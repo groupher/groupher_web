@@ -1,0 +1,8 @@
+{
+  "schemaPath": "schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "mastani": "http://0.0.0.0:4001/graphiql"
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "//--- general configs ---//": "",
+  "DEFAULT_THEME": "github",
+  "SENIOR_AMOUNT_THRESHOLD": 51.2,
+  "SPONSOR_AMOUNT_THRESHOLD": 3999,
+  "PAGE_SIZE": {
+    "S": 10,
+    "D": 20,
+    "M": 30,
+    "L": 40
+  },
+  "WORD_LIMIT": {
+    "COMMENT": 300
+  },
+  "AVATARS_LIST_LENGTH": {
+    "POSTS": 4,
+    "COMMENTS": 5
+  },
+  "TAG_COLORS": [
+    "RED",
+    "ORANGE",
+    "YELLOW",
+    "GREEN",
+    "CYAN",
+    "BLUE",
+    "PURPLE",
+    "PINK",
+    "GREY"
+  ],
+  "TAG_COLOR_ORDER": {
+    "red": 0,
+    "orange": 1,
+    "yellow": 2,
+    "green": 3,
+    "cyan": 4,
+    "blue": 5,
+    "purple": 6,
+    "dodgerblue": 7,
+    "yellowgreen": 8,
+    "brown": 9,
+    "cadetblue": 10,
+    "grey": 11
+  },
+  "//--- endpoint configs ---//": "",
+  "ASSETS_ENDPOINT": "https://assets.groupher.com",
+  "ICON": "https://assets.groupher.com/icons/static",
+  "ICON_BASE": "https://assets.groupher.com/icons",
+  "ICON_CMD": "https://assets.groupher.com/icons/cmd",
+  "DEFAULT_ICON": "https://assets.groupher.com/icons/cmd/cheatsheet.svg",
+  "DEFAULT_USER_AVATAR": "https://assets.groupher.com/icons/cmd/alien_user3.svg",
+  "GRAPHQL_ENDPOINT": "http://localhost:4001/graphiql",
+  "SITE_URL": "https://groupher.com",
+  "SITE_URL_SHORT": "https://groupher.com",
+  "GITHUB": "https://github.com/groupher",
+  "GITHUB_WEB_ADDR": "https://github.com/groupher/groupher_web",
+  "ABOUT_LINK": "/w/5",
+  "ISSUE_ADDR": "https://github.com/groupher/groupher_web/issues",
+  "MENTION_USER_ADDR": "https://groupher.com/users/",
+  "//--- contact configs ---//": "",
+  "EMAIL_SUPPORT": "groupher@outlook.com",
+  "// GRAPHQL_ENDPOINT": "https://api.groupher.com/graphiql",
+  "// 1000 * 60 * 10 = 10 mins": "",
+  "SSR_CACHE_TIME": 60000
+}
