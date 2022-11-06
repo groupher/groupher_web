@@ -14,8 +14,6 @@ import { useStore } from '@/stores/init'
  * that will apply to every page. Full info on how the default works
  * can be found here: https://github.com/garmeeh/next-seo#default-seo-configuration
  */
-// import { appWithTranslation } from '@/i18n'
-
 const App = ({ Component, pageProps }) => {
   const router = useRouter()
 
@@ -97,5 +95,4 @@ const App = ({ Component, pageProps }) => {
   )
 }
 
-// export default appWithTranslation(App)
 export default App
