@@ -1,0 +1,4 @@
+{
+  "//--- endpoint configs ---//": "",
+  "GRAPHQL_ENDPOINT": "https://api.groupher.com/graphiql"
+}
