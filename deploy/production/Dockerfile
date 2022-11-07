@@ -3,9 +3,8 @@ FROM node:16.18.0
 RUN mkdir /root/web
 
 ADD web.tar.gz /root/web
-RUN npm config set registry https://registry.npmmirror.com
 RUN npm i -g pm2 
-RUN cd /root/web/ && npm i --production
+RUN cd /root/web/ && npm i --omit=dev
 RUN cd /root/web/ && npm i typescript --save-dev
 
 RUN cd /root/web/ && ./node_modules/.bin/tsc --version
