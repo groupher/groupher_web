@@ -6,9 +6,9 @@ ADD web.tar.gz /root/web
 RUN npm i -g pm2 
 RUN cd /root/web/ && npm i --production
 RUN cd /root/web/ && npm i typescript --save-dev
-RUN cd /root/web/ && make build.prod
 
 RUN cd /root/web/ && ./node_modules/.bin/tsc --version
+RUN cd /root/web/ && make build.prod
 
 ADD loader.sh /usr/local/bin/loader.sh
 RUN chmod +x /usr/local/bin/loader.sh
