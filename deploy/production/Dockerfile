@@ -11,6 +11,7 @@ RUN cd /root/web/ && npm i typescript --save-dev
 
 RUN cd /root/web/ && ls -lla
 RUN cd /root/web/ && ls -lla src/pages
+RUN cd /root/web/src/pages && rm .__app.tsx
 RUN cd /root/web/ && make build.prod
 
 ADD loader.sh /usr/local/bin/loader.sh
