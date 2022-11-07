@@ -12,7 +12,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 // if move pwa config to witPlugins, it will not work
 const nextConfig = {
-  swcMinify: false,
+  swcMinify: true,
   productionBrowserSourceMaps: true,
   compiler: {
     removeConsole: {

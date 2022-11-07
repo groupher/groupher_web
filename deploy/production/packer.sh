@@ -16,13 +16,12 @@ mkdir "${PACKER_TMP_DIR}"
 echo "[Step 2/${TOTAL_STEPS}] cp files to ${PACKER_TMP_DIR} ..."
 npm run update.version
 cp -rf src server config public utils "${PACKER_TMP_DIR}"
-cp .env.production tsconfig.json .babelrc.fallback package.json package-lock.json next.config.js i18n.js global.d.ts "${PACKER_TMP_DIR}"
+cp .env.production tsconfig.json package.json package-lock.json next.config.js i18n.js global.d.ts "${PACKER_TMP_DIR}"
 cp Makefile Makefile.include.mk "${PACKER_TMP_DIR}"
 
 echo "[Step 3/${TOTAL_STEPS}] creating ${ARCHIVE_NAME} ..."
 cd "${PACKER_TMP_DIR}"
-mv .babelrc.fallback .babelrc
-tar czvf "../${ARCHIVE_NAME}" * .babelrc .env.production
+tar czvf "../${ARCHIVE_NAME}" *  .env.production
 cd ../
 
 echo "[Step 4/${TOTAL_STEPS}] cleanup ..."
