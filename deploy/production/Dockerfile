@@ -1,4 +1,4 @@
-FROM node:16.18.0
+FROM node:18.4.0
 
 RUN mkdir /root/web
 
