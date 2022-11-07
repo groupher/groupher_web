@@ -38,7 +38,7 @@ build.dev: before_action
 build.prod: before_action
 	@$(JSON_CLI) -s '.[0] * .[1]' config/config.json config/config.prod.json > /tmp/config.json
 	@cp /tmp/config.json ./config/config.json
-	npm run build.prod
+	npm run build.prod --debug
 
 serve.help:
 	$(call serve.help)
