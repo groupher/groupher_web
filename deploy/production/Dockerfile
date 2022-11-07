@@ -8,6 +8,8 @@ RUN cd /root/web/ && npm i --production
 RUN cd /root/web/ && npm i typescript --save-dev
 RUN cd /root/web/ && make build.prod
 
+RUN cd /root/web/ && ./node_modules/.bin/tsc --version
+
 ADD loader.sh /usr/local/bin/loader.sh
 RUN chmod +x /usr/local/bin/loader.sh
 CMD ["/usr/local/bin/loader.sh"]
