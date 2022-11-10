@@ -6,7 +6,6 @@
 
 import { FC, memo } from 'react'
 import { includes } from 'ramda'
-import Link from 'next/link'
 
 import type { TThread } from '@/spec'
 import { THREAD } from '@/constant'
@@ -47,9 +46,7 @@ const EmptyThread: FC<TProps> = ({ thread }) => (
         <Desc>如果你有相关的内容，欢迎一起和大家一起分享交流</Desc>
         <Desc>
           建议或遇到问题请
-          <Link href="/feedback" passHref>
-            <IssueLink>在这里反馈</IssueLink>
-          </Link>
+          <IssueLink href="/feedback">在这里反馈</IssueLink>
         </Desc>
       </DescWrapper>
     </Text>

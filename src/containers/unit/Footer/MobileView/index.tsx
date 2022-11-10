@@ -1,7 +1,5 @@
 import { FC } from 'react'
 
-import Link from 'next/link'
-
 import type { TMetric } from '@/spec'
 import { ICON, GITHUB, APP_VERSION, ABOUT_LINK } from '@/config'
 import { bond } from '@/utils/mobx'
@@ -37,26 +35,24 @@ const FooterContainer: FC<TProps> = ({ footer: store, metric }) => {
       </SiteWrapper>
 
       <SiteInfoWrapper>
-        <Link href={`${ABOUT_LINK}`} passHref>
-          <Item>关于</Item>
-        </Link>
+        <Item href={`${ABOUT_LINK}`} passHref>
+          关于
+        </Item>
         <Divider space={8} radius={3} />
-        <Link href="/feedback" passHref>
-          <Item>建议反馈</Item>
-        </Link>
+        <Item href="/feedback" passHref>
+          建议反馈
+        </Item>
         <Divider space={8} radius={3} />
-        <Link href={`/${ROUTE.SPONSOR}`} passHref>
-          <Item>
-            特别感谢 <ItemIcon src={`${ICON}/emotion/heart.png`} />
-          </Item>
-        </Link>
+        <Item href={`/${ROUTE.SPONSOR}`} passHref>
+          特别感谢 <ItemIcon src={`${ICON}/emotion/heart.png`} />
+        </Item>
         <Divider space={8} radius={3} />
-        <Link href={GITHUB} passHref>
-          <Item target="_blank">Github</Item>
-        </Link>
+        <Item href={GITHUB} target="_blank" passHref>
+          Github
+        </Item>
       </SiteInfoWrapper>
       <VersionWrapper>
-        <Item>{APP_VERSION}</Item>
+        <Item as="span">{APP_VERSION}</Item>
       </VersionWrapper>
     </Wrapper>
   )

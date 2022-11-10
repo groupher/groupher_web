@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import Img from '@/Img'
@@ -42,7 +43,7 @@ export const Desc = styled.div`
   margin-bottom: 5px;
   color: ${theme('thread.articleDigest')};
 `
-export const Nickname = styled.a`
+export const Nickname = styled(Link)`
   color: ${theme('thread.articleTitle')};
   text-decoration: none;
   font-size: 16px;

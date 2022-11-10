@@ -1,6 +1,5 @@
 import { FC } from 'react'
 import dynamic from 'next/dynamic'
-import Link from 'next/link'
 import TimeAgo from 'timeago-react'
 
 import type { TPost } from '@/spec'

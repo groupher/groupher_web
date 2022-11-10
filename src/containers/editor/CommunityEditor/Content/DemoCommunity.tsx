@@ -5,7 +5,6 @@
  */
 
 import { FC, memo } from 'react'
-import Link from 'next/link'
 
 import type { TCommunity } from '@/spec'
 import { buildLog } from '@/utils/logger'
@@ -32,9 +31,7 @@ const DemoCommunity: FC<TProps> = ({ item }) => {
     <Wrapper>
       <Community>
         <Logo src={item.logo} raw={item.raw} />
-        <Link href={`/${item.raw}`} passHref>
-          <Title>{item.title}</Title>
-        </Link>
+        <Title href={`/${item.raw}`}>{item.title}</Title>
       </Community>
     </Wrapper>
   )

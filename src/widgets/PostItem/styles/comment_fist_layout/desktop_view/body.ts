@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
@@ -68,7 +69,7 @@ export const LabelDivider = styled.div`
   background-color: ${theme('thread.articleDigest')};
   transform: rotate(12deg);
 `
-export const AuthorName = styled.a<{ darker: boolean }>`
+export const AuthorName = styled(Link)<{ darker: boolean }>`
   display: block;
   color: ${theme('thread.extraInfo')};
   font-size: 13px;

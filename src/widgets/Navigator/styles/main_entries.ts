@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import type { TTestable, TActive } from '@/spec'
@@ -13,7 +14,7 @@ export const DotDivider = styled(DotDividerBase)`
   background-color: transparent;
 `
 type TSiteLink = TTestable & TActive
-export const SiteLink = styled.a.attrs(({ testid }: TTestable) => ({
+export const SiteLink = styled(Link).attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TSiteLink>`
   ${css.flex('align-center')};

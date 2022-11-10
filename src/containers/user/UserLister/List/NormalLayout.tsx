@@ -1,7 +1,6 @@
 import { FC, memo } from 'react'
 
 import type { TUser } from '@/spec'
-import Link from 'next/link'
 
 import useAccount from '@/hooks/useAccount'
 import { cutRest } from '@/utils/helper'
@@ -35,9 +34,9 @@ const NormalLayout: FC<TProps> = ({ users }) => {
           <UserAvatar src={user.avatar} />
           <UserBrief>
             <Title>
-              <Link href={`/u/${user.login}`} passHref>
-                <Nickname>{cutRest(user.nickname, 15)}</Nickname>
-              </Link>
+              <Nickname href={`/u/${user.login}`}>
+                {cutRest(user.nickname, 15)}
+              </Nickname>
               <Location>
                 <CityIcon />
                 <City>{user.location || user.geoCity || '--'}</City>

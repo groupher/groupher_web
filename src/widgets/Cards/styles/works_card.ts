@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
@@ -74,7 +75,7 @@ export const Header = styled.div`
 export const Title = styled.div`
   ${css.flex('align-center')};
 `
-export const Name = styled.a`
+export const Name = styled(Link)`
   ${css.cutRest('280px')};
   color: ${theme('thread.articleTitle')};
   font-size: 16px;

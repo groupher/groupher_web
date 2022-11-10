@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
@@ -11,7 +12,7 @@ export const Brief = styled.div`
   margin-bottom: 10px;
   color: ${theme('thread.articleTitle')};
 `
-export const Title = styled.a`
+export const Title = styled(Link)`
   ${css.lineClamp(2)}
   font-size: 16px;
   color: ${theme('thread.articleTitle')};

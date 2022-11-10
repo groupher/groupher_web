@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
@@ -30,7 +31,7 @@ export const Entry = styled.div<{ mobile?: boolean }>`
     height: 88px;
   `};
 `
-export const Main = styled.a`
+export const Main = styled(Link)`
   ${css.flex('align-start')};
   text-decoration: none;
 `

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
@@ -18,7 +19,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   // background: ${theme('banner.bg')};
   background: rgba(0, 59, 74, 0.5);
 `
-export const LogoWrapper = styled.a.attrs(({ testid }: TTestable) => ({
+export const LogoWrapper = styled(Link).attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flex('align-center')};

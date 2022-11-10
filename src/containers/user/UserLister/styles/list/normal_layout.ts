@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import Img from '@/Img'
@@ -37,7 +38,7 @@ export const Title = styled.div`
     ${css.flexColumn('align-start')};
   `};
 `
-export const Nickname = styled.a`
+export const Nickname = styled(Link)`
   color: ${theme('thread.articleTitle')};
   text-decoration: none;
   font-size: 16px;

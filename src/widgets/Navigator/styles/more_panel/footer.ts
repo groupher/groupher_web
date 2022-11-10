@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
@@ -20,7 +21,7 @@ export const Entry = styled.div`
   width: 100%;
   margin-bottom: 15px;
 `
-export const Main = styled.a`
+export const Main = styled(Link)`
   ${css.flex('align-center')};
   text-decoration: none;
 `

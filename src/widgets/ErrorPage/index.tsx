@@ -6,7 +6,6 @@
 
 import { FC, memo } from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 
 import type { TMetric } from '@/spec'
 import { METRIC } from '@/constant'
@@ -53,12 +52,10 @@ const ErrorPage: FC<TProps> = ({
 
   return (
     <Wrapper testid={testid}>
-      <Link href="/" passHref>
-        <LogoWrapper testid="site-logo">
-          <SiteLogo />
-          <SiteTitle>oderPlanets</SiteTitle>
-        </LogoWrapper>
-      </Link>
+      <LogoWrapper href="/" testid="site-logo">
+        <SiteLogo />
+        <SiteTitle>oderPlanets</SiteTitle>
+      </LogoWrapper>
 
       <HintWrapper>
         <IconsWrapper>

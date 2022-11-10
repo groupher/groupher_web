@@ -1,6 +1,5 @@
 import { FC, memo } from 'react'
 import { filter } from 'ramda'
-import Link from 'next/link'
 
 import type { TArticle, TCommunity } from '@/spec'
 import { HCN } from '@/constant'
@@ -33,9 +32,7 @@ const ArticleBelongCommunity: FC<TProps> = ({
       {hasMirror && (
         <MirrorHint communities={mirrorCommunities as TCommunity[]} />
       )}
-      <Link href={`/${oc.raw}`} passHref>
-        <Name>{oc.title}</Name>
-      </Link>
+      <Name href={`/${oc.raw}`}>{oc.title}</Name>
       <JoinDesc>{oc.subscribersCount} 人加入</JoinDesc>
       <FollowButton
         size="tiny"

@@ -1,5 +1,4 @@
 import { FC, memo } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import { ROUTE } from '@/constant'
@@ -16,29 +15,29 @@ const DesktopView: FC = () => {
 
   return (
     <Wrapper>
-      <Link href={`/${ROUTE.TOPICS}`} passHref>
-        <SiteLink
-          active={mainPath === ROUTE.TOPICS}
-          testid="header-explore-link"
-        >
-          社区
-        </SiteLink>
-      </Link>
+      <SiteLink
+        href={`/${ROUTE.TOPICS}`}
+        active={mainPath === ROUTE.TOPICS}
+        testid="header-explore-link"
+      >
+        社区
+      </SiteLink>
       <DotDivider space={splitMargin} />
-      <Link href={`/${ROUTE.WORKS}`} passHref>
-        <SiteLink active={mainPath === ROUTE.WORKS} testid="header-works-link">
-          看板
-        </SiteLink>
-      </Link>
+      <SiteLink
+        href={`/${ROUTE.WORKS}`}
+        active={mainPath === ROUTE.WORKS}
+        testid="header-works-link"
+      >
+        看板
+      </SiteLink>
       <DotDivider space={splitMargin} />
-      <Link href={`/${ROUTE.COOL_GUIDE}`} passHref>
-        <SiteLink
-          active={mainPath === ROUTE.COOL_GUIDE}
-          testid={`header-${ROUTE.COOL_GUIDE}`}
-        >
-          更新日志
-        </SiteLink>
-      </Link>
+      <SiteLink
+        href={`/${ROUTE.COOL_GUIDE}`}
+        active={mainPath === ROUTE.COOL_GUIDE}
+        testid={`header-${ROUTE.COOL_GUIDE}`}
+      >
+        更新日志
+      </SiteLink>
       {/* <DotDivider space={splitMargin} />
       <Link href={`/${ROUTE.MEETUPS}`} passHref>
         <SiteLink
@@ -49,23 +48,21 @@ const DesktopView: FC = () => {
         </SiteLink>
       </Link> */}
       <DotDivider space={splitMargin} />
-      <Link href={`/${ROUTE.HAVE_A_DRINK}`} passHref>
-        <SiteLink
-          active={mainPath === ROUTE.HAVE_A_DRINK}
-          testid={`header-${ROUTE.HAVE_A_DRINK}`}
-        >
-          帮助台
-        </SiteLink>
-      </Link>
+      <SiteLink
+        href={`/${ROUTE.HAVE_A_DRINK}`}
+        active={mainPath === ROUTE.HAVE_A_DRINK}
+        testid={`header-${ROUTE.HAVE_A_DRINK}`}
+      >
+        帮助台
+      </SiteLink>
       <DotDivider space={splitMargin} />
-      <Link href={`/${ROUTE.HAVE_A_DRINK}`} passHref>
-        <SiteLink
-          active={mainPath === ROUTE.HAVE_A_DRINK}
-          testid={`header-${ROUTE.HAVE_A_DRINK}`}
-        >
-          关于
-        </SiteLink>
-      </Link>
+      <SiteLink
+        href={`/${ROUTE.HAVE_A_DRINK}`}
+        active={mainPath === ROUTE.HAVE_A_DRINK}
+        testid={`header-${ROUTE.HAVE_A_DRINK}`}
+      >
+        关于
+      </SiteLink>
       {/* <DotDivider space={splitMargin} />
       <MoreLink /> */}
     </Wrapper>

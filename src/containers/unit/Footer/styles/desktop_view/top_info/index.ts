@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
@@ -60,7 +61,7 @@ export const ArrowDividerIcon = styled(Img)`
   transform: rotate(180deg);
   margin-right: 6px;
 `
-export const Item = styled.a`
+export const Item = styled(Link)`
   ${css.flex('align-center')};
   color: ${theme('footer.title')};
   text-decoration: none;

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import type { TC11NLayout, TMetric } from '@/spec'
@@ -21,7 +22,7 @@ export const MainInfos = styled.footer`
   margin-bottom: 20px;
   ${css.media.tablet`display: none;`};
 `
-const Link = styled.a`
+const BaseLink = styled(Link)`
   text-decoration: none;
   font-weight: bolder;
   color: ${theme('footer.text')};
@@ -35,7 +36,7 @@ const Link = styled.a`
 export const BaseInfo = styled.div`
   ${css.flex()};
 `
-export const Item = styled(Link)`
+export const Item = styled(BaseLink)`
   ${css.flex('align-center')};
   margin-right: 25px;
 `

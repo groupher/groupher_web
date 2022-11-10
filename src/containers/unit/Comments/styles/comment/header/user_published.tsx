@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import Img from '@/Img'
@@ -16,7 +17,7 @@ export const ArticleBase = styled.div`
   ${css.flex('align-center')};
   flex-grow: 1;
 `
-export const AuthorTitle = styled.a`
+export const AuthorTitle = styled(Link)`
   color: ${theme('thread.articleTitle')};
   text-decoration: none;
   font-size: 15px;

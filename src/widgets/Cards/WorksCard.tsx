@@ -6,7 +6,6 @@
 
 import { Fragment, FC, memo } from 'react'
 import TimeAgo from 'timeago-react'
-import Link from 'next/link'
 import { isMobile } from 'react-device-detect'
 
 import type { TWorks } from '@/spec'
@@ -81,9 +80,7 @@ const WorksCard: FC<TProps> = ({
               {preview ? (
                 <PreviewName as="div">{title || '--'}</PreviewName>
               ) : (
-                <Link href={`/${ROUTE.W}/${id}`} passHref prefetch={false}>
-                  <Name>{title || '--'}</Name>
-                </Link>
+                <Name href={`/${ROUTE.W}/${id}`}>{title || '--'}</Name>
               )}
 
               {item.isOSS && (

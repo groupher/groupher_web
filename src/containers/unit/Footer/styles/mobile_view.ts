@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import Img from '@/Img'
@@ -29,7 +30,7 @@ export const SiteTitle = styled.div`
 export const SiteInfoWrapper = styled.div`
   ${css.flex('align-both')};
 `
-export const Item = styled.a`
+export const Item = styled(Link)`
   ${css.flex('align-center')};
   color: ${theme('footer.text')};
   text-decoration: none;

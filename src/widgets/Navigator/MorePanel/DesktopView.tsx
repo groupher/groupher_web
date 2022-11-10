@@ -1,5 +1,4 @@
 import { FC, memo } from 'react'
-import Link from 'next/link'
 
 import { ICON } from '@/config'
 import { ROUTE } from '@/constant'
@@ -32,15 +31,13 @@ const MoreContent: FC = () => {
           <Desc>贴纸/冰箱贴/各种奇奇怪怪。。</Desc>
         </Entry> */}
         <Entry>
-          <Link href={`/${ROUTE.SUPPORT_US}`} passHref>
-            <Main>
-              <Logo src={`${ICON}/menu/lifebuoy.png`} />
-              <Title>
-                支持我们
-                <Wip>help</Wip>
-              </Title>
-            </Main>
-          </Link>
+          <Main href={`/${ROUTE.SUPPORT_US}`}>
+            <Logo src={`${ICON}/menu/lifebuoy.png`} />
+            <Title>
+              支持我们
+              <Wip>help</Wip>
+            </Title>
+          </Main>
           <Desc>帮助我们一起共建社区</Desc>
         </Entry>
         {/* <Entry>
@@ -53,30 +50,24 @@ const MoreContent: FC = () => {
           <Desc>站内外近期热门讨论</Desc>
         </Entry> */}
         <Entry>
-          <Link href="/makers" passHref>
-            <Main>
-              <Icon.Makers />
-              <Title>Makers</Title>
-            </Main>
-          </Link>
+          <Main href="/makers">
+            <Icon.Makers />
+            <Title>Makers</Title>
+          </Main>
           <Desc>创作者经验交流，开发者访谈</Desc>
         </Entry>
         <Entry>
-          <Link href={`${ROUTE.APPLY_COMMUNITY}`} passHref>
-            <Main>
-              <Icon.Piece />
-              <Title>创建子社区</Title>
-            </Main>
-          </Link>
+          <Main href={`${ROUTE.APPLY_COMMUNITY}`}>
+            <Icon.Piece />
+            <Title>创建子社区</Title>
+          </Main>
           <Desc>在 CP 上创建一个子社区</Desc>
         </Entry>
         <Entry>
-          <Link href={`/${ROUTE.SUBSCRIBE}`} passHref>
-            <Main>
-              <Icon.Subscribe />
-              <Title offset="6px">内容订阅</Title>
-            </Main>
-          </Link>
+          <Main href={`/${ROUTE.SUBSCRIBE}`}>
+            <Icon.Subscribe />
+            <Title offset="6px">内容订阅</Title>
+          </Main>
           <Desc>各社区动态 RSS / Email 订阅</Desc>
         </Entry>
         <Entry>

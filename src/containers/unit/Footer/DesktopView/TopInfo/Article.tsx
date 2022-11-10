@@ -24,8 +24,8 @@ const Article: FC<TProps> = ({ article, noBottomBorder = false }) => {
         <Logo />
       </InfoBar>
       {originalCommunity.raw !== HCN && (
-        <Link href={`/${originalCommunity.raw}`} passHref>
-          <CommunityTitle as="a">{originalCommunity.title}</CommunityTitle>
+        <Link href={`/${originalCommunity.raw}`}>
+          <CommunityTitle>{originalCommunity.title}</CommunityTitle>
         </Link>
       )}
       <BlinkCursor />

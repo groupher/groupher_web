@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
@@ -51,7 +52,7 @@ export const CommunityDemoWrapper = styled.div`
   flex-wrap: wrap;
   margin-bottom: 10px;
 `
-export const MoreLink = styled.a`
+export const MoreLink = styled(Link)`
   font-size: 13px;
   color: #139c9e;
   cursor: pointer;
