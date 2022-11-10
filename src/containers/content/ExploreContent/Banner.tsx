@@ -5,7 +5,6 @@
  */
 
 import { FC, memo } from 'react'
-import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { isMobile } from 'react-device-detect'
 
@@ -76,9 +75,9 @@ const Banner: FC<TProps> = ({
             或者，来为你
             {/* @ts-ignore */}
             <SloganText />
-            <Link href={`/${ROUTE.APPLY_COMMUNITY}`} passHref>
-              <CreateCommunityLink>建立一个社区</CreateCommunityLink>
-            </Link>
+            <CreateCommunityLink href={`/${ROUTE.APPLY_COMMUNITY}`} passHref>
+              建立一个社区
+            </CreateCommunityLink>
             吧！
           </IntroDesc>
         )}

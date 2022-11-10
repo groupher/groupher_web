@@ -40,7 +40,7 @@ const COMMUNITY_INTRO = {
     threads: ['讨论', '看板', '技术栈', '团队'],
     demos: [
       {
-        title: 'CoderPlaents',
+        title: 'Groupher',
         raw: HCN,
         logo: '',
       },

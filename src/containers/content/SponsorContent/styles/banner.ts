@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
@@ -71,7 +72,7 @@ export const AnchorM = styled(Anchor)`
 export const AnchorL = styled(Anchor)`
   top: 80px;
 `
-export const SponsorBtn = styled.a<TActive>`
+export const SponsorBtn = styled(Link)<TActive>`
   font-size: 18px;
   color: ${theme('button.primary')};
   text-decoration: none;

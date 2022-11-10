@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
@@ -22,7 +23,7 @@ export const EmptyDesc = styled.div`
   font-size: 15px;
 `
 
-export const IssueLink = styled.a`
+export const IssueLink = styled(Link)`
   color: ${theme('button.primary')};
   margin-left: 3px;
   margin-right: 3px;

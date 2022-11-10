@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import type { TMetric } from '@/spec'
@@ -39,7 +40,7 @@ export const BottomInfo = styled.div`
   width: 100%;
   color: ${theme('thread.articleDigest')};
 `
-export const AuthorName = styled.a`
+export const AuthorName = styled(Link)`
   color: ${theme('thread.articleDigest')};
   text-decoration: none;
   font-size: 14px;

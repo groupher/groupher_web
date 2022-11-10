@@ -7,7 +7,6 @@
  */
 
 import { FC, memo, useState, Fragment } from 'react'
-import Link from 'next/link'
 
 import { buildLog } from '@/utils/logger'
 import ViewportTracker from '@/widgets/ViewportTracker'
@@ -76,11 +75,14 @@ const Banner: FC = () => {
         </LogosWrapper>
         <SupportTitle>感谢以下团队、个人对本项目的特别赞助</SupportTitle>
         {anchorMEnter && (
-          <Link href="mailto:groupher@outlook.com" passHref>
-            <SponsorBtn {...linkColors} show={anchorLEnter}>
-              我要赞助
-            </SponsorBtn>
-          </Link>
+          <SponsorBtn
+            href="mailto:groupher@outlook.com"
+            passHref
+            {...linkColors}
+            show={anchorLEnter}
+          >
+            我要赞助
+          </SponsorBtn>
         )}
         {!anchorMEnter && <Divider />}
       </SmileWrapper>

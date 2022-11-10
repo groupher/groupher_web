@@ -48,7 +48,7 @@
   "ICON_CMD": "https://assets.groupher.com/icons/cmd",
   "DEFAULT_ICON": "https://assets.groupher.com/icons/cmd/cheatsheet.svg",
   "DEFAULT_USER_AVATAR": "https://assets.groupher.com/icons/cmd/alien_user3.svg",
-  "GRAPHQL_ENDPOINT": "https://api.groupher.com/graphiql",
+  "GRAPHQL_ENDPOINT": "http://localhost:4001/graphiql",
   "SITE_URL": "https://groupher.com",
   "SITE_URL_SHORT": "https://groupher.com",
   "GITHUB": "https://github.com/groupher",

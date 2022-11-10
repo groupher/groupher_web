@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
@@ -54,7 +55,7 @@ export const SloganTextWrapper = styled.div<{ highlight?: boolean }>`
   color: ${({ highlight }) =>
     highlight ? theme('thread.articleTitle') : theme('thread.articleDigest')};
 `
-export const CreateCommunityLink = styled.a`
+export const CreateCommunityLink = styled(Link)`
   color: ${theme('button.primary')};
   margin-right: 3px;
   text-decoration: none;

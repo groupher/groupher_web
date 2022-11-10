@@ -1,6 +1,5 @@
 import { FC, memo } from 'react'
 import { isEmpty, contains } from 'ramda'
-import Link from 'next/link'
 
 import type { TCommunity } from '@/spec'
 import { NON_FILL_COMMUNITY } from '@/constant'
@@ -59,9 +58,9 @@ const CommunityCard: FC<TProps> = ({ community }) => {
         </ContentWrapper>
       </Left>
       <Right>
-        <Link href={`/${community.raw}`} passHref>
-          <Title>{community.title}</Title>
-        </Link>
+        <Title href={`/${community.raw}`} passHref>
+          {community.title}
+        </Title>
         <Desc>{cutRest(community.desc, 20)}</Desc>
         <SpaceGrow />
         <Footer>

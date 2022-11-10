@@ -3,7 +3,6 @@
  */
 
 import { FC, Fragment, memo } from 'react'
-import Link from 'next/link'
 
 import type { TPost, TMetric } from '@/spec'
 import { METRIC } from '@/constant'
@@ -54,9 +53,7 @@ const PostLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
     <Fragment>
       <Main metric={metric}>
         <Header>
-          <Link href={`/u/${author.login}`} passHref>
-            <AuthorName>{author.nickname}</AuthorName>
-          </Link>
+          <AuthorName href={`/u/${author.login}`}>{author.nickname}</AuthorName>
           <DotDivider space={12} />
           <PublishDateInfo>
             <ReadableDate date={insertedAt} fmt="absolute" withTime={false} />
