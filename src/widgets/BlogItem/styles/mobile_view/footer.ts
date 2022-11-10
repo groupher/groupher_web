@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
@@ -23,7 +24,7 @@ export const Extra = styled.li`
   font-size: 13px;
   color: ${theme('thread.extraInfo')};
 `
-export const CommunityLabel = styled.a`
+export const CommunityLabel = styled(Link)`
   color: inherit;
   padding-left: 14px;
   position: relative;

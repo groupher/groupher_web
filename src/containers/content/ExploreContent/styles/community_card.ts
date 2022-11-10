@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 // import Img from '@/Img'
@@ -79,7 +80,7 @@ export const ContentWrapper = styled(JoinWrapper)`
   margin-top: -30px;
   margin-left: -3px;
 `
-export const Title = styled.a`
+export const Title = styled(Link)`
   margin-top: -2px;
   font-size: 18px;
   font-weight: bold;

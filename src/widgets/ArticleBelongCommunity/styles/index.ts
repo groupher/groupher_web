@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
@@ -19,7 +20,7 @@ export const Icon = styled(Img)`
   ${css.size(32)};
   fill: ${theme('thread.articleDigest')};
 `
-export const Name = styled.a`
+export const Name = styled(Link)`
   text-decoration: none;
   color: ${theme('thread.articleTitle')};
   font-size: 14px;

@@ -1,5 +1,4 @@
 import { FC, memo } from 'react'
-import Link from 'next/link'
 
 import type { TUser } from '@/spec'
 import { Wrapper, Member, Avatar, Intro, Name, Bio } from './styles/teams'
@@ -15,9 +14,7 @@ const Teams: FC<TProps> = ({ teammates }) => {
         <Member key={user.login}>
           <Avatar src={user.avatar} />
           <Intro>
-            <Link href={`/u/${user.login}`} passHref>
-              <Name>{user.nickname}</Name>
-            </Link>
+            <Name href={`/u/${user.login}`}>{user.nickname}</Name>
             <Bio>{user.bio}</Bio>
           </Intro>
         </Member>

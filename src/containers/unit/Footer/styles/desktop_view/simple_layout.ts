@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
@@ -12,7 +13,7 @@ export const Note = styled.div`
   margin-bottom: 5px;
 `
 
-export const Addr = styled.a`
+export const Addr = styled(Link)`
   color: ${theme('thread.articleDigest')};
   text-decoration: none;
   margin-left: 2px;

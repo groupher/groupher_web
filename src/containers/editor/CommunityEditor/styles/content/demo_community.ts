@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
@@ -19,7 +20,7 @@ export const Logo = styled(CommunityFaceLogo)`
   ${css.circle(18)};
   filter: saturate(0.6);
 `
-export const Title = styled.a`
+export const Title = styled(Link)`
   color: ${theme('thread.articleDigest')};
   text-decoration: none;
   margin-left: 7px;

@@ -1,5 +1,4 @@
 import { FC, memo } from 'react'
-import Link from 'next/link'
 
 import { SIZE, ROUTE } from '@/constant'
 
@@ -41,9 +40,9 @@ const TheNotes: FC<TNote> = ({ communityType }) => {
       return (
         <Notes>
           团队主页 / github 或相关社交平台链接，如果已经在
-          <Link href={`/${ROUTE.WORKS}`} passHref>
-            <NoteLink target="_blank">作品集市</NoteLink>
-          </Link>
+          <NoteLink href={`/${ROUTE.WORKS}`} target="_blank">
+            作品集市
+          </NoteLink>
           发布过作品，请一并附上。
         </Notes>
       )
@@ -53,9 +52,9 @@ const TheNotes: FC<TNote> = ({ communityType }) => {
       return (
         <Notes>
           作品主页或相关社交平台链接，如果你已经在
-          <Link href={`/${ROUTE.WORKS}`} passHref>
-            <NoteLink target="_blank">作品集市</NoteLink>
-          </Link>
+          <NoteLink href={`/${ROUTE.WORKS}`} target="_blank">
+            作品集市
+          </NoteLink>
           发布过作品，请一并附上。
         </Notes>
       )

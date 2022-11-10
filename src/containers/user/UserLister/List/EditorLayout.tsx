@@ -1,7 +1,6 @@
 import { FC, memo } from 'react'
 
 import type { TUser } from '@/spec'
-import Link from 'next/link'
 
 import useAccount from '@/hooks/useAccount'
 import FollowButton from '@/widgets/Buttons/FollowButton'
@@ -35,9 +34,7 @@ const EditorLayout: FC<TProps> = ({ users }) => {
           <UserAvatar src={user.avatar} />
           <UserBrief>
             <Title>
-              <Link href={`/u/${user.login}`} passHref>
-                <Nickname>{user.nickname}</Nickname>
-              </Link>
+              <Nickname href={`/u/${user.login}`}>{user.nickname}</Nickname>
               <Location>
                 <CityIcon />
                 <City>{user.location || user.geoCity || '--'}</City>

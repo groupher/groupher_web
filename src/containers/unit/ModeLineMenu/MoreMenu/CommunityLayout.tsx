@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { FC, memo } from 'react'
-import Link from 'next/link'
 
 import { ICON, GITHUB } from '@/config'
 
@@ -40,11 +39,9 @@ const MoreMenu: FC = () => {
   return (
     <Wrapper>
       {menus.map((item) => (
-        <Link key={item.raw} href={item.link} passHref>
-          <A target={item.target || '_blank'}>
-            <NaviButton {...item} />
-          </A>
-        </Link>
+        <A key={item.raw} href={item.link} target={item.target || '_blank'}>
+          <NaviButton {...item} />
+        </A>
       ))}
     </Wrapper>
   )

@@ -1,5 +1,4 @@
 import { FC, memo } from 'react'
-import Link from 'next/link'
 
 import { ROUTE } from '@/constant'
 
@@ -22,9 +21,9 @@ const NotFound: FC<TProps> = ({ showSearchNote }) => {
         <EmptyTitle>没有找到相关社区</EmptyTitle>
         <EmptyDesc>
           若没有你感兴趣的社区, 欢迎
-          <Link href={`/${ROUTE.APPLY_COMMUNITY}`} passHref>
-            <IssueLink>参与创建</IssueLink>
-          </Link>
+          <IssueLink href={`/${ROUTE.APPLY_COMMUNITY}`} passHref>
+            参与创建
+          </IssueLink>
         </EmptyDesc>
       </EmptyCard>
     </Wrapper>

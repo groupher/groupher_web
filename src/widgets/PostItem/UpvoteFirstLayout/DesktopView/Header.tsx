@@ -1,6 +1,5 @@
 import { FC } from 'react'
 import dynamic from 'next/dynamic'
-import Link from 'next/link'
 import TimeAgo from 'timeago-react'
 
 import type { TPost } from '@/spec'
@@ -9,6 +8,7 @@ import { send } from '@/utils/helper'
 
 import Tooltip from '@/widgets/Tooltip'
 import { SpaceGrow, Space } from '@/widgets/Common'
+import TagsList from '@/widgets/TagsList'
 
 import CommentsCount from '../../CommentsCount'
 
@@ -23,10 +23,6 @@ import {
 } from '../../styles/upvote_fist_layout/desktop_view/header'
 
 const UserCard = dynamic(() => import('@/widgets/Cards/UserCard'), {
-  ssr: false,
-})
-
-const TagsList = dynamic(() => import('@/widgets/TagsList'), {
   ssr: false,
 })
 
@@ -46,9 +42,9 @@ const Header: FC<TProps> = ({ article }) => {
           placement="right"
           delay={500}
         >
-          <Link href={`/u/${author.login}`} passHref>
-            <AuthorName>{author.nickname}</AuthorName>
-          </Link>
+          <AuthorName href={`/u/${author.login}`} passHref>
+            {author.nickname}
+          </AuthorName>
         </Tooltip>
         <Dot radius={2.5} space={10} />
         <Space right={2} />

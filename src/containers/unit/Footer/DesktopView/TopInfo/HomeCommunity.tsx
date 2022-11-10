@@ -1,6 +1,5 @@
 import { FC, memo } from 'react'
 
-import Link from 'next/link'
 import { ICON, ABOUT_LINK } from '@/config'
 import { ROUTE } from '@/constant'
 import { Space, SpaceGrow } from '@/widgets/Common'
@@ -26,24 +25,14 @@ const HomeCommunity: FC = () => {
         <Beta>beta</Beta>
       </SiteTitle>
       <SpaceGrow />
-      <Link href={`${ABOUT_LINK}`} passHref>
-        <Item>关于</Item>
-      </Link>
-      <Link href={`/${ROUTE.SUPPORT_US}`} passHref>
-        <Item>支持我们</Item>
-      </Link>
-      <Link href="/feedback" passHref>
-        <Item>反馈建议</Item>
-      </Link>
-      <Link href={`/${ROUTE.SPONSOR}`} passHref>
-        <Item>
-          <HeartCrabIcon src={`${ICON}/emotion/heart.png`} noLazy />
-          特别感谢
-        </Item>
-      </Link>
-      <Link href={`/${ROUTE.FRIENDS}`} passHref>
-        <Item>友链</Item>
-      </Link>
+      <Item href={`${ABOUT_LINK}`}>关于</Item>
+      <Item href={`/${ROUTE.SUPPORT_US}`}>支持我们</Item>
+      <Item href="/feedback">反馈建议</Item>
+      <Item href={`/${ROUTE.SPONSOR}`}>
+        <HeartCrabIcon src={`${ICON}/emotion/heart.png`} noLazy />
+        特别感谢
+      </Item>
+      <Item href={`/${ROUTE.FRIENDS}`}>友链</Item>
       <Item href="https://plausible.io/groupher.com" target="_blank">
         访问统计
       </Item>

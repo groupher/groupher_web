@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import Link from 'next/link'
 
 import type { TCommunity, TBlog } from '@/spec'
 import { cutRest } from '@/utils/helper'
@@ -30,9 +29,9 @@ const Footer: FC<TProps> = ({ item, curCommunity }) => {
     <Wrapper>
       <Extra>
         {showOriginalCommunity && (
-          <Link href={`/${originalCommunity.raw}`} passHref>
-            <CommunityLabel>{originalCommunity.title}</CommunityLabel>
-          </Link>
+          <CommunityLabel href={`/${originalCommunity.raw}`}>
+            {originalCommunity.title}
+          </CommunityLabel>
         )}
 
         {showOriginalCommunity && <DotDivider radius={3} space={6} />}

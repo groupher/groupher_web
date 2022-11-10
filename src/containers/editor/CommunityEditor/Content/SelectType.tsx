@@ -6,7 +6,6 @@
 
 import { FC, memo } from 'react'
 
-import Link from 'next/link'
 import { ICON_CMD } from '@/config'
 import { buildLog } from '@/utils/logger'
 
@@ -48,9 +47,7 @@ const SelectType: FC<TProps> = ({ status: { communityType } }) => {
         </Header>
         <Desc>{intro.desc}</Desc>
         <br />
-        <Link href="/explore" passHref>
-          <MoreLink>查看详细</MoreLink>
-        </Link>
+        <MoreLink href="/explore">查看详细</MoreLink>
       </LeftBlock>
       <RightBlock>
         <Header>
@@ -63,9 +60,7 @@ const SelectType: FC<TProps> = ({ status: { communityType } }) => {
           ))}
         </CommunityDemoWrapper>
 
-        <Link href="/explore" passHref>
-          <MoreLink>查看更多</MoreLink>
-        </Link>
+        <MoreLink href="/explore">查看更多</MoreLink>
       </RightBlock>
     </Wrapper>
   )

@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import Link from 'next/link'
 
 import type { TBlog } from '@/spec'
 import { ROUTE } from '@/constant'
@@ -24,9 +23,7 @@ const Header: FC<TProps> = ({ item }) => {
   return (
     <Wrapper>
       <Brief>
-        <Link href={`/${ROUTE.BLOG}/${item.id}`} passHref>
-          <Title>{item.title}</Title>
-        </Link>
+        <Title href={`/${ROUTE.BLOG}/${item.id}`}>{item.title}</Title>
 
         <AddonInfo>
           {item.linkAddr && (

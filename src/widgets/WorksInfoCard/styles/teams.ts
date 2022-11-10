@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
@@ -20,7 +21,7 @@ export const Avatar = styled(Img)`
 export const Intro = styled.div`
   ${css.flexColumn()};
 `
-export const Name = styled.a`
+export const Name = styled(Link)`
   color: ${theme('thread.articleTitle')};
   text-decoration: none;
   font-size: 14px;

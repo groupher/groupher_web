@@ -3,8 +3,6 @@ import dynamic from 'next/dynamic'
 import { includes } from 'ramda'
 import TimeAgo from 'timeago-react'
 
-import Link from 'next/link'
-
 import type { TCommunity, TPost } from '@/spec'
 import { EVENT, ARTICLE_CAT } from '@/constant'
 import { send, changeToCommunity } from '@/utils/helper'
@@ -83,11 +81,12 @@ const Body: FC<TProps> = ({ article, curCommunity }) => {
             placement="right"
             delay={500}
           >
-            <Link href={`/u/${author.login}`} passHref>
-              <AuthorName darker={showOriginalCommunity}>
-                {author.nickname}
-              </AuthorName>
-            </Link>
+            <AuthorName
+              href={`/u/${author.login}`}
+              darker={showOriginalCommunity}
+            >
+              {author.nickname}
+            </AuthorName>
           </Tooltip>
 
           <Dot radius={3} space={10} />

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
@@ -12,7 +13,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   height: ${L_MENU_HEIGHT};
   margin-top: -20px;
 `
-export const A = styled.a`
+export const A = styled(Link)`
   color: ${theme('thread.articleTitle')};
   text-decoration: none;
 

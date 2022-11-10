@@ -3,7 +3,6 @@
  */
 
 import { FC, Fragment, memo } from 'react'
-import Link from 'next/link'
 
 import type { TPost, TMetric } from '@/spec'
 import { METRIC } from '@/constant'
@@ -26,9 +25,7 @@ import {
   Title,
   AuthorName,
   BottomInfo,
-  // CommunityInfo,
 } from '../styles/desktop_view/post_layout'
-// import { subscribeCommunity, unsubscribeCommunity } from '../logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:ArticleDigest')
@@ -54,9 +51,7 @@ const PostLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
     <Fragment>
       <Main metric={metric}>
         <Header>
-          <Link href={`/u/${author.login}`} passHref>
-            <AuthorName>{author.nickname}</AuthorName>
-          </Link>
+          <AuthorName href={`/u/${author.login}`}>{author.nickname}</AuthorName>
           <DotDivider space={12} />
           <PublishDateInfo>
             <ReadableDate date={insertedAt} fmt="absolute" withTime={false} />

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
@@ -50,7 +51,7 @@ export const TitleLink = styled.div`
   text-decoration: underline;
 `
 
-export const AuthorName = styled.a`
+export const AuthorName = styled(Link)`
   display: block;
   color: ${theme('thread.extraInfo')};
   font-size: 13px;

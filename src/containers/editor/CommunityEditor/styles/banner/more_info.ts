@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
@@ -39,7 +40,7 @@ export const Notes = styled.div`
   opacity: 0.8;
   padding: 14px 10px;
 `
-export const NoteLink = styled.a`
+export const NoteLink = styled(Link)`
   text-decoration: none;
   color: #139c9e;
   margin-left: 2px;

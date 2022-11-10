@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
@@ -5,7 +6,7 @@ import css, { theme } from '@/utils/css'
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
 `
-export const Title = styled.a`
+export const Title = styled(Link)`
   ${css.cutRest('50px')};
   color: ${theme('thread.articleTitle')};
   font-size: 12px;

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
@@ -37,7 +38,7 @@ export const FeedBacks = styled.div`
   ${css.flex('align-center')};
   margin-top: 20px;
 `
-export const FeedLink = styled.a`
+export const FeedLink = styled(Link)`
   font-size: 14px;
   color: #139c9e;
   text-decoration: none;

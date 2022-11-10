@@ -1,6 +1,5 @@
 import { FC, memo } from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 
 import { ROUTE } from '@/constant'
 
@@ -13,9 +12,7 @@ const MainBlockInfo: FC = () => {
   if (pathname === `/${ROUTE.COOL_GUIDE}`) {
     return (
       <Wrapper>
-        <Link href={asPath} passHref>
-          <Title>酷导航</Title>
-        </Link>
+        <Title href={asPath}>酷导航</Title>
       </Wrapper>
     )
   }
@@ -23,9 +20,7 @@ const MainBlockInfo: FC = () => {
   if (pathname === `/${ROUTE.HAVE_A_DRINK}`) {
     return (
       <Wrapper>
-        <Link href={asPath} passHref>
-          <Title>来一杯</Title>
-        </Link>
+        <Title href={asPath}>来一杯</Title>
       </Wrapper>
     )
   }
@@ -33,9 +28,7 @@ const MainBlockInfo: FC = () => {
   if (pathname === `/${ROUTE.MEETUPS}`) {
     return (
       <Wrapper>
-        <Link href={asPath} passHref>
-          <Title>小聚</Title>
-        </Link>
+        <Title href={asPath}>小聚</Title>
       </Wrapper>
     )
   }
@@ -43,9 +36,7 @@ const MainBlockInfo: FC = () => {
   if (pathname === `/${ROUTE.EXPLORE}`) {
     return (
       <Wrapper>
-        <Link href={asPath} passHref>
-          <Title>发现</Title>
-        </Link>
+        <Title href={asPath}>发现</Title>
       </Wrapper>
     )
   }
@@ -53,9 +44,7 @@ const MainBlockInfo: FC = () => {
   if (pathname === `/${ROUTE.PLAZA}`) {
     return (
       <Wrapper>
-        <Link href={asPath} passHref>
-          <Title>作品集市</Title>
-        </Link>
+        <Title href={asPath}>作品集市</Title>
       </Wrapper>
     )
   }
@@ -63,16 +52,14 @@ const MainBlockInfo: FC = () => {
   if (pathname === '/works/[id]') {
     return (
       <Wrapper>
-        <Link href={`/${ROUTE.PLAZA}`} passHref>
-          <Title>作品集市</Title>
-        </Link>
+        <Title href={`/${ROUTE.PLAZA}`}>作品集市</Title>
       </Wrapper>
     )
   }
 
   return (
     <Wrapper>
-      <Title>首页</Title>
+      <Title href="/">首页</Title>
     </Wrapper>
   )
 }

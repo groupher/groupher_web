@@ -1,8 +1,6 @@
 import { FC, memo } from 'react'
 
 import Link from 'next/link'
-import { EVENT, THREAD } from '@/constant'
-import { send } from '@/utils/helper'
 
 import {
   Wrapper,

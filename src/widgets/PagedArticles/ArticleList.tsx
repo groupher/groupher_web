@@ -41,38 +41,6 @@ const ArticleList: FC<TProps> = ({
   }
 
   switch (thread) {
-    // case THREAD.JOB:
-    //   return (
-    //     <MasonryCards column={2}>
-    //       {entries.map((entry) => (
-    //         <JobItem key={entry.id} entry={entry} c11n={c11n} />
-    //       ))}
-    //     </MasonryCards>
-    //   )
-
-    // case THREAD.BLOG:
-    //   return (
-    //     <Fragment>
-    //       {entries.map((entry) => (
-    //         <BlogItem
-    //           key={entry.id}
-    //           entry={entry}
-    //           c11n={c11n}
-    //           curCommunity={curCommunity}
-    //         />
-    //       ))}
-    //     </Fragment>
-    //   )
-
-    // case THREAD.RADAR:
-    //   return (
-    //     <MasonryCards column={2}>
-    //       {entries.map((entry) => (
-    //         <RadarItem key={entry.id} entry={entry} c11n={c11n} />
-    //       ))}
-    //     </MasonryCards>
-    //   )
-
     default:
       // common post
       // return <h3>PostItems</h3>
