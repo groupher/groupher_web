@@ -25,9 +25,7 @@ import {
   Title,
   AuthorName,
   BottomInfo,
-  // CommunityInfo,
 } from '../styles/desktop_view/post_layout'
-// import { subscribeCommunity, unsubscribeCommunity } from '../logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:ArticleDigest')
