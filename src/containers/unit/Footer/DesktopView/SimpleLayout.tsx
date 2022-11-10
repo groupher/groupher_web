@@ -6,7 +6,7 @@ const SimpleLayout: FC = () => {
   return (
     <Wrapper>
       <Note>
-        由<Addr href="/">Groupher</Addr>
+        由<Addr href="https://groupher.com">Groupher</Addr>
         提供服务
       </Note>
       <Note>
