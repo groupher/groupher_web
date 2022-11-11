@@ -1,20 +1,24 @@
 import { FC } from 'react'
 
+import { isEmpty } from 'ramda'
+
+import { SITE_URL, BEIAN_ADDR, BEIAN_TEXT } from '@/config'
 import { Wrapper, Note, Addr } from '../styles/desktop_view/simple_layout'
 
 const SimpleLayout: FC = () => {
   return (
     <Wrapper>
       <Note>
-        由<Addr href="https://groupher.com">Groupher</Addr>
+        由<Addr href={SITE_URL}>Groupher</Addr>
         提供服务
       </Note>
-      <Note>
-        <Addr href="http://beian.miit.gov.cn" target="_blank">
-          蜀ICP备17043722号-4
-        </Addr>
-      </Note>
-      <br />
+      {!isEmpty(BEIAN_TEXT) && (
+        <Note>
+          <Addr href={BEIAN_ADDR} target="_blank">
+            {BEIAN_TEXT}
+          </Addr>
+        </Note>
+      )}
     </Wrapper>
   )
 }
