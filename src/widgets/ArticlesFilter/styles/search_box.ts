@@ -9,17 +9,17 @@ import CloseSVG from '@/widgets/Icons/CloseCross'
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
   position: relative;
-  margin-left: 2px;
   cursor: pointer;
 `
 export const InputWrapper = styled(Wrapper)`
   cursor: default;
   width: 100%;
+  padding-left: 10px;
 `
 export const Inputer = styled(Input)`
   cursor: text;
   width: 100%;
-  padding-left: 25px;
+  padding-left: 30px;
   padding-bottom: 5px;
 `
 
@@ -33,8 +33,8 @@ export const SearchIcon = styled(SearchSVG)`
 `
 export const InputSearchIcon = styled(SearchIcon)`
   position: absolute;
-  left: 0;
-  top: 8px;
+  left: 18px;
+  top: 10px;
 
   margin-right: 0;
   margin-top: 0;
@@ -42,7 +42,7 @@ export const InputSearchIcon = styled(SearchIcon)`
 export const CloseIcon = styled(CloseSVG)`
   ${css.size(15)};
   position: absolute;
-  right: 0;
+  right: 12px;
   top: 10px;
   fill: ${theme('thread.articleDigest')};
   opacity: 0.4;

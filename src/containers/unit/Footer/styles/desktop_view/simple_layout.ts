@@ -8,9 +8,15 @@ export const Wrapper = styled.div`
   width: 100%;
 `
 export const Note = styled.div`
-  font-size: 13.5px;
+  font-size: 12px;
   color: ${theme('thread.articleDigest')};
   margin-bottom: 5px;
+  opacity: 0.6;
+
+  &:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
 `
 
 export const Addr = styled(Link)`
