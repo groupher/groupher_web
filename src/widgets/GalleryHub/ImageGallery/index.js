@@ -51,7 +51,7 @@ const tmpItems = [
     imgSrc: 'https://assets.groupher.com/navi/arch/wqsqpsngny.jpeg',
     imgSrc2: 'https://assets.groupher.com/navi/arch/wns.jpg',
     imgSrc3: 'https://assets.groupher.com/navi/arch/wqsqpsngny.jpeg',
-    // desc: '最性感的开发者社区',
+    // desc: '来为你心爱的产品建立一个反馈社区吧。',
     icon: 'https://assets.groupher.com/icons/pl/javascript.png',
   },
   {
@@ -62,7 +62,7 @@ const tmpItems = [
     imgSrc: 'https://assets.groupher.com/navi/arch/wns.jpg',
     imgSrc2: 'https://assets.groupher.com/navi/arch/wns.jpg',
     imgSrc3: 'https://assets.groupher.com/navi/arch/wqsqpsngny.jpeg',
-    // desc: '最性感的开发者社区',
+    // desc: '来为你心爱的产品建立一个反馈社区吧。',
     icon: 'https://assets.groupher.com/icons/pl/elixir.png',
   },
   {
@@ -73,7 +73,7 @@ const tmpItems = [
     imgSrc: 'https://assets.groupher.com/navi/arch/wqsqpsngny.jpeg',
     imgSrc2: 'https://assets.groupher.com/navi/arch/wns.jpg',
     imgSrc3: 'https://assets.groupher.com/navi/arch/wqsqpsngny.jpeg',
-    // desc: '最性感的开发者社区',
+    // desc: '来为你心爱的产品建立一个反馈社区吧。',
     icon: 'https://assets.groupher.com/icons/pl/javascript.png',
   },
   {
@@ -84,7 +84,7 @@ const tmpItems = [
     imgSrc: 'https://assets.groupher.com/navi/arch/wns.jpg',
     imgSrc2: 'https://assets.groupher.com/navi/arch/wns.jpg',
     imgSrc3: 'https://assets.groupher.com/navi/arch/wqsqpsngny.jpeg',
-    // desc: '最性感的开发者社区',
+    // desc: '来为你心爱的产品建立一个反馈社区吧。',
     icon: 'https://assets.groupher.com/icons/pl/elixir.png',
   },
 ]

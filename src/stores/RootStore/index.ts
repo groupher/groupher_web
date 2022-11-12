@@ -63,9 +63,6 @@ import {
   UserSettingsStore,
   UserBillingStore,
   //
-  // MeetupsContentStore,
-  // HaveADrinkContentStore,
-  // CoolGuideContentStore,
 
   // GEN: IMPORT SUBSTORE
   DashboardThreadStore,
@@ -76,7 +73,6 @@ import {
   KanbanThreadStore,
   FriendsContentStore,
   UserPublishedArticlesStore,
-  // BlogEditorStore,
   CommunityTagSetterStore,
   CollectionFolderStore,
   ShareStore,
@@ -85,10 +81,8 @@ import {
   ArticlesThreadStore,
   ThreadSidebarStore,
   AbuseReportStore,
-  HelpCenterContentStore,
   CommunityJoinBadgeStore,
   ArticleEditorStore,
-  WorksEditorStore,
   UserProfileStore,
   // MembershipContentStore,
   ArticleFooterStore,
@@ -97,10 +91,7 @@ import {
   ModeLineStore,
   // SubscribeContentStore,
   // RecipesContentStore,
-  SponsorContentStore,
   JoinModalStore,
-  // TrendingContentStore,
-  // WorksContentStore,
   C11NSettingPanelStore,
 } from '../index'
 
@@ -166,9 +157,6 @@ const rootStore = T.model({
   userSettings: T.optional(UserSettingsStore, {}),
 
   // have a drink
-  // meetupsContent: T.optional(MeetupsContentStore, {}),
-  // haveADrinkContent: T.optional(HaveADrinkContentStore, {}),
-  // coolGuideContent: T.optional(CoolGuideContentStore, {}),
 
   // GEN: PLUG SUBSTORE TO ROOTSTORE
   dashboardThread: T.optional(DashboardThreadStore, {}),
@@ -179,7 +167,6 @@ const rootStore = T.model({
   kanbanThread: T.optional(KanbanThreadStore, {}),
   friendsContent: T.optional(FriendsContentStore, {}),
   userPublishedArticles: T.optional(UserPublishedArticlesStore, {}),
-  // blogEditor: T.optional(BlogEditorStore, {}),
   communityTagSetter: T.optional(CommunityTagSetterStore, {}),
   collectionFolder: T.optional(CollectionFolderStore, {}),
   share: T.optional(ShareStore, {}),
@@ -188,10 +175,8 @@ const rootStore = T.model({
   articlesThread: T.optional(ArticlesThreadStore, {}),
   threadSidebar: T.optional(ThreadSidebarStore, {}),
   abuseReport: T.optional(AbuseReportStore, {}),
-  helpCenterContent: T.optional(HelpCenterContentStore, {}),
   communityJoinBadge: T.optional(CommunityJoinBadgeStore, {}),
   articleEditor: T.optional(ArticleEditorStore, {}),
-  worksEditor: T.optional(WorksEditorStore, {}),
   userProfile: T.optional(UserProfileStore, {}),
   // membershipContent: T.optional(MembershipContentStore, {}),
   articleFooter: T.optional(ArticleFooterStore, {}),
@@ -200,10 +185,7 @@ const rootStore = T.model({
   modeLine: T.optional(ModeLineStore, {}),
   // subscribeContent: T.optional(SubscribeContentStore, {}),
   // recipesContent: T.optional(RecipesContentStore, {}),
-  sponsorContent: T.optional(SponsorContentStore, {}),
   joinModal: T.optional(JoinModalStore, {}),
-  // trendingContent: T.optional(TrendingContentStore, {}),
-  // worksContent: T.optional(WorksContentStore, {}),
   c11NSettingPanel: T.optional(C11NSettingPanelStore, {}),
 })
   .views((self) => ({

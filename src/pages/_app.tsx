@@ -46,7 +46,10 @@ const App = ({ Component, pageProps }) => {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Groupher" />
-        <meta name="description" content="可能是最性感的开发者社区" />
+        <meta
+          name="description"
+          content="可能是来为你心爱的产品建立一个反馈社区吧。"
+        />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <link rel="icon" href="/favicon.ico" />

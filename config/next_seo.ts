@@ -1,14 +1,13 @@
 export default {
   title: 'groupher',
-  description:
-    '最性感的开发者社区 | the sexiest community for developers, ever.',
+  description: '来为你心爱的产品建立一个反馈社区吧。',
   cannotical: 'https://groupher.com',
   openGraph: {
     type: 'website',
     locale: 'zh_cn',
     url: 'https://groupher.com',
     site_name: 'groupher',
-    description: '最性感的开发者社区',
+    description: '来为你心爱的产品建立一个反馈社区吧。',
   },
   /*
      twitter: {

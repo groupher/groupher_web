@@ -208,7 +208,7 @@ export const mockDevelopers = (): TGallery[] => {
       birthPlace: 'american',
       nation: 'american',
       title: 'Richard Matthew Stallman',
-      desc: '最性感的开发者社区',
+      desc: '来为你心爱的产品建立一个反馈社区吧。',
       icon: 'https://assets.groupher.com/navi/fame-people/rms.png',
     },
     {
@@ -216,7 +216,7 @@ export const mockDevelopers = (): TGallery[] => {
       birthPlace: 'american',
       nation: 'american',
       title: 'Richard Matthew Stallman',
-      desc: '最性感的开发者社区',
+      desc: '来为你心爱的产品建立一个反馈社区吧。',
       icon: 'https://assets.groupher.com/navi/fame-people/rms.png',
     },
   ]
