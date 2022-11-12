@@ -9,7 +9,6 @@ import { FC, Fragment, ReactNode } from 'react'
 import { ThemeProvider } from 'styled-components'
 
 import type { TThemeMap } from '@/spec'
-// import { ANCHOR } from '@/constant'
 import { bond } from '@/utils/mobx'
 
 import ThirdPartyOverWrite from './ThirdPartyOverWrite'
@@ -44,17 +43,6 @@ const ThemeContainer: FC<TProps> = ({ children, theme: { themeData } }) => {
 
       <ScrollBarStyle />
       {/* @ts-ignore */}
-      {/* <NextNprogress
-        color={themeData.logoText}
-        startPosition={0.3}
-        stopDelayMs={200}
-        height={3}
-        options={{
-          minimum: 0.1,
-          parent: `#${ANCHOR.GLOBAL_HEADER_ID}`,
-        }}
-        showOnShallow
-      /> */}
       <Fragment>{children}</Fragment>
       {/* @ts-ignore */}
       <CodeSyxHighlight />
