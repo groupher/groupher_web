@@ -4,26 +4,14 @@
  * use custom animation Globally at GlobalStyle.ts
  */
 
-import { FC, Fragment, ReactNode, memo, createContext, useContext } from 'react'
-import dynamic from 'next/dynamic'
+import { FC, ReactNode, memo, createContext } from 'react'
 
 import type { TTooltipPlacement } from '@/spec'
 import { buildLog } from '@/utils/logger'
+import RealTooltip from './RealTooltip'
 
 // @ts-ignore
 const TooltipContext = createContext()
-
-const RealTooltip = dynamic(() => import('./RealTooltip'), {
-  /* eslint-disable react/display-name */
-  loading: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { children } = useContext(TooltipContext) as {
-      children: ReactNode
-    }
-    return <Fragment>{children}</Fragment>
-  },
-  ssr: false,
-})
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Tooltip:index')

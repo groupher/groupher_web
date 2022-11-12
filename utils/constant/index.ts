@@ -36,8 +36,6 @@ export { REPORT, REPORT_TYPE } from './report'
 export { default as SVG } from './svg'
 export { default as TAG_MODE } from './tag'
 
-export { WORKS_TAB, WORKS_TAB_ITEMS, BLOG_TAB, BLOG_TAB_ITEMS } from './tab'
-
 export { COMMUNITY_MAP_ALIAS } from './alias'
 
 export { ARTICLE_STATE, ARTICLE_CAT } from './article_cat_state'

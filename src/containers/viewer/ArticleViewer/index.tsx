@@ -38,19 +38,14 @@ const ArticleViewerContainer: FC<TProps> = ({
   testid = 'article-viewer',
 }) => {
   useInit(store)
-  const { viewingArticle, documentData, loading, tab, blogRssInfoData } = store
+  const { viewingArticle, documentData, loading } = store
   const article = Object.assign(viewingArticle, { document: documentData })
 
   return (
     <Wrapper testid={testid}>
       {/* @ts-ignore */}
       <CollectionFolder />
-      <Viewer
-        article={article}
-        loading={loading}
-        tab={tab}
-        blogRssInfo={blogRssInfoData}
-      />
+      <Viewer article={article} loading={loading} />
       <CommentsWrapper>
         <Comments />
       </CommentsWrapper>

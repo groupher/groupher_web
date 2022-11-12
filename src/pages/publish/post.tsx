@@ -56,11 +56,7 @@ export const PublishPostPage = (props) => {
   const seoConfig = articlePublishSEO()
 
   return (
-    <GlobalLayout
-      metric={METRIC.ARTICLE_EDITOR}
-      seoConfig={seoConfig}
-      noSidebar
-    >
+    <GlobalLayout metric={METRIC.ARTICLE_EDITOR} seoConfig={seoConfig}>
       <ArticleEditor />
     </GlobalLayout>
   )

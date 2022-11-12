@@ -2,8 +2,6 @@ import Router from 'next/router'
 
 import {
   curry,
-  groupBy,
-  prop,
   reduce,
   keys,
   values,
@@ -30,8 +28,6 @@ import type {
   TCommunitySetterStyle,
   TToastType,
   TToastPos,
-  TWorks,
-  TTechCommunities,
   TTabItem,
   TUser,
 } from '@/spec'
@@ -636,18 +632,6 @@ export const plural = (value: string, opt = null): string => {
   }
 
   return doCovert(`${value}s`, opt)
-}
-
-/**
- * classify works's techstacks, make suit for @wigets/TechStacks
- */
-export const classifyTechstack = (works: TWorks): TTechCommunities => {
-  const techs = works.techstacks.map((t) => ({
-    ...t,
-    category: !!t.category ? t.category : 'lang',
-  }))
-
-  return groupBy(prop('category'), techs)
 }
 
 // 给 Thread 的 Map 取别名

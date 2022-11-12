@@ -61,9 +61,7 @@ const NaviCatalog: FC<TProps> = ({
   onShowMore = null,
   headerUtils = true,
 }) => {
-  // console.log('the tags: ', tags)
   const items = tags2Menu(tags)
-  // console.log('the fucking items: ', items)
 
   const [menuMode, setMenuMode] = useState<TMenuMode>(ROOT_MENU)
   // 当前选中的目录 id, 不包括在其链路上的 id

@@ -9,7 +9,6 @@ import { merge } from 'ramda'
 import type { TRootStore, TThread, TArticle } from '@/spec'
 import { TYPE } from '@/constant'
 import { markStates, toJS } from '@/utils/mobx'
-import { BlogRSSInfo } from '@/model'
 
 const ArticleDigest = T.model('ArticleDigest', {
   loading: T.optional(T.boolean, false),
@@ -25,12 +24,6 @@ const ArticleDigest = T.model('ArticleDigest', {
     'down',
   ),
   inViewport: T.optional(T.boolean, true),
-
-  // blog-spec
-  blogRssInfo: T.optional(BlogRSSInfo, {}),
-
-  // for works or blog article
-  tab: T.optional(T.string, ''),
 })
   .views((self) => ({
     get isLogin(): boolean {
@@ -89,7 +82,6 @@ const ArticleDigest = T.model('ArticleDigest', {
       root.viewing.syncArticle(item)
     },
     reset(): void {
-      self.tab = ''
       self.subscribersCount = -1
       self.viewerHasSubscribed = false
     },

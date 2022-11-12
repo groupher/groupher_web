@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
-import type { TScrollDirection, TWorksTab, TBlog } from '@/spec'
-import { EVENT, ERR, BLOG_TAB } from '@/constant'
+import type { TScrollDirection } from '@/spec'
+import { EVENT, ERR } from '@/constant'
 import asyncSuit from '@/utils/async'
 import { send, errRescue } from '@/utils/helper'
 import { buildLog } from '@/utils/logger'
@@ -24,23 +24,6 @@ export const inAnchor = (): void => {
 
 export const outAnchor = (): void => {
   if (store) store.mark({ inViewport: false })
-}
-
-export const worksTabOnChange = (tab: TWorksTab): void => {
-  store.mark({ tab })
-}
-
-export const onBlogTabChange = (tab: string): void => {
-  store.mark({ tab })
-  const blog = store.viewingArticle as TBlog
-
-  if (
-    (tab === BLOG_TAB.FEEDS || tab === BLOG_TAB.AUTHOR) &&
-    !store.blogRssInfo.title
-  ) {
-    const args = { rss: blog.rss }
-    sr71$.query(S.blogRssInfo, args)
-  }
 }
 
 export const onListReactionUsers = (type, data): void =>
@@ -87,10 +70,6 @@ const DataSolver = [
     },
   },
 
-  {
-    match: asyncRes('blogRssInfo'),
-    action: ({ blogRssInfo }) => store.mark({ blogRssInfo }),
-  },
   {
     match: asyncRes('subscribeCommunity'),
     action: () => loadCommunity(),

@@ -1,17 +1,12 @@
 import { FC, memo } from 'react'
-import dynamic from 'next/dynamic'
 
 import type { TThread, TArticleFilter } from '@/spec'
 import Tooltip from '@/widgets/Tooltip'
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
 
-import { Wrapper, Label } from './styles/filter_button'
+import FilterPanel from './FilterPanel'
 
-const FilterPanel = dynamic(() => import('./FilterPanel'), {
-  /* eslint-disable react/display-name */
-  loading: () => <div />,
-  ssr: false,
-})
+import { Wrapper, Label } from './styles/filter_button'
 
 type TProps = {
   thread: TThread

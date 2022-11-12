@@ -57,7 +57,7 @@ const PostPage = (props) => {
   const seoConfig = articleSEO(ARTICLE_THREAD.POST, post)
 
   return (
-    <GlobalLayout metric={METRIC.ARTICLE} seoConfig={seoConfig} noSidebar>
+    <GlobalLayout metric={METRIC.ARTICLE} seoConfig={seoConfig}>
       <ArticleDigest />
       <ArticleContent />
     </GlobalLayout>

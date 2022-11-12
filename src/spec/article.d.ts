@@ -1,5 +1,5 @@
 import type { TCommunity, TTag } from './index'
-import type { TUser, TAccount, TSimpleUser, TRSSAuthor } from './account'
+import type { TUser, TAccount, TSimpleUser } from './account'
 import type { TID } from './utils'
 import type { TEmotion } from './emotion'
 import type { TColorName } from './color'
@@ -74,30 +74,6 @@ type TCity = {
 }
 
 export type TSocialInfo = { platform: string; link: string }
-export type TWorks = TBaseArticle & {
-  cover?: string
-  desc?: string
-  homeLink?: string
-  tag?: { title: string }
-  profitMode?: string
-  workingMode?: string
-  techstacks?: TTechStack[]
-  teammates?: TUser[]
-  socialInfo?: TSocialInfo[]
-  cities?: TCity[]
-  isOSS?: boolean
-  ossAddr?: string
-  digest?: string
-}
-
-export type TWorksTab =
-  | 'story'
-  | 'basic'
-  | 'techstacks'
-  | 'milestone'
-  | 'community'
-  | 'interview'
-export type TBlogTab = 'digest' | 'author' | 'feeds'
 
 export type TTechCommunities = {
   lang?: TCommunity[]
@@ -107,36 +83,8 @@ export type TTechCommunities = {
   design?: TCommunity[]
 }
 
-export type TBlog = TBaseArticle & {
-  digest?: string
-  published?: string
-  rss?: string
-}
-
-export type TBlogRSS = {
-  title?: string
-  subtitle?: string
-  link?: string
-  updated?: string
-  historyFeed?: TBlog[]
-  author?: TRSSAuthor
-}
-
-export type TRadar = TBaseArticle & {
-  digest?: string
-}
-
-export type TMeetup = TBaseArticle & {
-  digest?: string
-}
-
-export type TJob = TBaseArticle & {
-  company?: string
-  companyLink?: string
-}
-
-export type TArticle = TPost | TJob | TBlog | TRadar
-export type TArticleEntries = TPost[] | TJob[] | TBlog[] | TRadar[]
+export type TArticle = TPost
+export type TArticleEntries = TPost[]
 
 type TPagi = {
   totalCount: number
@@ -147,14 +95,6 @@ type TPagi = {
 
 export type TPagedArticles = {
   entries: TArticleEntries
-} & TPagi
-
-export type TPagedWorks = {
-  entries: TWorks[]
-} & TPagi
-
-export type TPagedMeetups = {
-  entries: TMeetup[]
 } & TPagi
 
 export type TComment = {

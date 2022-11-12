@@ -50,7 +50,7 @@ const MembershipPage = (props) => {
   const seoConfig = membershipSEO()
 
   return (
-    <GlobalLayout metric={METRIC.MEMBERSHIP} seoConfig={seoConfig} noSidebar>
+    <GlobalLayout metric={METRIC.MEMBERSHIP} seoConfig={seoConfig}>
       <MembershipContent />
     </GlobalLayout>
   )

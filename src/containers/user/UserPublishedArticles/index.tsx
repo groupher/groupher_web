@@ -40,7 +40,6 @@ const UserPublishedArticlesContainer: FC<TProps> = ({
     globalLayout,
   } = store
 
-  // console.log('pagedArticlesData: ', pagedArticlesData)
   return (
     <Fragment>
       <ThreadSelector thread={thread} user={viewingUser} />

@@ -53,7 +53,7 @@ export const getServerSideProps = async (context) => {
     return ssrError(context, 'fetch', 500)
   }
 
-  const { user, pagedWorks, subscribedCommunities } = resp
+  const { user, subscribedCommunities } = resp
 
   const initProps = {
     ...ssrBaseStates(resp),
@@ -77,11 +77,7 @@ const UserPage = (props) => {
   const seoConfig = userSEO(user)
 
   return (
-    <GlobalLayout
-      metric={METRIC.USER}
-      seoConfig={seoConfig}
-      noSidebar={!!user.login}
-    >
+    <GlobalLayout metric={METRIC.USER} seoConfig={seoConfig}>
       <UserContent />
     </GlobalLayout>
   )

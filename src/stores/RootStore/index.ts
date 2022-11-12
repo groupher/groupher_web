@@ -31,9 +31,6 @@ import {
   ErrorBoxStore,
 
   // threads
-  // ReposThreadStore,
-  // CperMapThreadStore,
-  // banners
   ArticleDigestStore,
   CommunityDigestStore,
   // content
@@ -71,7 +68,6 @@ import {
   AboutThreadStore,
   ChangelogThreadStore,
   KanbanThreadStore,
-  FriendsContentStore,
   UserPublishedArticlesStore,
   CommunityTagSetterStore,
   CollectionFolderStore,
@@ -108,8 +104,6 @@ const rootStore = T.model({
   // domain end
 
   // toolbox
-  // @ts-ignore TODO:
-  // sidebar: T.optional(SidebarStore, { menuItems: [] }),
   drawer: T.optional(DrawerStore, { visible: false }),
   doraemon: T.optional(DoraemonStore, {}),
   // repoEditor: T.optional(RepoEditorStore, {}),
@@ -142,8 +136,6 @@ const rootStore = T.model({
   // footer
   footer: T.optional(FooterStore, {}),
   // threads
-  // reposThread: T.optional(ReposThreadStore, {}),
-  // cperMapThread: T.optional(CperMapThreadStore, {}),
 
   tagsBar: T.optional(TagsBarStore, {}),
   userLister: T.optional(UserListerStore, {}),
@@ -165,7 +157,6 @@ const rootStore = T.model({
   aboutThread: T.optional(AboutThreadStore, {}),
   changelogThread: T.optional(ChangelogThreadStore, {}),
   kanbanThread: T.optional(KanbanThreadStore, {}),
-  friendsContent: T.optional(FriendsContentStore, {}),
   userPublishedArticles: T.optional(UserPublishedArticlesStore, {}),
   communityTagSetter: T.optional(CommunityTagSetterStore, {}),
   collectionFolder: T.optional(CollectionFolderStore, {}),
@@ -183,7 +174,6 @@ const rootStore = T.model({
   articleSticker: T.optional(ArticleStickerStore, {}),
   modeLineMenu: T.optional(ModeLineMenuStore, {}),
   modeLine: T.optional(ModeLineStore, {}),
-  // subscribeContent: T.optional(SubscribeContentStore, {}),
   // recipesContent: T.optional(RecipesContentStore, {}),
   joinModal: T.optional(JoinModalStore, {}),
   c11NSettingPanel: T.optional(C11NSettingPanelStore, {}),

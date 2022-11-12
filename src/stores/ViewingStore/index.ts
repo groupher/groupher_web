@@ -17,16 +17,12 @@ import type {
 import { THREAD, ARTICLE_THREAD } from '@/constant'
 import { markStates } from '@/utils/mobx'
 import { viewingChanged } from '@/utils/helper'
-import { User, Community, Post, Blog, Job, Radar, Works } from '@/model'
+import { User, Community, Post } from '@/model'
 
 const ViewingStore = T.model('ViewingStore', {
   user: T.optional(User, {}),
   community: T.optional(Community, {}),
   post: T.optional(Post, {}),
-  blog: T.optional(Blog, {}),
-  job: T.optional(Job, {}),
-  radar: T.optional(Radar, {}),
-  works: T.optional(Works, {}),
   // repo: T.optional(Repo, {}),
   activeThread: T.optional(
     T.enumeration('activeThread', values(THREAD)),

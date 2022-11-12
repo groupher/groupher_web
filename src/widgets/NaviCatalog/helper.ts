@@ -69,9 +69,6 @@ export const covertPathToURLQuery = (
 
 // convert
 const findUpdatePath = (menu: TNaviTag[], extra: string[]): string[] => {
-  // console.log('findUpdatePath menu: ', menu)
-  // console.log('findUpdatePath extra: ', extra)
-
   const rootIndex = findIndex((item) => equals(item.extra, [extra[0]]), menu)
   if (rootIndex === -1) return []
 

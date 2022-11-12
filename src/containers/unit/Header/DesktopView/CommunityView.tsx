@@ -16,6 +16,8 @@ import Navigator from '@/widgets/Navigator'
 
 import type { TStore } from '../store'
 
+import UserAccount from '../UserAccount'
+
 import {
   Wrapper,
   ClassicInnerWrapper,
@@ -31,7 +33,6 @@ const log = buildLog('C:Header')
 
 let MailBox
 
-const UserAccount = dynamic(() => import('../UserAccount'), { ssr: false })
 const AddOns = dynamic(() => import('../AddOns'), { ssr: false })
 
 type TProps = {

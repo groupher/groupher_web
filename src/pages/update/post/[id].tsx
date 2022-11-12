@@ -56,11 +56,7 @@ export const UpdatePostPage = (props) => {
   const seoConfig = articleUpdateSEO()
 
   return (
-    <GlobalLayout
-      metric={METRIC.ARTICLE_EDITOR}
-      seoConfig={seoConfig}
-      noSidebar
-    >
+    <GlobalLayout metric={METRIC.ARTICLE_EDITOR} seoConfig={seoConfig}>
       <ArticleEditor />
     </GlobalLayout>
   )

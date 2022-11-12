@@ -62,7 +62,6 @@ export const ssrGetParam = (context, key) => {
 
 export const ssrFetchPrepare = (context, opt) => {
   const token = ssrFetchToken(context, opt)
-  console.log('# fetched token: ', token)
 
   const gqClient = makeGQClient(token)
   const userHasLogin = !!token
@@ -94,7 +93,6 @@ export const isTokenExpired = (sessionState, context) => {
  */
 export const refreshIfneed = (sessionState, path = '/', context) => {
   if (isTokenExpired(sessionState, context)) {
-    console.log('DO REMOVE jwtToken Cookie')
     BStore.cookie.ssrRemove(context, 'jwtToken')
 
     // context.res.writeHead(200, { Location: path })

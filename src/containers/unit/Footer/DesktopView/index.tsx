@@ -6,7 +6,6 @@
 
 import { FC } from 'react'
 import { includes } from 'ramda'
-// import dynamic from 'next/dynamic'
 
 import type { TMetric } from '@/spec'
 import { buildLog } from '@/utils/logger'

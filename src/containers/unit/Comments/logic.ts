@@ -318,7 +318,6 @@ const DataSolver = [
   {
     match: asyncRes('commentsState'),
     action: ({ commentsState }) => {
-      log('## commentsState -> ', commentsState)
       store.mark({ ...commentsState })
     },
   },

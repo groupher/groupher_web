@@ -33,7 +33,6 @@ const parsePureTextForList = ({ items }): string => {
  * extract sanitized texts from editor papare for count
  */
 const extractWords = (body: string): string => {
-  // console.log('extractWords parse: ', JSON.parse(body))
   const { blocks } = JSON.parse(body)
   if (!blocks) return ''
   let pureText = ''

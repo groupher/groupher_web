@@ -25,7 +25,7 @@ const ExplorePage = (props) => {
   const seoConfig = exploreSEO()
 
   return (
-    <GlobalLayout metric={METRIC.EXPLORE} seoConfig={seoConfig} noSidebar>
+    <GlobalLayout metric={METRIC.EXPLORE} seoConfig={seoConfig}>
       {/* <ExploreContent /> */}
     </GlobalLayout>
   )

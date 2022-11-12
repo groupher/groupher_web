@@ -19,7 +19,6 @@ import BannerNotify from '@/widgets/BannerNotify'
 // import Footer from '@/containers/unit/Footer'
 // import ModeLine from '@/containers/unit/ModeLine'
 
-// import Drawer from '@/containers/tool/Drawer'
 // import CustomScroller from '@/widgets/CustomScroller'
 
 import type { TStore } from './store'
@@ -45,7 +44,6 @@ type TProps = {
   globalLayout?: TStore
   children: ReactNode
   seoConfig: TSEO
-  noSidebar?: boolean
   noFooter?: boolean
 
   metric: TMetric
@@ -55,7 +53,6 @@ const GlobalLayoutContainer: FC<TProps> = ({
   globalLayout: store,
   seoConfig,
   children,
-  noSidebar = false,
   noFooter = false,
   metric,
 }) => {
