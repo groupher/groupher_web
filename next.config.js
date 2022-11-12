@@ -4,6 +4,8 @@
 // const withPlugins = require('next-compose-plugins')
 // const withPWA = require('next-pwa')
 
+const withPreact = require('next-plugin-preact')
+
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
@@ -33,4 +35,4 @@ const nextConfig = {
   // },
 }
 
-module.exports = withBundleAnalyzer(nextConfig)
+module.exports = withPreact(nextConfig)
