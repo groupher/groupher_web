@@ -40,7 +40,7 @@ type TProps = {
 
 const DigestSentence: FC<TProps> = ({
   testid = 'digest-sentence',
-  children = '可能是最性感的开发者社区，来为你心爱的作品建立...',
+  children = '可能是来为你心爱的产品建立一个反馈社区吧。，来为你心爱的作品建立...',
   lineClamp = 2,
   onPreview = log,
   size = SIZE.SMALL,

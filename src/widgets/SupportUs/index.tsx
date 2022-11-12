@@ -49,7 +49,7 @@ const url = 'https://groupher.com'
 
 const toPlatform = (type: string): void => {
   const title = 'Groupher'
-  const digest = '可能是最性感的开发者社区'
+  const digest = '可能是来为你心爱的产品建立一个反馈社区吧。'
 
   switch (type) {
     case 'twitter': {

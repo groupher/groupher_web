@@ -216,7 +216,7 @@ const communities = [
     id: '0',
     title: 'Groupher',
     raw: 'home',
-    desc: '可能是最性感的开发者社区',
+    desc: '可能是来为你心爱的产品建立一个反馈社区吧。',
     logo: SITE_LOGO,
   },
   {
@@ -1681,7 +1681,7 @@ export const mockWorks = () => {
     id: '1',
     cover: `${ASSETS_ENDPOINT}/works/market1.jpeg`,
     title: 'groupher',
-    desc: '可能是最性感的开发者社区',
+    desc: '可能是来为你心爱的产品建立一个反馈社区吧。',
     isOSS: true,
     tag: {
       title: '协作工具',
