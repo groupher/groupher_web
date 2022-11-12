@@ -7,7 +7,6 @@
  */
 
 import { FC, memo } from 'react'
-// import dynamic from 'next/dynamic'
 
 import type { TThread, TCommunity } from '@/spec'
 import { buildLog } from '@/utils/logger'

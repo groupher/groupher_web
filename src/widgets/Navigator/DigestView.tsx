@@ -1,5 +1,4 @@
 import { FC, memo } from 'react'
-// import dynamic from 'next/dynamic'
 
 import type { TMetric } from '@/spec'
 import { changeToCommunity } from '@/utils/helper'

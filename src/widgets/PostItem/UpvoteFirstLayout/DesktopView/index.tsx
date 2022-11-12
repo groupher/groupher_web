@@ -1,4 +1,4 @@
-import { FC, Fragment, memo } from 'react'
+import { FC, memo } from 'react'
 
 import { EVENT } from '@/constant'
 import type { TPost } from '@/spec'

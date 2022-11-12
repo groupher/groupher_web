@@ -2,10 +2,6 @@ import dynamic from 'next/dynamic'
 
 import { ScrollHolder } from './styles'
 
-export const Sidebar = dynamic(() => import('@/containers/unit/Sidebar'), {
-  ssr: false,
-})
-
 export const CustomScroller = dynamic(
   () => import('@/widgets/CustomScroller'),
   {

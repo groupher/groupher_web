@@ -3,9 +3,9 @@
  */
 
 import { FC, ReactNode } from 'react'
-import dynamic from 'next/dynamic'
 
 import type { TSpace } from '@/spec'
+import RealPagi from './RealPagi'
 
 export type TProps = {
   children?: ReactNode
@@ -20,8 +20,6 @@ export type TProps = {
   onChange?: (page: number) => void
 }
 
-const Pagi = dynamic(() => import('./RealPagi'), {
-  ssr: false,
-})
+const Pagi = RealPagi
 
 export default Pagi as FC<TProps>
