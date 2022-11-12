@@ -56,7 +56,6 @@ export { default as CommentsStore } from '@/containers/unit/Comments/store'
 export { default as AccountEditorStore } from '@/containers/editor/AccountEditor/store'
 
 // viewers store
-// export { default as RepoViewerStore } from '@/containers/viewer/RepoViewer/store'
 export { default as MailsViewerStore } from '@/containers/viewer/MailsViewer/store'
 
 // user page
@@ -75,7 +74,6 @@ export { default as HelpThreadStore } from '@/containers/thread/HelpThread/store
 export { default as AboutThreadStore } from '@/containers/thread/AboutThread/store'
 export { default as ChangelogThreadStore } from '@/containers/thread/ChangelogThread/store'
 export { default as KanbanThreadStore } from '@/containers/thread/KanbanThread/store'
-export { default as FriendsContentStore } from '@/containers/content/FriendsContent/store'
 // export { default as BlogEditorStore } from '@/containers/editor/BlogEditor/store'
 export { default as CommunityTagSetterStore } from '@/containers/tool/CommunityTagSetter/store'
 export { default as CollectionFolderStore } from '@/containers/tool/CollectionFolder/store'
@@ -93,6 +91,5 @@ export { default as ArticleFooterStore } from '@/containers/unit/ArticleFooter/s
 export { default as ArticleStickerStore } from '@/containers/tool/ArticleSticker/store'
 export { default as ModeLineMenuStore } from '@/containers/unit/ModeLineMenu/store'
 export { default as ModeLineStore } from '@/containers/unit/ModeLine/store'
-// export { default as SubscribeContentStore } from '@/containers/content/SubscribeContent/store'
 export { default as JoinModalStore } from '@/containers/tool/JoinModal/store'
 export { default as C11NSettingPanelStore } from '@/containers/tool/C11NSettingPanel/store'

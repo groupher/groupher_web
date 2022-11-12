@@ -9,7 +9,6 @@ import DigestSentence from '@/widgets/DigestSentence'
 import { Br, SpaceGrow } from '@/widgets/Common'
 import ArticleImgWindow from '@/widgets/ArticleImgWindow'
 
-import Header from './Header'
 import Footer from './Footer'
 
 import { Wrapper, MobileDigest } from './styles'
@@ -22,7 +21,6 @@ export type TProps = {
 const ArticleCard: FC<TProps> = ({ data, thread = THREAD.JOB }) => {
   return (
     <Wrapper>
-      <Header data={data} thread={thread} />
       <Br top={8} />
       {isMobile ? (
         <MobileDigest>{data.digest}</MobileDigest>

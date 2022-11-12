@@ -4,9 +4,9 @@
  */
 
 import { types as T, getParent, Instance } from 'mobx-state-tree'
-import { merge, contains, values, findIndex } from 'ramda'
+import { merge, contains, values } from 'ramda'
 
-import type { TRootStore, TCommunity, TThread, TArticle, TWorks } from '@/spec'
+import type { TRootStore, TCommunity, TThread, TArticle } from '@/spec'
 import { TYPE, ARTICLE_THREAD, DASHBOARD_DESC_LAYOUT } from '@/constant'
 
 import { markStates, toJS } from '@/utils/mobx'
@@ -151,14 +151,14 @@ const DrawerStore = T.model('DrawerStore', {
         }
       }
 
-      const curIndex = findIndex(
-        (a: TWorks) => a.id === viewingArticleId,
-        pagedArticles.entries,
-      )
-      return {
-        previous: pagedArticles.entries[curIndex - 1] || null,
-        next: pagedArticles.entries[curIndex + 1] || null,
-      }
+      // const curIndex = findIndex(
+      //   (a: TWorks) => a.id === viewingArticleId,
+      //   pagedArticles.entries,
+      // )
+      // return {
+      //   previous: pagedArticles.entries[curIndex - 1] || null,
+      //   next: pagedArticles.entries[curIndex + 1] || null,
+      // }
     },
 
     get extraInfo(): TExtraInfo {

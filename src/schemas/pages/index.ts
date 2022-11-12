@@ -1,10 +1,4 @@
 import { pagedPosts, pagedPublishedPosts, post } from './post'
-import { pagedJobs, job, pagedPublishedJobs } from './job'
-import { pagedRadars, radar, pagedPublishedRadars } from './radar'
-import { pagedBlogs, blog, blogRssInfo, pagedPublishedBlogs } from './blog'
-import { pagedRepos, repo } from './repo'
-import { pagedWorks, works } from './works'
-import { pagedMeetups, meetup } from './meetup'
 
 import { user, sessionState } from './user'
 import { community, subscribedCommunities, pagedCommunities } from './community'
@@ -35,28 +29,6 @@ const P = {
   pagedPosts,
   pagedPublishedPosts,
   post,
-  // job
-  pagedJobs,
-  pagedPublishedJobs,
-  job,
-  // blog
-  pagedBlogs,
-  pagedPublishedBlogs,
-  blog,
-  blogRssInfo,
-  // radar
-  pagedRadars,
-  pagedPublishedRadars,
-  radar,
-  // repo
-  pagedRepos,
-  repo,
-  // works
-  pagedWorks,
-  works,
-  // meetup
-  pagedMeetups,
-  meetup,
   // user
   user,
   sessionState,

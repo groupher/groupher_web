@@ -24,24 +24,12 @@ import { TYPE } from '@/constant'
 import { markStates, toJS } from '@/utils/mobx'
 import { nilOrEmpty } from '@/utils/validator'
 import { plural } from '@/utils/helper'
-import {
-  PagedPosts,
-  PagedJobs,
-  PagedBlogs,
-  PagedRadars,
-  PagedWorks,
-  ArticlesFilter,
-  emptyPagi,
-} from '@/model'
+import { PagedPosts, ArticlesFilter, emptyPagi } from '@/model'
 
 const ArticlesThread = T.model('ArticlesThread', {
   mode: T.optional(T.enumeration(['default', 'search']), 'default'),
   searchValue: T.optional(T.string, ''),
   pagedPosts: T.optional(PagedPosts, emptyPagi),
-  pagedJobs: T.optional(PagedJobs, emptyPagi),
-  pagedBlogs: T.optional(PagedBlogs, emptyPagi),
-  pagedRadars: T.optional(PagedRadars, emptyPagi),
-  pagedWorks: T.optional(PagedWorks, emptyPagi),
   filters: T.optional(ArticlesFilter, {}),
   resState: T.optional(
     T.enumeration('resState', values(TYPE.RES_STATE)),

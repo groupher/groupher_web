@@ -107,7 +107,6 @@ const UserContentContainer: FC<TProps> = ({ userContent: store, metric }) => {
   const {
     activeThread,
     viewingUser,
-    pagedWorksData,
     pagedEditableCommunitiesData,
     hasContentBg,
     isSelfViewing,
@@ -123,7 +122,6 @@ const UserContentContainer: FC<TProps> = ({ userContent: store, metric }) => {
         {!isMobile && (
           <Sidebar
             user={viewingUser}
-            works={pagedWorksData}
             editableCommunities={pagedEditableCommunitiesData}
           />
         )}

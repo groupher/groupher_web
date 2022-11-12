@@ -19,14 +19,7 @@ import { buildLog } from '@/utils/logger'
 import { markStates, toJS } from '@/utils/mobx'
 import { plural } from '@/utils/helper'
 
-import {
-  PagedPosts,
-  PagedJobs,
-  PagedBlogs,
-  PagedRadars,
-  PagedWorks,
-  emptyPagi,
-} from '@/model'
+import { PagedPosts, emptyPagi } from '@/model'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:UserPublishedArticles')
@@ -37,10 +30,6 @@ const UserPublishedArticles = T.model('UserPublishedArticles', {
     ARTICLE_THREAD.POST,
   ),
   pagedPosts: T.optional(PagedPosts, emptyPagi),
-  pagedJobs: T.optional(PagedJobs, emptyPagi),
-  pagedBlogs: T.optional(PagedBlogs, emptyPagi),
-  pagedRadars: T.optional(PagedRadars, emptyPagi),
-  pagedWorks: T.optional(PagedWorks, emptyPagi),
 
   resState: T.optional(
     T.enumeration('resState', values(TYPE.RES_STATE)),

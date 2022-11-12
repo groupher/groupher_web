@@ -38,14 +38,6 @@ export const MailsViewer = dynamic(
   },
 )
 
-export const RepoViewer = dynamic(
-  () => import('@/containers/viewer/RepoViewer'),
-  {
-    loading: () => <CommonLoading />,
-    ssr: false,
-  },
-)
-
 // editors
 export const AccountEditor = dynamic(
   () => import('@/containers/editor/AccountEditor'),
@@ -63,11 +55,6 @@ export const UserLister = dynamic(
     ssr: false,
   },
 )
-
-// export const RepoEditor = dynamic(
-//   () => import('@/containers/editor/RepoEditor'),
-//   editorConfig,
-// )
 
 // utils
 export const C11NSettingPanel = dynamic(

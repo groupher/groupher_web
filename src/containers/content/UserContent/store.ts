@@ -6,16 +6,10 @@
 import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { values } from 'ramda'
 
-import type {
-  TRootStore,
-  TAccount,
-  TUser,
-  TPagedWorks,
-  TPagedCommunities,
-} from '@/spec'
+import type { TRootStore, TAccount, TUser, TPagedCommunities } from '@/spec'
 import { USER_THREAD } from '@/constant'
 import { markStates, toJS } from '@/utils/mobx'
-import { PagedWorks, PagedCommunities, emptyPagi } from '@/model'
+import { PagedCommunities, emptyPagi } from '@/model'
 
 const UserContent = T.model('UserContent', {
   activeThread: T.optional(
@@ -26,7 +20,6 @@ const UserContent = T.model('UserContent', {
 
   pagedEditableCommunities: T.optional(PagedCommunities, emptyPagi),
   subscribedCommunities: T.optional(PagedCommunities, emptyPagi),
-  pagedWorks: T.optional(PagedWorks, emptyPagi),
 })
   .views((self) => ({
     get isLogin(): boolean {
@@ -44,9 +37,6 @@ const UserContent = T.model('UserContent', {
     get isSelfViewing(): boolean {
       const root = getParent(self) as TRootStore
       return root.viewing.isSelfViewing
-    },
-    get pagedWorksData(): TPagedWorks {
-      return toJS(self.pagedWorks)
     },
     get pagedEditableCommunitiesData(): TPagedCommunities {
       return toJS(self.pagedEditableCommunities)

@@ -29,7 +29,6 @@ export type {
   TSimpleUser,
   TMembership,
   TC11N,
-  TRSSAuthor,
 } from './account'
 export type { TC11NLayout } from './c11n'
 export type {
@@ -98,17 +97,9 @@ export type {
   TArticleEntries,
   TArticleMeta,
   TPost,
-  TBlog,
-  TBlogRSS,
-  TRadar,
-  TJob,
-  TWorks,
   TSocialInfo,
   TTechCommunities,
   TTechStack,
-  TMeetup,
-  TPagedWorks,
-  TPagedMeetups,
   TPagedArticles,
   TComment,
   TPagedComments,
@@ -122,8 +113,6 @@ export type {
   TChangelogLayout,
   TGlobalLayout,
   TCommentsState,
-  TWorksTab,
-  TBlogTab,
   TArticleCat,
   TArticleState,
 } from './article'
