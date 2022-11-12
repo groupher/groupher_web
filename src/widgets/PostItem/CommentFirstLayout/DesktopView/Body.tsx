@@ -47,7 +47,6 @@ type TProps = {
 }
 
 const Body: FC<TProps> = ({ article, curCommunity }) => {
-  // console.log('# originalCommunity: ', originalCommunity)
   const { originalCommunity, author } = article
   const showOriginalCommunity =
     curCommunity === null || curCommunity.raw !== originalCommunity.raw

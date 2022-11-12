@@ -46,7 +46,6 @@ const INDEX = ''
 const getMainPath = (args) => {
   if (args.asPath === '/') return INDEX
 
-  // console.log('--2 args req: ', args)
   return parseMainPath(args)
 }
 
@@ -176,9 +175,6 @@ export const ssrParseURL = (req) => {
     }
   }
 
-  // console.log('ssrParseURL url: ', url)
-  // console.log('getMainPath: ', getRouteMainPath(url))
-  // console.log('ssrParsePathList: ', getRoutePathList(url))
   const pathList = getRoutePathList(url)
   const mainPath = pathList[0]
   const subPath = pathList[1]

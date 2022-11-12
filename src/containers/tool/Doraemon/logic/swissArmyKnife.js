@@ -80,8 +80,6 @@ export class SwissArmyKnife {
 
   // TODO rename to linker
   communityLinker = (cmdpath) => {
-    // console.log('communityLinker: ', cmdpath)
-    // console.log('communityLinker this.communities: ', this.communities)
     return and(contains(head(cmdpath), this.communities), lengthE1(cmdpath))
   }
 

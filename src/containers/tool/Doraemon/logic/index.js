@@ -130,7 +130,6 @@ const doNavigate = () => {
   if (startsWith('user-raw', store.activeSuggestion.raw)) {
     const { raw } = store.activeSuggestion
     // const login = raw.split('user-raw-')[1]
-    console.log('TODO: ', raw)
     // const data = { login }
     // const type = TYPE.DRAWER.USER_VIEW
 
@@ -287,7 +286,6 @@ const ErrSolver = [
   {
     match: asyncErr(ERR.GRAPHQL),
     action: (data) => {
-      console.log('got oauth error: ', data)
       store.mark({ searching: false })
     },
   },

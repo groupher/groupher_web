@@ -19,7 +19,6 @@ import BannerNotify from '@/widgets/BannerNotify'
 // import Footer from '@/containers/unit/Footer'
 // import ModeLine from '@/containers/unit/ModeLine'
 
-// import Drawer from '@/containers/tool/Drawer'
 // import CustomScroller from '@/widgets/CustomScroller'
 
 import type { TStore } from './store'
