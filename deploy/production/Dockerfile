@@ -8,7 +8,7 @@ RUN cd /root/web/ && npm i --omit=dev
 
 # tmp fix aliyun build
 # https://github.com/groupher/groupher_web/pull/1#issue-1437686131
-RUN cd /root/web/src/pages && tree
+RUN cd /root/web/src/pages && ls -lla
 RUN cd /root/web/src/pages && find . -type f -name '\.*' -print | xargs rm -f
 RUN cd /root/web/ && make build.prod
 
