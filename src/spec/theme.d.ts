@@ -1,12 +1,4 @@
-export type TThemeName =
-  | 'cyan'
-  | 'solarizedDark'
-  | 'purple'
-  | 'yellow'
-  | 'github'
-  | 'green'
-  | 'ironGreen'
-  | 'monokai'
+export type TThemeName = 'github'
 
 // export type TTheme = ((obj: any) => unknown) | string
 export type TTheme = any

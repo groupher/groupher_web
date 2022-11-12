@@ -19,8 +19,10 @@ import skinsData from './skins'
 export const themeSkins = { ...skinsData }
 
 // cover color of a theme
+// @ts-ignore
 export const themeCoverMap = map(path(['cover']), themeSkins)
 // the "T" color in themeSelector
+// @ts-ignore
 export const themeCoverIndexMap = map(path(['coverIndex']), themeSkins)
 
 // curried shorthand for style-components
