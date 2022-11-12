@@ -9,8 +9,6 @@ import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 import ArticlesThread from '@/containers//thread/ArticlesThread'
 import KanbanThread from '@/containers//thread/KanbanThread'
 import ChangeLogThread from '@/containers//thread/ChangelogThread'
-// import ReposThread from '@/containers/thread/ReposThread'
-// import CperMapThread from '@/containers/thread/CperMapThread'
 // import WipThread from './WipThread'
 import AboutThread from '@/containers/thread/AboutThread'
 import HelpThread from '@/containers/thread/HelpThread'
@@ -31,11 +29,6 @@ type TProps = {
 
 const ThreadContent: FC<TProps> = ({ thread }) => {
   switch (thread) {
-    // case THREAD.CPER:
-    // case THREAD.MAP: {
-    //   return <CperMapThread />
-    // }
-
     case THREAD.ABOUT: {
       return <AboutThread />
     }

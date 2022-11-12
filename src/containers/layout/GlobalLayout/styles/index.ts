@@ -20,11 +20,6 @@ export const Wrapper = styled.div`
 `
 
 type TInner = { metric: TMetric; sidebarPin: boolean }
-/* min-width: ${({ minWidth }) => minWidth}; */
-/*
-  padding-left: ${({ noSidebar }) => (noSidebar ? '0' : '56px')};
-  margin-left: ${({ sidebarPin }) => (sidebarPin ? '180px' : '0')};
- */
 export const InnerWrapper = styled.div<TInner>`
   ${css.flexColumn()};
   ${({ metric }) => css.fitPageWidth(metric)};

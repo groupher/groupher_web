@@ -31,9 +31,6 @@ import {
   ErrorBoxStore,
 
   // threads
-  // ReposThreadStore,
-  // CperMapThreadStore,
-  // banners
   ArticleDigestStore,
   CommunityDigestStore,
   // content
@@ -107,8 +104,6 @@ const rootStore = T.model({
   // domain end
 
   // toolbox
-  // @ts-ignore TODO:
-  // sidebar: T.optional(SidebarStore, { menuItems: [] }),
   drawer: T.optional(DrawerStore, { visible: false }),
   doraemon: T.optional(DoraemonStore, {}),
   // repoEditor: T.optional(RepoEditorStore, {}),
@@ -141,8 +136,6 @@ const rootStore = T.model({
   // footer
   footer: T.optional(FooterStore, {}),
   // threads
-  // reposThread: T.optional(ReposThreadStore, {}),
-  // cperMapThread: T.optional(CperMapThreadStore, {}),
 
   tagsBar: T.optional(TagsBarStore, {}),
   userLister: T.optional(UserListerStore, {}),

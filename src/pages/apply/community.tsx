@@ -53,11 +53,7 @@ const ApplyCommunityPage = (props) => {
   const seoConfig = publishCommunitySEO()
 
   return (
-    <GlobalLayout
-      metric={METRIC.COMMUNITY_EDITOR}
-      seoConfig={seoConfig}
-      noSidebar
-    >
+    <GlobalLayout metric={METRIC.COMMUNITY_EDITOR} seoConfig={seoConfig}>
       <CommunityEditor />
     </GlobalLayout>
   )

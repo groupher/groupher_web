@@ -52,7 +52,7 @@ const SupportUSPage = (props) => {
   const seoConfig = supportUsSEO()
 
   return (
-    <GlobalLayout metric={METRIC.SUPPORT_US} seoConfig={seoConfig} noSidebar>
+    <GlobalLayout metric={METRIC.SUPPORT_US} seoConfig={seoConfig}>
       <SupportUs />
     </GlobalLayout>
   )

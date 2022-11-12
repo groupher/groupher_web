@@ -3,10 +3,8 @@ import { isMobile } from 'react-device-detect'
 
 import useShortcut from '@/hooks/useShortcut'
 
-import Drawer from '@/containers/tool/Drawer'
-
 import { openDoraemon, logBuddha } from './logic'
-import { AbuseReport, Doraemon, ErrorBox } from './dynamic'
+import { AbuseReport, Doraemon, Drawer, ErrorBox } from './dynamic'
 
 const Addon: FC = () => {
   useEffect(() => logBuddha(), [])

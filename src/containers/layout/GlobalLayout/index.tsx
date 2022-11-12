@@ -44,7 +44,6 @@ type TProps = {
   globalLayout?: TStore
   children: ReactNode
   seoConfig: TSEO
-  noSidebar?: boolean
   noFooter?: boolean
 
   metric: TMetric
@@ -54,7 +53,6 @@ const GlobalLayoutContainer: FC<TProps> = ({
   globalLayout: store,
   seoConfig,
   children,
-  noSidebar = false,
   noFooter = false,
   metric,
 }) => {
