@@ -16,5 +16,3 @@ interface IWindow extends Window {
 declare global {
   type TWindow = IWindow | null
 }
-
-declare module '@groupher/use-mobile-detect-hook'
