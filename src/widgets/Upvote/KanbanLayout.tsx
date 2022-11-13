@@ -5,7 +5,7 @@
  */
 
 import { FC, memo } from 'react'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TUser } from '@/spec'
 import { buildLog } from '@/utils/logger'
@@ -40,6 +40,7 @@ const Upvote: FC<TProps> = ({
   onAction = log,
   avatarList,
 }) => {
+  const { isMobile } = useMobileDetect()
   const noOne = count === 0
 
   return (

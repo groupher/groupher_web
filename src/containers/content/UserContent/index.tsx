@@ -5,7 +5,7 @@
  */
 
 import { FC } from 'react'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TMetric } from '@/spec'
 import { USER_THREAD } from '@/constant'
@@ -103,6 +103,8 @@ type TProps = {
 
 const UserContentContainer: FC<TProps> = ({ userContent: store, metric }) => {
   useInit(store)
+
+  const { isMobile } = useMobileDetect()
 
   const {
     activeThread,

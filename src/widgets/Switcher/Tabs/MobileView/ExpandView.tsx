@@ -5,7 +5,7 @@
  */
 
 import { FC, useEffect, useRef, useState, useCallback, memo } from 'react'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TSizeSM, TTabItem } from '@/spec'
 import { ICON } from '@/config'
@@ -39,6 +39,8 @@ const MobileView: FC<TProps> = ({
   activeKey = '',
   toggleExpand,
 }) => {
+  const { isMobile } = useMobileDetect()
+
   const [tabWidthList, setTabWidthList] = useState([])
   const [showMore, setShowMore] = useState(false)
   const navRef = useRef(null)

@@ -1,5 +1,5 @@
 import { FC, memo } from 'react'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TArticle, TThread } from '@/spec'
 import { SIZE, THREAD, EVENT } from '@/constant'
@@ -19,6 +19,8 @@ export type TProps = {
 }
 
 const ArticleCard: FC<TProps> = ({ data, thread = THREAD.JOB }) => {
+  const { isMobile } = useMobileDetect()
+
   return (
     <Wrapper>
       <Br top={8} />

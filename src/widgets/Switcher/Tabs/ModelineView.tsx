@@ -6,7 +6,7 @@
 
 import { FC, useEffect, useRef, useState, useCallback, memo } from 'react'
 import { isEmpty, findIndex } from 'ramda'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TSizeSM, TTabItem } from '@/spec'
 import { SIZE } from '@/constant'
@@ -69,6 +69,8 @@ const ModelineView: FC<TProps> = ({
   activeKey = '',
   slipHeight = '2px',
 }) => {
+  const { isMobile } = useMobileDetect()
+
   const defaultActiveTabIndex = getDefaultActiveTabIndex(items, activeKey)
 
   const [active, setActive] = useState(defaultActiveTabIndex)

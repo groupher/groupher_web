@@ -7,7 +7,7 @@
  */
 
 import { FC } from 'react'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
@@ -37,6 +37,8 @@ const AbuseReportContainer: FC<TProps> = ({
 }) => {
   useInit(store)
   const { show, type, view, itemsData, activeItem, viewingArticle } = store
+
+  const { isMobile } = useMobileDetect()
 
   if (isMobile) {
     return (

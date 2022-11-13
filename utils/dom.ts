@@ -182,6 +182,8 @@ export const isElementInViewport = (el: HTMLElement): boolean => {
  * pixelAdd('20px', 10) => 30px
  */
 export const pixelAdd = (current: string, num: number): string => {
+  if (!current) return '0'
+
   const pixelNum = Number(current.slice(0, -2))
 
   return `${pixelNum + num}px`

@@ -1,5 +1,5 @@
 import { FC, memo } from 'react'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TThread, TCommunity, TMetric } from '@/spec'
 import { EVENT } from '@/constant'
@@ -31,6 +31,8 @@ type TProps = {
 }
 
 const ClassicLayout: FC<TProps> = ({ community, activeThread, metric }) => {
+  const { isMobile } = useMobileDetect()
+
   return (
     <Wrapper testid="community-digest" isMobile={isMobile}>
       <InnerWrapper metric={metric} isMobile={isMobile}>

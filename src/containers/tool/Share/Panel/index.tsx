@@ -3,7 +3,7 @@
  */
 
 import { FC, Fragment, memo } from 'react'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TArticle } from '@/spec'
 import { buildLog } from '@/utils/logger'
@@ -37,6 +37,8 @@ const SharePanel: FC<TProps> = ({
   article,
   testid = 'share-panel',
 }) => {
+  const { isMobile } = useMobileDetect()
+
   if (isMobile) {
     return (
       <Fragment>

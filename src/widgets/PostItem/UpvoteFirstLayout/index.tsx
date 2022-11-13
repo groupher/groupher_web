@@ -8,7 +8,7 @@ import { FC, memo } from 'react'
 
 import type { TPost, TAccount, TC11N } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import DesktopView from './DesktopView'
 import MobileView from './MobileView'
@@ -33,6 +33,8 @@ const PostItem: FC<TProps> = ({
   isMobilePreview,
   c11n,
 }) => {
+  const { isMobile } = useMobileDetect()
+
   return (
     <Wrapper c11n={c11n}>
       {isMobile || isMobilePreview ? (

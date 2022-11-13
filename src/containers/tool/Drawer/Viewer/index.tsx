@@ -1,6 +1,6 @@
 import { Fragment, useEffect } from 'react'
 import dynamic from 'next/dynamic'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 let CurrentView = null
 
@@ -9,6 +9,8 @@ let CurrentView = null
  * @returns
  */
 const Viewer = (props) => {
+  const { isMobile } = useMobileDetect()
+
   useEffect(() => {
     if (!isMobile) {
       CurrentView = dynamic(() => import('./DesktopView'), { ssr: false })

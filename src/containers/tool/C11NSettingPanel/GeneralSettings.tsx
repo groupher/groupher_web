@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 import { contains } from 'ramda'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TThread, TC11N } from '@/spec'
 import { THREAD, C11N } from '@/constant'
@@ -17,6 +17,8 @@ type TProps = {
 }
 
 const GeneralSettings: FC<TProps> = ({ curThread, customization }) => {
+  const { isMobile } = useMobileDetect()
+
   const { bannerLayout, contentDivider, markViewed, displayDensity } =
     customization
 
