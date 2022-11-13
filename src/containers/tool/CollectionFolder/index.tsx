@@ -38,7 +38,8 @@ const CollectionFolderContainer: FC<TProps> = ({
   testid = 'collection-folder',
   onSelect = log,
 }) => {
-  const { isMobile } = useMobileDetect()
+  const detect = useMobileDetect()
+  const { isMobile } = detect
 
   useInit(store, isMobile)
 
