@@ -6,7 +6,7 @@
 
 import { FC, useEffect, useRef, useState, useCallback, memo } from 'react'
 import { isEmpty, findIndex, pluck, includes } from 'ramda'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TSizeSM, TTabItem, TC11NLayout } from '@/spec'
 import { SIZE, C11N } from '@/constant'
@@ -69,6 +69,8 @@ const Tabs: FC<TProps> = ({
   slipHeight = '1px',
   bottomSpace = 0,
 }) => {
+  const { isMobile } = useMobileDetect()
+
   const defaultActiveTabIndex = getDefaultActiveTabIndex(items, activeKey)
   // @ts-ignore
   const hasActiveItem: boolean = includes(activeKey, pluck('raw', items))

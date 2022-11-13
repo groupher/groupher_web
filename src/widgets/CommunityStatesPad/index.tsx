@@ -5,7 +5,7 @@
  */
 
 import { FC, memo } from 'react'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TCommunity } from '@/spec'
 import { buildLog } from '@/utils/logger'
@@ -42,6 +42,8 @@ const CommunityStatesPad: FC<TProps> = ({
   onShowEditorList = log,
   onShowSubscriberList = log,
 }) => {
+  const { isMobile } = useMobileDetect()
+
   const { editorsCount, subscribersCount, contributesDigest, articlesCount } =
     community
 

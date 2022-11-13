@@ -7,7 +7,7 @@
  */
 
 import { FC, Fragment } from 'react'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
@@ -38,6 +38,8 @@ const CollectionFolderContainer: FC<TProps> = ({
   testid = 'collection-folder',
   onSelect = log,
 }) => {
+  const { isMobile } = useMobileDetect()
+
   useInit(store, isMobile)
 
   const {

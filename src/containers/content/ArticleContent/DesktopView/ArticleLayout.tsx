@@ -5,7 +5,7 @@
  */
 
 import { FC, useRef } from 'react'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TMetric } from '@/spec'
 import { buildLog } from '@/utils/logger'
@@ -49,6 +49,7 @@ const ArticleContentContainer: FC<TProps> = ({
   testid,
 }) => {
   useInit(store)
+  const { isMobile } = useMobileDetect()
 
   const { viewingArticle: article } = store
   const ref = useRef()

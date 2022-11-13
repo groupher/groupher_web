@@ -1,6 +1,6 @@
 import { FC, memo, Fragment } from 'react'
 import TimeAgo from 'timeago-react'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TComment } from '@/spec'
 
@@ -29,6 +29,8 @@ type TProps = {
 }
 
 const CommentHeader: FC<TProps> = ({ data, showInnerRef }) => {
+  const { isMobile } = useMobileDetect()
+
   const { author, meta } = data
   const avatarSize = author.bio ? 26 : 24
 

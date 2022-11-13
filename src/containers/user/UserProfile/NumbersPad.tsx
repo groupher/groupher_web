@@ -1,5 +1,5 @@
 import { FC, memo, Fragment } from 'react'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TUser, TPagedCommunities } from '@/spec'
 
@@ -36,6 +36,8 @@ const Numberspad: FC<TProps> = ({
   subscribedCommunities,
   hasFollowedUser,
 }) => {
+  const { isMobile } = useMobileDetect()
+
   return (
     <Wrapper>
       <GravitySection>

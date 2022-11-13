@@ -3,10 +3,9 @@
  */
 
 import { FC } from 'react'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { bond } from '@/utils/mobx'
-
 import CommunityDigest from '@/containers/digest/CommunityDigest'
 import ChangelogThread from '@/containers/thread/ChangelogThread'
 
@@ -29,6 +28,8 @@ type TProps = {
  */
 const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   useInit(store)
+
+  const { isMobile } = useMobileDetect()
 
   return (
     <Wrapper testid="changelog-thread-content">

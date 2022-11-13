@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 import dynamic from 'next/dynamic'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import DesktopView from './DesktopView'
 
@@ -9,6 +9,8 @@ const MobileView = dynamic(() => import('./MobileView'), {
 })
 
 const MainEntries = (props) => {
+  const { isMobile } = useMobileDetect()
+
   return (
     <Fragment>
       {/* @ts-ignore */}

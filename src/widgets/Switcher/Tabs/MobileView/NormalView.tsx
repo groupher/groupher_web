@@ -6,7 +6,7 @@
 
 import { FC, useEffect, useRef, useState, useCallback, memo } from 'react'
 import { isEmpty, findIndex } from 'ramda'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TSizeSM, TTabItem } from '@/spec'
 import { ICON } from '@/config'
@@ -75,6 +75,8 @@ const MobileView: FC<TProps> = ({
   slipHeight = '2px',
   toggleExpand,
 }) => {
+  const { isMobile } = useMobileDetect()
+
   const defaultActiveTabIndex = getDefaultActiveTabIndex(items, activeKey)
 
   const [active, setActive] = useState(defaultActiveTabIndex)

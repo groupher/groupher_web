@@ -6,7 +6,7 @@
 
 import { FC } from 'react'
 import { includes } from 'ramda'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TResState } from '@/spec'
 import { ARTICLE_THREAD } from '@/constant'
@@ -45,6 +45,8 @@ type TProps = {
 
 const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
   useInit(store)
+
+  const { isMobile } = useMobileDetect()
 
   const {
     pagedArticlesData,

@@ -4,7 +4,7 @@
 
 import { Fragment, FC, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TMetric } from '@/spec'
 import { METRIC } from '@/constant'
@@ -40,6 +40,8 @@ const ModeLineContainer: FC<TProps> = ({
     isCommunityBlockExpand,
     curCommunity,
   } = store
+
+  const { isMobile } = useMobileDetect()
 
   // viewing: { community, activeThread },
   useEffect(() => {

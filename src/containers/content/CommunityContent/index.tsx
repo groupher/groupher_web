@@ -4,7 +4,7 @@
 
 import { FC } from 'react'
 import { includes } from 'ramda'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { bond } from '@/utils/mobx'
 import { ARTICLE_THREAD } from '@/constant'
@@ -29,6 +29,7 @@ type TProps = {
 const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   useInit(store)
 
+  const { isMobile } = useMobileDetect()
   const { curThread: thread } = store
 
   const isMobileCardsView =

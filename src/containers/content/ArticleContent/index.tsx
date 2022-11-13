@@ -6,8 +6,6 @@
 
 // import { Fragment } from 'react'
 
-// import { isMobile } from 'react-device-detect'
-
 import DesktopView from './DesktopView'
 // import MobileView from './MobileView'
 

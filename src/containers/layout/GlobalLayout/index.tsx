@@ -6,7 +6,7 @@
 
 import { FC, ReactNode } from 'react'
 import dynamic from 'next/dynamic'
-import { isMobile } from 'react-device-detect'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TSEO, TMetric } from '@/spec'
 import { SIZE, BODY_SCROLLER } from '@/constant'
@@ -57,6 +57,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
   metric,
 }) => {
   // load debug graph
+  const { isMobile } = useMobileDetect()
   useInit(store, { isMobile })
 
   const { sidebarPin, wallpaper, wallpapers, globalLayout } = store
