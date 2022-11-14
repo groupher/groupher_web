@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { lighten, darken } from 'polished'
+import { lighten, darken } from '@/utils/color'
 import { includes } from 'ramda'
 
 import type { TMetric, TTestable, TColorName } from '@/spec'
@@ -41,8 +41,8 @@ export const LinkText = styled(Desc)`
 export const LinkBtn = styled.div<{ bg: TColorName }>`
   background: ${({ bg }) =>
     includes(bg, [COLOR_NAME.BLACK])
-      ? lighten(0.06, COLORS[bg])
-      : darken(0.1, COLORS[bg])};
+      ? lighten(COLORS[bg], 6)
+      : darken(COLORS[bg], 10)};
   color: white;
   height: 18px;
   padding: 1px 12px;

@@ -1,4 +1,4 @@
-import type { SnakeUpperCase } from '@/spec'
+import type { TSnakeUpperCase } from '@/spec'
 
 import type { TTab, TSettingField, TWidgetType } from './spec'
 
@@ -40,7 +40,7 @@ export const SETTING_FIELD = {
   WIDGETS_PRIMARY_COLOR: 'widgetsPrimaryColor',
   WIDGETS_SIZE: 'widgetsSize',
   WIDGETS_THREADS: 'widgetsThreads',
-} as Record<SnakeUpperCase<TSettingField>, TSettingField>
+} as Record<TSnakeUpperCase<TSettingField>, TSettingField>
 
 export const MENU = {
   BASIC: {

@@ -1,4 +1,4 @@
-import { gql } from '@urql/core'
+import { gql } from 'urql/core'
 
 const favoriteCategories = gql`
   query ($userId: ID, $filter: CommonPagedFilter!) {

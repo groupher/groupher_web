@@ -1,6 +1,6 @@
 {
   "name": "groupher_web",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "license": "Apache License 2.0",
   "scripts": {
     "dev": "next dev",
@@ -12,7 +12,6 @@
     "build.prod": "cross-env NODE_ENV=production next build",
     "build.dev": "cross-env NODE_ENV=dev next build",
     "build.ci": "cross-env NODE_ENV=ci next build",
-    "size.check": "bundlewatch --config size-limit.config.json",
     "serve": "cross-env NODE_ENV=production next start -p ${SERVE_PORT}",
     "serve.dev": "cross-env NODE_ENV=dev next start -p ${SERVE_PORT}",
     "serve.prod": "cross-env NODE_ENV=production next start -p ${SERVE_PORT}",
@@ -56,16 +55,12 @@
     "mobx": "^6.6.2",
     "mobx-react": "^7.5.3",
     "mobx-state-tree": "^5.1.6",
-    "module-alias": "^2.0.1",
     "nanoid": "^3.1.12",
     "next": "^13.0.2",
     "next-compose-plugins": "^2.2.0",
     "next-i18next": "4.4.1",
     "next-pwa": "^5.4.4",
-    "overlayscrollbars": "1.13.1",
-    "path": "^0.12.7",
-    "path-match": "^1.2.4",
-    "polished": "4.1.3",
+    "overlayscrollbars": "^1.13.3",
     "promise-timeout": "^1.3.0",
     "prop-types": "^15.5.10",
     "pubsub-js": "^1.9.3",
@@ -103,7 +98,7 @@
     "timeago-react": "^3.0.5",
     "tinykeys": "^1.0.6",
     "url": "^0.11.0",
-    "urql": "^2.0.4"
+    "urql": "^3.0.3"
   },
   "devDependencies": {
     "@cfaester/enzyme-adapter-react-18": "0.5.1",
@@ -118,7 +113,6 @@
     "@types/styled-components": "^5.1.8",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
-    "bundlewatch": "^0.2.7",
     "commitizen": "3.1.2",
     "coveralls": "3.0.14",
     "cypress": "^8.1.0",

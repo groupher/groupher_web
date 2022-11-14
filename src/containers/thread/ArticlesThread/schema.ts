@@ -1,4 +1,4 @@
-import { gql } from '@urql/core'
+import { gql } from 'urql/core'
 import { P, F } from '@/schemas'
 
 import { plural } from '@/utils/helper'

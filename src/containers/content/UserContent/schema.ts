@@ -1,4 +1,4 @@
-import { gql } from '@urql/core'
+import { gql } from 'urql/core'
 import { F } from '@/schemas'
 
 const follow = gql`
