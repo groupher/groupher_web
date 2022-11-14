@@ -94,7 +94,7 @@
     "sentry-testkit": "^2.1.0",
     "store": "^2.0.12",
     "stringz": "^2.0.0",
-    "styled-components": "^5.3.5",
+    "styled-components": "^6.0.0-beta.6",
     "timeago-react": "^3.0.5",
     "tinykeys": "^1.0.6",
     "url": "^0.11.0",
@@ -131,6 +131,7 @@
     "shelljs": "0.8.4",
     "standard-version": "^8.0.1",
     "start-server-and-test": "1.12.1",
+    "tslib": "^2.4.1",
     "type-fest": "^2.19.0",
     "typescript": "^4.8.2"
   }
