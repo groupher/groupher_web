@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import { lighten } from 'polished'
 
 import css, { theme } from '@/utils/css'
+import { lighten } from '@/utils/color'
 import type { TSize, TButton, TSpace } from '@/spec'
 
 import {
@@ -116,15 +116,15 @@ export const RedWrapper = styled(Wrapper)`
 
   &:hover {
     background-color: ${({ ghost }) =>
-      !ghost ? lighten(0.1, 'tomato') : 'transparent'};
+      !ghost ? lighten('#FF634F', 10) : 'transparent'};
   }
   &:focus {
     background-color: ${({ ghost }) =>
-      !ghost ? lighten(0.1, 'tomato') : 'transparent'};
+      !ghost ? lighten('#FF634F', 10) : 'transparent'};
   }
   &:active {
     background-color: ${({ ghost }) =>
-      !ghost ? lighten(0.1, 'tomato') : 'transparent'};
+      !ghost ? lighten('#FF634F', 10) : 'transparent'};
   }
   transition: all 0.1s;
 `

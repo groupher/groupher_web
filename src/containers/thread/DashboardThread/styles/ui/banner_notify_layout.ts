@@ -1,11 +1,11 @@
 import styled from 'styled-components'
-import { lighten, darken } from 'polished'
 import { includes } from 'ramda'
 
 import type { TActive, TColorName } from '@/spec'
 import { COLORS, COLOR_NAME } from '@/constant'
 
 import css, { theme } from '@/utils/css'
+import { lighten, darken } from '@/utils/color'
 
 import { Divider } from '@/widgets/Common'
 import CrossSVG from '@/icons/CloseCross'
@@ -45,8 +45,8 @@ export const NotifyDesc = styled.div`
 export const NotifySolidLink = styled.div<{ bg: TColorName }>`
   background: ${({ bg }) =>
     includes(bg, [COLOR_NAME.BLACK])
-      ? lighten(0.06, COLORS[bg])
-      : darken(0.1, COLORS[bg])};
+      ? lighten(COLORS[bg], 6)
+      : darken(COLORS[bg], 10)};
 
   color: white;
   border-radius: 5px;

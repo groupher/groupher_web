@@ -1,7 +1,7 @@
 /*
  * a theme inspired by github
  */
-import { lighten, darken } from 'polished'
+import { lighten, darken } from '@/utils/color'
 
 const primaryColor = '#3b434a' // '#000000'
 
@@ -33,13 +33,13 @@ const github = {
   spaceBg: '#fff',
   mobileTab: '#323344',
   loading: {
-    basic: darken(0.05, contentBg),
+    basic: darken(contentBg, 5),
     animate: contentBg,
   },
   error: {
     title: primaryColor,
-    desc: darken(0.1, primaryColor),
-    bg: lighten(0.02, contentBoxBg),
+    desc: darken(primaryColor, 10),
+    bg: lighten(contentBoxBg, 2),
   },
 
   font: fontColor,
@@ -47,7 +47,7 @@ const github = {
   border,
   hoverBg,
   menuActive: '#f3f3f3',
-  linkHover: lighten(0.05, link),
+  linkHover: lighten(link, 5),
   heightIcon: '#e48a3d',
   heightGradient:
     'linear-gradient(90deg, rgb(243, 170, 0) 0%, rgb(228, 62, 41) 100%)',
@@ -100,7 +100,7 @@ const github = {
     spliter: '#efefef',
     fixed: contentBoxBg,
     tabActive: '#EB6224', // articleTitle
-    tabOthers: lighten(0.1, '#849ca0'),
+    tabOthers: lighten('#849ca0', 10),
     cardBg: '#ffffff',
     cardBorder: '#e6e6e6',
     cardLogoText: 'lightgrey',
@@ -149,9 +149,9 @@ const github = {
   sidebar: {
     bg: sidebarBg,
     activeBar: '#87a791',
-    holder: lighten(0.15, sidebarBg),
+    holder: lighten(sidebarBg, 15),
     logoText: '#5e9aa2',
-    menuHover: darken(0.1, sidebarBg),
+    menuHover: darken(sidebarBg, 10),
     pinActive: 'yellowgreen',
     menuLink: '#D9E6E5',
     borderColor: '#14363E',
@@ -209,7 +209,7 @@ const github = {
     // mention popover background
     mentionBg: '#F9FCFC',
     mentionBorder: primaryColor,
-    mentionActiveBg: darken(0.1, '#F9FCFC'),
+    mentionActiveBg: darken('#F9FCFC', 10),
     mentionShadow: '0px 2px 10px 1px rgba(235, 235, 235, 1)',
 
     indentLine: '#d5d5d5',
@@ -225,7 +225,7 @@ const github = {
     borderActive: descText,
     borderNormal: '#e2eaea',
     footer: '#a6bebf',
-    footerHover: darken(0.05, '#a6bebf'),
+    footerHover: darken('#a6bebf', 5),
   },
   pagination: {
     activeNum: 'white',
@@ -237,7 +237,7 @@ const github = {
   },
 
   heatmap: {
-    activityLow: darken(0.2, '#6EC385'),
+    activityLow: darken('#6EC385', 20),
     activityHight: 'yellowgreen',
     empty: '#efefef',
     borderHover: '#51abb2',
@@ -272,27 +272,27 @@ const github = {
   markdown: {
     title: primaryColor,
     fg: markdownFont,
-    titleBottom: lighten(0.3, primaryColor),
+    titleBottom: lighten(primaryColor, 30),
     hrColor: '#154452',
     blockquoteBorder: '#b8d0ce',
-    blockquoteFg: darken(0.09, markdownFont),
+    blockquoteFg: darken(markdownFont, 10),
     strongFg: '#7c999c',
     strongBg: contentBoxBg,
     link,
-    tableBg: darken(0.01, contentBoxBg),
-    tableBg2n: darken(0.05, contentBoxBg),
-    tableborder: `1px solid ${darken(0.1, contentBoxBg)}`,
+    tableBg: darken(contentBoxBg, 5),
+    tableBg2n: darken(contentBoxBg, 5),
+    tableborder: `1px solid ${darken(contentBoxBg, 10)}`,
     taskDone: '#528416',
-    taskPeding: darken(0.1, contentBoxBg),
+    taskPeding: darken(contentBoxBg, 10),
     br: '#e8e8e8',
   },
   code: {
-    bg: darken(0.05, contentBoxBg),
+    bg: darken(contentBoxBg, 5),
   },
   shell: {
     link,
     searchInput: descText,
-    searchIcon: lighten(0.1, descText),
+    searchIcon: lighten(descText, 10),
     barBg: contentBoxBg,
     border: '#f3f3f3',
     title: threadTitle,
@@ -302,13 +302,13 @@ const github = {
   button: {
     primary: primaryColor,
     fg: '#FFFFFF',
-    hoverBg: lighten(0.1, primaryColor),
-    activeBg: darken(0.01, primaryColor),
+    hoverBg: lighten(primaryColor, 10),
+    activeBg: darken(primaryColor, 5),
     clicked: primaryColor,
   },
   navigator: {
     activeBottom: primaryColor,
-    borderRight: darken(0.05, bannerBg),
+    borderRight: darken(bannerBg, 5),
     hoverBg: '#eee',
   },
   popover: {
@@ -353,7 +353,7 @@ const github = {
   },
   a: {
     hover: primaryColor,
-    active: darken(0.1, primaryColor),
+    active: darken(primaryColor, 10),
   },
   toast: {
     bg: contentBoxBg,

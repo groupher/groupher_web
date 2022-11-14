@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-// import { lighten } from 'polished'
 
 import type { TButton, TSize } from '@/spec'
 import css, { theme } from '@/utils/css'
