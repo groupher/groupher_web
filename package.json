@@ -1,6 +1,6 @@
 {
   "name": "groupher_web",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "license": "Apache License 2.0",
   "scripts": {
     "dev": "next dev",
