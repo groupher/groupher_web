@@ -44,7 +44,7 @@ jobs:
           restore-keys: ${{ runner.os }}-mix-
       - name: (Backend) Checkout dev branch
         working-directory: ./backend_server
-        run: git checkout dev
+        run: git checkout debug-github-action-for-fe
       - name: (Backend) Install Packages
         working-directory: ./backend_server
         run: mix deps.get > /dev/null
