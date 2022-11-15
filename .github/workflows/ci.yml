@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:10
+        image: postgres:12
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -29,14 +29,10 @@ jobs:
           repository: 'groupher/groupher_server'
           path: 'backend_server'
       - name: (Backend) Setup Elixir and OTP
-        strategy:
-          matrix:
-            otp: ['22.2']
-            elixir: ['1.10.3']
-        uses: erlef/setup-beam@v1
+        uses: actions/setup-elixir@v1
         with:
-          otp-version: ${{matrix.otp}}
-          elixir-version: ${{matrix.elixir}}
+          elixir-version: '1.10.3'
+          otp-version: '22.3'
       - name: (Backend) Restore dependencies cache
         uses: actions/cache@v2
         with:
