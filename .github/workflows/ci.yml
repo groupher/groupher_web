@@ -97,5 +97,5 @@ jobs:
         with:
           working-directory: ./frontend_server
           # build: npm run build
-          start: npm run ci
+          start: test:ci
           wait-on: http://localhost:3000
