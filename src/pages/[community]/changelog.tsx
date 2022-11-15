@@ -122,13 +122,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return { props: { errorCode: null, ...initProps } }
 }
 
-const CommunityKanbanPage = (props) => {
+const CommunityChangelogPage = (props) => {
   const { viewing } = props
   const { community, activeThread } = viewing
   const store = useStore()
   store.mark(props)
 
-  log('the kanban thread')
+  log('the changelog thread')
 
   return (
     <GlobalLayout
@@ -140,4 +140,4 @@ const CommunityKanbanPage = (props) => {
   )
 }
 
-export default CommunityKanbanPage
+export default CommunityChangelogPage

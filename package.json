@@ -1,11 +1,11 @@
 {
   "name": "groupher_web",
-  "version": "1.0.25",
+  "version": "1.0.27",
   "license": "Apache License 2.0",
   "scripts": {
     "dev": "next dev",
     "dev2": "next dev --turbo",
-    "ci": "cross-env NODE_ENV=ci node server",
+    "ci": "cross-env NODE_ENV=ci next dev",
     "update.version": "node -p \"'export const APP_VERSION = ' + JSON.stringify(require('./package.json').version)\" > config/version.ts",
     "build": "next build",
     "build:clean": "run-s dist clean",
