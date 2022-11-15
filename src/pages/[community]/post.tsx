@@ -25,13 +25,14 @@ import PostContent from '@/containers/content/CommunityContent/PostContent'
 
 import { P } from '@/schemas'
 
+const thread = THREAD.POST
+
 const loader = async (context, opt = {}) => {
   const { query } = context
   const { gqClient, userHasLogin } = ssrFetchPrepare(context, opt)
 
   // 线上环境会直接跳过 index 到这里，有待排查。。
   const community = query.community || HCN
-  const thread = THREAD.POST
 
   // query data
   const sessionState = gqClient.request(P.sessionState)
@@ -80,8 +81,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     'Cache-Control',
     'public, s-maxage=10, stale-while-revalidate=59',
   )
-
-  const thread = THREAD.POST
 
   let resp
   try {

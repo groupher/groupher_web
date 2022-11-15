@@ -24,13 +24,14 @@ import ChangeLogContent from '@/containers/content/CommunityContent/ChangeLogCon
 
 import { P } from '@/schemas'
 
+const thread = THREAD.CHANGELOG
+
 const loader = async (context, opt = {}) => {
   const { query } = context
   const { gqClient, userHasLogin } = ssrFetchPrepare(context, opt)
 
   // 线上环境会直接跳过 index 到这里，有待排查。。
   const community = query.community || HCN
-  const thread = THREAD.CHANGELOG
 
   // query data
   const sessionState = gqClient.request(P.sessionState)
@@ -80,8 +81,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     'public, s-maxage=10, stale-while-revalidate=59',
   )
 
-  const thread = THREAD.CHANGELOG
-
   let resp
   try {
     resp = await loader(context)
@@ -103,7 +102,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       route: {
         communityPath: community.raw,
         mainPath: community.raw === HCN ? '' : community.raw,
-        subPath: THREAD.CHANGELOG,
+        subPath: thread,
         thread,
       },
       tagsBar: {
@@ -111,7 +110,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
       viewing: {
         community,
-        activeThread: THREAD.CHANGELOG,
+        activeThread: thread,
       },
     },
     {
