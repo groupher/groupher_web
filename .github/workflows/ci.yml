@@ -30,6 +30,8 @@ jobs:
           path: 'backend_server'
       - name: (Backend) install libtinfo5
         run: sudo apt install libtinfo5
+      - name: (Backend) install libssl
+        run: sudo apt install libssl1.0.0
       - name: (Backend) Setup Elixir and OTP
         uses: actions/setup-elixir@v1
         with:
