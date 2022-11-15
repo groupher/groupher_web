@@ -30,9 +30,9 @@ jobs:
           path: 'backend_server'
       - name: (Backend) Setup Elixir and OTP
         strategy:
-        matrix:
-          otp: ['22.2']
-          elixir: ['1.10.3']
+          matrix:
+            otp: ['22.2']
+            elixir: ['1.10.3']
         uses: erlef/setup-beam@v1
         with:
           otp-version: ${{matrix.otp}}
