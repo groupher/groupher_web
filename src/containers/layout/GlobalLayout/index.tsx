@@ -14,12 +14,6 @@ import { bond } from '@/utils/mobx'
 
 import ThemePalette from '@/containers/layout/ThemePalette'
 import BannerNotify from '@/widgets/BannerNotify'
-// import Header from '@/widgets/Header'
-
-// import Footer from '@/containers/unit/Footer'
-// import ModeLine from '@/containers/unit/ModeLine'
-
-// import CustomScroller from '@/widgets/CustomScroller'
 
 import type { TStore } from './store'
 import SEO from './SEO'
@@ -64,11 +58,9 @@ const GlobalLayoutContainer: FC<TProps> = ({
 
   return (
     <ThemePalette>
-      {/* @ts-ignore */}
       <Addon />
       <Skeleton>
         <Wallpaper wallpaper={wallpaper} wallpapers={wallpapers} />
-        {/* @ts-ignore */}
         <CustomScroller
           instanceKey={BODY_SCROLLER}
           direction="vertical"
@@ -86,23 +78,13 @@ const GlobalLayoutContainer: FC<TProps> = ({
                 layout={globalLayout.bannerNotify}
                 bg={globalLayout.bannerNotifyBg}
               />
-              {/* @ts-ignore */}
               <ContentWrapper offsetLeft={sidebarPin}>
-                {/* @ts-ignore */}
-
-                {/* <Header
-                  metric={metric}
-                  accountInfo={accountInfo}
-                  community={curCommunity}
-                /> */}
                 <BodyWrapper isMobile={isMobile}>
                   {childrenWithProps(children, { metric })}
                 </BodyWrapper>
-                {/* @ts-ignore */}
                 {!noFooter && <Footer metric={metric} />}
               </ContentWrapper>
             </InnerWrapper>
-            {/* @ts-ignore */}
             {isMobile && <ModeLine metric={metric} />}
           </Wrapper>
         </CustomScroller>
