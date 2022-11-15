@@ -20,7 +20,7 @@ import {
 } from '@/utils'
 
 import GlobalLayout from '@/containers/layout/GlobalLayout'
-import ChangeLogContent from '@/containers/content/CommunityContent/ChangeLogContent'
+import DashboardContent from '@/containers/content/CommunityContent/DashboardContent'
 
 import { P } from '@/schemas'
 
@@ -122,22 +122,22 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return { props: { errorCode: null, ...initProps } }
 }
 
-const CommunityChangelogPage = (props) => {
+const CommunityDashboardPage = (props) => {
   const { viewing } = props
   const { community, activeThread } = viewing
   const store = useStore()
   store.mark(props)
 
-  log('the changelog thread')
+  log('the dashboard thread')
 
   return (
     <GlobalLayout
       metric={METRIC.COMMUNITY}
       seoConfig={communitySEO(community as TCommunity, activeThread)}
     >
-      <ChangeLogContent />
+      <DashboardContent />
     </GlobalLayout>
   )
 }
 
-export default CommunityChangelogPage
+export default CommunityDashboardPage
