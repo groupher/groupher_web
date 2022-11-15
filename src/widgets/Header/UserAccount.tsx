@@ -3,13 +3,8 @@ import { Fragment, FC, memo } from 'react'
 import type { TAccount } from '@/spec'
 
 import { authWarn, logout } from '@/utils/helper'
-// import { ROUTE } from '@/constant'
 
 import Tooltip from '@/widgets/Tooltip'
-// import Button from '@/widgets/Buttons/Button'
-// import { Space } from '@/widgets/Common'
-
-// import { onLogin, onLogout, previewAccount } from './logic'
 
 import {
   Wrapper,
@@ -68,16 +63,6 @@ const UserAccount: FC<TProps> = ({ accountInfo }) => {
           <DefaultUserIcon />
         </Wrapper>
       )}
-
-      {/* <Space left={12} />
-      <Button
-        size="tiny"
-        type="primary"
-        ghost
-        onClick={() => router.push(`/${ROUTE.MEMBERSHIP}`)}
-      >
-        <MembershipHint>升舱</MembershipHint>
-      </Button> */}
     </Fragment>
   )
 }

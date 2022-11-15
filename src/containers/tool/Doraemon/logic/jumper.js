@@ -7,10 +7,7 @@ import { Global, send, changeToCommunity } from '@/utils/helper'
 export const jumpToCommunity = (store, communityRaw) => {
   const { mainPath, subPath } = store.curRoute
 
-  if (
-    contains(mainPath, [ROUTE.USER, ROUTE.EXPLORE]) ||
-    contains(subPath, [ROUTE.POST, ROUTE.JOB, ROUTE.REPO])
-  ) {
+  if (contains(mainPath, [ROUTE.USER]) || contains(subPath, [ROUTE.POST])) {
     Global.location.href = `/${communityRaw}`
     return false
   }

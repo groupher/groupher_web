@@ -169,7 +169,6 @@ const rootStore = T.model({
   communityJoinBadge: T.optional(CommunityJoinBadgeStore, {}),
   articleEditor: T.optional(ArticleEditorStore, {}),
   userProfile: T.optional(UserProfileStore, {}),
-  // membershipContent: T.optional(MembershipContentStore, {}),
   articleFooter: T.optional(ArticleFooterStore, {}),
   articleSticker: T.optional(ArticleStickerStore, {}),
   modeLineMenu: T.optional(ModeLineMenuStore, {}),

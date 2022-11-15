@@ -145,20 +145,9 @@ export { mockImage, mockImages, mockWorks } from './mock'
 
 export {
   communitySEO,
-  exploreSEO,
-  worksSEO,
-  membershipSEO,
-  meetupsSEO,
-  sponsorSEO,
-  friendsSEO,
-  trendingSEO,
-  drinkSEO,
-  coolGuideSEO,
   articleSEO,
   articlePublishSEO,
   articleUpdateSEO,
   userSEO,
   publishCommunitySEO,
-  supportUsSEO,
-  subscribeSEO,
 } from './seo'

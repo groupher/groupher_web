@@ -12,12 +12,7 @@ import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 import { METRIC } from '@/constant'
 
-import JoinModal from '@/containers/tool/JoinModal'
-
-import HomeLayout from './HomeLayout'
-// import ArticleLayout from './ArticleLayout'
-// import WorksArticleLayout from './WorksArticleLayout'
-import GeneralLayout from './GeneralLayout'
+// import HomeLayout from './HomeLayout'
 import SimpleLayout from './SimpleLayout'
 // import HostingCommunityView from './HostingCommunityView'
 
@@ -56,32 +51,7 @@ const FooterContainer: FC<TProps> = ({
 
   return (
     <Wrapper testid={testid} metric={metric}>
-      <JoinModal />
-      {metric === METRIC.EXPLORE && (
-        <HomeLayout metric={metric} onlineStatus={onlineStatus} />
-      )}
-
-      {metric === METRIC.COMMUNITY && (
-        // <GeneralLayout metric={metric} title={curCommunity.title} />
-        <SimpleLayout />
-      )}
-
-      {/* {metric === METRIC.WORKS_ARTICLE && (
-        <WorksArticleLayout viewingArticle={viewingArticle} />
-      )} */}
-
-      {isGeneral && <GeneralLayout metric={metric} />}
-
-      {/* {type === VIEW.HOME && (
-        <HostingCommunityView metric={metric}  />
-      )} */}
-      {metric === METRIC.ARTICLE && (
-        <SimpleLayout />
-        // <ArticleLayout
-        //   metric={metric}
-        //   article={viewingArticle}
-        // />
-      )}
+      <SimpleLayout />
     </Wrapper>
   )
 }

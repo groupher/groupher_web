@@ -2,7 +2,6 @@ import { FC, memo } from 'react'
 import Link from 'next/link'
 
 import type { TCommunity } from '@/spec'
-import { ROUTE } from '@/constant'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
 import {
@@ -25,7 +24,7 @@ const ExploreMenu: FC<TProps> = ({ communities }) => {
     <Wrapper>
       <Header>
         <Title>我加入的:</Title>
-        <Link href={`/${ROUTE.EXPLORE}`}>
+        <Link href="/">
           <ArrowButton arrowStyle="simple" size="tiny">
             全部社区
           </ArrowButton>

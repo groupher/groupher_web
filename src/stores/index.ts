@@ -85,7 +85,6 @@ export { default as AbuseReportStore } from '@/containers/tool/AbuseReport/store
 export { default as CommunityJoinBadgeStore } from '@/containers/tool/CommunityJoinBadge/store'
 export { default as ArticleEditorStore } from '@/containers/editor/ArticleEditor/store'
 export { default as UserProfileStore } from '@/containers/user/UserProfile/store'
-export { default as MembershipContentStore } from '@/containers/content/MembershipContent/store'
 export { default as ArticleFooterStore } from '@/containers/unit/ArticleFooter/store'
 export { default as ArticleStickerStore } from '@/containers/tool/ArticleSticker/store'
 export { default as ModeLineMenuStore } from '@/containers/unit/ModeLineMenu/store'

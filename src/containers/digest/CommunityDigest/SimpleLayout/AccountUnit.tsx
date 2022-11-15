@@ -2,6 +2,8 @@ import { FC, memo } from 'react'
 
 import Link from 'next/link'
 
+import { ROUTE } from '@/constant'
+
 import {
   Wrapper,
   Avatar,
@@ -13,19 +15,14 @@ import { mockUsers } from '@/utils/mock'
 // import { onShowEditorList, onShowSubscriberList, setViewport } from '../logic'
 
 const AccountUnit: FC = () => {
-  // return <Wrapper>登入 / 注册</Wrapper>
   return (
     <Wrapper>
       <SubscribeButton type="primary" ghost size="small">
         订阅
       </SubscribeButton>
 
-      <Link href="/home/dashboard">
-        <DashboardIcon
-          onClick={() => {
-            // send(EVENT.COMMUNITY_THREAD_CHANGE, { data: THREAD.DASHBOARD })
-          }}
-        />
+      <Link href={`/home/${ROUTE.DASHBOARD}`} prefetch={false}>
+        <DashboardIcon />
       </Link>
 
       <div data-test-id="header-notify-icon">

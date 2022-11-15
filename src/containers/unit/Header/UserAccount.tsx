@@ -3,9 +3,7 @@ import { useRouter } from 'next/router'
 
 import type { TAccount } from '@/spec'
 import { ICON } from '@/config'
-import { ROUTE } from '@/constant'
 import Tooltip from '@/widgets/Tooltip'
-import Button from '@/widgets/Buttons/Button'
 
 import { onLogin, onLogout, previewAccount } from './logic'
 
@@ -90,18 +88,6 @@ const UserAccount: FC<TProps> = ({ isLogin, accountInfo }) => {
           <DefaultUserIcon src={`${ICON}/user/account-solid.svg`} />
         </Wrapper>
       )}
-
-      <MembershipHint>
-        {/* 升&nbsp;级- */}
-        <Button
-          size="tiny"
-          type="primary"
-          ghost
-          onClick={() => router.push(`/${ROUTE.MEMBERSHIP}`)}
-        >
-          升&nbsp;级
-        </Button>
-      </MembershipHint>
     </Fragment>
   )
 }

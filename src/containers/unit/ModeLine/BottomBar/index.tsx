@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { includes } from 'ramda'
 
 import type { TArticle, TCommunity, TMetric, TModelineType } from '@/spec'
-import { METRIC, TYPE, ROUTE } from '@/constant'
+import { METRIC, TYPE } from '@/constant'
 import { multiClick } from '@/utils/helper'
 
 import {
@@ -25,16 +25,7 @@ import { openMenu } from '../logic'
 import { communityPageMenus, getArticlePageMenus } from './menus'
 
 const isNotBelongToCommunityRoute = (pathname: string): boolean => {
-  return includes(pathname, [
-    `/${ROUTE.MEETUPS}`,
-    `/${ROUTE.PLAZA}`,
-    `/${ROUTE.COOL_GUIDE}`,
-    `/${ROUTE.HAVE_A_DRINK}`,
-    `/${ROUTE.EXPLORE}`,
-    '/works/[id]',
-    '/guide/[id]',
-    '/meetup/[id]',
-  ])
+  return includes(pathname, [])
 }
 
 type TProps = {

@@ -3,7 +3,6 @@ import { useTheme } from 'styled-components'
 
 import type { TThemeMap, TMetric, TOnlineStatus } from '@/spec'
 import { GITHUB, ABOUT_LINK, APP_VERSION } from '@/config'
-import { ROUTE } from '@/constant'
 import { siteBirthDay } from '@/utils/helper'
 
 import TopInfo from './TopInfo'
@@ -42,21 +41,6 @@ const HomeView: FC<TProps> = ({ metric, onlineStatus }) => {
           <Column>
             <Title>网站地图</Title>
             <Body>
-              <LinkItem href={`${ROUTE.EXPLORE}`} {...linkColors}>
-                子社区
-              </LinkItem>
-              <LinkItem href={`${ROUTE.WORKS}`} {...linkColors}>
-                作品集市
-              </LinkItem>
-              <LinkItem href={`${ROUTE.COOL_GUIDE}`} {...linkColors}>
-                酷导航
-              </LinkItem>
-              <LinkItem href={`${ROUTE.HAVE_A_DRINK}`} {...linkColors}>
-                来一杯
-              </LinkItem>
-              <LinkItem href={`${ROUTE.MEETUPS}`} {...linkColors}>
-                小聚
-              </LinkItem>
               <LinkItem href="/makers" {...linkColors}>
                 Makers
               </LinkItem>
