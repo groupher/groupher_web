@@ -28,7 +28,9 @@ const AccountUnit: FC = () => {
         />
       </Link>
 
-      <NotifyIcon />
+      <div data-test-id="header-notify-icon">
+        <NotifyIcon />
+      </div>
       <Avatar src={`${mockUsers(1)[0].avatar}`} />
     </Wrapper>
   )
