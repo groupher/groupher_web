@@ -28,6 +28,8 @@ jobs:
           fetch-depth: 0
           repository: 'groupher/groupher_server'
           path: 'backend_server'
+      - name: (Backend) install libtinfo5
+        run: sudo apt install libtinfo5
       - name: (Backend) Setup Elixir and OTP
         uses: actions/setup-elixir@v1
         with:
@@ -49,9 +51,9 @@ jobs:
       - name: (Backend) set up test DB
         working-directory: ./backend_server
         run: MIX_ENV=ci mix ecto.setup > /dev/null
-      - name: (Backend) seed data into DB
-        working-directory: ./backend_server
-        run: MIX_ENV=ci mix run priv/mock/cps_seeds.exs > /dev/null
+      # - name: (Backend) seed data into DB
+      #   working-directory: ./backend_server
+      #   run: MIX_ENV=ci mix run priv/mock/cps_seeds.exs > /dev/null
       - name: (Backend) Run Server
         working-directory: ./backend_server
         run: MIX_ENV=ci mix phx.server &
