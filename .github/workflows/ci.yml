@@ -29,7 +29,7 @@ jobs:
           repository: 'groupher/groupher_server'
           path: 'backend_server'
       - name: (Backend) fix libinfo issue
-        run: ln -s /usr/lib/libncurses.so.5 /lib/libtinfo.so.5
+        run: apt install libtinfo5
       - name: (Backend) Setup Elixir and OTP
         uses: actions/setup-elixir@v1
         with:
