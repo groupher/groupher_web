@@ -28,8 +28,8 @@ jobs:
           fetch-depth: 0
           repository: 'groupher/groupher_server'
           path: 'backend_server'
-      - name: (Backend) fix libinfo issue
-        run: apt install libtinfo5
+      - name: (Backend) install libtinfo5
+        run: sudo apt install libtinfo5
       - name: (Backend) Setup Elixir and OTP
         uses: actions/setup-elixir@v1
         with:
