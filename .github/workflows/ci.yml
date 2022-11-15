@@ -42,6 +42,9 @@ jobs:
           path: deps
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
           restore-keys: ${{ runner.os }}-mix-
+      - name: (Backend) Checkout dev branch
+        working-directory: ./backend_server
+        run: git checkout dev
       - name: (Backend) Install Packages
         working-directory: ./backend_server
         run: mix deps.get > /dev/null
