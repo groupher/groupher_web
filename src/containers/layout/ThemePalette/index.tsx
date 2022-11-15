@@ -42,9 +42,7 @@ const ThemeContainer: FC<TProps> = ({ children, theme: { themeData } }) => {
       </Head> */}
 
       <ScrollBarStyle />
-      {/* @ts-ignore */}
       <Fragment>{children}</Fragment>
-      {/* @ts-ignore */}
       <CodeSyxHighlight />
       <ThirdPartyOverWrite />
       <GlobalStyle />
