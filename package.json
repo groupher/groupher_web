@@ -1,6 +1,6 @@
 {
   "name": "groupher_web",
-  "version": "1.0.31",
+  "version": "1.0.32",
   "license": "Apache License 2.0",
   "scripts": {
     "dev": "next dev",
@@ -48,8 +48,7 @@
     "compatible-debug": "^1.0.0",
     "cookies-next": "^2.0.3",
     "cross-env": "^7.0.2",
-    "graphql": "^15.5.1",
-    "graphql-request": "3.5.0",
+    "graphql": "^16.6.0",
     "mastani-codehighlight": "0.0.7",
     "mobx": "^6.6.2",
     "mobx-react": "^7.5.3",

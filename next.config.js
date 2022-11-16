@@ -14,11 +14,11 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const nextConfig = {
   swcMinify: true,
   productionBrowserSourceMaps: true,
-  compiler: {
-    removeConsole: {
-      exclude: ['error'],
-    },
-  },
+  // compiler: {
+  //   removeConsole: {
+  //     exclude: ['error'],
+  //   },
+  // },
   // experimental: { appDir: true },
 
   // pwa: {

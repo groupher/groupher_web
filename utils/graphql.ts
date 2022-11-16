@@ -1,24 +1,28 @@
 import { merge, toUpper, clone } from 'ramda'
-import { request, GraphQLClient } from 'graphql-request'
+import { createClient } from 'urql/core'
 
 import { GRAPHQL_ENDPOINT, PAGE_SIZE } from '@/config'
-import { nilOrEmpty, isString } from './validator'
-
-const client = new GraphQLClient(GRAPHQL_ENDPOINT)
+import { isString } from './validator'
 
 // NOTE the client with jwt info is used for getInitialProps for SSR
 // to load user related data
 export const makeGQClient = (token: string): any => {
-  if (!nilOrEmpty(token)) {
-    const requestHeaders = {
-      authorization: `Bearer ${token}`,
-    }
-    return {
-      request: (schema, query) => client.request(schema, query, requestHeaders),
-    }
-  }
+  const client = createClient({
+    url: GRAPHQL_ENDPOINT,
+    fetchOptions: () => {
+      return {
+        headers: { authorization: token ? `Bearer ${token}` : '' },
+      }
+    },
+  })
+
+  // see https://formidable.com/open-source/urql/docs/basics/core/
   return {
-    request: (schema, query) => request(GRAPHQL_ENDPOINT, schema, query),
+    request: (schema, query) =>
+      client
+        .query(schema, query)
+        .toPromise()
+        .then((res) => res.data),
   }
 }
 
@@ -26,11 +30,15 @@ export const makeGithubExplore = (
   GRAPHQL_ENDPOINT: string,
   token: string,
 ): any => {
-  const client = new GraphQLClient(GRAPHQL_ENDPOINT, {
-    headers: {
-      authorization: `bearer ${token}`,
+  const client = createClient({
+    url: GRAPHQL_ENDPOINT,
+    fetchOptions: () => {
+      return {
+        headers: { authorization: token ? `Bearer ${token}` : '' },
+      }
     },
   })
+
   return client
 }
 
