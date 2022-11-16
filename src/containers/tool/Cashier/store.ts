@@ -4,7 +4,7 @@
  */
 
 import { types as T, getParent, Instance } from 'mobx-state-tree'
-import { merge, values } from 'ramda'
+import { values } from 'ramda'
 
 import type { TRootStore, TAccount } from '@/spec'
 
@@ -52,14 +52,6 @@ const Cashier = T.model('Cashier', {
     authWarning(options): void {
       const root = getParent(self) as TRootStore
       root.authWarning(options)
-    },
-    toastDone(options): void {
-      const root = getParent(self) as TRootStore
-      root.toast('success', merge({ position: 'topCenter' }, options))
-    },
-    toastError(options): void {
-      const root = getParent(self) as TRootStore
-      root.toast('error', merge({ position: 'topCenter' }, options))
     },
     callCashier({ paymentUsage, amount }): void {
       self.show = true

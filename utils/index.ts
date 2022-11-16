@@ -134,7 +134,6 @@ export {
 } from './themes'
 
 // helpers
-export { toast, toastBarColor } from './toast'
 export { default as css } from './css'
 export { WIDTH } from './css/metric'
 export { default as BStore } from './bstore'

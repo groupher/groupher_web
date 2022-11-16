@@ -16,12 +16,7 @@ const log = buildLog('L:Footer2')
 const { SR71, $solver, asyncRes } = asyncSuit
 const sr71$ = new SR71({
   // @ts-ignore
-  receive: [
-    EVENT.COMMUNITY_CHANGE_BEFORE,
-    EVENT.AUTH_WARNING,
-    EVENT.TOAST,
-    EVENT.LOGOUT,
-  ],
+  receive: [EVENT.COMMUNITY_CHANGE_BEFORE, EVENT.AUTH_WARNING, EVENT.LOGOUT],
 })
 
 let sub$ = null
@@ -48,11 +43,6 @@ export const checkSessionState = (): void => sr71$.query(S.sessionState, {})
 // ###############################
 
 const handleAuthWarning = (option): void => store.authWarning(option)
-
-const handleToast = (data): void => {
-  const { type, ...rest } = data
-  store.toast(type, rest)
-}
 
 export const handleLogout = (): void => {
   store.logout()
@@ -85,13 +75,6 @@ const DataSolver = [
     action: (data): void => {
       const opt = data[EVENT.AUTH_WARNING]
       handleAuthWarning(opt)
-    },
-  },
-  {
-    match: asyncRes(EVENT.TOAST),
-    action: (data): void => {
-      const opt = data[EVENT.TOAST]
-      handleToast(opt)
     },
   },
   {

@@ -6,7 +6,7 @@ import { TYPE, EVENT, ERR } from '@/constant'
 
 import asyncSuit from '@/utils/async'
 import { buildLog } from '@/utils/logger'
-import { Global, send, errRescue, plural } from '@/utils/helper'
+import { Global, send, errRescue, plural, toast } from '@/utils/helper'
 import { atomizeValues } from '@/utils/graphql'
 import { scrollToHeader } from '@/utils/dom'
 
@@ -71,10 +71,7 @@ const DataSolver = [
     match: asyncRes(EVENT.SET_C11N),
     action: (res) => {
       if (!store.isLogin) {
-        store.toastInfo({
-          title: '设置未保存',
-          msg: '当前为未登录状态，个性化设置不会同步到服务器.',
-        })
+        toast('error', '设置未保存: 请登录.')
         return false
       }
       const { data } = res[EVENT.SET_C11N]

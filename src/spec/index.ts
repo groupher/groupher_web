@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/extensions */
 
@@ -77,7 +78,7 @@ export type {
   TTechStackCategory,
   TCommunitySetterStyle,
   TToastType,
-  TToastPos,
+  TToastOption,
   TView,
   TUserActivity,
   TEditMode,
@@ -85,7 +86,6 @@ export type {
   TModelineType,
   TTagMode,
   TMenuOption,
-  TToastOption,
   TPublishMode,
   TDashboardLayout,
   TSocial,
@@ -159,3 +159,19 @@ export type TRootStore = RootStoreType
 export type TViewing = TCommunity | TArticle
 
 export type TContainer = 'body' | 'drawer'
+
+interface IWindow extends Window {
+  appVersion?: string
+  /**
+   * used for check platform hook
+   */
+  chrome?: any
+  safari?: any
+  StyleMedia?: any
+  HTMLElement?: any
+
+  // for baidu analysis
+  _hmt?: any
+}
+
+export type TWindow = IWindow | null

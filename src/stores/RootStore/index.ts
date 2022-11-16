@@ -9,13 +9,11 @@
 import { types as T, Instance } from 'mobx-state-tree'
 import { merge, pickBy } from 'ramda'
 
-import type { TAccount, TRoute, TThread, TArticle, TToastOption } from '@/spec'
+import type { TAccount, TRoute, TThread, TArticle } from '@/spec'
 
-import { EVENT, DEFAULT_TOAST_OPTIONS } from '@/constant'
+import { EVENT } from '@/constant'
 import { markStates } from '@/utils/mobx'
-import { toast, toastBarColor } from '@/utils/toast'
-import { themeSkins } from '@/utils/themes'
-import { send } from '@/utils/helper'
+import { send, toast } from '@/utils/helper'
 import { notEmpty } from '@/utils/validator'
 
 import {
@@ -233,16 +231,6 @@ const rootStore = T.model({
       // self.footer.closeSponsor()
       // self.cashier.callCashier(opt)
     },
-    toast(type, options: TToastOption = DEFAULT_TOAST_OPTIONS): void {
-      const themeData = themeSkins[self.theme.curTheme]
-      const progressBarColor = toastBarColor(type, themeData)
-
-      const toastOpt = merge(options, {
-        progressBarColor,
-        duration: options.duration || 3000,
-      })
-      toast[type](toastOpt)
-    },
     authWarning(options = {}): void {
       const defaultOpt = {
         position: 'topCenter',
@@ -255,14 +243,14 @@ const rootStore = T.model({
         // pass
       } else {
         // @ts-ignore TODO:
-        self.toast('warn', merge(defaultOpt, options))
+        toast('warn', merge(defaultOpt, options))
       }
 
       send(EVENT.LOGIN_PANEL)
     },
     changesetErr(options): void {
       // @ts-ignore TODO:
-      self.toast('error', options)
+      toast('error', options)
     },
     updateC11N(options): void {
       self.account.updateC11N(options)

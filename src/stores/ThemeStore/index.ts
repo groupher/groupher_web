@@ -4,13 +4,14 @@
  */
 
 import { types as T, getParent, Instance } from 'mobx-state-tree'
-import { keys, merge } from 'ramda'
+import { keys } from 'ramda'
 
-import type { TRootStore, TThemeName, TMembership, TToastOption } from '@/spec'
+import type { TRootStore, TThemeName, TMembership } from '@/spec'
 import { DEFAULT_THEME } from '@/config'
 
 import { markStates } from '@/utils/mobx'
 import { themeSkins } from '@/utils/themes'
+import { toast } from '@/utils/helper'
 
 export const ThemeDefaults = {
   curTheme: DEFAULT_THEME,
@@ -33,7 +34,6 @@ export const ThemeStore = T.model('ThemeStore', {
       return root.isMemberOf(type)
     },
     checkSetable(): boolean {
-      const root = getParent(self) as TRootStore
       const { isMemberOf } = self as TStore
       if (
         isMemberOf('seniorMember') ||
@@ -43,14 +43,8 @@ export const ThemeStore = T.model('ThemeStore', {
         return false
       }
 
-      const options = {
-        title: '保存主题设置失败',
-        msg: '仅支持高级会员以打赏用户',
-      }
-      root.toast(
-        'warn',
-        merge({ position: 'topCenter' }, options) as TToastOption,
-      )
+      toast('info', '保存主题设置失败: 仅支持高级会员以打赏用户')
+      return false
     },
     changeTheme(name: TThemeName): void {
       self.curTheme = name

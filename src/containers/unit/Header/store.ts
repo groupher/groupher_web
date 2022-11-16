@@ -4,7 +4,7 @@
  */
 
 import { types as T, getParent, Instance } from 'mobx-state-tree'
-import { merge, contains, values } from 'ramda'
+import { contains, values } from 'ramda'
 
 import type { TRootStore, TCommunity, TAccount } from '@/spec'
 import { METRIC } from '@/constant'
@@ -78,10 +78,6 @@ const HeaderStore = T.model('HeaderStore', {
       const root = getParent(self) as TRootStore
       root.account.updateSession(state)
     },
-    toastInfo(options): void {
-      const root = getParent(self) as TRootStore
-      root.toast('info', merge({ position: 'topCenter' }, options))
-    },
     markRoute(query): void {
       const root = getParent(self) as TRootStore
       root.markRoute(query)
@@ -97,10 +93,6 @@ const HeaderStore = T.model('HeaderStore', {
     setViewing(sobj): void {
       const root = getParent(self) as TRootStore
       root.setViewing(sobj)
-    },
-    toast(type, options): void {
-      const root = getParent(self) as TRootStore
-      root.toast(type, options)
     },
     mark(sobj) {
       markStates(sobj, self)

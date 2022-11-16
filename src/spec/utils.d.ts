@@ -1,3 +1,4 @@
+import type { ToastPosition } from 'react-hot-toast'
 import { ReactNode, ChangeEvent } from 'react'
 // c# like
 export type Nullable<T> = T | null
@@ -196,15 +197,10 @@ export type TMenuOption = {
 }
 
 export type TToastType = 'info' | 'error' | 'success'
-export type TToastPos = 'topCenter' | 'topRight'
 
 export type TToastOption = {
-  title: string
-  msg?: string
-  message?: string
-  progressBarColor?: string
-  position?: TToastPos
-  duration?: number
+  position: ToastPosition
+  duration: number
 }
 
 export type TPublishMode = 'default' | 'changelog' | 'help'

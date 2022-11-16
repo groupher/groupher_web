@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { IziToast } from 'iziToast'
 
 interface IWindow extends Window {
-  iziToast?: IziToast
   appVersion?: string
   /**
    * used for check platform hook
@@ -16,6 +14,4 @@ interface IWindow extends Window {
   _hmt?: any
 }
 
-declare global {
-  type TWindow = IWindow | null
-}
+export type TWindow = IWindow | null

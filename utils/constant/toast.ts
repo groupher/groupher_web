@@ -1,15 +1,9 @@
-import type { TToastPos } from '@/spec'
+import type { ToastPosition } from 'react-hot-toast'
 
+// check: https://react-hot-toast.com/docs/toast
 const DEFAULT_TOAST_OPTIONS = {
-  title: 'toast',
-  message: '',
-  msg: '',
-  position: 'topCenter' as TToastPos,
-  timeout: 3000,
-  icon: '',
-  progressBarColor: 'yellogreen',
-  displayMode: 'replace',
-  transitionIn: 'fadeInDown',
+  position: 'top-center' as ToastPosition,
+  duration: 3000,
 }
 
 export default DEFAULT_TOAST_OPTIONS

@@ -11,7 +11,6 @@ const EVENT = {
   ERR_RESCUE: 'ERR_RESCUE',
 
   AUTH_WARNING: 'AUTH_WARNING',
-  TOAST: 'TOAST',
   LOGOUT: 'LOGOUT',
   // drawer
   DRAWER: {

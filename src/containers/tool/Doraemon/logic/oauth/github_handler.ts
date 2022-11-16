@@ -1,4 +1,4 @@
-import { Global } from '@/utils/helper'
+import { Global, toast } from '@/utils/helper'
 import { getQueryFromUrl } from '@/utils/route'
 
 import oauthPopup from './oauth_window'
@@ -18,11 +18,7 @@ const githubLoginHandler = (store, sr71$): void => {
       if (e.data.from_oauth_window) {
         const code = getQueryFromUrl('code', e.data.from_oauth_window)
 
-        store.toast('info', {
-          title: '正在同步您的 github 账户信息',
-          msg: '请稍等。',
-          position: 'topCenter',
-        })
+        toast('info', '正在同步您的 github 账户信息, 请稍等..')
         sr71$.mutate(S.githubSignin, { code })
         Global.postMessage({ from_parent: true }, Global.location.href)
       }
