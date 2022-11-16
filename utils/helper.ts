@@ -373,6 +373,7 @@ export const extractMentions = (str: string): string[] => {
 
   let matches = str.match(mentionsRegex)
   if (matches?.length) {
+    // @ts-ignore
     matches = matches.map((match) => {
       return match.slice(1)
     })
