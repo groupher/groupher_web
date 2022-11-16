@@ -1,6 +1,6 @@
 {
   "name": "groupher_web",
-  "version": "1.0.33",
+  "version": "1.0.34",
   "license": "Apache License 2.0",
   "scripts": {
     "dev": "next dev",
@@ -54,7 +54,7 @@
     "mobx-react": "^7.5.3",
     "mobx-state-tree": "^5.1.6",
     "nanoid": "^3.1.12",
-    "next": "^13.0.3",
+    "next": "^13.0.1",
     "next-compose-plugins": "^2.2.0",
     "next-i18next": "4.4.1",
     "overlayscrollbars": "^1.13.3",
