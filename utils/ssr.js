@@ -215,8 +215,6 @@ export const ssrParseArticleThread = (resp, thread, filters = {}) => {
   const activeTag = getActiveTag(resp.filter.tag, resp.pagedArticleTags)
   const pagedThread = `paged${plural(thread, 'titleCase')}`
 
-  console.log('## resp: ', resp)
-
   return {
     articlesThread: {
       [pagedThread]: resp[pagedThread],
