@@ -16,6 +16,7 @@ import PubSub from 'pubsub-js'
 import { limit, length } from 'stringz'
 
 import type {
+  TWindow,
   TID,
   TGQLError,
   TReportType,
@@ -27,10 +28,12 @@ import type {
   TTag,
   TCommunitySetterStyle,
   TToastType,
-  TToastPos,
+  TToastOption,
   TTabItem,
   TUser,
 } from '@/spec'
+
+import hotToast from 'react-hot-toast'
 
 import { TAG_COLOR_ORDER } from '@/config'
 import {
@@ -41,6 +44,7 @@ import {
   COMMUNITY_MAP_ALIAS,
   NON_COMMUNITY_ROUTE,
   ARTICLE_THREAD,
+  DEFAULT_TOAST_OPTIONS,
 } from '@/constant'
 
 import BStore from './bstore'
@@ -280,12 +284,17 @@ export const authWarn = (option = {}): void => send(EVENT.AUTH_WARNING, option)
 
 export const toast = (
   type: TToastType,
-  title: string,
   msg: string,
-  position: TToastPos = 'topCenter',
-  duration = 3000,
+  option: TToastOption = DEFAULT_TOAST_OPTIONS,
 ): void => {
-  send(EVENT.TOAST, { type, title, msg, position, duration })
+  const { position, duration } = option
+
+  if (type === 'info') {
+    hotToast(msg, { position, duration })
+    return
+  }
+
+  hotToast[type](msg, { position, duration })
 }
 
 /**

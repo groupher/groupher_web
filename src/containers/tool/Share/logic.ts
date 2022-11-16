@@ -69,7 +69,7 @@ export const handleMenu = (key: TMenu): void => {
   switch (key) {
     case MENU.COPY_LINK: {
       copy(linksData.link)
-      toast('success', '已复制到剪切板', '' as string, 'topCenter', 2000)
+      toast('success', '已复制到剪切板')
       return
     }
 

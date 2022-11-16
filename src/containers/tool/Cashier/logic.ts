@@ -5,7 +5,7 @@ import { EVENT, ERR } from '@/constant'
 
 import asyncSuit from '@/utils/async'
 import { errorForHuman } from '@/utils/errors'
-import { Global, send, errRescue } from '@/utils/helper'
+import { Global, send, errRescue, toast } from '@/utils/helper'
 import { buildLog } from '@/utils/logger'
 
 import type { TStore } from './store'
@@ -39,7 +39,7 @@ export const transferAccountChange = ({ target: { value } }) =>
 export const onPaymentConfirm = (): void => {
   if (!store.isLogin) return store.authWarning({ hideToast: true })
   if (isEmpty(store.transferAccount)) {
-    return store.toastError({ title: '提交失败', msg: '请填写转账信息' })
+    return toast('error', '提交失败: 请填写转账信息')
   }
 
   const { paymentMethod, paymentUsage, amount, transferAccount: note } = store
@@ -77,10 +77,6 @@ const DataSolver = [
     action: ({ createBill }) => {
       log('createBill done: ', createBill)
       store.mark({ show: false, subContentView: 'pay' })
-      store.toastDone({
-        title: 'CPS 团队感谢您的支持!',
-        msg: '我们会尽快为您办理',
-      })
       send(EVENT.NEW_BILLS)
     },
   },
@@ -90,7 +86,7 @@ const ErrSolver = [
   {
     match: asyncErr(ERR.GRAPHQL),
     action: ({ details }) =>
-      store.toastError({ title: '提交失败', msg: errorForHuman(details) }),
+      toast('error', `提交失败: ${errorForHuman(details)}`),
   },
   {
     match: asyncErr(ERR.TIMEOUT),

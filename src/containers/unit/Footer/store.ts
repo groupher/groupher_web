@@ -89,10 +89,6 @@ const FooterStore = T.model('FooterStore', {
       const root = getParent(self) as TRootStore
       root.account.logout()
     },
-    toast(type, options): void {
-      const root = getParent(self) as TRootStore
-      root.toast(type, options)
-    },
     authWarning(options?: Record<string, unknown>): void {
       const root = getParent(self) as TRootStore
       root.authWarning(options)

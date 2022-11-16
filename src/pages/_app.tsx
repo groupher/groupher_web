@@ -41,12 +41,6 @@ const App = ({ Component, pageProps }) => {
         <link rel="icon" href="/favicon.ico" />
 
         <link rel="manifest" href="/manifest.json" />
-
-        <link
-          rel="stylesheet"
-          href="https://cdn.staticfile.org/izitoast/1.4.0/css/iziToast.css"
-          data-async="true"
-        />
       </Head>
       <Script
         id="track-script"
@@ -58,10 +52,6 @@ const App = ({ Component, pageProps }) => {
         data-domain="groupher.com"
         src="https://plausible.io/js/plausible.js"
       /> */}
-      <Script
-        strategy="lazyOnload"
-        src="https://cdn.staticfile.org/izitoast/1.4.0/js/iziToast.min.js"
-      />
       <Provider store={store}>
         <Component {...pageProps} />
       </Provider>
