@@ -1,6 +1,6 @@
 import type { TGAEvent } from '@/spec'
 
-import { Global } from './helper'
+import { Global } from '../helper'
 
 // see: https://github.com/vercel/next.js/discussions/14980
 const gtag = (): void => {

@@ -11,6 +11,9 @@ interface IWindow extends Window {
   safari?: any
   StyleMedia?: any
   HTMLElement?: any
+
+  // for baidu analysis
+  _hmt?: any
 }
 
 declare global {

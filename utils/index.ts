@@ -139,7 +139,7 @@ export { default as css } from './css'
 export { WIDTH } from './css/metric'
 export { default as BStore } from './bstore'
 export { Trans } from './i18n'
-export { default as GA } from './analytics'
+export { default as GA } from './analytics/ga'
 
 export { mockImage, mockImages, mockWorks } from './mock'
 

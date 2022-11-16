@@ -3,33 +3,19 @@ import { Provider } from 'mobx-react'
 import Head from 'next/head'
 import Script from 'next/script'
 import { useRouter } from 'next/router'
-import GA from '@/utils/analytics'
-import { log } from '@/utils/logger'
+import { getAnalyticsTag, handleRouteChange } from '@/utils/analytics/baidu'
 
 import { useStore } from '@/stores/init'
 
-/**
- * import default seo configuration
- * Using a custom _app.js with next-seo you can set default SEO
- * that will apply to every page. Full info on how the default works
- * can be found here: https://github.com/garmeeh/next-seo#default-seo-configuration
- */
 const App = ({ Component, pageProps }) => {
   const router = useRouter()
 
   useEffect(() => {
-    const handleRouteChange = (url) => {
-      GA.pageview(url)
-    }
     router.events.on('routeChangeComplete', handleRouteChange)
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange)
     }
   }, [router.events])
-
-  const initialState = {}
-
-  log('initialState: ', initialState)
 
   const store = useStore()
 
@@ -55,11 +41,6 @@ const App = ({ Component, pageProps }) => {
         <link rel="icon" href="/favicon.ico" />
 
         <link rel="manifest" href="/manifest.json" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Audiowide"
-          data-async="true"
-        />
 
         <link
           rel="stylesheet"
@@ -68,25 +49,15 @@ const App = ({ Component, pageProps }) => {
         />
       </Head>
       <Script
+        id="track-script"
         strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA.TRACKING_ID}`}
+        dangerouslySetInnerHTML={getAnalyticsTag()}
       />
-      <Script
+      {/* <Script
         strategy="afterInteractive"
         data-domain="groupher.com"
         src="https://plausible.io/js/plausible.js"
-      />
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){window.dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', '${GA.TRACKING_ID}', {
-            page_path: window.location.pathname
-          });
-        `}
-      </Script>
+      /> */}
       <Script
         strategy="lazyOnload"
         src="https://cdn.staticfile.org/izitoast/1.4.0/js/iziToast.min.js"
