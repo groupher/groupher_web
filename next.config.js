@@ -2,7 +2,6 @@
 
 // next-plugins
 // const withPlugins = require('next-compose-plugins')
-// const withPWA = require('next-pwa')
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
@@ -14,11 +13,11 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const nextConfig = {
   swcMinify: true,
   productionBrowserSourceMaps: true,
-  compiler: {
-    removeConsole: {
-      exclude: ['error'],
-    },
-  },
+  // compiler: {
+  //   removeConsole: {
+  //     exclude: ['error'],
+  //   },
+  // },
   // experimental: { appDir: true },
 
   // pwa: {
