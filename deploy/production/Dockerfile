@@ -10,6 +10,8 @@ RUN cd /root/web/ && npm i --omit=dev
 # https://github.com/groupher/groupher_web/pull/1#issue-1437686131
 RUN cd /root/web/src/pages && ls -lla
 RUN cd /root/web/src/pages && find . -type f -name '\.*' -print | xargs rm -f
+RUN apt install jq
+RUN which jq
 RUN cd /root/web/ && make build.prod
 
 ADD loader.sh /usr/local/bin/loader.sh
