@@ -33,7 +33,7 @@ const github = {
   spaceBg: '#fff',
   mobileTab: '#323344',
   loading: {
-    basic: darken(contentBg, 5),
+    basic: '#E0E0E0',
     animate: contentBg,
   },
   error: {

@@ -4,7 +4,7 @@ import { DRAWER_SCROLLER } from '@/constant'
 import CustomScroller from '@/widgets/CustomScroller'
 
 import type { TExtraInfo } from '../spec'
-import renderContent from './renderContent'
+import Content from './Content'
 import { Wrapper } from '../styles/content'
 import { isViewerMode } from '../styles/metrics'
 
@@ -15,7 +15,7 @@ type TProps = {
   extraInfo: TExtraInfo
 }
 
-const Content: FC<TProps> = ({ visible, type, attUser, extraInfo }) => {
+const DesktopView: FC<TProps> = ({ visible, type, attUser, extraInfo }) => {
   const ref = useRef(null)
 
   /*
@@ -38,13 +38,17 @@ const Content: FC<TProps> = ({ visible, type, attUser, extraInfo }) => {
           barSize="medium"
           showShadow={false}
         >
-          {renderContent(type, attUser, extraInfo)}
+          <Content type={type} attUser={attUser} extraInfo={extraInfo} />
         </CustomScroller>
       </Wrapper>
     )
   }
 
-  return <Wrapper>{renderContent(type, attUser, extraInfo)}</Wrapper>
+  return (
+    <Wrapper>
+      <Content type={type} attUser={attUser} extraInfo={extraInfo} />
+    </Wrapper>
+  )
 }
 
-export default memo(Content)
+export default memo(DesktopView)

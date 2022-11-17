@@ -73,7 +73,7 @@ const PostViewer: FC<TProps> = ({ article, loading }) => {
           />
         </UpvoteWrapper>
         {loading && (
-          <ArticleContentLoading num={1} top={15} bottom={30} left={-50} />
+          <ArticleContentLoading num={1} top={15} bottom={30} left={-25} />
         )}
         {!loading && (
           <BodyWrapper>
