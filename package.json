@@ -1,6 +1,6 @@
 {
   "name": "groupher_web",
-  "version": "1.0.37",
+  "version": "1.0.38",
   "license": "Apache License 2.0",
   "scripts": {
     "dev": "next dev",
@@ -37,7 +37,6 @@
     }
   },
   "dependencies": {
-    "@groupher/react-animation": "^1.2.3",
     "@groupher/react-editor": "^1.1.30",
     "@groupher/use-mobile-detect-hook": "^2.0.2",
     "@next/bundle-analyzer": "^12.2.5",
@@ -68,6 +67,7 @@
     "react-content-loader": "6.2.0",
     "react-copy-to-clipboard": "^5.0.3",
     "react-dom": "^18.2.0",
+    "react-flip-numbers": "^3.0.7",
     "react-highlight-words": "^0.18.0",
     "react-hot-toast": "^2.4.0",
     "react-lazy-load-image-component": "1.5.5",

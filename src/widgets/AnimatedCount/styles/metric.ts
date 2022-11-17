@@ -3,19 +3,19 @@ import { SIZE } from '@/constant'
 
 import { theme } from '@/utils/css'
 
-export const getFontSize = (size: TSize): string => {
+export const getFontSize = (size: TSize): number => {
   switch (size) {
     case SIZE.TINY: {
-      return '14px'
+      return 14
     }
     case SIZE.MEDIUM: {
-      return '18px'
+      return 18
     }
     case SIZE.LARGE: {
-      return '23px'
+      return 23
     }
     default: {
-      return '15px'
+      return 15
     }
   }
 }

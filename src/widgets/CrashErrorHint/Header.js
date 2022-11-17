@@ -1,5 +1,4 @@
 import React from 'react'
-import { AnimateOnChange } from '@groupher/react-animation'
 
 import { SpaceGrow } from '@/widgets/Common'
 
@@ -7,26 +6,15 @@ import EXECUTES from './executes'
 
 import { Header, HintIcon, Title } from './styles'
 
-const animate = {
-  fade: {
-    durationOut: 200,
-  },
-  bounce: {
-    animationIn: 'bounceIn',
-    animationOut: 'bounceOut',
-    durationOut: 1000,
-  },
-}
-
 const HeaderComp = ({ index, themeName }) => {
   return (
-    <AnimateOnChange {...animate.fade}>
+    <div>
       <Header>
         <HintIcon src={EXECUTES[index].icon} />
         <Title t={themeName}>{EXECUTES[index].title}</Title>
         <SpaceGrow />
       </Header>
-    </AnimateOnChange>
+    </div>
   )
 }
 

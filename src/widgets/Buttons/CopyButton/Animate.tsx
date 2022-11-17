@@ -1,6 +1,5 @@
 import { FC, memo, useEffect, useState } from 'react'
 
-import { AnimateOnChange } from '@groupher/react-animation'
 import { CopyedHint, CopyIcon, CopyedText } from '../styles/copy_button'
 
 const CopyButton: FC = () => {
@@ -11,14 +10,14 @@ const CopyButton: FC = () => {
   }, [done])
 
   return (
-    <AnimateOnChange animationIn="popIn" animationOut="fadeOut" durationOut={0}>
+    <div>
       {!done && <CopyIcon onClick={() => setDone(true)} />}
       {done && (
         <CopyedHint>
           <CopyedText>已复制</CopyedText>
         </CopyedHint>
       )}
-    </AnimateOnChange>
+    </div>
   )
 }
 

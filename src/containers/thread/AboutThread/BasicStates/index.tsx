@@ -2,6 +2,7 @@ import { FC, memo } from 'react'
 
 import Trend from 'react-trend'
 import { useTheme } from 'styled-components'
+
 import type { TThemeMap } from '@/spec'
 
 import {

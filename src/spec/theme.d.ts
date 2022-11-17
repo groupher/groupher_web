@@ -27,6 +27,7 @@ export type TThemeMap = {
   thread?: {
     articleDigest?: string
     articleTitle?: string
+    extraInfo?: string
   }
   toast?: {
     successBar: string

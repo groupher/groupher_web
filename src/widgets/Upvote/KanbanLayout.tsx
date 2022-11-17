@@ -10,17 +10,12 @@ import useMobileDetect from '@groupher/use-mobile-detect-hook'
 import type { TUser } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
-import { Space } from '@/widgets/Common'
 import Facepile from '@/widgets/Facepile'
 
+import AnimatedCount from '../AnimatedCount'
 import UpvoteBtn from './UpvoteBtn'
 
-import {
-  Wrapper,
-  UpvoteBtnWrapper,
-  Count,
-  LineDivider,
-} from './styles/kanban_layout'
+import { Wrapper, UpvoteBtnWrapper, LineDivider } from './styles/kanban_layout'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Upvote:index')
@@ -52,9 +47,7 @@ const Upvote: FC<TProps> = ({
           count={count}
         />
       </UpvoteBtnWrapper>
-
-      <Space right={3} />
-      <Count noOne={noOne}>{count}</Count>
+      <AnimatedCount count={count} active={viewerHasUpvoted} />
       {!noOne && <LineDivider />}
       {!noOne && !isMobile && <Facepile users={avatarList} showMore />}
     </Wrapper>
