@@ -14,12 +14,13 @@ import { bond } from '@/utils/mobx'
 
 import ThemePalette from '@/containers/layout/ThemePalette'
 import BannerNotify from '@/widgets/BannerNotify'
+import Footer from '@/containers/unit/Footer'
 
 import type { TStore } from './store'
 import SEO from './SEO'
 import Wallpaper from './Wallpaper'
 
-import { CustomScroller, Footer, ModeLine } from './dynamic'
+import { CustomScroller } from './dynamic'
 
 import {
   Skeleton,
@@ -82,10 +83,10 @@ const GlobalLayoutContainer: FC<TProps> = ({
                 <BodyWrapper isMobile={isMobile}>
                   {childrenWithProps(children, { metric })}
                 </BodyWrapper>
-                {!noFooter && <Footer metric={metric} />}
+                <Footer metric={metric} />
               </ContentWrapper>
             </InnerWrapper>
-            {isMobile && <ModeLine metric={metric} />}
+            {/* {isMobile && <ModeLine metric={metric} />} */}
           </Wrapper>
         </CustomScroller>
       </Skeleton>

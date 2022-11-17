@@ -58,7 +58,6 @@ const Upvote: FC<TProps> = ({
           count={count}
         />
       </UpvoteBtnWrapper>
-
       <Space right={3} />
       <Count noOne={noOne}>{count}</Count>
       {!noOne && <LineDivider />}

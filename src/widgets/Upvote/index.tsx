@@ -15,11 +15,7 @@ import KanbanLayout from './KanbanLayout'
 import FixedHeaderLayout from './FixedHeaderLayout'
 import CommentLayout from './CommentLayout'
 import PostListLayout from './PostListLayout'
-import GuideListLayout from './GuideListLayout'
-import BlogListLayout from './BlogListLayout'
 import ArticleLayout from './ArticleLayout'
-// import WorksArticleLayout from './WorksArticleLayout'
-// import WorksCardLayout from './WorksCardLayout'
 import StickerLayout from './StickerLayout'
 
 import { Wrapper } from './styles'
@@ -57,22 +53,6 @@ const Upvote: FC<TProps> = ({
       Layout = PostListLayout
       break
     }
-    case UPVOTE_LAYOUT.GUIDE_LIST: {
-      Layout = GuideListLayout
-      break
-    }
-    case UPVOTE_LAYOUT.BLOG_LIST: {
-      Layout = BlogListLayout
-      break
-    }
-    // case UPVOTE_LAYOUT.WORKS_ARTICLE: {
-    //   Layout = WorksArticleLayout
-    //   break
-    // }
-    // case UPVOTE_LAYOUT.WORKS_CARD: {
-    //   Layout = WorksCardLayout
-    //   break
-    // }
     case UPVOTE_LAYOUT.ARTICLE: {
       Layout = ArticleLayout
       break

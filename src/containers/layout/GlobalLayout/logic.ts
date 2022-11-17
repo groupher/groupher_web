@@ -18,8 +18,6 @@ const log = buildLog('L:GlobalLayout')
 
 let store: TStore | undefined
 
-export const openDoraemon = (): void => store.openDoraemon()
-
 // custromScroll's scroll direction change
 export const onPageScrollDirhange = (
   bodyScrollDirection: TScrollDirection,

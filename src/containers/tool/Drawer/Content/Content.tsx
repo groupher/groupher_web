@@ -1,3 +1,5 @@
+import { FC } from 'react'
+
 import { TYPE } from '@/constant'
 // import ModeLineMenu from '@/containers/unit/ModeLineMenu'
 import type { TUser } from '@/spec'
@@ -18,12 +20,15 @@ import {
   DashboardDesc,
 } from '../dynamics'
 
-const renderContent = (
-  type: string,
-  attUser: TUser,
-  extraInfo: TExtraInfo,
-): any => {
-  if (!type) return <div />
+type TProps = {
+  type: string
+  attUser: TUser
+  extraInfo: TExtraInfo
+}
+
+const Content: FC<TProps> = ({ type, attUser, extraInfo }) => {
+  if (!type) return null
+
   const { DRAWER } = TYPE
 
   switch (type) {
@@ -61,10 +66,11 @@ const renderContent = (
       return <UserLister type={extraInfo.userListerType} />
     }
 
-    default:
+    default: {
       // @ts-ignore
       return <ArticleViewer />
+    }
   }
 }
 
-export default renderContent
+export default Content

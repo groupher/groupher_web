@@ -31,11 +31,7 @@ ifeq ($(OS),Darwin)  # Mac OS X
 endif
 ifeq ($(OS),Linux)
 		BROWSER_TOOL = google-chrome
-		JSON_CLI=./utils/bin/jq-linux
-endif
-ifeq ($(OS),Windows)
-		BROWSER_TOOL = explorer
-		JSON_CLI=./utils/bin/jq-win
+		JSON_CLI=//usr/local/bin/jq
 endif
 
 define browse

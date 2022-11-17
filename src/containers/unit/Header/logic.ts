@@ -51,8 +51,6 @@ export const onLogout = (): void => {
   }, 2000)
 }
 
-export const openDoraemon = (): void => store.openDoraemon()
-
 export const openC11NPanel = (): void => {
   send(EVENT.DRAWER.OPEN, { type: TYPE.DRAWER.C11N_SETTINGS })
 }

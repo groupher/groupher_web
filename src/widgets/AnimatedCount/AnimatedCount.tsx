@@ -1,26 +1,34 @@
 import { FC, memo } from 'react'
+import { useTheme } from 'styled-components'
 
+import type { TThemeMap } from '@/spec'
 import { SIZE } from '@/constant'
 
-import { AnimateOnChange } from '@groupher/react-animation'
+import FlipNumbers from 'react-flip-numbers'
 
 import type { TProps } from './index'
 import { Wrapper } from './styles'
+import { getFontSize } from './styles/metric'
 
 const AnimatedCount: FC<TProps> = ({
   count = 0,
   size = SIZE.SMALL,
   active = false,
 }) => {
+  const numSize = getFontSize(size)
+  const theme = useTheme() as TThemeMap
+
   return (
-    <Wrapper size={size} $active={active} count={count}>
-      <AnimateOnChange
-        animationIn="fadeInUp"
-        animationOut="bounceOut"
-        durationOut={200}
-      >
-        {count}
-      </AnimateOnChange>
+    <Wrapper $active={active} count={count}>
+      <FlipNumbers
+        height={numSize}
+        width={numSize}
+        color={theme.thread.extraInfo}
+        perspective={400}
+        duration={1}
+        numbers={String(count)}
+        play
+      />
     </Wrapper>
   )
 }

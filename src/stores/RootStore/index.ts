@@ -44,7 +44,7 @@ import {
   MailsViewerStore,
 
   // toolbox
-  DoraemonStore,
+  // DoraemonStore,
   DrawerStore,
   // SidebarStore,
   // RepoEditorStore,
@@ -103,7 +103,7 @@ const rootStore = T.model({
 
   // toolbox
   drawer: T.optional(DrawerStore, { visible: false }),
-  doraemon: T.optional(DoraemonStore, {}),
+  // doraemon: T.optional(DoraemonStore, {}),
   // repoEditor: T.optional(RepoEditorStore, {}),
   accountEditor: T.optional(AccountEditorStore, {}),
   mailBox: T.optional(MailBoxStore, {}),
@@ -182,10 +182,6 @@ const rootStore = T.model({
     get isMobile(): boolean {
       return self.globalLayout.isMobile
     },
-    get doraemonVisible(): boolean {
-      // TODO self.doraemon.visible
-      return self.doraemon.visible
-    },
     get viewingArticle(): TArticle {
       return self.viewing.viewingArticle
     },
@@ -203,9 +199,7 @@ const rootStore = T.model({
     showTopModeline(bool: boolean): void {
       self.modeLine.showTopBar(bool)
     },
-    openDoraemon(): void {
-      self.doraemon.open()
-    },
+
     closeDrawer(): void {
       self.drawer.close()
     },

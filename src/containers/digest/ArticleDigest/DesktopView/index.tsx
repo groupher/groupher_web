@@ -14,7 +14,7 @@ import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
-import { CollectionFolder, FixedHeader } from './dynamic'
+import { FixedHeader } from './dynamic'
 import Layout from './Layout'
 
 import type { TStore } from '../store'
@@ -51,7 +51,7 @@ const ArticleDigestContainer: FC<TProps> = ({
   return (
     <Wrapper testid={testid} metric={metric}>
       {/* @ts-ignore */}
-      {!isMobile && <CollectionFolder />}
+      {/* {!isMobile && <CollectionFolder />} */}
       {/* @ts-ignore */}
       <FixedHeader
         show={!inViewport}
