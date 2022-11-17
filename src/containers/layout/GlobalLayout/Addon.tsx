@@ -4,7 +4,7 @@ import useMobileDetect from '@groupher/use-mobile-detect-hook'
 import useShortcut from '@/hooks/useShortcut'
 
 import { logBuddha } from './logic'
-import { AbuseReport, Drawer } from './dynamic'
+import { Drawer } from './dynamic'
 
 const Addon: FC = () => {
   const { isMobile } = useMobileDetect()
@@ -15,7 +15,7 @@ const Addon: FC = () => {
   return (
     <Fragment>
       {/* @ts-ignore */}
-      {!isMobile && <AbuseReport />}
+      {/* {!isMobile && <AbuseReport />} */}
       {/* @ts-ignore */}
       <Drawer />
       {/* @ts-ignore */}

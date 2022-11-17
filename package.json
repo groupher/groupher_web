@@ -1,6 +1,6 @@
 {
   "name": "groupher_web",
-  "version": "1.0.39",
+  "version": "1.0.40",
   "license": "Apache License 2.0",
   "scripts": {
     "dev": "next dev",
@@ -94,7 +94,6 @@
     "styled-components": "^5.3.5",
     "timeago-react": "^3.0.5",
     "tinykeys": "^1.4.0",
-    "url": "^0.11.0",
     "urql": "^3.0.3"
   },
   "devDependencies": {

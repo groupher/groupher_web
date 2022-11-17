@@ -19,7 +19,7 @@ const AvatarComp: FC<TProps> = ({ user }) => {
   if (isQuote) {
     return (
       <Wrapper>
-        <Link href={`/user/${user.login}`} passHref>
+        <Link href={`/user/${user.login}`} prefetch={false}>
           <QuoteAvatar
             src={user.avatar || DEFAULT_USER_AVATAR}
             fallback={<ImgFallback user={user} size={200} />}
@@ -32,7 +32,7 @@ const AvatarComp: FC<TProps> = ({ user }) => {
   }
   return (
     <Wrapper>
-      <Link href={`/user/${user.login}`} passHref>
+      <Link href={`/user/${user.login}`} prefetch={false}>
         <Avatar
           src={user.avatar || DEFAULT_USER_AVATAR}
           fallback={<ImgFallback user={user} size={200} />}

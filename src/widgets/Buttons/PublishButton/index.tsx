@@ -20,7 +20,6 @@ import IconButton from '../IconButton'
 import MenuButton from '../MenuButton'
 
 import PostLayout from './PostLayout'
-import WorksLayout from './WorksLayout'
 
 import { Wrapper, PubButton, MoreOption } from '../styles/publish_button'
 import { getTargetPage, getText } from './helper'
@@ -55,11 +54,7 @@ const PublishButton: FC<TProps> = ({
           Router.push(url)
         }}
       >
-        {thread === THREAD.WORKS ? (
-          <WorksLayout text={text} />
-        ) : (
-          <PostLayout text={text} />
-        )}
+        <PostLayout text={text} />
       </PubButton>
       {!hasNoMenu && (
         <MoreOption>

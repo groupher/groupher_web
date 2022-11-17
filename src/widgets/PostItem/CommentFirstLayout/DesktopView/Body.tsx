@@ -12,6 +12,8 @@ import { Space, SpaceGrow } from '@/widgets/Common'
 // import UserCard from '@/widgets/Cards/UserCard'
 import Tooltip from '@/widgets/Tooltip'
 import ArticleCatState from '@/widgets/ArticleCatState'
+
+import ActiveBadge from './ActiveBadge'
 import ViewsCount from '../../ViewsCount'
 import CommentsCount from '../../CommentsCount'
 
@@ -34,10 +36,6 @@ const CommunityCard = dynamic(() => import('@/widgets/Cards/CommunityCard'), {
 })
 
 const UserCard = dynamic(() => import('@/widgets/Cards/UserCard'), {
-  ssr: false,
-})
-
-const ActiveBadge = dynamic(() => import('./ActiveBadge'), {
   ssr: false,
 })
 

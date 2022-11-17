@@ -24,7 +24,6 @@ import TagsBar from '@/containers/unit/TagsBar'
 // import PromotionList from '@/widgets/PromotionList'
 
 import {
-  NoteWrapper,
   TagsBarWrapper,
   StickyWrapper,
   DividerTitle,
@@ -82,17 +81,11 @@ const ClassicLayout: FC<TProps> = ({
 
       <StickyWrapper>
         <PublishWrapper show={showCommunityBadge}>
-          {community.raw !== 'blackhole' ? (
-            <PublishButton
-              thread={thread}
-              community={community.raw}
-              text="参与讨论"
-            />
-          ) : (
-            <NoteWrapper>
-              这里的内容将不会被开放给搜索引擎，只进不出。如果有异议，可联系志愿者移出。
-            </NoteWrapper>
-          )}
+          <PublishButton
+            thread={thread}
+            community={community.raw}
+            text="参与讨论"
+          />
         </PublishWrapper>
 
         {!showCommunityBadge && <CommunityJoinBadge />}

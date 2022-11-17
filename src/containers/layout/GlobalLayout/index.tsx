@@ -15,6 +15,7 @@ import { bond } from '@/utils/mobx'
 import ThemePalette from '@/containers/layout/ThemePalette'
 import BannerNotify from '@/widgets/BannerNotify'
 import Footer from '@/containers/unit/Footer'
+// import CustomScroller from '@/widgets/CustomScroller'
 
 import type { TStore } from './store'
 import SEO from './SEO'

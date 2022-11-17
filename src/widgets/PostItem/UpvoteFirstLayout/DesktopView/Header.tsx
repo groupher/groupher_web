@@ -42,7 +42,7 @@ const Header: FC<TProps> = ({ article }) => {
           placement="right"
           delay={500}
         >
-          <AuthorName href={`/u/${author.login}`} passHref>
+          <AuthorName href={`/u/${author.login}`} prefetch={false}>
             {author.nickname}
           </AuthorName>
         </Tooltip>

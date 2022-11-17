@@ -6,7 +6,7 @@
  */
 import { FC, memo } from 'react'
 import CalendarHeatmap from 'react-calendar-heatmap'
-import ReactTooltip from 'react-tooltip'
+// import ReactTooltip from 'react-tooltip'
 
 import type { TUser } from '@/spec'
 import { buildLog } from '@/utils/logger'
@@ -107,7 +107,7 @@ const UserContributeMap: FC<TProps> = ({ user }) => {
         </CalendarInnerWrapper>
       </CalendarWrapper>
       {/* @ts-ignore */}
-      <ReactTooltip effect="solid" place="top" id="user_contribute_map" />
+      {/* <ReactTooltip effect="solid" place="top" id="user_contribute_map" /> */}
     </Wrapper>
   )
 }

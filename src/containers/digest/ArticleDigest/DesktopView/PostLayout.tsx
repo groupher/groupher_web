@@ -51,7 +51,9 @@ const PostLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
     <Fragment>
       <Main metric={metric}>
         <Header>
-          <AuthorName href={`/u/${author.login}`}>{author.nickname}</AuthorName>
+          <AuthorName href={`/u/${author.login}`} prefetch={false}>
+            {author.nickname}
+          </AuthorName>
           <DotDivider space={12} />
           <PublishDateInfo>
             <ReadableDate date={insertedAt} fmt="absolute" withTime={false} />
