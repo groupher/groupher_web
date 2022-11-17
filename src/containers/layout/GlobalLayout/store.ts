@@ -67,10 +67,6 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
       const root = getParent(self) as TRootStore
       root.authWarning(options)
     },
-    openDoraemon(): void {
-      const root = getParent(self) as TRootStore
-      root.openDoraemon()
-    },
     mark(sobj: Record<string, unknown>): void {
       markStates(sobj, self)
     },

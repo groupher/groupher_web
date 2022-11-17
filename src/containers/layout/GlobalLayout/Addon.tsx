@@ -3,14 +3,14 @@ import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import useShortcut from '@/hooks/useShortcut'
 
-import { openDoraemon, logBuddha } from './logic'
-import { AbuseReport, Doraemon, Drawer, ErrorBox } from './dynamic'
+import { logBuddha } from './logic'
+import { AbuseReport, Drawer } from './dynamic'
 
 const Addon: FC = () => {
   const { isMobile } = useMobileDetect()
 
   useEffect(() => logBuddha(), [])
-  useShortcut('Control+P', openDoraemon)
+  useShortcut('Control+P', () => console.log('# Ctrl P pressed'))
 
   return (
     <Fragment>
@@ -20,9 +20,9 @@ const Addon: FC = () => {
       <Drawer />
       {/* @ts-ignore */}
       {/* @ts-ignore */}
-      {!isMobile && <Doraemon />}
+      {/* {!isMobile && <Doraemon />} */}
       {/* @ts-ignore */}
-      <ErrorBox />
+      {/* <ErrorBox /> */}
     </Fragment>
   )
 }

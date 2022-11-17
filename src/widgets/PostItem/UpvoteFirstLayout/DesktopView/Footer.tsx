@@ -1,7 +1,7 @@
 import { memo, FC, Fragment } from 'react'
 import { includes } from 'ramda'
 
-import { UPVOTE_LAYOUT, ARTICLE_CAT } from '@/constant'
+import { UPVOTE_LAYOUT } from '@/constant'
 import type { TPost } from '@/spec'
 
 import Upvote from '@/widgets/Upvote'
@@ -10,7 +10,10 @@ import { Space } from '@/widgets/Common'
 import ArticleCatState from '@/widgets/ArticleCatState'
 import ViewsCount from '../../ViewsCount'
 
-import { Wrapper } from '../../styles/upvote_fist_layout/desktop_view/footer'
+import {
+  Wrapper,
+  UpvoteWrapper,
+} from '../../styles/upvote_fist_layout/desktop_view/footer'
 
 type TProps = {
   article: TPost
@@ -23,21 +26,15 @@ const Footer: FC<TProps> = ({ article }) => {
 
   return (
     <Wrapper>
-      <Upvote
-        count={upvotesCount}
-        avatarList={meta.latestUpvotedUsers}
-        viewerHasUpvoted={viewerHasUpvoted}
-        type={UPVOTE_LAYOUT.KANBAN}
-        left={-2}
-      />
-
-      {article.category !== ARTICLE_CAT.DEFAULT && (
-        <ArticleCatState
-          cat={article.category}
-          state={article.state}
-          left={18}
+      <UpvoteWrapper count={upvotesCount}>
+        <Upvote
+          count={upvotesCount}
+          avatarList={meta.latestUpvotedUsers}
+          viewerHasUpvoted={viewerHasUpvoted}
+          type={UPVOTE_LAYOUT.KANBAN}
+          left={-2}
         />
-      )}
+      </UpvoteWrapper>
 
       {!includes(article.id, demoList) ? (
         <ArticleCatState left={18} cat="QUESTION" />

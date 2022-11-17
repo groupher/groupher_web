@@ -1,5 +1,5 @@
 import { TYPE } from '@/constant'
-import ModeLineMenu from '@/containers/unit/ModeLineMenu'
+// import ModeLineMenu from '@/containers/unit/ModeLineMenu'
 import type { TUser } from '@/spec'
 
 import type { TExtraInfo } from '../spec'
@@ -12,7 +12,7 @@ import {
   AccountEditor,
   WallpaperEditor,
   // utils
-  C11NSettingPanel,
+  // C11NSettingPanel,
   // userlister
   UserLister,
   DashboardDesc,
@@ -39,8 +39,9 @@ const renderContent = (
       return <MailsViewer />
 
     case DRAWER.C11N_SETTINGS:
-      // @ts-ignore
-      return <C11NSettingPanel />
+      return null
+    // @ts-ignore
+    // return <C11NSettingPanel />
 
     case DRAWER.DASHBOARD_DESC:
       // @ts-ignore
@@ -51,8 +52,9 @@ const renderContent = (
       return <WallpaperEditor />
 
     case DRAWER.MODELINE_MENU:
-      // @ts-ignore
-      return <ModeLineMenu type={extraInfo.mmType} />
+      return null
+    // @ts-ignore
+    // return <ModeLineMenu type={extraInfo.mmType} />
 
     case DRAWER.USER_LISTER: {
       // @ts-ignore

@@ -26,7 +26,7 @@ import {
   HeaderSearchIcon,
   Operations,
 } from '../styles/desktop_view/community_view'
-import { useInit, openDoraemon } from '../logic'
+import { useInit } from '../logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:Header')
@@ -76,7 +76,7 @@ const CommunityHeaderContainer: FC<TProps> = ({
         {/* @ts-ignore */}
         <AddOns />
         <Operations>
-          <Search onClick={openDoraemon} testid="header-search">
+          <Search testid="header-search">
             <HeaderSearchIcon testid="header-search-icon" />
           </Search>
 
