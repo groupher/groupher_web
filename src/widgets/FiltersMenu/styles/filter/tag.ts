@@ -28,7 +28,7 @@ export const Dot = styled.div<TActive>`
 `
 export const FoldDot = styled(Dot)`
   background: ${({ active }) =>
-    active ? activeColor : theme('thread.articleDigest')};
+    active ? activeColor : theme('article.digest')};
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -40,14 +40,12 @@ export const FoldDot = styled(Dot)`
 type TTitle = TActive & { revert?: boolean }
 export const Title = styled.div<TTitle>`
   font-size: 13px;
-  color: ${({ active }) =>
-    active ? activeColor : theme('thread.articleDigest')};
+  color: ${({ active }) => (active ? activeColor : theme('article.digest'))};
   margin-right: ${({ revert }) => (revert ? '6px' : '0')};
   margin-left: ${({ revert }) => (revert ? '1px' : '0')};
 
   &:hover {
-    color: ${({ active }) =>
-      active ? activeColor : theme('thread.articleTitle')};
+    color: ${({ active }) => (active ? activeColor : theme('article.title'))};
   }
 
   transition: all 0.2s;

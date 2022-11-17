@@ -9,7 +9,7 @@ export const getColor = (ghost: boolean, disabled: boolean): TTheme => {
   }
 
   if (disabled) {
-    return theme('thread.articleDigest')
+    return theme('article.digest')
   }
 
   return theme('button.fg')

@@ -5,7 +5,7 @@ import css, { theme } from '@/utils/css'
 
 export const Wrapper = styled.div`
   ${css.flex('align-center', 'justify-between')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   margin-bottom: 10px;
   cursor: pointer;
@@ -21,15 +21,15 @@ export const IconBgWrapper = styled.div`
   margin-right: 10px;
 `
 export const ActionIcon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(15)};
 `
 const HighlightLink = styled.a`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   &:hover {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     text-decoration: underline;
-    text-decoration-color: ${theme('thread.articleDigest')};
+    text-decoration-color: ${theme('article.digest')};
   }
 `
 export const ArticleTitle = styled(HighlightLink)`

@@ -28,11 +28,11 @@ export const LogoWrapper = styled(Link).attrs(({ testid }: TTestable) => ({
 `
 export const SiteLogo = styled(SiteLogoSVG)`
   ${css.size(18)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   margin-bottom: 2px;
 `
 export const SiteTitle = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-family: 'Audiowide', cursive;
   font-size: 15px;
   margin-left: 4px;
@@ -78,20 +78,20 @@ export const HintWrapper = styled.div`
 export const HintTitle = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   text-align: center;
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 10px;
 `
 export const HintDesc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   text-align: center;
   font-size: 15px;
   margin-top: 10px;
   line-height: 1.8;
 `
 export const FooterWrapper = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-bottom: 5%;
 `

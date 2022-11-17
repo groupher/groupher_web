@@ -25,7 +25,7 @@ export const IconWrapper = styled.span<TSize>`
 `
 
 export const Icon = styled(Img)<TSize>`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   display: block;
   width: ${({ size }) => size};
   height: ${({ size }) => size};

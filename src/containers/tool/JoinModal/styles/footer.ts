@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   border-top-color: #003b49;
 `
 export const Note = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 14px;
   width: 60%;
 `

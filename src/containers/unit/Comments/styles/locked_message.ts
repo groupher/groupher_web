@@ -15,12 +15,12 @@ export const Wrapper = styled.div`
 `
 
 export const LockIcon = styled(Img)`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   ${css.size(20)};
   margin-right: 10px;
   margin-top: -4px;
 `
 
 export const Message = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 `

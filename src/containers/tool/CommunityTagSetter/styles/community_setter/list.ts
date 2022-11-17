@@ -12,7 +12,7 @@ export const InnerWrapper = styled.div`
 export const HintTitle = styled.div<{ highlight: boolean }>`
   font-size: 13px;
   color: ${({ highlight }) =>
-    highlight ? '#12989B' : theme('thread.articleDigest')};
+    highlight ? '#12989B' : theme('article.digest')};
   margin-bottom: 10px;
   margin-left: 2px;
 `

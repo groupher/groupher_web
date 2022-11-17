@@ -17,7 +17,7 @@ export const PopMenu = styled.div`
 `
 export const MenuItem = styled.div`
   padding: 4px 13px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   opacity: 0.9;
   &:hover {
     background: #113744;
@@ -27,7 +27,7 @@ export const MenuItem = styled.div`
 `
 export const MenuLink = styled.a`
   padding: 4px 13px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   opacity: 0.9;
   &:hover {
     background: #113744;
@@ -40,16 +40,16 @@ export const LoginBadge = styled.div`
   padding: 7px 13px;
 `
 export const LoginDesc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const LoginName = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-weight: bold;
 `
 export const LogoutItem = styled.div`
   padding: 5px 13px;
   padding-bottom: 6px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   &:hover {
     color: ${theme('baseColor.red')};
     background: #113744;

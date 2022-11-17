@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/utils/css'
 
 export const Wrapper = styled.div`
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
 `
 export const PublishWrapper = styled.div`
   ${css.flex('align-center')};

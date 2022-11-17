@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
 `
 export const Title = styled.div<TActive>`
   position: relative;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 15px;
   padding-left: 5px;
 
@@ -31,7 +31,7 @@ export const OperatorsWrapper = styled.div`
   ${css.flex('align-center')};
 `
 export const Operator = styled.div<TActive>`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   display: ${({ show }) => (show ? 'flex' : 'none')};
   align-items: center;
   font-size: 12px;
@@ -43,18 +43,18 @@ export const Operator = styled.div<TActive>`
   }
 `
 export const ResetIcon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(14)};
   margin-right: 6px;
 
   &:hover {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
     cursor: pointer;
   }
 
   transition: all 0.2s;
 `
 export const HelpHint = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
 `

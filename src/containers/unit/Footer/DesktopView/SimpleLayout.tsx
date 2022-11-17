@@ -14,7 +14,7 @@ const SimpleLayout: FC = () => {
       </Note>
       {!isEmpty(BEIAN_TEXT) && (
         <Note>
-          <Addr href={BEIAN_ADDR} target="_blank">
+          <Addr href={BEIAN_ADDR} target="_blank" prefetch={false}>
             {BEIAN_TEXT}
           </Addr>
         </Note>

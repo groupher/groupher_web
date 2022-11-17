@@ -21,7 +21,7 @@ export const NoticeIcon = styled(NoticeSVG)`
   ${baseIcon};
 `
 export const InfoIcon = styled(InfoSVG)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${baseIcon};
 `
 export const ArchivedIcon = styled(ArchivedSVG)`

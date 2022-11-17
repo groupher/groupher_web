@@ -65,18 +65,18 @@ export const CommunitiesWrapper = styled.div`
 export const Num = styled.div`
   font-size: 18px;
   margin-left: -18px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 `
 export const Gravity = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-top: 4px;
   font-size: 12px;
   margin-left: 6px;
 `
 export const InfoIcon = styled(InfoSVG)`
   ${css.size(10)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   margin-left: 5px;
 
   opacity: 0.8;
@@ -85,13 +85,13 @@ export const InfoIcon = styled(InfoSVG)`
 export const Title = styled.div`
   margin-top: 4px;
   font-size: 12px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   opacity: 0.8;
 `
 
 export const Divider = styled.div`
   height: 40px;
   width: 1px;
-  background-color: ${theme('thread.articleDigest')};
+  background-color: ${theme('article.digest')};
   opacity: 0.3;
 `

@@ -30,9 +30,9 @@ export const Text = styled.div`
 `
 
 // border-bottom: 1px solid;
-// border-bottom-color: ${theme('thread.articleDigest')}
+// border-bottom-color: ${theme('article.digest')}
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-bottom: 15px;
   margin-top: 10px;
   font-size: 17px;
@@ -49,7 +49,7 @@ export const DescWrapper = styled.div`
 `
 export const Desc = styled.div`
   font-size: 13px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-bottom: 4px;
 `
 const Link = styled.a`

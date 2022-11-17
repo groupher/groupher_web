@@ -9,12 +9,12 @@ export const Wrapper = styled.div`
   position: relative;
 `
 export const Num = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 11px;
   display: block;
 
   ${Item}:hover & {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
   }
 
   ${Wrapper}:hover & {

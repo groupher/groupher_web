@@ -28,7 +28,7 @@ export const HomeBlock = styled(Block)`
 `
 export const JoinLink = styled.div`
   ${css.flex('align-center', 'justify-end')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 11px;
   width: 100px;
   &:active {
@@ -36,7 +36,7 @@ export const JoinLink = styled.div`
   }
 `
 export const ArrowIcon = styled(ArrowSVG)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(14)};
   transform: rotate(180deg);
   margin-left: 5px;

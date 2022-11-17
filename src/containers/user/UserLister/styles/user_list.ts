@@ -33,7 +33,7 @@ export const UserBrief = styled.div`
 `
 export const Title = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 
   ${css.media.tablet`
     ${css.flexColumn('align-start')};
@@ -44,7 +44,7 @@ export const Nickname = styled.div`
 `
 export const Location = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-left: 10px;
 
   ${css.media.tablet`
@@ -60,11 +60,11 @@ export const Location = styled.div`
   `};
 `
 export const GeoIcon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(13)};
   margin-right: 2px;
 `
 export const Action = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   width: 100px;
 `

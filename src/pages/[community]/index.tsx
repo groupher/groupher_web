@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router'
+// import { useRouter } from 'next/router'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { merge, toLower } from 'ramda'
 
@@ -17,8 +17,8 @@ import {
 } from '@/utils'
 
 import GlobalLayout from '@/containers/layout/GlobalLayout'
-import CommunityContent from '@/containers/content/CommunityContent'
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+import PostContent from '@/containers/content/CommunityContent/PostContent'
+// import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
 import { P } from '@/schemas'
 
@@ -93,8 +93,8 @@ const CommunityPage = (props) => {
   const store = useStore()
   store.mark(props)
 
-  const { isFallback } = useRouter()
-  if (isFallback) return <LavaLampLoading top={20} left={30} />
+  // const { isFallback } = useRouter()
+  // if (isFallback) return <LavaLampLoading top={20} left={30} />
 
   const { viewing } = props
   const { community, activeThread } = viewing
@@ -104,7 +104,7 @@ const CommunityPage = (props) => {
       metric={METRIC.COMMUNITY}
       seoConfig={communitySEO(community as TCommunity, activeThread)}
     >
-      <CommunityContent />
+      <PostContent />
     </GlobalLayout>
   )
 }

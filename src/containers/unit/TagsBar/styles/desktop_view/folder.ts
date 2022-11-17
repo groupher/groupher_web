@@ -39,7 +39,7 @@ export const Title = styled.div`
 `
 export const FolderTitle = styled.div<{ $isOpen: boolean }>`
   color: ${({ $isOpen }) =>
-    !$isOpen ? theme('thread.articleDigest') : theme('lightText')};
+    !$isOpen ? theme('article.digest') : theme('lightText')};
 
   margin-left: 4px;
   font-size: 13px;
@@ -47,11 +47,11 @@ export const FolderTitle = styled.div<{ $isOpen: boolean }>`
   ${css.cutRest('85px')};
 
   ${Header}:hover & {
-    color: ${theme('thread.articleDigest')};
+    color: ${theme('article.digest')};
   }
 `
 export const Count = styled.div`
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   font-size: 13px;
 
   &:before {
@@ -88,7 +88,7 @@ export const SubToggleTitle = styled.div`
   border-radius: 5px;
 
   &:hover {
-    color: ${theme('thread.articleDigest')};
+    color: ${theme('article.digest')};
   }
 
   transition: color 0.2s;

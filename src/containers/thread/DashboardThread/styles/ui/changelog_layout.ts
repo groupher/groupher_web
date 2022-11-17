@@ -56,7 +56,7 @@ export const MiniItem = styled.div`
 export const Cover = styled.div`
   ${css.flexColumn('align-both')};
   border: 1px solid;
-  border-color: ${theme('thread.articleDigest')};
+  border-color: ${theme('article.digest')};
   width: 34px;
   height: 36px;
   border-radius: 4px;
@@ -75,20 +75,20 @@ export const MiniBar = styled(Bar)`
   width: ${({ long }) => `${long || 10}%`};
   height: ${({ thin }) => (thin ? '3px' : '7px')};
   background: ${({ thin }) =>
-    thin ? theme('thread.articleDigest') : theme('thread.articleTitle')};
+    thin ? theme('article.digest') : theme('article.title')};
   opacity: 0.6;
   z-index: 3;
   border-radius: 2px;
 `
 export const Circle = styled.div<{ radius?: number }>`
   ${({ radius }) => `${css.circle(radius || 22)}`};
-  background: ${theme('thread.articleTitle')};
+  background: ${theme('article.title')};
 `
 export const UpvoteIcon = styled(UpvoteSVG)<{ size: number }>`
   ${({ size }) => css.size(size)};
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
 `
 export const CommentIcon = styled(CommentSVG)`
   ${css.size(12)};
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
 `

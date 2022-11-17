@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
   padding-left: 12px;
 `
 export const SignIcon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   position: absolute;
   top: -6px;
   right: 5px;
@@ -23,12 +23,12 @@ export const SignIcon = styled(Img)`
   transform: rotate(-10deg);
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-bottom: 5px;
   font-weight: bold;
 `
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 11px;
   margin-bottom: 5px;
   opacity: 0.8;

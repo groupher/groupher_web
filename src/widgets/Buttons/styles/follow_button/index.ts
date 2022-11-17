@@ -28,14 +28,13 @@ export const BtnText = styled.div`
   padding-top: 2px;
 `
 export const Popinfo = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 12px;
   padding: 5px 8px;
 `
 
 export const LoadingIcon = styled(BtnIcon)<{ light: boolean }>`
-  fill: ${({ light }) =>
-    light ? theme('button.fg') : theme('thread.articleTitle')};
+  fill: ${({ light }) => (light ? theme('button.fg') : theme('article.title'))};
 
   ${css.size(15)};
   animation: ${animate.rotate360} 1s linear infinite;
@@ -47,7 +46,7 @@ export const FollowingIcon = styled(JoinEyeSVG)`
   transform: scaleX(0.9);
   margin-top: -1px;
   ${BtnWrapper}:hover & {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
   }
 `
 export const FollowedButton = styled(Button)`
@@ -65,7 +64,7 @@ export const FollowingButton = styled(Button)<{ followingOffset: number }>`
   padding-bottom: 2px;
 
   &:hover {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     background: #034556;
   }
 `

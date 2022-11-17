@@ -25,12 +25,12 @@ export const Header = styled.div`
 `
 export const Title = styled.div`
   font-size: 16px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-weight: 600;
 `
 export const Count = styled.div`
   font-size: 11px;
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   background-color: ${theme('textBadge')};
   padding: 1px 5px;
   margin-left: 10px;

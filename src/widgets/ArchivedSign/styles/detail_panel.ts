@@ -7,11 +7,11 @@ export const Wrapper = styled.div`
   width: 230px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 13px;
 `
 export const Text = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-top: 4px;
   font-size: 13px;
 `

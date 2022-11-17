@@ -11,11 +11,11 @@ export const Header = styled.div`
   margin-bottom: 15px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 14px;
 `
 export const CodeWrapper = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   margin-left: -5px;
 `

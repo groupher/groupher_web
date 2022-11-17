@@ -14,7 +14,7 @@ const CustomOverWrite = createGlobalStyle`
   }
   .banner-heatmap {
     .react-calendar-heatmap-month-label {
-      fill: ${theme('bannerHeatmap.monthLabel')};
+      fill: ${theme('heatmap.monthLabel')};
       font-size: 12px;
     }
   }

@@ -17,7 +17,7 @@ export const Box = styled.div<TActive>`
   height: ${({ active }) => (active ? '105px' : '100px')};
   border-radius: 5px;
   border: 1px solid;
-  border-color: ${theme('thread.articleDigest')};
+  border-color: ${theme('article.digest')};
 
   border: ${({ active }) => (active ? '1px solid' : '1px solid')};
   border-top: ${({ active }) => (active ? '3px solid' : '1px solid')};
@@ -41,7 +41,7 @@ export const HeaderText = styled.div`
   font-size: 12px;
 `
 export const MainText = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 16px;
   font-weight: bold;
 `

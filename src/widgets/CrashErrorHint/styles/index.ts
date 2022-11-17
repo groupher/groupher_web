@@ -29,7 +29,7 @@ export const HintIcon = styled.img`
 `
 export const Title = styled.div<TThemeName>`
   font-size: 30px;
-  color: ${({ t }) => themeSkins[t].thread.articleTitle};
+  color: ${({ t }) => themeSkins[t].article.title};
   padding-bottom: 12px;
 `
 export const Desc = styled.p<TThemeName>`
@@ -37,7 +37,7 @@ export const Desc = styled.p<TThemeName>`
 `
 export const UL = styled.ul<TThemeName>`
   margin-left: -22px;
-  color: ${({ t }) => themeSkins[t].thread.articleDigest};
+  color: ${({ t }) => themeSkins[t].article.digest};
 `
 export const Li = styled.li`
   margin-top: 4px;

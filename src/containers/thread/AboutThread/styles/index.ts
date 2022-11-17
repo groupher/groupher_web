@@ -37,12 +37,12 @@ export const MemberBlock = styled(Block)`
 `
 export const Title = styled.div`
   font-size: 16px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-weight: 600;
   margin-bottom: 15px;
 `
 export const Desc = styled.div`
   font-size: 15px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   line-height: 1.8;
 `

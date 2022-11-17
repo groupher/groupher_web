@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   position: absolute;
   right: -50px;
   ${css.flex('align-center')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-left: 5px;
   opacity: 0;
 
@@ -25,7 +25,7 @@ export const Wrapper = styled.div`
 
 export const EmptyWrapper = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   opacity: 0.8;
   &:hover {
     opacity: 1;
@@ -36,7 +36,7 @@ export const EmptyWrapper = styled.div`
 `
 export const SettingIcon = styled(SettingSVG)`
   ${css.size(11)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   opacity: 0.6;
   margin-right: 3px;
 
@@ -47,7 +47,7 @@ export const SettingIcon = styled(SettingSVG)`
 
 export const HashIcon = styled(HashTagSVG)`
   ${css.size(13)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   transform: rotate(18deg);
   opacity: 0.6;
   margin-right: 5px;
@@ -57,6 +57,6 @@ export const HashIcon = styled(HashTagSVG)`
   }
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 14px;
 `

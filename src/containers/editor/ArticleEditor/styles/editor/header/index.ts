@@ -29,7 +29,7 @@ export const TitleInput = styled(Input)`
 
   min-height: 28px;
   font-size: 25px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   /* background: ${theme('editor.headerBg')}; */
   background: transparent;
   width: 100%;
@@ -53,5 +53,5 @@ export const SubTitleWrapper = styled.div`
 export const SubTitleInput = styled(TitleInput)`
   min-height: 18px;
   font-size: 18px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `

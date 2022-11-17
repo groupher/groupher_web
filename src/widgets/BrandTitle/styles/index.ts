@@ -16,14 +16,14 @@ export const Title = styled.div`
   cursor: pointer;
 `
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   opacity: 0.8;
   font-size: 13px;
   margin-top: 15px;
 `
 type TBrandText = { fontSize: number }
 export const BrandText = styled.div<TBrandText>`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: ${({ fontSize }) => `${fontSize}px`};
   font-weight: bold;
   padding: 0 4px;

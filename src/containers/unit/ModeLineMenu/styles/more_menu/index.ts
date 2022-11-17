@@ -14,19 +14,19 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   margin-top: -20px;
 `
 export const A = styled(Link)`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   text-decoration: none;
 
   &:active {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     text-decoration: none;
   }
 
   &:hover {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     text-decoration: none;
   }
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 `

@@ -9,14 +9,14 @@ export const Wrapper = styled.div`
 `
 export const Title = styled.div<TActive>`
   color: ${({ $active }) =>
-    $active ? theme('thread.articleTitle') : theme('thread.articleDigest')};
+    $active ? theme('article.title') : theme('article.digest')};
   font-size: 15px;
   opacity: ${({ $active }) => ($active ? 1 : 0.9)};
   font-weight: ${({ $active }) => ($active ? 600 : 400)};
   margin-right: 35px;
 
   &:hover {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     opacity: 1;
     cursor: pointer;
   }

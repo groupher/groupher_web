@@ -14,7 +14,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   left: 0;
   bottom: 0px;
   ${css.flex('align-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   width: 100%;
   height: 35px;
   background: #0e3b4a;
@@ -37,7 +37,7 @@ export const MenuItem = styled.div`
 export const MenuIcon = styled(Img)<TMenuIcon>`
   fill: ${({ active, colorTheme }: TMenuIcon) => {
     if (colorTheme) return theme(colorTheme)
-    return active ? '#2ca1a2' : theme('thread.articleDigest')
+    return active ? '#2ca1a2' : theme('article.digest')
   }};
 
   ${({ raw }) => {
@@ -50,7 +50,7 @@ export const MenuIcon = styled(Img)<TMenuIcon>`
   }
 `
 export const MenuDesc = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 12px;
   margin-left: 5px;
   margin-top: -1px;

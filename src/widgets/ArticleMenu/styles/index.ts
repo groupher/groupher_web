@@ -11,10 +11,10 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 
 export const MoreIcon = styled(Img)`
   ${css.size(18)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 
   &:hover {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
     cursor: pointer;
   }
 `

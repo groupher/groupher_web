@@ -6,7 +6,7 @@ import { theme } from '@/utils/css'
 export const Wrapper = styled.div<TActive>`
   background: #0a313e;
   display: ${({ show }) => (show ? 'block' : 'none')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   width: 100%;
   min-height: 400px;
   border-radius: 8px;

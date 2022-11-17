@@ -26,7 +26,7 @@ export const MainWrapper = styled.div`
 
 export const PreviousTitle = styled.div`
   font-size: 18px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-top: 45px;
   margin-bottom: 22px;
 `

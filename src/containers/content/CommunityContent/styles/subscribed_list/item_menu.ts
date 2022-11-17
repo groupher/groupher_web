@@ -14,18 +14,18 @@ export const Item = styled.div`
 `
 export const Icon = styled(Img)`
   ${css.size(14)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 
   ${Item}:hover & {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
   }
 `
 export const Title = styled.div`
   font-size: 13px;
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   margin-left: 5px;
 
   ${Item}:hover & {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
   }
 `

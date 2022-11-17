@@ -10,7 +10,7 @@ import SearchSVG from '@/icons/HeaderSearch'
 
 export const Wrapper = styled.div`
   ${css.flex('align-both')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-right: 14px;
   font-weight: 600;
   margin-top: 0;
@@ -25,13 +25,13 @@ export const SubscribeButton = styled(Button)`
   padding: 0 12px;
 `
 export const NotifyIcon = styled(NotifySVG)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(22)};
   margin-right: 18px;
   opacity: 0.8;
 `
 export const DashboardIcon = styled(DashboardSVG)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(20)};
   margin-right: 16px;
   opacity: 0.8;
@@ -43,7 +43,7 @@ export const DashboardIcon = styled(DashboardSVG)`
   transition: all 0.2s;
 `
 export const SearchIcon = styled(SearchSVG)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(20)};
   margin-right: 14px;
   opacity: 0.8;

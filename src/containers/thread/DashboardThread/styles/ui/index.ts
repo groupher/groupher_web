@@ -15,7 +15,7 @@ export const BaseSection = styled.section`
   border-bottom-color: ${theme('border')}; */
 `
 export const TitleBase = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 15px;
   margin-bottom: 12px;
 `
@@ -27,7 +27,7 @@ export const BlockBase = styled.div<TActive>`
 
   border: 1px solid;
   border-radius: 7px;
-  border-color: ${theme('thread.articleTitle')};
+  border-color: ${theme('article.title')};
   padding: 16px 15px;
 
   &:hover {
@@ -44,7 +44,7 @@ export const Bar = styled.div<TBar>`
   width: ${({ long }) => `${long || 10}%`};
   height: ${({ thin }) => (thin ? '4px' : '10px;')};
   background: ${({ thin }) =>
-    thin ? theme('thread.articleDigest') : theme('thread.articleTitle')};
+    thin ? theme('article.digest') : theme('article.title')};
   z-index: 3;
   border-radius: 5px;
   opacity: ${({ thin }) => (thin ? 0.6 : 1)};
@@ -52,5 +52,5 @@ export const Bar = styled.div<TBar>`
 
 export const Circle = styled.div<{ radius?: number }>`
   ${({ radius }) => `${css.circle(radius || 22)}`};
-  background: ${theme('thread.articleTitle')};
+  background: ${theme('article.title')};
 `

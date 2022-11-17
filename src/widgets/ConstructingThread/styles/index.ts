@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
 `
 
 export const ConstructIcon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   width: 300px;
   height: 300px;
 `
@@ -22,16 +22,16 @@ export const Text = styled.div`
 `
 
 // border-bottom: 1px solid;
-// border-bottom-color: ${theme('thread.articleDigest')}
+// border-bottom-color: ${theme('article.digest')}
 export const Title = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-bottom: 10px;
   margin-top: 20px;
   font-size: 1.4rem;
 `
 
 export const DescWrapper = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-top: 0.6rem;
   font-size: 0.9rem;
 `

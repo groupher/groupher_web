@@ -35,10 +35,10 @@ export const Name = styled.div<TActive>`
   font-size: 11px;
   margin-top: 7px;
   color: ${({ $active }) =>
-    $active ? theme('thread.extraInfo') : theme('thread.articleDigest')};
+    $active ? theme('article.info') : theme('article.digest')};
 
   ${Item}:hover & {
     cursor: pointer;
-    color: ${theme('thread.extraInfo')};
+    color: ${theme('article.info')};
   }
 `

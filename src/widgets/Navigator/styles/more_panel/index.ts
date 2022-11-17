@@ -37,7 +37,7 @@ export const Main = styled(Link)`
 `
 export const Title = styled.div<{ offset?: string }>`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-weight: bold;
   margin-left: ${({ offset }) => offset || '10px'};
 
@@ -49,7 +49,7 @@ export const Title = styled.div<{ offset?: string }>`
   }
 `
 export const Logo = styled(Img)`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   ${css.size(18)};
   margin-top: 4px;
 
@@ -70,24 +70,24 @@ const baseIcon = `
 `
 const Hot = styled(HotSVG)`
   ${baseIcon};
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
 `
 const Makers = styled(MakersSVG)`
   ${baseIcon};
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
 `
 const Piece = styled(PieceSVG)`
   ${baseIcon};
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
 `
 const Subscribe = styled(SubscribeSVG)`
   ${baseIcon};
   ${css.size(20)};
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
 `
 const Chart = styled(ChartSVG)`
   ${baseIcon};
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
 `
 
 export const Icon = {
@@ -109,7 +109,7 @@ export const ChartLogo = styled(Logo)`
   margin-left: -2px;
 `
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   margin-top: 5px;
   margin-left: 28px;

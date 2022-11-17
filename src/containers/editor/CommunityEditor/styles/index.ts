@@ -14,6 +14,6 @@ export const InnerWrapper = styled.div<{ metric: TMetric }>`
   ${({ metric }) => css.fitContentWidth(metric)};
 `
 export const ContentWrapper = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   transition: all 0.2s;
 `

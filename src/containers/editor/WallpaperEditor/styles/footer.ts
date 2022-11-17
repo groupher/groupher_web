@@ -17,7 +17,7 @@ export const Wrapper = styled.div`
   height: 65px;
 `
 export const ForbidImgIcon = styled(ForbidSVG)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(14)};
   margin-right: 10px;
 `

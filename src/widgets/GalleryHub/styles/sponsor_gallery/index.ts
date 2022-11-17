@@ -7,7 +7,7 @@ export const Wrapper = styled.div<{ center: boolean }>`
   ${css.flex()};
   justify-content: ${({ center }) => (center ? 'center' : 'flex-start')};
   flex-wrap: wrap;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   width: 100%;
 
   ${css.media.mobile`
@@ -64,9 +64,9 @@ export const Icon = styled.div`
   border-radius: 4px;
 `
 export const Title = styled.div<{ level: string }>`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   border-top: 1px solid;
-  border-color: ${theme('thread.articleTitle')};
+  border-color: ${theme('article.title')};
   font-size: ${({ level }) => (level === 'gold' ? '18px' : '16px')};
   cursor: pointer;
   padding-top: 5px;
@@ -91,7 +91,7 @@ export const IntroImg = styled(Img)`
 `
 export const Desc = styled.div<{ level: string }>`
   ${css.lineClamp(2)}
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: ${({ level }) => (level === 'gold' ? '14px' : '13px')};
   cursor: pointer;
   height: 45px;
@@ -103,7 +103,7 @@ export const Desc = styled.div<{ level: string }>`
   `};
 
   ${Block}:hover & {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     opacity: 1;
   }
   transition: all 0.3s;

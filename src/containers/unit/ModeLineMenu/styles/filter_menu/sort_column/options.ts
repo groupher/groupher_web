@@ -15,7 +15,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 `
 export const Title = styled.div`
   ${css.flex('justify-between', 'align-center')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   margin-bottom: 4px;
   width: 100%;

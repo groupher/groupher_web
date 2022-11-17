@@ -19,14 +19,14 @@ export const Block = styled.div`
 
 export const Title = styled.div`
   font-size: 14px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-weight: 600;
   margin-bottom: 10px;
 `
 export const Desc = styled.div`
   font-size: 14px;
   font-weight: 400;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   line-height: 1.6;
 `
 export const Reports = styled.div`
@@ -38,8 +38,8 @@ export const ReportsArticle = styled(Desc)`
 export const Press = styled.div`
   /* color: #ec633f; */
   border: 1px solid;
-  border-color: ${theme('thread.extraInfo')};
-  color: ${theme('thread.extraInfo')};
+  border-color: ${theme('article.info')};
+  color: ${theme('article.info')};
   font-weight: 600;
   padding: 0 4px;
   border-radius: 4px;

@@ -43,9 +43,9 @@ const ThemeContainer: FC<TProps> = ({ children, theme: { themeData } }) => {
 
       <ScrollBarStyle />
       <Fragment>{children}</Fragment>
-      <CodeSyxHighlight />
       <ThirdPartyOverWrite />
       <GlobalStyle />
+      <CodeSyxHighlight />
     </ThemeProvider>
   )
 }

@@ -1,7 +1,7 @@
 // avold SSR to save first load build size
 import { FC } from 'react'
 
-import dynamic from 'next/dynamic'
+import { Waypoint } from 'react-waypoint'
 
 type TProps = {
   /**
@@ -18,11 +18,8 @@ type TProps = {
   horizontal?: boolean
 }
 
-const Waypoint = dynamic(
-  () => import('react-waypoint').then((mod) => mod.Waypoint),
-  {
-    ssr: false,
-  },
-)
+const ViewportTracker: FC<TProps> = (props) => {
+  return <Waypoint {...props} />
+}
 
-export default Waypoint as FC<TProps>
+export default ViewportTracker

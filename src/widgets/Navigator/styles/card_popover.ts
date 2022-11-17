@@ -22,17 +22,17 @@ export const CommunityInfo = styled.div`
 `
 export const Title = styled.div`
   font-size: 1.2rem;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-bottom: 3px;
 `
 export const Desc = styled.div`
   font-size: 0.9rem;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 
 export const Divider = styled.div`
   border-bottom: 1px solid;
-  border-bottom-color: ${theme('thread.articleDigest')};
+  border-bottom-color: ${theme('article.digest')};
   opacity: 0.4;
   width: 100%;
   margin-top: 12px;

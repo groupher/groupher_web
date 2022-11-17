@@ -25,14 +25,14 @@ export const PinState = styled.div`
   margin-left: 1px;
 `
 export const PinIcon = styled(PinSVG)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(14)};
   opacity: 0.9;
   transform: rotate(-30deg);
 `
 export const PinText = styled.div`
   font-size: 12px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-left: 15px;
   opacity: 0.8;
 `
@@ -42,7 +42,7 @@ export const CommentWrapper = styled.div`
   width: 100%;
 `
 export const SidebarWrapper = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   ${css.flexColumn('align-start')};
   height: 100%;
   min-width: 28px;

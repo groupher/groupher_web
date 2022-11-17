@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   margin-left: -40px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 20px;
   font-weight: 500;
 `

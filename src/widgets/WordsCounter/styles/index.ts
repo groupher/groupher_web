@@ -12,7 +12,7 @@ export const Wrapper = styled.div<TSpace>`
 `
 
 export const Hint = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   opacity: 0.8;
 `
@@ -23,11 +23,11 @@ export const Main = styled.div`
 `
 export const CurNum = styled.div<{ invalid: boolean }>`
   color: ${({ invalid }) =>
-    invalid ? theme('baseColor.red') : theme('thread.articleTitle')};
+    invalid ? theme('baseColor.red') : theme('article.title')};
   font-size: 14px;
 `
 export const Slash = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 10px;
   margin-left: 6px;
   margin-right: 5px;
@@ -35,5 +35,5 @@ export const Slash = styled.div`
 `
 export const TotalNum = styled.div`
   font-size: 12px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `

@@ -18,23 +18,23 @@ export const HomeLogo = styled(SiteLogo)`
 `
 export const Icon = styled(Img)`
   ${css.size(32)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 `
 export const Name = styled(Link)`
   text-decoration: none;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 14px;
   margin-top: 12px;
   margin-bottom: 2px;
 
   &:hover {
     text-decoration: underline;
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     cursor: pointer;
   }
 `
 export const JoinDesc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   margin-top: 1px;
   margin-bottom: 10px;

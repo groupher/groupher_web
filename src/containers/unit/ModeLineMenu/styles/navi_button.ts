@@ -13,14 +13,14 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   /* height: 74px; */
 `
 export const Icon = styled(Img)<{ type: string }>`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   ${css.circle(32)};
   padding: 8px;
   padding: ${({ type }) => (type === 'avatar' ? '2px' : '8px')};
   background: #023544;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 12px;
   margin-top: 8px;
   ${css.cutRest('80px')};
@@ -29,7 +29,7 @@ export const Title = styled.div`
 export const Desc = styled.div`
   position: absolute;
   bottom: -18px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   opacity: 0.8;
   font-size: 12px;
   ${css.cutRest('80px')};

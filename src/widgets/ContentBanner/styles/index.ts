@@ -34,7 +34,7 @@ export const PostBrief = styled.div`
 
 export const Title = styled.div`
   font-size: 1.5em;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 
   ${css.cutRest('100%')};
 `
@@ -43,7 +43,7 @@ export const Desc = styled.div`
   margin-top: 5px;
   margin-bottom: 8px;
   font-size: 0.9rem;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const Avatar = styled.img`
   ${css.circle(25)};

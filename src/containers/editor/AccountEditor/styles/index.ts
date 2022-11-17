@@ -44,18 +44,18 @@ export const LoginSection = styled.div`
   margin-bottom: 15px;
 `
 export const LoginDesc = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-bottom: 8px;
 `
 export const GithubIcon = styled(GithubSVG)`
   ${css.size(15)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   opacity: 0.5;
   margin-right: 20px;
   margin-bottom: 7px;
 `
 export const SectionHint = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   opacity: 0.8;
   font-size: 12px;
   margin-top: 6px;
@@ -63,7 +63,7 @@ export const SectionHint = styled.div`
 `
 export const Label = styled.div`
   ${css.flex('justify-between', 'align-end')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 14px;
   margin-bottom: 8px;
   margin-left: 5px;
@@ -71,7 +71,7 @@ export const Label = styled.div`
   opacity: 0.85;
 `
 export const SexLabel = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 14px;
   margin-left: 7px;
   margin-right: 10px;

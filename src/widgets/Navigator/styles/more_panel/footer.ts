@@ -37,13 +37,13 @@ const baseIcon = `
 
 const Feedback = styled(FeedbackSVG)`
   ${baseIcon};
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
 `
 const Github = styled(GithubSVG)`
   ${baseIcon};
   ${css.size(16)};
   margin-left: 2px;
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
 `
 export const Icon = {
   Feedback,
@@ -51,7 +51,7 @@ export const Icon = {
 }
 
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 13px;
   font-weight: bold;
   margin-left: 12px;
@@ -64,7 +64,7 @@ export const Title = styled.div`
   }
 `
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   margin-left: 10px;
   align-self: flex-end;

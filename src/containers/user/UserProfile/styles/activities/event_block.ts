@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
 `
 export const Title = styled.div`
   font-size: 14px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   flex-grow: 1;
   margin-top: -4px;
 `

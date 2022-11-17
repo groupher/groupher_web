@@ -16,17 +16,17 @@ export const Header = styled.div`
 export const Title = styled.div<TActive>`
   ${css.cutRest('440px')};
   color: ${({ $active }) =>
-    $active ? theme('thread.articleTitle') : theme('thread.articleDigest')};
+    $active ? theme('article.title') : theme('article.digest')};
   font-size: 16px;
   font-weight: 500;
 
   ${Wrapper}:hover & {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
   }
 `
 export const ArrowIcon = styled(ArrowSVG)<TActive>`
   ${css.size(16)};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
   margin-left: 20px;
   margin-right: 10px;
   transform: ${({ $active }) => ($active ? 'rotate(270deg)' : 'rotate(90deg)')};
@@ -35,7 +35,7 @@ export const ArrowIcon = styled(ArrowSVG)<TActive>`
 `
 
 export const Body = styled.div<TActive>`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 15px;
   margin-top: ${({ show }) => (show ? '12px' : 0)};
   max-height: ${({ show }) => (show ? 'auto' : 0)};

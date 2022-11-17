@@ -21,12 +21,12 @@ export const Logo = styled(CommunityFaceLogo)`
   filter: saturate(0.6);
 `
 export const Title = styled(Link)`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   text-decoration: none;
   margin-left: 7px;
 
   &:hover {
     text-decoration: underline;
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
   }
 `

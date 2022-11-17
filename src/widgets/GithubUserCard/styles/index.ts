@@ -19,12 +19,12 @@ export const UserPopInfo = styled.div`
   ${css.flexColumn()};
 `
 export const Username = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-weight: bolder;
   font-size: 1rem;
 `
 export const UserBio = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 0.9rem;
   margin-bottom: 10px;
 `
@@ -32,12 +32,12 @@ export const UserLocation = styled.div`
   ${css.flex('align-center')};
 `
 export const LabelIcon = styled(Img)`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   ${css.size(15)};
   margin-right: 5px;
 `
 export const LabelText = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 `
 export const UserCompany = styled.div`
   ${css.flex('align-center')};

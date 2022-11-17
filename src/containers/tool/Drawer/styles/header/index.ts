@@ -28,6 +28,6 @@ export const TextWrapper = styled.div`
   height: 100%;
   transform: rotate(180deg);
   font-size: 12px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-weight: bold;
 `

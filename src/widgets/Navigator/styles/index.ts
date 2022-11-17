@@ -33,7 +33,7 @@ export const LogoMargin = styled.div`
   margin-right: 32px;
 `
 export const LogoText = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 16px;
   margin-left: 8px;
 `

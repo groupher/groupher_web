@@ -11,7 +11,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   ${css.flexColumn()};
   width: 100%;
   min-width: 320px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   padding-top: 25px;
   padding-left: 5px;
 `
@@ -21,13 +21,13 @@ export const Header = styled.div`
 `
 export const FAQIcon = styled(FAQSVG)`
   ${css.size(15)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   margin-right: 10px;
   opacity: 0.8;
   margin-top: 2px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const Body = styled.div`
   ${css.flex('align-center')};
@@ -42,10 +42,10 @@ export const Section = styled.div`
 
 export const Item = styled.span`
   font-size: 14px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   &:hover {
     cursor: pointer;
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
   }
 
   transition: all 0.2s;
@@ -56,7 +56,7 @@ export const Footer = styled.div`
   margin-top: 15px;
   padding-top: 20px;
   font-size: 12px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const MoreLink = styled.div`
   color: ${theme('link')};

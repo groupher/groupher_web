@@ -28,7 +28,7 @@ export const Wrapper = styled.div`
 `
 export const NeedleDot = styled.div`
   ${css.circle(4)};
-  background: ${theme('thread.articleTitle')};
+  background: ${theme('article.title')};
   position: absolute;
   left: 25px;
   top: 24px;
@@ -37,7 +37,7 @@ export const Needle = styled.div<{ direction: string }>`
   position: absolute;
   width: 25px;
   height: 1px;
-  background: ${theme('thread.articleTitle')};
+  background: ${theme('article.title')};
   top: 25px;
   left: 2px;
 
@@ -53,12 +53,11 @@ const Point = styled.div<TActive>`
 
   font-weight: ${({ $active }) => ($active ? 600 : 'bormal')};
   background: ${({ $active }) =>
-    $active ? theme('thread.articleTitle') : theme('border')};
-  color: ${({ $active }) =>
-    !$active ? theme('thread.articleTitle') : 'white'};
+    $active ? theme('article.title') : theme('border')};
+  color: ${({ $active }) => (!$active ? theme('article.title') : 'white')};
 
   &:hover {
-    background: ${theme('thread.articleDigest')};
+    background: ${theme('article.digest')};
     font-weight: 600;
     cursor: pointer;
     color: white;

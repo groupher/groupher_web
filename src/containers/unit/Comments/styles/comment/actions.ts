@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
   `};
 `
 export const ReplyAction = styled.div`
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   opacity: 0.7;
   font-weight: bold;
 

@@ -28,7 +28,7 @@ export const ViewIcon = styled(ViewSVG)`
   margin-right: 8px;
 `
 export const HintTitle = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 13px;
   margin-bottom: 5px;
 `
@@ -42,7 +42,7 @@ export const InputWrapper = styled.div`
   margin-bottom: 10px;
 `
 export const InputLabel = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   width: 120px;
 `

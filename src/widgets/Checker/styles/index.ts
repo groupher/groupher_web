@@ -23,7 +23,7 @@ export const Wrapper = styled.div<TWrapper>`
 export const IconWrapper = styled.div<TItem>`
   position: relative;
   background: ${({ checked }) =>
-    checked ? theme('thread.articleDigest') : 'transparent'};
+    checked ? theme('article.digest') : 'transparent'};
   width: ${({ size }) => getIconSize(size)};
   height: ${({ size }) => getIconSize(size)};
   ${css.flex('align-both')};
@@ -31,7 +31,7 @@ export const IconWrapper = styled.div<TItem>`
   border: ${({ disabled }) => (!disabled ? '1px solid' : 'none')};
 
   border-color: ${({ checked }) =>
-    checked ? theme('thread.articleTitle') : theme('thread.articleDigest')};
+    checked ? theme('article.title') : theme('article.digest')};
   border-radius: ${({ size }) => getBorderRadius(size)};
 
   transition: all 0.2s;
@@ -48,14 +48,14 @@ export const CheckIcon = styled(CheckedSVG)<TItem>`
 `
 export const ChildWrapper = styled.div<TItem>`
   color: ${({ checked }) =>
-    checked ? theme('thread.articleTitle') : theme('thread.articleDigest')};
+    checked ? theme('article.title') : theme('article.digest')};
   font-size: ${({ size }) => getFontSize(size)};
   margin-left: 8px;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 
   &:hover {
     color: ${({ disabled }) =>
-      disabled ? theme('thread.articleDigest') : theme('thread.articleTitle')};
+      disabled ? theme('article.digest') : theme('article.title')};
   }
 
   transition: color 0.1s;

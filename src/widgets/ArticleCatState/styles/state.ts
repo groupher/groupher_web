@@ -54,22 +54,22 @@ export const ResolveIcon = styled(ResolveSVG)<{ smaller: boolean }>`
 `
 export const LockIcon = styled(LockSVG)<{ smaller: boolean }>`
   ${({ smaller }) => (smaller ? css.size(11) : css.size(13))};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
   margin-right: 3px;
 `
 const LightIcon = styled(LightSVG)`
   ${css.size(12)};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
 `
 
 const BugIcon = styled(BugSVG)`
   ${css.size(12)};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
   margin-right: 2px;
 `
 const QuestionIcon = styled(QuestionSVG)`
   ${css.size(9)};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
   margin-right: 2px;
   margin-top: -1px;
 `

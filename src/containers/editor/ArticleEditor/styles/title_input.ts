@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
 export const Inputer = styled(Input)`
   width: 660px;
   /* width: calc(100% - 20px); */
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   display: block;
   border-radius: 0;
   border: none;
@@ -34,7 +34,7 @@ export const Inputer = styled(Input)`
 
   &::placeholder {
     font-size: 24px;
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     opacity: 0.6;
   }
 `

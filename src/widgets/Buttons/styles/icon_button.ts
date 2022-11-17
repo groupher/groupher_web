@@ -43,7 +43,7 @@ export const HoverBg = styled.div<{ size: number }>`
   transition: 0.25s;
 `
 export const Hint = styled.div`
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   text-align: center;
   min-width: 80px;
   padding: 5px;
@@ -51,13 +51,13 @@ export const Hint = styled.div`
 
 type TIcon = { size: number; $dimWhenIdle: boolean } & TSpace & TActive
 export const Icon = styled(Img)<TIcon>`
-  fill: ${({ $active }) => ($active ? '#00a59b' : theme('thread.extraInfo'))};
+  fill: ${({ $active }) => ($active ? '#00a59b' : theme('article.info'))};
   ${({ size }) => css.size(size)};
 
   opacity: ${({ $dimWhenIdle }) => ($dimWhenIdle ? 0.7 : 1)};
 
   &:hover {
-    fill: ${theme('thread.extraInfo')};
+    fill: ${theme('article.info')};
     opacity: 1;
     cursor: pointer;
   }
@@ -67,13 +67,13 @@ export const Icon = styled(Img)<TIcon>`
 
 const styledIcon = (comp: FC): FC<TIcon> => {
   return styled(comp)<TIcon>`
-    fill: ${({ $active }) => ($active ? '#00a59b' : theme('thread.extraInfo'))};
+    fill: ${({ $active }) => ($active ? '#00a59b' : theme('article.info'))};
     ${({ size }) => css.size(size)};
 
     opacity: ${({ $dimWhenIdle }) => ($dimWhenIdle ? 0.7 : 1)};
 
     &:hover {
-      fill: ${theme('thread.extraInfo')};
+      fill: ${theme('article.info')};
       opacity: 1;
       cursor: pointer;
     }

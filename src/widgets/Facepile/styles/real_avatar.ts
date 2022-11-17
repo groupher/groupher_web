@@ -46,7 +46,7 @@ export const AvatarsMore = styled.span<TAvatarsMore>`
   ${css.flex('align-both')};
   font-size: 14px;
   border-color: #113744;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   background-color: #113744;
   border-radius: 100px 100px 100px 100px;
   font-family: sans-serif;

@@ -33,7 +33,7 @@ export const HashTag = styled(HashTagSVG)<{ color: string }>`
 `
 export const Name = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 14px;
 `
 export const CheckWrapper = styled.div`

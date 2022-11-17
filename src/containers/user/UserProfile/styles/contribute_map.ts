@@ -27,7 +27,7 @@ export const Divider = styled.div`
   width: 100%;
   padding: 0 5px;
   height: 1px;
-  background: ${theme('thread.articleDigest')};
+  background: ${theme('article.digest')};
   opacity: 0.2;
   margin-top: 12px;
   margin-bottom: 16px;
@@ -46,19 +46,19 @@ export const CalendarInnerWrapper = styled.div`
 export const Title = styled.div`
   ${css.flex('align-center')};
   font-size: 13px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   flex-grow: 1;
   margin-top: -4px;
 `
 export const TitleCount = styled.div`
   font-size: 13px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-left: 2px;
   margin-right: 3px;
 `
 export const DotText = styled.div`
   font-size: 12px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   opacity: 0.8;
 `
 export const DotList = styled.div`

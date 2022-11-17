@@ -21,13 +21,13 @@ export const Avatar = styled(Img)`
   ${css.circle(40)};
   margin-bottom: 20px;
   border: 2px solid;
-  border-color: ${theme('thread.articleTitle')};
+  border-color: ${theme('article.title')};
   padding: 2px;
 `
 export const BadgeWrapper = styled.div`
   ${css.circle(14)};
   ${css.flex('align-both')};
-  background: ${theme('thread.articleTitle')};
+  background: ${theme('article.title')};
   padding: 1px;
   border: 2px solid white;
   position: absolute;

@@ -9,7 +9,6 @@ const bannerBg = '#fff'
 const contentBg = '#fff'
 const contentBoxBg = '#fff'
 const fontColor = primaryColor
-const sidebarBg = '#23292E'
 const markdownFont = '#9eb8bd'
 const border = '#EAE9E9'
 const link = '#005196' // '#6494cd'
@@ -117,21 +116,20 @@ const github = {
     numberDivider: '#eae9e9',
     numberHoverBg: '#f3f3f3',
   },
+  article: {
+    title: threadTitle,
+    digest: descText,
+    info: actionText,
+    link,
+    linkHover: 'orange',
+    reactionTitle: '#7f979a',
+    reactionHoverBg: '#f3f7f7',
+  },
   thread: {
     bg: contentBoxBg,
-    filterResultHint: descText,
-    articleTitle: threadTitle,
-    articleStrip: contentBoxBg,
-    articleDigest: descText,
-    articleTag: '#71979a',
-    articleLink: link,
     articleDivider: '#dce5e6',
     commentsUserBorder: contentBoxBg,
-    extraInfo: actionText,
     articleSpliter: '#dee8ea',
-
-    // like github
-    repoTitle: '#6ba0d8',
   },
   content: {
     bg: contentBoxBg,
@@ -145,23 +143,6 @@ const github = {
     hover: '#949CB5',
     title: '#77706B',
     bottomBg: '#252325',
-  },
-  sidebar: {
-    bg: sidebarBg,
-    activeBar: '#87a791',
-    holder: lighten(sidebarBg, 15),
-    logoText: '#5e9aa2',
-    menuHover: darken(sidebarBg, 10),
-    pinActive: 'yellowgreen',
-    menuLink: '#D9E6E5',
-    borderColor: '#14363E',
-    headerShadow: '0px 6px 4px 0px rgba(0,0,0,0.2)',
-    headerShadowBorderBottom: '1px dashed #3d5a51',
-    footerShadow: '-1px -4px 4px 0px rgba(0,0,0,0.2)',
-    footerShadowBorderBottom: '1px dashed #3d5a51',
-    searchInputBottom: '#3A3948',
-    searchInputBottomActive: '#3B8250',
-    searchInputHolder: '#3B3948',
   },
   drawer: {
     title: threadTitle,
@@ -182,12 +163,6 @@ const github = {
     divider: '#e0e6e5',
     /* single article page sidebar divider */
     sideDivider: '#e4e4e4',
-  },
-  article: {
-    link,
-    linkHover: 'orange',
-    reactionTitle: '#7f979a',
-    reactionHoverBg: '#f3f7f7',
   },
   comment: {
     bg: contentBg,
@@ -227,41 +202,12 @@ const github = {
     footer: '#a6bebf',
     footerHover: darken('#a6bebf', 5),
   },
-  pagination: {
-    activeNum: 'white',
-    itemBg: '#cbe7ea',
-    itemBorderColor: '#cbe7ea',
-    disableText: '#BCD9DC',
-    text: '#6d7f7b',
-    inactiveNum: 'white',
-  },
-
   heatmap: {
     activityLow: darken('#6EC385', 20),
     activityHight: 'yellowgreen',
     empty: '#efefef',
     borderHover: '#51abb2',
     monthLabel: '#c6dbde',
-    scale_1: '#dbe290',
-    scale_2: '#99c06f',
-    scale_3: '#609d4c',
-    scale_4: '#61793e',
-    scale_5: '#37642c',
-  },
-  geoMap: {
-    oceanColor: '#F8F8F8',
-    regionBg: '#D7D8D9',
-    restRegionBg: '#FAFBFC',
-    borderStroke: '#CFD3D7',
-    markerBg: '#F7B5A0',
-    markerShadow: '#F7B5A0',
-  },
-  bannerHeatmap: {
-    activityLow: '#D6ECB2',
-    activityHight: '#4F966E',
-    borderHover: '#51abb2',
-    empty: '#E4EEED',
-    monthLabel: descText,
     scale_1: '#dbe290',
     scale_2: '#99c06f',
     scale_3: '#609d4c',
@@ -369,11 +315,6 @@ const github = {
   mailBox: {
     headHightBg: '#e8f9f8',
   },
-  alertWarn: {
-    border: '#ffe58f',
-    bg: '#fffbe6',
-    text: '#c3ae8e',
-  },
   table: {
     headerBg: '#F8F8F8',
     headTitle: '#949494',
@@ -384,10 +325,6 @@ const github = {
   searchHighlight: {
     doramonFg: '#03a9f4',
     doramonBg: 'transparent',
-  },
-  tooltip: {
-    text: '#F0F6FA',
-    bg: '#2B2B2B',
   },
   avatar: {
     opacity: 1,

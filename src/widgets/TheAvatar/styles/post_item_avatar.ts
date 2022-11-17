@@ -28,7 +28,7 @@ export const QuoteShadow = styled(InnerShadow)`
 `
 export const Avatar = styled(Img)`
   ${css.circle(30)};
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   opacity: ${theme('avatar.opacity')};
 `
 export const QuoteAvatar = styled(Avatar)`

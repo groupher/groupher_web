@@ -18,7 +18,7 @@ export const Title = styled.div`
   font-weight: 600;
 `
 export const Name = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 16px;
 `
 export const Login = styled.div`

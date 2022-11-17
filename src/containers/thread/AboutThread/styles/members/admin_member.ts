@@ -9,13 +9,13 @@ export const Wrapper = styled.div`
 export const Info = styled.div``
 export const Name = styled.div`
   ${css.cutRest('140px')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 14px;
   margin-bottom: 2px;
   font-weight: 600;
 `
 export const Bio = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   ${css.lineClamp(2)};
   opacity: 0.8;

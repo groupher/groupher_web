@@ -16,21 +16,21 @@ export const Header = styled.div`
   margin-left: 2px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 15px;
 `
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   flex-grow: 1;
   font-size: 12px;
   margin-top: 12px;
 `
 export const JoinWrapper = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
 `
 export const JoinNumber = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-right: 3px;
 `

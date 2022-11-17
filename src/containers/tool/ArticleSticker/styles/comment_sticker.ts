@@ -15,14 +15,14 @@ export const Wrapper = styled(FadeToggle)<TActive>`
   flex-wrap: wrap;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 13px;
   margin-bottom: 15px;
   margin-left: 3px;
 `
 export const TotalNum = styled.span<{ highlight: boolean }>`
   color: ${({ highlight }) =>
-    highlight ? theme('comment.number') : theme('thread.articleTitle')};
+    highlight ? theme('comment.number') : theme('article.title')};
   font-size: 13px;
   margin-left: 4px;
   margin-right: 4px;
@@ -43,7 +43,7 @@ export const MoreUserWrapper = styled.div`
   background: #0f4251;
 `
 export const MoreIcon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(12)};
 `
 export const Divider = styled.div`

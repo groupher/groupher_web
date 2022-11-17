@@ -24,7 +24,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   margin-bottom: 20px;
 `
 export const Label = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 14px;
   margin-bottom: 12px;
 `
@@ -44,7 +44,7 @@ export const IconWrapper = styled.div`
 `
 export const Hint = styled.div`
   font-size: 12px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-top: 15px;
 `
 export const PlatformWrapper = styled.div`
@@ -61,7 +61,7 @@ export const PlatformWrapper = styled.div`
 const getIcon = (SVG, size = 16) => {
   return styled(SVG)<TActive>`
     ${css.size(size)};
-    fill: ${theme('thread.extraInfo')};
+    fill: ${theme('article.info')};
     filter: ${({ $active }) => ($active ? 'saturate(1)' : 'saturate(0)')};
     opacity: ${({ $active }) => ($active ? 1 : 0.7)};
 

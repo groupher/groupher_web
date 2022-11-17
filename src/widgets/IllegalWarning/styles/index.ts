@@ -4,7 +4,7 @@ import css, { theme } from '@/utils/css'
 
 export const Wrapper = styled.div`
   ${css.flexColumn()};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   width: 280px;
   border: 1px solid;
   border-top: 3px solid;
@@ -19,18 +19,18 @@ export const Title = styled.div`
   ${css.flex('align-center')};
   flex-wrap: wrap;
   font-size: 13px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-bottom: 12px;
 `
 export const Reason = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 `
 export const Content = styled.div`
   ${css.flex('align-center')};
   flex-wrap: wrap;
 `
 export const IllegalItem = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   background: #4c312c;
   font-size: 12px;
   padding: 2px 5px;

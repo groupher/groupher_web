@@ -34,21 +34,21 @@ export const IconWrapper = styled.div`
 `
 export const Icon = styled(LaptopSVG)`
   ${css.size(18)};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
 `
 export const Title = styled.div<{ color: string }>`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 18px;
   font-weight: 600;
   margin-top: 8px;
 `
 export const Item = styled.div<{ color: string }>`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 14px;
   margin-bottom: 6px;
 
   &:hover {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     cursor: pointer;
   }
 

@@ -18,7 +18,7 @@ export const SiteLink = styled(Link).attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TSiteLink>`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-weight: ${({ active }) => (active ? 600 : 400)};
 
   height: 33px;
@@ -27,6 +27,6 @@ export const SiteLink = styled(Link).attrs(({ testid }: TTestable) => ({
     cursor: pointer;
     text-decoration: none;
     font-weight: 600;
-    color: ${theme('thread.extraInfo')};
+    color: ${theme('article.info')};
   }
 `

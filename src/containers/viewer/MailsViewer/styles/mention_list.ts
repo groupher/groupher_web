@@ -34,18 +34,18 @@ export const UserAvatar = styled(Img)`
   margin-right: 8px;
 `
 export const UserNickname = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-top: -2px;
   ${UserLabel}:hover & {
     color: ${theme('banner.title')};
   }
 `
 export const MessageLinker = styled.a`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-top: 5px;
   &:hover {
     text-decoration: underline;
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
   }
 `
 
@@ -71,13 +71,13 @@ export const TitleHeader = styled.div`
   ${css.flex('align-center')};
 `
 export const TypeLabel = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   background: ${theme('mailBox.headHightBg')};
   font-size: 0.85rem;
   margin-right: 3px;
 `
 export const SourceTitle = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   ${css.cutRest('350px')};
   font-size: 0.9rem;
   &:hover {
@@ -86,7 +86,7 @@ export const SourceTitle = styled.div`
 `
 export const SourcePreview = styled.div`
   ${css.flex()};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 0.8rem;
   margin-top: 3px;
   margin-left: 20px;

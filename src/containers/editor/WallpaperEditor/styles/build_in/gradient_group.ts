@@ -18,7 +18,7 @@ export const BallWrapper = styled.div<TActive>`
   border-radius: 100%;
   border: 1.5px solid;
   border-color: ${({ $active }) =>
-    $active ? theme('thread.articleTitle') : 'transparent'};
+    $active ? theme('article.title') : 'transparent'};
   padding: 3px;
   background: ${({ $active }) => ($active ? theme('border') : 'transparent')};
   margin-bottom: 10px;
@@ -54,5 +54,5 @@ export const ActiveSign = styled.div`
   border-bottom-left-radius: 30px;
   z-index: 3;
   border: 1px solid;
-  border-color: ${theme('thread.articleTitle')};
+  border-color: ${theme('article.title')};
 `

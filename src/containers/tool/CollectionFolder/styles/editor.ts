@@ -13,7 +13,7 @@ export const Wrapper = styled.div<TActive>`
 `
 export const Header = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   background: ${theme('modal.bg')};
   filter: ${theme('modal.subPanelShadow')};
   height: 50px;
@@ -28,14 +28,14 @@ export const InnerWrapper = styled.div`
   height: 100%;
 `
 export const SidebarWrapper = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   width: 250px;
   padding-left: 12px;
   padding-top: 12px;
   margin-right: 10px;
 `
 export const NoteText = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 13px;
   margin-right: 25px;
   margin-top: 10px;
@@ -56,7 +56,7 @@ export const FormItemWrapper = styled.div`
   margin-bottom: 20px;
 `
 export const FormLabel = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 13px;
   margin-bottom: 10px;
   margin-left: 3px;

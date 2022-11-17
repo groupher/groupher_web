@@ -59,7 +59,7 @@ export const Label = styled.label<TLabel>`
     height: ${({ size }) => getRadioBoxSize(size)};
     border: 2px solid;
     border-color: ${({ checked }) =>
-      checked ? theme('button.fg') : theme('thread.articleTitle')};
+      checked ? theme('button.fg') : theme('article.title')};
     border-radius: 50%;
   }
 

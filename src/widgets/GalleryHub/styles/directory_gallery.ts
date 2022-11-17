@@ -6,7 +6,7 @@ import css, { theme } from '@/utils/css'
 export const Wrapper = styled.div`
   ${css.flex()};
   flex-wrap: wrap;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   width: 100%;
 `
 
@@ -44,11 +44,11 @@ export const IntroHead = styled.div<{ clickable: boolean }>`
   }
 `
 export const Icon = styled(Img)`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   ${css.circle(22)};
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 18px;
   margin-left: 12px;
 `
@@ -60,5 +60,5 @@ export const Footer = styled.div<{ clickable: boolean }>`
 `
 export const UpdatedAt = styled.div`
   font-size: 13px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `

@@ -27,11 +27,11 @@ export const Header = styled.div`
   margin-bottom: 20px;
 `
 export const Hint = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 13px;
 `
 export const Article = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   ${css.cutRest('180px')};
   font-size: 14px;
   margin-left: 5px;
@@ -67,7 +67,7 @@ export const LogoWrapper = styled.div<{ noBg: boolean }>`
   `};
 `
 export const Logo = styled(Img)<{ small: boolean }>`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${({ small }) => (small ? css.circle('20px') : css.circle('28px'))};
   filter: saturate(0.6);
   opacity: 0.8;
@@ -78,11 +78,11 @@ export const Logo = styled(Img)<{ small: boolean }>`
   }
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 13px;
 
   ${Media}:hover & {
-    color: ${theme('thread.extraInfo')};
+    color: ${theme('article.info')};
     font-weight: 500;
   }
 

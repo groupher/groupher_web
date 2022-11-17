@@ -4,7 +4,7 @@ import css, { theme } from '@/utils/css'
 
 export const Wrapper = styled.div`
   width: 700px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   padding-left: 5px;
 `
 export const ArticleFooter = styled.div`

@@ -22,7 +22,7 @@ export const Header = styled.div`
   padding-right: 14px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 14px;
 `
 export const CommunityWrapper = styled.div`
@@ -48,6 +48,6 @@ export const CommunityLogo = styled(CommunityFaceLogo)`
 export const CommunityTitle = styled.div`
   font-size: 14px;
   margin-left: 10px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   ${css.cutRest('100px')}
 `

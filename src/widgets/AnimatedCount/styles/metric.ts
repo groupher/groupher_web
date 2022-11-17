@@ -22,8 +22,8 @@ export const getFontSize = (size: TSize): number => {
 
 export const getCountColor = ($active: boolean, count: number): string => {
   if ($active) return '#139C9E'
-  if (count === 0) return theme('thread.articleDigest')
-  if (count >= 5) return theme('thread.extraInfo')
+  if (count === 0) return theme('article.digest')
+  if (count >= 5) return theme('article.info')
 
-  return theme('thread.extraInfo')
+  return theme('article.info')
 }

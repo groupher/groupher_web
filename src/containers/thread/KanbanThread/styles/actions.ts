@@ -9,13 +9,13 @@ export const Wrapper = styled.div`
 `
 export const Title = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 16px;
   font-weight: 500;
   margin-top: 6px;
 `
 export const Count = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   margin-left: 10px;
   opacity: 0.8;
@@ -27,7 +27,7 @@ export const LeftPart = styled.div`
 `
 export const KanbanIcon = styled(KanbanSVG)`
   ${css.size(13)};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
   margin-right: 10px;
   margin-top: 6px;
 `
@@ -39,7 +39,7 @@ export const RightPart = styled.div`
   ${css.flex('align-center')};
 `
 export const JoinTitle = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   margin-right: 10px;
   margin-top: 3px;

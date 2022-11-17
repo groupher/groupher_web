@@ -20,7 +20,7 @@ export const Main = styled.div`
   padding-bottom: 30px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 20px;
   font-weight: 580;
   margin-bottom: 6px;
@@ -30,7 +30,7 @@ export const TagsWrapper = styled.div`
   margin-bottom: 10px;
 `
 export const Body = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 15px;
   line-height: 1.85;
 `
@@ -45,10 +45,10 @@ export const CommentWrapper = styled.div`
 `
 export const CommentIcon = styled(CommentSVG)`
   ${css.size(13)};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
 `
 export const Text = styled.div`
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   font-size: 13px;
   margin-left: 6px;
 `
@@ -58,7 +58,7 @@ export const DateTime = styled.div`
   margin-top: -4px;
 `
 export const Version = styled.span`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 18px;
   font-weight: 480;
   opacity: 0.6;

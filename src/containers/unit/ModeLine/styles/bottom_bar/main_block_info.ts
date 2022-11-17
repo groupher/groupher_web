@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
 `
 export const Title = styled(Link)`
   ${css.cutRest('50px')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 12px;
   margin-left: 0;
   margin-right: 8px;

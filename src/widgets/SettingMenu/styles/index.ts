@@ -26,17 +26,17 @@ export const Option = styled.div<TActive>`
 `
 export const ActiveDot = styled.div`
   ${css.circle(6)};
-  background: ${theme('thread.extraInfo')};
+  background: ${theme('article.info')};
   position: absolute;
   left: 20px;
   top: 18px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 15px;
 `
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   margin-top: 2px;
 `

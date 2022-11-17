@@ -35,7 +35,7 @@ export const LabelDotSign = styled.div<THashSign>`
   margin-right: 4px;
 `
 export const Title = styled.div<{ size: TSizeTSM }>`
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   font-size: ${({ size }) => getTitleSize(size)};
   margin-left: 3px;
   word-break: keep-all;
@@ -43,7 +43,7 @@ export const Title = styled.div<{ size: TSizeTSM }>`
 `
 export const SolidTitle = styled.div<{ size: TSizeTSM; color: string }>`
   /* color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)}; */
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   font-size: 13px;
   margin-left: 3px;
   word-break: keep-all;
@@ -51,7 +51,7 @@ export const SolidTitle = styled.div<{ size: TSizeTSM; color: string }>`
   margin-right: 10px;
 `
 export const More = styled.div`
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   font-weight: bold;
   cursor: pointer;
   margin-top: -3px;

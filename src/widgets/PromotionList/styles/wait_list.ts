@@ -12,14 +12,14 @@ export const Wrapper = styled.div`
 export const Item = styled.div<TActive>`
   ${css.cutRest('50px')};
   color: ${({ active }) =>
-    active ? theme('thread.articleTitle') : theme('thread.articleDigest')};
+    active ? theme('article.title') : theme('article.digest')};
   font-size: 12px;
   margin-right: 8px;
   margin-bottom: 2px;
 
   &:hover {
     cursor: pointer;
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
   }
 
   transition: all 0.3s;

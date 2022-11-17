@@ -21,11 +21,11 @@ export const Block = styled.div<TActive>`
   overflow: hidden;
   border: 2px solid;
   border-color: ${({ $active }) =>
-    $active ? theme('thread.articleTitle') : 'transparent'};
+    $active ? theme('article.title') : 'transparent'};
   opacity: ${({ $active }) => ($active ? 1 : 0.85)};
 
   &:hover {
-    border-color: ${theme('thread.articleTitle')};
+    border-color: ${theme('article.title')};
     cursor: pointer;
     opacity: 0.85;
   }
@@ -46,10 +46,10 @@ export const ActiveSign = styled.div`
   border-bottom-left-radius: 30px;
   z-index: 3;
   border: 1px solid;
-  border-color: ${theme('thread.articleTitle')};
+  border-color: ${theme('article.title')};
 `
 export const CheckIcon = styled(CheckedSVG)`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   ${css.size(16)};
   position: absolute;
   top: 2px;

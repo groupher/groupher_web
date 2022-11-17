@@ -11,7 +11,7 @@ export const TotalCountWrapper = styled.div`
   flex-grow: 1;
 `
 export const TotalTitle = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 13px;
   margin-left: 1px;
 
@@ -23,7 +23,7 @@ export const TotalTitle = styled.div`
 `
 export const TotalNum = styled.span<{ highlight: boolean }>`
   color: ${({ highlight }) =>
-    highlight ? theme('comment.number') : theme('thread.articleTitle')};
+    highlight ? theme('comment.number') : theme('article.title')};
   font-weight: bold;
   font-size: 15px;
   margin-left: 5px;

@@ -13,7 +13,7 @@ export const CommunityLogo = styled(CommunityFaceLogo)`
 `
 export const MobileHint = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-bottom: 4px;
   margin-left: -10px;
   display: none;

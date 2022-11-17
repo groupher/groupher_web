@@ -17,6 +17,6 @@ export const ToggleIcon = styled(Img)`
 `
 
 export const ToggleTitle = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 0.9rem;
 `

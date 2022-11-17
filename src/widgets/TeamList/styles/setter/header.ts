@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   width: 100%;
   background: ${theme('modal.bg')};
   filter: ${theme('modal.subPanelShadow')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   padding-left: 20px;
   padding-right: 11px;
 `

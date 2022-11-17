@@ -17,17 +17,17 @@ export const Wrapper = styled.div`
 
   &:hover {
     border: 1px dashed;
-    border-color: ${theme('thread.extraInfo')};
+    border-color: ${theme('article.info')};
   }
   transition: all 0.2s;
 `
 export const UploadIcon = styled(UploadSVG)`
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
   ${css.size(30)};
 `
 export const Title = styled.div`
   font-size: 14px;
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   opacity: 0.6;
   margin-top: 15px;
   font-weight: bold;
@@ -53,5 +53,5 @@ export const Menu = styled.div`
 `
 export const MoreIcon = styled(MoreSVG)`
   ${css.size(16)};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
 `

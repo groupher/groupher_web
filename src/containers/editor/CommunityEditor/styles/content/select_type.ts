@@ -27,7 +27,7 @@ export const Header = styled.div`
   margin-bottom: 18px;
 `
 const Icon = styled(Img)`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   ${css.size(16)};
   margin-right: 10px;
 `
@@ -39,11 +39,11 @@ export const DemoIcon = styled(Icon)`
   margin-top: -1px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 17px;
 `
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   line-height: 1.7;
 `
 

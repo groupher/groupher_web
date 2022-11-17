@@ -7,7 +7,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flexColumn('align-start')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   line-height: 24px;
   font-size: 15px;
   opacity: 0.8;

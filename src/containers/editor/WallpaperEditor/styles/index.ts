@@ -14,7 +14,7 @@ export const Banner = styled.div`
 `
 export const Title = styled.div`
   font-size: 17px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-weight: bold;
   margin-bottom: 16px;
   margin-left: 2px;

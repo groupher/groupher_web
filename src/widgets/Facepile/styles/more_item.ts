@@ -29,7 +29,7 @@ export const TextMore = styled(AvatarsMore)`
   margin-left: 1px;
 `
 export const DotText = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-top: -10px;
   letter-spacing: -1px;
   padding-right: 2px;
@@ -40,12 +40,12 @@ export const StateInfoWrapper = styled.div`
 `
 export const TotalCommentStateHint = styled.div`
   ${css.flex('justify-end')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   width: 100%;
   font-size: 12px;
 `
 export const Focus = styled.span`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-weight: bold;
   margin-left: 4px;
 `

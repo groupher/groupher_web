@@ -102,7 +102,7 @@ export const ToolbarWrapper = styled.div`
   height: 24px;
 `
 export const ToolIcon = styled(Img)<{ reverse?: boolean }>`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   ${css.size(16)};
   transform: ${({ reverse }) => (reverse ? 'rotate(180deg)' : '')};
 `

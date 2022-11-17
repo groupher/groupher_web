@@ -17,7 +17,7 @@ export const LanguageDot = styled.div`
   background-color: ${({ color }) => color};
 `
 export const LanguagePopover = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   padding: 5px 10px;
   font-size: 1rem;
   font-weight: bold;

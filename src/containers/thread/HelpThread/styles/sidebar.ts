@@ -11,7 +11,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   ${css.flexColumn()};
   width: 320px;
   min-width: 320px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   padding-top: 25px;
   padding-left: 50px;
 `
@@ -21,18 +21,18 @@ export const Header = styled.div`
 `
 export const FAQIcon = styled(FAQSVG)`
   ${css.size(15)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   margin-right: 10px;
   opacity: 0.8;
   margin-top: 2px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const Section = styled.div`
   ${css.lineClamp(2)}
   font-size: 15px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-weight: 400;
   margin-bottom: 14px;
 
@@ -49,7 +49,7 @@ export const Footer = styled.div`
   border-top-color: ${theme('border')};
   padding-top: 20px;
   font-size: 12px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const MoreLink = styled.div`
   color: ${theme('link')};

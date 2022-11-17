@@ -5,7 +5,7 @@ import ArticleMirrorSVG from '@/icons/ArticleMirror'
 
 export const MirrorIcon = styled(ArticleMirrorSVG)`
   ${css.size(20)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   position: absolute;
   top: -14px;
   right: -35px;
@@ -20,7 +20,7 @@ export const MirrorIcon = styled(ArticleMirrorSVG)`
 `
 export const PopHint = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   margin-top: 6px;
   margin-bottom: 15px;

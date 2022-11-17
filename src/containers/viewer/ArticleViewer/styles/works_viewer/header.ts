@@ -23,11 +23,11 @@ export const Intro = styled.div`
 export const Title = styled.div`
   ${css.cutRest('350px')};
   font-size: 22px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 `
 export const Desc = styled.div`
   font-size: 14px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-top: 4px;
 `
 export const ContactWrapper = styled.div`
@@ -44,18 +44,18 @@ export const PublishWrapper = styled.div`
   margin-top: 10px;
 `
 export const PublishHint = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
 `
 export const PubDate = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 13px;
   margin-left: 4px;
   margin-top: -1px;
 `
 export const EditedHint = styled.div`
   font-size: 13px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 
   &:before {
     content: '(';

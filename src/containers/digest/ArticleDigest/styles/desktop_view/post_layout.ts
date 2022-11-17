@@ -17,7 +17,7 @@ export const Header = styled.div`
 `
 export const PublishDateInfo = styled.div`
   font-size: 10px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const CommunityInfo = styled.div`
   ${css.flex('align-start', 'justify-center')};
@@ -26,7 +26,7 @@ export const CommunityInfo = styled.div`
 `
 export const Title = styled.div`
   font-size: 26px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-bottom: 30px;
   ${css.lineClamp(3)};
 `
@@ -38,17 +38,17 @@ export const BottomInfo = styled.div`
   padding-right: 2px;
   border-bottom-color: ${theme('border')};
   width: 100%;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const AuthorName = styled(Link)`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   text-decoration: none;
   font-size: 14px;
   margin-bottom: 1px;
 
   &:hover {
     text-decoration: underline;
-    color: ${theme('thread.articleDigest')};
+    color: ${theme('article.digest')};
     cursor: pointer;
   }
 `

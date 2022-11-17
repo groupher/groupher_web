@@ -7,12 +7,12 @@ export const Wrapper = styled.div`
   ${css.flex('align-center')};
 `
 export const LoadingIcon = styled(Img)`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   ${css.size(26)};
   animation: ${animate.rotate360} 1s linear infinite;
   margin-right: 3px;
 `
 export const LoadingText = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 0.9rem;
 `

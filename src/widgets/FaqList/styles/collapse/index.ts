@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
 `
 export const Footer = styled.div`
   ${css.flex('align-both')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   margin-top: 60px;
   margin-left: -50px;

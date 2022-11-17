@@ -23,7 +23,7 @@ const AnimatedCount: FC<TProps> = ({
       <FlipNumbers
         height={numSize}
         width={numSize}
-        color={theme.thread.extraInfo}
+        color={theme.article.info}
         perspective={400}
         duration={1}
         numbers={String(count)}

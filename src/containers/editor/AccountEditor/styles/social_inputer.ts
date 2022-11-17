@@ -32,13 +32,13 @@ const iconBase = `
 export const CityIcon = styled(CitySVG)`
   ${iconBase};
   ${css.size(16)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   margin-left: 1px;
   margin-right: 11px;
 `
 export const CompanyIcon = styled(CompanySVG)`
   ${iconBase};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 `
 export const MailIcon = styled(MailSVG)`
   ${iconBase};
@@ -46,23 +46,23 @@ export const MailIcon = styled(MailSVG)`
   margin-left: 1px;
   margin-right: 11px;
   margin-top: 1px;
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 `
 export const GithubIcon = styled(GithubSVG)`
   ${iconBase};
   ${css.size(15)};
   margin-right: 11px;
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 `
 export const TwitterIcon = styled(TwitterSVG)`
   ${iconBase};
   ${css.size(14)};
   margin-right: 11px;
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 `
 export const BlogIcon = styled(BlogSVG)`
   ${iconBase};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   margin-right: 9px;
   margin-top: -1px;
 `

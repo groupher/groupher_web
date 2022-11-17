@@ -9,7 +9,7 @@ export const Wrapper = styled.div<{ type: string }>`
   width: 100%;
   height: ${({ type }) => getInfoPanelHeight(type)};
   background: ${theme('modal.subPanel')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   transition: all 0.1s;
 
   border-bottom-left-radius: 10px;

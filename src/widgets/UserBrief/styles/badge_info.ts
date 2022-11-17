@@ -13,11 +13,11 @@ export const BadgeWrapper = styled.div`
 `
 
 export const BadgeIcon = styled(Img)`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   ${css.size(12)};
   margin-right: 3px;
 `
 export const BadgeTitle = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 0.75rem;
 `

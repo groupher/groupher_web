@@ -72,13 +72,13 @@ export const SelectItem = styled.div<TActive>`
   background-color: ${({ active }) =>
     active ? theme('textBadge') : 'transparent'}; // to-theme
   color: ${({ active }) =>
-    active ? theme('thread.articleTitle') : theme('thread.articleDigest')};
+    active ? theme('article.title') : theme('article.digest')};
   font-weight: ${({ active }) => (active ? 600 : 450)};
   position: relative;
 
   &:hover {
     cursor: pointer;
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     background-color: #f8f8f8;
   }
 

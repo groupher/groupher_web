@@ -14,7 +14,7 @@ export const Wrapper = styled.div<TActive>`
 `
 export const Header = styled.div`
   ${css.flex('align-end')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   background: ${theme('modal.bg')};
   padding: 20px;
   padding-top: 15px;
@@ -32,7 +32,7 @@ export const Header = styled.div`
   `};
 `
 export const Artiment = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   ${css.cutRest('200px')};
   font-size: 15px;
   margin-left: 5px;
@@ -63,7 +63,7 @@ export const FolderWrapper = styled.div`
 export const Footer = styled.div`
   ${css.flex('justify-start')};
   font-size: 14px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   background: ${theme('modal.subPanel')};
   padding: 15px 20px;
 `

@@ -27,11 +27,11 @@ export const Intro = styled.div`
   margin-left: 20px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 17px;
 `
 export const Desc = styled.div`
   ${css.lineClamp(2)}
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 14px;
 `

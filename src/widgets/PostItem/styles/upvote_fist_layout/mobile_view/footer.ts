@@ -39,28 +39,28 @@ export const Extra = styled.li`
   margin-bottom: 4px;
   transition: opacity 0.2s;
   font-size: 13px;
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
 `
 export const UpvotesWrapper = styled.div`
   transform: scale(0.9);
 `
 export const ViewIcon = styled(ViewSVG)`
   ${css.size(10)};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
   margin-right: 4px;
 `
 export const CommentIcon = styled(CommentSVG)`
   ${css.size(8)};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
   margin-right: 6px;
 `
 export const BasicState = styled.div`
   ${css.flex('align-center')};
   font-size: 12px;
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
 `
 export const BodyDigest = styled.li`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   white-space: normal;
   display: block;
   font-size: 12px;

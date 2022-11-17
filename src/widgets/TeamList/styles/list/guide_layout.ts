@@ -22,9 +22,9 @@ export const Avatar = styled(Img)`
 `
 export const SettingIcon = styled(Img)`
   ${css.size(15)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 
   ${Wrapper}:hover & {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
   }
 `

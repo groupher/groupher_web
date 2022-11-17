@@ -10,7 +10,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 
 export const Tail = styled(Img)`
   position: absolute;
-  fill: #257f7c; // ${theme('thread.articleDigest')};
+  fill: #257f7c; // ${theme('article.digest')};
   opacity: 0.8;
   ${css.size(16)};
   top: 24px;

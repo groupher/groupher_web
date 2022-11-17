@@ -35,7 +35,7 @@ export const By = styled.div`
   ${css.flex('align-both')};
 
   font-size: 30px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-left: -20px;
   padding-bottom: 8px;
   transform: scaleY(0.8);
@@ -47,7 +47,7 @@ export const Circle = styled.div<TActive>`
   border: 1px solid;
   border-color: ${theme('font')};
   margin-right: 10px;
-  color: ${({ active }) => (active ? 'white' : theme('thread.articleTitle'))};
+  color: ${({ active }) => (active ? 'white' : theme('article.title'))};
   background-color: ${({ active }) => (active ? theme('font') : '')};
   &:hover {
     cursor: pointer;

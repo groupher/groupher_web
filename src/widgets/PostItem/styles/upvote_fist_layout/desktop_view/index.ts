@@ -13,14 +13,14 @@ export const Main = styled.div`
 `
 export const DigestWrapper = styled.div`
   ${css.cutRest('530px')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-top: 6px;
   margin-bottom: 12px;
   font-size: 13px;
   cursor: pointer;
 
   &:hover {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
   }
   transition: color 0.2s;
 `

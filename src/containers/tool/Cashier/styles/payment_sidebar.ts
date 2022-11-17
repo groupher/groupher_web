@@ -32,12 +32,12 @@ export const SelectorWrapper = styled.div`
   margin-top: 30px;
 `
 export const SelectorTitle = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-weight: bold;
 `
 export const TitleDivider = styled.div`
   border-bottom: 1px solid;
-  border-bottom-color: ${theme('thread.articleTitle')};
+  border-bottom-color: ${theme('article.title')};
   width: 80%;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -51,11 +51,11 @@ const OptionWrapper = styled.div`
   }
 `
 export const WeixinWrapper = styled(OptionWrapper)<TActive>`
-  color: ${({ active }) => (active ? '#3eb64b' : theme('thread.articleTitle'))};
+  color: ${({ active }) => (active ? '#3eb64b' : theme('article.title'))};
   display: ${({ show }) => (show ? 'block' : 'none')};
 `
 export const AliWrapper = styled(OptionWrapper)<TActive>`
-  color: ${({ active }) => (active ? '#42abe1' : theme('thread.articleTitle'))};
+  color: ${({ active }) => (active ? '#42abe1' : theme('article.title'))};
   display: ${({ show }) => (show ? 'block' : 'none')};
 `
 export const Holder = styled.div<{ margin?: string }>`
@@ -63,7 +63,7 @@ export const Holder = styled.div<{ margin?: string }>`
 `
 export const QuestionWrapper = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   &:hover {
     color: ${theme('thread.articeTitle')};
     cursor: pointer;
@@ -73,7 +73,7 @@ export const OptionTitle = styled.span`
   margin-left: 6px;
 `
 export const FaceValueWrapper = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const FaceValueNum = styled.span`
   color: orange;
@@ -83,5 +83,5 @@ export const PaymentIcon = styled(Img)`
   ${css.size(16)};
 `
 export const QuestionIcon = styled(PaymentIcon)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 `

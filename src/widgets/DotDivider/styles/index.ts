@@ -7,7 +7,7 @@ export const Wrapper = styled.div<TProps>`
   width: ${({ radius }) => `${radius}px`};
   height: ${({ radius }) => `${radius}px`};
   border-radius: 100%;
-  background-color: ${theme('thread.articleDigest')};
+  background-color: ${theme('article.digest')};
   opacity: 0.8;
 
   margin-left: ${({ space }) => `${space}px`};

@@ -15,7 +15,7 @@ export const WorksWrapper = styled.div`
 `
 // export const PublishDateInfo = styled.div`
 //   font-size: 12px;
-//   color: ${theme('thread.articleDigest')};
+//   color: ${theme('article.digest')};
 // `
 export const Avatar = styled.img`
   ${css.circle(25)};
@@ -33,12 +33,12 @@ export const Cover = styled(Img)`
 export const Title = styled.div`
   ${css.cutRest('180px')};
   font-size: 16px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-bottom: 2px;
 `
 export const Desc = styled.div`
   font-size: 13px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   ${css.cutRest('300px')};
 `
 export const TabsWrapper = styled.div`

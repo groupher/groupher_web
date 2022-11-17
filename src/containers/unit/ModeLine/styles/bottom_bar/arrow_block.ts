@@ -8,12 +8,12 @@ import SiteLogo from '@/icons/CPLogo'
 import UserSVG from '@/icons/User'
 
 export const MenuLogo = styled(Img)<TActive>`
-  fill: ${({ active }) => (active ? '#2ca1a2' : theme('thread.articleTitle'))};
+  fill: ${({ active }) => (active ? '#2ca1a2' : theme('article.title'))};
   ${css.size(12)};
 `
 export const UserLogo = styled(UserSVG)`
   ${css.size(14)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 `
 export const HomeLogo = styled(SiteLogo)`
   fill: ${theme('button.primary')};
@@ -22,13 +22,13 @@ export const HomeLogo = styled(SiteLogo)`
   margin-left: 2px;
 `
 export const ExploreLogo = styled(Img)<TActive>`
-  fill: ${({ active }) => (active ? '#2ca1a2' : theme('thread.articleTitle'))};
+  fill: ${({ active }) => (active ? '#2ca1a2' : theme('article.title'))};
   ${css.size(14)};
 `
 const Block = styled.div<{ bgColor: string }>`
   position: relative;
   ${css.flex('align-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   height: 100%;
   background: ${({ bgColor }) => bgColor};
   padding-left: 10px;

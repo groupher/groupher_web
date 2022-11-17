@@ -19,15 +19,14 @@ export const WechatLogo = styled(Img)`
 export const Title = styled.div`
   ${css.flex('align-center')};
   font-size: 15px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 `
 export const SelectWrapper = styled.div`
   ${css.flex('align-center')};
 `
 export const Letter = styled.div<TActive>`
   ${css.flex('align-both')};
-  color: ${({ $active }) =>
-    $active ? '#139c9e' : theme('thread.articleDigest')};
+  color: ${({ $active }) => ($active ? '#139c9e' : theme('article.digest'))};
   font-size: ${({ $active }) => ($active ? '15px' : '14px')};
   font-weight: ${({ $active }) => ($active ? 'bold' : 'normal')};
   margin-left: 13px;

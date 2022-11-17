@@ -18,9 +18,8 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 
 export const Item = styled.div<TItem>`
   ${css.flex('justify-end', 'align-center')};
-  fill: ${theme('thread.articleDigest')};
-  color: ${({ active }) =>
-    active ? activeColor : theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
+  color: ${({ active }) => (active ? activeColor : theme('article.digest'))};
   font-size: 14px;
   border-bottom: ${({ withDivider }) => (withDivider ? '1px solid' : 'none')};
   border-bottom-color: ${({ withDivider }) =>
@@ -29,8 +28,7 @@ export const Item = styled.div<TItem>`
   padding: ${({ withDivider }) => (withDivider ? '8px 6px' : '6px')};
 
   &:hover {
-    color: ${({ active }) =>
-      active ? activeColor : theme('thread.articleTitle')};
+    color: ${({ active }) => (active ? activeColor : theme('article.title'))};
     cursor: pointer;
   }
 
@@ -50,8 +48,7 @@ export const FixedIcon = styled(Img)`
 `
 export const Icon = styled(Img)<TActive>`
   display: ${({ active }) => (active ? 'block' : 'none')};
-  fill: ${({ active }) =>
-    active ? activeColor : theme('thread.articleDigest')};
+  fill: ${({ active }) => (active ? activeColor : theme('article.digest'))};
   ${css.size(15, false)};
 
   ${Item}:hover & {
@@ -59,7 +56,7 @@ export const Icon = styled(Img)<TActive>`
   }
 `
 export const ActiveDot = styled.div`
-  background: ${theme('thread.articleTitle')};
+  background: ${theme('article.title')};
   width: 5px;
   height: 5px;
   border-radius: 50%;

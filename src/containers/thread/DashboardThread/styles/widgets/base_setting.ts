@@ -44,11 +44,11 @@ export const Header = styled.div`
   width: 100%;
 `
 export const ThreadTitle = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 15px;
 `
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-top: 4px;
   font-size: 13px;
   width: 75%;

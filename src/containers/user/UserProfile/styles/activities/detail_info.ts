@@ -7,7 +7,7 @@ export const Wrapper = styled.div<{ first: boolean }>`
   position: relative;
   ${css.flexColumn()};
   padding: 10px 30px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   min-height: ${({ first }) => (first ? '130px' : '100px')};
   border-left: 3px solid;
   border-left-color: #103d46;
@@ -23,12 +23,12 @@ export const IconWrapper = styled.div<{ first: boolean }>`
   background: #033d45;
 `
 export const Icon = styled(EditPenSVG)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(14)};
 `
 export const Content = styled.div``
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 14px;
 
   ${css.media.mobile`
@@ -36,7 +36,7 @@ export const Title = styled.div`
   `};
 `
 export const Digest = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   ${css.cutRest('400px')};
   font-size: 13px;
   padding-top: 4px;

@@ -33,8 +33,12 @@ const BriefView: FC<TProps> = ({ metric, article, layout }) => {
         <TopInfo metric={METRIC.ARTICLE} article={article} noBottomBorder />
         <MainInfos>
           <BaseInfo>
-            <Item href={`${ABOUT_LINK}`}>关于</Item>
-            <Item href={`/${ROUTE.APPLY_COMMUNITY}`}>创建社区</Item>
+            <Item href={`${ABOUT_LINK}`} prefetch={false}>
+              关于
+            </Item>
+            <Item href={`/${ROUTE.APPLY_COMMUNITY}`} prefetch={false}>
+              创建社区
+            </Item>
             <NoLinkItem onClick={() => joinUS()}>加入群聊</NoLinkItem>
             <Item href={`${GITHUB}`} rel="noopener noreferrer" target="_blank">
               Github

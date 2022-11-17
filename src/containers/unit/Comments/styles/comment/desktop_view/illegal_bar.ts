@@ -15,17 +15,17 @@ export const Wrapper = styled.div<{ isFold: boolean }>`
 `
 
 export const BotIcon = styled(BotSVG)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(15)};
   margin-top: -1px;
   opacity: 0.6;
 `
 export const Content = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-left: 10px;
   font-size: 13px;
 `
 export const Reason = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 `

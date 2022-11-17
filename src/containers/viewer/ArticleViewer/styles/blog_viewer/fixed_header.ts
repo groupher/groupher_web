@@ -21,6 +21,6 @@ export const ArticleWrapper = styled.div`
 `
 export const ArticleTitle = styled.div`
   font-size: 18px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   ${css.cutRest('400px')};
 `

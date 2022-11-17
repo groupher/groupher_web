@@ -23,7 +23,7 @@ export const RedButton = styled.div`
   }
 `
 export const CancelButton = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 13px;
   opacity: 0.8;
 

@@ -14,22 +14,22 @@ const icon = `
   ${css.size(12)};
 
   ${Wrapper}:hover & {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
   }
 
   transition: fill 0.2s;
 `
 const CC = styled(CCSVG)`
   ${icon};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
 `
 const CCForbid = styled(CCForbidSVG)`
   ${icon};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
 `
 const CCApprove = styled(CCApproveSVG)`
   ${icon};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
 `
 
 export const Icon = {
@@ -40,11 +40,11 @@ export const Icon = {
 
 export const Text = styled.div`
   font-size: 12px;
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   margin-left: 6px;
 
   ${Wrapper}:hover & {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
   }
   transition: color 0.2s;
 `

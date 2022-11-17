@@ -17,7 +17,7 @@ export const MediaWrapper = styled.div`
 `
 export const Title = styled.div`
   ${css.flex('align-end')};
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   font-size: 16px;
   margin-left: 3px;
   font-weight: bold;
@@ -33,14 +33,14 @@ export const Title = styled.div`
   }
 `
 export const SubTitle = styled.span`
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   opacity: 0.6;
   font-size: 12px;
   margin-left: 10px;
   margin-bottom: 2px;
 `
 export const Desc = styled.div`
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   opacity: 0.6;
   font-size: 14px;
   margin-left: 3px;

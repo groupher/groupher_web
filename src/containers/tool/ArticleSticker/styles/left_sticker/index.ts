@@ -34,11 +34,11 @@ export const BackWrapper = styled.div`
   margin-left: -4px;
 `
 export const ArrowIcon = styled(Img)`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   ${css.size(16)};
 `
 export const BackText = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 12px;
   margin-left: 5px;
   cursor: pointer;

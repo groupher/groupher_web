@@ -41,10 +41,10 @@ export const Block = styled(BlockBase)`
 `
 export const UpvoteIcon = styled(UpvoteSVG)<{ size: number }>`
   ${({ size }) => css.size(size)};
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   transform: scaleY(0.8);
 `
 export const CommentIcon = styled(CommentSVG)`
   ${css.size(12)};
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
 `

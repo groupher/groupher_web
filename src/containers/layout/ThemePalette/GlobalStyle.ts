@@ -96,7 +96,7 @@ const GlobalStyle = createGlobalStyle`
     max-width: 368px;
     font-size: 1rem;
     margin-bottom: 0.2em;
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
   }
 
   .markdown-editor-mentionSuggestionsEntryAvatar {

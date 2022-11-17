@@ -67,18 +67,18 @@ export const TrendIcon = styled(PulseSVG)`
   fill: #2a7c43;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-weight: 600;
   font-size: 13px;
   margin-bottom: 2px;
 `
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 10px;
   opacity: 0.8;
 `
 export const Num = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 22px;
   font-weight: 600;
   margin-top: 5px;

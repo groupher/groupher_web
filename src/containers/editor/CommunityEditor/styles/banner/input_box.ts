@@ -47,7 +47,7 @@ export const InputBar = styled.input.attrs(() => ({
   width: auto;
   min-width: 420px;
   outline: none;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 18px;
   max-height: none;
   background-color: #0b2631;

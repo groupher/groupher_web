@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   ${css.flexColumn()};
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 14px;
   margin-bottom: 16px;
 `

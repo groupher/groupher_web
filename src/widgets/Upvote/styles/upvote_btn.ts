@@ -41,7 +41,7 @@ type TWrapper = {
 
 export const Wrapper = styled.div<TWrapper>`
   display: inline-block;
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   font-size: 15px;
   /* padding: 5px 0; */
   margin-top: 0;
@@ -172,12 +172,12 @@ export const UpIcon = styled(UpvoteIcon)<TUpIcon>`
   transform: scale(1, 0.8);
 
   &:hover {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
     cursor: pointer;
   }
 
   ${IconWrapper}:hover & {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
     cursor: pointer;
   }
 

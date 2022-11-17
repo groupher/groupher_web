@@ -10,13 +10,13 @@ export const Brief = styled.div`
   ${css.flexGrow('align-center')};
   margin-bottom: 7px;
   margin-left: 10px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 `
 export const Title = styled.div`
   position: relative;
   font-size: 15px;
   font-weight: 600;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 
   @media (max-width: 1450px) {
     ${css.cutRest('500px')};
@@ -29,7 +29,7 @@ export const Title = styled.div`
   }
 
   &:hover {
-    color: ${theme('thread.articleDigest')};
+    color: ${theme('article.digest')};
     cursor: pointer;
   }
 
@@ -42,13 +42,13 @@ export const TitleLink = styled.div`
   position: relative;
   font-size: 15px;
   margin-top: -1px;
-  color: ${theme('thread.articleLink')};
+  color: ${theme('article.link')};
   margin-left: 10px;
   opacity: 0.8;
   text-decoration: underline;
 `
 export const LinkIcon = styled(LinkSVG)`
-  fill: ${theme('thread.articleLink')};
+  fill: ${theme('article.link')};
   position: absolute;
   top: 6px;
   left: -5px;

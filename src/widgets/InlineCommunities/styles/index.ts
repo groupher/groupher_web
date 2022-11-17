@@ -9,16 +9,16 @@ export const Title = styled.div``
 export const MoreText = styled.div``
 
 export const PopoverInfo = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   padding: 10px;
   padding-top: 5px;
   padding-bottom: 5px;
 `
 export const Linker = styled.a`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   &:hover {
     text-decoration: underline;
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
   }
 `
 export const CommunityWrapper = styled.div`

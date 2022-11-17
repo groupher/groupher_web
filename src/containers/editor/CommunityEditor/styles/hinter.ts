@@ -6,12 +6,12 @@ export const Wrapper = styled.div`
   ${css.flexColumn('align-start')};
 `
 export const Title = styled.div`
-  color: ${theme('tooltip.text')};
+  color: ${theme('article.digest')};
   font-weight: bold;
   font-size: 1rem;
 `
 export const Desc = styled.div`
-  color: ${theme('tooltip.text')};
+  color: ${theme('article.digest')};
   margin-top: 10px;
   margin-left: 7px;
   font-size: 0.9rem;

@@ -56,11 +56,11 @@ export const Avatar = styled(Img)`
 `
 export const Linker = styled.a`
   transition: color 0.3s;
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
 
   &:hover {
     cursor: pointer;
-    color: ${theme('thread.extraInfo')};
+    color: ${theme('article.info')};
     text-decoration: none;
   }
 `
@@ -76,14 +76,14 @@ export const PopAvatar = styled(Img)`
 `
 export const PopNickname = styled.a`
   padding: 5px 10px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 1rem;
   font-weight: border;
   transition: color 0.3s;
 
   &:hover {
     cursor: pointer;
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     text-decoration: underline;
   }
 `

@@ -32,7 +32,7 @@ export const NumberTitle = styled.div<TNumberTitle>`
 `
 export const NumberDivider = styled.div`
   border: 1px solid;
-  border-color: ${theme('thread.articleDigest')};
+  border-color: ${theme('article.digest')};
   opacity: 0.3;
   height: 20px;
   align-self: flex-end;

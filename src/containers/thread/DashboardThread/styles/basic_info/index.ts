@@ -22,12 +22,12 @@ export const Logo = styled.div`
   border-radius: 4px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 15px;
   margin-bottom: 12px;
 `
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   opacity: 0.8;
   font-size: 12px;
   margin-top: 10px;
@@ -37,7 +37,7 @@ export const Row = styled.div`
   ${css.flex('align-center')};
 `
 export const Label = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 14px;
 `
 export const Inputer = styled(Input)`

@@ -13,10 +13,10 @@ export const PopoverInfo = styled.div`
   width: 200px;
 `
 export const PopTitle = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 `
 export const PopDesc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 0.8rem;
   margin-top: 4px;
 `

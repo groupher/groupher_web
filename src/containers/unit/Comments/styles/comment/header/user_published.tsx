@@ -18,13 +18,13 @@ export const ArticleBase = styled.div`
   flex-grow: 1;
 `
 export const AuthorTitle = styled(Link)`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   text-decoration: none;
   font-size: 15px;
   ${css.cutRest('300px')};
 
   &:hover {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     text-decoration: underline;
   }
 
@@ -33,14 +33,14 @@ export const AuthorTitle = styled(Link)`
   `};
 `
 export const AuthorName = styled.a`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 13px;
   text-decoration: none;
   margin-top: 2px;
   margin-bottom: 2px;
 
   &:hover {
-    color: ${theme('thread.articleDigest')};
+    color: ${theme('article.digest')};
     text-decoration: underline;
   }
 `

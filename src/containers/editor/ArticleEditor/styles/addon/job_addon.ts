@@ -13,11 +13,11 @@ export const Wrapper = styled.div`
 `
 export const LaptopIcon = styled(LaptopSVG)`
   ${css.size(16)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   margin-right: 2px;
 
   ${Wrapper}:hover & {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
   }
   transition: fill 0.2s;
 `
@@ -34,10 +34,10 @@ export const CompanyInput = styled(Input)`
 `
 export const LinkIcon = styled(LinkSVG)`
   ${css.size(16)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 
   ${Wrapper}:hover & {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
   }
   transition: fill 0.2s;
 `

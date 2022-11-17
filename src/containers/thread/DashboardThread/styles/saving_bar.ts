@@ -27,17 +27,17 @@ export const HintWrapper = styled.div`
   ${css.flex('align-center')};
 `
 export const InfoIcon = styled(InfoSVG)`
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
   ${css.size(14)};
   margin-right: 6px;
   opacity: 0.6;
 `
 export const HintText = styled.div`
   font-size: 13px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const Hint = styled.span`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-left: 2px;
 `
 export const ActionWrapper = styled.div`
