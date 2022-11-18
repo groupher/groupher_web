@@ -1,5 +1,5 @@
 import { useEffect, useState, RefObject } from 'react'
-import OverlayScrollbars from 'overlayscrollbars'
+import { OverlayScrollbars } from 'overlayscrollbars'
 
 type TOption = {
   className?: string
