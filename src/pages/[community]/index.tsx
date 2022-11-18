@@ -1,5 +1,6 @@
 import { GetServerSideProps } from 'next'
 import { merge, toLower } from 'ramda'
+import { Provider } from 'mobx-react'
 
 import type { TCommunity } from '@/spec'
 import { PAGE_SIZE } from '@/config'
@@ -123,18 +124,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 const CommunityPage = (props) => {
+  const store = useStore(props)
+
   const { viewing } = props
   const { community, activeThread } = viewing
-  const store = useStore()
-  store.mark(props)
 
   return (
-    <GlobalLayout
-      metric={METRIC.COMMUNITY}
-      seoConfig={communitySEO(community as TCommunity, activeThread)}
-    >
-      <PostContent />
-    </GlobalLayout>
+    <Provider store={store}>
+      <GlobalLayout
+        metric={METRIC.COMMUNITY}
+        seoConfig={communitySEO(community as TCommunity, activeThread)}
+      >
+        <PostContent />
+      </GlobalLayout>
+    </Provider>
   )
 }
 

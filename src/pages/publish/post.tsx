@@ -1,5 +1,7 @@
 import { GetServerSideProps } from 'next'
 import { METRIC, ARTICLE_THREAD } from '@/constant'
+import { Provider } from 'mobx-react'
+
 import {
   articlePublishSEO,
   ssrFetchPrepare,
@@ -50,15 +52,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 export const PublishPostPage = (props) => {
-  const store = useStore()
-  store.mark(props)
+  const store = useStore(props)
 
   const seoConfig = articlePublishSEO()
 
   return (
-    <GlobalLayout metric={METRIC.ARTICLE_EDITOR} seoConfig={seoConfig}>
-      <ArticleEditor />
-    </GlobalLayout>
+    <Provider store={store}>
+      <GlobalLayout metric={METRIC.ARTICLE_EDITOR} seoConfig={seoConfig}>
+        <ArticleEditor />
+      </GlobalLayout>
+    </Provider>
   )
 }
 

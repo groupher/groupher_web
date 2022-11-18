@@ -90,6 +90,6 @@ export const useInit = (_store: TStore, extra): void => {
 
     const { online, isMobile } = extra
     store.mark({ online, isMobile })
-    initAppVersion()
+    // initAppVersion()
   }, [_store, extra])
 }

@@ -1,8 +1,6 @@
 import { FC, memo, Fragment } from 'react'
-import { isEmpty } from 'ramda'
 
 import type { TComment } from '@/spec'
-import { Global } from '@/utils/helper'
 import { ICON } from '@/config'
 
 import Tooltip from '@/widgets/Tooltip'
@@ -31,13 +29,6 @@ import {
   IndentLine,
 } from '../../styles/comment/desktop_view'
 import { foldComment, handleUpvote } from '../../logic'
-
-const getSelection = () => {
-  const selectText = Global.getSelection().toString()
-  if (!isEmpty(selectText)) {
-    // TODO: then use window.getSelection().getRangeAt(0).getBoundingClientRect() to draw a button
-  }
-}
 
 type TProps = {
   data: TComment
@@ -96,7 +87,7 @@ const DefaultLayout: FC<TProps> = ({
           {isReply && <IndentLine onClick={() => foldComment(data.id)} />}
         </SidebarWrapper>
 
-        <CommentBodyInfo onMouseUp={getSelection}>
+        <CommentBodyInfo>
           <Header data={data} showInnerRef={showInnerRef} apiMode={apiMode} />
           <CommentContent>
             {isLegal ? (

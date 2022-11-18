@@ -1,6 +1,8 @@
 import { GetServerSideProps } from 'next'
 import { merge } from 'ramda'
 
+import { Provider } from 'mobx-react'
+
 import type { TCommunity } from '@/spec'
 import { PAGE_SIZE } from '@/config'
 import { HCN, THREAD, METRIC } from '@/constant'
@@ -122,20 +124,22 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 const CommunityKanbanPage = (props) => {
+  const store = useStore(props)
+
   const { viewing } = props
   const { community, activeThread } = viewing
-  const store = useStore()
-  store.mark(props)
 
   log('the kanban thread')
 
   return (
-    <GlobalLayout
-      metric={METRIC.COMMUNITY}
-      seoConfig={communitySEO(community as TCommunity, activeThread)}
-    >
-      <KanbanContent />
-    </GlobalLayout>
+    <Provider store={store}>
+      <GlobalLayout
+        metric={METRIC.COMMUNITY}
+        seoConfig={communitySEO(community as TCommunity, activeThread)}
+      >
+        <KanbanContent />
+      </GlobalLayout>
+    </Provider>
   )
 }
 

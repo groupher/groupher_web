@@ -15,13 +15,13 @@ import { bond } from '@/utils/mobx'
 import ThemePalette from '@/containers/layout/ThemePalette'
 import BannerNotify from '@/widgets/BannerNotify'
 import Footer from '@/widgets/Footer'
-// import CustomScroller from '@/widgets/CustomScroller'
+import CustomScroller from '@/widgets/CustomScroller'
 
 import type { TStore } from './store'
 import SEO from './SEO'
 import Wallpaper from './Wallpaper'
 
-import { CustomScroller } from './dynamic'
+// import { CustomScroller } from './dynamic'
 
 import {
   Skeleton,
@@ -56,7 +56,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
   const { isMobile } = useMobileDetect()
   useInit(store, { isMobile })
 
-  const { sidebarPin, wallpaper, wallpapers, globalLayout } = store
+  const { wallpaper, wallpapers, globalLayout } = store
 
   return (
     <ThemePalette>
@@ -74,13 +74,13 @@ const GlobalLayoutContainer: FC<TProps> = ({
         >
           <Wrapper>
             <SEO metric={metric} config={seoConfig} />
-            <InnerWrapper metric={metric} sidebarPin={sidebarPin}>
+            <InnerWrapper metric={metric}>
               <BannerNotify
                 metric={metric}
                 layout={globalLayout.bannerNotify}
                 bg={globalLayout.bannerNotifyBg}
               />
-              <ContentWrapper offsetLeft={sidebarPin}>
+              <ContentWrapper>
                 <BodyWrapper isMobile={isMobile}>
                   {childrenWithProps(children, { metric })}
                 </BodyWrapper>

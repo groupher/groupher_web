@@ -1,16 +1,19 @@
+import { Provider } from 'mobx-react'
+
 import ThemePalette from '@/containers/layout/ThemePalette'
 import OauthHinter from '@/widgets/OauthHinter'
 
 import { useStore } from '@/stores/init'
 
 const OAuthPage = (props) => {
-  const store = useStore()
-  store.mark(props)
+  const store = useStore(props)
 
   return (
-    <ThemePalette>
-      <OauthHinter />
-    </ThemePalette>
+    <Provider store={store}>
+      <ThemePalette>
+        <OauthHinter />
+      </ThemePalette>
+    </Provider>
   )
 }
 

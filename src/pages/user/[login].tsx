@@ -2,6 +2,8 @@
    this page is for /user/xxx
  */
 
+import { Provider } from 'mobx-react'
+
 import { METRIC } from '@/constant'
 import {
   ssrGetParam,
@@ -68,8 +70,7 @@ export const getServerSideProps = async (context) => {
 }
 
 const UserPage = (props) => {
-  const store = useStore()
-  store.mark(props)
+  const store = useStore(props)
 
   const { viewing } = props
   const { user } = viewing
@@ -77,9 +78,11 @@ const UserPage = (props) => {
   const seoConfig = userSEO(user)
 
   return (
-    <GlobalLayout metric={METRIC.USER} seoConfig={seoConfig}>
-      <UserContent />
-    </GlobalLayout>
+    <Provider store={store}>
+      <GlobalLayout metric={METRIC.USER} seoConfig={seoConfig}>
+        <UserContent />
+      </GlobalLayout>
+    </Provider>
   )
 }
 

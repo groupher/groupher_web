@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
-import { Provider } from 'mobx-react'
+// import { Provider } from 'mobx-react'
 import Head from 'next/head'
 import Script from 'next/script'
 import { useRouter } from 'next/router'
 import { getAnalyticsTag, handleRouteChange } from '@/utils/analytics/baidu'
 
-import { useStore } from '@/stores/init'
+// import { useStore } from '@/stores/init'
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter()
@@ -17,7 +17,7 @@ const App = ({ Component, pageProps }) => {
     }
   }, [router.events])
 
-  const store = useStore()
+  // const store = useStore()
 
   return (
     <>
@@ -52,9 +52,9 @@ const App = ({ Component, pageProps }) => {
         data-domain="groupher.com"
         src="https://plausible.io/js/plausible.js"
       /> */}
-      <Provider store={store}>
-        <Component {...pageProps} />
-      </Provider>
+      {/* <Provider store={store}> */}
+      <Component {...pageProps} />
+      {/* </Provider> */}
     </>
   )
 }

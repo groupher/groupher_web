@@ -3,7 +3,7 @@
  *
  */
 
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 
 // import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
@@ -43,6 +43,12 @@ const KanbanThreadContainer: FC<TProps> = ({
 }) => {
   useInit(store)
 
+  // see: https://stackoverflow.com/questions/72673362/error-text-content-does-not-match-server-rendered-html
+  const [hydrated, setHydrated] = useState(false)
+  useEffect(() => {
+    setHydrated(true)
+  }, [])
+
   return (
     <Wrapper testid={testid}>
       <Actions />
@@ -52,7 +58,7 @@ const KanbanThreadContainer: FC<TProps> = ({
           <Header>
             <TODOIcon />
             <Label>待办项</Label>
-            <SubTitle>{getRandomInt(5, 20)}</SubTitle>
+            <SubTitle>{hydrated && getRandomInt(10, 20)}</SubTitle>
             <SpaceGrow />
             <IconButton path="shape/add.svg" right={12} />
           </Header>
@@ -69,7 +75,7 @@ const KanbanThreadContainer: FC<TProps> = ({
           <Header>
             <WipIcon />
             <Label>正在完善</Label>
-            <SubTitle>{getRandomInt(5, 20)}</SubTitle>
+            <SubTitle>{hydrated && getRandomInt(10, 20)}</SubTitle>
             <SpaceGrow />
             <IconButton path="shape/add.svg" right={12} />
           </Header>
@@ -86,7 +92,7 @@ const KanbanThreadContainer: FC<TProps> = ({
           <Header>
             <DoneIcon />
             <Label>已完成</Label>
-            <SubTitle>{getRandomInt(5, 20)}</SubTitle>
+            <SubTitle>{hydrated && getRandomInt(10, 20)}</SubTitle>
             <SpaceGrow />
             <IconButton path="shape/add.svg" right={12} />
           </Header>

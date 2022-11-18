@@ -75,6 +75,7 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
     <Wrapper>
       <TheMainWrapper thread={curThread}>
         <ViewportTracker onEnter={inAnchor} onLeave={outAnchor} />
+
         {showFilters && (
           <FilterWrapper thread={curThread}>
             <ArticlesFilter
@@ -89,6 +90,7 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
             />
           </FilterWrapper>
         )}
+
         {mode === 'default' && (
           <PagedArticles
             data={pagedArticlesData}

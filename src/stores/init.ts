@@ -11,7 +11,7 @@ import RootStore from './RootStore'
 
 let clientSideRootStore: TRootStore | undefined
 
-const initRootStore = (snapshot = null): TRootStore => {
+export const initRootStore = (snapshot = {}): TRootStore => {
   const _store = clientSideRootStore ?? RootStore.create(snapshot, {})
 
   if (snapshot) {
