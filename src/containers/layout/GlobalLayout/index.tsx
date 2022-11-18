@@ -15,7 +15,7 @@ import { bond } from '@/utils/mobx'
 import ThemePalette from '@/containers/layout/ThemePalette'
 import BannerNotify from '@/widgets/BannerNotify'
 import Footer from '@/widgets/Footer'
-import CustomScroller from '@/widgets/CustomScroller'
+// import CustomScroller from '@/widgets/CustomScroller'
 
 import type { TStore } from './store'
 import SEO from './SEO'
@@ -26,11 +26,12 @@ import Wallpaper from './Wallpaper'
 import {
   Skeleton,
   Wrapper,
+  ScrollWrapper,
   InnerWrapper,
   BodyWrapper,
   ContentWrapper,
 } from './styles'
-import { useInit, onPageScrollDirhange, childrenWithProps } from './logic'
+import { useInit, childrenWithProps } from './logic'
 
 const Addon = dynamic(() => import('./Addon'), {
   ssr: false,
@@ -63,7 +64,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
       <Addon />
       <Skeleton>
         <Wallpaper wallpaper={wallpaper} wallpapers={wallpapers} />
-        <CustomScroller
+        {/* <CustomScroller
           instanceKey={BODY_SCROLLER}
           direction="vertical"
           height="100vh"
@@ -71,7 +72,8 @@ const GlobalLayoutContainer: FC<TProps> = ({
           showShadow={false}
           onScrollDirectionChange={onPageScrollDirhange}
           autoHide
-        >
+        > */}
+        <ScrollWrapper>
           <Wrapper>
             <SEO metric={metric} config={seoConfig} />
             <InnerWrapper metric={metric}>
@@ -89,7 +91,8 @@ const GlobalLayoutContainer: FC<TProps> = ({
             </InnerWrapper>
             {/* {isMobile && <ModeLine metric={metric} />} */}
           </Wrapper>
-        </CustomScroller>
+        </ScrollWrapper>
+        {/* </CustomScroller> */}
       </Skeleton>
     </ThemePalette>
   )

@@ -19,6 +19,11 @@ export const Wrapper = styled.div`
   ${css.flex('justify-center')};
 `
 
+export const ScrollWrapper = styled.div`
+  position: absolute;
+  width: 100%;
+`
+
 type TInner = { metric: TMetric }
 export const InnerWrapper = styled.div<TInner>`
   ${css.flexColumn()};
