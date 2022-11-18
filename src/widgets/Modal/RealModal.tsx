@@ -25,13 +25,13 @@ type TProps = Pick<
 
 const RealModal: FC<TProps> = ({
   children,
-  show = true,
-  width = '600px',
-  showCloseBtn = false,
-  mode = 'default',
-  background = 'default',
-  offsetTop = '20%',
-  offsetLeft = 'none',
+  show,
+  width,
+  showCloseBtn,
+  mode,
+  background,
+  offsetTop,
+  offsetLeft,
   handleCloseModal,
 }) => {
   // damn, i forgot why i set this state, fix LATER
