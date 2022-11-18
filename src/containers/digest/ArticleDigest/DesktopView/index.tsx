@@ -4,7 +4,7 @@
 
 import { FC } from 'react'
 import { isNil } from 'ramda'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
+// import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TScrollDirection, TMetric } from '@/spec'
 import { METRIC } from '@/constant'
@@ -14,7 +14,7 @@ import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
-import { FixedHeader } from './dynamic'
+import FixedHeader from './FixedHeader'
 import Layout from './Layout'
 
 import type { TStore } from '../store'
@@ -39,7 +39,7 @@ const ArticleDigestContainer: FC<TProps> = ({
   testid = 'article-digest',
   metric = METRIC.ARTICLE,
 }) => {
-  const { isMobile } = useMobileDetect()
+  // const { isMobile } = useMobileDetect()
   const { direction: scrollDirection } = useScroll()
 
   useInit(store, scrollDirection as TScrollDirection)
