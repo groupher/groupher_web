@@ -37,7 +37,7 @@ import {
   CommunityEditorStore,
   UserContentStore,
   // footer
-  FooterStore,
+  // FooterStore,
   // viewers
   // RepoViewerStore,
   CommentsStore,
@@ -132,7 +132,7 @@ const rootStore = T.model({
   // content end
 
   // footer
-  footer: T.optional(FooterStore, {}),
+  // footer: T.optional(FooterStore, {}),
   // threads
 
   tagsBar: T.optional(TagsBarStore, {}),
@@ -218,9 +218,8 @@ const rootStore = T.model({
     updateViewingIfNeed(type, sobj): void {
       self.viewing.updateViewingIfNeed(type, sobj)
     },
-    sponsorHepler(): void {
-      self.footer.sponsorHepler()
-    },
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    sponsorHepler(): void {},
     cashierHelper(opt): void {
       // self.footer.closeSponsor()
       // self.cashier.callCashier(opt)

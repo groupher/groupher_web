@@ -34,8 +34,7 @@ const CommunityDigest = T.model('CommunityDigest', {
       return toJS(root.viewing)
     },
     get realtimeVisitors(): number {
-      const root = getParent(self) as TRootStore
-      return root.footer.realtimeVisitors
+      return 0
     },
     get curThread(): TThread {
       const root = getParent(self) as TRootStore
