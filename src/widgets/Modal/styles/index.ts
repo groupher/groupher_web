@@ -58,7 +58,7 @@ export const CloseBtn = styled(CloseCrossSVG)<TCloseBtn>`
   top: 16px;
   right: 18px;
   fill: ${({ mode }) =>
-    mode === 'default' ? theme('thread.extraInfo') : theme('baseColor.red')};
+    mode === 'default' ? theme('article.info') : theme('baseColor.red')};
   ${css.size(20)};
   z-index: ${zIndex.modalCloseBtn};
   opacity: 0.8;

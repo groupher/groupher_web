@@ -14,7 +14,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   border-bottom-color: #054351;
 `
 export const Logo = styled(Img)`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   ${css.size(30)};
 `
 export const Digest = styled.div`
@@ -22,11 +22,11 @@ export const Digest = styled.div`
   margin-left: 12px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 14px;
   font-weight: bold;
 `
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
 `

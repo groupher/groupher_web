@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
 export const WrapperBase = styled.div`
   ${css.flex()};
   flex-wrap: wrap;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   width: 100%;
 `
 export const BlockBase = styled.div<{ borderTop: boolean }>`
@@ -47,7 +47,7 @@ export const ImageBase = styled(Img)`
   cursor: pointer;
 
   ${BlockBase}:hover & {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     opacity: 1;
   }
   transition: all 0.2s;
@@ -64,7 +64,7 @@ export const IntroHeadBase = styled.div`
   }
 `
 export const TitleBase = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   cursor: pointer;
 `
 export const FooterBase = styled.div`

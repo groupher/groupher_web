@@ -12,7 +12,7 @@ type TWrapper = TTestable & TSpace & { size: TSizeSM; interactive: boolean }
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: ${({ size }) => getFontSize(size)};
 
   padding-top: ${({ top }) => `${top}px`};
@@ -21,7 +21,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   padding-right: ${({ right }) => `${right}px`};
 
   &:hover {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     cursor: ${({ interactive }) => (interactive ? 'pointer' : 'text')};
   }
 
@@ -43,7 +43,7 @@ export const FixedHintWrapper = styled(HintWrapper)`
 
   &:before {
     content: '...';
-    color: ${theme('thread.articleDigest')};
+    color: ${theme('article.digest')};
     margin-left: 4px;
   }
 `
@@ -56,12 +56,12 @@ export const HintIcon = styled(Img)`
   position: absolute;
   top: 2px;
   left: 0;
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(14)};
   margin-right: 4px;
 `
 export const HintText = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 11px;
   height: 12px;
   margin-right: 5px;
@@ -81,16 +81,16 @@ export const PreviewWrapper = styled.div`
   transition: opacity 0.1s;
 `
 export const PreviewIcon = styled(Img)`
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
   ${css.size(14)};
   transform: rotate(180deg);
 `
 export const PreviewText = styled.span`
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   font-size: 12px;
 `
 export const ThunderIcon = styled(ThunderSVG)`
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
   ${css.size(18)};
   transform: rotate(12deg);
 `

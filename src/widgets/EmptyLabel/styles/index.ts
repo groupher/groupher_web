@@ -8,7 +8,7 @@ import Img from '@/Img'
 
 export const Wrapper = styled.div`
   ${css.flexColumn('align-both')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-left: -3%;
   height: 300px;
 `
@@ -17,6 +17,6 @@ export const Title = styled.div<{ size: TSizeSML }>`
   font-size: ${({ size }) => (size === SIZE.LARGE ? '18px' : '16px')};
 `
 export const Icon = styled(Img)<{ size: TSizeSML }>`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${({ size }) => (size === SIZE.LARGE ? css.size(100) : css.size(70))}
 `

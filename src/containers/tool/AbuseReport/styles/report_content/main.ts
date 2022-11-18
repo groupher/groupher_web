@@ -25,7 +25,7 @@ export const FooterPanel = styled.div`
   background: ${theme('modal.subPanel')};
   /* background: ${theme('modal.panelBg')}; */
   height: 56px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 13px;
 
   ${css.media.mobile`
@@ -49,7 +49,7 @@ export const SelectWrapper = styled.div`
   ${css.flex('align-center')};
 `
 export const Title = styled.div<TActive>`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-left: 5px;
   font-weight: ${({ active }) => (active ? 'bold' : 'normal')};
   opacity: ${({ active }) => (active ? 1 : 0.9)};

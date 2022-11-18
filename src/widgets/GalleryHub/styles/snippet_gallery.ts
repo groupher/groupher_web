@@ -6,7 +6,7 @@ import css, { theme } from '@/utils/css'
 export const Wrapper = styled.div`
   ${css.flex()};
   flex-wrap: wrap;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   width: 100%;
 `
 type TBlock = { borderRight: boolean; borderTop: boolean }
@@ -52,7 +52,7 @@ export const LangPrefix = styled.div`
   filter: saturate(0.8);
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 16px;
   cursor: pointer;
 `

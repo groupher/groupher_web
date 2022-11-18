@@ -8,6 +8,6 @@ export const Wrapper = styled.div`
   min-height: 300px;
 `
 export const InnerWrapper = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   /* ${css.flex()}; */
 `

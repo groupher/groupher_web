@@ -27,7 +27,7 @@ export const AvatarsMore = styled.span<TAvatarsMore>`
   ${css.flex('align-both')};
   font-size: 14px;
   border-color: ${theme('textBadge')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   background-color: ${theme('textBadge')};
   font-family: sans-serif;
   font-weight: ${({ total }) => (total >= 1000 ? 600 : 200)};

@@ -13,7 +13,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   ${css.flex('align-center')};
 `
 export const ViewsIcon = styled(ViewSVG)`
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
   ${css.size(13)};
   transition: fill 0.25s;
 `
@@ -21,19 +21,19 @@ export const CommentWrapper = styled.div`
   ${css.flex('align-center')};
 `
 export const CommentIcon = styled(CommentSVG)`
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
   ${css.size(12)};
   transition: fill 0.25s;
 
   ${CommentWrapper}:hover & {
     cursor: pointer;
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
   }
 
   transition: fill 0.2s;
 `
 export const Count = styled.div`
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   font-size: 15px;
   margin-left: 6px;
   margin-top: 1px;
@@ -42,7 +42,7 @@ export const CommentCount = styled(Count)`
   margin-left: 8px;
   ${CommentWrapper}:hover & {
     cursor: pointer;
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
   }
   transition: color 0.2s;
 `

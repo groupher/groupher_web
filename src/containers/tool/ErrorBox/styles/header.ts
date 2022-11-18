@@ -16,11 +16,11 @@ export const ErrorIcon = styled(Img)`
 export const Info = styled.div`
   ${css.flexColumn()};
 `
-// color: ${theme('thread.articleTitle')};
+// color: ${theme('article.title')};
 export const Title = styled.div`
   color: ${theme('baseColor.red')};
 `
-// color: ${theme('thread.articleDigest')};
+// color: ${theme('article.digest')};
 export const Desc = styled.div`
   color: ${theme('baseColor.red')};
   opacity: 0.6;

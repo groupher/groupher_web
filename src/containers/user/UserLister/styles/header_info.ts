@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   margin-left: 4px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 1rem;
   margin-bottom: 3px;
 `
@@ -17,7 +17,7 @@ export const DescLabel = styled.div`
   ${css.flex('align-center')};
 `
 export const DescIcon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(12)};
   margin-right: 5px;
 `
@@ -34,6 +34,6 @@ export const DescLink = styled.a`
   transition: color 0.2s;
 `
 export const DescText = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 0.9rem;
 `

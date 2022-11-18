@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   margin-top: 10px;
 `
 export const PlanTitle = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-weight: bold;
   width: 150px;
   font-size: 0.9rem;
@@ -22,11 +22,11 @@ export const GirlTitle = styled(PlanTitle)`
 `
 export const TitleDesc = styled.div<{ pink: boolean }>`
   color: ${({ pink }) =>
-    pink ? theme('baseColor.pinkLite') : theme('thread.articleDigest')};
+    pink ? theme('baseColor.pinkLite') : theme('article.digest')};
 `
 export const PlanDesc = styled.div`
   ${css.flexColumnGrow()};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const PurchaseButton = styled.div`
   margin-top: 2px;
@@ -85,6 +85,6 @@ export const BadgeWrapper = styled.div`
 `
 
 export const BadgeIcon = styled(Img)`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   ${css.size(40)};
 `

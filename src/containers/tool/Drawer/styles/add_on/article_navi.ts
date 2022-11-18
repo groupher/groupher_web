@@ -45,7 +45,7 @@ export const LeftSwitchBlock = styled(SwitchBlock)`
 `
 export const LeftArrow = styled(ArrowSVG)`
   ${css.size(28)};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
 `
 export const RightSwitchBlock = styled(SwitchBlock)`
   left: 780px;
@@ -60,7 +60,7 @@ export const RightArrow = styled(LeftArrow)`
 export const IndexWrapper = styled.div`
   position: absolute;
   width: 100px;
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   font-size: 12px;
 
   opacity: 0;

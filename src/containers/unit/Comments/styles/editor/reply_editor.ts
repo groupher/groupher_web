@@ -20,7 +20,7 @@ export const Header = styled.div`
   padding: 0 28px;
   padding-bottom: 8px;
   width: 100%;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 16px;
 `
 export const ReplyToHint = styled.div`
@@ -29,11 +29,11 @@ export const ReplyToHint = styled.div`
 `
 export const ReplyToContent = styled.div`
   ${css.lineClamp(1)}
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 14px;
 `
 export const ReplyToAuthor = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-left: 5px;
 `
 export const EditorWrapper = styled.div`

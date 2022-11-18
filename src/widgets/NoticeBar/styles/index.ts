@@ -15,7 +15,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 }))<TWrapper>`
   ${css.flex('align-start')};
   color: ${({ noBg }) =>
-    noBg ? theme('thread.articleDigest') : theme('thread.articleTitle')};
+    noBg ? theme('article.digest') : theme('article.title')};
   padding-left: ${({ noBg }) => (noBg ? '5px' : '12px')};
   padding-right: 15px;
   padding-top: 8px;
@@ -38,26 +38,26 @@ export const Main = styled.div`
   width: calc(100% - 18px);
 `
 export const UserName = styled.span`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-right: 5px;
 `
 export const AuthorTag = styled.span`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-left: 2px;
   margin-right: 5px;
 `
 export const Timestamp = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
 `
 export const Why = styled(Img)`
   ${css.size(15)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   margin-left: 10px;
   margin-top: -1px;
 
   &:hover {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
     cursor: pointer;
   }
 `

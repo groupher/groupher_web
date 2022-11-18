@@ -21,5 +21,5 @@ export const Wrapper = styled.div<TActive>`
 `
 
 export const Count = styled.div`
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
 `

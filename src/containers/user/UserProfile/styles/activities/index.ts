@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
 `
 export const Title = styled.div`
   font-size: 13px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   flex-grow: 1;
   margin-top: -4px;
   padding-left: 3px;
@@ -24,7 +24,7 @@ export const Divider = styled.div`
   width: 100%;
   padding: 0 5px;
   height: 1px;
-  background: ${theme('thread.articleDigest')};
+  background: ${theme('article.digest')};
   opacity: 0.2;
   margin-top: 12px;
 `

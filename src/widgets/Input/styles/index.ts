@@ -33,7 +33,7 @@ export const SuffixWrapper = styled(AddOn)`
 `
 export const Icon = styled(Img)<TActive>`
   fill: ${({ active }) =>
-    active ? theme('button.primary') : theme('thread.articleDigest')};
+    active ? theme('button.primary') : theme('article.digest')};
   ${css.size(14)};
   opacity: 0.8;
 
@@ -65,7 +65,7 @@ export const InputWrapper = styled.input<IInput>`
   font-size: 14px;
   line-height: 1.5;
   text-align: left;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   padding-left: ${({ hasPrefix }) => (hasPrefix ? '26px' : '8px')};
   padding-right: ${({ hasSuffix }) => (hasSuffix ? '26px' : '8px')};
   border: 1px solid;
@@ -73,7 +73,7 @@ export const InputWrapper = styled.input<IInput>`
   border-radius: 4px;
 
   ::placeholder {
-    color: ${theme('thread.articleDigest')};
+    color: ${theme('article.digest')};
     opacity: 0.5;
   }
   &:hover {

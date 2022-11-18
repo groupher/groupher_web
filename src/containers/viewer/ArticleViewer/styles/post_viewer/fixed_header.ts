@@ -30,7 +30,7 @@ export const UpvoteWrapper = styled(FadeToggle)`
 `
 export const ArticleTitle = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 18px;
   ${css.cutRest('400px')};
 `

@@ -17,7 +17,7 @@ export const CursorDivider = styled.div`
   animation: ${animate.blink} 2s linear infinite alternate;
 `
 export const Icon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(12)};
   margin-right: 8px;
 `

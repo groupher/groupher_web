@@ -34,7 +34,7 @@ export const Operations = styled.div<{ metric: TMetric }>`
     metric === METRIC.WORKS_ARTICLE ? '28px' : 0};
 `
 export const LoginHint = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 13px;
   margin-top: 1px;
 

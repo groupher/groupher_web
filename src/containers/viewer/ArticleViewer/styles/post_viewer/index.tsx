@@ -10,12 +10,12 @@ export const BodyWrapper = styled.div`
   margin-bottom: 14px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 25px;
 `
 export const SubTitle = styled.span`
   display: inline-block;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   opacity: 0.4;
   font-size: 22px;
   margin-left: 10px;

@@ -4,7 +4,7 @@ import css, { theme } from '@/utils/css'
 
 export const Wrapper = styled.div`
   ${css.flex('align-both')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 0.9rem;
 `
 export const LoginLabel = styled.div`

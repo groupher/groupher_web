@@ -24,6 +24,11 @@ export type TThemeMap = {
     pinkLite: string
     pinkBtnText: string
   }
+  article?: {
+    title?: string
+    digest?: string
+    info?: string
+  }
   thread?: {
     articleDigest?: string
     articleTitle?: string

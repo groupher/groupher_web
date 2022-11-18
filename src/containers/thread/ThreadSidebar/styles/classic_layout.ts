@@ -18,13 +18,13 @@ export const StickyWrapper = styled.div`
 `
 export const DividerTitle = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 14px;
   font-weight: 600;
 `
 export const CommunityJoinersNum = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   background: ${theme('textBadge')};
   font-size: 11px;
   font-weight: 600;
@@ -46,7 +46,7 @@ export const JoinerAvatar = styled(Img)`
 export const CommunityNoteWrapper = styled.div`
   ${css.lineClamp(2)}
   font-size: 13px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-bottom: 18px;
   line-height: 1.6;
 `
@@ -56,7 +56,7 @@ export const PublishWrapper = styled.div<TActive>`
   max-width: 185px;
 `
 export const NoteWrapper = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   opacity: 0.8;
   font-size: 12px;
   padding-bottom: 20px;

@@ -7,7 +7,7 @@ import { pixelAdd } from '@/utils/dom'
 type TPos = { top: number; left: number }
 
 export const ReadedLabel = styled.div<TPos>`
-  background: ${theme('thread.articleDigest')};
+  background: ${theme('article.digest')};
   ${css.circle(8)};
   position: absolute;
   top: ${({ top }) => `${top}px`};
@@ -19,7 +19,7 @@ export const ReadedLabel = styled.div<TPos>`
   `};
 `
 export const PinIcon = styled(PinSVG)<TPos>`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   position: absolute;
   ${css.size(18)};
   top: ${({ top }) => pixelAdd(`${top}px`, -4)};

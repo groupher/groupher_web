@@ -19,7 +19,7 @@ export const CommunityLogo = styled(CommunityFaceLogo)`
 `
 export const SubsInfo = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const Info = styled.div`
   ${css.flexColumn()};
@@ -31,7 +31,7 @@ export const Header = styled.div`
   margin-bottom: 6px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 16px;
   font-weight: bold;
 `
@@ -42,7 +42,7 @@ export const SubInfo = styled.div`
 `
 export const Raw = styled.a`
   text-decoration: none;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 14px;
   opacity: 0.8;
   margin-bottom: 1px;
@@ -60,21 +60,21 @@ export const Raw = styled.a`
 
   &:hover {
     text-decoration: underline;
-    color: ${theme('thread.articleDigest')};
+    color: ${theme('article.digest')};
     opacity: 1;
   }
 `
 export const UserIcon = styled(UserSVG)`
   ${css.size(10)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   margin-right: 3px;
   opacity: 0.8;
 `
 export const UserCount = styled.div`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   font-size: 13px;
 `
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 14px;
 `

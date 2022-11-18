@@ -25,7 +25,7 @@ export const Inputer = styled(Input)`
 
 export const SearchIcon = styled(SearchSVG)`
   ${css.size(15)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   z-index: 1;
   margin-right: 8px;
   margin-top: -1px;
@@ -44,7 +44,7 @@ export const CloseIcon = styled(CloseSVG)`
   position: absolute;
   right: 12px;
   top: 10px;
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   opacity: 0.4;
 
   &:hover {
@@ -55,13 +55,13 @@ export const CloseIcon = styled(CloseSVG)`
   transition: all 0.2s;
 `
 export const Text = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 13px;
   font-weight: 400;
   opacity: 0.8;
 
   ${Wrapper}:hover & {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     opacity: 0.8;
   }
 `

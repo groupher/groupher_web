@@ -41,7 +41,7 @@ export const getSelectStyles = (theme: TThemeMap) => {
     placeholder: (base) => ({
       ...base,
       fontSize: '13px',
-      color: theme.thread.articleDigest,
+      color: theme.article.digest,
       marginLeft: 5,
       opacity: 0.8,
     }),
@@ -54,7 +54,7 @@ export const getSelectStyles = (theme: TThemeMap) => {
     // 单值
     singleValue: (base) => ({
       ...base,
-      color: theme.thread.articleTitle,
+      color: theme.article.title,
       background: '#00343E',
       padding: '0 5px',
       borderRadius: '3px',
@@ -62,17 +62,17 @@ export const getSelectStyles = (theme: TThemeMap) => {
     }),
     multiValue: (base) => ({
       ...base,
-      color: theme.thread.articleTitle,
+      color: theme.article.title,
       background: '#00343E',
       borderRadius: '3px',
     }),
     multiValueLabel: (base) => ({
       ...base,
-      color: theme.thread.articleTitle,
+      color: theme.article.title,
     }),
     multiValueRemove: (base) => ({
       ...base,
-      color: theme.thread.articleDigest,
+      color: theme.article.digest,
       '&:hover': {
         cursor: 'pointer',
         color: theme.baseColor.red,
@@ -91,13 +91,13 @@ export const getSelectStyles = (theme: TThemeMap) => {
     clearIndicator: (base, state) => ({
       ...base,
       cursor: 'pointer',
-      color: theme.thread.articleDigest,
+      color: theme.article.digest,
       opacity: state.isFocused ? 1 : 0.5,
     }),
     dropdownIndicator: (base, state) => ({
       ...base,
       cursor: 'pointer',
-      color: theme.thread.articleDigest,
+      color: theme.article.digest,
       opacity: state.isFocused ? 1 : 0.8,
     }),
     option: (base) => ({

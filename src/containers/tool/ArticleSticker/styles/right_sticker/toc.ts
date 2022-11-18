@@ -21,36 +21,36 @@ export const TitleWrapper = styled.div`
   ${css.flex('align-center')};
 `
 export const TocIcon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(12)};
   margin-right: 4px;
   margin-top: -1px;
 
   ${HeaderWrapper}:hover & {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
     cursor: pointer;
   }
   transition: all 0.2s;
 `
 export const TocTitle = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   margin-left: 5px;
   font-weight: 600;
 
   ${HeaderWrapper}:hover & {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     cursor: pointer;
   }
   transition: all 0.2s;
 `
 const MenuIcon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(13)};
   transform: rotate(90deg);
 
   ${HeaderWrapper}:hover & {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
     cursor: pointer;
   }
   transition: all 0.2s;
@@ -64,7 +64,7 @@ export const MenuOpenedIcon = styled(MenuIcon)`
   opacity: 0.8;
 `
 export const TocContentWrapper = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   border-top: 1px solid;
   border-top-color: ${theme('border')};
   padding: 10px 0;

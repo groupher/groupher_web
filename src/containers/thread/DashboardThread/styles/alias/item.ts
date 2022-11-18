@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
 `
 export const Title = styled.div`
   font-size: 15px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   width: 130px;
 `
 export const Header = styled.div`
@@ -27,14 +27,14 @@ export const ArrowWrapper = styled.div`
 `
 export const ArrowLine = styled.div`
   border-top: 1px dashed;
-  border-top-color: ${theme('thread.articleDigest')};
+  border-top-color: ${theme('article.digest')};
   flex-grow: 1;
   opacity: 0.8;
   height: 1px;
   margin-right: 6px;
 `
 export const ArrowIcon = styled(ArrowSVG)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(12)};
   opacity: 0.7;
 `

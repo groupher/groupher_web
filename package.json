@@ -1,6 +1,6 @@
 {
   "name": "groupher_web",
-  "version": "1.0.40",
+  "version": "1.0.46",
   "license": "Apache License 2.0",
   "scripts": {
     "dev": "next dev",
@@ -91,7 +91,7 @@
     "sentry-testkit": "^2.1.0",
     "store": "^2.0.12",
     "stringz": "^2.0.0",
-    "styled-components": "^5.3.5",
+    "styled-components": "^5.3.6",
     "timeago-react": "^3.0.5",
     "tinykeys": "^1.4.0",
     "urql": "^3.0.3"

@@ -6,7 +6,7 @@ import css, { theme } from '@/utils/css'
 export const Wrapper = styled.div`
   ${css.flex()};
   flex-wrap: wrap;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   width: 100%;
 `
 type TBlock = { borderRight: boolean; borderTop: boolean }
@@ -50,21 +50,21 @@ export const Icon = styled(Img)`
   ${css.size(20)};
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 20px;
   margin-left: 10px;
   cursor: pointer;
 `
 export const Desc = styled.div`
   ${css.lineClamp(2)}
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 14px;
   margin-top: 15px;
   opacity: 0.9;
   cursor: pointer;
 
   ${Block}:hover & {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     opacity: 1;
   }
   transition: all 0.2s;

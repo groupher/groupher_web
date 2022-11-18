@@ -40,18 +40,18 @@ export const ChuanChuanSelect = styled.div`
 export const SelectTitle = styled.div`
   ${css.flex()};
   margin-left: 5px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 18px;
 `
 export const TeamName = styled.a`
   ${css.flex()};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-left: 6px;
   margin-right: 6px;
 
   &:hover {
     cursor: pointer;
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     text-decoration: underline;
   }
 `
@@ -65,7 +65,7 @@ export const SelectDesc = styled.div`
   margin-bottom: 30px;
   margin-left: 5px;
   font-size: 14px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const SelectHolder = styled.div`
   flex-grow: 1;

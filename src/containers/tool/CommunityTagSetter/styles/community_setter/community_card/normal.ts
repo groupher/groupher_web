@@ -36,11 +36,11 @@ export const Title = styled.div`
 `
 export const Name = styled.div`
   font-size: 15px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 `
 export const Raw = styled.div`
   font-size: 13px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   position: relative;
   padding-left: 5px;
 
@@ -56,7 +56,7 @@ export const Raw = styled.div`
 export const Digest = styled.div`
   margin-top: 3px;
   font-size: 12px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const CheckWrapper = styled.div`
   margin-left: 12px;

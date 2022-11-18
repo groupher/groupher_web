@@ -9,7 +9,7 @@ export const Wrapper = styled.div<{ hasComments: boolean }>`
   position: absolute;
   top: -4px;
   right: 0;
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   margin-right: 1px;
   margin-top: 8px;
 `
@@ -24,5 +24,5 @@ export const TimeStamp = styled(TimeAgo)`
   font-size: 11px;
 `
 export const TimeStr = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 `

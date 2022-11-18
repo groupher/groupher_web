@@ -50,28 +50,28 @@ export const Label = styled.label`
 `
 export const DescText = styled.div`
   ${css.flex('align-both')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   min-width: 90px;
   padding: 5px 10px;
 `
 export const Icon = styled(Img)<{ checked: boolean }>`
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
   ${({ checked }) => (checked ? css.size(14) : css.size(12))};
   transition: all 0.2s;
 
   &:hover {
-    fill: ${theme('thread.extraInfo')};
+    fill: ${theme('article.info')};
   }
 `
 
 const styledIcon = (comp: FC): FC<TActive> => {
   return styled(comp)<TActive>`
-    fill: ${theme('thread.extraInfo')};
+    fill: ${theme('article.info')};
     ${({ $active }) => ($active ? css.size(14) : css.size(12))};
     transition: all 0.2s;
 
     &:hover {
-      fill: ${theme('thread.extraInfo')};
+      fill: ${theme('article.info')};
     }
 
     transition: all 0.2s;

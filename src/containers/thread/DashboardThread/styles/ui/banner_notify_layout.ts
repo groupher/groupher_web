@@ -51,7 +51,7 @@ export const NotifySolidLink = styled.div<{ bg: TColorName }>`
   color: white;
   border-radius: 5px;
   font-size: 6px;
-  color: ${'theme.articleTitle'};
+  color: ${'article.title'};
   font-weight: bold;
   padding: 0 4px;
 `

@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   margin-bottom: 10px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 14px;
   margin-bottom: 12px;
 `

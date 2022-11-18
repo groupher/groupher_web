@@ -16,22 +16,22 @@ export const Wrapper = styled.div`
 `
 export const WipIcon = styled(WipSVG)`
   ${css.size(80)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   margin-bottom: 20px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 16px;
 `
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 14px;
   margin-top: 10px;
   margin-bottom: 20px;
 `
 export const Ul = styled.ul`
   list-style: disc;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-left: 18px;
 `
 export const Li = styled.li`

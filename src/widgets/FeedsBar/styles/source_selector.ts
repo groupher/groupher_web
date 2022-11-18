@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   position: relative;
   width: 100%;
   height: 75px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   background: #022935;
   border: 1px solid;
   border-color: #013648;
@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
 `
 export const Header = styled.div`
   ${css.flex()};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 // padding: 10px 2px;
 export const Block = styled.div`
@@ -34,5 +34,5 @@ export const Title = styled.div`
   ${css.cutRest('50px')};
   text-align: center;
   padding-left: 5px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `

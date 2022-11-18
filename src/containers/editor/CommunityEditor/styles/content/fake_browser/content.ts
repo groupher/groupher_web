@@ -36,13 +36,13 @@ export const Intro = styled.div`
   margin-left: 20px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 16px;
   margin-bottom: 4px;
 `
 export const Desc = styled.div`
   font-size: 14px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   opacity: 0.8;
 `
 export const ThreadWrapper = styled.div`

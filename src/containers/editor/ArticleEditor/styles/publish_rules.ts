@@ -4,14 +4,14 @@ import css, { theme } from '@/utils/css'
 
 export const Wrapper = styled.div`
   ${css.flexColumn('align-center')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   width: 280px;
   height: auto;
   margin-left: 20px;
 `
 export const Title = styled.div`
   font-size: 16px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-bottom: 12px;
 `
 export const Ul = styled.ul`
@@ -30,7 +30,7 @@ export const Li = styled.li`
 `
 export const Footer = styled.div`
   font-size: 12px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   opacity: 0.6;
   margin-top: 10px;
 `

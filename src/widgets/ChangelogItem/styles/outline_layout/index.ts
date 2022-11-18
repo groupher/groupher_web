@@ -17,18 +17,18 @@ export const Main = styled.div`
   width: 550px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 15px;
   font-weight: 580;
   margin-bottom: 2px;
   margin-top: 2px;
 
   ${Wrapper}:hover & {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
   }
 `
 export const Version = styled.span`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   display: inline-block;
   font-size: 15px;
   font-weight: 480;
@@ -37,7 +37,7 @@ export const Version = styled.span`
   margin-bottom: 1px;
 `
 export const Body = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   ${css.lineClamp(1)};
   font-size: 14px;
   opacity: 0.65;
@@ -58,16 +58,16 @@ export const CommentWrapper = styled.div`
 `
 export const CommentIcon = styled(CommentSVG)`
   ${css.size(13)};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
 `
 export const Text = styled.div`
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   font-size: 13px;
   margin-left: 6px;
 `
 export const Side = styled.div`
   ${css.flexColumn('align-end')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-top: -1px;
 `
 export const DateTime = styled.div`

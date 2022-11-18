@@ -17,7 +17,7 @@ export const UpvoteBtnWrapper = styled.div`
   margin-top: 4px;
 `
 export const Count = styled.div<{ noOne: boolean }>`
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   font-weight: ${({ noOne }) => (noOne ? 400 : 600)};
   font-size: 16px;
 `

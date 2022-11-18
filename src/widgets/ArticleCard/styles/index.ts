@@ -19,6 +19,6 @@ export const Wrapper = styled.div`
 `
 export const MobileDigest = styled.div`
   ${css.lineClamp(2)}
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 13px;
 `

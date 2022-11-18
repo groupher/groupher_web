@@ -4,7 +4,7 @@ import css, { theme } from '@/utils/css'
 
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   padding-top: 25px;
   padding-bottom: 18px;
   margin-left: 25px;
@@ -18,7 +18,7 @@ export const SlashSign = styled.div`
 
 export const Text = styled.div`
   font-size: 12px;
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   margin-left: 14px;
   font-weight: bold;
   opacity: 0.85;

@@ -29,7 +29,7 @@ export const DeleteWrapper = styled.div`
 `
 export const DeleteIcon = styled(DeleteSVG)`
   ${css.size(20)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   opacity: 0.5;
 
   ${DeleteWrapper}:hover & {
@@ -60,7 +60,7 @@ export const IconWrapper = styled.div`
 `
 export const Hint = styled.div`
   font-size: 12px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-top: 15px;
   margin-left: 2px;
 `

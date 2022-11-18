@@ -22,7 +22,7 @@ export const EmptyWrapper = styled(Wrapper)`
 `
 export const BottomMsg = styled.div`
   font-size: 16px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   opacity: 0.6;
   &:before {
     content: '\/\\*';

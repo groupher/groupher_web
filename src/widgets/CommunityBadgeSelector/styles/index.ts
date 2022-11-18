@@ -32,7 +32,7 @@ export const Intro = styled.div`
   /* margin-left: 10px; */
 `
 export const PubHint = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   margin-left: 2px;
   opacity: 0.85;
@@ -42,7 +42,7 @@ export const Title = styled.div`
   position: relative;
   ${css.flex('align-center')};
   font-size: 16px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-bottom: 5px;
 `
 export const ChangeBtn = styled.div`

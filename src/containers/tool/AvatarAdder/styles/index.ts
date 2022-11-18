@@ -15,9 +15,9 @@ export const Wrapper = styled.div`
 `
 export const SettingIcon = styled(Img)`
   ${css.size(18)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 
   ${Wrapper}:hover & {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
   }
 `

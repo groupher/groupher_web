@@ -10,19 +10,19 @@ export const LinkWraper = styled.div`
   ${css.flex('align-center')};
 `
 export const LinkIcon = styled(LinkSVG)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(14)};
 `
 export const LinkSrc = styled.a`
   ${css.cutRest('240px')};
   font-size: 13px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   opacity: 0.8;
   margin-left: 3px;
 
   &:hover {
     text-decoration: underline;
-    color: ${theme('thread.articleDigest')};
+    color: ${theme('article.digest')};
     opacity: 1;
     cursor: pointer;
   }
@@ -34,14 +34,14 @@ export const LinkSrc = styled.a`
 `
 export const Title = styled.div`
   display: inline;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 17px;
   cursor: pointer;
   text-decoration: none;
 
   &:hover {
     text-decoration: underline;
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
   }
 
   ${css.media.mobile`
@@ -66,7 +66,7 @@ export const CompanyLink = styled.a`
     content: '';
     ${css.circle(4)};
     display: inline-block;
-    background: ${theme('thread.articleDigest')};
+    background: ${theme('article.digest')};
     margin-bottom: 3px;
     margin-left: 8px;
   }

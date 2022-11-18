@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
 export const Extra = styled.li`
   position: relative;
   ${css.flex('align-end')};
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   margin-top: 5px;
   font-size: 12px;
 `
@@ -22,12 +22,12 @@ export const Footer = styled.div`
 `
 export const Digest = styled.div`
   ${css.cutRest('450px')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-top: 2px;
   font-size: 13px;
 
   &:hover {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     cursor: pointer;
   }
 
@@ -66,18 +66,18 @@ export const LabelDivider = styled.div`
   height: 8px;
   margin-left: 10px;
   margin-right: 12px;
-  background-color: ${theme('thread.articleDigest')};
+  background-color: ${theme('article.digest')};
   transform: rotate(12deg);
 `
 export const AuthorName = styled(Link)<{ darker: boolean }>`
   display: block;
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   font-size: 13px;
 
   text-decoration: none;
 
   &:hover {
-    color: ${theme('thread.extraInfo')};
+    color: ${theme('article.info')};
     text-decoration: underline;
     cursor: pointer;
   }
@@ -86,7 +86,7 @@ export const PublishTime = styled.div`
   font-size: 11px;
 `
 export const Dot = styled(DotDivider)`
-  background-color: ${theme('thread.articleDigest')};
+  background-color: ${theme('article.digest')};
   margin-right: 8px;
 `
 export const ArticleStateBadgeWrapper = styled.div`

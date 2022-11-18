@@ -11,7 +11,7 @@ export const InnerWrapper = styled.div`
 `
 export const HintTitle = styled.div`
   font-size: 13px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-bottom: 10px;
   margin-left: 2px;
 `

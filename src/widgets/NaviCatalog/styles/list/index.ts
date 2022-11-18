@@ -22,9 +22,8 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 `
 export const Item = styled.div<TItem>`
   ${css.flex('justify-end', 'align-center')};
-  fill: ${theme('thread.articleDigest')};
-  color: ${({ active }) =>
-    active ? activeColor : theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
+  color: ${({ active }) => (active ? activeColor : theme('article.digest'))};
   font-size: 14px;
   border-bottom: ${({ withDivider }) => (withDivider ? '1px solid' : 'none')};
   border-bottom-color: ${({ withDivider }) =>
@@ -34,8 +33,7 @@ export const Item = styled.div<TItem>`
   padding-left: ${({ isRootMenu }) => (isRootMenu ? '4px' : '8px')};
 
   &:hover {
-    color: ${({ active }) =>
-      active ? activeColor : theme('thread.articleTitle')};
+    color: ${({ active }) => (active ? activeColor : theme('article.title'))};
     cursor: pointer;
   }
 
@@ -55,8 +53,7 @@ export const FixedIcon = styled(Img)`
 `
 export const Icon = styled(Img)<TActive>`
   display: ${({ active }) => (active ? 'block' : 'none')};
-  fill: ${({ active }) =>
-    active ? activeColor : theme('thread.articleDigest')};
+  fill: ${({ active }) => (active ? activeColor : theme('article.digest'))};
 
   ${css.size(14, false)};
 
@@ -73,8 +70,7 @@ export const ActiveDot = styled.div<TActive>`
 `
 export const TotalNumber = styled.div<TActive>`
   font-size: 11px;
-  color: ${({ active }) =>
-    active ? activeColor : theme('thread.articleDigest')};
+  color: ${({ active }) => (active ? activeColor : theme('article.digest'))};
 
   opacity: ${({ active }) => (active ? 1 : 0.8)};
   font-size: ${({ active }) => (active ? '12px' : '11px')};

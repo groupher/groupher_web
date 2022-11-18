@@ -1,9 +1,6 @@
 import { FC, memo } from 'react'
 
 import Trend from 'react-trend'
-import { useTheme } from 'styled-components'
-
-import type { TThemeMap } from '@/spec'
 
 import {
   Wrapper,
@@ -25,12 +22,6 @@ import {
 } from '../styles/basic_states'
 
 const BasicStates: FC = () => {
-  const theme = useTheme() as TThemeMap
-
-  const {
-    heatmap: { activityLow, activityHight },
-  } = theme
-
   return (
     <Wrapper>
       <Block>
@@ -45,7 +36,7 @@ const BasicStates: FC = () => {
             width={80}
             height={30}
             data={[2, 3, 6, 0, 2, 10, 8, 8, 22, 33, 2, 3, 4, 5, 6]}
-            gradient={[activityLow, activityHight]}
+            gradient={['yellowgreen', 'green']}
             radius={15}
             strokeWidth={1}
             strokeLinecap="round"

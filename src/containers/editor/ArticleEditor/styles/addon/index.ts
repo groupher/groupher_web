@@ -7,7 +7,7 @@ import LinkSVG from '@/icons/Link'
 
 export const LinkIcon = styled(LinkSVG)`
   ${css.size(16)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   margin-top: 1px;
 
   transition: fill 0.2s;
@@ -18,6 +18,6 @@ export const LinkInput = styled(Input)<{ invalid?: boolean }>`
   height: 26px;
   width: 100px;
   color: ${({ invalid }) =>
-    invalid ? theme('baseColor.red') : theme('thread.articleDigest')};
+    invalid ? theme('baseColor.red') : theme('article.digest')};
   width: 200px;
 `

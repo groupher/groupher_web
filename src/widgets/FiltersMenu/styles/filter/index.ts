@@ -6,7 +6,7 @@ import css, { theme } from '@/utils/css'
 export const Wrapper = styled.div<{ revert: boolean }>`
   ${css.flexColumn()};
   align-items: ${({ revert }) => (revert ? 'flex-start' : 'flex-end')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 14px;
   padding: 4px;
   padding-top: 0;

@@ -5,7 +5,7 @@ import css, { theme } from '@/utils/css'
 const Block = styled.div<{ bgColor: string }>`
   position: relative;
   ${css.flex('align-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   height: 100%;
   background: ${({ bgColor }) => bgColor};
   padding-left: 10px;
@@ -41,6 +41,6 @@ export const Dot = styled.div`
   margin: 0 5px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
 `

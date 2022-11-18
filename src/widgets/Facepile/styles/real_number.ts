@@ -9,7 +9,7 @@ import { getAvatarSize, getMoreTextWidth } from './metric'
 type TWrapper = { size: string; total: number }
 export const Wrapper = styled(AvatarsMore)<TWrapper>`
   background-color: ${theme('textBadge')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   height: ${({ size }) => pixelAdd(getAvatarSize(size) as string, -2)};
   min-height: ${({ size }) => pixelAdd(getAvatarSize(size) as string, -2)};
   width: ${({ total }) => getMoreTextWidth(total)};

@@ -17,11 +17,11 @@ export const Brand = styled.div`
   ${css.flex('align-center')};
 `
 export const BrandIcon = styled(BrandSVG)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(22)};
 `
 export const BrandTitle = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 16px;
   font-weight: 600;
 `

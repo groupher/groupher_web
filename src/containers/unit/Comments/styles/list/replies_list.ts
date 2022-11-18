@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
 `
 export const CountHint = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   margin-left: 23px;
   margin-top: 10px;
@@ -21,7 +21,7 @@ export const SlashSign = styled.div`
   margin-right: 8px;
 `
 export const CountNum = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-weight: bold;
   margin-right: 5px;
 `

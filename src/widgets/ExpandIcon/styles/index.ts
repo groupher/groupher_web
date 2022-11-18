@@ -57,7 +57,7 @@ export const Icon = styled(Img)<TIcon>`
     active ? getActiveIconSize(size) : getNormalIconSize(size)};
 
   ${Wrapper}:hover & {
-    /* fill: ${theme('thread.articleTitle')}; */
+    /* fill: ${theme('article.title')}; */
     width: ${({ active, size }) =>
       active ? getActiveIconSize(size) : getNormalIconSize(size)};
     height: ${({ active, size }) =>

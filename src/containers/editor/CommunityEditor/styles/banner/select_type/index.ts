@@ -7,7 +7,7 @@ import Img from '@/Img'
 export const Wrapper = styled.div`
   position: relative;
   ${css.flexColumn('align-both')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   /* background-image: linear-gradient(#043B49, #022A35); */
   background-image: ${theme('banner.linearGradient')};
   width: 100%;
@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
 `
 export const IntroTitle = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 18px;
   margin-bottom: 20px;
   margin-left: -10px;
@@ -26,10 +26,10 @@ export const SloganTextWrapper = styled.div<{ highlight: boolean }>`
 
   font-weight: ${({ highlight }) => (highlight ? 'bold' : '')};
   color: ${({ highlight }) =>
-    highlight ? theme('thread.articleTitle') : theme('thread.articleDigest')};
+    highlight ? theme('article.title') : theme('article.digest')};
 `
 export const AddNewIcon = styled(Img)`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   ${css.size(18)};
   margin-right: 10px;
   transform: rotate(-90deg);

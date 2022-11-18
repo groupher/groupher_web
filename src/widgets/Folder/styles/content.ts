@@ -19,7 +19,7 @@ export const Wrapper = styled.div<{ inactive: boolean }>`
   box-shadow: -3px -7px 5px -5px rgb(0 0 0 / 8%);
 
   flex-grow: 1;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 
   &:hover {
     border-color: ${({ inactive }) => (inactive ? 'transparent' : '#117eaf')};
@@ -28,7 +28,7 @@ export const Wrapper = styled.div<{ inactive: boolean }>`
 `
 export const Info = styled.div``
 export const Text = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 10px;
   text-align: right;
 `
@@ -36,13 +36,13 @@ export const Unit = styled(Text)`
   display: inline-block;
 `
 export const Total = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 12px;
   text-align: right;
 `
 export const LockIcon = styled(Img)`
   position: absolute;
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(11)};
 
   left: 8px;

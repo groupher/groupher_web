@@ -1,5 +1,4 @@
 import { Fragment, FC, memo } from 'react'
-import { useRouter } from 'next/router'
 
 import type { TAccount } from '@/spec'
 import { ICON } from '@/config'
@@ -19,7 +18,7 @@ import {
   LogoutItem,
   AvatarIcon,
   MenuDivider,
-  MembershipHint,
+  // MembershipHint,
 } from './styles/user_account'
 
 type TProps = {
@@ -28,8 +27,6 @@ type TProps = {
 }
 
 const UserAccount: FC<TProps> = ({ isLogin, accountInfo }) => {
-  const router = useRouter()
-
   return (
     <Fragment>
       {isLogin ? (

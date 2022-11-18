@@ -20,7 +20,7 @@ export const Divider = styled.div`
   width: 100%;
   padding: 0 5px;
   height: 1px;
-  background: ${theme('thread.articleDigest')};
+  background: ${theme('article.digest')};
   opacity: 0.2;
   margin-top: 40px;
   margin-bottom: 40px;

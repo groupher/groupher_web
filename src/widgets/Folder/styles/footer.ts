@@ -15,7 +15,7 @@ export const Title = styled.div`
   margin-top: 5px;
 `
 export const Name = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 14px;
   ${css.cutRest('68px')};
 `

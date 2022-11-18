@@ -30,6 +30,6 @@ export const CheckIcon = styled(HookSVG)<TActive>`
 `
 export const Title = styled.div<TActive>`
   color: ${({ $active }) =>
-    $active ? theme('thread.articleTitle') : theme('thread.articleDigest')};
+    $active ? theme('article.title') : theme('article.digest')};
   font-size: 13px;
 `

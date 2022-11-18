@@ -21,7 +21,7 @@ export const HeadTitle = styled.div`
   font-weight: bold;
 `
 export const HeadNum = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   opacity: 0.9;
   margin-top: 1px;
@@ -52,7 +52,7 @@ export const ActiveDot = styled.div`
   background: #139c9e;
 `
 export const Logo = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(18)};
   border-radius: 5px;
   margin-right: 7px;
@@ -61,10 +61,10 @@ export const Logo = styled(Img)`
 export const Title = styled.div<TActive>`
   ${css.cutRest('70px')};
   color: ${({ $active }) =>
-    $active ? theme('thread.articleTitle') : theme('thread.articleDigest')};
+    $active ? theme('article.title') : theme('article.digest')};
 
   ${Item}:hover & {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     cursor: pointer;
   }
 `
@@ -72,12 +72,12 @@ export const Title = styled.div<TActive>`
 export const Option = styled.div``
 export const OptionIcon = styled(Img)`
   ${css.size(15)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   transform: rotate(90deg);
   opacity: 0;
 
   &:hover {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
     cursor: pointer;
   }
 
@@ -97,18 +97,18 @@ export const MenuItem = styled.div`
 `
 export const MenuIcon = styled(Img)`
   ${css.size(14)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 
   ${MenuItem}:hover & {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
   }
 `
 export const MenuTitle = styled.div`
   font-size: 13px;
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   margin-left: 5px;
 
   ${MenuItem}:hover & {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
   }
 `

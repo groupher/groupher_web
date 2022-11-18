@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
   `};
 `
 export const Note = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-top: 22px;
   margin-bottom: 18px;
   font-size: 14px;

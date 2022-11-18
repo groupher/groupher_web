@@ -19,10 +19,10 @@ export const Intro = styled.div`
 export const NickName = styled.div`
   font-size: 16px;
   font-weight: bold;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 `
 export const Bio = styled.div`
   ${css.lineClamp(2)}
   font-size: 13px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `

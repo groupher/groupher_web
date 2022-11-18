@@ -1,9 +1,9 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import RepoItem from '../index'
+// import Footer2 from '../index'
 
-describe('TODO <RepoItem />', () => {
+describe('TODO <Footer2 />', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(true)
   })

@@ -9,11 +9,11 @@ export const Wrapper = styled.div`
 `
 export const HintHolder = styled.div`
   font-size: 14px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   padding-left: 5px;
 
   &:hover {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     cursor: pointer;
   }
 `

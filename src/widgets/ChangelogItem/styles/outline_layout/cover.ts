@@ -22,7 +22,7 @@ export const CoverImg = styled(Img)`
 const BaseBar = styled.div`
   position: absolute;
   height: 2px;
-  background: ${theme('thread.extraInfo')};
+  background: ${theme('article.info')};
   opacity: 0.4;
   border-radius: 2px;
 `

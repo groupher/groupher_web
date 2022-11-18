@@ -6,7 +6,7 @@ import css, { theme } from '@/utils/css'
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   ${css.flexColumn()};
   min-height: 320px;
 `

@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
 `
 export const Spliter = styled.div`
   position: absolute;
-  background: ${theme('thread.articleDigest')};
+  background: ${theme('article.digest')};
   width: 1px;
   height: 35px;
   top: 4px;
@@ -25,36 +25,36 @@ export const Spliter = styled.div`
 export const CodeIcon = styled(CodeSVG)`
   ${css.size(23)};
   margin-bottom: 4px;
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   opacity: 0.7;
 `
 export const DevopsIcon = styled(DevopsSVG)`
   ${css.size(23)};
   margin-bottom: 3px;
   opacity: 0.7;
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 `
 export const FrameworkIcon = styled(FrameworkSVG)`
   ${css.size(20)};
   margin-bottom: 8px;
   opacity: 0.7;
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 `
 export const DatabaseIcon = styled(DatabaseSVG)`
   ${css.size(20)};
   margin-bottom: 8px;
   opacity: 0.7;
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 `
 export const DesignIcon = styled(DesignSVG)`
   ${css.size(20)};
   margin-bottom: 8px;
   opacity: 0.7;
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 `
 export const Title = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 15px;
 
   ${css.media.mobile`

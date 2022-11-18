@@ -12,7 +12,7 @@ export const Label = styled.div`
 `
 export const Title = styled.div`
   /* color: ${theme('tabs.headerActive')}; */
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 0.9rem;
   flex-grow: 1;
 `
@@ -32,7 +32,7 @@ export const Divider = styled.div`
   opacity: 0.3;
 `
 export const LabelIcon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   /* fill: ${theme('tabs.headerActive')}; */
   ${css.size(18)}
   margin-right: 5px;
@@ -41,7 +41,7 @@ export const LabelIcon = styled(Img)`
 `
 
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   /* color: ${theme('banner.desc')}; */
   opacity: 0.8;
   font-size: 14px;

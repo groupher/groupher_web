@@ -12,7 +12,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 `
 export const Title = styled.div`
   font-size: 14px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-weight: bold;
   margin-bottom: 16px;
   margin-left: 2px;
@@ -27,7 +27,7 @@ export const SwitchWrapper = styled.div`
   padding-right: 10px;
 `
 export const ToggleTitle = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 13px;
   margin-left: 1px;
   margin-top: 2px;

@@ -25,7 +25,7 @@ export const TitleWrapper = styled.div`
 `
 export const Title = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 18px;
   font-weight: 600;
 `

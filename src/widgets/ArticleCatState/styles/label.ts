@@ -15,7 +15,7 @@ type TWrapper = {
 export const Wrapper = styled.div<TWrapper>`
   color: ${({ state }) =>
     state === ARTICLE_STATE.DEFAULT
-      ? theme('thread.extraInfo')
+      ? theme('article.info')
       : theme('gtdBadge.feat')};
   background-color: ${({ kanbanLayout, state }) =>
     isNoBgCase(kanbanLayout, state) ? 'transparent' : theme('gtdBadge.featBg')};
@@ -31,7 +31,7 @@ export const Wrapper = styled.div<TWrapper>`
 export const BugWrapper = styled(Wrapper)<TWrapper>`
   color: ${({ state }) =>
     state === ARTICLE_STATE.DEFAULT
-      ? theme('thread.extraInfo')
+      ? theme('article.info')
       : theme('gtdBadge.bug')};
   background-color: ${({ kanbanLayout, state }) =>
     isNoBgCase(kanbanLayout, state) ? 'transparent' : theme('gtdBadge.bugBg')};
@@ -44,12 +44,12 @@ export const QuestionWrapper = styled.div<{ smaller: boolean }>`
   margin-right: ${({ smaller }) => (smaller ? '0' : '6px')};
 `
 export const LockWrapper = styled.div<{ smaller: boolean }>`
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   font-size: ${({ smaller }) => (smaller ? '12px' : '14px')};
   margin-right: ${({ smaller }) => (smaller ? '0' : '6px')};
 `
 
 export const OtherWrapper = styled.div`
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   font-size: 12px;
 `

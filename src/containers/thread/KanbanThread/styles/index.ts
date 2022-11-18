@@ -23,7 +23,7 @@ export const Column = styled.div`
   width: 32%;
   min-height: 70vh;
   /* border: 1px solid; */
-  /* border-color: ${theme('thread.extraInfo')}; */
+  /* border-color: ${theme('article.info')}; */
 `
 export const Header = styled.div`
   ${css.flex('align-center')};
@@ -37,26 +37,26 @@ export const Body = styled.div`
   border-radius: 6px;
 `
 export const SubTitle = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   opacity: 0.8;
   font-size: 13px;
   margin-left: 6px;
 `
 export const Label = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 15px;
   font-weight: 600;
   margin-left: 10px;
 `
 export const TODOIcon = styled(GtdTodoSVG)`
   ${css.size(12)};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
 `
 export const WipIcon = styled(GtdWipSVG)`
   ${css.size(12)};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
 `
 export const DoneIcon = styled(GtdDoneSVG)`
   ${css.size(12)};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
 `

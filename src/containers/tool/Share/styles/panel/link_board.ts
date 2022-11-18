@@ -14,12 +14,12 @@ export const TabWrapper = styled.div`
 export const TabName = styled.div<TActive>`
   font-size: 14px;
   color: ${({ $active }) =>
-    $active ? theme('thread.articleTitle') : theme('thread.articleDigest')};
+    $active ? theme('article.title') : theme('article.digest')};
   margin-right: 12px;
   font-weight: ${({ $active }) => ($active ? 'bold' : 'normal')};
 
   &:hover {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     font-weight: ${({ $active }) => ($active ? 'bold' : 'normal')};
     cursor: pointer;
   }

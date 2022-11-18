@@ -52,12 +52,12 @@ export const Cover = styled(Img)`
 `
 export const Title = styled.div`
   ${css.cutRest('400px')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-weight: 500;
   font-size: 17px;
 `
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 14px;
   ${css.cutRest('300px')};
 `

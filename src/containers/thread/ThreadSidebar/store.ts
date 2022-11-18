@@ -43,8 +43,7 @@ const ThreadSidebar = T.model('ThreadSidebar', {})
     },
 
     get realtimeVisitors(): number {
-      const root = getParent(self) as TRootStore
-      return root.footer.realtimeVisitors
+      return 0
     },
   }))
   .actions((self) => ({

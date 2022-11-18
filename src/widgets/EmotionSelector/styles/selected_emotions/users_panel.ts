@@ -12,12 +12,12 @@ export const UsersWrapper = styled.div`
   font-size: 13px;
 `
 export const Username = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 13px;
   margin-right: 5px;
 `
 export const Units = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-left: 3px;
   margin-right: 3px;
   font-size: 13px;

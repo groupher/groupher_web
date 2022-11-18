@@ -6,7 +6,7 @@ import ViewedSVG from '@/icons/article/Viewed'
 
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   font-size: 13px;
 `
 export const HighlightWrapper = styled(Wrapper)`
@@ -17,7 +17,7 @@ export const HighlightWrapper = styled(Wrapper)`
 `
 export const ViewsIcon = styled(ViewedSVG)<{ highlight?: boolean }>`
   fill: ${({ highlight }) =>
-    highlight ? theme('heightIcon') : theme('thread.extraInfo')};
+    highlight ? theme('heightIcon') : theme('article.info')};
   ${css.size(13)};
   margin-top: -1px;
   margin-right: 5px;

@@ -23,12 +23,12 @@ export const Avatar = styled(Img)`
   margin-right: 10px;
 `
 export const CommentBody = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   ${css.cutRest('320px')};
   font-size: 14px;
 `
 export const RepliesHint = styled.div`
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   font-size: 12px;
   margin-right: 6px;
 `
@@ -43,14 +43,14 @@ export const PinState = styled.div`
   margin-left: 1px;
 `
 export const PinIcon = styled(PinSVG)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(14)};
   opacity: 0.9;
   transform: rotate(-30deg);
 `
 export const PinText = styled.div`
   font-size: 12px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-left: 15px;
   opacity: 0.8;
 `

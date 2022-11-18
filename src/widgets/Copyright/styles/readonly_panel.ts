@@ -16,11 +16,11 @@ export const Header = styled.div`
 `
 export const Title = styled.div`
   font-size: 16px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 `
 export const Desc = styled.div`
   font-size: 13px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-top: 8px;
   margin-bottom: 8px;
 `
@@ -30,7 +30,7 @@ export const Items = styled.div`
 `
 export const DescItem = styled(IconText)`
   margin-bottom: 3px;
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
 `
 export const Footer = styled.div`
   ${css.flex('align-center')};

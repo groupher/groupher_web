@@ -12,13 +12,13 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   margin-top: 10px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 5px;
 `
 export const Desc = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 12px;
   font-weight: bold;
   margin-bottom: 10px;

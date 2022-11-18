@@ -54,7 +54,7 @@ export const ReadOnlyTitle = styled.div`
   font-size: 13px;
 `
 export const ReadOnlyIcon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(12)};
   margin-right: 6px;
   opacity: 0.8;
@@ -67,13 +67,13 @@ export const Operator = styled.div`
   }
 `
 export const BackIcon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(12)};
   margin-right: 6px;
   margin-top: -2px;
 
   &:hover {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
     cursor: pointer;
   }
 

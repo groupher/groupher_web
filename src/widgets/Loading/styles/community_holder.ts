@@ -13,7 +13,7 @@ export const BannerWrapper = styled.div`
   color: ${theme('banner.desc')};
 `
 export const SidebarText = styled.div`
-  color: ${theme('sidebar.holder')};
+  color: grey;
   text-align: center;
   margin-left: 5px;
 `

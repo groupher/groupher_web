@@ -28,7 +28,7 @@ export const Wrapper = styled.div<TWrapper>`
 `
 export const Hint = styled.div<{ mode: 'article' | 'comment' }>`
   ${css.flex('align-center')};
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   font-size: ${({ mode }) => (mode === 'article' ? '15px' : '13px')};
   padding-right: 5%;
   font-weight: bold;
@@ -45,7 +45,7 @@ export const FoldHint = styled(Hint)`
 `
 export const ArrowIcon = styled(Img)<{ reverse?: boolean }>`
   ${css.size(18)};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
   transform: ${({ reverse }) => (reverse ? 'rotate(90deg)' : 'rotate(-90deg)')};
   margin-left: 4px;
   opacity: 0.8;

@@ -24,14 +24,14 @@ export const SearchBoxWrapper = styled.div`
   background: #0b3440;
 `
 export const SearchIcon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   /* fill: #1f6377; */
   ${css.size(14)};
   margin-left: -12px;
 `
 export const Placeholder = styled.div`
   /* color: #1f6377; */
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   margin-left: 6px;
 `
@@ -51,11 +51,11 @@ export const Item = styled.div`
 `
 export const Title = styled.div`
   /* color: #1f6377; */
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 13px;
 `
 export const ArrowIcon = styled(ArrowSVG)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   /* fill: #1f6377; */
   ${css.size(14)};
   transform: rotate(180deg);

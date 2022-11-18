@@ -14,10 +14,10 @@ export const Label = styled.div`
 `
 export const Icon = styled(Img)`
   ${css.size(14)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 `
 export const Text = styled.div`
   font-size: 12px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-right: 5px;
 `

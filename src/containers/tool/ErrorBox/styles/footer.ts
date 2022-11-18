@@ -18,7 +18,7 @@ export const Issue = styled.div`
   margin-right: 4px;
 `
 export const GithubIcon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(15)};
   margin-right: 5px;
   opacity: 0.8;
@@ -27,19 +27,19 @@ export const GithubIcon = styled(Img)`
   }
 `
 export const IssueLinker = styled.a`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   text-decoration: none;
 
   &:hover {
     cursor: pointer;
     opacity: 1;
     text-decoration: underline;
-    fill: ${theme('thread.articleDigest')};
+    fill: ${theme('article.digest')};
   }
 `
 
 export const Divider = styled.div`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   margin-right: 4px;
   margin-left: 4px;
 `

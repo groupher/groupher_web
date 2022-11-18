@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   margin-top: 10px;
 `
 export const CountDesc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-bottom: 10px;
 `
 export const DescNumber = styled.span`
@@ -17,15 +17,15 @@ export const DescNumber = styled.span`
 `
 export const NextDesc = styled.div`
   margin-top: 15px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const NextStepBtn = styled.span`
   border: 1px solid;
-  border-color: ${theme('thread.articleTitle')};
+  border-color: ${theme('article.title')};
   padding: 0 3px;
   border-radius: 4px;
   margin-left: 6px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 
   &:hover {
     color: ${theme('banner.title')};

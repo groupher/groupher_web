@@ -15,7 +15,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   ${css.flexColumn()};
   width: 154px;
   min-width: 154px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   padding-top: 32px;
   padding-left: 25px;
 `
@@ -25,23 +25,23 @@ export const Folder = styled.div`
 `
 const BasicIcon = styled(InfoSVG)`
   ${css.size(15)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   opacity: 0.8;
 `
 const PulseIcon = styled(PulseSVG)`
   ${css.size(15)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   opacity: 0.8;
 `
 const ManagementIcon = styled(ManagementSVG)`
   ${css.size(18)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   opacity: 0.8;
   margin-left: -2px;
 `
 const BindIcon = styled(BindSVG)`
   ${css.size(15)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   opacity: 0.8;
 `
 

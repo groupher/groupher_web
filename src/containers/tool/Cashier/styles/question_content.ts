@@ -11,18 +11,18 @@ export const Wrapper = styled.div`
 `
 
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-weight: bold;
 `
 
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-top: 3px;
 `
 
 export const Divider = styled.div`
   border-top: 1px solid;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   width: 100%;
   opacity: 0.4;
   margin-top: 8px;

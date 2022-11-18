@@ -10,21 +10,21 @@ export const Wrapper = styled.div`
   padding-right: 10px;
 `
 export const Linker = styled.a`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   &:hover {
     text-decoration: underline;
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
   }
 `
 export const SocialIcon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(14)};
   margin-right: 8px;
   margin-bottom: 8px;
   opacity: 1;
 
   &:hover {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
     cursor: pointer;
   }
 

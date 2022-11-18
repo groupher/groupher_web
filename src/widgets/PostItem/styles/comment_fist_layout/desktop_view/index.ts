@@ -21,7 +21,7 @@ export const UpvoteWrapper = styled.div`
 `
 export const Avatar = styled(Img)`
   ${css.circle(36)};
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   opacity: ${theme('avatar.opacity')};
   margin-top: 2px;
 `

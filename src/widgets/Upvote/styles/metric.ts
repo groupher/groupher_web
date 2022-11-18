@@ -4,9 +4,9 @@ import { UPVOTE_LAYOUT } from '@/constant'
 import { theme } from '@/utils/css'
 
 export const getIconColor = ($active: boolean): string => {
-  if ($active) return theme('thread.articleTitle')
+  if ($active) return theme('article.title')
 
-  return theme('thread.extraInfo')
+  return theme('article.info')
 }
 
 export const getIconSize = (type: TUpvoteLayout): string => {

@@ -8,7 +8,7 @@ import { Block as BlockBase, Footer as FooterBase } from './index'
 export const Wrapper = styled.div`
   ${css.flex()};
   flex-wrap: wrap;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   width: 100%;
 `
 export const Block = styled(BlockBase)`
@@ -30,12 +30,12 @@ export const Intro = styled.div`
   margin-top: 15px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 18px;
   cursor: pointer;
 `
 export const Digest = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   text-align: center;
   font-size: 14px;
   margin-top: 10px;
@@ -44,7 +44,7 @@ export const Digest = styled.div`
   cursor: pointer;
 
   ${Block}:hover & {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     opacity: 1;
   }
   transition: all 0.2s;
@@ -55,7 +55,7 @@ export const SocialWrapper = styled.div`
   border-top: 1px solid #004352;
 
   ${Block}:hover & {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     opacity: 1;
   }
   transition: all 0.2s;

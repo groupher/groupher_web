@@ -19,7 +19,7 @@ export const Header = styled.div`
   padding: 0 28px;
   padding-bottom: 8px;
   width: 100%;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 16px;
 `
 

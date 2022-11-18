@@ -41,7 +41,7 @@ export const RealBar = styled.span<TRealBar>`
   width: ${({ width }) => width};
   height: 2px;
   /* border-radius: 3px; */
-  background: ${theme('thread.articleDigest')}; // to-theme
+  background: ${theme('article.digest')}; // to-theme
 `
 // transform: ${({ active }) =>
 //     active ? 'translate3d(0,0,0);' : 'translate3d(0, 150%, 0);'};

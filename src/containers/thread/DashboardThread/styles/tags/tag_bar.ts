@@ -43,7 +43,7 @@ export const DotSelector = styled.div`
   cursor: pointer;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 14px;
   margin-left: 10px;
 `
@@ -59,10 +59,10 @@ export const Actions = styled.div`
 `
 export const EditIcon = styled(EditSVG)<{ onClick: () => void }>`
   ${css.size(12)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 
   &:hover {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
     cursor: pointer;
   }
 
@@ -70,7 +70,7 @@ export const EditIcon = styled(EditSVG)<{ onClick: () => void }>`
 `
 export const CloseIcon = styled(CloseSVG)`
   ${css.size(14)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 
   &:hover {
     fill: tomato;

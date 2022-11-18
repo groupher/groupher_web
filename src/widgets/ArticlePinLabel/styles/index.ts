@@ -7,7 +7,7 @@ import { pixelAdd } from '@/utils/dom'
 type TPos = { top: number; left: number }
 
 export const PinIcon = styled(PinSVG)<TPos>`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   position: absolute;
   ${css.size(18)};
   top: ${({ top }) => pixelAdd(`${top}px`, -4)};

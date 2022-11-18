@@ -21,13 +21,13 @@ export const TextWrapper = styled.div`
   margin-top: 15px;
 `
 export const HintTitle = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 16px;
   margin-bottom: 10px;
   margin-top: 6px;
 `
 export const HintDesc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-top: 4px;
 `
 // fill: ${theme('font')};
@@ -44,7 +44,7 @@ export const LinkIcon = styled(LinkSVG)`
   animation: ${animate.rotate360} 1s linear infinite;
 `
 export const GithubLogoIcon = styled(GithubSVG)`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   ${css.size(50)};
 `
 export const HintWrapper = styled.div`
@@ -52,6 +52,6 @@ export const HintWrapper = styled.div`
   color: ${theme('banner.title')};
 `
 export const FooterWrapper = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-bottom: 10px;
 `

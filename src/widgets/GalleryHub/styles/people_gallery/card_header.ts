@@ -23,19 +23,19 @@ export const NationFlag = styled(Img)`
 `
 export const NationName = styled.div`
   font-size: 12px;
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 `
 export const MoreIcon = styled(Img)`
   ${css.size(16)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
 `
 export const MenuItem = styled.div`
   font-size: 12px;
   margin-bottom: 3px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 
   &:hover {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     cursor: pointer;
   }
 `

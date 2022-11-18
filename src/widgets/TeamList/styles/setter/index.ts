@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
 
 export const EmptyHint = styled.div`
   font-size: 13px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-top: 15px;
   margin-left: 20px;
 `

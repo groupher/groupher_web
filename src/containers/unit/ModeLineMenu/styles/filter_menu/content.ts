@@ -40,7 +40,7 @@ export const TagWrapper = styled.div`
 export const ItemBar = styled.div<TActive>`
   ${css.flex('align-center', 'justify-between')};
   color: ${({ active }) =>
-    active ? theme('thread.articleTitle') : theme('thread.articleDigest')};
+    active ? theme('article.title') : theme('article.digest')};
   font-weight: ${({ active }) => (active ? 'bold' : 'normal')};
   padding: 5px 8px;
   font-size: 13px;
@@ -48,7 +48,7 @@ export const ItemBar = styled.div<TActive>`
   border-radius: 3px;
 `
 export const ArrowIcon = styled(Img)`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   ${css.size(10)};
 `
 export const TagDot = styled.div`

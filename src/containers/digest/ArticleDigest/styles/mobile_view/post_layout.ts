@@ -8,12 +8,12 @@ export const Wrapper = styled.div`
 `
 export const Title = styled.div`
   font-size: 18px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-bottom: 10px;
 `
 export const PublishDateInfo = styled.div`
   font-size: 12px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const Avatar = styled.img`
   ${css.circle(25)};

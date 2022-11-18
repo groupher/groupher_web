@@ -28,7 +28,7 @@ type TItem = TActive & {
 export const Item = styled.div<TItem>`
   ${css.flex('align-center')};
   justify-content: ${({ revert }) => (revert ? 'flex-start' : 'flex-end')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: ${({ active }) => (active ? '15px' : '14px')};
   padding: 8px 6px;
   padding-bottom: ${({ noFilter }) => (noFilter ? '10px' : '5px')};
@@ -39,13 +39,13 @@ export const Item = styled.div<TItem>`
   margin-top: ${({ topMargin }) => (topMargin ? '10px' : '0')};
 
   &:hover {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     cursor: pointer;
   }
   transition: margin-top 0.25s;
 `
 export const Icon = styled(Img)<TActive>`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   opacity: ${({ active }) => (active ? 1 : 0)};
   ${css.size(15)};
 
@@ -56,7 +56,7 @@ export const Icon = styled(Img)<TActive>`
 `
 
 export const ActiveDot = styled.div`
-  background: ${theme('thread.articleTitle')};
+  background: ${theme('article.title')};
   width: 5px;
   height: 5px;
   border-radius: 50%;

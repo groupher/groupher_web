@@ -15,7 +15,7 @@ const Icon = styled(Img)`
 `
 export const CommunityIcon = styled(Icon)``
 export const CommunityTitle = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 13px;
   margin-bottom: 8px;
   margin-top: 8px;
@@ -29,11 +29,11 @@ export const Divider = styled.div`
 `
 export const Number = styled.div`
   ${css.flex('align-baseline')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 13px;
   margin-top: 5px;
 `
 export const Text = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 11px;
 `

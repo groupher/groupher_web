@@ -29,7 +29,7 @@ type TCommonIcon = { $active: boolean; $small: boolean }
 const commonIcon = (comp) => {
   return styled(comp)<TCommonIcon>`
     fill: ${({ $active }: { $active: boolean }) =>
-      $active ? theme('thread.articleTitle') : theme('thread.articleDigest')};
+      $active ? theme('article.title') : theme('article.digest')};
     width: ${({ $small }: { $small: boolean }) => ($small ? '13px' : '15px')};
     height: ${({ $small }) => ($small ? '13px' : '15px')};
     margin-right: 5px;
@@ -45,7 +45,7 @@ export const JobIcon = commonIcon(JobSVG)
 export const CityIcon = commonIcon(CitySVG)
 export const PostIcon = styled(PostSVG)<TCommonIcon>`
   fill: ${({ $active }: { $active: boolean }) =>
-    $active ? theme('thread.articleTitle') : theme('thread.articleDigest')};
+    $active ? theme('article.title') : theme('article.digest')};
   width: ${({ $small }: { $small: boolean }) => ($small ? '14px' : '15px')};
   height: 16px;
   margin-right: 8px;
@@ -53,7 +53,7 @@ export const PostIcon = styled(PostSVG)<TCommonIcon>`
 `
 export const WorksIcon = styled(WorksSVG)<TCommonIcon>`
   fill: ${({ $active }: { $active: boolean }) =>
-    $active ? theme('thread.articleTitle') : theme('thread.articleDigest')};
+    $active ? theme('article.title') : theme('article.digest')};
   width: ${({ $small }: { $small: boolean }) => ($small ? '13px' : '15px')};
   height: ${({ $small }) => ($small ? '12px' : '15px')};
   margin-right: 8px;

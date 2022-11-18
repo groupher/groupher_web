@@ -14,18 +14,18 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 `
 export const SignIcon = styled(ArchivedSVG)`
   ${css.size(12)};
-  fill: ${theme('thread.extraInfo')};
+  fill: ${theme('article.info')};
   margin-right: 5px;
 
   ${Wrapper}:hover & {
-    fill: ${theme('thread.extraInfo')};
+    fill: ${theme('article.info')};
   }
 `
 export const Text = styled.div`
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   font-size: 12px;
 
   ${Wrapper}:hover & {
-    color: ${theme('thread.extraInfo')};
+    color: ${theme('article.info')};
   }
 `

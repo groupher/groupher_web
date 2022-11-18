@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
 `
 export const UserTitle = styled.div`
   ${css.flex('justify-between', 'align-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 24px;
   margin-bottom: 2px;
   width: 100%;
@@ -21,11 +21,11 @@ export const WomanIcon = styled(WomanSVG)`
   margin-left: 8px;
 `
 export const ShortBio = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   opacity: 0.8;
 `
 export const Bio = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 14px;
 `
 type TUserDesc = { clickable: boolean; hide: boolean }

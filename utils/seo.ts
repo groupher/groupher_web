@@ -5,8 +5,7 @@ import { ROUTE, THREAD } from '@/constant'
 
 import { plural } from './helper'
 
-const SLOGAN =
-  '小众开发者社区，专注小众编程语言，框架以及各种奇奇怪怪话题的讨论与分享。'
+const SLOGAN = '来为你心爱的产品建立一个社区吧。'
 
 type TSEO = {
   url: string
@@ -49,30 +48,6 @@ export const articleSEO = (
 
 export const articlePublishSEO = (thread: TThread = THREAD.POST): TSEO => {
   switch (thread) {
-    case THREAD.BLOG: {
-      return {
-        url: `${SITE_URL}/publish/blog`,
-        title: '发布博客',
-        description: '提交新博客到社区',
-      }
-    }
-
-    case THREAD.JOB: {
-      return {
-        url: `${SITE_URL}/publish/job`,
-        title: '发布招聘',
-        description: ' 发布招人启事',
-      }
-    }
-
-    case THREAD.WORKS: {
-      return {
-        url: `${SITE_URL}/publish/works`,
-        title: '发布作品',
-        description: '提交新作品到社区',
-      }
-    }
-
     default: {
       return {
         url: `${SITE_URL}/publish/post`,

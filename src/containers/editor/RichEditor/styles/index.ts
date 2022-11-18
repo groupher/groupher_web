@@ -17,7 +17,7 @@ const EditWrapperBase = styled.div<{ type: string }>``
 export const EditorWrapper = styled(EditWrapperBase).attrs(() => ({
   spellCheck: false,
 }))`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   min-height: ${({ type }) => getMinHeight(type)};
   border-bottom: 3px solid;
   border-bottom-color: ${theme('border')};

@@ -24,14 +24,14 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
     }
 
     b {
-      color: ${theme('thread.articleTitle')};
+      color: ${theme('article.title')};
       font-weight: bold;
     }
 
     h1,
     h2,
     h3 {
-      color: ${theme('thread.articleTitle')};
+      color: ${theme('article.title')};
     }
 
     h1 {
@@ -69,7 +69,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
         position: absolute;
         width: 6px;
         height: 6px;
-        background: ${theme('thread.articleTitle')};
+        background: ${theme('article.title')};
         border-radius: 50%;
         top: -8px;
         left: 0;
@@ -100,5 +100,5 @@ export const Body = styled.div<TBody>`
   ${({ lineClamp }) => `${css.lineClamp(lineClamp)}`};
 `
 export const HTML = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `

@@ -41,7 +41,7 @@ export const CommentIcon = styled(CommentSVG)`
 `
 export const Content = styled.div``
 export const Highlight = styled.span`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 `
 export const HelpHint = styled.div`
   position: absolute;
@@ -52,7 +52,7 @@ export const HelpHint = styled.div`
   opacity: 0.8;
 
   &:hover {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     opacity: 1;
     cursor: pointer;
   }

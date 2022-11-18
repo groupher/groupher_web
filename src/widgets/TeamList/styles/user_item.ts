@@ -23,7 +23,7 @@ export const Intro = styled.div`
 `
 export const Name = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 16px;
 
   ${Wrapper}:hover & {
@@ -31,7 +31,7 @@ export const Name = styled.div`
   }
 `
 export const Bio = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   ${css.cutRest('380px')};
 
   ${Wrapper}:hover & {

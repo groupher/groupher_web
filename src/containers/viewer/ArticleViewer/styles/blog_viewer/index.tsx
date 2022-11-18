@@ -11,6 +11,6 @@ export const BodyWrapper = styled.div`
   margin-top: 5px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 25px;
 `

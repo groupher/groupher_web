@@ -22,11 +22,11 @@ export const BottomLine = styled.div`
 export const Title = styled.div`
   font-size: 16px;
   font-weight: bold;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 `
 export const Desc = styled.div`
   font-size: 12px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-top: 5px;
   margin-bottom: 10px;
 `

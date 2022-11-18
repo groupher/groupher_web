@@ -10,23 +10,23 @@ export const Wrapper = styled.div`
 `
 export const SocialWrapper = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   margin-top: 4px;
   margin-right: 16px;
   /* text-decoration: underline; */
   &:hover {
-    color: ${theme('thread.extraInfo')};
+    color: ${theme('article.info')};
     cursor: pointer;
   }
 `
 export const Icon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(14)};
   margin-right: 2px;
 
   ${SocialWrapper}:hover & {
-    fill: ${theme('thread.extraInfo')};
+    fill: ${theme('article.info')};
   }
 `
 export const Title = styled.div`

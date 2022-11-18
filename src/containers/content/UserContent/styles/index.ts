@@ -55,7 +55,7 @@ export const TabBarWrapper = styled.div`
 `
 export const MobileBottom = styled.div`
   border-top: 1px dashed;
-  border-top-color: ${theme('thread.articleDigest')};
+  border-top-color: ${theme('article.digest')};
   display: none;
   ${css.media.tablet`display: block`};
 `

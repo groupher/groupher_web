@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   ${css.flex('justify-between')};
 `
 export const Info = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const Number = styled.span`
   color: ${theme('banner.title')};

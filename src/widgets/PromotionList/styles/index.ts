@@ -18,7 +18,7 @@ export const Header = styled.div`
 `
 export const Title = styled.div`
   font-size: 12px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 
 export const MoreHint = styled.div`

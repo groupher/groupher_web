@@ -15,7 +15,7 @@ export const Wrapper = styled.div<{ size: TSizeSM }>`
 export const Track = styled.span<{ checked: boolean }>`
   background: ${theme('hoverBg')};
   background: ${({ checked }) =>
-    checked ? theme('thread.articleTitle') : theme('border')};
+    checked ? theme('article.title') : theme('border')};
   border-radius: 12px;
   cursor: pointer;
   display: flex;
@@ -26,7 +26,7 @@ export const Track = styled.span<{ checked: boolean }>`
 export const Indicator = styled.span<{ checked: boolean }>`
   ${css.circle(20)};
   ${css.flex('align-both')};
-  /* background: ${theme('thread.articleTitle')}; */
+  /* background: ${theme('article.title')}; */
   background: white;
   /* opacity: ${({ checked }) => (checked ? 1 : 0.4)}; */
   position: absolute;
@@ -37,7 +37,7 @@ export const Indicator = styled.span<{ checked: boolean }>`
   transition: 0.2s;
 `
 export const CheckIcon = styled(HookSVG)<{ checked: boolean }>`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   ${css.size(12)};
   opacity: 0;
   opacity: ${({ checked }) => (checked ? 1 : 0)};

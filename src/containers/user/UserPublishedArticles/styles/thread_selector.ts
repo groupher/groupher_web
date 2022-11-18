@@ -24,11 +24,11 @@ export const Wrapper = styled.div`
   `};
 `
 export const Text = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 14px;
 `
 export const Count = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 15px;
   margin-left: 4px;
   margin-right: 4px;
@@ -40,7 +40,7 @@ export const SelectWrapper = styled.div`
 export const SelectLabel = styled.div<TActive>`
   ${css.flex('align-center')};
   color: ${({ $active }) =>
-    $active ? theme('thread.articleTitle') : theme('thread.articleDigest')};
+    $active ? theme('article.title') : theme('article.digest')};
   background: ${({ $active }) => ($active ? '#014150' : 'transparent')};
   border-radius: 8px;
   padding: 2px 8px;
@@ -53,6 +53,6 @@ export const SelectLabel = styled.div<TActive>`
 `
 export const SubCount = styled.div`
   font-size: 12px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-left: 4px;
 `

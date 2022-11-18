@@ -9,7 +9,7 @@ import CommentSVG from '@/icons/Comment'
 
 export const Wrapper = styled.div<{ size: TSizeSM }>`
   ${css.flex('align-center')};
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   font-size: ${({ size }) => (size === SIZE.MEDIUM ? '14px' : '13px')};
   font-weight: 500;
 `
@@ -20,7 +20,7 @@ export const HighlightWrapper = styled(Wrapper)`
 `
 export const CommentsIcon = styled(CommentSVG)<{ highlight?: boolean }>`
   fill: ${({ highlight }) =>
-    highlight ? theme('heightIcon') : theme('thread.extraInfo')};
+    highlight ? theme('heightIcon') : theme('article.info')};
   ${css.size(10)};
   margin-right: 6px;
 `

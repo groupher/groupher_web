@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
 `
 export const Icon = styled(Img)<TActive>`
   fill: ${({ active }) =>
-    active ? theme('thread.articleTitle') : theme('thread.articleDigest')};
+    active ? theme('article.title') : theme('article.digest')};
 
   ${css.size(15)};
 

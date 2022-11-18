@@ -23,7 +23,7 @@ export const Entry = styled(EntryBase)<{ index: number }>`
   padding: 10px 8px;
 `
 export const Logo = styled(Img)`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   ${css.size(20)};
 
   ${Entry}:hover & {
@@ -37,7 +37,7 @@ export const Intro = styled.div`
 `
 export const Title = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 12px;
 
   ${Entry}:hover & {
@@ -46,7 +46,7 @@ export const Title = styled.div`
   }
 `
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   ${css.cutRest('100px')};
   font-size: 11px;
   margin-top: 2px;

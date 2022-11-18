@@ -5,7 +5,7 @@ import css, { theme } from '@/utils/css'
 
 export const Wrapper = styled.div<{ showShadow: boolean }>`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   background: ${theme('modal.bg')};
   /* padding: 20px 38px; */
   padding: ${({ showShadow }) => (showShadow ? '12px 38px' : '20px 38px')};
@@ -23,13 +23,13 @@ export const ReportIcon = styled(Img)`
   fill: ${theme('baseColor.red')};
 `
 export const Text = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-weight: bold;
   margin-left: 8px;
   margin-right: 6px;
 `
 export const ContentTitle = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   ${css.cutRest('300px')};
   font-size: 15px;
   margin-left: 3px;

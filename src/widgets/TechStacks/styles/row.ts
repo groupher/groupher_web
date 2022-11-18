@@ -44,7 +44,7 @@ export const Logo = styled(CommunityFaceLogo)`
   filter: saturate(0.8);
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   ${css.cutRest('64px')};
   font-size: 13px;
   margin-top: 7px;
@@ -57,18 +57,18 @@ export const AddButton = styled.div`
   ${css.flex('align-both')};
   background: #00343e;
   font-size: 18px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   padding-bottom: 2px;
 
   ${Block}:hover & {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     cursor: pointer;
   }
   transition: color 0.1s;
 `
 export const NoSetHint = styled.div`
   font-size: 13px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-top: 25px;
   margin-left: 16px;
   letter-spacing: 2px;

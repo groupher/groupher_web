@@ -9,7 +9,7 @@ export const Folder = styled.div`
 `
 
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 15px;
   margin-left: 12px;
   font-weight: 500;
@@ -18,7 +18,7 @@ export const Title = styled.div`
 export const Item = styled.div<TActive>`
   position: relative;
   color: ${({ $active }) =>
-    $active ? theme('thread.articleTitle') : theme('thread.articleDigest')};
+    $active ? theme('article.title') : theme('article.digest')};
   background: ${({ $active }) =>
     $active ? theme('menuActive') : 'transparent'};
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
@@ -34,7 +34,7 @@ export const Item = styled.div<TActive>`
 
   &:hover {
     cursor: pointer;
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     background: ${({ $active }) =>
       $active ? theme('menuActive') : theme('hoverBg')};
   }
@@ -43,7 +43,7 @@ export const Item = styled.div<TActive>`
 `
 export const TouchedDot = styled.div`
   ${css.circle(5)};
-  background-color: ${theme('thread.extraInfo')};
+  background-color: ${theme('article.info')};
   opacity: 0.8;
   position: absolute;
   top: 11px;

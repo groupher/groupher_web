@@ -16,7 +16,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   margin-top: 72px;
   margin-bottom: 42px;
 
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const TabsWrapper = styled.div`
   position: absolute;
@@ -27,7 +27,7 @@ export const ReportWrapper = styled.div`
   position: absolute;
   top: -28px;
   right: 18px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const ContentWrapper = styled.div`
   ${css.flex('justify-between')};

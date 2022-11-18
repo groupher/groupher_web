@@ -14,7 +14,7 @@ export const Wrapper = styled(TextareaAutosize).attrs(
   }),
 )<TWrapper>`
   ${baseInput};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   opacity: 0.9;
   min-height: 56px;
   padding: 10px;
@@ -28,7 +28,7 @@ export const Wrapper = styled(TextareaAutosize).attrs(
   border-color: ${theme('editor.border')};
   ::placeholder {
     font-size: 14px;
-    color: ${theme('thread.articleDigest')};
+    color: ${theme('article.digest')};
     opacity: 0.5;
   }
   &:hover {

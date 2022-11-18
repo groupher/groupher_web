@@ -11,9 +11,9 @@ export const getLabelColor = (
   checked: boolean,
   dimOnActive: boolean,
 ): TTheme => {
-  if (dimOnActive) return theme('thread.articleTitle')
+  if (dimOnActive) return theme('article.title')
 
-  return checked ? theme('button.fg') : theme('thread.articleTitle')
+  return checked ? theme('button.fg') : theme('article.title')
 }
 
 export const getLabelFontsize = (size: string): string => {

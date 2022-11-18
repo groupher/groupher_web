@@ -36,7 +36,7 @@ export const Avatar = styled(Img)`
   margin-top: -1px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 13px;
   margin-left: 12px;
   ${css.cutRest('60vw')};

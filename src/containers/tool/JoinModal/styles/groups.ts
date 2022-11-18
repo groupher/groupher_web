@@ -21,24 +21,24 @@ export const QRCodePic = styled(Img)<{ mask: boolean }>`
   filter: ${({ mask }) => (mask ? 'blur(5px)' : 'none')};
 `
 export const Title = styled.h3`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-bottom: 10px;
 `
 export const DescWrapper = styled.div`
   ${css.flexColumn()};
   width: 260px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const UL = styled.ul`
   list-style: circle;
 `
 export const LI = styled.li`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 14px;
   margin-bottom: 8px;
 `
 export const Focus = styled.span`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 14px;
   margin-left: 1px;
   margin-right: 1px;

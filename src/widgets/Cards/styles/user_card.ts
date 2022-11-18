@@ -15,7 +15,7 @@ export const Avatar = styled(Img)`
   ${css.circle(40)};
 `
 export const ShortBio = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   margin-top: 2px;
 `
@@ -37,14 +37,14 @@ export const Title = styled.a`
   }
 `
 export const Nickname = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 15px;
 `
 export const Login = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 13px;
 `
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 14px;
 `

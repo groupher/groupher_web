@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
 export const BlockWrapper = styled.div`
   ${css.flex('justify-start')};
   flex-wrap: wrap;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   width: 100%;
   min-height: 500px;
 `
@@ -56,7 +56,7 @@ export const Icon = styled(Img)`
   margin-right: 10px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 15px;
   margin-bottom: 2px;
   cursor: pointer;

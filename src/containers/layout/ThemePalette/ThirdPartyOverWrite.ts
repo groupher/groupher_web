@@ -4,39 +4,6 @@ import { theme } from '@/utils/css'
 
 // third party style overwrite
 const CustomOverWrite = createGlobalStyle`
-  .react-calendar-heatmap rect:hover {
-    stroke: ${theme('heatmap.borderHover')};
-  }
-
-  .react-calendar-heatmap-month-label {
-    fill: ${theme('heatmap.monthLabel')};
-    font-size: 11px;
-  }
-  .banner-heatmap {
-    .react-calendar-heatmap-month-label {
-      fill: ${theme('bannerHeatmap.monthLabel')};
-      font-size: 12px;
-    }
-  }
-
-  .react-calendar-heatmap .color-scale-1 {
-    fill: ${theme('heatmap.scale_1')};
-  }
-  .react-calendar-heatmap .color-scale-2 {
-    fill: ${theme('heatmap.scale_2')};
-  }
-  .react-calendar-heatmap .color-scale-3 {
-    fill: ${theme('heatmap.scale_3')};
-  }
-  .react-calendar-heatmap .color-scale-4 {
-    fill: ${theme('heatmap.scale_4')};
-  }
-  .react-calendar-heatmap .color-scale-5 {
-    fill: ${theme('heatmap.scale_5')};
-  }
-  .react-calendar-heatmap .color-empty {
-    fill: ${theme('heatmap.empty')};
-  }
   .comment-editor {
     .public-DraftEditor-content {
       min-height: 150px;

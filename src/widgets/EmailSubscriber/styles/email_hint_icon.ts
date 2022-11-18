@@ -12,7 +12,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   ${css.flex('align-center')};
 `
 export const MailIcon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(14)};
   transform: rotate(10deg);
   margin-right: 12px;
@@ -22,12 +22,12 @@ export const MailIcon = styled(Img)`
   }
 `
 export const CurveLineIcon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(24)};
   margin-right: 10px;
   transform: rotateZ(386deg);
 `
 export const MailBoxIcon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(20)};
 `

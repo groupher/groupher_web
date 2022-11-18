@@ -31,11 +31,11 @@ const RichEditorStyle = createGlobalStyle`
   .ce-header-wrapper h3:hover::after, 
   .ce-header-eyebrow-title-input, 
   .ce-header-footer-title-input {
-    color: ${theme('thread.articleTitle')} !important;
+    color: ${theme('article.title')} !important;
     opacity: 0.65 !important;
   }
   .codex-editor svg {
-    fill: ${theme('thread.articleTitle')} !important;
+    fill: ${theme('article.title')} !important;
     opacity: 0.65 !important;
   }
 
@@ -94,11 +94,11 @@ const RichEditorStyle = createGlobalStyle`
     background: ${theme('bodyBg')};
 
     &:hover {
-      color: ${theme('thread.articleTitle')};
+      color: ${theme('article.title')};
     }
   }
   .ce-inline-tool {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
 
     &:hover {
       background: #0e3b49; // text placeholder color
@@ -132,7 +132,7 @@ const RichEditorStyle = createGlobalStyle`
     border-color: ${theme('popover.borderColor')}; 
   }
   .cdx-settings-button {
-    color: ${theme('thread.articleDigest')};
+    color: ${theme('article.digest')};
     &:hover {
       background: transparent;
       svg {
@@ -149,7 +149,7 @@ const RichEditorStyle = createGlobalStyle`
     background: #082b35;
   }
   .ce-settings__button {
-    color: ${theme('thread.articleDigest')};
+    color: ${theme('article.digest')};
     &:hover {
       background: transparent;
       svg {
@@ -164,24 +164,24 @@ const RichEditorStyle = createGlobalStyle`
   }
   .ce-inline-tool-input--showed {
     background: #082b35;
-    color: ${theme('thread.articleDigest')};
+    color: ${theme('article.digest')};
   }
 
   /* plugin-delimiter */
   .ce-delimiter .delimiter-wing {
-    background-color: ${theme('thread.articleDigest')};
+    background-color: ${theme('article.digest')};
     opacity: 0.6;
   }
   .ce-delimiter .center-icon svg {
-    fill: ${theme('thread.articleDigest')};
+    fill: ${theme('article.digest')};
     opacity: 0.6;
   }
   /* plugin-delimiter end*/
 
   /* plugin-blockquote */
   blockquote.cdx-quote-short {
-    border-left-color: ${theme('thread.articleDigest')};
-    color: ${theme('thread.articleDigest')};
+    border-left-color: ${theme('article.digest')};
+    color: ${theme('article.digest')};
   }
 
   blockquote.cdx-quote-long { 
@@ -201,10 +201,10 @@ const RichEditorStyle = createGlobalStyle`
     background: #435c62 !important;
   }
   .cdx-quote-caption__text {
-    color: ${theme('thread.articleDigest')};
+    color: ${theme('article.digest')};
   }
   .cdx-quote-caption__text[contenteditable="true"]:empty:before {
-    color: ${theme('thread.articleDigest')};
+    color: ${theme('article.digest')};
     opacity: .6;
   }
 
@@ -301,10 +301,10 @@ const RichEditorStyle = createGlobalStyle`
   }
 
   .cdx-list__item-unorder-prefix::before {
-    background-color: ${theme('thread.articleTitle')} !important;
+    background-color: ${theme('article.title')} !important;
   }
   .cdx-list__item-order-prefix {
-    color: ${theme('thread.articleTitle')} !important;
+    color: ${theme('article.title')} !important;
   }
 
   .cdx-list-label__default {
@@ -325,7 +325,7 @@ const RichEditorStyle = createGlobalStyle`
   }
   .label-popover-input__default, .label-popover-input__red, .label-popover-input__warn, .label-popover-input__green {
     background: #092c35 !important;
-    color: ${theme('thread.articleTitle')} !important;
+    color: ${theme('article.title')} !important;
   }
   .tippy-arrow {
     display: none;
@@ -337,11 +337,11 @@ const RichEditorStyle = createGlobalStyle`
     box-shadow: ${theme('popover.boxShadow')} !important;
   }
   .cdx-list-drag-over {
-    border-bottom-color: ${theme('thread.articleDigest')} !important;
+    border-bottom-color: ${theme('article.digest')} !important;
   }
   .cdx-list-drag-start {
       opacity: 0.6;
-      border-bottom-color: ${theme('thread.articleDigest')} !important;
+      border-bottom-color: ${theme('article.digest')} !important;
   }
   /* plugin-list end */
 
@@ -415,7 +415,7 @@ const RichEditorStyle = createGlobalStyle`
     margin-top: 2px;
   }
   .cdx-collapse-title {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
   }
   .cdx-collapse-content .content-inner {
     border-left-color: #4a666b !important;
@@ -423,7 +423,7 @@ const RichEditorStyle = createGlobalStyle`
   }
 
   .cdx-collapse-content .content-inner[placeholder]:empty:before {
-    color: ${theme('thread.articleDigest')} !important;
+    color: ${theme('article.digest')} !important;
     opacity: .8;
   }
 
@@ -456,7 +456,7 @@ const RichEditorStyle = createGlobalStyle`
   }
 
   .cdx-code-lang_copy {
-    color: ${theme('thread.articleDigest')} !important;
+    color: ${theme('article.digest')} !important;
     display: flex;
     align-items: center;
   }
@@ -474,7 +474,7 @@ const RichEditorStyle = createGlobalStyle`
   .selectr-input {
     background: #00262F !important;
     border-color: transparent !important;
-    color: ${theme('thread.articleTitle')} !important;
+    color: ${theme('article.title')} !important;
   }
   .selectr-option.selected {
     background: #003E4D !important;
@@ -488,11 +488,11 @@ const RichEditorStyle = createGlobalStyle`
   }
 
   .cdx-code-tabs ul li label .title {
-    color: ${theme('thread.articleDigest')} !important;
+    color: ${theme('article.digest')} !important;
     opacity: 0.8;
   }
   .cdx-code-tabs ul li label.active .title {
-    color: ${theme('thread.articleTitle')} !important;
+    color: ${theme('article.title')} !important;
   }
   .cdx-code-tabs ul li .active {
     border-bottom-color: ${theme('button.primary')} !important;
@@ -512,14 +512,14 @@ const RichEditorStyle = createGlobalStyle`
   .cdx-mention__input {
     background: #00262F !important;
     border-color: transparent !important;
-    color: ${theme('thread.articleTitle')} !important;
+    color: ${theme('article.title')} !important;
   }
   .cdx-mention-suggestion__title {
-    color: ${theme('thread.articleTitle')} !important;
+    color: ${theme('article.title')} !important;
     line-height: 16px;
   }
   .cdx-mention-suggestion__desc {
-    color: ${theme('thread.articleDigest')} !important;
+    color: ${theme('article.digest')} !important;
   }
   .cdx-mention-suggestion:hover {
     background: #003E4D !important;
@@ -535,7 +535,7 @@ const RichEditorStyle = createGlobalStyle`
 
   .embed-tool__addrwrapper-inputwrapper-input {
     background: #012e38 !important;
-    color: ${theme('thread.articleTitle')} !important;
+    color: ${theme('article.title')} !important;
     color: #889fa0 !important;
     border-radius: 10px !important;
     padding-left: 10px !important;
@@ -543,7 +543,7 @@ const RichEditorStyle = createGlobalStyle`
   }
 
   .embed-tool__addrwrapper-descwrapper-desc, .embed-tool__addrwrapper-descwrapper-type-title, .embed-tool__addrwrapper-descwrapper-toggler {
-    color: ${theme('thread.articleTitle')} !important;
+    color: ${theme('article.title')} !important;
     opacity: 0.8;
   }
   
@@ -560,7 +560,7 @@ const RichEditorStyle = createGlobalStyle`
   }
 
   .embed-clip svg {
-    fill: ${theme('thread.articleTitle')} !important;
+    fill: ${theme('article.title')} !important;
     opacity: 0.6 !important;
   }
   .embed-top-success {
@@ -570,7 +570,7 @@ const RichEditorStyle = createGlobalStyle`
 
   .embed-tool--loading::before {
     border: 3px solid #cdd1e0;
-    border-color: ${theme('thread.articleDigest')} !important;
+    border-color: ${theme('article.digest')} !important;
     border-top-color: ${theme('button.primary')} !important;
   }
 
@@ -589,7 +589,7 @@ const RichEditorStyle = createGlobalStyle`
   }
 
   .image-tool__caption {
-    color: ${theme('thread.articleTitle')} !important;
+    color: ${theme('article.title')} !important;
     opacity: 0.7;
     font-size: 14px;
   }
@@ -615,11 +615,11 @@ const RichEditorStyle = createGlobalStyle`
 
   .image-tool__popover_input_wrapper_input {
     background: #092c35 !important;
-    color: ${theme('thread.articleTitle')} !important;
+    color: ${theme('article.title')} !important;
     border: none !important;
   }
   .image-tool__popover_input_wrapper_input::placeholder {
-    color: ${theme('thread.articleTitle')} !important;
+    color: ${theme('article.title')} !important;
     opacity: 0.6;
   }
   .image-tool__gallery_block_image {
@@ -635,7 +635,7 @@ const RichEditorStyle = createGlobalStyle`
   }
 
   .cdx-ctrlbreak-hint {
-    color: ${theme('thread.articleDigest')} !important;
+    color: ${theme('article.digest')} !important;
     opacity: .8;
   }
 

@@ -20,18 +20,18 @@ export const TextIntro = styled.div`
 `
 export const FromHint = styled.div`
   font-size: 12px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   margin-bottom: 10px;
   opacity: 0.7;
 `
 export const Name = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 17px;
 `
 export const Bio = styled.div`
   font-size: 13px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   ${css.lineClamp(2)};
 `
 export const AvatarIntro = styled.div`

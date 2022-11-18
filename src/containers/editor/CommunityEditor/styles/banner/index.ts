@@ -20,5 +20,5 @@ export const SloganTextWrapper = styled.div<{ highlight: boolean }>`
 
   font-weight: ${({ highlight }) => (highlight ? 'bold' : '')};
   color: ${({ highlight }) =>
-    highlight ? theme('thread.articleTitle') : theme('thread.articleDigest')};
+    highlight ? theme('article.title') : theme('article.digest')};
 `

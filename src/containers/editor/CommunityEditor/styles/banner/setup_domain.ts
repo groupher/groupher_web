@@ -7,7 +7,7 @@ import DomainSVG from '@/icons/Domain'
 export const Wrapper = styled.div`
   position: relative;
   ${css.flexColumn('align-both')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   /* background-image: linear-gradient(#043B49, #022A35); */
   background-image: ${theme('banner.linearGradient')};
   width: 100%;
@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
 export const IntroTitle = styled.div`
   position: relative;
   ${css.flex('align-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 18px;
   margin-bottom: 20px;
   margin-left: -10px;
@@ -28,14 +28,14 @@ export const Title = styled.div`
 `
 export const StepHint = styled.div`
   position: absolute;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 15px;
   top: -35px;
   left: 41%;
   opacity: 0.5;
 `
 export const DomainIcon = styled(DomainSVG)`
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   ${css.size(18)};
   margin-right: 10px;
 `

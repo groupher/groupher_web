@@ -15,7 +15,7 @@ type TTab = {
 
 export const Wrapper = styled.div<TTab>`
   ${css.flex('justify-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   position: relative;
   height: 100%;
   z-index: 1;
@@ -67,15 +67,15 @@ export const Label = styled.span<TLabel>`
   ${css.flex('align-center')};
   white-space: nowrap;
   color: ${({ active }) =>
-    active ? theme('thread.articleTitle') : '#878b8f'}; // to-theme
+    active ? theme('article.title') : '#878b8f'}; // to-theme
   margin-bottom: ${({ bottomSpace }) => `${bottomSpace}px`};
 
   font-weight: 500;
 
   &:hover {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     svg {
-      fill: ${theme('thread.articleTitle')};
+      fill: ${theme('article.title')};
     }
   }
 `

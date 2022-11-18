@@ -23,7 +23,7 @@ export const Title = styled.div`
   ${css.flex('justify-center')};
   width: 100%;
   font-size: 18px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 `
 export const TabBarWrapper = styled.div`
   ${css.flex('justify-center')};

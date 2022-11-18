@@ -13,7 +13,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   ${css.flexColumn()};
   width: 200px;
   min-width: 200px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   padding-top: 25px;
 `
 export const SearchInput = styled(Input)`
@@ -25,7 +25,7 @@ export const SearchInput = styled(Input)`
   border-color: ${theme('border')};
 
   ::placeholder {
-    color: ${theme('thread.articleDigest')};
+    color: ${theme('article.digest')};
     opacity: 0.8;
   }
 `
@@ -37,7 +37,7 @@ export const PublishButton = styled(Button)`
   width: 180px;
   border-radius: 12px;
   background: ${theme('hoverBg')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   border-color: ${theme('border')};
 `
 export const BtnText = styled.div`

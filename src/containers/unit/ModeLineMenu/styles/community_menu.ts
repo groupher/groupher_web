@@ -23,13 +23,13 @@ export const Logo = styled(CommunityFaceLogo)`
   border-radius: 5px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 16px;
   margin-top: 10px;
   margin-bottom: 5px;
 `
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   text-align: center;
   font-size: 14px;
   margin-bottom: 25px;

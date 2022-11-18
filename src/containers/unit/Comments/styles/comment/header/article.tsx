@@ -19,7 +19,7 @@ export const UserBase = styled.div`
   flex-grow: 1;
 `
 export const Nickname = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 15px;
   ${css.cutRest('150px')};
 

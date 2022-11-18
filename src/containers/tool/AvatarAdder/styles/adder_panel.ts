@@ -22,7 +22,7 @@ export const SearchWrapper = styled.div`
 export const Divider = styled.div`
   width: 100%;
   border-top: 1px solid;
-  border-color: ${theme('thread.articleDigest')};
+  border-color: ${theme('article.digest')};
   opacity: 0.4;
   margin-top: 15px;
   margin-bottom: 10px;
@@ -32,23 +32,23 @@ export const Footer = styled.div`
 `
 export const AdderIcon = styled(Img)`
   ${css.size(17)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   margin-right: 3px;
   &:hover {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
   }
 `
 export const AddBtn = styled.div`
   ${css.flex('align-both')};
   width: 80px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   border: 1px solid;
   border-radius: 4px;
-  border-color: ${theme('thread.articleDigest')};
+  border-color: ${theme('article.digest')};
 
   &:hover {
     border: 1px solid;
-    border-color: ${theme('thread.articleTitle')};
+    border-color: ${theme('article.title')};
     cursor: pointer;
     font-weight: bold;
   }

@@ -34,7 +34,7 @@ export const HintText = styled.div`
   top: -25px;
   left: 3px;
   font-size: 12px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   opacity: 0.8;
 `
 export const UnloginUser = styled(UserSVG)`

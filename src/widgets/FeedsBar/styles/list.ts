@@ -5,7 +5,7 @@ import css, { theme } from '@/utils/css'
 
 export const ListItemWrapper = styled.div`
   width: 100%;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   border-bottom: 1px solid;
   border-bottom-color: #034256;
   padding: 10px;
@@ -16,7 +16,7 @@ export const ListItemWrapper = styled.div`
 export const Header = styled.div`
   ${css.flex('align-center')};
   margin-bottom: 4px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const Icon = styled(Img)`
   ${css.circle(13)};
@@ -24,12 +24,12 @@ export const Icon = styled(Img)`
 `
 export const InfoIcon = styled(Img)`
   ${css.circle(13)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   margin-left: 5px;
   opacity: 0;
 
   ${Header}:hover & {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
     cursor: pointer;
     opacity: 1;
   }
@@ -37,11 +37,11 @@ export const InfoIcon = styled(Img)`
 `
 export const Timestamp = styled.div`
   ${css.flex()};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 14px;
   &:hover {
     cursor: pointer;

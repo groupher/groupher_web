@@ -23,12 +23,12 @@ export const Block = styled.div`
   margin-left: 8px;
 `
 export const Title = styled.div`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 15px;
   font-weight: bold;
 `
 export const ArrowIcon = styled(ArrowSVG)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(14)};
   transform: rotate(180deg);
   margin-left: 5px;

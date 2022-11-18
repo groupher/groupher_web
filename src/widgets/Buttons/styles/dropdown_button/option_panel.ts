@@ -55,7 +55,7 @@ export const Intro = styled.div`
 `
 export const Header = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
 `
 export const Title = styled.div`
   ${css.cutRest('90%')};
@@ -63,7 +63,7 @@ export const Title = styled.div`
 `
 export const LinkIcon = styled(Img)`
   ${css.size(10)};
-  fill: ${theme('thread.articleTitle')};
+  fill: ${theme('article.title')};
   margin-left: 5px;
   display: none;
 
@@ -72,7 +72,7 @@ export const LinkIcon = styled(Img)`
   }
 `
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 11px;
   margin-top: 4px;
 `

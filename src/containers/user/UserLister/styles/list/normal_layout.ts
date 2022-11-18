@@ -39,18 +39,18 @@ export const Title = styled.div`
   `};
 `
 export const Nickname = styled(Link)`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   text-decoration: none;
   font-size: 16px;
 
   &:hover {
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
     text-decoration: underline;
   }
 `
 export const Location = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const City = styled.div`
   ${css.cutRest('150px')};
@@ -67,12 +67,12 @@ export const City = styled.div`
   `};
 `
 export const CityIcon = styled(CitySVG)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(13)};
   margin-right: 2px;
 `
 export const Action = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   width: 100px;
   margin-top: 10px;
   margin-bottom: 10px;

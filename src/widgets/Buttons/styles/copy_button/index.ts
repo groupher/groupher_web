@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   ${css.flex('align-center')};
 `
 export const CopyIcon = styled(CopySVG)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(16)};
   margin-right: 2px;
   opacity: 0.8;

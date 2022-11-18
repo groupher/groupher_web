@@ -7,7 +7,7 @@ const bgColor = '#02303e'
 
 export const Wrapper = styled.div`
   width: 320px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   /* background: #02303e; */
   /* height: 90vh; */
   height: 100%;
@@ -23,13 +23,13 @@ export const Header = styled.div`
   position: relative;
   ${css.flex('align-center')};
   padding: 6px 8px 5px 0;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const FunctionIcon = styled(Img)`
   ${css.size(18)};
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   &:hover {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
     cursor: pointer;
   }
 `

@@ -9,12 +9,12 @@ export const Header = styled.div`
   ${css.flex('align-center')};
 `
 export const Title = styled.div<{ noDesc: boolean }>`
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   font-size: 16px;
   margin-bottom: ${({ noDesc }) => (noDesc ? '25px' : '0')};
 `
 export const Desc = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 13px;
   margin-top: 10px;
   margin-bottom: 25px;

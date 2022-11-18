@@ -5,7 +5,7 @@
  */
 
 import { FC, Fragment, ReactNode } from 'react'
-// import Head from 'next/head'
+import Head from 'next/head'
 import { ThemeProvider } from 'styled-components'
 
 import type { TThemeMap } from '@/spec'
@@ -28,24 +28,19 @@ const ThemeContainer: FC<TProps> = ({ children, theme: { themeData } }) => {
   // theme seems conflict with manifest
   return (
     <ThemeProvider theme={themeData}>
-      {/* <Head>
+      <Head>
         <meta
           name="theme-color"
           content={themeData.mobileTab}
           media="(prefers-color-scheme: light)"
         />
-        <meta
-          name="theme-color"
-          content={themeData.mobileTab}
-          media="(prefers-color-scheme: dark)"
-        />
-      </Head> */}
+      </Head>
 
       <ScrollBarStyle />
       <Fragment>{children}</Fragment>
-      <CodeSyxHighlight />
       <ThirdPartyOverWrite />
       <GlobalStyle />
+      <CodeSyxHighlight />
     </ThemeProvider>
   )
 }

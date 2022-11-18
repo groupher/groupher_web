@@ -9,7 +9,7 @@ export const getNormalColor = (type: string): TTheme => {
       return theme('baseColor.green')
 
     default:
-      return theme('thread.articleDigest')
+      return theme('article.digest')
   }
 }
 
@@ -19,7 +19,7 @@ export const getActiveColor = (type: string): TTheme => {
       return theme('baseColor.green')
 
     default:
-      return theme('thread.articleTitle')
+      return theme('article.title')
   }
 }
 

@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
 export const Item = styled.div`
   ${css.flex('align-center')};
 
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   margin-bottom: 8px;
   &:hover {
     font-weight: bold;

@@ -23,14 +23,14 @@ export const OptionRow = styled.div`
 `
 export const OptionTitle = styled.div<TActive>`
   font-size: 14px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   background: ${({ active }) => (active ? '#00343D' : 'transparent')};
   padding: 0 5px;
   border-radius: 3px;
 `
 export const OptionDesc = styled.div`
   font-size: 12px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   opacity: 0.8;
   margin-left: 15px;
 `

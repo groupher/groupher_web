@@ -24,12 +24,12 @@ export const Header = styled.div`
 `
 export const TimeStamp = styled.div`
   font-size: 12px;
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
 `
 export const Title = styled.div`
   ${css.lineClamp(1)}
   font-size: 15px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   width: 100%;
   font-weight: 500;
 
@@ -38,7 +38,7 @@ export const Title = styled.div`
 export const Desc = styled.div`
   ${css.lineClamp(2)}
   font-size: 13px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   width: calc(100% - 35px);
   margin-top: 8px;
   line-height: 1.62;
@@ -47,7 +47,7 @@ export const Desc = styled.div`
 export const Footer = styled.div`
   ${css.flex('align-center', 'justify-between')};
   font-size: 12px;
-  color: ${theme('thread.extraInfo')};
+  color: ${theme('article.info')};
   margin-top: 18px;
 `
 export const Author = styled.div`

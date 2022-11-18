@@ -11,7 +11,7 @@ type TWrapper = { withBorder: boolean; size: TSizeTS } & TSpace
 
 export const Wrapper = styled.div<TWrapper>`
   ${css.flex('align-center')};
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 
   border: ${({ withBorder }) => (withBorder ? '1px solid' : 'none')};
   border-color: ${({ withBorder }) =>
@@ -32,13 +32,13 @@ export const Label = styled.div`
 export const InnerBtnWrapper = styled.div`
   ${css.flex('align-center')};
   margin-left: 2px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-weight: 400;
   font-size: 13px;
 
   &:hover {
     cursor: pointer;
-    color: ${theme('thread.articleTitle')};
+    color: ${theme('article.title')};
   }
 
   transition: color 0.2s;
@@ -47,12 +47,12 @@ export const ButtonWrapper = styled(Button)`
   border: none;
 `
 export const FilterIcon = styled(ArrowSVG)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(14)};
   transform: rotate(-90deg);
   margin-left: 5px;
 
   ${InnerBtnWrapper}:hover & {
-    fill: ${theme('thread.articleDigest')};
+    fill: ${theme('article.digest')};
   }
 `

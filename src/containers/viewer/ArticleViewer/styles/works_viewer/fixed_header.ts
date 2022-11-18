@@ -27,13 +27,13 @@ export const Cover = styled(Img)`
 `
 export const Title = styled.div`
   font-size: 18px;
-  color: ${theme('thread.articleTitle')};
+  color: ${theme('article.title')};
   ${css.cutRest('120px')};
 `
 export const Desc = styled.div`
   font-size: 14px;
   margin-top: 3px;
   margin-left: 10px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   ${css.cutRest('240px')};
 `

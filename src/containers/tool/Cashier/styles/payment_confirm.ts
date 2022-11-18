@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
 export const Desc = styled.div`
   ${css.flex('align-center')};
   margin-top: 10px;
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
 `
 export const BtnWrapper = styled.div`
   align-self: flex-end;

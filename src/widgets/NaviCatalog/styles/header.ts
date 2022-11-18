@@ -15,8 +15,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 `
 export const Title = styled.div<TActive>`
   position: relative;
-  color: ${({ active }) =>
-    active ? activeColor : theme('thread.articleTitle')};
+  color: ${({ active }) => (active ? activeColor : theme('article.title'))};
   font-size: 15px;
   padding-left: 5px;
 `
@@ -28,11 +27,11 @@ export const Operator = styled.div<TActive>`
   margin-left: 6px;
 `
 export const OperateIcon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(13)};
 
   &:hover {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
     cursor: pointer;
   }
 
@@ -42,18 +41,18 @@ export const LocateIcon = styled(OperateIcon)``
 export const HomeIcon = styled(OperateIcon)``
 
 export const ResetIcon = styled(Img)`
-  fill: ${theme('thread.articleDigest')};
+  fill: ${theme('article.digest')};
   ${css.size(14)};
 
   &:hover {
-    fill: ${theme('thread.articleTitle')};
+    fill: ${theme('article.title')};
     cursor: pointer;
   }
 
   transition: all 0.2s;
 `
 export const HelpHint = styled.div`
-  color: ${theme('thread.articleDigest')};
+  color: ${theme('article.digest')};
   font-size: 12px;
   padding: 2px 5px;
 `
