@@ -12,7 +12,6 @@ RUN cd /root/web/src/pages && ls -lla
 RUN cd /root/web/src/pages && find . -type f -name '\.*' -print | xargs rm -f
 RUN curl -o /usr/local/bin/jq http://stedolan.github.io/jq/download/linux64/jq && \
   chmod +x /usr/local/bin/jq
-RUN which jq
 RUN cd /root/web/ && make build.prod
 
 ADD loader.sh /usr/local/bin/loader.sh
