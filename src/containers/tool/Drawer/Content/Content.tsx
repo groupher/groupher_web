@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { TYPE } from '@/constant'
+// import { TYPE } from '@/constant'
 // import ModeLineMenu from '@/containers/unit/ModeLineMenu'
 import type { TUser } from '@/spec'
 
@@ -9,15 +9,15 @@ import type { TExtraInfo } from '../spec'
 
 import {
   ArticleViewer,
-  MailsViewer,
+  // MailsViewer,
   // editors
-  AccountEditor,
-  WallpaperEditor,
+  // AccountEditor,
+  // WallpaperEditor,
   // utils
   // C11NSettingPanel,
   // userlister
-  UserLister,
-  DashboardDesc,
+  // UserLister,
+  // DashboardDesc,
 } from '../dynamics'
 
 type TProps = {
@@ -29,24 +29,22 @@ type TProps = {
 const Content: FC<TProps> = ({ type, attUser, extraInfo }) => {
   if (!type) return null
 
-  const { DRAWER } = TYPE
+  // const { DRAWER } = TYPE
 
+  return <ArticleViewer />
+  /*
   switch (type) {
     case DRAWER.ACCOUNT_EDIT:
       // @ts-ignore
       return <AccountEditor />
-
-    // case TYPE.DRAWER.REPO_CREATE:
-    //   return <RepoEditor />
 
     case DRAWER.MAILS_VIEW:
       // @ts-ignore
       return <MailsViewer />
 
     case DRAWER.C11N_SETTINGS:
-      return null
-    // @ts-ignore
-    // return <C11NSettingPanel />
+      // @ts-ignore
+      return <C11NSettingPanel />
 
     case DRAWER.DASHBOARD_DESC:
       // @ts-ignore
@@ -71,6 +69,7 @@ const Content: FC<TProps> = ({ type, attUser, extraInfo }) => {
       return <ArticleViewer />
     }
   }
+         */
 }
 
 export default Content
