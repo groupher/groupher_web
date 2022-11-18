@@ -96,6 +96,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const { filter, community, pagedArticleTags } = resp
+
   const articleThread = ssrParseArticleThread(resp, thread, filter)
 
   const initProps = merge(

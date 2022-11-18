@@ -202,18 +202,6 @@ const github = {
     footer: '#a6bebf',
     footerHover: darken('#a6bebf', 5),
   },
-  heatmap: {
-    activityLow: darken('#6EC385', 20),
-    activityHight: 'yellowgreen',
-    empty: '#efefef',
-    borderHover: '#51abb2',
-    monthLabel: '#c6dbde',
-    scale_1: '#dbe290',
-    scale_2: '#99c06f',
-    scale_3: '#609d4c',
-    scale_4: '#61793e',
-    scale_5: '#37642c',
-  },
 
   markdown: {
     title: primaryColor,
