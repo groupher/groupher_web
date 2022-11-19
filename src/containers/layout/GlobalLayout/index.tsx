@@ -4,16 +4,15 @@
  *
  */
 
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TSEO, TMetric } from '@/spec'
-import { SIZE, BODY_SCROLLER } from '@/constant'
 import { bond } from '@/utils/mobx'
 
 import ThemePalette from '@/containers/layout/ThemePalette'
-import BannerNotify from '@/widgets/BannerNotify'
+// import BannerNotify from '@/widgets/BannerNotify'
 import Footer from '@/widgets/Footer'
 // import CustomScroller from '@/widgets/CustomScroller'
 
@@ -21,7 +20,7 @@ import type { TStore } from './store'
 import SEO from './SEO'
 import Wallpaper from './Wallpaper'
 
-// import { CustomScroller } from './dynamic'
+import { Addon, BannerNotify } from './dynamic'
 
 import {
   Skeleton,
@@ -32,10 +31,6 @@ import {
   ContentWrapper,
 } from './styles'
 import { useInit, childrenWithProps } from './logic'
-
-const Addon = dynamic(() => import('./Addon'), {
-  ssr: false,
-})
 
 type TProps = {
   globalLayout?: TStore
@@ -57,11 +52,17 @@ const GlobalLayoutContainer: FC<TProps> = ({
   const { isMobile } = useMobileDetect()
   useInit(store, { isMobile })
 
+  const [load, setLoad] = useState(false)
+
   const { wallpaper, wallpapers, globalLayout } = store
+
+  useEffect(() => {
+    setLoad(true)
+  }, [])
 
   return (
     <ThemePalette>
-      <Addon />
+      {load && <Addon />}
       <Skeleton>
         <Wallpaper wallpaper={wallpaper} wallpapers={wallpapers} />
         {/* <CustomScroller
@@ -77,11 +78,13 @@ const GlobalLayoutContainer: FC<TProps> = ({
           <Wrapper>
             <SEO metric={metric} config={seoConfig} />
             <InnerWrapper metric={metric}>
-              <BannerNotify
-                metric={metric}
-                layout={globalLayout.bannerNotify}
-                bg={globalLayout.bannerNotifyBg}
-              />
+              {load && (
+                <BannerNotify
+                  metric={metric}
+                  layout={globalLayout.bannerNotify}
+                  bg={globalLayout.bannerNotifyBg}
+                />
+              )}
               <ContentWrapper>
                 <BodyWrapper isMobile={isMobile}>
                   {childrenWithProps(children, { metric })}

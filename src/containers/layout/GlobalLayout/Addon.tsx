@@ -22,7 +22,6 @@ const Addon: FC = () => {
       <Drawer />
       {/* @ts-ignore */}
       {/* @ts-ignore */}
-      {/* {!isMobile && <Doraemon />} */}
       {/* @ts-ignore */}
       {/* <ErrorBox /> */}
     </Fragment>

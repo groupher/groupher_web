@@ -1,6 +1,5 @@
 import { GetServerSideProps } from 'next'
 import { merge } from 'ramda'
-
 import { Provider } from 'mobx-react'
 
 import type { TCommunity } from '@/spec'
