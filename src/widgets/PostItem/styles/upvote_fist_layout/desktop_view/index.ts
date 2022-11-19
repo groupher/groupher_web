@@ -9,7 +9,6 @@ export const Wrapper = styled.div`
 `
 export const Main = styled.div`
   ${css.flexColumnGrow()};
-  margin-left: 6px;
 `
 export const DigestWrapper = styled.div`
   ${css.cutRest('530px')};

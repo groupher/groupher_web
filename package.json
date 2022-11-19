@@ -1,6 +1,6 @@
 {
   "name": "groupher_web",
-  "version": "1.0.56",
+  "version": "1.0.57",
   "license": "Apache License 2.0",
   "scripts": {
     "dev": "next dev",
@@ -16,6 +16,7 @@
     "serve.dev": "cross-env NODE_ENV=dev next start -p ${SERVE_PORT}",
     "serve.prod": "cross-env NODE_ENV=production next start -p ${SERVE_PORT}",
     "dist": "next build && next export -o \"build\"",
+    "info": "next info",
     "clean": "shjs ./utils/scripts/clean.js",
     "gen": "plop --plopfile ./utils/scripts/generators/index.js",
     "analyze": "cross-env ANALYZE=true next build",
