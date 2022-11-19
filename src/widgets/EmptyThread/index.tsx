@@ -32,7 +32,7 @@ type TProps = {
 }
 
 const EmptyThread: FC<TProps> = ({ thread }) => (
-  <Wrapper noShiftRight={includes(thread, [THREAD.POST, THREAD.BLOG])}>
+  <Wrapper noShiftRight={includes(thread, [THREAD.POST])}>
     <Icon>
       <Icon404 />
     </Icon>

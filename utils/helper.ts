@@ -606,10 +606,6 @@ const doCovert = (value: string, opt: TCovert): string => {
  */
 export const singular = (value: string, opt = null): string => {
   switch (value) {
-    case THREAD.WORKS: {
-      return doCovert(THREAD.WORKS, opt)
-    }
-
     default: {
       const singularValue = endsWith('s', value) ? value.slice(0, -1) : value
       return doCovert(singularValue, opt)
@@ -626,10 +622,6 @@ export const singular = (value: string, opt = null): string => {
 export const plural = (value: string, opt = null): string => {
   if (
     includes(value, [
-      THREAD.WORKS,
-      THREAD.INTERVIEW,
-      THREAD.TEAM,
-      THREAD.PRODUCT,
       THREAD.ACCOUNT,
       THREAD.CHANGELOG,
       THREAD.HELP,

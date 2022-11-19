@@ -65,7 +65,7 @@ const UserPublishedArticles = T.model('UserPublishedArticles', {
     },
 
     get hasContentBg(): boolean {
-      return !includes(self.thread, [ARTICLE_THREAD.JOB, ARTICLE_THREAD.RADAR])
+      return true
     },
     get globalLayout(): TGlobalLayout {
       const root = getParent(self) as TRootStore

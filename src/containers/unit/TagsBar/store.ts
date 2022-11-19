@@ -50,16 +50,8 @@ const TagsBar = T.model('TagsBar', {
       return groupByKey(tagsData, 'group')
     },
     get maxDisplayCount(): number {
-      const slf = self as TStore
-      switch (slf.curThread) {
-        case THREAD.JOB: {
-          return 3
-        }
-
-        default: {
-          return 3
-        }
-      }
+      // const slf = self as TStore
+      return 3
     },
     get totalCountThrold(): number {
       return 12

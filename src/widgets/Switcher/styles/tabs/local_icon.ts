@@ -3,12 +3,7 @@ import styled from 'styled-components'
 // import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 import PostSVG from '@/icons/Post'
-import RadarSVG from '@/icons/Radar'
-import CPerSVG from '@/icons/CPer'
-import BlogSVG from '@/icons/Blog'
-import JobSVG from '@/icons/Job'
 import CitySVG from '@/icons/City'
-import WorksSVG from '@/icons/Works'
 //
 // import TabRepoSVG from '@/SvgIcons/TabRepoSVG'
 // import TabCheatsheetSVG from '@/SvgIcons/TabCheatsheetSVG'
@@ -38,24 +33,12 @@ const commonIcon = (comp) => {
 }
 
 // export const PostIcon = commonIcon(PostSVG)
-export const RadarIcon = commonIcon(RadarSVG)
-export const CPerIcon = commonIcon(CPerSVG)
-export const BlogIcon = commonIcon(BlogSVG)
-export const JobIcon = commonIcon(JobSVG)
 export const CityIcon = commonIcon(CitySVG)
 export const PostIcon = styled(PostSVG)<TCommonIcon>`
   fill: ${({ $active }: { $active: boolean }) =>
     $active ? theme('article.title') : theme('article.digest')};
   width: ${({ $small }: { $small: boolean }) => ($small ? '14px' : '15px')};
   height: 16px;
-  margin-right: 8px;
-  display: block;
-`
-export const WorksIcon = styled(WorksSVG)<TCommonIcon>`
-  fill: ${({ $active }: { $active: boolean }) =>
-    $active ? theme('article.title') : theme('article.digest')};
-  width: ${({ $small }: { $small: boolean }) => ($small ? '13px' : '15px')};
-  height: ${({ $small }) => ($small ? '12px' : '15px')};
   margin-right: 8px;
   display: block;
 `

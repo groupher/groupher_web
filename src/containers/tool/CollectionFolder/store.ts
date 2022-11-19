@@ -34,10 +34,7 @@ const CollectionFolder = T.model('CollectionFolder', {
   showSetter: T.optional(T.boolean, false),
   // 创建或编辑的操作是否由 Setter 哪里发起，涉及文案，以及上一步、取消等逻辑
   actionFromSetter: T.optional(T.boolean, false),
-  thread: T.optional(
-    T.enumeration([THREAD.POST, THREAD.JOB, THREAD.REPO]),
-    THREAD.POST,
-  ),
+  thread: T.optional(T.enumeration([THREAD.POST]), THREAD.POST),
   loading: T.optional(T.boolean, false),
   doing: T.optional(T.boolean, false),
 })

@@ -18,7 +18,7 @@ export type TProps = {
   thread?: TThread
 }
 
-const ArticleCard: FC<TProps> = ({ data, thread = THREAD.JOB }) => {
+const ArticleCard: FC<TProps> = ({ data, thread = THREAD.POST }) => {
   const { isMobile } = useMobileDetect()
 
   return (

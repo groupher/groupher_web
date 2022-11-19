@@ -73,7 +73,7 @@ const GeneralSettings: FC<TProps> = ({ curThread, customization }) => {
         }
       />
 
-      {contains(curThread, [THREAD.POST, THREAD.JOB]) ? (
+      {contains(curThread, [THREAD.POST]) ? (
         <>
           <Br top={25} />
           <Desc>在帖子/文章下方显示辅助分割线。</Desc>

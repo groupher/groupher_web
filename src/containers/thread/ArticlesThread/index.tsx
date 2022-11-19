@@ -5,11 +5,9 @@
  */
 
 import { FC } from 'react'
-import { includes } from 'ramda'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TResState } from '@/spec'
-import { ARTICLE_THREAD } from '@/constant'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
@@ -21,12 +19,7 @@ import ArticlesFilter from '@/widgets/ArticlesFilter'
 
 import type { TStore } from './store'
 
-import {
-  Wrapper,
-  MainWrapper,
-  MobileCardsMainWrapper,
-  FilterWrapper,
-} from './styles'
+import { Wrapper, MainWrapper, FilterWrapper } from './styles'
 
 import {
   useInit,
@@ -62,18 +55,11 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
   } = store
   const { pageNumber, totalCount } = pagedArticlesData
 
-  const isMobileCardsView =
-    isMobile && includes(curThread, [ARTICLE_THREAD.JOB, ARTICLE_THREAD.RADAR])
-
-  const TheMainWrapper = isMobileCardsView
-    ? MobileCardsMainWrapper
-    : MainWrapper
-
   log('# got pagedArticlesData: ', pagedArticlesData)
 
   return (
     <Wrapper>
-      <TheMainWrapper thread={curThread}>
+      <MainWrapper thread={curThread}>
         <ViewportTracker onEnter={inAnchor} onLeave={outAnchor} />
 
         {showFilters && (
@@ -102,7 +88,7 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
           />
         )}
         {mode === 'search' && <FaqList mode="search-hint" />}
-      </TheMainWrapper>
+      </MainWrapper>
 
       {!isMobile && <ThreadSidebar />}
     </Wrapper>

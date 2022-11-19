@@ -35,10 +35,6 @@ export const getFixStickerOffset = (metric: TMetric): string => {
 
 export const getFixStickerAlign = (thread: TThread): TFlexRule => {
   switch (thread) {
-    case THREAD.WORKS: {
-      return 'justify-end'
-    }
-
     default: {
       return 'justify-center'
     }
