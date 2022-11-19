@@ -43,7 +43,9 @@ const BriefView: FC<TProps> = ({ metric, article, layout }) => {
             <Item href={`${GITHUB}`} rel="noopener noreferrer" target="_blank">
               Github
             </Item>
-            <Item href="/feedback">反馈建议</Item>
+            <Item href="/feedback" prefetch={false}>
+              反馈建议
+            </Item>
           </BaseInfo>
         </MainInfos>
       </InnerWrapper>

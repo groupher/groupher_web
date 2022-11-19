@@ -41,7 +41,7 @@ const CommentHeader: FC<TProps> = ({ data }) => {
           </FloorNum>
           <Space right={10} />
         </BaseInfo>
-        <AuthorName href={`/u/${article.author.login}`}>
+        <AuthorName href={`/u/${article.author.login}`} prefetch={false}>
           {article.author.nickname}
         </AuthorName>
 

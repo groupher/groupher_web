@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Link from 'next/link'
 
 // import type { TTestable } from '@/spec'
 
@@ -40,7 +41,7 @@ export const SubInfo = styled.div`
   ${css.flex('align-center')};
   margin-top: 2px;
 `
-export const Raw = styled.a`
+export const Raw = styled(Link)`
   text-decoration: none;
   color: ${theme('article.digest')};
   font-size: 14px;

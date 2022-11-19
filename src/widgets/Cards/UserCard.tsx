@@ -30,7 +30,7 @@ const UserCard: FC<TProps> = ({ user }) => {
       <Header>
         <Avatar src={avatar} />
         <Info>
-          <Title href={`user/${login}`}>
+          <Title href={`user/${login}`} prefetch={false}>
             <Nickname>{cutRest(nickname, 12)}</Nickname>
             <Login>{login}</Login>
           </Title>

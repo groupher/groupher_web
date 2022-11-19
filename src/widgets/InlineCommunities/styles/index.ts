@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Link from 'next/link'
 
 import css, { theme } from '@/utils/css'
 import Img from '@/Img'
@@ -14,7 +15,7 @@ export const PopoverInfo = styled.div`
   padding-top: 5px;
   padding-bottom: 5px;
 `
-export const Linker = styled.a`
+export const Linker = styled(Link)`
   color: ${theme('article.title')};
   &:hover {
     text-decoration: underline;

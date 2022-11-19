@@ -19,11 +19,13 @@ const HomeCommunity: FC = () => {
         <HomeLogo />
       </InfoBar>
       <SiteTitle>
-        oderPlanets
+        Groupher
         <Beta>beta</Beta>
       </SiteTitle>
       <SpaceGrow />
-      <Item href={`${ABOUT_LINK}`}>关于</Item>
+      <Item href={`${ABOUT_LINK}`} prefetch={false}>
+        关于
+      </Item>
       <Item href="https://plausible.io/groupher.com" target="_blank">
         访问统计
       </Item>

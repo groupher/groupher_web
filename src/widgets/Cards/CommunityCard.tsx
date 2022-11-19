@@ -34,7 +34,9 @@ const CommunityCard: FC<TProps> = ({ item: { logo, title, raw, desc } }) => {
         <Info>
           <Title>{title}</Title>
           <SubInfo>
-            <Raw href={`/${raw}`}>{raw}</Raw>
+            <Raw href={`/${raw}`} prefetch={false}>
+              {raw}
+            </Raw>
             <DotDivider space={6} />
             <SubsInfo>
               <UserIcon />

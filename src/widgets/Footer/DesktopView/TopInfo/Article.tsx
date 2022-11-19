@@ -24,7 +24,7 @@ const Article: FC<TProps> = ({ article, noBottomBorder = false }) => {
         <Logo />
       </InfoBar>
       {originalCommunity.raw !== HCN && (
-        <Link href={`/${originalCommunity.raw}`}>
+        <Link href={`/${originalCommunity.raw}`} prefetch={false}>
           <CommunityTitle>{originalCommunity.title}</CommunityTitle>
         </Link>
       )}

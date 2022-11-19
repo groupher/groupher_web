@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Link from 'next/link'
 
 import css, { theme } from '@/utils/css'
 import Img from '@/Img'
@@ -31,7 +32,7 @@ export const CommunityInfo = styled.div`
   ${css.flexColumn()};
   margin-top: -2px;
 `
-export const LogoText = styled.a`
+export const LogoText = styled(Link)`
   color: ${theme('header.cardLogoText')};
   font-size: 0.8rem;
   font-family: Cursive, Helvetica;

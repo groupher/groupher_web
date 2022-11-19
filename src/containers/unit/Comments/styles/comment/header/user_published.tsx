@@ -32,7 +32,7 @@ export const AuthorTitle = styled(Link)`
     ${css.cutRest('260px')};
   `};
 `
-export const AuthorName = styled.a`
+export const AuthorName = styled(Link)`
   color: ${theme('article.digest')};
   font-size: 13px;
   text-decoration: none;

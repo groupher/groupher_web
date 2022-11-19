@@ -38,7 +38,7 @@ const ExtraInfo: FC<TProps> = ({ user }) => {
       {user.social?.blog && (
         <Section>
           <ICON.BlogIcon />
-          <BlogLink href={user.social?.blog} target="_blank">
+          <BlogLink href={user.social?.blog} target="_blank" prefetch={false}>
             {user.social?.blog}
           </BlogLink>
         </Section>
@@ -62,16 +62,10 @@ const ExtraInfo: FC<TProps> = ({ user }) => {
           <LinkValue
             href={`https://twitter.com/${user.social.twitter}`}
             target="_blank"
+            prefetch={false}
           >
             {user.social.twitter}
           </LinkValue>
-        </Section>
-      )}
-
-      {user.email && (
-        <Section>
-          <ICON.MailIcon />
-          <LinkValue>{user.email}</LinkValue>
         </Section>
       )}
     </Fragment>

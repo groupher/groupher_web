@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Link from 'next/link'
 
 // import type { TTestable } from '@/spec'
 
@@ -27,7 +28,7 @@ export const Header = styled.div`
   ${css.flex('align-center')};
   margin-bottom: 10px;
 `
-export const Title = styled.a`
+export const Title = styled(Link)`
   text-decoration: none;
   font-size: 16px;
   font-weight: bold;

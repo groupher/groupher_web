@@ -13,7 +13,7 @@ import { P } from '@/schemas'
 
 import { useStore } from '@/stores/init'
 import GlobalLayout from '@/containers/layout/GlobalLayout'
-import ArticleEditor from '@/containers/editor/ArticleEditor'
+import ArticleEditor from '@/containers/editor/ArticleEditor/RealArticleEditor'
 
 const loader = async (context, opt = {}) => {
   const { gqClient } = ssrFetchPrepare(context, opt)

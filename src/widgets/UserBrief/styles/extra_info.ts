@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Link from 'next/link'
 
 import css, { theme } from '@/utils/css'
 
@@ -17,7 +18,7 @@ export const Section = styled.div`
 export const Desc = styled.div`
   color: ${theme('article.title')};
 `
-export const LinkValue = styled.a`
+export const LinkValue = styled(Link)`
   color: ${theme('article.title')};
   text-decoration: none;
   margin-left: 2px;

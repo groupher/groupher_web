@@ -34,7 +34,7 @@ const NormalLayout: FC<TProps> = ({ users }) => {
           <UserAvatar src={user.avatar} />
           <UserBrief>
             <Title>
-              <Nickname href={`/u/${user.login}`}>
+              <Nickname href={`/u/${user.login}`} prefetch={false}>
                 {cutRest(user.nickname, 15)}
               </Nickname>
               <Location>

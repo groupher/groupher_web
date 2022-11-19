@@ -32,7 +32,11 @@ const FullList = ({ data }) => (
         placement="bottom"
         content={
           <PopoverInfo>
-            来自 <Linker href={`/${c.raw}/jobs`}>{c.title}</Linker> 社区
+            来自{' '}
+            <Linker href={`/${c.raw}`} prefetch={false}>
+              {c.title}
+            </Linker>{' '}
+            社区
           </PopoverInfo>
         }
       >

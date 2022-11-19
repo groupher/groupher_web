@@ -14,7 +14,7 @@ const InternalLink: FC<TProps> = ({ src, text, openInNewTab }) => {
 
   return (
     <Fragment>
-      <Source href={src} target={target}>
+      <Source href={src} target={target} prefetch={false}>
         {cutRest(text, 10)}
       </Source>
       <LinkIcon />
