@@ -81,6 +81,7 @@ const Body: FC<TProps> = ({ article, curCommunity }) => {
             <AuthorName
               href={`/u/${author.login}`}
               darker={showOriginalCommunity}
+              prefetch={false}
             >
               {author.nickname}
             </AuthorName>

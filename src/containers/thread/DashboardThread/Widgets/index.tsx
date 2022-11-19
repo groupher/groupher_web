@@ -1,9 +1,10 @@
 import { FC, memo } from 'react'
 
 import { Br } from '@/widgets/Common'
-import Tabs from '@/widgets/Switcher/Tabs'
+
 import Button from '@/widgets/Buttons/Button'
-import { Radio } from '@/widgets/Switcher'
+import Tabs from '@/widgets/Switcher/Tabs'
+import Radio from '@/widgets/Switcher/Radio'
 
 import type { TWidgetsSettings, TTouched } from '../spec'
 import { WIDGET_TYPES } from '../constant'

@@ -3,12 +3,7 @@ import NextErrorComponent from 'next/error'
 import ThemePalette from '@/containers/layout/ThemePalette'
 import ErrorPage from '@/widgets/ErrorPage'
 
-import { useStore } from '@/stores/init'
-
 const Error = (props) => {
-  const store = useStore()
-  store.mark(props)
-
   const { statusCode, hasGetInitialPropsRun, err } = props
 
   if (!hasGetInitialPropsRun && err) {

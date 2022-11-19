@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Link from 'next/link'
 
 import css, { theme } from '@/utils/css'
 
@@ -9,7 +10,7 @@ export const LinkIcon = styled(LinkSVG)`
   fill: #119396;
   margin-left: 3px;
 `
-export const Source = styled.a`
+export const Source = styled(Link)`
   color: ${theme('link')};
   font-size: 14px;
   text-decoration: none;

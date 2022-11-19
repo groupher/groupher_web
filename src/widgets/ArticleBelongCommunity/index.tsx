@@ -32,7 +32,9 @@ const ArticleBelongCommunity: FC<TProps> = ({
       {hasMirror && (
         <MirrorHint communities={mirrorCommunities as TCommunity[]} />
       )}
-      <Name href={`/${oc.raw}`}>{oc.title}</Name>
+      <Name href={`/${oc.raw}`} prefetch={false}>
+        {oc.title}
+      </Name>
       <JoinDesc>{oc.subscribersCount} 人加入</JoinDesc>
       <FollowButton
         size="tiny"

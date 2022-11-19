@@ -115,23 +115,6 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
-  .doramon-search-highlighter {
-    background-color: ${theme('searchHighlight.doramonBg')};
-    padding: 0 1px;
-    color: ${theme('searchHighlight.doramonFg')};
-  }
-
-
-  #nprogress .bar, #nprogress .spinner {
-    ${css.media.mobile`
-      position: fixed !important;
-   `};
-  }
-
-  #nprogress .spinner {
-    top: 8px !important;
-  }
-
   // masonry cards styles
 
   .masonry-cards-grid {

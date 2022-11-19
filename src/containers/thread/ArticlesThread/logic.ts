@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { includes } from 'ramda'
 
 import type { TArticle, TThread, TArticleFilter } from '@/spec'
 import { TYPE, EVENT, ERR, THREAD } from '@/constant'
@@ -81,14 +80,10 @@ const handleUpvote = (article: TArticle, viewerHasUpvoted: boolean): void => {
   const { id, meta } = article
 
   store.updateUpvote(id, viewerHasUpvoted)
-  const queryLatestUsers = includes(article.meta.thread.toLowerCase(), [
-    THREAD.RADAR,
-    THREAD.JOB,
-  ])
 
   viewerHasUpvoted
-    ? sr71$.mutate(S.getUpvoteSchema(meta.thread, queryLatestUsers), { id })
-    : sr71$.mutate(S.getUndoUpvoteSchema(meta.thread, queryLatestUsers), { id })
+    ? sr71$.mutate(S.getUpvoteSchema(meta.thread, false), { id })
+    : sr71$.mutate(S.getUndoUpvoteSchema(meta.thread, false), { id })
 }
 
 const handleUovoteRes = ({ id, upvotesCount, meta }) => {
@@ -106,10 +101,7 @@ const handlePagedArticlesRes = (thread: TThread, pagedArticles): void => {
 // Data & Error handlers
 // ###############################
 const DataSolver = [
-  ...matchPagedArticles(
-    [THREAD.POST, THREAD.BLOG, THREAD.JOB, THREAD.RADAR, THREAD.WORKS],
-    handlePagedArticlesRes,
-  ),
+  ...matchPagedArticles([THREAD.POST], handlePagedArticlesRes),
   ...matchArticleUpvotes(handleUovoteRes),
   {
     match: asyncRes(EVENT.COMMUNITY_CHANGE),

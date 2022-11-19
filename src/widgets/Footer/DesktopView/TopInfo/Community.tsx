@@ -14,7 +14,7 @@ type TProps = Pick<TTopInfoProps, 'title'>
 const Community: FC<TProps> = ({ title = 'javascript' }) => {
   return (
     <Wrapper>
-      <ShortName>CP</ShortName>
+      <ShortName>Groupher</ShortName>
       <BlinkCursor duration={2} />
       <SiteTitle>{title}</SiteTitle>
     </Wrapper>

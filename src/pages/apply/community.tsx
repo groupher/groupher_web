@@ -4,6 +4,7 @@
 
 import { METRIC, ROUTE } from '@/constant'
 import { useStore } from '@/stores/init'
+import { Provider } from 'mobx-react'
 
 import {
   publishCommunitySEO,
@@ -48,14 +49,15 @@ export const getServerSideProps = async (context) => {
 }
 
 const ApplyCommunityPage = (props) => {
-  const store = useStore()
-  store.mark(props)
+  const store = useStore(props)
   const seoConfig = publishCommunitySEO()
 
   return (
-    <GlobalLayout metric={METRIC.COMMUNITY_EDITOR} seoConfig={seoConfig}>
-      <CommunityEditor />
-    </GlobalLayout>
+    <Provider store={store}>
+      <GlobalLayout metric={METRIC.COMMUNITY_EDITOR} seoConfig={seoConfig}>
+        <CommunityEditor />
+      </GlobalLayout>
+    </Provider>
   )
 }
 

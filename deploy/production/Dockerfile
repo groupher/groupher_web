@@ -3,6 +3,8 @@ FROM node:18.4.0
 RUN mkdir /root/web
 
 ADD web.tar.gz /root/web
+# do not use pm2
+# see https://stackoverflow.com/a/55245460/4050784
 RUN npm i -g pm2 
 RUN cd /root/web/ && npm i --omit=dev
 

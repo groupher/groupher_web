@@ -59,7 +59,7 @@ const NoticeBar: FC<TProps> = ({
         </Timestamp>
       )}
       {explainLink && (
-        <Link href={explainLink}>
+        <Link href={explainLink} prefetch={false}>
           <Why src={`${ICON}/shape/question.svg`} />
         </Link>
       )}

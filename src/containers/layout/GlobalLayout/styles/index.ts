@@ -19,7 +19,12 @@ export const Wrapper = styled.div`
   ${css.flex('justify-center')};
 `
 
-type TInner = { metric: TMetric; sidebarPin: boolean }
+export const ScrollWrapper = styled.div`
+  position: absolute;
+  width: 100%;
+`
+
+type TInner = { metric: TMetric }
 export const InnerWrapper = styled.div<TInner>`
   ${css.flexColumn()};
   ${({ metric }) => css.fitPageWidth(metric)};
@@ -29,7 +34,6 @@ export const InnerWrapper = styled.div<TInner>`
   min-height: 100vh;
   background: ${theme('bodyBg')};
   transition: all 0.2s;
-  overflow-x: ${({ sidebarPin }) => (sidebarPin ? 'hidden' : '')};
   z-index: 1;
   ${css.media.tablet`
     position: relative;
@@ -43,8 +47,7 @@ export const BodyWrapper = styled.div<TBody>`
   width: 100%;
 `
 // 180 is the sidebar full width
-export const ContentWrapper = styled.div<{ offsetLeft: boolean }>`
-  margin-left: ${({ offsetLeft }) => (offsetLeft ? '180px' : '0')};
+export const ContentWrapper = styled.div`
   /* for global blur */
   transition: filter 0.25s;
 `

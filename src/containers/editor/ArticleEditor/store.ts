@@ -17,10 +17,8 @@ import type {
   TAccount,
   TEditMode,
 } from '@/spec'
-import { ARTICLE_THREAD } from '@/constant'
 
 import { markStates, toJS } from '@/utils/mobx'
-import { isURL } from '@/utils/validator'
 import { Community, Tag, User } from '@/model'
 
 import type { TTexts, TEditData } from './spec'
@@ -84,70 +82,31 @@ const ArticleEditor = T.model('ArticleEditor', {
       return toJS(self.articleTags)
     },
     get texts(): TTexts {
-      const slf = self as TStore
-      const { thread } = slf
-
-      switch (thread) {
-        case ARTICLE_THREAD.JOB: {
-          return {
-            holder: {
-              title: '// 职位标题',
-              body: "// 职位描述（'Tab' 键插入富文本）",
-            },
-          }
-        }
-
-        case ARTICLE_THREAD.RADAR: {
-          return {
-            holder: {
-              title: '// 消息标题',
-              body: "// 消息内容（'Tab' 键插入富文本）",
-            },
-          }
-        }
-
-        default: {
-          return {
-            holder: {
-              title: '// 帖子标题',
-              body: "// 帖子内容（'Tab' 键插入富文本）",
-            },
-          }
-        }
+      return {
+        holder: {
+          title: '// 帖子标题',
+          body: "// 帖子内容（'Tab' 键插入富文本）",
+        },
       }
     },
     get editData(): TEditData {
       const slf = self as TStore
 
       const tagsIds = toJS(slf.articleTags).map((t) => t.id)
-      let baseFields
-      switch (slf.thread) {
-        case ARTICLE_THREAD.JOB: {
-          baseFields = ['title', 'body', 'copyRight', 'company', 'companyLink']
-          break
-        }
-
-        case ARTICLE_THREAD.RADAR: {
-          baseFields = ['title', 'body', 'copyRight', 'linkAddr']
-          break
-        }
-
-        default: {
-          baseFields = ['title', 'body', 'copyRight', 'isQuestion', 'linkAddr']
-          break
-        }
-      }
+      const baseFields = [
+        'title',
+        'body',
+        'copyRight',
+        'isQuestion',
+        'linkAddr',
+      ]
 
       return { ...pick(baseFields, slf), articleTags: tagsIds }
     },
     get isReady(): boolean {
       const slf = self as TStore
-      const { title, thread, wordsCountReady, linkAddr } = slf
+      const { title, wordsCountReady } = slf
       const titleReady = title.length > 0
-
-      if (thread === ARTICLE_THREAD.RADAR) {
-        return wordsCountReady && titleReady && !!isURL(linkAddr, true)
-      }
 
       return wordsCountReady && titleReady
     },

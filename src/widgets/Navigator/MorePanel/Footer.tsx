@@ -17,7 +17,7 @@ const MoreContent: FC = () => {
   return (
     <Wrapper>
       <Entry>
-        <Main href={`${GITHUB}`}>
+        <Main href={`${GITHUB}`} prefetch={false}>
           <Icon.Github />
           <Title>源代码</Title>
         </Main>
@@ -25,7 +25,7 @@ const MoreContent: FC = () => {
       </Entry>
 
       <Entry>
-        <Main href="/feedback">
+        <Main href="/feedback" prefetch={false}>
           <Icon.Feedback />
           <Title>建议与反馈</Title>
         </Main>

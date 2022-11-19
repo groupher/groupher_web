@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { animate } from '@/utils/css'
 
 export const Wrapper = styled.div<{ effect: string }>`
-  position: absolute;
+  position: fixed;
   top: 0;
   height: 100%;
   width: 100%;

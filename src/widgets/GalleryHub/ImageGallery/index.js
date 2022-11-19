@@ -11,7 +11,7 @@ import { GALLERY } from '@/constant'
 import { buildLog } from '@/utils/logger'
 
 import Pagi from '@/widgets/Pagi'
-import { PagiOptionSwitcher } from '@/widgets/Switcher'
+import PagiOptionSwitcher from '@/widgets/Switcher/PagiOptionSwitcher'
 
 import MainColumnGallery from './MainColumnGallery'
 import TwoColumnGallery from './TwoColumnGallery'

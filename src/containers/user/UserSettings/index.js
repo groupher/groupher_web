@@ -12,7 +12,7 @@ import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
 import { Br } from '@/widgets/Common'
-import { Radio } from '@/widgets/Switcher'
+import Radio from '@/widgets/Switcher/Radio'
 import ThemeSelector from '@/widgets/ThemeSelector'
 import SectionLabel from '@/widgets/SectionLabel'
 

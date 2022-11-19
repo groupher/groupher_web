@@ -6,7 +6,7 @@ import type { TThread, TC11N } from '@/spec'
 import { THREAD, C11N } from '@/constant'
 
 import { Br, Divider } from '@/widgets/Common'
-import { Radio } from '@/widgets/Switcher'
+import Radio from '@/widgets/Switcher/Radio'
 
 import { Wrapper, Title, Desc } from './styles/gerneral_settings'
 import { onC11NChange } from './logic'
@@ -73,7 +73,7 @@ const GeneralSettings: FC<TProps> = ({ curThread, customization }) => {
         }
       />
 
-      {contains(curThread, [THREAD.POST, THREAD.JOB]) ? (
+      {contains(curThread, [THREAD.POST]) ? (
         <>
           <Br top={25} />
           <Desc>在帖子/文章下方显示辅助分割线。</Desc>

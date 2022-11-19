@@ -44,7 +44,6 @@ import {
   MailsViewerStore,
 
   // toolbox
-  // DoraemonStore,
   DrawerStore,
   // SidebarStore,
   // RepoEditorStore,
@@ -103,7 +102,6 @@ const rootStore = T.model({
 
   // toolbox
   drawer: T.optional(DrawerStore, { visible: false }),
-  // doraemon: T.optional(DoraemonStore, {}),
   // repoEditor: T.optional(RepoEditorStore, {}),
   accountEditor: T.optional(AccountEditorStore, {}),
   mailBox: T.optional(MailBoxStore, {}),

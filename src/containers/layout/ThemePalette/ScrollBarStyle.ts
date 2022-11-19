@@ -18,634 +18,531 @@ OVERLAY SCROLLBARS CORE:
 */
 
 const ScrollBarStyle = createGlobalStyle`
-  html.os-html,
-  html.os-html > .os-host {
-    display: block;
+  /*!
+  * OverlayScrollbars
+  * Version: 2.0.1
+  *
+  * Copyright (c) Rene Haas | KingSora.
+  * https://github.com/KingSora
+  *
+  * Released under the MIT license.
+  */
+  .os-size-observer,
+  .os-size-observer-listener {
+    direction: inherit;
+    pointer-events: none;
     overflow: hidden;
+    visibility: hidden;
     box-sizing: border-box;
-    height: 100% !important;
-    width: 100% !important;
-    min-width: 100% !important;
-    min-height: 100% !important;
-    margin: 0 !important;
-    position: absolute !important; /* could be position: fixed; but it causes issues on iOS (-webkit-overflow-scrolling: touch) */
   }
-  html.os-html > .os-host > .os-padding {
-    position: absolute; /* could be position: fixed; but it causes issues on iOS (-webkit-overflow-scrolling: touch) */
+
+  .os-size-observer,
+  .os-size-observer-listener,
+  .os-size-observer-listener-item,
+  .os-size-observer-listener-item-final {
+    writing-mode: horizontal-tb;
+    position: absolute;
+    left: 0;
+    top: 0;
   }
-  body.os-dragging,
-  body.os-dragging * {
-    cursor: default;
-  }
-  .os-host,
-  .os-host-textarea {
-    position: relative;
-    overflow: visible !important;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -ms-flex-wrap: nowrap;
+
+  .os-size-observer {
+    z-index: -1;
+    contain: strict;
+    display: flex;
+    flex-direction: row;
     flex-wrap: nowrap;
-    -webkit-box-pack: start;
-    -ms-flex-pack: start;
-    justify-content: flex-start;
-    -ms-flex-line-pack: start;
-    align-content: flex-start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    -ms-grid-row-align: flex-start;
-    align-items: flex-start;
-  }
-  .os-host-flexbox {
-    overflow: hidden !important;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-  }
-  .os-host-flexbox > .os-size-auto-observer {
-    height: inherit !important;
-  }
-  .os-host-flexbox > .os-content-glue {
-    -webkit-box-flex: 1;
-    -ms-flex-positive: 1;
-    flex-grow: 1;
-    -ms-flex-negative: 0;
-    flex-shrink: 0;
-  }
-  .os-host-flexbox > .os-size-auto-observer,
-  .os-host-flexbox > .os-content-glue {
-    min-height: 0;
-    min-width: 0;
-    -webkit-box-flex: 0;
-    -ms-flex-positive: 0;
-    flex-grow: 0;
-    -ms-flex-negative: 1;
-    flex-shrink: 1;
-    -ms-flex-preferred-size: auto;
-    flex-basis: auto;
-  }
-  #os-dummy-scrollbar-size {
-    position: fixed;
-    opacity: 0;
-    -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)';
-    visibility: hidden;
-    overflow: scroll;
-    height: 500px;
-    width: 500px;
-  }
-  #os-dummy-scrollbar-size > div {
-    width: 200%;
-    height: 200%;
-    margin: 10px 0;
-  }
-  /* fix restricted measuring */
-  #os-dummy-scrollbar-size:before,
-  #os-dummy-scrollbar-size:after,
-  .os-content:before,
-  .os-content:after {
-    content: '';
-    display: table;
-    width: 0.01px;
-    height: 0.01px;
-    line-height: 0;
-    font-size: 0;
-    flex-grow: 0;
-    flex-shrink: 0;
-    visibility: hidden;
-  }
-  #os-dummy-scrollbar-size,
-  .os-viewport {
-    -ms-overflow-style: scrollbar !important;
-  }
-  .os-viewport-native-scrollbars-invisible#os-dummy-scrollbar-size,
-  .os-viewport-native-scrollbars-invisible.os-viewport {
-    scrollbar-width: none !important;
-  }
-  .os-viewport-native-scrollbars-invisible#os-dummy-scrollbar-size::-webkit-scrollbar,
-  .os-viewport-native-scrollbars-invisible.os-viewport::-webkit-scrollbar,
-  .os-viewport-native-scrollbars-invisible#os-dummy-scrollbar-size::-webkit-scrollbar-corner,
-  .os-viewport-native-scrollbars-invisible.os-viewport::-webkit-scrollbar-corner {
-    display: none !important;
-    width: 0px !important;
-    height: 0px !important;
-    visibility: hidden !important;
-    background: transparent !important;
-  }
-  .os-content-glue {
+    padding: inherit;
+    border: inherit;
     box-sizing: inherit;
-    max-height: 100%;
-    max-width: 100%;
-    width: 100%;
-    pointer-events: none;
-  }
-  .os-padding {
-    box-sizing: inherit;
-    direction: inherit;
-    position: absolute;
-    overflow: visible;
-    padding: 0;
-    margin: 0;
-    left: 0;
+    margin: -133px;
     top: 0;
-    bottom: 0;
     right: 0;
-    width: auto !important;
-    height: auto !important;
-    z-index: 0;
-  }
-  .os-host-overflow > .os-padding {
-    overflow: hidden;
-  }
-  .os-viewport {
-    direction: inherit !important;
-    box-sizing: inherit !important;
-    resize: none !important;
-    outline: none !important;
-    position: absolute;
-    overflow: hidden;
-    top: 0;
-    left: 0;
     bottom: 0;
-    right: 0;
-    padding: 0;
-    margin: 0;
-    -webkit-overflow-scrolling: touch;
-  }
-  .os-content-arrange {
-    position: absolute;
-    z-index: -1;
-    min-height: 1px;
-    min-width: 1px;
-    pointer-events: none;
-  }
-  .os-content {
-    direction: inherit;
-    box-sizing: border-box !important;
-    position: relative;
-    display: block;
-    height: 100%;
-    width: 100%;
-    height: 100%;
-    width: 100%;
-    visibility: visible;
-  }
-  .os-content > .os-textarea {
-    box-sizing: border-box !important;
-    direction: inherit !important;
-    background: transparent !important;
-    outline: 0px none transparent !important;
-    overflow: hidden !important;
-    position: absolute !important;
-    display: block !important;
-    top: 0 !important;
-    left: 0 !important;
-    margin: 0 !important;
-    border-radius: 0px !important;
-    float: none !important;
-    -webkit-filter: none !important;
-    filter: none !important;
-    border: none !important;
-    resize: none !important;
-    -webkit-transform: none !important;
-    transform: none !important;
-    max-width: none !important;
-    max-height: none !important;
-    box-shadow: none !important;
-    -webkit-perspective: none !important;
-    perspective: none !important;
-    opacity: 1 !important;
-    z-index: 1 !important;
-    clip: auto !important;
-    vertical-align: baseline !important;
-    padding: 0px;
-  }
-  .os-host-rtl > .os-padding > .os-viewport > .os-content > .os-textarea {
-    right: 0 !important;
-  }
-  .os-content > .os-textarea-cover {
-    z-index: -1;
-    pointer-events: none;
-  }
-  .os-content > .os-textarea[wrap='off'] {
-    white-space: pre !important;
-    margin: 0px !important;
-  }
-  .os-text-inherit {
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-    font-style: inherit;
-    font-variant: inherit;
-    text-transform: inherit;
-    text-decoration: inherit;
-    text-indent: inherit;
-    text-align: inherit;
-    text-shadow: inherit;
-    text-overflow: inherit;
-    letter-spacing: inherit;
-    word-spacing: inherit;
-    line-height: inherit;
-    unicode-bidi: inherit;
-    direction: inherit;
-    color: inherit;
-    cursor: text;
-  }
-  .os-resize-observer,
-  .os-resize-observer-host {
-    box-sizing: inherit;
-    display: block;
-    visibility: hidden;
-    position: absolute;
-    top: 0;
     left: 0;
-    height: 100%;
+    transform: scale(0.1);
+  }
+  .os-size-observer::before {
+    content: "";
+    flex: none;
+    box-sizing: inherit;
+    padding: 10px;
+    width: 10px;
+    height: 10px;
+  }
+
+  .os-size-observer-appear {
+    animation: os-size-observer-appear-animation 1ms forwards;
+  }
+
+  .os-size-observer-listener {
+    box-sizing: border-box;
+    position: relative;
+    flex: auto;
+    padding: inherit;
+    border: inherit;
+    margin: -133px;
+    transform: scale(10);
+  }
+  .os-size-observer-listener.ltr {
+    margin-right: -266px;
+    margin-left: 0;
+  }
+  .os-size-observer-listener.rtl {
+    margin-left: -266px;
+    margin-right: 0;
+  }
+  .os-size-observer-listener:empty::before {
+    content: "";
     width: 100%;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: -1;
-  }
-  .os-resize-observer-host {
-    padding: inherit;
-    border: inherit;
-    border-color: transparent;
-    border-style: solid;
-    box-sizing: border-box;
-  }
-  .os-resize-observer-host.observed {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
-  .os-resize-observer-host > .os-resize-observer,
-  .os-resize-observer-host.observed > .os-resize-observer {
-    height: 200%;
-    width: 200%;
-    padding: inherit;
-    border: inherit;
-    margin: 0;
-    display: block;
-    box-sizing: content-box;
-  }
-  .os-resize-observer-host.observed > .os-resize-observer,
-  .os-resize-observer-host.observed > .os-resize-observer:before {
-    display: flex;
-    position: relative;
-    flex-grow: 1;
-    flex-shrink: 0;
-    flex-basis: auto;
-    box-sizing: border-box;
-  }
-  .os-resize-observer-host.observed > .os-resize-observer:before {
-    content: '';
-    box-sizing: content-box;
-    padding: inherit;
-    border: inherit;
-    margin: 0;
-  }
-  .os-size-auto-observer {
-    box-sizing: inherit !important;
     height: 100%;
-    width: inherit;
-    max-width: 1px;
+  }
+  .os-size-observer-listener:empty::before, .os-size-observer-listener > .os-size-observer-listener-item {
+    display: block;
     position: relative;
-    float: left;
+    padding: inherit;
+    border: inherit;
+    box-sizing: content-box;
+    flex: auto;
+  }
+
+  .os-size-observer-listener-scroll {
+    box-sizing: border-box;
+    display: flex;
+  }
+
+  .os-size-observer-listener-item {
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    direction: ltr;
+    flex: none;
+  }
+
+  .os-size-observer-listener-item-final {
+    transition: none;
+  }
+
+  @keyframes os-size-observer-appear-animation {
+    from {
+      cursor: auto;
+    }
+    to {
+      cursor: none;
+    }
+  }
+  .os-trinsic-observer {
+    flex: none;
+    box-sizing: border-box;
+    position: relative;
+    max-width: 0px;
     max-height: 1px;
-    overflow: hidden;
-    z-index: -1;
     padding: 0;
     margin: 0;
-    pointer-events: none;
-    -webkit-box-flex: inherit;
-    -ms-flex-positive: inherit;
-    flex-grow: inherit;
-    -ms-flex-negative: 0;
-    flex-shrink: 0;
-    -ms-flex-preferred-size: 0;
-    flex-basis: 0;
+    border: none;
+    overflow: hidden;
+    z-index: -1;
+    height: 0;
+    top: calc(100% + 1px);
+    contain: strict;
   }
-  .os-size-auto-observer > .os-resize-observer {
+  .os-trinsic-observer:not(:empty) {
+    height: calc(100% + 1px);
+    top: -1px;
+  }
+  .os-trinsic-observer:not(:empty) > .os-size-observer {
     width: 1000%;
     height: 1000%;
     min-height: 1px;
     min-width: 1px;
   }
-  .os-resize-observer-item {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    overflow: hidden;
-    z-index: -1;
-    opacity: 0;
-    direction: ltr !important;
-    -webkit-box-flex: 0 !important;
-    -ms-flex: none !important;
-    flex: none !important;
-  }
-  .os-resize-observer-item-final {
-    position: absolute;
-    left: 0;
-    top: 0;
-    -webkit-transition: none !important;
-    transition: none !important;
-    -webkit-box-flex: 0 !important;
-    -ms-flex: none !important;
-    flex: none !important;
-  }
-  .os-resize-observer {
-    -webkit-animation-duration: 0.001s;
-    animation-duration: 0.001s;
-    -webkit-animation-name: os-resize-observer-dummy-animation;
-    animation-name: os-resize-observer-dummy-animation;
-  }
-  object.os-resize-observer {
-    box-sizing: border-box !important;
-  }
-  @-webkit-keyframes os-resize-observer-dummy-animation {
-    from {
-      z-index: 0;
-    }
-    to {
-      z-index: -1;
-    }
-  }
-  @keyframes os-resize-observer-dummy-animation {
-    from {
-      z-index: 0;
-    }
-    to {
-      z-index: -1;
-    }
-  }
 
-  /*
-  CUSTOM SCROLLBARS AND CORNER CORE:
+  /**
+  * environment setup
   */
+  .os-environment {
+    --os-custom-prop: -1;
+    position: fixed;
+    opacity: 0;
+    visibility: hidden;
+    overflow: scroll;
+    height: 200px;
+    width: 200px;
+    z-index: var(--os-custom-prop);
+  }
+  .os-environment div {
+    width: 200%;
+    height: 200%;
+    margin: 10px 0;
+  }
+  .os-environment.os-environment-flexbox-glue {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    height: auto;
+    width: auto;
+    min-height: 200px;
+    min-width: 200px;
+  }
+  .os-environment.os-environment-flexbox-glue div {
+    flex: auto;
+    width: auto;
+    height: auto;
+    max-height: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+  .os-environment.os-environment-flexbox-glue-max {
+    max-height: 200px;
+  }
+  .os-environment.os-environment-flexbox-glue-max div {
+    overflow: visible;
+  }
+  .os-environment.os-environment-flexbox-glue-max div::before {
+    content: "";
+    display: block;
+    height: 999px;
+    width: 999px;
+  }
 
-  .os-host-transition > .os-scrollbar,
-  .os-host-transition > .os-scrollbar-corner {
-    -webkit-transition: opacity 0.3s, visibility 0.3s, top 0.3s, right 0.3s,
-      bottom 0.3s, left 0.3s;
-    transition: opacity 0.3s, visibility 0.3s, top 0.3s, right 0.3s, bottom 0.3s,
-      left 0.3s;
+  /**
+  * hide native scrollbars
+  */
+  .os-environment,
+  .os-viewport {
+    -ms-overflow-style: scrollbar !important;
   }
-  html.os-html > .os-host > .os-scrollbar {
-    position: absolute; /* could be position: fixed; but it causes issues on iOS (-webkit-overflow-scrolling: touch) */
-    z-index: 999999; /* highest z-index of the page */
+
+  [data-overlayscrollbars-initialize],
+  [data-overlayscrollbars~=scrollbarHidden],
+  .os-viewport-scrollbar-hidden.os-environment,
+  .os-viewport-scrollbar-hidden.os-viewport {
+    scrollbar-width: none !important;
   }
-  .os-scrollbar,
-  .os-scrollbar-corner {
-    position: absolute;
-    opacity: 1;
-    -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=100)';
-    z-index: 1;
+
+  [data-overlayscrollbars-initialize]::-webkit-scrollbar,
+  [data-overlayscrollbars-initialize]::-webkit-scrollbar-corner,
+  [data-overlayscrollbars~=scrollbarHidden]::-webkit-scrollbar,
+  [data-overlayscrollbars~=scrollbarHidden]::-webkit-scrollbar-corner,
+  .os-viewport-scrollbar-hidden.os-environment::-webkit-scrollbar,
+  .os-viewport-scrollbar-hidden.os-environment::-webkit-scrollbar-corner,
+  .os-viewport-scrollbar-hidden.os-viewport::-webkit-scrollbar,
+  .os-viewport-scrollbar-hidden.os-viewport::-webkit-scrollbar-corner {
+    -webkit-appearance: none !important;
+            appearance: none !important;
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
   }
-  .os-scrollbar-corner {
-    bottom: 0;
-    right: 0;
+
+  /**
+  * elements wont suddenly crop after initialization is done
+  */
+  [data-overlayscrollbars-initialize] {
+    overflow: auto;
   }
-  .os-scrollbar {
-    pointer-events: none;
-  }
-  .os-scrollbar-track {
-    pointer-events: auto;
-    position: relative;
-    height: 100%;
+
+  /**
+  * applied to body
+  */
+  html[data-overlayscrollbars],
+  html.os-viewport-scrollbar-hidden,
+  html.os-viewport-scrollbar-hidden > body {
+    box-sizing: border-box;
+    margin: 0;
     width: 100%;
+    height: 100%;
+  }
+
+  html[data-overlayscrollbars] > body {
+    overflow: visible;
+  }
+
+  /**
+  * structure setup
+  */
+  [data-overlayscrollbars~=host],
+  .os-padding {
+    position: relative;
+  }
+
+  [data-overlayscrollbars~=host],
+  .os-padding {
+    display: flex;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .os-padding,
+  .os-viewport {
+    box-sizing: inherit;
+    position: relative;
+    flex: auto !important;
+    height: auto;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border: none;
+    z-index: 0;
+  }
+
+  .os-viewport {
+    --os-vaw: 0;
+    --os-vah: 0;
+  }
+  .os-viewport.os-viewport-arrange::before {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    z-index: -1;
+    min-width: 1px;
+    min-height: 1px;
+    width: var(--os-vaw);
+    height: var(--os-vah);
+  }
+
+  [data-overlayscrollbars~=host],
+  [data-overlayscrollbars~=viewport] {
+    overflow: hidden;
+  }
+
+  [data-overlayscrollbars~=overflowVisible] {
+    overflow: visible;
+  }
+
+  [data-overlayscrollbars-overflow-x=hidden] {
+    overflow-x: hidden;
+  }
+
+  [data-overlayscrollbars-overflow-x=scroll] {
+    overflow-x: scroll;
+  }
+
+  [data-overlayscrollbars-overflow-x=hidden] {
+    overflow-y: hidden;
+  }
+
+  [data-overlayscrollbars-overflow-y=scroll] {
+    overflow-y: scroll;
+  }
+
+  .os-padding,
+  .os-viewport {
+    overflow: hidden;
+  }
+
+  .os-overflow-visible {
+    overflow: visible;
+  }
+
+  .os-content {
+    box-sizing: inherit;
+  }
+
+  /**
+  * optional & experimental grid mode
+  */
+  [data-overlayscrollbars-grid],
+  [data-overlayscrollbars-grid] .os-padding {
+    display: grid;
+    grid-template: 1fr/1fr;
+  }
+
+  [data-overlayscrollbars-grid] > .os-padding,
+  [data-overlayscrollbars-grid] > .os-viewport,
+  [data-overlayscrollbars-grid] > .os-padding > .os-viewport {
+    height: auto !important;
+    width: auto !important;
+  }
+
+  .os-scrollbar {
+    contain: strict;
+    transition: opacity 0.3s, visibility 0.3s, top 0.3s, right 0.3s, bottom 0.3s, left 0.3s;
+    pointer-events: none;
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  body > .os-scrollbar {
+    position: fixed;
+    z-index: 99999;
+  }
+
+  .os-scrollbar-transitionless {
+    transition: none;
+  }
+
+  .os-scrollbar-track {
+    position: relative;
+    direction: ltr !important;
     padding: 0 !important;
     border: none !important;
   }
+
   .os-scrollbar-handle {
-    pointer-events: auto;
     position: absolute;
+  }
+
+  .os-scrollbar-track,
+  .os-scrollbar-handle {
+    pointer-events: none;
     width: 100%;
     height: 100%;
   }
-  .os-scrollbar-handle-off,
-  .os-scrollbar-track-off {
-    pointer-events: none;
+
+  .os-scrollbar.os-scrollbar-track-interactive .os-scrollbar-track,
+  .os-scrollbar.os-scrollbar-handle-interactive .os-scrollbar-handle {
+    pointer-events: auto;
+    touch-action: none;
   }
-  .os-scrollbar.os-scrollbar-unusable,
-  .os-scrollbar.os-scrollbar-unusable * {
-    pointer-events: none !important;
-  }
-  .os-scrollbar.os-scrollbar-unusable .os-scrollbar-handle {
-    opacity: 0 !important;
-  }
+
   .os-scrollbar-horizontal {
     bottom: 0;
     left: 0;
   }
+
   .os-scrollbar-vertical {
     top: 0;
     right: 0;
   }
-  .os-host-rtl > .os-scrollbar-horizontal {
+
+  .os-scrollbar-rtl.os-scrollbar-horizontal {
     right: 0;
   }
-  .os-host-rtl > .os-scrollbar-vertical {
+
+  .os-scrollbar-rtl.os-scrollbar-vertical {
     right: auto;
     left: 0;
   }
-  .os-host-rtl > .os-scrollbar-corner {
-    right: auto;
-    left: 0;
+
+  .os-scrollbar-visible,
+  .os-scrollbar-interaction.os-scrollbar-visible {
+    opacity: 1;
+    visibility: visible;
   }
-  .os-scrollbar-auto-hidden,
-  .os-padding + .os-scrollbar-corner,
-  .os-host-resize-disabled.os-host-scrollbar-horizontal-hidden
-    > .os-scrollbar-corner,
-  .os-host-scrollbar-horizontal-hidden > .os-scrollbar-horizontal,
-  .os-host-resize-disabled.os-host-scrollbar-vertical-hidden
-    > .os-scrollbar-corner,
-  .os-host-scrollbar-vertical-hidden > .os-scrollbar-vertical,
-  .os-scrollbar-horizontal.os-scrollbar-auto-hidden
-    + .os-scrollbar-vertical
-    + .os-scrollbar-corner,
-  .os-scrollbar-horizontal
-    + .os-scrollbar-vertical.os-scrollbar-auto-hidden
-    + .os-scrollbar-corner,
-  .os-scrollbar-horizontal.os-scrollbar-auto-hidden
-    + .os-scrollbar-vertical.os-scrollbar-auto-hidden
-    + .os-scrollbar-corner {
+
+  .os-scrollbar-auto-hidden {
     opacity: 0;
     visibility: hidden;
-    pointer-events: none;
   }
-  .os-scrollbar-corner-resize-both {
-    cursor: nwse-resize;
+
+  .os-scrollbar-unusable,
+  .os-scrollbar-unusable *,
+  .os-scrollbar-wheel,
+  .os-scrollbar-wheel * {
+    pointer-events: none !important;
   }
-  .os-host-rtl > .os-scrollbar-corner-resize-both {
-    cursor: nesw-resize;
+
+  .os-scrollbar-unusable .os-scrollbar-handle {
+    opacity: 0 !important;
   }
-  .os-scrollbar-corner-resize-horizontal {
-    cursor: ew-resize;
+
+  .os-scrollbar.os-scrollbar-horizontal.os-scrollbar-cornerless,
+  .os-scrollbar.os-scrollbar-horizontal.os-scrollbar-cornerless.os-scrollbar-rtl {
+    left: 0;
+    right: 0;
   }
-  .os-scrollbar-corner-resize-vertical {
-    cursor: ns-resize;
-  }
-  .os-dragging .os-scrollbar-corner.os-scrollbar-corner-resize {
-    cursor: default;
-  }
-  .os-host-resize-disabled.os-host-scrollbar-horizontal-hidden
-    > .os-scrollbar-vertical {
+
+  .os-scrollbar.os-scrollbar-vertical.os-scrollbar-cornerless,
+  .os-scrollbar.os-scrollbar-vertical.os-scrollbar-cornerless.os-scrollbar-rtl {
     top: 0;
     bottom: 0;
   }
-  .os-host-resize-disabled.os-host-scrollbar-vertical-hidden
-    > .os-scrollbar-horizontal,
-  .os-host-rtl.os-host-resize-disabled.os-host-scrollbar-vertical-hidden
-    > .os-scrollbar-horizontal {
-    right: 0;
-    left: 0;
-  }
-  .os-scrollbar:hover,
-  .os-scrollbar-corner.os-scrollbar-corner-resize {
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-
-  .os-host-rtl > .os-scrollbar-corner.os-scrollbar-corner-resize {
-    -webkit-transform: scale(-1, 1);
-    transform: scale(-1, 1);
-  }
-  .os-host-overflow {
-    overflow: hidden !important;
-  }
-  .os-host-overflow-x {
-  }
-  .os-host-overflow-y {
-  }
-
-  /*
-  THEMES:
-  */
 
   /* NONE THEME: */
-  .os-theme-none > .os-scrollbar-horizontal,
-  .os-theme-none > .os-scrollbar-vertical,
-  .os-theme-none > .os-scrollbar-corner {
+  [data-overlayscrollbars~=updating] > .os-scrollbar,
+  .os-theme-none.os-scrollbar {
     display: none !important;
   }
-  .os-theme-none > .os-scrollbar-corner-resize {
-    display: block !important;
-    min-width: 10px;
-    min-height: 10px;
-  }
+
   /* DARK & LIGHT THEME: */
-  .os-theme-dark > .os-scrollbar-horizontal,
-  .os-theme-light > .os-scrollbar-horizontal {
+  .os-theme-dark.os-scrollbar-horizontal,
+  .os-theme-light.os-scrollbar-horizontal {
     right: 10px;
     height: 10px;
   }
-  .os-theme-dark > .os-scrollbar-vertical,
-  .os-theme-light > .os-scrollbar-vertical {
+
+  .os-theme-dark.os-scrollbar-vertical,
+  .os-theme-light.os-scrollbar-vertical {
     bottom: 10px;
     width: 10px;
   }
-  .os-theme-dark.os-host-rtl > .os-scrollbar-horizontal,
-  .os-theme-light.os-host-rtl > .os-scrollbar-horizontal {
+
+  .os-theme-dark.os-scrollbar-rtl.os-scrollbar-horizontal,
+  .os-theme-light.os-scrollbar-rtl.os-scrollbar-horizontal {
     left: 10px;
     right: 0;
   }
-  .os-theme-dark > .os-scrollbar-corner,
-  .os-theme-light > .os-scrollbar-corner {
-    height: 10px;
-    width: 10px;
-  }
-  .os-theme-dark > .os-scrollbar-corner,
-  .os-theme-light > .os-scrollbar-corner {
-    background-color: transparent;
-  }
-  .os-theme-dark > .os-scrollbar,
-  .os-theme-light > .os-scrollbar {
+
+  .os-theme-dark.os-scrollbar,
+  .os-theme-light.os-scrollbar {
     padding: 2px;
     box-sizing: border-box;
     background: transparent;
   }
-  .os-theme-dark > .os-scrollbar.os-scrollbar-unusable,
-  .os-theme-light > .os-scrollbar.os-scrollbar-unusable {
+
+  .os-theme-dark.os-scrollbar-unusable,
+  .os-theme-light.os-scrollbar-unusable {
     background: transparent;
   }
-  .os-theme-dark > .os-scrollbar > .os-scrollbar-track,
-  .os-theme-light > .os-scrollbar > .os-scrollbar-track {
+
+  .os-theme-dark.os-scrollbar > .os-scrollbar-track,
+  .os-theme-light.os-scrollbar > .os-scrollbar-track {
     background: transparent;
   }
-  .os-theme-dark
-    > .os-scrollbar-horizontal
-    > .os-scrollbar-track
-    > .os-scrollbar-handle,
-  .os-theme-light
-    > .os-scrollbar-horizontal
-    > .os-scrollbar-track
-    > .os-scrollbar-handle {
+
+  .os-theme-dark.os-scrollbar-horizontal > .os-scrollbar-track > .os-scrollbar-handle,
+  .os-theme-light.os-scrollbar-horizontal > .os-scrollbar-track > .os-scrollbar-handle {
     min-width: 30px;
   }
-  .os-theme-dark
-    > .os-scrollbar-vertical
-    > .os-scrollbar-track
-    > .os-scrollbar-handle,
-  .os-theme-light
-    > .os-scrollbar-vertical
-    > .os-scrollbar-track
-    > .os-scrollbar-handle {
+
+  .os-theme-dark.os-scrollbar-vertical > .os-scrollbar-track > .os-scrollbar-handle,
+  .os-theme-light.os-scrollbar-vertical > .os-scrollbar-track > .os-scrollbar-handle {
     min-height: 30px;
   }
-  .os-theme-dark.os-host-transition
-    > .os-scrollbar
-    > .os-scrollbar-track
-    > .os-scrollbar-handle,
-  .os-theme-light.os-host-transition
-    > .os-scrollbar
-    > .os-scrollbar-track
-    > .os-scrollbar-handle {
-    -webkit-transition: background-color 0.3s;
+
+  .os-theme-dark.os-scrollbar-transition > .os-scrollbar-track > .os-scrollbar-handle,
+  .os-theme-light.os-scrollbar-transition > .os-scrollbar-track > .os-scrollbar-handle {
     transition: background-color 0.3s;
   }
-  .os-theme-dark > .os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle,
-  .os-theme-light > .os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle,
-  .os-theme-dark > .os-scrollbar > .os-scrollbar-track,
-  .os-theme-light > .os-scrollbar > .os-scrollbar-track {
+
+  .os-theme-dark.os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle,
+  .os-theme-light.os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle,
+  .os-theme-dark.os-scrollbar > .os-scrollbar-track,
+  .os-theme-light.os-scrollbar > .os-scrollbar-track {
     border-radius: 10px;
   }
-  .os-theme-dark > .os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle {
+
+  .os-theme-dark.os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle {
     background: rgba(0, 0, 0, 0.4);
   }
-  .os-theme-light > .os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle {
+
+  .os-theme-light.os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle {
     background: rgba(255, 255, 255, 0.4);
   }
-  .os-theme-dark
-    > .os-scrollbar:hover
-    > .os-scrollbar-track
-    > .os-scrollbar-handle {
+
+  .os-theme-dark.os-scrollbar:hover > .os-scrollbar-track > .os-scrollbar-handle {
     background: rgba(0, 0, 0, 0.55);
   }
-  .os-theme-light
-    > .os-scrollbar:hover
-    > .os-scrollbar-track
-    > .os-scrollbar-handle {
+
+  .os-theme-light.os-scrollbar:hover > .os-scrollbar-track > .os-scrollbar-handle {
     background: rgba(255, 255, 255, 0.55);
   }
-  .os-theme-dark
-    > .os-scrollbar
-    > .os-scrollbar-track
-    > .os-scrollbar-handle.active {
+
+  .os-theme-dark.os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle.active {
     background: rgba(0, 0, 0, 0.7);
   }
-  .os-theme-light
-    > .os-scrollbar
-    > .os-scrollbar-track
-    > .os-scrollbar-handle.active {
+
+  .os-theme-light.os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle.active {
     background: rgba(255, 255, 255, 0.7);
   }
-  .os-theme-dark > .os-scrollbar-horizontal .os-scrollbar-handle:before,
-  .os-theme-dark > .os-scrollbar-vertical .os-scrollbar-handle:before,
-  .os-theme-light > .os-scrollbar-horizontal .os-scrollbar-handle:before,
-  .os-theme-light > .os-scrollbar-vertical .os-scrollbar-handle:before {
-    content: '';
+
+  .os-theme-dark.os-scrollbar-horizontal .os-scrollbar-handle:before,
+  .os-theme-dark.os-scrollbar-vertical .os-scrollbar-handle:before,
+  .os-theme-light.os-scrollbar-horizontal .os-scrollbar-handle:before,
+  .os-theme-light.os-scrollbar-vertical .os-scrollbar-handle:before {
+    content: "";
     position: absolute;
     left: 0;
     right: 0;
@@ -653,34 +550,25 @@ const ScrollBarStyle = createGlobalStyle`
     bottom: 0;
     display: block;
   }
-  .os-theme-dark.os-host-scrollbar-horizontal-hidden
-    > .os-scrollbar-horizontal
-    .os-scrollbar-handle:before,
-  .os-theme-dark.os-host-scrollbar-vertical-hidden
-    > .os-scrollbar-vertical
-    .os-scrollbar-handle:before,
-  .os-theme-light.os-host-scrollbar-horizontal-hidden
-    > .os-scrollbar-horizontal
-    .os-scrollbar-handle:before,
-  .os-theme-light.os-host-scrollbar-vertical-hidden
-    > .os-scrollbar-vertical
-    .os-scrollbar-handle:before {
+
+  .os-theme-dark.os-host-scrollbar-hidden > .os-scrollbar-handle:before {
     display: none;
   }
-  .os-theme-dark > .os-scrollbar-horizontal .os-scrollbar-handle:before,
-  .os-theme-light > .os-scrollbar-horizontal .os-scrollbar-handle:before {
+
+  .os-theme-dark.os-scrollbar-horizontal .os-scrollbar-handle:before,
+  .os-theme-light.os-scrollbar-horizontal .os-scrollbar-handle:before {
     top: -6px;
     bottom: -2px;
   }
-  .os-theme-dark > .os-scrollbar-vertical .os-scrollbar-handle:before,
-  .os-theme-light > .os-scrollbar-vertical .os-scrollbar-handle:before {
+
+  .os-theme-dark.os-scrollbar-vertical .os-scrollbar-handle:before,
+  .os-theme-light.os-scrollbar-vertical .os-scrollbar-handle:before {
     left: -6px;
     right: -2px;
   }
-  .os-host-rtl.os-theme-dark > .os-scrollbar-vertical .os-scrollbar-handle:before,
-  .os-host-rtl.os-theme-light
-    > .os-scrollbar-vertical
-    .os-scrollbar-handle:before {
+
+  .os-theme-dark.os-scrollbar-rtl.os-scrollbar-vertical .os-scrollbar-handle:before,
+  .os-theme-light.os-scrollbar-rtl.os-scrollbar-vertical .os-scrollbar-handle:before {
     right: -6px;
     left: -2px;
   }

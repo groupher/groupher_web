@@ -27,6 +27,9 @@ dev: before_action
 	npm run update.version
 	npm run dev
 
+info:
+	npm run info
+
 build:
 	npm build
 

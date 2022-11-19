@@ -8,7 +8,7 @@ import { FC } from 'react'
 import { bond } from '@/utils/mobx'
 import { VIEW, DRAWER_SCROLLER } from '@/constant'
 
-import { Tabs } from '@/widgets/Switcher'
+import Tabs from '@/widgets/Switcher/Tabs'
 import CustomScroller from '@/widgets/CustomScroller'
 
 import type { TStore } from './store'

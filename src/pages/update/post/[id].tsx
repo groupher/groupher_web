@@ -1,5 +1,7 @@
 import { GetServerSideProps } from 'next'
 import { METRIC, ARTICLE_THREAD } from '@/constant'
+import { Provider } from 'mobx-react'
+
 import {
   articleUpdateSEO,
   ssrBaseStates,
@@ -11,7 +13,7 @@ import { P } from '@/schemas'
 
 import { useStore } from '@/stores/init'
 import GlobalLayout from '@/containers/layout/GlobalLayout'
-import ArticleEditor from '@/containers/editor/ArticleEditor'
+import ArticleEditor from '@/containers/editor/ArticleEditor/RealArticleEditor'
 
 const loader = async (context, opt = {}) => {
   const { gqClient } = ssrFetchPrepare(context, opt)
@@ -50,15 +52,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 export const UpdatePostPage = (props) => {
-  const store = useStore()
-  store.mark(props)
+  const store = useStore(props)
 
   const seoConfig = articleUpdateSEO()
 
   return (
-    <GlobalLayout metric={METRIC.ARTICLE_EDITOR} seoConfig={seoConfig}>
-      <ArticleEditor />
-    </GlobalLayout>
+    <Provider store={store}>
+      <GlobalLayout metric={METRIC.ARTICLE_EDITOR} seoConfig={seoConfig}>
+        <ArticleEditor />
+      </GlobalLayout>
+    </Provider>
   )
 }
 

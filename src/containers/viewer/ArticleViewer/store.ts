@@ -62,9 +62,7 @@ const ArticleViewer = T.model('ArticleViewer', {
     },
     syncArticle(item): void {
       const root = getParent(self) as TRootStore
-      if (self.activeThread === THREAD.WORKS) {
-        return
-      }
+
       root.articlesThread.updateArticle(item)
     },
     updateUpvote(viewerHasUpvoted: boolean): void {
