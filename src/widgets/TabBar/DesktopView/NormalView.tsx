@@ -1,7 +1,7 @@
 import { memo } from 'react'
 
 import { sortByIndex } from '@/utils/helper'
-import { Tabs } from '@/widgets/Switcher'
+import Tabs from '@/widgets/Switcher/Tabs'
 
 // priority: icon > localIcon || raw
 const getLocalIcon = (item) => {

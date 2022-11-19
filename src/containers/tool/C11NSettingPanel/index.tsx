@@ -11,7 +11,7 @@ import { VIEW } from '@/constant'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
-import { Tabs } from '@/widgets/Switcher'
+import Tabs from '@/widgets/Switcher/Tabs'
 import type { TStore } from './store'
 
 import GeneralSettings from './GeneralSettings'

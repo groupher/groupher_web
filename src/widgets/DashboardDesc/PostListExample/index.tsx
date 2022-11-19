@@ -9,7 +9,7 @@ import { FC, memo, useState } from 'react'
 import { SVG } from '@/constant'
 import { buildLog } from '@/utils/logger'
 
-import { IconSwitcher } from '@/widgets/Switcher'
+import IconSwitcher from '@/widgets/Switcher/IconSwitcher'
 import NoticeBar from '@/widgets/NoticeBar'
 
 import type { TPreviewDevice } from '../spec'
