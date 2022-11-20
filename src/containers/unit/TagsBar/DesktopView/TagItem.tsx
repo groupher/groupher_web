@@ -26,9 +26,11 @@ type TProps = {
 const TagItem: FC<TProps> = ({ tag, active, onSelect }) => {
   return (
     <Wrapper $active={active}>
-      <DotWrapper>
-        <DotSign color={tag.color} $active={active} />
-      </DotWrapper>
+      {tag.color && (
+        <DotWrapper>
+          <DotSign color={tag.color} $active={active} />
+        </DotWrapper>
+      )}
       <Tag $active={active} color={tag.color} onClick={() => onSelect(tag)}>
         <Title>{cutRest(Trans(tag.title), 10)}</Title>
         <RawWrapper $active={active}>

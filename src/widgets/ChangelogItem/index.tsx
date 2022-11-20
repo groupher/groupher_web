@@ -1,10 +1,10 @@
 import { FC, memo, Fragment } from 'react'
 
 import type { TChangelogLayout } from '@/spec'
-import { CHANGELOG_LAYOUT } from '@/constant'
+// import { CHANGELOG_LAYOUT } from '@/constant'
 
 import PreviewLayout from './PreviewtLayout'
-import OutlineLayout from './OutlineLayout'
+// import OutlineLayout from './OutlineLayout'
 
 type TProps = {
   layout: TChangelogLayout
@@ -12,17 +12,18 @@ type TProps = {
 }
 
 const ChangelogItem: FC<TProps> = ({ layout, showFullArticle = false }) => {
-  if (showFullArticle && layout === CHANGELOG_LAYOUT.OUTLINE) {
-    return <PreviewLayout showFullArticle />
-  }
+  // if (showFullArticle && layout === CHANGELOG_LAYOUT.OUTLINE) {
+  //   return <PreviewLayout showFullArticle />
+  // }
 
   return (
     <Fragment>
-      {layout === CHANGELOG_LAYOUT.PREVIEW ? (
+      <PreviewLayout showFullArticle />
+      {/* {layout === CHANGELOG_LAYOUT.PREVIEW ? (
         <PreviewLayout />
       ) : (
         <OutlineLayout />
-      )}
+      )} */}
     </Fragment>
   )
 }

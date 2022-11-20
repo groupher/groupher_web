@@ -70,6 +70,10 @@ const github = {
     orange: '#ad735c',
     orangeBg: '#FEF7E8',
 
+    // naming, fix later
+    cyan_light: '#00B5CC',
+    brown: '#8d691e',
+
     yellow: '#B0BA6C',
     yellowBg: '#FEFBE8',
 

@@ -140,7 +140,7 @@ export { default as BStore } from './bstore'
 export { Trans } from './i18n'
 export { default as GA } from './analytics/ga'
 
-export { mockImage, mockImages, mockWorks } from './mock'
+export { mockImage, mockImages } from './mock'
 
 export {
   communitySEO,
