@@ -11,21 +11,21 @@ export const Header = styled.div<TActive>`
   ${css.flex('align-center')};
   display: ${({ show }) => (show ? 'flex' : 'none')};
   margin-bottom: 8px;
-  margin-left: -25px;
+  margin-left: 1px;
   &:hover {
     cursor: pointer;
   }
 `
 export const ArrowIcon = styled(ArrowSVG)<{ $isOpen: boolean }>`
   fill: ${theme('tags.text')};
-  ${css.size(16)};
-  opacity: 0;
+  ${css.size(15)};
+  opacity: 0.6;
   transform: ${({ $isOpen }) =>
     $isOpen ? 'rotate(270deg)' : 'rotate(180deg)'};
   transition: transform 0.5s;
 
   ${Wrapper}:hover & {
-    opacity: 0.6;
+    opacity: 0.8;
   }
 
   ${Header}:hover & {
@@ -35,7 +35,7 @@ export const ArrowIcon = styled(ArrowSVG)<{ $isOpen: boolean }>`
 `
 export const Title = styled.div`
   ${css.flex('align-center')};
-  margin-left: 7px;
+  margin-left: 8px;
 `
 export const FolderTitle = styled.div<{ $isOpen: boolean }>`
   color: ${({ $isOpen }) =>

@@ -34,10 +34,11 @@ export const DotWrapper = styled.div`
   margin-right: 6px;
   margin-left: 2px;
 `
-type THashSign = TActive & { color: string }
+type THashSign = TActive & { color?: string }
 export const DotSign = styled.div<THashSign>`
   ${css.circle(10)};
-  background: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
+  background: ${({ color }) =>
+    color ? theme(`baseColor.${color.toLowerCase()}`) : 'none'};
   margin-top: 3px;
   margin-right: 10px;
   opacity: ${({ $active }) => ($active ? 0.9 : theme('tags.dotOpacity'))};

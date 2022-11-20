@@ -5,14 +5,15 @@ import { buildLog } from '@/utils/logger'
 
 // import S from './schma'
 import type { TStore } from './store'
+import type { TTagsMode } from './spec'
 
 let store: TStore | undefined
 
 /* eslint-disable-next-line */
 const log = buildLog('L:ChangelogThread')
 
-export const someMethod = (): void => {
-  //
+export const tagsModeChange = (tagsMode: TTagsMode): void => {
+  store.mark({ tagsMode })
 }
 
 // ###############################

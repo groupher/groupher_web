@@ -28,7 +28,7 @@ const ChangelogThreadContainer: FC<TProps> = ({
   testid = 'changelog-thread',
 }) => {
   useInit(store)
-  const { globalLayout } = store
+  const { globalLayout, tagsMode } = store
 
   return (
     <Wrapper testid={testid}>
@@ -49,7 +49,7 @@ const ChangelogThreadContainer: FC<TProps> = ({
         <ChangelogItem layout={globalLayout.changelog} />
         <ChangelogItem layout={globalLayout.changelog} />
       </MainWrapper>
-      <Filters />
+      <Filters tagsMode={tagsMode} />
     </Wrapper>
   )
 }

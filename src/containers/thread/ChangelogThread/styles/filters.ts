@@ -16,6 +16,28 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   color: ${theme('article.digest')};
   padding-top: 25px;
 `
+export const BannerText = styled.div`
+  color: ${theme('article.title')};
+  font-size: 14px;
+`
+export const TabWrapper = styled.div`
+  position: relative;
+  margin-bottom: 25px;
+  margin-left: -8px;
+  ${css.flex('align-both')};
+
+  &:before {
+    content: '';
+    height: 1px;
+    width: 170px;
+    position: absolute;
+    left: 13px;
+    bottom: 0;
+    background: lightgrey;
+    opacity: 0.5;
+  }
+`
+
 export const SearchInput = styled(Input)`
   width: 180px;
   font-size: 13px;

@@ -73,7 +73,7 @@ const settingsModalFields = {
   bannerNotifyBg: T.optional(T.enumeration(keys(COLORS)), 'BLACK'),
   changelogLayout: T.optional(
     T.enumeration(values(CHANGELOG_LAYOUT)),
-    CHANGELOG_LAYOUT.OUTLINE,
+    CHANGELOG_LAYOUT.PREVIEW,
   ),
   tags: T.optional(T.array(Tag), mockTags(12)),
   alias: T.optional(T.array(Alias), BUILDIN_ALIAS),

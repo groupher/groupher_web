@@ -3,16 +3,22 @@
  */
 
 import { types as T, getParent, Instance } from 'mobx-state-tree'
-// import {} from 'ramda'
+import { values } from 'ramda'
 
-import type { TCommunity, TRootStore, TGlobalLayout } from '@/spec'
+import type { TCommunity, TRootStore, TGlobalLayout, TTag } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { markStates, toJS } from '@/utils/mobx'
+
+import { mockTags, mockChangeTags } from '@/utils/mock'
+
+import { TAGS_MODE } from './constant'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:ChangelogThread')
 
-const ChangelogThread = T.model('ChangelogThread', {})
+const ChangelogThread = T.model('ChangelogThread', {
+  tagsMode: T.optional(T.enumeration(values(TAGS_MODE)), TAGS_MODE.DEFAULT),
+})
   .views((self) => ({
     get curCommunity(): TCommunity {
       const root = getParent(self) as TRootStore
@@ -22,6 +28,14 @@ const ChangelogThread = T.model('ChangelogThread', {})
     get globalLayout(): TGlobalLayout {
       const root = getParent(self) as TRootStore
       return root.dashboardThread.globalLayout
+    },
+    get tagsData(): TTag[] {
+      const slf = self as TStore
+      if (slf.tagsMode === TAGS_MODE.DEFAULT) {
+        return mockTags(15)
+      }
+
+      return mockChangeTags(15)
     },
   }))
   .actions((self) => ({
