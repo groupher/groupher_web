@@ -11,7 +11,7 @@ export const Header = styled.div<TActive>`
   ${css.flex('align-center')};
   display: ${({ show }) => (show ? 'flex' : 'none')};
   margin-bottom: 8px;
-  margin-left: 1px;
+  margin-left: 2px;
   &:hover {
     cursor: pointer;
   }

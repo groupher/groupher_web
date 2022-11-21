@@ -9,7 +9,11 @@ import type { TCommunity, TRootStore, TGlobalLayout, TTag } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { markStates, toJS } from '@/utils/mobx'
 
-import { mockTags, mockChangeTags } from '@/utils/mock'
+import {
+  mockTags,
+  mockChangelogTimeTags,
+  mockChangelogVersionTags,
+} from '@/utils/mock'
 
 import { TAGS_MODE } from './constant'
 
@@ -35,7 +39,11 @@ const ChangelogThread = T.model('ChangelogThread', {
         return mockTags(15)
       }
 
-      return mockChangeTags(15)
+      if (slf.tagsMode === TAGS_MODE.VERSION) {
+        return mockChangelogVersionTags(15)
+      }
+
+      return mockChangelogTimeTags(15)
     },
   }))
   .actions((self) => ({

@@ -41,6 +41,7 @@ export const DotSign = styled.div<THashSign>`
     color ? theme(`baseColor.${color.toLowerCase()}`) : 'none'};
   margin-top: 3px;
   margin-right: 10px;
+  margin-left: 1px;
   opacity: ${({ $active }) => ($active ? 0.9 : theme('tags.dotOpacity'))};
 
   ${Wrapper}:hover & {

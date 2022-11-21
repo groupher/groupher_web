@@ -21,15 +21,15 @@ export const BannerText = styled.div`
   font-size: 14px;
 `
 export const TabWrapper = styled.div`
+  ${css.flex('align-center')};
   position: relative;
   margin-bottom: 25px;
   margin-left: -8px;
-  ${css.flex('align-both')};
 
   &:before {
     content: '';
     height: 1px;
-    width: 170px;
+    width: 180px;
     position: absolute;
     left: 13px;
     bottom: 0;
@@ -58,9 +58,9 @@ export const NewButton = styled(Button)`
 export const PublishButton = styled(Button)`
   width: 180px;
   border-radius: 12px;
-  background: ${theme('hoverBg')};
-  color: ${theme('article.title')};
-  border-color: ${theme('border')};
+  /* background: ${theme('hoverBg')}; */
+  /* color: ${theme('article.title')}; */
+  /* border-color: ${theme('border')}; */
 `
 export const BtnText = styled.div`
   margin-left: 4px;
