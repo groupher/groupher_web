@@ -1,1 +1,1 @@
-export type TTagsMode = 'default' | 'created_time'
+export type TTagsMode = 'default' | 'created_time' | 'version'

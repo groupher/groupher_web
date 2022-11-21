@@ -280,7 +280,7 @@ export const mockUsers = (num: number): TUser[] => {
 export const mockTags = (num: number): TTag[] =>
   tags.slice(0, Math.min(num, tags.length))
 
-const changelogTags = [
+const changelogTimeTags = [
   {
     id: '13',
     raw: '1',
@@ -337,8 +337,72 @@ const changelogTags = [
   },
 ]
 
-export const mockChangeTags = (num = 10): TTag[] => {
-  return changelogTags.slice(0, Math.min(num, changelogTags.length))
+export const mockChangelogTimeTags = (num = 10): TTag[] => {
+  return changelogTimeTags.slice(0, Math.min(num, changelogTimeTags.length))
+}
+
+const changelogVersionTags = [
+  {
+    id: '13',
+    raw: '1',
+    title: 'v1.0.1',
+    group: 'v1',
+  },
+  {
+    id: '14',
+    raw: '2',
+    title: 'v1.0.2',
+    group: 'v1',
+  },
+  {
+    id: '15',
+    raw: '3',
+    title: 'v1.0.3',
+    group: 'v1',
+  },
+  {
+    id: '16',
+    raw: '4',
+    title: 'v1.0.4',
+    group: 'v1',
+  },
+  {
+    id: '17',
+    raw: '5',
+    title: 'v1.0.5',
+    group: 'v1',
+  },
+  {
+    id: '18',
+    raw: '6',
+    title: 'v1.0.6',
+    group: 'v1',
+  },
+  {
+    id: '0',
+    raw: '1',
+    title: 'v2.0.1',
+    group: 'v2',
+  },
+  {
+    id: '1',
+    raw: '2',
+    title: 'v2.0.2',
+    group: 'v2',
+  },
+  {
+    id: '2',
+    raw: '3',
+    title: 'v2.0.3',
+    group: 'v2',
+  },
+]
+
+export const mockChangelogVersionTags = (num = 10): TTag[] => {
+  return changelogVersionTags.slice(
+    0,
+    Math.min(num, changelogVersionTags.length),
+  )
 }
 
 export const mockCommunities = (num: number): TCommunity[] =>
