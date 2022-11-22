@@ -53,7 +53,14 @@ const Header: FC<TProps> = ({ article }) => {
         </PublishTime>
       </Topping>
       <Main>
-        <Title onClick={() => send(EVENT.PREVIEW_ARTICLE, { article })}>
+        <Title
+          onClick={(e) => {
+            // make page can open by user right click the menu
+            e.preventDefault()
+            send(EVENT.PREVIEW_ARTICLE, { article })
+          }}
+          href={`/post/${article.id}`}
+        >
           {article.title}{' '}
         </Title>
         {/*  @ts-ignore */}

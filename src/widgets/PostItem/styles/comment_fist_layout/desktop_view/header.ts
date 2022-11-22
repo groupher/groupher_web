@@ -12,8 +12,9 @@ export const Brief = styled.div`
   margin-left: 10px;
   color: ${theme('article.title')};
 `
-export const Title = styled.div`
+export const Title = styled.a`
   position: relative;
+  text-decoration: none;
   font-size: 15px;
   font-weight: 600;
   color: ${theme('article.title')};
