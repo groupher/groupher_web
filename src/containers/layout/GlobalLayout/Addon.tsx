@@ -4,6 +4,7 @@ import { FC, Fragment, memo, useEffect } from 'react'
 import useShortcut from '@/hooks/useShortcut'
 
 import Drawer from '@/containers/tool/Drawer'
+import Subscriber from '@/containers/tool/Subscriber'
 
 import { logBuddha } from './logic'
 // import { Drawer } from './dynamic'
@@ -20,6 +21,7 @@ const Addon: FC = () => {
       {/* {!isMobile && <AbuseReport />} */}
       {/* @ts-ignore */}
       <Drawer />
+      <Subscriber />
       {/* @ts-ignore */}
       {/* @ts-ignore */}
       {/* @ts-ignore */}

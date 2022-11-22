@@ -72,6 +72,9 @@ const EVENT = {
   C11N_DENSITY_CHANGE: 'C11N_DENSITY_CHANGE',
   //
   WORKS_UPVOTE: 'WORKS_UPVOTE',
+
+  // subscribe
+  SUBSCRIBE: 'SUBSCRIBE',
 }
 
 export default EVENT

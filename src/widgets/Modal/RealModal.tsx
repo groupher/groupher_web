@@ -1,7 +1,7 @@
 import { FC, useEffect, useState, useCallback } from 'react'
 import { Portal } from 'react-portal'
 
-import { toggleGlobalBlur } from '@/utils/dom'
+import { toggleGlobalBlur, lockPage, unlockPage } from '@/utils/dom'
 import useShortcut from '@/hooks/useShortcut'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
@@ -41,6 +41,7 @@ const RealModal: FC<TProps> = ({
     setVisibleOnPage(false)
     toggleGlobalBlur(false)
     handleCloseModal()
+    unlockPage()
   }, [handleCloseModal])
 
   useShortcut('Escape', handleClose)
@@ -48,9 +49,11 @@ const RealModal: FC<TProps> = ({
   useEffect(() => {
     if (visibleOnPage) {
       toggleGlobalBlur(true)
+      lockPage()
     }
     if (visibleOnPage && !show) {
       toggleGlobalBlur(false)
+      unlockPage()
     }
   }, [show, visibleOnPage])
 

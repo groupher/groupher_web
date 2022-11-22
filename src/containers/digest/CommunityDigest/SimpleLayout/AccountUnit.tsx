@@ -3,6 +3,7 @@ import { FC, memo } from 'react'
 import Link from 'next/link'
 
 import { ROUTE } from '@/constant'
+import { callSubscriber } from '@/utils/helper'
 
 import {
   Wrapper,
@@ -17,7 +18,12 @@ import { mockUsers } from '@/utils/mock'
 const AccountUnit: FC = () => {
   return (
     <Wrapper>
-      <SubscribeButton type="primary" ghost size="small">
+      <SubscribeButton
+        type="primary"
+        ghost
+        size="small"
+        onClick={callSubscriber}
+      >
         订阅
       </SubscribeButton>
 

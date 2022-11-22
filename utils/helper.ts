@@ -270,6 +270,10 @@ export const callDashboardDesc = (data): void => {
   send(EVENT.DRAWER.OPEN, { type: TYPE.DRAWER.DASHBOARD_DESC, data })
 }
 
+export const callSubscriber = (): void => {
+  send(EVENT.SUBSCRIBE, {})
+}
+
 export const upvoteOnArticleList = (
   article: TArticle,
   viewerHasUpvoted: boolean,
