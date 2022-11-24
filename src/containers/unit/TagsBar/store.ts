@@ -16,6 +16,7 @@ import type {
 } from '@/spec'
 
 import { markStates, toJS } from '@/utils/mobx'
+import { mockTags } from '@/utils/mock'
 import { groupByKey } from '@/utils/helper'
 
 import { Tag, emptyTag } from '@/model'
@@ -43,8 +44,8 @@ const TagsBar = T.model('TagsBar', {
       if (curThread === THREAD.CHANGELOG) {
         return root.changelogThread.tagsData
       }
-      return toJS(self.tags)
-      // return mockTags(15)
+      return mockTags(15)
+      // return toJS(self.tags)
     },
     get activeTagData(): TTag {
       return toJS(self.activeTag) || emptyTag
@@ -59,7 +60,7 @@ const TagsBar = T.model('TagsBar', {
       return 3
     },
     get totalCountThrold(): number {
-      return 12
+      return 10
     },
   }))
   .actions((self) => ({
