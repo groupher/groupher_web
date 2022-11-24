@@ -44,7 +44,7 @@ export const SearchInput = styled(Input)`
   text-align: center;
   border-radius: 15px;
   border: 1px solid;
-  border-color: ${theme('border')};
+  border-color: ${theme('divider')};
 
   ::placeholder {
     color: ${theme('article.digest')};
@@ -60,7 +60,7 @@ export const PublishButton = styled(Button)`
   border-radius: 12px;
   /* background: ${theme('hoverBg')}; */
   /* color: ${theme('article.title')}; */
-  /* border-color: ${theme('border')}; */
+  /* border-color: ${theme('divider')}; */
 `
 export const BtnText = styled.div`
   margin-left: 4px;

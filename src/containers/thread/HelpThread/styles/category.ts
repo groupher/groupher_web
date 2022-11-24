@@ -29,7 +29,7 @@ export const IconWrapper = styled.div`
   ${css.flex('align-both')};
 
   ${Wrapper}:hover & {
-    background: #f5f5f5; //${theme('border')};
+    background: #f5f5f5; //${theme('divider')};
   }
 `
 export const Icon = styled(LaptopSVG)`

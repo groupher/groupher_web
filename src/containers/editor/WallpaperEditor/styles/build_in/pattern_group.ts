@@ -38,7 +38,7 @@ export const Image = styled(Img)`
 `
 export const ActiveSign = styled.div`
   ${css.size(24)};
-  background: ${theme('border')};
+  background: ${theme('divider')};
   position: absolute;
   top: -1px;
   right: -1px;

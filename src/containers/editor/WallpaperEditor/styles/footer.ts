@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
   bottom: 0;
   left: 0;
   border-top: 1px solid;
-  border-top-color: ${theme('border')};
+  border-top-color: ${theme('divider')};
   height: 65px;
 `
 export const ForbidImgIcon = styled(ForbidSVG)`

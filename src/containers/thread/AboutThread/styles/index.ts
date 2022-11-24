@@ -23,7 +23,7 @@ export const Block = styled.div`
   margin-bottom: 30px;
   padding-bottom: 30px;
   border-bottom: 1px solid;
-  border-bottom-color: ${theme('border')};
+  border-bottom-color: ${theme('divider')};
   width: 620px;
 `
 export const IntroBlock = styled(Block)`

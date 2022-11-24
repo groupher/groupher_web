@@ -20,5 +20,5 @@ export const CodeWrapper = styled.div`
   margin-left: -5px;
 `
 export const Inputer = styled(Input)`
-  background: ${theme('border')};
+  background: ${theme('divider')};
 `

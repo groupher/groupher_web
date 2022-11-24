@@ -40,7 +40,7 @@ export const QRWrapper = styled.div`
 export const Divider = styled.div`
   width: 100%;
   height: 1px;
-  background: ${theme('border')};
+  background: ${theme('divider')};
   margin-top: 3px;
   margin-bottom: 3px;
 `

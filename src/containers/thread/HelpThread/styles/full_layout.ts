@@ -23,5 +23,5 @@ export const CatsWrapper = styled(MainWrapper)`
   padding-right: 50px;
 
   border-right: 1px solid;
-  border-right-color: ${theme('border')};
+  border-right-color: ${theme('divider')};
 `

@@ -22,5 +22,5 @@ export const MainWrapper = styled.div`
   padding-right: 80px;
 
   border-right: 1px solid;
-  border-right-color: ${theme('border')};
+  border-right-color: ${theme('divider')};
 `

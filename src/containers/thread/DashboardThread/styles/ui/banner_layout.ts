@@ -20,7 +20,7 @@ export const Main = styled.div`
 `
 export const ListsWrapper = styled.div`
   border-right: 1px solid;
-  border-right-color: ${theme('border')};
+  border-right-color: ${theme('divider')};
   width: 85%;
 `
 export const TagssWrapper = styled.div`

@@ -4,7 +4,7 @@ import { SIZE } from '@/constant'
 import { TTheme } from '@/spec'
 
 export const getActiveBackground = (dimOnActive: boolean): TTheme => {
-  return dimOnActive ? theme('border') : theme('button.primary')
+  return dimOnActive ? theme('divider') : theme('button.primary')
 }
 
 export const getLabelColor = (

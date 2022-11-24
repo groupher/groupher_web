@@ -14,7 +14,7 @@ export const Wrapper = styled.div<TActive>`
   background: ${theme('hoverBg')};
 
   &:hover {
-    background: ${theme('border')};
+    background: ${theme('divider')};
   }
 
   transition: all 0.2s;

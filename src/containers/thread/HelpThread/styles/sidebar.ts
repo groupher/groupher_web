@@ -46,7 +46,7 @@ export const Footer = styled.div`
   ${css.flex('align-center')};
   margin-top: 15px;
   border-top: 1px solid;
-  border-top-color: ${theme('border')};
+  border-top-color: ${theme('divider')};
   padding-top: 20px;
   font-size: 12px;
   color: ${theme('article.digest')};

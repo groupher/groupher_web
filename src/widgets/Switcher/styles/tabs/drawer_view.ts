@@ -12,9 +12,9 @@ export const Wrapper = styled.nav.attrs(({ testid }: TTestable) => ({
   width: 100%;
   height: 36px;
   border: 2px solid;
-  border-color: ${theme('border')};
+  border-color: ${theme('divider')};
   border-radius: 8px;
-  background: ${theme('border')};
+  background: ${theme('divider')};
   padding: 0 1px;
 `
 export const TabItem = styled.div<TActive>`

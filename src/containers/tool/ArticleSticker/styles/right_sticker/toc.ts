@@ -66,7 +66,7 @@ export const MenuOpenedIcon = styled(MenuIcon)`
 export const TocContentWrapper = styled.div`
   color: ${theme('article.digest')};
   border-top: 1px solid;
-  border-top-color: ${theme('border')};
+  border-top-color: ${theme('divider')};
   padding: 10px 0;
   font-size: 12px;
   margin-top: 8px;

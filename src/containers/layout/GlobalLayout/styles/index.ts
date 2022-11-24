@@ -35,6 +35,8 @@ export const InnerWrapper = styled.div<TInner>`
   background: ${theme('bodyBg')};
   transition: all 0.2s;
   z-index: 1;
+  border-top: 1px solid;
+  border-top-color: ${theme('divider')};
   ${css.media.tablet`
     position: relative;
     padding-left: 0;

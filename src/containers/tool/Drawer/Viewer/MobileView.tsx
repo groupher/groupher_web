@@ -45,6 +45,7 @@ const Viewer: FC<TProps> = ({
   disableContentDrag,
   children,
 }) => {
+  // @ts-ignore
   const theme: TThemeMap = useTheme()
   // swipe action state for top && bottom
   // null means restore and close

@@ -33,7 +33,7 @@ type TProps = {
 }
 
 const DETAIL_TEXT =
-  '本站即将迁移到 Groupher.com, 为中小产品团队提供社区反馈服务，如果你对此有兴趣，欢迎加 v(mydearxym) 详聊。'
+  'Groupher.com, 为中小产品团队提供社区反馈服务，如果你对此有兴趣，欢迎加 v(mydearxym) 详聊。'
 
 const BannerNotify: FC<TProps> = ({
   testid = 'banner-notify',
@@ -49,7 +49,7 @@ const BannerNotify: FC<TProps> = ({
       >
         <Row>
           <NotifyIcon />
-          <Desc>网站改版迁移中，服务暂不可用。</Desc>
+          <Desc>站点开发重构中，服务暂不可用。</Desc>
         </Row>
 
         <Row>

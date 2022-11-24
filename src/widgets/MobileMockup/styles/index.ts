@@ -15,8 +15,8 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   width: 320px; // 360px;
   height: 680px; // 780px;
   border-radius: 40px;
-  box-shadow: 0px 0px 0px 11px ${theme('border')},
-    0px 0px 0px 12px ${theme('border')}, 0px 0px 0px 6px ${theme('border')};
+  box-shadow: 0px 0px 0px 11px ${theme('divider')},
+    0px 0px 0px 12px ${theme('divider')}, 0px 0px 0px 6px ${theme('divider')};
 
   &:before {
     content: '';
@@ -28,7 +28,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
     top: 0px;
     width: 54%;
     height: 25px;
-    background-color: ${theme('border')};
+    background-color: ${theme('divider')};
     border-radius: 0px 0px 40px 40px;
   }
 

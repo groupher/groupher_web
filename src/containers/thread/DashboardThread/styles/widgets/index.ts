@@ -17,7 +17,7 @@ export const TypeSelect = styled.div`
 `
 export const TabWrapper = styled.div`
   border-bottom: 1px solid;
-  border-bottom-color: ${theme('border')};
+  border-bottom-color: ${theme('divider')};
 `
 export const BtnWrapper = styled.div`
   ${css.flex('align-both')};

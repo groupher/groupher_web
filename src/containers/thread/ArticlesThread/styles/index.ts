@@ -31,7 +31,7 @@ export const MainWrapper = styled.div<{ thread: TThread }>`
     includes(thread, values(CARD_THREAD)) ? '35px' : '65px'};
 
   border-right: 1px solid;
-  border-right-color: ${theme('border')};
+  border-right-color: ${theme('divider')};
 
   ${css.media.mobile`
      padding: 10px 15px;

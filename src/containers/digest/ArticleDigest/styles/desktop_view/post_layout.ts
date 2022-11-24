@@ -36,7 +36,7 @@ export const BottomInfo = styled.div`
   border-bottom: 1px solid;
   padding-left: 2px;
   padding-right: 2px;
-  border-bottom-color: ${theme('border')};
+  border-bottom-color: ${theme('divider')};
   width: 100%;
   color: ${theme('article.digest')};
 `

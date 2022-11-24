@@ -33,7 +33,7 @@ export const UploadIcon = styled(SettingSVG)`
 type TPreviewImage = { effect: string; noHover?: boolean }
 export const PreviewImage = styled.div<TPreviewImage>`
   border: 1px solid;
-  border-color: ${theme('border')};
+  border-color: ${theme('divider')};
   background-color: ${theme('hoverBg')};
 
   width: 296px;
@@ -70,7 +70,7 @@ export const ContentBlock = styled.div`
 export const ContentBar = styled.div<{ long: number }>`
   width: ${({ long }) => `${long}%`};
   height: 10px;
-  background: ${theme('border')};
+  background: ${theme('divider')};
   margin-bottom: 10px;
   z-index: 3;
   border-radius: 5px;

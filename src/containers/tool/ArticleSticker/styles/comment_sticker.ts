@@ -49,7 +49,7 @@ export const MoreIcon = styled(Img)`
 export const Divider = styled.div`
   width: 90%;
   height: 1px;
-  background: ${theme('border')};
+  background: ${theme('divider')};
   margin-top: 12px;
   margin-bottom: 12px;
 `

@@ -10,7 +10,7 @@ import { FC, memo } from 'react'
 import { useTheme } from 'styled-components'
 import ReactSelect from 'react-select'
 
-import type { TSelectOption } from '@/spec'
+import type { TSelectOption, TThemeMap } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
 import { Input, Option, IndicatorsContainer } from './components'
@@ -43,7 +43,8 @@ const Select: FC<TProps> = ({
   onChange = log,
   value = null,
 }) => {
-  const theme = useTheme()
+  // @ts-ignore
+  const theme: TThemeMap = useTheme()
   const styles = getSelectStyles(theme)
 
   return (

@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   position: relative;
   border: 1px dashed;
   border-radius: 5px;
-  border-color: ${theme('border')};
+  border-color: ${theme('divider')};
   width: 100%;
   height: 160px;
   cursor: pointer;
@@ -47,7 +47,7 @@ export const Menu = styled.div`
   border-radius: 4px;
   background: white;
   border: 1px solid;
-  border-color: ${theme('border')};
+  border-color: ${theme('divider')};
   border-radius: 5px;
   z-index: 2;
 `
