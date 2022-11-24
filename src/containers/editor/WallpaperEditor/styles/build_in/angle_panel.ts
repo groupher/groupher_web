@@ -21,7 +21,7 @@ const metric = {
 export const Wrapper = styled.div`
   ${css.circle(54)};
   border: 1px solid;
-  border-color: ${theme('border')};
+  border-color: ${theme('divider')};
   position: relative;
   margin-top: 12px;
   margin-left: 5px;
@@ -53,7 +53,7 @@ const Point = styled.div<TActive>`
 
   font-weight: ${({ $active }) => ($active ? 600 : 'bormal')};
   background: ${({ $active }) =>
-    $active ? theme('article.title') : theme('border')};
+    $active ? theme('article.title') : theme('divider')};
   color: ${({ $active }) => (!$active ? theme('article.title') : 'white')};
 
   &:hover {

@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   width: 300px;
   height: auto;
   border-left: 1px solid;
-  border-left-color: ${theme('border')};
+  border-left-color: ${theme('divider')};
   padding-left: 40px;
   padding-top: 10px;
   padding-bottom: 0;

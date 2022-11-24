@@ -16,7 +16,7 @@ export const Block = styled.div`
 `
 export const BottomBlock = styled(Block)`
   border-top: 1px solid;
-  border-top-color: ${theme('border')};
+  border-top-color: ${theme('divider')};
   padding-top: 30px;
 `
 export const Header = styled.div`

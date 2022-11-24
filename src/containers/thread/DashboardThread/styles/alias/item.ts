@@ -8,7 +8,7 @@ import ArrowSVG from '@/icons/ArrowSolid'
 export const Wrapper = styled.div`
   ${css.flexColumn()};
   border-bottom: 1px solid;
-  border-bottom-color: ${theme('border')};
+  border-bottom-color: ${theme('divider')};
   padding: 15px 0;
   width: 100%;
 `

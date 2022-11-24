@@ -12,7 +12,7 @@ export const BaseSection = styled.section`
   /* margin: 0 50px; */
   padding-bottom: 30px;
   /* border-bottom: 1px solid;
-  border-bottom-color: ${theme('border')}; */
+  border-bottom-color: ${theme('divider')}; */
 `
 export const TitleBase = styled.div`
   color: ${theme('article.title')};

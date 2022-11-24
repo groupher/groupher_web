@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   flex-wrap: wrap;
 
   border: 1px solid;
-  border-color: ${theme('border')};
+  border-color: ${theme('divider')};
   box-shadow: rgb(0 0 0 / 7%) 0px 0px 24px;
   padding: 10px 14px;
   padding-right: 0;

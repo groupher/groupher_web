@@ -17,7 +17,7 @@ export const InnerWrapper = styled.div`
   width: 100%;
   height: 50px;
   /* border-bottom: 1px solid;
-  border-bottom-color: ${theme('border')}; */
+  border-bottom-color: ${theme('divider')}; */
 `
 export const RouterWrapper = styled.div<{ metric: TMetric }>`
   ${css.flex('align-center')};

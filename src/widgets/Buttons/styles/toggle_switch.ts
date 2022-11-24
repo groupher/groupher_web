@@ -15,7 +15,7 @@ export const Wrapper = styled.div<{ size: TSizeSM }>`
 export const Track = styled.span<{ checked: boolean }>`
   background: ${theme('hoverBg')};
   background: ${({ checked }) =>
-    checked ? theme('article.title') : theme('border')};
+    checked ? theme('article.title') : theme('divider')};
   border-radius: 12px;
   cursor: pointer;
   display: flex;

@@ -20,11 +20,11 @@ export const BallWrapper = styled.div<TActive>`
   border-color: ${({ $active }) =>
     $active ? theme('article.title') : 'transparent'};
   padding: 3px;
-  background: ${({ $active }) => ($active ? theme('border') : 'transparent')};
+  background: ${({ $active }) => ($active ? theme('divider') : 'transparent')};
   margin-bottom: 10px;
 
   &:hover {
-    background: ${theme('border')};
+    background: ${theme('divider')};
     cursor: pointer;
   }
 
@@ -46,7 +46,7 @@ export const ColorBall = styled.div<TColorBall>`
 `
 export const ActiveSign = styled.div`
   ${css.size(24)};
-  background: ${theme('border')};
+  background: ${theme('divider')};
   position: absolute;
   top: -1px;
   right: -1px;

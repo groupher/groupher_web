@@ -29,6 +29,7 @@ export type TThemeMap = {
     digest?: string
     info?: string
   }
+  divider: string
   thread?: {
     articleDigest?: string
     articleTitle?: string

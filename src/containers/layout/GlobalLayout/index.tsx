@@ -5,14 +5,13 @@
  */
 
 import { FC, ReactNode, useEffect, useState } from 'react'
-import dynamic from 'next/dynamic'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TSEO, TMetric } from '@/spec'
 import { bond } from '@/utils/mobx'
 
 import ThemePalette from '@/containers/layout/ThemePalette'
-// import BannerNotify from '@/widgets/BannerNotify'
+import BannerNotify from '@/widgets/BannerNotify'
 import Footer from '@/widgets/Footer'
 // import CustomScroller from '@/widgets/CustomScroller'
 
@@ -20,7 +19,7 @@ import type { TStore } from './store'
 import SEO from './SEO'
 import Wallpaper from './Wallpaper'
 
-import { Addon, BannerNotify } from './dynamic'
+import { Addon } from './dynamic'
 
 import {
   Skeleton,
@@ -78,13 +77,11 @@ const GlobalLayoutContainer: FC<TProps> = ({
           <Wrapper>
             <SEO metric={metric} config={seoConfig} />
             <InnerWrapper metric={metric}>
-              {load && (
-                <BannerNotify
-                  metric={metric}
-                  layout={globalLayout.bannerNotify}
-                  bg={globalLayout.bannerNotifyBg}
-                />
-              )}
+              <BannerNotify
+                metric={metric}
+                layout={globalLayout.bannerNotify}
+                bg={globalLayout.bannerNotifyBg}
+              />
               <ContentWrapper>
                 <BodyWrapper isMobile={isMobile}>
                   {childrenWithProps(children, { metric })}

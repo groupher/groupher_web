@@ -73,6 +73,7 @@ const VerticalScroller: FC<TProps> = ({
     onBottomEnter?.()
   }, [onBottomEnter])
 
+  // @ts-ignore
   const { _meta: themeMeta }: TThemeMap = useTheme()
   const { category: themeCategory } = themeMeta
 

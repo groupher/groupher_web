@@ -14,7 +14,7 @@ export const Wrapper = styled.div<{ isEditMode: boolean }>`
   margin-left: -8px;
   padding: ${({ isEditMode }) => (isEditMode ? 0 : '10px')};
   border: ${({ isEditMode }) => (isEditMode ? 'none' : '1px solid')};
-  border-color: ${theme('border')};
+  border-color: ${theme('divider')};
   border-radius: 5px;
   margin-bottom: 12px;
 

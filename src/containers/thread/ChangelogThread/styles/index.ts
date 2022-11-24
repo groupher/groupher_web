@@ -21,7 +21,7 @@ export const MainWrapper = styled.div`
   padding-right: 65px;
   margin-right: 60px;
   border-right: 1px solid;
-  border-right-color: ${theme('border')};
+  border-right-color: ${theme('divider')};
 `
 
 export const PreviousTitle = styled.div`

@@ -55,6 +55,7 @@ const HorizontalScroller: FC<TProps> = ({
   const handleShowRightShadow = useCallback(() => setShowRightShadow(true), [])
   const handleHideRightShadow = useCallback(() => setShowRightShadow(false), [])
 
+  // @ts-ignore
   const { _meta: themeMeta }: TThemeMap = useTheme()
   const { category: themeCategory } = themeMeta
 

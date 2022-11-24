@@ -11,7 +11,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   ${css.flex('align-start')};
   padding-top: 12px;
   border-bottom: 1px solid;
-  border-bottom-color: ${theme('border')};
+  border-bottom-color: ${theme('divider')};
   margin-bottom: 30px;
 `
 export const Main = styled.div`

@@ -46,7 +46,7 @@ export const Picture = styled.div<{ small?: boolean }>`
   width: 100%;
   height: ${({ small }) => (small ? '80px;' : '100px;')};
   border-radius: 5px;
-  background: ${theme('border')};
+  background: ${theme('divider')};
 `
 
 export const MiniItem = styled.div`
@@ -65,7 +65,7 @@ export const MiniPic = styled.div`
   width: 30px;
   height: 16px;
   border-radius: 5px;
-  background: ${theme('border')};
+  background: ${theme('divider')};
 `
 export const MiniIntro = styled.div`
   width: 100%;

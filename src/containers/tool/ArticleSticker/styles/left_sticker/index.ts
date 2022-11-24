@@ -49,7 +49,7 @@ export const Divider = styled.div`
   width: 20px;
   height: 1px;
   margin-right: 4px;
-  background: ${theme('border')};
+  background: ${theme('divider')};
   margin-top: 20px;
   margin-bottom: 20px;
 `

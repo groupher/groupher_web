@@ -11,7 +11,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   width: 100%;
   height: 300px;
   border: 1px solid;
-  border-color: ${theme('border')};
+  border-color: ${theme('divider')};
   margin-bottom: 20px;
 `
 export const ImageWrapper = styled.div`
