@@ -96,5 +96,5 @@ export const SubToggleTitle = styled.div`
 export const SubTogglePrefixIcon = styled(MoreSVG)`
   fill: ${theme('lightText')};
   ${css.size(12)};
-  margin-right: 2px;
+  margin-left: 1px;
 `
