@@ -6,7 +6,7 @@ import Button from '@/widgets/Buttons/Button'
 import Img from '@/Img'
 import NotifySVG from '@/icons/Notify'
 import DashboardSVG from '@/icons/Dashboard'
-import SearchSVG from '@/icons/HeaderSearch'
+import AccountSVG from '@/icons/Acount'
 
 export const Wrapper = styled.div`
   ${css.flex('align-both')};
@@ -24,16 +24,8 @@ export const SubscribeButton = styled(Button)`
   border-radius: 10px;
   padding: 0 12px;
 `
-export const NotifyIcon = styled(NotifySVG)`
-  fill: ${theme('article.digest')};
-  ${css.size(22)};
-  margin-right: 18px;
-  opacity: 0.8;
-`
-export const DashboardIcon = styled(DashboardSVG)`
-  fill: ${theme('article.digest')};
-  ${css.size(20)};
-  margin-right: 16px;
+
+const hoverEffect = `
   opacity: 0.8;
 
   &:hover {
@@ -42,9 +34,25 @@ export const DashboardIcon = styled(DashboardSVG)`
   }
   transition: all 0.2s;
 `
-export const SearchIcon = styled(SearchSVG)`
+
+export const NotifyIcon = styled(NotifySVG)`
+  fill: ${theme('article.digest')};
+  ${css.size(22)};
+  margin-right: 18px;
+
+  ${hoverEffect}
+`
+export const DashboardIcon = styled(DashboardSVG)`
   fill: ${theme('article.digest')};
   ${css.size(20)};
+  margin-right: 16px;
+
+  ${hoverEffect}
+`
+export const AccountIcon = styled(AccountSVG)`
+  fill: ${theme('article.digest')};
+  ${css.size(19)};
   margin-right: 14px;
-  opacity: 0.8;
+
+  ${hoverEffect}
 `

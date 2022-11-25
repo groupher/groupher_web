@@ -274,6 +274,10 @@ export const callSubscriber = (): void => {
   send(EVENT.SUBSCRIBE, {})
 }
 
+export const callAuth = (): void => {
+  send(EVENT.AUTH, {})
+}
+
 export const upvoteOnArticleList = (
   article: TArticle,
   viewerHasUpvoted: boolean,
