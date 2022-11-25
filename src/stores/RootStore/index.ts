@@ -59,6 +59,7 @@ import {
   //
 
   // GEN: IMPORT SUBSTORE
+  AuthWallStore,
   SubscriberStore,
   DashboardThreadStore,
   WallpaperEditorStore,
@@ -148,6 +149,7 @@ const rootStore = T.model({
   // have a drink
 
   // GEN: PLUG SUBSTORE TO ROOTSTORE
+  authWall: T.optional(AuthWallStore, {}),
   subscriber: T.optional(SubscriberStore, {}),
   dashboardThread: T.optional(DashboardThreadStore, {}),
   wallpaperEditor: T.optional(WallpaperEditorStore, {}),

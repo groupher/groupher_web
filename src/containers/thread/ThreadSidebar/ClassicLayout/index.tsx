@@ -17,7 +17,10 @@ import { EVENT } from '@/constant'
 import Sticky from '@/widgets/Sticky'
 import { SpaceGrow, Br } from '@/widgets/Common'
 
-import { PublishButton, CommunityJoinBadge, TagsBar } from './dynamic'
+import PublishButton from '@/widgets/Buttons/PublishButton'
+import TagsBar from '@/containers/unit/TagsBar'
+
+import { CommunityJoinBadge } from './dynamic'
 
 import {
   Wrapper,
@@ -92,14 +95,10 @@ const ClassicLayout: FC<TProps> = ({
             />
           </PublishWrapper>
 
-          {load && (
-            <>
-              {!showCommunityBadge && <CommunityJoinBadge />}
-              <TagsBarWrapper>
-                <TagsBar onSelect={() => send(EVENT.REFRESH_ARTICLES)} />
-              </TagsBarWrapper>
-            </>
-          )}
+          {load && !showCommunityBadge && <CommunityJoinBadge />}
+          <TagsBarWrapper>
+            <TagsBar onSelect={() => send(EVENT.REFRESH_ARTICLES)} />
+          </TagsBarWrapper>
 
           <SpaceGrow />
         </StickyWrapper>

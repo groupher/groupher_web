@@ -5,6 +5,7 @@ import useShortcut from '@/hooks/useShortcut'
 
 import Drawer from '@/containers/tool/Drawer'
 import Subscriber from '@/containers/tool/Subscriber'
+import AuthWall from '@/containers/tool/AuthWall'
 
 import { logBuddha } from './logic'
 // import { Drawer } from './dynamic'
@@ -22,6 +23,7 @@ const Addon: FC = () => {
       {/* @ts-ignore */}
       <Drawer />
       <Subscriber />
+      <AuthWall />
       {/* @ts-ignore */}
       {/* @ts-ignore */}
       {/* @ts-ignore */}

@@ -1,22 +1,22 @@
 /*
- * Subscriber store
+ * AuthWall store
  */
 
 import { types as T, getParent, Instance } from 'mobx-state-tree'
-import { values } from 'ramda'
+// import { values } from 'ramda'
 
 import type { TCommunity, TRootStore } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { markStates, toJS } from '@/utils/mobx'
 
-import { BY } from './constant'
+// import { BY } from './constant'
 
 /* eslint-disable-next-line */
-const log = buildLog('S:Subscriber')
+const log = buildLog('S:AuthWall')
 
-const Subscriber = T.model('Subscriber', {
+const AuthWall = T.model('AuthWall', {
   visible: T.optional(T.boolean, false),
-  by: T.optional(T.enumeration(values(BY)), BY.EMAIL),
+  // by: T.optional(T.enumeration(values(BY)), BY.EMAIL),
 })
   .views((self) => ({
     get curCommunity(): TCommunity {
@@ -39,6 +39,6 @@ const Subscriber = T.model('Subscriber', {
     },
   }))
 
-export type TStore = Instance<typeof Subscriber>
+export type TStore = Instance<typeof AuthWall>
 
-export default Subscriber
+export default AuthWall

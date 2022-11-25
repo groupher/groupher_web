@@ -75,6 +75,7 @@ const EVENT = {
 
   // subscribe
   SUBSCRIBE: 'SUBSCRIBE',
+  AUTH: 'AUTH',
 }
 
 export default EVENT
