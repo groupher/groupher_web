@@ -2,15 +2,12 @@
 
 import { Fragment, memo, FC } from 'react'
 
-import { TYPE } from '@/constant'
+import { POST_LAYOUT, TYPE } from '@/constant'
 import type { TArticleEntries } from '@/spec'
 
 import PostItem from '@/widgets/PostItem'
-// import JobItem from '@/widgets/JobItem'
-// import BlogItem from '@/widgets/BlogItem'
-// import RadarItem from '@/widgets/RadarItem'
 
-// import MasonryCards from '@/widgets/MasonryCards'
+import MasonryCards from '@/widgets/MasonryCards'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 import { EmptyThread } from './dynamic'
 
@@ -40,24 +37,35 @@ const ArticleList: FC<TProps> = ({
     return <EmptyThread thread={thread} />
   }
 
-  switch (thread) {
-    default:
-      // common post
-      // return <h3>PostItems</h3>
-      return (
-        <Fragment>
-          {entries.map((entry) => (
-            <PostItem
-              key={entry.id}
-              article={entry}
-              c11n={c11n}
-              curCommunity={curCommunity}
-              layout={globalLayout.post}
-            />
-          ))}
-        </Fragment>
-      )
+  if (globalLayout.post === POST_LAYOUT.CARD) {
+    return (
+      <MasonryCards column={2}>
+        {entries.map((entry) => (
+          <PostItem
+            key={entry.id}
+            article={entry}
+            c11n={c11n}
+            curCommunity={curCommunity}
+            layout={globalLayout.post}
+          />
+        ))}
+      </MasonryCards>
+    )
   }
+
+  return (
+    <Fragment>
+      {entries.map((entry) => (
+        <PostItem
+          key={entry.id}
+          article={entry}
+          c11n={c11n}
+          curCommunity={curCommunity}
+          layout={globalLayout.post}
+        />
+      ))}
+    </Fragment>
+  )
 }
 
 export default memo(ArticleList)

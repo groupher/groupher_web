@@ -21,6 +21,7 @@ import {
   Block,
   Bar,
   Circle,
+  Box,
   Column,
   UpvoteIcon,
   CommentIcon,
@@ -81,14 +82,13 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </Block>
           <LayoutTitle $active={layout === POST_LAYOUT.UPVOTE_FIRST}>
             <CheckLabel
-              title="紧凑简洁"
+              title="投票列表"
               $active={layout === POST_LAYOUT.UPVOTE_FIRST}
               top={15}
               left={-15}
             />
           </LayoutTitle>
         </Layout>
-        <Space right={40} />
         <Layout onClick={() => edit(POST_LAYOUT.COMMENT_FIRST, 'postLayout')}>
           <Block $active={layout === POST_LAYOUT.COMMENT_FIRST}>
             <Row>
@@ -125,8 +125,32 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </Block>
           <LayoutTitle $active={layout === POST_LAYOUT.COMMENT_FIRST}>
             <CheckLabel
-              title="三段式"
+              title="评论列表"
               $active={layout === POST_LAYOUT.COMMENT_FIRST}
+              top={15}
+              left={-15}
+            />
+          </LayoutTitle>
+        </Layout>
+
+        <Layout onClick={() => edit(POST_LAYOUT.CARD, 'postLayout')}>
+          <Block $active={layout === POST_LAYOUT.CARD}>
+            <Row>
+              <Column grow>
+                <Box />
+                <Bar thin long={70} />
+              </Column>
+              <Space right={12} />
+              <Column grow>
+                <Box />
+                <Bar thin long={80} />
+              </Column>
+            </Row>
+          </Block>
+          <LayoutTitle $active={layout === POST_LAYOUT.CARD}>
+            <CheckLabel
+              title="卡片列表"
+              $active={layout === POST_LAYOUT.CARD}
               top={15}
               left={-15}
             />

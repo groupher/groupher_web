@@ -14,7 +14,16 @@ export { Bar, Circle } from '.'
 export const Wrapper = styled(BaseSection)``
 export const SelectWrapper = styled.div`
   ${css.flex('align-center')};
+  flex-wrap: wrap;
+  gap: 20px 30px;
   width: 100%;
+`
+export const Box = styled.div`
+  width: 100%;
+  height: 40px;
+  border-radius: 5px;
+  background: ${theme('article.digest')};
+  margin-bottom: 8px;
 `
 type TColumn = { center?: boolean; grow?: boolean }
 export const Column = styled.div<TColumn>`
@@ -39,6 +48,7 @@ export const Block = styled(BlockBase)`
   height: 94px;
   padding: 16px 15px;
 `
+
 export const UpvoteIcon = styled(UpvoteSVG)<{ size: number }>`
   ${({ size }) => css.size(size)};
   fill: ${theme('article.title')};

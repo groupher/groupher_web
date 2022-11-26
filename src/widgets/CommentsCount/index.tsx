@@ -5,11 +5,7 @@ import { SIZE } from '@/constant'
 
 import { Space } from '@/widgets/Common'
 
-import {
-  Wrapper,
-  CommentsIcon,
-  HighlightWrapper,
-} from './styles/comments_count'
+import { Wrapper, CommentsIcon, HighlightWrapper } from './styles'
 
 type TProps = {
   count: number

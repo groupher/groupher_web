@@ -12,7 +12,7 @@ import { buildLog } from '@/utils/logger'
 
 import CommentFirstLayout from './CommentFirstLayout'
 import UpvoteFirstLayout from './UpvoteFirstLayout'
-// import ListView from './ListView'
+import CardLayout from './CardLayout'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:PostItem:index')
@@ -37,14 +37,16 @@ const PostItem: FC<TProps> = ({
 }) => {
   return (
     <Fragment>
-      {layout === POST_LAYOUT.UPVOTE_FIRST ? (
+      {layout === POST_LAYOUT.UPVOTE_FIRST && (
         <UpvoteFirstLayout
           c11n={c11n}
           article={article}
           onAuthorSelect={onAuthorSelect}
           isMobilePreview={isMobilePreview}
         />
-      ) : (
+      )}
+
+      {layout === POST_LAYOUT.COMMENT_FIRST && (
         <CommentFirstLayout
           c11n={c11n}
           article={article}
@@ -53,6 +55,8 @@ const PostItem: FC<TProps> = ({
           isMobilePreview={isMobilePreview}
         />
       )}
+
+      {layout === POST_LAYOUT.CARD && <CardLayout article={article} />}
     </Fragment>
   )
 }

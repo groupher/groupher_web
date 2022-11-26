@@ -1,12 +1,12 @@
 import { FC, memo } from 'react'
 import TimeAgo from 'timeago-react'
 
+import { SIZE, UPVOTE_LAYOUT } from '@/constant'
 import type { TArticle } from '@/spec'
 import { upvoteOnArticleList } from '@/utils/helper'
-import { ICON } from '@/config'
 import Upvote from '@/widgets/Upvote'
 import DotDivider from '@/widgets/DotDivider'
-import IconText from '@/widgets/IconText'
+import CommentsCount from '@/widgets/CommentsCount'
 
 import { Wrapper, PublishWrapper, Bottom } from './styles/footer'
 
@@ -32,6 +32,7 @@ const Footer: FC<TProps> = ({ data }) => {
       </PublishWrapper>
       <Bottom>
         <Upvote
+          type={UPVOTE_LAYOUT.KANBAN}
           count={upvotesCount}
           avatarList={meta.latestUpvotedUsers}
           viewerHasUpvoted={viewerHasUpvoted}
@@ -39,9 +40,10 @@ const Footer: FC<TProps> = ({ data }) => {
             upvoteOnArticleList(data, viewerHasUpvoted)
           }
         />
-        <IconText iconSrc={`${ICON}/article/comment.svg`} size="medium">
-          {commentsCount}
-        </IconText>
+
+        {commentsCount !== 0 && (
+          <CommentsCount count={commentsCount} size={SIZE.MEDIUM} />
+        )}
       </Bottom>
     </Wrapper>
   )
