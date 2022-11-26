@@ -11,7 +11,7 @@ import ArticleImgWindow from '@/widgets/ArticleImgWindow'
 
 import Footer from './Footer'
 
-import { Wrapper, MobileDigest } from './styles'
+import { Wrapper, Title, MobileDigest } from './styles'
 
 export type TProps = {
   data: TArticle
@@ -24,6 +24,8 @@ const ArticleCard: FC<TProps> = ({ data, thread = THREAD.POST }) => {
   return (
     <Wrapper>
       <Br top={8} />
+      <Title>{data.title}</Title>
+
       {isMobile ? (
         <MobileDigest>{data.digest}</MobileDigest>
       ) : (

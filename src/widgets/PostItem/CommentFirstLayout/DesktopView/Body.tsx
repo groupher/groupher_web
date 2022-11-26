@@ -4,7 +4,7 @@ import { includes } from 'ramda'
 import TimeAgo from 'timeago-react'
 
 import type { TCommunity, TPost } from '@/spec'
-import { EVENT, ARTICLE_CAT } from '@/constant'
+import { EVENT } from '@/constant'
 import { send, changeToCommunity } from '@/utils/helper'
 
 import { Space, SpaceGrow } from '@/widgets/Common'
@@ -12,10 +12,10 @@ import { Space, SpaceGrow } from '@/widgets/Common'
 // import UserCard from '@/widgets/Cards/UserCard'
 import Tooltip from '@/widgets/Tooltip'
 import ArticleCatState from '@/widgets/ArticleCatState'
+import CommentsCount from '@/widgets/CommentsCount'
 
 import ActiveBadge from './ActiveBadge'
 import ViewsCount from '../../ViewsCount'
-import CommentsCount from '../../CommentsCount'
 
 import {
   Wrapper,
@@ -102,34 +102,20 @@ const Body: FC<TProps> = ({ article, curCommunity }) => {
         {article.digest}
       </Digest>
       <Footer>
-        {article.category !== ARTICLE_CAT.DEFAULT && (
-          <ArticleCatState
-            cat={article.category}
-            state={article.state}
-            left={-1}
-            right={20}
-          />
-        )}
+        <ArticleStateBadgeWrapper>
+          {article.id === '239' && <ArticleCatState cat="FEATURE" />}
+          {article.id === '231' && <ArticleCatState cat="BUG" />}
+          {article.id === '227' && <ArticleCatState cat="BUG" state="TODO" />}
+          {article.id === '228' && (
+            <ArticleCatState cat="FEATURE" state="WIP" />
+          )}
+          {article.id === '226' && (
+            <ArticleCatState cat="QUESTION" state="RESOLVE" />
+          )}
+          {article.id === '225' && <ArticleCatState cat="LOCK" state="LOCK" />}
+        </ArticleStateBadgeWrapper>
+        {includes(article.id, demoList) && <Space right={18} />}
 
-        {!includes(article.id, demoList) ? (
-          <ArticleCatState left={-1} />
-        ) : (
-          <ArticleStateBadgeWrapper>
-            {article.id === '239' && <ArticleCatState cat="FEATURE" />}
-            {article.id === '231' && <ArticleCatState cat="BUG" />}
-            {article.id === '227' && <ArticleCatState cat="BUG" state="TODO" />}
-            {article.id === '228' && (
-              <ArticleCatState cat="FEATURE" state="WIP" />
-            )}
-            {article.id === '226' && (
-              <ArticleCatState cat="QUESTION" state="RESOLVE" />
-            )}
-            {article.id === '225' && (
-              <ArticleCatState cat="LOCK" state="LOCK" />
-            )}
-          </ArticleStateBadgeWrapper>
-        )}
-        <Space right={18} />
         <ViewsCount count={article.views} />
         <Space right={18} />
         {article.commentsCount !== 0 && (

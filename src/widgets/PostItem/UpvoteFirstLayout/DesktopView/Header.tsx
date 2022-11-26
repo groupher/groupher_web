@@ -9,8 +9,7 @@ import { send } from '@/utils/helper'
 import Tooltip from '@/widgets/Tooltip'
 import { SpaceGrow, Space } from '@/widgets/Common'
 import TagsList from '@/widgets/TagsList'
-
-import CommentsCount from '../../CommentsCount'
+import CommentsCount from '@/widgets/CommentsCount'
 
 import {
   Wrapper,

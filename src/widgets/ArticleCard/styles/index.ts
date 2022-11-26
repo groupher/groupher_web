@@ -16,6 +16,18 @@ export const Wrapper = styled.div`
   padding: 20px;
   border: 1px solid;
   border-color: #f8f6f6;
+  margin-bottom: 15px;
+
+  &:hover {
+    border-color: ${theme('divider')};
+  }
+
+  transition: all 0.25s;
+`
+export const Title = styled.div`
+  color: ${theme('article.title')};
+  font-size: 16px;
+  font-weight: 500;
 `
 export const MobileDigest = styled.div`
   ${css.lineClamp(2)}

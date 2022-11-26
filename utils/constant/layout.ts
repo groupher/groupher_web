@@ -42,6 +42,7 @@ export const BANNER_NOTIFY_LAYOUT = {
 export const POST_LAYOUT = {
   UPVOTE_FIRST: 'upvote_first',
   COMMENT_FIRST: 'comment_first',
+  CARD: 'card',
 } as Record<TSnakeUpperCase<TPostLayout>, TPostLayout>
 
 export const CHANGELOG_LAYOUT = {
