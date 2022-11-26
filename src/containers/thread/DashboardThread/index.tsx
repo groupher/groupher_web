@@ -15,18 +15,17 @@ import type { TStore } from './store'
 import { Wrapper, MainWrapper } from './styles'
 import { useInit } from './logic' /* eslint-disable-next-line */
 
-// basic
-import BasicInfo from './BasicInfo'
-import UI from './UI'
-import Alias from './Alias'
-import Admin from './Admin'
-import Threads from './Threads'
-import Tags from './Tags'
-
-// integrates
-import Domain from './Domain'
-import ThirdPart from './ThirdPart'
-import Widgets from './Widgets'
+import {
+  BasicInfo,
+  UI,
+  Alias,
+  Admin,
+  Threads,
+  Tags,
+  Domain,
+  ThirdPart,
+  Widgets,
+} from './dynamic'
 
 // const log = buildLog('C:DashboardThread')
 
