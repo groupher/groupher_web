@@ -36,6 +36,9 @@ const Content: FC<TProps> = ({ type, attUser, extraInfo }) => {
       // @ts-ignore
       return <AccountEditor />
 
+    case DRAWER.G_EDITOR:
+      return <h2>G Editor</h2>
+
     case DRAWER.MAILS_VIEW:
       // @ts-ignore
       return <MailsViewer />

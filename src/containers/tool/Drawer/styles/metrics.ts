@@ -37,16 +37,22 @@ const VIEWER_TYPES = reduce(
  * viewer-mode is wider, for aritlce viewer, editor staff
  * normal-mode is for settings, user preview staff
  */
-export const isViewerMode = (type: string): boolean => {
-  return contains(type, VIEWER_TYPES) || type === TYPE.DRAWER.DASHBOARD_DESC
+export const isWideMode = (type: string): boolean => {
+  return (
+    contains(type, VIEWER_TYPES) ||
+    type === TYPE.DRAWER.DASHBOARD_DESC ||
+    type === TYPE.DRAWER.G_EDITOR
+  )
 }
 
 export const getDrawerWidth = (type: string): string => {
-  return isViewerMode(type) ? VIEWER_WIDTH : NORMAL_WIDTH
+  if (type === TYPE.DRAWER.G_EDITOR) return VIEWER_WIDTH
+
+  return isWideMode(type) ? VIEWER_WIDTH : NORMAL_WIDTH
 }
 
 export const getDrawerMinWidth = (type: string): string => {
-  return isViewerMode(type) ? '700px' : '450px'
+  return isWideMode(type) ? '700px' : '450px'
 }
 
 // export for modeline usage

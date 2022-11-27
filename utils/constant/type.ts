@@ -45,6 +45,7 @@ const TYPE = {
     MAILS_VIEW: 'MAILS_VIEW',
     DASHBOARD_DESC: 'DASHBOARD_DESC',
 
+    G_EDITOR: 'G_EDITOR',
     ...DRAWER_ARTICLE_CRUD,
 
     // c11n settings

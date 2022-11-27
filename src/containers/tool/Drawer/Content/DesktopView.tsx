@@ -6,7 +6,7 @@ import CustomScroller from '@/widgets/CustomScroller'
 import type { TExtraInfo } from '../spec'
 import Content from './Content'
 import { Wrapper } from '../styles/content'
-import { isViewerMode } from '../styles/metrics'
+import { isWideMode } from '../styles/metrics'
 
 type TProps = {
   visible: boolean
@@ -28,7 +28,7 @@ const DesktopView: FC<TProps> = ({ visible, type, attUser, extraInfo }) => {
     }
   }, [visible, ref])
 
-  if (isViewerMode(type)) {
+  if (isWideMode(type)) {
     return (
       <Wrapper>
         <CustomScroller

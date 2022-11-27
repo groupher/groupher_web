@@ -274,6 +274,10 @@ export const callSubscriber = (): void => {
   send(EVENT.SUBSCRIBE, {})
 }
 
+export const callGEditor = (): void => {
+  send(EVENT.DRAWER.OPEN, { type: TYPE.DRAWER.G_EDITOR })
+}
+
 export const callAuth = (): void => {
   send(EVENT.AUTH, {})
 }
