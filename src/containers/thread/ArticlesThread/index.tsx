@@ -5,6 +5,8 @@
  */
 
 import { FC } from 'react'
+import dynamic from 'next/dynamic'
+
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TResState } from '@/spec'
@@ -12,7 +14,10 @@ import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
 import PagedArticles from '@/widgets/PagedArticles'
-import FaqList from '@/widgets/FaqList'
+
+// import FaqList from '@/widgets/FaqList'
+// import TagNote from '@/widgets/TagNote'
+
 import ViewportTracker from '@/widgets/ViewportTracker'
 import ThreadSidebar from '@/containers/thread/ThreadSidebar'
 import ArticlesFilter from '@/widgets/ArticlesFilter'
@@ -32,6 +37,8 @@ import {
 
 /* eslint-disable-next-line */
 const log = buildLog('C:ArticlesThread')
+
+const FaqList = dynamic(() => import('@/widgets/FaqList'))
 
 type TProps = {
   articlesThread?: TStore
@@ -76,6 +83,8 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
             />
           </FilterWrapper>
         )}
+
+        {/* <TagNote /> */}
 
         {mode === 'default' && (
           <PagedArticles
