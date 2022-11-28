@@ -16,7 +16,7 @@ import { bond } from '@/utils/mobx'
 import PagedArticles from '@/widgets/PagedArticles'
 
 // import FaqList from '@/widgets/FaqList'
-// import TagNote from '@/widgets/TagNote'
+import TagNote from '@/widgets/TagNote'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
 import ThreadSidebar from '@/containers/thread/ThreadSidebar'
@@ -84,7 +84,7 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
           </FilterWrapper>
         )}
 
-        {/* <TagNote /> */}
+        <TagNote />
 
         {mode === 'default' && (
           <PagedArticles

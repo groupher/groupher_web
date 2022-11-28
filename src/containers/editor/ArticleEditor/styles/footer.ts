@@ -7,19 +7,14 @@ export const Wrapper = styled.div`
   color: ${theme('article.digest')};
   padding-left: 5px;
 `
-export const ArticleFooter = styled.div`
-  ${css.flex('align-center', 'justify-between')};
-  width: 100%;
-  border-bottom: 3px solid;
-  border-bottom-color: #1a3a40;
-  margin-bottom: 28px;
-  padding-left: 27px;
-  padding-right: 34px;
-  padding-bottom: 20px;
-`
+
 export const PublishFooter = styled.div`
+  border-top: 3px solid;
+  border-top-color: ${theme('divider')};
+  margin-top: 28px;
+  padding-top: 20px;
   ${css.flex('align-center', 'justify-between')};
   width: 100%;
-  padding-left: 26px;
+  padding-left: 20px;
   padding-right: 35px;
 `

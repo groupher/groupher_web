@@ -19,8 +19,6 @@ export const EditorWrapper = styled(EditWrapperBase).attrs(() => ({
 }))`
   color: ${theme('article.title')};
   min-height: ${({ type }) => getMinHeight(type)};
-  border-bottom: 3px solid;
-  border-bottom-color: ${theme('divider')};
   // media therdhold is 651
   width: 100%;
   padding-top: 10px;

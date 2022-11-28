@@ -11,7 +11,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   margin-top: 40px;
 `
 export const InnerWrapper = styled.div<{ metric: TMetric }>`
-  ${css.flex('justify-between')};
+  ${css.flex('justify-center')};
   width: 100%;
   margin-top: 30px;
   ${({ metric }) => css.fitContentWidth(metric)};

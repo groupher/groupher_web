@@ -4,6 +4,8 @@ import { TYPE } from '@/constant'
 // import ModeLineMenu from '@/containers/unit/ModeLineMenu'
 import type { TUser } from '@/spec'
 
+import ArticleEditor from '@/containers/editor/ArticleEditor'
+
 import type { TExtraInfo } from '../spec'
 // import PlaceHolder from './PlaceHolder'
 
@@ -37,7 +39,7 @@ const Content: FC<TProps> = ({ type, attUser, extraInfo }) => {
       return <AccountEditor />
 
     case DRAWER.G_EDITOR:
-      return <h2>G Editor</h2>
+      return <ArticleEditor />
 
     case DRAWER.MAILS_VIEW:
       // @ts-ignore

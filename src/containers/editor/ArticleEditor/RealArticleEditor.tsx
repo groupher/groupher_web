@@ -11,18 +11,17 @@ import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
 import ArchiveAlert from '@/widgets/ArchiveAlert'
-import IllegalWarning from '@/widgets/IllegalWarning'
-
+import TagsList from '@/widgets/TagsList'
 import NoticeBar from '@/widgets/NoticeBar'
+
 import CommunityTagSetter from '@/containers/tool/CommunityTagSetter'
 import RichEditor from '@/containers/editor/RichEditor'
-import CommunityBadgeSelector from '@/widgets/CommunityBadgeSelector'
 
 import TitleInput from './TitleInput'
 import AddOn from './AddOn'
 import Footer from './Footer'
 
-import PublishRules from './PublishRules'
+// import PublishRules from './PublishRules'
 
 // import Settings from './Settings'
 
@@ -81,6 +80,15 @@ const ArticleEditorContainer: FC<TProps> = ({
             <ArchiveAlert date={archivedAt} top={12} bottom={20} left={25} />
           )}
           <TitleInput title={title} placeholder={texts.holder.title} />
+
+          <TagsList
+            items={tagsData}
+            size="medium"
+            community={communityData}
+            thread={thread}
+            withSetter={mode === 'publish'}
+          />
+
           {initEditor && (
             /* @ts-ignore */
             <RichEditor
@@ -91,28 +99,11 @@ const ArticleEditorContainer: FC<TProps> = ({
             />
           )}
           <Footer
-            thread={thread}
             mode={mode as TEditMode}
-            tags={tagsData}
-            community={communityData}
             editData={editData}
             submitState={submitState}
           />
         </ContentWrapper>
-        <div>
-          <CommunityBadgeSelector
-            community={communityData}
-            mode={mode as TEditMode}
-          />
-
-          {mode === 'update' && meta && !meta.isLegal && (
-            <IllegalWarning
-              illegalReason={meta.illegalReason}
-              illegalWords={meta.illegalWords}
-            />
-          )}
-          <PublishRules thread={thread} />
-        </div>
       </InnerWrapper>
     </Wrapper>
   )

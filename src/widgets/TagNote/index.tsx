@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
 /*
  *
  * TagNote
@@ -9,7 +10,7 @@ import { FC, memo } from 'react'
 import { buildLog } from '@/utils/logger'
 import { SpaceGrow } from '@/widgets/Common'
 
-import { Wrapper, Header, TagDot, Title, PinIcon } from './styles'
+import { Wrapper, Header, Desc, TagDot, Title, InfoIcon } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('c:TagNote:index')
@@ -23,14 +24,14 @@ const TagNote: FC<TProps> = ({ testid = 'tag-note' }) => {
     <Wrapper testid={testid}>
       <Header>
         <TagDot />
-        <Title>Got a question?</Title>
+        <Title>Showcase</Title>
         <SpaceGrow />
-        <PinIcon />
+        <InfoIcon />
       </Header>
-      <p>
-        You can ask for help from fellow community members here. And pay it
-        forward to other members by sharing your own expertise if you can.
-      </p>
+      <Desc>
+        本标签下收集使用过程中的截图或者主题，欢迎分享到这个标签下，开发团队会定期像参与讨论者发送福利，欢迎参与
+        🙏
+      </Desc>
     </Wrapper>
   )
 }

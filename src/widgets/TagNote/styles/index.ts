@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
 
-import PinSVG from '@/icons/Pin'
+import InfoSVG from '@/icons/Info'
 // import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 
@@ -20,6 +20,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   padding: 20px 0;
   padding-top: 15px;
   margin-bottom: 25px;
+  margin-top: -8px;
 `
 export const Header = styled.div`
   ${css.flex('align-center')};
@@ -29,16 +30,21 @@ export const Header = styled.div`
 export const Title = styled.h2`
   color: ${theme('article.title')};
 `
+export const Desc = styled.p`
+  line-height: 1.75em;
+  font-size: 13px;
+  color: ${theme('article.digest')};
+`
 export const TagDot = styled.div`
   ${css.circle(10)};
   background: #849acd;
   margin-right: 10px;
 `
-export const PinIcon = styled(PinSVG)`
-  ${css.size(15)};
+export const InfoIcon = styled(InfoSVG)`
+  ${css.size(14)};
   fill: ${theme('article.digest')};
   margin-right: 2px;
-  opacity: 0.8;
+  opacity: 0.7;
 
-  transform: rotate(45deg);
+  /* transform: rotate(45deg); */
 `
