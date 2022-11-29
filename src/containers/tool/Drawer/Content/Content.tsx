@@ -4,8 +4,6 @@ import { TYPE } from '@/constant'
 // import ModeLineMenu from '@/containers/unit/ModeLineMenu'
 import type { TUser } from '@/spec'
 
-import ArticleEditor from '@/containers/editor/ArticleEditor'
-
 import type { TExtraInfo } from '../spec'
 // import PlaceHolder from './PlaceHolder'
 
@@ -20,6 +18,7 @@ import {
   // userlister
   UserLister,
   DashboardDesc,
+  ArticleEditor,
 } from '../dynamics'
 
 type TProps = {

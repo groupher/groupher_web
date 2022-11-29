@@ -33,6 +33,7 @@ type TProps = {
   suffixActive?: boolean
   disabled?: boolean
   autoFocus?: boolean
+  disableEnter?: boolean
 
   onFocus?: (e) => void | null
   onChange?: (e) => void | null
@@ -50,6 +51,7 @@ const Input: FC<TProps> = ({
   suffixActive = false,
   testid = 'input',
   autoFocus = false,
+  disableEnter = false,
   ...restProps
 }) => {
   const handleOnChange = useCallback((e) => onChange && onChange(e), [onChange])
@@ -87,7 +89,13 @@ const Input: FC<TProps> = ({
       </SuffixWrapper>
     </Wrapper>
   ) : (
-    <Textarea testid={testid} onChange={onChange} {...restProps} />
+    <Textarea
+      testid={testid}
+      onChange={onChange}
+      autoFocus={autoFocus}
+      disableEnter={disableEnter}
+      {...restProps}
+    />
   )
 }
 

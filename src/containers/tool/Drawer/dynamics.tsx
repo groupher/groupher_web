@@ -70,3 +70,10 @@ export const WallpaperEditor = dynamic(
 export const DashboardDesc = dynamic(() => import('@/widgets/DashboardDesc'), {
   loading: () => <CommonLoading />,
 })
+
+export const ArticleEditor = dynamic(
+  () => import('@/containers/editor/ArticleEditor'),
+  {
+    loading: () => <CommonLoading />,
+  },
+)
