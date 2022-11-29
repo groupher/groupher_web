@@ -108,6 +108,7 @@ export type {
   TComment,
   TPagedComments,
   TArticleFilter,
+  TArticleCatMode,
   TCopyright,
   TUpvoteLayout,
   TBrandLayout,

@@ -1,6 +1,7 @@
 import type { TArticleCat, TArticleState } from '@/spec'
 
 export const ARTICLE_CAT = {
+  ALL: 'ALL',
   FEATURE: 'FEATURE',
   BUG: 'BUG',
   QUESTION: 'QUESTION',

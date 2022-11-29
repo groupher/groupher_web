@@ -12,7 +12,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   ${css.flex('justify-between')};
   flex-wrap: wrap;
 
-  border-bottom: 2px solid;
+  border-bottom: 1px solid;
   border-color: ${theme('divider')};
   /* border-radius: 5px; */
   /* box-shadow: rgb(0 0 0 / 7%) 0px 0px 24px; */
@@ -36,9 +36,9 @@ export const Desc = styled.p`
   color: ${theme('article.digest')};
 `
 export const TagDot = styled.div`
-  ${css.circle(10)};
+  ${css.circle(12)};
   background: #849acd;
-  margin-right: 10px;
+  margin-right: 12px;
 `
 export const InfoIcon = styled(InfoSVG)`
   ${css.size(14)};

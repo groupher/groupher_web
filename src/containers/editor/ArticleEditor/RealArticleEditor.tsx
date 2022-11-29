@@ -10,9 +10,11 @@ import { METRIC } from '@/constant'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
+import { Row, Space } from '@/widgets/Common'
 import ArchiveAlert from '@/widgets/ArchiveAlert'
 import TagsList from '@/widgets/TagsList'
 import NoticeBar from '@/widgets/NoticeBar'
+import CatSelector from '@/widgets/CatSelector'
 
 import CommunityTagSetter from '@/containers/tool/CommunityTagSetter'
 import RichEditor from '@/containers/editor/RichEditor'
@@ -26,7 +28,7 @@ import Footer from './Footer'
 // import Settings from './Settings'
 
 import type { TProps } from './index'
-import { Wrapper, InnerWrapper, ContentWrapper } from './styles'
+import { Wrapper, InnerWrapper, ContentWrapper, FuncRow } from './styles'
 import { useInit, editOnChange, changeCommunity, onTagSelect } from './logic'
 
 /* eslint-disable-next-line */
@@ -81,13 +83,18 @@ const ArticleEditorContainer: FC<TProps> = ({
           )}
           <TitleInput title={title} placeholder={texts.holder.title} />
 
-          <TagsList
-            items={tagsData}
-            size="medium"
-            community={communityData}
-            thread={thread}
-            withSetter={mode === 'publish'}
-          />
+          <FuncRow>
+            <TagsList
+              items={tagsData}
+              size="medium"
+              community={communityData}
+              thread={thread}
+              withSetter={mode === 'publish'}
+            />
+            <Space left={20} />
+
+            <CatSelector onSelect={log} activeFilter={{}} mode="full" />
+          </FuncRow>
 
           {initEditor && (
             /* @ts-ignore */

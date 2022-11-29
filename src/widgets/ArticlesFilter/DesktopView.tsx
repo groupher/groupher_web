@@ -14,9 +14,10 @@ import { buildLog } from '@/utils/logger'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 import { SpaceGrow } from '@/widgets/Common'
 
+import CatSelector from '@/widgets/CatSelector'
+
 import SearchBox from './SearchBox'
 import FilterButton from './FilterButton'
-import CatFilterButton from './CatFilterButton'
 import SelectedFilters from './SelectedFilters'
 // import FilterResult from './FilterResult'
 
@@ -63,11 +64,9 @@ const ArticlesFilter: FC<TProps> = ({
             />
             <SelectedFilters onSelect={onSelect} activeFilter={activeFilter} />
           </MainFilterWrapper>
-          <CatFilterButton
-            thread={THREAD.POST}
-            onSelect={onSelect}
-            activeFilter={activeFilter}
-          />
+
+          <CatSelector onSelect={onSelect} activeFilter={activeFilter} />
+
           <SpaceGrow />
           {resState === TYPE.RES_STATE.LOADING && (
             <LavaLampLoading top={2} right={28} />
