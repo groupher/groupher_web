@@ -7,6 +7,7 @@ export const ARTICLE_CAT = {
   QUESTION: 'QUESTION',
   LOCK: 'LOCK',
   DEFAULT: 'DEFAULT',
+  OTHER: 'OTHER',
 } as Record<Uppercase<TArticleCat>, Uppercase<TArticleCat>>
 
 export const ARTICLE_STATE = {

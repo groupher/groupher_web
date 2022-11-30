@@ -18,8 +18,8 @@ const iconBase = `
   ${css.size(14)};
   margin-right: 12px;
   opacity: 0.8;
-
 `
+
 export const AllIcon = styled(AllSVG)`
   ${iconBase};
   ${css.size(16)};
@@ -55,7 +55,16 @@ export const OtherIcon = styled(OtherSVG)`
 `
 export const SelectItem = styled(SelectItemBase)`
   ${css.flex('align-center')};
-  margin-bottom: 2px;
+  padding: 4px 5px;
+  border-radius: 2px;
 `
+
+export const Icon = {
+  ALL: AllIcon,
+  FEATURE: LightIcon,
+  BUG: BugIcon,
+  QUESTION: QuestionIcon,
+  OTHER: OtherIcon,
+}
 
 export const Title = styled.div``

@@ -13,8 +13,6 @@ import {
   DotSign,
   Tag,
   Title,
-  RawWrapper,
-  Raw,
 } from '../styles/desktop_view/tag_item'
 
 type TProps = {
@@ -33,10 +31,10 @@ const TagItem: FC<TProps> = ({ tag, active, onSelect }) => {
       )}
       <Tag $active={active} color={tag.color} onClick={() => onSelect(tag)}>
         <Title>{cutRest(Trans(tag.title), 10)}</Title>
-        <RawWrapper $active={active}>
-          {/* <DotDivider radius={2} space={6} /> */}
+        {/* <RawWrapper $active={active}>
+          <DotDivider radius={2} space={6} />
           <Raw>{tag.raw}</Raw>
-        </RawWrapper>
+        </RawWrapper> */}
       </Tag>
       {/* <SpaceGrow />
 

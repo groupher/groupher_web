@@ -12,11 +12,10 @@ import { bond } from '@/utils/mobx'
 
 import { Space } from '@/widgets/Common'
 import ArchiveAlert from '@/widgets/ArchiveAlert'
-import TagsList from '@/widgets/TagsList'
 import NoticeBar from '@/widgets/NoticeBar'
 import CatSelector from '@/widgets/CatSelector'
+import TagSelector from '@/widgets/TagSelector'
 
-import CommunityTagSetter from '@/containers/tool/CommunityTagSetter'
 import RichEditor from '@/containers/editor/RichEditor'
 
 import type { TStore } from './store'
@@ -48,11 +47,9 @@ const ArticleEditorContainer: FC<TProps> = ({
     isArchived,
     archivedAt,
     mode,
-    communityData,
     submitState,
-    tagsData,
+    groupedTags,
     texts,
-    thread,
     editData,
     viewingArticle,
     allowEdit,
@@ -66,13 +63,13 @@ const ArticleEditorContainer: FC<TProps> = ({
   return (
     <Wrapper testid={testid}>
       <InnerWrapper metric={metric}>
-        {communityData.id && (
+        {/* {communityData.id && (
           <CommunityTagSetter
             selectedCommunity={communityData}
             onCommunitySelect={changeCommunity}
             onTagSelect={onTagSelect}
           />
-        )}
+        )} */}
         <ContentWrapper>
           {!allowEdit && (
             <NoticeBar
@@ -88,16 +85,9 @@ const ArticleEditorContainer: FC<TProps> = ({
           <TitleInput title={title} placeholder={texts.holder.title} />
 
           <FuncRow>
-            <TagsList
-              items={tagsData}
-              size="medium"
-              community={communityData}
-              thread={thread}
-              withSetter={mode === 'publish'}
-            />
+            <TagSelector groupedTags={groupedTags} />
             <Space left={20} />
-
-            <CatSelector onSelect={log} activeFilter={{}} mode="full" />
+            <CatSelector mode="full" />
           </FuncRow>
 
           {initEditor && (

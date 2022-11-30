@@ -202,6 +202,7 @@ export type TArticleCat =
   | 'QUESTION'
   | 'LOCK'
   | 'DEFAULT'
+  | 'OTHER'
 
 export type TArticleState =
   | 'TODO'

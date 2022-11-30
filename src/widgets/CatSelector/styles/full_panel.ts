@@ -48,6 +48,13 @@ export const OtherIcon = styled(OtherSVG)`
   fill: ${theme('article.digest')};
 `
 
+export const Icon = {
+  FEATURE: LightIcon,
+  BUG: BugIcon,
+  QUESTION: QuestionIcon,
+  OTHER: OtherIcon,
+}
+
 export const RightPart = styled.div``
 export const Title = styled.div`
   font-size: 14px;

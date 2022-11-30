@@ -1,72 +1,58 @@
 import { FC, memo } from 'react'
 
-import { FILTER } from '@/constant'
+import { ARTICLE_CAT } from '@/constant'
 
-import type { TArticleFilter } from '@/spec'
+import type { TArticleCat } from '@/spec'
+import { Trans } from '@/utils/i18n'
 
 import {
   Wrapper,
   SelectItem,
-  LightIcon,
-  BugIcon,
-  QuestionIcon,
-  OtherIcon,
+  Icon,
   RightPart,
   Title,
   Desc,
 } from './styles/full_panel'
 
 type TProps = {
-  activeFilter: TArticleFilter
-  onSelect: (filter: TArticleFilter) => void
+  activeCat: TArticleCat
+  onSelect: (cat: TArticleCat) => void
 }
 
-const FullPanel: FC<TProps> = ({ activeFilter, onSelect }) => {
+const DESC = {
+  [ARTICLE_CAT.FEATURE]: '提交需求，功能建议等',
+  [ARTICLE_CAT.BUG]: '吐槽使用中遇到的不足，缺陷等',
+  [ARTICLE_CAT.QUESTION]: '问题求助，使用疑惑等',
+  [ARTICLE_CAT.OTHER]: '一般讨论，其他话题',
+}
+
+const FullPanel: FC<TProps> = ({ activeCat, onSelect }) => {
+  const OPTIONS = [
+    ARTICLE_CAT.FEATURE,
+    ARTICLE_CAT.BUG,
+    ARTICLE_CAT.QUESTION,
+    ARTICLE_CAT.OTHER,
+  ]
+
   return (
     <Wrapper>
-      <SelectItem
-        active={activeFilter.length === FILTER.LEAST_WORDS}
-        onClick={() => onSelect({ length: FILTER.LEAST_WORDS })}
-      >
-        <LightIcon />
-        <RightPart>
-          <Title>功能需求</Title>
-          <Desc>提交需求，功能建议等</Desc>
-        </RightPart>
-      </SelectItem>
+      {OPTIONS.map((cat) => {
+        const OptIcon = Icon[cat]
 
-      <SelectItem
-        active={activeFilter.length === FILTER.LEAST_WORDS}
-        onClick={() => onSelect({ length: FILTER.LEAST_WORDS })}
-      >
-        <BugIcon />
-        <RightPart>
-          <Title>Bug</Title>
-          <Desc>吐槽使用中遇到的不足，缺陷等</Desc>
-        </RightPart>
-      </SelectItem>
-
-      <SelectItem
-        active={activeFilter.length === FILTER.LEAST_WORDS}
-        onClick={() => onSelect({ length: FILTER.LEAST_WORDS })}
-      >
-        <QuestionIcon />
-        <RightPart>
-          <Title>求助/提问</Title>
-          <Desc>问题求助，使用疑惑等</Desc>
-        </RightPart>
-      </SelectItem>
-
-      <SelectItem
-        active={activeFilter.length === FILTER.LEAST_WORDS}
-        onClick={() => onSelect({ length: FILTER.LEAST_WORDS })}
-      >
-        <OtherIcon />
-        <RightPart>
-          <Title>其它</Title>
-          <Desc>一般讨论，其他话题</Desc>
-        </RightPart>
-      </SelectItem>
+        return (
+          <SelectItem
+            key={cat}
+            active={activeCat === cat}
+            onClick={() => onSelect(cat)}
+          >
+            <OptIcon />
+            <RightPart>
+              <Title>{Trans(cat)}</Title>
+              <Desc>{DESC[cat]}</Desc>
+            </RightPart>
+          </SelectItem>
+        )
+      })}
     </Wrapper>
   )
 }

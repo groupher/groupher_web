@@ -65,7 +65,7 @@ const ArticlesFilter: FC<TProps> = ({
             <SelectedFilters onSelect={onSelect} activeFilter={activeFilter} />
           </MainFilterWrapper>
 
-          <CatSelector onSelect={onSelect} activeFilter={activeFilter} />
+          <CatSelector />
 
           <SpaceGrow />
           {resState === TYPE.RES_STATE.LOADING && (

@@ -3,12 +3,10 @@ import styled from 'styled-components'
 import type { TActive } from '@/spec'
 import css, { theme } from '@/utils/css'
 
-export const FilterWrapper = styled.div`
+export const Wrapper = styled.div`
   ${css.flex('align-center')};
   color: ${theme('article.digest')};
   font-size: 13px;
-`
-export const FullWrapper = styled(FilterWrapper)`
   border: 2px solid;
   border-color: ${theme('divider')};
   padding: 0 5px;
@@ -22,14 +20,10 @@ export const Label = styled.div`
 
 export const SelectItem = styled.div<TActive>`
   ${css.flex('align-start')};
-  padding: 10px 6px;
-  width: 100%;
-  border-radius: 8px;
-  margin-bottom: 2px;
-  /* border: 1px solid; */
-  /* border-color: ${({ active }) =>
-    active ? theme('divider') : 'transparent'};  */
-
+  padding: 2px 8px;
+  width: auto;
+  border-radius: 3px;
+  margin-bottom: 6px;
   background-color: ${({ active }) =>
     active ? theme('textBadge') : 'transparent'}; // to-theme
   color: ${({ active }) =>
@@ -39,8 +33,7 @@ export const SelectItem = styled.div<TActive>`
 
   &:hover {
     cursor: pointer;
-    background-color: ${({ active }) =>
-      active ? theme('textBadge') : theme('hoverBg')}; // to-theme
     color: ${theme('article.title')};
+    background-color: ${theme('hoverBg')};
   }
 `

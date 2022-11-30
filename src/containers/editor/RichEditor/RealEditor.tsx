@@ -47,7 +47,7 @@ const RichEditorContainer: FC<TProps> = ({
   return (
     <Wrapper>
       <InnerWrapper type={type}>
-        {type !== 'comment' && <Options addon={addon} />}
+        {/* {type !== 'comment' && <Options addon={addon} />} */}
         <EditorWrapper className="rich-editor" type={type}>
           <RichEditor
             onData={onChange}
