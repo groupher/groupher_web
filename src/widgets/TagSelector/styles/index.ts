@@ -3,12 +3,13 @@ import styled from 'styled-components'
 import type { TActive } from '@/spec'
 import css, { theme } from '@/utils/css'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ menuOpen: boolean }>`
   ${css.flex('align-center')};
   color: ${theme('article.digest')};
+  border: ${({ menuOpen }) => (menuOpen ? '1px solid' : '2px solid')};
+  border-color: ${({ menuOpen }) =>
+    menuOpen ? theme('article.digest') : theme('divider')};
   font-size: 13px;
-  border: 2px solid;
-  border-color: ${theme('divider')};
   padding: 0 5px;
   padding-left: 15px;
   border-radius: 10px;

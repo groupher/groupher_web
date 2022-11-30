@@ -17,6 +17,7 @@ type TProps = {
 
 const TagSelector: FC<TProps> = ({ groupedTags }) => {
   const [show, setShow] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const [activeTag, setActiveTag] = useState({ raw: '' })
 
   const handleSelect = (tag: TTag) => {
@@ -24,12 +25,18 @@ const TagSelector: FC<TProps> = ({ groupedTags }) => {
   }
 
   return (
-    <Wrapper>
+    <Wrapper menuOpen={menuOpen}>
       <Label>标签</Label>
       <Tooltip
         placement="bottom-start"
         trigger="click"
-        onShow={() => setShow(true)}
+        onShow={() => {
+          setShow(true)
+          setMenuOpen(true)
+        }}
+        onHide={() => {
+          setMenuOpen(false)
+        }}
         offset={[-42, 5]}
         content={
           <Fragment>
