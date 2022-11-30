@@ -20,6 +20,8 @@ type TProps = {
 
 const CatSelector: FC<TProps> = ({ mode = 'filter' }) => {
   const [show, setShow] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+
   const [activeCat, setActiveCat] = useState<TArticleCat>(ARTICLE_CAT.FEATURE)
 
   const Wrapper = mode === 'filter' ? FilterWrapper : FullWrapper
@@ -31,11 +33,18 @@ const CatSelector: FC<TProps> = ({ mode = 'filter' }) => {
   const offset = mode === 'filter' ? [-30, 5] : [-44, 5]
 
   return (
-    <Wrapper>
+    <Wrapper menuOpen={menuOpen}>
       <Label>类别</Label>
       <Tooltip
         placement="bottom-start"
-        onShow={() => setShow(true)}
+        trigger="click"
+        onShow={() => {
+          setShow(true)
+          setMenuOpen(true)
+        }}
+        onHide={() => {
+          setMenuOpen(false)
+        }}
         offset={offset as [number, number]}
         content={
           <Fragment>

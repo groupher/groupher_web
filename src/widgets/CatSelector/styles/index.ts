@@ -3,14 +3,15 @@ import styled from 'styled-components'
 import type { TActive } from '@/spec'
 import css, { theme } from '@/utils/css'
 
-export const FilterWrapper = styled.div`
+export const FilterWrapper = styled.div<{ menuOpen?: boolean }>`
   ${css.flex('align-center')};
   color: ${theme('article.digest')};
   font-size: 13px;
 `
 export const FullWrapper = styled(FilterWrapper)`
-  border: 2px solid;
-  border-color: ${theme('divider')};
+  border: ${({ menuOpen }) => (menuOpen ? '1px solid' : '2px solid')};
+  border-color: ${({ menuOpen }) =>
+    menuOpen ? theme('article.digest') : theme('divider')};
   padding: 0 5px;
   padding-left: 15px;
   border-radius: 10px;
