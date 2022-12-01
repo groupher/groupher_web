@@ -6,13 +6,20 @@ import css, { theme } from '@/utils/css'
 export const Wrapper = styled.div<{ menuOpen: boolean }>`
   ${css.flex('align-center')};
   color: ${theme('article.digest')};
-  border: ${({ menuOpen }) => (menuOpen ? '1px solid' : '2px solid')};
+  border: 1px solid;
   border-color: ${({ menuOpen }) =>
-    menuOpen ? theme('article.digest') : theme('divider')};
+    menuOpen ? theme('article.digest') : theme('button.ghostBorder')};
   font-size: 13px;
   padding: 0 5px;
   padding-left: 15px;
   border-radius: 10px;
+
+  &:hover {
+    border-color: ${theme('article.digest')};
+    cursor: pointer;
+  }
+
+  transition: all 0.2s;
 `
 
 export const Label = styled.div`
@@ -33,7 +40,6 @@ export const SelectItem = styled.div<TActive>`
   position: relative;
 
   &:hover {
-    cursor: pointer;
     color: ${theme('article.title')};
     background-color: ${theme('hoverBg')};
   }

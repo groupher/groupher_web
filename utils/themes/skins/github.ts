@@ -244,6 +244,7 @@ const github = {
     hoverBg: lighten(primaryColor, 10),
     activeBg: darken(primaryColor, 5),
     clicked: primaryColor,
+    ghostBorder: '#d5d5d5',
   },
   navigator: {
     activeBottom: primaryColor,

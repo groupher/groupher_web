@@ -42,9 +42,7 @@ const CatSelector: FC<TProps> = ({ mode = 'filter' }) => {
           setShow(true)
           setMenuOpen(true)
         }}
-        onHide={() => {
-          setMenuOpen(false)
-        }}
+        onHide={() => setMenuOpen(false)}
         offset={offset as [number, number]}
         content={
           <Fragment>

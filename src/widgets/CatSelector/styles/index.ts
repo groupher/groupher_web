@@ -9,12 +9,20 @@ export const FilterWrapper = styled.div<{ menuOpen?: boolean }>`
   font-size: 13px;
 `
 export const FullWrapper = styled(FilterWrapper)`
-  border: ${({ menuOpen }) => (menuOpen ? '1px solid' : '2px solid')};
+  border: 1px solid;
   border-color: ${({ menuOpen }) =>
-    menuOpen ? theme('article.digest') : theme('divider')};
+    menuOpen ? theme('article.digest') : theme('button.ghostBorder')};
+
   padding: 0 5px;
   padding-left: 15px;
   border-radius: 10px;
+
+  &:hover {
+    border-color: ${theme('article.digest')};
+    cursor: pointer;
+  }
+
+  transition: all 0.2s;
 `
 
 export const Label = styled.div`
