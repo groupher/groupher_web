@@ -10,7 +10,7 @@ import {
   getMobileContentHeight,
   getContentLinearGradient,
   getDim,
-  isViewerMode,
+  isWideMode,
   getDrawerWidth,
   getDrawerMinWidth,
 } from './metrics'
@@ -62,8 +62,8 @@ export const DrawerWrapper = styled.div.attrs(
   ${css.flex()};
   position: fixed;
   right: ${({ rightOffset, type }) =>
-    isViewerMode(type) ? rightOffset : pixelAdd(rightOffset, -25)};
-  top: ${({ type }) => (isViewerMode(type) ? 0 : '25px')};
+    isWideMode(type) ? rightOffset : pixelAdd(rightOffset, -25)};
+  top: ${({ type }) => (isWideMode(type) ? 0 : '25px')};
 
   color: ${theme('drawer.font')};
   box-sizing: border-box;
@@ -103,11 +103,10 @@ export const DrawerContent = styled.div<{ type: string }>`
   /* 60 is the width of addon */
   width: calc(100% - 60px);
   background-color: ${theme('drawer.bg')};
-  height: ${({ type }) =>
-    isViewerMode(type) ? '100vh' : 'calc(100vh - 50px)'};
-  border-radius: ${({ type }) => (isViewerMode(type) ? 0 : '10px')};
+  height: ${({ type }) => (isWideMode(type) ? '100vh' : 'calc(100vh - 50px)')};
+  border-radius: ${({ type }) => (isWideMode(type) ? 0 : '10px')};
   box-shadow: ${({ type }) =>
-    isViewerMode(type) ? theme('drawer.shadow') : theme('drawer.shadowLite')};
+    isWideMode(type) ? theme('drawer.shadow') : theme('drawer.shadowLite')};
 `
 type TDrawerMobile = { options: Record<string, unknown>; bgColor: string }
 export const DrawerMobileContent = styled.div<TDrawerMobile>`

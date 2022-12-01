@@ -10,6 +10,8 @@ import { DonwWrapper, DoneIcon, DoneHint } from './styles/submit_button'
 /* eslint-disable-next-line */
 const log = buildLog('w:Buttons:SubmitButton')
 
+const space = 22
+
 type TProps = {
   submitState?: TSubmitState
 
@@ -44,6 +46,7 @@ const TheButton: FC<TProps> = ({
       loading={publishing}
       onClick={() => onPublish()}
       size="small"
+      space={space}
       disabled={!isReady}
     >
       {okText}
@@ -70,7 +73,7 @@ const SubmitButton: FC<TProps> = ({
 
   if (mode === 'update' && !isArticleAuthor) {
     return (
-      <Button size="small" disabled>
+      <Button size="small" disabled space={space}>
         无权限
       </Button>
     )
@@ -78,7 +81,7 @@ const SubmitButton: FC<TProps> = ({
 
   if (isArchived) {
     return (
-      <Button size="small" disabled>
+      <Button size="small" disabled space={space}>
         已存档
       </Button>
     )

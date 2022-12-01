@@ -1,8 +1,9 @@
 import { FC, memo } from 'react'
 
-import type { TProps as TArticleStateBadgeProps } from './index'
-
 import { ARTICLE_STATE, ARTICLE_CAT } from '@/constant'
+import { Trans } from '@/utils/i18n'
+
+import type { TProps as TArticleStateBadgeProps } from './index'
 
 import {
   Wrapper,
@@ -22,7 +23,7 @@ const Label: FC<TProps> = ({ cat, state, kanbanLayout, smaller }) => {
     case ARTICLE_CAT.FEATURE: {
       return (
         <Wrapper kanbanLayout={kanbanLayout} state={state} smaller={smaller}>
-          功能建议
+          {Trans(ARTICLE_CAT.FEATURE)}
         </Wrapper>
       )
     }
@@ -30,23 +31,39 @@ const Label: FC<TProps> = ({ cat, state, kanbanLayout, smaller }) => {
     case ARTICLE_CAT.BUG: {
       return (
         <BugWrapper kanbanLayout={kanbanLayout} state={state} smaller={smaller}>
-          Bug / 吐槽
+          {Trans(ARTICLE_CAT.BUG)}
         </BugWrapper>
       )
     }
 
     case ARTICLE_CAT.QUESTION: {
       if (state === ARTICLE_STATE.RESOLVE) {
-        return <QuestionWrapper smaller={smaller}>已解决</QuestionWrapper>
+        return (
+          <QuestionWrapper smaller={smaller}>
+            {Trans(ARTICLE_STATE.RESOLVE)}
+          </QuestionWrapper>
+        )
       }
 
-      return <OtherWrapper>问题 / 求助</OtherWrapper>
+      return <OtherWrapper>{Trans(ARTICLE_CAT.QUESTION)}</OtherWrapper>
     }
 
-    case ARTICLE_CAT.LOCK: {
+    case ARTICLE_CAT.REJECT_DUP: {
       return <LockWrapper smaller={smaller}>重复问题</LockWrapper>
     }
 
+    case ARTICLE_CAT.REJECT_NO_FIX: {
+      return <LockWrapper smaller={smaller}>不修复</LockWrapper>
+    }
+    case ARTICLE_CAT.REJECT_NO_PLAN: {
+      return <LockWrapper smaller={smaller}>无计划</LockWrapper>
+    }
+    case ARTICLE_CAT.REJECT_STALE: {
+      return <LockWrapper smaller={smaller}>陈帖归档</LockWrapper>
+    }
+    case ARTICLE_CAT.REJECT_REPRO: {
+      return <LockWrapper smaller={smaller}>无法重现</LockWrapper>
+    }
     default:
       return <OtherWrapper>其它</OtherWrapper>
   }

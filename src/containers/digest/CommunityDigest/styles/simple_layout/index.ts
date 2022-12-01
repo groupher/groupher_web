@@ -11,12 +11,12 @@ type TWrapper = {
 }
 export const Wrapper = styled(BaseBanner)<TWrapper>`
   width: 100%;
-  min-height: 65px;
+  min-height: 58px;
 `
 export const InnerWrapper = styled.div<TWrapper>`
   ${css.flex('justify-center')};
-  padding-top: 10px;
-  min-height: 65px;
+  /* padding-top: 10px; */
+  margin-bottom: 8px;
   width: 100%;
   // if use margin-left will cause horizontal scrollbar
   // 70 是经典布局为缩小帖子列表"视觉宽度"手动缩小的值

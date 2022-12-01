@@ -1,10 +1,9 @@
-import { theme } from '@/utils'
 import styled from 'styled-components'
 
 import type { TArticleState } from '@/spec'
-import { ARTICLE_STATE } from '@/constant'
-import { isNoBgCase, getPadding } from './metric'
-// import { theme } from '@/utils/css'
+import { isNoBgCase, getPadding, getFeatureColor, getBugColor } from './metric'
+
+import { theme } from '@/utils/css'
 
 type TWrapper = {
   kanbanLayout: boolean
@@ -13,10 +12,7 @@ type TWrapper = {
 }
 
 export const Wrapper = styled.div<TWrapper>`
-  color: ${({ state }) =>
-    state === ARTICLE_STATE.DEFAULT
-      ? theme('article.info')
-      : theme('gtdBadge.feat')};
+  color: ${({ state }) => getFeatureColor(state)};
   background-color: ${({ kanbanLayout, state }) =>
     isNoBgCase(kanbanLayout, state) ? 'transparent' : theme('gtdBadge.featBg')};
   padding: ${({ kanbanLayout, state, smaller }) =>
@@ -29,10 +25,7 @@ export const Wrapper = styled.div<TWrapper>`
   font-size: 12px;
 `
 export const BugWrapper = styled(Wrapper)<TWrapper>`
-  color: ${({ state }) =>
-    state === ARTICLE_STATE.DEFAULT
-      ? theme('article.info')
-      : theme('gtdBadge.bug')};
+  color: ${({ state }) => getBugColor(state)};
   background-color: ${({ kanbanLayout, state }) =>
     isNoBgCase(kanbanLayout, state) ? 'transparent' : theme('gtdBadge.bugBg')};
   /* font-size: 12px; */

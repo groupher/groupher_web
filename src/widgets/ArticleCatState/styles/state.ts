@@ -9,7 +9,7 @@ import GtdWipSVG from '@/icons/GtdWip'
 import GtdDoneSVG from '@/icons/GtdDone'
 import GtdTodoSVG from '@/icons/GtdTodo'
 import ResolveSVG from '@/icons/Hook'
-import LockSVG from '@/icons/Lock'
+import RejectSVG from '@/icons/Reject'
 
 import LightSVG from '@/icons/Light'
 import BugSVG from '@/icons/Bug'
@@ -18,7 +18,8 @@ import QuestionSVG from '@/icons/Question'
 type TType = { cat: TArticleCat; smaller: boolean }
 
 export const Wrapper = styled.div<TType>`
-  ${({ smaller }) => (smaller ? css.size(14) : css.size(18))};
+  ${({ smaller }) => (smaller ? css.size(20) : css.size(24))};
+
   ${css.flex('align-both')};
   background: ${({ cat }) =>
     cat === ARTICLE_CAT.BUG
@@ -26,14 +27,14 @@ export const Wrapper = styled.div<TType>`
       : theme('gtdBadge.featBg')};
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
-  margin-right: ${({ smaller }) => (smaller ? '-3px' : '-5px')};
+  margin-right: ${({ smaller }) => (smaller ? '-6px' : '-8px')};
 `
 export const NoBgWrapper = styled.div`
   margin-right: 2px;
   ${css.flex('align-both')};
 `
 export const WipIcon = styled(GtdWipSVG)<TType>`
-  ${({ smaller }) => (smaller ? css.size(7) : css.size(9))};
+  ${({ smaller }) => (smaller ? css.size(8) : css.size(9))};
   fill: ${({ cat }) =>
     cat === ARTICLE_CAT.BUG ? theme('gtdBadge.bug') : theme('gtdBadge.feat')};
 `
@@ -52,10 +53,11 @@ export const ResolveIcon = styled(ResolveSVG)<{ smaller: boolean }>`
   margin-right: 2px;
   fill: ${theme('baseColor.green')};
 `
-export const LockIcon = styled(LockSVG)<{ smaller: boolean }>`
+export const RejectIcon = styled(RejectSVG)<{ smaller: boolean }>`
   ${({ smaller }) => (smaller ? css.size(11) : css.size(13))};
-  fill: ${theme('article.info')};
-  margin-right: 3px;
+  fill: ${theme('gtdBadge.bug')};
+  margin-right: 2px;
+  margin-top: -1px;
 `
 const LightIcon = styled(LightSVG)`
   ${css.size(12)};

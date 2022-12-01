@@ -11,11 +11,11 @@ import type {
   TID,
   TCommunity,
   TArticle,
-  TTag,
   TArticleThread,
   TSubmitState,
   TAccount,
   TEditMode,
+  TGroupedTags,
 } from '@/spec'
 
 import { markStates, toJS } from '@/utils/mobx'
@@ -73,13 +73,16 @@ const ArticleEditor = T.model('ArticleEditor', {
       return toJS(root.viewing.viewingThread)
     },
     get communityData(): TCommunity {
-      return toJS(self.community)
+      const root = getParent(self) as TRootStore
+      return toJS(root.viewing.community)
     },
     get communityId(): TID {
       return self.community.id
     },
-    get tagsData(): TTag[] {
-      return toJS(self.articleTags)
+
+    get groupedTags(): TGroupedTags {
+      const root = getParent(self) as TRootStore
+      return root.tagsBar.groupedTags
     },
     get texts(): TTexts {
       return {

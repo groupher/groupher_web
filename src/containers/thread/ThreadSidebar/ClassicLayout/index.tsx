@@ -33,6 +33,7 @@ import {
   CommunityNoteWrapper,
   PublishWrapper,
 } from '../styles/classic_layout'
+import { onPublish } from '../logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:ClassicSidebar')
@@ -92,6 +93,7 @@ const ClassicLayout: FC<TProps> = ({
               thread={thread}
               community={community.raw}
               text="参与讨论"
+              onClick={onPublish}
             />
           </PublishWrapper>
 

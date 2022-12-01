@@ -239,10 +239,12 @@ const github = {
   },
   button: {
     primary: primaryColor,
-    fg: '#FFFFFF',
+    fg: '#e7e7e7',
+    disabledFg: descText,
     hoverBg: lighten(primaryColor, 10),
     activeBg: darken(primaryColor, 5),
     clicked: primaryColor,
+    ghostBorder: '#d5d5d5',
   },
   navigator: {
     activeBottom: primaryColor,

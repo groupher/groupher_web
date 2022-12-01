@@ -40,7 +40,7 @@ const Footer: FC<TProps> = ({ article }) => {
           />
         </UpvotesWrapper>
 
-        {article.category !== ARTICLE_CAT.DEFAULT && (
+        {article.category !== ARTICLE_CAT.ALL && (
           <ArticleCatState cat={article.category} state={article.state} />
         )}
         <BasicState>

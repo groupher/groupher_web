@@ -5,14 +5,14 @@
  */
 
 import { memo, FC } from 'react'
-import Router from 'next/router'
+// import Router from 'next/router'
 import { isEmpty } from 'ramda'
 
 import type { TThread, TPublishMode } from '@/spec'
 import { THREAD, HCN, SVG, PUBLISH_MODE } from '@/constant'
 
 import { buildLog } from '@/utils/logger'
-import { authWarn } from '@/utils/helper'
+// import { authWarn } from '@/utils/helper'
 import useAccount from '@/hooks/useAccount'
 
 import { MORE_MENU } from './constant'
@@ -32,6 +32,7 @@ type TProps = {
   community?: string
   text?: string
   mode?: TPublishMode
+  onClick?: () => void
 }
 
 const PublishButton: FC<TProps> = ({
@@ -39,6 +40,7 @@ const PublishButton: FC<TProps> = ({
   community = HCN,
   text = getText(thread),
   mode = PUBLISH_MODE.DEFAULT,
+  onClick = log,
 }) => {
   const accountInfo = useAccount()
 
@@ -49,9 +51,10 @@ const PublishButton: FC<TProps> = ({
     <Wrapper>
       <PubButton
         onClick={() => {
-          if (!accountInfo) return authWarn()
-          const url = getTargetPage(community, thread)
-          Router.push(url)
+          onClick()
+          // if (!accountInfo) return authWarn()
+          // const url = getTargetPage(community, thread)
+          // Router.push(url)
         }}
       >
         <PostLayout text={text} />

@@ -108,6 +108,7 @@ export type {
   TComment,
   TPagedComments,
   TArticleFilter,
+  TArticleCatMode,
   TCopyright,
   TUpvoteLayout,
   TBrandLayout,
@@ -118,6 +119,7 @@ export type {
   TGlobalLayout,
   TCommentsState,
   TArticleCat,
+  TArticleCatReject,
   TArticleState,
 } from './article'
 

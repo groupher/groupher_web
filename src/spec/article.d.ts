@@ -144,6 +144,8 @@ export type TArticleFilter = {
   read?: string
 }
 
+export type TArticleCatMode = 'filter' | 'full'
+
 export type TUpvoteLayout =
   | 'default'
   | 'comment'
@@ -193,12 +195,25 @@ export type TCommentsState = {
   participants: TSimpleUser[]
 }
 
-export type TArticleCat = 'BUG' | 'FEATURE' | 'QUESTION' | 'LOCK' | 'DEFAULT'
+export type TArticleCatReject =
+  | 'REJECT_DUP'
+  | 'REJECT_NO_PLAN'
+  | 'REJECT_NO_FIX'
+  | 'REJECT_REPRO'
+  | 'REJECT_STALE'
+
+export type TArticleCat =
+  | 'ALL'
+  | 'BUG'
+  | 'FEATURE'
+  | 'QUESTION'
+  | 'OTHER'
+  | TArticleCatReject
 
 export type TArticleState =
   | 'TODO'
   | 'WIP'
   | 'DONE'
   | 'RESOLVE'
-  | 'LOCK'
+  | 'REJECT'
   | 'DEFAULT'

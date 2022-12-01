@@ -5,7 +5,7 @@ import type { TID } from '@/spec'
 import { TYPE, EVENT, ERR, ARTICLE_THREAD } from '@/constant'
 
 import asyncSuit from '@/utils/async'
-import { errRescue, listUsers } from '@/utils/helper'
+import { errRescue, listUsers, callGEditor } from '@/utils/helper'
 import { buildLog } from '@/utils/logger'
 
 import type { TStore } from './store'
@@ -20,6 +20,11 @@ let store: TStore | undefined
 
 /* eslint-disable-next-line */
 const log = buildLog('L:ThreadSidebar')
+
+export const onPublish = () => {
+  console.log('## onPublish')
+  callGEditor()
+}
 
 export const subscribeCommunity = (communityId: TID): void => {
   sr71$.mutate(S.subscribeCommunity, { communityId })

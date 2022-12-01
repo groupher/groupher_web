@@ -23,7 +23,7 @@ const Footer: FC<TProps> = ({ article }) => {
     <Wrapper>
       <BodyDigest>{article.digest}</BodyDigest>
       <Extra>
-        {article.category !== ARTICLE_CAT.DEFAULT && (
+        {article.category !== ARTICLE_CAT.ALL && (
           <ArticleCatState cat={article.category} state={article.state} />
         )}
         <BasicState>

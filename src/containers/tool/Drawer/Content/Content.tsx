@@ -18,6 +18,7 @@ import {
   // userlister
   UserLister,
   DashboardDesc,
+  ArticleEditor,
 } from '../dynamics'
 
 type TProps = {
@@ -35,6 +36,9 @@ const Content: FC<TProps> = ({ type, attUser, extraInfo }) => {
     case DRAWER.ACCOUNT_EDIT:
       // @ts-ignore
       return <AccountEditor />
+
+    case DRAWER.G_EDITOR:
+      return <ArticleEditor />
 
     case DRAWER.MAILS_VIEW:
       // @ts-ignore

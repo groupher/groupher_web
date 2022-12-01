@@ -16,6 +16,8 @@ const TitleInput: FC<TProps> = ({ title, placeholder }) => {
         placeholder={placeholder}
         behavior="textarea"
         onChange={(e) => editOnChange(e, 'title')}
+        disableEnter
+        autoFocus
       />
     </Wrapper>
   )

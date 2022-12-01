@@ -22,6 +22,14 @@ const I18nDict = {
   PRODUCT: '物品交易',
   FREE: '用爱发电',
   OTHRES: '其他',
+
+  // ArticleCat
+  ALL: '全部',
+  FEATURE: '功能需求',
+  BUG: 'Bug',
+  QUESTION: '求助',
+  OTHER: '其他',
+  RESOLVE: '问题解决',
 }
 
 export const Trans = (key) => I18nDict[key] || key
