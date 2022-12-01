@@ -11,10 +11,6 @@ export const Wrapper = styled.div`
   ${css.flex('align-center')};
   color: ${theme('article.title')};
   font-weight: 600;
-
-  /* background: linear-gradient(180deg, transparent 66%, #e8f0fe 0);
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px; */
 `
 const iconBase = `
   ${css.size(14)};
