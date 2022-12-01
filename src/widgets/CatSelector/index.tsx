@@ -2,7 +2,7 @@ import { FC, memo, useState, Fragment } from 'react'
 import dynamic from 'next/dynamic'
 
 import type { TArticleCatMode, TArticleCat } from '@/spec'
-import { ARTICLE_CAT } from '@/constant'
+import { ARTICLE_CAT, ARTICLE_CAT_MODE } from '@/constant'
 
 import Tooltip from '@/widgets/Tooltip'
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
@@ -16,21 +16,25 @@ const FullPanel = dynamic(() => import('./FullPanel'))
 
 type TProps = {
   mode?: TArticleCatMode
+  activeCat: TArticleCat
+  onSelect: (cat: TArticleCat) => void
 }
 
-const CatSelector: FC<TProps> = ({ mode = 'filter' }) => {
+const CatSelector: FC<TProps> = ({
+  mode = ARTICLE_CAT_MODE.FILTER,
+  activeCat,
+  onSelect,
+}) => {
   const [show, setShow] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
-  const [activeCat, setActiveCat] = useState<TArticleCat>(ARTICLE_CAT.FEATURE)
-
-  const Wrapper = mode === 'filter' ? FilterWrapper : FullWrapper
+  const Wrapper = mode === ARTICLE_CAT_MODE.FILTER ? FilterWrapper : FullWrapper
 
   const handleSelect = (cat: TArticleCat) => {
-    setActiveCat(cat)
+    onSelect(cat)
   }
 
-  const offset = mode === 'filter' ? [-30, 5] : [-44, 5]
+  const offset = mode === ARTICLE_CAT_MODE.FILTER ? [-30, 5] : [-44, 5]
 
   return (
     <Wrapper menuOpen={menuOpen}>
@@ -46,10 +50,10 @@ const CatSelector: FC<TProps> = ({ mode = 'filter' }) => {
         offset={offset as [number, number]}
         content={
           <Fragment>
-            {show && mode === 'full' && (
+            {show && mode === ARTICLE_CAT_MODE.FULL && (
               <FullPanel onSelect={handleSelect} activeCat={activeCat} />
             )}
-            {show && mode === 'filter' && (
+            {show && mode === ARTICLE_CAT_MODE.FILTER && (
               <FilterPanel onSelect={handleSelect} activeCat={activeCat} />
             )}
           </Fragment>
