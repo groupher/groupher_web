@@ -27,8 +27,9 @@ const I18nDict = {
   ALL: '全部',
   FEATURE: '功能需求',
   BUG: 'Bug',
-  QUESTION: '求助/提问',
+  QUESTION: '求助',
   OTHER: '其他',
+  RESOLVE: '问题解决',
 }
 
 export const Trans = (key) => I18nDict[key] || key

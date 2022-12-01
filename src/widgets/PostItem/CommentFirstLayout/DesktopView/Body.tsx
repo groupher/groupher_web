@@ -4,7 +4,7 @@ import { includes } from 'ramda'
 import TimeAgo from 'timeago-react'
 
 import type { TCommunity, TPost } from '@/spec'
-import { EVENT } from '@/constant'
+import { EVENT, ARTICLE_CAT } from '@/constant'
 import { send, changeToCommunity } from '@/utils/helper'
 
 import { Space, SpaceGrow } from '@/widgets/Common'
@@ -103,16 +103,32 @@ const Body: FC<TProps> = ({ article, curCommunity }) => {
       </Digest>
       <Footer>
         <ArticleStateBadgeWrapper>
-          {article.id === '239' && <ArticleCatState cat="FEATURE" />}
-          {article.id === '231' && <ArticleCatState cat="BUG" />}
-          {article.id === '227' && <ArticleCatState cat="BUG" state="TODO" />}
+          {article.id === '239' && (
+            <ArticleCatState cat={ARTICLE_CAT.FEATURE} left={18} />
+          )}
+          {article.id === '231' && (
+            <ArticleCatState cat={ARTICLE_CAT.BUG} left={18} />
+          )}
+          {article.id === '227' && (
+            <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" left={18} />
+          )}
           {article.id === '228' && (
-            <ArticleCatState cat="FEATURE" state="WIP" />
+            <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" left={18} />
           )}
           {article.id === '226' && (
-            <ArticleCatState cat="QUESTION" state="RESOLVE" />
+            <ArticleCatState
+              cat={ARTICLE_CAT.QUESTION}
+              state="RESOLVE"
+              left={18}
+            />
           )}
-          {article.id === '225' && <ArticleCatState cat="LOCK" state="LOCK" />}
+          {article.id === '225' && (
+            <ArticleCatState
+              cat={ARTICLE_CAT.REJECT_NO_PLAN}
+              state="REJECT"
+              left={18}
+            />
+          )}
         </ArticleStateBadgeWrapper>
         {includes(article.id, demoList) && <Space right={18} />}
 

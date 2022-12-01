@@ -195,19 +195,25 @@ export type TCommentsState = {
   participants: TSimpleUser[]
 }
 
+export type TArticleCatReject =
+  | 'REJECT_DUP'
+  | 'REJECT_NO_PLAN'
+  | 'REJECT_NO_FIX'
+  | 'REJECT_REPRO'
+  | 'REJECT_STALE'
+
 export type TArticleCat =
   | 'ALL'
   | 'BUG'
   | 'FEATURE'
   | 'QUESTION'
-  | 'LOCK'
-  | 'DEFAULT'
   | 'OTHER'
+  | TArticleCatReject
 
 export type TArticleState =
   | 'TODO'
   | 'WIP'
   | 'DONE'
   | 'RESOLVE'
-  | 'LOCK'
+  | 'REJECT'
   | 'DEFAULT'

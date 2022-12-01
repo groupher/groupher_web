@@ -29,7 +29,7 @@ export type TProps = {
 
 const ArticleCatState: FC<TProps> = ({
   testid = 'article-cat-state',
-  cat = ARTICLE_CAT.DEFAULT,
+  cat = ARTICLE_CAT.FEATURE,
   state = ARTICLE_STATE.DEFAULT,
   kanbanLayout = false,
   smaller = true,

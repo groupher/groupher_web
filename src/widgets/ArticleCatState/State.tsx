@@ -11,7 +11,7 @@ import {
   TODOIcon,
   DoneIcon,
   ResolveIcon,
-  LockIcon,
+  RejectIcon,
   //
   NoBgIcon,
 } from './styles/state'
@@ -52,10 +52,10 @@ const State: FC<TProps> = ({ state, cat, smaller }) => {
       )
     }
 
-    case ARTICLE_STATE.LOCK: {
+    case ARTICLE_STATE.REJECT: {
       return (
         <NoBgWrapper>
-          <LockIcon smaller={smaller} />
+          <RejectIcon smaller={smaller} />
         </NoBgWrapper>
       )
     }

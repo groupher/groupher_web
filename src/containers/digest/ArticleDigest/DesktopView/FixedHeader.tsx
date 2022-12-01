@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TArticle, TMetric, TThread } from '@/spec'
-import { METRIC } from '@/constant'
+import { METRIC, ARTICLE_CAT } from '@/constant'
 
 import ArticleCatState from '@/widgets/ArticleCatState'
 import ArticleBaseStats from '@/widgets/ArticleBaseStats'
@@ -36,17 +36,35 @@ const FixedHeader: FC<TProps> = ({
         <ContentWrapper metric={metric}>
           <Title>{article.title}</Title>
           <ArticleStateBadgeWrapper>
-            {article.id === '239' && <ArticleCatState cat="FEATURE" />}
-            {article.id === '231' && <ArticleCatState cat="BUG" />}
-            {article.id === '227' && <ArticleCatState cat="BUG" state="TODO" />}
+            {article.id === '239' && (
+              <ArticleCatState cat={ARTICLE_CAT.FEATURE} left={18} />
+            )}
+            {article.id === '231' && (
+              <ArticleCatState cat={ARTICLE_CAT.BUG} left={18} />
+            )}
+            {article.id === '227' && (
+              <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" left={18} />
+            )}
             {article.id === '228' && (
-              <ArticleCatState cat="FEATURE" state="WIP" />
+              <ArticleCatState
+                cat={ARTICLE_CAT.FEATURE}
+                state="WIP"
+                left={18}
+              />
             )}
             {article.id === '226' && (
-              <ArticleCatState cat="QUESTION" state="RESOLVE" />
+              <ArticleCatState
+                cat={ARTICLE_CAT.QUESTION}
+                state="RESOLVE"
+                left={18}
+              />
             )}
             {article.id === '225' && (
-              <ArticleCatState cat="LOCK" state="LOCK" />
+              <ArticleCatState
+                cat={ARTICLE_CAT.REJECT_NO_PLAN}
+                state="REJECT"
+                left={18}
+              />
             )}
           </ArticleStateBadgeWrapper>
         </ContentWrapper>
