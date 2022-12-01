@@ -4,11 +4,11 @@
  *
  */
 
-import { FC, Fragment, memo } from 'react'
+import { FC, Fragment, memo, useState } from 'react'
 
-import type { TArticleFilter, TResState } from '@/spec'
+import type { TArticleFilter, TResState, TArticleCat } from '@/spec'
 
-import { TYPE, THREAD } from '@/constant'
+import { TYPE, THREAD, ARTICLE_CAT } from '@/constant'
 import { buildLog } from '@/utils/logger'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
@@ -47,9 +47,9 @@ const ArticlesFilter: FC<TProps> = ({
   onSearch,
   closeSearch,
 }) => {
-  // NOTE: 这里使用 useViewing 会导致 build-size blow
-  // const { activeThread } = useViewing()
+  const [activeCat, setActiveCat] = useState<TArticleCat>(ARTICLE_CAT.ALL)
 
+  // const { activeThread } = useViewing()
   const searchMode = mode === 'search'
 
   return (
@@ -65,7 +65,7 @@ const ArticlesFilter: FC<TProps> = ({
             <SelectedFilters onSelect={onSelect} activeFilter={activeFilter} />
           </MainFilterWrapper>
 
-          <CatSelector />
+          <CatSelector activeCat={activeCat} onSelect={setActiveCat} />
 
           <SpaceGrow />
           {resState === TYPE.RES_STATE.LOADING && (

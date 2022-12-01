@@ -59,6 +59,7 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
     resState,
     mode,
     globalLayout,
+    activeTagData,
   } = store
   const { pageNumber, totalCount } = pagedArticlesData
 
@@ -84,7 +85,7 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
           </FilterWrapper>
         )}
 
-        <TagNote />
+        <TagNote tag={activeTagData} />
 
         {mode === 'default' && (
           <PagedArticles

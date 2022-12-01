@@ -7,24 +7,28 @@
 
 import { FC, memo } from 'react'
 
+import type { TTag } from '@/spec'
+
 import { buildLog } from '@/utils/logger'
 import { SpaceGrow } from '@/widgets/Common'
 
-import { Wrapper, Header, Desc, TagDot, Title, InfoIcon } from './styles'
+import { Wrapper, Header, Desc, Title, InfoIcon } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('c:TagNote:index')
 
 type TProps = {
   testid?: string
+  tag: TTag
 }
 
-const TagNote: FC<TProps> = ({ testid = 'tag-note' }) => {
+const TagNote: FC<TProps> = ({ testid = 'tag-note', tag }) => {
+  if (!tag.raw) return null
+
   return (
     <Wrapper testid={testid}>
       <Header>
-        <TagDot />
-        <Title>Showcase</Title>
+        <Title color={tag.color}>{tag.title}</Title>
         <SpaceGrow />
         <InfoIcon />
       </Header>

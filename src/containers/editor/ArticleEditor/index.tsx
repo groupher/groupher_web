@@ -2,10 +2,10 @@
  * ArticleEditor
  */
 
-import { FC } from 'react'
+import { FC, useState } from 'react'
 
-import type { TEditMode, TMetric } from '@/spec'
-import { METRIC } from '@/constant'
+import type { TEditMode, TMetric, TArticleCat } from '@/spec'
+import { METRIC, ARTICLE_CAT, ARTICLE_CAT_MODE } from '@/constant'
 
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
@@ -43,6 +43,8 @@ const ArticleEditorContainer: FC<TProps> = ({
   metric = METRIC.ARTICLE_EDITOR,
 }) => {
   useInit(store)
+  const [activeCat, setActiveCat] = useState<TArticleCat>(ARTICLE_CAT.FEATURE)
+
   const {
     isArchived,
     archivedAt,
@@ -87,7 +89,11 @@ const ArticleEditorContainer: FC<TProps> = ({
           <FuncRow>
             <TagSelector groupedTags={groupedTags} />
             <Space left={20} />
-            <CatSelector mode="full" />
+            <CatSelector
+              mode={ARTICLE_CAT_MODE.FULL}
+              activeCat={activeCat}
+              onSelect={setActiveCat}
+            />
           </FuncRow>
 
           {initEditor && (
