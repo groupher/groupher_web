@@ -11,12 +11,13 @@ import { UPVOTE_LAYOUT } from '@/constant'
 import { buildLog } from '@/utils/logger'
 
 import DefaultLayout from './DefaultLayout'
-import KanbanLayout from './KanbanLayout'
+import GeneralLayout from './GeneralLayout'
 import FixedHeaderLayout from './FixedHeaderLayout'
 import CommentLayout from './CommentLayout'
 import PostListLayout from './PostListLayout'
 import ArticleLayout from './ArticleLayout'
 import StickerLayout from './StickerLayout'
+import SimpleLayout from './SimpleLayout'
 
 import { Wrapper } from './styles'
 
@@ -57,8 +58,8 @@ const Upvote: FC<TProps> = ({
       Layout = ArticleLayout
       break
     }
-    case UPVOTE_LAYOUT.KANBAN: {
-      Layout = KanbanLayout
+    case UPVOTE_LAYOUT.DEFAULT: {
+      Layout = DefaultLayout
       break
     }
     case UPVOTE_LAYOUT.FIXED_HEADER: {
@@ -69,8 +70,12 @@ const Upvote: FC<TProps> = ({
       Layout = StickerLayout
       break
     }
+    case UPVOTE_LAYOUT.SIMPLE: {
+      Layout = SimpleLayout
+      break
+    }
     default: {
-      Layout = DefaultLayout
+      Layout = GeneralLayout
       break
     }
   }

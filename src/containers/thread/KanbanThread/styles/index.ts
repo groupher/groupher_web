@@ -53,7 +53,7 @@ export const TODOIcon = styled(GtdTodoSVG)`
   fill: ${theme('article.info')};
 `
 export const WipIcon = styled(GtdWipSVG)`
-  ${css.size(12)};
+  ${css.size(15)};
   fill: ${theme('article.info')};
 `
 export const DoneIcon = styled(GtdDoneSVG)`

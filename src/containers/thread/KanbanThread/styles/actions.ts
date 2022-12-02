@@ -26,10 +26,11 @@ export const LeftPart = styled.div`
   ${css.flex('align-center')};
 `
 export const KanbanIcon = styled(KanbanSVG)`
-  ${css.size(13)};
+  ${css.size(15)};
   fill: ${theme('article.info')};
-  margin-right: 10px;
+  margin-right: 8px;
   margin-top: 6px;
+  transform: rotate(180deg);
 `
 export const ModeWrapper = styled.div`
   margin-top: 2px;

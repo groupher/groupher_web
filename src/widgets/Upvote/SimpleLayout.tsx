@@ -8,10 +8,10 @@ import { FC, memo } from 'react'
 
 import { buildLog } from '@/utils/logger'
 
-import AnimatedCount from '@/widgets/AnimatedCount'
+import AnimatedCount from '../AnimatedCount'
 import UpvoteBtn from './UpvoteBtn'
 
-import { Wrapper, UpWrapper, CountWrapper } from './styles/works_card_layout'
+import { Wrapper, UpvoteBtnWrapper, CountWrapper } from './styles/simple_layout'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Upvote:index')
@@ -25,21 +25,21 @@ type TProps = {
 
 const Upvote: FC<TProps> = ({
   testid = 'upvote',
-  count = 0,
+  count = 4,
   viewerHasUpvoted = false,
   onAction = log,
 }) => {
   return (
     <Wrapper testid={testid}>
-      <UpWrapper>
+      <UpvoteBtnWrapper>
         <UpvoteBtn
           viewerHasUpvoted={viewerHasUpvoted}
           onAction={onAction}
           count={count}
         />
-      </UpWrapper>
+      </UpvoteBtnWrapper>
       <CountWrapper>
-        <AnimatedCount count={count} active={viewerHasUpvoted} />
+        <AnimatedCount count={count} active={viewerHasUpvoted} size="tiny" />
       </CountWrapper>
     </Wrapper>
   )

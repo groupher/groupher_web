@@ -15,7 +15,7 @@ import Facepile from '@/widgets/Facepile'
 import AnimatedCount from '../AnimatedCount'
 import UpvoteBtn from './UpvoteBtn'
 
-import { Wrapper, UpvoteBtnWrapper, LineDivider } from './styles/kanban_layout'
+import { Wrapper, UpvoteBtnWrapper, LineDivider } from './styles/general_layout'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Upvote:index')

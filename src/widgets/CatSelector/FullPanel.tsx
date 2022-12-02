@@ -21,8 +21,8 @@ type TProps = {
 
 const DESC = {
   [ARTICLE_CAT.FEATURE]: '提交需求，产品功能建议等',
-  [ARTICLE_CAT.BUG]: '吐槽使用中遇到的不足，缺陷等',
-  [ARTICLE_CAT.QUESTION]: '问题求助，使用疑惑等',
+  [ARTICLE_CAT.BUG]: '反馈使用中遇到的 Bug，问题等',
+  [ARTICLE_CAT.QUESTION]: '请求帮助，使用疑惑等',
   [ARTICLE_CAT.OTHER]: '一般讨论，其他话题',
 }
 

@@ -65,7 +65,7 @@ const ProductGallery: FC<TProps> = ({ items = mockProducts() }) => {
             <Upvote
               count={getRandomInt(10, 100)}
               avatarList={[]}
-              type="guide-list"
+              type="general"
             />
             <CommentWrapper>
               <IconText iconSrc={`${ICON}/article/comment.svg`} size="medium">

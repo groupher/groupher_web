@@ -6,7 +6,7 @@ import { theme } from '@/utils/css'
 export const getFontSize = (size: TSize): number => {
   switch (size) {
     case SIZE.TINY: {
-      return 14
+      return 13
     }
     case SIZE.MEDIUM: {
       return 18

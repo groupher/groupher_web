@@ -22,7 +22,7 @@ const AnimatedCount: FC<TProps> = ({
     <Wrapper $active={active} count={count}>
       <FlipNumbers
         height={numSize}
-        width={numSize}
+        width={numSize - 5}
         color={theme.article.info}
         perspective={400}
         duration={1}

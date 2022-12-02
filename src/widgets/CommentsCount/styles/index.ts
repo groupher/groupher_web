@@ -18,7 +18,8 @@ export const HighlightWrapper = styled(Wrapper)`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `
-export const CommentsIcon = styled(CommentSVG)<{ highlight?: boolean }>`
+type TCommentsIcon = { highlight?: boolean }
+export const CommentsIcon = styled(CommentSVG)<TCommentsIcon>`
   fill: ${({ highlight }) =>
     highlight ? theme('heightIcon') : theme('article.info')};
   ${css.size(10)};
