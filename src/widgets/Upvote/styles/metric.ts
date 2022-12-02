@@ -19,10 +19,6 @@ export const getIconSize = (type: TUpvoteLayout): string => {
       return '15px;'
     }
 
-    case UPVOTE_LAYOUT.WORKS_ARTICLE: {
-      return '22px;'
-    }
-
     default: {
       return ' 15px;'
     }

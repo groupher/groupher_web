@@ -10,13 +10,13 @@ type TInnerWrapper = {
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TInnerWrapper>`
-  ${css.flexColumn('align-both')};
+  ${css.flex('align-center')};
 `
-export const UpWrapper = styled.div`
-  margin-top: 2px;
-  /* transform: scale(0.9); */
+export const UpvoteBtnWrapper = styled.div`
+  transform: scale(0.8);
+  margin-top: 5px;
 `
+
 export const CountWrapper = styled.div`
-  margin-top: -4px;
-  margin-left: -5px;
+  margin-left: -1px;
 `

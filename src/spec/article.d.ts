@@ -151,11 +151,8 @@ export type TUpvoteLayout =
   | 'comment'
   | 'article'
   | 'post-list'
-  | 'blog-list'
-  | 'works-article'
-  | 'works-card'
-  | 'guide-list'
-  | 'kanban'
+  | 'general'
+  | 'simple'
   | 'fixed-header'
   | 'sticker'
 

@@ -15,14 +15,14 @@ import {
 
 type TProps = Pick<
   TArticleStateBadgeProps,
-  'cat' | 'kanbanLayout' | 'smaller' | 'state'
+  'cat' | 'noBg' | 'smaller' | 'state'
 >
 
-const Label: FC<TProps> = ({ cat, state, kanbanLayout, smaller }) => {
+const Label: FC<TProps> = ({ cat, state, noBg, smaller }) => {
   switch (cat) {
     case ARTICLE_CAT.FEATURE: {
       return (
-        <Wrapper kanbanLayout={kanbanLayout} state={state} smaller={smaller}>
+        <Wrapper noBg={noBg} state={state} smaller={smaller}>
           {Trans(ARTICLE_CAT.FEATURE)}
         </Wrapper>
       )
@@ -30,7 +30,7 @@ const Label: FC<TProps> = ({ cat, state, kanbanLayout, smaller }) => {
 
     case ARTICLE_CAT.BUG: {
       return (
-        <BugWrapper kanbanLayout={kanbanLayout} state={state} smaller={smaller}>
+        <BugWrapper noBg={noBg} state={state} smaller={smaller}>
           {Trans(ARTICLE_CAT.BUG)}
         </BugWrapper>
       )

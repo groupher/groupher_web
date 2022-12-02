@@ -32,7 +32,7 @@ const Footer: FC<TProps> = ({ data }) => {
       </PublishWrapper>
       <Bottom>
         <Upvote
-          type={UPVOTE_LAYOUT.KANBAN}
+          type={UPVOTE_LAYOUT.GENERAL}
           count={upvotesCount}
           avatarList={meta.latestUpvotedUsers}
           viewerHasUpvoted={viewerHasUpvoted}

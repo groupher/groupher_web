@@ -34,9 +34,10 @@ export const NoBgWrapper = styled.div`
   ${css.flex('align-both')};
 `
 export const WipIcon = styled(GtdWipSVG)<TType>`
-  ${({ smaller }) => (smaller ? css.size(8) : css.size(9))};
+  ${({ smaller }) => (smaller ? css.size(12) : css.size(14))};
   fill: ${({ cat }) =>
     cat === ARTICLE_CAT.BUG ? theme('gtdBadge.bug') : theme('gtdBadge.feat')};
+  z-index: 2;
 `
 export const DoneIcon = styled(GtdDoneSVG)<TType>`
   ${({ smaller }) => (smaller ? css.size(8) : css.size(10))};
