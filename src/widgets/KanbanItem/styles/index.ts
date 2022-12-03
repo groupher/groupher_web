@@ -17,6 +17,15 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   margin-bottom: 12px;
   padding: 10px;
   border-radius: 12px;
+  border: 1px solid transparent;
+
+  &:hover {
+    border-color: ${theme('article.digest')};
+    cursor: pointer;
+    opacity: 0.9;
+  }
+
+  /* transition: all 0.1s; */
 `
 export const Header = styled.div`
   ${css.flex('align-center', 'justify-between')};

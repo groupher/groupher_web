@@ -199,18 +199,12 @@ export type TArticleCatReject =
   | 'REJECT_REPRO'
   | 'REJECT_STALE'
 
-export type TArticleCat =
-  | 'ALL'
-  | 'BUG'
-  | 'FEATURE'
-  | 'QUESTION'
-  | 'OTHER'
-  | TArticleCatReject
-
 export type TArticleState =
   | 'TODO'
   | 'WIP'
   | 'DONE'
   | 'RESOLVE'
-  | 'REJECT'
   | 'DEFAULT'
+  | TArticleCatReject
+
+export type TArticleCat = 'ALL' | 'BUG' | 'FEATURE' | 'QUESTION' | 'OTHER'

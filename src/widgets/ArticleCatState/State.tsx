@@ -52,7 +52,10 @@ const State: FC<TProps> = ({ state, cat, smaller }) => {
       )
     }
 
-    case ARTICLE_STATE.REJECT: {
+    case ARTICLE_STATE.REJECT_STALE:
+    case ARTICLE_STATE.REJECT_NO_PLAN:
+    case ARTICLE_STATE.REJECT_NO_FIX:
+    case ARTICLE_STATE.REJECT_DUP: {
       return (
         <NoBgWrapper>
           <RejectIcon smaller={smaller} />

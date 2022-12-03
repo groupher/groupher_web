@@ -14,9 +14,6 @@ export const ARTICLE_CAT = {
   BUG: 'BUG',
   QUESTION: 'QUESTION',
   OTHER: 'OTHER',
-
-  // reject
-  ...ARTICLE_CAT_REJECT,
 } as Record<Uppercase<TArticleCat>, Uppercase<TArticleCat>>
 
 export const ARTICLE_STATE = {
@@ -25,7 +22,8 @@ export const ARTICLE_STATE = {
   DONE: 'DONE',
   DEFAULT: 'DEFAULT',
   RESOLVE: 'RESOLVE',
-  REJECT: 'REJECT',
+  // reject
+  ...ARTICLE_CAT_REJECT,
 } as Record<Uppercase<TArticleState>, Uppercase<TArticleState>>
 
 export const ARTICLE_CAT_MODE = {

@@ -2,7 +2,7 @@ import { memo, FC, Fragment } from 'react'
 import { includes } from 'ramda'
 
 import type { TPost } from '@/spec'
-import { UPVOTE_LAYOUT, ARTICLE_CAT } from '@/constant'
+import { UPVOTE_LAYOUT, ARTICLE_CAT, ARTICLE_STATE } from '@/constant'
 
 import Upvote from '@/widgets/Upvote'
 import { Space } from '@/widgets/Common'
@@ -61,8 +61,8 @@ const Footer: FC<TProps> = ({ article }) => {
           )}
           {article.id === '225' && (
             <ArticleCatState
-              cat={ARTICLE_CAT.REJECT_NO_PLAN}
-              state="REJECT"
+              cat={ARTICLE_CAT.FEATURE}
+              state={ARTICLE_STATE.REJECT_DUP}
               left={18}
             />
           )}

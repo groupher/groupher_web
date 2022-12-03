@@ -43,7 +43,7 @@ export const SubTitle = styled.div`
   margin-left: 6px;
 `
 export const Label = styled.div`
-  color: ${theme('article.title')};
+  color: ${theme('article.digest')};
   font-size: 15px;
   font-weight: 600;
   margin-left: 10px;

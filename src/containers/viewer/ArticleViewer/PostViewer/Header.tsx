@@ -3,7 +3,7 @@ import TimeAgo from 'timeago-react'
 
 import type { TPost } from '@/spec'
 
-import { ARTICLE_CAT } from '@/constant'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant'
 import DotDivider from '@/widgets/DotDivider'
 import ArticleCatState from '@/widgets/ArticleCatState'
 
@@ -74,8 +74,8 @@ const Header: FC<TProps> = ({ article }) => {
       )}
       {article.id === '225' && (
         <ArticleCatState
-          cat={ARTICLE_CAT.REJECT_NO_PLAN}
-          state="REJECT"
+          cat={ARTICLE_CAT.FEATURE}
+          state={ARTICLE_STATE.REJECT_DUP}
           left={18}
           smaller={false}
         />

@@ -15,6 +15,7 @@ import ArchiveAlert from '@/widgets/ArchiveAlert'
 import NoticeBar from '@/widgets/NoticeBar'
 import CatSelector from '@/widgets/CatSelector'
 import TagSelector from '@/widgets/TagSelector'
+import StateSelector from '@/widgets/StateSelector'
 
 import RichEditor from '@/containers/editor/RichEditor'
 
@@ -94,6 +95,8 @@ const ArticleEditorContainer: FC<TProps> = ({
               activeCat={activeCat}
               onSelect={setActiveCat}
             />
+            <Space left={20} />
+            <StateSelector />
           </FuncRow>
 
           {initEditor && (

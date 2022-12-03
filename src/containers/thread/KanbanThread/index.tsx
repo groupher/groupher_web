@@ -57,7 +57,7 @@ const KanbanThreadContainer: FC<TProps> = ({
         <Column>
           <Header>
             <TODOIcon />
-            <Label>待办项</Label>
+            <Label>待办</Label>
             <SubTitle>{hydrated && getRandomInt(10, 20)}</SubTitle>
             <SpaceGrow />
             <IconButton path="shape/add.svg" right={12} />
@@ -74,7 +74,7 @@ const KanbanThreadContainer: FC<TProps> = ({
         <Column>
           <Header>
             <WipIcon />
-            <Label>正在完善</Label>
+            <Label>进行中</Label>
             <SubTitle>{hydrated && getRandomInt(10, 20)}</SubTitle>
             <SpaceGrow />
             <IconButton path="shape/add.svg" right={12} />

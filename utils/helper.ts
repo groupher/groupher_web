@@ -31,6 +31,7 @@ import type {
   TToastOption,
   TTabItem,
   TUser,
+  TArticleState,
 } from '@/spec'
 
 import hotToast from 'react-hot-toast'
@@ -45,6 +46,7 @@ import {
   NON_COMMUNITY_ROUTE,
   ARTICLE_THREAD,
   DEFAULT_TOAST_OPTIONS,
+  ARTICLE_STATE,
 } from '@/constant'
 
 import BStore from './bstore'
@@ -659,4 +661,17 @@ export const aliasMapIfNeed = (
   }
 
   return threads
+}
+
+/**
+ * check if article state is one of the rejected states
+ */
+export const isRejectedState = (state: TArticleState): boolean => {
+  return includes(state, [
+    ARTICLE_STATE.REJECT_DUP,
+    ARTICLE_STATE.REJECT_NO_FIX,
+    ARTICLE_STATE.REJECT_NO_PLAN,
+    ARTICLE_STATE.REJECT_REPRO,
+    ARTICLE_STATE.REJECT_STALE,
+  ])
 }
