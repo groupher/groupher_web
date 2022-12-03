@@ -5,7 +5,7 @@
 import { FC, Fragment, memo } from 'react'
 
 import type { TPost, TMetric } from '@/spec'
-import { METRIC, ARTICLE_CAT } from '@/constant'
+import { METRIC, ARTICLE_CAT, ARTICLE_STATE } from '@/constant'
 import { buildLog } from '@/utils/logger'
 
 // import ArchivedSign from '@/widgets/ArchivedSign'
@@ -91,8 +91,8 @@ const PostLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
             )}
             {article.id === '225' && (
               <ArticleCatState
-                cat={ARTICLE_CAT.REJECT_NO_PLAN}
-                state="REJECT"
+                cat={ARTICLE_CAT.FEATURE}
+                state={ARTICLE_STATE.REJECT_DUP}
                 left={18}
               />
             )}

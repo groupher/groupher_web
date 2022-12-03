@@ -2,19 +2,22 @@ import type { TArticleState } from '@/spec'
 import { ARTICLE_STATE } from '@/constant'
 
 import { theme } from '@/utils/css'
+import { isRejectedState } from '@/utils/helper'
 
 export const isNoBgCase = (
   kanbanLayout: boolean,
   state: TArticleState,
 ): boolean => {
   return (
-    kanbanLayout ||
-    state === ARTICLE_STATE.DEFAULT ||
-    state === ARTICLE_STATE.REJECT
+    kanbanLayout || state === ARTICLE_STATE.DEFAULT || isRejectedState(state)
   )
 }
 
 export const getFeatureColor = (state: TArticleState) => {
+  if (isRejectedState(state)) {
+    return theme('article.info')
+  }
+
   return state === ARTICLE_STATE.DEFAULT
     ? theme('article.info')
     : theme('gtdBadge.feat')

@@ -2,6 +2,7 @@ import { FC, memo } from 'react'
 
 import { ARTICLE_STATE, ARTICLE_CAT } from '@/constant'
 import { Trans } from '@/utils/i18n'
+import { isRejectedState } from '@/utils/helper'
 
 import type { TProps as TArticleStateBadgeProps } from './index'
 
@@ -19,6 +20,14 @@ type TProps = Pick<
 >
 
 const Label: FC<TProps> = ({ cat, state, noBg, smaller }) => {
+  if (isRejectedState(state)) {
+    return (
+      <Wrapper state={state} smaller={smaller} noBg>
+        {Trans(state)}
+      </Wrapper>
+    )
+  }
+
   switch (cat) {
     case ARTICLE_CAT.FEATURE: {
       return (
@@ -48,22 +57,6 @@ const Label: FC<TProps> = ({ cat, state, noBg, smaller }) => {
       return <OtherWrapper>{Trans(ARTICLE_CAT.QUESTION)}</OtherWrapper>
     }
 
-    case ARTICLE_CAT.REJECT_DUP: {
-      return <LockWrapper smaller={smaller}>重复问题</LockWrapper>
-    }
-
-    case ARTICLE_CAT.REJECT_NO_FIX: {
-      return <LockWrapper smaller={smaller}>不修复</LockWrapper>
-    }
-    case ARTICLE_CAT.REJECT_NO_PLAN: {
-      return <LockWrapper smaller={smaller}>无计划</LockWrapper>
-    }
-    case ARTICLE_CAT.REJECT_STALE: {
-      return <LockWrapper smaller={smaller}>陈帖归档</LockWrapper>
-    }
-    case ARTICLE_CAT.REJECT_REPRO: {
-      return <LockWrapper smaller={smaller}>无法重现</LockWrapper>
-    }
     default:
       return <OtherWrapper>其它</OtherWrapper>
   }

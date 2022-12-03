@@ -4,7 +4,7 @@ import { includes } from 'ramda'
 import TimeAgo from 'timeago-react'
 
 import type { TCommunity, TPost } from '@/spec'
-import { EVENT, ARTICLE_CAT } from '@/constant'
+import { EVENT, ARTICLE_CAT, ARTICLE_STATE } from '@/constant'
 import { send, changeToCommunity } from '@/utils/helper'
 
 import { Space, SpaceGrow } from '@/widgets/Common'
@@ -124,8 +124,8 @@ const Body: FC<TProps> = ({ article, curCommunity }) => {
           )}
           {article.id === '225' && (
             <ArticleCatState
-              cat={ARTICLE_CAT.REJECT_NO_PLAN}
-              state="REJECT"
+              cat={ARTICLE_CAT.FEATURE}
+              state={ARTICLE_STATE.REJECT_DUP}
               left={18}
             />
           )}

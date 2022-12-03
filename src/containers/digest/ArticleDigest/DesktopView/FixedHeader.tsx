@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TArticle, TMetric, TThread } from '@/spec'
-import { METRIC, ARTICLE_CAT } from '@/constant'
+import { METRIC, ARTICLE_CAT, ARTICLE_STATE } from '@/constant'
 
 import ArticleCatState from '@/widgets/ArticleCatState'
 import ArticleBaseStats from '@/widgets/ArticleBaseStats'
@@ -61,8 +61,8 @@ const FixedHeader: FC<TProps> = ({
             )}
             {article.id === '225' && (
               <ArticleCatState
-                cat={ARTICLE_CAT.REJECT_NO_PLAN}
-                state="REJECT"
+                cat={ARTICLE_CAT.FEATURE}
+                state={ARTICLE_STATE.REJECT_DUP}
                 left={18}
               />
             )}

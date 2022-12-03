@@ -30,6 +30,15 @@ const I18nDict = {
   QUESTION: '求助',
   OTHER: '其他',
   RESOLVE: '问题解决',
+  // articleState;
+  TODO: '待办项',
+  WIP: '进行中',
+  DONE: '已完成',
+  REJECT_DUP: '重复问题',
+  REJECT_NO_PLAN: '无计划',
+  REJECT_NO_FIX: '不修复',
+  REJECT_REPRO: '无法重现',
+  REJECT_STALE: '陈帖归档',
 }
 
 export const Trans = (key) => I18nDict[key] || key

@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 
-import { TActive } from '@/spec'
 import css, { theme } from '@/utils/css'
 
 import { SelectItem as SelectItemBase } from '.'

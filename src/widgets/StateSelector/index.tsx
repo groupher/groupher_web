@@ -1,8 +1,12 @@
 import { FC, memo, useState, Fragment } from 'react'
 import dynamic from 'next/dynamic'
 
+import type { TArticleState } from '@/spec'
+
 import Tooltip from '@/widgets/Tooltip'
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
+
+import ActiveState from './ActiveState'
 
 import { Wrapper, Label } from './styles'
 
@@ -15,9 +19,9 @@ type TProps = {
 const StateSelector: FC<TProps> = ({ state = 'todo' }) => {
   const [show, setShow] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [activeState, setActiveState] = useState('todo')
+  const [activeState, setActiveState] = useState(null)
 
-  const handleSelect = (state: string) => {
+  const handleSelect = (state: TArticleState) => {
     setActiveState(state)
   }
 
@@ -44,8 +48,7 @@ const StateSelector: FC<TProps> = ({ state = 'todo' }) => {
         }
       >
         <DropdownButton>
-          active
-          {/* <ActiveState activeTag={activeTag} /> */}
+          <ActiveState activeState={activeState} />
         </DropdownButton>
       </Tooltip>
     </Wrapper>
