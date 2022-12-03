@@ -12,7 +12,7 @@ export { SelectItem } from '.'
 
 export const Wrapper = styled.div`
   ${css.flexColumn()};
-  min-width: 220px;
+  min-width: 190px;
 `
 const iconBase = `
   ${css.size(18)};
