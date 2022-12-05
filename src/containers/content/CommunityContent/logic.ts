@@ -4,7 +4,7 @@ import { values, includes } from 'ramda'
 import type { TThread } from '@/spec'
 import { ERR, EVENT, ARTICLE_THREAD } from '@/constant'
 
-import { plural } from '@/utils/helper'
+import { plural } from '@/utils/fmt'
 import { send, errRescue } from '@/utils/signal'
 import asyncSuit from '@/utils/async'
 import { buildLog } from '@/utils/logger'

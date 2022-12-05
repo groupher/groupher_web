@@ -1,6 +1,6 @@
 import { FC, Fragment, memo } from 'react'
 
-import { cutRest } from '@/utils/helper'
+import { cutRest } from '@/utils/fmt'
 import { Hint, LinkIcon, Source, PopHint } from './styles/external_link'
 import Tooltip from '@/widgets/Tooltip'
 

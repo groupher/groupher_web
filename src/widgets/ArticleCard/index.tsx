@@ -4,7 +4,7 @@ import useMobileDetect from '@groupher/use-mobile-detect-hook'
 import type { TArticle, TThread } from '@/spec'
 import { SIZE, THREAD, EVENT } from '@/constant'
 
-import { cutRest } from '@/utils/helper'
+import { cutRest } from '@/utils/fmt'
 import { send } from '@/utils/signal'
 import DigestSentence from '@/widgets/DigestSentence'
 import { Br, SpaceGrow } from '@/widgets/Common'

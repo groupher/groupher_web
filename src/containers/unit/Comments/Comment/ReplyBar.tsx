@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import type { TComment } from '@/spec'
 import { ICON } from '@/config'
-import { cutRest } from '@/utils/helper'
+import { cutRest } from '@/utils/fmt'
 
 import { SpaceGrow } from '@/widgets/Common'
 import {

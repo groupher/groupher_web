@@ -6,7 +6,7 @@ import { ANCHOR, EVENT, ERR } from '@/constant'
 
 import asyncSuit from '@/utils/async'
 import BStore from '@/utils/bstore'
-import { titleCase } from '@/utils/helper'
+import { titleCase } from '@/utils/fmt'
 import { errRescue, authWarn } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 import { scrollIntoEle } from '@/utils/dom'

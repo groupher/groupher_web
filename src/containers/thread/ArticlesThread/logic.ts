@@ -6,7 +6,7 @@ import { TYPE, EVENT, ERR, THREAD } from '@/constant'
 import { scrollToHeader } from '@/utils/dom'
 import asyncSuit from '@/utils/async'
 import { buildLog } from '@/utils/logger'
-import { plural } from '@/utils/helper'
+import { plural } from '@/utils/fmt'
 import { errRescue, previewArticle, authWarn } from '@/utils/signal'
 import { matchPagedArticles, matchArticleUpvotes } from '@/utils/macros'
 

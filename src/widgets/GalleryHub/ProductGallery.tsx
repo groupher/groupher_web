@@ -8,7 +8,8 @@ import { FC, memo } from 'react'
 
 import type { TGallery } from '@/spec'
 import { ICON } from '@/config'
-import { cutRest, getRandomInt } from '@/utils/helper'
+import { getRandomInt } from '@/utils/helper'
+import { cutRest } from '@/utils/fmt'
 import { buildLog } from '@/utils/logger'
 
 import Linker from '@/widgets/Linker'

@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import type { TArticle, TArticleThread, TPagedArticles } from '@/spec'
 import { TYPE, ERR, EVENT } from '@/constant'
 
-import { titleCase, plural } from '@/utils/helper'
+import { titleCase, plural } from '@/utils/fmt'
 import { previewArticle, errRescue } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 import asyncSuit from '@/utils/async'

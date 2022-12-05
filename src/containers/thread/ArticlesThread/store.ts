@@ -23,7 +23,7 @@ import type {
 import { TYPE } from '@/constant'
 import { markStates, toJS } from '@/utils/mobx'
 import { nilOrEmpty } from '@/utils/validator'
-import { plural } from '@/utils/helper'
+import { plural } from '@/utils/fmt'
 import { PagedPosts, ArticlesFilter, emptyPagi } from '@/model'
 
 const ArticlesThread = T.model('ArticlesThread', {

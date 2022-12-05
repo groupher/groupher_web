@@ -6,7 +6,7 @@ import { FC, memo } from 'react'
 
 import type { TSimpleUser, TEmotionType } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import { cutRest } from '@/utils/helper'
+import { cutRest } from '@/utils/fmt'
 
 import EmotionIcon from './EmotionIcon'
 

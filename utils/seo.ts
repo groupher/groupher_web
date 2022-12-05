@@ -3,7 +3,7 @@ import { SITE_URL } from '@/config'
 import type { TCommunity, TThread, TArticle, TUser } from '@/spec'
 import { ROUTE, THREAD } from '@/constant'
 
-import { plural } from './helper'
+import { plural } from './fmt'
 
 const SLOGAN = '来为你心爱的产品建立一个社区吧。'
 

@@ -3,7 +3,7 @@ import { FC } from 'react'
 import type { TPost } from '@/spec'
 import { UPVOTE_LAYOUT, ARTICLE_CAT } from '@/constant'
 
-import { cutRest } from '@/utils/helper'
+import { cutRest } from '@/utils/fmt'
 
 import ArticleCatState from '@/widgets/ArticleCatState'
 import Upvote from '@/widgets/Upvote'

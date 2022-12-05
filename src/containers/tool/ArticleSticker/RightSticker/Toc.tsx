@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 
 import { ICON } from '@/config'
-// import { cutRest } from '@/utils/helper'
+// import { cutRest } from '@/utils/fmt'
 import {
   Wrapper,
   HeaderWrapper,

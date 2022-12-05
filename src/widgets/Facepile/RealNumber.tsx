@@ -1,6 +1,6 @@
 import { FC, memo, Fragment } from 'react'
 
-import { prettyNum } from '@/utils/helper'
+import { prettyNum } from '@/utils/fmt'
 import { Wrapper, HighlightNumber } from './styles/real_number'
 
 import type { TProps as TAvatarsProps } from './index'

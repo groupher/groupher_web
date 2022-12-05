@@ -1,35 +1,11 @@
-import {
-  curry,
-  reduce,
-  keys,
-  sort,
-  uniq,
-  tap,
-  endsWith,
-  includes,
-  findIndex,
-} from 'ramda'
-import { limit, length } from 'stringz'
+import { curry, reduce, keys, sort, uniq, tap, includes } from 'ramda'
 
-import type {
-  TWindow,
-  TToastType,
-  TToastOption,
-  TTabItem,
-  TArticleState,
-} from '@/spec'
+import type { TWindow, TToastType, TToastOption, TArticleState } from '@/spec'
 
 import hotToast from 'react-hot-toast'
 
 import { TAG_COLOR_ORDER } from '@/config'
-import {
-  THREAD,
-  COMMUNITY_MAP_ALIAS,
-  DEFAULT_TOAST_OPTIONS,
-  ARTICLE_STATE,
-} from '@/constant'
-
-import { isString } from './validator'
+import { DEFAULT_TOAST_OPTIONS, ARTICLE_STATE } from '@/constant'
 
 type TSORTABLE_ITEMS = {
   color?: string
@@ -80,63 +56,6 @@ const log =
 
 // reference: https://blog.carbonfive.com/2017/12/20/easy-pipeline-debugging-with-curried-console-log/
 export const Rlog = (arg = 'Rlog: ') => tap(log(arg))
-
-/**
- * cut extra length of a string
- * 截取固定长度字符串，并添加省略号（...）
- * @param {*string} str 需要进行处理的字符串，可含汉字
- * @param {*number} len 需要显示多少个汉字，两个英文字母相当于一个汉字
- */
-export const cutRest = (str: string, len = 20): string => {
-  if (!str || !isString(str)) return '...'
-  return len >= length(str) ? str : `${limit(str, len, '')}...`
-}
-
-/**
- * prettyNum with human format
- * @see @link https://stackoverflow.com/questions/9461621/how-to-format-a-number-as-2-5k-if-a-thousand-or-more-otherwise-900-in-javascrip
- * e.g:
- * console.log(prettyNum(1200)) // => 1.2k
- *
- * @param {number} num
- * @param {number} [digits=1]
- * @returns {string}
- */
-export const prettyNum = (num: number, digits = 1): string => {
-  const si = [
-    { value: 1, symbol: '' },
-    { value: 1e3, symbol: 'k' },
-    { value: 1e6, symbol: 'M' },
-    { value: 1e9, symbol: 'G' },
-    { value: 1e12, symbol: 'T' },
-    { value: 1e15, symbol: 'P' },
-    { value: 1e18, symbol: 'E' },
-  ]
-  const rx = /\.0+$|(\.[0-9]*[1-9])0+$/
-  let i
-  for (i = si.length - 1; i > 0; i -= 1) {
-    if (num >= si[i].value) {
-      break
-    }
-  }
-  /* eslint-disable */
-  if (num < 1000) {
-    return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol
-  }
-  return (
-    (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol + '+'
-  )
-  /* eslint-enable  */
-}
-
-/**
- * number with commas foramt
- * @see @link https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
- *
- * @param {*} x
- */
-export const numberWithCommas = (x: number): string =>
-  x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
 /**
  * count both chinese-word and english-words
@@ -291,15 +210,6 @@ export const groupByKey = (array, key) => {
   }, {})
 }
 
-/**
- *  titlize a string
- */
-export const titleCase = (str: string): string => {
-  return str.replace(/\w\S*/g, (t) => {
-    return t.charAt(0).toUpperCase() + t.substr(1).toLowerCase()
-  })
-}
-
 type TShareParam = {
   url?: string
   title?: string
@@ -350,72 +260,6 @@ export const siteBirthDay = (birthday: string): string => {
   const days = daysBetween(new Date(birthday), Date.now()) - 365 * year
 
   return `${year}年${days}天`
-}
-
-type TCovert = 'titleCase' | 'upperCase' | null
-const doCovert = (value: string, opt: TCovert): string => {
-  switch (opt) {
-    case 'titleCase': {
-      return titleCase(value)
-    }
-    case 'upperCase': {
-      return value.toUpperCase()
-    }
-    default: {
-      return value
-    }
-  }
-}
-
-/**
- * mainly used for url -> thread convert
- *
- * e.g:
- * posts -> post
- */
-export const singular = (value: string, opt = null): string => {
-  switch (value) {
-    default: {
-      const singularValue = endsWith('s', value) ? value.slice(0, -1) : value
-      return doCovert(singularValue, opt)
-    }
-  }
-}
-
-/**
- * mainly used for thread -> url convert
- *
- * e.g:
- * post -> posts
- */
-export const plural = (value: string, opt = null): string => {
-  if (
-    includes(value, [
-      THREAD.ACCOUNT,
-      THREAD.CHANGELOG,
-      THREAD.HELP,
-      THREAD.KANBAN,
-      THREAD.ABOUT,
-      THREAD.DASHBOARD,
-    ])
-  ) {
-    return doCovert(value, opt)
-  }
-
-  return doCovert(`${value}s`, opt)
-}
-
-// 给 Thread 的 Map 取别名
-export const aliasMapIfNeed = (
-  communityRaw: string,
-  threads: TTabItem[],
-): TTabItem[] => {
-  if (includes(communityRaw, keys(COMMUNITY_MAP_ALIAS))) {
-    const index = findIndex((t) => t.raw === 'map', threads)
-    if (index >= 0) threads[index].title = COMMUNITY_MAP_ALIAS[communityRaw]
-  }
-
-  return threads
 }
 
 /**

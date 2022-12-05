@@ -11,7 +11,8 @@ import { TYPE, ARTICLE_THREAD, DASHBOARD_DESC_LAYOUT } from '@/constant'
 
 import { markStates, toJS } from '@/utils/mobx'
 import { lockPage, unlockPage } from '@/utils/dom'
-import { Global, plural } from '@/utils/helper'
+import { Global } from '@/utils/helper'
+import { plural } from '@/utils/fmt'
 import { WIDTH, mediaBreakPoints } from '@/utils/css/metric'
 import { User } from '@/model'
 

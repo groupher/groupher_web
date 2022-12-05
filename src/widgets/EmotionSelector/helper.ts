@@ -2,7 +2,7 @@ import { includes, reject, keys, values } from 'ramda'
 
 import { EMOTION } from '@/constant'
 import type { TEmotion, TEmotionType } from '@/spec'
-import { titleCase } from '@/utils/helper'
+import { titleCase } from '@/utils/fmt'
 
 export const getEmotionName = (item: TEmotion): TEmotionType => {
   const eCountKey = keys(item)[0] as string

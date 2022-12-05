@@ -17,7 +17,7 @@ import type {
 import { TYPE, ARTICLE_THREAD } from '@/constant'
 import { buildLog } from '@/utils/logger'
 import { markStates, toJS } from '@/utils/mobx'
-import { plural } from '@/utils/helper'
+import { plural } from '@/utils/fmt'
 
 import { PagedPosts, emptyPagi } from '@/model'
 

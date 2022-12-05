@@ -6,7 +6,7 @@ import { FC, memo } from 'react'
 
 import type { TSizeSM, TC11NLayout } from '@/spec'
 import { HCN, ANCHOR, THREAD, C11N, SIZE } from '@/constant'
-import { sortByIndex, aliasMapIfNeed } from '@/utils/helper'
+import { sortByIndex } from '@/utils/helper'
 import { buildLog } from '@/utils/logger'
 
 import type { TTabItem } from '../spec'
@@ -32,8 +32,7 @@ const TabBar: FC<TProps> = ({
   communityRaw = HCN,
   size = SIZE.MEDIUM,
 }) => {
-  const aliasSource = aliasMapIfNeed(communityRaw, source)
-  const sortedSource = sortByIndex(aliasSource)
+  const sortedSource = sortByIndex(source)
 
   return (
     <div id={ANCHOR.GLOBAL_TABBER_ID}>

@@ -4,7 +4,7 @@ import { EVENT, ERR, ARTICLE_THREAD } from '@/constant'
 import asyncSuit from '@/utils/async'
 import { buildLog } from '@/utils/logger'
 import { errRescue } from '@/utils/signal'
-import { singular } from '@/utils/helper'
+import { singular } from '@/utils/fmt'
 
 import type { TCommunity } from '@/spec'
 import type { TStore } from './store'

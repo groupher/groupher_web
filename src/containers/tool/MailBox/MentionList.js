@@ -3,7 +3,7 @@ import { isEmpty } from 'ramda'
 
 import EmptyLabel from '@/widgets/EmptyLabel'
 
-import { cutRest } from '@/utils/helper'
+import { cutRest } from '@/utils/fmt'
 import {
   Wrapper,
   ListsWrapper,

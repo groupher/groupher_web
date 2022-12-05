@@ -4,7 +4,7 @@ import type { TID } from '@/spec'
 import { TYPE, EVENT, ERR, ARTICLE_THREAD } from '@/constant'
 
 import asyncSuit from '@/utils/async'
-import { singular } from '@/utils/helper'
+import { singular } from '@/utils/fmt'
 import { errRescue, listUsers } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 

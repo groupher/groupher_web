@@ -17,9 +17,6 @@ export {
   Global,
   mapKeys,
   getRandomInt,
-  cutRest,
-  prettyNum,
-  numberWithCommas,
   sortByColor,
   sortByIndex,
   Rlog,
@@ -30,9 +27,16 @@ export {
   isCypressRunning,
   findDeepMatch,
   groupByKey,
+} from './helper'
+
+export {
   titleCase,
   singular,
-} from './helper'
+  plural,
+  cutRest,
+  prettyNum,
+  numberWithCommas,
+} from './fmt'
 
 export { errorForHuman, ssrRescue } from './errors'
 
