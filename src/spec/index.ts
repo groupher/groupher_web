@@ -119,6 +119,7 @@ export type {
   TGlobalLayout,
   TCommentsState,
   TArticleCat,
+  TArticlePubSelector,
   TArticleCatReject,
   TArticleState,
 } from './article'

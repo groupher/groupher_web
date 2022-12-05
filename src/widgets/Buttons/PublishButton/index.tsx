@@ -9,7 +9,7 @@ import dynamic from 'next/dynamic'
 // import Router from 'next/router'
 import { isEmpty } from 'ramda'
 
-import type { TThread, TPublishMode } from '@/spec'
+import type { TThread, TPublishMode, TArticleCat } from '@/spec'
 import { THREAD, HCN, SVG, PUBLISH_MODE } from '@/constant'
 
 import Tooltip from '@/widgets/Tooltip'
@@ -36,6 +36,7 @@ type TProps = {
   text?: string
   mode?: TPublishMode
   onClick?: () => void
+  onMenuSelect?: (cat: TArticleCat) => void
 }
 
 const PublishButton: FC<TProps> = ({
@@ -44,6 +45,7 @@ const PublishButton: FC<TProps> = ({
   text = getText(thread),
   mode = PUBLISH_MODE.DEFAULT,
   onClick = log,
+  onMenuSelect = log,
 }) => {
   const [show, setShow] = useState(false)
   const accountInfo = useAccount()
@@ -74,7 +76,7 @@ const PublishButton: FC<TProps> = ({
             offset={offset as [number, number]}
             content={
               <Fragment>
-                {show && <FullPanel onSelect={console.log} activeCat={null} />}
+                {show && <FullPanel onSelect={onMenuSelect} activeCat={null} />}
               </Fragment>
             }
           >

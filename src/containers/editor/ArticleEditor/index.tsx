@@ -2,10 +2,10 @@
  * ArticleEditor
  */
 
-import { FC, useState } from 'react'
+import { FC } from 'react'
 
-import type { TEditMode, TMetric, TArticleCat } from '@/spec'
-import { METRIC, ARTICLE_CAT, ARTICLE_CAT_MODE } from '@/constant'
+import type { TEditMode, TMetric } from '@/spec'
+import { METRIC, ARTICLE_CAT_MODE } from '@/constant'
 
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
@@ -27,7 +27,13 @@ import Footer from './Footer'
 // import PublishRules from './PublishRules'
 // import Settings from './Settings'
 import { Wrapper, InnerWrapper, ContentWrapper, FuncRow } from './styles'
-import { useInit, editOnChange, changeCommunity, onTagSelect } from './logic'
+import {
+  useInit,
+  editOnChange,
+  changeCommunity,
+  onTagSelect,
+  catOnChange,
+} from './logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:ArticleEditor')
@@ -44,7 +50,7 @@ const ArticleEditorContainer: FC<TProps> = ({
   metric = METRIC.ARTICLE_EDITOR,
 }) => {
   useInit(store)
-  const [activeCat, setActiveCat] = useState<TArticleCat>(ARTICLE_CAT.FEATURE)
+  const { activeCat } = store
 
   const {
     isArchived,
@@ -93,7 +99,7 @@ const ArticleEditorContainer: FC<TProps> = ({
             <CatSelector
               mode={ARTICLE_CAT_MODE.FULL}
               activeCat={activeCat}
-              onSelect={setActiveCat}
+              onSelect={catOnChange}
             />
             <Space left={20} />
             <StateSelector />

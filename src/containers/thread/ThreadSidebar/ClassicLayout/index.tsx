@@ -12,7 +12,7 @@ import type { TThread, TCommunity } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { send } from '@/utils/signal'
 import { mockUsers } from '@/utils/mock'
-import { EVENT } from '@/constant'
+import { ARTICLE_CAT, EVENT } from '@/constant'
 
 import Sticky from '@/widgets/Sticky'
 import { SpaceGrow, Br } from '@/widgets/Common'
@@ -93,7 +93,8 @@ const ClassicLayout: FC<TProps> = ({
               thread={thread}
               community={community.raw}
               text="参与讨论"
-              onClick={onPublish}
+              onClick={() => onPublish(ARTICLE_CAT.FEATURE)}
+              onMenuSelect={onPublish}
             />
           </PublishWrapper>
 

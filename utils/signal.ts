@@ -16,6 +16,7 @@ import type {
   TTag,
   TCommunitySetterStyle,
   TReportType,
+  TArticlePubSelector,
 } from '@/spec'
 
 import {
@@ -122,6 +123,13 @@ export const callGEditor = (): void => {
 
 export const callAuth = (): void => {
   send(EVENT.AUTH, {})
+}
+
+/**
+ * sync selector from publish button to g-editor
+ */
+export const callSyncSelector = (data: TArticlePubSelector): void => {
+  send(EVENT.ARTICLE_SELECTOR, { data })
 }
 
 export const upvoteOnArticleList = (

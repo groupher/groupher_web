@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import Router from 'next/router'
 import { values } from 'ramda'
 
-import type { TEditValue, TCommunity, TTag } from '@/spec'
+import type { TEditValue, TCommunity, TTag, TArticleCat } from '@/spec'
 import { HCN, ERR, EVENT } from '@/constant'
 import { buildLog } from '@/utils/logger'
 import asyncSuit from '@/utils/async'
@@ -104,6 +104,10 @@ export const setWordsCountState = (wordsCountReady: boolean): void => {
   store?.mark({ wordsCountReady })
 }
 
+export const catOnChange = (activeCat: TArticleCat) => {
+  store.mark({ activeCat })
+}
+
 // ###############################
 // init & uninit handlers
 // ###############################
@@ -138,7 +142,12 @@ const DataSolver = [
   {
     match: asyncRes(EVENT.ARTICLE_SELECTOR),
     action: (data) => {
-      console.log('## recived fuck: ', data)
+      console.log('## the data: ', data)
+      const {
+        data: { cat, tag },
+      } = data[EVENT.ARTICLE_SELECTOR]
+
+      cat && catOnChange(cat)
     },
   },
 ]

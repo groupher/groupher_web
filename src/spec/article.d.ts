@@ -208,3 +208,8 @@ export type TArticleState =
   | TArticleCatReject
 
 export type TArticleCat = 'ALL' | 'BUG' | 'FEATURE' | 'QUESTION' | 'OTHER'
+
+export type TArticlePubSelector = {
+  cat?: TArticleCat | null
+  tag?: TTag | null
+}

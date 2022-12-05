@@ -1,11 +1,16 @@
 import { useEffect } from 'react'
 // import { } from 'ramda'
 
-import type { TID } from '@/spec'
+import type { TArticleCat, TID } from '@/spec'
 import { TYPE, EVENT, ERR, ARTICLE_THREAD } from '@/constant'
 
 import asyncSuit from '@/utils/async'
-import { errRescue, listUsers, callGEditor, send } from '@/utils/signal'
+import {
+  errRescue,
+  listUsers,
+  callGEditor,
+  callSyncSelector,
+} from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 
 import type { TStore } from './store'
@@ -21,10 +26,10 @@ let store: TStore | undefined
 /* eslint-disable-next-line */
 const log = buildLog('L:ThreadSidebar')
 
-export const onPublish = () => {
+export const onPublish = (cat: TArticleCat) => {
   callGEditor()
   setTimeout(() => {
-    send(EVENT.ARTICLE_SELECTOR, { type: 'hello world' })
+    callSyncSelector({ cat })
   }, 500)
 }
 
