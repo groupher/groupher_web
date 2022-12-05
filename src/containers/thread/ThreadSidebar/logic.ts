@@ -28,9 +28,7 @@ const log = buildLog('L:ThreadSidebar')
 
 export const onPublish = (cat: TArticleCat) => {
   callGEditor()
-  setTimeout(() => {
-    callSyncSelector({ cat })
-  }, 500)
+  setTimeout(() => callSyncSelector({ cat, tag: store.activeTag }), 500)
 }
 
 export const subscribeCommunity = (communityId: TID): void => {

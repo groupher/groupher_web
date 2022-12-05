@@ -50,7 +50,7 @@ const ArticleEditorContainer: FC<TProps> = ({
   metric = METRIC.ARTICLE_EDITOR,
 }) => {
   useInit(store)
-  const { activeCat } = store
+  const { activeCat, activeTagData } = store
 
   const {
     isArchived,
@@ -94,7 +94,7 @@ const ArticleEditorContainer: FC<TProps> = ({
           <TitleInput title={title} placeholder={texts.holder.title} />
 
           <FuncRow>
-            <TagSelector groupedTags={groupedTags} />
+            <TagSelector groupedTags={groupedTags} activeTag={activeTagData} />
             <Space left={20} />
             <CatSelector
               mode={ARTICLE_CAT_MODE.FULL}

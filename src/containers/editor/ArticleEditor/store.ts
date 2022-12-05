@@ -16,6 +16,7 @@ import type {
   TAccount,
   TEditMode,
   TGroupedTags,
+  TTag,
 } from '@/spec'
 
 import { markStates, toJS } from '@/utils/mobx'
@@ -54,6 +55,8 @@ const ArticleEditor = T.model('ArticleEditor', {
     T.enumeration(values(ARTICLE_CAT)),
     ARTICLE_CAT.FEATURE,
   ),
+
+  activeTag: T.maybeNull(Tag),
 })
   .views((self) => ({
     get isLogin(): boolean {
@@ -141,6 +144,9 @@ const ArticleEditor = T.model('ArticleEditor', {
       )
 
       return { ...basicStatus, mode: mode as TEditMode }
+    },
+    get activeTagData(): TTag | null {
+      return toJS(self.activeTag)
     },
   }))
   .actions((self) => ({

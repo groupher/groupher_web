@@ -108,6 +108,10 @@ export const catOnChange = (activeCat: TArticleCat) => {
   store.mark({ activeCat })
 }
 
+export const tagOnChange = (activeTag: TTag) => {
+  store.mark({ activeTag })
+}
+
 // ###############################
 // init & uninit handlers
 // ###############################
@@ -142,12 +146,12 @@ const DataSolver = [
   {
     match: asyncRes(EVENT.ARTICLE_SELECTOR),
     action: (data) => {
-      console.log('## the data: ', data)
       const {
         data: { cat, tag },
       } = data[EVENT.ARTICLE_SELECTOR]
 
       cat && catOnChange(cat)
+      tag?.id !== '' && tagOnChange(tag)
     },
   },
 ]
