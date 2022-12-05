@@ -5,7 +5,7 @@ import type { TArticle, TC11NLayout, TMetric } from '@/spec'
 import { GITHUB, ABOUT_LINK } from '@/config'
 import { METRIC, ROUTE } from '@/constant'
 
-import { joinUS } from '@/utils/helper'
+import { joinUS } from '@/utils/signal'
 
 import TopInfo from './TopInfo'
 import BottomInfo from './BottomInfo'

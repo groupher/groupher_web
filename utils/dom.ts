@@ -206,3 +206,36 @@ export const isDescendant = (
   }
   return false
 }
+
+/**
+ * handle click and doubleClick safely
+ * see: https://github.com/facebook/react/issues/3185#issuecomment-75138124
+ *
+ * @param {function} onClick A callback function for single click events
+ * @param {function} onDoubleClick A callback function for double click events
+                     scroll to header by default
+ * @param {number} [latency=300] The amount of time (in milliseconds) to
+ *                 wait before differentiating a single from a double click
+ * example:
+ * before: onClick={() => openMenu(TYPE.MM_TYPE.GLOBAL_MENU)}
+ * after:  onClick={multiClick(openMenu(TYPE.MM_TYPE.GLOBAL_MENU))}
+ */
+export const multiClick = (
+  onClick: (HTMLElementEventMap) => void,
+  onDoubleClick: (e: HTMLElementEventMap) => void = scrollToHeader,
+  latency = 250,
+): ((event: HTMLElementEventMap) => void) => {
+  let timeoutID = null
+
+  return (event) => {
+    if (!timeoutID) {
+      timeoutID = setTimeout(() => {
+        onClick?.(event)
+        timeoutID = null
+      }, latency)
+    } else {
+      timeoutID = clearTimeout(timeoutID)
+      onDoubleClick?.(event)
+    }
+  }
+}

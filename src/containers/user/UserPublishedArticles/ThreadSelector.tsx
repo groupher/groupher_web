@@ -3,7 +3,7 @@ import { reduce, add, values } from 'ramda'
 
 import type { TUser, TArticleThread } from '@/spec'
 import { ARTICLE_THREAD } from '@/constant'
-import { titleCase, plural } from '@/utils/helper'
+import { titleCase, plural } from '@/utils/fmt'
 import { Trans } from '@/utils/i18n'
 import { SpaceGrow } from '@/widgets/Common'
 

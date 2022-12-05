@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 
 import { EVENT } from '@/constant'
 
-import { authWarn, addCollection } from '@/utils/helper'
+import { authWarn, addCollection } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 import asyncSuit from '@/utils/async'
 import { matchArticleUpvotes } from '@/utils/macros'
@@ -12,10 +12,7 @@ import S from './schema'
 import type { TStore } from './store'
 
 const { SR71, $solver, asyncRes } = asyncSuit
-const sr71$ = new SR71({
-  // @ts-ignore
-  receive: [EVENT.WORKS_UPVOTE],
-})
+const sr71$ = new SR71()
 
 let sub$ = null
 let store: TStore | undefined
@@ -62,13 +59,6 @@ const DataSolver = [
     match: asyncRes('pagedCommentsParticipants'),
     action: ({ pagedCommentsParticipants }) => {
       store.mark({ pagedCommentsParticipants })
-    },
-  },
-  {
-    match: asyncRes(EVENT.WORKS_UPVOTE),
-    action: (data) => {
-      const { viewerHasUpvoted } = data[EVENT.WORKS_UPVOTE].data
-      handleUpvote(viewerHasUpvoted)
     },
   },
 ]

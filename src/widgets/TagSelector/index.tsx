@@ -13,15 +13,16 @@ const FilterPanel = dynamic(() => import('./FilterPanel'))
 
 type TProps = {
   groupedTags: TGroupedTags
+  activeTag: TTag | null
+  onSelect?: (tag: TTag) => void
 }
 
-const TagSelector: FC<TProps> = ({ groupedTags }) => {
+const TagSelector: FC<TProps> = ({ groupedTags, activeTag, onSelect }) => {
   const [show, setShow] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [activeTag, setActiveTag] = useState({ raw: '' })
 
   const handleSelect = (tag: TTag) => {
-    setActiveTag(tag)
+    onSelect(tag)
   }
 
   return (

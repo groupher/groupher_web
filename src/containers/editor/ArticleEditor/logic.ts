@@ -2,12 +2,13 @@ import { useEffect } from 'react'
 import Router from 'next/router'
 import { values } from 'ramda'
 
-import type { TEditValue, TCommunity, TTag } from '@/spec'
-import { HCN, ERR } from '@/constant'
+import type { TEditValue, TCommunity, TTag, TArticleCat } from '@/spec'
+import { HCN, ERR, EVENT } from '@/constant'
 import { buildLog } from '@/utils/logger'
 import asyncSuit from '@/utils/async'
 import { getParameterByName } from '@/utils/route'
-import { titleCase, errRescue } from '@/utils/helper'
+import { titleCase } from '@/utils/fmt'
+import { errRescue } from '@/utils/signal'
 import { updateEditing } from '@/utils/mobx'
 import { matchArticles } from '@/utils/macros'
 
@@ -15,7 +16,10 @@ import type { TStore } from './store'
 import S from './schema'
 
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
-const sr71$ = new SR71()
+const sr71$ = new SR71({
+  // @ts-ignore
+  receive: [EVENT.ARTICLE_SELECTOR],
+})
 
 let sub$ = null
 let store: TStore | undefined
@@ -100,6 +104,14 @@ export const setWordsCountState = (wordsCountReady: boolean): void => {
   store?.mark({ wordsCountReady })
 }
 
+export const catOnChange = (activeCat: TArticleCat) => {
+  store.mark({ activeCat })
+}
+
+export const tagOnChange = (activeTag: TTag) => {
+  store.mark({ activeTag })
+}
+
 // ###############################
 // init & uninit handlers
 // ###############################
@@ -124,28 +136,23 @@ const DataSolver = [
     action: handleMutateRes,
   },
   {
-    match: asyncRes('createJob'),
-    action: handleMutateRes,
-  },
-  {
-    match: asyncRes('createRadar'),
-    action: handleMutateRes,
-  },
-  {
     match: asyncRes('updatePost'),
-    action: handleMutateRes,
-  },
-  {
-    match: asyncRes('updateJob'),
-    action: handleMutateRes,
-  },
-  {
-    match: asyncRes('updateRadar'),
     action: handleMutateRes,
   },
   {
     match: asyncRes('community'),
     action: ({ community }) => store.mark({ community }),
+  },
+  {
+    match: asyncRes(EVENT.ARTICLE_SELECTOR),
+    action: (data) => {
+      const {
+        data: { cat, tag },
+      } = data[EVENT.ARTICLE_SELECTOR]
+
+      cat && catOnChange(cat)
+      tag?.id !== '' && tagOnChange(tag)
+    },
   },
 ]
 

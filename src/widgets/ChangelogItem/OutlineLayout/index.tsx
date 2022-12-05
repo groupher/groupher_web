@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import { buildLog } from '@/utils/logger'
-import { cutRest } from '@/utils/helper'
+import { cutRest } from '@/utils/fmt'
 
 import Cover from './Cover'
 

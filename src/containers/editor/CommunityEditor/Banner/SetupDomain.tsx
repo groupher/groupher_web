@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 import { isEmpty } from 'ramda'
 
 import { SIZE } from '@/constant'
-import { cutRest } from '@/utils/helper'
+import { cutRest } from '@/utils/fmt'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'

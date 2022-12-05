@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import { EVENT, THREAD } from '@/constant'
-import { send } from '@/utils/helper'
+import { send } from '@/utils/signal'
 
 import {
   Wrapper,

@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 import type { TBannerNotifyLayout, TColorName } from '@/spec'
 
 import { BANNER_NOTIFY_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant'
-import { callDashboardDesc } from '@/utils/helper'
+import { callDashboardDesc } from '@/utils/signal'
 
 import { Row, Br, Space, SpaceGrow, Inline } from '@/widgets/Common'
 import ColorSelector from '@/widgets/ColorSelector'

@@ -5,7 +5,7 @@
 import { FC, memo } from 'react'
 
 import type { TAccount, TUser } from '@/spec'
-import { cutRest } from '@/utils/helper'
+import { cutRest } from '@/utils/fmt'
 
 import {
   Wrapper,

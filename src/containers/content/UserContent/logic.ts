@@ -4,7 +4,7 @@ import type { TID, TThread, TUser } from '@/spec'
 import { TYPE, EVENT, ERR } from '@/constant'
 
 import asyncSuit from '@/utils/async'
-import { send, errRescue } from '@/utils/helper'
+import { send, errRescue } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 
 import type { TStore } from './store'

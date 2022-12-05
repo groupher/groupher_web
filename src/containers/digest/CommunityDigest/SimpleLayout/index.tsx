@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import type { TThread, TCommunity, TMetric } from '@/spec'
 import { EVENT } from '@/constant'
-import { send } from '@/utils/helper'
+import { send } from '@/utils/signal'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
 

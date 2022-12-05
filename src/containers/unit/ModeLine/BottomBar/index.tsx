@@ -4,7 +4,7 @@ import { includes } from 'ramda'
 
 import type { TArticle, TCommunity, TMetric, TModelineType } from '@/spec'
 import { METRIC, TYPE } from '@/constant'
-import { multiClick } from '@/utils/helper'
+import { multiClick } from '@/utils/dom'
 
 import {
   MenuBlock,

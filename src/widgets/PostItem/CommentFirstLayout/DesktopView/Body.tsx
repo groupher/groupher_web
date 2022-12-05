@@ -5,7 +5,7 @@ import TimeAgo from 'timeago-react'
 
 import type { TCommunity, TPost } from '@/spec'
 import { EVENT, ARTICLE_CAT, ARTICLE_STATE } from '@/constant'
-import { send, changeToCommunity } from '@/utils/helper'
+import { send, changeToCommunity } from '@/utils/signal'
 
 import { Space, SpaceGrow } from '@/widgets/Common'
 // import CommunityCard from '@/widgets/Cards/CommunityCard'

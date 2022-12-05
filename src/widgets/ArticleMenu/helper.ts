@@ -3,7 +3,7 @@ import Router from 'next/router'
 import type { TArticle } from '@/spec'
 import { EVENT } from '@/constant'
 
-import { moveToCommunity, mirrorToCommunity, setTag } from '@/utils/helper'
+import { moveToCommunity, mirrorToCommunity, setTag } from '@/utils/signal'
 
 export const hendleMenu = (key: string, article: TArticle): void => {
   switch (key) {

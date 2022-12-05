@@ -2,7 +2,7 @@ import { types as T } from 'mobx-state-tree'
 import { values, reduce, merge } from 'ramda'
 
 import { EMOTION } from '@/constant'
-import { titleCase } from '@/utils/helper'
+import { titleCase } from '@/utils/fmt'
 
 import { SimpleUser } from './User'
 

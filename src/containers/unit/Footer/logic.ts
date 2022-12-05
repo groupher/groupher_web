@@ -4,7 +4,8 @@ import type { TMetric } from '@/spec'
 import { EVENT } from '@/constant'
 
 import asyncSuit from '@/utils/async'
-import { send, Global, sessionChanged } from '@/utils/helper'
+import { Global } from '@/utils/helper'
+import { send, sessionChanged } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 import S from './schema'
 

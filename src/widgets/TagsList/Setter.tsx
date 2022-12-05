@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TCommunity, TThread, TTag } from '@/spec'
-import { setArticleTag } from '@/utils/helper'
+import { setArticleTag } from '@/utils/signal'
 import {
   Wrapper,
   EmptyWrapper,

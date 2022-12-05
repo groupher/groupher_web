@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import type { TScrollDirection } from '@/spec'
 import { EVENT, ERR } from '@/constant'
 import asyncSuit from '@/utils/async'
-import { send, errRescue } from '@/utils/helper'
+import { send, errRescue } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 
 import type { TStore } from './store'
@@ -54,7 +54,7 @@ export const loadCommunity = (): void => {
 }
 
 export const handleWorksUpvote = (viewerHasUpvoted: boolean): void => {
-  send(EVENT.WORKS_UPVOTE, { data: { viewerHasUpvoted } })
+  //
 }
 
 // ###############################

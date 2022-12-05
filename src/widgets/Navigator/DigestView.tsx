@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TMetric } from '@/spec'
-import { changeToCommunity } from '@/utils/helper'
+import { changeToCommunity } from '@/utils/signal'
 
 import { METRIC } from '@/constant'
 

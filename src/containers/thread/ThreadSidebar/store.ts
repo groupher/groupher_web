@@ -5,7 +5,14 @@
 import { types as T, getParent, Instance } from 'mobx-state-tree'
 // import {} from 'ramda'
 
-import type { TAccount, TC11N, TCommunity, TThread, TRootStore } from '@/spec'
+import type {
+  TAccount,
+  TC11N,
+  TCommunity,
+  TThread,
+  TRootStore,
+  TTag,
+} from '@/spec'
 import { markStates, toJS } from '@/utils/mobx'
 import { buildLog } from '@/utils/logger'
 
@@ -44,6 +51,12 @@ const ThreadSidebar = T.model('ThreadSidebar', {})
 
     get realtimeVisitors(): number {
       return 0
+    },
+
+    get activeTag(): TTag {
+      const root = getParent(self) as TRootStore
+
+      return root.tagsBar.activeTagData
     },
   }))
   .actions((self) => ({

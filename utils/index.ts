@@ -12,32 +12,31 @@ export { buildLog, log } from './logger'
 
 export { default as uid } from './uid'
 
+export { send, joinUS, closeDrawer, report, errRescue } from './signal'
 export {
   Global,
-  send,
   mapKeys,
   getRandomInt,
-  cutRest,
-  prettyNum,
-  numberWithCommas,
   sortByColor,
   sortByIndex,
   Rlog,
   countWords,
-  joinUS,
-  closeDrawer,
-  report,
-  errRescue,
   debounce,
   extractMentions,
   extractAttachments,
   isCypressRunning,
-  multiClick,
   findDeepMatch,
   groupByKey,
+} from './helper'
+
+export {
   titleCase,
   singular,
-} from './helper'
+  plural,
+  cutRest,
+  prettyNum,
+  numberWithCommas,
+} from './fmt'
 
 export { errorForHuman, ssrRescue } from './errors'
 
@@ -121,6 +120,7 @@ export {
   isElementInViewport,
   pixelAdd,
   isDescendant,
+  multiClick,
 } from './dom'
 /*
  * theme related

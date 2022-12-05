@@ -5,7 +5,8 @@ import type { TThread } from '@/spec'
 import { TYPE, EVENT } from '@/constant'
 
 import asyncSuit from '@/utils/async'
-import { send, plural } from '@/utils/helper'
+import { plural } from '@/utils/fmt'
+import { send } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 
 import type { TStore } from './store'

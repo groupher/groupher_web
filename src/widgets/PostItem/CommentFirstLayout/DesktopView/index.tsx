@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 import type { TCommunity, TPost } from '@/spec'
 import { UPVOTE_LAYOUT } from '@/constant'
 
-import { upvoteOnArticleList } from '@/utils/helper'
+import { upvoteOnArticleList } from '@/utils/signal'
 import TheAvatar from '@/widgets/TheAvatar'
 import ArticleReadLabel from '@/widgets/ArticleReadLabel'
 import ArticlePinLabel from '@/widgets/ArticlePinLabel'

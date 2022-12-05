@@ -4,7 +4,7 @@
  */
 
 import { types as T, Instance, getParent } from 'mobx-state-tree'
-import { pick } from 'ramda'
+import { pick, values } from 'ramda'
 
 import type {
   TRootStore,
@@ -16,10 +16,13 @@ import type {
   TAccount,
   TEditMode,
   TGroupedTags,
+  TTag,
 } from '@/spec'
 
 import { markStates, toJS } from '@/utils/mobx'
 import { Community, Tag, User } from '@/model'
+
+import { ARTICLE_CAT } from '@/constant'
 
 import type { TTexts, TEditData } from './spec'
 
@@ -46,6 +49,14 @@ const ArticleEditor = T.model('ArticleEditor', {
   publishDone: T.optional(T.boolean, false),
   //
   wordsCountReady: T.optional(T.boolean, false),
+
+  // selectors
+  activeCat: T.optional(
+    T.enumeration(values(ARTICLE_CAT)),
+    ARTICLE_CAT.FEATURE,
+  ),
+
+  activeTag: T.maybeNull(Tag),
 })
   .views((self) => ({
     get isLogin(): boolean {
@@ -133,6 +144,9 @@ const ArticleEditor = T.model('ArticleEditor', {
       )
 
       return { ...basicStatus, mode: mode as TEditMode }
+    },
+    get activeTagData(): TTag | null {
+      return toJS(self.activeTag)
     },
   }))
   .actions((self) => ({

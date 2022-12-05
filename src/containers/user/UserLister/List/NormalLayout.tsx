@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 import type { TUser } from '@/spec'
 
 import useAccount from '@/hooks/useAccount'
-import { cutRest } from '@/utils/helper'
+import { cutRest } from '@/utils/fmt'
 import FollowButton from '@/widgets/Buttons/FollowButton'
 
 import {

@@ -2,7 +2,7 @@ import { gql } from 'urql/core'
 import { values, flatten } from 'ramda'
 
 import { EMOTION } from '@/constant'
-import { titleCase } from '@/utils/helper'
+import { titleCase } from '@/utils/fmt'
 
 export const community = `
   id

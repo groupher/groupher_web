@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import { TYPE, EVENT } from '@/constant'
-import { send } from '@/utils/helper'
+import { send } from '@/utils/signal'
 import { Wrapper, SiteLink } from '../styles/main_entries'
 import { MobileIcon } from '../styles/more_links'
 

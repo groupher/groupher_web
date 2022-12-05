@@ -1,6 +1,6 @@
 import { FC, Fragment, memo } from 'react'
 
-import { cutRest } from '@/utils/helper'
+import { cutRest } from '@/utils/fmt'
 import { LinkIcon, Source } from './styles/internal_link'
 
 type TProps = {

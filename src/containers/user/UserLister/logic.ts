@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { PAGE_SIZE } from '@/config'
 import { TYPE, EVENT, ERR } from '@/constant'
 
-import { errRescue } from '@/utils/helper'
+import { errRescue } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 import asyncSuit from '@/utils/async'
 

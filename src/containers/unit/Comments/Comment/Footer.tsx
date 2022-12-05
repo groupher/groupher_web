@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 import type { TComment } from '@/spec'
 import useAccount from '@/hooks/useAccount'
 
-import { authWarn } from '@/utils/helper'
+import { authWarn } from '@/utils/signal'
 
 import DotDivider from '@/widgets/DotDivider'
 import { SpaceGrow } from '@/widgets/Common'

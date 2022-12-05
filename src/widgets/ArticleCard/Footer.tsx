@@ -3,7 +3,7 @@ import TimeAgo from 'timeago-react'
 
 import { SIZE, UPVOTE_LAYOUT } from '@/constant'
 import type { TArticle } from '@/spec'
-import { upvoteOnArticleList } from '@/utils/helper'
+import { upvoteOnArticleList } from '@/utils/signal'
 import Upvote from '@/widgets/Upvote'
 import DotDivider from '@/widgets/DotDivider'
 import CommentsCount from '@/widgets/CommentsCount'

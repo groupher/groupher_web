@@ -16,7 +16,7 @@ import type {
 } from '@/spec'
 import { THREAD, ARTICLE_THREAD } from '@/constant'
 import { markStates } from '@/utils/mobx'
-import { viewingChanged } from '@/utils/helper'
+import { viewingChanged } from '@/utils/signal'
 import { User, Community, Post } from '@/model'
 
 const ViewingStore = T.model('ViewingStore', {

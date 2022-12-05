@@ -3,7 +3,7 @@ import { has } from 'ramda'
 
 import type { TThemeName } from '@/spec'
 import { EVENT } from '@/constant'
-import { send } from '@/utils/helper'
+import { send } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 // import S from './service'
 import type { TStore } from './store'

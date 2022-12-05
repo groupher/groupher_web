@@ -6,7 +6,7 @@ import type { TTag } from '@/spec'
 import { EVENT, ERR } from '@/constant'
 
 import asyncSuit from '@/utils/async'
-import { errRescue } from '@/utils/helper'
+import { errRescue } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 import { getParameterByName } from '@/utils/route'
 

@@ -4,7 +4,7 @@ import TimeAgo from 'timeago-react'
 
 import type { TPost } from '@/spec'
 import { SIZE, EVENT } from '@/constant'
-import { send } from '@/utils/helper'
+import { send } from '@/utils/signal'
 
 import Tooltip from '@/widgets/Tooltip'
 import { SpaceGrow, Space } from '@/widgets/Common'

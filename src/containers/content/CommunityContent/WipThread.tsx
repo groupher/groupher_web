@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import { joinUS } from '@/utils/helper'
+import { joinUS } from '@/utils/signal'
 import Linker from '@/widgets/Linker'
 import Button from '@/widgets/Buttons/Button'
 

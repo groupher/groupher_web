@@ -13,7 +13,8 @@ import type { TAccount, TRoute, TThread, TArticle } from '@/spec'
 
 import { EVENT } from '@/constant'
 import { markStates } from '@/utils/mobx'
-import { send, toast } from '@/utils/helper'
+import { toast } from '@/utils/helper'
+import { send } from '@/utils/signal'
 import { notEmpty } from '@/utils/validator'
 
 import {
