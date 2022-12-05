@@ -14,7 +14,7 @@ import { THREAD, HCN, SVG, PUBLISH_MODE } from '@/constant'
 
 import Tooltip from '@/widgets/Tooltip'
 import { buildLog } from '@/utils/logger'
-// import { authWarn } from '@/utils/helper'
+// import { authWarn } from '@/utils/signal'
 import useAccount from '@/hooks/useAccount'
 
 import { MORE_MENU } from './constant'

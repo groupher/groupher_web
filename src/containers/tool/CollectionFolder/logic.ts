@@ -7,7 +7,7 @@ import { EVENT, ERR } from '@/constant'
 
 import asyncSuit from '@/utils/async'
 import { buildLog } from '@/utils/logger'
-import { errRescue } from '@/utils/helper'
+import { errRescue } from '@/utils/signal'
 import { updateEditing } from '@/utils/mobx'
 
 import type { TStore } from './store'

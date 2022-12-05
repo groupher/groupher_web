@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { isEmpty } from 'ramda'
 
 import type { TCommunity, TTag, TInput, TThread } from '@/spec'
-import { errRescue } from '@/utils/helper'
+import { errRescue } from '@/utils/signal'
 import { ERR, EVENT } from '@/constant'
 import { buildLog } from '@/utils/logger'
 import asyncSuit from '@/utils/async'

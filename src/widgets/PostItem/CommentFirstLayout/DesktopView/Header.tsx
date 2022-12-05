@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 import type { TPost } from '@/spec'
 
 import { EVENT } from '@/constant'
-import { send } from '@/utils/helper'
+import { send } from '@/utils/signal'
 
 import Facepile from '@/widgets/Facepile'
 // import TagsList from '@/widgets/TagsList'

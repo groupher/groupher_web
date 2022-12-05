@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 // import { } from 'ramda'
 
 import { TYPE, ERR, ARTICLE_THREAD } from '@/constant'
-import { errRescue } from '@/utils/helper'
+import { errRescue } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 import asyncSuit from '@/utils/async'
 

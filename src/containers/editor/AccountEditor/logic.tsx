@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import type { TEditValue } from '@/spec'
 import { ERR } from '@/constant'
-import { closeDrawer } from '@/utils/helper'
+import { closeDrawer } from '@/utils/signal'
 
 import { buildLog, asyncSuit, updateEditing, errRescue } from '@/utils'
 

@@ -1,7 +1,8 @@
 import { FC, memo } from 'react'
 
 import type { TCommunity, TEditMode } from '@/spec'
-import { cutRest, selectCommunity } from '@/utils/helper'
+import { cutRest } from '@/utils/helper'
+import { selectCommunity } from '@/utils/signal'
 import { HCN } from '@/constant'
 
 import Tooltip from '@/widgets/Tooltip'

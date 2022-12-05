@@ -5,7 +5,7 @@ import { ERR } from '@/constant'
 
 import asyncSuit from '@/utils/async'
 import { buildLog } from '@/utils/logger'
-import { errRescue } from '@/utils/helper'
+import { errRescue } from '@/utils/signal'
 
 import S from './schema'
 

@@ -5,7 +5,7 @@ import type { TArticle, TC11NLayout, TMetric } from '@/spec'
 import { GITHUB, ABOUT_LINK } from '@/config'
 import { METRIC, ROUTE } from '@/constant'
 
-import { joinUS } from '@/utils/helper'
+import { joinUS } from '@/utils/signal'
 
 import TopInfo from './TopInfo'
 import BottomInfo from './BottomInfo'
@@ -17,7 +17,6 @@ import {
   BaseInfo,
   Item,
   NoLinkItem,
-  HeartCrabIcon,
 } from '../styles/desktop_view/article_layout'
 
 type TProps = {

@@ -3,11 +3,12 @@ import Router from 'next/router'
 import { values } from 'ramda'
 
 import type { TEditValue, TCommunity, TTag } from '@/spec'
-import { HCN, ERR } from '@/constant'
+import { HCN, ERR, EVENT } from '@/constant'
 import { buildLog } from '@/utils/logger'
 import asyncSuit from '@/utils/async'
 import { getParameterByName } from '@/utils/route'
-import { titleCase, errRescue } from '@/utils/helper'
+import { titleCase } from '@/utils/helper'
+import { errRescue } from '@/utils/signal'
 import { updateEditing } from '@/utils/mobx'
 import { matchArticles } from '@/utils/macros'
 
@@ -15,7 +16,10 @@ import type { TStore } from './store'
 import S from './schema'
 
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
-const sr71$ = new SR71()
+const sr71$ = new SR71({
+  // @ts-ignore
+  receive: [EVENT.ARTICLE_SELECTOR],
+})
 
 let sub$ = null
 let store: TStore | undefined
@@ -124,28 +128,18 @@ const DataSolver = [
     action: handleMutateRes,
   },
   {
-    match: asyncRes('createJob'),
-    action: handleMutateRes,
-  },
-  {
-    match: asyncRes('createRadar'),
-    action: handleMutateRes,
-  },
-  {
     match: asyncRes('updatePost'),
-    action: handleMutateRes,
-  },
-  {
-    match: asyncRes('updateJob'),
-    action: handleMutateRes,
-  },
-  {
-    match: asyncRes('updateRadar'),
     action: handleMutateRes,
   },
   {
     match: asyncRes('community'),
     action: ({ community }) => store.mark({ community }),
+  },
+  {
+    match: asyncRes(EVENT.ARTICLE_SELECTOR),
+    action: (data) => {
+      console.log('## recived fuck: ', data)
+    },
   },
 ]
 

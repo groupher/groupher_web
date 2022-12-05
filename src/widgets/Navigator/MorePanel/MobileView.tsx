@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import { ICON } from '@/config'
 
-import { changeToCommunity } from '@/utils/helper'
+import { changeToCommunity } from '@/utils/signal'
 
 import {
   Wrapper,

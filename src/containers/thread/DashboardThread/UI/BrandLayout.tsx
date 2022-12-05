@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 import type { TBrandLayout } from '@/spec'
 
 import { BRAND_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant'
-import { callDashboardDesc } from '@/utils/helper'
+import { callDashboardDesc } from '@/utils/signal'
 
 import { Space, Divider, Inline } from '@/widgets/Common'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'

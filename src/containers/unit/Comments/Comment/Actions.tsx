@@ -5,7 +5,7 @@ import { ICON } from '@/config'
 import useAccount from '@/hooks/useAccount'
 import { buildLog } from '@/utils/logger'
 
-import { authWarn } from '@/utils/helper'
+import { authWarn } from '@/utils/signal'
 
 import IconButton from '@/widgets/Buttons/IconButton'
 import MenuButton from '@/widgets/Buttons/MenuButton'

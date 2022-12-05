@@ -3,7 +3,7 @@ import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TThread, TCommunity, TMetric } from '@/spec'
 import { EVENT } from '@/constant'
-import { send } from '@/utils/helper'
+import { send } from '@/utils/signal'
 
 import TabBar from '@/widgets/TabBar'
 import ViewportTracker from '@/widgets/ViewportTracker'

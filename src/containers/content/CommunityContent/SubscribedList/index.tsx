@@ -8,7 +8,7 @@ import type { TCommunity } from '@/spec'
 import { ICON } from '@/config'
 import { HCN } from '@/constant'
 
-import { changeToCommunity } from '@/utils/helper'
+import { changeToCommunity } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 
 import DotDivider from '@/widgets/DotDivider'

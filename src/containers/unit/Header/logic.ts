@@ -6,7 +6,8 @@ import { TYPE, EVENT, ERR } from '@/constant'
 
 import asyncSuit from '@/utils/async'
 import { buildLog } from '@/utils/logger'
-import { Global, send, errRescue, plural, toast } from '@/utils/helper'
+import { Global, plural, toast } from '@/utils/helper'
+import { send, errRescue } from '@/utils/signal'
 import { atomizeValues } from '@/utils/graphql'
 import { scrollToHeader } from '@/utils/dom'
 

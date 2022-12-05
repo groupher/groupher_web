@@ -12,9 +12,9 @@ export { buildLog, log } from './logger'
 
 export { default as uid } from './uid'
 
+export { send, joinUS, closeDrawer, report, errRescue } from './signal'
 export {
   Global,
-  send,
   mapKeys,
   getRandomInt,
   cutRest,
@@ -24,15 +24,10 @@ export {
   sortByIndex,
   Rlog,
   countWords,
-  joinUS,
-  closeDrawer,
-  report,
-  errRescue,
   debounce,
   extractMentions,
   extractAttachments,
   isCypressRunning,
-  multiClick,
   findDeepMatch,
   groupByKey,
   titleCase,
@@ -121,6 +116,7 @@ export {
   isElementInViewport,
   pixelAdd,
   isDescendant,
+  multiClick,
 } from './dom'
 /*
  * theme related

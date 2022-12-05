@@ -5,7 +5,8 @@ import { EVENT, ERR } from '@/constant'
 
 import asyncSuit from '@/utils/async'
 import { errorForHuman } from '@/utils/errors'
-import { Global, send, errRescue, toast } from '@/utils/helper'
+import { Global, toast } from '@/utils/helper'
+import { send, errRescue } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 
 import type { TStore } from './store'

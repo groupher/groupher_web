@@ -4,7 +4,8 @@ import type { TID } from '@/spec'
 import { TYPE, EVENT, ERR, ARTICLE_THREAD } from '@/constant'
 
 import asyncSuit from '@/utils/async'
-import { errRescue, singular, listUsers } from '@/utils/helper'
+import { singular } from '@/utils/helper'
+import { errRescue, listUsers } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 
 import type { TStore } from './store'
@@ -14,8 +15,11 @@ import S from './schema'
 const log = buildLog('L:CommunityDigest')
 
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
-// @ts-ignore
-const sr71$ = new SR71({ receive: [EVENT.COMMUNITY_CHANGE] })
+
+const sr71$ = new SR71({
+  // @ts-ignore
+  receive: [EVENT.COMMUNITY_CHANGE],
+})
 
 let sub$ = null
 let store: TStore | undefined

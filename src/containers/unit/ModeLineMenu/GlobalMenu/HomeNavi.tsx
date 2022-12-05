@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import { HCN } from '@/constant'
-import { changeToCommunity } from '@/utils/helper'
+import { changeToCommunity } from '@/utils/signal'
 
 import { Wrapper, Logo, Block, Title } from '../styles/global_menu/home_navi'
 

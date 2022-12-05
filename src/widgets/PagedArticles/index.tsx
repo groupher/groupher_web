@@ -16,7 +16,7 @@ import type {
   TGlobalLayout,
 } from '@/spec'
 import { EVENT } from '@/constant'
-import { send } from '@/utils/helper'
+import { send } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 
 import ArticleList from './ArticleList'

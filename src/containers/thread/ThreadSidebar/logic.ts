@@ -5,7 +5,7 @@ import type { TID } from '@/spec'
 import { TYPE, EVENT, ERR, ARTICLE_THREAD } from '@/constant'
 
 import asyncSuit from '@/utils/async'
-import { errRescue, listUsers, callGEditor } from '@/utils/helper'
+import { errRescue, listUsers, callGEditor, send } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 
 import type { TStore } from './store'
@@ -22,8 +22,10 @@ let store: TStore | undefined
 const log = buildLog('L:ThreadSidebar')
 
 export const onPublish = () => {
-  console.log('## onPublish')
   callGEditor()
+  setTimeout(() => {
+    send(EVENT.ARTICLE_SELECTOR, { type: 'hello world' })
+  }, 500)
 }
 
 export const subscribeCommunity = (communityId: TID): void => {

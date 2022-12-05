@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 import { EVENT } from '@/constant'
 import type { TPost } from '@/spec'
 
-import { send } from '@/utils/helper'
+import { send } from '@/utils/signal'
 
 import ArticleReadLabel from '@/widgets/ArticleReadLabel'
 import ArticlePinLabel from '@/widgets/ArticlePinLabel'

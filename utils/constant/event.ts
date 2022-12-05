@@ -71,7 +71,8 @@ const EVENT = {
   //
   C11N_DENSITY_CHANGE: 'C11N_DENSITY_CHANGE',
   //
-  WORKS_UPVOTE: 'WORKS_UPVOTE',
+  // publish selectors
+  ARTICLE_SELECTOR: 'ARTICLE_SELECTOR',
 
   // subscribe
   SUBSCRIBE: 'SUBSCRIBE',

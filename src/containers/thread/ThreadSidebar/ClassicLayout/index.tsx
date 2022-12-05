@@ -10,7 +10,7 @@ import { FC, Fragment, memo, useEffect, useState } from 'react'
 
 import type { TThread, TCommunity } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import { send } from '@/utils/helper'
+import { send } from '@/utils/signal'
 import { mockUsers } from '@/utils/mock'
 import { EVENT } from '@/constant'
 
