@@ -6,9 +6,8 @@ import { UPVOTE_LAYOUT, ARTICLE_CAT, ARTICLE_STATE } from '@/constant'
 
 import Upvote from '@/widgets/Upvote'
 import { Space } from '@/widgets/Common'
-
+import ViewsCount from '@/widgets/ViewsCount'
 import ArticleCatState from '@/widgets/ArticleCatState'
-import ViewsCount from '../../ViewsCount'
 
 import {
   Wrapper,
@@ -33,6 +32,7 @@ const Footer: FC<TProps> = ({ article }) => {
           viewerHasUpvoted={viewerHasUpvoted}
           type={UPVOTE_LAYOUT.GENERAL}
           left={-2}
+          top={-1}
         />
       </UpvoteWrapper>
 

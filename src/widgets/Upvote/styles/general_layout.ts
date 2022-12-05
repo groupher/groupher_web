@@ -37,4 +37,6 @@ export const LineDivider = styled(LineDividerBase)`
   height: 10px;
   margin-left: 12px;
   margin-right: 10px;
+  opacity: 0.5;
+  margin-top: 1px;
 `

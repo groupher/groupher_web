@@ -1,6 +1,6 @@
-import { FC, memo, Fragment } from 'react'
+import { FC, memo } from 'react'
 
-import { Wrapper, ViewsIcon, HighlightWrapper } from './styles/views_count'
+import { Wrapper, ViewsIcon, HighlightWrapper } from './styles'
 
 type TProps = {
   count: number
@@ -8,7 +8,7 @@ type TProps = {
 
 const ViewsCount: FC<TProps> = ({ count }) => {
   return (
-    <Fragment>
+    <div>
       {count >= 400 ? (
         <HighlightWrapper>
           <ViewsIcon highlight />
@@ -20,7 +20,7 @@ const ViewsCount: FC<TProps> = ({ count }) => {
           {count}
         </Wrapper>
       )}
-    </Fragment>
+    </div>
   )
 }
 

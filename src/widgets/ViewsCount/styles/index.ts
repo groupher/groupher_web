@@ -18,7 +18,7 @@ export const HighlightWrapper = styled(Wrapper)`
 export const ViewsIcon = styled(ViewedSVG)<{ highlight?: boolean }>`
   fill: ${({ highlight }) =>
     highlight ? theme('heightIcon') : theme('article.info')};
-  ${css.size(13)};
-  margin-top: -1px;
+  ${css.size(11)};
   margin-right: 5px;
+  margin-top: -1px;
 `

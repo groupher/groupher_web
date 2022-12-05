@@ -13,9 +13,9 @@ import { Space, SpaceGrow } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'
 import ArticleCatState from '@/widgets/ArticleCatState'
 import CommentsCount from '@/widgets/CommentsCount'
+import ViewsCount from '@/widgets/ViewsCount'
 
 import ActiveBadge from './ActiveBadge'
-import ViewsCount from '../../ViewsCount'
 
 import {
   Wrapper,

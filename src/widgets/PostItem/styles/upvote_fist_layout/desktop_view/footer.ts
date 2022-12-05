@@ -10,5 +10,5 @@ export const Wrapper = styled.div`
 `
 
 export const UpvoteWrapper = styled.div<{ count: number }>`
-  margin-top: ${({ count }) => (count === 0 ? '-2px' : 0)};
+  margin-top: ${({ count }) => (count === 0 ? '-1px' : 0)};
 `
