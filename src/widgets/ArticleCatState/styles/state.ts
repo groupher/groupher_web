@@ -74,7 +74,6 @@ const QuestionIcon = styled(QuestionSVG)`
   ${css.size(9)};
   fill: ${theme('article.info')};
   margin-right: 2px;
-  margin-top: -1px;
 `
 
 export const NoBgIcon = {

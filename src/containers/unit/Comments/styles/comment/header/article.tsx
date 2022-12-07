@@ -35,9 +35,10 @@ export const AuthorTag = styled.div`
   margin-left: 7px;
   background-color: #fff6dd;
   color: #ff9800;
+  border: 1px solid;
+  border-color: #ff9800;
   border-radius: 8px;
-  font-weight: bold;
-  font-family: 'Audiowide';
+  font-weight: 600;
 
   ${css.media.mobile`
     margin-left: 5px;
