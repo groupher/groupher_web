@@ -62,7 +62,8 @@ const PagedArticles: FC<TProps> = ({
       <Pagi
         {...pagi}
         onChange={(page) => send(EVENT.REFRESH_ARTICLES, { page })}
-        margin={{ bottom: '60px', top: '60px' }}
+        top={80}
+        bottom={30}
       />
     </Fragment>
   )

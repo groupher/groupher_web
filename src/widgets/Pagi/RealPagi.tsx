@@ -1,95 +1,73 @@
-/*
- *
- * Pagi
- *
- */
+import { FC } from 'react'
 
-import { FC, memo } from 'react'
-import { merge } from 'ramda'
+import { roundUpNumber } from '@/utils/fmt'
+import type { TSpace } from '@/spec'
 
-import type { TProps } from './index'
-import { buildLog } from '@/utils/logger'
-import Perv from './Perv'
-import Next from './Next'
+import {
+  Wrapper,
+  InnerWrapper,
+  ArrowLeftIcon,
+  Main,
+  Slash,
+  Total,
+  LeftArrow,
+  LeftBar,
+  RightArrow,
+  RightBar,
+  ArrowRightIcon,
+  NumInputer,
+} from './styles'
 
-import { Wrapper, EmptyWrapper, BottomMsg } from './styles'
+import type { TProps as TPagiProps } from '.'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:Pagi:index')
+type TProps = Pick<
+  TPagiProps,
+  'pageNumber' | 'totalCount' | 'pageSize' | 'onChange' | 'totalPages'
+> &
+  TSpace
 
-const defaultMargin = {
-  top: '0',
-  bottom: '0',
-  left: '0',
-  right: '0',
-}
-
-/**
- * @param num The number to round
- * @param precision The number of decimal places to preserve
- * see: https://stackoverflow.com/questions/5191088/how-to-round-up-a-number-in-javascript
- */
-const roundUp = (num: number, precision = 0): number => {
-  // eslint-disable-next-line no-restricted-properties
-  precision = Math.pow(10, precision)
-  return Math.ceil(num * precision) / precision
-}
-
-const BottomFooter = ({ show, msg }) => {
-  if (show) return <BottomMsg>{msg}</BottomMsg>
-  return <div />
-}
-
-const hasExtraPage = (totalCount, pageSize) => totalCount > pageSize
-
-const Pagi: FC<TProps> = ({
-  children = <div />,
-  type = 'bottom',
-  pageNumber = 0,
-  pageSize = 0,
-  totalCount = 0,
-  onChange = log,
-
-  margin = {},
-  showBottomMsg = false,
-  emptyMsg = '还没有讨论',
-  noMoreMsg = '没有更多讨论了',
+const RealPagi: FC<TProps> = ({
+  pageNumber,
+  totalCount,
+  pageSize,
+  totalPages,
+  onChange,
+  ...restProps
 }) => {
-  const theMargin = merge(defaultMargin, margin)
-
-  if (totalCount === 0) {
-    return (
-      <EmptyWrapper margin={theMargin}>
-        <BottomFooter show={showBottomMsg} msg={emptyMsg} />
-      </EmptyWrapper>
-    )
-  }
+  const leftDisabled = pageNumber === 1
+  const rightDisabled = pageNumber >= roundUpNumber(totalCount / pageSize)
 
   return (
-    <>
-      {hasExtraPage(totalCount, pageSize) ? (
-        <Wrapper margin={theMargin}>
-          <Perv
-            type={type}
-            onChange={onChange}
-            disabled={pageNumber === 1}
-            pageNumber={pageNumber}
+    <Wrapper {...restProps}>
+      <InnerWrapper>
+        <LeftArrow onClick={() => !leftDisabled && onChange(pageNumber - 1)}>
+          {!leftDisabled && <LeftBar />}
+          <ArrowLeftIcon disabled={pageNumber === 1} />
+        </LeftArrow>
+        <Main>
+          <NumInputer
+            type="number"
+            min={1}
+            max={999}
+            value={pageNumber}
+            onChange={(e) => onChange(Number(e.target.value))}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                // @ts-ignore
+                onChange(Number(e.target.value))
+              }
+            }}
           />
-          <div>{children}</div>
-          <Next
-            type={type}
-            onChange={onChange}
-            disabled={pageNumber >= roundUp(totalCount / pageSize)}
-            pageNumber={pageNumber}
-          />
-        </Wrapper>
-      ) : (
-        <EmptyWrapper margin={theMargin}>
-          <BottomFooter show={showBottomMsg} msg={noMoreMsg} />
-        </EmptyWrapper>
-      )}
-    </>
+          <Slash>/</Slash>
+          <Total>{totalPages}</Total>
+        </Main>
+        <RightArrow onClick={() => !rightDisabled && onChange(pageNumber + 1)}>
+          {!rightDisabled && <RightBar />}
+          <ArrowRightIcon disabled={rightDisabled} />
+        </RightArrow>
+      </InnerWrapper>
+    </Wrapper>
   )
 }
 
-export default memo(Pagi)
+export default RealPagi

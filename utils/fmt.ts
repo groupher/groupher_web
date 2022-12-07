@@ -150,3 +150,14 @@ export const plural = (value: string, opt = null): string => {
 
   return doCovert(`${value}s`, opt)
 }
+
+/**
+ * @param num The number to round
+ * @param precision The number of decimal places to preserve
+ * see: https://stackoverflow.com/questions/5191088/how-to-round-up-a-number-in-javascript
+ */
+export const roundUpNumber = (num: number, precision = 0): number => {
+  // eslint-disable-next-line no-restricted-properties
+  precision = Math.pow(10, precision)
+  return Math.ceil(num * precision) / precision
+}

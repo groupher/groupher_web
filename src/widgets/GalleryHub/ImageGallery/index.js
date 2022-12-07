@@ -113,19 +113,7 @@ const ImageGallery = ({ items, galleryType }) => {
     }
   }
 
-  return (
-    <Wrapper>
-      {GalleryContent}
-      <Pagi margin={{ top: '60px', bottom: '80px' }}>
-        <PagiOptionSwitcher
-          activeKey={activeGalleryType}
-          title="显示模式"
-          items={GALLERY_TYPES}
-          onChange={(item) => setActiveGalleryType(item.key)}
-        />
-      </Pagi>
-    </Wrapper>
-  )
+  return <Wrapper>{GalleryContent}</Wrapper>
 }
 
 ImageGallery.propTypes = {
