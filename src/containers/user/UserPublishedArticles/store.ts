@@ -2,7 +2,7 @@
  * UserPublishedArticles store
  */
 
-import { values, includes } from 'ramda'
+import { values } from 'ramda'
 
 import type {
   TCommunity,

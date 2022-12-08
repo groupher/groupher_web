@@ -83,7 +83,6 @@ const HeaderStore = T.model('HeaderStore', {
     },
     handleLogin(): void {
       // const root = getParent(self) as TRootStore
-      console.log('## FIX')
       // root.doraemon.handleLogin()
     },
     setViewing(sobj): void {

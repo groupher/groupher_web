@@ -2,7 +2,6 @@
  * ArticleViewer store
  */
 
-import { THREAD } from '@/constant'
 import type {
   TCommunity,
   TRootStore,
