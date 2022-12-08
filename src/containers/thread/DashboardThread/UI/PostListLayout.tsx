@@ -198,21 +198,18 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         <Layout onClick={() => edit(POST_LAYOUT.COVER, 'postLayout')}>
           <Block $active={layout === POST_LAYOUT.COVER}>
             <Row>
-              <Space right={5} />
               <Cover />
-              <Space right={15} />
+              <Space right={17} />
               <Column grow>
-                <Row>
-                  <Br bottom={10} />
+                <Column>
                   <Bar long={50} />
-                </Row>
-                <Br bottom={8} />
-                <Bar thin long={80} />
-                <Br bottom={16} />
+                </Column>
+                <Br bottom={10} />
+                <Bar thin long={90} />
+                <Br bottom={20} />
                 <Row>
                   <Bar thin long={20} />
                 </Row>
-                <Br bottom={10} />
               </Column>
             </Row>
           </Block>

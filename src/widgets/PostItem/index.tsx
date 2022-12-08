@@ -13,6 +13,7 @@ import { buildLog } from '@/utils/logger'
 import CommentFirstLayout from './CommentFirstLayout'
 import UpvoteFirstLayout from './UpvoteFirstLayout'
 import MinimalLayout from './MinimalLayout'
+import CoverLayout from './CoverLayout'
 import CardLayout from './CardLayout'
 
 /* eslint-disable-next-line */
@@ -66,6 +67,14 @@ const PostItem: FC<TProps> = ({
         />
       )}
 
+      {layout === POST_LAYOUT.COVER && (
+        <CoverLayout
+          c11n={c11n}
+          article={article}
+          onAuthorSelect={onAuthorSelect}
+          isMobilePreview={isMobilePreview}
+        />
+      )}
       {layout === POST_LAYOUT.CARD && <CardLayout article={article} />}
     </Fragment>
   )

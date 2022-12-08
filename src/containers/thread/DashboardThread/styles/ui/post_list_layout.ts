@@ -28,10 +28,9 @@ export const Box = styled.div`
 
 export const Cover = styled.div`
   width: 90px;
-  height: 60px;
+  height: 62px;
   border-radius: 5px;
   background: ${theme('article.digest')};
-  margin-bottom: 8px;
 `
 
 type TColumn = { center?: boolean; grow?: boolean }
