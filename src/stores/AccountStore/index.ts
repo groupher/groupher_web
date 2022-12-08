@@ -3,23 +3,16 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { merge, clone, remove, insert, findIndex, propEq } from 'ramda'
 
-import type {
-  TRootStore,
-  TAccount,
-  TCommunity,
-  TPagedCommunities,
-  TC11N,
-} from '@/spec'
-import { markStates, toJS } from '@/utils/mobx'
+import type { TRootStore, TAccount, TCommunity, TPagedCommunities, TC11N } from '@/spec'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import BStore from '@/utils/bstore'
 import { User, EmptyUser, PagedCommunities } from '@/model'
 
 const AccountStore = T.model('AccountStore', {
-  user: T.optional(User, {}),
-  isValidSession: T.optional(T.boolean, false),
+  user: T.opt(User, {}),
+  isValidSession: T.opt(T.bool, false),
   userSubscribedCommunities: T.maybeNull(PagedCommunities),
 })
   .views((self) => ({

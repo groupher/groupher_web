@@ -3,17 +3,15 @@
  *
  */
 
-import { types as T, getParent } from 'mobx-state-tree'
-
 import { ERR } from '@/constant'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, toJS } from '@/utils/mobx'
 import { GithubUser } from '@/model'
 
 const AvatarAdder = T.model('AvatarAdder', {
   githubUser: T.maybeNull(GithubUser),
-  searchValue: T.optional(T.string, ''),
-  popoverVisible: T.optional(T.boolean, false),
-  searching: T.optional(T.boolean, false),
+  searchValue: T.opt(T.string, ''),
+  popoverVisible: T.opt(T.bool, false),
+  searching: T.opt(T.bool, false),
 
   errorType: T.maybeNull(T.string),
   /* ERR_TYPE:  */

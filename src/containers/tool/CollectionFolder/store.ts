@@ -3,12 +3,11 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { merge } from 'ramda'
 
 import type { TUser, TRootStore, TArticle } from '@/spec'
 import { THREAD } from '@/constant'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { changeset } from '@/utils/validator'
 
 import { FavoriteCategory, PagedFavoriteCategories, emptyPagi } from '@/model'
@@ -21,22 +20,19 @@ const emptyCat = {
 }
 
 const CollectionFolder = T.model('CollectionFolder', {
-  displayMode: T.optional(
-    T.enumeration('displayMode', ['list', 'hide']),
-    'hide',
-  ),
-  pagedCategories: T.optional(PagedFavoriteCategories, emptyPagi),
-  editCategory: T.optional(FavoriteCategory, emptyCat),
-  /* curView: T.optional(T.enumeration('curView', ['box', 'list']), 'box'), */
-  showModal: T.optional(T.boolean, false),
-  showUpdater: T.optional(T.boolean, false),
-  showCreator: T.optional(T.boolean, false),
-  showSetter: T.optional(T.boolean, false),
+  displayMode: T.opt(T.enum('displayMode', ['list', 'hide']), 'hide'),
+  pagedCategories: T.opt(PagedFavoriteCategories, emptyPagi),
+  editCategory: T.opt(FavoriteCategory, emptyCat),
+  /* curView: T.opt(T.enum('curView', ['box', 'list']), 'box'), */
+  showModal: T.opt(T.bool, false),
+  showUpdater: T.opt(T.bool, false),
+  showCreator: T.opt(T.bool, false),
+  showSetter: T.opt(T.bool, false),
   // 创建或编辑的操作是否由 Setter 哪里发起，涉及文案，以及上一步、取消等逻辑
-  actionFromSetter: T.optional(T.boolean, false),
-  thread: T.optional(T.enumeration([THREAD.POST]), THREAD.POST),
-  loading: T.optional(T.boolean, false),
-  doing: T.optional(T.boolean, false),
+  actionFromSetter: T.opt(T.bool, false),
+  thread: T.opt(T.enum([THREAD.POST]), THREAD.POST),
+  loading: T.opt(T.bool, false),
+  doing: T.opt(T.bool, false),
 })
   .views((self) => ({
     get isLogin(): boolean {

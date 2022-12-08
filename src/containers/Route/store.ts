@@ -3,31 +3,30 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { merge, pickBy, omit, isEmpty } from 'ramda'
 
 import type { TRootStore, TRoute } from '@/spec'
 import { PAGE_SIZE } from '@/config'
 
+import { T, getParent, Instance, markStates } from '@/utils/mobx'
 import { Global } from '@/utils/helper'
 import { isClientSide } from '@/utils/ssr'
 import { serializeQuery } from '@/utils/route'
-import { markStates } from '@/utils/mobx'
 
 const Query = T.model('Query', {
-  page: T.optional(T.string, '1'),
-  size: T.optional(T.string, String(PAGE_SIZE.D)),
+  page: T.opt(T.string, '1'),
+  size: T.opt(T.string, String(PAGE_SIZE.D)),
   tab: T.maybeNull(T.string),
   // sort .... [when, ...]
   // view ... [chart, list ...]
 })
 
 const RouteStore = T.model('RouteStore', {
-  communityPath: T.optional(T.string, ''),
-  threadPath: T.optional(T.string, ''),
-  mainPath: T.optional(T.string, ''),
-  subPath: T.optional(T.string, ''),
-  query: T.optional(Query, {}),
+  communityPath: T.opt(T.string, ''),
+  threadPath: T.opt(T.string, ''),
+  mainPath: T.opt(T.string, ''),
+  subPath: T.opt(T.string, ''),
+  query: T.opt(Query, {}),
 })
   .views((self) => ({
     get curRoute(): TRoute {

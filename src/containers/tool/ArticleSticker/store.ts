@@ -3,23 +3,16 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 // import {} from 'ramda'
 
-import type {
-  TRootStore,
-  TArticle,
-  TScrollDirection,
-  TThread,
-  TCommentsState,
-} from '@/spec'
-import { markStates, toJS } from '@/utils/mobx'
+import type { TRootStore, TArticle, TScrollDirection, TThread, TCommentsState } from '@/spec'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { PagedUsers, emptyPagi } from '@/model'
 
 const ArticleSticker = T.model('ArticleSticker', {
-  pagedCommentsParticipants: T.optional(PagedUsers, emptyPagi),
+  pagedCommentsParticipants: T.opt(PagedUsers, emptyPagi),
   // is TOC is opend, then lock the lefsidebar
-  isLeftStickerLocked: T.optional(T.boolean, false),
+  isLeftStickerLocked: T.opt(T.bool, false),
 })
   .views((self) => ({
     get isLogin(): boolean {
@@ -51,11 +44,7 @@ const ArticleSticker = T.model('ArticleSticker', {
       return articleInViewport
     },
     get showLeftSticker(): boolean {
-      const {
-        isArticleDigestInViewport,
-        isLeftStickerLocked,
-        bodyScrollDirection,
-      } = self as TStore
+      const { isArticleDigestInViewport, isLeftStickerLocked, bodyScrollDirection } = self as TStore
 
       if (isArticleDigestInViewport) return false
       if (isLeftStickerLocked) return true

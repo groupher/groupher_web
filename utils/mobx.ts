@@ -1,20 +1,29 @@
 import { FC } from 'react'
 
-import {
-  path,
-  has,
-  curry,
-  forEachObjIndexed,
-  keys,
-  isEmpty,
-  contains,
-} from 'ramda'
+import { types as mobxTypes } from 'mobx-state-tree'
+
+import { path, has, curry, forEachObjIndexed, keys, isEmpty, contains } from 'ramda'
 
 import { inject, observer } from 'mobx-react'
 import { toJS as toJSON } from 'mobx'
 
 import type { TEditValue } from '@/spec'
 import { isObject } from './validator'
+
+export { getParent } from 'mobx-state-tree'
+export type { Instance } from 'mobx-state-tree'
+
+// make the name shorter
+export const T = {
+  model: mobxTypes.model,
+  opt: mobxTypes.optional,
+  enum: mobxTypes.enumeration,
+  string: mobxTypes.string,
+  number: mobxTypes.number,
+  maybeNull: mobxTypes.maybeNull,
+  bool: mobxTypes.boolean,
+  array: mobxTypes.array,
+}
 
 type TStore = {
   mark: (obj: Record<string, unknown>) => void
@@ -68,12 +77,7 @@ export const markStates = (sobj, self) => {
 
   forEachObjIndexed((val, key) => {
     if (!contains(key, selfKeys)) return false
-    if (
-      !isEmpty(val) &&
-      !Array.isArray(val) &&
-      isObject(val) &&
-      self[key] !== null
-    ) {
+    if (!isEmpty(val) && !Array.isArray(val) && isObject(val) && self[key] !== null) {
       // NOTE: had to use this syntax to update object val
       // because the normal one is NOT WORKING in production build
       // what a mother-fucking bug is this ??? TODO: check later
@@ -84,48 +88,6 @@ export const markStates = (sobj, self) => {
   }, sobj)
 
   return false
-}
-
-export const flashState = (
-  store: TStore,
-  state: string,
-  value: string,
-  secs = 5,
-): void => {
-  store.mark({ [state]: value })
-  setTimeout(() => {
-    store.mark({ [state]: '' })
-  }, secs * 1000)
-}
-
-/*
-   can't put this in store, because this method is async
-   only boolean now
- */
-export const meteorState = (
-  store: TStore,
-  state: string,
-  secs: number,
-  statusMsg = '',
-): void => {
-  if (!has(state, store)) {
-    /* eslint-disable */
-    console.error(`Error: meteorState not found ${state}`)
-    /* eslint-enable */
-    return
-  }
-
-  store.mark({
-    [state]: true,
-    statusMsg,
-  })
-
-  setTimeout(() => {
-    store.mark({
-      [state]: false,
-      statusMsg: '',
-    })
-  }, secs * 1000)
 }
 
 export const toJS = (obj: any): any => {
@@ -139,11 +101,7 @@ export const toJS = (obj: any): any => {
  * NOTE: this method require store has a updateEditing under the hook to do the real update
  *
  */
-export const updateEditing = (
-  store: TStore,
-  part: string,
-  v: TEditValue,
-): void => {
+export const updateEditing = (store: TStore, part: string, v: TEditValue): void => {
   if (!store) return
   if (!store.updateEditing) {
     // eslint-disable-next-line no-console

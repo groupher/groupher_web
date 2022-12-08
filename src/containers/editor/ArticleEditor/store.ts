@@ -3,7 +3,6 @@
  *
  */
 
-import { types as T, Instance, getParent } from 'mobx-state-tree'
 import { pick, values } from 'ramda'
 
 import type {
@@ -19,42 +18,38 @@ import type {
   TTag,
 } from '@/spec'
 
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, toJS, Instance } from '@/utils/mobx'
 import { Community, Tag, User } from '@/model'
-
 import { ARTICLE_CAT } from '@/constant'
 
 import type { TTexts, TEditData } from './spec'
 
 const ArticleEditor = T.model('ArticleEditor', {
-  mode: T.optional(T.enumeration(['publish', 'update']), 'publish'),
-  isArchived: T.optional(T.boolean, false),
+  mode: T.opt(T.enum(['publish', 'update']), 'publish'),
+  isArchived: T.opt(T.bool, false),
   archivedAt: T.maybeNull(T.string),
 
-  title: T.optional(T.string, ''),
+  title: T.opt(T.string, ''),
   author: T.maybeNull(User),
-  body: T.optional(T.string, '{}'),
-  linkAddr: T.optional(T.string, ''),
-  copyRight: T.optional(T.string, 'cc'),
-  isQuestion: T.optional(T.boolean, false),
-  community: T.optional(Community, {}),
-  articleTags: T.optional(T.array(Tag), []),
+  body: T.opt(T.string, '{}'),
+  linkAddr: T.opt(T.string, ''),
+  copyRight: T.opt(T.string, 'cc'),
+  isQuestion: T.opt(T.bool, false),
+  community: T.opt(Community, {}),
+  articleTags: T.opt(T.array(Tag), []),
 
   // job spec
-  company: T.optional(T.string, ''),
-  companyLink: T.optional(T.string, ''),
+  company: T.opt(T.string, ''),
+  companyLink: T.opt(T.string, ''),
 
-  // showSubTitle: T.optional(T.boolean, false),
-  publishing: T.optional(T.boolean, false),
-  publishDone: T.optional(T.boolean, false),
+  // showSubTitle: T.opt(T.bool, false),
+  publishing: T.opt(T.bool, false),
+  publishDone: T.opt(T.bool, false),
   //
-  wordsCountReady: T.optional(T.boolean, false),
+  wordsCountReady: T.opt(T.bool, false),
 
   // selectors
-  activeCat: T.optional(
-    T.enumeration(values(ARTICLE_CAT)),
-    ARTICLE_CAT.FEATURE,
-  ),
+  activeCat: T.opt(T.enum(values(ARTICLE_CAT)), ARTICLE_CAT.FEATURE),
 
   activeTag: T.maybeNull(Tag),
 })
@@ -107,13 +102,7 @@ const ArticleEditor = T.model('ArticleEditor', {
       const slf = self as TStore
 
       const tagsIds = toJS(slf.articleTags).map((t) => t.id)
-      const baseFields = [
-        'title',
-        'body',
-        'copyRight',
-        'isQuestion',
-        'linkAddr',
-      ]
+      const baseFields = ['title', 'body', 'copyRight', 'isQuestion', 'linkAddr']
 
       return { ...pick(baseFields, slf), articleTags: tagsIds }
     },
@@ -133,13 +122,7 @@ const ArticleEditor = T.model('ArticleEditor', {
       const { mode } = slf
 
       const basicStatus = pick(
-        [
-          'publishing',
-          'publishDone',
-          'isReady',
-          'isArchived',
-          'isArticleAuthor',
-        ],
+        ['publishing', 'publishDone', 'isReady', 'isArchived', 'isArticleAuthor'],
         slf,
       )
 

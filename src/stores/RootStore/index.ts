@@ -6,13 +6,12 @@
  *
  */
 
-import { types as T, Instance } from 'mobx-state-tree'
 import { merge, pickBy } from 'ramda'
 
 import type { TAccount, TRoute, TThread, TArticle } from '@/spec'
 
 import { EVENT } from '@/constant'
-import { markStates } from '@/utils/mobx'
+import { T, markStates, Instance } from '@/utils/mobx'
 import { toast } from '@/utils/helper'
 import { send } from '@/utils/signal'
 import { notEmpty } from '@/utils/validator'
@@ -93,90 +92,90 @@ import {
 
 const rootStore = T.model({
   // domain stores
-  account: T.optional(AccountStore, {}),
-  route: T.optional(RouteStore, {}),
-  viewing: T.optional(ViewingStore, {}),
-  comments: T.optional(CommentsStore, {}),
+  account: T.opt(AccountStore, {}),
+  route: T.opt(RouteStore, {}),
+  viewing: T.opt(ViewingStore, {}),
+  comments: T.opt(CommentsStore, {}),
   // @ts-ignore TODO:
-  theme: T.optional(ThemeStore, ThemeDefaults),
-  locale: T.optional(T.enumeration('locale', ['zh', 'en']), 'zh'),
+  theme: T.opt(ThemeStore, ThemeDefaults),
+  locale: T.opt(T.enum('locale', ['zh', 'en']), 'zh'),
   errorCode: T.maybeNull(T.number),
   // domain end
 
   // toolbox
-  drawer: T.optional(DrawerStore, { visible: false }),
-  // repoEditor: T.optional(RepoEditorStore, {}),
-  accountEditor: T.optional(AccountEditorStore, {}),
-  mailBox: T.optional(MailBoxStore, {}),
-  avatarAdder: T.optional(AvatarAdderStore, {}),
+  drawer: T.opt(DrawerStore, { visible: false }),
+  // repoEditor: T.opt(RepoEditorStore, {}),
+  accountEditor: T.opt(AccountEditorStore, {}),
+  mailBox: T.opt(MailBoxStore, {}),
+  avatarAdder: T.opt(AvatarAdderStore, {}),
   // toolbox end
 
   // layouts > xxx > papers
   // layouts
-  globalLayout: T.optional(GlobalLayoutStore, {}),
-  richEditor: T.optional(RichEditorStore, {}),
-  // header: T.optional(HeaderStore, {}),
+  globalLayout: T.opt(GlobalLayoutStore, {}),
+  richEditor: T.opt(RichEditorStore, {}),
+  // header: T.opt(HeaderStore, {}),
   // layouts end
 
-  errorBox: T.optional(ErrorBoxStore, {}),
+  errorBox: T.opt(ErrorBoxStore, {}),
 
   // banners
-  articleDigest: T.optional(ArticleDigestStore, {}),
-  communityDigest: T.optional(CommunityDigestStore, {}),
+  articleDigest: T.opt(ArticleDigestStore, {}),
+  communityDigest: T.opt(CommunityDigestStore, {}),
 
   // content
-  communityContent: T.optional(CommunityContentStore, {}),
+  communityContent: T.opt(CommunityContentStore, {}),
 
-  // exploreContent: T.optional(ExploreContentStore, {}),
-  communityEditor: T.optional(CommunityEditorStore, {}),
-  userContent: T.optional(UserContentStore, {}),
+  // exploreContent: T.opt(ExploreContentStore, {}),
+  communityEditor: T.opt(CommunityEditorStore, {}),
+  userContent: T.opt(UserContentStore, {}),
   // content end
 
   // footer
-  // footer: T.optional(FooterStore, {}),
+  // footer: T.opt(FooterStore, {}),
   // threads
 
-  tagsBar: T.optional(TagsBarStore, {}),
-  userLister: T.optional(UserListerStore, {}),
-  // cashier: T.optional(CashierStore, {}),
+  tagsBar: T.opt(TagsBarStore, {}),
+  userLister: T.opt(UserListerStore, {}),
+  // cashier: T.opt(CashierStore, {}),
 
   // viewers (for drawer usage)
-  mailsViewer: T.optional(MailsViewerStore, {}),
+  mailsViewer: T.opt(MailsViewerStore, {}),
 
   // user page
-  userBilling: T.optional(UserBillingStore, {}),
-  userSettings: T.optional(UserSettingsStore, {}),
+  userBilling: T.opt(UserBillingStore, {}),
+  userSettings: T.opt(UserSettingsStore, {}),
 
   // have a drink
 
   // GEN: PLUG SUBSTORE TO ROOTSTORE
-  authWall: T.optional(AuthWallStore, {}),
-  subscriber: T.optional(SubscriberStore, {}),
-  dashboardThread: T.optional(DashboardThreadStore, {}),
-  wallpaperEditor: T.optional(WallpaperEditorStore, {}),
-  helpThread: T.optional(HelpThreadStore, {}),
-  aboutThread: T.optional(AboutThreadStore, {}),
-  changelogThread: T.optional(ChangelogThreadStore, {}),
-  kanbanThread: T.optional(KanbanThreadStore, {}),
-  userPublishedArticles: T.optional(UserPublishedArticlesStore, {}),
-  communityTagSetter: T.optional(CommunityTagSetterStore, {}),
-  collectionFolder: T.optional(CollectionFolderStore, {}),
-  share: T.optional(ShareStore, {}),
-  articleContent: T.optional(ArticleContentStore, {}),
-  articleViewer: T.optional(ArticleViewerStore, {}),
-  articlesThread: T.optional(ArticlesThreadStore, {}),
-  threadSidebar: T.optional(ThreadSidebarStore, {}),
-  abuseReport: T.optional(AbuseReportStore, {}),
-  communityJoinBadge: T.optional(CommunityJoinBadgeStore, {}),
-  articleEditor: T.optional(ArticleEditorStore, {}),
-  userProfile: T.optional(UserProfileStore, {}),
-  articleFooter: T.optional(ArticleFooterStore, {}),
-  articleSticker: T.optional(ArticleStickerStore, {}),
-  modeLineMenu: T.optional(ModeLineMenuStore, {}),
-  modeLine: T.optional(ModeLineStore, {}),
-  // recipesContent: T.optional(RecipesContentStore, {}),
-  joinModal: T.optional(JoinModalStore, {}),
-  c11NSettingPanel: T.optional(C11NSettingPanelStore, {}),
+  authWall: T.opt(AuthWallStore, {}),
+  subscriber: T.opt(SubscriberStore, {}),
+  dashboardThread: T.opt(DashboardThreadStore, {}),
+  wallpaperEditor: T.opt(WallpaperEditorStore, {}),
+  helpThread: T.opt(HelpThreadStore, {}),
+  aboutThread: T.opt(AboutThreadStore, {}),
+  changelogThread: T.opt(ChangelogThreadStore, {}),
+  kanbanThread: T.opt(KanbanThreadStore, {}),
+  userPublishedArticles: T.opt(UserPublishedArticlesStore, {}),
+  communityTagSetter: T.opt(CommunityTagSetterStore, {}),
+  collectionFolder: T.opt(CollectionFolderStore, {}),
+  share: T.opt(ShareStore, {}),
+  articleContent: T.opt(ArticleContentStore, {}),
+  articleViewer: T.opt(ArticleViewerStore, {}),
+  articlesThread: T.opt(ArticlesThreadStore, {}),
+  threadSidebar: T.opt(ThreadSidebarStore, {}),
+  abuseReport: T.opt(AbuseReportStore, {}),
+  communityJoinBadge: T.opt(CommunityJoinBadgeStore, {}),
+  articleEditor: T.opt(ArticleEditorStore, {}),
+  userProfile: T.opt(UserProfileStore, {}),
+  articleFooter: T.opt(ArticleFooterStore, {}),
+  articleSticker: T.opt(ArticleStickerStore, {}),
+  modeLineMenu: T.opt(ModeLineMenuStore, {}),
+  modeLine: T.opt(ModeLineStore, {}),
+  // recipesContent: T.opt(RecipesContentStore, {}),
+  joinModal: T.opt(JoinModalStore, {}),
+  c11NSettingPanel: T.opt(C11NSettingPanelStore, {}),
 })
   .views((self) => ({
     get isOnline(): boolean {

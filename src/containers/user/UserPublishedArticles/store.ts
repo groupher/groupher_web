@@ -2,8 +2,7 @@
  * UserPublishedArticles store
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
-import { values, includes } from 'ramda'
+import { values } from 'ramda'
 
 import type {
   TCommunity,
@@ -16,7 +15,7 @@ import type {
 } from '@/spec'
 import { TYPE, ARTICLE_THREAD } from '@/constant'
 import { buildLog } from '@/utils/logger'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { plural } from '@/utils/fmt'
 
 import { PagedPosts, emptyPagi } from '@/model'
@@ -25,16 +24,10 @@ import { PagedPosts, emptyPagi } from '@/model'
 const log = buildLog('S:UserPublishedArticles')
 
 const UserPublishedArticles = T.model('UserPublishedArticles', {
-  thread: T.optional(
-    T.enumeration(values(ARTICLE_THREAD)),
-    ARTICLE_THREAD.POST,
-  ),
-  pagedPosts: T.optional(PagedPosts, emptyPagi),
+  thread: T.opt(T.enum(values(ARTICLE_THREAD)), ARTICLE_THREAD.POST),
+  pagedPosts: T.opt(PagedPosts, emptyPagi),
 
-  resState: T.optional(
-    T.enumeration('resState', values(TYPE.RES_STATE)),
-    TYPE.RES_STATE.DONE,
-  ),
+  resState: T.opt(T.enum('resState', values(TYPE.RES_STATE)), TYPE.RES_STATE.DONE),
 })
   .views((self) => ({
     get isLogin(): boolean {

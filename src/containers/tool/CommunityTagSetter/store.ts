@@ -2,22 +2,15 @@
  * CommunityTagSetter store
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { values, filter, reject, includes, map, uniq } from 'ramda'
 
 import type { TCommunity, TRootStore } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 // import { mockCommunities } from '@/utils/mock'
 
 import type { TCommunitiesList, TTagsList, TTexts } from './spec'
-import {
-  TAG_VIEW,
-  COMMUNITY_VIEW,
-  COMMUNITY_STYLE,
-  TYPE,
-  COMMON_COMMUNITIES,
-} from './constant'
+import { TAG_VIEW, COMMUNITY_VIEW, COMMUNITY_STYLE, TYPE, COMMON_COMMUNITIES } from './constant'
 import { Community, Tag } from '@/model'
 
 /* eslint-disable-next-line */
@@ -25,30 +18,24 @@ const log = buildLog('S:CommunityTagSetter')
 
 // const allCommunities = mockCommunities(5)
 const CommunityTagSetter = T.model('CommunityTagSetter', {
-  show: T.optional(T.boolean, false),
-  type: T.optional(T.enumeration(values(TYPE)), TYPE.MIRROR_COMMUNITY),
-  tagView: T.optional(T.enumeration(values(TAG_VIEW)), TAG_VIEW.SELECT),
-  communityView: T.optional(
-    T.enumeration(values(COMMUNITY_VIEW)),
-    COMMUNITY_VIEW.DEFAULT,
-  ),
+  show: T.opt(T.bool, false),
+  type: T.opt(T.enum(values(TYPE)), TYPE.MIRROR_COMMUNITY),
+  tagView: T.opt(T.enum(values(TAG_VIEW)), TAG_VIEW.SELECT),
+  communityView: T.opt(T.enum(values(COMMUNITY_VIEW)), COMMUNITY_VIEW.DEFAULT),
   // communities states
-  communitySearchValue: T.optional(T.string, ''),
-  communitiesSearching: T.optional(T.boolean, false),
-  communitiesSearched: T.optional(T.boolean, false),
-  selectedCommunities: T.optional(T.array(Community), []),
-  searchedCommunities: T.optional(T.array(Community), []),
-  // commonUsedCommunities: T.optional(T.array(Community), mockCommunities(5)),
+  communitySearchValue: T.opt(T.string, ''),
+  communitiesSearching: T.opt(T.bool, false),
+  communitiesSearched: T.opt(T.bool, false),
+  selectedCommunities: T.opt(T.array(Community), []),
+  searchedCommunities: T.opt(T.array(Community), []),
+  // commonUsedCommunities: T.opt(T.array(Community), mockCommunities(5)),
 
-  communityStyle: T.optional(
-    T.enumeration(values(COMMUNITY_STYLE)),
-    COMMUNITY_STYLE.NORMAL,
-  ),
+  communityStyle: T.opt(T.enum(values(COMMUNITY_STYLE)), COMMUNITY_STYLE.NORMAL),
 
   // tags states
-  tagsLoading: T.optional(T.boolean, false),
-  tags: T.optional(T.array(Tag), []),
-  selectedTags: T.optional(T.array(Tag), []),
+  tagsLoading: T.opt(T.bool, false),
+  tags: T.opt(T.array(Tag), []),
+  selectedTags: T.opt(T.array(Tag), []),
 })
   .views((self) => ({
     get curCommunity(): TCommunity {
@@ -58,10 +45,7 @@ const CommunityTagSetter = T.model('CommunityTagSetter', {
     },
     get commonUsedCommunities(): TCommunity[] {
       const { communityStyle } = self
-      return (
-        COMMON_COMMUNITIES[communityStyle.toUpperCase()] ||
-        COMMON_COMMUNITIES.LANG
-      )
+      return COMMON_COMMUNITIES[communityStyle.toUpperCase()] || COMMON_COMMUNITIES.LANG
     },
     get communitiesList(): TCommunitiesList {
       const slf = self as TStore
@@ -106,10 +90,7 @@ const CommunityTagSetter = T.model('CommunityTagSetter', {
       const slf = self as TStore
       const { commonUsedCommunities, searchedCommunities } = slf
 
-      return uniq([
-        ...toJS(searchedCommunities),
-        ...toJS(commonUsedCommunities),
-      ])
+      return uniq([...toJS(searchedCommunities), ...toJS(commonUsedCommunities)])
     },
     get canActOnSeleted(): boolean {
       // if (self.type === TYPE.M)
@@ -124,8 +105,7 @@ const CommunityTagSetter = T.model('CommunityTagSetter', {
             searchPlaceholder: '// 搜索编程语言',
             notice: null,
             commonUsedHint: '常用编程语言',
-            notFoundHint:
-              '抱歉，未找到相关编程语言，请在该评论区或子社区 /feedback 中反馈。',
+            notFoundHint: '抱歉，未找到相关编程语言，请在该评论区或子社区 /feedback 中反馈。',
           }
         }
         case COMMUNITY_STYLE.FRAMEWORK: {
@@ -134,8 +114,7 @@ const CommunityTagSetter = T.model('CommunityTagSetter', {
             searchPlaceholder: '// 搜索框架 / 库',
             notice: null,
             commonUsedHint: '常用框架 / 库',
-            notFoundHint:
-              '抱歉，未找到相关框架 / 库，请在该评论区或子社区 /feedback 中反馈。',
+            notFoundHint: '抱歉，未找到相关框架 / 库，请在该评论区或子社区 /feedback 中反馈。',
           }
         }
         case COMMUNITY_STYLE.DATABASE: {
@@ -144,8 +123,7 @@ const CommunityTagSetter = T.model('CommunityTagSetter', {
             searchPlaceholder: '// 搜索数据库',
             notice: null,
             commonUsedHint: '常用数据库',
-            notFoundHint:
-              '抱歉，未找到相关数据库，请在该评论区或子社区 /feedback 中反馈。',
+            notFoundHint: '抱歉，未找到相关数据库，请在该评论区或子社区 /feedback 中反馈。',
           }
         }
         case COMMUNITY_STYLE.DEVOPS: {
@@ -154,8 +132,7 @@ const CommunityTagSetter = T.model('CommunityTagSetter', {
             searchPlaceholder: '// 搜索工具 / 平台',
             notice: null,
             commonUsedHint: '常用工具 / 平台',
-            notFoundHint:
-              '抱歉，未找到相关工具 / 平台，请在该评论区或子社区 /feedback 中反馈。',
+            notFoundHint: '抱歉，未找到相关工具 / 平台，请在该评论区或子社区 /feedback 中反馈。',
           }
         }
         case COMMUNITY_STYLE.DESIGN: {
@@ -164,8 +141,7 @@ const CommunityTagSetter = T.model('CommunityTagSetter', {
             searchPlaceholder: '// 设计工具',
             notice: null,
             commonUsedHint: '设计工具',
-            notFoundHint:
-              '抱歉，未找到相关设计工具，请在该评论区或子社区 /feedback 中反馈。',
+            notFoundHint: '抱歉，未找到相关设计工具，请在该评论区或子社区 /feedback 中反馈。',
           }
         }
         default: {
@@ -175,8 +151,7 @@ const CommunityTagSetter = T.model('CommunityTagSetter', {
             notice:
               '内测阶段所有人均可发布内容到首页。若测试请发布到「黑洞」。发布恶俗 / 恶意内容到社区，账号本身将进入「黑洞」，谢谢理解。',
             commonUsedHint: '常用子社区',
-            notFoundHint:
-              '抱歉，未找到相关子社区，请在该评论区或子社区 /feedback 中反馈。',
+            notFoundHint: '抱歉，未找到相关子社区，请在该评论区或子社区 /feedback 中反馈。',
           }
         }
       }
@@ -213,16 +188,10 @@ const CommunityTagSetter = T.model('CommunityTagSetter', {
       const slf = self as TStore
       const { selectableCommunities, selectedCommunities } = slf
 
-      const targetCommunities = filter(
-        (c) => c.raw === raw,
-        selectableCommunities,
-      )
+      const targetCommunities = filter((c) => c.raw === raw, selectableCommunities)
 
       slf.mark({
-        selectedCommunities: uniq([
-          ...toJS(selectedCommunities),
-          ...targetCommunities,
-        ]),
+        selectedCommunities: uniq([...toJS(selectedCommunities), ...targetCommunities]),
       })
     },
 
@@ -231,10 +200,7 @@ const CommunityTagSetter = T.model('CommunityTagSetter', {
       const { selectedCommunities } = slf
 
       slf.mark({
-        selectedCommunities: reject(
-          (c: TCommunity) => c.raw === raw,
-          toJS(selectedCommunities),
-        ),
+        selectedCommunities: reject((c: TCommunity) => c.raw === raw, toJS(selectedCommunities)),
       })
     },
 

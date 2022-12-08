@@ -2,12 +2,11 @@
  * Subscriber store
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { values } from 'ramda'
 
 import type { TCommunity, TRootStore } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
 import { BY } from './constant'
 
@@ -15,8 +14,8 @@ import { BY } from './constant'
 const log = buildLog('S:Subscriber')
 
 const Subscriber = T.model('Subscriber', {
-  visible: T.optional(T.boolean, false),
-  by: T.optional(T.enumeration(values(BY)), BY.EMAIL),
+  visible: T.opt(T.bool, false),
+  by: T.opt(T.enum(values(BY)), BY.EMAIL),
 })
   .views((self) => ({
     get curCommunity(): TCommunity {

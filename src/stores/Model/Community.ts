@@ -1,4 +1,4 @@
-import { types as T } from 'mobx-state-tree'
+import { T } from '@/utils/mobx'
 
 import { pagiFields, timestampFields } from './helper/common'
 
@@ -7,7 +7,7 @@ import { pagiFields, timestampFields } from './helper/common'
 const Thread = T.model('Thread', {
   title: T.string,
   raw: T.string,
-  index: T.optional(T.number, 0),
+  index: T.opt(T.number, 0),
 })
 
 export const SimpleCategory = T.model('Category', {
@@ -16,34 +16,34 @@ export const SimpleCategory = T.model('Category', {
 })
 
 const Meta = T.model('CommunityMeta', {
-  postsCount: T.optional(T.number, 0),
+  postsCount: T.opt(T.number, 0),
   worksCount: T.maybeNull(T.number),
-  blogsCount: T.optional(T.number, 0),
-  radarsCount: T.optional(T.number, 0),
-  jobsCount: T.optional(T.number, 0),
-  // reposCount: T.optional(T.number, 0),
+  blogsCount: T.opt(T.number, 0),
+  radarsCount: T.opt(T.number, 0),
+  jobsCount: T.opt(T.number, 0),
+  // reposCount: T.opt(T.number, 0),
 })
 
 export const Community = T.model('Community', {
   id: T.maybeNull(T.string),
   title: T.maybeNull(T.string),
-  desc: T.optional(T.string, ''),
+  desc: T.opt(T.string, ''),
   raw: T.maybeNull(T.string),
-  index: T.optional(T.number, 1000000),
+  index: T.opt(T.number, 1000000),
   logo: T.maybeNull(T.string),
-  categories: T.optional(T.array(SimpleCategory), []),
-  contributesDigest: T.optional(T.array(T.number), []),
-  subscribersCount: T.optional(T.number, 0),
-  articlesCount: T.optional(T.number, 0),
-  editorsCount: T.optional(T.number, 0),
+  categories: T.opt(T.array(SimpleCategory), []),
+  contributesDigest: T.opt(T.array(T.number), []),
+  subscribersCount: T.opt(T.number, 0),
+  articlesCount: T.opt(T.number, 0),
+  editorsCount: T.opt(T.number, 0),
   meta: T.maybeNull(Meta),
-  viewerHasSubscribed: T.maybeNull(T.boolean),
-  threads: T.optional(T.array(Thread), []),
+  viewerHasSubscribed: T.maybeNull(T.bool),
+  threads: T.opt(T.array(Thread), []),
 
   ...timestampFields(),
 })
 
 export const PagedCommunities = T.model('PagedCommunities', {
-  entries: T.optional(T.array(Community), []),
+  entries: T.opt(T.array(Community), []),
   ...pagiFields(),
 })

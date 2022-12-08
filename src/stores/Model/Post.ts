@@ -1,14 +1,14 @@
-import { types as T } from 'mobx-state-tree'
+import { T } from '@/utils/mobx'
 
 import { articleFields } from './helper/article'
 import { pagiFields } from './helper/common'
 
 export const Post = T.model('Post', {
   ...articleFields(),
-  isQuestion: T.maybeNull(T.boolean),
+  isQuestion: T.maybeNull(T.bool),
 })
 
 export const PagedPosts = T.model('PagedPosts', {
-  entries: T.optional(T.array(Post), []),
+  entries: T.opt(T.array(Post), []),
   ...pagiFields(),
 })

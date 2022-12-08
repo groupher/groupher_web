@@ -2,7 +2,6 @@
  * WallpaperEditor store
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { keys, values, clone, forEach, pick } from 'ramda'
 
 import { GRADIENT_WALLPAPER, PATTERN_WALLPAPER } from '@/constant'
@@ -15,7 +14,7 @@ import type {
   TWallpaperPic,
 } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { getWallpaperType } from '@/utils/wallpaper'
 
 import type { TWallpaperData } from './spec'
@@ -25,19 +24,19 @@ import { TAB } from './constant'
 const log = buildLog('S:WallpaperEditor')
 
 const initWallpaperModalFields = {
-  wallpaper: T.optional(T.string, 'green'),
+  wallpaper: T.opt(T.string, 'green'),
   // for gradient colors
-  hasPattern: T.optional(T.boolean, true),
-  hasBlur: T.optional(T.boolean, false),
-  direction: T.optional(T.string, 'bottom'),
+  hasPattern: T.opt(T.bool, true),
+  hasBlur: T.opt(T.bool, false),
+  direction: T.opt(T.string, 'bottom'),
 }
 
 const InitWallpaper = T.model('WallpaperInit', initWallpaperModalFields)
 
 const WallpaperEditor = T.model('WallpaperEditor', {
-  tab: T.optional(T.enumeration(values(TAB)), TAB.BUILDIN),
+  tab: T.opt(T.enum(values(TAB)), TAB.BUILDIN),
   ...initWallpaperModalFields,
-  initWallpaper: T.optional(InitWallpaper, {}),
+  initWallpaper: T.opt(InitWallpaper, {}),
 })
   .views((self) => ({
     get curCommunity(): TCommunity {

@@ -3,18 +3,16 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
-
 import type { TRootStore, TRoute, TArticle } from '@/spec'
 
-import { markStates } from '@/utils/mobx'
+import { T, getParent, markStates, Instance } from '@/utils/mobx'
 import { buildLog } from '@/utils/logger'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:ArticleContentStore')
 
 const ArticleContent = T.model('ArticleContent', {
-  articleInViewport: T.optional(T.boolean, true),
+  articleInViewport: T.opt(T.bool, true),
 })
   .views((self) => ({
     get curRoute(): TRoute {

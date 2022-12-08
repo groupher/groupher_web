@@ -3,18 +3,17 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { prop, trim, filter, contains } from 'ramda'
 
 import type { TRootStore, TArticle, TCommunity } from '@/spec'
 import { sortByIndex } from '@/utils/helper'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { notEmpty } from '@/utils/validator'
 
 import type { TCurActive } from './spec'
 
 const ModeLineMenu = T.model('ModeLineMenu', {
-  searchCommunityValue: T.optional(T.string, ''),
+  searchCommunityValue: T.opt(T.string, ''),
 })
   .views((self) => ({
     get viewingArticle(): TArticle {
@@ -44,9 +43,7 @@ const ModeLineMenu = T.model('ModeLineMenu', {
         )
       }
 
-      return subscribedCommunities
-        ? sortByIndex(subscribedCommunities.entries)
-        : []
+      return subscribedCommunities ? sortByIndex(subscribedCommunities.entries) : []
     },
   }))
   .actions((self) => ({

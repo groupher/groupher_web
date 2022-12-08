@@ -1,4 +1,4 @@
-import { types as T } from 'mobx-state-tree'
+import { T } from '@/utils/mobx'
 
 export { Community, PagedCommunities } from './Community'
 export { default as Article } from './Article'
@@ -11,13 +11,7 @@ export { FavoriteCategory, PagedFavoriteCategories } from './FavoriteCategory'
 export { GithubUser } from './GithubUser'
 export { emptyPagi } from './helper/common'
 
-export {
-  EmptyUser,
-  EmptyAchievement,
-  User,
-  PagedUsers,
-  SimpleUser,
-} from './User'
+export { EmptyUser, EmptyAchievement, User, PagedUsers, SimpleUser } from './User'
 
 export { ArticlesFilter } from './ArticlesFilter'
 

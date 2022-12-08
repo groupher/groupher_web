@@ -3,15 +3,14 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 // import {} from 'ramda'
 
 import type { TRootStore, TCommunity, TRoute } from '@/spec'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
 const CommunityJoinBadge = T.model('CommunityJoinBadge', {
-  subscribeLoading: T.optional(T.boolean, false),
-  loading: T.optional(T.boolean, false),
+  subscribeLoading: T.opt(T.bool, false),
+  loading: T.opt(T.bool, false),
 })
   .views((self) => ({
     get isLogin(): boolean {

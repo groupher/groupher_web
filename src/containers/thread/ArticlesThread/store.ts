@@ -2,7 +2,6 @@
  * ArticlesThread store
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { merge, isEmpty, findIndex, propEq, pickBy, values } from 'ramda'
 
 import type {
@@ -21,20 +20,17 @@ import type {
 } from '@/spec'
 
 import { TYPE } from '@/constant'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, markStates, getParent, Instance, toJS } from '@/utils/mobx'
 import { nilOrEmpty } from '@/utils/validator'
 import { plural } from '@/utils/fmt'
 import { PagedPosts, ArticlesFilter, emptyPagi } from '@/model'
 
 const ArticlesThread = T.model('ArticlesThread', {
-  mode: T.optional(T.enumeration(['default', 'search']), 'default'),
-  searchValue: T.optional(T.string, ''),
-  pagedPosts: T.optional(PagedPosts, emptyPagi),
-  filters: T.optional(ArticlesFilter, {}),
-  resState: T.optional(
-    T.enumeration('resState', values(TYPE.RES_STATE)),
-    TYPE.RES_STATE.LOADING,
-  ),
+  mode: T.opt(T.enum(['default', 'search']), 'default'),
+  searchValue: T.opt(T.string, ''),
+  pagedPosts: T.opt(PagedPosts, emptyPagi),
+  filters: T.opt(ArticlesFilter, {}),
+  resState: T.opt(T.enum('resState', values(TYPE.RES_STATE)), TYPE.RES_STATE.LOADING),
 })
   .views((self) => ({
     get isLogin(): boolean {
@@ -194,8 +190,7 @@ const ArticlesThread = T.model('ArticlesThread', {
       if (index === null) return
 
       if (meta) {
-        slf[pagedArticleKey].entries[index].meta.latestUpvotedUsers =
-          meta.latestUpvotedUsers
+        slf[pagedArticleKey].entries[index].meta.latestUpvotedUsers = meta.latestUpvotedUsers
       }
 
       slf[pagedArticleKey].entries[index].upvotesCount = count

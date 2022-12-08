@@ -3,26 +3,17 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
-
-import type {
-  TRootStore,
-  TAccount,
-  TC11N,
-  TArticle,
-  TCommunity,
-  TOnlineStatus,
-} from '@/spec'
+import type { TRootStore, TAccount, TC11N, TArticle, TCommunity, TOnlineStatus } from '@/spec'
 import { METRIC, HCN } from '@/constant'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
 // import { VIEW, TFooterView } from './constants'
 
 const FooterStore = T.model('FooterStore', {
-  showSponsor: T.optional(T.boolean, false),
-  metric: T.optional(T.string, METRIC.COMMUNITY),
+  showSponsor: T.opt(T.bool, false),
+  metric: T.opt(T.string, METRIC.COMMUNITY),
   // online-status
-  realtimeVisitors: T.optional(T.number, 1),
+  realtimeVisitors: T.opt(T.number, 1),
 })
   .views((self) => ({
     get isLogin(): boolean {

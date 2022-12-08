@@ -3,10 +3,8 @@
  *
  */
 
-import { types as T, getParent } from 'mobx-state-tree'
-
 import { PAGE_SIZE } from '@/config'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, toJS } from '@/utils/mobx'
 import { emptyPagi } from '@/model'
 
 const Bill = T.model('Bill', {
@@ -16,20 +14,20 @@ const Bill = T.model('Bill', {
   paymentUsage: T.string,
   state: T.string,
   amount: T.number,
-  note: T.optional(T.string, ''),
-  insertedAt: T.optional(T.string, ''),
+  note: T.opt(T.string, ''),
+  insertedAt: T.opt(T.string, ''),
 })
 
 const PagedBillRecords = T.model('PagedBillRecords', {
-  entries: T.optional(T.array(Bill), []),
-  pageNumber: T.optional(T.number, 1),
-  pageSize: T.optional(T.number, PAGE_SIZE.D),
-  totalCount: T.optional(T.number, 0),
-  totalPages: T.optional(T.number, 0),
+  entries: T.opt(T.array(Bill), []),
+  pageNumber: T.opt(T.number, 1),
+  pageSize: T.opt(T.number, PAGE_SIZE.D),
+  totalCount: T.opt(T.number, 0),
+  totalPages: T.opt(T.number, 0),
 })
 
 const UserBilling = T.model('UserBilling', {
-  pagedBillRecords: T.optional(PagedBillRecords, emptyPagi),
+  pagedBillRecords: T.opt(PagedBillRecords, emptyPagi),
 })
   .views((self) => ({
     get root() {

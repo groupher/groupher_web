@@ -3,18 +3,14 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 // import {} from 'ramda'
 
 import type { TArticle, TRootStore } from '@/spec'
-import { markStates } from '@/utils/mobx'
+import { T, markStates, Instance, getParent } from '@/utils/mobx'
 
 const ArticleFooter = T.model('ArticleFooter', {
-  hasFollowedAuthor: T.optional(T.boolean, false),
-  actionPanelType: T.optional(
-    T.enumeration(['reference-list', 'operation-list']),
-    'operation-list',
-  ),
+  hasFollowedAuthor: T.opt(T.bool, false),
+  actionPanelType: T.opt(T.enum(['reference-list', 'operation-list']), 'operation-list'),
 })
   .views((self) => ({
     get isLogin(): boolean {

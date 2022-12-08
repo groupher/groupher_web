@@ -3,26 +3,20 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
-
 import type { TRootStore } from '@/spec'
 
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { MailStatus, PagedMentionMessages, emptyPagi } from '@/model'
 
 const MailBox = T.model('MailBox', {
-  panelVisiable: T.optional(T.boolean, false),
-  mailStatus: T.optional(MailStatus, {}),
-  pagedMentions: T.optional(PagedMentionMessages, emptyPagi),
-  activeRaw: T.optional(
-    T.enumeration('notifications', [
-      'notifications',
-      'mentions',
-      'sys_notifications',
-    ]),
+  panelVisiable: T.opt(T.bool, false),
+  mailStatus: T.opt(MailStatus, {}),
+  pagedMentions: T.opt(PagedMentionMessages, emptyPagi),
+  activeRaw: T.opt(
+    T.enum('notifications', ['notifications', 'mentions', 'sys_notifications']),
     'mentions',
   ),
-  loading: T.optional(T.boolean, false),
+  loading: T.opt(T.bool, false),
 })
   .views((self) => ({
     get isLogin(): boolean {

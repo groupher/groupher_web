@@ -2,13 +2,12 @@
  * AbuseReport store
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { find, propEq } from 'ramda'
 
 import { REPORT_TYPE } from '@/constant'
 
 import type { TCommunity, TArticle, TRootStore } from '@/spec'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { buildLog } from '@/utils/logger'
 
 import type { TREPORT_ITEM } from './spec'
@@ -26,17 +25,17 @@ const initItem = {
 const Item = T.model('AbuseReport', {
   title: T.string,
   raw: T.string,
-  checked: T.optional(T.boolean, false),
-  info: T.optional(T.string, ''),
-  detail: T.optional(T.string, ''),
+  checked: T.opt(T.bool, false),
+  info: T.opt(T.string, ''),
+  detail: T.opt(T.string, ''),
 })
 
 const AbuseReport = T.model('AbuseReport', {
-  show: T.optional(T.boolean, false),
-  type: T.optional(T.string, REPORT_TYPE.ARTICLE),
+  show: T.opt(T.bool, false),
+  type: T.opt(T.string, REPORT_TYPE.ARTICLE),
   items: T.maybeNull(T.array(Item)),
   checkedItemRaw: T.maybeNull(T.string),
-  view: T.optional(T.enumeration(['main', 'detail']), 'main'),
+  view: T.opt(T.enum(['main', 'detail']), 'main'),
 })
   .views((self) => ({
     get curCommunity(): TCommunity {
@@ -53,10 +52,7 @@ const AbuseReport = T.model('AbuseReport', {
     },
     get activeItem(): TREPORT_ITEM {
       const { itemsData, checkedItemRaw } = self as TStore
-      const findItem = find(
-        propEq('raw', checkedItemRaw),
-        itemsData,
-      ) as TREPORT_ITEM
+      const findItem = find(propEq('raw', checkedItemRaw), itemsData) as TREPORT_ITEM
 
       return findItem || initItem
     },

@@ -3,13 +3,11 @@
  *
  */
 
-import { types as T, Instance } from 'mobx-state-tree'
-
-import { markStates } from '@/utils/mobx'
+import { T, markStates, Instance } from '@/utils/mobx'
 
 const JoinModal = T.model('JoinModal', {
-  show: T.optional(T.boolean, false),
-  activeGroup: T.optional(T.string, 'IN'),
+  show: T.opt(T.bool, false),
+  activeGroup: T.opt(T.string, 'IN'),
 }).actions((self) => ({
   mark(sobj) {
     markStates(sobj, self)

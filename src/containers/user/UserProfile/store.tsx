@@ -3,24 +3,18 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { reject } from 'ramda'
 
-import type {
-  TRootStore,
-  TUser,
-  TPagedCommunities,
-  TUserActivity,
-} from '@/spec'
+import type { TRootStore, TUser, TPagedCommunities, TUserActivity } from '@/spec'
 import { HCN } from '@/constant'
 
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { PagedCommunities, emptyPagi, PagedPosts } from '@/model'
 
 const UserProfile = T.model('UserProfile', {
-  hasFollowedUser: T.maybeNull(T.boolean),
-  subscribedCommunities: T.optional(PagedCommunities, emptyPagi),
-  pagedPosts: T.optional(PagedPosts, emptyPagi),
+  hasFollowedUser: T.maybeNull(T.bool),
+  subscribedCommunities: T.opt(PagedCommunities, emptyPagi),
+  pagedPosts: T.opt(PagedPosts, emptyPagi),
 })
   .views((self) => ({
     get isLogin(): boolean {

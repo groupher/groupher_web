@@ -2,9 +2,6 @@
  * ArticleViewer store
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
-
-import { THREAD } from '@/constant'
 import type {
   TCommunity,
   TRootStore,
@@ -15,7 +12,7 @@ import type {
   TDocument,
 } from '@/spec'
 
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { buildLog } from '@/utils/logger'
 import { Document } from '@/model'
 
@@ -23,10 +20,10 @@ import { Document } from '@/model'
 const log = buildLog('S:ArticleViewer')
 
 const ArticleViewer = T.model('ArticleViewer', {
-  loading: T.optional(T.boolean, false),
-  tab: T.optional(T.string, ''),
+  loading: T.opt(T.bool, false),
+  tab: T.opt(T.string, ''),
   // blog-spec
-  document: T.optional(Document, {}),
+  document: T.opt(Document, {}),
 })
   .views((self) => ({
     get isLogin(): boolean {

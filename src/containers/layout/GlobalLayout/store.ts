@@ -3,32 +3,23 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
-
-import type {
-  TRootStore,
-  TAccount,
-  TC11N,
-  TCommunity,
-  TWallpaper,
-  TGlobalLayout,
-} from '@/spec'
-import { markStates, toJS } from '@/utils/mobx'
+import type { TRootStore, TAccount, TC11N, TCommunity, TWallpaper, TGlobalLayout } from '@/spec'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
 const Platform = T.model('Platform', {
-  isChrome: T.optional(T.boolean, true),
-  isFirefox: T.optional(T.boolean, false),
-  isSafari: T.optional(T.boolean, false),
-  isIE: T.optional(T.boolean, false),
-  isEdge: T.optional(T.boolean, false),
+  isChrome: T.opt(T.bool, true),
+  isFirefox: T.opt(T.bool, false),
+  isSafari: T.opt(T.bool, false),
+  isIE: T.opt(T.bool, false),
+  isEdge: T.opt(T.bool, false),
 })
 
 const GlobalLayout = T.model('GlobalLayoutStore', {
-  online: T.optional(T.boolean, true),
-  platform: T.optional(Platform, {}),
-  isMobile: T.optional(T.boolean, false),
+  online: T.opt(T.bool, true),
+  platform: T.opt(Platform, {}),
+  isMobile: T.opt(T.bool, false),
   // follow the mac convention
-  bodyScrollDirection: T.optional(T.enumeration(['up', 'down']), 'up'),
+  bodyScrollDirection: T.opt(T.enum(['up', 'down']), 'up'),
 })
   .views((self) => ({
     get accountInfo(): TAccount {
