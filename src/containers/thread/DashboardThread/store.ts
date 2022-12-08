@@ -56,7 +56,7 @@ const settingsModalFields = {
   primaryColor: T.optional(T.enumeration(keys(COLORS)), 'BLACK'),
   postLayout: T.optional(
     T.enumeration(values(POST_LAYOUT)),
-    POST_LAYOUT.UPVOTE_FIRST,
+    POST_LAYOUT.MINIMAL,
   ),
   brandLayout: T.optional(
     T.enumeration(values(BRAND_LAYOUT)),

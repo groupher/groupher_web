@@ -55,6 +55,6 @@ export const UpvoteIcon = styled(UpvoteSVG)<{ size: number }>`
   transform: scaleY(0.8);
 `
 export const CommentIcon = styled(CommentSVG)`
-  ${css.size(12)};
+  ${css.size(10)};
   fill: ${theme('article.title')};
 `

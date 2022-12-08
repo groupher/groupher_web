@@ -22,8 +22,8 @@ type TCommentsIcon = { highlight?: boolean }
 export const CommentsIcon = styled(CommentSVG)<TCommentsIcon>`
   fill: ${({ highlight }) =>
     highlight ? theme('heightIcon') : theme('article.info')};
-  ${css.size(10)};
-  margin-right: 5px;
+  ${css.size(11)};
+  margin-right: 4px;
 `
 export const Count = styled.div`
   margin-top: -1px;

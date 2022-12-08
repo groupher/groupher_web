@@ -12,5 +12,5 @@ export const Wrapper = styled.div<{ top: number }>`
 `
 export const ViewIcon = styled(ViewSVG)`
   ${css.size(10)};
-  fill: ${theme('article.digest')};
+  fill: ${theme('article.info')};
 `

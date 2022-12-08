@@ -155,11 +155,12 @@ export type TUpvoteLayout =
   | 'simple'
   | 'fixed-header'
   | 'sticker'
+  | 'post-minimal'
 
 export type TBrandLayout = 'both' | 'logo' | 'text'
 export type TBannerLayout = 'header' | 'tabber'
 export type TBannerNotifyLayout = 'default' | 'center'
-export type TPostLayout = 'upvote_first' | 'comment_first' | 'card'
+export type TPostLayout = 'upvote_first' | 'comment_first' | 'card' | 'minimal'
 export type TChangelogLayout = 'preview' | 'outline'
 
 export type TGlobalLayout = {

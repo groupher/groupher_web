@@ -14,6 +14,7 @@ import DefaultLayout from './DefaultLayout'
 import GeneralLayout from './GeneralLayout'
 import FixedHeaderLayout from './FixedHeaderLayout'
 import CommentLayout from './CommentLayout'
+import PostMinimalLayout from './PostMinimalLayout'
 import PostListLayout from './PostListLayout'
 import ArticleLayout from './ArticleLayout'
 import StickerLayout from './StickerLayout'
@@ -48,6 +49,10 @@ const Upvote: FC<TProps> = ({
   switch (type) {
     case UPVOTE_LAYOUT.COMMENT: {
       Layout = CommentLayout
+      break
+    }
+    case UPVOTE_LAYOUT.POST_MINIMAL: {
+      Layout = PostMinimalLayout
       break
     }
     case UPVOTE_LAYOUT.POST_LIST: {
