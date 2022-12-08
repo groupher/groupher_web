@@ -7,7 +7,7 @@ import { pixelAdd } from '@/utils/dom'
 type TPos = { top: number; left: number }
 
 export const ReadedLabel = styled.div<TPos>`
-  background: ${theme('article.digest')};
+  background: ${theme('article.info')};
   ${css.circle(8)};
   position: absolute;
   top: ${({ top }) => `${top}px`};

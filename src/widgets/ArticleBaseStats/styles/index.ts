@@ -14,7 +14,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 `
 export const ViewsIcon = styled(ViewSVG)`
   fill: ${theme('article.info')};
-  ${css.size(13)};
+  ${css.size(12)};
   transition: fill 0.25s;
 `
 export const CommentWrapper = styled.div`
@@ -39,7 +39,7 @@ export const Count = styled.div`
   margin-top: 1px;
 `
 export const CommentCount = styled(Count)`
-  margin-left: 8px;
+  margin-left: 6px;
   ${CommentWrapper}:hover & {
     cursor: pointer;
     color: ${theme('article.title')};

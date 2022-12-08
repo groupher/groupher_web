@@ -12,6 +12,7 @@ import { buildLog } from '@/utils/logger'
 
 import CommentFirstLayout from './CommentFirstLayout'
 import UpvoteFirstLayout from './UpvoteFirstLayout'
+import MinimalLayout from './MinimalLayout'
 import CardLayout from './CardLayout'
 
 /* eslint-disable-next-line */
@@ -37,6 +38,15 @@ const PostItem: FC<TProps> = ({
 }) => {
   return (
     <Fragment>
+      {layout === POST_LAYOUT.MINIMAL && (
+        <MinimalLayout
+          c11n={c11n}
+          article={article}
+          onAuthorSelect={onAuthorSelect}
+          isMobilePreview={isMobilePreview}
+        />
+      )}
+
       {layout === POST_LAYOUT.UPVOTE_FIRST && (
         <UpvoteFirstLayout
           c11n={c11n}

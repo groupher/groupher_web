@@ -156,6 +156,45 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
             />
           </LayoutTitle>
         </Layout>
+
+        <Layout onClick={() => edit(POST_LAYOUT.MINIMAL, 'postLayout')}>
+          <Block $active={layout === POST_LAYOUT.MINIMAL}>
+            <Row>
+              <Space right={5} />
+              <Column center>
+                <UpvoteIcon size={13} />
+                <Br bottom={3} />
+                <Bar long={50} />
+              </Column>
+
+              <Space right={15} />
+
+              <Column grow>
+                <Br bottom={10} />
+                <Row>
+                  <Br bottom={10} />
+                  <Bar long={30} />
+                  <SpaceGrow />
+                  <CommentIcon />
+                </Row>
+                <Br bottom={11} />
+                <Bar thin long={80} />
+                <Br bottom={10} />
+                <Row>
+                  <Bar thin long={20} />
+                </Row>
+              </Column>
+            </Row>
+          </Block>
+          <LayoutTitle $active={layout === POST_LAYOUT.MINIMAL}>
+            <CheckLabel
+              title="极简列表"
+              $active={layout === POST_LAYOUT.MINIMAL}
+              top={15}
+              left={-15}
+            />
+          </LayoutTitle>
+        </Layout>
       </SelectWrapper>
 
       <SavingBar

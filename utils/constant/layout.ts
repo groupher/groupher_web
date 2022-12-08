@@ -14,6 +14,7 @@ export const UPVOTE_LAYOUT = {
   COMMENT: 'comment',
   ARTICLE: 'article',
   POST_LIST: 'post-list',
+  POST_MINIMAL: 'post-minimal',
   GENERAL: 'general',
   SIMPLE: 'simple',
   FIXED_HEADER: 'fixed-header',
@@ -40,6 +41,7 @@ export const POST_LAYOUT = {
   UPVOTE_FIRST: 'upvote_first',
   COMMENT_FIRST: 'comment_first',
   CARD: 'card',
+  MINIMAL: 'minimal',
 } as Record<TSnakeUpperCase<TPostLayout>, TPostLayout>
 
 export const CHANGELOG_LAYOUT = {
