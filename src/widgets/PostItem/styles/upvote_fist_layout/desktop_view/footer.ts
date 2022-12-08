@@ -9,6 +9,4 @@ export const Wrapper = styled.div`
   font-size: 12px;
 `
 
-export const UpvoteWrapper = styled.div<{ count: number }>`
-  margin-top: ${({ count }) => (count === 0 ? '-1px' : 0)};
-`
+export const holder = 1

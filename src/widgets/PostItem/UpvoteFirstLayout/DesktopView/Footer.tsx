@@ -9,10 +9,7 @@ import { Space } from '@/widgets/Common'
 import ViewsCount from '@/widgets/ViewsCount'
 import ArticleCatState from '@/widgets/ArticleCatState'
 
-import {
-  Wrapper,
-  UpvoteWrapper,
-} from '../../styles/upvote_fist_layout/desktop_view/footer'
+import { Wrapper } from '../../styles/upvote_fist_layout/desktop_view/footer'
 
 type TProps = {
   article: TPost
@@ -25,16 +22,14 @@ const Footer: FC<TProps> = ({ article }) => {
 
   return (
     <Wrapper>
-      <UpvoteWrapper count={upvotesCount}>
-        <Upvote
-          count={upvotesCount}
-          avatarList={meta.latestUpvotedUsers}
-          viewerHasUpvoted={viewerHasUpvoted}
-          type={UPVOTE_LAYOUT.GENERAL}
-          left={-2}
-          top={-1}
-        />
-      </UpvoteWrapper>
+      <Upvote
+        count={upvotesCount}
+        avatarList={meta.latestUpvotedUsers}
+        viewerHasUpvoted={viewerHasUpvoted}
+        type={UPVOTE_LAYOUT.GENERAL}
+        left={-2}
+        top={-1}
+      />
 
       {!includes(article.id, demoList) ? (
         <ArticleCatState left={18} cat={ARTICLE_CAT.QUESTION} />
