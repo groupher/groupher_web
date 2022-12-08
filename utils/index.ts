@@ -29,14 +29,7 @@ export {
   groupByKey,
 } from './helper'
 
-export {
-  titleCase,
-  singular,
-  plural,
-  cutRest,
-  prettyNum,
-  numberWithCommas,
-} from './fmt'
+export { titleCase, singular, plural, cutRest, prettyNum, numberWithCommas } from './fmt'
 
 export { errorForHuman, ssrRescue } from './errors'
 
@@ -51,13 +44,7 @@ export {
   isString,
 } from './validator'
 
-export {
-  makeGQClient,
-  makeGithubExplore,
-  later,
-  pagedFilter,
-  atomizeValues,
-} from './graphql'
+export { makeGQClient, makeGithubExplore, later, pagedFilter, atomizeValues } from './graphql'
 
 // export { default as githubAPI } from './github_api'
 
@@ -75,14 +62,7 @@ export {
   markRoute,
 } from './route'
 
-export {
-  bond,
-  markStates,
-  flashState,
-  meteorState,
-  toJS,
-  updateEditing,
-} from './mobx'
+export { bond, markStates, toJS, updateEditing } from './mobx'
 
 export {
   isServerSide,
@@ -125,13 +105,7 @@ export {
 /*
  * theme related
  */
-export {
-  theme,
-  themeMeta,
-  themeSkins,
-  themeCoverMap,
-  themeCoverIndexMap,
-} from './themes'
+export { theme, themeMeta, themeSkins, themeCoverMap, themeCoverIndexMap } from './themes'
 
 // helpers
 export { default as css } from './css'

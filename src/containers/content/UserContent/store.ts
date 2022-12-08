@@ -3,23 +3,19 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { values } from 'ramda'
 
 import type { TRootStore, TAccount, TUser, TPagedCommunities } from '@/spec'
 import { USER_THREAD } from '@/constant'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, Instance, markStates, toJS } from '@/utils/mobx'
 import { PagedCommunities, emptyPagi } from '@/model'
 
 const UserContent = T.model('UserContent', {
-  activeThread: T.optional(
-    T.enumeration('activeThread', values(USER_THREAD)),
-    USER_THREAD.PROFILE,
-  ),
-  following: T.optional(T.boolean, false),
+  activeThread: T.opt(T.enum('activeThread', values(USER_THREAD)), USER_THREAD.PROFILE),
+  following: T.opt(T.bool, false),
 
-  pagedEditableCommunities: T.optional(PagedCommunities, emptyPagi),
-  subscribedCommunities: T.optional(PagedCommunities, emptyPagi),
+  pagedEditableCommunities: T.opt(PagedCommunities, emptyPagi),
+  subscribedCommunities: T.opt(PagedCommunities, emptyPagi),
 })
   .views((self) => ({
     get isLogin(): boolean {
