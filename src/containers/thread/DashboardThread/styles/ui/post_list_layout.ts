@@ -25,6 +25,15 @@ export const Box = styled.div`
   background: ${theme('article.digest')};
   margin-bottom: 8px;
 `
+
+export const Cover = styled.div`
+  width: 90px;
+  height: 60px;
+  border-radius: 5px;
+  background: ${theme('article.digest')};
+  margin-bottom: 8px;
+`
+
 type TColumn = { center?: boolean; grow?: boolean }
 export const Column = styled.div<TColumn>`
   ${css.flexColumn()};
