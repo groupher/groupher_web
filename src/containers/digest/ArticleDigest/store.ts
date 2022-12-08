@@ -3,27 +3,21 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { merge } from 'ramda'
 
 import type { TRootStore, TThread, TArticle } from '@/spec'
 import { TYPE } from '@/constant'
-import { markStates, toJS } from '@/utils/mobx'
+
+import { T, getParent, markStates, toJS, Instance } from '@/utils/mobx'
 
 const ArticleDigest = T.model('ArticleDigest', {
-  loading: T.optional(T.boolean, false),
-  viewerHasSubscribed: T.optional(T.boolean, false),
-  subscribersCount: T.optional(T.number, -1),
+  loading: T.opt(T.bool, false),
+  viewerHasSubscribed: T.opt(T.bool, false),
+  subscribersCount: T.opt(T.number, -1),
 
-  action: T.optional(
-    T.enumeration('action', [TYPE.FAVORITE, TYPE.STAR]),
-    TYPE.FAVORITE,
-  ),
-  scrollDirection: T.optional(
-    T.enumeration('scrollDirection', ['up', 'down']),
-    'down',
-  ),
-  inViewport: T.optional(T.boolean, true),
+  action: T.opt(T.enum('action', [TYPE.FAVORITE, TYPE.STAR]), TYPE.FAVORITE),
+  scrollDirection: T.opt(T.enum('scrollDirection', ['up', 'down']), 'down'),
+  inViewport: T.opt(T.bool, true),
 })
   .views((self) => ({
     get isLogin(): boolean {
@@ -43,9 +37,7 @@ const ArticleDigest = T.model('ArticleDigest', {
       const originalCommunity = merge(article.originalCommunity, {
         viewerHasSubscribed,
         subscribersCount:
-          subscribersCount === -1
-            ? article.originalCommunity.subscribersCount
-            : subscribersCount,
+          subscribersCount === -1 ? article.originalCommunity.subscribersCount : subscribersCount,
       })
 
       // @ts-ignore

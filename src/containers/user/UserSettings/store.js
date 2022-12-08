@@ -3,9 +3,7 @@
  *
  */
 
-import { types as T, getParent } from 'mobx-state-tree'
-
-import { markStates } from '@/utils/mobx'
+import { T, getParent, markStates } from '@/utils/mobx'
 
 const UserSettings = T.model('UserSettings', {})
   .views((self) => ({

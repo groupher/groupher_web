@@ -3,23 +3,19 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { findIndex, propEq } from 'ramda'
 
 import type { TRootStore, TCommunity, TPagedUsers, TAccount } from '@/spec'
 import { TYPE } from '@/constant'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { PagedUsers, emptyPagi } from '@/model'
 
 const UserLister = T.model('UserLister', {
-  loading: T.optional(T.boolean, false),
-  curView: T.optional(
-    T.enumeration('curView', [TYPE.RESULT, TYPE.LOADING, TYPE.RESULT_EMPTY]),
-    TYPE.LOADING,
-  ),
-  pagedUsers: T.optional(PagedUsers, emptyPagi),
-  type: T.optional(
-    T.enumeration('type', [
+  loading: T.opt(T.bool, false),
+  curView: T.opt(T.enum('curView', [TYPE.RESULT, TYPE.LOADING, TYPE.RESULT_EMPTY]), TYPE.LOADING),
+  pagedUsers: T.opt(PagedUsers, emptyPagi),
+  type: T.opt(
+    T.enum('type', [
       TYPE.USER_LISTER_FAVORITES,
       TYPE.USER_LISTER_STARS,
       TYPE.USER_LISTER_COMMUNITY_EDITORS,
@@ -32,7 +28,7 @@ const UserLister = T.model('UserLister', {
   id: T.maybeNull(T.string),
   thread: T.maybeNull(T.string),
   action: T.maybeNull(T.string),
-  brief: T.optional(T.string, ''),
+  brief: T.opt(T.string, ''),
 })
   .views((self) => ({
     get isLogin(): boolean {

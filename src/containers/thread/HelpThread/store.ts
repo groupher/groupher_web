@@ -2,18 +2,17 @@
  * HelpThread store
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 // import {} from 'ramda'
 
 import type { TCommunity, TRootStore } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:HelpThread')
 
 const HelpThread = T.model('HelpThread', {
-  mode: T.optional(T.enumeration(['full', 'helpcenter', 'faq']), 'full'),
+  mode: T.opt(T.enum(['full', 'helpcenter', 'faq']), 'full'),
 })
   .views((self) => ({
     get curCommunity(): TCommunity {

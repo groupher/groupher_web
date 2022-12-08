@@ -1,21 +1,14 @@
-import { types as T } from 'mobx-state-tree'
-
 import { FILTER } from '@/constant'
+import { T } from '@/utils/mobx'
 
 export const ArticlesFilter = T.model('ArticlesFilter', {
-  when: T.optional(
-    T.enumeration('when', [
-      '',
-      FILTER.TODAY,
-      FILTER.THIS_WEEK,
-      FILTER.THIS_MONTH,
-      FILTER.THIS_YEAR,
-    ]),
+  when: T.opt(
+    T.enum('when', ['', FILTER.TODAY, FILTER.THIS_WEEK, FILTER.THIS_MONTH, FILTER.THIS_YEAR]),
     '',
   ),
 
-  sort: T.optional(
-    T.enumeration('sort', [
+  sort: T.opt(
+    T.enum('sort', [
       '',
       FILTER.MOST_VIEWS,
       FILTER.MOST_FAVORITES,
@@ -27,11 +20,8 @@ export const ArticlesFilter = T.model('ArticlesFilter', {
     ]),
     '',
   ),
-  length: T.optional(
-    T.enumeration('length', ['', FILTER.MOST_WORDS, FILTER.LEAST_WORDS]),
-    '',
-  ),
-  read: T.optional(T.enumeration('read', ['', FILTER.READ, FILTER.UNREAD]), ''),
+  length: T.opt(T.enum('length', ['', FILTER.MOST_WORDS, FILTER.LEAST_WORDS]), ''),
+  read: T.opt(T.enum('read', ['', FILTER.READ, FILTER.UNREAD]), ''),
 })
 
 export const holder = 1

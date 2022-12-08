@@ -2,18 +2,10 @@
  * ThreadSidebar store
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 // import {} from 'ramda'
 
-import type {
-  TAccount,
-  TC11N,
-  TCommunity,
-  TThread,
-  TRootStore,
-  TTag,
-} from '@/spec'
-import { markStates, toJS } from '@/utils/mobx'
+import type { TAccount, TC11N, TCommunity, TThread, TRootStore, TTag } from '@/spec'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { buildLog } from '@/utils/logger'
 
 /* eslint-disable-next-line */

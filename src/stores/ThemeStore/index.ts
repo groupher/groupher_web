@@ -3,13 +3,12 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { keys } from 'ramda'
 
 import type { TRootStore, TThemeName, TMembership } from '@/spec'
 import { DEFAULT_THEME } from '@/config'
 
-import { markStates } from '@/utils/mobx'
+import { T, markStates, getParent, Instance } from '@/utils/mobx'
 import { themeSkins } from '@/utils/themes'
 import { toast } from '@/utils/helper'
 
@@ -18,7 +17,7 @@ export const ThemeDefaults = {
 }
 
 export const ThemeStore = T.model('ThemeStore', {
-  curTheme: T.optional(T.enumeration('theme', keys(themeSkins)), DEFAULT_THEME),
+  curTheme: T.opt(T.enum('theme', keys(themeSkins)), DEFAULT_THEME),
 })
   .views((self) => ({
     get root() {
@@ -35,11 +34,7 @@ export const ThemeStore = T.model('ThemeStore', {
     },
     checkSetable(): boolean {
       const { isMemberOf } = self as TStore
-      if (
-        isMemberOf('seniorMember') ||
-        isMemberOf('sponsorMember') ||
-        isMemberOf('donateMember')
-      ) {
+      if (isMemberOf('seniorMember') || isMemberOf('sponsorMember') || isMemberOf('donateMember')) {
         return false
       }
 

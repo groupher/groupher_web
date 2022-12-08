@@ -1,4 +1,4 @@
-import { types as T } from 'mobx-state-tree'
+import { T } from '@/utils/mobx'
 
 import { pagiFields } from './helper/common'
 
@@ -11,10 +11,10 @@ const SimpleUser = T.model('SimpleUser', {
 })
 
 export const MailStatus = T.model('MailStatus', {
-  hasMail: T.optional(T.boolean, false),
-  mentionCount: T.optional(T.number, 0),
-  notificationCount: T.optional(T.number, 0),
-  totalCount: T.optional(T.number, 0),
+  hasMail: T.opt(T.bool, false),
+  mentionCount: T.opt(T.number, 0),
+  notificationCount: T.opt(T.number, 0),
+  totalCount: T.opt(T.number, 0),
 })
 
 export const MentionMsg = T.model('MentionMsg', {
@@ -30,10 +30,10 @@ export const MentionMsg = T.model('MentionMsg', {
   floor: T.maybeNull(T.number),
 
   community: T.maybeNull(T.string),
-  read: T.optional(T.boolean, false),
+  read: T.opt(T.bool, false),
 })
 
 export const PagedMentionMessages = T.model('PagedMentionMessages', {
-  entries: T.optional(T.array(MentionMsg), []),
+  entries: T.opt(T.array(MentionMsg), []),
   ...pagiFields(),
 })

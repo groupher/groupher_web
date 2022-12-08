@@ -2,18 +2,13 @@
  * ChangelogThread store
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { values } from 'ramda'
 
 import type { TCommunity, TRootStore, TGlobalLayout, TTag } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
-import {
-  mockTags,
-  mockChangelogTimeTags,
-  mockChangelogVersionTags,
-} from '@/utils/mock'
+import { mockTags, mockChangelogTimeTags, mockChangelogVersionTags } from '@/utils/mock'
 
 import { TAGS_MODE } from './constant'
 
@@ -21,7 +16,7 @@ import { TAGS_MODE } from './constant'
 const log = buildLog('S:ChangelogThread')
 
 const ChangelogThread = T.model('ChangelogThread', {
-  tagsMode: T.optional(T.enumeration(values(TAGS_MODE)), TAGS_MODE.DEFAULT),
+  tagsMode: T.opt(T.enum(values(TAGS_MODE)), TAGS_MODE.DEFAULT),
 })
   .views((self) => ({
     get curCommunity(): TCommunity {

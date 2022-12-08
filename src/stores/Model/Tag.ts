@@ -1,5 +1,6 @@
 import { values } from 'ramda'
-import { types as T } from 'mobx-state-tree'
+
+import { T } from '@/utils/mobx'
 
 import { TAG_COLORS } from '@/config'
 import { THREAD } from '@/constant'
@@ -11,10 +12,10 @@ export const Tag = T.model('Tag', {
   id: T.maybeNull(T.string),
   title: T.maybeNull(T.string),
   raw: T.maybeNull(T.string),
-  // color: T.optional(T.enumeration('color', TAG_COLORS), TAG_COLORS[0]),
-  color: T.optional(T.string, TAG_COLORS[0]),
-  thread: T.optional(
-    T.enumeration(
+  // color: T.opt(T.enum('color', TAG_COLORS), TAG_COLORS[0]),
+  color: T.opt(T.string, TAG_COLORS[0]),
+  thread: T.opt(
+    T.enum(
       'thread',
       values(THREAD).map((t) => t.toUpperCase()),
     ),
@@ -22,12 +23,12 @@ export const Tag = T.model('Tag', {
   ),
   group: T.maybeNull(T.string),
   community: T.maybeNull(Community),
-  insertedAt: T.optional(T.string, ''),
-  updatedAt: T.optional(T.string, ''),
+  insertedAt: T.opt(T.string, ''),
+  updatedAt: T.opt(T.string, ''),
 })
 
 export const PagedTags = T.model('PagedTags', {
-  entries: T.optional(T.array(Tag), []),
+  entries: T.opt(T.array(Tag), []),
   ...pagiFields(),
 })
 

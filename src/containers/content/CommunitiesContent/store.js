@@ -3,33 +3,32 @@
  *
  */
 
-import { types as T, getParent } from 'mobx-state-tree'
 import { propEq, findIndex } from 'ramda'
 
 import { ICON_CMD } from '@/config'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, toJS } from '@/utils/mobx'
 import { Trans } from '@/utils/i18n'
 import { PagedCommunities, PagedCategories, emptyPagi } from '@/model'
 
 const ExploreContentStore = T.model('ExploreContentStore', {
   // current active sidbar menu id
   activeCatalogId: T.maybeNull(T.string),
-  pagedCommunities: T.optional(PagedCommunities, emptyPagi),
-  searching: T.optional(T.boolean, false),
+  pagedCommunities: T.opt(PagedCommunities, emptyPagi),
+  searching: T.opt(T.bool, false),
   // cur active category
-  /* category: T.optional(T.string, ''), */
+  /* category: T.opt(T.string, ''), */
   // for UI loading state
-  subscribing: T.optional(T.boolean, false),
+  subscribing: T.opt(T.bool, false),
   subscribingId: T.maybeNull(T.string),
   pagedCategories: T.maybeNull(PagedCategories),
   // search status
-  isSearchMode: T.optional(T.boolean, false),
-  searchResultCount: T.optional(T.number, 0),
-  searchValue: T.optional(T.string, ''),
-  showSearchMask: T.optional(T.boolean, true),
-  showCreateHint: T.optional(T.boolean, true),
-  showSearchHint: T.optional(T.boolean, false),
-  searchfocused: T.optional(T.boolean, false),
+  isSearchMode: T.opt(T.bool, false),
+  searchResultCount: T.opt(T.number, 0),
+  searchValue: T.opt(T.string, ''),
+  showSearchMask: T.opt(T.bool, true),
+  showCreateHint: T.opt(T.bool, true),
+  showSearchHint: T.opt(T.bool, false),
+  searchfocused: T.opt(T.bool, false),
 })
   .views((self) => ({
     get root() {
@@ -105,10 +104,7 @@ const ExploreContentStore = T.model('ExploreContentStore', {
       self.root.authWarning(options)
     },
     toggleSubscribe(community) {
-      const index = findIndex(
-        propEq('id', community.id),
-        self.pagedCommunities.entries,
-      )
+      const index = findIndex(propEq('id', community.id), self.pagedCommunities.entries)
       if (index === -1) return false
 
       if (self.pagedCommunities.entries[index].viewerHasSubscribed) {

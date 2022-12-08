@@ -3,17 +3,7 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
-import {
-  values,
-  map,
-  findIndex,
-  propEq,
-  toUpper,
-  pick,
-  uniqBy,
-  prop,
-} from 'ramda'
+import { values, map, findIndex, propEq, toUpper, pick, uniqBy, prop } from 'ramda'
 
 import type {
   TRootStore,
@@ -31,7 +21,7 @@ import type {
   TCommentsState,
 } from '@/spec'
 // import { TYPE } from '@/constant'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { Comment, PagedComments, emptyPagi, SimpleUser } from '@/model'
 
 import type { TFoldState, TEditMode, TEditState, TRepliesState } from './spec'
@@ -40,60 +30,57 @@ import { MODE, EDIT_MODE, API_MODE } from './constant'
 const mentionMapper = (m) => ({ id: m.id, avatar: m.avatar, name: m.nickname })
 
 const CommentsStore = T.model('CommentsStore', {
-  mode: T.optional(T.enumeration(values(MODE)), MODE.REPLIES),
-  apiMode: T.optional(T.enumeration(values(API_MODE)), API_MODE.ARTICLE),
-  editMode: T.optional(T.enumeration(values(EDIT_MODE)), EDIT_MODE.CREATE),
+  mode: T.opt(T.enum(values(MODE)), MODE.REPLIES),
+  apiMode: T.opt(T.enum(values(API_MODE)), API_MODE.ARTICLE),
+  editMode: T.opt(T.enum(values(EDIT_MODE)), EDIT_MODE.CREATE),
 
   // toggle main comment box
-  showEditor: T.optional(T.boolean, false),
-  showUpdateEditor: T.optional(T.boolean, false),
+  showEditor: T.opt(T.bool, false),
+  showUpdateEditor: T.opt(T.bool, false),
 
   // toggle modal editor for reply
-  showReplyEditor: T.optional(T.boolean, false),
+  showReplyEditor: T.opt(T.bool, false),
 
   // content input of current comment editor
-  commentBody: T.optional(T.string, '{}'),
+  commentBody: T.opt(T.string, '{}'),
   // update comment
   updateId: T.maybeNull(T.string),
-  updateBody: T.optional(T.string, '{}'),
+  updateBody: T.opt(T.string, '{}'),
   // reply comment
   // parrent comment of current reply
   replyToComment: T.maybeNull(Comment),
-  replyBody: T.optional(T.string, '{}'),
+  replyBody: T.opt(T.string, '{}'),
   // content input of current reply comment editor
-  wordsCountReady: T.optional(T.boolean, false),
+  wordsCountReady: T.opt(T.bool, false),
   // comments pagination data of current COMMUNITY / PART
-  pagedComments: T.optional(PagedComments, emptyPagi),
-  pagedPublishedComments: T.optional(PagedComments, emptyPagi),
+  pagedComments: T.opt(PagedComments, emptyPagi),
+  pagedPublishedComments: T.opt(PagedComments, emptyPagi),
 
   // loadPagedReplies
   repliesParentId: T.maybeNull(T.string),
-  repliesLoading: T.optional(T.boolean, false),
+  repliesLoading: T.opt(T.bool, false),
 
   // toggle loading for creating comment
-  publishing: T.optional(T.boolean, false),
-  publishDone: T.optional(T.boolean, false),
+  publishing: T.opt(T.bool, false),
+  publishDone: T.opt(T.bool, false),
   // toggle loading for comments list
-  loading: T.optional(T.boolean, false),
+  loading: T.opt(T.bool, false),
 
-  foldedCommentIds: T.optional(T.array(T.string), []),
+  foldedCommentIds: T.opt(T.array(T.string), []),
 
   // basic states
-  needRefreshState: T.optional(T.boolean, true),
-  isViewerJoined: T.optional(T.boolean, false),
-  participantsCount: T.optional(T.number, 0),
-  totalCount: T.optional(T.number, -1),
-  participants: T.optional(T.array(SimpleUser), []),
+  needRefreshState: T.opt(T.bool, true),
+  isViewerJoined: T.opt(T.bool, false),
+  participantsCount: T.opt(T.number, 0),
+  totalCount: T.opt(T.number, -1),
+  participants: T.opt(T.array(SimpleUser), []),
 })
   .views((self) => ({
     get basicState(): TCommentsState {
       const slf = self as TStore
       let totalCount = 0
       if (slf.apiMode === API_MODE.ARTICLE) {
-        totalCount =
-          self.totalCount === -1
-            ? slf.viewingArticle.commentsCount
-            : self.totalCount
+        totalCount = self.totalCount === -1 ? slf.viewingArticle.commentsCount : self.totalCount
       } else {
         // eslint-disable-next-line prefer-destructuring
         totalCount = slf.pagedPublishedComments.totalCount

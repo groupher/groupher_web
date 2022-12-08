@@ -3,22 +3,13 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
-
-import type {
-  TRootStore,
-  TViewing,
-  TRoute,
-  TCommunity,
-  TThread,
-  TGlobalLayout,
-} from '@/spec'
-import { markStates, toJS } from '@/utils/mobx'
+import type { TRootStore, TViewing, TRoute, TCommunity, TThread, TGlobalLayout } from '@/spec'
+import { T, getParent, markStates, toJS, Instance } from '@/utils/mobx'
 
 const CommunityDigest = T.model('CommunityDigest', {
-  loading: T.optional(T.boolean, false),
+  loading: T.opt(T.bool, false),
 
-  inViewport: T.optional(T.boolean, true),
+  inViewport: T.opt(T.bool, true),
 })
   .views((self) => ({
     get isLogin(): boolean {

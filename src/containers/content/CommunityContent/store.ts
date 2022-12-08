@@ -3,10 +3,8 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
-
 import type { TRootStore, TAccount, TCommunity, TThread, TC11N } from '@/spec'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, toJS, Instance } from '@/utils/mobx'
 import { sortByIndex } from '@/utils/helper'
 
 const CommunityContent = T.model('CommunityContent', {})
@@ -31,9 +29,7 @@ const CommunityContent = T.model('CommunityContent', {})
       const root = getParent(self) as TRootStore
       const { subscribedCommunities } = root.account
 
-      return subscribedCommunities
-        ? sortByIndex(subscribedCommunities.entries)
-        : []
+      return subscribedCommunities ? sortByIndex(subscribedCommunities.entries) : []
     },
   }))
   .actions((self) => ({

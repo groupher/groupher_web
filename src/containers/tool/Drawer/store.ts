@@ -3,13 +3,12 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { merge, contains, values, findIndex } from 'ramda'
 
 import type { TRootStore, TCommunity, TThread, TArticle } from '@/spec'
 import { TYPE, ARTICLE_THREAD, DASHBOARD_DESC_LAYOUT } from '@/constant'
 
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { lockPage, unlockPage } from '@/utils/dom'
 import { Global } from '@/utils/helper'
 import { plural } from '@/utils/fmt'
@@ -23,33 +22,30 @@ import { SWIPE_THRESHOLD } from './styles/metrics'
 const defaultOptions: TSwipeOption = { direction: 'bottom', position: 'M' }
 
 const Options = T.model('Options', {
-  direction: T.optional(
-    T.enumeration('direction', ['top', 'bottom']),
-    'bottom',
-  ),
+  direction: T.opt(T.enum('direction', ['top', 'bottom']), 'bottom'),
   // like vi-mode
-  position: T.optional(T.enumeration('position', ['H', 'M', 'L']), 'M'),
+  position: T.opt(T.enum('position', ['H', 'M', 'L']), 'M'),
 })
 
 const DrawerStore = T.model('DrawerStore', {
-  visible: T.optional(T.boolean, false),
+  visible: T.opt(T.bool, false),
 
   previousURL: T.maybeNull(T.string),
   // auchor href in case user navi articles in drawers
   previousHomeURL: T.maybeNull(T.string),
   // only works for mobile view
-  options: T.optional(Options, defaultOptions),
-  swipeDownAviliable: T.optional(T.boolean, true),
-  swipeUpAviliable: T.optional(T.boolean, false),
-  canBeClose: T.optional(T.boolean, false),
-  headerText: T.optional(T.string, ''),
-  showHeaderText: T.optional(T.boolean, false),
-  disableContentDrag: T.optional(T.boolean, false),
+  options: T.opt(Options, defaultOptions),
+  swipeDownAviliable: T.opt(T.bool, true),
+  swipeUpAviliable: T.opt(T.bool, false),
+  canBeClose: T.opt(T.bool, false),
+  headerText: T.opt(T.string, ''),
+  showHeaderText: T.opt(T.bool, false),
+  disableContentDrag: T.opt(T.bool, false),
   // end of only works for mobile view
 
-  windowWidth: T.optional(T.number, 1520),
+  windowWidth: T.opt(T.number, 1520),
   type: T.maybeNull(
-    T.enumeration('previewType', [
+    T.enum('previewType', [
       // account
       TYPE.DRAWER.ACCOUNT_EDIT,
       TYPE.DRAWER.MAILS_VIEW,
@@ -65,13 +61,13 @@ const DrawerStore = T.model('DrawerStore', {
     ]),
   ),
   attUser: T.maybeNull(User),
-  userListerType: T.optional(T.string, ''),
+  userListerType: T.opt(T.string, ''),
 
   // shortcut for modelineMenuType
-  mmType: T.optional(T.enumeration(values(TYPE.MM_TYPE)), TYPE.MM_TYPE.MORE),
+  mmType: T.opt(T.enum(values(TYPE.MM_TYPE)), TYPE.MM_TYPE.MORE),
 
-  dashboardDescLayout: T.optional(
-    T.enumeration(values(DASHBOARD_DESC_LAYOUT)),
+  dashboardDescLayout: T.opt(
+    T.enum(values(DASHBOARD_DESC_LAYOUT)),
     DASHBOARD_DESC_LAYOUT.POST_LIST,
   ),
   // header:
@@ -94,9 +90,7 @@ const DrawerStore = T.model('DrawerStore', {
       const { windowWidth } = self
       const MAX_WIDTH = Number(WIDTH.COMMUNITY.PAGE.slice(0, -2))
 
-      return `${
-        windowWidth <= MAX_WIDTH ? '0' : (windowWidth - MAX_WIDTH) / 2
-      }px`
+      return `${windowWidth <= MAX_WIDTH ? '0' : (windowWidth - MAX_WIDTH) / 2}px`
     },
     get fromContentEdge(): boolean {
       const { windowWidth } = self
@@ -141,17 +135,12 @@ const DrawerStore = T.model('DrawerStore', {
       let pagedArticles
       switch (slf.curThread) {
         default: {
-          pagedArticles = toJS(
-            root.articlesThread[`paged${plural(slf.curThread, 'titleCase')}`],
-          )
+          pagedArticles = toJS(root.articlesThread[`paged${plural(slf.curThread, 'titleCase')}`])
           break
         }
       }
 
-      const curIndex = findIndex(
-        (a: TArticle) => a.id === viewingArticleId,
-        pagedArticles.entries,
-      )
+      const curIndex = findIndex((a: TArticle) => a.id === viewingArticleId, pagedArticles.entries)
       return {
         previous: pagedArticles.entries[curIndex - 1] || null,
         next: pagedArticles.entries[curIndex + 1] || null,

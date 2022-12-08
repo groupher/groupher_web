@@ -22,6 +22,7 @@ export const T = {
   number: mobxTypes.number,
   maybeNull: mobxTypes.maybeNull,
   bool: mobxTypes.boolean,
+  array: mobxTypes.array,
 }
 
 type TStore = {

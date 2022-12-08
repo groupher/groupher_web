@@ -3,11 +3,10 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { reduce, keys, merge, pick, startsWith } from 'ramda'
 
 import type { TRootStore, TSubmitState, TUser } from '@/spec'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
 import type { TEditData } from './spec'
 import { SEX } from './constant'
@@ -30,24 +29,24 @@ const safeMap = (obj) => {
 }
 
 const AccountEditorStore = T.model('AccountEditorStore', {
-  avatar: T.optional(T.string, ''),
-  login: T.optional(T.string, ''),
-  fromGithub: T.optional(T.boolean, false),
-  nickname: T.optional(T.string, ''),
-  shortbio: T.optional(T.string, ''),
-  bio: T.optional(T.string, ''),
-  sex: T.optional(T.string, SEX.DUDE),
-  location: T.optional(T.string, ''),
-  company: T.optional(T.string, ''),
+  avatar: T.opt(T.string, ''),
+  login: T.opt(T.string, ''),
+  fromGithub: T.opt(T.bool, false),
+  nickname: T.opt(T.string, ''),
+  shortbio: T.opt(T.string, ''),
+  bio: T.opt(T.string, ''),
+  sex: T.opt(T.string, SEX.DUDE),
+  location: T.opt(T.string, ''),
+  company: T.opt(T.string, ''),
 
   // social
-  github: T.optional(T.string, ''),
-  twitter: T.optional(T.string, ''),
-  email: T.optional(T.string, ''),
-  blog: T.optional(T.string, ''),
+  github: T.opt(T.string, ''),
+  twitter: T.opt(T.string, ''),
+  email: T.opt(T.string, ''),
+  blog: T.opt(T.string, ''),
 
-  publishing: T.optional(T.boolean, false),
-  publishDone: T.optional(T.boolean, false),
+  publishing: T.opt(T.bool, false),
+  publishDone: T.opt(T.bool, false),
 })
   .views((self) => ({
     get editData(): TEditData {

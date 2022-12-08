@@ -3,16 +3,11 @@
  *
  */
 
-import { types as T, Instance, getParent } from 'mobx-state-tree'
-
 import type { TRootStore, TThread, TAccount, TThemeName } from '@/spec'
-import { markStates } from '@/utils/mobx'
+import { T, markStates, Instance, getParent } from '@/utils/mobx'
 
 const C11NSettingPanel = T.model('C11NSettingPanel', {
-  activeTab: T.optional(
-    T.enumeration('activeTab', ['general', 'theme']),
-    'general',
-  ),
+  activeTab: T.opt(T.enum('activeTab', ['general', 'theme']), 'general'),
 })
   .views((self) => ({
     get accountInfo(): TAccount {

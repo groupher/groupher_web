@@ -3,40 +3,24 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { values } from 'ramda'
 
 import type { TRootStore, TAccount } from '@/spec'
 
 import { PAYMENT_USAGE, PAYMENT_METHOD } from '@/constant'
-import { markStates } from '@/utils/mobx'
+import { T, markStates, Instance, getParent } from '@/utils/mobx'
 
 import { AMOUNT, SIDEBAR_VIEW, SUBCONTENT_VIEW } from './constant'
 
 const Cashier = T.model('Cashier', {
-  show: T.optional(T.boolean, false),
-  transferAccount: T.optional(T.string, ''),
-  sidebarView: T.optional(
-    T.enumeration('sideView', values(SIDEBAR_VIEW)),
-    SIDEBAR_VIEW.PAY,
-  ),
-  contentView: T.optional(
-    T.enumeration('contentView', values(SIDEBAR_VIEW)),
-    SIDEBAR_VIEW.PAY,
-  ),
-  subContentView: T.optional(
-    T.enumeration('subContentView', values(SUBCONTENT_VIEW)),
-    SUBCONTENT_VIEW.PAY,
-  ),
-  paymentMethod: T.optional(
-    T.enumeration('paymentMethod', values(PAYMENT_METHOD)),
-    PAYMENT_METHOD.ALIPAY,
-  ),
-  paymentUsage: T.optional(
-    T.enumeration('paymentUsage', values(PAYMENT_USAGE)),
-    PAYMENT_USAGE.SENIOR,
-  ),
-  amount: T.optional(T.enumeration('amount', values(AMOUNT)), AMOUNT['10.24']),
+  show: T.opt(T.bool, false),
+  transferAccount: T.opt(T.string, ''),
+  sidebarView: T.opt(T.enum('sideView', values(SIDEBAR_VIEW)), SIDEBAR_VIEW.PAY),
+  contentView: T.opt(T.enum('contentView', values(SIDEBAR_VIEW)), SIDEBAR_VIEW.PAY),
+  subContentView: T.opt(T.enum('subContentView', values(SUBCONTENT_VIEW)), SUBCONTENT_VIEW.PAY),
+  paymentMethod: T.opt(T.enum('paymentMethod', values(PAYMENT_METHOD)), PAYMENT_METHOD.ALIPAY),
+  paymentUsage: T.opt(T.enum('paymentUsage', values(PAYMENT_USAGE)), PAYMENT_USAGE.SENIOR),
+  amount: T.opt(T.enum('amount', values(AMOUNT)), AMOUNT['10.24']),
 })
   .views((self) => ({
     get accountInfo(): TAccount {

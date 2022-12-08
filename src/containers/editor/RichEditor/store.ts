@@ -3,9 +3,7 @@
  *
  */
 
-import { types as T, Instance } from 'mobx-state-tree'
-
-import { markStates } from '@/utils/mobx'
+import { T, Instance, markStates } from '@/utils/mobx'
 
 const RichEditor = T.model('RichEditor', {})
   .views((self) => ({}))

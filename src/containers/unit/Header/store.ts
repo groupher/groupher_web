@@ -3,15 +3,14 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { contains, values } from 'ramda'
 
 import type { TRootStore, TCommunity, TAccount } from '@/spec'
 import { METRIC } from '@/constant'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
 const HeaderStore = T.model('HeaderStore', {
-  metric: T.optional(T.enumeration(values(METRIC)), METRIC.COMMUNITY),
+  metric: T.opt(T.enum(values(METRIC)), METRIC.COMMUNITY),
 })
   .views((self) => ({
     get isOnline(): boolean {

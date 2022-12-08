@@ -3,37 +3,30 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { pick, values, isEmpty } from 'ramda'
 
 import type { TRootStore, TRoute } from '@/spec'
-// toJS
-import { markStates } from '@/utils/mobx'
+import { T, getParent, markStates, Instance } from '@/utils/mobx'
 
-import type {
-  TSelectTypeStatus,
-  TSetupDomainStatus,
-  TSetupInfoStatus,
-  TValidState,
-} from './spec'
+import type { TSelectTypeStatus, TSetupDomainStatus, TSetupInfoStatus, TValidState } from './spec'
 import { STEP, COMMUNITY_TYPE } from './constant'
 
 const CommunityEditor = T.model('CommunityEditorStore', {
-  step: T.optional(T.enumeration(values(STEP)), STEP.SELECT_TYPE),
-  communityType: T.maybeNull(T.enumeration(values(COMMUNITY_TYPE))),
+  step: T.opt(T.enum(values(STEP)), STEP.SELECT_TYPE),
+  communityType: T.maybeNull(T.enum(values(COMMUNITY_TYPE))),
   // if community exist / has pending apply
-  checking: T.optional(T.boolean, false),
-  submitting: T.optional(T.boolean, false),
+  checking: T.opt(T.bool, false),
+  submitting: T.opt(T.bool, false),
 
-  communityExist: T.optional(T.boolean, false),
-  hasPendingApply: T.optional(T.boolean, false),
+  communityExist: T.opt(T.bool, false),
+  hasPendingApply: T.opt(T.bool, false),
 
   //
-  raw: T.optional(T.string, ''),
+  raw: T.opt(T.string, ''),
   logo: T.maybeNull(T.string),
-  title: T.optional(T.string, ''),
-  desc: T.optional(T.string, ''),
-  applyMsg: T.optional(T.string, ''),
+  title: T.opt(T.string, ''),
+  desc: T.opt(T.string, ''),
+  applyMsg: T.opt(T.string, ''),
 })
   .views((self) => ({
     get isLogin(): boolean {

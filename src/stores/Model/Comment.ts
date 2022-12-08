@@ -1,8 +1,8 @@
-import { types as T } from 'mobx-state-tree'
 import { values, reduce, merge } from 'ramda'
 
 import { EMOTION } from '@/constant'
 import { titleCase } from '@/utils/fmt'
+import { T } from '@/utils/mobx'
 
 import { SimpleUser } from './User'
 
@@ -15,11 +15,8 @@ const commentEmotionFields = () => {
     values(EMOTION).map((emotion) => {
       return {
         [`${emotion}Count`]: T.maybeNull(T.number),
-        [`latest${titleCase(emotion)}Users`]: T.optional(
-          T.array(SimpleUser),
-          [],
-        ),
-        [`viewerHas${titleCase(emotion)}ed`]: T.optional(T.boolean, false),
+        [`latest${titleCase(emotion)}Users`]: T.opt(T.array(SimpleUser), []),
+        [`viewerHas${titleCase(emotion)}ed`]: T.opt(T.bool, false),
       }
     }),
   )
@@ -28,36 +25,36 @@ const commentEmotionFields = () => {
 const CommentEmotion = T.model('CommentEmotion', commentEmotionFields())
 
 const CommentMeta = T.model('CommentMeta', {
-  isArticleAuthorUpvoted: T.optional(T.boolean, false),
-  isReplyToOthers: T.optional(T.boolean, false),
-  isLegal: T.optional(T.boolean, true),
-  illegalReason: T.optional(T.array(T.string), []),
-  illegalWords: T.optional(T.array(T.string), []),
+  isArticleAuthorUpvoted: T.opt(T.bool, false),
+  isReplyToOthers: T.opt(T.bool, false),
+  isLegal: T.opt(T.bool, true),
+  illegalReason: T.opt(T.array(T.string), []),
+  illegalWords: T.opt(T.array(T.string), []),
 })
 
 const ParentArticle = T.model('ParentArticle', {
   id: T.maybeNull(T.string),
-  title: T.optional(T.string, ''),
-  thread: T.optional(T.string, ''),
-  author: T.optional(SimpleUser, {}),
+  title: T.opt(T.string, ''),
+  thread: T.opt(T.string, ''),
+  author: T.opt(SimpleUser, {}),
 })
 
 const commentBaseFields = () => {
   return {
     id: T.maybeNull(T.string),
     bodyHtml: T.maybeNull(T.string),
-    author: T.optional(SimpleUser, {}),
-    isPinned: T.optional(T.boolean, false),
+    author: T.opt(SimpleUser, {}),
+    isPinned: T.opt(T.bool, false),
     floor: T.number,
-    upvotesCount: T.optional(T.number, 0),
-    isArticleAuthor: T.optional(T.boolean, false),
-    thread: T.optional(T.string, ''),
-    emotions: T.optional(CommentEmotion, {}),
-    meta: T.optional(CommentMeta, {}),
-    repliesCount: T.optional(T.number, 0),
+    upvotesCount: T.opt(T.number, 0),
+    isArticleAuthor: T.opt(T.bool, false),
+    thread: T.opt(T.string, ''),
+    emotions: T.opt(CommentEmotion, {}),
+    meta: T.opt(CommentMeta, {}),
+    repliesCount: T.opt(T.number, 0),
 
     replyToId: T.maybeNull(T.string),
-    viewerHasUpvoted: T.maybeNull(T.boolean),
+    viewerHasUpvoted: T.maybeNull(T.bool),
 
     article: T.maybeNull(ParentArticle),
 
@@ -66,7 +63,7 @@ const commentBaseFields = () => {
 }
 
 export const CommentReplyTo = T.model('CommentReplyTo', {
-  author: T.optional(SimpleUser, {}),
+  author: T.opt(SimpleUser, {}),
   floor: T.number,
 })
 
@@ -81,13 +78,13 @@ export const Comment = T.model('Comment', {
   replyTo: T.maybeNull(CommentReply),
   // field(:article, :common_article)
 
-  isDeleted: T.optional(T.boolean, false),
-  isForQuestion: T.optional(T.boolean, false),
-  isArchived: T.optional(T.boolean, false),
-  archivedAt: T.optional(T.boolean, false),
+  isDeleted: T.opt(T.bool, false),
+  isForQuestion: T.opt(T.bool, false),
+  isArchived: T.opt(T.bool, false),
+  archivedAt: T.opt(T.bool, false),
 })
 
 export const PagedComments = T.model('PagedComments', {
-  entries: T.optional(T.array(Comment), []),
+  entries: T.opt(T.array(Comment), []),
   ...pagiFields(),
 })

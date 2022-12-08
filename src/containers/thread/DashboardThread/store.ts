@@ -2,17 +2,9 @@
  * DashboardThread store
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { keys, values, pick, findIndex, clone, isNil, equals } from 'ramda'
 
-import type {
-  TCommunity,
-  TRootStore,
-  TTag,
-  TGlobalLayout,
-  TThread,
-  TSizeSML,
-} from '@/spec'
+import type { TCommunity, TRootStore, TTag, TGlobalLayout, TThread, TSizeSML } from '@/spec'
 import { mockTags } from '@/utils/mock'
 
 import {
@@ -26,7 +18,7 @@ import {
   SIZE,
 } from '@/constant'
 import { buildLog } from '@/utils/logger'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { Tag } from '@/model'
 
 import type {
@@ -46,64 +38,39 @@ import { TAB, SETTING_FIELD, BUILDIN_ALIAS, WIDGET_TYPE } from './constant'
 const log = buildLog('S:DashboardThread')
 
 const Alias = T.model('Alias', {
-  raw: T.optional(T.string, ''),
-  name: T.optional(T.string, ''),
-  original: T.optional(T.string, ''),
-  suggestions: T.optional(T.array(T.string), []),
+  raw: T.opt(T.string, ''),
+  name: T.opt(T.string, ''),
+  original: T.opt(T.string, ''),
+  suggestions: T.opt(T.array(T.string), []),
 })
 
 const settingsModalFields = {
-  primaryColor: T.optional(T.enumeration(keys(COLORS)), 'BLACK'),
-  postLayout: T.optional(
-    T.enumeration(values(POST_LAYOUT)),
-    POST_LAYOUT.UPVOTE_FIRST,
-  ),
-  brandLayout: T.optional(
-    T.enumeration(values(BRAND_LAYOUT)),
-    BRAND_LAYOUT.BOTH,
-  ),
-  bannerLayout: T.optional(
-    T.enumeration(values(BANNER_LAYOUT)),
-    BANNER_LAYOUT.HEADER,
-  ),
-  bannerNotifyLayout: T.optional(
-    T.enumeration(values(BANNER_NOTIFY_LAYOUT)),
-    BANNER_NOTIFY_LAYOUT.DEFAULT,
-  ),
-  bannerNotifyBg: T.optional(T.enumeration(keys(COLORS)), 'BLACK'),
-  changelogLayout: T.optional(
-    T.enumeration(values(CHANGELOG_LAYOUT)),
-    CHANGELOG_LAYOUT.PREVIEW,
-  ),
-  tags: T.optional(T.array(Tag), mockTags(12)),
-  alias: T.optional(T.array(Alias), BUILDIN_ALIAS),
+  primaryColor: T.opt(T.enum(keys(COLORS)), 'BLACK'),
+  postLayout: T.opt(T.enum(values(POST_LAYOUT)), POST_LAYOUT.UPVOTE_FIRST),
+  brandLayout: T.opt(T.enum(values(BRAND_LAYOUT)), BRAND_LAYOUT.BOTH),
+  bannerLayout: T.opt(T.enum(values(BANNER_LAYOUT)), BANNER_LAYOUT.HEADER),
+  bannerNotifyLayout: T.opt(T.enum(values(BANNER_NOTIFY_LAYOUT)), BANNER_NOTIFY_LAYOUT.DEFAULT),
+  bannerNotifyBg: T.opt(T.enum(keys(COLORS)), 'BLACK'),
+  changelogLayout: T.opt(T.enum(values(CHANGELOG_LAYOUT)), CHANGELOG_LAYOUT.PREVIEW),
+  tags: T.opt(T.array(Tag), mockTags(12)),
+  alias: T.opt(T.array(Alias), BUILDIN_ALIAS),
 
   // widgets
-  widgetsPrimaryColor: T.optional(T.enumeration(keys(COLORS)), 'BLACK'),
-  widgetsThreads: T.optional(T.array(T.string), [
-    THREAD.POST,
-    THREAD.KANBAN,
-    THREAD.CHANGELOG,
-  ]),
-  widgetsSize: T.optional(
-    T.enumeration([SIZE.SMALL, SIZE.MEDIUM, SIZE.LARGE]),
-    SIZE.MEDIUM,
-  ),
-  widgetsType: T.optional(
-    T.enumeration(values(WIDGET_TYPE)),
-    WIDGET_TYPE.SIDEBAR,
-  ),
+  widgetsPrimaryColor: T.opt(T.enum(keys(COLORS)), 'BLACK'),
+  widgetsThreads: T.opt(T.array(T.string), [THREAD.POST, THREAD.KANBAN, THREAD.CHANGELOG]),
+  widgetsSize: T.opt(T.enum([SIZE.SMALL, SIZE.MEDIUM, SIZE.LARGE]), SIZE.MEDIUM),
+  widgetsType: T.opt(T.enum(values(WIDGET_TYPE)), WIDGET_TYPE.SIDEBAR),
 }
 
 const InitSettings = T.model('DashboardInit', settingsModalFields)
 
 const DashboardThread = T.model('DashboardThread', {
-  saving: T.optional(T.boolean, false),
-  curTab: T.optional(T.enumeration(values(TAB)), TAB.UI),
+  saving: T.opt(T.bool, false),
+  curTab: T.opt(T.enum(values(TAB)), TAB.UI),
   editingTag: T.maybeNull(Tag),
   editingAlias: T.maybeNull(Alias),
   ...settingsModalFields,
-  initSettings: T.optional(InitSettings, {}),
+  initSettings: T.opt(InitSettings, {}),
 })
   .views((self) => ({
     get globalLayout(): TGlobalLayout {
@@ -189,10 +156,7 @@ const DashboardThread = T.model('DashboardThread', {
           postLayoutTouched ||
           changelogLayoutTouched,
 
-        widgets:
-          widgetsPrimaryColorTouched ||
-          widgetsThreadsTouched ||
-          widgetsSizeTouched,
+        widgets: widgetsPrimaryColorTouched || widgetsThreadsTouched || widgetsSizeTouched,
       }
     },
 
@@ -324,10 +288,7 @@ const DashboardThread = T.model('DashboardThread', {
       const slf = self as TStore
 
       const { tags, editingTag } = slf
-      const targetIdx = findIndex(
-        (item: TTag) => item.id === editingTag.id,
-        toJS(tags),
-      )
+      const targetIdx = findIndex((item: TTag) => item.id === editingTag.id, toJS(tags))
       return targetIdx
     },
 
@@ -335,10 +296,7 @@ const DashboardThread = T.model('DashboardThread', {
       const slf = self as TStore
 
       const { alias, editingAlias } = slf
-      const targetIdx = findIndex(
-        (item: TAlias) => item.raw === editingAlias.raw,
-        toJS(alias),
-      )
+      const targetIdx = findIndex((item: TAlias) => item.raw === editingAlias.raw, toJS(alias))
 
       return targetIdx
     },

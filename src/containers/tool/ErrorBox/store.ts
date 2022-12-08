@@ -3,34 +3,26 @@
  *
  */
 
-import { types as T, Instance } from 'mobx-state-tree'
-
 import type { TGQError } from '@/spec'
 import { ERR } from '@/constant'
-import { markStates, toJS } from '@/utils/mobx'
+import { T, markStates, Instance, toJS } from '@/utils/mobx'
 
 const Message = T.model('Message', {
   message: T.string,
-  key: T.optional(T.string, ''),
-  path: T.optional(T.string, ''),
-  code: T.optional(T.number, 0),
+  key: T.opt(T.string, ''),
+  path: T.opt(T.string, ''),
+  code: T.opt(T.number, 0),
 })
 
 const ErrorBox = T.model('ErrorBox', {
-  show: T.optional(T.boolean, false),
-  type: T.optional(
-    T.enumeration('type', [ERR.GRAPHQL, ERR.NETWORK, ERR.TIMEOUT]),
-    ERR.GRAPHQL,
-  ),
-  operation: T.optional(T.string, '--'),
+  show: T.opt(T.bool, false),
+  type: T.opt(T.enum('type', [ERR.GRAPHQL, ERR.NETWORK, ERR.TIMEOUT]), ERR.GRAPHQL),
+  operation: T.opt(T.string, '--'),
   path: T.maybeNull(T.string),
 
-  timeoutError: T.optional(T.string, '--'),
+  timeoutError: T.opt(T.string, '--'),
   // spec type of ERR.GRAPHQL
-  graphqlType: T.optional(
-    T.enumeration('graphqlType', ['changeset', 'parse', 'custom']),
-    'changeset',
-  ),
+  graphqlType: T.opt(T.enum('graphqlType', ['changeset', 'parse', 'custom']), 'changeset'),
   customError: T.maybeNull(T.array(Message)),
   parseError: T.maybeNull(T.array(Message)),
   changesetError: T.maybeNull(T.array(Message)),

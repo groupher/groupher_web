@@ -1,4 +1,4 @@
-import { types as T } from 'mobx-state-tree'
+import { T } from '@/utils/mobx'
 
 export const GithubUser = T.model('GithubUser', {
   githubId: T.maybeNull(T.string),

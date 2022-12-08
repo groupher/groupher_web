@@ -2,21 +2,14 @@
  * Share store
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { values } from 'ramda'
 
 import { SITE_URL_SHORT } from '@/config'
 import { SVG, THREAD } from '@/constant'
 
-import type {
-  TArticle,
-  TCommunity,
-  TRootStore,
-  TThread,
-  TMenuOption,
-} from '@/spec'
+import type { TArticle, TCommunity, TRootStore, TThread, TMenuOption } from '@/spec'
 
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { buildLog } from '@/utils/logger'
 
 import type { TLinksData, TShareData } from './spec'
@@ -26,11 +19,8 @@ import { SITE_SHARE_TYPE, MENU } from './constant'
 const log = buildLog('S:Share')
 
 const Share = T.model('Share', {
-  show: T.optional(T.boolean, false),
-  siteShareType: T.optional(
-    T.enumeration(values(SITE_SHARE_TYPE)),
-    SITE_SHARE_TYPE.LINKS,
-  ),
+  show: T.opt(T.bool, false),
+  siteShareType: T.opt(T.enum(values(SITE_SHARE_TYPE)), SITE_SHARE_TYPE.LINKS),
 })
   .views((self) => ({
     get viewingArticle(): TArticle {
@@ -59,8 +49,7 @@ const Share = T.model('Share', {
 
       const articleId = slf.viewingArticle.id
       const articleTitle = slf.viewingArticle.title
-      const thread =
-        slf.viewingArticle.meta?.thread.toLowerCase() || THREAD.POST
+      const thread = slf.viewingArticle.meta?.thread.toLowerCase() || THREAD.POST
 
       const link = `${SITE_URL_SHORT}/${thread}/${articleId}`
 

@@ -3,35 +3,22 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { values, merge, includes } from 'ramda'
 
-import type {
-  TRootStore,
-  TUser,
-  TArticle,
-  TArticleMeta,
-  TThread,
-  TAccount,
-} from '@/spec'
+import type { TRootStore, TUser, TArticle, TArticleMeta, TThread, TAccount } from '@/spec'
 import { THREAD, ARTICLE_THREAD } from '@/constant'
-import { markStates } from '@/utils/mobx'
+import { T, getParent, Instance, markStates } from '@/utils/mobx'
 import { viewingChanged } from '@/utils/signal'
 import { User, Community, Post } from '@/model'
 
 const ViewingStore = T.model('ViewingStore', {
-  user: T.optional(User, {}),
-  community: T.optional(Community, {}),
-  post: T.optional(Post, {}),
-  // repo: T.optional(Repo, {}),
-  activeThread: T.optional(
-    T.enumeration('activeThread', values(THREAD)),
-    THREAD.POST,
-  ),
+  user: T.opt(User, {}),
+  community: T.opt(Community, {}),
+  post: T.opt(Post, {}),
+  // repo: T.opt(Repo, {}),
+  activeThread: T.opt(T.enum('activeThread', values(THREAD)), THREAD.POST),
   // for drawer usage
-  viewingThread: T.maybeNull(
-    T.enumeration('viewingThread', values(ARTICLE_THREAD)),
-  ),
+  viewingThread: T.maybeNull(T.enum('viewingThread', values(ARTICLE_THREAD))),
 })
   .views((self) => ({
     get accountInfo(): TAccount {

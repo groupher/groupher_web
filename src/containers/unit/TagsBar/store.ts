@@ -3,30 +3,23 @@
  *
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 import { findIndex, propEq } from 'ramda'
 import { THREAD } from '@/constant'
 
-import type {
-  TRootStore,
-  TCommunity,
-  TTag,
-  TGroupedTags,
-  TThread,
-} from '@/spec'
+import type { TRootStore, TCommunity, TTag, TGroupedTags, TThread } from '@/spec'
 
-import { markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { mockTags } from '@/utils/mock'
 import { groupByKey } from '@/utils/helper'
 
 import { Tag, emptyTag } from '@/model'
 
 const TagsBar = T.model('TagsBar', {
-  tags: T.optional(T.array(Tag), []),
+  tags: T.opt(T.array(Tag), []),
   activeTag: T.maybeNull(Tag),
   thread: T.maybeNull(T.string),
 
-  loading: T.optional(T.boolean, false),
+  loading: T.opt(T.bool, false),
 })
   .views((self) => ({
     get curCommunity(): TCommunity {
