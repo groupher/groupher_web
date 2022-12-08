@@ -15,11 +15,7 @@ export const getColor = (ghost: boolean, disabled: boolean): TTheme => {
   return theme('button.fg')
 }
 
-export const getBackgroundColor = (
-  ghost: boolean,
-  disabled: boolean,
-  hover = false,
-): TTheme => {
+export const getBackgroundColor = (ghost: boolean, disabled: boolean, hover = false): TTheme => {
   if (ghost) {
     return 'transparent'
   }
@@ -33,6 +29,7 @@ export const getBackgroundColor = (
 export const getBorderColor = (
   noBorder: boolean,
   disabled: boolean,
+  ghost: boolean,
   hover = false,
 ): TTheme => {
   if (noBorder) {
@@ -40,6 +37,10 @@ export const getBorderColor = (
   }
   if (disabled) {
     return theme('divider') // TODO:  same as dimOnIdle background
+  }
+
+  if (ghost) {
+    return hover ? theme('button.primary') : theme('button.ghostBorder')
   }
 
   return hover ? theme('button.hoverBg') : theme('button.primary')

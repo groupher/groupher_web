@@ -28,10 +28,7 @@ export const Wrapper = styled.button<TWrapper>`
   border: 1px solid transparent;
   white-space: nowrap;
   padding: ${({ size }) => getPadding(size)};
-  ${({ space }) =>
-    `${
-      space !== null ? `padding-left: ${space}px;padding-right: ${space}px` : ''
-    }`};
+  ${({ space }) => `${space !== null ? `padding-left: ${space}px;padding-right: ${space}px` : ''}`};
 
   font-size: ${({ size }) => getFontSize(size)};
   border-radius: 10px;
@@ -41,10 +38,8 @@ export const Wrapper = styled.button<TWrapper>`
   position: relative;
 
   color: ${({ ghost, disabled }) => getColor(ghost, disabled)};
-  background-color: ${({ ghost, disabled }) =>
-    getBackgroundColor(ghost, disabled)};
-  border-color: ${({ noBorder, disabled }) =>
-    getBorderColor(noBorder, disabled)};
+  background-color: ${({ ghost, disabled }) => getBackgroundColor(ghost, disabled)};
+  border-color: ${({ noBorder, disabled, ghost }) => getBorderColor(noBorder, disabled, ghost)};
 
   opacity: ${({ noBorder }) => (noBorder ? '0.8' : 1)};
 
@@ -67,10 +62,9 @@ export const Wrapper = styled.button<TWrapper>`
 
   &:hover {
     color: ${({ ghost, disabled }) => getColor(ghost, disabled)};
-    border-color: ${({ noBorder, disabled }) =>
-      getBorderColor(noBorder, disabled, true)};
-    background-color: ${({ ghost, disabled }) =>
-      getBackgroundColor(ghost, disabled, true)};
+    border-color: ${({ noBorder, disabled, ghost }) =>
+      getBorderColor(noBorder, disabled, ghost, true)};
+    background-color: ${({ ghost, disabled }) => getBackgroundColor(ghost, disabled, true)};
     opacity: 1;
     cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 
@@ -83,17 +77,15 @@ export const Wrapper = styled.button<TWrapper>`
 
   &:focus {
     color: ${({ ghost, disabled }) => getColor(ghost, disabled)};
-    border-color: ${({ noBorder, disabled }) =>
-      getBorderColor(noBorder, disabled, true)};
-    background-color: ${({ ghost, disabled }) =>
-      getBackgroundColor(ghost, disabled, true)};
+    border-color: ${({ noBorder, disabled, ghost }) =>
+      getBorderColor(noBorder, disabled, ghost, true)};
+    background-color: ${({ ghost, disabled }) => getBackgroundColor(ghost, disabled, true)};
     opacity: 1;
   }
 
   &:active {
     color: ${({ ghost, disabled }) => getColor(ghost, disabled)};
-    background-color: ${({ ghost, disabled }) =>
-      getBackgroundColor(ghost, disabled, true)};
+    background-color: ${({ ghost, disabled }) => getBackgroundColor(ghost, disabled, true)};
     opacity: 1;
   }
 `
@@ -108,23 +100,18 @@ export const ChildrenWrapper = styled.div<TChildrenWrapper>`
 `
 export const RedWrapper = styled(Wrapper)`
   color: ${({ ghost }) => (ghost ? theme('baseColor.red') : 'white')};
-  background-color: ${({ ghost }) =>
-    !ghost ? theme('baseColor.red') : 'transparent'};
+  background-color: ${({ ghost }) => (!ghost ? theme('baseColor.red') : 'transparent')};
 
-  border-color: ${({ noBorder }) =>
-    noBorder ? 'transparent' : theme('baseColor.red')};
+  border-color: ${({ noBorder }) => (noBorder ? 'transparent' : theme('baseColor.red'))};
 
   &:hover {
-    background-color: ${({ ghost }) =>
-      !ghost ? lighten('#FF634F', 10) : 'transparent'};
+    background-color: ${({ ghost }) => (!ghost ? lighten('#FF634F', 10) : 'transparent')};
   }
   &:focus {
-    background-color: ${({ ghost }) =>
-      !ghost ? lighten('#FF634F', 10) : 'transparent'};
+    background-color: ${({ ghost }) => (!ghost ? lighten('#FF634F', 10) : 'transparent')};
   }
   &:active {
-    background-color: ${({ ghost }) =>
-      !ghost ? lighten('#FF634F', 10) : 'transparent'};
+    background-color: ${({ ghost }) => (!ghost ? lighten('#FF634F', 10) : 'transparent')};
   }
   transition: all 0.1s;
 `

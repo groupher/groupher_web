@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
   left: 0;
   border-top: 1px solid;
   border-top-color: ${theme('divider')};
-  height: 65px;
+  height: 58px;
 `
 export const ForbidImgIcon = styled(ForbidSVG)`
   fill: ${theme('article.digest')};
