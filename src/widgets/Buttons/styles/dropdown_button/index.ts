@@ -14,8 +14,7 @@ export const Wrapper = styled.div<TWrapper>`
   color: ${theme('article.digest')};
 
   border: ${({ withBorder }) => (withBorder ? '1px solid' : 'none')};
-  border-color: ${({ withBorder }) =>
-    withBorder ? theme('lightText') : theme('transparent')};
+  border-color: ${({ withBorder }) => (withBorder ? theme('lightText') : theme('transparent'))};
 
   border-radius: 10px;
 

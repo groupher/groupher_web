@@ -160,7 +160,7 @@ export type TUpvoteLayout =
 export type TBrandLayout = 'both' | 'logo' | 'text'
 export type TBannerLayout = 'header' | 'tabber'
 export type TBannerNotifyLayout = 'default' | 'center'
-export type TPostLayout = 'upvote_first' | 'comment_first' | 'card' | 'minimal'
+export type TPostLayout = 'upvote_first' | 'comment_first' | 'card' | 'minimal' | 'cover'
 export type TChangelogLayout = 'preview' | 'outline'
 
 export type TGlobalLayout = {
@@ -200,13 +200,7 @@ export type TArticleCatReject =
   | 'REJECT_REPRO'
   | 'REJECT_STALE'
 
-export type TArticleState =
-  | 'TODO'
-  | 'WIP'
-  | 'DONE'
-  | 'RESOLVE'
-  | 'DEFAULT'
-  | TArticleCatReject
+export type TArticleState = 'TODO' | 'WIP' | 'DONE' | 'RESOLVE' | 'DEFAULT' | TArticleCatReject
 
 export type TArticleCat = 'ALL' | 'BUG' | 'FEATURE' | 'QUESTION' | 'OTHER'
 

@@ -22,6 +22,7 @@ import {
   Bar,
   Circle,
   Box,
+  Cover,
   Column,
   UpvoteIcon,
   CommentIcon,
@@ -44,9 +45,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
             「讨论区」列表的展现形式，可根据讨论内容侧重或偏好选择，切换布局不影响已发布内容。
             <Inline>
               <ArrowButton
-                onClick={() =>
-                  callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)
-                }
+                onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
                 size="tiny"
                 arrowStyle="simple"
               >
@@ -190,6 +189,34 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
             <CheckLabel
               title="极简列表"
               $active={layout === POST_LAYOUT.MINIMAL}
+              top={15}
+              left={-15}
+            />
+          </LayoutTitle>
+        </Layout>
+
+        <Layout onClick={() => edit(POST_LAYOUT.COVER, 'postLayout')}>
+          <Block $active={layout === POST_LAYOUT.COVER}>
+            <Row>
+              <Cover />
+              <Space right={17} />
+              <Column grow>
+                <Column>
+                  <Bar long={50} />
+                </Column>
+                <Br bottom={10} />
+                <Bar thin long={90} />
+                <Br bottom={20} />
+                <Row>
+                  <Bar thin long={20} />
+                </Row>
+              </Column>
+            </Row>
+          </Block>
+          <LayoutTitle $active={layout === POST_LAYOUT.COVER}>
+            <CheckLabel
+              title="封面图列表"
+              $active={layout === POST_LAYOUT.COVER}
               top={15}
               left={-15}
             />

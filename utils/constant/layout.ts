@@ -42,6 +42,7 @@ export const POST_LAYOUT = {
   COMMENT_FIRST: 'comment_first',
   CARD: 'card',
   MINIMAL: 'minimal',
+  COVER: 'cover',
 } as Record<TSnakeUpperCase<TPostLayout>, TPostLayout>
 
 export const CHANGELOG_LAYOUT = {

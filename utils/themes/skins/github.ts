@@ -48,8 +48,7 @@ const github = {
   menuActive: '#f3f3f3',
   linkHover: lighten(link, 5),
   heightIcon: '#e48a3d',
-  heightGradient:
-    'linear-gradient(90deg, rgb(243, 170, 0) 0%, rgb(228, 62, 41) 100%)',
+  heightGradient: 'linear-gradient(90deg, rgb(243, 170, 0) 0%, rgb(228, 62, 41) 100%)',
   main: '#7DC0C5',
   bodyBg: contentBg,
   selectionBg: '#FFFEDE',
