@@ -10,8 +10,8 @@ const demoPost = {
   digest:
     '帖子以及更新日志等文章类除了常见的 Upvote 以外，是否可以支持表情功能，像目前评论一样，但是具体表情有区别',
   views: getRandomInt(50, 399),
-  upvotesCount: getRandomInt(50, 99),
-  commentsCount: getRandomInt(50, 99),
+  upvotesCount: getRandomInt(10, 99),
+  commentsCount: getRandomInt(5, 88),
   articleTags: [
     {
       color: 'GREEN',
@@ -38,8 +38,7 @@ export const DEMO_POSTS = [
     ...demoPost,
     id: '1',
     title: '看板板块在手机端显示异常',
-    digest:
-      '手机端帖子标题换行有错位问题，看起来不够直观，建议参考电商常见的搜索热榜等展示形式。',
+    digest: '手机端帖子标题换行有错位问题，看起来不够直观，建议参考电商常见的搜索热榜等展示形式。',
     category: ARTICLE_CAT.BUG,
     state: ARTICLE_STATE.WIP,
     articleTags: [

@@ -46,8 +46,7 @@ type TProps = {
 
 const Body: FC<TProps> = ({ article, curCommunity }) => {
   const { originalCommunity, author } = article
-  const showOriginalCommunity =
-    curCommunity === null || curCommunity.raw !== originalCommunity.raw
+  const showOriginalCommunity = curCommunity === null || curCommunity.raw !== originalCommunity.raw
 
   const demoList = ['239', '231', '227', '228', '226', '225']
   return (
@@ -62,81 +61,47 @@ const Body: FC<TProps> = ({ article, curCommunity }) => {
                 placement="right"
                 delay={1500}
               >
-                <CommunityLabel
-                  onClick={() => changeToCommunity(originalCommunity.raw)}
-                >
+                <CommunityLabel onClick={() => changeToCommunity(originalCommunity.raw)}>
                   {originalCommunity.title}
                 </CommunityLabel>
               </Tooltip>
               <LabelDivider />
             </Fragment>
           )}
-
-          <Tooltip
-            //  @ts-ignore
-            content={<UserCard user={author} />}
-            placement="right"
-            delay={500}
-          >
-            <AuthorName
-              href={`/u/${author.login}`}
-              darker={showOriginalCommunity}
-              prefetch={false}
-            >
-              {author.nickname}
-            </AuthorName>
-          </Tooltip>
-
-          <Dot radius={3} space={10} />
-          <PublishTime>
-            <TimeAgo datetime={article.insertedAt} locale="zh_CN" />
-          </PublishTime>
         </LeftPart>
         <SpaceGrow />
-
-        {/*  @ts-ignore */}
         <ActiveBadge article={article} />
       </Extra>
 
-      <Digest onClick={() => send(EVENT.PREVIEW_ARTICLE, { article })}>
-        {article.digest}
-      </Digest>
+      <Digest onClick={() => send(EVENT.PREVIEW_ARTICLE, { article })}>{article.digest}</Digest>
       <Footer>
         <ArticleStateBadgeWrapper>
-          {article.id === '239' && (
-            <ArticleCatState cat={ARTICLE_CAT.FEATURE} left={18} />
-          )}
-          {article.id === '231' && (
-            <ArticleCatState cat={ARTICLE_CAT.BUG} left={18} />
-          )}
+          {article.id === '239' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} right={18} />}
+          {article.id === '231' && <ArticleCatState cat={ARTICLE_CAT.BUG} right={18} />}
           {article.id === '227' && (
-            <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" left={18} />
+            <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" right={18} />
           )}
           {article.id === '228' && (
-            <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" left={18} />
+            <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" right={18} />
           )}
           {article.id === '226' && (
-            <ArticleCatState
-              cat={ARTICLE_CAT.QUESTION}
-              state="RESOLVE"
-              left={18}
-            />
+            <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" right={18} />
           )}
           {article.id === '225' && (
             <ArticleCatState
               cat={ARTICLE_CAT.FEATURE}
               state={ARTICLE_STATE.REJECT_DUP}
-              left={18}
+              right={18}
             />
           )}
         </ArticleStateBadgeWrapper>
-        {includes(article.id, demoList) && <Space right={18} />}
+        {!includes(article.id, demoList) && (
+          <ArticleCatState cat={ARTICLE_CAT.FEATURE} right={18} />
+        )}
 
         <ViewsCount count={article.views} />
         <Space right={18} />
-        {article.commentsCount !== 0 && (
-          <CommentsCount count={article.commentsCount} />
-        )}
+        {article.commentsCount !== 0 && <CommentsCount count={article.commentsCount} />}
       </Footer>
     </Wrapper>
   )

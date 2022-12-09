@@ -42,7 +42,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         title="讨论区布局"
         desc={
           <>
-            「讨论区」列表的展现形式，可根据讨论内容侧重或偏好选择，切换布局不影响已发布内容。
+            「讨论区」列表的默认布局，同时可对不同标签设置不同的布局，切换布局不影响已发布内容。
             <Inline>
               <ArrowButton
                 onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
@@ -161,9 +161,9 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
             <Row>
               <Space right={5} />
               <Column center>
-                <UpvoteIcon size={13} />
+                <UpvoteIcon size={14} />
                 <Br bottom={3} />
-                <Bar long={50} />
+                <Bar long={70} />
               </Column>
 
               <Space right={15} />

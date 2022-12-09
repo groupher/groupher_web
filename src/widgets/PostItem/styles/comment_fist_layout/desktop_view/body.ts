@@ -7,7 +7,7 @@ import DotDivider from '@/widgets/DotDivider'
 
 export const Wrapper = styled.div`
   margin-left: 10px;
-  margin-top: -10px;
+  margin-top: -12px;
 `
 export const Extra = styled.li`
   position: relative;
@@ -16,14 +16,11 @@ export const Extra = styled.li`
   margin-top: 5px;
   font-size: 12px;
 `
-export const Footer = styled.div`
-  margin-top: 6px;
-  ${css.flex('align-center')};
-`
+
 export const Digest = styled.div`
   ${css.cutRest('450px')};
   color: ${theme('article.digest')};
-  margin-top: 2px;
+  margin-top: 3px;
   font-size: 13px;
 
   &:hover {
@@ -33,6 +30,12 @@ export const Digest = styled.div`
 
   transition: all 0.2s;
 `
+export const Footer = styled.div`
+  line-height: 20px;
+  margin-top: 8px;
+  ${css.flex('align-center')};
+`
+
 export const LeftPart = styled.div`
   ${css.flex('align-center')};
 `

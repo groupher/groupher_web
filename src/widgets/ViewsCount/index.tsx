@@ -12,12 +12,12 @@ const ViewsCount: FC<TProps> = ({ count }) => {
       {count >= 400 ? (
         <HighlightWrapper>
           <ViewsIcon highlight />
-          {count}
+          <div>{count}</div>
         </HighlightWrapper>
       ) : (
         <Wrapper>
           <ViewsIcon />
-          {count}
+          <div>{count}</div>
         </Wrapper>
       )}
     </div>
