@@ -1,13 +1,11 @@
-import { FC, Fragment } from 'react'
-import dynamic from 'next/dynamic'
+import { FC } from 'react'
 import { includes } from 'ramda'
 
 import type { TCommunity, TPost } from '@/spec'
 import { EVENT, ARTICLE_CAT, ARTICLE_STATE } from '@/constant'
-import { send, changeToCommunity } from '@/utils/signal'
+import { send } from '@/utils/signal'
 
-import { Space, SpaceGrow } from '@/widgets/Common'
-import Tooltip from '@/widgets/Tooltip'
+import { Space } from '@/widgets/Common'
 import ArticleCatState from '@/widgets/ArticleCatState'
 import CommentsCount from '@/widgets/CommentsCount'
 import ViewsCount from '@/widgets/ViewsCount'
@@ -19,19 +17,8 @@ import {
   Digest,
   Footer,
   Extra,
-  LeftPart,
-  CommunityLabel,
-  LabelDivider,
   ArticleStateBadgeWrapper,
 } from '../../styles/comment_fist_layout/desktop_view/body'
-
-const CommunityCard = dynamic(() => import('@/widgets/Cards/CommunityCard'), {
-  ssr: false,
-})
-
-const UserCard = dynamic(() => import('@/widgets/Cards/UserCard'), {
-  ssr: false,
-})
 
 type TProps = {
   curCommunity: TCommunity | null
@@ -39,31 +26,10 @@ type TProps = {
 }
 
 const Body: FC<TProps> = ({ article, curCommunity }) => {
-  const { originalCommunity, author } = article
-  const showOriginalCommunity = curCommunity === null || curCommunity.raw !== originalCommunity.raw
-
   const demoList = ['239', '231', '227', '228', '226', '225']
   return (
     <Wrapper>
       <Extra>
-        <LeftPart>
-          {showOriginalCommunity && (
-            <Fragment>
-              <Tooltip
-                //  @ts-ignore
-                content={<CommunityCard article={originalCommunity} />}
-                placement="right"
-                delay={1500}
-              >
-                <CommunityLabel onClick={() => changeToCommunity(originalCommunity.raw)}>
-                  {originalCommunity.title}
-                </CommunityLabel>
-              </Tooltip>
-              <LabelDivider />
-            </Fragment>
-          )}
-        </LeftPart>
-        <SpaceGrow />
         <ActiveBadge article={article} />
       </Extra>
 
