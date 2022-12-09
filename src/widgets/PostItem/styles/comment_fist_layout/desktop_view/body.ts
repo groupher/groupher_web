@@ -18,7 +18,7 @@ export const Extra = styled.li`
 `
 
 export const Digest = styled.div`
-  ${css.cutRest('450px')};
+  ${css.cutRest('480px')};
   color: ${theme('article.digest')};
   margin-top: 3px;
   font-size: 13px;
@@ -32,7 +32,7 @@ export const Digest = styled.div`
 `
 export const Footer = styled.div`
   line-height: 20px;
-  margin-top: 8px;
+  margin-top: 6px;
   ${css.flex('align-center')};
 `
 
