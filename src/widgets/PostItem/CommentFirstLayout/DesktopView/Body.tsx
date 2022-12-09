@@ -1,15 +1,12 @@
 import { FC, Fragment } from 'react'
 import dynamic from 'next/dynamic'
 import { includes } from 'ramda'
-import TimeAgo from 'timeago-react'
 
 import type { TCommunity, TPost } from '@/spec'
 import { EVENT, ARTICLE_CAT, ARTICLE_STATE } from '@/constant'
 import { send, changeToCommunity } from '@/utils/signal'
 
 import { Space, SpaceGrow } from '@/widgets/Common'
-// import CommunityCard from '@/widgets/Cards/CommunityCard'
-// import UserCard from '@/widgets/Cards/UserCard'
 import Tooltip from '@/widgets/Tooltip'
 import ArticleCatState from '@/widgets/ArticleCatState'
 import CommentsCount from '@/widgets/CommentsCount'
@@ -21,13 +18,10 @@ import {
   Wrapper,
   Digest,
   Footer,
-  Dot,
-  PublishTime,
   Extra,
   LeftPart,
   CommunityLabel,
   LabelDivider,
-  AuthorName,
   ArticleStateBadgeWrapper,
 } from '../../styles/comment_fist_layout/desktop_view/body'
 
