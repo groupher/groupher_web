@@ -10,6 +10,11 @@ export const Wrapper = styled.div``
 export const MobileWrapper = styled.div`
   ${css.flexColumn('align-both')};
 `
+export const TabsWrapper = styled.div`
+  ${css.flex('justify-center')};
+  width: 100%;
+  margin-bottom: 20px;
+`
 
 export const MediaWrapper = styled.div`
   ${css.flex('align-both')};

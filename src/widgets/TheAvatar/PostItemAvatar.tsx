@@ -16,7 +16,7 @@ const PostItemAvatar: FC<TProps> = ({ user, onSelect }) => {
     <Wrapper onClick={() => onSelect(user)}>
       <Avatar
         src={user.avatar}
-        fallback={<ImgFallback user={user} size={30} top={-2} left={0} />}
+        fallback={<ImgFallback user={user} size={22} top={-2} left={0} />}
       />
       {/* {user.login === quoteLogin ? (
         <QuoteAvatar

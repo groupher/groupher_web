@@ -11,18 +11,19 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TInnerWrapper>`
   ${css.flexColumn('align-both')};
-  margin-left: -11px;
-  margin-top: 1px;
+  margin-left: -6px;
+  margin-bottom: -2px;
 `
 export const UpWrapper = styled.div`
-  margin-left: 8px;
+  ${css.flex('align-both')};
+  width: 30px;
+  padding-left: 3px;
   transform: scale(0.9);
 `
 export const CountWrapper = styled.div`
   min-width: 18px;
   text-align: center;
-  font-weight: bold;
-
-  margin-top: -4px;
-  margin-left: 3px;
+  width: 28px;
+  margin-top: 3px;
+  margin-left: -1px;
 `

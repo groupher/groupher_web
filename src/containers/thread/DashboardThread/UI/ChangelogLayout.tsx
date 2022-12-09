@@ -45,12 +45,10 @@ const ChangelogLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         title="更新日志布局"
         desc={
           <>
-            「更新日志」列表的展现形式，切换布局不影响已发布内容。
+            「更新日志」列表的默认展现形式，切换布局不影响已发布内容。
             <Inline>
               <ArrowButton
-                onClick={() =>
-                  callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)
-                }
+                onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
                 size="tiny"
                 arrowStyle="simple"
               >
@@ -61,9 +59,7 @@ const ChangelogLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         }
       />
       <SelectWrapper>
-        <Layout
-          onClick={() => edit(CHANGELOG_LAYOUT.OUTLINE, 'changelogLayout')}
-        >
+        <Layout onClick={() => edit(CHANGELOG_LAYOUT.OUTLINE, 'changelogLayout')}>
           <Block $active={layout === CHANGELOG_LAYOUT.OUTLINE}>
             <Column>
               <Picture />
@@ -172,9 +168,7 @@ const ChangelogLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
         <Space right={40} />
-        <Layout
-          onClick={() => edit(CHANGELOG_LAYOUT.PREVIEW, 'changelogLayout')}
-        >
+        <Layout onClick={() => edit(CHANGELOG_LAYOUT.PREVIEW, 'changelogLayout')}>
           <Block $active={layout === CHANGELOG_LAYOUT.PREVIEW}>
             <Column>
               <Picture small />

@@ -10,8 +10,8 @@ const demoPost = {
   digest:
     '帖子以及更新日志等文章类除了常见的 Upvote 以外，是否可以支持表情功能，像目前评论一样，但是具体表情有区别',
   views: getRandomInt(50, 399),
-  upvotesCount: getRandomInt(50, 99),
-  commentsCount: getRandomInt(50, 99),
+  upvotesCount: getRandomInt(10, 99),
+  commentsCount: getRandomInt(5, 88),
   articleTags: [
     {
       color: 'GREEN',
@@ -38,8 +38,7 @@ export const DEMO_POSTS = [
     ...demoPost,
     id: '1',
     title: '看板板块在手机端显示异常',
-    digest:
-      '手机端帖子标题换行有错位问题，看起来不够直观，建议参考电商常见的搜索热榜等展示形式。',
+    digest: '手机端帖子标题换行有错位问题，看起来不够直观，建议参考电商常见的搜索热榜等展示形式。',
     category: ARTICLE_CAT.BUG,
     state: ARTICLE_STATE.WIP,
     articleTags: [
@@ -49,9 +48,27 @@ export const DEMO_POSTS = [
         raw: 'mobile',
       },
     ],
-    views: getRandomInt(50, 399),
-    upvotesCount: getRandomInt(50, 99),
-    commentsCount: getRandomInt(50, 99),
+    views: getRandomInt(5, 39),
+    upvotesCount: getRandomInt(5, 99),
+    commentsCount: getRandomInt(5, 99),
+  },
+  {
+    ...demoPost,
+    id: '11',
+    title: '关于帖子布局模式的说明',
+    digest: '帖子布局除了可以全局设置以外，还可以针对不同的标签做自定义设置。',
+    category: ARTICLE_CAT.FEATURE,
+    state: ARTICLE_STATE.DEFAULT,
+    articleTags: [
+      {
+        color: 'CYAN',
+        title: '官方公告',
+        raw: 'mobile',
+      },
+    ],
+    views: getRandomInt(5, 39),
+    upvotesCount: getRandomInt(5, 99),
+    commentsCount: getRandomInt(5, 99),
   },
   {
     ...demoPost,
@@ -62,14 +79,32 @@ export const DEMO_POSTS = [
     state: ARTICLE_STATE.RESOLVE,
     articleTags: [
       {
-        color: 'CYAN',
+        color: 'GREEN',
         title: '账户设置',
         raw: 'account',
       },
     ],
-    views: getRandomInt(50, 399),
-    upvotesCount: getRandomInt(50, 99),
-    commentsCount: getRandomInt(50, 99),
+    views: getRandomInt(10, 399),
+    upvotesCount: getRandomInt(20, 99),
+    commentsCount: getRandomInt(7, 99),
+  },
+  {
+    ...demoPost,
+    id: '5',
+    title: '是否支持私有部署？',
+    digest: '支持，请在帮助中心中查看具体步骤',
+    category: ARTICLE_CAT.FEATURE,
+    state: ARTICLE_STATE.REJECT_DUP,
+    articleTags: [
+      {
+        color: 'RED',
+        title: '部署',
+        raw: 'account',
+      },
+    ],
+    views: getRandomInt(10, 399),
+    upvotesCount: getRandomInt(2, 99),
+    commentsCount: getRandomInt(7, 99),
   },
 ]
 

@@ -8,6 +8,7 @@ export const Wrapper = styled.div`
   ${css.flex('align-center')};
   color: ${theme('article.info')};
   font-size: 13px;
+  line-height: 19px;
 `
 export const HighlightWrapper = styled(Wrapper)`
   font-weight: 500;
@@ -16,9 +17,8 @@ export const HighlightWrapper = styled(Wrapper)`
   -webkit-text-fill-color: transparent;
 `
 export const ViewsIcon = styled(ViewedSVG)<{ highlight?: boolean }>`
-  fill: ${({ highlight }) =>
-    highlight ? theme('heightIcon') : theme('article.info')};
+  fill: ${({ highlight }) => (highlight ? theme('heightIcon') : theme('article.info'))};
   ${css.size(11)};
   margin-right: 5px;
-  margin-top: -1px;
+  opacity: 0.9;
 `

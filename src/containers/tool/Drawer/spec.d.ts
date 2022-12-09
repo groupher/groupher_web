@@ -1,4 +1,4 @@
-import type { TTestable, TActive, TArticle, TDashboardLayout } from '@/spec'
+import type { TTestable, TActive, TArticle, TDashboardLayout, TPostLayout } from '@/spec'
 
 export type TSwipeOption = {
   direction: 'bottom' | 'top'
@@ -31,4 +31,5 @@ export type TExtraInfo = {
   mmType: string
   userListerType: string
   dashboardDescLayout: TDashboardLayout
+  postLayout: TPostLayout
 }

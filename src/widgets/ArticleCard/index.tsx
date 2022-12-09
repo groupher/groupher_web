@@ -33,7 +33,7 @@ const ArticleCard: FC<TProps> = ({ data, thread = THREAD.POST }) => {
         <DigestSentence
           top={5}
           bottom={16}
-          size={isMobile ? SIZE.SMALL : SIZE.MEDIUM}
+          size={SIZE.SMALL}
           onPreview={() => send(EVENT.PREVIEW_ARTICLE, { article: data })}
         >
           {cutRest(data.digest, 150)}

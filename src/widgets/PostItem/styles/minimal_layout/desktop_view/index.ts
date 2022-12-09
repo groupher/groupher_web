@@ -19,8 +19,8 @@ export const UpvoteWrapper = styled.div`
 export const DigestWrapper = styled.div`
   ${css.cutRest('530px')};
   color: ${theme('article.digest')};
-  margin-top: 6px;
-  margin-bottom: 10px;
+  margin-top: 4px;
+  margin-bottom: 8px;
   font-size: 13px;
   cursor: pointer;
 

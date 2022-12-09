@@ -148,12 +148,14 @@ const DrawerStore = T.model('DrawerStore', {
     },
 
     get extraInfo(): TExtraInfo {
+      const root = getParent(self) as TRootStore
       const slf = self as TStore
 
       return {
         mmType: slf.mmType,
         userListerType: slf.userListerType,
         dashboardDescLayout: slf.dashboardDescLayout,
+        postLayout: root.dashboardThread.postLayout,
       }
     },
   }))

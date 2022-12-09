@@ -35,7 +35,7 @@ const DigestView: FC<TProps> = ({ curCommunity, article }) => {
       <ArticleReadLabel article={article} />
       <ArticlePinLabel article={article} />
 
-      <ViewingSign article={article} top={18} />
+      <ViewingSign article={article} top={12} />
       <AvatarWrapper>
         <TheAvatar user={article.author} />
         <UpvoteWrapper>
@@ -43,9 +43,7 @@ const DigestView: FC<TProps> = ({ curCommunity, article }) => {
             type={UPVOTE_LAYOUT.POST_LIST}
             count={article.upvotesCount}
             viewerHasUpvoted={article.viewerHasUpvoted}
-            onAction={(viewerHasUpvoted) =>
-              upvoteOnArticleList(article, viewerHasUpvoted)
-            }
+            onAction={(viewerHasUpvoted) => upvoteOnArticleList(article, viewerHasUpvoted)}
           />
         </UpvoteWrapper>
       </AvatarWrapper>

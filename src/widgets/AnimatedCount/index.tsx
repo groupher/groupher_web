@@ -34,11 +34,7 @@ export type TProps = {
   active?: boolean
 }
 
-const Count: FC<TProps> = ({
-  count = 0,
-  size = SIZE.SMALL,
-  active = false,
-}) => {
+const Count: FC<TProps> = ({ count = 0, size = SIZE.SMALL, active = false }) => {
   return (
     <Wrapper $active={active} count={count}>
       <AnimatedCount count={count} size={size} active={active} />

@@ -48,9 +48,15 @@ const Content: FC<TProps> = ({ type, attUser, extraInfo }) => {
       // @ts-ignore
       return <C11NSettingPanel />
 
-    case DRAWER.DASHBOARD_DESC:
+    case DRAWER.DASHBOARD_DESC: {
+      const { postLayout, dashboardDescLayout } = extraInfo
+
+      const activeSettings = {
+        postLayout,
+      }
       // @ts-ignore
-      return <DashboardDesc layout={extraInfo.dashboardDescLayout} />
+      return <DashboardDesc layout={dashboardDescLayout} activeSettings={activeSettings} />
+    }
 
     case DRAWER.CUSTOM_BG_EDITOR:
       // @ts-ignore

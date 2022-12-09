@@ -6,12 +6,7 @@ import { Divider, Br } from '@/widgets/Common'
 import MobileMockup from '@/widgets/MobileMockup'
 import PostItem from '@/widgets/PostItem'
 
-import {
-  MobileWrapper,
-  Title,
-  SubTitle,
-  Desc,
-} from '../styles/post_list_example'
+import { MobileWrapper, Title, SubTitle, Desc } from '../styles/post_layout_example'
 
 type TProps = {
   articles: TPost[]

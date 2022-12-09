@@ -12,6 +12,7 @@ export const Wrapper = styled.div<{ size: TSizeSM }>`
   color: ${theme('article.info')};
   font-size: ${({ size }) => (size === SIZE.MEDIUM ? '14px' : '13px')};
   font-weight: 500;
+  line-height: 19px;
 `
 export const HighlightWrapper = styled(Wrapper)`
   background: ${theme('heightGradient')};
@@ -20,11 +21,9 @@ export const HighlightWrapper = styled(Wrapper)`
 `
 type TCommentsIcon = { highlight?: boolean }
 export const CommentsIcon = styled(CommentSVG)<TCommentsIcon>`
-  fill: ${({ highlight }) =>
-    highlight ? theme('heightIcon') : theme('article.info')};
-  ${css.size(11)};
-  margin-right: 4px;
+  fill: ${({ highlight }) => (highlight ? theme('heightIcon') : theme('article.info'))};
+  ${css.size(10)};
+  margin-right: 5px;
+  margin-top: 1px;
 `
-export const Count = styled.div`
-  margin-top: -1px;
-`
+export const Count = styled.div``
