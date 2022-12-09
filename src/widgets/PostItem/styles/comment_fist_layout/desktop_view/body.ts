@@ -20,7 +20,7 @@ export const Extra = styled.li`
 export const Digest = styled.div`
   ${css.cutRest('480px')};
   color: ${theme('article.digest')};
-  margin-top: 3px;
+  margin-top: 4px;
   font-size: 13px;
 
   &:hover {
@@ -31,9 +31,8 @@ export const Digest = styled.div`
   transition: all 0.2s;
 `
 export const Footer = styled.div`
-  line-height: 20px;
-  margin-top: 6px;
   ${css.flex('align-center')};
+  margin-top: 7px;
 `
 
 export const LeftPart = styled.div`

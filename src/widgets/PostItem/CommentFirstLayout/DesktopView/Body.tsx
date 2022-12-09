@@ -36,27 +36,28 @@ const Body: FC<TProps> = ({ article, curCommunity }) => {
       <Digest onClick={() => send(EVENT.PREVIEW_ARTICLE, { article })}>{article.digest}</Digest>
       <Footer>
         <ArticleStateBadgeWrapper>
-          {article.id === '239' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} right={18} />}
-          {article.id === '231' && <ArticleCatState cat={ARTICLE_CAT.BUG} right={18} />}
+          {article.id === '239' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} right={18} top={1} />}
+          {article.id === '231' && <ArticleCatState cat={ARTICLE_CAT.BUG} right={18} top={1} />}
           {article.id === '227' && (
-            <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" right={18} />
+            <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" right={18} top={1} />
           )}
           {article.id === '228' && (
-            <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" right={18} />
+            <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" right={18} top={1} />
           )}
           {article.id === '226' && (
-            <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" right={18} />
+            <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" right={18} top={1} />
           )}
           {article.id === '225' && (
             <ArticleCatState
               cat={ARTICLE_CAT.FEATURE}
               state={ARTICLE_STATE.REJECT_DUP}
               right={18}
+              top={1}
             />
           )}
         </ArticleStateBadgeWrapper>
         {!includes(article.id, demoList) && (
-          <ArticleCatState cat={ARTICLE_CAT.FEATURE} right={18} />
+          <ArticleCatState right={18} cat={article.category} state={article.state} top={1} />
         )}
 
         <ViewsCount count={article.views} />

@@ -48,9 +48,27 @@ export const DEMO_POSTS = [
         raw: 'mobile',
       },
     ],
-    views: getRandomInt(50, 399),
-    upvotesCount: getRandomInt(50, 99),
-    commentsCount: getRandomInt(50, 99),
+    views: getRandomInt(5, 39),
+    upvotesCount: getRandomInt(5, 99),
+    commentsCount: getRandomInt(5, 99),
+  },
+  {
+    ...demoPost,
+    id: '11',
+    title: '关于帖子布局模式的说明',
+    digest: '帖子布局除了可以全局设置以外，还可以针对不同的标签做自定义设置。',
+    category: ARTICLE_CAT.FEATURE,
+    state: ARTICLE_STATE.DEFAULT,
+    articleTags: [
+      {
+        color: 'CYAN',
+        title: '官方公告',
+        raw: 'mobile',
+      },
+    ],
+    views: getRandomInt(5, 39),
+    upvotesCount: getRandomInt(5, 99),
+    commentsCount: getRandomInt(5, 99),
   },
   {
     ...demoPost,
@@ -61,14 +79,32 @@ export const DEMO_POSTS = [
     state: ARTICLE_STATE.RESOLVE,
     articleTags: [
       {
-        color: 'CYAN',
+        color: 'GREEN',
         title: '账户设置',
         raw: 'account',
       },
     ],
-    views: getRandomInt(50, 399),
-    upvotesCount: getRandomInt(50, 99),
-    commentsCount: getRandomInt(50, 99),
+    views: getRandomInt(10, 399),
+    upvotesCount: getRandomInt(20, 99),
+    commentsCount: getRandomInt(7, 99),
+  },
+  {
+    ...demoPost,
+    id: '5',
+    title: '是否支持私有部署？',
+    digest: '支持，请在帮助中心中查看具体步骤',
+    category: ARTICLE_CAT.FEATURE,
+    state: ARTICLE_STATE.REJECT_DUP,
+    articleTags: [
+      {
+        color: 'RED',
+        title: '部署',
+        raw: 'account',
+      },
+    ],
+    views: getRandomInt(10, 399),
+    upvotesCount: getRandomInt(2, 99),
+    commentsCount: getRandomInt(7, 99),
   },
 ]
 

@@ -7,6 +7,7 @@ import { getIconSize, getTitleSize, getInnerSpace } from './metric'
 
 export const Wrapper = styled.div<TSpace>`
   ${css.flex('align-center')};
+  line-height: 1px;
 
   margin-left: ${({ left }) => `${left || 0}px`};
   margin-right: ${({ right }) => `${right || 0}px`};

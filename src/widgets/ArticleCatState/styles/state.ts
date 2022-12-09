@@ -22,9 +22,7 @@ export const Wrapper = styled.div<TType>`
 
   ${css.flex('align-both')};
   background: ${({ cat }) =>
-    cat === ARTICLE_CAT.BUG
-      ? theme('gtdBadge.bugBg')
-      : theme('gtdBadge.featBg')};
+    cat === ARTICLE_CAT.BUG ? theme('gtdBadge.bugBg') : theme('gtdBadge.featBg')};
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
   margin-right: ${({ smaller }) => (smaller ? '-6px' : '-8px')};
@@ -34,37 +32,34 @@ export const NoBgWrapper = styled.div`
   ${css.flex('align-both')};
 `
 export const WipIcon = styled(GtdWipSVG)<TType>`
-  ${({ smaller }) => (smaller ? css.size(12) : css.size(14))};
-  fill: ${({ cat }) =>
-    cat === ARTICLE_CAT.BUG ? theme('gtdBadge.bug') : theme('gtdBadge.feat')};
+  ${({ smaller }) => (smaller ? css.size(13) : css.size(15))};
+  fill: ${({ cat }) => (cat === ARTICLE_CAT.BUG ? theme('gtdBadge.bug') : theme('gtdBadge.feat'))};
   z-index: 2;
 `
 export const DoneIcon = styled(GtdDoneSVG)<TType>`
   ${({ smaller }) => (smaller ? css.size(8) : css.size(10))};
-  fill: ${({ cat }) =>
-    cat === ARTICLE_CAT.BUG ? theme('gtdBadge.bug') : theme('gtdBadge.feat')};
+  fill: ${({ cat }) => (cat === ARTICLE_CAT.BUG ? theme('gtdBadge.bug') : theme('gtdBadge.feat'))};
+  margin-top: -1px;
 `
 export const TODOIcon = styled(GtdTodoSVG)<TType>`
-  ${({ smaller }) => (smaller ? css.size(8) : css.size(10))};
-  fill: ${({ cat }) =>
-    cat === ARTICLE_CAT.BUG ? theme('gtdBadge.bug') : theme('gtdBadge.feat')};
+  ${({ smaller }) => (smaller ? css.size(10) : css.size(12))};
+  fill: ${({ cat }) => (cat === ARTICLE_CAT.BUG ? theme('gtdBadge.bug') : theme('gtdBadge.feat'))};
 `
 export const ResolveIcon = styled(ResolveSVG)<{ smaller: boolean }>`
-  ${({ smaller }) => (smaller ? css.size(12) : css.size(17))};
+  ${({ smaller }) => (smaller ? css.size(11) : css.size(17))};
   margin-right: 2px;
   fill: ${theme('baseColor.green')};
 `
 export const RejectIcon = styled(RejectSVG)<{ smaller: boolean }>`
-  ${({ smaller }) => (smaller ? css.size(11) : css.size(13))};
+  ${({ smaller }) => (smaller ? css.size(12) : css.size(14))};
   fill: ${theme('gtdBadge.bug')};
-  margin-right: 2px;
+  margin-right: 3px;
   margin-top: -1px;
 `
 const LightIcon = styled(LightSVG)`
   ${css.size(12)};
   fill: ${theme('article.info')};
 `
-
 const BugIcon = styled(BugSVG)`
   ${css.size(12)};
   fill: ${theme('article.info')};

@@ -46,7 +46,7 @@ const Alias = T.model('Alias', {
 
 const settingsModalFields = {
   primaryColor: T.opt(T.enum(keys(COLORS)), 'BLACK'),
-  postLayout: T.opt(T.enum(values(POST_LAYOUT)), POST_LAYOUT.COMMENT_FIRST),
+  postLayout: T.opt(T.enum(values(POST_LAYOUT)), POST_LAYOUT.UPVOTE_FIRST),
   brandLayout: T.opt(T.enum(values(BRAND_LAYOUT)), BRAND_LAYOUT.BOTH),
   bannerLayout: T.opt(T.enum(values(BANNER_LAYOUT)), BANNER_LAYOUT.HEADER),
   bannerNotifyLayout: T.opt(T.enum(values(BANNER_NOTIFY_LAYOUT)), BANNER_NOTIFY_LAYOUT.DEFAULT),

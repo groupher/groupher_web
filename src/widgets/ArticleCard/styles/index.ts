@@ -7,8 +7,7 @@ export const Wrapper = styled.div`
   height: 100%;
 
   box-shadow: 0 2px 40px 0 rgb(224 226 228 / 27%);
-  transition: box-shadow 0.3s ease-out, transform 0.3s ease-out,
-    opacity 0.2s ease-out;
+  transition: box-shadow 0.3s ease-out, transform 0.3s ease-out, opacity 0.2s ease-out;
   transition-delay: 0.1s;
   border-radius: 4px;
   transform: translateZ(0);
@@ -27,7 +26,7 @@ export const Wrapper = styled.div`
 export const Title = styled.div`
   color: ${theme('article.title')};
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 550;
 `
 export const MobileDigest = styled.div`
   ${css.lineClamp(2)}
