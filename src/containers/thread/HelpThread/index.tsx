@@ -6,6 +6,7 @@
 import { FC } from 'react'
 
 // import { buildLog } from '@/utils/logger'
+import { HELP_LAYOUT } from '@/constant'
 import { bond } from '@/utils/mobx'
 
 import type { TStore } from './store'
@@ -13,6 +14,7 @@ import type { TStore } from './store'
 import HelpCenterLayout from './HelpCenterLayout'
 import FullLayout from './FullLayout'
 import FaqLayout from './FaqLayout'
+import ArticleLayout from './ArticleLayout'
 
 import { Wrapper } from './styles'
 import { useInit } from './logic' /* eslint-disable-next-line */
@@ -37,9 +39,10 @@ const HelpThreadContainer: FC<TProps> = ({
 
   return (
     <Wrapper testid={testid}>
-      {mode === 'full' && <FullLayout />}
-      {mode === 'faq' && <FaqLayout />}
-      {mode === 'helpcenter' && <HelpCenterLayout />}
+      {mode === HELP_LAYOUT.FULL && <FullLayout />}
+      {mode === HELP_LAYOUT.FAQ && <FaqLayout />}
+      {mode === HELP_LAYOUT.HELPCENTER && <HelpCenterLayout />}
+      {mode === HELP_LAYOUT.ARTICLE && <ArticleLayout />}
     </Wrapper>
   )
 }

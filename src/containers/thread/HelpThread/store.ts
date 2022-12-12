@@ -12,7 +12,7 @@ import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 const log = buildLog('S:HelpThread')
 
 const HelpThread = T.model('HelpThread', {
-  mode: T.opt(T.enum(['full', 'helpcenter', 'faq']), 'full'),
+  mode: T.opt(T.enum(['full', 'helpcenter', 'faq', 'article']), 'article'),
 })
   .views((self) => ({
     get curCommunity(): TCommunity {

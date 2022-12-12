@@ -7,11 +7,7 @@ import type { TRootStore as RootStoreType } from '@/stores/RootStore'
 import type { TArticle } from './article'
 import type { TCommunity } from './community'
 
-export type {
-  TSnakeUpperCase,
-  TNegativeInteger,
-  TNonNegativeInteger,
-} from './enhance'
+export type { TSnakeUpperCase, TNegativeInteger, TNonNegativeInteger } from './enhance'
 
 export type { TMetric } from './metric'
 export type {
@@ -27,14 +23,7 @@ export type {
 } from './size'
 export type { TButton, TFiltersMenuItems } from './comp'
 export type { TTheme, TThemeMap, TThemeName } from './theme'
-export type {
-  TAccount,
-  TUser,
-  TPagedUsers,
-  TSimpleUser,
-  TMembership,
-  TC11N,
-} from './account'
+export type { TAccount, TUser, TPagedUsers, TSimpleUser, TMembership, TC11N } from './account'
 export type { TC11NLayout } from './c11n'
 export type {
   TCommunity,
@@ -122,6 +111,7 @@ export type {
   TArticlePubSelector,
   TArticleCatReject,
   TArticleState,
+  THelpLayout,
 } from './article'
 
 export type {

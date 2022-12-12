@@ -7,6 +7,7 @@ import type {
   TPostLayout,
   TChangelogLayout,
   TSnakeUpperCase,
+  THelpLayout,
 } from '@/spec'
 
 export const UPVOTE_LAYOUT = {
@@ -55,3 +56,10 @@ export const DASHBOARD_DESC_LAYOUT = {
   BANNER: 'banner',
   CHANGELOG_LIST: 'changelog_list',
 } as Record<TSnakeUpperCase<TDashboardLayout>, TDashboardLayout>
+
+export const HELP_LAYOUT = {
+  FULL: 'full',
+  FAQ: 'faq',
+  HELPCENTER: 'helpcenter',
+  ARTICLE: 'article',
+} as Record<TSnakeUpperCase<THelpLayout>, THelpLayout>
