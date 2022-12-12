@@ -167,6 +167,7 @@ export type TGlobalLayout = {
   primaryColor: TColorName
   brand: TBrandLayout
   post: TPostLayout
+  help: THelpLayout
   banner: TBannerLayout
   changelog: TChangelogLayout
   bannerNotify: TBannerNotifyLayout

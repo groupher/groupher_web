@@ -15,17 +15,7 @@ import type { TStore } from './store'
 import { Wrapper, MainWrapper } from './styles'
 import { useInit } from './logic' /* eslint-disable-next-line */
 
-import {
-  BasicInfo,
-  UI,
-  Alias,
-  Admin,
-  Threads,
-  Tags,
-  Domain,
-  ThirdPart,
-  Widgets,
-} from './dynamic'
+import { BasicInfo, UI, Alias, Admin, Threads, Tags, Domain, ThirdPart, Widgets } from './dynamic'
 
 // const log = buildLog('C:DashboardThread')
 
@@ -39,14 +29,7 @@ const DashboardThreadContainer: FC<TProps> = ({
   testid = 'dashboard-thread',
 }) => {
   useInit(store)
-  const {
-    curTab,
-    uiSettings,
-    tagSettings,
-    aliasSettings,
-    widgetsSettings,
-    touched,
-  } = store
+  const { curTab, uiSettings, tagSettings, aliasSettings, widgetsSettings, touched } = store
 
   return (
     <Wrapper testid={testid}>
@@ -61,9 +44,7 @@ const DashboardThreadContainer: FC<TProps> = ({
 
         {curTab === TAB.DOMAIN && <Domain />}
         {curTab === TAB.THIRD_PART && <ThirdPart />}
-        {curTab === TAB.WIDGETS && (
-          <Widgets settings={widgetsSettings} touched={touched} />
-        )}
+        {curTab === TAB.WIDGETS && <Widgets settings={widgetsSettings} touched={touched} />}
       </MainWrapper>
     </Wrapper>
   )

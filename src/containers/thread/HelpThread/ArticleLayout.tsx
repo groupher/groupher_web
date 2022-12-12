@@ -1,9 +1,8 @@
 import { FC, memo } from 'react'
 
-import { HELP_LAYOUT } from '@/constant'
 import FileTree from '@/widgets/FileTree'
 
-import { changeMode } from './logic'
+import { back2Layout } from './logic'
 
 import {
   Wrapper,
@@ -27,7 +26,7 @@ const ArticleLayout: FC<TProps> = ({ testid = 'ArtileLayout' }) => {
       <Content>
         <Header>
           <Navi>
-            <All onClick={() => changeMode(HELP_LAYOUT.FULL)}>全部</All>
+            <All onClick={() => back2Layout()}>全部</All>
             <Slash>/</Slash>
             <Cur>产品</Cur>
           </Navi>
