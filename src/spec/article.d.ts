@@ -208,3 +208,5 @@ export type TArticlePubSelector = {
   cat?: TArticleCat | null
   tag?: TTag | null
 }
+
+export type THelpLayout = 'full' | 'faq' | 'helpcenter' | 'article'

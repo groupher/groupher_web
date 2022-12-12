@@ -12,7 +12,8 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   width: 320px;
   min-width: 320px;
   color: ${theme('article.digest')};
-  padding-top: 25px;
+  margin-top: 20px;
+  padding-top: 5px;
   padding-left: 50px;
 `
 export const Header = styled.div`

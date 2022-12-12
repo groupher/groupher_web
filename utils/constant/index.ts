@@ -24,6 +24,7 @@ export {
   POST_LAYOUT,
   CHANGELOG_LAYOUT,
   DASHBOARD_DESC_LAYOUT,
+  HELP_LAYOUT,
 } from './layout'
 export { default as ANCHOR } from './anchor'
 export { default as METRIC } from './metric'
@@ -47,12 +48,7 @@ export {
 
 export { default as DEFAULT_TOAST_OPTIONS } from './toast'
 
-export {
-  PATTERN_WALLPAPER,
-  GRADIENT_WALLPAPER,
-  WALLPAPER,
-  WALLPAPER_TYPE,
-} from './wallpaper'
+export { PATTERN_WALLPAPER, GRADIENT_WALLPAPER, WALLPAPER, WALLPAPER_TYPE } from './wallpaper'
 /* some svg icon are sensitive to fill color */
 /* some community svg need fill color, like city etc.. */
 export const NON_FILL_COMMUNITY = ['javascript']

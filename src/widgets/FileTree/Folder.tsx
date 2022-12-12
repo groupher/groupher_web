@@ -4,9 +4,8 @@ import { findIndex, reverse } from 'ramda'
 import type { TTag } from '@/spec'
 import { sortByColor } from '@/utils/helper'
 
-import TagItem from './TagItem'
+import FileItem from './FileItem'
 
-import { TagsWrapper } from '../styles/desktop_view'
 import {
   Wrapper,
   Header,
@@ -17,8 +16,7 @@ import {
   Content,
   SubToggle,
   SubToggleTitle,
-  SubTogglePrefixIcon,
-} from '../styles/desktop_view/folder'
+} from './styles/folder'
 
 type TProps = {
   title: string
@@ -50,9 +48,8 @@ const Folder: FC<TProps> = ({
 
   const sortedTags = reverse(sortByColor(groupTags))
 
-  const isActiveTagInFolder =
-    // @ts-ignore
-    findIndex((item) => item.id === activeTag.id, groupTags) >= 0
+  // @ts-ignore
+  const isActiveTagInFolder = findIndex((item) => item.id === activeTag.id, groupTags) >= 0
 
   const subToggleRef = useRef(null)
   // 当选中的 Tag 被折叠在展示更多里面时，将其展开
@@ -76,25 +73,24 @@ const Folder: FC<TProps> = ({
           }
         }}
       >
-        <ArrowIcon $isOpen={isFolderOpen} />
+        {!isFolderOpen && isActiveTagInFolder && <ArrowIcon $isOpen={isFolderOpen} />}
+
         <Title>
           <FolderTitle $isOpen={isFolderOpen}>{title}</FolderTitle>
           {!isFolderOpen && <Count>{sortedTags.length}</Count>}
         </Title>
-        {!isFolderOpen && isActiveTagInFolder && <TagItem tag={activeTag} active />}
+        {/* {!isFolderOpen && isActiveTagInFolder && <FileItem tag={activeTag} active />} */}
       </Header>
 
       <Content $isOpen={isFolderOpen}>
-        <TagsWrapper>
-          {sortedTags.slice(0, curDisplayCount).map((tag) => (
-            <TagItem
-              key={tag.raw}
-              tag={tag}
-              active={activeTag.title === tag.title}
-              onSelect={onSelect}
-            />
-          ))}
-        </TagsWrapper>
+        {sortedTags.slice(0, curDisplayCount).map((tag) => (
+          <FileItem
+            key={tag.raw}
+            tag={tag}
+            active={activeTag.title === tag.title}
+            onSelect={onSelect}
+          />
+        ))}
         {needSubToggle && (
           <SubToggle
             ref={subToggleRef}
@@ -104,7 +100,6 @@ const Folder: FC<TProps> = ({
               )
             }}
           >
-            <SubTogglePrefixIcon />
             <SubToggleTitle>{curDisplayCount === maxDisplayCount ? '展开' : '收起'}</SubToggleTitle>
           </SubToggle>
         )}

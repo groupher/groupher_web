@@ -22,6 +22,7 @@ export const CatsWrapper = styled(MainWrapper)`
   padding-left: 22px;
   padding-right: 50px;
 
-  border-right: 1px solid;
-  border-right-color: ${theme('divider')};
+  border-right: none;
 `
+
+export const FAQWrapper = styled.div``

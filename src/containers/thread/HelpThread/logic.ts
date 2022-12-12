@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 // import { } from 'ramda'
 
+import type { THelpLayout } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
 // import S from './schma'
@@ -11,8 +12,8 @@ let store: TStore | undefined
 /* eslint-disable-next-line */
 const log = buildLog('L:HelpThread')
 
-export const someMethod = (): void => {
-  //
+export const changeMode = (mode: THelpLayout): void => {
+  store.mark({ mode })
 }
 
 // ###############################

@@ -63,7 +63,7 @@ const FaqList: FC<TProps> = ({
   articles = defaultArticles,
 }) => {
   return (
-    <Wrapper testid={testid}>
+    <Wrapper testid={testid} withBorder={mode === 'sidebar'}>
       {mode === 'sidebar' && <Sidebar articles={articles} />}
       {mode === 'search-hint' && <SearchHint articles={articles} />}
       {mode === 'collapse' && <Collapse articles={articles} />}
