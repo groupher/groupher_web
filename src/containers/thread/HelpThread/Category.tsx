@@ -1,8 +1,7 @@
 import { FC, memo } from 'react'
 
-import { HELP_LAYOUT } from '@/constant'
 import { Wrapper, Header, IconWrapper, Icon, Title, Item, MoreLink } from './styles/category'
-import { changeMode } from './logic'
+import { gotoDetailLayout } from './logic'
 
 type TProps = {
   color: string
@@ -21,13 +20,13 @@ const Category: FC<TProps> = ({ color, title, desc, column = 2 }) => {
         <Title color={color}>{title}</Title>
       </Header>
 
-      <Item color={color} onClick={() => changeMode(HELP_LAYOUT.ARTICLE)}>
+      <Item color={color} onClick={() => gotoDetailLayout()}>
         {desc}
       </Item>
-      <Item color={color} onClick={() => changeMode(HELP_LAYOUT.ARTICLE)}>
+      <Item color={color} onClick={() => gotoDetailLayout()}>
         {desc}
       </Item>
-      <Item color={color} onClick={() => changeMode(HELP_LAYOUT.ARTICLE)}>
+      <Item color={color} onClick={() => gotoDetailLayout()}>
         {desc}
       </Item>
       <MoreLink>查看全部</MoreLink>

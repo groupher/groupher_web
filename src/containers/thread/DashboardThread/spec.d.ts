@@ -11,6 +11,7 @@ import type {
   TTag,
   TThread,
   TSizeSML,
+  THelpLayout,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'MANAGEMENT' | 'INTEGRATE'
@@ -71,6 +72,7 @@ export type TUiSettings = {
   primaryColor: TColorName
   brandLayout: TBrandLayout
   bannerLayout: TBannerLayout
+  helpLayout: THelpLayout
   bannerNotifyLayout: TBannerNotifyLayout
   bannerNotifyBg: TColorName
   postLayout: TPostLayout
@@ -88,6 +90,7 @@ export type TTouched = {
   primaryColor: boolean
   brandLayout: boolean
   bannerLayout: boolean
+  helpLayout: boolean
   bannerNotifyLayout: boolean
   bannerNotifyBg: boolean
   postLayout: boolean
@@ -109,6 +112,7 @@ export type TSettingField =
   | 'postLayout'
   | 'brandLayout'
   | 'bannerLayout'
+  | 'helpLayout'
   | 'bannerNotifyLayout'
   | 'bannerNotifyBg'
   | 'changelogLayout'

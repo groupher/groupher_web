@@ -22,8 +22,7 @@ export const TitleBase = styled.div`
 
 export const BlockBase = styled.div<TActive>`
   opacity: ${({ $active }) => ($active ? 0.7 : 0.2)};
-  box-shadow: ${({ $active }) =>
-    $active ? 'rgb(0 0 0 / 7%) 0px 0px 24px' : ''};
+  box-shadow: ${({ $active }) => ($active ? 'rgb(0 0 0 / 7%) 0px 0px 24px' : '')};
 
   border: 1px solid;
   border-radius: 7px;
@@ -39,15 +38,22 @@ export const BlockBase = styled.div<TActive>`
 `
 
 // base shapes
-type TBar = { long: number; thin?: boolean }
+type TBar = { long: number; thin?: boolean; bold?: boolean }
 export const Bar = styled.div<TBar>`
   width: ${({ long }) => `${long || 10}%`};
   height: ${({ thin }) => (thin ? '4px' : '10px;')};
-  background: ${({ thin }) =>
-    thin ? theme('article.digest') : theme('article.title')};
+  background: ${({ thin, bold }) => {
+    if (bold) return theme('article.title')
+
+    return thin ? theme('article.digest') : theme('article.title')
+  }};
   z-index: 3;
   border-radius: 5px;
-  opacity: ${({ thin }) => (thin ? 0.6 : 1)};
+  opacity: ${({ thin, bold }) => {
+    if (bold) return 0.8
+
+    return thin ? 0.6 : 1
+  }};
 `
 
 export const Circle = styled.div<{ radius?: number }>`

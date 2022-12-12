@@ -7,6 +7,7 @@ import PrimaryColor from './PrimaryColor'
 import Wallpaper from './Wallpaper'
 import BrandLayout from './BrandLayout'
 import BannerLayout from './BannerLayout'
+import HelpLayout from './HelpLayout'
 import PostListLayout from './PostListLayout'
 import ChangelogLayout from './ChangelogLayout'
 import BannerNotifyLayout from './BannerNotifyLayout'
@@ -24,6 +25,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
     primaryColor,
     brandLayout,
     bannerLayout,
+    helpLayout,
     bannerNotifyLayout,
     bannerNotifyBg,
     postLayout,
@@ -34,34 +36,16 @@ const UI: FC<TProps> = ({ settings, touched }) => {
 
   return (
     <Wrapper>
-      <Portal
-        title="外观布局"
-        desc="社区基本外观，主题色，以及常见布局自定义。"
-      />
-      <PrimaryColor
-        primaryColor={primaryColor}
-        isTouched={touched.primaryColor}
-        saving={saving}
-      />
+      <Portal title="外观布局" desc="社区基本外观，主题色，以及常见布局自定义。" />
+      <PrimaryColor primaryColor={primaryColor} isTouched={touched.primaryColor} saving={saving} />
       <Divider top={0} bottom={60} />
-      <BrandLayout
-        layout={brandLayout}
-        isTouched={touched.brandLayout}
-        saving={saving}
-      />
+      <BrandLayout layout={brandLayout} isTouched={touched.brandLayout} saving={saving} />
       <Divider top={20} bottom={60} />
-      <BannerLayout
-        layout={bannerLayout}
-        isTouched={touched.bannerLayout}
-        saving={saving}
-      />
+      <BannerLayout layout={bannerLayout} isTouched={touched.bannerLayout} saving={saving} />
       <Divider top={20} bottom={60} />
-      <PostListLayout
-        layout={postLayout}
-        isTouched={touched.postLayout}
-        saving={saving}
-      />
+      <PostListLayout layout={postLayout} isTouched={touched.postLayout} saving={saving} />
       <Divider top={20} bottom={60} />
+      <HelpLayout layout={helpLayout} isTouched={touched.helpLayout} saving={saving} />
       <ChangelogLayout
         layout={changelogLayout}
         isTouched={touched.changelogLayout}

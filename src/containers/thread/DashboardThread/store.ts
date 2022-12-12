@@ -16,6 +16,7 @@ import {
   COLORS,
   THREAD,
   SIZE,
+  HELP_LAYOUT,
 } from '@/constant'
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
@@ -47,6 +48,7 @@ const Alias = T.model('Alias', {
 const settingsModalFields = {
   primaryColor: T.opt(T.enum(keys(COLORS)), 'BLACK'),
   postLayout: T.opt(T.enum(values(POST_LAYOUT)), POST_LAYOUT.UPVOTE_FIRST),
+  helpLayout: T.opt(T.enum(values(HELP_LAYOUT)), HELP_LAYOUT.FULL),
   brandLayout: T.opt(T.enum(values(BRAND_LAYOUT)), BRAND_LAYOUT.BOTH),
   bannerLayout: T.opt(T.enum(values(BANNER_LAYOUT)), BANNER_LAYOUT.HEADER),
   bannerNotifyLayout: T.opt(T.enum(values(BANNER_NOTIFY_LAYOUT)), BANNER_NOTIFY_LAYOUT.DEFAULT),
@@ -80,6 +82,7 @@ const DashboardThread = T.model('DashboardThread', {
         primaryColor,
         changelogLayout,
         postLayout,
+        helpLayout,
         bannerLayout,
         bannerNotifyLayout,
         bannerNotifyBg,
@@ -90,6 +93,7 @@ const DashboardThread = T.model('DashboardThread', {
         primaryColor,
         brand: brandLayout,
         post: postLayout,
+        help: helpLayout,
         changelog: changelogLayout,
         banner: bannerLayout,
         bannerNotify: bannerNotifyLayout,
@@ -117,6 +121,7 @@ const DashboardThread = T.model('DashboardThread', {
       const bannerLayoutTouched = _isChanged('bannerLayout')
       const bannerNotifyBgTouched = _isChanged('bannerNotifyBg')
       const postLayoutTouched = _isChanged('postLayout')
+      const helpLayoutTouched = _isChanged('helpLayout')
       const bannerNotifyLayoutTouched = _isChanged('bannerNotifyLayout')
       const changelogLayoutTouched = _isChanged('changelogLayout')
 
@@ -138,6 +143,7 @@ const DashboardThread = T.model('DashboardThread', {
         bannerNotifyLayout: bannerNotifyLayoutTouched,
         bannerNotifyBg: bannerNotifyBgTouched,
         postLayout: postLayoutTouched,
+        helpLayout: helpLayoutTouched,
         changelogLayout: changelogLayoutTouched,
         alias: aliasTouched,
         tags: tagsTouched,
@@ -199,6 +205,7 @@ const DashboardThread = T.model('DashboardThread', {
             'bannerNotifyLayout',
             'bannerNotifyBg',
             'postLayout',
+            'helpLayout',
             'changelogLayout',
           ],
           slf,
