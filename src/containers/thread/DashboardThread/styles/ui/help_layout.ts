@@ -64,3 +64,6 @@ export const Block = styled(BlockBase)`
 export const DividerLine = styled(Divider)`
   opacity: 0.8;
 `
+export const FileTreeSettings = styled.div`
+  ${css.flex('align-center')};
+`

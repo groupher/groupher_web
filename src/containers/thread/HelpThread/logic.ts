@@ -12,11 +12,15 @@ let store: TStore | undefined
 const log = buildLog('L:HelpThread')
 
 export const gotoDetailLayout = (): void => {
-  store.mark({ isArticleLayout: true })
+  store.mark({ isArticleLayout: true, isFAQArticleLayout: false })
+}
+
+export const gotoFAQDetailLayout = (): void => {
+  store.mark({ isArticleLayout: true, isFAQArticleLayout: true })
 }
 
 export const back2Layout = (): void => {
-  store.mark({ isArticleLayout: false })
+  store.mark({ isArticleLayout: false, isFAQArticleLayout: false })
 }
 
 // ###############################

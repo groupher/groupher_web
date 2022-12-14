@@ -12,6 +12,7 @@ import type {
   TThread,
   TSizeSML,
   THelpLayout,
+  TFileTreeDirection,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'MANAGEMENT' | 'INTEGRATE'
@@ -75,6 +76,7 @@ export type TUiSettings = {
   helpLayout: THelpLayout
   bannerNotifyLayout: TBannerNotifyLayout
   bannerNotifyBg: TColorName
+  fileTreeDirection: TFileTreeDirection
   postLayout: TPostLayout
   changelogLayout: TChangelogLayout
 }
@@ -93,6 +95,7 @@ export type TTouched = {
   helpLayout: boolean
   bannerNotifyLayout: boolean
   bannerNotifyBg: boolean
+  fileTreeDirection: boolean
   postLayout: boolean
   changelogLayout: boolean
   alias: boolean
@@ -115,6 +118,7 @@ export type TSettingField =
   | 'helpLayout'
   | 'bannerNotifyLayout'
   | 'bannerNotifyBg'
+  | 'fileTreeDirection'
   | 'changelogLayout'
   | 'tag'
   | 'alias'

@@ -35,13 +35,17 @@ const HelpThreadContainer: FC<TProps> = ({
   desc = 'desc',
 }) => {
   useInit(store)
-  const { isArticleLayout, layout } = store
-
-  console.log('## help layout: ', layout)
+  const { isArticleLayout, layout, isFAQArticleLayout, fileTreeDirection } = store
 
   if (isArticleLayout) {
-    return <ArticleLayout />
+    return (
+      <ArticleLayout
+        isFAQArticleLayout={isFAQArticleLayout}
+        fileTreeDirection={fileTreeDirection}
+      />
+    )
   }
+
   return (
     <Wrapper testid={testid}>
       {layout === HELP_LAYOUT.FULL && <FullLayout />}

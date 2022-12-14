@@ -4,7 +4,15 @@
 
 import { keys, values, pick, findIndex, clone, isNil, equals } from 'ramda'
 
-import type { TCommunity, TRootStore, TTag, TGlobalLayout, TThread, TSizeSML } from '@/spec'
+import type {
+  TCommunity,
+  TRootStore,
+  TTag,
+  TGlobalLayout,
+  TThread,
+  TSizeSML,
+  TFileTreeDirection,
+} from '@/spec'
 import { mockTags } from '@/utils/mock'
 
 import {
@@ -56,6 +64,7 @@ const settingsModalFields = {
   changelogLayout: T.opt(T.enum(values(CHANGELOG_LAYOUT)), CHANGELOG_LAYOUT.PREVIEW),
   tags: T.opt(T.array(Tag), mockTags(12)),
   alias: T.opt(T.array(Alias), BUILDIN_ALIAS),
+  fileTreeDirection: T.opt(T.enum(['left', 'right']), 'left'),
 
   // widgets
   widgetsPrimaryColor: T.opt(T.enum(keys(COLORS)), 'BLACK'),
@@ -86,6 +95,7 @@ const DashboardThread = T.model('DashboardThread', {
         bannerLayout,
         bannerNotifyLayout,
         bannerNotifyBg,
+        fileTreeDirection,
         brandLayout,
       } = initSettings
 
@@ -98,6 +108,7 @@ const DashboardThread = T.model('DashboardThread', {
         banner: bannerLayout,
         bannerNotify: bannerNotifyLayout,
         bannerNotifyBg,
+        fileTreeDirection: fileTreeDirection as TFileTreeDirection,
       }
     },
     get curCommunity(): TCommunity {
@@ -120,6 +131,7 @@ const DashboardThread = T.model('DashboardThread', {
 
       const bannerLayoutTouched = _isChanged('bannerLayout')
       const bannerNotifyBgTouched = _isChanged('bannerNotifyBg')
+      const fileTreeDirectionTouched = _isChanged('fileTreeDirection')
       const postLayoutTouched = _isChanged('postLayout')
       const helpLayoutTouched = _isChanged('helpLayout')
       const bannerNotifyLayoutTouched = _isChanged('bannerNotifyLayout')
@@ -142,6 +154,7 @@ const DashboardThread = T.model('DashboardThread', {
         bannerLayout: bannerLayoutTouched,
         bannerNotifyLayout: bannerNotifyLayoutTouched,
         bannerNotifyBg: bannerNotifyBgTouched,
+        fileTreeDirection: fileTreeDirectionTouched,
         postLayout: postLayoutTouched,
         helpLayout: helpLayoutTouched,
         changelogLayout: changelogLayoutTouched,
@@ -159,6 +172,7 @@ const DashboardThread = T.model('DashboardThread', {
           bannerLayoutTouched ||
           bannerNotifyLayoutTouched ||
           bannerNotifyBgTouched ||
+          fileTreeDirectionTouched ||
           postLayoutTouched ||
           changelogLayoutTouched,
 
@@ -194,6 +208,7 @@ const DashboardThread = T.model('DashboardThread', {
         wallpaperEditor: { wallpapers, wallpaper },
       } = root
 
+      // @ts-ignore
       return {
         wallpaper: wallpapers[wallpaper],
         ...pick(
@@ -202,6 +217,7 @@ const DashboardThread = T.model('DashboardThread', {
             'primaryColor',
             'brandLayout',
             'bannerLayout',
+            'fileTreeDirection',
             'bannerNotifyLayout',
             'bannerNotifyBg',
             'postLayout',

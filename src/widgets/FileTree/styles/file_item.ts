@@ -10,7 +10,7 @@ import { TagsWrapper } from './index'
 type TTag = TActive & { color?: string }
 
 export const Wrapper = styled.div<TTag>`
-  ${css.flex('align-center')};
+  ${css.flexColumn()};
   padding: 4px;
   max-width: 180px;
   padding-left: 12px;
@@ -29,12 +29,11 @@ export const AllTagIcon = styled(Img)`
   ${css.size(14)};
   transform: rotate(17deg);
 `
-export const Tag = styled.div<TTag>`
+export const File = styled.div<TTag>`
   ${css.flex('align-end', 'justify-between')};
   width: 100%;
-  font-size: 14px;
+  font-size: 13px;
   padding-left: 5px;
-  margin-top: 1px;
   padding-top: ${({ $active }) => ($active ? '2px' : 0)};
   padding-bottom: ${({ $active }) => ($active ? '2px' : 0)};
 

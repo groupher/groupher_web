@@ -112,6 +112,7 @@ export type {
   TArticleCatReject,
   TArticleState,
   THelpLayout,
+  TFileTreeDirection,
 } from './article'
 
 export type {

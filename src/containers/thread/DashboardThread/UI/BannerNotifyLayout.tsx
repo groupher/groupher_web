@@ -45,13 +45,7 @@ type TProps = {
   bg: TColorName
 }
 
-const BannerNotifyLayout: FC<TProps> = ({
-  layout,
-  isLayoutTouched,
-  isBgTouched,
-  saving,
-  bg,
-}) => {
+const BannerNotifyLayout: FC<TProps> = ({ layout, isLayoutTouched, isBgTouched, saving, bg }) => {
   return (
     <Wrapper>
       <SectionLabel
@@ -61,9 +55,7 @@ const BannerNotifyLayout: FC<TProps> = ({
             全局横幅通知的样式，当用户设置内容时会以一下样式展示。
             <Inline>
               <ArrowButton
-                onClick={() =>
-                  callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)
-                }
+                onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
                 size="tiny"
                 arrowStyle="simple"
               >
@@ -74,11 +66,7 @@ const BannerNotifyLayout: FC<TProps> = ({
         }
       />
       <SelectWrapper>
-        <Layout
-          onClick={() =>
-            edit(BANNER_NOTIFY_LAYOUT.DEFAULT, 'bannerNotifyLayout')
-          }
-        >
+        <Layout onClick={() => edit(BANNER_NOTIFY_LAYOUT.DEFAULT, 'bannerNotifyLayout')}>
           <Block $active={layout === BANNER_NOTIFY_LAYOUT.DEFAULT}>
             <NotifyBar bg={bg}>
               <NotifyIcon />
@@ -125,11 +113,7 @@ const BannerNotifyLayout: FC<TProps> = ({
           </LayoutTitle>
         </Layout>
         <Space right={40} />
-        <Layout
-          onClick={() =>
-            edit(BANNER_NOTIFY_LAYOUT.CENTER, 'bannerNotifyLayout')
-          }
-        >
+        <Layout onClick={() => edit(BANNER_NOTIFY_LAYOUT.CENTER, 'bannerNotifyLayout')}>
           <Block $active={layout === BANNER_NOTIFY_LAYOUT.CENTER}>
             <NotifyBar bg={bg} center>
               <SpaceGrow />
@@ -187,13 +171,9 @@ const BannerNotifyLayout: FC<TProps> = ({
       />
 
       <Br top={30} />
-      <SavingBar
-        isTouched={isBgTouched}
-        field={SETTING_FIELD.BANNER_NOTIFY_BG}
-        loading={saving}
-      >
+      <SavingBar isTouched={isBgTouched} field={SETTING_FIELD.BANNER_NOTIFY_BG} loading={saving}>
         <BgWrapper>
-          <div>背景色</div>
+          <div>背景色:</div>
           <BgLabel bg={bg}>
             <ColorSelector
               activeColor={bg}

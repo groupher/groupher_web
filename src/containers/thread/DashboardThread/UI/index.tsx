@@ -9,7 +9,6 @@ import BrandLayout from './BrandLayout'
 import BannerLayout from './BannerLayout'
 import HelpLayout from './HelpLayout'
 import PostListLayout from './PostListLayout'
-import ChangelogLayout from './ChangelogLayout'
 import BannerNotifyLayout from './BannerNotifyLayout'
 
 import type { TUiSettings, TTouched } from '../spec'
@@ -29,7 +28,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
     bannerNotifyLayout,
     bannerNotifyBg,
     postLayout,
-    changelogLayout,
+    fileTreeDirection,
     wallpaper,
     saving,
   } = settings
@@ -45,13 +44,20 @@ const UI: FC<TProps> = ({ settings, touched }) => {
       <Divider top={20} bottom={60} />
       <PostListLayout layout={postLayout} isTouched={touched.postLayout} saving={saving} />
       <Divider top={20} bottom={60} />
-      <HelpLayout layout={helpLayout} isTouched={touched.helpLayout} saving={saving} />
-      <ChangelogLayout
+      <HelpLayout
+        layout={helpLayout}
+        isTouched={touched.helpLayout}
+        fileTreeDirection={fileTreeDirection}
+        isFileTreeDirectionTouched={touched.fileTreeDirection}
+        saving={saving}
+      />
+      <Divider top={20} bottom={60} />
+      {/* <ChangelogLayout
         layout={changelogLayout}
         isTouched={touched.changelogLayout}
         saving={saving}
       />
-      <Divider top={30} bottom={60} />
+      <Divider top={30} bottom={60} /> */}
       <BannerNotifyLayout
         layout={bannerNotifyLayout}
         bg={bannerNotifyBg}

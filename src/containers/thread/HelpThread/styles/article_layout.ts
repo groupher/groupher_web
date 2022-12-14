@@ -40,19 +40,32 @@ export const Slash = styled.div`
 export const Cur = styled.div`
   color: ${theme('article.digest')};
 `
-export const Content = styled(MainWrapper)`
+export const Content = styled(MainWrapper)<{ isRightLayout?: boolean }>`
   width: 100%;
   min-height: 600px;
-  margin-top: 8px;
+  margin-top: 25px;
   font-size: 15px;
+  line-height: 1.8;
 
   background: transparent;
   padding-left: 22px;
-  padding-right: 90px;
+  padding-right: ${({ isRightLayout }) => (isRightLayout ? '40px' : '90px')};
   border-right: none;
 `
-export const Sidebar = styled.div`
-  width: 300px;
-  padding-left: 32px;
-  margin-top: 8px;
+export const Sidebar = styled.div<{ isLeftLayout?: boolean }>`
+  width: ${({ isLeftLayout }) => (isLeftLayout ? '320px' : '300px')};
+  padding-left: ${({ isLeftLayout }) => (isLeftLayout ? '28px' : '32px')};
+  margin-top: 30px;
+`
+export const FAQItem = styled.div`
+  font-size: 14px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: ${theme('article.title')};
+  margin-left: -2px;
+
+  &:hover {
+    color: ${theme('article.digest')};
+    cursor: pointer;
+  }
 `

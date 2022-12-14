@@ -24,7 +24,7 @@ import { TAB } from './constant'
 const log = buildLog('S:WallpaperEditor')
 
 const initWallpaperModalFields = {
-  wallpaper: T.opt(T.string, 'green'),
+  wallpaper: T.opt(T.string, 'pink'),
   // for gradient colors
   hasPattern: T.opt(T.bool, true),
   hasBlur: T.opt(T.bool, false),

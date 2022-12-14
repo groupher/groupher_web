@@ -4,10 +4,11 @@ import type { TTag } from '@/spec'
 import { cutRest } from '@/utils/fmt'
 import { Trans } from '@/utils/i18n'
 
+import Outline from './Outline'
 // import DotDivider from '@/widgets/DotDivider'
 // import TagCount from './TagCount'
 
-import { Wrapper, Tag, Title } from './styles/file_item'
+import { Wrapper, File, Title } from './styles/file_item'
 
 type TProps = {
   tag: TTag
@@ -18,9 +19,10 @@ type TProps = {
 const FileItem: FC<TProps> = ({ tag, active, onSelect }) => {
   return (
     <Wrapper $active={active}>
-      <Tag $active={active} color={tag.color} onClick={() => onSelect(tag)}>
+      <File $active={active} color={tag.color} onClick={() => onSelect(tag)}>
         <Title $active={active}>{cutRest(Trans(tag.title), 10)}</Title>
-      </Tag>
+      </File>
+      {active && <Outline />}
     </Wrapper>
   )
 }

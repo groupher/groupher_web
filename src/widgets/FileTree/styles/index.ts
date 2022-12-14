@@ -9,7 +9,6 @@ import css from '@/utils/css'
 export const Wrapper = styled.div`
   position: relative;
   ${css.flexColumn()};
-  margin-top: 30px;
 `
 
 export const Title = styled.div``
