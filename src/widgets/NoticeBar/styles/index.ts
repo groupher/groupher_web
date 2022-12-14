@@ -14,8 +14,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.flex('align-start')};
-  color: ${({ noBg }) =>
-    noBg ? theme('article.digest') : theme('article.title')};
+  color: ${({ noBg }) => (noBg ? theme('article.digest') : theme('article.title'))};
   padding-left: ${({ noBg }) => (noBg ? '5px' : '12px')};
   padding-right: 15px;
   padding-top: 8px;

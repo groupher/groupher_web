@@ -5,9 +5,8 @@ import { Wrapper as MainWrapper } from './index'
 
 export const Wrapper = styled.div`
   position: relative;
-  ${css.flex('align-both')};
+  ${css.flex('align-center')};
   margin-bottom: 34px;
-  margin-left: -40px;
 `
 export const Title = styled.div`
   color: ${theme('article.title')};

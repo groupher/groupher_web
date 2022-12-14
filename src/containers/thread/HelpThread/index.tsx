@@ -49,7 +49,7 @@ const HelpThreadContainer: FC<TProps> = ({
   return (
     <Wrapper testid={testid}>
       {layout === HELP_LAYOUT.FULL && <FullLayout />}
-      {layout === HELP_LAYOUT.FAQ && <FaqLayout />}
+      {layout === HELP_LAYOUT.FAQ && <FaqLayout top={50} />}
       {layout === HELP_LAYOUT.HELPCENTER && <HelpCenterLayout />}
     </Wrapper>
   )
