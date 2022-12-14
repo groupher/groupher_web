@@ -22,9 +22,6 @@ export const ArrowIcon = styled(ArrowSVG)<{ $isOpen: boolean }>`
   opacity: 0.6;
   transform: ${({ $isOpen }) => ($isOpen ? 'rotate(270deg)' : 'rotate(180deg)')};
   transition: transform 0.5s;
-  position: absolute;
-  left: -24px;
-  top: 3px;
 
   ${Wrapper}:hover & {
     opacity: 0.8;
@@ -34,6 +31,17 @@ export const ArrowIcon = styled(ArrowSVG)<{ $isOpen: boolean }>`
     opacity: 1;
   }
   transition: all 0.2s;
+`
+
+export const ArrowHintIcon = styled(ArrowSVG)`
+  ${css.size(15)};
+  opacity: 0;
+  transform: rotate(270deg);
+
+  ${Header}:hover & {
+    opacity: 0.8;
+  }
+  transition: transform 0.2s;
 `
 export const Title = styled.div`
   ${css.flex('align-center')};
@@ -51,21 +59,6 @@ export const FolderTitle = styled.div<{ $isOpen: boolean }>`
 
   ${Header}:hover & {
     color: ${theme('article.digest')};
-  }
-`
-export const Count = styled.div`
-  color: ${theme('article.info')};
-  font-size: 13px;
-
-  &:before {
-    content: '(';
-    margin-right: 2px;
-    font-size: 12px;
-  }
-  &:after {
-    content: ')';
-    margin-left: 2px;
-    font-size: 12px;
   }
 `
 

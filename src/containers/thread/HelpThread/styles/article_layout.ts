@@ -24,11 +24,11 @@ export const Navi = styled.div`
   margin-bottom: 3px;
 `
 export const All = styled.div`
-  color: ${theme('article.info')};
+  color: ${theme('article.digest')};
 
   &:hover {
     cursor: pointer;
-    color: ${theme('link')};
+    color: ${theme('article.title')};
   }
 `
 export const Slash = styled.div`
@@ -43,18 +43,18 @@ export const Cur = styled.div`
 export const Content = styled(MainWrapper)<{ isRightLayout?: boolean }>`
   width: 100%;
   min-height: 600px;
-  margin-top: 25px;
-  font-size: 15px;
+  margin-top: 24px;
+  font-size: 16px;
   line-height: 1.8;
 
   background: transparent;
-  padding-left: 22px;
-  padding-right: ${({ isRightLayout }) => (isRightLayout ? '40px' : '90px')};
+  padding-left: 8px;
+  padding-right: ${({ isRightLayout }) => (isRightLayout ? '10px' : '90px')};
   border-right: none;
 `
 export const Sidebar = styled.div<{ isLeftLayout?: boolean }>`
   width: ${({ isLeftLayout }) => (isLeftLayout ? '320px' : '300px')};
-  padding-left: ${({ isLeftLayout }) => (isLeftLayout ? '28px' : '32px')};
+  padding-left: ${({ isLeftLayout }) => (isLeftLayout ? '24px' : '32px')};
   margin-top: 30px;
 `
 export const FAQItem = styled.div`

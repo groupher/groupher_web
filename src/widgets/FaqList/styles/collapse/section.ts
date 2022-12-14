@@ -16,7 +16,7 @@ export const Header = styled.div`
 export const Title = styled.div<TActive>`
   ${css.cutRest('440px')};
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 500;
 
   ${Wrapper}:hover & {
@@ -39,7 +39,7 @@ export const ArrowIcon = styled(ArrowSVG)<TActive>`
 `
 export const Body = styled.div<TActive>`
   color: ${theme('article.digest')};
-  font-size: 15px;
+  font-size: 16px;
   margin-top: ${({ show }) => (show ? '12px' : 0)};
   max-height: ${({ show }) => (show ? 'auto' : 0)};
   line-height: 1.8;

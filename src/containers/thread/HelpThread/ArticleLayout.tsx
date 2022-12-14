@@ -18,7 +18,7 @@ import {
   Sidebar,
   FAQItem,
 } from './styles/article_layout'
-import { back2Layout, gotoFAQDetailLayout } from './logic'
+import { back2Layout, gotoFAQDetailLayout, gotoDetailLayout } from './logic'
 
 type TProps = {
   testid?: string
@@ -37,12 +37,14 @@ const ArticleLayout: FC<TProps> = ({
         <>
           <Content>
             <Header>
-              <Navi>
-                {isFAQArticleLayout && <Space right={62} />}
-                <All onClick={() => back2Layout()}>全部</All>
-                <Slash>/</Slash>
-                <Cur>{isFAQArticleLayout ? '常见问题' : '产品'}</Cur>
-              </Navi>
+              {!isFAQArticleLayout && (
+                <Navi>
+                  <All onClick={() => back2Layout()}>全部</All>
+                  <Slash>/</Slash>
+                  <Cur>产品</Cur>
+                </Navi>
+              )}
+
               {!isFAQArticleLayout && <Title>关于帮助台的使用</Title>}
             </Header>
 
@@ -79,24 +81,25 @@ const ArticleLayout: FC<TProps> = ({
           </Content>
           <Sidebar>
             <FAQItem onClick={() => gotoFAQDetailLayout()}>常见问题</FAQItem>
-            <FileTree />
+            <FileTree onSelect={() => gotoDetailLayout()} />
           </Sidebar>
         </>
       ) : (
         <>
           <Sidebar isLeftLayout>
             <FAQItem onClick={() => gotoFAQDetailLayout()}>常见问题</FAQItem>
-            <FileTree />
+            <FileTree onSelect={() => gotoDetailLayout()} />
           </Sidebar>
-          <Space right={60} />
+          <Space right={96} />
           <Content isRightLayout>
             <Header>
-              <Navi>
-                {isFAQArticleLayout && <Space right={62} />}
-                <All onClick={() => back2Layout()}>全部</All>
-                <Slash>/</Slash>
-                <Cur>{isFAQArticleLayout ? '常见问题' : '产品'}</Cur>
-              </Navi>
+              {!isFAQArticleLayout && (
+                <Navi>
+                  <All onClick={() => back2Layout()}>全部</All>
+                  <Slash>/</Slash>
+                  <Cur>产品</Cur>
+                </Navi>
+              )}
               {!isFAQArticleLayout && <Title>关于帮助台的使用</Title>}
             </Header>
 

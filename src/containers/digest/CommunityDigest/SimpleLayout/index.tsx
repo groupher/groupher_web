@@ -44,10 +44,7 @@ const SimpleLayout: FC<TProps> = ({ community, activeThread, metric }) => {
           </CommunityBaseInfo>
         </BannerContentWrapper>
       </InnerWrapper>
-      <ViewportTracker
-        onEnter={() => setViewport(true)}
-        onLeave={() => setViewport(false)}
-      />
+      <ViewportTracker onEnter={() => setViewport(true)} onLeave={() => setViewport(false)} />
     </Wrapper>
   )
 }

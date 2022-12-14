@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 500;
 `
 export const MenuWrapper = styled.div`

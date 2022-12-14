@@ -8,6 +8,7 @@ import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
   transition: all 0.2s;
+  width: 200px;
 `
 export const LogoWrapper = styled.div`
   position: relative;

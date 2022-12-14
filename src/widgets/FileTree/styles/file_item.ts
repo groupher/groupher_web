@@ -32,7 +32,7 @@ export const AllTagIcon = styled(Img)`
 export const File = styled.div<TTag>`
   ${css.flex('align-end', 'justify-between')};
   width: 100%;
-  font-size: 13px;
+  font-size: 14px;
   padding-left: 5px;
   padding-top: ${({ $active }) => ($active ? '2px' : 0)};
   padding-bottom: ${({ $active }) => ($active ? '2px' : 0)};

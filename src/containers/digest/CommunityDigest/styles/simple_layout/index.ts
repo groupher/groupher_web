@@ -50,5 +50,5 @@ export const CommunityBaseInfo = styled.div`
   width: 100%;
   padding-top: 10px;
   // 60 是经典布局为缩小帖子列表"视觉宽度"手动缩小的值
-  padding-right: 60px;
+  /* padding-right: 60px; */
 `

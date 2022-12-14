@@ -8,7 +8,7 @@ import css, { theme } from '@/utils/css'
 
 export const Wrapper = styled.div`
   ${css.flexColumn()};
-  font-size: 12px;
+  font-size: 13px;
   margin-top: 5px;
   margin-bottom: 5px;
 `

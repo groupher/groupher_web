@@ -6,11 +6,10 @@ import css, { theme } from '@/utils/css'
 
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
-  margin-left: -10px;
+  margin-left: -50px;
 `
 export const Title = styled(Link)<TActive>`
-  color: ${({ $active }) =>
-    $active ? theme('article.title') : theme('article.digest')};
+  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   font-size: 15px;
   opacity: ${({ $active }) => ($active ? 1 : 0.9)};
   font-weight: ${({ $active }) => ($active ? 600 : 400)};

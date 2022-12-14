@@ -12,7 +12,7 @@ import {
   ArrowIcon,
   Title,
   FolderTitle,
-  Count,
+  ArrowHintIcon,
   Content,
   SubToggle,
   SubToggleTitle,
@@ -73,13 +73,11 @@ const Folder: FC<TProps> = ({
           }
         }}
       >
-        {!isFolderOpen && isActiveTagInFolder && <ArrowIcon $isOpen={isFolderOpen} />}
-
         <Title>
           <FolderTitle $isOpen={isFolderOpen}>{title}</FolderTitle>
-          {!isFolderOpen && <Count>{sortedTags.length}</Count>}
+          {!isFolderOpen && <ArrowIcon $isOpen={isFolderOpen} />}
+          {isFolderOpen && <ArrowHintIcon />}
         </Title>
-        {/* {!isFolderOpen && isActiveTagInFolder && <FileItem tag={activeTag} active />} */}
       </Header>
 
       <Content $isOpen={isFolderOpen}>

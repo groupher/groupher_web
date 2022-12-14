@@ -26,14 +26,7 @@ import type { TStore } from './store'
 
 import { Wrapper, MainWrapper, FilterWrapper } from './styles'
 
-import {
-  useInit,
-  inAnchor,
-  outAnchor,
-  onFilterSelect,
-  onSearch,
-  closeSearch,
-} from './logic'
+import { useInit, inAnchor, outAnchor, onFilterSelect, onSearch, closeSearch } from './logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:ArticlesThread')
@@ -62,8 +55,6 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
     activeTagData,
   } = store
   const { pageNumber, totalCount } = pagedArticlesData
-
-  log('# got pagedArticlesData: ', pagedArticlesData)
 
   return (
     <Wrapper>

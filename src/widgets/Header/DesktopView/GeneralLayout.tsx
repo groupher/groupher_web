@@ -15,11 +15,7 @@ import { buildLog } from '@/utils/logger'
 import Navigator from '@/widgets/Navigator'
 
 import type { TProps } from '../index'
-import {
-  Wrapper,
-  InnerWrapper,
-  RouterWrapper,
-} from '../styles/desktop_view/general_layout'
+import { Wrapper, InnerWrapper, RouterWrapper } from '../styles/desktop_view/general_layout'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:Header')
@@ -42,11 +38,7 @@ const hasNoBorder = (metric: TMetric): boolean =>
 
 const GeneralHeader: FC<TProps> = ({ metric, accountInfo }) => {
   return (
-    <Wrapper
-      id="whereCallShowDoraemon"
-      testid="header"
-      noBorder={hasNoBorder(metric)}
-    >
+    <Wrapper id="whereCallShowDoraemon" testid="header" noBorder={hasNoBorder(metric)}>
       <InnerWrapper metric={metric}>
         <RouterWrapper>
           <Navigator metric={metric} />
