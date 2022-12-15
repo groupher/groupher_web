@@ -8,9 +8,6 @@ export const getFontSize = (size: TSize): number => {
     case SIZE.TINY: {
       return 13
     }
-    case SIZE.SMALL: {
-      return 15
-    }
     case SIZE.MEDIUM: {
       return 16
     }
