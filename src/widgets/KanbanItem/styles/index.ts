@@ -46,7 +46,7 @@ export const Title = styled.div`
 `
 export const Desc = styled.div`
   ${css.lineClamp(2)}
-  font-size: 13px;
+  font-size: 14px;
   color: ${theme('article.digest')};
   width: calc(100% - 35px);
   margin-top: 8px;

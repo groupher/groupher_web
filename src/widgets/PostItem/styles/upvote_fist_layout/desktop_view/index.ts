@@ -15,7 +15,7 @@ export const DigestWrapper = styled.div`
   color: ${theme('article.digest')};
   margin-top: 6px;
   margin-bottom: 12px;
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
 
   &:hover {

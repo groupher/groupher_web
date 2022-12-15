@@ -13,7 +13,7 @@ import { UPVOTE_LAYOUT } from '@/constant'
 import CommentsCount from '@/widgets/CommentsCount'
 import { Row, Space } from '@/widgets/Common'
 
-import IconButton from '@/widgets/Buttons/IconButton'
+// import IconButton from '@/widgets/Buttons/IconButton'
 import ArticleCatState from '@/widgets/ArticleCatState'
 import Upvote from '@/widgets/Upvote'
 import TagsList from '@/widgets/TagsList'
@@ -51,21 +51,15 @@ const KanbanItem: FC<TProps> = ({ testid = 'gtd-item' }) => {
     <Wrapper testid={testid}>
       <Header>
         <TagsList items={tags} left={2} />
-        <IconButton path="shape/more.svg" />
+        {/* <IconButton path="shape/more.svg" /> */}
       </Header>
       <Title>增加看板，更新日志，与常见问题的功能和其他</Title>
-      <Desc>
-        服务于团队开发流程，以社区服务为基础，提供反馈社区工具箱，各种个性化设置等等
-      </Desc>
+      <Desc>服务于团队开发流程，以社区服务为基础，提供反馈社区工具箱，各种个性化设置等等</Desc>
       <Footer>
         <Row>
-          <Upvote
-            count={upvoteCount}
-            avatarList={mockUsers(3)}
-            type={UPVOTE_LAYOUT.SIMPLE}
-          />
+          <Upvote count={upvoteCount} avatarList={mockUsers(3)} type={UPVOTE_LAYOUT.SIMPLE} />
           <Space right={15} />
-          {commentCount !== 0 && <CommentsCount count={commentCount} />}
+          {commentCount !== 0 && <CommentsCount count={commentCount} size="medium" />}
         </Row>
         <ArticleCatState cat="FEATURE" noBg />
         {/* <ArticleCatState cat="LOCK" state="LOCK" noBg /> */}

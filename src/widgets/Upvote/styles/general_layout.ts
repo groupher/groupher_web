@@ -30,8 +30,6 @@ export const Text = styled.div`
 export const Count = styled.div<{ noOne: boolean }>`
   color: ${theme('article.info')};
   font-weight: ${({ noOne }) => (noOne ? 400 : 600)};
-  font-size: 14px;
-  margin-left: -3px;
 `
 export const LineDivider = styled(LineDividerBase)`
   height: 10px;

@@ -21,7 +21,7 @@ export const Digest = styled.div`
   ${css.cutRest('480px')};
   color: ${theme('article.digest')};
   margin-top: 4px;
-  font-size: 13px;
+  font-size: 14px;
 
   &:hover {
     color: ${theme('article.title')};

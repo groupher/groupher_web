@@ -8,14 +8,28 @@ export const getFontSize = (size: TSize): number => {
     case SIZE.TINY: {
       return 13
     }
+    case SIZE.SMALL: {
+      return 15
+    }
     case SIZE.MEDIUM: {
-      return 18
+      return 16
     }
     case SIZE.LARGE: {
       return 23
     }
     default: {
-      return 15
+      return 14
+    }
+  }
+}
+
+export const getFlipNumOffset = (size: TSize): number => {
+  switch (size) {
+    case SIZE.MEDIUM: {
+      return 7
+    }
+    default: {
+      return 6
     }
   }
 }

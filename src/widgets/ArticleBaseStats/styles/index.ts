@@ -11,6 +11,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flex('align-center')};
+  line-height: 20px;
 `
 export const ViewsIcon = styled(ViewSVG)`
   fill: ${theme('article.info')};
@@ -23,7 +24,7 @@ export const CommentWrapper = styled.div`
 export const CommentIcon = styled(CommentSVG)`
   fill: ${theme('article.info')};
   ${css.size(12)};
-  transition: fill 0.25s;
+  margin-top: 1px;
 
   ${CommentWrapper}:hover & {
     cursor: pointer;

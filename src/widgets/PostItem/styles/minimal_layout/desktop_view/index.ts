@@ -21,7 +21,7 @@ export const DigestWrapper = styled.div`
   color: ${theme('article.digest')};
   margin-top: 4px;
   margin-bottom: 8px;
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
 
   &:hover {

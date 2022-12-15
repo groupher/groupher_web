@@ -17,13 +17,13 @@ const CommentsCount: FC<TProps> = ({ count, size = SIZE.SMALL }) => {
     <Fragment>
       {count >= 100 ? (
         <HighlightWrapper size={size}>
-          <CommentsIcon highlight />
+          <CommentsIcon size={size} highlight />
           {size === SIZE.MEDIUM && <Space right={2} />}
           <Count>{count}</Count>
         </HighlightWrapper>
       ) : (
         <Wrapper size={size}>
-          <CommentsIcon />
+          <CommentsIcon size={size} />
           {size === SIZE.MEDIUM && <Space right={2} />}
           <Count>{count}</Count>
         </Wrapper>
