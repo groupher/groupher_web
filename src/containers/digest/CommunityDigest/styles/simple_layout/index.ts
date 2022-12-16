@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TMetric } from '@/spec'
-import css, { WIDTH } from '@/utils/css'
+import css, { WIDTH, theme } from '@/utils/css'
 import { pixelAdd } from '@/utils/dom'
 
 import { BaseBanner } from '../index'
@@ -12,6 +12,18 @@ type TWrapper = {
 export const Wrapper = styled(BaseBanner)<TWrapper>`
   width: 100%;
   min-height: 58px;
+
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(
+    0.35turn,
+    transparent,
+    ${theme('divider')},
+    ${theme('divider')},
+    ${theme('divider')},
+    transparent
+  );
+
+  border-image-slice: 1;
 `
 export const InnerWrapper = styled.div<TWrapper>`
   ${css.flex('justify-center')};
