@@ -12,16 +12,16 @@ import { TYPE, THREAD, ARTICLE_CAT } from '@/constant'
 import { buildLog } from '@/utils/logger'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
-import { SpaceGrow } from '@/widgets/Common'
+import { Space, SpaceGrow } from '@/widgets/Common'
 
 import CatSelector from '@/widgets/CatSelector'
 
 import SearchBox from './SearchBox'
 import FilterButton from './FilterButton'
-import SelectedFilters from './SelectedFilters'
+// import SelectedFilters from './SelectedFilters'
 // import FilterResult from './FilterResult'
 
-import { Wrapper, MainFilterWrapper } from './styles'
+import { Wrapper } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:ArticlesFilter:index')
@@ -56,29 +56,16 @@ const ArticlesFilter: FC<TProps> = ({
     <Wrapper>
       {!searchMode && (
         <Fragment>
-          <MainFilterWrapper>
-            <FilterButton
-              thread={THREAD.POST}
-              onSelect={onSelect}
-              activeFilter={activeFilter}
-            />
-            <SelectedFilters onSelect={onSelect} activeFilter={activeFilter} />
-          </MainFilterWrapper>
-
+          <FilterButton onSelect={onSelect} activeFilter={activeFilter} />
+          <Space right={15} />
           <CatSelector activeCat={activeCat} onSelect={setActiveCat} />
 
           <SpaceGrow />
-          {resState === TYPE.RES_STATE.LOADING && (
-            <LavaLampLoading top={2} right={28} />
-          )}
+          {resState === TYPE.RES_STATE.LOADING && <LavaLampLoading top={2} right={28} />}
         </Fragment>
       )}
 
-      <SearchBox
-        searchMode={searchMode}
-        onSearch={onSearch}
-        closeSearch={closeSearch}
-      />
+      <SearchBox searchMode={searchMode} onSearch={onSearch} closeSearch={closeSearch} />
       {/* <FilterResult pageNumber={pageNumber} totalCount={totalCount} /> */}
     </Wrapper>
   )

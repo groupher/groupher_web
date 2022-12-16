@@ -1,46 +1,41 @@
 import { FC, memo } from 'react'
 
-import type { TThread, TArticleFilter } from '@/spec'
-import { THREAD } from '@/constant'
-import useAccount from '@/hooks/useAccount'
+import type { TArticleFilter } from '@/spec'
 
-import TimeFilter from './TimeFilter'
-import SortFilter from './SortFilter'
 // import LengthFilter from './LengthFilter'
-import ViewedFilter from './ViewedFilter'
-import CatFilter from './CatFilter'
 
-import { FilterPanelWrapper, CatPanelWrapper } from '../styles'
+import { Wrapper, Block, Icon, Title } from '../styles/filter_panel'
 
 type TProps = {
   activeFilter: TArticleFilter
   onSelect: (filter: TArticleFilter) => void
-  thread: TThread | 'ArticleCat'
 }
 
-const FilterPanel: FC<TProps> = ({ thread, activeFilter, onSelect }) => {
-  const accountInfo = useAccount()
-
-  switch (thread) {
-    case THREAD.POST:
-      return (
-        <FilterPanelWrapper>
-          <TimeFilter activeFilter={activeFilter} onSelect={onSelect} />
-          <SortFilter activeFilter={activeFilter} onSelect={onSelect} />
-          {/* <LengthFilter activeFilter={activeFilter} onSelect={onSelect} /> */}
-          {accountInfo && (
-            <ViewedFilter activeFilter={activeFilter} onSelect={onSelect} />
-          )}
-        </FilterPanelWrapper>
-      )
-
-    default:
-      return (
-        <CatPanelWrapper>
-          <CatFilter activeFilter={activeFilter} onSelect={onSelect} />
-        </CatPanelWrapper>
-      )
-  }
+const FilterPanel: FC<TProps> = ({ activeFilter, onSelect }) => {
+  return (
+    <Wrapper>
+      <Block>
+        <Icon.ALL />
+        <Title>默认</Title>
+      </Block>
+      <Block>
+        <Icon.TIME />
+        <Title>发布时间</Title>
+      </Block>
+      <Block>
+        <Icon.UPVOTE />
+        <Title>投票数</Title>
+      </Block>
+      <Block>
+        <Icon.COMMENT />
+        <Title>评论数</Title>
+      </Block>
+      <Block>
+        <Icon.VIEW />
+        <Title>浏览量</Title>
+      </Block>
+    </Wrapper>
+  )
 }
 
 export default memo(FilterPanel)

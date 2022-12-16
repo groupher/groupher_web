@@ -17,7 +17,7 @@ export const StyledTippy = styled(Tippy)`
   padding: 5px;
 
   box-shadow: -3px 2px 20px 0px rgb(58 58 58 / 15%);
-  border-color: #dfdfdf;
+  border-color: ${theme('divider')};
 
   .tippy-arrow {
     display: none;
