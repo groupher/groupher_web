@@ -11,7 +11,7 @@ type TWrapper = {
 }
 export const Wrapper = styled(BaseBanner)<TWrapper>`
   width: 100%;
-  min-height: 58px;
+  min-height: 64px;
 
   border-bottom: 1px solid transparent;
   border-image: linear-gradient(

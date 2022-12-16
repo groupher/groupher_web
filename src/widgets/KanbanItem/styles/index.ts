@@ -36,22 +36,20 @@ export const TimeStamp = styled.div`
   color: ${theme('article.info')};
 `
 export const Title = styled.div`
-  ${css.lineClamp(1)}
+  ${css.lineClamp(2)}
   font-size: 15px;
   color: ${theme('article.title')};
   width: 100%;
   font-weight: 500;
-
   line-height: 1.62;
 `
 export const Desc = styled.div`
-  ${css.lineClamp(2)}
-  font-size: 14px;
+  ${css.lineClamp(1)}
+  font-size: 13px;
   color: ${theme('article.digest')};
-  width: calc(100% - 35px);
-  margin-top: 8px;
-  line-height: 1.62;
-  margin-bottom: 8px;
+  width: calc(100% - 10px);
+  margin-top: 6px;
+  margin-bottom: 5px;
 `
 export const Footer = styled.div`
   ${css.flex('align-center', 'justify-between')};
