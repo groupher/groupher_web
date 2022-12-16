@@ -14,18 +14,12 @@ export const Wrapper = styled.div`
 export const Inputer = styled(Input)`
   height: 30px;
 `
-export const MainFilterWrapper = styled.div`
-  ${css.flex('align-center')};
-  padding-left: 2px;
-`
 export const FilterPanelWrapper = styled.div`
   ${css.flex()};
-  min-width: 120px;
+  min-width: 180px;
   padding: 6px;
 `
-export const CatPanelWrapper = styled(FilterPanelWrapper)`
-  justify-content: flex-end;
-`
+
 export const ColumnWrapper = styled.div`
   ${css.flexColumn('align-center')};
   min-width: 60px;
@@ -69,10 +63,8 @@ export const SelectItem = styled.div<TActive>`
   width: 100%;
   border-radius: 3px;
   margin-bottom: 5px;
-  background-color: ${({ active }) =>
-    active ? theme('textBadge') : 'transparent'}; // to-theme
-  color: ${({ active }) =>
-    active ? theme('article.title') : theme('article.digest')};
+  background-color: ${({ active }) => (active ? theme('textBadge') : 'transparent')}; // to-theme
+  color: ${({ active }) => (active ? theme('article.title') : theme('article.digest'))};
   font-weight: ${({ active }) => (active ? 600 : 450)};
   position: relative;
 

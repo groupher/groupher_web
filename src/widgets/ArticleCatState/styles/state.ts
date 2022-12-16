@@ -59,6 +59,7 @@ export const RejectIcon = styled(RejectSVG)<{ smaller: boolean }>`
 const LightIcon = styled(LightSVG)`
   ${css.size(12)};
   fill: ${theme('article.info')};
+  margin-top: 1px;
 `
 const BugIcon = styled(BugSVG)`
   ${css.size(12)};

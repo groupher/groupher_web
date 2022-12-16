@@ -13,6 +13,8 @@ import { SelectItem as SelectItemBase } from '.'
 export const Wrapper = styled.div`
   ${css.flexColumn()};
   min-width: 120px;
+  margin-top: 2px;
+  font-size: 14px;
 `
 const iconBase = `
   ${css.size(14)};
@@ -55,10 +57,9 @@ export const OtherIcon = styled(OtherSVG)`
 `
 export const SelectItem = styled(SelectItemBase)`
   ${css.flex('align-center')};
-  padding: 4px 5px;
-  border-radius: 2px;
+  padding: 5px 5px;
+  border-radius: 5px;
 `
-
 export const Icon = {
   ALL: AllIcon,
   FEATURE: LightIcon,

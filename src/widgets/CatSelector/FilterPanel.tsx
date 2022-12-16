@@ -27,11 +27,7 @@ const FilterPanel: FC<TProps> = ({ activeCat, onSelect }) => {
         const OptIcon = Icon[cat]
 
         return (
-          <SelectItem
-            key={cat}
-            active={activeCat === cat}
-            onClick={() => onSelect(cat)}
-          >
+          <SelectItem key={cat} active={activeCat === cat} onClick={() => onSelect(cat)}>
             <OptIcon />
             {Trans(cat)}
           </SelectItem>

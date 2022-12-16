@@ -6,7 +6,8 @@ export const Wrapper = styled.div`
   ${css.flex('align-center')};
   color: ${theme('article.digest')};
   font-size: 13px;
+  line-height: 18px;
 `
 export const Label = styled.div`
-  opacity: 0.7;
+  opacity: 0.8;
 `
