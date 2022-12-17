@@ -5,7 +5,7 @@ import type { TEditValue, TTag } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { updateEditing, toJS } from '@/utils/mobx'
 
-import type { TTab, TSettingField, TAlias } from './spec'
+import type { TSettingField, TAlias } from './spec'
 // import S from './schma'
 import type { TStore } from './store'
 
@@ -13,10 +13,6 @@ let store: TStore | undefined
 
 /* eslint-disable-next-line */
 const log = buildLog('L:DashboardThread')
-
-export const tabOnChange = (curTab: TTab): void => {
-  store.mark({ curTab })
-}
 
 /**
  * rollback editing value to init value

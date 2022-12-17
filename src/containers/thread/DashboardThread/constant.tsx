@@ -1,31 +1,9 @@
 import type { TSnakeUpperCase } from '@/spec'
+import { DASHBOARD_ROUTE } from '@/constant'
 
-import type { TTab, TSettingField, TWidgetType } from './spec'
+import type { TSettingField, TWidgetType } from './spec'
 
 import { Icon } from './styles/side_menu'
-
-export const TAB = {
-  OVERVIEW: 'overview',
-  // basic-info
-  BASIC_INFO: 'basic_info',
-  UI: 'ui',
-  THREADS: 'threads',
-  ALIAS: 'alias',
-  DOMAIN: 'domain',
-  // analysis
-  // --
-  // contents
-  TAGS: 'tags',
-  POST: 'post',
-  KANBAN: 'kanban',
-  CHANGELOG: 'changelog',
-  HELP: 'help',
-  BLACKHOUSE: 'blackhouse',
-  // integrates
-  THIRD_PART: 'third_part',
-  ADMINS: 'admins',
-  WIDGETS: 'widgets',
-} as Record<Uppercase<TTab>, TTab>
 
 export const SETTING_FIELD = {
   PRIMARY_COLOR: 'primaryColor',
@@ -51,23 +29,23 @@ export const MENU = {
     children: [
       {
         title: '关于社区',
-        raw: TAB.BASIC_INFO,
+        raw: DASHBOARD_ROUTE.INFO,
       },
       {
         title: '外观布局',
-        raw: TAB.UI,
+        raw: DASHBOARD_ROUTE.UI,
       },
       {
         title: '社区板块',
-        raw: TAB.THREADS,
+        raw: DASHBOARD_ROUTE.THREADS,
       },
       {
         title: '别名',
-        raw: TAB.ALIAS,
+        raw: DASHBOARD_ROUTE.ALIAS,
       },
       {
         title: '管理员',
-        raw: TAB.ADMINS,
+        raw: DASHBOARD_ROUTE.ADMINS,
       },
     ],
   },
@@ -82,27 +60,27 @@ export const MENU = {
     children: [
       {
         title: '标签',
-        raw: TAB.TAGS,
+        raw: DASHBOARD_ROUTE.TAGS,
       },
       {
         title: '帖子',
-        raw: TAB.POST,
+        raw: DASHBOARD_ROUTE.POST,
       },
       {
         title: '看板',
-        raw: TAB.KANBAN,
+        raw: DASHBOARD_ROUTE.KANBAN,
       },
       {
         title: '更新日志',
-        raw: TAB.CHANGELOG,
+        raw: DASHBOARD_ROUTE.CHANGELOG,
       },
       {
         title: '帮助台',
-        raw: TAB.HELP,
+        raw: DASHBOARD_ROUTE.HELP,
       },
       {
         title: '小黑屋',
-        raw: TAB.BLACKHOUSE,
+        raw: DASHBOARD_ROUTE.BLACKHOUSE,
       },
     ],
   },
@@ -113,15 +91,15 @@ export const MENU = {
     children: [
       {
         title: '域名',
-        raw: TAB.DOMAIN,
+        raw: DASHBOARD_ROUTE.DOMAIN,
       },
       {
         title: '外部应用',
-        raw: TAB.THIRD_PART,
+        raw: DASHBOARD_ROUTE.THIRD_PART,
       },
       {
         title: '网站插件',
-        raw: TAB.WIDGETS,
+        raw: DASHBOARD_ROUTE.WIDGETS,
       },
     ],
   },

@@ -7,15 +7,14 @@ import { FC } from 'react'
 
 // import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
+import { ROUTE } from '@/constant'
 
-import { TAB } from './constant'
 import SideMenu from './SideMenu'
+import { BasicInfo, UI, Alias, Admin, Threads, Tags, Domain, ThirdPart, Widgets } from './dynamic'
 
 import type { TStore } from './store'
 import { Wrapper, MainWrapper } from './styles'
-import { useInit } from './logic' /* eslint-disable-next-line */
-
-import { BasicInfo, UI, Alias, Admin, Threads, Tags, Domain, ThirdPart, Widgets } from './dynamic'
+import { useInit } from './logic'
 
 // const log = buildLog('C:DashboardThread')
 
@@ -31,20 +30,22 @@ const DashboardThreadContainer: FC<TProps> = ({
   useInit(store)
   const { curTab, uiSettings, tagSettings, aliasSettings, widgetsSettings, touched } = store
 
+  const { DASHBOARD } = ROUTE
+
   return (
     <Wrapper testid={testid}>
       <SideMenu curTab={curTab} touched={touched} />
       <MainWrapper>
-        {curTab === TAB.BASIC_INFO && <BasicInfo />}
-        {curTab === TAB.UI && <UI settings={uiSettings} touched={touched} />}
-        {curTab === TAB.ALIAS && <Alias settings={aliasSettings} />}
-        {curTab === TAB.ADMINS && <Admin />}
-        {curTab === TAB.THREADS && <Threads />}
-        {curTab === TAB.TAGS && <Tags settings={tagSettings} />}
+        {curTab === DASHBOARD.INFO && <BasicInfo />}
+        {curTab === DASHBOARD.UI && <UI settings={uiSettings} touched={touched} />}
+        {curTab === DASHBOARD.ALIAS && <Alias settings={aliasSettings} />}
+        {curTab === DASHBOARD.ADMINS && <Admin />}
+        {curTab === DASHBOARD.THREADS && <Threads />}
+        {curTab === DASHBOARD.TAGS && <Tags settings={tagSettings} />}
 
-        {curTab === TAB.DOMAIN && <Domain />}
-        {curTab === TAB.THIRD_PART && <ThirdPart />}
-        {curTab === TAB.WIDGETS && <Widgets settings={widgetsSettings} touched={touched} />}
+        {curTab === DASHBOARD.DOMAIN && <Domain />}
+        {curTab === DASHBOARD.THIRD_PART && <ThirdPart />}
+        {curTab === DASHBOARD.WIDGETS && <Widgets settings={widgetsSettings} touched={touched} />}
       </MainWrapper>
     </Wrapper>
   )

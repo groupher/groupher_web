@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Link from 'next/link'
 
 import type { TActive } from '@/spec'
 import css, { theme } from '@/utils/css'
@@ -15,12 +16,12 @@ export const Title = styled.div`
   font-weight: 500;
 `
 
-export const Item = styled.div<TActive>`
+export const Item = styled(Link)<TActive>`
+  text-decoration: none;
   position: relative;
-  color: ${({ $active }) =>
-    $active ? theme('article.title') : theme('article.digest')};
-  background: ${({ $active }) =>
-    $active ? theme('menuActive') : 'transparent'};
+  display: block;
+  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
+  background: ${({ $active }) => ($active ? theme('menuActive') : 'transparent')};
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
   width: 116px;
   padding: 2px 5px;
@@ -35,8 +36,7 @@ export const Item = styled.div<TActive>`
   &:hover {
     cursor: pointer;
     color: ${theme('article.title')};
-    background: ${({ $active }) =>
-      $active ? theme('menuActive') : theme('hoverBg')};
+    background: ${({ $active }) => ($active ? theme('menuActive') : theme('hoverBg'))};
   }
 
   transition: all 0.2s;
