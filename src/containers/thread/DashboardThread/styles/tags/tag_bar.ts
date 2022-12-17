@@ -27,7 +27,7 @@ export const Wrapper = styled.div<TWrapper>`
   margin-left: ${({ isSetting, hasSettingTag }) => {
     if (!hasSettingTag) return '-8px'
 
-    return isSetting ? '-30px' : '-8px'
+    return isSetting ? '-12px' : '-8px'
   }};
 
   &:hover {
