@@ -59,6 +59,9 @@ const TYPE = {
 
     // modeline
     MODELINE_MENU: 'MODELINE_MENU',
+
+    // tag
+    TAG_SETTING: 'TAG_SETTING',
   },
 
   REPORT: {

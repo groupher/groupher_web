@@ -19,6 +19,7 @@ import {
   UserLister,
   DashboardDesc,
   ArticleEditor,
+  TagSettingEditor,
 } from '../dynamics'
 
 type TProps = {
@@ -70,6 +71,11 @@ const Content: FC<TProps> = ({ type, attUser, extraInfo }) => {
     case DRAWER.USER_LISTER: {
       // @ts-ignore
       return <UserLister type={extraInfo.userListerType} />
+    }
+
+    case DRAWER.TAG_SETTING: {
+      // @ts-ignore
+      return <TagSettingEditor />
     }
 
     default: {

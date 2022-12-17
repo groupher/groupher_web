@@ -22,58 +22,41 @@ const CommonLoading = () => {
 // }
 
 // viewers
-export const ArticleViewer = dynamic(
-  () => import('@/containers/viewer/ArticleViewer'),
-  {
-    loading: () => <CommonLoading />,
-  },
-)
+export const ArticleViewer = dynamic(() => import('@/containers/viewer/ArticleViewer'), {
+  loading: () => <CommonLoading />,
+})
 
-export const MailsViewer = dynamic(
-  () => import('@/containers/viewer/MailsViewer'),
-  {
-    loading: () => <CommonLoading />,
-  },
-)
+export const MailsViewer = dynamic(() => import('@/containers/viewer/MailsViewer'), {
+  loading: () => <CommonLoading />,
+})
 
 // editors
-export const AccountEditor = dynamic(
-  () => import('@/containers/editor/AccountEditor'),
-  {
-    loading: () => <CommonLoading />,
-  },
-)
+export const AccountEditor = dynamic(() => import('@/containers/editor/AccountEditor'), {
+  loading: () => <CommonLoading />,
+})
 
 // user lister
-export const UserLister = dynamic(
-  () => import('@/containers/user/UserLister'),
-  {
-    loading: () => <CommonLoading />,
-  },
-)
+export const UserLister = dynamic(() => import('@/containers/user/UserLister'), {
+  loading: () => <CommonLoading />,
+})
 
 // utils
-export const C11NSettingPanel = dynamic(
-  () => import('@/containers/tool/C11NSettingPanel'),
-  {
-    loading: () => <CommonLoading />,
-  },
-)
+export const C11NSettingPanel = dynamic(() => import('@/containers/tool/C11NSettingPanel'), {
+  loading: () => <CommonLoading />,
+})
 
-export const WallpaperEditor = dynamic(
-  () => import('@/containers/editor/WallpaperEditor'),
-  {
-    loading: () => <CommonLoading />,
-  },
-)
+export const WallpaperEditor = dynamic(() => import('@/containers/editor/WallpaperEditor'), {
+  loading: () => <CommonLoading />,
+})
 
 export const DashboardDesc = dynamic(() => import('@/widgets/DashboardDesc'), {
   loading: () => <CommonLoading />,
 })
 
-export const ArticleEditor = dynamic(
-  () => import('@/containers/editor/ArticleEditor'),
-  {
-    loading: () => <CommonLoading />,
-  },
-)
+export const ArticleEditor = dynamic(() => import('@/containers/editor/ArticleEditor'), {
+  loading: () => <CommonLoading />,
+})
+
+export const TagSettingEditor = dynamic(() => import('@/containers/editor/TagSettingEditor'), {
+  loading: () => <CommonLoading />,
+})

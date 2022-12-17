@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/utils/css'
 
 import EditSVG from '@/icons/EditPen'
-import CloseSVG from '@/icons/CloseLight'
+import SettingSVG from '@/icons/Setting'
 
 import Input from '@/widgets/Input'
 
@@ -19,8 +19,7 @@ export const Wrapper = styled.div<{ isEditMode: boolean }>`
   margin-bottom: 12px;
 
   &:hover {
-    background: ${({ isEditMode }) =>
-      !isEditMode ? theme('hoverBg') : 'transparent'};
+    background: ${({ isEditMode }) => (!isEditMode ? theme('hoverBg') : 'transparent')};
   }
 
   transition: background 0.2s;
@@ -58,7 +57,7 @@ export const Actions = styled.div`
   transition: all 0.2s;
 `
 export const EditIcon = styled(EditSVG)<{ onClick: () => void }>`
-  ${css.size(12)};
+  ${css.size(14)};
   fill: ${theme('article.digest')};
 
   &:hover {
@@ -68,12 +67,12 @@ export const EditIcon = styled(EditSVG)<{ onClick: () => void }>`
 
   transition: all 0.2s;
 `
-export const CloseIcon = styled(CloseSVG)`
-  ${css.size(14)};
+export const SettingIcon = styled(SettingSVG)<{ onClick: () => void }>`
+  ${css.size(13)};
   fill: ${theme('article.digest')};
 
   &:hover {
-    fill: tomato;
+    fill: ${theme('article.title')};
     cursor: pointer;
   }
 
