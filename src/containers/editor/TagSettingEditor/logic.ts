@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 // import { } from 'ramda'
 
+import type { TPostLayout } from '@/spec'
+
 import { buildLog } from '@/utils/logger'
 
 // import S from './schma'
@@ -11,7 +13,7 @@ let store: TStore | undefined
 /* eslint-disable-next-line */
 const log = buildLog('L:TagSettingEditor')
 
-export const someMethod = (): void => {
+export const edit = (layout: TPostLayout): void => {
   //
 }
 

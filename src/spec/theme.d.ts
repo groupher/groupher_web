@@ -24,6 +24,7 @@ export type TThemeMap = {
     pinkLite: string
     pinkBtnText: string
   }
+  hoverBg?: string
   article?: {
     title?: string
     digest?: string

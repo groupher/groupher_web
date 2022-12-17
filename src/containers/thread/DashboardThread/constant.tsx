@@ -36,12 +36,12 @@ export const MENU = {
         raw: DASHBOARD_ROUTE.UI,
       },
       {
-        title: '板块布局',
-        raw: DASHBOARD_ROUTE.LAYOUT,
-      },
-      {
         title: '社区板块',
         raw: DASHBOARD_ROUTE.THREADS,
+      },
+      {
+        title: '板块布局',
+        raw: DASHBOARD_ROUTE.LAYOUT,
       },
       {
         title: '别名',

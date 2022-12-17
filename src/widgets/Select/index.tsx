@@ -13,7 +13,7 @@ import ReactSelect from 'react-select'
 import type { TSelectOption, TThemeMap } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
-import { Input, Option, IndicatorsContainer } from './components'
+import { Option, IndicatorsContainer } from './components'
 
 import { Wrapper, getSelectStyles } from './styles'
 
@@ -24,6 +24,7 @@ type TProps = {
   testid?: string
   placeholder?: string
   options: TSelectOption[]
+  className?: string
 
   isMulti?: boolean
   closeMenuOnSelect?: boolean
@@ -42,20 +43,21 @@ const Select: FC<TProps> = ({
   closeMenuOnSelect = true,
   onChange = log,
   value = null,
+  className = '',
 }) => {
   // @ts-ignore
   const theme: TThemeMap = useTheme()
   const styles = getSelectStyles(theme)
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper testid={testid} className={className}>
       <ReactSelect
         value={value}
         options={options}
         placeholder={placeholder}
         styles={styles}
         // @ts-ignore
-        components={{ IndicatorsContainer, Option, Input }}
+        components={{ IndicatorsContainer, Option }}
         onChange={onChange}
         closeMenuOnSelect={closeMenuOnSelect}
         isMulti={isMulti}

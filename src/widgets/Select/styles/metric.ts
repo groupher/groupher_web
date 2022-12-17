@@ -16,27 +16,26 @@ export const getSelectStyles = (theme: TThemeMap) => {
     // 容器 -- not work
     control: (base, state) => ({
       ...base,
-      background: '#052630',
-      borderColor: '#043443',
+      borderColor: theme.article.digest,
       // 可以消除 outLine
       boxShadow: state.isFocused ? '0 0 0 1px #00627A' : 'none',
       '&:hover': {
-        borderColor: '#00627A',
+        borderColor: theme.article.title,
       },
       '&:focus': {
-        borderColor: '#00627A',
+        borderColor: theme.article.title,
       },
     }),
     indicatorContainer: (base) => ({
       ...base,
-      background: '#00262F',
+      // background: '#00262F',
     }),
     indicatorSeparator: (base) => ({
       ...base,
       alignSelf: 'none',
       height: '12px',
       marginLeft: '-1px',
-      background: '#405356',
+      // background: '#405356',
     }),
     placeholder: (base) => ({
       ...base,
@@ -48,14 +47,14 @@ export const getSelectStyles = (theme: TThemeMap) => {
     // 输入框
     valueContainer: (base) => ({
       ...base,
-      background: '#052630',
+      // background: '#052630',
       width: '100%',
     }),
     // 单值
     singleValue: (base) => ({
       ...base,
       color: theme.article.title,
-      background: '#00343E',
+      // background: '#00343E',
       padding: '0 5px',
       borderRadius: '3px',
       maxWidth: '80px',
@@ -63,7 +62,7 @@ export const getSelectStyles = (theme: TThemeMap) => {
     multiValue: (base) => ({
       ...base,
       color: theme.article.title,
-      background: '#00343E',
+      // background: '#00343E',
       borderRadius: '3px',
     }),
     multiValueLabel: (base) => ({
@@ -76,17 +75,17 @@ export const getSelectStyles = (theme: TThemeMap) => {
       '&:hover': {
         cursor: 'pointer',
         color: theme.baseColor.red,
-        background: '#00343E',
+        // background: '#00343E',
       },
     }),
     menu: (base) => ({
       ...base,
-      background: '#00262F',
+      // background: '#00262F',
     }),
     menuList: (base) => ({
       ...base,
-      border: '2px solid',
-      borderColor: '#043443',
+      border: '1px solid',
+      borderColor: theme.divider,
     }),
     clearIndicator: (base, state) => ({
       ...base,
@@ -103,10 +102,11 @@ export const getSelectStyles = (theme: TThemeMap) => {
     option: (base) => ({
       ...base,
       height: '100%',
-      background: '#00262F',
+      background: theme.hoverBg,
+      borderColor: 'transparent',
 
       '&:hover': {
-        background: '#043443',
+        // background: '#043443',
         cursor: 'pointer',
       },
     }),
