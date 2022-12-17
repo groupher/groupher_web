@@ -32,8 +32,12 @@ export const MENU = {
         raw: DASHBOARD_ROUTE.INFO,
       },
       {
-        title: '外观布局',
+        title: '外观',
         raw: DASHBOARD_ROUTE.UI,
+      },
+      {
+        title: '板块布局',
+        raw: DASHBOARD_ROUTE.LAYOUT,
       },
       {
         title: '社区板块',

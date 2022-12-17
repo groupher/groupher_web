@@ -9,6 +9,7 @@ export const DASHBOARD_ROUTE = {
   // basic-info
   INFO: 'info',
   UI: 'ui',
+  LAYOUT: 'layout',
   THREADS: 'threads',
   ALIAS: 'alias',
   DOMAIN: 'domain',

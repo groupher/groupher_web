@@ -5,6 +5,7 @@ export type TDashboardPath =
   // basic-info
   | 'info'
   | 'ui'
+  | 'layout'
   | 'threads'
   | 'alias'
   | 'domain'

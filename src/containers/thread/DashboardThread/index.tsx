@@ -10,7 +10,18 @@ import { bond } from '@/utils/mobx'
 import { ROUTE } from '@/constant'
 
 import SideMenu from './SideMenu'
-import { BasicInfo, UI, Alias, Admin, Threads, Tags, Domain, ThirdPart, Widgets } from './dynamic'
+import {
+  BasicInfo,
+  UI,
+  Layout,
+  Alias,
+  Admin,
+  Threads,
+  Tags,
+  Domain,
+  ThirdPart,
+  Widgets,
+} from './dynamic'
 
 import type { TStore } from './store'
 import { Wrapper, MainWrapper } from './styles'
@@ -38,6 +49,7 @@ const DashboardThreadContainer: FC<TProps> = ({
       <MainWrapper>
         {curTab === DASHBOARD.INFO && <BasicInfo />}
         {curTab === DASHBOARD.UI && <UI settings={uiSettings} touched={touched} />}
+        {curTab === DASHBOARD.LAYOUT && <Layout settings={uiSettings} touched={touched} />}
         {curTab === DASHBOARD.ALIAS && <Alias settings={aliasSettings} />}
         {curTab === DASHBOARD.ADMINS && <Admin />}
         {curTab === DASHBOARD.THREADS && <Threads />}
