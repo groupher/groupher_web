@@ -31,11 +31,13 @@ type TProps = {
 const TagSettingEditorContainer: FC<TProps> = ({ tagSettingEditor: store, testid }) => {
   useInit(store)
 
+  const { settingTag } = store
+
   return (
     <Wrapper testid={testid}>
       <TagItem>
-        <Dot />
-        <TagName>一个标签</TagName>
+        <Dot color={settingTag.color} />
+        <TagName>{settingTag.title}</TagName>
       </TagItem>
 
       <CustomScroller

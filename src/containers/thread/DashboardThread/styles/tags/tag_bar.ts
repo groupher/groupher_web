@@ -7,22 +7,34 @@ import SettingSVG from '@/icons/Setting'
 
 import Input from '@/widgets/Input'
 
-export const Wrapper = styled.div<{ isEditMode: boolean }>`
+type TWrapper = { isEditMode: boolean; isSetting: boolean; hasSettingTag: boolean }
+export const Wrapper = styled.div<TWrapper>`
   ${css.flex('align-center')};
   width: 100%;
   height: ${({ isEditMode }) => (isEditMode ? '46px' : '40px')};
-  margin-left: -8px;
+  /* margin-left: -8px; */
   padding: ${({ isEditMode }) => (isEditMode ? 0 : '10px')};
   border: ${({ isEditMode }) => (isEditMode ? 'none' : '1px solid')};
   border-color: ${theme('divider')};
   border-radius: 5px;
   margin-bottom: 12px;
 
+  opacity: ${({ isSetting, hasSettingTag }) => {
+    if (!hasSettingTag) return 1
+    return isSetting ? 1 : 0.3
+  }};
+
+  margin-left: ${({ isSetting, hasSettingTag }) => {
+    if (!hasSettingTag) return '-8px'
+
+    return isSetting ? '-30px' : '-8px'
+  }};
+
   &:hover {
     background: ${({ isEditMode }) => (!isEditMode ? theme('hoverBg') : 'transparent')};
   }
 
-  transition: background 0.2s;
+  transition: all 0.2s;
 `
 type TDot = { color: string; isEditMode?: boolean }
 export const Dot = styled.div<TDot>`

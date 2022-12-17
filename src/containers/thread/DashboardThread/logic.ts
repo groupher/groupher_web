@@ -2,14 +2,24 @@ import { useEffect } from 'react'
 // import { } from 'ramda'
 
 import type { TEditValue, TTag } from '@/spec'
+import { EVENT } from '@/constant'
+
 import { buildLog } from '@/utils/logger'
 import { updateEditing, toJS } from '@/utils/mobx'
+import asyncSuit from '@/utils/async'
 
 import type { TSettingField, TAlias } from './spec'
 // import S from './schma'
 import type { TStore } from './store'
 
+const { SR71, $solver, asyncRes } = asyncSuit
+const sr71$ = new SR71({
+  // @ts-ignore
+  receive: [EVENT.DRAWER.AFTER_CLOSE],
+})
+
 let store: TStore | undefined
+let sub$ = null
 
 /* eslint-disable-next-line */
 const log = buildLog('L:DashboardThread')
@@ -23,6 +33,10 @@ export const rollbackEdit = (field: TSettingField): void => {
 
 export const updateEditingTag = (tag: TTag): void => {
   store.mark({ editingTag: tag })
+}
+
+export const updateSettingTag = (tag: TTag): void => {
+  store.mark({ settingTag: tag })
 }
 
 export const updateEditingAlias = (alias: TAlias): void => {
@@ -56,10 +70,25 @@ export const onSave = (field: TSettingField, force = false): void => {
 // init & uninit handlers
 // ###############################
 
+const DataSolver = [
+  {
+    match: asyncRes(EVENT.DRAWER.AFTER_CLOSE),
+    action: () => {
+      store.mark({ settingTag: null })
+    },
+  },
+]
+
+const ErrSolver = []
 export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
     log('useInit: ', store)
-    // return () => store.reset()
+    sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
+
+    return () => {
+      sr71$.stop()
+      sub$.unsubscribe()
+    }
   }, [_store])
 }

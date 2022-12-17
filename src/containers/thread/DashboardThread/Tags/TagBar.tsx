@@ -21,18 +21,24 @@ import {
   EditIcon,
   SettingIcon,
 } from '../styles/tags/tag_bar'
-import { updateEditingTag } from '../logic'
+import { updateEditingTag, updateSettingTag } from '../logic'
 
 type TProps = {
   tag: TTag
   editingTag: TTag
+  settingTag: TTag
 }
 
-const TagBar: FC<TProps> = ({ tag, editingTag }) => {
+const TagBar: FC<TProps> = ({ tag, editingTag, settingTag }) => {
   const isEditMode = editingTag?.id === tag.id
 
   return (
-    <Wrapper key={tag.id} isEditMode={isEditMode}>
+    <Wrapper
+      key={tag.id}
+      isEditMode={isEditMode}
+      isSetting={settingTag?.id === tag.id}
+      hasSettingTag={settingTag !== null}
+    >
       <SavingBar isTouched={isEditMode} field={SETTING_FIELD.TAG}>
         {isEditMode ? (
           <ColorSelector
@@ -64,7 +70,12 @@ const TagBar: FC<TProps> = ({ tag, editingTag }) => {
           <Actions>
             <EditIcon onClick={() => updateEditingTag(tag)} />
             <Space right={8} />
-            <SettingIcon onClick={() => callTagSettingEditor()} />
+            <SettingIcon
+              onClick={() => {
+                updateSettingTag(tag)
+                callTagSettingEditor()
+              }}
+            />
           </Actions>
         )}
       </SavingBar>

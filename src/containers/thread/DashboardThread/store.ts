@@ -80,6 +80,7 @@ const DashboardThread = T.model('DashboardThread', {
   saving: T.opt(T.bool, false),
   curTab: T.opt(T.enum(values(ROUTE.DASHBOARD)), ROUTE.DASHBOARD.INFO),
   editingTag: T.maybeNull(Tag),
+  settingTag: T.maybeNull(Tag),
   editingAlias: T.maybeNull(Alias),
   ...settingsModalFields,
   initSettings: T.opt(InitSettings, {}),
@@ -186,6 +187,7 @@ const DashboardThread = T.model('DashboardThread', {
 
       return {
         editingTag: toJS(slf.editingTag),
+        settingTag: toJS(slf.settingTag),
         tags: toJS(slf.tags),
         saving: slf.saving,
       }

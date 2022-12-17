@@ -12,9 +12,10 @@ export const Wrapper = styled.div`
   flex-wrap: wrap;
   gap: 0 45px;
   width: 100%;
-  padding-left: 25px;
+  padding-left: 35px;
   background: ${theme('hoverBg')};
-  padding-bottom: 20px;
+  padding-top: 10px;
+  padding-bottom: 30px;
 `
 export const BlockBase = styled.div<TActive>`
   opacity: ${({ $active }) => ($active ? 0.7 : 0.2)};

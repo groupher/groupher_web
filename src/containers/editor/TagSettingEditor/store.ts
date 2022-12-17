@@ -5,7 +5,7 @@
 import { types as T, getParent, Instance } from 'mobx-state-tree'
 // import {} from 'ramda'
 
-import type { TCommunity, TRootStore } from '@/spec'
+import type { TCommunity, TRootStore, TTag } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { markStates, toJS } from '@/utils/mobx'
 
@@ -18,6 +18,12 @@ const TagSettingEditor = T.model('TagSettingEditor', {})
       const root = getParent(self) as TRootStore
 
       return toJS(root.viewing.community)
+    },
+
+    get settingTag(): TTag {
+      const root = getParent(self) as TRootStore
+
+      return toJS(root.dashboardThread.settingTag)
     },
   }))
   .actions((self) => ({

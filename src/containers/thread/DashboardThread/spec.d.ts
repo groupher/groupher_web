@@ -34,6 +34,7 @@ export type TTagSettings = {
   saving: boolean
   tags: TTag[]
   editingTag: TTag
+  settingTag: TTag
 }
 export type TAlias = {
   raw: string
