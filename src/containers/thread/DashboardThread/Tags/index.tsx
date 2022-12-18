@@ -14,7 +14,7 @@ type TProps = {
 }
 
 const Tags: FC<TProps> = ({ settings }) => {
-  const { tags, editingTag, settingTag } = settings
+  const { tags, editingTag, settingTag, categories, activeTagCategory } = settings
 
   return (
     <Wrapper>
@@ -22,7 +22,7 @@ const Tags: FC<TProps> = ({ settings }) => {
       <InnerWrapper>
         <ThreadSelector />
         <ContentWrapper>
-          <CategorySelector />
+          <CategorySelector categories={categories} active={activeTagCategory} />
           {tags.map((tag) => (
             <TagBar key={tag.id} tag={tag} editingTag={editingTag} settingTag={settingTag} />
           ))}

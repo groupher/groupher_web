@@ -99,14 +99,14 @@ export const getSelectStyles = (theme: TThemeMap) => {
       color: theme.article.digest,
       opacity: state.isFocused ? 1 : 0.8,
     }),
-    option: (base) => ({
+    option: (base, state) => ({
       ...base,
       height: '100%',
-      background: theme.hoverBg,
-      borderColor: 'transparent',
+      background: state.isSelected ? theme.article.title : theme.hoverBg,
+      // color: 'tomato',
 
       '&:hover': {
-        // background: '#043443',
+        background: state.isSelected ? theme.article.title : theme.divider,
         cursor: 'pointer',
       },
     }),

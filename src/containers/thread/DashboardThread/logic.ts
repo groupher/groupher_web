@@ -24,6 +24,11 @@ let sub$ = null
 /* eslint-disable-next-line */
 const log = buildLog('L:DashboardThread')
 
+// then user select catetory tab in tags settings
+export const changeTagCategory = (activeTagCategory: string | null): void => {
+  store.mark({ activeTagCategory })
+}
+
 /**
  * rollback editing value to init value
  */

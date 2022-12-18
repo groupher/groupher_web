@@ -8,26 +8,23 @@ import { baseInput } from './index'
 
 type TWrapper = TTestable | { spellCheck: string }
 
-export const Wrapper = styled(TextareaAutosize).attrs(
-  ({ testid }: TTestable) => ({
-    'data-test-id': testid,
-  }),
-)<TWrapper>`
+export const Wrapper = styled(TextareaAutosize).attrs(({ testid }: TTestable) => ({
+  'data-test-id': testid,
+}))<TWrapper>`
   ${baseInput};
   color: ${theme('article.title')};
   opacity: 0.9;
   min-height: 56px;
   padding: 10px;
-  background-color: #0b2631;
+  background-color: white;
   border: 1px solid;
-  border-color: ${theme('editor.border')};
   resize: none;
   overflow: hidden;
   text-align: left;
 
   border-color: ${theme('editor.border')};
   ::placeholder {
-    font-size: 14px;
+    font-size: 13px;
     color: ${theme('article.digest')};
     opacity: 0.5;
   }
@@ -36,11 +33,11 @@ export const Wrapper = styled(TextareaAutosize).attrs(
   }
   &:focus {
     border-color: ${theme('editor.borderActive')};
-    box-shadow: -2px 1px 0px 0px rgba(0, 0, 0, 0.2);
+    /* box-shadow: -2px 1px 0px 0px rgba(0, 0, 0, 0.2); */
   }
   &:active {
     border-color: ${theme('editor.borderActive')};
-    box-shadow: -2px 1px 0px 0px rgba(0, 0, 0, 0.2);
+    /* box-shadow: -2px 1px 0px 0px rgba(0, 0, 0, 0.2); */
   }
 
   transition: none;

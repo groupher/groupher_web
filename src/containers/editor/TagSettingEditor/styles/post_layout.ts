@@ -53,12 +53,10 @@ export const Bar = styled.div<TBar>`
     return thin ? 0.6 : 1
   }};
 `
-
 export const Circle = styled.div<{ radius?: number }>`
   ${({ radius }) => `${css.circle(radius || 22)}`};
   background: ${theme('article.title')};
 `
-
 export const Box = styled.div`
   width: 100%;
   height: 40px;
@@ -66,7 +64,6 @@ export const Box = styled.div`
   background: ${theme('article.digest')};
   margin-bottom: 8px;
 `
-
 export const Cover = styled.div`
   width: 90px;
   height: 62px;
@@ -87,7 +84,8 @@ export const Layout = styled.div`
 `
 export const LayoutTitle = styled.div<TActive>`
   opacity: ${({ $active }) => ($active ? 1 : 0.65)};
-  margin-top: -20px;
+  margin-top: -24px;
+  transform: scale(0.9);
 
   ${Layout}:hover & {
     opacity: 1;

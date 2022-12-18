@@ -2,7 +2,7 @@
  * DashboardThread store
  */
 
-import { keys, values, pick, findIndex, clone, isNil, equals } from 'ramda'
+import { keys, values, pick, findIndex, clone, isNil, equals, pluck, uniq, filter } from 'ramda'
 
 import type {
   TCommunity,
@@ -63,7 +63,10 @@ const settingsModalFields = {
   bannerNotifyLayout: T.opt(T.enum(values(BANNER_NOTIFY_LAYOUT)), BANNER_NOTIFY_LAYOUT.DEFAULT),
   bannerNotifyBg: T.opt(T.enum(keys(COLORS)), 'BLACK'),
   changelogLayout: T.opt(T.enum(values(CHANGELOG_LAYOUT)), CHANGELOG_LAYOUT.PREVIEW),
+  // tags
   tags: T.opt(T.array(Tag), mockTags(12)),
+  activeTagCategory: T.maybeNull(T.string),
+  //
   alias: T.opt(T.array(Alias), BUILDIN_ALIAS),
   fileTreeDirection: T.opt(T.enum(['left', 'right']), 'left'),
 
@@ -182,14 +185,29 @@ const DashboardThread = T.model('DashboardThread', {
       }
     },
 
+    get tagCategories(): string[] {
+      const slf = self as TStore
+      const tags = toJS(slf.tags)
+
+      // @ts-ignore
+      return uniq(pluck('group', tags))
+    },
+
     get tagSettings(): TTagSettings {
       const slf = self as TStore
+      const tags = toJS(slf.tags)
+      const { activeTagCategory } = slf
+
+      const filterdTags =
+        activeTagCategory === null ? tags : filter((t: TTag) => t.group === activeTagCategory, tags)
 
       return {
         editingTag: toJS(slf.editingTag),
         settingTag: toJS(slf.settingTag),
-        tags: toJS(slf.tags),
+        tags: filterdTags,
         saving: slf.saving,
+        categories: toJS(slf.tagCategories),
+        activeTagCategory,
       }
     },
 
