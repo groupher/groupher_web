@@ -41,9 +41,7 @@ const LogoLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
             页首 Logo 的展示形式。
             <Inline>
               <ArrowButton
-                onClick={() =>
-                  callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)
-                }
+                onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
                 size="tiny"
                 arrowStyle="simple"
               >
@@ -96,12 +94,7 @@ const LogoLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
             <Divider top={15} />
           </Block>
           <LayoutTitle $active={layout === BRAND_LAYOUT.TEXT}>
-            <CheckLabel
-              title="仅文字"
-              $active={layout === BRAND_LAYOUT.TEXT}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="仅文字" $active={layout === BRAND_LAYOUT.TEXT} top={15} left={-15} />
           </LayoutTitle>
         </Layout>
       </SelectWrapper>

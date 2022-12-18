@@ -13,6 +13,7 @@ import type {
   TSizeSML,
   THelpLayout,
   TFileTreeDirection,
+  TDashboardPath,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'MANAGEMENT' | 'INTEGRATE'
@@ -22,38 +23,18 @@ export type TMenuGroup = {
   icon: ReactNode
   children: TMenuItem[]
 }
-type TMenuItem = { title: string; raw: TTab }
+
+type TMenuItem = { title: string; raw: TDashboardPath }
 
 export type TMenu = {
   [k: TMenuGroupName]: TMenuGroup
 }
 
-export type TTab =
-  | 'overview'
-  // basic-info
-  | 'basic_info'
-  | 'ui'
-  | 'threads'
-  | 'alias'
-  | 'domain'
-  // analysis
-  // --
-  // contents
-  | 'tags'
-  | 'post'
-  | 'kanban'
-  | 'changelog'
-  | 'help'
-  | 'blackhouse'
-  // integrates
-  | 'third_part'
-  | 'admins'
-  | 'widgets'
-
 export type TTagSettings = {
   saving: boolean
   tags: TTag[]
   editingTag: TTag
+  settingTag: TTag
 }
 export type TAlias = {
   raw: string

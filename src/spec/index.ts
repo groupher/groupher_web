@@ -141,6 +141,8 @@ export type {
 
 export type { TColorName } from './color'
 
+export type { TPath, TDashboardPath, TNonCommunityPath } from './route'
+
 export type TRoute = {
   communityPath?: string
   threadPath?: string

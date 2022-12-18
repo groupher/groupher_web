@@ -66,6 +66,7 @@ export { default as CommunityEditorStore } from '@/containers/editor/CommunityEd
 // export { default as WorksEditorStore } from '@/containers/editor/WorksEditor/store'
 
 // GEN: EXPORT CONTAINERS STORE HERE
+export { default as TagSettingEditorStore } from '@/containers/editor/TagSettingEditor/store'
 export { default as AuthWallStore } from '@/containers/tool/AuthWall/store'
 export { default as SubscriberStore } from '@/containers/tool/Subscriber/store'
 export { default as DashboardThreadStore } from '@/containers/thread/DashboardThread/store'

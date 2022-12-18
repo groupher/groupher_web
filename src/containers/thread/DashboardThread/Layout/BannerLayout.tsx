@@ -44,9 +44,7 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
             整体页面的 Header 布局，适用于除文章页的所有页面。
             <Inline>
               <ArrowButton
-                onClick={() =>
-                  callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)
-                }
+                onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
                 size="tiny"
                 arrowStyle="simple"
               >

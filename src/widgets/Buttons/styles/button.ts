@@ -99,19 +99,25 @@ export const ChildrenWrapper = styled.div<TChildrenWrapper>`
   z-index: 2;
 `
 export const RedWrapper = styled(Wrapper)`
+  font-weight: 600;
   color: ${({ ghost }) => (ghost ? theme('baseColor.red') : 'white')};
   background-color: ${({ ghost }) => (!ghost ? theme('baseColor.red') : 'transparent')};
-
   border-color: ${({ noBorder }) => (noBorder ? 'transparent' : theme('baseColor.red'))};
 
   &:hover {
     background-color: ${({ ghost }) => (!ghost ? lighten('#FF634F', 10) : 'transparent')};
+    color: tomato;
+    border-color: tomato;
   }
   &:focus {
     background-color: ${({ ghost }) => (!ghost ? lighten('#FF634F', 10) : 'transparent')};
+    color: tomato;
+    border-color: tomato;
   }
   &:active {
     background-color: ${({ ghost }) => (!ghost ? lighten('#FF634F', 10) : 'transparent')};
+    color: tomato;
+    border-color: tomato;
   }
   transition: all 0.1s;
 `

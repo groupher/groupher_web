@@ -19,14 +19,7 @@ import type {
   TArticlePubSelector,
 } from '@/spec'
 
-import {
-  HCN,
-  TYPE,
-  EVENT,
-  THREAD,
-  NON_COMMUNITY_ROUTE,
-  ARTICLE_THREAD,
-} from '@/constant'
+import { HCN, TYPE, EVENT, THREAD, NON_COMMUNITY_ROUTE, ARTICLE_THREAD } from '@/constant'
 
 import BStore from './bstore'
 import { scrollToHeader } from './dom'
@@ -53,8 +46,7 @@ export const logout = (): void => {
  * shortcut for close Drawer
  *
  */
-export const closeDrawer = (type = ''): void =>
-  send(EVENT.DRAWER.CLOSE, { type })
+export const closeDrawer = (type = ''): void => send(EVENT.DRAWER.CLOSE, { type })
 
 /**
  * shortcut for call cashier
@@ -121,6 +113,10 @@ export const callGEditor = (): void => {
   send(EVENT.DRAWER.OPEN, { type: TYPE.DRAWER.G_EDITOR })
 }
 
+export const callTagSettingEditor = (): void => {
+  send(EVENT.DRAWER.OPEN, { type: TYPE.DRAWER.TAG_SETTING })
+}
+
 export const callAuth = (): void => {
   send(EVENT.AUTH, {})
 }
@@ -132,10 +128,7 @@ export const callSyncSelector = (data: TArticlePubSelector): void => {
   send(EVENT.ARTICLE_SELECTOR, { data })
 }
 
-export const upvoteOnArticleList = (
-  article: TArticle,
-  viewerHasUpvoted: boolean,
-): void => {
+export const upvoteOnArticleList = (article: TArticle, viewerHasUpvoted: boolean): void => {
   send(EVENT.UPVOTE_ON_ARTICLE_LIST, {
     article,
     viewerHasUpvoted,
@@ -236,11 +229,7 @@ export const previewArticle = (article: TArticle): void => {
   send(EVENT.DRAWER.OPEN, { type, data })
 }
 
-export const setArticleTag = (
-  community: TCommunity,
-  thread: TThread,
-  tags: TTag[],
-): void => {
+export const setArticleTag = (community: TCommunity, thread: TThread, tags: TTag[]): void => {
   if (!community.id) {
     console.error('should set community for tag setter')
     return
@@ -248,17 +237,10 @@ export const setArticleTag = (
   send(EVENT.SET_TAG, { community, thread, tags })
 }
 
-export const selectCommunity = (
-  communityStyle?: TCommunitySetterStyle,
-): void => {
+export const selectCommunity = (communityStyle?: TCommunitySetterStyle): void => {
   send(EVENT.SELECT_COMMUNITY, { communityStyle })
 }
 
-export const errRescue = ({
-  type,
-  operation,
-  details,
-  path,
-}: TGQLError): void => {
+export const errRescue = ({ type, operation, details, path }: TGQLError): void => {
   send(EVENT.ERR_RESCUE, { type, data: { operation, details, path } })
 }

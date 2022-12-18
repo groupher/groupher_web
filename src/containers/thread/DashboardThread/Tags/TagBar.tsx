@@ -3,10 +3,11 @@ import { FC, memo } from 'react'
 import type { TTag } from '@/spec'
 import { COLORS } from '@/constant'
 
-import { SETTING_FIELD } from '../constant'
+import { callTagSettingEditor } from '@/utils/signal'
 import { Space, SpaceGrow } from '@/widgets/Common'
 import ColorSelector from '@/widgets/ColorSelector'
 
+import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'
 
 import {
@@ -18,20 +19,26 @@ import {
   Inputer,
   Actions,
   EditIcon,
-  CloseIcon,
+  SettingIcon,
 } from '../styles/tags/tag_bar'
-import { updateEditingTag } from '../logic'
+import { updateEditingTag, updateSettingTag } from '../logic'
 
 type TProps = {
   tag: TTag
   editingTag: TTag
+  settingTag: TTag
 }
 
-const TagBar: FC<TProps> = ({ tag, editingTag }) => {
+const TagBar: FC<TProps> = ({ tag, editingTag, settingTag }) => {
   const isEditMode = editingTag?.id === tag.id
 
   return (
-    <Wrapper key={tag.id} isEditMode={isEditMode}>
+    <Wrapper
+      key={tag.id}
+      isEditMode={isEditMode}
+      isSetting={settingTag?.id === tag.id}
+      hasSettingTag={settingTag !== null}
+    >
       <SavingBar isTouched={isEditMode} field={SETTING_FIELD.TAG}>
         {isEditMode ? (
           <ColorSelector
@@ -51,9 +58,7 @@ const TagBar: FC<TProps> = ({ tag, editingTag }) => {
           <InputWrapper>
             <Inputer
               value={editingTag.title}
-              onChange={(e) =>
-                updateEditingTag({ ...editingTag, title: e.target.value })
-              }
+              onChange={(e) => updateEditingTag({ ...editingTag, title: e.target.value })}
               autoFocus
             />
           </InputWrapper>
@@ -64,8 +69,13 @@ const TagBar: FC<TProps> = ({ tag, editingTag }) => {
         {!isEditMode && (
           <Actions>
             <EditIcon onClick={() => updateEditingTag(tag)} />
-            <Space right={4} />
-            <CloseIcon />
+            <Space right={8} />
+            <SettingIcon
+              onClick={() => {
+                updateSettingTag(tag)
+                callTagSettingEditor()
+              }}
+            />
           </Actions>
         )}
       </SavingBar>

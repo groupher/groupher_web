@@ -25,6 +25,7 @@ import {
   THREAD,
   SIZE,
   HELP_LAYOUT,
+  ROUTE,
 } from '@/constant'
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
@@ -41,7 +42,7 @@ import type {
   TWidgetType,
 } from './spec'
 
-import { TAB, SETTING_FIELD, BUILDIN_ALIAS, WIDGET_TYPE } from './constant'
+import { SETTING_FIELD, BUILDIN_ALIAS, WIDGET_TYPE } from './constant'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:DashboardThread')
@@ -77,8 +78,9 @@ const InitSettings = T.model('DashboardInit', settingsModalFields)
 
 const DashboardThread = T.model('DashboardThread', {
   saving: T.opt(T.bool, false),
-  curTab: T.opt(T.enum(values(TAB)), TAB.UI),
+  curTab: T.opt(T.enum(values(ROUTE.DASHBOARD)), ROUTE.DASHBOARD.INFO),
   editingTag: T.maybeNull(Tag),
+  settingTag: T.maybeNull(Tag),
   editingAlias: T.maybeNull(Alias),
   ...settingsModalFields,
   initSettings: T.opt(InitSettings, {}),
@@ -185,6 +187,7 @@ const DashboardThread = T.model('DashboardThread', {
 
       return {
         editingTag: toJS(slf.editingTag),
+        settingTag: toJS(slf.settingTag),
         tags: toJS(slf.tags),
         saving: slf.saving,
       }

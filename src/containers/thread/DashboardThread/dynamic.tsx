@@ -7,6 +7,10 @@ export const BasicInfo = dynamic(() => import('./BasicInfo'), {
   loading: () => <LavaLampLoading />,
 })
 
+export const Layout = dynamic(() => import('./Layout'), {
+  loading: () => <LavaLampLoading />,
+})
+
 export const UI = dynamic(() => import('./UI'), {
   loading: () => <LavaLampLoading />,
 })
