@@ -35,6 +35,8 @@ export type TTagSettings = {
   tags: TTag[]
   editingTag: TTag
   settingTag: TTag
+  categories: string[]
+  activeTagCategory: string
 }
 export type TAlias = {
   raw: string
