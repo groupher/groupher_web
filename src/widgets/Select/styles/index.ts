@@ -14,8 +14,8 @@ export const OptionRow = styled.div`
 `
 export const OptionTitle = styled.div<TActive>`
   font-size: 14px;
-  color: ${theme('article.title')};
-  /* background: ${({ active }) => (active ? 'white' : 'transparent')}; */
+  /* color: ${theme('article.title')}; */
+  color: ${({ active }) => (active ? 'white' : 'transparent')};
   padding: 0 5px;
   border-radius: 3px;
 `

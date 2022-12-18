@@ -13,7 +13,7 @@ import ReactSelect from 'react-select'
 import type { TSelectOption, TThemeMap } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
-import { Option, IndicatorsContainer } from './components'
+import { IndicatorsContainer } from './components'
 
 import { Wrapper, getSelectStyles } from './styles'
 
@@ -57,10 +57,18 @@ const Select: FC<TProps> = ({
         placeholder={placeholder}
         styles={styles}
         // @ts-ignore
-        components={{ IndicatorsContainer, Option }}
+        components={{ IndicatorsContainer }}
         onChange={onChange}
         closeMenuOnSelect={closeMenuOnSelect}
         isMulti={isMulti}
+        theme={(theme) => ({
+          ...theme,
+          borderRadius: 2,
+          colors: {
+            ...theme.colors,
+            primary: 'black',
+          },
+        })}
         isClearable={isClearable}
       />
     </Wrapper>

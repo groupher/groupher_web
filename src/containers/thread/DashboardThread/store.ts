@@ -185,6 +185,14 @@ const DashboardThread = T.model('DashboardThread', {
       }
     },
 
+    get tagCategories(): string[] {
+      const slf = self as TStore
+      const tags = toJS(slf.tags)
+
+      // @ts-ignore
+      return uniq(pluck('group', tags))
+    },
+
     get tagSettings(): TTagSettings {
       const slf = self as TStore
       const tags = toJS(slf.tags)
@@ -198,8 +206,7 @@ const DashboardThread = T.model('DashboardThread', {
         settingTag: toJS(slf.settingTag),
         tags: filterdTags,
         saving: slf.saving,
-        // @ts-ignore
-        categories: uniq(pluck('group', tags)),
+        categories: toJS(slf.tagCategories),
         activeTagCategory,
       }
     },

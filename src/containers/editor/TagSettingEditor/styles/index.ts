@@ -4,6 +4,8 @@ import Link from 'next/link'
 import type { TTestable } from '@/spec'
 import css, { theme } from '@/utils/css'
 
+import Input from '@/widgets/Input'
+
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TTestable>`
@@ -30,23 +32,29 @@ export const SelectorWrapper = styled.div`
   margin-top: 10px;
 `
 export const Title = styled.div`
-  font-size: 16px;
+  font-size: 13px;
   color: ${theme('article.title')};
   font-weight: 600;
   padding-left: 28px;
   margin-bottom: 8px;
 `
 export const Desc = styled.div`
-  font-size: 13px;
+  font-size: 12px;
   color: ${theme('article.digest')};
   padding: 0 28px;
   margin-bottom: 10px;
 `
 export const Navi = styled(Link)`
-  font-size: 13px;
+  font-size: 12px;
   color: ${theme('link')};
   text-decoration: none;
   cursor: pointer;
   margin-left: 1px;
   margin-right: 2px;
+`
+
+export const Inputer = styled(Input)`
+  width: 100%;
+  margin-left: 28px;
+  width: 360px;
 `
