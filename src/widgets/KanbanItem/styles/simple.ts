@@ -55,7 +55,8 @@ export const Footer = styled.div`
   ${css.flex('align-center', 'justify-between')};
   font-size: 12px;
   color: ${theme('article.info')};
-  margin-top: 18px;
+  margin-top: 10px;
+  margin-left: -2px;
 `
 export const Author = styled.div`
   ${css.flex('align-center')};

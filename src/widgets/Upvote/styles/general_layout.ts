@@ -16,7 +16,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 `
 export const UpvoteBtnWrapper = styled.div`
   transform: scale(0.8);
-  margin-top: 5px;
+  margin-top: 6px;
 `
 export const DescWrapper = styled.div`
   ${css.flex('align-center')};

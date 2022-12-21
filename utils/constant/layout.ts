@@ -6,6 +6,7 @@ import type {
   TTopbarLayout,
   TBannerNotifyLayout,
   TPostLayout,
+  TKanbanLayout,
   TChangelogLayout,
   TSnakeUpperCase,
   THelpLayout,
@@ -51,6 +52,11 @@ export const POST_LAYOUT = {
   MINIMAL: 'minimal',
   COVER: 'cover',
 } as Record<TSnakeUpperCase<TPostLayout>, TPostLayout>
+
+export const KANBAN_LAYOUT = {
+  SIMPLE: 'simple',
+  FULL: 'full',
+} as Record<TSnakeUpperCase<TKanbanLayout>, TKanbanLayout>
 
 export const CHANGELOG_LAYOUT = {
   PREVIEW: 'preview',

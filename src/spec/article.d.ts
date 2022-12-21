@@ -162,12 +162,14 @@ export type TBannerLayout = 'header' | 'tabber'
 export type TBannerNotifyLayout = 'default' | 'center'
 export type TTopbarLayout = 'yes' | 'no'
 export type TPostLayout = 'upvote_first' | 'comment_first' | 'card' | 'minimal' | 'cover'
+export type TKanbanLayout = 'simple' | 'full'
 export type TChangelogLayout = 'preview' | 'outline'
 
 export type TGlobalLayout = {
   primaryColor: TColorName
   brand: TBrandLayout
   post: TPostLayout
+  kanban: TKanbanLayout
   help: THelpLayout
   banner: TBannerLayout
   changelog: TChangelogLayout

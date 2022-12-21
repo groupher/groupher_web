@@ -105,6 +105,7 @@ export type {
   TBannerNotifyLayout,
   TTopbarLayout,
   TPostLayout,
+  TKanbanLayout,
   TChangelogLayout,
   TGlobalLayout,
   TCommentsState,

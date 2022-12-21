@@ -21,6 +21,7 @@ export const ColumnsWrapper = styled.div`
 export const Column = styled.div`
   ${css.flexColumn('align-start')};
   width: 32%;
+  min-width: 32%;
   min-height: 70vh;
   /* border: 1px solid; */
   /* border-color: ${theme('article.info')}; */
@@ -35,6 +36,7 @@ export const Body = styled.div`
   background: ${theme('hoverBg')};
   padding: 8px;
   border-radius: 6px;
+  width: 100%;
 `
 export const SubTitle = styled.div`
   color: ${theme('article.digest')};

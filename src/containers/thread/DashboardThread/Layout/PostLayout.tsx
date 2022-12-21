@@ -26,7 +26,7 @@ import {
   Column,
   UpvoteIcon,
   CommentIcon,
-} from '../styles/ui/post_list_layout'
+} from '../styles/ui/post_layout'
 import { edit } from '../logic'
 
 type TProps = {

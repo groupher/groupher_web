@@ -4,7 +4,7 @@
 
 // import {} from 'ramda'
 
-import type { TCommunity, TRootStore } from '@/spec'
+import type { TCommunity, TKanbanLayout, TRootStore } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
@@ -17,6 +17,11 @@ const KanbanThread = T.model('KanbanThread', {})
       const root = getParent(self) as TRootStore
 
       return toJS(root.viewing.community)
+    },
+    get layout(): TKanbanLayout {
+      const root = getParent(self) as TRootStore
+
+      return toJS(root.dashboardThread.kanbanLayout)
     },
   }))
   .actions((self) => ({
