@@ -3,6 +3,7 @@ import type {
   TDashboardLayout,
   TBrandLayout,
   TBannerLayout,
+  TTopbarLayout,
   TBannerNotifyLayout,
   TPostLayout,
   TChangelogLayout,
@@ -32,6 +33,11 @@ export const BANNER_LAYOUT = {
   HEADER: 'header',
   TABBER: 'tabber',
 } as Record<TSnakeUpperCase<TBannerLayout>, TBannerLayout>
+
+export const TOPBAR_LAYOUT = {
+  YES: 'yes',
+  NO: 'no',
+} as Record<TSnakeUpperCase<TTopbarLayout>, TTopbarLayout>
 
 export const BANNER_NOTIFY_LAYOUT = {
   DEFAULT: 'default',

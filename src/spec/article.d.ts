@@ -160,6 +160,7 @@ export type TUpvoteLayout =
 export type TBrandLayout = 'both' | 'logo' | 'text'
 export type TBannerLayout = 'header' | 'tabber'
 export type TBannerNotifyLayout = 'default' | 'center'
+export type TTopbarLayout = 'yes' | 'no'
 export type TPostLayout = 'upvote_first' | 'comment_first' | 'card' | 'minimal' | 'cover'
 export type TChangelogLayout = 'preview' | 'outline'
 
@@ -172,6 +173,8 @@ export type TGlobalLayout = {
   changelog: TChangelogLayout
   bannerNotify: TBannerNotifyLayout
   bannerNotifyBg: TColorName
+  topbar: TTopbarLayout
+  topbarBg: TColorName
   fileTreeDirection: TFileTreeDirection
 }
 

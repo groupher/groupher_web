@@ -103,6 +103,7 @@ export type {
   TBrandLayout,
   TBannerLayout,
   TBannerNotifyLayout,
+  TTopbarLayout,
   TPostLayout,
   TChangelogLayout,
   TGlobalLayout,
