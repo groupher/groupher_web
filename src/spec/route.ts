@@ -1,7 +1,7 @@
 export type TNonCommunityPath = 'apply_community'
 
 export type TDashboardPath =
-  | 'overview'
+  | 'dashboard'
   // basic-info
   | 'info'
   | 'ui'

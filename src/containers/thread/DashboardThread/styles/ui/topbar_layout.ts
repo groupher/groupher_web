@@ -1,18 +1,13 @@
 import styled from 'styled-components'
-import { includes } from 'ramda'
 
 import type { TActive, TColorName } from '@/spec'
-import { COLORS, COLOR_NAME } from '@/constant'
+import { COLORS } from '@/constant'
 
 import css, { theme } from '@/utils/css'
-import { lighten, darken } from '@/utils/color'
 
 import { Divider } from '@/widgets/Common'
-import CrossSVG from '@/icons/CloseCross'
-import ArrowSVG from '@/icons/Arrow'
-import NotifySVG from '@/icons/Trumpet'
 
-import { BaseSection, BlockBase, Bar } from '.'
+import { BaseSection, BlockBase } from '.'
 
 export { Bar, Circle } from '.'
 
@@ -21,12 +16,12 @@ export const SelectWrapper = styled.div`
   ${css.flex('align-center')};
   width: 100%;
 `
-type TNotifyBar = { center?: boolean; bg: TColorName }
-export const NotifyBar = styled.div<TNotifyBar>`
+type TTopBar = { center?: boolean; bg: TColorName }
+export const TopBar = styled.div<TTopBar>`
   ${css.flex('align-center')};
   justify-content: ${({ center }) => (center ? 'center' : 'flex-start')};
   width: calc(100% + 2px);
-  height: 17px;
+  height: 5px;
   margin-top: -1px;
   margin-left: -1px;
   border-top-left-radius: 6px;
@@ -36,39 +31,6 @@ export const NotifyBar = styled.div<TNotifyBar>`
   background: ${({ bg }) => COLORS[bg]};
   padding: 0 20px;
   padding-bottom: 2px;
-`
-export const NotifyDesc = styled.div`
-  color: white;
-  font-size: 8px;
-  font-weight: 600;
-`
-export const NotifySolidLink = styled.div<{ bg: TColorName }>`
-  background: ${({ bg }) =>
-    includes(bg, [COLOR_NAME.BLACK]) ? lighten(COLORS[bg], 6) : darken(COLORS[bg], 10)};
-
-  color: white;
-  border-radius: 5px;
-  font-size: 6px;
-  color: ${'article.title'};
-  font-weight: bold;
-  padding: 0 4px;
-`
-export const NotifyIcon = styled(NotifySVG)`
-  ${css.size(8)};
-  fill: white;
-  margin-right: 6px;
-`
-export const CrossIcon = styled(CrossSVG)`
-  fill: white;
-  ${css.size(8)};
-  opacity: 0.8;
-  margin-right: -3px;
-`
-export const ArrowIcon = styled(ArrowSVG)`
-  fill: white;
-  ${css.size(8)};
-  opacity: 0.8;
-  transform: rotate(180deg);
 `
 export const Main = styled.div`
   ${css.flex()};
@@ -107,10 +69,7 @@ export const Block = styled(BlockBase)`
 export const DividerLine = styled(Divider)`
   opacity: 0.8;
 `
-export const NotifyTextBar = styled(Bar)`
-  width: ${({ long }) => `${long || 10}px`};
-  background: white;
-`
+
 export const BgWrapper = styled.div`
   ${css.flex('align-center')};
   font-size: 12px;

@@ -18,6 +18,7 @@ import { mockTags } from '@/utils/mock'
 import {
   BRAND_LAYOUT,
   BANNER_LAYOUT,
+  TOPBAR_LAYOUT,
   BANNER_NOTIFY_LAYOUT,
   CHANGELOG_LAYOUT,
   POST_LAYOUT,
@@ -60,6 +61,8 @@ const settingsModalFields = {
   helpLayout: T.opt(T.enum(values(HELP_LAYOUT)), HELP_LAYOUT.FULL),
   brandLayout: T.opt(T.enum(values(BRAND_LAYOUT)), BRAND_LAYOUT.BOTH),
   bannerLayout: T.opt(T.enum(values(BANNER_LAYOUT)), BANNER_LAYOUT.HEADER),
+  topbarLayout: T.opt(T.enum(values(TOPBAR_LAYOUT)), TOPBAR_LAYOUT.YES),
+  topbarBg: T.opt(T.enum(keys(COLORS)), 'BLACK'),
   bannerNotifyLayout: T.opt(T.enum(values(BANNER_NOTIFY_LAYOUT)), BANNER_NOTIFY_LAYOUT.DEFAULT),
   bannerNotifyBg: T.opt(T.enum(keys(COLORS)), 'BLACK'),
   changelogLayout: T.opt(T.enum(values(CHANGELOG_LAYOUT)), CHANGELOG_LAYOUT.PREVIEW),
@@ -98,6 +101,8 @@ const DashboardThread = T.model('DashboardThread', {
         postLayout,
         helpLayout,
         bannerLayout,
+        topbarLayout,
+        topbarBg,
         bannerNotifyLayout,
         bannerNotifyBg,
         fileTreeDirection,
@@ -111,6 +116,8 @@ const DashboardThread = T.model('DashboardThread', {
         help: helpLayout,
         changelog: changelogLayout,
         banner: bannerLayout,
+        topbar: topbarLayout,
+        topbarBg,
         bannerNotify: bannerNotifyLayout,
         bannerNotifyBg,
         fileTreeDirection: fileTreeDirection as TFileTreeDirection,
@@ -135,11 +142,13 @@ const DashboardThread = T.model('DashboardThread', {
       const brandLayoutTouched = _isChanged('brandLayout')
 
       const bannerLayoutTouched = _isChanged('bannerLayout')
-      const bannerNotifyBgTouched = _isChanged('bannerNotifyBg')
       const fileTreeDirectionTouched = _isChanged('fileTreeDirection')
       const postLayoutTouched = _isChanged('postLayout')
       const helpLayoutTouched = _isChanged('helpLayout')
       const bannerNotifyLayoutTouched = _isChanged('bannerNotifyLayout')
+      const bannerNotifyBgTouched = _isChanged('bannerNotifyBg')
+      const topbarLayoutTouched = _isChanged('topbarLayout')
+      const topbarBgTouched = _isChanged('topbarBg')
       const changelogLayoutTouched = _isChanged('changelogLayout')
 
       const aliasTouched = !isNil(slf.editingAlias)
@@ -157,6 +166,8 @@ const DashboardThread = T.model('DashboardThread', {
         primaryColor: primaryColorTouched,
         brandLayout: brandLayoutTouched,
         bannerLayout: bannerLayoutTouched,
+        topbarLayout: topbarLayoutTouched,
+        topbarBg: topbarBgTouched,
         bannerNotifyLayout: bannerNotifyLayoutTouched,
         bannerNotifyBg: bannerNotifyBgTouched,
         fileTreeDirection: fileTreeDirectionTouched,
@@ -177,6 +188,8 @@ const DashboardThread = T.model('DashboardThread', {
           bannerLayoutTouched ||
           bannerNotifyLayoutTouched ||
           bannerNotifyBgTouched ||
+          topbarLayoutTouched ||
+          topbarBgTouched ||
           fileTreeDirectionTouched ||
           postLayoutTouched ||
           changelogLayoutTouched,
@@ -239,6 +252,8 @@ const DashboardThread = T.model('DashboardThread', {
             'brandLayout',
             'bannerLayout',
             'fileTreeDirection',
+            'topbarLayout',
+            'topbarBg',
             'bannerNotifyLayout',
             'bannerNotifyBg',
             'postLayout',

@@ -6,6 +6,7 @@ import type {
   TPostLayout,
   TChangelogLayout,
   TBrandLayout,
+  TTopbarLayout,
   TBannerLayout,
   TBannerNotifyLayout,
   TTag,
@@ -55,6 +56,8 @@ export type TUiSettings = {
   wallpaper: TWallpaper
   primaryColor: TColorName
   brandLayout: TBrandLayout
+  topbarLayout: TTopbarLayout
+  topbarBg: TColorName
   bannerLayout: TBannerLayout
   helpLayout: THelpLayout
   bannerNotifyLayout: TBannerNotifyLayout
@@ -76,6 +79,8 @@ export type TTouched = {
   brandLayout: boolean
   bannerLayout: boolean
   helpLayout: boolean
+  topbarLayout: boolean
+  topbarBg: boolean
   bannerNotifyLayout: boolean
   bannerNotifyBg: boolean
   fileTreeDirection: boolean
@@ -99,6 +104,8 @@ export type TSettingField =
   | 'brandLayout'
   | 'bannerLayout'
   | 'helpLayout'
+  | 'topbarLayout'
+  | 'topbarBg'
   | 'bannerNotifyLayout'
   | 'bannerNotifyBg'
   | 'fileTreeDirection'

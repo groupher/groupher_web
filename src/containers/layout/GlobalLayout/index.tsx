@@ -10,8 +10,9 @@ import useMobileDetect from '@groupher/use-mobile-detect-hook'
 import type { TSEO, TMetric } from '@/spec'
 import { bond } from '@/utils/mobx'
 
+import { TOPBAR_LAYOUT } from '@/constant'
 import ThemePalette from '@/containers/layout/ThemePalette'
-import BannerNotify from '@/widgets/BannerNotify'
+// import BannerNotify from '@/widgets/BannerNotify'
 import Footer from '@/widgets/Footer'
 // import CustomScroller from '@/widgets/CustomScroller'
 
@@ -76,12 +77,16 @@ const GlobalLayoutContainer: FC<TProps> = ({
         <ScrollWrapper>
           <Wrapper>
             <SEO metric={metric} config={seoConfig} />
-            <InnerWrapper metric={metric}>
-              <BannerNotify
+            <InnerWrapper
+              metric={metric}
+              hasTopbar={globalLayout.topbar === TOPBAR_LAYOUT.YES}
+              topbarBg={globalLayout.topbarBg}
+            >
+              {/* <BannerNotify
                 metric={metric}
                 layout={globalLayout.bannerNotify}
                 bg={globalLayout.bannerNotifyBg}
-              />
+              /> */}
               <ContentWrapper>
                 <BodyWrapper isMobile={isMobile}>
                   {childrenWithProps(children, { metric })}

@@ -4,7 +4,7 @@ import { Provider } from 'mobx-react'
 
 import type { TCommunity } from '@/spec'
 import { PAGE_SIZE } from '@/config'
-import { HCN, THREAD, METRIC } from '@/constant'
+import { HCN, THREAD, METRIC, ROUTE } from '@/constant'
 import { useStore } from '@/stores/init'
 
 import {
@@ -109,6 +109,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       viewing: {
         community,
         activeThread: thread,
+      },
+      dashboardThread: {
+        curTab: ROUTE.DASHBOARD.DASHBOARD,
       },
     },
     {

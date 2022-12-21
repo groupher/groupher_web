@@ -59,6 +59,7 @@ export const edit = (e: TEditValue, key: string): void => {
  */
 export const onSave = (field: TSettingField, force = false): void => {
   store.mark({ saving: true })
+  console.log('## onSave: ', field)
   store.onSave(field)
 
   const time = force ? 0 : 1200

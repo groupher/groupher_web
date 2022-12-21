@@ -11,6 +11,7 @@ import { ROUTE } from '@/constant'
 
 import SideMenu from './SideMenu'
 import {
+  Overview,
   BasicInfo,
   UI,
   Layout,
@@ -47,6 +48,7 @@ const DashboardThreadContainer: FC<TProps> = ({
     <Wrapper testid={testid}>
       <SideMenu curTab={curTab} touched={touched} />
       <MainWrapper>
+        {curTab === DASHBOARD.DASHBOARD && <Overview />}
         {curTab === DASHBOARD.INFO && <BasicInfo />}
         {curTab === DASHBOARD.UI && <UI settings={uiSettings} touched={touched} />}
         {curTab === DASHBOARD.LAYOUT && <Layout settings={uiSettings} touched={touched} />}

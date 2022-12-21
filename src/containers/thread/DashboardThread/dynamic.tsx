@@ -2,6 +2,10 @@ import dynamic from 'next/dynamic'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
+export const Overview = dynamic(() => import('./Overview'), {
+  loading: () => <LavaLampLoading />,
+})
+
 // basic
 export const BasicInfo = dynamic(() => import('./BasicInfo'), {
   loading: () => <LavaLampLoading />,
