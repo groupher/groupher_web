@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
-import type { TMetric } from '@/spec'
+import type { TColorName, TMetric } from '@/spec'
+import { COLORS, COLOR_NAME } from '@/constant'
 // import { METRIC } from '@/constant'
 // import { ASSETS_ENDPOINT } from '@/config'
 import css, { theme } from '@/utils/css'
@@ -24,7 +25,7 @@ export const ScrollWrapper = styled.div`
   width: 100%;
 `
 
-type TInner = { metric: TMetric }
+type TInner = { metric: TMetric; hasTopbar: boolean; topbarBg: TColorName }
 export const InnerWrapper = styled.div<TInner>`
   ${css.flexColumn()};
   ${({ metric }) => css.fitPageWidth(metric)};
@@ -35,8 +36,10 @@ export const InnerWrapper = styled.div<TInner>`
   background: ${theme('bodyBg')};
   transition: all 0.2s;
   z-index: 1;
-  border-top: 1px solid;
-  border-top-color: ${theme('divider')};
+  border-top: ${({ hasTopbar }) => (hasTopbar ? '3px solid;' : '1px solid;')};
+  border-top-color: ${({ hasTopbar, topbarBg }) =>
+    hasTopbar ? COLORS[topbarBg] : theme('divider')};
+
   ${css.media.tablet`
     position: relative;
     padding-left: 0;
