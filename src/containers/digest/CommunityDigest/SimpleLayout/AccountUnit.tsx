@@ -7,7 +7,6 @@ import { callSubscriber, callAuth } from '@/utils/signal'
 
 import {
   Wrapper,
-  Avatar,
   DashboardIcon,
   NotifyIcon,
   SubscribeButton,
@@ -19,16 +18,11 @@ import {
 const AccountUnit: FC = () => {
   return (
     <Wrapper>
-      <SubscribeButton
-        type="primary"
-        ghost
-        size="small"
-        onClick={callSubscriber}
-      >
+      <SubscribeButton type="primary" ghost size="small" onClick={callSubscriber}>
         订阅
       </SubscribeButton>
 
-      <Link href={`/home/${ROUTE.DASHBOARD}`} prefetch={false}>
+      <Link href={`/home/${ROUTE.DASHBOARD.DASHBOARD}`} prefetch={false}>
         <DashboardIcon />
       </Link>
 
