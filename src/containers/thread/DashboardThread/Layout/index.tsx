@@ -6,7 +6,8 @@ import Portal from '../Portal'
 import BrandLayout from './BrandLayout'
 import BannerLayout from './BannerLayout'
 import HelpLayout from './HelpLayout'
-import PostListLayout from './PostListLayout'
+import PostLayout from './PostLayout'
+import KanbanLayout from './KanbanLayout'
 import TopbarLayout from './TopbarLayout'
 import BannerNotifyLayout from './BannerNotifyLayout'
 
@@ -28,6 +29,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
     bannerNotifyLayout,
     bannerNotifyBg,
     postLayout,
+    kanbanLayout,
     fileTreeDirection,
     saving,
   } = settings
@@ -39,7 +41,9 @@ const UI: FC<TProps> = ({ settings, touched }) => {
       <Divider top={20} bottom={60} />
       <BannerLayout layout={bannerLayout} isTouched={touched.bannerLayout} saving={saving} />
       <Divider top={20} bottom={60} />
-      <PostListLayout layout={postLayout} isTouched={touched.postLayout} saving={saving} />
+      <PostLayout layout={postLayout} isTouched={touched.postLayout} saving={saving} />
+      <Divider top={20} bottom={60} />
+      <KanbanLayout layout={kanbanLayout} isTouched={touched.kanbanLayout} saving={saving} />
       <Divider top={20} bottom={60} />
       <HelpLayout
         layout={helpLayout}

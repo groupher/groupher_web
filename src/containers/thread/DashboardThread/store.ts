@@ -22,6 +22,7 @@ import {
   BANNER_NOTIFY_LAYOUT,
   CHANGELOG_LAYOUT,
   POST_LAYOUT,
+  KANBAN_LAYOUT,
   COLORS,
   THREAD,
   SIZE,
@@ -58,6 +59,7 @@ const Alias = T.model('Alias', {
 const settingsModalFields = {
   primaryColor: T.opt(T.enum(keys(COLORS)), 'BLACK'),
   postLayout: T.opt(T.enum(values(POST_LAYOUT)), POST_LAYOUT.UPVOTE_FIRST),
+  kanbanLayout: T.opt(T.enum(values(KANBAN_LAYOUT)), KANBAN_LAYOUT.SIMPLE),
   helpLayout: T.opt(T.enum(values(HELP_LAYOUT)), HELP_LAYOUT.FULL),
   brandLayout: T.opt(T.enum(values(BRAND_LAYOUT)), BRAND_LAYOUT.BOTH),
   bannerLayout: T.opt(T.enum(values(BANNER_LAYOUT)), BANNER_LAYOUT.HEADER),
@@ -99,6 +101,7 @@ const DashboardThread = T.model('DashboardThread', {
         primaryColor,
         changelogLayout,
         postLayout,
+        kanbanLayout,
         helpLayout,
         bannerLayout,
         topbarLayout,
@@ -113,6 +116,7 @@ const DashboardThread = T.model('DashboardThread', {
         primaryColor,
         brand: brandLayout,
         post: postLayout,
+        kanban: kanbanLayout,
         help: helpLayout,
         changelog: changelogLayout,
         banner: bannerLayout,
@@ -144,6 +148,7 @@ const DashboardThread = T.model('DashboardThread', {
       const bannerLayoutTouched = _isChanged('bannerLayout')
       const fileTreeDirectionTouched = _isChanged('fileTreeDirection')
       const postLayoutTouched = _isChanged('postLayout')
+      const kanbanLayoutTouched = _isChanged('kanbanLayout')
       const helpLayoutTouched = _isChanged('helpLayout')
       const bannerNotifyLayoutTouched = _isChanged('bannerNotifyLayout')
       const bannerNotifyBgTouched = _isChanged('bannerNotifyBg')
@@ -172,6 +177,7 @@ const DashboardThread = T.model('DashboardThread', {
         bannerNotifyBg: bannerNotifyBgTouched,
         fileTreeDirection: fileTreeDirectionTouched,
         postLayout: postLayoutTouched,
+        kanbanLayout: kanbanLayoutTouched,
         helpLayout: helpLayoutTouched,
         changelogLayout: changelogLayoutTouched,
         alias: aliasTouched,
@@ -192,6 +198,7 @@ const DashboardThread = T.model('DashboardThread', {
           topbarBgTouched ||
           fileTreeDirectionTouched ||
           postLayoutTouched ||
+          kanbanLayoutTouched ||
           changelogLayoutTouched,
 
         widgets: widgetsPrimaryColorTouched || widgetsThreadsTouched || widgetsSizeTouched,
@@ -257,6 +264,7 @@ const DashboardThread = T.model('DashboardThread', {
             'bannerNotifyLayout',
             'bannerNotifyBg',
             'postLayout',
+            'kanbanLayout',
             'helpLayout',
             'changelogLayout',
           ],

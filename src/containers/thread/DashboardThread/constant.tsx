@@ -8,6 +8,7 @@ import { Icon } from './styles/side_menu'
 export const SETTING_FIELD = {
   PRIMARY_COLOR: 'primaryColor',
   POST_LAYOUT: 'postLayout',
+  KANBAN_LAYOUT: 'kanbanLayout',
   HELP_LAYOUT: 'helpLayout',
   BRAND_LAYOUT: 'brandLayout',
   BANNER_LAYOUT: 'bannerLayout',

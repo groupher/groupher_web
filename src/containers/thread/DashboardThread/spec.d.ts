@@ -15,6 +15,7 @@ import type {
   THelpLayout,
   TFileTreeDirection,
   TDashboardPath,
+  TKanbanLayout,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'MANAGEMENT' | 'INTEGRATE'
@@ -64,6 +65,7 @@ export type TUiSettings = {
   bannerNotifyBg: TColorName
   fileTreeDirection: TFileTreeDirection
   postLayout: TPostLayout
+  kanbanLayout: TKanbanLayout
   changelogLayout: TChangelogLayout
 }
 export type TWidgetsSettings = {
@@ -85,6 +87,7 @@ export type TTouched = {
   bannerNotifyBg: boolean
   fileTreeDirection: boolean
   postLayout: boolean
+  kanbanLayout: boolean
   changelogLayout: boolean
   alias: boolean
   tags: boolean
@@ -101,6 +104,7 @@ export type TTouched = {
 export type TSettingField =
   | 'primaryColor'
   | 'postLayout'
+  | 'kanbanLayout'
   | 'brandLayout'
   | 'bannerLayout'
   | 'helpLayout'

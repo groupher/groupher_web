@@ -37,11 +37,10 @@ type TProps = {
   testid?: string
 }
 
-const KanbanThreadContainer: FC<TProps> = ({
-  kanbanThread: store,
-  testid = 'kanban-thread',
-}) => {
+const KanbanThreadContainer: FC<TProps> = ({ kanbanThread: store, testid = 'kanban-thread' }) => {
   useInit(store)
+
+  const { layout } = store
 
   // see: https://stackoverflow.com/questions/72673362/error-text-content-does-not-match-server-rendered-html
   const [hydrated, setHydrated] = useState(false)
@@ -52,7 +51,6 @@ const KanbanThreadContainer: FC<TProps> = ({
   return (
     <Wrapper testid={testid}>
       <Actions />
-
       <ColumnsWrapper>
         <Column>
           <Header>
@@ -63,12 +61,13 @@ const KanbanThreadContainer: FC<TProps> = ({
             <IconButton path="shape/add.svg" right={12} />
           </Header>
           <Body>
-            <KanbanItem />
-            <KanbanItem />
-            <KanbanItem />
-            <KanbanItem />
-            <KanbanItem />
-            <KanbanItem />
+            <KanbanItem layout={layout} />
+            <KanbanItem layout={layout} />
+            <KanbanItem layout={layout} />
+            <KanbanItem layout={layout} />
+            <KanbanItem layout={layout} />
+            <KanbanItem layout={layout} />
+            <KanbanItem layout={layout} />
           </Body>
         </Column>
         <Column>
@@ -80,12 +79,13 @@ const KanbanThreadContainer: FC<TProps> = ({
             <IconButton path="shape/add.svg" right={12} />
           </Header>
           <Body>
-            <KanbanItem />
-            <KanbanItem />
-            <KanbanItem />
-            <KanbanItem />
-            <KanbanItem />
-            <KanbanItem />
+            <KanbanItem layout={layout} />
+            <KanbanItem layout={layout} />
+            <KanbanItem layout={layout} />
+            <KanbanItem layout={layout} />
+            <KanbanItem layout={layout} />
+            <KanbanItem layout={layout} />
+            <KanbanItem layout={layout} />
           </Body>
         </Column>
         <Column>
@@ -97,12 +97,12 @@ const KanbanThreadContainer: FC<TProps> = ({
             <IconButton path="shape/add.svg" right={12} />
           </Header>
           <Body>
-            <KanbanItem />
-            <KanbanItem />
-            <KanbanItem />
-            <KanbanItem />
-            <KanbanItem />
-            <KanbanItem />
+            <KanbanItem layout={layout} />
+            <KanbanItem layout={layout} />
+            <KanbanItem layout={layout} />
+            <KanbanItem layout={layout} />
+            <KanbanItem layout={layout} />
+            <KanbanItem layout={layout} />
           </Body>
         </Column>
       </ColumnsWrapper>
