@@ -1,9 +1,7 @@
 import styled from 'styled-components'
 
 import type { TColorName, TMetric } from '@/spec'
-import { COLORS, COLOR_NAME } from '@/constant'
-// import { METRIC } from '@/constant'
-// import { ASSETS_ENDPOINT } from '@/config'
+import { COLORS } from '@/constant'
 import css, { theme } from '@/utils/css'
 
 /**
