@@ -7,6 +7,7 @@ export type TWallpaperData = {
   wallpaperType: TWallpaperType
   hasPattern: boolean
   hasBlur: boolean
+  hasShadow: boolean
   direction: string
 }
 

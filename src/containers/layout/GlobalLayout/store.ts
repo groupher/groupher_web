@@ -48,6 +48,11 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
       const root = getParent(self) as TRootStore
       return root.wallpaperEditor.wallpapers
     },
+    get hasShadow(): boolean {
+      const root = getParent(self) as TRootStore
+
+      return root.wallpaperEditor.hasShadow
+    },
     get globalLayout(): TGlobalLayout {
       const root = getParent(self) as TRootStore
       return root.dashboardThread.globalLayout

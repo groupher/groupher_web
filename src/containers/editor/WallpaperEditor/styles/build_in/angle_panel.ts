@@ -23,7 +23,7 @@ export const Wrapper = styled.div`
   border: 1px solid;
   border-color: ${theme('divider')};
   position: relative;
-  margin-top: 12px;
+  margin-top: 30px;
   margin-left: 5px;
 `
 export const NeedleDot = styled.div`
@@ -52,8 +52,7 @@ const Point = styled.div<TActive>`
   z-index: 2;
 
   font-weight: ${({ $active }) => ($active ? 600 : 'bormal')};
-  background: ${({ $active }) =>
-    $active ? theme('article.title') : theme('divider')};
+  background: ${({ $active }) => ($active ? theme('article.title') : theme('divider'))};
   color: ${({ $active }) => (!$active ? theme('article.title') : 'white')};
 
   &:hover {

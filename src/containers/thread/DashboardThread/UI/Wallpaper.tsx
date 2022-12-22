@@ -25,9 +25,10 @@ import {
 
 type TProps = {
   wallpaper: TWallpaper
+  hasShadow: boolean
 }
 
-const Wallpaper: FC<TProps> = ({ wallpaper }) => {
+const Wallpaper: FC<TProps> = ({ wallpaper, hasShadow }) => {
   const { background, effect } = parseWallpaperRaw(wallpaper)
 
   const handleCallEditor = useCallback(() => callWallpaperEditor(), [])
@@ -42,11 +43,7 @@ const Wallpaper: FC<TProps> = ({ wallpaper }) => {
               「壁纸」为宽屏（屏幕尺寸大于 ${WIDTH.COMMUNITY.PAGE}
               ）下，超出内容部分显示的背景图片，除内置壁纸外，你还可以上传和社区话题相关的自定义图片。
               <Inline>
-                <ArrowButton
-                  onClick={handleCallEditor}
-                  size="tiny"
-                  arrowStyle="simple"
-                >
+                <ArrowButton onClick={handleCallEditor} size="tiny" arrowStyle="simple">
                   更换壁纸
                 </ArrowButton>
               </Inline>
@@ -64,7 +61,7 @@ const Wallpaper: FC<TProps> = ({ wallpaper }) => {
           <Space right={48} />
           <RealPreview>
             <PreviewImage style={{ background }} effect={effect} noHover />
-            <ContentBlock>
+            <ContentBlock hasShadow={hasShadow}>
               <ContentBar long={30} />
               <ContentBar long={80} />
               <ContentBar long={60} />

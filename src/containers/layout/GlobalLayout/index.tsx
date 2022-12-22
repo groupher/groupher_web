@@ -54,7 +54,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
 
   const [load, setLoad] = useState(false)
 
-  const { wallpaper, wallpapers, globalLayout } = store
+  const { wallpaper, wallpapers, hasShadow, globalLayout } = store
 
   useEffect(() => {
     setLoad(true)
@@ -79,6 +79,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
             <SEO metric={metric} config={seoConfig} />
             <InnerWrapper
               metric={metric}
+              hasShadow={hasShadow}
               hasTopbar={globalLayout.topbar === TOPBAR_LAYOUT.YES}
               topbarBg={globalLayout.topbarBg}
             >

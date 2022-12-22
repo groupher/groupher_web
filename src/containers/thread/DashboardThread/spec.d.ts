@@ -67,6 +67,7 @@ export type TUiSettings = {
   postLayout: TPostLayout
   kanbanLayout: TKanbanLayout
   changelogLayout: TChangelogLayout
+  hasWallpaperShadow: boolean
 }
 export type TWidgetsSettings = {
   saving: boolean

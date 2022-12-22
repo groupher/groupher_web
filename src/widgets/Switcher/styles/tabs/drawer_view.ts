@@ -19,15 +19,18 @@ export const Wrapper = styled.nav.attrs(({ testid }: TTestable) => ({
 `
 export const TabItem = styled.div<TActive>`
   ${css.flex('align-both')};
-  height: 30px;
+  height: 28px;
 
-  color: ${({ $active }) =>
-    $active ? theme('article.title') : theme('article.digest')};
+  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   background: ${({ $active }) => ($active ? theme('hoverBg') : 'transparent')};
   font-weight: ${({ $active }) => ($active ? 600 : 'normal')};
   font-size: 12px;
   flex-grow: 1;
-  border-radius: 6px;
+  border-radius: 8px;
+  margin-left: 1px;
+  margin-right: 1px;
+
+  box-shadow: ${({ $active }) => ($active ? 'rgb(0 0 0 / 15%) 0px 5px 15px 0px;' : 'none')};
 
   &:hover {
     font-weight: 600;
