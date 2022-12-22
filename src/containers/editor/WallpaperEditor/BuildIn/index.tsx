@@ -25,7 +25,7 @@ import {
   Divider,
   AngleSettings,
 } from '../styles/build_in'
-import { togglePattern, toggleBlur } from '../logic'
+import { togglePattern, toggleBlur, toggleShadow } from '../logic'
 
 type TProps = {
   wallpaperData: TWallpaperData
@@ -39,22 +39,17 @@ const BuildIn: FC<TProps> = ({ wallpaperData }) => {
     patternWallpapers,
     hasPattern,
     hasBlur,
+    hasShadow,
     direction,
   } = wallpaperData
 
   return (
     <Wrapper>
       <Title>图案:</Title>
-      <PatternGroup
-        wallpaper={wallpaper}
-        patternWallpapers={patternWallpapers}
-      />
+      <PatternGroup wallpaper={wallpaper} patternWallpapers={patternWallpapers} />
       <Br top={20} />
       <Title>纯色渐变:</Title>
-      <GradientGroup
-        wallpaper={wallpaper}
-        gradientWallpapers={gradientWallpapers}
-      />
+      <GradientGroup wallpaper={wallpaper} gradientWallpapers={gradientWallpapers} />
       <Br top={25} />
       <SettingWrapper show={wallpaperType !== WALLPAPER_TYPE.NONE}>
         <GeneralSettings>
@@ -70,12 +65,17 @@ const BuildIn: FC<TProps> = ({ wallpaperData }) => {
             <ToggleTitle>模糊效果</ToggleTitle>
             <ToggleSwitch checked={hasBlur} onChange={toggleBlur} />
           </SwitchWrapper>
+
+          <Br top={6} />
+          <SwitchWrapper>
+            <ToggleTitle>阴影效果</ToggleTitle>
+            <ToggleSwitch checked={hasShadow} onChange={toggleShadow} />
+          </SwitchWrapper>
         </GeneralSettings>
 
         {wallpaperType === WALLPAPER_TYPE.GRADIENT && (
           <Fragment>
             <Divider />
-
             <AngleSettings>
               <Title>渐变方向:</Title>
               <AnglePanel direction={direction} />

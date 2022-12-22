@@ -55,7 +55,7 @@ export const RealPreview = styled.div`
   ${css.flexColumn('align-center')};
   position: relative;
 `
-export const ContentBlock = styled.div`
+export const ContentBlock = styled.div<{ hasShadow?: boolean }>`
   position: absolute;
   top: 1px;
   left: 30px;
@@ -64,6 +64,9 @@ export const ContentBlock = styled.div`
   background: white;
   z-index: 2;
   padding: 15px;
+
+  box-shadow: ${({ hasShadow }) =>
+    hasShadow ? 'rgb(100 100 111 / 20%) 0px 7px 29px 0px;' : 'none'};
 
   transition: all 0.2s;
 `

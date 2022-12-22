@@ -15,14 +15,14 @@ type TProps = {
 }
 
 const UI: FC<TProps> = ({ settings, touched }) => {
-  const { primaryColor, wallpaper, saving } = settings
+  const { primaryColor, wallpaper, saving, hasWallpaperShadow } = settings
 
   return (
     <Wrapper>
       <Portal title="外观布局" desc="社区基本外观，主题色，以及常见布局自定义。" />
       <PrimaryColor primaryColor={primaryColor} isTouched={touched.primaryColor} saving={saving} />
       <Divider top={20} bottom={60} />
-      <Wallpaper wallpaper={wallpaper} />
+      <Wallpaper wallpaper={wallpaper} hasShadow={hasWallpaperShadow} />
     </Wrapper>
   )
 }

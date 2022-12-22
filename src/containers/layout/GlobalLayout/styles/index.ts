@@ -25,7 +25,7 @@ export const ScrollWrapper = styled.div`
   width: 100%;
 `
 
-type TInner = { metric: TMetric; hasTopbar: boolean; topbarBg: TColorName }
+type TInner = { metric: TMetric; hasTopbar: boolean; topbarBg: TColorName; hasShadow: boolean }
 export const InnerWrapper = styled.div<TInner>`
   ${css.flexColumn()};
   ${({ metric }) => css.fitPageWidth(metric)};
@@ -39,6 +39,9 @@ export const InnerWrapper = styled.div<TInner>`
   border-top: ${({ hasTopbar }) => (hasTopbar ? '3px solid;' : '1px solid;')};
   border-top-color: ${({ hasTopbar, topbarBg }) =>
     hasTopbar ? COLORS[topbarBg] : theme('divider')};
+
+  box-shadow: ${({ hasShadow }) =>
+    hasShadow ? 'rgb(100 100 111 / 20%) 0px 7px 29px 0px;' : 'none'};
 
   ${css.media.tablet`
     position: relative;

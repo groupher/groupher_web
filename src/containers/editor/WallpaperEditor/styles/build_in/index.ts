@@ -33,11 +33,10 @@ export const ToggleTitle = styled.div`
   margin-top: 2px;
 `
 export const Divider = styled(LineDivider)`
-  height: 70px;
-  margin-left: 10px;
-  margin-right: 65px;
-  opacity: 0.3;
-  margin-top: 30px;
+  height: 80px;
+  margin-left: 30px;
+  margin-right: 45px;
+  margin-top: 45px;
 `
 export const GeneralSettings = styled.div`
   width: 45%;

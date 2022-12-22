@@ -246,12 +246,13 @@ const DashboardThread = T.model('DashboardThread', {
       const root = getParent(self) as TRootStore
 
       const {
-        wallpaperEditor: { wallpapers, wallpaper },
+        wallpaperEditor: { wallpapers, wallpaper, hasShadow },
       } = root
 
       // @ts-ignore
       return {
         wallpaper: wallpapers[wallpaper],
+        hasWallpaperShadow: hasShadow,
         ...pick(
           [
             'saving',

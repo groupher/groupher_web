@@ -28,6 +28,7 @@ const initWallpaperModalFields = {
   // for gradient colors
   hasPattern: T.opt(T.bool, true),
   hasBlur: T.opt(T.bool, false),
+  hasShadow: T.opt(T.bool, false),
   direction: T.opt(T.string, 'bottom'),
 }
 
@@ -109,6 +110,7 @@ const WallpaperEditor = T.model('WallpaperEditor', {
           'wallpaperType',
           'hasPattern',
           'hasBlur',
+          'hasShadow',
           'direction',
         ],
         slf,

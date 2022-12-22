@@ -45,6 +45,10 @@ export const toggleBlur = (hasBlur: boolean): void => {
   store.mark({ hasBlur })
 }
 
+export const toggleShadow = (hasShadow: boolean): void => {
+  store.mark({ hasShadow })
+}
+
 const DataResolver = [
   {
     match: asyncRes(EVENT.DRAWER.AFTER_CLOSE),
