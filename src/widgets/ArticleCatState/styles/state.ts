@@ -18,7 +18,7 @@ import QuestionSVG from '@/icons/Question'
 type TType = { cat: TArticleCat; smaller: boolean }
 
 export const Wrapper = styled.div<TType>`
-  ${({ smaller }) => (smaller ? css.size(20) : css.size(24))};
+  ${({ smaller }) => (smaller ? css.size(20) : css.size(26))};
 
   ${css.flex('align-both')};
   background: ${({ cat }) =>

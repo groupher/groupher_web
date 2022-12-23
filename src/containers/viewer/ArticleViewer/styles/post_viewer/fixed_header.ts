@@ -8,13 +8,24 @@ export const Wrapper = styled.div<{ visible: boolean }>`
   position: fixed;
   top: ${({ visible }) => (visible ? 0 : '-60px;')};
   opacity: ${({ visible }) => (visible ? 1 : 0)};
-  width: calc(100% - 188px);
+  width: calc(100% - 200px);
   margin-left: -86px;
   padding-left: 90px;
+  padding-right: 30px;
   height: 60px;
   background: #fff; // to-theme
-  border-bottom: 1px solid;
-  border-bottom-color: ${theme('drawer.divider')};
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(
+    0.35turn,
+    transparent,
+    ${theme('divider')},
+    ${theme('divider')},
+    ${theme('divider')},
+    transparent
+  );
+
+  border-image-slice: 1;
+
   z-index: 5;
   transition: all 0.2s;
 `

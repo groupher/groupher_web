@@ -42,41 +42,21 @@ const Header: FC<TProps> = ({ article }) => {
         )}
       </PublishWrapper>
       <DotDivider space={10} />
-      {article.id === '239' && (
-        <ArticleCatState cat={ARTICLE_CAT.FEATURE} left={18} smaller={false} />
-      )}
-      {article.id === '231' && (
-        <ArticleCatState cat={ARTICLE_CAT.BUG} left={18} smaller={false} />
-      )}
+      {article.id === '239' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} smaller={false} />}
+      {article.id === '231' && <ArticleCatState cat={ARTICLE_CAT.BUG} smaller={false} />}
       {article.id === '227' && (
-        <ArticleCatState
-          cat={ARTICLE_CAT.BUG}
-          state="TODO"
-          left={18}
-          smaller={false}
-        />
+        <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" smaller={false} />
       )}
       {article.id === '228' && (
-        <ArticleCatState
-          cat={ARTICLE_CAT.FEATURE}
-          state="WIP"
-          left={18}
-          smaller={false}
-        />
+        <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" smaller={false} />
       )}
       {article.id === '226' && (
-        <ArticleCatState
-          cat={ARTICLE_CAT.QUESTION}
-          state="RESOLVE"
-          left={18}
-          smaller={false}
-        />
+        <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" smaller={false} />
       )}
       {article.id === '225' && (
         <ArticleCatState
           cat={ARTICLE_CAT.FEATURE}
           state={ARTICLE_STATE.REJECT_DUP}
-          left={18}
           smaller={false}
         />
       )}

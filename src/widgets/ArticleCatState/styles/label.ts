@@ -16,9 +16,7 @@ export const Wrapper = styled.div<TWrapper>`
   background-color: ${({ noBg, state }) =>
     isNoBgCase(noBg, state) ? 'transparent' : theme('gtdBadge.featBg')};
   padding: ${({ noBg, state, smaller }) => getPadding(noBg, state, smaller)}|;
-
-  line-height: ${({ smaller }) => (smaller ? '20px' : '24px')};
-
+  line-height: 20px;
   font-weight: ${({ noBg, state }) => (isNoBgCase(noBg, state) ? 400 : 600)};
   border-radius: ${({ noBg, state }) => (isNoBgCase(noBg, state) ? 0 : '6px')};
   font-size: 12px;
