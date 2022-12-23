@@ -7,12 +7,11 @@ export const Wrapper = styled.div`
   ${css.flexColumn()};
   width: 100%;
   margin-top: 10px;
-  padding-left: 22;
-  border-right: none;
 `
 export const CatsWrapper = styled(MainWrapper)`
-  ${css.flex()};
+  ${css.flex('justify-center')};
   flex-wrap: wrap;
+  margin-left: 6%;
 
   flex-grow: 1;
   width: 100%;

@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
-import type { TTestable } from '@/spec'
+import { COLORS } from '@/constant'
+import type { TColorName, TTestable } from '@/spec'
 import css, { theme } from '@/utils/css'
 
 import LaptopSVG from '@/icons/Works'
@@ -24,19 +25,25 @@ export const Header = styled.div`
   ${css.flexColumn()};
   margin-bottom: 12px;
 `
-export const IconWrapper = styled.div`
-  ${css.circle(32)};
+export const IconWrapper = styled.div<{ color: TColorName }>`
+  ${css.size(35)};
+  border-radius: 12px;
   ${css.flex('align-both')};
+  background: ${({ color }) => theme(`baseColor.${color.toLowerCase()}Bg`)};
+  margin-bottom: 8px;
+`
+export const Icon = styled(LaptopSVG)<{ color: TColorName }>`
+  ${css.size(16)};
+  fill: ${({ color }) => COLORS[color.toUpperCase()]};
+  opacity: 0.65;
 
   ${Wrapper}:hover & {
-    background: #f5f5f5; //${theme('divider')};
+    opacity: 1;
   }
+
+  transition: all 0.3s;
 `
-export const Icon = styled(LaptopSVG)`
-  ${css.size(18)};
-  fill: ${theme('article.info')};
-`
-export const Title = styled.div<{ color: string }>`
+export const Title = styled.div`
   color: ${theme('article.title')};
   font-size: 18px;
   font-weight: 600;
