@@ -1,5 +1,6 @@
 import { FC, memo } from 'react'
 
+import { COLOR_NAME } from '@/constant'
 import FaqList from '@/widgets/FaqList'
 
 import Category from './Category'
@@ -13,15 +14,31 @@ const FullLayout: FC<TProps> = ({ testid = 'FullLayout' }) => {
   return (
     <Wrapper>
       <CatsWrapper>
-        <Category color="orange" title="Get Started" desc="Get Started" />
-        <Category color="red" title="CI/CD and DevOps" desc="CI/CD and DevOps" />
-        <Category color="blue" title="Collaborative Coding" desc="Collaborative Coding" />
-        <Category color="green" title="Developers" desc="Collaborative Coding" />
-        <Category color="purple" title="Enterprise and Teams" desc="Enterprise and Teams" />
-        <Category color="red" title="CI/CD and DevOps" desc="CI/CD and DevOps" />
-        <Category color="blue" title="Collaborative Coding" desc="Collaborative Coding" />
-        <Category color="green" title="Developers" desc="Collaborative Coding" />
-        <Category color="purple" title="Enterprise and Teams" desc="Enterprise and Teams" />
+        <Category color={COLOR_NAME.ORANGE} title="Get Started" desc="Get Started" />
+        <Category color={COLOR_NAME.RED} title="CI/CD and DevOps" desc="CI/CD and DevOps" />
+        <Category
+          color={COLOR_NAME.BLUE}
+          title="Collaborative Coding"
+          desc="Collaborative Coding"
+        />
+        <Category color={COLOR_NAME.GREEN} title="Developers" desc="Collaborative Coding" />
+        <Category
+          color={COLOR_NAME.PURPLE}
+          title="Enterprise and Teams"
+          desc="Enterprise and Teams"
+        />
+        <Category color={COLOR_NAME.CYAN} title="CI/CD and DevOps" desc="CI/CD and DevOps" />
+        <Category
+          color={COLOR_NAME.PINK}
+          title="Collaborative Coding"
+          desc="Collaborative Coding"
+        />
+        <Category color={COLOR_NAME.YELLOW} title="Developers" desc="Collaborative Coding" />
+        <Category
+          color={COLOR_NAME.BLACK}
+          title="Enterprise and Teams"
+          desc="Enterprise and Teams"
+        />
       </CatsWrapper>
 
       <FAQWrapper>

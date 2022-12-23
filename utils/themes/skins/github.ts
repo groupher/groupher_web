@@ -77,7 +77,7 @@ const github = {
     yellowBg: '#FEFBE8',
 
     green: '#699411',
-    greenBg: '#F8FFEE',
+    greenBg: '#f3fee3',
 
     cyan: '#24878C',
     cyanBg: '#EBFEFB',
@@ -95,6 +95,9 @@ const github = {
 
     pinkLite: '#82606b',
     pinkBtnText: '#ded0d0',
+
+    black: '#333333',
+    blackBg: '#f4f4f4',
   },
   header: {
     fg: '#8c8c8c',
