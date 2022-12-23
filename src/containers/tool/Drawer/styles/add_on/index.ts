@@ -18,11 +18,11 @@ export const ViewerWrapper = styled.div`
   `};
 `
 export const TopArea = styled.div<{ showShare: boolean }>`
-  width: 42px;
+  width: 26px;
   height: ${({ showShare }) => (showShare ? '80px' : '50px')};
   position: fixed;
   top: 0;
-  left: 34px;
+  left: 40px;
   display: block;
   background: white;
   border-top-left-radius: 8px;
@@ -36,11 +36,11 @@ export const TopArea = styled.div<{ showShare: boolean }>`
     content: '';
     position: absolute;
     background: white;
-    bottom: -7px;
-    right: -9px;
+    bottom: -3px;
+    right: -19px;
     width: 25px;
     height: 9px;
-    transform: rotate(42deg);
+    transform: rotate(26deg);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 15px;
     /* border: 1px solid lightgrey; */
