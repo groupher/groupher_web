@@ -28,9 +28,16 @@ export const Header = styled.div`
 export const IconWrapper = styled.div<{ color: TColorName }>`
   ${css.size(35)};
   border-radius: 12px;
+  margin-left: -1px;
   ${css.flex('align-both')};
   background: ${({ color }) => theme(`baseColor.${color.toLowerCase()}Bg`)};
   margin-bottom: 8px;
+
+  opacity: 0.85;
+  ${Wrapper}:hover & {
+    opacity: 1;
+  }
+  transition: all 0.3s;
 `
 export const Icon = styled(LaptopSVG)<{ color: TColorName }>`
   ${css.size(16)};

@@ -1,7 +1,12 @@
 import { FC, memo } from 'react'
 
+// import { config, library } from '@fortawesome/fontawesome-svg-core'
+// config.autoAddCss = false
+
+import FaIcons from '@/widgets/FaIcons'
+
 import type { TColorName } from '@/spec'
-import { Wrapper, Header, IconWrapper, Icon, Title, Item, MoreLink } from './styles/category'
+import { Wrapper, Header, IconWrapper, Title, Item, MoreLink } from './styles/category'
 import { gotoDetailLayout } from './logic'
 
 type TProps = {
@@ -16,7 +21,7 @@ const Category: FC<TProps> = ({ color, title, desc, column = 2 }) => {
     <Wrapper color={color} column={column}>
       <Header>
         <IconWrapper color={color}>
-          <Icon color={color} />
+          <FaIcons icon="music" size={15} color={color} />
         </IconWrapper>
         <Title>{title}</Title>
       </Header>
