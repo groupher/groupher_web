@@ -47,9 +47,7 @@ export const prettyNum = (num: number, digits = 1): string => {
   if (num < 1000) {
     return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol
   }
-  return (
-    (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol + '+'
-  )
+  return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol + '+'
   /* eslint-enable  */
 }
 
@@ -70,6 +68,11 @@ export const titleCase = (str: string): string => {
   return str.replace(/\w\S*/g, (t) => {
     return t.charAt(0).toUpperCase() + t.substr(1).toLowerCase()
   })
+}
+
+export const camelize = (str: string): string => {
+  const a = str.toLowerCase().replace(/[-_\s.]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ''))
+  return a.substring(0, 1).toLowerCase() + a.substring(1)
 }
 
 // https://stackoverflow.com/a/2627482/4050784

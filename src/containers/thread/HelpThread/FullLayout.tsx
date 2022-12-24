@@ -2,7 +2,6 @@ import { FC, memo } from 'react'
 
 import { COLOR_NAME } from '@/constant'
 import FaqList from '@/widgets/FaqList'
-import FaIcons from '@/widgets/FaIcons'
 
 import Category from './Category'
 import { Wrapper, CatsWrapper, FAQWrapper } from './styles/full_layout'
@@ -44,7 +43,6 @@ const FullLayout: FC<TProps> = ({ testid = 'FullLayout' }) => {
 
       <FAQWrapper>
         <FaqList />
-        <FaIcons />
       </FAQWrapper>
     </Wrapper>
   )
