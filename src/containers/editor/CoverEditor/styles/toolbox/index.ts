@@ -1,0 +1,63 @@
+import styled from 'styled-components'
+
+import css, { theme } from '@/utils/css'
+
+import UploadSVG from '@/icons/Upload'
+
+export const Wrapper = styled.div`
+  ${css.flex('align-both')};
+  position: absolute;
+  bottom: -15px;
+  background: white;
+  width: 420px;
+  height: 65px;
+  padding-top: 3px;
+  border: 1px solid;
+  border-color: ${theme('divider')};
+  border-radius: 15px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+`
+
+export const UploadIcon = styled(UploadSVG)`
+  ${css.size(50)};
+  fill: ${theme('article.info')};
+  margin-bottom: 15px;
+  opacity: 0.3;
+`
+export const Title = styled.div`
+  color: ${theme('article.digest')};
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+`
+export const Desc = styled.div`
+  color: ${theme('article.digest')};
+  font-size: 12px;
+  opacity: 0.8;
+`
+
+export const SettingBlock = styled.div`
+  ${css.size(29)};
+  ${css.flex('align-both')};
+  border-radius: 2px;
+  border: 1px solid;
+  border-color: ${theme('divider')};
+  margin-top: 3px;
+  margin-bottom: 7px;
+
+  /* box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px; */
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+  transition: all 0.3s;
+
+  &:hover {
+    border-color: ${theme('article.info')};
+  }
+`
+
+export const SettingTitle = styled.div`
+  color: ${theme('article.digest')};
+  font-size: 9px;
+  opacity: 0.8;
+
+  transition: color 0.2s;
+`

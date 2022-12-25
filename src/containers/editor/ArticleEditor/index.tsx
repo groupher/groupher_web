@@ -18,6 +18,7 @@ import TagSelector from '@/widgets/TagSelector'
 import StateSelector from '@/widgets/StateSelector'
 
 import RichEditor from '@/containers/editor/RichEditor'
+import CoverEditor from '@/containers/editor/CoverEditor'
 
 import type { TStore } from './store'
 
@@ -30,8 +31,8 @@ import { Wrapper, InnerWrapper, ContentWrapper, FuncRow } from './styles'
 import {
   useInit,
   editOnChange,
-  changeCommunity,
-  onTagSelect,
+  // changeCommunity,
+  // onTagSelect,
   catOnChange,
 } from './logic'
 
@@ -80,17 +81,11 @@ const ArticleEditorContainer: FC<TProps> = ({
           />
         )} */}
         <ContentWrapper>
-          {!allowEdit && (
-            <NoticeBar
-              type="notice"
-              content="只有作者可以编辑本内容。"
-              left={25}
-            />
-          )}
+          {!allowEdit && <NoticeBar type="notice" content="只有作者可以编辑本内容。" left={25} />}
+          {isArchived && <ArchiveAlert date={archivedAt} top={12} bottom={20} left={25} />}
 
-          {isArchived && (
-            <ArchiveAlert date={archivedAt} top={12} bottom={20} left={25} />
-          )}
+          <CoverEditor />
+
           <TitleInput title={title} placeholder={texts.holder.title} />
 
           <FuncRow>
@@ -112,11 +107,7 @@ const ArticleEditorContainer: FC<TProps> = ({
               placeholder={texts.holder.body}
             />
           )}
-          <Footer
-            mode={mode as TEditMode}
-            editData={editData}
-            submitState={submitState}
-          />
+          <Footer mode={mode as TEditMode} editData={editData} submitState={submitState} />
         </ContentWrapper>
       </InnerWrapper>
     </Wrapper>
