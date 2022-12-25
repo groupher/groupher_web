@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 
-import type { TImagePos, TSettingLevel, TCoverImage } from '../../spec'
+import type { TCoverImage } from '../../spec'
 import { IMAGE_SHADOW, IMAGE_BORDER_RADIUS } from '../../constant'
 
 import { getImageCor } from '../metric'
