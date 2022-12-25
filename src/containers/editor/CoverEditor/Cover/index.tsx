@@ -1,21 +1,27 @@
 import { FC } from 'react'
+import { isEmpty } from 'ramda'
 // import type { TImagePos } from '../spec'
 
 import type { TToolboxSetting } from '../spec'
+
 import { Wrapper, Image } from '../styles/cover'
 import Placeholder from './Placeholder'
 
 type TProps = {
   setting: TToolboxSetting
+  imageUrl: string
 }
 
-const Cover: FC<TProps> = ({ setting }) => {
-  const imageUrl = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/385126/600.jpg'
+const Cover: FC<TProps> = ({ setting, imageUrl }) => {
+  const hasImage = !isEmpty(imageUrl)
 
   return (
-    <Wrapper>
-      <Image src={imageUrl} noLazy pos={setting.pos} />
-      {/* <Placeholder /> */}
+    <Wrapper hasImage={hasImage}>
+      {hasImage ? (
+        <Image src={imageUrl} pos={setting.pos} shadowLevel={setting.shadowLevel} noLazy />
+      ) : (
+        <Placeholder />
+      )}
     </Wrapper>
   )
 }

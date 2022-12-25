@@ -24,12 +24,14 @@ type TProps = {
 
 const CoverEditorContainer: FC<TProps> = ({ coverEditor: store, testid = 'cover-editor' }) => {
   useInit(store)
-
   const { toolboxSetting } = store
+
+  const imageUrl = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/385126/600.jpg'
+  // const imageUrl = ''
 
   return (
     <Wrapper testid={testid}>
-      <Cover setting={toolboxSetting} />
+      <Cover setting={toolboxSetting} imageUrl={imageUrl} />
       <Toolbox setting={toolboxSetting} />
     </Wrapper>
   )

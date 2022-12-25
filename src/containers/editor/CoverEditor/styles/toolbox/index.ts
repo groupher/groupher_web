@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 
+import type { TActive } from '@/spec'
 import css, { theme } from '@/utils/css'
 
 import UploadSVG from '@/icons/Upload'
@@ -8,12 +9,12 @@ export const Wrapper = styled.div`
   ${css.flex('align-both')};
   position: absolute;
   bottom: -32px;
-  width: 420px;
+  width: 440px;
   height: 65px;
   padding-top: 3px;
   border: 1px solid;
   border-color: ${theme('divider')};
-  border-radius: 15px;
+  border-radius: 8px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
@@ -38,12 +39,12 @@ export const Desc = styled.div`
   opacity: 0.8;
 `
 
-export const SettingBlock = styled.div`
+export const SettingBlock = styled.div<TActive>`
   ${css.size(29)};
   ${css.flex('align-both')};
   border-radius: 2px;
   border: 1px solid;
-  border-color: ${theme('divider')};
+  border-color: ${({ $active }) => ($active ? theme('article.digest') : theme('divider'))};
   margin-top: 3px;
   margin-bottom: 7px;
   background: white;
@@ -53,12 +54,12 @@ export const SettingBlock = styled.div`
   transition: all 0.3s;
 
   &:hover {
-    border-color: ${theme('article.info')};
+    border-color: ${theme('article.digest')};
   }
 `
 
-export const SettingTitle = styled.div`
-  color: ${theme('article.digest')};
+export const SettingTitle = styled.div<TActive>`
+  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   font-size: 9px;
   opacity: 0.8;
 

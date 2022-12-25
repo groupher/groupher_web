@@ -14,6 +14,9 @@ export type TImageCor = {
   left: string | number
 }
 
+export type TSettingLevel = 'L1' | 'L2' | 'L3' | 'L4' | 'L5'
+
 export type TToolboxSetting = {
   pos: TImagePos
+  shadowLevel: TSettingLevel
 }

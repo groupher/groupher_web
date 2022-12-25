@@ -3,7 +3,7 @@ import { Wrapper, Block, Pice, Desc } from '../styles/toolbox/position_block'
 
 import type { TImagePos } from '../spec'
 import { IMAGE_POS } from '../constant'
-import { imagePosOnChange } from '../logic'
+import { posOnChange } from '../logic'
 
 type TProps = {
   pos: TImagePos
@@ -14,39 +14,36 @@ const PositionBlock: FC<TProps> = ({ pos }) => {
     <Wrapper>
       <Block>
         <Pice
-          onClick={() => imagePosOnChange(IMAGE_POS.TOP_LEFT)}
+          onClick={() => posOnChange(IMAGE_POS.TOP_LEFT)}
           $active={pos === IMAGE_POS.TOP_LEFT}
         />
         <Pice
-          onClick={() => imagePosOnChange(IMAGE_POS.TOP_CENTER)}
+          onClick={() => posOnChange(IMAGE_POS.TOP_CENTER)}
           $active={pos === IMAGE_POS.TOP_CENTER}
         />
         <Pice
-          onClick={() => imagePosOnChange(IMAGE_POS.TOP_RIGHT)}
+          onClick={() => posOnChange(IMAGE_POS.TOP_RIGHT)}
           $active={pos === IMAGE_POS.TOP_RIGHT}
         />
         <Pice
-          onClick={() => imagePosOnChange(IMAGE_POS.CENTER_LEFT)}
+          onClick={() => posOnChange(IMAGE_POS.CENTER_LEFT)}
           $active={pos === IMAGE_POS.CENTER_LEFT}
         />
+        <Pice onClick={() => posOnChange(IMAGE_POS.CENTER)} $active={pos === IMAGE_POS.CENTER} />
         <Pice
-          onClick={() => imagePosOnChange(IMAGE_POS.CENTER)}
-          $active={pos === IMAGE_POS.CENTER}
-        />
-        <Pice
-          onClick={() => imagePosOnChange(IMAGE_POS.CENTER_RIGHT)}
+          onClick={() => posOnChange(IMAGE_POS.CENTER_RIGHT)}
           $active={pos === IMAGE_POS.CENTER_RIGHT}
         />
         <Pice
-          onClick={() => imagePosOnChange(IMAGE_POS.BOTTOM_LEFT)}
+          onClick={() => posOnChange(IMAGE_POS.BOTTOM_LEFT)}
           $active={pos === IMAGE_POS.BOTTOM_LEFT}
         />
         <Pice
-          onClick={() => imagePosOnChange(IMAGE_POS.BOTTOM_CENTER)}
+          onClick={() => posOnChange(IMAGE_POS.BOTTOM_CENTER)}
           $active={pos === IMAGE_POS.BOTTOM_CENTER}
         />
         <Pice
-          onClick={() => imagePosOnChange(IMAGE_POS.BOTTOM_RIGHT)}
+          onClick={() => posOnChange(IMAGE_POS.BOTTOM_RIGHT)}
           $active={pos === IMAGE_POS.BOTTOM_RIGHT}
         />
       </Block>
