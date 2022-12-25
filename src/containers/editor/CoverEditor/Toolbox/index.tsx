@@ -22,7 +22,7 @@ const Toolbox: FC<TProps> = ({ setting }) => {
       <PositionBlock pos={setting.pos} />
       <SizeBlock />
       <ShadowBlock shadowLevel={setting.shadowLevel} />
-      <ArchBlock />
+      <ArchBlock level={setting.borderRadiusLevel} />
       <RatioBlock />
       <BgBlock />
     </Wrapper>

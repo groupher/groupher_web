@@ -17,6 +17,7 @@ const log = buildLog('S:CoverEditor')
 const CoverEditor = T.model('CoverEditor', {
   imagePos: T.opt(T.enum(values(IMAGE_POS)), IMAGE_POS.CENTER),
   shadowLevel: T.opt(T.enum(values(SETTING_LEVEL)), SETTING_LEVEL.L1),
+  borderRadiusLevel: T.opt(T.enum(values(SETTING_LEVEL)), SETTING_LEVEL.L1),
 })
   .views((self) => ({
     get curCommunity(): TCommunity {
@@ -27,11 +28,12 @@ const CoverEditor = T.model('CoverEditor', {
 
     get toolboxSetting(): TToolboxSetting {
       const slf = self as TStore
-      const { imagePos, shadowLevel } = slf
+      const { imagePos, shadowLevel, borderRadiusLevel } = slf
 
       return {
         pos: imagePos as TImagePos,
         shadowLevel: shadowLevel as TSettingLevel,
+        borderRadiusLevel: borderRadiusLevel as TSettingLevel,
       }
     },
   }))

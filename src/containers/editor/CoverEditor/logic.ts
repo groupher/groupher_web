@@ -20,6 +20,10 @@ export const shadowOnChange = (shadowLevel: TSettingLevel): void => {
   store.mark({ shadowLevel })
 }
 
+export const borderRadiusOnChange = (borderRadiusLevel: TSettingLevel): void => {
+  store.mark({ borderRadiusLevel })
+}
+
 // ###############################
 // init & uninit handlers
 // ###############################

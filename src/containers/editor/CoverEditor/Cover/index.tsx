@@ -1,6 +1,5 @@
 import { FC } from 'react'
 import { isEmpty } from 'ramda'
-// import type { TImagePos } from '../spec'
 
 import type { TToolboxSetting } from '../spec'
 
@@ -18,7 +17,13 @@ const Cover: FC<TProps> = ({ setting, imageUrl }) => {
   return (
     <Wrapper hasImage={hasImage}>
       {hasImage ? (
-        <Image src={imageUrl} pos={setting.pos} shadowLevel={setting.shadowLevel} noLazy />
+        <Image
+          src={imageUrl}
+          pos={setting.pos}
+          shadowLevel={setting.shadowLevel}
+          borderRadiusLevel={setting.borderRadiusLevel}
+          noLazy
+        />
       ) : (
         <Placeholder />
       )}

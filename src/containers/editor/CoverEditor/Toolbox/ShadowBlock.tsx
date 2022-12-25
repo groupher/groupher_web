@@ -46,10 +46,10 @@ const ShadowBlock: FC<TProps> = ({ shadowLevel }) => {
           </Panel>
         }
         placement="top"
-        hideOnClick={false}
         trigger="click"
         onShow={() => setPanelOpen(true)}
-        onHide={() => setPanelOpen(true)}
+        onHide={() => setPanelOpen(false)}
+        hideOnClick={false}
         noPadding
       >
         <Block $active={panelOpen}>

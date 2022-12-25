@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 
-import type { TImagePos, TSettingLevel } from '../../spec'
-import { IMAGE_SHADOW } from '../../constant'
+import type { TImagePos, TSettingLevel, TCoverImage } from '../../spec'
+import { IMAGE_SHADOW, IMAGE_BORDER_RADIUS } from '../../constant'
 
 import { getImageCor } from '../metric'
 
@@ -23,7 +23,6 @@ export const Wrapper = styled.div<{ hasImage: boolean }>`
     hasImage ? 'linear-gradient(to bottom, #9fbdd3, #ebe6e2)' : 'none'};
 `
 
-type TCoverImage = { pos: TImagePos; shadowLevel: TSettingLevel }
 export const Image = styled(Img)<TCoverImage>`
   position: absolute;
 
@@ -33,8 +32,8 @@ export const Image = styled(Img)<TCoverImage>`
   width: 700px;
   height: 400px;
   object-fit: cover;
-  border-radius: 15px;
 
   /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; // one */
   box-shadow: ${({ shadowLevel }) => IMAGE_SHADOW[shadowLevel]};
+  border-radius: ${({ borderRadiusLevel }) => IMAGE_BORDER_RADIUS[borderRadiusLevel]};
 `
