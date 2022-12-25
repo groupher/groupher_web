@@ -30,5 +30,5 @@ export const Image = styled(Img)<{ pos: TImagePos }>`
   object-fit: cover;
   border-radius: 15px;
 
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; // one
 `
