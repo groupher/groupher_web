@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 
 import { buildLog } from '@/utils/logger'
 
+import type { TImagePos } from './spec'
 // import S from './schma'
 import type { TStore } from './store'
 
@@ -11,8 +12,8 @@ let store: TStore | undefined
 /* eslint-disable-next-line */
 const log = buildLog('L:CoverEditor')
 
-export const someMethod = (): void => {
-  //
+export const imagePosOnChange = (imagePos: TImagePos): void => {
+  store.mark({ imagePos })
 }
 
 // ###############################

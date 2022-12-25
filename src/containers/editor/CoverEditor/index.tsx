@@ -25,10 +25,12 @@ type TProps = {
 const CoverEditorContainer: FC<TProps> = ({ coverEditor: store, testid = 'cover-editor' }) => {
   useInit(store)
 
+  const { toolboxSetting } = store
+
   return (
     <Wrapper testid={testid}>
-      <Cover />
-      <Toolbox />
+      <Cover setting={toolboxSetting} />
+      <Toolbox setting={toolboxSetting} />
     </Wrapper>
   )
 }

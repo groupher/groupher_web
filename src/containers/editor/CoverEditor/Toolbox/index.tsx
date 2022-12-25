@@ -1,17 +1,24 @@
-import TiltBlock from './PositionBlock'
-import PositionBlock from './TiltBlock'
+import { FC } from 'react'
+
+import TiltBlock from './TiltBlock'
+import PositionBlock from './PositionBlock'
 import ArchBlock from './ArchBlock'
 import ShadowBlock from './ShadowBlock'
 import SizeBlock from './SizeBlock'
 import BgBlock from './BgBlock'
 
+import type { TToolboxSetting } from '../spec'
 import { Wrapper } from '../styles/toolbox'
 
-const Toolbox = () => {
+type TProps = {
+  setting: TToolboxSetting
+}
+
+const Toolbox: FC<TProps> = ({ setting }) => {
   return (
     <Wrapper>
       <TiltBlock />
-      <PositionBlock />
+      <PositionBlock pos={setting.pos} />
       <SizeBlock />
       <ShadowBlock />
       <ArchBlock />

@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 
+import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 
 import UploadSVG from '@/icons/Upload'
@@ -11,7 +12,20 @@ export const Wrapper = styled.div`
   border: 1px solid;
   border-color: ${theme('divider')};
   border-radius: 5px;
+  position: relative;
+  overflow: hidden;
 `
+
+export const Image = styled(Img)`
+  position: absolute;
+  top: 20px;
+  left: -30px;
+  width: 680px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 5px;
+`
+
 export const UploadIcon = styled(UploadSVG)`
   ${css.size(50)};
   fill: ${theme('article.info')};

@@ -18,12 +18,13 @@ export const Block = styled.div`
   border-color: ${theme('divider')};
   transform: scale(0.6);
   margin-top: -5px;
+  background: white;
 
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 
   ${Wrapper}:hover & {
     transform: scale(1.25);
-    margin-top: 0;
+    margin-top: -3px;
   }
 
   transition: all 0.3s;
@@ -31,10 +32,10 @@ export const Block = styled.div`
 export const Pice = styled.div<TActive>`
   ${css.size(15)};
   border-radius: 2px;
+  border: 1px solid;
+  border-color: ${theme('divider')};
   background: ${({ $active }) =>
-    $active
-      ? 'linear-gradient(to right bottom, rgb(115, 115, 115), rgb(38, 38, 38))'
-      : theme('hoverBg')};
+    $active ? 'linear-gradient(to right bottom, rgb(115, 115, 115), rgb(38, 38, 38))' : 'white'};
 
   &:hover {
     background: ${({ $active }) =>

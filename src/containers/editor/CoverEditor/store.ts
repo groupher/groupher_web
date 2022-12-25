@@ -2,22 +2,35 @@
  * CoverEditor store
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
-// import {} from 'ramda'
+import { values } from 'ramda'
 
 import type { TCommunity, TRootStore } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import { markStates, toJS } from '@/utils/mobx'
+import { markStates, toJS, getParent, Instance, T } from '@/utils/mobx'
+
+import type { TToolboxSetting, TImagePos } from './spec'
+import { IMAGE_POS } from './constant'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:CoverEditor')
 
-const CoverEditor = T.model('CoverEditor', {})
+const CoverEditor = T.model('CoverEditor', {
+  imagePos: T.opt(T.enum(values(IMAGE_POS)), IMAGE_POS.CENTER),
+})
   .views((self) => ({
     get curCommunity(): TCommunity {
       const root = getParent(self) as TRootStore
 
       return toJS(root.viewing.community)
+    },
+
+    get toolboxSetting(): TToolboxSetting {
+      const slf = self as TStore
+      const { imagePos } = slf
+
+      return {
+        pos: imagePos as TImagePos,
+      }
     },
   }))
   .actions((self) => ({

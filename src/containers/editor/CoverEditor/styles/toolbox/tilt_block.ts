@@ -20,12 +20,13 @@ export const Block = styled.div`
   border-color: ${theme('divider')};
   transform: scale(0.6);
   margin-top: -6px;
+  background: white;
 
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 
   ${Wrapper}:hover & {
     transform: scale(1.2);
-    margin-top: 0;
+    margin-top: -2px;
   }
 
   transition: all 0.3s;
