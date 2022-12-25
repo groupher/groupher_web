@@ -36,4 +36,6 @@ export const Image = styled(Img)<TCoverImage>`
   /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; // one */
   box-shadow: ${({ shadowLevel }) => IMAGE_SHADOW[shadowLevel]};
   border-radius: ${({ borderRadiusLevel }) => IMAGE_BORDER_RADIUS[borderRadiusLevel]};
+
+  transition: all 0.2s;
 `

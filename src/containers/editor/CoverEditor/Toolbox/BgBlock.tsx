@@ -1,9 +1,11 @@
-import { Wrapper, Block, Desc } from '../styles/toolbox/bg_block'
+import { Wrapper, Block, BgImage, Desc } from '../styles/toolbox/bg_block'
 
 const BgBlock = () => {
   return (
     <Wrapper>
-      <Block>B</Block>
+      <Block>
+        <BgImage />
+      </Block>
       <Desc>背景</Desc>
     </Wrapper>
   )
