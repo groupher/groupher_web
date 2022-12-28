@@ -103,7 +103,7 @@ const jump = keyframes`
     transform: translate3d(0px, 0px, 0);
   }
   50% {
-    transform: translate3d(0px, -10px, 0);
+    transform: translate3d(0px, -5px, 0);
   }
   100% {
     transform: translate3d(0px, 0px, 0);

@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 
 import { buildLog } from '@/utils/logger'
 
-import type { TImagePos, TSettingLevel } from './spec'
+import type { TImagePos, TLinearBorderPos, TSettingLevel } from './spec'
 // import S from './schma'
 import type { TStore } from './store'
 
@@ -22,6 +22,10 @@ export const shadowOnChange = (shadowLevel: TSettingLevel): void => {
 
 export const borderRadiusOnChange = (borderRadiusLevel: TSettingLevel): void => {
   store.mark({ borderRadiusLevel })
+}
+
+export const linearBorderPosOnChange = (linearBorderPos: TLinearBorderPos): void => {
+  store.mark({ linearBorderPos })
 }
 
 // ###############################

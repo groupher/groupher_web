@@ -1,6 +1,7 @@
-import type { TImagePos, TImageCor } from '../spec'
+// import { theme } from '@/utils/css'
 
-import { IMAGE_POS } from '../constant'
+import type { TImagePos, TImageCor, TLinearBorderPos } from '../spec'
+import { IMAGE_POS, LINEAR_BORDER } from '../constant'
 
 export const getImageCor = (pos: TImagePos): TImageCor => {
   const topOffset = 40
@@ -73,4 +74,46 @@ export const getImageCor = (pos: TImagePos): TImageCor => {
   }
 }
 
-export const holder = 1
+export const getLinearBorder = (pos: TLinearBorderPos, active = false): string => {
+  const color = active ? '#333333' : '#dcd6ca' // light or dark
+
+  switch (pos) {
+    case LINEAR_BORDER.TOP_LEFT: {
+      return `linear-gradient(transparent, transparent), 
+      linear-gradient(to left top, transparent, transparent 62%, ${color})`
+    }
+    case LINEAR_BORDER.TOP_RIGHT: {
+      return `linear-gradient(transparent, transparent),
+      linear-gradient(to right top, transparent, transparent 62%, ${color});`
+    }
+    case LINEAR_BORDER.TOP_ALL: {
+      return `linear-gradient(transparent, transparent),
+      linear-gradient(to top, transparent, transparent 20%, ${color});`
+    }
+    case LINEAR_BORDER.BOTTOM_LEFT: {
+      return `linear-gradient(transparent, transparent), 
+      linear-gradient(to left bottom, transparent, transparent 62%, ${color});`
+    }
+    case LINEAR_BORDER.BOTTOM_RIGHT: {
+      return `linear-gradient(transparent, transparent), 
+      linear-gradient(to right bottom, transparent, transparent 62%, ${color});`
+    }
+
+    case LINEAR_BORDER.BOTTOM_ALL: {
+      return `linear-gradient(transparent, transparent), 
+      linear-gradient(to bottom, transparent, transparent 20%, ${color});`
+    }
+    case LINEAR_BORDER.LEFT_ALL: {
+      return `linear-gradient(transparent, transparent), 
+      linear-gradient(to left, transparent, transparent 20%, ${color});`
+    }
+    case LINEAR_BORDER.RIGHT_ALL: {
+      return `linear-gradient(transparent, transparent),
+      linear-gradient(to right, transparent, transparent 20%, ${color});`
+    }
+    default: {
+      return `linear-gradient(transparent, transparent),
+      linear-gradient(to left, transparent, transparent, ${color});`
+    }
+  }
+}

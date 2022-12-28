@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 import TiltBlock from './TiltBlock'
 import PositionBlock from './PositionBlock'
-import ArchBlock from './ArchBlock'
+import BorderBlock from './BorderBlock'
 import ShadowBlock from './ShadowBlock'
 import SizeBlock from './SizeBlock'
 import BgBlock from './BgBlock'
@@ -22,7 +22,7 @@ const Toolbox: FC<TProps> = ({ setting }) => {
       <PositionBlock pos={setting.pos} />
       <SizeBlock />
       <ShadowBlock shadowLevel={setting.shadowLevel} />
-      <ArchBlock level={setting.borderRadiusLevel} />
+      <BorderBlock level={setting.borderRadiusLevel} linearBorderPos={setting.linearBorderPos} />
       <RatioBlock />
       <BgBlock />
     </Wrapper>

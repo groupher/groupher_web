@@ -27,11 +27,7 @@ const GroupTags: FC<TGroupTags> = ({ tags, activeTag, onSelect }) => {
   return (
     <GroupWrapper>
       {tags.map((tag) => (
-        <SelectItem
-          key={tag.id}
-          active={tag.id === activeTag.id}
-          onClick={() => onSelect(tag)}
-        >
+        <SelectItem key={tag.id} active={tag.id === activeTag?.id} onClick={() => onSelect(tag)}>
           <DotSign color={tag.color} />
           <Title>{tag.title}</Title>
         </SelectItem>

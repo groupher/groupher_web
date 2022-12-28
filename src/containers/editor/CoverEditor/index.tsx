@@ -26,7 +26,9 @@ const CoverEditorContainer: FC<TProps> = ({ coverEditor: store, testid = 'cover-
   useInit(store)
   const { toolboxSetting } = store
 
-  const imageUrl = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/385126/600.jpg'
+  // const imageUrl = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/385126/600.jpg'
+  // const imageUrl = '/changelog-demo-light.jpg'
+  const imageUrl = '/changelog-demo-dark.jpg'
   // const imageUrl = ''
 
   return (

@@ -9,6 +9,20 @@ export type TImagePos =
   | 'bottom_center'
   | 'bottom_right'
 
+export type TLinearBorderPos =
+  | 'top_left'
+  | 'top_right'
+  | 'top'
+  | 'bottom_left'
+  | 'bottom'
+  | 'bottom_right'
+  | 'top_all'
+  | 'bottom_all'
+  | 'left_all'
+  | 'right_all'
+  | 'all'
+  | 'none'
+
 export type TImageCor = {
   top: string | number
   left: string | number
@@ -20,10 +34,12 @@ export type TToolboxSetting = {
   pos: TImagePos
   shadowLevel: TSettingLevel
   borderRadiusLevel: TSettingLevel
+  linearBorderPos: TLinearBorderPos
 }
 
 export type TCoverImage = {
-  pos: TImagePos
+  pos?: TImagePos
   shadowLevel: TSettingLevel
   borderRadiusLevel: TSettingLevel
+  linearBorderPos: TLinearBorderPos
 }
