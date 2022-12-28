@@ -1,7 +1,7 @@
 // import { theme } from '@/utils/css'
 
 import type { TImagePos, TImageCor, TLinearBorderPos } from '../spec'
-import { IMAGE_POS, LINEAR_BORDER, BG_GRADIENT_DIRECTION } from '../constant'
+import { IMAGE_POS, LINEAR_BORDER } from '../constant'
 
 export const getImageCor = (pos: TImagePos): TImageCor => {
   const topOffset = 40

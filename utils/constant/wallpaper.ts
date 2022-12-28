@@ -1,4 +1,4 @@
-import type { TWallpaper, TWallpaperType } from '@/spec'
+import type { TSnakeUpperCase, TWallpaper, TWallpaperType, TWallpaperGradientDir } from '@/spec'
 
 const DIR = '/wallpaper'
 
@@ -108,3 +108,14 @@ export const WALLPAPER = {
   ...PATTERN_WALLPAPER,
   ...GRADIENT_WALLPAPER,
 }
+
+export const GRADIENT_DIRECTION = {
+  TOP: 'top',
+  TOP_RIGHT: 'top right',
+  RIGHT: 'right',
+  BOTTOM_RIGHT: 'bottom right',
+  BOTTOM: 'bottom',
+  BOTTOM_LEFT: 'bottom left',
+  LEFT: 'left',
+  TOP_LEFT: 'top left',
+} as Record<TSnakeUpperCase<TWallpaperGradientDir>, TWallpaperGradientDir>

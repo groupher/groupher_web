@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 // import { } from 'ramda'
 
+import type { TWallpaperGradientDirVal } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
 import type { TImagePos, TLinearBorderPos, TSettingLevel } from './spec'
@@ -32,7 +33,7 @@ export const wallpaperOnChange = (wallpaper: string): void => {
   store.mark({ wallpaper })
 }
 
-export const gradientDirOnChange = (direction: string): void => {
+export const gradientDirOnChange = (direction: TWallpaperGradientDirVal): void => {
   store.mark({ direction })
 }
 
