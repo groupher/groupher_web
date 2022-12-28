@@ -1,7 +1,7 @@
 import { useState, FC } from 'react'
-import { keys } from 'ramda'
+import { keys, values } from 'ramda'
 
-import type { TWallpaper } from '@/spec'
+import type { TWallpaper, TWallpaperGradientDirVal } from '@/spec'
 import { GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '@/constant'
 import { parseWallpaper } from '@/utils/wallpaper'
 
@@ -27,7 +27,7 @@ import { wallpaperOnChange, gradientDirOnChange } from '../logic'
 type TProps = {
   wallpapers: Record<string, TWallpaper>
   wallpaper: string
-  direction: string
+  direction: TWallpaperGradientDirVal
 }
 
 const BackgroundBlock: FC<TProps> = ({ wallpapers, wallpaper, direction }) => {
@@ -52,11 +52,11 @@ const BackgroundBlock: FC<TProps> = ({ wallpapers, wallpaper, direction }) => {
             <Divider />
             <Title>渐变方向:</Title>
             <DirRow>
-              {keys(GRADIENT_DIRECTION).map((dir) => (
+              {values(GRADIENT_DIRECTION).map((dir) => (
                 <DirWrapper
                   key={dir}
                   $active={dir === direction}
-                  onClick={() => gradientDirOnChange(GRADIENT_DIRECTION[dir])}
+                  onClick={() => gradientDirOnChange(dir)}
                 >
                   <DirArrowIcon dir={dir} />
                 </DirWrapper>

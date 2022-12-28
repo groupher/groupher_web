@@ -4,7 +4,13 @@
 
 import { values, keys, clone, forEach } from 'ramda'
 
-import type { TCommunity, TRootStore, TWallpaper, TWallpaperGradient } from '@/spec'
+import type {
+  TCommunity,
+  TRootStore,
+  TWallpaper,
+  TWallpaperGradient,
+  TWallpaperGradientDirVal,
+} from '@/spec'
 import { GRADIENT_WALLPAPER } from '@/constant'
 
 import { buildLog } from '@/utils/logger'
@@ -69,7 +75,7 @@ const CoverEditor = T.model('CoverEditor', {
         linearBorderPos: linearBorderPos as TLinearBorderPos,
         wallpapers: gradientWallpapers,
         wallpaper,
-        direction,
+        direction: direction as TWallpaperGradientDirVal,
       }
     },
   }))

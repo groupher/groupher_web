@@ -1,4 +1,4 @@
-import type { TWallpaper } from '@/spec'
+import type { TWallpaper, TWallpaperGradientDirVal } from '@/spec'
 
 export type TImagePos =
   | 'top_left'
@@ -39,7 +39,7 @@ export type TToolboxSetting = {
   linearBorderPos: TLinearBorderPos
   wallpapers: Record<string, TWallpaper>
   wallpaper: string
-  direction: string
+  direction: TWallpaperGradientDirVal
 }
 
 export type TCoverImage = {
