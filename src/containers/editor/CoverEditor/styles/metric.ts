@@ -111,6 +111,10 @@ export const getLinearBorder = (pos: TLinearBorderPos, active = false): string =
       return `linear-gradient(transparent, transparent),
       linear-gradient(to right, transparent, transparent 20%, ${color});`
     }
+    case LINEAR_BORDER.NONE: {
+      return 'none'
+    }
+    // all
     default: {
       return `linear-gradient(transparent, transparent),
       linear-gradient(to left, transparent, transparent, ${color});`

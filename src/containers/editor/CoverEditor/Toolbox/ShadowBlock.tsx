@@ -1,4 +1,6 @@
 import { FC, useState } from 'react'
+import { values } from 'ramda'
+
 import Tooltip from '@/widgets/Tooltip'
 
 import type { TSettingLevel } from '../spec'
@@ -18,31 +20,16 @@ const ShadowBlock: FC<TProps> = ({ shadowLevel }) => {
       <Tooltip
         content={
           <Panel>
-            <ShadowBox
-              boxShadow={IMAGE_SHADOW.L1}
-              $active={shadowLevel === SETTING_LEVEL.L1}
-              onClick={() => shadowOnChange(SETTING_LEVEL.L1)}
-            />
-            <ShadowBox
-              boxShadow={IMAGE_SHADOW.L2}
-              $active={shadowLevel === SETTING_LEVEL.L2}
-              onClick={() => shadowOnChange(SETTING_LEVEL.L2)}
-            />
-            <ShadowBox
-              boxShadow={IMAGE_SHADOW.L3}
-              $active={shadowLevel === SETTING_LEVEL.L3}
-              onClick={() => shadowOnChange(SETTING_LEVEL.L3)}
-            />
-            <ShadowBox
-              boxShadow={IMAGE_SHADOW.L4}
-              $active={shadowLevel === SETTING_LEVEL.L4}
-              onClick={() => shadowOnChange(SETTING_LEVEL.L4)}
-            />
-            <ShadowBox
-              boxShadow={IMAGE_SHADOW.L5}
-              $active={shadowLevel === SETTING_LEVEL.L5}
-              onClick={() => shadowOnChange(SETTING_LEVEL.L5)}
-            />
+            {values(SETTING_LEVEL).map((level) => (
+              <div key={level}>
+                <ShadowBox
+                  key={level}
+                  boxShadow={IMAGE_SHADOW[level]}
+                  $active={shadowLevel === SETTING_LEVEL[level]}
+                  onClick={() => shadowOnChange(SETTING_LEVEL[level])}
+                />
+              </div>
+            ))}
           </Panel>
         }
         placement="top"

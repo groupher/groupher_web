@@ -15,6 +15,7 @@ export const IMAGE_POS = {
 } as Record<TSnakeUpperCase<TImagePos>, TImagePos>
 
 export const LINEAR_BORDER = {
+  NONE: 'none',
   TOP_LEFT: 'top_left',
   TOP: 'top',
   TOP_RIGHT: 'top_right',
@@ -28,7 +29,6 @@ export const LINEAR_BORDER = {
   LEFT_ALL: 'left_all',
   RIGHT_ALL: 'right_all',
   ALL: 'all',
-  NONE: 'none',
 } as Record<TSnakeUpperCase<TLinearBorderPos>, TLinearBorderPos>
 
 export const SETTING_LEVEL = {

@@ -3,8 +3,11 @@ import styled from 'styled-components'
 import type { TActive } from '@/spec'
 import css, { theme } from '@/utils/css'
 import ArchSVG from '@/icons/Arch'
+import EmptySVG from '@/icons/Empty'
 
-import type { TLinearBorderPos } from '../../spec'
+import type { TLinearBorderPos, TSettingLevel } from '../../spec'
+import { LINEAR_BORDER, IMAGE_SHADOW } from '../../constant'
+
 import { SettingBlock, SettingTitle } from '.'
 import { getLinearBorder } from '../metric'
 
@@ -18,12 +21,11 @@ export const Block = styled(SettingBlock)``
 export const Panel = styled.div`
   ${css.flexColumn('justify-center', 'align-start')};
   color: ${theme('article.digest')};
-  width: 245px;
+  width: 252px;
   height: 135px;
   padding-left: 15px;
 
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
+  background-color: ${theme('hoverBg')};
 `
 
 export const Icon = styled(ArchSVG)`
@@ -42,7 +44,7 @@ export const Desc = styled(SettingTitle)`
 `
 export const Row = styled.div`
   ${css.flex('align-center')};
-  gap: 0 18px;
+  gap: 0 17px;
 `
 export const Divider = styled.div`
   width: 90%;
@@ -55,7 +57,7 @@ export const Divider = styled.div`
 export const RowTitle = styled.div`
   color: ${theme('article.title')};
   font-size: 11px;
-  width: 40px;
+  width: 45px;
 `
 export const BorderRow = styled.div`
   ${css.flex('align-start')};
@@ -64,10 +66,11 @@ export const BorderRow = styled.div`
 export const BorderContentsRow = styled.div`
   ${css.flex('align-center')};
   flex-wrap: wrap;
-  gap: 10px 18px;
-  margin-left: 10px;
+  width: 160px;
+  gap: 10px 12px;
+  margin-left: -5px;
 `
-type TRadiusBox = { borderRadius: string } & TActive
+type TRadiusBox = { borderRadius: string; shadowLevel: TSettingLevel } & TActive
 export const RadiusBox = styled.div<TRadiusBox>`
   ${css.size(16)};
   border: 1px solid;
@@ -78,7 +81,9 @@ export const RadiusBox = styled.div<TRadiusBox>`
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
-  background: ${theme('hoverBg')};
+  /* background: ${theme('hoverBg')}; */
+  background: white;
+  box-shadow: ${({ shadowLevel }) => IMAGE_SHADOW[shadowLevel]};
 
   &:hover {
     border-color: ${theme('article.digest')};
@@ -89,7 +94,7 @@ export const RadiusBox = styled.div<TRadiusBox>`
   transition: all 0.2s;
 `
 
-type TBorderBox = { linearBorderPos: TLinearBorderPos } & TActive
+type TBorderBox = { linearBorderPos: TLinearBorderPos; shadowLevel: TSettingLevel } & TActive
 export const BorderBox = styled.div<TBorderBox>`
   position: relative;
   ${css.size(16)};
@@ -100,13 +105,22 @@ export const BorderBox = styled.div<TBorderBox>`
   border-image-slice: 1;
   background-origin: border-box;
   background-clip: content-box, border-box;
+  border-color: ${({ linearBorderPos, $active }) => {
+    if (linearBorderPos === LINEAR_BORDER.ALL) {
+      return $active ? theme('article.digest') : '#dcd6ca'
+    }
+
+    return 'transparent'
+  }};
+
+  box-shadow: ${({ shadowLevel }) => IMAGE_SHADOW[shadowLevel]};
 
   &:before {
     position: absolute;
     content: '';
     ${css.size(14)};
     border-radius: 3px;
-    background: ${theme('hoverBg')};
+    background: white;
     left: 0;
     top: 0;
   }
@@ -117,4 +131,14 @@ export const BorderBox = styled.div<TBorderBox>`
   }
 
   transition: all 0.2s;
+`
+export const ForbidIcon = styled(EmptySVG)<TActive>`
+  ${css.size(16)};
+  fill: ${theme('article.digest')};
+  opacity: ${({ $active }) => ($active ? 1 : 0.3)};
+
+  &:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
 `

@@ -2,11 +2,12 @@ import styled from 'styled-components'
 
 import Img from '@/Img'
 
+import type { TActive } from '@/spec'
 import css, { theme } from '@/utils/css'
 import { pixelAdd } from '@/utils/dom'
 
 import type { TCoverImage } from '../../spec'
-import { IMAGE_SHADOW, IMAGE_BORDER_RADIUS } from '../../constant'
+import { IMAGE_SHADOW, IMAGE_BORDER_RADIUS, LINEAR_BORDER } from '../../constant'
 
 import { getImageCor, getLinearBorder } from '../metric'
 
@@ -44,7 +45,8 @@ export const GlassBorder = styled.div<TCoverImage>`
   box-shadow: ${({ shadowLevel }) => IMAGE_SHADOW[shadowLevel]};
 `
 
-export const Image = styled(Img)<TCoverImage>`
+type TImage = TCoverImage & TActive
+export const Image = styled(Img)<TImage>`
   position: absolute;
   top: 0;
   left: 0;
@@ -54,6 +56,13 @@ export const Image = styled(Img)<TCoverImage>`
   border-image-slice: 1;
   background-origin: border-box;
   background-clip: content-box, border-box;
+  border-color: ${({ linearBorderPos, $active }) => {
+    if (linearBorderPos === LINEAR_BORDER.ALL) {
+      return $active ? theme('article.digest') : '#dcd6ca'
+    }
+
+    return 'transparent'
+  }};
 
   top: ${({ pos }) => getImageCor(pos).top};
   left: ${({ pos }) => getImageCor(pos).left};

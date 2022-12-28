@@ -29,7 +29,6 @@ export const Wrapper = styled.div`
     display: flex;
   }
 `
-
 export const UploadIcon = styled(UploadSVG)`
   ${css.size(50)};
   fill: ${theme('article.info')};
@@ -47,7 +46,6 @@ export const Desc = styled.div`
   font-size: 12px;
   opacity: 0.8;
 `
-
 export const SettingBlock = styled.div<TActive>`
   ${css.size(29)};
   ${css.flex('align-both')};
@@ -66,7 +64,6 @@ export const SettingBlock = styled.div<TActive>`
     border-color: ${theme('article.digest')};
   }
 `
-
 export const SettingTitle = styled.div<TActive>`
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   font-size: 9px;

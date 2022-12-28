@@ -1,4 +1,6 @@
 import { FC, useState } from 'react'
+import { keys } from 'ramda'
+
 import Tooltip from '@/widgets/Tooltip'
 
 import type { TLinearBorderPos, TSettingLevel } from '../spec'
@@ -13,6 +15,7 @@ import {
   BorderContentsRow,
   BorderRow,
   BorderBox,
+  ForbidIcon,
   Divider,
   Row,
   RowTitle,
@@ -20,11 +23,12 @@ import {
 import { borderRadiusOnChange, linearBorderPosOnChange } from '../logic'
 
 type TProps = {
-  level: TSettingLevel
+  borderRadiusLevel: TSettingLevel
   linearBorderPos: TLinearBorderPos
+  shadowLevel: TSettingLevel
 }
 
-const ArchBlock: FC<TProps> = ({ level, linearBorderPos }) => {
+const ArchBlock: FC<TProps> = ({ borderRadiusLevel, linearBorderPos, shadowLevel }) => {
   const [panelOpen, setPanelOpen] = useState(false)
 
   return (
@@ -34,77 +38,44 @@ const ArchBlock: FC<TProps> = ({ level, linearBorderPos }) => {
           <Panel>
             <Row>
               <RowTitle>圆角</RowTitle>
-              <RadiusBox
-                borderRadius={IMAGE_BORDER_RADIUS.L1}
-                $active={level === SETTING_LEVEL.L1}
-                onClick={() => borderRadiusOnChange(SETTING_LEVEL.L1)}
-              />
-              <RadiusBox
-                borderRadius={IMAGE_BORDER_RADIUS.L2}
-                $active={level === SETTING_LEVEL.L2}
-                onClick={() => borderRadiusOnChange(SETTING_LEVEL.L2)}
-              />
-              <RadiusBox
-                borderRadius={IMAGE_BORDER_RADIUS.L3}
-                $active={level === SETTING_LEVEL.L3}
-                onClick={() => borderRadiusOnChange(SETTING_LEVEL.L3)}
-              />
-              <RadiusBox
-                borderRadius={IMAGE_BORDER_RADIUS.L4}
-                $active={level === SETTING_LEVEL.L4}
-                onClick={() => borderRadiusOnChange(SETTING_LEVEL.L4)}
-              />
-              <RadiusBox
-                borderRadius={IMAGE_BORDER_RADIUS.L5}
-                $active={level === SETTING_LEVEL.L5}
-                onClick={() => borderRadiusOnChange(SETTING_LEVEL.L5)}
-              />
+              {keys(IMAGE_BORDER_RADIUS).map((level) => {
+                return (
+                  <RadiusBox
+                    key={level}
+                    borderRadius={IMAGE_BORDER_RADIUS[level]}
+                    shadowLevel={shadowLevel}
+                    $active={borderRadiusLevel === SETTING_LEVEL[level]}
+                    onClick={() => borderRadiusOnChange(SETTING_LEVEL[level])}
+                  />
+                )
+              })}
             </Row>
+
             <Divider />
 
             <BorderRow>
               <RowTitle>边框</RowTitle>
               <BorderContentsRow>
-                <BorderBox
-                  linearBorderPos={LINEAR_BORDER.TOP_LEFT}
-                  $active={linearBorderPos === LINEAR_BORDER.TOP_LEFT}
-                  onClick={() => linearBorderPosOnChange(LINEAR_BORDER.TOP_LEFT)}
-                />
-                <BorderBox
-                  linearBorderPos={LINEAR_BORDER.TOP_RIGHT}
-                  $active={linearBorderPos === LINEAR_BORDER.TOP_RIGHT}
-                  onClick={() => linearBorderPosOnChange(LINEAR_BORDER.TOP_RIGHT)}
-                />
-                <BorderBox
-                  linearBorderPos={LINEAR_BORDER.BOTTOM_LEFT}
-                  $active={linearBorderPos === LINEAR_BORDER.BOTTOM_LEFT}
-                  onClick={() => linearBorderPosOnChange(LINEAR_BORDER.BOTTOM_LEFT)}
-                />
-                <BorderBox
-                  linearBorderPos={LINEAR_BORDER.BOTTOM_RIGHT}
-                  $active={linearBorderPos === LINEAR_BORDER.BOTTOM_RIGHT}
-                  onClick={() => linearBorderPosOnChange(LINEAR_BORDER.BOTTOM_RIGHT)}
-                />
-                <BorderBox
-                  linearBorderPos={LINEAR_BORDER.TOP_ALL}
-                  $active={linearBorderPos === LINEAR_BORDER.TOP_ALL}
-                  onClick={() => linearBorderPosOnChange(LINEAR_BORDER.TOP_ALL)}
-                />
-                <BorderBox
-                  linearBorderPos={LINEAR_BORDER.BOTTOM_ALL}
-                  $active={linearBorderPos === LINEAR_BORDER.BOTTOM_ALL}
-                  onClick={() => linearBorderPosOnChange(LINEAR_BORDER.BOTTOM_ALL)}
-                />
-                <BorderBox
-                  linearBorderPos={LINEAR_BORDER.LEFT_ALL}
-                  $active={linearBorderPos === LINEAR_BORDER.LEFT_ALL}
-                  onClick={() => linearBorderPosOnChange(LINEAR_BORDER.LEFT_ALL)}
-                />
-                <BorderBox
-                  linearBorderPos={LINEAR_BORDER.RIGHT_ALL}
-                  $active={linearBorderPos === LINEAR_BORDER.RIGHT_ALL}
-                  onClick={() => linearBorderPosOnChange(LINEAR_BORDER.RIGHT_ALL)}
-                />
+                {keys(LINEAR_BORDER).map((pos) => {
+                  if (pos === LINEAR_BORDER.NONE.toUpperCase()) {
+                    return (
+                      <ForbidIcon
+                        key={pos}
+                        $active={linearBorderPos === LINEAR_BORDER.NONE}
+                        onClick={() => linearBorderPosOnChange(LINEAR_BORDER.NONE)}
+                      />
+                    )
+                  }
+                  return (
+                    <BorderBox
+                      key={pos}
+                      linearBorderPos={LINEAR_BORDER[pos]}
+                      shadowLevel={shadowLevel}
+                      $active={linearBorderPos === LINEAR_BORDER[pos]}
+                      onClick={() => linearBorderPosOnChange(LINEAR_BORDER[pos])}
+                    />
+                  )
+                })}
               </BorderContentsRow>
             </BorderRow>
           </Panel>
