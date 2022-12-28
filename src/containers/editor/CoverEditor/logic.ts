@@ -32,6 +32,10 @@ export const wallpaperOnChange = (wallpaper: string): void => {
   store.mark({ wallpaper })
 }
 
+export const gradientDirOnChange = (direction: string): void => {
+  store.mark({ direction })
+}
+
 // ###############################
 // init & uninit handlers
 // ###############################

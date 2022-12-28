@@ -39,6 +39,7 @@ export type TToolboxSetting = {
   linearBorderPos: TLinearBorderPos
   wallpapers: Record<string, TWallpaper>
   wallpaper: string
+  direction: string
 }
 
 export type TCoverImage = {

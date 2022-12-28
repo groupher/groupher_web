@@ -47,6 +47,17 @@ export const IMAGE_SHADOW = {
   L5: 'rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;',
 } as Record<TSettingLevel, string>
 
+export const BG_GRADIENT_DIRECTION = {
+  TOP: 'top',
+  TOP_RIGHT: 'top right',
+  RIGHT: 'right',
+  BOTTOM_RIGHT: 'bottom right',
+  BOTTOM: 'bottom',
+  BOTTOM_LEFT: 'bottom left',
+  LEFT: 'left',
+  TOP_LEFT: 'top left',
+}
+
 export const IMAGE_BORDER_RADIUS = {
   L1: '0px',
   L2: '10px',

@@ -25,7 +25,7 @@ const CoverEditor = T.model('CoverEditor', {
   wallpaper: T.opt(T.string, 'pink'),
   hasPattern: T.opt(T.bool, false),
   hasBlur: T.opt(T.bool, true),
-  direction: T.opt(T.string, 'bottom'),
+  direction: T.opt(T.string, 'BOTTOM'),
 })
   .views((self) => ({
     get curCommunity(): TCommunity {
@@ -59,6 +59,7 @@ const CoverEditor = T.model('CoverEditor', {
         linearBorderPos,
         wallpaper,
         gradientWallpapers,
+        direction,
       } = slf
 
       return {
@@ -68,6 +69,7 @@ const CoverEditor = T.model('CoverEditor', {
         linearBorderPos: linearBorderPos as TLinearBorderPos,
         wallpapers: gradientWallpapers,
         wallpaper,
+        direction,
       }
     },
   }))

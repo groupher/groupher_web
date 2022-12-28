@@ -1,7 +1,7 @@
 // import { theme } from '@/utils/css'
 
 import type { TImagePos, TImageCor, TLinearBorderPos } from '../spec'
-import { IMAGE_POS, LINEAR_BORDER } from '../constant'
+import { IMAGE_POS, LINEAR_BORDER, BG_GRADIENT_DIRECTION } from '../constant'
 
 export const getImageCor = (pos: TImagePos): TImageCor => {
   const topOffset = 40
@@ -118,6 +118,36 @@ export const getLinearBorder = (pos: TLinearBorderPos, active = false): string =
     default: {
       return `linear-gradient(transparent, transparent),
       linear-gradient(to left, transparent, transparent, ${color});`
+    }
+  }
+}
+
+export const getBgGradientDirAngle = (dir: string): string => {
+  switch (dir) {
+    case 'TOP': {
+      return '90deg'
+    }
+    case 'TOP_RIGHT': {
+      return '135deg'
+    }
+    case 'RIGHT': {
+      return '180deg'
+    }
+    case 'BOTTOM_RIGHT': {
+      return '225deg'
+    }
+    case 'BOTTOM': {
+      return '270deg'
+    }
+    case 'BOTTOM_LEFT': {
+      return '315deg'
+    }
+    case 'LEFT': {
+      return '0'
+    }
+    // TOP_LEFT
+    default: {
+      return '45deg'
     }
   }
 }

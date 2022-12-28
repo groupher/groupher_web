@@ -1,11 +1,13 @@
 import styled from 'styled-components'
 
+import type { TActive } from '@/spec'
 import css, { theme } from '@/utils/css'
 
 import ArchSVG from '@/icons/Arch'
+import ArrowSVG from '@/icons/Arrow'
 
 import { SettingBlock, SettingTitle } from '.'
-import { TActive } from '@/spec'
+import { getBgGradientDirAngle } from '../metric'
 
 export const Wrapper = styled.div`
   ${css.size(60)};
@@ -15,12 +17,41 @@ export const Wrapper = styled.div`
 export const Block = styled(SettingBlock)``
 
 export const Panel = styled.div`
-  ${css.flex('align-both')};
-  gap: 0 15px;
-  width: 300px;
-  height: 55px;
+  ${css.flexColumn('align-start')};
+  width: 320px;
+  height: 160px;
+  padding: 10px;
 
   background-color: ${theme('hoverBg')};
+`
+
+export const Title = styled.div`
+  color: ${theme('article.digest')};
+  font-weight: 600;
+  font-size: 12px;
+  margin-top: 5px;
+  margin-bottom: 8px;
+  margin-left: 2px;
+`
+
+export const BgRow = styled.div`
+  ${css.flex('align-center')};
+  gap: 0 15px;
+`
+
+export const Divider = styled.div`
+  width: 90%;
+  height: 1px;
+  background: ${theme('divider')};
+  opacity: 0.4;
+  margin-top: 15px;
+  margin-bottom: 6px;
+`
+
+export const DirRow = styled.div`
+  ${css.flex('align-center')};
+  flex-wrap: wrap;
+  gap: 0 12px;
 `
 
 export const BgImage = styled.div<{ background: string }>`
@@ -46,6 +77,12 @@ export const ImageWrapper = styled.div<TActive>`
     cursor: pointer;
   }
 `
+
+export const DirWrapper = styled(ImageWrapper)`
+  ${css.size(24)};
+  ${css.flex('align-both')};
+`
+
 type TImageBlock = { background: string }
 export const ImageBlock = styled.div<TImageBlock>`
   ${css.size(22)};
@@ -67,4 +104,10 @@ export const Desc = styled(SettingTitle)`
   ${Wrapper}:hover & {
     color: ${theme('article.title')};
   }
+`
+export const DirArrowIcon = styled(ArrowSVG)<{ dir: string }>`
+  ${css.size(10)};
+  fill: ${theme('article.digest')};
+
+  transform: ${({ dir }) => `rotate(${getBgGradientDirAngle(dir)})`};
 `

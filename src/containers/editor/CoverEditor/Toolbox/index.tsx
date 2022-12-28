@@ -28,7 +28,11 @@ const Toolbox: FC<TProps> = ({ setting }) => {
         shadowLevel={setting.shadowLevel}
       />
       <RatioBlock />
-      <BackgroundBlock wallpapers={setting.wallpapers} wallpaper={setting.wallpaper} />
+      <BackgroundBlock
+        wallpapers={setting.wallpapers}
+        wallpaper={setting.wallpaper}
+        direction={setting.direction}
+      />
     </Wrapper>
   )
 }
