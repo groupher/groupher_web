@@ -140,7 +140,6 @@ export type {
   TWallpaper,
   TWallpaperType,
   TWallpaperGradientDir,
-  TWallpaperGradientDirVal,
 } from './wallpaper'
 
 export type { TColorName } from './color'

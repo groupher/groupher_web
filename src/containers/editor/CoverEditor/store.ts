@@ -9,9 +9,9 @@ import type {
   TRootStore,
   TWallpaper,
   TWallpaperGradient,
-  TWallpaperGradientDirVal,
+  TWallpaperGradientDir,
 } from '@/spec'
-import { GRADIENT_WALLPAPER } from '@/constant'
+import { GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '@/constant'
 
 import { buildLog } from '@/utils/logger'
 import { markStates, toJS, getParent, Instance, T } from '@/utils/mobx'
@@ -31,7 +31,7 @@ const CoverEditor = T.model('CoverEditor', {
   wallpaper: T.opt(T.string, 'pink'),
   hasPattern: T.opt(T.bool, false),
   hasBlur: T.opt(T.bool, true),
-  direction: T.opt(T.string, 'BOTTOM'),
+  direction: T.opt(T.string, GRADIENT_DIRECTION.BOTTOM),
 })
   .views((self) => ({
     get curCommunity(): TCommunity {
@@ -75,7 +75,7 @@ const CoverEditor = T.model('CoverEditor', {
         linearBorderPos: linearBorderPos as TLinearBorderPos,
         wallpapers: gradientWallpapers,
         wallpaper,
-        direction: direction as TWallpaperGradientDirVal,
+        direction: direction as TWallpaperGradientDir,
       }
     },
   }))

@@ -1,6 +1,6 @@
 // import { theme } from '@/utils/css'
 
-import type { TWallpaperGradientDirVal } from '@/spec'
+import type { TWallpaperGradientDir } from '@/spec'
 import { GRADIENT_DIRECTION } from '@/constant'
 
 import type { TImagePos, TImageCor, TLinearBorderPos } from '../spec'
@@ -125,7 +125,7 @@ export const getLinearBorder = (pos: TLinearBorderPos, active = false): string =
   }
 }
 
-export const getBgGradientDirAngle = (dir: TWallpaperGradientDirVal): string => {
+export const getBgGradientDirAngle = (dir: TWallpaperGradientDir): string => {
   switch (dir) {
     case GRADIENT_DIRECTION.TOP: {
       return '90deg'

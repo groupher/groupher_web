@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TActive, TWallpaperGradientDirVal } from '@/spec'
+import type { TActive, TWallpaperGradientDir } from '@/spec'
 import css, { theme } from '@/utils/css'
 
 import ArchSVG from '@/icons/Arch'
@@ -105,7 +105,7 @@ export const Desc = styled(SettingTitle)`
     color: ${theme('article.title')};
   }
 `
-export const DirArrowIcon = styled(ArrowSVG)<{ dir: TWallpaperGradientDirVal }>`
+export const DirArrowIcon = styled(ArrowSVG)<{ dir: TWallpaperGradientDir }>`
   ${css.size(10)};
   fill: ${theme('article.digest')};
 

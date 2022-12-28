@@ -1,6 +1,3 @@
-import type { TValueOf } from '@/spec'
-import { GRADIENT_DIRECTION } from '@/constant'
-
 export type TWallpaperFmt = {
   effect: string
   background: string
@@ -15,8 +12,6 @@ export type TWallpaperGradientDir =
   | 'bottom left'
   | 'left'
   | 'top left'
-
-export type TWallpaperGradientDirVal = TValueOf<typeof GRADIENT_DIRECTION>
 
 export type TWallpaperGradient = {
   colors?: string[]

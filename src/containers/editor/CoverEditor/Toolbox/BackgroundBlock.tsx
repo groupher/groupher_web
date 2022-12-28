@@ -1,7 +1,7 @@
 import { useState, FC } from 'react'
 import { keys, values } from 'ramda'
 
-import type { TWallpaper, TWallpaperGradientDirVal } from '@/spec'
+import type { TWallpaper, TWallpaperGradientDir } from '@/spec'
 import { GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '@/constant'
 import { parseWallpaper } from '@/utils/wallpaper'
 
@@ -27,7 +27,7 @@ import { wallpaperOnChange, gradientDirOnChange } from '../logic'
 type TProps = {
   wallpapers: Record<string, TWallpaper>
   wallpaper: string
-  direction: TWallpaperGradientDirVal
+  direction: TWallpaperGradientDir
 }
 
 const BackgroundBlock: FC<TProps> = ({ wallpapers, wallpaper, direction }) => {
