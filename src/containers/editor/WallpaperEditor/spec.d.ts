@@ -1,4 +1,4 @@
-import type { TWallpaper, TWallpaperType } from '@/spec'
+import type { TWallpaper, TWallpaperType, TWallpaperGradientDir } from '@/spec'
 
 export type TWallpaperData = {
   wallpaper: string
@@ -8,7 +8,7 @@ export type TWallpaperData = {
   hasPattern: boolean
   hasBlur: boolean
   hasShadow: boolean
-  direction: string
+  direction: TWallpaperGradientDir
 }
 
 export type TTab = 'buildin' | 'custom'

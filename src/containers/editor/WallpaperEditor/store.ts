@@ -12,6 +12,7 @@ import type {
   TWallpaperType,
   TWallpaperGradient,
   TWallpaperPic,
+  TWallpaperGradientDir,
 } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
@@ -79,7 +80,7 @@ const WallpaperEditor = T.model('WallpaperEditor', {
 
         wallpaperObj.hasPattern = slf.hasPattern
         wallpaperObj.hasBlur = slf.hasBlur
-        wallpaperObj.direction = slf.direction
+        wallpaperObj.direction = slf.direction as TWallpaperGradientDir
       }, paperKeys)
 
       return wallpapers
@@ -102,19 +103,22 @@ const WallpaperEditor = T.model('WallpaperEditor', {
     get wallpaperData(): TWallpaperData {
       const slf = self as TStore
 
-      return pick(
-        [
-          'wallpaper',
-          'patternWallpapers',
-          'gradientWallpapers',
-          'wallpaperType',
-          'hasPattern',
-          'hasBlur',
-          'hasShadow',
-          'direction',
-        ],
-        slf,
-      )
+      return {
+        ...pick(
+          [
+            'wallpaper',
+            'patternWallpapers',
+            'gradientWallpapers',
+            'wallpaperType',
+            'hasPattern',
+            'hasBlur',
+            'hasShadow',
+          ],
+          slf,
+        ),
+
+        direction: self.direction as TWallpaperGradientDir,
+      }
     },
   }))
   .actions((self) => ({
@@ -125,7 +129,7 @@ const WallpaperEditor = T.model('WallpaperEditor', {
       self.wallpaper = init.wallpaper
       self.hasPattern = init.hasPattern
       self.hasBlur = init.hasBlur
-      self.direction = init.direction
+      self.direction = init.direction as TWallpaperGradientDir
     },
 
     mark(sobj: Record<string, unknown>): void {

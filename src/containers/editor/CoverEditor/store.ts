@@ -50,7 +50,7 @@ const CoverEditor = T.model('CoverEditor', {
 
         wallpaperObj.hasPattern = slf.hasPattern
         wallpaperObj.hasBlur = slf.hasBlur
-        wallpaperObj.direction = slf.direction
+        wallpaperObj.direction = slf.direction as TWallpaperGradientDir
       }, paperKeys)
 
       return wallpapers

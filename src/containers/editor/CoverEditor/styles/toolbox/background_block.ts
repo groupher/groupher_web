@@ -107,7 +107,7 @@ export const Desc = styled(SettingTitle)`
 `
 export const DirArrowIcon = styled(ArrowSVG)<{ dir: TWallpaperGradientDir }>`
   ${css.size(10)};
-  fill: ${theme('article.digest')};
+  fill: ${theme('article.title')};
 
   transform: ${({ dir }) => `rotate(${getBgGradientDirAngle(dir)})`};
 `

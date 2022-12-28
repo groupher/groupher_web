@@ -17,7 +17,7 @@ export type TWallpaperGradient = {
   colors?: string[]
   hasPattern?: boolean
   hasBlur?: boolean
-  direction?: string
+  direction?: TWallpaperGradientDir
 }
 
 export type TWallpaperPic = {
