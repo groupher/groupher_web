@@ -14,7 +14,8 @@ import { getImageCor, getLinearBorder } from '../metric'
 const IMAGE_WIDTH = '700px'
 const IMAGE_HEIGHT = '400px'
 
-export const Wrapper = styled.div<{ hasImage: boolean }>`
+type TWrapper = { hasImage: boolean; background: string }
+export const Wrapper = styled.div<TWrapper>`
   ${css.flexColumn('align-both')};
   width: ${IMAGE_WIDTH};
   height: ${IMAGE_HEIGHT};
@@ -24,10 +25,9 @@ export const Wrapper = styled.div<{ hasImage: boolean }>`
   position: relative;
   overflow: hidden;
 
-  background-image: ${({ hasImage }) =>
-    // hasImage ? 'linear-gradient(to bottom, #9fbdd3, #ebe6e2)' : 'none'};
-    hasImage ? 'linear-gradient(to bottom, #683FD1, #DD8DC6)' : 'none'};
+  background-image: ${({ hasImage, background }) => (hasImage ? background : 'none')};
 `
+// 'linear-gradient(to bottom, #683FD1, #DD8DC6)'
 
 export const GlassBorder = styled.div<TCoverImage>`
   position: absolute;

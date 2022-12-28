@@ -1,8 +1,9 @@
 import { FC } from 'react'
 import { isEmpty } from 'ramda'
 
+import { parseWallpaper } from '@/utils/wallpaper'
+
 import type { TToolboxSetting } from '../spec'
-// import { SETTING_LEVEL } from '../constant'
 
 import { Wrapper, GlassBorder, Image } from '../styles/cover'
 import Placeholder from './Placeholder'
@@ -21,7 +22,10 @@ const Cover: FC<TProps> = ({ setting, imageUrl }) => {
   }
 
   return (
-    <Wrapper hasImage={hasImage}>
+    <Wrapper
+      hasImage={hasImage}
+      background={parseWallpaper(setting.wallpapers, setting.wallpaper).background}
+    >
       {hasImage && hasGlassBorder && (
         <GlassBorder
           pos={setting.pos}

@@ -1,3 +1,5 @@
+import type { TWallpaper } from '@/spec'
+
 export type TImagePos =
   | 'top_left'
   | 'top_center'
@@ -35,6 +37,8 @@ export type TToolboxSetting = {
   shadowLevel: TSettingLevel
   borderRadiusLevel: TSettingLevel
   linearBorderPos: TLinearBorderPos
+  wallpapers: Record<string, TWallpaper>
+  wallpaper: string
 }
 
 export type TCoverImage = {

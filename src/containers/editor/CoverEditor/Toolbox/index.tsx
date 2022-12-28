@@ -5,7 +5,7 @@ import PositionBlock from './PositionBlock'
 import BorderBlock from './BorderBlock'
 import ShadowBlock from './ShadowBlock'
 import SizeBlock from './SizeBlock'
-import BgBlock from './BgBlock'
+import BackgroundBlock from './BackgroundBlock'
 import RatioBlock from './RatioBlock'
 
 import type { TToolboxSetting } from '../spec'
@@ -28,7 +28,7 @@ const Toolbox: FC<TProps> = ({ setting }) => {
         shadowLevel={setting.shadowLevel}
       />
       <RatioBlock />
-      <BgBlock />
+      <BackgroundBlock wallpapers={setting.wallpapers} wallpaper={setting.wallpaper} />
     </Wrapper>
   )
 }

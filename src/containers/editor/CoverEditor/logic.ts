@@ -28,6 +28,10 @@ export const linearBorderPosOnChange = (linearBorderPos: TLinearBorderPos): void
   store.mark({ linearBorderPos })
 }
 
+export const wallpaperOnChange = (wallpaper: string): void => {
+  store.mark({ wallpaper })
+}
+
 // ###############################
 // init & uninit handlers
 // ###############################

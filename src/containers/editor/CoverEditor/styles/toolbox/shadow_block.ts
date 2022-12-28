@@ -34,8 +34,7 @@ export const Panel = styled.div`
   width: 200px;
   height: 55px;
 
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
+  background-color: ${theme('hoverBg')};
 `
 type TShadowBox = { boxShadow: string } & TActive
 export const ShadowBox = styled.div<TShadowBox>`

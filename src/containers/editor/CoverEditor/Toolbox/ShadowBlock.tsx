@@ -21,14 +21,12 @@ const ShadowBlock: FC<TProps> = ({ shadowLevel }) => {
         content={
           <Panel>
             {values(SETTING_LEVEL).map((level) => (
-              <div key={level}>
-                <ShadowBox
-                  key={level}
-                  boxShadow={IMAGE_SHADOW[level]}
-                  $active={shadowLevel === SETTING_LEVEL[level]}
-                  onClick={() => shadowOnChange(SETTING_LEVEL[level])}
-                />
-              </div>
+              <ShadowBox
+                key={level}
+                boxShadow={IMAGE_SHADOW[level]}
+                $active={shadowLevel === SETTING_LEVEL[level]}
+                onClick={() => shadowOnChange(SETTING_LEVEL[level])}
+              />
             ))}
           </Panel>
         }

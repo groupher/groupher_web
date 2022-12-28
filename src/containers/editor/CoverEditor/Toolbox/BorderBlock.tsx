@@ -81,7 +81,7 @@ const ArchBlock: FC<TProps> = ({ borderRadiusLevel, linearBorderPos, shadowLevel
           </Panel>
         }
         placement="top"
-        trigger="click"
+        trigger="mouseenter focus"
         onShow={() => setPanelOpen(true)}
         onHide={() => setPanelOpen(false)}
         hideOnClick={false}
