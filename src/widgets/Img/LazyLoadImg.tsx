@@ -11,6 +11,7 @@ type TProps = {
   fallback?: ReactNode | null
   // scrollPosition: any
   visibleByDefault?: boolean
+  onClick?: () => void
 }
 
 /**
@@ -24,14 +25,13 @@ const LazyLoadImg: FC<TProps> = ({
   alt = 'image',
   fallback = null,
   visibleByDefault = true,
+  onClick,
 }) => {
   const [imgLoaded, setImgLoaded] = useState(false)
 
   return (
-    <Wrapper>
-      <FallbackWrapper>
-        {!imgLoaded && <Fragment>{fallback}</Fragment>}
-      </FallbackWrapper>
+    <Wrapper onClick={onClick}>
+      <FallbackWrapper>{!imgLoaded && <Fragment>{fallback}</Fragment>}</FallbackWrapper>
       <LazyLoadImage
         className={className}
         src={src}

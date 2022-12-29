@@ -3,11 +3,21 @@ export type TWallpaperFmt = {
   background: string
 }
 
+export type TWallpaperGradientDir =
+  | 'top'
+  | 'top right'
+  | 'right'
+  | 'bottom right'
+  | 'bottom'
+  | 'bottom left'
+  | 'left'
+  | 'top left'
+
 export type TWallpaperGradient = {
   colors?: string[]
   hasPattern?: boolean
   hasBlur?: boolean
-  direction?: string
+  direction?: TWallpaperGradientDir
 }
 
 export type TWallpaperPic = {

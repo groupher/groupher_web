@@ -7,10 +7,7 @@ export const getActiveBackground = (dimOnActive: boolean): TTheme => {
   return dimOnActive ? theme('divider') : theme('button.primary')
 }
 
-export const getLabelColor = (
-  checked: boolean,
-  dimOnActive: boolean,
-): TTheme => {
+export const getLabelColor = (checked: boolean, dimOnActive: boolean): TTheme => {
   if (dimOnActive) return theme('article.title')
 
   return checked ? theme('button.fg') : theme('article.title')
@@ -19,7 +16,7 @@ export const getLabelColor = (
 export const getLabelFontsize = (size: string): string => {
   switch (size) {
     case SIZE.SMALL: {
-      return '12px'
+      return '11px'
     }
 
     default: {
@@ -31,7 +28,7 @@ export const getLabelFontsize = (size: string): string => {
 export const getRadioBoxSize = (size: string): string => {
   switch (size) {
     case SIZE.SMALL: {
-      return '12px'
+      return '11px'
     }
 
     default: {
@@ -43,7 +40,7 @@ export const getRadioBoxSize = (size: string): string => {
 export const getRadioBoxTop = (size: string): string => {
   switch (size) {
     case SIZE.SMALL: {
-      return '4px'
+      return '3px'
     }
 
     default: {
@@ -55,7 +52,7 @@ export const getRadioBoxTop = (size: string): string => {
 export const getRadioBoxLeft = (size: string): string => {
   switch (size) {
     case SIZE.SMALL: {
-      return '5px'
+      return '7px'
     }
 
     default: {

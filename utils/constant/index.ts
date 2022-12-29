@@ -50,7 +50,13 @@ export {
 
 export { default as DEFAULT_TOAST_OPTIONS } from './toast'
 
-export { PATTERN_WALLPAPER, GRADIENT_WALLPAPER, WALLPAPER, WALLPAPER_TYPE } from './wallpaper'
+export {
+  PATTERN_WALLPAPER,
+  GRADIENT_WALLPAPER,
+  WALLPAPER,
+  WALLPAPER_TYPE,
+  GRADIENT_DIRECTION,
+} from './wallpaper'
 /* some svg icon are sensitive to fill color */
 /* some community svg need fill color, like city etc.. */
 export const NON_FILL_COMMUNITY = ['javascript']

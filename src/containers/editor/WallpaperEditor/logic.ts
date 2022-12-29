@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 // import { } from 'ramda'
 
+import type { TWallpaperGradientDir } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { EVENT } from '@/constant'
 import asyncSuit from '@/utils/async'
@@ -24,7 +25,7 @@ export const changeTab = (tab: TTab): void => {
   store.mark({ tab })
 }
 
-export const changeDirection = (direction: string): void => {
+export const changeDirection = (direction: TWallpaperGradientDir): void => {
   store.mark({ direction })
 }
 

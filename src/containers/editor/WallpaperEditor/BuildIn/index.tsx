@@ -56,7 +56,7 @@ const BuildIn: FC<TProps> = ({ wallpaperData }) => {
           <Title>附加效果:</Title>
           {wallpaperType === WALLPAPER_TYPE.GRADIENT && (
             <SwitchWrapper>
-              <ToggleTitle>叠加印纹</ToggleTitle>
+              <ToggleTitle>叠加花纹</ToggleTitle>
               <ToggleSwitch checked={hasPattern} onChange={togglePattern} />
             </SwitchWrapper>
           )}

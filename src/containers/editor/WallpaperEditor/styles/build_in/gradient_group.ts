@@ -17,14 +17,17 @@ export const BallWrapper = styled.div<TActive>`
   ${css.flex('align-both')};
   border-radius: 100%;
   border: 1.5px solid;
-  border-color: ${({ $active }) =>
-    $active ? theme('article.title') : 'transparent'};
+  border-color: ${({ $active }) => ($active ? theme('article.title') : 'transparent')};
   padding: 3px;
-  background: ${({ $active }) => ($active ? theme('divider') : 'transparent')};
+  box-shadow: ${({ $active }) =>
+    $active
+      ? 'rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px'
+      : 'transparent'};
   margin-bottom: 10px;
 
   &:hover {
-    background: ${theme('divider')};
+    border-color: ${theme('article.digest')};
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
     cursor: pointer;
   }
 

@@ -59,6 +59,7 @@ import {
   //
 
   // GEN: IMPORT SUBSTORE
+  CoverEditorStore,
   TagSettingEditorStore,
   AuthWallStore,
   SubscriberStore,
@@ -150,6 +151,7 @@ const rootStore = T.model({
   // have a drink
 
   // GEN: PLUG SUBSTORE TO ROOTSTORE
+  coverEditor: T.opt(CoverEditorStore, {}),
   tagSettingEditor: T.opt(TagSettingEditorStore, {}),
   authWall: T.opt(AuthWallStore, {}),
   subscriber: T.opt(SubscriberStore, {}),

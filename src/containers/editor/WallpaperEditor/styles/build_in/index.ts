@@ -25,6 +25,7 @@ export const SettingWrapper = styled.div<TActive>`
 export const SwitchWrapper = styled.div`
   ${css.flex('align-center', 'justify-between')};
   padding-right: 10px;
+  margin-left: 1px;
 `
 export const ToggleTitle = styled.div`
   color: ${theme('article.digest')};
