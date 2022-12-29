@@ -1,8 +1,10 @@
 import { FC } from 'react'
-import { Wrapper, Block, Pice, Desc } from '../styles/toolbox/position_block'
+import { values } from 'ramda'
 
 import type { TImagePos } from '../spec'
 import { IMAGE_POS } from '../constant'
+
+import { Wrapper, Block, Pice, Desc } from '../styles/toolbox/position_block'
 import { posOnChange } from '../logic'
 
 type TProps = {
@@ -13,39 +15,11 @@ const PositionBlock: FC<TProps> = ({ pos }) => {
   return (
     <Wrapper>
       <Block>
-        <Pice
-          onClick={() => posOnChange(IMAGE_POS.TOP_LEFT)}
-          $active={pos === IMAGE_POS.TOP_LEFT}
-        />
-        <Pice
-          onClick={() => posOnChange(IMAGE_POS.TOP_CENTER)}
-          $active={pos === IMAGE_POS.TOP_CENTER}
-        />
-        <Pice
-          onClick={() => posOnChange(IMAGE_POS.TOP_RIGHT)}
-          $active={pos === IMAGE_POS.TOP_RIGHT}
-        />
-        <Pice
-          onClick={() => posOnChange(IMAGE_POS.CENTER_LEFT)}
-          $active={pos === IMAGE_POS.CENTER_LEFT}
-        />
-        <Pice onClick={() => posOnChange(IMAGE_POS.CENTER)} $active={pos === IMAGE_POS.CENTER} />
-        <Pice
-          onClick={() => posOnChange(IMAGE_POS.CENTER_RIGHT)}
-          $active={pos === IMAGE_POS.CENTER_RIGHT}
-        />
-        <Pice
-          onClick={() => posOnChange(IMAGE_POS.BOTTOM_LEFT)}
-          $active={pos === IMAGE_POS.BOTTOM_LEFT}
-        />
-        <Pice
-          onClick={() => posOnChange(IMAGE_POS.BOTTOM_CENTER)}
-          $active={pos === IMAGE_POS.BOTTOM_CENTER}
-        />
-        <Pice
-          onClick={() => posOnChange(IMAGE_POS.BOTTOM_RIGHT)}
-          $active={pos === IMAGE_POS.BOTTOM_RIGHT}
-        />
+        {values(IMAGE_POS).map((_pos) => {
+          if (_pos === IMAGE_POS.NONE) return null
+
+          return <Pice key={_pos} onClick={() => posOnChange(_pos)} $active={pos === _pos} />
+        })}
       </Block>
       <Desc>位置</Desc>
     </Wrapper>

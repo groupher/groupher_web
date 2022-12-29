@@ -4,6 +4,7 @@ import { isEmpty } from 'ramda'
 import { parseWallpaper } from '@/utils/wallpaper'
 
 import type { TToolboxSetting } from '../spec'
+import { IMAGE_POS } from '../constant'
 
 import { Wrapper, GlassBorder, Image, Light } from '../styles/cover'
 import Placeholder from './Placeholder'
@@ -46,7 +47,7 @@ const Cover: FC<TProps> = ({ setting, imageUrl }) => {
             linearBorderPos={setting.linearBorderPos}
             noLazy
           />
-          <Light pos={setting.lightPos} />
+          {setting.lightPos !== IMAGE_POS.NONE && <Light pos={setting.lightPos} />}
         </GlassBorder>
       )}
     </Wrapper>

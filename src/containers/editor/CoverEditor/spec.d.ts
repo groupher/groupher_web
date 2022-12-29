@@ -10,6 +10,7 @@ export type TImagePos =
   | 'bottom_left'
   | 'bottom_center'
   | 'bottom_right'
+  | 'none'
 
 export type TLinearBorderPos =
   | 'top_left'

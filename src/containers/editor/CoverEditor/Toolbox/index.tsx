@@ -19,7 +19,6 @@ const Toolbox: FC<TProps> = ({ setting }) => {
   return (
     <Wrapper>
       <PositionBlock pos={setting.pos} />
-      <LightBlock pos={setting.lightPos} />
       <SizeBlock size={setting.size} />
       <ShadowBlock shadowLevel={setting.shadowLevel} />
       <BorderBlock
@@ -28,6 +27,7 @@ const Toolbox: FC<TProps> = ({ setting }) => {
         shadowLevel={setting.shadowLevel}
       />
       <RatioBlock ratio={setting.ratio} />
+      <LightBlock pos={setting.lightPos} />
       <BackgroundBlock
         wallpapers={setting.wallpapers}
         wallpaper={setting.wallpaper}

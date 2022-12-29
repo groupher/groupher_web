@@ -18,6 +18,7 @@ export const IMAGE_POS = {
   BOTTOM_LEFT: 'bottom_left',
   BOTTOM_CENTER: 'bottom_center',
   BOTTOM_RIGHT: 'bottom_right',
+  NONE: 'none',
 } as Record<TSnakeUpperCase<TImagePos>, TImagePos>
 
 export const LINEAR_BORDER = {
