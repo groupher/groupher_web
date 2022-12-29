@@ -27,7 +27,7 @@ const Toolbox: FC<TProps> = ({ setting }) => {
         linearBorderPos={setting.linearBorderPos}
         shadowLevel={setting.shadowLevel}
       />
-      <RatioBlock />
+      <RatioBlock ratio={setting.ratio} />
       <BackgroundBlock
         wallpapers={setting.wallpapers}
         wallpaper={setting.wallpaper}

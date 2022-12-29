@@ -7,18 +7,20 @@ import css, { theme } from '@/utils/css'
 import { pixelAdd } from '@/utils/dom'
 
 import type { TCoverImage } from '../../spec'
-import { IMAGE_SHADOW, IMAGE_BORDER_RADIUS, LINEAR_BORDER } from '../../constant'
+import {
+  IMAGE_CONTAINER_SIZE,
+  IMAGE_SHADOW,
+  IMAGE_BORDER_RADIUS,
+  LINEAR_BORDER,
+} from '../../constant'
 
 import { getImageTranslate, getLinearBorder, getImageSize } from '../metric'
-
-const IMAGE_WIDTH = '700px'
-const IMAGE_HEIGHT = '400px'
 
 type TWrapper = { hasImage: boolean; background: string }
 export const Wrapper = styled.div<TWrapper>`
   ${css.flexColumn('align-both')};
-  width: ${IMAGE_WIDTH};
-  height: ${IMAGE_HEIGHT};
+  width: ${IMAGE_CONTAINER_SIZE.WIDTH};
+  height: ${IMAGE_CONTAINER_SIZE.HEIGHT};
   border: 1px solid;
   border-color: ${theme('divider')};
   border-radius: 5px;
@@ -34,8 +36,8 @@ export const GlassBorder = styled.div<TCoverImage>`
   border-radius: ${({ borderRadiusLevel }) => pixelAdd(IMAGE_BORDER_RADIUS[borderRadiusLevel], 5)};
 
   ${css.flexColumn('align-both')};
-  width: ${pixelAdd(IMAGE_WIDTH, 7)};
-  height: ${pixelAdd(IMAGE_HEIGHT, 7)};
+  width: ${pixelAdd(IMAGE_CONTAINER_SIZE.WIDTH, 7)};
+  height: ${pixelAdd(IMAGE_CONTAINER_SIZE.HEIGHT, 7)};
   background-color: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(5px);
 
@@ -60,8 +62,8 @@ export const Image = styled(Img)<TImage>`
 
   transform: ${({ pos, size }) => getImageTranslate(pos, size)};
 
-  width: ${({ size }) => getImageSize(size).width};
-  height: ${({ size }) => getImageSize(size).height};
+  width: ${({ size, ratio }) => getImageSize(size, ratio).width};
+  height: ${({ size, ratio }) => getImageSize(size, ratio).height};
 
   object-fit: cover;
 

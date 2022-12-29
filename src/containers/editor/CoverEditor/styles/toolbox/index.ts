@@ -18,11 +18,9 @@ export const Wrapper = styled.div`
   border-color: ${theme('divider')};
   border-radius: 8px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  /* background-color: rgba(255, 255, 255, 0.8); */
-  /* backdrop-filter: blur(10px); */
   background: ${theme('hoverBg')};
   z-index: 2;
-  display: flex;
+  display: none;
   animation: ${animate.jump} 0.4s linear;
 
   ${Container}:hover & {
@@ -56,7 +54,6 @@ export const SettingBlock = styled.div<TActive>`
   margin-bottom: 7px;
   background: white;
 
-  /* box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px; */
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
   transition: all 0.3s;
 

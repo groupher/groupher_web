@@ -3,33 +3,11 @@
 import type { TWallpaperGradientDir } from '@/spec'
 import { GRADIENT_DIRECTION } from '@/constant'
 
-import type { TImagePos, TLinearBorderPos, TImageSize, TImageSizeValue } from '../spec'
-import { IMAGE_POS, LINEAR_BORDER, IMAGE_SIZE } from '../constant'
+import type { TImagePos, TLinearBorderPos, TImageSize, TImageRadio, TImageSizeValue } from '../spec'
+import { IMAGE_RATIO_SIZE, IMAGE_POS, LINEAR_BORDER, IMAGE_SIZE } from '../constant'
 
-export const getImageSize = (size: TImageSize): TImageSizeValue => {
-  switch (size) {
-    case IMAGE_SIZE.MEDIUM: {
-      return {
-        height: '300px',
-        width: '600px;',
-      }
-    }
-
-    case IMAGE_SIZE.SMALL: {
-      return {
-        height: '200px',
-        width: '500px;',
-      }
-    }
-
-    // large
-    default: {
-      return {
-        height: '400px',
-        width: '700px;',
-      }
-    }
-  }
+export const getImageSize = (size: TImageSize, ratio: TImageRadio): TImageSizeValue => {
+  return IMAGE_RATIO_SIZE[ratio][size]
 }
 
 type TTranslateOffset = {

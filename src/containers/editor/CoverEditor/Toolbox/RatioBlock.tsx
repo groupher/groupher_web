@@ -2,9 +2,17 @@ import { FC, useState } from 'react'
 
 import Tooltip from '@/widgets/Tooltip'
 
-import { Wrapper, Block, Panel, Item, Icon, Desc } from '../styles/toolbox/ratio_block'
+import type { TImageRadio } from '../spec'
+import { IMAGE_RATIO } from '../constant'
 
-const RatioBlock = () => {
+import { Wrapper, Block, Panel, Item, Icon, Desc } from '../styles/toolbox/ratio_block'
+import { ratioOnChange } from '../logic'
+
+type TProps = {
+  ratio: TImageRadio
+}
+
+const RatioBlock: FC<TProps> = ({ ratio }) => {
   const [panelOpen, setPanelOpen] = useState(false)
 
   return (
@@ -12,13 +20,26 @@ const RatioBlock = () => {
       <Tooltip
         content={
           <Panel>
-            <Item $active>1:1</Item>
-            <Item>4:3</Item>
-            <Item>16:9</Item>
+            <Item
+              $active={ratio === IMAGE_RATIO.SCREEN}
+              onClick={() => ratioOnChange(IMAGE_RATIO.SCREEN)}
+            >
+              16:9
+            </Item>
+
+            <Item $active={ratio === IMAGE_RATIO.TV} onClick={() => ratioOnChange(IMAGE_RATIO.TV)}>
+              4:3
+            </Item>
+            <Item
+              $active={ratio === IMAGE_RATIO.SQUARE}
+              onClick={() => ratioOnChange(IMAGE_RATIO.SQUARE)}
+            >
+              1:1
+            </Item>
           </Panel>
         }
         placement="top"
-        trigger="click"
+        trigger="mouseenter focus"
         onShow={() => setPanelOpen(true)}
         onHide={() => setPanelOpen(false)}
         hideOnClick={false}

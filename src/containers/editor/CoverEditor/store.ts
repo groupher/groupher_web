@@ -22,8 +22,9 @@ import type {
   TSettingLevel,
   TLinearBorderPos,
   TImageSize,
+  TImageRadio,
 } from './spec'
-import { IMAGE_POS, SETTING_LEVEL, LINEAR_BORDER, IMAGE_SIZE } from './constant'
+import { IMAGE_POS, SETTING_LEVEL, LINEAR_BORDER, IMAGE_SIZE, IMAGE_RATIO } from './constant'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:CoverEditor')
@@ -34,6 +35,8 @@ const CoverEditor = T.model('CoverEditor', {
   borderRadiusLevel: T.opt(T.enum(values(SETTING_LEVEL)), SETTING_LEVEL.L1),
   linearBorderPos: T.opt(T.enum(values(LINEAR_BORDER)), LINEAR_BORDER.BOTTOM_RIGHT),
   size: T.opt(T.enum(values(IMAGE_SIZE)), IMAGE_SIZE.LARGE),
+  ratio: T.opt(T.enum(values(IMAGE_RATIO)), IMAGE_RATIO.SCREEN),
+
   // for background
   wallpaper: T.opt(T.string, 'pink'),
   hasPattern: T.opt(T.bool, false),
@@ -74,6 +77,7 @@ const CoverEditor = T.model('CoverEditor', {
         gradientWallpapers,
         direction,
         size,
+        ratio,
       } = slf
 
       return {
@@ -85,6 +89,7 @@ const CoverEditor = T.model('CoverEditor', {
         wallpaper,
         direction: direction as TWallpaperGradientDir,
         size: size as TImageSize,
+        ratio: ratio as TImageRadio,
       }
     },
   }))

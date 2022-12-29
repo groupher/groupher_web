@@ -1,6 +1,12 @@
 import type { TSnakeUpperCase } from '@/spec'
 
-import type { TImagePos, TSettingLevel, TLinearBorderPos, TImageSize } from './spec'
+import type { TImagePos, TSettingLevel, TLinearBorderPos, TImageSize, TImageRadio } from './spec'
+
+// default size it's based on ratio 16:9
+export const IMAGE_CONTAINER_SIZE = {
+  WIDTH: '710px', // 16:9
+  HEIGHT: '400px',
+}
 
 export const IMAGE_POS = {
   TOP_LEFT: 'top_left',
@@ -53,6 +59,12 @@ export const IMAGE_SIZE = {
   SMALL: 'small',
 } as Record<Uppercase<TImageSize>, TImageSize>
 
+export const IMAGE_RATIO = {
+  SQUARE: 'square',
+  TV: 'tv',
+  SCREEN: 'screen',
+} as Record<Uppercase<TImageRadio>, TImageRadio>
+
 export const IMAGE_BORDER_RADIUS = {
   L1: '0px',
   L2: '10px',
@@ -60,3 +72,56 @@ export const IMAGE_BORDER_RADIUS = {
   L4: '25px',
   L5: '50px',
 } as Record<TSettingLevel, string>
+
+export const IMAGE_RATIO_SIZE = {
+  [IMAGE_RATIO.SCREEN]: {
+    [IMAGE_SIZE.LARGE]: {
+      width: IMAGE_CONTAINER_SIZE.WIDTH,
+      height: IMAGE_CONTAINER_SIZE.HEIGHT,
+    },
+
+    [IMAGE_SIZE.MEDIUM]: {
+      width: '640px',
+      height: '360px',
+    },
+
+    [IMAGE_SIZE.SMALL]: {
+      width: '540px',
+      height: '305px',
+    },
+  },
+
+  [IMAGE_RATIO.TV]: {
+    [IMAGE_SIZE.LARGE]: {
+      width: '532px',
+      height: IMAGE_CONTAINER_SIZE.HEIGHT,
+    },
+
+    [IMAGE_SIZE.MEDIUM]: {
+      width: '478px',
+      height: '360px',
+    },
+
+    [IMAGE_SIZE.SMALL]: {
+      width: '406px',
+      height: '305px',
+    },
+  },
+
+  [IMAGE_RATIO.SQUARE]: {
+    [IMAGE_SIZE.LARGE]: {
+      width: IMAGE_CONTAINER_SIZE.HEIGHT,
+      height: IMAGE_CONTAINER_SIZE.HEIGHT,
+    },
+
+    [IMAGE_SIZE.MEDIUM]: {
+      width: '360px',
+      height: '360px',
+    },
+
+    [IMAGE_SIZE.SMALL]: {
+      width: '305px',
+      height: '305px',
+    },
+  },
+}
