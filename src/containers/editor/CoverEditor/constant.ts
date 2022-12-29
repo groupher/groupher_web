@@ -1,6 +1,6 @@
 import type { TSnakeUpperCase } from '@/spec'
 
-import type { TImagePos, TSettingLevel, TLinearBorderPos } from './spec'
+import type { TImagePos, TSettingLevel, TLinearBorderPos, TImageSize } from './spec'
 
 export const IMAGE_POS = {
   TOP_LEFT: 'top_left',
@@ -46,6 +46,12 @@ export const IMAGE_SHADOW = {
   L4: 'rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;',
   L5: 'rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;',
 } as Record<TSettingLevel, string>
+
+export const IMAGE_SIZE = {
+  LARGE: 'large',
+  MEDIUM: 'medium',
+  SMALL: 'small',
+} as Record<Uppercase<TImageSize>, TImageSize>
 
 export const IMAGE_BORDER_RADIUS = {
   L1: '0px',

@@ -16,17 +16,24 @@ import { GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '@/constant'
 import { buildLog } from '@/utils/logger'
 import { markStates, toJS, getParent, Instance, T } from '@/utils/mobx'
 
-import type { TToolboxSetting, TImagePos, TSettingLevel, TLinearBorderPos } from './spec'
-import { IMAGE_POS, SETTING_LEVEL, LINEAR_BORDER } from './constant'
+import type {
+  TToolboxSetting,
+  TImagePos,
+  TSettingLevel,
+  TLinearBorderPos,
+  TImageSize,
+} from './spec'
+import { IMAGE_POS, SETTING_LEVEL, LINEAR_BORDER, IMAGE_SIZE } from './constant'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:CoverEditor')
 
 const CoverEditor = T.model('CoverEditor', {
-  imagePos: T.opt(T.enum(values(IMAGE_POS)), IMAGE_POS.TOP_LEFT),
+  imagePos: T.opt(T.enum(values(IMAGE_POS)), IMAGE_POS.CENTER),
   shadowLevel: T.opt(T.enum(values(SETTING_LEVEL)), SETTING_LEVEL.L3),
-  borderRadiusLevel: T.opt(T.enum(values(SETTING_LEVEL)), SETTING_LEVEL.L3),
+  borderRadiusLevel: T.opt(T.enum(values(SETTING_LEVEL)), SETTING_LEVEL.L1),
   linearBorderPos: T.opt(T.enum(values(LINEAR_BORDER)), LINEAR_BORDER.BOTTOM_RIGHT),
+  size: T.opt(T.enum(values(IMAGE_SIZE)), IMAGE_SIZE.LARGE),
   // for background
   wallpaper: T.opt(T.string, 'pink'),
   hasPattern: T.opt(T.bool, false),
@@ -66,6 +73,7 @@ const CoverEditor = T.model('CoverEditor', {
         wallpaper,
         gradientWallpapers,
         direction,
+        size,
       } = slf
 
       return {
@@ -76,6 +84,7 @@ const CoverEditor = T.model('CoverEditor', {
         wallpapers: gradientWallpapers,
         wallpaper,
         direction: direction as TWallpaperGradientDir,
+        size: size as TImageSize,
       }
     },
   }))

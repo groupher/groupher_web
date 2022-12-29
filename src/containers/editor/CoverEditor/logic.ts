@@ -4,8 +4,7 @@ import { useEffect } from 'react'
 import type { TWallpaperGradientDir } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
-import type { TImagePos, TLinearBorderPos, TSettingLevel } from './spec'
-// import S from './schma'
+import type { TImagePos, TImageSize, TLinearBorderPos, TSettingLevel } from './spec'
 import type { TStore } from './store'
 
 let store: TStore | undefined
@@ -35,6 +34,10 @@ export const wallpaperOnChange = (wallpaper: string): void => {
 
 export const gradientDirOnChange = (direction: TWallpaperGradientDir): void => {
   store.mark({ direction })
+}
+
+export const sizeOnChange = (size: TImageSize): void => {
+  store.mark({ size })
 }
 
 // ###############################

@@ -48,6 +48,7 @@ const Cover: FC<TProps> = ({ setting, imageUrl }) => {
         <Image
           src={imageUrl}
           pos={setting.pos}
+          size={setting.size}
           shadowLevel={setting.shadowLevel}
           borderRadiusLevel={setting.borderRadiusLevel}
           linearBorderPos={setting.linearBorderPos}

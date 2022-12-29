@@ -3,78 +3,126 @@
 import type { TWallpaperGradientDir } from '@/spec'
 import { GRADIENT_DIRECTION } from '@/constant'
 
-import type { TImagePos, TImageCor, TLinearBorderPos } from '../spec'
-import { IMAGE_POS, LINEAR_BORDER } from '../constant'
+import type { TImagePos, TLinearBorderPos, TImageSize, TImageSizeValue } from '../spec'
+import { IMAGE_POS, LINEAR_BORDER, IMAGE_SIZE } from '../constant'
 
-export const getImageCor = (pos: TImagePos): TImageCor => {
-  const topOffset = 40
-  const leftOffset = 40
+export const getImageSize = (size: TImageSize): TImageSizeValue => {
+  switch (size) {
+    case IMAGE_SIZE.MEDIUM: {
+      return {
+        height: '300px',
+        width: '600px;',
+      }
+    }
+
+    case IMAGE_SIZE.SMALL: {
+      return {
+        height: '200px',
+        width: '500px;',
+      }
+    }
+
+    // large
+    default: {
+      return {
+        height: '400px',
+        width: '700px;',
+      }
+    }
+  }
+}
+
+type TTranslateOffset = {
+  x: number
+  y: number
+}
+
+const getTranslateOffset = (size: TImageSize, ratio = ''): TTranslateOffset => {
+  let xOffset = 40
+  let yOffset = 40
+
+  switch (size) {
+    case IMAGE_SIZE.MEDIUM: {
+      xOffset = 50
+      yOffset = 53
+      break
+    }
+
+    case IMAGE_SIZE.SMALL: {
+      xOffset = 100
+      yOffset = 103
+      break
+    }
+
+    default: {
+      break
+    }
+  }
+
+  return {
+    x: xOffset,
+    y: yOffset,
+  }
+}
+
+export const getImageTranslate = (pos: TImagePos, size: TImageSize): string => {
+  let x = '0px'
+  let y = '3px'
+
+  const { x: xOffset, y: yOffset } = getTranslateOffset(size)
 
   switch (pos) {
     case IMAGE_POS.TOP_LEFT: {
-      return {
-        top: `-${topOffset}px`,
-        left: `-${leftOffset}px`,
-      }
+      x = `-${xOffset}px`
+      y = `-${yOffset}px`
+      break
     }
 
     case IMAGE_POS.TOP_CENTER: {
-      return {
-        top: `-${topOffset}px`,
-        left: 0,
-      }
+      y = `-${yOffset}px`
+      break
     }
 
     case IMAGE_POS.TOP_RIGHT: {
-      return {
-        top: `-${topOffset}px`,
-        left: `${leftOffset}px`,
-      }
+      x = `${xOffset}px`
+      y = `-${yOffset}px`
+      break
     }
 
     case IMAGE_POS.CENTER_LEFT: {
-      return {
-        top: 0,
-        left: `-${leftOffset}px`,
-      }
+      x = `-${xOffset}px`
+      break
     }
 
     case IMAGE_POS.CENTER_RIGHT: {
-      return {
-        top: 0,
-        left: `${leftOffset}px`,
-      }
+      x = `${xOffset}px`
+      break
     }
 
     case IMAGE_POS.BOTTOM_LEFT: {
-      return {
-        top: `${topOffset}px`,
-        left: `-${leftOffset}px`,
-      }
+      x = `-${xOffset}px`
+      y = `${yOffset}px`
+      break
     }
 
     case IMAGE_POS.BOTTOM_CENTER: {
-      return {
-        top: `${topOffset}px`,
-        left: 0,
-      }
+      y = `${yOffset}px`
+      break
     }
 
     case IMAGE_POS.BOTTOM_RIGHT: {
-      return {
-        top: `${topOffset}px`,
-        left: `${leftOffset}px`,
-      }
+      x = `${xOffset}px`
+      y = `${yOffset}px`
+      break
     }
 
     // center
     default: {
-      return {
-        left: 0,
-        top: 0,
-      }
+      break
     }
   }
+
+  return `translate(${x}, ${y})`
 }
 
 export const getLinearBorder = (pos: TLinearBorderPos, active = false): string => {

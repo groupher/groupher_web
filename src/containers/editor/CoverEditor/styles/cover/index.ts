@@ -9,7 +9,7 @@ import { pixelAdd } from '@/utils/dom'
 import type { TCoverImage } from '../../spec'
 import { IMAGE_SHADOW, IMAGE_BORDER_RADIUS, LINEAR_BORDER } from '../../constant'
 
-import { getImageCor, getLinearBorder } from '../metric'
+import { getImageTranslate, getLinearBorder, getImageSize } from '../metric'
 
 const IMAGE_WIDTH = '700px'
 const IMAGE_HEIGHT = '400px'
@@ -30,9 +30,7 @@ export const Wrapper = styled.div<TWrapper>`
 // 'linear-gradient(to bottom, #683FD1, #DD8DC6)'
 
 export const GlassBorder = styled.div<TCoverImage>`
-  position: absolute;
-  top: ${({ pos }) => getImageCor(pos).top};
-  left: ${({ pos }) => getImageCor(pos).left};
+  transform: ${({ pos, size }) => getImageTranslate(pos, size)};
   border-radius: ${({ borderRadiusLevel }) => pixelAdd(IMAGE_BORDER_RADIUS[borderRadiusLevel], 5)};
 
   ${css.flexColumn('align-both')};
@@ -47,10 +45,6 @@ export const GlassBorder = styled.div<TCoverImage>`
 
 type TImage = TCoverImage & TActive
 export const Image = styled(Img)<TImage>`
-  position: absolute;
-  top: 0;
-  left: 0;
-
   border: 1px solid transparent;
   background-image: ${({ linearBorderPos }) => getLinearBorder(linearBorderPos)};
   border-image-slice: 1;
@@ -64,14 +58,13 @@ export const Image = styled(Img)<TImage>`
     return 'transparent'
   }};
 
-  top: ${({ pos }) => getImageCor(pos).top};
-  left: ${({ pos }) => getImageCor(pos).left};
+  transform: ${({ pos, size }) => getImageTranslate(pos, size)};
 
-  width: 700px;
-  height: 400px;
+  width: ${({ size }) => getImageSize(size).width};
+  height: ${({ size }) => getImageSize(size).height};
+
   object-fit: cover;
 
-  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; // one */
   box-shadow: ${({ shadowLevel }) => IMAGE_SHADOW[shadowLevel]};
   border-radius: ${({ borderRadiusLevel }) => IMAGE_BORDER_RADIUS[borderRadiusLevel]};
 
