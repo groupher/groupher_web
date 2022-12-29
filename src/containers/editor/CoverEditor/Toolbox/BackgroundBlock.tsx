@@ -40,6 +40,10 @@ const BackgroundBlock: FC<TProps> = ({ wallpapers, wallpaper, direction }) => {
           <Panel>
             <Title>渐变背景色:</Title>
             <BgRow>
+              <ImageWrapper $active={wallpaper === ''}>
+                <ImageBlock background="" onClick={() => wallpaperOnChange('')} />
+              </ImageWrapper>
+
               {keys(GRADIENT_WALLPAPER).map((themeName) => (
                 <ImageWrapper key={themeName} $active={wallpaper === themeName}>
                   <ImageBlock

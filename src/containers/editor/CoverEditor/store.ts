@@ -40,7 +40,7 @@ const CoverEditor = T.model('CoverEditor', {
   hasGlassBorder: T.opt(T.bool, false),
 
   // for background
-  wallpaper: T.opt(T.string, 'pink'),
+  wallpaper: T.opt(T.string, ''),
   hasPattern: T.opt(T.bool, false),
   hasBlur: T.opt(T.bool, true),
   direction: T.opt(T.string, GRADIENT_DIRECTION.BOTTOM),

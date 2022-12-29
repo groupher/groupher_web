@@ -19,7 +19,7 @@ export const Block = styled(SettingBlock)``
 export const Panel = styled.div`
   ${css.flexColumn('align-start')};
   width: 320px;
-  height: 160px;
+  height: 200px;
   padding: 10px;
 
   background-color: ${theme('hoverBg')};
@@ -36,7 +36,8 @@ export const Title = styled.div`
 
 export const BgRow = styled.div`
   ${css.flex('align-center')};
-  gap: 0 15px;
+  flex-wrap: wrap;
+  gap: 10px 15px;
 `
 
 export const Divider = styled.div`
@@ -57,8 +58,8 @@ export const DirRow = styled.div`
 export const BgImage = styled.div<{ background: string }>`
   ${css.size(23)};
   border-radius: 5px;
-  /* background-image: linear-gradient(to bottom, #9fbdd3, #ebe6e2); */
-  background: ${({ background }) => background || 'transparent'};
+  background: ${({ background }) => background || theme('hoverBg')};
+  transition: all 0.2s;
 `
 
 export const ImageWrapper = styled.div<TActive>`
@@ -87,7 +88,7 @@ type TImageBlock = { background: string }
 export const ImageBlock = styled.div<TImageBlock>`
   ${css.size(22)};
   border-radius: 5px;
-  background: ${({ background }) => background || 'transparent'};
+  background: ${({ background }) => background || theme('hoverBg')};
 `
 
 export const Icon = styled(ArchSVG)`
