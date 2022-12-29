@@ -16,7 +16,6 @@ type TProps = {
 
 const Cover: FC<TProps> = ({ setting, imageUrl }) => {
   const hasImage = !isEmpty(imageUrl)
-  const hasGlassBorder = true
 
   if (!hasImage) {
     return <Placeholder />
@@ -29,7 +28,7 @@ const Cover: FC<TProps> = ({ setting, imageUrl }) => {
     >
       {hasImage && (
         <GlassBorder
-          hasGlassBorder={hasGlassBorder}
+          hasGlassBorder={setting.hasGlassBorder}
           pos={setting.pos}
           size={setting.size}
           ratio={setting.ratio}

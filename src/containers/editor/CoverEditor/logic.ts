@@ -37,6 +37,7 @@ export const gradientDirOnChange = (direction: TWallpaperGradientDir): void =>
 export const sizeOnChange = (size: TImageSize): void => store.mark({ size })
 export const ratioOnChange = (ratio: TImageRadio): void => store.mark({ ratio })
 
+export const glassBorderOnChange = (hasGlassBorder: boolean) => store.mark({ hasGlassBorder })
 // ###############################
 // init & uninit handlers
 // ###############################

@@ -22,7 +22,7 @@ export const Panel = styled.div`
   ${css.flexColumn('justify-center', 'align-start')};
   color: ${theme('article.digest')};
   width: 252px;
-  height: 135px;
+  height: 180px;
   padding-left: 15px;
 
   background-color: ${theme('hoverBg')};

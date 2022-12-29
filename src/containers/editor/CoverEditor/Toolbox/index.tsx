@@ -25,6 +25,7 @@ const Toolbox: FC<TProps> = ({ setting }) => {
         borderRadiusLevel={setting.borderRadiusLevel}
         linearBorderPos={setting.linearBorderPos}
         shadowLevel={setting.shadowLevel}
+        hasGlassBorder={setting.hasGlassBorder}
       />
       <RatioBlock ratio={setting.ratio} />
       <LightBlock pos={setting.lightPos} />

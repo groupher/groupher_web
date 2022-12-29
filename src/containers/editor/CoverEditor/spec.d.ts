@@ -46,6 +46,7 @@ export type TToolboxSetting = {
   direction: TWallpaperGradientDir
   size: TImageSize
   ratio: TImageRadio
+  hasGlassBorder: boolean
 }
 
 export type TCoverImage = {
@@ -55,4 +56,5 @@ export type TCoverImage = {
   linearBorderPos: TLinearBorderPos
   size: TImageSize
   ratio: TImageRadio
+  hasGlassBorder?: boolean
 }

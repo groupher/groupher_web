@@ -37,6 +37,7 @@ const CoverEditor = T.model('CoverEditor', {
   linearBorderPos: T.opt(T.enum(values(LINEAR_BORDER)), LINEAR_BORDER.NONE),
   size: T.opt(T.enum(values(IMAGE_SIZE)), IMAGE_SIZE.LARGE),
   ratio: T.opt(T.enum(values(IMAGE_RATIO)), IMAGE_RATIO.SCREEN),
+  hasGlassBorder: T.opt(T.bool, false),
 
   // for background
   wallpaper: T.opt(T.string, 'pink'),
@@ -80,6 +81,7 @@ const CoverEditor = T.model('CoverEditor', {
         direction,
         size,
         ratio,
+        hasGlassBorder,
       } = slf
 
       return {
@@ -93,6 +95,7 @@ const CoverEditor = T.model('CoverEditor', {
         direction: direction as TWallpaperGradientDir,
         size: size as TImageSize,
         ratio: ratio as TImageRadio,
+        hasGlassBorder,
       }
     },
   }))
