@@ -15,7 +15,7 @@ type TTranslateOffset = {
   y: number
 }
 
-const getTranslateOffset = (size: TImageSize, ratio = ''): TTranslateOffset => {
+const getTranslateOffset = (size: TImageSize): TTranslateOffset => {
   let xOffset = 40
   let yOffset = 40
 
@@ -101,6 +101,75 @@ export const getImageTranslate = (pos: TImagePos, size: TImageSize): string => {
   }
 
   return `translate(${x}, ${y})`
+}
+
+type TLightPos = {
+  size: number
+  top: string
+  left: string
+}
+
+export const getLightPos = (pos: TImagePos): TLightPos => {
+  const size = 300
+  let top = '-205px'
+  let left = '-200px'
+
+  switch (pos) {
+    case IMAGE_POS.TOP_LEFT: {
+      top = '-350px'
+      left = '-450px'
+      break
+    }
+
+    case IMAGE_POS.TOP_CENTER: {
+      top = '-350px'
+      break
+    }
+
+    case IMAGE_POS.TOP_RIGHT: {
+      top = '-350px'
+      left = '45px'
+      break
+    }
+
+    case IMAGE_POS.CENTER_LEFT: {
+      left = '-450px'
+      break
+    }
+
+    case IMAGE_POS.CENTER_RIGHT: {
+      left = '45px'
+      break
+    }
+
+    case IMAGE_POS.BOTTOM_LEFT: {
+      left = '-420px'
+      top = '-50px'
+      break
+    }
+
+    case IMAGE_POS.BOTTOM_CENTER: {
+      top = '-50px'
+      break
+    }
+
+    case IMAGE_POS.BOTTOM_RIGHT: {
+      left = '45px'
+      top = '-50px'
+      break
+    }
+
+    // center
+    default: {
+      break
+    }
+  }
+
+  return {
+    size,
+    top,
+    left,
+  }
 }
 
 export const getLinearBorder = (pos: TLinearBorderPos, active = false): string => {

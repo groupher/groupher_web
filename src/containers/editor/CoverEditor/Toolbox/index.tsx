@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import TiltBlock from './TiltBlock'
+import LightBlock from './LightBlock'
 import PositionBlock from './PositionBlock'
 import BorderBlock from './BorderBlock'
 import ShadowBlock from './ShadowBlock'
@@ -18,8 +18,8 @@ type TProps = {
 const Toolbox: FC<TProps> = ({ setting }) => {
   return (
     <Wrapper>
-      <TiltBlock />
       <PositionBlock pos={setting.pos} />
+      <LightBlock pos={setting.lightPos} />
       <SizeBlock size={setting.size} />
       <ShadowBlock shadowLevel={setting.shadowLevel} />
       <BorderBlock

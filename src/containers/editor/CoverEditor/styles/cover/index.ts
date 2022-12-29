@@ -6,15 +6,16 @@ import type { TActive } from '@/spec'
 import css, { theme } from '@/utils/css'
 import { pixelAdd } from '@/utils/dom'
 
-import type { TCoverImage } from '../../spec'
+import type { TCoverImage, TImagePos } from '../../spec'
 import {
   IMAGE_CONTAINER_SIZE,
   IMAGE_SHADOW,
   IMAGE_BORDER_RADIUS,
   LINEAR_BORDER,
+  IMAGE_SIZE,
 } from '../../constant'
 
-import { getImageTranslate, getLinearBorder, getImageSize } from '../metric'
+import { getImageTranslate, getLinearBorder, getImageSize, getLightPos } from '../metric'
 
 type TWrapper = { hasImage: boolean; background: string }
 export const Wrapper = styled.div<TWrapper>`
@@ -31,18 +32,29 @@ export const Wrapper = styled.div<TWrapper>`
 `
 // 'linear-gradient(to bottom, #683FD1, #DD8DC6)'
 
-export const GlassBorder = styled.div<TCoverImage>`
-  transform: ${({ pos, size }) => getImageTranslate(pos, size)};
+type TGlassBorder = TCoverImage & { hasGlassBorder: boolean }
+export const GlassBorder = styled.div<TGlassBorder>`
   border-radius: ${({ borderRadiusLevel }) => pixelAdd(IMAGE_BORDER_RADIUS[borderRadiusLevel], 5)};
 
-  ${css.flexColumn('align-both')};
-  width: ${pixelAdd(IMAGE_CONTAINER_SIZE.WIDTH, 7)};
-  height: ${pixelAdd(IMAGE_CONTAINER_SIZE.HEIGHT, 7)};
-  background-color: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(5px);
+  ${css.flex('align-both')};
 
-  /* background: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px; */
+  min-width: ${({ size, ratio, hasGlassBorder }) =>
+    pixelAdd(getImageSize(size, ratio).width, hasGlassBorder ? 15 : 0)};
+  min-height: ${({ size, ratio, hasGlassBorder }) =>
+    pixelAdd(getImageSize(size, ratio).height, hasGlassBorder ? 13 : 0)};
+
+  ${({ hasGlassBorder }) =>
+    hasGlassBorder ? 'background-color: rgba(255, 255, 255, 0.2);backdrop-filter: blur(5px);' : ''};
+
+  /* border-color: transparent; */
+
+  /* padding-top: 6px; */
+
+  position: relative;
   box-shadow: ${({ shadowLevel }) => IMAGE_SHADOW[shadowLevel]};
+  transform: ${({ pos, size }) => getImageTranslate(pos, size)};
+
+  transition: all 0.2s;
 `
 
 type TImage = TCoverImage & TActive
@@ -60,15 +72,34 @@ export const Image = styled(Img)<TImage>`
     return 'transparent'
   }};
 
-  transform: ${({ pos, size }) => getImageTranslate(pos, size)};
-
+  /* transform: ${({ pos, size }) => getImageTranslate(pos, size)}; */
   width: ${({ size, ratio }) => getImageSize(size, ratio).width};
   height: ${({ size, ratio }) => getImageSize(size, ratio).height};
 
   object-fit: cover;
+  margin-top: ${({ size }) => (size === IMAGE_SIZE.LARGE ? '-5px' : 0)};
 
   box-shadow: ${({ shadowLevel }) => IMAGE_SHADOW[shadowLevel]};
   border-radius: ${({ borderRadiusLevel }) => IMAGE_BORDER_RADIUS[borderRadiusLevel]};
+
+  transition: all 0.2s;
+`
+
+export const Light = styled.div<{ pos: TImagePos }>`
+  position: absolute;
+  top: ${({ pos }) => `calc(50% + ${getLightPos(pos).top})`};
+  left: ${({ pos }) => `calc(50% + ${getLightPos(pos).left})`};
+
+  ${css.size(400)};
+
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0) 65%
+  );
+  background-blend-mode: lighten;
+  pointer-events: none;
+  z-index: 1;
 
   transition: all 0.2s;
 `

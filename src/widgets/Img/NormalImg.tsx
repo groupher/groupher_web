@@ -1,12 +1,4 @@
-import {
-  FC,
-  memo,
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  ReactNode,
-} from 'react'
+import { FC, memo, useState, useEffect, useRef, useCallback, ReactNode } from 'react'
 
 import { Image } from './styles'
 
@@ -15,6 +7,7 @@ type TProps = {
   src: string
   alt?: string
   fallback?: ReactNode | null
+  onClick: () => void
 }
 
 /**
@@ -27,6 +20,7 @@ const NormalImg: FC<TProps> = ({
   src,
   alt = 'image',
   fallback = null,
+  onClick,
 }) => {
   const ref = useRef(null)
   const [loadCheck, setLoadCheck] = useState(true)
@@ -55,6 +49,7 @@ const NormalImg: FC<TProps> = ({
         className={className}
         src={src}
         alt={alt}
+        onClick={onClick}
         onLoad={handleOnLoad}
         onError={handleOnError}
       />

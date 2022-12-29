@@ -13,6 +13,7 @@ let store: TStore | undefined
 const log = buildLog('L:CoverEditor')
 
 export const posOnChange = (imagePos: TImagePos): void => store.mark({ imagePos })
+export const lightPosOnChange = (lightPos: TImagePos): void => store.mark({ lightPos })
 export const shadowOnChange = (shadowLevel: TSettingLevel): void => store.mark({ shadowLevel })
 export const borderRadiusOnChange = (borderRadiusLevel: TSettingLevel): void =>
   store.mark({ borderRadiusLevel })

@@ -43,22 +43,21 @@ const Img: FC<IProps> = ({
       <SvgLoader
         src={src}
         beforeInjection={(svg) =>
-          className
-            .split(' ')
-            .map((singleClassName) => svg.classList.add(singleClassName))
+          className.split(' ').map((singleClassName) => svg.classList.add(singleClassName))
         }
         onClick={onClick}
       />
     )
   }
   return (
-    <div onClick={onClick}>
+    <>
       {noLazy ? (
         <NormalImg
           className={className}
           src={src}
           alt={alt}
           fallback={fallback}
+          onClick={onClick}
         />
       ) : (
         // <NextImg
@@ -73,9 +72,10 @@ const Img: FC<IProps> = ({
           alt={alt}
           fallback={fallback}
           visibleByDefault={visibleByDefault}
+          onClick={onClick}
         />
       )}
-    </div>
+    </>
   )
 }
 

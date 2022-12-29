@@ -5,7 +5,7 @@ import { parseWallpaper } from '@/utils/wallpaper'
 
 import type { TToolboxSetting } from '../spec'
 
-import { Wrapper, GlassBorder, Image } from '../styles/cover'
+import { Wrapper, GlassBorder, Image, Light } from '../styles/cover'
 import Placeholder from './Placeholder'
 
 type TProps = {
@@ -15,7 +15,7 @@ type TProps = {
 
 const Cover: FC<TProps> = ({ setting, imageUrl }) => {
   const hasImage = !isEmpty(imageUrl)
-  const hasGlassBorder = false
+  const hasGlassBorder = true
 
   if (!hasImage) {
     return <Placeholder />
@@ -26,35 +26,28 @@ const Cover: FC<TProps> = ({ setting, imageUrl }) => {
       hasImage={hasImage}
       background={parseWallpaper(setting.wallpapers, setting.wallpaper).background}
     >
-      {hasImage && hasGlassBorder && (
+      {hasImage && (
         <GlassBorder
-          pos={setting.pos}
-          shadowLevel={setting.shadowLevel}
-          borderRadiusLevel={setting.borderRadiusLevel}
-          linearBorderPos={setting.linearBorderPos}
-        >
-          <Image
-            src={imageUrl}
-            // pos={{ left: 0, top: 0 }}
-            shadowLevel={setting.shadowLevel}
-            borderRadiusLevel={setting.borderRadiusLevel}
-            linearBorderPos={setting.linearBorderPos}
-            noLazy
-          />
-        </GlassBorder>
-      )}
-
-      {hasImage && !hasGlassBorder && (
-        <Image
-          src={imageUrl}
+          hasGlassBorder={hasGlassBorder}
           pos={setting.pos}
           size={setting.size}
           ratio={setting.ratio}
           shadowLevel={setting.shadowLevel}
           borderRadiusLevel={setting.borderRadiusLevel}
           linearBorderPos={setting.linearBorderPos}
-          noLazy
-        />
+        >
+          <Image
+            src={imageUrl}
+            pos={setting.pos}
+            size={setting.size}
+            ratio={setting.ratio}
+            shadowLevel={setting.shadowLevel}
+            borderRadiusLevel={setting.borderRadiusLevel}
+            linearBorderPos={setting.linearBorderPos}
+            noLazy
+          />
+          <Light pos={setting.lightPos} />
+        </GlassBorder>
       )}
     </Wrapper>
   )

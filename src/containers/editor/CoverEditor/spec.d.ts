@@ -36,6 +36,7 @@ export type TImageRadio = 'square' | 'tv' | 'screen'
 
 export type TToolboxSetting = {
   pos: TImagePos
+  lightPos: TImagePos
   shadowLevel: TSettingLevel
   borderRadiusLevel: TSettingLevel
   linearBorderPos: TLinearBorderPos
@@ -47,10 +48,10 @@ export type TToolboxSetting = {
 }
 
 export type TCoverImage = {
-  pos?: TImagePos
+  pos: TImagePos
   shadowLevel: TSettingLevel
   borderRadiusLevel: TSettingLevel
   linearBorderPos: TLinearBorderPos
-  size?: TImageSize
-  ratio?: TImageRadio
+  size: TImageSize
+  ratio: TImageRadio
 }
