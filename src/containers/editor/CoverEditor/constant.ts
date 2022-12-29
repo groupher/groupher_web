@@ -67,10 +67,10 @@ export const IMAGE_RATIO = {
 
 export const IMAGE_BORDER_RADIUS = {
   L1: '0px',
-  L2: '10px',
+  L2: '8px',
   L3: '18px',
-  L4: '25px',
-  L5: '50px',
+  L4: '15px',
+  L5: '20px',
 } as Record<TSettingLevel, string>
 
 export const IMAGE_RATIO_SIZE = {

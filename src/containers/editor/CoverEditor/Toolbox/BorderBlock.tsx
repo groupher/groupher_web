@@ -39,6 +39,8 @@ const ArchBlock: FC<TProps> = ({ borderRadiusLevel, linearBorderPos, shadowLevel
             <Row>
               <RowTitle>圆角</RowTitle>
               {keys(IMAGE_BORDER_RADIUS).map((level) => {
+                if (level === 'L3') return null
+
                 return (
                   <RadiusBox
                     key={level}
