@@ -67,7 +67,7 @@ export const IMAGE_RATIO = {
 } as Record<Uppercase<TImageRadio>, TImageRadio>
 
 export const IMAGE_BORDER_RADIUS = {
-  L1: '0px',
+  L1: '0',
   L2: '8px',
   L3: '18px',
   L4: '15px',

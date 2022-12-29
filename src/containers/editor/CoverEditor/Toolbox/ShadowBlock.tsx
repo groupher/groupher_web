@@ -5,7 +5,17 @@ import Tooltip from '@/widgets/Tooltip'
 
 import type { TSettingLevel } from '../spec'
 import { IMAGE_SHADOW, SETTING_LEVEL } from '../constant'
-import { Wrapper, Block, Icon, Desc, Panel, ShadowBox } from '../styles/toolbox/shadow_block'
+
+import {
+  Wrapper,
+  Block,
+  Icon,
+  Desc,
+  Panel,
+  ShadowBox,
+  SelectBox,
+  ForbidIcon,
+} from '../styles/toolbox/shadow_block'
 import { shadowOnChange } from '../logic'
 
 type TProps = {
@@ -20,14 +30,28 @@ const ShadowBlock: FC<TProps> = ({ shadowLevel }) => {
       <Tooltip
         content={
           <Panel>
-            {values(SETTING_LEVEL).map((level) => (
-              <ShadowBox
-                key={level}
-                boxShadow={IMAGE_SHADOW[level]}
-                $active={shadowLevel === SETTING_LEVEL[level]}
-                onClick={() => shadowOnChange(SETTING_LEVEL[level])}
-              />
-            ))}
+            {values(SETTING_LEVEL).map((level) => {
+              if (level === 'L1') {
+                return (
+                  <SelectBox
+                    key={level}
+                    $active={shadowLevel === SETTING_LEVEL[level]}
+                    onClick={() => shadowOnChange(SETTING_LEVEL[level])}
+                  >
+                    <ForbidIcon $active={shadowLevel === SETTING_LEVEL[level]} />
+                  </SelectBox>
+                )
+              }
+
+              return (
+                <ShadowBox
+                  key={level}
+                  boxShadow={IMAGE_SHADOW[level]}
+                  $active={shadowLevel === SETTING_LEVEL[level]}
+                  onClick={() => shadowOnChange(SETTING_LEVEL[level])}
+                />
+              )
+            })}
           </Panel>
         }
         placement="top"

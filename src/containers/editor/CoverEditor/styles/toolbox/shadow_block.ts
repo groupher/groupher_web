@@ -2,7 +2,9 @@ import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
 import css, { theme } from '@/utils/css'
+
 import ShadowSVG from '@/icons/Shadow'
+import EmptySVG from '@/icons/Empty'
 
 import { SettingBlock, SettingTitle } from '.'
 
@@ -51,4 +53,24 @@ export const ShadowBox = styled.div<TShadowBox>`
   }
 
   transition: all 0.2s;
+`
+
+export const SelectBox = styled.div<TActive>`
+  ${css.size(20)};
+  ${css.flex('align-both')};
+  border: 1px solid;
+  border-radius: 3px;
+  background: white;
+
+  border-color: ${({ $active }) => ($active ? theme('article.digest') : 'transparent')};
+`
+export const ForbidIcon = styled(EmptySVG)<TActive>`
+  ${css.size(14)};
+  fill: ${theme('article.digest')};
+  opacity: ${({ $active }) => ($active ? 1 : 0.8)};
+
+  &:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
 `

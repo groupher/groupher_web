@@ -32,9 +32,9 @@ const log = buildLog('S:CoverEditor')
 const CoverEditor = T.model('CoverEditor', {
   imagePos: T.opt(T.enum(values(IMAGE_POS)), IMAGE_POS.CENTER),
   lightPos: T.opt(T.enum(values(IMAGE_POS)), IMAGE_POS.NONE),
-  shadowLevel: T.opt(T.enum(values(SETTING_LEVEL)), SETTING_LEVEL.L3),
+  shadowLevel: T.opt(T.enum(values(SETTING_LEVEL)), SETTING_LEVEL.L1),
   borderRadiusLevel: T.opt(T.enum(values(SETTING_LEVEL)), SETTING_LEVEL.L1),
-  linearBorderPos: T.opt(T.enum(values(LINEAR_BORDER)), LINEAR_BORDER.BOTTOM_RIGHT),
+  linearBorderPos: T.opt(T.enum(values(LINEAR_BORDER)), LINEAR_BORDER.NONE),
   size: T.opt(T.enum(values(IMAGE_SIZE)), IMAGE_SIZE.LARGE),
   ratio: T.opt(T.enum(values(IMAGE_RATIO)), IMAGE_RATIO.SCREEN),
 

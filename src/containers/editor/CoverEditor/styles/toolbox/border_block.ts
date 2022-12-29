@@ -44,7 +44,12 @@ export const Desc = styled(SettingTitle)`
 `
 export const Row = styled.div`
   ${css.flex('align-center')};
-  gap: 0 17px;
+`
+export const RadiusContentsRow = styled.div`
+  ${css.flex('align-center')};
+  width: 160px;
+  gap: 10px 12px;
+  margin-left: 13px;
 `
 export const Divider = styled.div`
   width: 90%;
@@ -132,10 +137,19 @@ export const BorderBox = styled.div<TBorderBox>`
 
   transition: all 0.2s;
 `
-export const ForbidIcon = styled(EmptySVG)<TActive>`
+export const SelectBox = styled.div<TActive>`
   ${css.size(16)};
+  ${css.flex('align-both')};
+  border: 1px solid;
+  border-radius: 3px;
+  background: white;
+
+  border-color: ${({ $active }) => ($active ? theme('article.digest') : 'transparent')};
+`
+export const ForbidIcon = styled(EmptySVG)<TActive>`
+  ${css.size(10)};
   fill: ${theme('article.digest')};
-  opacity: ${({ $active }) => ($active ? 1 : 0.3)};
+  opacity: ${({ $active }) => ($active ? 1 : 0.8)};
 
   &:hover {
     opacity: 1;

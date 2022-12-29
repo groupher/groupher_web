@@ -15,10 +15,12 @@ import {
   BorderContentsRow,
   BorderRow,
   BorderBox,
+  SelectBox,
   ForbidIcon,
   Divider,
   Row,
   RowTitle,
+  RadiusContentsRow,
 } from '../styles/toolbox/border_block'
 import { borderRadiusOnChange, linearBorderPosOnChange } from '../logic'
 
@@ -38,19 +40,33 @@ const ArchBlock: FC<TProps> = ({ borderRadiusLevel, linearBorderPos, shadowLevel
           <Panel>
             <Row>
               <RowTitle>圆角</RowTitle>
-              {keys(IMAGE_BORDER_RADIUS).map((level) => {
-                if (level === 'L3') return null
+              <RadiusContentsRow>
+                {keys(IMAGE_BORDER_RADIUS).map((level) => {
+                  if (level === 'L1') {
+                    return (
+                      <SelectBox
+                        key={level}
+                        $active={borderRadiusLevel === SETTING_LEVEL[level]}
+                        onClick={() => borderRadiusOnChange(SETTING_LEVEL[level])}
+                      >
+                        <ForbidIcon $active={borderRadiusLevel === SETTING_LEVEL[level]} />
+                      </SelectBox>
+                    )
+                  }
 
-                return (
-                  <RadiusBox
-                    key={level}
-                    borderRadius={IMAGE_BORDER_RADIUS[level]}
-                    shadowLevel={shadowLevel}
-                    $active={borderRadiusLevel === SETTING_LEVEL[level]}
-                    onClick={() => borderRadiusOnChange(SETTING_LEVEL[level])}
-                  />
-                )
-              })}
+                  if (level === 'L3') return null
+
+                  return (
+                    <RadiusBox
+                      key={level}
+                      borderRadius={IMAGE_BORDER_RADIUS[level]}
+                      shadowLevel={shadowLevel}
+                      $active={borderRadiusLevel === SETTING_LEVEL[level]}
+                      onClick={() => borderRadiusOnChange(SETTING_LEVEL[level])}
+                    />
+                  )
+                })}
+              </RadiusContentsRow>
             </Row>
 
             <Divider />
@@ -61,11 +77,13 @@ const ArchBlock: FC<TProps> = ({ borderRadiusLevel, linearBorderPos, shadowLevel
                 {keys(LINEAR_BORDER).map((pos) => {
                   if (pos === LINEAR_BORDER.NONE.toUpperCase()) {
                     return (
-                      <ForbidIcon
+                      <SelectBox
                         key={pos}
                         $active={linearBorderPos === LINEAR_BORDER.NONE}
                         onClick={() => linearBorderPosOnChange(LINEAR_BORDER.NONE)}
-                      />
+                      >
+                        <ForbidIcon $active={linearBorderPos === LINEAR_BORDER.NONE} />
+                      </SelectBox>
                     )
                   }
                   return (
