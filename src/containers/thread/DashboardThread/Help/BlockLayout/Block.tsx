@@ -8,17 +8,17 @@ import FaIconSelector from '@/widgets/FaIcons/Selector'
 import Tooltip from '@/widgets/Tooltip'
 
 import BlockMenu from './BlockMenu'
+import FileItem from './FileItem'
 
 import {
   Wrapper,
   GlobalSettingIcon,
   Header,
   Title,
-  Item,
-  MoreLink,
+  // MoreLink,
   AdderButton,
   PlusIcon,
-} from '../styles/help/block'
+} from '../../styles/help/block_layout/block'
 
 type TProps = {
   color: TColorName
@@ -45,9 +45,7 @@ const Block: FC<TProps> = ({ color, title, desc, column = 2 }) => {
         <Title>{title}</Title>
       </Header>
 
-      <Item color={color}>{desc}</Item>
-      {/* <Item color={color}>{desc}</Item>
-      <Item color={color}>{desc}</Item> */}
+      <FileItem name={desc} />
 
       <AdderButton ghost size="small">
         <PlusIcon /> 添加文章

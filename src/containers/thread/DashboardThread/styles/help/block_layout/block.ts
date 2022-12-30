@@ -76,19 +76,6 @@ export const Title = styled.div`
   font-weight: 600;
   margin-top: 8px;
 `
-export const Item = styled.div<{ color: string }>`
-  color: ${theme('article.digest')};
-  font-size: 14px;
-  margin-bottom: 6px;
-
-  &:hover {
-    color: ${theme('article.title')};
-    cursor: pointer;
-  }
-
-  transition: all 0.2s;
-`
-
 export const PlusIcon = styled(PlusSVG)`
   ${css.size(10)};
   fill: ${theme('article.digest')};

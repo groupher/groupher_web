@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import { Wrapper, AddIcon, Title } from '../styles/help/adder_block'
+import { Wrapper, AddIcon, Title } from '../../styles/help/block_layout/adder_block'
 
 const AdderBlock: FC = () => {
   return (

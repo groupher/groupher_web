@@ -1,4 +1,4 @@
-import { Wrapper, Item, Title, Icon } from '../styles/help/block_menu'
+import { Wrapper, Item, Title, Icon } from '../../styles/help/block_layout/block_menu'
 
 const BlockMenu = () => {
   return (
