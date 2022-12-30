@@ -3,9 +3,12 @@ import { FC, memo } from 'react'
 // import { config, library } from '@fortawesome/fontawesome-svg-core'
 // config.autoAddCss = false
 
-import FaIconSelector from '@/widgets/FaIcons/Selector'
-
 import type { TColorName } from '@/spec'
+import FaIconSelector from '@/widgets/FaIcons/Selector'
+import Tooltip from '@/widgets/Tooltip'
+
+import BlockMenu from './BlockMenu'
+
 import {
   Wrapper,
   GlobalSettingIcon,
@@ -27,7 +30,16 @@ type TProps = {
 const Block: FC<TProps> = ({ color, title, desc, column = 2 }) => {
   return (
     <Wrapper color={color} column={column}>
-      <GlobalSettingIcon />
+      <Tooltip
+        content={<BlockMenu />}
+        placement="bottom-end"
+        trigger="mouseenter focus"
+        offset={[-10, 30]}
+        hideOnClick
+        noPadding
+      >
+        <GlobalSettingIcon />
+      </Tooltip>
       <Header>
         <FaIconSelector size={15} color={color} left={0} bottom={5} />
         <Title>{title}</Title>
