@@ -33,12 +33,12 @@ const Block: FC<TProps> = ({ color, title, desc, column = 2 }) => {
         <Title>{title}</Title>
       </Header>
 
-      <Item color={color}>{desc}</Item>
-      <Item color={color}>{desc}</Item>
-      <Item color={color}>{desc}</Item>
+      {/* <Item color={color}>{desc}</Item> */}
+      {/* <Item color={color}>{desc}</Item>
+      <Item color={color}>{desc}</Item> */}
 
       <AdderButton ghost size="small">
-        <PlusIcon /> 添加
+        <PlusIcon /> 添加文章
       </AdderButton>
       {/* <MoreLink>查看全部</MoreLink> */}
     </Wrapper>

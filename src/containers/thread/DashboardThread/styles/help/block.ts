@@ -17,6 +17,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   position: relative;
   background: transparent;
   width: 225px;
+  height: 300px;
   min-height: 80px;
   padding: 15px 20px;
   padding-left: 0;
@@ -95,7 +96,7 @@ export const PlusIcon = styled(PlusSVG)`
 `
 
 export const AdderButton = styled(Button)`
-  width: 60px;
+  width: 80px;
   margin-left: -1px;
   margin-top: 8px;
 `
