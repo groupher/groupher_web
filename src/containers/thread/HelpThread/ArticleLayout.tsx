@@ -1,8 +1,10 @@
 import { FC, memo } from 'react'
 
 import type { TFileTreeDirection } from '@/spec'
+
 import FileTree from '@/widgets/FileTree'
 import { Space } from '@/widgets/Common'
+import FeedbackFooter from '@/widgets/FeedbackFooter'
 
 import FaqLayout from './FaqLayout'
 
@@ -133,6 +135,7 @@ const ArticleLayout: FC<TProps> = ({
                 </div>
               </>
             )}
+            <FeedbackFooter top={60} />
           </Content>
         </>
       )}
