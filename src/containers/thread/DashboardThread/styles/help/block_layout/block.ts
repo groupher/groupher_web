@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import { COLORS } from '@/constant'
-import type { TColorName, TTestable, TActive } from '@/spec'
+import type { TColorName, TTestable } from '@/spec'
 import css, { theme } from '@/utils/css'
 
 import Button from '@/widgets/Buttons/Button'

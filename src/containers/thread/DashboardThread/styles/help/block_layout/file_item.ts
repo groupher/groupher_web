@@ -2,10 +2,16 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
 
+import MoreSVG from '@/icons/menu/More'
+
 export const Wrapper = styled.div`
+  ${css.flex('align-center', 'justify-between')};
+  margin-bottom: 6px;
+  position: relative;
+`
+export const Name = styled.div`
   color: ${theme('article.digest')};
   font-size: 14px;
-  margin-bottom: 6px;
 
   &:hover {
     color: ${theme('article.title')};
@@ -15,4 +21,22 @@ export const Wrapper = styled.div`
   transition: all 0.2s;
 `
 
-export const holder = 1
+export const SettingIcon = styled(MoreSVG)`
+  ${css.size(15)};
+  fill: ${theme('article.digest')};
+  position: absolute;
+  top: -7px;
+  right: -4px;
+  opacity: 0;
+
+  ${Wrapper}:hover & {
+    opacity: 1;
+  }
+
+  &:hover {
+    fill: ${theme('article.title')};
+    cursor: pointer;
+  }
+
+  transition: all 0.2s;
+`

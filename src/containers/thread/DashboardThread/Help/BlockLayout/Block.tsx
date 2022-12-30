@@ -46,6 +46,7 @@ const Block: FC<TProps> = ({ color, title, desc, column = 2 }) => {
       </Header>
 
       <FileItem name={desc} />
+      <FileItem name={desc} />
 
       <AdderButton ghost size="small">
         <PlusIcon /> 添加文章
