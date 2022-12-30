@@ -3,16 +3,16 @@ import styled from 'styled-components'
 import css, { theme } from '@/utils/css'
 import ArrowSVG from '@/icons/Arrow'
 import Arrow2TopSVG from '@/icons/Arrow2Top'
+import TransforSVG from '@/icons/Transfor'
 
 export const Wrapper = styled.div`
   ${css.flexColumn()};
   padding: 6px;
   width: 100px;
 `
-
 export const Item = styled.div`
   ${css.flex('justify-between', 'align-center')};
-  padding: 2px 4px;
+  padding: 3px 4px;
 
   &:hover {
     background: ${theme('hoverBg')};
@@ -42,6 +42,16 @@ const Arrow2TopIcon = styled(Arrow2TopSVG)`
   }
 `
 
+const TransforIcon = styled(TransforSVG)`
+  ${css.size(12)};
+  fill: ${theme('article.digest')};
+  margin-left: -1px;
+
+  ${Item}:hover & {
+    color: ${theme('article.title')};
+  }
+`
+
 const Arrow2BottomIcon = styled(Arrow2TopIcon)`
   transform: rotate(180deg);
 `
@@ -51,6 +61,7 @@ export const Icon = {
   ArrowDown: ArrowDownIcon,
   Arrow2Top: Arrow2TopIcon,
   Arrow2Bottom: Arrow2BottomIcon,
+  Transfor: TransforIcon,
 }
 
 export const Title = styled.div`

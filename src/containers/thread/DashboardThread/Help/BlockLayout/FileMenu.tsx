@@ -19,6 +19,10 @@ const FileMenu = () => {
         <Icon.Arrow2Bottom />
         <Title>移至最后</Title>
       </Item>
+      <Item>
+        <Icon.Transfor />
+        <Title>移动到</Title>
+      </Item>
     </Wrapper>
   )
 }

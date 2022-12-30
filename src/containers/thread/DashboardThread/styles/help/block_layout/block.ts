@@ -40,7 +40,7 @@ export const GlobalSettingIcon = styled(MoreSVG)`
   fill: ${theme('article.digest')};
   position: absolute;
   top: 5px;
-  right: 2px;
+  right: -2px;
   opacity: 0;
 
   ${Wrapper}:hover & {

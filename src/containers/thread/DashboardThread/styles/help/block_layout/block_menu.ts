@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
 
 export const Item = styled.div`
   ${css.flex('justify-between', 'align-center')};
-  padding: 2px 4px;
+  padding: 3px 4px;
 
   &:hover {
     background: ${theme('hoverBg')};

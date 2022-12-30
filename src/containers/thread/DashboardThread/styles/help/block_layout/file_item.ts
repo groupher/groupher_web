@@ -25,6 +25,7 @@ export const SettingIcon = styled(MoreSVG)`
   ${css.size(15)};
   fill: ${theme('article.digest')};
   position: absolute;
+  transform: rotate(90deg);
   top: -7px;
   right: -4px;
   opacity: 0;
