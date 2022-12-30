@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
-import { COLORS } from '@/constant'
-import type { TColorName, TTestable } from '@/spec'
+import type { TTestable } from '@/spec'
 import css, { theme } from '@/utils/css'
 
 import PlusSVG from '@/icons/BoxAdd'
