@@ -68,7 +68,7 @@ export const ImageWrapper = styled.div<TActive>`
   border: 1px solid transparent;
   background-color: white;
   border-radius: 3px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+  box-shadow: ${css.cardShadow};
   border-color: ${({ $active }) => ($active ? theme('article.digest') : 'transparent')};
   opacity: ${({ $active }) => ($active ? 1 : 0.85)};
 
