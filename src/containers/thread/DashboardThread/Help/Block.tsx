@@ -34,7 +34,7 @@ const Block: FC<TProps> = ({ color, title, desc, column = 2 }) => {
         content={<BlockMenu />}
         placement="bottom-end"
         trigger="mouseenter focus"
-        offset={[-10, 30]}
+        offset={[0, 20]}
         hideOnClick
         noPadding
       >
@@ -45,7 +45,7 @@ const Block: FC<TProps> = ({ color, title, desc, column = 2 }) => {
         <Title>{title}</Title>
       </Header>
 
-      {/* <Item color={color}>{desc}</Item> */}
+      <Item color={color}>{desc}</Item>
       {/* <Item color={color}>{desc}</Item>
       <Item color={color}>{desc}</Item> */}
 
