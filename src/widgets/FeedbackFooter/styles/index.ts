@@ -65,12 +65,7 @@ export const IconWrapper = styled.div<TActive>`
 `
 export const GoodIcon = styled(GoodSVG)<TActive>`
   ${css.size(24)};
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
-  border-bottom-left-radius: 50%;
-  border-bottom-right-radius: 50%;
-  box-shadow: ${({ $active }) =>
-    $active ? 'rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px' : 'none'};
+  filter: ${({ $active }) => ($active ? 'drop-shadow(0 1px 2px lightgrey);' : 'none')};
 `
 export const SoSoIcon = styled(SoSoSVG)<TActive>`
   ${css.circle(24)};
@@ -79,7 +74,7 @@ export const SoSoIcon = styled(SoSoSVG)<TActive>`
 `
 export const BadIcon = styled(BadSVG)<TActive>`
   ${css.circle(24)};
-  opacity: ${({ $active }) => ($active ? 1 : 0.75)};
+  opacity: ${({ $active }) => ($active ? 1 : 0.6)};
   box-shadow: ${({ $active }) =>
     $active ? 'rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px' : 'none'};
 
