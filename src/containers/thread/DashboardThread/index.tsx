@@ -22,6 +22,7 @@ import {
   Domain,
   ThirdPart,
   Widgets,
+  Help,
 } from './dynamic'
 
 import type { TStore } from './store'
@@ -56,6 +57,8 @@ const DashboardThreadContainer: FC<TProps> = ({
         {curTab === DASHBOARD.ADMINS && <Admin />}
         {curTab === DASHBOARD.THREADS && <Threads />}
         {curTab === DASHBOARD.TAGS && <Tags settings={tagSettings} />}
+
+        {curTab === DASHBOARD.HELP && <Help />}
 
         {curTab === DASHBOARD.DOMAIN && <Domain />}
         {curTab === DASHBOARD.THIRD_PART && <ThirdPart />}
