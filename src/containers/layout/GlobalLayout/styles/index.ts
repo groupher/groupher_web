@@ -24,10 +24,15 @@ export const ScrollWrapper = styled.div`
 `
 
 export const GrowBackground = styled.div`
-  background: radial-gradient(circle at 30% -20%, #bf3a2c21 0, #2cbf6f00 30%),
+  background: radial-gradient(circle at 30% -20%, #bf3a2c29 0, #2cbf6f00 30%),
     radial-gradient(circle at 100% 0, #ffeba824 0, #ffeba800 40%),
     radial-gradient(circle at 68% 3%, #4e4bd212 0, #4e4bd200 40%),
-    radial-gradient(circle at 84% 6%, #ee00000d 0, #e000 40%);
+    radial-gradient(circle at 84% 20%, #961fb31a 0, #e000 30%);
+
+  /* background: radial-gradient(circle at 30% -20%, #bf3a2c21 0, #2cbf6f00 30%),
+    radial-gradient(circle at 100% 0, #ffeba824 0, #ffeba800 40%),
+    radial-gradient(circle at 68% 3%, #4e4bd212 0, #4e4bd200 40%),
+    radial-gradient(circle at 84% 6%, #ee00000d 0, #e000 40%); */
   filter: saturate(1);
   inset: 0;
   position: fixed;

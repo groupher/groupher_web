@@ -109,6 +109,10 @@ export const COVER_GRADIENT_WALLPAPER = {
     colors: ['#323455', '#624b77'],
     ...DEFAULT_GRADIENT_EFFECT,
   },
+  purple3: {
+    colors: ['#BE5C4C', '#006588'],
+    ...DEFAULT_GRADIENT_EFFECT,
+  },
   yellow: {
     colors: ['#F7CE7E', '#E17D43'],
     ...DEFAULT_GRADIENT_EFFECT,
