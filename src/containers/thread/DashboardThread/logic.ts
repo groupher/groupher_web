@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 // import { } from 'ramda'
 
 import type { TEditValue, TTag } from '@/spec'
-import { EVENT } from '@/constant'
+import { COLOR_NAME, EVENT } from '@/constant'
 
 import { buildLog } from '@/utils/logger'
 import { updateEditing, toJS } from '@/utils/mobx'
@@ -48,6 +48,17 @@ export const updateEditingAlias = (alias: TAlias): void => {
   store.mark({ editingAlias: alias })
 }
 
+export const addHelpCategory = (): void => {
+  const helpCategories = store.helpSettings.categories.concat({
+    name: '新分类',
+    index: store.helpCategories.length,
+    color: COLOR_NAME.BLACK,
+    files: [],
+  })
+
+  store.mark({ helpCategories })
+}
+
 export const resetEdit = (field: TSettingField): void => store.resetEdit(field)
 
 export const edit = (e: TEditValue, key: string): void => {
@@ -59,7 +70,6 @@ export const edit = (e: TEditValue, key: string): void => {
  */
 export const onSave = (field: TSettingField, force = false): void => {
   store.mark({ saving: true })
-  console.log('## onSave: ', field)
   store.onSave(field)
 
   const time = force ? 0 : 1200

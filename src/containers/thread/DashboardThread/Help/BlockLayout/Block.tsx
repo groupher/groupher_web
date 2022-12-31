@@ -23,13 +23,11 @@ import {
 type TProps = {
   color: TColorName
   title: string
-  desc: string
-  column?: number
 }
 
-const Block: FC<TProps> = ({ color, title, desc, column = 2 }) => {
+const Block: FC<TProps> = ({ color, title }) => {
   return (
-    <Wrapper color={color} column={column}>
+    <Wrapper>
       <Tooltip
         content={<BlockMenu />}
         placement="bottom-end"
@@ -45,8 +43,8 @@ const Block: FC<TProps> = ({ color, title, desc, column = 2 }) => {
         <Title>{title}</Title>
       </Header>
 
-      <FileItem name={desc} />
-      <FileItem name={desc} />
+      {/* <FileItem name={desc} />
+      <FileItem name={desc} /> */}
 
       <AdderButton ghost size="small">
         <PlusIcon /> 添加文章

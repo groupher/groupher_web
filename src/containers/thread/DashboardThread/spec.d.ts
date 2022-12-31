@@ -123,3 +123,21 @@ export type TSettingField =
   | 'widgetsType'
 
 export type TWidgetType = 'sidebar' | 'modal' | 'popup' | 'iframe' | 'link'
+
+type THelpFile = {
+  index: number
+  name: string
+  articleId: string
+  linkAddr: string
+}
+
+type THelpCategory = {
+  name: string
+  index: number
+  color: TColorName
+  files: THelpFile[]
+}
+
+export type THelpSettings = {
+  categories: THelpCategory[]
+}

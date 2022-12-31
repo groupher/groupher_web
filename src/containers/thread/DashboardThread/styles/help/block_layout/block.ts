@@ -9,7 +9,7 @@ import LaptopSVG from '@/icons/Works'
 import PlusSVG from '@/icons/Plus'
 import MoreSVG from '@/icons/menu/More'
 
-type TWrapper = TTestable & { color?: string; column: number }
+type TWrapper = TTestable
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TWrapper>`

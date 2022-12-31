@@ -41,7 +41,8 @@ const DashboardThreadContainer: FC<TProps> = ({
   testid = 'dashboard-thread',
 }) => {
   useInit(store)
-  const { curTab, uiSettings, tagSettings, aliasSettings, widgetsSettings, touched } = store
+  const { curTab, uiSettings, tagSettings, aliasSettings, widgetsSettings, helpSettings, touched } =
+    store
 
   const { DASHBOARD } = ROUTE
 
@@ -58,7 +59,7 @@ const DashboardThreadContainer: FC<TProps> = ({
         {curTab === DASHBOARD.THREADS && <Threads />}
         {curTab === DASHBOARD.TAGS && <Tags settings={tagSettings} />}
 
-        {curTab === DASHBOARD.HELP && <Help />}
+        {curTab === DASHBOARD.HELP && <Help settings={helpSettings} />}
 
         {curTab === DASHBOARD.DOMAIN && <Domain />}
         {curTab === DASHBOARD.THIRD_PART && <ThirdPart />}

@@ -5,17 +5,23 @@ import { COLOR_NAME } from '@/constant'
 import Block from './Block'
 import AdderBlock from './AdderBlock'
 
+import type { THelpSettings } from '../../spec'
 import { Wrapper, CatsWrapper } from '../../styles/help/block_layout'
 
 type TProps = {
   testid?: string
+  settings: THelpSettings
 }
 
-const BlockList: FC<TProps> = ({ testid = 'FaqLayout' }) => {
+const BlockList: FC<TProps> = ({ testid = 'FaqLayout', settings }) => {
+  const { categories } = settings
+
   return (
     <Wrapper>
       <CatsWrapper>
-        <Block color={COLOR_NAME.ORANGE} title="分类 1" desc="边缘函数" column={3} />
+        {categories.map((cat) => {
+          return <Block key={cat.index} color={cat.color} title={cat.name} />
+        })}
         <AdderBlock />
       </CatsWrapper>
     </Wrapper>
