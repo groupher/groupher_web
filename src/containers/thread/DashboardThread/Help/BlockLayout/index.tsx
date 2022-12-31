@@ -1,7 +1,5 @@
 import { FC, memo } from 'react'
 
-import { COLOR_NAME } from '@/constant'
-
 import Block from './Block'
 import AdderBlock from './AdderBlock'
 
@@ -9,11 +7,10 @@ import type { THelpSettings } from '../../spec'
 import { Wrapper, CatsWrapper } from '../../styles/help/block_layout'
 
 type TProps = {
-  testid?: string
   settings: THelpSettings
 }
 
-const BlockList: FC<TProps> = ({ testid = 'FaqLayout', settings }) => {
+const BlockList: FC<TProps> = ({ settings }) => {
   const { categories } = settings
 
   return (
