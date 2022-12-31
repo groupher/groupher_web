@@ -23,6 +23,17 @@ export const ScrollWrapper = styled.div`
   width: 100%;
 `
 
+export const GrowBackground = styled.div`
+  background: radial-gradient(circle at 30% -20%, #2cbf6f21 0, #2cbf6f00 30%),
+    radial-gradient(circle at 100% 0, #ffeba824 0, #ffeba800 40%),
+    radial-gradient(circle at 68% 3%, #4e4bd212 0, #4e4bd200 40%),
+    radial-gradient(circle at 84% 6%, #ee00000d 0, #e000 40%);
+  filter: saturate(1);
+  inset: 0;
+  position: fixed;
+  z-index: -1;
+`
+
 type TInner = { metric: TMetric; hasTopbar: boolean; topbarBg: TColorName; hasShadow: boolean }
 export const InnerWrapper = styled.div<TInner>`
   ${css.flexColumn()};

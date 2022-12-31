@@ -29,7 +29,7 @@ const initWallpaperModalFields = {
   // for gradient colors
   hasPattern: T.opt(T.bool, true),
   hasBlur: T.opt(T.bool, false),
-  hasShadow: T.opt(T.bool, false),
+  hasShadow: T.opt(T.bool, true),
   direction: T.opt(T.string, 'bottom'),
 }
 
