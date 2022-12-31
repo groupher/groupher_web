@@ -2,7 +2,7 @@ import { useState, FC } from 'react'
 import { keys, values } from 'ramda'
 
 import type { TWallpaper, TWallpaperGradientDir } from '@/spec'
-import { GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '@/constant'
+import { COVER_GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '@/constant'
 import { parseWallpaper } from '@/utils/wallpaper'
 
 import Tooltip from '@/widgets/Tooltip'
@@ -44,7 +44,7 @@ const BackgroundBlock: FC<TProps> = ({ wallpapers, wallpaper, direction }) => {
                 <ImageBlock background="" onClick={() => wallpaperOnChange('')} />
               </ImageWrapper>
 
-              {keys(GRADIENT_WALLPAPER).map((themeName) => (
+              {keys(COVER_GRADIENT_WALLPAPER).map((themeName) => (
                 <ImageWrapper key={themeName} $active={wallpaper === themeName}>
                   <ImageBlock
                     background={parseWallpaper(wallpapers, themeName).background}
