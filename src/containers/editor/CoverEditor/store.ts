@@ -11,7 +11,7 @@ import type {
   TWallpaperGradient,
   TWallpaperGradientDir,
 } from '@/spec'
-import { GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '@/constant'
+import { COVER_GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '@/constant'
 
 import { buildLog } from '@/utils/logger'
 import { markStates, toJS, getParent, Instance, T } from '@/utils/mobx'
@@ -43,7 +43,7 @@ const CoverEditor = T.model('CoverEditor', {
   wallpaper: T.opt(T.string, ''),
   hasPattern: T.opt(T.bool, false),
   hasBlur: T.opt(T.bool, true),
-  direction: T.opt(T.string, GRADIENT_DIRECTION.BOTTOM),
+  direction: T.opt(T.string, GRADIENT_DIRECTION.BOTTOM_RIGHT),
 })
   .views((self) => ({
     get curCommunity(): TCommunity {
@@ -54,8 +54,8 @@ const CoverEditor = T.model('CoverEditor', {
 
     get gradientWallpapers(): Record<string, TWallpaper> {
       const slf = self as TStore
-      const wallpapers = clone(GRADIENT_WALLPAPER)
-      const paperKeys = keys(GRADIENT_WALLPAPER)
+      const wallpapers = clone(COVER_GRADIENT_WALLPAPER)
+      const paperKeys = keys(COVER_GRADIENT_WALLPAPER)
 
       forEach((key) => {
         const wallpaperObj = wallpapers[key] as TWallpaperGradient

@@ -14,6 +14,7 @@ import { COLORS, COLOR_NAME } from '@/constant'
 import type { TSpace, TColorName } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
+import { Row } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'
 
 import type { TIcon } from './spec'
@@ -47,36 +48,38 @@ const FaIcons: FC<TProps> = ({
 
   return (
     <Wrapper testid={testid} {...restProps}>
-      <Tooltip
-        content={
-          <Panel
-            panelOpen={panelOpen}
-            selectIcon={selectIcon}
-            selectColor={selectColor}
-            onColorSelect={setSelectColor}
-            onIconSelect={setSelectIcon}
-          />
-        }
-        placement="bottom-start"
-        hideOnClick={false}
-        trigger="click"
-        offset={[-5, 5]}
-        onShow={() => setPanelOpen(true)}
-        onHide={() => setPanelOpen(false)}
-        noPadding
-      >
-        <InnerWrapper>
-          <IconWrapper color={selectColor} $active={panelOpen}>
-            <FontAwesomeIcon
-              icon={FaIcon[selectIcon]}
-              fontSize={size}
-              color={COLORS[selectColor]}
+      <InnerWrapper>
+        <Tooltip
+          content={
+            <Panel
+              panelOpen={panelOpen}
+              selectIcon={selectIcon}
+              selectColor={selectColor}
+              onColorSelect={setSelectColor}
+              onIconSelect={setSelectIcon}
             />
-          </IconWrapper>
+          }
+          placement="bottom-start"
+          hideOnClick={false}
+          trigger="click"
+          offset={[-5, 5]}
+          onShow={() => setPanelOpen(true)}
+          onHide={() => setPanelOpen(false)}
+          noPadding
+        >
+          <Row>
+            <IconWrapper color={selectColor} $active={panelOpen}>
+              <FontAwesomeIcon
+                icon={FaIcon[selectIcon]}
+                fontSize={size}
+                color={COLORS[selectColor]}
+              />
+            </IconWrapper>
 
-          <ArrowIcon $active={panelOpen} />
-        </InnerWrapper>
-      </Tooltip>
+            <ArrowIcon $active={panelOpen} />
+          </Row>
+        </Tooltip>
+      </InnerWrapper>
     </Wrapper>
   )
 }

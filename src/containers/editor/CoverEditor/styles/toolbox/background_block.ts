@@ -13,7 +13,6 @@ export const Wrapper = styled.div`
   ${css.size(60)};
   ${css.flexColumn('align-both')};
 `
-
 export const Block = styled(SettingBlock)``
 
 export const Panel = styled.div`
@@ -37,7 +36,7 @@ export const Title = styled.div`
 export const BgRow = styled.div`
   ${css.flex('align-center')};
   flex-wrap: wrap;
-  gap: 10px 15px;
+  gap: 10px;
 `
 
 export const Divider = styled.div`
@@ -60,6 +59,7 @@ export const BgImage = styled.div<{ background: string }>`
   border-radius: 5px;
   background: ${({ background }) => background || theme('hoverBg')};
   transition: all 0.2s;
+  cursor: pointer;
 `
 
 export const ImageWrapper = styled.div<TActive>`
@@ -68,7 +68,7 @@ export const ImageWrapper = styled.div<TActive>`
   border: 1px solid transparent;
   background-color: white;
   border-radius: 3px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+  box-shadow: ${css.cardShadow};
   border-color: ${({ $active }) => ($active ? theme('article.digest') : 'transparent')};
   opacity: ${({ $active }) => ($active ? 1 : 0.85)};
 

@@ -22,6 +22,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 `
 export const InnerWrapper = styled.div`
   ${css.flex('align-center')};
+  max-width: 70px;
 `
 
 type TIconWrapper = { color: TColorName } & TActive
@@ -34,18 +35,18 @@ export const IconWrapper = styled.div<TIconWrapper>`
   ${css.flex('align-both')};
   border-radius: 7px;
 
-  ${Wrapper}:hover & {
+  ${InnerWrapper}:hover & {
     border-color: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
   }
 `
 export const ArrowIcon = styled(ArrowSVG)<TActive>`
   ${css.size(12)};
   fill: ${theme('article.info')};
-  opacity: ${({ $active }) => ($active ? 1 : 0.4)};
+  opacity: ${({ $active }) => ($active ? 1 : 0)};
   margin-left: 8px;
   transform: rotate(90deg);
 
-  ${Wrapper}:hover & {
+  ${InnerWrapper}:hover & {
     opacity: 1;
   }
 `

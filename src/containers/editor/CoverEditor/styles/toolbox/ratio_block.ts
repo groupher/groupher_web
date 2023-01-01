@@ -32,7 +32,7 @@ export const Item = styled.div<TActive>`
   padding: 1px 6px;
   cursor: pointer;
   background: white;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+  box-shadow: ${css.cardShadow};
 
   &:hover {
     border-color: ${theme('article.digest')};

@@ -27,8 +27,10 @@ import {
   THREAD,
   SIZE,
   HELP_LAYOUT,
+  COLOR_NAME,
   ROUTE,
 } from '@/constant'
+
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { Tag } from '@/model'
@@ -36,6 +38,7 @@ import { Tag } from '@/model'
 import type {
   TUiSettings,
   TTagSettings,
+  THelpSettings,
   TAliasSettings,
   TTouched,
   TSettingField,
@@ -56,6 +59,20 @@ const Alias = T.model('Alias', {
   suggestions: T.opt(T.array(T.string), []),
 })
 
+const File = T.model('File', {
+  index: T.int,
+  name: T.str,
+  articleId: T.opt(T.str, ''),
+  linkAddr: T.opt(T.str, ''),
+})
+
+const GroupCategory = T.model('GroupGategory', {
+  name: T.opt(T.str, ''),
+  index: T.int,
+  color: T.opt(T.enum(values(COLOR_NAME)), COLOR_NAME.BLACK),
+  files: T.opt(T.array(File), []),
+})
+
 const settingsModalFields = {
   primaryColor: T.opt(T.enum(keys(COLORS)), 'BLACK'),
   postLayout: T.opt(T.enum(values(POST_LAYOUT)), POST_LAYOUT.UPVOTE_FIRST),
@@ -68,6 +85,10 @@ const settingsModalFields = {
   bannerNotifyLayout: T.opt(T.enum(values(BANNER_NOTIFY_LAYOUT)), BANNER_NOTIFY_LAYOUT.DEFAULT),
   bannerNotifyBg: T.opt(T.enum(keys(COLORS)), 'BLACK'),
   changelogLayout: T.opt(T.enum(values(CHANGELOG_LAYOUT)), CHANGELOG_LAYOUT.PREVIEW),
+
+  // help
+  helpCategories: T.opt(T.array(GroupCategory), []),
+
   // tags
   tags: T.opt(T.array(Tag), mockTags(12)),
   activeTagCategory: T.maybeNull(T.string),
@@ -228,6 +249,14 @@ const DashboardThread = T.model('DashboardThread', {
         saving: slf.saving,
         categories: toJS(slf.tagCategories),
         activeTagCategory,
+      }
+    },
+
+    get helpSettings(): THelpSettings {
+      const slf = self as TStore
+
+      return {
+        categories: toJS(slf.helpCategories),
       }
     },
 

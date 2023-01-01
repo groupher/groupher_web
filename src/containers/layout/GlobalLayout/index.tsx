@@ -26,6 +26,7 @@ import {
   Skeleton,
   Wrapper,
   ScrollWrapper,
+  GrowBackground,
   InnerWrapper,
   BodyWrapper,
   ContentWrapper,
@@ -94,6 +95,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
                 </BodyWrapper>
                 <Footer metric={metric} />
               </ContentWrapper>
+              <GrowBackground />
             </InnerWrapper>
             {/* {isMobile && <ModeLine metric={metric} />} */}
           </Wrapper>

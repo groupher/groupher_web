@@ -47,3 +47,7 @@ export const ThirdPart = dynamic(() => import('./ThirdPart'), {
 export const Widgets = dynamic(() => import('./Widgets'), {
   loading: () => <LavaLampLoading />,
 })
+
+export const Help = dynamic(() => import('./Help'), {
+  loading: () => <LavaLampLoading />,
+})
