@@ -3,10 +3,11 @@ import { FC, memo } from 'react'
 import type { TFileTreeDirection } from '@/spec'
 
 import FileTree from '@/widgets/FileTree'
-import { Space } from '@/widgets/Common'
+import { Space, SpaceGrow } from '@/widgets/Common'
 import FeedbackFooter from '@/widgets/FeedbackFooter'
 
 import FaqLayout from './FaqLayout'
+import ArticleHeadAction from './ArticleHeadAction'
 
 import {
   Wrapper,
@@ -100,6 +101,8 @@ const ArticleLayout: FC<TProps> = ({
                   <All onClick={() => back2Layout()}>全部</All>
                   <Slash>/</Slash>
                   <Cur>产品</Cur>
+                  <SpaceGrow />
+                  <ArticleHeadAction />
                 </Navi>
               )}
               {!isFAQArticleLayout && <Title>关于帮助台的使用</Title>}

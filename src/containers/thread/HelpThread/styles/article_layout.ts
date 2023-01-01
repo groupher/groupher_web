@@ -56,6 +56,19 @@ export const Sidebar = styled.div<{ isLeftLayout?: boolean }>`
   width: ${({ isLeftLayout }) => (isLeftLayout ? '320px' : '300px')};
   padding-left: ${({ isLeftLayout }) => (isLeftLayout ? '26px' : '32px')};
   margin-top: 30px;
+
+  border-right: 1px solid;
+  border-right: 1px solid transparent;
+  border-image: linear-gradient(
+    0.46turn,
+    transparent,
+    ${theme('divider')},
+    ${theme('divider')},
+    ${theme('divider')},
+    transparent
+  );
+
+  border-image-slice: 1;
 `
 export const FAQItem = styled.div`
   font-size: 14px;
