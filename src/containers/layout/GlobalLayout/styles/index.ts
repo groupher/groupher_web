@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
-import type { TColorName, TMetric } from '@/spec'
-import { COLORS } from '@/constant'
+import type { TColorName, TMetric, TGlowEffect } from '@/spec'
+import { COLORS, GLOW_EFFECTS } from '@/constant'
 import css, { theme } from '@/utils/css'
 
 /**
@@ -23,19 +23,18 @@ export const ScrollWrapper = styled.div`
   width: 100%;
 `
 
-export const GrowBackground = styled.div`
-  background: radial-gradient(circle at 30% -20%, #bf3a2c29 0, #2cbf6f00 30%),
-    radial-gradient(circle at 100% 0, #ffeba824 0, #ffeba800 40%),
-    radial-gradient(circle at 68% 3%, #4e4bd212 0, #4e4bd200 40%),
-    radial-gradient(circle at 84% 20%, #961fb314 0, #e000 30%);
+export const GrowBackground = styled.div<TGlowEffect>`
+  background: ${({ glowType }) => `
+    radial-gradient(circle at ${GLOW_EFFECTS[glowType].LEFT.X} ${GLOW_EFFECTS[glowType].LEFT.Y}, ${GLOW_EFFECTS[glowType].LEFT.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].LEFT.RADIUS}),
+    radial-gradient(circle at ${GLOW_EFFECTS[glowType].RIGHT1.X} ${GLOW_EFFECTS[glowType].RIGHT1.Y}, ${GLOW_EFFECTS[glowType].RIGHT1.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].RIGHT1.RADIUS}),
+    radial-gradient(circle at ${GLOW_EFFECTS[glowType].MAIN.X} ${GLOW_EFFECTS[glowType].MAIN.Y}, ${GLOW_EFFECTS[glowType].MAIN.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].MAIN.RADIUS}),
+    radial-gradient(circle at ${GLOW_EFFECTS[glowType].RIGHT2.X} ${GLOW_EFFECTS[glowType].RIGHT2.Y}, ${GLOW_EFFECTS[glowType].RIGHT2.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].RIGHT1.RADIUS});
+  `};
 
-  /* background: radial-gradient(circle at 30% -20%, #bf3a2c21 0, #2cbf6f00 30%),
-    radial-gradient(circle at 100% 0, #ffeba824 0, #ffeba800 40%),
-    radial-gradient(circle at 68% 3%, #4e4bd212 0, #4e4bd200 40%),
-    radial-gradient(circle at 84% 6%, #ee00000d 0, #e000 40%); */
-  filter: saturate(1);
+  filter: saturate(1.2);
+
   inset: 0;
-  position: fixed;
+  position: ${({ glowPosition }) => glowPosition};
   z-index: -1;
 `
 

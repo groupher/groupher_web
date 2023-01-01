@@ -23,6 +23,8 @@ export const SETTING_FIELD = {
   WIDGETS_PRIMARY_COLOR: 'widgetsPrimaryColor',
   WIDGETS_SIZE: 'widgetsSize',
   WIDGETS_THREADS: 'widgetsThreads',
+  GLOW_TYPE: 'glowType',
+  GLOW_FIXED: 'glowFixed',
 } as Record<TSnakeUpperCase<TSettingField>, TSettingField>
 
 export const MENU = {

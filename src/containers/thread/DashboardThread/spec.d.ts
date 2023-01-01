@@ -60,6 +60,8 @@ export type TUiSettings = {
   topbarLayout: TTopbarLayout
   topbarBg: TColorName
   bannerLayout: TBannerLayout
+  glowType: string
+  glowFixed: boolean
   helpLayout: THelpLayout
   bannerNotifyLayout: TBannerNotifyLayout
   bannerNotifyBg: TColorName
@@ -81,6 +83,8 @@ export type TTouched = {
   primaryColor: boolean
   brandLayout: boolean
   bannerLayout: boolean
+  glowType: boolean
+  glowFixed: boolean
   helpLayout: boolean
   topbarLayout: boolean
   topbarBg: boolean
@@ -108,6 +112,8 @@ export type TSettingField =
   | 'kanbanLayout'
   | 'brandLayout'
   | 'bannerLayout'
+  | 'glowType'
+  | 'glowFixed'
   | 'helpLayout'
   | 'topbarLayout'
   | 'topbarBg'
@@ -121,6 +127,8 @@ export type TSettingField =
   | 'widgetsThreads'
   | 'widgetsSize'
   | 'widgetsType'
+  | 'glowType'
+  | 'glowFixed'
 
 export type TWidgetType = 'sidebar' | 'modal' | 'popup' | 'iframe' | 'link'
 

@@ -33,6 +33,8 @@ import {
 } from './styles'
 import { useInit, childrenWithProps } from './logic'
 
+const glowPosition = 'fixed'
+
 type TProps = {
   globalLayout?: TStore
   children: ReactNode
@@ -55,7 +57,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
 
   const [load, setLoad] = useState(false)
 
-  const { wallpaper, wallpapers, hasShadow, globalLayout } = store
+  const { wallpaper, wallpapers, hasShadow, glowType, glowFixed, globalLayout } = store
 
   useEffect(() => {
     setLoad(true)
@@ -95,7 +97,12 @@ const GlobalLayoutContainer: FC<TProps> = ({
                 </BodyWrapper>
                 <Footer metric={metric} />
               </ContentWrapper>
-              <GrowBackground />
+              {!!glowType && (
+                <GrowBackground
+                  glowType={glowType}
+                  glowPosition={glowFixed ? 'fixed' : 'absolute'}
+                />
+              )}
             </InnerWrapper>
             {/* {isMobile && <ModeLine metric={metric} />} */}
           </Wrapper>

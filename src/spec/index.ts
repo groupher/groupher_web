@@ -159,6 +159,11 @@ export type TViewing = TCommunity | TArticle
 
 export type TContainer = 'body' | 'drawer'
 
+export type TGlowEffect = {
+  glowType: string
+  glowPosition: 'fixed' | 'absolute'
+}
+
 interface IWindow extends Window {
   appVersion?: string
   /**

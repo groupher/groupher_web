@@ -48,6 +48,14 @@ export const updateEditingAlias = (alias: TAlias): void => {
   store.mark({ editingAlias: alias })
 }
 
+export const updateGlowType = (glowType: string): void => {
+  store.mark({ glowType })
+}
+
+export const updateGlowFixed = (glowFixed: boolean): void => {
+  store.mark({ glowFixed })
+}
+
 export const addHelpCategory = (): void => {
   const helpCategories = store.helpSettings.categories.concat({
     name: '新分类',
