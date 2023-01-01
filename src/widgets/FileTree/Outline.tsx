@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { Wrapper, Item, Index } from './styles/outline'
+import { Wrapper, Item } from './styles/outline'
 
 const items = [
   {
@@ -25,8 +25,6 @@ const Outline: FC = () => {
     <Wrapper>
       {items.map((item) => (
         <Item key={item.id} $active={item.active}>
-          {item.active && <Index />}
-
           {item.title}
         </Item>
       ))}

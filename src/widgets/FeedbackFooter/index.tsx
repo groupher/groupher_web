@@ -4,14 +4,15 @@
  *
  */
 
-import { FC, memo, useState } from 'react'
+import { FC, memo } from 'react'
 
 import type { TSpace } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
-import type { THelpFeedback } from './spec'
-import { HELP_FEEDBACK } from './constant'
-import { Wrapper, Title, FaceWraper, IconWrapper, GoodIcon, SoSoIcon, BadIcon } from './styles'
+import TopInfo from './TopInfo'
+import BottomInfo from './BottomInfo'
+
+import { Wrapper, TopWrapper } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('c:FeedbackFooter:index')
@@ -26,23 +27,10 @@ const FeedbackFooter: FC<TProps> = ({
   offsetRight = 30,
   ...restProps
 }) => {
-  const { GOOD, BAD, SOSO } = HELP_FEEDBACK
-  const [feedback, setFeedback] = useState<THelpFeedback | ''>('')
-
   return (
-    <Wrapper testid={testid} offsetRight={offsetRight} {...restProps}>
-      <Title>本文是否有帮助?</Title>
-      <FaceWraper>
-        <IconWrapper $active={feedback === BAD} onClick={() => setFeedback(BAD)}>
-          <BadIcon $active={feedback === BAD} />
-        </IconWrapper>
-        <IconWrapper $active={feedback === SOSO} onClick={() => setFeedback(SOSO)}>
-          <SoSoIcon $active={feedback === SOSO} />
-        </IconWrapper>
-        <IconWrapper $active={feedback === GOOD} onClick={() => setFeedback(GOOD)}>
-          <GoodIcon $active={feedback === GOOD} />
-        </IconWrapper>
-      </FaceWraper>
+    <Wrapper {...restProps}>
+      <TopInfo />
+      <BottomInfo offsetRight={offsetRight} />
     </Wrapper>
   )
 }

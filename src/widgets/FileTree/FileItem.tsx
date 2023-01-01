@@ -8,7 +8,7 @@ import Outline from './Outline'
 // import DotDivider from '@/widgets/DotDivider'
 // import TagCount from './TagCount'
 
-import { Wrapper, File, Title } from './styles/file_item'
+import { Wrapper, File, Title, IndexDot } from './styles/file_item'
 
 type TProps = {
   tag: TTag
@@ -23,6 +23,7 @@ const FileItem: FC<TProps> = ({ tag, active, onSelect }) => {
         <Title $active={active}>{cutRest(Trans(tag.title), 10)}</Title>
       </File>
       {active && <Outline />}
+      {active && <IndexDot />}
     </Wrapper>
   )
 }
