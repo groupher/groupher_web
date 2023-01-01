@@ -89,6 +89,10 @@ const settingsModalFields = {
   // help
   helpCategories: T.opt(T.array(GroupCategory), []),
 
+  // glow effect
+  glowType: T.opt(T.string, ''),
+  glowFixed: T.opt(T.bool, true),
+
   // tags
   tags: T.opt(T.array(Tag), mockTags(12)),
   activeTagCategory: T.maybeNull(T.string),
@@ -177,6 +181,9 @@ const DashboardThread = T.model('DashboardThread', {
       const topbarBgTouched = _isChanged('topbarBg')
       const changelogLayoutTouched = _isChanged('changelogLayout')
 
+      const glowFixedTouched = _isChanged('glowFixed')
+      const glowTypeTouched = _isChanged('glowType')
+
       const aliasTouched = !isNil(slf.editingAlias)
       const tagsTouched = !isNil(slf.editingTag)
 
@@ -204,6 +211,9 @@ const DashboardThread = T.model('DashboardThread', {
         alias: aliasTouched,
         tags: tagsTouched,
 
+        glowFixed: glowFixedTouched,
+        glowType: glowTypeTouched,
+
         widgetsPrimaryColor: widgetsPrimaryColorTouched,
         widgetsThreads: widgetsThreadsTouched,
         widgetsSize: widgetsSizeTouched,
@@ -220,7 +230,9 @@ const DashboardThread = T.model('DashboardThread', {
           fileTreeDirectionTouched ||
           postLayoutTouched ||
           kanbanLayoutTouched ||
-          changelogLayoutTouched,
+          changelogLayoutTouched ||
+          glowFixedTouched ||
+          glowTypeTouched,
 
         widgets: widgetsPrimaryColorTouched || widgetsThreadsTouched || widgetsSizeTouched,
       }
@@ -297,6 +309,8 @@ const DashboardThread = T.model('DashboardThread', {
             'kanbanLayout',
             'helpLayout',
             'changelogLayout',
+            'glowFixed',
+            'glowType',
           ],
           slf,
         ),

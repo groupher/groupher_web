@@ -46,6 +46,8 @@ const DashboardThreadContainer: FC<TProps> = ({
 
   const { DASHBOARD } = ROUTE
 
+  console.log('## uiSettings: ', uiSettings)
+
   return (
     <Wrapper testid={testid}>
       <SideMenu curTab={curTab} touched={touched} />
