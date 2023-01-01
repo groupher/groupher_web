@@ -32,7 +32,7 @@ const Block: FC<TProps> = ({ color, title }) => {
         content={<BlockMenu />}
         placement="bottom-end"
         trigger="mouseenter focus"
-        offset={[0, 20]}
+        offset={[4, 20]}
         hideOnClick
         noPadding
       >
