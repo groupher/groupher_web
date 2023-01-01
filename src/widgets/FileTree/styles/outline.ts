@@ -11,27 +11,20 @@ export const Wrapper = styled.div`
   font-size: 13px;
   margin-top: 5px;
   margin-bottom: 5px;
+  margin-left: 6px;
 `
 export const Item = styled.div<TActive>`
   ${css.lineClamp(1)};
-  margin-top: 4px;
-  margin-bottom: 5px;
-  padding-left: 16px;
+  padding-left: 14px;
   position: relative;
-  color: ${theme('article.title')};
+  padding-top: 5px;
+  padding-bottom: 4px;
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   font-weight: ${({ $active }) => ($active ? 600 : 400)};
+  border-left: 1px solid transparent;
+  border-left-color: ${({ $active }) => ($active ? theme('article.title') : theme('divider'))};
 
   &:hover {
     color: ${theme('article.title')};
   }
-`
-export const Index = styled.div`
-  position: absolute;
-  left: 4px;
-  top: 7px;
-  border-radius: 5px;
-  background-color: ${theme('article.info')};
-  ${css.size(4)};
-  opacity: 0.6;
 `

@@ -11,7 +11,7 @@ export const Header = styled.div<TActive>`
   display: ${({ show }) => (show ? 'flex' : 'none')};
   margin-bottom: 8px;
   position: relative;
-  /* margin-left: -30px; */
+
   &:hover {
     cursor: pointer;
   }
@@ -46,13 +46,11 @@ export const ArrowHintIcon = styled(ArrowSVG)`
 export const Title = styled.div`
   ${css.flex('align-center')};
   font-weight: 600;
-  margin-left: -6px;
   margin-bottom: 5px;
 `
 export const FolderTitle = styled.div<{ $isOpen: boolean }>`
   /* color: ${({ $isOpen }) => (!$isOpen ? theme('article.digest') : theme('lightText'))}; */
   color: ${theme('article.title')};
-  margin-left: 4px;
   font-size: 14px;
   margin-right: 8px;
   ${css.cutRest('85px')};
@@ -66,8 +64,7 @@ export const Content = styled.div<{ $isOpen: boolean }>`
   display: ${({ $isOpen }) => ($isOpen ? 'block' : 'none')};
   width: 100%;
   margin-bottom: 32px;
-  border-left: 1px solid;
-  border-left-color: ${theme('divider')};
+  margin-left: -5px;
 `
 export const SubToggle = styled.div`
   ${css.flex('align-center')};

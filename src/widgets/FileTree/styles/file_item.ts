@@ -10,17 +10,14 @@ import { TagsWrapper } from './index'
 type TTag = TActive & { color?: string }
 
 export const Wrapper = styled.div<TTag>`
+  position: relative;
   ${css.flexColumn()};
   padding: 4px;
   max-width: 180px;
-  padding-left: 12px;
-  border-left: ${({ $active }) => ($active ? '1px solid' : 'none')};
-  border-left-color: ${({ $active }) => ($active ? theme('article.digest') : 'none')};
-  margin-left: ${({ $active }) => ($active ? '-1px' : 0)};
+  padding-left: 0;
 
   &:hover {
     cursor: pointer;
-    border-left-color: ${theme('article.digest')};
   }
 `
 export const AllTagIcon = styled(Img)`
@@ -79,4 +76,12 @@ export const CountInfoWrapper = styled.div`
 
   transition: opacity 0.3s;
   transition-delay: 0.5s;
+`
+
+export const IndexDot = styled.div`
+  position: absolute;
+  left: -12px;
+  top: 14px;
+  background-color: ${theme('article.digest')};
+  ${css.circle(5)};
 `
