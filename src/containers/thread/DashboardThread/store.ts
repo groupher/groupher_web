@@ -29,6 +29,7 @@ import {
   HELP_LAYOUT,
   COLOR_NAME,
   ROUTE,
+  GLOW_EFFECTS,
 } from '@/constant'
 
 import { buildLog } from '@/utils/logger'
@@ -90,7 +91,7 @@ const settingsModalFields = {
   helpCategories: T.opt(T.array(GroupCategory), []),
 
   // glow effect
-  glowType: T.opt(T.string, ''),
+  glowType: T.opt(T.string, keys(GLOW_EFFECTS)[0]),
   glowFixed: T.opt(T.bool, true),
 
   // tags

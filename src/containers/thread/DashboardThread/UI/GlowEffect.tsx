@@ -1,10 +1,9 @@
 import { FC, memo } from 'react'
 import { keys } from 'ramda'
 
-import type { TColorName } from '@/spec'
 import { GLOW_EFFECTS } from '@/constant'
 
-import { Inline, Space, Br } from '@/widgets/Common'
+import { Inline, Br } from '@/widgets/Common'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import Radio from '@/widgets/Switcher/Radio'
 
