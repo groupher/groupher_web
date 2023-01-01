@@ -3,35 +3,28 @@ import { FC, memo } from 'react'
 import { SpaceGrow } from '@/widgets/Common'
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
 
-import {
-  Wrapper,
-  Section,
-  Section2,
-  Header,
-  Title,
-  Desc,
-} from '../styles/threads/help_thread'
+import { Wrapper, Section, Header, Title, Desc } from '../styles/threads/help_thread'
 
 const HelpThread: FC = () => {
   return (
     <Wrapper>
       <Section>
         <Header>
-          <Title>常见问题</Title>
-          <SpaceGrow />
-          <ToggleSwitch checked />
-        </Header>
-        <Desc>FAQ 列表，适合常见的一句话问答等，参考 xxx</Desc>
-      </Section>
-
-      <Section2>
-        <Header>
-          <Title>文档集</Title>
+          <Title>最后更新时间</Title>
           <SpaceGrow />
           <ToggleSwitch />
         </Header>
-        <Desc>适合中长篇文档，支持富文本，目录树，TOC 等常见文档功能。</Desc>
-      </Section2>
+        <Desc>是否在文档底部显示当前文档的最后更新时间</Desc>
+      </Section>
+
+      <Section>
+        <Header>
+          <Title>反馈调查</Title>
+          <SpaceGrow />
+          <ToggleSwitch checked />
+        </Header>
+        <Desc>是否在文档底部显示 “本文是否有帮助?” 的反馈组件</Desc>
+      </Section>
     </Wrapper>
   )
 }
