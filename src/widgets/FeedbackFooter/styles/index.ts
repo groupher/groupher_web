@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TSpace, TTestable } from '@/spec'
 
 // import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css from '@/utils/css'
 
 type TWrapper = TTestable & TSpace
 
@@ -16,6 +16,4 @@ export const Wrapper = styled.div<TWrapper>`
   margin-right: ${({ right }) => `${right}px` || 0};
 `
 
-export const TopWrapper = styled.div`
-  ${css.flex('justify-between')};
-`
+export const holder = 1

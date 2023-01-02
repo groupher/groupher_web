@@ -23,6 +23,7 @@ import {
   ThirdPart,
   Widgets,
   Help,
+  Footer,
 } from './dynamic'
 
 import type { TStore } from './store'
@@ -46,8 +47,6 @@ const DashboardThreadContainer: FC<TProps> = ({
 
   const { DASHBOARD } = ROUTE
 
-  console.log('## uiSettings: ', uiSettings)
-
   return (
     <Wrapper testid={testid}>
       <SideMenu curTab={curTab} touched={touched} />
@@ -60,6 +59,7 @@ const DashboardThreadContainer: FC<TProps> = ({
         {curTab === DASHBOARD.ADMINS && <Admin />}
         {curTab === DASHBOARD.THREADS && <Threads />}
         {curTab === DASHBOARD.TAGS && <Tags settings={tagSettings} />}
+        {curTab === DASHBOARD.FOOTER && <Footer />}
 
         {curTab === DASHBOARD.HELP && <Help settings={helpSettings} />}
 

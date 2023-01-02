@@ -15,6 +15,7 @@ export const Item = styled.div`
   gap: 0 6px;
   cursor: pointer;
   transition: all 0.2s;
+  margin-left: -2px;
 `
 
 export const ArrowIcon = styled(ArrowSVG)<{ reverse?: boolean }>`

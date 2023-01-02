@@ -12,7 +12,7 @@ import { buildLog } from '@/utils/logger'
 import TopInfo from './TopInfo'
 import BottomInfo from './BottomInfo'
 
-import { Wrapper, TopWrapper } from './styles'
+import { Wrapper } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('c:FeedbackFooter:index')

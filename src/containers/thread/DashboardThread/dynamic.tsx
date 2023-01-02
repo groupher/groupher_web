@@ -51,3 +51,7 @@ export const Widgets = dynamic(() => import('./Widgets'), {
 export const Help = dynamic(() => import('./Help'), {
   loading: () => <LavaLampLoading />,
 })
+
+export const Footer = dynamic(() => import('./Footer'), {
+  loading: () => <LavaLampLoading />,
+})

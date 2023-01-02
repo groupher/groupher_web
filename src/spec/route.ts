@@ -17,6 +17,7 @@ export type TDashboardPath =
   | 'kanban'
   | 'changelog'
   | 'help'
+  | 'footer'
   | 'blackhouse'
   // integrates
   | 'third_part'

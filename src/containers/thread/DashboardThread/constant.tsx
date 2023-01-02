@@ -88,6 +88,10 @@ export const MENU = {
         raw: DASHBOARD_ROUTE.HELP,
       },
       {
+        title: '页脚',
+        raw: DASHBOARD_ROUTE.FOOTER,
+      },
+      {
         title: '小黑屋',
         raw: DASHBOARD_ROUTE.BLACKHOUSE,
       },
