@@ -3,6 +3,8 @@ import { FC } from 'react'
 import type { TFooterSettings, TTouched } from '../spec'
 
 import Templates from './Templates'
+import SimpleEditor from './Editors/Simple'
+
 import { Wrapper } from '../styles/footer'
 
 type TProps = {
@@ -16,7 +18,7 @@ const Footer: FC<TProps> = ({ settings, touched }) => {
       <Templates settings={settings} isTouched={touched.footerLayout} />
       <br />
       <br />
-      <h3>the Template Editor</h3>
+      <SimpleEditor />
     </Wrapper>
   )
 }
