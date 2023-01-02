@@ -1,5 +1,8 @@
 import { FC } from 'react'
 
+import type { TActive } from '@/spec'
+import { FOOTER_LAYOUT } from '@/constant'
+
 import {
   Wrapper,
   LeftWrapper,
@@ -10,10 +13,13 @@ import {
   RightWrapper,
   SocialIcon,
 } from '../../styles/footer/templates/simple'
+import { edit } from '../../logic'
 
-const Simple: FC = () => {
+type TProps = TActive
+
+const Simple: FC<TProps> = ({ $active }) => {
   return (
-    <Wrapper>
+    <Wrapper $active={$active} onClick={() => edit(FOOTER_LAYOUT.SIMPLE, 'footerLayout')}>
       <LeftWrapper>
         <BrandLogo />
         <BrandText>Groupher</BrandText>

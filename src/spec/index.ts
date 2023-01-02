@@ -107,6 +107,7 @@ export type {
   TPostLayout,
   TKanbanLayout,
   TChangelogLayout,
+  TFooterLayout,
   TGlobalLayout,
   TCommentsState,
   TArticleCat,

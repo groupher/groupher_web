@@ -164,6 +164,7 @@ export type TTopbarLayout = 'yes' | 'no'
 export type TPostLayout = 'upvote_first' | 'comment_first' | 'card' | 'minimal' | 'cover'
 export type TKanbanLayout = 'simple' | 'full'
 export type TChangelogLayout = 'preview' | 'outline'
+export type TFooterLayout = 'simple' | 'full'
 
 export type TGlobalLayout = {
   primaryColor: TColorName
@@ -173,6 +174,7 @@ export type TGlobalLayout = {
   help: THelpLayout
   banner: TBannerLayout
   changelog: TChangelogLayout
+  footer: TFooterLayout
   bannerNotify: TBannerNotifyLayout
   bannerNotifyBg: TColorName
   topbar: TTopbarLayout

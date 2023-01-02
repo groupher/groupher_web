@@ -27,6 +27,7 @@ export {
   CHANGELOG_LAYOUT,
   DASHBOARD_DESC_LAYOUT,
   HELP_LAYOUT,
+  FOOTER_LAYOUT,
 } from './layout'
 export { default as ANCHOR } from './anchor'
 export { default as METRIC } from './metric'

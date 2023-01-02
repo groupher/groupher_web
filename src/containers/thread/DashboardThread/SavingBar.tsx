@@ -7,14 +7,7 @@ import { SpaceGrow } from '@/widgets/Common'
 import YesOrNoButtons from '@/widgets/Buttons/YesOrNoButtons'
 
 import type { TSettingField } from './spec.d'
-import {
-  Wrapper,
-  HintWrapper,
-  InfoIcon,
-  HintText,
-  Hint,
-  ActionWrapper,
-} from './styles/saving_bar'
+import { Wrapper, HintWrapper, InfoIcon, HintText, Hint, ActionWrapper } from './styles/saving_bar'
 
 import { rollbackEdit, onSave } from './logic'
 
@@ -28,6 +21,7 @@ type TProps = {
   loading?: boolean
   isTouched?: boolean
   onCancel?: () => void
+  onConfirm?: () => void
 } & TSpace
 
 const SavingBar: FC<TProps> = ({
@@ -38,6 +32,7 @@ const SavingBar: FC<TProps> = ({
   isTouched = false,
   loading = false,
   onCancel = log,
+  onConfirm = log,
   ...restProps
 }) => {
   if (children !== null) {
@@ -56,7 +51,10 @@ const SavingBar: FC<TProps> = ({
                 onCancel?.()
                 rollbackEdit(field)
               }}
-              onConfirm={() => onSave(field)}
+              onConfirm={() => {
+                onSave(field)
+                setTimeout(() => onConfirm?.(), 1000)
+              }}
             />
           </ActionWrapper>
         </Wrapper>
@@ -83,7 +81,10 @@ const SavingBar: FC<TProps> = ({
           confirmText="确定"
           loading={loading}
           space={4}
-          onConfirm={() => onSave(field)}
+          onConfirm={() => {
+            onSave(field)
+            setTimeout(() => onConfirm?.(), 1000)
+          }}
           onCancel={() => {
             onCancel?.()
             rollbackEdit(field)
