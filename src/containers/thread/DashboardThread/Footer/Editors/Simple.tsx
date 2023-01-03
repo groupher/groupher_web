@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import BrandEditor from './BrandEditor'
+import BrandEditor from './BrandInfo'
 import ItemEditor from './ItemEditor'
 
 import {

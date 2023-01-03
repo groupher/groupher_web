@@ -104,7 +104,7 @@ const settingsModalFields = {
   fileTreeDirection: T.opt(T.enum(['left', 'right']), 'left'),
 
   // footer
-  footerLayout: T.opt(T.enum(values(FOOTER_LAYOUT)), FOOTER_LAYOUT.SIMPLE),
+  footerLayout: T.opt(T.enum(values(FOOTER_LAYOUT)), FOOTER_LAYOUT.FULL),
 
   // widgets
   widgetsPrimaryColor: T.opt(T.enum(keys(COLORS)), 'BLACK'),

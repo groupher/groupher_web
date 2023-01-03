@@ -1,46 +1,76 @@
 import styled from 'styled-components'
 
-import type { TTestable, TSizeSM } from '@/spec'
+import type { TActive, TTestable, TSpace } from '@/spec'
+import { SOCIAL_LIST } from '@/constant'
+
 import css, { theme } from '@/utils/css'
 
-import Img from '@/Img'
+import GlobalSVG from '@/icons/social/Global'
+import WeChatSVG from '@/icons/social/WeChat'
+import TwitterSVG from '@/icons/social/Twitter'
+import WeiboSVG from '@/icons/social/Weibo'
+import ZhihuSVG from '@/icons/social/Zhihu'
+import GithubSVG from '@/icons/social/Github'
+import BiliBiliSVG from '@/icons/social/BiliBili'
+import BossSVG from '@/icons/social/Boss'
+import LagouSVG from '@/icons/social/Lagou'
 
+type TWrapper = TTestable & TSpace
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
-}))<TTestable>`
-  display: flex;
+}))<TWrapper>`
+  ${css.flex('align-center')};
   flex-wrap: wrap;
+  gap: 10px;
+
+  margin-top: ${({ top }) => `${top}px` || 0};
+  margin-bottom: ${({ bottom }) => `${bottom}px` || 0};
+
+  margin-left: ${({ left }) => `${left}px` || 0};
+  margin-right: ${({ right }) => `${right}px` || 0};
 `
 export const SocialWrapper = styled.div`
   ${css.flex('align-center')};
   color: ${theme('banner.desc')};
   font-size: 12px;
-  /* border: 1px solid; */
-  /* border-color: ${theme('banner.desc')}; */
-  border-radius: 5px;
-  margin-right: 8px;
-  margin-bottom: 0;
-  width: auto;
-  text-decoration: underline;
 
   &:hover {
     color: ${theme('banner.active')};
     cursor: pointer;
   }
 `
-export const Icon = styled(Img)<{ size: TSizeSM }>`
-  fill: ${theme('banner.desc')};
-  border-radius: 50%;
-  width: ${({ size }) => (size === 'small' ? '13px;' : '17px')};
-  height: ${({ size }) => (size === 'small' ? '13px;' : '17px')};
-  padding: 0;
-  margin-right: ${({ size }) => (size === 'small' ? '2px' : '10px')};
-  display: block;
 
-  ${SocialWrapper}:hover & {
-    fill: ${theme('banner.active')};
-  }
-`
+const getIcon = (SVG, size = 15) => {
+  return styled(SVG)<TActive>`
+    ${css.size(size)};
+    fill: ${theme('article.digest')};
+    opacity: ${({ $active }) => ($active ? 1 : 0.7)};
+
+    &:hover {
+      cursor: pointer;
+      filter: saturate(1);
+      opacity: 1;
+    }
+
+    ${SocialWrapper}:hover & {
+      opacity: 1;
+    }
+    transition: all 0.2s;
+  `
+}
+
+export const Icon = {
+  [SOCIAL_LIST.HOMEPAGE]: getIcon(GlobalSVG),
+  [SOCIAL_LIST.TWITTER]: getIcon(TwitterSVG),
+  [SOCIAL_LIST.ZHIHU]: getIcon(ZhihuSVG),
+  [SOCIAL_LIST.GITHUB]: getIcon(GithubSVG),
+  [SOCIAL_LIST.BILIBILI]: getIcon(BiliBiliSVG),
+  [SOCIAL_LIST.WECHAT]: getIcon(WeChatSVG),
+  [SOCIAL_LIST.BOSS]: getIcon(BossSVG, 14),
+  [SOCIAL_LIST.LAGOU]: getIcon(LagouSVG, 14),
+  [SOCIAL_LIST.WEIBO]: getIcon(WeiboSVG, 17),
+}
+
 export const Title = styled.div<{ size: string }>`
   font-size: ${({ size }) => (size === 'small' ? '12px;' : '14px')};
 `

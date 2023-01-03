@@ -9,26 +9,29 @@ export { Icon } from './index'
 // import { theme } from '@/utils/themes'
 
 export const Wrapper = styled.div`
-  width: 300px;
   ${css.flex('align-center')};
   position: relative;
 `
 export const Inputer = styled(Input)`
-  width: 265px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+  background: transparent;
+
+  ::placeholder {
+    font-size: 12px;
+  }
 `
 export const DeleteWrapper = styled.div`
-  ${css.circle(20)};
+  ${css.circle(18)};
   ${css.flex('align-both')};
   position: absolute;
-  top: 7px;
+  top: 8px;
   right: -8px;
   background: white;
   z-index: 2;
 `
 export const DeleteIcon = styled(DeleteSVG)`
-  ${css.size(20)};
+  ${css.size(18)};
   fill: ${theme('article.digest')};
   opacity: 0.5;
 
@@ -41,7 +44,7 @@ export const DeleteIcon = styled(DeleteSVG)`
   &:before {
     content: '';
     position: absolute;
-    ${css.size(20)};
+    ${css.size(18)};
   }
 
   transition: all 0.2s;
@@ -50,7 +53,6 @@ export const DeleteIcon = styled(DeleteSVG)`
 export const IconWrapper = styled.div`
   border: 1px solid;
   border-color: ${theme('editor.border')};
-  background: ${theme('hoverBg')};
   ${css.flex('align-both')};
   width: 38px;
   height: 34px;
@@ -72,5 +74,4 @@ export const PlatformWrapper = styled.div`
   background: ${theme('hoverBg')};
   padding: 12px 10px;
   border-radius: 5px;
-  width: 300px;
 `

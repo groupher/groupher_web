@@ -78,6 +78,7 @@ export type {
   TPublishMode,
   TDashboardLayout,
   TSocial,
+  TSocialType,
 } from './utils'
 
 export type { TGQLError } from './graphql'

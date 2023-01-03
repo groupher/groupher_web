@@ -15,7 +15,7 @@ export const ReadonlyWrapper = styled.div<{ editing: boolean }>`
   ${({ editing }) => editing && 'padding-top: 20px; border-top: 1px solid transparent;'};
 
   border-image: linear-gradient(
-    0.32turn,
+    0.28turn,
     transparent,
     ${theme('divider')},
     ${theme('divider')},
@@ -72,7 +72,7 @@ export const EditWrapper = styled.div`
 
   border-bottom: 1px solid transparent;
   border-image: linear-gradient(
-    0.3turn,
+    0.26turn,
     transparent,
     ${theme('divider')},
     ${theme('divider')},

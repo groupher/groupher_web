@@ -56,9 +56,9 @@ const ItemEditor: FC<TProps> = ({ editing = false, alignRight = false }) => {
             <ActionWrapper editing={editing}>
               <Tooltip
                 content={<BlockMenu />}
-                placement="bottom-end"
+                placement="bottom-start"
                 trigger="mouseenter focus"
-                offset={[4, 0]}
+                offset={[0, 0]}
                 hideOnClick
                 noPadding
               >

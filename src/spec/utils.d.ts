@@ -57,12 +57,7 @@ export type TPlatform = {
 export type TDirection = 'down' | 'up'
 export type TScrollDirection = 'up' | 'down'
 
-export type TTooltipAnimation =
-  | 'shift-away'
-  | 'shift-toward'
-  | 'fade'
-  | 'scale'
-  | 'perspective'
+export type TTooltipAnimation = 'shift-away' | 'shift-toward' | 'fade' | 'scale' | 'perspective'
 
 export type TTooltipPlacement =
   | 'top'
@@ -97,11 +92,7 @@ export type TTabItem = {
 
 export type TResState = 'LOADING' | 'DONE' | 'EMPTY'
 
-export type TPaymentUsage =
-  | 'SENIOR'
-  | 'GIRLS_CODE_TOO_PLAN'
-  | 'DONATE'
-  | 'SPONSOR'
+export type TPaymentUsage = 'SENIOR' | 'GIRLS_CODE_TOO_PLAN' | 'DONATE' | 'SPONSOR'
 export type TPaymentMethod = 'ALIPAY' | 'WECHAT'
 
 export type TFlexRule =
@@ -125,9 +116,7 @@ export type TGQError = {
   code?: number
 }
 
-export type TInput =
-  | (Event & { target: HTMLInputElement })
-  | ChangeEvent<HTMLInputElement>
+export type TInput = (Event & { target: HTMLInputElement }) | ChangeEvent<HTMLInputElement>
 export type TEditValue = TInput | string | boolean | string[]
 
 export type TEditMode = 'publish' | 'update'
@@ -148,12 +137,7 @@ export type TSelectOption = {
   desc?: string
 }
 
-export type TTechStackCategory =
-  | 'lang'
-  | 'framework'
-  | 'database'
-  | 'devOps'
-  | 'design'
+export type TTechStackCategory = 'lang' | 'framework' | 'database' | 'devOps' | 'design'
 
 export type TCommunitySetterStyle = 'normal' | TTechStackCategory
 
@@ -206,6 +190,20 @@ export type TToastOption = {
 export type TPublishMode = 'default' | 'changelog' | 'help'
 
 export type TDashboardLayout = 'post_list' | 'banner' | 'changelog_list'
+
+export type TSocialType =
+  | 'homepage'
+  | 'wechat'
+  | 'twitter'
+  | 'weibo'
+  // | 'qq'
+  // | 'douban'
+  // | 'steam'
+  | 'zhihu'
+  | 'github'
+  | 'bilibili'
+  | 'boss'
+  | 'lagou'
 
 export type TSocial = {
   title: string
