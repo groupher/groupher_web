@@ -44,16 +44,15 @@ const getIcon = (SVG, size = 15) => {
   return styled(SVG)<TActive>`
     ${css.size(size)};
     fill: ${theme('article.digest')};
-    opacity: ${({ $active }) => ($active ? 1 : 0.7)};
+    filter: ${({ $active }) => ($active ? 'saturate(1);' : 'saturate(0.8);')};
 
     &:hover {
       cursor: pointer;
       filter: saturate(1);
-      opacity: 1;
     }
 
     ${SocialWrapper}:hover & {
-      opacity: 1;
+      filter: saturate(1);
     }
     transition: all 0.2s;
   `
