@@ -22,7 +22,7 @@ type TProps = {
 }
 
 const InputBar: FC<TProps> = ({ social, onDelete }) => {
-  const SocalIcon = Icon[social.type.toLowerCase()]
+  const SocalIcon = Icon[social.type]
 
   return (
     <Wrapper>
