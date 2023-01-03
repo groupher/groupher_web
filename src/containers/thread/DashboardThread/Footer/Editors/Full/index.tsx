@@ -36,7 +36,7 @@ const Full: FC = () => {
         </TopLeft>
         {editMode && (
           <TopRight>
-            <BrandEditor />
+            <BrandEditor onHide={() => setEditMode(false)} />
           </TopRight>
         )}
       </TopWrapper>
