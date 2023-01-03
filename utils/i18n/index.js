@@ -39,6 +39,16 @@ const I18nDict = {
   REJECT_NO_FIX: '不修复',
   REJECT_REPRO: '无法重现',
   REJECT_STALE: '陈帖归档',
+
+  // osocial
+  HOMEPAGE: '官方主页',
+  GITHUB: 'Github',
+  TWITTER: '推特',
+  ZHIHU: '知乎',
+  BILIBILI: 'B站',
+  WEIBO: '微博',
+  BOSS: 'Boss 直聘',
+  LAGOU: '拉钩',
 }
 
 export const Trans = (key) => I18nDict[key] || key

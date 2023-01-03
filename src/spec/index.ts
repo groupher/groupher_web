@@ -78,6 +78,8 @@ export type {
   TPublishMode,
   TDashboardLayout,
   TSocial,
+  TSocialType,
+  TSocialItem,
 } from './utils'
 
 export type { TGQLError } from './graphql'
@@ -107,6 +109,7 @@ export type {
   TPostLayout,
   TKanbanLayout,
   TChangelogLayout,
+  TFooterLayout,
   TGlobalLayout,
   TCommentsState,
   TArticleCat,

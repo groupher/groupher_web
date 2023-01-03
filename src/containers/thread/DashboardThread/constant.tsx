@@ -12,6 +12,7 @@ export const SETTING_FIELD = {
   HELP_LAYOUT: 'helpLayout',
   BRAND_LAYOUT: 'brandLayout',
   BANNER_LAYOUT: 'bannerLayout',
+  FOOTER_LAYOUT: 'footerLayout',
   FILE_TREE_DIRECTION: 'fileTreeDirection',
   TOPBAR_LAYOUT: 'topbarLayout',
   TOPBAR_BG: 'topbarBg',
@@ -86,6 +87,10 @@ export const MENU = {
       {
         title: '帮助台',
         raw: DASHBOARD_ROUTE.HELP,
+      },
+      {
+        title: '页脚',
+        raw: DASHBOARD_ROUTE.FOOTER,
       },
       {
         title: '小黑屋',

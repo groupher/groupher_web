@@ -6,35 +6,30 @@
 
 import { FC, memo } from 'react'
 
-import type { TSocial } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import type { TSocialItem } from '@/spec'
 
-import {
-  Wrapper,
-  IconWrapper,
-  DeleteWrapper,
-  DeleteIcon,
-  Inputer,
-  Icon,
-} from './styles/input_bar'
+import { buildLog } from '@/utils/logger'
+import { Trans } from '@/utils/i18n'
+
+import { Wrapper, IconWrapper, DeleteWrapper, DeleteIcon, Inputer, Icon } from './styles/input_bar'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:SocialEditor:index')
 
 type TProps = {
-  social: TSocial
-  onDelete: (social: TSocial) => void
+  social: TSocialItem
+  onDelete: (social: TSocialItem) => void
 }
 
 const InputBar: FC<TProps> = ({ social, onDelete }) => {
-  const SocalIcon = Icon[social.raw]
+  const SocalIcon = Icon[social.type]
 
   return (
     <Wrapper>
       <IconWrapper>
         <SocalIcon $active />
       </IconWrapper>
-      <Inputer placeholder={social.title} />
+      <Inputer placeholder={Trans(social.type)} value={social.addr} />
       <DeleteWrapper onClick={() => onDelete(social)}>
         <DeleteIcon />
       </DeleteWrapper>

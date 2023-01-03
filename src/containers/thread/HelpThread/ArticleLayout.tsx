@@ -8,6 +8,7 @@ import FeedbackFooter from '@/widgets/FeedbackFooter'
 
 import FaqLayout from './FaqLayout'
 import ArticleHeadAction from './ArticleHeadAction'
+import ArticleCover from './ArticleCover'
 
 import {
   Wrapper,
@@ -106,6 +107,7 @@ const ArticleLayout: FC<TProps> = ({
                 </Navi>
               )}
               {!isFAQArticleLayout && <Title>关于帮助台的使用</Title>}
+              <ArticleCover />
             </Header>
 
             {isFAQArticleLayout ? (

@@ -1,24 +1,48 @@
 import { FC } from 'react'
 
-import { isEmpty } from 'ramda'
+import { ROUTE, SOCIAL_LIST } from '@/constant'
+import SocialList from '@/widgets/SocialList'
 
-import { SITE_URL, BEIAN_ADDR, BEIAN_TEXT } from '@/config'
-import { Wrapper, Note, Addr } from '../styles/desktop_view/simple_layout'
+import {
+  Wrapper,
+  BrandInfo,
+  BrandText,
+  LinksInfo,
+  LinkItem,
+  SocialInfo,
+} from '../styles/desktop_view/simple_layout'
 
 const SimpleLayout: FC = () => {
   return (
-    <Wrapper testid="footer">
-      <Note>
-        由<Addr href={SITE_URL}>Groupher</Addr>
-        提供服务
-      </Note>
-      {!isEmpty(BEIAN_TEXT) && (
-        <Note>
-          <Addr href={BEIAN_ADDR} target="_blank" prefetch={false}>
-            {BEIAN_TEXT}
-          </Addr>
-        </Note>
-      )}
+    <Wrapper>
+      <BrandInfo>
+        <BrandText>Groupher</BrandText>
+      </BrandInfo>
+      <LinksInfo>
+        <LinkItem href={ROUTE.POST}>讨论</LinkItem>
+        <LinkItem href={ROUTE.KANBAN}>看板</LinkItem>
+        <LinkItem href={ROUTE.CHANGELOG}>更新日志</LinkItem>
+        <LinkItem href={ROUTE.HELP}>帮助台</LinkItem>
+        <LinkItem href={ROUTE.ABOUT}>关于</LinkItem>
+      </LinksInfo>
+      <SocialInfo>
+        <SocialList
+          selected={[
+            {
+              type: SOCIAL_LIST.HOMEPAGE,
+              addr: 'https://groupher.com',
+            },
+            {
+              type: SOCIAL_LIST.TWITTER,
+              addr: 'https://twitter.com',
+            },
+            {
+              type: SOCIAL_LIST.BOSS,
+              addr: 'https://zhipin.com',
+            },
+          ]}
+        />
+      </SocialInfo>
     </Wrapper>
   )
 }

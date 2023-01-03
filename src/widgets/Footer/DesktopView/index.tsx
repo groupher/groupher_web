@@ -5,17 +5,15 @@
  */
 
 import { FC } from 'react'
-import { includes } from 'ramda'
 
 import type { TMetric } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
-// import HomeLayout from './HomeLayout'
 import SimpleLayout from './SimpleLayout'
-// import HostingCommunityView from './HostingCommunityView'
+import PowerbyInfo from './PowerbyInfo'
 
-import { Wrapper } from '../styles'
+import { Wrapper, InnerWrapper } from '../styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:Footer')
@@ -28,7 +26,10 @@ type TProps = {
 const FooterContainer: FC<TProps> = ({ metric, testid = 'footer' }) => {
   return (
     <Wrapper testid={testid} metric={metric}>
-      <SimpleLayout />
+      <InnerWrapper metric={metric}>
+        <SimpleLayout />
+        <PowerbyInfo />
+      </InnerWrapper>
     </Wrapper>
   )
 }

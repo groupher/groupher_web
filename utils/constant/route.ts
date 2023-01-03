@@ -21,6 +21,7 @@ export const DASHBOARD_ROUTE = {
   KANBAN: 'kanban',
   CHANGELOG: 'changelog',
   HELP: 'help',
+  FOOTER: 'footer',
   BLACKHOUSE: 'blackhouse',
   // integrates
   THIRD_PART: 'third_part',

@@ -23,6 +23,7 @@ import {
   CHANGELOG_LAYOUT,
   POST_LAYOUT,
   KANBAN_LAYOUT,
+  FOOTER_LAYOUT,
   COLORS,
   THREAD,
   SIZE,
@@ -39,6 +40,7 @@ import { Tag } from '@/model'
 import type {
   TUiSettings,
   TTagSettings,
+  TFooterSettings,
   THelpSettings,
   TAliasSettings,
   TTouched,
@@ -101,6 +103,9 @@ const settingsModalFields = {
   alias: T.opt(T.array(Alias), BUILDIN_ALIAS),
   fileTreeDirection: T.opt(T.enum(['left', 'right']), 'left'),
 
+  // footer
+  footerLayout: T.opt(T.enum(values(FOOTER_LAYOUT)), FOOTER_LAYOUT.FULL),
+
   // widgets
   widgetsPrimaryColor: T.opt(T.enum(keys(COLORS)), 'BLACK'),
   widgetsThreads: T.opt(T.array(T.string), [THREAD.POST, THREAD.KANBAN, THREAD.CHANGELOG]),
@@ -129,6 +134,7 @@ const DashboardThread = T.model('DashboardThread', {
         postLayout,
         kanbanLayout,
         helpLayout,
+        footerLayout,
         bannerLayout,
         topbarLayout,
         topbarBg,
@@ -144,6 +150,7 @@ const DashboardThread = T.model('DashboardThread', {
         post: postLayout,
         kanban: kanbanLayout,
         help: helpLayout,
+        footer: footerLayout,
         changelog: changelogLayout,
         banner: bannerLayout,
         topbar: topbarLayout,
@@ -181,6 +188,7 @@ const DashboardThread = T.model('DashboardThread', {
       const topbarLayoutTouched = _isChanged('topbarLayout')
       const topbarBgTouched = _isChanged('topbarBg')
       const changelogLayoutTouched = _isChanged('changelogLayout')
+      const footerLayoutTouched = _isChanged('footerLayout')
 
       const glowFixedTouched = _isChanged('glowFixed')
       const glowTypeTouched = _isChanged('glowType')
@@ -206,6 +214,7 @@ const DashboardThread = T.model('DashboardThread', {
         bannerNotifyBg: bannerNotifyBgTouched,
         fileTreeDirection: fileTreeDirectionTouched,
         postLayout: postLayoutTouched,
+        footerLayout: footerLayoutTouched,
         kanbanLayout: kanbanLayoutTouched,
         helpLayout: helpLayoutTouched,
         changelogLayout: changelogLayoutTouched,
@@ -262,6 +271,16 @@ const DashboardThread = T.model('DashboardThread', {
         saving: slf.saving,
         categories: toJS(slf.tagCategories),
         activeTagCategory,
+      }
+    },
+
+    get footerSettings(): TFooterSettings {
+      const slf = self as TStore
+      const { footerLayout } = slf
+
+      return {
+        footerLayout: toJS(footerLayout),
+        saving: slf.saving,
       }
     },
 

@@ -5,6 +5,7 @@ import type {
   TColorName,
   TPostLayout,
   TChangelogLayout,
+  TFooterLayout,
   TBrandLayout,
   TTopbarLayout,
   TBannerLayout,
@@ -40,6 +41,10 @@ export type TTagSettings = {
   categories: string[]
   activeTagCategory: string
 }
+export type TFooterSettings = {
+  footerLayout: TFooterLayout
+  saving: boolean
+}
 export type TAlias = {
   raw: string
   name: string
@@ -69,6 +74,7 @@ export type TUiSettings = {
   postLayout: TPostLayout
   kanbanLayout: TKanbanLayout
   changelogLayout: TChangelogLayout
+  footerLayout: TFooterLayout
   hasWallpaperShadow: boolean
 }
 export type TWidgetsSettings = {
@@ -83,6 +89,7 @@ export type TTouched = {
   primaryColor: boolean
   brandLayout: boolean
   bannerLayout: boolean
+  footerLayout: boolean
   glowType: boolean
   glowFixed: boolean
   helpLayout: boolean
@@ -112,6 +119,7 @@ export type TSettingField =
   | 'kanbanLayout'
   | 'brandLayout'
   | 'bannerLayout'
+  | 'footerLayout'
   | 'glowType'
   | 'glowFixed'
   | 'helpLayout'

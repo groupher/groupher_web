@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable, TActive } from '@/spec'
+import { SOCIAL_LIST } from '@/constant'
 
 import css, { theme } from '@/utils/css'
 
@@ -8,13 +9,11 @@ import GlobalSVG from '@/icons/social/Global'
 import WeChatSVG from '@/icons/social/WeChat'
 import TwitterSVG from '@/icons/social/Twitter'
 import WeiboSVG from '@/icons/social/Weibo'
-import QQSVG from '@/icons/social/QQ'
-import TelegramSVG from '@/icons/social/Telegram'
-import DoubanSVG from '@/icons/social/Douban'
 import ZhihuSVG from '@/icons/social/Zhihu'
-import SteamSVG from '@/icons/social/Steam'
 import GithubSVG from '@/icons/social/Github'
 import BiliBiliSVG from '@/icons/social/BiliBili'
+import BossSVG from '@/icons/social/Boss'
+import LagouSVG from '@/icons/social/Lagou'
 
 // import { theme } from '@/utils/themes'
 
@@ -22,11 +21,19 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TTestable>`
   margin-bottom: 20px;
+  max-width: 300px;
 `
 export const Label = styled.div`
   color: ${theme('article.title')};
   font-size: 14px;
   margin-bottom: 12px;
+  margin-left: 4px;
+`
+export const Hint = styled.div`
+  font-size: 12px;
+  color: ${theme('article.digest')};
+  margin-top: 10px;
+  margin-left: 4px;
 `
 export const InputsWrapper = styled.div`
   ${css.flexColumn()};
@@ -42,26 +49,31 @@ export const IconWrapper = styled.div`
   border-bottom-left-radius: 5px;
   border-right: none;
 `
-export const Hint = styled.div`
-  font-size: 12px;
-  color: ${theme('article.digest')};
-  margin-top: 15px;
-`
 export const PlatformWrapper = styled.div`
   ${css.flex('align-center')};
   flex-wrap: wrap;
   gap: 12px 15px;
   margin-top: 10px;
-  background: ${theme('hoverBg')};
+  margin-bottom: 15px;
+  border: 1px solid;
+  border-color: ${theme('divider')};
+  /* background: ${theme('hoverBg')}; */
   padding: 12px 10px;
   border-radius: 5px;
-  width: 300px;
+  width: 100%;
+
+  &:hover {
+    border-color: ${theme('article.digest')};
+    box-shadow: ${css.cardShadow};
+  }
+
+  transition: all 0.2s;
 `
 
-const getIcon = (SVG, size = 16) => {
+const getIcon = (SVG, size = 15) => {
   return styled(SVG)<TActive>`
     ${css.size(size)};
-    fill: ${theme('article.info')};
+    fill: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
     filter: ${({ $active }) => ($active ? 'saturate(1)' : 'saturate(0)')};
     opacity: ${({ $active }) => ($active ? 1 : 0.7)};
 
@@ -75,15 +87,13 @@ const getIcon = (SVG, size = 16) => {
 }
 
 export const Icon = {
-  Homepage: getIcon(GlobalSVG),
-  Wechat: getIcon(WeChatSVG, 15),
-  Twitter: getIcon(TwitterSVG),
-  Weibo: getIcon(WeiboSVG, 18),
-  QQ: getIcon(QQSVG),
-  Telegram: getIcon(TelegramSVG, 15),
-  Douban: getIcon(DoubanSVG, 15),
-  Steam: getIcon(SteamSVG, 14),
-  Zhihu: getIcon(ZhihuSVG, 15),
-  Github: getIcon(GithubSVG, 15),
-  Bilibili: getIcon(BiliBiliSVG, 15),
+  [SOCIAL_LIST.HOMEPAGE]: getIcon(GlobalSVG),
+  [SOCIAL_LIST.TWITTER]: getIcon(TwitterSVG),
+  [SOCIAL_LIST.ZHIHU]: getIcon(ZhihuSVG),
+  [SOCIAL_LIST.GITHUB]: getIcon(GithubSVG),
+  [SOCIAL_LIST.BILIBILI]: getIcon(BiliBiliSVG),
+  [SOCIAL_LIST.WECHAT]: getIcon(WeChatSVG),
+  [SOCIAL_LIST.BOSS]: getIcon(BossSVG, 14),
+  [SOCIAL_LIST.LAGOU]: getIcon(LagouSVG, 14),
+  [SOCIAL_LIST.WEIBO]: getIcon(WeiboSVG, 17),
 }

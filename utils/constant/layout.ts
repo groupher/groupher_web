@@ -10,6 +10,7 @@ import type {
   TChangelogLayout,
   TSnakeUpperCase,
   THelpLayout,
+  TFooterLayout,
 } from '@/spec'
 
 export const UPVOTE_LAYOUT = {
@@ -75,3 +76,8 @@ export const HELP_LAYOUT = {
   HELPCENTER: 'helpcenter',
   ARTICLE: 'article',
 } as Record<TSnakeUpperCase<THelpLayout>, THelpLayout>
+
+export const FOOTER_LAYOUT = {
+  SIMPLE: 'simple',
+  FULL: 'full',
+} as Record<Uppercase<TFooterLayout>, TFooterLayout>
