@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Link from 'next/link'
 
 import type { TActive, TTestable, TSpace } from '@/spec'
 import { SOCIAL_LIST } from '@/constant'
@@ -29,7 +30,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   margin-left: ${({ left }) => `${left}px` || 0};
   margin-right: ${({ right }) => `${right}px` || 0};
 `
-export const SocialWrapper = styled.div`
+export const SocialWrapper = styled(Link)`
   ${css.flex('align-center')};
   color: ${theme('banner.desc')};
   font-size: 12px;

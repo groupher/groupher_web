@@ -79,6 +79,7 @@ export type {
   TDashboardLayout,
   TSocial,
   TSocialType,
+  TSocialItem,
 } from './utils'
 
 export type { TGQLError } from './graphql'

@@ -44,7 +44,20 @@ const BrandInfo: FC<TProps> = ({
       {footerLayout === FOOTER_LAYOUT.FULL && (
         <SocialList
           top={24}
-          selected={[SOCIAL_LIST.HOMEPAGE, SOCIAL_LIST.TWITTER, SOCIAL_LIST.BOSS]}
+          selected={[
+            {
+              type: SOCIAL_LIST.HOMEPAGE,
+              addr: 'https://groupher.com',
+            },
+            {
+              type: SOCIAL_LIST.TWITTER,
+              addr: 'https://twitter.com',
+            },
+            {
+              type: SOCIAL_LIST.BOSS,
+              addr: 'https://zhipin.com',
+            },
+          ]}
         />
       )}
     </Wrapper>

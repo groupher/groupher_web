@@ -7,7 +7,7 @@
 import { FC, memo, useState, useCallback } from 'react'
 import { keys, includes, reject } from 'ramda'
 
-import type { TSocialType } from '@/spec'
+import type { TSocialType, TSocialItem } from '@/spec'
 import { SOCIAL_LIST } from '@/constant'
 import { buildLog } from '@/utils/logger'
 
@@ -23,12 +23,17 @@ type TProps = {
 }
 
 const SocialEditor: FC<TProps> = ({ testid = 'social-editor' }) => {
-  const [selected, setSelected] = useState([SOCIAL_LIST.HOMEPAGE.toUpperCase()])
+  const [selected, setSelected] = useState<TSocialItem[]>([
+    { type: SOCIAL_LIST.HOMEPAGE, addr: 'https://groupher.com' },
+  ])
 
   const remove = useCallback(
-    (social) => {
+    (social: TSocialItem) => {
       // @ts-ignore
-      const after: TSocialType[] = reject((item: TSocialType) => item === social, selected)
+      const after: TSocialItem[] = reject(
+        (item: TSocialItem) => item.type === social.type,
+        selected,
+      )
       setSelected(after)
     },
     [selected],
@@ -40,16 +45,17 @@ const SocialEditor: FC<TProps> = ({ testid = 'social-editor' }) => {
       <Hint>点击选择社交平台:</Hint>
 
       <PlatformWrapper>
-        {keys(SOCIAL_LIST).map((social) => {
-          const SocialIcon = Icon[social.toLowerCase()]
+        {keys(SOCIAL_LIST).map((social: TSocialType) => {
+          const SocialIcon = Icon[social]
+          const selectedTypes = selected.map((s) => s.type)
 
           return (
             <SocialIcon
               key={social}
-              $active={includes(social, selected)}
+              $active={includes(social, selectedTypes)}
               onClick={() => {
-                if (!includes(social, selected)) {
-                  setSelected([...selected, social])
+                if (!includes(social, selectedTypes)) {
+                  setSelected([...selected, { type: social, addr: '' }])
                 }
               }}
             />
@@ -58,8 +64,8 @@ const SocialEditor: FC<TProps> = ({ testid = 'social-editor' }) => {
       </PlatformWrapper>
 
       <InputsWrapper>
-        {selected.map((item: TSocialType) => (
-          <InputBar key={item} social={item} onDelete={(social) => remove(social)} />
+        {selected.map((item: TSocialItem) => (
+          <InputBar key={item.type} social={item} onDelete={(social) => remove(social)} />
         ))}
       </InputsWrapper>
     </Wrapper>

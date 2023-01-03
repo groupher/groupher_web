@@ -192,18 +192,23 @@ export type TPublishMode = 'default' | 'changelog' | 'help'
 export type TDashboardLayout = 'post_list' | 'banner' | 'changelog_list'
 
 export type TSocialType =
-  | 'homepage'
-  | 'wechat'
-  | 'twitter'
-  | 'weibo'
+  | 'HOMEPAGE'
+  | 'WECHAT'
+  | 'TWITTER'
+  | 'WEIBO'
   // | 'qq'
   // | 'douban'
   // | 'steam'
-  | 'zhihu'
-  | 'github'
-  | 'bilibili'
-  | 'boss'
-  | 'lagou'
+  | 'ZHIHU'
+  | 'GITHUB'
+  | 'BILIBILI'
+  | 'BOSS'
+  | 'LAGOU'
+
+export type TSocialItem = {
+  type: TSocialType
+  addr: string
+}
 
 export type TSocial = {
   title: string

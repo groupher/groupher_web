@@ -8,7 +8,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.flex('justify-center')};
-  margin-top: 50px;
+  margin-top: 100px;
   ${({ metric }) => css.fitPageWidth(metric)};
   padding: 30px 0;
 `

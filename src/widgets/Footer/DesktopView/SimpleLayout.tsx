@@ -26,7 +26,22 @@ const SimpleLayout: FC = () => {
         <LinkItem href={ROUTE.ABOUT}>关于</LinkItem>
       </LinksInfo>
       <SocialInfo>
-        <SocialList selected={[SOCIAL_LIST.HOMEPAGE, SOCIAL_LIST.TWITTER, SOCIAL_LIST.BOSS]} />
+        <SocialList
+          selected={[
+            {
+              type: SOCIAL_LIST.HOMEPAGE,
+              addr: 'https://groupher.com',
+            },
+            {
+              type: SOCIAL_LIST.TWITTER,
+              addr: 'https://twitter.com',
+            },
+            {
+              type: SOCIAL_LIST.BOSS,
+              addr: 'https://zhipin.com',
+            },
+          ]}
+        />
       </SocialInfo>
     </Wrapper>
   )
