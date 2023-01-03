@@ -3,6 +3,7 @@ import type { TSocialType } from '@/spec'
 // dribbble
 const SOCIAL_LIST = {
   HOMEPAGE: 'HOMEPAGE',
+  EMAIL: 'EMAIL',
   GITHUB: 'GITHUB',
   WECHAT: 'WECHAT',
   TWITTER: 'TWITTER',

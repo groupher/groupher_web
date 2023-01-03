@@ -24,11 +24,10 @@ export const CenterWrapper = styled.div`
   height: auto;
   gap: 25px 0;
   padding: 10px 20px;
+  margin-right: 40px;
 `
 export const RightWrapper = styled.div`
-  ${css.flexColumn('align-end')};
-  gap: 25px 0;
-  width: 260px;
-  height: 200px;
-  padding: 10px 20px;
+  ${css.flexColumn('align-start')};
+  width: 200px;
+  margin-top: 8px;
 `

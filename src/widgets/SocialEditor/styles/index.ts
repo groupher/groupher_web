@@ -1,11 +1,12 @@
 import styled from 'styled-components'
 
-import type { TTestable, TActive } from '@/spec'
+import type { TTestable, TActive, TSpace } from '@/spec'
 import { SOCIAL_LIST } from '@/constant'
 
 import css, { theme } from '@/utils/css'
 
 import GlobalSVG from '@/icons/social/Global'
+import EmailSVG from '@/icons/social/Email'
 import WeChatSVG from '@/icons/social/WeChat'
 import TwitterSVG from '@/icons/social/Twitter'
 import WeiboSVG from '@/icons/social/Weibo'
@@ -17,11 +18,17 @@ import LagouSVG from '@/icons/social/Lagou'
 
 // import { theme } from '@/utils/themes'
 
+type TWrapper = TTestable & { width: string } & TSpace
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
-}))<TTestable>`
+}))<TWrapper>`
   margin-bottom: 20px;
-  max-width: 300px;
+  width: ${({ width }) => width};
+
+  margin-left: ${({ left }) => `${left || 0}px`};
+  margin-right: ${({ right }) => `${right || 0}px`};
+  margin-top: ${({ top }) => `${top}px` || 0};
+  margin-bottom: ${({ bottom }) => `${bottom}px` || 0};
 `
 export const Label = styled.div`
   color: ${theme('article.title')};
@@ -88,6 +95,7 @@ const getIcon = (SVG, size = 15) => {
 
 export const Icon = {
   [SOCIAL_LIST.HOMEPAGE]: getIcon(GlobalSVG),
+  [SOCIAL_LIST.EMAIL]: getIcon(EmailSVG),
   [SOCIAL_LIST.TWITTER]: getIcon(TwitterSVG),
   [SOCIAL_LIST.ZHIHU]: getIcon(ZhihuSVG),
   [SOCIAL_LIST.GITHUB]: getIcon(GithubSVG),

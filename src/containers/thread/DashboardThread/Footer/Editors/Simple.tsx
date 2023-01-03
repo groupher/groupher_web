@@ -1,5 +1,7 @@
 import { FC } from 'react'
 
+import SocialEditor from '@/widgets/SocialEditor'
+
 import BrandInfo from './BrandInfo'
 import ItemEditor from './ItemEditor'
 
@@ -27,10 +29,7 @@ const Simple: FC = () => {
       </CenterWrapper>
       <RightWrapper>
         <Title>社交媒体</Title>
-        <ItemEditor alignRight />
-        <ItemEditor alignRight editing />
-        <ItemEditor alignRight />
-        <ItemEditor alignRight />
+        <SocialEditor width="200px" withTitle={false} top={12} left={-5} />
       </RightWrapper>
     </Wrapper>
   )

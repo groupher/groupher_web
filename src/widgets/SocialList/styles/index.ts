@@ -7,6 +7,7 @@ import { SOCIAL_LIST } from '@/constant'
 import css, { theme } from '@/utils/css'
 
 import GlobalSVG from '@/icons/social/Global'
+import EmailSVG from '@/icons/social/Email'
 import WeChatSVG from '@/icons/social/WeChat'
 import TwitterSVG from '@/icons/social/Twitter'
 import WeiboSVG from '@/icons/social/Weibo'
@@ -61,6 +62,7 @@ const getIcon = (SVG, size = 15) => {
 
 export const Icon = {
   [SOCIAL_LIST.HOMEPAGE]: getIcon(GlobalSVG),
+  [SOCIAL_LIST.EMAIL]: getIcon(EmailSVG),
   [SOCIAL_LIST.TWITTER]: getIcon(TwitterSVG),
   [SOCIAL_LIST.ZHIHU]: getIcon(ZhihuSVG),
   [SOCIAL_LIST.GITHUB]: getIcon(GithubSVG),

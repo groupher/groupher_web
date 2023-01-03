@@ -7,7 +7,7 @@
 import { FC, memo, useState, useCallback } from 'react'
 import { keys, includes, reject } from 'ramda'
 
-import type { TSocialType, TSocialItem } from '@/spec'
+import type { TSocialType, TSocialItem, TSpace } from '@/spec'
 import { SOCIAL_LIST } from '@/constant'
 import { buildLog } from '@/utils/logger'
 
@@ -20,9 +20,16 @@ const log = buildLog('w:SocialEditor:index')
 
 type TProps = {
   testid?: string
-}
+  width?: string
+  withTitle?: boolean
+} & TSpace
 
-const SocialEditor: FC<TProps> = ({ testid = 'social-editor' }) => {
+const SocialEditor: FC<TProps> = ({
+  testid = 'social-editor',
+  width = '310px',
+  withTitle = true,
+  ...restProps
+}) => {
   const [selected, setSelected] = useState<TSocialItem[]>([
     { type: SOCIAL_LIST.HOMEPAGE, addr: 'https://groupher.com' },
   ])
@@ -40,10 +47,9 @@ const SocialEditor: FC<TProps> = ({ testid = 'social-editor' }) => {
   )
 
   return (
-    <Wrapper testid={testid}>
-      <Label>更新社交账号</Label>
+    <Wrapper testid={testid} width={width} {...restProps}>
+      {withTitle && <Label>更新社交账号</Label>}
       <Hint>点击选择社交平台:</Hint>
-
       <PlatformWrapper>
         {keys(SOCIAL_LIST).map((social: TSocialType) => {
           const SocialIcon = Icon[social]

@@ -193,6 +193,7 @@ export type TDashboardLayout = 'post_list' | 'banner' | 'changelog_list'
 
 export type TSocialType =
   | 'HOMEPAGE'
+  | 'EMAIL'
   | 'WECHAT'
   | 'TWITTER'
   | 'WEIBO'
