@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import BrandEditor from './BrandInfo'
+import BrandInfo from './BrandInfo'
 import ItemEditor from './ItemEditor'
 
 import {
@@ -15,7 +15,7 @@ const Simple: FC = () => {
   return (
     <Wrapper>
       <LeftWrapper>
-        <BrandEditor />
+        <BrandInfo />
       </LeftWrapper>
       <CenterWrapper>
         <Title>链接</Title>

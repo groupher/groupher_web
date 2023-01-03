@@ -1,5 +1,6 @@
 import { FC, useState } from 'react'
 
+import { FOOTER_LAYOUT } from '@/constant'
 import Button from '@/widgets/Buttons/Button'
 
 import BrandInfo from '../BrandInfo'
@@ -27,7 +28,11 @@ const Full: FC = () => {
     <Wrapper>
       <TopWrapper>
         <TopLeft>
-          <BrandInfo editable triggerEditor={() => setEditMode(true)} />
+          <BrandInfo
+            footerLayout={FOOTER_LAYOUT.FULL}
+            triggerEditor={() => setEditMode(true)}
+            editable
+          />
         </TopLeft>
         {editMode && (
           <TopRight>
