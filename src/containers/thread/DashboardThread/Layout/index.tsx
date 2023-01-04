@@ -30,7 +30,6 @@ const UI: FC<TProps> = ({ settings, touched }) => {
     bannerNotifyBg,
     postLayout,
     kanbanLayout,
-    fileTreeDirection,
     saving,
   } = settings
 
@@ -45,13 +44,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
       <Divider top={20} bottom={60} />
       <KanbanLayout layout={kanbanLayout} isTouched={touched.kanbanLayout} saving={saving} />
       <Divider top={20} bottom={60} />
-      <HelpLayout
-        layout={helpLayout}
-        isTouched={touched.helpLayout}
-        fileTreeDirection={fileTreeDirection}
-        isFileTreeDirectionTouched={touched.fileTreeDirection}
-        saving={saving}
-      />
+      <HelpLayout layout={helpLayout} isTouched={touched.helpLayout} saving={saving} />
       <Divider top={20} bottom={60} />
       <TopbarLayout
         layout={topbarLayout}

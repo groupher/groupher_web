@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import type { THelpLayout, TFileTreeDirection } from '@/spec'
+import type { THelpLayout } from '@/spec'
 
 import { HELP_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant'
 import { callDashboardDesc } from '@/utils/signal'
@@ -35,17 +35,9 @@ type TProps = {
   layout: THelpLayout
   isTouched: boolean
   saving: boolean
-  fileTreeDirection: TFileTreeDirection
-  isFileTreeDirectionTouched: boolean
 }
 
-const HelpLayout: FC<TProps> = ({
-  layout,
-  isTouched,
-  saving,
-  isFileTreeDirectionTouched,
-  fileTreeDirection,
-}) => {
+const HelpLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
   return (
     <Wrapper>
       <SectionLabel
@@ -243,33 +235,6 @@ const HelpLayout: FC<TProps> = ({
         top={20}
         bottom={30}
       />
-
-      <Br bottom={10} />
-      <SavingBar
-        isTouched={isFileTreeDirectionTouched}
-        field={SETTING_FIELD.FILE_TREE_DIRECTION}
-        loading={saving}
-      >
-        <FileTreeSettings>
-          <div>文件树位置:</div>
-          <Space right={20} />
-          <Radio
-            size="small"
-            items={[
-              {
-                value: '左侧',
-                key: 'left',
-              },
-              {
-                value: '右侧',
-                key: 'right',
-              },
-            ]}
-            activeKey={fileTreeDirection}
-            onChange={(item) => edit(item.key, 'fileTreeDirection')}
-          />
-        </FileTreeSettings>
-      </SavingBar>
     </Wrapper>
   )
 }

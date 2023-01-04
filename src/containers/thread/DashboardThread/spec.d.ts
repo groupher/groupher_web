@@ -14,7 +14,6 @@ import type {
   TThread,
   TSizeSML,
   THelpLayout,
-  TFileTreeDirection,
   TDashboardPath,
   TKanbanLayout,
 } from '@/spec'
@@ -70,7 +69,6 @@ export type TUiSettings = {
   helpLayout: THelpLayout
   bannerNotifyLayout: TBannerNotifyLayout
   bannerNotifyBg: TColorName
-  fileTreeDirection: TFileTreeDirection
   postLayout: TPostLayout
   kanbanLayout: TKanbanLayout
   changelogLayout: TChangelogLayout
@@ -97,7 +95,6 @@ export type TTouched = {
   topbarBg: boolean
   bannerNotifyLayout: boolean
   bannerNotifyBg: boolean
-  fileTreeDirection: boolean
   postLayout: boolean
   kanbanLayout: boolean
   changelogLayout: boolean
@@ -127,7 +124,6 @@ export type TSettingField =
   | 'topbarBg'
   | 'bannerNotifyLayout'
   | 'bannerNotifyBg'
-  | 'fileTreeDirection'
   | 'changelogLayout'
   | 'tag'
   | 'alias'

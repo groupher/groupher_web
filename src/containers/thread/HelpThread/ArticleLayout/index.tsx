@@ -1,7 +1,5 @@
 import { FC, memo, useState } from 'react'
 
-import type { TFileTreeDirection } from '@/spec'
-
 import FileTree from '@/widgets/FileTree'
 import { Space, SpaceGrow } from '@/widgets/Common'
 import FeedbackFooter from '@/widgets/FeedbackFooter'
@@ -30,14 +28,9 @@ import { back2Layout, gotoFAQDetailLayout, gotoDetailLayout } from '../logic'
 type TProps = {
   testid?: string
   isFAQArticleLayout: boolean
-  fileTreeDirection: TFileTreeDirection
 }
 
-const ArticleLayout: FC<TProps> = ({
-  testid = 'ArtileLayout',
-  isFAQArticleLayout,
-  fileTreeDirection,
-}) => {
+const ArticleLayout: FC<TProps> = ({ testid = 'ArtileLayout', isFAQArticleLayout }) => {
   const [filetreeOpen, setFileTreeOpen] = useState(true)
 
   return (

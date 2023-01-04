@@ -35,15 +35,10 @@ const HelpThreadContainer: FC<TProps> = ({
   desc = 'desc',
 }) => {
   useInit(store)
-  const { isArticleLayout, layout, isFAQArticleLayout, fileTreeDirection } = store
+  const { isArticleLayout, layout, isFAQArticleLayout } = store
 
   if (isArticleLayout) {
-    return (
-      <ArticleLayout
-        isFAQArticleLayout={isFAQArticleLayout}
-        fileTreeDirection={fileTreeDirection}
-      />
-    )
+    return <ArticleLayout isFAQArticleLayout={isFAQArticleLayout} />
   }
 
   return (

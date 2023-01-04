@@ -13,7 +13,6 @@ export const SETTING_FIELD = {
   BRAND_LAYOUT: 'brandLayout',
   BANNER_LAYOUT: 'bannerLayout',
   FOOTER_LAYOUT: 'footerLayout',
-  FILE_TREE_DIRECTION: 'fileTreeDirection',
   TOPBAR_LAYOUT: 'topbarLayout',
   TOPBAR_BG: 'topbarBg',
   BANNER_NOTIFY_LAYOUT: 'bannerNotifyLayout',
