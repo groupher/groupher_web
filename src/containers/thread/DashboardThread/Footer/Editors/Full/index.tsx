@@ -6,7 +6,10 @@ import Button from '@/widgets/Buttons/Button'
 import BrandInfo from '../BrandInfo'
 import ItemEditor from '../ItemEditor'
 
-import BrandEditor from './BrandEditor'
+import MainEditor from './MainEditor'
+
+import type { TFooterEditType } from '../../../spec'
+import { FOOTER_EDIT_TYPE } from '../../../constant'
 
 import {
   Wrapper,
@@ -23,6 +26,7 @@ import {
 
 const Full: FC = () => {
   const [editMode, setEditMode] = useState(false)
+  const [editType, setEditType] = useState<TFooterEditType>(FOOTER_EDIT_TYPE.LOGO)
 
   return (
     <Wrapper>
@@ -30,13 +34,16 @@ const Full: FC = () => {
         <TopLeft>
           <BrandInfo
             footerLayout={FOOTER_LAYOUT.FULL}
-            triggerEditor={() => setEditMode(true)}
+            onEdit={(type) => {
+              setEditMode(true)
+              setEditType(type)
+            }}
             editable
           />
         </TopLeft>
         {editMode && (
           <TopRight>
-            <BrandEditor onHide={() => setEditMode(false)} />
+            <MainEditor type={editType} onHide={() => setEditMode(false)} />
           </TopRight>
         )}
       </TopWrapper>

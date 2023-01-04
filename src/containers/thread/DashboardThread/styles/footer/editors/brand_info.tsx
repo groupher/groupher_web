@@ -1,13 +1,16 @@
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
+
+import { Row } from '@/widgets/Common'
 import EditSVG from '@/icons/EditPen'
 
 export const Wrapper = styled.div`
   ${css.flexColumn('align-start')};
 `
-export const Logo = styled.div`
+export const LogoWrapper = styled.div`
   ${css.size(30)};
+  ${css.flex('align-both')};
   border-radius: 4px;
   background: ${theme('divider')};
 `
@@ -28,20 +31,51 @@ export const Desc = styled.div`
   margin-top: 5px;
 `
 
-export const EditIcon = styled(EditSVG)<{ onClick: () => void }>`
+export const SocialWrapper = styled(Row)`
+  margin-top: 24px;
+`
+
+const EditIconBase = styled(EditSVG)<{ onClick?: () => void }>`
   ${css.size(12)};
   fill: ${theme('article.digest')};
-  margin-left: 10px;
-  opacity: 0;
+  opacity: 1;
 
   &:hover {
     fill: ${theme('article.title')};
     cursor: pointer;
   }
 
+  transition: all 0.2s; ;
+`
+
+const TitleEditIcon = styled(EditIconBase)`
+  opacity: 0;
+  margin-left: 10px;
+
   ${BaseInfo}:hover & {
     opacity: 1;
   }
-
-  transition: all 0.2s; ;
 `
+
+const LogoEditIcon = styled(EditIconBase)`
+  opacity: 0;
+
+  ${LogoWrapper}:hover & {
+    opacity: 1;
+  }
+`
+
+const SocialEditIcon = styled(EditIconBase)`
+  opacity: 0;
+  margin-left: 10px;
+
+  ${SocialWrapper}:hover & {
+    opacity: 1;
+  }
+`
+
+export const EditIcon = {
+  Logo: LogoEditIcon,
+  Title: TitleEditIcon,
+  Social: SocialEditIcon,
+}

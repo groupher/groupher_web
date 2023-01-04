@@ -1,7 +1,7 @@
 import type { TSnakeUpperCase } from '@/spec'
 import { DASHBOARD_ROUTE } from '@/constant'
 
-import type { TSettingField, TWidgetType } from './spec'
+import type { TSettingField, TWidgetType, TFooterEditType } from './spec'
 
 import { Icon } from './styles/side_menu'
 
@@ -169,3 +169,9 @@ export const WIDGET_TYPES = [
     raw: WIDGET_TYPE.LINK,
   },
 ]
+
+export const FOOTER_EDIT_TYPE = {
+  LOGO: 'logo',
+  TITLE: 'title',
+  SOCIAL: 'social',
+} as Record<Uppercase<TFooterEditType>, TFooterEditType>
