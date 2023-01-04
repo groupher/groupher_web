@@ -3,13 +3,14 @@ import { FC, memo } from 'react'
 import Link from 'next/link'
 
 import { ROUTE } from '@/constant'
-import { callSubscriber, callAuth } from '@/utils/signal'
+// import { callSubscriber, callAuth } from '@/utils/signal'
+import { callAuth } from '@/utils/signal'
 
 import {
   Wrapper,
   DashboardIcon,
   NotifyIcon,
-  SubscribeButton,
+  // SubscribeButton,
   AccountIcon,
 } from '../styles/simple_layout/account_unit'
 // import { mockUsers } from '@/utils/mock'
@@ -18,9 +19,9 @@ import {
 const AccountUnit: FC = () => {
   return (
     <Wrapper>
-      <SubscribeButton type="primary" ghost size="small" onClick={callSubscriber}>
+      {/* <SubscribeButton type="primary" ghost size="small" onClick={callSubscriber}>
         订阅
-      </SubscribeButton>
+      </SubscribeButton> */}
 
       <Link href={`/home/${ROUTE.DASHBOARD.DASHBOARD}`} prefetch={false}>
         <DashboardIcon />

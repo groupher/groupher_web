@@ -153,3 +153,5 @@ type THelpCategory = {
 export type THelpSettings = {
   categories: THelpCategory[]
 }
+
+export type TFooterEditType = 'logo' | 'title' | 'social'
