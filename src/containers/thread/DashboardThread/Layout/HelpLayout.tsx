@@ -8,7 +8,6 @@ import { callDashboardDesc } from '@/utils/signal'
 import { Br, Space, Inline } from '@/widgets/Common'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import CheckLabel from '@/widgets/CheckLabel'
-import Radio from '@/widgets/Switcher/Radio'
 
 import { SETTING_FIELD } from '../constant'
 import SectionLabel from '../SectionLabel'
@@ -27,7 +26,6 @@ import {
   ListsWrapper,
   FAQWrapper,
   FAQFullWrapper,
-  FileTreeSettings,
 } from '../styles/ui/help_layout'
 import { edit } from '../logic'
 
