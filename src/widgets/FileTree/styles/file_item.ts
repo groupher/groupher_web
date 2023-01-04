@@ -11,6 +11,8 @@ type TTag = TActive & { color?: string }
 
 export const Wrapper = styled.div<TTag>`
   position: relative;
+  /* border: 1px solid tomato; */
+  /* margin-left: 20px; */
   ${css.flexColumn()};
   padding: 4px;
   max-width: 180px;

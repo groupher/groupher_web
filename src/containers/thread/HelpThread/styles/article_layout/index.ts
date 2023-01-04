@@ -85,6 +85,9 @@ export const Sidebar = styled.div<TSidebar>`
   border-image-slice: 1;
 `
 
+export const TreeWrapper = styled.div`
+  margin-left: -18px;
+`
 export const ToggleBtn = styled.div<{ open: boolean }>`
   position: absolute;
   top: 12%;

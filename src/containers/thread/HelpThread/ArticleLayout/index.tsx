@@ -4,6 +4,7 @@ import FileTree from '@/widgets/FileTree'
 import { Space, SpaceGrow } from '@/widgets/Common'
 import FeedbackFooter from '@/widgets/FeedbackFooter'
 import Sticky from '@/widgets/Sticky'
+import CustomScroller from '@/widgets/CustomScroller'
 
 import FaqLayout from '../FaqLayout'
 import HeadAction from './HeadAction'
@@ -21,6 +22,7 @@ import {
   Title,
   Content,
   Sidebar,
+  TreeWrapper,
   FAQItem,
 } from '../styles/article_layout'
 import { back2Layout, gotoFAQDetailLayout, gotoDetailLayout } from '../logic'
@@ -40,7 +42,16 @@ const ArticleLayout: FC<TProps> = ({ testid = 'ArtileLayout', isFAQArticleLayout
       <Sidebar isLeftLayout open={filetreeOpen}>
         <Sticky offsetTop={30}>
           <FAQItem onClick={() => gotoFAQDetailLayout()}>常见问题</FAQItem>
-          <FileTree onSelect={() => gotoDetailLayout()} />
+          <TreeWrapper>
+            <CustomScroller
+              direction="vertical"
+              height="calc(100vh - 110px)"
+              barSize="small"
+              showShadow={false}
+            >
+              <FileTree onSelect={() => gotoDetailLayout()} left={18} />
+            </CustomScroller>
+          </TreeWrapper>
         </Sticky>
       </Sidebar>
       <Space right={80} />
