@@ -4,7 +4,7 @@
 
 // import {} from 'ramda'
 
-import type { TCommunity, THelpLayout, TRootStore, TFileTreeDirection } from '@/spec'
+import type { TCommunity, THelpLayout, TRootStore } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
@@ -20,11 +20,6 @@ const HelpThread = T.model('HelpThread', {
       const root = getParent(self) as TRootStore
 
       return toJS(root.viewing.community)
-    },
-    get fileTreeDirection(): TFileTreeDirection {
-      const root = getParent(self) as TRootStore
-
-      return root.dashboardThread.uiSettings.fileTreeDirection
     },
     get layout(): THelpLayout {
       const root = getParent(self) as TRootStore

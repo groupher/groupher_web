@@ -7,6 +7,7 @@
 import { FC, memo } from 'react'
 import { reverse, keys } from 'ramda'
 
+import type { TSpace } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { groupByKey } from '@/utils/helper'
 import { mockTags } from '@/utils/mock'
@@ -21,9 +22,9 @@ const log = buildLog('c:FileTree:index')
 type TProps = {
   testid?: string
   onSelect?: () => void
-}
+} & TSpace
 
-const FileTree: FC<TProps> = ({ testid = 'file-tree', onSelect }) => {
+const FileTree: FC<TProps> = ({ testid = 'file-tree', onSelect, ...restProps }) => {
   const tagsData = mockTags(15)
   // console.log('## tagsData: ', tagsData)
 
@@ -32,7 +33,7 @@ const FileTree: FC<TProps> = ({ testid = 'file-tree', onSelect }) => {
   const groupsKeys = reverse(keys(groupedTags)) as string[]
 
   return (
-    <Wrapper>
+    <Wrapper {...restProps}>
       {groupsKeys.map((groupKey) => (
         <Folder
           key={groupKey}

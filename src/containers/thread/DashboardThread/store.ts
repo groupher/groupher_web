@@ -4,15 +4,7 @@
 
 import { keys, values, pick, findIndex, clone, isNil, equals, pluck, uniq, filter } from 'ramda'
 
-import type {
-  TCommunity,
-  TRootStore,
-  TTag,
-  TGlobalLayout,
-  TThread,
-  TSizeSML,
-  TFileTreeDirection,
-} from '@/spec'
+import type { TCommunity, TRootStore, TTag, TGlobalLayout, TThread, TSizeSML } from '@/spec'
 import { mockTags } from '@/utils/mock'
 
 import {
@@ -101,7 +93,6 @@ const settingsModalFields = {
   activeTagCategory: T.maybeNull(T.string),
   //
   alias: T.opt(T.array(Alias), BUILDIN_ALIAS),
-  fileTreeDirection: T.opt(T.enum(['left', 'right']), 'left'),
 
   // footer
   footerLayout: T.opt(T.enum(values(FOOTER_LAYOUT)), FOOTER_LAYOUT.FULL),
@@ -140,7 +131,6 @@ const DashboardThread = T.model('DashboardThread', {
         topbarBg,
         bannerNotifyLayout,
         bannerNotifyBg,
-        fileTreeDirection,
         brandLayout,
       } = initSettings
 
@@ -157,7 +147,6 @@ const DashboardThread = T.model('DashboardThread', {
         topbarBg,
         bannerNotify: bannerNotifyLayout,
         bannerNotifyBg,
-        fileTreeDirection: fileTreeDirection as TFileTreeDirection,
       }
     },
     get curCommunity(): TCommunity {
@@ -179,7 +168,6 @@ const DashboardThread = T.model('DashboardThread', {
       const brandLayoutTouched = _isChanged('brandLayout')
 
       const bannerLayoutTouched = _isChanged('bannerLayout')
-      const fileTreeDirectionTouched = _isChanged('fileTreeDirection')
       const postLayoutTouched = _isChanged('postLayout')
       const kanbanLayoutTouched = _isChanged('kanbanLayout')
       const helpLayoutTouched = _isChanged('helpLayout')
@@ -212,7 +200,6 @@ const DashboardThread = T.model('DashboardThread', {
         topbarBg: topbarBgTouched,
         bannerNotifyLayout: bannerNotifyLayoutTouched,
         bannerNotifyBg: bannerNotifyBgTouched,
-        fileTreeDirection: fileTreeDirectionTouched,
         postLayout: postLayoutTouched,
         footerLayout: footerLayoutTouched,
         kanbanLayout: kanbanLayoutTouched,
@@ -237,7 +224,6 @@ const DashboardThread = T.model('DashboardThread', {
           bannerNotifyBgTouched ||
           topbarLayoutTouched ||
           topbarBgTouched ||
-          fileTreeDirectionTouched ||
           postLayoutTouched ||
           kanbanLayoutTouched ||
           changelogLayoutTouched ||
@@ -320,7 +306,6 @@ const DashboardThread = T.model('DashboardThread', {
             'primaryColor',
             'brandLayout',
             'bannerLayout',
-            'fileTreeDirection',
             'topbarLayout',
             'topbarBg',
             'bannerNotifyLayout',

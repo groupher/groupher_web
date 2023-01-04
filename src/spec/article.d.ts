@@ -179,7 +179,6 @@ export type TGlobalLayout = {
   bannerNotifyBg: TColorName
   topbar: TTopbarLayout
   topbarBg: TColorName
-  fileTreeDirection: TFileTreeDirection
 }
 
 export type TCollectionFolder = {
@@ -219,5 +218,3 @@ export type TArticlePubSelector = {
 }
 
 export type THelpLayout = 'full' | 'faq' | 'helpcenter' | 'article'
-
-export type TFileTreeDirection = 'left' | 'right'
