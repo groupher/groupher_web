@@ -1,15 +1,10 @@
-import {
-  merge,
-  pick,
-  isEmpty,
-  findIndex,
-  propEq,
-  includes,
-  values,
-} from 'ramda'
+import { merge, pick, isEmpty, findIndex, propEq, includes, values } from 'ramda'
 
 import { DEFAULT_THEME } from '@/config'
-import { HCN, TYPE, ARTICLE_THREAD } from '@/constant'
+import { HCN } from '@/constant/name'
+import TYPE from '@/constant/type'
+import { ARTICLE_THREAD } from '@/constant/thread'
+
 import { plural } from './fmt'
 
 import { makeGQClient } from './graphql'
@@ -184,8 +179,7 @@ export const ssrError = (context, errorType, errorCode = 500) => {
   }
 }
 
-const getCurView = (source) =>
-  source.entries.length === 0 ? TYPE.RESULT_EMPTY : TYPE.RESULT
+const getCurView = (source) => (source.entries.length === 0 ? TYPE.RESULT_EMPTY : TYPE.RESULT)
 
 const getActiveTag = (tagRaw, tagList) => {
   if (!tagRaw || isEmpty(tagList)) return null

@@ -9,7 +9,9 @@ import { isEmpty, findIndex, pluck, includes } from 'ramda'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TSizeSM, TTabItem, TC11NLayout } from '@/spec'
-import { SIZE, C11N } from '@/constant'
+import SIZE from '@/constant/size'
+import C11N from '@/constant/c11n'
+
 import { isString } from '@/utils/validator'
 import { buildLog } from '@/utils/logger'
 
@@ -38,10 +40,7 @@ const temItems = [
  * @param {string} activeKey
  * @returns number
  */
-const getDefaultActiveTabIndex = (
-  items: TTabItem[],
-  activeKey: string,
-): number => {
+const getDefaultActiveTabIndex = (items: TTabItem[], activeKey: string): number => {
   if (isEmpty(activeKey)) return 0
   const index = findIndex((item) => {
     return activeKey === (item.raw || item.title)
@@ -86,8 +85,7 @@ const Tabs: FC<TProps> = ({
   useEffect(() => {
     if (navRef.current) {
       const activeSlipWidth =
-        navRef.current.childNodes[defaultActiveTabIndex].firstElementChild
-          .offsetWidth
+        navRef.current.childNodes[defaultActiveTabIndex].firstElementChild.offsetWidth
       setSlipWidth(activeSlipWidth)
     }
     setActive(defaultActiveTabIndex)

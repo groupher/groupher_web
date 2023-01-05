@@ -4,7 +4,7 @@
 import type { TThread } from '@/spec'
 import { map, values, flatten } from 'ramda'
 
-import { ARTICLE_THREAD } from '@/constant'
+import { ARTICLE_THREAD } from '@/constant/thread'
 import { titleCase, plural } from './fmt'
 import asyncSuite from './async'
 

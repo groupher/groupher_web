@@ -1,5 +1,5 @@
 import { isEmpty, keys, includes } from 'ramda'
-import { PATTERN_WALLPAPER, WALLPAPER_TYPE } from '@/constant'
+import { PATTERN_WALLPAPER, WALLPAPER_TYPE } from '@/constant/wallpaper'
 
 import type {
   TWallpaperFmt,
@@ -42,14 +42,10 @@ export const getWallpaperType = (name: string): TWallpaperType => {
  */
 const _parseWallpaper = (wallpaper: TWallpaper): TWallpaperFmt => {
   // @ts-ignore
-  return wallpaper?.colors
-    ? _parseGradientBackground(wallpaper)
-    : _parsePicBackground(wallpaper)
+  return wallpaper?.colors ? _parseGradientBackground(wallpaper) : _parsePicBackground(wallpaper)
 }
 
-const _parseGradientBackground = (
-  gradient: TWallpaperGradient,
-): TWallpaperFmt => {
+const _parseGradientBackground = (gradient: TWallpaperGradient): TWallpaperFmt => {
   const DIR = '/wallpaper'
   const { direction, hasPattern, hasBlur } = gradient
   const colors = gradient.colors.join(',')
@@ -57,9 +53,7 @@ const _parseGradientBackground = (
   let background = `linear-gradient(to ${direction}, ${colors})`
 
   const patternPic = `${DIR}/patterns/1.png`
-  background = hasPattern
-    ? `url(${patternPic}) repeat, ${background}`
-    : background
+  background = hasPattern ? `url(${patternPic}) repeat, ${background}` : background
 
   const effect = hasBlur ? 'filter: blur(3px)' : ''
 
