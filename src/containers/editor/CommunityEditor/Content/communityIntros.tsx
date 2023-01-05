@@ -1,5 +1,5 @@
 import { ICON_BASE } from '@/config'
-import { HCN } from '@/constant'
+import { HCN } from '@/constant/name'
 
 const COMMUNITY_INTRO = {
   PUBLIC: {

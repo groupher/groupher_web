@@ -5,7 +5,7 @@
  */
 
 import { FC } from 'react'
-import { ANCHOR } from '@/constant'
+import { ANCHOR } from '@/constant/dom'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TMetric } from '@/spec'

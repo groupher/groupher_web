@@ -18,8 +18,11 @@ import type {
   TReportType,
   TArticlePubSelector,
 } from '@/spec'
-
-import { HCN, TYPE, EVENT, THREAD, NON_COMMUNITY_ROUTE, ARTICLE_THREAD } from '@/constant'
+import { HCN } from '@/constant/name'
+import { NON_COMMUNITY_ROUTE } from '@/constant/route'
+import { THREAD, ARTICLE_THREAD } from '@/constant/thread'
+import TYPE from '@/constant/type'
+import EVENT from '@/constant/event'
 
 import BStore from './bstore'
 import { scrollToHeader } from './dom'

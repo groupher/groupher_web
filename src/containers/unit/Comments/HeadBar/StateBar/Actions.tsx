@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import { SVG } from '@/constant'
+import SVG from '@/constant/svg'
 
 import IconButton from '@/widgets/Buttons/IconButton'
 import IconSwitcher from '@/widgets/Switcher/IconSwitcher'

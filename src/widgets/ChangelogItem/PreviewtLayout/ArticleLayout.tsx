@@ -8,7 +8,7 @@ import { FC, memo } from 'react'
 
 import { buildLog } from '@/utils/logger'
 
-import { TAG_MODE } from '@/constant'
+import TAG_MODE from '@/constant/tag'
 
 import { SpaceGrow } from '@/widgets/Common'
 import TagsList from '@/widgets/TagsList'
@@ -49,13 +49,7 @@ const PreviewLayout: FC<TProps> = ({ testid = 'changelog-item' }) => {
           <Version>v3.20</Version>
         </Title>
         <TagsWrapper>
-          <TagsList
-            items={demoTags}
-            left={3}
-            mode={TAG_MODE.LABEL}
-            size="small"
-            max={5}
-          />
+          <TagsList items={demoTags} left={3} mode={TAG_MODE.LABEL} size="small" max={5} />
           <DateTime>10天前</DateTime>
         </TagsWrapper>
         <Body>

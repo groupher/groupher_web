@@ -1,8 +1,4 @@
 // a.k.a for HOME COMMUNITY NAME
-export const HCN = 'home'
-export const BODY_SCROLLER = 'body-scroller'
-export const DRAWER_SCROLLER = 'drawer-scroller'
-
 export { default as TYPE } from './type'
 export { default as EVENT } from './event'
 export { default as ERR } from './err'
@@ -28,7 +24,6 @@ export {
   HELP_LAYOUT,
   FOOTER_LAYOUT,
 } from './layout'
-export { default as ANCHOR } from './anchor'
 export { default as METRIC } from './metric'
 export { default as SIZE } from './size'
 export { default as URL_QUERY } from './url_query'
@@ -60,7 +55,6 @@ export {
 } from './wallpaper'
 /* some svg icon are sensitive to fill color */
 /* some community svg need fill color, like city etc.. */
-export const NON_FILL_COMMUNITY = ['javascript']
 
 export { PUBLISH_MODE } from './publish'
 export { COLORS, COLOR_NAME } from './colors'

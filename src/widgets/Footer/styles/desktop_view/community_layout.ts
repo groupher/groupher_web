@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TC11NLayout, TMetric } from '@/spec'
-import { C11N } from '@/constant'
+import C11N from '@/constant/c11n'
 import css, { theme } from '@/utils/css'
 
 export { NoLinkItem } from './article_layout'

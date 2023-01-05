@@ -2,7 +2,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 
 import type { TC11NLayout, TMetric } from '@/spec'
-import { C11N } from '@/constant'
+import C11N from '@/constant/c11n'
 import css, { theme } from '@/utils/css'
 
 export { HeartCrabIcon } from './home_layout'

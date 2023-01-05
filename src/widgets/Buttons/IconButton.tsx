@@ -2,18 +2,11 @@ import { FC, memo, ReactNode } from 'react'
 
 import type { TSpace } from '@/spec'
 import { ICON } from '@/config'
-import { SVG } from '@/constant'
+import SVG from '@/constant/svg'
 import { buildLog } from '@/utils/logger'
 
 import Tooltip from '@/widgets/Tooltip'
-import {
-  Wrapper,
-  Content,
-  Icon,
-  Hint,
-  getLocalIcon,
-  HoverBg,
-} from './styles/icon_button'
+import { Wrapper, Content, Icon, Hint, getLocalIcon, HoverBg } from './styles/icon_button'
 
 const log = buildLog('w:IconButton')
 
@@ -46,19 +39,12 @@ const IconButton: FC<TProps> = ({
   if (path) {
     // icon from OSS
     realIcon = (
-      <Icon
-        src={`${ICON}/${path}`}
-        size={size}
-        $active={active}
-        $dimWhenIdle={dimWhenIdle}
-      />
+      <Icon src={`${ICON}/${path}`} size={size} $active={active} $dimWhenIdle={dimWhenIdle} />
     )
   } else {
     const LocalIcon = getLocalIcon(icon || SVG.UPVOTE)
 
-    realIcon = (
-      <LocalIcon size={size} $active={active} $dimWhenIdle={dimWhenIdle} />
-    )
+    realIcon = <LocalIcon size={size} $active={active} $dimWhenIdle={dimWhenIdle} />
   }
 
   return (

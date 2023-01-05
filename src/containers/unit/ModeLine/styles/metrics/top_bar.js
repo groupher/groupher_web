@@ -1,4 +1,4 @@
-import { C11N } from '@/constant'
+import C11N from '@/constant/c11n'
 import { WIDTH } from '@/utils/css'
 
 export const getMaxWidth = (type) => {

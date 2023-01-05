@@ -3,7 +3,7 @@ import { pluck } from 'ramda'
 
 import type { TID, TMenuOption, TArticle } from '@/spec'
 
-import { SVG } from '@/constant'
+import SVG from '@/constant/svg'
 
 import IconButton from '@/widgets/Buttons/IconButton'
 import MenuButton from '@/widgets/Buttons/MenuButton'
@@ -18,10 +18,7 @@ type TProps = {
 
 const Banner: FC<TProps> = ({ menuOptions, setOpenedIDs, articles }) => {
   const foldAll = useCallback(() => setOpenedIDs([]), [])
-  const unFoldAll = useCallback(
-    () => setOpenedIDs(pluck('id', articles)),
-    [articles, setOpenedIDs],
-  )
+  const unFoldAll = useCallback(() => setOpenedIDs(pluck('id', articles)), [articles, setOpenedIDs])
 
   const handleMenu = useCallback(
     (key) => {
@@ -45,11 +42,7 @@ const Banner: FC<TProps> = ({ menuOptions, setOpenedIDs, articles }) => {
     <Wrapper>
       <Title>常见问题</Title>
       <MenuWrapper>
-        <MenuButton
-          placement="bottom-end"
-          options={menuOptions}
-          onClick={(key) => handleMenu(key)}
-        >
+        <MenuButton placement="bottom-end" options={menuOptions} onClick={(key) => handleMenu(key)}>
           <IconButton icon={SVG.MORE} />
         </MenuButton>
       </MenuWrapper>

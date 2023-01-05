@@ -3,7 +3,10 @@ import Router from 'next/router'
 import { values } from 'ramda'
 
 import type { TEditValue, TCommunity, TTag, TArticleCat } from '@/spec'
-import { HCN, ERR, EVENT } from '@/constant'
+import { HCN } from '@/constant/name'
+import EVENT from '@/constant/event'
+import ERR from '@/constant/err'
+
 import { buildLog } from '@/utils/logger'
 import asyncSuit from '@/utils/async'
 import { getParameterByName } from '@/utils/route'

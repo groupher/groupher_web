@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TArticle } from '@/spec'
-import { SVG } from '@/constant'
+import SVG from '@/constant/svg'
 import IconButton from '@/widgets/Buttons/IconButton'
 import ReadableDate from '@/widgets/ReadableDate'
 

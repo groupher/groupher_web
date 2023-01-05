@@ -6,7 +6,7 @@ import { FC, Fragment, useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 
 import type { TSpace } from '@/spec'
-import { SVG } from '@/constant'
+import SVG from '@/constant/svg'
 
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
@@ -28,11 +28,7 @@ type TProps = {
 
 let Panel = null
 
-const ShareContainer: FC<TProps> = ({
-  share: store,
-  offsetLeft = 'none',
-  ...restProps
-}) => {
+const ShareContainer: FC<TProps> = ({ share: store, offsetLeft = 'none', ...restProps }) => {
   useInit(store)
 
   const { show, menuOptions, siteShareType, linksData, viewingArticle } = store

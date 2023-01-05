@@ -4,7 +4,9 @@
  */
 
 import type { TRootStore, TAccount, TC11N, TArticle, TCommunity, TOnlineStatus } from '@/spec'
-import { METRIC, HCN } from '@/constant'
+import { HCN } from '@/constant/name'
+import METRIC from '@/constant/metric'
+
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
 // import { VIEW, TFooterView } from './constants'

@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 import { isEmpty } from 'ramda'
 
-import { HCN } from '@/constant'
+import { HCN } from '@/constant/name'
 // import { ICON_BASE } from '@/config'
 import { buildLog } from '@/utils/logger'
 
@@ -35,9 +35,7 @@ const CommunityFaceLogo: FC<TProps> = ({
     return <HomeLogo className={className} />
   }
 
-  return (
-    <Logo noFill={noFill} src={src} className={className} noLazy={noLazy} />
-  )
+  return <Logo noFill={noFill} src={src} className={className} noLazy={noLazy} />
 }
 
 export default memo(CommunityFaceLogo)

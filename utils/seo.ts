@@ -1,7 +1,8 @@
 import { SITE_URL } from '@/config'
 
 import type { TCommunity, TThread, TArticle, TUser } from '@/spec'
-import { ROUTE, THREAD } from '@/constant'
+import { ROUTE } from '@/constant/route'
+import { THREAD } from '@/constant/thread'
 
 import { plural } from './fmt'
 
@@ -29,10 +30,7 @@ export const communitySEO = (community: TCommunity, thread: TThread): TSEO => {
   }
 }
 
-export const articleSEO = (
-  thread: TThread = THREAD.POST,
-  article: TArticle,
-): TSEO => {
+export const articleSEO = (thread: TThread = THREAD.POST, article: TArticle): TSEO => {
   const { id, title, insertedAt, updatedAt, author } = article
 
   return {

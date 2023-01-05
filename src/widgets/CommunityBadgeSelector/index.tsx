@@ -1,33 +1,22 @@
 import { FC, memo } from 'react'
 
 import type { TCommunity, TEditMode } from '@/spec'
+import { HCN } from '@/constant/name'
+
 import { cutRest } from '@/utils/fmt'
 import { selectCommunity } from '@/utils/signal'
-import { HCN } from '@/constant'
 
 import Tooltip from '@/widgets/Tooltip'
 import CommunityCard from '@/widgets/Cards/CommunityCard'
 
-import {
-  Wrapper,
-  BadgeWrapper,
-  Logo,
-  Intro,
-  PubHint,
-  Title,
-  ChangeBtn,
-  ArrowLogo,
-} from './styles'
+import { Wrapper, BadgeWrapper, Logo, Intro, PubHint, Title, ChangeBtn, ArrowLogo } from './styles'
 
 type TProps = {
   community: TCommunity
   mode?: TEditMode
 }
 
-const CommunityBadgeSelector: FC<TProps> = ({
-  community,
-  mode = 'publish',
-}) => {
+const CommunityBadgeSelector: FC<TProps> = ({ community, mode = 'publish' }) => {
   const targetHint = community.raw === HCN ? '首页' : '子社区'
 
   return (
@@ -41,11 +30,7 @@ const CommunityBadgeSelector: FC<TProps> = ({
           )}
           <Title>
             <Logo src={community.logo} raw={community.raw} />
-            <Tooltip
-              content={<CommunityCard item={community} />}
-              delay={500}
-              placement="bottom"
-            >
+            <Tooltip content={<CommunityCard item={community} />} delay={500} placement="bottom">
               <div>{cutRest(community.title || '--', 15)}</div>
             </Tooltip>
             {mode === 'publish' && (

@@ -2,7 +2,9 @@ import { useEffect } from 'react'
 import { isEmpty, reject, equals } from 'ramda'
 
 import type { TComment, TID, TEmotionType, TEditValue } from '@/spec'
-import { ANCHOR, EVENT, ERR } from '@/constant'
+import { ANCHOR } from '@/constant/dom'
+import EVENT from '@/constant/event'
+import ERR from '@/constant/err'
 
 import asyncSuit from '@/utils/async'
 import BStore from '@/utils/bstore'
@@ -225,10 +227,7 @@ export const handleEmotion = (
 /**
  * toggle upvote action
  */
-export const handleUpvote = (
-  comment: TComment,
-  viewerHasUpvoted: boolean,
-): void => {
+export const handleUpvote = (comment: TComment, viewerHasUpvoted: boolean): void => {
   if (!store.isLogin) return authWarn({ hideToast: true })
   const { id, upvotesCount } = comment
 
@@ -487,11 +486,7 @@ const initDraftTimmer = (): void => {
 // ###############################
 // init & uninit
 // ###############################
-export const useInit = (
-  _store: TStore,
-  locked: boolean,
-  apiMode: TAPIMode,
-): void => {
+export const useInit = (_store: TStore, locked: boolean, apiMode: TAPIMode): void => {
   useEffect(() => {
     // log('effect init')
     store = _store

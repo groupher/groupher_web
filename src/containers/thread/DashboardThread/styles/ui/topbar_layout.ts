@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive, TColorName } from '@/spec'
-import { COLORS } from '@/constant'
+import { COLORS } from '@/constant/colors'
 
 import css, { theme } from '@/utils/css'
 

@@ -10,7 +10,10 @@ import dynamic from 'next/dynamic'
 import { isEmpty } from 'ramda'
 
 import type { TThread, TPublishMode, TArticleCat } from '@/spec'
-import { THREAD, HCN, SVG, PUBLISH_MODE } from '@/constant'
+import { PUBLISH_MODE } from '@/constant/publish'
+import { HCN } from '@/constant/name'
+import { THREAD } from '@/constant/thread'
+import SVG from '@/constant/svg'
 
 import Tooltip from '@/widgets/Tooltip'
 import { buildLog } from '@/utils/logger'
@@ -75,9 +78,7 @@ const PublishButton: FC<TProps> = ({
             onShow={() => setShow(true)}
             offset={offset as [number, number]}
             content={
-              <Fragment>
-                {show && <FullPanel onSelect={onMenuSelect} activeCat={null} />}
-              </Fragment>
+              <Fragment>{show && <FullPanel onSelect={onMenuSelect} activeCat={null} />}</Fragment>
             }
           >
             <IconButton icon={SVG.MOREL} />

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
-import { COLORS } from '@/constant'
+import { COLORS } from '@/constant/colors'
 import css from '@/utils/css'
 
 import { BaseSection } from '.'

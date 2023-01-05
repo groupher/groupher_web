@@ -3,7 +3,7 @@ import { values } from 'ramda'
 
 import type { TEmotion, TEmotionType } from '@/spec'
 
-import { EMOTION } from '@/constant'
+import EMOTION from '@/constant/emotion'
 import { ICON } from '@/config'
 
 import { isViewerEmotioned } from './helper'
@@ -30,11 +30,7 @@ const EmojiPanel: FC<TProps> = ({ emotions, onAction }) => {
         const viewerHasEmotioned = isViewerEmotioned(emotions, name)
 
         return (
-          <Item
-            key={name}
-            name={name}
-            onClick={() => onAction(name, viewerHasEmotioned)}
-          >
+          <Item key={name} name={name} onClick={() => onAction(name, viewerHasEmotioned)}>
             <EIcon
               src={`${ICON}/emotion/${name}.png`}
               name={name}

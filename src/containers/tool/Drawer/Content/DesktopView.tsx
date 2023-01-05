@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef, memo } from 'react'
 
-import { DRAWER_SCROLLER } from '@/constant'
+import { DRAWER_SCROLLER } from '@/constant/dom'
 import CustomScroller from '@/widgets/CustomScroller'
 
 import type { TExtraInfo } from '../spec'

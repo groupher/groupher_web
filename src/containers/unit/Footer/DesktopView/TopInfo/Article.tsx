@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 import Link from 'next/link'
 
-import { HCN } from '@/constant'
+import { HCN } from '@/constant/name'
 import BlinkCursor from '@/widgets/BlinkCursor'
 import type { TProps as TTopInfoProps } from './index'
 

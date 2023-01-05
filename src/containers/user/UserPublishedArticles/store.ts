@@ -13,7 +13,9 @@ import type {
   TC11N,
   TGlobalLayout,
 } from '@/spec'
-import { TYPE, ARTICLE_THREAD } from '@/constant'
+import TYPE from '@/constant/type'
+import { ARTICLE_THREAD } from '@/constant/thread'
+
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { plural } from '@/utils/fmt'

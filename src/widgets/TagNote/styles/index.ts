@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
 
-import { COLORS } from '@/constant'
+import { COLORS } from '@/constant/colors'
 
 import InfoSVG from '@/icons/Info'
 
@@ -43,10 +43,8 @@ export const Title = styled.h2<{ color: string }>`
     position: absolute;
     left: 0;
     bottom: 4px;
-    background: ${({ color }) =>
-      `linear-gradient(180deg, transparent 30%, ${COLORS[color]} 0)`};
-    /* background: ${({ color }) =>
-      `linear-gradient(-90deg, transparent 60%, ${color} 0)`}; */
+    background: ${({ color }) => `linear-gradient(180deg, transparent 30%, ${COLORS[color]} 0)`};
+    /* background: ${({ color }) => `linear-gradient(-90deg, transparent 60%, ${color} 0)`}; */
     opacity: 0.2;
     width: 100%;
     height: 15px;

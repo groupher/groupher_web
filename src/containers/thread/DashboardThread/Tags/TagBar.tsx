@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TTag } from '@/spec'
-import { COLORS } from '@/constant'
+import { COLORS } from '@/constant/colors'
 
 import { callTagSettingEditor } from '@/utils/signal'
 import { Space, SpaceGrow } from '@/widgets/Common'

@@ -5,7 +5,8 @@
 import { FC, Fragment, memo } from 'react'
 
 import type { TPost, TMetric } from '@/spec'
-import { METRIC, ARTICLE_CAT, ARTICLE_STATE } from '@/constant'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/article_cat_state'
+import METRIC from '@/constant/metric'
 import { buildLog } from '@/utils/logger'
 
 // import ArchivedSign from '@/widgets/ArchivedSign'
@@ -66,28 +67,16 @@ const PostLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
           )} */}
           <DotDivider space={12} />
           <div>
-            {article.id === '239' && (
-              <ArticleCatState cat={ARTICLE_CAT.FEATURE} left={18} />
-            )}
-            {article.id === '231' && (
-              <ArticleCatState cat={ARTICLE_CAT.BUG} left={18} />
-            )}
+            {article.id === '239' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} left={18} />}
+            {article.id === '231' && <ArticleCatState cat={ARTICLE_CAT.BUG} left={18} />}
             {article.id === '227' && (
               <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" left={18} />
             )}
             {article.id === '228' && (
-              <ArticleCatState
-                cat={ARTICLE_CAT.FEATURE}
-                state="WIP"
-                left={18}
-              />
+              <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" left={18} />
             )}
             {article.id === '226' && (
-              <ArticleCatState
-                cat={ARTICLE_CAT.QUESTION}
-                state="RESOLVE"
-                left={18}
-              />
+              <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" left={18} />
             )}
             {article.id === '225' && (
               <ArticleCatState

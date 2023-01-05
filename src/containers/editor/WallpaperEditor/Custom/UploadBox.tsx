@@ -1,15 +1,9 @@
 import { FC, memo } from 'react'
 
-import { SVG } from '@/constant'
+import SVG from '@/constant/svg'
 import MenuButton from '@/widgets/Buttons/MenuButton'
 
-import {
-  Wrapper,
-  Menu,
-  MoreIcon,
-  UploadIcon,
-  Title,
-} from '../styles/custom/upload_box'
+import { Wrapper, Menu, MoreIcon, UploadIcon, Title } from '../styles/custom/upload_box'
 
 const menuOptions = [
   {

@@ -6,7 +6,8 @@
 import { FC, Fragment } from 'react'
 
 import type { TMetric } from '@/spec'
-import { METRIC, BANNER_LAYOUT } from '@/constant'
+import { BANNER_LAYOUT } from '@/constant/layout'
+import METRIC from '@/constant/metric'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
@@ -35,17 +36,9 @@ const CommunityDigestContainer: FC<TProps> = ({
   return (
     <Fragment>
       {globalLayout.banner === BANNER_LAYOUT.TABBER ? (
-        <ClassicLayout
-          metric={metric}
-          community={curCommunity}
-          activeThread={curThread}
-        />
+        <ClassicLayout metric={metric} community={curCommunity} activeThread={curThread} />
       ) : (
-        <SimpleLayout
-          metric={metric}
-          community={curCommunity}
-          activeThread={curThread}
-        />
+        <SimpleLayout metric={metric} community={curCommunity} activeThread={curThread} />
       )}
     </Fragment>
   )

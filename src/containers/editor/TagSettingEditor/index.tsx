@@ -7,7 +7,8 @@ import { FC } from 'react'
 
 // import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
-import { DRAWER_SCROLLER, ROUTE } from '@/constant'
+import { ROUTE } from '@/constant/route'
+import { DRAWER_SCROLLER } from '@/constant/dom'
 
 import { Br } from '@/widgets/Common'
 import Select from '@/widgets/Select'
