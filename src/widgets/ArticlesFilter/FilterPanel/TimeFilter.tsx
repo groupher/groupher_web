@@ -1,15 +1,9 @@
 import { FC, memo } from 'react'
 
 import type { TArticleFilter } from '@/spec'
-import { FILTER } from '@/constant'
+import FILTER from '@/constant/filter'
 
-import {
-  ColumnWrapper,
-  SelectLabel,
-  LabelDivider,
-  SelectTitle,
-  SelectItem,
-} from '../styles'
+import { ColumnWrapper, SelectLabel, LabelDivider, SelectTitle, SelectItem } from '../styles'
 
 type TProps = {
   activeFilter: TArticleFilter

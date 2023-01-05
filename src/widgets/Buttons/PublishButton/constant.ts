@@ -1,4 +1,5 @@
-import { SVG, PUBLISH_MODE } from '@/constant'
+import SVG from '@/constant/svg'
+import { PUBLISH_MODE } from '@/constant/publish'
 
 export const MORE_MENU = {
   [PUBLISH_MODE.DEFAULT]: [

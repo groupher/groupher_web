@@ -8,7 +8,7 @@ import { FC, memo, useState, useCallback } from 'react'
 import { keys, includes, reject } from 'ramda'
 
 import type { TSocialType, TSocialItem, TSpace } from '@/spec'
-import { SOCIAL_LIST } from '@/constant'
+import SOCIAL_LIST from '@/constant/social'
 import { buildLog } from '@/utils/logger'
 
 import InputBar from './InputBar'

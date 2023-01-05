@@ -3,7 +3,7 @@ import { lighten, darken } from '@/utils/color'
 import { includes } from 'ramda'
 
 import type { TMetric, TTestable, TColorName } from '@/spec'
-import { COLORS, COLOR_NAME } from '@/constant'
+import { COLORS, COLOR_NAME } from '@/constant/colors'
 
 import css from '@/utils/css'
 import CrossSVG from '@/icons/CloseCross'
@@ -40,9 +40,7 @@ export const LinkText = styled(Desc)`
 `
 export const LinkBtn = styled.div<{ bg: TColorName }>`
   background: ${({ bg }) =>
-    includes(bg, [COLOR_NAME.BLACK])
-      ? lighten(COLORS[bg], 6)
-      : darken(COLORS[bg], 10)};
+    includes(bg, [COLOR_NAME.BLACK]) ? lighten(COLORS[bg], 6) : darken(COLORS[bg], 10)};
   color: white;
   height: 18px;
   padding: 1px 12px;

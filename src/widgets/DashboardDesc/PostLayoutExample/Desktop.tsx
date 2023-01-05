@@ -7,7 +7,7 @@
 import { FC, memo, Fragment } from 'react'
 
 import type { TPost, TPostLayout } from '@/spec'
-import { POST_LAYOUT } from '@/constant'
+import { POST_LAYOUT } from '@/constant/layout'
 
 import { buildLog } from '@/utils/logger'
 

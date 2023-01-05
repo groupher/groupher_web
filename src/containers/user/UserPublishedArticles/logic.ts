@@ -2,7 +2,10 @@ import { useEffect } from 'react'
 // import { } from 'ramda'
 
 import type { TArticle, TArticleThread, TPagedArticles } from '@/spec'
-import { TYPE, ERR, EVENT } from '@/constant'
+
+import EVENT from '@/constant/event'
+import ERR from '@/constant/err'
+import TYPE from '@/constant/type'
 
 import { titleCase, plural } from '@/utils/fmt'
 import { previewArticle, errRescue } from '@/utils/signal'

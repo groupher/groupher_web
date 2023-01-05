@@ -1,7 +1,6 @@
 import { FC, memo, Fragment } from 'react'
 
 import type { TChangelogLayout } from '@/spec'
-// import { CHANGELOG_LAYOUT } from '@/constant'
 
 import PreviewLayout from './PreviewtLayout'
 // import OutlineLayout from './OutlineLayout'

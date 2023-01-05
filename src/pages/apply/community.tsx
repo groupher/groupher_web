@@ -2,9 +2,11 @@
    this page is for /apply/community
  */
 
-import { METRIC, ROUTE } from '@/constant'
 import { useStore } from '@/stores/init'
 import { Provider } from 'mobx-react'
+
+import { ROUTE } from '@/constant/route'
+import METRIC from '@/constant/metric'
 
 import {
   publishCommunitySEO,

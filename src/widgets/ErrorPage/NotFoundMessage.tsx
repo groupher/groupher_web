@@ -4,7 +4,9 @@ import Linker from '@/widgets/Linker'
 
 import type { TMetric } from '@/spec'
 
-import { METRIC, ROUTE } from '@/constant'
+import { ROUTE } from '@/constant/route'
+import METRIC from '@/constant/metric'
+
 import { HintTitle } from './styles'
 
 type TProps = {

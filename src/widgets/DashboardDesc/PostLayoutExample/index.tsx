@@ -7,7 +7,11 @@
 import { FC, memo, useState } from 'react'
 
 import type { TPostLayout } from '@/spec'
-import { POST_LAYOUT, SVG, VIEW } from '@/constant'
+
+import { POST_LAYOUT } from '@/constant/layout'
+import SVG from '@/constant/svg'
+import VIEW from '@/constant/view'
+
 import { buildLog } from '@/utils/logger'
 
 import Tabs from '@/widgets/Switcher/Tabs'

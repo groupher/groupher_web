@@ -1,7 +1,9 @@
 import { FC, memo } from 'react'
 import TimeAgo from 'timeago-react'
 
-import { SIZE, UPVOTE_LAYOUT } from '@/constant'
+import { UPVOTE_LAYOUT } from '@/constant/layout'
+import SIZE from '@/constant/size'
+
 import type { TArticle } from '@/spec'
 import { upvoteOnArticleList } from '@/utils/signal'
 import Upvote from '@/widgets/Upvote'
@@ -15,14 +17,7 @@ type TProps = {
 }
 
 const Footer: FC<TProps> = ({ data }) => {
-  const {
-    author,
-    insertedAt,
-    commentsCount,
-    upvotesCount,
-    viewerHasUpvoted,
-    meta,
-  } = data
+  const { author, insertedAt, commentsCount, upvotesCount, viewerHasUpvoted, meta } = data
 
   return (
     <Wrapper>
@@ -36,14 +31,10 @@ const Footer: FC<TProps> = ({ data }) => {
           count={upvotesCount}
           avatarList={meta.latestUpvotedUsers}
           viewerHasUpvoted={viewerHasUpvoted}
-          onAction={(viewerHasUpvoted) =>
-            upvoteOnArticleList(data, viewerHasUpvoted)
-          }
+          onAction={(viewerHasUpvoted) => upvoteOnArticleList(data, viewerHasUpvoted)}
         />
 
-        {commentsCount !== 0 && (
-          <CommentsCount count={commentsCount} size={SIZE.MEDIUM} />
-        )}
+        {commentsCount !== 0 && <CommentsCount count={commentsCount} size={SIZE.MEDIUM} />}
       </Bottom>
     </Wrapper>
   )

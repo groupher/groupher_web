@@ -1,6 +1,6 @@
 import type { TArticleState } from '@/spec'
-import { ARTICLE_STATE } from '@/constant'
 
+import { ARTICLE_STATE } from '@/constant/article_cat_state'
 import { theme } from '@/utils/css'
 import { isRejectedState } from '@/utils/helper'
 

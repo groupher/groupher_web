@@ -1,14 +1,10 @@
 import { GetServerSideProps } from 'next'
-import { METRIC, ARTICLE_THREAD } from '@/constant'
 import { Provider } from 'mobx-react'
 
-import {
-  articlePublishSEO,
-  ssrFetchPrepare,
-  ssrBaseStates,
-  refreshIfneed,
-  ssrError,
-} from '@/utils'
+import { ARTICLE_THREAD } from '@/constant/thread'
+import METRIC from '@/constant/metric'
+
+import { articlePublishSEO, ssrFetchPrepare, ssrBaseStates, refreshIfneed, ssrError } from '@/utils'
 import { P } from '@/schemas'
 
 import { useStore } from '@/stores/init'

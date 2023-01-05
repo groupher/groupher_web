@@ -1,18 +1,15 @@
 import { FC } from 'react'
 
 import type { TPost } from '@/spec'
-import { SIZE, EVENT } from '@/constant'
+import EVENT from '@/constant/event'
+import SIZE from '@/constant/size'
 import { send } from '@/utils/signal'
 
 import { SpaceGrow } from '@/widgets/Common'
 import TagsList from '@/widgets/TagsList'
 import CommentsCount from '@/widgets/CommentsCount'
 
-import {
-  Wrapper,
-  Main,
-  Title,
-} from '../../styles/minimal_layout/desktop_view/header'
+import { Wrapper, Main, Title } from '../../styles/minimal_layout/desktop_view/header'
 
 type TProps = {
   article: TPost
@@ -37,9 +34,7 @@ const Header: FC<TProps> = ({ article }) => {
         {/*  @ts-ignore */}
         <TagsList items={article.articleTags} left={12} />
         <SpaceGrow />
-        {commentsCount !== 0 && (
-          <CommentsCount count={commentsCount} size={SIZE.MEDIUM} />
-        )}
+        {commentsCount !== 0 && <CommentsCount count={commentsCount} size={SIZE.MEDIUM} />}
       </Main>
     </Wrapper>
   )
