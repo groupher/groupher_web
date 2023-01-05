@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive, TGlowEffect } from '@/spec'
-import { GLOW_EFFECTS } from '@/constant'
+import GLOW_EFFECTS from '@/constant/glow_effect'
 
 import css, { theme } from '@/utils/css'
 

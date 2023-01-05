@@ -1,7 +1,7 @@
 import styled, { keyframes } from 'styled-components'
 
 import type { TUpvoteLayout, TActive } from '@/spec'
-import { UPVOTE_LAYOUT } from '@/constant'
+import { UPVOTE_LAYOUT } from '@/constant/layout'
 
 import UpvoteIcon from '@/icons/Upvote'
 import css, { theme } from '@/utils/css'
@@ -74,31 +74,16 @@ export const Wrapper = styled.div<TWrapper>`
     display: ${({ showAnimation }) => (showAnimation ? 'block' : 'none')};
 
     top: -75%;
-    background-image: radial-gradient(
-        circle,
-        ${theme('button.primary')} 20%,
-        transparent 20%
-      ),
-      radial-gradient(
-        circle,
-        transparent 20%,
-        ${theme('button.primary')} 20%,
-        transparent 30%
-      ),
+    background-image: radial-gradient(circle, ${theme('button.primary')} 20%, transparent 20%),
+      radial-gradient(circle, transparent 20%, ${theme('button.primary')} 20%, transparent 30%),
       radial-gradient(circle, ${theme('button.primary')} 20%, transparent 20%),
       radial-gradient(circle, ${theme('button.primary')} 20%, transparent 20%),
-      radial-gradient(
-        circle,
-        transparent 10%,
-        ${theme('button.primary')} 15%,
-        transparent 20%
-      ),
+      radial-gradient(circle, transparent 10%, ${theme('button.primary')} 15%, transparent 20%),
       radial-gradient(circle, ${theme('button.primary')} 20%, transparent 20%),
       radial-gradient(circle, ${theme('button.primary')} 20%, transparent 20%),
       radial-gradient(circle, ${theme('button.primary')} 20%, transparent 20%),
       radial-gradient(circle, ${theme('button.primary')} 20%, transparent 20%);
-    background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%,
-      15% 15%, 10% 10%, 18% 18%;
+    background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%, 10% 10%, 18% 18%;
 
     animation: ${topBubbles} ease-in-out 1s infinite;
   }
@@ -116,22 +101,12 @@ export const Wrapper = styled.div<TWrapper>`
 
     display: ${({ showAnimation }) => (showAnimation ? 'block' : 'none')};
     bottom: -60%;
-    background-image: radial-gradient(
-        circle,
-        ${theme('button.primary')} 20%,
-        transparent 20%
-      ),
+    background-image: radial-gradient(circle, ${theme('button.primary')} 20%, transparent 20%),
       radial-gradient(circle, ${theme('button.primary')} 20%, transparent 20%),
-      radial-gradient(
-        circle,
-        transparent 10%,
-        ${theme('button.primary')} 15%,
-        transparent 20%
-      ),
+      radial-gradient(circle, transparent 10%, ${theme('button.primary')} 15%, transparent 20%),
       radial-gradient(circle, ${theme('button.primary')} 20%, transparent 20%),
       radial-gradient(circle, ${theme('button.primary')} 20%, transparent 20%);
-    background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 10% 10%,
-      20% 20%;
+    background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 10% 10%, 20% 20%;
 
     animation: ${bottomBubbles} ease-in-out 1s infinite;
     transform: rotate(200deg);

@@ -1,7 +1,11 @@
 import { useEffect } from 'react'
 
 import type { TArticle, TThread, TArticleFilter } from '@/spec'
-import { TYPE, EVENT, ERR, THREAD } from '@/constant'
+
+import { THREAD } from '@/constant/thread'
+import EVENT from '@/constant/event'
+import ERR from '@/constant/err'
+import TYPE from '@/constant/type'
 
 import { scrollToHeader } from '@/utils/dom'
 import asyncSuit from '@/utils/async'

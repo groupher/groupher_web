@@ -2,7 +2,9 @@ import { FC, memo } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TArticle, TThread } from '@/spec'
-import { SIZE, THREAD, EVENT } from '@/constant'
+import { THREAD } from '@/constant/thread'
+import EVENT from '@/constant/event'
+import SIZE from '@/constant/size'
 
 import { cutRest } from '@/utils/fmt'
 import { send } from '@/utils/signal'

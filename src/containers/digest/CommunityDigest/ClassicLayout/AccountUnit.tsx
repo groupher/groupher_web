@@ -1,7 +1,10 @@
 import { FC, memo } from 'react'
 
-import { EVENT, THREAD } from '@/constant'
+import { THREAD } from '@/constant/thread'
+import EVENT from '@/constant/event'
+
 import { send } from '@/utils/signal'
+import { mockUsers } from '@/utils/mock'
 
 import {
   Wrapper,
@@ -10,7 +13,6 @@ import {
   DashboardIcon,
   SubscribeButton,
 } from '../styles/classic_layout/account_unit'
-import { mockUsers } from '@/utils/mock'
 // import { onShowEditorList, onShowSubscriberList, setViewport } from '../logic'
 
 const AccountUnit: FC = () => {
@@ -22,9 +24,7 @@ const AccountUnit: FC = () => {
       </SubscribeButton>
 
       <DashboardIcon
-        onClick={() =>
-          send(EVENT.COMMUNITY_THREAD_CHANGE, { data: THREAD.DASHBOARD })
-        }
+        onClick={() => send(EVENT.COMMUNITY_THREAD_CHANGE, { data: THREAD.DASHBOARD })}
       />
 
       <NotifyIcon />

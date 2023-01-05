@@ -1,6 +1,7 @@
 import { FC, memo } from 'react'
 
-import { VIEW, TAG_MODE } from '@/constant'
+import TAG_MODE from '@/constant/tag'
+import VIEW from '@/constant/view'
 
 import TagsBar from '@/containers/unit/TagsBar'
 import { Br, Space } from '@/widgets/Common'
@@ -25,9 +26,7 @@ type TProps = {
 const Filters: FC<TProps> = ({ tagsMode }) => {
   return (
     <Wrapper>
-      <BannerText>
-        Groupher 的最新版可以在 [这里] 获取，任何问题欢迎反馈。
-      </BannerText>
+      <BannerText>Groupher 的最新版可以在 [这里] 获取，任何问题欢迎反馈。</BannerText>
       <Br bottom={20} />
       <PublishButton>
         <BtnText>订阅更新</BtnText>

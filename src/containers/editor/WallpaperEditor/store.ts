@@ -4,7 +4,6 @@
 
 import { keys, values, clone, forEach, pick } from 'ramda'
 
-import { GRADIENT_WALLPAPER, PATTERN_WALLPAPER } from '@/constant'
 import type {
   TCommunity,
   TRootStore,
@@ -14,6 +13,8 @@ import type {
   TWallpaperPic,
   TWallpaperGradientDir,
 } from '@/spec'
+import { GRADIENT_WALLPAPER, PATTERN_WALLPAPER } from '@/constant/wallpaper'
+
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { getWallpaperType } from '@/utils/wallpaper'

@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
 
-import { FOOTER_LAYOUT } from '@/constant'
+import { FOOTER_LAYOUT } from '@/constant/layout'
 import Button from '@/widgets/Buttons/Button'
 
 import BrandInfo from '../BrandInfo'

@@ -9,17 +9,12 @@ import { FC, memo } from 'react'
 import type { TUser } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
-import { UPVOTE_LAYOUT } from '@/constant'
+import { UPVOTE_LAYOUT } from '@/constant/layout'
 import AnimatedCount from '@/widgets/AnimatedCount'
 import Facepile from '@/widgets/Facepile'
 
 import UpvoteBtn from './UpvoteBtn'
-import {
-  Wrapper,
-  UpWrapper,
-  CountWrapper,
-  AvatarsWrapper,
-} from './styles/sticker_layout'
+import { Wrapper, UpWrapper, CountWrapper, AvatarsWrapper } from './styles/sticker_layout'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Upvote:index')

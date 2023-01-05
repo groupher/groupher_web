@@ -9,7 +9,7 @@ import { FC, memo, useState, useEffect } from 'react'
 import { buildLog } from '@/utils/logger'
 import { mockTags, mockUsers } from '@/utils/mock'
 import { getRandomInt } from '@/utils/helper'
-import { UPVOTE_LAYOUT } from '@/constant'
+import { UPVOTE_LAYOUT } from '@/constant/layout'
 import CommentsCount from '@/widgets/CommentsCount'
 import { Row, Space } from '@/widgets/Common'
 

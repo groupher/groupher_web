@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 import { keys } from 'ramda'
 
-import { GLOW_EFFECTS } from '@/constant'
+import GLOW_EFFECTS from '@/constant/glow_effect'
 
 import { Inline, Br } from '@/widgets/Common'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'

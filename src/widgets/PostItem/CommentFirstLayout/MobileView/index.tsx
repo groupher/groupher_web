@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TPost, TAccount } from '@/spec'
-import { UPVOTE_LAYOUT } from '@/constant'
+import { UPVOTE_LAYOUT } from '@/constant/layout'
 import Upvote from '@/widgets/Upvote'
 
 import Header from './Header'

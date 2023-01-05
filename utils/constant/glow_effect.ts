@@ -1,4 +1,4 @@
-export const GLOW_EFFECTS = {
+const GLOW_EFFECTS = {
   ORANGE_PURPLE: {
     LEFT: {
       COLOR: '#f39e8d40',
@@ -134,4 +134,4 @@ export const GLOW_EFFECTS = {
   },
 }
 
-export const holder = 1
+export default GLOW_EFFECTS

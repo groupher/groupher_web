@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TCommunity, TPost } from '@/spec'
-import { UPVOTE_LAYOUT } from '@/constant'
+import { UPVOTE_LAYOUT } from '@/constant/layout'
 
 import { upvoteOnArticleList } from '@/utils/signal'
 import TheAvatar from '@/widgets/TheAvatar'

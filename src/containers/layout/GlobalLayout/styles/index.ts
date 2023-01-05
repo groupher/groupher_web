@@ -1,7 +1,9 @@
 import styled from 'styled-components'
 
 import type { TColorName, TMetric, TGlowEffect } from '@/spec'
-import { COLORS, GLOW_EFFECTS } from '@/constant'
+import { COLORS } from '@/constant/colors'
+import GLOW_EFFECTS from '@/constant/glow_effect'
+
 import css, { theme } from '@/utils/css'
 
 /**

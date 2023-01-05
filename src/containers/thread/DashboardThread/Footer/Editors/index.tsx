@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import type { TFooterLayout } from '@/spec'
-import { FOOTER_LAYOUT } from '@/constant'
+import { FOOTER_LAYOUT } from '@/constant/layout'
 
 import SimpleEditor from './Simple'
 import FullEditor from './Full'
