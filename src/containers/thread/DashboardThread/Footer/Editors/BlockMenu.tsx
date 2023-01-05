@@ -1,26 +1,18 @@
 import { FC } from 'react'
 
-import { Wrapper, Item, Title, Icon } from '../../styles/footer/editors/block_menu'
+import MenuItem from '@/widgets/MenuItem'
+import MENU from '@/constant/menu'
+
+import { Wrapper } from '../../styles/footer/editors/block_menu'
 
 const BlockMenu: FC = () => {
   return (
     <Wrapper>
-      <Item>
-        <Icon.ArrowUp />
-        <Title>上移</Title>
-      </Item>
-      <Item>
-        <Icon.ArrowDown />
-        <Title>下移</Title>
-      </Item>
-      <Item>
-        <Icon.Arrow2Top />
-        <Title>移至最前</Title>
-      </Item>
-      <Item>
-        <Icon.Arrow2Bottom />
-        <Title>移至最后</Title>
-      </Item>
+      <MenuItem icon={MENU.ARROW_UP} title="上移" />
+      <MenuItem icon={MENU.ARROW_DOWN} title="下移" />
+
+      <MenuItem icon={MENU.ARROW_TO_TOP} title="移至最前" />
+      <MenuItem icon={MENU.ARROW_TO_BOTTOM} title="移至最后" />
     </Wrapper>
   )
 }

@@ -131,6 +131,7 @@ export type {
   TGalleryTextWithImage,
 } from './gallery'
 
+export type { TMenu } from './menu'
 export type { TAccountStore, TViewingStore } from './store'
 
 export type { TEmotion, TEmotionType } from './emotion'
