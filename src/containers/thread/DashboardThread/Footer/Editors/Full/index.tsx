@@ -51,7 +51,7 @@ const Full: FC = () => {
         <ActionRow>
           <Button size="small" ghost space={10}>
             <PlusIcon />
-            添加组
+            添加列
           </Button>
         </ActionRow>
         <LinkGroup>
