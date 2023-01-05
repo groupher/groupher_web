@@ -14,7 +14,10 @@ import {
   merge,
 } from 'ramda'
 
-import { HCN, THREAD, ROUTE } from '@/constant'
+import { HCN } from '@/constant/name'
+import { THREAD } from '@/constant/thread'
+import { ROUTE } from '@/constant/route'
+
 import { nilOrEmpty } from './validator'
 import { Global } from './helper'
 // import { isServerSide } from './ssr'
@@ -22,14 +25,7 @@ import { Global } from './helper'
 export const isServerSide = typeof window === 'undefined'
 
 // example: /getme/xxx?aa=bb&cc=dd
-const parseMainPath = compose(
-  head,
-  split('?'),
-  head,
-  reject(isEmpty),
-  split('/'),
-  prop('asPath'),
-)
+const parseMainPath = compose(head, split('?'), head, reject(isEmpty), split('/'), prop('asPath'))
 
 // example: /xxx/getme?aa=bb&cc=dd
 const parsePathList = compose(
@@ -144,13 +140,7 @@ export const getRoutePathList = compose(
   split('?'),
 )
 
-const doGetRouteMainPath = compose(
-  head,
-  split('?'),
-  head,
-  reject(isEmpty),
-  split('/'),
-)
+const doGetRouteMainPath = compose(head, split('?'), head, reject(isEmpty), split('/'))
 
 export const getRouteMainPath = (asPath) => {
   if (asPath === '/') return ROUTE.HOME
@@ -233,10 +223,7 @@ const mergePagiQuery = (query = {}, opt = { pagi: 'string' }) => {
 }
 
 // convert url query string to json, with optional pagi info
-export const queryStringToJSON = (
-  path,
-  opt = { noPagiInfo: false, pagi: 'string' },
-) => {
+export const queryStringToJSON = (path, opt = { noPagiInfo: false, pagi: 'string' }) => {
   const splited = split('?', path)
   if (splited.length === 1) return mergePagiQuery({}, opt)
 

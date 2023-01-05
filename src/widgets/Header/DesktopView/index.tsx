@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 
 import type { TProps } from '../index'
 // import CommunityLayout from './CommunityLayout'

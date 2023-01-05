@@ -1,5 +1,5 @@
 import type { TSnakeUpperCase } from '@/spec'
-import { DASHBOARD_ROUTE } from '@/constant'
+import { DASHBOARD_ROUTE } from '@/constant/route'
 
 import type { TSettingField, TWidgetType, TFooterEditType } from './spec'
 

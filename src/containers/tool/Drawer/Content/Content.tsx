@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { TYPE } from '@/constant'
+import TYPE from '@/constant/type'
 // import ModeLineMenu from '@/containers/unit/ModeLineMenu'
 import type { TUser } from '@/spec'
 

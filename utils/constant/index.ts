@@ -1,14 +1,9 @@
 // a.k.a for HOME COMMUNITY NAME
-export const HCN = 'home'
-export const BODY_SCROLLER = 'body-scroller'
-export const DRAWER_SCROLLER = 'drawer-scroller'
-
 export { default as TYPE } from './type'
 export { default as EVENT } from './event'
 export { default as ERR } from './err'
 export { NON_COMMUNITY_ROUTE, ROUTE, DASHBOARD_ROUTE } from './route'
 export { ARTICLE_THREAD, CARD_THREAD, THREAD } from './thread'
-export { default as USER_THREAD } from './user_thread'
 export { default as FILTER } from './filter'
 export { default as ACTION } from './action'
 export { default as C11N } from './c11n'
@@ -29,7 +24,6 @@ export {
   HELP_LAYOUT,
   FOOTER_LAYOUT,
 } from './layout'
-export { default as ANCHOR } from './anchor'
 export { default as METRIC } from './metric'
 export { default as SIZE } from './size'
 export { default as URL_QUERY } from './url_query'
@@ -42,12 +36,7 @@ export { default as TAG_MODE } from './tag'
 
 export { COMMUNITY_MAP_ALIAS } from './alias'
 
-export {
-  ARTICLE_STATE,
-  ARTICLE_CAT,
-  ARTICLE_CAT_REJECT,
-  ARTICLE_CAT_MODE,
-} from './article_cat_state'
+export { ARTICLE_STATE, ARTICLE_CAT, ARTICLE_CAT_REJECT, ARTICLE_CAT_MODE } from './gtd'
 
 export { default as DEFAULT_TOAST_OPTIONS } from './toast'
 
@@ -61,10 +50,8 @@ export {
 } from './wallpaper'
 /* some svg icon are sensitive to fill color */
 /* some community svg need fill color, like city etc.. */
-export const NON_FILL_COMMUNITY = ['javascript']
 
 export { PUBLISH_MODE } from './publish'
 export { COLORS, COLOR_NAME } from './colors'
-export { GLOW_EFFECTS } from './glow_effect'
 
 export { default as SOCIAL_LIST } from './social'

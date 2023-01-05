@@ -1,7 +1,7 @@
 import type { TUser, TTag, TCommunity } from '@/spec'
 import { SITE_LOGO, ICON, ICON_BASE } from '@/config'
+import { COLOR_NAME } from '@/constant/colors'
 
-import { COLOR_NAME } from '@/constant'
 import { getRandomInt } from './helper'
 
 const users = [
@@ -269,8 +269,7 @@ export const mockUsers = (num: number): TUser[] => {
   return users.slice(0, Math.min(num, users.length - 1))
 }
 
-export const mockTags = (num: number): TTag[] =>
-  tags.slice(0, Math.min(num, tags.length))
+export const mockTags = (num: number): TTag[] => tags.slice(0, Math.min(num, tags.length))
 
 const changelogTimeTags = [
   {
@@ -391,10 +390,7 @@ const changelogVersionTags = [
 ]
 
 export const mockChangelogVersionTags = (num = 10): TTag[] => {
-  return changelogVersionTags.slice(
-    0,
-    Math.min(num, changelogVersionTags.length),
-  )
+  return changelogVersionTags.slice(0, Math.min(num, changelogVersionTags.length))
 }
 
 export const mockCommunities = (num: number): TCommunity[] =>

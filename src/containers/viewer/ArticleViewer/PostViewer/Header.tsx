@@ -3,7 +3,7 @@ import TimeAgo from 'timeago-react'
 
 import type { TPost } from '@/spec'
 
-import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import DotDivider from '@/widgets/DotDivider'
 import ArticleCatState from '@/widgets/ArticleCatState'
 

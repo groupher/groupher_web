@@ -1,6 +1,7 @@
 import { FC } from 'react'
 
-import { ROUTE, SOCIAL_LIST } from '@/constant'
+import { ROUTE } from '@/constant/route'
+import SOCIAL_LIST from '@/constant/social'
 import SocialList from '@/widgets/SocialList'
 
 import {

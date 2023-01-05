@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TThread, TCommunity, TMetric } from '@/spec'
-import { EVENT } from '@/constant'
+import EVENT from '@/constant/event'
 import { send } from '@/utils/signal'
 
 import TabBar from '@/widgets/TabBar'
@@ -51,10 +51,7 @@ const ClassicLayout: FC<TProps> = ({ community, activeThread, metric }) => {
           </TabBarWrapper>
         </BannerContentWrapper>
       </InnerWrapper>
-      <ViewportTracker
-        onEnter={() => setViewport(true)}
-        onLeave={() => setViewport(false)}
-      />
+      <ViewportTracker onEnter={() => setViewport(true)} onLeave={() => setViewport(false)} />
     </Wrapper>
   )
 }

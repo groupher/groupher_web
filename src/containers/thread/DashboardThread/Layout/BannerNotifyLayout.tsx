@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import type { TBannerNotifyLayout, TColorName } from '@/spec'
 
-import { BANNER_NOTIFY_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant'
+import { BANNER_NOTIFY_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { callDashboardDesc } from '@/utils/signal'
 
 import { Row, Br, Space, SpaceGrow, Inline } from '@/widgets/Common'

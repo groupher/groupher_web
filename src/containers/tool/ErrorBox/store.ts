@@ -4,7 +4,7 @@
  */
 
 import type { TGQError } from '@/spec'
-import { ERR } from '@/constant'
+import ERR from '@/constant/err'
 import { T, markStates, Instance, toJS } from '@/utils/mobx'
 
 const Message = T.model('Message', {

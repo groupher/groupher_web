@@ -3,7 +3,8 @@ import dynamic from 'next/dynamic'
 import TimeAgo from 'timeago-react'
 
 import type { TPost } from '@/spec'
-import { SIZE, EVENT } from '@/constant'
+import EVENT from '@/constant/event'
+import SIZE from '@/constant/size'
 import { send } from '@/utils/signal'
 
 import Tooltip from '@/widgets/Tooltip'
@@ -65,9 +66,7 @@ const Header: FC<TProps> = ({ article }) => {
         {/*  @ts-ignore */}
         <TagsList items={article.articleTags} left={12} />
         <SpaceGrow />
-        {commentsCount !== 0 && (
-          <CommentsCount count={commentsCount} size={SIZE.MEDIUM} />
-        )}
+        {commentsCount !== 0 && <CommentsCount count={commentsCount} size={SIZE.MEDIUM} />}
       </Main>
     </Wrapper>
   )

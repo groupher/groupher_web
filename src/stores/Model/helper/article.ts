@@ -1,4 +1,4 @@
-import { THREAD } from '@/constant'
+import { THREAD } from '@/constant/thread'
 import { T } from '@/utils/mobx'
 
 import { User, SimpleUser, PagedUsers } from '../User'

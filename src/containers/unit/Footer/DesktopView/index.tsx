@@ -10,7 +10,7 @@ import { includes } from 'ramda'
 import type { TMetric } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 
 // import HomeLayout from './HomeLayout'
 import SimpleLayout from './SimpleLayout'
@@ -29,11 +29,7 @@ type TProps = {
   testid?: string
 }
 
-const FooterContainer: FC<TProps> = ({
-  footer: store,
-  metric,
-  testid = 'footer',
-}) => {
+const FooterContainer: FC<TProps> = ({ footer: store, metric, testid = 'footer' }) => {
   useInit(store, metric)
 
   const { onlineStatus } = store

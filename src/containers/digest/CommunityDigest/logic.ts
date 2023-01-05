@@ -1,7 +1,11 @@
 import { useEffect } from 'react'
 
 import type { TID } from '@/spec'
-import { TYPE, EVENT, ERR, ARTICLE_THREAD } from '@/constant'
+
+import { ARTICLE_THREAD } from '@/constant/thread'
+import EVENT from '@/constant/event'
+import ERR from '@/constant/err'
+import TYPE from '@/constant/type'
 
 import asyncSuit from '@/utils/async'
 import { singular } from '@/utils/fmt'

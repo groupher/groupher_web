@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TSizeSM } from '@/spec'
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 
 import HookSVG from '@/icons/Hook'
 import css, { theme } from '@/utils/css'
@@ -14,8 +14,7 @@ export const Wrapper = styled.div<{ size: TSizeSM }>`
 `
 export const Track = styled.span<{ checked: boolean }>`
   background: ${theme('hoverBg')};
-  background: ${({ checked }) =>
-    checked ? theme('article.title') : theme('divider')};
+  background: ${({ checked }) => (checked ? theme('article.title') : theme('divider'))};
   border-radius: 12px;
   cursor: pointer;
   display: flex;
@@ -32,8 +31,7 @@ export const Indicator = styled.span<{ checked: boolean }>`
   position: absolute;
   left: 3px;
   bottom: 3px;
-  transform: ${({ checked }) =>
-    checked ? 'translateX(16px)' : 'translateX(0)'};
+  transform: ${({ checked }) => (checked ? 'translateX(16px)' : 'translateX(0)')};
   transition: 0.2s;
 `
 export const CheckIcon = styled(HookSVG)<{ checked: boolean }>`

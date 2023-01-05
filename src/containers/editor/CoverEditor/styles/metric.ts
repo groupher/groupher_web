@@ -1,7 +1,7 @@
 // import { theme } from '@/utils/css'
 
 import type { TWallpaperGradientDir } from '@/spec'
-import { GRADIENT_DIRECTION } from '@/constant'
+import { GRADIENT_DIRECTION } from '@/constant/wallpaper'
 
 import type { TImagePos, TLinearBorderPos, TImageSize, TImageRadio, TImageSizeValue } from '../spec'
 import { IMAGE_RATIO_SIZE, IMAGE_POS, LINEAR_BORDER, IMAGE_SIZE } from '../constant'

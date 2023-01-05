@@ -2,7 +2,9 @@ import { useEffect } from 'react'
 
 import type { TThread, TMetric } from '@/spec'
 // eslint-disable-next-line import/named
-import { TYPE, EVENT, ERR } from '@/constant'
+import ERR from '@/constant/err'
+import EVENT from '@/constant/event'
+import TYPE from '@/constant/type'
 
 import asyncSuit from '@/utils/async'
 import { buildLog } from '@/utils/logger'

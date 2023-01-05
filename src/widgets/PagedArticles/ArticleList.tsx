@@ -2,7 +2,8 @@
 
 import { Fragment, memo, FC } from 'react'
 
-import { POST_LAYOUT, TYPE } from '@/constant'
+import { POST_LAYOUT } from '@/constant/layout'
+import TYPE from '@/constant/type'
 import type { TArticleEntries } from '@/spec'
 
 import PostItem from '@/widgets/PostItem'

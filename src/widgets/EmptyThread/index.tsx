@@ -8,21 +8,12 @@ import { FC, memo } from 'react'
 import { includes } from 'ramda'
 
 import type { TThread } from '@/spec'
-import { THREAD } from '@/constant'
+import { THREAD } from '@/constant/thread'
 
 import { buildLog } from '@/utils/logger'
 import { Trans } from '@/utils/i18n'
 
-import {
-  Icon404,
-  Wrapper,
-  Icon,
-  Text,
-  Title,
-  DescWrapper,
-  Desc,
-  IssueLink,
-} from './styles'
+import { Icon404, Wrapper, Icon, Text, Title, DescWrapper, Desc, IssueLink } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:EmptyThread:index')

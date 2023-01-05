@@ -6,7 +6,7 @@
 import { contains, values } from 'ramda'
 
 import type { TRootStore, TCommunity, TAccount } from '@/spec'
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
 const HeaderStore = T.model('HeaderStore', {

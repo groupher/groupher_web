@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
 
-import { FOOTER_LAYOUT } from '@/constant'
+import { FOOTER_LAYOUT } from '@/constant/layout'
 import Button from '@/widgets/Buttons/Button'
 
 import BrandInfo from '../BrandInfo'
@@ -51,7 +51,7 @@ const Full: FC = () => {
         <ActionRow>
           <Button size="small" ghost space={10}>
             <PlusIcon />
-            添加组
+            添加列
           </Button>
         </ActionRow>
         <LinkGroup>

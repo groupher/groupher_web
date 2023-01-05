@@ -1,11 +1,10 @@
 import type { TContainer } from '@/spec'
-import { ANCHOR, BODY_SCROLLER, DRAWER_SCROLLER } from '@/constant'
+import { ANCHOR, BODY_SCROLLER, DRAWER_SCROLLER } from '@/constant/dom'
 
 // side effects, need refactor
 /* eslint-disable no-undef */
 const hasDocument = typeof document === 'object' && document !== null
-const hasWindow =
-  typeof window === 'object' && window !== null && window.self === window
+const hasWindow = typeof window === 'object' && window !== null && window.self === window
 
 /**
  * check is client side or not
@@ -57,8 +56,7 @@ export const scrollDrawerToTop = (): void => {
 
 export const scrollToComments = (view: TContainer = 'body'): void => {
   if (typeof window === 'object') {
-    const scroller =
-      view === 'body' ? window[BODY_SCROLLER] : window[DRAWER_SCROLLER]
+    const scroller = view === 'body' ? window[BODY_SCROLLER] : window[DRAWER_SCROLLER]
     const el = document.getElementById(ANCHOR.COMMENTS_ID)
 
     scroller?.scroll(el, 500)
@@ -193,10 +191,7 @@ export const pixelAdd = (current: string, num: number): string => {
  * check if child is descendant of the parent node
  * @see @link https://stackoverflow.com/questions/2234979/how-to-check-in-javascript-if-one-element-is-contained-within-another
  */
-export const isDescendant = (
-  parent: HTMLElement,
-  child: HTMLElement,
-): boolean => {
+export const isDescendant = (parent: HTMLElement, child: HTMLElement): boolean => {
   let node = child.parentNode
   while (node != null) {
     if (node === parent) {

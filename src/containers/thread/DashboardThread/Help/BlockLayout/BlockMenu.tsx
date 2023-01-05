@@ -1,24 +1,16 @@
-import { Wrapper, Item, Title, Icon } from '../../styles/help/block_layout/block_menu'
+import MenuItem from '@/widgets/MenuItem'
+import MENU from '@/constant/menu'
+
+import { Wrapper } from '../../styles/help/block_layout/block_menu'
 
 const BlockMenu = () => {
   return (
     <Wrapper>
-      <Item>
-        <Icon.ArrowLeft />
-        <Title>左移</Title>
-      </Item>
-      <Item>
-        <Icon.ArrowRight />
-        <Title>右移</Title>
-      </Item>
-      <Item>
-        <Icon.Arrow2Top />
-        <Title>移至最前</Title>
-      </Item>
-      <Item>
-        <Icon.Arrow2Bottom />
-        <Title>移至最后</Title>
-      </Item>
+      <MenuItem icon={MENU.ARROW_LEFT} title="左移" />
+      <MenuItem icon={MENU.ARROW_RIGHT} title="右移" />
+
+      <MenuItem icon={MENU.ARROW_TO_TOP} title="移至最前" />
+      <MenuItem icon={MENU.ARROW_TO_BOTTOM} title="移至最后" />
     </Wrapper>
   )
 }

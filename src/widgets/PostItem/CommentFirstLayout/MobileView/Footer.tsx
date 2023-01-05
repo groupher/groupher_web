@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import type { TPost } from '@/spec'
-import { ARTICLE_CAT } from '@/constant'
+import { ARTICLE_CAT } from '@/constant/gtd'
 
 import ArticleCatState from '@/widgets/ArticleCatState'
 import { Space } from '@/widgets/Common'

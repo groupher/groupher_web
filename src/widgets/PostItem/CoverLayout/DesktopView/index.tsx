@@ -1,6 +1,6 @@
 import { FC, memo, useState, useEffect } from 'react'
 
-import { EVENT } from '@/constant'
+import EVENT from '@/constant/event'
 import type { TPost } from '@/spec'
 
 import { send } from '@/utils/signal'

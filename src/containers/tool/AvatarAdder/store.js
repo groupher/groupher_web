@@ -3,7 +3,7 @@
  *
  */
 
-import { ERR } from '@/constant'
+import ERR from '@/constant/err'
 import { T, getParent, markStates, toJS } from '@/utils/mobx'
 import { GithubUser } from '@/model'
 

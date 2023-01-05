@@ -1,6 +1,9 @@
 import { useEffect } from 'react'
 
-import { EVENT, ERR, ARTICLE_THREAD } from '@/constant'
+import EVENT from '@/constant/event'
+import ERR from '@/constant/err'
+import { ARTICLE_THREAD } from '@/constant/thread'
+
 import asyncSuit from '@/utils/async'
 import { buildLog } from '@/utils/logger'
 import { errRescue } from '@/utils/signal'
@@ -46,8 +49,7 @@ export const onCancleSubscribe = (community: TCommunity): void => {
   sr71$.mutate(S.unsubscribeCommunity, { communityId: community.id })
 }
 
-const markLoading = (maybe = true): void =>
-  store.mark({ loading: maybe, subscribeLoading: maybe })
+const markLoading = (maybe = true): void => store.mark({ loading: maybe, subscribeLoading: maybe })
 
 // ###############################
 // Data & Error handlers

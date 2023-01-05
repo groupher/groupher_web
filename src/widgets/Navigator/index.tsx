@@ -5,7 +5,7 @@
 import { FC, memo } from 'react'
 
 import type { TMetric } from '@/spec'
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 
 import DigestView from './DigestView'
 // import BriefView from './BriefView'

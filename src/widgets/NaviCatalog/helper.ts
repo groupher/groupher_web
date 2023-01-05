@@ -1,23 +1,11 @@
-import {
-  map,
-  find,
-  propEq,
-  last,
-  filter,
-  findIndex,
-  equals,
-  clone,
-} from 'ramda'
+import { map, find, propEq, last, filter, findIndex, equals, clone } from 'ramda'
 
 import type { TNaviTag } from '@/spec'
-import { URL_QUERY } from '@/constant'
+import URL_QUERY from '@/constant/url_query'
 import { nilOrEmpty } from '@/utils/validator'
 
 // 根据 path 路径得到当前目录项
-export const getCurrentMenuItem = (
-  path: TNaviTag[],
-  items: TNaviTag[],
-): TNaviTag => {
+export const getCurrentMenuItem = (path: TNaviTag[], items: TNaviTag[]): TNaviTag => {
   if (nilOrEmpty(path) || nilOrEmpty(items)) return
 
   const item = find(propEq('id', path[0].id), items) as TNaviTag
@@ -33,10 +21,7 @@ export const getCurrentMenuItem = (
  * @param {string} pathString
  * @returns {array of catalog}
  */
-export const findPath = (
-  items: TNaviTag[],
-  pathString = 'aa-bb-cc',
-): TNaviTag[] => {
+export const findPath = (items: TNaviTag[], pathString = 'aa-bb-cc'): TNaviTag[] => {
   // pathList => parentId-childId-subChildId-xxx
   const idPaths = pathString.split('-')
 
@@ -58,9 +43,7 @@ export const findPath = (
   return path
 }
 
-export const covertPathToURLQuery = (
-  path: TNaviTag[],
-): Record<string, unknown> => {
+export const covertPathToURLQuery = (path: TNaviTag[]): Record<string, unknown> => {
   const idPathString = map((catalog) => catalog.id, path).join('-')
   if (nilOrEmpty(idPathString)) return { [URL_QUERY.NAVI_CATALOG_PATH]: '' }
 
@@ -82,10 +65,7 @@ const findUpdatePath = (menu: TNaviTag[], extra: string[]): string[] => {
   if (parentMenuPath.length === 2) {
     updatePath.push(rootIndex)
 
-    const index = findIndex(
-      (item) => equals(item.extra, parentMenuPath),
-      menu[rootIndex].childMenu,
-    )
+    const index = findIndex((item) => equals(item.extra, parentMenuPath), menu[rootIndex].childMenu)
 
     updatePath.push(index)
   }

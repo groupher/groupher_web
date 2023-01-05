@@ -2,9 +2,12 @@ import { FC, memo } from 'react'
 import { reduce, add, values } from 'ramda'
 
 import type { TUser, TArticleThread } from '@/spec'
-import { ARTICLE_THREAD } from '@/constant'
+
+import { ARTICLE_THREAD } from '@/constant/thread'
+
 import { titleCase, plural } from '@/utils/fmt'
 import { Trans } from '@/utils/i18n'
+
 import { SpaceGrow } from '@/widgets/Common'
 
 import {
@@ -56,11 +59,7 @@ const ThreadSelector: FC<TProps> = ({ thread, user }) => {
           const subCount = getSubCount(meta, t, false)
           if (!!subCount) {
             return (
-              <SelectLabel
-                key={t}
-                $active={activeThread === t}
-                onClick={() => changeTab(t)}
-              >
+              <SelectLabel key={t} $active={activeThread === t} onClick={() => changeTab(t)}>
                 {Trans(t)}
                 <SubCount>{subCount}</SubCount>
               </SelectLabel>

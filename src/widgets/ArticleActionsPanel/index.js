@@ -8,7 +8,7 @@ import React from 'react'
 import T from 'prop-types'
 import { values } from 'ramda'
 
-import { THREAD } from '@/constant'
+import { THREAD } from '@/constant/thread'
 import { buildLog } from '@/utils/logger'
 
 import PinOption from './PinOption'
@@ -49,18 +49,9 @@ const ArticleActionsPanel = ({
         onUnsetRefined={onUnsetRefined}
       />
 
-      <EditOption
-        passport="owner"
-        ownerId={data.author?.id}
-        onEdit={onEdit}
-        thread={thread}
-      />
+      <EditOption passport="owner" ownerId={data.author?.id} onEdit={onEdit} thread={thread} />
 
-      <DeleteOption
-        passport="owner"
-        ownerId={data.author?.id}
-        onDelete={onDelete}
-      />
+      <DeleteOption passport="owner" ownerId={data.author?.id} onDelete={onDelete} />
     </Wrapper>
   )
 }

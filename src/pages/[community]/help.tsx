@@ -4,7 +4,9 @@ import { Provider } from 'mobx-react'
 
 import type { TCommunity } from '@/spec'
 import { PAGE_SIZE } from '@/config'
-import { HCN, THREAD, METRIC } from '@/constant'
+import { HCN } from '@/constant/name'
+import { THREAD } from '@/constant/thread'
+import METRIC from '@/constant/metric'
 import { useStore } from '@/stores/init'
 
 import {

@@ -7,7 +7,8 @@
 import { FC, memo, Fragment } from 'react'
 
 import type { TMetric, TBannerNotifyLayout, TColorName } from '@/spec'
-import { BANNER_NOTIFY_LAYOUT, ANCHOR } from '@/constant'
+import { ANCHOR } from '@/constant/dom'
+import { BANNER_NOTIFY_LAYOUT } from '@/constant/layout'
 import { buildLog } from '@/utils/logger'
 
 import {
@@ -35,18 +36,10 @@ type TProps = {
 const DETAIL_TEXT =
   'Groupher.com, 为中小产品团队提供社区反馈服务，如果你对此有兴趣，欢迎加 v(mydearxym) 详聊。'
 
-const BannerNotify: FC<TProps> = ({
-  testid = 'banner-notify',
-  metric,
-  layout,
-  bg,
-}) => {
+const BannerNotify: FC<TProps> = ({ testid = 'banner-notify', metric, layout, bg }) => {
   return (
     <Wrapper testid={testid} bg={bg} id={ANCHOR.GLOBAL_HEADER_ID}>
-      <InnerWrapper
-        metric={metric}
-        center={layout === BANNER_NOTIFY_LAYOUT.CENTER}
-      >
+      <InnerWrapper metric={metric} center={layout === BANNER_NOTIFY_LAYOUT.CENTER}>
         <Row>
           <NotifyIcon />
           <Desc>站点开发重构中，服务暂不可用。</Desc>

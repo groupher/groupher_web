@@ -1,7 +1,10 @@
 import { useEffect } from 'react'
 // import { } from 'ramda'
 
-import { TYPE, ERR, ARTICLE_THREAD } from '@/constant'
+import { ARTICLE_THREAD } from '@/constant/thread'
+import ERR from '@/constant/err'
+import TYPE from '@/constant/type'
+
 import { errRescue } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 import asyncSuit from '@/utils/async'

@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import type { TPagedUsers } from '@/spec'
-import { TYPE } from '@/constant'
+import TYPE from '@/constant/type'
 
 import { buildLog } from '@/utils/logger'
 
@@ -25,10 +25,7 @@ type TProps = {
   data: TPagedUsers
 }
 
-const UserList: FC<TProps> = ({
-  type,
-  data: { entries, pageNumber, pageSize, totalCount },
-}) => (
+const UserList: FC<TProps> = ({ type, data: { entries, pageNumber, pageSize, totalCount } }) => (
   <>
     {type === TYPE.USER_LISTER_COMMUNITY_EDITORS ? (
       <EditorLayout users={entries} />

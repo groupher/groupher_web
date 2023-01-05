@@ -1,6 +1,6 @@
 import { Fragment, FC, ReactNode, memo } from 'react'
 
-import { ANCHOR } from '@/constant'
+import { ANCHOR } from '@/constant/dom'
 
 import type { TSwipeOption, TArticleNavi } from '../spec'
 import AddOn from '../AddOn'

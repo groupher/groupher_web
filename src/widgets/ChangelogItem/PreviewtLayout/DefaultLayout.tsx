@@ -8,7 +8,8 @@ import { FC, memo } from 'react'
 
 import { buildLog } from '@/utils/logger'
 
-import { SIZE, TAG_MODE } from '@/constant'
+import TAG_MODE from '@/constant/tag'
+import SIZE from '@/constant/size'
 
 import { SpaceGrow } from '@/widgets/Common'
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
@@ -48,13 +49,7 @@ const PreviewLayout: FC<TProps> = ({ testid = 'changelog-item' }) => {
         <CoverImage />
         <Title>帖子支持表情了</Title>
         <TagsWrapper>
-          <TagsList
-            items={demoTags}
-            left={3}
-            mode={TAG_MODE.LABEL}
-            size="small"
-            max={5}
-          />
+          <TagsList items={demoTags} left={3} mode={TAG_MODE.LABEL} size="small" max={5} />
         </TagsWrapper>
         <Body>
           这次俄乌冲突出现侮辱乌女性的评论就是1450干的，刷完评论就截图转发外网，成为外媒攻击中国人的“口实”。

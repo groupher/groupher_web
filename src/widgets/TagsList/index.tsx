@@ -4,15 +4,10 @@
 
 import { FC, memo } from 'react'
 
-import type {
-  TTag,
-  TSizeTSM,
-  TCommunity,
-  TThread,
-  TTagMode,
-  TSpace,
-} from '@/spec'
-import { SIZE, THREAD, TAG_MODE } from '@/constant'
+import type { TTag, TSizeTSM, TCommunity, TThread, TTagMode, TSpace } from '@/spec'
+import { THREAD } from '@/constant/thread'
+import TAG_MODE from '@/constant/tag'
+import SIZE from '@/constant/size'
 
 import { sortByColor } from '@/utils/helper'
 import { Trans } from '@/utils/i18n'
@@ -56,39 +51,26 @@ const TagsList: FC<TProps> = ({
           .slice(0, max)
           .map((tag) => (
             <Tag key={tag.title}>
-              {mode === TAG_MODE.DEFAULT && (
-                <DotSign color={tag.color} size={size} />
-              )}
+              {mode === TAG_MODE.DEFAULT && <DotSign color={tag.color} size={size} />}
               <Title size={size}>{Trans(tag.title)}</Title>
             </Tag>
           ))}
         <Tooltip
           placement="bottom"
-          content={
-            <FullList items={items} size={size} mode={mode} {...restProps} />
-          }
+          content={<FullList items={items} size={size} mode={mode} {...restProps} />}
         >
           <More>..</More>
         </Tooltip>
-        {withSetter && (
-          <Setter community={community} thread={thread} tags={items} noEmpty />
-        )}
+        {withSetter && <Setter community={community} thread={thread} tags={items} noEmpty />}
       </Wrapper>
     )
   }
 
   return (
     <Wrapper>
-      {items.length > 0 && (
-        <FullList items={items} size={size} mode={mode} {...restProps} />
-      )}
+      {items.length > 0 && <FullList items={items} size={size} mode={mode} {...restProps} />}
       {withSetter && (
-        <Setter
-          tags={items}
-          community={community}
-          thread={thread}
-          noEmpty={items.length > 0}
-        />
+        <Setter tags={items} community={community} thread={thread} noEmpty={items.length > 0} />
       )}
     </Wrapper>
   )

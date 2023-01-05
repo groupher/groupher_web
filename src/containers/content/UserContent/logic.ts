@@ -1,7 +1,9 @@
 import { useEffect } from 'react'
 
 import type { TID, TThread, TUser } from '@/spec'
-import { TYPE, EVENT, ERR } from '@/constant'
+import ERR from '@/constant/err'
+import EVENT from '@/constant/event'
+import TYPE from '@/constant/type'
 
 import asyncSuit from '@/utils/async'
 import { send, errRescue } from '@/utils/signal'

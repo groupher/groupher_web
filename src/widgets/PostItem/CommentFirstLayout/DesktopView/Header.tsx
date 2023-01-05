@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic'
 
 import type { TPost } from '@/spec'
 
-import { EVENT } from '@/constant'
+import EVENT from '@/constant/event'
 import { send } from '@/utils/signal'
 
 import Facepile from '@/widgets/Facepile'
@@ -46,10 +46,7 @@ const Header: FC<TProps> = ({ article }) => {
         <TagsList items={article.articleTags} left={12} />
       </Brief>
       <AvatarsWrapper>
-        <Facepile
-          users={article.commentsParticipants}
-          total={article.commentsCount}
-        />
+        <Facepile users={article.commentsParticipants} total={article.commentsCount} />
       </AvatarsWrapper>
     </Wrapper>
   )

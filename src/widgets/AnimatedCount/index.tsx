@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TSize } from '@/spec'
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 import { Wrapper } from './styles'
 
 import AnimatedCount from './AnimatedCount'

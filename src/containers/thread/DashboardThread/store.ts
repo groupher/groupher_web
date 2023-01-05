@@ -13,17 +13,16 @@ import {
   TOPBAR_LAYOUT,
   BANNER_NOTIFY_LAYOUT,
   CHANGELOG_LAYOUT,
+  HELP_LAYOUT,
   POST_LAYOUT,
   KANBAN_LAYOUT,
   FOOTER_LAYOUT,
-  COLORS,
-  THREAD,
-  SIZE,
-  HELP_LAYOUT,
-  COLOR_NAME,
-  ROUTE,
-  GLOW_EFFECTS,
-} from '@/constant'
+} from '@/constant/layout'
+import { COLORS, COLOR_NAME } from '@/constant/colors'
+import { THREAD } from '@/constant/thread'
+import SIZE from '@/constant/size'
+import { ROUTE } from '@/constant/route'
+import GLOW_EFFECTS from '@/constant/glow_effect'
 
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'

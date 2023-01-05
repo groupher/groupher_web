@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import { COLOR_NAME } from '@/constant'
+import { COLOR_NAME } from '@/constant/colors'
 import FaqList from '@/widgets/FaqList'
 
 import Category from './Category'

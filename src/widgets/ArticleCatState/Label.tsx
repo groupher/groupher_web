@@ -1,23 +1,15 @@
 import { FC, memo } from 'react'
 
-import { ARTICLE_STATE, ARTICLE_CAT } from '@/constant'
+import { ARTICLE_STATE, ARTICLE_CAT } from '@/constant/gtd'
+
 import { Trans } from '@/utils/i18n'
 import { isRejectedState } from '@/utils/helper'
 
 import type { TProps as TArticleStateBadgeProps } from './index'
 
-import {
-  Wrapper,
-  BugWrapper,
-  QuestionWrapper,
-  LockWrapper,
-  OtherWrapper,
-} from './styles/label'
+import { Wrapper, BugWrapper, QuestionWrapper, LockWrapper, OtherWrapper } from './styles/label'
 
-type TProps = Pick<
-  TArticleStateBadgeProps,
-  'cat' | 'noBg' | 'smaller' | 'state'
->
+type TProps = Pick<TArticleStateBadgeProps, 'cat' | 'noBg' | 'smaller' | 'state'>
 
 const Label: FC<TProps> = ({ cat, state, noBg, smaller }) => {
   if (isRejectedState(state)) {
@@ -47,11 +39,7 @@ const Label: FC<TProps> = ({ cat, state, noBg, smaller }) => {
 
     case ARTICLE_CAT.QUESTION: {
       if (state === ARTICLE_STATE.RESOLVE) {
-        return (
-          <QuestionWrapper smaller={smaller}>
-            {Trans(ARTICLE_STATE.RESOLVE)}
-          </QuestionWrapper>
-        )
+        return <QuestionWrapper smaller={smaller}>{Trans(ARTICLE_STATE.RESOLVE)}</QuestionWrapper>
       }
 
       return <OtherWrapper>{Trans(ARTICLE_CAT.QUESTION)}</OtherWrapper>

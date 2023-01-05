@@ -2,8 +2,7 @@ import { FC, memo } from 'react'
 import { contains } from 'ramda'
 
 import type { TCommunity } from '@/spec'
-import { ICON_CMD } from '@/config'
-import { NON_FILL_COMMUNITY } from '@/constant'
+import { NON_FILL_COMMUNITY } from '@/constant/name'
 
 import {
   Wrapper,

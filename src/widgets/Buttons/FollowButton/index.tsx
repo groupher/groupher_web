@@ -5,7 +5,7 @@
 import { FC, memo, useState, useCallback } from 'react'
 
 import type { TID, TSizeTSM } from '@/spec'
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 import useAccount from '@/hooks/useAccount'
 
 import { buildLog } from '@/utils/logger'
@@ -79,12 +79,7 @@ const FollowButton: FC<TProps> = ({
           onClick={handleUndoFollow}
         />
       ) : (
-        <FollowedBtn
-          size={size}
-          loading={isLoading}
-          text={followText}
-          onClick={handleFollow}
-        />
+        <FollowedBtn size={size} loading={isLoading} text={followText} onClick={handleFollow} />
       )}
     </>
   )

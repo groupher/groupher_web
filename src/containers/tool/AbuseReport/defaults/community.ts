@@ -1,4 +1,4 @@
-import { REPORT } from '@/constant'
+import { REPORT } from '@/constant/report'
 
 const items = [
   {
@@ -19,8 +19,7 @@ const items = [
     title: '其他',
     raw: REPORT.OTHERS,
     checked: false,
-    detail:
-      '该社区不适合本站。如果你有合适的标签能代表此类账户，请在提交时一并附上。',
+    detail: '该社区不适合本站。如果你有合适的标签能代表此类账户，请在提交时一并附上。',
   },
 ]
 

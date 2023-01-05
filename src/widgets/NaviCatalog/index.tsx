@@ -7,7 +7,7 @@
 import { FC, useState, useCallback, useEffect, memo } from 'react'
 import { find, findIndex, propEq, last } from 'ramda'
 
-import { URL_QUERY } from '@/constant'
+import URL_QUERY from '@/constant/url_query'
 import type { TNaviTag } from '@/spec'
 
 import { findDeepMatch } from '@/utils/helper'
@@ -24,12 +24,7 @@ import List from './List'
 
 import { Wrapper } from './styles'
 
-import {
-  getCurrentMenuItem,
-  findPath,
-  covertPathToURLQuery,
-  tags2Menu,
-} from './helper'
+import { getCurrentMenuItem, findPath, covertPathToURLQuery, tags2Menu } from './helper'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:NaviCatalog:index')

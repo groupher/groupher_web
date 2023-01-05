@@ -8,7 +8,7 @@ import { FC, memo } from 'react'
 
 import type { TSizeSM, TSpace } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 
 import { Wrapper, Label } from './styles/radio'
 

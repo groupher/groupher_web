@@ -5,7 +5,8 @@ import type { TWindow, TToastType, TToastOption, TArticleState } from '@/spec'
 import hotToast from 'react-hot-toast'
 
 import { TAG_COLOR_ORDER } from '@/config'
-import { DEFAULT_TOAST_OPTIONS, ARTICLE_STATE } from '@/constant'
+import { ARTICLE_STATE } from '@/constant/gtd'
+import DEFAULT_TOAST_OPTIONS from '@/constant/toast'
 
 type TSORTABLE_ITEMS = {
   color?: string
@@ -34,10 +35,7 @@ export const mapKeys = curry((fn, obj) => {
  * sort the array by it's color
  */
 export const sortByColor = (source: TSORTABLE_ITEMS): TSORTABLE_ITEMS =>
-  sort(
-    (t1, t2) => TAG_COLOR_ORDER[t1.color] - TAG_COLOR_ORDER[t2.color],
-    source,
-  )
+  sort((t1, t2) => TAG_COLOR_ORDER[t1.color] - TAG_COLOR_ORDER[t2.color], source)
 
 /**
  * sort the array by it's index
@@ -220,10 +218,7 @@ type TShareParam = {
   href?: string
   name?: string
 }
-export const openShareWindow = (
-  platformUrl: string,
-  param: TShareParam,
-): void => {
+export const openShareWindow = (platformUrl: string, param: TShareParam): void => {
   const safeParam = []
 
   /* eslint-disable */

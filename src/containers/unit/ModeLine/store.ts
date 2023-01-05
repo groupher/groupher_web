@@ -6,7 +6,10 @@
 import { values } from 'ramda'
 
 import type { TRootStore, TViewing, TCommunity, TArticle } from '@/spec'
-import { TYPE, METRIC } from '@/constant'
+
+import METRIC from '@/constant/metric'
+import TYPE from '@/constant/type'
+
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
 const ModeLine = T.model('ModeLine', {

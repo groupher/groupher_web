@@ -1,5 +1,5 @@
 import type { TUpvoteLayout } from '@/spec'
-import { UPVOTE_LAYOUT } from '@/constant'
+import { UPVOTE_LAYOUT } from '@/constant/layout'
 
 import { theme } from '@/utils/css'
 

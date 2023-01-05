@@ -2,7 +2,9 @@ import { useEffect } from 'react'
 import { values, includes } from 'ramda'
 
 import type { TThread } from '@/spec'
-import { ERR, EVENT, ARTICLE_THREAD } from '@/constant'
+import { ARTICLE_THREAD } from '@/constant/thread'
+import EVENT from '@/constant/event'
+import ERR from '@/constant/err'
 
 import { plural } from '@/utils/fmt'
 import { send, errRescue } from '@/utils/signal'
@@ -31,8 +33,7 @@ const tabOnChange = (activeThread: TThread): void => {
   const { curCommunity } = store
 
   const mainPath = curCommunity.raw
-  const subPath =
-    activeThread !== ARTICLE_THREAD.POST ? plural(activeThread) : ''
+  const subPath = activeThread !== ARTICLE_THREAD.POST ? plural(activeThread) : ''
 
   // store.setViewing({ activeThread })
   store.setCurThread(activeThread)

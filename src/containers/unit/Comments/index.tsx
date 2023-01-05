@@ -6,7 +6,7 @@
 
 import { FC } from 'react'
 
-import { ANCHOR } from '@/constant'
+import { ANCHOR } from '@/constant/dom'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
@@ -40,15 +40,7 @@ const CommentsContainer: FC<TProps> = ({
 }) => {
   useInit(store, locked, apiMode)
 
-  const {
-    mode,
-    pagedCommentsData,
-    foldState,
-    editState,
-    repliesState,
-    loading,
-    basicState,
-  } = store
+  const { mode, pagedCommentsData, foldState, editState, repliesState, loading, basicState } = store
 
   const { isAllFolded } = foldState
   const { totalCount } = pagedCommentsData

@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TWallpaperGradientDir } from '@/spec'
-import { GRADIENT_DIRECTION } from '@/constant'
+import { GRADIENT_DIRECTION } from '@/constant/wallpaper'
 
 import {
   Wrapper,

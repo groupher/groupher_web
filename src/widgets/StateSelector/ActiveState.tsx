@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import { TArticleState } from '@/spec'
-import { ARTICLE_STATE } from '@/constant'
+import { ARTICLE_STATE } from '@/constant/gtd'
 
 import { Trans } from '@/utils/i18n'
 

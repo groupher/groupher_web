@@ -3,7 +3,8 @@ import { merge } from 'ramda'
 
 import type { TArticle } from '@/spec'
 
-import { EVENT, ERR } from '@/constant'
+import EVENT from '@/constant/event'
+import ERR from '@/constant/err'
 import { buildLog } from '@/utils/logger'
 import { errRescue, authWarn } from '@/utils/signal'
 import asyncSuit from '@/utils/async'
@@ -25,10 +26,7 @@ let sub$ = null
 /* eslint-disable-next-line */
 const log = buildLog('L:ArticleViewer')
 
-export const handleUpvote = (
-  article: TArticle,
-  viewerHasUpvoted: boolean,
-): void => {
+export const handleUpvote = (article: TArticle, viewerHasUpvoted: boolean): void => {
   if (!store.isLogin) return authWarn({ hideToast: true })
   const { id, meta } = article
 
@@ -77,11 +75,7 @@ const handleArticleRes = (article: TArticle): void => {
 const handleUovoteRes = ({ upvotesCount, meta }) => {
   store.updateUpvoteCount(upvotesCount, meta)
 
-  const {
-    id,
-    viewerHasUpvoted,
-    meta: viewingArticleMeta,
-  } = store.viewingArticle
+  const { id, viewerHasUpvoted, meta: viewingArticleMeta } = store.viewingArticle
   const syncMeta = merge(viewingArticleMeta, meta)
   store.syncArticle({ id, viewerHasUpvoted, upvotesCount, meta: syncMeta })
 }
@@ -135,8 +129,7 @@ const ErrSolver = [
   },
   {
     match: asyncErr(ERR.TIMEOUT),
-    action: ({ details }) =>
-      errRescue({ type: ERR.TIMEOUT, details, path: 'PostViewer' }),
+    action: ({ details }) => errRescue({ type: ERR.TIMEOUT, details, path: 'PostViewer' }),
   },
   {
     match: asyncErr(ERR.NETWORK),

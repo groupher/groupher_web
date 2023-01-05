@@ -3,7 +3,8 @@ import { FC, memo } from 'react'
 
 import type { TArticle, TC11NLayout, TMetric } from '@/spec'
 import { GITHUB, ABOUT_LINK } from '@/config'
-import { METRIC, ROUTE } from '@/constant'
+import METRIC from '@/constant/metric'
+import { ROUTE } from '@/constant/route'
 
 import { joinUS } from '@/utils/signal'
 

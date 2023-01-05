@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 import { filter } from 'ramda'
 
 import type { TArticle, TCommunity } from '@/spec'
-import { HCN } from '@/constant'
+import { HCN } from '@/constant/name'
 
 import FollowButton from '@/widgets/Buttons/FollowButton'
 import MirrorHint from './MirrorHint'
@@ -15,11 +15,7 @@ type TProps = {
   onUndoFollow: () => void
 }
 
-const ArticleBelongCommunity: FC<TProps> = ({
-  article,
-  onFollow,
-  onUndoFollow,
-}) => {
+const ArticleBelongCommunity: FC<TProps> = ({ article, onFollow, onUndoFollow }) => {
   const { originalCommunity: oc, communities } = article
 
   // @ts-ignore
@@ -29,9 +25,7 @@ const ArticleBelongCommunity: FC<TProps> = ({
   return (
     <Wrapper>
       {oc.raw === HCN ? <HomeLogo /> : <Icon src={oc.logo} />}
-      {hasMirror && (
-        <MirrorHint communities={mirrorCommunities as TCommunity[]} />
-      )}
+      {hasMirror && <MirrorHint communities={mirrorCommunities as TCommunity[]} />}
       <Name href={`/${oc.raw}`} prefetch={false}>
         {oc.title}
       </Name>

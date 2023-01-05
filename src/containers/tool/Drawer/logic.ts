@@ -2,7 +2,8 @@ import { useEffect } from 'react'
 import { contains, values } from 'ramda'
 
 import type { TArticle, TDirection } from '@/spec'
-import { TYPE, EVENT } from '@/constant'
+import EVENT from '@/constant/event'
+import TYPE from '@/constant/type'
 
 import { toggleGlobalBlur, clearGlobalBlur } from '@/utils/dom'
 import { Global, debounce } from '@/utils/helper'
@@ -58,12 +59,7 @@ export const onSwipedYHandler = (
   setSwipeDownY: (i: number) => void,
   ignoreSwipeAviliable = false,
 ): void => {
-  const {
-    optionsData: options,
-    swipeThreshold,
-    swipeUpAviliable,
-    swipeDownAviliable,
-  } = store
+  const { optionsData: options, swipeThreshold, swipeUpAviliable, swipeDownAviliable } = store
 
   if (options.direction === 'bottom') {
     const swipeDonwY = parseInt(ev.absY, 10)
@@ -71,10 +67,7 @@ export const onSwipedYHandler = (
     if (swipeDonwY < swipeThreshold) {
       setSwipeDownY(0)
       store.mark({ canBeClose: false })
-    } else if (
-      ev.dir === 'Down' &&
-      (swipeDownAviliable || ignoreSwipeAviliable)
-    ) {
+    } else if (ev.dir === 'Down' && (swipeDownAviliable || ignoreSwipeAviliable)) {
       closeDrawer()
       setSwipeDownY(null)
     }
@@ -111,21 +104,13 @@ export const onSwipingYHandler = (
 ): void => {
   // when top/bottom has no content, the whole panel can be swipeable
   // like tiktok style
-  const {
-    swipeThreshold,
-    optionsData: options,
-    swipeUpAviliable,
-    swipeDownAviliable,
-  } = store
+  const { swipeThreshold, optionsData: options, swipeUpAviliable, swipeDownAviliable } = store
 
   if ((ignoreSwipeAviliable || swipeUpAviliable) && ev.dir === 'Up') {
     const swipeUpY = parseInt(ev.absY, 10)
     setSwipeUpY(swipeUpY)
 
-    if (
-      ignoreSwipeAviliable ||
-      (swipeUpAviliable && options.direction !== 'bottom')
-    ) {
+    if (ignoreSwipeAviliable || (swipeUpAviliable && options.direction !== 'bottom')) {
       swipeUpY >= swipeThreshold ? handleClearEffect() : handleRestoreEffect()
     }
   }
@@ -134,10 +119,7 @@ export const onSwipingYHandler = (
     const swipeDonwY = parseInt(ev.absY, 10)
     setSwipeDownY(swipeDonwY)
 
-    if (
-      ignoreSwipeAviliable ||
-      (swipeDownAviliable && options.direction !== 'top')
-    ) {
+    if (ignoreSwipeAviliable || (swipeDownAviliable && options.direction !== 'top')) {
       swipeDonwY >= swipeThreshold ? handleClearEffect() : handleRestoreEffect()
     }
   }

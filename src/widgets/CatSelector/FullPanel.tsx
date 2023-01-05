@@ -1,18 +1,11 @@
 import { FC, memo } from 'react'
 
-import { ARTICLE_CAT } from '@/constant'
-
 import type { TArticleCat } from '@/spec'
+import { ARTICLE_CAT } from '@/constant/gtd'
+
 import { Trans } from '@/utils/i18n'
 
-import {
-  Wrapper,
-  SelectItem,
-  Icon,
-  RightPart,
-  Title,
-  Desc,
-} from './styles/full_panel'
+import { Wrapper, SelectItem, Icon, RightPart, Title, Desc } from './styles/full_panel'
 
 type TProps = {
   activeCat: TArticleCat
@@ -27,12 +20,7 @@ const DESC = {
 }
 
 const FullPanel: FC<TProps> = ({ activeCat, onSelect }) => {
-  const OPTIONS = [
-    ARTICLE_CAT.FEATURE,
-    ARTICLE_CAT.BUG,
-    ARTICLE_CAT.QUESTION,
-    ARTICLE_CAT.OTHER,
-  ]
+  const OPTIONS = [ARTICLE_CAT.FEATURE, ARTICLE_CAT.BUG, ARTICLE_CAT.QUESTION, ARTICLE_CAT.OTHER]
 
   return (
     <Wrapper>
@@ -40,11 +28,7 @@ const FullPanel: FC<TProps> = ({ activeCat, onSelect }) => {
         const OptIcon = Icon[cat]
 
         return (
-          <SelectItem
-            key={cat}
-            active={activeCat === cat}
-            onClick={() => onSelect(cat)}
-          >
+          <SelectItem key={cat} active={activeCat === cat} onClick={() => onSelect(cat)}>
             <OptIcon />
             <RightPart>
               <Title>{Trans(cat)}</Title>

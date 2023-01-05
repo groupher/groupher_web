@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import Link from 'next/link'
 
-import { ROUTE } from '@/constant'
+import { ROUTE } from '@/constant/route'
 // import { callSubscriber, callAuth } from '@/utils/signal'
 import { callAuth } from '@/utils/signal'
 

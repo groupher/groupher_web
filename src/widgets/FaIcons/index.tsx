@@ -9,7 +9,7 @@ import { FC, memo } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 
-import { COLORS } from '@/constant'
+import { COLORS } from '@/constant/colors'
 import type { TSpace, TColorName } from '@/spec'
 import { buildLog } from '@/utils/logger'
 

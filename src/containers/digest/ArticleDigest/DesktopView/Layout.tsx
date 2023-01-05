@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 import type { TArticle, TMetric, TThread } from '@/spec'
 
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 
 import PostLayout from './PostLayout'
 

@@ -7,10 +7,11 @@
 import { FC, ReactNode, useEffect, useState } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
+import { TOPBAR_LAYOUT } from '@/constant/layout'
+
 import type { TSEO, TMetric } from '@/spec'
 import { bond } from '@/utils/mobx'
 
-import { TOPBAR_LAYOUT } from '@/constant'
 import ThemePalette from '@/containers/layout/ThemePalette'
 // import BannerNotify from '@/widgets/BannerNotify'
 import Footer from '@/widgets/Footer'

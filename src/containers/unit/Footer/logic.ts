@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import type { TMetric } from '@/spec'
-import { EVENT } from '@/constant'
+import EVENT from '@/constant/event'
 
 import asyncSuit from '@/utils/async'
 import { Global } from '@/utils/helper'
@@ -23,8 +23,7 @@ const sr71$ = new SR71({
 let sub$ = null
 let store: TStore | undefined
 
-export const toggleSponsorHelper = (): void =>
-  store.mark({ showSponsor: !store.showSponsor })
+export const toggleSponsorHelper = (): void => store.mark({ showSponsor: !store.showSponsor })
 
 export const onLogin = (): void => store.authWarning({ hideToast: true })
 export const queryDoraemon = (data): void => send(EVENT.QUERY_DORAMON, { data })

@@ -8,7 +8,7 @@ import { FC, memo } from 'react'
 
 import { scrollToHeader, scrollDrawerToTop } from '@/utils/dom'
 
-import { SVG } from '@/constant'
+import SVG from '@/constant/svg'
 import IconButton from '@/widgets/Buttons/IconButton'
 
 import { Wrapper } from './styles'

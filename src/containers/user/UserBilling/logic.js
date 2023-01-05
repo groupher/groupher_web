@@ -1,7 +1,11 @@
 import { useEffect } from 'react'
 
 import { PAGE_SIZE } from '@/config'
-import { EVENT, ERR, PAYMENT_USAGE } from '@/constant'
+
+import { PAYMENT_USAGE } from '@/constant/payment'
+import EVENT from '@/constant/event'
+import ERR from '@/constant/err'
+
 import { asyncSuit, buildLog, errRescue } from '@/utils'
 
 import S from './schema'
@@ -52,8 +56,7 @@ const ErrSolver = [
   },
   {
     match: asyncErr(ERR.TIMEOUT),
-    action: ({ details }) =>
-      errRescue({ type: ERR.TIMEOUT, details, path: 'UserBilling' }),
+    action: ({ details }) => errRescue({ type: ERR.TIMEOUT, details, path: 'UserBilling' }),
   },
   {
     match: asyncErr(ERR.NETWORK),

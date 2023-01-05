@@ -1,4 +1,4 @@
-import { FILTER } from '@/constant'
+import FILTER from '@/constant/filter'
 import { T } from '@/utils/mobx'
 
 export const ArticlesFilter = T.model('ArticlesFilter', {

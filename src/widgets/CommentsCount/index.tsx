@@ -1,7 +1,7 @@
 import { FC, memo, Fragment } from 'react'
 
 import type { TSizeSM } from '@/spec'
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 
 import { Space } from '@/widgets/Common'
 

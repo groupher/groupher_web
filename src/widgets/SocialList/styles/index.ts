@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import Link from 'next/link'
 
 import type { TActive, TTestable, TSpace } from '@/spec'
-import { SOCIAL_LIST } from '@/constant'
+import SOCIAL_LIST from '@/constant/social'
 
 import css, { theme } from '@/utils/css'
 

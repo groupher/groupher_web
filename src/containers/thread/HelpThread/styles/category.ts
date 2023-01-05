@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { COLORS } from '@/constant'
+import { COLORS } from '@/constant/colors'
 import type { TColorName, TTestable } from '@/spec'
 import css, { theme } from '@/utils/css'
 

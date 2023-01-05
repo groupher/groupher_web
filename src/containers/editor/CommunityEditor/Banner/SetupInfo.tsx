@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 import { nilOrEmpty } from '@/utils/validator'
 
 import OSSUploader from '@/widgets/OSSUploader'
@@ -68,12 +68,7 @@ const SetupInfo: FC<TProps> = ({ status, validState }) => {
       </InfoWrapper>
 
       <NextBtn>
-        <ArrowButton
-          size={SIZE.MEDIUM}
-          direction="left"
-          onClick={pervStep}
-          dimWhenIdle
-        >
+        <ArrowButton size={SIZE.MEDIUM} direction="left" onClick={pervStep} dimWhenIdle>
           上一步
         </ArrowButton>
         <Space right={30} />

@@ -2,7 +2,8 @@ import { useEffect } from 'react'
 // import { } from 'ramda'
 
 import type { TEditValue, TTag } from '@/spec'
-import { COLOR_NAME, EVENT } from '@/constant'
+import { COLOR_NAME } from '@/constant/colors'
+import EVENT from '@/constant/event'
 
 import { buildLog } from '@/utils/logger'
 import { updateEditing, toJS } from '@/utils/mobx'

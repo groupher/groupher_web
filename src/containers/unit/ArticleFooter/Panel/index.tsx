@@ -7,7 +7,7 @@
 import { FC, memo, useState, useCallback } from 'react'
 
 import type { TAccount } from '@/spec'
-import { SVG } from '@/constant'
+import SVG from '@/constant/svg'
 import { buildLog } from '@/utils/logger'
 
 import Tabs from '@/widgets/Switcher/Tabs'
@@ -18,12 +18,7 @@ import AuthorInfo from './AuthorInfo'
 import ActivityInfo from './ActivityInfo'
 import ReferenceInfo from './ReferenceInfo'
 
-import {
-  Wrapper,
-  TabsWrapper,
-  ReportWrapper,
-  ContentWrapper,
-} from '../styles/panel'
+import { Wrapper, TabsWrapper, ReportWrapper, ContentWrapper } from '../styles/panel'
 
 // import { onFollow, undoFollow } from '../logic'
 

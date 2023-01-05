@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TSizeSM } from '@/spec'
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 import { buildLog } from '@/utils/logger'
 
 import { Wrapper, Track, Indicator, CheckIcon } from './styles/toggle_switch'
@@ -14,11 +14,7 @@ type TProps = {
   onChange?: (checked: boolean) => void
 }
 
-const ToggleSwitch: FC<TProps> = ({
-  size = SIZE.SMALL,
-  checked = false,
-  onChange = log,
-}) => {
+const ToggleSwitch: FC<TProps> = ({ size = SIZE.SMALL, checked = false, onChange = log }) => {
   return (
     <Wrapper onClick={() => onChange(!checked)} size={size}>
       <Track checked={checked}>

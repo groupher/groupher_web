@@ -1,4 +1,4 @@
-import { C11N } from '@/constant'
+import C11N from '@/constant/c11n'
 import { T } from '@/utils/mobx'
 
 import { Community /* PagedCommunities */ } from './Community'

@@ -5,7 +5,7 @@
 
 import { FC } from 'react'
 
-import { CHANGELOG_LAYOUT } from '@/constant'
+import { CHANGELOG_LAYOUT } from '@/constant/layout'
 import { bond } from '@/utils/mobx'
 
 import ChangelogItem from '@/widgets/ChangelogItem'

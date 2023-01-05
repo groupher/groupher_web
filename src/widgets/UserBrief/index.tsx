@@ -6,7 +6,8 @@
 import { FC, memo, Fragment } from 'react'
 
 import type { TUser, TPagedCommunities } from '@/spec'
-import { EVENT, TYPE } from '@/constant'
+import EVENT from '@/constant/event'
+import TYPE from '@/constant/type'
 
 import { buildLog } from '@/utils/logger'
 import { send } from '@/utils/signal'

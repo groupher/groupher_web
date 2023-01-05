@@ -4,7 +4,9 @@ import { Provider } from 'mobx-react'
 
 import type { TCommunity } from '@/spec'
 import { PAGE_SIZE } from '@/config'
-import { HCN, THREAD, METRIC } from '@/constant'
+import { HCN } from '@/constant/name'
+import { THREAD } from '@/constant/thread'
+import METRIC from '@/constant/metric'
 import { useStore } from '@/stores/init'
 
 import {
@@ -78,10 +80,7 @@ const loader = async (context, opt = {}) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { res } = context
 
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=59',
-  )
+  res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
 
   let resp
   try {

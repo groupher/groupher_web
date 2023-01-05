@@ -5,7 +5,13 @@
 import { FC, memo } from 'react'
 
 import type { TSizeSM, TC11NLayout } from '@/spec'
-import { HCN, ANCHOR, THREAD, C11N, SIZE } from '@/constant'
+
+import SIZE from '@/constant/size'
+import { THREAD } from '@/constant/thread'
+import { ANCHOR } from '@/constant/dom'
+import C11N from '@/constant/c11n'
+import { HCN } from '@/constant/name'
+
 import { sortByIndex } from '@/utils/helper'
 import { buildLog } from '@/utils/logger'
 

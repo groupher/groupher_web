@@ -8,7 +8,7 @@ import { FC } from 'react'
 import Head from 'next/head'
 
 import type { TMetric } from '@/spec'
-// import { METRIC } from '@/constant'
+// import  METRIC  from '@/constant/metric'
 
 type TProps = {
   metric: TMetric

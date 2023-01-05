@@ -8,32 +8,19 @@ import React from 'react'
 import T from 'prop-types'
 
 import { ICON_CMD } from '@/config'
-import { THREAD } from '@/constant'
+import { THREAD } from '@/constant/thread'
 import { buildLog } from '@/utils/logger'
 import { Trans } from '@/utils/i18n'
 
 import Tooltip from '@/widgets/Tooltip'
 import Panel from './Panel'
 
-import {
-  Wrapper,
-  Label,
-  BoxedLabel,
-  LabelIcon,
-  LabelText,
-  LabelCount,
-} from './styles'
+import { Wrapper, Label, BoxedLabel, LabelIcon, LabelText, LabelCount } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:ThreadSelector:index')
 
-const ThreadSelector = ({
-  options,
-  active,
-  onSelect,
-  totalCount,
-  lookLike,
-}) => (
+const ThreadSelector = ({ options, active, onSelect, totalCount, lookLike }) => (
   <Wrapper>
     <Tooltip
       placement="right"

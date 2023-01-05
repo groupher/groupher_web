@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TArticle } from '@/spec'
-import { REPORT_TYPE } from '@/constant'
+import { REPORT_TYPE } from '@/constant/report'
 import { ICON } from '@/config'
 
 import type { TREPORT_ITEM, TView } from './spec'

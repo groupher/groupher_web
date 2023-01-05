@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import styled from 'styled-components'
 
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 import css, { theme } from '@/utils/css'
 
 export { NoLinkItem } from './article_layout'

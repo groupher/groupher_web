@@ -2,7 +2,8 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { Provider } from 'mobx-react'
 
-import { ARTICLE_THREAD, METRIC } from '@/constant'
+import { ARTICLE_THREAD } from '@/constant/thread'
+import METRIC from '@/constant/metric'
 
 import { articleSEO, makeGQClient } from '@/utils'
 import { useStore } from '@/stores/init'

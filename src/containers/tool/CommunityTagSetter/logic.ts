@@ -2,10 +2,11 @@ import { useEffect } from 'react'
 import { isEmpty } from 'ramda'
 
 import type { TCommunity, TTag, TInput, TThread } from '@/spec'
-import { errRescue } from '@/utils/signal'
-import { ERR, EVENT } from '@/constant'
-import { buildLog } from '@/utils/logger'
+import EVENT from '@/constant/event'
+import ERR from '@/constant/err'
 import asyncSuit from '@/utils/async'
+import { errRescue } from '@/utils/signal'
+import { buildLog } from '@/utils/logger'
 
 import S from './schema'
 import { TYPE, COMMUNITY_STYLE } from './constant'
@@ -44,10 +45,7 @@ export const communityOnSearch = (e: TInput): void => {
   doSearchCommunities()
 }
 
-export const toggleCommunity = (
-  community: TCommunity,
-  checked: boolean,
-): void => {
+export const toggleCommunity = (community: TCommunity, checked: boolean): void => {
   const { type, selectCommunity, undoSelectCommunity } = store
   const { raw } = community
 
@@ -160,8 +158,7 @@ const DataSolver = [
     match: asyncRes(EVENT.SELECT_COMMUNITY),
     action: (data) => {
       log('收到 SELECT_COMMUNITY: ', data)
-      const communityStyle =
-        data[EVENT.SELECT_COMMUNITY].communityStyle || COMMUNITY_STYLE.NORMAL
+      const communityStyle = data[EVENT.SELECT_COMMUNITY].communityStyle || COMMUNITY_STYLE.NORMAL
       store.mark({ show: true, type: TYPE.SELECT_COMMUNITY, communityStyle })
     },
   },
@@ -200,10 +197,7 @@ const ErrSolver = [
 // init & uninit handlers
 // ###############################
 
-export const useInit = (
-  _store: TStore,
-  selectedCommunity: TCommunity,
-): void => {
+export const useInit = (_store: TStore, selectedCommunity: TCommunity): void => {
   useEffect(() => {
     store = _store
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))

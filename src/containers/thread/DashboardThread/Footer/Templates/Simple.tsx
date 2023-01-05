@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import type { TActive } from '@/spec'
-import { FOOTER_LAYOUT } from '@/constant'
+import { FOOTER_LAYOUT } from '@/constant/layout'
 
 import {
   Wrapper,

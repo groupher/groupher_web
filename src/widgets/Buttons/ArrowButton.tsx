@@ -8,7 +8,7 @@ import { FC, ReactNode, memo } from 'react'
 
 import type { TSize } from '@/spec'
 import { ICON } from '@/config'
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 import { buildLog } from '@/utils/logger'
 
 import { Wrapper, Text, LeftIcon, RightIcon } from './styles/arrow_button'
@@ -36,9 +36,7 @@ const ArrowButton: FC<TProps> = ({
   disabled = false,
 }) => {
   const iconSrc =
-    arrowStyle === 'default'
-      ? `${ICON}/shape/arrow.svg`
-      : `${ICON}/shape/arrow-simple.svg`
+    arrowStyle === 'default' ? `${ICON}/shape/arrow.svg` : `${ICON}/shape/arrow-simple.svg`
 
   return (
     <Wrapper

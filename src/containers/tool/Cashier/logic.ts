@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 import { isEmpty } from 'ramda'
 
-import { EVENT, ERR } from '@/constant'
+import EVENT from '@/constant/event'
+import ERR from '@/constant/err'
 
 import asyncSuit from '@/utils/async'
 import { errorForHuman } from '@/utils/errors'
@@ -28,11 +29,9 @@ const log = buildLog('L:Cashier')
 export const sidebarViewOnChange = (sidebarView): void =>
   store.mark({ sidebarView, contentView: sidebarView })
 
-export const paymentMethodOnChange = (paymentMethod): void =>
-  store.mark({ paymentMethod })
+export const paymentMethodOnChange = (paymentMethod): void => store.mark({ paymentMethod })
 
-export const subContentViewOnChange = (subContentView): void =>
-  store.mark({ subContentView })
+export const subContentViewOnChange = (subContentView): void => store.mark({ subContentView })
 
 export const transferAccountChange = ({ target: { value } }) =>
   store.mark({ transferAccount: value })
@@ -86,13 +85,11 @@ const DataSolver = [
 const ErrSolver = [
   {
     match: asyncErr(ERR.GRAPHQL),
-    action: ({ details }) =>
-      toast('error', `提交失败: ${errorForHuman(details)}`),
+    action: ({ details }) => toast('error', `提交失败: ${errorForHuman(details)}`),
   },
   {
     match: asyncErr(ERR.TIMEOUT),
-    action: ({ details }) =>
-      errRescue({ type: ERR.TIMEOUT, details, path: 'Cashier' }),
+    action: ({ details }) => errRescue({ type: ERR.TIMEOUT, details, path: 'Cashier' }),
   },
   {
     match: asyncErr(ERR.NETWORK),

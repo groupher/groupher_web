@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import type { TBrandLayout } from '@/spec'
 
-import { BRAND_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant'
+import { BRAND_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { callDashboardDesc } from '@/utils/signal'
 
 import { Space, Divider, Inline } from '@/widgets/Common'

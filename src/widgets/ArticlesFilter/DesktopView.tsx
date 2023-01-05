@@ -8,7 +8,9 @@ import { FC, Fragment, memo, useState } from 'react'
 
 import type { TArticleFilter, TResState, TArticleCat } from '@/spec'
 
-import { TYPE, THREAD, ARTICLE_CAT } from '@/constant'
+import { ARTICLE_CAT } from '@/constant/gtd'
+import TYPE from '@/constant/type'
+
 import { buildLog } from '@/utils/logger'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'

@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 // import { } from 'ramda'
 
 import { buildLog } from '@/utils/logger'
-import { EVENT } from '@/constant'
+import EVENT from '@/constant/event'
 import asyncSuit from '@/utils/async'
 
 // import S from './schma'

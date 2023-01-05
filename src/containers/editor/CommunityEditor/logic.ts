@@ -2,7 +2,8 @@ import { useEffect } from 'react'
 import { pick } from 'ramda'
 
 import type { TEditValue } from '@/spec'
-import { EVENT, ERR } from '@/constant'
+import EVENT from '@/constant/event'
+import ERR from '@/constant/err'
 import { asyncSuit, buildLog, errRescue, updateEditing } from '@/utils'
 
 import type { TStore } from './store'

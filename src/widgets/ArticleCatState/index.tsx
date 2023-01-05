@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import type { TSpace, TArticleCat, TArticleState } from '@/spec'
-import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import { buildLog } from '@/utils/logger'
 
 import State from './State'

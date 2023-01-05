@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import type { TKanbanLayout } from '@/spec'
 
-import { KANBAN_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant'
+import { KANBAN_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { callDashboardDesc } from '@/utils/signal'
 
 import { Row, Br, Space, SpaceGrow, Inline } from '@/widgets/Common'

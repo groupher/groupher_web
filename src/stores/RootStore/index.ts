@@ -10,7 +10,7 @@ import { merge, pickBy } from 'ramda'
 
 import type { TAccount, TRoute, TThread, TArticle } from '@/spec'
 
-import { EVENT } from '@/constant'
+import EVENT from '@/constant/event'
 import { T, markStates, Instance } from '@/utils/mobx'
 import { toast } from '@/utils/helper'
 import { send } from '@/utils/signal'

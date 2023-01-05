@@ -1,5 +1,6 @@
 import { concat, keys, reduce, contains } from 'ramda'
-import { TYPE, ARTICLE_THREAD } from '@/constant'
+import TYPE from '@/constant/type'
+import { ARTICLE_THREAD } from '@/constant/thread'
 
 type Options = {
   position?: 'H' | 'M' | 'L'
@@ -71,11 +72,7 @@ const M_TRANSLATE = '100%'
  * @param {object} options
  * @returns
  */
-export const getDim = (
-  swipeUpY: number,
-  swipeDownY: number,
-  options: Options,
-): string => {
+export const getDim = (swipeUpY: number, swipeDownY: number, options: Options): string => {
   const threshold = SWIPE_THRESHOLD[options.direction][options.position]
 
   if (options.direction === 'bottom') {
@@ -141,9 +138,7 @@ export const getTransform = (
   switch (options.direction) {
     case 'top': {
       // return visible ? 'translate(0, 0)' : 'translate(0, -80%)'
-      return visible
-        ? `translate(0px, ${getTopPosition(swipeUpY, options)})`
-        : 'translate(0, -80%)'
+      return visible ? `translate(0px, ${getTopPosition(swipeUpY, options)})` : 'translate(0, -80%)'
     }
 
     case 'bottom': {
@@ -159,10 +154,7 @@ export const getTransform = (
 }
 
 // only for mobile
-export const getContentLinearGradient = (
-  options: Options,
-  bgColor: string,
-): string => {
+export const getContentLinearGradient = (options: Options, bgColor: string): string => {
   if (options.direction === 'bottom') {
     return `linear-gradient(0deg,${bgColor} calc(100% - 30px),transparent 30px)`
   }

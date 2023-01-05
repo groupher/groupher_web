@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import type { TPostLayout } from '@/spec'
 
-import { POST_LAYOUT } from '@/constant'
+import { POST_LAYOUT } from '@/constant/layout'
 
 import { Row, Br, Space, SpaceGrow } from '@/widgets/Common'
 import CheckLabel from '@/widgets/CheckLabel'

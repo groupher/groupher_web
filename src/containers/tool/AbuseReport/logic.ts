@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 
-import { TYPE, EVENT } from '@/constant'
+import EVENT from '@/constant/event'
+import TYPE from '@/constant/type'
+
 import asyncSuit from '@/utils/async'
 import { buildLog } from '@/utils/logger'
 

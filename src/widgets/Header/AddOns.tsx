@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TAccount } from '@/spec'
-import { EVENT } from '@/constant'
+import EVENT from '@/constant/event'
 
 import { send, c11nSettings } from '@/utils/signal'
 
@@ -38,10 +38,7 @@ const AddOns: FC<TProps> = ({ accountInfo }) => {
       </div>
       <Divider>&nbsp;</Divider>
       <Operations>
-        <Search
-          onClick={() => send(EVENT.QUERY_DORAMON)}
-          testid="header-search"
-        >
+        <Search onClick={() => send(EVENT.QUERY_DORAMON)} testid="header-search">
           <HeaderSearchIcon testid="header-search-icon" />
         </Search>
 

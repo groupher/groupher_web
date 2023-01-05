@@ -5,7 +5,7 @@ import QRCode from 'qrcode.react'
 import type { TMenuOption } from '@/spec'
 
 import { ICON } from '@/config'
-import { SVG } from '@/constant'
+import SVG from '@/constant/svg'
 import { cutRest } from '@/utils/fmt'
 
 import {
@@ -52,12 +52,7 @@ type TProps = {
   onClick?: (key?: string) => void
 }
 
-const Menu: FC<TProps> = ({
-  options,
-  extraOptions,
-  onClick,
-  panelMinWidth,
-}) => {
+const Menu: FC<TProps> = ({ options, extraOptions, onClick, panelMinWidth }) => {
   return (
     <Wrapper panelMinWidth={panelMinWidth}>
       {options.map((item) => (
@@ -72,11 +67,7 @@ const Menu: FC<TProps> = ({
       ))}
       {!isEmpty(extraOptions) && <Divider />}
       {extraOptions.map((item) => (
-        <OptionBlock
-          key={item.key}
-          item={item}
-          onClick={() => onClick(item.key)}
-        />
+        <OptionBlock key={item.key} item={item} onClick={() => onClick(item.key)} />
       ))}
     </Wrapper>
   )

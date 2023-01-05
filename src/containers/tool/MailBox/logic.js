@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 
-import { TYPE, EVENT, ERR } from '@/constant'
+import ERR from '@/constant/err'
+import EVENT from '@/constant/event'
+import TYPE from '@/constant/type'
 import { asyncSuit, buildLog, send, errRescue } from '@/utils'
 
 import S from './schema'
@@ -36,8 +38,7 @@ export const visibleOnChange = () => {
   loadMentions()
 }
 
-export const seeAll = () =>
-  send(EVENT.DRAWER.OPEN, { type: TYPE.DRAWER.MAILS_VIEW })
+export const seeAll = () => send(EVENT.DRAWER.OPEN, { type: TYPE.DRAWER.MAILS_VIEW })
 
 const markLoading = (maybe = true) => store.mark({ loading: maybe })
 
@@ -72,8 +73,7 @@ const ErrSolver = [
   },
   {
     match: asyncErr(ERR.TIMEOUT),
-    action: ({ details }) =>
-      errRescue({ type: ERR.TIMEOUT, details, path: 'MailBox' }),
+    action: ({ details }) => errRescue({ type: ERR.TIMEOUT, details, path: 'MailBox' }),
   },
   {
     match: asyncErr(ERR.NETWORK),

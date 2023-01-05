@@ -6,7 +6,8 @@
 import { FC } from 'react'
 
 import { bond } from '@/utils/mobx'
-import { VIEW, DRAWER_SCROLLER } from '@/constant'
+import { DRAWER_SCROLLER } from '@/constant/dom'
+import VIEW from '@/constant/view'
 
 import Tabs from '@/widgets/Switcher/Tabs'
 import CustomScroller from '@/widgets/CustomScroller'
@@ -37,12 +38,7 @@ const WallpaperEditorContainer: FC<TProps> = ({
     <Wrapper testid={testid}>
       <Banner>
         <Title>壁纸设置</Title>
-        <Tabs
-          items={TAB_OPTIONS}
-          activeKey={tab}
-          onChange={changeTab}
-          view={VIEW.DRAWER}
-        />
+        <Tabs items={TAB_OPTIONS} activeKey={tab} onChange={changeTab} view={VIEW.DRAWER} />
       </Banner>
 
       <CustomScroller
@@ -58,10 +54,7 @@ const WallpaperEditorContainer: FC<TProps> = ({
           {tab === TAB.CUSTOM && <Custom />}
         </Content>
       </CustomScroller>
-      <Footer
-        wallpaperType={wallpaperData.wallpaperType}
-        isTouched={isTouched}
-      />
+      <Footer wallpaperType={wallpaperData.wallpaperType} isTouched={isTouched} />
     </Wrapper>
   )
 }

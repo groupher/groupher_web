@@ -7,7 +7,7 @@
 import React from 'react'
 
 import { ICON_CMD } from '@/config'
-import { C11N } from '@/constant'
+import C11N from '@/constant/c11n'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
@@ -37,11 +37,7 @@ const UserSettingsContainer = ({ userSettings: store }) => {
             iconSrc={`${ICON_CMD}/setting_theme.svg`}
             desc="如果你有更好的配色灵感，欢迎反馈给社区。"
           />
-          <ThemeSelector
-            curTheme={curTheme}
-            changeTheme={changeTheme}
-            displayStyle="card"
-          />
+          <ThemeSelector curTheme={curTheme} changeTheme={changeTheme} displayStyle="card" />
           <SectionLabel
             title="顶部视图"
             iconSrc={`${ICON_CMD}/setting_banner.svg`}

@@ -1,7 +1,8 @@
 import { FC, memo } from 'react'
 
-import { EVENT, UPVOTE_LAYOUT } from '@/constant'
 import type { TPost } from '@/spec'
+import { UPVOTE_LAYOUT } from '@/constant/layout'
+import EVENT from '@/constant/event'
 
 import { send } from '@/utils/signal'
 

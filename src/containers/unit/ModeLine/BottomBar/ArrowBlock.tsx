@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 import type { TCommunity } from '@/spec'
 import { ICON } from '@/config'
-import { TYPE } from '@/constant'
+import TYPE from '@/constant/type'
 
 import CommunityInfo from './CommunityInfo'
 import MainBlockInfo from './MainBlockInfo'
@@ -58,11 +58,7 @@ export const CommunityBlock: FC<TCommunityBlock> = ({
       bgColor={viewerHasSubscribed ? activeBgColor : bgColor}
       onClick={() => onClick()}
     >
-      <CommunityInfo
-        community={community}
-        isExpand={isExpand}
-        isArticle={isArticle}
-      />
+      <CommunityInfo community={community} isExpand={isExpand} isArticle={isArticle} />
       <ArrowShape bgColor={viewerHasSubscribed ? activeBgColor : bgColor} />
     </CommunityWrapper>
   )
@@ -83,10 +79,7 @@ export const ExploreBlock: FC = () => {
   const bgColor = '#071f27'
 
   return (
-    <ExploreWrapper
-      bgColor={bgColor}
-      onClick={() => openMenu(TYPE.MM_TYPE.EXPLORE)}
-    >
+    <ExploreWrapper bgColor={bgColor} onClick={() => openMenu(TYPE.MM_TYPE.EXPLORE)}>
       <ArrowShapeLeft bgColor={bgColor} />
       <ExploreLogo src={`${ICON}/discover.svg`} />
     </ExploreWrapper>

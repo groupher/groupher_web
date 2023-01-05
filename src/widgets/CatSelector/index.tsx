@@ -2,7 +2,7 @@ import { FC, memo, useState, Fragment } from 'react'
 import dynamic from 'next/dynamic'
 
 import type { TArticleCatMode, TArticleCat } from '@/spec'
-import { ARTICLE_CAT, ARTICLE_CAT_MODE } from '@/constant'
+import { ARTICLE_CAT, ARTICLE_CAT_MODE } from '@/constant/gtd'
 
 import Tooltip from '@/widgets/Tooltip'
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
@@ -20,11 +20,7 @@ type TProps = {
   onSelect: (cat: TArticleCat) => void
 }
 
-const CatSelector: FC<TProps> = ({
-  mode = ARTICLE_CAT_MODE.FILTER,
-  activeCat,
-  onSelect,
-}) => {
+const CatSelector: FC<TProps> = ({ mode = ARTICLE_CAT_MODE.FILTER, activeCat, onSelect }) => {
   const [show, setShow] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -60,11 +56,7 @@ const CatSelector: FC<TProps> = ({
         }
       >
         <DropdownButton>
-          {activeCat === ARTICLE_CAT.ALL ? (
-            '全部'
-          ) : (
-            <ActiveLabel cat={activeCat} />
-          )}
+          {activeCat === ARTICLE_CAT.ALL ? '全部' : <ActiveLabel cat={activeCat} />}
         </DropdownButton>
       </Tooltip>
     </Wrapper>

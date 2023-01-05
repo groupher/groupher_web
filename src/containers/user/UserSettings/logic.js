@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { EVENT } from '@/constant'
+import EVENT from '@/constant/event'
 import { asyncSuit, buildLog, send } from '@/utils'
 
 /* eslint-disable-next-line */

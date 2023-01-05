@@ -1,4 +1,4 @@
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 import type { TAvatarSize } from '../spec'
 
 /**
@@ -21,10 +21,7 @@ export const getLiSize = (size: TAvatarSize): string => {
   }
 }
 
-export const getAvatarSize = (
-  size: string,
-  fmt = 'string',
-): string | number => {
+export const getAvatarSize = (size: string, fmt = 'string'): string | number => {
   switch (size) {
     case SIZE.SMALL: {
       return fmt === 'string' ? '22px' : 22

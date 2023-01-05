@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 
 import type { TScrollDirection } from '@/spec'
-import { EVENT, ERR } from '@/constant'
+import EVENT from '@/constant/event'
+import ERR from '@/constant/err'
 import asyncSuit from '@/utils/async'
 import { send, errRescue } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
@@ -88,8 +89,7 @@ const ErrSolver = [
   },
   {
     match: asyncErr(ERR.TIMEOUT),
-    action: ({ details }) =>
-      errRescue({ type: ERR.TIMEOUT, details, path: 'AccountEditor' }),
+    action: ({ details }) => errRescue({ type: ERR.TIMEOUT, details, path: 'AccountEditor' }),
   },
   {
     match: asyncErr(ERR.NETWORK),
@@ -100,10 +100,7 @@ const ErrSolver = [
 // ###############################
 // init & uninit
 // ###############################
-export const useInit = (
-  _store: TStore,
-  scrollDirection: TScrollDirection,
-): void => {
+export const useInit = (_store: TStore, scrollDirection: TScrollDirection): void => {
   useEffect(() => {
     store = _store
     // log('effect init')

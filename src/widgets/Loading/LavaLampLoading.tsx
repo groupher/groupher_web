@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 import { range, merge } from 'ramda'
 
 import type { TSpace, TSizeTSM } from '@/spec'
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 
 import { Wrapper, Container, Circle } from './styles/lava_lamp_loading'
 

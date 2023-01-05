@@ -1,4 +1,4 @@
-import { REPORT } from '@/constant'
+import { REPORT } from '@/constant/report'
 
 const items = [
   {
@@ -24,15 +24,13 @@ const items = [
     title: '侵权内容',
     raw: REPORT.VIOLATION,
     checked: false,
-    detail:
-      '包括但不限于盗版话题讨论，未授权转载，人身攻击，无根据造谣等内容。',
+    detail: '包括但不限于盗版话题讨论，未授权转载，人身攻击，无根据造谣等内容。',
   },
   {
     title: '劣质问题',
     raw: REPORT.ARTICLE.BAD_QUESTION,
     checked: false,
-    detail:
-      '求助类问题没有明确的上下文信息，或所提问题过于宽泛、空洞。比如：怎样学习操作系统 ? ',
+    detail: '求助类问题没有明确的上下文信息，或所提问题过于宽泛、空洞。比如：怎样学习操作系统 ? ',
   },
   {
     title: '违法违规',

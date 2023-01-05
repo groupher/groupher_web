@@ -6,7 +6,7 @@ import { FC, memo, Fragment, useState } from 'react'
 
 import type { TCommunity } from '@/spec'
 import { ICON } from '@/config'
-import { HCN } from '@/constant'
+import { HCN } from '@/constant/name'
 
 import { changeToCommunity } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'

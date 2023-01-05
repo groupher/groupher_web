@@ -12,19 +12,14 @@ import { trackWindowScroll } from 'react-lazy-load-image-component'
 import type { TUser, TSize } from '@/spec'
 import type { TAvatarSize } from './spec'
 import { AVATARS_LIST_LENGTH } from '@/config'
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 import { buildLog } from '@/utils/logger'
 
 // import RealAvatar from './RealAvatar'
 import MoreItem from './MoreItem'
 
 import { getAvatarSize } from './styles/metric'
-import {
-  Wrapper,
-  AvatarsWrapper,
-  TotalOneOffset,
-  AvatarFallback,
-} from './styles'
+import { Wrapper, AvatarsWrapper, TotalOneOffset, AvatarFallback } from './styles'
 
 // @ts-ignore
 const RealAvatarContext = createContext()
@@ -38,12 +33,7 @@ export const RealAvatar = dynamic(() => import('./RealAvatar'), {
       size: TSize
     }
 
-    return (
-      <AvatarFallback
-        size={getAvatarSize(size, 'number') as number}
-        user={user}
-      />
-    )
+    return <AvatarFallback size={getAvatarSize(size, 'number') as number} user={user} />
   },
   ssr: false,
 })

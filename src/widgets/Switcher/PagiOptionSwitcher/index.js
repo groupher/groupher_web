@@ -7,7 +7,7 @@
 import React, { useMemo } from 'react'
 import T from 'prop-types'
 
-import { GALLERY } from '@/constant'
+import GALLERY from '@/constant/gallery'
 import { buildLog } from '@/utils/logger'
 
 import IconSwitcher from '../IconSwitcher'
@@ -55,11 +55,7 @@ const PagiOptionSwitcher = ({ title, items, activeKey, onChange }) => {
   return (
     <Wrapper testid="PagiOptionSwitcher">
       <Title>{title}</Title>
-      <IconSwitcher
-        items={mappedItems}
-        activeKey={activeKey}
-        onChange={onChange}
-      />
+      <IconSwitcher items={mappedItems} activeKey={activeKey} onChange={onChange} />
     </Wrapper>
   )
 }

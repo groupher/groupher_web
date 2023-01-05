@@ -1,7 +1,7 @@
 import { endsWith, includes } from 'ramda'
 import { limit, length } from 'stringz'
 
-import { THREAD } from '@/constant'
+import { THREAD } from '@/constant/thread'
 
 import { isString } from './validator'
 
