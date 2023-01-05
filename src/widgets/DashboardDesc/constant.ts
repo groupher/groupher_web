@@ -1,4 +1,4 @@
-import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/article_cat_state'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import { mockUsers } from '@/utils/mock'
 import { getRandomInt } from '@/utils/helper'
 

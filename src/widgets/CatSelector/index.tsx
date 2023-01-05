@@ -2,7 +2,7 @@ import { FC, memo, useState, Fragment } from 'react'
 import dynamic from 'next/dynamic'
 
 import type { TArticleCatMode, TArticleCat } from '@/spec'
-import { ARTICLE_CAT, ARTICLE_CAT_MODE } from '@/constant/article_cat_state'
+import { ARTICLE_CAT, ARTICLE_CAT_MODE } from '@/constant/gtd'
 
 import Tooltip from '@/widgets/Tooltip'
 import DropdownButton from '@/widgets/Buttons/DropdownButton'

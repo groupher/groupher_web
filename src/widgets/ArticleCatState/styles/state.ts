@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TArticleCat } from '@/spec'
-import { ARTICLE_CAT } from '@/constant/article_cat_state'
+import { ARTICLE_CAT } from '@/constant/gtd'
 
 import css, { theme } from '@/utils/css'
 

@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TArticle, TMetric, TThread } from '@/spec'
-import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/article_cat_state'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import METRIC from '@/constant/metric'
 
 import ArticleCatState from '@/widgets/ArticleCatState'

@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import type { TPost } from '@/spec'
-import { ARTICLE_CAT } from '@/constant/article_cat_state'
+import { ARTICLE_CAT } from '@/constant/gtd'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
 import { cutRest } from '@/utils/fmt'

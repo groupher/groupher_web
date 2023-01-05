@@ -2,7 +2,7 @@ import { memo, FC, Fragment } from 'react'
 import { includes } from 'ramda'
 
 import type { TPost } from '@/spec'
-import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/article_cat_state'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 
 import ArticleCatState from '@/widgets/ArticleCatState'
 

@@ -5,7 +5,7 @@
 import { FC, Fragment, memo } from 'react'
 
 import type { TPost, TMetric } from '@/spec'
-import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/article_cat_state'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import METRIC from '@/constant/metric'
 import { buildLog } from '@/utils/logger'
 

@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { includes } from 'ramda'
 
 import type { TCommunity, TPost } from '@/spec'
-import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/article_cat_state'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import EVENT from '@/constant/event'
 import { send } from '@/utils/signal'
 

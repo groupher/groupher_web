@@ -11,7 +11,7 @@ import { FC, Fragment, memo, useEffect, useState } from 'react'
 import type { TThread, TCommunity } from '@/spec'
 
 import EVENT from '@/constant/event'
-import { ARTICLE_CAT } from '@/constant/article_cat_state'
+import { ARTICLE_CAT } from '@/constant/gtd'
 
 import { buildLog } from '@/utils/logger'
 import { send } from '@/utils/signal'

@@ -5,7 +5,7 @@ import type { TWindow, TToastType, TToastOption, TArticleState } from '@/spec'
 import hotToast from 'react-hot-toast'
 
 import { TAG_COLOR_ORDER } from '@/config'
-import { ARTICLE_STATE } from '@/constant/article_cat_state'
+import { ARTICLE_STATE } from '@/constant/gtd'
 import DEFAULT_TOAST_OPTIONS from '@/constant/toast'
 
 type TSORTABLE_ITEMS = {

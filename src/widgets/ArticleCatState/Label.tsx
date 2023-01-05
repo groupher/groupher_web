@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import { ARTICLE_STATE, ARTICLE_CAT } from '@/constant/article_cat_state'
+import { ARTICLE_STATE, ARTICLE_CAT } from '@/constant/gtd'
 
 import { Trans } from '@/utils/i18n'
 import { isRejectedState } from '@/utils/helper'

@@ -8,7 +8,7 @@ import { FC, Fragment, memo, useState } from 'react'
 
 import type { TArticleFilter, TResState, TArticleCat } from '@/spec'
 
-import { ARTICLE_CAT } from '@/constant/article_cat_state'
+import { ARTICLE_CAT } from '@/constant/gtd'
 import TYPE from '@/constant/type'
 
 import { buildLog } from '@/utils/logger'

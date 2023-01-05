@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import { ARTICLE_STATE } from '@/constant/article_cat_state'
+import { ARTICLE_STATE } from '@/constant/gtd'
 
 import type { TProps as TArticleStateBadgeProps } from './index'
 

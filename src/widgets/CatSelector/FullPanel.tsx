@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TArticleCat } from '@/spec'
-import { ARTICLE_CAT } from '@/constant/article_cat_state'
+import { ARTICLE_CAT } from '@/constant/gtd'
 
 import { Trans } from '@/utils/i18n'
 

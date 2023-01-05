@@ -5,7 +5,7 @@
 import { FC } from 'react'
 
 import type { TEditMode, TMetric } from '@/spec'
-import { ARTICLE_CAT_MODE } from '@/constant/article_cat_state'
+import { ARTICLE_CAT_MODE } from '@/constant/gtd'
 import METRIC from '@/constant/metric'
 
 import { buildLog } from '@/utils/logger'

@@ -20,7 +20,7 @@ import type {
 
 import { T, getParent, markStates, toJS, Instance } from '@/utils/mobx'
 import { Community, Tag, User } from '@/model'
-import { ARTICLE_CAT } from '@/constant/article_cat_state'
+import { ARTICLE_CAT } from '@/constant/gtd'
 
 import type { TTexts, TEditData } from './spec'
 
