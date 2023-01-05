@@ -7,7 +7,7 @@ import { isNil } from 'ramda'
 // import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TScrollDirection, TMetric } from '@/spec'
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 import useScroll from '@/hooks/useScroll'
 
 import { buildLog } from '@/utils/logger'
@@ -18,11 +18,7 @@ import FixedHeader from './FixedHeader'
 import Layout from './Layout'
 
 import type { TStore } from '../store'
-import {
-  Wrapper,
-  InnerWrapper,
-  BannerContent,
-} from '../styles/desktop_view/index'
+import { Wrapper, InnerWrapper, BannerContent } from '../styles/desktop_view/index'
 import { useInit, inAnchor, outAnchor } from '../logic'
 
 /* eslint-disable-next-line */
@@ -53,18 +49,10 @@ const ArticleDigestContainer: FC<TProps> = ({
       {/* @ts-ignore */}
       {/* {!isMobile && <CollectionFolder />} */}
       {/* @ts-ignore */}
-      <FixedHeader
-        show={!inViewport}
-        article={viewingArticle}
-        metric={metric}
-      />
+      <FixedHeader show={!inViewport} article={viewingArticle} metric={metric} />
       <InnerWrapper>
         <BannerContent>
-          <Layout
-            article={viewingArticle}
-            thread={activeThread}
-            metric={metric}
-          />
+          <Layout article={viewingArticle} thread={activeThread} metric={metric} />
         </BannerContent>
       </InnerWrapper>
       <ViewportTracker onEnter={inAnchor} onLeave={outAnchor} />

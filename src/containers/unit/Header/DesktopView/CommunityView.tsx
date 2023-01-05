@@ -8,7 +8,7 @@ import { FC, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 
 import type { TMetric } from '@/spec'
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
@@ -41,10 +41,7 @@ type TProps = {
   header?: TStore
 }
 
-const CommunityHeaderContainer: FC<TProps> = ({
-  header: store,
-  metric = METRIC.COMMUNITY,
-}) => {
+const CommunityHeaderContainer: FC<TProps> = ({ header: store, metric = METRIC.COMMUNITY }) => {
   // log('header metric: ', metric)
   useInit(store, metric)
 

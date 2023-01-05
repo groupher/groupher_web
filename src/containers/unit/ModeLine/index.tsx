@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TMetric } from '@/spec'
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
@@ -25,10 +25,7 @@ type TProps = {
   metric?: TMetric
 }
 
-const ModeLineContainer: FC<TProps> = ({
-  modeLine: store,
-  metric = METRIC.COMMUNITY,
-}) => {
+const ModeLineContainer: FC<TProps> = ({ modeLine: store, metric = METRIC.COMMUNITY }) => {
   useInit(store, metric)
   const [showBottomBar, setShowBottomBar] = useState(false)
 

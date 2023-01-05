@@ -8,7 +8,7 @@ import { FC } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TMetric } from '@/spec'
-import { USER_THREAD } from '@/constant'
+import { USER_THREAD } from '@/constant/thread'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
@@ -106,13 +106,8 @@ const UserContentContainer: FC<TProps> = ({ userContent: store, metric }) => {
 
   const { isMobile } = useMobileDetect()
 
-  const {
-    activeThread,
-    viewingUser,
-    pagedEditableCommunitiesData,
-    hasContentBg,
-    isSelfViewing,
-  } = store
+  const { activeThread, viewingUser, pagedEditableCommunitiesData, hasContentBg, isSelfViewing } =
+    store
   const taberSource = isSelfViewing ? FullTaberThreads : BaseTaberThreads
 
   return (
@@ -122,19 +117,12 @@ const UserContentContainer: FC<TProps> = ({ userContent: store, metric }) => {
       </BannerWrapper>
       <InnerWrapper metric={metric}>
         {!isMobile && (
-          <Sidebar
-            user={viewingUser}
-            editableCommunities={pagedEditableCommunitiesData}
-          />
+          <Sidebar user={viewingUser} editableCommunities={pagedEditableCommunitiesData} />
         )}
 
         <ContentWrapper hasContentBg={hasContentBg}>
           <TabBarWrapper className="tabs-with-bottom">
-            <TabBar
-              source={taberSource}
-              onChange={tabOnChange}
-              active={activeThread}
-            />
+            <TabBar source={taberSource} onChange={tabOnChange} active={activeThread} />
           </TabBarWrapper>
           <TabberContent active={activeThread} />
         </ContentWrapper>

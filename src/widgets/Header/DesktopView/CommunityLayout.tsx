@@ -9,7 +9,7 @@ import { contains } from 'ramda'
 import dynamic from 'next/dynamic'
 
 import type { TMetric } from '@/spec'
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 import { buildLog } from '@/utils/logger'
 
 import Navigator from '@/widgets/Navigator'
@@ -44,11 +44,7 @@ const CommunityView: FC<TProps> = ({ metric, accountInfo }) => {
   const InnerWrapper = ClassicInnerWrapper
 
   return (
-    <Wrapper
-      id="whereCallShowDoraemon"
-      testid="header"
-      noBorder={hasNoBorder(metric)}
-    >
+    <Wrapper id="whereCallShowDoraemon" testid="header" noBorder={hasNoBorder(metric)}>
       <InnerWrapper metric={metric}>
         <RouterWrapper>
           <Navigator metric={metric} />

@@ -4,7 +4,7 @@
 
 import { Provider } from 'mobx-react'
 
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 import {
   ssrGetParam,
   ssrFetchPrepare,

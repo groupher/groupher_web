@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TMetric } from '@/spec'
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 
 import {
   RawWrapper,
@@ -21,14 +21,10 @@ const BottomInfo: FC<TProps> = ({ metric }) => {
     return (
       <RawWrapper metric={metric}>
         <InnerWrapper>
-          <BeianLink href="http://beian.miit.gov.cn">
-            蜀ICP备17043722号-4
-          </BeianLink>
+          <BeianLink href="http://beian.miit.gov.cn">蜀ICP备17043722号-4</BeianLink>
           <PowerByWrapper>
             Powered by
-            <PowerByLink href="http://github.com/groupher">
-              Groupher
-            </PowerByLink>
+            <PowerByLink href="http://github.com/groupher">Groupher</PowerByLink>
           </PowerByWrapper>
         </InnerWrapper>
       </RawWrapper>
@@ -40,9 +36,7 @@ const BottomInfo: FC<TProps> = ({ metric }) => {
   return (
     <Wrapper metric={metric}>
       <InnerWrapper>
-        <BeianLink href="http://beian.miit.gov.cn">
-          蜀ICP备17043722号-4
-        </BeianLink>
+        <BeianLink href="http://beian.miit.gov.cn">蜀ICP备17043722号-4</BeianLink>
         <PowerByWrapper>
           Powered by
           <PowerByLink href="http://github.com/groupher">Groupher</PowerByLink>

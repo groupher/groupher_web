@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 import type { TMetric } from '@/spec'
 import { changeToCommunity } from '@/utils/signal'
 
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 
 import {
   Breadcrumbs,

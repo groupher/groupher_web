@@ -1,4 +1,4 @@
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 import type { TMetric } from '@/spec'
 
 export const getStickerJustify = (metric: TMetric): string => {

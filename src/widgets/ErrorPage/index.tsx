@@ -8,7 +8,7 @@ import { FC, memo } from 'react'
 import { useRouter } from 'next/router'
 
 import type { TMetric } from '@/spec'
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 import { buildLog } from '@/utils/logger'
 
 import SpinPlanet from './SpinPlanet'

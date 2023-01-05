@@ -6,7 +6,7 @@
 import { values } from 'ramda'
 
 import type { TRootStore, TAccount, TUser, TPagedCommunities } from '@/spec'
-import { USER_THREAD } from '@/constant'
+import { USER_THREAD } from '@/constant/thread'
 import { T, getParent, Instance, markStates, toJS } from '@/utils/mobx'
 import { PagedCommunities, emptyPagi } from '@/model'
 

@@ -3,7 +3,7 @@ import { values } from 'ramda'
 import { T } from '@/utils/mobx'
 
 import { TAG_COLORS } from '@/config'
-import { THREAD } from '@/constant'
+import { THREAD } from '@/constant/thread'
 
 import { pagiFields } from './helper/common'
 import { Community } from './Community'

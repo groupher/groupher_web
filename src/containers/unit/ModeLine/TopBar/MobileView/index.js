@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 
 import ArticleBar from './ArticleBar'
 import CommunityBar from './CommunityBar'
@@ -8,11 +8,7 @@ import CommunityBar from './CommunityBar'
 const MobileView = ({ metric, ...restProps }) => {
   return (
     <React.Fragment>
-      {metric === METRIC.ARTICLE ? (
-        <ArticleBar {...restProps} />
-      ) : (
-        <CommunityBar {...restProps} />
-      )}
+      {metric === METRIC.ARTICLE ? <ArticleBar {...restProps} /> : <CommunityBar {...restProps} />}
     </React.Fragment>
   )
 }

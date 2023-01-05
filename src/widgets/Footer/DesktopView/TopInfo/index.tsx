@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TMetric, TArticle } from '@/spec'
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 
 import HomeCommunity from './HomeCommunity'
 import Article from './Article'
@@ -14,11 +14,7 @@ export type TProps = {
   noBottomBorder?: boolean
 }
 
-const TopInfo: FC<TProps> = ({
-  metric = METRIC.COMMUNITY,
-  title = '',
-  ...restProps
-}) => {
+const TopInfo: FC<TProps> = ({ metric = METRIC.COMMUNITY, title = '', ...restProps }) => {
   if (METRIC.COMMUNITY && title !== '') {
     return <Community title={title} />
   }

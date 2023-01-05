@@ -10,7 +10,7 @@ import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
 import type { TMetric } from '@/spec'
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 
 import Banner from './Banner'
 import Content from './Content'
@@ -32,13 +32,7 @@ const CommunityEditorContainer: FC<TProps> = ({
   metric = METRIC.COMMUNITY_EDITOR,
 }) => {
   useInit(store)
-  const {
-    step,
-    selectTypeStatus,
-    setupDomainStatus,
-    setupInfoStatus,
-    validState,
-  } = store
+  const { step, selectTypeStatus, setupDomainStatus, setupInfoStatus, validState } = store
 
   return (
     <Wrapper metric={metric}>

@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 import { includes, reject, clone } from 'ramda'
 
-import { THREAD } from '@/constant'
+import { THREAD } from '@/constant/thread'
 import ColorSelector from '@/widgets/ColorSelector'
 import { SpaceGrow, Br } from '@/widgets/Common'
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
@@ -44,10 +44,7 @@ const BaseSetting: FC<TProps> = ({ settings, touched }) => {
 
   return (
     <Wrapper>
-      <SectionLabel
-        title="组件主题色"
-        desc="默认与当前社区设置的主题色相一致。"
-      />
+      <SectionLabel title="组件主题色" desc="默认与当前社区设置的主题色相一致。" />
       <SavingBar
         isTouched={touched.widgetsPrimaryColor}
         field={SETTING_FIELD.WIDGETS_PRIMARY_COLOR}

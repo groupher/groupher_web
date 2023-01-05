@@ -2,7 +2,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 
 import type { TMetric } from '@/spec'
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 import css, { theme } from '@/utils/css'
 
 export const Main = styled.div<{ metric: TMetric }>`

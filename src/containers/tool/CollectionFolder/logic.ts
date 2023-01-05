@@ -3,7 +3,8 @@ import { curry, toUpper } from 'ramda'
 
 import type { TID } from '@/spec'
 import { PAGE_SIZE } from '@/config'
-import { EVENT, ERR } from '@/constant'
+import EVENT from '@/constant/event'
+import ERR from '@/constant/err'
 
 import asyncSuit from '@/utils/async'
 import { buildLog } from '@/utils/logger'
@@ -126,8 +127,7 @@ export const unSetContent = (categoryId: TID): void => {
   sr71$.mutate(S.unsetFavorites, args)
 }
 
-const markLoading = (maybe = true) =>
-  store.mark({ loading: maybe, doing: false })
+const markLoading = (maybe = true) => store.mark({ loading: maybe, doing: false })
 
 // ###############################
 // Data & Error handlers

@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 import dynamic from 'next/dynamic'
 
 import type { TThread } from '@/spec'
-import { THREAD } from '@/constant'
+import { THREAD } from '@/constant/thread'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
@@ -14,14 +14,11 @@ import AboutThread from '@/containers/thread/AboutThread'
 import HelpThread from '@/containers/thread/HelpThread'
 // import DashboardThread from '@/containers/thread/DashboardThread'
 
-const DashboardThread = dynamic(
-  () => import('@/containers/thread/DashboardThread'),
-  {
-    /* eslint-disable react/display-name */
-    loading: () => <LavaLampLoading />,
-    ssr: false,
-  },
-)
+const DashboardThread = dynamic(() => import('@/containers/thread/DashboardThread'), {
+  /* eslint-disable react/display-name */
+  loading: () => <LavaLampLoading />,
+  ssr: false,
+})
 
 type TProps = {
   thread: TThread

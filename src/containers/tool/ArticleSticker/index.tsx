@@ -11,7 +11,7 @@ import { FC, Fragment } from 'react'
 import type { TMetric } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 
 import Sticky from '@/widgets/Sticky'
 import GotoTop from '@/widgets/GotoTop'
@@ -65,10 +65,7 @@ const ArticleStickerContainer: FC<TProps> = ({
                 article={viewingArticle}
                 thread={activeThread}
               />
-              <CommentSticker
-                show={showCommentSticker}
-                commentsState={commentsState}
-              />
+              <CommentSticker show={showCommentSticker} commentsState={commentsState} />
             </MainWrapper>
             <GoTopWrapper show={!isArticleDigestInViewport}>
               <GotoTop />

@@ -1,6 +1,6 @@
 import { FC, memo, useState } from 'react'
 
-import { THREAD } from '@/constant'
+import { THREAD } from '@/constant/thread'
 
 import { Wrapper, Hint, CatsWrapper, CatButton } from '../styles/tags/thread_selector'
 
