@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { VIEW } from '@/constant'
+import VIEW from '@/constant/view'
 import TabBar from '@/widgets/TabBar'
 
 import TagBlock from './TagBlock'

@@ -6,7 +6,7 @@
 
 import { FC } from 'react'
 
-import { VIEW } from '@/constant'
+import VIEW from '@/constant/view'
 import type { TTagMode } from '@/spec'
 import type { TStore } from './store'
 

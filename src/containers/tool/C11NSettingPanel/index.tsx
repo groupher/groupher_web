@@ -7,7 +7,7 @@
 import { FC } from 'react'
 
 import { ICON_CMD } from '@/config'
-import { VIEW } from '@/constant'
+import VIEW from '@/constant/view'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
@@ -39,9 +39,7 @@ const TAB_OPTIONS = [
 const Content = ({ activeTab, curTheme, curThread, customization }) => {
   switch (activeTab) {
     case 'general': {
-      return (
-        <GeneralSettings curThread={curThread} customization={customization} />
-      )
+      return <GeneralSettings curThread={curThread} customization={customization} />
     }
     case 'theme': {
       return <ThemeSettings curTheme={curTheme} />
@@ -67,12 +65,7 @@ const C11NSettingPanelContainer: FC<TProps> = ({ c11NSettingPanel: store }) => {
       <br />
       <Title>个性化设置</Title>
       <TabBarWrapper>
-        <Tabs
-          items={TAB_OPTIONS}
-          activeKey={activeTab}
-          onChange={tabOnChange}
-          view={VIEW.DRAWER}
-        />
+        <Tabs items={TAB_OPTIONS} activeKey={activeTab} onChange={tabOnChange} view={VIEW.DRAWER} />
       </TabBarWrapper>
       <ContentWrapper>
         <Content
