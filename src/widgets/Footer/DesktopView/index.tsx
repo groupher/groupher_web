@@ -11,6 +11,7 @@ import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
 import SimpleLayout from './SimpleLayout'
+// import FullLayout from './FullLayout'
 import PowerbyInfo from './PowerbyInfo'
 
 import { Wrapper, InnerWrapper } from '../styles'
@@ -28,6 +29,7 @@ const FooterContainer: FC<TProps> = ({ metric, testid = 'footer' }) => {
     <Wrapper testid={testid} metric={metric}>
       <InnerWrapper metric={metric}>
         <SimpleLayout />
+        {/* <FullLayout /> */}
         <PowerbyInfo />
       </InnerWrapper>
     </Wrapper>

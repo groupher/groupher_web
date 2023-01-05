@@ -151,7 +151,7 @@ const github = {
     cardBorderHover: primaryColor,
   },
   footer: {
-    text: '#c7c7c7',
+    text: descText,
     hover: '#949CB5',
     title: '#77706B',
     bottomBg: '#252325',
