@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 
-import Img from '@/Img'
 import type { TMetric } from '@/spec'
 import css, { theme } from '@/utils/css'
 import ArrowLink from '@/widgets/Buttons/ArrowLink'
@@ -17,29 +16,47 @@ export const InnerWrapper = styled.div<{ metric: TMetric }>`
   ${({ metric }) => css.fitContentWidth(metric)};
   // 20 是经典布局为缩小帖子列表"视觉宽度"手动缩小的值
   padding: 0 20px;
-  ${css.media.laptopM`
-    padding: 15px;
-  `}
-`
-export const MainInfos = styled.div`
+
   ${css.flex('justify-between')};
   margin-top: 20px;
   margin-bottom: 30px;
-  margin-right: 12px;
-  margin-left: 5px;
-  opacity: 0.9;
+  padding-left: 30px;
 
   &:hover {
     opacity: 1;
   }
   transition: opacity 0.25s;
 
+  ${css.media.laptopM`
+    padding: 15px;
+  `}
+
   ${css.media.tablet`display: none;`};
 `
+
+export const BrandWrapper = styled.div`
+  ${css.flexColumn()};
+  width: 45%;
+  height: 100px;
+`
+export const BrandTitle = styled.div`
+  color: ${theme('article.title')};
+  font-weight: 600;
+  font-size: 18px;
+`
+export const BrandDesc = styled.div`
+  color: ${theme('article.digest')};
+  margin-top: 4px;
+  font-size: 13px;
+  opacity: 0.8;
+`
+export const SocialInfo = styled.div``
+
 export const Column = styled.div<{ margin?: string }>`
   ${css.flexColumn()};
   min-width: 105px;
   margin-right: ${({ margin }) => margin || '50px'};
+  opacity: 0.8;
 `
 export const Title = styled.div`
   color: ${theme('footer.title')};
@@ -69,13 +86,4 @@ export const Item = styled.a<TItem>`
 `
 export const LinkItem = styled(ArrowLink)`
   margin-bottom: 10px;
-`
-export const ItemGitSource = styled.div`
-  ${css.flex('align-center')};
-`
-
-export const HeartCrabIcon = styled(Img)`
-  ${css.size(13)};
-  margin-right: 7px;
-  filter: saturate(0.6);
 `

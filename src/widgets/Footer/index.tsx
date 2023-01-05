@@ -4,15 +4,25 @@
  *
  */
 
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
+import dynamic from 'next/dynamic'
 
-import DesktopView from './DesktopView'
+import { Waypoint } from 'react-waypoint'
+
+// import DesktopView from './DesktopView'
 // import MobileView from './MobileView'
 
+const DesktopView = dynamic(() => import('./DesktopView'), {
+  ssr: false,
+})
+
 const Footer = (props) => {
+  const [inView, setInView] = useState(false)
+
   return (
     <Fragment>
-      <DesktopView {...props} />
+      <Waypoint onEnter={() => setInView(true)} />
+      {inView && <DesktopView {...props} />}
     </Fragment>
   )
 }
