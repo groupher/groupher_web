@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import { GRADIENT_DIRECTION } from '@/constant'
+import { GRADIENT_DIRECTION } from '@/constant/wallpaper'
 
 import css, { theme } from '@/utils/css'
 import ArrowSVG from '@/icons/ArrowSolid'

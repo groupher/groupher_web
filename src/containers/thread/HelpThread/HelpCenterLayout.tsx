@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import { COLOR_NAME } from '@/constant'
+import { COLOR_NAME } from '@/constant/colors'
 
 import Category from './Category'
 import { Wrapper, CatsWrapper } from './styles/helpcenter_layout'

@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TArticle } from '@/spec'
-import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/article_cat_state'
 
 import Upvote from '@/widgets/Upvote'
 import ArticleCatState from '@/widgets/ArticleCatState'

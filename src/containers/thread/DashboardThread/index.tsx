@@ -7,7 +7,7 @@ import { FC } from 'react'
 
 // import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
-import { ROUTE } from '@/constant'
+import { ROUTE } from '@/constant/route'
 
 import SideMenu from './SideMenu'
 import {
