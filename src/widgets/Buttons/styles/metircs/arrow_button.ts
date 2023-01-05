@@ -1,4 +1,4 @@
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 
 const TINY_SIZE = 12
 const SMALL_SIZE = 14

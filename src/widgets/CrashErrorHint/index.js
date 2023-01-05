@@ -11,7 +11,7 @@ import { contains, keys } from 'ramda'
 import dynamic from 'next/dynamic'
 
 import { DEFAULT_THEME } from '@/config'
-import { TYPE } from '@/constant'
+import TYPE from '@/constant/type'
 
 import { themeSkins } from '@/utils/themes'
 import BStore from '@/utils/bstore'
@@ -50,9 +50,7 @@ const CrashErrorHint = ({ onReport }) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setExecuteIndex(
-        executeIndex >= EXECUTES.length - 1 ? 0 : executeIndex + 1,
-      )
+      setExecuteIndex(executeIndex >= EXECUTES.length - 1 ? 0 : executeIndex + 1)
     }, 3000)
 
     return () => clearInterval(timer)
@@ -82,8 +80,8 @@ const CrashErrorHint = ({ onReport }) => {
         </UL>
       </div>
       <Footer t={themeName}>
-        sorry to see this, please try <Action t={themeName}>reload page</Action>
-        , <Action t={themeName}>report error</Action> or report issue on{' '}
+        sorry to see this, please try <Action t={themeName}>reload page</Action>,{' '}
+        <Action t={themeName}>report error</Action> or report issue on{' '}
         <Action t={themeName}>github</Action>
       </Footer>
     </Wrapper>

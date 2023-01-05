@@ -7,7 +7,7 @@
 import { FC } from 'react'
 
 import type { TModelineType } from '@/spec'
-import { TYPE } from '@/constant'
+import TYPE from '@/constant/type'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
@@ -83,11 +83,7 @@ const ModeLineMenuContainer: FC<TProps> = ({
   useInit(store)
   const { curActive, subscribedCommunities } = store
 
-  return (
-    <Wrapper testid={testid}>
-      {renderMenus(type, curActive, subscribedCommunities)}
-    </Wrapper>
-  )
+  return <Wrapper testid={testid}>{renderMenus(type, curActive, subscribedCommunities)}</Wrapper>
 }
 
 export default bond(ModeLineMenuContainer, 'modeLineMenu') as FC<TProps>

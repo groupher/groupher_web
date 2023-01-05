@@ -1,15 +1,10 @@
 import { FC } from 'react'
 
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 import { buildLog } from '@/utils/logger'
 
 import type { TProps as TButtonProps } from './index'
-import {
-  Wrapper,
-  UpButton,
-  OrSign,
-  BottomButton,
-} from '../styles/or_button/vertical_button'
+import { Wrapper, UpButton, OrSign, BottomButton } from '../styles/or_button/vertical_button'
 
 const log = buildLog('w:VericalButton')
 

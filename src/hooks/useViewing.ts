@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 // import { merge } from 'ramda'
 
-import { EVENT } from '@/constant'
+import EVENT from '@/constant/event'
 import type { TID } from '@/spec'
 
 import BStore from '@/utils/bstore'

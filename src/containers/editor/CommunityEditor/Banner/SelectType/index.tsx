@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import { ICON_CMD } from '@/config'
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 import { buildLog } from '@/utils/logger'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
@@ -50,9 +50,7 @@ const SelectType: FC<TProps> = ({ status: { communityType }, validState }) => {
             <ErrorMsg>创建社区需要先登录</ErrorMsg>
           )}
           {validState.isLogin && validState.hasPendingApply && (
-            <InfoMsg>
-              你上次申请的创建请求还在处理中，请等待处理后再次创建，谢谢!
-            </InfoMsg>
+            <InfoMsg>你上次申请的创建请求还在处理中，请等待处理后再次创建，谢谢!</InfoMsg>
           )}
 
           {!validState.hasPendingApply && (

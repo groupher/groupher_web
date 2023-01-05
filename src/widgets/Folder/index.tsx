@@ -8,7 +8,7 @@
 import { FC, memo } from 'react'
 import { TSizeSM } from '@/spec'
 
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 import { buildLog } from '@/utils/logger'
 
 import Content from './Content'
@@ -43,18 +43,8 @@ const Folder: FC<TProps> = ({
   return (
     <Wrapper testid="folder" size={size}>
       <TabShape />
-      <Content
-        total={total}
-        lock={lock}
-        updatedAt={updatedAt}
-        inactive={inactive}
-      />
-      <Footer
-        title={title}
-        onClick={onSelect}
-        onMenuClick={onMenuClick}
-        inactive={inactive}
-      />
+      <Content total={total} lock={lock} updatedAt={updatedAt} inactive={inactive} />
+      <Footer title={title} onClick={onSelect} onMenuClick={onMenuClick} inactive={inactive} />
     </Wrapper>
   )
 }

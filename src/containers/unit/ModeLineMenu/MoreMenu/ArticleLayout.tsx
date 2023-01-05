@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 
 import type { TArticle } from '@/spec'
 import { ICON } from '@/config'
-import { TYPE } from '@/constant'
+import TYPE from '@/constant/type'
 
 import NaviButton from '../NaviButton'
 import { Wrapper, Title } from '../styles/more_menu'

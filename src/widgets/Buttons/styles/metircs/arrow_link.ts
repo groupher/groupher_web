@@ -1,4 +1,4 @@
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 
 export const getTextSize = (size: string): string => {
   switch (size) {

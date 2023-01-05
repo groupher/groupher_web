@@ -7,7 +7,7 @@
 import { FC, ReactNode, memo } from 'react'
 
 import type { TSize } from '@/spec'
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 import { buildLog } from '@/utils/logger'
 
 import { Wrapper, Text, RightIcon } from './styles/arrow_link'
@@ -35,12 +35,7 @@ const ArrowLink: FC<TProps> = ({
   hoverColor = '',
 }) => {
   return (
-    <Wrapper
-      className={className}
-      href={href}
-      rel="noopener noreferrer"
-      target={target}
-    >
+    <Wrapper className={className} href={href} rel="noopener noreferrer" target={target}>
       <Text size={size} color={color} $hoverColor={hoverColor}>
         {children}
       </Text>

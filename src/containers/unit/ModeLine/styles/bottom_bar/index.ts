@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
 import Img from '@/Img'
-import { TYPE } from '@/constant'
+import TYPE from '@/constant/type'
 import css, { theme, zIndex } from '@/utils/css'
 
 type TMenuIcon = { active: boolean; colorTheme: string; raw?: string }

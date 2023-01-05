@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import { ICON_CMD } from '@/config'
-import { ERR } from '@/constant'
+import ERR from '@/constant/err'
 
 import GraphQLTitle from './GraphqlTitle'
 

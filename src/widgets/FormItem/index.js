@@ -10,7 +10,7 @@ import { isEmpty } from 'ramda'
 
 import { buildLog } from '@/utils/logger'
 import { hasValue } from '@/utils/validator'
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 import Maybe from '@/widgets/Maybe'
 
 import {

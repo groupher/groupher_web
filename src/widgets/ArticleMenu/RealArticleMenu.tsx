@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import { ICON } from '@/config'
-import { EVENT } from '@/constant'
+import EVENT from '@/constant/event'
 
 import type { TArticle } from '@/spec'
 import MenuButton from '@/widgets/Buttons/MenuButton'
@@ -62,14 +62,8 @@ const extraOptions = [
   },
 ]
 
-const ArticleMenu: FC<TProps> = ({
-  testid = 'archived-sign',
-  verticalIcon,
-  article,
-}) => {
-  const icon = verticalIcon
-    ? `${ICON}/shape/more-l.svg`
-    : `${ICON}/shape/more.svg`
+const ArticleMenu: FC<TProps> = ({ testid = 'archived-sign', verticalIcon, article }) => {
+  const icon = verticalIcon ? `${ICON}/shape/more-l.svg` : `${ICON}/shape/more.svg`
 
   return (
     <MenuButton

@@ -20,7 +20,7 @@ import type {
   TSubmitState,
   TCommentsState,
 } from '@/spec'
-// import { TYPE } from '@/constant'
+// import TYPE from '@/constant/type'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { Comment, PagedComments, emptyPagi, SimpleUser } from '@/model'
 

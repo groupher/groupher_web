@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 import { useTheme } from 'styled-components'
 
 import type { TThemeMap } from '@/spec'
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 
 import FlipNumbers from 'react-flip-numbers'
 

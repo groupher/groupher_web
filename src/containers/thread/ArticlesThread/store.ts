@@ -19,7 +19,7 @@ import type {
   TGlobalLayout,
 } from '@/spec'
 
-import { TYPE } from '@/constant'
+import TYPE from '@/constant/type'
 import { T, markStates, getParent, Instance, toJS } from '@/utils/mobx'
 import { nilOrEmpty } from '@/utils/validator'
 import { plural } from '@/utils/fmt'

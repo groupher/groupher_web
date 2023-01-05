@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 import { isEmpty } from 'ramda'
 
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 import { cutRest } from '@/utils/fmt'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
@@ -36,38 +36,23 @@ const SetupDomain: FC<TProps> = ({ status, validState }) => {
         社区的子域名
         <StepHint>2 / 4</StepHint>
       </IntroTitle>
-      <InputBox
-        value={raw}
-        placeholder="my-domain"
-        onChange={(e) => inputOnChange(e, 'raw')}
-      />
+      <InputBox value={raw} placeholder="my-domain" onChange={(e) => inputOnChange(e, 'raw')} />
       {!isEmpty(raw) && !communityExist && !isRawValid && (
         <ErrorMsg>仅支持英文、拼音或数字组合</ErrorMsg>
       )}
 
       {!checking && communityExist && (
-        <ErrorMsg>
-          {cutRest(raw, 8)} 已存在（或他人在申请中），请尝试其他域名
-        </ErrorMsg>
+        <ErrorMsg>{cutRest(raw, 8)} 已存在（或他人在申请中），请尝试其他域名</ErrorMsg>
       )}
       <NextBtn>
-        <ArrowButton
-          size={SIZE.MEDIUM}
-          direction="left"
-          onClick={pervStep}
-          dimWhenIdle
-        >
+        <ArrowButton size={SIZE.MEDIUM} direction="left" onClick={pervStep} dimWhenIdle>
           上一步
         </ArrowButton>
 
         {checking ? (
           <LavaLampLoading />
         ) : (
-          <ArrowButton
-            size={SIZE.MEDIUM}
-            onClick={nextStep}
-            disabled={!isRawValid}
-          >
+          <ArrowButton size={SIZE.MEDIUM} onClick={nextStep} disabled={!isRawValid}>
             下一步
           </ArrowButton>
         )}

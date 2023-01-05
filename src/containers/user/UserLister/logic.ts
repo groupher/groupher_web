@@ -1,7 +1,9 @@
 import { useEffect } from 'react'
 
 import { PAGE_SIZE } from '@/config'
-import { TYPE, EVENT, ERR } from '@/constant'
+import ERR from '@/constant/err'
+import EVENT from '@/constant/event'
+import TYPE from '@/constant/type'
 
 import { errRescue } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
@@ -22,10 +24,8 @@ const sr71$ = new SR71({
 let sub$ = null
 let store: TStore | undefined
 
-export const onFollow = (login: string): void =>
-  sr71$.mutate(S.follow, { login })
-export const undoFollow = (login: string): void =>
-  sr71$.mutate(S.undoFollow, { login })
+export const onFollow = (login: string): void => sr71$.mutate(S.follow, { login })
+export const undoFollow = (login: string): void => sr71$.mutate(S.undoFollow, { login })
 
 const loadUsers = (type, page = 1): void => {
   // log('loadUsers type: ', type)
@@ -117,13 +117,11 @@ const DataSolver = [
   },
   {
     match: asyncRes('pagedCommunityEditors'),
-    action: ({ pagedCommunityEditors: pagedUsers }) =>
-      handleUsersRes(pagedUsers),
+    action: ({ pagedCommunityEditors: pagedUsers }) => handleUsersRes(pagedUsers),
   },
   {
     match: asyncRes('pagedCommunitySubscribers'),
-    action: ({ pagedCommunitySubscribers: pagedUsers }) =>
-      handleUsersRes(pagedUsers),
+    action: ({ pagedCommunitySubscribers: pagedUsers }) => handleUsersRes(pagedUsers),
   },
   {
     match: asyncRes('pagedUsers'),
@@ -147,8 +145,7 @@ const ErrSolver = [
   },
   {
     match: asyncErr(ERR.TIMEOUT),
-    action: ({ details }) =>
-      errRescue({ type: ERR.TIMEOUT, details, path: 'UserLister' }),
+    action: ({ details }) => errRescue({ type: ERR.TIMEOUT, details, path: 'UserLister' }),
   },
   {
     match: asyncErr(ERR.NETWORK),

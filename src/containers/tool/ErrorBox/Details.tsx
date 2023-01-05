@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TGQError } from '@/spec'
-import { ERR } from '@/constant'
+import ERR from '@/constant/err'
 import GraphqlDetail from './GraphqlDetail'
 
 import { Wrapper, TitleWrapper, Dot, Title, Desc } from './styles/details'
@@ -37,9 +37,7 @@ const Details: FC<TProps> = ({
             <Dot />
             <Title>服务器发生错误</Title>
           </TitleWrapper>
-          <Desc>
-            若您的网络没有问题，很可能是服务器发生错误，恳请您提交 issue{' '}
-          </Desc>
+          <Desc>若您的网络没有问题，很可能是服务器发生错误，恳请您提交 issue </Desc>
         </Wrapper>
       )
 

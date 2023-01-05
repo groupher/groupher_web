@@ -1,10 +1,6 @@
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 
-export const getSlipMargin = (
-  size: string,
-  mobileView: boolean,
-  holyGrailView = false,
-): number => {
+export const getSlipMargin = (size: string, mobileView: boolean, holyGrailView = false): number => {
   if (mobileView) return 5
   if (holyGrailView) return 15
 
@@ -66,10 +62,7 @@ export const getPadding = (
   }
 }
 
-export const getMarginBottom = (
-  holyGrailView: boolean,
-  wrapMode: boolean,
-): string => {
+export const getMarginBottom = (holyGrailView: boolean, wrapMode: boolean): string => {
   if (holyGrailView) return '0'
   if (wrapMode) return '4px'
 

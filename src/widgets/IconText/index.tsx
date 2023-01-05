@@ -10,7 +10,7 @@ import type { TSize } from '@/spec'
 import { ICON } from '@/config'
 import { nilOrEmpty } from '@/utils/validator'
 import { buildLog } from '@/utils/logger'
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 
 import { Wrapper, Icon, Text } from './styles'
 
@@ -45,13 +45,7 @@ const IconText: FC<TProps> = ({
   return (
     <Wrapper testid="iconText" className={className} dimWhenIdle={dimWhenIdle}>
       {!nilOrEmpty(src) && (
-        <Icon
-          src={src}
-          size={size}
-          round={round}
-          margin={margin}
-          highlight={highlight}
-        />
+        <Icon src={src} size={size} round={round} margin={margin} highlight={highlight} />
       )}
       <Text size={size} highlight={highlight}>
         {children}

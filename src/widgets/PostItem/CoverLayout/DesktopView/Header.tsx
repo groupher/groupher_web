@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import type { TPost } from '@/spec'
-import { EVENT } from '@/constant'
+import EVENT from '@/constant/event'
 import { send } from '@/utils/signal'
 
 import { Wrapper, Main, Title } from '../../styles/cover_layout/desktop_view/header'

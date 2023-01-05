@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 // import { } from 'ramda'
 
-import { ERR } from '@/constant'
+import ERR from '@/constant/err'
 
 import { errRescue } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
@@ -67,8 +67,7 @@ const ErrSolver = [
   },
   {
     match: asyncErr(ERR.TIMEOUT),
-    action: ({ details }) =>
-      errRescue({ type: ERR.TIMEOUT, details, path: 'ArticleFooter' }),
+    action: ({ details }) => errRescue({ type: ERR.TIMEOUT, details, path: 'ArticleFooter' }),
   },
   {
     match: asyncErr(ERR.NETWORK),

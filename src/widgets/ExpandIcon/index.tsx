@@ -10,7 +10,7 @@ import type { TSizeSM } from '@/spec'
 
 import { isString } from '@/utils/validator'
 import { buildLog } from '@/utils/logger'
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 
 import Tooltip from '@/widgets/Tooltip'
 
@@ -49,22 +49,13 @@ const ExpandIcon: FC<TProps> = ({
       onHide={() => setActive(false)}
       onShow={() => setActive(true)}
     >
-      <Wrapper
-        testid="ExpandIcon"
-        active={active}
-        hideTextOnInit={hideTextOnInit}
-      >
+      <Wrapper testid="ExpandIcon" active={active} hideTextOnInit={hideTextOnInit}>
         {isString(icon) ? (
           <Icon src={icon as string} active={active} type={type} size={size} />
         ) : (
           <span>{icon}</span>
         )}
-        <Text
-          active={active}
-          type={type}
-          size={size}
-          hideTextOnInit={hideTextOnInit}
-        >
+        <Text active={active} type={type} size={size} hideTextOnInit={hideTextOnInit}>
           {text}
         </Text>
       </Wrapper>

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TSizeSML } from '@/spec'
 
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 import css, { theme } from '@/utils/css'
 import Img from '@/Img'
 

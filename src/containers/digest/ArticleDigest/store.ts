@@ -6,7 +6,7 @@
 import { merge } from 'ramda'
 
 import type { TRootStore, TThread, TArticle } from '@/spec'
-import { TYPE } from '@/constant'
+import TYPE from '@/constant/type'
 
 import { T, getParent, markStates, toJS, Instance } from '@/utils/mobx'
 

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { EVENT } from '@/constant'
+import EVENT from '@/constant/event'
 import asyncSuit from '@/utils/async'
 import { buildLog } from '@/utils/logger'
 

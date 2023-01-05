@@ -1,7 +1,7 @@
 import { FC, ReactNode, memo } from 'react'
 
 import type { TSizeTSM, TSpace } from '@/spec'
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 import { buildLog } from '@/utils/logger'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'

@@ -2,18 +2,11 @@ import { FC, memo } from 'react'
 
 import type { TCommunity } from '@/spec'
 import { ICON_CMD, EMAIL_SUPPORT } from '@/config'
-import { TYPE } from '@/constant'
+import TYPE from '@/constant/type'
 
 import NoticeBar from '@/widgets/NoticeBar'
 
-import {
-  Wrapper,
-  Title,
-  DescLabel,
-  DescIcon,
-  DescText,
-  DescLink,
-} from './styles/header_info'
+import { Wrapper, Title, DescLabel, DescIcon, DescText, DescLink } from './styles/header_info'
 
 type TProps = {
   type: string

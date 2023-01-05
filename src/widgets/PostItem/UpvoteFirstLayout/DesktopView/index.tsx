@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import { EVENT } from '@/constant'
+import EVENT from '@/constant/event'
 import type { TPost } from '@/spec'
 
 import { send } from '@/utils/signal'
@@ -13,11 +13,7 @@ import ViewingSign from '../../ViewingSign'
 import Header from './Header'
 import Footer from './Footer'
 
-import {
-  Wrapper,
-  Main,
-  DigestWrapper,
-} from '../../styles/upvote_fist_layout/desktop_view'
+import { Wrapper, Main, DigestWrapper } from '../../styles/upvote_fist_layout/desktop_view'
 
 type TProps = {
   article: TPost

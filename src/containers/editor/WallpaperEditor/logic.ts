@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 
 import type { TWallpaperGradientDir } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import { EVENT } from '@/constant'
+import EVENT from '@/constant/event'
 import asyncSuit from '@/utils/async'
 
 // import S from './schma'

@@ -1,4 +1,4 @@
-import { TYPE } from '@/constant'
+import TYPE from '@/constant/type'
 import { ICON } from '@/config'
 import type { TArticle } from '@/spec'
 
@@ -59,8 +59,7 @@ const articlePageMenus = [
 export const getArticlePageMenus = (article: TArticle): TArticleMenuItem[] => {
   if (!article) return articlePageMenus
 
-  const { upvotesCount, commentsCount, viewerHasUpvoted, viewerHasCollected } =
-    article
+  const { upvotesCount, commentsCount, viewerHasUpvoted, viewerHasCollected } = article
 
   const articlePageMenusData = [...articlePageMenus] as TArticleMenuItem[]
 

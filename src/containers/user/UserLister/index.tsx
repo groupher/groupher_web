@@ -6,7 +6,7 @@
 
 import { FC } from 'react'
 
-import { TYPE } from '@/constant'
+import TYPE from '@/constant/type'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
@@ -56,11 +56,7 @@ const UserListerContainer: FC<TProps> = ({ userLister: store, type }) => {
 
   return (
     <Wrapper>
-      <HeaderInfo
-        type={type}
-        totalCount={pagedUsersData.totalCount}
-        curCommunity={curCommunity}
-      />
+      <HeaderInfo type={type} totalCount={pagedUsersData.totalCount} curCommunity={curCommunity} />
 
       {renderContent(type, curView, pagedUsersData)}
     </Wrapper>

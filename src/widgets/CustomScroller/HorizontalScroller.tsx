@@ -11,7 +11,7 @@ import type { TThemeMap } from '@/spec'
 
 import useCustomScroll from '@/hooks/useCustomScroll'
 // import ViewportTracker from '@/widgets/ViewportTracker'
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 
 import type { TProps as TScrollProps } from './index'
 
@@ -79,18 +79,10 @@ const HorizontalScroller: FC<TProps> = ({
       <ScrollWrapper ref={ref}>
         <InnerWrapper innerHeight={innerHeight}>
           {/*  @ts-ignore */}
-          <Waypoint
-            horizontal
-            onEnter={handleHideLeftShadow}
-            onLeave={handleShowLeftShadow}
-          />
+          <Waypoint horizontal onEnter={handleHideLeftShadow} onLeave={handleShowLeftShadow} />
           {children}
           {/*  @ts-ignore */}
-          <Waypoint
-            horizontal
-            onEnter={handleHideRightShadow}
-            onLeave={handleShowRightShadow}
-          />
+          <Waypoint horizontal onEnter={handleHideRightShadow} onLeave={handleShowRightShadow} />
         </InnerWrapper>
       </ScrollWrapper>
       {showShadow && (

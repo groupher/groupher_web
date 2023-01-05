@@ -1,16 +1,11 @@
 import { FC, ReactNode, memo } from 'react'
 
 import type { TSizeTS, TSpace } from '@/spec'
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 
 import { buildLog } from '@/utils/logger'
 
-import {
-  Wrapper,
-  ButtonWrapper,
-  InnerBtnWrapper,
-  FilterIcon,
-} from '../styles/dropdown_button'
+import { Wrapper, ButtonWrapper, InnerBtnWrapper, FilterIcon } from '../styles/dropdown_button'
 
 const log = buildLog('C:DropdownButton')
 
@@ -30,12 +25,7 @@ const DropdownButton: FC<TProps> = ({
 }) => {
   return (
     // @ts-ignore
-    <Wrapper
-      withBorder={withBorder}
-      size={size}
-      onClick={onClick}
-      {...restProps}
-    >
+    <Wrapper withBorder={withBorder} size={size} onClick={onClick} {...restProps}>
       <ButtonWrapper size="small" type="primary" ghost>
         <InnerBtnWrapper>
           <>{children}</>

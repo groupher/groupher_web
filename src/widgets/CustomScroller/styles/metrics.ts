@@ -1,4 +1,4 @@
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 
 const ShadowBgColor = '#ededed' // to-theme
 
@@ -44,13 +44,8 @@ const verticalShadowBg = (type: string): string => {
 }
 
 // horizontal getShadowBackground
-export const getShadowBackground = (
-  type: string,
-  direction = 'horizontal',
-): string => {
-  return direction === 'horizontal'
-    ? horizontalShadowBg(type)
-    : verticalShadowBg(type)
+export const getShadowBackground = (type: string, direction = 'horizontal'): string => {
+  return direction === 'horizontal' ? horizontalShadowBg(type) : verticalShadowBg(type)
 }
 
 // horizontal getShadowWidth
@@ -126,11 +121,6 @@ const verticalScrollbarWidth = (type: string): string => {
 
 // horizontal ScrollbarHeight
 // see https://kingsora.github.io/OverlayScrollbars/#!documentation/classnames
-export const getScrollbarThin = (
-  type: string,
-  direction = 'horizontal',
-): string => {
-  return direction === 'horizontal'
-    ? horizontalScrollbarHeight(type)
-    : verticalScrollbarWidth(type)
+export const getScrollbarThin = (type: string, direction = 'horizontal'): string => {
+  return direction === 'horizontal' ? horizontalScrollbarHeight(type) : verticalScrollbarWidth(type)
 }

@@ -1,15 +1,10 @@
 import { FC } from 'react'
 
-import { SIZE } from '@/constant'
+import SIZE from '@/constant/size'
 import { buildLog } from '@/utils/logger'
 
 import type { TProps as TButtonProps } from './index'
-import {
-  Wrapper,
-  LeftButton,
-  OrSign,
-  RightButton,
-} from '../styles/or_button/horizontal_button'
+import { Wrapper, LeftButton, OrSign, RightButton } from '../styles/or_button/horizontal_button'
 
 const log = buildLog('w:HorizontalButton')
 

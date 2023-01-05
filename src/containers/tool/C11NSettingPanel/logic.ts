@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { has } from 'ramda'
 
 import type { TThemeName } from '@/spec'
-import { EVENT } from '@/constant'
+import EVENT from '@/constant/event'
 import { send } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 // import S from './service'
@@ -13,8 +13,7 @@ let store: TStore | undefined
 /* eslint-disable-next-line */
 const log = buildLog('L:C11NSettingPanel')
 
-export const tabOnChange = (activeTab: string): void =>
-  store.mark({ activeTab })
+export const tabOnChange = (activeTab: string): void => store.mark({ activeTab })
 
 export const changeTheme = (theme: TThemeName): void => {
   store.changeTheme(theme)
