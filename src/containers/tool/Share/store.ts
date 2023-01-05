@@ -5,7 +5,8 @@
 import { values } from 'ramda'
 
 import { SITE_URL_SHORT } from '@/config'
-import { SVG, THREAD } from '@/constant'
+import SVG from '@/constant/svg'
+import { THREAD } from '@/constant/thread'
 
 import type { TArticle, TCommunity, TRootStore, TThread, TMenuOption } from '@/spec'
 

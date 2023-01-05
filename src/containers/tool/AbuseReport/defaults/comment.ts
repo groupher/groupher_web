@@ -1,4 +1,4 @@
-import { REPORT } from '@/constant'
+import { REPORT } from '@/constant/report'
 
 const items = [
   {

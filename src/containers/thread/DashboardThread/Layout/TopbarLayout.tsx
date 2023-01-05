@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import type { TTopbarLayout, TColorName } from '@/spec'
 
-import { TOPBAR_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant'
+import { TOPBAR_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { callDashboardDesc } from '@/utils/signal'
 
 import { Br, Space, Inline } from '@/widgets/Common'

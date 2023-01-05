@@ -3,23 +3,14 @@ import { useRouter } from 'next/router'
 import { includes } from 'ramda'
 
 import type { TArticle, TCommunity, TMetric, TModelineType } from '@/spec'
-import { METRIC, TYPE } from '@/constant'
+
+import METRIC from '@/constant/metric'
+import TYPE from '@/constant/type'
+
 import { multiClick } from '@/utils/dom'
 
-import {
-  MenuBlock,
-  CommunityBlock,
-  MainBlock,
-  ExploreBlock,
-  AccountBlock,
-} from './ArrowBlock'
-import {
-  Wrapper,
-  ItemsWrapper,
-  MenuItem,
-  MenuDesc,
-  MenuIcon,
-} from '../styles/bottom_bar'
+import { MenuBlock, CommunityBlock, MainBlock, ExploreBlock, AccountBlock } from './ArrowBlock'
+import { Wrapper, ItemsWrapper, MenuItem, MenuDesc, MenuIcon } from '../styles/bottom_bar'
 
 import { openMenu } from '../logic'
 import { communityPageMenus, getArticlePageMenus } from './menus'
@@ -51,9 +42,7 @@ const BottomBar: FC<TProps> = ({
     ? getArticlePageMenus(article)
     : communityPageMenus
 
-  const communityInfo = article?.originalCommunity?.raw
-    ? article.originalCommunity
-    : community
+  const communityInfo = article?.originalCommunity?.raw ? article.originalCommunity : community
 
   return (
     <Wrapper testid={testid} isMenuActive={!!activeMenu}>

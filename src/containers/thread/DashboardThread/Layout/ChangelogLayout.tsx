@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import type { TChangelogLayout } from '@/spec'
 
-import { CHANGELOG_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant'
+import { CHANGELOG_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { callDashboardDesc } from '@/utils/signal'
 
 import { Row, Br, Space, SpaceGrow, Divider, Inline } from '@/widgets/Common'

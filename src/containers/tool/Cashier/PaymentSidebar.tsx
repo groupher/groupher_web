@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import { ICON_CMD } from '@/config'
-import { PAYMENT_METHOD } from '@/constant'
+import { PAYMENT_METHOD } from '@/constant/payment'
 import useAccount from '@/hooks/useAccount'
 
 import type { TProps as TContentProps } from './Content'
@@ -29,11 +29,7 @@ import { sidebarViewOnChange, paymentMethodOnChange } from './logic'
 
 type TProps = Pick<TContentProps, 'amount' | 'paymentMethod' | 'subContentView'>
 
-const PaymentSidebar: FC<TProps> = ({
-  paymentMethod,
-  amount,
-  subContentView,
-}) => {
+const PaymentSidebar: FC<TProps> = ({ paymentMethod, amount, subContentView }) => {
   const accountInfo = useAccount()
 
   if (!accountInfo) return null

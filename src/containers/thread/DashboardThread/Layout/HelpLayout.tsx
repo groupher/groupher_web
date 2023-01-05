@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import type { THelpLayout } from '@/spec'
 
-import { HELP_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant'
+import { HELP_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { callDashboardDesc } from '@/utils/signal'
 
 import { Br, Space, Inline } from '@/widgets/Common'

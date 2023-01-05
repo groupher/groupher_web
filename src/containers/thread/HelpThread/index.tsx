@@ -6,7 +6,7 @@
 import { FC } from 'react'
 
 // import { buildLog } from '@/utils/logger'
-import { HELP_LAYOUT } from '@/constant'
+import { HELP_LAYOUT } from '@/constant/layout'
 import { bond } from '@/utils/mobx'
 
 import type { TStore } from './store'

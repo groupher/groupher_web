@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import type { TPostLayout } from '@/spec'
 
-import { POST_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant'
+import { POST_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { callDashboardDesc } from '@/utils/signal'
 
 import { Row, Br, Space, SpaceGrow, Inline } from '@/widgets/Common'

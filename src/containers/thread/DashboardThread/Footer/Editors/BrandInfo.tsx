@@ -2,7 +2,8 @@ import { FC } from 'react'
 
 import type { TFooterLayout } from '@/spec'
 
-import { FOOTER_LAYOUT, SOCIAL_LIST } from '@/constant'
+import { FOOTER_LAYOUT } from '@/constant/layout'
+import SOCIAL_LIST from '@/constant/social'
 import { buildLog } from '@/utils/logger'
 
 import SocialList from '@/widgets/SocialList'

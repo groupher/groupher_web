@@ -1,13 +1,11 @@
 import React from 'react'
 
-import { VIEW, SIZE } from '@/constant'
+import SIZE from '@/constant/size'
+import VIEW from '@/constant/view'
+
 import TabBar from '@/widgets/TabBar'
 
-import {
-  Wrapper,
-  InnerWrapper,
-  TabsWrapper,
-} from '../styles/top_bar/desktop_view'
+import { Wrapper, InnerWrapper, TabsWrapper } from '../styles/top_bar/desktop_view'
 
 import { tabOnChange } from '../logic'
 

@@ -2,7 +2,9 @@ import { useEffect } from 'react'
 // import { } from 'ramda'
 
 import type { TThread } from '@/spec'
-import { TYPE, EVENT } from '@/constant'
+
+import EVENT from '@/constant/event'
+import TYPE from '@/constant/type'
 
 import asyncSuit from '@/utils/async'
 import { plural } from '@/utils/fmt'

@@ -9,10 +9,13 @@
 import { FC, Fragment, memo, useEffect, useState } from 'react'
 
 import type { TThread, TCommunity } from '@/spec'
+
+import EVENT from '@/constant/event'
+import { ARTICLE_CAT } from '@/constant/article_cat_state'
+
 import { buildLog } from '@/utils/logger'
 import { send } from '@/utils/signal'
 import { mockUsers } from '@/utils/mock'
-import { ARTICLE_CAT, EVENT } from '@/constant'
 
 import Sticky from '@/widgets/Sticky'
 import { SpaceGrow, Br } from '@/widgets/Common'
@@ -44,11 +47,7 @@ export type TProps = {
   community: TCommunity
 }
 
-const ClassicLayout: FC<TProps> = ({
-  showCommunityBadge,
-  thread,
-  community,
-}) => {
+const ClassicLayout: FC<TProps> = ({ showCommunityBadge, thread, community }) => {
   const [load, setLoad] = useState(false)
 
   useEffect(() => {

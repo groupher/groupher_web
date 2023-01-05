@@ -6,7 +6,10 @@
 import { merge, contains, values, findIndex } from 'ramda'
 
 import type { TRootStore, TCommunity, TThread, TArticle } from '@/spec'
-import { TYPE, ARTICLE_THREAD, DASHBOARD_DESC_LAYOUT } from '@/constant'
+
+import { DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
+import { ARTICLE_THREAD } from '@/constant/thread'
+import TYPE from '@/constant/type'
 
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { lockPage, unlockPage } from '@/utils/dom'

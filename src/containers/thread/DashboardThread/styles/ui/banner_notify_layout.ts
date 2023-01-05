@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { includes } from 'ramda'
 
 import type { TActive, TColorName } from '@/spec'
-import { COLORS, COLOR_NAME } from '@/constant'
+import { COLORS, COLOR_NAME } from '@/constant/colors'
 
 import css, { theme } from '@/utils/css'
 import { lighten, darken } from '@/utils/color'

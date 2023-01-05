@@ -3,7 +3,8 @@ import { contains } from 'ramda'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TThread, TC11N } from '@/spec'
-import { THREAD, C11N } from '@/constant'
+import { THREAD } from '@/constant/thread'
+import C11N from '@/constant/c11n'
 
 import { Br, Divider } from '@/widgets/Common'
 import Radio from '@/widgets/Switcher/Radio'
@@ -19,8 +20,7 @@ type TProps = {
 const GeneralSettings: FC<TProps> = ({ curThread, customization }) => {
   const { isMobile } = useMobileDetect()
 
-  const { bannerLayout, contentDivider, markViewed, displayDensity } =
-    customization
+  const { bannerLayout, contentDivider, markViewed, displayDensity } = customization
 
   return (
     <Wrapper>

@@ -4,7 +4,7 @@
 
 import { find, propEq } from 'ramda'
 
-import { REPORT_TYPE } from '@/constant'
+import { REPORT_TYPE } from '@/constant/report'
 
 import type { TCommunity, TArticle, TRootStore } from '@/spec'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
