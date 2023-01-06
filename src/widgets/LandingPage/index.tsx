@@ -12,8 +12,10 @@ import { buildLog } from '@/utils/logger'
 
 import Tooltip from '@/widgets/Tooltip'
 import Button from '@/widgets/Buttons/Button'
-
 import { SpaceGrow } from '@/widgets/Common'
+
+import Header from './Header'
+
 import {
   Wrapper,
   Banner,
@@ -39,6 +41,7 @@ const LandingPage: FC<TProps> = ({ testid = 'landing-page' }) => {
   return (
     <Wrapper testid={testid}>
       <Banner>
+        <Header />
         <Title>让你的产品聆听用户的声音</Title>
         <Desc>讨论区，GTD 看板，更新日志，帮助文档多合一，收集沉淀用户反馈，打造更好的产品</Desc>
         <ButtonGroup>

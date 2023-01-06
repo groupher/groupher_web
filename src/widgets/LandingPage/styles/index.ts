@@ -18,7 +18,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   width: 100%;
 `
 export const Banner = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.flexColumn('align-center')};
   height: 700px;
   width: 100%;
   position: relative;
