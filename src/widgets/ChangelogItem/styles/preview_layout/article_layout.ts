@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TTestable } from '@/spec'
 
 import css, { theme } from '@/utils/css'
-import CommentSVG from '@/icons/Comment'
+import ShareSVG from '@/icons/Share'
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
@@ -52,4 +52,8 @@ export const Version = styled.span`
   font-weight: 480;
   opacity: 0.6;
   margin-left: 8px;
+`
+export const ShareIcon = styled(ShareSVG)`
+  ${css.size(13)};
+  fill: ${theme('article.digest')};
 `
