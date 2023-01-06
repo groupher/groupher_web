@@ -14,9 +14,10 @@ import { SpaceGrow } from '@/widgets/Common'
 import TagsList from '@/widgets/TagsList'
 import CoverImage from '@/widgets/CoverImage'
 import EmotionSelector from '@/widgets/EmotionSelector'
+import CommentsCount from '@/widgets/CommentsCount'
 
 import { demoTags, demoEmotion } from '../constant'
-import BonusButton from './BonusButton'
+import Author from './Author'
 
 import {
   Wrapper,
@@ -27,9 +28,6 @@ import {
   Footer,
   Version,
   DateTime,
-  CommentWrapper,
-  CommentIcon,
-  Text,
 } from '../styles/preview_layout/article_layout'
 
 /* eslint-disable-next-line */
@@ -59,12 +57,9 @@ const PreviewLayout: FC<TProps> = ({ testid = 'changelog-item' }) => {
         </Body>
         <Footer>
           <EmotionSelector emotions={demoEmotion} isLegal />
-          <CommentWrapper>
-            <CommentIcon />
-            <Text>23</Text>
-          </CommentWrapper>
+          <CommentsCount count={8} size="medium" left={20} />
           <SpaceGrow />
-          <BonusButton top={-3} />
+          <Author />
         </Footer>
       </Main>
     </Wrapper>

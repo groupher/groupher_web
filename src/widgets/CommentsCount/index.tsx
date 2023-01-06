@@ -1,6 +1,6 @@
 import { FC, memo, Fragment } from 'react'
 
-import type { TSizeSM } from '@/spec'
+import type { TSizeSM, TSpace } from '@/spec'
 import SIZE from '@/constant/size'
 
 import { Space } from '@/widgets/Common'
@@ -10,19 +10,19 @@ import { Wrapper, Count, CommentsIcon, HighlightWrapper } from './styles'
 type TProps = {
   count: number
   size?: TSizeSM
-}
+} & TSpace
 
-const CommentsCount: FC<TProps> = ({ count, size = SIZE.SMALL }) => {
+const CommentsCount: FC<TProps> = ({ count, size = SIZE.SMALL, ...restProps }) => {
   return (
     <Fragment>
       {count >= 100 ? (
-        <HighlightWrapper size={size}>
+        <HighlightWrapper size={size} {...restProps}>
           <CommentsIcon size={size} highlight />
           {size === SIZE.MEDIUM && <Space right={2} />}
           <Count>{count}</Count>
         </HighlightWrapper>
       ) : (
-        <Wrapper size={size}>
+        <Wrapper size={size} {...restProps}>
           <CommentsIcon size={size} />
           {size === SIZE.MEDIUM && <Space right={2} />}
           <Count>{count}</Count>

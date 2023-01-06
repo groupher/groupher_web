@@ -18,7 +18,6 @@ import CoverImage from '@/widgets/CoverImage'
 import EmotionSelector from '@/widgets/EmotionSelector'
 
 import { demoTags, demoEmotion } from '../constant'
-import BonusButton from './BonusButton'
 
 import {
   Wrapper,
@@ -63,7 +62,6 @@ const PreviewLayout: FC<TProps> = ({ testid = 'changelog-item' }) => {
             <Text>23</Text>
           </CommentWrapper>
           <SpaceGrow />
-          <BonusButton top={-8} right={2} />
         </Footer>
       </Main>
       <Side>
