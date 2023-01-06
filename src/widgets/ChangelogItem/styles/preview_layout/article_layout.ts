@@ -42,8 +42,9 @@ export const Footer = styled.div`
 `
 
 export const DateTime = styled.div`
+  color: ${theme('article.digest')};
   font-size: 13px;
-  opacity: 0.8;
+  opacity: 0.6;
   margin-top: -4px;
 `
 export const Version = styled.span`
