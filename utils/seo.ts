@@ -56,6 +56,15 @@ export const articlePublishSEO = (thread: TThread = THREAD.POST): TSEO => {
   }
 }
 
+export const landingSEO = (): TSEO => {
+  return {
+    url: `${SITE_URL}`,
+    title: 'Groupher',
+    description:
+      '让你的产品聆听用户的声音。互动讨论，GTD 看板，更新日志，帮助文档多合一，收集整理用户用户反馈，助你打造更好的产品',
+  }
+}
+
 export const articleUpdateSEO = (): TSEO => {
   return {
     url: `${SITE_URL}/todo`,

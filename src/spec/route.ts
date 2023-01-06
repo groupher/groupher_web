@@ -7,6 +7,7 @@ export type TDashboardPath =
   | 'ui'
   | 'layout'
   | 'threads'
+  | 'seo'
   | 'alias'
   | 'domain'
   // analysis

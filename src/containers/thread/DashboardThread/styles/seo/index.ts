@@ -12,27 +12,6 @@ export const Section = styled.div`
   padding-bottom: 30px;
   margin-bottom: 20px;
 `
-
-export const LogoWrapper = styled.div`
-  ${css.size(70)};
-`
-export const Logo = styled.div`
-  ${css.size(70)};
-  background: ${theme('hoverBg')};
-  border-radius: 4px;
-`
-export const Title = styled.div`
-  color: ${theme('article.title')};
-  font-size: 15px;
-  margin-bottom: 12px;
-`
-export const Desc = styled.div`
-  color: ${theme('article.digest')};
-  opacity: 0.8;
-  font-size: 12px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-`
 export const Row = styled.div`
   ${css.flex('align-center')};
 `

@@ -15,10 +15,15 @@ export const BrandInfo = styled.div`
   ${css.flex('align-center')};
 `
 
-export const BrandText = styled.div`
+export const BrandText = styled(Link)`
   color: ${theme('article.title')};
   font-size: 14px;
   font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `
 
 export const LinksInfo = styled.div`

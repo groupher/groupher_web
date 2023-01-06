@@ -3,7 +3,7 @@ import { Provider } from 'mobx-react'
 
 import METRIC from '@/constant/metric'
 
-import { articleUpdateSEO } from '@/utils'
+import { landingSEO } from '@/utils'
 
 import { useStore } from '@/stores/init'
 import GlobalLayout from '@/containers/layout/GlobalLayout'
@@ -26,11 +26,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 export const HomePage = (props) => {
   const store = useStore(props)
 
-  const seoConfig = articleUpdateSEO()
+  const seoConfig = landingSEO()
 
   return (
     <Provider store={store}>
-      <GlobalLayout metric={METRIC.ARTICLE_EDITOR} seoConfig={seoConfig}>
+      <GlobalLayout metric={METRIC.HOME} seoConfig={seoConfig}>
         <LandingPage />
       </GlobalLayout>
     </Provider>

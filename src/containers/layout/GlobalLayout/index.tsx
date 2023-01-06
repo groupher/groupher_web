@@ -34,8 +34,6 @@ import {
 } from './styles'
 import { useInit, childrenWithProps } from './logic'
 
-const glowPosition = 'fixed'
-
 type TProps = {
   globalLayout?: TStore
   children: ReactNode
