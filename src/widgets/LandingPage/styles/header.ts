@@ -23,7 +23,7 @@ export const Brand = styled.div`
 `
 
 export const BrandTitle = styled.div`
-  font-size: 16px;
+  font-size: 18px;
   color: ${theme('article.title')};
   font-weight: 600;
 `
