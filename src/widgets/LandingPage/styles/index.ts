@@ -6,7 +6,7 @@ import type { TTestable } from '@/spec'
 import Button from '@/widgets/Buttons/Button'
 import LinkSVG from '@/icons/LinkOutside'
 
-// import Img from '@/Img'
+import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 import InfoSVG from '@/icons/Info'
 
@@ -14,7 +14,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flexColumn('align-both')};
-  min-height: 100vh;
+  height: 100%;
   width: 100%;
 `
 export const Banner = styled.div`
@@ -94,4 +94,15 @@ export const DemoButton = styled(Button)`
   }
 
   transition: all 0.2s;
+`
+
+export const CoverImage = styled(Img)`
+  width: 1024px;
+  border-radius: 10px;
+  height: auto;
+  object-fit: cover;
+  margin-top: -200px;
+  border-top: 1px solid;
+  border-color: ${theme('divider')};
+  box-shadow: 0 5px 25px rgb(35 35 35 / 10%);
 `

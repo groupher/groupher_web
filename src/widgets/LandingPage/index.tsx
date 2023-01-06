@@ -28,6 +28,7 @@ import {
   DemoButton,
   Note,
   InfoIcon,
+  CoverImage,
 } from './styles'
 
 /* eslint-disable-next-line */
@@ -76,6 +77,8 @@ const LandingPage: FC<TProps> = ({ testid = 'landing-page' }) => {
           本站正在开发中，详情请联系 mydearxym@qq.com
         </Note>
       </Banner>
+
+      <CoverImage src="/landing-demo.png" />
 
       <SpaceGrow />
     </Wrapper>
