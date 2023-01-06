@@ -37,6 +37,10 @@ export const MENU = {
         raw: DASHBOARD_ROUTE.INFO,
       },
       {
+        title: 'SEO',
+        raw: DASHBOARD_ROUTE.SEO,
+      },
+      {
         title: '外观',
         raw: DASHBOARD_ROUTE.UI,
       },

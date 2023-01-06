@@ -11,6 +11,7 @@ export const DASHBOARD_ROUTE = {
   UI: 'ui',
   LAYOUT: 'layout',
   THREADS: 'threads',
+  SEO: 'seo',
   ALIAS: 'alias',
   DOMAIN: 'domain',
   // analysis

@@ -11,6 +11,10 @@ export const BasicInfo = dynamic(() => import('./BasicInfo'), {
   loading: () => <LavaLampLoading />,
 })
 
+export const SEO = dynamic(() => import('./SEO'), {
+  loading: () => <LavaLampLoading />,
+})
+
 export const Layout = dynamic(() => import('./Layout'), {
   loading: () => <LavaLampLoading />,
 })
