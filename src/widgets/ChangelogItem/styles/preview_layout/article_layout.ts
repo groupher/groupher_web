@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TTestable } from '@/spec'
 
 import css, { theme } from '@/utils/css'
-import CommentSVG from '@/icons/Comment'
+import ShareSVG from '@/icons/Share'
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
@@ -23,11 +23,12 @@ export const Title = styled.div`
   color: ${theme('article.title')};
   font-size: 20px;
   font-weight: 580;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
+  margin-top: 30px;
 `
 export const TagsWrapper = styled.div`
   ${css.flex('align-both', 'justify-between')};
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 `
 export const Body = styled.div`
   color: ${theme('article.digest')};
@@ -39,22 +40,11 @@ export const Footer = styled.div`
   margin-top: 20px;
   margin-left: -5px;
 `
-export const CommentWrapper = styled.div`
-  ${css.flex('align-center')};
-  margin-left: 20px;
-`
-export const CommentIcon = styled(CommentSVG)`
-  ${css.size(13)};
-  fill: ${theme('article.info')};
-`
-export const Text = styled.div`
-  color: ${theme('article.info')};
-  font-size: 13px;
-  margin-left: 6px;
-`
+
 export const DateTime = styled.div`
+  color: ${theme('article.digest')};
   font-size: 13px;
-  opacity: 0.8;
+  opacity: 0.6;
   margin-top: -4px;
 `
 export const Version = styled.span`
@@ -63,4 +53,8 @@ export const Version = styled.span`
   font-weight: 480;
   opacity: 0.6;
   margin-left: 8px;
+`
+export const ShareIcon = styled(ShareSVG)`
+  ${css.size(13)};
+  fill: ${theme('article.digest')};
 `

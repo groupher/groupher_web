@@ -44,11 +44,11 @@ export const SearchInput = styled(Input)`
   text-align: center;
   border-radius: 15px;
   border: 1px solid;
-  border-color: ${theme('divider')};
+  border-color: ${theme('article.digest')};
+  background: transparent;
 
   ::placeholder {
-    color: ${theme('article.digest')};
-    opacity: 0.8;
+    color: ${theme('article.title')};
   }
 `
 export const NewButton = styled(Button)`

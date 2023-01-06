@@ -28,10 +28,10 @@ const Filters: FC<TProps> = ({ tagsMode }) => {
     <Wrapper>
       <BannerText>Groupher 的最新版可以在 [这里] 获取，任何问题欢迎反馈。</BannerText>
       <Br bottom={20} />
-      <PublishButton>
+      {/* <PublishButton>
         <BtnText>订阅更新</BtnText>
-      </PublishButton>
-      <Br bottom={20} />
+      </PublishButton> */}
+      {/* <Br bottom={20} /> */}
       <SearchInput placeholder="搜索内容" />
       <Br bottom={30} />
       <TabWrapper>
