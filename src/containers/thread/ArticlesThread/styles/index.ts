@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import { values, includes } from 'ramda'
 import type { TThread } from '@/spec'
-import { CARD_THREAD } from '@/constant'
+import { CARD_THREAD } from '@/constant/thread'
 import css, { theme } from '@/utils/css'
 
 export const Wrapper = styled.div`
