@@ -1,6 +1,10 @@
 import styled from 'styled-components'
+import Link from 'next/link'
 
 import type { TTestable } from '@/spec'
+
+import Button from '@/widgets/Buttons/Button'
+import LinkSVG from '@/icons/LinkOutside'
 
 // import Img from '@/Img'
 import css, { theme } from '@/utils/css'
@@ -30,7 +34,7 @@ export const Title = styled.div`
   font-weight: 600;
 `
 export const Desc = styled.p`
-  font-size: 16px;
+  font-size: 18px;
   ${theme('article.digest')};
   margin-top: 15px;
   opacity: 0.8;
@@ -45,4 +49,49 @@ export const Note = styled.div`
   ${css.flex('align-center')};
   font-size: 13px;
   margin-top: 20px;
+`
+
+export const ButtonGroup = styled.div`
+  ${css.flex('align-center')};
+  gap: 0 22px;
+  margin-top: 30px;
+`
+export const DemoPanel = styled.div`
+  ${css.flexColumn()};
+  gap: 3px 0;
+  padding: 6px 2px;
+  width: 100px;
+`
+
+export const DemoMenuItem = styled(Link)`
+  ${css.flex('justify-between', 'align-center')};
+  color: ${theme('article.title')};
+  font-size: 14px;
+  padding: 2px 4px;
+  text-decoration: none;
+
+  &:hover {
+    /* font-weight: 600; */
+    cursor: pointer;
+    background: ${theme('hoverBg')};
+    text-decoration: none;
+  }
+`
+export const LinkIcon = styled(LinkSVG)`
+  ${css.size(8)};
+  color: ${theme('article.digest')};
+  opacity: 0.4;
+
+  ${DemoMenuItem}:hover & {
+    opacity: 1;
+  }
+`
+export const DemoButton = styled(Button)`
+  border-color: ${theme('article.digest')};
+
+  &:hover {
+    border-color: ${theme('article.title')};
+  }
+
+  transition: all 0.2s;
 `
