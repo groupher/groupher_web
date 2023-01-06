@@ -2,6 +2,7 @@ import type { TMetric } from '@/spec'
 // NOTE:  the value is mapping to @/utils/media's key
 // so do not change to lowercase etc...
 const METRIC = {
+  HOME: 'HOME',
   COMMUNITY: 'COMMUNITY',
   USER: 'USER',
   // article

@@ -15,6 +15,10 @@ export const mediaBreakPoints = {
 // PAGE: 页面宽度 (不包括背景图) for footer, header etc
 // CONTENT: 内容宽度
 export const WIDTH = {
+  HOME: {
+    PAGE: '1400px',
+    CONTENT: '1024px',
+  },
   COMMUNITY: {
     PAGE: '1320px',
     CONTENT: '1024px',
@@ -55,40 +59,8 @@ export const WIDTH = {
     STICKER: '260px',
     STICKER_LAPTOPL: '260px',
   },
-  WORKS: {
-    CONTENT: '1100px',
-  },
-  COOL_GUIDE: {
-    CONTENT: '1150px',
-    LAPTOP_M_PADDING: '45px',
-  },
-  RECIPES: {
-    CONTENT: '1150px',
-    LAPTOP_M_PADDING: '45px',
-  },
-  MEETUPS: {
-    CONTENT: '1150px',
-  },
-
-  HAVE_A_DRINK: {
-    CONTENT: '1120px',
-    LAPTOP_M_PADDING: '15px',
-  },
-  TREADING: {
-    CONTENT: '1120px',
-  },
-
-  SPONSOR: {
-    PAGE: '1460px',
-    CONTENT: '1080px',
-  },
 
   MEMBERSHIP: {
-    CONTENT: '1080px',
-  },
-
-  SUPPORT_US: {
-    PAGE: '1460px',
     CONTENT: '1080px',
   },
 

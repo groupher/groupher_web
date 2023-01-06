@@ -123,4 +123,5 @@ export {
   articleUpdateSEO,
   userSEO,
   publishCommunitySEO,
+  landingSEO,
 } from './seo'

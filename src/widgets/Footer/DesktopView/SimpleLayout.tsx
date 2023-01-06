@@ -17,7 +17,7 @@ const SimpleLayout: FC = () => {
   return (
     <Wrapper>
       <BrandInfo>
-        <BrandText>Groupher</BrandText>
+        <BrandText href="/">Groupher</BrandText>
       </BrandInfo>
       <LinksInfo>
         <LinkItem href={ROUTE.POST}>讨论</LinkItem>

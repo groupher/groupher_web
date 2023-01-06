@@ -31,6 +31,7 @@ export const Addr = styled(Link)`
 
   &:hover {
     color: ${theme('article.title')};
+    text-decoration: underline;
   }
 
   transition: all 0.2s;

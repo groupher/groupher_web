@@ -11,7 +11,7 @@ const PowerbyInfo: FC = () => {
   return (
     <Wrapper testid="footer">
       <Note>
-        由<Addr href={SITE_URL}>Groupher</Addr>
+        由<Addr href="/">Groupher</Addr>
         提供服务
       </Note>
       <BottomWrapper>
