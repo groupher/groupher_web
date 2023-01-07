@@ -15,6 +15,9 @@ import Button from '@/widgets/Buttons/Button'
 import { SpaceGrow } from '@/widgets/Common'
 
 import Header from './Header'
+import CoverImage from './CoverImage'
+import FeatureWall from './FeatureWall'
+import UsersWall from './UsersWall'
 
 import {
   Wrapper,
@@ -28,7 +31,7 @@ import {
   DemoButton,
   Note,
   InfoIcon,
-  CoverImage,
+  Divider,
 } from './styles'
 
 /* eslint-disable-next-line */
@@ -44,7 +47,9 @@ const LandingPage: FC<TProps> = ({ testid = 'landing-page' }) => {
       <Banner>
         <Header />
         <Title>让你的产品聆听用户的声音</Title>
-        <Desc>讨论区，GTD 看板，更新日志，帮助文档多合一，收集沉淀用户反馈，打造更好的产品</Desc>
+        <Desc>
+          讨论区，GTD 看板，更新日志，帮助文档多合一，收集沉淀用户反馈，助你打造更好的产品
+        </Desc>
         <ButtonGroup>
           <Link href={`/${ROUTE.HOME}/${ROUTE.HELP}`}>
             <Button size="medium">开始使用</Button>
@@ -78,8 +83,11 @@ const LandingPage: FC<TProps> = ({ testid = 'landing-page' }) => {
         </Note>
       </Banner>
 
-      <CoverImage src="/landing-demo.png" />
-
+      <CoverImage />
+      <Divider top={100} bottom={80} />
+      <FeatureWall />
+      <Divider top={60} bottom={80} />
+      <UsersWall />
       <SpaceGrow />
     </Wrapper>
   )

@@ -260,7 +260,7 @@ const github = {
     hoverBg: '#eee',
   },
   popover: {
-    bg: '#fff',
+    bg: '#ffffffe6',
     borderColor: '#e9e9ea',
     boxShadow: '0 1px 4px rgba(0, 0, 0, 0.15)',
   },
