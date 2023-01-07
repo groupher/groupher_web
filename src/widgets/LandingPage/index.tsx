@@ -12,7 +12,6 @@ import { buildLog } from '@/utils/logger'
 
 import Tooltip from '@/widgets/Tooltip'
 import Button from '@/widgets/Buttons/Button'
-import { SpaceGrow } from '@/widgets/Common'
 
 import Header from './Header'
 import CoverImage from './CoverImage'
@@ -88,7 +87,6 @@ const LandingPage: FC<TProps> = ({ testid = 'landing-page' }) => {
       <FeatureWall />
       <Divider top={60} bottom={80} />
       <UsersWall />
-      <SpaceGrow />
     </Wrapper>
   )
 }

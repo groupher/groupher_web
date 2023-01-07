@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TTestable } from '@/spec'
+import type { TColorName, TTestable } from '@/spec'
 
 import css, { theme } from '@/utils/css'
 
@@ -35,6 +35,16 @@ export const Wall = styled.div`
     radial-gradient(circle at 80% 30%, #ffeba824 0, transparent 40%);
 `
 
-export const Hightlight = styled.span`
-  background-color: #fffee0;
+export const DempP = styled.div`
+  line-height: 1.75;
+  font-size: 15px;
+  p {
+    margin-top: 10px;
+  }
+`
+export const Hightlight = styled.span<{ color: TColorName }>`
+  color: ${theme('article.title')};
+  font-weight: 500;
+  padding: 0 2px;
+  background-color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}Bg`)};
 `
