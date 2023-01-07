@@ -1,12 +1,11 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 
-import type { TTestable } from '@/spec'
+import type { TSpace, TTestable } from '@/spec'
 
 import Button from '@/widgets/Buttons/Button'
 import LinkSVG from '@/icons/LinkOutside'
 
-import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 import InfoSVG from '@/icons/Info'
 
@@ -96,13 +95,22 @@ export const DemoButton = styled(Button)`
   transition: all 0.2s;
 `
 
-export const CoverImage = styled(Img)`
-  width: 1024px;
-  border-radius: 10px;
-  height: auto;
-  object-fit: cover;
-  margin-top: -200px;
-  border-top: 1px solid;
-  border-color: ${theme('divider')};
-  box-shadow: 0 5px 25px rgb(35 35 35 / 10%);
+export const Divider = styled.div<TSpace>`
+  width: 90%;
+  height: 1px;
+  border-bottom: 1px solid transparent;
+
+  margin-top: ${({ top }) => `${top === undefined ? 20 : top}px`};
+  margin-bottom: ${({ bottom }) => `${bottom === undefined ? 20 : bottom}px`};
+
+  border-image: linear-gradient(
+    0.35turn,
+    transparent,
+    ${theme('divider')},
+    ${theme('divider')},
+    ${theme('divider')},
+    transparent
+  );
+
+  border-image-slice: 1;
 `

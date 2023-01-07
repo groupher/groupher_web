@@ -119,7 +119,6 @@ const GlobalStyle = createGlobalStyle`
 
   .masonry-cards-grid {
     display: flex;
-    margin-left: -20px; /* gutter size offset */
     width: auto;
 
     ${css.media.mobile`
@@ -127,8 +126,8 @@ const GlobalStyle = createGlobalStyle`
     `};
   }
   .masonry-cards-grid_column {
-    padding-left: 20px; /* gutter size */
     background-clip: padding-box;
+    padding: 20px;
 
     ${css.media.mobile`
       padding-left: 10px;
@@ -158,5 +157,10 @@ const GlobalStyle = createGlobalStyle`
   /* .tippy-box[data-state='hidden'] {
     opacity: 0;
   } */
+
+  // 不然图片下面后有个条
+  .lazy-load-image-background.blur.lazy-load-image-loaded {
+    line-height: 0.8;
+  }
 `
 export default GlobalStyle
