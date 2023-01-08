@@ -32,7 +32,7 @@ import {
   BodyWrapper,
   ContentWrapper,
 } from './styles'
-import { useInit, childrenWithProps } from './logic'
+import { useInit, childrenWithProps, getGlowPosition } from './logic'
 
 type TProps = {
   globalLayout?: TStore
@@ -99,7 +99,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
               {!!glowType && (
                 <GrowBackground
                   glowType={glowType}
-                  glowPosition={glowFixed ? 'fixed' : 'absolute'}
+                  glowPosition={getGlowPosition(metric, glowFixed)}
                 />
               )}
             </InnerWrapper>
