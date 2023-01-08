@@ -9,6 +9,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 }))<TTestable>`
   ${css.flexColumn('align-both')};
   width: 100%;
+  height: auto;
 `
 export const Slogan = styled.div`
   ${css.flexColumn('align-both')};
@@ -29,9 +30,14 @@ export const Wall = styled.div`
   ${css.flexColumn('align-both')};
   margin-top: 30px;
   width: 100%;
-  height: 200px;
 `
 
-export const Hightlight = styled.span`
-  background-color: #fffee0;
+export const FeatBlock = styled.div`
+  ${css.flex('align-center', 'justify-between')};
+  width: 100%;
+  height: 730px;
+  padding: 0 15%;
+
+  background: radial-gradient(circle at 60% 50%, #e58a7894 0, transparent 30%),
+    radial-gradient(circle at 80% 30%, #ddecf14a, transparent 30%);
 `

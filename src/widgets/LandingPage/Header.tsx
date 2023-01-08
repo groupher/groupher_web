@@ -58,9 +58,9 @@ const Header: FC = () => {
           content={
             <Panel>
               <MenuItem href={`/${ROUTE.HOME}`}>团队博客</MenuItem>
-              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`}>看板</MenuItem>
-              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`}>更新日志</MenuItem>
               <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`}>帮助文档</MenuItem>
+              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`}>更新日志</MenuItem>
+              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`}>自定义</MenuItem>
             </Panel>
           }
           placement="bottom"

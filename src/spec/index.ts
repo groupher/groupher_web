@@ -162,9 +162,10 @@ export type TViewing = TCommunity | TArticle
 
 export type TContainer = 'body' | 'drawer'
 
+export type TGlowPosition = 'fixed' | 'absolute'
 export type TGlowEffect = {
   glowType: string
-  glowPosition: 'fixed' | 'absolute'
+  glowPosition: TGlowPosition
 }
 
 interface IWindow extends Window {

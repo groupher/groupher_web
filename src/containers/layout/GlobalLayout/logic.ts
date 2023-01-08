@@ -1,13 +1,9 @@
-import {
-  ReactNode,
-  useEffect,
-  Children,
-  isValidElement,
-  cloneElement,
-} from 'react'
+import { ReactNode, useEffect, Children, isValidElement, cloneElement } from 'react'
 
-import type { TScrollDirection } from '@/spec'
 import { APP_VERSION } from '@/config'
+import type { TMetric, TScrollDirection, TGlowPosition } from '@/spec'
+import { METRIC } from '@/constant'
+
 import { buildLog } from '@/utils/logger'
 import { Global } from '@/utils/helper'
 
@@ -19,9 +15,17 @@ const log = buildLog('L:GlobalLayout')
 let store: TStore | undefined
 
 // custromScroll's scroll direction change
-export const onPageScrollDirhange = (
-  bodyScrollDirection: TScrollDirection,
-): void => store.mark({ bodyScrollDirection })
+export const onPageScrollDirhange = (bodyScrollDirection: TScrollDirection): void =>
+  store.mark({ bodyScrollDirection })
+
+export const getGlowPosition = (metric: TMetric, glowFixed: boolean): TGlowPosition => {
+  if (metric === METRIC.HOME) {
+    return 'absolute'
+  }
+
+  return glowFixed ? 'fixed' : 'absolute'
+}
+
 /**
  * log ascii Buddha just for fun
  * 控制台打印佛祖保佑
