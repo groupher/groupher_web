@@ -36,8 +36,9 @@ export const FeatBlock = styled.div`
   ${css.flex('align-center', 'justify-between')};
   width: 100%;
   height: 730px;
-  padding: 0 15%;
+  padding: 0 12%;
+  margin-top: -50px;
 
-  background: radial-gradient(circle at 60% 50%, #e58a7894 0, transparent 30%),
-    radial-gradient(circle at 80% 30%, #ddecf14a, transparent 30%);
+  background: radial-gradient(circle at 68% 50%, #e5847873 0, transparent 35%),
+    radial-gradient(circle at 20% 30%, #ffdbbb4a, transparent 20%);
 `

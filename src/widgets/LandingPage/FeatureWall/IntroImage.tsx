@@ -7,7 +7,6 @@ const IntroImage: FC = () => {
     <Wrapper>
       <Image src="/intro-help-demo.png" />
       <ColorBlock />
-      <ColorBlock2 />
     </Wrapper>
   )
 }

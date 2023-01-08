@@ -27,7 +27,7 @@ export const Desc = styled.div`
 //
 export const Wall = styled.div`
   ${css.flexColumn('align-both')};
-  margin-top: 30px;
+  margin-top: 80px;
   width: 100%;
   height: auto;
 

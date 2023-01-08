@@ -10,7 +10,7 @@ const FeatureWall: FC = () => {
     <Wrapper>
       <Slogan>
         <Title>为你的产品添彩</Title>
-        <Desc>你只需专注产品的核心工作，将那些“无聊”但又重要的体力活交给 Groupher</Desc>
+        <Desc>你只需专注产品的核心工作，将那些“无聊”却又重要的体力活交给 Groupher</Desc>
       </Slogan>
       <Wall>
         <FeatBlock>
