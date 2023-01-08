@@ -20,6 +20,8 @@ export const Wrapper = styled.div<TWrapper>`
 
   transition: all 0.2s;
   transition-delay: 1s;
+
+  z-index: -1;
 `
 
 export const holder = 1

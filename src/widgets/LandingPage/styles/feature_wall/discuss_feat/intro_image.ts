@@ -14,6 +14,10 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   height: 440px; */
   position: relative;
 `
+export const ImageWrapper = styled.div`
+  width: 600px;
+  height: 400px;
+`
 export const Image = styled(Img)`
   width: 600px;
   height: 400px

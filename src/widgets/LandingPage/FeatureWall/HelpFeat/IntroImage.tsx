@@ -4,7 +4,12 @@ import type { TActive } from '@/spec'
 
 import { FEAT_TYPE } from '../../constant'
 import BgDots from '../BgDots'
-import { Wrapper, Image, ColorBlock } from '../../styles/feature_wall/help_feat/intro_image'
+import {
+  Wrapper,
+  ImageWrapper,
+  Image,
+  ColorBlock,
+} from '../../styles/feature_wall/help_feat/intro_image'
 
 type TProps = TActive
 
@@ -12,7 +17,9 @@ const IntroImage: FC<TProps> = ({ $active }) => {
   return (
     <Wrapper>
       <BgDots $active={$active} featType={FEAT_TYPE.HELP} />
-      <Image src="/intro-help-demo.png" />
+      <ImageWrapper>
+        <Image src="/intro-help-demo.png" />
+      </ImageWrapper>
       <ColorBlock $active={$active} />
     </Wrapper>
   )

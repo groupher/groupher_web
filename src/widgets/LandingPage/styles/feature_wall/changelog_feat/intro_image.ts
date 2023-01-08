@@ -10,9 +10,11 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 }))<TTestable>`
   ${css.flexColumn('align-both')};
   flex-grow: 1;
-  /* width: 500px;
-  height: 440px; */
   position: relative;
+`
+export const ImageWrapper = styled.div`
+  width: 600px;
+  height: 400px;
 `
 export const Image = styled(Img)`
   width: 600px;
