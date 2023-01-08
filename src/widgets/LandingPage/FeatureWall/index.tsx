@@ -1,9 +1,11 @@
 import { FC } from 'react'
 
-import IntroDigest from './IntroDigest'
-import IntroImage from './IntroImage'
+import ChangelogFeat from './ChangelogFeat'
+import DiscussFeat from './DiscussFeat'
+import KanbanFeat from './KanbanFeat'
+import HelpFeat from './HelpFeat'
 
-import { Wrapper, Slogan, Title, Desc, Wall, FeatBlock } from '../styles/feature_wall'
+import { Wrapper, Slogan, Title, Desc, Wall } from '../styles/feature_wall'
 
 const FeatureWall: FC = () => {
   return (
@@ -13,10 +15,10 @@ const FeatureWall: FC = () => {
         <Desc>你只需专注产品的核心工作，将那些“无聊”却又重要的体力活交给 Groupher</Desc>
       </Slogan>
       <Wall>
-        <FeatBlock>
-          <IntroDigest />
-          <IntroImage />
-        </FeatBlock>
+        <DiscussFeat />
+        <KanbanFeat />
+        <ChangelogFeat />
+        <HelpFeat />
       </Wall>
     </Wrapper>
   )

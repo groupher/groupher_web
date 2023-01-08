@@ -32,13 +32,8 @@ export const Wall = styled.div`
   width: 100%;
 `
 
-export const FeatBlock = styled.div`
-  ${css.flex('align-center', 'justify-between')};
-  width: 100%;
-  height: 730px;
-  padding: 0 12%;
-  margin-top: -50px;
-
-  background: radial-gradient(circle at 68% 50%, #e5847873 0, transparent 35%),
-    radial-gradient(circle at 20% 30%, #ffdbbb4a, transparent 20%);
+export const FeatList = styled.div`
+  ${css.flexColumn()};
+  gap: 18px 0;
+  margin-top: 28px;
 `

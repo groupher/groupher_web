@@ -16,6 +16,8 @@ type TProps = {
    * Whether to activate on horizontal scrolling instead of vertical
    */
   horizontal?: boolean
+  topOffset?: string | number
+  bottomOffset?: string | number
 }
 
 const ViewportTracker: FC<TProps> = (props) => {

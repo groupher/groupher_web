@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TTestable } from '@/spec'
+import type { TActive, TTestable } from '@/spec'
 
 import Img from '@/Img'
 import css, { theme } from '@/utils/css'
@@ -25,29 +25,28 @@ export const Image = styled(Img)`
   /* border-color: ${theme('divider')}; */
   /* box-shadow: 0 5px 25px rgb(35 35 35 / 10%); */
 `
-export const ColorBlock = styled.div`
+export const ColorBlock = styled.div<TActive>`
   position: absolute;
   left: 0;
   top: 0;
   width: 600px;
   height: 390px;
-  /* background: #ffb4b2; */
-  background: rgb(244, 183, 180);
-  background: linear-gradient(137deg, rgba(244, 183, 180, 1) 52%, rgba(235, 171, 62, 1) 100%);
+  /* background: ${({ $active }) =>
+    $active
+      ? 'linear-gradient(137deg, rgba(244, 183, 180, 1) 52%, rgba(235, 171, 62, 1) 100%)'
+      : theme('hoverBg')}; */
+
+  background: linear-gradient(
+    137deg,
+    rgba(197, 214, 245, 1) 52%,
+    rgba(72, 144, 157, 0.3744091386554622) 100%
+  );
 
   border-radius: 20px;
-  transform: rotate(-5deg);
-  /* box-shadow: ${css.cardShadow}; */
-  box-shadow: 0 5px 25px rgb(35 35 35 / 10%);
-`
-export const ColorBlock2 = styled.div`
-  position: absolute;
-  right: 20px;
-  bottom: 0;
-  ${css.size(455)};
-  width: 500px;
-  border-radius: 10px;
-  transform: rotate(-1.5deg);
-  /* box-shadow: ${css.cardShadow}; */
-  box-shadow: 0 5px 25px rgb(35 35 35 / 10%);
+  transform: rotate(4deg);
+
+  box-shadow: ${({ $active }) => ($active ? '0 5px 25px rgb(35 35 35 / 10%)' : 'none')};
+
+  transition: all 0.3s;
+  transition-delay: 0.8s;
 `
