@@ -11,27 +11,25 @@ import FeatItem from '../FeatItem'
 import MoreLink from '../MoreLink'
 
 import { Wrapper, FeatList } from '../../styles/feature_wall/changelog_feat/intro_digest'
+import { checkBlockInView } from '../helper'
 
 type TProps = {
   inViewChange: (inView: boolean) => void
 }
 
 const IntroDigest: FC<TProps> = ({ inViewChange }) => {
+  const [inView, setInView] = useState(false)
   const [headInView, setHeadInview] = useState(false)
   const [footInView, setFootInview] = useState(false)
 
   const scrollDir = useScrollDir()
 
   useEffect(() => {
-    if (
-      (headInView && footInView) ||
-      (headInView && scrollDir === 'up') ||
-      (footInView && scrollDir === 'up') ||
-      (headInView && scrollDir === 'down') ||
-      (footInView && !headInView && scrollDir === 'down')
-    ) {
+    if (checkBlockInView(headInView, footInView, scrollDir)) {
+      setInView(true)
       inViewChange(true)
     } else {
+      setInView(false)
       inViewChange(false)
     }
   }, [headInView, footInView, scrollDir, inViewChange])
@@ -45,6 +43,7 @@ const IntroDigest: FC<TProps> = ({ inViewChange }) => {
     <Wrapper>
       <ViewportTracker onEnter={() => setHeadInview(true)} onLeave={() => setHeadInview(false)} />
       <FeatHead
+        $active={inView}
         title="更新日志"
         desc="方便用户快速获取产品最新功能。"
         featType={FEAT_TYPE.CHANGELOG}

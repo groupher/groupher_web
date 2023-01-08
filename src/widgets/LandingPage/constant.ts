@@ -3,18 +3,22 @@ import type { TFeatType } from './spec'
 export const FEAT = {
   DISCUSS: {
     COLOR: '#ad86bf',
+    HINT: 'Discuss',
   },
 
   KANBAN: {
-    COLOR: '#5187ef',
+    COLOR: '#6399ff',
+    HINT: 'Roadmap',
   },
 
   CHANGELOG: {
     COLOR: '#ec6760',
+    HINT: 'Changelog',
   },
 
   HELP: {
     COLOR: '#50A1A2',
+    HINT: 'Help Center',
   },
 }
 
