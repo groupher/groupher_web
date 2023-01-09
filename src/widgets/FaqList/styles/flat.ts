@@ -14,9 +14,9 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   width: 100%;
   min-width: 320px;
 `
-export const Header = styled.div`
+export const Header = styled.div<{ large: boolean }>`
   ${css.flex('align-both')};
-  margin-bottom: 50px;
+  margin-bottom: ${({ large }) => (large ? '65px' : '50px')};
 `
 export const FAQIcon = styled(FAQSVG)`
   ${css.size(15)};
@@ -25,52 +25,48 @@ export const FAQIcon = styled(FAQSVG)`
   opacity: 0.8;
   margin-top: 2px;
 `
-export const BrandText = styled.div`
+export const BrandText = styled.div<{ large: boolean }>`
   color: ${theme('article.title')};
   font-weight: bold;
-  font-size: 20px;
+  font-size: ${({ large }) => (large ? '26px' : '20px')};
 `
 export const Content = styled.div`
   ${css.flex('justify-between')};
   flex-wrap: wrap;
   gap: 60px 0;
 `
-export const Section = styled.div`
+export const Section = styled.div<{ large: boolean }>`
   ${css.lineClamp(2)}
   width: 28%;
-  font-size: 15px;
+  font-size: ${({ large }) => (large ? '16px' : '15px')};
   color: ${theme('article.title')};
   font-weight: 400;
 
-  &:hover {
-    font-weight: 500;
-    cursor: pointer;
-  }
   transition: all 0.2s;
 `
 export const SectionHead = styled.div`
   ${css.flex('align-center')};
 `
-export const Title = styled.div`
+export const Title = styled.div<{ large: boolean }>`
   ${css.cutRest('250px')};
   color: ${theme('article.title')};
-  font-size: 15px;
+  font-size: ${({ large }) => (large ? '17px' : '15px')};
   font-weight: 500;
 `
-export const CheckIconWrapper = styled.div`
+export const CheckIconWrapper = styled.div<{ large: boolean }>`
   ${css.size(16)};
-  margin-right: 10px;
+  margin-right: ${({ large }) => (large ? '15px' : '10px')};
 `
-export const CheckIcon = styled(CheckSVG)`
+export const CheckIcon = styled(CheckSVG)<{ large: boolean }>`
   fill: ${theme('baseColor.greenLight')};
-  ${css.size(16)};
+  ${({ large }) => css.size(large ? 18 : 16)};
 `
-
-export const Desc = styled.div`
+export const Desc = styled.div<{ large: boolean }>`
   ${css.lineClamp(3)};
   color: ${theme('article.digest')};
-  font-size: 14px;
+  font-size: ${({ large }) => (large ? '16px' : '14px')};
   opacity: 0.8;
   margin-top: 15px;
-  padding-left: 25px;
+  padding-left: ${({ large }) => (large ? '30px' : '25px')};
+  line-height: 1.7;
 `

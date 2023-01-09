@@ -15,24 +15,24 @@ import {
 
 import type { TProps as TIndex } from './index'
 
-type TProps = Pick<TIndex, 'articles'>
+type TProps = Pick<TIndex, 'articles' | 'large'>
 
-const Flat: FC<TProps> = ({ articles }) => {
+const Flat: FC<TProps> = ({ articles, large }) => {
   return (
     <Wrapper>
-      <Header>
-        <BrandText>常见问题</BrandText>
+      <Header large={large}>
+        <BrandText large={large}>常见问题</BrandText>
       </Header>
       <Content>
         {articles.map((item) => (
-          <Section key={item.title}>
+          <Section key={item.title} large={large}>
             <SectionHead>
-              <CheckIconWrapper>
-                <CheckIcon />
+              <CheckIconWrapper large={large}>
+                <CheckIcon large={large} />
               </CheckIconWrapper>
-              <Title>{item.title}</Title>
+              <Title large={large}>{item.title}</Title>
             </SectionHead>
-            <Desc>{item.body}</Desc>
+            <Desc large={large}>{item.body}</Desc>
           </Section>
         ))}
       </Content>
