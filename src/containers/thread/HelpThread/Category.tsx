@@ -13,12 +13,11 @@ type TProps = {
   color: TColorName
   title: string
   desc: string
-  column?: number
 }
 
-const Category: FC<TProps> = ({ color, title, desc, column = 2 }) => {
+const Category: FC<TProps> = ({ color, title, desc }) => {
   return (
-    <Wrapper color={color} column={column}>
+    <Wrapper color={color}>
       <Header>
         <IconWrapper color={color}>
           <FaIcons icon="music" size={15} color={color} />

@@ -8,15 +8,14 @@ import { FC, memo } from 'react'
 
 import { buildLog } from '@/utils/logger'
 
-import TAG_MODE from '@/constant/tag'
-
 import { SpaceGrow } from '@/widgets/Common'
-import TagsList from '@/widgets/TagsList'
 import CoverImage from '@/widgets/CoverImage'
 import EmotionSelector from '@/widgets/EmotionSelector'
 import CommentsCount from '@/widgets/CommentsCount'
 
 import { demoTags, demoEmotion } from '../constant'
+
+import SolidTagList from '../SolidTagList'
 import Author from './Author'
 
 import {
@@ -48,7 +47,7 @@ const PreviewLayout: FC<TProps> = ({ testid = 'changelog-item' }) => {
           <Version>v3.20</Version>
         </Title>
         <TagsWrapper>
-          <TagsList items={demoTags} left={3} mode={TAG_MODE.LABEL} size="small" max={5} />
+          <SolidTagList tags={demoTags} />
           <DateTime>10-04, 2022</DateTime>
         </TagsWrapper>
         <Body>

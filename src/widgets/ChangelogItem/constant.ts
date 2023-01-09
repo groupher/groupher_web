@@ -1,13 +1,15 @@
+import { COLOR_NAME } from '@/constant'
+
 export const demoTags = [
   {
     title: 'Bug 修复',
     raw: 'fix',
-    color: 'red',
+    color: COLOR_NAME.GREEN,
   },
   {
     title: '新功能',
     raw: 'feature',
-    color: 'blue',
+    color: COLOR_NAME.PURPLE,
   },
 ]
 

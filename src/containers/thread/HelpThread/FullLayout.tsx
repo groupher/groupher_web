@@ -4,7 +4,7 @@ import { COLOR_NAME } from '@/constant/colors'
 import FaqList from '@/widgets/FaqList'
 
 import Category from './Category'
-import { Wrapper, CatsWrapper, FAQWrapper } from './styles/full_layout'
+import { Wrapper, CatsWrapper, Divider, FAQWrapper } from './styles/full_layout'
 
 type TProps = {
   testid?: string
@@ -41,9 +41,11 @@ const FullLayout: FC<TProps> = ({ testid = 'FullLayout' }) => {
         />
       </CatsWrapper>
 
+      <Divider />
       <FAQWrapper>
-        <FaqList />
+        <FaqList mode="flat" />
       </FAQWrapper>
+      <Divider />
     </Wrapper>
   )
 }

@@ -12,6 +12,7 @@ import { buildLog } from '@/utils/logger'
 
 import Tooltip from '@/widgets/Tooltip'
 import Button from '@/widgets/Buttons/Button'
+import FaqList from '@/widgets/FaqList'
 
 import Header from './Header'
 import CoverImage from './CoverImage'
@@ -31,6 +32,7 @@ import {
   Note,
   InfoIcon,
   Divider,
+  FAQWrapper,
 } from './styles'
 
 /* eslint-disable-next-line */
@@ -72,7 +74,7 @@ const LandingPage: FC<TProps> = ({ testid = 'landing-page' }) => {
             offset={[1, 5]}
           >
             <DemoButton size="medium" ghost>
-              查看 Demo
+              在线体验
             </DemoButton>
           </Tooltip>
         </ButtonGroup>
@@ -87,6 +89,11 @@ const LandingPage: FC<TProps> = ({ testid = 'landing-page' }) => {
       <FeatureWall />
       <Divider top={60} bottom={80} />
       <UsersWall />
+      <Divider top={60} bottom={80} />
+      <FAQWrapper>
+        <FaqList mode="flat" large />
+      </FAQWrapper>
+      <Divider top={60} bottom={50} />
     </Wrapper>
   )
 }
