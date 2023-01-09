@@ -1,18 +1,15 @@
 import styled from 'styled-components'
 
-import { COLORS } from '@/constant/colors'
 import type { TColorName, TTestable } from '@/spec'
 import css, { theme } from '@/utils/css'
 
-import LaptopSVG from '@/icons/Works'
-
-type TWrapper = TTestable & { color?: string; column: number }
+type TWrapper = TTestable & { color?: string }
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.flexColumn()};
   background: transparent;
-  width: ${({ column }) => (column === 2 ? '50%' : '33%')};
+  width: 28%;
   min-height: 80px;
   padding: 15px 20px;
   padding-left: 0;
@@ -33,22 +30,7 @@ export const IconWrapper = styled.div<{ color: TColorName }>`
   background: ${({ color }) => theme(`baseColor.${color.toLowerCase()}Bg`)};
   margin-bottom: 8px;
 
-  opacity: 0.85;
-  ${Wrapper}:hover & {
-    opacity: 1;
-  }
-  transition: all 0.3s;
-`
-export const Icon = styled(LaptopSVG)<{ color: TColorName }>`
-  ${css.size(16)};
-  fill: ${({ color }) => COLORS[color.toUpperCase()]};
-  opacity: 0.65;
-
-  ${Wrapper}:hover & {
-    opacity: 1;
-  }
-
-  transition: all 0.3s;
+  filter: saturate(0.7);
 `
 export const Title = styled.div`
   color: ${theme('article.title')};

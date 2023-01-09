@@ -39,13 +39,15 @@ export const Footer = styled.div`
   ${css.flex('align-center')};
   margin-top: 20px;
   margin-left: -5px;
+  margin-right: 12px;
 `
 
 export const DateTime = styled.div`
   color: ${theme('article.digest')};
-  font-size: 13px;
+  font-size: 12px;
   opacity: 0.6;
-  margin-top: -4px;
+  margin-top: -2px;
+  margin-right: 5px;
 `
 export const Version = styled.span`
   color: ${theme('article.digest')};

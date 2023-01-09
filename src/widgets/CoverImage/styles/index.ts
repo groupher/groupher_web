@@ -3,15 +3,13 @@ import styled from 'styled-components'
 import type { TTestable } from '@/spec'
 
 import Img from '@/Img'
-import { theme } from '@/utils/css'
+// import { theme } from '@/utils/css'
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TTestable>`
   width: 100%;
   height: 300px;
-  border: 1px solid;
-  border-color: ${theme('divider')};
   margin-bottom: 20px;
 `
 export const ImageWrapper = styled.div`

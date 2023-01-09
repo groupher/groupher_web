@@ -37,7 +37,7 @@ export const GrowBackground = styled.div<TGlowEffect>`
 
   inset: 0;
   position: ${({ glowPosition }) => glowPosition};
-  height: ${({ glowPosition }) => (glowPosition === 'absolute' ? '550px' : 'auto')};
+  height: ${({ glowPosition }) => (glowPosition === 'absolute' ? '600px' : 'auto')};
   z-index: -1;
 `
 

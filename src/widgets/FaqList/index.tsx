@@ -6,10 +6,10 @@
 
 import { FC, memo } from 'react'
 
-import type { TArticle } from '@/spec'
+import type { TArticle, TSpace } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
-import Sidebar from './Sidebar'
+import Flat from './Flat'
 import SearchHint from './SearchHint'
 import Collapse from './Collapse'
 
@@ -41,7 +41,7 @@ const defaultArticles = [
   },
   {
     id: '5',
-    title: '小画桌语音是否支持额外购买？',
+    title: 'Groupher 语音是否支持额外购买？',
     body: '是否支持7天无理由退款？',
   },
   {
@@ -53,18 +53,19 @@ const defaultArticles = [
 
 export type TProps = {
   testid?: string
-  mode?: 'sidebar' | 'search-hint' | 'collapse'
+  mode?: 'flat' | 'search-hint' | 'collapse'
   articles?: TArticle[]
-}
+} & TSpace
 
 const FaqList: FC<TProps> = ({
   testid = 'faq-list',
-  mode = 'sidebar',
+  mode = 'flat',
   articles = defaultArticles,
+  ...restProps
 }) => {
   return (
-    <Wrapper testid={testid} withBorder={mode === 'sidebar'}>
-      {mode === 'sidebar' && <Sidebar articles={articles} />}
+    <Wrapper testid={testid} {...restProps}>
+      {mode === 'flat' && <Flat articles={articles} />}
       {mode === 'search-hint' && <SearchHint articles={articles} />}
       {mode === 'collapse' && <Collapse articles={articles} />}
     </Wrapper>
