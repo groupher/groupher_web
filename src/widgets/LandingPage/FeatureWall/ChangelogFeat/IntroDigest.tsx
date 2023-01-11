@@ -45,7 +45,7 @@ const IntroDigest: FC<TProps> = ({ inViewChange }) => {
       <FeatHead
         $active={inView}
         title="更新日志"
-        desc="方便用户快速获取产品最新功能。"
+        desc="官方发布更新日志，方便用户快速获取产品最新功能。"
         featType={FEAT_TYPE.CHANGELOG}
       />
 

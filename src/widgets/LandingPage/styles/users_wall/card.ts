@@ -26,7 +26,6 @@ export const Avatar = styled(Img)<{ color: TColorName }>`
   ${css.circle(30)};
   border: 2px solid;
   padding: 2px;
-  border-color: gold;
   border-color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
   background-color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}Bg`)};
 `

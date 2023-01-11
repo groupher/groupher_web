@@ -10,6 +10,10 @@ import {
   ImageWrapper,
   Image,
   ColorBlock,
+  IconsWrapper,
+  Icon1,
+  Icon2,
+  Icon3,
 } from '../../styles/feature_wall/kanban_feat/intro_image'
 
 type TProps = TActive
@@ -21,7 +25,14 @@ const IntroImage: FC<TProps> = ({ $active }) => {
       <ImageWrapper>
         <Image src="/intro-help-demo.png" />
       </ImageWrapper>
+
       <ColorBlock $active={$active} />
+
+      <IconsWrapper $active={$active}>
+        <Icon1 />
+        <Icon2 />
+        <Icon3 />
+      </IconsWrapper>
     </Wrapper>
   )
 }

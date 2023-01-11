@@ -23,7 +23,7 @@ const Flat: FC<TProps> = ({ articles, large }) => {
       <Header large={large}>
         <BrandText large={large}>常见问题</BrandText>
       </Header>
-      <Content>
+      <Content large={large}>
         {articles.map((item) => (
           <Section key={item.title} large={large}>
             <SectionHead>

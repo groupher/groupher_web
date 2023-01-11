@@ -114,7 +114,6 @@ export const Divider = styled.div<TSpace>`
 
   border-image-slice: 1;
 `
-
 export const FAQWrapper = styled.div`
   width: 100%;
   max-width: 1080px;

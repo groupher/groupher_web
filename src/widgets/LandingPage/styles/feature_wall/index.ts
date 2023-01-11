@@ -28,8 +28,8 @@ export const Desc = styled.div`
 //
 export const Wall = styled.div`
   ${css.flexColumn('align-both')};
-  margin-top: 30px;
   width: 100%;
+  margin-top: -120px;
 `
 
 export const FeatList = styled.div`

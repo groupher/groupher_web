@@ -3,7 +3,11 @@ import styled from 'styled-components'
 import type { TActive, TTestable } from '@/spec'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css from '@/utils/css'
+
+import GtdWipSVG from '@/icons/GtdWip'
+import GtdDoneSVG from '@/icons/GtdDone'
+import GtdTodoSVG from '@/icons/GtdTodo'
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
@@ -25,9 +29,7 @@ export const Image = styled(Img)`
   object-fit: cover;
   box-shadow: ${css.cardShadow};
   border-radius: 5px;
-  /* border: 1px solid; */
-  /* border-color: ${theme('divider')}; */
-  /* box-shadow: 0 5px 25px rgb(35 35 35 / 10%); */
+  box-shadow: 0 5px 25px rgb(35 35 35 / 5%);
 `
 export const ColorBlock = styled.div<TActive>`
   position: absolute;
@@ -35,16 +37,8 @@ export const ColorBlock = styled.div<TActive>`
   top: 0;
   width: 600px;
   height: 390px;
-  /* background: ${({ $active }) =>
-    $active
-      ? 'linear-gradient(137deg, rgba(244, 183, 180, 1) 52%, rgba(235, 171, 62, 1) 100%)'
-      : theme('hoverBg')}; */
 
-  background: linear-gradient(
-    137deg,
-    rgba(197, 214, 245, 1) 52%,
-    rgba(72, 144, 157, 0.3744091386554622) 100%
-  );
+  background: linear-gradient(137deg, rgba(197, 214, 245, 1) 52%, rgba(72, 144, 157, 0.37) 100%);
 
   border-radius: 20px;
   transform: rotate(4deg);
@@ -53,4 +47,32 @@ export const ColorBlock = styled.div<TActive>`
 
   transition: all 0.3s;
   transition-delay: 0.8s;
+`
+export const IconsWrapper = styled.div<TActive>`
+  position: absolute;
+  ${css.flex('align-center')};
+  gap: 0 15px;
+  bottom: -40px;
+  left: 40px;
+  filter: saturate(0.8);
+
+  opacity: ${({ $active }) => ($active ? 1 : 0)};
+
+  transition: all 0.3s;
+  transition-delay: 1s;
+`
+export const Icon1 = styled(GtdTodoSVG)`
+  ${css.size(21)};
+  fill: #5799fb;
+  opacity: 0.6;
+`
+export const Icon2 = styled(GtdWipSVG)`
+  ${css.size(23)};
+  fill: #5799fb;
+  opacity: 0.8;
+`
+export const Icon3 = styled(GtdDoneSVG)`
+  ${css.size(21)};
+  fill: #69b8cc;
+  opacity: 0.8;
 `

@@ -9,6 +9,10 @@ import {
   ImageWrapper,
   Image,
   ColorBlock,
+  IconsWrapper,
+  Icon1,
+  Icon2,
+  Icon3,
 } from '../../styles/feature_wall/help_feat/intro_image'
 
 type TProps = TActive
@@ -21,6 +25,12 @@ const IntroImage: FC<TProps> = ({ $active }) => {
         <Image src="/intro-help-demo.png" />
       </ImageWrapper>
       <ColorBlock $active={$active} />
+
+      <IconsWrapper $active={$active}>
+        <Icon1 />
+        <Icon2 />
+        <Icon3 />
+      </IconsWrapper>
     </Wrapper>
   )
 }
