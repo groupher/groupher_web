@@ -41,21 +41,10 @@ export const ColorBlock = styled.div<TActive>`
   background: linear-gradient(137deg, rgba(244, 183, 180, 1) 52%, rgba(235, 171, 62, 0.3) 100%);
   border-radius: 20px;
   /* transform: ${({ $active }) => ($active ? 'rotate(-5deg)' : 'rotate(0deg)')}; */
-  transform: rotate(-5deg);
+  transform: rotate(4deg);
 
   box-shadow: ${({ $active }) => ($active ? '0 5px 25px rgb(35 35 35 / 10%)' : 'none')};
 
   transition: all 0.3s;
   transition-delay: 0.8s;
-`
-export const ColorBlock2 = styled.div`
-  position: absolute;
-  right: 20px;
-  bottom: 0;
-  ${css.size(455)};
-  width: 500px;
-  border-radius: 10px;
-  transform: rotate(-1.5deg);
-  /* box-shadow: ${css.cardShadow}; */
-  box-shadow: 0 5px 25px rgb(35 35 35 / 10%);
 `

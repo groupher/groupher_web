@@ -87,8 +87,10 @@ const LandingPage: FC<TProps> = ({ testid = 'landing-page' }) => {
       <CoverImage />
       <Divider top={100} bottom={80} />
       <FeatureWall />
+
       <Divider top={60} bottom={80} />
       <UsersWall />
+
       <Divider top={60} bottom={80} />
       <FAQWrapper>
         <FaqList mode="flat" large />

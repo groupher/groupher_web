@@ -29,4 +29,5 @@ export const Desc = styled.div`
   font-size: 17px;
   color: ${theme('article.digest')};
   margin-top: 12px;
+  width: 340px;
 `
