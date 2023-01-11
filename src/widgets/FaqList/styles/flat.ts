@@ -30,10 +30,10 @@ export const BrandText = styled.div<{ large: boolean }>`
   font-weight: bold;
   font-size: ${({ large }) => (large ? '26px' : '20px')};
 `
-export const Content = styled.div`
+export const Content = styled.div<{ large: boolean }>`
   ${css.flex('justify-between')};
   flex-wrap: wrap;
-  gap: 60px 0;
+  gap: ${({ large }) => (large ? '45px' : '50px')};
 `
 export const Section = styled.div<{ large: boolean }>`
   ${css.lineClamp(2)}

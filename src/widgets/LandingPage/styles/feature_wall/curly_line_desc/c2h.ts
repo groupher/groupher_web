@@ -4,7 +4,7 @@ import type { TTestable } from '@/spec'
 
 import css, { theme } from '@/utils/css'
 
-import CurlyLineSVG from './D2RSVG'
+import CurlyLineSVG from './C2HSVG'
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
@@ -13,15 +13,15 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   width: 100%;
   height: auto;
   position: relative;
-  margin-top: -180px;
+  margin-top: -272px;
 `
 
 export const DescBlock = styled.div`
   position: absolute;
   top: 100px;
   ${css.flex('align-center')};
-  color: ${theme('article.digest')};
-  font-size: 15px;
+  color: ${theme('article.title')};
+  font-size: 14px;
   font-weight: 400;
   opacity: 0.4;
 
@@ -33,29 +33,32 @@ export const DescBlock = styled.div`
 `
 
 export const Desc = styled(DescBlock)`
-  left: calc(50% - 50px);
-  top: 116px;
+  left: calc(50% - 80px);
+  top: 216px;
   transform: rotate(4deg);
 `
 
 export const Desc2 = styled(DescBlock)`
-  left: calc(50% - 125px);
-  top: 170px;
+  left: calc(50% - 155px);
+  top: 290px;
   transform: rotate(3deg);
 `
 export const Desc3 = styled(DescBlock)`
-  left: calc(50% + 68px);
-  top: 150px;
+  left: calc(50% + 80px);
+  top: 240px;
   transform: rotate(-2deg);
 `
 export const Desc4 = styled(DescBlock)`
-  left: calc(50% + -25px);
-  top: 225px;
+  left: calc(50% - 26px);
+  top: 278px;
   transform: rotate(2deg);
 `
 
 export const CurlyLineIcon = styled(CurlyLineSVG)`
-  ${css.size(360)};
-  opacity: 0.4;
-  z-index: -1;
+  ${css.size(520)};
+  opacity: 0.5;
+  z-index: -2;
+  z-index: -2;
+
+  transform: rotate(8deg) scaleY(1.2);
 `

@@ -40,7 +40,7 @@ const IntroDigest: FC<TProps> = ({ inViewChange }) => {
       <FeatHead
         $active={inView}
         title="看板"
-        desc="通过直观的看板，让你的用户了解团队正在进行中的工作。"
+        desc="通过直观的看板展示进度，让你的用户了解团队正在进行中的工作。"
         featType={FEAT_TYPE.KANBAN}
       />
 

@@ -13,7 +13,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   width: 100%;
   height: 730px;
   padding: 0 12%;
-  margin-top: -160px;
+  margin-top: -280px;
   position: relative;
 
   /* background: ${({ $active }) =>

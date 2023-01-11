@@ -12,6 +12,7 @@ export const Wrapper = styled(Link)`
   ${css.flex('align-center')};
   text-decoration: none;
   opacity: 0.8;
+  margin-top: 55px;
 
   &:hover {
     text-decoration: none;
