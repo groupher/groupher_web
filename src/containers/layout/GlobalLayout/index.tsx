@@ -7,6 +7,7 @@
 import { FC, ReactNode, useEffect, useState } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
+import METRIC from '@/constant/metric'
 import { TOPBAR_LAYOUT } from '@/constant/layout'
 
 import type { TSEO, TMetric } from '@/spec'
@@ -82,7 +83,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
             <InnerWrapper
               metric={metric}
               hasShadow={hasShadow}
-              hasTopbar={globalLayout.topbar === TOPBAR_LAYOUT.YES}
+              hasTopbar={metric !== METRIC.HOME && globalLayout.topbar === TOPBAR_LAYOUT.YES}
               topbarBg={globalLayout.topbarBg}
             >
               {/* <BannerNotify

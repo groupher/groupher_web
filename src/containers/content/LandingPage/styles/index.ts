@@ -23,7 +23,6 @@ export const Banner = styled.div`
   position: relative;
 
   background: radial-gradient(circle at 35% 35%, #f39e8d70 0, transparent 25%),
-    radial-gradient(circle at 80% 30%, #ffeba824 0, transparent 40%),
     radial-gradient(circle at 58% 50%, #5d1f8a2e 0, transparent 30%),
     radial-gradient(circle at 40% 45%, #961fb333 0, transparent 40%);
 `
