@@ -50,7 +50,7 @@ export const SectionHead = styled.div`
 export const Title = styled.div<{ large: boolean }>`
   ${css.cutRest('250px')};
   color: ${theme('article.title')};
-  font-size: ${({ large }) => (large ? '17px' : '15px')};
+  font-size: ${({ large }) => (large ? '16px' : '15px')};
   font-weight: 500;
 `
 export const CheckIconWrapper = styled.div<{ large: boolean }>`
@@ -59,12 +59,12 @@ export const CheckIconWrapper = styled.div<{ large: boolean }>`
 `
 export const CheckIcon = styled(CheckSVG)<{ large: boolean }>`
   fill: ${theme('baseColor.greenLight')};
-  ${({ large }) => css.size(large ? 18 : 16)};
+  ${({ large }) => css.size(large ? 17 : 16)};
 `
 export const Desc = styled.div<{ large: boolean }>`
   ${css.lineClamp(3)};
   color: ${theme('article.digest')};
-  font-size: ${({ large }) => (large ? '16px' : '14px')};
+  font-size: ${({ large }) => (large ? '15px' : '14px')};
   opacity: 0.8;
   margin-top: 15px;
   padding-left: ${({ large }) => (large ? '30px' : '25px')};

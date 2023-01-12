@@ -123,6 +123,11 @@ const WallpaperEditor = T.model('WallpaperEditor', {
     },
   }))
   .actions((self) => ({
+    /** it also maybe called by landing page */
+    changeWallpaper(wallpaper: string): void {
+      const slf = self as TStore
+      slf.wallpaper = wallpaper
+    },
     rollbackEdit(): void {
       const slf = self as TStore
       const init = slf.initWallpaper

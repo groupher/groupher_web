@@ -3,13 +3,7 @@ import { keys } from 'ramda'
 
 import type { TWallpaperPic } from '@/spec'
 
-import {
-  Wrapper,
-  Block,
-  Image,
-  ActiveSign,
-  CheckIcon,
-} from '../styles/build_in/pattern_group'
+import { Wrapper, Block, Image, ActiveSign, CheckIcon } from '../styles/build_in/pattern_group'
 
 import { changeWallpaper } from '../logic'
 
@@ -30,10 +24,7 @@ const PatternGroup: FC<TProps> = ({ wallpaper, patternWallpapers }) => {
               <CheckIcon />
             </ActiveSign>
           )}
-          <Image
-            src={patternWallpapers[name].bgImage}
-            onClick={() => changeWallpaper(name)}
-          />
+          <Image src={patternWallpapers[name].bgImage} onClick={() => changeWallpaper(name)} />
         </Block>
       ))}
     </Wrapper>
