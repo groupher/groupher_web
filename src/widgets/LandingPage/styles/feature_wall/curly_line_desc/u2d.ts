@@ -18,17 +18,16 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 `
 export const MagicWrapper = styled.div`
   position: absolute;
-  left: calc(50% - 39px);
-  top: 83px;
+  left: calc(50% - 40px);
+  top: 85px;
   transform: rotate(-24deg);
-
-  animation: ${animate.breath} 2s linear infinite alternate;
+  opacity: 0.5;
 
   &:after {
     content: '';
     position: absolute;
-    top: 28px;
-    left: 3px;
+    top: 24px;
+    left: 5px;
     ${css.size(10)};
     height: 7px;
     background: white;
@@ -38,8 +37,11 @@ export const MagicWrapper = styled.div`
 export const MagicIcon = styled(MagicSVG)<{ color: TColorName }>`
   ${css.size(35)};
   fill: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
-  opacity: 0.4;
+
   filter: saturate(1.3);
+  transform: scale(0.8);
+  animation: ${animate.breath} 2s linear infinite alternate;
+  transition: all 0.2s;
 `
 
 export const DescBlock = styled.div`
@@ -47,14 +49,14 @@ export const DescBlock = styled.div`
   top: 100px;
   ${css.flex('align-center')};
   color: ${theme('article.digest')};
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 400;
   opacity: 0.4;
 `
 
 export const Desc = styled(DescBlock)`
-  left: calc(50% - 140px);
-  top: 140px;
+  left: calc(50% - 125px);
+  top: 145px;
   transform: rotate(4deg);
 `
 
