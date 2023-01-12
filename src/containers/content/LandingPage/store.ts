@@ -2,12 +2,10 @@
  * LandingPage store
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
-// import {} from 'ramda'
+import type { TCommunity, TRootStore, TWallpaper } from '@/spec'
 
-import type { TCommunity, TRootStore } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import { markStates, toJS } from '@/utils/mobx'
+import { markStates, toJS, T, getParent, Instance } from '@/utils/mobx'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:LandingPage')
@@ -19,8 +17,24 @@ const LandingPage = T.model('LandingPage', {})
 
       return toJS(root.viewing.community)
     },
+    get wallpaper(): string {
+      const root = getParent(self) as TRootStore
+
+      return root.wallpaperEditor.wallpaper
+    },
+    get gradientWallpapers(): Record<string, TWallpaper> {
+      const root = getParent(self) as TRootStore
+
+      return root.wallpaperEditor.gradientWallpapers
+    },
   }))
   .actions((self) => ({
+    changeWallpaper(wallpaper: string): void {
+      const root = getParent(self) as TRootStore
+
+      return root.wallpaperEditor.changeWallpaper(wallpaper)
+    },
+
     mark(sobj: Record<string, unknown>): void {
       markStates(sobj, self)
     },

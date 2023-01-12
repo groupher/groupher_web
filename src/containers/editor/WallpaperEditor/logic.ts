@@ -30,7 +30,7 @@ export const changeDirection = (direction: TWallpaperGradientDir): void => {
 }
 
 export const changeWallpaper = (wallpaper: string): void => {
-  store.mark({ wallpaper })
+  store.changeWallpaper(wallpaper)
 }
 
 export const rollbackEdit = (): void => store.rollbackEdit()

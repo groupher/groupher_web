@@ -11,8 +11,8 @@ let store: TStore | undefined
 /* eslint-disable-next-line */
 const log = buildLog('L:LandingPage')
 
-export const someMethod = (): void => {
-  //
+export const changeWallpaper = (wallpaper: string): void => {
+  store.changeWallpaper(wallpaper)
 }
 
 // ###############################

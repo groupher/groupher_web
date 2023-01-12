@@ -18,6 +18,8 @@ import FaqList from '@/widgets/FaqList'
 
 import Header from './Header'
 import CoverImage from './CoverImage'
+import WallpaperBar from './WallpaperBar'
+
 import FeatureWall from './FeatureWall'
 import UsersWall from './UsersWall'
 
@@ -47,6 +49,8 @@ type TProps = {
 
 const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
   useInit(store)
+
+  const { wallpaper, gradientWallpapers } = store
 
   return (
     <Wrapper testid="landing-page">
@@ -90,7 +94,10 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
       </Banner>
 
       <CoverImage />
-      <Divider top={100} bottom={80} />
+
+      <WallpaperBar wallpaper={wallpaper} gradientWallpapers={gradientWallpapers} />
+
+      <Divider top={60} bottom={80} />
       <FeatureWall />
 
       <Divider top={60} bottom={80} />

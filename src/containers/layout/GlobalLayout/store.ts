@@ -51,7 +51,7 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
     get glowType(): string {
       const root = getParent(self) as TRootStore
 
-      return root.dashboardThread.uiSettings.glowType
+      return root.wallpaperEditor.wallpaper && root.dashboardThread.uiSettings.glowType
     },
     get glowFixed(): boolean {
       const root = getParent(self) as TRootStore
@@ -61,7 +61,7 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
     get hasShadow(): boolean {
       const root = getParent(self) as TRootStore
 
-      return root.wallpaperEditor.hasShadow
+      return root.wallpaperEditor.wallpaper && root.wallpaperEditor.hasShadow
     },
     get globalLayout(): TGlobalLayout {
       const root = getParent(self) as TRootStore
