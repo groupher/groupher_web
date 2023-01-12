@@ -8,7 +8,7 @@ import { landingSEO } from '@/utils'
 import { useStore } from '@/stores/init'
 import GlobalLayout from '@/containers/layout/GlobalLayout'
 
-import LandingPage from '@/widgets/LandingPage'
+import LandingPage from '@/containers/content/LandingPage'
 
 // export const getServerSideProps = async (context) => {
 //   return {

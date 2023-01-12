@@ -1,14 +1,16 @@
-/*
- *
+/* *
  * LandingPage
  *
  */
 
-import { FC, memo } from 'react'
+import { FC } from 'react'
+
+// import { buildLog } from '@/utils/logger'
+import { bond } from '@/utils/mobx'
+
 import Link from 'next/link'
 
 import { ROUTE } from '@/constant/route'
-import { buildLog } from '@/utils/logger'
 
 import Tooltip from '@/widgets/Tooltip'
 import Button from '@/widgets/Buttons/Button'
@@ -18,6 +20,8 @@ import Header from './Header'
 import CoverImage from './CoverImage'
 import FeatureWall from './FeatureWall'
 import UsersWall from './UsersWall'
+
+import type { TStore } from './store'
 
 import {
   Wrapper,
@@ -35,16 +39,17 @@ import {
   FAQWrapper,
 } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('c:LandingPage:index')
+import { useInit } from './logic'
 
 type TProps = {
-  testid?: string
+  landingPage?: TStore
 }
 
-const LandingPage: FC<TProps> = ({ testid = 'landing-page' }) => {
+const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
+  useInit(store)
+
   return (
-    <Wrapper testid={testid}>
+    <Wrapper testid="landing-page">
       <Banner>
         <Header />
         <Title>让你的产品聆听用户的声音</Title>
@@ -100,4 +105,4 @@ const LandingPage: FC<TProps> = ({ testid = 'landing-page' }) => {
   )
 }
 
-export default memo(LandingPage)
+export default bond(LandingPageContainer, 'landingPage') as FC<TProps>
