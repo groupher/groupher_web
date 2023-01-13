@@ -14,6 +14,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   height: auto;
   position: relative;
   margin-top: -272px;
+  z-index: -2;
 `
 
 export const DescBlock = styled.div`
@@ -24,12 +25,6 @@ export const DescBlock = styled.div`
   font-size: 14px;
   font-weight: 400;
   opacity: 0.4;
-
-  /* box-shadow: 0 5px 25px rgb(35 35 35 / 10%); */
-  /* border: 1px dashed;
-  border-color: ${theme('article.title')}; */
-  /* padding: 0 5px; */
-  /* border-radius: 10px; */
 `
 
 export const Desc = styled(DescBlock)`
@@ -60,5 +55,5 @@ export const CurlyLineIcon = styled(CurlyLineSVG)`
   z-index: -2;
   z-index: -2;
 
-  transform: rotate(8deg) scaleY(1.2);
+  transform: rotate(9deg) scaleY(1.2);
 `

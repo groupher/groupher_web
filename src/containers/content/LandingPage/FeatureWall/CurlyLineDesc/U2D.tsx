@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react'
-import { keys } from 'ramda'
 
-import { COLORS, COLOR_NAME } from '@/constant/colors'
+import { COLOR_NAME } from '@/constant/colors'
 
 import {
   Wrapper,

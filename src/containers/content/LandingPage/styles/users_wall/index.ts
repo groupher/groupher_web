@@ -31,8 +31,7 @@ export const Wall = styled.div`
   width: 100%;
   height: auto;
 
-  background: radial-gradient(circle at 50% 50%, #e58a7894 0, transparent 35%),
-    radial-gradient(circle at 80% 30%, #ffeba824 0, transparent 40%);
+  background: radial-gradient(circle at 50% 50%, #e4959594 0, transparent 35%);
 `
 
 export const DempP = styled.div`

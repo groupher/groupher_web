@@ -54,22 +54,20 @@ export const Dot = styled.div`
   background: ${theme('divider')};
   margin-right: 6px;
 `
-export const Image = styled(Img)`
+export const Background = styled.div<{ effect: string }>`
+  ${css.flex('align-both')}
   width: 100%;
   height: 700px;
-  object-fit: cover;
+  background tomato;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
 
-  border-top: 1px solid transparent;
-  border-image: linear-gradient(
-    0.23turn,
-    transparent,
-    ${theme('divider')},
-    ${theme('divider')},
-    ${theme('divider')},
-    transparent
-  );
-
-  border-image-slice: 1;
+  will-change: transform;
+  transition: all 0.3s;
+`
+export const Image = styled(Img)`
+  display: block;
+  width: 100%;
+  height: 700px;
+  object-fit: cover;
 `

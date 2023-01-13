@@ -14,6 +14,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   height: auto;
   position: relative;
   margin-top: -272px;
+  z-index: -1;
 `
 
 export const DescBlock = styled.div`

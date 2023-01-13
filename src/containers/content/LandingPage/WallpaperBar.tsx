@@ -2,11 +2,21 @@ import { FC, memo, useCallback } from 'react'
 import { keys } from 'ramda'
 
 import type { TWallpaperGradient } from '@/spec'
+import { ROUTE } from '@/constant/route'
 
 import { parseWallpaper } from '@/utils/wallpaper'
 import { callWallpaperEditor } from '@/utils/signal'
 
-import { Wrapper, Block, BallWrapper, ColorBall, CustomBall } from './styles/wallpaper_bar'
+import {
+  Wrapper,
+  MainWrapper,
+  Desc,
+  DescLink,
+  ArrowIcon,
+  BallWrapper,
+  ColorBall,
+  CustomBall,
+} from './styles/wallpaper_bar'
 
 import { changeWallpaper } from './logic'
 
@@ -22,17 +32,27 @@ const WallpaperBar: FC<TProps> = ({ wallpaper, gradientWallpapers }) => {
 
   return (
     <Wrapper>
-      {gradientKeys.map((name) => (
-        <Block key={name}>
-          <BallWrapper $active={name === wallpaper} onClick={() => changeWallpaper(name)}>
+      <MainWrapper>
+        {gradientKeys.map((name) => (
+          <BallWrapper
+            key={name}
+            $active={name === wallpaper}
+            onClick={() => changeWallpaper(name)}
+          >
             <ColorBall
               $active={name === wallpaper}
               background={parseWallpaper(gradientWallpapers, name).background}
             />
           </BallWrapper>
-        </Block>
-      ))}
-      <CustomBall onClick={() => handleCallEditor()}>T</CustomBall>
+        ))}
+        <CustomBall onClick={() => handleCallEditor()}>T</CustomBall>
+      </MainWrapper>
+      <Desc>
+        壁纸仅在宽屏模式下显示，更多自定义设置
+        <DescLink href={`/${ROUTE.HOME}/${ROUTE.HELP}`}>
+          查看这里 <ArrowIcon />
+        </DescLink>
+      </Desc>
     </Wrapper>
   )
 }

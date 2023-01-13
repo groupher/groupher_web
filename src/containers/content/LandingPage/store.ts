@@ -22,6 +22,10 @@ const LandingPage = T.model('LandingPage', {})
 
       return root.wallpaperEditor.wallpaper
     },
+    get wallpapers(): Record<string, TWallpaper> {
+      const root = getParent(self) as TRootStore
+      return root.wallpaperEditor.wallpapers
+    },
     get gradientWallpapers(): Record<string, TWallpaper> {
       const root = getParent(self) as TRootStore
 
