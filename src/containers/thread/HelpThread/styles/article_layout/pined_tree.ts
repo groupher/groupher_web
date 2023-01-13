@@ -15,6 +15,7 @@ export const Wrapper = styled.div`
 `
 export const Item = styled.div`
   ${css.flex('align-center')};
+  cursor: pointer;
 `
 export const Cover = styled.div<{ color?: TColorName }>`
   ${css.size(25)};
@@ -58,7 +59,6 @@ export const Title = styled.div<{ color: TColorName }>`
   &:hover {
     color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
     font-weight: 500;
-    cursor: pointer;
   }
   transition: all 0.2s;
 `
