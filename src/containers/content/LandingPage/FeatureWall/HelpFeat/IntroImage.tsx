@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { Parallax } from 'react-scroll-parallax'
 
 import type { TActive } from '@/spec'
 
@@ -24,13 +25,18 @@ const IntroImage: FC<TProps> = ({ $active }) => {
       <ImageWrapper>
         <Image src="/intro-help-demo.png" />
       </ImageWrapper>
-      <ColorBlock $active={$active} />
 
-      <IconsWrapper $active={$active}>
-        <Icon1 />
-        <Icon2 />
-        <Icon3 />
-      </IconsWrapper>
+      <Parallax speed={15} rotate={[-2, 6]} translateY={[10, -10]}>
+        <ColorBlock $active={$active} />
+      </Parallax>
+
+      <Parallax speed={15} rotate={[-4, 14]} translateY={[10, -10]} opacity={[1, 0.5]}>
+        <IconsWrapper>
+          <Icon1 />
+          <Icon2 />
+          <Icon3 />
+        </IconsWrapper>
+      </Parallax>
     </Wrapper>
   )
 }

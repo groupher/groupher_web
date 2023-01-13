@@ -33,33 +33,23 @@ export const Image = styled(Img)`
 `
 export const ColorBlock = styled.div<TActive>`
   position: absolute;
-  left: 0;
-  top: 0;
+  left: -300px;
+  top: -400px;
   width: 600px;
   height: 390px;
 
   background: linear-gradient(137deg, rgb(217 199 228) 52%, rgba(229, 216, 217, 1) 100%);
   border-radius: 20px;
-  /* transform: ${({ $active }) => ($active ? 'rotate(-5deg)' : 'rotate(0deg)')}; */
-  transform: rotate(-5deg);
-
   box-shadow: ${({ $active }) => ($active ? '0 5px 25px rgb(35 35 35 / 10%)' : 'none')};
-
-  transition: all 0.3s;
-  transition-delay: 1s;
+  transform: rotate(-5deg);
 `
-export const IconsWrapper = styled.div<TActive>`
+export const IconsWrapper = styled.div`
   position: absolute;
   ${css.flex('align-center')};
   gap: 0 18px;
-  bottom: -38px;
-  right: 40px;
-  filter: saturate(0.8);
-
-  opacity: ${({ $active }) => ($active ? 1 : 0)};
-
-  transition: all 0.3s;
-  transition-delay: 1s;
+  bottom: -25px;
+  right: -250px;
+  z-index: -1;
 `
 export const Icon1 = styled(UpvoteSVG)`
   ${css.size(19)};

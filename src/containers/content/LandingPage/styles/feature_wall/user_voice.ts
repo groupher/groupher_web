@@ -9,14 +9,14 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 }))<TTestable>`
   ${css.flex('align-both')};
   flex-wrap: wrap;
-  gap: 35px 18px;
+  gap: 40px 25px;
   height: auto;
   margin-top: 80px;
   width: 1080px;
   width: 80%;
   border-radius: 50%;
 `
-export const Card = styled.div<{ angle: number }>`
+export const Card = styled.div`
   ${css.flex('align-center')};
   /* border: 1px solid; */
   border-color: ${theme('divider')};
@@ -26,11 +26,6 @@ export const Card = styled.div<{ angle: number }>`
 
   /* box-shadow: ${css.cardShadow}; */
   box-shadow: 0 5px 25px rgb(35 35 35 / 10%);
-
-  transform: ${({ angle }) => `rotate(${angle}deg)`};
-  /* transition: all 0.5s; */
-  transition: transform 0.2s ease-in;
-  transition-delay: 0.6s;
 `
 export const Avatar = styled.div<{ color: TColorName }>`
   ${css.circle(30)};

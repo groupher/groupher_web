@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 
 import UserVoice from './UserVoice'
 
@@ -15,18 +15,16 @@ import CurlyLineC2H from './CurlyLineDesc/C2H'
 import { Wrapper, Slogan, Title, Desc, Wall } from '../styles/feature_wall'
 
 const FeatureWall: FC = () => {
-  const [firstFeatInview, setFirstFeatInView] = useState(false)
-
   return (
     <Wrapper>
       <Slogan>
         <Title>为团队和用户之间架设桥梁</Title>
         <Desc>你只需专注产品的核心工作，将那些“无聊”却又重要的杂活交给 Groupher</Desc>
       </Slogan>
-      <UserVoice arrange={firstFeatInview} />
+      <UserVoice />
       <CurlyLineU2D />
       <Wall>
-        <DiscussFeat inViewOnChange={(inview) => setFirstFeatInView(inview)} />
+        <DiscussFeat />
         <CurlyLineD2K />
         <KanbanFeat />
         <CurlyLineK2C />

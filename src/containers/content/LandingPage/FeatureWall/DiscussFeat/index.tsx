@@ -5,18 +5,13 @@ import IntroImage from './IntroImage'
 
 import { Wrapper } from '../../styles/feature_wall/discuss_feat'
 
-type TProps = {
-  inViewOnChange: (inview: boolean) => void
-}
-
-const DiscussFeat: FC<TProps> = ({ inViewOnChange }) => {
+const DiscussFeat: FC = () => {
   const [inView, setInView] = useState(false)
 
   return (
     <Wrapper $active={inView}>
       <IntroDigest
         inViewChange={(cur) => {
-          inViewOnChange(cur)
           setInView(cur)
         }}
       />
