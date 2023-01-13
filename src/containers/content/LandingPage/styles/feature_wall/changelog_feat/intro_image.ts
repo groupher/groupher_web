@@ -30,34 +30,25 @@ export const Image = styled(Img)`
 `
 export const ColorBlock = styled.div<TActive>`
   position: absolute;
-  left: 0;
-  top: 0;
+  left: -290px;
+  top: -400px;
   width: 600px;
   height: 390px;
 
   background: linear-gradient(137deg, rgba(244, 183, 180, 1) 52%, rgba(235, 171, 62, 0.3) 100%);
   border-radius: 20px;
-  /* transform: ${({ $active }) => ($active ? 'rotate(-5deg)' : 'rotate(0deg)')}; */
-  transform: rotate(-4deg);
+  transform: rotate(-3deg);
 
   box-shadow: ${({ $active }) => ($active ? '0 5px 25px rgb(35 35 35 / 10%)' : 'none')};
-
-  transition: all 0.3s;
-  transition-delay: 0.8s;
 `
 
-export const IconsWrapper = styled.div<TActive>`
+export const IconsWrapper = styled.div`
   position: absolute;
   ${css.flex('align-center')};
   gap: 0 18px;
-  bottom: -38px;
-  right: 40px;
-  filter: saturate(0.8);
-
-  opacity: ${({ $active }) => ($active ? 1 : 0)};
-
-  transition: all 0.3s;
-  transition-delay: 1s;
+  bottom: -25px;
+  right: -250px;
+  z-index: -3;
 `
 export const Icon1 = styled(UpvoteSVG)`
   ${css.size(21)};

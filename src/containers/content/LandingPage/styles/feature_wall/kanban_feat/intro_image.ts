@@ -33,33 +33,21 @@ export const Image = styled(Img)`
 `
 export const ColorBlock = styled.div<TActive>`
   position: absolute;
-  left: 0;
-  top: 0;
+  left: -300px;
+  top: -400px;
   width: 600px;
   height: 390px;
-
   background: linear-gradient(137deg, rgba(197, 214, 245, 1) 52%, rgba(72, 144, 157, 0.37) 100%);
-
   border-radius: 20px;
-  transform: rotate(4deg);
-
   box-shadow: ${({ $active }) => ($active ? '0 5px 25px rgb(35 35 35 / 10%)' : 'none')};
-
-  transition: all 0.3s;
-  transition-delay: 0.8s;
+  transform: rotate(5deg);
 `
-export const IconsWrapper = styled.div<TActive>`
+export const IconsWrapper = styled.div`
   position: absolute;
   ${css.flex('align-center')};
   gap: 0 15px;
   bottom: -40px;
-  left: 40px;
-  filter: saturate(0.8);
-
-  opacity: ${({ $active }) => ($active ? 1 : 0)};
-
-  transition: all 0.3s;
-  transition-delay: 1s;
+  left: -270px;
 `
 export const Icon1 = styled(GtdTodoSVG)`
   ${css.size(21)};

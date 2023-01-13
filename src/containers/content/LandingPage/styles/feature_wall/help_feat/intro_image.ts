@@ -33,33 +33,23 @@ export const Image = styled(Img)`
 `
 export const ColorBlock = styled.div<TActive>`
   position: absolute;
-  left: 0;
-  top: 0;
+  left: -300px;
+  top: -400px;
   width: 600px;
   height: 390px;
 
   background: linear-gradient(137deg, rgba(80, 161, 162, 0.76) 52%, rgba(204, 191, 149, 0.71) 100%);
   border-radius: 20px;
-  transform: rotate(4deg);
-
   box-shadow: ${({ $active }) => ($active ? '0 5px 25px rgb(35 35 35 / 10%)' : 'none')};
-
-  transition: all 0.3s;
-  transition-delay: 0.8s;
+  transform: rotate(4deg);
 `
 
-export const IconsWrapper = styled.div<TActive>`
+export const IconsWrapper = styled.div`
   position: absolute;
   ${css.flex('align-center')};
   gap: 0 18px;
-  bottom: -38px;
-  left: 45px;
-  filter: saturate(0.8);
-
-  opacity: ${({ $active }) => ($active ? 1 : 0)};
-
-  transition: all 0.3s;
-  transition-delay: 1s;
+  bottom: -40px;
+  left: -270px;
 `
 
 export const Icon1 = styled(BadSVG)`
