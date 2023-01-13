@@ -16,12 +16,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   margin-top: -268px;
   position: relative;
 
-  /* background: ${({ $active }) =>
-    $active
-      ? 'radial-gradient(circle at 68% 50%, #e5847873 0, transparent 35%),radial-gradient(circle at 20% 30%, #ffdbbb4a, transparent 20%);'
-      : 'radial-gradient(circle at 20% 30%, #ffdbbb4a, transparent 20%)'}; */
-
-  background: radial-gradient(circle at 20% 30%, #ffdbbb4a, transparent 20%);
+  /* background: radial-gradient(circle at 20% 30%, #ffdbbb4a, transparent 20%); */
 
   // right
   /* background: radial-gradient(circle at 68% 50%, #e5847873 0, transparent 35%); */

@@ -15,12 +15,13 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   height: auto;
   position: relative;
   margin-top: -30px;
+  z-index: -1;
 `
 export const MagicWrapper = styled.div`
   position: absolute;
-  left: calc(50% - 40px);
-  top: 85px;
-  transform: rotate(-24deg);
+  left: calc(50% - 57px);
+  top: 95px;
+  transform: rotate(-32deg);
   opacity: 0.5;
 
   &:after {
@@ -82,7 +83,7 @@ export const Desc5 = styled(DescBlock)`
 `
 export const CurlyLineIcon = styled(CurlyLineSVG)`
   ${css.size(500)};
-  transform: rotatey(180deg) rotate(-4deg) scaleY(1);
+  transform: rotatey(180deg) rotate(2deg) scaleY(1);
   margin-left: 60px;
   opacity: 0.6;
   z-index: -1;

@@ -18,7 +18,9 @@ export const Title = styled.div`
   color: ${theme('article.title')};
   font-size: 38px;
   font-weight: 500;
+  position: relative;
 `
+
 export const Desc = styled.div`
   font-size: 17px;
   ${theme('article.digest')};

@@ -92,18 +92,17 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
           本站正在开发中，详情请联系 mydearxym@qq.com
         </Note>
       </Banner>
-
       <CoverImage />
 
       <WallpaperBar wallpaper={wallpaper} gradientWallpapers={gradientWallpapers} />
+      <Divider top={100} bottom={100} />
 
-      <Divider top={60} bottom={80} />
       <FeatureWall />
-
       <Divider top={60} bottom={80} />
+
       <UsersWall />
-
       <Divider top={60} bottom={80} />
+
       <FAQWrapper>
         <FaqList mode="flat" large />
       </FAQWrapper>

@@ -1,15 +1,46 @@
 import styled from 'styled-components'
+import Link from 'next/link'
 
 import type { TActive } from '@/spec'
 import css, { animate, theme } from '@/utils/css'
 
+import ArrowSVG from '@/icons/Arrow'
+
 export const Wrapper = styled.div`
-  ${css.flex('align-both')};
-  width: calc(100%);
+  ${css.flexColumn('align-both')}
+  width: 100%;
   margin-top: 60px;
-  gap: 0 18px;
 `
-export const Block = styled.div``
+
+export const MainWrapper = styled.div`
+  ${css.flex('align-both')};
+  gap: 0 18px;
+  margin-bottom: 15px;
+`
+export const Desc = styled.div`
+  ${css.flex('align-center')};
+  color: ${theme('article.digest')};
+  font-size: 13px;
+  opacity: 0.6;
+`
+export const DescLink = styled(Link)`
+  ${css.flex('align-center')};
+  color: ${theme('link')};
+  text-decoration: none;
+  margin-left: 1px;
+
+  &:hover {
+    color: ${theme('link')};
+    text-decoration: none;
+    font-weight: 500;
+  }
+`
+export const ArrowIcon = styled(ArrowSVG)`
+  ${css.size(10)};
+  fill: ${theme('link')};
+  transform: rotate(180deg);
+  margin-left: 3px;
+`
 
 export const BallWrapper = styled.div<TActive>`
   ${css.size(30)};
