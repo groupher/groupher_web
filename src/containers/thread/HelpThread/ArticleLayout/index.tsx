@@ -1,13 +1,13 @@
 import { FC, memo, useState } from 'react'
 
 import FileTree from '@/widgets/FileTree'
-import { Space, SpaceGrow } from '@/widgets/Common'
+import { Space } from '@/widgets/Common'
 import FeedbackFooter from '@/widgets/FeedbackFooter'
 import Sticky from '@/widgets/Sticky'
 import CustomScroller from '@/widgets/CustomScroller'
 
 import FaqLayout from '../FaqLayout'
-import HeadAction from './HeadAction'
+import NaviHead from './NaviHead'
 import ArticleCover from './ArticleCover'
 
 import ToggleBtn from './ToggleBtn'
@@ -15,17 +15,13 @@ import ToggleBtn from './ToggleBtn'
 import {
   Wrapper,
   Header,
-  Navi,
-  All,
-  Slash,
-  Cur,
   Title,
   Content,
   Sidebar,
   TreeWrapper,
   FAQItem,
 } from '../styles/article_layout'
-import { back2Layout, gotoFAQDetailLayout, gotoDetailLayout } from '../logic'
+import { gotoFAQDetailLayout, gotoDetailLayout } from '../logic'
 
 type TProps = {
   testid?: string
@@ -57,15 +53,7 @@ const ArticleLayout: FC<TProps> = ({ testid = 'ArtileLayout', isFAQArticleLayout
       <Space right={80} />
       <Content isRightLayout open={filetreeOpen}>
         <Header>
-          {!isFAQArticleLayout && (
-            <Navi>
-              <All onClick={() => back2Layout()}>全部</All>
-              <Slash>/</Slash>
-              <Cur>产品</Cur>
-              <SpaceGrow />
-              <HeadAction />
-            </Navi>
-          )}
+          {!isFAQArticleLayout && <NaviHead />}
           {!isFAQArticleLayout && <Title>关于帮助台的使用</Title>}
           <ArticleCover />
         </Header>
