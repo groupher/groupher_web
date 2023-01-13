@@ -108,15 +108,3 @@ export const ToggleListIcon = styled(ListSVG)`
 
   transition: all 0.2s;
 `
-
-export const FAQItem = styled.div`
-  font-size: 14px;
-  margin-bottom: 10px;
-  font-weight: 600;
-  color: ${theme('article.title')};
-
-  &:hover {
-    color: ${theme('article.digest')};
-    cursor: pointer;
-  }
-`

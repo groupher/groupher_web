@@ -23,7 +23,7 @@ export const Home = styled.div`
 export const ArrowIcon = styled(ArrowSVG)`
   ${css.size(9)};
   fill: ${theme('article.digest')};
-  opacity: 0.8;
+  opacity: 0.6;
   margin-right: 7px;
 
   ${Home}:hover & {

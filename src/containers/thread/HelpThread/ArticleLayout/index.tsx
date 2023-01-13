@@ -6,22 +6,15 @@ import FeedbackFooter from '@/widgets/FeedbackFooter'
 import Sticky from '@/widgets/Sticky'
 import CustomScroller from '@/widgets/CustomScroller'
 
+import PinedTree from './PinedTree'
 import FaqLayout from '../FaqLayout'
 import NaviHead from './NaviHead'
 import ArticleCover from './ArticleCover'
 
 import ToggleBtn from './ToggleBtn'
 
-import {
-  Wrapper,
-  Header,
-  Title,
-  Content,
-  Sidebar,
-  TreeWrapper,
-  FAQItem,
-} from '../styles/article_layout'
-import { gotoFAQDetailLayout, gotoDetailLayout } from '../logic'
+import { Wrapper, Header, Title, Content, Sidebar, TreeWrapper } from '../styles/article_layout'
+import { gotoDetailLayout } from '../logic'
 
 type TProps = {
   testid?: string
@@ -37,7 +30,7 @@ const ArticleLayout: FC<TProps> = ({ testid = 'ArtileLayout', isFAQArticleLayout
 
       <Sidebar isLeftLayout open={filetreeOpen}>
         <Sticky offsetTop={30}>
-          <FAQItem onClick={() => gotoFAQDetailLayout()}>常见问题</FAQItem>
+          <PinedTree />
           <TreeWrapper>
             <CustomScroller
               direction="vertical"
