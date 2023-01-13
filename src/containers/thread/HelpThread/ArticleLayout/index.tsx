@@ -29,8 +29,8 @@ const ArticleLayout: FC<TProps> = ({ testid = 'ArtileLayout', isFAQArticleLayout
       <ToggleBtn open={filetreeOpen} onToggle={(toggle) => setFileTreeOpen(toggle)} />
 
       <Sidebar isLeftLayout open={filetreeOpen}>
+        {filetreeOpen && <PinedTree />}
         <Sticky offsetTop={30}>
-          <PinedTree />
           <TreeWrapper>
             <CustomScroller
               direction="vertical"

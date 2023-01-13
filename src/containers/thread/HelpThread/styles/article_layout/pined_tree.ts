@@ -9,7 +9,7 @@ import BlocksSVG from '@/icons/Blocks'
 
 export const Wrapper = styled.div`
   ${css.flexColumn('justify-center')};
-  gap: 15px 0;
+  gap: 16px 0;
   width: 100%;
   margin-bottom: 35px;
 `
@@ -17,7 +17,7 @@ export const Item = styled.div`
   ${css.flex('align-center')};
 `
 export const Cover = styled.div<{ color?: TColorName }>`
-  ${css.size(26)};
+  ${css.size(25)};
   ${css.flex('align-both')};
   background-color: ${({ color }) => theme(`baseColor.${color?.toLowerCase()}`)};
   border-radius: 5px;
