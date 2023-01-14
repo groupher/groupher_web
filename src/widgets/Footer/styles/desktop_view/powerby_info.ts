@@ -15,11 +15,6 @@ export const Note = styled.div`
   font-size: 12px;
   color: ${theme('article.digest')};
   opacity: 0.6;
-
-  &:hover {
-    opacity: 1;
-    cursor: pointer;
-  }
 `
 
 export const Addr = styled(Link)`

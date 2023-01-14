@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 import { useTheme } from 'styled-components'
 
 import type { TThemeMap, TMetric } from '@/spec'
-import { GITHUB, ABOUT_LINK } from '@/config'
+import { GITHUB, APP_VERSION } from '@/config'
 import { SpaceGrow } from '@/widgets/Common'
 
 import SOCIAL_LIST from '@/constant/social'
@@ -18,8 +18,8 @@ import {
   Column,
   Title,
   Body,
-  Item,
   LinkItem,
+  Item,
 } from '../styles/desktop_view/full_layout'
 
 type TProps = {
@@ -63,58 +63,62 @@ const HomeView: FC<TProps> = ({ metric }) => {
         </BrandWrapper>
 
         <Column>
-          <Title>使用指南</Title>
+          <Title>产品</Title>
           <Body>
-            <LinkItem href={`${ABOUT_LINK}`} {...linkColors}>
-              发帖须知
+            <LinkItem href="/" {...linkColors}>
+              使用帮助
             </LinkItem>
-            <LinkItem href={`${ABOUT_LINK}`} {...linkColors}>
-              会员福利
-            </LinkItem>
-            <LinkItem href={`${ABOUT_LINK}`} {...linkColors}>
+            <LinkItem href="/" {...linkColors}>
               隐私说明
             </LinkItem>
-            <LinkItem href={`${ABOUT_LINK}`} {...linkColors}>
-              存档规则
-            </LinkItem>
-            <LinkItem href={`${ABOUT_LINK}`} {...linkColors}>
+            <LinkItem href="/" {...linkColors}>
               免责声明
+            </LinkItem>
+            <Item>版本号: {APP_VERSION}</Item>
+            <LinkItem href="/" {...linkColors}>
+              友情链接
             </LinkItem>
           </Body>
         </Column>
 
         <Column>
-          <Title>开发者</Title>
+          <Title>资源</Title>
           <Body>
-            <Item as="span" normal>
+            <LinkItem href="/home/changelog" {...linkColors}>
+              官方社区
+            </LinkItem>
+            <LinkItem href="/home/changelog" {...linkColors}>
               开发计划
-            </Item>
-            <LinkItem href="/feedback" {...linkColors}>
+            </LinkItem>
+            <LinkItem href="/" {...linkColors}>
               文档中心
             </LinkItem>
-            <LinkItem href={`${GITHUB}`} {...linkColors}>
+            <LinkItem href="/" {...linkColors}>
               技术栈
-            </LinkItem>
-            <LinkItem href={`${GITHUB}`} {...linkColors}>
-              API
             </LinkItem>
             <LinkItem href={`${GITHUB}`} {...linkColors}>
               Github
             </LinkItem>
+            <LinkItem href="/" {...linkColors}>
+              Logo &amp; 设计
+            </LinkItem>
           </Body>
         </Column>
 
         <Column>
-          <Title>品牌</Title>
+          <Title>竞品对比</Title>
           <Body>
-            <LinkItem href={`${ABOUT_LINK}`} {...linkColors}>
-              价值观
+            <LinkItem href="/" {...linkColors}>
+              与腾讯兔小巢对比
             </LinkItem>
-            <LinkItem href={`${ABOUT_LINK}`} {...linkColors}>
-              名词解释
+            <LinkItem href="/" {...linkColors}>
+              与 Flarum 对比
             </LinkItem>
-            <LinkItem href={`${ABOUT_LINK}`} {...linkColors}>
-              Logo &amp; 资源
+            <LinkItem href="/" {...linkColors}>
+              与 Discusours 对比
+            </LinkItem>
+            <LinkItem href="/" {...linkColors}>
+              与 Canny.io 对比
             </LinkItem>
           </Body>
         </Column>

@@ -4,7 +4,7 @@ import { isEmpty } from 'ramda'
 
 import { LineDivider } from '@/widgets/Common'
 
-import { SITE_URL, BEIAN_ADDR, BEIAN_TEXT } from '@/config'
+import { BEIAN_ADDR, BEIAN_TEXT } from '@/config'
 import { Wrapper, Note, Addr, BottomWrapper } from '../styles/desktop_view/powerby_info'
 
 const PowerbyInfo: FC = () => {
