@@ -17,12 +17,20 @@ export const Item = styled.div`
   ${css.flex('align-center')};
   cursor: pointer;
 `
-export const Cover = styled.div<{ color?: TColorName }>`
+export const IconBox = styled.div`
   ${css.size(25)};
   ${css.flex('align-both')};
+  position: relative;
+  margin-right: 14px;
+`
+export const Cover = styled.div<{ color?: TColorName }>`
+  ${css.size(25)};
+  position: absolute;
+  left: 0;
+  top: 0;
+
   background-color: ${({ color }) => theme(`baseColor.${color?.toLowerCase()}`)};
   border-radius: 5px;
-  margin-right: 14px;
   opacity: 0.6;
 
   ${Item}:hover & {
@@ -32,24 +40,25 @@ export const Cover = styled.div<{ color?: TColorName }>`
 
   transition: all 0.2s;
 `
-
 export const CategoryCover = styled(Cover)`
   background: ${theme('divider')};
   border: 1px solid;
   border-color: ${theme('lightText')};
 `
-
 export const BlocksIcon = styled(BlocksSVG)`
   ${css.size(15)};
-  fill: ${theme('article.title')};
+  fill: ${theme('article.digest')};
+  z-index: 1;
 `
 export const QuestionIcon = styled(QuestionSVG)`
   ${css.size(12)};
   fill: white;
+  z-index: 1;
 `
 export const GithubIcon = styled(GithubSVG)`
   ${css.size(16)};
   fill: white;
+  z-index: 1;
 `
 
 export const Title = styled.div<{ color: TColorName }>`

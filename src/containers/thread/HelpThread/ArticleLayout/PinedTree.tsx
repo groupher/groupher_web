@@ -6,6 +6,7 @@ import {
   Wrapper,
   Item,
   Cover,
+  IconBox,
   CategoryCover,
   BlocksIcon,
   QuestionIcon,
@@ -18,21 +19,24 @@ const PinedTree: FC = () => {
   return (
     <Wrapper>
       <Item onClick={() => back2Layout()}>
-        <CategoryCover color={COLOR_NAME.BLACK}>
+        <IconBox>
+          <CategoryCover color={COLOR_NAME.BLACK} />
           <BlocksIcon />
-        </CategoryCover>
+        </IconBox>
         <Title color={COLOR_NAME.BLACK}>全部文档</Title>
       </Item>
       <Item onClick={() => gotoFAQDetailLayout()}>
-        <Cover color={COLOR_NAME.PURPLE}>
+        <IconBox>
+          <Cover color={COLOR_NAME.PURPLE} />
           <QuestionIcon />
-        </Cover>
+        </IconBox>
         <Title color={COLOR_NAME.PURPLE}>常见问题</Title>
       </Item>
       <Item onClick={() => gotoFAQDetailLayout()}>
-        <Cover color={COLOR_NAME.BLACK}>
+        <IconBox>
+          <Cover color={COLOR_NAME.BLACK} />
           <GithubIcon />
-        </Cover>
+        </IconBox>
         <Title color={COLOR_NAME.BLACK}>Github</Title>
       </Item>
     </Wrapper>

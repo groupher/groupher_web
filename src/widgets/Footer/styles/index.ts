@@ -10,8 +10,10 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   ${css.flexColumn('align-both')};
   width: 100%;
   min-height: 50px;
-  margin-top: 50px;
-  margin-bottom: 20px;
+  margin-top: 80px;
+  padding-top: 50px;
+  padding-bottom: 30px;
+  box-shadow: rgb(241 241 241) 0px 0px 50px 0px inset;
 `
 export const InnerWrapper = styled.div<{ metric: TMetric }>`
   width: 100%;
