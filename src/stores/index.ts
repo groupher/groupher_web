@@ -40,9 +40,6 @@ export { default as CommunityContentStore } from '@/containers/content/Community
 // export { default as ExploreContentStore } from '@/containers/content/ExploreContent/store'
 export { default as UserContentStore } from '@/containers/content/UserContent/store'
 
-// footer
-export { default as FooterStore } from '@/containers/unit/Footer/store'
-
 // threads store
 // export { default as ReposThreadStore } from '@/containers/thread/ReposThread/store'
 

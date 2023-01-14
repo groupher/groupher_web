@@ -20,11 +20,9 @@ import {
   LayoutTitle,
   Block,
   Bar,
-  Box,
   Box3,
   Main,
   ListsWrapper,
-  FAQWrapper,
   FAQFullWrapper,
 } from '../styles/ui/help_layout'
 import { edit } from '../logic'
@@ -42,7 +40,7 @@ const HelpLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         title="帮助台布局"
         desc={
           <>
-            帮助台的布局，请根据你的文档内容多少自由选择。
+            当前设置仅针对常见问题的展示样式。
             <Inline>
               <ArrowButton
                 onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
@@ -56,80 +54,39 @@ const HelpLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         }
       />
       <SelectWrapper>
-        <Layout onClick={() => edit(HELP_LAYOUT.FULL, 'helpLayout')}>
-          <Block $active={layout === HELP_LAYOUT.FULL}>
+        <Layout onClick={() => edit(HELP_LAYOUT.FAQ_COLLAPSE, 'helpLayout')}>
+          <Block $active={layout === HELP_LAYOUT.FAQ_COLLAPSE}>
             <Br bottom={14} />
             <Main>
-              <ListsWrapper withDivider>
-                <Box>
-                  <Bar long={60} thin bold />
-                  <Br bottom={14} />
-                  <Bar long={50} thin />
-                  <Br bottom={8} />
-                  <Bar long={55} thin />
-                  <Br bottom={8} />
-                  <Bar long={40} thin />
-                  <Br bottom={8} />
-                </Box>
-                <Box>
-                  <Bar long={60} thin bold />
-                  <Br bottom={14} />
-                  <Bar long={50} thin />
-                  <Br bottom={8} />
-                  <Bar long={55} thin />
-                  <Br bottom={8} />
-                  <Bar long={40} thin />
-                  <Br bottom={20} />
-                </Box>
-                <Box>
-                  <Bar long={60} thin bold />
-                  <Br bottom={14} />
-                  <Bar long={50} thin />
-                  <Br bottom={8} />
-                  <Bar long={55} thin />
-                  <Br bottom={8} />
-                  <Bar long={40} thin />
-                  <Br bottom={8} />
-                </Box>
-                <Box>
-                  <Bar long={60} thin bold />
-                  <Br bottom={14} />
-                  <Bar long={50} thin />
-                  <Br bottom={8} />
-                  <Bar long={55} thin />
-                  <Br bottom={8} />
-                  <Bar long={40} thin />
-                  <Br bottom={8} />
-                </Box>
-              </ListsWrapper>
-              <FAQWrapper>
-                <Bar thin long={50} bold />
-                <Br bottom={15} />
-                <Bar long={60} thin />
-                <Br bottom={6} />
+              <FAQFullWrapper>
+                <Bar long={30} />
+                <Br bottom={20} />
+                <Bar long={60} thin bold />
+                <Br bottom={10} />
                 <Bar long={85} thin />
-                <Br bottom={6} />
-                <Bar long={50} thin />
-                <Br bottom={6} />
+                <Br bottom={10} />
+                <Bar long={50} thin bold />
+                <Br bottom={10} />
                 <Bar long={60} thin />
-                <Br bottom={6} />
-                <Bar long={50} thin />
-              </FAQWrapper>
+                <Br bottom={10} />
+                <Bar long={50} thin bold />
+                <Br bottom={10} />
+                <Bar long={60} thin />
+              </FAQFullWrapper>
             </Main>
           </Block>
-          <LayoutTitle $active={layout === HELP_LAYOUT.FULL}>
+          <LayoutTitle $active={layout === HELP_LAYOUT.FAQ_COLLAPSE}>
             <CheckLabel
-              title="双栏模式"
-              $active={layout === HELP_LAYOUT.FULL}
+              title="可折叠"
+              $active={layout === HELP_LAYOUT.FAQ_COLLAPSE}
               top={15}
               left={-15}
             />
           </LayoutTitle>
         </Layout>
-
         <Space right={40} />
-        <Layout onClick={() => edit(HELP_LAYOUT.HELPCENTER, 'helpLayout')}>
-          <Block $active={layout === HELP_LAYOUT.HELPCENTER}>
+        <Layout onClick={() => edit(HELP_LAYOUT.FAQ_FLAT, 'helpLayout')}>
+          <Block $active={layout === HELP_LAYOUT.FAQ_FLAT}>
             <Br bottom={14} />
             <Main>
               <ListsWrapper>
@@ -186,40 +143,10 @@ const HelpLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
               </ListsWrapper>
             </Main>
           </Block>
-          <LayoutTitle $active={layout === HELP_LAYOUT.HELPCENTER}>
+          <LayoutTitle $active={layout === HELP_LAYOUT.FAQ_FLAT}>
             <CheckLabel
-              title="仅目录"
-              $active={layout === HELP_LAYOUT.HELPCENTER}
-              top={15}
-              left={-15}
-            />
-          </LayoutTitle>
-        </Layout>
-        <Layout onClick={() => edit(HELP_LAYOUT.FAQ, 'helpLayout')}>
-          <Block $active={layout === HELP_LAYOUT.FAQ}>
-            <Br bottom={14} />
-            <Main>
-              <FAQFullWrapper>
-                <Bar long={30} />
-                <Br bottom={20} />
-                <Bar long={60} thin bold />
-                <Br bottom={10} />
-                <Bar long={85} thin />
-                <Br bottom={10} />
-                <Bar long={50} thin bold />
-                <Br bottom={10} />
-                <Bar long={60} thin />
-                <Br bottom={10} />
-                <Bar long={50} thin bold />
-                <Br bottom={10} />
-                <Bar long={60} thin />
-              </FAQFullWrapper>
-            </Main>
-          </Block>
-          <LayoutTitle $active={layout === HELP_LAYOUT.FAQ}>
-            <CheckLabel
-              title="仅常见问题"
-              $active={layout === HELP_LAYOUT.FAQ}
+              title="铺开式"
+              $active={layout === HELP_LAYOUT.FAQ_FLAT}
               top={15}
               left={-15}
             />

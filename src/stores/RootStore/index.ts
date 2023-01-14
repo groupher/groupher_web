@@ -36,8 +36,6 @@ import {
   // ExploreContentStore,
   CommunityEditorStore,
   UserContentStore,
-  // footer
-  // FooterStore,
   // viewers
   // RepoViewerStore,
   CommentsStore,

@@ -1,25 +1,32 @@
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
-import { Wrapper as MainWrapper } from './index'
+import ArrowSVG from '@/icons/ArrowSolid'
 
 export const Wrapper = styled.div`
   position: relative;
-  ${css.flex('align-center')};
+  ${css.flex('align-both')};
   margin-bottom: 34px;
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
   font-size: 22px;
   font-weight: 500;
+  margin-left: -35px;
+`
+export const MenuIcon = styled(ArrowSVG)`
+  ${css.size(12)};
+  fill: ${theme('article.digest')};
+  transform: rotate(90deg);
 `
 export const MenuWrapper = styled.div`
-  position: absolute;
-  right: 10px;
   cursor: pointer;
-  display: none;
+  margin-left: 5px;
+  opacity: 0;
 
-  ${MainWrapper}:hover & {
-    display: block;
+  ${Wrapper}:hover & {
+    opacity: 1;
   }
+
+  transition: all 0.3s;
 `

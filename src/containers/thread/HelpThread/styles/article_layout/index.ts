@@ -12,7 +12,6 @@ export const Wrapper = styled.div`
   width: 100%;
   position: relative;
 `
-
 export const Header = styled.div`
   margin-bottom: 26px;
 `
@@ -20,29 +19,6 @@ export const Title = styled.div`
   font-size: 26px;
   color: ${theme('article.title')};
   font-weight: 600;
-`
-
-export const Navi = styled.div`
-  ${css.flex('align-center')};
-  font-size: 13px;
-  margin-bottom: 3px;
-`
-export const All = styled.div`
-  color: ${theme('article.digest')};
-
-  &:hover {
-    cursor: pointer;
-    color: ${theme('article.title')};
-  }
-`
-export const Slash = styled.div`
-  font-size: 10px;
-  color: ${theme('article.info')};
-  margin-left: 7px;
-  margin-right: 7px;
-`
-export const Cur = styled.div`
-  color: ${theme('article.digest')};
 `
 type TContent = { isRightLayout?: boolean; open?: boolean }
 export const Content = styled(MainWrapper)<TContent>`
@@ -131,16 +107,4 @@ export const ToggleListIcon = styled(ListSVG)`
   }
 
   transition: all 0.2s;
-`
-
-export const FAQItem = styled.div`
-  font-size: 14px;
-  margin-bottom: 10px;
-  font-weight: 600;
-  color: ${theme('article.title')};
-
-  &:hover {
-    color: ${theme('article.digest')};
-    cursor: pointer;
-  }
 `
