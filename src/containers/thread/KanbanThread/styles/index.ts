@@ -35,6 +35,7 @@ export const Header = styled.div`
 export const Body = styled.div`
   background: ${theme('hoverBg')};
   padding: 8px;
+  padding-bottom: 0;
   border-radius: 6px;
   width: 100%;
 `

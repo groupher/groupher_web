@@ -16,7 +16,7 @@ const link = '#005196' // '#6494cd'
 const actionText = '#647392'
 const descText = '#666'
 const threadTitle = '#333333'
-const hoverBg = '#f9f9f9'
+const hoverBg = '#efefef9c' // with alpha
 // const primaryMate = 'orange'
 
 const github = {
@@ -45,14 +45,14 @@ const github = {
   link,
   divider: border,
   hoverBg,
-  menuActive: '#f3f3f3',
+  menuActive: '#e9e9e991',
   linkHover: lighten(link, 5),
   heightIcon: '#e48a3d',
   heightGradient: 'linear-gradient(90deg, rgb(243, 170, 0) 0%, rgb(228, 62, 41) 100%)',
   main: '#7DC0C5',
   bodyBg: contentBg,
   selectionBg: '#FFFEDE',
-  textBadge: '#f6f6f6',
+  textBadge: '#e2e2e287', // with alpha
   lightText: '#999999',
 
   gtdBadge: {
