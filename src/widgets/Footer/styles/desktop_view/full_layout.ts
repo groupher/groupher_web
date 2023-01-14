@@ -9,18 +9,15 @@ import ArrowLink from '@/widgets/Buttons/ArrowLink'
 export const Wrapper = styled.footer`
   ${css.flexColumn('align-center')};
   width: 100%;
-  padding-top: 30px;
 `
 export const InnerWrapper = styled.div<{ metric: TMetric }>`
   width: 100%;
   ${({ metric }) => css.fitContentWidth(metric)};
   // 20 是经典布局为缩小帖子列表"视觉宽度"手动缩小的值
-  padding: 0 20px;
 
   ${css.flex('justify-between')};
   margin-top: 20px;
   margin-bottom: 30px;
-  padding-left: 30px;
 
   &:hover {
     opacity: 1;
@@ -52,10 +49,9 @@ export const BrandDesc = styled.div`
 `
 export const SocialInfo = styled.div``
 
-export const Column = styled.div<{ margin?: string }>`
+export const Column = styled.div`
   ${css.flexColumn()};
   min-width: 105px;
-  margin-right: ${({ margin }) => margin || '50px'};
   opacity: 0.8;
 `
 export const Title = styled.div`
@@ -68,7 +64,7 @@ export const Body = styled.div`
   ${css.flexColumn('justify-start')};
   color: ${theme('footer.text')};
 `
-type TItem = { normal: boolean; offsetTop?: string }
+type TItem = { normal?: boolean; offsetTop?: string }
 export const Item = styled.a<TItem>`
   color: ${theme('footer.text')};
 

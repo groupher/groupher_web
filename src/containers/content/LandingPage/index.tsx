@@ -108,7 +108,6 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
         <FAQWrapper>
           <FaqList mode="flat" large />
         </FAQWrapper>
-        <Divider top={60} bottom={50} />
       </Wrapper>
     </ParallaxProvider>
   )

@@ -116,4 +116,5 @@ export const Divider = styled.div<TSpace>`
 export const FAQWrapper = styled.div`
   width: 100%;
   max-width: 1080px;
+  margin-bottom: 20px;
 `
