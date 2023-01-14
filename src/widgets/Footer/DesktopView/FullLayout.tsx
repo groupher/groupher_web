@@ -19,6 +19,7 @@ import {
   Title,
   Body,
   LinkItem,
+  HeartIcon,
   Item,
 } from '../styles/desktop_view/full_layout'
 
@@ -74,7 +75,11 @@ const HomeView: FC<TProps> = ({ metric }) => {
             <LinkItem href="/" {...linkColors}>
               免责声明
             </LinkItem>
-            <Item>版本号: {APP_VERSION}</Item>
+            <Item as="div">版本号: {APP_VERSION}</Item>
+            <LinkItem href="/" {...linkColors}>
+              <HeartIcon />
+              捐助
+            </LinkItem>
             <LinkItem href="/" {...linkColors}>
               友情链接
             </LinkItem>
@@ -115,7 +120,7 @@ const HomeView: FC<TProps> = ({ metric }) => {
               与 Flarum 对比
             </LinkItem>
             <LinkItem href="/" {...linkColors}>
-              与 Discusours 对比
+              与 Discourse 对比
             </LinkItem>
             <LinkItem href="/" {...linkColors}>
               与 Canny.io 对比

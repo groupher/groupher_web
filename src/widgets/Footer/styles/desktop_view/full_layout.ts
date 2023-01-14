@@ -1,10 +1,10 @@
 import styled from 'styled-components'
+import Link from 'next/link'
 
 import type { TMetric } from '@/spec'
 import css, { theme } from '@/utils/css'
-import ArrowLink from '@/widgets/Buttons/ArrowLink'
 
-// import { getPadding } from '../../metrics'
+import HeartSVG from '@/icons/Heart'
 
 export const Wrapper = styled.footer`
   ${css.flexColumn('align-center')};
@@ -55,18 +55,19 @@ export const Column = styled.div`
   opacity: 0.8;
 `
 export const Title = styled.div`
-  color: ${theme('footer.title')};
+  color: ${theme('article.title')};
   margin-bottom: 15px;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 500;
 `
 export const Body = styled.div`
   ${css.flexColumn('justify-start')};
   color: ${theme('footer.text')};
 `
 type TItem = { normal?: boolean; offsetTop?: string }
-export const Item = styled.a<TItem>`
-  color: ${theme('footer.text')};
+export const Item = styled(Link)<TItem>`
+  color: ${theme('article.digest')};
+  margin-left: -1px;
 
   font-size: 14px;
   margin-bottom: 10px;
@@ -74,12 +75,28 @@ export const Item = styled.a<TItem>`
   text-decoration: none;
 
   &:hover {
-    color: ${theme('footer.hover')};
-    text-decoration: ${({ normal }) => (normal ? 'none' : 'underline')};
+    color: ${theme('article.title')};
+    text-decoration: none;
     cursor: pointer;
   }
   transition: color 0.2s;
 `
-export const LinkItem = styled(ArrowLink)`
+export const LinkItem = styled(Link)`
+  ${css.flex('align-center')};
+  color: ${theme('article.digest')};
   margin-bottom: 10px;
+  margin-left: -1px;
+  text-decoration: none;
+
+  &:hover {
+    color: ${theme('article.title')};
+    cursor: pointer;
+  }
+`
+
+export const HeartIcon = styled(HeartSVG)`
+  ${css.size(13)};
+  fill: ${theme('baseColor.red')};
+  margin-top: 2px;
+  margin-right: 6px;
 `
