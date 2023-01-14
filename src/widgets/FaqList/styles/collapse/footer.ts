@@ -43,10 +43,16 @@ export const PeopleIcon = styled(PeopleSVG)`
   margin-right: 6px;
 `
 
-export const LinkButton = styled(Button)``
+export const MoreButton = styled(Button)`
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+`
+
+export const AskButton = styled(Button)`
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+`
 
 export const Bottom = styled.div`
   margin-top: 15px;
   ${css.flex('align-center')};
-  gap: 0 15px;
+  gap: 0 18px;
 `

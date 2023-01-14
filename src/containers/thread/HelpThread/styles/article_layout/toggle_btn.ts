@@ -23,6 +23,7 @@ export const Wrapper = styled.div<TWrapper>`
     box-shadow: ${css.cardShadow};
     background: white;
     cursor: pointer;
+    box-shadow: rgb(17 17 26 / 10%) 0px 0px 16px;
   }
   transition: all 0.1s;
 `
