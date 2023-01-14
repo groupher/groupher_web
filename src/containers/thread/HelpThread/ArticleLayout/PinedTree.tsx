@@ -8,7 +8,7 @@ import {
   Cover,
   IconBox,
   CategoryCover,
-  BlocksIcon,
+  BookIcon,
   QuestionIcon,
   GithubIcon,
   Title,
@@ -21,7 +21,7 @@ const PinedTree: FC = () => {
       <Item onClick={() => back2Layout()}>
         <IconBox>
           <CategoryCover color={COLOR_NAME.BLACK} />
-          <BlocksIcon />
+          <BookIcon />
         </IconBox>
         <Title color={COLOR_NAME.BLACK}>全部文档</Title>
       </Item>

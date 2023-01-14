@@ -1,0 +1,52 @@
+import styled from 'styled-components'
+
+import css, { theme } from '@/utils/css'
+
+import Button from '@/widgets/Buttons/Button'
+import BookSVG from '@/icons/Book'
+import PeopleSVG from '@/icons/People'
+
+export const Wrapper = styled.div`
+  ${css.flexColumn('align-both')};
+  font-size: 14px;
+  margin-top: 60px;
+  margin-left: -30px;
+  padding-top: 30px;
+
+  border-top: 1px solid transparent;
+  border-image: linear-gradient(
+    0.35turn,
+    transparent,
+    ${theme('divider')},
+    ${theme('divider')},
+    ${theme('divider')},
+    transparent
+  );
+
+  border-image-slice: 1;
+`
+
+export const Note = styled.div`
+  font-size: 13px;
+  color: ${theme('article.digest')};
+  opacity: 0.8;
+`
+
+export const BookIcon = styled(BookSVG)`
+  ${css.size(13)};
+  fill: white;
+  margin-right: 6px;
+`
+export const PeopleIcon = styled(PeopleSVG)`
+  ${css.size(12)};
+  fill: ${theme('article.digest')};
+  margin-right: 6px;
+`
+
+export const LinkButton = styled(Button)``
+
+export const Bottom = styled.div`
+  margin-top: 15px;
+  ${css.flex('align-center')};
+  gap: 0 15px;
+`

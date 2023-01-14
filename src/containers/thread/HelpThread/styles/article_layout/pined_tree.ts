@@ -5,7 +5,7 @@ import type { TColorName } from '@/spec'
 import css, { theme } from '@/utils/css'
 import GithubSVG from '@/icons/social/Github'
 import QuestionSVG from '@/icons/Question'
-import BlocksSVG from '@/icons/Blocks'
+import BookSVG from '@/icons/Book'
 
 export const Wrapper = styled.div`
   ${css.flexColumn('justify-center')};
@@ -45,7 +45,7 @@ export const CategoryCover = styled(Cover)`
   border: 1px solid;
   border-color: ${theme('lightText')};
 `
-export const BlocksIcon = styled(BlocksSVG)`
+export const BookIcon = styled(BookSVG)`
   ${css.size(15)};
   fill: ${theme('article.digest')};
   z-index: 1;

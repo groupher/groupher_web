@@ -7,8 +7,9 @@ import { MENU, DEFAULT_MENU } from './constant'
 
 import Banner from './Banner'
 import Section from './Section'
+import Footer from './Footer'
 
-import { Wrapper, Footer, MoreLink } from '../styles/collapse'
+import { Wrapper } from '../styles/collapse'
 
 import type { TProps as TIndex } from '../index'
 
@@ -41,25 +42,13 @@ const Collapse: FC<TProps> = ({ articles }) => {
 
   return (
     <Wrapper>
-      <Banner
-        menuOptions={menuOptions}
-        setOpenedIDs={setOpenedIDs}
-        articles={articles}
-      />
+      <Banner menuOptions={menuOptions} setOpenedIDs={setOpenedIDs} articles={articles} />
 
       {articles.map((item) => (
-        <Section
-          key={item.id}
-          item={item}
-          openedIDs={openedIDs}
-          toggle={toggle}
-        />
+        <Section key={item.id} item={item} openedIDs={openedIDs} toggle={toggle} />
       ))}
 
-      <Footer>
-        <div>如有其他疑问，请</div>
-        <MoreLink>告诉我们</MoreLink>。
-      </Footer>
+      <Footer />
     </Wrapper>
   )
 }

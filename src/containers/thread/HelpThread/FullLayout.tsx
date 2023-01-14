@@ -45,7 +45,6 @@ const FullLayout: FC<TProps> = ({ testid = 'FullLayout' }) => {
       <FAQWrapper>
         <FaqList mode="flat" />
       </FAQWrapper>
-      <Divider />
     </Wrapper>
   )
 }

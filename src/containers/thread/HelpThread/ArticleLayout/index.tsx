@@ -48,11 +48,11 @@ const ArticleLayout: FC<TProps> = ({ testid = 'ArtileLayout', isFAQArticleLayout
         <Header>
           {!isFAQArticleLayout && <NaviHead />}
           {!isFAQArticleLayout && <Title>关于帮助台的使用</Title>}
-          <ArticleCover />
+          {!isFAQArticleLayout && <ArticleCover />}
         </Header>
 
         {isFAQArticleLayout ? (
-          <FaqLayout />
+          <FaqLayout left={-25} top={-18} />
         ) : (
           <>
             <div>
@@ -81,7 +81,7 @@ const ArticleLayout: FC<TProps> = ({ testid = 'ArtileLayout', isFAQArticleLayout
             </div>
           </>
         )}
-        <FeedbackFooter top={60} />
+        {!isFAQArticleLayout && <FeedbackFooter top={60} />}
       </Content>
     </Wrapper>
   )

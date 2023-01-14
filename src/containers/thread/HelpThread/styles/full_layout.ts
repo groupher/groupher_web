@@ -50,4 +50,5 @@ export const Divider = styled.div`
 export const FAQWrapper = styled.div`
   margin-left: -10%;
   width: 95%;
+  margin-bottom: 20px;
 `

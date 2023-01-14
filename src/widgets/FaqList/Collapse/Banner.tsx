@@ -3,12 +3,9 @@ import { pluck } from 'ramda'
 
 import type { TID, TMenuOption, TArticle } from '@/spec'
 
-import SVG from '@/constant/svg'
-
-import IconButton from '@/widgets/Buttons/IconButton'
 import MenuButton from '@/widgets/Buttons/MenuButton'
 
-import { Wrapper, Title, MenuWrapper } from '../styles/collapse/banner'
+import { Wrapper, Title, MenuWrapper, MenuIcon } from '../styles/collapse/banner'
 
 type TProps = {
   menuOptions: TMenuOption[]
@@ -43,7 +40,7 @@ const Banner: FC<TProps> = ({ menuOptions, setOpenedIDs, articles }) => {
       <Title>常见问题</Title>
       <MenuWrapper>
         <MenuButton placement="bottom-end" options={menuOptions} onClick={(key) => handleMenu(key)}>
-          <IconButton icon={SVG.MORE} />
+          <MenuIcon />
         </MenuButton>
       </MenuWrapper>
     </Wrapper>
