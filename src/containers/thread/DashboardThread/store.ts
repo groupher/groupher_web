@@ -71,7 +71,7 @@ const settingsModalFields = {
   primaryColor: T.opt(T.enum(keys(COLORS)), 'BLACK'),
   postLayout: T.opt(T.enum(values(POST_LAYOUT)), POST_LAYOUT.UPVOTE_FIRST),
   kanbanLayout: T.opt(T.enum(values(KANBAN_LAYOUT)), KANBAN_LAYOUT.SIMPLE),
-  helpLayout: T.opt(T.enum(values(HELP_LAYOUT)), HELP_LAYOUT.FULL),
+  helpLayout: T.opt(T.enum(values(HELP_LAYOUT)), HELP_LAYOUT.FAQ_COLLAPSE),
   brandLayout: T.opt(T.enum(values(BRAND_LAYOUT)), BRAND_LAYOUT.BOTH),
   bannerLayout: T.opt(T.enum(values(BANNER_LAYOUT)), BANNER_LAYOUT.HEADER),
   topbarLayout: T.opt(T.enum(values(TOPBAR_LAYOUT)), TOPBAR_LAYOUT.YES),

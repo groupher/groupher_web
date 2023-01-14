@@ -6,13 +6,11 @@
 import { FC } from 'react'
 
 // import { buildLog } from '@/utils/logger'
-import { HELP_LAYOUT } from '@/constant/layout'
 import { bond } from '@/utils/mobx'
 
 import type { TStore } from './store'
 
-import FullLayout from './FullLayout'
-import FaqLayout from './FaqLayout'
+import Home from './Home'
 import ArticleLayout from './ArticleLayout'
 
 import { Wrapper } from './styles'
@@ -42,8 +40,7 @@ const HelpThreadContainer: FC<TProps> = ({
 
   return (
     <Wrapper testid={testid}>
-      {layout === HELP_LAYOUT.FULL && <FullLayout />}
-      {layout === HELP_LAYOUT.FAQ && <FaqLayout top={50} />}
+      <Home />
     </Wrapper>
   )
 }

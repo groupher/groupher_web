@@ -217,4 +217,4 @@ export type TArticlePubSelector = {
   tag?: TTag | null
 }
 
-export type THelpLayout = 'full' | 'faq' | 'helpcenter' | 'article'
+export type THelpLayout = 'article' | 'faq_flat' | 'faq_collapse'

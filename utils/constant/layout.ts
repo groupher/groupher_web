@@ -71,9 +71,8 @@ export const DASHBOARD_DESC_LAYOUT = {
 } as Record<TSnakeUpperCase<TDashboardLayout>, TDashboardLayout>
 
 export const HELP_LAYOUT = {
-  FULL: 'full',
-  FAQ: 'faq',
-  HELPCENTER: 'helpcenter',
+  FAQ_FLAT: 'faq_flat',
+  FAQ_COLLAPSE: 'faq_collapse',
   ARTICLE: 'article',
 } as Record<TSnakeUpperCase<THelpLayout>, THelpLayout>
 

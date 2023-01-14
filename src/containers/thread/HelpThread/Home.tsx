@@ -4,13 +4,13 @@ import { COLOR_NAME } from '@/constant/colors'
 import FaqList from '@/widgets/FaqList'
 
 import Category from './Category'
-import { Wrapper, CatsWrapper, Divider, FAQWrapper } from './styles/full_layout'
+import { Wrapper, CatsWrapper, Divider, FAQWrapper } from './styles/home'
 
 type TProps = {
   testid?: string
 }
 
-const FullLayout: FC<TProps> = ({ testid = 'FullLayout' }) => {
+const Home: FC<TProps> = ({ testid = 'home' }) => {
   return (
     <Wrapper>
       <CatsWrapper>
@@ -49,4 +49,4 @@ const FullLayout: FC<TProps> = ({ testid = 'FullLayout' }) => {
   )
 }
 
-export default memo(FullLayout)
+export default memo(Home)
