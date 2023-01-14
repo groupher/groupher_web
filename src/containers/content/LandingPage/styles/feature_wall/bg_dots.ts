@@ -16,7 +16,7 @@ export const Wrapper = styled.div<TWrapper>`
   top: -80px;
   border-radius: 100px;
 
-  opacity: ${({ $active }) => ($active ? 0.8 : 0)};
+  opacity: ${({ $active }) => ($active ? 1 : 0.8)};
 
   transition: all 0.2s;
   transition-delay: 1s;
