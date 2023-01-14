@@ -1,19 +1,27 @@
 import { FC } from 'react'
-
 import { isEmpty } from 'ramda'
 
+import type { TMetric } from '@/spec'
+import METRIC from '@/constant/metric'
 import { LineDivider } from '@/widgets/Common'
 
 import { BEIAN_ADDR, BEIAN_TEXT } from '@/config'
 import { Wrapper, Note, Addr, BottomWrapper } from '../styles/desktop_view/powerby_info'
 
-const PowerbyInfo: FC = () => {
+type TProps = {
+  metric?: TMetric
+}
+
+const PowerbyInfo: FC<TProps> = ({ metric }) => {
   return (
-    <Wrapper testid="footer">
-      <Note>
-        由<Addr href="/">Groupher</Addr>
-        提供服务
-      </Note>
+    <Wrapper testid="power-by">
+      {metric !== METRIC.HOME && (
+        <Note>
+          由<Addr href="/">Groupher</Addr>
+          提供服务
+        </Note>
+      )}
+
       <BottomWrapper>
         {!isEmpty(BEIAN_TEXT) && (
           <Note>

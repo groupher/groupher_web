@@ -40,14 +40,13 @@ const IntroDigest: FC<TProps> = ({ inViewChange }) => {
       <FeatHead
         $active={inView}
         title="讨论区"
-        desc="强大的社区功能，满足用户与团队，用户与用户间的互动交流。"
+        desc="强大的社区功能，满足用户与团队间的互动交流，让用户成为产品团队的一员。"
         featType={FEAT_TYPE.DISCUSS}
       />
 
       <FeatList>
         <FeatItem text="封面图片编辑" featType={FEAT_TYPE.DISCUSS} />
         <FeatItem text="强大的富文本内容" featType={FEAT_TYPE.DISCUSS} />
-        <FeatItem text="按标签，版本号，时间自动归档" featType={FEAT_TYPE.DISCUSS} />
         <FeatItem text="评论，表情反馈" featType={FEAT_TYPE.DISCUSS} />
         <FeatItem text="一键多渠道分享" featType={FEAT_TYPE.DISCUSS} />
         <FeatItem text="高度自定义" featType={FEAT_TYPE.DISCUSS} />

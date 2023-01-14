@@ -7,6 +7,8 @@
 import { FC } from 'react'
 
 import type { TMetric } from '@/spec'
+import METRIC from '@/constant/metric'
+
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
@@ -15,7 +17,6 @@ import FullLayout from './FullLayout'
 import PowerbyInfo from './PowerbyInfo'
 
 import { Wrapper, InnerWrapper } from '../styles'
-import METRIC from '@/constant/metric'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:Footer')
@@ -30,7 +31,7 @@ const FooterContainer: FC<TProps> = ({ metric, testid = 'footer' }) => {
     <Wrapper testid={testid} metric={metric}>
       <InnerWrapper metric={metric}>
         {metric === METRIC.HOME ? <FullLayout metric={metric} /> : <SimpleLayout />}
-        <PowerbyInfo />
+        <PowerbyInfo metric={metric} />
       </InnerWrapper>
     </Wrapper>
   )

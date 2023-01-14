@@ -19,7 +19,7 @@ const FeatureWall: FC = () => {
     <Wrapper>
       <Slogan>
         <Title>为团队和用户之间架设桥梁</Title>
-        <Desc>你只需专注产品的核心工作，将那些“无聊”却又重要的杂活交给 Groupher</Desc>
+        <Desc>你只需专注产品的核心工作，将那些“无聊”却又重要的体力活交给 Groupher</Desc>
       </Slogan>
       <UserVoice />
       <CurlyLineU2D />

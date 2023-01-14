@@ -40,7 +40,7 @@ const IntroDigest: FC<TProps> = ({ inViewChange }) => {
       <FeatHead
         $active={inView}
         title="帮助台"
-        desc="方便用户快速获取产品最新功能。"
+        desc="沉淀常见问题，公共知识文档，快速解决用户疑惑。"
         featType={FEAT_TYPE.HELP}
       />
 

@@ -33,8 +33,7 @@ export const InnerWrapper = styled.div<{ metric: TMetric }>`
 
 export const BrandWrapper = styled.div`
   ${css.flexColumn()};
-  width: 45%;
-  height: 100px;
+  width: 40%;
 `
 export const BrandTitle = styled.div`
   color: ${theme('article.title')};
@@ -43,11 +42,10 @@ export const BrandTitle = styled.div`
 `
 export const BrandDesc = styled.div`
   color: ${theme('article.digest')};
-  margin-top: 4px;
-  font-size: 13px;
+  margin-top: 8px;
+  font-size: 14px;
   opacity: 0.8;
 `
-export const SocialInfo = styled.div``
 
 export const Column = styled.div`
   ${css.flexColumn()};
@@ -63,6 +61,7 @@ export const Title = styled.div`
 export const Body = styled.div`
   ${css.flexColumn('justify-start')};
   color: ${theme('footer.text')};
+  gap: 12px 0;
 `
 type TItem = { normal?: boolean; offsetTop?: string }
 export const Item = styled(Link)<TItem>`
@@ -70,7 +69,6 @@ export const Item = styled(Link)<TItem>`
   margin-left: -1px;
 
   font-size: 14px;
-  margin-bottom: 10px;
   margin-top: ${({ offsetTop }) => offsetTop || '0'};
   text-decoration: none;
 
@@ -84,7 +82,6 @@ export const Item = styled(Link)<TItem>`
 export const LinkItem = styled(Link)`
   ${css.flex('align-center')};
   color: ${theme('article.digest')};
-  margin-bottom: 10px;
   margin-left: -1px;
   text-decoration: none;
 

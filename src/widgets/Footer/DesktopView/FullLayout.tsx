@@ -14,7 +14,6 @@ import {
   BrandWrapper,
   BrandTitle,
   BrandDesc,
-  SocialInfo,
   Column,
   Title,
   Body,
@@ -43,24 +42,22 @@ const HomeView: FC<TProps> = ({ metric }) => {
           <BrandDesc>让你的产品聆听用户的声音</BrandDesc>
           <SpaceGrow />
 
-          <SocialInfo>
-            <SocialList
-              selected={[
-                {
-                  type: SOCIAL_LIST.HOMEPAGE,
-                  addr: 'https://groupher.com',
-                },
-                {
-                  type: SOCIAL_LIST.TWITTER,
-                  addr: 'https://twitter.com',
-                },
-                {
-                  type: SOCIAL_LIST.BOSS,
-                  addr: 'https://zhipin.com',
-                },
-              ]}
-            />
-          </SocialInfo>
+          <SocialList
+            selected={[
+              {
+                type: SOCIAL_LIST.HOMEPAGE,
+                addr: 'https://groupher.com',
+              },
+              {
+                type: SOCIAL_LIST.TWITTER,
+                addr: 'https://twitter.com',
+              },
+              {
+                type: SOCIAL_LIST.BOSS,
+                addr: 'https://zhipin.com',
+              },
+            ]}
+          />
         </BrandWrapper>
 
         <Column>

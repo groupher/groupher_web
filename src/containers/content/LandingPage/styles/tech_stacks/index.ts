@@ -7,6 +7,7 @@ import css, { theme } from '@/utils/css'
 import Img from '@/Img'
 
 import GithubSVG from '@/icons/social/Github'
+import ArrowSVG from '@/icons/Arrow'
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
@@ -23,10 +24,35 @@ export const Title = styled.div`
   font-weight: 500;
 `
 export const Desc = styled.div`
+  ${css.flex('align-center')};
   font-size: 17px;
-  ${theme('article.digest')};
+  color: ${theme('article.digest')};
   margin-top: 12px;
   opacity: 0.8;
+`
+
+export const LeanMoreLink = styled(Link)`
+  ${css.flex('align-center')};
+  font-size: 16px;
+  text-decoration: none;
+  color: ${theme('link')};
+
+  &:hover {
+    text-decoration: none;
+    color: ${theme('link')};
+    font-weight: 500;
+  }
+`
+
+export const ArrowIcon = styled(ArrowSVG)`
+  ${css.size(12)};
+  fill: ${theme('link')};
+  margin-left: 5px;
+
+  transform: rotate(180deg);
+  ${LeanMoreLink}:hover & {
+    fill: ${theme('link')};
+  }
 `
 
 export const Wall = styled.div`
@@ -37,7 +63,7 @@ export const Wall = styled.div`
   position: relative;
 `
 export const BgWrapper = styled.div`
-  opacity: 0.25;
+  opacity: 0.8;
   position: absolute;
   top: 0;
 `
@@ -58,7 +84,7 @@ export const TechsWrapper = styled.div`
 `
 export const GithubLink = styled(Link)`
   ${css.flex('align-center')};
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 500;
   text-decoration: none;
   color: ${theme('article.title')};
@@ -69,7 +95,14 @@ export const GithubLink = styled(Link)`
   }
 `
 export const GithubIcon = styled(GithubSVG)`
-  ${css.size(16)};
+  ${css.size(18)};
   fill: ${theme('article.title')};
   margin-right: 8px;
+`
+
+export const BottonNote = styled.div`
+  margin-top: 8px;
+  color: ${theme('article.digest')};
+  font-size: 14px;
+  opacity: 0.8;
 `
