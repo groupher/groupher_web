@@ -39,6 +39,18 @@ export const Item = styled(Link)<TActive>`
     background: ${({ $active }) => ($active ? theme('menuActive') : theme('hoverBg'))};
   }
 
+  &:before {
+    content: '';
+    display: ${({ $active }) => ($active ? 'block' : 'none')};
+    position: absolute;
+    top: 5px;
+    left: 0px;
+    width: 3px;
+    height: 15px;
+    border-radius: 5px;
+    background: ${theme('article.digest')};
+  }
+
   transition: all 0.2s;
 `
 export const TouchedDot = styled.div`
