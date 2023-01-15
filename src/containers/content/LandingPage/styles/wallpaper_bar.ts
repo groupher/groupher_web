@@ -54,7 +54,6 @@ export const BallWrapper = styled.div<TActive>`
       ? 'rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px'
       : 'transparent'};
   margin-bottom: 10px;
-  opacity: 0.8;
 
   &:hover {
     border-color: ${theme('article.digest')};

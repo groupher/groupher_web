@@ -12,6 +12,7 @@ import {
   LockIcon,
   AddText,
   Highlight,
+  Content,
   Background,
   Image,
 } from './styles/cover_image'
@@ -40,9 +41,10 @@ const CoverImage: FC<TProps> = ({ wallpaper, wallpapers }) => {
         </AddrBar>
         <SpaceGrow />
       </BrowerHead>
-      <Background style={{ background }} effect={effect}>
+      <Content>
         <Image src="/landing-demo.png" />
-      </Background>
+        <Background style={{ background }} effect={effect} />
+      </Content>
     </Wrapper>
   )
 }

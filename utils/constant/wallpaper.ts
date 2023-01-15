@@ -143,36 +143,36 @@ export const GRADIENT_WALLPAPER = {
   // linear gradian
   // background: #2c3e50; /* fallback for old browsers */
   // background: -webkit-linear-gradient(#C6D183, #72B58C); /* Chrome 10-25, Safari 5.1-6 */
-
-  green: {
-    colors: ['#C6D183', '#72B58C'],
-    ...DEFAULT_GRADIENT_EFFECT,
-    hasPattern: true,
-  },
-  purple: {
-    colors: ['#BBA4C9', '#8390CD'],
-    ...DEFAULT_GRADIENT_EFFECT,
-  },
-  yellow: {
-    colors: ['#F7CE7E', '#E17D43'],
-    ...DEFAULT_GRADIENT_EFFECT,
-  },
-  cyan: {
-    colors: ['#568A79', '#295054'],
-    ...DEFAULT_GRADIENT_EFFECT,
-  },
-  red: {
-    colors: ['#E76B66', '#6E3837'],
-    ...DEFAULT_GRADIENT_EFFECT,
-  },
-  blue: {
-    colors: ['#85AADA', '#274AA1'],
-    ...DEFAULT_GRADIENT_EFFECT,
-  },
   pink: {
     colors: ['#FBEFDE', '#D8B9E3'],
     ...DEFAULT_GRADIENT_EFFECT,
     hasBlur: true,
+  },
+
+  green: {
+    colors: ['#ffefc4', '#c06577'],
+    ...DEFAULT_GRADIENT_EFFECT,
+    hasPattern: true,
+  },
+  purple: {
+    colors: ['#E1EFE0', '#F4F1E1', '#e9f3f8'],
+    ...DEFAULT_GRADIENT_EFFECT,
+  },
+  yellow: {
+    colors: ['#6299be', '#766ba1'],
+    ...DEFAULT_GRADIENT_EFFECT,
+  },
+  cyan: {
+    colors: ['#eeeeee', '#d8d8d8', '#CACACE'],
+    ...DEFAULT_GRADIENT_EFFECT,
+  },
+  red: {
+    colors: ['#d58585', '#556270'],
+    ...DEFAULT_GRADIENT_EFFECT,
+  },
+  blue: {
+    colors: ['#daf3fb', '#B8D1FA', '#c7bbf2', '#6390c5'],
+    ...DEFAULT_GRADIENT_EFFECT,
   },
 } as Record<string, TWallpaper>
 

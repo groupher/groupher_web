@@ -54,6 +54,12 @@ export const Dot = styled.div`
   background: ${theme('divider')};
   margin-right: 6px;
 `
+export const Content = styled.div`
+  ${css.flex('align-both')};
+  width: 100%;
+  height: 700px;
+  position: relative;
+`
 export const Background = styled.div<{ effect: string }>`
   ${css.flex('align-both')}
   width: 100%;
@@ -61,13 +67,17 @@ export const Background = styled.div<{ effect: string }>`
   background tomato;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
+  position: absolute;
+  top: 0;
+  left: 0;
 
+  ${({ effect }) => effect || ''};
   will-change: transform;
   transition: all 0.3s;
 `
 export const Image = styled(Img)`
   display: block;
   width: 100%;
-  height: 700px;
+  height: 701px;
   object-fit: cover;
 `
