@@ -17,16 +17,25 @@ const PatternGroup: FC<TProps> = ({ wallpaper, patternWallpapers }) => {
 
   return (
     <Wrapper>
-      {patternKeys.map((name) => (
-        <Block key={name} $active={name === wallpaper}>
-          {name === wallpaper && (
-            <ActiveSign>
-              <CheckIcon />
-            </ActiveSign>
-          )}
-          <Image src={patternWallpapers[name].bgImage} onClick={() => changeWallpaper(name)} />
-        </Block>
-      ))}
+      {patternKeys.map((name) => {
+        const { bgImage } = patternWallpapers[name]
+        const bgSrc = bgImage === '/wallpaper/ms.svg' ? '/wallpaper/ms.png' : bgImage
+
+        return (
+          <Block key={name} $active={name === wallpaper}>
+            {name === wallpaper && (
+              <ActiveSign>
+                <CheckIcon />
+              </ActiveSign>
+            )}
+            <Image
+              src={bgSrc}
+              height={name === 'ms' ? '110px' : 'auto'}
+              onClick={() => changeWallpaper(name)}
+            />
+          </Block>
+        )
+      })}
     </Wrapper>
   )
 }

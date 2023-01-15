@@ -20,30 +20,29 @@ export const Block = styled.div<TActive>`
   border-radius: 4px;
   overflow: hidden;
   border: 2px solid;
-  border-color: ${({ $active }) =>
-    $active ? theme('article.title') : 'transparent'};
+  border-color: ${({ $active }) => ($active ? theme('article.title') : 'transparent')};
   opacity: ${({ $active }) => ($active ? 1 : 0.85)};
 
   &:hover {
     border-color: ${theme('article.title')};
     cursor: pointer;
-    opacity: 0.85;
   }
 
   transition: all 0.2s linear;
 `
-export const Image = styled(Img)`
+export const Image = styled(Img)<{ height?: string }>`
   width: 100%;
+  height: ${({ height }) => height || 'auto'};
   object-fit: cover;
 `
 export const ActiveSign = styled.div`
-  ${css.size(24)};
-  background: ${theme('divider')};
+  ${css.size(20)};
+  background: white;
   position: absolute;
   top: -1px;
   right: -1px;
   border-top-right-radius: 4px;
-  border-bottom-left-radius: 30px;
+  border-bottom-left-radius: 10px;
   z-index: 3;
   border: 1px solid;
   border-color: ${theme('article.title')};
@@ -53,5 +52,5 @@ export const CheckIcon = styled(CheckedSVG)`
   ${css.size(16)};
   position: absolute;
   top: 2px;
-  left: 6px;
+  left: 2px;
 `

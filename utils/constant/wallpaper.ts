@@ -59,6 +59,11 @@ export const PATTERN_WALLPAPER = {
   cartoon: {
     bgImage: `${DIR}/cartoon.jpeg`,
   },
+
+  ms: {
+    bgImage: `${DIR}/ms.svg`,
+    bgSize: 'cover',
+  },
   // istanbul: {
   //   bgImage: `${DIR}/istanbul.jpeg`,
   // },
