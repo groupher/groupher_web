@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable, TActive, TSpace } from '@/spec'
-import SOCIAL_LIST from '@/constant/social'
+import { SOCIAL_LIST } from '@/constant/social'
 
 import css, { theme } from '@/utils/css'
 

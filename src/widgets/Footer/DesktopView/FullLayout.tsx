@@ -5,7 +5,7 @@ import type { TThemeMap, TMetric } from '@/spec'
 import { GITHUB, APP_VERSION } from '@/config'
 import { SpaceGrow } from '@/widgets/Common'
 
-import SOCIAL_LIST from '@/constant/social'
+import { DEME_SOCIALS } from '@/constant/social'
 import SocialList from '@/widgets/SocialList'
 
 import {
@@ -42,22 +42,7 @@ const HomeView: FC<TProps> = ({ metric }) => {
           <BrandDesc>让你的产品聆听用户的声音</BrandDesc>
           <SpaceGrow />
 
-          <SocialList
-            selected={[
-              {
-                type: SOCIAL_LIST.HOMEPAGE,
-                addr: 'https://groupher.com',
-              },
-              {
-                type: SOCIAL_LIST.TWITTER,
-                addr: 'https://twitter.com',
-              },
-              {
-                type: SOCIAL_LIST.BOSS,
-                addr: 'https://zhipin.com',
-              },
-            ]}
-          />
+          <SocialList size="medium" selected={DEME_SOCIALS} />
         </BrandWrapper>
 
         <Column>

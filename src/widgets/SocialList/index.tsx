@@ -1,18 +1,24 @@
 import { FC, memo } from 'react'
 
-import type { TSizeSM, TSocialItem, TSpace } from '@/spec'
+import type { TSizeTSM, TSocialItem, TSpace } from '@/spec'
+import SIZE from '@/constant/size'
 
 import { Wrapper, SocialWrapper, Icon } from './styles'
 
 type TProps = {
-  size?: TSizeSM
+  size?: TSizeTSM
   testid?: string
   selected?: TSocialItem[]
 } & TSpace
 
-const SocialList: FC<TProps> = ({ testid = 'social-list', selected = [], ...restProps }) => {
+const SocialList: FC<TProps> = ({
+  testid = 'social-list',
+  selected = [],
+  size = SIZE.SMALL,
+  ...restProps
+}) => {
   return (
-    <Wrapper testid={testid} {...restProps}>
+    <Wrapper testid={testid} size={size} {...restProps}>
       {selected.map((social) => {
         const SocialIcon = Icon[social.type]
         return (

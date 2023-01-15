@@ -5,6 +5,7 @@ import type { TActive } from '@/spec'
 import css, { animate, theme } from '@/utils/css'
 
 import ArrowSVG from '@/icons/Arrow'
+import ClothSVG from '@/icons/Cloth'
 
 export const Wrapper = styled.div`
   ${css.flexColumn('align-both')}
@@ -46,9 +47,9 @@ export const BallWrapper = styled.div<TActive>`
   ${css.size(30)};
   ${css.flex('align-both')};
   border-radius: 100%;
-  border: 2px solid;
+  border: 1px solid;
   border-color: ${({ $active }) => ($active ? theme('article.digest') : 'transparent')};
-  padding: 5px;
+  padding: 4px;
   box-shadow: ${({ $active }) =>
     $active
       ? 'rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px'
@@ -63,14 +64,6 @@ export const BallWrapper = styled.div<TActive>`
 
   transition: all 0.1s linear;
 `
-
-export const CustomBall = styled(BallWrapper)`
-  background: ${theme('divider')};
-  color: ${theme('article.digest')};
-  font-weight: 600;
-  font-size: 15px;
-`
-
 type TColorBall = { background: string } & TActive
 export const ColorBall = styled.div<TColorBall>`
   ${({ $active }) => ($active ? css.circle(22) : css.circle(30))};
@@ -83,4 +76,23 @@ export const ColorBall = styled.div<TColorBall>`
   }
 
   transition: all 0.1s linear;
+`
+export const CustomBall = styled(BallWrapper)`
+  background: ${theme('divider')};
+  color: ${theme('article.digest')};
+  font-weight: 600;
+  font-size: 15px;
+  box-shadow: ${css.cardShadow};
+  cursor: pointer;
+`
+export const ClothIcon = styled(ClothSVG)`
+  ${css.size(14)};
+  fill: ${theme('article.digest')};
+  opacity: 0.8;
+
+  ${CustomBall}:hover & {
+    opacity: 1;
+  }
+
+  transition: all 0.2s;
 `

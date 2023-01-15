@@ -2,6 +2,9 @@ import { FC } from 'react'
 
 import type { TActive } from '@/spec'
 import { FOOTER_LAYOUT } from '@/constant/layout'
+import { DEME_SOCIALS } from '@/constant/social'
+
+import SocialList from '@/widgets/SocialList'
 
 import {
   Wrapper,
@@ -11,7 +14,6 @@ import {
   CenterWrapper,
   LinkItem,
   RightWrapper,
-  SocialIcon,
 } from '../../styles/footer/templates/simple'
 import { edit } from '../../logic'
 
@@ -32,9 +34,7 @@ const Simple: FC<TProps> = ({ $active }) => {
         <LinkItem>关于</LinkItem>
       </CenterWrapper>
       <RightWrapper>
-        <SocialIcon.Email />
-        <SocialIcon.Twitter />
-        <SocialIcon.Github />
+        <SocialList top={0} size="tiny" selected={DEME_SOCIALS} />
       </RightWrapper>
     </Wrapper>
   )

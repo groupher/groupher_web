@@ -1,5 +1,5 @@
 import { FC, memo, useCallback } from 'react'
-import { keys } from 'ramda'
+import { keys, includes } from 'ramda'
 
 import type { TWallpaperGradient } from '@/spec'
 import { ROUTE } from '@/constant/route'
@@ -16,6 +16,7 @@ import {
   BallWrapper,
   ColorBall,
   CustomBall,
+  ClothIcon,
 } from './styles/wallpaper_bar'
 
 import { changeWallpaper } from './logic'
@@ -29,6 +30,7 @@ const WallpaperBar: FC<TProps> = ({ wallpaper, gradientWallpapers }) => {
   const gradientKeys = keys(gradientWallpapers)
 
   const handleCallEditor = useCallback(() => callWallpaperEditor(), [])
+  const isCustomWallpaper = wallpaper && !includes(wallpaper, gradientKeys)
 
   return (
     <Wrapper>
@@ -45,7 +47,9 @@ const WallpaperBar: FC<TProps> = ({ wallpaper, gradientWallpapers }) => {
             />
           </BallWrapper>
         ))}
-        <CustomBall onClick={() => handleCallEditor()}>T</CustomBall>
+        <CustomBall onClick={() => handleCallEditor()} $active={isCustomWallpaper}>
+          <ClothIcon />
+        </CustomBall>
       </MainWrapper>
       <Desc>
         壁纸仅在宽屏模式下显示，更多自定义设置

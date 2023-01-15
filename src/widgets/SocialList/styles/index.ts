@@ -1,8 +1,9 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 
-import type { TActive, TTestable, TSpace } from '@/spec'
-import SOCIAL_LIST from '@/constant/social'
+import type { TActive, TTestable, TSpace, TSizeTSM } from '@/spec'
+import { SOCIAL_LIST } from '@/constant/social'
+import SIZE from '@/constant/size'
 
 import css, { theme } from '@/utils/css'
 
@@ -17,13 +18,20 @@ import BiliBiliSVG from '@/icons/social/BiliBili'
 import BossSVG from '@/icons/social/Boss'
 import LagouSVG from '@/icons/social/Lagou'
 
-type TWrapper = TTestable & TSpace
+type TWrapper = TTestable & TSpace & { size: TSizeTSM }
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.flex('align-center')};
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 14px;
+
+  transform: ${({ size }) => {
+    if (size === SIZE.TINY) return 'scale(0.8)'
+    if (size === SIZE.SMALL) return 'scale(0.9)'
+
+    return 'none'
+  }};
 
   margin-top: ${({ top }) => `${top}px` || 0};
   margin-bottom: ${({ bottom }) => `${bottom}px` || 0};
@@ -42,7 +50,7 @@ export const SocialWrapper = styled(Link)`
   }
 `
 
-const getIcon = (SVG, size = 15) => {
+const getIcon = (SVG, size = 17) => {
   return styled(SVG)<TActive>`
     ${css.size(size)};
     fill: ${theme('article.digest')};

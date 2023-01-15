@@ -3,7 +3,7 @@ import { FC } from 'react'
 import type { TFooterLayout } from '@/spec'
 
 import { FOOTER_LAYOUT } from '@/constant/layout'
-import SOCIAL_LIST from '@/constant/social'
+import { DEME_SOCIALS } from '@/constant/social'
 import { buildLog } from '@/utils/logger'
 
 import SocialList from '@/widgets/SocialList'
@@ -45,30 +45,11 @@ const BrandInfo: FC<TProps> = ({
           Groupher
           {editable && <EditIcon.Title onClick={() => onEdit(FOOTER_EDIT_TYPE.TITLE)} />}
         </Title>
-        {footerLayout === FOOTER_LAYOUT.FULL && (
-          <Desc>一站式反馈社区解决方案，您产品的公共论坛，看板，更新日</Desc>
-        )}
+        {footerLayout === FOOTER_LAYOUT.FULL && <Desc>让你的产品聆听用户的声音</Desc>}
       </BaseInfo>
 
       <SocialWrapper>
-        {footerLayout === FOOTER_LAYOUT.FULL && (
-          <SocialList
-            selected={[
-              {
-                type: SOCIAL_LIST.HOMEPAGE,
-                addr: 'https://groupher.com',
-              },
-              {
-                type: SOCIAL_LIST.TWITTER,
-                addr: 'https://twitter.com',
-              },
-              {
-                type: SOCIAL_LIST.BOSS,
-                addr: 'https://zhipin.com',
-              },
-            ]}
-          />
-        )}
+        {footerLayout === FOOTER_LAYOUT.FULL && <SocialList selected={DEME_SOCIALS} />}
         <EditIcon.Social onClick={() => onEdit(FOOTER_EDIT_TYPE.SOCIAL)} />
       </SocialWrapper>
     </Wrapper>

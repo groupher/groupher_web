@@ -16,9 +16,9 @@ export const PATTERN_WALLPAPER = {
   limones: {
     bgImage: `${DIR}/limones.jpeg`,
   },
-  mataura: {
-    bgImage: `${DIR}/mataura.png`,
-    bgSize: 'cover',
+  country1: {
+    bgImage: `${DIR}/country-1.webp`,
+    // bgSize: 'cover',
   },
   // curves: {
   //   bgImage: `${DIR}/curves.png`,
@@ -40,8 +40,15 @@ export const PATTERN_WALLPAPER = {
   earth: {
     bgImage: `${DIR}/earth.jpg`,
   },
-  code: {
-    bgImage: `${DIR}/code.jpg`,
+  // code: {
+  //   bgImage: `${DIR}/code.jpg`,
+  // },
+  plane: {
+    bgImage: `${DIR}/plane.webp`,
+    // bgSize: 'cover',
+  },
+  idian: {
+    bgImage: `${DIR}/idian.webp`,
   },
   // elec: {
   //   bgImage: `${DIR}/elec.jpg`,

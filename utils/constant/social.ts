@@ -1,7 +1,7 @@
 import type { TSocialType } from '@/spec'
 
 // dribbble
-const SOCIAL_LIST = {
+export const SOCIAL_LIST = {
   HOMEPAGE: 'HOMEPAGE',
   EMAIL: 'EMAIL',
   GITHUB: 'GITHUB',
@@ -14,4 +14,17 @@ const SOCIAL_LIST = {
   LAGOU: 'LAGOU',
 } as Record<Uppercase<TSocialType>, TSocialType>
 
-export default SOCIAL_LIST
+export const DEME_SOCIALS = [
+  {
+    type: SOCIAL_LIST.GITHUB,
+    addr: 'https://github.com',
+  },
+  {
+    type: SOCIAL_LIST.WECHAT,
+    addr: 'https://twitter.com',
+  },
+  {
+    type: SOCIAL_LIST.ZHIHU,
+    addr: 'https://zhipin.com',
+  },
+]

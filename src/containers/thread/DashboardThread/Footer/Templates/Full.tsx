@@ -2,6 +2,9 @@ import { FC } from 'react'
 
 import type { TActive } from '@/spec'
 import { FOOTER_LAYOUT } from '@/constant/layout'
+import { DEME_SOCIALS } from '@/constant/social'
+
+import SocialList from '@/widgets/SocialList'
 
 import {
   Wrapper,
@@ -12,8 +15,6 @@ import {
   Desc,
   CenterWrapper,
   LinkItem,
-  SocialWrapper,
-  SocialIcon,
 } from '../../styles/footer/templates/full'
 import { edit } from '../../logic'
 
@@ -27,12 +28,8 @@ const Full: FC<TProps> = ({ $active }) => {
           <BrandLogo />
           <BrandText>Groupher</BrandText>
         </BrandWrapper>
-        <Desc>一站式反馈社区解决方案，您产品的公共论坛，看板，更新日志，帮助中心...</Desc>
-        <SocialWrapper>
-          <SocialIcon.Email />
-          <SocialIcon.Twitter />
-          <SocialIcon.Github />
-        </SocialWrapper>
+        <Desc>让你的产品聆听用户的声音</Desc>
+        <SocialList top={20} left={-15} size="tiny" selected={DEME_SOCIALS} />
       </LeftWrapper>
       <CenterWrapper>
         <LinkItem>讨论</LinkItem>

@@ -4,8 +4,6 @@ import css, { theme } from '@/utils/css'
 
 import { TemplateBlock } from '.'
 
-export { SocialIcon } from '.'
-
 export const Wrapper = styled(TemplateBlock)`
   padding: 12px 20px;
   ${css.flex('align-start', 'justify-between')};
@@ -46,10 +44,4 @@ export const LinkItem = styled.div`
     color: ${theme('article.title')};
     cursor: pointer;
   }
-`
-
-export const SocialWrapper = styled.div`
-  ${css.flex('align-center')};
-  margin-top: 15px;
-  gap: 0 6px;
 `

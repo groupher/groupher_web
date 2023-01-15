@@ -4,8 +4,6 @@ import css, { theme } from '@/utils/css'
 
 import { TemplateBlock } from '.'
 
-export { SocialIcon } from '.'
-
 export const Wrapper = styled(TemplateBlock)`
   ${css.flex('align-center', 'justify-between')};
   height: 60px;

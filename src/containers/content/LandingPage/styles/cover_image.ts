@@ -64,7 +64,7 @@ export const Background = styled.div<{ effect: string }>`
   ${css.flex('align-both')}
   width: 100%;
   height: 700px;
-  background tomato;
+  background transparent;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   position: absolute;
