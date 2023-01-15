@@ -28,8 +28,7 @@ export const DrawerOverlay = styled.div<TActive>`
   background: ${({ visible }) => (visible ? theme('drawer.mask') : 'none')};
   opacity: ${({ visible }) => (visible ? 0.5 : 0)};
 
-  transition: visibility 0.1s ease-in, opacity 0.1s ease-in,
-    background 0.1s ease-in;
+  transition: visibility 0.1s ease-in, opacity 0.1s ease-in, background 0.1s ease-in;
 `
 // see https://stackoverflow.com/questions/60079950/when-do-i-use-attrs-vs-passing-props-directly-with-styled-components
 
@@ -48,21 +47,14 @@ export const DrawerWrapper = styled.div.attrs(
   }: TDrawer) => ({
     'data-test-id': testid,
     style: {
-      transform: getTransform(
-        visible,
-        mobile,
-        swipeUpY,
-        swipeDownY,
-        fromContentEdge,
-        options,
-      ),
+      transform: getTransform(visible, mobile, swipeUpY, swipeDownY, fromContentEdge, options),
     },
   }),
 )<TDrawer>`
   ${css.flex()};
   position: fixed;
   right: ${({ rightOffset, type }) =>
-    isWideMode(type) ? rightOffset : pixelAdd(rightOffset, -25)};
+    isWideMode(type) ? rightOffset : pixelAdd(rightOffset, -60)};
   top: ${({ type }) => (isWideMode(type) ? 0 : '25px')};
 
   color: ${theme('drawer.font')};
@@ -75,8 +67,7 @@ export const DrawerWrapper = styled.div.attrs(
   z-index: ${({ visible }) => (visible ? zIndex.drawer : -1)};
 
   visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
-  opacity: ${({ visible, fromContentEdge }) =>
-    !visible && !fromContentEdge ? 0 : 1};
+  opacity: ${({ visible, fromContentEdge }) => (!visible && !fromContentEdge ? 0 : 1)};
 
   max-width: 985px;
 
@@ -113,21 +104,17 @@ export const DrawerMobileContent = styled.div<TDrawerMobile>`
   width: 100%;
   height: ${({ options }) => getMobileContentHeight(options)};
   box-shadow: ${theme('drawer.shadow')};
-  background: ${({ options, bgColor }) =>
-    getContentLinearGradient(options, bgColor)};
+  background: ${({ options, bgColor }) => getContentLinearGradient(options, bgColor)};
 `
 
-export const MobileInnerContent = styled.div.attrs(
-  ({ swipeUpY, swipeDownY, options }: TSwipe) => ({
-    style: {
-      filter: getDim(swipeUpY, swipeDownY, options),
-    },
-  }),
-)<TSwipe>`
+export const MobileInnerContent = styled.div.attrs(({ swipeUpY, swipeDownY, options }: TSwipe) => ({
+  style: {
+    filter: getDim(swipeUpY, swipeDownY, options),
+  },
+}))<TSwipe>`
   width: 100%;
   max-height: calc(100% - 30px);
-  margin-top: ${({ options }) =>
-    options.direction === 'bottom' ? '15px' : '0'};
+  margin-top: ${({ options }) => (options.direction === 'bottom' ? '15px' : '0')};
   overflow-y: scroll;
   transition: filter 0.3s;
 `

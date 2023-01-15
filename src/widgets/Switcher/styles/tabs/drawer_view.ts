@@ -22,7 +22,7 @@ export const TabItem = styled.div<TActive>`
   height: 28px;
 
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
-  background: ${({ $active }) => ($active ? theme('hoverBg') : 'transparent')};
+  background: ${({ $active }) => ($active ? 'white' : 'transparent')};
   font-weight: ${({ $active }) => ($active ? 600 : 'normal')};
   font-size: 12px;
   flex-grow: 1;
