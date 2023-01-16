@@ -4,7 +4,7 @@ import { FOOTER_LAYOUT } from '@/constant/layout'
 import Button from '@/widgets/Buttons/Button'
 
 import BrandInfo from '../BrandInfo'
-import ItemEditor from '../ItemEditor'
+import LinkEditor from '../LinkEditor'
 
 import MainEditor from './MainEditor'
 
@@ -57,26 +57,26 @@ const Full: FC = () => {
         <LinkGroup>
           <ColumnWrapper>
             <Title>链接</Title>
-            <ItemEditor />
-            <ItemEditor />
-            <ItemEditor />
-            <ItemEditor />
-            <ItemEditor />
+            <LinkEditor />
+            <LinkEditor />
+            <LinkEditor notifyText="new" />
+            <LinkEditor />
+            <LinkEditor />
           </ColumnWrapper>
           <ColumnWrapper>
             <Title>链接</Title>
-            <ItemEditor />
-            <ItemEditor />
-            <ItemEditor editing />
-            <ItemEditor />
-            <ItemEditor />
+            <LinkEditor />
+            <LinkEditor />
+            <LinkEditor editing />
+            <LinkEditor />
+            <LinkEditor />
           </ColumnWrapper>
           <ColumnWrapper alignRight>
             <Title>社交媒体</Title>
-            <ItemEditor alignRight />
-            <ItemEditor alignRight editing />
-            <ItemEditor alignRight />
-            <ItemEditor alignRight />
+            <LinkEditor alignRight />
+            <LinkEditor alignRight editing />
+            <LinkEditor alignRight />
+            <LinkEditor alignRight />
           </ColumnWrapper>
         </LinkGroup>
       </BottomWrapper>

@@ -8,6 +8,7 @@ export const Wrapper = styled(TemplateBlock)`
   padding: 12px 20px;
   ${css.flex('align-start', 'justify-between')};
   height: 150px !important;
+  background: ${theme('alphaBg')};
 `
 export const LeftWrapper = styled.div`
   ${css.flexColumn()};

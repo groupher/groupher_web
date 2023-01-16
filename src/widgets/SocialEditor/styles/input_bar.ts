@@ -27,7 +27,7 @@ export const DeleteWrapper = styled.div`
   position: absolute;
   top: 8px;
   right: -8px;
-  background: white;
+  background: #ffffff42;
   z-index: 2;
 `
 export const DeleteIcon = styled(DeleteSVG)`

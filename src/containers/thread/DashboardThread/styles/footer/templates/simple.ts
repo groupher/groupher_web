@@ -8,6 +8,7 @@ export const Wrapper = styled(TemplateBlock)`
   ${css.flex('align-center', 'justify-between')};
   height: 60px;
   padding: 0 20px;
+  background: ${theme('alphaBg')};
 `
 export const LeftWrapper = styled.div`
   ${css.flex('align-center')};

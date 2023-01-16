@@ -43,11 +43,7 @@ type TProps = {
   metric?: TMetric
 }
 
-const ArticleContentContainer: FC<TProps> = ({
-  articleContent: store,
-  metric,
-  testid,
-}) => {
+const ArticleContentContainer: FC<TProps> = ({ articleContent: store, metric, testid }) => {
   useInit(store)
   const { isMobile } = useMobileDetect()
 
@@ -65,9 +61,7 @@ const ArticleContentContainer: FC<TProps> = ({
         />
         <MainWrapper metric={metric}>
           <ArticleWrapper ref={ref}>
-            {!!article.linkAddr && (
-              <Linker src={article.linkAddr} bottom={22} hint="原文:" />
-            )}
+            {!!article.linkAddr && <Linker src={article.linkAddr} bottom={22} />}
             <ArtimentBody document={article.document} />
             <ArticleFooter />
           </ArticleWrapper>

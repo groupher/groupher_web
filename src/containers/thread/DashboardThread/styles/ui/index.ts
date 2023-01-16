@@ -24,6 +24,8 @@ export const BlockBase = styled.div<TActive>`
   opacity: ${({ $active }) => ($active ? 0.7 : 0.2)};
   box-shadow: ${({ $active }) => ($active ? 'rgb(0 0 0 / 7%) 0px 0px 24px' : '')};
 
+  background-color: ${({ $active }) => ($active ? theme('alphaBg') : 'transparent')};
+
   border: 1px solid;
   border-radius: 7px;
   border-color: ${theme('article.title')};

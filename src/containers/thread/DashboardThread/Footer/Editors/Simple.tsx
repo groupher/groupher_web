@@ -3,7 +3,7 @@ import { FC } from 'react'
 import SocialEditor from '@/widgets/SocialEditor'
 
 import BrandInfo from './BrandInfo'
-import ItemEditor from './ItemEditor'
+import LinkEditor from './LinkEditor'
 
 import {
   Wrapper,
@@ -21,11 +21,11 @@ const Simple: FC = () => {
       </LeftWrapper>
       <CenterWrapper>
         <Title>链接</Title>
-        <ItemEditor />
-        <ItemEditor />
-        <ItemEditor editing />
-        <ItemEditor />
-        <ItemEditor />
+        <LinkEditor />
+        <LinkEditor />
+        <LinkEditor editing />
+        <LinkEditor />
+        <LinkEditor />
       </CenterWrapper>
       <RightWrapper>
         <Title>社交媒体</Title>

@@ -40,10 +40,10 @@ const github = {
     desc: darken(primaryColor, 10),
     bg: lighten(contentBoxBg, 2),
   },
-
   font: fontColor,
   link,
   divider: border,
+  alphaBg: '#ffffff95',
   hoverBg,
   menuActive: '#e9e9e991',
   linkHover: lighten(link, 5),
@@ -260,7 +260,7 @@ const github = {
     hoverBg: '#eee',
   },
   popover: {
-    bg: '#ffffffe6',
+    bg: '#ffffffa6',
     borderColor: '#e9e9ea',
     boxShadow: '0 1px 4px rgba(0, 0, 0, 0.15)',
   },
