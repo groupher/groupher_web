@@ -3,7 +3,15 @@
  *
  */
 
-import type { TRootStore, TAccount, TC11N, TCommunity, TWallpaper, TGlobalLayout } from '@/spec'
+import type {
+  TRootStore,
+  TAccount,
+  TC11N,
+  TCommunity,
+  TWallpaper,
+  TGlobalLayout,
+  TGlowEffect,
+} from '@/spec'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
 const Platform = T.model('Platform', {
@@ -48,15 +56,18 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
       const root = getParent(self) as TRootStore
       return root.wallpaperEditor.wallpapers
     },
-    get glowType(): string {
-      const root = getParent(self) as TRootStore
 
-      return root.wallpaperEditor.wallpaper && root.dashboardThread.uiSettings.glowType
-    },
-    get glowFixed(): boolean {
+    get glowEffect(): TGlowEffect {
       const root = getParent(self) as TRootStore
+      const { wallpaper } = root.wallpaperEditor
+      const { uiSettings } = root.dashboardThread
+      const { glowType, glowFixed, glowOpacity } = uiSettings
 
-      return root.dashboardThread.uiSettings.glowFixed
+      return {
+        glowType: wallpaper && glowType,
+        glowFixed,
+        glowOpacity,
+      }
     },
     get hasShadow(): boolean {
       const root = getParent(self) as TRootStore

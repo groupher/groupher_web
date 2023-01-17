@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 import { keys } from 'ramda'
 
-import GLOW_EFFECTS from '@/constant/glow_effect'
+import GLOW_EFFECTS, { GLOW_OPACITY } from '@/constant/glow_effect'
 
 import { Inline, Br } from '@/widgets/Common'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
@@ -16,21 +16,34 @@ import {
   Wrapper,
   Row,
   Box,
+  NoBox,
+  ForbidIcon,
+  CloseIcon,
   GrowBackground,
   SettingsRow,
   SettingTitle,
 } from '../styles/ui/glow_effect'
-import { updateGlowType, updateGlowFixed } from '../logic'
+import { edit } from '../logic'
 
 type TProps = {
   glowType: string
   glowFixed: boolean
+  glowOpacity: string
   isTouched: boolean
   isGrowFixedTouched: boolean
+  isGrowOpacityTouched: boolean
   saving: boolean
 }
 
-const GlowEffect: FC<TProps> = ({ glowType, glowFixed, isTouched, isGrowFixedTouched, saving }) => {
+const GlowEffect: FC<TProps> = ({
+  glowType,
+  glowFixed,
+  glowOpacity,
+  isTouched,
+  isGrowFixedTouched,
+  isGrowOpacityTouched,
+  saving,
+}) => {
   const EFFECTS_KEYS = keys(GLOW_EFFECTS)
 
   return (
@@ -39,10 +52,10 @@ const GlowEffect: FC<TProps> = ({ glowType, glowFixed, isTouched, isGrowFixedTou
         title="页面辉光"
         desc={
           <>
-            设置后每个页面的展示光晕（阅览页面除外）
+            设置后每个页面的展示光晕（阅览页面除外），可配合壁纸风格搭配。
             <Inline left={4}>
               <ArrowButton size="tiny" arrowStyle="simple">
-                影响范围
+                了解更多
               </ArrowButton>
             </Inline>
           </>
@@ -50,12 +63,13 @@ const GlowEffect: FC<TProps> = ({ glowType, glowFixed, isTouched, isGrowFixedTou
       />
 
       <Row>
+        <NoBox $active={glowType === ''} onClick={() => edit('', 'glowType')}>
+          <ForbidIcon />
+          <CloseIcon />
+        </NoBox>
+
         {EFFECTS_KEYS.map((effect) => (
-          <Box
-            key={effect}
-            $active={effect === glowType}
-            onClick={() => updateGlowType(effect === glowType ? '' : effect)}
-          >
+          <Box key={effect} $active={effect === glowType} onClick={() => edit(effect, 'glowType')}>
             <GrowBackground glowPosition="absolute" glowType={effect} />
           </Box>
         ))}
@@ -63,7 +77,7 @@ const GlowEffect: FC<TProps> = ({ glowType, glowFixed, isTouched, isGrowFixedTou
 
       <SavingBar isTouched={isTouched} field={SETTING_FIELD.GLOW_TYPE} loading={saving} top={30} />
 
-      <Br bottom={30} />
+      <Br bottom={40} />
 
       <SavingBar isTouched={isGrowFixedTouched} field={SETTING_FIELD.GLOW_FIXED} loading={saving}>
         <SettingsRow>
@@ -81,10 +95,39 @@ const GlowEffect: FC<TProps> = ({ glowType, glowFixed, isTouched, isGrowFixedTou
               },
             ]}
             activeKey={glowFixed}
-            onChange={(item) => updateGlowFixed(item.key as boolean)}
+            onChange={(item) => edit(item.key, 'glowFixed')}
           />
         </SettingsRow>
       </SavingBar>
+
+      <Br bottom={40} />
+
+      {glowType !== '' && (
+        <SavingBar
+          isTouched={isGrowOpacityTouched}
+          field={SETTING_FIELD.GLOW_OPACITY}
+          loading={saving}
+        >
+          <SettingsRow>
+            <SettingTitle>辉光强度:</SettingTitle>
+            <Radio
+              size="small"
+              items={[
+                {
+                  value: '正常',
+                  key: GLOW_OPACITY.NORMAL,
+                },
+                {
+                  value: '弱',
+                  key: GLOW_OPACITY.WEEK,
+                },
+              ]}
+              activeKey={glowOpacity}
+              onChange={(item) => edit(item.key, 'glowOpacity')}
+            />
+          </SettingsRow>
+        </SavingBar>
+      )}
     </Wrapper>
   )
 }

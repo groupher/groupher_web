@@ -38,6 +38,8 @@ export const GrowBackground = styled.div<TGlowEffect>`
   inset: 0;
   position: ${({ glowPosition }) => glowPosition};
   height: ${({ glowPosition }) => (glowPosition === 'absolute' ? '600px' : 'auto')};
+  opacity: ${({ glowOpacity }) => `${parseFloat(glowOpacity)}` || 1};
+
   z-index: -1;
 `
 

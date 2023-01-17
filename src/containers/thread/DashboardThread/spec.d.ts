@@ -66,6 +66,7 @@ export type TUiSettings = {
   bannerLayout: TBannerLayout
   glowType: string
   glowFixed: boolean
+  glowOpacity: string
   helpLayout: THelpLayout
   bannerNotifyLayout: TBannerNotifyLayout
   bannerNotifyBg: TColorName
@@ -90,6 +91,7 @@ export type TTouched = {
   footerLayout: boolean
   glowType: boolean
   glowFixed: boolean
+  glowOpacity: boolean
   helpLayout: boolean
   topbarLayout: boolean
   topbarBg: boolean
@@ -119,6 +121,7 @@ export type TSettingField =
   | 'footerLayout'
   | 'glowType'
   | 'glowFixed'
+  | 'glowOpacity'
   | 'helpLayout'
   | 'topbarLayout'
   | 'topbarBg'
@@ -131,8 +134,6 @@ export type TSettingField =
   | 'widgetsThreads'
   | 'widgetsSize'
   | 'widgetsType'
-  | 'glowType'
-  | 'glowFixed'
 
 export type TWidgetType = 'sidebar' | 'modal' | 'popup' | 'iframe' | 'link'
 

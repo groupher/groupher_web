@@ -25,8 +25,8 @@ export const Item = styled(Link)<TActive>`
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
   width: 116px;
   padding: 2px 5px;
-  padding-left: 30px;
-  margin-left: -2px;
+  padding-left: 22px;
+  margin-left: 5px;
   border-radius: 8px;
   font-size: 14px;
 
@@ -43,10 +43,10 @@ export const Item = styled(Link)<TActive>`
     content: '';
     display: ${({ $active }) => ($active ? 'block' : 'none')};
     position: absolute;
-    top: 5px;
-    left: 0px;
+    top: 7px;
+    left: -1px;
     width: 3px;
-    height: 15px;
+    height: 13px;
     border-radius: 5px;
     background: ${theme('article.digest')};
   }
@@ -55,9 +55,9 @@ export const Item = styled(Link)<TActive>`
 `
 export const TouchedDot = styled.div`
   ${css.circle(5)};
-  background-color: ${theme('article.info')};
-  opacity: 0.8;
+  background-color: ${theme('article.digest')};
+  opacity: 0.5;
   position: absolute;
-  top: 11px;
-  left: 8px;
+  top: 10px;
+  right: 12px;
 `

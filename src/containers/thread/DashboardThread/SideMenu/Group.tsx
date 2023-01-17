@@ -20,8 +20,8 @@ const Group: FC<TProps> = ({ group, curTab, touched }) => {
       </Folder>
       {group.children.map((item) => (
         <Item $active={item.raw === curTab} key={item.raw} href={`/home/dashboard/${item.raw}`}>
-          {touched[item.raw] && <TouchedDot />}
           {item.title}
+          {touched[item.raw] && <TouchedDot />}
         </Item>
       ))}
     </Fragment>
