@@ -57,7 +57,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
 
   const [load, setLoad] = useState(false)
 
-  const { wallpaper, wallpapers, hasShadow, glowType, glowFixed, globalLayout } = store
+  const { wallpaper, wallpapers, hasShadow, glowEffect, globalLayout } = store
 
   useEffect(() => {
     setLoad(true)
@@ -97,10 +97,11 @@ const GlobalLayoutContainer: FC<TProps> = ({
                 </BodyWrapper>
                 <Footer metric={metric} />
               </ContentWrapper>
-              {!!glowType && (
+              {!!glowEffect.glowType && (
                 <GrowBackground
-                  glowType={glowType}
-                  glowPosition={getGlowPosition(metric, glowFixed)}
+                  glowType={glowEffect.glowType}
+                  glowPosition={getGlowPosition(metric, glowEffect.glowFixed)}
+                  glowOpacity={glowEffect.glowOpacity}
                 />
               )}
             </InnerWrapper>

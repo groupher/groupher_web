@@ -165,7 +165,9 @@ export type TContainer = 'body' | 'drawer'
 export type TGlowPosition = 'fixed' | 'absolute'
 export type TGlowEffect = {
   glowType: string
-  glowPosition: TGlowPosition
+  glowPosition?: TGlowPosition
+  glowFixed?: boolean
+  glowOpacity?: string
 }
 
 interface IWindow extends Window {

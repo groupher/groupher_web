@@ -16,7 +16,8 @@ type TProps = {
 }
 
 const UI: FC<TProps> = ({ settings, touched }) => {
-  const { primaryColor, wallpaper, saving, hasWallpaperShadow, glowType, glowFixed } = settings
+  const { primaryColor, wallpaper, saving, hasWallpaperShadow, glowType, glowFixed, glowOpacity } =
+    settings
 
   return (
     <Wrapper>
@@ -28,8 +29,10 @@ const UI: FC<TProps> = ({ settings, touched }) => {
       <GlowEffect
         glowType={glowType}
         glowFixed={glowFixed}
+        glowOpacity={glowOpacity}
         isTouched={touched.glowType}
         isGrowFixedTouched={touched.glowFixed}
+        isGrowOpacityTouched={touched.glowOpacity}
         saving={saving}
       />
     </Wrapper>

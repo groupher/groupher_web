@@ -25,6 +25,7 @@ export const SETTING_FIELD = {
   WIDGETS_THREADS: 'widgetsThreads',
   GLOW_TYPE: 'glowType',
   GLOW_FIXED: 'glowFixed',
+  GLOW_OPACITY: 'glowOpacity',
 } as Record<TSnakeUpperCase<TSettingField>, TSettingField>
 
 export const MENU = {

@@ -22,7 +22,7 @@ import { COLORS, COLOR_NAME } from '@/constant/colors'
 import { THREAD } from '@/constant/thread'
 import SIZE from '@/constant/size'
 import { ROUTE } from '@/constant/route'
-import GLOW_EFFECTS from '@/constant/glow_effect'
+import GLOW_EFFECTS, { GLOW_OPACITY } from '@/constant/glow_effect'
 
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
@@ -68,16 +68,16 @@ const GroupCategory = T.model('GroupGategory', {
 })
 
 const settingsModalFields = {
-  primaryColor: T.opt(T.enum(keys(COLORS)), 'BLACK'),
+  primaryColor: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
   postLayout: T.opt(T.enum(values(POST_LAYOUT)), POST_LAYOUT.UPVOTE_FIRST),
   kanbanLayout: T.opt(T.enum(values(KANBAN_LAYOUT)), KANBAN_LAYOUT.SIMPLE),
   helpLayout: T.opt(T.enum(values(HELP_LAYOUT)), HELP_LAYOUT.FAQ_COLLAPSE),
   brandLayout: T.opt(T.enum(values(BRAND_LAYOUT)), BRAND_LAYOUT.BOTH),
   bannerLayout: T.opt(T.enum(values(BANNER_LAYOUT)), BANNER_LAYOUT.HEADER),
   topbarLayout: T.opt(T.enum(values(TOPBAR_LAYOUT)), TOPBAR_LAYOUT.YES),
-  topbarBg: T.opt(T.enum(keys(COLORS)), 'BLACK'),
+  topbarBg: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
   bannerNotifyLayout: T.opt(T.enum(values(BANNER_NOTIFY_LAYOUT)), BANNER_NOTIFY_LAYOUT.DEFAULT),
-  bannerNotifyBg: T.opt(T.enum(keys(COLORS)), 'BLACK'),
+  bannerNotifyBg: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
   changelogLayout: T.opt(T.enum(values(CHANGELOG_LAYOUT)), CHANGELOG_LAYOUT.PREVIEW),
 
   // help
@@ -86,6 +86,7 @@ const settingsModalFields = {
   // glow effect
   glowType: T.opt(T.string, keys(GLOW_EFFECTS)[0]),
   glowFixed: T.opt(T.bool, true),
+  glowOpacity: T.opt(T.enum(values(GLOW_OPACITY)), GLOW_OPACITY.NORMAL),
 
   // tags
   tags: T.opt(T.array(Tag), mockTags(12)),
@@ -97,7 +98,7 @@ const settingsModalFields = {
   footerLayout: T.opt(T.enum(values(FOOTER_LAYOUT)), FOOTER_LAYOUT.FULL),
 
   // widgets
-  widgetsPrimaryColor: T.opt(T.enum(keys(COLORS)), 'BLACK'),
+  widgetsPrimaryColor: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
   widgetsThreads: T.opt(T.array(T.string), [THREAD.POST, THREAD.KANBAN, THREAD.CHANGELOG]),
   widgetsSize: T.opt(T.enum([SIZE.SMALL, SIZE.MEDIUM, SIZE.LARGE]), SIZE.MEDIUM),
   widgetsType: T.opt(T.enum(values(WIDGET_TYPE)), WIDGET_TYPE.SIDEBAR),
@@ -179,6 +180,7 @@ const DashboardThread = T.model('DashboardThread', {
 
       const glowFixedTouched = _isChanged('glowFixed')
       const glowTypeTouched = _isChanged('glowType')
+      const glowOpacityTouched = _isChanged('glowOpacity')
 
       const aliasTouched = !isNil(slf.editingAlias)
       const tagsTouched = !isNil(slf.editingTag)
@@ -209,6 +211,7 @@ const DashboardThread = T.model('DashboardThread', {
 
         glowFixed: glowFixedTouched,
         glowType: glowTypeTouched,
+        glowOpacity: glowOpacityTouched,
 
         widgetsPrimaryColor: widgetsPrimaryColorTouched,
         widgetsThreads: widgetsThreadsTouched,
@@ -227,7 +230,8 @@ const DashboardThread = T.model('DashboardThread', {
           kanbanLayoutTouched ||
           changelogLayoutTouched ||
           glowFixedTouched ||
-          glowTypeTouched,
+          glowTypeTouched ||
+          glowOpacityTouched,
 
         widgets: widgetsPrimaryColorTouched || widgetsThreadsTouched || widgetsSizeTouched,
       }
@@ -315,6 +319,7 @@ const DashboardThread = T.model('DashboardThread', {
             'changelogLayout',
             'glowFixed',
             'glowType',
+            'glowOpacity',
           ],
           slf,
         ),

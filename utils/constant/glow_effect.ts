@@ -1,3 +1,8 @@
+export const GLOW_OPACITY = {
+  NORMAL: '1',
+  WEEK: '0.68',
+}
+
 const GLOW_EFFECTS = {
   ORANGE_PURPLE: {
     LEFT: {
