@@ -16,6 +16,9 @@ import {
   Wrapper,
   Row,
   Box,
+  NoBox,
+  ForbidIcon,
+  CloseIcon,
   GrowBackground,
   SettingsRow,
   SettingTitle,
@@ -39,10 +42,10 @@ const GlowEffect: FC<TProps> = ({ glowType, glowFixed, isTouched, isGrowFixedTou
         title="页面辉光"
         desc={
           <>
-            设置后每个页面的展示光晕（阅览页面除外）
+            设置后每个页面的展示光晕（阅览页面除外），可配合壁纸风格搭配。
             <Inline left={4}>
               <ArrowButton size="tiny" arrowStyle="simple">
-                影响范围
+                了解更多
               </ArrowButton>
             </Inline>
           </>
@@ -50,12 +53,13 @@ const GlowEffect: FC<TProps> = ({ glowType, glowFixed, isTouched, isGrowFixedTou
       />
 
       <Row>
+        <NoBox $active={glowType === ''} onClick={() => updateGlowType('')}>
+          <ForbidIcon />
+          <CloseIcon />
+        </NoBox>
+
         {EFFECTS_KEYS.map((effect) => (
-          <Box
-            key={effect}
-            $active={effect === glowType}
-            onClick={() => updateGlowType(effect === glowType ? '' : effect)}
-          >
+          <Box key={effect} $active={effect === glowType} onClick={() => updateGlowType(effect)}>
             <GrowBackground glowPosition="absolute" glowType={effect} />
           </Box>
         ))}

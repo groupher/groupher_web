@@ -5,6 +5,9 @@ import GLOW_EFFECTS from '@/constant/glow_effect'
 
 import css, { theme } from '@/utils/css'
 
+import DLightSVG from '@/icons/DLight'
+import ClossSVG from '@/icons/CloseLight'
+
 import { BaseSection } from '.'
 
 export const Wrapper = styled(BaseSection)``
@@ -12,17 +15,19 @@ export const Wrapper = styled(BaseSection)``
 export const Row = styled.div`
   ${css.flex('align-center')};
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 26px 20px;
 `
 export const Box = styled.div<TActive>`
   position: relative;
   width: 310px;
-  height: 200px;
+  height: 180px;
   border-radius: 6px;
   border: 1px solid;
+  z-index: 1;
 
   border-color: ${({ $active }) => ($active ? theme('article.digest') : theme('divider'))};
   box-shadow: ${({ $active }) => ($active ? css.cardShadow : 'none')};
+  background: ${theme('alphaBg')};
 
   &:hover {
     box-shadow: ${css.cardShadow};
@@ -31,6 +36,21 @@ export const Box = styled.div<TActive>`
 
   transition: all 0.2s;
 `
+export const NoBox = styled(Box)`
+  ${css.flexColumn('align-both')};
+`
+export const ForbidIcon = styled(DLightSVG)`
+  ${css.size(40)};
+  fill: ${theme('article.digest')};
+  opacity: 0.6;
+`
+export const CloseIcon = styled(ClossSVG)`
+  ${css.size(20)};
+  fill: ${theme('article.digest')};
+  transform: scaley(0.9);
+  opacity: 0.3;
+`
+
 export const SettingTitle = styled.div`
   color: ${theme('article.digest')};
   font-size: 13px;

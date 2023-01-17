@@ -55,9 +55,9 @@ export const Item = styled(Link)<TActive>`
 `
 export const TouchedDot = styled.div`
   ${css.circle(5)};
-  background-color: ${theme('article.info')};
-  opacity: 0.8;
+  background-color: ${theme('article.digest')};
+  opacity: 0.5;
   position: absolute;
-  top: 11px;
-  left: 8px;
+  top: 10px;
+  right: 12px;
 `

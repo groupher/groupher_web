@@ -23,6 +23,8 @@ const UI: FC<TProps> = ({ settings, touched }) => {
       <Portal title="外观布局" desc="社区基本外观，主题色，以及常见布局自定义。" />
       <PrimaryColor primaryColor={primaryColor} isTouched={touched.glowFixed} saving={saving} />
       <Divider top={20} bottom={60} />
+      <Wallpaper wallpaper={wallpaper} hasShadow={hasWallpaperShadow} />
+      <Divider top={20} bottom={60} />
       <GlowEffect
         glowType={glowType}
         glowFixed={glowFixed}
@@ -30,8 +32,6 @@ const UI: FC<TProps> = ({ settings, touched }) => {
         isGrowFixedTouched={touched.glowFixed}
         saving={saving}
       />
-      <Divider top={20} bottom={60} />
-      <Wallpaper wallpaper={wallpaper} hasShadow={hasWallpaperShadow} />
     </Wrapper>
   )
 }
