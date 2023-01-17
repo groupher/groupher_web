@@ -39,8 +39,6 @@ type TProps = {
   globalLayout?: TStore
   children: ReactNode
   seoConfig: TSEO
-  noFooter?: boolean
-
   metric: TMetric
 }
 
@@ -48,7 +46,6 @@ const GlobalLayoutContainer: FC<TProps> = ({
   globalLayout: store,
   seoConfig,
   children,
-  noFooter = false,
   metric,
 }) => {
   // load debug graph
