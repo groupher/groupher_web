@@ -18,6 +18,7 @@ import {
   HoverMask,
   UploadIcon,
   RealPreview,
+  PreviewerWrapper,
   PreviewImage,
   ContentBlock,
   ContentBar,
@@ -57,10 +58,10 @@ const Wallpaper: FC<TProps> = ({ wallpaperInfo }) => {
             <PreviewImage style={{ background }} effect={effect} />
             <CheckLabel title="原图" top={15} left={-15} $active={false} />
           </HoverMask>
-
           <Space right={48} />
-          <RealPreview>
-            <PreviewImage style={{ background }} effect={effect} noHover>
+          <PreviewerWrapper>
+            <RealPreview>
+              <PreviewImage style={{ background }} effect={effect} noHover />
               <ContentBlock hasShadow={hasShadow}>
                 <ContentBar long={30} />
                 <ContentBar long={80} />
@@ -69,9 +70,9 @@ const Wallpaper: FC<TProps> = ({ wallpaperInfo }) => {
                 <ContentBar long={70} />
                 <ContentBar long={30} />
               </ContentBlock>
-            </PreviewImage>
+            </RealPreview>
             <CheckLabel title="预览效果" top={15} left={-15} $active={false} />
-          </RealPreview>
+          </PreviewerWrapper>
         </PreviewWrapper>
       </Section>
     </Wrapper>
