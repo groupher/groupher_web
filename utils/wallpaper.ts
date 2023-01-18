@@ -7,6 +7,7 @@ import type {
   TWallpaperPic,
   TWallpaper,
   TWallpaperType,
+  TCustomWallpaper,
 } from '@/spec'
 
 /**
@@ -15,6 +16,7 @@ import type {
 export const parseWallpaper = (
   wallpapers: Record<string, TWallpaper>,
   name: string,
+  customWallpaper?: TCustomWallpaper,
 ): TWallpaperFmt => {
   if (isEmpty(name)) {
     return {
@@ -23,11 +25,7 @@ export const parseWallpaper = (
     }
   }
 
-  return _parseWallpaper(wallpapers[name])
-}
-
-export const parseWallpaperRaw = (wallpaper: TWallpaper): TWallpaperFmt => {
-  return _parseWallpaper(wallpaper)
+  return _parseWallpaper(wallpapers[name], customWallpaper)
 }
 
 export const getWallpaperType = (name: string): TWallpaperType => {
@@ -40,7 +38,13 @@ export const getWallpaperType = (name: string): TWallpaperType => {
 /**
  * parse wallpaper both for gradient and picture background
  */
-const _parseWallpaper = (wallpaper: TWallpaper): TWallpaperFmt => {
+const _parseWallpaper = (
+  wallpaper: TWallpaper,
+  customWallpaper?: TCustomWallpaper,
+): TWallpaperFmt => {
+  if (customWallpaper) {
+    return _parseGradientBackground(customWallpaper)
+  }
   // @ts-ignore
   return wallpaper?.colors ? _parseGradientBackground(wallpaper) : _parsePicBackground(wallpaper)
 }

@@ -8,9 +8,9 @@ import type {
   TAccount,
   TC11N,
   TCommunity,
-  TWallpaper,
   TGlobalLayout,
   TGlowEffect,
+  TWallpaperInfo,
 } from '@/spec'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
@@ -48,15 +48,18 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
       // return root.sidebar.pin
       return false
     },
-    get wallpaper(): string {
+    get wallpaperInfo(): TWallpaperInfo {
       const root = getParent(self) as TRootStore
-      return root.wallpaperEditor.wallpaper
-    },
-    get wallpapers(): Record<string, TWallpaper> {
-      const root = getParent(self) as TRootStore
-      return root.wallpaperEditor.wallpapers
-    },
+      const {
+        wallpaperEditor: { customWallpaper, wallpaper, wallpapers },
+      } = root
 
+      return {
+        customWallpaper: toJS(customWallpaper),
+        wallpaper,
+        wallpapers,
+      }
+    },
     get glowEffect(): TGlowEffect {
       const root = getParent(self) as TRootStore
       const { wallpaper } = root.wallpaperEditor

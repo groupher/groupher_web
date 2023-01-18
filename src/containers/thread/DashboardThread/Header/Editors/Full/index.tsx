@@ -6,7 +6,7 @@ import Button from '@/widgets/Buttons/Button'
 import BrandInfo from '../BrandInfo'
 import LinkEditor from '../LinkEditor'
 
-import MainEditor from './MainEditor'
+import Editor from './Editor'
 
 import type { TFooterEditType } from '../../../spec'
 import { FOOTER_EDIT_TYPE } from '../../../constant'
@@ -22,7 +22,7 @@ import {
   ColumnWrapper,
   TopLeft,
   TopRight,
-} from '../../../styles/footer/editors/full'
+} from '../../../styles/header/editors/full'
 
 const Full: FC = () => {
   const [editMode, setEditMode] = useState(false)
@@ -43,7 +43,7 @@ const Full: FC = () => {
         </TopLeft>
         {editMode && (
           <TopRight>
-            <MainEditor type={editType} onHide={() => setEditMode(false)} />
+            <Editor type={editType} onHide={() => setEditMode(false)} />
           </TopRight>
         )}
       </TopWrapper>

@@ -7,10 +7,8 @@ export const Wrapper = styled.div`
   ${css.flex()};
   width: calc(100% + 30px);
   flex-wrap: wrap;
+  gap: 0 12px;
   margin-top: 10px;
-`
-export const Block = styled.div`
-  margin-right: 12px;
 `
 export const BallWrapper = styled.div<TActive>`
   ${css.size(36)};
@@ -33,9 +31,8 @@ export const BallWrapper = styled.div<TActive>`
 
   transition: all 0.1s linear;
 `
-type TColorBall = { background: string } & TActive
+type TColorBall = { background?: string } & TActive
 export const ColorBall = styled.div<TColorBall>`
-  ${css.circle(30)};
   ${({ $active }) => ($active ? css.circle(28) : css.circle(30))};
 
   background: ${({ background }) => background || 'transparent'};
@@ -46,6 +43,26 @@ export const ColorBall = styled.div<TColorBall>`
   }
 
   transition: all 0.1s linear;
+`
+
+export const CustomColorBall = styled(ColorBall)`
+  ${({ $active }) => ($active ? css.circle(26) : css.circle(30))};
+  ${css.flex('align-both')};
+  background: ${theme('hoverBg')};
+  background: conic-gradient(
+    rgb(235, 87, 87),
+    rgb(78, 167, 252),
+    rgb(76, 183, 130),
+    rgb(242, 201, 76),
+    rgb(250, 96, 122)
+  );
+
+  &:hover {
+    transform: rotate(180deg);
+    cursor: pointer;
+  }
+
+  transition: all 0.3s;
 `
 export const ActiveSign = styled.div`
   ${css.size(24)};

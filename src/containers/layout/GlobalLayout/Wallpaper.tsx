@@ -1,17 +1,17 @@
 import { FC, memo } from 'react'
 
-import type { TWallpaper } from '@/spec'
+import type { TWallpaperInfo } from '@/spec'
 import { parseWallpaper } from '@/utils/wallpaper'
 
 import { Wrapper } from './styles/wallpaper'
 
 type TProps = {
-  wallpaper: string
-  wallpapers: Record<string, TWallpaper>
+  wallpaperInfo: TWallpaperInfo
 }
 
-const Wallpaper: FC<TProps> = ({ wallpaper, wallpapers }) => {
-  const { background, effect } = parseWallpaper(wallpapers, wallpaper)
+const Wallpaper: FC<TProps> = ({ wallpaperInfo }) => {
+  const { wallpapers, wallpaper, customWallpaper } = wallpaperInfo
+  const { background, effect } = parseWallpaper(wallpapers, wallpaper, customWallpaper)
 
   // for custom image/svg
   // for use style object not passing props

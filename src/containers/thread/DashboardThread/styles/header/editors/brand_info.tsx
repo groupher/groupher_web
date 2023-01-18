@@ -2,7 +2,6 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
 
-import { Row } from '@/widgets/Common'
 import EditSVG from '@/icons/EditPen'
 
 export const Wrapper = styled.div`
@@ -19,7 +18,7 @@ export const Title = styled.div`
   ${css.flex('align-center')};
   color: ${theme('article.title')};
   font-weight: 600;
-  font-size: 15px;
+  font-size: 16px;
   margin-top: 15px;
 `
 export const Desc = styled.div`
@@ -31,8 +30,15 @@ export const Desc = styled.div`
   margin-top: 5px;
 `
 
-export const SocialWrapper = styled(Row)`
-  margin-top: 24px;
+export const DisplayOption = styled.div`
+  color: ${theme('article.info')};
+  font-size: 12px;
+  margin-top: 15px;
+
+  &:hover {
+    font-weight: 500;
+    cursor: pointer;
+  }
 `
 
 const EditIconBase = styled(EditSVG)<{ onClick?: () => void }>`
@@ -65,17 +71,7 @@ const LogoEditIcon = styled(EditIconBase)`
   }
 `
 
-const SocialEditIcon = styled(EditIconBase)`
-  opacity: 0;
-  margin-left: 10px;
-
-  ${SocialWrapper}:hover & {
-    opacity: 1;
-  }
-`
-
 export const EditIcon = {
   Logo: LogoEditIcon,
   Title: TitleEditIcon,
-  Social: SocialEditIcon,
 }

@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 
 import type {
   TWallpaper,
+  TCustomWallpaper,
   TColorName,
   TPostLayout,
   TChangelogLayout,
@@ -16,6 +17,7 @@ import type {
   THelpLayout,
   TDashboardPath,
   TKanbanLayout,
+  TWallpaperInfo,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'MANAGEMENT' | 'INTEGRATE'
@@ -58,7 +60,9 @@ export type TAliasSettings = {
 
 export type TUiSettings = {
   saving: boolean
+  wallpaperInfo: TWallpaperInfo
   wallpaper: TWallpaper
+  customWallpaper: TCustomWallpaper
   primaryColor: TColorName
   brandLayout: TBrandLayout
   topbarLayout: TTopbarLayout
@@ -74,7 +78,6 @@ export type TUiSettings = {
   kanbanLayout: TKanbanLayout
   changelogLayout: TChangelogLayout
   footerLayout: TFooterLayout
-  hasWallpaperShadow: boolean
 }
 export type TWidgetsSettings = {
   saving: boolean

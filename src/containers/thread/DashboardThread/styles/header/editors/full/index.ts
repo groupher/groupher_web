@@ -30,7 +30,7 @@ export const TopRight = styled.div`
   height: auto;
   border-left: 1px solid transparent;
   border-image: linear-gradient(
-    0.45turn,
+    0.51turn,
     transparent,
     ${theme('divider')},
     ${theme('divider')},

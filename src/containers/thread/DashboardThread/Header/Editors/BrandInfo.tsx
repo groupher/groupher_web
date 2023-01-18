@@ -12,6 +12,7 @@ import {
   Wrapper,
   LogoWrapper,
   BaseInfo,
+  DisplayOption,
   Title,
   EditIcon,
   Desc,
@@ -37,12 +38,10 @@ const BrandInfo: FC<TProps> = ({
       </LogoWrapper>
 
       <BaseInfo>
-        <Title>
-          Groupher
-          {editable && <EditIcon.Title onClick={() => onEdit(FOOTER_EDIT_TYPE.TITLE)} />}
-        </Title>
+        <Title>Groupher</Title>
         {footerLayout === FOOTER_LAYOUT.FULL && <Desc>让你的产品聆听用户的声音</Desc>}
       </BaseInfo>
+      <DisplayOption onClick={() => onEdit(FOOTER_EDIT_TYPE.TITLE)}>显示选项</DisplayOption>
     </Wrapper>
   )
 }

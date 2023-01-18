@@ -32,9 +32,11 @@ export const UploadIcon = styled(SettingSVG)`
 `
 type TPreviewImage = { effect: string; noHover?: boolean }
 export const PreviewImage = styled.div<TPreviewImage>`
+  ${css.flexColumn('align-both')};
   border: 1px solid;
   border-color: ${theme('divider')};
   background-color: ${theme('hoverBg')};
+  overflow-y: hidden;
 
   width: 296px;
   height: 180px;
@@ -56,9 +58,9 @@ export const RealPreview = styled.div`
   position: relative;
 `
 export const ContentBlock = styled.div<{ hasShadow?: boolean }>`
-  position: absolute;
+  /* position: absolute;
   top: 1px;
-  left: 30px;
+  left: 30px; */
   width: 240px;
   height: 178px;
   background: white;
