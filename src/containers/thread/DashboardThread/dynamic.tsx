@@ -56,6 +56,10 @@ export const Help = dynamic(() => import('./Help'), {
   loading: () => <LavaLampLoading />,
 })
 
+export const Header = dynamic(() => import('./Header'), {
+  loading: () => <LavaLampLoading />,
+})
+
 export const Footer = dynamic(() => import('./Footer'), {
   loading: () => <LavaLampLoading />,
 })

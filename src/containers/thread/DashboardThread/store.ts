@@ -231,7 +231,8 @@ const DashboardThread = T.model('DashboardThread', {
           changelogLayoutTouched ||
           glowFixedTouched ||
           glowTypeTouched ||
-          glowOpacityTouched,
+          glowOpacityTouched ||
+          footerLayoutTouched,
 
         widgets: widgetsPrimaryColorTouched || widgetsThreadsTouched || widgetsSizeTouched,
       }

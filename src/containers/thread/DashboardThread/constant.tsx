@@ -61,6 +61,14 @@ export const MENU = {
         title: '管理员',
         raw: DASHBOARD_ROUTE.ADMINS,
       },
+      {
+        title: '页头',
+        raw: DASHBOARD_ROUTE.HEADER,
+      },
+      {
+        title: '页脚',
+        raw: DASHBOARD_ROUTE.FOOTER,
+      },
     ],
   },
   ANALYSIS: {
@@ -91,10 +99,6 @@ export const MENU = {
       {
         title: '帮助台',
         raw: DASHBOARD_ROUTE.HELP,
-      },
-      {
-        title: '页脚',
-        raw: DASHBOARD_ROUTE.FOOTER,
       },
       {
         title: '小黑屋',
