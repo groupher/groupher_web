@@ -62,7 +62,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
 
   return (
     <ThemePalette>
-      {load && <Addon />}
+      {load && <Addon metric={metric} />}
       <Skeleton>
         <Wallpaper wallpaperInfo={wallpaperInfo} />
         {/* <CustomScroller

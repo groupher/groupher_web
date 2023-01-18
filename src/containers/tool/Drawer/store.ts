@@ -9,6 +9,8 @@ import type { TRootStore, TCommunity, TThread, TArticle } from '@/spec'
 
 import { DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { ARTICLE_THREAD } from '@/constant/thread'
+import METRIC from '@/constant/metric'
+
 import TYPE from '@/constant/type'
 
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
@@ -32,6 +34,7 @@ const Options = T.model('Options', {
 
 const DrawerStore = T.model('DrawerStore', {
   visible: T.opt(T.bool, false),
+  metric: T.opt(T.enum(values(METRIC)), METRIC.COMMUNITY),
 
   previousURL: T.maybeNull(T.string),
   // auchor href in case user navi articles in drawers
@@ -91,14 +94,14 @@ const DrawerStore = T.model('DrawerStore', {
     },
     // 预览面板从最右侧滑出的偏移量
     get rightOffset(): string {
-      const { windowWidth } = self
-      const MAX_WIDTH = Number(WIDTH.COMMUNITY.PAGE.slice(0, -2))
+      const { windowWidth, metric } = self
+      const MAX_WIDTH = Number(WIDTH[metric].PAGE.slice(0, -2))
 
       return `${windowWidth <= MAX_WIDTH ? '0' : (windowWidth - MAX_WIDTH) / 2}px`
     },
     get fromContentEdge(): boolean {
-      const { windowWidth } = self
-      const MAX_PAGE_WIDTH = Number(WIDTH.COMMUNITY.PAGE.slice(0, -2))
+      const { windowWidth, metric } = self
+      const MAX_PAGE_WIDTH = Number(WIDTH[metric].PAGE.slice(0, -2))
 
       return windowWidth <= MAX_PAGE_WIDTH
     },

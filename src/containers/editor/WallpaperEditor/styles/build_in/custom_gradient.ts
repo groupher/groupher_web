@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   ${css.flex()};
   width: 100%;
   margin-top: 25px;
-  padding: 20px 10px;
+  padding: 20px;
 
   border: 1px solid;
   border-color: ${theme('article.digest')};
@@ -19,7 +19,7 @@ export const Wrapper = styled.div`
 export const Label = styled.div`
   position: absolute;
   top: -10px;
-  left: 5px;
+  left: 15px;
   padding: 0 5px;
   background: white;
   font-size: 12px;
