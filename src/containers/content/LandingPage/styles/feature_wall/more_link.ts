@@ -25,7 +25,7 @@ export const Wrapper = styled(Link)`
 export const Text = styled.div<{ featType: TFeatType }>`
   color: ${({ featType }) => FEAT[featType].COLOR};
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
 `
 export const ArrowIcon = styled(ArrowSVG)<{ featType: TFeatType }>`
   ${css.size(14)};

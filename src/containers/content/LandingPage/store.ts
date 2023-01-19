@@ -39,6 +39,12 @@ const LandingPage = T.model('LandingPage', {})
       return root.wallpaperEditor.changeWallpaper(wallpaper)
     },
 
+    changeGlowEffect(glowEffect: string): void {
+      const root = getParent(self) as TRootStore
+
+      return root.dashboardThread.changeGlowEffect(glowEffect)
+    },
+
     mark(sobj: Record<string, unknown>): void {
       markStates(sobj, self)
     },
