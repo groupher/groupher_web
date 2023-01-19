@@ -13,9 +13,9 @@ export const PATTERN_WALLPAPER = {
   // bubbles: {
   //   bgImage: `${DIR}/bubbles.png`,
   // },
-  limones: {
-    bgImage: `${DIR}/limones.jpeg`,
-  },
+  // limones: {
+  //   bgImage: `${DIR}/limones.jpeg`,
+  // },
   country1: {
     bgImage: `${DIR}/country-1.webp`,
     // bgSize: 'cover',
@@ -60,10 +60,10 @@ export const PATTERN_WALLPAPER = {
     bgImage: `${DIR}/cartoon.jpeg`,
   },
 
-  ms: {
-    bgImage: `${DIR}/ms.svg`,
-    bgSize: 'cover',
-  },
+  // ms: {
+  //   bgImage: `${DIR}/ms.svg`,
+  //   bgSize: 'cover',
+  // },
   // istanbul: {
   //   bgImage: `${DIR}/istanbul.jpeg`,
   // },
@@ -171,17 +171,18 @@ export const GRADIENT_WALLPAPER = {
     ...DEFAULT_GRADIENT_EFFECT,
   },
   yellow: {
-    colors: ['#6299be', '#766ba1'],
+    // colors: ['#6299be', '#766ba1'],
+    colors: ['#69999F', '#6B80A7', '#8C8EBB'],
     ...DEFAULT_GRADIENT_EFFECT,
   },
   cyan: {
     colors: ['#eeeeee', '#d8d8d8', '#CACACE'],
     ...DEFAULT_GRADIENT_EFFECT,
   },
-  red: {
-    colors: ['#d58585', '#556270'],
-    ...DEFAULT_GRADIENT_EFFECT,
-  },
+  // red: {
+  //   colors: ['#d58585', '#556270'],
+  //   ...DEFAULT_GRADIENT_EFFECT,
+  // },
   blue: {
     colors: ['#daf3fb', '#B8D1FA', '#c7bbf2', '#6390c5'],
     ...DEFAULT_GRADIENT_EFFECT,
@@ -203,3 +204,5 @@ export const GRADIENT_DIRECTION = {
   LEFT: 'left',
   TOP_LEFT: 'top left',
 } as Record<TSnakeUpperCase<TWallpaperGradientDir>, TWallpaperGradientDir>
+
+export const WALLPAPER_CUSTOM = 'custom'

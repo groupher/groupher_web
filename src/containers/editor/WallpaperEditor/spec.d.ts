@@ -9,6 +9,8 @@ export type TWallpaperData = {
   hasBlur: boolean
   hasShadow: boolean
   direction: TWallpaperGradientDir
+
+  customColor: string
 }
 
 export type TTab = 'buildin' | 'custom'

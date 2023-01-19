@@ -24,6 +24,7 @@ import {
   ThirdPart,
   Widgets,
   Help,
+  Header,
   Footer,
 } from './dynamic'
 
@@ -69,6 +70,7 @@ const DashboardThreadContainer: FC<TProps> = ({
         {curTab === DASHBOARD.ADMINS && <Admin />}
         {curTab === DASHBOARD.THREADS && <Threads />}
         {curTab === DASHBOARD.TAGS && <Tags settings={tagSettings} />}
+        {curTab === DASHBOARD.HEADER && <Header settings={footerSettings} touched={touched} />}
         {curTab === DASHBOARD.FOOTER && <Footer settings={footerSettings} touched={touched} />}
         {curTab === DASHBOARD.HELP && <Help settings={helpSettings} />}
         {curTab === DASHBOARD.DOMAIN && <Domain />}

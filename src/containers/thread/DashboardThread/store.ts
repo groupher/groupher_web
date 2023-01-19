@@ -231,7 +231,8 @@ const DashboardThread = T.model('DashboardThread', {
           changelogLayoutTouched ||
           glowFixedTouched ||
           glowTypeTouched ||
-          glowOpacityTouched,
+          glowOpacityTouched ||
+          footerLayoutTouched,
 
         widgets: widgetsPrimaryColorTouched || widgetsThreadsTouched || widgetsSizeTouched,
       }
@@ -296,13 +297,17 @@ const DashboardThread = T.model('DashboardThread', {
       const root = getParent(self) as TRootStore
 
       const {
-        wallpaperEditor: { wallpapers, wallpaper, hasShadow },
+        wallpaperEditor: { wallpapers, wallpaper, customWallpaper, hasShadow },
       } = root
 
       // @ts-ignore
       return {
-        wallpaper: wallpapers[wallpaper],
-        hasWallpaperShadow: hasShadow,
+        wallpaperInfo: {
+          customWallpaper: toJS(customWallpaper),
+          wallpaper,
+          wallpapers,
+          hasShadow,
+        },
         ...pick(
           [
             'saving',

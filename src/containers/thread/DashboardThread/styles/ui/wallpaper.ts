@@ -30,15 +30,17 @@ export const UploadIcon = styled(SettingSVG)`
   }
   transition: all 0.2s;
 `
+
 type TPreviewImage = { effect: string; noHover?: boolean }
 export const PreviewImage = styled.div<TPreviewImage>`
+  ${css.flexColumn('align-both')};
   border: 1px solid;
   border-color: ${theme('divider')};
   background-color: ${theme('hoverBg')};
 
   width: 296px;
   height: 180px;
-  border-radius: 8px;
+  border-radius: 4px;
   ${({ effect }) => effect || ''};
 
   ${({ noHover }) =>
@@ -51,16 +53,20 @@ export const PreviewImage = styled.div<TPreviewImage>`
 
   transition: all 0.2s;
 `
+export const PreviewerWrapper = styled.div`
+  ${css.flexColumn('align-center')};
+`
 export const RealPreview = styled.div`
   ${css.flexColumn('align-center')};
   position: relative;
+  overflow: hidden;
 `
 export const ContentBlock = styled.div<{ hasShadow?: boolean }>`
   position: absolute;
-  top: 1px;
+  top: 0px;
   left: 30px;
   width: 240px;
-  height: 178px;
+  height: 180px;
   background: white;
   z-index: 2;
   padding: 15px;
@@ -72,9 +78,9 @@ export const ContentBlock = styled.div<{ hasShadow?: boolean }>`
 `
 export const ContentBar = styled.div<{ long: number }>`
   width: ${({ long }) => `${long}%`};
-  height: 10px;
+  height: 8px;
   background: ${theme('divider')};
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   z-index: 3;
   border-radius: 5px;
 `

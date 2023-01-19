@@ -143,6 +143,8 @@ export type {
   TWallpaper,
   TWallpaperType,
   TWallpaperGradientDir,
+  TCustomWallpaper,
+  TWallpaperInfo,
 } from './wallpaper'
 
 export type { TColorName } from './color'

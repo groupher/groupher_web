@@ -2,7 +2,8 @@ import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
 import css, { theme } from '@/utils/css'
-import CheckedSVG from '@/icons/Checked'
+
+import CheckedSVG from '@/icons/CheckBold'
 
 import { getIconSize, getFontSize, getBorderRadius } from './metric'
 
@@ -21,41 +22,35 @@ export const Wrapper = styled.div<TWrapper>`
   }
 `
 export const IconWrapper = styled.div<TItem>`
-  position: relative;
-  background: ${({ checked }) =>
-    checked ? theme('article.digest') : 'transparent'};
+  ${css.flex('align-both')};
+  background: ${({ checked }) => (checked ? theme('article.digest') : 'transparent')};
   width: ${({ size }) => getIconSize(size)};
   height: ${({ size }) => getIconSize(size)};
   ${css.flex('align-both')};
+  padding: 1px;
 
   border: ${({ disabled }) => (!disabled ? '1px solid' : 'none')};
 
-  border-color: ${({ checked }) =>
-    checked ? theme('article.title') : theme('article.digest')};
+  border-color: ${theme('article.digest')};
   border-radius: ${({ size }) => getBorderRadius(size)};
 
   transition: all 0.2s;
 `
 export const CheckIcon = styled(CheckedSVG)<TItem>`
-  position: absolute;
   fill: ${({ checked }) => (checked ? 'white' : 'none')};
   display: ${({ checked }) => (checked ? 'block' : 'none')};
   width: ${({ size }) => getIconSize(size)};
   height: ${({ size }) => getIconSize(size)};
-  top: -1px;
-  left: -1px;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 `
 export const ChildWrapper = styled.div<TItem>`
-  color: ${({ checked }) =>
-    checked ? theme('article.title') : theme('article.digest')};
+  color: ${({ checked }) => (checked ? theme('article.title') : theme('article.digest'))};
   font-size: ${({ size }) => getFontSize(size)};
   margin-left: 8px;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 
   &:hover {
-    color: ${({ disabled }) =>
-      disabled ? theme('article.digest') : theme('article.title')};
+    color: ${({ disabled }) => (disabled ? theme('article.digest') : theme('article.title'))};
   }
 
   transition: color 0.1s;

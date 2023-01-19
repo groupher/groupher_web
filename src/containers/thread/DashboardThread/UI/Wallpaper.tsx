@@ -1,9 +1,9 @@
 import { FC, memo, useCallback } from 'react'
 
-import type { TWallpaper } from '@/spec'
+import type { TWallpaperInfo } from '@/spec'
 import { WIDTH } from '@/utils/css'
 import { callWallpaperEditor } from '@/utils/signal'
-import { parseWallpaperRaw } from '@/utils/wallpaper'
+import { parseWallpaper } from '@/utils/wallpaper'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import CheckLabel from '@/widgets/CheckLabel'
@@ -18,18 +18,19 @@ import {
   HoverMask,
   UploadIcon,
   RealPreview,
+  PreviewerWrapper,
   PreviewImage,
   ContentBlock,
   ContentBar,
 } from '../styles/ui/wallpaper'
 
 type TProps = {
-  wallpaper: TWallpaper
-  hasShadow: boolean
+  wallpaperInfo: TWallpaperInfo
 }
 
-const Wallpaper: FC<TProps> = ({ wallpaper, hasShadow }) => {
-  const { background, effect } = parseWallpaperRaw(wallpaper)
+const Wallpaper: FC<TProps> = ({ wallpaperInfo }) => {
+  const { wallpapers, wallpaper, customWallpaper, hasShadow } = wallpaperInfo
+  const { background, effect } = parseWallpaper(wallpapers, wallpaper, customWallpaper)
 
   const handleCallEditor = useCallback(() => callWallpaperEditor(), [])
 
@@ -57,20 +58,21 @@ const Wallpaper: FC<TProps> = ({ wallpaper, hasShadow }) => {
             <PreviewImage style={{ background }} effect={effect} />
             <CheckLabel title="原图" top={15} left={-15} $active={false} />
           </HoverMask>
-
           <Space right={48} />
-          <RealPreview>
-            <PreviewImage style={{ background }} effect={effect} noHover />
-            <ContentBlock hasShadow={hasShadow}>
-              <ContentBar long={30} />
-              <ContentBar long={80} />
-              <ContentBar long={60} />
-              <ContentBar long={20} />
-              <ContentBar long={70} />
-              <ContentBar long={30} />
-            </ContentBlock>
+          <PreviewerWrapper>
+            <RealPreview>
+              <PreviewImage style={{ background }} effect={effect} noHover />
+              <ContentBlock hasShadow={hasShadow}>
+                <ContentBar long={30} />
+                <ContentBar long={80} />
+                <ContentBar long={60} />
+                <ContentBar long={20} />
+                <ContentBar long={70} />
+                <ContentBar long={30} />
+              </ContentBlock>
+            </RealPreview>
             <CheckLabel title="预览效果" top={15} left={-15} $active={false} />
-          </RealPreview>
+          </PreviewerWrapper>
         </PreviewWrapper>
       </Section>
     </Wrapper>

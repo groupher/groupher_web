@@ -49,7 +49,7 @@ export const getBorderColor = (
 export const getHeight = (size: string): string => {
   switch (size) {
     case SIZE.TINY: {
-      return '18px'
+      return 'auto'
     }
 
     case SIZE.SMALL: {

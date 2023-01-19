@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { contains, values } from 'ramda'
 
-import type { TArticle, TDirection } from '@/spec'
+import type { TArticle, TDirection, TMetric } from '@/spec'
 import EVENT from '@/constant/event'
 import TYPE from '@/constant/type'
 
@@ -171,13 +171,13 @@ const DataResolver = [
 // ###############################
 // init & uninit
 // ###############################
-export const useInit = (_store: TStore, windowWidth: number): void => {
+export const useInit = (_store: TStore, windowWidth: number, metric: TMetric): void => {
   useEffect((): (() => void) => {
     store = _store
     if (!sub$) {
       sub$ = sr71$.data().subscribe($solver(DataResolver, []))
     }
-    store.mark({ windowWidth })
+    store.mark({ windowWidth, metric })
 
     return () => {
       if (!sub$) return
@@ -185,5 +185,5 @@ export const useInit = (_store: TStore, windowWidth: number): void => {
       sub$.unsubscribe()
       sub$ = null
     }
-  }, [_store, windowWidth])
+  }, [_store, windowWidth, metric])
 }

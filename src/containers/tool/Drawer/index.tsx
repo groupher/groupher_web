@@ -6,6 +6,7 @@
 
 import { FC } from 'react'
 
+import type { TMetric } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 import useResize from '@/hooks/useResize'
@@ -23,11 +24,12 @@ const log = buildLog('C:Preview')
 
 type TProps = {
   drawer: TStore
+  metric: TMetric
 }
 
-const DrawerContainer: FC<TProps> = ({ drawer: store }) => {
+const DrawerContainer: FC<TProps> = ({ drawer: store, metric }) => {
   const { width: windowWidth } = useResize()
-  useInit(store, windowWidth)
+  useInit(store, windowWidth, metric)
   useShortcut('Escape', closeDrawer)
 
   const {

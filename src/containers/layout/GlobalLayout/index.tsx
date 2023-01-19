@@ -54,7 +54,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
 
   const [load, setLoad] = useState(false)
 
-  const { wallpaper, wallpapers, hasShadow, glowEffect, globalLayout } = store
+  const { wallpaperInfo, hasShadow, glowEffect, globalLayout } = store
 
   useEffect(() => {
     setLoad(true)
@@ -62,9 +62,9 @@ const GlobalLayoutContainer: FC<TProps> = ({
 
   return (
     <ThemePalette>
-      {load && <Addon />}
+      {load && <Addon metric={metric} />}
       <Skeleton>
-        <Wallpaper wallpaper={wallpaper} wallpapers={wallpapers} />
+        <Wallpaper wallpaperInfo={wallpaperInfo} />
         {/* <CustomScroller
           instanceKey={BODY_SCROLLER}
           direction="vertical"

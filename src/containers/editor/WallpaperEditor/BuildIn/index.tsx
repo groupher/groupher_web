@@ -5,13 +5,14 @@
 
 import { FC, Fragment } from 'react'
 
-import { WALLPAPER_TYPE } from '@/constant/wallpaper'
+import { WALLPAPER_CUSTOM, WALLPAPER_TYPE } from '@/constant/wallpaper'
 
 import { Br } from '@/widgets/Common'
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
 
-import PatternGroup from './PatternGroup'
+import PictureGroup from './PictureGroup'
 import GradientGroup from './GradientGroup'
+import CustomGradientEditor from './CustomGradientEditor'
 import AnglePanel from './AnglePanel'
 
 import type { TWallpaperData } from '../spec'
@@ -23,6 +24,7 @@ import {
   ToggleTitle,
   GeneralSettings,
   Divider,
+  MainDivider,
   AngleSettings,
 } from '../styles/build_in'
 import { togglePattern, toggleBlur, toggleShadow } from '../logic'
@@ -41,16 +43,18 @@ const BuildIn: FC<TProps> = ({ wallpaperData }) => {
     hasBlur,
     hasShadow,
     direction,
+    customColor,
   } = wallpaperData
 
   return (
     <Wrapper>
-      <Title>图案:</Title>
-      <PatternGroup wallpaper={wallpaper} patternWallpapers={patternWallpapers} />
-      <Br top={20} />
-      <Title>纯色渐变:</Title>
+      <Title>渐变:</Title>
       <GradientGroup wallpaper={wallpaper} gradientWallpapers={gradientWallpapers} />
+      {wallpaper === WALLPAPER_CUSTOM && <CustomGradientEditor customColor={customColor} />}
       <Br top={25} />
+      <Title>图片:</Title>
+      <PictureGroup wallpaper={wallpaper} patternWallpapers={patternWallpapers} />
+      <MainDivider />
       <SettingWrapper show={wallpaperType !== WALLPAPER_TYPE.NONE}>
         <GeneralSettings>
           <Title>附加效果:</Title>
