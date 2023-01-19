@@ -3,6 +3,14 @@ export const GLOW_OPACITY = {
   WEEK: '0.68',
 }
 
+export const GLOW_EFFECT_NAME = {
+  ORANGE_PURPLE: 'ORANGE_PURPLE',
+  GREY_BROWN: 'GREY_BROWN',
+  YELLOW_RED: 'YELLOW_RED',
+  GREY_GREEN: 'GREY_GREEN',
+  PURPLE_BLUE: 'PURPLE_BLUE',
+}
+
 const GLOW_EFFECTS = {
   ORANGE_PURPLE: {
     LEFT: {
@@ -110,7 +118,7 @@ const GLOW_EFFECTS = {
       RADIUS: '30%',
     },
   },
-  YELLOW_BLUE: {
+  PURPLE_BLUE: {
     LEFT: {
       COLOR: '#e2eaf58f',
       X: '28%',

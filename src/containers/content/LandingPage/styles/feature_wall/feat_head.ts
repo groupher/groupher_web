@@ -10,12 +10,12 @@ import { FEAT } from '../../constant'
 export const Title = styled.div<{ featType: TFeatType }>`
   ${css.flex('align-center')};
   color: ${({ featType }) => FEAT[featType].COLOR};
-  font-size: 26px;
+  font-size: 21px;
   font-weight: 600;
 `
 
 export const Hint = styled.div<TActive>`
-  font-size: 24px;
+  font-size: 22px;
   margin-left: 15px;
   opacity: ${({ $active }) => ($active ? 0.3 : 0)};
 

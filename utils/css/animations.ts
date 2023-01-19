@@ -21,14 +21,14 @@ const shake = keyframes`
   50%,
   70%,
   90% {
-    transform: translate3d(-10px, 0, 0);
+    transform: translate3d(-50px, 0, 0);
   }
 
   20%,
   40%,
   60%,
   80% {
-    transform: translate3d(10px, 0, 0);
+    transform: translate3d(50px, 0, 0);
   }
 `
 

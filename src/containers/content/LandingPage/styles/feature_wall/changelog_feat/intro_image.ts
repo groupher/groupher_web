@@ -36,6 +36,7 @@ export const ColorBlock = styled.div<TActive>`
   height: 390px;
 
   background: linear-gradient(137deg, rgba(244, 183, 180, 1) 52%, rgba(235, 171, 62, 0.3) 100%);
+  backdrop-filter: blur(5px);
   border-radius: 20px;
   transform: rotate(-3deg);
 

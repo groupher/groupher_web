@@ -39,6 +39,7 @@ export const ColorBlock = styled.div<TActive>`
   height: 390px;
 
   background: linear-gradient(137deg, rgba(80, 161, 162, 0.76) 52%, rgba(204, 191, 149, 0.71) 100%);
+  backdrop-filter: blur(5px);
   border-radius: 20px;
   box-shadow: ${({ $active }) => ($active ? '0 5px 25px rgb(35 35 35 / 10%)' : 'none')};
   transform: rotate(4deg);

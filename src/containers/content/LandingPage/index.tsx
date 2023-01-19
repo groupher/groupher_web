@@ -3,7 +3,7 @@
  *
  */
 
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { ParallaxProvider } from 'react-scroll-parallax'
 
 // import { buildLog } from '@/utils/logger'
@@ -29,6 +29,7 @@ import type { TStore } from './store'
 
 import {
   Wrapper,
+  BgGlow,
   Banner,
   Title,
   Desc,
@@ -43,7 +44,7 @@ import {
   FAQWrapper,
 } from './styles'
 
-import { useInit } from './logic'
+import { useInit, changeGlowEffect } from './logic'
 
 type TProps = {
   landingPage?: TStore
@@ -52,11 +53,17 @@ type TProps = {
 const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
   useInit(store)
 
-  const { wallpaper, wallpapers, gradientWallpapers } = store
+  const { wallpaperInfo, gradientWallpapers } = store
+  const { wallpaper } = wallpaperInfo
+
+  useEffect(() => {
+    changeGlowEffect(wallpaper)
+  }, [wallpaper])
 
   return (
     <ParallaxProvider>
       <Wrapper testid="landing-page">
+        <BgGlow wallpaper={wallpaper} />
         <Banner>
           <Header />
           <Title>让你的产品聆听用户的声音</Title>
@@ -95,7 +102,7 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
             本站正在开发中，详情请联系 mydearxym@qq.com
           </Note>
         </Banner>
-        <CoverImage wallpaper={wallpaper} wallpapers={wallpapers} />
+        <CoverImage wallpaperInfo={wallpaperInfo} />
 
         <WallpaperBar wallpaper={wallpaper} gradientWallpapers={gradientWallpapers} />
         <Divider top={100} bottom={100} />

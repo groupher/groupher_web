@@ -344,6 +344,11 @@ const DashboardThread = T.model('DashboardThread', {
     },
   }))
   .actions((self) => ({
+    /** it also maybe called by landing page */
+    changeGlowEffect(glowType: string): void {
+      const slf = self as TStore
+      slf.glowType = glowType
+    },
     onSave(field: TSettingField): void {
       const slf = self as TStore
 

@@ -6,26 +6,37 @@ import type { TSpace, TTestable } from '@/spec'
 import Button from '@/widgets/Buttons/Button'
 import LinkSVG from '@/icons/LinkOutside'
 
-import css, { theme } from '@/utils/css'
+import css, { animate, theme } from '@/utils/css'
 import InfoSVG from '@/icons/Info'
 
+import { getGlowOpacity, getGlowBackground } from './metric'
+
+type TWrapper = TTestable
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
-}))<TTestable>`
+}))<TWrapper>`
   ${css.flexColumn('align-both')};
   height: 100%;
   width: 100%;
+  position: relative;
 `
 export const Banner = styled.div`
   ${css.flexColumn('align-center')};
   height: 700px;
   width: 100%;
   position: relative;
-
-  background: radial-gradient(circle at 35% 35%, #f39e8d70 0, transparent 25%),
-    radial-gradient(circle at 58% 50%, #5d1f8a2e 0, transparent 30%),
-    radial-gradient(circle at 40% 45%, #961fb333 0, transparent 40%);
 `
+export const BgGlow = styled.div<{ wallpaper: string }>`
+  position: absolute;
+  top: 0;
+  height: 700px;
+  width: 100%;
+
+  opacity: ${({ wallpaper }) => getGlowOpacity(wallpaper)};
+  background: ${({ wallpaper }) => getGlowBackground(wallpaper)};
+  animation: ${animate.shake} 15s ease-in infinite alternate;
+`
+
 export const Title = styled.div`
   font-size: 40px;
   ${theme('article.title')};

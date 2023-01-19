@@ -1,6 +1,9 @@
+/* eslint-disable no-useless-return */
 import { useEffect } from 'react'
 // import { } from 'ramda'
 
+import { GRADIENT_WALLPAPER_NAME } from '@/constant/wallpaper'
+import { GLOW_EFFECT_NAME } from '@/constant/glow_effect'
 import { buildLog } from '@/utils/logger'
 
 // import S from './schma'
@@ -13,6 +16,33 @@ const log = buildLog('L:LandingPage')
 
 export const changeWallpaper = (wallpaper: string): void => {
   store.changeWallpaper(wallpaper)
+}
+
+export const changeGlowEffect = (wallpaper: string): void => {
+  switch (wallpaper) {
+    case GRADIENT_WALLPAPER_NAME.PINK: {
+      store.changeGlowEffect(GLOW_EFFECT_NAME.ORANGE_PURPLE)
+      return
+    }
+    case GRADIENT_WALLPAPER_NAME.GREEN: {
+      store.changeGlowEffect(GLOW_EFFECT_NAME.GREY_GREEN)
+      return
+    }
+    case GRADIENT_WALLPAPER_NAME.ORANGE: {
+      store.changeGlowEffect(GLOW_EFFECT_NAME.YELLOW_RED)
+      return
+    }
+    case GRADIENT_WALLPAPER_NAME.PURPLE:
+    case GRADIENT_WALLPAPER_NAME.BLUE: {
+      store.changeGlowEffect(GLOW_EFFECT_NAME.PURPLE_BLUE)
+      return
+    }
+    default: {
+      // pic/custom wallpaper
+      store.changeGlowEffect('')
+      return
+    }
+  }
 }
 
 // ###############################

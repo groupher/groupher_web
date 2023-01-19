@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import type { TWallpaper } from '@/spec'
+import type { TWallpaperInfo } from '@/spec'
 import { Space, SpaceGrow } from '@/widgets/Common'
 import { parseWallpaper } from '@/utils/wallpaper'
 
@@ -18,11 +18,11 @@ import {
 } from './styles/cover_image'
 
 type TProps = {
-  wallpaper: string
-  wallpapers: Record<string, TWallpaper>
+  wallpaperInfo: TWallpaperInfo
 }
 
-const CoverImage: FC<TProps> = ({ wallpaper, wallpapers }) => {
+const CoverImage: FC<TProps> = ({ wallpaperInfo }) => {
+  const { wallpapers, wallpaper, hasShadow } = wallpaperInfo
   const { background, effect } = parseWallpaper(wallpapers, wallpaper)
 
   return (
@@ -42,7 +42,7 @@ const CoverImage: FC<TProps> = ({ wallpaper, wallpapers }) => {
         <SpaceGrow />
       </BrowerHead>
       <Content>
-        <Image src="/landing-demo.png" />
+        <Image src="/landing-demo.png" hasShadow={hasShadow} />
         <Background style={{ background }} effect={effect} />
       </Content>
     </Wrapper>
