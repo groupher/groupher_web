@@ -5,7 +5,14 @@ import type { TWallpaperGradient } from '@/spec'
 import { parseWallpaper } from '@/utils/wallpaper'
 import { WALLPAPER_CUSTOM } from '@/constant/wallpaper'
 
-import { Wrapper, BallWrapper, ColorBall, CustomColorBall } from '../styles/build_in/gradient_group'
+import {
+  Wrapper,
+  BallWrapper,
+  ColorBall,
+  CustomColorBall,
+  PenWrapper,
+  PenIcon,
+} from '../styles/build_in/gradient_group'
 
 import { changeWallpaper } from '../logic'
 
@@ -31,7 +38,11 @@ const GradientGroup: FC<TProps> = ({ wallpaper, gradientWallpapers }) => {
         $active={wallpaper === WALLPAPER_CUSTOM}
         onClick={() => changeWallpaper(WALLPAPER_CUSTOM)}
       >
-        <CustomColorBall />
+        <CustomColorBall>
+          <PenWrapper>
+            <PenIcon />
+          </PenWrapper>
+        </CustomColorBall>
       </BallWrapper>
     </Wrapper>
   )

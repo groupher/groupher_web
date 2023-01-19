@@ -20,8 +20,7 @@ export const Wrapper = styled.button<TWrapper>`
   outline: none;
   // otherwise the slim effect will appear outside
   overflow: hidden;
-
-  line-height: 1.5;
+  line-height: 1.6;
   text-align: center;
   touch-action: manipulation;
   background-image: none;
@@ -31,7 +30,7 @@ export const Wrapper = styled.button<TWrapper>`
   ${({ space }) => `${space !== null ? `padding-left: ${space}px;padding-right: ${space}px` : ''}`};
 
   font-size: ${({ size }) => getFontSize(size)};
-  border-radius: 10px;
+  border-radius: ${({ size }) => (size === 'tiny' ? '6px' : '10px')};
   height: ${({ size }) => getHeight(size)};
   user-select: none;
   transition: all 0.1s cubic-bezier(0.645, 0.045, 0.355, 1);

@@ -5,14 +5,14 @@
 
 import { FC, Fragment } from 'react'
 
-import { WALLPAPER_TYPE } from '@/constant/wallpaper'
+import { WALLPAPER_CUSTOM, WALLPAPER_TYPE } from '@/constant/wallpaper'
 
 import { Br } from '@/widgets/Common'
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
 
 import PictureGroup from './PictureGroup'
 import GradientGroup from './GradientGroup'
-import CustomGradient from './CustomGradient'
+import CustomGradientEditor from './CustomGradientEditor'
 import AnglePanel from './AnglePanel'
 
 import type { TWallpaperData } from '../spec'
@@ -43,13 +43,14 @@ const BuildIn: FC<TProps> = ({ wallpaperData }) => {
     hasBlur,
     hasShadow,
     direction,
+    customColor,
   } = wallpaperData
 
   return (
     <Wrapper>
       <Title>渐变:</Title>
       <GradientGroup wallpaper={wallpaper} gradientWallpapers={gradientWallpapers} />
-      <CustomGradient wallpaper={wallpaper} />
+      {wallpaper === WALLPAPER_CUSTOM && <CustomGradientEditor customColor={customColor} />}
       <Br top={25} />
       <Title>图片:</Title>
       <PictureGroup wallpaper={wallpaper} patternWallpapers={patternWallpapers} />

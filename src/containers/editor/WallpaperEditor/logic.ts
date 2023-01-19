@@ -33,6 +33,10 @@ export const changeWallpaper = (wallpaper: string): void => {
   store.changeWallpaper(wallpaper)
 }
 
+export const changeCustomColor = (customColorValue: string): void => {
+  store.mark({ customColorValue })
+}
+
 export const rollbackEdit = (): void => store.rollbackEdit()
 
 /**

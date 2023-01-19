@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import type { TActive } from '@/spec'
 import css, { animate, theme } from '@/utils/css'
 
+import PenSVG from '@/icons/EditPen'
+
 export const Wrapper = styled.div`
   ${css.flex()};
   width: calc(100% + 30px);
@@ -58,12 +60,20 @@ export const CustomColorBall = styled(ColorBall)`
   );
 
   &:hover {
-    transform: rotate(180deg);
     cursor: pointer;
   }
-
-  transition: all 0.3s;
 `
+
+export const PenWrapper = styled.div`
+  ${css.circle(16)};
+  ${css.flex('align-both')};
+  background: radial-gradient(circle, white 40%, transparent 100%);
+`
+export const PenIcon = styled(PenSVG)`
+  ${css.size(10)};
+  fill: ${theme('article.digest')};
+`
+
 export const ActiveSign = styled.div`
   ${css.size(24)};
   background: ${theme('divider')};

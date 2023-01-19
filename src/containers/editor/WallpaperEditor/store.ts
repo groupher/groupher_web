@@ -51,11 +51,13 @@ const WallpaperEditor = T.model('WallpaperEditor', {
     },
     get customWallpaper(): TCustomWallpaper {
       const slf = self as TStore
-      const { hasPattern, hasBlur, hasShadow, direction } = slf
+      const { hasPattern, hasBlur, hasShadow, direction, customColorValue } = slf
 
       if (slf.wallpaper === WALLPAPER_CUSTOM) {
+        const customColors = customColorValue.split(',').map((c) => c.trim())
+
         return {
-          colors: ['#FFA69E', '#861657'],
+          colors: customColors,
           hasPattern,
           hasBlur,
           hasShadow,
@@ -136,6 +138,7 @@ const WallpaperEditor = T.model('WallpaperEditor', {
           slf,
         ),
 
+        customColor: slf.customColorValue,
         direction: self.direction as TWallpaperGradientDir,
       }
     },
