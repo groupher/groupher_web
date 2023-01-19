@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css from '@/utils/css'
 
 export const BaseBanner = styled.nav.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
@@ -9,9 +9,6 @@ export const BaseBanner = styled.nav.attrs(({ testid }: TTestable) => ({
   ${css.flexColumn('justify-center', 'align-center')};
   position: relative;
   min-height: 108px;
-  background: ${theme('banner.bg')};
-  border-bottom: 1px solid;
-  border-bottom-color: ${theme('banner.spliter')};
 `
 export const BaseTabber = styled.div`
   ${css.flex()};

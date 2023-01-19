@@ -9,9 +9,8 @@ import {
   Logo,
   LogoWrapper,
   CommunityInfo,
-  TitleWrapper,
   Title,
-  TitleText,
+  Desc,
 } from '../styles/classic_layout/community_brief'
 // import { subscribeCommunity, unsubscribeCommunity } from '../logic'
 
@@ -30,11 +29,11 @@ const CommunityBrief: FC<TProps> = ({ community }) => {
         />
       </LogoWrapper>
       <CommunityInfo>
-        <TitleWrapper>
-          <Title>
-            <TitleText>{community.title}</TitleText>
-          </Title>
-        </TitleWrapper>
+        <Title>
+          Groupher
+          {/* <TitleText>{community.title}</TitleText> */}
+        </Title>
+        <Desc>让你的产品聆听用户的声音</Desc>
       </CommunityInfo>
     </Wrapper>
   )

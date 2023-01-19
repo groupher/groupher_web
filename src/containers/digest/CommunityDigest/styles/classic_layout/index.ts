@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TMetric } from '@/spec'
-import css, { WIDTH } from '@/utils/css'
+import css, { WIDTH, theme } from '@/utils/css'
 import { pixelAdd } from '@/utils/dom'
 
 import { BaseBanner } from '../index'
@@ -11,7 +11,7 @@ const getMinHeight = (isMobile) => {
     return '140px'
   }
 
-  return '116px'
+  return '215px'
 }
 
 type TWrapper = {
@@ -42,6 +42,9 @@ export const BaseBannerContent = styled.div`
   width: 100%;
   max-width: ${WIDTH.COMMUNITY.CONTENT};
 
+  border-bottom: 1px solid;
+  border-bottom-color: ${theme('divider')};
+
   ${css.media.mobile`
     padding-left: 6%;
     padding-right: 5.5%;
@@ -49,11 +52,8 @@ export const BaseBannerContent = styled.div`
 `
 export const BannerContentWrapper = styled(BaseBannerContent)`
   ${css.flexColumn('justify-between')};
-  align-items: 'center';
 `
-export const BannerContainer = styled(BaseBanner)`
-  /* min-height: 125px; */
-`
+
 export const TabBarWrapper = styled.div`
   ${css.flex()};
   width: 100%;
@@ -69,7 +69,7 @@ export const TabBarWrapper = styled.div`
   `};
 `
 export const CommunityBaseInfo = styled.div`
-  ${css.flex('justify-between')};
+  ${css.flex('justify-between', 'align-start')};
   width: 100%;
   padding-top: 20px;
   // 60 是经典布局为缩小帖子列表"视觉宽度"手动缩小的值
