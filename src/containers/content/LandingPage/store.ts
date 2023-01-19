@@ -2,7 +2,7 @@
  * LandingPage store
  */
 
-import type { TCommunity, TRootStore, TWallpaper } from '@/spec'
+import type { TCommunity, TRootStore, TWallpaper, TWallpaperInfo } from '@/spec'
 
 import { buildLog } from '@/utils/logger'
 import { markStates, toJS, T, getParent, Instance } from '@/utils/mobx'
@@ -17,14 +17,19 @@ const LandingPage = T.model('LandingPage', {})
 
       return toJS(root.viewing.community)
     },
-    get wallpaper(): string {
-      const root = getParent(self) as TRootStore
 
-      return root.wallpaperEditor.wallpaper
-    },
-    get wallpapers(): Record<string, TWallpaper> {
+    get wallpaperInfo(): TWallpaperInfo {
       const root = getParent(self) as TRootStore
-      return root.wallpaperEditor.wallpapers
+      const {
+        wallpaperEditor: { wallpapers, wallpaper, customWallpaper, hasShadow },
+      } = root
+
+      return {
+        customWallpaper: toJS(customWallpaper),
+        wallpaper,
+        wallpapers,
+        hasShadow,
+      }
     },
     get gradientWallpapers(): Record<string, TWallpaper> {
       const root = getParent(self) as TRootStore

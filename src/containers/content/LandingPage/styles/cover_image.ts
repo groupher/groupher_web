@@ -59,6 +59,7 @@ export const Content = styled.div`
   width: 100%;
   height: 700px;
   position: relative;
+  overflow: hidden;
 `
 export const Background = styled.div<{ effect: string }>`
   ${css.flex('align-both')}
@@ -75,9 +76,14 @@ export const Background = styled.div<{ effect: string }>`
   will-change: transform;
   transition: all 0.3s;
 `
-export const Image = styled(Img)`
+export const Image = styled(Img)<{ hasShadow: boolean }>`
   display: block;
   width: 100%;
   height: 701px;
   object-fit: cover;
+
+  box-shadow: ${({ hasShadow }) =>
+    hasShadow ? 'rgb(100 100 111 / 20%) 0px 7px 29px 0px;' : 'none'};
+
+  transition: all 0.2s;
 `

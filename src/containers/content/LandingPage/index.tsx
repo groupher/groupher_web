@@ -53,7 +53,8 @@ type TProps = {
 const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
   useInit(store)
 
-  const { wallpaper, wallpapers, gradientWallpapers } = store
+  const { wallpaperInfo, gradientWallpapers } = store
+  const { wallpaper } = wallpaperInfo
 
   useEffect(() => {
     changeGlowEffect(wallpaper)
@@ -101,7 +102,7 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
             本站正在开发中，详情请联系 mydearxym@qq.com
           </Note>
         </Banner>
-        <CoverImage wallpaper={wallpaper} wallpapers={wallpapers} />
+        <CoverImage wallpaperInfo={wallpaperInfo} />
 
         <WallpaperBar wallpaper={wallpaper} gradientWallpapers={gradientWallpapers} />
         <Divider top={100} bottom={100} />

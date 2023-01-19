@@ -25,9 +25,6 @@ export const Banner = styled.div`
   height: 700px;
   width: 100%;
   position: relative;
-
-  /* background: radial-gradient(circle at 35% 35%, #f39e8d5c 0, transparent 24%),
-    radial-gradient(circle at 58% 50%, #5d1f8a4d 0, transparent 38%); */
 `
 export const BgGlow = styled.div<{ wallpaper: string }>`
   position: absolute;
