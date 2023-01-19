@@ -25,6 +25,7 @@ export const CommunityInfo = styled.div`
 export const Title = styled.div`
   ${css.flex('align-center')};
   color: ${theme('article.title')};
+  /* color: #e9eaea; */
   margin-top: 10px;
   margin-right: 10px;
   font-size: 18px;
@@ -33,6 +34,7 @@ export const Title = styled.div`
 `
 export const Desc = styled.div`
   color: ${theme('article.digest')};
+  /* color: #e9eaea; */
   opacity: 0.8;
   font-size: 13px;
   margin-top: 5px;

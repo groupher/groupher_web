@@ -29,12 +29,14 @@ export const SubText = styled.div`
 `
 export const NotifyIcon = styled(NotifySVG)`
   fill: ${theme('article.digest')};
+  /* fill: #e9eaea; */
   ${css.size(18)};
   margin-right: 15px;
   opacity: 0.8;
 `
 export const DashboardIcon = styled(DashboardSVG)`
   fill: ${theme('article.digest')};
+  /* fill: #e9eaea; */
   ${css.size(16)};
   margin-right: 14px;
   opacity: 0.8;
