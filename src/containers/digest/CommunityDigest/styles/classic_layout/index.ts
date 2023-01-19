@@ -70,7 +70,7 @@ export const TabBarWrapper = styled.div`
 `
 export const CustomPart = styled.div`
   color: ${theme('article.digest')};
-  font-size: 12px;
+  font-size: 13px;
   padding-right: 45px;
   font-weight: 500;
   cursor: pointer;

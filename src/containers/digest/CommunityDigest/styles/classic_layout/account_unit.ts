@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
   font-weight: 600;
 `
 export const Avatar = styled(Img)`
-  ${css.circle(18)};
+  ${css.circle(20)};
   ${css.flex('justify-between')};
 `
 export const SubscribeButton = styled(Button)`
@@ -30,14 +30,14 @@ export const SubText = styled.div`
 export const NotifyIcon = styled(NotifySVG)`
   fill: ${theme('article.digest')};
   /* fill: #e9eaea; */
-  ${css.size(18)};
+  ${css.size(20)};
   margin-right: 15px;
   opacity: 0.8;
 `
 export const DashboardIcon = styled(DashboardSVG)`
   fill: ${theme('article.digest')};
   /* fill: #e9eaea; */
-  ${css.size(16)};
+  ${css.size(20)};
   margin-right: 14px;
   opacity: 0.8;
 

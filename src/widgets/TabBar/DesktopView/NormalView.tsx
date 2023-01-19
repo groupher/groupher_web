@@ -23,6 +23,7 @@ const NormalView = ({ layout, source, active, onChange, size }) => {
       activeKey={active}
       onChange={onChange}
       size={size}
+      noAnimation
     />
   )
 }

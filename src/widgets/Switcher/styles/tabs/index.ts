@@ -7,6 +7,7 @@ type TSlipBar = {
   slipHeight: string
   width: string
   translateX: string
+  noAnimation?: boolean
 }
 
 export const Wrapper = styled.nav.attrs(({ testid }: TTestable) => ({
@@ -32,9 +33,9 @@ export const SlipBar = styled.span<TSlipBar>`
   bottom: 1px;
   left: 0;
   height: ${({ slipHeight }) => slipHeight};
-
   transform: ${({ translateX }) => `translate3d(${translateX}, 0, 0);`};
-  transition: transform 0.25s;
+
+  transition: ${({ noAnimation }) => (noAnimation ? 'none' : 'transform 0.25s')};
 `
 type TRealBar = { width: string }
 export const RealBar = styled.span<TRealBar>`
