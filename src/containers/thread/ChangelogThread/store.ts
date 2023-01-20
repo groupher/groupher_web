@@ -16,7 +16,7 @@ import { TAGS_MODE } from './constant'
 const log = buildLog('S:ChangelogThread')
 
 const ChangelogThread = T.model('ChangelogThread', {
-  tagsMode: T.opt(T.enum(values(TAGS_MODE)), TAGS_MODE.DEFAULT),
+  tagsMode: T.opt(T.enum(values(TAGS_MODE)), TAGS_MODE.ALL),
 })
   .views((self) => ({
     get curCommunity(): TCommunity {
@@ -30,7 +30,7 @@ const ChangelogThread = T.model('ChangelogThread', {
     },
     get tagsData(): TTag[] {
       const slf = self as TStore
-      if (slf.tagsMode === TAGS_MODE.DEFAULT) {
+      if (slf.tagsMode === TAGS_MODE.ALL) {
         return mockTags(15)
       }
 

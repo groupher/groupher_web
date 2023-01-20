@@ -25,16 +25,18 @@ export const Wrapper = styled.div<TTab>`
     getPadding(size, holyGrailView, mobileView, wrapMode, modelineView)};
   text-align: center;
   min-width: auto;
-  cursor: pointer;
 
-  margin-bottom: ${({ holyGrailView, wrapMode }) =>
-    getMarginBottom(holyGrailView, wrapMode)};
+  margin-bottom: ${({ holyGrailView, wrapMode }) => getMarginBottom(holyGrailView, wrapMode)};
 
   /* background: ${({ active }) => (active ? '#114758' : '')}; */
 
   ${css.media.mobile`
     margin-right: ${() => getMarginRight('', true, false)};
   `};
+
+  &:hover {
+    cursor: pointer;
+  }
 
   transition: all 0.2s;
 `
@@ -66,8 +68,7 @@ type TLabel = TActive & {
 export const Label = styled.span<TLabel>`
   ${css.flex('align-center')};
   white-space: nowrap;
-  color: ${({ active }) =>
-    active ? theme('article.title') : '#878b8f'}; // to-theme
+  color: ${({ active }) => (active ? theme('article.title') : '#878b8f')}; // to-theme
   margin-bottom: ${({ bottomSpace }) => `${bottomSpace}px`};
 
   font-weight: 500;

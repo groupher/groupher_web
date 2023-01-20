@@ -1,19 +1,24 @@
 import type { TTagsMode } from './spec'
 
 export const TAGS_MODE = {
-  DEFAULT: 'default' as TTagsMode,
-  CREATED_TIME: 'created_time' as TTagsMode,
+  ALL: 'all' as TTagsMode,
+  TAG: 'tag' as TTagsMode,
+  TIME: 'time' as TTagsMode,
   VERSION: 'version' as TTagsMode,
 }
 
 export const TABS_MODE_OPTIONS = [
   {
+    title: '全部',
+    raw: TAGS_MODE.ALL,
+  },
+  {
     title: '标签',
-    raw: TAGS_MODE.DEFAULT,
+    raw: TAGS_MODE.TAG,
   },
   {
     title: '时间',
-    raw: TAGS_MODE.CREATED_TIME,
+    raw: TAGS_MODE.TIME,
   },
   {
     title: '版本',
