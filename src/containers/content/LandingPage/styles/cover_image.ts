@@ -5,6 +5,8 @@ import css, { theme } from '@/utils/css'
 import Img from '@/Img'
 import LockSVG from '@/icons/Lock'
 
+import { getPathGradient } from './metric'
+
 export const Wrapper = styled.div`
   ${css.flexColumn('align-center')};
   position: relative;
@@ -32,7 +34,7 @@ export const BrowerHead = styled.div`
 `
 export const AddrBar = styled.div`
   ${css.flex('align-center')};
-  margin-left: -75px;
+  margin-left: -65px;
 `
 export const LockIcon = styled(LockSVG)`
   ${css.size(12)};
@@ -40,14 +42,19 @@ export const LockIcon = styled(LockSVG)`
   opacity: 0.5;
   margin-right: 4px;
 `
-
 export const AddText = styled.div`
   color: ${theme('article.digest')};
-  opacity: 0.8;
+  opacity: 0.7;
+`
+export const CoolText = styled.div<{ wallpaper: string }>`
+  color: ${theme('article.digest')};
+  background: ${({ wallpaper }) => `linear-gradient(to left, ${getPathGradient(wallpaper)})`};
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
 `
 export const Highlight = styled.div`
   color: ${theme('article.title')};
-  font-weight: 600;
 `
 export const Dot = styled.div`
   ${css.circle(10)};
