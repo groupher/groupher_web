@@ -5,15 +5,13 @@
 
 import { FC } from 'react'
 
-import { CHANGELOG_LAYOUT } from '@/constant/layout'
+// import { CHANGELOG_LAYOUT } from '@/constant/layout'
 import { bond } from '@/utils/mobx'
 
-import ChangelogItem from '@/widgets/ChangelogItem'
-
-import Filters from './Filters'
+import ClassicLayout from './ClassicLayout'
+import FocusLayout from './FocusLayout'
 
 import type { TStore } from './store'
-import { Wrapper, PreviousTitle, MainWrapper } from './styles'
 import { useInit } from './logic' /* eslint-disable-next-line */
 
 // const log = buildLog('C:ChangelogThread')
@@ -30,28 +28,10 @@ const ChangelogThreadContainer: FC<TProps> = ({
   useInit(store)
   const { globalLayout, tagsMode } = store
 
-  return (
-    <Wrapper testid={testid}>
-      <MainWrapper>
-        <ChangelogItem layout={globalLayout.changelog} showFullArticle />
+  // globalLayout.changelog === CHANGELOG_LAYOUT.OUTLINE
 
-        {globalLayout.changelog === CHANGELOG_LAYOUT.OUTLINE && (
-          <PreviousTitle>历史版本</PreviousTitle>
-        )}
-
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-      </MainWrapper>
-      <Filters tagsMode={tagsMode} />
-    </Wrapper>
-  )
+  return <FocusLayout globalLayout={globalLayout} />
+  // return <ClassicLayout globalLayout={globalLayout} tagsMode={tagsMode} />
 }
 
 export default bond(ChangelogThreadContainer, 'changelogThread') as FC<TProps>
