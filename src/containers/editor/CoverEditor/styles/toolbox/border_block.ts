@@ -25,7 +25,8 @@ export const Panel = styled.div`
   height: 180px;
   padding-left: 15px;
 
-  background-color: ${theme('hoverBg')};
+  background: ${theme('alphaBg2')};
+  backdrop-filter: blur(5px);
 `
 
 export const Icon = styled(ArchSVG)`

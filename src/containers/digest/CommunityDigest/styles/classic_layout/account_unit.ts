@@ -11,12 +11,12 @@ import SearchSVG from '@/icons/HeaderSearch'
 export const Wrapper = styled.div`
   ${css.flex('align-both')};
   color: ${theme('article.digest')};
-  margin-right: 14px;
+  margin-right: 10px;
+  margin-top: 15px;
   font-weight: 600;
-  margin-top: 0;
 `
 export const Avatar = styled(Img)`
-  ${css.circle(24)};
+  ${css.circle(20)};
   ${css.flex('justify-between')};
 `
 export const SubscribeButton = styled(Button)`
@@ -29,14 +29,16 @@ export const SubText = styled.div`
 `
 export const NotifyIcon = styled(NotifySVG)`
   fill: ${theme('article.digest')};
-  ${css.size(22)};
-  margin-right: 18px;
+  /* fill: #e9eaea; */
+  ${css.size(20)};
+  margin-right: 15px;
   opacity: 0.8;
 `
 export const DashboardIcon = styled(DashboardSVG)`
   fill: ${theme('article.digest')};
+  /* fill: #e9eaea; */
   ${css.size(20)};
-  margin-right: 16px;
+  margin-right: 14px;
   opacity: 0.8;
 
   &:hover {

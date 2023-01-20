@@ -1,6 +1,9 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
+import Typewriter from 'typewriter-effect'
 
 import type { TWallpaperInfo } from '@/spec'
+
+import useInterval from '@/hooks/useInterval'
 import { Space, SpaceGrow } from '@/widgets/Common'
 import { parseWallpaper } from '@/utils/wallpaper'
 
@@ -11,6 +14,7 @@ import {
   AddrBar,
   LockIcon,
   AddText,
+  CoolText,
   Highlight,
   Content,
   Background,
@@ -22,8 +26,14 @@ type TProps = {
 }
 
 const CoverImage: FC<TProps> = ({ wallpaperInfo }) => {
+  const [animateKey, setAnimateKey] = useState(0)
+
   const { wallpapers, wallpaper, hasShadow } = wallpaperInfo
   const { background, effect } = parseWallpaper(wallpapers, wallpaper)
+
+  useInterval(() => {
+    setAnimateKey(animateKey + 1)
+  }, 2000)
 
   return (
     <Wrapper>
@@ -36,8 +46,17 @@ const CoverImage: FC<TProps> = ({ wallpaperInfo }) => {
           <LockIcon />
           <AddText>https://</AddText>
           <Space right={2} />
-          <Highlight>your-brand</Highlight>
-          <AddText>.groupher.com</AddText>
+          <Highlight>your-product</Highlight>
+          <AddText>.groupher.com/</AddText>
+          <CoolText wallpaper={wallpaper}>
+            <Typewriter
+              options={{
+                strings: ['posts', 'kanban', 'changelog', 'help', 'roadmap', 'docs'],
+                autoStart: true,
+                loop: true,
+              }}
+            />
+          </CoolText>
         </AddrBar>
         <SpaceGrow />
       </BrowerHead>

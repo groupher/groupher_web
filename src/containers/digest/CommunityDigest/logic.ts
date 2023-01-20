@@ -68,7 +68,7 @@ const markLoading = (maybe = true) => store.mark({ loading: maybe })
  * @param {Boolean} inView
  */
 export const setViewport = (inViewport: boolean): void => {
-  store.mark({ inViewport })
+  // store.mark({ inViewport })
 }
 
 // ###############################

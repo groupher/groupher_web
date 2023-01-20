@@ -19,6 +19,9 @@ export const Title = styled.div`
   font-size: 38px;
   font-weight: 500;
   position: relative;
+
+  text-shadow: rgb(0 0 0 / 8%) 0px 10px 20px;
+  opacity: 0.9;
 `
 
 export const Desc = styled.div`

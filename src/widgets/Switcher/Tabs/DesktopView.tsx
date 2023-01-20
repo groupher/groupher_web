@@ -57,6 +57,7 @@ type TProps = {
   size: TSizeSM
   slipHeight: '1px' | '2px'
   bottomSpace?: number
+  noAnimation?: boolean
 }
 
 const Tabs: FC<TProps> = ({
@@ -67,6 +68,7 @@ const Tabs: FC<TProps> = ({
   activeKey = '',
   slipHeight = '1px',
   bottomSpace = 0,
+  noAnimation = false,
 }) => {
   const { isMobile } = useMobileDetect()
 
@@ -140,6 +142,7 @@ const Tabs: FC<TProps> = ({
             translateX={translateX}
             width={`${tabWidthList[active]}px`}
             slipHeight={slipHeight}
+            noAnimation={noAnimation}
           >
             <RealBar width={`${slipWidth}px`} />
           </SlipBar>

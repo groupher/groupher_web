@@ -31,6 +31,7 @@ import {
   Wrapper,
   BgGlow,
   Banner,
+  BetaText,
   Title,
   Desc,
   ButtonGroup,
@@ -38,6 +39,7 @@ import {
   DemoMenuItem,
   LinkIcon,
   DemoButton,
+  ArrowIcon,
   Note,
   InfoIcon,
   Divider,
@@ -66,6 +68,7 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
         <BgGlow wallpaper={wallpaper} />
         <Banner>
           <Header />
+          <BetaText>Beta</BetaText>
           <Title>让你的产品聆听用户的声音</Title>
           <Desc>
             讨论区，GTD 看板，更新日志，帮助文档多合一，收集沉淀用户反馈，助你打造更好的产品
@@ -89,11 +92,10 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
                 </DemoPanel>
               }
               placement="bottom"
-              trigger="click"
               offset={[1, 5]}
             >
               <DemoButton size="medium" ghost>
-                在线体验
+                在线体验 <ArrowIcon />
               </DemoButton>
             </Tooltip>
           </ButtonGroup>

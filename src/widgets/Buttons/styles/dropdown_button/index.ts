@@ -43,7 +43,7 @@ export const InnerBtnWrapper = styled.div`
   transition: color 0.2s;
 `
 export const ButtonWrapper = styled(Button)`
-  border: none;
+  border: none !important;
 `
 export const FilterIcon = styled(ArrowSVG)`
   fill: ${theme('article.digest')};

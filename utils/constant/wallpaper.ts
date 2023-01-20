@@ -186,7 +186,7 @@ export const GRADIENT_WALLPAPER = {
     ...DEFAULT_GRADIENT_EFFECT,
   },
   [GRADIENT_WALLPAPER_NAME.GREY]: {
-    colors: ['#eeeeee', '#d8d8d8', '#CACACE'],
+    colors: ['#EEEBE8', '#E7E2DD', '#dccfc2'],
     ...DEFAULT_GRADIENT_EFFECT,
   },
   [GRADIENT_WALLPAPER_NAME.BLUE]: {

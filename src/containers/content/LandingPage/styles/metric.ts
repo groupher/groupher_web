@@ -4,7 +4,8 @@ import { GRADIENT_WALLPAPER, GRADIENT_WALLPAPER_NAME } from '@/constant/wallpape
 
 export const getGlowBackground = (wallpaper: string): string => {
   if (!includes(wallpaper, keys(GRADIENT_WALLPAPER))) {
-    return ''
+    return `radial-gradient(circle at 40% 90%,#eeeeee 0,transparent 18%), 
+            radial-gradient(circle at 58% 100%,#CACACE 0,transparent 30%)`
   }
 
   // @ts-ignore
@@ -30,7 +31,7 @@ export const getGlowOpacity = (wallpaper: string): number => {
     }
 
     case GRADIENT_WALLPAPER_NAME.PURPLE: {
-      return 0.5
+      return 0.4
     }
 
     case GRADIENT_WALLPAPER_NAME.BLUE: {
@@ -41,4 +42,28 @@ export const getGlowOpacity = (wallpaper: string): number => {
       return 0.8
     }
   }
+}
+
+export const getPathGradient = (wallpaper: string): string => {
+  if (!includes(wallpaper, keys(GRADIENT_WALLPAPER))) {
+    return '#f2bc5a,#f76b6b'
+  }
+
+  if (wallpaper === GRADIENT_WALLPAPER_NAME.PINK) {
+    return '#f8be6d,#c479de'
+  }
+
+  if (wallpaper === GRADIENT_WALLPAPER_NAME.GREY) {
+    return '#E1D5CC, #955D29'
+  }
+
+  // @ts-ignore
+  const { colors } = GRADIENT_WALLPAPER[wallpaper]
+
+  if (!colors) return ''
+
+  const color1 = colors[0]
+  const color2 = colors[colors.length - 1]
+
+  return `${color1}, ${color2}`
 }

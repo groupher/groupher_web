@@ -4,16 +4,16 @@ import { sortByIndex } from '@/utils/helper'
 import Tabs from '@/widgets/Switcher/Tabs'
 
 // priority: icon > localIcon || raw
-const getLocalIcon = (item) => {
-  if (item.icon) return ''
+// const getLocalIcon = (item) => {
+//   if (item.icon) return ''
 
-  return item.localIcon ? item.localIcon : item.raw
-}
+//   return item.localIcon ? item.localIcon : item.raw
+// }
 
 const NormalView = ({ layout, source, active, onChange, size }) => {
   const items = source.map((item) => ({
     ...item,
-    localIcon: getLocalIcon(item),
+    // localIcon: getLocalIcon(item),
   }))
 
   return (
@@ -23,6 +23,7 @@ const NormalView = ({ layout, source, active, onChange, size }) => {
       activeKey={active}
       onChange={onChange}
       size={size}
+      noAnimation
     />
   )
 }

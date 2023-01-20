@@ -18,7 +18,8 @@ export const Wrapper = styled.div`
   border-color: ${theme('divider')};
   border-radius: 8px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  background: ${theme('hoverBg')};
+  background: ${theme('alphaBg2')};
+  backdrop-filter: blur(5px);
   z-index: 2;
   display: none;
   animation: ${animate.jump} 0.4s linear;

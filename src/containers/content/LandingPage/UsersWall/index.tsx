@@ -49,7 +49,7 @@ const UsersWall: FC = () => {
   return (
     <Wrapper>
       <Slogan>
-        <Title>被众多优秀开发者及团队青睐</Title>
+        <Title>被众多优秀开发者和团队青睐</Title>
         <Desc>从独立开发者到中小型创业团队，我们用产品力回报信任</Desc>
       </Slogan>
       <Wall>

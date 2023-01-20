@@ -1,10 +1,10 @@
 import { FC, memo } from 'react'
+import Router from 'next/router'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TThread, TCommunity, TMetric } from '@/spec'
-import EVENT from '@/constant/event'
-import { send } from '@/utils/signal'
 
+import { SpaceGrow } from '@/widgets/Common'
 import TabBar from '@/widgets/TabBar'
 import ViewportTracker from '@/widgets/ViewportTracker'
 
@@ -17,6 +17,7 @@ import {
   BannerContentWrapper,
   CommunityBaseInfo,
   TabBarWrapper,
+  CustomPart,
 } from '../styles/classic_layout'
 
 import { setViewport } from '../logic'
@@ -44,10 +45,15 @@ const ClassicLayout: FC<TProps> = ({ community, activeThread, metric }) => {
           <TabBarWrapper>
             <TabBar
               source={community.threads}
-              onChange={(data) => send(EVENT.COMMUNITY_THREAD_CHANGE, { data })}
+              onChange={(path) => {
+                Router.push(`/home/${path}`)
+              }}
               active={activeThread}
               communityRaw={community.raw}
             />
+            <SpaceGrow />
+            {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
+            <CustomPart>🔥 我们在招人!</CustomPart>
           </TabBarWrapper>
         </BannerContentWrapper>
       </InnerWrapper>
