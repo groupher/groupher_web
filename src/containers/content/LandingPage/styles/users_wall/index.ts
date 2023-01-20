@@ -17,6 +17,9 @@ export const Title = styled.div`
   color: ${theme('article.title')};
   font-size: 38px;
   font-weight: 500;
+
+  text-shadow: rgb(0 0 0 / 8%) 0px 10px 20px;
+  opacity: 0.9;
 `
 export const Desc = styled.div`
   font-size: 17px;

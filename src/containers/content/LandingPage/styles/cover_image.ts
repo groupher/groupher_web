@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
   border-radius: 12px;
   box-shadow: 0 5px 25px rgb(35 35 35 / 10%);
   /* box-shadow: -1px 6px 25px 5px rgb(35 35 35 / 11%); */
-  margin-top: -200px;
+  margin-top: -218px;
   border-top: 1px solid;
   border-color: ${theme('divider')};
 

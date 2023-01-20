@@ -9,7 +9,7 @@ import LinkSVG from '@/icons/LinkOutside'
 import css, { animate, theme } from '@/utils/css'
 import InfoSVG from '@/icons/Info'
 
-import { getGlowOpacity, getGlowBackground } from './metric'
+import { getGlowOpacity, getGlowBackground, getBetaGradient } from './metric'
 
 type TWrapper = TTestable
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
@@ -37,10 +37,21 @@ export const BgGlow = styled.div<{ wallpaper: string }>`
   animation: ${animate.shake} 15s ease-in infinite alternate;
 `
 
+export const BetaText = styled.div<{ wallpaper: string }>`
+  font-size: 20px;
+  background: ${({ wallpaper }) => `linear-gradient(to left, ${getBetaGradient(wallpaper)})`};
+  font-weight: 500;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-top: -48px;
+  margin-bottom: 10px;
+`
 export const Title = styled.div`
   font-size: 40px;
   ${theme('article.title')};
   font-weight: 600;
+  text-shadow: rgb(0 0 0 / 8%) 0px 10px 20px;
+  opacity: 0.8;
 `
 export const Desc = styled.p`
   font-size: 18px;
