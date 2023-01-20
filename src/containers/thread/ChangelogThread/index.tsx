@@ -5,7 +5,7 @@
 
 import { FC } from 'react'
 
-// import { CHANGELOG_LAYOUT } from '@/constant/layout'
+import { BANNER_LAYOUT } from '@/constant/layout'
 import { bond } from '@/utils/mobx'
 
 import ClassicLayout from './ClassicLayout'
@@ -28,10 +28,11 @@ const ChangelogThreadContainer: FC<TProps> = ({
   useInit(store)
   const { globalLayout, tagsMode } = store
 
-  // globalLayout.changelog === CHANGELOG_LAYOUT.OUTLINE
-
-  return <FocusLayout globalLayout={globalLayout} />
-  // return <ClassicLayout globalLayout={globalLayout} tagsMode={tagsMode} />
+  return globalLayout.banner === BANNER_LAYOUT.HEADER ? (
+    <FocusLayout globalLayout={globalLayout} />
+  ) : (
+    <ClassicLayout globalLayout={globalLayout} tagsMode={tagsMode} />
+  )
 }
 
 export default bond(ChangelogThreadContainer, 'changelogThread') as FC<TProps>
