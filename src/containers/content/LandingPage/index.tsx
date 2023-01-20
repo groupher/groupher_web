@@ -39,6 +39,7 @@ import {
   DemoMenuItem,
   LinkIcon,
   DemoButton,
+  ArrowIcon,
   Note,
   InfoIcon,
   Divider,
@@ -91,11 +92,10 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
                 </DemoPanel>
               }
               placement="bottom"
-              trigger="click"
               offset={[1, 5]}
             >
               <DemoButton size="medium" ghost>
-                在线体验
+                在线体验 <ArrowIcon />
               </DemoButton>
             </Tooltip>
           </ButtonGroup>

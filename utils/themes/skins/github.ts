@@ -44,6 +44,7 @@ const github = {
   link,
   divider: border,
   alphaBg: '#ffffff95',
+  alphaBg2: '#fffffff2',
   hoverBg,
   menuActive: '#e9e9e991',
   linkHover: lighten(link, 5),

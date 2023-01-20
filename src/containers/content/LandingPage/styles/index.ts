@@ -8,6 +8,7 @@ import LinkSVG from '@/icons/LinkOutside'
 
 import css, { animate, theme } from '@/utils/css'
 import InfoSVG from '@/icons/Info'
+import ArrowSVG from '@/icons/ArrowSimple'
 
 import { getGlowOpacity, getGlowBackground } from './metric'
 
@@ -39,7 +40,7 @@ export const BgGlow = styled.div<{ wallpaper: string }>`
 
 export const BetaText = styled.div`
   font-size: 16px;
-  background: linear-gradient(180deg, #606060 16.79%, rgb(151 151 151 / 56%) 87.31%);
+  background: linear-gradient(-180deg, #606060 16.79%, rgb(151 151 151 / 56%) 87.31%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -76,6 +77,7 @@ export const ButtonGroup = styled.div`
   ${css.flex('align-center')};
   gap: 0 22px;
   margin-top: 30px;
+  margin-left: 12px;
 `
 export const DemoPanel = styled.div`
   ${css.flexColumn()};
@@ -106,6 +108,13 @@ export const LinkIcon = styled(LinkSVG)`
   ${DemoMenuItem}:hover & {
     opacity: 1;
   }
+`
+export const ArrowIcon = styled(ArrowSVG)`
+  ${css.size(16)};
+  margin-left: 4px;
+  fill: ${theme('article.digest')};
+  transform: rotate(-90deg);
+  margin-right: -5px;
 `
 export const DemoButton = styled(Button)`
   border-color: ${theme('article.digest')};

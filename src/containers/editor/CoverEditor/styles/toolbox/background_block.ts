@@ -21,7 +21,8 @@ export const Panel = styled.div`
   height: 200px;
   padding: 10px;
 
-  background-color: ${theme('hoverBg')};
+  background: ${theme('alphaBg2')};
+  backdrop-filter: blur(5px);
 `
 
 export const Title = styled.div`
