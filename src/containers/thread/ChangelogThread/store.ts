@@ -4,7 +4,7 @@
 
 import { values } from 'ramda'
 
-import type { TCommunity, TRootStore, TGlobalLayout, TTag } from '@/spec'
+import type { TCommunity, TRootStore, TGlobalLayout, TTag, TChangelogLayout } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
@@ -30,7 +30,7 @@ const ChangelogThread = T.model('ChangelogThread', {
     },
     get tagsData(): TTag[] {
       const slf = self as TStore
-      if (slf.tagsMode === TAGS_MODE.ALL) {
+      if (slf.tagsMode === TAGS_MODE.ALL || slf.tagsMode === TAGS_MODE.TAG) {
         return mockTags(15)
       }
 

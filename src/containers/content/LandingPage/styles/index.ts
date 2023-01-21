@@ -12,7 +12,7 @@ import ArrowSVG from '@/icons/ArrowSimple'
 
 // import TestBgSVG from './TestSVG'
 
-import { getGlowOpacity, getGlowBackground } from './metric'
+import { getGlowOpacity, getGlowBackground, getPathGradient } from './metric'
 
 type TWrapper = TTestable
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
@@ -64,9 +64,10 @@ export const PatternBg = styled.div`
   opacity: 0.25;
   /* transform: skewY(-2deg); */
 `
-export const BetaText = styled.div`
+export const BetaText = styled.div<{ wallpaper: string }>`
   font-size: 16px;
   background: linear-gradient(-180deg, #606060 16.79%, rgb(151 151 151 / 56%) 87.31%);
+  background: ${({ wallpaper }) => `linear-gradient(to top, ${getPathGradient(wallpaper)})`};
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
