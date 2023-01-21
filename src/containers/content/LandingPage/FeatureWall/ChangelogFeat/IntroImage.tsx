@@ -22,7 +22,7 @@ type TProps = TActive
 const IntroImage: FC<TProps> = ({ $active }) => {
   return (
     <Wrapper>
-      <BgDots $active={$active} featType={FEAT_TYPE.DISCUSS} />
+      <BgDots $active={$active} featType={FEAT_TYPE.CHANGELOG} />
       <ImageWrapper>
         <Image src="/intro-help-demo.png" />
       </ImageWrapper>

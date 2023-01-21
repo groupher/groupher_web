@@ -11,12 +11,12 @@ export const Wrapper = styled.div<TWrapper>`
   ${css.size(600)};
   background: ${({ featType }) => `radial-gradient(${FEAT[featType].COLOR} 1px, transparent 1px)`};
 
-  background-size: 25px 25px;
+  background-size: 26px 26px;
   position: absolute;
   top: -80px;
   border-radius: 100px;
 
-  opacity: ${({ $active }) => ($active ? 1 : 0.8)};
+  opacity: ${({ $active }) => ($active ? 0.7 : 0.5)};
 
   transition: all 0.2s;
   transition-delay: 1s;

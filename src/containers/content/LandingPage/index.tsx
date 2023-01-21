@@ -30,6 +30,7 @@ import type { TStore } from './store'
 import {
   Wrapper,
   BgGlow,
+  PatternBg,
   Banner,
   BetaText,
   Title,
@@ -66,6 +67,7 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
     <ParallaxProvider>
       <Wrapper testid="landing-page">
         <BgGlow wallpaper={wallpaper} />
+        <PatternBg />
         <Banner>
           <Header />
           <BetaText>Beta</BetaText>
