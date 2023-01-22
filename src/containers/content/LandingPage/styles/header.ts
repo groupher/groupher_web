@@ -119,25 +119,53 @@ export const DemoIcon = styled(DemoSVG)`
   transition: all 0.2s;
 `
 
-export const Panel = styled.div`
+export const Panel = styled.div<{ width?: string }>`
   ${css.flexColumn()};
+  margin-top: 3px;
+  margin-bottom: 3px;
   gap: 3px 0;
   padding: 6px 4px;
   padding-left: 8px;
-  width: 100px;
+  width: ${({ width }) => width};
 `
 
-export const MenuItem = styled(Link)`
-  ${css.flex('justify-between', 'align-center')};
-  color: ${theme('article.title')};
+export const MenuItem = styled(Link)<{ noDesc?: boolean }>`
+  ${css.flexColumn('align-start')};
   font-size: 14px;
-  padding: 4px 4px;
+
+  padding: ${({ noDesc }) => (noDesc ? '6px 12px;' : '10px 12px')};
+
   text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 8px;
 
   &:hover {
-    /* font-weight: 600; */
     cursor: pointer;
-    background: ${theme('hoverBg')};
+    background: #e4e4e457;
     text-decoration: none;
+    border-color: ${theme('popover.activeBorder')};
+  }
+
+  will-change: background;
+`
+export const MenuTitle = styled.div`
+  color: ${theme('article.title')};
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.8;
+
+  ${MenuItem}:hover & {
+    opacity: 1;
+    cursor: pointer;
+  }
+`
+export const MenuDesc = styled.div`
+  color: ${theme('article.digest')};
+  font-size: 12px;
+  margin-top: 3px;
+
+  ${MenuItem}:hover & {
+    color: ${theme('article.title')};
+    cursor: pointer;
   }
 `
