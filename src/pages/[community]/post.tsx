@@ -25,6 +25,7 @@ import {
 
 import GlobalLayout from '@/containers/layout/GlobalLayout'
 import PostContent from '@/containers/content/CommunityContent/PostContent'
+// import SidebarContent from '@/containers/content/CommunityContent/SidebarContent'
 
 import { P } from '@/schemas'
 
@@ -134,6 +135,7 @@ const CommunityPage = (props) => {
         seoConfig={communitySEO(community as TCommunity, activeThread)}
       >
         <PostContent />
+        {/* <SidebarContent /> */}
       </GlobalLayout>
     </Provider>
   )

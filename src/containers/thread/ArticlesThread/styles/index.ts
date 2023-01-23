@@ -9,7 +9,21 @@ export const Wrapper = styled.div`
   ${css.flex()};
   width: 100%;
 `
-export const MainWrapper = styled.div<{ thread: TThread }>`
+
+type TMainWrapper = {
+  thread?: TThread
+  isViewingArticle?: boolean
+}
+
+export const SidebarWrapper = styled.div<TMainWrapper>`
+  flex-grow: 1;
+  width: 100%;
+  max-width: 600px;
+  margin-left: ${({ isViewingArticle }) => (isViewingArticle ? '2%' : '14%')};
+
+  transition: all 0.2s;
+`
+export const MainWrapper = styled.div<TMainWrapper>`
   flex-grow: 1;
   width: 100%;
 

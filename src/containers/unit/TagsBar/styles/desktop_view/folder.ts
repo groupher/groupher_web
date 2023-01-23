@@ -19,9 +19,8 @@ export const Header = styled.div<TActive>`
 export const ArrowIcon = styled(ArrowSVG)<{ $isOpen: boolean }>`
   fill: ${theme('tags.text')};
   ${css.size(15)};
-  opacity: 0.6;
-  transform: ${({ $isOpen }) =>
-    $isOpen ? 'rotate(270deg)' : 'rotate(180deg)'};
+  opacity: 0.8;
+  transform: ${({ $isOpen }) => ($isOpen ? 'rotate(270deg)' : 'rotate(180deg)')};
   transition: transform 0.5s;
 
   ${Wrapper}:hover & {
@@ -35,11 +34,10 @@ export const ArrowIcon = styled(ArrowSVG)<{ $isOpen: boolean }>`
 `
 export const Title = styled.div`
   ${css.flex('align-center')};
-  margin-left: 8px;
+  margin-left: 5px;
 `
 export const FolderTitle = styled.div<{ $isOpen: boolean }>`
-  color: ${({ $isOpen }) =>
-    !$isOpen ? theme('article.digest') : theme('lightText')};
+  color: ${theme('article.title')};
 
   margin-left: 4px;
   font-size: 13px;
@@ -74,7 +72,7 @@ export const Content = styled.div<{ $isOpen: boolean }>`
 export const SubToggle = styled.div`
   ${css.flex('align-center')};
   margin-top: 5px;
-  margin-left: 3px;
+  margin-left: 2px;
 
   &:hover {
     cursor: pointer;
@@ -83,7 +81,7 @@ export const SubToggle = styled.div`
 export const SubToggleTitle = styled.div`
   color: ${theme('lightText')};
   font-size: 12px;
-  margin-left: 11px;
+  margin-left: 8px;
   padding: 2px;
   border-radius: 5px;
 
@@ -95,6 +93,6 @@ export const SubToggleTitle = styled.div`
 `
 export const SubTogglePrefixIcon = styled(MoreSVG)`
   fill: ${theme('lightText')};
-  ${css.size(12)};
-  margin-left: 1px;
+  ${css.size(11)};
+  margin-left: 2px;
 `

@@ -36,7 +36,6 @@ export const Wrapper = styled.div<TActive>`
   /* TODO: move namespace to modeline */
   background: ${theme('header.fixed')};
   opacity: ${({ visible }) => (visible ? 1 : '0')};
-  /* border: 1px solid tomato; */
   height: 32px;
   box-shadow: -5px 6px 37px -8px rgba(0, 0, 0, 0.42);
 

@@ -12,12 +12,7 @@ import ThreadContent from './ThreadContent'
 import type { TStore } from './store'
 import { useInit } from './logic'
 
-import {
-  Wrapper,
-  InnerWrapper,
-  ContentWrapper,
-  MobileCardsWrapper,
-} from './styles'
+import { Wrapper, InnerWrapper, ContentWrapper } from './styles'
 
 type TProps = {
   communityContent?: TStore

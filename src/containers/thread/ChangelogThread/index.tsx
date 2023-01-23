@@ -28,10 +28,10 @@ const ChangelogThreadContainer: FC<TProps> = ({
   useInit(store)
   const { globalLayout, tagsMode } = store
 
-  return globalLayout.banner === BANNER_LAYOUT.HEADER ? (
-    <FocusLayout globalLayout={globalLayout} />
-  ) : (
+  return globalLayout.banner === BANNER_LAYOUT.TABBER ? (
     <ClassicLayout globalLayout={globalLayout} tagsMode={tagsMode} />
+  ) : (
+    <FocusLayout globalLayout={globalLayout} />
   )
 }
 

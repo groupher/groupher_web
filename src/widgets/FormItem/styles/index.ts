@@ -7,25 +7,17 @@ import Input from '@/widgets/Input'
 // import Img from '@/Img'
 
 export const Inputer = styled(Input)<{ error: string }>`
-  border-left: ${({ error }) =>
-    error === 'true' ? '3px solid !important' : ''};
-  border-right: ${({ error }) =>
-    error === 'true' ? '3px solid !important' : ''};
-  border-left-color: ${({ error }) =>
-    error === 'true' ? theme('baseColor.red') : ''};
-  border-right-color: ${({ error }) =>
-    error === 'true' ? theme('baseColor.red') : ''};
+  border-left: ${({ error }) => (error === 'true' ? '3px solid !important' : '')};
+  border-right: ${({ error }) => (error === 'true' ? '3px solid !important' : '')};
+  border-left-color: ${({ error }) => (error === 'true' ? theme('baseColor.red') : '')};
+  border-right-color: ${({ error }) => (error === 'true' ? theme('baseColor.red') : '')};
 `
 // TODO:  ANTD-CHECK
 export const TextAreaInput = styled(Input)<{ error: string }>`
-  border-left: ${({ error }) =>
-    error === 'true' ? '3px solid !important' : ''};
-  border-right: ${({ error }) =>
-    error === 'true' ? '3px solid !important' : ''};
-  border-left-color: ${({ error }) =>
-    error === 'true' ? theme('baseColor.red') : ''};
-  border-right-color: ${({ error }) =>
-    error === 'true' ? theme('baseColor.red') : ''};
+  border-left: ${({ error }) => (error === 'true' ? '3px solid !important' : '')};
+  border-right: ${({ error }) => (error === 'true' ? '3px solid !important' : '')};
+  border-left-color: ${({ error }) => (error === 'true' ? theme('baseColor.red') : '')};
+  border-right-color: ${({ error }) => (error === 'true' ? theme('baseColor.red') : '')};
   border: 1px solid tomato;
 `
 
@@ -36,8 +28,7 @@ export const FormItemWrapper = styled.div<TSpace>`
 `
 export const FormLabel = styled.div<{ error: boolean }>`
   font-size: 13px;
-  color: ${({ error }) =>
-    error ? theme('baseColor.red') : theme('form.label')};
+  color: ${({ error }) => (error ? theme('baseColor.red') : theme('form.label'))};
   margin-right: 10px;
   margin-top: 5px;
   width: auto;

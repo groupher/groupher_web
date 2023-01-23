@@ -10,7 +10,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   /* ${css.flex('align-start', 'justify-between')}; */
   width: 100%;
   position: relative;
-  background: white;
+  background: ${theme('alphaBg')};
   padding-top: 10px;
   padding-bottom: 12px;
   margin-top: 3px;

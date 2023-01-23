@@ -10,12 +10,12 @@ import dynamic from 'next/dynamic'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TResState } from '@/spec'
+import { BANNER_LAYOUT } from '@/constant/layout'
+
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
 import PagedArticles from '@/widgets/PagedArticles'
-
-// import FaqList from '@/widgets/FaqList'
 import TagNote from '@/widgets/TagNote'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
@@ -24,7 +24,7 @@ import ArticlesFilter from '@/widgets/ArticlesFilter'
 
 import type { TStore } from './store'
 
-import { Wrapper, MainWrapper, FilterWrapper } from './styles'
+import { Wrapper, MainWrapper, SidebarWrapper, FilterWrapper } from './styles'
 
 import { useInit, inAnchor, outAnchor, onFilterSelect, onSearch, closeSearch } from './logic'
 
@@ -53,12 +53,16 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
     mode,
     globalLayout,
     activeTagData,
+    isViewingArticle,
   } = store
   const { pageNumber, totalCount } = pagedArticlesData
 
+  const isSidebarLayout = globalLayout.banner === BANNER_LAYOUT.SIDEBAR
+  const LayoutWrapper = isSidebarLayout ? SidebarWrapper : MainWrapper
+
   return (
     <Wrapper>
-      <MainWrapper thread={curThread}>
+      <LayoutWrapper thread={curThread} isViewingArticle={isViewingArticle}>
         <ViewportTracker onEnter={inAnchor} onLeave={outAnchor} />
 
         {showFilters && (
@@ -89,9 +93,9 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
           />
         )}
         {mode === 'search' && <FaqList mode="search-hint" />}
-      </MainWrapper>
+      </LayoutWrapper>
 
-      {!isMobile && <ThreadSidebar />}
+      {!isMobile && !isSidebarLayout && <ThreadSidebar />}
     </Wrapper>
   )
 }
