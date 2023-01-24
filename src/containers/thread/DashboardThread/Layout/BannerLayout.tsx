@@ -24,7 +24,8 @@ import {
   Circle,
   Main,
   ListsWrapper,
-  TagssWrapper,
+  TagsWrapper,
+  SidebarWrapper,
 } from '../styles/ui/banner_layout'
 import { edit } from '../logic'
 
@@ -85,7 +86,7 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
                 <Br bottom={14} />
                 <Bar long={55} thin />
               </ListsWrapper>
-              <TagssWrapper>
+              <TagsWrapper>
                 <Bar long={100} />
                 <Br bottom={15} />
                 <Bar long={60} thin />
@@ -97,7 +98,7 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
                 <Bar long={60} thin />
                 <Br bottom={6} />
                 <Bar long={50} thin />
-              </TagssWrapper>
+              </TagsWrapper>
             </Main>
           </Block>
           <LayoutTitle $active={layout === BANNER_LAYOUT.HEADER}>
@@ -109,7 +110,6 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
             />
           </LayoutTitle>
         </Layout>
-        <Space right={40} />
         <Layout onClick={() => edit(BANNER_LAYOUT.TABBER, 'bannerLayout')}>
           <Block $active={layout === BANNER_LAYOUT.TABBER}>
             <Row>
@@ -146,7 +146,7 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
                 <Br bottom={14} />
                 <Bar long={50} thin />
               </ListsWrapper>
-              <TagssWrapper>
+              <TagsWrapper>
                 <Bar long={100} />
                 <Br bottom={15} />
                 <Bar long={60} thin />
@@ -158,13 +158,74 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
                 <Bar long={60} thin />
                 <Br bottom={6} />
                 <Bar long={50} thin />
-              </TagssWrapper>
+              </TagsWrapper>
             </Main>
           </Block>
           <LayoutTitle $active={layout === BANNER_LAYOUT.TABBER}>
             <CheckLabel
               title="标签卡式"
               $active={layout === BANNER_LAYOUT.TABBER}
+              top={15}
+              left={-15}
+            />
+          </LayoutTitle>
+        </Layout>
+        <Layout onClick={() => edit(BANNER_LAYOUT.SIDEBAR, 'bannerLayout')}>
+          <Block $active={layout === BANNER_LAYOUT.SIDEBAR}>
+            <Row>
+              <Space right={110} />
+              <Bar thin long={10} />
+              <SpaceGrow />
+              <Space right={5} />
+              <Circle radius={6} />
+            </Row>
+            <Main>
+              <SidebarWrapper>
+                <Bar long={100} />
+                <Br bottom={15} />
+                <Bar long={60} thin />
+                <Br bottom={6} />
+                <Bar long={85} thin />
+                <Br bottom={6} />
+                <Bar long={50} thin />
+                <Br bottom={6} />
+                <Bar long={60} thin />
+                <Br bottom={6} />
+                <Bar long={50} thin />
+                <Br bottom={15} />
+                <DividerLine top={6} bottom={12} />
+                <Bar long={50} thin />
+                <Br bottom={6} />
+                <Bar long={60} thin />
+                <Br bottom={6} />
+                <Bar long={50} thin />
+              </SidebarWrapper>
+              <Space right={50} />
+              <ListsWrapper noBorder>
+                <DividerLine top={5} bottom={20} />
+                <Bar long={60} thin />
+                <Br bottom={14} />
+                <Bar long={50} thin />
+                <Br bottom={14} />
+                <Bar long={55} thin />
+                <Br bottom={14} />
+                <Bar long={40} thin />
+                <Br bottom={14} />
+                <Bar long={60} thin />
+                <Br bottom={14} />
+                <Bar long={50} thin />
+                <Br bottom={14} />
+                <Bar long={55} thin />
+                <Br bottom={14} />
+                <Bar long={40} thin />
+                <Br bottom={14} />
+              </ListsWrapper>
+            </Main>
+          </Block>
+          <LayoutTitle $active={layout === BANNER_LAYOUT.SIDEBAR}>
+            <CheckLabel
+              title="边栏式"
+              $active={layout === BANNER_LAYOUT.SIDEBAR}
               top={15}
               left={-15}
             />

@@ -72,7 +72,7 @@ const ClassicLayout: FC<TProps> = ({ showCommunityBadge, thread, community }) =>
           {showCommunityBadge && (
             <Fragment>
               <DividerTitle>
-                参与者
+                团队
                 <CommunityJoinersNum>329</CommunityJoinersNum>
               </DividerTitle>
               <Br top={14} />

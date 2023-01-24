@@ -50,7 +50,7 @@ export const MENU = {
         raw: DASHBOARD_ROUTE.THREADS,
       },
       {
-        title: '板块布局',
+        title: '布局/样式',
         raw: DASHBOARD_ROUTE.LAYOUT,
       },
       {
