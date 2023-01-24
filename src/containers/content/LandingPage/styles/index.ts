@@ -10,7 +10,9 @@ import css, { animate, theme } from '@/utils/css'
 import InfoSVG from '@/icons/Info'
 import ArrowSVG from '@/icons/ArrowSimple'
 
-import { getGlowOpacity, getGlowBackground } from './metric'
+// import TestBgSVG from './TestSVG'
+
+import { getGlowOpacity, getGlowBackground, getPathGradient } from './metric'
 
 type TWrapper = TTestable
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
@@ -20,6 +22,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   height: 100%;
   width: 100%;
   position: relative;
+  overflow: hidden;
 `
 export const Banner = styled.div`
   ${css.flexColumn('align-center')};
@@ -37,10 +40,34 @@ export const BgGlow = styled.div<{ wallpaper: string }>`
   background: ${({ wallpaper }) => getGlowBackground(wallpaper)};
   animation: ${animate.shake} 15s ease-in infinite alternate;
 `
+export const PatternBg = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 800px;
+  height: 500px;
+  mix-blend-mode: overlay;
 
-export const BetaText = styled.div`
+  background: conic-gradient(at 10% 50%, #0000 75%, rgba(0, 0, 0, 0.97) 0),
+    conic-gradient(at 10% 50%, #0000 75%, rgba(0, 0, 0, 0.97) 0) calc(1 * 20px) calc(3 * 20px),
+    conic-gradient(at 10% 50%, #0000 75%, rgba(0, 0, 0, 0.97) 0) calc(2 * 20px) calc(1 * 20px),
+    conic-gradient(at 10% 50%, #0000 75%, rgba(0, 0, 0, 0.97) 0) calc(3 * 20px) calc(4 * 20px),
+    conic-gradient(at 10% 50%, #0000 75%, rgba(0, 0, 0, 0.97) 0) calc(4 * 20px) calc(2 * 20px),
+    conic-gradient(at 50% 10%, #0000 75%, rgba(0, 0, 0, 0.97) 0) 0 calc(4 * 20px),
+    conic-gradient(at 50% 10%, #0000 75%, rgba(0, 0, 0, 0.97) 0) calc(1 * 20px) calc(2 * 20px),
+    conic-gradient(at 50% 10%, #0000 75%, rgba(0, 0, 0, 0.97) 0) calc(2 * 20px) 0,
+    conic-gradient(at 50% 10%, #0000 75%, rgba(0, 0, 0, 0.97) 0) calc(3 * 20px) calc(3 * 20px),
+    conic-gradient(at 50% 10%, #0000 75%, rgba(0, 0, 0, 0.97) 0) calc(4 * 20px) calc(1 * 20px),
+    rgba(71, 212, 255, 0);
+  background-size: 100px 100px;
+
+  opacity: 0.25;
+  /* transform: skewY(-2deg); */
+`
+export const BetaText = styled.div<{ wallpaper: string }>`
   font-size: 16px;
   background: linear-gradient(-180deg, #606060 16.79%, rgb(151 151 151 / 56%) 87.31%);
+  background: ${({ wallpaper }) => `linear-gradient(to top, ${getPathGradient(wallpaper)})`};
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

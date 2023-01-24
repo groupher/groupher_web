@@ -28,6 +28,10 @@ export const changeGlowEffect = (wallpaper: string): void => {
       store.changeGlowEffect(GLOW_EFFECT_NAME.GREY_GREEN)
       return
     }
+    case GRADIENT_WALLPAPER_NAME.GREY: {
+      store.changeGlowEffect(GLOW_EFFECT_NAME.GREY_BROWN)
+      return
+    }
     case GRADIENT_WALLPAPER_NAME.ORANGE: {
       store.changeGlowEffect(GLOW_EFFECT_NAME.YELLOW_RED)
       return

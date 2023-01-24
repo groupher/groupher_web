@@ -98,6 +98,11 @@ const ArticlesThread = T.model('ArticlesThread', {
       const root = getParent(self) as TRootStore
       return root.dashboardThread.globalLayout
     },
+    get isViewingArticle(): boolean {
+      const root = getParent(self) as TRootStore
+
+      return root.drawer.open && !!root.viewing.viewingArticle?.id
+    },
   }))
   .actions((self) => ({
     afterInitLoading(): void {

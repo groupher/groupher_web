@@ -24,6 +24,7 @@ import { MORE_MENU } from './constant'
 import IconButton from '../IconButton'
 
 import PostLayout from './PostLayout'
+import SidebarHeaderLayout from './SidebarHeaderLayout'
 
 import { Wrapper, PubButton, MoreOption } from '../styles/publish_button'
 import { getText } from './helper'
@@ -61,6 +62,7 @@ const PublishButton: FC<TProps> = ({
   return (
     <Wrapper>
       <PubButton
+        smaller={mode === PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER}
         onClick={() => {
           onClick()
           // if (!accountInfo) return authWarn()
@@ -68,8 +70,10 @@ const PublishButton: FC<TProps> = ({
           // Router.push(url)
         }}
       >
-        <PostLayout text={text} />
+        {mode === PUBLISH_MODE.DEFAULT && <PostLayout text={text} />}
+        {mode === PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER && <SidebarHeaderLayout text={text} />}
       </PubButton>
+
       {!hasNoMenu && (
         <MoreOption>
           <Tooltip

@@ -34,6 +34,7 @@ export const BRAND_LAYOUT = {
 export const BANNER_LAYOUT = {
   HEADER: 'header',
   TABBER: 'tabber',
+  SIDEBAR: 'sidebar',
 } as Record<TSnakeUpperCase<TBannerLayout>, TBannerLayout>
 
 export const TOPBAR_LAYOUT = {

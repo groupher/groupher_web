@@ -10,13 +10,13 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   /* ${css.flex('align-start', 'justify-between')}; */
   width: 100%;
   position: relative;
-  background: white;
+  background: ${theme('alphaBg2')};
   padding-top: 10px;
   padding-bottom: 12px;
   margin-top: 3px;
   margin-bottom: 12px;
   padding: 10px;
-  border-radius: 12px;
+  border-radius: 6px;
   border: 1px solid transparent;
 
   &:hover {

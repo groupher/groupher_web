@@ -14,15 +14,7 @@ import BasicStates from './BasicStates'
 import type { TStore } from './store'
 import Sidebar from './Sidebar'
 
-import {
-  Wrapper,
-  MainWrapper,
-  StateBlock,
-  IntroBlock,
-  MemberBlock,
-  Title,
-  Desc,
-} from './styles'
+import { Wrapper, MainWrapper, StateBlock, IntroBlock, MemberBlock, Title, Desc } from './styles'
 import { useInit } from './logic' /* eslint-disable-next-line */
 
 // const log = buildLog('C:AboutThread')
@@ -30,17 +22,19 @@ import { useInit } from './logic' /* eslint-disable-next-line */
 type TProps = {
   aboutThread?: TStore
   testid?: string
+  isSidebarLayout?: boolean
 }
 
 const AboutThreadContainer: FC<TProps> = ({
   aboutThread: store,
   testid = 'about-thread',
+  isSidebarLayout = false,
 }) => {
   useInit(store)
 
   return (
     <Wrapper testid={testid}>
-      <MainWrapper>
+      <MainWrapper isSidebarLayout={isSidebarLayout}>
         <IntroBlock>
           <Title>社区简介</Title>
           <Desc>
@@ -60,7 +54,7 @@ const AboutThreadContainer: FC<TProps> = ({
           <Members />
         </MemberBlock>
       </MainWrapper>
-      <Sidebar />
+      <Sidebar isSidebarLayout={isSidebarLayout} />
     </Wrapper>
   )
 }

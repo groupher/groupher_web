@@ -9,7 +9,7 @@ import TabBar from '@/widgets/TabBar'
 import ViewportTracker from '@/widgets/ViewportTracker'
 
 import CommunityBrief from './CommunityBrief'
-import AccountUnit from './AccountUnit'
+// import AccountUnit from './AccountUnit'
 
 import {
   Wrapper,
@@ -40,8 +40,9 @@ const ClassicLayout: FC<TProps> = ({ community, activeThread, metric }) => {
         <BannerContentWrapper>
           <CommunityBaseInfo>
             <CommunityBrief community={community} />
-            <AccountUnit />
           </CommunityBaseInfo>
+
+          <SpaceGrow />
           <TabBarWrapper>
             <TabBar
               source={community.threads}

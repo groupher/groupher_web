@@ -30,7 +30,7 @@ const UserAccount: FC<TProps> = ({ accountInfo }) => {
 
   return (
     <Fragment>
-      {accountInfo.isLogin ? (
+      {accountInfo?.isLogin ? (
         <Tooltip
           placement="bottom-end"
           trigger="click"
@@ -42,11 +42,7 @@ const UserAccount: FC<TProps> = ({ accountInfo }) => {
                 <LoginName>{accountInfo.login}</LoginName>
               </LoginBadge>
               <MenuDivider />
-              <MenuLink
-                href={`/u/${accountInfo.login}`}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
+              <MenuLink href={`/u/${accountInfo.login}`} rel="noopener noreferrer" target="_blank">
                 我的主页
               </MenuLink>
               <MenuItem>帮助</MenuItem>

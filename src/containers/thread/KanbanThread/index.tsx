@@ -35,9 +35,14 @@ import { useInit } from './logic' /* eslint-disable-next-line */
 type TProps = {
   kanbanThread?: TStore
   testid?: string
+  isSidebarLayout?: boolean
 }
 
-const KanbanThreadContainer: FC<TProps> = ({ kanbanThread: store, testid = 'kanban-thread' }) => {
+const KanbanThreadContainer: FC<TProps> = ({
+  kanbanThread: store,
+  testid = 'kanban-thread',
+  isSidebarLayout = false,
+}) => {
   useInit(store)
 
   const { layout } = store
@@ -49,7 +54,7 @@ const KanbanThreadContainer: FC<TProps> = ({ kanbanThread: store, testid = 'kanb
   }, [])
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper testid={testid} isSidebarLayout={isSidebarLayout}>
       <Actions />
       <ColumnsWrapper>
         <Column>

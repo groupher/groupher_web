@@ -3,11 +3,13 @@ import styled from 'styled-components'
 import type { TTestable } from '@/spec'
 import { theme } from '@/utils/css'
 
+type TWrapper = TTestable & { isSidebarLayout: boolean }
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
-}))<TTestable>`
+}))<TWrapper>`
   width: 100%;
   margin-top: 10px;
+  margin-left: ${({ isSidebarLayout }) => (isSidebarLayout ? '-30px' : 0)};
 `
 export const MainWrapper = styled.div`
   flex-grow: 1;

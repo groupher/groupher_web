@@ -6,19 +6,17 @@ import { FC } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { bond } from '@/utils/mobx'
+import { BANNER_LAYOUT } from '@/constant/layout'
+import { THREAD } from '@/constant/thread'
 
 import CommunityDigest from '@/containers/digest/CommunityDigest'
 import ArticlesThread from '@/containers//thread/ArticlesThread'
+import SidebarLayoutHeader from '@/widgets/SidebarLayoutHeader'
 
 import type { TStore } from './store'
 import { useInit } from './logic'
 
-import {
-  Wrapper,
-  InnerWrapper,
-  ContentWrapper,
-  MobileCardsWrapper,
-} from './styles'
+import { Wrapper, SidebarWrapper, InnerWrapper, ContentWrapper, MobileCardsWrapper } from './styles'
 
 type TProps = {
   communityContent?: TStore
@@ -30,10 +28,14 @@ type TProps = {
 const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   useInit(store)
 
+  const { globalLayout } = store
   const { isMobile } = useMobileDetect()
 
+  const isSidebarLayout = globalLayout.banner === BANNER_LAYOUT.SIDEBAR
+  const LayoutWrapper = isSidebarLayout ? SidebarWrapper : Wrapper
+
   return (
-    <Wrapper testid="post-thread-content">
+    <LayoutWrapper testid="post-thread-content">
       <CommunityDigest />
       {isMobile ? (
         <MobileCardsWrapper>
@@ -43,12 +45,13 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
         </MobileCardsWrapper>
       ) : (
         <InnerWrapper>
+          {isSidebarLayout && <SidebarLayoutHeader thread={THREAD.POST} />}
           <ContentWrapper>
             <ArticlesThread />
           </ContentWrapper>
         </InnerWrapper>
       )}
-    </Wrapper>
+    </LayoutWrapper>
   )
 }
 

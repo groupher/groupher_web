@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
 
-import { ROUTE } from '@/constant'
+import { ROUTE } from '@/constant/route'
 
 import Tooltip from '@/widgets/Tooltip'
 
@@ -19,6 +19,8 @@ import {
   GithubIcon,
   Panel,
   MenuItem,
+  MenuTitle,
+  MenuDesc,
 } from './styles/header'
 
 const Header: FC = () => {
@@ -33,11 +35,23 @@ const Header: FC = () => {
       <LinksWrapper>
         <Tooltip
           content={
-            <Panel>
-              <MenuItem href={`/${ROUTE.HOME}`}>讨论区</MenuItem>
-              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`}>看板</MenuItem>
-              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`}>更新日志</MenuItem>
-              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`}>帮助文档</MenuItem>
+            <Panel width="220px">
+              <MenuItem href={`/${ROUTE.HOME}`}>
+                <MenuTitle>讨论区</MenuTitle>
+                <MenuDesc>讨论，投票功能需求，问题等</MenuDesc>
+              </MenuItem>
+              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.KANBAN}`}>
+                <MenuTitle>看板</MenuTitle>
+                <MenuDesc>公开的开发计划，产品路线图</MenuDesc>
+              </MenuItem>
+              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.CHANGELOG}`}>
+                <MenuTitle>更新日志</MenuTitle>
+                <MenuDesc>产品更新详情，版本说明等</MenuDesc>
+              </MenuItem>
+              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.HELP}`}>
+                <MenuTitle>帮助文档</MenuTitle>
+                <MenuDesc>常见问题，使用引导，开发指南等</MenuDesc>
+              </MenuItem>
             </Panel>
           }
           placement="bottom"
@@ -56,11 +70,19 @@ const Header: FC = () => {
         <LinkItem href={`/${ROUTE.HOME}`}>社区</LinkItem>
         <Tooltip
           content={
-            <Panel>
-              <MenuItem href={`/${ROUTE.HOME}`}>团队博客</MenuItem>
-              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`}>帮助文档</MenuItem>
-              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`}>更新日志</MenuItem>
-              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`}>自定义</MenuItem>
+            <Panel width="120px">
+              <MenuItem href={`/${ROUTE.HOME}`} noDesc>
+                <MenuTitle>团队博客</MenuTitle>
+              </MenuItem>
+              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`} noDesc>
+                <MenuTitle>帮助文档</MenuTitle>
+              </MenuItem>
+              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`} noDesc>
+                <MenuTitle>更新日志</MenuTitle>
+              </MenuItem>
+              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`} noDesc>
+                <MenuTitle>自定义</MenuTitle>
+              </MenuItem>
             </Panel>
           }
           placement="bottom"

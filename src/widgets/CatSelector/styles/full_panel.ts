@@ -59,7 +59,7 @@ export const RightPart = styled.div``
 export const Title = styled.div`
   font-size: 13px;
   color: ${theme('article.title')};
-  font-weight: 600;
+  font-weight: 500;
   margin-bottom: 2px;
 `
 export const Desc = styled.div`

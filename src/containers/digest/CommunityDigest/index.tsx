@@ -11,6 +11,7 @@ import METRIC from '@/constant/metric'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
+import SidebarLayout from './SidebarLayout'
 import ClassicLayout from './ClassicLayout'
 import SimpleLayout from './SimpleLayout'
 
@@ -35,9 +36,13 @@ const CommunityDigestContainer: FC<TProps> = ({
 
   return (
     <Fragment>
-      {globalLayout.banner === BANNER_LAYOUT.TABBER ? (
+      {globalLayout.banner === BANNER_LAYOUT.TABBER && (
         <ClassicLayout metric={metric} community={curCommunity} activeThread={curThread} />
-      ) : (
+      )}
+      {globalLayout.banner === BANNER_LAYOUT.SIDEBAR && (
+        <SidebarLayout metric={metric} community={curCommunity} activeThread={curThread} />
+      )}
+      {globalLayout.banner === BANNER_LAYOUT.HEADER && (
         <SimpleLayout metric={metric} community={curCommunity} activeThread={curThread} />
       )}
     </Fragment>

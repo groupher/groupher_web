@@ -19,19 +19,21 @@ import { useInit } from './logic' /* eslint-disable-next-line */
 type TProps = {
   changelogThread?: TStore
   testid?: string
+  isSidebarLayout?: boolean
 }
 
 const ChangelogThreadContainer: FC<TProps> = ({
   changelogThread: store,
   testid = 'changelog-thread',
+  isSidebarLayout = false,
 }) => {
   useInit(store)
   const { globalLayout, tagsMode } = store
 
-  return globalLayout.banner === BANNER_LAYOUT.HEADER ? (
-    <FocusLayout globalLayout={globalLayout} />
-  ) : (
+  return globalLayout.banner === BANNER_LAYOUT.TABBER ? (
     <ClassicLayout globalLayout={globalLayout} tagsMode={tagsMode} />
+  ) : (
+    <FocusLayout globalLayout={globalLayout} isSidebarLayout={isSidebarLayout} />
   )
 }
 

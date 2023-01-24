@@ -187,7 +187,7 @@ export type TToastOption = {
   duration: number
 }
 
-export type TPublishMode = 'default' | 'changelog' | 'help'
+export type TPublishMode = 'default' | 'changelog' | 'help' | 'sidebar_layout_header'
 
 export type TDashboardLayout = 'post_list' | 'banner' | 'changelog_list'
 

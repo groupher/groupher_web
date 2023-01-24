@@ -1,43 +1,82 @@
 import styled from 'styled-components'
+import Link from 'next/link'
 
-import css, { theme } from '@/utils/css'
+import css, { WIDTH, theme } from '@/utils/css'
 import Img from '@/Img'
 
+import ArrowSVG from '@/icons/Arrow'
 import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
 
 export const Wrapper = styled.div`
-  ${css.flexColumnGrow('align-start')};
+  ${css.flexColumnGrow('align-center')};
+`
+export const CoverImage = styled(Img)`
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+`
+export const MainWrapper = styled.div`
+  width: 100%;
+  max-width: ${WIDTH.COMMUNITY.CONTENT};
+  margin-left: 108px;
+  position: relative;
+`
+export const SocialWrapper = styled.div`
+  position: absolute;
+  right: 50px;
+  bottom: 90px;
 `
 export const LogoWrapper = styled.div`
   position: relative;
-  ${css.size(45)};
-  margin-left: -4px;
+  ${css.size(100)};
+  margin-top: -50px;
+  z-index: 2;
   ${css.flex('align-both')};
-  /* border-radius: 5px; */
-  /* background: #e3e3e399; */
+  border-radius: 5px;
+  background: ${theme('article.title')};
+  box-shadow: ${css.cardShadow};
 `
 export const Logo = styled(CommunityFaceLogo)`
   ${css.size(30)};
 `
 export const CommunityInfo = styled.div`
   ${css.flexColumn('justify-center')};
+  margin-top: 18px;
 `
 export const Title = styled.div`
   ${css.flex('align-center')};
   color: ${theme('article.title')};
-  /* color: #e9eaea; */
-  margin-top: 10px;
-  margin-right: 10px;
-  font-size: 18px;
-  letter-spacing: 0.03em;
+  font-size: 22px;
   font-weight: 600;
+`
+export const Digest = styled.div`
+  ${css.flex('align-center')};
+  margin-top: 6px;
+`
+export const BackHome = styled(Link)`
+  ${css.flex('align-center')};
+  color: ${theme('article.digest')};
+`
+export const Divider = styled.div`
+  width: 1px;
+  height: 14px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-right: 1px solid;
+  border-right-color: ${theme('article.digest')};
+  opacity: 0.8;
+`
+
+export const ArrowIcon = styled(ArrowSVG)`
+  ${css.size(10)};
+  fill: ${theme('article.digest')};
+  opacity: 0.8;
+  margin-right: 5px;
 `
 export const Desc = styled.div`
   color: ${theme('article.digest')};
-  /* color: #e9eaea; */
   opacity: 0.8;
-  font-size: 13px;
-  margin-top: 5px;
+  font-size: 15px;
 `
 export const LogoHolder = styled(Img)`
   fill: ${theme('banner.desc')};

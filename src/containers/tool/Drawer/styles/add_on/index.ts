@@ -9,7 +9,6 @@ export const Wrapper = styled.div`
   z-index: 1;
 `
 export const ViewerWrapper = styled.div`
-  /* border: 1px solid tomato; */
   width: 60px;
   ${css.flexColumn('align-end')};
 

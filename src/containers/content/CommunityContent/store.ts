@@ -3,7 +3,7 @@
  *
  */
 
-import type { TRootStore, TAccount, TCommunity, TThread, TC11N } from '@/spec'
+import type { TRootStore, TAccount, TCommunity, TThread, TC11N, TGlobalLayout } from '@/spec'
 import { T, getParent, markStates, toJS, Instance } from '@/utils/mobx'
 import { sortByIndex } from '@/utils/helper'
 
@@ -30,6 +30,10 @@ const CommunityContent = T.model('CommunityContent', {})
       const { subscribedCommunities } = root.account
 
       return subscribedCommunities ? sortByIndex(subscribedCommunities.entries) : []
+    },
+    get globalLayout(): TGlobalLayout {
+      const root = getParent(self) as TRootStore
+      return root.dashboardThread.globalLayout
     },
   }))
   .actions((self) => ({

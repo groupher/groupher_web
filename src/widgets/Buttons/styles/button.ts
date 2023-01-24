@@ -20,7 +20,6 @@ export const Wrapper = styled.button<TWrapper>`
   outline: none;
   // otherwise the slim effect will appear outside
   overflow: hidden;
-  line-height: 1.6;
   text-align: center;
   touch-action: manipulation;
   background-image: none;

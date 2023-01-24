@@ -33,17 +33,13 @@ export const SelectItem = styled.div<TActive>`
   ${css.flex('align-start')};
   padding: 10px 6px;
   width: 100%;
-  border-radius: 8px;
-  margin-bottom: 2px;
-  /* border: 1px solid; */
-  /* border-color: ${({ active }) =>
-    active ? theme('divider') : 'transparent'};  */
+  border-radius: 6px;
+  border: 1px solid;
+  border-color: ${({ active }) => (active ? theme('popover.activeBorder') : 'transparent')};
 
-  background-color: ${({ active }) =>
-    active ? theme('textBadge') : 'transparent'}; // to-theme
-  color: ${({ active }) =>
-    active ? theme('article.title') : theme('article.digest')};
-  font-weight: ${({ active }) => (active ? 600 : 450)};
+  background-color: ${({ active }) => (active ? theme('textBadge') : 'transparent')}; // to-theme
+  color: ${({ active }) => (active ? theme('article.title') : theme('article.digest'))};
+  font-weight: ${({ active }) => (active ? 500 : 400)};
   position: relative;
 
   &:hover {
@@ -51,5 +47,8 @@ export const SelectItem = styled.div<TActive>`
     background-color: ${({ active }) =>
       active ? theme('textBadge') : theme('hoverBg')}; // to-theme
     color: ${theme('article.title')};
+    border-color: ${theme('popover.activeBorder')};
   }
+
+  transition: all 0.1s;
 `

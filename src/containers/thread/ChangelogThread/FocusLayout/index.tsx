@@ -18,15 +18,16 @@ import { Wrapper, Banner, TabsWrapper, Title, Desc, MainWrapper } from '../style
 
 type TProps = {
   globalLayout: TGlobalLayout
+  isSidebarLayout: boolean
 }
 
-const FocusLayout: FC<TProps> = ({ globalLayout }) => {
+const FocusLayout: FC<TProps> = ({ globalLayout, isSidebarLayout }) => {
   // globalLayout.changelog === CHANGELOG_LAYOUT.OUTLINE
   const [filterExpand, setFilterExpand] = useState(false)
   const [tab, setTab] = useState(TABS_MODE_OPTIONS[0].raw)
 
   return (
-    <Wrapper>
+    <Wrapper isSidebarLayout={isSidebarLayout}>
       <Banner>
         <Title>更新日志</Title>
         <Desc>Groupher 的功能更新，界面调整，性能与 Bug 修复等</Desc>

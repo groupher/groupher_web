@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { Parallax } from 'react-scroll-parallax'
 
-import { COLOR_NAME } from '@/constant'
+import { COLOR_NAME } from '@/constant/colors'
 
 import { Wrapper, Card, Avatar, Title } from '../styles/feature_wall/user_voice'
 import { TColorName } from '@/spec'

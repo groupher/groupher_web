@@ -140,7 +140,7 @@ const GlobalStyle = createGlobalStyle`
   /** customize tooltip animation globally */
   .tippy-box[data-state='visible'] {
     background: ${theme('popover.bg')} !important;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(18px);
 
     transition: all .25s ease-in-out !important;
   }

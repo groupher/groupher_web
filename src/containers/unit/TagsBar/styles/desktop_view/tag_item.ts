@@ -36,29 +36,11 @@ export const DotWrapper = styled.div`
 `
 type THashSign = TActive & { color?: string }
 export const DotSign = styled.div<THashSign>`
-  ${css.circle(10)};
-  background: ${({ color }) =>
-    color ? theme(`baseColor.${color.toLowerCase()}`) : 'none'};
+  ${css.circle(8)};
+  background: ${({ color }) => (color ? theme(`baseColor.${color.toLowerCase()}`) : 'none')};
   margin-top: 3px;
-  margin-right: 10px;
-  margin-left: 1px;
-  opacity: ${({ $active }) => ($active ? 0.9 : theme('tags.dotOpacity'))};
-
-  ${Wrapper}:hover & {
-    opacity: 0.9;
-  }
-
-  transition: filter 0.1s;
-`
-export const SlashSign = styled.div<THashSign>`
-  width: 5px;
-  height: 16px;
-  border-radius: 5px;
-  background: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
-  margin-top: 0;
   margin-left: 2px;
-  margin-right: 8px;
-  opacity: ${({ $active }) => ($active ? 0.9 : theme('tags.dotOpacity'))};
+  opacity: ${({ $active }) => ($active ? 1 : theme('tags.dotOpacity'))};
 
   ${Wrapper}:hover & {
     opacity: 0.9;
@@ -69,7 +51,7 @@ export const SlashSign = styled.div<THashSign>`
 export const Tag = styled.div<TTag>`
   ${css.flex('align-end', 'justify-between')};
   width: 100%;
-  font-size: 14px;
+  font-size: 13px;
   padding-left: 4px;
 
   font-weight: ${({ $active }) => (!$active ? 'bold' : 'normal')};
