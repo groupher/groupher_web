@@ -8,7 +8,7 @@
 
 import { FC, Fragment, memo, useEffect, useState } from 'react'
 
-import type { TThread, TCommunity } from '@/spec'
+import type { TThread, TCommunity, TAvatarLayout } from '@/spec'
 
 import EVENT from '@/constant/event'
 import { ARTICLE_CAT } from '@/constant/gtd'
@@ -45,9 +45,10 @@ export type TProps = {
   showCommunityBadge: boolean
   thread: TThread
   community: TCommunity
+  avatarLayout: TAvatarLayout
 }
 
-const ClassicLayout: FC<TProps> = ({ showCommunityBadge, thread, community }) => {
+const ClassicLayout: FC<TProps> = ({ showCommunityBadge, thread, community, avatarLayout }) => {
   const [load, setLoad] = useState(false)
 
   useEffect(() => {
@@ -81,7 +82,7 @@ const ClassicLayout: FC<TProps> = ({ showCommunityBadge, thread, community }) =>
 
           <CommunityJoinersWrapper show={showCommunityBadge}>
             {mockUsers(5).map((user) => (
-              <JoinerAvatar key={user.id} src={user.avatar} noLazy />
+              <JoinerAvatar key={user.id} src={user.avatar} avatarLayout={avatarLayout} noLazy />
             ))}
           </CommunityJoinersWrapper>
         </Fragment>

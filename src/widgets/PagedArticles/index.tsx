@@ -7,8 +7,17 @@
 import { Fragment, FC, memo } from 'react'
 import Pagi from '@/widgets/Pagi'
 
-import type { TCommunity, TThread, TPagedArticles, TResState, TC11N, TGlobalLayout } from '@/spec'
+import type {
+  TCommunity,
+  TThread,
+  TPagedArticles,
+  TResState,
+  TC11N,
+  TGlobalLayout,
+  TAvatarLayout,
+} from '@/spec'
 import EVENT from '@/constant/event'
+
 import { send } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 

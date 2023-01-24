@@ -1,11 +1,15 @@
 import styled from 'styled-components'
 
-import Img from '@/Img'
+import type { TAvatarLayout } from '@/spec'
+import { AVATAR_LAYOUT } from '@/constant/layout'
+
 import css, { theme } from '@/utils/css'
 
+import Img from '@/Img'
 import ImgFallback from '@/widgets/ImgFallback'
-import { getLiSize, getAvatarSize } from './metric'
+
 import type { TAvatarSize } from '../spec'
+import { getLiSize, getAvatarSize } from './metric'
 
 // height: 49px;
 type TWrapper = { size: TAvatarSize }
@@ -28,16 +32,21 @@ export const InnerWrapper = styled.div`
   transition: all 0.2s;
 `
 
-type TAvatarsImg = { size: string; onClick: () => void; scrollPosition: any }
+type TAvatarsImg = {
+  size: string
+  onClick: () => void
+  scrollPosition: any
+  avatarLayout: TAvatarLayout
+}
 export const AvatarsImg = styled(Img)<TAvatarsImg>`
   border: 2px solid;
   border-color: ${theme('thread.commentsUserBorder')};
   color: #ffffff;
-  font-family: sans-serif;
   font-size: 12px;
   font-weight: 100;
 
-  ${({ size }) => css.circle(getAvatarSize(size))};
+  ${({ size }) => css.size(getAvatarSize(size))};
+  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
 
   text-align: center;
 `

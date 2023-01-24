@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 
-import type { TActive, TTestable } from '@/spec'
+import type { TActive, TAvatarLayout, TTestable } from '@/spec'
+import { AVATAR_LAYOUT } from '@/constant/layout'
+
 import css, { theme } from '@/utils/css'
 import Img from '@/Img'
 
@@ -39,8 +41,9 @@ export const CommunityJoinersWrapper = styled.div<TActive>`
   height: ${({ show }) => (show ? 'auto' : 0)};
   margin-bottom: 25px;
 `
-export const JoinerAvatar = styled(Img)`
-  ${css.circle(28)};
+export const JoinerAvatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
+  ${css.size(24)};
+  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
   margin-right: 8px;
 `
 export const CommunityNoteWrapper = styled.div`

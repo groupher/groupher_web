@@ -6,7 +6,7 @@
 
 import { FC, memo } from 'react'
 
-import type { TPost, TAccount, TC11N } from '@/spec'
+import type { TPost, TAccount, TC11N, TAvatarLayout } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
@@ -25,6 +25,7 @@ type TProps = {
   isMobilePreview: boolean
 
   onAuthorSelect?: (obj: TAccount) => void
+  avatarLayout: TAvatarLayout
 }
 
 const PostItem: FC<TProps> = ({
@@ -32,6 +33,7 @@ const PostItem: FC<TProps> = ({
   onAuthorSelect = log,
   isMobilePreview,
   c11n,
+  avatarLayout,
 }) => {
   const { isMobile } = useMobileDetect()
 
@@ -40,7 +42,7 @@ const PostItem: FC<TProps> = ({
       {isMobile || isMobilePreview ? (
         <MobileView article={article} onAuthorSelect={onAuthorSelect} />
       ) : (
-        <DesktopView article={article} />
+        <DesktopView article={article} avatarLayout={avatarLayout} />
       )}
     </Wrapper>
   )

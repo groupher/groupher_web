@@ -34,7 +34,7 @@ export const Count = styled.div<{ noOne: boolean }>`
 export const LineDivider = styled(LineDividerBase)`
   height: 10px;
   background: ${theme('article.digest')};
-  opacity: 0.5;
+  opacity: 0.8;
   margin-left: 12px;
   margin-right: 10px;
   margin-top: 1px;
