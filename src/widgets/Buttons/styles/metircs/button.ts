@@ -97,3 +97,19 @@ export const getFontSize = (size: string): string => {
     }
   }
 }
+
+export const getLineHeight = (size: string): string => {
+  switch (size) {
+    case SIZE.TINY: {
+      return '12px'
+    }
+
+    case SIZE.SMALL: {
+      return '12px'
+    }
+
+    default: {
+      return '12px'
+    }
+  }
+}

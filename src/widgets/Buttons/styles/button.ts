@@ -10,6 +10,7 @@ import {
   getBorderColor,
   getHeight,
   getPadding,
+  getLineHeight,
   getFontSize,
 } from './metircs/button'
 
@@ -26,6 +27,7 @@ export const Wrapper = styled.button<TWrapper>`
   border: 1px solid transparent;
   white-space: nowrap;
   padding: ${({ size }) => getPadding(size)};
+  line-height: ${({ size }) => getLineHeight(size)};
   ${({ space }) => `${space !== null ? `padding-left: ${space}px;padding-right: ${space}px` : ''}`};
 
   font-size: ${({ size }) => getFontSize(size)};

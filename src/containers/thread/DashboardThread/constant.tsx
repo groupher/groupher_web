@@ -11,6 +11,7 @@ export const SETTING_FIELD = {
   KANBAN_LAYOUT: 'kanbanLayout',
   HELP_LAYOUT: 'helpLayout',
   BRAND_LAYOUT: 'brandLayout',
+  AVATAR_LAYOUT: 'avatarLayout',
   BANNER_LAYOUT: 'bannerLayout',
   FOOTER_LAYOUT: 'footerLayout',
   TOPBAR_LAYOUT: 'topbarLayout',
