@@ -6,7 +6,7 @@
 
 import { FC, memo } from 'react'
 
-import type { TUser, TSpace } from '@/spec'
+import type { TUser, TSpace, TAvatarLayout } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
 import Work from './Work'
@@ -21,6 +21,7 @@ export type TAvatarProps = {
   user?: TUser
   size?: number
   quote?: boolean
+  avatarLayout?: TAvatarLayout
 } & TSpace
 
 type TProps = {

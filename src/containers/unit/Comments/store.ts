@@ -19,6 +19,7 @@ import type {
   TEmotion,
   TSubmitState,
   TCommentsState,
+  TAvatarLayout,
 } from '@/spec'
 // import TYPE from '@/constant/type'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
@@ -208,6 +209,11 @@ const CommentsStore = T.model('CommentsStore', {
     get submitState(): TSubmitState {
       const slf = self as TStore
       return pick(['publishing', 'publishDone', 'isReady'], slf)
+    },
+    get avatarLayout(): TAvatarLayout {
+      const root = getParent(self) as TRootStore
+
+      return root.dashboardThread.avatarLayout
     },
   }))
   .actions((self) => ({

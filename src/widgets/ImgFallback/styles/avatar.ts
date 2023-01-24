@@ -1,12 +1,14 @@
 import styled from 'styled-components'
 
-import type { TTestable } from '@/spec'
+import type { TAvatarLayout, TTestable } from '@/spec'
+import { AVATAR_LAYOUT } from '@/constant/layout'
+
 import css, { theme } from '@/utils/css'
 
 import type { TAvatarProps } from '../index'
 import { getFontSize } from './metric/avatar'
 
-type TWrapper = TTestable & TAvatarProps
+type TWrapper = TTestable & TAvatarProps & { avatarLayout: TAvatarLayout }
 
 export const Wrapper = styled.div.attrs(({ testid }: TWrapper) => ({
   'data-test-id': testid,
@@ -16,7 +18,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TWrapper) => ({
   width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};
   background: ${theme('avatar.fallbackBg')};
-  border-radius: 100%;
+  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
 
   margin-top: ${({ top }) => `${top}px`};
   margin-bottom: ${({ bottom }) => `${bottom}px`};

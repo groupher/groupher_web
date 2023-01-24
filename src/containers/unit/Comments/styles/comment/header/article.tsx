@@ -1,14 +1,20 @@
 import styled from 'styled-components'
 
-import Img from '@/Img'
+import type { TAvatarLayout } from '@/spec'
+import { AVATAR_LAYOUT } from '@/constant/layout'
 import css, { theme } from '@/utils/css'
+
+import Img from '@/Img'
 
 export { HeaderBaseInfo, BaseInfo, FloorNum } from './index'
 
-export const Avatar = styled(Img)<{ avatarSize: number }>`
-  ${({ avatarSize }) => css.circle(avatarSize)};
+type TAvatar = { avatarSize: number; avatarLayout: TAvatarLayout }
+
+export const Avatar = styled(Img)<TAvatar>`
+  ${({ avatarSize }) => css.size(avatarSize)};
   opacity: ${theme('avatar.opacity')};
   margin-right: 13px;
+  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
   ${css.media.mobile`
     margin-right: 5px;
   `}

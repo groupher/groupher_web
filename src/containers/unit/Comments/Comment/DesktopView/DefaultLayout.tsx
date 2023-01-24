@@ -1,6 +1,6 @@
 import { FC, memo, Fragment } from 'react'
 
-import type { TComment } from '@/spec'
+import type { TComment, TAvatarLayout } from '@/spec'
 import { ICON } from '@/config'
 
 import Tooltip from '@/widgets/Tooltip'
@@ -35,6 +35,7 @@ type TProps = {
   apiMode: TAPIMode
   isReply?: boolean
   showInnerRef?: boolean
+  avatarLayout: TAvatarLayout
 }
 
 const DefaultLayout: FC<TProps> = ({
@@ -42,6 +43,7 @@ const DefaultLayout: FC<TProps> = ({
   isReply = false,
   showInnerRef = false,
   apiMode,
+  avatarLayout,
 }) => {
   const { isPinned, meta } = data
   const { isArticleAuthorUpvoted, isLegal, illegalReason, illegalWords } = meta
@@ -88,7 +90,12 @@ const DefaultLayout: FC<TProps> = ({
         </SidebarWrapper>
 
         <CommentBodyInfo>
-          <Header data={data} showInnerRef={showInnerRef} apiMode={apiMode} />
+          <Header
+            data={data}
+            showInnerRef={showInnerRef}
+            apiMode={apiMode}
+            avatarLayout={avatarLayout}
+          />
           <CommentContent>
             {isLegal ? (
               <Fragment>
@@ -100,10 +107,7 @@ const DefaultLayout: FC<TProps> = ({
                 />
               </Fragment>
             ) : (
-              <IllegalBar
-                illegalReason={illegalReason}
-                illegalWords={illegalWords}
-              />
+              <IllegalBar illegalReason={illegalReason} illegalWords={illegalWords} />
             )}
 
             {/* <IllegalBar /> */}

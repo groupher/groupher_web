@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 import TimeAgo from 'timeago-react'
 
-import type { TComment } from '@/spec'
+import type { TComment, TAvatarLayout } from '@/spec'
 import { ICON } from '@/config'
 
 import ImgFallback from '@/widgets/ImgFallback'
@@ -22,23 +22,20 @@ import { expandComment } from '../../logic'
 
 type TProps = {
   data: TComment
+  avatarLayout: TAvatarLayout
 }
 
-const FoldLayout: FC<TProps> = ({ data }) => {
+const FoldLayout: FC<TProps> = ({ data, avatarLayout }) => {
   const isSolution = false //
   const { meta } = data
   const { isLegal, illegalReason, illegalWords } = meta
 
   return (
     <Wrapper onClick={() => expandComment(data.id)}>
-      <IconButton
-        path="shape/expand-all.svg"
-        hint="展开讨论"
-        left={-1}
-        right={12}
-      />
+      <IconButton path="shape/expand-all.svg" hint="展开讨论" left={-1} right={12} />
       <Avatar
         src={data.author.avatar}
+        avatarLayout={avatarLayout}
         fallback={<ImgFallback user={data.author} size={16} right={10} />}
       />
       {isLegal ? (
@@ -48,18 +45,12 @@ const FoldLayout: FC<TProps> = ({ data }) => {
           }}
         />
       ) : (
-        <IllegalBar
-          illegalReason={illegalReason}
-          illegalWords={illegalWords}
-          isFold
-        />
+        <IllegalBar illegalReason={illegalReason} illegalWords={illegalWords} isFold />
       )}
 
       <SpaceGrow />
 
-      {data.repliesCount > 0 && (
-        <RepliesHint>[ {data.repliesCount} 条回复 ]</RepliesHint>
-      )}
+      {data.repliesCount > 0 && <RepliesHint>[ {data.repliesCount} 条回复 ]</RepliesHint>}
 
       {isSolution && (
         <SolutionIcon

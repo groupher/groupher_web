@@ -6,6 +6,7 @@
 
 import { FC, memo } from 'react'
 
+import { AVATAR_LAYOUT } from '@/constant/layout'
 import { buildLog } from '@/utils/logger'
 
 import type { TAvatarProps as TProps } from './index'
@@ -26,6 +27,7 @@ const Avatar: FC<TProps> = ({
   top = 0,
   bottom = 0,
   quote = false,
+  avatarLayout = AVATAR_LAYOUT.SQUARE,
 }) => {
   const name = user?.nickname
   const sliceCount = size >= 30 ? 2 : 1
@@ -40,6 +42,7 @@ const Avatar: FC<TProps> = ({
       top={top}
       bottom={bottom}
       quote={quote}
+      avatarLayout={avatarLayout}
     >
       <Name size={size}>{name.slice(0, sliceCount)}</Name>
     </Wrapper>
