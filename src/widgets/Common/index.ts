@@ -24,6 +24,25 @@ export const Divider = styled.div<TSpace>`
   margin-top: ${({ top }) => `${top === undefined ? 20 : top}px`};
   margin-bottom: ${({ bottom }) => `${bottom === undefined ? 20 : bottom}px`};
 `
+export const SexyDivider = styled.div<TSpace>`
+  height: 1px;
+  width: 100%;
+
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(
+    0.35turn,
+    transparent,
+    ${theme('divider')},
+    ${theme('divider')},
+    ${theme('divider')},
+    transparent
+  );
+
+  border-image-slice: 1;
+
+  margin-top: ${({ top }) => `${top === undefined ? 20 : top}px`};
+  margin-bottom: ${({ bottom }) => `${bottom === undefined ? 20 : bottom}px`};
+`
 
 type TLineDivider = TSpace & { height?: number }
 export const LineDivider = styled.div<TLineDivider>`

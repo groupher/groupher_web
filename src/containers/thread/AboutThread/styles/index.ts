@@ -9,7 +9,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   ${css.flex('align-start')};
   width: 100%;
 `
-export const MainWrapper = styled.div`
+export const MainWrapper = styled.div<{ isSidebarLayout: boolean }>`
   width: auto;
   min-height: 550px;
   flex-grow: 1;
@@ -17,7 +17,7 @@ export const MainWrapper = styled.div`
   background: transparent;
   border-radius: 6px;
   margin-top: 25px;
-  padding-left: 22px;
+  padding-left: ${({ isSidebarLayout }) => (isSidebarLayout ? 0 : '22px')};
 `
 export const Block = styled.div`
   margin-bottom: 30px;

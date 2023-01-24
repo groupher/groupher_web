@@ -24,7 +24,7 @@ type TProps = {
 }
 
 const MainMenu: FC<TProps> = ({ community, activeThread }) => {
-  const communityPath = 'home' // community?.raw || 'home'
+  const communityPath = community?.raw || 'home'
 
   return (
     <Wrapper>

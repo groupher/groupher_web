@@ -5,19 +5,15 @@ import Linker from '@/widgets/Linker'
 
 import SocialList from './SocialList'
 
-import {
-  Wrapper,
-  Block,
-  Title,
-  Reports,
-  ReportsArticle,
-  Press,
-  Desc,
-} from './styles/sidebar'
+import { Wrapper, Block, Title, Reports, ReportsArticle, Press, Desc } from './styles/sidebar'
 
-const Sidebar: FC = () => {
+type TProps = {
+  isSidebarLayout: boolean
+}
+
+const Sidebar: FC<TProps> = ({ isSidebarLayout }) => {
   return (
-    <Wrapper>
+    <Wrapper isSidebarLayout={isSidebarLayout}>
       <Block>
         <Title>官方主页</Title>
         <Desc>
@@ -47,9 +43,7 @@ const Sidebar: FC = () => {
         <Br top={10} />
         <Reports>
           <Press>36kr</Press>
-          <ReportsArticle>
-            新一代xxx一体化协作平台「XXX」获1000万元Pre
-          </ReportsArticle>
+          <ReportsArticle>新一代xxx一体化协作平台「XXX」获1000万元Pre</ReportsArticle>
         </Reports>
         <Br top={6} />
         <Reports>

@@ -1,7 +1,9 @@
 import styled from 'styled-components'
 
 import type { TMetric } from '@/spec'
-import css, { WIDTH, theme } from '@/utils/css'
+import css, { theme } from '@/utils/css'
+
+import { SexyDivider } from '@/widgets/Common'
 
 import { BaseBanner } from '../index'
 
@@ -29,22 +31,9 @@ export const ScrollArea = styled.div`
 export const TabBarWrapper = styled.div`
   ${css.flex('align-center', 'justify-start')};
   margin-left: 42px;
-  margin-top: 25px;
-`
-export const Divider = styled.div`
-  height: 1px;
-  width: 95%;
   margin-top: 20px;
-
-  border-bottom: 1px solid transparent;
-  border-image: linear-gradient(
-    0.35turn,
-    transparent,
-    ${theme('divider')},
-    ${theme('divider')},
-    ${theme('divider')},
-    transparent
-  );
-
-  border-image-slice: 1;
+`
+export const Divider = styled(SexyDivider)`
+  width: 180px;
+  margin-left: 32px;
 `

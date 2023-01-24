@@ -16,7 +16,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   margin-top: 3px;
   margin-bottom: 12px;
   padding: 10px;
-  border-radius: 12px;
+  border-radius: 6px;
   border: 1px solid transparent;
 
   &:hover {

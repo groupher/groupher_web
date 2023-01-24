@@ -15,7 +15,7 @@ import GuideSVG from '@/icons/Guide'
 export const Wrapper = styled.div`
   ${css.flexColumn()};
   width: 100%;
-  margin-top: 20px;
+  margin-top: 10px;
   padding: 5px 40px;
 `
 export const MenuItem = styled(Link)<TActive>`

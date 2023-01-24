@@ -4,6 +4,8 @@ import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TThread, TCommunity, TMetric } from '@/spec'
 import EVENT from '@/constant/event'
+import { THREAD } from '@/constant/thread'
+
 import { send } from '@/utils/signal'
 
 import TagsBar from '@/containers/unit/TagsBar'
@@ -33,7 +35,7 @@ const SidebarLayout: FC<TProps> = ({ community, activeThread, metric }) => {
     <Wrapper testid="community-digest" isMobile={isMobile}>
       <Sticky>
         <CommunityBrief community={community} />
-        <Divider />
+        <Divider bottom={0} />
         <CustomScroller
           direction="vertical"
           height="calc(100vh - 140px)"
@@ -42,10 +44,12 @@ const SidebarLayout: FC<TProps> = ({ community, activeThread, metric }) => {
         >
           <ScrollArea>
             <MainMenu community={community} activeThread={activeThread} />
-            <Divider />
-            <TabBarWrapper>
-              <TagsBar onSelect={() => send(EVENT.REFRESH_ARTICLES)} />
-            </TabBarWrapper>
+            <Divider top={8} />
+            {activeThread === THREAD.POST && (
+              <TabBarWrapper>
+                <TagsBar onSelect={() => send(EVENT.REFRESH_ARTICLES)} />
+              </TabBarWrapper>
+            )}
           </ScrollArea>
         </CustomScroller>
       </Sticky>

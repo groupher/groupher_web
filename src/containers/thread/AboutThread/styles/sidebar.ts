@@ -2,8 +2,8 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
 
-export const Wrapper = styled.div`
-  width: 300px;
+export const Wrapper = styled.div<{ isSidebarLayout: boolean }>`
+  width: ${({ isSidebarLayout }) => (isSidebarLayout ? '280px' : '300px')};
   height: auto;
   border-left: 1px solid;
   border-left-color: ${theme('divider')};
@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   padding-top: 10px;
   padding-bottom: 0;
   margin-top: 19px;
-  margin-left: 60px;
+  margin-left: ${({ isSidebarLayout }) => (isSidebarLayout ? '32px' : '60px')};
 `
 export const Block = styled.div`
   margin-bottom: 20px;
