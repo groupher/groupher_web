@@ -29,7 +29,7 @@ const MainMenu: FC<TProps> = ({ community, activeThread }) => {
 
   return (
     <Wrapper>
-      <MenuItem href={`/${communityPath}/${THREAD.POST}`}>
+      <MenuItem href="/">
         <IconWrapper>
           <HomeIcon />
         </IconWrapper>

@@ -32,6 +32,7 @@ export const MenuItem = styled(Link)<TActive>`
   border-radius: 10px;
   margin-left: -5px;
   padding-left: 10px;
+  cursor: pointer;
 
   &:hover {
     background: ${theme('hoverBg')};

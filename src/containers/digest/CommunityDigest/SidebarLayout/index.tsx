@@ -3,17 +3,21 @@ import { FC, memo } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TThread, TCommunity, TMetric } from '@/spec'
+
 import EVENT from '@/constant/event'
 import { THREAD } from '@/constant/thread'
+import { DEME_SOCIALS } from '@/constant/social'
 
 import { send } from '@/utils/signal'
 
 import PinedTree from '@/containers/thread/HelpThread/ArticleLayout/PinedTree'
 import TagsBar from '@/containers/unit/TagsBar'
+
 import Sticky from '@/widgets/Sticky'
 import { SpaceGrow } from '@/widgets/Common'
 import CustomScroller from '@/widgets/CustomScroller'
 import FileTree from '@/widgets/FileTree'
+import SocialList from '@/widgets/SocialList'
 
 import CommunityBrief from './CommunityBrief'
 import MainMenu from './MainMenu'
@@ -61,6 +65,9 @@ const SidebarLayout: FC<TProps> = ({ community, activeThread, metric }) => {
               <PinedTree />
               <FileTree />
             </FileTreeWrapper>
+          )}
+          {(activeThread === THREAD.KANBAN || activeThread === THREAD.CHANGELOG) && (
+            <SocialList top={20} left={25} size="tiny" selected={DEME_SOCIALS} />
           )}
         </CustomScroller>
       </Sticky>
