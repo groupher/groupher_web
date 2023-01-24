@@ -12,20 +12,29 @@ export { Bar, Circle } from '.'
 export const Wrapper = styled(BaseSection)``
 export const SelectWrapper = styled.div`
   ${css.flex('align-center')};
+  flex-wrap: wrap;
+  gap: 40px;
   width: 100%;
 `
 export const Main = styled.div`
   ${css.flex()};
   width: 100%%;
 `
-export const ListsWrapper = styled.div`
-  border-right: 1px solid;
+export const ListsWrapper = styled.div<{ noBorder?: boolean }>`
+  border-right: ${({ noBorder }) => (noBorder ? 'none' : '1px solid')};
   border-right-color: ${theme('divider')};
   width: 85%;
 `
-export const TagssWrapper = styled.div`
+export const TagsWrapper = styled.div`
   width: 15%;
   margin-left: 20px;
+`
+export const SidebarWrapper = styled.div`
+  width: 80px;
+  padding-right: 15px;
+  border-right: 1px solid;
+  border-right-color: ${theme('divider')};
+  z-index: 2;
 `
 export const ExampleBtn = styled.div`
   display: inline-block;

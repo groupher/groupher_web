@@ -35,7 +35,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
 
   return (
     <Wrapper>
-      <Portal title="板块布局" desc="社区板块自定义布局。" />
+      <Portal title="布局/样式" desc="社区板块自定义布局与全局样式。" />
       <BrandLayout layout={brandLayout} isTouched={touched.brandLayout} saving={saving} />
       <Divider top={20} bottom={60} />
       <BannerLayout layout={bannerLayout} isTouched={touched.bannerLayout} saving={saving} />
