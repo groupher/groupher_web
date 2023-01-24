@@ -30,7 +30,9 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
 
   const { globalLayout } = store
   const { isMobile } = useMobileDetect()
-  const LayoutWrapper = globalLayout.banner === BANNER_LAYOUT.SIDEBAR ? SidebarWrapper : Wrapper
+
+  const isSidebarLayout = globalLayout.banner === BANNER_LAYOUT.SIDEBAR
+  const LayoutWrapper = isSidebarLayout ? SidebarWrapper : Wrapper
 
   return (
     <LayoutWrapper testid="help-thread-content">
@@ -43,7 +45,7 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
         </MobileCardsWrapper>
       ) : (
         <InnerWrapper>
-          <SidebarLayoutHeader thread={THREAD.HELP} />
+          {isSidebarLayout && <SidebarLayoutHeader thread={THREAD.HELP} />}
           <ContentWrapper>
             <HelpThread isSidebarLayout={globalLayout.banner === BANNER_LAYOUT.SIDEBAR} />
           </ContentWrapper>

@@ -12,7 +12,9 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   width: 100%;
+  height: 100vh;
   padding: 10px 25px;
+  margin-bottom: 30px;
   margin-left: ${({ isSidebarLayout }) => (isSidebarLayout ? '-35px' : 0)};
 `
 export const ColumnsWrapper = styled.div`
