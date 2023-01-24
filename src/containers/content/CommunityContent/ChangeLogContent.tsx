@@ -6,11 +6,10 @@ import { FC } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { bond } from '@/utils/mobx'
-import { BANNER_LAYOUT } from '@/constant'
+import { BANNER_LAYOUT } from '@/constant/layout'
 
 import CommunityDigest from '@/containers/digest/CommunityDigest'
 import ChangelogThread from '@/containers/thread/ChangelogThread'
-import SidebarLayoutHeader from '@/widgets/SidebarLayoutHeader'
 
 import type { TStore } from './store'
 import { useInit } from './logic'
@@ -42,7 +41,6 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
         </MobileCardsWrapper>
       ) : (
         <InnerWrapper>
-          <SidebarLayoutHeader />
           <ContentWrapper>
             <ChangelogThread isSidebarLayout={globalLayout.banner === BANNER_LAYOUT.SIDEBAR} />
           </ContentWrapper>

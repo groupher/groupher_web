@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
 
-import { ROUTE } from '@/constant'
+import { ROUTE } from '@/constant/route'
 
 import Tooltip from '@/widgets/Tooltip'
 

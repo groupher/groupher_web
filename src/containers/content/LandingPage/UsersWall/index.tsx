@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react'
 
-import { COLOR_NAME } from '@/constant'
+import { COLOR_NAME } from '@/constant/colors'
 import { mockUsers } from '@/utils/mock'
 
 import MasonryCards from '@/widgets/MasonryCards'

@@ -5,6 +5,8 @@ import type { TActive } from '@/spec'
 import css, { theme } from '@/utils/css'
 // import Img from '@/Img'
 
+import LinkOutSVG from '@/icons/LinkOut'
+
 import KanbanSVG from '@/icons/Kanban'
 import HomeSVG from '@/icons/Home'
 import DiscussSVG from '@/icons/Discuss'
@@ -20,7 +22,7 @@ export const Wrapper = styled.div`
 `
 export const MenuItem = styled(Link)<TActive>`
   ${css.flex('align-center')};
-  width: calc(100% - 5px);
+  width: 160px;
   text-decoration: none;
   height: 30px;
   margin-top: 3px;
@@ -74,4 +76,15 @@ export const MenuTitle = styled.div<TActive>`
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
   font-size: 14px;
   margin-left: 10px;
+`
+
+export const OutLinkIcon = styled(LinkOutSVG)<TActive>`
+  fill: ${theme('article.title')};
+  ${css.size(10)};
+  opacity: 0;
+  margin-right: 12px;
+
+  ${MenuItem}:hover & {
+    opacity: 0.6;
+  }
 `

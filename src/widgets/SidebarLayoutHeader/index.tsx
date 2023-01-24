@@ -6,41 +6,30 @@
 
 import { FC, memo } from 'react'
 
-import { buildLog } from '@/utils/logger'
+import type { TThread } from '@/spec'
+import { THREAD } from '@/constant/thread'
 
-import PublishButton from '@/widgets/Buttons/PublishButton'
-import { Wrapper, EmptySpace, MainArea, PublishWrapper, AccountWrapper } from './styles'
-
-/* eslint-disable-next-line */
-const log = buildLog('c:SidebarLayoutHeader:index')
+import PostLayout from './PostLayout'
+import HelpLayout from './HelpLayout'
 
 type TProps = {
   testid?: string
+  thread: TThread
 }
 
-const SidebarLayoutHeader: FC<TProps> = ({ testid = 'sidebar-layout-header' }) => {
-  return (
-    <Wrapper testid={testid}>
-      <EmptySpace />
-      <MainArea>
-        <div>讨论区</div>
-        <PublishWrapper>
-          <PublishButton
-            thread="post"
-            community="home"
-            mode="sidebar_layout_header"
-            text="参与讨论"
-            onClick={() => console.log('## publish')}
-            onMenuSelect={() => console.log('## on publish')}
+const SidebarLayoutHeader: FC<TProps> = ({ testid = 'sidebar-layout-header', thread }) => {
+  switch (thread) {
+    case THREAD.POST: {
+      return <PostLayout />
+    }
+    case THREAD.HELP: {
+      return <HelpLayout />
+    }
 
-            // onClick={() => onPublish(ARTICLE_CAT.FEATURE)}
-            // onMenuSelect={onPublish}
-          />
-        </PublishWrapper>
-      </MainArea>
-      <AccountWrapper>account</AccountWrapper>
-    </Wrapper>
-  )
+    default: {
+      return null
+    }
+  }
 }
 
 export default memo(SidebarLayoutHeader)

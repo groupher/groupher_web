@@ -2,7 +2,7 @@ import { ReactNode, useEffect, Children, isValidElement, cloneElement } from 're
 
 import { APP_VERSION } from '@/config'
 import type { TMetric, TScrollDirection, TGlowPosition } from '@/spec'
-import { METRIC } from '@/constant'
+import METRIC from '@/constant/metric'
 
 import { buildLog } from '@/utils/logger'
 import { Global } from '@/utils/helper'

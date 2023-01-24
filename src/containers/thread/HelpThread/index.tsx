@@ -23,6 +23,7 @@ type TProps = {
   testid?: string
   title?: string
   desc?: string
+  isSidebarLayout?: boolean
 }
 
 const HelpThreadContainer: FC<TProps> = ({
@@ -30,16 +31,19 @@ const HelpThreadContainer: FC<TProps> = ({
   testid = 'help-thread',
   title = 'title',
   desc = 'desc',
+  isSidebarLayout = false,
 }) => {
   useInit(store)
   const { isArticleLayout, layout, isFAQArticleLayout } = store
 
   if (isArticleLayout) {
-    return <ArticleLayout isFAQArticleLayout={isFAQArticleLayout} />
+    return (
+      <ArticleLayout isFAQArticleLayout={isFAQArticleLayout} isSidebarLayout={isSidebarLayout} />
+    )
   }
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper testid={testid} isSidebarLayout={isSidebarLayout}>
       <Home />
     </Wrapper>
   )

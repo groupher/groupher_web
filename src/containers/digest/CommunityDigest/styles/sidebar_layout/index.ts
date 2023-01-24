@@ -25,9 +25,6 @@ export const Wrapper = styled(BaseBanner)<TWrapper>`
 
   border-image-slice: 1;
 `
-export const ScrollArea = styled.div`
-  width: 100%;
-`
 export const TabBarWrapper = styled.div`
   ${css.flex('align-center', 'justify-start')};
   margin-left: 42px;
@@ -36,4 +33,8 @@ export const TabBarWrapper = styled.div`
 export const Divider = styled(SexyDivider)`
   width: 180px;
   margin-left: 32px;
+`
+export const FileTreeWrapper = styled.div`
+  padding-left: 32px;
+  margin-top: 20px;
 `

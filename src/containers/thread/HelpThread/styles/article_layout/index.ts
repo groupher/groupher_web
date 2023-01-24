@@ -7,8 +7,9 @@ import ListSVG from '@/icons/List'
 
 import { MainWrapper } from '..'
 
-export const Wrapper = styled.div`
-  ${css.flex('justify-center')};
+export const Wrapper = styled.div<{ isSidebarLayout: boolean }>`
+  ${({ isSidebarLayout }) =>
+    isSidebarLayout ? css.flex('justify-start') : css.flex('justify-center')};
   width: 100%;
   position: relative;
 `
@@ -20,7 +21,7 @@ export const Title = styled.div`
   color: ${theme('article.title')};
   font-weight: 600;
 `
-type TContent = { isRightLayout?: boolean; open?: boolean }
+type TContent = { isRightLayout?: boolean; open?: boolean; isSidebarLayout: boolean }
 export const Content = styled(MainWrapper)<TContent>`
   flex-grow: 1;
   background: transparent;
@@ -30,7 +31,12 @@ export const Content = styled(MainWrapper)<TContent>`
   padding-right: ${({ isRightLayout }) => (isRightLayout ? '10px' : '90px')};
   border-right: none;
 
-  max-width: ${({ open }) => (open ? '100%' : '700px')};
+  max-width: ${({ open, isSidebarLayout }) => {
+    if (isSidebarLayout || !open) {
+      return '700px'
+    }
+    return '100%'
+  }};
 `
 type TSidebar = { isLeftLayout?: boolean; open?: boolean }
 export const Sidebar = styled.div<TSidebar>`

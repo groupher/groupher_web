@@ -19,32 +19,42 @@ import { gotoDetailLayout } from '../logic'
 type TProps = {
   testid?: string
   isFAQArticleLayout: boolean
+  isSidebarLayout: boolean
 }
 
-const ArticleLayout: FC<TProps> = ({ testid = 'ArtileLayout', isFAQArticleLayout }) => {
+const ArticleLayout: FC<TProps> = ({
+  testid = 'ArtileLayout',
+  isFAQArticleLayout,
+  isSidebarLayout,
+}) => {
   const [filetreeOpen, setFileTreeOpen] = useState(true)
 
   return (
-    <Wrapper>
-      <ToggleBtn open={filetreeOpen} onToggle={(toggle) => setFileTreeOpen(toggle)} />
+    <Wrapper isSidebarLayout={isSidebarLayout}>
+      {!isSidebarLayout && (
+        <>
+          <ToggleBtn open={filetreeOpen} onToggle={(toggle) => setFileTreeOpen(toggle)} />
 
-      <Sidebar isLeftLayout open={filetreeOpen}>
-        {filetreeOpen && <PinedTree />}
-        <Sticky offsetTop={30}>
-          <TreeWrapper>
-            <CustomScroller
-              direction="vertical"
-              height="calc(100vh - 110px)"
-              barSize="small"
-              showShadow={false}
-            >
-              <FileTree onSelect={() => gotoDetailLayout()} left={18} />
-            </CustomScroller>
-          </TreeWrapper>
-        </Sticky>
-      </Sidebar>
-      <Space right={80} />
-      <Content isRightLayout open={filetreeOpen}>
+          <Sidebar isLeftLayout open={filetreeOpen}>
+            {filetreeOpen && <PinedTree />}
+            <Sticky offsetTop={30}>
+              <TreeWrapper>
+                <CustomScroller
+                  direction="vertical"
+                  height="calc(100vh - 110px)"
+                  barSize="small"
+                  showShadow={false}
+                >
+                  <FileTree onSelect={() => gotoDetailLayout()} left={18} />
+                </CustomScroller>
+              </TreeWrapper>
+            </Sticky>
+          </Sidebar>
+          <Space right={80} />
+        </>
+      )}
+
+      <Content isRightLayout open={filetreeOpen} isSidebarLayout={isSidebarLayout}>
         <Header>
           {!isFAQArticleLayout && <NaviHead />}
           {!isFAQArticleLayout && <Title>关于帮助台的使用</Title>}

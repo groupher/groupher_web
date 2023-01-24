@@ -1,9 +1,9 @@
 import { FC } from 'react'
-import Link from 'next/link'
 
 import type { TCommunity, TThread } from '@/spec'
-import { ROUTE } from '@/constant/route'
 import { THREAD } from '@/constant/thread'
+
+import { SpaceGrow } from '@/widgets/Common'
 
 import {
   Wrapper,
@@ -16,6 +16,7 @@ import {
   InfoIcon,
   GuideIcon,
   MenuTitle,
+  OutLinkIcon,
 } from '../styles/sidebar_layout/main_menu'
 
 type TProps = {
@@ -33,6 +34,8 @@ const MainMenu: FC<TProps> = ({ community, activeThread }) => {
           <HomeIcon />
         </IconWrapper>
         <MenuTitle>官网</MenuTitle>
+        <SpaceGrow />
+        <OutLinkIcon />
       </MenuItem>
       <MenuItem $active={activeThread === THREAD.POST} href={`/${communityPath}/${THREAD.POST}`}>
         <IconWrapper>

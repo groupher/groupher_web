@@ -6,7 +6,8 @@ import { FC } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { bond } from '@/utils/mobx'
-import { BANNER_LAYOUT } from '@/constant'
+import { BANNER_LAYOUT } from '@/constant/layout'
+import { THREAD } from '@/constant/thread'
 
 import CommunityDigest from '@/containers/digest/CommunityDigest'
 import HelpThread from '@/containers//thread/HelpThread'
@@ -42,9 +43,9 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
         </MobileCardsWrapper>
       ) : (
         <InnerWrapper>
-          <SidebarLayoutHeader />
+          <SidebarLayoutHeader thread={THREAD.HELP} />
           <ContentWrapper>
-            <HelpThread />
+            <HelpThread isSidebarLayout={globalLayout.banner === BANNER_LAYOUT.SIDEBAR} />
           </ContentWrapper>
         </InnerWrapper>
       )}

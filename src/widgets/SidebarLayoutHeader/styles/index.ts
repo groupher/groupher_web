@@ -1,31 +1,56 @@
 import styled from 'styled-components'
 
-import type { TTestable } from '@/spec'
-
 import css, { theme } from '@/utils/css'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
-  'data-test-id': testid,
-}))<TTestable>`
-  ${css.flex('align-center', 'justify-between')};
-  width: 100%;
-  margin-bottom: 20px;
-  margin-top: 5px;
+import KanbanSVG from '@/icons/Kanban'
+import HomeSVG from '@/icons/Home'
+import DiscussSVG from '@/icons/Discuss'
+import TadaSVG from '@/icons/Tada'
+import InfoSVG from '@/icons/Info'
+import GuideSVG from '@/icons/Guide'
+
+export const Menu = styled.div`
+  ${css.flex('align-center')};
 `
-export const EmptySpace = styled.div`
-  width: 132px;
+export const MenuItem = styled.div`
+  color: ${theme('article.title')};
+  margin-left: 6px;
 `
-export const MainArea = styled.div`
-  ${css.flex('align-center', 'justify-between')};
-  width: 610px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid;
-  border-bottom-color: ${theme('divider')};
+export const IconWrapper = styled.div`
+  ${css.size(16)};
+  ${css.flex('align-both')};
 `
-export const PublishWrapper = styled.div`
-  width: 110px;
+export const HomeIcon = styled(HomeSVG)`
+  ${css.size(13)};
+  fill: ${theme('article.digest')};
 `
-export const AccountWrapper = styled.div`
-  ${css.flex('justify-end')};
-  flex-grow: 1;
+export const DiscussIcon = styled(DiscussSVG)`
+  ${css.size(14)};
+  fill: ${theme('article.digest')};
 `
+export const KanbanIcon = styled(KanbanSVG)`
+  ${css.size(16)};
+  fill: ${theme('article.digest')};
+  transform: rotate(180deg);
+`
+export const GuideIcon = styled(GuideSVG)`
+  ${css.size(13)};
+  margin-left: -1px;
+  fill: ${theme('article.digest')};
+`
+export const InfoIcon = styled(InfoSVG)`
+  ${css.size(13)};
+  fill: ${theme('article.digest')};
+`
+export const TadaIcon = styled(TadaSVG)`
+  ${css.size(15)};
+  fill: ${theme('article.digest')};
+`
+
+export const Icon = {
+  Home: HomeIcon,
+  Discuss: DiscussIcon,
+  Kanban: KanbanIcon,
+  Tada: TadaIcon,
+  Info: InfoIcon,
+}
