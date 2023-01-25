@@ -1,4 +1,5 @@
 import { FC, memo } from 'react'
+import Router from 'next/router'
 
 import { Divider } from '@/widgets/Common'
 import VIEW from '@/constant/view'
@@ -64,8 +65,17 @@ const UI: FC<TProps> = ({ settings, touched }) => {
             items={LAYOUT_TABS}
             activeKey={layoutTab}
             bottomSpace={4}
-            onChange={(tab) => edit(tab, 'layoutTab')}
+            onChange={(tab) => {
+              edit(tab, 'layoutTab')
+              const targetPath =
+                tab === DASHBOARD_LAYOUT_ROUTE.GLOBAL
+                  ? '/home/dashboard/layout'
+                  : `/home/dashboard/layout/${tab}`
+
+              Router.push(targetPath)
+            }}
             view={VIEW.DESKTOP}
+            noAnimation
           />
         </TabsWrapper>
       </Banner>
