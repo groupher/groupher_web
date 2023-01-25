@@ -48,6 +48,7 @@ const ArticleList: FC<TProps> = ({
             c11n={c11n}
             curCommunity={curCommunity}
             layout={globalLayout.post}
+            avatarLayout={globalLayout.avatar}
           />
         ))}
       </MasonryCards>
@@ -63,6 +64,7 @@ const ArticleList: FC<TProps> = ({
           c11n={c11n}
           curCommunity={curCommunity}
           layout={globalLayout.post}
+          avatarLayout={globalLayout.avatar}
         />
       ))}
     </Fragment>

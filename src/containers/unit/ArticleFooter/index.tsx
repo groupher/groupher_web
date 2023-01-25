@@ -31,7 +31,7 @@ const ArticleFooterContainer: FC<TProps> = ({
   testid = 'article-footer',
 }) => {
   useInit(store)
-  const { viewingArticle } = store
+  const { viewingArticle, avatarLayout } = store
   const { author, articleTags } = viewingArticle
 
   return (
@@ -41,7 +41,7 @@ const ArticleFooterContainer: FC<TProps> = ({
         <div>Emoji</div>
       </BaseInfo>
 
-      <Panel author={author} />
+      <Panel author={author} avatarLayout={avatarLayout} />
     </Wrapper>
   )
 }

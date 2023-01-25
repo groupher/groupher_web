@@ -1,6 +1,7 @@
 import type {
   TUpvoteLayout,
   TDashboardLayout,
+  TAvatarLayout,
   TBrandLayout,
   TBannerLayout,
   TTopbarLayout,
@@ -24,6 +25,11 @@ export const UPVOTE_LAYOUT = {
   FIXED_HEADER: 'fixed-header',
   STICKER: 'sticker',
 } as Record<TSnakeUpperCase<TUpvoteLayout>, TUpvoteLayout>
+
+export const AVATAR_LAYOUT = {
+  CIRCLE: 'circle',
+  SQUARE: 'square',
+} as Record<TSnakeUpperCase<TAvatarLayout>, TAvatarLayout>
 
 export const BRAND_LAYOUT = {
   BOTH: 'both',

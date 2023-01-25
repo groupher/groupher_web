@@ -6,8 +6,8 @@
 
 import { FC, memo, Fragment } from 'react'
 
-import type { TCommunity, TPost, TAccount, TC11N, TPostLayout } from '@/spec'
-import { POST_LAYOUT } from '@/constant/layout'
+import type { TCommunity, TPost, TAccount, TC11N, TPostLayout, TAvatarLayout } from '@/spec'
+import { AVATAR_LAYOUT, POST_LAYOUT } from '@/constant/layout'
 
 import { buildLog } from '@/utils/logger'
 
@@ -28,6 +28,7 @@ type TProps = {
   isMobilePreview?: boolean
 
   onAuthorSelect?: (obj: TAccount) => void
+  avatarLayout?: TAvatarLayout
 }
 
 const PostItem: FC<TProps> = ({
@@ -37,6 +38,7 @@ const PostItem: FC<TProps> = ({
   layout = POST_LAYOUT.UPVOTE_FIRST,
   isMobilePreview = false,
   c11n,
+  avatarLayout = AVATAR_LAYOUT.SQUARE,
 }) => {
   return (
     <Fragment>
@@ -55,6 +57,7 @@ const PostItem: FC<TProps> = ({
           article={article}
           onAuthorSelect={onAuthorSelect}
           isMobilePreview={isMobilePreview}
+          avatarLayout={avatarLayout}
         />
       )}
 

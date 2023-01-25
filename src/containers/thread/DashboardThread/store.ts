@@ -8,6 +8,7 @@ import type { TCommunity, TRootStore, TTag, TGlobalLayout, TThread, TSizeSML } f
 import { mockTags } from '@/utils/mock'
 
 import {
+  AVATAR_LAYOUT,
   BRAND_LAYOUT,
   BANNER_LAYOUT,
   TOPBAR_LAYOUT,
@@ -72,6 +73,8 @@ const settingsModalFields = {
   postLayout: T.opt(T.enum(values(POST_LAYOUT)), POST_LAYOUT.UPVOTE_FIRST),
   kanbanLayout: T.opt(T.enum(values(KANBAN_LAYOUT)), KANBAN_LAYOUT.SIMPLE),
   helpLayout: T.opt(T.enum(values(HELP_LAYOUT)), HELP_LAYOUT.FAQ_COLLAPSE),
+  avatarLayout: T.opt(T.enum(values(AVATAR_LAYOUT)), AVATAR_LAYOUT.SQUARE),
+  // avatarLayout: T.opt(T.enum(values(AVATAR_LAYOUT)), AVATAR_LAYOUT.CIRCLE),
   brandLayout: T.opt(T.enum(values(BRAND_LAYOUT)), BRAND_LAYOUT.BOTH),
   bannerLayout: T.opt(T.enum(values(BANNER_LAYOUT)), BANNER_LAYOUT.HEADER),
   // bannerLayout: T.opt(T.enum(values(BANNER_LAYOUT)), BANNER_LAYOUT.TABBER),
@@ -134,11 +137,13 @@ const DashboardThread = T.model('DashboardThread', {
         bannerNotifyLayout,
         bannerNotifyBg,
         brandLayout,
+        avatarLayout,
       } = initSettings
 
       return {
         primaryColor,
         brand: brandLayout,
+        avatar: avatarLayout,
         post: postLayout,
         kanban: kanbanLayout,
         help: helpLayout,
@@ -168,6 +173,7 @@ const DashboardThread = T.model('DashboardThread', {
 
       const primaryColorTouched = _isChanged('primaryColor')
       const brandLayoutTouched = _isChanged('brandLayout')
+      const avatarTouched = _isChanged('avatarLayout')
 
       const bannerLayoutTouched = _isChanged('bannerLayout')
       const postLayoutTouched = _isChanged('postLayout')
@@ -198,6 +204,7 @@ const DashboardThread = T.model('DashboardThread', {
       return {
         primaryColor: primaryColorTouched,
         brandLayout: brandLayoutTouched,
+        avatarLayout: avatarTouched,
         bannerLayout: bannerLayoutTouched,
         topbarLayout: topbarLayoutTouched,
         topbarBg: topbarBgTouched,
@@ -315,6 +322,7 @@ const DashboardThread = T.model('DashboardThread', {
             'saving',
             'primaryColor',
             'brandLayout',
+            'avatarLayout',
             'bannerLayout',
             'topbarLayout',
             'topbarBg',

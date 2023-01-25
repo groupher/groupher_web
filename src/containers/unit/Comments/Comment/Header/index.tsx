@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import type { TComment } from '@/spec'
+import type { TAvatarLayout, TComment } from '@/spec'
 
 import ArticleHeader from './Article'
 import UserPublishedHeader from './UserPublished'
@@ -14,19 +14,21 @@ type TProps = {
   data: TComment
   apiMode?: TAPIMode
   showInnerRef: boolean
+  avatarLayout: TAvatarLayout
 }
 
 const CommentHeader: FC<TProps> = ({
   data,
   showInnerRef,
   apiMode = API_MODE.ARTICLE,
+  avatarLayout,
 }) => {
   return (
     <Wrapper>
       {apiMode === API_MODE.USER_PUBLISHED ? (
         <UserPublishedHeader data={data} />
       ) : (
-        <ArticleHeader data={data} showInnerRef={showInnerRef} />
+        <ArticleHeader data={data} showInnerRef={showInnerRef} avatarLayout={avatarLayout} />
       )}
     </Wrapper>
   )

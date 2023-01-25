@@ -1,6 +1,8 @@
 import { FC, memo } from 'react'
 
+import type { TAvatarLayout } from '@/spec'
 import { mockUsers } from '@/utils/mock'
+
 import AdminMember from './AdminMember'
 
 import {
@@ -14,7 +16,11 @@ import {
   NormalAvatar,
 } from '../styles/members'
 
-const Members: FC = () => {
+type TProps = {
+  avatarLayout: TAvatarLayout
+}
+
+const Members: FC<TProps> = ({ avatarLayout }) => {
   return (
     <Wrapper>
       <Block>
@@ -24,7 +30,7 @@ const Members: FC = () => {
         <Row>
           {mockUsers(6).map((user) => (
             <Admin key={user.id}>
-              <AdminMember user={user} />
+              <AdminMember user={user} avatarLayout={avatarLayout} />
             </Admin>
           ))}
         </Row>
@@ -36,10 +42,10 @@ const Members: FC = () => {
         </Header>
         <Row>
           {mockUsers(15).map((user) => (
-            <NormalAvatar key={user.id} src={user.avatar} />
+            <NormalAvatar key={user.id} src={user.avatar} avatarLayout={avatarLayout} />
           ))}
           {mockUsers(15).map((user) => (
-            <NormalAvatar key={user.id} src={user.avatar} />
+            <NormalAvatar key={user.id} src={user.avatar} avatarLayout={avatarLayout} />
           ))}
         </Row>
       </BottomBlock>

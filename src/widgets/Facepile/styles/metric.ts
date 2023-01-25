@@ -28,7 +28,7 @@ export const getAvatarSize = (size: string, fmt = 'string'): string | number => 
     }
 
     case SIZE.MEDIUM: {
-      return fmt === 'string' ? '30px' : 30
+      return fmt === 'string' ? '26px' : 26
     }
 
     default: {

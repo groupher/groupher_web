@@ -2,7 +2,7 @@ import { FC, memo, Fragment } from 'react'
 import TimeAgo from 'timeago-react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TComment } from '@/spec'
+import type { TAvatarLayout, TComment } from '@/spec'
 
 import ImgFallback from '@/widgets/ImgFallback'
 import { Space } from '@/widgets/Common'
@@ -26,9 +26,10 @@ import {
 type TProps = {
   data: TComment
   showInnerRef: boolean
+  avatarLayout: TAvatarLayout
 }
 
-const CommentHeader: FC<TProps> = ({ data, showInnerRef }) => {
+const CommentHeader: FC<TProps> = ({ data, showInnerRef, avatarLayout }) => {
   const { isMobile } = useMobileDetect()
 
   const { author, meta } = data
@@ -39,8 +40,14 @@ const CommentHeader: FC<TProps> = ({ data, showInnerRef }) => {
       <Avatar
         src={data.author.avatar}
         avatarSize={avatarSize}
+        avatarLayout={avatarLayout}
         fallback={
-          <ImgFallback user={data.author} size={avatarSize} right={10} />
+          <ImgFallback
+            user={data.author}
+            size={avatarSize}
+            right={10}
+            avatarLayout={avatarLayout}
+          />
         }
       />
 

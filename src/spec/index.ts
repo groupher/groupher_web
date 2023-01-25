@@ -104,6 +104,7 @@ export type {
   TUpvoteLayout,
   TBrandLayout,
   TBannerLayout,
+  TAvatarLayout,
   TBannerNotifyLayout,
   TTopbarLayout,
   TPostLayout,

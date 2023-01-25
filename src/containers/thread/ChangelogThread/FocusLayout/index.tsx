@@ -5,7 +5,7 @@
 
 import { FC, useState } from 'react'
 
-import type { TGlobalLayout } from '@/spec'
+import type { TAvatarLayout, TGlobalLayout } from '@/spec'
 import ChangelogItem from '@/widgets/ChangelogItem'
 import Tabs from '@/widgets/Switcher/Tabs'
 
@@ -19,9 +19,10 @@ import { Wrapper, Banner, TabsWrapper, Title, Desc, MainWrapper } from '../style
 type TProps = {
   globalLayout: TGlobalLayout
   isSidebarLayout: boolean
+  avatarLayout: TAvatarLayout
 }
 
-const FocusLayout: FC<TProps> = ({ globalLayout, isSidebarLayout }) => {
+const FocusLayout: FC<TProps> = ({ globalLayout, isSidebarLayout, avatarLayout }) => {
   // globalLayout.changelog === CHANGELOG_LAYOUT.OUTLINE
   const [filterExpand, setFilterExpand] = useState(false)
   const [tab, setTab] = useState(TABS_MODE_OPTIONS[0].raw)
@@ -50,16 +51,20 @@ const FocusLayout: FC<TProps> = ({ globalLayout, isSidebarLayout }) => {
       </Banner>
       {filterExpand && <FilterBar tab={tab} />}
       <MainWrapper>
-        <ChangelogItem layout={globalLayout.changelog} showFullArticle />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
+        <ChangelogItem
+          layout={globalLayout.changelog}
+          showFullArticle
+          avatarLayout={avatarLayout}
+        />
+        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
+        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
+        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
+        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
+        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
+        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
+        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
+        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
+        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
       </MainWrapper>
     </Wrapper>
   )

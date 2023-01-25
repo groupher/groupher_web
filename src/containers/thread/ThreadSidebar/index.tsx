@@ -27,7 +27,7 @@ export type TProps = { threadSidebar?: TStore } & TBaseProps
 
 const ThreadSidebarContainer: FC<TProps> = ({ threadSidebar: store }) => {
   useInit(store)
-  const { curCommunity, isCommunityDigestInViewport, curThread } = store
+  const { curCommunity, isCommunityDigestInViewport, curThread, avatarLayout } = store
 
   return (
     <Fragment>
@@ -35,6 +35,7 @@ const ThreadSidebarContainer: FC<TProps> = ({ threadSidebar: store }) => {
         showCommunityBadge={isCommunityDigestInViewport}
         thread={curThread}
         community={curCommunity}
+        avatarLayout={avatarLayout}
       />
     </Fragment>
   )

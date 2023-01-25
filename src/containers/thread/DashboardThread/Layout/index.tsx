@@ -3,6 +3,7 @@ import { FC, memo } from 'react'
 import { Divider } from '@/widgets/Common'
 
 import Portal from '../Portal'
+import AvatarLayout from './AvatarLayout'
 import BrandLayout from './BrandLayout'
 import BannerLayout from './BannerLayout'
 import HelpLayout from './HelpLayout'
@@ -22,6 +23,7 @@ type TProps = {
 const UI: FC<TProps> = ({ settings, touched }) => {
   const {
     brandLayout,
+    avatarLayout,
     bannerLayout,
     helpLayout,
     topbarLayout,
@@ -36,6 +38,8 @@ const UI: FC<TProps> = ({ settings, touched }) => {
   return (
     <Wrapper>
       <Portal title="布局/样式" desc="社区板块自定义布局与全局样式。" />
+      <AvatarLayout layout={avatarLayout} isTouched={touched.avatarLayout} saving={saving} />
+      <Divider top={20} bottom={60} />
       <BrandLayout layout={brandLayout} isTouched={touched.brandLayout} saving={saving} />
       <Divider top={20} bottom={60} />
       <BannerLayout layout={bannerLayout} isTouched={touched.bannerLayout} saving={saving} />

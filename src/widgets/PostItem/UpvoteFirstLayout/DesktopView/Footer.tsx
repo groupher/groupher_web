@@ -1,7 +1,7 @@
 import { memo, FC, Fragment } from 'react'
 import { includes } from 'ramda'
 
-import type { TPost } from '@/spec'
+import type { TPost, TAvatarLayout } from '@/spec'
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
@@ -14,9 +14,10 @@ import { Wrapper } from '../../styles/upvote_fist_layout/desktop_view/footer'
 
 type TProps = {
   article: TPost
+  avatarLayout: TAvatarLayout
 }
 
-const Footer: FC<TProps> = ({ article }) => {
+const Footer: FC<TProps> = ({ article, avatarLayout }) => {
   const { upvotesCount, meta, viewerHasUpvoted } = article
 
   const demoList = ['239', '231', '227', '228', '226', '225']
@@ -28,6 +29,7 @@ const Footer: FC<TProps> = ({ article }) => {
         avatarList={meta.latestUpvotedUsers}
         viewerHasUpvoted={viewerHasUpvoted}
         type={UPVOTE_LAYOUT.GENERAL}
+        avatarLayout={avatarLayout}
         left={-2}
         top={-1}
       />

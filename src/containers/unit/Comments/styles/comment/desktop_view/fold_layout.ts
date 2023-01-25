@@ -1,5 +1,8 @@
 import styled from 'styled-components'
 
+import type { TAvatarLayout } from '@/spec'
+import { AVATAR_LAYOUT } from '@/constant/layout'
+
 import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 
@@ -17,8 +20,9 @@ export const Wrapper = styled.div`
   background: transparent;
   cursor: pointer;
 `
-export const Avatar = styled(Img)`
-  ${css.circle(16)};
+export const Avatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
+  ${css.size(16)};
+  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
   opacity: ${theme('avatar.opacity')};
   margin-right: 10px;
 `

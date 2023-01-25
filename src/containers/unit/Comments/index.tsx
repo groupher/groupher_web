@@ -40,7 +40,16 @@ const CommentsContainer: FC<TProps> = ({
 }) => {
   useInit(store, locked, apiMode)
 
-  const { mode, pagedCommentsData, foldState, editState, repliesState, loading, basicState } = store
+  const {
+    mode,
+    pagedCommentsData,
+    foldState,
+    editState,
+    repliesState,
+    loading,
+    basicState,
+    avatarLayout,
+  } = store
 
   const { isAllFolded } = foldState
   const { totalCount } = pagedCommentsData
@@ -76,6 +85,7 @@ const CommentsContainer: FC<TProps> = ({
         pagedComments={pagedCommentsData}
         repliesState={repliesState}
         loading={loading}
+        avatarLayout={avatarLayout}
       />
     </Wrapper>
   )

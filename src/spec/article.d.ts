@@ -157,6 +157,7 @@ export type TUpvoteLayout =
   | 'sticker'
   | 'post-minimal'
 
+export type TAvatarLayout = 'circle' | 'square'
 export type TBrandLayout = 'both' | 'logo' | 'text'
 export type TBannerLayout = 'header' | 'tabber' | 'sidebar'
 export type TBannerNotifyLayout = 'default' | 'center'
@@ -173,6 +174,7 @@ export type TGlobalLayout = {
   kanban: TKanbanLayout
   help: THelpLayout
   banner: TBannerLayout
+  avatar: TAvatarLayout
   changelog: TChangelogLayout
   footer: TFooterLayout
   bannerNotify: TBannerNotifyLayout

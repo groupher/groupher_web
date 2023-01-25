@@ -5,7 +5,7 @@
 
 // import {} from 'ramda'
 
-import type { TArticle, TRootStore } from '@/spec'
+import type { TArticle, TRootStore, TAvatarLayout } from '@/spec'
 import { T, markStates, Instance, getParent } from '@/utils/mobx'
 
 const ArticleFooter = T.model('ArticleFooter', {
@@ -20,6 +20,11 @@ const ArticleFooter = T.model('ArticleFooter', {
     get viewingArticle(): TArticle {
       const root = getParent(self) as TRootStore
       return root.viewingArticle
+    },
+    get avatarLayout(): TAvatarLayout {
+      const root = getParent(self) as TRootStore
+
+      return root.dashboardThread.avatarLayout
     },
   }))
   .actions((self) => ({

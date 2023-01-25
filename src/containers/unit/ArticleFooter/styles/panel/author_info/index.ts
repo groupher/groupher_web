@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 
-import type { TTestable } from '@/spec'
+import type { TAvatarLayout, TTestable } from '@/spec'
+import { AVATAR_LAYOUT } from '@/constant/layout'
+
 import Img from '@/Img'
 
 import css, { theme } from '@/utils/css'
@@ -39,8 +41,9 @@ export const AvatarIntro = styled.div`
   min-width: 60px;
   margin-top: 2px;
 `
-export const Avatar = styled(Img)`
-  ${css.circle(30)};
+export const Avatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
+  ${css.size(30)};
+  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
   margin-bottom: 22px;
   margin-right: 15px;
 `

@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 
-import type { TTestable, TSpace } from '@/spec'
+import type { TTestable, TSpace, TAvatarLayout } from '@/spec'
+import { AVATAR_LAYOUT } from '@/constant/layout'
+
 import css, { theme } from '@/utils/css'
 
 import Img from '@/Img'
@@ -17,22 +19,24 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   margin-left: ${({ left }) => `${left}px` || 0};
   margin-right: ${({ right }) => `${right}px` || 0};
 `
-export const Avatar = styled(Img)`
-  ${css.circle(40)};
+export const Avatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
+  ${css.size(40)};
+  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
   margin-bottom: 20px;
-  border: 2px solid;
+  border: 1px solid;
   border-color: ${theme('article.title')};
   padding: 2px;
 `
-export const BadgeWrapper = styled.div`
+export const BadgeWrapper = styled.div<{ avatarLayout: TAvatarLayout }>`
   ${css.circle(14)};
   ${css.flex('align-both')};
   background: ${theme('article.title')};
   padding: 1px;
   border: 2px solid white;
   position: absolute;
-  right: 0;
-  bottom: 18px;
+
+  right: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '-2px' : 0)};
+  bottom: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '16px' : '18px')};
   z-index: 2;
 `
 

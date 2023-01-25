@@ -1,18 +1,12 @@
 import { FC, memo } from 'react'
 
-import type { TComment, TID } from '@/spec'
+import type { TComment, TID, TAvatarLayout } from '@/spec'
 
 import type { TRepliesState, TAPIMode } from '../spec'
 import TogglerButton from './TogglerButton'
 import Comment from '../Comment'
 
-import {
-  Wrapper,
-  CountHint,
-  SlashSign,
-  CountNum,
-  ListWrapper,
-} from '../styles/list/replies_list'
+import { Wrapper, CountHint, SlashSign, CountNum, ListWrapper } from '../styles/list/replies_list'
 
 import { loadCommentReplies } from '../logic'
 
@@ -23,6 +17,7 @@ type TProps = {
   repliesCount: number
   repliesState: TRepliesState
   foldedIds: TID[]
+  avatarLayout: TAvatarLayout
 }
 
 const RepliesList: FC<TProps> = ({
@@ -32,9 +27,9 @@ const RepliesList: FC<TProps> = ({
   repliesCount,
   repliesState,
   foldedIds,
+  avatarLayout,
 }) => {
-  const loading =
-    parentId === repliesState.repliesParentId && repliesState.repliesLoading
+  const loading = parentId === repliesState.repliesParentId && repliesState.repliesLoading
 
   return (
     <Wrapper>
@@ -51,6 +46,7 @@ const RepliesList: FC<TProps> = ({
               apiMode={apiMode}
               data={comment}
               foldedIds={foldedIds}
+              avatarLayout={avatarLayout}
               showInnerRef
               isReply
             />

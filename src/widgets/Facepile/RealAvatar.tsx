@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import type { TUser } from '@/spec'
+import type { TUser, TAvatarLayout } from '@/spec'
 
 import Tooltip from '@/widgets/Tooltip'
 import UserCard from '@/widgets/Cards/UserCard'
@@ -8,12 +8,7 @@ import UserCard from '@/widgets/Cards/UserCard'
 import { getAvatarSize } from './styles/metric'
 import type { TAvatarSize } from './spec'
 
-import {
-  Wrapper,
-  InnerWrapper,
-  AvatarsImg,
-  AvatarFallback,
-} from './styles/real_avatar'
+import { Wrapper, InnerWrapper, AvatarsImg, AvatarFallback } from './styles/real_avatar'
 
 type TProps = {
   user?: TUser
@@ -21,6 +16,7 @@ type TProps = {
   noLazyLoad: boolean
   popCardPlacement?: 'top' | 'bottom'
   onUserSelect: (user: TUser) => void
+  avatarLayout?: TAvatarLayout
 }
 
 const RealAvatar: FC<TProps> = ({
@@ -29,6 +25,7 @@ const RealAvatar: FC<TProps> = ({
   noLazyLoad,
   onUserSelect,
   popCardPlacement,
+  avatarLayout,
 }) => {
   return (
     <Wrapper size={size}>
@@ -46,10 +43,12 @@ const RealAvatar: FC<TProps> = ({
             onClick={() => onUserSelect(user)}
             scrollPosition={null}
             noLazy={noLazyLoad}
+            avatarLayout={avatarLayout}
             fallback={
               <AvatarFallback
                 size={getAvatarSize(size, 'number') as number}
                 user={user}
+                avatarLayout={avatarLayout}
               />
             }
           />

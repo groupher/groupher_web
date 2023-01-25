@@ -28,12 +28,16 @@ const ChangelogThreadContainer: FC<TProps> = ({
   isSidebarLayout = false,
 }) => {
   useInit(store)
-  const { globalLayout, tagsMode } = store
+  const { globalLayout, tagsMode, avatarLayout } = store
 
   return globalLayout.banner === BANNER_LAYOUT.TABBER ? (
-    <ClassicLayout globalLayout={globalLayout} tagsMode={tagsMode} />
+    <ClassicLayout globalLayout={globalLayout} tagsMode={tagsMode} avatarLayout={avatarLayout} />
   ) : (
-    <FocusLayout globalLayout={globalLayout} isSidebarLayout={isSidebarLayout} />
+    <FocusLayout
+      globalLayout={globalLayout}
+      isSidebarLayout={isSidebarLayout}
+      avatarLayout={avatarLayout}
+    />
   )
 }
 

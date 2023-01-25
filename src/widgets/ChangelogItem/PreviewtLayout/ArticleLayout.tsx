@@ -6,6 +6,7 @@
 
 import { FC, memo } from 'react'
 
+import type { TAvatarLayout } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
 import { SpaceGrow } from '@/widgets/Common'
@@ -35,9 +36,10 @@ const log = buildLog('w:ChangelogItem:index')
 
 type TProps = {
   testid?: string
+  avatarLayout: TAvatarLayout
 }
 
-const PreviewLayout: FC<TProps> = ({ testid = 'changelog-item' }) => {
+const PreviewLayout: FC<TProps> = ({ testid = 'changelog-item', avatarLayout }) => {
   return (
     <Wrapper testid={testid}>
       <Main>
@@ -55,7 +57,7 @@ const PreviewLayout: FC<TProps> = ({ testid = 'changelog-item' }) => {
           这种行为十分危险，战争期间各种武装组织骚动，随时对我国在乌克兰撤侨的6000人直接造成生命威胁。前段时间，刘学州那个找爸妈的孩子，也是被1450它们网暴死的。
           （1450罪恶滔天啊！1450是九世恶人下凡！连孩子都不放过。
         </Body>
-        <Author />
+        <Author avatarLayout={avatarLayout} />
         <Footer>
           <EmotionSelector emotions={demoEmotion} isLegal />
           <SpaceGrow />

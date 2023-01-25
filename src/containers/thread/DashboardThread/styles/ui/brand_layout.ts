@@ -10,7 +10,7 @@ import { BaseSection, BlockBase } from '.'
 export const Wrapper = styled(BaseSection)``
 export const SelectWrapper = styled.div`
   ${css.flex('align-center')};
-  gap: 0 42px;
+  gap: 0 30px;
   width: 100%;
 `
 export const Brand = styled.div`
@@ -29,7 +29,7 @@ export const Layout = styled.div`
   ${css.flexColumn('align-both')};
 `
 export const Block = styled(BlockBase)`
-  width: 184px;
+  width: 200px;
   height: 80px;
 `
 export const LayoutTitle = styled.div<TActive>`

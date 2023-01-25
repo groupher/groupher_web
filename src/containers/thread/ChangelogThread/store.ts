@@ -4,7 +4,7 @@
 
 import { values } from 'ramda'
 
-import type { TCommunity, TRootStore, TGlobalLayout, TTag, TChangelogLayout } from '@/spec'
+import type { TCommunity, TRootStore, TGlobalLayout, TTag, TAvatarLayout } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
@@ -39,6 +39,11 @@ const ChangelogThread = T.model('ChangelogThread', {
       }
 
       return mockChangelogTimeTags(15)
+    },
+    get avatarLayout(): TAvatarLayout {
+      const root = getParent(self) as TRootStore
+
+      return root.dashboardThread.avatarLayout
     },
   }))
   .actions((self) => ({

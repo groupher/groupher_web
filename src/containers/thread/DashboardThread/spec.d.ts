@@ -18,6 +18,7 @@ import type {
   TDashboardPath,
   TKanbanLayout,
   TWallpaperInfo,
+  TAvatarLayout,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'MANAGEMENT' | 'INTEGRATE'
@@ -67,6 +68,7 @@ export type TUiSettings = {
   brandLayout: TBrandLayout
   topbarLayout: TTopbarLayout
   topbarBg: TColorName
+  avatarLayout: TAvatarLayout
   bannerLayout: TBannerLayout
   glowType: string
   glowFixed: boolean
@@ -90,6 +92,7 @@ export type TWidgetsSettings = {
 export type TTouched = {
   primaryColor: boolean
   brandLayout: boolean
+  avatarLayout: boolean
   bannerLayout: boolean
   footerLayout: boolean
   glowType: boolean
@@ -120,6 +123,7 @@ export type TSettingField =
   | 'postLayout'
   | 'kanbanLayout'
   | 'brandLayout'
+  | 'avatarLayout'
   | 'bannerLayout'
   | 'footerLayout'
   | 'glowType'
