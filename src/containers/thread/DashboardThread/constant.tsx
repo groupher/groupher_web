@@ -43,10 +43,6 @@ export const MENU = {
         raw: DASHBOARD_ROUTE.SEO,
       },
       {
-        title: '外观',
-        raw: DASHBOARD_ROUTE.UI,
-      },
-      {
         title: '社区板块',
         raw: DASHBOARD_ROUTE.THREADS,
       },

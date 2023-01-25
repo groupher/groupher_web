@@ -22,7 +22,7 @@ import {
   PreviewImage,
   ContentBlock,
   ContentBar,
-} from '../styles/ui/wallpaper'
+} from '../styles/layout/wallpaper'
 
 type TProps = {
   wallpaperInfo: TWallpaperInfo

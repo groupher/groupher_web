@@ -20,11 +20,9 @@ import {
   LayoutTitle,
   Block,
   Bar,
-  Circle,
-  Column,
   UpvoteIcon,
   CommentIcon,
-} from '../styles/ui/kanban_layout'
+} from '../styles/layout/kanban_layout'
 import { edit } from '../logic'
 
 type TProps = {

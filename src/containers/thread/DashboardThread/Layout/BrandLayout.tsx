@@ -22,7 +22,7 @@ import {
   Brand,
   BrandIcon,
   BrandTitle,
-} from '../styles/ui/brand_layout'
+} from '../styles/layout/brand_layout'
 import { edit } from '../logic'
 
 type TProps = {

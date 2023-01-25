@@ -13,6 +13,7 @@ export const Wrapper = styled(BaseSection)``
 export const SelectWrapper = styled.div`
   ${css.flex('align-center')};
   flex-wrap: wrap;
+  gap: 20px 30px;
   width: 100%;
 `
 export const Main = styled.div`
@@ -57,7 +58,7 @@ export const LayoutTitle = styled.div<TActive>`
   transition: all 0.2s;
 `
 export const Block = styled(BlockBase)`
-  width: 300px;
+  width: 290px;
   height: 200px;
   padding: 12px 25px;
 `

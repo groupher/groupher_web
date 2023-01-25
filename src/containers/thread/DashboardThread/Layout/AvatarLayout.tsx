@@ -19,7 +19,7 @@ import {
   Divider,
   Avatar,
   AvatarList,
-} from '../styles/ui/avatar_layout'
+} from '../styles/layout/avatar_layout'
 import { edit } from '../logic'
 
 type TProps = {

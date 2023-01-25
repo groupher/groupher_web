@@ -8,7 +8,6 @@ export const DASHBOARD_ROUTE = {
   DASHBOARD: 'dashboard',
   // basic-info
   INFO: 'info',
-  UI: 'ui',
   LAYOUT: 'layout',
   THREADS: 'threads',
   SEO: 'seo',

@@ -10,7 +10,7 @@ import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
 import { SETTING_FIELD } from '../constant'
-import { Wrapper, Label, TheColor } from '../styles/ui/primary_color'
+import { Wrapper, Label, TheColor } from '../styles/layout/primary_color'
 import { edit } from '../logic'
 
 type TProps = {

@@ -13,7 +13,6 @@ import SideMenu from './SideMenu'
 import {
   Overview,
   BasicInfo,
-  UI,
   Layout,
   SEO,
   Alias,
@@ -64,7 +63,6 @@ const DashboardThreadContainer: FC<TProps> = ({
         {curTab === DASHBOARD.DASHBOARD && <Overview />}
         {curTab === DASHBOARD.INFO && <BasicInfo />}
         {curTab === DASHBOARD.SEO && <SEO />}
-        {curTab === DASHBOARD.UI && <UI settings={uiSettings} touched={touched} />}
         {curTab === DASHBOARD.LAYOUT && <Layout settings={uiSettings} touched={touched} />}
         {curTab === DASHBOARD.ALIAS && <Alias settings={aliasSettings} />}
         {curTab === DASHBOARD.ADMINS && <Admin />}

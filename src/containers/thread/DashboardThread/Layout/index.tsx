@@ -9,7 +9,7 @@ import Tabs from '@/widgets/Switcher/Tabs'
 import { LAYOUT_TABS } from '../constant'
 import Portal from '../Portal'
 import AvatarLayout from './AvatarLayout'
-import BrandLayout from './BrandLayout'
+// import BrandLayout from './BrandLayout'
 import BannerLayout from './BannerLayout'
 import HelpLayout from './HelpLayout'
 import PostLayout from './PostLayout'
@@ -17,8 +17,12 @@ import KanbanLayout from './KanbanLayout'
 import TopbarLayout from './TopbarLayout'
 import BannerNotifyLayout from './BannerNotifyLayout'
 
+import PrimaryColor from './PrimaryColor'
+import GlowEffect from './GlowEffect'
+import Wallpaper from './Wallpaper'
+
 import type { TUiSettings, TTouched } from '../spec'
-import { Wrapper, Banner, TabsWrapper } from '../styles/ui'
+import { Wrapper, Banner, TabsWrapper } from '../styles/layout'
 
 import { edit } from '../logic'
 
@@ -30,7 +34,7 @@ type TProps = {
 const UI: FC<TProps> = ({ settings, touched }) => {
   const {
     layoutTab,
-    brandLayout,
+    // brandLayout,
     avatarLayout,
     bannerLayout,
     helpLayout,
@@ -40,6 +44,13 @@ const UI: FC<TProps> = ({ settings, touched }) => {
     bannerNotifyBg,
     postLayout,
     kanbanLayout,
+
+    // ui part
+    primaryColor,
+    wallpaperInfo,
+    glowType,
+    glowFixed,
+    glowOpacity,
     saving,
   } = settings
 
@@ -61,7 +72,21 @@ const UI: FC<TProps> = ({ settings, touched }) => {
 
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.GLOBAL && (
         <>
+          <PrimaryColor primaryColor={primaryColor} isTouched={touched.glowFixed} saving={saving} />
+          <Divider top={20} bottom={60} />
           <BannerLayout layout={bannerLayout} isTouched={touched.bannerLayout} saving={saving} />
+          <Divider top={20} bottom={60} />
+          <Wallpaper wallpaperInfo={wallpaperInfo} />
+          <Divider top={20} bottom={60} />
+          <GlowEffect
+            glowType={glowType}
+            glowFixed={glowFixed}
+            glowOpacity={glowOpacity}
+            isTouched={touched.glowType}
+            isGrowFixedTouched={touched.glowFixed}
+            isGrowOpacityTouched={touched.glowOpacity}
+            saving={saving}
+          />
           <Divider top={20} bottom={60} />
           <AvatarLayout layout={avatarLayout} isTouched={touched.avatarLayout} saving={saving} />
           <Divider top={20} bottom={60} />

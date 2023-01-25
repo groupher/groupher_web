@@ -8,6 +8,21 @@ export const Wrapper = styled.div`
   padding-left: 20px;
   padding-right: 90px;
 `
+
+export const Banner = styled.div`
+  height: 70px;
+  width: 100%;
+  border-bottom: 1px solid;
+  border-bottom-color: ${theme('divider')};
+  margin-bottom: 40px;
+  position: relative;
+`
+export const TabsWrapper = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: -8px;
+`
+
 export const BaseSection = styled.section`
   /* margin: 0 50px; */
   padding-bottom: 30px;
@@ -23,6 +38,8 @@ export const TitleBase = styled.div`
 export const BlockBase = styled.div<TActive>`
   opacity: ${({ $active }) => ($active ? 0.7 : 0.2)};
   box-shadow: ${({ $active }) => ($active ? 'rgb(0 0 0 / 7%) 0px 0px 24px' : '')};
+
+  background-color: ${({ $active }) => ($active ? theme('alphaBg') : 'transparent')};
 
   border: 1px solid;
   border-radius: 7px;

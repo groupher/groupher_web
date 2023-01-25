@@ -34,7 +34,7 @@ import {
   BgWrapper,
   BgLabel,
   TheColor,
-} from '../styles/ui/banner_notify_layout'
+} from '../styles/layout/banner_notify_layout'
 import { edit } from '../logic'
 
 type TProps = {

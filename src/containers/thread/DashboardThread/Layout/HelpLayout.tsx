@@ -5,7 +5,7 @@ import type { THelpLayout } from '@/spec'
 import { HELP_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { callDashboardDesc } from '@/utils/signal'
 
-import { Br, Space, Inline } from '@/widgets/Common'
+import { Br, Inline } from '@/widgets/Common'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import CheckLabel from '@/widgets/CheckLabel'
 
@@ -24,7 +24,7 @@ import {
   Main,
   ListsWrapper,
   FAQFullWrapper,
-} from '../styles/ui/help_layout'
+} from '../styles/layout/help_layout'
 import { edit } from '../logic'
 
 type TProps = {

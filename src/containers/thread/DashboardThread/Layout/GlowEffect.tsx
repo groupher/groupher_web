@@ -22,7 +22,7 @@ import {
   GrowBackground,
   SettingsRow,
   SettingTitle,
-} from '../styles/ui/glow_effect'
+} from '../styles/layout/glow_effect'
 import { edit } from '../logic'
 
 type TProps = {
