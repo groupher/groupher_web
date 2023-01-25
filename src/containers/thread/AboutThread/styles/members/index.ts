@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 
-import type { TTestable } from '@/spec'
+import type { TAvatarLayout, TTestable } from '@/spec'
+import { AVATAR_LAYOUT } from '@/constant/layout'
+
 import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 
@@ -46,8 +48,9 @@ export const Admin = styled.div`
   ${css.flex('align-start')};
   width: 33.3%;
 `
-export const NormalAvatar = styled(Img)`
-  ${css.circle(26)};
+export const NormalAvatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
+  ${css.size(26)};
+  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
   margin-right: 10px;
   margin-bottom: 16px;
 `

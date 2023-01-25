@@ -45,7 +45,7 @@ const KanbanThreadContainer: FC<TProps> = ({
 }) => {
   useInit(store)
 
-  const { layout } = store
+  const { layout, avatarLayout } = store
 
   // see: https://stackoverflow.com/questions/72673362/error-text-content-does-not-match-server-rendered-html
   const [hydrated, setHydrated] = useState(false)
@@ -55,7 +55,7 @@ const KanbanThreadContainer: FC<TProps> = ({
 
   return (
     <Wrapper testid={testid} isSidebarLayout={isSidebarLayout}>
-      <Actions />
+      <Actions avatarLayout={avatarLayout} />
       <ColumnsWrapper>
         <Column>
           <Header>

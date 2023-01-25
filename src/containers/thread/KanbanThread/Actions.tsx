@@ -1,20 +1,17 @@
 import { FC, memo } from 'react'
 
+import type { TAvatarLayout } from '@/spec'
 import { mockUsers } from '@/utils/mock'
 
 import Facepile from '@/widgets/Facepile'
 
-import {
-  Wrapper,
-  Title,
-  Count,
-  LeftPart,
-  RightPart,
-  KanbanIcon,
-  JoinTitle,
-} from './styles/actions'
+import { Wrapper, Title, Count, LeftPart, RightPart, KanbanIcon, JoinTitle } from './styles/actions'
 
-const Actions: FC = () => {
+type TProps = {
+  avatarLayout: TAvatarLayout
+}
+
+const Actions: FC<TProps> = ({ avatarLayout }) => {
   return (
     <Wrapper>
       <LeftPart>
@@ -30,6 +27,7 @@ const Actions: FC = () => {
           size="medium"
           users={mockUsers(6)}
           total={20}
+          avatarLayout={avatarLayout}
           showTotalNumber
         />
         {/* <Space right={25} /> */}

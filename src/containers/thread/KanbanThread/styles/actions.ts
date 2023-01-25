@@ -43,5 +43,5 @@ export const JoinTitle = styled.div`
   color: ${theme('article.digest')};
   font-size: 12px;
   margin-right: 10px;
-  margin-top: 3px;
+  margin-top: 1px;
 `

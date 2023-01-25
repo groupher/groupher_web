@@ -5,7 +5,7 @@
 
 import { FC } from 'react'
 
-import type { TGlobalLayout } from '@/spec'
+import type { TGlobalLayout, TAvatarLayout } from '@/spec'
 import ChangelogItem from '@/widgets/ChangelogItem'
 
 import type { TTagsMode } from '../spec'
@@ -18,22 +18,27 @@ import { Wrapper, MainWrapper } from '../styles/classic_layout'
 type TProps = {
   globalLayout: TGlobalLayout
   tagsMode: TTagsMode
+  avatarLayout: TAvatarLayout
 }
 
-const ClassicLayout: FC<TProps> = ({ globalLayout, tagsMode }) => {
+const ClassicLayout: FC<TProps> = ({ globalLayout, tagsMode, avatarLayout }) => {
   return (
     <Wrapper>
       <MainWrapper>
-        <ChangelogItem layout={globalLayout.changelog} showFullArticle />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
-        <ChangelogItem layout={globalLayout.changelog} />
+        <ChangelogItem
+          layout={globalLayout.changelog}
+          showFullArticle
+          avatarLayout={avatarLayout}
+        />
+        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
+        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
+        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
+        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
+        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
+        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
+        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
+        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
+        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
       </MainWrapper>
       <Sidebar tagsMode={tagsMode} />
     </Wrapper>

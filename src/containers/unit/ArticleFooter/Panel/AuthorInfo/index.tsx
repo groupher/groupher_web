@@ -6,7 +6,7 @@
 
 import { FC, memo } from 'react'
 
-import type { TAccount } from '@/spec'
+import type { TAccount, TAvatarLayout } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
 import ImgFallback from '@/widgets/ImgFallback'
@@ -33,9 +33,10 @@ const log = buildLog('w:AuthorInfo:index')
 type TProps = {
   testid?: string
   author: TAccount
+  avatarLayout: TAvatarLayout
 }
 
-const AuthorInfo: FC<TProps> = ({ testid = 'author-info', author }) => {
+const AuthorInfo: FC<TProps> = ({ testid = 'author-info', author, avatarLayout }) => {
   return (
     <Wrapper testid={testid}>
       <ContentWrapper>
@@ -50,7 +51,10 @@ const AuthorInfo: FC<TProps> = ({ testid = 'author-info', author }) => {
         <AvatarIntro>
           <Avatar
             src={author.avatar}
-            fallback={<ImgFallback user={author} size={38} bottom={16} />}
+            avatarLayout={avatarLayout}
+            fallback={
+              <ImgFallback user={author} size={38} bottom={16} avatarLayout={avatarLayout} />
+            }
           />
           <SocialList />
         </AvatarIntro>

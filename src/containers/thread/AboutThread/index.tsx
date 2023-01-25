@@ -32,6 +32,8 @@ const AboutThreadContainer: FC<TProps> = ({
 }) => {
   useInit(store)
 
+  const { avatarLayout } = store
+
   return (
     <Wrapper testid={testid}>
       <MainWrapper isSidebarLayout={isSidebarLayout}>
@@ -51,7 +53,7 @@ const AboutThreadContainer: FC<TProps> = ({
         </StateBlock>
 
         <MemberBlock>
-          <Members />
+          <Members avatarLayout={avatarLayout} />
         </MemberBlock>
       </MainWrapper>
       <Sidebar isSidebarLayout={isSidebarLayout} />
