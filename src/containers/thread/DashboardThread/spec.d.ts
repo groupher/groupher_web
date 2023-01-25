@@ -19,6 +19,7 @@ import type {
   TKanbanLayout,
   TWallpaperInfo,
   TAvatarLayout,
+  TDashboardLayoutRoute,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'MANAGEMENT' | 'INTEGRATE'
@@ -80,6 +81,8 @@ export type TUiSettings = {
   kanbanLayout: TKanbanLayout
   changelogLayout: TChangelogLayout
   footerLayout: TFooterLayout
+
+  layoutTab: TDashboardLayoutRoute
 }
 export type TWidgetsSettings = {
   saving: boolean

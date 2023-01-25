@@ -22,7 +22,7 @@ import {
 import { COLORS, COLOR_NAME } from '@/constant/colors'
 import { THREAD } from '@/constant/thread'
 import SIZE from '@/constant/size'
-import { ROUTE } from '@/constant/route'
+import { ROUTE, DASHBOARD_LAYOUT_ROUTE } from '@/constant/route'
 import GLOW_EFFECTS, { GLOW_OPACITY } from '@/constant/glow_effect'
 
 import { buildLog } from '@/utils/logger'
@@ -114,6 +114,7 @@ const InitSettings = T.model('DashboardInit', settingsModalFields)
 const DashboardThread = T.model('DashboardThread', {
   saving: T.opt(T.bool, false),
   curTab: T.opt(T.enum(values(ROUTE.DASHBOARD)), ROUTE.DASHBOARD.INFO),
+  layoutTab: T.opt(T.enum(values(DASHBOARD_LAYOUT_ROUTE)), DASHBOARD_LAYOUT_ROUTE.GLOBAL),
   editingTag: T.maybeNull(Tag),
   settingTag: T.maybeNull(Tag),
   editingAlias: T.maybeNull(Alias),
@@ -319,6 +320,7 @@ const DashboardThread = T.model('DashboardThread', {
         },
         ...pick(
           [
+            'layoutTab',
             'saving',
             'primaryColor',
             'brandLayout',

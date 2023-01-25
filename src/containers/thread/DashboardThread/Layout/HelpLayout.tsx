@@ -37,7 +37,7 @@ const HelpLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
   return (
     <Wrapper>
       <SectionLabel
-        title="帮助台布局"
+        title="常见问题布局"
         desc={
           <>
             当前设置仅针对常见问题的展示样式。
@@ -84,7 +84,6 @@ const HelpLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
             />
           </LayoutTitle>
         </Layout>
-        <Space right={40} />
         <Layout onClick={() => edit(HELP_LAYOUT.FAQ_FLAT, 'helpLayout')}>
           <Block $active={layout === HELP_LAYOUT.FAQ_FLAT}>
             <Br bottom={14} />

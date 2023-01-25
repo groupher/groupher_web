@@ -1,5 +1,7 @@
 export type TNonCommunityPath = 'apply_community'
 
+export type TDashboardLayoutRoute = 'global' | 'post' | 'kanban' | 'changelog' | 'help' | 'about'
+
 export type TDashboardPath =
   | 'dashboard'
   // basic-info

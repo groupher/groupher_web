@@ -62,6 +62,8 @@ export const LayoutTitle = styled.div<TActive>`
   transition: all 0.2s;
 `
 export const Block = styled(BlockBase)`
+  border: 1px solid;
+  border-color: ${theme('article.digest')};
   width: 300px;
   height: 200px;
   padding: 0px;

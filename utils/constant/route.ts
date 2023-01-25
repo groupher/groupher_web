@@ -1,4 +1,4 @@
-import type { TDashboardPath, TNonCommunityPath } from '@/spec'
+import type { TDashboardPath, TNonCommunityPath, TDashboardLayoutRoute } from '@/spec'
 
 export const NON_COMMUNITY_ROUTE = {
   APPLY_COMMUNITY: 'apply_community',
@@ -30,6 +30,15 @@ export const DASHBOARD_ROUTE = {
   ADMINS: 'admins',
   WIDGETS: 'widgets',
 } as Record<Uppercase<TDashboardPath>, TDashboardPath>
+
+export const DASHBOARD_LAYOUT_ROUTE = {
+  GLOBAL: 'global',
+  POST: 'post',
+  KANBAN: 'kanban',
+  CHANGELOG: 'changelog',
+  HELP: 'help',
+  ABOUT: 'about',
+} as Record<Uppercase<TDashboardLayoutRoute>, TDashboardLayoutRoute>
 
 export const ROUTE = {
   // NOTE: the lower-case is MUST

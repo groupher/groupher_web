@@ -1,5 +1,5 @@
 import type { TSnakeUpperCase } from '@/spec'
-import { DASHBOARD_ROUTE } from '@/constant/route'
+import { DASHBOARD_ROUTE, DASHBOARD_LAYOUT_ROUTE } from '@/constant/route'
 
 import type { TSettingField, TWidgetType, TFooterEditType } from './spec'
 
@@ -185,3 +185,30 @@ export const FOOTER_EDIT_TYPE = {
   TITLE: 'title',
   SOCIAL: 'social',
 } as Record<Uppercase<TFooterEditType>, TFooterEditType>
+
+export const LAYOUT_TABS = [
+  {
+    title: '全局',
+    raw: DASHBOARD_LAYOUT_ROUTE.GLOBAL,
+  },
+  {
+    title: '讨论区',
+    raw: DASHBOARD_LAYOUT_ROUTE.POST,
+  },
+  {
+    title: '看板',
+    raw: DASHBOARD_LAYOUT_ROUTE.KANBAN,
+  },
+  {
+    title: '更新日志',
+    raw: DASHBOARD_LAYOUT_ROUTE.CHANGELOG,
+  },
+  {
+    title: '帮助台',
+    raw: DASHBOARD_LAYOUT_ROUTE.HELP,
+  },
+  {
+    title: '关于',
+    raw: DASHBOARD_LAYOUT_ROUTE.ABOUT,
+  },
+]

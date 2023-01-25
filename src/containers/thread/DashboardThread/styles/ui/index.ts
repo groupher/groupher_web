@@ -8,6 +8,21 @@ export const Wrapper = styled.div`
   padding-left: 20px;
   padding-right: 90px;
 `
+
+export const Banner = styled.div`
+  height: 70px;
+  width: 100%;
+  border-bottom: 1px solid;
+  border-bottom-color: ${theme('divider')};
+  margin-bottom: 40px;
+  position: relative;
+`
+export const TabsWrapper = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: -12px;
+`
+
 export const BaseSection = styled.section`
   /* margin: 0 50px; */
   padding-bottom: 30px;
