@@ -239,3 +239,20 @@ export const LAYOUT_TABS = [
     raw: DASHBOARD_LAYOUT_ROUTE.ABOUT,
   },
 ]
+
+export const TW_CARD = {
+  SUMMARY: 'summary',
+  SUMMARY_LARGE_IMAGE: 'summary_large_image',
+}
+
+export const TW_CARD_OPTIONS = [
+  {
+    label: TW_CARD.SUMMARY,
+    value: TW_CARD.SUMMARY,
+  },
+
+  {
+    label: TW_CARD.SUMMARY_LARGE_IMAGE,
+    value: TW_CARD.SUMMARY_LARGE_IMAGE,
+  },
+]

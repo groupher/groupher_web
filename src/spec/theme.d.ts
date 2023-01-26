@@ -53,6 +53,9 @@ export type TThemeMap = {
     basic: string
     animate: string
   }
+  editor?: {
+    border: string
+  }
   mobileTab?: string
   logoText?: string
   heatmap?: { activityLow: string; activityHight: string }
