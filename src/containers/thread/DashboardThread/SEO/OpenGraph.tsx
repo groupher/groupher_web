@@ -5,20 +5,23 @@ import type { TPostLayout } from '@/spec'
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
 import { Divider } from '@/widgets/Common'
 
+import type { TSEOSettings } from '../spec'
 import SectionLabel from '../SectionLabel'
 import SearchEnginePreview from './SearchEnginePreview'
 
 import { Wrapper, Label, EnableDesc, Inputer } from '../styles/seo/open_graph'
+import { edit } from '../logic'
 
 type TProps = {
   testid?: TPostLayout
+  settings: TSEOSettings
 }
 
 /*
  see: https://mintlify.com/docs/settings/seo for details
 */
 
-const OpenGraph: FC<TProps> = ({ testid = 'seo' }) => {
+const OpenGraph: FC<TProps> = ({ testid = 'seo', settings }) => {
   return (
     <Wrapper>
       <SectionLabel
@@ -27,16 +30,15 @@ const OpenGraph: FC<TProps> = ({ testid = 'seo' }) => {
         addon={<ToggleSwitch checked />}
       />
       <Divider bottom={34} top={10} />
-      <SearchEnginePreview />
-      <SectionLabel title="基本信息" />
+      <SearchEnginePreview settings={settings} />
       <Label>og:site_name</Label>
-      <Inputer />
+      <Inputer value={settings.ogSiteName} onChange={(e) => edit(e, 'ogSiteName')} />
       <Label>og:title</Label>
-      <Inputer />
+      <Inputer value={settings.ogTitle} onChange={(e) => edit(e, 'ogTitle')} />
       <Label>og:description</Label>
-      <Inputer />
+      <Inputer value={settings.ogDescription} onChange={(e) => edit(e, 'ogDescription')} />
       <Label>og:url</Label>
-      <Inputer />
+      <Inputer value={settings.ogUrl} onChange={(e) => edit(e, 'ogUrl')} />
       <Label>og:image</Label>
       <Inputer />
       <Label>og:locale</Label>

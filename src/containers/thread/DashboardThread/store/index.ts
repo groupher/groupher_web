@@ -238,6 +238,7 @@ const DashboardThread = T.model('DashboardThread', {
       return pick(
         [
           'seoTab',
+          'ogSiteName',
           'ogTitle',
           'ogDescription',
           'ogUrl',
@@ -248,6 +249,7 @@ const DashboardThread = T.model('DashboardThread', {
           'twTitle',
           'twDescription',
           'twUrl',
+          'twCard',
           'twSite',
           'twImage',
           'twImageWidth',

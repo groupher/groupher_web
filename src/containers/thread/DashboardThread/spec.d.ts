@@ -76,6 +76,7 @@ export type TBaseInfoSettings = {
 }
 
 export type TSEOSettings = {
+  ogSiteName: string
   ogTitle: string
   ogDescription: string
   ogUrl: string
@@ -86,6 +87,7 @@ export type TSEOSettings = {
   twTitle: string
   twDescription: string
   twUrl: string
+  twCard: string // 'summary' | 'summary_large_image'
   twSite: string
   twImage: string
   twImageWidth: string
