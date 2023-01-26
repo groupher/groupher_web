@@ -2,8 +2,6 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
 
-import Input from '@/widgets/Input'
-
 export const Wrapper = styled.div`
   ${css.flexColumn()};
   padding: 0 150px;

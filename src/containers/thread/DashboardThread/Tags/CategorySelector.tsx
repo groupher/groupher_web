@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 import Button from '@/widgets/Buttons/Button'
 
 import { Wrapper, CatsWrapper, Hint } from '../styles/tags/category_selector'
-import { changeTagCategory } from '../logic'
+import { edit } from '../logic'
 
 type TProps = {
   categories: string[]
@@ -19,7 +19,7 @@ const CategorySelector: FC<TProps> = ({ categories, active }) => {
           ghost
           size="small"
           noBorder={active !== null}
-          onClick={() => changeTagCategory(null)}
+          onClick={() => edit(null, 'activeTagCategory')}
         >
           全部
         </Button>
@@ -30,7 +30,7 @@ const CategorySelector: FC<TProps> = ({ categories, active }) => {
             ghost
             size="small"
             noBorder={active !== cat}
-            onClick={() => changeTagCategory(cat)}
+            onClick={() => edit(cat, 'activeTagCategory')}
           >
             {cat}
           </Button>

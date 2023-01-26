@@ -105,7 +105,7 @@ export const MENU = {
     icon: <Icon.Bind />,
     children: [
       {
-        title: '域名',
+        title: '自定义域名',
         raw: DASHBOARD_ROUTE.DOMAIN,
       },
       {

@@ -8,6 +8,14 @@ export const Wrapper = styled.div`
   padding-bottom: 30px;
   margin-bottom: 20px;
 `
+export const FaviconWrapper = styled.div`
+  ${css.size(30)};
+`
+export const Favicon = styled.div`
+  ${css.size(30)};
+  background: ${theme('hoverBg')};
+  border-radius: 4px;
+`
 export const LogoWrapper = styled.div`
   ${css.size(70)};
 `

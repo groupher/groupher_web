@@ -5,10 +5,6 @@ import css, { theme } from '@/utils/css'
 import Input from '@/widgets/Input'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
-  padding: 0 150px;
-`
-export const Section = styled.div`
   padding-bottom: 30px;
   margin-bottom: 20px;
 `
@@ -24,4 +20,9 @@ export const Inputer = styled(Input)`
   margin-bottom: 20px;
   width: 300px;
   background: transparent;
+`
+
+export const EnableDesc = styled.div`
+  width: 80%;
+  line-height: 1.65;
 `

@@ -7,12 +7,13 @@ import OSSUploader from '@/widgets/OSSUploader'
 import SocialEditor from '@/widgets/SocialEditor'
 
 import SectionLabel from '../SectionLabel'
-// import CheckLabel from '@/widgets/CheckLabel'
 
 import {
   Wrapper,
   Label,
   Inputer,
+  FaviconWrapper,
+  Favicon,
   LogoWrapper,
   Logo,
   Title,
@@ -27,6 +28,15 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info' }) => {
   return (
     <Wrapper>
       <SectionLabel title="基本信息" />
+      <Title>favicon</Title>
+      <FaviconWrapper>
+        <OSSUploader>
+          <Favicon />
+        </OSSUploader>
+      </FaviconWrapper>
+      <Desc>上传 favicon, 仅支持 ico 格式，最大 10 KB。可选。</Desc>
+      <Br bottom={30} />
+
       <Title>LOGO</Title>
       <LogoWrapper>
         <OSSUploader>
