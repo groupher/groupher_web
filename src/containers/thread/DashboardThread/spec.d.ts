@@ -19,6 +19,9 @@ import type {
   TKanbanLayout,
   TWallpaperInfo,
   TAvatarLayout,
+  TDashboardLayoutRoute,
+  TDashboardBaseInfoRoute,
+  TDashboardSEORoute,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'MANAGEMENT' | 'INTEGRATE'
@@ -59,6 +62,38 @@ export type TAliasSettings = {
   editingAlias: TAlias
 }
 
+export type TBaseInfoSettings = {
+  favicon: string
+  logo: string
+  title: string
+  desc: string
+  homepage: string
+  url: string
+  city: string
+  techstack: string
+
+  baseInfoTab: TDashboardBaseInfoRoute
+}
+
+export type TSEOSettings = {
+  ogTitle: string
+  ogDescription: string
+  ogUrl: string
+  ogImage: string
+  ogLocale: string
+  ogPublisher: string
+
+  twTitle: string
+  twDescription: string
+  twUrl: string
+  twSite: string
+  twImage: string
+  twImageWidth: string
+  twImageHeight: string
+
+  seoTab: TDashboardSEORoute
+}
+
 export type TUiSettings = {
   saving: boolean
   wallpaperInfo: TWallpaperInfo
@@ -80,6 +115,8 @@ export type TUiSettings = {
   kanbanLayout: TKanbanLayout
   changelogLayout: TChangelogLayout
   footerLayout: TFooterLayout
+
+  layoutTab: TDashboardLayoutRoute
 }
 export type TWidgetsSettings = {
   saving: boolean

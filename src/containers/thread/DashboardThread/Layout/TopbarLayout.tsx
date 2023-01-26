@@ -28,7 +28,7 @@ import {
   BgWrapper,
   BgLabel,
   TheColor,
-} from '../styles/ui/topbar_layout'
+} from '../styles/layout/topbar_layout'
 import { edit } from '../logic'
 
 type TProps = {

@@ -5,7 +5,7 @@ import type { THelpLayout } from '@/spec'
 import { HELP_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { callDashboardDesc } from '@/utils/signal'
 
-import { Br, Space, Inline } from '@/widgets/Common'
+import { Br, Inline } from '@/widgets/Common'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import CheckLabel from '@/widgets/CheckLabel'
 
@@ -24,7 +24,7 @@ import {
   Main,
   ListsWrapper,
   FAQFullWrapper,
-} from '../styles/ui/help_layout'
+} from '../styles/layout/help_layout'
 import { edit } from '../logic'
 
 type TProps = {
@@ -37,7 +37,7 @@ const HelpLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
   return (
     <Wrapper>
       <SectionLabel
-        title="帮助台布局"
+        title="常见问题布局"
         desc={
           <>
             当前设置仅针对常见问题的展示样式。
@@ -84,7 +84,6 @@ const HelpLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
             />
           </LayoutTitle>
         </Layout>
-        <Space right={40} />
         <Layout onClick={() => edit(HELP_LAYOUT.FAQ_FLAT, 'helpLayout')}>
           <Block $active={layout === HELP_LAYOUT.FAQ_FLAT}>
             <Br bottom={14} />

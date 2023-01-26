@@ -26,7 +26,7 @@ import {
   ListsWrapper,
   TagsWrapper,
   SidebarWrapper,
-} from '../styles/ui/banner_layout'
+} from '../styles/layout/banner_layout'
 import { edit } from '../logic'
 
 type TProps = {

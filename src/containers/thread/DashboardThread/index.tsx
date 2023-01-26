@@ -13,9 +13,8 @@ import SideMenu from './SideMenu'
 import {
   Overview,
   BasicInfo,
-  UI,
-  Layout,
   SEO,
+  Layout,
   Alias,
   Admin,
   Threads,
@@ -46,6 +45,8 @@ const DashboardThreadContainer: FC<TProps> = ({
   useInit(store)
   const {
     curTab,
+    baseInfoSettings,
+    seoSettings,
     uiSettings,
     tagSettings,
     footerSettings,
@@ -62,9 +63,8 @@ const DashboardThreadContainer: FC<TProps> = ({
       <SideMenu curTab={curTab} touched={touched} />
       <MainWrapper>
         {curTab === DASHBOARD.DASHBOARD && <Overview />}
-        {curTab === DASHBOARD.INFO && <BasicInfo />}
-        {curTab === DASHBOARD.SEO && <SEO />}
-        {curTab === DASHBOARD.UI && <UI settings={uiSettings} touched={touched} />}
+        {curTab === DASHBOARD.INFO && <BasicInfo settings={baseInfoSettings} />}
+        {curTab === DASHBOARD.SEO && <SEO settings={seoSettings} />}
         {curTab === DASHBOARD.LAYOUT && <Layout settings={uiSettings} touched={touched} />}
         {curTab === DASHBOARD.ALIAS && <Alias settings={aliasSettings} />}
         {curTab === DASHBOARD.ADMINS && <Admin />}

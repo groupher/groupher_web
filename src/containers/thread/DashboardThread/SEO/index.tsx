@@ -1,63 +1,59 @@
 import { FC, memo } from 'react'
+import Router from 'next/router'
 
 import type { TPostLayout } from '@/spec'
+import { DASHBOARD_SEO_ROUTE } from '@/constant/route'
+import VIEW from '@/constant/view'
 
-import { Br } from '@/widgets/Common'
+import Tabs from '@/widgets/Switcher/Tabs'
+
+import { SEO_TABS } from '../constant'
+import type { TSEOSettings } from '../spec'
 
 import Portal from '../Portal'
-import SectionLabel from '../SectionLabel'
-// import CheckLabel from '@/widgets/CheckLabel'
+import OpenGraph from './OpenGraph'
+import TwitterGraph from './TwitterGraph'
 
-import { Wrapper, Section, Label, Inputer } from '../styles/seo'
+import { Wrapper, Banner, TabsWrapper } from '../styles/basic_info'
+import { edit } from '../logic'
 
 type TProps = {
   testid?: TPostLayout
+  settings: TSEOSettings
 }
 
-/*
- see: https://mintlify.com/docs/settings/seo for details
-*/
+const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
+  const { seoTab } = settings
 
-const SEO: FC<TProps> = ({ testid = 'seo' }) => {
   return (
     <Wrapper>
-      <Portal title="社区 SEO" desc="社区 SEO 相关信息。" />
-      <Section>
-        <SectionLabel title="基本信息" />
-        <Label>og:site_name</Label>
-        <Inputer />
-        <Label>og:title</Label>
-        <Inputer />
-        <Label>og:description</Label>
-        <Inputer />
-        <Label>og:url</Label>
-        <Inputer />
-        <Label>og:image</Label>
-        <Inputer />
-        <Label>og:locale</Label>
-        <Inputer />
-        <Label>article:publisher</Label>
-        <Inputer />
+      <Portal title="SEO" desc="搜索引擎及社交媒体展示优化。" withDivider={false} />
 
-        <Br bottom={40} />
-        <SectionLabel title="twitter" />
-        <Label>twitter:title</Label>
-        <Inputer />
-        <Label>twitter:description</Label>
-        <Inputer />
-        <Label>twitter:url</Label>
-        <Inputer />
-        <Label>twitter:site</Label>
-        <Inputer />
-        <Label>twitter:image</Label>
-        <Inputer />
-        <Label>og:image:width</Label>
-        <Inputer />
-        <Label>og:image:height</Label>
-        <Inputer />
-      </Section>
+      <Banner>
+        <TabsWrapper>
+          <Tabs
+            items={SEO_TABS}
+            activeKey={seoTab}
+            bottomSpace={4}
+            onChange={(tab) => {
+              edit(tab, 'seoTab')
+              const targetPath =
+                tab === DASHBOARD_SEO_ROUTE.SEARCH_ENGINE
+                  ? '/home/dashboard/seo'
+                  : `/home/dashboard/seo/${tab}`
+
+              Router.push(targetPath)
+            }}
+            view={VIEW.DESKTOP}
+            noAnimation
+          />
+        </TabsWrapper>
+      </Banner>
+
+      {seoTab === DASHBOARD_SEO_ROUTE.SEARCH_ENGINE && <OpenGraph />}
+      {seoTab === DASHBOARD_SEO_ROUTE.TWITTER && <TwitterGraph />}
     </Wrapper>
   )
 }
 
-export default memo(SEO)
+export default memo(BasicInfo)

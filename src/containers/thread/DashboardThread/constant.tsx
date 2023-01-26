@@ -1,5 +1,10 @@
 import type { TSnakeUpperCase } from '@/spec'
-import { DASHBOARD_ROUTE } from '@/constant/route'
+import {
+  DASHBOARD_ROUTE,
+  DASHBOARD_LAYOUT_ROUTE,
+  DASHBOARD_BASEINFO_ROUTE,
+  DASHBOARD_SEO_ROUTE,
+} from '@/constant/route'
 
 import type { TSettingField, TWidgetType, TFooterEditType } from './spec'
 
@@ -35,16 +40,12 @@ export const MENU = {
     icon: <Icon.Basic />,
     children: [
       {
-        title: '关于社区',
+        title: '基本信息',
         raw: DASHBOARD_ROUTE.INFO,
       },
       {
         title: 'SEO',
         raw: DASHBOARD_ROUTE.SEO,
-      },
-      {
-        title: '外观',
-        raw: DASHBOARD_ROUTE.UI,
       },
       {
         title: '社区板块',
@@ -113,7 +114,7 @@ export const MENU = {
     icon: <Icon.Bind />,
     children: [
       {
-        title: '域名',
+        title: '自定义域名',
         raw: DASHBOARD_ROUTE.DOMAIN,
       },
       {
@@ -185,3 +186,56 @@ export const FOOTER_EDIT_TYPE = {
   TITLE: 'title',
   SOCIAL: 'social',
 } as Record<Uppercase<TFooterEditType>, TFooterEditType>
+
+export const BASEINFO_TABS = [
+  {
+    title: '基本信息',
+    raw: DASHBOARD_BASEINFO_ROUTE.BASIC,
+  },
+  {
+    title: '社交媒体',
+    raw: DASHBOARD_BASEINFO_ROUTE.SOCIAL,
+  },
+  {
+    title: '其他',
+    raw: DASHBOARD_BASEINFO_ROUTE.OTHER,
+  },
+]
+
+export const SEO_TABS = [
+  {
+    title: '搜索引擎',
+    raw: DASHBOARD_SEO_ROUTE.SEARCH_ENGINE,
+  },
+  {
+    title: 'Twitter',
+    raw: DASHBOARD_SEO_ROUTE.TWITTER,
+  },
+]
+
+export const LAYOUT_TABS = [
+  {
+    title: '全局',
+    raw: DASHBOARD_LAYOUT_ROUTE.GLOBAL,
+  },
+  {
+    title: '讨论区',
+    raw: DASHBOARD_LAYOUT_ROUTE.POST,
+  },
+  {
+    title: '看板',
+    raw: DASHBOARD_LAYOUT_ROUTE.KANBAN,
+  },
+  {
+    title: '更新日志',
+    raw: DASHBOARD_LAYOUT_ROUTE.CHANGELOG,
+  },
+  {
+    title: '帮助台',
+    raw: DASHBOARD_LAYOUT_ROUTE.HELP,
+  },
+  {
+    title: '关于',
+    raw: DASHBOARD_LAYOUT_ROUTE.ABOUT,
+  },
+]

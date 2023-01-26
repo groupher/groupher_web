@@ -19,10 +19,6 @@ export const Layout = dynamic(() => import('./Layout'), {
   loading: () => <LavaLampLoading />,
 })
 
-export const UI = dynamic(() => import('./UI'), {
-  loading: () => <LavaLampLoading />,
-})
-
 export const Alias = dynamic(() => import('./Alias'), {
   loading: () => <LavaLampLoading />,
 })

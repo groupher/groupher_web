@@ -28,7 +28,7 @@ import {
   Column,
   UpvoteIcon,
   Picture,
-} from '../styles/ui/changelog_layout'
+} from '../styles/layout/changelog_layout'
 
 import { edit } from '../logic'
 
