@@ -50,6 +50,7 @@ export const settingsModalFields = {
   favicon: T.opt(T.string, ''),
   logo: T.opt(T.string, ''),
   title: T.opt(T.string, ''),
+  desc: T.opt(T.string, ''),
   homepage: T.opt(T.string, ''),
   url: T.opt(T.string, ''),
   city: T.opt(T.string, ''),

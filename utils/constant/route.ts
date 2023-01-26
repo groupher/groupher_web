@@ -3,6 +3,7 @@ import type {
   TNonCommunityPath,
   TDashboardLayoutRoute,
   TDashboardBaseInfoRoute,
+  TDashboardSEORoute,
 } from '@/spec'
 
 export const NON_COMMUNITY_ROUTE = {
@@ -13,6 +14,7 @@ export const DASHBOARD_ROUTE = {
   DASHBOARD: 'dashboard',
   // basic-info
   INFO: 'info',
+  SEO: 'seo',
   LAYOUT: 'layout',
   THREADS: 'threads',
   ALIAS: 'alias',
@@ -36,8 +38,14 @@ export const DASHBOARD_ROUTE = {
 
 export const DASHBOARD_BASEINFO_ROUTE = {
   BASIC: 'basic',
-  SEO: 'seo',
+  SOCIAL: 'social',
+  OTHER: 'other',
 } as Record<Uppercase<TDashboardBaseInfoRoute>, TDashboardBaseInfoRoute>
+
+export const DASHBOARD_SEO_ROUTE = {
+  SEARCH_ENGINE: 'search_engine',
+  TWITTER: 'twitter',
+} as Record<Uppercase<TDashboardSEORoute>, TDashboardSEORoute>
 
 export const DASHBOARD_LAYOUT_ROUTE = {
   GLOBAL: 'global',

@@ -156,6 +156,7 @@ export type {
   TNonCommunityPath,
   TDashboardLayoutRoute,
   TDashboardBaseInfoRoute,
+  TDashboardSEORoute,
 } from './route'
 
 export type TRoute = {

@@ -1,5 +1,10 @@
 import type { TSnakeUpperCase } from '@/spec'
-import { DASHBOARD_ROUTE, DASHBOARD_LAYOUT_ROUTE, DASHBOARD_BASEINFO_ROUTE } from '@/constant/route'
+import {
+  DASHBOARD_ROUTE,
+  DASHBOARD_LAYOUT_ROUTE,
+  DASHBOARD_BASEINFO_ROUTE,
+  DASHBOARD_SEO_ROUTE,
+} from '@/constant/route'
 
 import type { TSettingField, TWidgetType, TFooterEditType } from './spec'
 
@@ -35,8 +40,12 @@ export const MENU = {
     icon: <Icon.Basic />,
     children: [
       {
-        title: '关于社区',
+        title: '基本信息',
         raw: DASHBOARD_ROUTE.INFO,
+      },
+      {
+        title: 'SEO',
+        raw: DASHBOARD_ROUTE.SEO,
       },
       {
         title: '社区板块',
@@ -184,8 +193,23 @@ export const BASEINFO_TABS = [
     raw: DASHBOARD_BASEINFO_ROUTE.BASIC,
   },
   {
-    title: 'SEO',
-    raw: DASHBOARD_BASEINFO_ROUTE.SEO,
+    title: '社交媒体',
+    raw: DASHBOARD_BASEINFO_ROUTE.SOCIAL,
+  },
+  {
+    title: '其他',
+    raw: DASHBOARD_BASEINFO_ROUTE.OTHER,
+  },
+]
+
+export const SEO_TABS = [
+  {
+    title: '搜索引擎',
+    raw: DASHBOARD_SEO_ROUTE.SEARCH_ENGINE,
+  },
+  {
+    title: 'Twitter',
+    raw: DASHBOARD_SEO_ROUTE.TWITTER,
   },
 ]
 

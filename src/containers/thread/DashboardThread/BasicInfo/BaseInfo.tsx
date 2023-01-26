@@ -4,10 +4,8 @@ import type { TPostLayout } from '@/spec'
 
 import { Br } from '@/widgets/Common'
 import OSSUploader from '@/widgets/OSSUploader'
-import SocialEditor from '@/widgets/SocialEditor'
 
 import type { TBaseInfoSettings } from '../spec'
-import SectionLabel from '../SectionLabel'
 
 import {
   Wrapper,
@@ -19,7 +17,7 @@ import {
   Logo,
   Title,
   Desc,
-} from '../styles/basic_info/baseinfo_form'
+} from '../styles/basic_info/base_info'
 import { edit } from '../logic'
 
 type TProps = {
@@ -30,7 +28,6 @@ type TProps = {
 const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
   return (
     <Wrapper>
-      <SectionLabel title="基本信息" />
       <Title>favicon</Title>
       <FaviconWrapper>
         <OSSUploader>
@@ -50,22 +47,12 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
       <Br bottom={30} />
       <Label>社区名称</Label>
       <Inputer value={settings.title} onChange={(v) => edit(v, 'title')} />
+      <Label>社区简介</Label>
+      <Inputer value={settings.desc} onChange={(v) => edit(v, 'desc')} />
       <Label>官方主页</Label>
       <Inputer value={settings.homepage} onChange={(v) => edit(v, 'homepage')} />
       <Label>社区 URL</Label>
       <Inputer value={settings.url} onChange={(v) => edit(v, 'url')} />
-      <SocialEditor />
-
-      <Br bottom={40} />
-      <SectionLabel title="其它信息" />
-      <Label>社交媒体</Label>
-      <Inputer />
-      <Label>城市</Label>
-      <Inputer />
-      <Label>技术栈</Label>
-      <Inputer />
-      <Label>媒体报道</Label>
-      <Inputer />
     </Wrapper>
   )
 }

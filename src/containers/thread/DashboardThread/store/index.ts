@@ -5,7 +5,12 @@
 import { values, pick, findIndex, clone, isNil, equals, pluck, uniq, filter } from 'ramda'
 
 import type { TCommunity, TRootStore, TTag, TGlobalLayout, TThread, TSizeSML } from '@/spec'
-import { ROUTE, DASHBOARD_LAYOUT_ROUTE, DASHBOARD_BASEINFO_ROUTE } from '@/constant/route'
+import {
+  ROUTE,
+  DASHBOARD_LAYOUT_ROUTE,
+  DASHBOARD_BASEINFO_ROUTE,
+  DASHBOARD_SEO_ROUTE,
+} from '@/constant/route'
 
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
@@ -13,6 +18,7 @@ import { Tag } from '@/model'
 
 import type {
   TBaseInfoSettings,
+  TSEOSettings,
   TUiSettings,
   TTagSettings,
   TFooterSettings,
@@ -35,11 +41,13 @@ const log = buildLog('S:DashboardThread')
 const DashboardThread = T.model('DashboardThread', {
   saving: T.opt(T.bool, false),
   curTab: T.opt(T.enum(values(ROUTE.DASHBOARD)), ROUTE.DASHBOARD.INFO),
-  layoutTab: T.opt(T.enum(values(DASHBOARD_LAYOUT_ROUTE)), DASHBOARD_LAYOUT_ROUTE.GLOBAL),
   baseInfoTab: T.opt(T.enum(values(DASHBOARD_BASEINFO_ROUTE)), DASHBOARD_BASEINFO_ROUTE.BASIC),
+  seoTab: T.opt(T.enum(values(DASHBOARD_SEO_ROUTE)), DASHBOARD_SEO_ROUTE.SEARCH_ENGINE),
+  layoutTab: T.opt(T.enum(values(DASHBOARD_LAYOUT_ROUTE)), DASHBOARD_LAYOUT_ROUTE.GLOBAL),
   editingTag: T.maybeNull(Tag),
   settingTag: T.maybeNull(Tag),
   editingAlias: T.maybeNull(Alias),
+
   ...settingsModalFields,
   initSettings: T.opt(InitSettings, {}),
 })
@@ -224,11 +232,36 @@ const DashboardThread = T.model('DashboardThread', {
       }
     },
 
+    get seoSettings(): TSEOSettings {
+      const slf = self as TStore
+
+      return pick(
+        [
+          'seoTab',
+          'ogTitle',
+          'ogDescription',
+          'ogUrl',
+          'ogImage',
+          'ogLocale',
+          'ogPublisher',
+
+          'twTitle',
+          'twDescription',
+          'twUrl',
+          'twSite',
+          'twImage',
+          'twImageWidth',
+          'twImageHeight',
+        ],
+        slf,
+      )
+    },
+
     get baseInfoSettings(): TBaseInfoSettings {
       const slf = self as TStore
 
       return pick(
-        ['favicon', 'logo', 'title', 'homepage', 'url', 'city', 'techstack', 'baseInfoTab'],
+        ['favicon', 'logo', 'title', 'desc', 'homepage', 'url', 'city', 'techstack', 'baseInfoTab'],
         slf,
       )
     },

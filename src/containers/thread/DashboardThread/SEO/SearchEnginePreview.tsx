@@ -1,8 +1,8 @@
 import { FC } from 'react'
 
-import { Wrapper, URL, Title, Desc, Hint } from '../styles/basic_info/seo_preview'
+import { Wrapper, URL, Title, Desc, Hint } from '../styles/seo/search_engine_preview'
 
-const SEOPreview: FC = () => {
+const SearchEnginePreview: FC = () => {
   return (
     <Wrapper>
       <Hint>预览</Hint>
@@ -13,4 +13,4 @@ const SEOPreview: FC = () => {
   )
 }
 
-export default SEOPreview
+export default SearchEnginePreview

@@ -12,8 +12,9 @@ import type { TBaseInfoSettings } from '../spec'
 
 import Portal from '../Portal'
 
-import BaseInfoForm from './BaseInfoForm'
-import SEOForm from './SEOForm'
+import BaseInfo from './BaseInfo'
+import SocialInfo from './SocialInfo'
+import OtherInfo from './OtherInfo'
 
 import { Wrapper, Banner, TabsWrapper } from '../styles/basic_info'
 import { edit } from '../logic'
@@ -28,11 +29,7 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
 
   return (
     <Wrapper>
-      <Portal
-        title="社区信息"
-        desc="社区基本信息，关于页面主要信息，SEO 信息等。"
-        withDivider={false}
-      />
+      <Portal title="社区信息" desc="社区基本信息，关于页面主要信息等。" withDivider={false} />
 
       <Banner>
         <TabsWrapper>
@@ -55,8 +52,9 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
         </TabsWrapper>
       </Banner>
 
-      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.BASIC && <BaseInfoForm settings={settings} />}
-      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.SEO && <SEOForm />}
+      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.BASIC && <BaseInfo settings={settings} />}
+      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.SOCIAL && <SocialInfo settings={settings} />}
+      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.OTHER && <OtherInfo settings={settings} />}
     </Wrapper>
   )
 }

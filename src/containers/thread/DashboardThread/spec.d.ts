@@ -21,6 +21,7 @@ import type {
   TAvatarLayout,
   TDashboardLayoutRoute,
   TDashboardBaseInfoRoute,
+  TDashboardSEORoute,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'MANAGEMENT' | 'INTEGRATE'
@@ -65,6 +66,7 @@ export type TBaseInfoSettings = {
   favicon: string
   logo: string
   title: string
+  desc: string
   homepage: string
   url: string
   city: string
@@ -88,6 +90,8 @@ export type TSEOSettings = {
   twImage: string
   twImageWidth: string
   twImageHeight: string
+
+  seoTab: TDashboardSEORoute
 }
 
 export type TUiSettings = {
