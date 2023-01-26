@@ -19,3 +19,8 @@ export const TabsWrapper = styled.div`
   bottom: 0;
   left: -8px;
 `
+
+export const EnableDesc = styled.div`
+  width: 80%;
+  line-height: 1.65;
+`

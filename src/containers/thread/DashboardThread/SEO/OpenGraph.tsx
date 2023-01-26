@@ -8,7 +8,7 @@ import { Divider } from '@/widgets/Common'
 import SectionLabel from '../SectionLabel'
 import SearchEnginePreview from './SearchEnginePreview'
 
-import { Wrapper, Label, EnableDesc, Inputer } from '../styles/seo/twitter_graph'
+import { Wrapper, Label, EnableDesc, Inputer } from '../styles/seo/open_graph'
 
 type TProps = {
   testid?: TPostLayout
