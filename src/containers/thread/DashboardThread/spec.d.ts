@@ -62,7 +62,32 @@ export type TAliasSettings = {
 }
 
 export type TBaseInfoSettings = {
+  favicon: string
+  logo: string
+  title: string
+  homepage: string
+  url: string
+  city: string
+  techstack: string
+
   baseInfoTab: TDashboardBaseInfoRoute
+}
+
+export type TSEOSettings = {
+  ogTitle: string
+  ogDescription: string
+  ogUrl: string
+  ogImage: string
+  ogLocale: string
+  ogPublisher: string
+
+  twTitle: string
+  twDescription: string
+  twUrl: string
+  twSite: string
+  twImage: string
+  twImageWidth: string
+  twImageHeight: string
 }
 
 export type TUiSettings = {

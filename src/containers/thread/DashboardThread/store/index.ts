@@ -2,28 +2,10 @@
  * DashboardThread store
  */
 
-import { keys, values, pick, findIndex, clone, isNil, equals, pluck, uniq, filter } from 'ramda'
+import { values, pick, findIndex, clone, isNil, equals, pluck, uniq, filter } from 'ramda'
 
 import type { TCommunity, TRootStore, TTag, TGlobalLayout, TThread, TSizeSML } from '@/spec'
-import { mockTags } from '@/utils/mock'
-
-import {
-  AVATAR_LAYOUT,
-  BRAND_LAYOUT,
-  BANNER_LAYOUT,
-  TOPBAR_LAYOUT,
-  BANNER_NOTIFY_LAYOUT,
-  CHANGELOG_LAYOUT,
-  HELP_LAYOUT,
-  POST_LAYOUT,
-  KANBAN_LAYOUT,
-  FOOTER_LAYOUT,
-} from '@/constant/layout'
-import { COLORS, COLOR_NAME } from '@/constant/colors'
-import { THREAD } from '@/constant/thread'
-import SIZE from '@/constant/size'
 import { ROUTE, DASHBOARD_LAYOUT_ROUTE, DASHBOARD_BASEINFO_ROUTE } from '@/constant/route'
-import GLOW_EFFECTS, { GLOW_OPACITY } from '@/constant/glow_effect'
 
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
@@ -41,76 +23,14 @@ import type {
   TAlias,
   TWidgetsSettings,
   TWidgetType,
-} from './spec'
+} from '../spec'
 
-import { SETTING_FIELD, BUILDIN_ALIAS, WIDGET_TYPE } from './constant'
+import { SETTING_FIELD } from '../constant'
+
+import { Alias, settingsModalFields, InitSettings } from './Models'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:DashboardThread')
-
-const Alias = T.model('Alias', {
-  raw: T.opt(T.string, ''),
-  name: T.opt(T.string, ''),
-  original: T.opt(T.string, ''),
-  suggestions: T.opt(T.array(T.string), []),
-})
-
-const File = T.model('File', {
-  index: T.int,
-  name: T.str,
-  articleId: T.opt(T.str, ''),
-  linkAddr: T.opt(T.str, ''),
-})
-
-const GroupCategory = T.model('GroupGategory', {
-  name: T.opt(T.str, ''),
-  index: T.int,
-  color: T.opt(T.enum(values(COLOR_NAME)), COLOR_NAME.BLACK),
-  files: T.opt(T.array(File), []),
-})
-
-const settingsModalFields = {
-  primaryColor: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
-  postLayout: T.opt(T.enum(values(POST_LAYOUT)), POST_LAYOUT.UPVOTE_FIRST),
-  kanbanLayout: T.opt(T.enum(values(KANBAN_LAYOUT)), KANBAN_LAYOUT.SIMPLE),
-  helpLayout: T.opt(T.enum(values(HELP_LAYOUT)), HELP_LAYOUT.FAQ_COLLAPSE),
-  avatarLayout: T.opt(T.enum(values(AVATAR_LAYOUT)), AVATAR_LAYOUT.SQUARE),
-  // avatarLayout: T.opt(T.enum(values(AVATAR_LAYOUT)), AVATAR_LAYOUT.CIRCLE),
-  brandLayout: T.opt(T.enum(values(BRAND_LAYOUT)), BRAND_LAYOUT.BOTH),
-  bannerLayout: T.opt(T.enum(values(BANNER_LAYOUT)), BANNER_LAYOUT.HEADER),
-  // bannerLayout: T.opt(T.enum(values(BANNER_LAYOUT)), BANNER_LAYOUT.TABBER),
-  // bannerLayout: T.opt(T.enum(values(BANNER_LAYOUT)), BANNER_LAYOUT.SIDEBAR),
-  topbarLayout: T.opt(T.enum(values(TOPBAR_LAYOUT)), TOPBAR_LAYOUT.YES),
-  topbarBg: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
-  bannerNotifyLayout: T.opt(T.enum(values(BANNER_NOTIFY_LAYOUT)), BANNER_NOTIFY_LAYOUT.DEFAULT),
-  bannerNotifyBg: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
-  changelogLayout: T.opt(T.enum(values(CHANGELOG_LAYOUT)), CHANGELOG_LAYOUT.PREVIEW),
-
-  // help
-  helpCategories: T.opt(T.array(GroupCategory), []),
-
-  // glow effect
-  glowType: T.opt(T.string, keys(GLOW_EFFECTS)[0]),
-  glowFixed: T.opt(T.bool, true),
-  glowOpacity: T.opt(T.enum(values(GLOW_OPACITY)), GLOW_OPACITY.NORMAL),
-
-  // tags
-  tags: T.opt(T.array(Tag), mockTags(12)),
-  activeTagCategory: T.maybeNull(T.string),
-  //
-  alias: T.opt(T.array(Alias), BUILDIN_ALIAS),
-
-  // footer
-  footerLayout: T.opt(T.enum(values(FOOTER_LAYOUT)), FOOTER_LAYOUT.FULL),
-
-  // widgets
-  widgetsPrimaryColor: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
-  widgetsThreads: T.opt(T.array(T.string), [THREAD.POST, THREAD.KANBAN, THREAD.CHANGELOG]),
-  widgetsSize: T.opt(T.enum([SIZE.SMALL, SIZE.MEDIUM, SIZE.LARGE]), SIZE.MEDIUM),
-  widgetsType: T.opt(T.enum(values(WIDGET_TYPE)), WIDGET_TYPE.SIDEBAR),
-}
-
-const InitSettings = T.model('DashboardInit', settingsModalFields)
 
 const DashboardThread = T.model('DashboardThread', {
   saving: T.opt(T.bool, false),
@@ -307,9 +227,10 @@ const DashboardThread = T.model('DashboardThread', {
     get baseInfoSettings(): TBaseInfoSettings {
       const slf = self as TStore
 
-      return {
-        baseInfoTab: slf.baseInfoTab,
-      }
+      return pick(
+        ['favicon', 'logo', 'title', 'homepage', 'url', 'city', 'techstack', 'baseInfoTab'],
+        slf,
+      )
     },
     get uiSettings(): TUiSettings {
       const slf = self as TStore

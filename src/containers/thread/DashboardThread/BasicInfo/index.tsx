@@ -55,7 +55,7 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
         </TabsWrapper>
       </Banner>
 
-      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.BASIC && <BaseInfoForm />}
+      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.BASIC && <BaseInfoForm settings={settings} />}
       {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.SEO && <SEOForm />}
     </Wrapper>
   )

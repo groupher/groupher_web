@@ -6,6 +6,7 @@ import { Br } from '@/widgets/Common'
 import OSSUploader from '@/widgets/OSSUploader'
 import SocialEditor from '@/widgets/SocialEditor'
 
+import type { TBaseInfoSettings } from '../spec'
 import SectionLabel from '../SectionLabel'
 
 import {
@@ -19,12 +20,14 @@ import {
   Title,
   Desc,
 } from '../styles/basic_info/baseinfo_form'
+import { edit } from '../logic'
 
 type TProps = {
   testid?: TPostLayout
+  settings: TBaseInfoSettings
 }
 
-const BasicInfo: FC<TProps> = ({ testid = 'basic-info' }) => {
+const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
   return (
     <Wrapper>
       <SectionLabel title="基本信息" />
@@ -46,11 +49,11 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info' }) => {
       <Desc>上传社区 Logo, 支持常见图片格式，200 KB以内。可选。</Desc>
       <Br bottom={30} />
       <Label>社区名称</Label>
-      <Inputer />
+      <Inputer value={settings.title} onChange={(v) => edit(v, 'title')} />
       <Label>官方主页</Label>
-      <Inputer />
+      <Inputer value={settings.homepage} onChange={(v) => edit(v, 'homepage')} />
       <Label>社区 URL</Label>
-      <Inputer />
+      <Inputer value={settings.url} onChange={(v) => edit(v, 'url')} />
       <SocialEditor />
 
       <Br bottom={40} />
