@@ -2,6 +2,8 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
 
+import ImageSVG from '@/icons/Image'
+
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
   background: ${theme('alphaBg')};
@@ -16,11 +18,17 @@ export const Wrapper = styled.div`
   overflow: hidden;
 `
 export const CoverWrapper = styled.div`
+  ${css.flex('align-both')};
   width: 123px;
   height: 124px;
   border-right: 1px solid;
   border-right-color: #cfd9de;
   background: ${theme('hoverBg')};
+`
+export const ImageIcon = styled(ImageSVG)`
+  ${css.size(40)};
+  fill: ${theme('article.digest')};
+  opacity: 0.2;
 `
 export const Content = styled.div`
   padding: 12px 10px;

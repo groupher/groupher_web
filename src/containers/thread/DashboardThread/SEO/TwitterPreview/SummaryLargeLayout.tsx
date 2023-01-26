@@ -4,6 +4,8 @@ import type { TSEOSettings } from '../../spec'
 import {
   Wrapper,
   CoverWrapper,
+  ImageIcon,
+  Hint,
   Content,
   URL,
   Title,
@@ -19,7 +21,10 @@ const SummaryLargePreview: FC<TProps> = ({ settings }) => {
   // twitter:card = summary_large_image
   return (
     <Wrapper>
-      <CoverWrapper />
+      <Hint>预览</Hint>
+      <CoverWrapper>
+        <ImageIcon />
+      </CoverWrapper>
       <Content>
         <URL>{settings.twUrl || '--'}</URL>
         <Title>{settings.twTitle || '--'}</Title>

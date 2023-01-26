@@ -3,7 +3,9 @@ import { FC } from 'react'
 import type { TSEOSettings } from '../../spec'
 import {
   Wrapper,
+  Hint,
   CoverWrapper,
+  ImageIcon,
   Content,
   URL,
   Title,
@@ -20,7 +22,10 @@ const SummaryPreview: FC<TProps> = ({ settings }) => {
 
   return (
     <Wrapper>
-      <CoverWrapper />
+      <Hint>预览</Hint>
+      <CoverWrapper>
+        <ImageIcon />
+      </CoverWrapper>
       <Content>
         <URL>{settings.twUrl || '--'}</URL>
         <Title>{settings.twTitle || '--'}</Title>
