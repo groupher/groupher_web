@@ -22,7 +22,7 @@ import {
 import { T } from '@/utils/mobx'
 import { mockTags } from '@/utils/mock'
 
-import { BUILDIN_ALIAS, WIDGET_TYPE } from '../constant'
+import { BUILDIN_ALIAS, WIDGET_TYPE, TW_CARD } from '../constant'
 
 export const Alias = T.model('Alias', {
   raw: T.opt(T.string, ''),
@@ -57,6 +57,7 @@ export const settingsModalFields = {
   techstack: T.opt(T.string, ''),
 
   // seo
+  ogSiteName: T.opt(T.string, ''),
   ogTitle: T.opt(T.string, ''),
   ogDescription: T.opt(T.string, ''),
   ogUrl: T.opt(T.string, ''),
@@ -67,6 +68,7 @@ export const settingsModalFields = {
   twTitle: T.opt(T.string, ''),
   twDescription: T.opt(T.string, ''),
   twUrl: T.opt(T.string, ''),
+  twCard: T.opt(T.string, TW_CARD.SUMMARY),
   twSite: T.opt(T.string, ''),
   twImage: T.opt(T.string, ''),
   twImageWidth: T.opt(T.string, ''),

@@ -21,3 +21,8 @@ export const Inputer = styled(Input)`
   width: 300px;
   background: transparent;
 `
+export const SelectWrapper = styled.div`
+  margin-top: 10px;
+  margin-bottom: 20px;
+  width: 300px;
+`

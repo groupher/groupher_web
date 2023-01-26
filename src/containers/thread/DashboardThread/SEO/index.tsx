@@ -50,8 +50,8 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
         </TabsWrapper>
       </Banner>
 
-      {seoTab === DASHBOARD_SEO_ROUTE.SEARCH_ENGINE && <OpenGraph />}
-      {seoTab === DASHBOARD_SEO_ROUTE.TWITTER && <TwitterGraph />}
+      {seoTab === DASHBOARD_SEO_ROUTE.SEARCH_ENGINE && <OpenGraph settings={settings} />}
+      {seoTab === DASHBOARD_SEO_ROUTE.TWITTER && <TwitterGraph settings={settings} />}
     </Wrapper>
   )
 }

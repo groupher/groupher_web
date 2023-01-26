@@ -1,14 +1,19 @@
 import { FC } from 'react'
 
+import type { TSEOSettings } from '../spec'
 import { Wrapper, URL, Title, Desc, Hint } from '../styles/seo/search_engine_preview'
 
-const SearchEnginePreview: FC = () => {
+type TProps = {
+  settings: TSEOSettings
+}
+
+const SearchEnginePreview: FC<TProps> = ({ settings }) => {
   return (
     <Wrapper>
       <Hint>预览</Hint>
-      <URL>https://your-product.groupher.com</URL>
-      <Title>Your Product</Title>
-      <Desc>产品描述</Desc>
+      <URL>{settings.ogUrl || '--'}</URL>
+      <Title>{settings.ogSiteName || '--'} </Title>
+      <Desc>{settings.ogDescription || '--'} </Desc>
     </Wrapper>
   )
 }

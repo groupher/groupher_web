@@ -16,7 +16,7 @@ export const getSelectStyles = (theme: TThemeMap) => {
     // 容器 -- not work
     control: (base, state) => ({
       ...base,
-      borderColor: theme.article.digest,
+      borderColor: theme.editor.border,
       // 可以消除 outLine
       boxShadow: state.isFocused ? '0 0 0 1px #00627A' : 'none',
       '&:hover': {
@@ -57,7 +57,7 @@ export const getSelectStyles = (theme: TThemeMap) => {
       // background: '#00343E',
       padding: '0 5px',
       borderRadius: '3px',
-      maxWidth: '80px',
+      maxWidth: '200px',
     }),
     multiValue: (base) => ({
       ...base,
@@ -96,7 +96,7 @@ export const getSelectStyles = (theme: TThemeMap) => {
     dropdownIndicator: (base, state) => ({
       ...base,
       cursor: 'pointer',
-      color: theme.article.digest,
+      color: theme.editor.border,
       opacity: state.isFocused ? 1 : 0.8,
     }),
     option: (base, state) => ({
