@@ -29,7 +29,7 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
   return (
     <Wrapper>
       <Portal
-        title="关于社区"
+        title="社区信息"
         desc="社区基本信息，关于页面主要信息，SEO 信息等。"
         withDivider={false}
       />
