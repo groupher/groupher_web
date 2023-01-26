@@ -1,5 +1,6 @@
 export type TNonCommunityPath = 'apply_community'
 
+export type TDashboardBaseInfoRoute = 'basic' | 'seo'
 export type TDashboardLayoutRoute = 'global' | 'post' | 'kanban' | 'changelog' | 'help' | 'about'
 
 export type TDashboardPath =
@@ -9,7 +10,6 @@ export type TDashboardPath =
   | 'ui'
   | 'layout'
   | 'threads'
-  | 'seo'
   | 'alias'
   | 'domain'
   // analysis

@@ -20,6 +20,7 @@ import type {
   TWallpaperInfo,
   TAvatarLayout,
   TDashboardLayoutRoute,
+  TDashboardBaseInfoRoute,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'MANAGEMENT' | 'INTEGRATE'
@@ -58,6 +59,10 @@ export type TAliasSettings = {
   saving: boolean
   alias: TAlias[]
   editingAlias: TAlias
+}
+
+export type TBaseInfoSettings = {
+  baseInfoTab: TDashboardBaseInfoRoute
 }
 
 export type TUiSettings = {

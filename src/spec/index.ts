@@ -150,7 +150,13 @@ export type {
 
 export type { TColorName } from './color'
 
-export type { TPath, TDashboardPath, TNonCommunityPath, TDashboardLayoutRoute } from './route'
+export type {
+  TPath,
+  TDashboardPath,
+  TNonCommunityPath,
+  TDashboardLayoutRoute,
+  TDashboardBaseInfoRoute,
+} from './route'
 
 export type TRoute = {
   communityPath?: string

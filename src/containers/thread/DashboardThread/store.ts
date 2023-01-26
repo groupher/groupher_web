@@ -22,7 +22,7 @@ import {
 import { COLORS, COLOR_NAME } from '@/constant/colors'
 import { THREAD } from '@/constant/thread'
 import SIZE from '@/constant/size'
-import { ROUTE, DASHBOARD_LAYOUT_ROUTE } from '@/constant/route'
+import { ROUTE, DASHBOARD_LAYOUT_ROUTE, DASHBOARD_BASEINFO_ROUTE } from '@/constant/route'
 import GLOW_EFFECTS, { GLOW_OPACITY } from '@/constant/glow_effect'
 
 import { buildLog } from '@/utils/logger'
@@ -30,6 +30,7 @@ import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { Tag } from '@/model'
 
 import type {
+  TBaseInfoSettings,
   TUiSettings,
   TTagSettings,
   TFooterSettings,
@@ -115,6 +116,7 @@ const DashboardThread = T.model('DashboardThread', {
   saving: T.opt(T.bool, false),
   curTab: T.opt(T.enum(values(ROUTE.DASHBOARD)), ROUTE.DASHBOARD.INFO),
   layoutTab: T.opt(T.enum(values(DASHBOARD_LAYOUT_ROUTE)), DASHBOARD_LAYOUT_ROUTE.GLOBAL),
+  baseInfoTab: T.opt(T.enum(values(DASHBOARD_BASEINFO_ROUTE)), DASHBOARD_BASEINFO_ROUTE.BASIC),
   editingTag: T.maybeNull(Tag),
   settingTag: T.maybeNull(Tag),
   editingAlias: T.maybeNull(Alias),
@@ -302,6 +304,13 @@ const DashboardThread = T.model('DashboardThread', {
       }
     },
 
+    get baseInfoSettings(): TBaseInfoSettings {
+      const slf = self as TStore
+
+      return {
+        baseInfoTab: slf.baseInfoTab,
+      }
+    },
     get uiSettings(): TUiSettings {
       const slf = self as TStore
       const root = getParent(self) as TRootStore

@@ -1,4 +1,9 @@
-import type { TDashboardPath, TNonCommunityPath, TDashboardLayoutRoute } from '@/spec'
+import type {
+  TDashboardPath,
+  TNonCommunityPath,
+  TDashboardLayoutRoute,
+  TDashboardBaseInfoRoute,
+} from '@/spec'
 
 export const NON_COMMUNITY_ROUTE = {
   APPLY_COMMUNITY: 'apply_community',
@@ -10,7 +15,6 @@ export const DASHBOARD_ROUTE = {
   INFO: 'info',
   LAYOUT: 'layout',
   THREADS: 'threads',
-  SEO: 'seo',
   ALIAS: 'alias',
   DOMAIN: 'domain',
   // analysis
@@ -29,6 +33,11 @@ export const DASHBOARD_ROUTE = {
   ADMINS: 'admins',
   WIDGETS: 'widgets',
 } as Record<Uppercase<TDashboardPath>, TDashboardPath>
+
+export const DASHBOARD_BASEINFO_ROUTE = {
+  BASIC: 'basic',
+  SEO: 'seo',
+} as Record<Uppercase<TDashboardBaseInfoRoute>, TDashboardBaseInfoRoute>
 
 export const DASHBOARD_LAYOUT_ROUTE = {
   GLOBAL: 'global',

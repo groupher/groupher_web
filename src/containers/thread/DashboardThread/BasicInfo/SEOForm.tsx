@@ -4,11 +4,10 @@ import type { TPostLayout } from '@/spec'
 
 import { Br } from '@/widgets/Common'
 
-import Portal from '../Portal'
 import SectionLabel from '../SectionLabel'
 // import CheckLabel from '@/widgets/CheckLabel'
 
-import { Wrapper, Section, Label, Inputer } from '../styles/seo'
+import { Section, Label, Inputer } from '../styles/basic_info/seo'
 
 type TProps = {
   testid?: TPostLayout
@@ -20,8 +19,7 @@ type TProps = {
 
 const SEO: FC<TProps> = ({ testid = 'seo' }) => {
   return (
-    <Wrapper>
-      <Portal title="社区 SEO" desc="社区 SEO 相关信息。" />
+    <>
       <Section>
         <SectionLabel title="基本信息" />
         <Label>og:site_name</Label>
@@ -56,7 +54,7 @@ const SEO: FC<TProps> = ({ testid = 'seo' }) => {
         <Label>og:image:height</Label>
         <Inputer />
       </Section>
-    </Wrapper>
+    </>
   )
 }
 

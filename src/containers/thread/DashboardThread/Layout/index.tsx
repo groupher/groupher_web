@@ -1,10 +1,10 @@
 import { FC, memo } from 'react'
 import Router from 'next/router'
 
-import { Divider } from '@/widgets/Common'
-import VIEW from '@/constant/view'
 import { DASHBOARD_LAYOUT_ROUTE } from '@/constant/route'
+import VIEW from '@/constant/view'
 
+import { Divider } from '@/widgets/Common'
 import Tabs from '@/widgets/Switcher/Tabs'
 
 import { LAYOUT_TABS } from '../constant'

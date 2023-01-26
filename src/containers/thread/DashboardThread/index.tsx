@@ -14,7 +14,6 @@ import {
   Overview,
   BasicInfo,
   Layout,
-  SEO,
   Alias,
   Admin,
   Threads,
@@ -45,6 +44,7 @@ const DashboardThreadContainer: FC<TProps> = ({
   useInit(store)
   const {
     curTab,
+    baseInfoSettings,
     uiSettings,
     tagSettings,
     footerSettings,
@@ -61,8 +61,7 @@ const DashboardThreadContainer: FC<TProps> = ({
       <SideMenu curTab={curTab} touched={touched} />
       <MainWrapper>
         {curTab === DASHBOARD.DASHBOARD && <Overview />}
-        {curTab === DASHBOARD.INFO && <BasicInfo />}
-        {curTab === DASHBOARD.SEO && <SEO />}
+        {curTab === DASHBOARD.INFO && <BasicInfo settings={baseInfoSettings} />}
         {curTab === DASHBOARD.LAYOUT && <Layout settings={uiSettings} touched={touched} />}
         {curTab === DASHBOARD.ALIAS && <Alias settings={aliasSettings} />}
         {curTab === DASHBOARD.ADMINS && <Admin />}

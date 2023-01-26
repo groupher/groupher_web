@@ -1,5 +1,5 @@
 import type { TSnakeUpperCase } from '@/spec'
-import { DASHBOARD_ROUTE, DASHBOARD_LAYOUT_ROUTE } from '@/constant/route'
+import { DASHBOARD_ROUTE, DASHBOARD_LAYOUT_ROUTE, DASHBOARD_BASEINFO_ROUTE } from '@/constant/route'
 
 import type { TSettingField, TWidgetType, TFooterEditType } from './spec'
 
@@ -37,10 +37,6 @@ export const MENU = {
       {
         title: '关于社区',
         raw: DASHBOARD_ROUTE.INFO,
-      },
-      {
-        title: 'SEO',
-        raw: DASHBOARD_ROUTE.SEO,
       },
       {
         title: '社区板块',
@@ -181,6 +177,17 @@ export const FOOTER_EDIT_TYPE = {
   TITLE: 'title',
   SOCIAL: 'social',
 } as Record<Uppercase<TFooterEditType>, TFooterEditType>
+
+export const BASEINFO_TABS = [
+  {
+    title: '基本信息',
+    raw: DASHBOARD_BASEINFO_ROUTE.BASIC,
+  },
+  {
+    title: 'SEO',
+    raw: DASHBOARD_BASEINFO_ROUTE.SEO,
+  },
+]
 
 export const LAYOUT_TABS = [
   {
