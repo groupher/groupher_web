@@ -14,7 +14,7 @@ import type { TSEO, TMetric } from '@/spec'
 import { bond } from '@/utils/mobx'
 
 import ThemePalette from '@/containers/layout/ThemePalette'
-// import BannerNotify from '@/widgets/BannerNotify'
+import BannerBroadcast from '@/widgets/BannerBroadcast'
 import Footer from '@/widgets/Footer'
 // import CustomScroller from '@/widgets/CustomScroller'
 
@@ -83,11 +83,11 @@ const GlobalLayoutContainer: FC<TProps> = ({
               hasTopbar={metric !== METRIC.HOME && globalLayout.topbar === TOPBAR_LAYOUT.YES}
               topbarBg={globalLayout.topbarBg}
             >
-              {/* <BannerNotify
+              <BannerBroadcast
                 metric={metric}
-                layout={globalLayout.bannerNotify}
-                bg={globalLayout.bannerNotifyBg}
-              /> */}
+                layout={globalLayout.bannerBroadcast}
+                bg={globalLayout.bannerBroadcastBg}
+              />
               <ContentWrapper>
                 <BodyWrapper isMobile={isMobile}>
                   {childrenWithProps(children, { metric })}

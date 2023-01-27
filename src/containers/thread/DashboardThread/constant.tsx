@@ -21,8 +21,8 @@ export const SETTING_FIELD = {
   FOOTER_LAYOUT: 'footerLayout',
   TOPBAR_LAYOUT: 'topbarLayout',
   TOPBAR_BG: 'topbarBg',
-  BANNER_NOTIFY_LAYOUT: 'bannerNotifyLayout',
-  BANNER_NOTIFY_BG: 'bannerNotifyBg',
+  BANNER_BROADCAST_LAYOUT: 'bannerBroadcastLayout',
+  BANNER_BROADCAST_BG: 'bannerBroadcastBg',
   CHANGELOG_LAYOUT: 'changelogLayout',
   TAG: 'tag',
   ALIAS: 'alias',
@@ -101,6 +101,10 @@ export const MENU = {
       {
         title: '帮助台',
         raw: DASHBOARD_ROUTE.HELP,
+      },
+      {
+        title: '横幅广播',
+        raw: DASHBOARD_ROUTE.BANNER_BROADCAST,
       },
       {
         title: '小黑屋',

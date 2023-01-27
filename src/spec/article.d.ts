@@ -160,7 +160,9 @@ export type TUpvoteLayout =
 export type TAvatarLayout = 'circle' | 'square'
 export type TBrandLayout = 'both' | 'logo' | 'text'
 export type TBannerLayout = 'header' | 'tabber' | 'sidebar'
-export type TBannerNotifyLayout = 'default' | 'center'
+
+export type TBannerBroadcastLayout = 'default' | 'center'
+
 export type TTopbarLayout = 'yes' | 'no'
 export type TPostLayout = 'upvote_first' | 'comment_first' | 'card' | 'minimal' | 'cover'
 export type TKanbanLayout = 'simple' | 'full'
@@ -177,8 +179,10 @@ export type TGlobalLayout = {
   avatar: TAvatarLayout
   changelog: TChangelogLayout
   footer: TFooterLayout
-  bannerNotify: TBannerNotifyLayout
-  bannerNotifyBg: TColorName
+
+  bannerBroadcast: TBannerBroadcastLayout
+  bannerBroadcastBg: TColorName
+
   topbar: TTopbarLayout
   topbarBg: TColorName
 }

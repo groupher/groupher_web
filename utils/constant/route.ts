@@ -29,6 +29,7 @@ export const DASHBOARD_ROUTE = {
   HELP: 'help',
   HEADER: 'header',
   FOOTER: 'footer',
+  BANNER_BROADCAST: 'banner_broadcast',
   BLACKHOUSE: 'blackhouse',
   // integrates
   THIRD_PART: 'third_part',

@@ -8,25 +8,48 @@ import css, { theme } from '@/utils/css'
 import { lighten, darken } from '@/utils/color'
 
 import { Divider } from '@/widgets/Common'
+
 import CrossSVG from '@/icons/CloseCross'
 import ArrowSVG from '@/icons/Arrow'
 import NotifySVG from '@/icons/Trumpet'
 
-import { BaseSection, BlockBase, Bar } from '.'
+import { TemplateBlock } from '.'
 
-export { Bar, Circle } from '.'
+type TBar = { long: number; thin?: boolean; bold?: boolean }
+export const Bar = styled.div<TBar>`
+  width: ${({ long }) => `${long || 20}%`};
+  height: ${({ thin }) => (thin ? '4px' : '12px;')};
+  background: ${({ thin, bold }) => {
+    if (bold) return theme('article.title')
 
-export const Wrapper = styled(BaseSection)``
-export const SelectWrapper = styled.div`
-  ${css.flex('align-center')};
-  width: 100%;
+    return thin ? theme('article.digest') : theme('article.title')
+  }};
+  z-index: 3;
+  border-radius: 5px;
+  opacity: ${({ thin, bold }) => {
+    if (bold) return 0.8
+
+    return thin ? 0.6 : 1
+  }};
 `
-type TNotifyBar = { center?: boolean; bg: TColorName }
+
+export const Wrapper = styled(TemplateBlock)`
+  ${css.flex('align-start', 'justify-between')};
+  height: 100px !important;
+  background: ${({ $active }) => ($active ? theme('alphaBg') : 'transparent')};
+`
+
+export const Row = styled.div`
+  ${css.flex('align-center')};
+`
+
+type TNotifyBar = { center?: boolean; bg: TColorName } & TActive
 export const NotifyBar = styled.div<TNotifyBar>`
   ${css.flex('align-center')};
   justify-content: ${({ center }) => (center ? 'center' : 'flex-start')};
+  opacity: ${({ $active }) => ($active ? 1 : 0.6)};
   width: calc(100% + 2px);
-  height: 17px;
+  height: 20px;
   margin-top: -1px;
   margin-left: -1px;
   border-top-left-radius: 6px;
@@ -54,13 +77,13 @@ export const NotifySolidLink = styled.div<{ bg: TColorName }>`
   padding: 0 4px;
 `
 export const NotifyIcon = styled(NotifySVG)`
-  ${css.size(8)};
+  ${css.size(12)};
   fill: white;
   margin-right: 6px;
 `
 export const CrossIcon = styled(CrossSVG)`
   fill: white;
-  ${css.size(8)};
+  ${css.size(12)};
   opacity: 0.8;
   margin-right: -3px;
 `
@@ -99,18 +122,12 @@ export const LayoutTitle = styled.div<TActive>`
   }
   transition: all 0.2s;
 `
-export const Block = styled(BlockBase)`
-  border: 1px solid;
-  border-color: ${theme('article.digest')};
-  width: 300px;
-  height: 200px;
-  padding: 0px;
-`
+
 export const DividerLine = styled(Divider)`
   opacity: 0.8;
 `
 export const NotifyTextBar = styled(Bar)`
-  width: ${({ long }) => `${long || 10}px`};
+  width: ${({ long }) => `${long || 30}px`};
   background: white;
 `
 export const BgWrapper = styled.div`

@@ -35,7 +35,7 @@ const TagSettingEditor = T.model('TagSettingEditor', {})
     get settingTag(): TTag {
       const root = getParent(self) as TRootStore
 
-      return toJS(root.dashboardThread.settingTag)
+      return toJS(root.dashboardThread.settingTag || {})
     },
 
     get curCategory(): TSelectOption {

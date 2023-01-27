@@ -18,6 +18,7 @@ import {
   Alias,
   Admin,
   Threads,
+  BannerBroadcast,
   Tags,
   Domain,
   ThirdPart,
@@ -53,6 +54,7 @@ const DashboardThreadContainer: FC<TProps> = ({
     aliasSettings,
     widgetsSettings,
     helpSettings,
+    bannerBroadcastSettings,
     touched,
   } = store
 
@@ -72,6 +74,9 @@ const DashboardThreadContainer: FC<TProps> = ({
         {curTab === DASHBOARD.TAGS && <Tags settings={tagSettings} />}
         {curTab === DASHBOARD.HEADER && <Header settings={footerSettings} touched={touched} />}
         {curTab === DASHBOARD.FOOTER && <Footer settings={footerSettings} touched={touched} />}
+        {curTab === DASHBOARD.BANNER_BROADCAST && (
+          <BannerBroadcast settings={bannerBroadcastSettings} touched={touched} />
+        )}
         {curTab === DASHBOARD.HELP && <Help settings={helpSettings} />}
         {curTab === DASHBOARD.DOMAIN && <Domain />}
         {curTab === DASHBOARD.THIRD_PART && <ThirdPart />}

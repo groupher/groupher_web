@@ -16,7 +16,6 @@ import HelpLayout from './HelpLayout'
 import PostLayout from './PostLayout'
 import KanbanLayout from './KanbanLayout'
 import TopbarLayout from './TopbarLayout'
-import BannerNotifyLayout from './BannerNotifyLayout'
 
 import PrimaryColor from './PrimaryColor'
 import GlowEffect from './GlowEffect'
@@ -41,8 +40,6 @@ const UI: FC<TProps> = ({ settings, touched }) => {
     helpLayout,
     topbarLayout,
     topbarBg,
-    bannerNotifyLayout,
-    bannerNotifyBg,
     postLayout,
     kanbanLayout,
 
@@ -82,7 +79,11 @@ const UI: FC<TProps> = ({ settings, touched }) => {
 
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.GLOBAL && (
         <>
-          <PrimaryColor primaryColor={primaryColor} isTouched={touched.glowFixed} saving={saving} />
+          <PrimaryColor
+            primaryColor={primaryColor}
+            isTouched={touched.primaryColor}
+            saving={saving}
+          />
           <Divider top={20} bottom={60} />
           <BannerLayout layout={bannerLayout} isTouched={touched.bannerLayout} saving={saving} />
           <Divider top={20} bottom={60} />
@@ -107,15 +108,6 @@ const UI: FC<TProps> = ({ settings, touched }) => {
             bg={topbarBg}
             isLayoutTouched={touched.topbarLayout}
             isBgTouched={touched.topbarBg}
-            saving={saving}
-          />
-
-          <Divider top={20} bottom={60} />
-          <BannerNotifyLayout
-            layout={bannerNotifyLayout}
-            bg={bannerNotifyBg}
-            isLayoutTouched={touched.bannerNotifyLayout}
-            isBgTouched={touched.bannerNotifyBg}
             saving={saving}
           />
         </>

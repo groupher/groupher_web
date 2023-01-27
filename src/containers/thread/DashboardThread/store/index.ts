@@ -28,6 +28,7 @@ import type {
   TSettingField,
   TAlias,
   TWidgetsSettings,
+  TBannerBroadcastSettings,
   TWidgetType,
 } from '../spec'
 
@@ -65,8 +66,10 @@ const DashboardThread = T.model('DashboardThread', {
         bannerLayout,
         topbarLayout,
         topbarBg,
-        bannerNotifyLayout,
-        bannerNotifyBg,
+
+        bannerBroadcastLayout,
+        bannerBroadcastBg,
+
         brandLayout,
         avatarLayout,
       } = initSettings
@@ -83,8 +86,9 @@ const DashboardThread = T.model('DashboardThread', {
         banner: bannerLayout,
         topbar: topbarLayout,
         topbarBg,
-        bannerNotify: bannerNotifyLayout,
-        bannerNotifyBg,
+
+        bannerBroadcast: bannerBroadcastLayout,
+        bannerBroadcastBg,
       }
     },
     get curCommunity(): TCommunity {
@@ -110,8 +114,10 @@ const DashboardThread = T.model('DashboardThread', {
       const postLayoutTouched = _isChanged('postLayout')
       const kanbanLayoutTouched = _isChanged('kanbanLayout')
       const helpLayoutTouched = _isChanged('helpLayout')
-      const bannerNotifyLayoutTouched = _isChanged('bannerNotifyLayout')
-      const bannerNotifyBgTouched = _isChanged('bannerNotifyBg')
+
+      const bannerBroadcastLayoutTouched = _isChanged('bannerBroadcastLayout')
+      const bannerBroadcastBgTouched = _isChanged('bannerBroadcastBg')
+
       const topbarLayoutTouched = _isChanged('topbarLayout')
       const topbarBgTouched = _isChanged('topbarBg')
       const changelogLayoutTouched = _isChanged('changelogLayout')
@@ -139,8 +145,7 @@ const DashboardThread = T.model('DashboardThread', {
         bannerLayout: bannerLayoutTouched,
         topbarLayout: topbarLayoutTouched,
         topbarBg: topbarBgTouched,
-        bannerNotifyLayout: bannerNotifyLayoutTouched,
-        bannerNotifyBg: bannerNotifyBgTouched,
+
         postLayout: postLayoutTouched,
         footerLayout: footerLayoutTouched,
         kanbanLayout: kanbanLayoutTouched,
@@ -162,8 +167,6 @@ const DashboardThread = T.model('DashboardThread', {
           primaryColorTouched ||
           brandLayoutTouched ||
           bannerLayoutTouched ||
-          bannerNotifyLayoutTouched ||
-          bannerNotifyBgTouched ||
           topbarLayoutTouched ||
           topbarBgTouched ||
           postLayoutTouched ||
@@ -175,6 +178,7 @@ const DashboardThread = T.model('DashboardThread', {
           footerLayoutTouched,
 
         widgets: widgetsPrimaryColorTouched || widgetsThreadsTouched || widgetsSizeTouched,
+        bannerBroadcast: bannerBroadcastLayoutTouched || bannerBroadcastBgTouched,
       }
     },
 
@@ -293,8 +297,8 @@ const DashboardThread = T.model('DashboardThread', {
             'bannerLayout',
             'topbarLayout',
             'topbarBg',
-            'bannerNotifyLayout',
-            'bannerNotifyBg',
+            'bannerBroadcastLayout',
+            'bannerBroadcastBg',
             'postLayout',
             'kanbanLayout',
             'helpLayout',
@@ -305,6 +309,15 @@ const DashboardThread = T.model('DashboardThread', {
           ],
           slf,
         ),
+      }
+    },
+
+    get bannerBroadcastSettings(): TBannerBroadcastSettings {
+      const slf = self as TStore
+
+      return {
+        saving: slf.saving,
+        ...pick(['bannerBroadcastLayout', 'bannerBroadcastBg'], slf),
       }
     },
 

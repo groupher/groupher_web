@@ -105,7 +105,7 @@ export type {
   TBrandLayout,
   TBannerLayout,
   TAvatarLayout,
-  TBannerNotifyLayout,
+  TBannerBroadcastLayout,
   TTopbarLayout,
   TPostLayout,
   TKanbanLayout,

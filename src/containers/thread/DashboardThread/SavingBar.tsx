@@ -14,7 +14,7 @@ import { rollbackEdit, onSave } from './logic'
 const log = buildLog('C:Dashboard/SavingBar')
 
 type TProps = {
-  field: TSettingField
+  field?: TSettingField | null
   prefix?: string
   hint?: ReactNode
   children?: ReactNode
@@ -25,7 +25,7 @@ type TProps = {
 } & TSpace
 
 const SavingBar: FC<TProps> = ({
-  field,
+  field = null,
   prefix = '是否保存',
   hint = null,
   children = null,
@@ -49,11 +49,15 @@ const SavingBar: FC<TProps> = ({
               space={4}
               onCancel={() => {
                 onCancel?.()
-                rollbackEdit(field)
+                field && rollbackEdit(field)
               }}
               onConfirm={() => {
-                onSave(field)
-                setTimeout(() => onConfirm?.(), 1000)
+                if (field) {
+                  onSave(field)
+                  setTimeout(() => onConfirm?.(), 1000)
+                } else {
+                  onConfirm?.()
+                }
               }}
             />
           </ActionWrapper>
@@ -82,12 +86,16 @@ const SavingBar: FC<TProps> = ({
           loading={loading}
           space={4}
           onConfirm={() => {
-            onSave(field)
-            setTimeout(() => onConfirm?.(), 1000)
+            if (field) {
+              onSave(field)
+              setTimeout(() => onConfirm?.(), 1000)
+            } else {
+              onConfirm?.()
+            }
           }}
           onCancel={() => {
             onCancel?.()
-            rollbackEdit(field)
+            field && rollbackEdit(field)
           }}
         />
       </ActionWrapper>

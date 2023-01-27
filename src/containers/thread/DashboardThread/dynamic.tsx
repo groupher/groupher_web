@@ -35,6 +35,10 @@ export const Tags = dynamic(() => import('./Tags'), {
   loading: () => <LavaLampLoading />,
 })
 
+export const BannerBroadcast = dynamic(() => import('./BannerBroadcast'), {
+  loading: () => <LavaLampLoading />,
+})
+
 // integrates
 export const Domain = dynamic(() => import('./Domain'), {
   loading: () => <LavaLampLoading />,

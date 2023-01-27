@@ -27,6 +27,9 @@ const SEO: FC<TProps> = ({ metric, config }) => {
       <meta property="og:url" content={config.url} />
       <meta property="og:type" content="website" />
       {/* <link rel="icon" href="/favicon.ico" /> */}
+      <meta property="twitter:title" content={config.title} />
+      <meta property="twitter:description" content={config.description} />
+      <meta property="twitter:card" content="summary" />
     </Head>
     // <BlogJsonLd
     //   url={config.url}
