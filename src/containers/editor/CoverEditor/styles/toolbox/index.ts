@@ -22,6 +22,7 @@ export const Wrapper = styled.div`
   backdrop-filter: blur(5px);
   z-index: 2;
   display: none;
+  /* display: flex; */
   animation: ${animate.jump} 0.4s linear;
 
   ${Container}:hover & {

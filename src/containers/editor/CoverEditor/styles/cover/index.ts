@@ -59,7 +59,8 @@ export const GlassBorder = styled.div<TGlassBorder>`
 
 type TImage = TCoverImage & TActive
 export const Image = styled(Img)<TImage>`
-  border: 1px solid transparent;
+  border: ${({ linearBorderPos }) => (linearBorderPos === 'none' ? 'none' : '1px solid')};
+
   background-image: ${({ linearBorderPos }) => getLinearBorder(linearBorderPos)};
 
   border-image-slice: 1;
