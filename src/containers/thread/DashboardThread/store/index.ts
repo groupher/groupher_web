@@ -28,7 +28,7 @@ import type {
   TSettingField,
   TAlias,
   TWidgetsSettings,
-  TBannerBroadcastSettings,
+  TBroadcastSettings,
   TWidgetType,
 } from '../spec'
 
@@ -67,9 +67,9 @@ const DashboardThread = T.model('DashboardThread', {
         topbarLayout,
         topbarBg,
 
-        bannerBroadcastLayout,
-        bannerBroadcastBg,
-        bannerBroadcastEnable,
+        broadcastLayout,
+        broadcastBg,
+        broadcastEnable,
 
         brandLayout,
         avatarLayout,
@@ -88,9 +88,9 @@ const DashboardThread = T.model('DashboardThread', {
         topbar: topbarLayout,
         topbarBg,
 
-        bannerBroadcast: bannerBroadcastLayout,
-        bannerBroadcastBg,
-        bannerBroadcastEnable,
+        broadcast: broadcastLayout,
+        broadcastBg,
+        broadcastEnable,
       }
     },
     get curCommunity(): TCommunity {
@@ -117,8 +117,8 @@ const DashboardThread = T.model('DashboardThread', {
       const kanbanLayoutTouched = _isChanged('kanbanLayout')
       const helpLayoutTouched = _isChanged('helpLayout')
 
-      const bannerBroadcastLayoutTouched = _isChanged('bannerBroadcastLayout')
-      const bannerBroadcastBgTouched = _isChanged('bannerBroadcastBg')
+      const broadcastLayoutTouched = _isChanged('broadcastLayout')
+      const broadcastBgTouched = _isChanged('broadcastBg')
 
       const topbarLayoutTouched = _isChanged('topbarLayout')
       const topbarBgTouched = _isChanged('topbarBg')
@@ -180,7 +180,7 @@ const DashboardThread = T.model('DashboardThread', {
           footerLayoutTouched,
 
         widgets: widgetsPrimaryColorTouched || widgetsThreadsTouched || widgetsSizeTouched,
-        bannerBroadcast: bannerBroadcastLayoutTouched || bannerBroadcastBgTouched,
+        broadcast: broadcastLayoutTouched || broadcastBgTouched,
       }
     },
 
@@ -312,12 +312,12 @@ const DashboardThread = T.model('DashboardThread', {
       }
     },
 
-    get bannerBroadcastSettings(): TBannerBroadcastSettings {
+    get broadcastSettings(): TBroadcastSettings {
       const slf = self as TStore
 
       return {
         saving: slf.saving,
-        ...pick(['bannerBroadcastLayout', 'bannerBroadcastBg', 'bannerBroadcastEnable'], slf),
+        ...pick(['broadcastLayout', 'broadcastBg', 'broadcastEnable'], slf),
       }
     },
 

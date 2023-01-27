@@ -10,7 +10,7 @@ import type {
   TBrandLayout,
   TTopbarLayout,
   TBannerLayout,
-  TBannerBroadcastLayout,
+  TBroadcastLayout,
   TTag,
   TThread,
   TSizeSML,
@@ -22,7 +22,7 @@ import type {
   TDashboardLayoutRoute,
   TDashboardBaseInfoRoute,
   TDashboardSEORoute,
-  TBannerBroadcastConfig,
+  TBroadcastConfig,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'MANAGEMENT' | 'INTEGRATE'
@@ -120,7 +120,7 @@ export type TUiSettings = {
   layoutTab: TDashboardLayoutRoute
 }
 
-export type TBannerBroadcastSettings = TBannerBroadcastConfig & {
+export type TBroadcastSettings = TBroadcastConfig & {
   saving: boolean
 }
 
@@ -157,7 +157,7 @@ export type TTouched = {
   // sidebar
   ui: boolean
   widgets: boolean
-  bannerBroadcast: boolean
+  broadcast: boolean
 }
 
 export type TSettingField =
@@ -174,9 +174,9 @@ export type TSettingField =
   | 'helpLayout'
   | 'topbarLayout'
   | 'topbarBg'
-  | 'bannerBroadcastLayout'
-  | 'bannerBroadcastBg'
-  | 'bannerBroadcastEnable'
+  | 'broadcastLayout'
+  | 'broadcastBg'
+  | 'broadcastEnable'
   | 'changelogLayout'
   | 'tag'
   | 'alias'

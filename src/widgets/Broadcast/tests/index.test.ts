@@ -1,9 +1,9 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import BannerBroadcast from '../index'
+// import Broadcast from '../index'
 
-describe('TODO <BannerBroadcast />', () => {
+describe('TODO <Broadcast />', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(true)
   })

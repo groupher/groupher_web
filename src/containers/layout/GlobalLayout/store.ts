@@ -11,7 +11,7 @@ import type {
   TGlobalLayout,
   TGlowEffect,
   TWallpaperInfo,
-  TBannerBroadcastConfig,
+  TBroadcastConfig,
 } from '@/spec'
 
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
@@ -80,13 +80,10 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
 
       return root.wallpaperEditor.wallpaper && root.wallpaperEditor.hasShadow
     },
-    get bannerBroadcastConfig(): TBannerBroadcastConfig {
+    get broadcastConfig(): TBroadcastConfig {
       const root = getParent(self) as TRootStore
 
-      return pick(
-        ['bannerBroadcastLayout', 'bannerBroadcastBg', 'bannerBroadcastEnable'],
-        root.dashboardThread,
-      )
+      return pick(['broadcastLayout', 'broadcastBg', 'broadcastEnable'], root.dashboardThread)
     },
     get globalLayout(): TGlobalLayout {
       const root = getParent(self) as TRootStore

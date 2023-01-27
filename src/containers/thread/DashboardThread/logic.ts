@@ -45,31 +45,31 @@ export const addHelpCategory = (): void => {
   store.mark({ helpCategories })
 }
 
-export const bannerBroadcastToggle = (enable: boolean): void => {
-  store.mark({ bannerBroadcastEnable: enable })
+export const broadcastToggle = (enable: boolean): void => {
+  store.mark({ broadcastEnable: enable })
 }
 
-export const bannerBroadcastOnSave = (): void => {
+export const broadcastOnSave = (): void => {
   store.mark({ saving: true })
 
-  store.onSave(SETTING_FIELD.BANNER_BROADCAST_LAYOUT)
-  store.onSave(SETTING_FIELD.BANNER_BROADCAST_BG)
+  store.onSave(SETTING_FIELD.BROADCAST_LAYOUT)
+  store.onSave(SETTING_FIELD.BROADCAST_BG)
 
   setTimeout(() => {
     store.mark({ saving: false })
 
     const initSettings = {
       ...store.initSettings,
-      [SETTING_FIELD.BANNER_BROADCAST_LAYOUT]: toJS(store[SETTING_FIELD.BANNER_BROADCAST_LAYOUT]),
-      [SETTING_FIELD.BANNER_BROADCAST_BG]: toJS(store[SETTING_FIELD.BANNER_BROADCAST_BG]),
+      [SETTING_FIELD.BROADCAST_LAYOUT]: toJS(store[SETTING_FIELD.BROADCAST_LAYOUT]),
+      [SETTING_FIELD.BROADCAST_BG]: toJS(store[SETTING_FIELD.BROADCAST_BG]),
     }
     store.mark({ initSettings })
   }, 1200)
 }
 
-export const bannerBroadcastOnCancel = (): void => {
-  store.rollbackEdit(SETTING_FIELD.BANNER_BROADCAST_LAYOUT)
-  store.rollbackEdit(SETTING_FIELD.BANNER_BROADCAST_BG)
+export const broadcastOnCancel = (): void => {
+  store.rollbackEdit(SETTING_FIELD.BROADCAST_LAYOUT)
+  store.rollbackEdit(SETTING_FIELD.BROADCAST_BG)
 }
 
 /**

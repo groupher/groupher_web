@@ -54,7 +54,7 @@ const DashboardThreadContainer: FC<TProps> = ({
     aliasSettings,
     widgetsSettings,
     helpSettings,
-    bannerBroadcastSettings,
+    broadcastSettings,
     touched,
   } = store
 
@@ -75,7 +75,7 @@ const DashboardThreadContainer: FC<TProps> = ({
         {curTab === DASHBOARD.HEADER && <Header settings={footerSettings} touched={touched} />}
         {curTab === DASHBOARD.FOOTER && <Footer settings={footerSettings} touched={touched} />}
         {curTab === DASHBOARD.BANNER_BROADCAST && (
-          <Broadcast settings={bannerBroadcastSettings} touched={touched} />
+          <Broadcast settings={broadcastSettings} touched={touched} />
         )}
         {curTab === DASHBOARD.HELP && <Help settings={helpSettings} />}
         {curTab === DASHBOARD.DOMAIN && <Domain />}

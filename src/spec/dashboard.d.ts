@@ -11,12 +11,12 @@ export type TChangelogLayout = 'preview' | 'outline'
 export type THelpLayout = 'article' | 'faq_flat' | 'faq_collapse'
 export type TFooterLayout = 'simple' | 'full'
 
-export type TBannerBroadcastLayout = 'default' | 'center'
+export type TBroadcastLayout = 'default' | 'center'
 
-export type TBannerBroadcastConfig = {
-  bannerBroadcastLayout: TBannerBroadcastLayout
-  bannerBroadcastBg: TColorName
-  bannerBroadcastEnable: boolean
+export type TBroadcastConfig = {
+  broadcastLayout: TBroadcastLayout
+  broadcastBg: TColorName
+  broadcastEnable: boolean
 }
 
 export type TGlobalLayout = {
@@ -30,9 +30,9 @@ export type TGlobalLayout = {
   changelog: TChangelogLayout
   footer: TFooterLayout
 
-  bannerBroadcast: TBannerBroadcastLayout
-  bannerBroadcastBg: TColorName
-  bannerBroadcastEnable: boolean
+  broadcast: TBroadcastLayout
+  broadcastBg: TColorName
+  broadcastEnable: boolean
 
   topbar: TTopbarLayout
   topbarBg: TColorName

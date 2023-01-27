@@ -5,7 +5,7 @@ import type {
   TBrandLayout,
   TBannerLayout,
   TTopbarLayout,
-  TBannerBroadcastLayout,
+  TBroadcastLayout,
   TPostLayout,
   TKanbanLayout,
   TChangelogLayout,
@@ -48,10 +48,10 @@ export const TOPBAR_LAYOUT = {
   NO: 'no',
 } as Record<TSnakeUpperCase<TTopbarLayout>, TTopbarLayout>
 
-export const BANNER_BROADCAST_LAYOUT = {
+export const BROADCAST_LAYOUT = {
   DEFAULT: 'default',
   CENTER: 'center',
-} as Record<TSnakeUpperCase<TBannerBroadcastLayout>, TBannerBroadcastLayout>
+} as Record<TSnakeUpperCase<TBroadcastLayout>, TBroadcastLayout>
 
 export const POST_LAYOUT = {
   UPVOTE_FIRST: 'upvote_first',

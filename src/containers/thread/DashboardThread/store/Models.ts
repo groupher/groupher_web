@@ -11,7 +11,7 @@ import {
   BRAND_LAYOUT,
   BANNER_LAYOUT,
   TOPBAR_LAYOUT,
-  BANNER_BROADCAST_LAYOUT,
+  BROADCAST_LAYOUT,
   CHANGELOG_LAYOUT,
   HELP_LAYOUT,
   POST_LAYOUT,
@@ -85,12 +85,9 @@ export const settingsModalFields = {
   topbarLayout: T.opt(T.enum(values(TOPBAR_LAYOUT)), TOPBAR_LAYOUT.YES),
   topbarBg: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
 
-  bannerBroadcastLayout: T.opt(
-    T.enum(values(BANNER_BROADCAST_LAYOUT)),
-    BANNER_BROADCAST_LAYOUT.DEFAULT,
-  ),
-  bannerBroadcastBg: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
-  bannerBroadcastEnable: T.opt(T.bool, false),
+  broadcastLayout: T.opt(T.enum(values(BROADCAST_LAYOUT)), BROADCAST_LAYOUT.DEFAULT),
+  broadcastBg: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
+  broadcastEnable: T.opt(T.bool, false),
 
   changelogLayout: T.opt(T.enum(values(CHANGELOG_LAYOUT)), CHANGELOG_LAYOUT.PREVIEW),
 

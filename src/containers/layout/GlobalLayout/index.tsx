@@ -14,7 +14,7 @@ import type { TSEO, TMetric } from '@/spec'
 import { bond } from '@/utils/mobx'
 
 import ThemePalette from '@/containers/layout/ThemePalette'
-import BannerBroadcast from '@/widgets/BannerBroadcast'
+import Broadcast from '@/widgets/Broadcast'
 import Footer from '@/widgets/Footer'
 // import CustomScroller from '@/widgets/CustomScroller'
 
@@ -54,7 +54,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
 
   const [load, setLoad] = useState(false)
 
-  const { wallpaperInfo, hasShadow, glowEffect, globalLayout, bannerBroadcastConfig } = store
+  const { wallpaperInfo, hasShadow, glowEffect, globalLayout, broadcastConfig } = store
 
   useEffect(() => {
     setLoad(true)
@@ -74,7 +74,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
               hasTopbar={metric !== METRIC.HOME && globalLayout.topbar === TOPBAR_LAYOUT.YES}
               topbarBg={globalLayout.topbarBg}
             >
-              <BannerBroadcast metric={metric} settings={bannerBroadcastConfig} />
+              <Broadcast metric={metric} settings={broadcastConfig} />
               <ContentWrapper>
                 <BodyWrapper isMobile={isMobile}>
                   {childrenWithProps(children, { metric })}

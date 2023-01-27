@@ -1,9 +1,9 @@
 import { FC } from 'react'
 
-import { BANNER_BROADCAST_LAYOUT } from '@/constant/layout'
+import { BROADCAST_LAYOUT } from '@/constant/layout'
 import { Space, SpaceGrow } from '@/widgets/Common'
 
-import type { TBannerBroadcastSettings } from '../../spec'
+import type { TBroadcastSettings } from '../../spec'
 
 import {
   Wrapper,
@@ -18,23 +18,23 @@ import {
 import { edit } from '../../logic'
 
 type TProps = {
-  settings: TBannerBroadcastSettings
+  settings: TBroadcastSettings
   onSelect?: () => void | null
 }
 
 const Center: FC<TProps> = ({ settings, onSelect = null }) => {
-  const { bannerBroadcastLayout, bannerBroadcastBg } = settings
-  const $active = bannerBroadcastLayout === BANNER_BROADCAST_LAYOUT.CENTER
+  const { broadcastLayout, broadcastBg } = settings
+  const $active = broadcastLayout === BROADCAST_LAYOUT.CENTER
 
   return (
     <Wrapper
       $active={$active}
       onClick={() => {
-        edit(BANNER_BROADCAST_LAYOUT.CENTER, 'bannerBroadcastLayout')
+        edit(BROADCAST_LAYOUT.CENTER, 'broadcastLayout')
         onSelect?.()
       }}
     >
-      <NotifyBar bg={bannerBroadcastBg} $active={$active} center>
+      <NotifyBar bg={broadcastBg} $active={$active} center>
         <SpaceGrow />
         <Row>
           <NotifyIcon />

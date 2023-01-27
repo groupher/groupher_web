@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import type { TBannerBroadcastSettings, TTouched } from '../spec'
+import type { TBroadcastSettings, TTouched } from '../spec'
 
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
 
@@ -11,15 +11,15 @@ import Templates from './Templates'
 import Editor from './Editor'
 
 import { Wrapper, InnerWrapper, EnableDesc } from '../styles/broadcast'
-import { bannerBroadcastOnSave, bannerBroadcastOnCancel, bannerBroadcastToggle } from '../logic'
+import { broadcastOnSave, broadcastOnCancel, broadcastToggle } from '../logic'
 
 type TProps = {
-  settings: TBannerBroadcastSettings
+  settings: TBroadcastSettings
   touched: TTouched
 }
 
 const Broadcast: FC<TProps> = ({ settings, touched }) => {
-  const { saving, bannerBroadcastEnable } = settings
+  const { saving, broadcastEnable } = settings
 
   return (
     <Wrapper>
@@ -29,15 +29,15 @@ const Broadcast: FC<TProps> = ({ settings, touched }) => {
         <SectionLabel
           title="开启横幅广播"
           desc={<EnableDesc>开启后，本社区内的所有页面顶部将展示广播信息</EnableDesc>}
-          addon={<ToggleSwitch checked={bannerBroadcastEnable} onChange={bannerBroadcastToggle} />}
+          addon={<ToggleSwitch checked={broadcastEnable} onChange={broadcastToggle} />}
         />
         <br />
         <Editor settings={settings} />
 
         <SavingBar
-          isTouched={touched.bannerBroadcast}
-          onCancel={bannerBroadcastOnCancel}
-          onConfirm={bannerBroadcastOnSave}
+          isTouched={touched.broadcast}
+          onCancel={broadcastOnCancel}
+          onConfirm={broadcastOnSave}
           loading={saving}
           top={50}
         />

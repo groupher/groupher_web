@@ -2,29 +2,29 @@ import { FC } from 'react'
 
 import ColorSelector from '@/widgets/ColorSelector'
 
-import type { TBannerBroadcastSettings } from '../../spec'
+import type { TBroadcastSettings } from '../../spec'
 import { Wrapper, Item, Label, BgLabel, TheColor, Inputer } from '../../styles/broadcast/editor'
 import { edit } from '../../logic'
 
 type TProps = {
-  settings: TBannerBroadcastSettings
+  settings: TBroadcastSettings
 }
 
 const Editor: FC<TProps> = ({ settings }) => {
-  const { bannerBroadcastBg } = settings
+  const { broadcastBg } = settings
 
   return (
     <Wrapper>
       <Item>
         <Label>背景色</Label>
-        <BgLabel bg={bannerBroadcastBg}>
+        <BgLabel bg={broadcastBg}>
           <ColorSelector
-            activeColor={bannerBroadcastBg}
-            onChange={(color) => edit(color, 'bannerBroadcastBg')}
+            activeColor={broadcastBg}
+            onChange={(color) => edit(color, 'broadcastBg')}
             placement="right"
             offset={[-1, 15]}
           >
-            <TheColor color={bannerBroadcastBg} />
+            <TheColor color={broadcastBg} />
           </ColorSelector>
         </BgLabel>
       </Item>

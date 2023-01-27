@@ -95,8 +95,8 @@ export type {
   THelpLayout,
   TFooterLayout,
   TGlobalLayout,
-  TBannerBroadcastConfig,
-  TBannerBroadcastLayout,
+  TBroadcastConfig,
+  TBroadcastLayout,
 } from './dashboard'
 
 export type {
