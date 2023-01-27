@@ -45,7 +45,7 @@ export const SidebarWrapper = styled.div`
   color: ${theme('article.title')};
   ${css.flexColumn('align-start')};
   height: 100%;
-  min-width: 28px;
+  min-width: 33px;
 `
 export const BadgePopContent = styled.div`
   padding: 5px 10px;
@@ -69,17 +69,34 @@ export const IndentLine = styled.div`
   flex-grow: 1;
   width: 20px;
   height: 100%;
-  border-left: 1px dashed;
-  border-left-color: ${theme('comment.indentLine')};
+
+  border-left: 2px solid transparent;
+  border-image: linear-gradient(
+    0.2turn,
+    transparent,
+    ${theme('divider')},
+    ${theme('divider')},
+    ${theme('divider')},
+    transparent
+  );
+
+  border-image-slice: 1;
+
   margin-left: 7px;
-  margin-top: 8px;
-  opacity: 1;
+  margin-top: 18px;
 
   ${SidebarWrapper}:hover & {
-    opacity: 1;
     cursor: pointer;
-    border-left: 1px solid;
-    border-left-color: ${theme('comment.indentActive')};
+    border-left: 1px solid transparent;
+    border-image: linear-gradient(
+      0.2turn,
+      transparent,
+      ${theme('article.digest')},
+      ${theme('article.digest')},
+      ${theme('article.digest')},
+      transparent
+    );
+    border-image-slice: 1;
   }
 
   ${CommentWrapper}:hover & {
