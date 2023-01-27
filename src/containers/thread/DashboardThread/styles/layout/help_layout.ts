@@ -58,7 +58,7 @@ export const LayoutTitle = styled.div<TActive>`
   transition: all 0.2s;
 `
 export const Block = styled(BlockBase)`
-  width: 290px;
+  width: 280px;
   height: 200px;
   padding: 12px 25px;
 `
