@@ -9,6 +9,8 @@ import Button from '@/widgets/Buttons/Button'
 
 export const Wrapper = styled.div`
   ${css.flexColumn('align-both')};
+  width: 100%;
+  height: 100%;
   gap: 15px;
   padding-bottom: 30px;
 

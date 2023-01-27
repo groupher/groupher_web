@@ -90,6 +90,7 @@ export const settingsModalFields = {
     BANNER_BROADCAST_LAYOUT.DEFAULT,
   ),
   bannerBroadcastBg: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
+  bannerBroadcastEnable: T.opt(T.bool, false),
 
   changelogLayout: T.opt(T.enum(values(CHANGELOG_LAYOUT)), CHANGELOG_LAYOUT.PREVIEW),
 

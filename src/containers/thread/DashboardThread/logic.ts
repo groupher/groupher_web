@@ -45,6 +45,10 @@ export const addHelpCategory = (): void => {
   store.mark({ helpCategories })
 }
 
+export const bannerBroadcastToggle = (enable: boolean): void => {
+  store.mark({ bannerBroadcastEnable: enable })
+}
+
 export const bannerBroadcastOnSave = (): void => {
   store.mark({ saving: true })
 

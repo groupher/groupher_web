@@ -22,6 +22,7 @@ import type {
   TDashboardLayoutRoute,
   TDashboardBaseInfoRoute,
   TDashboardSEORoute,
+  TBannerBroadcastConfig,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'MANAGEMENT' | 'INTEGRATE'
@@ -119,9 +120,7 @@ export type TUiSettings = {
   layoutTab: TDashboardLayoutRoute
 }
 
-export type TBannerBroadcastSettings = {
-  bannerBroadcastLayout: TBannerBroadcastLayout
-  bannerBroadcastBg: TColorName
+export type TBannerBroadcastSettings = TBannerBroadcastConfig & {
   saving: boolean
 }
 
@@ -177,6 +176,7 @@ export type TSettingField =
   | 'topbarBg'
   | 'bannerBroadcastLayout'
   | 'bannerBroadcastBg'
+  | 'bannerBroadcastEnable'
   | 'changelogLayout'
   | 'tag'
   | 'alias'

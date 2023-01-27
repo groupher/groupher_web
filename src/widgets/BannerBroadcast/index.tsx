@@ -6,7 +6,7 @@
 
 import { FC, memo, Fragment } from 'react'
 
-import type { TMetric, TBannerBroadcastLayout, TColorName } from '@/spec'
+import type { TMetric, TBannerBroadcastLayout, TColorName, TBannerBroadcastConfig } from '@/spec'
 import { ANCHOR } from '@/constant/dom'
 import { BANNER_BROADCAST_LAYOUT } from '@/constant/layout'
 import { buildLog } from '@/utils/logger'
@@ -28,15 +28,21 @@ const log = buildLog('w:BannerBroadcast:index')
 
 type TProps = {
   testid?: string
+  settings: TBannerBroadcastConfig
   metric: TMetric
-  layout: TBannerBroadcastLayout
-  bg: TColorName
 }
 
 const DETAIL_TEXT =
   'Groupher.com, 为中小产品团队提供社区反馈服务，如果你对此有兴趣，欢迎加 v(mydearxym) 详聊。'
 
-const BannerBroadcast: FC<TProps> = ({ testid = 'banner-notify', metric, layout, bg }) => {
+const BannerBroadcast: FC<TProps> = ({ testid = 'banner-notify', metric, settings }) => {
+  const {
+    bannerBroadcastBg: bg,
+    bannerBroadcastLayout: layout,
+    bannerBroadcastEnable: enabled,
+  } = settings
+  if (!enabled) return null
+
   return (
     <Wrapper testid={testid} bg={bg} id={ANCHOR.GLOBAL_HEADER_ID}>
       <InnerWrapper metric={metric} center={layout === BANNER_BROADCAST_LAYOUT.CENTER}>

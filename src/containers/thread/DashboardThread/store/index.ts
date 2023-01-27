@@ -69,6 +69,7 @@ const DashboardThread = T.model('DashboardThread', {
 
         bannerBroadcastLayout,
         bannerBroadcastBg,
+        bannerBroadcastEnable,
 
         brandLayout,
         avatarLayout,
@@ -89,6 +90,7 @@ const DashboardThread = T.model('DashboardThread', {
 
         bannerBroadcast: bannerBroadcastLayout,
         bannerBroadcastBg,
+        bannerBroadcastEnable,
       }
     },
     get curCommunity(): TCommunity {
@@ -297,8 +299,6 @@ const DashboardThread = T.model('DashboardThread', {
             'bannerLayout',
             'topbarLayout',
             'topbarBg',
-            'bannerBroadcastLayout',
-            'bannerBroadcastBg',
             'postLayout',
             'kanbanLayout',
             'helpLayout',
@@ -317,7 +317,7 @@ const DashboardThread = T.model('DashboardThread', {
 
       return {
         saving: slf.saving,
-        ...pick(['bannerBroadcastLayout', 'bannerBroadcastBg'], slf),
+        ...pick(['bannerBroadcastLayout', 'bannerBroadcastBg', 'bannerBroadcastEnable'], slf),
       }
     },
 

@@ -5,7 +5,9 @@ import { COLORS } from '@/constant/colors'
 
 import css from '@/utils/css'
 
-export const Wrapper = styled.div``
+export const Wrapper = styled.div`
+  width: 100%;
+`
 
 export const BgWrapper = styled.div`
   ${css.flex('align-center')};

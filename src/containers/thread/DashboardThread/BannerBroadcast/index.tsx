@@ -10,8 +10,8 @@ import SavingBar from '../SavingBar'
 import Templates from './Templates'
 import Editor from './Editor'
 
-import { Wrapper, EnableDesc } from '../styles/banner_broadcast'
-import { bannerBroadcastOnSave, bannerBroadcastOnCancel } from '../logic'
+import { Wrapper, InnerWrapper, EnableDesc } from '../styles/banner_broadcast'
+import { bannerBroadcastOnSave, bannerBroadcastOnCancel, bannerBroadcastToggle } from '../logic'
 
 type TProps = {
   settings: TBannerBroadcastSettings
@@ -19,27 +19,29 @@ type TProps = {
 }
 
 const BannerBroadcast: FC<TProps> = ({ settings, touched }) => {
-  const { saving } = settings
+  const { saving, bannerBroadcastEnable } = settings
 
   return (
     <Wrapper>
-      <Templates settings={settings} />
-      <br />
-      <SectionLabel
-        title="开启横幅广播"
-        desc={<EnableDesc>开启后，本社区内的所有页面顶部将展示广播信息</EnableDesc>}
-        addon={<ToggleSwitch checked />}
-      />
-      <br />
-      <Editor settings={settings} />
+      <InnerWrapper>
+        <Templates settings={settings} />
+        <br />
+        <SectionLabel
+          title="开启横幅广播"
+          desc={<EnableDesc>开启后，本社区内的所有页面顶部将展示广播信息</EnableDesc>}
+          addon={<ToggleSwitch checked={bannerBroadcastEnable} onChange={bannerBroadcastToggle} />}
+        />
+        <br />
+        <Editor settings={settings} />
 
-      <SavingBar
-        isTouched={touched.bannerBroadcast}
-        onCancel={bannerBroadcastOnCancel}
-        onConfirm={bannerBroadcastOnSave}
-        loading={saving}
-        top={50}
-      />
+        <SavingBar
+          isTouched={touched.bannerBroadcast}
+          onCancel={bannerBroadcastOnCancel}
+          onConfirm={bannerBroadcastOnSave}
+          loading={saving}
+          top={50}
+        />
+      </InnerWrapper>
     </Wrapper>
   )
 }

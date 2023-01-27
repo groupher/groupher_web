@@ -7,8 +7,6 @@ import { COLORS, COLOR_NAME } from '@/constant/colors'
 import css, { theme } from '@/utils/css'
 import { lighten, darken } from '@/utils/color'
 
-import { Divider } from '@/widgets/Common'
-
 import CrossSVG from '@/icons/CloseCross'
 import ArrowSVG from '@/icons/Arrow'
 import NotifySVG from '@/icons/Trumpet'
@@ -92,39 +90,6 @@ export const ArrowIcon = styled(ArrowSVG)`
   ${css.size(8)};
   opacity: 0.8;
   transform: rotate(180deg);
-`
-export const Main = styled.div`
-  ${css.flex()};
-  padding: 0 20px;
-  margin-top: 25px;
-`
-export const ListsWrapper = styled.div`
-  border-right: 1px solid;
-  border-right-color: ${theme('divider')};
-  width: 85%;
-`
-export const TagssWrapper = styled.div`
-  width: 15%;
-  margin-left: 20px;
-`
-export const ExampleBtn = styled.div`
-  display: inline-block;
-`
-export const Layout = styled.div`
-  ${css.flexColumn('align-both')};
-`
-export const LayoutTitle = styled.div<TActive>`
-  opacity: ${({ $active }) => ($active ? 1 : 0.65)};
-
-  ${Layout}:hover & {
-    opacity: 1;
-    cursor: pointer;
-  }
-  transition: all 0.2s;
-`
-
-export const DividerLine = styled(Divider)`
-  opacity: 0.8;
 `
 export const NotifyTextBar = styled(Bar)`
   width: ${({ long }) => `${long || 30}px`};
