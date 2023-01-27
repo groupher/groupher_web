@@ -74,7 +74,7 @@ const DashboardThreadContainer: FC<TProps> = ({
         {curTab === DASHBOARD.TAGS && <Tags settings={tagSettings} />}
         {curTab === DASHBOARD.HEADER && <Header settings={footerSettings} touched={touched} />}
         {curTab === DASHBOARD.FOOTER && <Footer settings={footerSettings} touched={touched} />}
-        {curTab === DASHBOARD.BANNER_BROADCAST && (
+        {curTab === DASHBOARD.BROADCAST && (
           <Broadcast settings={broadcastSettings} touched={touched} />
         )}
         {curTab === DASHBOARD.HELP && <Help settings={helpSettings} />}

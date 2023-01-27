@@ -104,7 +104,7 @@ export const MENU = {
       },
       {
         title: '横幅广播',
-        raw: DASHBOARD_ROUTE.BANNER_BROADCAST,
+        raw: DASHBOARD_ROUTE.BROADCAST,
       },
       {
         title: '小黑屋',

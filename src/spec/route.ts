@@ -24,7 +24,7 @@ export type TDashboardPath =
   | 'help'
   | 'header'
   | 'footer'
-  | 'banner_broadcast'
+  | 'broadcast'
   | 'blackhouse'
   // integrates
   | 'third_part'

@@ -114,7 +114,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         activeThread: thread,
       },
       dashboardThread: {
-        curTab: ROUTE.DASHBOARD.BANNER_BROADCAST,
+        curTab: ROUTE.DASHBOARD.BROADCAST,
       },
     },
     {
