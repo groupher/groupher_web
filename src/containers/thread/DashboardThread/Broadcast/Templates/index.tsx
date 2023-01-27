@@ -7,12 +7,7 @@ import type { TBannerBroadcastSettings } from '../../spec'
 import Center from './Center'
 import Default from './Default'
 
-import {
-  Wrapper,
-  ArrowIcon,
-  ToggleButton,
-  ToggleText,
-} from '../../styles/banner_broadcast/templates'
+import { Wrapper, ArrowIcon, ToggleButton, ToggleText } from '../../styles/broadcast/templates'
 
 type TProps = {
   settings: TBannerBroadcastSettings

@@ -4,15 +4,17 @@ import { BANNER_BROADCAST_LAYOUT } from '@/constant/layout'
 import { Space, SpaceGrow } from '@/widgets/Common'
 
 import type { TBannerBroadcastSettings } from '../../spec'
+
 import {
   Wrapper,
+  Row,
   NotifyBar,
   NotifyDesc,
-  NotifySolidLink,
   NotifyTextBar,
   NotifyIcon,
   CrossIcon,
-} from '../../styles/banner_broadcast/templates/default'
+  ArrowIcon,
+} from '../../styles/broadcast/templates/default'
 import { edit } from '../../logic'
 
 type TProps = {
@@ -20,32 +22,35 @@ type TProps = {
   onSelect?: () => void | null
 }
 
-const Default: FC<TProps> = ({ settings, onSelect = null }) => {
+const Center: FC<TProps> = ({ settings, onSelect = null }) => {
   const { bannerBroadcastLayout, bannerBroadcastBg } = settings
-  const $active = bannerBroadcastLayout === BANNER_BROADCAST_LAYOUT.DEFAULT
+  const $active = bannerBroadcastLayout === BANNER_BROADCAST_LAYOUT.CENTER
 
   return (
     <Wrapper
       $active={$active}
       onClick={() => {
-        edit(BANNER_BROADCAST_LAYOUT.DEFAULT, 'bannerBroadcastLayout')
+        edit(BANNER_BROADCAST_LAYOUT.CENTER, 'bannerBroadcastLayout')
         onSelect?.()
       }}
     >
-      <NotifyBar bg={bannerBroadcastBg} $active={$active}>
-        <NotifyIcon />
-        <NotifyDesc>
-          <NotifyTextBar long={220} thin />
-        </NotifyDesc>
+      <NotifyBar bg={bannerBroadcastBg} $active={$active} center>
         <SpaceGrow />
-        <NotifySolidLink bg={bannerBroadcastBg}>
-          <NotifyTextBar long={40} thin />
-        </NotifySolidLink>
-        <Space left={5} />
+        <Row>
+          <NotifyIcon />
+          <NotifyDesc>
+            <NotifyTextBar long={180} thin />
+          </NotifyDesc>
+          <Space right={10} />
+          <NotifyTextBar long={50} thin />
+          <Space left={5} />
+          <ArrowIcon />
+        </Row>
+        <SpaceGrow />
         <CrossIcon />
       </NotifyBar>
     </Wrapper>
   )
 }
 
-export default Default
+export default Center

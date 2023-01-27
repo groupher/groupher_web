@@ -18,7 +18,7 @@ import {
   Alias,
   Admin,
   Threads,
-  BannerBroadcast,
+  Broadcast,
   Tags,
   Domain,
   ThirdPart,
@@ -75,7 +75,7 @@ const DashboardThreadContainer: FC<TProps> = ({
         {curTab === DASHBOARD.HEADER && <Header settings={footerSettings} touched={touched} />}
         {curTab === DASHBOARD.FOOTER && <Footer settings={footerSettings} touched={touched} />}
         {curTab === DASHBOARD.BANNER_BROADCAST && (
-          <BannerBroadcast settings={bannerBroadcastSettings} touched={touched} />
+          <Broadcast settings={bannerBroadcastSettings} touched={touched} />
         )}
         {curTab === DASHBOARD.HELP && <Help settings={helpSettings} />}
         {curTab === DASHBOARD.DOMAIN && <Domain />}

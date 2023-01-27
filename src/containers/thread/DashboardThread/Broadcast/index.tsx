@@ -10,7 +10,7 @@ import SavingBar from '../SavingBar'
 import Templates from './Templates'
 import Editor from './Editor'
 
-import { Wrapper, InnerWrapper, EnableDesc } from '../styles/banner_broadcast'
+import { Wrapper, InnerWrapper, EnableDesc } from '../styles/broadcast'
 import { bannerBroadcastOnSave, bannerBroadcastOnCancel, bannerBroadcastToggle } from '../logic'
 
 type TProps = {
@@ -18,7 +18,7 @@ type TProps = {
   touched: TTouched
 }
 
-const BannerBroadcast: FC<TProps> = ({ settings, touched }) => {
+const Broadcast: FC<TProps> = ({ settings, touched }) => {
   const { saving, bannerBroadcastEnable } = settings
 
   return (
@@ -46,4 +46,4 @@ const BannerBroadcast: FC<TProps> = ({ settings, touched }) => {
   )
 }
 
-export default BannerBroadcast
+export default Broadcast

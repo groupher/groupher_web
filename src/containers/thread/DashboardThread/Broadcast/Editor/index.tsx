@@ -3,14 +3,7 @@ import { FC } from 'react'
 import ColorSelector from '@/widgets/ColorSelector'
 
 import type { TBannerBroadcastSettings } from '../../spec'
-import {
-  Wrapper,
-  Item,
-  Label,
-  BgLabel,
-  TheColor,
-  Inputer,
-} from '../../styles/banner_broadcast/editor'
+import { Wrapper, Item, Label, BgLabel, TheColor, Inputer } from '../../styles/broadcast/editor'
 import { edit } from '../../logic'
 
 type TProps = {
