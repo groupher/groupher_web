@@ -19,16 +19,16 @@ import TagSelector from '@/widgets/TagSelector'
 import StateSelector from '@/widgets/StateSelector'
 
 import RichEditor from '@/containers/editor/RichEditor'
-import CoverEditor from '@/containers/editor/CoverEditor'
 
-import type { TStore } from './store'
+import ArticleCover from './ArticleCover'
 
 import TitleInput from './TitleInput'
 import Footer from './Footer'
 
-// import PublishRules from './PublishRules'
+import type { TStore } from './store'
 // import Settings from './Settings'
 import { Wrapper, InnerWrapper, ContentWrapper, FuncRow } from './styles'
+
 import {
   useInit,
   editOnChange,
@@ -81,11 +81,12 @@ const ArticleEditorContainer: FC<TProps> = ({
             onTagSelect={onTagSelect}
           />
         )} */}
+
         <ContentWrapper>
           {!allowEdit && <NoticeBar type="notice" content="只有作者可以编辑本内容。" left={25} />}
           {isArchived && <ArchiveAlert date={archivedAt} top={12} bottom={20} left={25} />}
 
-          <CoverEditor />
+          <ArticleCover />
 
           <TitleInput title={title} placeholder={texts.holder.title} />
 

@@ -17,6 +17,8 @@ type TProps = {
 const Cover: FC<TProps> = ({ setting, imageUrl }) => {
   const hasImage = !isEmpty(imageUrl)
 
+  console.log('## setting.linearBorderPos: ', setting.linearBorderPos)
+
   if (!hasImage) {
     return <Placeholder />
   }
@@ -32,6 +34,7 @@ const Cover: FC<TProps> = ({ setting, imageUrl }) => {
           pos={setting.pos}
           size={setting.size}
           ratio={setting.ratio}
+          rotate={setting.rotate}
           shadowLevel={setting.shadowLevel}
           borderRadiusLevel={setting.borderRadiusLevel}
           linearBorderPos={setting.linearBorderPos}
@@ -41,6 +44,7 @@ const Cover: FC<TProps> = ({ setting, imageUrl }) => {
             pos={setting.pos}
             size={setting.size}
             ratio={setting.ratio}
+            rotate={setting.rotate}
             shadowLevel={setting.shadowLevel}
             borderRadiusLevel={setting.borderRadiusLevel}
             linearBorderPos={setting.linearBorderPos}

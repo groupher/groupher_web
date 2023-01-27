@@ -34,6 +34,7 @@ export type TImageSizeValue = {
 export type TSettingLevel = 'L1' | 'L2' | 'L3' | 'L4' | 'L5'
 export type TImageSize = 'large' | 'medium' | 'small'
 export type TImageRadio = 'square' | 'tv' | 'screen'
+export type TImageRotate = string
 
 export type TToolboxSetting = {
   pos: TImagePos
@@ -46,6 +47,7 @@ export type TToolboxSetting = {
   direction: TWallpaperGradientDir
   size: TImageSize
   ratio: TImageRadio
+  rotate: number
   hasGlassBorder: boolean
 }
 
@@ -56,5 +58,6 @@ export type TCoverImage = {
   linearBorderPos: TLinearBorderPos
   size: TImageSize
   ratio: TImageRadio
+  rotate: number
   hasGlassBorder?: boolean
 }
