@@ -23,7 +23,7 @@ const ArticleCover: FC = () => {
           <ImageIcon />
         </Adder>
       )}
-      {hasCover && <CoverEditor />}
+      {hasCover && <CoverEditor onDelete={() => setHasCover(false)} />}
     </Wrapper>
   )
 }
