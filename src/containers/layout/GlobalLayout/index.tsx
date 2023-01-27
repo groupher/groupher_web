@@ -14,7 +14,7 @@ import type { TSEO, TMetric } from '@/spec'
 import { bond } from '@/utils/mobx'
 
 import ThemePalette from '@/containers/layout/ThemePalette'
-// import BannerNotify from '@/widgets/BannerNotify'
+import Broadcast from '@/widgets/Broadcast'
 import Footer from '@/widgets/Footer'
 // import CustomScroller from '@/widgets/CustomScroller'
 
@@ -54,7 +54,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
 
   const [load, setLoad] = useState(false)
 
-  const { wallpaperInfo, hasShadow, glowEffect, globalLayout } = store
+  const { wallpaperInfo, hasShadow, glowEffect, globalLayout, broadcastConfig } = store
 
   useEffect(() => {
     setLoad(true)
@@ -65,15 +65,6 @@ const GlobalLayoutContainer: FC<TProps> = ({
       {load && <Addon metric={metric} />}
       <Skeleton>
         <Wallpaper wallpaperInfo={wallpaperInfo} />
-        {/* <CustomScroller
-          instanceKey={BODY_SCROLLER}
-          direction="vertical"
-          height="100vh"
-          barSize={SIZE.MEDIUM}
-          showShadow={false}
-          onScrollDirectionChange={onPageScrollDirhange}
-          autoHide
-        > */}
         <ScrollWrapper>
           <Wrapper>
             <SEO metric={metric} config={seoConfig} />
@@ -83,11 +74,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
               hasTopbar={metric !== METRIC.HOME && globalLayout.topbar === TOPBAR_LAYOUT.YES}
               topbarBg={globalLayout.topbarBg}
             >
-              {/* <BannerNotify
-                metric={metric}
-                layout={globalLayout.bannerNotify}
-                bg={globalLayout.bannerNotifyBg}
-              /> */}
+              <Broadcast metric={metric} settings={broadcastConfig} />
               <ContentWrapper>
                 <BodyWrapper isMobile={isMobile}>
                   {childrenWithProps(children, { metric })}
@@ -105,7 +92,6 @@ const GlobalLayoutContainer: FC<TProps> = ({
             {/* {isMobile && <ModeLine metric={metric} />} */}
           </Wrapper>
         </ScrollWrapper>
-        {/* </CustomScroller> */}
       </Skeleton>
     </ThemePalette>
   )

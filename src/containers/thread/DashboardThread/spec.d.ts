@@ -10,7 +10,7 @@ import type {
   TBrandLayout,
   TTopbarLayout,
   TBannerLayout,
-  TBannerNotifyLayout,
+  TBroadcastLayout,
   TTag,
   TThread,
   TSizeSML,
@@ -22,6 +22,7 @@ import type {
   TDashboardLayoutRoute,
   TDashboardBaseInfoRoute,
   TDashboardSEORoute,
+  TBroadcastConfig,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'MANAGEMENT' | 'INTEGRATE'
@@ -111,8 +112,6 @@ export type TUiSettings = {
   glowFixed: boolean
   glowOpacity: string
   helpLayout: THelpLayout
-  bannerNotifyLayout: TBannerNotifyLayout
-  bannerNotifyBg: TColorName
   postLayout: TPostLayout
   kanbanLayout: TKanbanLayout
   changelogLayout: TChangelogLayout
@@ -120,6 +119,11 @@ export type TUiSettings = {
 
   layoutTab: TDashboardLayoutRoute
 }
+
+export type TBroadcastSettings = TBroadcastConfig & {
+  saving: boolean
+}
+
 export type TWidgetsSettings = {
   saving: boolean
   widgetsPrimaryColor: TColorName
@@ -140,8 +144,6 @@ export type TTouched = {
   helpLayout: boolean
   topbarLayout: boolean
   topbarBg: boolean
-  bannerNotifyLayout: boolean
-  bannerNotifyBg: boolean
   postLayout: boolean
   kanbanLayout: boolean
   changelogLayout: boolean
@@ -155,6 +157,7 @@ export type TTouched = {
   // sidebar
   ui: boolean
   widgets: boolean
+  broadcast: boolean
 }
 
 export type TSettingField =
@@ -171,8 +174,9 @@ export type TSettingField =
   | 'helpLayout'
   | 'topbarLayout'
   | 'topbarBg'
-  | 'bannerNotifyLayout'
-  | 'bannerNotifyBg'
+  | 'broadcastLayout'
+  | 'broadcastBg'
+  | 'broadcastEnable'
   | 'changelogLayout'
   | 'tag'
   | 'alias'

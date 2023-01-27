@@ -4,6 +4,7 @@ import css, { theme } from '@/utils/css'
 
 export const Wrapper = styled.div`
   ${css.flexColumn()};
+  width: 100%;
 `
 export const Header = styled.div`
   ${css.flex('align-center')};

@@ -11,8 +11,11 @@ import type {
   TGlobalLayout,
   TGlowEffect,
   TWallpaperInfo,
+  TBroadcastConfig,
 } from '@/spec'
+
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
+import { pick } from 'ramda'
 
 const Platform = T.model('Platform', {
   isChrome: T.opt(T.bool, true),
@@ -76,6 +79,11 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
       const root = getParent(self) as TRootStore
 
       return root.wallpaperEditor.wallpaper && root.wallpaperEditor.hasShadow
+    },
+    get broadcastConfig(): TBroadcastConfig {
+      const root = getParent(self) as TRootStore
+
+      return pick(['broadcastLayout', 'broadcastBg', 'broadcastEnable'], root.dashboardThread)
     },
     get globalLayout(): TGlobalLayout {
       const root = getParent(self) as TRootStore

@@ -9,9 +9,10 @@ import { buildLog } from '@/utils/logger'
 import { updateEditing, toJS } from '@/utils/mobx'
 import asyncSuit from '@/utils/async'
 
-import type { TSettingField, TAlias } from './spec'
-// import S from './schma'
 import type { TStore } from './store'
+import type { TSettingField, TAlias } from './spec'
+
+import { SETTING_FIELD } from './constant'
 
 const { SR71, $solver, asyncRes } = asyncSuit
 const sr71$ = new SR71({
@@ -25,19 +26,8 @@ let sub$ = null
 /* eslint-disable-next-line */
 const log = buildLog('L:DashboardThread')
 
-/**
- * rollback editing value to init value
- */
-export const rollbackEdit = (field: TSettingField): void => {
-  store.rollbackEdit(field)
-}
-
-export const updateEditingTag = (tag: TTag): void => {
-  store.mark({ editingTag: tag })
-}
-
-export const updateSettingTag = (tag: TTag): void => {
-  store.mark({ settingTag: tag })
+export const editTag = (key: 'settingTag' | 'editingTag', tag: TTag): void => {
+  store.mark({ [key]: tag })
 }
 
 export const updateEditingAlias = (alias: TAlias): void => {
@@ -55,11 +45,39 @@ export const addHelpCategory = (): void => {
   store.mark({ helpCategories })
 }
 
-export const resetEdit = (field: TSettingField): void => store.resetEdit(field)
-
-export const edit = (e: TEditValue, key: string): void => {
-  updateEditing(store, key, e)
+export const broadcastToggle = (enable: boolean): void => {
+  store.mark({ broadcastEnable: enable })
 }
+
+export const broadcastOnSave = (): void => {
+  store.mark({ saving: true })
+
+  store.onSave(SETTING_FIELD.BROADCAST_LAYOUT)
+  store.onSave(SETTING_FIELD.BROADCAST_BG)
+
+  setTimeout(() => {
+    store.mark({ saving: false })
+
+    const initSettings = {
+      ...store.initSettings,
+      [SETTING_FIELD.BROADCAST_LAYOUT]: toJS(store[SETTING_FIELD.BROADCAST_LAYOUT]),
+      [SETTING_FIELD.BROADCAST_BG]: toJS(store[SETTING_FIELD.BROADCAST_BG]),
+    }
+    store.mark({ initSettings })
+  }, 1200)
+}
+
+export const broadcastOnCancel = (): void => {
+  store.rollbackEdit(SETTING_FIELD.BROADCAST_LAYOUT)
+  store.rollbackEdit(SETTING_FIELD.BROADCAST_BG)
+}
+
+/**
+ * rollback editing value to init value
+ */
+export const rollbackEdit = (field: TSettingField): void => store.rollbackEdit(field)
+export const resetEdit = (field: TSettingField): void => store.resetEdit(field)
+export const edit = (e: TEditValue, key: string): void => updateEditing(store, key, e)
 
 /**
  * save to server

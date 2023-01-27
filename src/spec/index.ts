@@ -85,6 +85,21 @@ export type {
 export type { TGQLError } from './graphql'
 
 export type {
+  TAvatarLayout,
+  TTopbarLayout,
+  TBrandLayout,
+  TBannerLayout,
+  TPostLayout,
+  TKanbanLayout,
+  TChangelogLayout,
+  THelpLayout,
+  TFooterLayout,
+  TGlobalLayout,
+  TBroadcastConfig,
+  TBroadcastLayout,
+} from './dashboard'
+
+export type {
   TCollectionFolder,
   TPagedCollectionFolder,
   TDocument,
@@ -102,22 +117,11 @@ export type {
   TArticleCatMode,
   TCopyright,
   TUpvoteLayout,
-  TBrandLayout,
-  TBannerLayout,
-  TAvatarLayout,
-  TBannerNotifyLayout,
-  TTopbarLayout,
-  TPostLayout,
-  TKanbanLayout,
-  TChangelogLayout,
-  TFooterLayout,
-  TGlobalLayout,
   TCommentsState,
   TArticleCat,
   TArticlePubSelector,
   TArticleCatReject,
   TArticleState,
-  THelpLayout,
 } from './article'
 
 export type {

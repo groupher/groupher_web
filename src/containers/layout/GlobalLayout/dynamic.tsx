@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic'
 
-// export const BannerNotify = dynamic(() => import('@/widgets/BannerNotify'), {
+// export const Broadcast = dynamic(() => import('@/widgets/Broadcast'), {
 //   /* eslint-disable react/display-name */
 //   loading: () => <div />,
 //   ssr: true,
