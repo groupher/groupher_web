@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css from '@/utils/css'
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
@@ -17,6 +17,4 @@ export const MainWrapper = styled.div`
   margin-top: 30px;
   padding-left: 80px;
   margin-left: 42px;
-  border-left: 1px solid;
-  border-left-color: ${theme('divider')};
 `

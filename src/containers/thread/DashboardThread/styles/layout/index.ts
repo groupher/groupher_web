@@ -5,8 +5,8 @@ import css, { theme } from '@/utils/css'
 
 export const Wrapper = styled.div`
   ${css.flexColumn()};
-  padding-left: 20px;
-  padding-right: 90px;
+  padding-left: 50px;
+  padding-right: 75px;
 `
 
 export const Banner = styled.div`
