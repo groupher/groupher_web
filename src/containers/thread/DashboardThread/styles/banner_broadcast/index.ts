@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
 `
 
 export const InnerWrapper = styled.div`
-  width: 520px;
+  width: 480px;
   margin-left: -20px;
   ${css.flexColumn('align-start')};
 `

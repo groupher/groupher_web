@@ -3,7 +3,14 @@ import { FC } from 'react'
 import ColorSelector from '@/widgets/ColorSelector'
 
 import type { TBannerBroadcastSettings } from '../../spec'
-import { Wrapper, BgWrapper, BgLabel, TheColor } from '../../styles/banner_broadcast/editor'
+import {
+  Wrapper,
+  Item,
+  Label,
+  BgLabel,
+  TheColor,
+  Inputer,
+} from '../../styles/banner_broadcast/editor'
 import { edit } from '../../logic'
 
 type TProps = {
@@ -15,8 +22,8 @@ const Editor: FC<TProps> = ({ settings }) => {
 
   return (
     <Wrapper>
-      <BgWrapper>
-        <div>背景色:</div>
+      <Item>
+        <Label>背景色</Label>
         <BgLabel bg={bannerBroadcastBg}>
           <ColorSelector
             activeColor={bannerBroadcastBg}
@@ -27,7 +34,17 @@ const Editor: FC<TProps> = ({ settings }) => {
             <TheColor color={bannerBroadcastBg} />
           </ColorSelector>
         </BgLabel>
-      </BgWrapper>
+      </Item>
+
+      <Item>
+        <Label>广播内容</Label>
+        <Inputer />
+      </Item>
+
+      <Item>
+        <Label>链接地址</Label>
+        <Inputer />
+      </Item>
     </Wrapper>
   )
 }
