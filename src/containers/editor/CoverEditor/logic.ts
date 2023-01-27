@@ -4,7 +4,14 @@ import { useEffect } from 'react'
 import type { TWallpaperGradientDir } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
-import type { TImagePos, TImageRadio, TImageSize, TLinearBorderPos, TSettingLevel } from './spec'
+import type {
+  TImagePos,
+  TImageRadio,
+  TImageRotate,
+  TImageSize,
+  TLinearBorderPos,
+  TSettingLevel,
+} from './spec'
 import { IMAGE_POS } from './constant'
 import type { TStore } from './store'
 
@@ -36,6 +43,7 @@ export const gradientDirOnChange = (direction: TWallpaperGradientDir): void =>
   store.mark({ direction })
 export const sizeOnChange = (size: TImageSize): void => store.mark({ size })
 export const ratioOnChange = (ratio: TImageRadio): void => store.mark({ ratio })
+export const rotateOnChange = (rotate: number): void => store.mark({ rotate })
 
 export const glassBorderOnChange = (hasGlassBorder: boolean) => store.mark({ hasGlassBorder })
 // ###############################

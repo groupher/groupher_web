@@ -7,6 +7,7 @@ import ShadowBlock from './ShadowBlock'
 import SizeBlock from './SizeBlock'
 import BackgroundBlock from './BackgroundBlock'
 import RatioBlock from './RatioBlock'
+import RotateBlock from './RotateBlock'
 
 import type { TToolboxSetting } from '../spec'
 import { Wrapper } from '../styles/toolbox'
@@ -28,6 +29,7 @@ const Toolbox: FC<TProps> = ({ setting }) => {
         hasGlassBorder={setting.hasGlassBorder}
       />
       <RatioBlock ratio={setting.ratio} />
+      <RotateBlock rotate={setting.rotate} />
       <LightBlock pos={setting.lightPos} />
       <BackgroundBlock
         wallpapers={setting.wallpapers}

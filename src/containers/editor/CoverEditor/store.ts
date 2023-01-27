@@ -37,6 +37,7 @@ const CoverEditor = T.model('CoverEditor', {
   linearBorderPos: T.opt(T.enum(values(LINEAR_BORDER)), LINEAR_BORDER.NONE),
   size: T.opt(T.enum(values(IMAGE_SIZE)), IMAGE_SIZE.LARGE),
   ratio: T.opt(T.enum(values(IMAGE_RATIO)), IMAGE_RATIO.SCREEN),
+  rotate: T.opt(T.int, 0),
   hasGlassBorder: T.opt(T.bool, false),
 
   // for background
@@ -70,6 +71,7 @@ const CoverEditor = T.model('CoverEditor', {
 
     get toolboxSetting(): TToolboxSetting {
       const slf = self as TStore
+
       const {
         imagePos,
         lightPos,
@@ -81,6 +83,7 @@ const CoverEditor = T.model('CoverEditor', {
         direction,
         size,
         ratio,
+        rotate,
         hasGlassBorder,
       } = slf
 
@@ -95,6 +98,7 @@ const CoverEditor = T.model('CoverEditor', {
         direction: direction as TWallpaperGradientDir,
         size: size as TImageSize,
         ratio: ratio as TImageRadio,
+        rotate,
         hasGlassBorder,
       }
     },

@@ -32,6 +32,7 @@ const Cover: FC<TProps> = ({ setting, imageUrl }) => {
           pos={setting.pos}
           size={setting.size}
           ratio={setting.ratio}
+          rotate={setting.rotate}
           shadowLevel={setting.shadowLevel}
           borderRadiusLevel={setting.borderRadiusLevel}
           linearBorderPos={setting.linearBorderPos}
@@ -41,6 +42,7 @@ const Cover: FC<TProps> = ({ setting, imageUrl }) => {
             pos={setting.pos}
             size={setting.size}
             ratio={setting.ratio}
+            rotate={setting.rotate}
             shadowLevel={setting.shadowLevel}
             borderRadiusLevel={setting.borderRadiusLevel}
             linearBorderPos={setting.linearBorderPos}

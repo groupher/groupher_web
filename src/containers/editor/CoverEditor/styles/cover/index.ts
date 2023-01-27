@@ -52,7 +52,7 @@ export const GlassBorder = styled.div<TGlassBorder>`
 
   position: relative;
   box-shadow: ${({ shadowLevel }) => IMAGE_SHADOW[shadowLevel]};
-  transform: ${({ pos, size }) => getImageTranslate(pos, size)};
+  transform: ${({ pos, size, rotate }) => `${getImageTranslate(pos, size)} rotate(${rotate}deg);`};
 
   transition: all 0.2s;
 `
@@ -61,6 +61,7 @@ type TImage = TCoverImage & TActive
 export const Image = styled(Img)<TImage>`
   border: 1px solid transparent;
   background-image: ${({ linearBorderPos }) => getLinearBorder(linearBorderPos)};
+
   border-image-slice: 1;
   background-origin: border-box;
   background-clip: content-box, border-box;
@@ -81,6 +82,8 @@ export const Image = styled(Img)<TImage>`
 
   box-shadow: ${({ shadowLevel }) => IMAGE_SHADOW[shadowLevel]};
   border-radius: ${({ borderRadiusLevel }) => IMAGE_BORDER_RADIUS[borderRadiusLevel]};
+
+  /* transform: ${({ rotate }) => `rotate(${rotate}deg)`}; */
 
   transition: all 0.2s;
 `
