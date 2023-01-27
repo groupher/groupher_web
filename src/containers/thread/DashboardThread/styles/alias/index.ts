@@ -5,6 +5,7 @@ import css from '@/utils/css'
 export const Wrapper = styled.div`
   ${css.flexColumn()};
   padding: 20px 80px;
+  padding-left: 150px;
   padding-right: 120px;
 `
 

@@ -6,9 +6,9 @@ export const Wrapper = styled.div`
   ${css.flex('justify-between')};
   flex-wrap: wrap;
 
-  border-left: 4px solid;
+  border-left: 2px solid;
   border-left-color: ${theme('divider')};
-  padding: 10px 14px;
+  padding: 10px 20px;
   padding-right: 0;
   gap: 20px;
 `

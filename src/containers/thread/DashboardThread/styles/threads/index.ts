@@ -4,8 +4,8 @@ import styled from 'styled-components'
 
 export const Wrapper = styled.div`
   padding: 0;
-  padding-left: 80px;
-  padding-right: 120px;
+  padding-left: 95px;
+  padding-right: 100px;
 `
 export const Desc = styled.div`
   width: 80%;
