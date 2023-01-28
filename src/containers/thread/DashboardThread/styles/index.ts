@@ -16,5 +16,5 @@ export const MainWrapper = styled.div`
   background: transparent;
   margin-top: 30px;
   padding-left: 80px;
-  margin-left: 42px;
+  margin-left: 20px;
 `

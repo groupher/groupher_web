@@ -13,8 +13,8 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flexColumn()};
-  width: 154px;
-  min-width: 154px;
+  width: 175px;
+  min-width: 175px;
   color: ${theme('article.digest')};
   padding-top: 32px;
   padding-left: 25px;
