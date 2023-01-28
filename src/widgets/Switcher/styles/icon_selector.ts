@@ -28,7 +28,7 @@ export const Tabs = styled.div`
   z-index: 2;
   border: 1px solid;
   border-color: transparent;
-  background-color: ${theme('textBadge')}; // to-theme
+  background-color: ${theme('hoverBg')}; // to-theme
 
   ${Wrapper}:hover & {
     border-color: ${theme('textBadge')}; // to-theme
