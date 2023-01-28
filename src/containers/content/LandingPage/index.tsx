@@ -23,6 +23,7 @@ import WallpaperBar from './WallpaperBar'
 
 import FeatureWall from './FeatureWall'
 import TechStacks from './TechStacks'
+import EnjoyDev from './EnjoyDev'
 import UsersWall from './UsersWall'
 
 import type { TStore } from './store'
@@ -113,6 +114,8 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
 
         <FeatureWall />
         <Divider top={60} bottom={100} />
+        <EnjoyDev />
+        <Divider top={80} bottom={80} />
         <TechStacks />
         <Divider top={80} bottom={80} />
         <UsersWall />
