@@ -1,5 +1,8 @@
 import styled from 'styled-components'
 
+import type { TAvatarLayout } from '@/spec'
+import { AVATAR_LAYOUT } from '@/constant/layout'
+
 import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 import CommentSVG from '@/icons/Comment'
@@ -10,8 +13,7 @@ export const Wrapper = styled.div`
   height: 44px;
 
   cursor: pointer;
-  -webkit-mask: linear-gradient(-60deg, #000 30%, #0005, #000 70%) right/300%
-    100%;
+  -webkit-mask: linear-gradient(-60deg, #000 30%, #0005, #000 70%) right/300% 100%;
 
   background-repeat: no-repeat;
   animation: shimmer 3s infinite;
@@ -41,8 +43,10 @@ export const UnloginUser = styled(UserSVG)`
   ${css.size(12)};
   fill: ${theme('comment.placeholder')};
 `
-export const UserAvatar = styled(Img)`
-  ${css.circle(20)};
+export const UserAvatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
+  ${css.size(20)};
+  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '4px' : '100%')};
+
   fill: ${theme('comment.placeholder')};
   margin-left: 4%;
   opacity: ${theme('avatar.opacity')};

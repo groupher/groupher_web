@@ -1,6 +1,8 @@
 import { FC, memo } from 'react'
 
+import type { TAvatarLayout } from '@/spec'
 import { mockUsers } from '@/utils/mock'
+
 import Button from '@/widgets/Buttons/Button'
 
 import {
@@ -14,26 +16,20 @@ import {
 
 type TProps = {
   closeEditor: () => void
+  avatarLayout: TAvatarLayout
 }
 
-const PublishBar: FC<TProps> = ({ closeEditor }) => {
+const PublishBar: FC<TProps> = ({ closeEditor, avatarLayout }) => {
   return (
     <Wrapper>
       <AccountWrapper>
-        <Avatar src={mockUsers(3)[0].avatar} />
+        <Avatar src={mockUsers(3)[0].avatar} avatarLayout={avatarLayout} />
         <UserName>mydearxym</UserName>
       </AccountWrapper>
       <ActionsWrapper>
-        <Button
-          size="small"
-          space={20}
-          ghost
-          noBorder
-          onClick={() => closeEditor()}
-        >
+        <Button size="small" space={20} ghost noBorder onClick={() => closeEditor()}>
           取消
         </Button>
-
         <Button size="small" space={10}>
           <Publishcon />
           发布

@@ -12,7 +12,7 @@ export const getWidth = (type) => {
 export const getMinHeight = (type) => {
   switch (type) {
     case 'comment': {
-      return '250px'
+      return '180px'
     }
     default: {
       return '360px'

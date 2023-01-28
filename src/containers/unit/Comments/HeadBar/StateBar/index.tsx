@@ -1,7 +1,6 @@
 import { FC, memo } from 'react'
 
 import { buildLog } from '@/utils/logger'
-import { LineDivider } from '@/widgets/Common'
 import Button from '@/widgets/Buttons/Button'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
@@ -14,15 +13,15 @@ import {
   TotalCountWrapper,
   TotalNum,
   ActionsWrapper,
+  Divider,
   EditIcon,
 } from '../../styles/head_bar/state_bar'
 
 const log = buildLog('C:HeaderBar')
 
-type TProps = Pick<
-  TBase,
-  'mode' | 'apiMode' | 'isAllFolded' | 'loading' | 'basicState'
-> & { callEditor?: () => void }
+type TProps = Pick<TBase, 'mode' | 'apiMode' | 'isAllFolded' | 'loading' | 'basicState'> & {
+  callEditor?: () => void
+}
 
 const StateBar: FC<TProps> = ({
   basicState,
@@ -36,11 +35,8 @@ const StateBar: FC<TProps> = ({
     <Wrapper>
       <TotalCountWrapper>
         <TotalTitle>
-          共
-          <TotalNum highlight={basicState.isViewerJoined}>
-            {basicState.totalCount}
-          </TotalNum>
-          条讨论
+          共<TotalNum highlight={basicState.isViewerJoined}>{basicState.totalCount}</TotalNum>
+          条评论
         </TotalTitle>
       </TotalCountWrapper>
       <ActionsWrapper>
@@ -48,9 +44,9 @@ const StateBar: FC<TProps> = ({
 
         <Button size="small" space={10} onClick={() => callEditor()}>
           <EditIcon />
-          讨论
+          写评论
         </Button>
-        <LineDivider left={18} />
+        <Divider left={15} />
 
         <Actions mode={mode} isAllFolded={isAllFolded} apiMode={apiMode} />
       </ActionsWrapper>

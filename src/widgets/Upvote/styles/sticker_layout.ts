@@ -12,7 +12,6 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 }))<TInnerWrapper>`
   ${css.flexColumn('align-both')};
   margin-left: -6px;
-  margin-top: 5px;
 `
 
 export const Button = styled.div`
@@ -30,17 +29,9 @@ export const Button = styled.div`
 
   transition: 0.2s all;
 `
-
-export const Alias = styled.div`
-  color: ${theme('article.info')};
-  font-weight: 600;
-  margin-top: 3px;
-`
-
 export const UpWrapper = styled.div`
   margin-left: 5px;
 `
 export const CountWrapper = styled.div`
   margin-top: -4px;
-  margin-left: 1px;
 `

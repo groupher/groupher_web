@@ -72,11 +72,10 @@ export const IndentLine = styled.div`
 
   border-left: 2px solid transparent;
   border-image: linear-gradient(
-    0.2turn,
-    transparent,
-    ${theme('divider')},
-    ${theme('divider')},
-    ${theme('divider')},
+    0.74turn,
+    ${theme('comment.indentLine')},
+    ${theme('comment.indentLine')},
+    ${theme('comment.indentLine')},
     transparent
   );
 
@@ -87,13 +86,13 @@ export const IndentLine = styled.div`
 
   ${SidebarWrapper}:hover & {
     cursor: pointer;
-    border-left: 1px solid transparent;
+    border-left: 2px solid transparent;
     border-image: linear-gradient(
-      0.2turn,
-      transparent,
-      ${theme('article.digest')},
-      ${theme('article.digest')},
-      ${theme('article.digest')},
+      0.74turn,
+      ${theme('comment.indentActive')},
+      ${theme('comment.indentActive')},
+      ${theme('comment.indentActive')},
+      ${theme('comment.indentActive')},
       transparent
     );
     border-image-slice: 1;
