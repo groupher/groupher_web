@@ -18,11 +18,11 @@ export const UPVOTE_LAYOUT = {
   DEFAULT: 'default',
   COMMENT: 'comment',
   ARTICLE: 'article',
-  POST_LIST: 'post-list',
-  POST_MINIMAL: 'post-minimal',
+  POST_LIST: 'post_list',
+  POST_MINIMAL: 'post_minimal',
   GENERAL: 'general',
   SIMPLE: 'simple',
-  FIXED_HEADER: 'fixed-header',
+  FIXED_HEADER: 'fixed_header',
   STICKER: 'sticker',
 } as Record<TSnakeUpperCase<TUpvoteLayout>, TUpvoteLayout>
 

@@ -57,6 +57,15 @@ export const Block = styled(BlockBase)`
   padding: 16px 15px;
 `
 
+export const Border = styled.div`
+  ${css.flexColumn('align-both')};
+  border: 1px solid;
+  border-color: ${theme('divider')};
+
+  border-radius: 6px;
+  padding: 6px 8px;
+`
+
 export const UpvoteIcon = styled(UpvoteSVG)<{ size: number }>`
   ${({ size }) => css.size(size)};
   fill: ${theme('article.title')};

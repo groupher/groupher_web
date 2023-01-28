@@ -14,8 +14,30 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 }))<TInnerWrapper>`
   ${css.flex('align-center')};
 `
+export const Button = styled.div`
+  ${css.flex('align-center')};
+  border: 1px solid;
+  border-color: ${theme('divider')};
+
+  border-radius: 10px;
+  padding: 0 10px;
+
+  &:hover {
+    border-color: ${theme('lightText')};
+    cursor: pointer;
+  }
+
+  transition: 0.2s all;
+`
+export const Alias = styled.div`
+  color: ${theme('article.info')};
+  font-weight: 600;
+  margin-right: 7px;
+  margin-left: 2px;
+`
 export const UpvoteBtnWrapper = styled.div`
-  margin-top: 6px;
+  transform: scale(0.8);
+  margin-top: 5px;
 `
 export const DescWrapper = styled.div`
   ${css.flex('align-center')};
@@ -23,17 +45,18 @@ export const DescWrapper = styled.div`
 `
 export const Text = styled.div`
   color: ${theme('article.info')};
-  font-size: 14px;
+  font-size: 12px;
+  margin-top: 1px;
 `
 export const Count = styled.div<{ noOne: boolean }>`
   color: ${theme('article.info')};
   font-weight: ${({ noOne }) => (noOne ? 400 : 600)};
-  font-size: 16px;
-  margin-left: 3px;
-  margin-top: 1px;
 `
 export const LineDivider = styled(LineDividerBase)`
-  height: 11px;
+  height: 10px;
+  background: ${theme('article.digest')};
+  opacity: 0.8;
+  margin-left: 12px;
+  margin-right: 10px;
   margin-top: 1px;
-  background: ${theme('article.info')};
 `

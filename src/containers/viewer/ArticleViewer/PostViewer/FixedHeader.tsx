@@ -1,7 +1,9 @@
 import { FC, memo } from 'react'
 
 import type { TArticle } from '@/spec'
+
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
+import { UPVOTE_LAYOUT } from '@/constant/layout'
 
 import Upvote from '@/widgets/Upvote'
 import ArticleCatState from '@/widgets/ArticleCatState'
@@ -28,7 +30,11 @@ const FixedHeader: FC<TProps> = ({ article, visible, footerVisible }) => {
     <Wrapper visible={visible}>
       <LeftPart>
         <UpvoteWrapper show={!footerVisible}>
-          <Upvote count={upvotesCount} viewerHasUpvoted={viewerHasUpvoted} type="fixed-header" />
+          <Upvote
+            count={upvotesCount}
+            viewerHasUpvoted={viewerHasUpvoted}
+            type={UPVOTE_LAYOUT.FIXED_HEADER}
+          />
         </UpvoteWrapper>
 
         <ArticleTitle>{article.title}</ArticleTitle>

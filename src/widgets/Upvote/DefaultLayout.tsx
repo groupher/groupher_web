@@ -7,21 +7,16 @@
 import { FC, memo } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TUser } from '@/spec'
+import type { TUser, TAvatarLayout } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
-import { Space } from '@/widgets/Common'
 import Facepile from '@/widgets/Facepile'
 
+import AnimatedCount from '../AnimatedCount'
 import UpvoteBtn from './UpvoteBtn'
-import Desc from './Desc'
 
-import {
-  Wrapper,
-  UpvoteBtnWrapper,
-  Count,
-  LineDivider,
-} from './styles/default_layout'
+import { Wrapper, Button, Alias, UpvoteBtnWrapper, LineDivider } from './styles/default_layout'
+import { AVATAR_LAYOUT } from '@/constant/layout'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Upvote:index')
@@ -29,47 +24,36 @@ const log = buildLog('w:Upvote:index')
 type TProps = {
   testid?: string
   count?: number
-  avatarsRowLimit?: number
+  alias?: string
   viewerHasUpvoted?: boolean
-  alias?: string // 觉得很赞(default), 觉得很酷(works), 学到了(blog), 感兴趣(meetup), 有意思(Radar)
   avatarList?: TUser[]
   onAction?: (viewerHasUpvoted: boolean) => void
+  avatarLayout?: TAvatarLayout
 }
 
 const Upvote: FC<TProps> = ({
   testid = 'upvote',
   count = 4,
+  alias = '赞同',
   viewerHasUpvoted = false,
-  avatarsRowLimit = 3,
-  alias = '觉得很赞',
   onAction = log,
   avatarList,
+  avatarLayout = AVATAR_LAYOUT.SQUARE,
 }) => {
   const { isMobile } = useMobileDetect()
-
   const noOne = count === 0
 
   return (
     <Wrapper testid={testid}>
-      <UpvoteBtnWrapper>
-        <UpvoteBtn
-          viewerHasUpvoted={viewerHasUpvoted}
-          onAction={onAction}
-          count={count}
-        />
-      </UpvoteBtnWrapper>
-      <Space right={3} />
-      <Count noOne={noOne}>{count}</Count>
+      <Button>
+        <UpvoteBtnWrapper>
+          <UpvoteBtn viewerHasUpvoted={viewerHasUpvoted} onAction={onAction} count={count} />
+        </UpvoteBtnWrapper>
+        <Alias>{alias}</Alias>
+        <AnimatedCount count={count} active={viewerHasUpvoted} size="medium" />
+      </Button>
       {!noOne && <LineDivider />}
-      {!noOne && !isMobile && <Facepile users={avatarList} showMore={false} />}
-      {!noOne && (
-        <Desc
-          noOne={noOne}
-          count={count}
-          avatarsRowLimit={avatarsRowLimit}
-          alias={alias}
-        />
-      )}
+      {!noOne && !isMobile && <Facepile users={avatarList} avatarLayout={avatarLayout} showMore />}
     </Wrapper>
   )
 }
