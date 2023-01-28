@@ -8,12 +8,13 @@ export const Wrapper = styled.div<{ visible: boolean }>`
   position: fixed;
   top: ${({ visible }) => (visible ? 0 : '-60px;')};
   opacity: ${({ visible }) => (visible ? 1 : 0)};
-  width: calc(100% - 200px);
+  width: calc(100% - 240px);
   margin-left: -86px;
-  padding-left: 90px;
+  padding-left: 80px;
   padding-right: 30px;
   height: 60px;
-  background: #fff; // to-theme
+  background: ${theme('alphaBg')};
+  backdrop-filter: blur(10px);
   border-bottom: 1px solid transparent;
   border-image: linear-gradient(
     0.35turn,
@@ -36,7 +37,7 @@ export const LeftPart = styled.div`
 export const UpvoteWrapper = styled(FadeToggle)`
   ${css.flex('align-center')};
   position: absolute;
-  left: -85px;
+  left: -75px;
   top: 2px;
 `
 export const ArticleTitle = styled.div`

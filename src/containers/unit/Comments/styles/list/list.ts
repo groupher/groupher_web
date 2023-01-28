@@ -21,7 +21,7 @@ export const IndentLine = styled.div<TIndentLine>`
 
   border-left: 2px solid transparent;
   border-image: linear-gradient(
-    0.28turn,
+    0.34turn,
     ${theme('divider')},
     ${theme('divider')},
     ${theme('divider')},
@@ -36,7 +36,7 @@ export const IndentLine = styled.div<TIndentLine>`
 
     border-left: 1px solid transparent;
     border-image: linear-gradient(
-      0.28turn,
+      0.34turn,
       ${theme('article.digest')},
       ${theme('article.digest')},
       ${theme('article.digest')},
