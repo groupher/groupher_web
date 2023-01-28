@@ -38,7 +38,6 @@ const ArticleFooterContainer: FC<TProps> = ({
     <Wrapper testid={testid}>
       <BaseInfo>
         <TagsList items={articleTags} size="small" />
-        <div>Emoji</div>
       </BaseInfo>
 
       <Panel author={author} avatarLayout={avatarLayout} />

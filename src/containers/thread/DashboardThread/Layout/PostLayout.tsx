@@ -18,6 +18,7 @@ import {
   SelectWrapper,
   Layout,
   LayoutTitle,
+  Border,
   Block,
   Bar,
   Circle,
@@ -161,9 +162,11 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
             <Row>
               <Space right={5} />
               <Column center>
-                <UpvoteIcon size={14} />
-                <Br bottom={3} />
-                <Bar long={70} />
+                <Border>
+                  <UpvoteIcon size={14} />
+                  <Br bottom={3} />
+                  <Bar long={70} />
+                </Border>
               </Column>
 
               <Space right={15} />

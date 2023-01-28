@@ -12,7 +12,7 @@ import { UPVOTE_LAYOUT } from '@/constant/layout'
 import AnimatedCount from '@/widgets/AnimatedCount'
 import UpvoteBtn from './UpvoteBtn'
 
-import { Wrapper, UpWrapper, CountWrapper } from './styles/post_minimal_layout'
+import { Wrapper, Button, UpWrapper, CountWrapper } from './styles/post_minimal_layout'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Upvote:index')
@@ -32,17 +32,19 @@ const Upvote: FC<TProps> = ({
 }) => {
   return (
     <Wrapper testid={testid}>
-      <UpWrapper>
-        <UpvoteBtn
-          type={UPVOTE_LAYOUT.COMMENT}
-          viewerHasUpvoted={viewerHasUpvoted}
-          onAction={onAction}
-          count={count}
-        />
-      </UpWrapper>
-      <CountWrapper>
-        <AnimatedCount count={count} active={viewerHasUpvoted} size="medium" />
-      </CountWrapper>
+      <Button>
+        <UpWrapper>
+          <UpvoteBtn
+            type={UPVOTE_LAYOUT.COMMENT}
+            viewerHasUpvoted={viewerHasUpvoted}
+            onAction={onAction}
+            count={count}
+          />
+        </UpWrapper>
+        <CountWrapper>
+          <AnimatedCount count={count} active={viewerHasUpvoted} size="medium" />
+        </CountWrapper>
+      </Button>
     </Wrapper>
   )
 }

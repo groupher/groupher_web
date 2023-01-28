@@ -12,12 +12,11 @@ export const Main = styled.div`
 `
 export const UpvoteWrapper = styled.div`
   width: 40px;
-  margin-right: 10px;
-  margin-left: -6px;
-  margin-top: 4px;
+  margin-right: 25px;
+  margin-top: 6px;
 `
 export const DigestWrapper = styled.div`
-  ${css.cutRest('530px')};
+  ${css.cutRest('510px')};
   color: ${theme('article.digest')};
   margin-top: 4px;
   margin-bottom: 8px;

@@ -150,12 +150,12 @@ export type TUpvoteLayout =
   | 'default'
   | 'comment'
   | 'article'
-  | 'post-list'
+  | 'post_list'
   | 'general'
   | 'simple'
-  | 'fixed-header'
+  | 'fixed_header'
   | 'sticker'
-  | 'post-minimal'
+  | 'post_minimal'
 
 export type TCollectionFolder = {
   id: TID
