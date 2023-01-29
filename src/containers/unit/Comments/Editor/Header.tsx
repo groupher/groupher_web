@@ -1,6 +1,7 @@
 import { FC, memo } from 'react'
 
-import type { TAccount } from '@/spec'
+import type { TAccount, TAvatarLayout } from '@/spec'
+import { AVATAR_LAYOUT } from '@/constant/layout'
 
 import { SpaceGrow } from '@/widgets/Common'
 
@@ -20,14 +21,19 @@ import { openEditor } from '../logic'
 type TProps = {
   accountInfo: TAccount
   showEditor: boolean
+  avatarLayout?: TAvatarLayout
 }
 
-const EditorHeader: FC<TProps> = ({ accountInfo, showEditor }) => {
+const EditorHeader: FC<TProps> = ({
+  accountInfo,
+  showEditor,
+  avatarLayout = AVATAR_LAYOUT.SQUARE,
+}) => {
   if (showEditor) {
     return (
       <ExpandWrapper>
         <HintText>创建评论:</HintText>
-        <UserAvatar src={accountInfo.avatar} />
+        <UserAvatar src={accountInfo.avatar} avatarLayout={avatarLayout} />
         <LeaveResponseUsername>{accountInfo.nickname}</LeaveResponseUsername>
       </ExpandWrapper>
     )
@@ -35,7 +41,7 @@ const EditorHeader: FC<TProps> = ({ accountInfo, showEditor }) => {
   return (
     <Wrapper onClick={openEditor}>
       {accountInfo.avatar ? (
-        <UserAvatar src={accountInfo.avatar} />
+        <UserAvatar src={accountInfo.avatar} avatarLayout={avatarLayout} />
       ) : (
         <UnloginUser />
       )}

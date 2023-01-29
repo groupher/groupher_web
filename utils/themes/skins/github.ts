@@ -200,8 +200,8 @@ const github = {
     mentionActiveBg: darken('#F9FCFC', 10),
     mentionShadow: '0px 2px 10px 1px rgba(235, 235, 235, 1)',
 
-    indentLine: '#d5d5d5',
-    indentActive: '#8590a6',
+    indentLine: '#E7E9ED',
+    indentActive: '#B5BCCB',
   },
   editor: {
     title: '#7ea9ad',

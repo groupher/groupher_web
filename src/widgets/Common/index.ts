@@ -46,7 +46,7 @@ export const SexyDivider = styled.div<TSpace>`
 
 type TLineDivider = TSpace & { height?: number }
 export const LineDivider = styled.div<TLineDivider>`
-  background: ${theme('divider')};
+  background-color: ${theme('divider')};
   width: 1px;
   height: ${({ height }) => `${height || 12}px`};
 

@@ -6,7 +6,6 @@
 
 import { FC, memo } from 'react'
 
-import type { TUser } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
 import { UPVOTE_LAYOUT } from '@/constant/layout'
@@ -21,7 +20,6 @@ const log = buildLog('w:Upvote:index')
 type TProps = {
   testid?: string
   count?: number
-  avatarList?: TUser[]
   viewerHasUpvoted?: boolean
   onAction?: (viewerHasUpvoted: boolean) => void
 }
@@ -31,7 +29,6 @@ const Upvote: FC<TProps> = ({
   count = 0,
   viewerHasUpvoted = false,
   onAction = log,
-  avatarList,
 }) => {
   return (
     <Wrapper testid={testid}>

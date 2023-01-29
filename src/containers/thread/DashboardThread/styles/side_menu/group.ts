@@ -37,13 +37,13 @@ export const Title = styled.div`
 `
 export const MenuWrapper = styled.div`
   margin-left: 7px;
-  padding-top: 12px;
+  margin-top: 12px;
   padding-bottom: 5px;
 
   border-left: 1px solid transparent;
   border-image: linear-gradient(
-    0.5turn,
-    transparent,
+    0.55turn,
+    ${theme('divider')},
     ${theme('divider')},
     ${theme('divider')},
     ${theme('divider')},
@@ -59,7 +59,7 @@ export const Item = styled(Link)<TActive>`
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   background: ${({ $active }) => ($active ? theme('menuActive') : 'transparent')};
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
-  width: 116px;
+  width: 140px;
   padding: 2px 5px;
   padding-left: 18px;
   margin-left: 0;

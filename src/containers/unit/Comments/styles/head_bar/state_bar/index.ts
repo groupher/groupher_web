@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/utils/css'
 
 import EditPenSVG from '@/icons/EditPen'
+import { LineDivider } from '@/widgets/Common'
 
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
@@ -22,12 +23,15 @@ export const TotalTitle = styled.div`
   `};
 `
 export const TotalNum = styled.span<{ highlight: boolean }>`
-  color: ${({ highlight }) =>
-    highlight ? theme('comment.number') : theme('article.title')};
+  color: ${({ highlight }) => (highlight ? theme('comment.number') : theme('article.title'))};
   font-weight: bold;
   font-size: 15px;
   margin-left: 5px;
   margin-right: 5px;
+`
+export const Divider = styled(LineDivider)`
+  background: ${theme('article.digest')};
+  opacity: 0.5;
 `
 export const CommentBlock = styled.div`
   ${css.flex()};

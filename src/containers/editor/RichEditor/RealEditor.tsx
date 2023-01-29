@@ -11,7 +11,7 @@ import RichEditor from '@groupher/react-editor'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
-import Options from './Options'
+// import Options from './Options'
 
 import type { TStore } from './store'
 import { useInit } from './logic'

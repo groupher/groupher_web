@@ -37,7 +37,7 @@ export const LinksWrapper = styled.div`
   gap: 0 28px;
   margin-top: 2px;
   flex-flow: 1;
-  padding-left: 15px;
+  padding-left: 24px;
 `
 export const LinkItem = styled(Link)<TActive>`
   font-size: 15px;
@@ -93,8 +93,8 @@ export const GithubIcon = styled(GithubSVT)`
 `
 export const Divider = styled(LineDivider)`
   background: ${theme('article.digest')};
-  opacity: 0.5;
-  height: 8px;
+  opacity: 0.8;
+  height: 10px;
 `
 export const RequestDemo = styled.div`
   ${css.flex('align-end')};
