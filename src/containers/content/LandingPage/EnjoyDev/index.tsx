@@ -1,10 +1,10 @@
 import { FC } from 'react'
-// import { Parallax } from 'react-scroll-parallax'
 
 import { Br } from '@/widgets/Common'
-// import TechItem from './TechItem'
 import Block from './Block'
 import NodeBlock from './NodeBlock'
+
+import BgShapes from './BgShapes'
 
 import {
   Wrapper,
@@ -12,6 +12,12 @@ import {
   Title,
   Desc,
   Wall,
+  ConnectLine,
+  SeedIcon,
+  TadaIcon,
+  HeadConnectLine,
+  TailConnectLine,
+  MainConnectLine,
   BgWrapper,
   BadWrapper,
   GoodWrapper,
@@ -28,17 +34,23 @@ const EnjoyDev: FC = () => {
     <Wrapper>
       <Slogan>
         <Title>将用户反馈融入开发流程</Title>
-        <Desc>让你心爱的产品尽早接受真实用户的反馈，优先满足用户真正关心的需求</Desc>
+        <Desc>让你心爱的产品尽早收集真实用户的反馈，优先满足用户真正关心的需求</Desc>
       </Slogan>
       <Wall>
         <BadWrapper>
+          <Block text="开发" noDot />
+          <ConnectLine />
           <Block text="开发" />
+          <ConnectLine />
           <Block text="开发" />
+          <ConnectLine />
           <Block text="开发" />
+          <ConnectLine />
           <Block text="开发" />
-          <Block text="开发" />
-          <Block text="没人用" />
-          <Block text="放弃" />
+          <ConnectLine />
+          <Block text="没人用" type="online" />
+          <ConnectLine />
+          <Block text="放弃" type="giveup" />
         </BadWrapper>
         <NoNote>
           <NoIcon />
@@ -46,38 +58,38 @@ const EnjoyDev: FC = () => {
         </NoNote>
         <VS>VS</VS>
         <GoodWrapper>
+          <BgShapes />
+          <SeedIcon left="-38px" top="298px" />
+          <HeadConnectLine left="-10px" top="306px" />
           <NodeBlock index={0} />
+          <MainConnectLine left="120px" top="306px" />
           <PositionWrapper left="200px" top="20px">
             <NodeBlock cat="FEATURE" />
           </PositionWrapper>
-          <PositionWrapper left="210px" top="350px">
+          <PositionWrapper left="210px" top="390px">
             <NodeBlock cat="OTHER" />
           </PositionWrapper>
           <NodeBlock index={1} />
+          <MainConnectLine left="500px" top="306px" />
           <PositionWrapper left="590px" top="40px">
-            <NodeBlock cat="BUG" />
-          </PositionWrapper>
-          <PositionWrapper left="600px" top="340px">
             <NodeBlock cat="QUESTION" />
           </PositionWrapper>
+          <PositionWrapper left="600px" top="375px">
+            <NodeBlock cat="BUG" />
+          </PositionWrapper>
           <NodeBlock index={2} />
-          {/* <Block text="双赢" /> */}
-          {/* <Parallax speed={-10} translateY={[10, -10]} opacity={[1, 0.8]}> */}
-          <BgWrapper />
-          {/* </Parallax> */}
+          <TailConnectLine left="965px" top="307px" />
+          <TadaIcon left="1028px" top="300px" />
         </GoodWrapper>
-        {/* <BgWrapper>
-          <Parallax speed={-10} translateY={[10, -10]} opacity={[1, 0.8]}>
-            <CADBackground src="/cad-bg.png" />
-          </Parallax>
-        </BgWrapper> */}
+
+        <YesNote>
+          <YesIcon />
+          与用户共赢
+        </YesNote>
+        <BgWrapper />
       </Wall>
 
       <Br top={40} />
-      <YesNote>
-        <YesIcon />
-        与用户共赢
-      </YesNote>
     </Wrapper>
   )
 }

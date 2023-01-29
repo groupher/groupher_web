@@ -1,15 +1,16 @@
 import styled from 'styled-components'
-import Link from 'next/link'
 
 import type { TTestable } from '@/spec'
 
 import css, { theme } from '@/utils/css'
 
-import GithubSVG from '@/icons/social/Github'
-import ArrowSVG from '@/icons/Arrow'
+import SeedSVG from '@/icons/Seed'
+import TadaSVG from '@/icons/Tada'
 
 import NoSVG from '@/icons/CloseCross'
 import YesSVG from '@/icons/CheckBold'
+
+type TPos = { top: string; left: string }
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
@@ -17,6 +18,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   ${css.flexColumn('align-both')};
   width: 100%;
 `
+
 export const Slogan = styled.div`
   ${css.flexColumn('align-both')};
 `
@@ -36,30 +38,6 @@ export const Desc = styled.div`
   opacity: 0.8;
 `
 
-export const LeanMoreLink = styled(Link)`
-  ${css.flex('align-center')};
-  font-size: 16px;
-  text-decoration: none;
-  color: ${theme('link')};
-
-  &:hover {
-    text-decoration: none;
-    color: ${theme('link')};
-    font-weight: 500;
-  }
-`
-
-export const ArrowIcon = styled(ArrowSVG)`
-  ${css.size(12)};
-  fill: ${theme('link')};
-  margin-left: 5px;
-
-  transform: rotate(180deg);
-  ${LeanMoreLink}:hover & {
-    fill: ${theme('link')};
-  }
-`
-
 export const Wall = styled.div`
   ${css.flexColumn('align-both')};
   width: 80%;
@@ -70,11 +48,11 @@ export const Wall = styled.div`
 export const BgWrapper = styled.div`
   opacity: 0.2;
   position: absolute;
-  top: -20px;
+  top: 0;
   left: 0;
   z-index: -1;
   width: 100%;
-  height: 100%;
+  height: calc(100% + 60px);
 
   background-image: linear-gradient(#d9d9d9 1.5px, transparent 1.5px),
     linear-gradient(to right, #d9d9d9 1.5px, transparent 1.5px);
@@ -85,11 +63,92 @@ export const BgWrapper = styled.div`
 `
 export const BadWrapper = styled.div`
   ${css.flex('align-both')};
-  gap: 15px 50px;
+  gap: 15px 0px;
   height: 140px;
   width: 100%;
   padding: 40px 80px;
   margin-top: -20px;
+`
+export const ConnectLine = styled.div`
+  width: 60px;
+  height: 2px;
+  margin-top: -1px;
+
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(
+    0.35turn,
+    transparent,
+    ${theme('divider')},
+    ${theme('divider')},
+    ${theme('divider')},
+    ${theme('divider')}
+  );
+
+  border-image-slice: 1;
+`
+
+export const MainConnectLine = styled.div<TPos>`
+  position: absolute;
+  left: ${({ left }) => left};
+  top: ${({ top }) => top};
+
+  width: 310px;
+  height: 2px;
+  z-index: -1;
+
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(0.32turn, transparent, transparent, #dddddd, #dddddd, #dddddd);
+  border-image-slice: 1;
+
+  filter: drop-shadow(2px 4px 6px lightgrey);
+`
+
+export const SeedIcon = styled(SeedSVG)<TPos>`
+  ${css.size(16)};
+  fill: ${theme('article.digest')};
+  opacity: 0.3;
+
+  position: absolute;
+  left: ${({ left }) => left};
+  top: ${({ top }) => top};
+
+  &:hover {
+    fill: ${theme('baseColor.green')};
+    transform: scale(1.8);
+  }
+
+  transition: all 0.2s;
+`
+
+export const TadaIcon = styled(TadaSVG)<TPos>`
+  ${css.size(16)};
+
+  position: absolute;
+  left: ${({ left }) => left};
+  top: ${({ top }) => top};
+
+  filter: saturate(0) drop-shadow(2px 4px 6px #dddddd);
+
+  &:hover {
+    filter: saturate(1);
+    transform: scale(1.8);
+  }
+
+  transition: all 0.2s;
+`
+export const HeadConnectLine = styled.div<TPos>`
+  position: absolute;
+  left: ${({ left }) => left};
+  top: ${({ top }) => top};
+  width: 50px;
+  height: 2px;
+  z-index: -1;
+  border-bottom: 2px dashed;
+  border-bottom-color: #dddddd;
+  filter: drop-shadow(2px 4px 6px lightgrey);
+`
+export const TailConnectLine = styled(HeadConnectLine)`
+  width: 50px;
 `
 export const GoodWrapper = styled.div`
   ${css.flex('align-both', 'justify-between')};
@@ -99,39 +158,24 @@ export const GoodWrapper = styled.div`
   padding-left: 40px;
   padding-right: 40px;
 `
-type TPos = { top: string; left: string }
 export const PositionWrapper = styled.div<TPos>`
   position: absolute;
   left: ${({ left }) => left};
   top: ${({ top }) => top};
 `
-export const GithubLink = styled(Link)`
-  ${css.flex('align-center')};
-  font-size: 18px;
-  font-weight: 500;
-  text-decoration: none;
-  color: ${theme('article.title')};
-
-  &:hover {
-    color: ${theme('article.digest')};
-    text-decoration: none;
-  }
-`
-export const GithubIcon = styled(GithubSVG)`
-  ${css.size(18)};
-  fill: ${theme('article.title')};
-  margin-right: 8px;
-`
 
 export const VS = styled.div`
   font-size: 50px;
   font-weight: 600;
-  font-style: italy;
   font-style: italic;
-  color: ${theme('article.digest')};
-  opacity: 0.15;
-  margin-top: 40px;
-  margin-bottom: 50px;
+  color: ${theme('divider')};
+  margin-top: 50px;
+  margin-bottom: 40px;
+  margin-left: -10px;
+  padding: 0 20px;
+  border-radius: 30px;
+  position: relative;
+  background: white;
 `
 const BottonNote = styled.div`
   ${css.flex('align-center')};
@@ -160,9 +204,10 @@ const BottonNote = styled.div`
 `
 
 export const YesNote = styled(BottonNote)`
+  margin-top: 60px;
   color: ${theme('baseColor.green')};
   &:before {
-    background: #d8ffca7a;
+    background: #d8ffca40;
   }
 `
 

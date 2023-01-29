@@ -15,8 +15,7 @@ export const Wrapper = styled.div<TWrapper>`
   position: relative;
   ${css.flexColumn()};
   width: 150px;
-  height: 150px;
-  height: ${({ longer }) => (longer ? '180px' : '140px')};
+  height: ${({ longer }) => (longer ? '165px' : '140px')};
   border: 1px solid;
   border-color: ${({ color }) => color || theme('divider')};
   border-radius: 6px;
@@ -91,7 +90,7 @@ export const Bar = styled.div<TBar>`
 export const Footer = styled.div`
   ${css.flex('align-both')};
 `
-type TLeftDot = { bg: string }
+type TLeftDot = { bg?: string }
 export const LeftDot = styled.div<TLeftDot>`
   ${css.circle(6)};
   background: ${({ bg }) => bg || theme('article.digest')};

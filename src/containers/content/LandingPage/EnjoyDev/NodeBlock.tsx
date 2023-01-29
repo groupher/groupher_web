@@ -66,7 +66,13 @@ const NodeBlock: FC<TProps> = ({ cat = ARTICLE_CAT.ALL, index = -1 }) => {
   const colors = getNodeBlockColors(cat)
 
   return (
-    <Wrapper color={colors.barBg} longer={cat === ARTICLE_CAT.ALL}>
+    <Wrapper color={colors.border} longer={cat === ARTICLE_CAT.ALL}>
+      {cat === ARTICLE_CAT.ALL && index === 0 && (
+        <LeftInfo bottom="51px">
+          <LeftDot bg="#888888" />
+        </LeftInfo>
+      )}
+
       {cat === ARTICLE_CAT.ALL && index === 1 && (
         <LeftInfo bottom="63px">
           <LeftDot bg="#B36BAA" />
@@ -90,7 +96,7 @@ const NodeBlock: FC<TProps> = ({ cat = ARTICLE_CAT.ALL, index = -1 }) => {
 
       {cat === ARTICLE_CAT.ALL && index === 2 && (
         <LeftInfo bottom="63px">
-          <LeftDot bg="#DF796B" />
+          <LeftDot bg="#C98B25" />
           <LeftText>已解决</LeftText>
         </LeftInfo>
       )}
@@ -104,7 +110,7 @@ const NodeBlock: FC<TProps> = ({ cat = ARTICLE_CAT.ALL, index = -1 }) => {
 
       {cat === ARTICLE_CAT.ALL && index === 2 && (
         <LeftInfo bottom="25px">
-          <LeftDot bg="#C98B25" />
+          <LeftDot bg="#DF796B" />
           <LeftText>重复问题</LeftText>
         </LeftInfo>
       )}
@@ -123,7 +129,6 @@ const NodeBlock: FC<TProps> = ({ cat = ARTICLE_CAT.ALL, index = -1 }) => {
             <Bar bg={colors.barBg} short />
             <Bar bg={colors.barBg} />
 
-            <Bar bg={colors.barBg} short />
             <Bar bg={colors.barBg} short />
             <Bar bg={colors.barBg} short />
           </>
