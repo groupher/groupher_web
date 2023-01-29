@@ -48,7 +48,7 @@ const METRIC = {
 
   [ARTICLE_CAT.BUG]: {
     title: 'Bug',
-    upvoteText: '同样问题',
+    upvoteText: '同样遇到',
     upvoteNum: 9,
   },
 

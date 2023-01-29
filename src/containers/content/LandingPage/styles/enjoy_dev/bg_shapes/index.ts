@@ -24,7 +24,7 @@ export const Wrapper = styled.div`
 export const CurveLine1 = styled(CurveLine1SVG)`
   ${css.size(300)};
   position: absolute;
-  top: 64px;
+  top: 65px;
   left: 184px;
   transform: scaleY(1.05) rotate(1deg);
   z-index: -1;
@@ -35,7 +35,7 @@ export const CurveLine2 = styled(CurveLine2SVG)`
   ${css.size(300)};
   position: absolute;
   top: 73px;
-  left: 565px;
+  left: 567px;
   transform: scaleY(0.92) rotate(1deg);
   z-index: -1;
   filter: drop-shadow(2px 4px 6px lightgrey);

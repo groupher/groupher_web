@@ -107,13 +107,15 @@ export const SeedIcon = styled(SeedSVG)<TPos>`
   ${css.size(16)};
   fill: ${theme('article.digest')};
   opacity: 0.3;
+  z-index: 1;
 
   position: absolute;
   left: ${({ left }) => left};
   top: ${({ top }) => top};
 
   &:hover {
-    fill: ${theme('baseColor.green')};
+    fill: yellowgreen;
+    opacity: 1;
     transform: scale(1.8);
   }
 
