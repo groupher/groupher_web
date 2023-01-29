@@ -21,7 +21,7 @@ const Footer = (props) => {
 
   return (
     <>
-      <Waypoint onEnter={() => setInView(true)} />
+      <Waypoint onEnter={() => setInView(true)} topOffset="500px" />
       {inView && <DesktopView {...props} />}
     </>
   )
