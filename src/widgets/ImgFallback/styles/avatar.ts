@@ -29,6 +29,6 @@ export const Wrapper = styled.div.attrs(({ testid }: TWrapper) => ({
   border-color: ${({ quote }) => (quote ? theme('avatar.quote') : 'none')};
 `
 export const Name = styled.div<{ size: number }>`
-  font-family: 'Audiowide', cursive;
+  color: ${theme('article.digest')};
   font-size: ${({ size }) => getFontSize(size)};
 `

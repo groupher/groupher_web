@@ -1,9 +1,13 @@
 import styled from 'styled-components'
 
+import type { TAvatarLayout } from '@/spec'
+import { AVATAR_LAYOUT } from '@/constant/layout'
+
 import css, { theme } from '@/utils/css'
 import { pixelAdd } from '@/utils/dom'
 
-import { Wrapper as BaseWrapper, AvatarsMore } from './index'
+import type { TAvatarSize } from '../spec'
+import { Wrapper as BaseWrapper } from '.'
 import { getAvatarSize } from './metric'
 
 const BaseAvatarItem = styled.li<{ size: string }>`
@@ -20,19 +24,23 @@ const BaseAvatarItem = styled.li<{ size: string }>`
 export const Wrapper = styled(BaseAvatarItem)`
   ${css.media.mobile`display: none`};
 `
-export const TextMore = styled(AvatarsMore)`
-  font-size: 20px;
-  padding-left: 4px;
-
-  ${({ size }) => css.circle(pixelAdd(getAvatarSize(size) as string, -2))};
+type TTextMore = { size: TAvatarSize; total: number; avatarLayout: TAvatarLayout }
+export const TextMore = styled.div<TTextMore>`
+  font-size: 17px;
+  ${({ size }) => css.size(pixelAdd(getAvatarSize(size) as string, -3))};
   ${css.flex('align-both')};
-  margin-left: 1px;
+
+  background-color: ${theme('hoverBg')};
+  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '5px' : '100%')};
+  padding-left: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '7px' : '5px')};
 `
 export const DotText = styled.div`
-  color: ${theme('article.title')};
-  margin-top: -10px;
+  color: ${theme('article.digest')};
   letter-spacing: -1px;
   padding-right: 2px;
+  line-height: 20px;
+  margin-top: -8px;
+  opacity: 0.5;
 `
 export const StateInfoWrapper = styled.div`
   width: 95px;
