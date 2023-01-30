@@ -38,20 +38,20 @@ const Footer: FC<TProps> = ({ article, avatarLayout }) => {
         <ArticleCatState left={18} cat={article.category} state={article.state} />
       ) : (
         <Fragment>
-          {article.id === '239' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} left={18} />}
-          {article.id === '231' && <ArticleCatState cat={ARTICLE_CAT.BUG} left={18} />}
-          {article.id === '227' && <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" left={18} />}
+          {article.id === '239' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} left={14} />}
+          {article.id === '231' && <ArticleCatState cat={ARTICLE_CAT.BUG} left={14} />}
+          {article.id === '227' && <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" left={14} />}
           {article.id === '228' && (
-            <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" left={18} />
+            <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" left={14} />
           )}
           {article.id === '226' && (
-            <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" left={18} />
+            <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" left={14} />
           )}
           {article.id === '225' && (
             <ArticleCatState
               cat={ARTICLE_CAT.FEATURE}
               state={ARTICLE_STATE.REJECT_DUP}
-              left={18}
+              left={14}
               top={1}
             />
           )}

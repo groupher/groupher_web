@@ -5,60 +5,21 @@ import { FC } from 'react'
 
 import type { TProps as TAvatarsProps } from './index'
 
-import RealNumber from './RealNumber'
+// import RealNumber from './RealNumber'
 
-import {
-  Wrapper,
-  TextMore,
-  DotText,
-  // StateInfoWrapper,
-  // TotalCommentStateHint,
-  // Focus,
-} from './styles/more_item'
+import { Wrapper, TextMore, DotText } from './styles/more_item'
 
 type TProps = Pick<
   TAvatarsProps,
-  'size' | 'total' | 'showTotalNumber' | 'onTotalSelect'
+  'size' | 'total' | 'showTotalNumber' | 'onTotalSelect' | 'avatarLayout'
 >
 
-const MoreItem: FC<TProps> = ({
-  size,
-  total,
-  onTotalSelect,
-  showTotalNumber,
-}) => {
+const MoreItem: FC<TProps> = ({ size, total, onTotalSelect, showTotalNumber, avatarLayout }) => {
   return (
     <Wrapper size={size} onClick={() => onTotalSelect()}>
-      {!showTotalNumber ? (
-        <TextMore size={size} total={total}>
-          <DotText>..</DotText>
-        </TextMore>
-      ) : (
-        <RealNumber total={total} size={size} />
-      )}
-
-      {/* <Tooltip
-        content={
-          showTotalNumber ? (
-            '更多'
-          ) : (
-            <StateInfoWrapper>
-              <TotalCommentStateHint>
-                讨论: <Focus>{total}</Focus>
-              </TotalCommentStateHint>
-              <Br top={5} />
-              <TotalCommentStateHint>
-                参与者: <Focus>{total}</Focus>
-              </TotalCommentStateHint>
-            </StateInfoWrapper>
-          )
-        }
-        delay={500}
-        placement="bottom-end"
-        noPadding
-      >
-        <div>...</div>
-      </Tooltip> */}
+      <TextMore size={size} total={total} avatarLayout={avatarLayout}>
+        <DotText>..</DotText>
+      </TextMore>
     </Wrapper>
   )
 }

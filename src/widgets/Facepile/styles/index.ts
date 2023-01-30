@@ -1,9 +1,8 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css from '@/utils/css'
 
-import { getAvatarSize, getUlMarginRight } from './metric'
-import type { TAvatarSize } from '../spec'
+import { getUlMarginRight } from './metric'
 
 export { AvatarFallback } from './real_avatar'
 
@@ -20,21 +19,4 @@ export const AvatarsWrapper = styled.div`
 `
 export const TotalOneOffset = styled.span`
   margin-right: 10px;
-`
-type TAvatarsMore = { size: TAvatarSize; total: number }
-export const AvatarsMore = styled.span<TAvatarsMore>`
-  ${({ size }) => css.circle(getAvatarSize(size))};
-  ${css.flex('align-both')};
-  font-size: 14px;
-  border-color: ${theme('textBadge')};
-  color: ${theme('article.title')};
-  background-color: ${theme('textBadge')};
-  font-family: sans-serif;
-  font-weight: ${({ total }) => (total >= 1000 ? 600 : 200)};
-
-  padding-left: ${({ total }) => (total >= 1000 ? '5px' : '3px')};
-
-  &:hover {
-    cursor: pointer;
-  }
 `

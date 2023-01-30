@@ -3,11 +3,10 @@ import styled from 'styled-components'
 import { theme } from '@/utils/css'
 import { pixelAdd } from '@/utils/dom'
 
-import { AvatarsMore } from './index'
 import { getAvatarSize, getMoreTextWidth } from './metric'
 
 type TWrapper = { size: string; total: number }
-export const Wrapper = styled(AvatarsMore)<TWrapper>`
+export const Wrapper = styled.div<TWrapper>`
   background-color: ${theme('textBadge')};
   color: ${theme('article.title')};
   height: ${({ size }) => pixelAdd(getAvatarSize(size) as string, -2)};

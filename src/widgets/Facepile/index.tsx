@@ -107,6 +107,7 @@ const Facepile: FC<TProps> = ({
           total={totalCount}
           showTotalNumber={showTotalNumber}
           onTotalSelect={onTotalSelect}
+          avatarLayout={avatarLayout}
         />
       )}
 
