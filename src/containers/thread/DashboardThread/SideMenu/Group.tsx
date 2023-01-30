@@ -10,6 +10,7 @@ import {
   Title,
   MenuWrapper,
   TouchedDot,
+  IconWrapper,
 } from '../styles/side_menu/group'
 
 type TProps = {
@@ -24,7 +25,7 @@ const Group: FC<TProps> = ({ group, curTab, touched }) => {
   return (
     <Fragment key={group.title}>
       <Folder onClick={() => setFold(!fold)}>
-        {group.icon}
+        <IconWrapper>{group.icon}</IconWrapper>
         <Title>{group.title}</Title>
         <FoldArrowIcon fold={fold} />
       </Folder>

@@ -29,7 +29,7 @@ const BasicIcon = styled(InfoSVG)`
   opacity: 0.8;
 `
 const PulseIcon = styled(PulseSVG)`
-  ${css.size(15)};
+  ${css.size(14)};
   fill: ${theme('article.digest')};
   opacity: 0.8;
 `

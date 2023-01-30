@@ -9,6 +9,7 @@ import {
   ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
   DASHBOARD_BASEINFO_ROUTE,
+  DASHBOARD_BROADCAST_ROUTE,
   DASHBOARD_SEO_ROUTE,
 } from '@/constant/route'
 
@@ -45,6 +46,7 @@ const DashboardThread = T.model('DashboardThread', {
   baseInfoTab: T.opt(T.enum(values(DASHBOARD_BASEINFO_ROUTE)), DASHBOARD_BASEINFO_ROUTE.BASIC),
   seoTab: T.opt(T.enum(values(DASHBOARD_SEO_ROUTE)), DASHBOARD_SEO_ROUTE.SEARCH_ENGINE),
   layoutTab: T.opt(T.enum(values(DASHBOARD_LAYOUT_ROUTE)), DASHBOARD_LAYOUT_ROUTE.GLOBAL),
+  broadcastTab: T.opt(T.enum(values(DASHBOARD_BROADCAST_ROUTE)), DASHBOARD_BROADCAST_ROUTE.GLOBAL),
   editingTag: T.maybeNull(Tag),
   settingTag: T.maybeNull(Tag),
   editingAlias: T.maybeNull(Alias),
@@ -315,10 +317,10 @@ const DashboardThread = T.model('DashboardThread', {
     get broadcastSettings(): TBroadcastSettings {
       const slf = self as TStore
 
-      return {
-        saving: slf.saving,
-        ...pick(['broadcastLayout', 'broadcastBg', 'broadcastEnable'], slf),
-      }
+      return pick(
+        ['saving', 'broadcastTab', 'broadcastLayout', 'broadcastBg', 'broadcastEnable'],
+        slf,
+      )
     },
 
     get widgetsSettings(): TWidgetsSettings {

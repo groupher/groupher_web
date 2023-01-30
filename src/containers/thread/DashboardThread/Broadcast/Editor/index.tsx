@@ -1,44 +1,23 @@
 import { FC } from 'react'
 
-import ColorSelector from '@/widgets/ColorSelector'
+import type { TDashboardBroadcastRoute } from '@/spec'
+import { DASHBOARD_BROADCAST_ROUTE } from '@/constant/route'
+
+import GlobalEditor from './Global'
+import ArticleEditor from './Article'
 
 import type { TBroadcastSettings } from '../../spec'
-import { Wrapper, Item, Label, BgLabel, TheColor, Inputer } from '../../styles/broadcast/editor'
-import { edit } from '../../logic'
 
 type TProps = {
   settings: TBroadcastSettings
+  tab: TDashboardBroadcastRoute
 }
 
-const Editor: FC<TProps> = ({ settings }) => {
-  const { broadcastBg } = settings
-
-  return (
-    <Wrapper>
-      <Item>
-        <Label>背景色</Label>
-        <BgLabel bg={broadcastBg}>
-          <ColorSelector
-            activeColor={broadcastBg}
-            onChange={(color) => edit(color, 'broadcastBg')}
-            placement="right"
-            offset={[-1, 15]}
-          >
-            <TheColor color={broadcastBg} />
-          </ColorSelector>
-        </BgLabel>
-      </Item>
-
-      <Item>
-        <Label>广播内容</Label>
-        <Inputer />
-      </Item>
-
-      <Item>
-        <Label>链接地址</Label>
-        <Inputer />
-      </Item>
-    </Wrapper>
+const Editor: FC<TProps> = ({ settings, tab }) => {
+  return tab === DASHBOARD_BROADCAST_ROUTE.GLOBAL ? (
+    <GlobalEditor settings={settings} />
+  ) : (
+    <ArticleEditor settings={settings} />
   )
 }
 

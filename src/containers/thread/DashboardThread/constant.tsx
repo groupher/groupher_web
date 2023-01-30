@@ -2,6 +2,7 @@ import type { TSnakeUpperCase } from '@/spec'
 import {
   DASHBOARD_ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
+  DASHBOARD_BROADCAST_ROUTE,
   DASHBOARD_BASEINFO_ROUTE,
   DASHBOARD_SEO_ROUTE,
 } from '@/constant/route'
@@ -103,7 +104,7 @@ export const MENU = {
         raw: DASHBOARD_ROUTE.HELP,
       },
       {
-        title: '横幅广播',
+        title: '广播',
         raw: DASHBOARD_ROUTE.BROADCAST,
       },
       {
@@ -241,6 +242,17 @@ export const LAYOUT_TABS = [
   {
     title: '关于',
     raw: DASHBOARD_LAYOUT_ROUTE.ABOUT,
+  },
+]
+
+export const BROADCAST_TABS = [
+  {
+    title: '站顶横幅',
+    raw: DASHBOARD_BROADCAST_ROUTE.GLOBAL,
+  },
+  {
+    title: '文章页面',
+    raw: DASHBOARD_BROADCAST_ROUTE.ARTICLE,
   },
 ]
 

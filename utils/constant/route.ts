@@ -2,6 +2,7 @@ import type {
   TDashboardPath,
   TNonCommunityPath,
   TDashboardLayoutRoute,
+  TDashboardBroadcastRoute,
   TDashboardBaseInfoRoute,
   TDashboardSEORoute,
 } from '@/spec'
@@ -56,6 +57,11 @@ export const DASHBOARD_LAYOUT_ROUTE = {
   HELP: 'help',
   ABOUT: 'about',
 } as Record<Uppercase<TDashboardLayoutRoute>, TDashboardLayoutRoute>
+
+export const DASHBOARD_BROADCAST_ROUTE = {
+  GLOBAL: 'global',
+  ARTICLE: 'article',
+} as Record<Uppercase<TDashboardBroadcastRoute>, TDashboardBroadcastRoute>
 
 export const ROUTE = {
   // NOTE: the lower-case is MUST
