@@ -32,12 +32,13 @@ export type TProps = {
   count?: number
   size?: TSize
   active?: boolean
+  color?: string
 }
 
-const Count: FC<TProps> = ({ count = 0, size = SIZE.SMALL, active = false }) => {
+const Count: FC<TProps> = ({ count = 0, size = SIZE.SMALL, active = false, color = '' }) => {
   return (
     <Wrapper $active={active} count={count}>
-      <AnimatedCount count={count} size={size} active={active} />
+      <AnimatedCount count={count} size={size} active={active} color={color} />
     </Wrapper>
     // <LoadingValueContext.Provider value={{ count, size, active }}>
     //   <AnimatedCount count={count} size={size} active={active} />

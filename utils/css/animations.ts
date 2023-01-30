@@ -1,5 +1,48 @@
 import { keyframes } from 'styled-components'
 
+// see https://stackoverflow.com/a/65859463/4050784
+const blinker = keyframes`
+  0% {
+    opacity: 0.5;
+  }
+  19% {
+    opacity: 0.5;
+  }
+  20% {
+    opacity: 1;
+  }
+  21% {
+    opacity: 1;
+  }
+  22% {
+    opacity: 0.5;
+  }
+  23% {
+    opacity: 0.5;
+  }
+  36% {
+    opacity: 0.4;
+  }
+  40% {
+    opacity: 1;
+  }
+  41% {
+    opacity: 0;
+  }
+  42% {
+    opacity: 1;
+  }
+  43% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+`
+
 const animatedBg = keyframes`
   from {
     background-position: 0 0;
@@ -134,6 +177,7 @@ const animate = {
   blink,
   jump,
   animatedBg,
+  blinker,
 }
 
 export default animate

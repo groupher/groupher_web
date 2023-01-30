@@ -29,6 +29,8 @@ export const CurveLine1 = styled(CurveLine1SVG)`
   transform: scaleY(1.05) rotate(1deg);
   z-index: -1;
   filter: drop-shadow(2px 4px 6px lightgrey);
+
+  animation: ${animate.blinker} 4s linear infinite alternate;
 `
 
 export const CurveLine2 = styled(CurveLine2SVG)`
@@ -39,6 +41,8 @@ export const CurveLine2 = styled(CurveLine2SVG)`
   transform: scaleY(0.92) rotate(1deg);
   z-index: -1;
   filter: drop-shadow(2px 4px 6px lightgrey);
+
+  animation: ${animate.blinker} 3s cubic-bezier(0.17, 0.67, 0.91, 0.27) infinite alternate;
 `
 
 export const CurveLine3 = styled(CurveLine3SVG)`
@@ -49,6 +53,9 @@ export const CurveLine3 = styled(CurveLine3SVG)`
   transform: scaleY(1.42) rotate(1deg);
   z-index: -1;
   filter: drop-shadow(2px 4px 6px lightgrey);
+
+  animation: ${animate.blinker} 2s cubic-bezier(0.53, 0.24, 0.91, 0.27) infinite alternate;
+  animation-delay: 2s;
 `
 export const CurveLine4 = styled(CurveLine4SVG)`
   ${css.size(300)};
@@ -58,6 +65,8 @@ export const CurveLine4 = styled(CurveLine4SVG)`
   transform: scaleY(1.3) rotate(1deg);
   z-index: -1;
   filter: drop-shadow(2px 4px 6px lightgrey);
+
+  animation: ${animate.blinker} 3s cubic-bezier(0.09, 0.74, 0.36, 1.05) infinite alternate;
 `
 
 export const ShapeCross1Icon = styled(ShapeCross2SVG)`

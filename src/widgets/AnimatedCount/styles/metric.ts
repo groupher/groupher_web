@@ -30,11 +30,3 @@ export const getFlipNumOffset = (size: TSize): number => {
     }
   }
 }
-
-export const getCountColor = ($active: boolean, count: number): string => {
-  if ($active) return '#139C9E'
-  if (count === 0) return theme('article.digest')
-  if (count >= 5) return theme('article.info')
-
-  return theme('article.info')
-}

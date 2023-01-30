@@ -10,7 +10,12 @@ import type { TProps } from './index'
 import { Wrapper } from './styles'
 import { getFontSize, getFlipNumOffset } from './styles/metric'
 
-const AnimatedCount: FC<TProps> = ({ count = 0, size = SIZE.SMALL, active = false }) => {
+const AnimatedCount: FC<TProps> = ({
+  count = 0,
+  size = SIZE.SMALL,
+  active = false,
+  color = '',
+}) => {
   const numSize = getFontSize(size)
   const offset = getFlipNumOffset(size)
   const theme = useTheme() as TThemeMap
@@ -20,7 +25,7 @@ const AnimatedCount: FC<TProps> = ({ count = 0, size = SIZE.SMALL, active = fals
       <FlipNumbers
         height={numSize}
         width={numSize - offset}
-        color={theme.article.info}
+        color={color || theme.article.info}
         perspective={400}
         duration={0.8}
         numbers={String(count)}
