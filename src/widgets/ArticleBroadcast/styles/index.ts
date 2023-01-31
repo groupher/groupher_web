@@ -79,26 +79,26 @@ export const Desc = styled.div`
   ${css.lineClamp(2)};
   margin-top: 10px;
 `
-export const LinkButton = styled(Button)`
+export const LinkButton = styled(Button)<{ color: TColorName }>`
   border-radius: 6px;
   background: ${theme('alphaBg')};
   border: none;
 
   &:hover {
     background: ${theme('alphaBg2')};
-    color: ${theme('baseColor.red')};
+    color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
   }
 
   box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
 `
-export const LinkText = styled.div`
-  color: ${theme('baseColor.red')};
+export const LinkText = styled.div<{ color: TColorName }>`
+  color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
   opacity: 0.8;
 `
-export const ArrowIcon = styled(ArrowSVG)`
+export const ArrowIcon = styled(ArrowSVG)<{ color: TColorName }>`
   ${css.size(14)};
   transform: rotate(180deg);
   margin-left: 2px;
   margin-right: -5px;
-  fill: ${theme('baseColor.red')};
+  fill: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
 `

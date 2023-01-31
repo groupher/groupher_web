@@ -41,8 +41,6 @@ const ArticleViewerContainer: FC<TProps> = ({
   const { viewingArticle, documentData, loading, broadcastConfig } = store
   const article = Object.assign(viewingArticle, { document: documentData })
 
-  console.log('## broadcastConfig: ', broadcastConfig)
-
   return (
     <Wrapper testid={testid}>
       {/* @ts-ignore */}

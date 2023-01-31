@@ -48,8 +48,8 @@ const ArticleBroadcast: FC<TProps> = ({
         <Desc>由社区管理员设置，在每篇帖子下面显示，后期可提供更详细的显示设置,</Desc>
       </Content>
       <SpaceGrow />
-      <LinkButton size="small" space={18}>
-        <LinkText>详情</LinkText> <ArrowIcon />
+      <LinkButton size="small" space={18} color={color}>
+        <LinkText color={color}>详情</LinkText> <ArrowIcon color={color} />
       </LinkButton>
     </Wrapper>
   )
