@@ -26,7 +26,3 @@ export const InnerWrapper = styled.div`
   margin-left: -20px;
   ${css.flexColumn('align-start')};
 `
-export const EnableDesc = styled.div`
-  width: 80%;
-  line-height: 1.65;
-`

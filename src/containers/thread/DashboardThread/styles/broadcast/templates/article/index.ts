@@ -12,19 +12,14 @@ export const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   gap: 15px;
+  padding-top: 40px;
   padding-bottom: 30px;
 
-  border-bottom: 1px solid transparent;
-  border-image: linear-gradient(
-    0.25turn,
-    transparent,
-    ${theme('divider')},
-    ${theme('divider')},
-    ${theme('divider')},
-    transparent
-  );
+  border-top: 1px solid;
+  border-top-color: ${theme('divider')};
 
-  border-image-slice: 1;
+  border-bottom: 1px solid;
+  border-bottom-color: ${theme('divider')};
 `
 export const TemplateBlock = styled.div<TActive>`
   width: 100%;

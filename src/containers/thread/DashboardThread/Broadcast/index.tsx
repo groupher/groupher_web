@@ -5,20 +5,15 @@ import { DASHBOARD_BROADCAST_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
 
 import Tabs from '@/widgets/Switcher/Tabs'
-import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
 
 import type { TBroadcastSettings, TTouched } from '../spec'
 import { BROADCAST_TABS } from '../constant'
 
 import Portal from '../Portal'
-import SectionLabel from '../SectionLabel'
-import SavingBar from '../SavingBar'
-
-import Templates from './Templates'
 import Editor from './Editor'
 
-import { Wrapper, Banner, TabsWrapper, InnerWrapper, EnableDesc } from '../styles/broadcast'
-import { edit, broadcastOnSave, broadcastOnCancel, broadcastToggle } from '../logic'
+import { Wrapper, Banner, TabsWrapper, InnerWrapper } from '../styles/broadcast'
+import { edit } from '../logic'
 
 type TProps = {
   settings: TBroadcastSettings
@@ -26,7 +21,7 @@ type TProps = {
 }
 
 const Broadcast: FC<TProps> = ({ settings, touched }) => {
-  const { saving, broadcastEnable, broadcastTab } = settings
+  const { broadcastTab } = settings
 
   return (
     <Wrapper>
@@ -54,24 +49,7 @@ const Broadcast: FC<TProps> = ({ settings, touched }) => {
       </Banner>
 
       <InnerWrapper>
-        <Templates settings={settings} />
-        <br />
-        <SectionLabel
-          title="开启横幅广播"
-          desc={<EnableDesc>开启后，本社区内的所有页面顶部将展示广播信息</EnableDesc>}
-          addon={<ToggleSwitch checked={broadcastEnable} onChange={broadcastToggle} />}
-        />
-        <br />
-
-        <Editor settings={settings} tab={broadcastTab} />
-
-        <SavingBar
-          isTouched={touched.broadcast}
-          onCancel={broadcastOnCancel}
-          onConfirm={broadcastOnSave}
-          loading={saving}
-          top={50}
-        />
+        <Editor settings={settings} touched={touched} />
       </InnerWrapper>
     </Wrapper>
   )

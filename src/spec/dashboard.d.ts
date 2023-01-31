@@ -12,11 +12,17 @@ export type THelpLayout = 'article' | 'faq_flat' | 'faq_collapse'
 export type TFooterLayout = 'simple' | 'full'
 
 export type TBroadcastLayout = 'default' | 'center'
+export type TBroadcastArticleLayout = 'default' | 'simple'
 
 export type TBroadcastConfig = {
+  // banner
   broadcastLayout: TBroadcastLayout
   broadcastBg: TColorName
   broadcastEnable: boolean
+  // article
+  broadcastArticleBg: TColorName
+  broadcastArticleLayout: TBroadcastArticleLayout
+  broadcastArticleEnable: boolean
 }
 
 export type TGlobalLayout = {
@@ -33,6 +39,10 @@ export type TGlobalLayout = {
   broadcast: TBroadcastLayout
   broadcastBg: TColorName
   broadcastEnable: boolean
+
+  broadcastArticle: TBroadcastArticleLayout
+  broadcastArticleBg: TColorName
+  broadcastArticleEnable: boolean
 
   topbar: TTopbarLayout
   topbarBg: TColorName

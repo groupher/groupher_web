@@ -6,6 +6,7 @@ import type {
   TBannerLayout,
   TTopbarLayout,
   TBroadcastLayout,
+  TBroadcastArticleLayout,
   TPostLayout,
   TKanbanLayout,
   TChangelogLayout,
@@ -52,6 +53,11 @@ export const BROADCAST_LAYOUT = {
   DEFAULT: 'default',
   CENTER: 'center',
 } as Record<TSnakeUpperCase<TBroadcastLayout>, TBroadcastLayout>
+
+export const BROADCAST_ARTICLE_LAYOUT = {
+  DEFAULT: 'default',
+  SIMPLE: 'simple',
+} as Record<TSnakeUpperCase<TBroadcastArticleLayout>, TBroadcastArticleLayout>
 
 export const POST_LAYOUT = {
   UPVOTE_FIRST: 'upvote_first',

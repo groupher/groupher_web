@@ -39,3 +39,7 @@ export const Inputer = styled(Input)`
   width: 100%;
   background: transparent;
 `
+export const EnableDesc = styled.div`
+  width: 80%;
+  line-height: 1.65;
+`

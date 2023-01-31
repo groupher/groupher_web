@@ -3,7 +3,7 @@ import { FC } from 'react'
 import { BROADCAST_LAYOUT } from '@/constant/layout'
 import { Space, SpaceGrow } from '@/widgets/Common'
 
-import type { TBroadcastSettings } from '../../spec'
+import type { TBroadcastSettings } from '../../../spec'
 
 import {
   Wrapper,
@@ -14,8 +14,8 @@ import {
   NotifyIcon,
   CrossIcon,
   ArrowIcon,
-} from '../../styles/broadcast/templates/default'
-import { edit } from '../../logic'
+} from '../../../styles/broadcast/templates/global/default'
+import { edit } from '../../../logic'
 
 type TProps = {
   settings: TBroadcastSettings

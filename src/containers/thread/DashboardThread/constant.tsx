@@ -23,7 +23,9 @@ export const SETTING_FIELD = {
   TOPBAR_LAYOUT: 'topbarLayout',
   TOPBAR_BG: 'topbarBg',
   BROADCAST_LAYOUT: 'broadcastLayout',
+  BROADCAST_ARTICLE_LAYOUT: 'broadcastArticleLayout',
   BROADCAST_BG: 'broadcastBg',
+  BROADCAST_ARTICLE_BG: 'broadcastArticleBg',
   CHANGELOG_LAYOUT: 'changelogLayout',
   TAG: 'tag',
   ALIAS: 'alias',
@@ -251,7 +253,7 @@ export const BROADCAST_TABS = [
     raw: DASHBOARD_BROADCAST_ROUTE.GLOBAL,
   },
   {
-    title: '文章页面',
+    title: '帖子页脚',
     raw: DASHBOARD_BROADCAST_ROUTE.ARTICLE,
   },
 ]

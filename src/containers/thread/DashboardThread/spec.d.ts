@@ -159,6 +159,7 @@ export type TTouched = {
   ui: boolean
   widgets: boolean
   broadcast: boolean
+  broadcastArticle: boolean
 }
 
 export type TSettingField =
@@ -178,6 +179,9 @@ export type TSettingField =
   | 'broadcastLayout'
   | 'broadcastBg'
   | 'broadcastEnable'
+  | 'broadcastArticleLayout'
+  | 'broadcastArticleBg'
+  | 'broadcastArticleEnable'
   | 'changelogLayout'
   | 'tag'
   | 'alias'

@@ -66,7 +66,7 @@ export const CurveLine4 = styled(CurveLine4SVG)`
   z-index: -1;
   filter: drop-shadow(2px 4px 6px lightgrey);
 
-  animation: ${animate.blinker} 3s cubic-bezier(0.09, 0.74, 0.36, 1.05) infinite alternate;
+  animation: ${animate.blinker} 1s cubic-bezier(0.09, 0.74, 0.36, 1.05) infinite alternate;
 `
 
 export const ShapeCross1Icon = styled(ShapeCross2SVG)`

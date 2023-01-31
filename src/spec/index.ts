@@ -97,6 +97,7 @@ export type {
   TGlobalLayout,
   TBroadcastConfig,
   TBroadcastLayout,
+  TBroadcastArticleLayout,
 } from './dashboard'
 
 export type {

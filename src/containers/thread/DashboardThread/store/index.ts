@@ -73,6 +73,10 @@ const DashboardThread = T.model('DashboardThread', {
         broadcastBg,
         broadcastEnable,
 
+        broadcastArticleLayout,
+        broadcastArticleBg,
+        broadcastArticleEnable,
+
         brandLayout,
         avatarLayout,
       } = initSettings
@@ -93,6 +97,10 @@ const DashboardThread = T.model('DashboardThread', {
         broadcast: broadcastLayout,
         broadcastBg,
         broadcastEnable,
+
+        broadcastArticle: broadcastArticleLayout,
+        broadcastArticleBg,
+        broadcastArticleEnable,
       }
     },
     get curCommunity(): TCommunity {
@@ -121,6 +129,9 @@ const DashboardThread = T.model('DashboardThread', {
 
       const broadcastLayoutTouched = _isChanged('broadcastLayout')
       const broadcastBgTouched = _isChanged('broadcastBg')
+
+      const broadcastArticleLayoutTouched = _isChanged('broadcastArticleLayout')
+      const broadcastArticleBgTouched = _isChanged('broadcastArticleBg')
 
       const topbarLayoutTouched = _isChanged('topbarLayout')
       const topbarBgTouched = _isChanged('topbarBg')
@@ -182,7 +193,12 @@ const DashboardThread = T.model('DashboardThread', {
           footerLayoutTouched,
 
         widgets: widgetsPrimaryColorTouched || widgetsThreadsTouched || widgetsSizeTouched,
-        broadcast: broadcastLayoutTouched || broadcastBgTouched,
+        broadcast:
+          broadcastLayoutTouched ||
+          broadcastBgTouched ||
+          broadcastArticleLayoutTouched ||
+          broadcastArticleBgTouched,
+        broadcastArticle: broadcastArticleLayoutTouched || broadcastArticleBgTouched,
       }
     },
 
@@ -318,7 +334,16 @@ const DashboardThread = T.model('DashboardThread', {
       const slf = self as TStore
 
       return pick(
-        ['saving', 'broadcastTab', 'broadcastLayout', 'broadcastBg', 'broadcastEnable'],
+        [
+          'saving',
+          'broadcastTab',
+          'broadcastLayout',
+          'broadcastBg',
+          'broadcastEnable',
+          'broadcastArticleLayout',
+          'broadcastArticleBg',
+          'broadcastArticleEnable',
+        ],
         slf,
       )
     },
