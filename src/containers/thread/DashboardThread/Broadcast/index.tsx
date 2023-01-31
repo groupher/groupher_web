@@ -1,17 +1,19 @@
 import { FC } from 'react'
+import Router from 'next/router'
+
+import { DASHBOARD_BROADCAST_ROUTE } from '@/constant/route'
+import VIEW from '@/constant/view'
+
+import Tabs from '@/widgets/Switcher/Tabs'
 
 import type { TBroadcastSettings, TTouched } from '../spec'
+import { BROADCAST_TABS } from '../constant'
 
-import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
-
-import SectionLabel from '../SectionLabel'
-import SavingBar from '../SavingBar'
-
-import Templates from './Templates'
+import Portal from '../Portal'
 import Editor from './Editor'
 
-import { Wrapper, InnerWrapper, EnableDesc } from '../styles/broadcast'
-import { broadcastOnSave, broadcastOnCancel, broadcastToggle } from '../logic'
+import { Wrapper, Banner, TabsWrapper, InnerWrapper } from '../styles/broadcast'
+import { edit } from '../logic'
 
 type TProps = {
   settings: TBroadcastSettings
@@ -19,28 +21,35 @@ type TProps = {
 }
 
 const Broadcast: FC<TProps> = ({ settings, touched }) => {
-  const { saving, broadcastEnable } = settings
+  const { broadcastTab } = settings
 
   return (
     <Wrapper>
-      <InnerWrapper>
-        <Templates settings={settings} />
-        <br />
-        <SectionLabel
-          title="开启横幅广播"
-          desc={<EnableDesc>开启后，本社区内的所有页面顶部将展示广播信息</EnableDesc>}
-          addon={<ToggleSwitch checked={broadcastEnable} onChange={broadcastToggle} />}
-        />
-        <br />
-        <Editor settings={settings} />
+      <Banner>
+        <Portal title="布局/样式" desc="社区板块自定义布局与全局样式。" withDivider={false} />
 
-        <SavingBar
-          isTouched={touched.broadcast}
-          onCancel={broadcastOnCancel}
-          onConfirm={broadcastOnSave}
-          loading={saving}
-          top={50}
-        />
+        <TabsWrapper>
+          <Tabs
+            items={BROADCAST_TABS}
+            activeKey={broadcastTab}
+            bottomSpace={4}
+            onChange={(tab) => {
+              edit(tab, 'broadcastTab')
+              const targetPath =
+                tab === DASHBOARD_BROADCAST_ROUTE.GLOBAL
+                  ? '/home/dashboard/broadcast'
+                  : `/home/dashboard/broadcast/${tab}`
+
+              Router.push(targetPath)
+            }}
+            view={VIEW.DESKTOP}
+            noAnimation
+          />
+        </TabsWrapper>
+      </Banner>
+
+      <InnerWrapper>
+        <Editor settings={settings} touched={touched} />
       </InnerWrapper>
     </Wrapper>
   )

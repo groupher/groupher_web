@@ -13,7 +13,7 @@ export const Wrapper = styled.div<{ visible: boolean }>`
   padding-left: 80px;
   padding-right: 30px;
   height: 60px;
-  background: ${theme('alphaBg')};
+  background: ${theme('alphaBg2')};
   backdrop-filter: blur(10px);
   border-bottom: 1px solid transparent;
   border-image: linear-gradient(

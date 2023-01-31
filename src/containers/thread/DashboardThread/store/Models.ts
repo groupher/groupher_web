@@ -12,6 +12,7 @@ import {
   BANNER_LAYOUT,
   TOPBAR_LAYOUT,
   BROADCAST_LAYOUT,
+  BROADCAST_ARTICLE_LAYOUT,
   CHANGELOG_LAYOUT,
   HELP_LAYOUT,
   POST_LAYOUT,
@@ -88,6 +89,13 @@ export const settingsModalFields = {
   broadcastLayout: T.opt(T.enum(values(BROADCAST_LAYOUT)), BROADCAST_LAYOUT.DEFAULT),
   broadcastBg: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
   broadcastEnable: T.opt(T.bool, false),
+
+  broadcastArticleLayout: T.opt(
+    T.enum(values(BROADCAST_ARTICLE_LAYOUT)),
+    BROADCAST_ARTICLE_LAYOUT.DEFAULT,
+  ),
+  broadcastArticleBg: T.opt(T.enum(keys(COLORS)), COLOR_NAME.RED),
+  broadcastArticleEnable: T.opt(T.bool, true),
 
   changelogLayout: T.opt(T.enum(values(CHANGELOG_LAYOUT)), CHANGELOG_LAYOUT.PREVIEW),
 

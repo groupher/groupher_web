@@ -97,6 +97,7 @@ export type {
   TGlobalLayout,
   TBroadcastConfig,
   TBroadcastLayout,
+  TBroadcastArticleLayout,
 } from './dashboard'
 
 export type {
@@ -161,6 +162,7 @@ export type {
   TDashboardLayoutRoute,
   TDashboardBaseInfoRoute,
   TDashboardSEORoute,
+  TDashboardBroadcastRoute,
 } from './route'
 
 export type TRoute = {

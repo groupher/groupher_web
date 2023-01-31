@@ -10,6 +10,11 @@ export const Folder = styled.div`
   ${css.flex('align-center', 'justify-between')};
   cursor: pointer;
 `
+export const IconWrapper = styled.div`
+  ${css.size(18)};
+  ${css.flex('align-both')};
+  margin-left: -1px;
+`
 export const FoldArrowIcon = styled(ArrowSVG)<{ fold: boolean }>`
   ${css.size(15)};
   fill: ${theme('article.digest')};
@@ -22,11 +27,10 @@ export const FoldArrowIcon = styled(ArrowSVG)<{ fold: boolean }>`
 
   transition: all 0.2s;
 `
-
 export const Title = styled.div`
   color: ${theme('article.title')};
   font-size: 15px;
-  margin-left: 12px;
+  margin-left: 10px;
   font-weight: 500;
   flex-grow: 1;
 

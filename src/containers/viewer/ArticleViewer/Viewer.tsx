@@ -6,22 +6,23 @@
 
 import { FC, memo } from 'react'
 
-import type { TArticle } from '@/spec'
+import type { TArticle, TBroadcastConfig } from '@/spec'
 
 import PostViewer from './PostViewer'
 
 type TProps = {
   article: TArticle
   loading: boolean
+  broadcastConfig: TBroadcastConfig
 }
 
-const Viewer: FC<TProps> = ({ article, loading }) => {
+const Viewer: FC<TProps> = ({ article, loading, broadcastConfig }) => {
   const { meta } = article
 
   switch (meta.thread.toLowerCase()) {
     default: {
       // post, job, etc..
-      return <PostViewer article={article} loading={loading} />
+      return <PostViewer article={article} loading={loading} broadcastConfig={broadcastConfig} />
     }
   }
 }

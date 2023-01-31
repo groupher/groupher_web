@@ -45,31 +45,36 @@ export const addHelpCategory = (): void => {
   store.mark({ helpCategories })
 }
 
-export const broadcastToggle = (enable: boolean): void => {
-  store.mark({ broadcastEnable: enable })
-}
-
-export const broadcastOnSave = (): void => {
+export const broadcastOnSave = (isArticle = false): void => {
   store.mark({ saving: true })
+  const layoutKey = !isArticle
+    ? SETTING_FIELD.BROADCAST_LAYOUT
+    : SETTING_FIELD.BROADCAST_ARTICLE_LAYOUT
+  const bgKey = !isArticle ? SETTING_FIELD.BROADCAST_BG : SETTING_FIELD.BROADCAST_ARTICLE_BG
 
-  store.onSave(SETTING_FIELD.BROADCAST_LAYOUT)
-  store.onSave(SETTING_FIELD.BROADCAST_BG)
+  store.onSave(layoutKey)
+  store.onSave(bgKey)
 
   setTimeout(() => {
     store.mark({ saving: false })
 
     const initSettings = {
       ...store.initSettings,
-      [SETTING_FIELD.BROADCAST_LAYOUT]: toJS(store[SETTING_FIELD.BROADCAST_LAYOUT]),
-      [SETTING_FIELD.BROADCAST_BG]: toJS(store[SETTING_FIELD.BROADCAST_BG]),
+      [layoutKey]: toJS(store[layoutKey]),
+      [bgKey]: toJS(store[bgKey]),
     }
     store.mark({ initSettings })
   }, 1200)
 }
 
-export const broadcastOnCancel = (): void => {
-  store.rollbackEdit(SETTING_FIELD.BROADCAST_LAYOUT)
-  store.rollbackEdit(SETTING_FIELD.BROADCAST_BG)
+export const broadcastOnCancel = (isArticle = false): void => {
+  const layoutKey = !isArticle
+    ? SETTING_FIELD.BROADCAST_LAYOUT
+    : SETTING_FIELD.BROADCAST_ARTICLE_LAYOUT
+  const bgKey = !isArticle ? SETTING_FIELD.BROADCAST_BG : SETTING_FIELD.BROADCAST_ARTICLE_BG
+
+  store.rollbackEdit(layoutKey)
+  store.rollbackEdit(bgKey)
 }
 
 /**

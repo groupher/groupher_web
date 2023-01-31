@@ -83,7 +83,17 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
     get broadcastConfig(): TBroadcastConfig {
       const root = getParent(self) as TRootStore
 
-      return pick(['broadcastLayout', 'broadcastBg', 'broadcastEnable'], root.dashboardThread)
+      return pick(
+        [
+          'broadcastLayout',
+          'broadcastBg',
+          'broadcastEnable',
+          'broadcastArticleLayout',
+          'broadcastArticleBg',
+          'broadcastArticleEnable',
+        ],
+        root.dashboardThread,
+      )
     },
     get globalLayout(): TGlobalLayout {
       const root = getParent(self) as TRootStore

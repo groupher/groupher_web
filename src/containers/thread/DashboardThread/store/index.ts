@@ -9,6 +9,7 @@ import {
   ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
   DASHBOARD_BASEINFO_ROUTE,
+  DASHBOARD_BROADCAST_ROUTE,
   DASHBOARD_SEO_ROUTE,
 } from '@/constant/route'
 
@@ -45,6 +46,7 @@ const DashboardThread = T.model('DashboardThread', {
   baseInfoTab: T.opt(T.enum(values(DASHBOARD_BASEINFO_ROUTE)), DASHBOARD_BASEINFO_ROUTE.BASIC),
   seoTab: T.opt(T.enum(values(DASHBOARD_SEO_ROUTE)), DASHBOARD_SEO_ROUTE.SEARCH_ENGINE),
   layoutTab: T.opt(T.enum(values(DASHBOARD_LAYOUT_ROUTE)), DASHBOARD_LAYOUT_ROUTE.GLOBAL),
+  broadcastTab: T.opt(T.enum(values(DASHBOARD_BROADCAST_ROUTE)), DASHBOARD_BROADCAST_ROUTE.GLOBAL),
   editingTag: T.maybeNull(Tag),
   settingTag: T.maybeNull(Tag),
   editingAlias: T.maybeNull(Alias),
@@ -71,6 +73,10 @@ const DashboardThread = T.model('DashboardThread', {
         broadcastBg,
         broadcastEnable,
 
+        broadcastArticleLayout,
+        broadcastArticleBg,
+        broadcastArticleEnable,
+
         brandLayout,
         avatarLayout,
       } = initSettings
@@ -91,6 +97,10 @@ const DashboardThread = T.model('DashboardThread', {
         broadcast: broadcastLayout,
         broadcastBg,
         broadcastEnable,
+
+        broadcastArticle: broadcastArticleLayout,
+        broadcastArticleBg,
+        broadcastArticleEnable,
       }
     },
     get curCommunity(): TCommunity {
@@ -119,6 +129,9 @@ const DashboardThread = T.model('DashboardThread', {
 
       const broadcastLayoutTouched = _isChanged('broadcastLayout')
       const broadcastBgTouched = _isChanged('broadcastBg')
+
+      const broadcastArticleLayoutTouched = _isChanged('broadcastArticleLayout')
+      const broadcastArticleBgTouched = _isChanged('broadcastArticleBg')
 
       const topbarLayoutTouched = _isChanged('topbarLayout')
       const topbarBgTouched = _isChanged('topbarBg')
@@ -180,7 +193,12 @@ const DashboardThread = T.model('DashboardThread', {
           footerLayoutTouched,
 
         widgets: widgetsPrimaryColorTouched || widgetsThreadsTouched || widgetsSizeTouched,
-        broadcast: broadcastLayoutTouched || broadcastBgTouched,
+        broadcast:
+          broadcastLayoutTouched ||
+          broadcastBgTouched ||
+          broadcastArticleLayoutTouched ||
+          broadcastArticleBgTouched,
+        broadcastArticle: broadcastArticleLayoutTouched || broadcastArticleBgTouched,
       }
     },
 
@@ -315,10 +333,19 @@ const DashboardThread = T.model('DashboardThread', {
     get broadcastSettings(): TBroadcastSettings {
       const slf = self as TStore
 
-      return {
-        saving: slf.saving,
-        ...pick(['broadcastLayout', 'broadcastBg', 'broadcastEnable'], slf),
-      }
+      return pick(
+        [
+          'saving',
+          'broadcastTab',
+          'broadcastLayout',
+          'broadcastBg',
+          'broadcastEnable',
+          'broadcastArticleLayout',
+          'broadcastArticleBg',
+          'broadcastArticleEnable',
+        ],
+        slf,
+      )
     },
 
     get widgetsSettings(): TWidgetsSettings {

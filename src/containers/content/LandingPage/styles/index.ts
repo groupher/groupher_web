@@ -59,8 +59,8 @@ export const PatternBg = styled.div`
     conic-gradient(at 50% 10%, #0000 75%, rgba(0, 0, 0, 0.97) 0) calc(3 * 20px) calc(3 * 20px),
     conic-gradient(at 50% 10%, #0000 75%, rgba(0, 0, 0, 0.97) 0) calc(4 * 20px) calc(1 * 20px),
     rgba(71, 212, 255, 0);
-  background-size: 100px 100px;
 
+  background-size: 100px 100px;
   opacity: 0.25;
   /* transform: skewY(-2deg); */
 `

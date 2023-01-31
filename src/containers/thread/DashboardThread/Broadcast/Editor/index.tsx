@@ -1,44 +1,24 @@
 import { FC } from 'react'
 
-import ColorSelector from '@/widgets/ColorSelector'
+import { DASHBOARD_BROADCAST_ROUTE } from '@/constant/route'
 
-import type { TBroadcastSettings } from '../../spec'
-import { Wrapper, Item, Label, BgLabel, TheColor, Inputer } from '../../styles/broadcast/editor'
-import { edit } from '../../logic'
+import GlobalEditor from './Global'
+import ArticleEditor from './Article'
+
+import type { TBroadcastSettings, TTouched } from '../../spec'
 
 type TProps = {
   settings: TBroadcastSettings
+  touched: TTouched
 }
 
-const Editor: FC<TProps> = ({ settings }) => {
-  const { broadcastBg } = settings
+const Editor: FC<TProps> = ({ settings, touched }) => {
+  const { broadcastTab } = settings
 
-  return (
-    <Wrapper>
-      <Item>
-        <Label>背景色</Label>
-        <BgLabel bg={broadcastBg}>
-          <ColorSelector
-            activeColor={broadcastBg}
-            onChange={(color) => edit(color, 'broadcastBg')}
-            placement="right"
-            offset={[-1, 15]}
-          >
-            <TheColor color={broadcastBg} />
-          </ColorSelector>
-        </BgLabel>
-      </Item>
-
-      <Item>
-        <Label>广播内容</Label>
-        <Inputer />
-      </Item>
-
-      <Item>
-        <Label>链接地址</Label>
-        <Inputer />
-      </Item>
-    </Wrapper>
+  return broadcastTab === DASHBOARD_BROADCAST_ROUTE.GLOBAL ? (
+    <GlobalEditor settings={settings} touched={touched} />
+  ) : (
+    <ArticleEditor settings={settings} touched={touched} />
   )
 }
 
