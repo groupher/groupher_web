@@ -6,7 +6,7 @@
 
 import { FC, memo, useState, useCallback } from 'react'
 
-import type { TAccount, TAvatarLayout } from '@/spec'
+import type { TAccount, TAvatarLayout, TArticle } from '@/spec'
 import SVG from '@/constant/svg'
 import { buildLog } from '@/utils/logger'
 
@@ -15,7 +15,7 @@ import IconButton from '@/widgets/Buttons/IconButton'
 import MenuButton from '@/widgets/Buttons/MenuButton'
 
 import Activities from './Activities'
-import ReferenceInfo from './ReferenceInfo'
+import Members from './Members'
 
 import { TAB_ITEMS, TAB_ACTIVITIES, TAB_MEMBERS } from '../constant'
 import { Wrapper, TabsWrapper, ReportWrapper, ContentWrapper } from '../styles/panel'
@@ -29,6 +29,7 @@ type TProps = {
   testid?: string
   author: TAccount
   avatarLayout: TAvatarLayout
+  article: TArticle
 }
 
 const menuOptions = [
@@ -39,7 +40,7 @@ const menuOptions = [
   },
 ]
 
-const Panel: FC<TProps> = ({ testid = 'author-info', author, avatarLayout }) => {
+const Panel: FC<TProps> = ({ testid = 'author-info', author, avatarLayout, article }) => {
   const [tab, setTab] = useState(TAB_ACTIVITIES)
 
   const handleMenu = useCallback((key) => setTab(key), [])
@@ -62,7 +63,7 @@ const Panel: FC<TProps> = ({ testid = 'author-info', author, avatarLayout }) => 
       </ReportWrapper>
       <ContentWrapper>
         {tab === TAB_ACTIVITIES && <Activities avatarLayout={avatarLayout} />}
-        {tab === TAB_MEMBERS && <ReferenceInfo />}
+        {tab === TAB_MEMBERS && <Members avatarLayout={avatarLayout} article={article} />}
       </ContentWrapper>
     </Wrapper>
   )

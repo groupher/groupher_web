@@ -40,7 +40,7 @@ const ArticleFooterContainer: FC<TProps> = ({
         <TagsList items={articleTags} size="small" />
       </BaseInfo>
 
-      <Panel author={author} avatarLayout={avatarLayout} />
+      <Panel author={author} avatarLayout={avatarLayout} article={viewingArticle} />
     </Wrapper>
   )
 }
