@@ -67,9 +67,7 @@ const markLoading = (maybe = true) => store.mark({ loading: maybe })
  * set digest visible in current viewport
  * @param {Boolean} inView
  */
-export const setViewport = (inViewport: boolean): void => {
-  // store.mark({ inViewport })
-}
+export const setViewport = (inViewport: boolean): void => store.mark({ inViewport })
 
 // ###############################
 // Data & Error handlers
