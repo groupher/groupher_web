@@ -4,7 +4,7 @@ import { buildLog } from '@/utils/logger'
 import Button from '@/widgets/Buttons/Button'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
-import Actions from './Actions'
+import SortMenu from './SortMenu'
 import type { TProps as TBase } from '../index'
 
 import {
@@ -13,7 +13,6 @@ import {
   TotalCountWrapper,
   TotalNum,
   ActionsWrapper,
-  Divider,
   EditIcon,
 } from '../../styles/head_bar/state_bar'
 
@@ -42,13 +41,11 @@ const StateBar: FC<TProps> = ({
       <ActionsWrapper>
         {loading && <LavaLampLoading right={15} />}
 
+        <SortMenu mode={mode} isAllFolded={isAllFolded} apiMode={apiMode} />
         <Button size="small" space={10} onClick={() => callEditor()}>
           <EditIcon />
           写评论
         </Button>
-        <Divider left={15} />
-
-        <Actions mode={mode} isAllFolded={isAllFolded} apiMode={apiMode} />
       </ActionsWrapper>
     </Wrapper>
   )

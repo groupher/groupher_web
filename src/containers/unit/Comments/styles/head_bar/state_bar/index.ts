@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import css, { theme } from '@/utils/css'
 
 import EditPenSVG from '@/icons/EditPen'
-import { LineDivider } from '@/widgets/Common'
 
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
@@ -29,10 +28,7 @@ export const TotalNum = styled.span<{ highlight: boolean }>`
   margin-left: 5px;
   margin-right: 5px;
 `
-export const Divider = styled(LineDivider)`
-  background: ${theme('article.digest')};
-  opacity: 0.5;
-`
+
 export const CommentBlock = styled.div`
   ${css.flex()};
   margin-bottom: 16px;
