@@ -15,10 +15,6 @@ const SVG = {
   // comment
   EMOTION: 'emotion',
   LOCK: 'lock',
-  TIMELINE_MODE: 'timeline_mode',
-  REPLY_MODE: 'reply_mode',
-  EXPAND: 'expand',
-  FOLD: 'fold',
 
   TO_TOP: 'to_top',
   // utils

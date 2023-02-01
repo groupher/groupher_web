@@ -5,8 +5,6 @@ import SVG from '@/constant/svg'
 import UpvoteIcon from './Upvote'
 import EditPenIcon from './EditPen'
 import LockIcon from './Lock'
-import ExpandIcon from './Expand'
-import FoldIcon from './Fold'
 import Emotion from './Emotion'
 import CommentIcon from './Comment'
 
@@ -36,10 +34,6 @@ import LightIcon from './Light'
 import BugIcon from './Bug'
 import QuestionIcon from './Question'
 
-// comments
-import ReplyModeIcon from './CommentReplyMode'
-import TimelineModeIcon from './CommentTimelineMode'
-
 import DesktopIcon from './Desktop'
 import MobileIcon from './Mobile'
 
@@ -53,14 +47,6 @@ export const getLocalSVG = (type: string, styledFn: TstyledFn): FC => {
 
     case SVG.MOBILE: {
       return styledFn(MobileIcon)
-    }
-
-    case SVG.REPLY_MODE: {
-      return styledFn(ReplyModeIcon)
-    }
-
-    case SVG.TIMELINE_MODE: {
-      return styledFn(TimelineModeIcon)
     }
 
     case SVG.FEATURE: {
@@ -109,14 +95,6 @@ export const getLocalSVG = (type: string, styledFn: TstyledFn): FC => {
 
     case SVG.LOCK: {
       return styledFn(LockIcon)
-    }
-
-    case SVG.EXPAND: {
-      return styledFn(ExpandIcon)
-    }
-
-    case SVG.FOLD: {
-      return styledFn(FoldIcon)
     }
 
     case SVG.COLLECTION: {
