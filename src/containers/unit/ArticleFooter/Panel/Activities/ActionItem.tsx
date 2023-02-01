@@ -13,7 +13,7 @@ import {
   AvatarIcon,
   UserName,
   ArticleTitle,
-} from '../../styles/panel/activity_info/action_item'
+} from '../../styles/panel/activities/action_item'
 
 type TProps = {
   item: {
@@ -24,9 +24,7 @@ type TProps = {
   }
 }
 
-const ActionItem: FC<TProps> = ({
-  item: { author, article, community, insertedAt },
-}) => {
+const ActionItem: FC<TProps> = ({ item: { author, article, insertedAt } }) => {
   return (
     <Wrapper>
       <MainInfo>
@@ -35,9 +33,7 @@ const ActionItem: FC<TProps> = ({
         </IconBgWrapper>
         <AvatarIcon
           src={author.avatar}
-          fallback={
-            <ImgFallback user={author} size={14} bottom={2} right={10} />
-          }
+          fallback={<ImgFallback user={author} size={14} bottom={2} right={10} />}
         />
         <UserName>{author.nickname}</UserName> {insertedAt}在:{' '}
         <ArticleTitle>{article.title}</ArticleTitle>

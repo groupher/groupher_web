@@ -14,10 +14,10 @@ import Tabs from '@/widgets/Switcher/Tabs'
 import IconButton from '@/widgets/Buttons/IconButton'
 import MenuButton from '@/widgets/Buttons/MenuButton'
 
-import AuthorInfo from './AuthorInfo'
-import ActivityInfo from './ActivityInfo'
+import Activities from './Activities'
 import ReferenceInfo from './ReferenceInfo'
 
+import { TAB_ITEMS, TAB_ACTIVITIES, TAB_MEMBERS } from '../constant'
 import { Wrapper, TabsWrapper, ReportWrapper, ContentWrapper } from '../styles/panel'
 
 // import { onFollow, undoFollow } from '../logic'
@@ -31,21 +31,6 @@ type TProps = {
   avatarLayout: TAvatarLayout
 }
 
-export const TAB_ITEMS = [
-  {
-    title: '帖作者',
-    raw: 'author-info',
-  },
-  {
-    title: '日志',
-    raw: 'activity-info',
-  },
-  {
-    title: '引用',
-    raw: 'reference-info',
-  },
-]
-
 const menuOptions = [
   {
     key: 'report',
@@ -55,7 +40,7 @@ const menuOptions = [
 ]
 
 const Panel: FC<TProps> = ({ testid = 'author-info', author, avatarLayout }) => {
-  const [tab, setTab] = useState('author-info')
+  const [tab, setTab] = useState(TAB_ACTIVITIES)
 
   const handleMenu = useCallback((key) => setTab(key), [])
 
@@ -76,9 +61,8 @@ const Panel: FC<TProps> = ({ testid = 'author-info', author, avatarLayout }) => 
         </MenuButton>
       </ReportWrapper>
       <ContentWrapper>
-        {tab === 'author-info' && <AuthorInfo author={author} avatarLayout={avatarLayout} />}
-        {tab === 'activity-info' && <ActivityInfo />}
-        {tab === 'reference-info' && <ReferenceInfo />}
+        {tab === TAB_ACTIVITIES && <Activities avatarLayout={avatarLayout} />}
+        {tab === TAB_MEMBERS && <ReferenceInfo />}
       </ContentWrapper>
     </Wrapper>
   )

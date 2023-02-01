@@ -1,8 +1,8 @@
 import { FC, memo } from 'react'
 
-import ActionItem from '../ActivityInfo/ActionItem'
+import ActionItem from '../Activities/ActionItem'
 
-import { Wrapper } from '../../styles/panel/activity_info'
+import { Wrapper } from '../../styles/panel/activities'
 
 const tmpItems = [
   {
