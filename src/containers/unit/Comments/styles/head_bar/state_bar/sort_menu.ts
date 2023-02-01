@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
 `
 export const Title = styled.div<TActive>`
   ${css.flex('align-center')};
-  font-size: 13px;
+  font-size: 12px;
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   margin-right: 15px;
 
@@ -53,7 +53,6 @@ export const ArrowIcon = styled(ArrowSVG)<TActive>`
   fill: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   transform: rotate(90deg);
   opacity: 0.6;
-  margin-top: 1px;
   margin-left: 3px;
 `
 
@@ -65,6 +64,7 @@ export const Panel = styled.div<{ width?: string }>`
   padding: 6px 4px;
   padding-left: 8px;
   width: ${({ width }) => width};
+  background: ${theme('alphaBg2')};
 `
 
 export const MenuItem = styled.div`
