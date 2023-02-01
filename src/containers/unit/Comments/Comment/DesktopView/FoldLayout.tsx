@@ -4,6 +4,7 @@ import TimeAgo from 'timeago-react'
 import type { TComment, TAvatarLayout } from '@/spec'
 import { ICON } from '@/config'
 
+import ImgFallback from '@/widgets/ImgFallback'
 import IconButton from '@/widgets/Buttons/IconButton'
 import { SpaceGrow } from '@/widgets/Common'
 
@@ -32,7 +33,11 @@ const FoldLayout: FC<TProps> = ({ data, avatarLayout }) => {
   return (
     <Wrapper onClick={() => expandComment(data.id)}>
       <IconButton path="shape/expand-all.svg" hint="展开讨论" left={-1} right={12} />
-      <Avatar src={data.author.avatar} avatarLayout={avatarLayout} noLazy />
+      <Avatar
+        src={data.author.avatar}
+        avatarLayout={avatarLayout}
+        fallback={<ImgFallback user={data.author} size={16} avatarLayout={avatarLayout} />}
+      />
       {isLegal ? (
         <CommentBody
           dangerouslySetInnerHTML={{

@@ -1,14 +1,13 @@
 import { FC, memo } from 'react'
 
 import type { TAvatarLayout } from '@/spec'
-import { Br } from '@/widgets/Common'
 import { mockUsers } from '@/utils/mock'
+
+import ImgFallback from '@/widgets/ImgFallback'
 
 import TagItem from './TagItem'
 import GtdItem from './GtdItem'
 import MentionItem from './MentionItem'
-
-import ActionItem from './ActionItem'
 
 import {
   Wrapper,
@@ -18,24 +17,6 @@ import {
   Content,
   LastUpdate,
 } from '../../styles/panel/activities'
-
-const tmpItems = [
-  {
-    id: '0',
-    author: {
-      login: '1',
-      nickname: 'mydearxym',
-      avatar: 'https://avatars2.githubusercontent.com/u/6184465?v=4',
-    },
-    insertedAt: '3天前',
-    article: {
-      title: '这个社区太棒了',
-    },
-    community: {
-      raw: 'javascript',
-    },
-  },
-]
 
 type TProps = {
   avatarLayout: TAvatarLayout
@@ -47,7 +28,12 @@ const Activities: FC<TProps> = ({ avatarLayout }) => {
   return (
     <Wrapper>
       <Item>
-        <Avatar src={user.avatar} avatarLayout={avatarLayout} />
+        <Avatar
+          src={user.avatar}
+          avatarLayout={avatarLayout}
+          fallback={<ImgFallback size={18} user={user} avatarLayout={avatarLayout} left={-3} />}
+        />
+
         <Content>
           <Highlight left={-3} right={5}>
             mydearxym

@@ -24,22 +24,26 @@ export const DividerTitle = styled.div`
   font-size: 14px;
   font-weight: 600;
 `
-export const CommunityJoinersNum = styled.div`
-  ${css.flex('align-center')};
-  color: ${theme('article.digest')};
-  background: ${theme('textBadge')};
-  font-size: 11px;
-  font-weight: 600;
-  margin-left: 5px;
-  padding: 0 6px;
-  border-radius: 5px;
-`
 export const CommunityJoinersWrapper = styled.div<TActive>`
   ${css.flex()};
   visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
   margin-bottom: ${({ show }) => (show ? '15px' : 0)};
   height: ${({ show }) => (show ? 'auto' : 0)};
   margin-bottom: 25px;
+`
+export const MoreNum = styled.div`
+  color: ${theme('article.digest')};
+  font-size: 15px;
+  margin-top: 1px;
+  margin-left: 2px;
+  letter-spacing: 1px;
+  opacity: 0.8;
+
+  &:hover {
+    color: ${theme('article.title')};
+    opacity: 1;
+    cursor: pointer;
+  }
 `
 export const JoinerAvatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
   ${css.size(24)};

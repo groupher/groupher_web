@@ -41,15 +41,14 @@ const CommentHeader: FC<TProps> = ({ data, showInnerRef, avatarLayout }) => {
         src={data.author.avatar}
         avatarSize={avatarSize}
         avatarLayout={avatarLayout}
-        noLazy
-        // fallback={
-        //   <ImgFallback
-        //     user={data.author}
-        //     size={avatarSize}
-        //     right={10}
-        //     avatarLayout={avatarLayout}
-        //   />
-        // }
+        fallback={
+          <ImgFallback
+            user={data.author}
+            size={avatarSize}
+            right={10}
+            avatarLayout={avatarLayout}
+          />
+        }
       />
 
       <HeaderBaseInfo>

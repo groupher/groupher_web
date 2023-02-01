@@ -3,6 +3,8 @@ import { FC, memo } from 'react'
 import type { TAvatarLayout } from '@/spec'
 import { mockUsers } from '@/utils/mock'
 
+import ImgFallback from '@/widgets/ImgFallback'
+
 import AdminMember from './AdminMember'
 
 import {
@@ -42,10 +44,20 @@ const Members: FC<TProps> = ({ avatarLayout }) => {
         </Header>
         <Row>
           {mockUsers(15).map((user) => (
-            <NormalAvatar key={user.id} src={user.avatar} avatarLayout={avatarLayout} />
+            <NormalAvatar
+              key={user.id}
+              src={user.avatar}
+              avatarLayout={avatarLayout}
+              fallback={<ImgFallback size={26} user={user} avatarLayout={avatarLayout} />}
+            />
           ))}
           {mockUsers(15).map((user) => (
-            <NormalAvatar key={user.id} src={user.avatar} avatarLayout={avatarLayout} />
+            <NormalAvatar
+              key={user.id}
+              src={user.avatar}
+              avatarLayout={avatarLayout}
+              fallback={<ImgFallback size={26} user={user} avatarLayout={avatarLayout} />}
+            />
           ))}
         </Row>
       </BottomBlock>

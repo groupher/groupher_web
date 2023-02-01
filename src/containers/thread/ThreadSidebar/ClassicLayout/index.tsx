@@ -17,6 +17,7 @@ import { buildLog } from '@/utils/logger'
 import { send } from '@/utils/signal'
 import { mockUsers } from '@/utils/mock'
 
+import ImgFallback from '@/widgets/ImgFallback'
 import Sticky from '@/widgets/Sticky'
 import { SpaceGrow, Br } from '@/widgets/Common'
 
@@ -30,9 +31,9 @@ import {
   TagsBarWrapper,
   StickyWrapper,
   DividerTitle,
-  CommunityJoinersNum,
   CommunityJoinersWrapper,
   JoinerAvatar,
+  MoreNum,
   CommunityNoteWrapper,
   PublishWrapper,
 } from '../styles/classic_layout'
@@ -72,18 +73,21 @@ const ClassicLayout: FC<TProps> = ({ showCommunityBadge, thread, community, avat
 
           {showCommunityBadge && (
             <Fragment>
-              <DividerTitle>
-                团队
-                <CommunityJoinersNum>329</CommunityJoinersNum>
-              </DividerTitle>
+              <DividerTitle>团队</DividerTitle>
               <Br top={14} />
             </Fragment>
           )}
 
           <CommunityJoinersWrapper show={showCommunityBadge}>
             {mockUsers(5).map((user) => (
-              <JoinerAvatar key={user.id} src={user.avatar} avatarLayout={avatarLayout} noLazy />
+              <JoinerAvatar
+                key={user.id}
+                src={user.avatar}
+                avatarLayout={avatarLayout}
+                fallback={<ImgFallback size={24} user={user} avatarLayout={avatarLayout} />}
+              />
             ))}
+            <MoreNum>+2</MoreNum>
           </CommunityJoinersWrapper>
         </Fragment>
 
