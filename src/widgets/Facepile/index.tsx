@@ -11,6 +11,7 @@ import { trackWindowScroll } from 'react-lazy-load-image-component'
 
 import type { TUser, TSize, TAvatarLayout } from '@/spec'
 import { AVATARS_LIST_LENGTH } from '@/config'
+
 import SIZE from '@/constant/size'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
@@ -36,7 +37,7 @@ export const RealAvatar = dynamic(() => import('./RealAvatar'), {
 
     return <AvatarFallback size={getAvatarSize(size, 'number') as number} user={user} />
   },
-  ssr: false,
+  ssr: true,
 })
 
 /* eslint-disable-next-line */

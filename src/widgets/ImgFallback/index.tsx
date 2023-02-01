@@ -9,7 +9,7 @@ import { FC, memo } from 'react'
 import type { TUser, TSpace, TAvatarLayout } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
-import Work from './Work'
+// import Work from './Work'
 import Avatar from './Avatar'
 
 /* eslint-disable-next-line */
@@ -29,14 +29,7 @@ type TProps = {
 } & TAvatarProps
 
 const ImgFallback: FC<TProps> = ({ type = 'avatar', ...restProps }) => {
-  switch (type) {
-    case 'work': {
-      return <Work {...restProps} />
-    }
-
-    default:
-      return <Avatar {...restProps} />
-  }
+  return <Avatar {...restProps} />
 }
 
 export default memo(ImgFallback)

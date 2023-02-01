@@ -8,6 +8,7 @@ import { FC, memo } from 'react'
 
 import { AVATAR_LAYOUT } from '@/constant/layout'
 import { buildLog } from '@/utils/logger'
+import { getLetterColor } from '@/utils/color'
 
 import type { TAvatarProps as TProps } from './index'
 import { Wrapper, Name } from './styles/avatar'
@@ -32,9 +33,12 @@ const Avatar: FC<TProps> = ({
   const name = user?.nickname
   const sliceCount = size >= 30 ? 2 : 1
 
+  const color = getLetterColor(name)
+
   return (
     <Wrapper
       className={className}
+      color={color}
       testid={testid}
       size={size}
       left={left}
@@ -44,7 +48,9 @@ const Avatar: FC<TProps> = ({
       quote={quote}
       avatarLayout={avatarLayout}
     >
-      <Name size={size}>{name.slice(0, sliceCount)}</Name>
+      <Name size={size} color={color}>
+        {name.slice(0, sliceCount)}
+      </Name>
     </Wrapper>
   )
 }

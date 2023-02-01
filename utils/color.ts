@@ -1,3 +1,6 @@
+import type { TColorName } from '@/spec'
+import { COLOR_NAME } from '@/constant/colors'
+
 /* eslint-disable radix */
 /**
  * for lighten / darken color
@@ -32,4 +35,62 @@ export const lighten = (color: string, percent: number): string => {
 
 export const darken = (color: string, percent: number): string => {
   return shadeColor(color, -percent as number)
+}
+
+export const getLetterColor = (username: string): TColorName => {
+  const firstLetter = username[0].toLowerCase()
+
+  switch (firstLetter) {
+    case 'a':
+    case 'b':
+    case 'c': {
+      return COLOR_NAME.RED
+    }
+
+    case 'd':
+    case 'e':
+    case 'f': {
+      return COLOR_NAME.YELLOW
+    }
+
+    case 'g':
+    case 'h':
+    case 'i': {
+      return COLOR_NAME.GREEN
+    }
+
+    case 'j':
+    case 'k':
+    case 'l': {
+      return COLOR_NAME.BLUE
+    }
+
+    case 'm':
+    case 'n':
+    case 'o': {
+      return COLOR_NAME.PURPLE
+    }
+
+    case 'p':
+    case 'q':
+    case 'r': {
+      return COLOR_NAME.CYAN
+    }
+    case 's':
+    case 't':
+    case 'w':
+    case 'u': {
+      return COLOR_NAME.PURPLE
+    }
+
+    case 'x':
+    case 'y':
+    case 'z': {
+      return COLOR_NAME.CYAN
+    }
+
+    default: {
+      return COLOR_NAME.PURPLE
+    }
+  }
 }
