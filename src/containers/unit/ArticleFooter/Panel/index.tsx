@@ -6,7 +6,7 @@
 
 import { FC, memo, useState, useCallback } from 'react'
 
-import type { TAccount, TAvatarLayout } from '@/spec'
+import type { TAccount, TAvatarLayout, TArticle } from '@/spec'
 import SVG from '@/constant/svg'
 import { buildLog } from '@/utils/logger'
 
@@ -14,10 +14,10 @@ import Tabs from '@/widgets/Switcher/Tabs'
 import IconButton from '@/widgets/Buttons/IconButton'
 import MenuButton from '@/widgets/Buttons/MenuButton'
 
-import AuthorInfo from './AuthorInfo'
-import ActivityInfo from './ActivityInfo'
-import ReferenceInfo from './ReferenceInfo'
+import Activities from './Activities'
+import Members from './Members'
 
+import { TAB_ITEMS, TAB_ACTIVITIES, TAB_MEMBERS } from '../constant'
 import { Wrapper, TabsWrapper, ReportWrapper, ContentWrapper } from '../styles/panel'
 
 // import { onFollow, undoFollow } from '../logic'
@@ -29,22 +29,8 @@ type TProps = {
   testid?: string
   author: TAccount
   avatarLayout: TAvatarLayout
+  article: TArticle
 }
-
-export const TAB_ITEMS = [
-  {
-    title: '帖作者',
-    raw: 'author-info',
-  },
-  {
-    title: '日志',
-    raw: 'activity-info',
-  },
-  {
-    title: '引用',
-    raw: 'reference-info',
-  },
-]
 
 const menuOptions = [
   {
@@ -54,8 +40,8 @@ const menuOptions = [
   },
 ]
 
-const Panel: FC<TProps> = ({ testid = 'author-info', author, avatarLayout }) => {
-  const [tab, setTab] = useState('author-info')
+const Panel: FC<TProps> = ({ testid = 'author-info', author, avatarLayout, article }) => {
+  const [tab, setTab] = useState(TAB_ACTIVITIES)
 
   const handleMenu = useCallback((key) => setTab(key), [])
 
@@ -76,9 +62,8 @@ const Panel: FC<TProps> = ({ testid = 'author-info', author, avatarLayout }) => 
         </MenuButton>
       </ReportWrapper>
       <ContentWrapper>
-        {tab === 'author-info' && <AuthorInfo author={author} avatarLayout={avatarLayout} />}
-        {tab === 'activity-info' && <ActivityInfo />}
-        {tab === 'reference-info' && <ReferenceInfo />}
+        {tab === TAB_ACTIVITIES && <Activities avatarLayout={avatarLayout} />}
+        {tab === TAB_MEMBERS && <Members avatarLayout={avatarLayout} article={article} />}
       </ContentWrapper>
     </Wrapper>
   )

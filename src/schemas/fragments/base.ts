@@ -40,6 +40,7 @@ export const article = `
   views
   commentsCount
   upvotesCount
+  commentsParticipantsCount
  
   author {
     ${author}

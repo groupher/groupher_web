@@ -9,12 +9,13 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   ${css.flexColumn()};
   position: relative;
   border-top: 1px solid;
-  border-bottom: 3px solid;
+  border-bottom: 2px solid;
   border-color: ${theme('divider')};
   padding: 26px 0;
-  padding-bottom: 32px;
+  padding-bottom: 12px;
   margin-top: 72px;
   margin-bottom: 42px;
+  min-height: 100px;
 
   color: ${theme('article.digest')};
 `
