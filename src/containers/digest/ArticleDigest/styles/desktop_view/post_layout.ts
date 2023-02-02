@@ -5,12 +5,13 @@ import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
 import css, { theme } from '@/utils/css'
 
-export const Main = styled.div<{ metric: TMetric }>`
+export const Wrapper = styled.div<{ metric: TMetric }>`
   ${({ metric }) => css.fitContentWidth(metric)};
   width: 100%;
-  margin-top: 78px;
+  margin-top: 50px;
+  position: relative;
 `
-export const Header = styled.div`
+export const Topping = styled.div`
   ${css.flex('align-center')};
   margin-bottom: 14px;
   position: relative;

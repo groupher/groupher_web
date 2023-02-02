@@ -1,10 +1,8 @@
 import styled from 'styled-components'
 
-import type { TTestable, TMetric, TActive, TThread } from '@/spec'
+import type { TTestable, TMetric, TActive } from '@/spec'
 import css, { theme, zIndex } from '@/utils/css'
 import Img from '@/Img'
-
-import { getFixStickerOffset, getFixStickerAlign } from './metric'
 
 type TWrapper = TTestable & TActive
 export const Wrapper = styled.nav.attrs(({ testid }: TTestable) => ({
@@ -25,33 +23,32 @@ export const Wrapper = styled.nav.attrs(({ testid }: TTestable) => ({
   transition-timing-function: ease-out;
 `
 export const InnerWrapper = styled.div<{ metric: TMetric }>`
-  ${css.flex('align-center')};
-  background: #fff; // to-theme
+  ${css.flex('align-both')};
+  background: white;
+  background: radial-gradient(circle, rgba(255, 255, 255, 1) 15%, rgba(255, 255, 255, 0.15) 56%),
+    radial-gradient(circle, rgba(255, 255, 255, 1) 45%, transparent 66%);
+
   width: 100%;
-  height: 48px;
+  height: 46px;
   ${({ metric }) => css.fitPageWidth(metric)};
-  border-bottom: 1px solid;
-  border-bottom-color: ${theme('drawer.divider')};
+  border-radius: 5px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  padding: 0 10px;
+  padding-left: 0;
 `
 export const ContentWrapper = styled.div<{ metric: TMetric }>`
-  ${css.flex('align-center')};
+  ${css.flex('align-center', 'justify-between')};
   width: 100%;
   height: 100%;
   ${({ metric }) => css.fitContentWidth(metric)};
-`
-type TStickerWrapper = { metric: TMetric; thread: TThread }
-export const RightWrapper = styled.div<TStickerWrapper>`
-  ${({ metric }) => css.fitStickerWidth(metric)};
-  ${({ thread }) => css.flex(getFixStickerAlign(thread))};
-
-  margin-left: ${({ metric }) => getFixStickerOffset(metric)};
 `
 export const Cover = styled(Img)`
   ${css.size(28)};
   margin-right: 15px;
 `
 export const Title = styled.div`
-  ${css.cutRest('400px')};
+  ${css.cutRest('300px')};
   color: ${theme('article.title')};
   font-weight: 500;
   font-size: 17px;
@@ -60,7 +57,4 @@ export const Desc = styled.div`
   color: ${theme('article.digest')};
   font-size: 14px;
   ${css.cutRest('300px')};
-`
-export const ArticleStateBadgeWrapper = styled.div`
-  margin-left: 10px;
 `

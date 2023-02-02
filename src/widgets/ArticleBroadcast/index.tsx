@@ -21,6 +21,7 @@ import {
   Desc,
   LinkButton,
   LinkText,
+  NotifyIcon,
   ArrowIcon,
 } from './styles'
 
@@ -43,6 +44,8 @@ const ArticleBroadcast: FC<TProps> = ({
     <Wrapper testid={testid} color={color} {...restProps}>
       {!simple && <BgWrapper />}
       {!simple && <BgWrapper2 />}
+      {!simple && <NotifyIcon color={color} />}
+
       <Content>
         <Title color={color}>文章页脚广播</Title>
         <Desc>由社区管理员设置，在每篇帖子下面显示，后期可提供更详细的显示设置,</Desc>

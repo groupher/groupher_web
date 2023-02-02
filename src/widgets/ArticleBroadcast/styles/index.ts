@@ -4,6 +4,7 @@ import type { TTestable, TSpace, TColorName } from '@/spec'
 
 import Button from '@/widgets/Buttons/Button'
 import ArrowSVG from '@/icons/ArrowSimple'
+import BroadcastSVG from '@/icons/Broadcast'
 
 // import Img from '@/Img'
 import css, { theme } from '@/utils/css'
@@ -55,11 +56,14 @@ export const Content = styled.div`
   width: 55%;
 `
 export const Title = styled.span<{ color: TColorName }>`
+  ${css.flex('align-center')};
+  display: inline-flex;
   font-size: 15px;
   color: ${theme('article.title')};
   font-weight: 600;
   position: relative;
   padding-left: 5px;
+  z-index: 2;
 
   &:after {
     content: '';
@@ -68,7 +72,7 @@ export const Title = styled.span<{ color: TColorName }>`
     border-radius: 5px;
     position: absolute;
     left: 0;
-    bottom: -2px;
+    bottom: 1px;
     background-color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
     opacity: 0.25;
   }
@@ -100,5 +104,16 @@ export const ArrowIcon = styled(ArrowSVG)<{ color: TColorName }>`
   transform: rotate(180deg);
   margin-left: 2px;
   margin-right: -5px;
+  fill: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
+`
+export const NotifyIcon = styled(BroadcastSVG)<{ color: TColorName }>`
+  ${css.size(24)};
+  position: absolute;
+  top: 4px;
+  left: 130px;
+  margin-top: -2px;
+  margin-right: 5px;
+  transform: rotate(-15deg);
+  mix-blend-mode: color-burn;
   fill: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
 `

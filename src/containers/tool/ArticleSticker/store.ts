@@ -54,9 +54,9 @@ const ArticleSticker = T.model('ArticleSticker', {
 
     get showArticleAction(): boolean {
       // const root = getParent(self) as TRootStore
-      const { isArticleInViewport, isArticleDigestInViewport } = self as TStore
+      const { isArticleDigestInViewport } = self as TStore
 
-      return !isArticleDigestInViewport && isArticleInViewport
+      return !isArticleDigestInViewport
     },
     // get showCommunity(): boolean {
     //   const { isArticleDigestInViewport, isArticleInViewport } = self as TStore

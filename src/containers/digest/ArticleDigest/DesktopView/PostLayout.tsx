@@ -2,7 +2,7 @@
  * PostLayout
  */
 
-import { FC, Fragment, memo } from 'react'
+import { FC, memo } from 'react'
 
 import type { TPost, TMetric } from '@/spec'
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
@@ -19,9 +19,11 @@ import DotDivider from '@/widgets/DotDivider'
 import ReadableDate from '@/widgets/ReadableDate'
 import ArticleCatState from '@/widgets/ArticleCatState'
 
+import BackTo from './BackTo'
+
 import {
-  Main,
-  Header,
+  Wrapper,
+  Topping,
   PublishDateInfo,
   Title,
   AuthorName,
@@ -49,64 +51,46 @@ const PostLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
   } = article
 
   return (
-    <Fragment>
-      <Main metric={metric}>
-        <Header>
-          <AuthorName href={`/u/${author.login}`} prefetch={false}>
-            {author.nickname}
-          </AuthorName>
-          <DotDivider space={12} />
-          <PublishDateInfo>
-            <ReadableDate date={insertedAt} fmt="absolute" withTime={false} />
-          </PublishDateInfo>
-          {/* {isArchived && (
+    <Wrapper metric={metric}>
+      <BackTo />
+      <Topping>
+        <AuthorName href={`/u/${author.login}`} prefetch={false}>
+          {author.nickname}
+        </AuthorName>
+        <DotDivider space={12} />
+        <PublishDateInfo>
+          <ReadableDate date={insertedAt} fmt="absolute" withTime={false} />
+        </PublishDateInfo>
+        {/* {isArchived && (
             <Fragment>
               <DotDivider space={8} />
               <ArchivedSign date={archivedAt} />
             </Fragment>
           )} */}
-          <DotDivider space={12} />
-          <div>
-            {article.id === '239' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} left={18} />}
-            {article.id === '231' && <ArticleCatState cat={ARTICLE_CAT.BUG} left={18} />}
-            {article.id === '227' && (
-              <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" left={18} />
-            )}
-            {article.id === '228' && (
-              <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" left={18} />
-            )}
-            {article.id === '226' && (
-              <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" left={18} />
-            )}
-            {article.id === '225' && (
-              <ArticleCatState
-                cat={ARTICLE_CAT.FEATURE}
-                state={ARTICLE_STATE.REJECT_DUP}
-                left={18}
-              />
-            )}
-          </div>
-        </Header>
-        <Title>{title}</Title>
-        <BottomInfo>
-          <Upvote
-            count={upvotesCount}
-            avatarList={meta.latestUpvotedUsers}
-            viewerHasUpvoted={viewerHasUpvoted}
-          />
-          <Space right={30} />
-          <ArticleBaseStats article={article} />
-          {/* <ArticleMenu article={article} /> */}
-        </BottomInfo>
-      </Main>
-      {/* <CommunityInfo>
-        <ArticleBelongCommunity
-          article={article}
-          onFollow={() => subscribeCommunity()}
-          onUndoFollow={() => unsubscribeCommunity()}
+        <DotDivider space={12} />
+        <div>
+          {article.id === '239' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} />}
+          {article.id === '231' && <ArticleCatState cat={ARTICLE_CAT.BUG} />}
+          {article.id === '227' && <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" />}
+          {article.id === '228' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" />}
+          {article.id === '226' && <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" />}
+          {article.id === '225' && (
+            <ArticleCatState cat={ARTICLE_CAT.FEATURE} state={ARTICLE_STATE.REJECT_DUP} />
+          )}
+        </div>
+      </Topping>
+      <Title>{title}</Title>
+      <BottomInfo>
+        <Upvote
+          count={upvotesCount}
+          avatarList={meta.latestUpvotedUsers}
+          viewerHasUpvoted={viewerHasUpvoted}
         />
-      </CommunityInfo> */}
-    </Fragment>
+        <Space right={30} />
+        <ArticleBaseStats article={article} />
+        {/* <ArticleMenu article={article} /> */}
+      </BottomInfo>
+    </Wrapper>
   )
 }
 

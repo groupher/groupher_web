@@ -26,6 +26,7 @@ export const Button = styled.div`
   ${css.flexColumn('align-both')};
   border: 1px solid;
   border-color: ${theme('divider')};
+  background: ${theme('alphaBg')};
 
   border-radius: 10px;
   padding: 8px 10px;

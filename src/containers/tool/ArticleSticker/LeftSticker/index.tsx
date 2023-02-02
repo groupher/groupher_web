@@ -14,20 +14,16 @@ type TProps = {
   testid?: string
 }
 
-const LeftSticker: FC<TProps> = ({
-  show,
-  article,
-  testid = 'article-sticker-left-sidebar',
-}) => {
+const LeftSticker: FC<TProps> = ({ show, article, testid = 'article-sticker-left-sidebar' }) => {
   const { upvotesCount, viewerHasUpvoted, meta } = article
 
   return (
     <Wrapper show={show} testid={testid}>
       <InnerWrapper>
         {/* <BackWrapper>
-        <ArrowIcon src={`${ICON}/shape/arrow-simple.svg`} />
-        <BackText>返回社区</BackText>
-      </BackWrapper> */}
+          <ArrowIcon src={`${ICON}/shape/arrow-simple.svg`} />
+          <BackText>返回社区</BackText>
+        </BackWrapper> */}
 
         <Upvote
           count={upvotesCount}
@@ -37,7 +33,7 @@ const LeftSticker: FC<TProps> = ({
           onAction={handleUpvote}
         />
         <Divider />
-        <Share left={5} size={17} right={3} />
+        <Share size={17} right={3} />
       </InnerWrapper>
     </Wrapper>
   )

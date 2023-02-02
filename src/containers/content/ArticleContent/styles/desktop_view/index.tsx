@@ -22,7 +22,7 @@ export const Wrapper = styled.article.attrs(({ testid }: TTestable) => ({
   `};
 `
 export const InnerWrapper = styled.div`
-  ${css.flex()};
+  ${css.flex('justify-center')};
   width: 100%;
   padding-left: 0;
   padding-right: 0;

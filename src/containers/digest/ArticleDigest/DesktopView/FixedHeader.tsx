@@ -1,20 +1,14 @@
 import { FC, memo } from 'react'
 
-import type { TArticle, TMetric, TThread } from '@/spec'
+import type { TArticle, TMetric } from '@/spec'
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import METRIC from '@/constant/metric'
 
+import { SpaceGrow } from '@/widgets/Common'
 import ArticleCatState from '@/widgets/ArticleCatState'
 import ArticleBaseStats from '@/widgets/ArticleBaseStats'
 
-import {
-  Wrapper,
-  InnerWrapper,
-  ContentWrapper,
-  RightWrapper,
-  Title,
-  ArticleStateBadgeWrapper,
-} from '../styles/desktop_view/fixed_header'
+import { Wrapper, InnerWrapper, ContentWrapper, Title } from '../styles/desktop_view/fixed_header'
 
 type TProps = {
   article: TArticle
@@ -28,38 +22,26 @@ const FixedHeader: FC<TProps> = ({
   metric = METRIC.ARTICLE,
   testid = 'article-fixed-header',
 }) => {
-  const { meta } = article
-  const thread = meta.thread.toLowerCase() as TThread
-
   return (
     <Wrapper show={show} testid={testid}>
       <InnerWrapper metric={metric}>
         <ContentWrapper metric={metric}>
           <Title>{article.title}</Title>
-          <ArticleStateBadgeWrapper>
-            {article.id === '239' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} left={18} />}
-            {article.id === '231' && <ArticleCatState cat={ARTICLE_CAT.BUG} left={18} />}
-            {article.id === '227' && (
-              <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" left={18} />
-            )}
-            {article.id === '228' && (
-              <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" left={18} />
-            )}
-            {article.id === '226' && (
-              <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" left={18} />
-            )}
-            {article.id === '225' && (
-              <ArticleCatState
-                cat={ARTICLE_CAT.FEATURE}
-                state={ARTICLE_STATE.REJECT_DUP}
-                left={18}
-              />
-            )}
-          </ArticleStateBadgeWrapper>
-        </ContentWrapper>
-        <RightWrapper metric={metric} thread={thread}>
+          {article.id === '239' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} left={8} />}
+          {article.id === '231' && <ArticleCatState cat={ARTICLE_CAT.BUG} left={8} />}
+          {article.id === '227' && <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" left={8} />}
+          {article.id === '228' && (
+            <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" left={8} />
+          )}
+          {article.id === '226' && (
+            <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" left={8} />
+          )}
+          {article.id === '225' && (
+            <ArticleCatState cat={ARTICLE_CAT.FEATURE} state={ARTICLE_STATE.REJECT_DUP} left={8} />
+          )}
+          <SpaceGrow />
           <ArticleBaseStats article={article} container="drawer" />
-        </RightWrapper>
+        </ContentWrapper>
       </InnerWrapper>
     </Wrapper>
   )

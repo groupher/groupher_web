@@ -21,10 +21,9 @@ export const Wrapper = styled.nav.attrs(({ testid }: TTestable) => ({
   max-width: ${WIDTH.ARTICLE.PAGE};
 `
 export const InnerWrapper = styled.div`
-  ${css.flex('justify-center')};
   width: 100%;
 `
 export const BannerContent = styled.div`
-  ${css.flex()};
+  ${css.flex('justify-center')};
   width: 100%;
 `

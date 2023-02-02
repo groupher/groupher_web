@@ -13,6 +13,11 @@ export const community = `
   logo
   subscribersCount
   articlesCount
+
+  threads {
+    raw
+    title
+  }
 `
 export const tag = `
   title

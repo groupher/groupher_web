@@ -60,12 +60,7 @@ const Img: FC<IProps> = ({
           onClick={onClick}
         />
       ) : (
-        // <NextImg
-        //   className={className}
-        //   src={src}
-        //   alt={alt}
-        //   fallback={fallback}
-        // />
+        // <NextImg className={className} src={src} alt={alt} fallback={fallback} />
         <LazyLoadImg
           className={className}
           src={src}

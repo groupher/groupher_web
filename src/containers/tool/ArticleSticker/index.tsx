@@ -42,21 +42,21 @@ const ArticleStickerContainer: FC<TProps> = ({
   metric = METRIC.ARTICLE,
 }) => {
   useInit(store)
-  const { commentsState } = store
+  // const { commentsState } = store
 
   const {
     viewingArticle,
     activeThread,
     showArticleAction,
-    isArticleDigestInViewport,
-    showCommentSticker,
+    // isArticleDigestInViewport,
+    // showCommentSticker,
   } = store
 
   return (
     <Fragment>
       <LeftSticker show={showArticleAction} article={viewingArticle} />
 
-      <Sticky offsetTop={105}>
+      {/* <Sticky offsetTop={105}>
         <Wrapper testid={testid} metric={metric}>
           <InnerWrapper>
             <MainWrapper>
@@ -72,7 +72,7 @@ const ArticleStickerContainer: FC<TProps> = ({
             </GoTopWrapper>
           </InnerWrapper>
         </Wrapper>
-      </Sticky>
+      </Sticky> */}
     </Fragment>
   )
 }

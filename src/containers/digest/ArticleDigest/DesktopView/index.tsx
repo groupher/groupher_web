@@ -15,10 +15,11 @@ import { bond } from '@/utils/mobx'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
 import FixedHeader from './FixedHeader'
+import Header from './Header'
 import Layout from './Layout'
 
 import type { TStore } from '../store'
-import { Wrapper, InnerWrapper, BannerContent } from '../styles/desktop_view/index'
+import { Wrapper, InnerWrapper, BannerContent } from '../styles/desktop_view'
 import { useInit, inAnchor, outAnchor } from '../logic'
 
 /* eslint-disable-next-line */
@@ -51,6 +52,7 @@ const ArticleDigestContainer: FC<TProps> = ({
       {/* @ts-ignore */}
       <FixedHeader show={!inViewport} article={viewingArticle} metric={metric} />
       <InnerWrapper>
+        <Header metric={metric} community={viewingArticle.originalCommunity} />
         <BannerContent>
           <Layout article={viewingArticle} thread={activeThread} metric={metric} />
         </BannerContent>

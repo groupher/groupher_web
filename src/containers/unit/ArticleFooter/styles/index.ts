@@ -10,6 +10,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 export const BaseInfo = styled.div`
   ${css.flex('align-center', 'justify-between')};
   margin-bottom: 30px;
+  margin-top: 10px;
   padding-left: 0;
   padding-right: 10px;
 
