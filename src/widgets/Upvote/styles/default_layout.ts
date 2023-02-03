@@ -17,7 +17,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 export const Button = styled.div`
   ${css.flex('align-center')};
   border: 1px solid;
-  border-color: ${theme('divider')};
+  border-color: ${theme('button.upvoteBorder')};
 
   border-radius: 10px;
   padding: 0 10px;

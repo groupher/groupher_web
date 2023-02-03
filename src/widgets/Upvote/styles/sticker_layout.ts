@@ -25,7 +25,7 @@ export const FacesWrapper = styled.div<{ count: number }>`
 export const Button = styled.div`
   ${css.flexColumn('align-both')};
   border: 1px solid;
-  border-color: ${theme('divider')};
+  border-color: ${theme('button.upvoteBorder')};
   background: ${theme('alphaBg')};
 
   border-radius: 10px;

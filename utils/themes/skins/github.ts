@@ -254,6 +254,7 @@ const github = {
     activeBg: darken(primaryColor, 5),
     clicked: primaryColor,
     ghostBorder: descText,
+    upvoteBorder: '#74839e66',
   },
   navigator: {
     activeBottom: primaryColor,
