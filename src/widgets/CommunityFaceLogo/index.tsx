@@ -31,10 +31,6 @@ const CommunityFaceLogo: FC<TProps> = ({
   className = 'community-facelogo-class',
   noLazy = false,
 }) => {
-  if (raw === HCN || isEmpty(src)) {
-    return <HomeLogo className={className} />
-  }
-
   return <Logo noFill={noFill} src={src} className={className} noLazy={noLazy} />
 }
 

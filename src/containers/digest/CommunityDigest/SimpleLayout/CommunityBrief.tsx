@@ -25,11 +25,7 @@ const CommunityBrief: FC<TProps> = ({ community }) => {
   return (
     <Wrapper>
       <LogoWrapper>
-        <Logo
-          noFill={contains(community.raw, NON_FILL_COMMUNITY)}
-          src={community.logo}
-          raw={community.raw}
-        />
+        <Logo src={community.logo} noLazy />
       </LogoWrapper>
       <CommunityInfo>
         <TitleWrapper>

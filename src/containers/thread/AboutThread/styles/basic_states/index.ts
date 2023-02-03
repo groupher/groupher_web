@@ -25,46 +25,49 @@ const IconWrapper = styled.div`
   ${css.circle(24)};
   ${css.flex('align-both')};
   margin-bottom: 12px;
-  opacity: 0.65;
   margin-left: -1px;
 `
 export const UsersWrapper = styled(IconWrapper)`
-  background: #c5e1f4;
+  background: ${theme('baseColor.blueBg')};
 `
 export const ContentWrapper = styled(IconWrapper)`
-  background: #d5c7e0;
+  background: ${theme('baseColor.purpleBg')};
 `
 export const CommentsWrapper = styled(IconWrapper)`
-  background: #f9dfc9;
+  background: ${theme('baseColor.orangeBg')};
 `
 export const EmojisWrapper = styled(IconWrapper)`
-  background: #ffd5dc;
+  background: ${theme('baseColor.redBg')};
 `
 export const TrendWrapper = styled(IconWrapper)`
-  background: #def0ba;
+  background: ${theme('baseColor.greenBg')};
 `
 export const UsersIcon = styled(UserSVG)`
   ${css.size(14)};
-  fill: #2f71ff;
+  fill: ${theme('baseColor.blue')};
+  opacity: 0.8;
 `
 export const ContentIcon = styled(PostSVG)`
   ${css.size(12)};
-  fill: #860075;
+  fill: ${theme('baseColor.purple')};
   margin-top: 1px;
 `
 export const CommentIcon = styled(CommentSVG)`
-  ${css.size(15)};
-  fill: #e75908;
+  ${css.size(14)};
+  fill: ${theme('baseColor.orange')};
   margin-left: 1px;
   margin-top: 1px;
+  opacity: 0.8;
+  filter: saturate(1.3);
 `
 export const EmojiIcon = styled(EmojiSVG)`
   ${css.size(14)};
-  fill: #ff1717;
+  fill: ${theme('baseColor.red')};
+  filter: saturate(1.3);
 `
 export const TrendIcon = styled(PulseSVG)`
   ${css.size(14)};
-  fill: #2a7c43;
+  fill: ${theme('baseColor.green')};
 `
 export const Title = styled.div`
   color: ${theme('article.digest')};

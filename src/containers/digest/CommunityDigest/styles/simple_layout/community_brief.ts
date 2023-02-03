@@ -3,8 +3,6 @@ import styled from 'styled-components'
 import css, { theme } from '@/utils/css'
 import Img from '@/Img'
 
-import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
-
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
   transition: all 0.2s;
@@ -14,8 +12,8 @@ export const LogoWrapper = styled.div`
   position: relative;
   width: 20px;
 `
-export const Logo = styled(CommunityFaceLogo)`
-  ${css.size(18)};
+export const Logo = styled(Img)`
+  ${css.size(22)};
 `
 export const CommunityInfo = styled.div`
   ${css.flexColumn('justify-center')};
