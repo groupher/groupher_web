@@ -1,9 +1,11 @@
 import { FC, memo } from 'react'
 
+import { DEME_SOCIALS } from '@/constant/social'
+
 import { Br, Divider } from '@/widgets/Common'
 import Linker from '@/widgets/Linker'
 
-import SocialList from './SocialList'
+import SocialList from '@/widgets/SocialList'
 
 import { Wrapper, Block, Title, Reports, ReportsArticle, Press, Desc } from './styles/sidebar'
 
@@ -22,7 +24,7 @@ const Sidebar: FC<TProps> = ({ isSidebarLayout }) => {
       </Block>
       <Block>
         <Title>关注我们</Title>
-        <SocialList />
+        <SocialList top={20} size="small" selected={DEME_SOCIALS} left={-12} />
       </Block>
       <Divider />
       <Block>

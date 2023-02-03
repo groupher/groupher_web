@@ -15,8 +15,9 @@ import type { TStore } from './store'
 import Sidebar from './Sidebar'
 
 import { Wrapper, MainWrapper, StateBlock, IntroBlock, MemberBlock, Title, Desc } from './styles'
-import { useInit } from './logic' /* eslint-disable-next-line */
+import { useInit } from './logic'
 
+/* eslint-disable-next-line */
 // const log = buildLog('C:AboutThread')
 
 type TProps = {
@@ -46,12 +47,10 @@ const AboutThreadContainer: FC<TProps> = ({
             找一个懂媒体懂政治的学者在前面替自己怼人，自己默默坐在后面为学者的话背书。
           </Desc>
         </IntroBlock>
-
         <StateBlock>
           <Title>社区概况</Title>
           <BasicStates />
         </StateBlock>
-
         <MemberBlock>
           <Members avatarLayout={avatarLayout} />
         </MemberBlock>
