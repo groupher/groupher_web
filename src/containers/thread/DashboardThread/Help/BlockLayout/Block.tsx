@@ -49,7 +49,6 @@ const Block: FC<TProps> = ({ color, title }) => {
       <AdderButton ghost size="small">
         <PlusIcon /> 添加文章
       </AdderButton>
-      {/* <MoreLink>查看全部</MoreLink> */}
     </Wrapper>
   )
 }

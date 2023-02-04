@@ -34,7 +34,7 @@ const Category: FC<TProps> = ({ color, title, desc }) => {
       <Item color={color} onClick={() => gotoDetailLayout()}>
         {desc}
       </Item>
-      <MoreLink>查看全部</MoreLink>
+      <MoreLink linkColor>查看全部</MoreLink>
     </Wrapper>
   )
 }

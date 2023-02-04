@@ -2,8 +2,7 @@ import styled from 'styled-components'
 
 import type { TTestable, TSpace, TColorName } from '@/spec'
 
-import Button from '@/widgets/Buttons/Button'
-import ArrowSVG from '@/icons/ArrowSimple'
+import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import BroadcastSVG from '@/icons/Broadcast'
 
 // import Img from '@/Img'
@@ -83,28 +82,17 @@ export const Desc = styled.div`
   ${css.lineClamp(2)};
   margin-top: 10px;
 `
-export const LinkButton = styled(Button)<{ color: TColorName }>`
+export const LinkButton = styled(ArrowButton)<{ color: TColorName }>`
   border-radius: 6px;
   background: ${theme('alphaBg')};
-  border: none;
+  padding: 3px 12px;
+  font-size: 13px;
 
   &:hover {
     background: ${theme('alphaBg2')};
-    color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
   }
 
   box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
-`
-export const LinkText = styled.div<{ color: TColorName }>`
-  color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
-  opacity: 0.8;
-`
-export const ArrowIcon = styled(ArrowSVG)<{ color: TColorName }>`
-  ${css.size(14)};
-  transform: rotate(180deg);
-  margin-left: 2px;
-  margin-right: -5px;
-  fill: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
 `
 export const NotifyIcon = styled(BroadcastSVG)<{ color: TColorName }>`
   ${css.size(24)};

@@ -22,9 +22,7 @@ const Admin: FC<TProps> = ({ testid = 'admin' }) => {
           <>
             添加可参与社区内容管理的账号。
             <Inline>
-              <ArrowButton size="tiny" arrowStyle="simple">
-                设置参考
-              </ArrowButton>
+              <ArrowButton>设置参考</ArrowButton>
             </Inline>
           </>
         }

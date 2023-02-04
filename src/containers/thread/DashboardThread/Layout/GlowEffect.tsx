@@ -3,7 +3,7 @@ import { keys } from 'ramda'
 
 import GLOW_EFFECTS, { GLOW_OPACITY } from '@/constant/glow_effect'
 
-import { Inline, Br } from '@/widgets/Common'
+import { Br } from '@/widgets/Common'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import Radio from '@/widgets/Switcher/Radio'
 
@@ -53,11 +53,9 @@ const GlowEffect: FC<TProps> = ({
         desc={
           <>
             设置后每个页面的展示光晕（阅览页面除外），可配合壁纸风格搭配。
-            <Inline left={4}>
-              <ArrowButton size="tiny" arrowStyle="simple">
-                了解更多
-              </ArrowButton>
-            </Inline>
+            <ArrowButton size="small" linkColor>
+              了解更多
+            </ArrowButton>
           </>
         }
       />

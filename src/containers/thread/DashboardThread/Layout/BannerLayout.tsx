@@ -5,7 +5,7 @@ import type { TBannerLayout } from '@/spec'
 import { BANNER_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { callDashboardDesc } from '@/utils/signal'
 
-import { Row, Br, Space, SpaceGrow, Inline } from '@/widgets/Common'
+import { Row, Br, Space, SpaceGrow } from '@/widgets/Common'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import CheckLabel from '@/widgets/CheckLabel'
 
@@ -43,15 +43,14 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         desc={
           <>
             整体页面的 Header 布局，适用于除文章页的所有页面。
-            <Inline>
-              <ArrowButton
-                onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
-                size="tiny"
-                arrowStyle="simple"
-              >
-                查看示例
-              </ArrowButton>
-            </Inline>
+            <ArrowButton
+              onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
+              size="small"
+              linkColor
+              top={-1}
+            >
+              查看示例
+            </ArrowButton>
           </>
         }
       />

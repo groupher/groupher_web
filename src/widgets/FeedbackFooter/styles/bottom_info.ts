@@ -20,17 +20,8 @@ export const Wrapper = styled.div<TWrapper>`
   padding-right: ${({ offsetRight, withLastUpdated }) =>
     withLastUpdated ? 0 : `${offsetRight}px`};
 
-  border-top: 1px solid transparent;
-  border-image: linear-gradient(
-    0.35turn,
-    transparent,
-    ${theme('divider')},
-    ${theme('divider')},
-    ${theme('divider')},
-    transparent
-  );
-
-  border-image-slice: 1;
+  border-top: 1px solid;
+  border-top-color: ${theme('divider')};
 `
 
 export const LastUpdateWrapper = styled.div`

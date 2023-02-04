@@ -4,14 +4,13 @@ import { SpaceGrow } from '@/widgets/Common'
 
 import HeadAction from './HeadAction'
 
-import { Wrapper, Home, ArrowIcon, Slash, Cur } from '../styles/article_layout/navi_head'
+import { Wrapper, Home, Slash, Cur } from '../styles/article_layout/navi_head'
 import { back2Layout } from '../logic'
 
 const NaviHead: FC = () => {
   return (
     <Wrapper>
-      <Home onClick={() => back2Layout()}>
-        <ArrowIcon />
+      <Home leftLayout onClick={() => back2Layout()}>
         全部
       </Home>
       <Slash>/</Slash>
