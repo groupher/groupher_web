@@ -13,6 +13,7 @@ import {
   InnerWrapper,
   BrandWrapper,
   BrandTitle,
+  BrandLogo,
   BrandDesc,
   Column,
   Title,
@@ -38,7 +39,7 @@ const HomeView: FC<TProps> = ({ metric }) => {
     <Wrapper>
       <InnerWrapper metric={metric}>
         <BrandWrapper>
-          <BrandTitle>Groupher</BrandTitle>
+          <BrandLogo src="/groupher-alpha.png" />
           <BrandDesc>让你的产品聆听用户的声音</BrandDesc>
           <SpaceGrow />
 

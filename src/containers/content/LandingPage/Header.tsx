@@ -8,6 +8,7 @@ import {
   Wrapper,
   Brand,
   BrandTitle,
+  BrandLogo,
   LinksWrapper,
   LinkItem,
   MoreLink,
@@ -30,6 +31,7 @@ const Header: FC = () => {
   return (
     <Wrapper>
       <Brand>
+        <BrandLogo src="/groupher-alpha.png" />
         <BrandTitle>Groupher</BrandTitle>
       </Brand>
       <LinksWrapper>

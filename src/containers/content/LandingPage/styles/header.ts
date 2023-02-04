@@ -5,7 +5,7 @@ import type { TTestable, TActive } from '@/spec'
 
 import css, { theme } from '@/utils/css'
 
-// import Img from '@/Img'
+import Img from '@/Img'
 import { LineDivider } from '@/widgets/Common'
 import DemoSVG from '@/icons/DemoTV'
 import ArrowSVG from '@/icons/ArrowSimple'
@@ -26,10 +26,14 @@ export const Brand = styled.div`
   width: 150px;
 `
 
+export const BrandLogo = styled(Img)`
+  ${css.size(22)};
+  margin-right: 8px;
+`
 export const BrandTitle = styled.div`
   font-size: 18px;
   color: ${theme('article.title')};
-  font-weight: 600;
+  /* font-weight: 500; */
 `
 
 export const LinksWrapper = styled.div`

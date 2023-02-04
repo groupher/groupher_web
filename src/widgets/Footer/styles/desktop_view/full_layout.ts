@@ -4,6 +4,7 @@ import Link from 'next/link'
 import type { TMetric } from '@/spec'
 import css, { theme } from '@/utils/css'
 
+import Img from '@/Img'
 import HeartSVG from '@/icons/Heart'
 
 export const Wrapper = styled.footer`
@@ -35,6 +36,9 @@ export const BrandWrapper = styled.div`
   ${css.flexColumn()};
   width: 40%;
 `
+export const BrandLogo = styled(Img)`
+  ${css.size(35)};
+`
 export const BrandTitle = styled.div`
   color: ${theme('article.title')};
   font-weight: 600;
@@ -42,9 +46,8 @@ export const BrandTitle = styled.div`
 `
 export const BrandDesc = styled.div`
   color: ${theme('article.digest')};
-  margin-top: 8px;
+  margin-top: 14px;
   font-size: 14px;
-  opacity: 0.8;
 `
 
 export const Column = styled.div`
