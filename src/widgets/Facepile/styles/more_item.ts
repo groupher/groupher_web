@@ -37,10 +37,9 @@ export const TextMore = styled.div<TTextMore>`
 export const DotText = styled.div`
   color: ${theme('article.digest')};
   letter-spacing: -1px;
-  padding-right: 2px;
-  line-height: 20px;
-  margin-top: -8px;
-  opacity: 0.5;
+  padding-right: 4px;
+  padding-bottom: calc(50% + 5px);
+  opacity: 0.6;
 `
 export const StateInfoWrapper = styled.div`
   width: 95px;
