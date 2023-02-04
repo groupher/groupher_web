@@ -26,12 +26,7 @@ import {
   Footer,
 } from './styles/editor'
 
-import {
-  categoryOnChange,
-  privateOnChange,
-  onCategoryCreate,
-  switchToSetter,
-} from './logic'
+import { categoryOnChange, privateOnChange, onCategoryCreate, switchToSetter } from './logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:CollectionFolder:Creator')
@@ -49,19 +44,13 @@ const Creator: FC<TProps> = ({ data, show }) => (
         <Folder inactive lock />
         <Br bottom={30} />
         <IconText iconSrc={`${ICON}/route/light.svg`}>Tips</IconText>
-        <TipsText>
-          你可以将不同板块的内容归类到不同的收藏夹中，方便往后查找。
-        </TipsText>
+        <TipsText>你可以将不同板块的内容归类到不同的收藏夹中，方便往后查找。</TipsText>
       </SidebarWrapper>
       <EditWrapper>
         <FormItemWrapper>
           <FormLabel>收藏夹标题</FormLabel>
           <FormInput>
-            <Input
-              placeholder="//必填项"
-              value={data.title}
-              onChange={categoryOnChange('title')}
-            />
+            <Input placeholder="//必填项" value={data.title} onChange={categoryOnChange('title')} />
           </FormInput>
         </FormItemWrapper>
         <FormItemWrapper>
@@ -91,7 +80,7 @@ const Creator: FC<TProps> = ({ data, show }) => (
         </FormItemWrapper>
         <SpaceGrow />
         <Footer>
-          <ArrowButton size="tiny" direction="left" onClick={switchToSetter}>
+          <ArrowButton leftLayout onClick={switchToSetter}>
             上一步
           </ArrowButton>
           <Space right={18} />

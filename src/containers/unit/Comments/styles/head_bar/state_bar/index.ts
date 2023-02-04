@@ -11,22 +11,15 @@ export const TotalCountWrapper = styled.div`
   flex-grow: 1;
 `
 export const TotalTitle = styled.div`
-  color: ${theme('article.digest')};
-  font-size: 13px;
-  margin-left: 1px;
-
-  ${css.media.mobile`
-    font-size: 13px;
-    margin-left: 0;
-    padding-left: 5px;
-  `};
-`
-export const TotalNum = styled.span<{ highlight: boolean }>`
-  color: ${({ highlight }) => (highlight ? theme('comment.number') : theme('article.title'))};
-  font-weight: bold;
+  color: ${theme('article.title')};
   font-size: 15px;
-  margin-left: 5px;
-  margin-right: 5px;
+  font-weight: bold;
+`
+export const TotalNum = styled.span`
+  color: ${theme('article.digest')};
+  font-size: 14px;
+  font-weight: normal;
+  margin-left: 6px;
 `
 
 export const CommentBlock = styled.div`

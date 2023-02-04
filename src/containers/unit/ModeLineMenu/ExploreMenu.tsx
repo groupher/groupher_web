@@ -25,9 +25,7 @@ const ExploreMenu: FC<TProps> = ({ communities }) => {
       <Header>
         <Title>我加入的:</Title>
         <Link href="/">
-          <ArrowButton arrowStyle="simple" size="tiny">
-            全部社区
-          </ArrowButton>
+          <ArrowButton>全部社区</ArrowButton>
         </Link>
       </Header>
       <CommunityWrapper>

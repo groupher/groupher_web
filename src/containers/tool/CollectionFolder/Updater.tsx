@@ -27,12 +27,7 @@ import {
   Footer,
 } from './styles/editor'
 
-import {
-  categoryOnChange,
-  privateOnChange,
-  onCategoryCreate,
-  switchToSetter,
-} from './logic'
+import { categoryOnChange, privateOnChange, onCategoryCreate, switchToSetter } from './logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:CollectionFolder:Updater')
@@ -68,11 +63,7 @@ const Updater: FC<TProps> = ({ data, show }) => (
         <FormItemWrapper>
           <FormLabel>收藏夹标题</FormLabel>
           <FormInput>
-            <Input
-              placeholder="//必填项"
-              value={data.title}
-              onChange={categoryOnChange('title')}
-            />
+            <Input placeholder="//必填项" value={data.title} onChange={categoryOnChange('title')} />
           </FormInput>
         </FormItemWrapper>
         <FormItemWrapper>
@@ -102,7 +93,7 @@ const Updater: FC<TProps> = ({ data, show }) => (
         </FormItemWrapper>
         <SpaceGrow />
         <Footer>
-          <ArrowButton size="tiny" direction="left" onClick={switchToSetter}>
+          <ArrowButton leftLayout onClick={switchToSetter}>
             上一步
           </ArrowButton>
           <Space right={18} />

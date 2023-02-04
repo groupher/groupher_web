@@ -42,11 +42,7 @@ const HelpLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           <>
             当前设置仅针对常见问题的展示样式。
             <Inline>
-              <ArrowButton
-                onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
-                size="tiny"
-                arrowStyle="simple"
-              >
+              <ArrowButton onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}>
                 查看示例
               </ArrowButton>
             </Inline>

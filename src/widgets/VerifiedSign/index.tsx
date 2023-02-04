@@ -32,11 +32,10 @@ const PopContent = ({ communityTitle }) => {
         <PopHeaderText>官方认证</PopHeaderText>
       </PopHeader>
       <div>
-        我们已通过各种渠道证实该社区为{' '}
-        <PopHighlight>{communityTitle}</PopHighlight> 官方开通
+        我们已通过各种渠道证实该社区为 <PopHighlight>{communityTitle}</PopHighlight> 官方开通
       </div>
       <RulesWrapper>
-        <ArrowButton size="tiny">认证规则</ArrowButton>
+        <ArrowButton>认证规则</ArrowButton>
       </RulesWrapper>
     </PopContentWrapper>
   )

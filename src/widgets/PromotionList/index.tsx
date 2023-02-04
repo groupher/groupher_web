@@ -46,8 +46,7 @@ const PromotionList: FC<TProps> = ({
 
   useInterval(() => {
     if (isHovering) return
-    const nextIndex =
-      activeItemIndex < items.length - 1 ? activeItemIndex + 1 : 0
+    const nextIndex = activeItemIndex < items.length - 1 ? activeItemIndex + 1 : 0
     setActiveId(items[nextIndex].id)
   }, intervalSec)
 
@@ -58,17 +57,11 @@ const PromotionList: FC<TProps> = ({
           <Header>
             <Title>热门社区</Title>
             <MoreHint onClick={onAbout}>
-              <ArrowButton size="tiny" arrowStyle="simple">
-                全部
-              </ArrowButton>
+              <ArrowButton size="small">全部</ArrowButton>
             </MoreHint>
           </Header>
           <Spotlight item={activeItem} />
-          <WaitList
-            items={items}
-            activeId={activeId}
-            setActiveId={setActiveId}
-          />
+          <WaitList items={items} activeId={activeId} setActiveId={setActiveId} />
         </Fragment>
       )}
     </Wrapper>

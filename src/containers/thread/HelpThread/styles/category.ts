@@ -3,12 +3,13 @@ import styled from 'styled-components'
 import type { TColorName, TTestable } from '@/spec'
 import css, { theme } from '@/utils/css'
 
+import ArrowButton from '@/widgets/Buttons/ArrowButton'
+
 type TWrapper = TTestable & { color?: string }
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flexColumn()};
-  background: transparent;
+  ${css.flexColumn('align-start')};
   width: 28%;
   min-height: 80px;
   padding: 15px 20px;
@@ -16,6 +17,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   margin-bottom: 20px;
 
   transition: all 0.2s;
+  background: transparent;
 `
 
 export const Header = styled.div`
@@ -50,14 +52,8 @@ export const Item = styled.div<{ color: string }>`
 
   transition: all 0.2s;
 `
-export const MoreLink = styled.div`
-  color: ${theme('link')};
-  font-size: 12px;
+export const MoreLink = styled(ArrowButton)`
   margin-top: 5px;
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  transition: all 0.2s;
+  transform: scale(0.8);
+  margin-left: -8px;
 `

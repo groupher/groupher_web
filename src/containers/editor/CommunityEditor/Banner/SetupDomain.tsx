@@ -45,14 +45,14 @@ const SetupDomain: FC<TProps> = ({ status, validState }) => {
         <ErrorMsg>{cutRest(raw, 8)} 已存在（或他人在申请中），请尝试其他域名</ErrorMsg>
       )}
       <NextBtn>
-        <ArrowButton size={SIZE.MEDIUM} direction="left" onClick={pervStep} dimWhenIdle>
+        <ArrowButton leftLayout onClick={pervStep} dimWhenIdle>
           上一步
         </ArrowButton>
 
         {checking ? (
           <LavaLampLoading />
         ) : (
-          <ArrowButton size={SIZE.MEDIUM} onClick={nextStep} disabled={!isRawValid}>
+          <ArrowButton onClick={nextStep} disabled={!isRawValid}>
             下一步
           </ArrowButton>
         )}

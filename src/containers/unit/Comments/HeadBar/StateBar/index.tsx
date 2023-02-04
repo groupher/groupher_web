@@ -34,8 +34,8 @@ const StateBar: FC<TProps> = ({
     <Wrapper>
       <TotalCountWrapper>
         <TotalTitle>
-          共<TotalNum highlight={basicState.isViewerJoined}>{basicState.totalCount}</TotalNum>
-          条评论
+          评论
+          <TotalNum>{basicState.totalCount}</TotalNum>
         </TotalTitle>
       </TotalCountWrapper>
       <ActionsWrapper>

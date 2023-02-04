@@ -34,8 +34,6 @@ const SubTitle: FC<TProps> = ({
       <OptionWrapper>
         {withMore && (
           <ArrowButton
-            size="tiny"
-            arrowStyle="simple"
             onClick={() => {
               Router.push(moreLink)
             }}
