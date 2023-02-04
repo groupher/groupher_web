@@ -42,7 +42,11 @@ export const ColorBlock = styled.div<TActive>`
 
   box-shadow: ${({ $active }) => ($active ? '0 5px 25px rgb(35 35 35 / 10%)' : 'none')};
 `
-
+export const ColorBlockHolder = styled(ColorBlock)`
+  left: 0px;
+  top: 0;
+  opacity: 0.3;
+`
 export const IconsWrapper = styled.div`
   position: absolute;
   ${css.flex('align-center')};

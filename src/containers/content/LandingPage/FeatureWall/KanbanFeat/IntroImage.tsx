@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Parallax } from 'react-scroll-parallax'
 
 import type { TActive } from '@/spec'
@@ -11,6 +11,7 @@ import {
   ImageWrapper,
   Image,
   ColorBlock,
+  ColorBlockHolder,
   IconsWrapper,
   Icon1,
   Icon2,
@@ -20,6 +21,12 @@ import {
 type TProps = TActive
 
 const IntroImage: FC<TProps> = ({ $active }) => {
+  const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    setLoaded(true)
+  }, [])
+
   return (
     <Wrapper>
       <BgDots $active={$active} featType={FEAT_TYPE.KANBAN} />
@@ -27,9 +34,13 @@ const IntroImage: FC<TProps> = ({ $active }) => {
         <Image src="/intro-help-demo.png" />
       </ImageWrapper>
 
-      <Parallax speed={15} rotate={[-2, 6]} translateY={[10, -10]}>
-        <ColorBlock $active={$active} />
-      </Parallax>
+      {!loaded && <ColorBlockHolder />}
+
+      {loaded && (
+        <Parallax speed={15} rotate={[-2, 6]} translateY={[10, -10]}>
+          <ColorBlock $active={$active} />
+        </Parallax>
+      )}
 
       <Parallax speed={15} rotate={[-4, 14]} translateY={[10, -10]} opacity={[1, 0.5]}>
         <IconsWrapper>
