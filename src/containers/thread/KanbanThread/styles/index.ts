@@ -12,7 +12,8 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   padding: 10px 25px;
   margin-bottom: 30px;
   margin-left: ${({ isSidebarLayout }) => (isSidebarLayout ? '-35px' : 0)};

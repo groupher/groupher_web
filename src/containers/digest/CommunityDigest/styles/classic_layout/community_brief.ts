@@ -5,7 +5,6 @@ import css, { WIDTH, theme } from '@/utils/css'
 import Img from '@/Img'
 
 import ArrowSVG from '@/icons/Arrow'
-import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
 
 export const Wrapper = styled.div`
   ${css.flexColumnGrow('align-center')};
@@ -33,11 +32,11 @@ export const LogoWrapper = styled.div`
   z-index: 2;
   ${css.flex('align-both')};
   border-radius: 5px;
-  background: ${theme('article.title')};
+  background: white;
   box-shadow: ${css.cardShadow};
 `
-export const Logo = styled(CommunityFaceLogo)`
-  ${css.size(30)};
+export const Logo = styled(Img)`
+  ${css.size(60)};
 `
 export const CommunityInfo = styled.div`
   ${css.flexColumn('justify-center')};

@@ -11,11 +11,11 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   width: 100%;
   position: relative;
   background: ${theme('alphaBg2')};
-  padding-top: 10px;
-  padding-bottom: 12px;
-  margin-top: 3px;
-  margin-bottom: 12px;
+  margin-top: 2px;
+  margin-bottom: 10px;
   padding: 10px;
+  padding-top: 12px;
+  padding-bottom: 5px;
   border-radius: 6px;
   border: 1px solid transparent;
 
@@ -37,26 +37,20 @@ export const TimeStamp = styled.div`
 `
 export const Title = styled.div`
   ${css.lineClamp(2)}
-  font-size: 15px;
+  font-size: 14px;
   color: ${theme('article.title')};
   width: 100%;
   font-weight: 500;
   line-height: 1.62;
 `
-export const Desc = styled.div`
-  ${css.lineClamp(1)}
-  font-size: 13px;
-  color: ${theme('article.digest')};
-  width: calc(100% - 10px);
-  margin-top: 6px;
-  margin-bottom: 5px;
-`
 export const Footer = styled.div`
   ${css.flex('align-center', 'justify-between')};
-  font-size: 12px;
+  line-height: 20px;
   color: ${theme('article.info')};
   margin-top: 10px;
-  margin-left: -2px;
+  margin-left: -16px;
+  width: calc(100% + 30px);
+  transform: scale(0.9);
 `
 export const Author = styled.div`
   ${css.flex('align-center')};

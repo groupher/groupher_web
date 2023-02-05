@@ -13,7 +13,7 @@ export const LogoWrapper = styled.div`
   width: 20px;
 `
 export const Logo = styled(Img)`
-  ${css.size(22)};
+  ${css.size(20)};
 `
 export const CommunityInfo = styled.div`
   ${css.flexColumn('justify-center')};
@@ -25,7 +25,7 @@ export const TitleWrapper = styled.div`
 export const Title = styled.div`
   ${css.flex('align-center')};
   color: ${theme('article.digest')};
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
 `
 export const TitleText = styled.span`

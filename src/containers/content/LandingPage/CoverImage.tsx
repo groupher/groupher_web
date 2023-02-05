@@ -1,7 +1,8 @@
 import { FC, useState } from 'react'
 import Typewriter from 'typewriter-effect'
 
-import type { TWallpaperInfo } from '@/spec'
+import type { TWallpaperInfo, TBannerLayout } from '@/spec'
+import { BANNER_LAYOUT } from '@/constant/layout'
 
 import useInterval from '@/hooks/useInterval'
 import { Space, SpaceGrow } from '@/widgets/Common'
@@ -23,9 +24,26 @@ import {
 
 type TProps = {
   wallpaperInfo: TWallpaperInfo
+  bannerLayout: TBannerLayout
 }
 
-const CoverImage: FC<TProps> = ({ wallpaperInfo }) => {
+const getImageSrc = (bannerLayout: TBannerLayout): string => {
+  switch (bannerLayout) {
+    case BANNER_LAYOUT.SIDEBAR: {
+      return '/intro/home-sidebar.png'
+    }
+
+    case BANNER_LAYOUT.TABBER: {
+      return '/intro/home-tabber.png'
+    }
+
+    default: {
+      return '/intro/home.png'
+    }
+  }
+}
+
+const CoverImage: FC<TProps> = ({ wallpaperInfo, bannerLayout }) => {
   const [animateKey, setAnimateKey] = useState(0)
 
   const { wallpapers, wallpaper, hasShadow } = wallpaperInfo
@@ -34,6 +52,8 @@ const CoverImage: FC<TProps> = ({ wallpaperInfo }) => {
   useInterval(() => {
     setAnimateKey(animateKey + 1)
   }, 2000)
+
+  const imageSrc = getImageSrc(bannerLayout)
 
   return (
     <Wrapper>
@@ -61,7 +81,7 @@ const CoverImage: FC<TProps> = ({ wallpaperInfo }) => {
         <SpaceGrow />
       </BrowerHead>
       <Content>
-        <Image src="/landing-demo.png" hasShadow={hasShadow} />
+        <Image src={imageSrc} hasShadow={hasShadow} />
         <Background style={{ background }} effect={effect} />
       </Content>
     </Wrapper>

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TActive, TTestable } from '@/spec'
 
 import Img from '@/Img'
-import css from '@/utils/css'
+import css, { theme } from '@/utils/css'
 
 import EmojiSVG from '@/icons/EmojiTada'
 import UpvoteSVG from '@/icons/Upvote'
@@ -19,10 +19,17 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 export const ImageWrapper = styled.div`
   width: 600px;
   height: 400px;
+  /* border: 5px solid; */
+  z-index: 2;
+  background: ${theme('alphaBg')};
+  backdrop-filter: blur(5px);
+  padding: 5px;
+  border-radius: 10px;
+  overflow: hidden;
 `
 export const Image = styled(Img)`
-  width: 600px;
-  height: 400px
+  width: 100%;
+  height: 390px;
   border-radius: 5px;
   object-fit: cover;
   border-radius: 5px;

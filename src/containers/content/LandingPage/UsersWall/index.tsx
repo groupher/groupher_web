@@ -1,4 +1,5 @@
 import { FC, ReactNode } from 'react'
+import { Parallax } from 'react-scroll-parallax'
 
 import { COLOR_NAME } from '@/constant/colors'
 import { mockUsers } from '@/utils/mock'
@@ -6,7 +7,16 @@ import { mockUsers } from '@/utils/mock'
 import MasonryCards from '@/widgets/MasonryCards'
 
 import Card from './Card'
-import { Wrapper, Slogan, Title, Desc, Wall, DempP, Hightlight } from '../styles/users_wall'
+import {
+  Wrapper,
+  Slogan,
+  Title,
+  Desc,
+  Wall,
+  BgGradient,
+  DempP,
+  Hightlight,
+} from '../styles/users_wall'
 import { TColorName } from '@/spec'
 
 const P1 = (markColor: TColorName): ReactNode => (
@@ -52,6 +62,10 @@ const UsersWall: FC = () => {
         <Title>被众多优秀开发者和团队青睐</Title>
         <Desc>从独立开发者到中小型创业团队，我们用产品力回报信任</Desc>
       </Slogan>
+      <Parallax speed={-20} scale={[3, 0.8]} opacity={[1, 0.8]}>
+        <BgGradient />
+      </Parallax>
+
       <Wall>
         <MasonryCards column={3}>
           <Card content={P1(COLOR_NAME.BLUE)} user={users[0]} color={COLOR_NAME.BLUE} />

@@ -56,7 +56,12 @@ export const Footer = styled.div`
   font-size: 12px;
   color: ${theme('article.info')};
   margin-top: 18px;
-  margin-left: -2px;
+  margin-left: -10px;
+  width: calc(100% + 20px);
+  transform: scale(0.9);
+`
+export const UpvotesWrapper = styled.div`
+  margin-left: -6px;
 `
 export const Author = styled.div`
   ${css.flex('align-center')};

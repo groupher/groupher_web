@@ -1,6 +1,9 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 
+import type { TAvatarLayout } from '@/spec'
+import { AVATAR_LAYOUT } from '@/constant/layout'
+
 // import type { TTestable } from '@/spec'
 
 import Img from '@/Img'
@@ -12,8 +15,9 @@ export const Wrapper = styled.div`
   min-height: 100px;
   padding: 5px 10px;
 `
-export const Avatar = styled(Img)`
-  ${css.circle(40)};
+export const Avatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
+  ${css.size(40)};
+  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
 `
 export const ShortBio = styled.div`
   color: ${theme('article.digest')};

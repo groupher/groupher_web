@@ -31,7 +31,7 @@ const IntroImage: FC<TProps> = ({ $active }) => {
     <Wrapper>
       <BgDots $active={$active} featType={FEAT_TYPE.CHANGELOG} />
       <ImageWrapper>
-        <Image src="/intro-help-demo.png" />
+        <Image src="/intro/changelog-demo.png" />
       </ImageWrapper>
 
       {!loaded && <ColorBlockHolder />}

@@ -31,7 +31,8 @@ const IntroImage: FC<TProps> = ({ $active }) => {
     <Wrapper>
       <BgDots $active={$active} featType={FEAT_TYPE.KANBAN} />
       <ImageWrapper>
-        <Image src="/intro-help-demo.png" />
+        {/* <Image src="/intro/kanban-demo.png" /> */}
+        <Image src="https://global-uploads.webflow.com/611a9c161d362bab9bf15fd8/63c17d6a65cb2f9e830e7523_Group%204739.png" />
       </ImageWrapper>
 
       {!loaded && <ColorBlockHolder />}

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TActive, TTestable } from '@/spec'
 
 import Img from '@/Img'
-import css from '@/utils/css'
+import css, { theme } from '@/utils/css'
 
 import UpvoteSVG from '@/icons/Upvote'
 import CommentSVG from '@/icons/Comment'
@@ -24,12 +24,15 @@ export const ImageWrapper = styled.div`
 `
 export const Image = styled(Img)`
   width: 600px;
-  height: 400px
+  height: 396px;
   border-radius: 5px;
   object-fit: cover;
   box-shadow: ${css.cardShadow};
+  border: 1px solid;
+  border-color: ${theme('divider')};
   border-radius: 5px;
   box-shadow: 0 5px 25px rgb(35 35 35 / 5%);
+  background: ${theme('alphaBg2')};
 `
 export const ColorBlock = styled.div<TActive>`
   position: absolute;

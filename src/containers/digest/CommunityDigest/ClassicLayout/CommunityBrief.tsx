@@ -29,16 +29,14 @@ type TProps = {
 }
 
 const CommunityBrief: FC<TProps> = ({ community }) => {
+  console.log('## community: ', community)
+
   return (
     <Wrapper>
       <CoverImage src="/banner-cover.webp" noLazy />
       <MainWrapper>
         <LogoWrapper>
-          <Logo
-            noFill={contains(community.raw, NON_FILL_COMMUNITY)}
-            src={community.logo}
-            raw={community.raw}
-          />
+          <Logo src={community.logo} />
         </LogoWrapper>
         <CommunityInfo>
           <Title>

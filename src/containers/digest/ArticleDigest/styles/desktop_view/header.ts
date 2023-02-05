@@ -8,14 +8,17 @@ import AccountSVG from '@/icons/Acount'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.flex('align-both')};
   position: relative;
   background: transparent;
-  border-bottom: ${theme('banner.spliter')};
-  height: 60px;
+  max-width: ${WIDTH.ARTICLE.PAGE};
   width: 100%;
-  /* max-width: ${WIDTH.ARTICLE.PAGE}; */
-  padding: 5px 150px;
+`
+export const InnerWrapper = styled.div`
+  ${css.flex('align-center', 'justify-between')};
+  width: 78%;
+  height: 54px;
+  padding-top: 2px;
 `
 export const Community = styled.div`
   ${css.flex('align-both')};
@@ -33,19 +36,32 @@ export const CommunityTitle = styled.div`
 
 export const Main = styled.div<{ metric: TMetric }>`
   ${css.flex('align-both')};
-  gap: 0 28px;
+  gap: 0 32px;
   width: 100%;
   ${({ metric }) => css.fitContentWidth(metric)};
   margin-left: -20px !important;
   height: 100%;
+
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(
+    0.35turn,
+    transparent,
+    ${theme('divider')},
+    ${theme('divider')},
+    ${theme('divider')},
+    transparent
+  );
+
+  border-image-slice: 1;
 `
 export const LinkItem = styled(Link)`
-  font-size: 14px;
+  font-size: 13px;
   color: ${theme('article.digest')};
-  font-weight: 500;
+  font-weight: 400;
   text-decoration: none;
 
   &:hover {
+    font-weight: 500;
     text-decoration: none;
     color: ${theme('article.title')};
   }

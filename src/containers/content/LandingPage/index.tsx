@@ -3,11 +3,12 @@
  *
  */
 
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { ParallaxProvider } from 'react-scroll-parallax'
 
 // import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
+import { BANNER_LAYOUT } from '@/constant/layout'
 
 import Link from 'next/link'
 
@@ -60,6 +61,8 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
   const { wallpaperInfo, gradientWallpapers } = store
   const { wallpaper } = wallpaperInfo
 
+  const [bannerLayout, setBannerLayout] = useState(BANNER_LAYOUT.HEADER)
+
   useEffect(() => {
     changeGlowEffect(wallpaper)
   }, [wallpaper])
@@ -107,9 +110,14 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
             本站正在开发中，详情请联系 mydearxym@qq.com
           </Note>
         </Banner>
-        <CoverImage wallpaperInfo={wallpaperInfo} />
+        <CoverImage wallpaperInfo={wallpaperInfo} bannerLayout={bannerLayout} />
 
-        <WallpaperBar wallpaper={wallpaper} gradientWallpapers={gradientWallpapers} />
+        <WallpaperBar
+          wallpaper={wallpaper}
+          gradientWallpapers={gradientWallpapers}
+          bannerLayout={bannerLayout}
+          onLayoutChange={(layout) => setBannerLayout(layout)}
+        />
         <Divider top={100} bottom={100} />
 
         <FeatureWall />

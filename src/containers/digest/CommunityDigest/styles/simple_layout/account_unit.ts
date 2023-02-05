@@ -37,21 +37,21 @@ const hoverEffect = `
 
 export const NotifyIcon = styled(NotifySVG)`
   fill: ${theme('article.digest')};
-  ${css.size(18)};
+  ${css.size(16)};
   margin-right: 18px;
 
   ${hoverEffect}
 `
 export const DashboardIcon = styled(DashboardSVG)`
   fill: ${theme('article.digest')};
-  ${css.size(16)};
+  ${css.size(15)};
   margin-right: 16px;
 
   ${hoverEffect}
 `
 export const AccountIcon = styled(AccountSVG)`
   fill: ${theme('article.digest')};
-  ${css.size(16)};
+  ${css.size(14)};
   margin-right: 14px;
 
   ${hoverEffect}
