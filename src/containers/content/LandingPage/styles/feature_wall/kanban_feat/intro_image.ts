@@ -25,14 +25,17 @@ export const ImageWrapper = styled.div`
 export const Image = styled(Img)`
   width: 600px;
   height: 396px;
-  border-radius: 5px;
   object-fit: cover;
   box-shadow: ${css.cardShadow};
-  border-radius: 5px;
+  border-radius: 20px;
   border: 1px solid;
-  border-color: ${theme('divider')};
+  border-color: #c6d4f0;
   box-shadow: 0 5px 25px rgb(35 35 35 / 5%);
   background: ${theme('alphaBg2')};
+
+  /* border: 1px solid transparent;
+  border-image: linear-gradient(0.35turn, transparent, #c6d4f0, #c6d4f0, #c6d4f0, transparent); */
+  /* border-image-slice: 1; */
 `
 export const ColorBlock = styled.div<TActive>`
   position: absolute;

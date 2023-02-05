@@ -88,7 +88,7 @@ export const Image = styled(Img)<{ hasShadow: boolean }>`
   width: calc(100% - 100px);
   margin-left: 50px;
   height: 701px;
-  object-fit: fill;
+  object-fit: cover;
 
   box-shadow: ${({ hasShadow }) =>
     hasShadow ? 'rgb(100 100 111 / 20%) 0px 7px 29px 0px;' : 'none'};

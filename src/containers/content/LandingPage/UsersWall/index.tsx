@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, useState, useEffect } from 'react'
 import { Parallax } from 'react-scroll-parallax'
 
 import { COLOR_NAME } from '@/constant/colors'
@@ -54,6 +54,12 @@ const P3 = (markColor: TColorName): ReactNode => (
 )
 
 const UsersWall: FC = () => {
+  const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    setLoaded(true)
+  }, [])
+
   const users = mockUsers(10)
 
   return (
@@ -62,9 +68,12 @@ const UsersWall: FC = () => {
         <Title>被众多优秀开发者和团队青睐</Title>
         <Desc>从独立开发者到中小型创业团队，我们用产品力回报信任</Desc>
       </Slogan>
-      <Parallax speed={-20} scale={[3, 0.8]} opacity={[1, 0.8]}>
-        <BgGradient />
-      </Parallax>
+
+      {loaded && (
+        <Parallax speed={-20} scale={[3, 0.8]} opacity={[1, 0.8]}>
+          <BgGradient />
+        </Parallax>
+      )}
 
       <Wall>
         <MasonryCards column={3}>

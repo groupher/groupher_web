@@ -27,7 +27,7 @@ export const MenuItem = styled(Link)<TActive>`
   height: 30px;
   margin-top: 3px;
   margin-bottom: 3px;
-  background: ${({ $active }) => ($active ? theme('hoverBg') : 'transparent')};
+  background: ${({ $active }) => ($active ? theme('article.title') : 'transparent')};
   /* background: ${({ $active }) => ($active ? theme('article.title') : 'transparent')}; */
   border-radius: 10px;
   margin-left: -5px;
@@ -47,34 +47,34 @@ export const IconWrapper = styled.div`
 `
 export const HomeIcon = styled(HomeSVG)<TActive>`
   ${css.size(13)};
-  fill: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
+  fill: ${({ $active }) => ($active ? 'white' : theme('article.digest'))};
 `
 export const DiscussIcon = styled(DiscussSVG)<TActive>`
   ${css.size(14)};
-  fill: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
+  fill: ${({ $active }) => ($active ? 'white' : theme('article.digest'))};
 `
 export const KanbanIcon = styled(KanbanSVG)<TActive>`
   ${css.size(16)};
-  fill: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
+  fill: ${({ $active }) => ($active ? 'white' : theme('article.digest'))};
   transform: rotate(180deg);
 `
 export const GuideIcon = styled(GuideSVG)<TActive>`
   ${css.size(13)};
   margin-left: -1px;
-  fill: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
+  fill: ${({ $active }) => ($active ? 'white' : theme('article.digest'))};
 `
 export const InfoIcon = styled(InfoSVG)<TActive>`
   ${css.size(13)};
-  fill: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
+  fill: ${({ $active }) => ($active ? 'white' : theme('article.digest'))};
 `
 export const TadaIcon = styled(TadaSVG)<TActive>`
   ${css.size(15)};
-  fill: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
+  fill: ${({ $active }) => ($active ? 'white' : theme('article.digest'))};
 `
 
 export const MenuTitle = styled.div<TActive>`
-  color: ${theme('article.title')};
-  font-weight: ${({ $active }) => ($active ? 500 : 400)};
+  color: ${({ $active }) => ($active ? 'white' : theme('article.title'))};
+  /* font-weight: ${({ $active }) => ($active ? 500 : 400)}; */
   font-size: 14px;
   margin-left: 10px;
 `

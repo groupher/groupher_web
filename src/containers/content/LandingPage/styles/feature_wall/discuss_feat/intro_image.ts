@@ -25,12 +25,11 @@ export const ImageWrapper = styled.div`
 export const Image = styled(Img)`
   width: 600px;
   height: 396px;
-  border-radius: 5px;
+  border-radius: 20px;
   object-fit: cover;
   box-shadow: ${css.cardShadow};
   border: 1px solid;
-  border-color: ${theme('divider')};
-  border-radius: 5px;
+  border-color: #d4c6df;
   box-shadow: 0 5px 25px rgb(35 35 35 / 5%);
   background: ${theme('alphaBg2')};
 `
