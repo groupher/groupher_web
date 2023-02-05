@@ -1,8 +1,6 @@
 import { FC, memo } from 'react'
-import { contains } from 'ramda'
 
 import type { TCommunity } from '@/spec'
-import { NON_FILL_COMMUNITY } from '@/constant/name'
 
 // import CommunityJoinSign from '@/widgets/CommunityJoinSign'
 

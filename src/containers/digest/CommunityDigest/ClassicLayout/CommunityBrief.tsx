@@ -1,9 +1,7 @@
 import { FC, memo } from 'react'
-import { contains } from 'ramda'
 
 import type { TCommunity } from '@/spec'
 import { DEME_SOCIALS } from '@/constant/social'
-import { NON_FILL_COMMUNITY } from '@/constant/name'
 
 import SocialList from '@/widgets/SocialList'
 
@@ -29,8 +27,6 @@ type TProps = {
 }
 
 const CommunityBrief: FC<TProps> = ({ community }) => {
-  console.log('## community: ', community)
-
   return (
     <Wrapper>
       <CoverImage src="/banner-cover.webp" noLazy />
