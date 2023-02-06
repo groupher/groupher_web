@@ -19,9 +19,35 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   position: relative;
 `
 export const ImageWrapper = styled.div`
+  ${css.flexColumn('align-end')};
   width: 600px;
   height: 400px;
+  background: ${theme('alphaBg2')};
+  border: 1px solid;
+  border-color: #c8d5f2;
+  border-radius: 15px;
+  z-index: 2;
 `
+export const BoardsWrapper = styled.div`
+  ${css.flex('justify-center', 'align-end')};
+  gap: 0 18px;
+  width: 100%;
+`
+export const Board = styled.div<{ shadow?: boolean }>`
+  ${css.flexColumn()};
+  padding: 6px;
+  gap: 6px;
+  overflow: hidden;
+
+  width: 168px;
+  height: 300px;
+  background: #c8d6f24f;
+  border-radius: 8px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  box-shadow: ${({ shadow }) => (shadow ? '#c3d6f336 1px 5px 17px 7px' : 'none')}; ;
+`
+
 export const Image = styled(Img)`
   width: 600px;
   height: 396px;
@@ -58,21 +84,21 @@ export const IconsWrapper = styled.div`
   position: absolute;
   ${css.flex('align-center')};
   gap: 0 15px;
-  bottom: -40px;
+  bottom: -38px;
   left: -270px;
 `
 export const Icon1 = styled(GtdTodoSVG)`
-  ${css.size(21)};
+  ${css.size(19)};
   fill: #5799fb;
   opacity: 0.6;
 `
 export const Icon2 = styled(GtdWipSVG)`
-  ${css.size(23)};
+  ${css.size(20)};
   fill: #5799fb;
   opacity: 0.8;
 `
 export const Icon3 = styled(GtdDoneSVG)`
-  ${css.size(21)};
+  ${css.size(19)};
   fill: #69b8cc;
   opacity: 0.8;
 `

@@ -16,10 +16,12 @@ export const Wrapper = styled.div`
 export const CheckIcon = styled(CheckSVG)<{ featType: TFeatType }>`
   ${css.size(16)};
   fill: ${({ featType }) => FEAT[featType].COLOR};
+  /* fill: ${theme('article.digest')}; */
+  opacity: 0.6;
   margin-right: 14px;
 `
 
 export const Text = styled.div`
   color: ${theme('article.digest')};
-  font-size: 17px;
+  font-size: 16px;
 `

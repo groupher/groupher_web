@@ -6,7 +6,7 @@ import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 
 import EmojiSVG from '@/icons/EmojiTada'
-import UpvoteSVG from '@/icons/Upvote'
+import BroadcastSVG from '@/icons/Broadcast'
 import CommentSVG from '@/icons/Heart'
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
@@ -62,11 +62,10 @@ export const IconsWrapper = styled.div`
   right: -250px;
   z-index: -3;
 `
-export const Icon1 = styled(UpvoteSVG)`
+export const Icon1 = styled(BroadcastSVG)`
   ${css.size(21)};
   fill: #f46b68;
-  opacity: 0.7;
-  transform: scaleY(0.8);
+  opacity: 0.85;
   margin-top: -1px;
 `
 export const Icon2 = styled(CommentSVG)`
