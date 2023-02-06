@@ -3,13 +3,14 @@ import { Parallax } from 'react-scroll-parallax'
 
 import type { TActive } from '@/spec'
 
+import ChangelogItem from './ChangelogItem'
+
 import { FEAT_TYPE } from '../../constant'
 import BgDots from '../BgDots'
 
 import {
   Wrapper,
   ImageWrapper,
-  Image,
   ColorBlock,
   ColorBlockHolder,
   IconsWrapper,
@@ -31,7 +32,7 @@ const IntroImage: FC<TProps> = ({ $active }) => {
     <Wrapper>
       <BgDots $active={$active} featType={FEAT_TYPE.CHANGELOG} />
       <ImageWrapper>
-        <Image src="/intro/changelog-demo.png" />
+        <ChangelogItem />
       </ImageWrapper>
 
       {!loaded && <ColorBlockHolder />}

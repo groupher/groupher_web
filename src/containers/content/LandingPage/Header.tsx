@@ -68,8 +68,8 @@ const Header: FC = () => {
           </MoreLink>
         </Tooltip>
 
-        <LinkItem href={`/${ROUTE.HOME}`}>价格</LinkItem>
         <LinkItem href={`/${ROUTE.HOME}`}>社区</LinkItem>
+        <LinkItem href={`/${ROUTE.HOME}`}>开发计划</LinkItem>
         <Tooltip
           content={
             <Panel width="120px">

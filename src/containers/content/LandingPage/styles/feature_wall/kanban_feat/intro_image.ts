@@ -2,7 +2,6 @@ import styled from 'styled-components'
 
 import type { TActive, TTestable } from '@/spec'
 
-import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 
 import GtdWipSVG from '@/icons/GtdWip'
@@ -22,10 +21,11 @@ export const ImageWrapper = styled.div`
   ${css.flexColumn('align-end')};
   width: 600px;
   height: 400px;
-  background: ${theme('alphaBg2')};
-  border: 1px solid;
+  background: white;
+  /* background: ${theme('alphaBg2')}; */
+  border: 1px dotted;
   border-color: #c8d5f2;
-  border-radius: 15px;
+  border-radius: 10px;
   z-index: 2;
 `
 export const BoardsWrapper = styled.div`
@@ -46,22 +46,6 @@ export const Board = styled.div<{ shadow?: boolean }>`
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   box-shadow: ${({ shadow }) => (shadow ? '#c3d6f336 1px 5px 17px 7px' : 'none')}; ;
-`
-
-export const Image = styled(Img)`
-  width: 600px;
-  height: 396px;
-  object-fit: cover;
-  box-shadow: ${css.cardShadow};
-  border-radius: 20px;
-  border: 1px solid;
-  border-color: #c6d4f0;
-  box-shadow: 0 5px 25px rgb(35 35 35 / 5%);
-  background: ${theme('alphaBg2')};
-
-  /* border: 1px solid transparent;
-  border-image: linear-gradient(0.35turn, transparent, #c6d4f0, #c6d4f0, #c6d4f0, transparent); */
-  /* border-image-slice: 1; */
 `
 export const ColorBlock = styled.div<TActive>`
   position: absolute;

@@ -2,8 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive, TTestable } from '@/spec'
 
-import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css from '@/utils/css'
 
 import EmojiSVG from '@/icons/EmojiTada'
 import BroadcastSVG from '@/icons/Broadcast'
@@ -19,22 +18,15 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 export const ImageWrapper = styled.div`
   width: 600px;
   height: 400px;
-  /* border: 5px solid; */
   z-index: 2;
-  background: ${theme('alphaBg')};
-  backdrop-filter: blur(5px);
+  background: white;
   padding: 5px;
   border-radius: 10px;
+  border: 1px dotted;
+  border-color: #f9b7b5;
   overflow: hidden;
 `
-export const Image = styled(Img)`
-  width: 100%;
-  height: 390px;
-  border-radius: 5px;
-  object-fit: cover;
-  border-radius: 5px;
-  box-shadow: 0 5px 25px rgb(35 35 35 / 5%);
-`
+
 export const ColorBlock = styled.div<TActive>`
   position: absolute;
   left: -290px;
@@ -58,7 +50,7 @@ export const IconsWrapper = styled.div`
   position: absolute;
   ${css.flex('align-center')};
   gap: 0 18px;
-  bottom: -25px;
+  bottom: -30px;
   right: -250px;
   z-index: -3;
 `
