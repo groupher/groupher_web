@@ -92,7 +92,7 @@ export const StarIcon = styled(StarSVG)`
 
 export const StarIcon2 = styled(StarSVG)`
   ${css.size(20)};
-  fill: #f9b7b6;
+  fill: #ffd67e;
 
   position: absolute;
   top: 170px;

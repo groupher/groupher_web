@@ -32,4 +32,5 @@ export const Desc = styled.div`
   color: ${theme('article.digest')};
   margin-top: 12px;
   width: 340px;
+  opacity: 0.65;
 `

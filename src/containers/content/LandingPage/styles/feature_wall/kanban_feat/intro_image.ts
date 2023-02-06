@@ -57,7 +57,7 @@ export const ColorBlock = styled.div<TActive>`
   backdrop-filter: blur(5px);
   border-radius: 20px;
   box-shadow: ${({ $active }) => ($active ? '0 5px 25px rgb(35 35 35 / 10%)' : 'none')};
-  transform: rotate(5deg);
+  transform: rotate(4deg);
 `
 export const ColorBlockHolder = styled(ColorBlock)`
   left: 0px;
