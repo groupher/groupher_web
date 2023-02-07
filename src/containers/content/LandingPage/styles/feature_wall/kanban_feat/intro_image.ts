@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive, TTestable } from '@/spec'
 
-import css, { theme } from '@/utils/css'
+import css from '@/utils/css'
 
 import GtdWipSVG from '@/icons/GtdWip'
 import GtdDoneSVG from '@/icons/GtdDone'
@@ -22,7 +22,6 @@ export const ImageWrapper = styled.div`
   width: 600px;
   height: 400px;
   background: white;
-  /* background: ${theme('alphaBg2')}; */
   border: 1px dotted;
   border-color: #c8d5f2;
   border-radius: 10px;
