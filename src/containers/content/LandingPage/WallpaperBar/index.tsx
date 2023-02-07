@@ -1,32 +1,41 @@
 import { FC, memo, useCallback } from 'react'
 import { keys, includes } from 'ramda'
 
-import type { TWallpaperGradient } from '@/spec'
-import { ROUTE } from '@/constant/route'
+import type { TBannerLayout, TWallpaperGradient } from '@/spec'
 
 import { parseWallpaper } from '@/utils/wallpaper'
 import { callWallpaperEditor } from '@/utils/signal'
+
+import ArrowButton from '@/widgets/Buttons/ArrowButton'
+
+import LayoutBall from './LayoutBall'
 
 import {
   Wrapper,
   MainWrapper,
   Desc,
-  DescLink,
-  ArrowIcon,
   BallWrapper,
   ColorBall,
   CustomBall,
-  ClothIcon,
-} from './styles/wallpaper_bar'
+  Divider,
+  ThemeIcon,
+} from '../styles/wallpaper_bar'
 
-import { changeWallpaper } from './logic'
+import { changeWallpaper } from '../logic'
 
 type TProps = {
   wallpaper: string
   gradientWallpapers: Record<string, TWallpaperGradient>
+  bannerLayout: TBannerLayout
+  onLayoutChange: (bannerLayout: TBannerLayout) => void
 }
 
-const WallpaperBar: FC<TProps> = ({ wallpaper, gradientWallpapers }) => {
+const WallpaperBar: FC<TProps> = ({
+  wallpaper,
+  gradientWallpapers,
+  bannerLayout,
+  onLayoutChange,
+}) => {
   const gradientKeys = keys(gradientWallpapers)
 
   const handleCallEditor = useCallback(() => callWallpaperEditor(), [])
@@ -48,14 +57,16 @@ const WallpaperBar: FC<TProps> = ({ wallpaper, gradientWallpapers }) => {
           </BallWrapper>
         ))}
         <CustomBall onClick={() => handleCallEditor()} $active={isCustomWallpaper}>
-          <ClothIcon />
+          <ThemeIcon />
         </CustomBall>
+        <Divider left={4} right={4} />
+        <LayoutBall bannerLayout={bannerLayout} onLayoutChange={onLayoutChange} />
       </MainWrapper>
       <Desc>
         壁纸仅在宽屏模式下显示，更多自定义设置
-        <DescLink href={`/${ROUTE.HOME}/${ROUTE.HELP}`}>
-          查看这里 <ArrowIcon />
-        </DescLink>
+        <ArrowButton size="small" top={1} left={-3} linkColor>
+          查看这里
+        </ArrowButton>
       </Desc>
     </Wrapper>
   )

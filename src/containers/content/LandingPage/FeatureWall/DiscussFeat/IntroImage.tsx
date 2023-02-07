@@ -6,10 +6,11 @@ import type { TActive } from '@/spec'
 import { FEAT_TYPE } from '../../constant'
 import BgDots from '../BgDots'
 
+import DiscussDemo from './DiscussDemo'
+
 import {
   Wrapper,
   ImageWrapper,
-  Image,
   ColorBlock,
   ColorBlockHolder,
   IconsWrapper,
@@ -31,7 +32,7 @@ const IntroImage: FC<TProps> = ({ $active }) => {
     <Wrapper>
       <BgDots $active={$active} featType={FEAT_TYPE.DISCUSS} />
       <ImageWrapper>
-        <Image src="/intro-help-demo.png" />
+        <DiscussDemo />
       </ImageWrapper>
 
       {!loaded && <ColorBlockHolder />}

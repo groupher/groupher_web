@@ -1,8 +1,9 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-
 import css, { theme } from '@/utils/css'
+
+import AccountSVG from '@/icons/Acount'
 
 export { Menu, MenuItem, Icon } from '.'
 
@@ -31,4 +32,21 @@ export const AccountWrapper = styled.div`
   ${css.flex('justify-end')};
   flex-grow: 1;
   padding-bottom: 15px;
+  padding-right: 20px;
+`
+
+const hoverEffect = `
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
+  transition: all 0.2s;
+`
+export const AccountIcon = styled(AccountSVG)`
+  fill: ${theme('article.digest')};
+  ${css.size(16)};
+
+  ${hoverEffect}
 `

@@ -41,6 +41,7 @@ type TProps = {
   mode?: TPublishMode
   onClick?: () => void
   onMenuSelect?: (cat: TArticleCat) => void
+  menuLeft?: boolean
 }
 
 const PublishButton: FC<TProps> = ({
@@ -50,6 +51,7 @@ const PublishButton: FC<TProps> = ({
   mode = PUBLISH_MODE.DEFAULT,
   onClick = log,
   onMenuSelect = log,
+  menuLeft = false,
 }) => {
   const [show, setShow] = useState(false)
   const accountInfo = useAccount()
@@ -61,6 +63,22 @@ const PublishButton: FC<TProps> = ({
 
   return (
     <Wrapper>
+      {menuLeft && !hasNoMenu && (
+        <MoreOption right={3}>
+          <Tooltip
+            placement="bottom-start"
+            trigger="click"
+            onShow={() => setShow(true)}
+            offset={offset as [number, number]}
+            content={
+              <Fragment>{show && <FullPanel onSelect={onMenuSelect} activeCat={null} />}</Fragment>
+            }
+          >
+            <IconButton icon={SVG.MOREL} />
+          </Tooltip>
+        </MoreOption>
+      )}
+
       <PubButton
         smaller={mode === PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER}
         onClick={() => {
@@ -74,8 +92,8 @@ const PublishButton: FC<TProps> = ({
         {mode === PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER && <SidebarHeaderLayout text={text} />}
       </PubButton>
 
-      {!hasNoMenu && (
-        <MoreOption>
+      {!menuLeft && !hasNoMenu && (
+        <MoreOption left={3}>
           <Tooltip
             placement="bottom-end"
             trigger="click"

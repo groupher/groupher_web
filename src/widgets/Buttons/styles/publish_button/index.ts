@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 
+import type { TSpace } from '@/spec'
 // import Img from '@/Img'
 import css from '@/utils/css'
 
@@ -21,7 +22,8 @@ export const PubButton = styled(Button)<{ smaller?: boolean }>`
   height: ${({ smaller }) => (smaller ? '26px' : '33px')};
   border-radius: 15px;
 `
-export const MoreOption = styled.div`
+export const MoreOption = styled.div<TSpace>`
   ${css.flex('align-both')};
-  margin-left: 3px;
+  margin-left: ${({ left }) => `${left}px` || 0};
+  margin-right: ${({ right }) => `${right}px` || 0};
 `

@@ -65,3 +65,18 @@ export const Inline = styled.div<TSpace>`
   margin-left: ${({ left }) => `${left || 0}px`};
   margin-right: ${({ right }) => `${right || 0}px`};
 `
+
+type TBar = { width?: number; opacity?: number; height?: number } & TSpace
+
+export const Bar = styled.div<TBar>`
+  width: ${({ width }) => `${width}px` || '20px'};
+  height: ${({ height }) => `${height}px` || '5px'};
+  border-radius: 5px;
+  opacity: ${({ opacity }) => opacity || 1};
+  background: ${theme('divider')};
+
+  margin-top: ${({ top }) => `${top}px` || 0};
+  margin-bottom: ${({ bottom }) => `${bottom}px` || 0};
+  margin-left: ${({ left }) => `${left}px` || 0};
+  margin-right: ${({ right }) => `${right}px` || 0};
+`

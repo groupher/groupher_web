@@ -6,10 +6,11 @@ import type { TActive } from '@/spec'
 import { FEAT_TYPE } from '../../constant'
 import BgDots from '../BgDots'
 
+import KanbanDemo from './KanbanDemo'
+
 import {
   Wrapper,
   ImageWrapper,
-  Image,
   ColorBlock,
   ColorBlockHolder,
   IconsWrapper,
@@ -31,7 +32,7 @@ const IntroImage: FC<TProps> = ({ $active }) => {
     <Wrapper>
       <BgDots $active={$active} featType={FEAT_TYPE.KANBAN} />
       <ImageWrapper>
-        <Image src="/intro-help-demo.png" />
+        <KanbanDemo />
       </ImageWrapper>
 
       {!loaded && <ColorBlockHolder />}

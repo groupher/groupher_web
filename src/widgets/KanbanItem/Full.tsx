@@ -10,14 +10,13 @@ import { buildLog } from '@/utils/logger'
 import { mockTags, mockUsers } from '@/utils/mock'
 import { getRandomInt } from '@/utils/helper'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
-import { Row } from '@/widgets/Common'
 
 // import IconButton from '@/widgets/Buttons/IconButton'
 import ArticleCatState from '@/widgets/ArticleCatState'
 import Upvote from '@/widgets/Upvote'
 import TagsList from '@/widgets/TagsList'
 
-import { Wrapper, Header, Footer, Title, Desc } from './styles/full'
+import { Wrapper, Header, Footer, UpvotesWrapper, Title, Desc } from './styles/full'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:KanbanItem:index')
@@ -57,10 +56,10 @@ const KanbanItem: FC<TProps> = ({ testid = 'gtd-item' }) => {
       <Title>{TITLES[titleIdx]}</Title>
       <Desc>服务于团队开发流程，以社区服务为基础，提供反馈社区工具箱，各种个性化设置等等</Desc>
       <Footer>
-        <Row>
+        <UpvotesWrapper>
           <Upvote count={upvoteCount} avatarList={mockUsers(3)} type={UPVOTE_LAYOUT.GENERAL} />
-        </Row>
-        <ArticleCatState cat="FEATURE" noBg />
+        </UpvotesWrapper>
+        <ArticleCatState cat="FEATURE" noBg top={1} />
       </Footer>
     </Wrapper>
   )

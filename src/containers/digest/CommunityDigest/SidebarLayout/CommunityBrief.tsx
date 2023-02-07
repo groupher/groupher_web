@@ -1,8 +1,6 @@
 import { FC, memo } from 'react'
-import { contains } from 'ramda'
 
 import type { TCommunity } from '@/spec'
-import { NON_FILL_COMMUNITY } from '@/constant/name'
 
 import {
   Wrapper,
@@ -25,11 +23,7 @@ const CommunityBrief: FC<TProps> = ({ community }) => {
     <Wrapper>
       <MainWrapper>
         <LogoWrapper>
-          <Logo
-            noFill={contains(community.raw, NON_FILL_COMMUNITY)}
-            src={community.logo}
-            raw={community.raw}
-          />
+          <Logo src={community.logo} raw={community.raw} />
         </LogoWrapper>
         <CommunityInfo>
           <Title>Groupher</Title>

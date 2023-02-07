@@ -5,6 +5,7 @@ import { ROUTE } from '@/constant/route'
 
 import {
   Wrapper,
+  InnerWrapper,
   Community,
   CommunityLogo,
   CommunityTitle,
@@ -22,20 +23,22 @@ type TProps = {
 const Header: FC<TProps> = ({ metric, community }) => {
   return (
     <Wrapper>
-      <Community>
-        <CommunityLogo src={community.logo} />
-        <CommunityTitle>{community.title}</CommunityTitle>
-      </Community>
-      <Main metric={metric}>
-        <LinkItem href={`/${community.raw}/${ROUTE.POST}`}>讨论区</LinkItem>
-        <LinkItem href={`/${community.raw}/${ROUTE.KANBAN}`}>看板</LinkItem>
-        <LinkItem href={`/${community.raw}/${ROUTE.CHANGELOG}`}>更新日志</LinkItem>
-        <LinkItem href={`/${community.raw}/${ROUTE.HELP}`}>帮助台</LinkItem>
-        <LinkItem href={`/${community.raw}/${ROUTE.ABOUT}`}>关于</LinkItem>
-      </Main>
-      <Account>
-        <AccountIcon />
-      </Account>
+      <InnerWrapper>
+        <Community>
+          <CommunityLogo src={community.logo} />
+          <CommunityTitle>{community.title}</CommunityTitle>
+        </Community>
+        <Main metric={metric}>
+          <LinkItem href={`/${community.raw}/${ROUTE.POST}`}>讨论区</LinkItem>
+          <LinkItem href={`/${community.raw}/${ROUTE.KANBAN}`}>看板</LinkItem>
+          <LinkItem href={`/${community.raw}/${ROUTE.CHANGELOG}`}>更新日志</LinkItem>
+          <LinkItem href={`/${community.raw}/${ROUTE.HELP}`}>帮助台</LinkItem>
+          <LinkItem href={`/${community.raw}/${ROUTE.ABOUT}`}>关于</LinkItem>
+        </Main>
+        <Account>
+          <AccountIcon />
+        </Account>
+      </InnerWrapper>
     </Wrapper>
   )
 }

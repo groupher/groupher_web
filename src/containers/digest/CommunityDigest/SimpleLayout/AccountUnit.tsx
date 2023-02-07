@@ -27,9 +27,10 @@ const AccountUnit: FC = () => {
         <DashboardIcon />
       </Link>
 
-      <div data-test-id="header-notify-icon">
+      {/* <div data-test-id="header-notify-icon">
         <NotifyIcon />
-      </div>
+      </div> */}
+
       <AccountIcon onClick={callAuth} />
       {/* <Avatar src={`${mockUsers(1)[0].avatar}`} onClick={callAuth} /> */}
     </Wrapper>

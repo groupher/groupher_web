@@ -2,7 +2,6 @@ import styled from 'styled-components'
 
 import type { TActive, TTestable } from '@/spec'
 
-import Img from '@/Img'
 import css from '@/utils/css'
 
 import GtdWipSVG from '@/icons/GtdWip'
@@ -19,18 +18,16 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   position: relative;
 `
 export const ImageWrapper = styled.div`
+  ${css.flexColumn('align-end')};
   width: 600px;
   height: 400px;
+  background: white;
+  border: 1px dotted;
+  border-color: #c8d5f2;
+  border-radius: 10px;
+  z-index: 2;
 `
-export const Image = styled(Img)`
-  width: 600px;
-  height: 400px
-  border-radius: 5px;
-  object-fit: cover;
-  box-shadow: ${css.cardShadow};
-  border-radius: 5px;
-  box-shadow: 0 5px 25px rgb(35 35 35 / 5%);
-`
+
 export const ColorBlock = styled.div<TActive>`
   position: absolute;
   left: -300px;
@@ -41,7 +38,7 @@ export const ColorBlock = styled.div<TActive>`
   backdrop-filter: blur(5px);
   border-radius: 20px;
   box-shadow: ${({ $active }) => ($active ? '0 5px 25px rgb(35 35 35 / 10%)' : 'none')};
-  transform: rotate(5deg);
+  transform: rotate(4deg);
 `
 export const ColorBlockHolder = styled(ColorBlock)`
   left: 0px;
@@ -52,21 +49,21 @@ export const IconsWrapper = styled.div`
   position: absolute;
   ${css.flex('align-center')};
   gap: 0 15px;
-  bottom: -40px;
+  bottom: -38px;
   left: -270px;
 `
 export const Icon1 = styled(GtdTodoSVG)`
-  ${css.size(21)};
+  ${css.size(19)};
   fill: #5799fb;
   opacity: 0.6;
 `
 export const Icon2 = styled(GtdWipSVG)`
-  ${css.size(23)};
+  ${css.size(20)};
   fill: #5799fb;
   opacity: 0.8;
 `
 export const Icon3 = styled(GtdDoneSVG)`
-  ${css.size(21)};
+  ${css.size(19)};
   fill: #69b8cc;
   opacity: 0.8;
 `

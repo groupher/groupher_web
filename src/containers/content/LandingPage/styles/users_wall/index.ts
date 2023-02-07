@@ -33,8 +33,16 @@ export const Wall = styled.div`
   margin-top: 80px;
   width: 100%;
   height: auto;
+  position: relative;
+`
+export const BgGradient = styled.div`
+  position: absolute;
+  top: -10vh;
+  left: -50vw;
+  width: 100vw;
+  height: 100vh;
 
-  background: radial-gradient(circle at 50% 50%, #d6b09c94 0, transparent 35%);
+  background: radial-gradient(circle at 50% 50%, #e8c3afc4 0, transparent 35%);
 `
 
 export const DempP = styled.div`

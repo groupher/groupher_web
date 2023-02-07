@@ -14,6 +14,7 @@ import {
   MainArea,
   PublishWrapper,
   AccountWrapper,
+  AccountIcon,
   Icon,
 } from './styles/post_layout'
 
@@ -38,13 +39,16 @@ const PostLayout: FC<TProps> = ({ testid = 'sidebar-layout-header' }) => {
             text="参与讨论"
             onClick={() => console.log('## publish')}
             onMenuSelect={() => console.log('## on publish')}
+            menuLeft
 
             // onClick={() => onPublish(ARTICLE_CAT.FEATURE)}
             // onMenuSelect={onPublish}
           />
         </PublishWrapper>
       </MainArea>
-      <AccountWrapper>account</AccountWrapper>
+      <AccountWrapper>
+        <AccountIcon />
+      </AccountWrapper>
     </Wrapper>
   )
 }

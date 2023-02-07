@@ -9,15 +9,17 @@ import { FEAT } from '../../constant'
 
 export const Title = styled.div<{ featType: TFeatType }>`
   ${css.flex('align-center')};
-  color: ${({ featType }) => FEAT[featType].COLOR};
+  /* color: ${({ featType }) => FEAT[featType].COLOR}; */
+  color: ${theme('article.title')};
   font-size: 21px;
-  font-weight: 600;
+  font-weight: 500;
+  text-shadow: rgb(0 0 0 / 8%) 0px 10px 20px;
 `
 
 export const Hint = styled.div<TActive>`
   font-size: 22px;
   margin-left: 15px;
-  opacity: ${({ $active }) => ($active ? 0.3 : 0)};
+  opacity: ${({ $active }) => ($active ? 0.2 : 0)};
 
   font-style: italic;
 
@@ -26,8 +28,9 @@ export const Hint = styled.div<TActive>`
 `
 
 export const Desc = styled.div`
-  font-size: 17px;
+  font-size: 16px;
   color: ${theme('article.digest')};
   margin-top: 12px;
   width: 340px;
+  opacity: 0.65;
 `

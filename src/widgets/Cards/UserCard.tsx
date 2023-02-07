@@ -4,7 +4,9 @@
 
 import { FC, memo } from 'react'
 
-import type { TAccount, TUser } from '@/spec'
+import type { TAccount, TAvatarLayout, TUser } from '@/spec'
+import { AVATAR_LAYOUT } from '@/constant/layout'
+
 import { cutRest } from '@/utils/fmt'
 
 import {
@@ -21,14 +23,15 @@ import {
 
 type TProps = {
   user: TUser | TAccount
+  avatarLayout?: TAvatarLayout
 }
 
-const UserCard: FC<TProps> = ({ user }) => {
+const UserCard: FC<TProps> = ({ user, avatarLayout = AVATAR_LAYOUT.SQUARE }) => {
   const { avatar, nickname, login, bio } = user
   return (
     <Wrapper>
       <Header>
-        <Avatar src={avatar} />
+        <Avatar src={avatar} avatarLayout={avatarLayout} />
         <Info>
           <Title href={`user/${login}`} prefetch={false}>
             <Nickname>{cutRest(nickname, 12)}</Nickname>

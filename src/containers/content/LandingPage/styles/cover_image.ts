@@ -85,7 +85,8 @@ export const Background = styled.div<{ effect: string }>`
 `
 export const Image = styled(Img)<{ hasShadow: boolean }>`
   display: block;
-  width: 100%;
+  width: calc(100% - 100px);
+  margin-left: 50px;
   height: 701px;
   object-fit: cover;
 

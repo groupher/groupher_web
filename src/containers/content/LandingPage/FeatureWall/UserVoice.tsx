@@ -22,7 +22,7 @@ const VoiceCard: FC<TVoiceCard> = ({ color, text, uname }) => {
 }
 
 const UserVoice: FC = () => {
-  const speed = 10
+  const speed = 20
 
   return (
     <Wrapper>
