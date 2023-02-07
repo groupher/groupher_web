@@ -2,7 +2,6 @@ import styled from 'styled-components'
 
 import type { TActive, TTestable } from '@/spec'
 
-import Img from '@/Img'
 import css from '@/utils/css'
 
 import BadSVG from './BadSVG'
@@ -21,15 +20,12 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 export const ImageWrapper = styled.div`
   width: 600px;
   height: 400px;
-`
-export const Image = styled(Img)`
-  width: 600px;
-  height: 400px
-  border-radius: 5px;
-  object-fit: cover;
-  box-shadow: ${css.cardShadow};
-  border-radius: 5px;
-  box-shadow: 0 5px 25px rgb(35 35 35 / 5%);
+
+  background: white;
+  border: 1px dotted;
+  border-color: #6db7b7;
+  border-radius: 10px;
+  z-index: 2;
 `
 export const ColorBlock = styled.div<TActive>`
   position: absolute;
@@ -54,20 +50,20 @@ export const IconsWrapper = styled.div`
   ${css.flex('align-center')};
   gap: 0 18px;
   bottom: -40px;
-  left: -270px;
+  left: -260px;
 `
 
 export const Icon1 = styled(BadSVG)`
-  ${css.size(20)};
+  ${css.size(19)};
   opacity: 0.85;
   margin-top: -1px;
 `
 export const Icon2 = styled(SoSoSVG)`
-  ${css.size(20)};
+  ${css.size(19)};
   opacity: 0.85;
   margin-top: -1px;
 `
 export const Icon3 = styled(GoodSVG)`
-  ${css.size(22)};
+  ${css.size(20)};
   opacity: 0.8;
 `
