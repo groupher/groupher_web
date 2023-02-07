@@ -15,7 +15,7 @@ import {
   Cover,
   Bar,
   ShareIcon,
-} from '../../styles/feature_wall/help_feat/help_item'
+} from '../../styles/feature_wall/help_feat/help_demo'
 
 const HelpItem: FC = () => {
   return (

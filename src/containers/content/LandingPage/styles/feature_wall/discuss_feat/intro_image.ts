@@ -21,17 +21,14 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 export const ImageWrapper = styled.div`
   width: 600px;
   height: 400px;
-`
-export const Image = styled(Img)`
-  width: 600px;
-  height: 396px;
-  border-radius: 20px;
-  object-fit: cover;
-  box-shadow: ${css.cardShadow};
-  border: 1px solid;
-  border-color: #d4c6df;
-  box-shadow: 0 5px 25px rgb(35 35 35 / 5%);
-  background: ${theme('alphaBg2')};
+
+  z-index: 2;
+  background: white;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px dotted;
+  border-color: #af92c1;
+  overflow: hidden;
 `
 export const ColorBlock = styled.div<TActive>`
   position: absolute;

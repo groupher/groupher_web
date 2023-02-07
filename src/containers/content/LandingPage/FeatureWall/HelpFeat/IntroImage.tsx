@@ -6,7 +6,7 @@ import type { TActive } from '@/spec'
 import { FEAT_TYPE } from '../../constant'
 import BgDots from '../BgDots'
 
-import HelpItem from './HelpItem'
+import HelpDemo from './HelpDemo'
 
 import {
   Wrapper,
@@ -32,7 +32,7 @@ const IntroImage: FC<TProps> = ({ $active }) => {
     <Wrapper>
       <BgDots $active={$active} featType={FEAT_TYPE.HELP} />
       <ImageWrapper>
-        <HelpItem />
+        <HelpDemo />
       </ImageWrapper>
 
       {!loaded && <ColorBlockHolder />}

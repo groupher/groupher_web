@@ -15,7 +15,7 @@ export const Wrapper = styled.div<{ opacity: number }>`
 `
 
 export const Bar = styled(BarBase)`
-  background: #c3d6f3;
+  background: #a4c4f4;
 `
 
 export const Footer = styled.div`

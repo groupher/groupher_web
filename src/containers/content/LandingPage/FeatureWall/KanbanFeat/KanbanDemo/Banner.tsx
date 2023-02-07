@@ -11,7 +11,7 @@ import {
   Icon1,
   Icon2,
   Icon3,
-} from '../../styles/feature_wall/kanban_feat/banner'
+} from '../../../styles/feature_wall/kanban_feat/banner'
 
 const Banner: FC = () => {
   return (

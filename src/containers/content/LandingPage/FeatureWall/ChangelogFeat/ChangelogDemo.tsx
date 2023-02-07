@@ -16,9 +16,9 @@ import {
   StarIcon,
   StarIcon2,
   StarIcon3,
-} from '../../styles/feature_wall/changelog_feat/changelog_item'
+} from '../../styles/feature_wall/changelog_feat/changelog_demo'
 
-const ChangeLogItem: FC = () => {
+const ChangeLogDemo: FC = () => {
   return (
     <Wrapper>
       <StarIcon />
@@ -60,4 +60,4 @@ const ChangeLogItem: FC = () => {
   )
 }
 
-export default ChangeLogItem
+export default ChangeLogDemo

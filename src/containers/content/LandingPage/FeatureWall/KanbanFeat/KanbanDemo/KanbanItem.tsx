@@ -6,7 +6,7 @@ import {
   Footer,
   UpvoteIcon,
   Count,
-} from '../../styles/feature_wall/kanban_feat/kanban_item'
+} from '../../../styles/feature_wall/kanban_feat/kanban_demo/kanban_item'
 
 type TProps = {
   opacity?: number
