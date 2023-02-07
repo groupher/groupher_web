@@ -34,6 +34,7 @@ export const Alias = styled.div`
   font-weight: 600;
   margin-right: 7px;
   margin-left: 2px;
+  word-break: keep-all;
 `
 export const UpvoteBtnWrapper = styled.div`
   transform: scale(0.8);

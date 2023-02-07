@@ -1,10 +1,8 @@
 import { FC, memo, Fragment } from 'react'
 
 import type { TComment, TAvatarLayout } from '@/spec'
-import { ICON } from '@/config'
 
-import Tooltip from '@/widgets/Tooltip'
-import Upvote from '@/widgets/Upvote'
+// import Tooltip from '@/widgets/Tooltip'
 import ArtimentBody from '@/widgets/ArtimentBody'
 
 import Header from '../Header'
@@ -23,12 +21,12 @@ import {
   PinState,
   PinIcon,
   PinText,
-  AuthorUpvotedIcon,
-  SolutionIcon,
-  BadgePopContent,
+  // AuthorUpvotedIcon,
+  // SolutionIcon,
+  // BadgePopContent,
   IndentLine,
 } from '../../styles/comment/desktop_view'
-import { foldComment, handleUpvote } from '../../logic'
+import { foldComment } from '../../logic'
 
 type TProps = {
   data: TComment
@@ -46,8 +44,8 @@ const DefaultLayout: FC<TProps> = ({
   avatarLayout,
 }) => {
   const { isPinned, meta } = data
-  const { isArticleAuthorUpvoted, isLegal, illegalReason, illegalWords } = meta
-  const isSolution = false
+  const { isLegal, illegalReason, illegalWords } = meta
+  // const isSolution = false
 
   return (
     <Wrapper isPinned={isPinned}>
