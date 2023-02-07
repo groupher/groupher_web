@@ -1,7 +1,9 @@
 import { FC } from 'react'
 
 import { Space, SpaceGrow } from '@/widgets/Common'
+
 import PostItem from './PostItem'
+import CommentItem from './CommentItem'
 
 import {
   Wrapper,
@@ -14,6 +16,7 @@ import {
   CommentIcon,
   Count,
   Bar,
+  CommentsHeader,
 } from '../../../styles/feature_wall/discuss_feat/discuss_demo'
 
 const DiscussDemo: FC = () => {
@@ -48,6 +51,15 @@ const DiscussDemo: FC = () => {
         <Bar top={5} height={6} width={160} bottom={26} opacity={0.3} />
         <Bar top={5} height={6} width={180} bottom={12} opacity={0.3} />
         <Bar top={5} height={6} width={80} bottom={12} opacity={0.3} />
+
+        <CommentsHeader>
+          评论 <Count>18</Count>
+          <SpaceGrow />
+          <Bar top={5} height={3} width={26} opacity={0.2} right={-3} />
+        </CommentsHeader>
+        <CommentItem />
+        <CommentItem index={1} />
+        <CommentItem index={2} />
       </DetailWrapper>
     </Wrapper>
   )

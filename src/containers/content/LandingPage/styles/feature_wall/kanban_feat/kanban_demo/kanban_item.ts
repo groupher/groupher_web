@@ -3,11 +3,11 @@ import styled from 'styled-components'
 import { Bar as BarBase } from '@/widgets/Common'
 import UpvoteSVG from '@/icons/Upvote'
 
-import css, { theme } from '@/utils/css'
+import css from '@/utils/css'
 
 export const Wrapper = styled.div<{ opacity: number }>`
   ${css.flexColumn()};
-  background: ${theme('alphaBg2')};
+  background: white;
   border-radius: 6px;
   height: 50px;
   padding: 3px 6px;

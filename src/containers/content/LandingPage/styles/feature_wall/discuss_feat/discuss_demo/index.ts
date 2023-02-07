@@ -12,6 +12,7 @@ export const Wrapper = styled.div`
   ${css.flex('justify-between')};
   position: relative;
   padding: 30px;
+  opacity: 0.8;
 `
 export const ListsWrapper = styled.div`
   width: 240px;
@@ -20,7 +21,8 @@ export const ListsWrapper = styled.div`
 export const DetailWrapper = styled.div`
   flex-grow: 1;
   height: 360px;
-  padding: 8px 30px;
+  padding: 8px 20px;
+  padding-left: 40px;
   margin-top: -10px;
 
   border-left: 1px solid transparent;
@@ -66,7 +68,17 @@ export const Count = styled.div`
   font-size: 12px;
   font-weight: 400;
   margin-left: 3px;
+  opacity: 0.8;
 `
 export const Bar = styled(BarBase)`
   background: ${theme('baseColor.purple')};
+`
+export const CommentsHeader = styled.div`
+  ${css.flex('align-center')};
+  color: ${theme('baseColor.purple')};
+  font-weight: 500;
+  font-size: 12px;
+  margin-top: 24px;
+  margin-bottom: 15px;
+  opacity: 0.8;
 `

@@ -26,7 +26,7 @@ const PostItem: FC<TProps> = ({ opacity = 1, count = 9, width = 80 }) => {
 
       <RightPart>
         <Bar top={5} height={6} width={width} bottom={1} />
-        <Bar top={5} height={3} width={width + 20} bottom={10} opacity={0.4} />
+        <Bar top={5} height={4} width={width + 20} bottom={10} opacity={0.3} />
 
         <Footer>
           <Bar height={3} width={16} top={3} opacity={0.4} />

@@ -2,8 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive, TTestable } from '@/spec'
 
-import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css from '@/utils/css'
 
 import UpvoteSVG from '@/icons/Upvote'
 import CommentSVG from '@/icons/Comment'
@@ -14,8 +13,6 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 }))<TTestable>`
   ${css.flexColumn('align-both')};
   flex-grow: 1;
-  /* width: 500px;
-  height: 440px; */
   position: relative;
 `
 export const ImageWrapper = styled.div`
@@ -40,7 +37,7 @@ export const ColorBlock = styled.div<TActive>`
   background: linear-gradient(137deg, rgb(217 199 228) 52%, rgba(229, 216, 217, 1) 100%);
   border-radius: 20px;
   box-shadow: ${({ $active }) => ($active ? '0 5px 25px rgb(35 35 35 / 10%)' : 'none')};
-  transform: rotate(-5deg);
+  transform: rotate(-6deg);
 `
 export const ColorBlockHolder = styled(ColorBlock)`
   left: 0px;
@@ -51,15 +48,15 @@ export const IconsWrapper = styled.div`
   position: absolute;
   ${css.flex('align-center')};
   gap: 0 18px;
-  bottom: -25px;
+  bottom: -30px;
   right: -250px;
   z-index: -1;
 `
 export const Icon1 = styled(UpvoteSVG)`
-  ${css.size(19)};
+  ${css.size(18)};
   fill: #b086bd;
-  opacity: 0.6;
-  transform: scaleY(0.9);
+  opacity: 0.8;
+  transform: scaleY(0.8);
   margin-top: -1px;
 `
 export const Icon2 = styled(CommentSVG)`
