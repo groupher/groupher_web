@@ -48,20 +48,16 @@ export const PatternBg = styled.div`
   height: 500px;
   mix-blend-mode: overlay;
 
-  background: conic-gradient(at 10% 50%, #0000 75%, rgba(0, 0, 0, 0.97) 0),
-    conic-gradient(at 10% 50%, #0000 75%, rgba(0, 0, 0, 0.97) 0) calc(1 * 20px) calc(3 * 20px),
-    conic-gradient(at 10% 50%, #0000 75%, rgba(0, 0, 0, 0.97) 0) calc(2 * 20px) calc(1 * 20px),
-    conic-gradient(at 10% 50%, #0000 75%, rgba(0, 0, 0, 0.97) 0) calc(3 * 20px) calc(4 * 20px),
-    conic-gradient(at 10% 50%, #0000 75%, rgba(0, 0, 0, 0.97) 0) calc(4 * 20px) calc(2 * 20px),
-    conic-gradient(at 50% 10%, #0000 75%, rgba(0, 0, 0, 0.97) 0) 0 calc(4 * 20px),
-    conic-gradient(at 50% 10%, #0000 75%, rgba(0, 0, 0, 0.97) 0) calc(1 * 20px) calc(2 * 20px),
-    conic-gradient(at 50% 10%, #0000 75%, rgba(0, 0, 0, 0.97) 0) calc(2 * 20px) 0,
-    conic-gradient(at 50% 10%, #0000 75%, rgba(0, 0, 0, 0.97) 0) calc(3 * 20px) calc(3 * 20px),
-    conic-gradient(at 50% 10%, #0000 75%, rgba(0, 0, 0, 0.97) 0) calc(4 * 20px) calc(1 * 20px),
-    rgba(71, 212, 255, 0);
+  background: conic-gradient(at 62.5% 12.5%, #010101 25%, #0000 0) calc(44px / -8) calc(44px / 2),
+    conic-gradient(at 62.5% 12.5%, #010101 25%, #0000 0) calc(-3 * 44px / 8) calc(44px / 4),
+    conic-gradient(at 87.5% 62.5%, #010101 25%, #0000 0) calc(3 * 44px / 8) calc(44px / 4),
+    conic-gradient(at 87.5% 62.5%, #010101 25%, #0000 0) calc(44px / -8) 0,
+    conic-gradient(at 25% 12.5%, #010101 25%, #0000 0) 0 calc(44px / -4),
+    conic-gradient(at 25% 12.5%, #010101 25%, #0000 0) calc(44px / -4) 0,
+    conic-gradient(at 87.5% 87.5%, #010101 25%, #0000 0) calc(44px / 8) 0 rgba(255, 255, 255, 0);
+  background-size: 44px 44px;
 
-  background-size: 100px 100px;
-  opacity: 0.25;
+  opacity: 0.2;
   /* transform: skewY(-2deg); */
 `
 export const BetaText = styled.div<{ wallpaper: string }>`
