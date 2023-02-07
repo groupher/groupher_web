@@ -7,6 +7,7 @@ import css, { theme } from '@/utils/css'
 
 export const Wrapper = styled.div`
   ${css.flex('align-center', 'justify-center')};
+  background: ${theme('alphaBg2')};
   width: 230px;
   padding: 8px 10px;
   padding-top: 12px;
@@ -17,8 +18,7 @@ export const Item = styled.div<{ name: string }>`
 `
 type TEIcon = { name: string } & TActive
 export const EIcon = styled(Img)<TEIcon>`
-  margin-top: ${({ name }) =>
-    includes(name, ['downvote', 'beer']) ? '2px' : 0};
+  margin-top: ${({ name }) => (includes(name, ['downvote', 'beer']) ? '2px' : 0)};
   margin-bottom: ${({ name }) => (name === 'heart' ? '1px' : 0)};
   ${({ name }) => (name === 'confused' ? css.size(21) : css.size(20))};
 
@@ -34,8 +34,7 @@ export const EIcon = styled(Img)<TEIcon>`
 export const Name = styled.div<TActive>`
   font-size: 11px;
   margin-top: 7px;
-  color: ${({ $active }) =>
-    $active ? theme('article.info') : theme('article.digest')};
+  color: ${({ $active }) => ($active ? theme('article.info') : theme('article.digest'))};
 
   ${Item}:hover & {
     cursor: pointer;

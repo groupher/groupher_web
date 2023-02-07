@@ -59,7 +59,7 @@ const DefaultLayout: FC<TProps> = ({
       )}
       <CommentWrapper>
         <SidebarWrapper>
-          <Upvote
+          {/* <Upvote
             type="comment"
             count={data.upvotesCount}
             viewerHasUpvoted={data.viewerHasUpvoted}
@@ -85,7 +85,7 @@ const DefaultLayout: FC<TProps> = ({
                 src={`${ICON}/shape/solution-check.svg`}
               />
             </Tooltip>
-          )}
+          )} */}
           {isReply && <IndentLine onClick={() => foldComment(data.id)} />}
         </SidebarWrapper>
 

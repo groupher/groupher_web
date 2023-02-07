@@ -19,9 +19,9 @@ export const IndentLine = styled.div<TIndentLine>`
   width: 20px;
   margin-left: 5px;
 
-  border-left: 2px solid transparent;
+  border-left: 1px solid transparent;
   border-image: linear-gradient(
-    0.5turn,
+    0.28turn,
     ${theme('comment.indentLine')},
     ${theme('comment.indentLine')},
     ${theme('comment.indentLine')},
@@ -34,9 +34,9 @@ export const IndentLine = styled.div<TIndentLine>`
   &:hover {
     cursor: pointer;
 
-    border-left: 2px solid transparent;
+    border-left: 1px solid transparent;
     border-image: linear-gradient(
-      0.5turn,
+      0.28turn,
       ${theme('comment.indentActive')},
       ${theme('comment.indentActive')},
       ${theme('comment.indentActive')},
