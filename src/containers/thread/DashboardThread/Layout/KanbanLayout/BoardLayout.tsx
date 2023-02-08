@@ -3,6 +3,7 @@ import { FC, memo, useState } from 'react'
 import type { TColorName } from '@/spec'
 import { DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { callDashboardDesc } from '@/utils/signal'
+import useHover from '@/hooks/useHover'
 
 import { Inline, SpaceGrow, Space, LineDivider } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'
@@ -35,6 +36,10 @@ const BoardLayout: FC<TProps> = ({ kanbanBgColors, isTouched, saving }) => {
   const [diceRotate, setDiceRotate] = useState(0)
   const [presetActive, setPresetActive] = useState(false)
 
+  const [board1Ref, isBoard1Hovered] = useHover<HTMLDivElement>()
+  const [board2Ref, isBoard2Hovered] = useHover<HTMLDivElement>()
+  const [board3Ref, isBoard3Hovered] = useHover<HTMLDivElement>()
+
   const [BG1, BG2, BG3] = kanbanBgColors
 
   return (
@@ -64,9 +69,10 @@ const BoardLayout: FC<TProps> = ({ kanbanBgColors, isTouched, saving }) => {
             onChange={(color) => edit([color, BG2, BG3], 'kanbanBgColors')}
             placement="bottom-start"
             offset={[-10, 10]}
+            excepts={[COLOR_NAME.CYAN, COLOR_NAME.GREEN]}
             bgMode
           >
-            <ColorBall color={BG1 as TColorName} setable />
+            <ColorBall ref={board1Ref} color={BG1 as TColorName} setable />
           </ColorSelector>
 
           <ColorSelector
@@ -74,9 +80,10 @@ const BoardLayout: FC<TProps> = ({ kanbanBgColors, isTouched, saving }) => {
             onChange={(color) => edit([BG1, color, BG3], 'kanbanBgColors')}
             placement="bottom-start"
             offset={[-10, 10]}
+            excepts={[COLOR_NAME.CYAN, COLOR_NAME.GREEN]}
             bgMode
           >
-            <ColorBall color={BG2 as TColorName} setable />
+            <ColorBall ref={board2Ref} color={BG2 as TColorName} setable />
           </ColorSelector>
 
           <ColorSelector
@@ -84,9 +91,10 @@ const BoardLayout: FC<TProps> = ({ kanbanBgColors, isTouched, saving }) => {
             onChange={(color) => edit([BG1, BG2, color], 'kanbanBgColors')}
             placement="bottom-start"
             offset={[-10, 10]}
+            excepts={[COLOR_NAME.CYAN, COLOR_NAME.GREEN]}
             bgMode
           >
-            <ColorBall color={BG3 as TColorName} setable />
+            <ColorBall ref={board3Ref} color={BG3 as TColorName} setable />
           </ColorSelector>
         </Preset>
 
@@ -140,23 +148,26 @@ const BoardLayout: FC<TProps> = ({ kanbanBgColors, isTouched, saving }) => {
       </ColorsWrapper>
 
       <BoardsWrapper>
-        <Board color={BG1 as TColorName}>
+        <Board color={BG1 as TColorName} $active={isBoard1Hovered}>
           <KanbanItem count={17} />
           <KanbanItem opacity={0.85} count={4} width={60} />
           <KanbanItem opacity={0.75} count={6} width={40} />
           <KanbanItem opacity={0.65} count={13} width={70} />
+          <KanbanItem opacity={0.55} count={6} width={40} />
         </Board>
-        <Board color={BG2 as TColorName}>
+        <Board color={BG2 as TColorName} $active={isBoard2Hovered}>
           <KanbanItem count={21} width={60} />
           <KanbanItem opacity={0.85} count={11} width={60} />
           <KanbanItem opacity={0.75} count={16} width={80} />
           <KanbanItem opacity={0.65} count={21} width={110} />
+          <KanbanItem opacity={0.55} count={11} width={60} />
         </Board>
-        <Board color={BG3 as TColorName}>
+        <Board color={BG3 as TColorName} $active={isBoard3Hovered}>
           <KanbanItem count={72} width={68} />
           <KanbanItem opacity={0.95} count={112} width={60} />
           <KanbanItem opacity={0.85} count={41} width={100} />
           <KanbanItem opacity={0.75} count={87} width={60} />
+          <KanbanItem opacity={0.55} count={41} width={100} />
         </Board>
       </BoardsWrapper>
 

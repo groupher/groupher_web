@@ -13,23 +13,29 @@ export { Bar, Circle } from '..'
 export const BoardsWrapper = styled.div`
   ${css.flex('justify-center', 'align-end')};
   gap: 0 18px;
-  width: 100%;
-  margin-left: -8px;
+  width: calc(100% + 100px);
+  margin-left: -45px;
+  margin-top: 26px;
 `
-export const Board = styled.div<{ color?: TColorName }>`
+type TBoard = { color?: TColorName } & TActive
+export const Board = styled.div<TBoard>`
   ${css.flexColumn()};
   padding: 8px;
   gap: 6px;
   overflow: hidden;
 
-  width: 194px;
-  height: 230px;
+  width: 33%;
+  height: 280px;
   background-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
 
   border-radius: 8px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  /* box-shadow: ${css.cardShadow}; */
+
+  border: 1px solid;
+  border-color: ${({ $active }) => ($active ? theme('lightText') : 'transparent')};
+
+  transition: all 0.2s;
 `
 export const ColorsWrapper = styled.div`
   ${css.flex('align-center')};

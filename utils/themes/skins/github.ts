@@ -65,7 +65,7 @@ const github = {
 
   baseColor: {
     red: '#ca5f4d',
-    redBg: '#FDF1F0',
+    redBg: '#ffbfba3d',
 
     orange: '#ad735c',
     orangeBg: '#FEF7E8',
@@ -98,7 +98,7 @@ const github = {
     grey: '#106d8a',
 
     pink: '#b36976',
-    pinkBg: '#FCF1F6',
+    pinkBg: '#ffd8ea59',
 
     pinkLite: '#82606b',
     pinkBtnText: '#ded0d0',
