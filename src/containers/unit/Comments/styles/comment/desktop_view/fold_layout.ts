@@ -6,6 +6,7 @@ import { AVATAR_LAYOUT } from '@/constant/layout'
 import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 
+import ExpandSVG from '@/icons/Expand'
 import PinSVG from '@/icons/Pin'
 
 import { CreateDate as HeaderCreateDate } from '../header'
@@ -13,12 +14,38 @@ import { CreateDate as HeaderCreateDate } from '../header'
 export const Wrapper = styled.div`
   position: relative;
   ${css.flex('align-center')};
-  margin-left: 2px;
-  margin-right: 5px;
   padding-top: 20px;
   position: relative;
   background: transparent;
   cursor: pointer;
+`
+
+export const CurveLine = styled.div`
+  position: absolute;
+  left: -38px;
+  top: -15px;
+  ${css.size(45)};
+  border-radius: 22px;
+  border-bottom: 1px solid;
+  border-bottom-color: ${theme('comment.indentLine')};
+  transform: rotate(20deg);
+  z-index: -1;
+
+  &:after {
+    content: '';
+    ${css.circle(26)};
+    background: ${theme('alphaBg2')};
+    /* background: tomato; */
+    position: absolute;
+    bottom: -5px;
+    right: -1px;
+  }
+`
+export const ExpandIcon = styled(ExpandSVG)`
+  ${css.size(13)};
+  fill: ${theme('article.info')};
+  opacity: 0.8;
+  margin-right: 14px;
 `
 export const Avatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
   ${css.size(16)};

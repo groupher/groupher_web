@@ -6,6 +6,7 @@ import EditPenSVG from '@/icons/EditPen'
 
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
+  margin-bottom: 10px;
 `
 export const TotalCountWrapper = styled.div`
   flex-grow: 1;
@@ -17,9 +18,10 @@ export const TotalTitle = styled.div`
 `
 export const TotalNum = styled.span`
   color: ${theme('article.digest')};
-  font-size: 14px;
-  font-weight: normal;
+  font-size: 13px;
+  font-weight: 400;
   margin-left: 6px;
+  opacity: 0.8;
 `
 
 export const CommentBlock = styled.div`

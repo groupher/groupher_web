@@ -3,13 +3,13 @@ import styled from 'styled-components'
 import css, { theme } from '@/utils/css'
 
 export const Wrapper = styled.div`
-  margin-left: 22px;
+  margin-left: 20px;
 `
 export const CountHint = styled.div`
   ${css.flex('align-center')};
   color: ${theme('article.info')};
   font-size: 12px;
-  margin-left: 15px;
+  margin-left: 18px;
   margin-top: 10px;
   opacity: 0.8;
 `

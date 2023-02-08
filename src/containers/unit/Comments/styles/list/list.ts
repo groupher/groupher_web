@@ -5,6 +5,7 @@ import { theme } from '@/utils/css'
 
 export const Wrapper = styled.div`
   position: relative;
+  margin-left: 6px;
 `
 type TIndentLine = {
   isFold: boolean

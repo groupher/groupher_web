@@ -18,7 +18,7 @@ export const FEAT = {
 
   HELP: {
     COLOR: '#50A1A2',
-    HINT: 'Help Center',
+    HINT: 'HelpDesk',
   },
 }
 

@@ -11,6 +11,32 @@ export { HeaderBaseInfo, BaseInfo, FloorNum } from './index'
 
 type TAvatar = { avatarSize: number; avatarLayout: TAvatarLayout }
 
+export const Wrapper = styled.div`
+  ${css.flex('align-center')};
+  position: relative;
+  width: 100%;
+`
+export const CurveLine = styled.div`
+  position: absolute;
+  left: -32px;
+  top: -25px;
+  ${css.size(45)};
+  border-radius: 22px;
+  border-bottom: 1px solid;
+  border-bottom-color: ${theme('comment.indentLine')};
+  transform: rotate(20deg);
+  z-index: -1;
+
+  &:after {
+    content: '';
+    ${css.circle(20)};
+    background: ${theme('alphaBg2')};
+    /* background: tomato; */
+    position: absolute;
+    bottom: -3px;
+    right: 7px;
+  }
+`
 export const Avatar = styled(Img)<TAvatar>`
   ${({ avatarSize }) => css.size(avatarSize)};
   opacity: ${theme('avatar.opacity')};

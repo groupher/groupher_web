@@ -9,6 +9,8 @@ import { Space } from '@/widgets/Common'
 import DotDivider from '@/widgets/DotDivider'
 
 import {
+  Wrapper,
+  CurveLine,
   FloorNum,
   CreateDate,
   Avatar,
@@ -27,16 +29,18 @@ type TProps = {
   data: TComment
   showInnerRef: boolean
   avatarLayout: TAvatarLayout
+  isReply: boolean
 }
 
-const CommentHeader: FC<TProps> = ({ data, showInnerRef, avatarLayout }) => {
+const CommentHeader: FC<TProps> = ({ data, showInnerRef, avatarLayout, isReply }) => {
   const { isMobile } = useMobileDetect()
 
   const { author, meta } = data
   const avatarSize = author.bio ? 26 : 24
 
   return (
-    <Fragment>
+    <Wrapper>
+      {isReply && <CurveLine />}
       <Avatar
         src={data.author.avatar}
         avatarSize={avatarSize}
@@ -50,7 +54,6 @@ const CommentHeader: FC<TProps> = ({ data, showInnerRef, avatarLayout }) => {
           />
         }
       />
-
       <HeaderBaseInfo>
         <BaseInfo>
           <UserBase>
@@ -76,7 +79,7 @@ const CommentHeader: FC<TProps> = ({ data, showInnerRef, avatarLayout }) => {
 
         {author.bio && <ShortIntro>{author.bio}</ShortIntro>}
       </HeaderBaseInfo>
-    </Fragment>
+    </Wrapper>
   )
 }
 

@@ -15,6 +15,7 @@ type TProps = {
   apiMode?: TAPIMode
   showInnerRef: boolean
   avatarLayout: TAvatarLayout
+  isReply?: boolean
 }
 
 const CommentHeader: FC<TProps> = ({
@@ -22,13 +23,19 @@ const CommentHeader: FC<TProps> = ({
   showInnerRef,
   apiMode = API_MODE.ARTICLE,
   avatarLayout,
+  isReply,
 }) => {
   return (
     <Wrapper>
       {apiMode === API_MODE.USER_PUBLISHED ? (
         <UserPublishedHeader data={data} />
       ) : (
-        <ArticleHeader data={data} showInnerRef={showInnerRef} avatarLayout={avatarLayout} />
+        <ArticleHeader
+          data={data}
+          showInnerRef={showInnerRef}
+          avatarLayout={avatarLayout}
+          isReply={isReply}
+        />
       )}
     </Wrapper>
   )

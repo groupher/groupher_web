@@ -93,6 +93,7 @@ const DefaultLayout: FC<TProps> = ({
             showInnerRef={showInnerRef}
             apiMode={apiMode}
             avatarLayout={avatarLayout}
+            isReply={isReply}
           />
           <CommentContent>
             {isLegal ? (
