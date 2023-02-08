@@ -1,7 +1,9 @@
 import styled from 'styled-components'
 
 import { TActive } from '@/spec'
+
 import css, { theme } from '@/utils/css'
+import { camelize } from '@/utils/fmt'
 
 import { SelectItem as SelectItemBase } from '.'
 
@@ -24,8 +26,7 @@ export const SelectItem = styled(SelectItemBase)`
 type THashSign = TActive & { color?: string }
 export const DotSign = styled.div<THashSign>`
   ${css.circle(8)};
-  background: ${({ color }) =>
-    color ? theme(`baseColor.${color.toLowerCase()}`) : 'none'};
+  background: ${({ color }) => (color ? theme(`baseColor.${camelize(color)}Bg`) : 'none')};
 
   margin-right: 8px;
   margin-top: -1px;

@@ -114,6 +114,7 @@ export type TUiSettings = {
   helpLayout: THelpLayout
   postLayout: TPostLayout
   kanbanLayout: TKanbanLayout
+  kanbanBgColors: string[]
   changelogLayout: TChangelogLayout
   footerLayout: TFooterLayout
 
@@ -166,6 +167,7 @@ export type TSettingField =
   | 'primaryColor'
   | 'postLayout'
   | 'kanbanLayout'
+  | 'kanbanBgColors'
   | 'brandLayout'
   | 'avatarLayout'
   | 'bannerLayout'

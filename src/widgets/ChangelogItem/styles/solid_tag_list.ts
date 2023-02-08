@@ -1,7 +1,9 @@
 import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
+
 import css, { theme } from '@/utils/css'
+import { camelize } from '@/utils/fmt'
 
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
@@ -17,7 +19,7 @@ export const TagWrapper = styled.div<{ color: TColorName }>`
 `
 
 export const Name = styled.div`
-  color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
+  color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
   font-size: 12px;
   font-weight: 500;
 `

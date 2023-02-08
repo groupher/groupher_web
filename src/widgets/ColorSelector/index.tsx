@@ -24,6 +24,7 @@ type TProps = {
   onChange?: (color: TColorName) => void
   placement?: TTooltipPlacement
   offset?: [number, number]
+  bgMode?: boolean
 }
 
 const ColorSelector: FC<TProps> = ({
@@ -33,6 +34,7 @@ const ColorSelector: FC<TProps> = ({
   onChange = log,
   placement = 'bottom',
   offset = [5, 5],
+  bgMode = false,
 }) => {
   return (
     <Tooltip
@@ -46,8 +48,8 @@ const ColorSelector: FC<TProps> = ({
 
             return (
               <DotWrapper key={name} onClick={() => onChange(name)}>
-                <Dot color={COLORS[name]} $active={$active}>
-                  {$active && <HookIcon />}
+                <Dot color={COLORS[name]} $active={$active} colorName={name} bgMode={bgMode}>
+                  {$active && <HookIcon colorName={name} bgMode={bgMode} />}
                 </Dot>
               </DotWrapper>
             )

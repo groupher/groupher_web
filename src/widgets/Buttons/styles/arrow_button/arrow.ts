@@ -2,7 +2,9 @@ import styled from 'styled-components'
 
 // import Img from '@/Img'
 import type { TColorName } from '@/spec'
+
 import css, { theme } from '@/utils/css'
+import { camelize } from '@/utils/fmt'
 
 import { Wrapper as ButtonWrapper } from '.'
 
@@ -20,7 +22,7 @@ const BaseArrow = styled.div<TArrow>`
 
   ${ButtonWrapper}:hover & {
     background-color: ${({ color, linkColor }) =>
-      linkColor ? theme('link') : theme(`baseColor.${color.toLowerCase()}`)};
+      linkColor ? theme('link') : theme(`baseColor.${camelize(color)}Bg`)};
   }
 
   ${ButtonWrapper}:hover &:before {
@@ -33,7 +35,7 @@ const BaseArrow = styled.div<TArrow>`
     position: absolute;
     border: solid;
     border-color: ${({ color, linkColor }) =>
-      linkColor ? theme('link') : theme(`baseColor.${color.toLowerCase()}`)};
+      linkColor ? theme('link') : theme(`baseColor.${camelize(color)}Bg`)};
     border-width: 0 1px 1px 0;
     display: inline-block;
     padding: 3px;

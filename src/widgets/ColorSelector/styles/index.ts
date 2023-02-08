@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 
-import type { TTestable, TActive } from '@/spec'
+import type { TTestable, TActive, TColorName } from '@/spec'
 
 // import Img from '@/Img'
 import HookSVG from '@/icons/Hook'
-import css from '@/utils/css'
+import css, { theme } from '@/utils/css'
+import { camelize } from '@/utils/fmt'
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
@@ -16,13 +17,17 @@ export const DotWrapper = styled.div`
   ${css.circle(28)};
   ${css.flex('align-both')};
 `
-type TDot = TActive & { color: string }
+type TDot = TActive & { color: string; colorName: TColorName; bgMode: boolean }
 export const Dot = styled.div<TDot>`
   ${({ $active }) => ($active ? css.circle(20) : css.circle(16))};
   ${css.flex('align-both')};
-  background-color: ${({ color }) => color};
-  box-shadow: ${({ $active }) =>
-    $active ? '0px 0px 7px 0px rgb(151 151 151 / 30%)' : ''};
+  background-color: ${({ color, bgMode, colorName }) =>
+    !bgMode ? color : theme(`baseColor.${camelize(colorName)}Bg`)};
+
+  box-shadow: ${({ $active }) => ($active ? '0px 0px 7px 0px rgb(151 151 151 / 30%)' : '')};
+
+  border: ${({ bgMode }) => (bgMode ? '1px dashed' : 'none')};
+  border-color: ${({ colorName }) => theme(`baseColor.${camelize(colorName)}`)};
 
   &:hover {
     ${css.circle(20)};
@@ -32,7 +37,9 @@ export const Dot = styled.div<TDot>`
 
   transition: all 0.2s;
 `
-export const HookIcon = styled(HookSVG)`
+type THookIcon = { colorName: TColorName; bgMode: boolean }
+export const HookIcon = styled(HookSVG)<THookIcon>`
   ${css.size(10)};
-  fill: white;
+  fill: ${({ bgMode, colorName }) =>
+    !bgMode ? theme('alphaBg2') : theme(`baseColor.${camelize(colorName)}`)};
 `

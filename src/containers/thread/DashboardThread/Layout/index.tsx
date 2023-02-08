@@ -42,6 +42,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
     topbarBg,
     postLayout,
     kanbanLayout,
+    kanbanBgColors,
 
     // ui part
     primaryColor,
@@ -121,7 +122,12 @@ const UI: FC<TProps> = ({ settings, touched }) => {
 
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.KANBAN && (
         <>
-          <KanbanLayout layout={kanbanLayout} isTouched={touched.kanbanLayout} saving={saving} />
+          <KanbanLayout
+            layout={kanbanLayout}
+            isTouched={touched.kanbanLayout}
+            kanbanBgColors={kanbanBgColors}
+            saving={saving}
+          />
         </>
       )}
 

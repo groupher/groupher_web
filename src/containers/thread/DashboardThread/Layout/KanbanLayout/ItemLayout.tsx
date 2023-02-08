@@ -11,7 +11,7 @@ import { SETTING_FIELD } from '../../constant'
 import SectionLabel from '../../SectionLabel'
 import SavingBar from '../../SavingBar'
 
-import type { TProps } from '.'
+import type { TProps as TPropsBase } from '.'
 import {
   SelectWrapper,
   Layout,
@@ -22,6 +22,8 @@ import {
   CommentIcon,
 } from '../../styles/layout/kanban_layout/item_layout'
 import { edit } from '../../logic'
+
+type TProps = Omit<TPropsBase, 'kanbanBgColors'>
 
 const KanbanItemLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
   return (

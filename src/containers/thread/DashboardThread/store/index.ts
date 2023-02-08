@@ -63,6 +63,7 @@ const DashboardThread = T.model('DashboardThread', {
         changelogLayout,
         postLayout,
         kanbanLayout,
+        kanbanBgColors,
         helpLayout,
         footerLayout,
         bannerLayout,
@@ -87,6 +88,7 @@ const DashboardThread = T.model('DashboardThread', {
         avatar: avatarLayout,
         post: postLayout,
         kanban: kanbanLayout,
+        kanbanBgColors,
         help: helpLayout,
         footer: footerLayout,
         changelog: changelogLayout,
@@ -307,6 +309,7 @@ const DashboardThread = T.model('DashboardThread', {
           wallpapers,
           hasShadow,
         },
+        kanbanBgColors: toJS(slf.kanbanBgColors),
         ...pick(
           [
             'layoutTab',

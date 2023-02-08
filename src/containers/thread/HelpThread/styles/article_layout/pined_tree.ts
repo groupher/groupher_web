@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import type { TColorName } from '@/spec'
 
 import css, { theme } from '@/utils/css'
+import { camelize } from '@/utils/fmt'
+
 import GithubSVG from '@/icons/social/Github'
 import QuestionSVG from '@/icons/Question'
 import BookSVG from '@/icons/Book'
@@ -66,7 +68,7 @@ export const Title = styled.div<{ color: TColorName }>`
   color: ${theme('article.digest')};
 
   &:hover {
-    color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
+    color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
     font-weight: 500;
   }
   transition: all 0.2s;
