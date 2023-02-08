@@ -26,19 +26,19 @@ const FixedHeader: FC<TProps> = ({
     <Wrapper show={show} testid={testid}>
       <InnerWrapper metric={metric}>
         <ContentWrapper metric={metric}>
-          <Title>{article.title}</Title>
-          {article.id === '239' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} left={8} />}
-          {article.id === '231' && <ArticleCatState cat={ARTICLE_CAT.BUG} left={8} />}
-          {article.id === '227' && <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" left={8} />}
+          {article.id === '239' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} right={8} />}
+          {article.id === '231' && <ArticleCatState cat={ARTICLE_CAT.BUG} right={8} />}
+          {article.id === '227' && <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" right={8} />}
           {article.id === '228' && (
-            <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" left={8} />
+            <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" right={8} />
           )}
           {article.id === '226' && (
-            <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" left={8} />
+            <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" right={8} />
           )}
           {article.id === '225' && (
-            <ArticleCatState cat={ARTICLE_CAT.FEATURE} state={ARTICLE_STATE.REJECT_DUP} left={8} />
+            <ArticleCatState cat={ARTICLE_CAT.FEATURE} state={ARTICLE_STATE.REJECT_DUP} right={8} />
           )}
+          <Title>{article.title}</Title>
           <SpaceGrow />
           <ArticleBaseStats article={article} container="drawer" />
         </ContentWrapper>

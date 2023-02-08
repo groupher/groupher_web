@@ -37,21 +37,17 @@ const FixedHeader: FC<TProps> = ({ article, visible, footerVisible }) => {
           />
         </UpvoteWrapper>
 
-        <ArticleTitle>{article.title}</ArticleTitle>
         <ArticleStateBadgeWrapper>
-          {article.id === '239' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} left={1} />}
-          {article.id === '231' && <ArticleCatState cat={ARTICLE_CAT.BUG} left={1} />}
-          {article.id === '227' && <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" left={1} />}
-          {article.id === '228' && (
-            <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" left={1} />
-          )}
-          {article.id === '226' && (
-            <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" left={1} />
-          )}
+          {article.id === '239' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} />}
+          {article.id === '231' && <ArticleCatState cat={ARTICLE_CAT.BUG} />}
+          {article.id === '227' && <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" />}
+          {article.id === '228' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" />}
+          {article.id === '226' && <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" />}
           {article.id === '225' && (
-            <ArticleCatState cat={ARTICLE_CAT.FEATURE} state={ARTICLE_STATE.REJECT_DUP} left={1} />
+            <ArticleCatState cat={ARTICLE_CAT.FEATURE} state={ARTICLE_STATE.REJECT_DUP} />
           )}
         </ArticleStateBadgeWrapper>
+        <ArticleTitle>{article.title}</ArticleTitle>
       </LeftPart>
       <ArticleBaseStats article={article} container="drawer" />
     </Wrapper>

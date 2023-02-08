@@ -54,20 +54,12 @@ const PostLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
     <Wrapper metric={metric}>
       <BackTo />
       <Topping>
-        <AuthorName href={`/u/${author.login}`} prefetch={false}>
-          {author.nickname}
-        </AuthorName>
-        <DotDivider space={12} />
-        <PublishDateInfo>
-          <ReadableDate date={insertedAt} fmt="absolute" withTime={false} />
-        </PublishDateInfo>
         {/* {isArchived && (
             <Fragment>
               <DotDivider space={8} />
               <ArchivedSign date={archivedAt} />
             </Fragment>
           )} */}
-        <DotDivider space={12} />
         <div>
           {article.id === '239' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} />}
           {article.id === '231' && <ArticleCatState cat={ARTICLE_CAT.BUG} />}
@@ -78,6 +70,14 @@ const PostLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
             <ArticleCatState cat={ARTICLE_CAT.FEATURE} state={ARTICLE_STATE.REJECT_DUP} />
           )}
         </div>
+        <DotDivider space={12} />
+        <AuthorName href={`/u/${author.login}`} prefetch={false}>
+          {author.nickname}
+        </AuthorName>
+        <DotDivider space={12} />
+        <PublishDateInfo>
+          <ReadableDate date={insertedAt} fmt="absolute" withTime={false} />
+        </PublishDateInfo>
       </Topping>
       <Title>{title}</Title>
       <BottomInfo>
