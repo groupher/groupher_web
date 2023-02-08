@@ -11,10 +11,9 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   width: 100%;
   position: relative;
   background: ${theme('alphaBg2')};
-  margin-top: 2px;
   margin-bottom: 10px;
   padding: 10px;
-  padding-top: 12px;
+  padding-top: 8px;
   padding-bottom: 5px;
   border-radius: 6px;
   border: 1px solid transparent;
@@ -29,7 +28,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 `
 export const Header = styled.div`
   ${css.flex('align-center', 'justify-between')};
-  margin-bottom: 10px;
+  margin-bottom: 4px;
 `
 export const TimeStamp = styled.div`
   font-size: 12px;

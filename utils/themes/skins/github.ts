@@ -81,7 +81,7 @@ const github = {
     yellowBg: '#FEFBE8',
 
     green: '#699411',
-    greenBg: '#f3fee3',
+    greenBg: '#eefdd89c',
 
     greenLight: '#37B784',
     greenLightBg: '#f3fee3',
@@ -90,10 +90,10 @@ const github = {
     cyanBg: '#EBFEFB',
 
     blue: '#456fbd',
-    blueBg: '#E9F6FE',
+    blueBg: '#d8e3fd54',
 
     purple: '#7d519e',
-    purpleBg: '#F7F0FE',
+    purpleBg: '#f7d8fd38',
 
     grey: '#106d8a',
 

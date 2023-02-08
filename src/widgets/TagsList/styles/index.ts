@@ -7,7 +7,6 @@ import { getIconSize, getTitleSize, getInnerSpace } from './metric'
 
 export const Wrapper = styled.div<TSpace>`
   ${css.flex('align-center')};
-  line-height: 1px;
 
   margin-left: ${({ left }) => `${left || 0}px`};
   margin-right: ${({ right }) => `${right || 0}px`};
@@ -15,7 +14,6 @@ export const Wrapper = styled.div<TSpace>`
   margin-bottom: ${({ bottom }) => `${bottom}px` || 0};
 
   position: relative;
-  margin-top: 1px;
 `
 export const Tag = styled.div`
   ${css.flex('align-center')};
@@ -28,7 +26,6 @@ export const DotSign = styled.div<THashSign>`
   ${({ size }) => css.circle(getIconSize(size))};
   margin-right: 2px;
   margin-right: ${({ size }) => `${getInnerSpace(size)}px`};
-  margin-top: -1px;
 `
 export const LabelDotSign = styled.div<THashSign>`
   background: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};

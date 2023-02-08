@@ -39,6 +39,8 @@ export const Header = styled.div`
 `
 export const Body = styled.div`
   background: ${theme('hoverBg')};
+  /* background: ${theme('baseColor.blueBg')}; */
+  background: ${theme('baseColor.purpleBg')};
   padding: 8px;
   padding-bottom: 0;
   border-radius: 12px;

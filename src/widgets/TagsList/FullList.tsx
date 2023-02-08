@@ -5,23 +5,11 @@ import { Trans } from '@/utils/i18n'
 
 import type { TProps as TTagProps } from './index'
 
-import {
-  Wrapper,
-  Tag,
-  DotSign,
-  LabelDotSign,
-  Title,
-  SolidTitle,
-} from './styles'
+import { Wrapper, Tag, DotSign, LabelDotSign, Title, SolidTitle } from './styles'
 
 type TProps = Omit<TTagProps, 'withSetter' | 'max' | 'community' | 'thread'>
 
-const FullList: FC<TProps> = ({
-  items,
-  size,
-  mode = 'default',
-  ...restProps
-}) => {
+const FullList: FC<TProps> = ({ items, size, mode = 'default', ...restProps }) => {
   return (
     <Wrapper {...restProps}>
       {sortByColor(items).map((tag) => (

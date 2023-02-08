@@ -25,9 +25,12 @@ export const Wrapper = styled.div.attrs(({ testid }: TWrapper) => ({
   margin-bottom: ${({ bottom }) => `${bottom}px`};
   margin-left: ${({ left }) => `${left}px`};
   margin-right: ${({ right }) => `${right}px`};
+  border: none;
 
-  border: ${({ quote }) => (quote ? '2px solid' : 'none')};
-  border-color: ${({ quote }) => (quote ? theme('avatar.quote') : 'none')};
+  /* border: 2px solid; */
+  /* border-color: white; */
+  /* border: ${({ quote }) => (quote ? '2px solid' : 'none')}; */
+  /* border-color: ${({ quote }) => (quote ? theme('avatar.quote') : 'none')}; */
 `
 type TName = { size: number; color: TColorName }
 export const Name = styled.div<TName>`
