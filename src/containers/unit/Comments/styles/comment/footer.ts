@@ -28,6 +28,7 @@ export const AnwserWrapper = styled.span`
   color: ${theme('baseColor.green')};
   font-weight: 600;
   margin-right: 15px;
+  text-shadow: #8bc34a2e 1px 0 8px;
 `
 export const CheckSVGIcon = styled(CheckSVG)`
   ${css.size(13)};
