@@ -1,7 +1,5 @@
 import { FC, memo } from 'react'
 
-import type { TKanbanLayout } from '@/spec'
-
 import { KANBAN_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { callDashboardDesc } from '@/utils/signal'
 
@@ -9,12 +7,12 @@ import { Row, Br, Space, SpaceGrow, Inline } from '@/widgets/Common'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import CheckLabel from '@/widgets/CheckLabel'
 
-import { SETTING_FIELD } from '../constant'
-import SectionLabel from '../SectionLabel'
-import SavingBar from '../SavingBar'
+import { SETTING_FIELD } from '../../constant'
+import SectionLabel from '../../SectionLabel'
+import SavingBar from '../../SavingBar'
 
+import type { TProps } from '.'
 import {
-  Wrapper,
   SelectWrapper,
   Layout,
   LayoutTitle,
@@ -22,18 +20,12 @@ import {
   Bar,
   UpvoteIcon,
   CommentIcon,
-} from '../styles/layout/kanban_layout'
-import { edit } from '../logic'
+} from '../../styles/layout/kanban_layout/item_layout'
+import { edit } from '../../logic'
 
-type TProps = {
-  layout: TKanbanLayout
-  isTouched: boolean
-  saving: boolean
-}
-
-const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
+const KanbanItemLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
   return (
-    <Wrapper>
+    <>
       <SectionLabel
         title="看板布局"
         desc={
@@ -117,8 +109,8 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         loading={saving}
         top={20}
       />
-    </Wrapper>
+    </>
   )
 }
 
-export default memo(PostListLayout)
+export default memo(KanbanItemLayout)

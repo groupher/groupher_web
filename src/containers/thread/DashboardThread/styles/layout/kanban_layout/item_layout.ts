@@ -7,11 +7,10 @@ import css, { theme } from '@/utils/css'
 import UpvoteSVG from '@/icons/Upvote'
 import CommentSVG from '@/icons/Comment'
 
-import { BaseSection, BlockBase } from '.'
+import { BlockBase } from '..'
 
-export { Bar, Circle } from '.'
+export { Bar, Circle } from '..'
 
-export const Wrapper = styled(BaseSection)``
 export const SelectWrapper = styled.div`
   ${css.flex('align-center')};
   flex-wrap: wrap;
