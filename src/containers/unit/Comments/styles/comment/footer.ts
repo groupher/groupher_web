@@ -1,12 +1,52 @@
 import styled from 'styled-components'
 
 // import Img from '@/Img'
-import css from '@/utils/css'
+import UserBadge from '@/icons/UserBadge'
+import CheckSVG from '@/icons/CheckBold'
+
+import css, { theme } from '@/utils/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.flexColumn()};
   margin-bottom: 5px;
   margin-top: -10px;
   margin-left: -3px;
 `
-export const holder = 1
+
+export const MainWrapper = styled.div`
+  ${css.flex('align-center')};
+`
+
+export const ExtraWrapper = styled.div`
+  ${css.flex('align-center')};
+  margin-bottom: 14px;
+  padding: 0 8px;
+`
+export const AnwserWrapper = styled.span`
+  ${css.flex('align-center')};
+  font-size: 12px;
+  color: ${theme('baseColor.green')};
+  font-weight: 600;
+  margin-right: 15px;
+  text-shadow: #8bc34a2e 1px 0 8px;
+`
+export const CheckSVGIcon = styled(CheckSVG)`
+  ${css.size(13)};
+  fill: ${theme('baseColor.green')};
+  margin-right: 5px;
+  margin-top: -1px;
+  opacity: 0.6;
+`
+export const AuthorUpvoteWrapper = styled.span`
+  ${css.flex('align-center')};
+  font-size: 11px;
+  color: ${theme('article.info')};
+  opacity: 0.8;
+`
+export const UpvotedIcon = styled(UserBadge)`
+  ${css.size(12)};
+  fill: ${theme('article.info')};
+  margin-right: 5px;
+  margin-top: -1px;
+  opacity: 0.6;
+`

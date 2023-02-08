@@ -5,34 +5,37 @@ import type { TComment, TAvatarLayout } from '@/spec'
 import { ICON } from '@/config'
 
 import ImgFallback from '@/widgets/ImgFallback'
-import IconButton from '@/widgets/Buttons/IconButton'
 import { SpaceGrow } from '@/widgets/Common'
 
 import IllegalBar from './IllegalBar'
 
 import {
   Wrapper,
+  CurveLine,
   Avatar,
   CommentBody,
   RepliesHint,
   SolutionIcon,
   CreateDate,
+  ExpandIcon,
 } from '../../styles/comment/desktop_view/fold_layout'
 import { expandComment } from '../../logic'
 
 type TProps = {
   data: TComment
   avatarLayout: TAvatarLayout
+  isReply?: boolean
 }
 
-const FoldLayout: FC<TProps> = ({ data, avatarLayout }) => {
+const FoldLayout: FC<TProps> = ({ data, avatarLayout, isReply = false }) => {
   const isSolution = false //
   const { meta } = data
   const { isLegal, illegalReason, illegalWords } = meta
 
   return (
     <Wrapper onClick={() => expandComment(data.id)}>
-      <IconButton path="shape/expand-all.svg" hint="展开讨论" left={-1} right={12} />
+      {isReply && <CurveLine />}
+      <ExpandIcon />
       <Avatar
         src={data.author.avatar}
         avatarLayout={avatarLayout}

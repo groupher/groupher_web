@@ -15,6 +15,7 @@ type TProps = {
   foldedIds: TID[]
   showInnerRef?: boolean
   avatarLayout: TAvatarLayout
+  isReply?: boolean
 }
 
 const Comment: FC<TProps> = (props) => {

@@ -1,10 +1,8 @@
 import { FC, memo, Fragment } from 'react'
 
 import type { TComment, TAvatarLayout } from '@/spec'
-import { ICON } from '@/config'
 
-import Tooltip from '@/widgets/Tooltip'
-import Upvote from '@/widgets/Upvote'
+// import Tooltip from '@/widgets/Tooltip'
 import ArtimentBody from '@/widgets/ArtimentBody'
 
 import Header from '../Header'
@@ -23,12 +21,12 @@ import {
   PinState,
   PinIcon,
   PinText,
-  AuthorUpvotedIcon,
-  SolutionIcon,
-  BadgePopContent,
+  // AuthorUpvotedIcon,
+  // SolutionIcon,
+  // BadgePopContent,
   IndentLine,
 } from '../../styles/comment/desktop_view'
-import { foldComment, handleUpvote } from '../../logic'
+import { foldComment } from '../../logic'
 
 type TProps = {
   data: TComment
@@ -46,8 +44,7 @@ const DefaultLayout: FC<TProps> = ({
   avatarLayout,
 }) => {
   const { isPinned, meta } = data
-  const { isArticleAuthorUpvoted, isLegal, illegalReason, illegalWords } = meta
-  const isSolution = false
+  const { isLegal, illegalReason, illegalWords } = meta
 
   return (
     <Wrapper isPinned={isPinned}>
@@ -59,33 +56,6 @@ const DefaultLayout: FC<TProps> = ({
       )}
       <CommentWrapper>
         <SidebarWrapper>
-          <Upvote
-            type="comment"
-            count={data.upvotesCount}
-            viewerHasUpvoted={data.viewerHasUpvoted}
-            onAction={(did) => handleUpvote(data, did)}
-          />
-          {isArticleAuthorUpvoted && (
-            <Tooltip
-              content={<BadgePopContent>作者赞过</BadgePopContent>}
-              placement="bottom"
-              noPadding
-            >
-              <AuthorUpvotedIcon />
-            </Tooltip>
-          )}
-          {isSolution && (
-            <Tooltip
-              content={<BadgePopContent>最佳答案</BadgePopContent>}
-              placement="bottom"
-              noPadding
-            >
-              <SolutionIcon
-                isAuthorUpvoted={isArticleAuthorUpvoted}
-                src={`${ICON}/shape/solution-check.svg`}
-              />
-            </Tooltip>
-          )}
           {isReply && <IndentLine onClick={() => foldComment(data.id)} />}
         </SidebarWrapper>
 
@@ -95,6 +65,7 @@ const DefaultLayout: FC<TProps> = ({
             showInnerRef={showInnerRef}
             apiMode={apiMode}
             avatarLayout={avatarLayout}
+            isReply={isReply}
           />
           <CommentContent>
             {isLegal ? (

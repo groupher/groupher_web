@@ -3,7 +3,14 @@ import { Parallax } from 'react-scroll-parallax'
 
 import { COLOR_NAME } from '@/constant/colors'
 
-import { Wrapper, Card, Avatar, Title } from '../styles/feature_wall/user_voice'
+import {
+  Wrapper,
+  Card,
+  Avatar,
+  Title,
+  TreeWrapper,
+  TreesIcon,
+} from '../styles/feature_wall/user_voice'
 import { TColorName } from '@/spec'
 
 type TVoiceCard = {
@@ -29,7 +36,6 @@ const UserVoice: FC = () => {
       <Parallax speed={speed} rotate={[8, 0]} translateY={[0, 0]}>
         <VoiceCard color={COLOR_NAME.ORANGE} uname="XY" text="提了一个需求" />
       </Parallax>
-
       <Parallax speed={speed} rotate={[3, 0]} translateY={[0, 0]}>
         <VoiceCard color={COLOR_NAME.PURPLE} uname="MV" text="发现一个 Bug" />
       </Parallax>
@@ -69,6 +75,9 @@ const UserVoice: FC = () => {
       <Parallax speed={speed} rotate={[7, 0]} translateY={[0, 0]}>
         <VoiceCard color={COLOR_NAME.CYAN} uname="QE" text="想找到组织" />
       </Parallax>
+      <TreeWrapper>
+        <TreesIcon />
+      </TreeWrapper>
     </Wrapper>
   )
 }

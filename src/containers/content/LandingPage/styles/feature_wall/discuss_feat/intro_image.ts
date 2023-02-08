@@ -6,7 +6,7 @@ import css from '@/utils/css'
 
 import UpvoteSVG from '@/icons/Upvote'
 import CommentSVG from '@/icons/Comment'
-import PeopleSVG from '@/icons/People'
+import ShareSVG from '@/icons/Share'
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
@@ -64,9 +64,10 @@ export const Icon2 = styled(CommentSVG)`
   fill: #b086bd;
   opacity: 0.6;
 `
-export const Icon3 = styled(PeopleSVG)`
-  ${css.size(19)};
+export const Icon3 = styled(ShareSVG)`
+  ${css.size(18)};
   fill: #b086bd;
   opacity: 0.7;
   margin-top: -1px;
+  margin-left: -2px;
 `

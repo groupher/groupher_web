@@ -24,9 +24,10 @@ export const Wrapper = styled.nav.attrs(({ testid }: TTestable) => ({
 `
 export const InnerWrapper = styled.div<{ metric: TMetric }>`
   ${css.flex('align-both')};
-  background: white;
-  background: radial-gradient(circle, rgba(255, 255, 255, 1) 15%, rgba(255, 255, 255, 0.15) 56%),
-    radial-gradient(circle, rgba(255, 255, 255, 1) 45%, transparent 66%);
+  /* background: white; */
+  background: radial-gradient(circle, rgb(255 255 255) 15%, rgb(255 255 255 / 0%) 56%),
+    radial-gradient(circle, rgb(255 255 255 / 53%) 30%, transparent 68%);
+  backdrop-filter: blur(8px);
 
   width: 100%;
   height: 46px;

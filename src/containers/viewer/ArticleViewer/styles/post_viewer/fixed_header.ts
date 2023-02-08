@@ -47,5 +47,5 @@ export const ArticleTitle = styled.div`
   ${css.cutRest('400px')};
 `
 export const ArticleStateBadgeWrapper = styled.div`
-  margin-left: 10px;
+  margin-right: 10px;
 `

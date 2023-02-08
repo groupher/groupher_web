@@ -25,23 +25,6 @@ const Header: FC<TProps> = ({ article }) => {
   const { author, meta, insertedAt } = article
   return (
     <Wrapper>
-      <AuthorWrapper>
-        {/* <Avatar src={author.avatar} /> */}
-        <AuthorName>{author.nickname}</AuthorName>
-      </AuthorWrapper>
-      <DotDivider space={10} />
-      <PublishWrapper>
-        <PubDate>
-          <TimeAgo datetime={insertedAt} locale="zh_CN" />
-        </PubDate>
-        {meta.isEdited && (
-          <Fragment>
-            <DotDivider space={8} />
-            <EditedHint>修改过</EditedHint>
-          </Fragment>
-        )}
-      </PublishWrapper>
-      <DotDivider space={10} />
       {article.id === '239' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} smaller={false} />}
       {article.id === '231' && <ArticleCatState cat={ARTICLE_CAT.BUG} smaller={false} />}
       {article.id === '227' && (
@@ -60,6 +43,25 @@ const Header: FC<TProps> = ({ article }) => {
           smaller={false}
         />
       )}
+
+      <DotDivider space={10} />
+
+      <AuthorWrapper>
+        {/* <Avatar src={author.avatar} /> */}
+        <AuthorName>{author.nickname}</AuthorName>
+      </AuthorWrapper>
+      <DotDivider space={10} />
+      <PublishWrapper>
+        <PubDate>
+          <TimeAgo datetime={insertedAt} locale="zh_CN" />
+        </PubDate>
+        {meta.isEdited && (
+          <Fragment>
+            <DotDivider space={8} />
+            <EditedHint>修改过</EditedHint>
+          </Fragment>
+        )}
+      </PublishWrapper>
     </Wrapper>
   )
 }
