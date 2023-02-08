@@ -45,7 +45,6 @@ const DefaultLayout: FC<TProps> = ({
 }) => {
   const { isPinned, meta } = data
   const { isLegal, illegalReason, illegalWords } = meta
-  // const isSolution = false
 
   return (
     <Wrapper isPinned={isPinned}>
@@ -57,33 +56,6 @@ const DefaultLayout: FC<TProps> = ({
       )}
       <CommentWrapper>
         <SidebarWrapper>
-          {/* <Upvote
-            type="comment"
-            count={data.upvotesCount}
-            viewerHasUpvoted={data.viewerHasUpvoted}
-            onAction={(did) => handleUpvote(data, did)}
-          />
-          {isArticleAuthorUpvoted && (
-            <Tooltip
-              content={<BadgePopContent>作者赞过</BadgePopContent>}
-              placement="bottom"
-              noPadding
-            >
-              <AuthorUpvotedIcon />
-            </Tooltip>
-          )}
-          {isSolution && (
-            <Tooltip
-              content={<BadgePopContent>最佳答案</BadgePopContent>}
-              placement="bottom"
-              noPadding
-            >
-              <SolutionIcon
-                isAuthorUpvoted={isArticleAuthorUpvoted}
-                src={`${ICON}/shape/solution-check.svg`}
-              />
-            </Tooltip>
-          )} */}
           {isReply && <IndentLine onClick={() => foldComment(data.id)} />}
         </SidebarWrapper>
 

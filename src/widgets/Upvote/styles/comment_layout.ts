@@ -19,6 +19,7 @@ export const Button = styled.div`
 
   border-radius: 10px;
   padding: 0 2px;
+  padding-right: 5px;
 
   &:hover {
     border-color: ${theme('comment.indentActive')};
@@ -34,6 +35,7 @@ export const UpWrapper = styled.div`
 `
 export const Alias = styled.div`
   color: ${theme('article.info')};
+  margin-top: 1px;
   font-size: 12px;
   font-weight: 600;
   margin-right: 5px;
@@ -41,5 +43,7 @@ export const Alias = styled.div`
 `
 export const CountWrapper = styled.div`
   margin-left: 1px;
-  margin-right: 5px;
+  margin-right: 3px;
+  margin-top: -1px;
+  transform: scale(0.88);
 `

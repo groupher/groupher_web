@@ -16,7 +16,15 @@ import Actions from './Actions'
 
 import type { TAPIMode } from '../spec'
 import { API_MODE } from '../constant'
-import { Wrapper } from '../styles/comment/footer'
+import {
+  Wrapper,
+  MainWrapper,
+  AnwserWrapper,
+  CheckSVGIcon,
+  AuthorUpvoteWrapper,
+  UpvotedIcon,
+  ExtraWrapper,
+} from '../styles/comment/footer'
 import { handleUpvote, handleEmotion } from '../logic'
 
 type TProps = {
@@ -30,30 +38,54 @@ const Footer: FC<TProps> = ({ data, apiMode }) => {
   const { meta, upvotesCount, viewerHasUpvoted } = data
   const { isArticleAuthorUpvoted, isLegal, illegalReason, illegalWords } = meta
 
+  const isSolution = false
+  const noExtraInfo = !isSolution && !isArticleAuthorUpvoted
+
   return (
     <Wrapper>
-      <Upvote
-        left={5}
-        top={-1}
-        type={UPVOTE_LAYOUT.COMMENT}
-        count={upvotesCount}
-        viewerHasUpvoted={viewerHasUpvoted}
-        onAction={(did) => handleUpvote(data, did)}
-      />
+      {!noExtraInfo && (
+        <ExtraWrapper>
+          {isSolution && (
+            <AnwserWrapper>
+              <CheckSVGIcon />
+              解决方案
+            </AnwserWrapper>
+          )}
 
-      <Space right={10} />
+          {isArticleAuthorUpvoted && (
+            <AuthorUpvoteWrapper>
+              <UpvotedIcon />
+              作者点了赞
+            </AuthorUpvoteWrapper>
+          )}
+          <SpaceGrow />
+        </ExtraWrapper>
+      )}
 
-      <EmotionSelector
-        isLegal={isLegal}
-        emotions={data.emotions}
-        onAction={(name, hasEmotioned) => {
-          if (!accountInfo) return authWarn()
-          handleEmotion(data, name, hasEmotioned)
-        }}
-      />
-      {apiMode === API_MODE.ARTICLE && isLegal && <DotDivider radius={3} space={10} />}
-      {apiMode === API_MODE.ARTICLE && <Actions data={data} />}
-      <SpaceGrow />
+      <MainWrapper>
+        <Upvote
+          left={5}
+          top={-1}
+          type={UPVOTE_LAYOUT.COMMENT}
+          count={upvotesCount}
+          viewerHasUpvoted={viewerHasUpvoted}
+          onAction={(did) => handleUpvote(data, did)}
+        />
+
+        <Space right={10} />
+
+        <EmotionSelector
+          isLegal={isLegal}
+          emotions={data.emotions}
+          onAction={(name, hasEmotioned) => {
+            if (!accountInfo) return authWarn()
+            handleEmotion(data, name, hasEmotioned)
+          }}
+        />
+        {apiMode === API_MODE.ARTICLE && isLegal && <DotDivider radius={3} space={10} />}
+        {apiMode === API_MODE.ARTICLE && <Actions data={data} />}
+        <SpaceGrow />
+      </MainWrapper>
     </Wrapper>
   )
 }
