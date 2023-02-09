@@ -32,9 +32,7 @@ const YesOrNoButton: FC<TProps> = ({
 }) => {
   return (
     <Wrapper align={align}>
-      {!loading && (
-        <CancelBtn onClick={() => onCancel?.()}>{cancelText}</CancelBtn>
-      )}
+      {!loading && <CancelBtn onClick={() => onCancel?.()}>{cancelText}</CancelBtn>}
       <Space left={5} right={10} />
 
       <Button
