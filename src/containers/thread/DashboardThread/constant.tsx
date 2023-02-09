@@ -15,6 +15,7 @@ export const SETTING_FIELD = {
   PRIMARY_COLOR: 'primaryColor',
   POST_LAYOUT: 'postLayout',
   KANBAN_LAYOUT: 'kanbanLayout',
+  KANBAN_BG_COLORS: 'kanbanBgColors',
   HELP_LAYOUT: 'helpLayout',
   BRAND_LAYOUT: 'brandLayout',
   AVATAR_LAYOUT: 'avatarLayout',

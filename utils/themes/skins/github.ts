@@ -65,29 +65,29 @@ const github = {
 
   baseColor: {
     red: '#ca5f4d',
-    redBg: '#FDF1F0',
+    redBg: '#ffbfba3d',
 
     orange: '#ad735c',
     orangeBg: '#FEF7E8',
 
-    // naming, fix later
-    cyanLight: '#00B5CC',
-    cyanLightBg: '#e1fcff',
-
     brown: '#8d691e',
     brownBg: '#fff3df',
 
-    yellow: '#B0BA6C',
+    yellow: '#eddd85',
     yellowBg: '#FEFBE8',
 
     green: '#699411',
     greenBg: '#eefdd89c',
 
     greenLight: '#37B784',
-    greenLightBg: '#f3fee3',
+    greenLightBg: '#e3f3cc4a',
 
     cyan: '#24878C',
-    cyanBg: '#EBFEFB',
+    cyanBg: '#e1fcff',
+
+    // naming, fix later
+    cyanLight: '#00B5CC',
+    cyanLightBg: '#e1fcff94',
 
     blue: '#456fbd',
     blueBg: '#d8e3fd54',
@@ -98,7 +98,7 @@ const github = {
     grey: '#106d8a',
 
     pink: '#b36976',
-    pinkBg: '#FCF1F6',
+    pinkBg: '#ffd8ea59',
 
     pinkLite: '#82606b',
     pinkBtnText: '#ded0d0',

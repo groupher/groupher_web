@@ -7,6 +7,7 @@ import BroadcastSVG from '@/icons/Broadcast'
 
 // import Img from '@/Img'
 import css, { theme } from '@/utils/css'
+import { camelize } from '@/utils/fmt'
 
 type TWrapper = { color: TColorName } & TSpace & TTestable
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
@@ -72,7 +73,7 @@ export const Title = styled.span<{ color: TColorName }>`
     position: absolute;
     left: 0;
     bottom: 1px;
-    background-color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
+    background-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
     opacity: 0.25;
   }
 `
@@ -103,5 +104,5 @@ export const NotifyIcon = styled(BroadcastSVG)<{ color: TColorName }>`
   margin-right: 5px;
   transform: rotate(-15deg);
   mix-blend-mode: color-burn;
-  fill: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
+  fill: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
 `

@@ -114,6 +114,7 @@ export type TUiSettings = {
   helpLayout: THelpLayout
   postLayout: TPostLayout
   kanbanLayout: TKanbanLayout
+  kanbanBgColors: TColorName[]
   changelogLayout: TChangelogLayout
   footerLayout: TFooterLayout
 
@@ -147,6 +148,7 @@ export type TTouched = {
   topbarBg: boolean
   postLayout: boolean
   kanbanLayout: boolean
+  kanbanBgColors: boolean
   changelogLayout: boolean
   alias: boolean
   tags: boolean
@@ -166,6 +168,7 @@ export type TSettingField =
   | 'primaryColor'
   | 'postLayout'
   | 'kanbanLayout'
+  | 'kanbanBgColors'
   | 'brandLayout'
   | 'avatarLayout'
   | 'bannerLayout'

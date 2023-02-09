@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import type { TColorName, TTestable } from '@/spec'
 
 import css, { animate, theme } from '@/utils/css'
+import { camelize } from '@/utils/fmt'
 
 import MagicSVG from '@/icons/MagicHand'
 import CurlyLineSVG from './U2DSVG'
@@ -37,7 +38,7 @@ export const MagicWrapper = styled.div`
 `
 export const MagicIcon = styled(MagicSVG)<{ color: TColorName }>`
   ${css.size(35)};
-  fill: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
+  fill: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
 
   filter: saturate(1.3);
   transform: scale(0.8);

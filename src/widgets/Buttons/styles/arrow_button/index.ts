@@ -1,9 +1,10 @@
 import styled from 'styled-components'
 
 import type { TColorName, TSize, TSpace } from '@/spec'
+import { SIZE } from '@/constant'
 
 import css, { theme } from '@/utils/css'
-import { SIZE } from '@/constant'
+import { camelize } from '@/utils/fmt'
 
 type TWrapper = {
   disabled: boolean
@@ -19,7 +20,7 @@ export const Wrapper = styled.button<TWrapper>`
   display: inline-flex;
   opacity: ${({ dimWhenIdle, disabled }) => (dimWhenIdle || disabled ? '0.65' : 1)};
   color: ${({ color, linkColor }) =>
-    linkColor ? theme('link') : theme(`baseColor.${color.toLowerCase()}`)};
+    linkColor ? theme('link') : theme(`baseColor.${camelize(color)}Bg`)};
 
   border: none;
   background: transparent;

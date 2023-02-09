@@ -45,7 +45,8 @@ const KanbanThreadContainer: FC<TProps> = ({
 }) => {
   useInit(store)
 
-  const { layout, avatarLayout } = store
+  const { layout, avatarLayout, kanbanBgColors } = store
+  const [BG1, BG2, BG3] = kanbanBgColors
 
   // see: https://stackoverflow.com/questions/72673362/error-text-content-does-not-match-server-rendered-html
   const [hydrated, setHydrated] = useState(false)
@@ -65,7 +66,7 @@ const KanbanThreadContainer: FC<TProps> = ({
             <SpaceGrow />
             <IconButton path="shape/add.svg" right={12} />
           </Header>
-          <Body>
+          <Body color={BG1}>
             <KanbanItem layout={layout} />
             <KanbanItem layout={layout} />
             <KanbanItem layout={layout} />
@@ -83,7 +84,7 @@ const KanbanThreadContainer: FC<TProps> = ({
             <SpaceGrow />
             <IconButton path="shape/add.svg" right={12} />
           </Header>
-          <Body>
+          <Body color={BG2}>
             <KanbanItem layout={layout} />
             <KanbanItem layout={layout} />
             <KanbanItem layout={layout} />
@@ -101,7 +102,7 @@ const KanbanThreadContainer: FC<TProps> = ({
             <SpaceGrow />
             <IconButton path="shape/add.svg" right={12} />
           </Header>
-          <Body>
+          <Body color={BG3}>
             <KanbanItem layout={layout} />
             <KanbanItem layout={layout} />
             <KanbanItem layout={layout} />

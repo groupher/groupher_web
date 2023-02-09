@@ -2,7 +2,9 @@ import styled from 'styled-components'
 import Link from 'next/link'
 
 import type { TTestable } from '@/spec'
+
 import css, { theme } from '@/utils/css'
+import { camelize } from '@/utils/fmt'
 
 import Input from '@/widgets/Input'
 
@@ -21,7 +23,7 @@ export const TagItem = styled.div`
 export const Dot = styled.div<{ color: string }>`
   ${css.circle(10)};
   margin-right: 10px;
-  background: ${({ color }) => (color ? theme(`baseColor.${color.toLowerCase()}`) : 'none')};
+  background: ${({ color }) => (color ? theme(`baseColor.${camelize(color)}Bg`) : 'none')};
 `
 export const TagName = styled.div`
   font-size: 15px;

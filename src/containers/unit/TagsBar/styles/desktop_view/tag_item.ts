@@ -1,11 +1,13 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import Img from '@/Img'
-// import HashTagSVG from '@/icons/HashTag'
-import css, { theme } from '@/utils/css'
 
-import { TagsWrapper } from './index'
+import css, { theme } from '@/utils/css'
+import { camelize } from '@/utils/fmt'
+
+import Img from '@/Img'
+
+import { TagsWrapper } from '.'
 
 type TTag = TActive & { color?: string }
 
@@ -37,7 +39,7 @@ export const DotWrapper = styled.div`
 type THashSign = TActive & { color?: string }
 export const DotSign = styled.div<THashSign>`
   ${css.circle(8)};
-  background: ${({ color }) => (color ? theme(`baseColor.${color.toLowerCase()}`) : 'none')};
+  background: ${({ color }) => (color ? theme(`baseColor.${camelize(color)}`) : 'none')};
   margin-top: 3px;
   margin-left: 2px;
   opacity: ${({ $active }) => ($active ? 1 : theme('tags.dotOpacity'))};

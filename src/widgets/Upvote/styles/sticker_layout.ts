@@ -29,9 +29,10 @@ export const Button = styled.div`
   background: ${theme('alphaBg')};
 
   border-radius: 10px;
-  padding: 8px 10px;
+  padding: 7px 10px;
+  padding-bottom: 4px;
 
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 
   &:hover {
     border-color: ${theme('lightText')};

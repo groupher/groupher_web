@@ -5,7 +5,7 @@
  */
 
 import { FC, memo, ReactNode } from 'react'
-import { keys } from 'ramda'
+import { keys, includes, isEmpty } from 'ramda'
 
 import type { TColorName, TTooltipPlacement } from '@/spec'
 import { buildLog } from '@/utils/logger'
@@ -24,6 +24,8 @@ type TProps = {
   onChange?: (color: TColorName) => void
   placement?: TTooltipPlacement
   offset?: [number, number]
+  bgMode?: boolean
+  excepts?: TColorName[]
 }
 
 const ColorSelector: FC<TProps> = ({
@@ -33,7 +35,13 @@ const ColorSelector: FC<TProps> = ({
   onChange = log,
   placement = 'bottom',
   offset = [5, 5],
+  bgMode = false,
+  excepts = [],
 }) => {
+  const colorKeys = isEmpty(excepts)
+    ? keys(COLORS)
+    : keys(COLORS).filter((k) => !includes(k, excepts))
+
   return (
     <Tooltip
       placement={placement}
@@ -41,13 +49,13 @@ const ColorSelector: FC<TProps> = ({
       offset={offset}
       content={
         <Wrapper testid={testid}>
-          {keys(COLORS).map((name) => {
+          {colorKeys.map((name) => {
             const $active = name === activeColor || COLORS[name] === activeColor
 
             return (
               <DotWrapper key={name} onClick={() => onChange(name)}>
-                <Dot color={COLORS[name]} $active={$active}>
-                  {$active && <HookIcon />}
+                <Dot color={COLORS[name]} $active={$active} colorName={name} bgMode={bgMode}>
+                  {$active && <HookIcon colorName={name} bgMode={bgMode} />}
                 </Dot>
               </DotWrapper>
             )

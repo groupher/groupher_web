@@ -1,8 +1,11 @@
 import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
-import Img from '@/Img'
+
 import css, { theme } from '@/utils/css'
+import { camelize } from '@/utils/fmt'
+
+import Img from '@/Img'
 
 export const Wrapper = styled.div`
   color: ${theme('article.digest')};
@@ -26,7 +29,7 @@ export const Avatar = styled(Img)<{ color: TColorName }>`
   ${css.circle(30)};
   border: 2px solid;
   padding: 2px;
-  border-color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
+  border-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
   background-color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}Bg`)};
 `
 

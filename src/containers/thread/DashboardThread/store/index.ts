@@ -4,7 +4,15 @@
 
 import { values, pick, findIndex, clone, isNil, equals, pluck, uniq, filter } from 'ramda'
 
-import type { TCommunity, TRootStore, TTag, TGlobalLayout, TThread, TSizeSML } from '@/spec'
+import type {
+  TCommunity,
+  TRootStore,
+  TTag,
+  TGlobalLayout,
+  TThread,
+  TSizeSML,
+  TColorName,
+} from '@/spec'
 import {
   ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
@@ -63,6 +71,7 @@ const DashboardThread = T.model('DashboardThread', {
         changelogLayout,
         postLayout,
         kanbanLayout,
+        kanbanBgColors,
         helpLayout,
         footerLayout,
         bannerLayout,
@@ -87,6 +96,7 @@ const DashboardThread = T.model('DashboardThread', {
         avatar: avatarLayout,
         post: postLayout,
         kanban: kanbanLayout,
+        kanbanBgColors: kanbanBgColors as TColorName[],
         help: helpLayout,
         footer: footerLayout,
         changelog: changelogLayout,
@@ -115,7 +125,7 @@ const DashboardThread = T.model('DashboardThread', {
       const { initSettings: init } = slf
 
       const _isChanged = (field: TSettingField): boolean => {
-        return slf[field] !== init[field]
+        return !equals(slf[field], init[field])
       }
 
       const primaryColorTouched = _isChanged('primaryColor')
@@ -125,6 +135,7 @@ const DashboardThread = T.model('DashboardThread', {
       const bannerLayoutTouched = _isChanged('bannerLayout')
       const postLayoutTouched = _isChanged('postLayout')
       const kanbanLayoutTouched = _isChanged('kanbanLayout')
+      const kanbanBgColorsTouched = _isChanged('kanbanBgColors')
       const helpLayoutTouched = _isChanged('helpLayout')
 
       const broadcastLayoutTouched = _isChanged('broadcastLayout')
@@ -164,6 +175,7 @@ const DashboardThread = T.model('DashboardThread', {
         postLayout: postLayoutTouched,
         footerLayout: footerLayoutTouched,
         kanbanLayout: kanbanLayoutTouched,
+        kanbanBgColors: kanbanBgColorsTouched,
         helpLayout: helpLayoutTouched,
         changelogLayout: changelogLayoutTouched,
         alias: aliasTouched,
@@ -307,6 +319,7 @@ const DashboardThread = T.model('DashboardThread', {
           wallpapers,
           hasShadow,
         },
+        kanbanBgColors: toJS(slf.kanbanBgColors) as TColorName[],
         ...pick(
           [
             'layoutTab',

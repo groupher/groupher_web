@@ -12,13 +12,14 @@ export const TotalCountWrapper = styled.div`
   flex-grow: 1;
 `
 export const TotalTitle = styled.div`
+  ${css.flex('align-end')};
   color: ${theme('article.title')};
   font-size: 15px;
   font-weight: bold;
 `
 export const TotalNum = styled.span`
   color: ${theme('article.digest')};
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   margin-left: 6px;
   opacity: 0.8;

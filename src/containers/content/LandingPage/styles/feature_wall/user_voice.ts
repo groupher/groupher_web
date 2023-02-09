@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import type { TTestable, TColorName } from '@/spec'
 
 import css, { theme } from '@/utils/css'
+import { camelize } from '@/utils/fmt'
 
 import TreesSVG from '@/icons/Trees'
 
@@ -53,11 +54,11 @@ export const Avatar = styled.div<{ color: TColorName }>`
   ${css.circle(30)};
   ${css.flex('align-both')};
   padding: 2px;
-  color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)};
+  color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
   font-size: 12px;
 
   /* border: 2px solid; */
-  /* border-color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)}; */
+  /* border-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)}; */
   background-color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}Bg`)};
 `
 export const Title = styled.div`
