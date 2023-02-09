@@ -39,7 +39,7 @@ export const DotWrapper = styled.div`
 type THashSign = TActive & { color?: string }
 export const DotSign = styled.div<THashSign>`
   ${css.circle(8)};
-  background: ${({ color }) => (color ? theme(`baseColor.${camelize(color)}Bg`) : 'none')};
+  background: ${({ color }) => (color ? theme(`baseColor.${camelize(color)}`) : 'none')};
   margin-top: 3px;
   margin-left: 2px;
   opacity: ${({ $active }) => ($active ? 1 : theme('tags.dotOpacity'))};
