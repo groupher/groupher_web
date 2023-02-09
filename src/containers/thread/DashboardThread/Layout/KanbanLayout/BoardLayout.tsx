@@ -2,11 +2,14 @@ import { FC, memo, useState } from 'react'
 
 import type { TColorName } from '@/spec'
 import { DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
+import { COLOR_NAME } from '@/constant/colors'
+
 import { callDashboardDesc } from '@/utils/signal'
+import { randomBgNames } from '@/utils/helper'
+
 import useHover from '@/hooks/useHover'
 
-import { Inline, SpaceGrow, Space, LineDivider } from '@/widgets/Common'
-import Tooltip from '@/widgets/Tooltip'
+import { Inline, SpaceGrow, Space } from '@/widgets/Common'
 import ColorSelector from '@/widgets/ColorSelector'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
@@ -21,26 +24,22 @@ import type { TProps } from '.'
 import {
   BoardsWrapper,
   Board,
-  Panel,
   ColorsWrapper,
   Preset,
   ColorBall,
   Action,
   DiceIcon,
-  ArrowIcon,
 } from '../../styles/layout/kanban_layout/board_layout'
-import { COLOR_NAME } from '@/constant'
 import { edit } from '../../logic'
 
 const BoardLayout: FC<TProps> = ({ kanbanBgColors, isTouched, saving }) => {
   const [diceRotate, setDiceRotate] = useState(0)
-  const [presetActive, setPresetActive] = useState(false)
 
   const [board1Ref, isBoard1Hovered] = useHover<HTMLDivElement>()
   const [board2Ref, isBoard2Hovered] = useHover<HTMLDivElement>()
   const [board3Ref, isBoard3Hovered] = useHover<HTMLDivElement>()
 
-  const [BG1, BG2, BG3] = kanbanBgColors
+  const [BG1, BG2, BG3] = kanbanBgColors as TColorName[]
 
   return (
     <>
@@ -65,10 +64,10 @@ const BoardLayout: FC<TProps> = ({ kanbanBgColors, isTouched, saving }) => {
       <ColorsWrapper>
         <Preset setable>
           <ColorSelector
-            activeColor={BG1 as TColorName}
+            activeColor={BG1}
             onChange={(color) => edit([color, BG2, BG3], 'kanbanBgColors')}
-            placement="bottom-start"
-            offset={[-10, 10]}
+            placement="right"
+            offset={[-2, 1]}
             excepts={[COLOR_NAME.CYAN, COLOR_NAME.GREEN]}
             bgMode
           >
@@ -78,8 +77,8 @@ const BoardLayout: FC<TProps> = ({ kanbanBgColors, isTouched, saving }) => {
           <ColorSelector
             activeColor={BG2 as TColorName}
             onChange={(color) => edit([BG1, color, BG3], 'kanbanBgColors')}
-            placement="bottom-start"
-            offset={[-10, 10]}
+            placement="right"
+            offset={[-2, 1]}
             excepts={[COLOR_NAME.CYAN, COLOR_NAME.GREEN]}
             bgMode
           >
@@ -89,8 +88,8 @@ const BoardLayout: FC<TProps> = ({ kanbanBgColors, isTouched, saving }) => {
           <ColorSelector
             activeColor={BG3 as TColorName}
             onChange={(color) => edit([BG1, BG2, color], 'kanbanBgColors')}
-            placement="bottom-start"
-            offset={[-10, 10]}
+            placement="right"
+            offset={[-2, 1]}
             excepts={[COLOR_NAME.CYAN, COLOR_NAME.GREEN]}
             bgMode
           >
@@ -103,47 +102,11 @@ const BoardLayout: FC<TProps> = ({ kanbanBgColors, isTouched, saving }) => {
         <Action
           onClick={() => {
             setDiceRotate(diceRotate + 80)
+            edit(randomBgNames(3), 'kanbanBgColors')
           }}
         >
-          <DiceIcon rotate={diceRotate} /> 随机
+          <DiceIcon rotate={diceRotate} /> 随缘
         </Action>
-
-        <LineDivider left={1} right={1} />
-
-        <Tooltip
-          content={
-            <Panel>
-              <Preset>
-                <ColorBall color={COLOR_NAME.BLUE} />
-                <ColorBall color={COLOR_NAME.PURPLE} />
-                <ColorBall color={COLOR_NAME.YELLOW} />
-              </Preset>
-
-              <Preset>
-                <ColorBall color={COLOR_NAME.RED} />
-                <ColorBall color={COLOR_NAME.YELLOW} />
-                <ColorBall color={COLOR_NAME.GREEN} />
-              </Preset>
-
-              <Preset>
-                <ColorBall color={COLOR_NAME.BLUE} />
-                <ColorBall color={COLOR_NAME.PURPLE} />
-                <ColorBall color={COLOR_NAME.YELLOW} />
-              </Preset>
-            </Panel>
-          }
-          placement="bottom-end"
-          trigger="mouseenter focus"
-          offset={[-5, 5]}
-          onShow={() => setPresetActive(true)}
-          onHide={() => setPresetActive(false)}
-          noPadding
-        >
-          <Action $active={presetActive}>
-            预设 <ArrowIcon />
-          </Action>
-        </Tooltip>
-
         <Space right={0} />
       </ColorsWrapper>
 

@@ -6,7 +6,6 @@ import css, { theme } from '@/utils/css'
 import { camelize } from '@/utils/fmt'
 
 import DiceSVG from '@/icons/Dice'
-import ArrowSVG from '@/icons/ArrowSimple'
 
 export { Bar, Circle } from '..'
 
@@ -42,12 +41,7 @@ export const ColorsWrapper = styled.div`
   gap: 0 10px;
   margin-bottom: 18px;
 `
-export const Panel = styled.div`
-  ${css.flexColumn('align-both')};
-  gap: 10px;
-  width: 100px;
-  padding: 10px 15px;
-`
+
 export const Action = styled.div<TActive>`
   ${css.flex('align-center')};
   color: ${theme('article.info')};
@@ -70,12 +64,7 @@ export const DiceIcon = styled(DiceSVG)<{ rotate: number }>`
   transform: ${({ rotate }) => `rotate(${rotate}deg)`};
   transition: all 0.2s;
 `
-export const ArrowIcon = styled(ArrowSVG)`
-  ${css.size(13)};
-  fill: ${theme('article.info')};
-  margin-left: 5px;
-  transform: rotate(-90deg);
-`
+
 export const Preset = styled.div<{ setable?: boolean }>`
   ${css.flex('align-both')};
   border: 1px solid;
@@ -83,13 +72,13 @@ export const Preset = styled.div<{ setable?: boolean }>`
   border-radius: 10px;
   gap: 0 6px;
   width: 84px;
-
   height: 30px;
 
   &:hover {
     cursor: ${({ setable }) => (!setable ? 'pointer' : 'normal')};
     border-color: ${theme('article.digest')};
     border-color: ${({ setable }) => (!setable ? theme('article.digest') : theme('divider'))};
+    box-shadow: ${css.cardShadow};
   }
 
   transition: all 0.2s;

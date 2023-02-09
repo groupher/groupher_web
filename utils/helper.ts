@@ -1,12 +1,12 @@
-import { curry, reduce, keys, sort, uniq, tap, includes } from 'ramda'
-
-import type { TWindow, TToastType, TToastOption, TArticleState } from '@/spec'
-
 import hotToast from 'react-hot-toast'
+import { curry, reduce, keys, sort, uniq, tap, includes, remove, isEmpty } from 'ramda'
+
+import type { TWindow, TToastType, TToastOption, TArticleState, TColorName } from '@/spec'
 
 import { TAG_COLOR_ORDER } from '@/config'
 import { ARTICLE_STATE } from '@/constant/gtd'
 import DEFAULT_TOAST_OPTIONS from '@/constant/toast'
+import { COLOR_NAME } from '@/constant/colors'
 
 type TSORTABLE_ITEMS = {
   color?: string
@@ -151,6 +151,31 @@ export const getRandomInt = (min: number, max: number): number => {
   min = Math.ceil(min)
   max = Math.floor(max)
   return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+/**
+ * get radom backgrounds from COLOR_NAMEs
+ */
+export const randomBgNames = (
+  count,
+  excepts = [COLOR_NAME.CYAN, COLOR_NAME.GREEN],
+): TColorName[] => {
+  let colorKeys = isEmpty(excepts)
+    ? keys(COLOR_NAME)
+    : keys(COLOR_NAME).filter((k) => !includes(k, excepts))
+
+  let randomIdx
+  const ret = []
+
+  for (let idx = 0; idx < count; idx += 1) {
+    if (isEmpty(colorKeys)) break
+
+    randomIdx = getRandomInt(0, colorKeys.length - 1)
+    ret.push(colorKeys[randomIdx])
+    colorKeys = remove(randomIdx, 1, colorKeys)
+  }
+
+  return ret
 }
 
 /**
