@@ -61,6 +61,9 @@ import { Alias, settingsModalFields, InitSettings } from './Models'
 /* eslint-disable-next-line */
 const log = buildLog('S:DashboardThread')
 
+// for local store, demo setting usage
+const DASHBOARD_DEMO_KEY = 'dashboard_demo'
+
 const DashboardThread = T.model('DashboardThread', {
   saving: T.opt(T.bool, false),
   curTab: T.opt(T.enum(values(ROUTE.DASHBOARD)), ROUTE.DASHBOARD.INFO),
@@ -74,6 +77,10 @@ const DashboardThread = T.model('DashboardThread', {
 
   ...settingsModalFields,
   initSettings: T.opt(InitSettings, {}),
+  defaultSettings: T.opt(InitSettings, {}),
+
+  // for global alert
+  demoAlertEnable: T.opt(T.bool, false),
 })
   .views((self) => ({
     get globalLayout(): TGlobalLayout {
@@ -389,7 +396,32 @@ const DashboardThread = T.model('DashboardThread', {
   .actions((self) => ({
     afterCreate(): void {
       const slf = self as TStore
-      const dashboardDemoSettings = BStore.get('dashboard_demo')
+
+      if (!slf._loadLocalSettings()) {
+        slf.mark({ demoAlertEnable: false })
+      }
+    },
+
+    clearLocalSettings(): void {
+      BStore.remove(DASHBOARD_DEMO_KEY)
+
+      const slf = self as TStore
+      const curSlfObj = toJS(slf)
+
+      mapObjIndexed((value, key) => {
+        if (!equals(curSlfObj[key], curSlfObj.defaultSettings[key])) {
+          if (key !== 'defaultSettings' && key !== 'initSettings') {
+            slf.mark({ [key]: value })
+          }
+        }
+      }, curSlfObj.defaultSettings)
+
+      slf.mark({ demoAlertEnable: false, saving: false, initSettings: curSlfObj.defaultSettings })
+    },
+
+    _loadLocalSettings(): boolean {
+      const slf = self as TStore
+      const dashboardDemoSettings = BStore.get(DASHBOARD_DEMO_KEY)
 
       if (dashboardDemoSettings) {
         const settingsObj = JSON.parse(dashboardDemoSettings)
@@ -402,9 +434,12 @@ const DashboardThread = T.model('DashboardThread', {
             }
           }, settingsObj)
 
-          slf.mark({ saving: false, initSettings: settingsObj })
+          slf.mark({ saving: false, initSettings: settingsObj, demoAlertEnable: true })
         })
+        return true
       }
+
+      return false
     },
 
     /** it also maybe called by landing page */
@@ -434,7 +469,8 @@ const DashboardThread = T.model('DashboardThread', {
         slf.editingAlias = null
       }
 
-      BStore.set('dashboard_demo', JSON.stringify(toJS(slf)))
+      BStore.set(DASHBOARD_DEMO_KEY, JSON.stringify(toJS(slf)))
+      slf.mark({ demoAlertEnable: true })
     },
 
     rollbackEdit(field: TSettingField): void {

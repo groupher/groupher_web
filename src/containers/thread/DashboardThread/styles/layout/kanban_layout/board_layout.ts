@@ -47,7 +47,7 @@ export const Action = styled.div<TActive>`
   color: ${theme('article.info')};
   font-size: 12px;
   opacity: ${({ $active }) => ($active ? 1 : 0.85)};
-  margin-top: 2px;
+  margin-top: 4px;
 
   &:hover {
     cursor: pointer;

@@ -99,8 +99,23 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
       const root = getParent(self) as TRootStore
       return root.dashboardThread.globalLayout
     },
+
+    get showDashboardAlert(): boolean {
+      const root = getParent(self) as TRootStore
+
+      return root.dashboardThread.demoAlertEnable
+    },
   }))
   .actions((self) => ({
+    loadDemoSetting(): void {
+      const root = getParent(self) as TRootStore
+
+      return root.dashboardThread.afterCreate()
+    },
+    clearLocalSettings(): void {
+      const root = getParent(self) as TRootStore
+      return root.dashboardThread.clearLocalSettings()
+    },
     authWarning(options): void {
       const root = getParent(self) as TRootStore
       root.authWarning(options)

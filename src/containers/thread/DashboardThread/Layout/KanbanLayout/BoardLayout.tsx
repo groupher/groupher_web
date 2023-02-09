@@ -106,7 +106,7 @@ const BoardLayout: FC<TProps> = ({ kanbanBgColors, isBgColorsTouched, saving }) 
             edit(randomBgNames(3), 'kanbanBgColors')
           }}
         >
-          <DiceIcon rotate={diceRotate} /> 随缘
+          <DiceIcon rotate={diceRotate} /> 灵感
         </Action>
         <Space right={0} />
       </ColorsWrapper>
