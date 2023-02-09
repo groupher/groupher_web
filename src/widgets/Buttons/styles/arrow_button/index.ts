@@ -20,7 +20,7 @@ export const Wrapper = styled.button<TWrapper>`
   display: inline-flex;
   opacity: ${({ dimWhenIdle, disabled }) => (dimWhenIdle || disabled ? '0.65' : 1)};
   color: ${({ color, linkColor }) =>
-    linkColor ? theme('link') : theme(`baseColor.${camelize(color)}Bg`)};
+    linkColor ? theme('link') : theme(`baseColor.${camelize(color)}`)};
 
   border: none;
   background: transparent;

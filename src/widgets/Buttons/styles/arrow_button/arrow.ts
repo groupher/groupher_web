@@ -22,7 +22,7 @@ const BaseArrow = styled.div<TArrow>`
 
   ${ButtonWrapper}:hover & {
     background-color: ${({ color, linkColor }) =>
-      linkColor ? theme('link') : theme(`baseColor.${camelize(color)}Bg`)};
+      linkColor ? theme('link') : theme(`baseColor.${camelize(color)}`)};
   }
 
   ${ButtonWrapper}:hover &:before {
@@ -35,7 +35,7 @@ const BaseArrow = styled.div<TArrow>`
     position: absolute;
     border: solid;
     border-color: ${({ color, linkColor }) =>
-      linkColor ? theme('link') : theme(`baseColor.${camelize(color)}Bg`)};
+      linkColor ? theme('link') : theme(`baseColor.${camelize(color)}`)};
     border-width: 0 1px 1px 0;
     display: inline-block;
     padding: 3px;
