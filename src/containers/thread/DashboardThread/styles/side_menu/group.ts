@@ -29,7 +29,7 @@ export const FoldArrowIcon = styled(ArrowSVG)<{ fold: boolean }>`
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
-  font-size: 15px;
+  font-size: 14px;
   margin-left: 10px;
   font-weight: 500;
   flex-grow: 1;
@@ -62,7 +62,6 @@ export const Item = styled(Link)<TActive>`
   display: block;
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   background: ${({ $active }) => ($active ? theme('menuActive') : 'transparent')};
-  font-weight: ${({ $active }) => ($active ? 500 : 400)};
   width: 140px;
   padding: 2px 5px;
   padding-left: 18px;
@@ -72,8 +71,8 @@ export const Item = styled(Link)<TActive>`
   border-bottom-left-radius: 5px;
   font-size: 14px;
 
-  margin-top: ${({ $active }) => ($active ? '4px' : '2px')};
-  margin-bottom: ${({ $active }) => ($active ? '8px' : '6px')};
+  margin-top: ${({ $active }) => ($active ? '4px' : '3px')};
+  margin-bottom: ${({ $active }) => ($active ? '8px' : '7px')};
 
   &:hover {
     cursor: pointer;
