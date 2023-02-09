@@ -125,7 +125,7 @@ const DashboardThread = T.model('DashboardThread', {
       const { initSettings: init } = slf
 
       const _isChanged = (field: TSettingField): boolean => {
-        return slf[field] !== init[field]
+        return !equals(slf[field], init[field])
       }
 
       const primaryColorTouched = _isChanged('primaryColor')
@@ -135,6 +135,7 @@ const DashboardThread = T.model('DashboardThread', {
       const bannerLayoutTouched = _isChanged('bannerLayout')
       const postLayoutTouched = _isChanged('postLayout')
       const kanbanLayoutTouched = _isChanged('kanbanLayout')
+      const kanbanBgColorsTouched = _isChanged('kanbanBgColors')
       const helpLayoutTouched = _isChanged('helpLayout')
 
       const broadcastLayoutTouched = _isChanged('broadcastLayout')
@@ -174,6 +175,7 @@ const DashboardThread = T.model('DashboardThread', {
         postLayout: postLayoutTouched,
         footerLayout: footerLayoutTouched,
         kanbanLayout: kanbanLayoutTouched,
+        kanbanBgColors: kanbanBgColorsTouched,
         helpLayout: helpLayoutTouched,
         changelogLayout: changelogLayoutTouched,
         alias: aliasTouched,

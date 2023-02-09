@@ -12,19 +12,26 @@ import { Wrapper } from '../../styles/layout/kanban_layout'
 export type TProps = {
   layout: TKanbanLayout
   isTouched: boolean
+  isBgColorsTouched: boolean
   saving: boolean
   kanbanBgColors: TColorName[]
 }
 
-const KanbanListLayout: FC<TProps> = ({ layout, isTouched, kanbanBgColors, saving }) => {
+const KanbanListLayout: FC<TProps> = ({
+  layout,
+  isTouched,
+  isBgColorsTouched,
+  kanbanBgColors,
+  saving,
+}) => {
   return (
     <Wrapper>
       <ItemLayout layout={layout} isTouched={isTouched} saving={saving} />
-      <Divider top={40} bottom={50} />
+      <Divider top={50} bottom={60} />
       <BoardLayout
         layout={layout}
         kanbanBgColors={kanbanBgColors}
-        isTouched={isTouched}
+        isBgColorsTouched={isBgColorsTouched}
         saving={saving}
       />
     </Wrapper>

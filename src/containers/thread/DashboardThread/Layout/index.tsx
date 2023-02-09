@@ -125,6 +125,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
           <KanbanLayout
             layout={kanbanLayout}
             isTouched={touched.kanbanLayout}
+            isBgColorsTouched={touched.kanbanBgColors}
             kanbanBgColors={kanbanBgColors}
             saving={saving}
           />

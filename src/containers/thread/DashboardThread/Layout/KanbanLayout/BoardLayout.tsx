@@ -18,7 +18,7 @@ import SavingBar from '../../SavingBar'
 
 import KanbanItem from './KanbanItem'
 
-import type { TProps } from '.'
+import type { TProps as TPropsBase } from '.'
 
 import {
   BoardsWrapper,
@@ -31,7 +31,9 @@ import {
 } from '../../styles/layout/kanban_layout/board_layout'
 import { edit } from '../../logic'
 
-const BoardLayout: FC<TProps> = ({ kanbanBgColors, isTouched, saving }) => {
+type TProps = Omit<TPropsBase, 'isTouched'>
+
+const BoardLayout: FC<TProps> = ({ kanbanBgColors, isBgColorsTouched, saving }) => {
   const [diceRotate, setDiceRotate] = useState(0)
 
   const [board1Ref, isBoard1Hovered] = useHover<HTMLDivElement>()
@@ -134,10 +136,10 @@ const BoardLayout: FC<TProps> = ({ kanbanBgColors, isTouched, saving }) => {
       </BoardsWrapper>
 
       <SavingBar
-        isTouched={isTouched}
-        field={SETTING_FIELD.KANBAN_LAYOUT}
+        isTouched={isBgColorsTouched}
+        field={SETTING_FIELD.KANBAN_BG_COLORS}
         loading={saving}
-        top={20}
+        top={40}
       />
     </>
   )

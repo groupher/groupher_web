@@ -148,6 +148,7 @@ export type TTouched = {
   topbarBg: boolean
   postLayout: boolean
   kanbanLayout: boolean
+  kanbanBgColors: boolean
   changelogLayout: boolean
   alias: boolean
   tags: boolean

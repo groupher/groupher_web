@@ -23,7 +23,7 @@ import {
 } from '../../styles/layout/kanban_layout/item_layout'
 import { edit } from '../../logic'
 
-type TProps = Omit<TPropsBase, 'kanbanBgColors'>
+type TProps = Omit<TPropsBase, 'kanbanBgColors' | 'isBgColorsTouched'>
 
 const KanbanItemLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
   return (
