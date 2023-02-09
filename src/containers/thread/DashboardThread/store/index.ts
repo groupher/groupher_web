@@ -2,7 +2,18 @@
  * DashboardThread store
  */
 
-import { values, pick, findIndex, clone, isNil, equals, pluck, uniq, filter } from 'ramda'
+import {
+  values,
+  pick,
+  findIndex,
+  clone,
+  isNil,
+  equals,
+  pluck,
+  uniq,
+  filter,
+  mapObjIndexed,
+} from 'ramda'
 
 import type {
   TCommunity,
@@ -13,6 +24,7 @@ import type {
   TSizeSML,
   TColorName,
 } from '@/spec'
+
 import {
   ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
@@ -21,6 +33,7 @@ import {
   DASHBOARD_SEO_ROUTE,
 } from '@/constant/route'
 
+import BStore from '@/utils/bstore'
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { Tag } from '@/model'
@@ -374,6 +387,26 @@ const DashboardThread = T.model('DashboardThread', {
     },
   }))
   .actions((self) => ({
+    afterCreate(): void {
+      const slf = self as TStore
+      const dashboardDemoSettings = BStore.get('dashboard_demo')
+
+      if (dashboardDemoSettings) {
+        const settingsObj = JSON.parse(dashboardDemoSettings)
+        const curSlfObj = toJS(slf)
+
+        setTimeout(() => {
+          mapObjIndexed((value, key) => {
+            if (!equals(curSlfObj[key], settingsObj[key])) {
+              slf.mark({ [key]: value })
+            }
+          }, settingsObj)
+
+          slf.mark({ saving: false, initSettings: settingsObj })
+        })
+      }
+    },
+
     /** it also maybe called by landing page */
     changeGlowEffect(glowType: string): void {
       const slf = self as TStore
@@ -400,6 +433,8 @@ const DashboardThread = T.model('DashboardThread', {
         slf.alias[targetIdx] = clone(toJS(editingAlias))
         slf.editingAlias = null
       }
+
+      BStore.set('dashboard_demo', JSON.stringify(toJS(slf)))
     },
 
     rollbackEdit(field: TSettingField): void {
