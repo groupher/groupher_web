@@ -25,7 +25,6 @@ export const inputOnChange = (e: TEditValue, key: string): void => {
 export const onUpdate = (): void => {
   if (!store.isReady) return
 
-  console.log('onUpdate: ', store.editData)
   store.mark({ publishing: true })
   sr71$.mutate(S.updateProfile, store.editData)
 }

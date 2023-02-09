@@ -5,6 +5,8 @@
  */
 
 import { FC, ReactNode, useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import METRIC from '@/constant/metric'
@@ -16,6 +18,8 @@ import { bond } from '@/utils/mobx'
 import ThemePalette from '@/containers/layout/ThemePalette'
 import Broadcast from '@/widgets/Broadcast'
 import Footer from '@/widgets/Footer'
+
+// import DashboardAlert from './DashboardAlert'
 // import CustomScroller from '@/widgets/CustomScroller'
 
 import type { TStore } from './store'
@@ -33,7 +37,9 @@ import {
   BodyWrapper,
   ContentWrapper,
 } from './styles'
-import { useInit, childrenWithProps, getGlowPosition } from './logic'
+import { useInit, childrenWithProps, getGlowPosition, loadDemoSetting } from './logic'
+
+let DashboardAlert = null
 
 type TProps = {
   globalLayout?: TStore
@@ -52,13 +58,39 @@ const GlobalLayoutContainer: FC<TProps> = ({
   const { isMobile } = useMobileDetect()
   useInit(store, { isMobile })
 
-  const [load, setLoad] = useState(false)
+  const router = useRouter()
 
-  const { wallpaperInfo, hasShadow, glowEffect, globalLayout, broadcastConfig } = store
+  const [load, setLoad] = useState(false)
+  const [showDashboardAlertUI, setShowDashboardAlertUI] = useState(false)
+
+  const {
+    wallpaperInfo,
+    hasShadow,
+    glowEffect,
+    globalLayout,
+    broadcastConfig,
+    showDashboardAlert,
+  } = store
 
   useEffect(() => {
+    const handleRouteComplete = () => loadDemoSetting()
+    router.events.on('routeChangeComplete', handleRouteComplete)
+
     setLoad(true)
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteComplete)
+    }
   }, [])
+
+  useEffect(() => {
+    if (showDashboardAlert) {
+      DashboardAlert = dynamic(() => import('./DashboardAlert'), { ssr: false })
+      setShowDashboardAlertUI(true)
+    } else {
+      setShowDashboardAlertUI(false)
+    }
+  }, [showDashboardAlert])
 
   return (
     <ThemePalette>
@@ -93,6 +125,8 @@ const GlobalLayoutContainer: FC<TProps> = ({
           </Wrapper>
         </ScrollWrapper>
       </Skeleton>
+
+      {showDashboardAlertUI && <DashboardAlert />}
     </ThemePalette>
   )
 }

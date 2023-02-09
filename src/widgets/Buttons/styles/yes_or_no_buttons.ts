@@ -6,13 +6,13 @@ type TWrapper = { align: 'center' | 'right' }
 export const Wrapper = styled.div<TWrapper>`
   ${css.flex('align-center')};
   width: auto;
-  justify-content: ${({ align }) =>
-    align === 'center' ? 'center' : 'flex-end'};
+  justify-content: ${({ align }) => (align === 'center' ? 'center' : 'flex-end')};
 `
 export const CancelBtn = styled.div`
   opacity: 0.8;
   color: ${theme('button.primary')};
-  font-size: 14px;
+  font-size: 13px;
+  margin-top: 1px;
 
   &:hover {
     opacity: 1;

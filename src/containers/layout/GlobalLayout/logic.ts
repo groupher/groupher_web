@@ -26,6 +26,8 @@ export const getGlowPosition = (metric: TMetric, glowFixed: boolean): TGlowPosit
   return glowFixed ? 'fixed' : 'absolute'
 }
 
+export const clearDemoSetting = () => store.clearLocalSettings()
+export const loadDemoSetting = () => store.loadDemoSetting()
 /**
  * log ascii Buddha just for fun
  * 控制台打印佛祖保佑

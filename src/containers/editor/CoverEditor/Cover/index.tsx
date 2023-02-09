@@ -17,8 +17,6 @@ type TProps = {
 const Cover: FC<TProps> = ({ setting, imageUrl }) => {
   const hasImage = !isEmpty(imageUrl)
 
-  console.log('## setting.linearBorderPos: ', setting.linearBorderPos)
-
   if (!hasImage) {
     return <Placeholder />
   }

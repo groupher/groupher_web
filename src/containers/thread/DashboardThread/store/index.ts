@@ -2,7 +2,18 @@
  * DashboardThread store
  */
 
-import { values, pick, findIndex, clone, isNil, equals, pluck, uniq, filter } from 'ramda'
+import {
+  values,
+  pick,
+  findIndex,
+  clone,
+  isNil,
+  equals,
+  pluck,
+  uniq,
+  filter,
+  mapObjIndexed,
+} from 'ramda'
 
 import type {
   TCommunity,
@@ -13,6 +24,7 @@ import type {
   TSizeSML,
   TColorName,
 } from '@/spec'
+
 import {
   ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
@@ -21,6 +33,7 @@ import {
   DASHBOARD_SEO_ROUTE,
 } from '@/constant/route'
 
+import BStore from '@/utils/bstore'
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { Tag } from '@/model'
@@ -48,6 +61,9 @@ import { Alias, settingsModalFields, InitSettings } from './Models'
 /* eslint-disable-next-line */
 const log = buildLog('S:DashboardThread')
 
+// for local store, demo setting usage
+const DASHBOARD_DEMO_KEY = 'dashboard_demo'
+
 const DashboardThread = T.model('DashboardThread', {
   saving: T.opt(T.bool, false),
   curTab: T.opt(T.enum(values(ROUTE.DASHBOARD)), ROUTE.DASHBOARD.INFO),
@@ -61,6 +77,10 @@ const DashboardThread = T.model('DashboardThread', {
 
   ...settingsModalFields,
   initSettings: T.opt(InitSettings, {}),
+  defaultSettings: T.opt(InitSettings, {}),
+
+  // for global alert
+  demoAlertEnable: T.opt(T.bool, false),
 })
   .views((self) => ({
     get globalLayout(): TGlobalLayout {
@@ -374,6 +394,54 @@ const DashboardThread = T.model('DashboardThread', {
     },
   }))
   .actions((self) => ({
+    afterCreate(): void {
+      const slf = self as TStore
+
+      if (!slf._loadLocalSettings()) {
+        slf.mark({ demoAlertEnable: false })
+      }
+    },
+
+    clearLocalSettings(): void {
+      BStore.remove(DASHBOARD_DEMO_KEY)
+
+      const slf = self as TStore
+      const curSlfObj = toJS(slf)
+
+      mapObjIndexed((value, key) => {
+        if (!equals(curSlfObj[key], curSlfObj.defaultSettings[key])) {
+          if (key !== 'defaultSettings' && key !== 'initSettings') {
+            slf.mark({ [key]: value })
+          }
+        }
+      }, curSlfObj.defaultSettings)
+
+      slf.mark({ demoAlertEnable: false, saving: false, initSettings: curSlfObj.defaultSettings })
+    },
+
+    _loadLocalSettings(): boolean {
+      const slf = self as TStore
+      const dashboardDemoSettings = BStore.get(DASHBOARD_DEMO_KEY)
+
+      if (dashboardDemoSettings) {
+        const settingsObj = JSON.parse(dashboardDemoSettings)
+        const curSlfObj = toJS(slf)
+
+        setTimeout(() => {
+          mapObjIndexed((value, key) => {
+            if (!equals(curSlfObj[key], settingsObj[key])) {
+              slf.mark({ [key]: value })
+            }
+          }, settingsObj)
+
+          slf.mark({ saving: false, initSettings: settingsObj, demoAlertEnable: true })
+        })
+        return true
+      }
+
+      return false
+    },
+
     /** it also maybe called by landing page */
     changeGlowEffect(glowType: string): void {
       const slf = self as TStore
@@ -400,6 +468,9 @@ const DashboardThread = T.model('DashboardThread', {
         slf.alias[targetIdx] = clone(toJS(editingAlias))
         slf.editingAlias = null
       }
+
+      BStore.set(DASHBOARD_DEMO_KEY, JSON.stringify(toJS(slf)))
+      slf.mark({ demoAlertEnable: true })
     },
 
     rollbackEdit(field: TSettingField): void {
