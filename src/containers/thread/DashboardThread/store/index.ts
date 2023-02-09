@@ -4,7 +4,15 @@
 
 import { values, pick, findIndex, clone, isNil, equals, pluck, uniq, filter } from 'ramda'
 
-import type { TCommunity, TRootStore, TTag, TGlobalLayout, TThread, TSizeSML } from '@/spec'
+import type {
+  TCommunity,
+  TRootStore,
+  TTag,
+  TGlobalLayout,
+  TThread,
+  TSizeSML,
+  TColorName,
+} from '@/spec'
 import {
   ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
@@ -88,7 +96,7 @@ const DashboardThread = T.model('DashboardThread', {
         avatar: avatarLayout,
         post: postLayout,
         kanban: kanbanLayout,
-        kanbanBgColors,
+        kanbanBgColors: kanbanBgColors as TColorName[],
         help: helpLayout,
         footer: footerLayout,
         changelog: changelogLayout,
@@ -309,7 +317,7 @@ const DashboardThread = T.model('DashboardThread', {
           wallpapers,
           hasShadow,
         },
-        kanbanBgColors: toJS(slf.kanbanBgColors),
+        kanbanBgColors: toJS(slf.kanbanBgColors) as TColorName[],
         ...pick(
           [
             'layoutTab',

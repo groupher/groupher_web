@@ -30,7 +30,7 @@ export type TGlobalLayout = {
   brand: TBrandLayout
   post: TPostLayout
   kanban: TKanbanLayout
-  kanbanBgColors: string[]
+  kanbanBgColors: TColorName[]
   help: THelpLayout
   banner: TBannerLayout
   avatar: TAvatarLayout

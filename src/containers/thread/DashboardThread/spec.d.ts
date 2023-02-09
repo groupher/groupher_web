@@ -114,7 +114,7 @@ export type TUiSettings = {
   helpLayout: THelpLayout
   postLayout: TPostLayout
   kanbanLayout: TKanbanLayout
-  kanbanBgColors: string[]
+  kanbanBgColors: TColorName[]
   changelogLayout: TChangelogLayout
   footerLayout: TFooterLayout
 

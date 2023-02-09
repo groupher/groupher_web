@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import type { TKanbanLayout } from '@/spec'
+import type { TColorName, TKanbanLayout } from '@/spec'
 
 import { Br } from '@/widgets/Common'
 
@@ -13,7 +13,7 @@ export type TProps = {
   layout: TKanbanLayout
   isTouched: boolean
   saving: boolean
-  kanbanBgColors: string[]
+  kanbanBgColors: TColorName[]
 }
 
 const KanbanListLayout: FC<TProps> = ({ layout, isTouched, kanbanBgColors, saving }) => {
