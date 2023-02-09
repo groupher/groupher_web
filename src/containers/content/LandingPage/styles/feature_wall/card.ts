@@ -30,7 +30,7 @@ export const Avatar = styled(Img)<{ color: TColorName }>`
   padding: 2px;
   border-color: gold;
   border-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
-  background-color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}Bg`)};
+  background-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
 `
 
 export const User = styled.div``

@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 
-import type { TTestable } from '@/spec'
+import type { TColorName, TTestable } from '@/spec'
 import css, { theme } from '@/utils/css'
+import { camelize } from '@/utils/fmt'
 
 import GtdWipSVG from '@/icons/GtdWip'
 import GtdDoneSVG from '@/icons/GtdDone'
@@ -37,10 +38,8 @@ export const Header = styled.div`
   width: 100%;
   padding-left: 3px;
 `
-export const Body = styled.div`
-  background: ${theme('hoverBg')};
-  /* background: ${theme('baseColor.blueBg')}; */
-  background: ${theme('baseColor.purpleBg')};
+export const Body = styled.div<{ color: TColorName }>`
+  background-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
   padding: 8px;
   padding-bottom: 0;
   border-radius: 12px;

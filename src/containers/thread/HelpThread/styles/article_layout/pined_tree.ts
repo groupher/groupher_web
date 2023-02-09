@@ -31,7 +31,7 @@ export const Cover = styled.div<{ color?: TColorName }>`
   left: 0;
   top: 0;
 
-  background-color: ${({ color }) => theme(`baseColor.${color?.toLowerCase()}`)};
+  background-color: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
   border-radius: 5px;
   opacity: 0.6;
 

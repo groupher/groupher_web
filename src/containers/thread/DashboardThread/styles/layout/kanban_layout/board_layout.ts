@@ -86,7 +86,6 @@ export const Preset = styled.div<{ setable?: boolean }>`
 
 type TColorBall = { color: TColorName; setable?: boolean }
 export const ColorBall = styled.div<TColorBall>`
-  /* background-color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}`)}; */
   background-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
 
   border: 1px dashed;

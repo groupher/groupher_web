@@ -24,13 +24,13 @@ export const Tag = styled.div`
 `
 type THashSign = { color: string; size: TSizeTSM }
 export const DotSign = styled.div<THashSign>`
-  background: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
+  background: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
   ${({ size }) => css.circle(getIconSize(size))};
   margin-right: 2px;
   margin-right: ${({ size }) => `${getInnerSpace(size)}px`};
 `
 export const LabelDotSign = styled.div<THashSign>`
-  background: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
+  background: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
   ${css.circle(8)};
   margin-right: 4px;
 `
@@ -42,7 +42,6 @@ export const Title = styled.div<{ size: TSizeTSM }>`
   letter-spacing: 0.06em;
 `
 export const SolidTitle = styled.div<{ size: TSizeTSM; color: string }>`
-  /* color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)}; */
   color: ${theme('article.info')};
   font-size: 13px;
   margin-left: 3px;

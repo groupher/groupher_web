@@ -4,6 +4,7 @@ import type { TAvatarLayout, TColorName, TTestable } from '@/spec'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
 import css, { theme } from '@/utils/css'
+import { camelize } from '@/utils/fmt'
 
 import type { TAvatarProps } from '../index'
 import { getFontSize } from './metric/avatar'
@@ -15,7 +16,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TWrapper) => ({
 }))<TWrapper>`
   ${css.flex('align-both')};
 
-  background: ${({ color }) => theme(`baseColor.${color?.toLowerCase()}Bg`)};
+  background: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
 
   width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};
