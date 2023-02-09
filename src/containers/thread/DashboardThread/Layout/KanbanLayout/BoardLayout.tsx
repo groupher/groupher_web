@@ -46,7 +46,7 @@ const BoardLayout: FC<TProps> = ({ kanbanBgColors, isTouched, saving }) => {
         title="看板背景色"
         desc={
           <>
-            「看板」背景色，默认为灰色。
+            看板背景颜色，与标签颜色无关联。默认为灰色。
             <Inline>
               <ArrowButton
                 onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}

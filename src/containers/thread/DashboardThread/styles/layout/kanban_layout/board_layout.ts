@@ -70,8 +70,8 @@ export const Preset = styled.div<{ setable?: boolean }>`
   border: 1px solid;
   border-color: ${theme('divider')};
   border-radius: 10px;
-  gap: 0 6px;
-  width: 84px;
+  gap: 0 8px;
+  width: 80px;
   height: 30px;
 
   &:hover {
