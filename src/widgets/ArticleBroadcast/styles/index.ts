@@ -39,7 +39,7 @@ export const BgWrapper = styled.div`
   background-image: url(/pattern/ab-p2.png);
   mix-blend-mode: color-burn;
   transform: scale(0.8) rotate(215deg);
-  opacity: 0.7;
+  opacity: 0.2;
 `
 export const BgWrapper2 = styled.div`
   position: absolute;
@@ -50,7 +50,7 @@ export const BgWrapper2 = styled.div`
   background-image: url(/pattern/ab-p1.png);
   mix-blend-mode: color-burn;
   transform: rotate(168deg);
-  opacity: 0.5;
+  opacity: 0.1;
 `
 export const Content = styled.div`
   width: 55%;

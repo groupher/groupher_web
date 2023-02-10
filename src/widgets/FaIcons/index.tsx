@@ -26,6 +26,7 @@ export type TProps = {
   size?: number
   icon?: TIcon
   color?: TColorName
+  opacity?: number
 } & TSpace
 
 const FaIcons: FC<TProps> = ({

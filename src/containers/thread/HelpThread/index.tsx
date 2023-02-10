@@ -10,7 +10,8 @@ import { bond } from '@/utils/mobx'
 
 import type { TStore } from './store'
 
-import Home from './Home'
+import BlocksLayout from './BlocksLayout'
+import ListsLayout from './ListsLayout'
 import ArticleLayout from './ArticleLayout'
 
 import { Wrapper } from './styles'
@@ -44,7 +45,8 @@ const HelpThreadContainer: FC<TProps> = ({
 
   return (
     <Wrapper testid={testid} isSidebarLayout={isSidebarLayout}>
-      <Home />
+      {/* <ListsLayout /> */}
+      <BlocksLayout />
     </Wrapper>
   )
 }

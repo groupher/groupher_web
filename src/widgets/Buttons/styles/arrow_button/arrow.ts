@@ -8,7 +8,7 @@ import { camelize } from '@/utils/fmt'
 
 import { Wrapper as ButtonWrapper } from '.'
 
-type TArrow = { color: TColorName; linkColor: boolean }
+type TArrow = { color: TColorName; linkColor: boolean; down?: boolean; up?: boolean }
 
 const BaseArrow = styled.div<TArrow>`
   width: 8px;
@@ -20,9 +20,16 @@ const BaseArrow = styled.div<TArrow>`
 
   transition: 0.2s;
 
+  transform: ${({ up, down }) => {
+    if (down) return 'rotate(90deg)'
+    if (up) return 'rotate(-90deg)'
+
+    return 'none'
+  }};
+
   ${ButtonWrapper}:hover & {
     background-color: ${({ color, linkColor }) =>
-      linkColor ? theme('link') : theme(`baseColor.${camelize(color)}Bg`)};
+      linkColor ? theme('link') : theme(`baseColor.${camelize(color)}`)};
   }
 
   ${ButtonWrapper}:hover &:before {
@@ -35,7 +42,7 @@ const BaseArrow = styled.div<TArrow>`
     position: absolute;
     border: solid;
     border-color: ${({ color, linkColor }) =>
-      linkColor ? theme('link') : theme(`baseColor.${camelize(color)}Bg`)};
+      linkColor ? theme('link') : theme(`baseColor.${camelize(color)}`)};
     border-width: 0 1px 1px 0;
     display: inline-block;
     padding: 3px;

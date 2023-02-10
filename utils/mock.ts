@@ -395,3 +395,184 @@ export const mockChangelogVersionTags = (num = 10): TTag[] => {
 
 export const mockCommunities = (num: number): TCommunity[] =>
   communities.slice(0, Math.min(num, communities.length))
+
+export const mockHelpCats = () => {
+  return [
+    {
+      id: '0',
+      title: 'Groupher 是什么?',
+      desc: '可以。讨论区/看板/更新日志等等板块可以像使用积木一样按需使用，后台可一键开启。',
+      color: COLOR_NAME.BLACK,
+      articles: [
+        {
+          id: '0',
+          title: '基本介绍',
+        },
+        {
+          id: '1',
+          title: '社区板块介绍',
+        },
+      ],
+    },
+    {
+      id: '1',
+      title: '个性化设置',
+      desc: '可以。讨论区/看板/更新日志等等板块可以像使用积木一样按需使用，后台可一键开启。',
+      color: COLOR_NAME.RED,
+      articles: [
+        {
+          id: '0',
+          title: '社区基本信息设置',
+        },
+        {
+          id: '1',
+          title: 'SEO 信息设置',
+        },
+        {
+          id: '2',
+          title: '社区板块',
+        },
+        {
+          id: '3',
+          title: '别名管理',
+        },
+        {
+          id: '4',
+          title: '自定义页头',
+        },
+        {
+          id: '5',
+          title: '自定义页脚',
+        },
+      ],
+    },
+    {
+      id: '2',
+      title: '社区内容管理',
+      desc: '当然，Groupher 支持微信等国内主流社交软件的第三方登录。',
+      color: COLOR_NAME.ORANGE,
+      articles: [
+        {
+          id: '0',
+          title: '讨论区帖子',
+        },
+        {
+          id: '1',
+          title: '看板墙',
+        },
+        {
+          id: '2',
+          title: '更新日志',
+        },
+        {
+          id: '3',
+          title: '帮助台内容',
+        },
+        {
+          id: '4',
+          title: '自定义页头',
+        },
+        {
+          id: '5',
+          title: '自定义页脚',
+        },
+      ],
+    },
+    {
+      id: '3',
+      title: '统计分析',
+      desc: '当然，Groupher 提供 30 天免费试用，对开源项目可无任何限制的使用。',
+      color: COLOR_NAME.BLUE,
+      articles: [
+        {
+          id: '0',
+          title: '社区基本信息设置',
+        },
+        {
+          id: '1',
+          title: 'SEO 信息设置',
+        },
+        {
+          id: '2',
+          title: '社区板块',
+        },
+        {
+          id: '3',
+          title: '别名管理',
+        },
+      ],
+    },
+    {
+      id: '4',
+      title: '联系我们',
+      desc: '人手原因目前暂不支持独立部署，但未来会支持。独立部署版本不受任何限制。',
+      color: COLOR_NAME.PURPLE,
+      articles: [
+        {
+          id: '0',
+          title: '社区基本信息设置',
+        },
+        {
+          id: '1',
+          title: 'SEO 信息设置',
+        },
+        {
+          id: '2',
+          title: '社区板块',
+        },
+        {
+          id: '3',
+          title: '别名管理',
+        },
+      ],
+    },
+    {
+      id: '5',
+      title: '隐私政策',
+      desc: '支持，Groupher 支持高度自定义，从基础颜色到板块展现样式，各种细节均可自定义。',
+      color: COLOR_NAME.GREEN,
+      articles: [
+        {
+          id: '0',
+          title: '社区基本信息设置',
+        },
+        {
+          id: '1',
+          title: 'SEO 信息设置',
+        },
+        {
+          id: '2',
+          title: '社区板块',
+        },
+        {
+          id: '3',
+          title: '别名管理',
+        },
+      ],
+    },
+    {
+      id: '6',
+      title: '绑定集成',
+      desc: 'Groupher 完全开源在 Github 上，欢迎任何形式的参与。',
+      color: COLOR_NAME.BLACK,
+      articles: [
+        {
+          id: '0',
+          title: '社区基本信息设置',
+        },
+        {
+          id: '1',
+          title: 'SEO 信息设置',
+        },
+        {
+          id: '2',
+          title: '社区板块',
+        },
+        {
+          id: '3',
+          title: '别名管理',
+        },
+      ],
+    },
+  ]
+}

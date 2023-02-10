@@ -68,8 +68,9 @@ export const Title = styled.div<{ color: TColorName }>`
   color: ${theme('article.digest')};
 
   &:hover {
-    color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
+    color: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
     font-weight: 500;
   }
+
   transition: all 0.2s;
 `

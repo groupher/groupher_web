@@ -8,13 +8,16 @@ type TProps = {
   color: TColorName
   leftLayout: boolean
   linkColor: boolean
+
+  up: boolean
+  down: boolean
 }
 
-const Arrow: FC<TProps> = ({ color, leftLayout, linkColor }) => {
+const Arrow: FC<TProps> = ({ color, leftLayout, linkColor, up, down }) => {
   return leftLayout ? (
-    <LeftArrow color={color} linkColor={linkColor} />
+    <LeftArrow color={color} linkColor={linkColor} up={up} down={down} />
   ) : (
-    <RightArrow color={color} linkColor={linkColor} />
+    <RightArrow color={color} linkColor={linkColor} up={up} down={down} />
   )
 }
 
