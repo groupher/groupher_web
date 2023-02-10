@@ -37,14 +37,19 @@ export const IconWrapper = styled.div<{ color: TColorName }>`
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 500;
   margin-top: 8px;
 `
+export const ItemsWrapper = styled.div`
+  margin-top: 3px;
+  ${css.flexColumn()};
+  gap: 10px;
+`
 export const Item = styled.div<{ color: string }>`
+  ${css.lineClamp(1)};
   color: ${theme('article.digest')};
   font-size: 14px;
-  margin-bottom: 6px;
 
   &:hover {
     color: ${theme('article.title')};
@@ -54,7 +59,7 @@ export const Item = styled.div<{ color: string }>`
   transition: all 0.2s;
 `
 export const MoreLink = styled(ArrowButton)`
-  margin-top: 5px;
-  transform: scale(0.8);
-  margin-left: -8px;
+  margin-top: 18px;
+  margin-left: -4px;
+  transform: scale(0.9);
 `

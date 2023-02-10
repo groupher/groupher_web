@@ -5,17 +5,26 @@ import { FC, memo } from 'react'
 
 import FaIcons from '@/widgets/FaIcons'
 
-import type { TColorName } from '@/spec'
-import { Wrapper, Header, IconWrapper, Title, Item, MoreLink } from './styles/category'
-import { gotoDetailLayout } from './logic'
+import type { TArticle, TColorName } from '@/spec'
+import {
+  Wrapper,
+  Header,
+  IconWrapper,
+  Title,
+  ItemsWrapper,
+  Item,
+  MoreLink,
+} from '../styles/blocks_layout/category'
+import { gotoDetailLayout } from '../logic'
 
 type TProps = {
   color: TColorName
   title: string
   desc: string
+  articles: TArticle[]
 }
 
-const Category: FC<TProps> = ({ color, title, desc }) => {
+const Category: FC<TProps> = ({ color, title, desc, articles }) => {
   return (
     <Wrapper color={color}>
       <Header>
@@ -25,15 +34,14 @@ const Category: FC<TProps> = ({ color, title, desc }) => {
         <Title>{title}</Title>
       </Header>
 
-      <Item color={color} onClick={() => gotoDetailLayout()}>
-        {desc}
-      </Item>
-      <Item color={color} onClick={() => gotoDetailLayout()}>
-        {desc}
-      </Item>
-      <Item color={color} onClick={() => gotoDetailLayout()}>
-        {desc}
-      </Item>
+      <ItemsWrapper>
+        {articles.map((article) => (
+          <Item key={article.id} color={color} onClick={() => gotoDetailLayout()}>
+            {article.title}
+          </Item>
+        ))}
+      </ItemsWrapper>
+
       <MoreLink linkColor>查看全部</MoreLink>
     </Wrapper>
   )

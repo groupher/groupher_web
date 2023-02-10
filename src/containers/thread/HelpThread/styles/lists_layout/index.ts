@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
-import { MainWrapper } from './index'
+import { MainWrapper } from '../index'
 
 export const Wrapper = styled.div`
   ${css.flexColumn('align-both')};
@@ -10,10 +10,7 @@ export const Wrapper = styled.div`
   margin-top: 10px;
 `
 export const CatsWrapper = styled(MainWrapper)`
-  ${css.flex('justify-between')};
-  flex-wrap: wrap;
-
-  flex-grow: 1;
+  ${css.flexColumn('align-center')};
   width: 100%;
   min-height: 600px;
   margin-top: 8px;
