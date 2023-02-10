@@ -10,15 +10,17 @@ import { Wrapper as ButtonWrapper } from '.'
 
 type TArrow = { color: TColorName; linkColor: boolean; down?: boolean; up?: boolean }
 
+const getColor = (color: TColorName, linkColor: boolean) => {
+  return linkColor ? theme('link') : theme(`baseColor.${camelize(color)}`)
+}
+
 const BaseArrow = styled.div<TArrow>`
-  width: 8px;
+  width: 0;
   height: 1px;
+
   position: relative;
   background: transparent;
   border-color: inherit;
-  opacity: 0.68;
-
-  transition: 0.2s;
 
   transform: ${({ up, down }) => {
     if (down) return 'rotate(90deg)'
@@ -27,14 +29,18 @@ const BaseArrow = styled.div<TArrow>`
     return 'none'
   }};
 
+  background: ${({ color, linkColor }) => getColor(color, linkColor)};
+  opacity: 0.68;
+
   ${ButtonWrapper}:hover & {
-    background-color: ${({ color, linkColor }) =>
-      linkColor ? theme('link') : theme(`baseColor.${camelize(color)}`)};
+    width: 8px;
   }
 
   ${ButtonWrapper}:hover &:before {
     right: 0;
   }
+
+  transition: 0.2s;
 
   &:before {
     content: '';
@@ -54,7 +60,12 @@ const BaseArrow = styled.div<TArrow>`
 
 export const LeftArrow = styled(BaseArrow)`
   box-sizing: border-box;
-  margin-right: 1px;
+  margin-right: 8px;
+
+  ${ButtonWrapper}:hover & {
+    width: 8px;
+    margin-right: 0;
+  }
 
   ${ButtonWrapper}:hover &:before {
     left: -1px;
@@ -70,6 +81,14 @@ export const LeftArrow = styled(BaseArrow)`
 `
 
 export const RightArrow = styled(BaseArrow)`
+  box-sizing: border-box;
+  margin-left: 8px;
+
+  ${ButtonWrapper}:hover & {
+    width: 8px;
+    margin-left: 0px;
+  }
+
   ${ButtonWrapper}:hover &:before {
     right: 0;
   }
