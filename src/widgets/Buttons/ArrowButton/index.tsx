@@ -28,6 +28,8 @@ type TProps = {
   linkColor?: boolean
   className?: string
   leftLayout?: boolean
+  up?: boolean
+  down?: boolean
   size?: TSize
 } & TSpace
 
@@ -40,6 +42,8 @@ const ArrowButton: FC<TProps> = ({
   className = '',
   leftLayout = false,
   linkColor = false,
+  up = false,
+  down = false,
   size = SIZE.MEDIUM,
   ...restProps
 }) => {
@@ -54,9 +58,13 @@ const ArrowButton: FC<TProps> = ({
       size={size}
       {...restProps}
     >
-      {leftLayout && <Arrow color={color} linkColor={linkColor} leftLayout={leftLayout} />}
+      {leftLayout && (
+        <Arrow color={color} linkColor={linkColor} leftLayout={leftLayout} up={up} down={down} />
+      )}
       {children}
-      {!leftLayout && <Arrow color={color} linkColor={linkColor} leftLayout={leftLayout} />}
+      {!leftLayout && (
+        <Arrow color={color} linkColor={linkColor} leftLayout={leftLayout} up={up} down={down} />
+      )}
     </Wrapper>
   )
 }

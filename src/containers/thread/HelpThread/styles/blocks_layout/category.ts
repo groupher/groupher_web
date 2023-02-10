@@ -45,6 +45,7 @@ export const ItemsWrapper = styled.div`
   margin-top: 3px;
   ${css.flexColumn()};
   gap: 10px;
+  transition: all 0.2s;
 `
 export const Item = styled.div<{ color: string }>`
   ${css.lineClamp(1)};

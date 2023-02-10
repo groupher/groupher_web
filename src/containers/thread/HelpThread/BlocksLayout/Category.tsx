@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { FC, memo, useState } from 'react'
 
 // import { config, library } from '@fortawesome/fontawesome-svg-core'
 // config.autoAddCss = false
@@ -27,24 +27,36 @@ type TProps = {
 }
 
 const Category: FC<TProps> = ({ color, title, desc, articles }) => {
+  const [sliceCount, setSliceCount] = useState(FOLD_LIMIT)
+
   return (
     <Wrapper color={color}>
       <Header>
         <IconWrapper color={color}>
-          <FaIcons icon="music" size={15} color={color} />
+          <FaIcons icon="music" size={15} color={color} opacity={0.6} />
         </IconWrapper>
         <Title>{title}</Title>
       </Header>
 
       <ItemsWrapper>
-        {articles.slice(0, FOLD_LIMIT).map((article) => (
+        {articles.slice(0, sliceCount).map((article) => (
           <Item key={article.id} color={color} onClick={() => gotoDetailLayout()}>
             {article.title}
           </Item>
         ))}
       </ItemsWrapper>
 
-      {articles.length > FOLD_LIMIT && <MoreLink linkColor>查看全部</MoreLink>}
+      {articles.length >= FOLD_LIMIT && sliceCount <= FOLD_LIMIT && (
+        <MoreLink linkColor down onClick={() => setSliceCount(articles.length)}>
+          查看全部
+        </MoreLink>
+      )}
+
+      {articles.length >= FOLD_LIMIT && sliceCount > FOLD_LIMIT && (
+        <MoreLink linkColor up onClick={() => setSliceCount(FOLD_LIMIT)}>
+          收起
+        </MoreLink>
+      )}
     </Wrapper>
   )
 }

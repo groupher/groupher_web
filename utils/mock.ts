@@ -552,7 +552,7 @@ export const mockHelpCats = () => {
     },
     {
       id: '6',
-      title: '绑定即成',
+      title: '绑定集成',
       desc: 'Groupher 完全开源在 Github 上，欢迎任何形式的参与。',
       color: COLOR_NAME.BLACK,
       articles: [

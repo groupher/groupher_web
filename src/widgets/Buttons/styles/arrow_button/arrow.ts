@@ -8,7 +8,7 @@ import { camelize } from '@/utils/fmt'
 
 import { Wrapper as ButtonWrapper } from '.'
 
-type TArrow = { color: TColorName; linkColor: boolean }
+type TArrow = { color: TColorName; linkColor: boolean; down?: boolean; up?: boolean }
 
 const BaseArrow = styled.div<TArrow>`
   width: 8px;
@@ -19,6 +19,13 @@ const BaseArrow = styled.div<TArrow>`
   opacity: 0.68;
 
   transition: 0.2s;
+
+  transform: ${({ up, down }) => {
+    if (down) return 'rotate(90deg)'
+    if (up) return 'rotate(-90deg)'
+
+    return 'none'
+  }};
 
   ${ButtonWrapper}:hover & {
     background-color: ${({ color, linkColor }) =>
