@@ -436,6 +436,14 @@ export const mockHelpCats = () => {
           id: '3',
           title: '别名管理',
         },
+        {
+          id: '4',
+          title: '自定义页头',
+        },
+        {
+          id: '5',
+          title: '自定义页脚',
+        },
       ],
     },
     {
@@ -459,6 +467,14 @@ export const mockHelpCats = () => {
         {
           id: '3',
           title: '帮助台内容',
+        },
+        {
+          id: '4',
+          title: '自定义页头',
+        },
+        {
+          id: '5',
+          title: '自定义页脚',
         },
       ],
     },

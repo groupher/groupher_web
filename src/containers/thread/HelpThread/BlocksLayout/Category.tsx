@@ -17,6 +17,8 @@ import {
 } from '../styles/blocks_layout/category'
 import { gotoDetailLayout } from '../logic'
 
+const FOLD_LIMIT = 5
+
 type TProps = {
   color: TColorName
   title: string
@@ -35,14 +37,14 @@ const Category: FC<TProps> = ({ color, title, desc, articles }) => {
       </Header>
 
       <ItemsWrapper>
-        {articles.map((article) => (
+        {articles.slice(0, FOLD_LIMIT).map((article) => (
           <Item key={article.id} color={color} onClick={() => gotoDetailLayout()}>
             {article.title}
           </Item>
         ))}
       </ItemsWrapper>
 
-      <MoreLink linkColor>查看全部</MoreLink>
+      {articles.length > FOLD_LIMIT && <MoreLink linkColor>查看全部</MoreLink>}
     </Wrapper>
   )
 }
