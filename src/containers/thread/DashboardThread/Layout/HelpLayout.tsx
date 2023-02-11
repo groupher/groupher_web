@@ -181,8 +181,8 @@ const HelpLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sa
         }
       />
       <SelectWrapper>
-        <Layout onClick={() => edit(HELP_FAQ_LAYOUT.FAQ_COLLAPSE, 'helpFaqLayout')}>
-          <Block $active={faqLayout === HELP_FAQ_LAYOUT.FAQ_COLLAPSE}>
+        <Layout onClick={() => edit(HELP_FAQ_LAYOUT.COLLAPSE, 'helpFaqLayout')}>
+          <Block $active={faqLayout === HELP_FAQ_LAYOUT.COLLAPSE}>
             <Br bottom={14} />
             <Main>
               <FAQFullWrapper>
@@ -202,17 +202,17 @@ const HelpLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sa
               </FAQFullWrapper>
             </Main>
           </Block>
-          <LayoutTitle $active={faqLayout === HELP_FAQ_LAYOUT.FAQ_COLLAPSE}>
+          <LayoutTitle $active={faqLayout === HELP_FAQ_LAYOUT.COLLAPSE}>
             <CheckLabel
               title="可折叠"
-              $active={faqLayout === HELP_FAQ_LAYOUT.FAQ_COLLAPSE}
+              $active={faqLayout === HELP_FAQ_LAYOUT.COLLAPSE}
               top={15}
               left={-15}
             />
           </LayoutTitle>
         </Layout>
-        <Layout onClick={() => edit(HELP_FAQ_LAYOUT.FAQ_FLAT, 'helpFaqLayout')}>
-          <Block $active={faqLayout === HELP_FAQ_LAYOUT.FAQ_FLAT}>
+        <Layout onClick={() => edit(HELP_FAQ_LAYOUT.FLAT, 'helpFaqLayout')}>
+          <Block $active={faqLayout === HELP_FAQ_LAYOUT.FLAT}>
             <Br bottom={14} />
             <Main>
               <ListsWrapper>
@@ -269,10 +269,10 @@ const HelpLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sa
               </ListsWrapper>
             </Main>
           </Block>
-          <LayoutTitle $active={faqLayout === HELP_FAQ_LAYOUT.FAQ_FLAT}>
+          <LayoutTitle $active={faqLayout === HELP_FAQ_LAYOUT.FLAT}>
             <CheckLabel
               title="铺开式"
-              $active={faqLayout === HELP_FAQ_LAYOUT.FAQ_FLAT}
+              $active={faqLayout === HELP_FAQ_LAYOUT.FLAT}
               top={15}
               left={-15}
             />

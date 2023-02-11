@@ -92,7 +92,7 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
             globalLayout={globalLayout}
           />
         )}
-        {mode === 'search' && <FaqList layout={HELP_FAQ_LAYOUT.FAQ_SEARCH_HINT} />}
+        {mode === 'search' && <FaqList layout={HELP_FAQ_LAYOUT.SEARCH_HINT} />}
       </LayoutWrapper>
 
       {!isMobile && !isSidebarLayout && <ThreadSidebar />}

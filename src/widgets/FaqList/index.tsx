@@ -30,16 +30,16 @@ export type TProps = {
 
 const FaqList: FC<TProps> = ({
   testid = 'faq-list',
-  layout = HELP_FAQ_LAYOUT.FAQ_FLAT,
+  layout = HELP_FAQ_LAYOUT.FLAT,
   articles = DefaultFAQ,
   large = false,
   ...restProps
 }) => {
   return (
     <Wrapper testid={testid} {...restProps}>
-      {layout === HELP_FAQ_LAYOUT.FAQ_FLAT && <Flat articles={articles} large={large} />}
-      {layout === HELP_FAQ_LAYOUT.FAQ_SEARCH_HINT && <SearchHint articles={articles} />}
-      {layout === HELP_FAQ_LAYOUT.FAQ_COLLAPSE && <Collapse articles={articles} />}
+      {layout === HELP_FAQ_LAYOUT.FLAT && <Flat articles={articles} large={large} />}
+      {layout === HELP_FAQ_LAYOUT.SEARCH_HINT && <SearchHint articles={articles} />}
+      {layout === HELP_FAQ_LAYOUT.COLLAPSE && <Collapse articles={articles} />}
     </Wrapper>
   )
 }

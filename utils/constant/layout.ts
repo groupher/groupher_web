@@ -91,9 +91,9 @@ export const HELP_LAYOUT = {
 } as Record<TSnakeUpperCase<THelpLayout>, THelpLayout>
 
 export const HELP_FAQ_LAYOUT = {
-  FAQ_FLAT: 'faq_flat',
-  FAQ_COLLAPSE: 'faq_collapse',
-  FAQ_SEARCH_HINT: 'faq_search_hint',
+  FLAT: 'flat',
+  COLLAPSE: 'collapse',
+  SEARCH_HINT: 'search_hint',
 } as Record<TSnakeUpperCase<THelpFAQLayout>, THelpFAQLayout>
 
 export const FOOTER_LAYOUT = {

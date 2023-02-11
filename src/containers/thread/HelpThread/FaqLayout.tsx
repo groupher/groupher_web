@@ -14,7 +14,7 @@ type TProps = {
 const FaqLayout: FC<TProps> = ({ testid = 'FaqLayout', ...restProps }) => {
   return (
     <Wrapper {...restProps}>
-      <FaqList layout={HELP_FAQ_LAYOUT.FAQ_COLLAPSE} />
+      <FaqList layout={HELP_FAQ_LAYOUT.COLLAPSE} />
     </Wrapper>
   )
 }
