@@ -14,10 +14,10 @@ export const CatsWrapper = styled(MainWrapper)`
   width: 100%;
   min-height: 600px;
   margin-top: 8px;
+  margin-left: -50px;
 
   background: transparent;
   border-radius: 6px;
-  padding-left: 22px;
   padding-right: 50px;
 
   border-right: none;
@@ -42,10 +42,4 @@ export const Divider = styled.div`
   );
 
   border-image-slice: 1;
-`
-
-export const FAQWrapper = styled.div`
-  margin-left: -10%;
-  width: 95%;
-  margin-bottom: 20px;
 `

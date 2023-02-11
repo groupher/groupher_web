@@ -1,11 +1,11 @@
 import { FC, memo } from 'react'
 
-import type { THelpLayout } from '@/spec'
+import type { THelpFAQLayout, THelpLayout } from '@/spec'
 
-import { HELP_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
+import { HELP_LAYOUT, HELP_FAQ_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { callDashboardDesc } from '@/utils/signal'
 
-import { Br, Inline } from '@/widgets/Common'
+import { Br, Divider } from '@/widgets/Common'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import CheckLabel from '@/widgets/CheckLabel'
 
@@ -29,29 +29,34 @@ import { edit } from '../logic'
 
 type TProps = {
   layout: THelpLayout
+  faqLayout: THelpFAQLayout
   isTouched: boolean
+  isFaqTouched: boolean
   saving: boolean
 }
 
-const HelpLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
+const HelpLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, saving }) => {
   return (
     <Wrapper>
       <SectionLabel
-        title="常见问题布局"
+        title="封面目录布局"
         desc={
           <>
-            当前设置仅针对常见问题的展示样式。
-            <Inline>
-              <ArrowButton onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}>
-                查看示例
-              </ArrowButton>
-            </Inline>
+            全部文档的目录布局。
+            <ArrowButton
+              onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
+              bottom={1}
+              size="small"
+              linkColor
+            >
+              查看示例
+            </ArrowButton>
           </>
         }
       />
       <SelectWrapper>
-        <Layout onClick={() => edit(HELP_LAYOUT.FAQ_COLLAPSE, 'helpLayout')}>
-          <Block $active={layout === HELP_LAYOUT.FAQ_COLLAPSE}>
+        <Layout onClick={() => edit(HELP_LAYOUT.BLOCKS, 'helpLayout')}>
+          <Block $active={layout === HELP_LAYOUT.BLOCKS}>
             <Br bottom={14} />
             <Main>
               <FAQFullWrapper>
@@ -71,17 +76,18 @@ const HelpLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
               </FAQFullWrapper>
             </Main>
           </Block>
-          <LayoutTitle $active={layout === HELP_LAYOUT.FAQ_COLLAPSE}>
+          <LayoutTitle $active={layout === HELP_LAYOUT.BLOCKS}>
             <CheckLabel
-              title="可折叠"
-              $active={layout === HELP_LAYOUT.FAQ_COLLAPSE}
+              title="块状排列"
+              $active={layout === HELP_LAYOUT.BLOCKS}
               top={15}
               left={-15}
             />
           </LayoutTitle>
         </Layout>
-        <Layout onClick={() => edit(HELP_LAYOUT.FAQ_FLAT, 'helpLayout')}>
-          <Block $active={layout === HELP_LAYOUT.FAQ_FLAT}>
+
+        <Layout onClick={() => edit(HELP_LAYOUT.LISTS, 'helpLayout')}>
+          <Block $active={layout === HELP_LAYOUT.LISTS}>
             <Br bottom={14} />
             <Main>
               <ListsWrapper>
@@ -138,10 +144,10 @@ const HelpLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
               </ListsWrapper>
             </Main>
           </Block>
-          <LayoutTitle $active={layout === HELP_LAYOUT.FAQ_FLAT}>
+          <LayoutTitle $active={layout === HELP_LAYOUT.LISTS}>
             <CheckLabel
-              title="铺开式"
-              $active={layout === HELP_LAYOUT.FAQ_FLAT}
+              title="列表排列"
+              $active={layout === HELP_LAYOUT.LISTS}
               top={15}
               left={-15}
             />
@@ -151,6 +157,131 @@ const HelpLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
       <SavingBar
         isTouched={isTouched}
         field={SETTING_FIELD.HELP_LAYOUT}
+        loading={saving}
+        top={20}
+        bottom={30}
+      />
+
+      <Divider top={50} bottom={60} />
+
+      <SectionLabel
+        title="常见问题布局"
+        desc={
+          <>
+            当前设置仅针对常见问题的展示样式。
+            <ArrowButton
+              onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
+              bottom={1}
+              size="small"
+              linkColor
+            >
+              查看示例
+            </ArrowButton>
+          </>
+        }
+      />
+      <SelectWrapper>
+        <Layout onClick={() => edit(HELP_FAQ_LAYOUT.FAQ_COLLAPSE, 'helpFaqLayout')}>
+          <Block $active={faqLayout === HELP_FAQ_LAYOUT.FAQ_COLLAPSE}>
+            <Br bottom={14} />
+            <Main>
+              <FAQFullWrapper>
+                <Bar long={30} />
+                <Br bottom={20} />
+                <Bar long={60} thin bold />
+                <Br bottom={10} />
+                <Bar long={85} thin />
+                <Br bottom={10} />
+                <Bar long={50} thin bold />
+                <Br bottom={10} />
+                <Bar long={60} thin />
+                <Br bottom={10} />
+                <Bar long={50} thin bold />
+                <Br bottom={10} />
+                <Bar long={60} thin />
+              </FAQFullWrapper>
+            </Main>
+          </Block>
+          <LayoutTitle $active={faqLayout === HELP_FAQ_LAYOUT.FAQ_COLLAPSE}>
+            <CheckLabel
+              title="可折叠"
+              $active={faqLayout === HELP_FAQ_LAYOUT.FAQ_COLLAPSE}
+              top={15}
+              left={-15}
+            />
+          </LayoutTitle>
+        </Layout>
+        <Layout onClick={() => edit(HELP_FAQ_LAYOUT.FAQ_FLAT, 'helpFaqLayout')}>
+          <Block $active={faqLayout === HELP_FAQ_LAYOUT.FAQ_FLAT}>
+            <Br bottom={14} />
+            <Main>
+              <ListsWrapper>
+                <Box3>
+                  <Bar long={60} thin bold />
+                  <Br bottom={14} />
+                  <Bar long={50} thin />
+                  <Br bottom={8} />
+                  <Bar long={55} thin />
+                  <Br bottom={8} />
+                  <Bar long={40} thin />
+                  <Br bottom={8} />
+                </Box3>
+                <Box3>
+                  <Bar long={60} thin bold />
+                  <Br bottom={14} />
+                  <Bar long={50} thin />
+                  <Br bottom={8} />
+                  <Bar long={55} thin />
+                  <Br bottom={8} />
+                  <Bar long={40} thin />
+                  <Br bottom={8} />
+                </Box3>
+                <Box3>
+                  <Bar long={60} thin bold />
+                  <Br bottom={14} />
+                  <Bar long={50} thin />
+                  <Br bottom={8} />
+                  <Bar long={55} thin />
+                  <Br bottom={8} />
+                  <Bar long={40} thin />
+                  <Br bottom={20} />
+                </Box3>
+                <Box3>
+                  <Bar long={60} thin bold />
+                  <Br bottom={14} />
+                  <Bar long={50} thin />
+                  <Br bottom={8} />
+                  <Bar long={55} thin />
+                  <Br bottom={8} />
+                  <Bar long={40} thin />
+                  <Br bottom={8} />
+                </Box3>
+                <Box3>
+                  <Bar long={60} thin bold />
+                  <Br bottom={14} />
+                  <Bar long={50} thin />
+                  <Br bottom={8} />
+                  <Bar long={55} thin />
+                  <Br bottom={8} />
+                  <Bar long={40} thin />
+                  <Br bottom={8} />
+                </Box3>
+              </ListsWrapper>
+            </Main>
+          </Block>
+          <LayoutTitle $active={faqLayout === HELP_FAQ_LAYOUT.FAQ_FLAT}>
+            <CheckLabel
+              title="铺开式"
+              $active={faqLayout === HELP_FAQ_LAYOUT.FAQ_FLAT}
+              top={15}
+              left={-15}
+            />
+          </LayoutTitle>
+        </Layout>
+      </SelectWrapper>
+      <SavingBar
+        isTouched={isFaqTouched}
+        field={SETTING_FIELD.HELP_FAQ_LAYOUT}
         loading={saving}
         top={20}
         bottom={30}

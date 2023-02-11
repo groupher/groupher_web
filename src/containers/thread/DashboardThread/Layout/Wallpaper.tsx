@@ -7,7 +7,7 @@ import { parseWallpaper } from '@/utils/wallpaper'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import CheckLabel from '@/widgets/CheckLabel'
-import { Space, Inline } from '@/widgets/Common'
+import { Space } from '@/widgets/Common'
 
 import SectionLabel from '../SectionLabel'
 

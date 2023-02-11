@@ -2,10 +2,8 @@ import { FC, memo } from 'react'
 
 import { mockHelpCats } from '@/utils/mock'
 
-import FaqList from '@/widgets/FaqList'
-
 import Category from './Category'
-import { Wrapper, CatsWrapper, Divider, FAQWrapper } from '../styles/blocks_layout'
+import { Wrapper, CatsWrapper, Divider } from '../styles/blocks_layout'
 
 type TProps = {
   testid?: string
@@ -29,11 +27,6 @@ const BlocksLayout: FC<TProps> = ({ testid = 'home' }) => {
           )
         })}
       </CatsWrapper>
-
-      <Divider />
-      <FAQWrapper>
-        <FaqList mode="flat" />
-      </FAQWrapper>
     </Wrapper>
   )
 }

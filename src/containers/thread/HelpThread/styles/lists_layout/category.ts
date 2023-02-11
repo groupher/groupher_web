@@ -35,16 +35,16 @@ export const Content = styled.div`
 `
 export const IconWrapper = styled.div<{ color: TColorName }>`
   ${css.size(50)};
-  border-radius: 12px;
   ${css.flex('align-both')};
+  margin-top: -35px;
+  border-radius: 12px;
   background: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
   opacity: 0.8;
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 500;
-  margin-top: 8px;
 `
 export const Desc = styled.div`
   ${css.lineClamp(2)};
@@ -66,6 +66,5 @@ export const AuthorHint = styled.div`
 
 export const MoreLink = styled(ArrowButton)`
   margin-top: 5px;
-  transform: scale(0.8);
-  margin-left: -8px;
+  transform: scale(0.9);
 `

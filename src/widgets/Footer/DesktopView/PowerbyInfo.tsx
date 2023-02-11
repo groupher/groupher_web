@@ -23,6 +23,8 @@ const PowerbyInfo: FC<TProps> = ({ metric }) => {
       )}
 
       <BottomWrapper>
+        {metric === METRIC.HOME && <Note>Made in ChengDu</Note>}
+        {metric === METRIC.HOME && <LineDivider height={10} left={8} right={6} />}
         {!isEmpty(BEIAN_TEXT) && (
           <Note>
             <Addr href={BEIAN_ADDR} target="_blank" prefetch={false}>

@@ -4,8 +4,6 @@ import type { TColorName, TTestable } from '@/spec'
 import css, { theme } from '@/utils/css'
 import { camelize } from '@/utils/fmt'
 
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
-
 type TWrapper = TTestable & { color?: string }
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
@@ -58,9 +56,4 @@ export const Item = styled.div<{ color: string }>`
   }
 
   transition: all 0.2s;
-`
-export const MoreLink = styled(ArrowButton)`
-  margin-top: 18px;
-  margin-left: -4px;
-  transform: scale(0.9);
 `

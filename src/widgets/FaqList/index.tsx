@@ -6,10 +6,11 @@
 
 import { FC, memo } from 'react'
 
-import type { TArticle, TSpace } from '@/spec'
-import { buildLog } from '@/utils/logger'
-
+import type { TArticle, TSpace, THelpFAQLayout } from '@/spec'
+import { HELP_FAQ_LAYOUT } from '@/constant/layout'
 import { FAQ as DefaultFAQ } from '@/constant/landingPage'
+
+import { buildLog } from '@/utils/logger'
 
 import Flat from './Flat'
 import SearchHint from './SearchHint'
@@ -22,23 +23,23 @@ const log = buildLog('w:FaqList:index')
 
 export type TProps = {
   testid?: string
-  mode?: 'flat' | 'search-hint' | 'collapse'
+  layout?: THelpFAQLayout
   articles?: TArticle[]
   large?: boolean
 } & TSpace
 
 const FaqList: FC<TProps> = ({
   testid = 'faq-list',
-  mode = 'flat',
+  layout = HELP_FAQ_LAYOUT.FAQ_FLAT,
   articles = DefaultFAQ,
   large = false,
   ...restProps
 }) => {
   return (
     <Wrapper testid={testid} {...restProps}>
-      {mode === 'flat' && <Flat articles={articles} large={large} />}
-      {mode === 'search-hint' && <SearchHint articles={articles} />}
-      {mode === 'collapse' && <Collapse articles={articles} />}
+      {layout === HELP_FAQ_LAYOUT.FAQ_FLAT && <Flat articles={articles} large={large} />}
+      {layout === HELP_FAQ_LAYOUT.FAQ_SEARCH_HINT && <SearchHint articles={articles} />}
+      {layout === HELP_FAQ_LAYOUT.FAQ_COLLAPSE && <Collapse articles={articles} />}
     </Wrapper>
   )
 }

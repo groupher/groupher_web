@@ -8,7 +8,7 @@ import { ParallaxProvider } from 'react-scroll-parallax'
 
 // import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
-import { BANNER_LAYOUT } from '@/constant/layout'
+import { BANNER_LAYOUT, HELP_FAQ_LAYOUT } from '@/constant/layout'
 
 import Link from 'next/link'
 
@@ -43,8 +43,6 @@ import {
   LinkIcon,
   DemoButton,
   ArrowIcon,
-  Note,
-  InfoIcon,
   Divider,
   FAQWrapper,
 } from './styles'
@@ -125,7 +123,7 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
         <Divider top={60} bottom={80} />
 
         <FAQWrapper>
-          <FaqList mode="flat" large />
+          <FaqList layout={HELP_FAQ_LAYOUT.FAQ_FLAT} large />
         </FAQWrapper>
       </Wrapper>
     </ParallaxProvider>

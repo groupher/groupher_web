@@ -4,6 +4,7 @@ import { FC, memo, useState } from 'react'
 // config.autoAddCss = false
 
 import FaIcons from '@/widgets/FaIcons'
+import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
 import type { TArticle, TColorName } from '@/spec'
 import {
@@ -13,7 +14,6 @@ import {
   Title,
   ItemsWrapper,
   Item,
-  MoreLink,
 } from '../styles/blocks_layout/category'
 import { gotoDetailLayout } from '../logic'
 
@@ -47,15 +47,15 @@ const Category: FC<TProps> = ({ color, title, desc, articles }) => {
       </ItemsWrapper>
 
       {articles.length >= FOLD_LIMIT && sliceCount <= FOLD_LIMIT && (
-        <MoreLink linkColor down onClick={() => setSliceCount(articles.length)}>
+        <ArrowButton linkColor down onClick={() => setSliceCount(articles.length)} top={18}>
           查看全部
-        </MoreLink>
+        </ArrowButton>
       )}
 
       {articles.length >= FOLD_LIMIT && sliceCount > FOLD_LIMIT && (
-        <MoreLink linkColor up onClick={() => setSliceCount(FOLD_LIMIT)}>
+        <ArrowButton linkColor up onClick={() => setSliceCount(FOLD_LIMIT)} top={18}>
           收起
-        </MoreLink>
+        </ArrowButton>
       )}
     </Wrapper>
   )

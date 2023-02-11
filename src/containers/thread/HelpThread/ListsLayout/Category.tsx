@@ -43,7 +43,7 @@ const Category: FC<TProps> = ({ color, title, desc }) => {
           <Facepile size="medium" users={mockUsers(6)} total={20} showTotalNumber />
           <AuthorHint>6 位共同编辑</AuthorHint>
           <SpaceGrow />
-          <MoreLink linkColor top={-2} onClick={() => gotoDetailLayout()}>
+          <MoreLink linkColor onClick={() => gotoDetailLayout()}>
             9 篇文档
           </MoreLink>
         </Footer>

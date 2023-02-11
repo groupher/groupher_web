@@ -6,7 +6,6 @@ import { MainWrapper } from '../index'
 export const Wrapper = styled.div`
   ${css.flexColumn('align-both')};
   width: 100%;
-  margin: 0 6%;
   margin-top: 10px;
 `
 export const CatsWrapper = styled(MainWrapper)`
@@ -45,10 +44,4 @@ export const Divider = styled.div`
   );
 
   border-image-slice: 1;
-`
-
-export const FAQWrapper = styled.div`
-  margin-left: -10%;
-  width: 95%;
-  margin-bottom: 20px;
 `
