@@ -7,14 +7,17 @@ import { FC } from 'react'
 
 // import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
+import { HELP_LAYOUT } from '@/constant/layout'
 
-import type { TStore } from './store'
+import { Divider } from '@/widgets/Common'
+import FaqList from '@/widgets/FaqList'
 
 import BlocksLayout from './BlocksLayout'
 import ListsLayout from './ListsLayout'
 import ArticleLayout from './ArticleLayout'
 
-import { Wrapper } from './styles'
+import type { TStore } from './store'
+import { Wrapper, FAQWrapper } from './styles'
 import { useInit } from './logic' /* eslint-disable-next-line */
 
 // const log = buildLog('C:HelpThread')
@@ -35,7 +38,7 @@ const HelpThreadContainer: FC<TProps> = ({
   isSidebarLayout = false,
 }) => {
   useInit(store)
-  const { isArticleLayout, layout, isFAQArticleLayout } = store
+  const { isArticleLayout, layout, faqLayout, isFAQArticleLayout } = store
 
   if (isArticleLayout) {
     return (
@@ -45,8 +48,13 @@ const HelpThreadContainer: FC<TProps> = ({
 
   return (
     <Wrapper testid={testid} isSidebarLayout={isSidebarLayout}>
-      {/* <ListsLayout /> */}
-      <BlocksLayout />
+      {layout === HELP_LAYOUT.BLOCKS && <BlocksLayout />}
+      {layout === HELP_LAYOUT.LISTS && <ListsLayout />}
+      <Divider top={50} bottom={80} />
+
+      <FAQWrapper>
+        <FaqList layout={faqLayout} />
+      </FAQWrapper>
     </Wrapper>
   )
 }

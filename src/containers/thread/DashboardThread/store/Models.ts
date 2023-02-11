@@ -15,6 +15,7 @@ import {
   BROADCAST_ARTICLE_LAYOUT,
   CHANGELOG_LAYOUT,
   HELP_LAYOUT,
+  HELP_FAQ_LAYOUT,
   POST_LAYOUT,
   KANBAN_LAYOUT,
   FOOTER_LAYOUT,
@@ -85,7 +86,8 @@ export const settingsModalFields = {
     COLOR_NAME.GREEN_LIGHT,
   ]),
 
-  helpLayout: T.opt(T.enum(values(HELP_LAYOUT)), HELP_LAYOUT.FAQ_COLLAPSE),
+  helpLayout: T.opt(T.enum(values(HELP_LAYOUT)), HELP_LAYOUT.BLOCKS),
+  helpFaqLayout: T.opt(T.enum(values(HELP_FAQ_LAYOUT)), HELP_FAQ_LAYOUT.COLLAPSE),
   avatarLayout: T.opt(T.enum(values(AVATAR_LAYOUT)), AVATAR_LAYOUT.SQUARE),
   brandLayout: T.opt(T.enum(values(BRAND_LAYOUT)), BRAND_LAYOUT.BOTH),
   bannerLayout: T.opt(T.enum(values(BANNER_LAYOUT)), BANNER_LAYOUT.HEADER),

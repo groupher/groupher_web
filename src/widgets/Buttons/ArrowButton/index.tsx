@@ -14,7 +14,7 @@ import { COLOR_NAME } from '@/constant/colors'
 import { buildLog } from '@/utils/logger'
 
 import Arrow from './Arrow'
-import { Wrapper } from '../styles/arrow_button'
+import { Wrapper, Text } from '../styles/arrow_button'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Buttons:ArrowButton')
@@ -61,7 +61,7 @@ const ArrowButton: FC<TProps> = ({
       {leftLayout && (
         <Arrow color={color} linkColor={linkColor} leftLayout={leftLayout} up={up} down={down} />
       )}
-      {children}
+      <Text>{children}</Text>
       {!leftLayout && (
         <Arrow color={color} linkColor={linkColor} leftLayout={leftLayout} up={up} down={down} />
       )}

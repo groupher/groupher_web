@@ -12,6 +12,7 @@ import type {
   TChangelogLayout,
   TSnakeUpperCase,
   THelpLayout,
+  THelpFAQLayout,
   TFooterLayout,
 } from '@/spec'
 
@@ -84,10 +85,16 @@ export const DASHBOARD_DESC_LAYOUT = {
 } as Record<TSnakeUpperCase<TDashboardLayout>, TDashboardLayout>
 
 export const HELP_LAYOUT = {
-  FAQ_FLAT: 'faq_flat',
-  FAQ_COLLAPSE: 'faq_collapse',
+  BLOCKS: 'blocks',
+  LISTS: 'lists',
   ARTICLE: 'article',
 } as Record<TSnakeUpperCase<THelpLayout>, THelpLayout>
+
+export const HELP_FAQ_LAYOUT = {
+  FLAT: 'flat',
+  COLLAPSE: 'collapse',
+  SEARCH_HINT: 'search_hint',
+} as Record<TSnakeUpperCase<THelpFAQLayout>, THelpFAQLayout>
 
 export const FOOTER_LAYOUT = {
   SIMPLE: 'simple',

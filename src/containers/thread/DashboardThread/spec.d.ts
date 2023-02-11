@@ -14,6 +14,7 @@ import type {
   TThread,
   TSizeSML,
   THelpLayout,
+  THelpFAQLayout,
   TDashboardPath,
   TKanbanLayout,
   TWallpaperInfo,
@@ -112,6 +113,7 @@ export type TUiSettings = {
   glowFixed: boolean
   glowOpacity: string
   helpLayout: THelpLayout
+  helpFaqLayout: THelpFaqLayout
   postLayout: TPostLayout
   kanbanLayout: TKanbanLayout
   kanbanBgColors: TColorName[]
@@ -144,6 +146,7 @@ export type TTouched = {
   glowFixed: boolean
   glowOpacity: boolean
   helpLayout: boolean
+  helpFaqLayout: boolean
   topbarLayout: boolean
   topbarBg: boolean
   postLayout: boolean
@@ -177,6 +180,7 @@ export type TSettingField =
   | 'glowFixed'
   | 'glowOpacity'
   | 'helpLayout'
+  | 'helpFaqLayout'
   | 'topbarLayout'
   | 'topbarBg'
   | 'broadcastLayout'

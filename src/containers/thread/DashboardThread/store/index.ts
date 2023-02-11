@@ -93,6 +93,7 @@ const DashboardThread = T.model('DashboardThread', {
         kanbanLayout,
         kanbanBgColors,
         helpLayout,
+        helpFaqLayout,
         footerLayout,
         bannerLayout,
         topbarLayout,
@@ -118,6 +119,7 @@ const DashboardThread = T.model('DashboardThread', {
         kanban: kanbanLayout,
         kanbanBgColors: kanbanBgColors as TColorName[],
         help: helpLayout,
+        helpFaq: helpFaqLayout,
         footer: footerLayout,
         changelog: changelogLayout,
         banner: bannerLayout,
@@ -157,6 +159,7 @@ const DashboardThread = T.model('DashboardThread', {
       const kanbanLayoutTouched = _isChanged('kanbanLayout')
       const kanbanBgColorsTouched = _isChanged('kanbanBgColors')
       const helpLayoutTouched = _isChanged('helpLayout')
+      const helpFaqLayoutTouched = _isChanged('helpFaqLayout')
 
       const broadcastLayoutTouched = _isChanged('broadcastLayout')
       const broadcastBgTouched = _isChanged('broadcastBg')
@@ -197,6 +200,7 @@ const DashboardThread = T.model('DashboardThread', {
         kanbanLayout: kanbanLayoutTouched,
         kanbanBgColors: kanbanBgColorsTouched,
         helpLayout: helpLayoutTouched,
+        helpFaqLayout: helpFaqLayoutTouched,
         changelogLayout: changelogLayoutTouched,
         alias: aliasTouched,
         tags: tagsTouched,
@@ -353,6 +357,7 @@ const DashboardThread = T.model('DashboardThread', {
             'postLayout',
             'kanbanLayout',
             'helpLayout',
+            'helpFaqLayout',
             'changelogLayout',
             'glowFixed',
             'glowType',

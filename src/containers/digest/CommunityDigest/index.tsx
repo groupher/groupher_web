@@ -4,9 +4,11 @@
  *
  */
 import { FC, Fragment } from 'react'
+import { useRouter } from 'next/router'
 
 import type { TMetric } from '@/spec'
 import { BANNER_LAYOUT } from '@/constant/layout'
+import { ROUTE } from '@/constant/route'
 import METRIC from '@/constant/metric'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
@@ -33,6 +35,12 @@ const CommunityDigestContainer: FC<TProps> = ({
   useInit(store)
 
   const { curThread, curCommunity, globalLayout } = store
+  const router = useRouter()
+
+  // always use SimpleLayout in dashboard settings
+  if (router.pathname.split('/')[2] === ROUTE.DASHBOARD.DASHBOARD) {
+    return <SimpleLayout metric={metric} community={curCommunity} activeThread={curThread} />
+  }
 
   return (
     <Fragment>

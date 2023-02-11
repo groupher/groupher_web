@@ -8,7 +8,8 @@ export type TTopbarLayout = 'yes' | 'no'
 export type TPostLayout = 'upvote_first' | 'comment_first' | 'card' | 'minimal' | 'cover'
 export type TKanbanLayout = 'simple' | 'full'
 export type TChangelogLayout = 'preview' | 'outline'
-export type THelpLayout = 'article' | 'faq_flat' | 'faq_collapse'
+export type THelpLayout = 'blocks' | 'lists' | 'article'
+export type THelpFAQLayout = 'flat' | 'collapse' | 'search_hint'
 export type TFooterLayout = 'simple' | 'full'
 
 export type TBroadcastLayout = 'default' | 'center'
@@ -32,6 +33,7 @@ export type TGlobalLayout = {
   kanban: TKanbanLayout
   kanbanBgColors: TColorName[]
   help: THelpLayout
+  helpFaq: THelpFAQLayout
   banner: TBannerLayout
   avatar: TAvatarLayout
   changelog: TChangelogLayout

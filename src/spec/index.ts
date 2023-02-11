@@ -93,6 +93,7 @@ export type {
   TKanbanLayout,
   TChangelogLayout,
   THelpLayout,
+  THelpFAQLayout,
   TFooterLayout,
   TGlobalLayout,
   TBroadcastConfig,

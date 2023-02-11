@@ -10,7 +10,7 @@ import dynamic from 'next/dynamic'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TResState } from '@/spec'
-import { BANNER_LAYOUT } from '@/constant/layout'
+import { BANNER_LAYOUT, HELP_FAQ_LAYOUT } from '@/constant/layout'
 
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
@@ -92,7 +92,7 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
             globalLayout={globalLayout}
           />
         )}
-        {mode === 'search' && <FaqList mode="search-hint" />}
+        {mode === 'search' && <FaqList layout={HELP_FAQ_LAYOUT.SEARCH_HINT} />}
       </LayoutWrapper>
 
       {!isMobile && !isSidebarLayout && <ThreadSidebar />}

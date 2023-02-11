@@ -38,6 +38,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
     avatarLayout,
     bannerLayout,
     helpLayout,
+    helpFaqLayout,
     topbarLayout,
     topbarBg,
     postLayout,
@@ -140,7 +141,13 @@ const UI: FC<TProps> = ({ settings, touched }) => {
 
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.HELP && (
         <>
-          <HelpLayout layout={helpLayout} isTouched={touched.helpLayout} saving={saving} />
+          <HelpLayout
+            layout={helpLayout}
+            faqLayout={helpFaqLayout}
+            isTouched={touched.helpLayout}
+            isFaqTouched={touched.helpFaqLayout}
+            saving={saving}
+          />
         </>
       )}
 
