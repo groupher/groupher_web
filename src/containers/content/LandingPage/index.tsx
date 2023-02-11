@@ -105,13 +105,8 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
               </DemoButton>
             </Tooltip>
           </ButtonGroup>
-          <Note>
-            <InfoIcon />
-            本站正在开发中，详情请联系 mydearxym@qq.com
-          </Note>
         </Banner>
         <CoverImage wallpaperInfo={wallpaperInfo} bannerLayout={bannerLayout} />
-
         <WallpaperBar
           wallpaper={wallpaper}
           gradientWallpapers={gradientWallpapers}

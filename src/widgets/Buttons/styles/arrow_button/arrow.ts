@@ -16,7 +16,7 @@ const getColor = (color: TColorName, linkColor: boolean) => {
 
 const BaseArrow = styled.div<TArrow>`
   width: 0;
-  height: 1px;
+  height: 0;
 
   position: relative;
   background: transparent;
@@ -30,10 +30,10 @@ const BaseArrow = styled.div<TArrow>`
   }};
 
   background: ${({ color, linkColor }) => getColor(color, linkColor)};
-  opacity: 0.68;
 
   ${ButtonWrapper}:hover & {
     width: 8px;
+    height: 1px;
   }
 
   ${ButtonWrapper}:hover &:before {
@@ -54,7 +54,7 @@ const BaseArrow = styled.div<TArrow>`
     padding: 3px;
     transform: rotate(-45deg);
 
-    transition: 0.2s;
+    transition: 0.2s ease-out;
   }
 `
 

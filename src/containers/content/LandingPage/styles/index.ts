@@ -99,8 +99,8 @@ export const Note = styled.div`
 export const ButtonGroup = styled.div`
   ${css.flex('align-center')};
   gap: 0 22px;
-  margin-top: 30px;
-  margin-left: 12px;
+  margin-top: 40px;
+  margin-left: 10px;
 `
 export const DemoPanel = styled.div`
   ${css.flexColumn()};
