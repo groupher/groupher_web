@@ -6,6 +6,7 @@
 import { FC, useState } from 'react'
 
 import type { TAvatarLayout, TGlobalLayout } from '@/spec'
+import { CHANGELOG_LAYOUT } from '@/constant/layout'
 
 import ChangelogItem from '@/widgets/ChangelogItem'
 import Tabs from '@/widgets/Switcher/Tabs'
@@ -24,18 +25,17 @@ type TProps = {
 }
 
 const SimpleLayout: FC<TProps> = ({ globalLayout, isSidebarLayout, avatarLayout }) => {
-  // globalLayout.changelog === CHANGELOG_LAYOUT.OUTLINE
   const [filterExpand, setFilterExpand] = useState(false)
   const [tab, setTab] = useState(TABS_MODE_OPTIONS[0].raw)
 
-  const isChangelogSimpleLayout = true
+  const alignLeft = globalLayout.changelog === CHANGELOG_LAYOUT.SIMPLE
 
   return (
     <Wrapper isSidebarLayout={isSidebarLayout}>
-      <Banner isChangelogSimpleLayout={isChangelogSimpleLayout}>
+      <Banner alignLeft={alignLeft}>
         <Title>更新日志</Title>
         <Desc>Groupher 的功能更新，界面调整，性能与 Bug 修复等</Desc>
-        <TabsWrapper isChangelogSimpleLayout={isChangelogSimpleLayout}>
+        <TabsWrapper alignLeft={alignLeft}>
           <Tabs
             items={TABS_MODE_OPTIONS}
             size="small"
@@ -53,13 +53,9 @@ const SimpleLayout: FC<TProps> = ({ globalLayout, isSidebarLayout, avatarLayout 
         </TabsWrapper>
       </Banner>
 
-      {filterExpand && <FilterBar tab={tab} isChangelogSimpleLayout={isChangelogSimpleLayout} />}
+      {filterExpand && <FilterBar tab={tab} alignLeft={alignLeft} />}
       <MainWrapper>
-        <ChangelogItem
-          layout={globalLayout.changelog}
-          showFullArticle
-          avatarLayout={avatarLayout}
-        />
+        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
         <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
         <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
         <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />

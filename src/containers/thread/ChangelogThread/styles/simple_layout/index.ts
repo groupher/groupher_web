@@ -11,11 +11,10 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   width: 100%;
   margin-left: ${({ isSidebarLayout }) => (isSidebarLayout ? '-60px' : '0')};
 `
-export const Banner = styled.div<{ isChangelogSimpleLayout: boolean }>`
+export const Banner = styled.div<{ alignLeft: boolean }>`
   ${css.flexColumn('align-both')};
-  align-items: ${({ isChangelogSimpleLayout }) =>
-    isChangelogSimpleLayout ? 'flex-start' : 'center'};
-  padding-left: ${({ isChangelogSimpleLayout }) => (isChangelogSimpleLayout ? '186px' : '')};
+  align-items: ${({ alignLeft }) => (alignLeft ? 'flex-start' : 'center')};
+  padding-left: ${({ alignLeft }) => (alignLeft ? '186px' : '')};
 
   height: 200px;
   width: 700px;
@@ -35,11 +34,11 @@ export const Banner = styled.div<{ isChangelogSimpleLayout: boolean }>`
   border-image-slice: 1;
 `
 
-export const TabsWrapper = styled.div<{ isChangelogSimpleLayout: boolean }>`
+export const TabsWrapper = styled.div<{ alignLeft: boolean }>`
   position: absolute;
   bottom: 0;
 
-  left: ${({ isChangelogSimpleLayout }) => (isChangelogSimpleLayout ? '172px' : '')};
+  left: ${({ alignLeft }) => (alignLeft ? '172px' : '')};
 `
 
 export const Title = styled.h2`

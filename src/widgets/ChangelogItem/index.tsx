@@ -1,6 +1,7 @@
 import { FC, memo, Fragment } from 'react'
 
 import type { TAvatarLayout, TChangelogLayout } from '@/spec'
+import { CHANGELOG_LAYOUT } from '@/constant/layout'
 
 import ClassicLayout from './ClassicLayout'
 import SimpleLayout from './SimpleLayout'
@@ -9,25 +10,14 @@ import SimpleLayout from './SimpleLayout'
 
 type TProps = {
   layout: TChangelogLayout
-  showFullArticle?: boolean
   avatarLayout: TAvatarLayout
 }
 
-const ChangelogItem: FC<TProps> = ({ layout, showFullArticle = false, avatarLayout }) => {
-  // if (showFullArticle && layout === CHANGELOG_LAYOUT.OUTLINE) {
-  //   return <PreviewLayout showFullArticle />
-  // }
-
+const ChangelogItem: FC<TProps> = ({ layout, avatarLayout }) => {
   return (
     <Fragment>
-      {/* <ClassicLayout avatarLayout={avatarLayout} /> */}
-      <SimpleLayout avatarLayout={avatarLayout} />
-
-      {/* {layout === CHANGELOG_LAYOUT.PREVIEW ? (
-        <PreviewLayout />
-      ) : (
-        <OutlineLayout />
-      )} */}
+      {layout === CHANGELOG_LAYOUT.SIMPLE && <SimpleLayout avatarLayout={avatarLayout} />}
+      {layout === CHANGELOG_LAYOUT.CLASSIC && <ClassicLayout avatarLayout={avatarLayout} />}
     </Fragment>
   )
 }

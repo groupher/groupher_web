@@ -105,7 +105,7 @@ export const settingsModalFields = {
   broadcastArticleBg: T.opt(T.enum(keys(COLORS)), COLOR_NAME.RED),
   broadcastArticleEnable: T.opt(T.bool, true),
 
-  changelogLayout: T.opt(T.enum(values(CHANGELOG_LAYOUT)), CHANGELOG_LAYOUT.PREVIEW),
+  changelogLayout: T.opt(T.enum(values(CHANGELOG_LAYOUT)), CHANGELOG_LAYOUT.CLASSIC),
 
   // help
   helpCategories: T.opt(T.array(GroupCategory), []),

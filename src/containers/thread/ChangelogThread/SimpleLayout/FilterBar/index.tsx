@@ -11,14 +11,14 @@ import VersionFilter from './VersionFilter'
 
 type TProps = {
   tab: TTagsMode
-  isChangelogSimpleLayout: boolean
+  alignLeft: boolean
 }
 
-const FilterBar: FC<TProps> = ({ tab, isChangelogSimpleLayout }) => {
+const FilterBar: FC<TProps> = ({ tab, alignLeft }) => {
   switch (tab) {
     case TAGS_MODE.TAG: {
       return (
-        <Wrapper isChangelogSimpleLayout={isChangelogSimpleLayout}>
+        <Wrapper alignLeft={alignLeft}>
           <TagFilter />
         </Wrapper>
       )
@@ -26,7 +26,7 @@ const FilterBar: FC<TProps> = ({ tab, isChangelogSimpleLayout }) => {
 
     case TAGS_MODE.TIME: {
       return (
-        <Wrapper isChangelogSimpleLayout={isChangelogSimpleLayout}>
+        <Wrapper alignLeft={alignLeft}>
           <TimeFilter />
         </Wrapper>
       )
@@ -34,7 +34,7 @@ const FilterBar: FC<TProps> = ({ tab, isChangelogSimpleLayout }) => {
 
     case TAGS_MODE.VERSION: {
       return (
-        <Wrapper isChangelogSimpleLayout={isChangelogSimpleLayout}>
+        <Wrapper alignLeft={alignLeft}>
           <VersionFilter />
         </Wrapper>
       )

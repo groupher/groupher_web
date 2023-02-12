@@ -13,6 +13,7 @@ import AvatarLayout from './AvatarLayout'
 // import BrandLayout from './BrandLayout'
 import BannerLayout from './BannerLayout'
 import HelpLayout from './HelpLayout'
+import ChangelogLayout from './ChangelogLayout'
 import PostLayout from './PostLayout'
 import KanbanLayout from './KanbanLayout'
 import TopbarLayout from './TopbarLayout'
@@ -44,6 +45,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
     postLayout,
     kanbanLayout,
     kanbanBgColors,
+    changelogLayout,
 
     // ui part
     primaryColor,
@@ -116,53 +118,38 @@ const UI: FC<TProps> = ({ settings, touched }) => {
       )}
 
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.POST && (
-        <>
-          <PostLayout layout={postLayout} isTouched={touched.postLayout} saving={saving} />
-        </>
+        <PostLayout layout={postLayout} isTouched={touched.postLayout} saving={saving} />
       )}
 
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.KANBAN && (
-        <>
-          <KanbanLayout
-            layout={kanbanLayout}
-            isTouched={touched.kanbanLayout}
-            isBgColorsTouched={touched.kanbanBgColors}
-            kanbanBgColors={kanbanBgColors}
-            saving={saving}
-          />
-        </>
+        <KanbanLayout
+          layout={kanbanLayout}
+          isTouched={touched.kanbanLayout}
+          isBgColorsTouched={touched.kanbanBgColors}
+          kanbanBgColors={kanbanBgColors}
+          saving={saving}
+        />
       )}
 
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.CHANGELOG && (
-        <>
-          <div>changelog todo</div>
-        </>
+        <ChangelogLayout
+          layout={changelogLayout}
+          isTouched={touched.changelogLayout}
+          saving={saving}
+        />
       )}
 
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.HELP && (
-        <>
-          <HelpLayout
-            layout={helpLayout}
-            faqLayout={helpFaqLayout}
-            isTouched={touched.helpLayout}
-            isFaqTouched={touched.helpFaqLayout}
-            saving={saving}
-          />
-        </>
+        <HelpLayout
+          layout={helpLayout}
+          faqLayout={helpFaqLayout}
+          isTouched={touched.helpLayout}
+          isFaqTouched={touched.helpFaqLayout}
+          saving={saving}
+        />
       )}
 
-      {layoutTab === DASHBOARD_LAYOUT_ROUTE.ABOUT && (
-        <>
-          <div>about todo</div>
-        </>
-      )}
-
-      {/* <ChangelogLayout
-        layout={changelogLayout}
-        isTouched={touched.changelogLayout}
-        saving={saving}
-      />
-      <Divider top={30} bottom={60} /> */}
+      {layoutTab === DASHBOARD_LAYOUT_ROUTE.ABOUT && <div>about todo</div>}
     </Wrapper>
   )
 }
