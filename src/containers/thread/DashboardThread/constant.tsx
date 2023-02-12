@@ -243,10 +243,6 @@ export const LAYOUT_TABS = [
     title: '帮助台',
     raw: DASHBOARD_LAYOUT_ROUTE.HELP,
   },
-  {
-    title: '关于',
-    raw: DASHBOARD_LAYOUT_ROUTE.ABOUT,
-  },
 ]
 
 export const BROADCAST_TABS = [
