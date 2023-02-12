@@ -6,73 +6,66 @@
 
 import { FC, memo } from 'react'
 
+import type { TAvatarLayout } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
-import TAG_MODE from '@/constant/tag'
-import SIZE from '@/constant/size'
-
 import { SpaceGrow } from '@/widgets/Common'
-import DropdownButton from '@/widgets/Buttons/DropdownButton'
 import TagsList from '@/widgets/TagsList'
-import CoverImage from '@/widgets/CoverImage'
 import EmotionSelector from '@/widgets/EmotionSelector'
+import CommentsCount from '@/widgets/CommentsCount'
 
 import { demoTags, demoEmotion } from '../constant'
+
+import SolidTagList from '../SolidTagList'
+import Author from './Author'
 
 import {
   Wrapper,
   Main,
-  Side,
   Title,
   TagsWrapper,
   Body,
   Footer,
   Version,
   DateTime,
-  CommentWrapper,
-  CommentIcon,
-  Text,
-} from '../styles/preview_layout/default_layout'
+  ShareIcon,
+} from '../styles/simple_layout/article_layout'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:ChangelogItem:index')
 
 type TProps = {
   testid?: string
+  avatarLayout: TAvatarLayout
 }
 
-const PreviewLayout: FC<TProps> = ({ testid = 'changelog-item' }) => {
+const SimpleLayout: FC<TProps> = ({ testid = 'changelog-item', avatarLayout }) => {
   return (
     <Wrapper testid={testid}>
+      <DateTime>10-04, 2022</DateTime>
       <Main>
-        <CoverImage />
-        <Title>帖子支持表情了</Title>
+        <Title>
+          <span>帖子支持表情了</span>
+          <Version>v3.21</Version>
+        </Title>
         <TagsWrapper>
-          <TagsList items={demoTags} left={3} mode={TAG_MODE.LABEL} size="small" max={5} />
+          <TagsList items={demoTags} size="small" />
         </TagsWrapper>
         <Body>
           这次俄乌冲突出现侮辱乌女性的评论就是1450干的，刷完评论就截图转发外网，成为外媒攻击中国人的“口实”。
           这种行为十分危险，战争期间各种武装组织骚动，随时对我国在乌克兰撤侨的6000人直接造成生命威胁。前段时间，刘学州那个找爸妈的孩子，也是被1450它们网暴死的。
           （1450罪恶滔天啊！1450是九世恶人下凡！连孩子都不放过。
         </Body>
+        {/* <Author avatarLayout={avatarLayout} /> */}
         <Footer>
           <EmotionSelector emotions={demoEmotion} isLegal />
-          <CommentWrapper>
-            <CommentIcon />
-            <Text>23</Text>
-          </CommentWrapper>
           <SpaceGrow />
+          <CommentsCount count={12} size="medium" right={15} />
+          <ShareIcon />
         </Footer>
       </Main>
-      <Side>
-        <Version>v3.20</Version>
-        <DateTime>10天前</DateTime>
-        <DropdownButton size={SIZE.TINY} top={5} right={-8} withBorder>
-          获取
-        </DropdownButton>
-      </Side>
     </Wrapper>
   )
 }
 
-export default memo(PreviewLayout)
+export default memo(SimpleLayout)

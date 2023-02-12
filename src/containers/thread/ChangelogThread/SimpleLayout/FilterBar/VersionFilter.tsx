@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { Item } from '../../styles/focus_layout/filter_bar'
+import { Item } from '../../styles/simple_layout/filter_bar'
 
 const VersionBar: FC = () => {
   return (

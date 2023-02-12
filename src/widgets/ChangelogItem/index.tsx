@@ -2,7 +2,9 @@ import { FC, memo, Fragment } from 'react'
 
 import type { TAvatarLayout, TChangelogLayout } from '@/spec'
 
-import PreviewLayout from './PreviewtLayout'
+import ClassicLayout from './ClassicLayout'
+import SimpleLayout from './SimpleLayout'
+
 // import OutlineLayout from './OutlineLayout'
 
 type TProps = {
@@ -18,7 +20,9 @@ const ChangelogItem: FC<TProps> = ({ layout, showFullArticle = false, avatarLayo
 
   return (
     <Fragment>
-      <PreviewLayout avatarLayout={avatarLayout} showFullArticle />
+      {/* <ClassicLayout avatarLayout={avatarLayout} /> */}
+      <SimpleLayout avatarLayout={avatarLayout} />
+
       {/* {layout === CHANGELOG_LAYOUT.PREVIEW ? (
         <PreviewLayout />
       ) : (

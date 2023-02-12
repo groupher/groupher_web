@@ -14,12 +14,12 @@ export const Wrapper = styled.div`
 
 export const TagWrapper = styled.div<{ color: TColorName }>`
   background: ${({ color }) => theme(`baseColor.${color.toLowerCase()}Bg`)};
-  padding: 1px 8px;
+  padding: 2px 10px;
   border-radius: 10px;
 `
 
 export const Name = styled.div`
-  color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
+  color: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
   font-size: 12px;
   font-weight: 500;
 `

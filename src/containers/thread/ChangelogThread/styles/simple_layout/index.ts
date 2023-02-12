@@ -11,8 +11,12 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   width: 100%;
   margin-left: ${({ isSidebarLayout }) => (isSidebarLayout ? '-60px' : '0')};
 `
-export const Banner = styled.div`
+export const Banner = styled.div<{ isChangelogSimpleLayout: boolean }>`
   ${css.flexColumn('align-both')};
+  align-items: ${({ isChangelogSimpleLayout }) =>
+    isChangelogSimpleLayout ? 'flex-start' : 'center'};
+  padding-left: ${({ isChangelogSimpleLayout }) => (isChangelogSimpleLayout ? '186px' : '')};
+
   height: 200px;
   width: 700px;
   margin-bottom: 20px;
@@ -31,9 +35,11 @@ export const Banner = styled.div`
   border-image-slice: 1;
 `
 
-export const TabsWrapper = styled.div`
+export const TabsWrapper = styled.div<{ isChangelogSimpleLayout: boolean }>`
   position: absolute;
   bottom: 0;
+
+  left: ${({ isChangelogSimpleLayout }) => (isChangelogSimpleLayout ? '172px' : '')};
 `
 
 export const Title = styled.h2`
@@ -47,7 +53,7 @@ export const Desc = styled.div`
   color: ${theme('article.digest')};
 `
 export const MainWrapper = styled.div`
-  width: 680px;
+  width: 600px;
   margin-top: 12px;
 
   border-radius: 6px;

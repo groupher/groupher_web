@@ -3,8 +3,13 @@ import styled from 'styled-components'
 import type { TActive } from '@/spec'
 import css, { animate, theme } from '@/utils/css'
 
-export const Wrapper = styled.div<TActive>`
+type TWrapper = TActive & { isChangelogSimpleLayout: boolean }
+export const Wrapper = styled.div<TWrapper>`
   ${css.flex('align-both')};
+  justify-content: ${({ isChangelogSimpleLayout }) =>
+    isChangelogSimpleLayout ? 'flex-start' : 'center'};
+  padding-left: ${({ isChangelogSimpleLayout }) => (isChangelogSimpleLayout ? '186px' : '')};
+
   gap: 0 15px;
   width: 700px;
   height: 52px;

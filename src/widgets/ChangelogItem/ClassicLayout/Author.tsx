@@ -3,7 +3,7 @@ import { FC } from 'react'
 import type { TAvatarLayout } from '@/spec'
 import { mockUsers } from '@/utils/mock'
 
-import { Wrapper, Avatar, Name } from '../styles/preview_layout/author'
+import { Wrapper, Avatar, Name } from '../styles/classic_layout/author'
 
 type TProps = {
   avatarLayout: TAvatarLayout

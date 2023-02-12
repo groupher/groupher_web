@@ -29,7 +29,7 @@ import {
   Version,
   DateTime,
   ShareIcon,
-} from '../styles/preview_layout/article_layout'
+} from '../styles/classic_layout/article_layout'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:ChangelogItem:index')
@@ -39,14 +39,14 @@ type TProps = {
   avatarLayout: TAvatarLayout
 }
 
-const PreviewLayout: FC<TProps> = ({ testid = 'changelog-item', avatarLayout }) => {
+const ClassicLayout: FC<TProps> = ({ testid = 'changelog-item', avatarLayout }) => {
   return (
     <Wrapper testid={testid}>
       <Main>
         <CoverImage />
         <Title>
           <span>帖子支持表情了</span>
-          <Version>v3.20</Version>
+          <Version>v3.21</Version>
         </Title>
         <TagsWrapper>
           <SolidTagList tags={demoTags} />
@@ -69,4 +69,4 @@ const PreviewLayout: FC<TProps> = ({ testid = 'changelog-item', avatarLayout }) 
   )
 }
 
-export default memo(PreviewLayout)
+export default memo(ClassicLayout)
