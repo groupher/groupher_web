@@ -23,6 +23,7 @@ export const Column = styled.div<TColumn>`
   ${css.flexColumn()};
   ${({ center }) => (center ? 'align-items: center;' : '')};
   ${({ grow }) => (grow ? 'flex-grow: 1;' : '')};
+  padding: 0 18px;
 `
 export const Layout = styled.div`
   ${css.flexColumn('align-both')};
@@ -38,38 +39,26 @@ export const LayoutTitle = styled.div<TActive>`
 `
 export const Block = styled(BlockBase)`
   width: 300px;
-  height: 430px;
-  padding: 16px 15px;
+  height: 380px;
+  padding: 30px 50px;
 `
 
-export const Picture = styled.div<{ small?: boolean }>`
+export const Picture = styled.div`
   width: 100%;
-  height: ${({ small }) => (small ? '80px;' : '100px;')};
+  height: 60px;
   border-radius: 5px;
   background: ${theme('divider')};
 `
-
 export const MiniItem = styled.div`
-  ${css.flex('align-center')};
+  ${css.flex('align-start')};
   width: 100%;
-`
-export const Cover = styled.div`
-  ${css.flexColumn('align-both')};
-  border: 1px solid;
-  border-color: ${theme('article.digest')};
-  width: 34px;
-  height: 36px;
-  border-radius: 4px;
-`
-export const MiniPic = styled.div`
-  width: 30px;
-  height: 16px;
-  border-radius: 5px;
-  background: ${theme('divider')};
+  margin-left: 5px;
+  padding: 0 10px;
 `
 export const MiniIntro = styled.div`
   width: 100%;
   margin-left: 14px;
+  margin-top: -2px;
 `
 export const MiniBar = styled(Bar)`
   width: ${({ long }) => `${long || 10}%`};
@@ -78,6 +67,7 @@ export const MiniBar = styled(Bar)`
   opacity: 0.6;
   z-index: 3;
   border-radius: 2px;
+  margin-right: 10px;
 `
 export const Circle = styled.div<{ radius?: number }>`
   ${({ radius }) => `${css.circle(radius || 22)}`};

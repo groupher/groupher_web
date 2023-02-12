@@ -74,8 +74,8 @@ export const KANBAN_LAYOUT = {
 } as Record<TSnakeUpperCase<TKanbanLayout>, TKanbanLayout>
 
 export const CHANGELOG_LAYOUT = {
-  PREVIEW: 'preview',
-  OUTLINE: 'outline',
+  CLASSIC: 'classic',
+  SIMPLE: 'simple',
 } as Record<TSnakeUpperCase<TChangelogLayout>, TChangelogLayout>
 
 export const DASHBOARD_DESC_LAYOUT = {

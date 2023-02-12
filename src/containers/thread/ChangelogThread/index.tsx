@@ -9,7 +9,7 @@ import { BANNER_LAYOUT } from '@/constant/layout'
 import { bond } from '@/utils/mobx'
 
 import ClassicLayout from './ClassicLayout'
-import FocusLayout from './FocusLayout'
+import SimpleLayout from './SimpleLayout'
 
 import type { TStore } from './store'
 import { useInit } from './logic' /* eslint-disable-next-line */
@@ -33,7 +33,7 @@ const ChangelogThreadContainer: FC<TProps> = ({
   return globalLayout.banner === BANNER_LAYOUT.TABBER ? (
     <ClassicLayout globalLayout={globalLayout} tagsMode={tagsMode} avatarLayout={avatarLayout} />
   ) : (
-    <FocusLayout
+    <SimpleLayout
       globalLayout={globalLayout}
       isSidebarLayout={isSidebarLayout}
       avatarLayout={avatarLayout}

@@ -25,11 +25,7 @@ const ClassicLayout: FC<TProps> = ({ globalLayout, tagsMode, avatarLayout }) => 
   return (
     <Wrapper>
       <MainWrapper>
-        <ChangelogItem
-          layout={globalLayout.changelog}
-          showFullArticle
-          avatarLayout={avatarLayout}
-        />
+        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
         <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
         <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
         <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
