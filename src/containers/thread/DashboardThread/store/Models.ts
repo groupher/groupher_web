@@ -35,7 +35,7 @@ export const Enable = T.model('Enable', {
   helpLastUpdate: T.opt(T.bool, true),
   helpReaction: T.opt(T.bool, true),
   //
-  about: T.opt(T.bool, false),
+  about: T.opt(T.bool, true),
   aboutTechstack: T.opt(T.bool, true),
   aboutLocation: T.opt(T.bool, true),
   aboutLinks: T.opt(T.bool, true),
@@ -136,6 +136,7 @@ export const settingsModalFields = {
   activeTagCategory: T.maybeNull(T.string),
   //
   alias: T.opt(T.array(Alias), BUILDIN_ALIAS),
+  enable: T.opt(Enable, {}),
 
   // footer
   footerLayout: T.opt(T.enum(values(FOOTER_LAYOUT)), FOOTER_LAYOUT.FULL),

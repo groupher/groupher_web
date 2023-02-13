@@ -41,6 +41,7 @@ import { Tag } from '@/model'
 import type {
   TBaseInfoSettings,
   TSEOSettings,
+  TEnableSettings,
   TUiSettings,
   TTagSettings,
   TFooterSettings,
@@ -236,6 +237,12 @@ const DashboardThread = T.model('DashboardThread', {
           broadcastArticleBgTouched,
         broadcastArticle: broadcastArticleLayoutTouched || broadcastArticleBgTouched,
       }
+    },
+
+    get enableSettings(): TEnableSettings {
+      const slf = self as TStore
+
+      return toJS(slf.enable)
     },
 
     get tagCategories(): string[] {

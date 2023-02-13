@@ -48,6 +48,7 @@ const DashboardThreadContainer: FC<TProps> = ({
     curTab,
     baseInfoSettings,
     seoSettings,
+    enableSettings,
     uiSettings,
     tagSettings,
     footerSettings,
@@ -70,7 +71,7 @@ const DashboardThreadContainer: FC<TProps> = ({
         {curTab === DASHBOARD.LAYOUT && <Layout settings={uiSettings} touched={touched} />}
         {curTab === DASHBOARD.ALIAS && <Alias settings={aliasSettings} />}
         {curTab === DASHBOARD.ADMINS && <Admin />}
-        {curTab === DASHBOARD.THREADS && <Threads />}
+        {curTab === DASHBOARD.THREADS && <Threads settings={enableSettings} />}
         {curTab === DASHBOARD.TAGS && <Tags settings={tagSettings} />}
         {curTab === DASHBOARD.HEADER && <Header settings={footerSettings} touched={touched} />}
         {curTab === DASHBOARD.FOOTER && <Footer settings={footerSettings} touched={touched} />}
