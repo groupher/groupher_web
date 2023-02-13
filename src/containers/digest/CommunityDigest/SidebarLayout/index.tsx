@@ -56,12 +56,12 @@ const SidebarLayout: FC<TProps> = ({ community, activeThread, metric, enable }) 
             </>
           )}
 
-          {activeThread === THREAD.POST && (
+          {activeThread === THREAD.POST && enable.post && (
             <TabBarWrapper>
               <TagsBar onSelect={() => send(EVENT.REFRESH_ARTICLES)} />
             </TabBarWrapper>
           )}
-          {activeThread === THREAD.HELP && (
+          {activeThread === THREAD.HELP && enable.help && (
             <FileTreeWrapper>
               <PinedTree />
               <FileTree />
