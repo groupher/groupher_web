@@ -71,7 +71,7 @@ const BasicStates: FC = () => {
         <EmojisWrapper>
           <EmojiIcon />
         </EmojisWrapper>
-        <Title>反应</Title>
+        <Title>回应</Title>
         <Desc>赞同与表情</Desc>
         <Num>374</Num>
       </Block>

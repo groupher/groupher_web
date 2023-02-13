@@ -34,24 +34,46 @@ const CommunityDigestContainer: FC<TProps> = ({
 }) => {
   useInit(store)
 
-  const { curThread, curCommunity, globalLayout } = store
+  const { curThread, curCommunity, globalLayout, enable } = store
   const router = useRouter()
 
   // always use SimpleLayout in dashboard settings
   if (router.pathname.split('/')[2] === ROUTE.DASHBOARD.DASHBOARD) {
-    return <SimpleLayout metric={metric} community={curCommunity} activeThread={curThread} />
+    return (
+      <SimpleLayout
+        metric={metric}
+        community={curCommunity}
+        activeThread={curThread}
+        enable={enable}
+      />
+    )
   }
 
   return (
     <Fragment>
       {globalLayout.banner === BANNER_LAYOUT.TABBER && (
-        <ClassicLayout metric={metric} community={curCommunity} activeThread={curThread} />
+        <ClassicLayout
+          metric={metric}
+          community={curCommunity}
+          activeThread={curThread}
+          enable={enable}
+        />
       )}
       {globalLayout.banner === BANNER_LAYOUT.SIDEBAR && (
-        <SidebarLayout metric={metric} community={curCommunity} activeThread={curThread} />
+        <SidebarLayout
+          metric={metric}
+          community={curCommunity}
+          activeThread={curThread}
+          enable={enable}
+        />
       )}
       {globalLayout.banner === BANNER_LAYOUT.HEADER && (
-        <SimpleLayout metric={metric} community={curCommunity} activeThread={curThread} />
+        <SimpleLayout
+          metric={metric}
+          community={curCommunity}
+          activeThread={curThread}
+          enable={enable}
+        />
       )}
     </Fragment>
   )

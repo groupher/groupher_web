@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 // import Router from 'next/router'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TThread, TCommunity, TMetric } from '@/spec'
+import type { TThread, TCommunity, TMetric, TEnableConfig } from '@/spec'
 
 import EVENT from '@/constant/event'
 import { THREAD } from '@/constant/thread'
@@ -32,9 +32,10 @@ type TProps = {
   community: TCommunity
   activeThread: TThread
   metric: TMetric
+  enable: TEnableConfig
 }
 
-const SidebarLayout: FC<TProps> = ({ community, activeThread, metric }) => {
+const SidebarLayout: FC<TProps> = ({ community, activeThread, metric, enable }) => {
   const { isMobile } = useMobileDetect()
 
   return (
@@ -50,17 +51,17 @@ const SidebarLayout: FC<TProps> = ({ community, activeThread, metric }) => {
         >
           {activeThread !== THREAD.HELP && (
             <>
-              <MainMenu community={community} activeThread={activeThread} />
+              <MainMenu community={community} activeThread={activeThread} enable={enable} />
               <Divider top={8} />
             </>
           )}
 
-          {activeThread === THREAD.POST && (
+          {activeThread === THREAD.POST && enable.post && (
             <TabBarWrapper>
               <TagsBar onSelect={() => send(EVENT.REFRESH_ARTICLES)} />
             </TabBarWrapper>
           )}
-          {activeThread === THREAD.HELP && (
+          {activeThread === THREAD.HELP && enable.help && (
             <FileTreeWrapper>
               <PinedTree />
               <FileTree />

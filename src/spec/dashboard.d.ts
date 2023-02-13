@@ -26,6 +26,22 @@ export type TBroadcastConfig = {
   broadcastArticleEnable: boolean
 }
 
+export type TEnableConfig = {
+  post: boolean
+  kanban: boolean
+  changelog: boolean
+  //
+  help: boolean
+  helpLastUpdate: boolean
+  helpReaction: boolean
+  //
+  about: boolean
+  aboutTechstack: boolean
+  aboutLocation: boolean
+  aboutLinks: boolean
+  aboutMediaReport: boolean
+}
+
 export type TGlobalLayout = {
   primaryColor: TColorName
   brand: TBrandLayout
@@ -49,4 +65,6 @@ export type TGlobalLayout = {
 
   topbar: TTopbarLayout
   topbarBg: TColorName
+
+  enable: TEnableConfig
 }

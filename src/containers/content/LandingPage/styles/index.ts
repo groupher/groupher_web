@@ -10,8 +10,6 @@ import css, { animate, theme } from '@/utils/css'
 import InfoSVG from '@/icons/Info'
 import ArrowSVG from '@/icons/ArrowSimple'
 
-// import TestBgSVG from './TestSVG'
-
 import { getGlowOpacity, getGlowBackground, getPathGradient } from './metric'
 
 type TWrapper = TTestable
@@ -117,14 +115,13 @@ export const DemoMenuItem = styled(Link)`
   text-decoration: none;
 
   &:hover {
-    /* font-weight: 600; */
     cursor: pointer;
     background: ${theme('hoverBg')};
     text-decoration: none;
   }
 `
 export const LinkIcon = styled(LinkSVG)`
-  ${css.size(8)};
+  ${css.size(12)};
   color: ${theme('article.digest')};
   opacity: 0.4;
 

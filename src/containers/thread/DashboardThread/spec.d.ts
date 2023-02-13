@@ -52,6 +52,7 @@ export type TFooterSettings = {
   footerLayout: TFooterLayout
   saving: boolean
 }
+
 export type TAlias = {
   raw: string
   name: string
@@ -192,6 +193,7 @@ export type TSettingField =
   | 'changelogLayout'
   | 'tag'
   | 'alias'
+  | 'enable'
   | 'widgetsPrimaryColor'
   | 'widgetsThreads'
   | 'widgetsSize'

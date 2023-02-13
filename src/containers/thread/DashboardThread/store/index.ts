@@ -23,6 +23,7 @@ import type {
   TThread,
   TSizeSML,
   TColorName,
+  TEnableConfig,
 } from '@/spec'
 
 import {
@@ -109,6 +110,7 @@ const DashboardThread = T.model('DashboardThread', {
 
         brandLayout,
         avatarLayout,
+        enable,
       } = initSettings
 
       return {
@@ -133,6 +135,8 @@ const DashboardThread = T.model('DashboardThread', {
         broadcastArticle: broadcastArticleLayout,
         broadcastArticleBg,
         broadcastArticleEnable,
+
+        enable,
       }
     },
     get curCommunity(): TCommunity {
@@ -236,6 +240,12 @@ const DashboardThread = T.model('DashboardThread', {
           broadcastArticleBgTouched,
         broadcastArticle: broadcastArticleLayoutTouched || broadcastArticleBgTouched,
       }
+    },
+
+    get enableSettings(): TEnableConfig {
+      const slf = self as TStore
+
+      return toJS(slf.enable)
     },
 
     get tagCategories(): string[] {

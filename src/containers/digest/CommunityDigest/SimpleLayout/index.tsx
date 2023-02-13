@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import type { TThread, TCommunity, TMetric } from '@/spec'
+import type { TThread, TCommunity, TMetric, TEnableConfig } from '@/spec'
 import EVENT from '@/constant/event'
 import { send } from '@/utils/signal'
 
@@ -26,9 +26,12 @@ type TProps = {
   community: TCommunity
   activeThread: TThread
   metric: TMetric
+  enable: TEnableConfig
 }
 
-const SimpleLayout: FC<TProps> = ({ community, activeThread, metric }) => {
+const SimpleLayout: FC<TProps> = ({ community, activeThread, metric, enable }) => {
+  const publicThreads = community.threads.filter((thread) => enable[thread.raw])
+
   return (
     <Wrapper testid="community-digest">
       <InnerWrapper metric={metric}>
@@ -36,7 +39,7 @@ const SimpleLayout: FC<TProps> = ({ community, activeThread, metric }) => {
           <CommunityBaseInfo>
             <CommunityBrief community={community} />
             <ThreadTab
-              threads={community.threads}
+              threads={publicThreads}
               onChange={(data) => send(EVENT.COMMUNITY_THREAD_CHANGE, { data })}
               active={activeThread}
             />

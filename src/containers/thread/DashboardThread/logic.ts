@@ -26,6 +26,18 @@ let sub$ = null
 /* eslint-disable-next-line */
 const log = buildLog('L:DashboardThread')
 
+export const enableThread = (key: string, toggle: boolean) => {
+  const { enableSettings } = store
+
+  const enable = {
+    ...enableSettings,
+    [key]: toggle,
+  }
+
+  store.mark({ enable })
+  store.onSave('enable')
+}
+
 export const editTag = (key: 'settingTag' | 'editingTag', tag: TTag): void => {
   store.mark({ [key]: tag })
 }

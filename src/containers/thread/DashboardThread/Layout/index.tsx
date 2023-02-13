@@ -148,8 +148,6 @@ const UI: FC<TProps> = ({ settings, touched }) => {
           saving={saving}
         />
       )}
-
-      {layoutTab === DASHBOARD_LAYOUT_ROUTE.ABOUT && <div>about todo</div>}
     </Wrapper>
   )
 }

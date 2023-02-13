@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 import Router from 'next/router'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TThread, TCommunity, TMetric } from '@/spec'
+import type { TThread, TCommunity, TMetric, TEnableConfig } from '@/spec'
 
 import { SpaceGrow } from '@/widgets/Common'
 import TabBar from '@/widgets/TabBar'
@@ -29,10 +29,12 @@ type TProps = {
   community: TCommunity
   activeThread: TThread
   metric: TMetric
+  enable: TEnableConfig
 }
 
-const ClassicLayout: FC<TProps> = ({ community, activeThread, metric }) => {
+const ClassicLayout: FC<TProps> = ({ community, activeThread, metric, enable }) => {
   const { isMobile } = useMobileDetect()
+  const publicThreads = community.threads.filter((thread) => enable[thread.raw])
 
   return (
     <Wrapper testid="community-digest" isMobile={isMobile}>
@@ -45,7 +47,7 @@ const ClassicLayout: FC<TProps> = ({ community, activeThread, metric }) => {
           <SpaceGrow />
           <TabBarWrapper>
             <TabBar
-              source={community.threads}
+              source={publicThreads}
               onChange={(path) => {
                 Router.push(`/home/${path}`)
               }}

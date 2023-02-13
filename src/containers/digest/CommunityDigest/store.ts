@@ -3,7 +3,15 @@
  *
  */
 
-import type { TRootStore, TViewing, TRoute, TCommunity, TThread, TGlobalLayout } from '@/spec'
+import type {
+  TRootStore,
+  TViewing,
+  TRoute,
+  TCommunity,
+  TThread,
+  TGlobalLayout,
+  TEnableConfig,
+} from '@/spec'
 import { T, getParent, markStates, toJS, Instance } from '@/utils/mobx'
 
 const CommunityDigest = T.model('CommunityDigest', {
@@ -35,6 +43,11 @@ const CommunityDigest = T.model('CommunityDigest', {
       const root = getParent(self) as TRootStore
 
       return toJS(root.viewing.community)
+    },
+    get enable(): TEnableConfig {
+      const root = getParent(self) as TRootStore
+
+      return toJS(root.dashboardThread.enableSettings)
     },
     get globalLayout(): TGlobalLayout {
       const root = getParent(self) as TRootStore

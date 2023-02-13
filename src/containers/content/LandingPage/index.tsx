@@ -91,7 +91,7 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
                   </DemoMenuItem>
                   <DemoMenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`}>
                     管理后台
-                    <LinkIcon />{' '}
+                    <LinkIcon />
                   </DemoMenuItem>
                 </DemoPanel>
               }
