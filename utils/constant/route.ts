@@ -3,6 +3,7 @@ import type {
   TNonCommunityPath,
   TDashboardLayoutRoute,
   TDashboardBroadcastRoute,
+  TDashboardAliasRoute,
   TDashboardBaseInfoRoute,
   TDashboardSEORoute,
 } from '@/spec'
@@ -61,6 +62,11 @@ export const DASHBOARD_BROADCAST_ROUTE = {
   GLOBAL: 'global',
   ARTICLE: 'article',
 } as Record<Uppercase<TDashboardBroadcastRoute>, TDashboardBroadcastRoute>
+
+export const DASHBOARD_ALIAS_ROUTE = {
+  GENERAL: 'general',
+  KANBAN: 'kanban',
+} as Record<Uppercase<TDashboardAliasRoute>, TDashboardAliasRoute>
 
 export const ROUTE = {
   BOOK_DEMO: 'book-demo',

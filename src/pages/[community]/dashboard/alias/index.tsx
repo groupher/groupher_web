@@ -5,7 +5,7 @@ import { Provider } from 'mobx-react'
 import type { TCommunity } from '@/spec'
 import { PAGE_SIZE } from '@/config'
 import { HCN } from '@/constant/name'
-import { ROUTE } from '@/constant/route'
+import { ROUTE, DASHBOARD_ALIAS_ROUTE } from '@/constant/route'
 import { THREAD } from '@/constant/thread'
 import METRIC from '@/constant/metric'
 import { useStore } from '@/stores/init'
@@ -115,6 +115,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
       dashboardThread: {
         curTab: ROUTE.DASHBOARD.ALIAS,
+        aliasTab: DASHBOARD_ALIAS_ROUTE.GENERAL,
       },
     },
     {

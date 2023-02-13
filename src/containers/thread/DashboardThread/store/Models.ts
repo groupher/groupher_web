@@ -47,6 +47,7 @@ export const Alias = T.model('Alias', {
   name: T.opt(T.string, ''),
   original: T.opt(T.string, ''),
   suggestions: T.opt(T.array(T.string), []),
+  group: T.opt(T.string, ''),
 })
 
 const File = T.model('File', {

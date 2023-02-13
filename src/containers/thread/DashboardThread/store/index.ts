@@ -30,6 +30,7 @@ import {
   ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
   DASHBOARD_BASEINFO_ROUTE,
+  DASHBOARD_ALIAS_ROUTE,
   DASHBOARD_BROADCAST_ROUTE,
   DASHBOARD_SEO_ROUTE,
 } from '@/constant/route'
@@ -67,11 +68,15 @@ const DASHBOARD_DEMO_KEY = 'dashboard_demo'
 
 const DashboardThread = T.model('DashboardThread', {
   saving: T.opt(T.bool, false),
+  // tab
   curTab: T.opt(T.enum(values(ROUTE.DASHBOARD)), ROUTE.DASHBOARD.INFO),
   baseInfoTab: T.opt(T.enum(values(DASHBOARD_BASEINFO_ROUTE)), DASHBOARD_BASEINFO_ROUTE.BASIC),
+  aliasTab: T.opt(T.enum(values(DASHBOARD_ALIAS_ROUTE)), DASHBOARD_ALIAS_ROUTE.GENERAL),
   seoTab: T.opt(T.enum(values(DASHBOARD_SEO_ROUTE)), DASHBOARD_SEO_ROUTE.SEARCH_ENGINE),
   layoutTab: T.opt(T.enum(values(DASHBOARD_LAYOUT_ROUTE)), DASHBOARD_LAYOUT_ROUTE.GLOBAL),
   broadcastTab: T.opt(T.enum(values(DASHBOARD_BROADCAST_ROUTE)), DASHBOARD_BROADCAST_ROUTE.GLOBAL),
+
+  // editing
   editingTag: T.maybeNull(Tag),
   settingTag: T.maybeNull(Tag),
   editingAlias: T.maybeNull(Alias),
@@ -296,6 +301,7 @@ const DashboardThread = T.model('DashboardThread', {
       const slf = self as TStore
 
       return {
+        aliasTab: slf.aliasTab,
         editingAlias: toJS(slf.editingAlias),
         alias: toJS(slf.alias),
         saving: slf.saving,

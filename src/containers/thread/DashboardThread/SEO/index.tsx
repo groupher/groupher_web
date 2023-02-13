@@ -7,8 +7,8 @@ import VIEW from '@/constant/view'
 
 import Tabs from '@/widgets/Switcher/Tabs'
 
-import { SEO_TABS } from '../constant'
 import type { TSEOSettings } from '../spec'
+import { SEO_TABS } from '../constant'
 
 import Portal from '../Portal'
 import OpenGraph from './OpenGraph'
