@@ -22,15 +22,15 @@ import {
   MenuItem,
   MenuTitle,
   MenuDesc,
-} from './styles/header'
+} from './styles'
 
-const Header: FC = () => {
+const HomeHeader: FC = () => {
   const [productActive, setProductActive] = useState(false)
   const [moreActive, setMoreActive] = useState(false)
 
   return (
     <Wrapper>
-      <Brand>
+      <Brand href="/">
         <BrandLogo src="/groupher-alpha.png" />
         <BrandTitle>Groupher</BrandTitle>
       </Brand>
@@ -103,7 +103,7 @@ const Header: FC = () => {
       <RightSideInfo>
         <GithubIcon />
         <Divider left={14} right={12} />
-        <RequestDemo>
+        <RequestDemo href={`/${ROUTE.BOOK_DEMO}`}>
           <DemoIcon />
           <div>预约演示</div>
         </RequestDemo>
@@ -112,4 +112,4 @@ const Header: FC = () => {
   )
 }
 
-export default Header
+export default HomeHeader

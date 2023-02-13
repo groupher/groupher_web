@@ -63,6 +63,7 @@ export const DASHBOARD_BROADCAST_ROUTE = {
 } as Record<Uppercase<TDashboardBroadcastRoute>, TDashboardBroadcastRoute>
 
 export const ROUTE = {
+  BOOK_DEMO: 'book-demo',
   // NOTE: the lower-case is MUST
   HOME: 'home',
 

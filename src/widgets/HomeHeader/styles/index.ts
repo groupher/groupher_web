@@ -21,9 +21,14 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   width: 100%;
   margin-bottom: 8%;
 `
-export const Brand = styled.div`
+export const Brand = styled(Link)`
   ${css.flex('align-center')};
-  width: 150px;
+  text-decoration: none;
+  max-width: 150px;
+
+  &:hover {
+    text-decoration: none;
+  }
 `
 
 export const BrandLogo = styled(Img)`
@@ -100,9 +105,11 @@ export const Divider = styled(LineDivider)`
   opacity: 0.8;
   height: 10px;
 `
-export const RequestDemo = styled.div`
+export const RequestDemo = styled(Link)`
   ${css.flex('align-end')};
   color: ${theme('article.digest')};
+  text-decoration: none;
+
   font-size: 13px;
 
   &:hover {
