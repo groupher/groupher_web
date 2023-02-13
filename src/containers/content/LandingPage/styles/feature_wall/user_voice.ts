@@ -54,7 +54,7 @@ export const Avatar = styled.div<{ color: TColorName }>`
   ${css.circle(30)};
   ${css.flex('align-both')};
   padding: 2px;
-  color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
+  color: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
   font-size: 12px;
 
   /* border: 2px solid; */
