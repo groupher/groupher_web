@@ -45,9 +45,9 @@ const IntroDigest: FC<TProps> = ({ inViewChange }) => {
       />
 
       <FeatList>
-        <FeatItem text="封面图片编辑" featType={FEAT_TYPE.KANBAN} />
-        <FeatItem text="强大的富文本内容" featType={FEAT_TYPE.KANBAN} />
-        <FeatItem text="按标签，版本号，时间自动归档" featType={FEAT_TYPE.KANBAN} />
+        <FeatItem text="经典简洁的 UI" featType={FEAT_TYPE.KANBAN} />
+        <FeatItem text="富文本内容" featType={FEAT_TYPE.KANBAN} />
+        <FeatItem text="状态自然同步" featType={FEAT_TYPE.KANBAN} />
         <FeatItem text="评论，表情反馈" featType={FEAT_TYPE.KANBAN} />
         <FeatItem text="一键多渠道分享" featType={FEAT_TYPE.KANBAN} />
         <FeatItem text="高度自定义" featType={FEAT_TYPE.KANBAN} />

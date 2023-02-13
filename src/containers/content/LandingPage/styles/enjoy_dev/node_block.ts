@@ -94,6 +94,7 @@ type TLeftDot = { bg?: string }
 export const LeftDot = styled.div<TLeftDot>`
   ${css.circle(6)};
   background: ${({ bg }) => bg || theme('article.digest')};
+  opacity: 0.7;
 `
 type TLeftInfo = { bottom: string }
 export const LeftInfo = styled.div<TLeftInfo>`
@@ -118,4 +119,5 @@ export const RightDot = styled.div<TRightDot>`
   bottom: ${({ middle }) => (middle ? '50px' : '14px')};
   right: -3px;
   background: ${({ bg }) => bg || theme('article.title')};
+  opacity: 0.7;
 `

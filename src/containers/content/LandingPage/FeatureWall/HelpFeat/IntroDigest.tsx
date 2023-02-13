@@ -40,17 +40,18 @@ const IntroDigest: FC<TProps> = ({ inViewChange }) => {
       <FeatHead
         $active={inView}
         title="帮助台"
-        desc="沉淀常见问题，公共知识文档，快速解决用户疑惑。"
+        desc="沉淀常见问题，公共知识库，操作指南等，快速解决用户疑惑。"
         featType={FEAT_TYPE.HELP}
       />
 
       <FeatList>
-        <FeatItem text="封面图片编辑" featType={FEAT_TYPE.HELP} />
-        <FeatItem text="强大的富文本内容" featType={FEAT_TYPE.HELP} />
-        <FeatItem text="评论，表情反馈" featType={FEAT_TYPE.HELP} />
-        <FeatItem text="一键多渠道分享" featType={FEAT_TYPE.HELP} />
-        <FeatItem text="高度自定义" featType={FEAT_TYPE.HELP} />
         <FeatItem text="保存即发布，No bullshit" featType={FEAT_TYPE.HELP} />
+        <FeatItem text="支持 MD 格式导入" featType={FEAT_TYPE.HELP} />
+        <FeatItem text="富文本内容" featType={FEAT_TYPE.HELP} />
+        <FeatItem text="多种目录封面" featType={FEAT_TYPE.HELP} />
+        <FeatItem text="表情反馈" featType={FEAT_TYPE.HELP} />
+        <FeatItem text="默认好看" featType={FEAT_TYPE.HELP} />
+        <FeatItem text="高度自定义" featType={FEAT_TYPE.HELP} />
       </FeatList>
 
       <SpaceGrow />

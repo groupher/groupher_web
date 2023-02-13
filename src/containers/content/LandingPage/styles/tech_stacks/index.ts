@@ -7,7 +7,6 @@ import css, { theme } from '@/utils/css'
 import Img from '@/Img'
 
 import GithubSVG from '@/icons/social/Github'
-import ArrowSVG from '@/icons/Arrow'
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
@@ -33,31 +32,6 @@ export const Desc = styled.div`
   margin-top: 12px;
   opacity: 0.8;
 `
-
-export const LeanMoreLink = styled(Link)`
-  ${css.flex('align-center')};
-  font-size: 16px;
-  text-decoration: none;
-  color: ${theme('link')};
-
-  &:hover {
-    text-decoration: none;
-    color: ${theme('link')};
-    font-weight: 500;
-  }
-`
-
-export const ArrowIcon = styled(ArrowSVG)`
-  ${css.size(12)};
-  fill: ${theme('link')};
-  margin-left: 5px;
-
-  transform: rotate(180deg);
-  ${LeanMoreLink}:hover & {
-    fill: ${theme('link')};
-  }
-`
-
 export const Wall = styled.div`
   ${css.flexColumn('align-both')};
   width: 80%;
