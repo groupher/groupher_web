@@ -35,7 +35,7 @@ const HelpThread: FC<TProps> = ({ settings }) => {
             onChange={(c) => enableThread('helpReaction', c)}
           />
         </Header>
-        <Desc>是否在文档底部显示 “本文是否有帮助?” 的反馈组件</Desc>
+        <Desc>是否在文档底部显示 “本文是否有帮助?” 的反馈组件（含 Emoji）</Desc>
       </Section>
     </Wrapper>
   )

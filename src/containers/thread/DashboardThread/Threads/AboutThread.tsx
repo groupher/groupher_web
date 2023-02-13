@@ -59,7 +59,7 @@ const AboutThread: FC<TProps> = ({ settings }) => {
             onChange={(c) => enableThread('aboutMediaReport', c)}
           />
         </Header>
-        <Desc>其他媒体报道的链接。</Desc>
+        <Desc>其他媒体报道的文章/播客/视频等链接。</Desc>
       </Section>
     </Wrapper>
   )
