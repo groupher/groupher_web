@@ -26,6 +26,22 @@ import { mockTags } from '@/utils/mock'
 
 import { BUILDIN_ALIAS, WIDGET_TYPE, TW_CARD } from '../constant'
 
+export const Enable = T.model('Enable', {
+  post: T.opt(T.bool, true),
+  kanban: T.opt(T.bool, true),
+  changelog: T.opt(T.bool, true),
+  //
+  help: T.opt(T.bool, true),
+  helpLastUpdate: T.opt(T.bool, true),
+  helpReaction: T.opt(T.bool, true),
+  //
+  about: T.opt(T.bool, false),
+  aboutTechstack: T.opt(T.bool, true),
+  aboutLocation: T.opt(T.bool, true),
+  aboutLinks: T.opt(T.bool, true),
+  aboutMediaReport: T.opt(T.bool, true),
+})
+
 export const Alias = T.model('Alias', {
   raw: T.opt(T.string, ''),
   name: T.opt(T.string, ''),

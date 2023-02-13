@@ -7,11 +7,11 @@ export const Wrapper = styled.div<{ isSidebarLayout: boolean }>`
   height: auto;
   border-left: 1px solid;
   border-left-color: ${theme('divider')};
-  padding-left: 40px;
+  padding-left: 60px;
   padding-top: 10px;
   padding-bottom: 0;
-  margin-top: 19px;
-  margin-left: ${({ isSidebarLayout }) => (isSidebarLayout ? '32px' : '60px')};
+  margin-top: 20px;
+  margin-left: ${({ isSidebarLayout }) => (isSidebarLayout ? '32px' : '70px')};
 `
 export const Block = styled.div`
   margin-bottom: 20px;
