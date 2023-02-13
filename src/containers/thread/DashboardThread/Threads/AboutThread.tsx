@@ -1,14 +1,14 @@
 import { FC, memo } from 'react'
 
+import type { TEnableConfig } from '@/spec'
 import { SpaceGrow } from '@/widgets/Common'
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
 
-import type { TEnableSettings } from '../spec'
 import { Wrapper, Section, Header, Title, Desc } from '../styles/threads/help_thread'
 import { enableThread } from '../logic'
 
 type TProps = {
-  settings: TEnableSettings
+  settings: TEnableConfig
 }
 
 const AboutThread: FC<TProps> = ({ settings }) => {

@@ -52,21 +52,6 @@ export type TFooterSettings = {
   footerLayout: TFooterLayout
   saving: boolean
 }
-export type TEnableSettings = {
-  post: boolean
-  kanban: boolean
-  changelog: boolean
-  //
-  help: boolean
-  helpLastUpdate: boolean
-  helpReaction: boolean
-  //
-  about: boolean
-  aboutTechstack: boolean
-  aboutLocation: boolean
-  aboutLinks: boolean
-  aboutMediaReport: boolean
-}
 
 export type TAlias = {
   raw: string
@@ -208,6 +193,7 @@ export type TSettingField =
   | 'changelogLayout'
   | 'tag'
   | 'alias'
+  | 'enable'
   | 'widgetsPrimaryColor'
   | 'widgetsThreads'
   | 'widgetsSize'

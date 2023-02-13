@@ -35,6 +35,7 @@ export const enableThread = (key: string, toggle: boolean) => {
   }
 
   store.mark({ enable })
+  store.onSave('enable')
 }
 
 export const editTag = (key: 'settingTag' | 'editingTag', tag: TTag): void => {

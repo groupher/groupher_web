@@ -1,9 +1,9 @@
 import { FC, memo } from 'react'
 
+import type { TEnableConfig } from '@/spec'
+
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
 import { Divider, Br } from '@/widgets/Common'
-
-import type { TEnableSettings } from '../spec'
 
 import HelpThread from './HelpThread'
 import AboutThread from './AboutThread'
@@ -15,7 +15,7 @@ import { enableThread } from '../logic'
 
 type TProps = {
   testid?: string
-  settings: TEnableSettings
+  settings: TEnableConfig
 }
 
 const Threads: FC<TProps> = ({ testid = 'threads', settings }) => {

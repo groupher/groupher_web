@@ -23,6 +23,7 @@ import type {
   TThread,
   TSizeSML,
   TColorName,
+  TEnableConfig,
 } from '@/spec'
 
 import {
@@ -41,7 +42,6 @@ import { Tag } from '@/model'
 import type {
   TBaseInfoSettings,
   TSEOSettings,
-  TEnableSettings,
   TUiSettings,
   TTagSettings,
   TFooterSettings,
@@ -110,6 +110,7 @@ const DashboardThread = T.model('DashboardThread', {
 
         brandLayout,
         avatarLayout,
+        enable,
       } = initSettings
 
       return {
@@ -134,6 +135,8 @@ const DashboardThread = T.model('DashboardThread', {
         broadcastArticle: broadcastArticleLayout,
         broadcastArticleBg,
         broadcastArticleEnable,
+
+        enable,
       }
     },
     get curCommunity(): TCommunity {
@@ -239,7 +242,7 @@ const DashboardThread = T.model('DashboardThread', {
       }
     },
 
-    get enableSettings(): TEnableSettings {
+    get enableSettings(): TEnableConfig {
       const slf = self as TStore
 
       return toJS(slf.enable)
