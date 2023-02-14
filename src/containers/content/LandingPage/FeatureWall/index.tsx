@@ -1,4 +1,5 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import UserVoice from './UserVoice'
 
@@ -15,6 +16,14 @@ import CurlyLineC2H from './CurlyLineDesc/C2H'
 import { Wrapper, Slogan, Title, Desc, Wall } from '../styles/feature_wall'
 
 const FeatureWall: FC = () => {
+  const { isMobile } = useMobileDetect()
+
+  const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    setLoaded(true)
+  }, [])
+
   return (
     <Wrapper>
       <Slogan>
@@ -22,14 +31,15 @@ const FeatureWall: FC = () => {
         <Desc>你只需专注产品的核心工作，将那些“无聊”却又重要的体力活交给 Groupher</Desc>
       </Slogan>
       <UserVoice />
-      <CurlyLineU2D />
+      {loaded && !isMobile && <CurlyLineU2D />}
+
       <Wall>
         <DiscussFeat />
-        <CurlyLineD2K />
+        {loaded && !isMobile && <CurlyLineD2K />}
         <KanbanFeat />
-        <CurlyLineK2C />
+        {loaded && !isMobile && <CurlyLineK2C />}
         <ChangelogFeat />
-        <CurlyLineC2H />
+        {loaded && !isMobile && <CurlyLineC2H />}
         <HelpFeat />
       </Wall>
     </Wrapper>

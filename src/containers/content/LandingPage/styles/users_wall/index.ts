@@ -50,6 +50,7 @@ export const Wall = styled.div`
 
   ${css.media.mobile`
     margin-top: 30px;
+    padding: 0 15px;
   `};
 `
 export const BgGradient = styled.div`

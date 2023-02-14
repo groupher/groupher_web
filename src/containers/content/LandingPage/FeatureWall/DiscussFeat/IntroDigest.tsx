@@ -45,7 +45,8 @@ const IntroDigest: FC<TProps> = ({ inViewChange }) => {
       />
 
       <FeatList>
-        <FeatItem text="投票，发帖，评论，分享" featType={FEAT_TYPE.DISCUSS} />
+        {/* <FeatItem text="投票，发帖，评论，分享" featType={FEAT_TYPE.DISCUSS} /> */}
+        <FeatItem text="投票，发帖，评论" featType={FEAT_TYPE.DISCUSS} />
         <FeatItem text="标签，状态分类" featType={FEAT_TYPE.DISCUSS} />
         <FeatItem text="富文本内容" featType={FEAT_TYPE.DISCUSS} />
         <FeatItem text="移动端友好" featType={FEAT_TYPE.DISCUSS} />

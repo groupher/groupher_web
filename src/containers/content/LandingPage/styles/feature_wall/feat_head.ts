@@ -14,6 +14,10 @@ export const Title = styled.div<{ featType: TFeatType }>`
   font-size: 21px;
   font-weight: 500;
   text-shadow: rgb(0 0 0 / 8%) 0px 10px 20px;
+
+  ${css.media.mobile`
+    font-size: 20px;
+  `};
 `
 
 export const Hint = styled.div<TActive>`
@@ -25,6 +29,11 @@ export const Hint = styled.div<TActive>`
 
   transition: all 0.3s;
   transition-delay: 0.5s;
+
+  ${css.media.mobile`
+    font-size: 20px;
+    margin-left: 8px;
+  `};
 `
 
 export const Desc = styled.div`
@@ -33,4 +42,9 @@ export const Desc = styled.div`
   margin-top: 12px;
   width: 340px;
   opacity: 0.65;
+
+  ${css.media.mobile`
+    font-size: 14px;
+    width: 100%;
+  `};
 `

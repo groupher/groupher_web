@@ -52,4 +52,8 @@ export const FeatList = styled.div`
   ${css.flexColumn()};
   gap: 18px 0;
   margin-top: 28px;
+
+  ${css.media.mobile`
+    ${css.flex()};
+  `};
 `

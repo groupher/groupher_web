@@ -19,4 +19,9 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
     background-color: ${FEAT.DISCUSS.COLOR} !important;
     color: white;
   }
+
+  ${css.media.mobile`
+    width: 100%;
+    padding: 0;
+  `};
 `

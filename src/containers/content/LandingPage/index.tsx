@@ -114,7 +114,6 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
           onLayoutChange={(layout) => setBannerLayout(layout)}
         />
         <Divider top={!isMobile ? 100 : 50} bottom={!isMobile ? 100 : 50} />
-
         <FeatureWall />
         <Divider top={!isMobile ? 100 : 20} bottom={!isMobile ? 100 : 50} />
         <EnjoyDev />
