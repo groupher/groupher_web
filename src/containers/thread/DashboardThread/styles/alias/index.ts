@@ -1,12 +1,24 @@
 import styled from 'styled-components'
 
-import css from '@/utils/css'
+import css, { theme } from '@/utils/css'
 
 export const Wrapper = styled.div`
   ${css.flexColumn()};
-  padding: 20px 80px;
+  padding: 0 80px;
   padding-left: 150px;
   padding-right: 120px;
 `
 
-export const Title = styled.div``
+export const Banner = styled.div`
+  height: 70px;
+  width: 100%;
+  border-bottom: 1px solid;
+  border-bottom-color: ${theme('divider')};
+  margin-bottom: 40px;
+  position: relative;
+`
+export const TabsWrapper = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: -8px;
+`

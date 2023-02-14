@@ -2,6 +2,8 @@ import { FC } from 'react'
 import { Parallax } from 'react-scroll-parallax'
 
 import { GITHUB } from '@/config'
+import ArrowButton from '@/widgets/Buttons/ArrowButton'
+
 import TechItem from './TechItem'
 
 import {
@@ -9,7 +11,6 @@ import {
   Slogan,
   Title,
   Desc,
-  LeanMoreLink,
   Wall,
   BgWrapper,
   TechsWrapper,
@@ -17,7 +18,6 @@ import {
   GithubLink,
   GithubIcon,
   BottonNote,
-  ArrowIcon,
 } from '../styles/tech_stacks'
 
 const TeckStacks: FC = () => {
@@ -27,10 +27,7 @@ const TeckStacks: FC = () => {
         <Title>由最酷的技术栈驱动</Title>
         <Desc>
           现代化的产品体验得益于现代化的技术栈及工具，
-          <LeanMoreLink href="/">
-            了解更多
-            <ArrowIcon />
-          </LeanMoreLink>
+          <ArrowButton linkColor>了解更多</ArrowButton>
         </Desc>
       </Slogan>
       <Wall>

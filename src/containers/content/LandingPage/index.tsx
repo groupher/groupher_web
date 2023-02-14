@@ -17,8 +17,8 @@ import { ROUTE } from '@/constant/route'
 import Tooltip from '@/widgets/Tooltip'
 import Button from '@/widgets/Buttons/Button'
 import FaqList from '@/widgets/FaqList'
+import HomeHeader from '@/widgets/HomeHeader'
 
-import Header from './Header'
 import CoverImage from './CoverImage'
 import WallpaperBar from './WallpaperBar'
 
@@ -71,7 +71,7 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
         <BgGlow wallpaper={wallpaper} />
         <PatternBg />
         <Banner>
-          <Header />
+          <HomeHeader />
           <BetaText wallpaper={wallpaper}>内测中</BetaText>
           <Title>让你的产品聆听用户的声音</Title>
           <Desc>

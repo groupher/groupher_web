@@ -24,6 +24,7 @@ import type {
   TDashboardSEORoute,
   TBroadcastConfig,
   TDashboardBroadcastRoute,
+  TDashboardAliasRoute,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'MANAGEMENT' | 'INTEGRATE'
@@ -63,6 +64,7 @@ export type TAliasSettings = {
   saving: boolean
   alias: TAlias[]
   editingAlias: TAlias
+  aliasTab: TDashboardAliasRoute
 }
 
 export type TBaseInfoSettings = {

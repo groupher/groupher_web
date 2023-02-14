@@ -165,6 +165,7 @@ export type {
   TDashboardBaseInfoRoute,
   TDashboardSEORoute,
   TDashboardBroadcastRoute,
+  TDashboardAliasRoute,
 } from './route'
 
 export type TRoute = {

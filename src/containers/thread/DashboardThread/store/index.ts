@@ -9,6 +9,7 @@ import {
   clone,
   isNil,
   equals,
+  omit,
   pluck,
   uniq,
   filter,
@@ -30,6 +31,7 @@ import {
   ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
   DASHBOARD_BASEINFO_ROUTE,
+  DASHBOARD_ALIAS_ROUTE,
   DASHBOARD_BROADCAST_ROUTE,
   DASHBOARD_SEO_ROUTE,
 } from '@/constant/route'
@@ -67,11 +69,15 @@ const DASHBOARD_DEMO_KEY = 'dashboard_demo'
 
 const DashboardThread = T.model('DashboardThread', {
   saving: T.opt(T.bool, false),
+  // tab
   curTab: T.opt(T.enum(values(ROUTE.DASHBOARD)), ROUTE.DASHBOARD.INFO),
   baseInfoTab: T.opt(T.enum(values(DASHBOARD_BASEINFO_ROUTE)), DASHBOARD_BASEINFO_ROUTE.BASIC),
+  aliasTab: T.opt(T.enum(values(DASHBOARD_ALIAS_ROUTE)), DASHBOARD_ALIAS_ROUTE.GENERAL),
   seoTab: T.opt(T.enum(values(DASHBOARD_SEO_ROUTE)), DASHBOARD_SEO_ROUTE.SEARCH_ENGINE),
   layoutTab: T.opt(T.enum(values(DASHBOARD_LAYOUT_ROUTE)), DASHBOARD_LAYOUT_ROUTE.GLOBAL),
   broadcastTab: T.opt(T.enum(values(DASHBOARD_BROADCAST_ROUTE)), DASHBOARD_BROADCAST_ROUTE.GLOBAL),
+
+  // editing
   editingTag: T.maybeNull(Tag),
   settingTag: T.maybeNull(Tag),
   editingAlias: T.maybeNull(Alias),
@@ -296,6 +302,7 @@ const DashboardThread = T.model('DashboardThread', {
       const slf = self as TStore
 
       return {
+        aliasTab: slf.aliasTab,
         editingAlias: toJS(slf.editingAlias),
         alias: toJS(slf.alias),
         saving: slf.saving,
@@ -484,8 +491,20 @@ const DashboardThread = T.model('DashboardThread', {
         slf.editingAlias = null
       }
 
-      BStore.set(DASHBOARD_DEMO_KEY, JSON.stringify(toJS(slf)))
+      slf._saveToLocal()
       slf.mark({ demoAlertEnable: true })
+    },
+
+    // save to local settings should omit subTabs,
+    // otherwise it will be choas when save one one tab then switch to other tab
+    _saveToLocal(): void {
+      const slf = self as TStore
+      const saveSlf = omit(
+        ['curTab', 'baseInfoTab', 'aliasTab', 'layoutTab', 'layoutTab', 'broadcastTab'],
+        toJS(slf),
+      )
+
+      BStore.set(DASHBOARD_DEMO_KEY, JSON.stringify(saveSlf))
     },
 
     rollbackEdit(field: TSettingField): void {
@@ -522,12 +541,12 @@ const DashboardThread = T.model('DashboardThread', {
         const targetIdx = slf._findAliasIdx()
         if (targetIdx < 0) return
 
-        slf.alias[targetIdx] = {
-          ...slf.alias[targetIdx],
-          name: slf.alias[targetIdx].original,
-        }
+        slf.alias[targetIdx].name = slf.alias[targetIdx].original
         slf.editingAlias = null
       }
+
+      slf._saveToLocal()
+      // slf.mark({ demoAlertEnable: true })
     },
 
     _findTagIdx(): number {

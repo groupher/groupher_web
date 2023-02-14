@@ -3,6 +3,7 @@ import {
   DASHBOARD_ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
   DASHBOARD_BROADCAST_ROUTE,
+  DASHBOARD_ALIAS_ROUTE,
   DASHBOARD_BASEINFO_ROUTE,
   DASHBOARD_SEO_ROUTE,
 } from '@/constant/route'
@@ -138,24 +139,67 @@ export const MENU = {
   },
 }
 
+export const ALIAS_GROUP = {
+  GENERAL: DASHBOARD_ALIAS_ROUTE.GENERAL,
+  KANBAN: DASHBOARD_ALIAS_ROUTE.KANBAN,
+}
+
 export const BUILDIN_ALIAS = [
   {
-    raw: 'posts',
+    raw: 'post',
     name: '讨论',
     original: '讨论',
     suggestions: ['帖子', '讨论区', '论坛'],
+    group: ALIAS_GROUP.GENERAL,
   },
   {
     raw: 'changelog',
     name: '更新日志',
     original: '更新日志',
-    suggestions: ['新功能', '发布日志', '里程碑'],
+    suggestions: ['新功能', '发布日志', '里程碑', '开发计划'],
+    group: ALIAS_GROUP.GENERAL,
   },
   {
     raw: 'kanban',
     name: '看板',
     original: '看板',
     suggestions: ['路线图', '规划', '蓝图'],
+    group: ALIAS_GROUP.GENERAL,
+  },
+  {
+    raw: 'upvote',
+    name: '赞同',
+    original: '赞同',
+    suggestions: ['支持', '顶', '赞', '有帮助'],
+    group: ALIAS_GROUP.GENERAL,
+  },
+  {
+    raw: 'upvote_bug',
+    name: '相同问题',
+    original: '相同问题',
+    suggestions: ['同样问题', '复现', '求解决'],
+    group: ALIAS_GROUP.GENERAL,
+  },
+  {
+    raw: 'todo',
+    name: '待办',
+    original: '待办',
+    suggestions: ['Todo', '已排期', '审核中', '计划中'],
+    group: ALIAS_GROUP.KANBAN,
+  },
+  {
+    raw: 'doing',
+    name: '进行中',
+    original: '进行中',
+    suggestions: ['Doing', '完善中'],
+    group: ALIAS_GROUP.KANBAN,
+  },
+  {
+    raw: 'done',
+    name: '已完成',
+    original: '已完成',
+    suggestions: ['Done', '已解决'],
+    group: ALIAS_GROUP.KANBAN,
   },
 ]
 
@@ -270,5 +314,16 @@ export const TW_CARD_OPTIONS = [
   {
     label: TW_CARD.SUMMARY_LARGE_IMAGE,
     value: TW_CARD.SUMMARY_LARGE_IMAGE,
+  },
+]
+
+export const ALIAS_TABS = [
+  {
+    title: '常规',
+    raw: DASHBOARD_ALIAS_ROUTE.GENERAL,
+  },
+  {
+    title: '看板',
+    raw: DASHBOARD_ALIAS_ROUTE.KANBAN,
   },
 ]

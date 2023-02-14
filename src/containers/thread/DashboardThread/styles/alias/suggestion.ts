@@ -16,14 +16,15 @@ export const Hint = styled.div`
 export const List = styled.div`
   ${css.flex('align-center')};
   margin-left: 12px;
+  gap: 10px;
 `
 export const Item = styled(Button)`
-  ${css.flex('align-center')};
   height: 18px;
   opacity: 0.8;
-  padding: 3px 6px;
-  padding-bottom: 0;
-  margin-right: 10px;
+  padding-top: 1px;
+  padding-left: 6px;
+  padding-right: 6px;
+  border: 1px dotted;
 
   &:hover {
     opacity: 1;

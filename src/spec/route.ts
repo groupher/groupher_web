@@ -4,6 +4,7 @@ export type TDashboardBaseInfoRoute = 'basic' | 'social' | 'other'
 export type TDashboardSEORoute = 'search_engine' | 'twitter'
 export type TDashboardLayoutRoute = 'global' | 'post' | 'kanban' | 'changelog' | 'help'
 export type TDashboardBroadcastRoute = 'global' | 'article'
+export type TDashboardAliasRoute = 'general' | 'kanban'
 
 export type TDashboardPath =
   | 'dashboard'
