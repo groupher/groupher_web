@@ -1,16 +1,14 @@
 import { FC, useState, useEffect } from 'react'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
-import { SpaceGrow } from '@/widgets/Common'
 import useScrollDir from '@/hooks/useScrollDir'
 
 import { FEAT_TYPE } from '../../constant'
 
 import FeatHead from '../FeatHead'
-import FeatItem from '../FeatItem'
-import MoreLink from '../MoreLink'
 
-import { Wrapper, FeatList } from '../../styles/feature_wall/kanban_feat/intro_digest'
+import IntroItems from './IntroItems'
+import { Wrapper, DesktopOnly } from '../../styles/feature_wall/kanban_feat/intro_digest'
 import { checkBlockInView } from '../helper'
 
 type TProps = {
@@ -44,17 +42,9 @@ const IntroDigest: FC<TProps> = ({ inViewChange }) => {
         featType={FEAT_TYPE.KANBAN}
       />
 
-      <FeatList>
-        <FeatItem text="经典简洁的 UI" featType={FEAT_TYPE.KANBAN} />
-        <FeatItem text="富文本内容" featType={FEAT_TYPE.KANBAN} />
-        <FeatItem text="状态自然同步" featType={FEAT_TYPE.KANBAN} />
-        <FeatItem text="评论，表情反馈" featType={FEAT_TYPE.KANBAN} />
-        <FeatItem text="一键多渠道分享" featType={FEAT_TYPE.KANBAN} />
-        <FeatItem text="高度自定义" featType={FEAT_TYPE.KANBAN} />
-      </FeatList>
-
-      <SpaceGrow />
-      <MoreLink href="/" featType={FEAT_TYPE.KANBAN} />
+      <DesktopOnly>
+        <IntroItems />
+      </DesktopOnly>
 
       <ViewportTracker onEnter={() => setFootInview(true)} onLeave={() => setFootInview(false)} />
     </Wrapper>

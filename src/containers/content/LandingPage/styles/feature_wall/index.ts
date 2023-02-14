@@ -66,7 +66,16 @@ export const DesktopOnly = styled.div`
 
 export const MobileOnly = styled.div`
   display: none;
+  width: 100%;
   ${css.media.mobile`
     display: block;
   `};
+`
+
+export const MobileIntroLists = styled.div`
+  ${css.flex()};
+  flex-wrap: wrap;
+  gap: 16px 0;
+  padding-left: 10px;
+  margin-top: -25px;
 `

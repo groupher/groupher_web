@@ -1,5 +1,4 @@
-import { FC, useEffect, useState } from 'react'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
+import { FC } from 'react'
 
 import UserVoice from './UserVoice'
 
@@ -16,14 +15,6 @@ import CurlyLineC2H from './CurlyLineDesc/C2H'
 import { Wrapper, Slogan, Title, Desc, Wall } from '../styles/feature_wall'
 
 const FeatureWall: FC = () => {
-  const { isMobile } = useMobileDetect()
-
-  const [loaded, setLoaded] = useState(false)
-
-  useEffect(() => {
-    setLoaded(true)
-  }, [])
-
   return (
     <Wrapper>
       <Slogan>
@@ -35,7 +26,7 @@ const FeatureWall: FC = () => {
       <Wall>
         <DiscussFeat />
         <CurlyLineD2K />
-        {/* <KanbanFeat /> */}
+        <KanbanFeat />
         {/*  {loaded && !isMobile && <CurlyLineK2C />}
         <ChangelogFeat />
         {loaded && !isMobile && <CurlyLineC2H />}

@@ -4,7 +4,16 @@ import type { TActive, TTestable } from '@/spec'
 
 import css from '@/utils/css'
 
+export { MobileOnly } from '..'
+
 type TWrapper = TActive
+
+export const DesktopOnly = styled.div`
+  ${css.flex('align-center', 'justify-between')};
+  ${css.media.mobile`
+    display: none;
+  `};
+`
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
@@ -32,6 +41,13 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
     transition-delay: 1s;
     z-index: -1;
   }
+
+  ${css.media.mobile`
+    ${css.flexColumn()};
+    margin-top: 80px;
+    padding: 0 18px;
+    height: auto;
+  `};
 `
 export const Slogan = styled.div`
   ${css.flexColumn('align-both')};

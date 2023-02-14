@@ -5,7 +5,7 @@ import css from '@/utils/css'
 
 import { FEAT } from '../../../constant'
 
-export { FeatList } from '..'
+export { FeatList, DesktopOnly } from '..'
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
@@ -19,4 +19,10 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
     background-color: ${FEAT.KANBAN.COLOR} !important;
     color: white;
   }
+
+  ${css.media.mobile`
+    width: 100%;
+    padding: 0;
+    height: auto;
+  `};
 `
