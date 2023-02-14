@@ -9,6 +9,7 @@ import {
   clone,
   isNil,
   equals,
+  omit,
   pluck,
   uniq,
   filter,
@@ -490,8 +491,20 @@ const DashboardThread = T.model('DashboardThread', {
         slf.editingAlias = null
       }
 
-      BStore.set(DASHBOARD_DEMO_KEY, JSON.stringify(toJS(slf)))
+      slf._saveToLocal()
       slf.mark({ demoAlertEnable: true })
+    },
+
+    // save to local settings should omit subTabs,
+    // otherwise it will be choas when save one one tab then switch to other tab
+    _saveToLocal(): void {
+      const slf = self as TStore
+      const saveSlf = omit(
+        ['curTab', 'baseInfoTab', 'aliasTab', 'layoutTab', 'layoutTab', 'broadcastTab'],
+        toJS(slf),
+      )
+
+      BStore.set(DASHBOARD_DEMO_KEY, JSON.stringify(saveSlf))
     },
 
     rollbackEdit(field: TSettingField): void {
@@ -528,12 +541,12 @@ const DashboardThread = T.model('DashboardThread', {
         const targetIdx = slf._findAliasIdx()
         if (targetIdx < 0) return
 
-        slf.alias[targetIdx] = {
-          ...slf.alias[targetIdx],
-          name: slf.alias[targetIdx].original,
-        }
+        slf.alias[targetIdx].name = slf.alias[targetIdx].original
         slf.editingAlias = null
       }
+
+      slf._saveToLocal()
+      // slf.mark({ demoAlertEnable: true })
     },
 
     _findTagIdx(): number {

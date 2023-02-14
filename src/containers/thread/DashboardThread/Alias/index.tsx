@@ -4,10 +4,12 @@ import Router from 'next/router'
 import { DASHBOARD_ALIAS_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
 
+import { groupByKey } from '@/utils/helper'
+
 import Tabs from '@/widgets/Switcher/Tabs'
 
 import type { TAliasSettings } from '../spec'
-import { ALIAS_TABS } from '../constant'
+import { ALIAS_TABS, ALIAS_GROUP } from '../constant'
 
 import Portal from '../Portal'
 import Item from './Item'
@@ -21,6 +23,10 @@ type TProps = {
 
 const Alias: FC<TProps> = ({ settings }) => {
   const { alias, editingAlias, aliasTab } = settings
+  const groupedAlias = groupByKey(alias, 'group')
+
+  const generalAlias = groupedAlias[ALIAS_GROUP.GENERAL]
+  const kanbanAlias = groupedAlias[ALIAS_GROUP.KANBAN]
 
   return (
     <Wrapper>
@@ -29,7 +35,6 @@ const Alias: FC<TProps> = ({ settings }) => {
         desc="覆盖系统默认的板块，组件，提示信息等名称。"
         withDivider={false}
       />
-
       <Banner>
         <TabsWrapper>
           <Tabs
@@ -51,9 +56,13 @@ const Alias: FC<TProps> = ({ settings }) => {
         </TabsWrapper>
       </Banner>
 
-      {alias.map((item) => (
-        <Item key={item.raw} alias={item} editingAlias={editingAlias} />
-      ))}
+      {aliasTab === ALIAS_GROUP.GENERAL &&
+        generalAlias.map((item) => (
+          <Item key={item.raw} alias={item} editingAlias={editingAlias} />
+        ))}
+
+      {aliasTab === ALIAS_GROUP.KANBAN &&
+        kanbanAlias.map((item) => <Item key={item.raw} alias={item} editingAlias={editingAlias} />)}
     </Wrapper>
   )
 }

@@ -323,7 +323,7 @@ export const ALIAS_TABS = [
     raw: DASHBOARD_ALIAS_ROUTE.GENERAL,
   },
   {
-    title: '帖子页脚',
+    title: '看板',
     raw: DASHBOARD_ALIAS_ROUTE.KANBAN,
   },
 ]
