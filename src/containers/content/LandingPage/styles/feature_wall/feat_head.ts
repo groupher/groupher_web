@@ -17,6 +17,7 @@ export const Title = styled.div<{ featType: TFeatType }>`
 
   ${css.media.mobile`
     font-size: 20px;
+    padding-left: 5px;
   `};
 `
 
@@ -46,5 +47,6 @@ export const Desc = styled.div`
   ${css.media.mobile`
     font-size: 14px;
     width: 100%;
+    padding: 0 5px;
   `};
 `
