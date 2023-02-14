@@ -5,7 +5,7 @@ import css from '@/utils/css'
 
 import { FEAT } from '../../../constant'
 
-export { FeatList } from '..'
+export { FeatList, DesktopOnly } from '..'
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,

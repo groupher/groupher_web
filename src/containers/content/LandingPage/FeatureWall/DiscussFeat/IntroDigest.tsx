@@ -1,5 +1,4 @@
 import { FC, useState, useEffect } from 'react'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
 import useScrollDir from '@/hooks/useScrollDir'
@@ -9,7 +8,7 @@ import { FEAT_TYPE } from '../../constant'
 import FeatHead from '../FeatHead'
 
 import IntroItems from './IntroItems'
-import { Wrapper } from '../../styles/feature_wall/discuss_feat/intro_digest'
+import { Wrapper, DesktopOnly } from '../../styles/feature_wall/discuss_feat/intro_digest'
 import { checkBlockInView } from '../helper'
 
 type TProps = {
@@ -22,12 +21,6 @@ const IntroDigest: FC<TProps> = ({ inViewChange }) => {
   const [footInView, setFootInview] = useState(false)
 
   const scrollDir = useScrollDir()
-
-  const { isMobile } = useMobileDetect()
-  const [loaded, setLoaded] = useState(false)
-  useEffect(() => {
-    setLoaded(true)
-  }, [])
 
   useEffect(() => {
     if (checkBlockInView(headInView, footInView, scrollDir)) {
@@ -49,7 +42,9 @@ const IntroDigest: FC<TProps> = ({ inViewChange }) => {
         featType={FEAT_TYPE.DISCUSS}
       />
 
-      {loaded && !isMobile && <IntroItems />}
+      <DesktopOnly>
+        <IntroItems />
+      </DesktopOnly>
 
       <ViewportTracker onEnter={() => setFootInview(true)} onLeave={() => setFootInview(false)} />
     </Wrapper>

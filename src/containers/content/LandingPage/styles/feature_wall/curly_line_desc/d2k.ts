@@ -15,6 +15,10 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   position: relative;
   margin-top: -272px;
   z-index: -1;
+
+  ${css.media.mobile`
+    display: none;
+  `};
 `
 
 export const DescBlock = styled.div`

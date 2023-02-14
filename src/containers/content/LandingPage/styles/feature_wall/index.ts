@@ -57,3 +57,16 @@ export const FeatList = styled.div`
     ${css.flex()};
   `};
 `
+
+export const DesktopOnly = styled.div`
+  ${css.media.mobile`
+    display: none;
+  `};
+`
+
+export const MobileOnly = styled.div`
+  display: none;
+  ${css.media.mobile`
+    display: block;
+  `};
+`

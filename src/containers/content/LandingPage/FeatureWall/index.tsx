@@ -35,9 +35,9 @@ const FeatureWall: FC = () => {
 
       <Wall>
         <DiscussFeat />
-        {loaded && !isMobile && <CurlyLineD2K />}
-        {/* <KanbanFeat />
-        {loaded && !isMobile && <CurlyLineK2C />}
+        <CurlyLineD2K />
+        {/* <KanbanFeat /> */}
+        {/*  {loaded && !isMobile && <CurlyLineK2C />}
         <ChangelogFeat />
         {loaded && !isMobile && <CurlyLineC2H />}
         <HelpFeat /> */}
