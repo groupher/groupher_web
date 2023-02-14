@@ -17,6 +17,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 
   ${css.media.mobile`
     transform: scale(0.52);
+    margin-top: -50px;
   `};
 `
 export const ImageWrapper = styled.div`

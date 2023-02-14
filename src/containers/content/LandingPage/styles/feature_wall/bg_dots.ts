@@ -22,6 +22,10 @@ export const Wrapper = styled.div<TWrapper>`
   transition-delay: 1s;
 
   z-index: -1;
+
+  ${css.media.mobile`
+    transform: scale(0.8);
+  `};
 `
 
 export const holder = 1

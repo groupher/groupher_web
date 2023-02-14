@@ -9,4 +9,5 @@ export const MobileWrapper = styled.div`
   flex-wrap: wrap;
   gap: 16px 0;
   padding-left: 10px;
+  margin-top: -25px;
 `
