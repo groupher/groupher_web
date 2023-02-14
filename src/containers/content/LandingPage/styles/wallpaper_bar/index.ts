@@ -11,10 +11,18 @@ export const Wrapper = styled.div`
   ${css.flexColumn('align-both')}
   width: 100%;
   margin-top: 60px;
+
+  ${css.media.mobile`
+    margin-top: 30px;
+  `};
 `
 export const MainWrapper = styled.div`
   ${css.flex('align-both')};
   gap: 0 18px;
+
+  ${css.media.mobile`
+    transform: scale(0.7);
+  `};
 `
 export const Desc = styled.div`
   ${css.flex('align-center')};
@@ -22,6 +30,11 @@ export const Desc = styled.div`
   margin-top: 25px;
   font-size: 13px;
   opacity: 0.8;
+
+  ${css.media.mobile`
+    transform: scale(0.9);
+    margin-top: 15px;
+  `};
 `
 export const BallWrapper = styled.div<TActive>`
   ${css.size(30)};

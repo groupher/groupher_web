@@ -20,6 +20,10 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   height: 68px;
   width: 100%;
   margin-bottom: 8%;
+
+  ${css.media.mobile`
+     padding: 0 14px;
+  `};
 `
 export const Brand = styled(Link)`
   ${css.flex('align-center')};
@@ -30,15 +34,22 @@ export const Brand = styled(Link)`
     text-decoration: none;
   }
 `
-
 export const BrandLogo = styled(Img)`
   ${css.size(22)};
   margin-right: 8px;
+
+  ${css.media.mobile`
+    ${css.size(16)};
+    margin-right: 6px;
+  `};
 `
 export const BrandTitle = styled.div`
   font-size: 18px;
   color: ${theme('article.title')};
-  /* font-weight: 500; */
+
+  ${css.media.mobile`
+    font-size: 15px;
+  `};
 `
 
 export const LinksWrapper = styled.div`
@@ -47,6 +58,10 @@ export const LinksWrapper = styled.div`
   margin-top: 2px;
   flex-flow: 1;
   padding-left: 24px;
+
+  ${css.media.mobile`
+     display: none;
+  `};
 `
 export const LinkItem = styled(Link)<TActive>`
   font-size: 15px;

@@ -27,6 +27,10 @@ export const Banner = styled.div`
   height: 700px;
   width: 100%;
   position: relative;
+
+  ${css.media.mobile`
+    height: 600px;
+  `};
 `
 export const BgGlow = styled.div<{ wallpaper: string }>`
   position: absolute;
@@ -37,6 +41,10 @@ export const BgGlow = styled.div<{ wallpaper: string }>`
   opacity: ${({ wallpaper }) => getGlowOpacity(wallpaper)};
   background: ${({ wallpaper }) => getGlowBackground(wallpaper)};
   animation: ${animate.shake} 15s ease-in infinite alternate;
+
+  ${css.media.mobile`
+     display: none;
+  `};
 `
 export const PatternBg = styled.div`
   position: absolute;
@@ -68,6 +76,11 @@ export const BetaText = styled.div<{ wallpaper: string }>`
   font-weight: 500;
   margin-top: -48px;
   margin-bottom: 10px;
+
+  ${css.media.mobile`
+    font-size: 13px;
+    margin-top: 0px;
+  `};
 `
 export const Title = styled.div`
   font-size: 40px;
@@ -75,12 +88,22 @@ export const Title = styled.div`
   font-weight: 600;
   text-shadow: rgb(0 0 0 / 8%) 0px 10px 20px;
   opacity: 0.8;
+
+  ${css.media.mobile`
+    font-size: 24px;
+  `};
 `
 export const Desc = styled.p`
   font-size: 18px;
   ${theme('article.digest')};
   margin-top: 15px;
   opacity: 0.8;
+
+  ${css.media.mobile`
+    font-size: 14px;
+    text-align: center;
+    padding: 0 20px;
+  `};
 `
 export const InfoIcon = styled(InfoSVG)`
   fill: ${theme('article.digest')};
