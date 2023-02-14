@@ -15,6 +15,7 @@ import Link from 'next/link'
 
 import { ROUTE } from '@/constant/route'
 
+import { DesktopOnly, MobileOnly } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'
 import Button from '@/widgets/Buttons/Button'
 import FaqList from '@/widgets/FaqList'
@@ -113,7 +114,12 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
           bannerLayout={bannerLayout}
           onLayoutChange={(layout) => setBannerLayout(layout)}
         />
-        <Divider top={!isMobile ? 100 : 50} bottom={!isMobile ? 100 : 50} />
+        <DesktopOnly>
+          <Divider top={100} bottom={100} />
+        </DesktopOnly>
+        <MobileOnly>
+          <Divider top={50} bottom={50} />
+        </MobileOnly>
         <FeatureWall />
         <Divider top={!isMobile ? 100 : 20} bottom={!isMobile ? 100 : 50} />
         <EnjoyDev />

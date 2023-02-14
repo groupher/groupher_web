@@ -1,5 +1,6 @@
 import { FC, useState, useEffect } from 'react'
 
+import { DesktopOnly } from '@/widgets/Common'
 import ViewportTracker from '@/widgets/ViewportTracker'
 import useScrollDir from '@/hooks/useScrollDir'
 
@@ -8,7 +9,7 @@ import { FEAT_TYPE } from '../../constant'
 import FeatHead from '../FeatHead'
 
 import IntroItems from './IntroItems'
-import { Wrapper, DesktopOnly } from '../../styles/feature_wall/kanban_feat/intro_digest'
+import { Wrapper } from '../../styles/feature_wall/kanban_feat/intro_digest'
 import { checkBlockInView } from '../helper'
 
 type TProps = {

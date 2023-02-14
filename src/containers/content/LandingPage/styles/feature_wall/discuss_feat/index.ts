@@ -4,8 +4,6 @@ import type { TActive, TTestable } from '@/spec'
 
 import css from '@/utils/css'
 
-export { MobileOnly } from '..'
-
 type TWrapper = TActive
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({

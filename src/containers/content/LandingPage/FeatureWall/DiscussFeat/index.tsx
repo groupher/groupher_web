@@ -1,10 +1,12 @@
 import { FC, useState } from 'react'
 
+import { MobileOnly } from '@/widgets/Common'
+
 import IntroDigest from './IntroDigest'
 import IntroImage from './IntroImage'
 import IntroItems from './IntroItems'
 
-import { Wrapper, MobileOnly } from '../../styles/feature_wall/discuss_feat'
+import { Wrapper } from '../../styles/feature_wall/discuss_feat'
 
 const DiscussFeat: FC = () => {
   const [inView, setInView] = useState(false)

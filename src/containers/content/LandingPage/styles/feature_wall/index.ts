@@ -58,20 +58,6 @@ export const FeatList = styled.div`
   `};
 `
 
-export const DesktopOnly = styled.div`
-  ${css.media.mobile`
-    display: none;
-  `};
-`
-
-export const MobileOnly = styled.div`
-  display: none;
-  width: 100%;
-  ${css.media.mobile`
-    display: block;
-  `};
-`
-
 export const MobileIntroLists = styled.div`
   ${css.flex()};
   flex-wrap: wrap;

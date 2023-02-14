@@ -1,18 +1,13 @@
 import { FC } from 'react'
 
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow, DesktopOnly, MobileOnly } from '@/widgets/Common'
 
 import { FEAT_TYPE } from '../../constant'
 
 import FeatItem from '../FeatItem'
 import MoreLink from '../MoreLink'
 
-import {
-  FeatList,
-  DesktopOnly,
-  MobileOnly,
-  MobileIntroLists,
-} from '../../styles/feature_wall/intro_items'
+import { FeatList, MobileIntroLists } from '../../styles/feature_wall/intro_items'
 
 const featType = FEAT_TYPE.KANBAN
 

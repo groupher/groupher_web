@@ -80,3 +80,17 @@ export const Bar = styled.div<TBar>`
   margin-left: ${({ left }) => `${left}px` || 0};
   margin-right: ${({ right }) => `${right}px` || 0};
 `
+
+export const DesktopOnly = styled.div`
+  ${css.media.mobile`
+    display: none;
+  `};
+`
+
+export const MobileOnly = styled.div`
+  display: none;
+  width: 100%;
+  ${css.media.mobile`
+    display: block;
+  `};
+`

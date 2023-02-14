@@ -1,1 +1,1 @@
-export { FeatList, MobileOnly, DesktopOnly, MobileIntroLists } from '.'
+export { FeatList, MobileIntroLists } from '.'
