@@ -18,6 +18,12 @@ export const Wrapper = styled.div`
   padding: 20px;
   box-shadow: 0 5px 25px rgb(35 35 35 / 10%);
   margin-bottom: 25px;
+
+  ${css.media.mobile`
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+  `};
 `
 
 export const Header = styled.div`
@@ -31,6 +37,10 @@ export const Avatar = styled(Img)<{ color: TColorName }>`
   padding: 2px;
   border-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
   background-color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}Bg`)};
+
+  ${css.media.mobile`
+    ${css.circle(25)};
+  `};
 `
 
 export const User = styled.div``
@@ -39,6 +49,10 @@ export const Nickname = styled.div`
   color: ${theme('article.title')};
   margin-left: 10px;
   font-size: 14px;
+
+  ${css.media.mobile`
+    font-size: 12px;
+  `};
 `
 
 export const Content = styled.div``

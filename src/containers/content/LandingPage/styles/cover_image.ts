@@ -24,7 +24,7 @@ export const Wrapper = styled.div`
 
   ${css.media.mobile`
     width: calc(100% - 20px);
-    height: 300px;
+    height: 220px;
     padding-top: 25px;
   `};
 `
@@ -117,6 +117,8 @@ export const Background = styled.div<{ effect: string }>`
   ${({ effect }) => effect || ''};
   will-change: transform;
   transition: all 0.3s;
+
+
 `
 export const Image = styled(Img)<{ hasShadow: boolean }>`
   display: block;
@@ -129,7 +131,7 @@ export const Image = styled(Img)<{ hasShadow: boolean }>`
     hasShadow ? 'rgb(100 100 111 / 20%) 0px 7px 29px 0px;' : 'none'};
 
   ${css.media.mobile`
-    height: 300px;
+    height: 220px;
     margin-left: 15px;
     object-fit: cover;
   `};

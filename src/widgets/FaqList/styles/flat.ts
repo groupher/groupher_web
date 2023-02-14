@@ -34,6 +34,12 @@ export const Content = styled.div<{ large: boolean }>`
   ${css.flex('justify-between')};
   flex-wrap: wrap;
   gap: ${({ large }) => (large ? '45px' : '50px')};
+
+  ${css.media.mobile`
+    ${css.flex('justify-around')};
+    gap: 20px 10px;
+    padding: 0 15px;
+  `};
 `
 export const Section = styled.div<{ large: boolean }>`
   ${css.lineClamp(2)}
@@ -43,6 +49,10 @@ export const Section = styled.div<{ large: boolean }>`
   font-weight: 400;
 
   transition: all 0.2s;
+
+  ${css.media.mobile`
+    width: 45%;
+  `};
 `
 export const SectionHead = styled.div`
   ${css.flex('align-center')};
@@ -52,14 +62,27 @@ export const Title = styled.div<{ large: boolean }>`
   color: ${theme('article.title')};
   font-size: ${({ large }) => (large ? '16px' : '15px')};
   font-weight: 500;
+
+  ${css.media.mobile`
+    ${css.cutRest('280px')};
+    font-size: 14px;
+  `};
 `
 export const CheckIconWrapper = styled.div<{ large: boolean }>`
   ${css.size(16)};
   margin-right: ${({ large }) => (large ? '15px' : '10px')};
+
+  ${css.media.mobile`
+    margin-right: 6px;
+  `};
 `
 export const CheckIcon = styled(CheckSVG)<{ large: boolean }>`
   fill: ${theme('baseColor.greenLight')};
   ${({ large }) => css.size(large ? 17 : 16)};
+
+  ${css.media.mobile`
+    ${css.size(14)};
+  `};
 `
 export const Desc = styled.div<{ large: boolean }>`
   ${css.lineClamp(3)};
@@ -69,4 +92,10 @@ export const Desc = styled.div<{ large: boolean }>`
   margin-top: 15px;
   padding-left: ${({ large }) => (large ? '30px' : '25px')};
   line-height: 1.7;
+
+  ${css.media.mobile`
+    font-size: 13px;
+    margin-top: 8px;
+    padding-left: 20px;
+  `};
 `

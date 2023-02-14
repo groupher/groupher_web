@@ -1,5 +1,6 @@
 import { FC, ReactNode, useState, useEffect } from 'react'
 import { Parallax } from 'react-scroll-parallax'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { COLOR_NAME } from '@/constant/colors'
 import { mockUsers } from '@/utils/mock'
@@ -55,6 +56,7 @@ const P3 = (markColor: TColorName): ReactNode => (
 
 const UsersWall: FC = () => {
   const [loaded, setLoaded] = useState(false)
+  const { isMobile } = useMobileDetect()
 
   useEffect(() => {
     setLoaded(true)
@@ -76,7 +78,7 @@ const UsersWall: FC = () => {
       )}
 
       <Wall>
-        <MasonryCards column={3}>
+        <MasonryCards column={isMobile ? 2 : 3}>
           <Card content={P1(COLOR_NAME.BLUE)} user={users[0]} color={COLOR_NAME.BLUE} />
           <Card content={P2(COLOR_NAME.ORANGE)} user={users[1]} color={COLOR_NAME.ORANGE} />
           <Card content={P1(COLOR_NAME.RED)} user={users[2]} color={COLOR_NAME.RED} />

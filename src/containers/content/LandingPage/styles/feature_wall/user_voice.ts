@@ -19,11 +19,17 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   width: 80%;
   border-radius: 50%;
   position: relative;
+
+  ${css.media.mobile`
+    border-radius: 15px;
+    gap: 30px 20px;
+    width: 100%;
+    margin-top: 40px;
+  `};
 `
 export const TreeWrapper = styled.div`
   height: 240px;
   width: 700px;
-  /* border-radius: 100%; */
   border-radius: 300px;
   opacity: 0.03;
   z-index: -1;
@@ -31,11 +37,23 @@ export const TreeWrapper = styled.div`
   position: absolute;
   top: -20px;
   left: 200px;
+
+  ${css.media.mobile`
+    top: 20px;
+    left: 0;
+    width: 100%;
+    height: 350px;
+  `};
 `
 export const TreesIcon = styled(TreesSVG)`
   height: 240px;
   width: 700px;
   fill: ${theme('artivle.digest')};
+
+  ${css.media.mobile`
+    width: 100%;
+    height: 350px;
+  `};
 `
 export const Card = styled.div`
   ${css.flex('align-center')};
@@ -49,6 +67,10 @@ export const Card = styled.div`
 
   /* box-shadow: ${css.cardShadow}; */
   box-shadow: 0 5px 25px rgb(35 35 35 / 10%);
+
+  ${css.media.mobile`
+    padding: 5px 6px;
+  `};
 `
 export const Avatar = styled.div<{ color: TColorName }>`
   ${css.circle(30)};
@@ -60,9 +82,20 @@ export const Avatar = styled.div<{ color: TColorName }>`
   /* border: 2px solid; */
   /* border-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)}; */
   background-color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}Bg`)};
+
+  ${css.media.mobile`
+    ${css.circle(20)};
+    ${css.flex('align-both')};
+    font-size: 8px;
+  `};
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
   font-size: 15px;
   margin-left: 8px;
+
+  ${css.media.mobile`
+    font-size: 12px;
+    margin-left: 5px;
+  `};
 `

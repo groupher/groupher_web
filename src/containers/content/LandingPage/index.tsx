@@ -5,6 +5,7 @@
 
 import { FC, useEffect, useState } from 'react'
 import { ParallaxProvider } from 'react-scroll-parallax'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 // import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
@@ -55,6 +56,7 @@ type TProps = {
 
 const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
   useInit(store)
+  const { isMobile } = useMobileDetect()
 
   const { wallpaperInfo, gradientWallpapers } = store
   const { wallpaper } = wallpaperInfo
@@ -111,16 +113,16 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
           bannerLayout={bannerLayout}
           onLayoutChange={(layout) => setBannerLayout(layout)}
         />
-        <Divider top={100} bottom={100} />
+        <Divider top={!isMobile ? 100 : 50} bottom={!isMobile ? 100 : 50} />
 
         <FeatureWall />
-        <Divider top={60} bottom={100} />
+        <Divider top={!isMobile ? 100 : 20} bottom={!isMobile ? 100 : 50} />
         <EnjoyDev />
-        <Divider top={80} bottom={80} />
+        <Divider top={!isMobile ? 80 : 50} bottom={!isMobile ? 80 : 50} />
         <TechStacks />
-        <Divider top={80} bottom={80} />
+        <Divider top={!isMobile ? 80 : 50} bottom={!isMobile ? 80 : 50} />
         <UsersWall />
-        <Divider top={60} bottom={80} />
+        <Divider top={!isMobile ? 60 : 50} bottom={!isMobile ? 80 : 50} />
 
         <FAQWrapper>
           <FaqList layout={HELP_FAQ_LAYOUT.FLAT} large />

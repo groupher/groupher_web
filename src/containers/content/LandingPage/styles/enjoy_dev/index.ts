@@ -29,6 +29,11 @@ export const Title = styled.div`
 
   text-shadow: rgb(0 0 0 / 8%) 0px 10px 20px;
   opacity: 0.9;
+
+  ${css.media.mobile`
+    font-size: 22px;
+    font-weight: 600;
+  `};
 `
 export const Desc = styled.div`
   ${css.flex('align-center')};
@@ -36,8 +41,13 @@ export const Desc = styled.div`
   color: ${theme('article.digest')};
   margin-top: 12px;
   opacity: 0.8;
-`
 
+  ${css.media.mobile`
+    font-size: 15px;
+    text-align: center;
+    padding: 0 20px;
+  `};
+`
 export const Wall = styled.div`
   ${css.flexColumn('align-both')};
   width: 80%;
