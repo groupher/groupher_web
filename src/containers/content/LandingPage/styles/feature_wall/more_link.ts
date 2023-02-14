@@ -20,6 +20,11 @@ export const Wrapper = styled(Link)`
     cursor: pointer;
   }
 
+  ${css.media.mobile`
+    margin-top: 0;
+    transform: scale(0.9);
+  `};
+
   transition: all 0.2s;
 `
 export const Text = styled.div<{ featType: TFeatType }>`

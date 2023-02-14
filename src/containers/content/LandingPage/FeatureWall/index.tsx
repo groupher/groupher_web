@@ -31,8 +31,7 @@ const FeatureWall: FC = () => {
         <Desc>你只需专注产品的核心工作，将那些“无聊”却又重要的体力活交给 Groupher</Desc>
       </Slogan>
       <UserVoice />
-      {loaded && !isMobile && <CurlyLineU2D />}
-
+      <CurlyLineU2D />
       <Wall>
         <DiscussFeat />
         <CurlyLineD2K />

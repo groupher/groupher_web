@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import css from '@/utils/css'
 
-export { FeatList } from '..'
+export { FeatList, MobileOnly, DesktopOnly } from '..'
 
 export const MobileWrapper = styled.div`
   ${css.flex()};
