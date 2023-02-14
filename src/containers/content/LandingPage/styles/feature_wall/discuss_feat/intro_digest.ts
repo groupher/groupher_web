@@ -23,5 +23,6 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   ${css.media.mobile`
     width: 100%;
     padding: 0;
+    height: auto;
   `};
 `

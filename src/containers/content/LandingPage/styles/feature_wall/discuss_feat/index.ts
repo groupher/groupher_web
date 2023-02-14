@@ -34,6 +34,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
     ${css.flexColumn()};
     margin-top: 200px;
     padding: 0 18px;
+    height: auto;
   `};
 `
 export const Slogan = styled.div`

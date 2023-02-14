@@ -1,4 +1,5 @@
 import { FC, useState, useEffect } from 'react'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
 import useScrollDir from '@/hooks/useScrollDir'
@@ -22,6 +23,12 @@ const IntroDigest: FC<TProps> = ({ inViewChange }) => {
 
   const scrollDir = useScrollDir()
 
+  const { isMobile } = useMobileDetect()
+  const [loaded, setLoaded] = useState(false)
+  useEffect(() => {
+    setLoaded(true)
+  }, [])
+
   useEffect(() => {
     if (checkBlockInView(headInView, footInView, scrollDir)) {
       setInView(true)
@@ -42,7 +49,7 @@ const IntroDigest: FC<TProps> = ({ inViewChange }) => {
         featType={FEAT_TYPE.DISCUSS}
       />
 
-      <IntroItems />
+      {loaded && !isMobile && <IntroItems />}
 
       <ViewportTracker onEnter={() => setFootInview(true)} onLeave={() => setFootInview(false)} />
     </Wrapper>

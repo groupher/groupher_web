@@ -14,6 +14,7 @@ export const Wrapper = styled.div`
 
   ${css.media.mobile`
     margin-left: 0;
+    min-width: 50%;
   `};
 `
 
