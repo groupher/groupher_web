@@ -114,21 +114,42 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
           bannerLayout={bannerLayout}
           onLayoutChange={(layout) => setBannerLayout(layout)}
         />
+
         <DesktopOnly>
           <Divider top={100} bottom={100} />
         </DesktopOnly>
         <MobileOnly>
           <Divider top={50} bottom={50} />
         </MobileOnly>
-        <FeatureWall />
-        <Divider top={!isMobile ? 100 : 20} bottom={!isMobile ? 100 : 50} />
-        <EnjoyDev />
-        <Divider top={!isMobile ? 80 : 50} bottom={!isMobile ? 80 : 50} />
-        <TechStacks />
-        <Divider top={!isMobile ? 80 : 50} bottom={!isMobile ? 80 : 50} />
-        <UsersWall />
-        <Divider top={!isMobile ? 60 : 50} bottom={!isMobile ? 80 : 50} />
 
+        <FeatureWall />
+        <DesktopOnly>
+          <Divider top={100} bottom={100} />
+        </DesktopOnly>
+        <MobileOnly>
+          <Divider top={50} bottom={50} />
+        </MobileOnly>
+        <EnjoyDev />
+        <DesktopOnly>
+          <Divider top={80} bottom={80} />
+        </DesktopOnly>
+        <MobileOnly>
+          <Divider top={-120} bottom={0} />
+        </MobileOnly>
+        <TechStacks />
+        <DesktopOnly>
+          <Divider top={80} bottom={80} />
+        </DesktopOnly>
+        <MobileOnly>
+          <Divider top={50} bottom={50} />
+        </MobileOnly>
+        <UsersWall />
+        <DesktopOnly>
+          <Divider top={60} bottom={60} />
+        </DesktopOnly>
+        <MobileOnly>
+          <Divider top={50} bottom={50} />
+        </MobileOnly>
         <FAQWrapper>
           <FaqList layout={HELP_FAQ_LAYOUT.FLAT} large />
         </FAQWrapper>

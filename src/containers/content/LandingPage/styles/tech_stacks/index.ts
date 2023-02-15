@@ -13,6 +13,10 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 }))<TTestable>`
   ${css.flexColumn('align-both')};
   width: 100%;
+
+  ${css.media.mobile`
+    margin-top: -60px;
+  `};
 `
 export const Slogan = styled.div`
   ${css.flexColumn('align-both')};

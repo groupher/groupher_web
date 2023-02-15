@@ -13,7 +13,7 @@ const KanbanFeat: FC = () => {
 
   return (
     <Wrapper $active={inView}>
-      <DesktopOnly>
+      <DesktopOnly flex>
         <IntroImage $active={inView} />
         <IntroDigest inViewChange={(cur) => setInView(cur)} />
       </DesktopOnly>

@@ -37,6 +37,13 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
     transition-delay: 1s;
     z-index: -1;
   }
+
+  ${css.media.mobile`
+    ${css.flexColumn()};
+    margin-top: 80px;
+    padding: 0 18px;
+    height: auto;
+  `};
 `
 export const Slogan = styled.div`
   ${css.flexColumn('align-both')};

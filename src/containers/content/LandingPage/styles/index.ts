@@ -170,8 +170,9 @@ export const DemoButton = styled(Button)`
 `
 
 export const Divider = styled.div<TSpace>`
-  width: 90%;
+  width: 84%;
   height: 1px;
+  margin-left: 8%;
 
   margin-top: ${({ top }) => `${top === undefined ? 20 : top}px`};
   margin-bottom: ${({ bottom }) => `${bottom === undefined ? 20 : bottom}px`};

@@ -13,9 +13,12 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 }))<TTestable>`
   ${css.flexColumn('align-both')};
   flex-grow: 1;
-  /* width: 500px;
-  height: 440px; */
   position: relative;
+
+  ${css.media.mobile`
+    transform: scale(0.52);
+    margin-top: -50px;
+  `};
 `
 export const ImageWrapper = styled.div`
   width: 600px;

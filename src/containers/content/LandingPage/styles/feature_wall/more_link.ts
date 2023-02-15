@@ -21,8 +21,10 @@ export const Wrapper = styled(Link)`
   }
 
   ${css.media.mobile`
-    margin-top: 0;
+    ${css.flex('justify-center')};
+    margin-top: 20px;
     transform: scale(0.9);
+    width: 90%;
   `};
 
   transition: all 0.2s;
