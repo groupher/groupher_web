@@ -37,8 +37,8 @@ export const GrowBackground = styled.div<TGlowEffect>`
 
   inset: 0;
   position: ${({ glowPosition }) => glowPosition};
-  height: ${({ glowPosition }) => (glowPosition === 'absolute' ? '600px' : 'auto')};
-  // width is must, without it the wechat will not work
+  // width & height must be 100%, without it the wechat will not work
+  height: ${({ glowPosition }) => (glowPosition === 'absolute' ? '600px' : '100%')};
   width: 100%;
   opacity: ${({ glowOpacity }) => `${parseFloat(glowOpacity)}` || 1};
 
