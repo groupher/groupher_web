@@ -1,7 +1,9 @@
 import { FC, useEffect, useState } from 'react'
 import { Parallax } from 'react-scroll-parallax'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TActive } from '@/spec'
+import { DesktopOnly } from '@/widgets/Common'
 
 import ChangelogDemo from './ChangelogDemo'
 
@@ -23,6 +25,7 @@ type TProps = TActive
 
 const IntroImage: FC<TProps> = ({ $active }) => {
   const [loaded, setLoaded] = useState(false)
+  const { isMobile } = useMobileDetect()
 
   useEffect(() => {
     setLoaded(true)
@@ -38,17 +41,25 @@ const IntroImage: FC<TProps> = ({ $active }) => {
       {!loaded && <ColorBlockHolder />}
 
       {loaded && (
-        <Parallax speed={15} rotate={[-5, 8]} translateY={[10, -10]}>
+        <Parallax speed={15} rotate={[-5, 8]} translateY={[10, -10]} disabled={isMobile}>
           <ColorBlock $active={$active} />
         </Parallax>
       )}
 
-      <Parallax speed={15} rotate={[-4, 14]} translateY={[10, -10]} opacity={[1, 0.3]}>
-        <IconsWrapper>
-          <Icon1 />
-          <Icon2 />
-          <Icon3 />
-        </IconsWrapper>
+      <Parallax
+        speed={15}
+        rotate={[-4, 14]}
+        translateY={[10, -10]}
+        opacity={[1, 0.3]}
+        disabled={isMobile}
+      >
+        <DesktopOnly>
+          <IconsWrapper>
+            <Icon1 />
+            <Icon2 />
+            <Icon3 />
+          </IconsWrapper>
+        </DesktopOnly>
       </Parallax>
     </Wrapper>
   )

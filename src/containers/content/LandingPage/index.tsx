@@ -42,6 +42,7 @@ import {
   DemoPanel,
   DemoMenuItem,
   LinkIcon,
+  StartButton,
   DemoButton,
   ArrowIcon,
   Divider,
@@ -69,8 +70,10 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
   return (
     <ParallaxProvider>
       <Wrapper testid="landing-page">
-        <BgGlow wallpaper={wallpaper} />
         <PatternBg />
+        <DesktopOnly>
+          <BgGlow wallpaper={wallpaper} />
+        </DesktopOnly>
         <Banner>
           <HomeHeader />
           <BetaText wallpaper={wallpaper}>内测中</BetaText>
@@ -80,7 +83,7 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
           </Desc>
           <ButtonGroup>
             <Link href={`/${ROUTE.HOME}/${ROUTE.HELP}`}>
-              <Button size="medium">开始使用</Button>
+              <StartButton size="medium">开始使用</StartButton>
             </Link>
 
             <Tooltip

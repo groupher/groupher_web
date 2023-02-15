@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { Parallax } from 'react-scroll-parallax'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { GITHUB } from '@/config'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
@@ -21,6 +22,8 @@ import {
 } from '../styles/tech_stacks'
 
 const TeckStacks: FC = () => {
+  const { isMobile } = useMobileDetect()
+
   return (
     <Wrapper>
       <Slogan>
@@ -59,7 +62,7 @@ const TeckStacks: FC = () => {
           <TechItem path="design/gimp.png" name="GIMP" size={55} />
         </TechsWrapper>
         <BgWrapper>
-          <Parallax speed={-10} translateY={[10, -10]} opacity={[1, 0.8]}>
+          <Parallax speed={-10} translateY={[10, -10]} opacity={[1, 0.8]} disabled={isMobile}>
             <CADBackground src="/cad-bg.png" />
           </Parallax>
         </BgWrapper>

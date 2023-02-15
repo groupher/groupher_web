@@ -72,7 +72,7 @@ const UsersWall: FC = () => {
       </Slogan>
 
       {loaded && (
-        <Parallax speed={-20} scale={[3, 0.8]} opacity={[1, 0.8]}>
+        <Parallax speed={-20} scale={[3, 0.8]} opacity={[1, 0.8]} disabled={isMobile}>
           <BgGradient />
         </Parallax>
       )}

@@ -35,6 +35,10 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
     margin-top: 200px;
     padding: 0 18px;
     height: auto;
+
+    &:after {
+      display: none;
+    }
   `};
 `
 export const Slogan = styled.div`

@@ -122,6 +122,10 @@ export const ButtonGroup = styled.div`
   gap: 0 22px;
   margin-top: 40px;
   margin-left: 10px;
+
+  ${css.media.mobile`
+    gap: 0px;
+  `};
 `
 export const DemoPanel = styled.div`
   ${css.flexColumn()};
@@ -159,6 +163,13 @@ export const ArrowIcon = styled(ArrowSVG)`
   transform: rotate(-90deg);
   margin-right: -5px;
 `
+export const StartButton = styled(Button)`
+  text-decoration: none;
+
+  ${css.media.mobile`
+    transform: scale(0.8);
+  `};
+`
 export const DemoButton = styled(Button)`
   border-color: ${theme('article.digest')};
 
@@ -167,6 +178,10 @@ export const DemoButton = styled(Button)`
   }
 
   transition: all 0.2s;
+
+  ${css.media.mobile`
+    transform: scale(0.8);
+  `};
 `
 
 export const Divider = styled.div<TSpace>`
