@@ -5,7 +5,6 @@
 
 import { FC, useEffect, useState } from 'react'
 import { ParallaxProvider } from 'react-scroll-parallax'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 // import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
@@ -57,7 +56,6 @@ type TProps = {
 
 const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
   useInit(store)
-  const { isMobile } = useMobileDetect()
 
   const { wallpaperInfo, gradientWallpapers } = store
   const { wallpaper } = wallpaperInfo
