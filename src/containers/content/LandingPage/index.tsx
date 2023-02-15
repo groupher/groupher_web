@@ -14,6 +14,7 @@ import Link from 'next/link'
 
 import { ROUTE } from '@/constant/route'
 
+import { DesktopOnly, MobileOnly } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'
 import Button from '@/widgets/Buttons/Button'
 import FaqList from '@/widgets/FaqList'
@@ -111,17 +112,42 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
           bannerLayout={bannerLayout}
           onLayoutChange={(layout) => setBannerLayout(layout)}
         />
-        <Divider top={100} bottom={100} />
+
+        <DesktopOnly>
+          <Divider top={100} bottom={100} />
+        </DesktopOnly>
+        <MobileOnly>
+          <Divider top={50} bottom={50} />
+        </MobileOnly>
 
         <FeatureWall />
-        <Divider top={60} bottom={100} />
+        <DesktopOnly>
+          <Divider top={100} bottom={100} />
+        </DesktopOnly>
+        <MobileOnly>
+          <Divider top={50} bottom={50} />
+        </MobileOnly>
         <EnjoyDev />
-        <Divider top={80} bottom={80} />
+        <DesktopOnly>
+          <Divider top={80} bottom={80} />
+        </DesktopOnly>
+        <MobileOnly>
+          <Divider top={-120} bottom={0} />
+        </MobileOnly>
         <TechStacks />
-        <Divider top={80} bottom={80} />
+        <DesktopOnly>
+          <Divider top={80} bottom={80} />
+        </DesktopOnly>
+        <MobileOnly>
+          <Divider top={50} bottom={50} />
+        </MobileOnly>
         <UsersWall />
-        <Divider top={60} bottom={80} />
-
+        <DesktopOnly>
+          <Divider top={60} bottom={60} />
+        </DesktopOnly>
+        <MobileOnly>
+          <Divider top={50} bottom={50} />
+        </MobileOnly>
         <FAQWrapper>
           <FaqList layout={HELP_FAQ_LAYOUT.FLAT} large />
         </FAQWrapper>

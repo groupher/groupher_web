@@ -1,23 +1,23 @@
 import { FC, useState, useEffect } from 'react'
 
+import { DesktopOnly } from '@/widgets/Common'
 import ViewportTracker from '@/widgets/ViewportTracker'
-import { SpaceGrow } from '@/widgets/Common'
 import useScrollDir from '@/hooks/useScrollDir'
 
 import { FEAT_TYPE } from '../../constant'
 
 import FeatHead from '../FeatHead'
-import FeatItem from '../FeatItem'
-import MoreLink from '../MoreLink'
 
-import { Wrapper, FeatList } from '../../styles/feature_wall/kanban_feat/intro_digest'
+import IntroItems from './IntroItems'
+import { Wrapper } from '../../styles/feature_wall/kanban_feat/intro_digest'
 import { checkBlockInView } from '../helper'
 
 type TProps = {
   inViewChange: (inView: boolean) => void
+  alignRight?: boolean
 }
 
-const IntroDigest: FC<TProps> = ({ inViewChange }) => {
+const IntroDigest: FC<TProps> = ({ inViewChange, alignRight = false }) => {
   const [inView, setInView] = useState(false)
   const [headInView, setHeadInview] = useState(false)
   const [footInView, setFootInview] = useState(false)
@@ -42,19 +42,12 @@ const IntroDigest: FC<TProps> = ({ inViewChange }) => {
         title="看板"
         desc="通过直观的看板展示进度，让你的用户了解团队正在进行中的工作。"
         featType={FEAT_TYPE.KANBAN}
+        alignRight={alignRight}
       />
 
-      <FeatList>
-        <FeatItem text="经典简洁的 UI" featType={FEAT_TYPE.KANBAN} />
-        <FeatItem text="富文本内容" featType={FEAT_TYPE.KANBAN} />
-        <FeatItem text="状态自然同步" featType={FEAT_TYPE.KANBAN} />
-        <FeatItem text="评论，表情反馈" featType={FEAT_TYPE.KANBAN} />
-        <FeatItem text="一键多渠道分享" featType={FEAT_TYPE.KANBAN} />
-        <FeatItem text="高度自定义" featType={FEAT_TYPE.KANBAN} />
-      </FeatList>
-
-      <SpaceGrow />
-      <MoreLink href="/" featType={FEAT_TYPE.KANBAN} />
+      <DesktopOnly>
+        <IntroItems />
+      </DesktopOnly>
 
       <ViewportTracker onEnter={() => setFootInview(true)} onLeave={() => setFootInview(false)} />
     </Wrapper>

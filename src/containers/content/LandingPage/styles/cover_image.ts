@@ -13,7 +13,6 @@ export const Wrapper = styled.div`
   width: 1080px;
   border-radius: 12px;
   box-shadow: 0 5px 25px rgb(35 35 35 / 10%);
-  /* box-shadow: -1px 6px 25px 5px rgb(35 35 35 / 11%); */
   margin-top: -251px;
   border-top: 1px solid;
   border-color: ${theme('divider')};
@@ -22,6 +21,12 @@ export const Wrapper = styled.div`
   padding-top: 38px;
   background: #ffffff6e;
   z-index: 2;
+
+  ${css.media.mobile`
+    width: calc(100% - 20px);
+    height: 220px;
+    padding-top: 25px;
+  `};
 `
 export const BrowerHead = styled.div`
   ${css.flex('align-center', 'justify-center')};
@@ -31,20 +36,37 @@ export const BrowerHead = styled.div`
   left: 10px;
   top: 8px;
   padding-left: 8px;
+
+  ${css.media.mobile`
+    top: 6px;
+  `};
 `
 export const AddrBar = styled.div`
   ${css.flex('align-center')};
   margin-left: -65px;
+
+  ${css.media.mobile`
+    margin-left: -35px;
+  `};
 `
 export const LockIcon = styled(LockSVG)`
   ${css.size(12)};
   fill: ${theme('article.digest')};
   opacity: 0.5;
   margin-right: 4px;
+
+  ${css.media.mobile`
+    ${css.size(10)};
+    margin-top: -1px;
+  `};
 `
 export const AddText = styled.div`
   color: ${theme('article.digest')};
   opacity: 0.7;
+
+  ${css.media.mobile`
+    font-size: 10px;
+  `};
 `
 export const CoolText = styled.div<{ wallpaper: string }>`
   color: ${theme('article.digest')};
@@ -52,14 +74,27 @@ export const CoolText = styled.div<{ wallpaper: string }>`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 600;
+
+  ${css.media.mobile`
+    font-size: 10px;
+    margin-left: 1px;
+  `};
 `
 export const Highlight = styled.div`
   color: ${theme('article.title')};
+
+  ${css.media.mobile`
+    font-size: 10px;
+  `};
 `
 export const Dot = styled.div`
   ${css.circle(10)};
   background: ${theme('divider')};
   margin-right: 6px;
+
+  ${css.media.mobile`
+    display: none;
+  `};
 `
 export const Content = styled.div`
   ${css.flex('align-both')};
@@ -82,10 +117,12 @@ export const Background = styled.div<{ effect: string }>`
   ${({ effect }) => effect || ''};
   will-change: transform;
   transition: all 0.3s;
+
+
 `
 export const Image = styled(Img)<{ hasShadow: boolean }>`
   display: block;
-  width: calc(100% - 100px);
+  width: calc(100% - 30px);
   margin-left: 50px;
   height: 701px;
   object-fit: cover;
@@ -93,5 +130,10 @@ export const Image = styled(Img)<{ hasShadow: boolean }>`
   box-shadow: ${({ hasShadow }) =>
     hasShadow ? 'rgb(100 100 111 / 20%) 0px 7px 29px 0px;' : 'none'};
 
+  ${css.media.mobile`
+    height: 220px;
+    margin-left: 15px;
+    object-fit: cover;
+  `};
   transition: all 0.2s;
 `

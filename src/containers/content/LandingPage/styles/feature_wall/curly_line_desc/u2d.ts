@@ -17,6 +17,10 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   position: relative;
   margin-top: -30px;
   z-index: -1;
+
+  ${css.media.mobile`
+    display: none;
+  `};
 `
 export const MagicWrapper = styled.div`
   position: absolute;

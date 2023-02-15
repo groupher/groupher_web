@@ -5,22 +5,23 @@ import type { TActive } from '@/spec'
 import type { TFeatType } from '../spec'
 import { FEAT } from '../constant'
 
-import { Title, Hint, Desc } from '../styles/feature_wall/feat_head'
+import { Wrapper, Title, Hint, Desc } from '../styles/feature_wall/feat_head'
 
 type TProps = {
   featType: TFeatType
   title: string
   desc: string
+  alignRight?: boolean
 } & TActive
 
-const FeatHead: FC<TProps> = ({ title, desc, featType, $active }) => {
+const FeatHead: FC<TProps> = ({ title, desc, featType, $active, alignRight = false }) => {
   return (
-    <>
+    <Wrapper alignRight={alignRight}>
       <Title featType={featType}>
         {title} <Hint $active={$active}>{FEAT[featType].HINT}</Hint>
       </Title>
-      <Desc>{desc}</Desc>
-    </>
+      <Desc alignRight={alignRight}>{desc}</Desc>
+    </Wrapper>
   )
 }
 

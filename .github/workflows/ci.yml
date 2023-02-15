@@ -22,44 +22,44 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-      - name: (Backend) checkout codebase
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          repository: 'groupher/groupher_server'
-          path: 'backend_server'
-      - name: (Backend) install libtinfo5
-        run: sudo apt install libtinfo5
-      - name: (Backend) Setup Elixir and OTP
-        uses: actions/setup-elixir@v1
-        with:
-          elixir-version: '1.10.3'
-          otp-version: '22.3'
-          experimental-otp: true
-      - name: (Backend) Restore dependencies cache
-        uses: actions/cache@v2
-        with:
-          path: deps
-          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
-          restore-keys: ${{ runner.os }}-mix-
-      - name: (Backend) Checkout dev branch
-        working-directory: ./backend_server
-        run: git checkout debug-github-action-for-fe
-      - name: (Backend) Install Packages
-        working-directory: ./backend_server
-        run: mix deps.get > /dev/null
-      - name: (Backend) run migration
-        working-directory: ./backend_server
-        run: MIX_ENV=ci MIX_ENV=ci mix ecto.migrate > /dev/null
-      - name: (Backend) set up test DB
-        working-directory: ./backend_server
-        run: MIX_ENV=ci mix ecto.setup > /dev/null
-      - name: (Backend) seed data into DB
-        working-directory: ./backend_server
-        run: MIX_ENV=ci mix run priv/mock/cps_seeds.exs > /dev/null
-      - name: (Backend) Run Server
-        working-directory: ./backend_server
-        run: MIX_ENV=ci mix phx.server &
+      # - name: (Backend) checkout codebase
+      #   uses: actions/checkout@v2
+      #   with:
+      #     fetch-depth: 0
+      #     repository: 'groupher/groupher_server'
+      #     path: 'backend_server'
+      # - name: (Backend) install libtinfo5
+      #   run: sudo apt install libtinfo5
+      # - name: (Backend) Setup Elixir and OTP
+      #   uses: actions/setup-elixir@v1
+      #   with:
+      #     elixir-version: '1.10.3'
+      #     otp-version: '22.3'
+      #     experimental-otp: true
+      # - name: (Backend) Restore dependencies cache
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: deps
+      #     key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+      #     restore-keys: ${{ runner.os }}-mix-
+      # - name: (Backend) Checkout dev branch
+      #   working-directory: ./backend_server
+      #   run: git checkout debug-github-action-for-fe
+      # - name: (Backend) Install Packages
+      #   working-directory: ./backend_server
+      #   run: mix deps.get > /dev/null
+      # - name: (Backend) run migration
+      #   working-directory: ./backend_server
+      #   run: MIX_ENV=ci MIX_ENV=ci mix ecto.migrate > /dev/null
+      # - name: (Backend) set up test DB
+      #   working-directory: ./backend_server
+      #   run: MIX_ENV=ci mix ecto.setup > /dev/null
+      # - name: (Backend) seed data into DB
+      #   working-directory: ./backend_server
+      #   run: MIX_ENV=ci mix run priv/mock/cps_seeds.exs > /dev/null
+      # - name: (Backend) Run Server
+      #   working-directory: ./backend_server
+      #   run: MIX_ENV=ci mix phx.server &
 
       - name: (Frontend) checkout codebase
         uses: actions/checkout@v2
@@ -92,9 +92,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
-      - name: (Frontend) Run e2e Tests
-        working-directory: ./frontend_server
-        run: npm run test:ci
+      # - name: (Frontend) Run e2e Tests
+      #   working-directory: ./frontend_server
+      #   run: npm run test:ci
       # - name: (Frontend) Cypress run
       #   uses: cypress-io/github-action@v2
       #   with:

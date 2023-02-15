@@ -20,6 +20,13 @@ export const Wrapper = styled(Link)`
     cursor: pointer;
   }
 
+  ${css.media.mobile`
+    ${css.flex('justify-center')};
+    margin-top: 20px;
+    transform: scale(0.9);
+    width: 90%;
+  `};
+
   transition: all 0.2s;
 `
 export const Text = styled.div<{ featType: TFeatType }>`

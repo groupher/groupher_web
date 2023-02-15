@@ -1,7 +1,10 @@
 import { FC, useState } from 'react'
 
+import { MobileOnly } from '@/widgets/Common'
+
 import IntroDigest from './IntroDigest'
 import IntroImage from './IntroImage'
+import IntroItems from './IntroItems'
 
 import { Wrapper } from '../../styles/feature_wall/discuss_feat'
 
@@ -16,6 +19,9 @@ const DiscussFeat: FC = () => {
         }}
       />
       <IntroImage $active={inView} />
+      <MobileOnly>
+        <IntroItems />
+      </MobileOnly>
     </Wrapper>
   )
 }

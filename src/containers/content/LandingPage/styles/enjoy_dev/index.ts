@@ -17,8 +17,8 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 }))<TTestable>`
   ${css.flexColumn('align-both')};
   width: 100%;
+  height: auto;
 `
-
 export const Slogan = styled.div`
   ${css.flexColumn('align-both')};
 `
@@ -29,6 +29,11 @@ export const Title = styled.div`
 
   text-shadow: rgb(0 0 0 / 8%) 0px 10px 20px;
   opacity: 0.9;
+
+  ${css.media.mobile`
+    font-size: 22px;
+    font-weight: 600;
+  `};
 `
 export const Desc = styled.div`
   ${css.flex('align-center')};
@@ -36,14 +41,31 @@ export const Desc = styled.div`
   color: ${theme('article.digest')};
   margin-top: 12px;
   opacity: 0.8;
-`
 
+  ${css.media.mobile`
+    font-size: 15px;
+    text-align: center;
+    padding: 0 20px;
+  `};
+`
 export const Wall = styled.div`
   ${css.flexColumn('align-both')};
   width: 80%;
   height: auto;
   margin-top: 35px;
   position: relative;
+
+  ${css.media.mobile`
+    width: 2000%;
+    overflow: scroll;
+    transform: scale(0.7);
+    padding-left: 600px;
+
+    padding-left: 600px;
+    height: 980px;
+    overflow-y: hidden;
+    margin-top: -100px;
+  `};
 `
 export const BgWrapper = styled.div`
   opacity: 0.2;
@@ -68,6 +90,10 @@ export const BadWrapper = styled.div`
   width: 100%;
   padding: 40px 80px;
   margin-top: -20px;
+
+  ${css.media.mobile`
+    transform: scale(1.2);
+  `};
 `
 export const ConnectLine = styled.div`
   width: 60px;
@@ -211,6 +237,10 @@ export const YesNote = styled(BottonNote)`
   &:before {
     background: #d8ffca40;
   }
+
+  ${css.media.mobile`
+    margin-top: 20px;
+  `};
 `
 
 export const NoNote = styled(BottonNote)`

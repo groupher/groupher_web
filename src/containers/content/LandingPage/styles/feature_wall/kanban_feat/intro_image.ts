@@ -16,6 +16,11 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   /* width: 500px;
   height: 440px; */
   position: relative;
+
+  ${css.media.mobile`
+    transform: scale(0.52);
+    margin-top: -50px;
+  `};
 `
 export const ImageWrapper = styled.div`
   ${css.flexColumn('align-end')};

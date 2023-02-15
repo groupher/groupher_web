@@ -130,7 +130,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 20px;
 
     ${css.media.mobile`
-      padding-left: 10px;
+      padding: 5px;
     `};
   }
 

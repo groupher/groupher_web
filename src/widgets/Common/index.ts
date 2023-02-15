@@ -73,10 +73,26 @@ export const Bar = styled.div<TBar>`
   height: ${({ height }) => `${height}px` || '5px'};
   border-radius: 5px;
   opacity: ${({ opacity }) => opacity || 1};
-  background: ${theme('divider')};
 
   margin-top: ${({ top }) => `${top}px` || 0};
   margin-bottom: ${({ bottom }) => `${bottom}px` || 0};
   margin-left: ${({ left }) => `${left}px` || 0};
   margin-right: ${({ right }) => `${right}px` || 0};
+`
+
+type TDesktopOnly = { flex?: boolean }
+export const DesktopOnly = styled.div<TDesktopOnly>`
+  display: ${({ flex }) => (flex ? 'flex' : 'block')};
+  width: 100%;
+  ${css.media.mobile`
+    display: none;
+  `};
+`
+
+export const MobileOnly = styled.div`
+  display: none;
+  width: 100%;
+  ${css.media.mobile`
+    display: block;
+  `};
 `

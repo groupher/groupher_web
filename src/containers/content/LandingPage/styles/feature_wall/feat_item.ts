@@ -11,17 +11,30 @@ import { FEAT } from '../../constant'
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
   margin-left: 18px;
+
+  ${css.media.mobile`
+    margin-left: 0;
+    min-width: 50%;
+  `};
 `
 
 export const CheckIcon = styled(CheckSVG)<{ featType: TFeatType }>`
   ${css.size(16)};
   fill: ${({ featType }) => FEAT[featType].COLOR};
-  /* fill: ${theme('article.digest')}; */
   opacity: 0.6;
   margin-right: 14px;
+
+  ${css.media.mobile`
+    ${css.size(10)};
+    margin-right: 5px;
+  `};
 `
 
 export const Text = styled.div`
   color: ${theme('article.digest')};
   font-size: 16px;
+
+  ${css.media.mobile`
+    font-size: 12px;
+  `};
 `

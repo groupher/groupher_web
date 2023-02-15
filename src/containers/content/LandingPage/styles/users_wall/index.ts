@@ -20,12 +20,25 @@ export const Title = styled.div`
 
   text-shadow: rgb(0 0 0 / 8%) 0px 10px 20px;
   opacity: 0.9;
+
+  ${css.media.mobile`
+    font-size: 22px;
+    font-weight: 600;
+  `};
 `
 export const Desc = styled.div`
   font-size: 17px;
   ${theme('article.digest')};
   margin-top: 12px;
   opacity: 0.8;
+
+  ${css.media.mobile`
+    font-size: 15px;
+    text-align: center;
+    padding: 0 20px;
+    display: inline-block;
+    font-weight: 400;
+  `};
 `
 //
 export const Wall = styled.div`
@@ -34,6 +47,11 @@ export const Wall = styled.div`
   width: 100%;
   height: auto;
   position: relative;
+
+  ${css.media.mobile`
+    margin-top: 30px;
+    padding: 0 15px;
+  `};
 `
 export const BgGradient = styled.div`
   position: absolute;
@@ -51,6 +69,11 @@ export const DempP = styled.div`
   p {
     margin-top: 10px;
   }
+
+  ${css.media.mobile`
+    font-size: 12px;
+    margin-top: 6px;
+  `};
 `
 export const Hightlight = styled.span<{ color: TColorName }>`
   color: ${theme('article.title')};
