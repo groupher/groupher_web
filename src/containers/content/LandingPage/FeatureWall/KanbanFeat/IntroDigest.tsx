@@ -14,9 +14,10 @@ import { checkBlockInView } from '../helper'
 
 type TProps = {
   inViewChange: (inView: boolean) => void
+  alignRight?: boolean
 }
 
-const IntroDigest: FC<TProps> = ({ inViewChange }) => {
+const IntroDigest: FC<TProps> = ({ inViewChange, alignRight = false }) => {
   const [inView, setInView] = useState(false)
   const [headInView, setHeadInview] = useState(false)
   const [footInView, setFootInview] = useState(false)
@@ -41,6 +42,7 @@ const IntroDigest: FC<TProps> = ({ inViewChange }) => {
         title="看板"
         desc="通过直观的看板展示进度，让你的用户了解团队正在进行中的工作。"
         featType={FEAT_TYPE.KANBAN}
+        alignRight={alignRight}
       />
 
       <DesktopOnly>

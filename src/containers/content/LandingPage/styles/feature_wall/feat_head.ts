@@ -7,6 +7,10 @@ import type { TActive } from '@/spec'
 import type { TFeatType } from '../../spec'
 import { FEAT } from '../../constant'
 
+export const Wrapper = styled.div<{ alignRight: boolean }>`
+  ${css.flexColumn()};
+  align-items: ${({ alignRight }) => (alignRight ? 'flex-end' : 'flex-start')};
+`
 export const Title = styled.div<{ featType: TFeatType }>`
   ${css.flex('align-center')};
   /* color: ${({ featType }) => FEAT[featType].COLOR}; */
@@ -37,12 +41,14 @@ export const Hint = styled.div<TActive>`
   `};
 `
 
-export const Desc = styled.div`
+export const Desc = styled.div<{ alignRight: boolean }>`
   font-size: 16px;
   color: ${theme('article.digest')};
   margin-top: 12px;
   width: 340px;
   opacity: 0.65;
+
+  text-align: ${({ alignRight }) => (alignRight ? 'right' : 'left')};
 
   ${css.media.mobile`
     font-size: 14px;

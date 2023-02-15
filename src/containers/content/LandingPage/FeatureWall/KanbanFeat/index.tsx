@@ -19,7 +19,7 @@ const KanbanFeat: FC = () => {
       </DesktopOnly>
 
       <MobileOnly>
-        <IntroDigest inViewChange={(cur) => setInView(cur)} />
+        <IntroDigest inViewChange={(cur) => setInView(cur)} alignRight />
         <IntroImage $active={inView} />
         <IntroItems />
       </MobileOnly>
