@@ -168,6 +168,7 @@ export const StartButton = styled(Button)`
 
   ${css.media.mobile`
     transform: scale(0.8);
+    text-decoration: none;
   `};
 `
 export const DemoButton = styled(Button)`

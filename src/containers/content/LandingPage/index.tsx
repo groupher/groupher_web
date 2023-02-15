@@ -5,6 +5,7 @@
 
 import { FC, useEffect, useState } from 'react'
 import { ParallaxProvider } from 'react-scroll-parallax'
+import Router from 'next/router'
 
 // import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
@@ -16,7 +17,6 @@ import { ROUTE } from '@/constant/route'
 
 import { DesktopOnly, MobileOnly } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'
-import Button from '@/widgets/Buttons/Button'
 import FaqList from '@/widgets/FaqList'
 import HomeHeader from '@/widgets/HomeHeader'
 
@@ -82,9 +82,14 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
             讨论区，GTD 看板，更新日志，帮助文档多合一，收集沉淀用户反馈，助你打造更好的产品
           </Desc>
           <ButtonGroup>
-            <Link href={`/${ROUTE.HOME}/${ROUTE.HELP}`}>
-              <StartButton size="medium">开始使用</StartButton>
-            </Link>
+            <StartButton
+              size="medium"
+              onClick={() => {
+                Router.push(`/${ROUTE.HOME}/${ROUTE.HELP}`)
+              }}
+            >
+              开始使用
+            </StartButton>
 
             <Tooltip
               content={
