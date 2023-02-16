@@ -80,10 +80,10 @@ export const Bar = styled.div<TBar>`
   margin-right: ${({ right }) => `${right}px` || 0};
 `
 
-type TDesktopOnly = { flex?: boolean }
+type TDesktopOnly = { flex?: boolean; width?: string }
 export const DesktopOnly = styled.div<TDesktopOnly>`
   display: ${({ flex }) => (flex ? 'flex' : 'block')};
-  width: 100%;
+  width: ${({ width }) => width || '100%'};
   ${css.media.mobile`
     display: none;
   `};

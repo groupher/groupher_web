@@ -17,6 +17,10 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 export const Header = styled.div<{ large: boolean }>`
   ${css.flex('align-both')};
   margin-bottom: ${({ large }) => (large ? '65px' : '50px')};
+
+  ${css.media.mobile`
+    margin-bottom: 35px;
+  `};
 `
 export const FAQIcon = styled(FAQSVG)`
   ${css.size(15)};
@@ -29,6 +33,10 @@ export const BrandText = styled.div<{ large: boolean }>`
   color: ${theme('article.title')};
   font-weight: bold;
   font-size: ${({ large }) => (large ? '26px' : '20px')};
+
+  ${css.media.mobile`
+    font-size: 22px;
+  `};
 `
 export const Content = styled.div<{ large: boolean }>`
   ${css.flex('justify-between')};

@@ -5,6 +5,7 @@ import useMobileDetect from '@groupher/use-mobile-detect-hook'
 import { COLOR_NAME } from '@/constant/colors'
 import { mockUsers } from '@/utils/mock'
 
+import { DesktopOnly } from '@/widgets/Common'
 import MasonryCards from '@/widgets/MasonryCards'
 
 import Card from './Card'
@@ -14,6 +15,7 @@ import {
   Title,
   Desc,
   Wall,
+  WallInner,
   BgGradient,
   DempP,
   Hightlight,
@@ -54,6 +56,24 @@ const P3 = (markColor: TColorName): ReactNode => (
   </DempP>
 )
 
+const CardsList = () => {
+  const users = mockUsers(10)
+
+  return (
+    <MasonryCards column={3}>
+      <Card content={P1(COLOR_NAME.BLUE)} user={users[0]} color={COLOR_NAME.BLUE} />
+      <Card content={P2(COLOR_NAME.ORANGE)} user={users[1]} color={COLOR_NAME.ORANGE} />
+      <Card content={P1(COLOR_NAME.RED)} user={users[2]} color={COLOR_NAME.RED} />
+      <Card content={P1(COLOR_NAME.GREEN)} user={users[3]} color={COLOR_NAME.GREEN} />
+      <Card content={P3(COLOR_NAME.CYAN)} user={users[4]} color={COLOR_NAME.CYAN} />
+      <Card content={P1(COLOR_NAME.PURPLE)} user={users[5]} color={COLOR_NAME.PURPLE} />
+      <Card content={P2(COLOR_NAME.YELLOW)} user={users[6]} color={COLOR_NAME.YELLOW} />
+      <Card content={P1(COLOR_NAME.BLUE)} user={users[7]} color={COLOR_NAME.BLUE} />
+      <Card content={P1(COLOR_NAME.BROWN)} user={users[8]} color={COLOR_NAME.BROWN} />
+    </MasonryCards>
+  )
+}
+
 const UsersWall: FC = () => {
   const [loaded, setLoaded] = useState(false)
   const { isMobile } = useMobileDetect()
@@ -62,36 +82,27 @@ const UsersWall: FC = () => {
     setLoaded(true)
   }, [])
 
-  const users = mockUsers(10)
-
   return (
     <Wrapper>
       <Slogan>
         <Title>被众多优秀开发者和团队青睐</Title>
         <Desc>从独立开发者到中小型创业团队，我们用产品力回报信任</Desc>
       </Slogan>
-
       {loaded && (
         <Parallax speed={-20} scale={[3, 0.8]} opacity={[1, 0.8]} disabled={isMobile}>
           <BgGradient />
         </Parallax>
       )}
 
-      {loaded && (
-        <Wall>
-          <MasonryCards column={isMobile ? 2 : 3}>
-            <Card content={P1(COLOR_NAME.BLUE)} user={users[0]} color={COLOR_NAME.BLUE} />
-            <Card content={P2(COLOR_NAME.ORANGE)} user={users[1]} color={COLOR_NAME.ORANGE} />
-            <Card content={P1(COLOR_NAME.RED)} user={users[2]} color={COLOR_NAME.RED} />
-            <Card content={P1(COLOR_NAME.GREEN)} user={users[3]} color={COLOR_NAME.GREEN} />
-            <Card content={P3(COLOR_NAME.CYAN)} user={users[4]} color={COLOR_NAME.CYAN} />
-            <Card content={P1(COLOR_NAME.PURPLE)} user={users[5]} color={COLOR_NAME.PURPLE} />
-            <Card content={P2(COLOR_NAME.YELLOW)} user={users[6]} color={COLOR_NAME.YELLOW} />
-            <Card content={P1(COLOR_NAME.BLUE)} user={users[7]} color={COLOR_NAME.BLUE} />
-            <Card content={P1(COLOR_NAME.BROWN)} user={users[8]} color={COLOR_NAME.BROWN} />
-          </MasonryCards>
-        </Wall>
-      )}
+      <Wall>
+        <WallInner>
+          <CardsList />
+        </WallInner>
+
+        <DesktopOnly width="auto">
+          <CardsList />
+        </DesktopOnly>
+      </Wall>
     </Wrapper>
   )
 }

@@ -18,6 +18,10 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   margin-bottom: ${({ bottom }) => `${bottom}px` || 0};
   margin-left: ${({ left }) => `${left}px` || 0};
   margin-right: ${({ right }) => `${right}px` || 0};
+
+  ${css.media.mobile`
+    padding-bottom: 15px;
+  `};
 `
 
 export const Title = styled.div``

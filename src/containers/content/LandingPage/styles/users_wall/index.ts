@@ -28,7 +28,7 @@ export const Title = styled.div`
 `
 export const Desc = styled.div`
   font-size: 17px;
-  ${theme('article.digest')};
+  color: ${theme('article.digest')};
   margin-top: 12px;
   opacity: 0.8;
 
@@ -49,8 +49,20 @@ export const Wall = styled.div`
   position: relative;
 
   ${css.media.mobile`
+    width: 200%;
     margin-top: 30px;
-    padding: 0 15px;
+    padding: 0 20px;
+    overflow-x: scroll;
+  `};
+`
+export const WallInner = styled.div`
+  width: 220%;
+  padding-left: 85%;
+  padding-right: 25%;
+  display: none;
+
+  ${css.media.mobile`
+    display: block;
   `};
 `
 export const BgGradient = styled.div`

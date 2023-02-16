@@ -38,7 +38,7 @@ export const Addr = styled(Link)`
 
 export const BottomWrapper = styled.div`
   margin-top: 5px;
-  ${css.flex('align-center')};
+  ${css.flex('align-both')};
 
   ${css.media.mobile`
     ${css.flexColumn()};
