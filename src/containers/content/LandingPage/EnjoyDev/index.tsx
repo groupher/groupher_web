@@ -1,4 +1,5 @@
-import { FC } from 'react'
+import { FC, useRef, useEffect } from 'react'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { Br } from '@/widgets/Common'
 import Block from './Block'
@@ -30,13 +31,22 @@ import {
 } from '../styles/enjoy_dev'
 
 const EnjoyDev: FC = () => {
+  const ref = useRef(null)
+  const { isMobile } = useMobileDetect()
+
+  useEffect(() => {
+    if (isMobile && ref) {
+      ref.current.scrollLeft += 310
+    }
+  }, [isMobile, ref])
+
   return (
     <Wrapper>
       <Slogan>
         <Title>将用户反馈融入开发流程</Title>
         <Desc>让你心爱的产品尽早收集真实用户的反馈，优先满足用户真正关心的需求</Desc>
       </Slogan>
-      <Wall>
+      <Wall ref={ref}>
         <BadWrapper>
           <Block text="开发" noDot />
           <ConnectLine />

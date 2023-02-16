@@ -3,7 +3,7 @@ import useMobileDetect from '@groupher/use-mobile-detect-hook'
 import { Parallax } from 'react-scroll-parallax'
 
 import type { TActive } from '@/spec'
-import { DesktopOnly } from '@/widgets/Common'
+import { DesktopOnly, MobileOnly } from '@/widgets/Common'
 
 import { FEAT_TYPE } from '../../constant'
 import BgDots from '../BgDots'
@@ -24,8 +24,9 @@ import {
 type TProps = TActive
 
 const IntroImage: FC<TProps> = ({ $active }) => {
-  const [loaded, setLoaded] = useState(false)
   const { isMobile } = useMobileDetect()
+
+  const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
     setLoaded(true)
@@ -37,14 +38,19 @@ const IntroImage: FC<TProps> = ({ $active }) => {
       <ImageWrapper>
         <DiscussDemo />
       </ImageWrapper>
+      <DesktopOnly>
+        {!loaded && <ColorBlockHolder />}
 
-      {!loaded && <ColorBlockHolder />}
+        {loaded && (
+          <Parallax speed={15} rotate={[-2, 10]} translateY={[10, -10]} disabled={isMobile}>
+            <ColorBlock $active={$active} />
+          </Parallax>
+        )}
+      </DesktopOnly>
 
-      {loaded && (
-        <Parallax speed={15} rotate={[-2, 10]} translateY={[10, -10]} disabled={isMobile}>
-          <ColorBlock $active={$active} />
-        </Parallax>
-      )}
+      <MobileOnly>
+        <ColorBlock />
+      </MobileOnly>
 
       <Parallax
         speed={15}

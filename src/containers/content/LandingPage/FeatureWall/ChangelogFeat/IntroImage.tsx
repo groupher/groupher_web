@@ -3,7 +3,7 @@ import { Parallax } from 'react-scroll-parallax'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TActive } from '@/spec'
-import { DesktopOnly } from '@/widgets/Common'
+import { DesktopOnly, MobileOnly } from '@/widgets/Common'
 
 import ChangelogDemo from './ChangelogDemo'
 
@@ -25,6 +25,7 @@ type TProps = TActive
 
 const IntroImage: FC<TProps> = ({ $active }) => {
   const [loaded, setLoaded] = useState(false)
+
   const { isMobile } = useMobileDetect()
 
   useEffect(() => {
@@ -38,13 +39,19 @@ const IntroImage: FC<TProps> = ({ $active }) => {
         <ChangelogDemo />
       </ImageWrapper>
 
-      {!loaded && <ColorBlockHolder />}
+      <DesktopOnly>
+        {!loaded && <ColorBlockHolder />}
 
-      {loaded && (
-        <Parallax speed={15} rotate={[-5, 8]} translateY={[10, -10]} disabled={isMobile}>
-          <ColorBlock $active={$active} />
-        </Parallax>
-      )}
+        {loaded && (
+          <Parallax speed={15} rotate={[-5, 8]} translateY={[10, -10]} disabled={isMobile}>
+            <ColorBlock $active={$active} />
+          </Parallax>
+        )}
+      </DesktopOnly>
+
+      <MobileOnly>
+        <ColorBlock />
+      </MobileOnly>
 
       <Parallax
         speed={15}

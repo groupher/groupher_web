@@ -31,6 +31,10 @@ export const CurveLine1 = styled(CurveLine1SVG)`
   filter: drop-shadow(2px 4px 6px lightgrey);
 
   animation: ${animate.blinker} 4s linear infinite alternate;
+
+  ${css.media.mobile`
+    animation: none;
+  `};
 `
 
 export const CurveLine2 = styled(CurveLine2SVG)`
@@ -43,6 +47,10 @@ export const CurveLine2 = styled(CurveLine2SVG)`
   filter: drop-shadow(2px 4px 6px lightgrey);
 
   animation: ${animate.blinker} 3s cubic-bezier(0.17, 0.67, 0.91, 0.27) infinite alternate;
+
+  ${css.media.mobile`
+    animation: none;
+  `};
 `
 
 export const CurveLine3 = styled(CurveLine3SVG)`
@@ -56,6 +64,10 @@ export const CurveLine3 = styled(CurveLine3SVG)`
 
   animation: ${animate.blinker} 2s cubic-bezier(0.53, 0.24, 0.91, 0.27) infinite alternate;
   animation-delay: 2s;
+
+  ${css.media.mobile`
+    animation: none;
+  `};
 `
 export const CurveLine4 = styled(CurveLine4SVG)`
   ${css.size(300)};
@@ -67,6 +79,10 @@ export const CurveLine4 = styled(CurveLine4SVG)`
   filter: drop-shadow(2px 4px 6px lightgrey);
 
   animation: ${animate.blinker} 1s cubic-bezier(0.09, 0.74, 0.36, 1.05) infinite alternate;
+
+  ${css.media.mobile`
+    animation: none;
+  `};
 `
 
 export const ShapeCross1Icon = styled(ShapeCross2SVG)`
@@ -79,6 +95,10 @@ export const ShapeCross1Icon = styled(ShapeCross2SVG)`
 
   animation: ${animate.breath} 1s linear infinite alternate;
   transition: all 0.2s;
+
+  ${css.media.mobile`
+    animation: none;
+  `};
 `
 export const ShapeCross2Icon = styled(ShapeCross2SVG)`
   ${css.size(20)};

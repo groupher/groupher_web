@@ -32,7 +32,7 @@ export const ImageWrapper = styled.div`
 `
 export const ColorBlock = styled.div<TActive>`
   position: absolute;
-  left: -300px;
+  left: 0;
   top: -400px;
   width: 600px;
   height: 390px;
@@ -42,6 +42,11 @@ export const ColorBlock = styled.div<TActive>`
   border-radius: 20px;
   box-shadow: ${({ $active }) => ($active ? '0 5px 25px rgb(35 35 35 / 10%)' : 'none')};
   transform: rotate(4deg);
+
+  ${css.media.mobile`
+    left: -140px;
+    top: 5px;
+  `};
 `
 export const ColorBlockHolder = styled(ColorBlock)`
   left: 0px;

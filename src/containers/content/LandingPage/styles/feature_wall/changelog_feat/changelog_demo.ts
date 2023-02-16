@@ -88,6 +88,10 @@ export const StarIcon = styled(StarSVG)`
   filter: drop-shadow(2px 4px 6px #f1cac9);
   z-index: 3;
   animation: ${animate.blinker} 3s linear infinite alternate;
+
+  ${css.media.mobile`
+    animation: none;
+  `};
 `
 
 export const StarIcon2 = styled(StarSVG)`
@@ -101,6 +105,10 @@ export const StarIcon2 = styled(StarSVG)`
   filter: drop-shadow(2px 4px 6px #f1cac9);
   z-index: 3;
   animation: ${animate.breath} 2s linear infinite alternate;
+
+  ${css.media.mobile`
+    animation: none;
+  `};
 `
 
 export const StarIcon3 = styled(StarSVG)`
@@ -115,4 +123,8 @@ export const StarIcon3 = styled(StarSVG)`
   z-index: 3;
 
   animation: ${animate.breath} 2s linear infinite alternate;
+
+  ${css.media.mobile`
+    animation: none;
+  `};
 `

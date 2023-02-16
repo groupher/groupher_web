@@ -36,13 +36,23 @@ export const ColorBlock = styled.div<TActive>`
   position: absolute;
   left: -300px;
   top: -400px;
+
+  left: 0;
+  top: -400px;
+
   width: 600px;
   height: 390px;
 
   background: linear-gradient(137deg, rgb(217 199 228) 52%, rgba(229, 216, 217, 1) 100%);
   border-radius: 20px;
   box-shadow: ${({ $active }) => ($active ? '0 5px 25px rgb(35 35 35 / 10%)' : 'none')};
-  transform: rotate(-6deg);
+  transform: rotate(-5deg);
+
+  ${css.media.mobile`
+    left: 0;
+    top: 0;
+    transform: rotate(-4deg);
+  `};
 `
 export const ColorBlockHolder = styled(ColorBlock)`
   left: 0px;

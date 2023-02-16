@@ -3,7 +3,7 @@ import { isEmpty } from 'ramda'
 
 import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
-import { LineDivider } from '@/widgets/Common'
+import { LineDivider, DesktopOnly, MobileOnly, Row, Br } from '@/widgets/Common'
 
 import { BEIAN_ADDR, BEIAN_TEXT } from '@/config'
 import { Wrapper, Note, Addr, BottomWrapper } from '../styles/desktop_view/powerby_info'
@@ -22,19 +22,39 @@ const PowerbyInfo: FC<TProps> = ({ metric }) => {
         </Note>
       )}
 
-      <BottomWrapper>
-        {metric === METRIC.HOME && <Note>Made in ChengDu</Note>}
-        {metric === METRIC.HOME && <LineDivider height={10} left={8} right={6} />}
-        {!isEmpty(BEIAN_TEXT) && (
-          <Note>
-            <Addr href={BEIAN_ADDR} target="_blank" prefetch={false}>
-              {BEIAN_TEXT}
-            </Addr>
-          </Note>
-        )}
-        <LineDivider height={10} left={5} right={6} />
-        <Note>违法信息举报</Note>
-      </BottomWrapper>
+      <DesktopOnly>
+        <BottomWrapper>
+          {metric === METRIC.HOME && <Note>Made in ChengDu</Note>}
+          {metric === METRIC.HOME && <LineDivider height={10} left={8} right={6} />}
+          {!isEmpty(BEIAN_TEXT) && (
+            <Note>
+              <Addr href={BEIAN_ADDR} target="_blank" prefetch={false}>
+                {BEIAN_TEXT}
+              </Addr>
+            </Note>
+          )}
+          <LineDivider height={10} left={5} right={6} />
+          <Note>违法信息举报</Note>
+        </BottomWrapper>
+      </DesktopOnly>
+
+      <MobileOnly>
+        <BottomWrapper>
+          <Row>
+            {metric === METRIC.HOME && <Note>Made in ChengDu</Note>}
+            {metric === METRIC.HOME && <LineDivider height={10} left={8} right={6} />}
+            <Note>违法信息举报</Note>
+          </Row>
+          <Br bottom={5} />
+          {!isEmpty(BEIAN_TEXT) && (
+            <Note>
+              <Addr href={BEIAN_ADDR} target="_blank" prefetch={false}>
+                {BEIAN_TEXT}
+              </Addr>
+            </Note>
+          )}
+        </BottomWrapper>
+      </MobileOnly>
     </Wrapper>
   )
 }

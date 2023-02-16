@@ -10,6 +10,10 @@ export const Wrapper = styled.article.attrs(({ testid }: TTestable) => ({
   ${css.flexColumn('align-both')};
   width: 100%;
   margin-top: 50px;
+
+  ${css.media.mobile`
+    margin-top: 0;
+  `};
 `
 export const Note = styled.div`
   font-size: 12px;
@@ -35,4 +39,8 @@ export const Addr = styled(Link)`
 export const BottomWrapper = styled.div`
   margin-top: 5px;
   ${css.flex('align-center')};
+
+  ${css.media.mobile`
+    ${css.flexColumn()};
+  `};
 `

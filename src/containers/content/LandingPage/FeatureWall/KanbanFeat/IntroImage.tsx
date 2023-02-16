@@ -3,7 +3,7 @@ import { Parallax } from 'react-scroll-parallax'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TActive } from '@/spec'
-import { DesktopOnly } from '@/widgets/Common'
+import { DesktopOnly, MobileOnly } from '@/widgets/Common'
 
 import { FEAT_TYPE } from '../../constant'
 import BgDots from '../BgDots'
@@ -38,13 +38,19 @@ const IntroImage: FC<TProps> = ({ $active }) => {
         <KanbanDemo />
       </ImageWrapper>
 
-      {!loaded && <ColorBlockHolder />}
+      <DesktopOnly>
+        {!loaded && <ColorBlockHolder />}
 
-      {loaded && (
-        <Parallax speed={15} rotate={[-2, 6]} translateY={[10, -10]} disabled={isMobile}>
-          <ColorBlock $active={$active} />
-        </Parallax>
-      )}
+        {loaded && (
+          <Parallax speed={15} rotate={[-2, 6]} translateY={[10, -10]} disabled={isMobile}>
+            <ColorBlock $active={$active} />
+          </Parallax>
+        )}
+      </DesktopOnly>
+
+      <MobileOnly>
+        <ColorBlock />
+      </MobileOnly>
 
       <Parallax
         speed={15}

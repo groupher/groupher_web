@@ -35,7 +35,10 @@ const IntroDigest: FC<TProps> = ({ inViewChange }) => {
 
   return (
     <Wrapper>
-      <ViewportTracker onEnter={() => setHeadInview(true)} onLeave={() => setHeadInview(false)} />
+      <DesktopOnly>
+        <ViewportTracker onEnter={() => setHeadInview(true)} onLeave={() => setHeadInview(false)} />
+      </DesktopOnly>
+
       <FeatHead
         $active={inView}
         title="讨论区"
@@ -45,9 +48,9 @@ const IntroDigest: FC<TProps> = ({ inViewChange }) => {
 
       <DesktopOnly>
         <IntroItems />
-      </DesktopOnly>
 
-      <ViewportTracker onEnter={() => setFootInview(true)} onLeave={() => setFootInview(false)} />
+        <ViewportTracker onEnter={() => setFootInview(true)} onLeave={() => setFootInview(false)} />
+      </DesktopOnly>
     </Wrapper>
   )
 }

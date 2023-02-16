@@ -28,7 +28,7 @@ export const Desc = styled.div`
   ${css.flex('align-center')};
   color: ${theme('article.digest')};
   margin-top: 25px;
-  font-size: 13px;
+  font-size: 12px;
   opacity: 0.8;
 
   ${css.media.mobile`
