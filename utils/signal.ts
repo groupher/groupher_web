@@ -101,7 +101,7 @@ export const c11nSettings = (): void => {
 }
 
 export const callWallpaperEditor = (): void => {
-  send(EVENT.DRAWER.OPEN, { type: TYPE.DRAWER.CUSTOM_BG_EDITOR })
+  send(EVENT.DRAWER.OPEN, { type: TYPE.DRAWER.CUSTOM_BG_EDITOR, options: { position: 'H' } })
 }
 
 export const callDashboardDesc = (data): void => {

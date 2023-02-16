@@ -2,6 +2,7 @@ import type { TTestable, TActive, TArticle, TDashboardLayout, TPostLayout } from
 
 export type TSwipeOption = {
   direction: 'bottom' | 'top'
+  // inspired by the vim shortcut
   position: 'H' | 'M' | 'L'
 }
 

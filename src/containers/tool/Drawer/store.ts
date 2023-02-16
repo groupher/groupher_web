@@ -189,6 +189,7 @@ const DrawerStore = T.model('DrawerStore', {
 
       slf.visible = true
       slf.type = type
+
       slf.options = merge(defaultOptions, options)
       lockPage()
 
