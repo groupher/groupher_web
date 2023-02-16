@@ -87,7 +87,7 @@ const BuildIn: FC<TProps> = ({ wallpaperData }) => {
           </Fragment>
         )}
       </SettingWrapper>
-      <Br top={50} />
+      <Br top={80} />
     </Wrapper>
   )
 }

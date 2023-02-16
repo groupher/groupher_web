@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 
+import { theme } from '@/utils/css'
 // see example: https://codepen.io/mattbraun/pen/EywBJR
 
 export const Wrapper = styled.div`
@@ -20,7 +21,7 @@ export const LineBase = styled.span<{ curve: boolean }>`
 
   &:after {
     content: '';
-    background-color: #194d5f;
+    background-color: ${theme('divider')};
     width: 20px;
     height: 3px;
     display: block;

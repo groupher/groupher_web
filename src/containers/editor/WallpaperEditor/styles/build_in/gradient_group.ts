@@ -11,6 +11,11 @@ export const Wrapper = styled.div`
   flex-wrap: wrap;
   gap: 0 12px;
   margin-top: 10px;
+
+  ${css.media.mobile`
+    transform: scale(0.9);
+    margin-left: -15px;
+  `};
 `
 export const BallWrapper = styled.div<TActive>`
   ${css.size(36)};

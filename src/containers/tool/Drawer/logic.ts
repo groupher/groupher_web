@@ -26,7 +26,11 @@ let store: TStore | undefined
 let sub$ = null
 
 // those types will not treat as page link
-const FUNCTION_TYPES = [TYPE.DRAWER.C11N_SETTINGS, TYPE.DRAWER.MODELINE_MENU]
+const FUNCTION_TYPES = [
+  TYPE.DRAWER.C11N_SETTINGS,
+  TYPE.DRAWER.MODELINE_MENU,
+  TYPE.DRAWER.CUSTOM_BG_EDITOR,
+]
 
 /**
  * close current drawer

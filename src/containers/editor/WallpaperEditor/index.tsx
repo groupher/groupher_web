@@ -9,6 +9,7 @@ import { bond } from '@/utils/mobx'
 import { DRAWER_SCROLLER } from '@/constant/dom'
 import VIEW from '@/constant/view'
 
+import { DesktopOnly, MobileOnly, Br } from '@/widgets/Common'
 import Tabs from '@/widgets/Switcher/Tabs'
 import CustomScroller from '@/widgets/CustomScroller'
 
@@ -41,19 +42,27 @@ const WallpaperEditorContainer: FC<TProps> = ({
         <Tabs items={TAB_OPTIONS} activeKey={tab} onChange={changeTab} view={VIEW.DRAWER} />
       </Banner>
 
-      <CustomScroller
-        instanceKey={DRAWER_SCROLLER}
-        direction="vertical"
-        height="calc(100vh - 226px)"
-        barSize="small"
-        showShadow={false}
-        autoHide={false}
-      >
+      <MobileOnly>
         <Content>
           {tab === TAB.BUILDIN && <BuildIn wallpaperData={wallpaperData} />}
           {tab === TAB.CUSTOM && <Custom />}
         </Content>
-      </CustomScroller>
+      </MobileOnly>
+      <DesktopOnly>
+        <CustomScroller
+          instanceKey={DRAWER_SCROLLER}
+          direction="vertical"
+          height="calc(100vh - 226px)"
+          barSize="small"
+          showShadow={false}
+          autoHide={false}
+        >
+          <Content>
+            {tab === TAB.BUILDIN && <BuildIn wallpaperData={wallpaperData} />}
+            {tab === TAB.CUSTOM && <Custom />}
+          </Content>
+        </CustomScroller>
+      </DesktopOnly>
       <Footer wallpaperType={wallpaperData.wallpaperType} isTouched={isTouched} />
     </Wrapper>
   )

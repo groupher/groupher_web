@@ -10,9 +10,9 @@ const BaseWrapper = styled.div`
   left: 0;
   width: 100%;
   height: 30px;
-  background: #002a35;
+  background: ${theme('alphaBg2')};
   border-bottom: 1px solid;
-  border-bottom-color: #144150;
+  border-bottom-color: ${theme('divider')};
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;
 `

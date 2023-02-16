@@ -103,7 +103,6 @@ type TDrawerMobile = { options: Record<string, unknown>; bgColor: string }
 export const DrawerMobileContent = styled.div<TDrawerMobile>`
   width: 100%;
   height: ${({ options }) => getMobileContentHeight(options)};
-  box-shadow: ${theme('drawer.shadow')};
   background: ${({ options, bgColor }) => getContentLinearGradient(options, bgColor)};
 `
 
@@ -117,6 +116,7 @@ export const MobileInnerContent = styled.div.attrs(({ swipeUpY, swipeDownY, opti
   margin-top: ${({ options }) => (options.direction === 'bottom' ? '15px' : '0')};
   overflow-y: scroll;
   transition: filter 0.3s;
+  box-shadow: ${theme('drawer.shadow')};
 `
 export const PreviewHeader = styled.div`
   ${css.flex()};
