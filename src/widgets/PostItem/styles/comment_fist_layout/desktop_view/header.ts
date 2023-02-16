@@ -18,6 +18,8 @@ export const Title = styled.a`
   text-decoration: none;
   font-size: 15px;
   font-weight: 600;
+  letter-spacing: 0.03em;
+  opacity: 0.85;
   color: ${theme('article.title')};
 
   @media (max-width: 1450px) {
