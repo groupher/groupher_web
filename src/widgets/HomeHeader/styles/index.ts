@@ -60,7 +60,7 @@ export const LinksWrapper = styled.div`
   padding-left: 24px;
 
   ${css.media.mobile`
-     display: none;
+    display: none;
   `};
 `
 export const LinkItem = styled(Link)<TActive>`
@@ -110,7 +110,20 @@ export const ArrowIcon = styled(ArrowSVG)`
 export const RightSideInfo = styled.div`
   ${css.flex('align-center', 'justify-end')};
   width: 150px;
+
+  ${css.media.mobile`
+    display: none;
+  `};
 `
+export const MobileRightSide = styled.div`
+  ${css.flex('align-both')};
+  display: none;
+
+  ${css.media.mobile`
+    display: flex;
+  `};
+`
+
 export const GithubIcon = styled(GithubSVT)`
   ${css.size(16)};
   fill: ${theme('article.digest')};

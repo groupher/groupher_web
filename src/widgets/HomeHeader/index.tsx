@@ -2,7 +2,10 @@ import { FC, useState } from 'react'
 
 import { ROUTE } from '@/constant/route'
 
+import { DesktopOnly } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'
+
+import MobileMenu from './MobileMenu'
 
 import {
   Wrapper,
@@ -22,6 +25,7 @@ import {
   MenuItem,
   MenuTitle,
   MenuDesc,
+  MobileRightSide,
 } from './styles'
 
 const HomeHeader: FC = () => {
@@ -108,6 +112,12 @@ const HomeHeader: FC = () => {
           <div>预约演示</div>
         </RequestDemo>
       </RightSideInfo>
+
+      <MobileRightSide>
+        <GithubIcon />
+        <Divider left={14} right={12} />
+        <MobileMenu />
+      </MobileRightSide>
     </Wrapper>
   )
 }
