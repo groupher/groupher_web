@@ -24,6 +24,11 @@ export const Wrapper = styled.div`
   );
 
   border-image-slice: 1;
+
+  ${css.media.mobile`
+    margin-top: 35px;
+    margin-left: -10px;
+  `};
 `
 
 export const Note = styled.div`

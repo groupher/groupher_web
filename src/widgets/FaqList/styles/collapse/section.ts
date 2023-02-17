@@ -8,6 +8,10 @@ import ArrowSVG from '@/icons/ArrowSimple'
 export const Wrapper = styled.div`
   padding: 18px 0;
   width: 100%;
+
+  ${css.media.mobile`
+    padding: 16px 0;
+  `};
 `
 export const Header = styled.div`
   ${css.flex('align-center', 'justify-between')};
@@ -22,6 +26,11 @@ export const Title = styled.div<TActive>`
   ${Wrapper}:hover & {
     color: ${theme('article.title')};
   }
+
+  ${css.media.mobile`
+    font-size: 16px;
+    ${css.cutRest('300px')};
+  `};
 `
 export const ArrowIcon = styled(ArrowSVG)<TActive>`
   ${css.size(16)};
@@ -47,4 +56,8 @@ export const Body = styled.div<TActive>`
 
   opacity: ${({ show }) => (show ? 1 : 0)};
   transition: all 0.3s;
+
+  ${css.media.mobile`
+    font-size: 15px;
+  `};
 `

@@ -14,6 +14,10 @@ export const Wrapper = styled.div`
   margin-right: 14px;
   font-weight: 600;
   margin-top: 0;
+
+  ${css.media.mobile`
+    margin-right: 0;
+  `};
 `
 export const Avatar = styled(Img)`
   ${css.circle(24)};

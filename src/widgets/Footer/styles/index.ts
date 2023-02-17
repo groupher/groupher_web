@@ -18,4 +18,8 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 export const InnerWrapper = styled.div<{ metric: TMetric }>`
   width: 100%;
   ${({ metric }) => css.fitContentWidth(metric)};
+
+  ${css.media.mobile`
+    margin-left: 0;
+  `};
 `

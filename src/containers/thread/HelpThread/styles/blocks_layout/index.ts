@@ -23,6 +23,10 @@ export const CatsWrapper = styled(MainWrapper)`
   padding-right: 50px;
 
   border-right: none;
+
+  ${css.media.mobile`
+    padding: 0;
+  `};
 `
 
 export const Divider = styled.div`

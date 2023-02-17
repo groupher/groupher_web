@@ -5,22 +5,11 @@ import type { TThemeMap } from '@/spec'
 import useSwipe from '@/hooks/useSwipe'
 
 import type { TSwipeOption } from '../spec'
-import AddOn from '../AddOn'
 import Header from '../Header'
 
-import {
-  DrawerOverlay,
-  DrawerWrapper,
-  DrawerMobileContent,
-  MobileInnerContent,
-} from '../styles'
+import { DrawerOverlay, DrawerWrapper, DrawerMobileContent, MobileInnerContent } from '../styles'
 
-import {
-  closeDrawer,
-  onSwipedYHandler,
-  onSwipingYHandler,
-  resetSwipeAviliable,
-} from '../logic'
+import { closeDrawer, onSwipedYHandler, onSwipingYHandler, resetSwipeAviliable } from '../logic'
 
 type TProps = {
   testid?: string
@@ -89,12 +78,8 @@ const Viewer: FC<TProps> = ({
   })
 
   return (
-    <div>
-      <DrawerOverlay
-        ref={overlayRef}
-        visible={visible}
-        onClick={() => closeDrawer()}
-      />
+    <>
+      <DrawerOverlay ref={overlayRef} visible={visible} onClick={() => closeDrawer()} />
       <DrawerWrapper
         testid={testid}
         visible={visible}
@@ -104,7 +89,6 @@ const Viewer: FC<TProps> = ({
         options={options}
         mobile
       >
-        <AddOn type={type} />
         <DrawerMobileContent options={options} bgColor={theme.drawer.bg}>
           <MobileInnerContent
             options={options}
@@ -124,7 +108,7 @@ const Viewer: FC<TProps> = ({
           showHeaderText={showHeaderText}
         />
       </DrawerWrapper>
-    </div>
+    </>
   )
 }
 

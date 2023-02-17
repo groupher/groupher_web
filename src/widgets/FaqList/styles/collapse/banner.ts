@@ -13,6 +13,10 @@ export const Title = styled.div`
   font-size: 22px;
   font-weight: 500;
   margin-left: -35px;
+
+  ${css.media.mobile`
+    margin-left: -10px;
+  `};
 `
 export const MenuIcon = styled(ArrowSVG)`
   ${css.size(12)};

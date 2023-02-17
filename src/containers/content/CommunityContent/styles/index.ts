@@ -25,8 +25,8 @@ export const BaseInnerWrapper = styled.div`
   padding-top: 0;
 
   ${css.media.mobile`
-    margin: 0 3%;
-    padding-top: 0;
+    margin: 0;
+    padding: 0;
   `};
 `
 export const BaseContentWrapper = styled.div`
@@ -56,5 +56,11 @@ export const InnerWrapper = styled(BaseInnerWrapper)`
   /* 经典布局在统一宽度下再缩减 35px, 否则列表页会太宽 */
   padding-left: 35px;
   padding-right: 35px;
+
+  ${css.media.mobile`
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+  `};
 `
 export const ContentWrapper = styled(BaseContentWrapper)``

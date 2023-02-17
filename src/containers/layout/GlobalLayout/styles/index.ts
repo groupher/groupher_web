@@ -20,9 +20,17 @@ export const Wrapper = styled.div`
   ${css.flex('justify-center')};
 `
 
-export const ScrollWrapper = styled.div`
+export const ScrollWrapper = styled.div<{ noMobilePadding: boolean }>`
   position: absolute;
   width: 100%;
+
+  ${css.media.mobile`
+    width: calc(100% - 12px);
+    margin-left: 6px;
+  `};
+
+  ${({ noMobilePadding }) =>
+    noMobilePadding ? 'width: 100% !important; margin-left: 0 !important;' : ''};
 `
 
 export const GrowBackground = styled.div<TGlowEffect>`
@@ -43,6 +51,10 @@ export const GrowBackground = styled.div<TGlowEffect>`
   opacity: ${({ glowOpacity }) => `${parseFloat(glowOpacity)}` || 1};
 
   z-index: -1;
+
+  ${css.media.mobile`
+    width: 100vw;
+  `};
 `
 
 type TInner = { metric: TMetric; hasTopbar: boolean; topbarBg: TColorName; hasShadow: boolean }

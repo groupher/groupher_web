@@ -97,7 +97,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
       {load && <Addon metric={metric} />}
       <Skeleton>
         <Wallpaper wallpaperInfo={wallpaperInfo} />
-        <ScrollWrapper>
+        <ScrollWrapper noMobilePadding={metric === METRIC.HOME}>
           <Wrapper>
             <SEO metric={metric} config={seoConfig} />
             <InnerWrapper

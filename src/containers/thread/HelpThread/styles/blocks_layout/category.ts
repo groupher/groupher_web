@@ -17,6 +17,12 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 
   transition: all 0.2s;
   background: transparent;
+
+  ${css.media.mobile`
+    width: 50%;
+    padding: 0;
+    margin-bottom: 28px;
+  `};
 `
 
 export const Header = styled.div`
@@ -38,6 +44,10 @@ export const Title = styled.div`
   font-size: 16px;
   font-weight: 500;
   margin-top: 8px;
+
+  ${css.media.mobile`
+    font-size: 15px;
+  `};
 `
 export const ItemsWrapper = styled.div`
   margin-top: 3px;

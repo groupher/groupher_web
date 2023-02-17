@@ -15,17 +15,15 @@ const BlocksLayout: FC<TProps> = ({ testid = 'home' }) => {
   return (
     <Wrapper>
       <CatsWrapper>
-        {cats.map((cat) => {
-          return (
-            <Category
-              key={cat.id}
-              color={cat.color}
-              title={cat.title}
-              desc={cat.desc}
-              articles={cat.articles}
-            />
-          )
-        })}
+        {cats.map((cat) => (
+          <Category
+            key={cat.id}
+            color={cat.color}
+            title={cat.title}
+            desc={cat.desc}
+            articles={cat.articles}
+          />
+        ))}
       </CatsWrapper>
     </Wrapper>
   )

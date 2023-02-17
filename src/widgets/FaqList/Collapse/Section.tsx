@@ -3,13 +3,7 @@ import { FC, memo } from 'react'
 import { includes } from 'ramda'
 
 import type { TID, TArticle } from '@/spec'
-import {
-  Wrapper,
-  Header,
-  Title,
-  ArrowIcon,
-  Body,
-} from '../styles/collapse/section'
+import { Wrapper, Header, Title, ArrowIcon, Body } from '../styles/collapse/section'
 
 type TProps = {
   item: TArticle

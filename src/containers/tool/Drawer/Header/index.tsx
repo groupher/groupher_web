@@ -4,9 +4,9 @@ import useSwipe from '@/hooks/useSwipe'
 import { nilOrEmpty } from '@/utils/validator'
 
 import type { TSwipeOption } from '../spec'
-import CloseLine from './CloseLine'
-import { TopWrapper, BottomWrapper, TextWrapper } from '../styles/header'
-import { onSwipedYHandler, onSwipingYHandler } from '../logic'
+// import CloseLine from './CloseLine'
+import { TopWrapper, BottomWrapper, TextWrapper, CloseButton } from '../styles/header'
+import { onSwipedYHandler, onSwipingYHandler, closeDrawer } from '../logic'
 
 /* <TextWrapper>讨论共 167 条</TextWrapper> */
 
@@ -29,21 +29,22 @@ const Header: FC<TProps> = ({
 }) => {
   const ignoreSwipeAviliable = true
   const swipeHandlers = useSwipe({
-    onSwiped: (ev) =>
-      onSwipedYHandler(ev, setSwipeUpY, setSwipeDownY, ignoreSwipeAviliable),
-    onSwiping: (ev) =>
-      onSwipingYHandler(ev, setSwipeUpY, setSwipeDownY, ignoreSwipeAviliable),
+    onSwiped: (ev) => onSwipedYHandler(ev, setSwipeUpY, setSwipeDownY, ignoreSwipeAviliable),
+    onSwiping: (ev) => onSwipingYHandler(ev, setSwipeUpY, setSwipeDownY, ignoreSwipeAviliable),
   })
 
-  const content =
-    showHeaderText && !nilOrEmpty(headerText) ? (
-      <TextWrapper>{headerText}</TextWrapper>
-    ) : (
-      <CloseLine curve={!canBeClose} />
-    )
+  const content = showHeaderText && !nilOrEmpty(headerText) && (
+    <TextWrapper>{headerText}</TextWrapper>
+  )
+  // <CloseLine curve={!canBeClose} />
 
   if (options.direction === 'bottom') {
-    return <BottomWrapper {...swipeHandlers}>{content}</BottomWrapper>
+    return (
+      <BottomWrapper {...swipeHandlers}>
+        {content}
+        <CloseButton onClick={() => closeDrawer()} />
+      </BottomWrapper>
+    )
   }
   return <TopWrapper {...swipeHandlers}>{content}</TopWrapper>
 }

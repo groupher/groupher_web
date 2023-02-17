@@ -1,6 +1,7 @@
 import { FC, memo } from 'react'
 
 import IconButton from '@/widgets/Buttons/IconButton'
+
 import { closeDrawer } from '../logic'
 
 const CloseButton: FC = () => {
