@@ -4,6 +4,7 @@
  */
 
 import { FC } from 'react'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 // import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
@@ -39,6 +40,7 @@ const HelpThreadContainer: FC<TProps> = ({
 }) => {
   useInit(store)
   const { isArticleLayout, layout, faqLayout, isFAQArticleLayout } = store
+  const { isMobile } = useMobileDetect()
 
   if (isArticleLayout) {
     return (
@@ -50,7 +52,8 @@ const HelpThreadContainer: FC<TProps> = ({
     <Wrapper testid={testid} isSidebarLayout={isSidebarLayout}>
       {layout === HELP_LAYOUT.BLOCKS && <BlocksLayout />}
       {layout === HELP_LAYOUT.LISTS && <ListsLayout />}
-      <Divider top={50} bottom={80} />
+
+      <Divider top={50} bottom={80} width={isMobile ? '90%' : '100%'} />
 
       <FAQWrapper>
         <FaqList layout={faqLayout} />

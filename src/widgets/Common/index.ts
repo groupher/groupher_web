@@ -17,10 +17,11 @@ export const Space = styled.span<TSpace>`
 export const SpaceGrow = styled.div`
   flex-grow: 1;
 `
-export const Divider = styled.div<TSpace>`
+type TDivider = { width?: string } & TSpace
+export const Divider = styled.div<TDivider>`
   border-top: 1px solid;
   border-top-color: ${theme('divider')};
-  width: 100%;
+  width: ${({ width }) => width || '100%'};
   margin-top: ${({ top }) => `${top === undefined ? 20 : top}px`};
   margin-bottom: ${({ bottom }) => `${bottom === undefined ? 20 : bottom}px`};
 `

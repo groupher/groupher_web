@@ -7,6 +7,10 @@ import css, { theme } from '@/utils/css'
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
   margin-left: -100px;
+
+  ${css.media.mobile`
+    display: none;
+  `};
 `
 export const Title = styled(Link)<TActive>`
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};

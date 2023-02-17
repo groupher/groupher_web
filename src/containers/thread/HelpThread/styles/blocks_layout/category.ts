@@ -22,6 +22,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
     width: 50%;
     padding: 0;
     margin-bottom: 28px;
+    padding: 0 22px;
   `};
 `
 

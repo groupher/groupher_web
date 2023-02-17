@@ -4,7 +4,6 @@ import type { TThread, TCommunity, TMetric, TEnableConfig } from '@/spec'
 import EVENT from '@/constant/event'
 import { send } from '@/utils/signal'
 
-import { DesktopOnly } from '@/widgets/Common'
 import ViewportTracker from '@/widgets/ViewportTracker'
 
 import ThreadTab from './ThreadTab'
@@ -39,13 +38,11 @@ const SimpleLayout: FC<TProps> = ({ community, activeThread, metric, enable }) =
         <BannerContentWrapper>
           <CommunityBaseInfo>
             <CommunityBrief community={community} />
-            <DesktopOnly>
-              <ThreadTab
-                threads={publicThreads}
-                onChange={(data) => send(EVENT.COMMUNITY_THREAD_CHANGE, { data })}
-                active={activeThread}
-              />
-            </DesktopOnly>
+            <ThreadTab
+              threads={publicThreads}
+              onChange={(data) => send(EVENT.COMMUNITY_THREAD_CHANGE, { data })}
+              active={activeThread}
+            />
             <AccountUnit />
           </CommunityBaseInfo>
         </BannerContentWrapper>

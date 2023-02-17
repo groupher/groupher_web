@@ -25,8 +25,8 @@ export const ScrollWrapper = styled.div<{ noMobilePadding: boolean }>`
   width: 100%;
 
   ${css.media.mobile`
-    width: calc(100% - 12px);
-    margin-left: 6px;
+    width: calc(100% - 16px);
+    margin-left: 8px;
   `};
 
   ${({ noMobilePadding }) =>
@@ -51,10 +51,6 @@ export const GrowBackground = styled.div<TGlowEffect>`
   opacity: ${({ glowOpacity }) => `${parseFloat(glowOpacity)}` || 1};
 
   z-index: -1;
-
-  ${css.media.mobile`
-    width: 100vw;
-  `};
 `
 
 type TInner = { metric: TMetric; hasTopbar: boolean; topbarBg: TColorName; hasShadow: boolean }
@@ -78,6 +74,7 @@ export const InnerWrapper = styled.div<TInner>`
   ${css.media.tablet`
     position: relative;
     padding-left: 0;
+    border-top: none;
   `};
 `
 type TBody = { isMobile: boolean }
