@@ -164,5 +164,16 @@ const GlobalStyle = createGlobalStyle`
   .lazy-load-image-background.blur.lazy-load-image-loaded {
     line-height: 0.8;
   }
+
+  // ngpress
+  #nprogress .bar {
+    background: ${theme('article.title')} !important;
+  }
+  #nprogress .peg {
+    box-shadow: 0 0 10px ${theme('article.title')}, 0 0 5px ${theme('article.title')} !important;
+  }
+  #nprogress .spinner {
+    display: none !important;
+  }
 `
 export default GlobalStyle

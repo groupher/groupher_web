@@ -3,6 +3,8 @@ import { useEffect, Fragment } from 'react'
 import Head from 'next/head'
 import Script from 'next/script'
 import { useRouter } from 'next/router'
+import NextNProgress from 'nextjs-progressbar'
+
 import { getAnalyticsTag, handleRouteChange } from '@/utils/analytics/baidu'
 
 // import { useStore } from '@/stores/init'
@@ -41,6 +43,7 @@ const App = ({ Component, pageProps }) => {
         strategy="afterInteractive"
         dangerouslySetInnerHTML={getAnalyticsTag()}
       />
+      <NextNProgress startPosition={0.6} height={2} />
       {/* <Script
         strategy="afterInteractive"
         data-domain="groupher.com"

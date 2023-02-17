@@ -12,7 +12,7 @@ const MobileMenu: FC = () => {
       content={
         <Wrapper>
           <Item href={`/${ROUTE.HOME}`}>官方社区</Item>
-          <Item href={`/${ROUTE.HOME}/${ROUTE.CHANGELOG}`}>开发计划</Item>
+          <Item href={`/${ROUTE.HOME}/${ROUTE.KANBAN}`}>开发计划</Item>
           <Title>产品</Title>
           <Item href={`/${ROUTE.HOME}`}>讨论区</Item>
           <Item href={`/${ROUTE.HOME}`}>GTD 看板</Item>
