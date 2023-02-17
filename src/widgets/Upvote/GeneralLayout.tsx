@@ -5,12 +5,12 @@
  */
 
 import { FC, memo } from 'react'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TUser, TAvatarLayout } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
 import Facepile from '@/widgets/Facepile'
+import { DesktopOnly } from '@/widgets/Common'
 
 import AnimatedCount from '../AnimatedCount'
 import UpvoteBtn from './UpvoteBtn'
@@ -38,7 +38,6 @@ const Upvote: FC<TProps> = ({
   avatarList,
   avatarLayout = AVATAR_LAYOUT.SQUARE,
 }) => {
-  const { isMobile } = useMobileDetect()
   const noOne = count === 0
 
   return (
@@ -51,8 +50,10 @@ const Upvote: FC<TProps> = ({
         active={viewerHasUpvoted}
         size={count === 0 ? 'small' : 'medium'}
       />
-      {!noOne && <LineDivider />}
-      {!noOne && !isMobile && <Facepile users={avatarList} avatarLayout={avatarLayout} showMore />}
+      <DesktopOnly>{!noOne && <LineDivider />}</DesktopOnly>
+      <DesktopOnly>
+        {!noOne && <Facepile users={avatarList} avatarLayout={avatarLayout} showMore />}
+      </DesktopOnly>
     </Wrapper>
   )
 }

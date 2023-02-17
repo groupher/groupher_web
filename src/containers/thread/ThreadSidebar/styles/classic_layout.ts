@@ -14,6 +14,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   padding-top: 15px;
 
   ${css.media.tablet`display: none;`};
+  ${css.media.mobile`display: none;`};
 `
 export const StickyWrapper = styled.div`
   ${css.flexColumn()};

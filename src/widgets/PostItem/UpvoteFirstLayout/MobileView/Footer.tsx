@@ -36,8 +36,8 @@ const Footer: FC<TProps> = ({ article }) => {
             avatarList={meta.latestUpvotedUsers}
             viewerHasUpvoted={viewerHasUpvoted}
             type={UPVOTE_LAYOUT.GENERAL}
-            left={-6}
-            right={5}
+            left={-3}
+            right={10}
           />
         </UpvotesWrapper>
 

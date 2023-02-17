@@ -40,8 +40,6 @@ type TProps = {
 const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
   useInit(store)
 
-  const { isMobile } = useMobileDetect()
-
   const {
     pagedArticlesData,
     filtersData,
@@ -95,7 +93,7 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
         {mode === 'search' && <FaqList layout={HELP_FAQ_LAYOUT.SEARCH_HINT} />}
       </LayoutWrapper>
 
-      {!isMobile && !isSidebarLayout && <ThreadSidebar />}
+      {!isSidebarLayout && <ThreadSidebar />}
     </Wrapper>
   )
 }

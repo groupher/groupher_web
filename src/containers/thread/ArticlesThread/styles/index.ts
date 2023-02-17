@@ -43,7 +43,7 @@ export const MainWrapper = styled.div<TMainWrapper>`
   border-right-color: ${theme('divider')};
 
   ${css.media.mobile`
-     padding: 10px 15px;
+     padding: 0px 18px;
      margin-right: 0;
   `};
 `
@@ -56,5 +56,7 @@ export const FilterWrapper = styled.div<{ thread: TThread }>`
   margin-bottom: 5px;
   margin-left: ${({ thread }) => (includes(thread, values(CARD_THREAD)) ? '5px' : 0)};
 
-  ${css.media.mobile`margin-bottom: 4px;`};
+  ${css.media.mobile`
+    margin-bottom: 0;
+  `};
 `

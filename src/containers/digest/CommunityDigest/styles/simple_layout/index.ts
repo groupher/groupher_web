@@ -25,6 +25,10 @@ export const Wrapper = styled(BaseBanner)<TWrapper>`
   );
 
   border-image-slice: 1;
+
+  ${css.media.mobile`
+    min-height: 48px;
+  `};
 `
 export const InnerWrapper = styled.div<TWrapper>`
   ${css.flex('justify-center')};
@@ -47,8 +51,8 @@ export const BaseBannerContent = styled.div`
   max-width: ${WIDTH.COMMUNITY.CONTENT};
 
   ${css.media.mobile`
-    padding-left: 6%;
-    padding-right: 5.5%;
+    padding-left: 18px;
+    padding-right: 20px;
   `};
 `
 export const BannerContentWrapper = styled(BaseBannerContent)`
