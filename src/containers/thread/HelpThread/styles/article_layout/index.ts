@@ -20,6 +20,10 @@ export const Title = styled.div`
   font-size: 26px;
   color: ${theme('article.title')};
   font-weight: 600;
+
+  ${css.media.mobile`
+    font-size: 20px;
+  `};
 `
 type TContent = { isRightLayout?: boolean; open?: boolean; isSidebarLayout: boolean }
 export const Content = styled(MainWrapper)<TContent>`

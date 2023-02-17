@@ -59,4 +59,8 @@ export const AccountIcon = styled(AccountSVG)`
   margin-right: 14px;
 
   ${hoverEffect}
+
+  ${css.media.mobile`
+    margin-right: 0;
+  `};
 `

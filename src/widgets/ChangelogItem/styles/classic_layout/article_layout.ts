@@ -25,6 +25,11 @@ export const Title = styled.div`
   font-weight: 580;
   margin-bottom: 10px;
   margin-top: 30px;
+
+  ${css.media.mobile`
+    font-size: 18px;
+    margin-top: 20px;
+  `};
 `
 export const TagsWrapper = styled.div`
   ${css.flex('align-both', 'justify-between')};
@@ -55,7 +60,13 @@ export const Version = styled.span`
   font-weight: 480;
   opacity: 0.6;
   margin-left: 8px;
+
+  ${css.media.mobile`
+    font-size: 15px;
+    margin-left: 5px;
+  `};
 `
+
 export const ShareIcon = styled(ShareSVG)`
   ${css.size(13)};
   fill: ${theme('article.digest')};

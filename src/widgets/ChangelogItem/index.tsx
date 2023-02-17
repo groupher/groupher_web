@@ -16,8 +16,8 @@ type TProps = {
 const ChangelogItem: FC<TProps> = ({ layout, avatarLayout }) => {
   return (
     <Fragment>
-      {layout === CHANGELOG_LAYOUT.SIMPLE && <SimpleLayout avatarLayout={avatarLayout} />}
       {layout === CHANGELOG_LAYOUT.CLASSIC && <ClassicLayout avatarLayout={avatarLayout} />}
+      {layout === CHANGELOG_LAYOUT.SIMPLE && <SimpleLayout avatarLayout={avatarLayout} />}
     </Fragment>
   )
 }

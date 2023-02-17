@@ -1,7 +1,7 @@
 import { FC, memo, useState } from 'react'
 
 import FileTree from '@/widgets/FileTree'
-import { Space } from '@/widgets/Common'
+import { Space, DesktopOnly } from '@/widgets/Common'
 import FeedbackFooter from '@/widgets/FeedbackFooter'
 import Sticky from '@/widgets/Sticky'
 import CustomScroller from '@/widgets/CustomScroller'
@@ -31,28 +31,30 @@ const ArticleLayout: FC<TProps> = ({
 
   return (
     <Wrapper isSidebarLayout={isSidebarLayout}>
-      {!isSidebarLayout && (
-        <>
-          <ToggleBtn open={filetreeOpen} onToggle={(toggle) => setFileTreeOpen(toggle)} />
+      <DesktopOnly>
+        {!isSidebarLayout && (
+          <>
+            <ToggleBtn open={filetreeOpen} onToggle={(toggle) => setFileTreeOpen(toggle)} />
 
-          <Sidebar isLeftLayout open={filetreeOpen}>
-            {filetreeOpen && <PinedTree />}
-            <Sticky offsetTop={30}>
-              <TreeWrapper>
-                <CustomScroller
-                  direction="vertical"
-                  height="calc(100vh - 110px)"
-                  barSize="small"
-                  showShadow={false}
-                >
-                  <FileTree onSelect={() => gotoDetailLayout()} left={18} />
-                </CustomScroller>
-              </TreeWrapper>
-            </Sticky>
-          </Sidebar>
-          <Space right={80} />
-        </>
-      )}
+            <Sidebar isLeftLayout open={filetreeOpen}>
+              {filetreeOpen && <PinedTree />}
+              <Sticky offsetTop={30}>
+                <TreeWrapper>
+                  <CustomScroller
+                    direction="vertical"
+                    height="calc(100vh - 110px)"
+                    barSize="small"
+                    showShadow={false}
+                  >
+                    <FileTree onSelect={() => gotoDetailLayout()} left={18} />
+                  </CustomScroller>
+                </TreeWrapper>
+              </Sticky>
+            </Sidebar>
+            <Space right={80} />
+          </>
+        )}
+      </DesktopOnly>
 
       <Content isRightLayout open={filetreeOpen} isSidebarLayout={isSidebarLayout}>
         <Header>

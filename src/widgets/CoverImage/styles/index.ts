@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TTestable } from '@/spec'
 
 import Img from '@/Img'
-// import { theme } from '@/utils/css'
+import css from '@/utils/css'
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
@@ -11,6 +11,11 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   width: 100%;
   height: 300px;
   margin-bottom: 20px;
+
+  ${css.media.mobile`
+    height: auto;
+    margin-bottom: 0;
+  `};
 `
 export const ImageWrapper = styled.div`
   max-height: 300px;
@@ -21,4 +26,9 @@ export const Image = styled(Img)`
   max-height: 300px;
   object-fit: cover;
   border-radius: 10px;
+
+  ${css.media.mobile`
+    border-radius: 4px;
+
+  `};
 `
