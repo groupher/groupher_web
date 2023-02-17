@@ -139,11 +139,20 @@ const GlobalStyle = createGlobalStyle`
   }
   /** customize tooltip animation globally */
   .tippy-box[data-state='visible'] {
-    background: ${theme('popover.bg')} !important;
-    backdrop-filter: blur(18px);
-
-    transition: all .25s ease-in-out !important;
+    background: ${theme('popover.bgFallback')} !important;
+    transition: all .2s ease-in-out !important;
   }
+
+  /** wechat brower not support backdrop-filter */
+  @supports (-webkit-backdrop-filter:none) or (backdrop-filter:none) {
+    .tippy-box[data-state='visible'] {
+      background: ${theme('popover.bg')} !important;
+      backdrop-filter: blur(12px);
+
+      transition: all .2s ease-in-out !important;
+    }
+  }
+
   .tippy-box[data-placement^=top][data-state='visible'] {
     transform: translateY(-5px);
   }

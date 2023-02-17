@@ -263,6 +263,7 @@ const github = {
   },
   popover: {
     bg: '#ffffffa6',
+    bgFallback: '#fff',
     borderColor: '#e9e9ea',
     boxShadow: '0 1px 4px rgba(0, 0, 0, 0.15)',
     activeBorder: '#70707094',
