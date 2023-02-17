@@ -17,8 +17,7 @@ type TBar = {
 export const Wrapper = styled(WrapperBase)<{ barSize: string }>`
   .os-theme-dark > .os-scrollbar-horizontal,
   .os-theme-light > .os-scrollbar-horizontal {
-    height: ${({ barSize }) =>
-      `${getScrollbarThin(barSize, 'horizontal')} !important`};
+    height: ${({ barSize }) => `${getScrollbarThin(barSize, 'horizontal')} !important`};
   }
 `
 export const ScrollWrapper = styled(ScrollWrapperBase)``
@@ -34,8 +33,7 @@ const ShadowBar = styled(ShadowBarBase)<TBar>`
   top: 1%;
   height: ${({ height }) => `calc(${height} - 2%)`};
   width: ${({ shadowSize }) => getShadowSize(shadowSize)};
-  background: ${({ shadowSize }) =>
-    getShadowBackground(shadowSize, 'horizontal')};
+  background: ${({ shadowSize }) => getShadowBackground(shadowSize, 'horizontal')};
   border-left: ${({ withBorder }) => (withBorder ? '1px solid' : 'none')};
   border-color: ${({ withBorder }) => (withBorder ? '#084255' : 'none')};
 `

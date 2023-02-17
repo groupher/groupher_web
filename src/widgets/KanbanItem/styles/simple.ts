@@ -40,6 +40,8 @@ export const Title = styled.div`
   color: ${theme('article.title')};
   width: 100%;
   font-weight: 500;
+  opacity: 0.9;
+  letter-spacing: 0.02em;
   line-height: 1.62;
 `
 export const Footer = styled.div`

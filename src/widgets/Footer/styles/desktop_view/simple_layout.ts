@@ -10,6 +10,10 @@ export const Wrapper = styled.div`
   border-color: ${theme('divider')}; */
   padding-left: 35px;
   padding-right: 30px;
+
+  ${css.media.mobile`
+    margin-bottom: 20px;
+  `};
 `
 export const BrandInfo = styled.div`
   ${css.flex('align-center')};
@@ -29,6 +33,10 @@ export const BrandText = styled(Link)`
 export const LinksInfo = styled.div`
   ${css.flex('align-center')};
   gap: 0 18px;
+
+  ${css.media.mobile`
+    display: none;
+  `};
 `
 
 export const LinkItem = styled(Link)`

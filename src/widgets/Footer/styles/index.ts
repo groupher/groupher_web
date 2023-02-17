@@ -14,6 +14,10 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   padding-top: 50px;
   padding-bottom: 30px;
   box-shadow: rgb(241 241 241) 0px 0px 50px 0px inset;
+
+  ${css.media.mobile`
+    margin-top: 40px;
+  `};
 `
 export const InnerWrapper = styled.div<{ metric: TMetric }>`
   width: 100%;

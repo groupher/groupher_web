@@ -42,6 +42,8 @@ export const Title = styled.div`
   width: 100%;
   font-weight: 500;
   line-height: 1.62;
+  opacity: 0.9;
+  letter-spacing: 0.02em;
 `
 export const Desc = styled.div`
   ${css.lineClamp(1)}
