@@ -24,7 +24,6 @@ const MobileMenu: FC = () => {
         </Wrapper>
       }
       placement="bottom-end"
-      hideOnClick={false}
       trigger="click"
       offset={[0, -22]}
       noPadding
