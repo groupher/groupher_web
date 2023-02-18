@@ -42,9 +42,9 @@ export const MagicWrapper = styled.div`
 `
 export const MagicIcon = styled(MagicSVG)<{ color: TColorName }>`
   ${css.size(35)};
-  fill: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
+  fill: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
 
-  filter: saturate(1.3);
+  filter: saturate(1.5);
   transform: scale(0.8);
   animation: ${animate.breath} 2s linear infinite alternate;
   transition: all 0.2s;

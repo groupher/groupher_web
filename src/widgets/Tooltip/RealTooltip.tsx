@@ -53,8 +53,6 @@ const Tooltip: FC<TProps> = ({
     setWechatEnv(isWechatBrower())
   }, [])
 
-  console.log('## wechatEnv: ', wechatEnv)
-
   const PopoverContent = (
     <ContentWrapper
       ref={contentRef}
@@ -130,7 +128,7 @@ const Tooltip: FC<TProps> = ({
       </ChildrenWrapper>
     </StyledTippy>
   ) : (
-    <NoPaddingStyledTippy {...props}>
+    <NoPaddingStyledTippy {...props} wechatEnv={wechatEnv}>
       <ChildrenWrapper contentHeight={contentHeight} forceZIndex={forceZIndex}>
         {children}
       </ChildrenWrapper>
