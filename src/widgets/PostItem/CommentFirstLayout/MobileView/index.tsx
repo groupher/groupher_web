@@ -5,6 +5,7 @@ import { AVATAR_LAYOUT, UPVOTE_LAYOUT } from '@/constant/layout'
 
 import { upvoteOnArticleList } from '@/utils/signal'
 import Upvote from '@/widgets/Upvote'
+import ImgFallback from '@/widgets/ImgFallback'
 
 import Header from './Header'
 import Body from './Body'
@@ -24,13 +25,16 @@ const DigestView: FC<TProps> = ({
   avatarLayout = AVATAR_LAYOUT.SQUARE,
   onAuthorSelect,
 }) => {
+  const { author } = article
+
   return (
     <Wrapper>
       <AvatarWrapper>
         <Avatar
-          src={article.author.avatar}
+          src={author.avatar}
           avatarLayout={avatarLayout}
-          onClick={() => onAuthorSelect(article.author)}
+          onClick={() => onAuthorSelect(author)}
+          fallback={<ImgFallback size={22} user={author} avatarLayout={avatarLayout} />}
         />
         <Upvote
           type={UPVOTE_LAYOUT.POST_LIST}

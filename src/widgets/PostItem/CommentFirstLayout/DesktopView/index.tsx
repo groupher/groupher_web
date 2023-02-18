@@ -7,6 +7,7 @@ import { upvoteOnArticleList } from '@/utils/signal'
 import ArticleReadLabel from '@/widgets/ArticleReadLabel'
 import ArticlePinLabel from '@/widgets/ArticlePinLabel'
 import Upvote from '@/widgets/Upvote'
+import ImgFallback from '@/widgets/ImgFallback'
 
 import ViewingSign from '../../ViewingSign'
 
@@ -24,6 +25,7 @@ type TProps = {
 }
 
 const DigestView: FC<TProps> = ({ article, avatarLayout = AVATAR_LAYOUT.SQUARE }) => {
+  const { author } = article
   return (
     <Wrapper>
       <ArticleReadLabel article={article} />
@@ -31,7 +33,12 @@ const DigestView: FC<TProps> = ({ article, avatarLayout = AVATAR_LAYOUT.SQUARE }
 
       <ViewingSign article={article} top={12} />
       <AvatarWrapper>
-        <Avatar src={article.author.avatar} avatarLayout={avatarLayout} />
+        <Avatar
+          src={author.avatar}
+          avatarLayout={avatarLayout}
+          fallback={<ImgFallback size={26} user={author} avatarLayout={avatarLayout} />}
+        />
+
         <Upvote
           type={UPVOTE_LAYOUT.POST_LIST}
           count={article.upvotesCount}
