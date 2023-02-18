@@ -25,7 +25,7 @@ export const Wrapper = styled.div`
 `
 export const Title = styled.div`
   color: ${theme('article.digest')};
-  font-size: 15px;
+  font-size: 14px;
   opacity: 0.8;
   margin-top: 10px;
 `

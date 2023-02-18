@@ -26,6 +26,7 @@ export const Wrapper = styled.div`
     width: calc(100% - 20px);
     height: 220px;
     padding-top: 25px;
+    border-radius: 7px;
   `};
 `
 export const BrowerHead = styled.div`

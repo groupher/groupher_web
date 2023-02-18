@@ -234,3 +234,8 @@ export const multiClick = (
     }
   }
 }
+
+// fuck ugly wechat
+export const isWechatBrower = (): boolean => {
+  return /MicroMessenger/i.test(window.navigator.userAgent)
+}

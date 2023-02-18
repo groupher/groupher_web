@@ -34,8 +34,12 @@ const App = ({ Component, pageProps }) => {
         <meta name="description" content="可能是来为你心爱的产品建立一个反馈社区吧。" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <link rel="icon" href="/favicon.ico" />
+        <meta
+          name="google-site-verification"
+          content="GpUqIx4KXiL1s_tEpAf4nfPwccaAWP99IWQ_e-Ibaxg"
+        />
 
+        <link rel="icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
       </Head>
       <Script

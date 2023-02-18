@@ -4,13 +4,13 @@
  * use custom animation Globally at GlobalStyle.ts
  */
 
-import { FC, useState, useRef, memo } from 'react'
+import { FC, useState, useRef, memo, useEffect } from 'react'
 import { hideAll } from 'tippy.js'
 
 import { zIndex } from '@/utils/css'
 import { buildLog } from '@/utils/logger'
 import { isString } from '@/utils/validator'
-import { isDescendant } from '@/utils/dom'
+import { isDescendant, isWechatBrower } from '@/utils/dom'
 
 import useOutsideClick from '@/hooks/useOutsideClick'
 
@@ -18,15 +18,7 @@ import type { TProps } from './index'
 import ConfirmFooter from './ConfirmFooter'
 import { FOOTER_BEHAVIOR } from './constant'
 
-import {
-  StyledTippy,
-  NoPaddingStyledTippy,
-  ChildrenWrapper,
-  ContentWrapper,
-  TopArrow,
-  BottomArrow,
-  LeftArrow,
-} from './styles'
+import { StyledTippy, NoPaddingStyledTippy, ChildrenWrapper, ContentWrapper } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Tooltip:index')
@@ -52,22 +44,16 @@ const Tooltip: FC<TProps> = ({
 }) => {
   const [instance, setInstance] = useState(null)
   const [active, setActive] = useState(false)
-
-  const ContentComp = showArrow ? (
-    <ChildrenWrapper contentHeight={contentHeight} forceZIndex={forceZIndex}>
-      {active && placement === 'bottom' && <TopArrow />}
-      {active && placement === 'top' && <BottomArrow />}
-      {active && placement === 'right' && <LeftArrow />}
-
-      <>{children}</>
-    </ChildrenWrapper>
-  ) : (
-    <ChildrenWrapper contentHeight={contentHeight} forceZIndex={forceZIndex}>
-      {children}
-    </ChildrenWrapper>
-  )
+  const [wechatEnv, setWechatEnv] = useState(false)
 
   const contentRef = useRef()
+
+  useEffect(() => {
+    // the wechat's env support backdrop-filter like a shit
+    setWechatEnv(isWechatBrower())
+  }, [])
+
+  console.log('## wechatEnv: ', wechatEnv)
 
   const PopoverContent = (
     <ContentWrapper
@@ -138,9 +124,17 @@ const Tooltip: FC<TProps> = ({
   }
 
   return !noPadding ? (
-    <StyledTippy {...props}>{ContentComp}</StyledTippy>
+    <StyledTippy {...props} wechatEnv={wechatEnv}>
+      <ChildrenWrapper contentHeight={contentHeight} forceZIndex={forceZIndex}>
+        {children}
+      </ChildrenWrapper>
+    </StyledTippy>
   ) : (
-    <NoPaddingStyledTippy {...props}>{ContentComp}</NoPaddingStyledTippy>
+    <NoPaddingStyledTippy {...props}>
+      <ChildrenWrapper contentHeight={contentHeight} forceZIndex={forceZIndex}>
+        {children}
+      </ChildrenWrapper>
+    </NoPaddingStyledTippy>
   )
 }
 

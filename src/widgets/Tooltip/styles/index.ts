@@ -3,9 +3,8 @@ import Tippy from '@tippyjs/react'
 
 import css, { theme, zIndex } from '@/utils/css'
 
-export const StyledTippy = styled(Tippy)`
+export const StyledTippy = styled(Tippy)<{ wechatEnv?: boolean }>`
   position: relative;
-  background: ${theme('popover.bg')};
   color: ${theme('article.digest')};
   box-shadow: ${theme('popover.boxShadow')};
   outline: none;
@@ -18,6 +17,9 @@ export const StyledTippy = styled(Tippy)`
 
   box-shadow: -3px 2px 20px 0px rgb(58 58 58 / 15%);
   border-color: ${theme('divider')};
+
+  background: ${({ wechatEnv }) => (wechatEnv ? theme('alphaBg2') : theme('popover.bg'))};
+  backdrop-filter: blur(5px);
 
   .tippy-arrow {
     display: none;
