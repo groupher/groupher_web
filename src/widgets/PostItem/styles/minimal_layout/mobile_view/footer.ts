@@ -1,13 +1,7 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import { Wrapper as WrapperDesktop } from '../desktop_view/footer'
 
-export const Wrapper = styled.div`
-  position: relative;
-  ${css.flex('align-center')};
-  color: ${theme('article.info')};
-  font-size: 12px;
-  line-height: 20px;
-`
+export const Wrapper = styled(WrapperDesktop)``
 
 export const holder = 1

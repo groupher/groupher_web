@@ -2,14 +2,11 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
 
-export const Wrapper = styled.div`
-  ${css.flexColumn()};
-`
+import { Wrapper as WrapperDesktop, Main as MainDesktop } from '../desktop_view/header'
 
-export const Main = styled.div`
-  ${css.flexGrow('align-center')};
-  color: ${theme('article.title')};
-`
+export const Wrapper = styled(WrapperDesktop)``
+export const Main = styled(MainDesktop)``
+
 export const Title = styled.a`
   position: relative;
   text-decoration: none;
@@ -20,11 +17,4 @@ export const Title = styled.a`
   color: ${theme('article.title')};
   max-width: 83%;
   ${css.lineClamp(1)};
-
-  &:hover {
-    color: ${theme('article.digest')};
-    cursor: pointer;
-  }
-
-  transition: color 0.2s;
 `

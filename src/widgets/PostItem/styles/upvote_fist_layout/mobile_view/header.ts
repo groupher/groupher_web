@@ -17,14 +17,3 @@ export const TimeStamp = styled.div`
   font-size: 12px;
   margin-top: 2px;
 `
-export const Brief = styled.div`
-  ${css.flexGrow('align-center')};
-  margin-bottom: 10px;
-  color: ${theme('article.title')};
-  &:hover {
-    cursor: pointer;
-  }
-`
-export const TagListWrapper = styled.div`
-  margin-right: -3px;
-`

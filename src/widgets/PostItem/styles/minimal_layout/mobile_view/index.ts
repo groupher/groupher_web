@@ -2,14 +2,10 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
 
-export const Wrapper = styled.div`
-  ${css.flex()};
-  width: 100%;
-  position: relative;
-`
-export const Main = styled.div`
-  ${css.flexColumnGrow()};
-`
+import { Wrapper as WrapperDesktop, Main as MainDesktop } from '../desktop_view'
+
+export const Wrapper = styled(WrapperDesktop)``
+export const Main = styled(MainDesktop)``
 export const UpvoteWrapper = styled.div`
   width: 30px;
   margin-right: 18px;
@@ -21,10 +17,4 @@ export const DigestWrapper = styled.div`
   margin-top: 4px;
   margin-bottom: 8px;
   font-size: 13px;
-  cursor: pointer;
-
-  &:hover {
-    color: ${theme('article.title')};
-  }
-  transition: color 0.2s;
 `
