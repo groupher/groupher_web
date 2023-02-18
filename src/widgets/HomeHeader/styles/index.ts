@@ -161,7 +161,6 @@ export const DemoIcon = styled(DemoSVG)`
 export const Panel = styled.div<{ width?: string }>`
   ${css.flexColumn()};
   margin-top: 3px;
-  margin-bottom: 3px;
   gap: 3px 0;
   padding: 6px 4px;
   padding-left: 8px;

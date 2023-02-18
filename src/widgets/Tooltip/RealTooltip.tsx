@@ -59,11 +59,11 @@ const Tooltip: FC<TProps> = ({
       {active && placement === 'top' && <BottomArrow />}
       {active && placement === 'right' && <LeftArrow />}
 
-      <div>{children}</div>
+      <>{children}</>
     </ChildrenWrapper>
   ) : (
     <ChildrenWrapper contentHeight={contentHeight} forceZIndex={forceZIndex}>
-      <div>{children}</div>
+      {children}
     </ChildrenWrapper>
   )
 

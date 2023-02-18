@@ -2,7 +2,6 @@ import { FC, useState } from 'react'
 
 import { ROUTE } from '@/constant/route'
 
-import { DesktopOnly } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'
 
 import MobileMenu from './MobileMenu'

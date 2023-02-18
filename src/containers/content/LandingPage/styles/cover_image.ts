@@ -117,20 +117,19 @@ export const Background = styled.div<{ effect: string }>`
   ${({ effect }) => effect || ''};
   will-change: transform;
   transition: all 0.3s;
-
-
 `
 export const Image = styled(Img)<{ hasShadow: boolean }>`
   display: block;
-  width: calc(100% - 30px);
-  margin-left: 50px;
-  height: 701px;
+  width: calc(100% - 60px);
+  margin-left: 30px;
+  height: 700px;
   object-fit: cover;
 
   box-shadow: ${({ hasShadow }) =>
     hasShadow ? 'rgb(100 100 111 / 20%) 0px 7px 29px 0px;' : 'none'};
 
   ${css.media.mobile`
+    width: calc(100% - 30px);
     height: 220px;
     margin-left: 15px;
     object-fit: cover;

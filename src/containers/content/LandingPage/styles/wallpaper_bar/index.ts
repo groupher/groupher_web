@@ -71,17 +71,20 @@ export const ColorBall = styled.div<TColorBall>`
 `
 export const CustomBall = styled(BallWrapper)`
   background: ${theme('hoverBg')};
-  border: 1px solid;
   border-color: ${theme('divider')};
-  color: ${theme('article.digest')};
   font-weight: 600;
   font-size: 15px;
-  box-shadow: ${css.cardShadow};
   cursor: pointer;
 `
 export const ThemeIcon = styled(ThemeSVG)`
-  ${css.size(20)};
-  fill: ${theme('article.info')};
+  ${css.size(25)};
+  fill: ${theme('article.digest')};
+  opacity: 0.7;
+  z-index: 2;
+
+  ${CustomBall}:hover & {
+    opacity: 1;
+  }
 `
 
 export const Divider = styled(LineDivider)`

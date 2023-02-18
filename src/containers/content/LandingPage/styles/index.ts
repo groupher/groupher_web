@@ -129,7 +129,7 @@ export const ButtonGroup = styled.div`
 `
 export const DemoPanel = styled.div`
   ${css.flexColumn()};
-  gap: 3px 0;
+  gap: 5px 0;
   padding: 6px 2px;
   width: 100px;
 `
@@ -150,7 +150,7 @@ export const DemoMenuItem = styled(Link)`
 export const LinkIcon = styled(LinkSVG)`
   ${css.size(12)};
   color: ${theme('article.digest')};
-  opacity: 0.4;
+  opacity: 0.3;
 
   ${DemoMenuItem}:hover & {
     opacity: 1;

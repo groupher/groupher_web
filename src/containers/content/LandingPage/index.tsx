@@ -11,7 +11,7 @@ import Router from 'next/router'
 import { bond } from '@/utils/mobx'
 import { BANNER_LAYOUT, HELP_FAQ_LAYOUT } from '@/constant/layout'
 
-import Link from 'next/link'
+// import Link from 'next/link'
 
 import { ROUTE } from '@/constant/route'
 
