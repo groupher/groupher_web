@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { includes } from 'ramda'
 
-import type { TCommunity, TPost } from '@/spec'
+import type { TPost } from '@/spec'
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import EVENT from '@/constant/event'
 import { send } from '@/utils/signal'
@@ -22,11 +22,10 @@ import {
 } from '../../styles/comment_fist_layout/desktop_view/body'
 
 type TProps = {
-  curCommunity: TCommunity | null
   article: TPost
 }
 
-const Body: FC<TProps> = ({ article, curCommunity }) => {
+const Body: FC<TProps> = ({ article }) => {
   const demoList = ['239', '231', '227', '228', '226', '225']
   return (
     <Wrapper>

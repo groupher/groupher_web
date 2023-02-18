@@ -1,40 +1,42 @@
-import { FC, memo } from 'react'
-import TimeAgo from 'timeago-react'
+import { FC } from 'react'
 
-import type { TPost, TAccount } from '@/spec'
+import type { TPost } from '@/spec'
 
-import TagsList from '@/widgets/TagsList'
-import DotDivider from '@/widgets/DotDivider'
+import EVENT from '@/constant/event'
+import { send } from '@/utils/signal'
 
-import {
-  Wrapper,
-  AuthorInfo,
-  TimeStamp,
-  TagListWrapper,
-} from '../../styles/comment_fist_layout/mobile_view/header'
+import CommentsCount from '@/widgets/CommentsCount'
+
+import { Wrapper, Brief, Title } from '../../styles/comment_fist_layout/mobile_view/header'
 
 type TProps = {
   article: TPost
-  onAuthorSelect?: (obj: TAccount) => void
 }
 
-const Body: FC<TProps> = ({ article, onAuthorSelect }) => {
+const Header: FC<TProps> = ({ article }) => {
+  // const gotoArticle = useCallback(() => {
+  //   Router.push(`/${ARTICLE_THREAD.POST}/${article.id}`)
+  // }, [article.id])
+
   return (
     <Wrapper>
-      <AuthorInfo>
-        <div onClick={() => onAuthorSelect(article.author)}>
-          {article?.author.nickname}
-        </div>
-        <DotDivider radius={2} space={8} />
-        <TimeStamp>
-          <TimeAgo datetime={article.insertedAt} locale="zh_CN" />
-        </TimeStamp>
-      </AuthorInfo>
-      <TagListWrapper>
-        <TagsList items={article.articleTags} />
-      </TagListWrapper>
+      <Brief>
+        <Title
+          onClick={(e) => {
+            // make page can open by user right click the menu
+            e.preventDefault()
+            send(EVENT.PREVIEW_ARTICLE, { article })
+          }}
+          href={`/post/${article.id}`}
+        >
+          {article.title}
+        </Title>
+        {/*  @ts-ignore */}
+      </Brief>
+
+      {article.commentsCount !== 0 && <CommentsCount count={article.commentsCount} top={-5} />}
     </Wrapper>
   )
 }
 
-export default memo(Body)
+export default Header

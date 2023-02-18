@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import type { TAvatarLayout, TCommunity, TPost } from '@/spec'
+import type { TAvatarLayout, TPost } from '@/spec'
 import { AVATAR_LAYOUT, UPVOTE_LAYOUT } from '@/constant/layout'
 
 import { upvoteOnArticleList } from '@/utils/signal'
@@ -16,7 +16,6 @@ import Body from './Body'
 import { Wrapper, Avatar, AvatarWrapper, Main } from '../../styles/comment_fist_layout/desktop_view'
 
 type TProps = {
-  curCommunity: TCommunity | null
   article: TPost
   avatarLayout?: TAvatarLayout
 
@@ -24,7 +23,7 @@ type TProps = {
   // onAuthorSelect?: (obj: TAccount) => void
 }
 
-const DigestView: FC<TProps> = ({ curCommunity, article, avatarLayout = AVATAR_LAYOUT.SQUARE }) => {
+const DigestView: FC<TProps> = ({ article, avatarLayout = AVATAR_LAYOUT.SQUARE }) => {
   return (
     <Wrapper>
       <ArticleReadLabel article={article} />
@@ -42,7 +41,7 @@ const DigestView: FC<TProps> = ({ curCommunity, article, avatarLayout = AVATAR_L
       </AvatarWrapper>
       <Main>
         <Header article={article} />
-        <Body article={article} curCommunity={curCommunity} />
+        <Body article={article} />
       </Main>
     </Wrapper>
   )

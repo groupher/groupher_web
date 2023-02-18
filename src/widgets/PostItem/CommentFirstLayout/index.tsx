@@ -6,9 +6,10 @@
 
 import { FC, memo } from 'react'
 
-import type { TCommunity, TPost, TAccount, TC11N } from '@/spec'
+import type { TCommunity, TPost, TAccount, TC11N, TAvatarLayout } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
+
+import { DesktopOnly, MobileOnly } from '@/widgets/Common'
 
 import DesktopView from './DesktopView'
 import MobileView from './MobileView'
@@ -20,30 +21,34 @@ import { Wrapper } from '../styles/comment_fist_layout'
 const log = buildLog('w:PostItem:index')
 
 type TProps = {
-  curCommunity: TCommunity | null
   article: TPost
   c11n: TC11N
   isMobilePreview: boolean
+  avatarLayout: TAvatarLayout
 
   onAuthorSelect?: (obj: TAccount) => void
 }
 
 const PostItem: FC<TProps> = ({
-  curCommunity,
   article,
   onAuthorSelect = log,
   isMobilePreview,
+  avatarLayout,
   c11n,
 }) => {
-  const { isMobile } = useMobileDetect()
+  if (isMobilePreview) {
+    return <MobileView article={article} onAuthorSelect={onAuthorSelect} />
+  }
 
   return (
     <Wrapper c11n={c11n}>
-      {isMobile || isMobilePreview ? (
+      <MobileOnly>
         <MobileView article={article} onAuthorSelect={onAuthorSelect} />
-      ) : (
-        <DesktopView article={article} curCommunity={curCommunity} />
-      )}
+      </MobileOnly>
+
+      <DesktopOnly>
+        <DesktopView article={article} avatarLayout={avatarLayout} />
+      </DesktopOnly>
     </Wrapper>
   )
 }
