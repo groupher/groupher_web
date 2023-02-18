@@ -1,26 +1,53 @@
 import { FC, memo } from 'react'
 
-import type { TPost, TAccount } from '@/spec'
+import type { TPost } from '@/spec'
+import { UPVOTE_LAYOUT } from '@/constant/layout'
+import EVENT from '@/constant/event'
+
+import { send } from '@/utils/signal'
+
+import Upvote from '@/widgets/Upvote'
 
 import Header from './Header'
-import Body from './Body'
 import Footer from './Footer'
 
-import { Wrapper } from '../../styles/minimal_layout/mobile_view'
+import {
+  Wrapper,
+  UpvoteWrapper,
+  Main,
+  DigestWrapper,
+} from '../../styles/minimal_layout/mobile_view'
 
 type TProps = {
   article: TPost
-  onAuthorSelect?: (obj: TAccount) => void
+  // onUserSelect?: (obj: TUser) => void
+  // onAuthorSelect?: (obj: TAccount) => void
 }
 
-const MobileView: FC<TProps> = ({ article, onAuthorSelect }) => {
+const DigestView: FC<TProps> = ({ article }) => {
+  const { upvotesCount, meta, viewerHasUpvoted } = article
+
   return (
     <Wrapper>
-      <Header article={article} onAuthorSelect={onAuthorSelect} />
-      <Body article={article} />
-      <Footer article={article} />
+      <UpvoteWrapper>
+        <Upvote
+          count={upvotesCount}
+          avatarList={meta.latestUpvotedUsers}
+          viewerHasUpvoted={viewerHasUpvoted}
+          type={UPVOTE_LAYOUT.POST_MINIMAL}
+          left={-2}
+          top={-1}
+        />
+      </UpvoteWrapper>
+      <Main>
+        <Header article={article} />
+        <DigestWrapper onClick={() => send(EVENT.PREVIEW_ARTICLE, { article })}>
+          {article.digest}
+        </DigestWrapper>
+        <Footer article={article} />
+      </Main>
     </Wrapper>
   )
 }
 
-export default memo(MobileView)
+export default memo(DigestView)

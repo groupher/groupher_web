@@ -1,57 +1,40 @@
-import { FC } from 'react'
+import { memo, FC, Fragment } from 'react'
+import { includes } from 'ramda'
 
 import type { TPost } from '@/spec'
-import { UPVOTE_LAYOUT } from '@/constant/layout'
-import { ARTICLE_CAT } from '@/constant/gtd'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 
-import { cutRest } from '@/utils/fmt'
-
+import TagsList from '@/widgets/TagsList'
 import ArticleCatState from '@/widgets/ArticleCatState'
-import Upvote from '@/widgets/Upvote'
-import { Space } from '@/widgets/Common'
 
-import {
-  Wrapper,
-  Extra,
-  UpvotesWrapper,
-  BasicState,
-  BodyDigest,
-  CommentIcon,
-} from '../../styles/minimal_layout/mobile_view/footer'
+import { Wrapper } from '../../styles/minimal_layout/mobile_view/footer'
 
 type TProps = {
   article: TPost
 }
 
 const Footer: FC<TProps> = ({ article }) => {
-  const { upvotesCount, meta, viewerHasUpvoted } = article
+  const demoList = ['239', '231', '227', '228', '226', '225']
 
   return (
     <Wrapper>
-      <BodyDigest>{cutRest(article.digest, 20)}</BodyDigest>
-      <Extra>
-        <UpvotesWrapper>
-          <Upvote
-            count={upvotesCount}
-            avatarList={meta.latestUpvotedUsers}
-            viewerHasUpvoted={viewerHasUpvoted}
-            type={UPVOTE_LAYOUT.GENERAL}
-            left={-6}
-            right={5}
-          />
-        </UpvotesWrapper>
-
-        {article.category !== ARTICLE_CAT.ALL && (
-          <ArticleCatState cat={article.category} state={article.state} />
-        )}
-        <BasicState>
-          <Space right={18} />
-          <CommentIcon />
-          <div>{article.commentsCount}</div>
-        </BasicState>
-      </Extra>
+      {!includes(article.id, demoList) ? (
+        <ArticleCatState right={18} cat={article.category} state={article.state} />
+      ) : (
+        <Fragment>
+          {article.id === '239' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} />}
+          {article.id === '231' && <ArticleCatState cat={ARTICLE_CAT.BUG} />}
+          {article.id === '227' && <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" />}
+          {article.id === '228' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" />}
+          {article.id === '226' && <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" />}
+          {article.id === '225' && (
+            <ArticleCatState cat={ARTICLE_CAT.FEATURE} state={ARTICLE_STATE.REJECT_DUP} />
+          )}
+        </Fragment>
+      )}
+      <TagsList items={article.articleTags} left={12} />
     </Wrapper>
   )
 }
 
-export default Footer
+export default memo(Footer)

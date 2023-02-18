@@ -65,9 +65,9 @@ const PostItem: FC<TProps> = ({
         <CommentFirstLayout
           c11n={c11n}
           article={article}
-          curCommunity={curCommunity}
           onAuthorSelect={onAuthorSelect}
           isMobilePreview={isMobilePreview}
+          avatarLayout={avatarLayout}
         />
       )}
 

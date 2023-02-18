@@ -2,28 +2,22 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
 
-export const Wrapper = styled.div`
-  ${css.flex('align-center')};
-  color: ${theme('article.digest')};
-  margin-left: 1px;
-  margin-bottom: 5px;
-`
-export const AuthorInfo = styled.div`
-  ${css.flex('align-center')};
-  color: ${theme('article.info')};
-  font-size: 12px;
-`
-export const TimeStamp = styled.div`
-  font-size: 12px;
-`
-export const Brief = styled.div`
-  ${css.flexGrow('align-center')};
-  margin-bottom: 10px;
+import { Wrapper as WrapperDesktop, Brief as BriefDesktop } from '../desktop_view/header'
+
+export const Wrapper = styled(WrapperDesktop)``
+
+export const Brief = styled(BriefDesktop)``
+
+export const Title = styled.a`
+  position: relative;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  opacity: 0.85;
   color: ${theme('article.title')};
-  &:hover {
-    cursor: pointer;
-  }
-`
-export const TagListWrapper = styled.div`
-  margin-left: 14px;
+  ${css.lineClamp(1)};
+  width: 88%;
+
+  transition: color 0.2s;
 `

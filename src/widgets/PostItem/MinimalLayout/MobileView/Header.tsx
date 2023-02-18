@@ -1,41 +1,41 @@
-import { FC, memo } from 'react'
-import TimeAgo from 'timeago-react'
+import { FC } from 'react'
 
-import type { TPost, TAccount } from '@/spec'
+import type { TPost } from '@/spec'
+import EVENT from '@/constant/event'
+import SIZE from '@/constant/size'
+import { send } from '@/utils/signal'
 
-import TagsList from '@/widgets/TagsList'
-import DotDivider from '@/widgets/DotDivider'
+import { SpaceGrow } from '@/widgets/Common'
+import CommentsCount from '@/widgets/CommentsCount'
 
-import {
-  Wrapper,
-  AuthorInfo,
-  TimeStamp,
-  TagListWrapper,
-} from '../../styles/minimal_layout/mobile_view/header'
+import { Wrapper, Main, Title } from '../../styles/minimal_layout/mobile_view/header'
 
 type TProps = {
   article: TPost
-  onAuthorSelect?: (obj: TAccount) => void
 }
 
-const Header: FC<TProps> = ({ article, onAuthorSelect }) => {
+const Header: FC<TProps> = ({ article }) => {
+  const { commentsCount } = article
+
   return (
     <Wrapper>
-      <AuthorInfo>
-        <div onClick={() => onAuthorSelect(article.author)}>
-          {article?.author.nickname}
-        </div>
-        <DotDivider radius={2} space={8} />
-
-        <TimeStamp>
-          <TimeAgo datetime={article.insertedAt} locale="zh_CN" />
-        </TimeStamp>
-      </AuthorInfo>
-      <TagListWrapper>
-        <TagsList items={article.articleTags} />
-      </TagListWrapper>
+      <Main>
+        <Title
+          onClick={(e) => {
+            // make page can open by user right click the menu
+            e.preventDefault()
+            send(EVENT.PREVIEW_ARTICLE, { article })
+          }}
+          href={`/post/${article.id}`}
+        >
+          {article.title}
+        </Title>
+        <SpaceGrow />
+        {/*  @ts-ignore */}
+        {commentsCount !== 0 && <CommentsCount count={commentsCount} size={SIZE.MEDIUM} />}
+      </Main>
     </Wrapper>
   )
 }
 
-export default memo(Header)
+export default Header
