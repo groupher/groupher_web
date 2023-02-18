@@ -18,6 +18,7 @@ const MobileMenu: FC = () => {
           <Item href={`/${ROUTE.HOME}`}>GTD 看板</Item>
           <Item href={`/${ROUTE.HOME}`}>更新日志</Item>
           <Item href={`/${ROUTE.HOME}`}>帮助台</Item>
+          <Item href={`/${ROUTE.BOOK_DEMO}`}>预约演示</Item>
           <Title>了解更多</Title>
           <Item href={`/${ROUTE.HOME}/${ROUTE.HELP}`}>文档中心</Item>
           <Item href={`/${ROUTE.HOME}/${ROUTE.HELP}`}>自定义</Item>

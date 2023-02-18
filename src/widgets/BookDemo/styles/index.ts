@@ -12,6 +12,11 @@ export const Wrapper = styled.div`
 export const Content = styled.div`
   min-height: 60vh;
   padding-left: 10%;
+
+  ${css.media.mobile`
+    padding: 0 30px;
+    min-height: 80vh;
+  `};
 `
 export const Thanks = styled.div`
   font-size: 30px;
@@ -21,6 +26,10 @@ export const Thanks = styled.div`
 export const Title = styled.div`
   color: ${theme('article.title')};
   font-size: 32px;
+
+  ${css.media.mobile`
+    font-size: 24px;
+  `};
 `
 export const Bold = styled.span`
   color: ${theme('article.title')};
@@ -32,4 +41,9 @@ export const P = styled.p`
   margin-top: 25px;
   width: 500px;
   line-height: 1.75;
+
+  ${css.media.mobile`
+    font-size: 15px;
+    width: 100%;
+  `};
 `

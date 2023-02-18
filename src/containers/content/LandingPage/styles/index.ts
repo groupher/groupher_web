@@ -62,9 +62,11 @@ export const PatternBg = styled.div`
     conic-gradient(at 25% 12.5%, #010101 25%, #0000 0) calc(44px / -4) 0,
     conic-gradient(at 87.5% 87.5%, #010101 25%, #0000 0) calc(44px / 8) 0 rgba(255, 255, 255, 0);
   background-size: 44px 44px;
-
   opacity: 0.2;
-  /* transform: skewY(-2deg); */
+
+  ${css.media.mobile`
+    display: none;
+  `};
 `
 export const BetaText = styled.div<{ wallpaper: string }>`
   font-size: 16px;
