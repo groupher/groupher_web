@@ -26,6 +26,7 @@ type TProps = {
 
 const DigestView: FC<TProps> = ({ article, avatarLayout = AVATAR_LAYOUT.SQUARE }) => {
   const { author } = article
+
   return (
     <Wrapper>
       <ArticleReadLabel article={article} />
