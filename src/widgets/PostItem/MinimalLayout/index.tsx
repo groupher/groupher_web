@@ -8,7 +8,8 @@ import { FC, memo } from 'react'
 
 import type { TPost, TAccount, TC11N } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
+
+import { DesktopOnly, MobileOnly } from '@/widgets/Common'
 
 import DesktopView from './DesktopView'
 import MobileView from './MobileView'
@@ -27,21 +28,20 @@ type TProps = {
   onAuthorSelect?: (obj: TAccount) => void
 }
 
-const PostItem: FC<TProps> = ({
-  article,
-  onAuthorSelect = log,
-  isMobilePreview,
-  c11n,
-}) => {
-  const { isMobile } = useMobileDetect()
+const PostItem: FC<TProps> = ({ article, onAuthorSelect = log, isMobilePreview, c11n }) => {
+  if (isMobilePreview) {
+    return <MobileView article={article} />
+  }
 
   return (
     <Wrapper c11n={c11n}>
-      {isMobile || isMobilePreview ? (
-        <MobileView article={article} onAuthorSelect={onAuthorSelect} />
-      ) : (
+      <MobileOnly>
+        <MobileView article={article} />
+      </MobileOnly>
+
+      <DesktopOnly>
         <DesktopView article={article} />
-      )}
+      </DesktopOnly>
     </Wrapper>
   )
 }
