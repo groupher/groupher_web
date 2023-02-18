@@ -72,7 +72,7 @@ const HomeHeader: FC = () => {
         </Tooltip>
 
         <LinkItem href={`/${ROUTE.HOME}`}>社区</LinkItem>
-        <LinkItem href={`/${ROUTE.HOME}`}>开发计划</LinkItem>
+        <LinkItem href={`/${ROUTE.HOME}/${ROUTE.KANBAN}`}>开发计划</LinkItem>
         <Tooltip
           content={
             <Panel width="120px">

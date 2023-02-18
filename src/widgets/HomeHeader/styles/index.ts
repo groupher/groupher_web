@@ -57,7 +57,7 @@ export const LinksWrapper = styled.div`
   gap: 0 28px;
   margin-top: 2px;
   flex-flow: 1;
-  padding-left: 24px;
+  padding-left: 45px;
 
   ${css.media.mobile`
     display: none;

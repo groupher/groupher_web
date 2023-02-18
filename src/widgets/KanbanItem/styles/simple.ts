@@ -19,7 +19,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   border: 1px solid transparent;
 
   &:hover {
-    border-color: ${theme('article.digest')};
+    /* border-color: ${theme('article.digest')}; */
     cursor: pointer;
     opacity: 0.9;
   }

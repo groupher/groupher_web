@@ -1,10 +1,9 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import Typewriter from 'typewriter-effect'
 
 import type { TWallpaperInfo, TBannerLayout } from '@/spec'
 import { BANNER_LAYOUT } from '@/constant/layout'
 
-import useInterval from '@/hooks/useInterval'
 import { Space, SpaceGrow } from '@/widgets/Common'
 import { parseWallpaper } from '@/utils/wallpaper'
 
@@ -44,14 +43,8 @@ const getImageSrc = (bannerLayout: TBannerLayout): string => {
 }
 
 const CoverImage: FC<TProps> = ({ wallpaperInfo, bannerLayout }) => {
-  const [animateKey, setAnimateKey] = useState(0)
-
   const { wallpapers, wallpaper, hasShadow } = wallpaperInfo
   const { background, effect } = parseWallpaper(wallpapers, wallpaper)
-
-  useInterval(() => {
-    setAnimateKey(animateKey + 1)
-  }, 2000)
 
   const imageSrc = getImageSrc(bannerLayout)
 
