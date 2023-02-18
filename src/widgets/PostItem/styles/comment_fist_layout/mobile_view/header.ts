@@ -2,16 +2,12 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
 
-export const Wrapper = styled.div`
-  ${css.flex()};
-  margin-top: 2px;
-`
-export const Brief = styled.div`
-  ${css.flexGrow('align-center')};
-  margin-bottom: 7px;
-  margin-left: 10px;
-  color: ${theme('article.title')};
-`
+import { Wrapper as WrapperDesktop, Brief as BriefDesktop } from '../desktop_view/header'
+
+export const Wrapper = styled(WrapperDesktop)``
+
+export const Brief = styled(BriefDesktop)``
+
 export const Title = styled.a`
   position: relative;
   text-decoration: none;
