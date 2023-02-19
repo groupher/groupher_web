@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
   /* background: ${theme('comment.bg')}; */
   background: transparent;
   border-bottom: 1px solid;
-  border-bottom-color: #0b4252;
+  border-bottom-color: ${theme('divider')};
 `
 // filter: blur(3px);
 export const CommentWrapper = styled.div`

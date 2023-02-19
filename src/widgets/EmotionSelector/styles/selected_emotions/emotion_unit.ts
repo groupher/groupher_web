@@ -7,11 +7,13 @@ export const Wrapper = styled.div<TActive>`
   ${css.flex('align-center')};
   cursor: pointer;
   margin-right: 6px;
-  padding: 2px 8px;
+  padding: 4px 8px;
   margin-left: 2px;
-  border-radius: 15px;
+  border-radius: 8px;
   /* background: ${({ $active }) => ($active ? '#00333D' : 'transparent')}; */
-  background: ${theme('hoverBg')};
+  /* background: ${theme('hoverBg')}; */
+  border: 1px solid;
+  border-color: ${theme('divider')};
 
   &:hover {
     background: ${theme('divider')};

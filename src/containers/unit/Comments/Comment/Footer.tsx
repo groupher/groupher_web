@@ -8,7 +8,7 @@ import { UPVOTE_LAYOUT } from '@/constant/layout'
 import { authWarn } from '@/utils/signal'
 
 import DotDivider from '@/widgets/DotDivider'
-import { Space, SpaceGrow } from '@/widgets/Common'
+import { DesktopOnly, Space, SpaceGrow } from '@/widgets/Common'
 import EmotionSelector from '@/widgets/EmotionSelector'
 import Upvote from '@/widgets/Upvote'
 
@@ -82,8 +82,11 @@ const Footer: FC<TProps> = ({ data, apiMode }) => {
             handleEmotion(data, name, hasEmotioned)
           }}
         />
-        {apiMode === API_MODE.ARTICLE && isLegal && <DotDivider radius={3} space={10} />}
+        <DesktopOnly>
+          {apiMode === API_MODE.ARTICLE && isLegal && <DotDivider radius={3} space={10} />}
+        </DesktopOnly>
         {apiMode === API_MODE.ARTICLE && <Actions data={data} />}
+
         <SpaceGrow />
       </MainWrapper>
     </Wrapper>

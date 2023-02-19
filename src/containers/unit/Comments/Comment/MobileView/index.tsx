@@ -17,7 +17,7 @@ import {
   HeaderWrapper,
   CommentContent,
   CommentBodyInfo,
-} from '../../styles/comment/mobile_view/index'
+} from '../../styles/comment/mobile_view'
 
 type TProps = {
   data: TComment
@@ -40,11 +40,7 @@ const MobileView: FC<TProps> = ({ data, apiMode }) => {
                 <Br top={14} />
               </>
             )}
-            <ArtimentBody
-              document={{ bodyHtml: data.bodyHtml }}
-              initLineClamp={6}
-              mode="comment"
-            />
+            <ArtimentBody document={{ bodyHtml: data.bodyHtml }} initLineClamp={6} mode="comment" />
           </CommentContent>
           <Footer data={data} apiMode={apiMode} />
         </CommentBodyInfo>
