@@ -17,6 +17,10 @@ export const Wrapper = styled.nav.attrs(({ testid }: TTestable) => ({
   overflow: hidden;
   width: auto;
   font-size: 14px;
+
+  ${css.media.mobile`
+    overflow: scroll;
+  `};
 `
 export const Nav = styled.nav`
   position: relative;

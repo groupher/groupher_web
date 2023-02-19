@@ -64,6 +64,7 @@ const DashboardThreadContainer: FC<TProps> = ({
   return (
     <Wrapper testid={testid}>
       <SideMenu curTab={curTab} touched={touched} />
+
       <MainWrapper>
         {curTab === DASHBOARD.DASHBOARD && <Overview />}
         {curTab === DASHBOARD.INFO && <BasicInfo settings={baseInfoSettings} />}

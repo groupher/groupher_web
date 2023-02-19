@@ -11,7 +11,8 @@ export const Wrapper = styled(BaseSection)``
 
 export const SelectWrapper = styled.div`
   ${css.flex('align-center')};
-  gap: 0 30px;
+  flex-wrap: wrap;
+  gap: 20px 30px;
   width: 100%;
 `
 

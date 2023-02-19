@@ -15,6 +15,25 @@ export const BoardsWrapper = styled.div`
   width: calc(100% + 100px);
   margin-left: -45px;
   margin-top: 26px;
+
+  ${css.media.mobile`
+    display: none;
+  `}
+`
+export const MobileBoardsWrapper = styled.div`
+  width: 100%;
+  margin-top: 26px;
+  display: none;
+
+  ${css.media.mobile`
+    display: block;
+    overflow: scroll;
+  `}
+`
+export const MobileBoardsInnerWrapper = styled.div`
+  ${css.flex('justify-center', 'align-end')};
+  width: 150%;
+  gap: 0 18px;
 `
 type TBoard = { color?: TColorName } & TActive
 export const Board = styled.div<TBoard>`
@@ -34,6 +53,9 @@ export const Board = styled.div<TBoard>`
   border: 1px solid;
   border-color: ${({ $active }) => ($active ? theme('lightText') : 'transparent')};
 
+  ${css.media.mobile`
+    width: 50%;
+  `}
   transition: all 0.2s;
 `
 export const ColorsWrapper = styled.div`

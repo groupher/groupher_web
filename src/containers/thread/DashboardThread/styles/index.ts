@@ -17,4 +17,11 @@ export const MainWrapper = styled.div`
   margin-top: 30px;
   padding-left: 80px;
   margin-left: 20px;
+
+  ${css.media.mobile`
+    margin-top: 20px;
+    padding-left: 0;
+    margin-left: 0;
+    width: 100%;
+  `};
 `

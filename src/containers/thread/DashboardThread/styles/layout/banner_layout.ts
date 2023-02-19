@@ -13,8 +13,12 @@ export const Wrapper = styled(BaseSection)``
 export const SelectWrapper = styled.div`
   ${css.flex('align-center')};
   flex-wrap: wrap;
-  gap: 40px;
-  width: 100%;
+  gap: 30px;
+  width: calc(100% + 40px);
+
+  ${css.media.mobile`
+    width: 100%;
+  `}
 `
 export const Main = styled.div`
   ${css.flex()};

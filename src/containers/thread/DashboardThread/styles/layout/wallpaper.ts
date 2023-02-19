@@ -11,6 +11,13 @@ export const Section = styled(BaseSection)``
 
 export const PreviewWrapper = styled.div`
   ${css.flex('align-center')};
+  flex-wrap: wrap;
+  gap: 30px;
+  width: calc(100% + 40px);
+
+  ${css.media.mobile`
+    width: 100%;
+  `}
 `
 export const HoverMask = styled.div`
   ${css.flexColumn('align-center')};
