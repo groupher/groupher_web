@@ -52,7 +52,7 @@ export const TABS_MODE_OPTIONS = [
   },
   {
     title: '瀑布流卡片',
-    raw: POST_LAYOUT.CARD,
+    raw: POST_LAYOUT.MASONRY,
   },
   {
     title: '极简',

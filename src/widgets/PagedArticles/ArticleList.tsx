@@ -39,7 +39,7 @@ const ArticleList: FC<TProps> = ({
     return <EmptyThread thread={thread} />
   }
 
-  if (globalLayout.post === POST_LAYOUT.CARD) {
+  if (globalLayout.post === POST_LAYOUT.MASONRY) {
     return (
       <MasonryCardsWrapper>
         <MasonryCards column={2}>

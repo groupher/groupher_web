@@ -107,8 +107,8 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         </LayoutTitle>
       </Layout>
 
-      <Layout onClick={() => edit(POST_LAYOUT.CARD)}>
-        <Block $active={layout === POST_LAYOUT.CARD}>
+      <Layout onClick={() => edit(POST_LAYOUT.MASONRY)}>
+        <Block $active={layout === POST_LAYOUT.MASONRY}>
           <Row>
             <Column grow>
               <Box />
@@ -121,10 +121,10 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
             </Column>
           </Row>
         </Block>
-        <LayoutTitle $active={layout === POST_LAYOUT.CARD}>
+        <LayoutTitle $active={layout === POST_LAYOUT.MASONRY}>
           <CheckLabel
             title="瀑布流卡片"
-            $active={layout === POST_LAYOUT.CARD}
+            $active={layout === POST_LAYOUT.MASONRY}
             top={15}
             left={-15}
           />
