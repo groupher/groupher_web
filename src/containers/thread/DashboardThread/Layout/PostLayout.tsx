@@ -82,7 +82,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </Block>
           <LayoutTitle $active={layout === POST_LAYOUT.UPVOTE_FIRST}>
             <CheckLabel
-              title="投票列表"
+              title="侧重投票"
               $active={layout === POST_LAYOUT.UPVOTE_FIRST}
               top={15}
               left={-15}
@@ -125,7 +125,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </Block>
           <LayoutTitle $active={layout === POST_LAYOUT.COMMENT_FIRST}>
             <CheckLabel
-              title="评论列表"
+              title="侧重评论"
               $active={layout === POST_LAYOUT.COMMENT_FIRST}
               top={15}
               left={-15}
@@ -149,7 +149,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </Block>
           <LayoutTitle $active={layout === POST_LAYOUT.CARD}>
             <CheckLabel
-              title="卡片列表"
+              title="瀑布流卡片"
               $active={layout === POST_LAYOUT.CARD}
               top={15}
               left={-15}
@@ -189,12 +189,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
             </Row>
           </Block>
           <LayoutTitle $active={layout === POST_LAYOUT.MINIMAL}>
-            <CheckLabel
-              title="极简列表"
-              $active={layout === POST_LAYOUT.MINIMAL}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="极简" $active={layout === POST_LAYOUT.MINIMAL} top={15} left={-15} />
           </LayoutTitle>
         </Layout>
 
@@ -217,12 +212,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
             </Row>
           </Block>
           <LayoutTitle $active={layout === POST_LAYOUT.COVER}>
-            <CheckLabel
-              title="封面图列表"
-              $active={layout === POST_LAYOUT.COVER}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="封面图" $active={layout === POST_LAYOUT.COVER} top={15} left={-15} />
           </LayoutTitle>
         </Layout>
       </SelectWrapper>

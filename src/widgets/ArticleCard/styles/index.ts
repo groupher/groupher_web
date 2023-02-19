@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   transition-delay: 0.1s;
   border-radius: 8px;
   transform: translateZ(0);
-  background-color: ${theme('alphaBg2')};
+  background-color: ${theme('alphaBg')};
   padding: 8px 18px;
   border: 1px solid;
   border-color: #f8f6f6;
