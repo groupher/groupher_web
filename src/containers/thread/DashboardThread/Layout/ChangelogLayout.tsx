@@ -108,7 +108,6 @@ const ChangelogLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
             />
           </LayoutTitle>
         </Layout>
-        <Space right={40} />
         <Layout onClick={() => edit(CHANGELOG_LAYOUT.SIMPLE, 'changelogLayout')}>
           <Block $active={layout === CHANGELOG_LAYOUT.SIMPLE}>
             <MiniItem>

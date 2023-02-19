@@ -5,6 +5,10 @@ import css from '@/utils/css'
 export const Wrapper = styled.div`
   padding: 0 100px;
   padding-right: 120px;
+
+  ${css.media.mobile`
+    padding: 0 20px;
+  `};
 `
 export const InnerWrapper = styled.div`
   ${css.flexColumn()};

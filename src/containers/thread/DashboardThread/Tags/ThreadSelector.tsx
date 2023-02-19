@@ -1,8 +1,10 @@
 import { FC, memo, useState } from 'react'
 
+import Button from '@/widgets/Buttons/Button'
+
 import { THREAD } from '@/constant/thread'
 
-import { Wrapper, Hint, CatsWrapper, CatButton } from '../styles/tags/thread_selector'
+import { Wrapper, Hint, CatsWrapper } from '../styles/tags/thread_selector'
 
 const ThreadSelector: FC = () => {
   const [thread, setThread] = useState(THREAD.POST)
@@ -11,35 +13,35 @@ const ThreadSelector: FC = () => {
     <Wrapper>
       <Hint>社区板块:</Hint>
       <CatsWrapper>
-        <CatButton
+        <Button
           ghost={thread !== THREAD.POST}
           size="small"
           noBorder={thread !== THREAD.POST}
           onClick={() => setThread(THREAD.POST)}
-          space={12}
+          space={10}
         >
           讨论区
-        </CatButton>
+        </Button>
 
-        <CatButton
+        <Button
           ghost={thread !== THREAD.KANBAN}
           size="small"
           noBorder={thread !== THREAD.KANBAN}
           onClick={() => setThread(THREAD.KANBAN)}
-          space={12}
+          space={10}
         >
           看板墙
-        </CatButton>
+        </Button>
 
-        <CatButton
+        <Button
           ghost={thread !== THREAD.CHANGELOG}
           size="small"
           noBorder={thread !== THREAD.CHANGELOG}
           onClick={() => setThread(THREAD.CHANGELOG)}
-          space={12}
+          space={10}
         >
           更新日志
-        </CatButton>
+        </Button>
       </CatsWrapper>
     </Wrapper>
   )

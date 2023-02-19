@@ -7,8 +7,11 @@ export const Wrapper = styled.div`
   ${css.flexColumn()};
   padding-left: 56px;
   padding-right: 75px;
-`
 
+  ${css.media.mobile`
+    padding: 20px;
+  `};
+`
 export const Banner = styled.div`
   height: 70px;
   width: 100%;
@@ -16,13 +19,21 @@ export const Banner = styled.div`
   border-bottom-color: ${theme('divider')};
   margin-bottom: 40px;
   position: relative;
+
+  ${css.media.mobile`
+    margin-bottom: 25px;
+  `};
 `
 export const TabsWrapper = styled.div`
   position: absolute;
   bottom: 0;
   left: -8px;
-`
 
+  ${css.media.mobile`
+    width: 100%;
+    overflow: scroll;
+  `};
+`
 export const BaseSection = styled.section`
   /* margin: 0 50px; */
   padding-bottom: 30px;

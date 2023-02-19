@@ -14,7 +14,13 @@ export { Bar, Circle } from '.'
 export const Wrapper = styled(BaseSection)``
 export const SelectWrapper = styled.div`
   ${css.flex('align-center')};
-  width: 100%;
+  flex-wrap: wrap;
+  gap: 30px;
+  width: calc(100% + 50px);
+
+  ${css.media.mobile`
+    width: 100%;
+  `}
 `
 type TTopBar = { center?: boolean; bg: TColorName }
 export const TopBar = styled.div<TTopBar>`

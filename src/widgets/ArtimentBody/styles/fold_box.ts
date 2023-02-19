@@ -20,8 +20,8 @@ export const Wrapper = styled.div<TWrapper>`
   padding-bottom: 5px;
 
   ${css.media.mobile`
-    margin-top: 18px;
-    margin-bottom: 18px;
+    margin-top: -40px;
+    margin-bottom: 30px;
   `};
 
   transition: all 0.2s;

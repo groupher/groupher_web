@@ -16,10 +16,16 @@ export const Row = styled.div`
   ${css.flex('align-center')};
   flex-wrap: wrap;
   gap: 26px 20px;
+
+  width: calc(100% + 40px);
+
+  ${css.media.mobile`
+    width: 100%;
+  `}
 `
 export const Box = styled.div<TActive>`
   position: relative;
-  width: 310px;
+  width: 300px;
   height: 180px;
   border-radius: 6px;
   border: 1px solid;

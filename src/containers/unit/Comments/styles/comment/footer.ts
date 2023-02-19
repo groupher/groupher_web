@@ -11,10 +11,19 @@ export const Wrapper = styled.div`
   margin-bottom: 5px;
   margin-top: -10px;
   margin-left: -3px;
+
+  ${css.media.mobile`
+    margin-left: -8px;
+  `};
 `
 
 export const MainWrapper = styled.div`
   ${css.flex('align-center')};
+
+  ${css.media.mobile`
+    flex-wrap: wrap;
+    gap: 10px 0; 
+  `};
 `
 
 export const ExtraWrapper = styled.div`

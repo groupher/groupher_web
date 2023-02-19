@@ -20,4 +20,9 @@ export const CatsWrapper = styled.div`
   flex-wrap: wrap;
   margin-left: 15px;
   gap: 14px;
+
+  ${css.media.mobile`
+    margin-left: 0;
+    gap: 6px;
+  `};
 `

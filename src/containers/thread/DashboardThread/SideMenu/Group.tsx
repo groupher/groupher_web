@@ -15,8 +15,8 @@ import {
 
 type TProps = {
   group: TMenuGroup
-  curTab: TDashboardPath
-  touched: TTouched
+  curTab: TDashboardPath | string
+  touched: TTouched | null
 }
 
 const Group: FC<TProps> = ({ group, curTab, touched }) => {
@@ -35,7 +35,7 @@ const Group: FC<TProps> = ({ group, curTab, touched }) => {
           {group.children.map((item) => (
             <Item $active={item.raw === curTab} key={item.raw} href={`/home/dashboard/${item.raw}`}>
               {item.title}
-              {touched[item.raw] && <TouchedDot />}
+              {touched && touched[item.raw] && <TouchedDot />}
             </Item>
           ))}
         </MenuWrapper>

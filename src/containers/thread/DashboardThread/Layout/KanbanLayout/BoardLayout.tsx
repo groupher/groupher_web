@@ -1,4 +1,4 @@
-import { FC, memo, useState } from 'react'
+import { FC, memo, useEffect, useState, useRef } from 'react'
 
 import { DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { COLOR_NAME } from '@/constant/colors'
@@ -16,12 +16,14 @@ import { SETTING_FIELD } from '../../constant'
 import SectionLabel from '../../SectionLabel'
 import SavingBar from '../../SavingBar'
 
-import KanbanItem from './KanbanItem'
+import KanbanList from './KanbanList'
 
 import type { TProps as TPropsBase } from '.'
 
 import {
   BoardsWrapper,
+  MobileBoardsWrapper,
+  MobileBoardsInnerWrapper,
   Board,
   ColorsWrapper,
   Preset,
@@ -35,6 +37,18 @@ type TProps = Omit<TPropsBase, 'isTouched'>
 
 const BoardLayout: FC<TProps> = ({ kanbanBgColors, isBgColorsTouched, saving }) => {
   const [diceRotate, setDiceRotate] = useState(0)
+
+  const ref = useRef(null)
+
+  /*
+   * reset when content visible
+   * scroll to top always
+   */
+  useEffect(() => {
+    if (ref?.current) {
+      ref.current.scrollLeft += 80
+    }
+  }, [ref])
 
   const [board1Ref, isBoard1Hovered] = useHover<HTMLDivElement>()
   const [board2Ref, isBoard2Hovered] = useHover<HTMLDivElement>()
@@ -113,27 +127,28 @@ const BoardLayout: FC<TProps> = ({ kanbanBgColors, isBgColorsTouched, saving }) 
 
       <BoardsWrapper>
         <Board color={BG1} $active={isBoard1Hovered}>
-          <KanbanItem count={17} />
-          <KanbanItem opacity={0.85} count={4} width={60} />
-          <KanbanItem opacity={0.75} count={6} width={40} />
-          <KanbanItem opacity={0.65} count={13} width={70} />
-          <KanbanItem opacity={0.55} count={6} width={40} />
+          <KanbanList num={1} />
         </Board>
         <Board color={BG2} $active={isBoard2Hovered}>
-          <KanbanItem count={21} width={60} />
-          <KanbanItem opacity={0.85} count={11} width={60} />
-          <KanbanItem opacity={0.75} count={16} width={80} />
-          <KanbanItem opacity={0.65} count={21} width={110} />
-          <KanbanItem opacity={0.55} count={11} width={60} />
+          <KanbanList num={2} />
         </Board>
         <Board color={BG3} $active={isBoard3Hovered}>
-          <KanbanItem count={72} width={68} />
-          <KanbanItem opacity={0.95} count={112} width={60} />
-          <KanbanItem opacity={0.85} count={41} width={100} />
-          <KanbanItem opacity={0.75} count={87} width={60} />
-          <KanbanItem opacity={0.55} count={41} width={100} />
+          <KanbanList num={3} />
         </Board>
       </BoardsWrapper>
+      <MobileBoardsWrapper ref={ref}>
+        <MobileBoardsInnerWrapper>
+          <Board color={BG1}>
+            <KanbanList num={1} />
+          </Board>
+          <Board color={BG2}>
+            <KanbanList num={2} />
+          </Board>
+          <Board color={BG3}>
+            <KanbanList num={3} />
+          </Board>
+        </MobileBoardsInnerWrapper>
+      </MobileBoardsWrapper>
 
       <SavingBar
         isTouched={isBgColorsTouched}

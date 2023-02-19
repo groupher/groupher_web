@@ -32,7 +32,7 @@ const EmotionSelector: FC<TProps> = ({
 }) => {
   const validEmotions = emotionsCoverter(emotions)
   return (
-    <Wrapper testid={testid}>
+    <>
       <SelectedEmotions emotions={validEmotions} onAction={onAction} />
       {isLegal && (
         <Tooltip
@@ -45,7 +45,7 @@ const EmotionSelector: FC<TProps> = ({
           </SelectEmotionWrapper>
         </Tooltip>
       )}
-    </Wrapper>
+    </>
   )
 }
 

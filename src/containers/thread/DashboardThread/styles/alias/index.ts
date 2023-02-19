@@ -7,6 +7,10 @@ export const Wrapper = styled.div`
   padding: 0 80px;
   padding-left: 150px;
   padding-right: 120px;
+
+  ${css.media.mobile`
+    padding: 0 20px;
+  `};
 `
 
 export const Banner = styled.div`

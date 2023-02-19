@@ -5,7 +5,7 @@ import type { TTopbarLayout, TColorName } from '@/spec'
 import { TOPBAR_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { callDashboardDesc } from '@/utils/signal'
 
-import { Br, Space, Inline } from '@/widgets/Common'
+import { Br, Inline } from '@/widgets/Common'
 import ColorSelector from '@/widgets/ColorSelector'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import CheckLabel from '@/widgets/CheckLabel'
@@ -95,7 +95,6 @@ const TopbarLayout: FC<TProps> = ({ layout, isLayoutTouched, isBgTouched, saving
             />
           </LayoutTitle>
         </Layout>
-        <Space right={40} />
         <Layout onClick={() => edit(TOPBAR_LAYOUT.NO, 'topbarLayout')}>
           <Block $active={layout === TOPBAR_LAYOUT.NO}>
             <Main>

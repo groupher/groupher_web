@@ -9,6 +9,9 @@ export const Wrapper = styled.div`
 
   ${css.media.mobile`
     font-size: 12px;
+    width: 50px;
+    word-break: keep-all;
+    margin-left: 15px;
   `};
 `
 export const ReplyAction = styled.div`

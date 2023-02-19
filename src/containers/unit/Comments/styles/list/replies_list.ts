@@ -4,6 +4,10 @@ import css, { theme } from '@/utils/css'
 
 export const Wrapper = styled.div`
   margin-left: 20px;
+
+  ${css.media.mobile`
+    margin-left: 12px;
+  `};
 `
 export const CountHint = styled.div`
   ${css.flex('align-center')};

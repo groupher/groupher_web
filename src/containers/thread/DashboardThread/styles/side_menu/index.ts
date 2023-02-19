@@ -18,7 +18,23 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   color: ${theme('article.digest')};
   padding-top: 32px;
   padding-left: 25px;
+
+  ${css.media.mobile`
+    display: none;
+  `};
 `
+
+export const MobileWrapper = styled.div.attrs(({ testid }: TTestable) => ({
+  'data-test-id': testid,
+}))<TTestable>`
+  ${css.flexColumn()};
+  width: 175px;
+  min-width: 175px;
+  color: ${theme('article.digest')};
+  padding-top: 15px;
+  padding-left: 15px;
+`
+
 export const Folder = styled.div`
   ${css.flex('align-center')};
   margin-bottom: 13px;

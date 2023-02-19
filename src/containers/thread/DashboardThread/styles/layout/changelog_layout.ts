@@ -15,7 +15,14 @@ export const Wrapper = styled(BaseSection)``
 
 export const SelectWrapper = styled.div`
   ${css.flex('align-center')};
-  width: 100%;
+  flex-wrap: wrap;
+  gap: 20px 30px;
+
+  width: calc(100% + 40px);
+
+  ${css.media.mobile`
+    width: 100%;
+  `}
 `
 
 type TColumn = { center?: boolean; grow?: boolean }

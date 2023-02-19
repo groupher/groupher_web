@@ -59,7 +59,6 @@ const UI: FC<TProps> = ({ settings, touched }) => {
   return (
     <Wrapper>
       <Portal title="布局/样式" desc="社区板块自定义布局与全局样式。" withDivider={false} />
-
       <Banner>
         <TabsWrapper>
           <Tabs

@@ -13,11 +13,11 @@ import Group from './Group'
 import { Wrapper } from '../styles/side_menu'
 
 type TProps = {
-  curTab: TDashboardPath
-  touched: TTouched
+  curTab?: TDashboardPath
+  touched?: TTouched
 }
 
-const SideMenu: FC<TProps> = ({ curTab, touched }) => {
+const SideMenu: FC<TProps> = ({ curTab = '', touched = null }) => {
   const groupKeys = keys(MENU)
 
   return (

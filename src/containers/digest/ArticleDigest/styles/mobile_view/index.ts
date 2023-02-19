@@ -14,7 +14,7 @@ export const InnerWrapper = styled.div`
   ${css.flex('justify-center')};
   width: 100%;
   border-bottom: 1px solid;
-  border-bottom-color: #0b4252;
+  border-bottom-color: ${theme('divider')};
   padding-bottom: 15px;
 `
 export const BannerContent = styled.div`

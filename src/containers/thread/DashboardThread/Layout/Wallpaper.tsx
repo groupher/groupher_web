@@ -56,7 +56,6 @@ const Wallpaper: FC<TProps> = ({ wallpaperInfo }) => {
             <PreviewImage style={{ background }} effect={effect} />
             <CheckLabel title="原图" top={15} left={-15} $active={false} />
           </HoverMask>
-          <Space right={48} />
           <PreviewerWrapper>
             <RealPreview>
               <PreviewImage style={{ background }} effect={effect} noHover />
