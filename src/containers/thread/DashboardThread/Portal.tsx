@@ -1,8 +1,11 @@
 import { FC, memo, ReactNode } from 'react'
 
 import { Divider } from '@/widgets/Common'
+import Tooltip from '@/widgets/Tooltip'
 
-import { Wrapper, Title, Desc } from './styles/portal'
+import SideMenu from './SideMenu/Mobile'
+
+import { Wrapper, Title, MobileTitle, ArrowIcon, Desc, MobileMenu } from './styles/portal'
 
 type TProps = {
   title: string
@@ -14,6 +17,22 @@ const Portal: FC<TProps> = ({ title, desc = null, withDivider = true }) => {
   return (
     <Wrapper>
       <Title>{title}</Title>
+      <Tooltip
+        content={
+          <MobileMenu>
+            <SideMenu />
+          </MobileMenu>
+        }
+        placement="bottom-start"
+        trigger="click"
+        noPadding
+      >
+        <MobileTitle>
+          {title} <ArrowIcon />
+        </MobileTitle>
+      </Tooltip>
+
+      {/* <SideMenu curTab={curTab} touched={touched} /> */}
       {desc && <Desc>{desc}</Desc>}
       {withDivider && <Divider bottom={30} top={20} />}
     </Wrapper>

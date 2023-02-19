@@ -3,14 +3,13 @@ import { keys } from 'ramda'
 
 import type { TDashboardPath } from '@/spec'
 import { Br } from '@/widgets/Common'
-import Sticky from '@/widgets/Sticky'
 
 import { MENU } from '../constant'
 import type { TTouched, TMenuGroup } from '../spec'
 
 import Group from './Group'
 
-import { Wrapper } from '../styles/side_menu'
+import { MobileWrapper } from '../styles/side_menu'
 
 type TProps = {
   curTab?: TDashboardPath
@@ -21,16 +20,14 @@ const SideMenu: FC<TProps> = ({ curTab = '', touched = null }) => {
   const groupKeys = keys(MENU)
 
   return (
-    <Wrapper>
-      <Sticky offsetTop={30}>
-        {groupKeys.map((key) => (
-          <Fragment key={key}>
-            <Group group={MENU[key] as TMenuGroup} curTab={curTab} touched={touched} />
-            <Br top={30} />
-          </Fragment>
-        ))}
-      </Sticky>
-    </Wrapper>
+    <MobileWrapper>
+      {groupKeys.map((key) => (
+        <Fragment key={key}>
+          <Group group={MENU[key] as TMenuGroup} curTab={curTab} touched={touched} />
+          <Br top={30} />
+        </Fragment>
+      ))}
+    </MobileWrapper>
   )
 }
 
