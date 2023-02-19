@@ -7,9 +7,11 @@ import ArrowSVG from '@/icons/ArrowSimple'
 
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
-  color: ${theme('article.title')};
+  line-height: 24px;
+`
+export const Title = styled.div`
   font-size: 13px;
-  margin-left: 2px;
+  color: ${theme('article.title')};
 `
 export const ArrowIcon = styled(ArrowSVG)`
   ${css.size(15)};
@@ -23,7 +25,6 @@ export const Panel = styled.div`
   width: 140px;
   padding: 15px 20px;
 `
-
 export const Item = styled(Link)`
   color: ${theme('article.title')};
   font-size: 15px;

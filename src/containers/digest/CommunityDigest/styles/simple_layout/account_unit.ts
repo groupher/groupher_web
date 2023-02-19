@@ -52,6 +52,10 @@ export const DashboardIcon = styled(DashboardSVG)`
   margin-right: 16px;
 
   ${hoverEffect}
+
+  ${css.media.mobile`
+    display: none;
+  `};
 `
 export const AccountIcon = styled(AccountSVG)`
   fill: ${theme('article.digest')};

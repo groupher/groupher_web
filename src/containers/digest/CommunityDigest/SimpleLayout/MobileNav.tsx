@@ -6,7 +6,7 @@ import { ROUTE } from '@/constant/route'
 import Tooltip from '@/widgets/Tooltip'
 import { Divider } from '@/widgets/Common'
 
-import { Wrapper, ArrowIcon, Panel, Item } from '../styles/simple_layout/mobile_nav'
+import { Wrapper, Title, ArrowIcon, Panel, Item } from '../styles/simple_layout/mobile_nav'
 
 type TProps = {
   testid?: string
@@ -38,7 +38,7 @@ const MobileNav: FC<TProps> = ({ testid = 'MobileNav', community, threads, activ
         noPadding
       >
         <Wrapper>
-          {curThread?.title || '管理后台'}
+          <Title>{curThread?.title || '管理后台'}</Title>
           <ArrowIcon />
         </Wrapper>
       </Tooltip>

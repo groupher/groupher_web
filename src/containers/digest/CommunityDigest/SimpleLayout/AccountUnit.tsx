@@ -25,11 +25,9 @@ const AccountUnit: FC = () => {
         订阅
       </SubscribeButton> */}
 
-      <DesktopOnly>
-        <Link href={`/home/${ROUTE.DASHBOARD.DASHBOARD}`} prefetch={false}>
-          <DashboardIcon />
-        </Link>
-      </DesktopOnly>
+      <Link href={`/home/${ROUTE.DASHBOARD.DASHBOARD}`} prefetch={false}>
+        <DashboardIcon />
+      </Link>
 
       {/* <div data-test-id="header-notify-icon">
         <NotifyIcon />
