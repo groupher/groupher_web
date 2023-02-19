@@ -17,3 +17,10 @@ export const Block = styled.div`
   margin-right: 10px;
   border-radius: 5px;
 `
+
+export const MobileBlock = styled.div`
+  width: 96%;
+  height: 60px;
+  background: ${theme('hoverBg')};
+  border-radius: 5px;
+`

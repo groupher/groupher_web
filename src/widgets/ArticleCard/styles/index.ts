@@ -20,15 +20,28 @@ export const Wrapper = styled.div`
     border-color: ${theme('divider')};
   }
 
+  ${css.media.mobile`
+    padding: 4px 12px;
+    margin-bottom: 10px;
+  `};
+
   transition: all 0.25s;
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
   font-size: 16px;
   font-weight: 550;
+  ${css.lineClamp(2)};
+  opacity: 0.9;
+
+  ${css.media.mobile`
+    font-size: 15px;
+  `};
 `
 export const MobileDigest = styled.div`
   ${css.lineClamp(2)}
   color: ${theme('article.digest')};
   font-size: 13px;
+  margin-top: 3px;
+  margin-bottom: 3px;
 `
