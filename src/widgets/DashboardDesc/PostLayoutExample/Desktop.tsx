@@ -47,7 +47,7 @@ const PostLayoutExample: FC<TProps> = ({ articles, layout }) => {
         </>
       )}
 
-      {layout === POST_LAYOUT.CARD && (
+      {layout === POST_LAYOUT.MASONRY && (
         <>
           <MasonryCards column={2}>
             {articles.map((item) => (
@@ -56,7 +56,7 @@ const PostLayoutExample: FC<TProps> = ({ articles, layout }) => {
                 article={item}
                 c11n={{}}
                 curCommunity={{ raw: 'demo' }}
-                layout={POST_LAYOUT.CARD}
+                layout={POST_LAYOUT.MASONRY}
               />
             ))}
           </MasonryCards>

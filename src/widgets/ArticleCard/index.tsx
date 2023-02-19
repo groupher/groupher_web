@@ -1,5 +1,4 @@
 import { FC, memo } from 'react'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TArticle, TThread } from '@/spec'
 import { THREAD } from '@/constant/thread'
@@ -9,7 +8,7 @@ import SIZE from '@/constant/size'
 import { cutRest } from '@/utils/fmt'
 import { send } from '@/utils/signal'
 import DigestSentence from '@/widgets/DigestSentence'
-import { Br, SpaceGrow } from '@/widgets/Common'
+import { Br, SpaceGrow, DesktopOnly, MobileOnly } from '@/widgets/Common'
 import ArticleImgWindow from '@/widgets/ArticleImgWindow'
 
 import Footer from './Footer'
@@ -22,16 +21,12 @@ export type TProps = {
 }
 
 const ArticleCard: FC<TProps> = ({ data, thread = THREAD.POST }) => {
-  const { isMobile } = useMobileDetect()
-
   return (
     <Wrapper>
       <Br top={8} />
       <Title>{data.title}</Title>
 
-      {isMobile ? (
-        <MobileDigest>{data.digest}</MobileDigest>
-      ) : (
+      <DesktopOnly>
         <DigestSentence
           top={5}
           bottom={16}
@@ -40,7 +35,12 @@ const ArticleCard: FC<TProps> = ({ data, thread = THREAD.POST }) => {
         >
           {cutRest(data.digest, 150)}
         </DigestSentence>
-      )}
+      </DesktopOnly>
+
+      <MobileOnly>
+        <MobileDigest>{data.digest}</MobileDigest>
+      </MobileOnly>
+
       <Br top={6} />
       <ArticleImgWindow />
       <Br top={18} />

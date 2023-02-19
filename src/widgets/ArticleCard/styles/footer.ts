@@ -13,6 +13,7 @@ export const PublishWrapper = styled.div`
 
   ${css.media.mobile`
     font-size: 12px;
+    margin-bottom: 2px;
   `};
 `
 export const Bottom = styled.div`
@@ -20,7 +21,7 @@ export const Bottom = styled.div`
 
   ${css.media.mobile`
     transform: scale(0.9);
-    width: 109%;
-    margin-left: -8px;
+    width: 106%;
+    margin-left: -6px;
   `};
 `

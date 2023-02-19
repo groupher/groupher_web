@@ -15,7 +15,7 @@ import CommentFirstLayout from './CommentFirstLayout'
 import UpvoteFirstLayout from './UpvoteFirstLayout'
 import MinimalLayout from './MinimalLayout'
 import CoverLayout from './CoverLayout'
-import CardLayout from './CardLayout'
+import MasonryLayout from './MasonryLayout'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:PostItem:index')
@@ -79,7 +79,8 @@ const PostItem: FC<TProps> = ({
           isMobilePreview={isMobilePreview}
         />
       )}
-      {layout === POST_LAYOUT.CARD && <CardLayout article={article} />}
+
+      {layout === POST_LAYOUT.MASONRY && <MasonryLayout article={article} />}
     </Fragment>
   )
 }

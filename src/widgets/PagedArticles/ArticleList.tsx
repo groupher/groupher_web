@@ -13,6 +13,7 @@ import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 import { EmptyThread } from './dynamic'
 
 import type { TProps as TBaseTProps } from '.'
+import { MasonryCardsWrapper } from './styles/article_list'
 
 type TProps = { entries: TArticleEntries } & Omit<TBaseTProps, 'data'>
 
@@ -38,20 +39,22 @@ const ArticleList: FC<TProps> = ({
     return <EmptyThread thread={thread} />
   }
 
-  if (globalLayout.post === POST_LAYOUT.CARD) {
+  if (globalLayout.post === POST_LAYOUT.MASONRY) {
     return (
-      <MasonryCards column={2}>
-        {entries.map((entry) => (
-          <PostItem
-            key={entry.id}
-            article={entry}
-            c11n={c11n}
-            curCommunity={curCommunity}
-            layout={globalLayout.post}
-            avatarLayout={globalLayout.avatar}
-          />
-        ))}
-      </MasonryCards>
+      <MasonryCardsWrapper>
+        <MasonryCards column={2}>
+          {entries.map((entry) => (
+            <PostItem
+              key={entry.id}
+              article={entry}
+              c11n={c11n}
+              curCommunity={curCommunity}
+              layout={globalLayout.post}
+              avatarLayout={globalLayout.avatar}
+            />
+          ))}
+        </MasonryCards>
+      </MasonryCardsWrapper>
     )
   }
 

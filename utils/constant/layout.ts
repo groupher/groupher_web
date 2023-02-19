@@ -63,7 +63,7 @@ export const BROADCAST_ARTICLE_LAYOUT = {
 export const POST_LAYOUT = {
   UPVOTE_FIRST: 'upvote_first',
   COMMENT_FIRST: 'comment_first',
-  CARD: 'card',
+  MASONRY: 'masonry',
   MINIMAL: 'minimal',
   COVER: 'cover',
 } as Record<TSnakeUpperCase<TPostLayout>, TPostLayout>
