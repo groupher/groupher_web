@@ -22,4 +22,5 @@ export const CountWrapper = styled.div`
   text-align: center;
   width: 24px;
   margin-top: 2px;
+  margin-left: -2px;
 `

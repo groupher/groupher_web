@@ -127,7 +127,7 @@ const GlobalStyle = createGlobalStyle`
   }
   .masonry-cards-grid_column {
     background-clip: padding-box;
-    padding: 20px;
+    padding: 8px;
 
     ${css.media.mobile`
       padding: 5px;
