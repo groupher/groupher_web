@@ -9,5 +9,6 @@ export const Wrapper = styled.div`
   line-height: 18px;
 `
 export const Label = styled.div`
-  opacity: 0.8;
+  opacity: 0.7;
+  word-break: keep-all;
 `
