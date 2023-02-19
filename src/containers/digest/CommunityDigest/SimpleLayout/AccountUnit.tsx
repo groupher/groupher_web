@@ -6,10 +6,12 @@ import { ROUTE } from '@/constant/route'
 // import { callSubscriber, callAuth } from '@/utils/signal'
 import { callAuth } from '@/utils/signal'
 
+import { DesktopOnly } from '@/widgets/Common'
+
 import {
   Wrapper,
   DashboardIcon,
-  NotifyIcon,
+  // NotifyIcon,
   // SubscribeButton,
   AccountIcon,
 } from '../styles/simple_layout/account_unit'
@@ -23,9 +25,11 @@ const AccountUnit: FC = () => {
         订阅
       </SubscribeButton> */}
 
-      <Link href={`/home/${ROUTE.DASHBOARD.DASHBOARD}`} prefetch={false}>
-        <DashboardIcon />
-      </Link>
+      <DesktopOnly>
+        <Link href={`/home/${ROUTE.DASHBOARD.DASHBOARD}`} prefetch={false}>
+          <DashboardIcon />
+        </Link>
+      </DesktopOnly>
 
       {/* <div data-test-id="header-notify-icon">
         <NotifyIcon />

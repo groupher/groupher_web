@@ -59,6 +59,7 @@ export const Text = styled.div`
   font-size: 13px;
   font-weight: 400;
   opacity: 0.8;
+  word-break: keep-all;
 
   ${Wrapper}:hover & {
     color: ${theme('article.title')};

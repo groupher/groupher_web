@@ -24,11 +24,10 @@ export const FullWrapper = styled(FilterWrapper)`
 
   transition: all 0.2s;
 `
-
 export const Label = styled.div`
   opacity: 0.7;
+  word-break: keep-all;
 `
-
 export const SelectItem = styled.div<TActive>`
   ${css.flex('align-start')};
   padding: 10px 6px;

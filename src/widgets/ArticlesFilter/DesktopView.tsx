@@ -14,7 +14,7 @@ import TYPE from '@/constant/type'
 import { buildLog } from '@/utils/logger'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
-import { Space, SpaceGrow } from '@/widgets/Common'
+import { Space, SpaceGrow, DesktopOnly } from '@/widgets/Common'
 
 import CatSelector from '@/widgets/CatSelector'
 
@@ -63,7 +63,10 @@ const ArticlesFilter: FC<TProps> = ({
           <CatSelector activeCat={activeCat} onSelect={setActiveCat} />
 
           <SpaceGrow />
-          {resState === TYPE.RES_STATE.LOADING && <LavaLampLoading top={2} right={28} />}
+
+          <DesktopOnly>
+            {resState === TYPE.RES_STATE.LOADING && <LavaLampLoading top={2} right={28} />}
+          </DesktopOnly>
         </Fragment>
       )}
 

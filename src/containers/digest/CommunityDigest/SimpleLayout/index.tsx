@@ -5,10 +5,12 @@ import EVENT from '@/constant/event'
 import { send } from '@/utils/signal'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
+import { MobileOnly } from '@/widgets/Common'
 
 import ThreadTab from './ThreadTab'
 import CommunityBrief from './CommunityBrief'
 import AccountUnit from './AccountUnit'
+import MobileNav from './MobileNav'
 
 import {
   Wrapper,
@@ -38,10 +40,15 @@ const SimpleLayout: FC<TProps> = ({ community, activeThread, metric, enable }) =
         <BannerContentWrapper>
           <CommunityBaseInfo>
             <CommunityBrief community={community} />
+
+            <MobileOnly>
+              <MobileNav community={community} threads={publicThreads} active={activeThread} />
+            </MobileOnly>
+
             <ThreadTab
               threads={publicThreads}
-              onChange={(data) => send(EVENT.COMMUNITY_THREAD_CHANGE, { data })}
               active={activeThread}
+              onChange={(data) => send(EVENT.COMMUNITY_THREAD_CHANGE, { data })}
             />
             <AccountUnit />
           </CommunityBaseInfo>
