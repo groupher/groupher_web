@@ -5,6 +5,10 @@ import css, { theme } from '@/utils/css'
 export const Wrapper = styled.div`
   ${css.flexColumn()};
   padding: 0 150px;
+
+  ${css.media.mobile`
+    padding: 0 20px;
+  `};
 `
 export const Banner = styled.div`
   height: 70px;
