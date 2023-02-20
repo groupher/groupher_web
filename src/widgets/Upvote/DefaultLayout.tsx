@@ -5,7 +5,6 @@
  */
 
 import { FC, memo } from 'react'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TUser, TAvatarLayout } from '@/spec'
 import { buildLog } from '@/utils/logger'
@@ -15,7 +14,14 @@ import Facepile from '@/widgets/Facepile'
 import AnimatedCount from '../AnimatedCount'
 import UpvoteBtn from './UpvoteBtn'
 
-import { Wrapper, Button, Alias, UpvoteBtnWrapper, LineDivider } from './styles/default_layout'
+import {
+  Wrapper,
+  Button,
+  Alias,
+  UpvoteBtnWrapper,
+  Count,
+  LineDivider,
+} from './styles/default_layout'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
 /* eslint-disable-next-line */
@@ -40,7 +46,6 @@ const Upvote: FC<TProps> = ({
   avatarList,
   avatarLayout = AVATAR_LAYOUT.SQUARE,
 }) => {
-  const { isMobile } = useMobileDetect()
   const noOne = count === 0
 
   return (
@@ -50,10 +55,12 @@ const Upvote: FC<TProps> = ({
           <UpvoteBtn viewerHasUpvoted={viewerHasUpvoted} onAction={onAction} count={count} />
         </UpvoteBtnWrapper>
         <Alias>{alias}</Alias>
-        <AnimatedCount count={count} active={viewerHasUpvoted} size="medium" />
+        <Count>
+          <AnimatedCount count={count} active={viewerHasUpvoted} size="medium" />
+        </Count>
       </Button>
       {!noOne && <LineDivider />}
-      {!noOne && !isMobile && <Facepile users={avatarList} avatarLayout={avatarLayout} showMore />}
+      {!noOne && <Facepile users={avatarList} avatarLayout={avatarLayout} showMore />}
     </Wrapper>
   )
 }

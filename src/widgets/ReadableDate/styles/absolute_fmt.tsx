@@ -8,7 +8,6 @@ export const Wrapper = styled.div`
 
   ${css.media.mobile`
     font-size: 12px;
-    margin-bottom: 4px;
   `}
 `
 

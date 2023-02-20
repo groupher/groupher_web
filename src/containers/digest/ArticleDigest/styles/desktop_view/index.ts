@@ -19,6 +19,12 @@ export const Wrapper = styled.nav.attrs(({ testid }: TTestable) => ({
   margin-bottom: 24px;
   width: 100%;
   max-width: ${WIDTH.ARTICLE.PAGE};
+
+  ${css.media.mobile`
+    height: auto;
+    margin-bottom: 16px;
+    min-height: 240px;
+  `};
 `
 export const InnerWrapper = styled.div`
   width: 100%;

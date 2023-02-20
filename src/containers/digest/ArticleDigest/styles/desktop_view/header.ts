@@ -19,6 +19,13 @@ export const InnerWrapper = styled.div`
   width: 78%;
   height: 54px;
   padding-top: 2px;
+
+  ${css.media.mobile`
+    width: 100%;
+    height: 40px;
+    padding: 0 20px;
+    padding-left: 14px;
+  `};
 `
 export const Community = styled.div`
   ${css.flex('align-both')};
@@ -53,6 +60,10 @@ export const Main = styled.div<{ metric: TMetric }>`
   );
 
   border-image-slice: 1;
+
+  ${css.media.mobile`
+    display: none;
+  `};
 `
 export const LinkItem = styled(Link)`
   font-size: 13px;
@@ -84,5 +95,9 @@ export const AccountIcon = styled(AccountSVG)`
   ${css.size(16)};
   margin-right: 14px;
 
+  ${css.media.mobile`
+    ${css.size(14)};
+    margin-right: 0;
+  `};
   ${hoverEffect}
 `

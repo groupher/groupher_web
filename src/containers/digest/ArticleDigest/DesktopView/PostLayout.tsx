@@ -14,7 +14,6 @@ import Upvote from '@/widgets/Upvote'
 import { Space } from '@/widgets/Common'
 import ArticleBaseStats from '@/widgets/ArticleBaseStats'
 // import ArticleBelongCommunity from '@/widgets/ArticleBelongCommunity'
-import DotDivider from '@/widgets/DotDivider'
 // import ArticleMenu from '@/widgets/ArticleMenu'
 import ReadableDate from '@/widgets/ReadableDate'
 import ArticleCatState from '@/widgets/ArticleCatState'
@@ -28,6 +27,7 @@ import {
   Title,
   AuthorName,
   BottomInfo,
+  Divider,
 } from '../styles/desktop_view/post_layout'
 
 /* eslint-disable-next-line */
@@ -70,11 +70,11 @@ const PostLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
             <ArticleCatState cat={ARTICLE_CAT.FEATURE} state={ARTICLE_STATE.REJECT_DUP} />
           )}
         </div>
-        <DotDivider space={12} />
+        <Divider />
         <AuthorName href={`/u/${author.login}`} prefetch={false}>
           {author.nickname}
         </AuthorName>
-        <DotDivider space={12} />
+        <Divider />
         <PublishDateInfo>
           <ReadableDate date={insertedAt} fmt="absolute" withTime={false} />
         </PublishDateInfo>

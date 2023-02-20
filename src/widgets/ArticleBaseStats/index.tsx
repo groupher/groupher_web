@@ -17,6 +17,7 @@ import {
   CommentIcon,
   Count,
   CommentCount,
+  Divider,
 } from './styles'
 
 type TProps = {
@@ -34,7 +35,7 @@ const ArticleBaseStats: FC<TProps> = ({
     <Wrapper testid={testid}>
       <ViewsIcon />
       <Count>{article.views}</Count>
-      <Space left={18} />
+      <Divider />
       <CommentWrapper onClick={() => scrollToComments(container)}>
         <CommentIcon />
         <CommentCount>{article.commentsCount}</CommentCount>

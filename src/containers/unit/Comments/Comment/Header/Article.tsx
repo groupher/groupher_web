@@ -1,4 +1,4 @@
-import { FC, memo, Fragment } from 'react'
+import { FC, memo } from 'react'
 import TimeAgo from 'timeago-react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 

@@ -4,7 +4,7 @@ import type { TArticle, TMetric } from '@/spec'
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import METRIC from '@/constant/metric'
 
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow, DesktopOnly } from '@/widgets/Common'
 import ArticleCatState from '@/widgets/ArticleCatState'
 import ArticleBaseStats from '@/widgets/ArticleBaseStats'
 
@@ -40,7 +40,9 @@ const FixedHeader: FC<TProps> = ({
           )}
           <Title>{article.title}</Title>
           <SpaceGrow />
-          <ArticleBaseStats article={article} container="drawer" />
+          <DesktopOnly>
+            <ArticleBaseStats article={article} container="drawer" />
+          </DesktopOnly>
         </ContentWrapper>
       </InnerWrapper>
     </Wrapper>

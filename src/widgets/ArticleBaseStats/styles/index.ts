@@ -12,10 +12,15 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 }))<TTestable>`
   ${css.flex('align-center')};
   line-height: 20px;
+
+  ${css.media.mobile`
+    transform: scale(0.9);
+  `};
 `
 export const ViewsIcon = styled(ViewSVG)`
   fill: ${theme('article.info')};
   ${css.size(12)};
+  margin-top: 1px;
   transition: fill 0.25s;
 `
 export const CommentWrapper = styled.div`
@@ -46,4 +51,12 @@ export const CommentCount = styled(Count)`
     color: ${theme('article.title')};
   }
   transition: color 0.2s;
+`
+
+export const Divider = styled.div`
+  margin: 0 9px;
+
+  ${css.media.mobile`
+     margin: 0 6px;
+  `};
 `

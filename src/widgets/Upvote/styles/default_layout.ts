@@ -27,6 +27,9 @@ export const Button = styled.div`
     cursor: pointer;
   }
 
+  ${css.media.mobile`
+    padding: 0 6px;
+  `};
   transition: 0.2s all;
 `
 export const Alias = styled.div`
@@ -35,10 +38,22 @@ export const Alias = styled.div`
   margin-right: 7px;
   margin-left: 2px;
   word-break: keep-all;
+
+  ${css.media.mobile`
+    font-weight: 500;
+    margin-left: 0;
+    margin-right: 5px;
+    font-size: 13px;
+    margin-top: 2px;
+  `}
 `
 export const UpvoteBtnWrapper = styled.div`
   transform: scale(0.8);
   margin-top: 5px;
+
+  ${css.media.mobile`
+    margin-top: 3px;
+  `}
 `
 export const DescWrapper = styled.div`
   ${css.flex('align-center')};
@@ -49,9 +64,10 @@ export const Text = styled.div`
   font-size: 12px;
   margin-top: 1px;
 `
-export const Count = styled.div<{ noOne: boolean }>`
-  color: ${theme('article.info')};
-  font-weight: ${({ noOne }) => (noOne ? 400 : 600)};
+export const Count = styled.div`
+  ${css.media.mobile`
+    transform: scale(0.9);
+  `}
 `
 export const LineDivider = styled(LineDividerBase)`
   height: 10px;
@@ -59,5 +75,9 @@ export const LineDivider = styled(LineDividerBase)`
   opacity: 0.8;
   margin-left: 12px;
   margin-right: 10px;
-  margin-top: 1px;
+
+  ${css.media.mobile`
+    margin-left: 10px;
+    margin-right: 8px;
+  `}
 `
