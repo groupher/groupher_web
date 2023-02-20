@@ -40,7 +40,7 @@ const FixedHeader: FC<TProps> = ({
           )}
           <Title>{article.title}</Title>
           <SpaceGrow />
-          <DesktopOnly>
+          <DesktopOnly width="auto">
             <ArticleBaseStats article={article} container="drawer" />
           </DesktopOnly>
         </ContentWrapper>

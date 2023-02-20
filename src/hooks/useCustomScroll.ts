@@ -25,16 +25,12 @@ type TOption = {
  *
  * @returns
  */
-const useCustomScroll = (
-  ref: RefObject<HTMLElement>,
-  option: TOption = {},
-): any => {
+const useCustomScroll = (ref: RefObject<HTMLElement>, option: TOption = {}): any => {
   const [scrollInstance, setScrollInstance] = useState(null)
 
   useEffect(() => {
     if (OverlayScrollbars && ref.current && !scrollInstance) {
-      option.className =
-        option.themeCategory === 'dark' ? 'os-theme-light' : 'os-theme-dark'
+      option.className = option.themeCategory === 'dark' ? 'os-theme-light' : 'os-theme-dark'
       delete option.themeCategory
 
       const defaultOption = {
@@ -43,13 +39,10 @@ const useCustomScroll = (
         callbacks: { ...option.callbacks },
       }
       const { instanceKey, ...restOptions } = option
-      const instance = OverlayScrollbars(
-        ref.current,
-        Object.assign(defaultOption, restOptions),
-      )
+      const instance = OverlayScrollbars(ref.current, Object.assign(defaultOption, restOptions))
 
       if (instanceKey && typeof window === 'object') {
-        window[instanceKey] = instance
+        window[instanceKey] = instance.elements().viewport
       }
       setScrollInstance(instance)
     }

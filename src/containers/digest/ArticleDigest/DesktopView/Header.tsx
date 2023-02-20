@@ -1,7 +1,11 @@
 import { FC } from 'react'
 
-import type { TCommunity, TMetric } from '@/spec'
+import type { TCommunity, TMetric, TEnableConfig, TThread } from '@/spec'
+
+import { ANCHOR } from '@/constant/dom'
 import { ROUTE } from '@/constant/route'
+
+import MobileThreadNavi from '@/widgets/MobileThreadNavi'
 
 import {
   Wrapper,
@@ -13,21 +17,27 @@ import {
   LinkItem,
   Account,
   AccountIcon,
+  MobileNaviWrapper,
 } from '../styles/desktop_view/header'
 
 type TProps = {
   metric: TMetric
   community: TCommunity
+  enable: TEnableConfig
+  activeThread: TThread
 }
 
-const Header: FC<TProps> = ({ metric, community }) => {
+const Header: FC<TProps> = ({ metric, community, enable, activeThread }) => {
+  const publicThreads = community.threads.filter((thread) => enable[thread.raw])
+
   return (
-    <Wrapper>
+    <Wrapper id={ANCHOR.GLOBAL_HEADER_ID}>
       <InnerWrapper>
         <Community>
           <CommunityLogo src={community.logo} />
           <CommunityTitle>{community.title}</CommunityTitle>
         </Community>
+
         <Main metric={metric}>
           <LinkItem href={`/${community.raw}/${ROUTE.POST}`}>讨论区</LinkItem>
           <LinkItem href={`/${community.raw}/${ROUTE.KANBAN}`}>看板</LinkItem>
@@ -35,6 +45,11 @@ const Header: FC<TProps> = ({ metric, community }) => {
           <LinkItem href={`/${community.raw}/${ROUTE.HELP}`}>帮助台</LinkItem>
           <LinkItem href={`/${community.raw}/${ROUTE.ABOUT}`}>关于</LinkItem>
         </Main>
+
+        <MobileNaviWrapper>
+          <MobileThreadNavi community={community} threads={publicThreads} active={activeThread} />
+        </MobileNaviWrapper>
+
         <Account>
           <AccountIcon />
         </Account>

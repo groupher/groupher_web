@@ -86,7 +86,7 @@ export const Desc = styled.div`
 export const LinkButton = styled(ArrowButton)<{ color: TColorName }>`
   border-radius: 6px;
   background: ${theme('alphaBg')};
-  padding: 3px 12px;
+  padding: 6px 15px;
   font-size: 13px;
 
   &:hover {

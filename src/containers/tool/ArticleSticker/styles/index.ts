@@ -9,8 +9,12 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.flexColumn('align-center', 'justify-start')};
-  ${({ metric }) => css.fitStickerWidth(metric)};
+  /* ${({ metric }) => css.fitStickerWidth(metric)}; */
   min-height: 60vh;
+
+  ${css.media.mobile`
+    display: none;
+  `};
 `
 export const InnerWrapper = styled.div`
   ${css.flexColumn('justify-between')}
@@ -73,8 +77,11 @@ export const Text = styled.div`
 
 export const GoTopWrapper = styled.div<TActive>`
   ${css.flex('align-both')};
-  opacity: ${({ show }) => (show ? 1 : 0)};
+  display: ${({ show }) => (show ? 'flex' : 'none')};
   position: absolute;
-  bottom: -140px;
+  bottom: -200px;
+  left: 100px;
   width: 100%;
+
+  animation: ${animate.jump} 0.6s linear;
 `

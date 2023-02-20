@@ -6,7 +6,7 @@ import { ROUTE } from '@/constant/route'
 import Tooltip from '@/widgets/Tooltip'
 import { Divider } from '@/widgets/Common'
 
-import { Wrapper, Title, ArrowIcon, Panel, Item } from '../styles/simple_layout/mobile_nav'
+import { Wrapper, Title, ArrowIcon, Panel, Item } from './styles'
 
 type TProps = {
   testid?: string
@@ -16,7 +16,12 @@ type TProps = {
   active: string
 }
 
-const MobileNav: FC<TProps> = ({ testid = 'MobileNav', community, threads, active }) => {
+const MobileThreadNav: FC<TProps> = ({
+  testid = 'mobile-thread-nav',
+  community,
+  threads,
+  active,
+}) => {
   const curThread = threads.filter((t) => t.raw === active)[0] as TCommunityThread
 
   return (
@@ -46,4 +51,4 @@ const MobileNav: FC<TProps> = ({ testid = 'MobileNav', community, threads, activ
   )
 }
 
-export default memo(MobileNav)
+export default memo(MobileThreadNav)
