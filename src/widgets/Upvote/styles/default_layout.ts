@@ -28,7 +28,8 @@ export const Button = styled.div`
   }
 
   ${css.media.mobile`
-    padding: 0 6px;
+    padding: 0 8px;
+    height: 26px;
   `};
   transition: 0.2s all;
 `
@@ -44,7 +45,6 @@ export const Alias = styled.div`
     margin-left: 0;
     margin-right: 5px;
     font-size: 13px;
-    margin-top: 2px;
   `}
 `
 export const UpvoteBtnWrapper = styled.div`
@@ -52,7 +52,7 @@ export const UpvoteBtnWrapper = styled.div`
   margin-top: 5px;
 
   ${css.media.mobile`
-    margin-top: 3px;
+    margin-top: 4px;
   `}
 `
 export const DescWrapper = styled.div`

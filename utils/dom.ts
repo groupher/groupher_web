@@ -41,7 +41,7 @@ export const oldScrollIntoEle = (eleID: string): void => {
 export const scrollIntoEle = (eleID: string): void => {
   if (typeof window === 'object') {
     const el = document.getElementById(eleID)
-    window[BODY_SCROLLER]?.scroll(el, 500)
+    el.scrollIntoView({ behavior: 'smooth' })
   }
 }
 
@@ -50,7 +50,7 @@ export const scrollToTabber = (): void => scrollIntoEle(ANCHOR.GLOBAL_TABBER_ID)
 
 export const scrollDrawerToTop = (): void => {
   if (typeof window === 'object') {
-    window[DRAWER_SCROLLER]?.scroll({ top: 0 }, 300)
+    window[DRAWER_SCROLLER]?.scroll({ top: 0, behavior: 'smooth' })
   }
 }
 

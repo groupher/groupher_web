@@ -101,3 +101,11 @@ export const AccountIcon = styled(AccountSVG)`
   `};
   ${hoverEffect}
 `
+export const MobileNaviWrapper = styled.div`
+  display: none;
+
+  ${css.media.mobile`
+    ${css.flexGrow('align-center')};
+    margin-left: 10px;
+  `}
+`

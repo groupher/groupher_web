@@ -6,11 +6,11 @@ import { send } from '@/utils/signal'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
 import { MobileOnly } from '@/widgets/Common'
+import MobileThreadNavi from '@/widgets/MobileThreadNavi'
 
 import ThreadTab from './ThreadTab'
 import CommunityBrief from './CommunityBrief'
 import AccountUnit from './AccountUnit'
-import MobileNav from './MobileNav'
 
 import {
   Wrapper,
@@ -42,7 +42,11 @@ const SimpleLayout: FC<TProps> = ({ community, activeThread, metric, enable }) =
             <CommunityBrief community={community} />
 
             <MobileOnly>
-              <MobileNav community={community} threads={publicThreads} active={activeThread} />
+              <MobileThreadNavi
+                community={community}
+                threads={publicThreads}
+                active={activeThread}
+              />
             </MobileOnly>
 
             <ThreadTab

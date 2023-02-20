@@ -41,7 +41,7 @@ const ArticleDigestContainer: FC<TProps> = ({
 
   useInit(store, scrollDirection as TScrollDirection)
 
-  const { viewingArticle, inViewport, activeThread } = store
+  const { viewingArticle, inViewport, activeThread, enable } = store
 
   if (isNil(viewingArticle.id)) return null
 
@@ -52,7 +52,12 @@ const ArticleDigestContainer: FC<TProps> = ({
       {/* @ts-ignore */}
       <FixedHeader show={!inViewport} article={viewingArticle} metric={metric} />
       <InnerWrapper>
-        <Header metric={metric} community={viewingArticle.originalCommunity} />
+        <Header
+          metric={metric}
+          community={viewingArticle.originalCommunity}
+          enable={enable}
+          activeThread={activeThread}
+        />
         <BannerContent>
           <Layout article={viewingArticle} thread={activeThread} metric={metric} />
         </BannerContent>

@@ -5,7 +5,7 @@
 
 import { merge } from 'ramda'
 
-import type { TRootStore, TThread, TArticle } from '@/spec'
+import type { TRootStore, TThread, TArticle, TEnableConfig } from '@/spec'
 import TYPE from '@/constant/type'
 
 import { T, getParent, markStates, toJS, Instance } from '@/utils/mobx'
@@ -58,6 +58,12 @@ const ArticleDigest = T.model('ArticleDigest', {
       const { action, loading } = self
       if (action === TYPE.FAVORITE && loading) return true
       return false
+    },
+
+    get enable(): TEnableConfig {
+      const root = getParent(self) as TRootStore
+
+      return toJS(root.dashboardThread.enableSettings)
     },
   }))
   .actions((self) => ({
