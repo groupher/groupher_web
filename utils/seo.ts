@@ -6,7 +6,8 @@ import { THREAD } from '@/constant/thread'
 
 import { plural } from './fmt'
 
-const SLOGAN = '来为你心爱的产品建立一个社区吧。'
+const SLOGAN =
+  '让你的产品聆听用户的声音。互动讨论，GTD 看板，更新日志，帮助文档多合一，收集整理用户用户反馈，助你打造更好的产品。'
 
 type TSEO = {
   url: string
@@ -60,8 +61,7 @@ export const landingSEO = (): TSEO => {
   return {
     url: `${SITE_URL}`,
     title: 'Groupher | 让你的产品聆听用户的声音',
-    description:
-      '让你的产品聆听用户的声音。互动讨论，GTD 看板，更新日志，帮助文档多合一，收集整理用户用户反馈，助你打造更好的产品',
+    description: SLOGAN,
   }
 }
 

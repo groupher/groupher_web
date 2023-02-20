@@ -65,8 +65,8 @@ const ClassicLayout: FC<TProps> = ({ showCommunityBadge, thread, community, avat
               <DividerTitle>简介</DividerTitle>
               <Br top={10} />
               <CommunityNoteWrapper>
-                关于 Groupher 的各种建议，吐槽等请发布到这里 关于 Groupher
-                的各种建议，吐槽等请发布到这里
+                让你的产品聆听用户的声音。互动讨论，GTD
+                看板，更新日志，帮助文档多合一，收集整理用户用户反馈，助你打造更好的产品
               </CommunityNoteWrapper>
             </Fragment>
           )}
