@@ -15,11 +15,21 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   width: calc(100% + 38px);
   margin-top: 30px;
   margin-bottom: 22px;
+
+  ${css.media.mobile`
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 50px 0;
+  `};
 `
 export const Block = styled.div`
   ${css.flexColumn('align-start')};
   width: 20%;
   height: 100px;
+
+  ${css.media.mobile`
+    width: 33%;
+  `};
 `
 const IconWrapper = styled.div`
   ${css.circle(24)};

@@ -140,7 +140,7 @@ export const toggleHeaderTextVisiable = (bool: boolean): void => {
   store.mark({ showHeaderText: bool })
 }
 
-export const resetSwipeAviliable = (): void => store.resetSwipeAviliable()
+export const resetSwipeAviliable = (): void => store?.resetSwipeAviliable()
 
 //
 const DataResolver = [

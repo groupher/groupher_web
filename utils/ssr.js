@@ -179,7 +179,9 @@ export const ssrError = (context, errorType, errorCode = 500) => {
   }
 }
 
-const getCurView = (source) => (source.entries.length === 0 ? TYPE.RESULT_EMPTY : TYPE.RESULT)
+const getCurView = (source) => {
+  return source.entries.length === 0 ? TYPE.RESULT_EMPTY : TYPE.RESULT
+}
 
 const getActiveTag = (tagRaw, tagList) => {
   if (!tagRaw || isEmpty(tagList)) return null

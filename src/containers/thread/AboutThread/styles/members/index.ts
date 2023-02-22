@@ -15,7 +15,13 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 export const Block = styled.div`
   margin-bottom: 30px;
   width: 665px;
+
+  ${css.media.mobile`
+    width: 100%;
+    margin-bottom: 0;
+  `}
 `
+
 export const BottomBlock = styled(Block)`
   border-top: 1px solid;
   border-top-color: ${theme('divider')};
@@ -47,6 +53,10 @@ export const Row = styled.div`
 export const Admin = styled.div`
   ${css.flex('align-start')};
   width: 33.3%;
+
+  ${css.media.mobile`
+    width: 50%;
+  `}
 `
 export const NormalAvatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
   ${css.size(26)};

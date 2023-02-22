@@ -20,7 +20,10 @@ const nextConfig = {
     //   exclude: ['error'],
     // },
   },
-  // experimental: { appDir: true },
+  experimental: {
+    // appDir: true
+    scrollRestoration: true,
+  },
 }
 
 module.exports = withBundleAnalyzer(nextConfig)

@@ -8,6 +8,10 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 }))<TTestable>`
   ${css.flex('align-start')};
   width: 100%;
+
+  ${css.media.mobile`
+    ${css.flexColumn('align-start')};
+  `};
 `
 export const MainWrapper = styled.div<{ isSidebarLayout: boolean }>`
   width: auto;
@@ -18,6 +22,10 @@ export const MainWrapper = styled.div<{ isSidebarLayout: boolean }>`
   border-radius: 6px;
   margin-top: 25px;
   padding-left: ${({ isSidebarLayout }) => (isSidebarLayout ? 0 : '22px')};
+
+  ${css.media.mobile`
+    width: 100%;
+  `};
 `
 export const Block = styled.div`
   margin-bottom: 30px;
@@ -25,6 +33,10 @@ export const Block = styled.div`
   border-bottom: 1px solid;
   border-bottom-color: ${theme('divider')};
   width: 620px;
+
+  ${css.media.mobile`
+    width: 100%;
+  `};
 `
 export const IntroBlock = styled(Block)`
   padding-right: 20px;

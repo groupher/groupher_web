@@ -26,10 +26,7 @@ export const makeGQClient = (token: string): any => {
   }
 }
 
-export const makeGithubExplore = (
-  GRAPHQL_ENDPOINT: string,
-  token: string,
-): any => {
+export const makeGithubExplore = (GRAPHQL_ENDPOINT: string, token: string): any => {
   const client = createClient({
     url: GRAPHQL_ENDPOINT,
     fetchOptions: () => {
@@ -49,9 +46,7 @@ export const pagedFilter = (page, options = {}): Record<string, any> =>
  * map value(string) to UPPER case for server absinthe-atom format
  * e.p: is server required :post, front-end should pass "POST"
  */
-export const atomizeValues = (
-  _obj: Record<string, any>,
-): Record<string, string> => {
+export const atomizeValues = (_obj: Record<string, any>): Record<string, string> => {
   const obj = clone(_obj)
 
   Object.keys(obj).forEach((k) => {

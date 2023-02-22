@@ -16,17 +16,7 @@
     "POSTS": 4,
     "COMMENTS": 5
   },
-  "TAG_COLORS": [
-    "RED",
-    "ORANGE",
-    "YELLOW",
-    "GREEN",
-    "CYAN",
-    "BLUE",
-    "PURPLE",
-    "PINK",
-    "GREY"
-  ],
+  "TAG_COLORS": ["RED", "ORANGE", "YELLOW", "GREEN", "CYAN", "BLUE", "PURPLE", "PINK", "GREY"],
   "TAG_COLOR_ORDER": {
     "red": 0,
     "orange": 1,
@@ -48,7 +38,7 @@
   "ICON_CMD": "https://assets.groupher.com/icons/cmd",
   "DEFAULT_ICON": "https://assets.groupher.com/icons/cmd/cheatsheet.svg",
   "DEFAULT_USER_AVATAR": "https://assets.groupher.com/icons/cmd/alien_user3.svg",
-  "GRAPHQL_ENDPOINT": "http://localhost:4001/graphiql",
+  "GRAPHQL_ENDPOINT": "http://127.0.0.1:4001/graphiql",
   "SITE_URL": "https://groupher.com",
   "SITE_URL_SHORT": "https://groupher.com",
   "GITHUB": "https://github.com/groupher",
@@ -58,7 +48,8 @@
   "MENTION_USER_ADDR": "https://groupher.com/users/",
   "//--- contact configs ---//": "",
   "EMAIL_SUPPORT": "groupher@outlook.com",
-  "// GRAPHQL_ENDPOINT": "https://api.groupher.com/graphiql",
+  "// GRAPHQL_ENDPOINT": "http://localhost:4001/graphiql",
   "BEIAN_ADDR": "http://beian.miit.gov.cn",
-  "BEIAN_TEXT": "蜀ICP备17043722号-4"
+  "BEIAN_TEXT": "蜀ICP备17043722号-4",
+  "/// GRAPHQL_ENDPOINT": "https://api.groupher.com/graphiql"
 }

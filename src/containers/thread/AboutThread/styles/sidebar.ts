@@ -12,7 +12,21 @@ export const Wrapper = styled.div<{ isSidebarLayout: boolean }>`
   padding-bottom: 0;
   margin-top: 20px;
   margin-left: ${({ isSidebarLayout }) => (isSidebarLayout ? '32px' : '70px')};
+
+  ${css.media.mobile`
+    display: none;
+  `};
 `
+
+export const MobileWrapper = styled.div`
+  display: none;
+
+  ${css.media.mobile`
+    display: block;
+    padding: 0 20px;
+  `};
+`
+
 export const Block = styled.div`
   margin-bottom: 20px;
 `
