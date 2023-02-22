@@ -14,7 +14,7 @@ type TProps = {
 }
 
 const AvatarComp: FC<TProps> = ({ user }) => {
-  const isQuote = user.login === 'mydearxym2'
+  const isQuote = user.login === 'mydearxym22'
 
   if (isQuote) {
     return (
