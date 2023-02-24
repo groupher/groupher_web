@@ -2,8 +2,6 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
 
-export const Wrapper = styled.div``
-
 export const Extra = styled.li`
   ${css.flex('align-center')};
   margin-top: 5px;
@@ -17,14 +15,14 @@ export const UpvotesWrapper = styled.div`
 `
 export const BasicState = styled.div`
   ${css.flex('align-center')};
+  gap: 0 10px;
   font-size: 12px;
-  color: ${theme('article.info')};
-  margin-top: 2px;
+  margin-top: 1px;
 `
 export const BodyDigest = styled.li`
   color: ${theme('article.digest')};
   white-space: normal;
-  display: block;
   font-size: 12px;
-  max-width: 96%;
+  ${css.lineClamp(1)};
+  max-width: 90%;
 `

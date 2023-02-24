@@ -44,10 +44,14 @@ export const SidebarWrapper = styled(BaseWrapper)`
   ${css.flex('justify-start')};
 `
 export const MobileCardsWrapper = styled.div`
-  ${css.flexColumn()};
   width: 100%;
   padding: 0;
   margin: 0;
+  display: none;
+
+  ${css.media.mobile`
+    ${css.flexColumn()};
+  `};
 `
 export const InnerWrapper = styled(BaseInnerWrapper)`
   max-width: ${pixelAdd(WIDTH.COMMUNITY.CONTENT, 46)};
@@ -61,6 +65,7 @@ export const InnerWrapper = styled(BaseInnerWrapper)`
     padding-left: 0;
     padding-right: 0;
     margin-left: 0;
+    display: none;
   `};
 `
 export const ContentWrapper = styled(BaseContentWrapper)``

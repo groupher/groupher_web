@@ -5,7 +5,7 @@ import type { TPost, TAccount } from '@/spec'
 
 import DotDivider from '@/widgets/DotDivider'
 
-import { Wrapper, AuthorInfo, TimeStamp } from '../../styles/upvote_fist_layout/mobile_view/header'
+import { Wrapper } from '../../styles/upvote_fist_layout/mobile_view/header'
 
 type TProps = {
   article: TPost
@@ -15,14 +15,9 @@ type TProps = {
 const Header: FC<TProps> = ({ article, onAuthorSelect }) => {
   return (
     <Wrapper>
-      <AuthorInfo>
-        <div onClick={() => onAuthorSelect(article.author)}>{article?.author.nickname}</div>
-        <DotDivider radius={2} space={8} />
-
-        <TimeStamp>
-          <TimeAgo datetime={article.insertedAt} locale="zh_CN" />
-        </TimeStamp>
-      </AuthorInfo>
+      <div onClick={() => onAuthorSelect(article.author)}>{article?.author.nickname}</div>
+      <DotDivider radius={2} space={8} />
+      <TimeAgo datetime={article.insertedAt} locale="zh_CN" />
     </Wrapper>
   )
 }

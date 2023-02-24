@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Link from 'next/link'
 
 import css, { theme } from '@/utils/css'
 
@@ -7,7 +8,7 @@ export const Wrapper = styled.div`
   margin-bottom: 4px;
   color: ${theme('article.title')};
 `
-export const Title = styled.a`
+export const Title = styled(Link)`
   color: ${theme('article.title')};
   text-decoration: none;
   font-size: 15px;

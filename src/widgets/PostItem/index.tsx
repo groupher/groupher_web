@@ -53,7 +53,6 @@ const PostItem: FC<TProps> = ({
 
       {layout === POST_LAYOUT.UPVOTE_FIRST && (
         <UpvoteFirstLayout
-          c11n={c11n}
           article={article}
           onAuthorSelect={onAuthorSelect}
           isMobilePreview={isMobilePreview}

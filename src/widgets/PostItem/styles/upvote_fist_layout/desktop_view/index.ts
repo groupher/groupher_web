@@ -6,6 +6,10 @@ export const Wrapper = styled.div`
   ${css.flex()};
   width: 100%;
   position: relative;
+
+  ${css.media.mobile`
+    display: none;
+  `};
 `
 export const Main = styled.div`
   ${css.flexColumnGrow()};

@@ -15,6 +15,6 @@ export const BaseInfo = styled.div`
   padding-right: 10px;
 
   ${css.media.mobile`
-    margin-top: 20px;
+    margin-top: 10px;
   `};
 `

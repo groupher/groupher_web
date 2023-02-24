@@ -1,12 +1,17 @@
 import { FC, memo } from 'react'
+import dynamic from 'next/dynamic'
 
 import type { TPost, TAccount } from '@/spec'
 
 import Header from './Header'
 import Body from './Body'
-import Footer from './Footer'
+// import Footer from './Footer'
 
 import { Wrapper } from '../../styles/upvote_fist_layout/mobile_view'
+
+const Footer = dynamic(() => import('./Footer'), {
+  ssr: false,
+})
 
 type TProps = {
   article: TPost

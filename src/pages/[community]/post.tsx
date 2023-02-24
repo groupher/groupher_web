@@ -135,7 +135,6 @@ const CommunityPage = (props) => {
         seoConfig={communitySEO(community as TCommunity, activeThread)}
       >
         <PostContent />
-        {/* <SidebarContent /> */}
       </GlobalLayout>
     </Provider>
   )

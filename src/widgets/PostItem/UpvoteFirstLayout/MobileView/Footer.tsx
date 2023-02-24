@@ -4,16 +4,12 @@ import type { TPost } from '@/spec'
 import { ARTICLE_CAT } from '@/constant/gtd'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
-import { cutRest } from '@/utils/fmt'
-
 import ArticleCatState from '@/widgets/ArticleCatState'
 import Upvote from '@/widgets/Upvote'
-import { Space } from '@/widgets/Common'
 import TagsList from '@/widgets/TagsList'
 import CommentsCount from '@/widgets/CommentsCount'
 
 import {
-  Wrapper,
   Extra,
   UpvotesWrapper,
   BasicState,
@@ -28,8 +24,8 @@ const Footer: FC<TProps> = ({ article }) => {
   const { upvotesCount, meta, viewerHasUpvoted } = article
 
   return (
-    <Wrapper>
-      <BodyDigest>{cutRest(article.digest, 20)}</BodyDigest>
+    <>
+      <BodyDigest>{article.digest}</BodyDigest>
       <Extra>
         <UpvotesWrapper>
           <Upvote
@@ -43,16 +39,20 @@ const Footer: FC<TProps> = ({ article }) => {
         </UpvotesWrapper>
 
         {article.category !== ARTICLE_CAT.ALL && (
-          <ArticleCatState cat={article.category} state={article.state} top={2} left={5} />
+          <ArticleCatState
+            cat={article.category}
+            state={article.state}
+            top={1}
+            left={4}
+            right={14}
+          />
         )}
         <BasicState>
-          <Space right={18} />
           <TagsList items={article.articleTags} />
-          <Space right={18} />
-          {article.commentsCount !== 0 && <CommentsCount count={article.commentsCount} />}
+          {article.commentsCount !== 0 && <CommentsCount count={article.commentsCount} top={-1} />}
         </BasicState>
       </Extra>
-    </Wrapper>
+    </>
   )
 }
 

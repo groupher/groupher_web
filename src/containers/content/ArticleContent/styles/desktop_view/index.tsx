@@ -53,4 +53,8 @@ export const BodyHeaderWrapper = styled.div`
 `
 export const CommentsWrapper = styled.div`
   margin-top: 50px;
+
+  ${css.media.mobile`
+    margin-top: 35px;
+  `};
 `

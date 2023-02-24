@@ -3,7 +3,6 @@
  */
 
 import { FC } from 'react'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { bond } from '@/utils/mobx'
 import { BANNER_LAYOUT } from '@/constant/layout'
@@ -29,7 +28,6 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   useInit(store)
 
   const { globalLayout } = store
-  const { isMobile } = useMobileDetect()
 
   const isSidebarLayout = globalLayout.banner === BANNER_LAYOUT.SIDEBAR
   const LayoutWrapper = isSidebarLayout ? SidebarWrapper : Wrapper
@@ -37,20 +35,17 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   return (
     <LayoutWrapper testid="post-thread-content">
       <CommunityDigest />
-      {isMobile ? (
-        <MobileCardsWrapper>
-          <ContentWrapper>
-            <ArticlesThread />
-          </ContentWrapper>
-        </MobileCardsWrapper>
-      ) : (
-        <InnerWrapper>
-          {isSidebarLayout && <SidebarLayoutHeader thread={THREAD.POST} />}
-          <ContentWrapper>
-            <ArticlesThread />
-          </ContentWrapper>
-        </InnerWrapper>
-      )}
+      <MobileCardsWrapper>
+        <ContentWrapper>
+          <ArticlesThread />
+        </ContentWrapper>
+      </MobileCardsWrapper>
+      <InnerWrapper>
+        {isSidebarLayout && <SidebarLayoutHeader thread={THREAD.POST} />}
+        <ContentWrapper>
+          <ArticlesThread />
+        </ContentWrapper>
+      </InnerWrapper>
     </LayoutWrapper>
   )
 }

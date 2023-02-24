@@ -16,13 +16,25 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   margin-top: 72px;
   margin-bottom: 42px;
   min-height: 100px;
-
   color: ${theme('article.digest')};
+
+  ${css.media.mobile`
+    margin-top: 55px;
+    margin-bottom: 0;
+    padding: 20px 0;
+    padding-bottom: 8px;
+  `};
 `
 export const TabsWrapper = styled.div`
   position: absolute;
   top: -36px;
   left: -14px;
+
+  ${css.media.mobile`
+    left: -20px;
+    top: -42px;
+    transform: scale(0.8);
+  `};
 `
 export const ReportWrapper = styled.div`
   position: absolute;

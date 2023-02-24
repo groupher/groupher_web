@@ -1,5 +1,4 @@
-import { FC, memo, useCallback } from 'react'
-import Router from 'next/router'
+import { FC, memo } from 'react'
 
 import type { TPost } from '@/spec'
 import { ARTICLE_THREAD } from '@/constant/thread'
@@ -11,13 +10,9 @@ type TProps = {
 }
 
 const Body: FC<TProps> = ({ article }) => {
-  const gotoArticle = useCallback(() => {
-    Router.push(`/${ARTICLE_THREAD.POST}/${article.id}`)
-  }, [article.id])
-
   return (
     <Wrapper>
-      <Title onClick={gotoArticle}>{article.title}</Title>
+      <Title href={`/${ARTICLE_THREAD.POST}/${article.id}`}>{article.title}</Title>
     </Wrapper>
   )
 }

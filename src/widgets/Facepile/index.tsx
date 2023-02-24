@@ -37,7 +37,7 @@ export const RealAvatar = dynamic(() => import('./RealAvatar'), {
 
     return <AvatarFallback size={getAvatarSize(size, 'number') as number} user={user} />
   },
-  ssr: true,
+  ssr: false,
 })
 
 /* eslint-disable-next-line */

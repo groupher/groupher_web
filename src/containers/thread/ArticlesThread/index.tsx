@@ -7,8 +7,6 @@
 import { FC } from 'react'
 import dynamic from 'next/dynamic'
 
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
-
 import type { TResState } from '@/spec'
 import { BANNER_LAYOUT, HELP_FAQ_LAYOUT } from '@/constant/layout'
 
@@ -90,6 +88,7 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
             globalLayout={globalLayout}
           />
         )}
+
         {mode === 'search' && <FaqList layout={HELP_FAQ_LAYOUT.SEARCH_HINT} />}
       </LayoutWrapper>
 
