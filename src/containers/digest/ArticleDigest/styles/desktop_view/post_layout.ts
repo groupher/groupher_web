@@ -5,32 +5,29 @@ import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
 import css, { theme } from '@/utils/css'
 
+import Img from '@/Img'
 import DotDivider from '@/widgets/DotDivider'
 
 export const Wrapper = styled.div<{ metric: TMetric }>`
-  ${({ metric }) => css.fitContentWidth(metric)};
+  ${css.flex('align-start', 'justify-between')};
   width: 100%;
   margin-top: 50px;
   position: relative;
-
-  ${css.media.mobile`
-    margin-top: 24px;
-    margin-left: 0;
-    padding: 0 20px;
-  `};
+`
+export const LeftPart = styled.div`
+  flex-grow: 1;
+  max-width: 600px;
+`
+export const RightPart = styled.div`
+  height: 100%;
+  width: 200px;
+  margin-top: 28px;
+  padding-right: 15px;
 `
 export const Topping = styled.div`
   ${css.flex('align-center')};
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   position: relative;
-
-  ${css.media.mobile`
-    margin-bottom: 8px;
-  `};
-`
-export const PublishDateInfo = styled.div`
-  font-size: 10px;
-  color: ${theme('article.digest')};
 `
 export const CommunityInfo = styled.div`
   ${css.flex('align-start', 'justify-center')};
@@ -40,8 +37,8 @@ export const CommunityInfo = styled.div`
 export const Title = styled.div`
   font-size: 26px;
   color: ${theme('article.title')};
-  margin-bottom: 30px;
-  ${css.lineClamp(3)};
+  margin-bottom: 14px;
+  max-width: 620px;
 
   ${css.media.mobile`
     font-size: 20px;
@@ -51,23 +48,21 @@ export const Title = styled.div`
 export const BottomInfo = styled.div`
   ${css.flex('align-center', 'justify-between')};
   padding-bottom: 30px;
-  border-bottom: 1px solid;
-  padding-left: 2px;
-  padding-right: 2px;
-  border-bottom-color: ${theme('divider')};
+
   width: 100%;
   color: ${theme('article.digest')};
-
-  ${css.media.mobile`
-    padding-left: 0;
-    padding-right: 0;
-  `};
+`
+export const Avatar = styled(Img)`
+  ${css.size(16)};
+  border-radius: 4px;
+  margin-right: 8px;
 `
 export const AuthorName = styled(Link)`
+  ${css.flex('align-center')};
   color: ${theme('article.digest')};
   text-decoration: none;
   font-size: 14px;
-  margin-bottom: 1px;
+  margin-top: 1px;
 
   &:hover {
     text-decoration: underline;
@@ -79,9 +74,4 @@ export const AuthorName = styled(Link)`
 export const Divider = styled(DotDivider)`
   margin-left: 12px;
   margin-right: 12px;
-
-  ${css.media.mobile`
-    margin-left: 8px;
-    margin-right: 8px;
-  `};
 `

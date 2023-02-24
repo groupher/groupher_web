@@ -1,8 +1,1 @@
-export {
-  Wrapper,
-  InnerWrapper,
-  MainWrapper,
-  SidebarWrapper,
-  ArticleWrapper,
-  CommentsWrapper,
-} from './index'
+export { Wrapper, InnerWrapper, MainWrapper, ArticleWrapper, CommentsWrapper } from './index'

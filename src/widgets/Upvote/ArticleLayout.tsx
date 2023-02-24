@@ -6,13 +6,14 @@
 
 import { FC, memo } from 'react'
 
+import type { TUser, TAvatarLayout } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import { UPVOTE_LAYOUT } from '@/constant/layout'
 
+import { AVATAR_LAYOUT, UPVOTE_LAYOUT } from '@/constant/layout'
 import AnimatedCount from '@/widgets/AnimatedCount'
-import UpvoteBtn from './UpvoteBtn'
 
-import { Wrapper, UpWrapper, CountWrapper } from './styles/article_layout'
+import UpvoteBtn from './UpvoteBtn'
+import { Wrapper, Button, UpWrapper, CountWrapper, Alias } from './styles/article_layout'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Upvote:index')
@@ -22,6 +23,8 @@ type TProps = {
   count?: number
   viewerHasUpvoted?: boolean
   onAction?: (viewerHasUpvoted: boolean) => void
+  avatarLayout?: TAvatarLayout
+  avatarList: TUser[]
 }
 
 const Upvote: FC<TProps> = ({
@@ -29,20 +32,27 @@ const Upvote: FC<TProps> = ({
   count = 0,
   viewerHasUpvoted = false,
   onAction = log,
+  avatarList = [],
+  avatarLayout = AVATAR_LAYOUT.SQUARE,
 }) => {
+  const noOne = count === 0
+
   return (
     <Wrapper testid={testid}>
-      <UpWrapper>
-        <UpvoteBtn
-          viewerHasUpvoted={viewerHasUpvoted}
-          type={UPVOTE_LAYOUT.ARTICLE}
-          onAction={onAction}
-          count={count}
-        />
-      </UpWrapper>
-      <CountWrapper>
-        <AnimatedCount count={count} />
-      </CountWrapper>
+      <Button>
+        <UpWrapper>
+          <UpvoteBtn
+            type={UPVOTE_LAYOUT.COMMENT}
+            viewerHasUpvoted={viewerHasUpvoted}
+            onAction={onAction}
+            count={count}
+          />
+        </UpWrapper>
+        <CountWrapper>
+          <AnimatedCount count={count} active={viewerHasUpvoted} size="medium" />
+        </CountWrapper>
+      </Button>
+      <Alias>投票</Alias>
     </Wrapper>
   )
 }
