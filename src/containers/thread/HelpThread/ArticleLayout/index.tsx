@@ -1,7 +1,8 @@
 import { FC, memo, useState } from 'react'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import FileTree from '@/widgets/FileTree'
-import { Space, DesktopOnly } from '@/widgets/Common'
+import { Space } from '@/widgets/Common'
 import FeedbackFooter from '@/widgets/FeedbackFooter'
 import Sticky from '@/widgets/Sticky'
 import CustomScroller from '@/widgets/CustomScroller'
@@ -29,32 +30,31 @@ const ArticleLayout: FC<TProps> = ({
 }) => {
   const [filetreeOpen, setFileTreeOpen] = useState(true)
 
+  const { isMobile } = useMobileDetect()
+
   return (
     <Wrapper isSidebarLayout={isSidebarLayout}>
-      <DesktopOnly>
-        {!isSidebarLayout && (
-          <>
-            <ToggleBtn open={filetreeOpen} onToggle={(toggle) => setFileTreeOpen(toggle)} />
-
-            <Sidebar isLeftLayout open={filetreeOpen}>
-              {filetreeOpen && <PinedTree />}
-              <Sticky offsetTop={30}>
-                <TreeWrapper>
-                  <CustomScroller
-                    direction="vertical"
-                    height="calc(100vh - 110px)"
-                    barSize="small"
-                    showShadow={false}
-                  >
-                    <FileTree onSelect={() => gotoDetailLayout()} left={18} />
-                  </CustomScroller>
-                </TreeWrapper>
-              </Sticky>
-            </Sidebar>
-            <Space right={80} />
-          </>
-        )}
-      </DesktopOnly>
+      {!isSidebarLayout && !isMobile && (
+        <>
+          <ToggleBtn open={filetreeOpen} onToggle={(toggle) => setFileTreeOpen(toggle)} />
+          <Sidebar isLeftLayout open={filetreeOpen}>
+            {filetreeOpen && <PinedTree />}
+            <Sticky offsetTop={30}>
+              <TreeWrapper>
+                <CustomScroller
+                  direction="vertical"
+                  height="calc(100vh - 110px)"
+                  barSize="small"
+                  showShadow={false}
+                >
+                  <FileTree onSelect={() => gotoDetailLayout()} left={18} />
+                </CustomScroller>
+              </TreeWrapper>
+            </Sticky>
+          </Sidebar>
+          <Space right={80} />
+        </>
+      )}
 
       <Content isRightLayout open={filetreeOpen} isSidebarLayout={isSidebarLayout}>
         <Header>

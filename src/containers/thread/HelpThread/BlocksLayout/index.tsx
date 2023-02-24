@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 import { mockHelpCats } from '@/utils/mock'
 
 import Category from './Category'
-import { Wrapper, CatsWrapper, Divider } from '../styles/blocks_layout'
+import { Wrapper, CatsWrapper } from '../styles/blocks_layout'
 
 type TProps = {
   testid?: string

@@ -65,7 +65,6 @@ export const InnerWrapper = styled(BaseInnerWrapper)`
     padding-left: 0;
     padding-right: 0;
     margin-left: 0;
-    display: none;
   `};
 `
 export const ContentWrapper = styled(BaseContentWrapper)``
