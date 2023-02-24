@@ -37,22 +37,12 @@ export const InnerWrapper = styled.div<{ metric: TMetric }>`
   border-top-right-radius: 0;
   padding: 0 10px;
   padding-left: 0;
-
-  ${css.media.mobile`
-    height: 36px;
-    background: radial-gradient(circle,rgb(255 255 255) 15%,rgb(255 255 255 / 0%) 56%),radial-gradient(circle,rgb(255 255 255 / 70%) 80% 68%);
-    backdrop-filter: blur(10px);
-  `};
 `
 export const ContentWrapper = styled.div<{ metric: TMetric }>`
   ${css.flex('align-center', 'justify-between')};
   width: 100%;
   height: 100%;
-  ${({ metric }) => css.fitContentWidth(metric)};
-
-  ${css.media.mobile`
-    margin-left: 30px;
-  `};
+  padding: 0 200px;
 `
 export const Cover = styled(Img)`
   ${css.size(28)};

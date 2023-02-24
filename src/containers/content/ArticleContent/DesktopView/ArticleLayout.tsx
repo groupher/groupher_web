@@ -5,21 +5,21 @@
  */
 
 import { FC, useRef } from 'react'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
 import dynamic from 'next/dynamic'
 
 import type { TMetric } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
-import ArticleSticker from '@/containers/tool/ArticleSticker'
+// import ArticleSticker from '@/containers/tool/ArticleSticker'
 // import ArticleFooter from '@/containers/unit/ArticleFooter'
+import { MobileOnly } from '@/widgets/Common'
 import ArtimentBody from '@/widgets/ArtimentBody'
 // import Comments from '@/containers/unit/Comments'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
-import Linker from '@/widgets/Linker'
-
 import ViewportTracker from '@/widgets/ViewportTracker'
+
+import SideInfo from './SideInfo'
 
 import type { TStore } from '../store'
 
@@ -27,7 +27,6 @@ import {
   Wrapper,
   InnerWrapper,
   MainWrapper,
-  SidebarWrapper,
   ArticleWrapper,
   CommentsWrapper,
 } from '../styles/desktop_view/article_layout'
@@ -57,7 +56,6 @@ type TProps = {
 
 const ArticleContentContainer: FC<TProps> = ({ articleContent: store, metric, testid }) => {
   useInit(store)
-  const { isMobile } = useMobileDetect()
 
   const { viewingArticle: article } = store
   const ref = useRef()
@@ -75,7 +73,9 @@ const ArticleContentContainer: FC<TProps> = ({ articleContent: store, metric, te
           <ArticleWrapper ref={ref}>
             {/* {!!article.linkAddr && <Linker src={article.linkAddr} bottom={22} />} */}
             <ArtimentBody document={article.document} />
-            <ArticleFooter />
+            <MobileOnly>
+              <ArticleFooter />
+            </MobileOnly>
           </ArticleWrapper>
 
           <ViewportTracker
@@ -86,12 +86,9 @@ const ArticleContentContainer: FC<TProps> = ({ articleContent: store, metric, te
             <Comments />
           </CommentsWrapper>
         </MainWrapper>
-        {!isMobile && (
-          <SidebarWrapper>
-            <ArticleSticker metric={metric} />
-          </SidebarWrapper>
-        )}
       </InnerWrapper>
+
+      <SideInfo article={article} />
     </Wrapper>
   )
 }

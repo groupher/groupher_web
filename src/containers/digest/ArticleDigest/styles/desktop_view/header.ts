@@ -19,10 +19,7 @@ export const InnerWrapper = styled.div`
   width: 78%;
   height: 54px;
   padding-top: 2px;
-
-  ${css.media.mobile`
-    display: none;
-  `};
+  margin-left: -50px;
 `
 export const Community = styled.div`
   ${css.flex('align-both')};

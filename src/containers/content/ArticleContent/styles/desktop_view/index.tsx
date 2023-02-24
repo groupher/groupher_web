@@ -1,44 +1,34 @@
 import styled from 'styled-components'
 
 import type { TTestable, TMetric } from '@/spec'
-import css, { theme, WIDTH } from '@/utils/css'
+import css, { theme } from '@/utils/css'
 
 export const Wrapper = styled.article.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexGrow('justify-center')};
+  ${css.flex('justify-between')};
   position: relative;
   padding-top: 2px;
   min-height: 300px;
-  max-width: ${WIDTH.ARTICLE.PAGE};
   width: 100%;
+  padding: 0 180px;
+  margin-left: 60px;
 
-  ${css.media.tablet`
-    padding: 8px 0;
-  `};
   ${css.media.mobile`
-    padding: 0;
-    max-width: 100%;
+    padding: 0 20px;
+    margin-left: 0;
   `};
 `
 export const InnerWrapper = styled.div`
-  ${css.flex('justify-center')};
-  width: 100%;
-  padding-left: 0;
-  padding-right: 0;
-`
-export const MainWrapper = styled.div<{ metric: TMetric }>`
-  flex-grow: 1;
-  ${({ metric }) => css.fitContentWidth(metric)};
+  width: 600px;
 
   ${css.media.mobile`
-    padding: 0 24px;
-    margin: 0;
-    max-width: 100%;
+    width: 100%;
   `};
 `
-export const SidebarWrapper = styled.div``
-/* background: ${theme('drawer.articleBg')}; */
+export const MainWrapper = styled.div<{ metric: TMetric }>`
+  width: 100%;
+`
 export const ArticleWrapper = styled.div`
   font-size: 15px;
   /* background: ${theme('drawer.articleBg')}; */
@@ -52,9 +42,5 @@ export const BodyHeaderWrapper = styled.div`
   margin-bottom: 18px;
 `
 export const CommentsWrapper = styled.div`
-  margin-top: 50px;
-
-  ${css.media.mobile`
-    margin-top: 35px;
-  `};
+  margin-top: 35px;
 `

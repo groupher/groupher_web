@@ -4,7 +4,8 @@ import type { TArticle, TMetric } from '@/spec'
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import METRIC from '@/constant/metric'
 
-import { SpaceGrow, DesktopOnly } from '@/widgets/Common'
+import { SpaceGrow } from '@/widgets/Common'
+import Upvote from '@/widgets/Upvote'
 import ArticleCatState from '@/widgets/ArticleCatState'
 import ArticleBaseStats from '@/widgets/ArticleBaseStats'
 
@@ -22,6 +23,8 @@ const FixedHeader: FC<TProps> = ({
   metric = METRIC.ARTICLE,
   testid = 'article-fixed-header',
 }) => {
+  const { upvotesCount, meta, viewerHasUpvoted } = article
+
   return (
     <Wrapper show={show} testid={testid}>
       <InnerWrapper metric={metric}>
@@ -40,9 +43,14 @@ const FixedHeader: FC<TProps> = ({
           )}
           <Title>{article.title}</Title>
           <SpaceGrow />
-          <DesktopOnly width="auto">
-            <ArticleBaseStats article={article} container="drawer" />
-          </DesktopOnly>
+          <Upvote
+            count={upvotesCount}
+            avatarList={meta.latestUpvotedUsers}
+            viewerHasUpvoted={viewerHasUpvoted}
+            type="fixed_header"
+            right={16}
+          />
+          <ArticleBaseStats article={article} container="drawer" />
         </ContentWrapper>
       </InnerWrapper>
     </Wrapper>

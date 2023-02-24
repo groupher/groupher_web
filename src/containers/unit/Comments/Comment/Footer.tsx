@@ -82,7 +82,7 @@ const Footer: FC<TProps> = ({ data, apiMode }) => {
             handleEmotion(data, name, hasEmotioned)
           }}
         />
-        <DesktopOnly>
+        <DesktopOnly width="auto">
           {apiMode === API_MODE.ARTICLE && isLegal && <DotDivider radius={3} space={10} />}
         </DesktopOnly>
         {apiMode === API_MODE.ARTICLE && <Actions data={data} />}
