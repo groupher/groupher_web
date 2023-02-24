@@ -1,27 +1,25 @@
 /*
- *
  * ArticleDigest
- *
  */
 
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
+import Router from 'next/router'
 import { isNil } from 'ramda'
 
-import type { TScrollDirection } from '@/spec'
-import useScroll from '@/hooks/useScroll'
+import type { TMetric } from '@/spec'
+import METRIC from '@/constant/metric'
+import { ROUTE } from '@/constant/route'
+
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
-
+import FixedHeader from './FixedHeader'
+import Header from './Header'
 import Layout from './Layout'
 
 import type { TStore } from '../store'
-import {
-  Wrapper,
-  InnerWrapper,
-  BannerContent,
-} from '../styles/mobile_view/index'
+import { Wrapper, InnerWrapper, BannerContent } from '../styles/mobile_view'
 import { useInit, inAnchor, outAnchor } from '../logic'
 
 /* eslint-disable-next-line */
@@ -29,21 +27,37 @@ const log = buildLog('C:ArticleDigest')
 
 type TProps = {
   articleDigest?: TStore
+  testid?: string
+  metric?: TMetric
 }
 
-const ArticleDigestContainer: FC<TProps> = ({ articleDigest: store }) => {
-  const { direction: scrollDirection } = useScroll()
-  useInit(store, scrollDirection as TScrollDirection)
+const ArticleDigestContainer: FC<TProps> = ({
+  articleDigest: store,
+  testid = 'article-digest',
+  metric = METRIC.ARTICLE,
+}) => {
+  useInit(store)
 
-  const { viewingArticle: article, activeThread } = store
+  const { viewingArticle, inViewport, activeThread, enable } = store
 
-  if (isNil(article.id)) return null
+  useEffect(() => {
+    Router.prefetch(`/${ROUTE.HOME}/${ROUTE.POST}`)
+  }, [])
+
+  if (isNil(viewingArticle.id)) return null
 
   return (
-    <Wrapper>
+    <Wrapper testid={testid} metric={metric}>
+      <FixedHeader show={!inViewport} article={viewingArticle} metric={metric} />
       <InnerWrapper>
+        <Header
+          metric={metric}
+          community={viewingArticle.originalCommunity}
+          enable={enable}
+          activeThread={activeThread}
+        />
         <BannerContent>
-          <Layout article={article} thread={activeThread} />
+          <Layout article={viewingArticle} thread={activeThread} metric={metric} />
         </BannerContent>
       </InnerWrapper>
       <ViewportTracker onEnter={inAnchor} onLeave={outAnchor} />

@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 
-import type { TScrollDirection } from '@/spec'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 import asyncSuit from '@/utils/async'
@@ -100,7 +99,7 @@ const ErrSolver = [
 // ###############################
 // init & uninit
 // ###############################
-export const useInit = (_store: TStore, scrollDirection: TScrollDirection): void => {
+export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
     // log('effect init')
@@ -109,7 +108,6 @@ export const useInit = (_store: TStore, scrollDirection: TScrollDirection): void
     }
 
     loadCommunity()
-    store.mark({ scrollDirection })
 
     return () => {
       // log('effect uninit')
@@ -117,5 +115,5 @@ export const useInit = (_store: TStore, scrollDirection: TScrollDirection): void
       sr71$.stop()
       sub$.unsubscribe()
     }
-  }, [_store, scrollDirection])
+  }, [_store])
 }

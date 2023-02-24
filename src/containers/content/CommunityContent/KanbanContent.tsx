@@ -3,7 +3,6 @@
  */
 
 import { FC } from 'react'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { bond } from '@/utils/mobx'
 import { BANNER_LAYOUT } from '@/constant/layout'
@@ -27,26 +26,22 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   useInit(store)
 
   const { globalLayout } = store
-  const { isMobile } = useMobileDetect()
 
   const LayoutWrapper = globalLayout.banner === BANNER_LAYOUT.SIDEBAR ? SidebarWrapper : Wrapper
 
   return (
     <LayoutWrapper testid="kanban-thread-content">
       <CommunityDigest />
-      {isMobile ? (
-        <MobileCardsWrapper>
-          <ContentWrapper>
-            <KanbanThread />
-          </ContentWrapper>
-        </MobileCardsWrapper>
-      ) : (
-        <InnerWrapper>
-          <ContentWrapper>
-            <KanbanThread isSidebarLayout={globalLayout.banner === BANNER_LAYOUT.SIDEBAR} />
-          </ContentWrapper>
-        </InnerWrapper>
-      )}
+      <MobileCardsWrapper>
+        <ContentWrapper>
+          <KanbanThread />
+        </ContentWrapper>
+      </MobileCardsWrapper>
+      <InnerWrapper>
+        <ContentWrapper>
+          <KanbanThread isSidebarLayout={globalLayout.banner === BANNER_LAYOUT.SIDEBAR} />
+        </ContentWrapper>
+      </InnerWrapper>
     </LayoutWrapper>
   )
 }

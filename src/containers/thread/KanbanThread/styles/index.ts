@@ -32,8 +32,8 @@ export const ColumnsWrapper = styled.div`
 export const MobileColumnsWrapper = styled.div`
   display: none;
   ${css.media.mobile`
-    margin-top: 50px;
     display: block;
+    margin-top: 50px;
     width: 100%;
     overflow: scroll;
   `};

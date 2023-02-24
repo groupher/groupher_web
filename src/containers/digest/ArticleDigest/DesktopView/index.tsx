@@ -6,9 +6,8 @@ import { FC } from 'react'
 import { isNil } from 'ramda'
 // import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TScrollDirection, TMetric } from '@/spec'
+import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
-import useScroll from '@/hooks/useScroll'
 
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
@@ -37,9 +36,7 @@ const ArticleDigestContainer: FC<TProps> = ({
   metric = METRIC.ARTICLE,
 }) => {
   // const { isMobile } = useMobileDetect()
-  const { direction: scrollDirection } = useScroll()
-
-  useInit(store, scrollDirection as TScrollDirection)
+  useInit(store)
 
   const { viewingArticle, inViewport, activeThread, enable } = store
 

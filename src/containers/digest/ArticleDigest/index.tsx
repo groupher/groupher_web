@@ -5,18 +5,15 @@
  */
 
 // import { Fragment } from 'react'
-// import useMobileDetect from '@groupher/use-mobile-detect-hook'
+import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import DesktopView from './DesktopView'
-// import MobileView from './MobileView/index'
+import MobileView from './MobileView'
 
 const ArticleDigest = (props) => {
-  return (
-    <DesktopView {...props} />
-    // <Fragment key={String(isMobile)}>
-    //   {!isMobile ? <DesktopView {...props} /> : <MobileView {...props} />}
-    // </Fragment>
-  )
+  const { isMobile } = useMobileDetect()
+
+  return <>{isMobile ? <MobileView {...props} /> : <DesktopView {...props} />}</>
 }
 
 export default ArticleDigest

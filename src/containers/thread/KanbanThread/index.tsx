@@ -39,7 +39,6 @@ const KanbanThreadContainer: FC<TProps> = ({
       <ColumnsWrapper>
         <Columns layout={layout} bgColors={kanbanBgColors} />
       </ColumnsWrapper>
-
       <MobileColumnsWrapper>
         <CustomScroller
           direction="horizontal"

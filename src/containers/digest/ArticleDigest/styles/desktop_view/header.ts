@@ -21,10 +21,7 @@ export const InnerWrapper = styled.div`
   padding-top: 2px;
 
   ${css.media.mobile`
-    width: 100%;
-    height: 40px;
-    padding: 0 20px;
-    padding-left: 14px;
+    display: none;
   `};
 `
 export const Community = styled.div`

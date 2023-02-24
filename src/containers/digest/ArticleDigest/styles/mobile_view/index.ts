@@ -1,28 +1,26 @@
 import styled from 'styled-components'
 
+import type { TTestable, TMetric } from '@/spec'
 import css, { theme } from '@/utils/css'
 
-export const Wrapper = styled.nav`
-  ${css.flexColumn('justify-start')};
-  width: 100%;
+type TWrapper = { metric: TMetric } & TTestable
+export const Wrapper = styled.nav.attrs(({ testid }: TTestable) => ({
+  'data-test-id': testid,
+}))<TWrapper>`
+  ${css.flexColumn('justify-center')};
   position: relative;
-  padding: 30px 22px;
-  padding-bottom: 20px;
-  min-height: 150px;
+  background: transparent;
+  border-bottom: ${theme('banner.spliter')};
+  width: 100%;
+
+  height: auto;
+  margin-bottom: 16px;
+  min-height: 240px;
 `
 export const InnerWrapper = styled.div`
-  ${css.flex('justify-center')};
   width: 100%;
-  border-bottom: 1px solid;
-  border-bottom-color: ${theme('divider')};
-  padding-bottom: 15px;
 `
 export const BannerContent = styled.div`
-  ${css.flex()};
-  height: 100%;
+  ${css.flex('justify-center')};
   width: 100%;
-`
-export const Avatar = styled.img`
-  ${css.circle(25)};
-  margin-right: 5px;
 `
