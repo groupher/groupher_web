@@ -62,6 +62,7 @@ export const InnerWrapper = styled(BaseInnerWrapper)`
   padding-right: 35px;
 
   ${css.media.mobile`
+    display: none;
     padding-left: 0;
     padding-right: 0;
     margin-left: 0;

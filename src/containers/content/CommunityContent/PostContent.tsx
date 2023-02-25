@@ -40,6 +40,7 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
           <ArticlesThread />
         </ContentWrapper>
       </MobileCardsWrapper>
+
       <InnerWrapper>
         {isSidebarLayout && <SidebarLayoutHeader thread={THREAD.POST} />}
         <ContentWrapper>
