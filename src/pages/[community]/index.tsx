@@ -30,6 +30,8 @@ import { P } from '@/schemas'
 
 const thread = THREAD.POST
 
+let respCache = null
+
 const loader = async (context, opt = {}) => {
   const { query } = context
   const { gqClient, userHasLogin } = ssrFetchPrepare(context, opt)
@@ -78,20 +80,29 @@ const loader = async (context, opt = {}) => {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { res } = context
+  const { req, res } = context
 
   res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
 
+  // see: https://github.com/vercel/next.js/discussions/19611#discussioncomment-972107
+  const isFirstServerCall = req?.url?.indexOf('/_next/data/') === -1
+
   let resp
-  try {
-    resp = await loader(context)
-  } catch (e) {
-    log('#### error from server: ', e)
-    if (ssrRescue.hasLoginError(e.response?.errors)) {
-      // token 过期了，重新用匿名方式请求一次
-      await loader(context, { tokenExpired: true })
-    } else {
-      return ssrError(context, 'fetch', 500)
+
+  if (!isFirstServerCall) {
+    resp = respCache
+  } else {
+    try {
+      resp = await loader(context)
+      respCache = resp
+    } catch (e) {
+      log('#### error from server: ', e)
+      if (ssrRescue.hasLoginError(e.response?.errors)) {
+        // token 过期了，重新用匿名方式请求一次
+        await loader(context, { tokenExpired: true })
+      } else {
+        return ssrError(context, 'fetch', 500)
+      }
     }
   }
 
