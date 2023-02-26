@@ -34,8 +34,8 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
     width: 100%;
     height: 100%;
     background: radial-gradient(circle at 20% 50%, #ccddefde 0, transparent 30%);
-    opacity: ${({ $active }) => ($active ? 1 : 0)};
-    transition: opacity 0.5s;
+    opacity: ${({ $active }) => ($active ? 0.3 : 0)};
+    transition: opacity 0.3s;
     transition-delay: 1s;
     z-index: -1;
   }

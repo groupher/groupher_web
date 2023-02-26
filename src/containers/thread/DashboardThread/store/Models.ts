@@ -109,7 +109,7 @@ export const settingsModalFields = {
   brandLayout: T.opt(T.enum(values(BRAND_LAYOUT)), BRAND_LAYOUT.BOTH),
   bannerLayout: T.opt(T.enum(values(BANNER_LAYOUT)), BANNER_LAYOUT.HEADER),
   topbarLayout: T.opt(T.enum(values(TOPBAR_LAYOUT)), TOPBAR_LAYOUT.YES),
-  topbarBg: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
+  topbarBg: T.opt(T.enum(keys(COLORS)), COLOR_NAME.PINK),
 
   broadcastLayout: T.opt(T.enum(values(BROADCAST_LAYOUT)), BROADCAST_LAYOUT.DEFAULT),
   broadcastBg: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),

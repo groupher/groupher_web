@@ -39,10 +39,10 @@ export const ColorBlock = styled.div<TActive>`
   top: -400px;
   width: 600px;
   height: 390px;
-  background: linear-gradient(137deg, rgba(197, 214, 245, 1) 52%, rgba(72, 144, 157, 0.37) 100%);
-  backdrop-filter: blur(5px);
+  background: linear-gradient(137deg, rgb(226 236 255) 52%, rgb(219 238 241) 100%);
+  /* backdrop-filter: blur(5px); */
   border-radius: 20px;
-  box-shadow: ${({ $active }) => ($active ? '0 5px 25px rgb(35 35 35 / 10%)' : 'none')};
+  /* box-shadow: ${({ $active }) => ($active ? '0 5px 25px rgb(35 35 35 / 10%)' : 'none')}; */
   transform: rotate(4deg);
 
   ${css.media.mobile`
