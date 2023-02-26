@@ -45,6 +45,22 @@ export const Title = styled.div`
     margin-bottom: 15px;
   `};
 `
+
+export const SubTitle = styled.span`
+  display: inline-block;
+  color: ${theme('article.digest')};
+  opacity: 0.4;
+  font-size: 22px;
+  margin-left: 10px;
+  margin-top: -2px;
+
+  &:before {
+    content: '#';
+    margin-top: 1px;
+    margin-right: 3px;
+    font-size: 19px;
+  }
+`
 export const BottomInfo = styled.div`
   ${css.flex('align-center', 'justify-between')};
   padding-bottom: 30px;

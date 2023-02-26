@@ -24,6 +24,7 @@ import {
   RightPart,
   Topping,
   Title,
+  SubTitle,
   Avatar,
   AuthorName,
   BottomInfo,
@@ -38,7 +39,7 @@ type TProps = {
 }
 
 const PostLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
-  const { author, title, upvotesCount, meta, viewerHasUpvoted } = article
+  const { id, author, title, upvotesCount, meta, viewerHasUpvoted } = article
 
   return (
     <Wrapper metric={metric}>
@@ -48,7 +49,10 @@ const PostLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
             讨论区
           </ArrowButton>
         </Topping>
-        <Title>{title}</Title>
+        <Title>
+          {title}
+          <SubTitle>{id}</SubTitle>
+        </Title>
         <BottomInfo>
           <AuthorName href="/">
             <Avatar src={author.avatar} />

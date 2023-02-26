@@ -15,7 +15,7 @@ export const Title = styled.div`
 `
 export const SubTitle = styled.span`
   display: inline-block;
-  color: ${theme('article.title')};
+  color: ${theme('article.digest')};
   opacity: 0.4;
   font-size: 22px;
   margin-left: 10px;

@@ -177,7 +177,9 @@ export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
     store.afterInitLoading()
-    sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
+    if (!sub$) {
+      sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
+    }
 
     // if (store.isEmpty) loadArticles()
 
