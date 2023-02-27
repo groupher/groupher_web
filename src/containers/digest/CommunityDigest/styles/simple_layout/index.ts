@@ -16,7 +16,7 @@ export const Wrapper = styled(BaseBanner)<TWrapper>`
 
   border-bottom: 1px solid transparent;
   border-image: linear-gradient(
-    0.8turn,
+    0.2turn,
     transparent,
     ${theme('divider')},
     ${theme('divider')},

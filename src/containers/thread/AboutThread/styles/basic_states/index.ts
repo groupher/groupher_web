@@ -32,10 +32,10 @@ export const Block = styled.div`
   `};
 `
 const IconWrapper = styled.div`
-  ${css.circle(24)};
+  ${css.circle(28)};
   ${css.flex('align-both')};
   margin-bottom: 12px;
-  margin-left: -1px;
+  margin-left: -2px;
 `
 export const UsersWrapper = styled(IconWrapper)`
   background: ${theme('baseColor.blueBg')};
@@ -56,28 +56,30 @@ export const UsersIcon = styled(UserSVG)`
   ${css.size(14)};
   fill: ${theme('baseColor.blue')};
   opacity: 0.8;
+  filter: drop-shadow(0 0px 5px #a9c0e2);
 `
 export const ContentIcon = styled(PostSVG)`
   ${css.size(12)};
   fill: ${theme('baseColor.purple')};
-  margin-top: 1px;
+  filter: drop-shadow(0 0px 5px #bea3cc);
 `
 export const CommentIcon = styled(CommentSVG)`
-  ${css.size(14)};
+  ${css.size(12)};
   fill: ${theme('baseColor.orange')};
   margin-left: 1px;
   margin-top: 1px;
   opacity: 0.8;
-  filter: saturate(1.3);
+  filter: saturate(1.3) drop-shadow(0 0px 5px #d9a590);
 `
 export const EmojiIcon = styled(EmojiSVG)`
   ${css.size(14)};
   fill: ${theme('baseColor.red')};
-  filter: saturate(1.3);
+  filter: saturate(1.3) drop-shadow(0 0px 5px #e8a7a0);
 `
 export const TrendIcon = styled(PulseSVG)`
   ${css.size(14)};
   fill: ${theme('baseColor.green')};
+  filter: drop-shadow(0 0px 5px #d0e3b8);
 `
 export const Title = styled.div`
   color: ${theme('article.digest')};
@@ -92,8 +94,8 @@ export const Desc = styled.div`
 `
 export const Num = styled.div`
   color: ${theme('article.title')};
-  font-size: 22px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 400;
   margin-top: 5px;
 `
 export const TrendLineWrapper = styled.div`
