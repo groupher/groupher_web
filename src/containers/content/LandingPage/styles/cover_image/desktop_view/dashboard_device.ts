@@ -1,0 +1,39 @@
+import styled from 'styled-components'
+
+import css, { theme } from '@/utils/css'
+
+import Img from '@/Img'
+
+export const Wrapper = styled.div`
+  ${css.flexColumn('align-center')};
+  position: absolute;
+  bottom: 15px;
+  left: -40px;
+
+  width: 360px;
+  border-radius: 12px;
+  box-shadow: 0 5px 25px rgb(35 35 35 / 10%);
+  border: 1px solid;
+  border-color: ${theme('divider')};
+
+  // for brower header
+  padding-top: 10px;
+  background: white;
+  transform: rotate(-5deg);
+
+  z-index: 3;
+`
+export const Content = styled.div`
+  ${css.flex('align-both')};
+  width: 100%;
+  height: 240px;
+  position: relative;
+  overflow: hidden;
+`
+
+export const Image = styled(Img)`
+  display: block;
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+`
