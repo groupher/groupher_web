@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import Typewriter from 'typewriter-effect'
 
-import type { TWallpaperInfo, TBannerLayout } from '@/spec'
+import type { TBannerLayout } from '@/spec'
 import { BANNER_LAYOUT } from '@/constant/layout'
 
 import { Space, SpaceGrow } from '@/widgets/Common'
