@@ -19,12 +19,9 @@ import {
   Content,
   Background,
   Image,
-} from './styles/cover_image'
+} from '../styles/cover_image/mobile_view'
 
-type TProps = {
-  wallpaperInfo: TWallpaperInfo
-  bannerLayout: TBannerLayout
-}
+import type { TProps } from '.'
 
 const getImageSrc = (bannerLayout: TBannerLayout): string => {
   switch (bannerLayout) {

@@ -5,7 +5,7 @@ import css, { theme } from '@/utils/css'
 import Img from '@/Img'
 import LockSVG from '@/icons/Lock'
 
-import { getPathGradient } from './metric'
+import { getPathGradient } from '../metric'
 
 export const Wrapper = styled.div`
   ${css.flexColumn('align-center')};
