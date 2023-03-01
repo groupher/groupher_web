@@ -8,11 +8,11 @@ export const Wrapper = styled.div`
   ${css.flexColumn('align-center')};
   position: absolute;
   bottom: -5px;
-  right: 40px;
+  right: 65px;
 
   width: 194px;
   border-radius: 12px;
-  box-shadow: 0 5px 25px rgb(35 35 35 / 10%);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
   border: 1px solid;
   border-color: ${theme('divider')};
 
@@ -59,5 +59,7 @@ export const Background = styled.div<{ effect: string }>`
 export const Image = styled(Img)`
   display: block;
   width: 180px;
-  height: 360px;
+  height: auto;
+  object-fit: cover;
+  margin-top: 20px;
 `

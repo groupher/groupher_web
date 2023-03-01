@@ -10,7 +10,7 @@ import { getPathGradient } from '../../metric'
 export const Wrapper = styled.div`
   ${css.flexColumn('align-center')};
   position: relative;
-  width: 750px;
+  width: 714px;
   border-radius: 12px;
   box-shadow: 0 5px 25px rgb(35 35 35 / 10%);
   margin-top: -251px;
@@ -20,7 +20,7 @@ export const Wrapper = styled.div`
   // for brower header
   padding-top: 38px;
   background: #ffffff6e;
-  z-index: 2;
+  z-index: 0;
 `
 export const BrowerHead = styled.div`
   ${css.flex('align-center', 'justify-center')};
@@ -84,8 +84,8 @@ export const Background = styled.div<{ effect: string }>`
 `
 export const Image = styled(Img)<{ hasShadow: boolean }>`
   display: block;
-  width: calc(100% - 60px);
-  margin-left: 30px;
+  width: calc(100% - 40px);
+  margin-left: 20px;
   height: 480px;
   object-fit: cover;
 

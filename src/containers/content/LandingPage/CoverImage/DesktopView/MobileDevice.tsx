@@ -22,7 +22,7 @@ const MobileDevice: FC<TProps> = ({ wallpaperInfo }) => {
     <Wrapper>
       <Bar />
       <Content>
-        <Image src={imageSrc} />
+        <Image src={imageSrc} noLazy />
         <Background style={{ background }} effect={effect} />
       </Content>
     </Wrapper>

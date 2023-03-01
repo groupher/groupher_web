@@ -13,4 +13,9 @@ export const Wrapper = styled.div`
   `};
 `
 
-export const holder = 1
+export const ParallaxWrapper = styled.div`
+  width: 1080px;
+  position: relative;
+  z-index: 100;
+  z-index: 2;
+`
