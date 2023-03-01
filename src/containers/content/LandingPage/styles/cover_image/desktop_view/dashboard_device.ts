@@ -7,13 +7,13 @@ import Img from '@/Img'
 export const Wrapper = styled.div`
   ${css.flexColumn('align-center')};
   position: absolute;
-  bottom: 5px;
+  bottom: 15px;
   left: -40px;
 
   width: 360px;
   border-radius: 12px;
   box-shadow: 0 5px 25px rgb(35 35 35 / 10%);
-  border-top: 1px solid;
+  border: 1px solid;
   border-color: ${theme('divider')};
 
   // for brower header

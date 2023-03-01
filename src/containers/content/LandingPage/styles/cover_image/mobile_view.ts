@@ -8,7 +8,6 @@ import LockSVG from '@/icons/Lock'
 import { getPathGradient } from '../metric'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-center')};
   position: relative;
   width: 1080px;
   border-radius: 12px;
@@ -22,7 +21,10 @@ export const Wrapper = styled.div`
   background: #ffffff6e;
   z-index: 2;
 
+  display: none;
+
   ${css.media.mobile`
+    ${css.flexColumn('align-center')};
     width: calc(100% - 20px);
     height: 220px;
     padding-top: 25px;

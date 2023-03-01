@@ -1,5 +1,4 @@
 import { FC, memo } from 'react'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TWallpaperInfo, TBannerLayout } from '@/spec'
 
@@ -12,9 +11,12 @@ export type TProps = {
 }
 
 const CoverImage: FC<TProps> = (props) => {
-  const { isMobile } = useMobileDetect()
-
-  return isMobile ? <MobileView {...props} /> : <DesktopView {...props} />
+  return (
+    <>
+      <MobileView {...props} />
+      <DesktopView {...props} />
+    </>
+  )
 }
 
 export default memo(CoverImage)

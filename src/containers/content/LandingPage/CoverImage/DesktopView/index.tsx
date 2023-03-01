@@ -2,6 +2,7 @@ import { FC } from 'react'
 
 import DesktopDevice from './DesktopDevice'
 import DashboardDevice from './DashboardDevice'
+import MobileDevice from './MobileDevice'
 
 import { Wrapper } from '../../styles/cover_image/desktop_view'
 
@@ -12,6 +13,7 @@ const CoverImage: FC<TProps> = (props) => {
     <Wrapper>
       <DesktopDevice {...props} />
       <DashboardDevice />
+      <MobileDevice {...props} />
     </Wrapper>
   )
 }

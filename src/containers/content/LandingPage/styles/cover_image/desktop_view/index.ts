@@ -7,6 +7,10 @@ export const Wrapper = styled.div`
   position: relative;
   width: 1080px;
   border-radius: 12px;
+
+  ${css.media.mobile`
+    display: none;
+  `};
 `
 
 export const holder = 1
