@@ -34,11 +34,10 @@ export const InnerContent = styled.div`
 `
 export const ShareIcon = styled(ShareSVG)`
   ${css.size(12)};
-  fill: #6db7b7;
+  fill: #e9c79a;
   position: absolute;
   top: 11px;
   right: -1px;
-  opacity: 0.5;
 `
 
 export const Footer = styled.div`
@@ -49,7 +48,7 @@ export const Footer = styled.div`
 `
 const ArrowIcon = styled(ArrowSimple)`
   ${css.size(18)};
-  fill: #6db7b7;
+  fill: #aac387;
 `
 export const LeftArrowIcon = styled(ArrowIcon)``
 export const RightArrowIcon = styled(ArrowIcon)`
@@ -57,12 +56,12 @@ export const RightArrowIcon = styled(ArrowIcon)`
 `
 export const BookIcon = styled(BookSVG)`
   ${css.size(15)};
-  fill: #6db7b7;
+  fill: #e9c79a;
   z-index: 1;
 `
 export const QuestionIcon = styled(QuestionSVG)`
   ${css.size(12)};
-  fill: #6db7b7;
+  fill: #e9c79a;
   z-index: 1;
 `
 export const PinnedItem = styled.div`
@@ -82,7 +81,7 @@ export const Cover = styled.div`
   margin-top: 10px;
   margin-bottom: 10px;
 
-  background: linear-gradient(137deg, #6db7b7 52%, #d8d0b6 100%);
+  background: linear-gradient(137deg, #ecc297 52%, #fcebd9 100%);
   backdrop-filter: blur(5px);
 
   opacity: 0.3;
@@ -106,7 +105,7 @@ export const Divider = styled.div`
   height: 1px;
 
   border-bottom: 1px solid transparent;
-  border-image: linear-gradient(0.35turn, transparent, #6db7b7, #6db7b7, #6db7b7, transparent);
+  border-image: linear-gradient(0.35turn, transparent, #b6cc97, #b6cc97, #b6cc97, transparent);
 
   border-image-slice: 1;
 
@@ -116,7 +115,8 @@ export const Divider = styled.div`
 `
 
 export const Bar = styled(BarBase)`
-  background: #6db7b7;
+  background: #dcb370;
+  background: #ecc297;
 `
 
 export const GreyBar = styled(BarBase)`

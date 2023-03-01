@@ -26,7 +26,7 @@ export const ImageWrapper = styled.div`
 
   background: white;
   border: 1px dotted;
-  border-color: #6db7b7;
+  border-color: #d5a14e;
   border-radius: 10px;
   z-index: 2;
 `
@@ -37,8 +37,7 @@ export const ColorBlock = styled.div<TActive>`
   width: 600px;
   height: 390px;
 
-  background: linear-gradient(137deg, rgb(190 225 225 / 76%) 52%, rgb(239 233 214 / 89%) 100%);
-  /* backdrop-filter: blur(5px); */
+  background: linear-gradient(137deg, #ffe9d6 52%, #fffbf5 100%);
   border-radius: 20px;
   transform: rotate(4deg);
 

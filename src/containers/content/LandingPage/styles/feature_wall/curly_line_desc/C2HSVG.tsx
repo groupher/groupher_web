@@ -15,7 +15,7 @@ const SVG = (props: SVGProps<SVGSVGElement>) => {
       <defs>
         <linearGradient id="c2h" gradientTransform="rotate(257 .5 .5)">
           <stop stopColor="#F5716E" offset={0} />
-          <stop stopColor="#6EB6B6" offset={1} />
+          <stop stopColor="#E9C79A" offset={1} />
         </linearGradient>
       </defs>
     </svg>

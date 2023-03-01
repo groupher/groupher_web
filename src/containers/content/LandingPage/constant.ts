@@ -17,7 +17,7 @@ export const FEAT = {
   },
 
   HELP: {
-    COLOR: '#50A1A2',
+    COLOR: '#ce9f6f',
     HINT: 'HelpDesk',
   },
 }

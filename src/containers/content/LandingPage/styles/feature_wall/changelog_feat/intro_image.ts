@@ -41,7 +41,9 @@ export const ColorBlock = styled.div<TActive>`
 
   background: linear-gradient(137deg, rgb(253 223 222) 52%, rgb(252 242 223) 100%);
   border-radius: 20px;
-  transform: rotate(-1deg);
+  transform: rotate(-4deg);
+
+  /* box-shadow: ${({ $active }) => ($active ? '0 5px 25px rgb(35 35 35 / 10%)' : 'none')}; */
 
   ${css.media.mobile`
     left: 0;

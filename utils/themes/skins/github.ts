@@ -67,7 +67,7 @@ const github = {
     red: '#ca5f4d',
     redBg: '#ffbfba3d',
 
-    orange: '#ad735c',
+    orange: '#ce9f6f',
     orangeBg: '#FEF7E8',
 
     brown: '#8d691e',

@@ -6,7 +6,7 @@ const SVG = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 36 36" {...props}>
       <path
-        fill="#a2d0d1"
+        fill="#FEE79D"
         d="M36 18c0 9.941-8.059 18-18 18S0 27.941 0 18 8.059 0 18 0s18 8.059 18 18"
       />
       <path

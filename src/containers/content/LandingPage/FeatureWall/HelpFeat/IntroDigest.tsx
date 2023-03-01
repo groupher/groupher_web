@@ -50,7 +50,6 @@ const IntroDigest: FC<TProps> = ({ inViewChange, alignRight = false }) => {
 
       <DesktopOnly>
         <IntroItems />
-
         <ViewportTracker onEnter={() => setFootInview(true)} onLeave={() => setFootInview(false)} />
       </DesktopOnly>
     </Wrapper>
