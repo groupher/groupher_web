@@ -26,7 +26,7 @@ export const DescBlock = styled.div`
   top: 100px;
   ${css.flex('align-center')};
   color: ${theme('article.title')};
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
   opacity: 0.4;
 `
