@@ -15,9 +15,9 @@ export const Board = styled.div<{ shadow?: boolean }>`
 
   width: 168px;
   height: 300px;
-  /* background: #c8d6f24f; */
   /* background: linear-gradient(180deg, #c8d6f24f 34%, #c8d6f24f 100%); */
   background: linear-gradient(180deg, #c8d6f24f 34%, #deecff4f 100%);
+  background: #d8deec4f;
 
   border-radius: 8px;
   border-bottom-left-radius: 0;

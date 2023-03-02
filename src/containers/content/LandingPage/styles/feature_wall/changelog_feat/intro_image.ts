@@ -41,7 +41,8 @@ export const ColorBlock = styled.div<TActive>`
 
   background: linear-gradient(137deg, rgb(253 223 222) 52%, rgb(252 242 223) 100%);
   border-radius: 20px;
-  transform: rotate(-4deg);
+  /* transform: rotate(-4deg); */
+  transform: rotate(4deg);
 
   /* box-shadow: ${({ $active }) => ($active ? '0 5px 25px rgb(35 35 35 / 10%)' : 'none')}; */
 
@@ -59,23 +60,23 @@ export const IconsWrapper = styled.div`
   position: absolute;
   ${css.flex('align-center')};
   gap: 0 18px;
-  bottom: -30px;
+  bottom: -40px;
   right: -250px;
   z-index: -3;
 `
 export const Icon1 = styled(BroadcastSVG)`
-  ${css.size(21)};
+  ${css.size(19)};
   fill: #f46b68;
   opacity: 0.85;
   margin-top: -1px;
 `
 export const Icon2 = styled(CommentSVG)`
-  ${css.size(20)};
+  ${css.size(18)};
   fill: #f48d68;
   opacity: 0.8;
 `
 export const Icon3 = styled(EmojiSVG)`
-  ${css.size(21)};
+  ${css.size(19)};
   opacity: 0.5;
   margin-top: -2px;
 `

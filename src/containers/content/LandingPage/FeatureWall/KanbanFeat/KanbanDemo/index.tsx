@@ -26,7 +26,7 @@ const KanbanDemo: FC = () => {
           <KanbanItem opacity={0.55} count={9} width={40} />
           <KanbanItem opacity={0.45} count={15} width={60} />
         </Board>
-        <Board shadow>
+        <Board>
           <KanbanItem count={72} width={68} />
           <KanbanItem opacity={0.95} count={112} width={60} />
           <KanbanItem opacity={0.85} count={41} width={100} />
