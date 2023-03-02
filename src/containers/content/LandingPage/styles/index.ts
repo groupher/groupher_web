@@ -6,7 +6,7 @@ import type { TSpace, TTestable } from '@/spec'
 import Button from '@/widgets/Buttons/Button'
 import LinkSVG from '@/icons/LinkOutside'
 
-import css, { animate, theme } from '@/utils/css'
+import css, { theme } from '@/utils/css'
 import InfoSVG from '@/icons/Info'
 import ArrowSVG from '@/icons/ArrowSimple'
 
@@ -40,7 +40,6 @@ export const BgGlow = styled.div<{ wallpaper: string }>`
 
   opacity: ${({ wallpaper }) => getGlowOpacity(wallpaper)};
   background: ${({ wallpaper }) => getGlowBackground(wallpaper)};
-  animation: ${animate.shake} 15s ease-in infinite alternate;
 
   ${css.media.mobile`
      display: none;
