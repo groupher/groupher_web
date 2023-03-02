@@ -16,6 +16,7 @@ export const Wrapper = styled.div`
   margin-top: -251px;
   border-top: 1px solid;
   border-color: ${theme('divider')};
+  margin-left: 20px;
 
   // for brower header
   padding-top: 38px;

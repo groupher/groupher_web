@@ -8,8 +8,7 @@ export const Wrapper = styled.div`
   ${css.flexColumn('align-center')};
   position: absolute;
   bottom: -5px;
-  right: 65px;
-
+  right: 45px;
   width: 194px;
   border-radius: 12px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;

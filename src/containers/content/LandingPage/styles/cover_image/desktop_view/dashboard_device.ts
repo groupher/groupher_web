@@ -21,6 +21,8 @@ export const Wrapper = styled.div`
   background: white;
   transform: rotate(-5deg);
 
+  margin-left: 15px;
+
   z-index: 3;
 `
 export const Content = styled.div`
