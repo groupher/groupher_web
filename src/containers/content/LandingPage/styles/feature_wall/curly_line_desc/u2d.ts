@@ -1,11 +1,9 @@
 import styled from 'styled-components'
 
-import type { TColorName, TTestable } from '@/spec'
+import type { TTestable } from '@/spec'
 
-import css, { animate, theme } from '@/utils/css'
-import { camelize } from '@/utils/fmt'
+import css, { theme } from '@/utils/css'
 
-import MagicSVG from '@/icons/MagicHand'
 import CurlyLineSVG from './U2DSVG'
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
@@ -15,39 +13,21 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   width: 100%;
   height: auto;
   position: relative;
-  margin-top: -30px;
+  margin-top: -50px;
   z-index: -1;
 
   ${css.media.mobile`
     display: none;
   `};
 `
-export const MagicWrapper = styled.div`
+export const Circle = styled.div`
+  ${css.circle(8)};
+  border: 1px solid;
+  border-color: ${theme('article.info')};
   position: absolute;
-  left: calc(50% - 57px);
-  top: 95px;
-  transform: rotate(-32deg);
-  opacity: 0.5;
-
-  &:after {
-    content: '';
-    position: absolute;
-    top: 24px;
-    left: 5px;
-    ${css.size(10)};
-    height: 7px;
-    background: white;
-    transform: rotate(45deg);
-  }
-`
-export const MagicIcon = styled(MagicSVG)<{ color: TColorName }>`
-  ${css.size(35)};
-  fill: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
-
-  filter: saturate(1.5);
-  transform: scale(0.8);
-  animation: ${animate.breath} 2s linear infinite alternate;
-  transition: all 0.2s;
+  left: calc(50% - 44px);
+  top: 110px;
+  opacity: 0.4;
 `
 
 export const DescBlock = styled.div`
