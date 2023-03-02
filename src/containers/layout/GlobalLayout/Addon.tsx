@@ -1,5 +1,6 @@
 import { FC, Fragment, memo, useEffect } from 'react'
 // import useMobileDetect from '@groupher/use-mobile-detect-hook'
+import { Toaster } from 'react-hot-toast'
 
 import type { TMetric } from '@/spec'
 import useShortcut from '@/hooks/useShortcut'
@@ -29,6 +30,7 @@ const Addon: FC<TProps> = ({ metric }) => {
       <Drawer metric={metric} />
       <Subscriber />
       <AuthWall />
+      <Toaster />
       {/* @ts-ignore */}
       {/* @ts-ignore */}
       {/* @ts-ignore */}

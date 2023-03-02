@@ -92,7 +92,7 @@ export const DesktopOnly = styled.div<TDesktopOnly>`
 
 export const MobileOnly = styled.div`
   display: none;
-  width: 100%;
+  width: auto;
   ${css.media.mobile`
     display: block;
   `};

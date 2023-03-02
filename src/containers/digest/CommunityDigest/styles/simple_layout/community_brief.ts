@@ -7,6 +7,11 @@ export const Wrapper = styled.div`
   ${css.flex('align-center')};
   transition: all 0.2s;
   width: 200px;
+
+  ${css.media.mobile`
+    width: auto;
+    max-width: 150px;
+  `};
 `
 export const LogoWrapper = styled.div`
   position: relative;

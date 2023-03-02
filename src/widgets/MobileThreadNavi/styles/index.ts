@@ -31,3 +31,7 @@ export const Item = styled(Link)`
 
   text-decoration: none;
 `
+export const ShareItem = styled.div`
+  color: ${theme('article.title')};
+  font-size: 15px;
+`
