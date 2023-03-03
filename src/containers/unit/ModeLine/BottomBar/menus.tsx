@@ -6,22 +6,24 @@ export const communityPageMenus = [
   {
     // '过滤',
     raw: TYPE.MM_TYPE.FILTER,
+    title: '讨论区',
     icon: `${ICON}/filter.svg`,
   },
   {
-    // '搜索',
-    raw: TYPE.MM_TYPE.SEARCH,
+    raw: TYPE.MM_TYPE.EXPLORE,
+    title: '标签',
     icon: `${ICON}/search.svg`,
   },
   {
     //  '发布',
-    raw: TYPE.MM_TYPE.PUBLISH,
-    icon: `${ICON}/article/more.svg`,
+    raw: TYPE.MM_TYPE.SHARE,
+    title: '状态',
+    icon: `${ICON}/search.svg`,
   },
   {
-    // '更多',
-    raw: TYPE.MM_TYPE.MORE,
-    icon: `${ICON}/more.svg`,
+    raw: TYPE.MM_TYPE.SEARCH,
+    title: '搜索',
+    icon: `${ICON}/search.svg`,
   },
 ]
 

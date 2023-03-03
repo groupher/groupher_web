@@ -18,7 +18,6 @@ export const TextAreaInput = styled(Input)<{ error: string }>`
   border-right: ${({ error }) => (error === 'true' ? '3px solid !important' : '')};
   border-left-color: ${({ error }) => (error === 'true' ? theme('baseColor.red') : '')};
   border-right-color: ${({ error }) => (error === 'true' ? theme('baseColor.red') : '')};
-  border: 1px solid tomato;
 `
 
 export const FormItemWrapper = styled.div<TSpace>`

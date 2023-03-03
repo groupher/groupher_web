@@ -34,7 +34,7 @@ const CatSelector: FC<TProps> = ({ mode = ARTICLE_CAT_MODE.FILTER, activeCat, on
 
   return (
     <Wrapper menuOpen={menuOpen}>
-      <Label>类别</Label>
+      {mode === ARTICLE_CAT_MODE.FULL && <Label>类别</Label>}
       <Tooltip
         placement="bottom-start"
         trigger="click"
@@ -56,7 +56,7 @@ const CatSelector: FC<TProps> = ({ mode = ARTICLE_CAT_MODE.FILTER, activeCat, on
         }
       >
         <DropdownButton>
-          {activeCat === ARTICLE_CAT.ALL ? '全部' : <ActiveLabel cat={activeCat} />}
+          {activeCat === ARTICLE_CAT.ALL ? '类别' : <ActiveLabel cat={activeCat} />}
         </DropdownButton>
       </Tooltip>
     </Wrapper>

@@ -145,6 +145,7 @@ export type TArticleFilter = {
 }
 
 export type TArticleCatMode = 'filter' | 'full'
+export type TArticleStateMode = 'filter' | 'full'
 
 export type TUpvoteLayout =
   | 'default'

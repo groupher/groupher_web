@@ -2,6 +2,8 @@ import { FC, memo } from 'react'
 
 import type { TThread, TCommunity, TMetric, TEnableConfig } from '@/spec'
 import EVENT from '@/constant/event'
+import { ANCHOR } from '@/constant/dom'
+
 import { send } from '@/utils/signal'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
@@ -35,7 +37,7 @@ const SimpleLayout: FC<TProps> = ({ community, activeThread, metric, enable }) =
   const publicThreads = community.threads.filter((thread) => enable[thread.raw])
 
   return (
-    <Wrapper testid="community-digest">
+    <Wrapper testid="community-digest" id={ANCHOR.GLOBAL_HEADER_ID}>
       <InnerWrapper metric={metric}>
         <BannerContentWrapper>
           <CommunityBaseInfo>

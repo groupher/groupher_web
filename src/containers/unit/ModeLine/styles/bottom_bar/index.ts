@@ -1,57 +1,61 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import Img from '@/Img'
-import TYPE from '@/constant/type'
 import css, { theme, zIndex } from '@/utils/css'
 
-type TMenuIcon = { active: boolean; colorTheme: string; raw?: string }
+import GotoTopSVG from '@/icons/Arrow2Top'
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TTestable & { isMenuActive: boolean }>`
   position: fixed;
   left: 0;
-  bottom: 0px;
-  ${css.flex('align-center')};
-  color: ${theme('article.title')};
+  bottom: 15px;
+  ${css.flex('align-both')};
   width: 100%;
   height: 35px;
-  background: #0e3b4a;
   z-index: ${zIndex.modeLine};
-  box-shadow: ${({ isMenuActive }) =>
-    !isMenuActive ? '' : '-5px 6px 37px -8px rgba(0, 0, 0, 0.42)'};
 `
-export const ItemsWrapper = styled.div`
+export const InnerWrapper = styled.div`
   ${css.flex('justify-between', 'align-center')};
   height: 100%;
-  width: auto;
+  padding: 0 10px;
+  width: calc(100% - 50px);
+
+  border-radius: 15px;
+`
+export const MainMenusWrapper = styled.div`
+  ${css.flex('justify-between', 'align-center')};
   flex-grow: 1;
+  background: ${theme('alphaBg2')};
   height: 100%;
-  margin-left: 18px;
-  margin-right: 18px;
+  padding: 0 16px;
+  padding-right: 18px;
+  border-radius: 15px;
+  border: 1px solid;
+  border-color: ${theme('divider')};
+  box-shadow: -5px 6px 37px -8px rgba(0, 0, 0, 0.42);
+`
+export const Go2TopWrapper = styled.div`
+  ${css.flex('align-both')};
+  width: 40px;
+  height: 100%;
+  border-radius: 15px;
+  margin-left: 8px;
+  background: ${theme('alphaBg2')};
+
+  border: 1px solid;
+  border-color: ${theme('divider')};
+  box-shadow: -5px 6px 37px -8px rgba(0, 0, 0, 0.42);
+`
+export const GotoTopIcon = styled(GotoTopSVG)`
+  ${css.size(15)};
+  fill: ${theme('article.title')};
 `
 export const MenuItem = styled.div`
   ${css.flex('align-center')};
 `
-export const MenuIcon = styled(Img)<TMenuIcon>`
-  fill: ${({ active, colorTheme }: TMenuIcon) => {
-    if (colorTheme) return theme(colorTheme)
-    return active ? '#2ca1a2' : theme('article.digest')
-  }};
-
-  ${({ raw }) => {
-    if (raw === TYPE.MM_TYPE.UPVOTE) return css.size(10)
-    return css.size(14)
-  }};
-
-  :last-child {
-    margin-right: 0;
-  }
-`
 export const MenuDesc = styled.div`
   color: ${theme('article.title')};
   font-size: 12px;
-  margin-left: 5px;
-  margin-top: -1px;
 `

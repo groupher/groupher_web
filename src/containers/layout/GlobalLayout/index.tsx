@@ -16,6 +16,8 @@ import type { TSEO, TMetric } from '@/spec'
 import { bond } from '@/utils/mobx'
 
 import ThemePalette from '@/containers/layout/ThemePalette'
+import ModeLine from '@/containers/unit/ModeLine'
+
 import Broadcast from '@/widgets/Broadcast'
 import Footer from '@/widgets/Footer'
 
@@ -108,9 +110,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
             >
               <Broadcast metric={metric} settings={broadcastConfig} />
               <ContentWrapper>
-                <BodyWrapper isMobile={isMobile}>
-                  {childrenWithProps(children, { metric })}
-                </BodyWrapper>
+                <BodyWrapper>{childrenWithProps(children, { metric })}</BodyWrapper>
                 <Footer metric={metric} />
               </ContentWrapper>
               {!!glowEffect.glowType && (
@@ -121,7 +121,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
                 />
               )}
             </InnerWrapper>
-            {/* {isMobile && <ModeLine metric={metric} />} */}
+            {isMobile && load && <ModeLine metric={metric} />}
           </Wrapper>
         </ScrollWrapper>
       </Skeleton>

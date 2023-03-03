@@ -25,8 +25,8 @@ export const SelectItem = styled(SelectItemBase)`
 
 type THashSign = TActive & { color?: string }
 export const DotSign = styled.div<THashSign>`
-  ${css.circle(8)};
-  background: ${({ color }) => (color ? theme(`baseColor.${camelize(color)}Bg`) : 'none')};
+  ${css.circle(7)};
+  background: ${({ color }) => (color ? theme(`baseColor.${camelize(color)}`) : 'none')};
 
   margin-right: 8px;
   margin-top: -1px;

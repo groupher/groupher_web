@@ -7,22 +7,26 @@ import type { TArticle, TCommunity, TMetric, TModelineType } from '@/spec'
 import METRIC from '@/constant/metric'
 import TYPE from '@/constant/type'
 
-import { multiClick } from '@/utils/dom'
+import { scrollToHeader } from '@/utils/dom'
 
-import { MenuBlock, CommunityBlock, MainBlock, ExploreBlock, AccountBlock } from './ArrowBlock'
-import { Wrapper, ItemsWrapper, MenuItem, MenuDesc, MenuIcon } from '../styles/bottom_bar'
+// import { MenuBlock, CommunityBlock, MainBlock, ExploreBlock, AccountBlock } from './ArrowBlock'
+import {
+  Wrapper,
+  InnerWrapper,
+  MainMenusWrapper,
+  Go2TopWrapper,
+  GotoTopIcon,
+  MenuItem,
+  MenuDesc,
+} from '../styles/bottom_bar'
 
-import { openMenu } from '../logic'
+// import { openMenu } from '../logic'
 import { communityPageMenus, getArticlePageMenus } from './menus'
-
-const isNotBelongToCommunityRoute = (pathname: string): boolean => {
-  return includes(pathname, [])
-}
 
 type TProps = {
   testid?: string
   metric: TMetric
-  activeMenu: TModelineType
+  activeMenu: string // TModelineType
   isCommunityBlockExpand?: boolean
   article: TArticle | null
   community: TCommunity
@@ -42,45 +46,34 @@ const BottomBar: FC<TProps> = ({
     ? getArticlePageMenus(article)
     : communityPageMenus
 
-  const communityInfo = article?.originalCommunity?.raw ? article.originalCommunity : community
+  // const communityInfo = article?.originalCommunity?.raw ? article.originalCommunity : community
+
+  //               onClick={multiClick(() => openMenu(item.raw))}
 
   return (
     <Wrapper testid={testid} isMenuActive={!!activeMenu}>
-      <MenuBlock
-        active={activeMenu === TYPE.MM_TYPE.GLOBAL_MENU}
-        // @ts-ignore
-        onClick={multiClick(() => openMenu(TYPE.MM_TYPE.GLOBAL_MENU))}
-      />
-      {isNotBelongToCommunityRoute(router.pathname) ? (
-        <MainBlock />
-      ) : (
-        <CommunityBlock
-          onClick={() => openMenu(TYPE.MM_TYPE.COMMUNITY)}
-          community={communityInfo}
-          isArticle={!!article}
-          isExpand={isCommunityBlockExpand}
-        />
-      )}
-
-      <ItemsWrapper>
-        {menus.map((item) => (
-          <MenuItem
-            key={item.raw}
-            // @ts-ignore
-            onClick={multiClick(() => openMenu(item.raw))}
-          >
-            <MenuIcon
-              src={item.icon}
-              colorTheme={item.iconTheme}
-              raw={item.raw}
-              active={activeMenu === item.raw}
-            />
-            {item.title && <MenuDesc>{item.title}</MenuDesc>}
+      <InnerWrapper>
+        <MainMenusWrapper>
+          <MenuItem>
+            <MenuDesc>讨论区</MenuDesc>
           </MenuItem>
-        ))}
-      </ItemsWrapper>
-      <ExploreBlock />
-      <AccountBlock />
+
+          <MenuItem>
+            <MenuDesc>排序</MenuDesc>
+          </MenuItem>
+
+          <MenuItem>
+            <MenuDesc>标签</MenuDesc>
+          </MenuItem>
+
+          <MenuItem>
+            <MenuDesc>类别</MenuDesc>
+          </MenuItem>
+        </MainMenusWrapper>
+        <Go2TopWrapper onClick={() => scrollToHeader()}>
+          <GotoTopIcon />
+        </Go2TopWrapper>
+      </InnerWrapper>
     </Wrapper>
   )
 }
