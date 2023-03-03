@@ -13,6 +13,7 @@ export const Wrapper = styled.div`
 `
 export const InputWrapper = styled(Wrapper)`
   cursor: default;
+  padding-left: 2px;
   width: 100%;
 `
 export const Inputer = styled(Input)`

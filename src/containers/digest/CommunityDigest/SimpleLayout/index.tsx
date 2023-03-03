@@ -3,10 +3,8 @@ import { FC, memo } from 'react'
 import type { TThread, TCommunity, TMetric, TEnableConfig } from '@/spec'
 import EVENT from '@/constant/event'
 import { send } from '@/utils/signal'
-import { toast } from '@/utils/helper'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
-import { MobileOnly, SpaceGrow } from '@/widgets/Common'
 import MobileThreadNavi from '@/widgets/MobileThreadNavi'
 
 import ThreadTab from './ThreadTab'
@@ -18,6 +16,7 @@ import {
   InnerWrapper,
   BannerContentWrapper,
   CommunityBaseInfo,
+  MobileNaviWrapper,
 } from '../styles/simple_layout'
 
 import { setViewport } from '../logic'
@@ -41,14 +40,13 @@ const SimpleLayout: FC<TProps> = ({ community, activeThread, metric, enable }) =
         <BannerContentWrapper>
           <CommunityBaseInfo>
             <CommunityBrief community={community} />
-            <MobileOnly>
+            <MobileNaviWrapper>
               <MobileThreadNavi
                 community={community}
                 threads={publicThreads}
                 active={activeThread}
               />
-            </MobileOnly>
-            <SpaceGrow />
+            </MobileNaviWrapper>
             <ThreadTab
               threads={publicThreads}
               active={activeThread}

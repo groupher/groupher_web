@@ -66,6 +66,12 @@ export const CommunityBaseInfo = styled.div`
   ${css.flex('justify-between', 'align-center')};
   width: 100%;
   padding-top: 10px;
-  // 60 是经典布局为缩小帖子列表"视觉宽度"手动缩小的值
-  /* padding-right: 60px; */
+`
+
+export const MobileNaviWrapper = styled.div`
+  display: none;
+
+  ${css.media.mobile`
+    ${css.flexGrow()};
+  `};
 `
