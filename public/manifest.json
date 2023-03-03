@@ -1,7 +1,7 @@
 {
-  "name": "groupher",
+  "name": "Groupher",
   "short_name": "Groupher",
-  "description": "反馈 & 建议 & 更新日志",
+  "description": "让你的产品聆听用户的声音。互动讨论，GTD 看板，更新日志，帮助文档多合一，收集整理用户用户反馈，助你打造更好的产品。",
   "icons": [
     {
       "src": "/pwa/icon-192x192.png",
@@ -26,8 +26,8 @@
     }
   ],
   "theme_color": "#002B36",
-  "background_color": "#002B36",
+  "background_color": "white",
   "start_url": "/",
-  "display": "standalone",
+  "display": "browser",
   "orientation": "portrait"
 }
