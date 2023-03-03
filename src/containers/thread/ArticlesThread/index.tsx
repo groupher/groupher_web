@@ -22,7 +22,7 @@ import ArticlesFilter from '@/widgets/ArticlesFilter'
 
 import type { TStore } from './store'
 
-import { Wrapper, MainWrapper, SidebarWrapper, FilterWrapper } from './styles'
+import { Wrapper, MainWrapper, SidebarWrapper, FilterWrapper, ArticleListWrapper } from './styles'
 
 import { useInit, inAnchor, outAnchor, onFilterSelect, onSearch, closeSearch } from './logic'
 
@@ -78,7 +78,9 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
 
         <TagNote tag={activeTagData} />
 
-        {mode === 'default' && (
+        {mode === 'search' && <FaqList layout={HELP_FAQ_LAYOUT.SEARCH_HINT} left={6} />}
+
+        <ArticleListWrapper show={mode === 'default'}>
           <PagedArticles
             data={pagedArticlesData}
             curCommunity={curCommunity}
@@ -87,9 +89,7 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
             c11n={c11n}
             globalLayout={globalLayout}
           />
-        )}
-
-        {mode === 'search' && <FaqList layout={HELP_FAQ_LAYOUT.SEARCH_HINT} />}
+        </ArticleListWrapper>
       </LayoutWrapper>
 
       {!isSidebarLayout && <ThreadSidebar />}

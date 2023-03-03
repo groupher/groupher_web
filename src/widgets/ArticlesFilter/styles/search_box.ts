@@ -14,7 +14,6 @@ export const Wrapper = styled.div`
 export const InputWrapper = styled(Wrapper)`
   cursor: default;
   width: 100%;
-  padding-left: 10px;
 `
 export const Inputer = styled(Input)`
   cursor: text;
@@ -33,7 +32,7 @@ export const SearchIcon = styled(SearchSVG)`
 `
 export const InputSearchIcon = styled(SearchIcon)`
   position: absolute;
-  left: 18px;
+  left: 10px;
   top: 10px;
 
   margin-right: 0;
