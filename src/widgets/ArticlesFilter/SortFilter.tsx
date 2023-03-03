@@ -25,7 +25,7 @@ const SortFilter: FC<TProps> = ({ onSelect, activeFilter }) => {
         )
       }
     >
-      <DropdownButton left={-8}>排序</DropdownButton>
+      <DropdownButton left={-8}>默认排序</DropdownButton>
     </Tooltip>
   )
 }

@@ -66,7 +66,7 @@ const ArticlesFilter: FC<TProps> = ({
           <StateSelector mode={ARTICLE_STATE_MODE.FILTER} />
           <SpaceGrow />
           <DesktopOnly>
-            {resState === TYPE.RES_STATE.LOADING && <LavaLampLoading top={2} right={28} />}
+            {resState === TYPE.RES_STATE.LOADING && <LavaLampLoading right={28} left={10} />}
           </DesktopOnly>
         </Fragment>
       )}

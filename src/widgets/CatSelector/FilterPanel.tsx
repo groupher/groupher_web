@@ -5,7 +5,7 @@ import { ARTICLE_CAT } from '@/constant/gtd'
 
 import { Trans } from '@/utils/i18n'
 
-import { Wrapper, SelectItem, Icon } from './styles/filter_panel'
+import { Wrapper, SelectItem, IconWrapper, Icon } from './styles/filter_panel'
 
 type TProps = {
   activeCat: TArticleCat
@@ -28,7 +28,9 @@ const FilterPanel: FC<TProps> = ({ activeCat, onSelect }) => {
 
         return (
           <SelectItem key={cat} active={activeCat === cat} onClick={() => onSelect(cat)}>
-            <OptIcon />
+            <IconWrapper>
+              <OptIcon />
+            </IconWrapper>
             {Trans(cat)}
           </SelectItem>
         )

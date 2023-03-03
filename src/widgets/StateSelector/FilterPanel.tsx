@@ -6,6 +6,7 @@ import { ARTICLE_STATE } from '@/constant/gtd'
 import {
   Wrapper,
   SelectItem,
+  IconWrapper,
   TodoIcon,
   WipIcon,
   DoneIcon,
@@ -25,21 +26,27 @@ const FilterPanel: FC<TProps> = ({ activeState, onSelect }) => {
         active={activeState === ARTICLE_STATE.TODO}
         onClick={() => onSelect(ARTICLE_STATE.TODO)}
       >
-        <TodoIcon />
+        <IconWrapper>
+          <TodoIcon />
+        </IconWrapper>
         <Title>代办项</Title>
       </SelectItem>
       <SelectItem
         active={activeState === ARTICLE_STATE.WIP}
         onClick={() => onSelect(ARTICLE_STATE.WIP)}
       >
-        <WipIcon />
+        <IconWrapper>
+          <WipIcon />
+        </IconWrapper>
         <Title>进行中</Title>
       </SelectItem>
       <SelectItem
         active={activeState === ARTICLE_STATE.DONE}
         onClick={() => onSelect(ARTICLE_STATE.DONE)}
       >
-        <DoneIcon />
+        <IconWrapper>
+          <DoneIcon />
+        </IconWrapper>
         <Title>已完成</Title>
       </SelectItem>
 
@@ -47,7 +54,9 @@ const FilterPanel: FC<TProps> = ({ activeState, onSelect }) => {
         active={activeState === ARTICLE_STATE.DONE}
         onClick={() => onSelect(ARTICLE_STATE.DONE)}
       >
-        <RejectIcon />
+        <IconWrapper>
+          <RejectIcon />
+        </IconWrapper>
         <Title>回绝</Title>
       </SelectItem>
     </Wrapper>

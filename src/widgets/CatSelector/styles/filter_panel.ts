@@ -16,18 +16,20 @@ export const Wrapper = styled.div`
   margin-top: 2px;
   font-size: 14px;
 `
-const iconBase = `
-  ${css.size(14)};
-  margin-right: 12px;
-  opacity: 0.8;
+export const IconWrapper = styled.div`
+  ${css.circle(16)};
+  ${css.flex('align-both')};
+  margin-right: 10px;
 `
 
+const iconBase = `
+  ${css.size(14)};
+  opacity: 0.8;
+`
 export const AllIcon = styled(AllSVG)`
   ${iconBase};
   ${css.size(16)};
   fill: ${theme('article.digest')};
-  margin-right: 11px;
-  margin-left: -1px;
 `
 export const LightIcon = styled(LightSVG)`
   ${iconBase};
@@ -37,27 +39,21 @@ export const LightIcon = styled(LightSVG)`
 export const QuestionIcon = styled(QuestionSVG)`
   ${iconBase};
   ${css.size(10)};
-  margin-right: 13px;
-  margin-left: 1px;
   fill: ${theme('article.digest')};
 `
 export const BugIcon = styled(BugSVG)`
   ${iconBase};
   ${css.size(12)};
-  margin-left: 1px;
-  margin-right: 13px;
   fill: ${theme('article.digest')};
 `
 export const OtherIcon = styled(OtherSVG)`
   ${iconBase};
   ${css.size(13)};
-  margin-right: 11px;
-  margin-left: 1px;
   fill: ${theme('article.digest')};
 `
 export const SelectItem = styled(SelectItemBase)`
   ${css.flex('align-center')};
-  padding: 5px 5px;
+  padding: 7px 5px;
   border-radius: 5px;
 `
 export const Icon = {
