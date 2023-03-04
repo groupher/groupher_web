@@ -30,7 +30,8 @@ export const oldScrollIntoEle = (eleID: string): void => {
   const e = safeDocument.getElementById(eleID)
 
   if (e?.scrollIntoView) {
-    e.scrollIntoView({ behavior: 'smooth' })
+    // e.scrollIntoView({ behavior: 'smooth' })
+    e.scrollIntoView()
   }
 }
 
@@ -41,7 +42,8 @@ export const oldScrollIntoEle = (eleID: string): void => {
 export const scrollIntoEle = (eleID: string): void => {
   if (typeof window === 'object') {
     const el = document.getElementById(eleID)
-    el?.scrollIntoView({ behavior: 'smooth' })
+    // el?.scrollIntoView({ behavior: 'smooth' })
+    el?.scrollIntoView()
   }
 }
 

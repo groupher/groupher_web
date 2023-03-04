@@ -29,7 +29,7 @@ const MobileThreadNav: FC<TProps> = ({
   const curThread = threads.filter((t) => t.raw === active)[0] as TCommunityThread
 
   const placement = mode === 'mobile' ? 'bottom' : 'bottom-start'
-  const offset = mode === 'mobile' ? [-5, 5] : [-15, 5]
+  const offset = mode === 'mobile' ? [-5, 5] : [-28, 5]
 
   return (
     <Wrapper lineHeight={mode === 'mobile'}>

@@ -1,6 +1,7 @@
 import { GetServerSideProps } from 'next'
 import { merge, toLower } from 'ramda'
 import { Provider } from 'mobx-react'
+import { getSelectorsByUserAgent } from 'react-device-detect'
 
 import type { TCommunity } from '@/spec'
 import { PAGE_SIZE } from '@/config'
@@ -81,6 +82,7 @@ const loader = async (context, opt = {}) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { req, res } = context
+  const device = getSelectorsByUserAgent(req.headers['user-agent'])
 
   res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
 
@@ -113,6 +115,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const initProps = merge(
     {
       ...ssrBaseStates(resp),
+      globalLayout: {
+        isMobile: device?.isMobile,
+      },
       route: {
         communityPath: community.raw,
         mainPath: community.raw === HCN ? '' : community.raw,

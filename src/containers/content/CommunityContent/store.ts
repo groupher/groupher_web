@@ -9,6 +9,11 @@ import { sortByIndex } from '@/utils/helper'
 
 const CommunityContent = T.model('CommunityContent', {})
   .views((self) => ({
+    get isMobile(): boolean {
+      const root = getParent(self) as TRootStore
+
+      return root.isMobile
+    },
     get curCommunity(): TCommunity {
       const root = getParent(self) as TRootStore
       return toJS(root.viewing.community)

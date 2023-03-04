@@ -35,6 +35,11 @@ const ArticlesThread = T.model('ArticlesThread', {
   resState: T.opt(T.enum('resState', values(TYPE.RES_STATE)), TYPE.RES_STATE.LOADING),
 })
   .views((self) => ({
+    get isMobile(): boolean {
+      const root = getParent(self) as TRootStore
+
+      return root.isMobile
+    },
     get isLogin(): boolean {
       const root = getParent(self) as TRootStore
       return root.account.isLogin
