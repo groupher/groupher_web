@@ -23,7 +23,7 @@ import {
   MainMenusWrapper,
   Go2TopWrapper,
   GotoTopIcon,
-} from '../styles/bottom_bar'
+} from '../styles/community_layout'
 
 // import { openMenu } from '../logic'
 // import { communityPageMenus, getArticlePageMenus } from './menus'

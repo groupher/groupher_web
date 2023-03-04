@@ -2,7 +2,7 @@
  * ModeLine
  */
 
-import { Fragment, FC, useState } from 'react'
+import { Fragment, FC } from 'react'
 
 import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
@@ -11,7 +11,7 @@ import { bond } from '@/utils/mobx'
 
 import type { TStore } from './store'
 // import TopBar from './TopBar'
-import BottomBar from './BottomBar'
+import CommunityLayout from './CommunityLayout'
 import { useInit } from './logic'
 
 /* eslint-disable-next-line */
@@ -36,7 +36,7 @@ const ModeLineContainer: FC<TProps> = ({ modeLine: store, metric = METRIC.COMMUN
         viewingArticle={viewingArticle}
       /> */}
 
-      <BottomBar
+      <CommunityLayout
         metric={metric}
         activeTag={activeTag}
         groupedTags={groupedTags}
