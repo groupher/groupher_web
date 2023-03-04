@@ -3,7 +3,9 @@ import styled from 'styled-components'
 import type { TTestable } from '@/spec'
 import css, { theme, zIndex } from '@/utils/css'
 
+import Img from '@/Img'
 import GotoTopSVG from '@/icons/Arrow2Top'
+import MoreSVG from '@/icons/menu/MoreL'
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
@@ -16,14 +18,25 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   height: 35px;
   z-index: ${zIndex.modeLine};
 `
-export const InnerWrapper = styled.div`
+export const InnerWrapper = styled.div<{ expand: boolean }>`
   ${css.flex('justify-between', 'align-center')};
   height: 100%;
   padding: 0 10px;
-  width: calc(100% - 50px);
-
+  /* width: calc(100% - 45px); */
+  width: ${({ expand }) => (expand ? 'calc(100% - 26px)' : 'calc(100% - 70px)')};
   border-radius: 15px;
+
+  transition: all 0.1s;
 `
+export const MoreIcon = styled(MoreSVG)`
+  width: 14px;
+  height: 25px;
+  fill: ${theme('article.info')};
+  opacity: 0.6;
+  margin-right: -10px;
+  margin-top: -1px;
+`
+
 export const MainMenusWrapper = styled.div`
   ${css.flex('justify-between', 'align-center')};
   flex-grow: 1;
@@ -36,9 +49,15 @@ export const MainMenusWrapper = styled.div`
   border-color: ${theme('divider')};
   box-shadow: -5px 6px 37px -8px rgba(0, 0, 0, 0.42);
 `
+export const CommunityLogo = styled(Img)`
+  ${css.size(13)};
+  margin-left: -4px;
+  margin-right: 2px;
+`
+
 export const Go2TopWrapper = styled.div`
   ${css.flex('align-both')};
-  width: 40px;
+  width: 36px;
   height: 100%;
   border-radius: 15px;
   margin-left: 8px;

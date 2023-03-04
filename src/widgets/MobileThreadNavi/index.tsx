@@ -54,8 +54,9 @@ const MobileThreadNav: FC<TProps> = ({
         noPadding
       >
         <Wrapper lineHeight={mode === 'mobile'}>
+          {/* <Title withMaxWidth={mode === 'modeline'}>管理后台</Title> */}
           <Title withMaxWidth={mode === 'modeline'}>{curThread?.title || '管理后台'}</Title>
-          {mode === 'mobile' ? <ArrowIcon /> : <ModelineDivider left={10} right={10} />}
+          {mode === 'mobile' ? <ArrowIcon /> : <ModelineDivider left={8} right={4} />}
         </Wrapper>
       </Tooltip>
     </Wrapper>

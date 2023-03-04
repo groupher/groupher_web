@@ -21,6 +21,7 @@ export type TProps = {
   onSelect?: (filter: TArticleFilter) => void
   resState?: TResState
   mode?: TArticleFilterMode
+  modelineExpand?: boolean
   onSearch?: (v: string) => void
   closeSearch?: () => void
   groupedTags: TGroupedTags

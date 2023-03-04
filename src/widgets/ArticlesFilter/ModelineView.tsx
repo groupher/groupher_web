@@ -37,6 +37,7 @@ const ArticlesFilter: FC<TProps> = ({
   closeSearch = log,
   groupedTags,
   activeTag,
+  modelineExpand = false,
 }) => {
   const [activeCat, setActiveCat] = useState<TArticleCat>(ARTICLE_CAT.ALL)
 
@@ -57,7 +58,9 @@ const ArticlesFilter: FC<TProps> = ({
         noArrow
       />
 
-      <StateSelector mode={ARTICLE_STATE_MODE.FILTER} tooltipPlacement="top-start" noArrow />
+      {modelineExpand && (
+        <StateSelector mode={ARTICLE_STATE_MODE.FILTER} tooltipPlacement="top-start" noArrow />
+      )}
 
       {/* <SearchBox searchMode={searchMode} onSearch={onSearch} closeSearch={closeSearch} /> */}
     </ModelineWrapper>
