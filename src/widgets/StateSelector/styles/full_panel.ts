@@ -14,6 +14,7 @@ export const Wrapper = styled.div`
   width: 120px;
   padding: 10px 8px;
   gap: 5px 0;
+  cursor: auto;
 `
 export const SelectItem = styled(SelectItemBase)`
   ${css.flex('align-center')};

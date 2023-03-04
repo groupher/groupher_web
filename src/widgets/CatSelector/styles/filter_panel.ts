@@ -15,6 +15,7 @@ export const Wrapper = styled.div`
   min-width: 120px;
   margin-top: 2px;
   font-size: 14px;
+  cursor: auto;
 `
 export const IconWrapper = styled.div`
   ${css.circle(16)};

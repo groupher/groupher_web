@@ -5,9 +5,10 @@ import { Wrapper, TagItem, DotSign, TagTitle } from './styles/active_tag'
 
 type TProps = {
   activeTag: TTag
+  mode: 'mobile' | 'modeline' | 'default'
 }
 
-const ActiveTag: FC<TProps> = ({ activeTag }) => {
+const ActiveTag: FC<TProps> = ({ activeTag, mode }) => {
   return (
     <Wrapper>
       {activeTag?.id ? (
@@ -16,7 +17,7 @@ const ActiveTag: FC<TProps> = ({ activeTag }) => {
           <TagTitle>{activeTag.title}</TagTitle>
         </TagItem>
       ) : (
-        <>未设置</>
+        <>{mode === 'default' ? '未设置' : '标签'}</>
       )}
     </Wrapper>
   )

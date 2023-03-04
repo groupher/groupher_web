@@ -6,10 +6,11 @@
 
 import { FC, memo } from 'react'
 
-import type { TArticleFilter, TResState, TArticleFilterMode } from '@/spec'
+import type { TArticleFilter, TResState, TArticleFilterMode, TGroupedTags, TTag } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
 import DesktopView from './DesktopView'
+import MobileView from './MobileView'
 import ModelineView from './ModelineView'
 
 /* eslint-disable-next-line */
@@ -22,6 +23,8 @@ export type TProps = {
   mode?: TArticleFilterMode
   onSearch?: (v: string) => void
   closeSearch?: () => void
+  groupedTags: TGroupedTags
+  activeTag: TTag
 }
 
 const ArticlesFilter: FC<TProps> = (props) => {
@@ -30,7 +33,12 @@ const ArticlesFilter: FC<TProps> = (props) => {
     return <ModelineView {...props} />
   }
 
-  return <DesktopView {...props} />
+  return (
+    <>
+      <DesktopView {...props} />
+      <MobileView {...props} />
+    </>
+  )
 }
 
 export default memo(ArticlesFilter)

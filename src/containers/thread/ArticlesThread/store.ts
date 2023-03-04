@@ -18,6 +18,7 @@ import type {
   TC11N,
   TGlobalLayout,
   TAvatarLayout,
+  TGroupedTags,
 } from '@/spec'
 
 import TYPE from '@/constant/type'
@@ -76,6 +77,10 @@ const ArticlesThread = T.model('ArticlesThread', {
     get activeTagData(): TTag {
       const root = getParent(self) as TRootStore
       return toJS(root.tagsBar.activeTagData)
+    },
+    get groupedTags(): TGroupedTags {
+      const root = getParent(self) as TRootStore
+      return root.tagsBar.groupedTags
     },
     get tagQuery(): Record<string, unknown> {
       const root = getParent(self) as TRootStore

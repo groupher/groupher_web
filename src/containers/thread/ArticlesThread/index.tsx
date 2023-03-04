@@ -48,8 +48,9 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
     resState,
     mode,
     globalLayout,
-    activeTagData,
     isViewingArticle,
+    activeTagData,
+    groupedTags,
   } = store
   const isSidebarLayout = globalLayout.banner === BANNER_LAYOUT.SIDEBAR
   const LayoutWrapper = isSidebarLayout ? SidebarWrapper : MainWrapper
@@ -62,6 +63,8 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
         {showFilters && (
           <FilterWrapper thread={curThread}>
             <ArticlesFilter
+              activeTag={activeTagData}
+              groupedTags={groupedTags}
               resState={resState as TResState}
               onSelect={onFilterSelect}
               activeFilter={filtersData}

@@ -13,6 +13,8 @@ import type {
   TArticleFilter,
   TThread,
   TEnableConfig,
+  TGroupedTags,
+  TTag,
 } from '@/spec'
 
 import METRIC from '@/constant/metric'
@@ -48,6 +50,15 @@ const ModeLine = T.model('ModeLine', {
 
       const { activeThread } = root.viewing
       return activeThread
+    },
+
+    get activeTag(): TTag {
+      const root = getParent(self) as TRootStore
+      return toJS(root.tagsBar.activeTagData)
+    },
+    get groupedTags(): TGroupedTags {
+      const root = getParent(self) as TRootStore
+      return root.tagsBar.groupedTags
     },
 
     get filtersData(): TArticleFilter {

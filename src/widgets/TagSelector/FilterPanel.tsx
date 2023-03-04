@@ -8,6 +8,7 @@ import {
   GroupWrapper,
   GroupTitle,
   SelectItem,
+  DotBox,
   DotSign,
   Title,
 } from './styles/filter_panel'
@@ -26,12 +27,18 @@ type TGroupTags = {
 const GroupTags: FC<TGroupTags> = ({ tags, activeTag, onSelect }) => {
   return (
     <GroupWrapper>
-      {tags.map((tag) => (
-        <SelectItem key={tag.id} active={tag.id === activeTag?.id} onClick={() => onSelect(tag)}>
-          <DotSign color={tag.color} />
-          <Title>{tag.title}</Title>
-        </SelectItem>
-      ))}
+      {tags.map((tag) => {
+        const $active = tag.id === activeTag?.id
+
+        return (
+          <SelectItem key={tag.id} $active={$active} onClick={() => onSelect(tag)}>
+            <DotBox>
+              <DotSign color={tag.color} $active={$active} />
+            </DotBox>
+            <Title>{tag.title}</Title>
+          </SelectItem>
+        )
+      })}
     </GroupWrapper>
   )
 }

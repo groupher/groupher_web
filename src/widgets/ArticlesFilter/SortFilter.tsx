@@ -4,6 +4,7 @@ import type { TArticleFilter, TTooltipPlacement } from '@/spec'
 
 import Tooltip from '@/widgets/Tooltip'
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
+import { DesktopOnly, MobileOnly } from '@/widgets/Common'
 
 import FilterPanel from './FilterPanel'
 
@@ -34,7 +35,8 @@ const SortFilter: FC<TProps> = ({
       }
     >
       <DropdownButton left={-8} noArrow={noArrow}>
-        默认排序
+        <DesktopOnly>默认排序</DesktopOnly>
+        <MobileOnly>排序</MobileOnly>
       </DropdownButton>
     </Tooltip>
   )

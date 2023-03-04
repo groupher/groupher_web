@@ -9,11 +9,7 @@ import Input from '@/widgets/Input'
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
   width: 100%;
-  margin-bottom: 8px;
-
-  ${css.media.mobile`
-    display: none;
-  `};
+  margin-bottom: 10px;
 `
 export const ModelineWrapper = styled.div`
   ${css.flex('align-center')};

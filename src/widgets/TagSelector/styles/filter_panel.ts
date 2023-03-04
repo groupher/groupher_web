@@ -10,6 +10,7 @@ import { SelectItem as SelectItemBase } from '.'
 export const Wrapper = styled.div`
   ${css.flexColumn()};
   width: 240px;
+  cursor: auto;
 `
 export const GroupWrapper = styled.div`
   ${css.flex('align-center')};
@@ -22,7 +23,10 @@ export const SelectItem = styled(SelectItemBase)`
   margin-bottom: 2px;
   margin-right: 3px;
 `
-
+export const DotBox = styled.div`
+  ${css.circle(12)};
+  ${css.flex('align-both')};
+`
 type THashSign = TActive & { color?: string }
 export const DotSign = styled.div<THashSign>`
   ${css.circle(7)};
@@ -33,6 +37,12 @@ export const DotSign = styled.div<THashSign>`
   opacity: ${theme('tags.dotOpacity')};
 
   transition: filter 0.1s;
+
+  ${SelectItem}:hover & {
+    ${css.circle(11)};
+    border: 2px solid;
+    border-color: white;
+  }
 `
 export const GroupTitle = styled.div`
   font-size: 12px;

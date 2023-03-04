@@ -13,6 +13,7 @@ export const Wrapper = styled.div`
   ${css.flexColumn()};
   width: 110px;
   padding: 8px 10px;
+  cursor: auto;
 `
 export const SelectItem = styled(SelectItemBase)`
   ${css.flex('align-center')};

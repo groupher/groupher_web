@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, memo, useState } from 'react'
+import { FC, Fragment, memo, useState } from 'react'
 
 import type { TArticleCat } from '@/spec'
 
@@ -13,17 +13,19 @@ import TYPE from '@/constant/type'
 
 import { buildLog } from '@/utils/logger'
 
-import { Space } from '@/widgets/Common'
+import { SpaceGrow } from '@/widgets/Common'
+
 import CatSelector from '@/widgets/CatSelector'
 import StateSelector from '@/widgets/StateSelector'
 import TagSelector from '@/widgets/TagSelector'
 
+import SearchBox from './SearchBox'
 import SortFilter from './SortFilter'
 // import SelectedFilters from './SelectedFilters'
 // import FilterResult from './FilterResult'
 
 import type { TProps } from '.'
-import { ModelineWrapper } from './styles'
+import { Wrapper } from './styles/mobile_view'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:ArticlesFilter:index')
@@ -40,27 +42,23 @@ const ArticlesFilter: FC<TProps> = ({
 }) => {
   const [activeCat, setActiveCat] = useState<TArticleCat>(ARTICLE_CAT.ALL)
 
+  // const { activeThread } = useViewing()
+  const searchMode = mode === 'search'
+
   return (
-    <ModelineWrapper>
-      <TagSelector groupedTags={groupedTags} activeTag={activeTag} mode="modeline" />
-      <Space right={6} />
-      <SortFilter
-        onSelect={onSelect}
-        activeFilter={activeFilter}
-        tooltipPlacement="top-start"
-        noArrow
-      />
-      <CatSelector
-        activeCat={activeCat}
-        onSelect={setActiveCat}
-        tooltipPlacement="top-start"
-        noArrow
-      />
+    <Wrapper>
+      {!searchMode && (
+        <Fragment>
+          <SortFilter onSelect={onSelect} activeFilter={activeFilter} />
+          <TagSelector groupedTags={groupedTags} activeTag={activeTag} mode="mobile" />
+          <CatSelector activeCat={activeCat} onSelect={setActiveCat} />
+          <StateSelector mode={ARTICLE_STATE_MODE.FILTER} />
+          <SpaceGrow />
+        </Fragment>
+      )}
 
-      <StateSelector mode={ARTICLE_STATE_MODE.FILTER} tooltipPlacement="top-start" noArrow />
-
-      {/* <SearchBox searchMode={searchMode} onSearch={onSearch} closeSearch={closeSearch} /> */}
-    </ModelineWrapper>
+      <SearchBox searchMode={searchMode} onSearch={onSearch} closeSearch={closeSearch} />
+    </Wrapper>
   )
 }
 

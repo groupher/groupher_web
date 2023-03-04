@@ -1,6 +1,15 @@
 import { FC, memo } from 'react'
 
-import type { TArticle, TCommunity, TMetric, TModelineType, TEnableConfig, TThread } from '@/spec'
+import type {
+  TArticle,
+  TCommunity,
+  TMetric,
+  TModelineType,
+  TEnableConfig,
+  TThread,
+  TTag,
+  TGroupedTags,
+} from '@/spec'
 
 import { scrollToHeader } from '@/utils/dom'
 
@@ -27,6 +36,8 @@ type TProps = {
   community: TCommunity
   activeThread: TThread
   enable: TEnableConfig
+  activeTag: TTag
+  groupedTags: TGroupedTags
 }
 
 const BottomBar: FC<TProps> = ({
@@ -37,6 +48,8 @@ const BottomBar: FC<TProps> = ({
   activeMenu,
   activeThread,
   enable,
+  activeTag,
+  groupedTags,
 }) => {
   const publicThreads = community.threads.filter((thread) => enable[thread.raw])
 
@@ -53,7 +66,7 @@ const BottomBar: FC<TProps> = ({
             active={activeThread}
             mode="modeline"
           />
-          <ArticlesFilter mode="modeline" />
+          <ArticlesFilter mode="modeline" activeTag={activeTag} groupedTags={groupedTags} />
         </MainMenusWrapper>
         <Go2TopWrapper onClick={() => scrollToHeader()}>
           <GotoTopIcon />
