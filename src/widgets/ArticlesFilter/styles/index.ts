@@ -11,6 +11,9 @@ export const Wrapper = styled.div`
   width: 100%;
   margin-bottom: 8px;
 `
+export const ModelineWrapper = styled.div`
+  ${css.flex('align-center')};
+`
 export const Inputer = styled(Input)`
   height: 30px;
 `

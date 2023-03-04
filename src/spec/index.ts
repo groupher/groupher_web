@@ -117,6 +117,7 @@ export type {
   TComment,
   TPagedComments,
   TArticleFilter,
+  TArticleFilterMode,
   TArticleCatMode,
   TArticleStateMode,
   TCopyright,

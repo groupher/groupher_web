@@ -25,7 +25,7 @@ import SortFilter from './SortFilter'
 // import FilterResult from './FilterResult'
 
 import type { TProps } from '.'
-import { Wrapper } from './styles'
+import { ModelineWrapper } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:ArticlesFilter:index')
@@ -40,27 +40,23 @@ const ArticlesFilter: FC<TProps> = ({
 }) => {
   const [activeCat, setActiveCat] = useState<TArticleCat>(ARTICLE_CAT.ALL)
 
-  // const { activeThread } = useViewing()
-  const searchMode = mode === 'search'
-
   return (
-    <Wrapper>
-      {!searchMode && (
-        <Fragment>
-          <SortFilter onSelect={onSelect} activeFilter={activeFilter} />
-          <Space right={2} />
-          <CatSelector activeCat={activeCat} onSelect={setActiveCat} />
-          <Space right={2} />
-          <StateSelector mode={ARTICLE_STATE_MODE.FILTER} />
-          <SpaceGrow />
-          <DesktopOnly>
-            {resState === TYPE.RES_STATE.LOADING && <LavaLampLoading right={28} left={10} />}
-          </DesktopOnly>
-        </Fragment>
-      )}
-
-      <SearchBox searchMode={searchMode} onSearch={onSearch} closeSearch={closeSearch} />
-    </Wrapper>
+    <ModelineWrapper>
+      <SortFilter
+        onSelect={onSelect}
+        activeFilter={activeFilter}
+        tooltipPlacement="top-start"
+        noArrow
+      />
+      <CatSelector
+        activeCat={activeCat}
+        onSelect={setActiveCat}
+        tooltipPlacement="top-start"
+        noArrow
+      />
+      <StateSelector mode={ARTICLE_STATE_MODE.FILTER} tooltipPlacement="top-start" noArrow />
+      {/* <SearchBox searchMode={searchMode} onSearch={onSearch} closeSearch={closeSearch} /> */}
+    </ModelineWrapper>
   )
 }
 

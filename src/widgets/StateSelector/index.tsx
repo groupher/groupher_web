@@ -1,7 +1,7 @@
 import { FC, memo, useState, Fragment } from 'react'
 import dynamic from 'next/dynamic'
 
-import type { TArticleState, TArticleCatMode } from '@/spec'
+import type { TArticleState, TArticleCatMode, TTooltipPlacement } from '@/spec'
 import { ARTICLE_STATE_MODE } from '@/constant/gtd'
 
 import Tooltip from '@/widgets/Tooltip'
@@ -17,9 +17,16 @@ const FullPanel = dynamic(() => import('./FullPanel'))
 type TProps = {
   mode?: TArticleCatMode
   state?: string
+  noArrow?: boolean
+  tooltipPlacement?: TTooltipPlacement
 }
 
-const StateSelector: FC<TProps> = ({ mode = ARTICLE_STATE_MODE.FULL, state = 'todo' }) => {
+const StateSelector: FC<TProps> = ({
+  mode = ARTICLE_STATE_MODE.FULL,
+  state = 'todo',
+  noArrow = false,
+  tooltipPlacement = 'bottom-start',
+}) => {
   const [show, setShow] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeState, setActiveState] = useState(null)
@@ -35,7 +42,7 @@ const StateSelector: FC<TProps> = ({ mode = ARTICLE_STATE_MODE.FULL, state = 'to
     <Wrapper menuOpen={menuOpen}>
       {mode === ARTICLE_STATE_MODE.FULL && <Label>状态</Label>}
       <Tooltip
-        placement="bottom-start"
+        placement={tooltipPlacement}
         trigger="click"
         onShow={() => {
           setShow(true)
@@ -58,7 +65,7 @@ const StateSelector: FC<TProps> = ({ mode = ARTICLE_STATE_MODE.FULL, state = 'to
         }
         noPadding
       >
-        <DropdownButton>
+        <DropdownButton noArrow={noArrow}>
           <ActiveState activeState={activeState} mode={mode} />
         </DropdownButton>
       </Tooltip>

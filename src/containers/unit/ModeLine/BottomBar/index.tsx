@@ -1,13 +1,11 @@
 import { FC, memo } from 'react'
-import { useRouter } from 'next/router'
-import { includes } from 'ramda'
 
-import type { TArticle, TCommunity, TMetric, TModelineType } from '@/spec'
-
-import METRIC from '@/constant/metric'
-import TYPE from '@/constant/type'
+import type { TArticle, TCommunity, TMetric, TModelineType, TEnableConfig, TThread } from '@/spec'
 
 import { scrollToHeader } from '@/utils/dom'
+
+import MobileThreadNavi from '@/widgets/MobileThreadNavi'
+import ArticlesFilter from '@/widgets/ArticlesFilter'
 
 // import { MenuBlock, CommunityBlock, MainBlock, ExploreBlock, AccountBlock } from './ArrowBlock'
 import {
@@ -16,20 +14,19 @@ import {
   MainMenusWrapper,
   Go2TopWrapper,
   GotoTopIcon,
-  MenuItem,
-  MenuDesc,
 } from '../styles/bottom_bar'
 
 // import { openMenu } from '../logic'
-import { communityPageMenus, getArticlePageMenus } from './menus'
+// import { communityPageMenus, getArticlePageMenus } from './menus'
 
 type TProps = {
   testid?: string
   metric: TMetric
   activeMenu: string // TModelineType
-  isCommunityBlockExpand?: boolean
   article: TArticle | null
   community: TCommunity
+  activeThread: TThread
+  enable: TEnableConfig
 }
 
 const BottomBar: FC<TProps> = ({
@@ -38,37 +35,25 @@ const BottomBar: FC<TProps> = ({
   article = null,
   community,
   activeMenu,
-  isCommunityBlockExpand = false,
+  activeThread,
+  enable,
 }) => {
-  const router = useRouter()
-
-  const menus = includes(metric, [METRIC.ARTICLE, METRIC.WORKS_ARTICLE])
-    ? getArticlePageMenus(article)
-    : communityPageMenus
+  const publicThreads = community.threads.filter((thread) => enable[thread.raw])
 
   // const communityInfo = article?.originalCommunity?.raw ? article.originalCommunity : community
-
   //               onClick={multiClick(() => openMenu(item.raw))}
 
   return (
     <Wrapper testid={testid} isMenuActive={!!activeMenu}>
       <InnerWrapper>
         <MainMenusWrapper>
-          <MenuItem>
-            <MenuDesc>讨论区</MenuDesc>
-          </MenuItem>
-
-          <MenuItem>
-            <MenuDesc>排序</MenuDesc>
-          </MenuItem>
-
-          <MenuItem>
-            <MenuDesc>标签</MenuDesc>
-          </MenuItem>
-
-          <MenuItem>
-            <MenuDesc>类别</MenuDesc>
-          </MenuItem>
+          <MobileThreadNavi
+            community={community}
+            threads={publicThreads}
+            active={activeThread}
+            mode="modeline"
+          />
+          <ArticlesFilter mode="modeline" />
         </MainMenusWrapper>
         <Go2TopWrapper onClick={() => scrollToHeader()}>
           <GotoTopIcon />

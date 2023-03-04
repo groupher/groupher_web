@@ -3,15 +3,19 @@ import Link from 'next/link'
 
 import css, { theme } from '@/utils/css'
 
+import { LineDivider } from '@/widgets/Common'
+
 import ArrowSVG from '@/icons/ArrowSimple'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ lineHeight: boolean }>`
   ${css.flex('align-center')};
-  line-height: 24px;
+  line-height: ${({ lineHeight }) => (lineHeight ? '24px' : '')};
 `
-export const Title = styled.div`
+export const Title = styled.div<{ withMaxWidth: boolean }>`
   font-size: 13px;
   color: ${theme('article.title')};
+
+  ${({ withMaxWidth }) => (withMaxWidth ? css.lineClamp(1) : '')};
 `
 export const ArrowIcon = styled(ArrowSVG)`
   ${css.size(15)};
@@ -19,6 +23,12 @@ export const ArrowIcon = styled(ArrowSVG)`
   transform: rotate(-90deg);
   margin-left: 2px;
 `
+
+export const ModelineDivider = styled(LineDivider)`
+  background-color: ${theme('article.digest')};
+  opacity: 0.5;
+`
+
 export const Panel = styled.div`
   ${css.flexColumn()};
   gap: 14px;

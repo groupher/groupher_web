@@ -5,7 +5,15 @@
 
 import { values } from 'ramda'
 
-import type { TRootStore, TViewing, TCommunity, TArticle } from '@/spec'
+import type {
+  TRootStore,
+  TViewing,
+  TCommunity,
+  TArticle,
+  TArticleFilter,
+  TThread,
+  TEnableConfig,
+} from '@/spec'
 
 import METRIC from '@/constant/metric'
 import TYPE from '@/constant/type'
@@ -23,10 +31,29 @@ const ModeLine = T.model('ModeLine', {
       return root.isMobile
     },
 
+    get enable(): TEnableConfig {
+      const root = getParent(self) as TRootStore
+
+      return toJS(root.dashboardThread.enableSettings)
+    },
+
     get curCommunity(): TCommunity {
       const root = getParent(self) as TRootStore
 
       return toJS(root.viewing.community)
+    },
+
+    get activeThread(): TThread {
+      const root = getParent(self) as TRootStore
+
+      const { activeThread } = root.viewing
+      return activeThread
+    },
+
+    get filtersData(): TArticleFilter {
+      const root = getParent(self) as TRootStore
+
+      return root.articlesThread.filtersData
     },
 
     get viewing(): TViewing {

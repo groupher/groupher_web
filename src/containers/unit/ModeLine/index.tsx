@@ -24,16 +24,7 @@ type TProps = {
 
 const ModeLineContainer: FC<TProps> = ({ modeLine: store, metric = METRIC.COMMUNITY }) => {
   useInit(store, metric)
-  const [showBottomBar, setShowBottomBar] = useState(false)
-
-  const {
-    // isTopBarVisiable,
-    // viewing,
-    viewingArticle,
-    activeMenu,
-    isCommunityBlockExpand,
-    curCommunity,
-  } = store
+  const { viewingArticle, activeMenu, curCommunity, activeThread, enable } = store
 
   return (
     <Fragment>
@@ -49,7 +40,8 @@ const ModeLineContainer: FC<TProps> = ({ modeLine: store, metric = METRIC.COMMUN
         article={viewingArticle}
         community={curCommunity}
         activeMenu={activeMenu}
-        isCommunityBlockExpand={isCommunityBlockExpand}
+        activeThread={activeThread}
+        enable={enable}
       />
     </Fragment>
   )
