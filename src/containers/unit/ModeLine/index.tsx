@@ -25,6 +25,7 @@ type TProps = {
 const ModeLineContainer: FC<TProps> = ({ modeLine: store, metric = METRIC.COMMUNITY }) => {
   useInit(store, metric)
   const {
+    isMobile,
     topBarVisiable,
     viewingArticle,
     activeMenu,
@@ -45,6 +46,7 @@ const ModeLineContainer: FC<TProps> = ({ modeLine: store, metric = METRIC.COMMUN
       /> */}
 
       <CommunityLayout
+        isMobile={isMobile}
         show={topBarVisiable}
         metric={metric}
         activeTag={activeTag}

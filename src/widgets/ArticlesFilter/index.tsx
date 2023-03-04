@@ -17,6 +17,7 @@ import ModelineView from './ModelineView'
 const log = buildLog('w:ArticlesFilter:index')
 
 export type TProps = {
+  isMobile: boolean
   activeFilter?: TArticleFilter
   onSelect?: (filter: TArticleFilter) => void
   resState?: TResState
@@ -29,17 +30,12 @@ export type TProps = {
 }
 
 const ArticlesFilter: FC<TProps> = (props) => {
-  const { mode } = props
+  const { isMobile, mode } = props
   if (mode === 'modeline') {
     return <ModelineView {...props} />
   }
 
-  return (
-    <>
-      <DesktopView {...props} />
-      <MobileView {...props} />
-    </>
-  )
+  return <>{isMobile ? <MobileView {...props} /> : <DesktopView {...props} />}</>
 }
 
 export default memo(ArticlesFilter)

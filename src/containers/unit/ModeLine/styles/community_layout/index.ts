@@ -15,7 +15,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   display: ${({ show }) => (show ? 'flex' : 'none')};
   position: fixed;
   left: 0;
-  bottom: 15px;
+  bottom: 25px;
   width: 100%;
   height: 35px;
   z-index: ${zIndex.modeLine};

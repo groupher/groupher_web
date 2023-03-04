@@ -4,7 +4,7 @@
  *
  */
 
-import { FC } from 'react'
+import { FC, useEffect, useState, useRef } from 'react'
 import dynamic from 'next/dynamic'
 
 import type { TResState, TArticleFilterMode } from '@/spec'
@@ -35,10 +35,29 @@ type TProps = {
   articlesThread?: TStore
 }
 
+const isInViewport = (element) => {
+  const rect = element.getBoundingClientRect()
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  )
+}
+
 const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
   useInit(store)
 
+  const trackerRef = useRef(null)
+
+  useEffect(() => {
+    if (trackerRef.current) {
+      isInViewport(trackerRef.current) ? inAnchor() : outAnchor()
+    }
+  }, [trackerRef])
+
   const {
+    isMobile,
     pagedArticlesData,
     filtersData,
     curCommunity,
@@ -52,6 +71,7 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
     activeTagData,
     groupedTags,
   } = store
+
   const isSidebarLayout = globalLayout.banner === BANNER_LAYOUT.SIDEBAR
   const LayoutWrapper = isSidebarLayout ? SidebarWrapper : MainWrapper
 
@@ -61,8 +81,9 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
         <ViewportTracker onEnter={inAnchor} onLeave={outAnchor} />
 
         {showFilters && (
-          <FilterWrapper thread={curThread}>
+          <FilterWrapper ref={trackerRef} thread={curThread}>
             <ArticlesFilter
+              isMobile={isMobile}
               activeTag={activeTagData}
               groupedTags={groupedTags}
               resState={resState as TResState}

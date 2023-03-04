@@ -34,6 +34,7 @@ import {
 
 type TProps = {
   testid?: string
+  isMobile: boolean
   show: boolean
   metric: TMetric
   activeMenu: string // TModelineType
@@ -45,8 +46,9 @@ type TProps = {
   groupedTags: TGroupedTags
 }
 
-const BottomBar: FC<TProps> = ({
+const CommunityLayout: FC<TProps> = ({
   testid = 'modeline-bottom-bar',
+  isMobile,
   show,
   metric,
   article = null,
@@ -76,6 +78,7 @@ const BottomBar: FC<TProps> = ({
             mode="modeline"
           />
           <ArticlesFilter
+            isMobile={isMobile}
             mode="modeline"
             activeTag={activeTag}
             groupedTags={groupedTags}
@@ -97,4 +100,4 @@ const BottomBar: FC<TProps> = ({
   )
 }
 
-export default memo(BottomBar)
+export default memo(CommunityLayout)

@@ -27,7 +27,7 @@ type TProps = {
 const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   useInit(store)
 
-  const { globalLayout } = store
+  const { globalLayout, isMobile } = store
 
   const isSidebarLayout = globalLayout.banner === BANNER_LAYOUT.SIDEBAR
   const LayoutWrapper = isSidebarLayout ? SidebarWrapper : Wrapper
@@ -35,18 +35,22 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   return (
     <LayoutWrapper testid="post-thread-content">
       <CommunityDigest />
-      <MobileCardsWrapper>
-        <ContentWrapper>
-          <ArticlesThread />
-        </ContentWrapper>
-      </MobileCardsWrapper>
+      {isMobile && (
+        <MobileCardsWrapper>
+          <ContentWrapper>
+            <ArticlesThread />
+          </ContentWrapper>
+        </MobileCardsWrapper>
+      )}
 
-      <InnerWrapper>
-        {isSidebarLayout && <SidebarLayoutHeader thread={THREAD.POST} />}
-        <ContentWrapper>
-          <ArticlesThread />
-        </ContentWrapper>
-      </InnerWrapper>
+      {!isMobile && (
+        <InnerWrapper>
+          {isSidebarLayout && <SidebarLayoutHeader thread={THREAD.POST} />}
+          <ContentWrapper>
+            <ArticlesThread />
+          </ContentWrapper>
+        </InnerWrapper>
+      )}
     </LayoutWrapper>
   )
 }
