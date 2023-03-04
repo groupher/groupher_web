@@ -4,7 +4,7 @@ import type { TArticleFilter } from '@/spec'
 
 // import LengthFilter from './LengthFilter'
 
-import { Wrapper, Block, Icon, Title } from '../styles/filter_panel'
+import { Wrapper, Block, IconWrapper, Icon, Title } from '../styles/filter_panel'
 
 type TProps = {
   activeFilter: TArticleFilter
@@ -15,23 +15,33 @@ const FilterPanel: FC<TProps> = ({ activeFilter, onSelect }) => {
   return (
     <Wrapper>
       <Block>
-        <Icon.ALL />
-        <Title>默认</Title>
+        <IconWrapper>
+          <Icon.ALL />
+        </IconWrapper>
+        <Title>默认排序</Title>
       </Block>
       <Block>
-        <Icon.TIME />
+        <IconWrapper>
+          <Icon.TIME />
+        </IconWrapper>
         <Title>发布时间</Title>
       </Block>
       <Block>
-        <Icon.UPVOTE />
+        <IconWrapper>
+          <Icon.UPVOTE />
+        </IconWrapper>
         <Title>投票数</Title>
       </Block>
       <Block>
-        <Icon.COMMENT />
+        <IconWrapper>
+          <Icon.COMMENT />
+        </IconWrapper>
         <Title>评论数</Title>
       </Block>
       <Block>
-        <Icon.VIEW />
+        <IconWrapper>
+          <Icon.VIEW />
+        </IconWrapper>
         <Title>浏览量</Title>
       </Block>
     </Wrapper>

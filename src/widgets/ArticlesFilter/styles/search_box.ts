@@ -30,6 +30,11 @@ export const SearchIcon = styled(SearchSVG)`
   margin-right: 8px;
   margin-top: -1px;
   opacity: 0.6;
+
+  ${css.media.mobile`
+    margin-right: 1px;
+    opacity: 0.8;
+  `};
 `
 export const InputSearchIcon = styled(SearchIcon)`
   position: absolute;
@@ -65,4 +70,8 @@ export const Text = styled.div`
     color: ${theme('article.title')};
     opacity: 0.8;
   }
+
+  ${css.media.mobile`
+    display: none;
+  `};
 `

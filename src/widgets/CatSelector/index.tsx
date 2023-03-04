@@ -1,7 +1,7 @@
 import { FC, memo, useState, Fragment } from 'react'
 import dynamic from 'next/dynamic'
 
-import type { TArticleCatMode, TArticleCat } from '@/spec'
+import type { TArticleCatMode, TArticleCat, TTooltipPlacement } from '@/spec'
 import { ARTICLE_CAT, ARTICLE_CAT_MODE } from '@/constant/gtd'
 
 import Tooltip from '@/widgets/Tooltip'
@@ -18,9 +18,17 @@ type TProps = {
   mode?: TArticleCatMode
   activeCat: TArticleCat
   onSelect: (cat: TArticleCat) => void
+  noArrow?: boolean
+  tooltipPlacement?: TTooltipPlacement
 }
 
-const CatSelector: FC<TProps> = ({ mode = ARTICLE_CAT_MODE.FILTER, activeCat, onSelect }) => {
+const CatSelector: FC<TProps> = ({
+  mode = ARTICLE_CAT_MODE.FILTER,
+  activeCat,
+  onSelect,
+  noArrow = false,
+  tooltipPlacement = 'bottom-start',
+}) => {
   const [show, setShow] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -34,9 +42,9 @@ const CatSelector: FC<TProps> = ({ mode = ARTICLE_CAT_MODE.FILTER, activeCat, on
 
   return (
     <Wrapper menuOpen={menuOpen}>
-      <Label>类别</Label>
+      {mode === ARTICLE_CAT_MODE.FULL && <Label>类别</Label>}
       <Tooltip
-        placement="bottom-start"
+        placement={tooltipPlacement}
         trigger="click"
         onShow={() => {
           setShow(true)
@@ -55,8 +63,8 @@ const CatSelector: FC<TProps> = ({ mode = ARTICLE_CAT_MODE.FILTER, activeCat, on
           </Fragment>
         }
       >
-        <DropdownButton>
-          {activeCat === ARTICLE_CAT.ALL ? '全部' : <ActiveLabel cat={activeCat} />}
+        <DropdownButton noArrow={noArrow}>
+          {activeCat === ARTICLE_CAT.ALL ? '类别' : <ActiveLabel cat={activeCat} />}
         </DropdownButton>
       </Tooltip>
     </Wrapper>

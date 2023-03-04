@@ -9,14 +9,14 @@ import { toast } from '@/utils/helper'
 import Tooltip from '@/widgets/Tooltip'
 import { Divider } from '@/widgets/Common'
 
-import { Wrapper, Title, ArrowIcon, Panel, Item, ShareItem } from './styles'
+import { Wrapper, Title, ArrowIcon, Panel, Item, ShareItem, ModelineDivider } from './styles'
 
 type TProps = {
   testid?: string
-
   community: TCommunity
   threads: TCommunityThread[]
   active: string
+  mode?: 'mobile' | 'modeline'
 }
 
 const MobileThreadNav: FC<TProps> = ({
@@ -24,11 +24,15 @@ const MobileThreadNav: FC<TProps> = ({
   community,
   threads,
   active,
+  mode = 'mobile',
 }) => {
   const curThread = threads.filter((t) => t.raw === active)[0] as TCommunityThread
 
+  const placement = mode === 'mobile' ? 'bottom' : 'bottom-start'
+  const offset = mode === 'mobile' ? [-5, 5] : [-15, 5]
+
   return (
-    <Wrapper>
+    <Wrapper lineHeight={mode === 'mobile'}>
       <Tooltip
         content={
           <Panel>
@@ -44,13 +48,15 @@ const MobileThreadNav: FC<TProps> = ({
             </CopyToClipboard>
           </Panel>
         }
-        placement="bottom"
+        placement={placement}
+        offset={offset as [number, number]}
         trigger="click"
         noPadding
       >
-        <Wrapper>
-          <Title>{curThread?.title || '管理后台'}</Title>
-          <ArrowIcon />
+        <Wrapper lineHeight={mode === 'mobile'}>
+          {/* <Title withMaxWidth={mode === 'modeline'}>管理后台</Title> */}
+          <Title withMaxWidth={mode === 'modeline'}>{curThread?.title || '管理后台'}</Title>
+          {mode === 'mobile' ? <ArrowIcon /> : <ModelineDivider left={8} right={4} />}
         </Wrapper>
       </Tooltip>
     </Wrapper>

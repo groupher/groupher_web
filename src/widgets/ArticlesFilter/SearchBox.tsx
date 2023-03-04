@@ -21,11 +21,7 @@ const SearchBox: FC<TProps> = ({ searchMode, onSearch, closeSearch }) => {
     return (
       <InputWrapper>
         <InputSearchIcon />
-        <Inputer
-          placeholder="搜索内容"
-          onChange={(e) => onSearch(e.target.value)}
-          autoFocus
-        />
+        <Inputer placeholder="搜索内容" onChange={(e) => onSearch(e.target.value)} autoFocus />
         <CloseIcon onClick={() => closeSearch()} />
       </InputWrapper>
     )

@@ -144,7 +144,10 @@ export type TArticleFilter = {
   read?: string
 }
 
+export type TArticleFilterMode = 'default' | 'search' | 'modeline'
+
 export type TArticleCatMode = 'filter' | 'full'
+export type TArticleStateMode = 'filter' | 'full'
 
 export type TUpvoteLayout =
   | 'default'

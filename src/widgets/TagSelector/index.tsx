@@ -7,7 +7,7 @@ import Tooltip from '@/widgets/Tooltip'
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
 import ActiveTag from './ActiveTag'
 
-import { Wrapper, Label } from './styles'
+import { EditorWrapper, MobileWrapper, Label } from './styles'
 
 const FilterPanel = dynamic(() => import('./FilterPanel'))
 
@@ -15,9 +15,10 @@ type TProps = {
   groupedTags: TGroupedTags
   activeTag: TTag | null
   onSelect?: (tag: TTag) => void
+  mode?: 'mobile' | 'modeline' | 'default'
 }
 
-const TagSelector: FC<TProps> = ({ groupedTags, activeTag, onSelect }) => {
+const TagSelector: FC<TProps> = ({ mode = 'default', groupedTags, activeTag, onSelect }) => {
   const [show, setShow] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -25,9 +26,11 @@ const TagSelector: FC<TProps> = ({ groupedTags, activeTag, onSelect }) => {
     onSelect(tag)
   }
 
+  const Wrapper = mode === 'default' ? EditorWrapper : MobileWrapper
+
   return (
     <Wrapper menuOpen={menuOpen}>
-      <Label>标签</Label>
+      {mode === 'default' && <Label>标签</Label>}
       <Tooltip
         placement="bottom-start"
         trigger="click"
@@ -51,8 +54,8 @@ const TagSelector: FC<TProps> = ({ groupedTags, activeTag, onSelect }) => {
           </Fragment>
         }
       >
-        <DropdownButton>
-          <ActiveTag activeTag={activeTag} />
+        <DropdownButton noArrow={mode === 'modeline'}>
+          <ActiveTag activeTag={activeTag} mode={mode} />
         </DropdownButton>
       </Tooltip>
     </Wrapper>

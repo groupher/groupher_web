@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
-import { TArticleState } from '@/spec'
-import { ARTICLE_STATE } from '@/constant/gtd'
+import type { TArticleState, TArticleCatMode } from '@/spec'
+import { ARTICLE_STATE, ARTICLE_STATE_MODE } from '@/constant/gtd'
 
 import { Trans } from '@/utils/i18n'
 
@@ -18,9 +18,11 @@ import {
 
 type TProps = {
   activeState: TArticleState
+  mode?: TArticleCatMode
 }
 
-const Icon: FC<TProps> = ({ activeState }) => {
+type TTIcon = Omit<TProps, 'mode'>
+const Icon: FC<TTIcon> = ({ activeState }) => {
   switch (activeState) {
     case ARTICLE_STATE.TODO: {
       return <TodoIcon />
@@ -37,7 +39,7 @@ const Icon: FC<TProps> = ({ activeState }) => {
   }
 }
 
-const ActiveState: FC<TProps> = ({ activeState }) => {
+const ActiveState: FC<TProps> = ({ activeState, mode = ARTICLE_STATE_MODE.FILTER }) => {
   return (
     <Wrapper>
       {activeState ? (
@@ -48,7 +50,7 @@ const ActiveState: FC<TProps> = ({ activeState }) => {
           <StateTitle>{Trans(activeState)}</StateTitle>
         </Item>
       ) : (
-        <>未设置</>
+        <>{mode === ARTICLE_STATE_MODE.FILTER ? '状态' : '未设置'}</>
       )}
     </Wrapper>
   )

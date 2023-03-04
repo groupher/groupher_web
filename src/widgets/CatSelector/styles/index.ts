@@ -33,8 +33,6 @@ export const SelectItem = styled.div<TActive>`
   padding: 10px 6px;
   width: 100%;
   border-radius: 6px;
-  border: 1px solid;
-  border-color: ${({ active }) => (active ? theme('popover.activeBorder') : 'transparent')};
 
   background-color: ${({ active }) => (active ? theme('textBadge') : 'transparent')}; // to-theme
   color: ${({ active }) => (active ? theme('article.title') : theme('article.digest'))};

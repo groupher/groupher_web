@@ -7,7 +7,7 @@
 import { FC } from 'react'
 import dynamic from 'next/dynamic'
 
-import type { TResState } from '@/spec'
+import type { TResState, TArticleFilterMode } from '@/spec'
 import { BANNER_LAYOUT, HELP_FAQ_LAYOUT } from '@/constant/layout'
 
 import { buildLog } from '@/utils/logger'
@@ -48,11 +48,10 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
     resState,
     mode,
     globalLayout,
-    activeTagData,
     isViewingArticle,
+    activeTagData,
+    groupedTags,
   } = store
-  const { pageNumber, totalCount } = pagedArticlesData
-
   const isSidebarLayout = globalLayout.banner === BANNER_LAYOUT.SIDEBAR
   const LayoutWrapper = isSidebarLayout ? SidebarWrapper : MainWrapper
 
@@ -64,12 +63,12 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
         {showFilters && (
           <FilterWrapper thread={curThread}>
             <ArticlesFilter
+              activeTag={activeTagData}
+              groupedTags={groupedTags}
               resState={resState as TResState}
               onSelect={onFilterSelect}
               activeFilter={filtersData}
-              pageNumber={pageNumber}
-              totalCount={totalCount}
-              mode={mode}
+              mode={mode as TArticleFilterMode}
               onSearch={onSearch}
               closeSearch={closeSearch}
             />

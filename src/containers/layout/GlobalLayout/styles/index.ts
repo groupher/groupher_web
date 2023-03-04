@@ -77,8 +77,7 @@ export const InnerWrapper = styled.div<TInner>`
     border-top: none;
   `};
 `
-type TBody = { isMobile: boolean }
-export const BodyWrapper = styled.div<TBody>`
+export const BodyWrapper = styled.div`
   ${css.flexColumn('align-both')};
 
   width: 100%;

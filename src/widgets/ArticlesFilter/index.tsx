@@ -4,17 +4,42 @@
  *
  */
 
-import { memo } from 'react'
+import { FC, memo } from 'react'
 
+import type { TArticleFilter, TResState, TArticleFilterMode, TGroupedTags, TTag } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
 import DesktopView from './DesktopView'
+import MobileView from './MobileView'
+import ModelineView from './ModelineView'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:ArticlesFilter:index')
 
-const ArticlesFilter = (props) => {
-  return <DesktopView {...props} />
+export type TProps = {
+  activeFilter?: TArticleFilter
+  onSelect?: (filter: TArticleFilter) => void
+  resState?: TResState
+  mode?: TArticleFilterMode
+  modelineExpand?: boolean
+  onSearch?: (v: string) => void
+  closeSearch?: () => void
+  groupedTags: TGroupedTags
+  activeTag: TTag
+}
+
+const ArticlesFilter: FC<TProps> = (props) => {
+  const { mode } = props
+  if (mode === 'modeline') {
+    return <ModelineView {...props} />
+  }
+
+  return (
+    <>
+      <DesktopView {...props} />
+      <MobileView {...props} />
+    </>
+  )
 }
 
 export default memo(ArticlesFilter)

@@ -50,10 +50,9 @@ const speedMap = {
 
 export const Circle = styled.span<{ index: number }>`
   ${css.circle(3)};
-  background-color: ${theme('article.info')};
+  background-color: ${theme('article.digest')};
   animation: ${move} 1s linear 0ms infinite;
-  /* animation-duration: ${() =>
-    `${speed[getRandomInt(0, speed.length - 1)]}s`}; */
+  /* animation-duration: ${() => `${speed[getRandomInt(0, speed.length - 1)]}s`}; */
   width: ${({ index }) => (index === 2 || index === 6 ? '15px' : '4px')};
   animation-duration: ${({ index }) => `${speedMap[index]}s`};
   margin-right: 3px;

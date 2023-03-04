@@ -10,6 +10,13 @@ export const Wrapper = styled.div`
   ${css.flex('align-center')};
   width: 100%;
   margin-bottom: 8px;
+
+  ${css.media.mobile`
+    display: none;
+  `};
+`
+export const ModelineWrapper = styled.div`
+  ${css.flex('align-center')};
 `
 export const Inputer = styled(Input)`
   height: 30px;

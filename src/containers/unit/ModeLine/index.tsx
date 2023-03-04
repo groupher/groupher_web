@@ -2,9 +2,7 @@
  * ModeLine
  */
 
-import { Fragment, FC, useEffect, useState } from 'react'
-import dynamic from 'next/dynamic'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
+import { Fragment, FC } from 'react'
 
 import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
@@ -13,12 +11,11 @@ import { bond } from '@/utils/mobx'
 
 import type { TStore } from './store'
 // import TopBar from './TopBar'
+import CommunityLayout from './CommunityLayout'
 import { useInit } from './logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:ModeLine')
-
-let BottomBar = null
 
 type TProps = {
   modeLine?: TStore
@@ -27,27 +24,16 @@ type TProps = {
 
 const ModeLineContainer: FC<TProps> = ({ modeLine: store, metric = METRIC.COMMUNITY }) => {
   useInit(store, metric)
-  const [showBottomBar, setShowBottomBar] = useState(false)
-
   const {
-    // isTopBarVisiable,
-    // viewing,
+    topBarVisiable,
     viewingArticle,
     activeMenu,
-    isCommunityBlockExpand,
     curCommunity,
+    activeThread,
+    enable,
+    activeTag,
+    groupedTags,
   } = store
-
-  const { isMobile } = useMobileDetect()
-
-  // viewing: { community, activeThread },
-  useEffect(() => {
-    // only load BottomBar on mobile view
-    if (isMobile) {
-      BottomBar = dynamic(() => import('./BottomBar'), { ssr: false })
-      setShowBottomBar(true)
-    }
-  }, [showBottomBar])
 
   return (
     <Fragment>
@@ -57,15 +43,18 @@ const ModeLineContainer: FC<TProps> = ({ modeLine: store, metric = METRIC.COMMUN
         viewing={viewing}
         viewingArticle={viewingArticle}
       /> */}
-      {showBottomBar && BottomBar && isMobile && (
-        <BottomBar
-          metric={metric}
-          article={viewingArticle}
-          community={curCommunity}
-          activeMenu={activeMenu}
-          isCommunityBlockExpand={isCommunityBlockExpand}
-        />
-      )}
+
+      <CommunityLayout
+        show={topBarVisiable}
+        metric={metric}
+        activeTag={activeTag}
+        groupedTags={groupedTags}
+        article={viewingArticle}
+        community={curCommunity}
+        activeMenu={activeMenu}
+        activeThread={activeThread}
+        enable={enable}
+      />
     </Fragment>
   )
 }

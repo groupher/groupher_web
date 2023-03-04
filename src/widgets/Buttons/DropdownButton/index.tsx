@@ -14,6 +14,7 @@ type TProps = {
   size?: TSizeTS
   withBorder?: boolean
   onClick?: () => void
+  noArrow?: boolean
 } & TSpace
 
 const DropdownButton: FC<TProps> = ({
@@ -21,6 +22,7 @@ const DropdownButton: FC<TProps> = ({
   size = SIZE.SMALL,
   withBorder = false,
   onClick = log,
+  noArrow = false,
   ...restProps
 }) => {
   return (
@@ -29,7 +31,7 @@ const DropdownButton: FC<TProps> = ({
       <ButtonWrapper size="small" type="primary" ghost>
         <InnerBtnWrapper>
           <>{children}</>
-          <FilterIcon />
+          {!noArrow && <FilterIcon />}
         </InnerBtnWrapper>
       </ButtonWrapper>
     </Wrapper>

@@ -41,7 +41,7 @@ export const oldScrollIntoEle = (eleID: string): void => {
 export const scrollIntoEle = (eleID: string): void => {
   if (typeof window === 'object') {
     const el = document.getElementById(eleID)
-    el.scrollIntoView({ behavior: 'smooth' })
+    el?.scrollIntoView({ behavior: 'smooth' })
   }
 }
 

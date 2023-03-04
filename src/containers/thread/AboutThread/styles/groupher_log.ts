@@ -10,7 +10,6 @@ export const Wrapper = styled.div`
   padding-top: 6px;
   position: relative;
   margin-bottom: 20px;
-  /* border: 1px solid tomato; */
 
   /* transform: scale(0.4); */
 `

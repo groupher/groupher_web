@@ -54,7 +54,6 @@ export const MobileCardsMainWrapper = styled(MainWrapper)`
 export const FilterWrapper = styled.div<{ thread: TThread }>`
   ${css.flex('align-center')};
   margin-bottom: 5px;
-  margin-left: ${({ thread }) => (includes(thread, values(CARD_THREAD)) ? '5px' : 0)};
 
   ${css.media.mobile`
     margin-bottom: 0;

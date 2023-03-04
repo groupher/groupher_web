@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
 `
 export const Block = styled.div<TActive>`
   ${css.flex('align-center')};
-  padding: 8px 5px;
+  padding: 7px 5px;
   width: 100%;
   border-radius: 8px;
 
@@ -30,10 +30,15 @@ export const Block = styled.div<TActive>`
     color: ${theme('article.title')};
   }
 `
+export const IconWrapper = styled.div`
+  ${css.circle(18)};
+  ${css.flex('align-both')};
+  margin-right: 10px;
+`
 export const Title = styled.div`
   font-size: 14px;
   font-weight: 400;
-  color: ${theme('article.title')};
+  color: ${theme('article.digest')};
 
   ${Block}:hover & {
     font-weight: 600;
@@ -42,8 +47,7 @@ export const Title = styled.div`
 
 const iconBase = `
   ${css.size(12)};
-  margin-right: 12px;
-  opacity: 0.8;
+  opacity: 0.6;
   z-index: 10;
 `
 
@@ -51,12 +55,10 @@ export const AllIcon = styled(AllSVG)`
   ${iconBase};
   ${css.size(18)};
   fill: ${theme('article.digest')};
-  margin-left: -2px;
 `
 export const TimeIcon = styled(TimeSVG)`
   ${iconBase};
   ${css.size(12)};
-  margin-left: 2px;
   fill: ${theme('article.digest')};
 `
 
@@ -65,21 +67,18 @@ export const UpvoteIcon = styled(UpvoteSVG)`
   ${css.size(13)};
   fill: ${theme('article.digest')};
   transform: scaleY(0.8);
-  margin-left: 1px;
 `
 
 export const CommentIcon = styled(CommentSVG)`
   ${iconBase};
   ${css.size(12)};
   fill: ${theme('article.digest')};
-  margin-left: 1px;
 `
 
 export const ViewIcon = styled(ViewSVG)`
   ${iconBase};
-  ${css.size(13)};
+  ${css.size(12)};
   fill: ${theme('article.digest')};
-  margin-left: 0px;
 `
 
 export const Icon = {

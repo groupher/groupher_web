@@ -54,4 +54,9 @@ export const FilterIcon = styled(ArrowSVG)`
   ${InnerBtnWrapper}:hover & {
     fill: ${theme('article.digest')};
   }
+
+  ${css.media.mobile`
+    margin-left: 3px;
+    opacity: 0.6;
+  `};
 `
