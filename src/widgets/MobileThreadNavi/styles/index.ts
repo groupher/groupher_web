@@ -22,6 +22,10 @@ export const ArrowIcon = styled(ArrowSVG)`
   fill: ${theme('article.digest')};
   transform: rotate(-90deg);
   margin-left: 2px;
+
+  ${css.media.mobile`
+    opacity: 0.6;
+  `};
 `
 
 export const ModelineDivider = styled(LineDivider)`
