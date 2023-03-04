@@ -1,22 +1,26 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css, { theme, zIndex } from '@/utils/css'
+import css, { animate, theme, zIndex } from '@/utils/css'
 
 import Img from '@/Img'
 import GotoTopSVG from '@/icons/Arrow2Top'
 import MoreSVG from '@/icons/menu/MoreL'
 
+type TWrapper = TTestable & { isMenuActive: boolean; show: boolean }
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
-}))<TTestable & { isMenuActive: boolean }>`
+}))<TWrapper>`
+  ${css.flex('align-both')};
+  display: ${({ show }) => (show ? 'flex' : 'none')};
   position: fixed;
   left: 0;
   bottom: 15px;
-  ${css.flex('align-both')};
   width: 100%;
   height: 35px;
   z-index: ${zIndex.modeLine};
+
+  animation: ${animate.fadeInUp} 0.2s linear;
 `
 export const InnerWrapper = styled.div<{ expand: boolean }>`
   ${css.flex('justify-between', 'align-center')};

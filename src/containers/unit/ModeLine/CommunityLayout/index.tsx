@@ -34,6 +34,7 @@ import {
 
 type TProps = {
   testid?: string
+  show: boolean
   metric: TMetric
   activeMenu: string // TModelineType
   article: TArticle | null
@@ -46,6 +47,7 @@ type TProps = {
 
 const BottomBar: FC<TProps> = ({
   testid = 'modeline-bottom-bar',
+  show,
   metric,
   article = null,
   community,
@@ -63,7 +65,7 @@ const BottomBar: FC<TProps> = ({
   //               onClick={multiClick(() => openMenu(item.raw))}
 
   return (
-    <Wrapper testid={testid} isMenuActive={!!activeMenu}>
+    <Wrapper testid={testid} show={show} isMenuActive={!!activeMenu}>
       <InnerWrapper expand={expand}>
         <MainMenusWrapper>
           <CommunityLogo src={community.logo} />
