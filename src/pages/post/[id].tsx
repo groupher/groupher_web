@@ -17,8 +17,6 @@ import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
 import { P } from '@/schemas'
 
-let respCache = null
-
 const loader = async (context, opt = {}) => {
   const { query } = context
   const { gqClient } = ssrFetchPrepare(context, opt)
@@ -71,25 +69,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const device = getSelectorsByUserAgent(req.headers['user-agent'])
   res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
 
-  // tmp solution
-  // see: https://github.com/vercel/next.js/discussions/19611#discussioncomment-972107
-  const isFirstServerCall = req?.url?.indexOf('/_next/data/') === -1
-
   let resp
 
-  if (!isFirstServerCall) {
-    resp = respCache
-  } else {
-    try {
-      resp = await loader(context)
-      respCache = resp
-    } catch (e) {
-      if (ssrRescue.hasLoginError(e.response?.errors)) {
-        // token 过期了，重新用匿名方式请求一次
-        await loader(context, { tokenExpired: true })
-      } else {
-        return ssrError(context, 'fetch', 500)
-      }
+  try {
+    resp = await loader(context)
+  } catch (e) {
+    if (ssrRescue.hasLoginError(e.response?.errors)) {
+      // token 过期了，重新用匿名方式请求一次
+      await loader(context, { tokenExpired: true })
+    } else {
+      return ssrError(context, 'fetch', 500)
     }
   }
 

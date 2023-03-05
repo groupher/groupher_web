@@ -28,6 +28,7 @@ const ModeLineContainer: FC<TProps> = ({ modeLine: store, metric = METRIC.COMMUN
   useInit(store, metric)
   const {
     isMobile,
+    isArticleBarVisiable,
     topBarVisiable,
     viewingArticle,
     activeMenu,
@@ -42,7 +43,7 @@ const ModeLineContainer: FC<TProps> = ({ modeLine: store, metric = METRIC.COMMUN
     return (
       <ArticleLayout
         isMobile={isMobile}
-        show
+        show={isArticleBarVisiable}
         metric={metric}
         activeTag={activeTag}
         groupedTags={groupedTags}

@@ -1,4 +1,5 @@
 import { FC, memo, useState } from 'react'
+import Router from 'next/router'
 
 import type {
   TArticle,
@@ -68,8 +69,13 @@ const ArticleLayout: FC<TProps> = ({
         <ActionBallWrapper
           right={8}
           onClick={() => {
-            setExpand(false)
-            scrollToHeader()
+            Router.push(
+              {
+                pathname: `/home/${activeThread}`,
+              },
+              undefined,
+              { scroll: false },
+            )
           }}
         >
           <GoBackIcon />
