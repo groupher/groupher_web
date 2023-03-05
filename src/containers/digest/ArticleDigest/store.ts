@@ -20,6 +20,11 @@ const ArticleDigest = T.model('ArticleDigest', {
   inViewport: T.opt(T.bool, true),
 })
   .views((self) => ({
+    get isMobile(): boolean {
+      const root = getParent(self) as TRootStore
+
+      return root.isMobile
+    },
     get isLogin(): boolean {
       const root = getParent(self) as TRootStore
       return root.account.isLogin

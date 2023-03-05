@@ -7,16 +7,12 @@
 // import { Fragment } from 'react'
 
 import DesktopView from './DesktopView'
-// import MobileView from './MobileView'
+import MobileView from './MobileView'
 
 const ArticleContent = (props) => {
-  // const { isMobile } = usePlatform()
-  return <DesktopView {...props} />
-  // return (
-  //   <Fragment>
-  //     {!isMobile ? <DesktopView {...props} /> : <MobileView {...props} />}
-  //   </Fragment>
-  // )
+  const { isMobile } = props
+
+  return <>{!isMobile ? <DesktopView {...props} /> : <MobileView {...props} />}</>
 }
 
 export default ArticleContent

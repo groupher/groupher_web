@@ -32,7 +32,7 @@ export const TabsWrapper = styled.div`
 
   ${css.media.mobile`
     left: -20px;
-    top: -42px;
+    top: -32px;
     transform: scale(0.8);
   `};
 `

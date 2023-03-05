@@ -12,13 +12,11 @@ import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
 // import ArticleSticker from '@/containers/tool/ArticleSticker'
-// import ArticleFooter from '@/containers/unit/ArticleFooter'
+import ArticleFooter from '@/containers/unit/ArticleFooter'
 import ArtimentBody from '@/widgets/ArtimentBody'
 // import Comments from '@/containers/unit/Comments'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 import ViewportTracker from '@/widgets/ViewportTracker'
-
-import SideInfo from './SideInfo'
 
 import type { TStore } from '../store'
 
@@ -34,6 +32,12 @@ import { useInit, checkAnchor } from '../logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:PostContent')
+
+// const ArticleFooter = dynamic(() => import('@/containers/unit/ArticleFooter'), {
+//   /* eslint-disable react/display-name */
+//   loading: () => <LavaLampLoading />,
+//   ssr: false,
+// })
 
 const Comments = dynamic(() => import('@/containers/unit/Comments'), {
   /* eslint-disable react/display-name */
@@ -64,10 +68,9 @@ const ArticleContentContainer: FC<TProps> = ({ articleContent: store, metric, te
         /> */}
         <MainWrapper metric={metric}>
           <ArticleWrapper ref={ref}>
-            {/* {!!article.linkAddr && <Linker src={article.linkAddr} bottom={22} />} */}
             <ArtimentBody document={article.document} />
+            <ArticleFooter />
           </ArticleWrapper>
-
           <ViewportTracker
             onEnter={() => checkAnchor(ref?.current)}
             onLeave={() => checkAnchor(ref?.current)}
@@ -77,8 +80,6 @@ const ArticleContentContainer: FC<TProps> = ({ articleContent: store, metric, te
           </CommentsWrapper>
         </MainWrapper>
       </InnerWrapper>
-
-      <SideInfo article={article} />
     </Wrapper>
   )
 }

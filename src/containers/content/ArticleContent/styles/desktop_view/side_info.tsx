@@ -14,10 +14,6 @@ export const Wrapper = styled.div`
   padding-bottom: 30px;
   margin-top: 5px;
   margin-right: -18px;
-
-  ${css.media.mobile`
-    display: none;
-  `};
 `
 export const InnerWrapper = styled.div`
   width: 100%:

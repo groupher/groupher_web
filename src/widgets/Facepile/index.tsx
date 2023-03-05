@@ -111,7 +111,6 @@ const Facepile: FC<TProps> = ({
           avatarLayout={avatarLayout}
         />
       )}
-
       {totalCount === 1 ? (
         <RealAvatarContext.Provider value={{ size, user: sortedUsers[0] }}>
           {/*  @ts-ignore */}

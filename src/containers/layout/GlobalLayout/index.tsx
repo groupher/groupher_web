@@ -7,7 +7,6 @@
 import { FC, ReactNode, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import METRIC from '@/constant/metric'
 import { TOPBAR_LAYOUT } from '@/constant/layout'
@@ -57,8 +56,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
   metric,
 }) => {
   // load debug graph
-  const { isMobile } = useMobileDetect()
-  useInit(store, { isMobile })
+  useInit(store)
 
   const router = useRouter()
 
@@ -66,6 +64,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
   const [showDashboardAlertUI, setShowDashboardAlertUI] = useState(false)
 
   const {
+    isMobile,
     wallpaperInfo,
     hasShadow,
     glowEffect,
