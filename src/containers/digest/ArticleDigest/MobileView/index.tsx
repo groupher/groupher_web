@@ -2,13 +2,11 @@
  * ArticleDigest
  */
 
-import { FC, useEffect } from 'react'
-import Router from 'next/router'
+import { FC } from 'react'
 import { isNil } from 'ramda'
 
 import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
-import { ROUTE } from '@/constant/route'
 
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
@@ -39,10 +37,6 @@ const ArticleDigestContainer: FC<TProps> = ({
   useInit(store)
 
   const { viewingArticle, inViewport, activeThread, enable } = store
-
-  useEffect(() => {
-    Router.prefetch(`/${ROUTE.HOME}/${ROUTE.POST}`)
-  }, [])
 
   if (isNil(viewingArticle.id)) return null
 

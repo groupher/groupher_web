@@ -13,7 +13,6 @@ import { bond } from '@/utils/mobx'
 
 // import ArticleSticker from '@/containers/tool/ArticleSticker'
 // import ArticleFooter from '@/containers/unit/ArticleFooter'
-import { MobileOnly } from '@/widgets/Common'
 import ArtimentBody from '@/widgets/ArtimentBody'
 // import Comments from '@/containers/unit/Comments'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
@@ -35,12 +34,6 @@ import { useInit, checkAnchor } from '../logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:PostContent')
-
-const ArticleFooter = dynamic(() => import('@/containers/unit/ArticleFooter'), {
-  /* eslint-disable react/display-name */
-  loading: () => <LavaLampLoading />,
-  ssr: false,
-})
 
 const Comments = dynamic(() => import('@/containers/unit/Comments'), {
   /* eslint-disable react/display-name */
@@ -65,17 +58,14 @@ const ArticleContentContainer: FC<TProps> = ({ articleContent: store, metric, te
   return (
     <Wrapper testid={testid}>
       <InnerWrapper>
-        <ViewportTracker
+        {/* <ViewportTracker
           onEnter={() => checkAnchor(ref?.current)}
           onLeave={() => checkAnchor(ref?.current)}
-        />
+        /> */}
         <MainWrapper metric={metric}>
           <ArticleWrapper ref={ref}>
             {/* {!!article.linkAddr && <Linker src={article.linkAddr} bottom={22} />} */}
             <ArtimentBody document={article.document} />
-            <MobileOnly>
-              <ArticleFooter />
-            </MobileOnly>
           </ArticleWrapper>
 
           <ViewportTracker

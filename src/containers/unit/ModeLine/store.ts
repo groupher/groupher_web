@@ -71,6 +71,11 @@ const ModeLine = T.model('ModeLine', {
       const root = getParent(self) as TRootStore
       return toJS(root.viewing)
     },
+    get isArticleBarVisiable(): boolean {
+      const root = getParent(self) as TRootStore
+
+      return !root.articleDigest.inViewport
+    },
     get isTopBarVisiable(): boolean {
       const slf = self as TStore
 

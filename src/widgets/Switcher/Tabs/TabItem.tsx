@@ -10,14 +10,10 @@ import type { TSizeSM, TTabItem } from '@/spec'
 import { Trans } from '@/utils/i18n'
 import { isString } from '@/utils/validator'
 import { buildLog } from '@/utils/logger'
+import { isElementInViewport } from '@/utils/dom'
 
 import TabIcon from './TabIcon'
-import {
-  Wrapper,
-  Label,
-  ActiveLineWrapper,
-  ActiveLine,
-} from '../styles/tabs/tab_item'
+import { Wrapper, Label, ActiveLineWrapper, ActiveLine } from '../styles/tabs/tab_item'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Tabs:index')
@@ -59,10 +55,7 @@ const TabItem: FC<TProps> = ({
     setItemWidth?.(index, width)
   }, [setItemWidth, index])
 
-  const handleWrapperClick = useCallback(
-    () => clickableRef.current.click(),
-    [clickableRef],
-  )
+  const handleWrapperClick = useCallback(() => clickableRef.current.click(), [clickableRef])
 
   const handleLabelClick = useCallback(
     (e) => {
@@ -73,20 +66,21 @@ const TabItem: FC<TProps> = ({
   )
 
   useEffect(() => {
-    if (item.raw === activeKey && (mobileView || modelineView) && !wrapMode) {
+    if (item.raw === activeKey && !(mobileView || modelineView) && !wrapMode) {
       const curEl = activeRef?.current
+      const inViewport = isElementInViewport(curEl)
+
       // 这里的 width 是一个 hack, 每一个 TabItem 会触发设置宽度的
       // 父元素钩子，导致两次渲染，但是第一次没有调用之前每个 Item 的宽度是 auto
       // 利用这个特性可以判断真正需要 scroll 到 view 的元素
-      if (curEl && getComputedStyle(curEl).width !== 'auto') {
+      if (curEl && inViewport && getComputedStyle(curEl).width !== 'auto') {
         curEl.scrollIntoView({
-          behavior: 'smooth',
           block: 'center',
           // inline: 'center',
         })
       }
     }
-  }, [item, activeKey, mobileView, modelineView, wrapMode])
+  }, [activeRef, item, activeKey, mobileView, modelineView, wrapMode])
 
   return (
     <Wrapper
@@ -107,11 +101,7 @@ const TabItem: FC<TProps> = ({
         bottomSpace={bottomSpace}
       >
         {!isString(item) && (item.icon || item.localIcon) && (
-          <TabIcon
-            item={item}
-            clickableRef={clickableRef}
-            active={item.raw === activeKey}
-          />
+          <TabIcon item={item} clickableRef={clickableRef} active={item.raw === activeKey} />
         )}
         <div ref={item.raw === activeKey ? activeRef : null}>
           {isString(item) ? item : item.alias || Trans(item.title)}

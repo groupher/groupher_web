@@ -90,12 +90,11 @@ const initAppVersion = (): void => {
 // ###############################
 // init & uninit
 // ###############################
-export const useInit = (_store: TStore, extra): void => {
+export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
-
-    const { online, isMobile } = extra
-    store.mark({ online, isMobile })
+    // const { online, isMobile } = extra
+    // store.mark({ online, isMobile })
     initAppVersion()
-  }, [_store, extra])
+  }, [_store])
 }

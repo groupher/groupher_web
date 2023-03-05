@@ -51,7 +51,7 @@ export const ContentWrapper = styled.div<{ metric: TMetric }>`
   ${({ metric }) => css.fitContentWidth(metric)};
 
   ${css.media.mobile`
-    margin-left: 30px;
+    margin-left: 15px;
   `};
 `
 export const Cover = styled(Img)`
@@ -68,7 +68,7 @@ export const Title = styled.div`
     font-size: 14px;
     font-weight: 400;
     height: 24px;
-    ${css.cutRest('210px')};
+    ${css.cutRest('230px')};
   `};
 `
 export const Desc = styled.div`

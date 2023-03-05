@@ -12,6 +12,8 @@ import { bond } from '@/utils/mobx'
 import type { TStore } from './store'
 // import TopBar from './TopBar'
 import CommunityLayout from './CommunityLayout'
+import ArticleLayout from './ArticleLayout'
+
 import { useInit } from './logic'
 
 /* eslint-disable-next-line */
@@ -26,6 +28,7 @@ const ModeLineContainer: FC<TProps> = ({ modeLine: store, metric = METRIC.COMMUN
   useInit(store, metric)
   const {
     isMobile,
+    isArticleBarVisiable,
     topBarVisiable,
     viewingArticle,
     activeMenu,
@@ -35,6 +38,23 @@ const ModeLineContainer: FC<TProps> = ({ modeLine: store, metric = METRIC.COMMUN
     activeTag,
     groupedTags,
   } = store
+
+  if (metric === METRIC.ARTICLE) {
+    return (
+      <ArticleLayout
+        isMobile={isMobile}
+        show={isArticleBarVisiable}
+        metric={metric}
+        activeTag={activeTag}
+        groupedTags={groupedTags}
+        article={viewingArticle}
+        community={curCommunity}
+        activeMenu={activeMenu}
+        activeThread={activeThread}
+        enable={enable}
+      />
+    )
+  }
 
   return (
     <Fragment>
