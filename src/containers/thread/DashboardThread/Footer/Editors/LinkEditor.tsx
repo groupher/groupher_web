@@ -1,5 +1,7 @@
 import { FC } from 'react'
 
+import type { TLinkItem } from '@/spec'
+
 import { Space, SpaceGrow } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'
 import Linker from '@/widgets/Linker'
@@ -21,13 +23,25 @@ import {
   NotifyLabel,
 } from '../../styles/footer/editors/link_editor'
 
+const DEFAULT_LINK = {
+  title: '讨论',
+  addr: 'https://groupher.com',
+}
+
 type TProps = {
   editing?: boolean
   alignRight?: boolean
   notifyText?: string
+
+  linkItem?: TLinkItem
 }
 
-const LinkEditor: FC<TProps> = ({ editing = false, alignRight = false, notifyText = '' }) => {
+const LinkEditor: FC<TProps> = ({
+  editing = false,
+  alignRight = false,
+  notifyText = '',
+  linkItem = DEFAULT_LINK,
+}) => {
   return (
     <Wrapper>
       <ReadonlyWrapper editing={editing}>
@@ -35,9 +49,9 @@ const LinkEditor: FC<TProps> = ({ editing = false, alignRight = false, notifyTex
           <>
             <ReadOnlyFields alignRight={alignRight}>
               <Label>
-                讨论 <Space right={6} /> {notifyText && <NotifyLabel>New</NotifyLabel>}
+                {linkItem.title} <Space right={6} /> {notifyText && <NotifyLabel>New</NotifyLabel>}
               </Label>
-              <Linker src="https://groupher.com" left={-2} top={5} external />
+              <Linker src={linkItem.addr} left={-2} top={5} external />
             </ReadOnlyFields>
             <SpaceGrow />
             <ActionWrapper editing={editing}>

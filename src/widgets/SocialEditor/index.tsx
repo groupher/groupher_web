@@ -7,6 +7,8 @@
 import { FC, memo, useState, useCallback } from 'react'
 import { keys, includes, reject } from 'ramda'
 
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+
 import type { TSocialType, TSocialItem, TSpace } from '@/spec'
 import { SOCIAL_LIST } from '@/constant/social'
 import { buildLog } from '@/utils/logger'
@@ -30,6 +32,8 @@ const SocialEditor: FC<TProps> = ({
   withTitle = true,
   ...restProps
 }) => {
+  const [parent] = useAutoAnimate({ duration: 100 })
+
   const [selected, setSelected] = useState<TSocialItem[]>([
     { type: SOCIAL_LIST.HOMEPAGE, addr: 'https://groupher.com' },
   ])
@@ -69,7 +73,7 @@ const SocialEditor: FC<TProps> = ({
         })}
       </PlatformWrapper>
 
-      <InputsWrapper>
+      <InputsWrapper ref={parent}>
         {selected.map((item: TSocialItem) => (
           <InputBar key={item.type} social={item} onDelete={(social) => remove(social)} />
         ))}

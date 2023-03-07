@@ -15,6 +15,7 @@ type TSORTABLE_ITEMS = {
   title?: string
   raw: string
   logo?: string
+  addr?: string
 }[]
 
 export const Global: TWindow = typeof window !== 'undefined' ? window : null
