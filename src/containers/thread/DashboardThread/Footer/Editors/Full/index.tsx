@@ -29,7 +29,7 @@ import {
   TopLeft,
   TopRight,
 } from '../../../styles/footer/editors/full'
-import { moveUpLink, moveDownLink, move2TopLink, move2BottomLink } from '../../../logic'
+import { moveUpLink, moveDownLink, move2TopLink, move2BottomLink } from '../../../logic/links'
 
 type TProps = {
   links: TLinkItem[]

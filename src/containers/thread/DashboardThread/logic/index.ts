@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
-import { findIndex, remove } from 'ramda'
 
-import type { TEditValue, TTag, TLinkItem } from '@/spec'
+import type { TEditValue, TTag } from '@/spec'
 import { COLOR_NAME } from '@/constant/colors'
 import EVENT from '@/constant/event'
 
@@ -9,10 +8,11 @@ import { buildLog } from '@/utils/logger'
 import { updateEditing, toJS } from '@/utils/mobx'
 import asyncSuit from '@/utils/async'
 
-import type { TStore } from './store'
-import type { TSettingField, TAlias } from './spec'
+import type { TStore } from '../store'
+import type { TSettingField, TAlias } from '../spec'
 
-import { SETTING_FIELD } from './constant'
+import { SETTING_FIELD } from '../constant'
+import { init as linksLogicInit } from './links'
 
 const { SR71, $solver, asyncRes } = asyncSuit
 const sr71$ = new SR71({
@@ -113,55 +113,6 @@ export const onSave = (field: TSettingField, force = false): void => {
   }, time)
 }
 
-export const removeLink = (link: TLinkItem): void => {
-  const { footerLinks } = store.footerSettings
-  const linkIndex = findIndex((item) => item.index === link.index, footerLinks)
-
-  store.mark({ footerLinks: remove(linkIndex, 1, footerLinks) })
-}
-
-const _moveLink = (link: TLinkItem, opt: 'up' | 'down' | 'top' | 'bottom'): void => {
-  const { footerLinks } = store.footerSettings
-
-  const linkIndex = findIndex((item) => item.index === link.index, footerLinks)
-
-  let targetIndex
-
-  switch (opt) {
-    case 'up':
-      targetIndex = linkIndex - 1
-      break
-    case 'down':
-      targetIndex = linkIndex + 1
-      break
-    case 'top':
-      targetIndex = 0
-      break
-    default:
-      targetIndex = footerLinks.length - 1
-      break
-  }
-
-  const tmp = footerLinks[targetIndex]
-  footerLinks[targetIndex] = footerLinks[linkIndex]
-  footerLinks[linkIndex] = tmp
-
-  const tmpIndex = footerLinks[targetIndex].index
-  footerLinks[targetIndex].index = footerLinks[linkIndex].index
-  footerLinks[linkIndex].index = tmpIndex
-
-  store.mark({ footerLinks })
-}
-
-export const moveUpLink = (link: TLinkItem): void => _moveLink(link, 'up')
-export const moveDownLink = (link: TLinkItem): void => _moveLink(link, 'down')
-export const move2TopLink = (link: TLinkItem): void => _moveLink(link, 'top')
-export const move2BottomLink = (link: TLinkItem): void => _moveLink(link, 'bottom')
-
-export const move2Group = () => {
-  return []
-}
-
 // ###############################
 // init & uninit handlers
 // ###############################
@@ -179,6 +130,7 @@ const ErrSolver = []
 export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
+    linksLogicInit(store)
     log('useInit: ', store)
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
 
