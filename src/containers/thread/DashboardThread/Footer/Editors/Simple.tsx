@@ -1,5 +1,4 @@
 import { FC, useState } from 'react'
-import { update } from 'ramda'
 
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
@@ -9,6 +8,7 @@ import { sortByIndex } from '@/utils/helper'
 
 import SocialEditor from '@/widgets/SocialEditor'
 
+import { DEFAULT_LINK_ITEMS } from '../../constant'
 import BrandInfo from './BrandInfo'
 import LinkEditor from './LinkEditor'
 
@@ -20,38 +20,8 @@ import {
   RightWrapper,
 } from '../../styles/footer/editors/simple'
 
-const LINKS = [
-  {
-    index: 0,
-    raw: '0',
-    title: 'title 1',
-    addr: 'https://groupher.com/1',
-  },
-
-  {
-    index: 3,
-    raw: '3',
-    title: 'title 2',
-    addr: 'https://groupher.com/1',
-  },
-
-  {
-    index: 5,
-    raw: '5',
-    title: 'title 3',
-    addr: 'https://groupher.com/1',
-  },
-
-  {
-    index: 7,
-    raw: '7',
-    title: 'title 4',
-    addr: 'https://groupher.com/1',
-  },
-]
-
 const Simple: FC = () => {
-  const [links, setLinks] = useState(LINKS)
+  const [links, setLinks] = useState(DEFAULT_LINK_ITEMS)
 
   const [parent] = useAutoAnimate({ duration: 220 })
 
@@ -61,35 +31,7 @@ const Simple: FC = () => {
         <BrandInfo />
       </LeftWrapper>
       <CenterWrapper ref={parent}>
-        <Title
-          onClick={() => {
-            setLinks(
-              update(
-                1,
-                {
-                  index: 6,
-                  raw: '6',
-                  title: 'title 6',
-                  addr: 'https://groupher.com/1',
-                },
-                links,
-              ),
-            )
-
-            /*
-            setLinks([
-              ...links,
-              {
-                index: 4,
-                title: 'title 5',
-                addr: 'https://groupher.com/1',
-              },
-            ])
-                         */
-          }}
-        >
-          链接
-        </Title>
+        <Title>链接</Title>
         {sortByIndex(links).map((item) => (
           <LinkEditor key={item.index} linkItem={item as TLinkItem} />
         ))}

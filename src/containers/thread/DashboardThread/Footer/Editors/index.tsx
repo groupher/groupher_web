@@ -1,20 +1,22 @@
 import { FC } from 'react'
 
-import type { TFooterLayout } from '@/spec'
 import { FOOTER_LAYOUT } from '@/constant/layout'
 
+import type { TFooterSettings } from '../../spec'
 import SimpleEditor from './Simple'
 import FullEditor from './Full'
 
 type TProps = {
-  footerLayout: TFooterLayout
+  settings: TFooterSettings
 }
 
-const Editor: FC<TProps> = ({ footerLayout }) => {
+const Editor: FC<TProps> = ({ settings }) => {
+  const { footerLayout } = settings
+
   return (
     <div>
       {footerLayout === FOOTER_LAYOUT.SIMPLE && <SimpleEditor />}
-      {footerLayout === FOOTER_LAYOUT.FULL && <FullEditor />}
+      {footerLayout === FOOTER_LAYOUT.FULL && <FullEditor links={settings.footerLinks} />}
     </div>
   )
 }

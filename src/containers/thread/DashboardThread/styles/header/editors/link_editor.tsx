@@ -25,8 +25,8 @@ export const ReadonlyWrapper = styled.div<{ editing: boolean }>`
   border-image-slice: 1;
 `
 
-export const ReadOnlyFields = styled.div<{ alignRight: boolean }>`
-  ${({ alignRight }) => (alignRight ? css.flexColumn('align-end') : '')};
+export const ReadOnlyFields = styled.div`
+  ${css.flexColumn()};
 `
 
 export const ActionWrapper = styled.div<{ editing: boolean }>`

@@ -24,7 +24,7 @@ import {
 import { T } from '@/utils/mobx'
 import { mockTags } from '@/utils/mock'
 
-import { BUILDIN_ALIAS, WIDGET_TYPE, TW_CARD } from '../constant'
+import { BUILDIN_ALIAS, WIDGET_TYPE, TW_CARD, DEFAULT_LINK_ITEMS } from '../constant'
 
 export const Enable = T.model('Enable', {
   post: T.opt(T.bool, true),
@@ -62,6 +62,14 @@ const GroupCategory = T.model('GroupGategory', {
   index: T.int,
   color: T.opt(T.enum(values(COLOR_NAME)), COLOR_NAME.BLACK),
   files: T.opt(T.array(File), []),
+})
+
+const LinkItem = T.model('LinkItem', {
+  index: T.opt(T.int, 0),
+  title: T.opt(T.str, ''),
+  raw: T.opt(T.str, ''),
+  addr: T.opt(T.str, ''),
+  group: T.opt(T.str, ''),
 })
 
 export const settingsModalFields = {
@@ -141,6 +149,9 @@ export const settingsModalFields = {
 
   // footer
   footerLayout: T.opt(T.enum(values(FOOTER_LAYOUT)), FOOTER_LAYOUT.FULL),
+
+  footerLinks: T.opt(T.array(LinkItem), DEFAULT_LINK_ITEMS),
+  headerLinks: T.opt(T.array(LinkItem), DEFAULT_LINK_ITEMS),
 
   // widgets
   widgetsPrimaryColor: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),

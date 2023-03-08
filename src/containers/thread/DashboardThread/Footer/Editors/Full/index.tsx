@@ -1,7 +1,13 @@
 import { FC, useState } from 'react'
 
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+
+import type { TLinkItem } from '@/spec'
+
 import { FOOTER_LAYOUT } from '@/constant/layout'
 import Button from '@/widgets/Buttons/Button'
+
+import { sortByIndex } from '@/utils/helper'
 
 import BrandInfo from '../BrandInfo'
 import LinkEditor from '../LinkEditor'
@@ -23,10 +29,17 @@ import {
   TopLeft,
   TopRight,
 } from '../../../styles/footer/editors/full'
+import { moveUpLink, moveDownLink, move2TopLink, move2BottomLink } from '../../../logic'
 
-const Full: FC = () => {
+type TProps = {
+  links: TLinkItem[]
+}
+
+const Full: FC<TProps> = ({ links }) => {
   const [editMode, setEditMode] = useState(false)
   const [editType, setEditType] = useState<TFooterEditType>(FOOTER_EDIT_TYPE.LOGO)
+
+  const [parent] = useAutoAnimate()
 
   return (
     <Wrapper>
@@ -55,28 +68,38 @@ const Full: FC = () => {
           </Button>
         </ActionRow>
         <LinkGroup>
+          <ColumnWrapper ref={parent}>
+            <Title>链接</Title>
+            {/* @ts-ignore */}
+            {sortByIndex(links).map((item, index) => (
+              <LinkEditor
+                key={`${item.title}${item.addr}`}
+                linkItem={item as TLinkItem}
+                moveUpLink={moveUpLink}
+                moveDownLink={moveDownLink}
+                move2TopLink={move2TopLink}
+                move2BottomLink={move2BottomLink}
+                isFirst={index === 0}
+                isLast={index === links.length - 1}
+              />
+            ))}
+          </ColumnWrapper>
+
           <ColumnWrapper>
             <Title>链接</Title>
             <LinkEditor />
             <LinkEditor />
-            <LinkEditor notifyText="new" />
+            <LinkEditor />
             <LinkEditor />
             <LinkEditor />
           </ColumnWrapper>
+
           <ColumnWrapper>
-            <Title>链接</Title>
-            <LinkEditor />
-            <LinkEditor />
-            <LinkEditor editing />
-            <LinkEditor />
-            <LinkEditor />
-          </ColumnWrapper>
-          <ColumnWrapper alignRight>
             <Title>社交媒体</Title>
-            <LinkEditor alignRight />
-            <LinkEditor alignRight editing />
-            <LinkEditor alignRight />
-            <LinkEditor alignRight />
+            <LinkEditor />
+            <LinkEditor />
+            <LinkEditor />
+            <LinkEditor />
           </ColumnWrapper>
         </LinkGroup>
       </BottomWrapper>

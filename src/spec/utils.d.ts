@@ -220,4 +220,6 @@ export type TLinkItem = {
   index: number
   title: string
   addr: string
+  raw?: string
+  group?: string
 }

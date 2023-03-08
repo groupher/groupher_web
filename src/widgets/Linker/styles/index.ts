@@ -43,6 +43,7 @@ export const Source = styled.a<{ plainColor: boolean }>`
   font-size: 13px;
   text-decoration: none;
   word-break: break-all;
+  ${css.lineClamp(1)};
 
   &:hover {
     color: ${theme('linkHover')};

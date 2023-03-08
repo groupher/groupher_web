@@ -58,9 +58,9 @@ export const LinkGroup = styled.div`
   ${css.flex('justify-between')};
   width: 100%;
 `
-export const ColumnWrapper = styled.div<{ alignRight?: boolean }>`
-  ${({ alignRight }) =>
-    !alignRight ? css.flexColumn('align-start') : css.flexColumn('align-end')};
+export const ColumnWrapper = styled.div`
+  ${css.flexColumn()};
+
   gap: 25px 0;
   width: 32%;
   height: 100%;

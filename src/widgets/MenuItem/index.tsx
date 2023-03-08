@@ -17,13 +17,14 @@ const log = buildLog('c:MenuItem:index')
 type TProps = {
   icon: TMenu
   title: string
+  onClick?: () => void
 }
 
-const MenuItem: FC<TProps> = ({ title, icon }) => {
+const MenuItem: FC<TProps> = ({ title, icon, onClick = log }) => {
   const Icon = MenuIcon[icon]
 
   return (
-    <Wrapper>
+    <Wrapper onClick={onClick}>
       <Icon />
       <Title>{title}</Title>
     </Wrapper>

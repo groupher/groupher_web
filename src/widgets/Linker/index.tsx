@@ -27,7 +27,6 @@ type TProps = TSpace & {
   openInNewTab?: boolean
   inline?: boolean
   plainColor?: boolean
-  maxLength?: number
 }
 
 const Linker: FC<TProps> = ({
@@ -38,31 +37,26 @@ const Linker: FC<TProps> = ({
   openInNewTab = false,
   inline = false,
   plainColor = false,
-  maxLength = 25,
   ...restProps
 }) => {
-  const displayLimit = maxLength
   if (!src) return null
 
   return (
     <Wrapper testid={testid} inline={inline} {...restProps}>
       {external ? <LinkOutIcon /> : <LinkIcon />}
-      {src.length < displayLimit ? (
+
+      <Tooltip
+        content={<PopHint>{src}</PopHint>}
+        placement="bottom"
+        hideOnClick={false}
+        delay={300}
+        offset={[-10, 0] as [number, number]}
+        noPadding
+      >
         <Source href={src} target="_blank" plainColor={plainColor}>
-          {cutRest(src, displayLimit + 3)}
+          {src}
         </Source>
-      ) : (
-        <Source href={src} target="_blank" plainColor={plainColor}>
-          <Tooltip
-            content={<PopHint>{src}</PopHint>}
-            placement="bottom"
-            hideOnClick={false}
-            noPadding
-          >
-            {cutRest(src, displayLimit + 3)}
-          </Tooltip>
-        </Source>
-      )}
+      </Tooltip>
     </Wrapper>
   )
 }
