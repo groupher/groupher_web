@@ -9,7 +9,6 @@ import { FC, memo } from 'react'
 import type { TSpace } from '@/spec'
 
 import { buildLog } from '@/utils/logger'
-import { cutRest } from '@/utils/fmt'
 
 import Tooltip from '@/widgets/Tooltip'
 
@@ -24,7 +23,6 @@ type TProps = TSpace & {
   text?: string
   // link to external or some domain
   external?: boolean
-  openInNewTab?: boolean
   inline?: boolean
   plainColor?: boolean
 }
@@ -34,7 +32,6 @@ const Linker: FC<TProps> = ({
   src,
   text = '',
   external = true,
-  openInNewTab = false,
   inline = false,
   plainColor = false,
   ...restProps

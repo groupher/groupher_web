@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
@@ -21,8 +21,6 @@ import {
 } from '../../styles/footer/editors/simple'
 
 const Simple: FC = () => {
-  const [links, setLinks] = useState(DEFAULT_LINK_ITEMS)
-
   const [parent] = useAutoAnimate({ duration: 220 })
 
   return (
@@ -32,7 +30,7 @@ const Simple: FC = () => {
       </LeftWrapper>
       <CenterWrapper ref={parent}>
         <Title>链接</Title>
-        {sortByIndex(links).map((item) => (
+        {sortByIndex(DEFAULT_LINK_ITEMS).map((item) => (
           <LinkEditor key={item.index} linkItem={item as TLinkItem} />
         ))}
       </CenterWrapper>
