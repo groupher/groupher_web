@@ -1,4 +1,4 @@
-import { findIndex } from 'ramda'
+import { findIndex, clone, remove } from 'ramda'
 
 import type { TLinkItem } from '@/spec'
 
@@ -6,27 +6,12 @@ import type { TStore } from '../store'
 
 let store: TStore | undefined
 
-const _moveLink = (link: TLinkItem, opt: 'up' | 'down' | 'top' | 'bottom'): void => {
+const _moveLink = (link: TLinkItem, opt: 'up' | 'down'): void => {
   const { footerLinks } = store.footerSettings
 
   const linkIndex = findIndex((item) => item.index === link.index, footerLinks)
 
-  let targetIndex
-
-  switch (opt) {
-    case 'up':
-      targetIndex = linkIndex - 1
-      break
-    case 'down':
-      targetIndex = linkIndex + 1
-      break
-    case 'top':
-      targetIndex = 0
-      break
-    default:
-      targetIndex = footerLinks.length - 1
-      break
-  }
+  const targetIndex = opt === 'up' ? linkIndex - 1 : linkIndex + 1
 
   const tmp = footerLinks[targetIndex]
   footerLinks[targetIndex] = footerLinks[linkIndex]
@@ -39,10 +24,32 @@ const _moveLink = (link: TLinkItem, opt: 'up' | 'down' | 'top' | 'bottom'): void
   store.mark({ footerLinks })
 }
 
+const _reindex = (links: TLinkItem[]): TLinkItem[] => {
+  return links.map((item, index) => ({
+    ...item,
+    index,
+  }))
+}
+
+const _move2Edge = (link: TLinkItem, opt: 'top' | 'bottom'): void => {
+  const { footerLinks } = store.footerSettings
+
+  const curLinkItemIndex = findIndex((item) => item.index === link.index, footerLinks)
+  const curLinkItem = clone(footerLinks[curLinkItemIndex])
+
+  const newFooterLinks =
+    opt === 'top'
+      ? [curLinkItem, ...remove(curLinkItemIndex, 1, footerLinks)]
+      : [...remove(curLinkItemIndex, 1, footerLinks), curLinkItem]
+
+  store.mark({ footerLinks: _reindex(newFooterLinks) })
+}
+
 export const moveUpLink = (link: TLinkItem): void => _moveLink(link, 'up')
 export const moveDownLink = (link: TLinkItem): void => _moveLink(link, 'down')
-export const move2TopLink = (link: TLinkItem): void => _moveLink(link, 'top')
-export const move2BottomLink = (link: TLinkItem): void => _moveLink(link, 'bottom')
+
+export const move2TopLink = (link: TLinkItem): void => _move2Edge(link, 'top')
+export const move2BottomLink = (link: TLinkItem): void => _move2Edge(link, 'bottom')
 
 export const move2Group = () => {
   return []
