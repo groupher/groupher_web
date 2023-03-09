@@ -70,6 +70,7 @@ const LinkItem = T.model('LinkItem', {
   raw: T.opt(T.str, ''),
   addr: T.opt(T.str, ''),
   group: T.opt(T.str, ''),
+  groupIndex: T.opt(T.int, 0),
 })
 
 export const settingsModalFields = {

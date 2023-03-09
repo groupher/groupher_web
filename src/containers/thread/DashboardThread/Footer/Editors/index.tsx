@@ -14,10 +14,10 @@ const Editor: FC<TProps> = ({ settings }) => {
   const { footerLayout } = settings
 
   return (
-    <div>
+    <>
       {footerLayout === FOOTER_LAYOUT.SIMPLE && <SimpleEditor />}
       {footerLayout === FOOTER_LAYOUT.FULL && <FullEditor links={settings.footerLinks} />}
-    </div>
+    </>
   )
 }
 

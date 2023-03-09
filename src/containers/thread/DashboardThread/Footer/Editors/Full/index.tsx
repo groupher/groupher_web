@@ -1,4 +1,5 @@
-import { FC, useState } from 'react'
+import { FC, useState, memo } from 'react'
+import { keys } from 'ramda'
 
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
@@ -7,7 +8,7 @@ import type { TLinkItem } from '@/spec'
 import { FOOTER_LAYOUT } from '@/constant/layout'
 import Button from '@/widgets/Buttons/Button'
 
-import { sortByIndex } from '@/utils/helper'
+import { sortByIndex, groupByKey } from '@/utils/helper'
 
 import BrandInfo from '../BrandInfo'
 import LinkEditor from '../LinkEditor'
@@ -39,7 +40,11 @@ const Full: FC<TProps> = ({ links }) => {
   const [editMode, setEditMode] = useState(false)
   const [editType, setEditType] = useState<TFooterEditType>(FOOTER_EDIT_TYPE.LOGO)
 
-  const [parent] = useAutoAnimate()
+  const [animateRef] = useAutoAnimate()
+
+  // @ts-ignore
+  const groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
+  const groupKeys = keys(groupedLinks)
 
   return (
     <Wrapper>
@@ -68,43 +73,32 @@ const Full: FC<TProps> = ({ links }) => {
           </Button>
         </ActionRow>
         <LinkGroup>
-          <ColumnWrapper ref={parent}>
-            <Title>链接</Title>
-            {/* @ts-ignore */}
-            {sortByIndex(links).map((item, index) => (
-              <LinkEditor
-                key={`${item.title}${item.addr}`}
-                linkItem={item as TLinkItem}
-                moveUpLink={moveUpLink}
-                moveDownLink={moveDownLink}
-                move2TopLink={move2TopLink}
-                move2BottomLink={move2BottomLink}
-                isFirst={index === 0}
-                isLast={index === links.length - 1}
-              />
-            ))}
-          </ColumnWrapper>
+          {groupKeys.map((groupKey) => {
+            const curGroupLinks = groupedLinks[groupKey]
 
-          <ColumnWrapper>
-            <Title>链接</Title>
-            <LinkEditor />
-            <LinkEditor />
-            <LinkEditor />
-            <LinkEditor />
-            <LinkEditor />
-          </ColumnWrapper>
-
-          <ColumnWrapper>
-            <Title>社交媒体</Title>
-            <LinkEditor />
-            <LinkEditor />
-            <LinkEditor />
-            <LinkEditor />
-          </ColumnWrapper>
+            return (
+              <ColumnWrapper key={groupKey as string} ref={animateRef}>
+                <Title>{groupKey}</Title>
+                {/* @ts-ignore */}
+                {sortByIndex(curGroupLinks).map((item, index) => (
+                  <LinkEditor
+                    key={`${item.title}${item.addr}`}
+                    linkItem={item as TLinkItem}
+                    moveUpLink={moveUpLink}
+                    moveDownLink={moveDownLink}
+                    move2TopLink={move2TopLink}
+                    move2BottomLink={move2BottomLink}
+                    isFirst={index === 0}
+                    isLast={index === curGroupLinks.length - 1}
+                  />
+                ))}
+              </ColumnWrapper>
+            )
+          })}
         </LinkGroup>
       </BottomWrapper>
     </Wrapper>
   )
 }
 
-export default Full
+export default memo(Full)

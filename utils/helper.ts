@@ -11,6 +11,7 @@ import { COLOR_NAME } from '@/constant/colors'
 type TSORTABLE_ITEMS = {
   color?: string
   index?: number
+  groupIndex?: number
   id?: string
   title?: string
   raw: string
@@ -41,8 +42,8 @@ export const sortByColor = (source: TSORTABLE_ITEMS): TSORTABLE_ITEMS =>
 /**
  * sort the array by it's index
  */
-export const sortByIndex = (source: TSORTABLE_ITEMS): TSORTABLE_ITEMS =>
-  sort((a, b) => a.index - b.index, source)
+export const sortByIndex = (source: TSORTABLE_ITEMS, key = 'index'): TSORTABLE_ITEMS =>
+  sort((a, b) => a[key] - b[key], source)
 
 /* eslint-disable */
 const log =

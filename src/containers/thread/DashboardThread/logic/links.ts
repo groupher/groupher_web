@@ -1,4 +1,4 @@
-import { findIndex, clone, remove } from 'ramda'
+import { findIndex, clone, remove, filter, reject } from 'ramda'
 
 import type { TLinkItem } from '@/spec'
 
@@ -7,21 +7,25 @@ import type { TStore } from '../store'
 let store: TStore | undefined
 
 const _moveLink = (link: TLinkItem, opt: 'up' | 'down'): void => {
+  const { group } = link
   const { footerLinks } = store.footerSettings
 
-  const linkIndex = findIndex((item) => item.index === link.index, footerLinks)
+  const groupFooterLinks = filter((item: TLinkItem) => item.group === group, footerLinks)
+  const restFooterLinks = reject((item: TLinkItem) => item.group === group, footerLinks)
+
+  const linkIndex = findIndex((item) => item.index === link.index, groupFooterLinks)
 
   const targetIndex = opt === 'up' ? linkIndex - 1 : linkIndex + 1
 
-  const tmp = footerLinks[targetIndex]
-  footerLinks[targetIndex] = footerLinks[linkIndex]
-  footerLinks[linkIndex] = tmp
+  const tmp = groupFooterLinks[targetIndex]
+  groupFooterLinks[targetIndex] = groupFooterLinks[linkIndex]
+  groupFooterLinks[linkIndex] = tmp
 
-  const tmpIndex = footerLinks[targetIndex].index
-  footerLinks[targetIndex].index = footerLinks[linkIndex].index
-  footerLinks[linkIndex].index = tmpIndex
+  const tmpIndex = groupFooterLinks[targetIndex].index
+  groupFooterLinks[targetIndex].index = groupFooterLinks[linkIndex].index
+  groupFooterLinks[linkIndex].index = tmpIndex
 
-  store.mark({ footerLinks })
+  store.mark({ footerLinks: [...restFooterLinks, ..._reindex(groupFooterLinks)] })
 }
 
 const _reindex = (links: TLinkItem[]): TLinkItem[] => {
@@ -32,17 +36,21 @@ const _reindex = (links: TLinkItem[]): TLinkItem[] => {
 }
 
 const _move2Edge = (link: TLinkItem, opt: 'top' | 'bottom'): void => {
+  const { group } = link
   const { footerLinks } = store.footerSettings
 
-  const curLinkItemIndex = findIndex((item) => item.index === link.index, footerLinks)
-  const curLinkItem = clone(footerLinks[curLinkItemIndex])
+  const groupFooterLinks = filter((item: TLinkItem) => item.group === group, footerLinks)
+  const restFooterLinks = reject((item: TLinkItem) => item.group === group, footerLinks)
+
+  const curLinkItemIndex = findIndex((item) => item.index === link.index, groupFooterLinks)
+  const curLinkItem = clone(groupFooterLinks[curLinkItemIndex])
 
   const newFooterLinks =
     opt === 'top'
-      ? [curLinkItem, ...remove(curLinkItemIndex, 1, footerLinks)]
-      : [...remove(curLinkItemIndex, 1, footerLinks), curLinkItem]
+      ? [curLinkItem, ...remove(curLinkItemIndex, 1, groupFooterLinks)]
+      : [...remove(curLinkItemIndex, 1, groupFooterLinks), curLinkItem]
 
-  store.mark({ footerLinks: _reindex(newFooterLinks) })
+  store.mark({ footerLinks: [...restFooterLinks, ..._reindex(newFooterLinks)] })
 }
 
 export const moveUpLink = (link: TLinkItem): void => _moveLink(link, 'up')
