@@ -224,3 +224,7 @@ export type TLinkItem = {
   group?: string
   groupIndex?: number
 }
+
+export type TGroupedLinks = {
+  [key: string]: TLinkItem[]
+}

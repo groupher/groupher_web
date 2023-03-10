@@ -81,6 +81,7 @@ export type {
   TSocialType,
   TSocialItem,
   TLinkItem,
+  TGroupedLinks,
 } from './utils'
 
 export type { TGQLError } from './graphql'

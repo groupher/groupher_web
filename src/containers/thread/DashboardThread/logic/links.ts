@@ -1,6 +1,6 @@
 import { keys, findIndex, clone, remove, filter, reject } from 'ramda'
 
-import type { TLinkItem } from '@/spec'
+import type { TLinkItem, TGroupedLinks } from '@/spec'
 import { sortByIndex, groupByKey } from '@/utils/helper'
 import { toJS } from '@/utils/mobx'
 
@@ -67,10 +67,6 @@ export const moveLink2Bottom = (link: TLinkItem): void => _moveLink2Edge(link, '
 /**
  * move group actions
  */
-
-type TGroupedLinks = {
-  [key: string]: TLinkItem[]
-}
 
 const _reindexGroup = (groupKeys: string[], groupedLinks: TGroupedLinks): TGroupedLinks => {
   for (let index = 0; index < groupKeys.length; index += 1) {
