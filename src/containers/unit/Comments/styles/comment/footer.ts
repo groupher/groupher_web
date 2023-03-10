@@ -9,8 +9,8 @@ import css, { theme } from '@/utils/css'
 export const Wrapper = styled.div`
   ${css.flexColumn()};
   margin-bottom: 5px;
-  margin-top: -10px;
-  margin-left: -3px;
+  margin-top: -12px;
+  margin-left: -8px;
 
   ${css.media.mobile`
     margin-left: -8px;

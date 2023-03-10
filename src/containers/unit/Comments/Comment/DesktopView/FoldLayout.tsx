@@ -51,8 +51,6 @@ const FoldLayout: FC<TProps> = ({ data, avatarLayout, isReply = false }) => {
         <IllegalBar illegalReason={illegalReason} illegalWords={illegalWords} isFold />
       )}
 
-      <SpaceGrow />
-
       {data.repliesCount > 0 && <RepliesHint>[ {data.repliesCount} 条回复 ]</RepliesHint>}
 
       {isSolution && (

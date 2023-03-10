@@ -27,7 +27,7 @@ export const Button = styled.div`
   border-radius: 10px;
   padding: 7px 10px;
   padding-bottom: 7px;
-  margin-bottom: 7px;
+  margin-bottom: 8px;
 
   &:hover {
     border-color: ${theme('lightText')};

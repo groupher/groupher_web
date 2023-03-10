@@ -22,13 +22,13 @@ export const LeftPart = styled.div`
 export const RightPart = styled.div`
   height: 100%;
   width: 200px;
-  margin-top: 28px;
+  margin-top: 37px;
   padding-right: 15px;
 `
 export const Topping = styled.div`
   ${css.flex('align-both')};
   margin-left: -2px;
-  margin-bottom: 5px;
+  margin-bottom: 16px;
   margin-top: -5px;
   position: relative;
 `

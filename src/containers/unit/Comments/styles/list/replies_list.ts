@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/utils/css'
 
 export const Wrapper = styled.div`
-  margin-left: 20px;
+  margin-left: 15px;
 
   ${css.media.mobile`
     margin-left: 12px;

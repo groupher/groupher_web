@@ -112,4 +112,8 @@ export const CreateDate = styled.div`
   color: ${theme('comment.floor')};
   font-size: 12px;
   margin-left: 2px;
+
+  ${css.media.mobile`
+    font-size: 11px;
+  `};
 `

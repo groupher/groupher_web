@@ -113,8 +113,6 @@ export const CommentBodyInfo = styled.div`
   `};
 `
 export const CommentContent = styled.div`
-  margin-left: 4px;
-
   ${css.media.mobile`
     margin-left: -2px;
   `};

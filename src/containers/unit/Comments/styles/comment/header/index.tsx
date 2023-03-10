@@ -12,7 +12,10 @@ export const Wrapper = styled.div`
 export const HeaderBaseInfo = styled.div`
   ${css.flexColumn()};
   width: 100%;
-  margin-left: 5px;
+
+  ${css.media.mobile`
+    margin-left: 5px;
+  `};
 `
 export const BaseInfo = styled.div`
   ${css.flexGrow('align-center')};
@@ -37,4 +40,8 @@ export const CreateDate = styled.div`
   font-size: 12px;
   margin-left: 2px;
   opacity: 0.8;
+
+  ${css.media.mobile`
+    font-size: 10px;
+  `};
 `

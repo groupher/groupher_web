@@ -17,6 +17,7 @@ export const Wrapper = styled.div`
   padding-top: 20px;
   position: relative;
   background: transparent;
+  margin-left: -15px;
   cursor: pointer;
 `
 
@@ -55,8 +56,9 @@ export const Avatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
 `
 export const CommentBody = styled.div`
   color: ${theme('article.digest')};
-  ${css.cutRest('320px')};
+  ${css.lineClamp(1)};
   font-size: 14px;
+  flex-grow: 1;
 `
 export const RepliesHint = styled.div`
   color: ${theme('article.info')};
@@ -64,7 +66,10 @@ export const RepliesHint = styled.div`
   margin-right: 6px;
 `
 export const CreateDate = styled(HeaderCreateDate)`
+  ${css.flex('justify-end')};
+  min-width: 40px;
   margin-right: 4px;
+  word-break: keep-all;
 `
 export const PinState = styled.div`
   position: absolute;

@@ -23,7 +23,7 @@ export const MobileAvatar = styled.div`
     display: block;
     margin-top: 3px;
     margin-right: 10px;
-`};
+  `};
 `
 
 export const CommentHeaderFirst = styled.div`
