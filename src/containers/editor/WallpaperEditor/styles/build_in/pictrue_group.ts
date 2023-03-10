@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TActive } from '@/spec'
 import Img from '@/Img'
 import css, { theme } from '@/utils/css'
-import CheckedSVG from '@/icons/Checked'
+import CheckedSVG from '@/icons/CheckBold'
 import CircleArrowSVG from '@/icons/CircleArrow'
 
 export const Wrapper = styled.div<{ showMore: boolean }>`
@@ -49,23 +49,21 @@ export const Image = styled(Img)<{ height?: string }>`
 `
 
 export const ActiveSign = styled.div`
-  ${css.size(20)};
-  background: white;
+  ${css.circle(20)};
+  background: ${theme('article.title')};
   position: absolute;
-  top: -1px;
-  right: -1px;
-  border-top-right-radius: 4px;
-  border-bottom-left-radius: 10px;
+  top: -5px;
+  right: -2px;
   z-index: 3;
   border: 1px solid;
   border-color: ${theme('article.title')};
 `
 export const CheckIcon = styled(CheckedSVG)`
-  fill: ${theme('article.title')};
-  ${css.size(16)};
+  fill: white;
+  ${css.size(14)};
   position: absolute;
-  top: 2px;
-  left: 2px;
+  top: 3px;
+  left: 3px;
 `
 
 export const ShowMoreMask = styled.div<{ showMore: boolean }>`

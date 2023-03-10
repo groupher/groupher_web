@@ -6,6 +6,7 @@ import METRIC from '@/constant/metric'
 import css, { theme } from '@/utils/css'
 
 import Img from '@/Img'
+import ArrowSVG from '@/icons/Arrow'
 import DotDivider from '@/widgets/DotDivider'
 
 export const Wrapper = styled.div<{ metric: TMetric }>`
@@ -25,9 +26,35 @@ export const RightPart = styled.div`
   padding-right: 15px;
 `
 export const Topping = styled.div`
-  ${css.flex('align-center')};
-  margin-bottom: 12px;
+  ${css.flex('align-both')};
+  margin-left: -2px;
+  margin-bottom: 5px;
+  margin-top: -5px;
   position: relative;
+`
+export const BackBtnWrapper = styled.div`
+  ${css.flex('align-both')};
+  padding: 2px 5px;
+  border-radius: 8px;
+  color: ${theme('article.digest')};
+
+  &:hover {
+    background: ${theme('hoverBg')};
+    color: ${theme('article.title')};
+    cursor: pointer;
+  }
+
+  transition: all 0.2s;
+`
+export const ArrowIcon = styled(ArrowSVG)`
+  ${css.size(12)};
+  fill: ${theme('article.digest')};
+  margin-right: 5px;
+  opacity: 0.6;
+
+  ${BackBtnWrapper}:hover & {
+    opacity: 1;
+  }
 `
 export const CommunityInfo = styled.div`
   ${css.flex('align-start', 'justify-center')};

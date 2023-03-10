@@ -10,9 +10,9 @@ import METRIC from '@/constant/metric'
 import { buildLog } from '@/utils/logger'
 
 // import ArchivedSign from '@/widgets/ArchivedSign'
+import { SpaceGrow } from '@/widgets/Common'
 import Upvote from '@/widgets/Upvote'
 import ArticleBaseStats from '@/widgets/ArticleBaseStats'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
 // import ArticleBelongCommunity from '@/widgets/ArticleBelongCommunity'
 // import ArticleMenu from '@/widgets/ArticleMenu'
@@ -20,6 +20,8 @@ import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
 import {
   Wrapper,
+  BackBtnWrapper,
+  ArrowIcon,
   LeftPart,
   RightPart,
   Topping,
@@ -45,9 +47,11 @@ const PostLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
     <Wrapper metric={metric}>
       <LeftPart>
         <Topping>
-          <ArrowButton leftLayout size="small" left="-5" onClick={() => Router.push('/home')}>
+          <BackBtnWrapper onClick={() => Router.push('/home')}>
+            <ArrowIcon />
             讨论区
-          </ArrowButton>
+          </BackBtnWrapper>
+          <SpaceGrow />
         </Topping>
         <Title>
           {title}
