@@ -19,7 +19,7 @@ const Footer: FC<TProps> = ({ settings, touched }) => {
       <Templates settings={settings} isTouched={touched.footerLayout} />
       <br />
       <br />
-      <Editor footerLayout={settings.footerLayout} />
+      <Editor settings={settings} />
     </Wrapper>
   )
 }

@@ -1,7 +1,14 @@
 import { FC } from 'react'
 
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+
+import type { TLinkItem } from '@/spec'
+
+import { sortByIndex } from '@/utils/helper'
+
 import SocialEditor from '@/widgets/SocialEditor'
 
+import { DEFAULT_LINK_ITEMS } from '../../constant'
 import BrandInfo from './BrandInfo'
 import LinkEditor from './LinkEditor'
 
@@ -14,18 +21,18 @@ import {
 } from '../../styles/footer/editors/simple'
 
 const Simple: FC = () => {
+  const [parent] = useAutoAnimate({ duration: 220 })
+
   return (
     <Wrapper>
       <LeftWrapper>
         <BrandInfo />
       </LeftWrapper>
-      <CenterWrapper>
+      <CenterWrapper ref={parent}>
         <Title>链接</Title>
-        <LinkEditor />
-        <LinkEditor />
-        <LinkEditor editing />
-        <LinkEditor />
-        <LinkEditor />
+        {sortByIndex(DEFAULT_LINK_ITEMS).map((item) => (
+          <LinkEditor key={item.index} linkItem={item as TLinkItem} />
+        ))}
       </CenterWrapper>
       <RightWrapper>
         <Title>社交媒体</Title>

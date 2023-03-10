@@ -282,10 +282,11 @@ const DashboardThread = T.model('DashboardThread', {
 
     get footerSettings(): TFooterSettings {
       const slf = self as TStore
-      const { footerLayout } = slf
+      const { footerLayout, footerLinks } = slf
 
       return {
         footerLayout: toJS(footerLayout),
+        footerLinks: toJS(footerLinks),
         saving: slf.saving,
       }
     },

@@ -49,15 +49,12 @@ const FriendsGallery: FC<TProps> = ({ items }) => {
               </IntroHead>
             </Header>
             <LinkWrapper>
-              <Linker src={item.addr} maxLength={22} />
+              <Linker src={item.addr} />
             </LinkWrapper>
           </Block>
         ))}
       </BlockWrapper>
-      <ExchangeButton
-        href="mailto:groupher@outlook.com?subject=交换友链"
-        target="_blank"
-      >
+      <ExchangeButton href="mailto:groupher@outlook.com?subject=交换友链" target="_blank">
         交换友链
       </ExchangeButton>
     </Wrapper>

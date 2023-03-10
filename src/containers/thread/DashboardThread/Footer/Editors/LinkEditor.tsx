@@ -1,18 +1,24 @@
 import { FC } from 'react'
 
+import type { TLinkItem } from '@/spec'
+
+import { buildLog } from '@/utils/logger'
+
 import { Space, SpaceGrow } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'
 import Linker from '@/widgets/Linker'
 
-import BlockMenu from './BlockMenu'
+import LinkMenu from './LinkMenu'
 
 import {
   Wrapper,
   ReadonlyWrapper,
-  ReadOnlyFields,
+  ReadOnlyHeader,
   EditWrapper,
   ActionWrapper,
   EditPenIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
   SettingIcon,
   EditItem,
   EditLabel,
@@ -21,64 +27,74 @@ import {
   NotifyLabel,
 } from '../../styles/footer/editors/link_editor'
 
-type TProps = {
-  editing?: boolean
-  alignRight?: boolean
-  notifyText?: string
+const DEFAULT_LINK = {
+  title: '讨论',
+  addr: 'https://groupher.com',
 }
 
-const LinkEditor: FC<TProps> = ({ editing = false, alignRight = false, notifyText = '' }) => {
+/* eslint-disable-next-line */
+const log = buildLog('C:Dashboard:LinkEditor')
+
+type TProps = {
+  editing?: boolean
+  notifyText?: string
+  linkItem?: TLinkItem
+  isFirst?: boolean
+  isLast?: boolean
+
+  moveLinkUp?: (linkItem: TLinkItem) => void
+  moveLinkDown?: (linkItem: TLinkItem) => void
+
+  moveLink2Top?: (linkItem: TLinkItem) => void
+  moveLink2Bottom?: (linkItem: TLinkItem) => void
+}
+
+const LinkEditor: FC<TProps> = ({
+  editing = false,
+  notifyText = '',
+  linkItem = DEFAULT_LINK,
+  isFirst = false,
+  isLast = false,
+  moveLinkUp = log,
+  moveLinkDown = log,
+
+  moveLink2Top = log,
+  moveLink2Bottom = log,
+}) => {
   return (
     <Wrapper>
       <ReadonlyWrapper editing={editing}>
-        {!alignRight ? (
-          <>
-            <ReadOnlyFields alignRight={alignRight}>
-              <Label>
-                讨论 <Space right={6} /> {notifyText && <NotifyLabel>New</NotifyLabel>}
-              </Label>
-              <Linker src="https://groupher.com" left={-2} top={5} external />
-            </ReadOnlyFields>
-            <SpaceGrow />
-            <ActionWrapper editing={editing}>
-              <EditPenIcon />
-
-              <Tooltip
-                content={<BlockMenu />}
-                placement="bottom-end"
-                trigger="mouseenter focus"
-                offset={[4, 0]}
-                hideOnClick
-                noPadding
-              >
-                <SettingIcon />
-              </Tooltip>
-            </ActionWrapper>
-          </>
-        ) : (
-          <>
-            <ActionWrapper editing={editing}>
-              <Tooltip
-                content={<BlockMenu />}
-                placement="bottom-start"
-                trigger="mouseenter focus"
-                offset={[0, 0]}
-                hideOnClick
-                noPadding
-              >
-                <SettingIcon />
-              </Tooltip>
-              <EditPenIcon />
-            </ActionWrapper>
-            <SpaceGrow />
-            <ReadOnlyFields alignRight={alignRight}>
-              <Label>
-                讨论 <Space right={6} />
-              </Label>
-              <Linker src="https://groupher.com" left={-2} top={5} />
-            </ReadOnlyFields>
-          </>
-        )}
+        <ReadOnlyHeader>
+          <Label>
+            {linkItem.title} <Space right={6} /> {notifyText && <NotifyLabel>New</NotifyLabel>}
+          </Label>
+          <SpaceGrow />
+          <ActionWrapper editing={editing}>
+            {!isFirst && <ArrowUpIcon onClick={() => moveLinkUp(linkItem)} />}
+            {!isLast && <ArrowDownIcon onClick={() => moveLinkDown(linkItem)} />}
+            <EditPenIcon />
+            <Tooltip
+              content={
+                <LinkMenu
+                  isFirst={isFirst}
+                  isLast={isLast}
+                  move2Top={() => moveLink2Top(linkItem)}
+                  move2Bottom={() => moveLink2Bottom(linkItem)}
+                />
+              }
+              placement="bottom-end"
+              trigger="mouseenter focus"
+              offset={[4, 0]}
+              delay={300}
+              hideOnClick
+              noPadding
+            >
+              <SettingIcon />
+            </Tooltip>
+          </ActionWrapper>
+        </ReadOnlyHeader>
+        <SpaceGrow />
+        <Linker src={linkItem.addr} left={-2} top={5} external />
       </ReadonlyWrapper>
       {editing && (
         <EditWrapper>

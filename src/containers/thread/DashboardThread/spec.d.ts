@@ -14,7 +14,6 @@ import type {
   TThread,
   TSizeSML,
   THelpLayout,
-  THelpFAQLayout,
   TDashboardPath,
   TKanbanLayout,
   TWallpaperInfo,
@@ -25,6 +24,7 @@ import type {
   TBroadcastConfig,
   TDashboardBroadcastRoute,
   TDashboardAliasRoute,
+  TLinkItem,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'MANAGEMENT' | 'INTEGRATE'
@@ -51,6 +51,7 @@ export type TTagSettings = {
 }
 export type TFooterSettings = {
   footerLayout: TFooterLayout
+  footerLinks: TLinkItem[]
   saving: boolean
 }
 

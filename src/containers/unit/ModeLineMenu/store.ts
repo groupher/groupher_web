@@ -6,7 +6,6 @@
 import { prop, trim, filter, contains } from 'ramda'
 
 import type { TRootStore, TArticle, TCommunity } from '@/spec'
-import { sortByIndex } from '@/utils/helper'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { notEmpty } from '@/utils/validator'
 
@@ -43,7 +42,7 @@ const ModeLineMenu = T.model('ModeLineMenu', {
         )
       }
 
-      return subscribedCommunities ? sortByIndex(subscribedCommunities.entries) : []
+      return subscribedCommunities ? subscribedCommunities.entries : []
     },
   }))
   .actions((self) => ({

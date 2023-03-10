@@ -327,3 +327,98 @@ export const ALIAS_TABS = [
     raw: DASHBOARD_ALIAS_ROUTE.KANBAN,
   },
 ]
+
+export const DEFAULT_LINK_ITEMS = [
+  {
+    title: '讨论区',
+    addr: 'https://groupher.com/home/post',
+    index: 0,
+    raw: '0',
+    group: 'Group 0',
+    groupIndex: 0,
+  },
+  {
+    title: '看板',
+    addr: 'https://groupher.com/home/kanban',
+    index: 1,
+    raw: '1',
+    group: 'Group 0',
+    groupIndex: 0,
+  },
+  {
+    title: '更新日志',
+    addr: 'https://groupher.com/home/changelog',
+    index: 2,
+    raw: '2',
+    group: 'Group 0',
+    groupIndex: 0,
+  },
+  {
+    title: '帮助台',
+    addr: 'https://groupher.com/home/help',
+    index: 3,
+    raw: '3',
+    group: 'Group 0',
+    groupIndex: 0,
+  },
+  {
+    title: '关于',
+    addr: 'https://groupher.com/home/about',
+    index: 4,
+    raw: '4',
+    group: 'Group 0',
+    groupIndex: 0,
+  },
+
+  // group 1
+  {
+    title: '布局设置',
+    addr: 'https://groupher.com/home/post',
+    index: 0,
+    raw: '0',
+    group: 'Group 1',
+    groupIndex: 1,
+  },
+  {
+    title: '看板设置',
+    addr: 'https://groupher.com/home/kanban',
+    index: 1,
+    raw: '1',
+    group: 'Group 1',
+    groupIndex: 1,
+  },
+  {
+    title: '更新日志设置',
+    addr: 'https://groupher.com/home/changelog',
+    index: 2,
+    raw: '2',
+    group: 'Group 1',
+    groupIndex: 1,
+  },
+
+  //
+  {
+    title: '与 xxx 的对比',
+    addr: 'https://groupher.com/home/post',
+    index: 0,
+    raw: '0',
+    group: 'Group 2',
+    groupIndex: 2,
+  },
+  {
+    title: '帮助中心',
+    addr: 'https://groupher.com/home/kanban',
+    index: 1,
+    raw: '1',
+    group: 'Group 2',
+    groupIndex: 2,
+  },
+  {
+    title: '联系我们',
+    addr: 'https://groupher.com/home/changelog',
+    index: 2,
+    raw: '2',
+    group: 'Group 2',
+    groupIndex: 2,
+  },
+]

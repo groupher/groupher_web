@@ -41,6 +41,20 @@ const ArrowRightIcon = styled(ArrowLeftIcon)`
   transform: rotate(-180deg);
 `
 
+const Arrow2LeftIcon = styled(Arrow2TopSVG)`
+  ${css.size(12)};
+  fill: ${theme('article.digest')};
+  margin-left: -1px;
+  transform: rotate(-90deg);
+
+  ${Wrapper}:hover & {
+    color: ${theme('article.title')};
+  }
+`
+const Arrow2RightIcon = styled(Arrow2LeftIcon)`
+  transform: rotate(90deg);
+`
+
 const ArrowUpIcon = styled(ArrowSVG)`
   ${css.size(10)};
   fill: ${theme('article.digest')};
@@ -69,7 +83,9 @@ const Arrow2BottomIcon = styled(Arrow2TopIcon)`
 
 export const MenuIcon = {
   [MENU.ARROW_LEFT]: ArrowLeftIcon,
+  [MENU.ARROW_TO_LEFT]: Arrow2LeftIcon,
   [MENU.ARROW_RIGHT]: ArrowRightIcon,
+  [MENU.ARROW_TO_RIGHT]: Arrow2RightIcon,
 
   [MENU.ARROW_UP]: ArrowUpIcon,
   [MENU.ARROW_DOWN]: ArrowDownIcon,

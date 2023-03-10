@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-// import { } from 'ramda'
 
 import type { TEditValue, TTag } from '@/spec'
 import { COLOR_NAME } from '@/constant/colors'
@@ -9,10 +8,11 @@ import { buildLog } from '@/utils/logger'
 import { updateEditing, toJS } from '@/utils/mobx'
 import asyncSuit from '@/utils/async'
 
-import type { TStore } from './store'
-import type { TSettingField, TAlias } from './spec'
+import type { TStore } from '../store'
+import type { TSettingField, TAlias } from '../spec'
 
-import { SETTING_FIELD } from './constant'
+import { SETTING_FIELD } from '../constant'
+import { init as linksLogicInit } from './links'
 
 const { SR71, $solver, asyncRes } = asyncSuit
 const sr71$ = new SR71({
@@ -130,6 +130,7 @@ const ErrSolver = []
 export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
+    linksLogicInit(store)
     log('useInit: ', store)
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
 

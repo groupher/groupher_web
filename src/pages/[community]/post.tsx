@@ -64,12 +64,12 @@ const loader = async (context, opt = {}) => {
     ? gqClient.request(ssrPagedArticleSchema(thread), filter)
     : {}
 
-  const subscribedCommunities = gqClient.request(P.subscribedCommunities, {
-    filter: {
-      page: 1,
-      size: PAGE_SIZE.M,
-    },
-  })
+  // const subscribedCommunities = gqClient.request(P.subscribedCommunities, {
+  //   filter: {
+  //     page: 1,
+  //     size: PAGE_SIZE.M,
+  //   },
+  // })
 
   return {
     filter,
@@ -77,7 +77,7 @@ const loader = async (context, opt = {}) => {
     ...(await sessionState),
     ...(await curCommunity),
     ...(await pagedArticles),
-    ...(await subscribedCommunities),
+    // ...(await subscribedCommunities),
   }
 }
 

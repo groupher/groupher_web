@@ -6,23 +6,16 @@ import PlusSVG from '@/icons/Plus'
 export const Wrapper = styled.div`
   ${css.flexColumn('align-start', 'justify-between')};
 `
-
-export const Title = styled.div`
-  color: ${theme('article.title')};
-  font-size: 14px;
-`
 export const TopWrapper = styled.div`
   ${css.flex('align-start')};
   width: 100%;
   padding: 10px 20px;
-  padding-left: 5px;
-  margin-bottom: 80px;
+  padding-left: 0;
+  margin-bottom: 50px;
 `
-
 export const TopLeft = styled.div`
   width: 45%;
 `
-
 export const TopRight = styled.div`
   ${css.flexColumn('align-both')};
   flex-grow: 1;
@@ -47,21 +40,21 @@ export const ActionRow = styled.div`
   ${css.flex('justify-start', 'align-center')};
   width: 100%;
   margin-bottom: 30px;
-  margin-left: -5px;
+  margin-left: -2px;
 `
 export const PlusIcon = styled(PlusSVG)`
   ${css.size(12)};
   fill: ${theme('article.digest')};
-  margin-right: 6px;
+  margin-left: 6px;
 `
 export const LinkGroup = styled.div`
   ${css.flex('justify-between')};
-  width: 100%;
+  width: calc(100% + 50px);
 `
-export const ColumnWrapper = styled.div<{ alignRight?: boolean }>`
-  ${({ alignRight }) =>
-    !alignRight ? css.flexColumn('align-start') : css.flexColumn('align-end')};
+export const ColumnWrapper = styled.div`
+  ${css.flexColumn()};
+
   gap: 25px 0;
-  width: 32%;
+  width: 30%;
   height: 100%;
 `

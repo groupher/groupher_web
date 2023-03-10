@@ -71,12 +71,12 @@ const Full: FC = () => {
             <LinkEditor />
             <LinkEditor />
           </ColumnWrapper>
-          <ColumnWrapper alignRight>
+          <ColumnWrapper>
             <Title>社交媒体</Title>
-            <LinkEditor alignRight />
-            <LinkEditor alignRight editing />
-            <LinkEditor alignRight />
-            <LinkEditor alignRight />
+            <LinkEditor />
+            <LinkEditor />
+            <LinkEditor />
+            <LinkEditor />
           </ColumnWrapper>
         </LinkGroup>
       </BottomWrapper>

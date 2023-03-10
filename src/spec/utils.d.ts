@@ -215,3 +215,16 @@ export type TSocial = {
   title: string
   raw: string
 }
+
+export type TLinkItem = {
+  index: number
+  title: string
+  addr: string
+  raw?: string
+  group?: string
+  groupIndex?: number
+}
+
+export type TGroupedLinks = {
+  [key: string]: TLinkItem[]
+}
