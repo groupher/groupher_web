@@ -46,7 +46,7 @@ const Linker: FC<TProps> = ({
         content={<PopHint>{src}</PopHint>}
         placement="bottom"
         hideOnClick={false}
-        delay={300}
+        delay={500}
         offset={[-10, 0] as [number, number]}
         noPadding
       >

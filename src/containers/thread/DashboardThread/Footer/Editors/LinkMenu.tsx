@@ -5,7 +5,7 @@ import { buildLog } from '@/utils/logger'
 import MenuItem from '@/widgets/MenuItem'
 import MENU from '@/constant/menu'
 
-import { Wrapper } from '../../styles/footer/editors/block_menu'
+import { Wrapper } from '../../styles/footer/editors/link_menu'
 
 const log = buildLog('C:Dashboard:LinkEditor')
 
@@ -17,7 +17,7 @@ type TProps = {
   move2Bottom?: () => void
 }
 
-const BlockMenu: FC<TProps> = ({
+const LinkMenu: FC<TProps> = ({
   isFirst = false,
   isLast = false,
   move2Top = log,
@@ -39,4 +39,4 @@ const BlockMenu: FC<TProps> = ({
   )
 }
 
-export default BlockMenu
+export default LinkMenu

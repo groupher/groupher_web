@@ -13,6 +13,7 @@ import { sortByIndex, groupByKey } from '@/utils/helper'
 import BrandInfo from '../BrandInfo'
 import LinkEditor from '../LinkEditor'
 
+import GroupHead from './GroupHead'
 import MainEditor from './MainEditor'
 
 import type { TFooterEditType } from '../../../spec'
@@ -20,7 +21,6 @@ import { FOOTER_EDIT_TYPE } from '../../../constant'
 
 import {
   Wrapper,
-  Title,
   TopWrapper,
   LinkGroup,
   BottomWrapper,
@@ -30,7 +30,16 @@ import {
   TopLeft,
   TopRight,
 } from '../../../styles/footer/editors/full'
-import { moveUpLink, moveDownLink, move2TopLink, move2BottomLink } from '../../../logic/links'
+import {
+  moveLinkUp,
+  moveLinkDown,
+  moveLink2Top,
+  moveLink2Bottom,
+  moveGroup2Left,
+  moveGroup2Right,
+  moveGroup2EdgeLeft,
+  moveGroup2EdgeRight,
+} from '../../../logic/links'
 
 type TProps = {
   links: TLinkItem[]
@@ -41,6 +50,7 @@ const Full: FC<TProps> = ({ links }) => {
   const [editType, setEditType] = useState<TFooterEditType>(FOOTER_EDIT_TYPE.LOGO)
 
   const [animateRef] = useAutoAnimate()
+  const [groupAnimateRef] = useAutoAnimate()
 
   // @ts-ignore
   const groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
@@ -68,26 +78,34 @@ const Full: FC<TProps> = ({ links }) => {
       <BottomWrapper>
         <ActionRow>
           <Button size="small" ghost space={10}>
+            添加组
             <PlusIcon />
-            添加列
           </Button>
         </ActionRow>
-        <LinkGroup>
-          {groupKeys.map((groupKey) => {
+        <LinkGroup ref={groupAnimateRef}>
+          {groupKeys.map((groupKey: string, index) => {
             const curGroupLinks = groupedLinks[groupKey]
 
             return (
-              <ColumnWrapper key={groupKey as string} ref={animateRef}>
-                <Title>{groupKey}</Title>
+              <ColumnWrapper key={groupKey} ref={animateRef}>
+                <GroupHead
+                  title={groupKey as string}
+                  moveLeft={() => moveGroup2Left(groupKey)}
+                  moveRight={() => moveGroup2Right(groupKey)}
+                  moveEdgeLeft={() => moveGroup2EdgeLeft(groupKey)}
+                  moveEdgeRight={() => moveGroup2EdgeRight(groupKey)}
+                  isEdgeLeft={index === 0}
+                  isEdgeRight={index === groupKeys.length - 1}
+                />
                 {/* @ts-ignore */}
                 {sortByIndex(curGroupLinks).map((item, index) => (
                   <LinkEditor
                     key={`${item.title}${item.addr}`}
                     linkItem={item as TLinkItem}
-                    moveUpLink={moveUpLink}
-                    moveDownLink={moveDownLink}
-                    move2TopLink={move2TopLink}
-                    move2BottomLink={move2BottomLink}
+                    moveLinkUp={moveLinkUp}
+                    moveLinkDown={moveLinkDown}
+                    moveLink2Top={moveLink2Top}
+                    moveLink2Bottom={moveLink2Bottom}
                     isFirst={index === 0}
                     isLast={index === curGroupLinks.length - 1}
                   />

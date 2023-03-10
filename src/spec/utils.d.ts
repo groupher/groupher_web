@@ -222,4 +222,5 @@ export type TLinkItem = {
   addr: string
   raw?: string
   group?: string
+  groupIndex?: number
 }

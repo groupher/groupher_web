@@ -2,9 +2,9 @@ import type { TMenu } from '@/spec'
 
 const MENU = {
   ARROW_LEFT: 'ARROW_LEFT',
-  // ARROW_TO_LEFT: 'ARROW_TO_LEFT',
+  ARROW_TO_LEFT: 'ARROW_TO_LEFT',
   ARROW_RIGHT: 'ARROW_RIGHT',
-  // ARROW_TO_RIGHT: 'ARROW_TO_RIGHT',
+  ARROW_TO_RIGHT: 'ARROW_TO_RIGHT',
   //
 
   ARROW_UP: 'ARROW_UP',

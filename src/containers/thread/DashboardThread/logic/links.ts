@@ -1,11 +1,16 @@
-import { findIndex, clone, remove, filter, reject } from 'ramda'
+import { keys, findIndex, clone, remove, filter, reject } from 'ramda'
 
 import type { TLinkItem } from '@/spec'
+import { sortByIndex, groupByKey } from '@/utils/helper'
+import { toJS } from '@/utils/mobx'
 
 import type { TStore } from '../store'
 
 let store: TStore | undefined
 
+/**
+ * move links actions
+ */
 const _moveLink = (link: TLinkItem, opt: 'up' | 'down'): void => {
   const { group } = link
   const { footerLinks } = store.footerSettings
@@ -35,7 +40,7 @@ const _reindex = (links: TLinkItem[]): TLinkItem[] => {
   }))
 }
 
-const _move2Edge = (link: TLinkItem, opt: 'top' | 'bottom'): void => {
+const _moveLink2Edge = (link: TLinkItem, opt: 'top' | 'bottom'): void => {
   const { group } = link
   const { footerLinks } = store.footerSettings
 
@@ -53,13 +58,89 @@ const _move2Edge = (link: TLinkItem, opt: 'top' | 'bottom'): void => {
   store.mark({ footerLinks: [...restFooterLinks, ..._reindex(newFooterLinks)] })
 }
 
-export const moveUpLink = (link: TLinkItem): void => _moveLink(link, 'up')
-export const moveDownLink = (link: TLinkItem): void => _moveLink(link, 'down')
+export const moveLinkUp = (link: TLinkItem): void => _moveLink(link, 'up')
+export const moveLinkDown = (link: TLinkItem): void => _moveLink(link, 'down')
 
-export const move2TopLink = (link: TLinkItem): void => _move2Edge(link, 'top')
-export const move2BottomLink = (link: TLinkItem): void => _move2Edge(link, 'bottom')
+export const moveLink2Top = (link: TLinkItem): void => _moveLink2Edge(link, 'top')
+export const moveLink2Bottom = (link: TLinkItem): void => _moveLink2Edge(link, 'bottom')
 
-export const move2Group = () => {
+/**
+ * move group actions
+ */
+
+type TGroupedLinks = {
+  [key: string]: TLinkItem[]
+}
+
+const _reindexGroup = (groupKeys: string[], groupedLinks: TGroupedLinks): TGroupedLinks => {
+  for (let index = 0; index < groupKeys.length; index += 1) {
+    const gkey = groupKeys[index]
+
+    groupedLinks[gkey] = groupedLinks[gkey].map((item) => ({
+      ...item,
+      groupIndex: index,
+    }))
+  }
+
+  return groupedLinks
+}
+
+const _moveGroup = (group: string, opt: 'left' | 'right' | 'edge-left' | 'edge-right'): void => {
+  const { footerLinks } = store
+
+  const _groupedLinks = groupByKey(sortByIndex(toJS(footerLinks), 'groupIndex'), 'group')
+  const groupKeys = keys(_groupedLinks) as string[]
+
+  const groupedLinks = _reindexGroup(groupKeys, _groupedLinks)
+  const curIndex = groupedLinks[group][0].groupIndex
+
+  let nextIndex
+
+  switch (opt) {
+    case 'left': {
+      nextIndex = curIndex - 1
+      break
+    }
+
+    case 'right': {
+      nextIndex = curIndex + 1
+      break
+    }
+
+    case 'edge-left': {
+      nextIndex = 0
+      break
+    }
+
+    default: {
+      nextIndex = groupKeys.length - 1
+      break
+    }
+  }
+
+  groupedLinks[group] = groupedLinks[group].map((item) => ({
+    ...item,
+    groupIndex: nextIndex,
+  }))
+
+  groupedLinks[groupKeys[nextIndex]] = groupedLinks[groupKeys[nextIndex]].map((item) => ({
+    ...item,
+    groupIndex: curIndex,
+  }))
+
+  const newFooterLinks = []
+  groupKeys.forEach((key) => newFooterLinks.push(...groupedLinks[key]))
+
+  store.mark({ footerLinks: newFooterLinks })
+}
+
+export const moveGroup2Left = (group: string): void => _moveGroup(group, 'left')
+export const moveGroup2Right = (group: string): void => _moveGroup(group, 'right')
+
+export const moveGroup2EdgeLeft = (group: string): void => _moveGroup(group, 'edge-left')
+export const moveGroup2EdgeRight = (group: string): void => _moveGroup(group, 'edge-right')
+
+export const moveLink2Group = () => {
   return []
 }
 

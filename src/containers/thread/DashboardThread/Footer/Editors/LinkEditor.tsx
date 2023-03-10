@@ -8,7 +8,7 @@ import { Space, SpaceGrow } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'
 import Linker from '@/widgets/Linker'
 
-import BlockMenu from './BlockMenu'
+import LinkMenu from './LinkMenu'
 
 import {
   Wrapper,
@@ -42,11 +42,11 @@ type TProps = {
   isFirst?: boolean
   isLast?: boolean
 
-  moveUpLink?: (linkItem: TLinkItem) => void
-  moveDownLink?: (linkItem: TLinkItem) => void
+  moveLinkUp?: (linkItem: TLinkItem) => void
+  moveLinkDown?: (linkItem: TLinkItem) => void
 
-  move2TopLink?: (linkItem: TLinkItem) => void
-  move2BottomLink?: (linkItem: TLinkItem) => void
+  moveLink2Top?: (linkItem: TLinkItem) => void
+  moveLink2Bottom?: (linkItem: TLinkItem) => void
 }
 
 const LinkEditor: FC<TProps> = ({
@@ -55,11 +55,11 @@ const LinkEditor: FC<TProps> = ({
   linkItem = DEFAULT_LINK,
   isFirst = false,
   isLast = false,
-  moveUpLink = log,
-  moveDownLink = log,
+  moveLinkUp = log,
+  moveLinkDown = log,
 
-  move2TopLink = log,
-  move2BottomLink = log,
+  moveLink2Top = log,
+  moveLink2Bottom = log,
 }) => {
   return (
     <Wrapper>
@@ -70,21 +70,22 @@ const LinkEditor: FC<TProps> = ({
           </Label>
           <SpaceGrow />
           <ActionWrapper editing={editing}>
-            {!isFirst && <ArrowUpIcon onClick={() => moveUpLink(linkItem)} />}
-            {!isLast && <ArrowDownIcon onClick={() => moveDownLink(linkItem)} />}
+            {!isFirst && <ArrowUpIcon onClick={() => moveLinkUp(linkItem)} />}
+            {!isLast && <ArrowDownIcon onClick={() => moveLinkDown(linkItem)} />}
             <EditPenIcon />
             <Tooltip
               content={
-                <BlockMenu
+                <LinkMenu
                   isFirst={isFirst}
                   isLast={isLast}
-                  move2Top={() => move2TopLink(linkItem)}
-                  move2Bottom={() => move2BottomLink(linkItem)}
+                  move2Top={() => moveLink2Top(linkItem)}
+                  move2Bottom={() => moveLink2Bottom(linkItem)}
                 />
               }
               placement="bottom-end"
               trigger="mouseenter focus"
               offset={[4, 0]}
+              delay={300}
               hideOnClick
               noPadding
             >
