@@ -52,7 +52,7 @@ export const scrollToTabber = (): void => scrollIntoEle(ANCHOR.GLOBAL_TABBER_ID)
 
 export const scrollDrawerToTop = (): void => {
   if (typeof window === 'object') {
-    window[DRAWER_SCROLLER]?.scroll({ top: 0, behavior: 'smooth' })
+    window[DRAWER_SCROLLER]?.scroll({ top: 0, behavior: 'auto' })
   }
 }
 

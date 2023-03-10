@@ -2,10 +2,11 @@
  * ArticleViewer
  */
 
-import { FC, memo, Fragment, useCallback, useState } from 'react'
+import { FC, memo, Fragment, useCallback, useState, useEffect } from 'react'
 
 import type { TPost, TBroadcastConfig } from '@/spec'
 import { buildLog } from '@/utils/logger'
+import { scrollDrawerToTop } from '@/utils/dom'
 import { BROADCAST_ARTICLE_LAYOUT } from '@/constant/layout'
 
 import ArticleFooter from '@/containers/unit/ArticleFooter'
@@ -42,6 +43,10 @@ type TProps = {
 const PostViewer: FC<TProps> = ({ article, loading, broadcastConfig }) => {
   const [fixedHeaderVisible, setFixedHeaderVisible] = useState(false)
   const [footerVisible, setFooterVisible] = useState(false)
+
+  useEffect(() => {
+    scrollDrawerToTop()
+  }, [])
 
   const hideFixedHeader = useCallback(() => setFixedHeaderVisible(false), [])
   const showFixedHeader = useCallback(() => setFixedHeaderVisible(true), [])
