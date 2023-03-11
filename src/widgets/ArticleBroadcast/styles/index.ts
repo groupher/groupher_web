@@ -102,7 +102,8 @@ export const NotifyIcon = styled(BroadcastSVG)<{ color: TColorName }>`
   left: 130px;
   margin-top: -2px;
   margin-right: 5px;
-  transform: rotate(-15deg);
+  transform: rotateZ(20deg) rotateY(180deg);
   mix-blend-mode: color-burn;
-  fill: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
+  fill: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
+  opacity: 0.3;
 `

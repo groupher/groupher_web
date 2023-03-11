@@ -60,6 +60,7 @@ const TeckStacks: FC = () => {
           <TechItem path="devops/docker.png" name="Docker" size={50} />
           <TechItem path="devops/git.png" name="Git" size={46} />
           <TechItem path="design/gimp.png" name="GIMP" size={55} />
+          <TechItem path="design/phosphor.png" name="Phosphor" size={42} />
         </TechsWrapper>
         <BgWrapper>
           <Parallax speed={-10} translateY={[10, -10]} opacity={[1, 0.8]} disabled={isMobile}>

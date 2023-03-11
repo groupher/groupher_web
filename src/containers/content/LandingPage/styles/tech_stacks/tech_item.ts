@@ -28,6 +28,7 @@ export const Name = styled.div`
   color: ${theme('article.title')};
   font-size: 15px;
   margin-top: 6px;
+  z-index: 1;
 
   ${css.media.mobile`
     font-size: 12px;
