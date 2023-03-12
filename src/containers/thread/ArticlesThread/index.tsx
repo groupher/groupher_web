@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, useEffect, useState, useRef } from 'react'
+import { FC, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 
 import type { TResState, TArticleFilterMode } from '@/spec'
@@ -22,7 +22,7 @@ import ArticlesFilter from '@/widgets/ArticlesFilter'
 
 import type { TStore } from './store'
 
-import { Wrapper, MainWrapper, SidebarWrapper, FilterWrapper, ArticleListWrapper } from './styles'
+import { Wrapper, MainWrapper, SidebarWrapper, FilterWrapper } from './styles'
 
 import { useInit, inAnchor, outAnchor, onFilterSelect, onSearch, closeSearch } from './logic'
 
@@ -100,7 +100,7 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
 
         {mode === 'search' && <FaqList layout={HELP_FAQ_LAYOUT.SEARCH_HINT} left={6} />}
 
-        <ArticleListWrapper show={mode === 'default'}>
+        {mode === 'default' && (
           <PagedArticles
             data={pagedArticlesData}
             curCommunity={curCommunity}
@@ -109,7 +109,7 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
             c11n={c11n}
             globalLayout={globalLayout}
           />
-        </ArticleListWrapper>
+        )}
       </LayoutWrapper>
 
       {!isSidebarLayout && <ThreadSidebar />}

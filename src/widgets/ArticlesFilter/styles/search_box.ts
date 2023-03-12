@@ -21,6 +21,7 @@ export const Back = styled.div`
   ${css.media.mobile`
     width: 68px;
     margin-right: 0;
+    margin-left: -5px
   `};
 `
 export const InputWrapper = styled(Wrapper)`

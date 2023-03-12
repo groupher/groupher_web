@@ -59,8 +59,3 @@ export const FilterWrapper = styled.div<{ thread: TThread }>`
     margin-bottom: 0;
   `};
 `
-
-export const ArticleListWrapper = styled.div<{ show: boolean }>`
-  visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
-  opacity: ${({ show }) => (show ? 1 : 0)};
-`
