@@ -4,12 +4,24 @@ import css, { theme } from '@/utils/css'
 
 import Input from '@/widgets/Input'
 import SearchSVG from '@/icons/HeaderSearch'
-import CloseSVG from '@/widgets/Icons/CloseCross'
+import CloseSVG from '@/icons/CloseCross'
+import FilterSVG from '@/icons/FilterList'
 
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
   position: relative;
   cursor: pointer;
+`
+export const Back = styled.div`
+  ${css.flex('align-both')};
+  width: 70px;
+  margin-right: 10px;
+  padding-right: 8px;
+
+  ${css.media.mobile`
+    width: 68px;
+    margin-right: 0;
+  `};
 `
 export const InputWrapper = styled(Wrapper)`
   cursor: default;
@@ -21,8 +33,11 @@ export const Inputer = styled(Input)`
   width: 100%;
   padding-left: 30px;
   padding-bottom: 5px;
-`
 
+  ${css.media.mobile`
+    padding-left: 10px;
+  `};
+`
 export const SearchIcon = styled(SearchSVG)`
   ${css.size(15)};
   fill: ${theme('article.digest')};
@@ -38,26 +53,46 @@ export const SearchIcon = styled(SearchSVG)`
 `
 export const InputSearchIcon = styled(SearchIcon)`
   position: absolute;
-  left: 10px;
+  left: 85px;
   top: 10px;
 
   margin-right: 0;
   margin-top: 0;
+
+  ${css.media.mobile`
+    display: none;
+  `};
 `
-export const CloseIcon = styled(CloseSVG)`
+export const ClearIcon = styled(CloseSVG)`
   ${css.size(15)};
   position: absolute;
-  right: 12px;
+  right: 45px;
   top: 10px;
   fill: ${theme('article.digest')};
-  opacity: 0.4;
+  opacity: 0.3;
 
   &:hover {
     cursor: pointer;
     opacity: 0.8;
   }
 
+  ${css.media.mobile`
+    right: 40px;
+  `};
+
   transition: all 0.2s;
+`
+export const FilterIcon = styled(FilterSVG)`
+  ${css.size(20)};
+  fill: ${theme('article.title')};
+  margin-left: 18px;
+  opacity: 1;
+  cursor: pointer;
+
+  ${css.media.mobile`
+    ${css.size(25)};
+    margin-left: 10px;
+  `};
 `
 export const Text = styled.div`
   color: ${theme('article.digest')};

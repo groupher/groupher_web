@@ -1,13 +1,17 @@
 import { FC, memo } from 'react'
 
+import ArrowButton from '@/widgets/Buttons/ArrowButton'
+
 import {
   Wrapper,
+  Back,
   SearchIcon,
   InputWrapper,
   InputSearchIcon,
   Inputer,
   Text,
-  CloseIcon,
+  ClearIcon,
+  FilterIcon,
 } from './styles/search_box'
 
 type TProps = {
@@ -20,9 +24,16 @@ const SearchBox: FC<TProps> = ({ searchMode, onSearch, closeSearch }) => {
   if (searchMode) {
     return (
       <InputWrapper>
+        <Back>
+          <ArrowButton size="small" leftLayout color="BLACK" onClick={() => closeSearch()}>
+            返回
+          </ArrowButton>
+        </Back>
+
         <InputSearchIcon />
         <Inputer placeholder="搜索内容" onChange={(e) => onSearch(e.target.value)} autoFocus />
-        <CloseIcon onClick={() => closeSearch()} />
+        <ClearIcon onClick={() => onSearch('')} />
+        <FilterIcon onClick={() => onSearch('')} />
       </InputWrapper>
     )
   }

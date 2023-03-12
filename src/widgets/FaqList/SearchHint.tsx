@@ -1,5 +1,8 @@
 import { FC, memo } from 'react'
 
+import { mockHelpCats } from '@/utils/mock'
+import { Br } from '@/widgets/Common'
+
 import {
   Wrapper,
   Header,
@@ -7,7 +10,10 @@ import {
   Title,
   Body,
   Section,
+  CatSection,
+  CatDesc,
   Item,
+  CatItem,
   Footer,
   MoreLink,
 } from './styles/search_hint'
@@ -17,10 +23,11 @@ import type { TProps as TIndex } from './index'
 type TProps = Pick<TIndex, 'articles'>
 
 const SearchHint: FC<TProps> = ({ articles }) => {
+  const cats = mockHelpCats()
+
   return (
     <Wrapper>
       <Header>
-        <FAQIcon />
         <Title>常见问题</Title>
       </Header>
       <Body>
@@ -30,6 +37,22 @@ const SearchHint: FC<TProps> = ({ articles }) => {
           </Section>
         ))}
       </Body>
+
+      <Br bottom={40} />
+
+      <Header>
+        <Title>帮助文档</Title>
+      </Header>
+      <Br bottom={5} />
+      <Body>
+        {cats.map((item) => (
+          <CatSection key={item.title} color={item.color}>
+            <CatItem>{item.title}</CatItem>
+            <CatDesc>{item.articles.length} 篇内容</CatDesc>
+          </CatSection>
+        ))}
+      </Body>
+
       <Footer>
         <div>更多问题，请移步</div>
         <MoreLink>帮助台</MoreLink>。
