@@ -1,8 +1,10 @@
 import styled from 'styled-components'
 
-import type { TTestable } from '@/spec'
+import type { TColorName, TTestable } from '@/spec'
 
 import css, { theme } from '@/utils/css'
+import { camelize } from '@/utils/fmt'
+
 import FAQSVG from '@/icons/FAQ'
 
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
@@ -13,7 +15,11 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   min-width: 320px;
   color: ${theme('article.digest')};
   padding-top: 25px;
-  padding-left: 5px;
+  margin-left: 156px;
+
+  ${css.media.mobile`
+    margin-left: 5px;
+  `};
 `
 export const Header = styled.div`
   ${css.flex('align-center')};
@@ -27,19 +33,56 @@ export const FAQIcon = styled(FAQSVG)`
   margin-top: 2px;
 `
 export const Title = styled.div`
-  color: ${theme('article.digest')};
+  color: ${theme('article.title')};
+  font-size: 14px;
 `
 export const Body = styled.div`
   ${css.flex('align-center')};
   flex-wrap: wrap;
 `
 export const Section = styled.div`
-  width: 48%;
+  width: 44%;
   ${css.lineClamp(1)}
 
   margin-bottom: 14px;
-`
 
+  ${css.media.mobile`
+    width: 50%;
+  `};
+`
+export const CatSection = styled.div<{ color: TColorName }>`
+  width: 44%;
+  padding-left: 15px;
+  margin-left: 2px;
+  margin-bottom: 22px;
+  position: relative;
+
+  ${css.media.mobile`
+    width: 48%;
+  `};
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    height: 100%;
+    width: 4px;
+    border-radius: 5px;
+    background-color: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
+    opacity: 0.5;
+  }
+`
+export const CatItem = styled.div`
+  ${css.lineClamp(1)}
+  font-size: 13px;
+  color: ${theme('article.title')};
+`
+export const CatDesc = styled.div`
+  font-size: 12px;
+  color: ${theme('article.digest')};
+  opacity: 0.65;
+  margin-top: 2px;
+`
 export const Item = styled.span`
   font-size: 14px;
   color: ${theme('article.digest')};
