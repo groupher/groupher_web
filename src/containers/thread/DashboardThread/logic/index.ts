@@ -57,6 +57,33 @@ export const addHelpCategory = (): void => {
   store.mark({ helpCategories })
 }
 
+export const rssOnSave = (): void => {
+  store.mark({ saving: true })
+  const { RSS_FEED_TYPE, RSS_FEED_COUNT } = SETTING_FIELD
+
+  store.onSave(RSS_FEED_TYPE)
+  store.onSave(RSS_FEED_COUNT)
+
+  setTimeout(() => {
+    store.mark({ saving: false })
+
+    const initSettings = {
+      ...store.initSettings,
+      [RSS_FEED_TYPE]: toJS(store[RSS_FEED_TYPE]),
+      [RSS_FEED_COUNT]: toJS(store[RSS_FEED_COUNT]),
+    }
+
+    store.mark({ initSettings })
+  }, 1200)
+}
+
+export const rssOnCancel = (): void => {
+  const { RSS_FEED_TYPE, RSS_FEED_COUNT } = SETTING_FIELD
+
+  store.rollbackEdit(RSS_FEED_TYPE)
+  store.rollbackEdit(RSS_FEED_COUNT)
+}
+
 export const broadcastOnSave = (isArticle = false): void => {
   store.mark({ saving: true })
   const layoutKey = !isArticle

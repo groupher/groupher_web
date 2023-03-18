@@ -26,6 +26,7 @@ import {
   Help,
   Header,
   Footer,
+  RSS,
 } from './dynamic'
 
 import type { TStore } from './store'
@@ -51,6 +52,7 @@ const DashboardThreadContainer: FC<TProps> = ({
     enableSettings,
     uiSettings,
     tagSettings,
+    rssSettings,
     footerSettings,
     aliasSettings,
     widgetsSettings,
@@ -74,6 +76,9 @@ const DashboardThreadContainer: FC<TProps> = ({
         {curTab === DASHBOARD.ADMINS && <Admin />}
         {curTab === DASHBOARD.THREADS && <Threads settings={enableSettings} />}
         {curTab === DASHBOARD.TAGS && <Tags settings={tagSettings} />}
+
+        {curTab === DASHBOARD.RSS && <RSS settings={rssSettings} touched={touched} />}
+
         {curTab === DASHBOARD.HEADER && <Header settings={footerSettings} touched={touched} />}
         {curTab === DASHBOARD.FOOTER && <Footer settings={footerSettings} touched={touched} />}
         {curTab === DASHBOARD.BROADCAST && (

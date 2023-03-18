@@ -11,6 +11,7 @@ export type TChangelogLayout = 'classic' | 'simple'
 export type THelpLayout = 'blocks' | 'lists' | 'article'
 export type THelpFAQLayout = 'flat' | 'collapse' | 'search_hint'
 export type TFooterLayout = 'simple' | 'full'
+export type TRSSType = 'digest' | 'full'
 
 export type TBroadcastLayout = 'default' | 'center'
 export type TBroadcastArticleLayout = 'default' | 'simple'

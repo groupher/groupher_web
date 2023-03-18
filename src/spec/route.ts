@@ -28,6 +28,7 @@ export type TDashboardPath =
   | 'footer'
   | 'broadcast'
   | 'blackhouse'
+  | 'rss'
   // integrates
   | 'third_part'
   | 'admins'

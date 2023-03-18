@@ -1,14 +1,22 @@
 import styled from 'styled-components'
 
-import type { TTestable } from '@/spec'
+import type { TTestable, TSpace } from '@/spec'
 
 // import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 
+type TWrapper = TTestable & TSpace & { width: string }
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   'data-test-id': testid,
-}))<TTestable>`
+}))<TWrapper>`
   ${css.flexColumn('align-center')};
+  width: ${({ width }) => width};
+
+  margin-top: ${({ top }) => `${top}px` || 0};
+  margin-bottom: ${({ bottom }) => `${bottom}px` || 0};
+
+  margin-left: ${({ left }) => `${left}px` || 0};
+  margin-right: ${({ right }) => `${right}px` || 0};
 `
 
 export const RangeInput = styled.input`

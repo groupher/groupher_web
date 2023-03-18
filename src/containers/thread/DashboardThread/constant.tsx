@@ -32,6 +32,8 @@ export const SETTING_FIELD = {
   CHANGELOG_LAYOUT: 'changelogLayout',
   TAG: 'tag',
   ALIAS: 'alias',
+  RSS_FEED_TYPE: 'rssFeedType',
+  RSS_FEED_COUNT: 'rssFeedCount',
   WIDGETS_PRIMARY_COLOR: 'widgetsPrimaryColor',
   WIDGETS_SIZE: 'widgetsSize',
   WIDGETS_THREADS: 'widgetsThreads',
@@ -115,6 +117,10 @@ export const MENU = {
       {
         title: '小黑屋',
         raw: DASHBOARD_ROUTE.BLACKHOUSE,
+      },
+      {
+        title: 'RSS',
+        raw: DASHBOARD_ROUTE.RSS,
       },
     ],
   },
