@@ -27,7 +27,7 @@ const TeckStacks: FC = () => {
   return (
     <Wrapper>
       <Slogan>
-        <Title>由最酷的技术栈驱动</Title>
+        <Title>小而美，由最酷的开源技术栈驱动</Title>
         <Desc>
           现代化的产品体验得益于现代化的技术栈及工具，
           <ArrowButton linkColor>了解更多</ArrowButton>

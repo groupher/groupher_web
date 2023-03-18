@@ -49,6 +49,13 @@ export type TTagSettings = {
   categories: string[]
   activeTagCategory: string
 }
+
+export type TRSSSettings = {
+  feedType: string
+  feedCount: number
+  saving: boolean
+}
+
 export type TFooterSettings = {
   footerLayout: TFooterLayout
   footerLinks: TLinkItem[]
@@ -160,6 +167,8 @@ export type TTouched = {
   alias: boolean
   tags: boolean
 
+  rssFeed: boolean
+
   widgetsPrimaryColor: boolean
   widgetsThreads: boolean
   widgetsSize: boolean
@@ -196,6 +205,8 @@ export type TSettingField =
   | 'changelogLayout'
   | 'tag'
   | 'alias'
+  | 'rssFeedType'
+  | 'rssFeedCount'
   | 'enable'
   | 'widgetsPrimaryColor'
   | 'widgetsThreads'

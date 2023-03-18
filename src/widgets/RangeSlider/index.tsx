@@ -8,6 +8,7 @@ import { FC, memo } from 'react'
 
 import { buildLog } from '@/utils/logger'
 
+import type { TSpace } from '@/spec'
 import { Wrapper, Value, Unit, RangeInput } from './styles'
 
 /* eslint-disable-next-line */
@@ -19,8 +20,9 @@ type TProps = {
   unit?: string
   min?: number
   max?: number
+  width?: string
   onChange?: (v: number) => void
-}
+} & TSpace
 
 // ref: https://codepen.io/thehonestape/pen/DRpEGX
 const RangeSlider: FC<TProps> = ({
@@ -28,11 +30,13 @@ const RangeSlider: FC<TProps> = ({
   value = 0,
   min = -15,
   max = 15,
+  width = 'auto',
   unit = 'deg',
   onChange,
+  ...restProps
 }) => {
   return (
-    <Wrapper testid={testid}>
+    <Wrapper testid={testid} width={width} {...restProps}>
       <Value>
         {value}
         <Unit>{unit}</Unit>

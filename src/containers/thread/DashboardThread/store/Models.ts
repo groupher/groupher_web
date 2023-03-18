@@ -19,6 +19,7 @@ import {
   POST_LAYOUT,
   KANBAN_LAYOUT,
   FOOTER_LAYOUT,
+  RSS_TYPE,
 } from '@/constant/layout'
 
 import { T } from '@/utils/mobx'
@@ -141,12 +142,15 @@ export const settingsModalFields = {
   glowFixed: T.opt(T.bool, true),
   glowOpacity: T.opt(T.enum(values(GLOW_OPACITY)), GLOW_OPACITY.NORMAL),
 
+  // contents
   // tags
   tags: T.opt(T.array(Tag), mockTags(12)),
   activeTagCategory: T.maybeNull(T.string),
-  //
   alias: T.opt(T.array(Alias), BUILDIN_ALIAS),
   enable: T.opt(Enable, {}),
+
+  rssFeedType: T.opt(T.enum(values(RSS_TYPE)), RSS_TYPE.DIGEST),
+  rssFeedCount: T.opt(T.int, 5),
 
   // footer
   footerLayout: T.opt(T.enum(values(FOOTER_LAYOUT)), FOOTER_LAYOUT.FULL),

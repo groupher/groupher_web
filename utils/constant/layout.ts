@@ -14,6 +14,7 @@ import type {
   THelpLayout,
   THelpFAQLayout,
   TFooterLayout,
+  TRSSType,
 } from '@/spec'
 
 export const UPVOTE_LAYOUT = {
@@ -100,3 +101,8 @@ export const FOOTER_LAYOUT = {
   SIMPLE: 'simple',
   FULL: 'full',
 } as Record<Uppercase<TFooterLayout>, TFooterLayout>
+
+export const RSS_TYPE = {
+  DIGEST: 'digest',
+  FULL: 'full',
+} as Record<Uppercase<TRSSType>, TRSSType>

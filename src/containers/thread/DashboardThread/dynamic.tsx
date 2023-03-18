@@ -35,6 +35,10 @@ export const Tags = dynamic(() => import('./Tags'), {
   loading: () => <LavaLampLoading />,
 })
 
+export const RSS = dynamic(() => import('./RSS'), {
+  loading: () => <LavaLampLoading />,
+})
+
 export const Broadcast = dynamic(() => import('./Broadcast'), {
   loading: () => <LavaLampLoading />,
 })

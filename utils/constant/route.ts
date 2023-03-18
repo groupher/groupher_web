@@ -33,6 +33,7 @@ export const DASHBOARD_ROUTE = {
   FOOTER: 'footer',
   BROADCAST: 'broadcast',
   BLACKHOUSE: 'blackhouse',
+  RSS: 'rss',
   // integrates
   THIRD_PART: 'third_part',
   ADMINS: 'admins',

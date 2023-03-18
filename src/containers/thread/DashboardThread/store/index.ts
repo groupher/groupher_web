@@ -46,6 +46,7 @@ import type {
   TSEOSettings,
   TUiSettings,
   TTagSettings,
+  TRSSSettings,
   TFooterSettings,
   THelpSettings,
   TAliasSettings,
@@ -189,6 +190,9 @@ const DashboardThread = T.model('DashboardThread', {
       const aliasTouched = !isNil(slf.editingAlias)
       const tagsTouched = !isNil(slf.editingTag)
 
+      const rssFeedTypeTouched = _isChanged('rssFeedType')
+      const rssFeedCountTouched = _isChanged('rssFeedCount')
+
       const widgetsPrimaryColorTouched = _isChanged('widgetsPrimaryColor')
       const widgetsSizeTouched = _isChanged('widgetsSize')
 
@@ -218,6 +222,8 @@ const DashboardThread = T.model('DashboardThread', {
         glowFixed: glowFixedTouched,
         glowType: glowTypeTouched,
         glowOpacity: glowOpacityTouched,
+
+        rssFeed: rssFeedTypeTouched || rssFeedCountTouched,
 
         widgetsPrimaryColor: widgetsPrimaryColorTouched,
         widgetsThreads: widgetsThreadsTouched,
@@ -277,6 +283,15 @@ const DashboardThread = T.model('DashboardThread', {
         saving: slf.saving,
         categories: toJS(slf.tagCategories),
         activeTagCategory,
+      }
+    },
+
+    get rssSettings(): TRSSSettings {
+      const slf = self as TStore
+      return {
+        feedType: slf.rssFeedType,
+        feedCount: slf.rssFeedCount,
+        saving: slf.saving,
       }
     },
 
