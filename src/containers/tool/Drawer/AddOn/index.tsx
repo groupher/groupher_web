@@ -35,7 +35,7 @@ const AddOn: FC<TProps> = ({ type, articleNavi }) => {
     <ViewerWrapper>
       <TopArea showShare={showShare}>
         <CloseButton />
-        {showShare && <Share top={8} left={0} size={15} offsetLeft="50%" />}
+        {showShare && <Share top={10} left={-2} size={14} offsetLeft="50%" />}
       </TopArea>
 
       {showArticleNavi && <ArticleNavi articleNavi={articleNavi} />}

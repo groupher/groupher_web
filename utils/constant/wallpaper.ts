@@ -60,6 +60,10 @@ export const PATTERN_WALLPAPER = {
     bgImage: `${DIR}/cartoon.jpeg`,
   },
 
+  mac: {
+    bgImage: `${DIR}/mp_teal.jpg`,
+  },
+
   // ms: {
   //   bgImage: `${DIR}/ms.svg`,
   //   bgSize: 'cover',
