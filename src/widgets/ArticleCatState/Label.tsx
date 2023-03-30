@@ -7,7 +7,7 @@ import { isRejectedState } from '@/utils/helper'
 
 import type { TProps as TArticleStateBadgeProps } from './index'
 
-import { Wrapper, BugWrapper, QuestionWrapper, LockWrapper, OtherWrapper } from './styles/label'
+import { Wrapper, BugWrapper, QuestionWrapper, OtherWrapper } from './styles/label'
 
 type TProps = Pick<TArticleStateBadgeProps, 'cat' | 'noBg' | 'smaller' | 'state'>
 
@@ -38,8 +38,8 @@ const Label: FC<TProps> = ({ cat, state, noBg, smaller }) => {
     }
 
     case ARTICLE_CAT.QUESTION: {
-      if (state === ARTICLE_STATE.RESOLVE) {
-        return <QuestionWrapper smaller={smaller}>{Trans(ARTICLE_STATE.RESOLVE)}</QuestionWrapper>
+      if (state === ARTICLE_STATE.RESOLVED) {
+        return <QuestionWrapper smaller={smaller}>{Trans(ARTICLE_STATE.RESOLVED)}</QuestionWrapper>
       }
 
       return <OtherWrapper>{Trans(ARTICLE_CAT.QUESTION)}</OtherWrapper>

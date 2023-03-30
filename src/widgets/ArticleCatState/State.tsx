@@ -44,7 +44,7 @@ const State: FC<TProps> = ({ state, cat, smaller }) => {
       )
     }
 
-    case ARTICLE_STATE.RESOLVE: {
+    case ARTICLE_STATE.RESOLVED: {
       return (
         <NoBgWrapper>
           <ResolveIcon smaller={smaller} />

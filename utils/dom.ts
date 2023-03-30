@@ -170,7 +170,6 @@ export const clearGlobalBlur = (): void => {
 export const isElementInViewport = (el: HTMLElement): boolean => {
   if (!el) return false
   const rect = el.getBoundingClientRect()
-  console.log('## rect.height: ', rect.height)
 
   return rect.height + rect.y > 0
 }

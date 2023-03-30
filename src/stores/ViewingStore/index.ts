@@ -51,7 +51,7 @@ const ViewingStore = T.model('ViewingStore', {
     setViewing(sobj): void {
       const { mark, viewingArticle } = self as TStore
       mark(sobj)
-      viewingChanged(viewingArticle.id)
+      viewingChanged(viewingArticle)
     },
     changeCommunity(raw): void {
       self.community.raw = raw

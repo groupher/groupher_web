@@ -45,7 +45,7 @@ const Body: FC<TProps> = ({ article }) => {
             <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" right={18} top={1} />
           )}
           {article.id === '226' && (
-            <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" right={18} top={1} />
+            <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVED" right={18} top={1} />
           )}
           {article.id === '225' && (
             <ArticleCatState

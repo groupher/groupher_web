@@ -4,7 +4,6 @@ import Router from 'next/router'
 import { values, includes } from 'ramda'
 
 import type {
-  TID,
   TUser,
   TAttInfo,
   TPaymentUsage,
@@ -186,8 +185,13 @@ export const sessionChanged = (user: TUser): void => {
 /**
  * handle user account state change
  */
-export const viewingChanged = (articleId: TID | null): void => {
-  BStore.set('viewingInfo', articleId)
+export const viewingChanged = (article: TArticle | null): void => {
+  if (article) {
+    // @ts-ignore
+    BStore.set('viewingArticle', { community: article.originalCommunityRaw, id: article.innerId })
+  } else {
+    BStore.set('viewingArticle', null)
+  }
   // see: https://stackoverflow.com/a/55349670/4050784
   Global.dispatchEvent(new Event(EVENT.VIEWING_CHANGED))
 }

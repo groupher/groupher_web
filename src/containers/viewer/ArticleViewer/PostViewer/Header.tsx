@@ -34,7 +34,7 @@ const Header: FC<TProps> = ({ article }) => {
         <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" smaller={false} />
       )}
       {article.id === '226' && (
-        <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" smaller={false} />
+        <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVED" smaller={false} />
       )}
       {article.id === '225' && (
         <ArticleCatState

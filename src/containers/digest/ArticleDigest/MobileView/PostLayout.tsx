@@ -56,7 +56,7 @@ const PostLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
           {article.id === '231' && <ArticleCatState cat={ARTICLE_CAT.BUG} />}
           {article.id === '227' && <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" />}
           {article.id === '228' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" />}
-          {article.id === '226' && <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" />}
+          {article.id === '226' && <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVED" />}
           {article.id === '225' && (
             <ArticleCatState cat={ARTICLE_CAT.FEATURE} state={ARTICLE_STATE.REJECT_DUP} />
           )}

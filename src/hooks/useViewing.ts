@@ -2,20 +2,24 @@ import { useState, useEffect } from 'react'
 // import { merge } from 'ramda'
 
 import EVENT from '@/constant/event'
-import type { TID } from '@/spec'
+import type { TViewingInfo } from '@/spec'
 
 import BStore from '@/utils/bstore'
 import { Global } from '@/utils/helper'
 
-const initState = ''
+const initState = {
+  community: 'home',
+  id: '1',
+}
 
-const useViewing = (): TID | null => {
+const useViewing = (): TViewingInfo | null => {
   const [viewing, setViewing] = useState(initState)
 
   /* eslint-disable */
   useEffect(() => {
     const checkViewing = () => {
-      const item = BStore.get('viewingInfo')
+      const item = BStore.get('viewingArticle')
+      // @ts-ignore
       setViewing(item)
     }
 

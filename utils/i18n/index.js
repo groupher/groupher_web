@@ -29,7 +29,7 @@ const I18nDict = {
   BUG: '问题反馈',
   QUESTION: '求助',
   OTHER: '其他',
-  RESOLVE: '问题解决',
+  RESOLVED: '问题解决',
   // articleState;
   TODO: '待办项',
   WIP: '进行中',

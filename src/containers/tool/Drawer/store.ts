@@ -236,13 +236,14 @@ const DrawerStore = T.model('DrawerStore', {
     },
 
     markPreviewURLIfNeed(article: TArticle): void {
-      const { id, title, meta } = article
+      const { innerId, title, meta, originalCommunityRaw } = article
 
-      if (!id || !contains(self.type, ARTICLE_VIEWER_TYPES)) return
+      if (!innerId || !contains(self.type, ARTICLE_VIEWER_TYPES)) return
       self.previousURL = Global.location.href
 
       const thread = meta.thread.toLowerCase()
-      const nextURL = `${Global.location.origin}/${thread}/${id}`
+      const nextURL = `${Global.location.origin}/${originalCommunityRaw}/${thread}/${innerId}`
+
       Global.history.replaceState(null, title, nextURL)
     },
 

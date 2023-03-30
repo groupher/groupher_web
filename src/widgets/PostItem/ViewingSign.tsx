@@ -11,9 +11,14 @@ type TProps = {
 }
 
 const ViewingSign: FC<TProps> = ({ article, top = 30 }) => {
-  const viewingId = useViewing()
+  const viewingArticle = useViewing()
 
-  if (article.id !== viewingId) return null
+  // !viewingArticle means drawer closed
+  if (!viewingArticle) return null
+
+  const { id, community } = viewingArticle
+
+  if (!(article.innerId === id && community === article.originalCommunityRaw)) return null
 
   return (
     <Wrapper top={top}>

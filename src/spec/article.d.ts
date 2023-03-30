@@ -2,7 +2,6 @@ import type { TCommunity, TTag } from './index'
 import type { TUser, TAccount, TSimpleUser } from './account'
 import type { TID } from './utils'
 import type { TEmotion } from './emotion'
-import type { TColorName } from './color'
 
 export type TCopyright = 'cc' | 'approve' | 'forbid'
 
@@ -23,8 +22,14 @@ export type TDocument = {
   body?: string
 }
 
+export type TViewingInfo = {
+  community: string
+  id: TID
+}
+
 type TBaseArticle = {
   id?: TID
+  innerId?: TID
   title?: string
   digest?: string
   body?: string
@@ -35,6 +40,7 @@ type TBaseArticle = {
   author?: TAccount
   upvotesCount?: number
   originalCommunity?: TCommunity
+  originalCommunityRaw?: string
   communities?: TCommunity[]
   commentsParticipants?: TUser[]
   commentsParticipantsCount?: number
@@ -187,7 +193,7 @@ export type TArticleCatReject =
   | 'REJECT_REPRO'
   | 'REJECT_STALE'
 
-export type TArticleState = 'TODO' | 'WIP' | 'DONE' | 'RESOLVE' | 'DEFAULT' | TArticleCatReject
+export type TArticleState = 'TODO' | 'WIP' | 'DONE' | 'RESOLVED' | 'DEFAULT' | TArticleCatReject
 
 export type TArticleCat = 'ALL' | 'BUG' | 'FEATURE' | 'QUESTION' | 'OTHER'
 

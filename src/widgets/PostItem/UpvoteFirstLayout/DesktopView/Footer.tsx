@@ -45,7 +45,7 @@ const Footer: FC<TProps> = ({ article, avatarLayout }) => {
             <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" left={14} />
           )}
           {article.id === '226' && (
-            <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" left={14} />
+            <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVED" left={14} />
           )}
           {article.id === '225' && (
             <ArticleCatState

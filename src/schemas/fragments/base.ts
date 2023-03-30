@@ -35,6 +35,8 @@ export const author = `
 `
 export const article = `
   id
+  innerId
+  originalCommunityRaw
   isPinned
   title
   linkAddr

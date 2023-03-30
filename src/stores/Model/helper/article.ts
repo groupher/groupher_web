@@ -31,6 +31,8 @@ export const Document = T.model('ArticleMeta', {
 export const articleFields = () => {
   return {
     id: T.maybeNull(T.string),
+    innerId: T.maybeNull(T.string),
+    originalCommunityRaw: T.maybeNull(T.string),
     title: T.opt(T.string, ''),
     document: T.opt(Document, {}),
     digest: T.maybeNull(T.string),

@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { Provider } from 'mobx-react'
 import { getSelectorsByUserAgent } from 'react-device-detect'
 
+import { HCN } from '@/constant/name'
 import { ARTICLE_THREAD } from '@/constant/thread'
 import METRIC from '@/constant/metric'
 
@@ -21,48 +22,17 @@ const loader = async (context, opt = {}) => {
   const { query } = context
   const { gqClient } = ssrFetchPrepare(context, opt)
 
+  const community = query.community || HCN
+
   // query data
   const sessionState = gqClient.request(P.sessionState)
-  const post = gqClient.request(P.post, { id: query.id, userHasLogin: false })
+  const post = gqClient.request(P.post, { community, id: query.id, userHasLogin: false })
 
   return {
     ...(await sessionState),
     ...(await post),
   }
 }
-
-/**
-const loader = async (params) => {
-  const gqClient = makeGQClient('')
-  const { id } = params
-
-  const post = gqClient.request(P.post, { id, userHasLogin: false })
-
-  return {
-    ...(await post),
-  }
-}
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  return { paths: [], fallback: true }
-}
-
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  const { params } = ctx
-
-  const resp = await loader(params)
-
-  return {
-    props: {
-      viewing: {
-        post: resp.post,
-        activeThread: ARTICLE_THREAD.POST,
-      },
-    },
-    revalidate: 5,
-  }
-}
- */
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { req, res } = context

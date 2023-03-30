@@ -21,7 +21,7 @@ export const ARTICLE_STATE = {
   WIP: 'WIP',
   DONE: 'DONE',
   DEFAULT: 'DEFAULT',
-  RESOLVE: 'RESOLVE',
+  RESOLVED: 'RESOLVED',
   // reject
   ...ARTICLE_CAT_REJECT,
 } as Record<Uppercase<TArticleState>, Uppercase<TArticleState>>

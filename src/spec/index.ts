@@ -110,6 +110,7 @@ export type {
   TPagedCollectionFolder,
   TDocument,
   TArticle,
+  TViewingInfo,
   TArticleEntries,
   TArticleMeta,
   TPost,

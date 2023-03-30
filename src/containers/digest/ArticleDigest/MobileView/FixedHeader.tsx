@@ -33,7 +33,7 @@ const FixedHeader: FC<TProps> = ({
             <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" right={8} />
           )}
           {article.id === '226' && (
-            <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVE" right={8} />
+            <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVED" right={8} />
           )}
           {article.id === '225' && (
             <ArticleCatState cat={ARTICLE_CAT.FEATURE} state={ARTICLE_STATE.REJECT_DUP} right={8} />
