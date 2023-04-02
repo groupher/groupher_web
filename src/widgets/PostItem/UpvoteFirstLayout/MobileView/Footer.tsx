@@ -38,14 +38,8 @@ const Footer: FC<TProps> = ({ article }) => {
           />
         </UpvotesWrapper>
 
-        {article.category !== ARTICLE_CAT.ALL && (
-          <ArticleCatState
-            cat={article.category}
-            state={article.state}
-            top={1}
-            left={4}
-            right={14}
-          />
+        {article.cat !== ARTICLE_CAT.ALL && (
+          <ArticleCatState cat={article.cat} state={article.state} top={1} left={4} right={14} />
         )}
         <BasicState>
           <TagsList items={article.articleTags} />

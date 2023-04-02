@@ -106,31 +106,7 @@ export const post = `
   updatedAt
   views
 `
-export const repo = `
-  id
-  views
-  title
-  ownerName
-  desc
-  insertedAt
-  prsCount
-  forkCount
-  starCount
-  license
-  ownerUrl
-  repoUrl
-  homepageUrl
-  releaseTag
-  primaryLanguage {
-    color
-    name
-  }
-  contributors {
-    avatar
-    htmlUrl
-    nickname
-  }
-`
+
 export const userSocial = `
   github
   twitter

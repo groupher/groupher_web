@@ -41,8 +41,8 @@ const Footer: FC<TProps> = ({ article }) => {
           />
         </UpvotesWrapper>
 
-        {article.category !== ARTICLE_CAT.ALL && (
-          <ArticleCatState cat={article.category} state={article.state} />
+        {article.cat !== ARTICLE_CAT.ALL && (
+          <ArticleCatState cat={article.cat} state={article.state} />
         )}
         <BasicState>
           <Space right={18} />

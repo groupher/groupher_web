@@ -13,6 +13,8 @@ export const pagedPosts = `
     pagedPosts(filter: $filter) {
       entries {
         ${F.article}
+        cat
+        state
         meta {
           thread
           latestUpvotedUsers {

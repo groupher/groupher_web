@@ -58,7 +58,7 @@ type TBaseArticle = {
   archivedAt?: string
   activeAt?: string
 
-  category?: TArticleCat
+  cat?: TArticleCat
   state?: TArticleState
 }
 

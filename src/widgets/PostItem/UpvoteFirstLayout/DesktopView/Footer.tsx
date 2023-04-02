@@ -20,8 +20,6 @@ type TProps = {
 const Footer: FC<TProps> = ({ article, avatarLayout }) => {
   const { upvotesCount, meta, viewerHasUpvoted } = article
 
-  const demoList = ['239', '231', '227', '228', '226', '225']
-
   return (
     <Wrapper>
       <Upvote
@@ -34,29 +32,7 @@ const Footer: FC<TProps> = ({ article, avatarLayout }) => {
         top={-1}
       />
 
-      {!includes(article.id, demoList) ? (
-        <ArticleCatState left={18} cat={article.category} state={article.state} />
-      ) : (
-        <Fragment>
-          {article.id === '239' && <ArticleCatState cat={ARTICLE_CAT.FEATURE} left={14} />}
-          {article.id === '231' && <ArticleCatState cat={ARTICLE_CAT.BUG} left={14} />}
-          {article.id === '227' && <ArticleCatState cat={ARTICLE_CAT.BUG} state="TODO" left={14} />}
-          {article.id === '228' && (
-            <ArticleCatState cat={ARTICLE_CAT.FEATURE} state="WIP" left={14} />
-          )}
-          {article.id === '226' && (
-            <ArticleCatState cat={ARTICLE_CAT.QUESTION} state="RESOLVED" left={14} />
-          )}
-          {article.id === '225' && (
-            <ArticleCatState
-              cat={ARTICLE_CAT.FEATURE}
-              state={ARTICLE_STATE.REJECT_DUP}
-              left={14}
-              top={1}
-            />
-          )}
-        </Fragment>
-      )}
+      {article.cat && <ArticleCatState left={18} cat={article.cat} state={article.state} />}
 
       <Space right={18} />
       <ViewsCount count={article.views} />
