@@ -1,8 +1,6 @@
-import { memo, FC, Fragment } from 'react'
-import { includes } from 'ramda'
+import { memo, FC } from 'react'
 
 import type { TPost, TAvatarLayout } from '@/spec'
-import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
 import Upvote from '@/widgets/Upvote'
