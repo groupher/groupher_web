@@ -25,8 +25,6 @@ import TYPE from '@/constant/type'
 import { T, markStates, getParent, Instance, toJS } from '@/utils/mobx'
 import { nilOrEmpty } from '@/utils/validator'
 import { plural } from '@/utils/fmt'
-import BStore from '@/utils/bstore'
-import { viewingChanged } from '@/utils/signal'
 
 import { PagedPosts, ArticlesFilter, emptyPagi } from '@/model'
 
