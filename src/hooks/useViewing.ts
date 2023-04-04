@@ -9,7 +9,7 @@ import { Global } from '@/utils/helper'
 
 const initState = {
   community: 'home',
-  id: '1',
+  id: '-1',
 }
 
 const useViewing = (): TViewingInfo | null => {

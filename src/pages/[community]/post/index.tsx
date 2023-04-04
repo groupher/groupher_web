@@ -18,6 +18,7 @@ import {
   ssrPagedArticleSchema,
   ssrPagedArticlesFilter,
   ssrParseArticleThread,
+  ssrParseDashboard,
   ssrRescue,
   communitySEO,
   singular,
@@ -113,6 +114,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { filter, community, pagedArticleTags } = resp
   const articleThread = ssrParseArticleThread(resp, thread, filter)
 
+  const dashboard = ssrParseDashboard(community)
+  console.log('## community dashborad: ', dashboard)
+
   const initProps = merge(
     {
       ...ssrBaseStates(resp),
@@ -131,6 +135,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       viewing: {
         community,
         activeThread: toLower(thread),
+      },
+      dashboardThread: {
+        ...dashboard,
       },
     },
     articleThread,

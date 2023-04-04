@@ -77,6 +77,7 @@ export {
   ssrHomePagedArticlesFilter,
   ssrError,
   ssrParseArticleThread,
+  ssrParseDashboard,
   validCommunityFilters,
   parseTheme,
   ssrGetParam,

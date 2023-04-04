@@ -1,10 +1,11 @@
 import { FC, memo } from 'react'
 
-import type { TThread, TCommunity, TMetric, TEnableConfig } from '@/spec'
+import type { TThread, TCommunity, TMetric, TEnableConfig, TCommunityThread } from '@/spec'
 import EVENT from '@/constant/event'
 import { ANCHOR } from '@/constant/dom'
 
 import { send } from '@/utils/signal'
+import { sortByIndex } from '@/utils/helper'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
 import MobileThreadNavi from '@/widgets/MobileThreadNavi'
@@ -34,7 +35,9 @@ type TProps = {
 }
 
 const SimpleLayout: FC<TProps> = ({ community, activeThread, metric, enable }) => {
-  const publicThreads = community.threads.filter((thread) => enable[thread.raw])
+  const publicThreads = sortByIndex(
+    community.threads.filter((thread) => enable[thread.raw]),
+  ) as TCommunityThread[]
 
   return (
     <Wrapper testid="community-digest" id={ANCHOR.GLOBAL_HEADER_ID}>

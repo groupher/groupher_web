@@ -35,6 +35,7 @@ const CommunityDigestContainer: FC<TProps> = ({
   useInit(store)
 
   const { curThread, curCommunity, globalLayout, enable } = store
+
   const router = useRouter()
 
   // always use SimpleLayout in dashboard settings

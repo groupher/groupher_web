@@ -4,14 +4,15 @@ import type {
   TArticle,
   TCommunity,
   TMetric,
-  TModelineType,
   TEnableConfig,
   TThread,
   TTag,
   TGroupedTags,
+  TCommunityThread,
 } from '@/spec'
 
 import { scrollToHeader } from '@/utils/dom'
+import { sortByIndex } from '@/utils/helper'
 
 import MobileThreadNavi from '@/widgets/MobileThreadNavi'
 import ArticlesFilter from '@/widgets/ArticlesFilter'
@@ -61,7 +62,9 @@ const CommunityLayout: FC<TProps> = ({
 }) => {
   const [expand, setExpand] = useState(false)
 
-  const publicThreads = community.threads.filter((thread) => enable[thread.raw])
+  const publicThreads = sortByIndex(
+    community.threads.filter((thread) => enable[thread.raw]),
+  ) as TCommunityThread[]
 
   // const communityInfo = article?.originalCommunity?.raw ? article.originalCommunity : community
   //               onClick={multiClick(() => openMenu(item.raw))}

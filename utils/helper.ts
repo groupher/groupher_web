@@ -42,8 +42,11 @@ export const sortByColor = (source: TSORTABLE_ITEMS): TSORTABLE_ITEMS =>
 /**
  * sort the array by it's index
  */
-export const sortByIndex = (source: TSORTABLE_ITEMS, key = 'index'): TSORTABLE_ITEMS =>
-  sort((a, b) => a[key] - b[key], source)
+export const sortByIndex = (source: TSORTABLE_ITEMS, key = 'index'): TSORTABLE_ITEMS => {
+  if (isEmpty(source)) return []
+
+  return sort((a, b) => a[key] - b[key], source)
+}
 
 /* eslint-disable */
 const log =
@@ -295,4 +298,20 @@ export const isRejectedState = (state: TArticleState): boolean => {
     ARTICLE_STATE.REJECT_REPRO,
     ARTICLE_STATE.REJECT_STALE,
   ])
+}
+
+/**
+ * remove empty value from given object
+ */
+export const removeEmptyValuesFromObject = (object) => {
+  const newObject = {}
+
+  Object.keys(object).forEach((key) => {
+    const value = object[key]
+    if (value !== null && value !== undefined && value !== '') {
+      newObject[key] = value
+    }
+  })
+
+  return newObject
 }

@@ -4,6 +4,8 @@ import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TThread, TCommunity, TMetric, TEnableConfig } from '@/spec'
 
+import { sortByIndex } from '@/utils/helper'
+
 import { SpaceGrow } from '@/widgets/Common'
 import TabBar from '@/widgets/TabBar'
 import ViewportTracker from '@/widgets/ViewportTracker'
@@ -34,7 +36,7 @@ type TProps = {
 
 const ClassicLayout: FC<TProps> = ({ community, activeThread, metric, enable }) => {
   const { isMobile } = useMobileDetect()
-  const publicThreads = community.threads.filter((thread) => enable[thread.raw])
+  const publicThreads = sortByIndex(community.threads.filter((thread) => enable[thread.raw]))
 
   return (
     <Wrapper testid="community-digest" isMobile={isMobile}>
