@@ -233,6 +233,7 @@ export const previewArticle = (article: TArticle): void => {
   const type = TYPE.DRAWER[`${article.meta.thread}_VIEW`]
   const data = article
 
+  console.log('## type: ', type)
   send(EVENT.DRAWER.OPEN, { type, data })
 }
 

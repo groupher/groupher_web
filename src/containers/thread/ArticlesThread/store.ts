@@ -22,6 +22,8 @@ import type {
 } from '@/spec'
 
 import TYPE from '@/constant/type'
+import { ARTICLE_THREAD } from '@/constant/thread'
+
 import { T, markStates, getParent, Instance, toJS } from '@/utils/mobx'
 import { nilOrEmpty } from '@/utils/validator'
 import { plural } from '@/utils/fmt'
@@ -153,6 +155,9 @@ const ArticlesThread = T.model('ArticlesThread', {
     },
     targetArticleIndex(id: TID): number | null {
       const slf = self as TStore
+      // TODO: need update kanban source logic
+      if (slf.curThread !== ARTICLE_THREAD.POST) return null
+
       const { entries } = slf.pagedArticlesData
       // @ts-ignore
       const index = findIndex(propEq('id', id), entries)

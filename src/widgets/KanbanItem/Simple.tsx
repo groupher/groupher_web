@@ -6,10 +6,15 @@
 
 import { FC, memo, useState, useEffect } from 'react'
 
+import type { TArticle } from '@/spec'
+
+import { UPVOTE_LAYOUT } from '@/constant/layout'
+
 import { buildLog } from '@/utils/logger'
 import { mockTags, mockUsers } from '@/utils/mock'
+import { previewArticle } from '@/utils/signal'
 import { getRandomInt } from '@/utils/helper'
-import { UPVOTE_LAYOUT } from '@/constant/layout'
+
 import CommentsCount from '@/widgets/CommentsCount'
 import { Row, Space } from '@/widgets/Common'
 
@@ -23,29 +28,15 @@ import { Wrapper, Header, Footer, Title } from './styles/simple'
 /* eslint-disable-next-line */
 const log = buildLog('w:KanbanItem:index')
 
-const TITLES = [
-  '发布帖子支持封面图设置',
-  '后台设置编辑帖子时候可以让用户选择多个标签',
-  '暗黑模式',
-  '不同标签支持不同展示模式',
-  '后台统计分析模块',
-  '看板支持标签过滤，里程碑等',
-  '更新日志封面编辑器',
-  '支持团管理员更改帖子标题',
-]
-
 type TProps = {
   testid?: string
+  article: TArticle
 }
 
-const KanbanItem: FC<TProps> = ({ testid = 'gtd-item' }) => {
-  const [upvoteCount, setUpvoteCount] = useState(0)
-  const [commentCount, setCommentCount] = useState(0)
+const KanbanItem: FC<TProps> = ({ testid = 'gtd-item', article }) => {
   const [titleIdx, setTitleIdx] = useState(0)
 
   useEffect(() => {
-    setUpvoteCount(getRandomInt(0, 100))
-    setCommentCount(getRandomInt(0, 5))
     setTitleIdx(getRandomInt(0, 7))
   }, [])
 
@@ -57,14 +48,20 @@ const KanbanItem: FC<TProps> = ({ testid = 'gtd-item' }) => {
         <TagsList items={[tags[titleIdx]]} left={2} />
         {/* <IconButton path="shape/more.svg" /> */}
       </Header>
-      <Title>{TITLES[titleIdx]}</Title>
+      <Title onClick={() => previewArticle(article)}>{article.title}</Title>
       <Footer>
         <Row>
-          <Upvote count={upvoteCount} avatarList={mockUsers(3)} type={UPVOTE_LAYOUT.SIMPLE} />
+          <Upvote
+            count={article.upvotesCount}
+            avatarList={mockUsers(3)}
+            type={UPVOTE_LAYOUT.SIMPLE}
+          />
           <Space right={15} />
-          {commentCount !== 0 && <CommentsCount count={commentCount} size="medium" />}
+          {article.commentsCount !== 0 && (
+            <CommentsCount count={article.commentsCount} size="medium" />
+          )}
         </Row>
-        <ArticleCatState cat="FEATURE" noBg />
+        <ArticleCatState cat={article.cat} noBg />
       </Footer>
     </Wrapper>
   )

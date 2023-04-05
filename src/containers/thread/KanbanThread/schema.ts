@@ -1,23 +1,66 @@
 import { gql } from 'urql/core'
 
-const simpleMutation = gql`
-  mutation ($id: ID!) {
-    post(id: $id) {
-      id
-    }
-  }
-`
-const simpleQuery = gql`
-  query ($filter: filter!) {
-    post(id: $id) {
-      id
+import { F } from '@/schemas'
+
+const groupedKanbanPosts = gql`
+  query groupedKanbanPosts($community: String!) {
+    groupedKanbanPosts(community: $community) {
+      todo {
+        entries {
+          innerId
+          cat
+          state
+          title
+          originalCommunityRaw
+          meta {
+            thread
+          }
+          author {
+            ${F.author}
+          }
+        }
+        ${F.pagi}
+      }
+
+      wip {
+        entries {
+          innerId
+          cat
+          state
+          title
+          originalCommunityRaw
+          meta {
+            thread
+          }
+          author {
+            ${F.author}
+          }
+        }
+        ${F.pagi}
+      }
+
+      done {
+        entries {
+          innerId
+          cat
+          state
+          title
+          originalCommunityRaw
+          meta {
+            thread
+          }
+          author {
+            ${F.author}
+          }
+        }
+        ${F.pagi}
+      }
     }
   }
 `
 
 const schema = {
-  simpleMutation,
-  simpleQuery,
+  groupedKanbanPosts,
 }
 
 export default schema

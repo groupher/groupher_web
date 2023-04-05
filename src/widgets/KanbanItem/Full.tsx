@@ -6,6 +6,8 @@
 
 import { FC, memo, useState, useEffect } from 'react'
 
+import type { TArticle } from '@/spec'
+
 import { buildLog } from '@/utils/logger'
 import { mockTags, mockUsers } from '@/utils/mock'
 import { getRandomInt } from '@/utils/helper'
@@ -21,27 +23,15 @@ import { Wrapper, Header, Footer, UpvotesWrapper, Title, Desc } from './styles/f
 /* eslint-disable-next-line */
 const log = buildLog('w:KanbanItem:index')
 
-const TITLES = [
-  '发布帖子支持封面图设置',
-  '后台设置编辑帖子时候可以让用户选择多个标签',
-  '暗黑模式',
-  '不同标签支持不同展示模式',
-  '后台统计分析模块',
-  '看板支持标签过滤，里程碑等',
-  '更新日志封面编辑器',
-  '支持团管理员更改帖子标题',
-]
-
 type TProps = {
   testid?: string
+  article: TArticle
 }
 
-const KanbanItem: FC<TProps> = ({ testid = 'gtd-item' }) => {
-  const [upvoteCount, setUpvoteCount] = useState(0)
+const KanbanItem: FC<TProps> = ({ testid = 'gtd-item', article }) => {
   const [titleIdx, setTitleIdx] = useState(0)
 
   useEffect(() => {
-    setUpvoteCount(getRandomInt(0, 20))
     setTitleIdx(getRandomInt(0, 7))
   }, [])
 
@@ -53,13 +43,17 @@ const KanbanItem: FC<TProps> = ({ testid = 'gtd-item' }) => {
         <TagsList items={[tags[titleIdx]]} left={2} />
         {/* <IconButton path="shape/more.svg" /> */}
       </Header>
-      <Title>{TITLES[titleIdx]}</Title>
-      <Desc>服务于团队开发流程，以社区服务为基础，提供反馈社区工具箱，各种个性化设置等等</Desc>
+      <Title>{article.title}</Title>
+      <Desc>{article.digest}</Desc>
       <Footer>
         <UpvotesWrapper>
-          <Upvote count={upvoteCount} avatarList={mockUsers(3)} type={UPVOTE_LAYOUT.GENERAL} />
+          <Upvote
+            count={article.upvotesCount}
+            avatarList={mockUsers(3)}
+            type={UPVOTE_LAYOUT.GENERAL}
+          />
         </UpvotesWrapper>
-        <ArticleCatState cat="FEATURE" noBg top={1} />
+        <ArticleCatState cat={article.cat} noBg top={1} />
       </Footer>
     </Wrapper>
   )

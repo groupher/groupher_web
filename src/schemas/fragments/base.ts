@@ -101,6 +101,7 @@ export const pageArticleMeta = `
 `
 export const post = `
   id
+  innerId
   title
   insertedAt
   updatedAt
