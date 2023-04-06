@@ -1,4 +1,5 @@
 import { pagedPosts, pagedPublishedPosts, post, groupedKanbanPosts } from './post'
+import { pagedChangelogs, changelog } from './changelog'
 
 import { user, sessionState } from './user'
 import { community, subscribedCommunities, pagedCommunities } from './community'
@@ -23,6 +24,9 @@ const P = {
   pagedPosts,
   pagedPublishedPosts,
   post,
+  // changelog
+  pagedChangelogs,
+  changelog,
   // user
   user,
   sessionState,

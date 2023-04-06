@@ -115,7 +115,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const articleThread = ssrParseArticleThread(resp, thread, filter)
 
   const dashboard = ssrParseDashboard(community)
-  console.log('## community dashborad: ', dashboard)
 
   const initProps = merge(
     {

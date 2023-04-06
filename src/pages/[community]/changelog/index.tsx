@@ -3,7 +3,6 @@ import { merge } from 'ramda'
 import { Provider } from 'mobx-react'
 
 import type { TCommunity } from '@/spec'
-import { PAGE_SIZE } from '@/config'
 import { HCN } from '@/constant/name'
 import { THREAD } from '@/constant/thread'
 import METRIC from '@/constant/metric'
@@ -13,13 +12,11 @@ import {
   isArticleThread,
   ssrBaseStates,
   ssrFetchPrepare,
-  ssrError,
   ssrPagedArticleSchema,
   ssrPagedArticlesFilter,
-  ssrRescue,
+  ssrParseArticleThread,
+  ssrParseDashboard,
   communitySEO,
-  singular,
-  log,
 } from '@/utils'
 
 import GlobalLayout from '@/containers/layout/GlobalLayout'
@@ -43,36 +40,17 @@ const loader = async (context, opt = {}) => {
     userHasLogin,
   })
 
-  // tmply
-  const pagedArticleTags = isArticleThread(thread)
-    ? gqClient.request(P.pagedArticleTags, {
-        filter: {
-          communityRaw: community,
-          thread: singular(thread, 'upperCase'),
-        },
-      })
-    : {}
-
   const filter = ssrPagedArticlesFilter(context, userHasLogin)
 
   const pagedArticles = isArticleThread(thread)
     ? gqClient.request(ssrPagedArticleSchema(thread), filter)
     : {}
 
-  const subscribedCommunities = gqClient.request(P.subscribedCommunities, {
-    filter: {
-      page: 1,
-      size: PAGE_SIZE.M,
-    },
-  })
-
   return {
     filter,
-    ...(await pagedArticleTags),
     ...(await sessionState),
     ...(await curCommunity),
     ...(await pagedArticles),
-    ...(await subscribedCommunities),
   }
 }
 
@@ -81,42 +59,30 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
 
-  let resp
-  try {
-    resp = await loader(context)
-  } catch (e) {
-    log('#### error from server: ', e)
-    if (ssrRescue.hasLoginError(e.response?.errors)) {
-      // token 过期了，重新用匿名方式请求一次
-      await loader(context, { tokenExpired: true })
-    } else {
-      return ssrError(context, 'fetch', 500)
-    }
+  const resp = await loader(context)
+
+  const { community, pagedChangelogs } = resp
+  const dashboard = ssrParseDashboard(community)
+
+  const initProps = {
+    ...ssrBaseStates(resp),
+    route: {
+      communityPath: community.raw,
+      mainPath: community.raw === HCN ? '' : community.raw,
+      subPath: thread,
+      thread,
+    },
+    viewing: {
+      community,
+      activeThread: thread,
+    },
+    dashboardThread: {
+      ...dashboard,
+    },
+    changelogThread: {
+      pagedChangelogs,
+    },
   }
-
-  const { community, pagedArticleTags } = resp
-
-  const initProps = merge(
-    {
-      ...ssrBaseStates(resp),
-      route: {
-        communityPath: community.raw,
-        mainPath: community.raw === HCN ? '' : community.raw,
-        subPath: thread,
-        thread,
-      },
-      tagsBar: {
-        tags: pagedArticleTags?.entries || [],
-      },
-      viewing: {
-        community,
-        activeThread: thread,
-      },
-    },
-    {
-      articleThread: thread,
-    },
-  )
 
   return { props: { errorCode: null, ...initProps } }
 }
@@ -126,8 +92,6 @@ const CommunityChangelogPage = (props) => {
 
   const { viewing } = props
   const { community, activeThread } = viewing
-
-  log('the changelog thread')
 
   return (
     <Provider store={store}>

@@ -66,6 +66,10 @@ export type TPost = TBaseArticle & {
   digest?: string
 }
 
+export type TChangelog = TBaseArticle & {
+  digest?: string
+}
+
 export type TTechStack = {
   title?: string
   logo: string
@@ -90,7 +94,7 @@ export type TTechCommunities = {
 }
 
 export type TArticle = TPost
-export type TArticleEntries = TPost[]
+export type TArticleEntries = TPost[] | TChangelog[]
 
 type TPagi = {
   totalCount: number

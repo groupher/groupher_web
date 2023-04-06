@@ -39,8 +39,6 @@ export const article = `
   originalCommunityRaw
   isPinned
   title
-  linkAddr
-  copyRight
   insertedAt
   activeAt
   updatedAt

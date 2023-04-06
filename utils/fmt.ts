@@ -139,14 +139,7 @@ export const singular = (value: string, opt = null): string => {
  */
 export const plural = (value: string, opt = null): string => {
   if (
-    includes(value, [
-      THREAD.ACCOUNT,
-      THREAD.CHANGELOG,
-      THREAD.HELP,
-      THREAD.KANBAN,
-      THREAD.ABOUT,
-      THREAD.DASHBOARD,
-    ])
+    includes(value, [THREAD.ACCOUNT, THREAD.HELP, THREAD.KANBAN, THREAD.ABOUT, THREAD.DASHBOARD])
   ) {
     return doCovert(value, opt)
   }

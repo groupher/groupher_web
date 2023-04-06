@@ -1,17 +1,15 @@
 import { FC } from 'react'
 
-import type { TAvatarLayout } from '@/spec'
-import { mockUsers } from '@/utils/mock'
+import type { TAvatarLayout, TUser } from '@/spec'
 
 import { Wrapper, Avatar, Name } from '../styles/classic_layout/author'
 
 type TProps = {
   avatarLayout: TAvatarLayout
+  user: TUser
 }
 
-const Author: FC<TProps> = ({ avatarLayout }) => {
-  const user = mockUsers(1)[0]
-
+const Author: FC<TProps> = ({ avatarLayout, user }) => {
   return (
     <Wrapper>
       <Avatar src={user.avatar} avatarLayout={avatarLayout} />

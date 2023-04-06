@@ -4,6 +4,7 @@ export const CARD_THREAD = {}
 
 export const ARTICLE_THREAD = {
   POST: 'post',
+  CHANGELOG: 'changelog',
 } as Record<Uppercase<TArticleThread>, TArticleThread>
 
 export const THREAD = {

@@ -129,7 +129,7 @@ const DrawerStore = T.model('DrawerStore', {
     get articleNavi(): TArticleNavi {
       const slf = self as TStore
 
-      if (!contains(slf.curThread, values(ARTICLE_THREAD))) {
+      if (!contains(slf.curThread, values(ARTICLE_THREAD)) || !slf.viewingArticle) {
         return {
           previous: null,
           next: null,
