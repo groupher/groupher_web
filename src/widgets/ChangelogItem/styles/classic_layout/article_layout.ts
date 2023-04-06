@@ -22,6 +22,10 @@ export const Main = styled.div`
   width: 100%;
   min-height: 220px;
   padding-bottom: 30px;
+
+  &:hover {
+    cursor: pointer;
+  }
 `
 export const Title = styled.div`
   color: ${theme('article.title')};

@@ -7,7 +7,9 @@
 import { FC, memo } from 'react'
 
 import type { TAvatarLayout, TChangelog } from '@/spec'
+
 import { buildLog } from '@/utils/logger'
+import { previewArticle } from '@/utils/signal'
 
 import { SpaceGrow } from '@/widgets/Common'
 import CoverImage from '@/widgets/CoverImage'
@@ -44,7 +46,7 @@ type TProps = {
 const ClassicLayout: FC<TProps> = ({ testid = 'changelog-item', avatarLayout, article }) => {
   return (
     <Wrapper testid={testid}>
-      <Main>
+      <Main onClick={() => previewArticle(article)}>
         <CoverImage />
         <Title>
           <span>{article.title}</span>

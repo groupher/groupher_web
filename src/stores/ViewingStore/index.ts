@@ -11,12 +11,13 @@ import { ARTICLE_THREAD, THREAD } from '@/constant/thread'
 
 import { T, getParent, Instance, markStates } from '@/utils/mobx'
 import { viewingChanged } from '@/utils/signal'
-import { User, Community, Post } from '@/model'
+import { User, Community, Post, Changelog } from '@/model'
 
 const ViewingStore = T.model('ViewingStore', {
   user: T.opt(User, {}),
   community: T.opt(Community, {}),
   post: T.opt(Post, {}),
+  changelog: T.opt(Changelog, {}),
   // repo: T.opt(Repo, {}),
   activeThread: T.opt(T.enum('activeThread', values(THREAD)), THREAD.POST),
   // for drawer usage
@@ -41,7 +42,12 @@ const ViewingStore = T.model('ViewingStore', {
     },
     get viewingArticle(): TArticle {
       const curThread = self.viewingThread || self.activeThread
+
+      console.log('## curThread: ', curThread)
+
       if (includes(curThread, values(ARTICLE_THREAD))) {
+        console.log('## self[curThread]: ', self[curThread])
+
         return self[curThread]
       }
       return {}
@@ -50,6 +56,9 @@ const ViewingStore = T.model('ViewingStore', {
   .actions((self) => ({
     setViewing(sobj): void {
       const { mark, viewingArticle } = self as TStore
+
+      console.log('## setViewing: ', sobj)
+
       mark(sobj)
       viewingChanged(viewingArticle)
     },
