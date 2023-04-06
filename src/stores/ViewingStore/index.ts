@@ -43,11 +43,7 @@ const ViewingStore = T.model('ViewingStore', {
     get viewingArticle(): TArticle {
       const curThread = self.viewingThread || self.activeThread
 
-      console.log('## curThread: ', curThread)
-
       if (includes(curThread, values(ARTICLE_THREAD))) {
-        console.log('## self[curThread]: ', self[curThread])
-
         return self[curThread]
       }
       return {}
@@ -56,8 +52,6 @@ const ViewingStore = T.model('ViewingStore', {
   .actions((self) => ({
     setViewing(sobj): void {
       const { mark, viewingArticle } = self as TStore
-
-      console.log('## setViewing: ', sobj)
 
       mark(sobj)
       viewingChanged(viewingArticle)
