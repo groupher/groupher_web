@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import METRIC from '@/constant/metric'
 
 import type { TMetric } from '@/spec'
 import css, { theme } from '@/utils/css'
