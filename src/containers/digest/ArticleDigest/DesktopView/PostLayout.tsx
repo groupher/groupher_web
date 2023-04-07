@@ -6,7 +6,10 @@ import { FC, memo } from 'react'
 import Router from 'next/router'
 
 import type { TPost, TMetric } from '@/spec'
+
 import METRIC from '@/constant/metric'
+import { ARTICLE_THREAD } from '@/constant/thread'
+
 import { buildLog } from '@/utils/logger'
 
 // import ArchivedSign from '@/widgets/ArchivedSign'
@@ -43,11 +46,13 @@ type TProps = {
 const PostLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
   const { id, author, title, upvotesCount, meta, viewerHasUpvoted } = article
 
+  const backUrl = `/${article.originalCommunityRaw}/${ARTICLE_THREAD.POST}`
+
   return (
     <Wrapper metric={metric}>
       <LeftPart>
         <Topping>
-          <BackBtnWrapper onClick={() => Router.push('/home')}>
+          <BackBtnWrapper onClick={() => Router.push(backUrl)}>
             <ArrowIcon />
             讨论区
           </BackBtnWrapper>

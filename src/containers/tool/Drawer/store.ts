@@ -16,7 +16,6 @@ import TYPE from '@/constant/type'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { lockPage, unlockPage } from '@/utils/dom'
 import { Global } from '@/utils/helper'
-import { plural } from '@/utils/fmt'
 import { WIDTH, mediaBreakPoints } from '@/utils/css/metric'
 import { User } from '@/model'
 
@@ -129,7 +128,7 @@ const DrawerStore = T.model('DrawerStore', {
     get articleNavi(): TArticleNavi {
       const slf = self as TStore
 
-      if (!contains(slf.curThread, values(ARTICLE_THREAD))) {
+      if (!contains(slf.curThread, values(ARTICLE_THREAD)) || !slf.viewingArticle?.id) {
         return {
           previous: null,
           next: null,
@@ -140,14 +139,21 @@ const DrawerStore = T.model('DrawerStore', {
       const viewingArticleId = slf.viewingArticle.id
 
       let pagedArticles
+
       switch (slf.curThread) {
+        case ARTICLE_THREAD.CHANGELOG: {
+          pagedArticles = root.changelogThread.pagedChangelogsData
+          break
+        }
         default: {
-          pagedArticles = toJS(root.articlesThread[`paged${plural(slf.curThread, 'titleCase')}`])
+          // pagedArticles = toJS(root.articlesThread[`paged${plural(slf.curThread, 'titleCase')}`])
+          pagedArticles = toJS(root.articlesThread.pagedPosts)
           break
         }
       }
 
       const curIndex = findIndex((a: TArticle) => a.id === viewingArticleId, pagedArticles.entries)
+
       return {
         previous: pagedArticles.entries[curIndex - 1] || null,
         next: pagedArticles.entries[curIndex + 1] || null,

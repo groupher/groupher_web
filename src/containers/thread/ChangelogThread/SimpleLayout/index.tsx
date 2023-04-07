@@ -5,7 +5,7 @@
 
 import { FC, useState } from 'react'
 
-import type { TAvatarLayout, TGlobalLayout } from '@/spec'
+import type { TAvatarLayout, TGlobalLayout, TPagedArticles } from '@/spec'
 import { CHANGELOG_LAYOUT } from '@/constant/layout'
 
 import ChangelogItem from '@/widgets/ChangelogItem'
@@ -22,9 +22,15 @@ type TProps = {
   globalLayout: TGlobalLayout
   isSidebarLayout: boolean
   avatarLayout: TAvatarLayout
+  pagedChangelogs: TPagedArticles
 }
 
-const SimpleLayout: FC<TProps> = ({ globalLayout, isSidebarLayout, avatarLayout }) => {
+const SimpleLayout: FC<TProps> = ({
+  globalLayout,
+  isSidebarLayout,
+  avatarLayout,
+  pagedChangelogs,
+}) => {
   const [filterExpand, setFilterExpand] = useState(false)
   const [tab, setTab] = useState(TABS_MODE_OPTIONS[0].raw)
 
@@ -55,16 +61,14 @@ const SimpleLayout: FC<TProps> = ({ globalLayout, isSidebarLayout, avatarLayout 
 
       {filterExpand && <FilterBar tab={tab} alignLeft={alignLeft} />}
       <MainWrapper>
-        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
-        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
-        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
-        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
-        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
-        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
-        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
-        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
-        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
-        <ChangelogItem layout={globalLayout.changelog} avatarLayout={avatarLayout} />
+        {pagedChangelogs.entries.map((item) => (
+          <ChangelogItem
+            key={item.innerId}
+            layout={globalLayout.changelog}
+            avatarLayout={avatarLayout}
+            article={item}
+          />
+        ))}
       </MainWrapper>
     </Wrapper>
   )

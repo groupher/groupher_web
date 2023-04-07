@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import METRIC from '@/constant/metric'
 
 import type { TMetric } from '@/spec'
 import css, { theme } from '@/utils/css'
@@ -30,7 +29,7 @@ export const Operations = styled.div<{ metric: TMetric }>`
   justify-content: ${({ metric }) => getStickerJustify(metric)};
   ${({ metric }) => css.fitStickerWidth(metric)};
 
-  padding-right: ${({ metric }) => (metric === METRIC.WORKS_ARTICLE ? '28px' : 0)};
+  padding-right: 0;
 `
 export const LoginHint = styled.div`
   color: ${theme('article.title')};

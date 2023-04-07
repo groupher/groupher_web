@@ -1,30 +1,14 @@
-import { article, repo, author, pagi } from './base'
+import { article, author, pagi } from './base'
 
 export const pagedPosts = `
   entries {
     ${article}
+    cat
+    state
     commentsParticipants {
       ${author}
     }
   }
   ${pagi}
 `
-export const pagedJobs = `
-  entries {
-    ${article}
-    company
-    companyLink
-   }
-  ${pagi}
-`
-
-export const pagedRepos = `
-  entries {
-    ${repo}
-    views
-    author {
-      ${author}
-    }
-  }
-  ${pagi}
-`
+export const holder = 1

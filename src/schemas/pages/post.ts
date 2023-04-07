@@ -13,6 +13,8 @@ export const pagedPosts = `
     pagedPosts(filter: $filter) {
       entries {
         ${F.article}
+        cat
+        state
         meta {
           thread
           latestUpvotedUsers {
@@ -49,6 +51,63 @@ export const pagedPublishedPosts = `
         viewerHasUpvoted @include(if: $userHasLogin)
       }
       ${F.pagi}
+    }
+  }
+`
+
+export const groupedKanbanPosts = `
+  query groupedKanbanPosts($community: String!) {
+    groupedKanbanPosts(community: $community) {
+      todo {
+        entries {
+          innerId
+          cat
+          state
+          title
+          originalCommunityRaw
+          meta {
+            thread
+          }
+          author {
+            ${F.author}
+          }
+        }
+        ${F.pagi}
+      }
+
+      wip {
+        entries {
+          innerId
+          cat
+          state
+          title
+          originalCommunityRaw
+          meta {
+            thread
+          }
+          author {
+            ${F.author}
+          }
+        }
+        ${F.pagi}
+      }
+
+      done {
+        entries {
+          innerId
+          cat
+          state
+          title
+          originalCommunityRaw
+          meta {
+            thread
+          }
+          author {
+            ${F.author}
+          }
+        }
+        ${F.pagi}
+      }
     }
   }
 `

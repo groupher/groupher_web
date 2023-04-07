@@ -12,7 +12,7 @@ export const Wrapper = styled.article.attrs(({ testid }: TTestable) => ({
   min-height: 300px;
   width: 100%;
   padding: 0 180px;
-  margin-left: 60px;
+  margin-left: 20px;
 
   ${css.media.mobile`
     padding: 0 20px;

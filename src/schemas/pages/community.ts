@@ -28,6 +28,36 @@ export const community = `
         postsCount
         blogsCount
       }
+      dashboard {
+        seo {
+          ogTitle
+          ogDescription
+        }
+
+        layout {
+          postLayout
+          kanbanLayout
+          helpLayout
+          changelogLayout
+        }
+
+        baseInfo {
+          favicon
+        }
+
+        rss {
+          rssFeedType
+          rssFeedCount
+        }
+
+        enable {
+          post
+          kanban
+          changelog
+          help
+          about
+        }
+      }
     }
   }
 `

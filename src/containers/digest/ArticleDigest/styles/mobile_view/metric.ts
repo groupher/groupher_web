@@ -1,16 +1,7 @@
 import type { TMetric, TThread, TFlexRule } from '@/spec'
-import METRIC from '@/constant/metric'
 
 export const getDigestHeight = (metric: TMetric): string => {
   switch (metric) {
-    case METRIC.WORKS_ARTICLE: {
-      return '220px'
-    }
-
-    case METRIC.BLOG_ARTICLE: {
-      return '265px'
-    }
-
     default: {
       return '252px'
     }
@@ -22,11 +13,6 @@ export const getDigestHeight = (metric: TMetric): string => {
  */
 export const getFixStickerOffset = (metric: TMetric): string => {
   switch (metric) {
-    case METRIC.WORKS_ARTICLE: {
-      // 和 关于，成员，技术栈等靠左对齐
-      return '14px'
-    }
-
     default: {
       return '0'
     }

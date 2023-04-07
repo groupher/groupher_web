@@ -6,7 +6,7 @@
 
 import { FC, memo } from 'react'
 
-import type { TAvatarLayout } from '@/spec'
+import type { TAvatarLayout, TChangelog } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
 import { SpaceGrow } from '@/widgets/Common'
@@ -16,8 +16,8 @@ import CommentsCount from '@/widgets/CommentsCount'
 
 import { demoTags, demoEmotion } from '../constant'
 
-import SolidTagList from '../SolidTagList'
-import Author from './Author'
+// import SolidTagList from '../SolidTagList'
+// import Author from './Author'
 
 import {
   Wrapper,
@@ -37,15 +37,16 @@ const log = buildLog('w:ChangelogItem:index')
 type TProps = {
   testid?: string
   avatarLayout: TAvatarLayout
+  article: TChangelog
 }
 
-const SimpleLayout: FC<TProps> = ({ testid = 'changelog-item', avatarLayout }) => {
+const SimpleLayout: FC<TProps> = ({ testid = 'changelog-item', avatarLayout, article }) => {
   return (
     <Wrapper testid={testid}>
-      <DateTime>10-04, 2022</DateTime>
+      <DateTime>{article.insertedAt}</DateTime>
       <Main>
         <Title>
-          <span>帖子支持表情了</span>
+          <span>{article.title}</span>
           <Version>v3.21</Version>
         </Title>
         <TagsWrapper>
@@ -60,7 +61,7 @@ const SimpleLayout: FC<TProps> = ({ testid = 'changelog-item', avatarLayout }) =
         <Footer>
           <EmotionSelector emotions={demoEmotion} isLegal />
           <SpaceGrow />
-          <CommentsCount count={12} size="medium" right={15} />
+          <CommentsCount count={article.commentsCount} size="medium" right={15} />
           <ShareIcon />
         </Footer>
       </Main>

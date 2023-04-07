@@ -39,8 +39,6 @@ export const article = `
   originalCommunityRaw
   isPinned
   title
-  linkAddr
-  copyRight
   insertedAt
   activeAt
   updatedAt
@@ -101,36 +99,13 @@ export const pageArticleMeta = `
 `
 export const post = `
   id
+  innerId
   title
   insertedAt
   updatedAt
   views
 `
-export const repo = `
-  id
-  views
-  title
-  ownerName
-  desc
-  insertedAt
-  prsCount
-  forkCount
-  starCount
-  license
-  ownerUrl
-  repoUrl
-  homepageUrl
-  releaseTag
-  primaryLanguage {
-    color
-    name
-  }
-  contributors {
-    avatar
-    htmlUrl
-    nickname
-  }
-`
+
 export const userSocial = `
   github
   twitter

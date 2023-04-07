@@ -7,6 +7,7 @@ const METRIC = {
   USER: 'USER',
   // article
   ARTICLE: 'ARTICLE',
+  CHANGELOG_ARTICLE: 'CHANGELOG_ARTICLE',
 
   // 版块
   HELP_CENTER: 'HELP_CENTER',

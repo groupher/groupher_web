@@ -13,11 +13,19 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   border-bottom: 1px solid;
   border-bottom-color: ${theme('divider')};
   margin-bottom: 30px;
+
+  :last-child {
+    border-bottom: none;
+  }
 `
 export const Main = styled.div`
   width: 100%;
   min-height: 220px;
   padding-bottom: 30px;
+
+  &:hover {
+    cursor: pointer;
+  }
 `
 export const Title = styled.div`
   color: ${theme('article.title')};

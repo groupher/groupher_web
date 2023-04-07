@@ -30,7 +30,7 @@ import {
   getUndoUpvoteSchema,
 } from './base'
 
-import { pagedPosts, pagedJobs, pagedRepos } from './paged'
+import { pagedPosts } from './paged'
 
 const F = {
   community,
@@ -40,8 +40,6 @@ const F = {
   author,
   tag,
   pagedPosts,
-  pagedJobs,
-  pagedRepos,
 
   user,
   userSocial,

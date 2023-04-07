@@ -41,6 +41,13 @@ export const WIDTH = {
     STICKER: '240px',
     STICKER_LAPTOPL: '220px',
   },
+  CHANGELOG_ARTICLE: {
+    PAGE: '1250px',
+    CONTENT: '580px',
+    CONTENT_OFFSET: '50px',
+    CONTENT_OFFSET_LAPTOPL: '0',
+    CONTENT_OFFSET_DESKTOPL: '0',
+  },
   BLOG_ARTICLE: {
     PAGE: '1460px',
     CONTENT: '630px',
@@ -49,15 +56,6 @@ export const WIDTH = {
     CONTENT_OFFSET_DESKTOPL: '400px',
     STICKER: '260px',
     STICKER_LAPTOPL: '240px',
-  },
-  WORKS_ARTICLE: {
-    PAGE: '1460px',
-    CONTENT: '615px',
-    CONTENT_OFFSET: '180px',
-    CONTENT_OFFSET_LAPTOPL: '150px',
-    CONTENT_OFFSET_DESKTOPL: '280px',
-    STICKER: '260px',
-    STICKER_LAPTOPL: '260px',
   },
 
   MEMBERSHIP: {

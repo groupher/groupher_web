@@ -1,10 +1,11 @@
 import { FC } from 'react'
 
-import type { TCommunity, TMetric, TEnableConfig, TThread } from '@/spec'
+import type { TCommunity, TMetric, TEnableConfig, TThread, TCommunityThread } from '@/spec'
 
 import { ANCHOR } from '@/constant/dom'
 import { ROUTE } from '@/constant/route'
 
+import { sortByIndex } from '@/utils/helper'
 import MobileThreadNavi from '@/widgets/MobileThreadNavi'
 
 import {
@@ -28,7 +29,9 @@ type TProps = {
 }
 
 const Header: FC<TProps> = ({ metric, community, enable, activeThread }) => {
-  const publicThreads = community.threads.filter((thread) => enable[thread.raw])
+  const publicThreads = sortByIndex(
+    community.threads.filter((thread) => enable[thread.raw]),
+  ) as TCommunityThread[]
 
   return (
     <Wrapper id={ANCHOR.GLOBAL_HEADER_ID}>

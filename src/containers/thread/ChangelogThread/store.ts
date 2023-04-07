@@ -4,11 +4,20 @@
 
 import { values } from 'ramda'
 
-import type { TCommunity, TRootStore, TGlobalLayout, TTag, TAvatarLayout } from '@/spec'
+import type {
+  TCommunity,
+  TRootStore,
+  TGlobalLayout,
+  TTag,
+  TAvatarLayout,
+  TPagedArticles,
+} from '@/spec'
 import { buildLog } from '@/utils/logger'
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
+import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { mockTags, mockChangelogTimeTags, mockChangelogVersionTags } from '@/utils/mock'
+
+import { PagedChangelogs, emptyPagi } from '@/model'
 
 import { TAGS_MODE } from './constant'
 
@@ -16,6 +25,7 @@ import { TAGS_MODE } from './constant'
 const log = buildLog('S:ChangelogThread')
 
 const ChangelogThread = T.model('ChangelogThread', {
+  pagedChangelogs: T.opt(PagedChangelogs, emptyPagi),
   tagsMode: T.opt(T.enum(values(TAGS_MODE)), TAGS_MODE.ALL),
 })
   .views((self) => ({
@@ -44,6 +54,9 @@ const ChangelogThread = T.model('ChangelogThread', {
       const root = getParent(self) as TRootStore
 
       return root.dashboardThread.avatarLayout
+    },
+    get pagedChangelogsData(): TPagedArticles {
+      return toJS(self.pagedChangelogs)
     },
   }))
   .actions((self) => ({

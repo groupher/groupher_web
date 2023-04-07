@@ -5,6 +5,8 @@ import { pagiFields } from './helper/common'
 
 export const Post = T.model('Post', {
   ...articleFields(),
+  cat: T.maybeNull(T.string),
+  state: T.maybeNull(T.string),
   isQuestion: T.maybeNull(T.bool),
 })
 

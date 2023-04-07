@@ -114,6 +114,7 @@ export type {
   TArticleEntries,
   TArticleMeta,
   TPost,
+  TChangelog,
   TSocialInfo,
   TTechCommunities,
   TTechStack,

@@ -5,6 +5,8 @@ import { HCN } from '@/constant/name'
 import TYPE from '@/constant/type'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
+import { removeEmptyValuesFromObject } from '@/utils/helper'
+
 import { plural } from './fmt'
 
 import { makeGQClient } from './graphql'
@@ -219,6 +221,16 @@ export const ssrParseArticleThread = (resp, thread, filters = {}) => {
       filters,
     },
   }
+}
+
+export const ssrParseDashboard = (community) => {
+  const { dashboard } = community
+
+  return removeEmptyValuesFromObject({
+    enable: dashboard.enable,
+    ...dashboard.layout,
+    ...dashboard.rss,
+  })
 }
 
 export const validCommunityFilters = [

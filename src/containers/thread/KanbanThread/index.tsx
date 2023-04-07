@@ -31,13 +31,19 @@ const KanbanThreadContainer: FC<TProps> = ({
 }) => {
   useInit(store)
 
-  const { layout, avatarLayout, kanbanBgColors } = store
+  const { layout, avatarLayout, kanbanBgColors, todoPosts, wipPosts, donePosts } = store
 
   return (
     <Wrapper testid={testid} isSidebarLayout={isSidebarLayout}>
       <Actions avatarLayout={avatarLayout} />
       <ColumnsWrapper>
-        <Columns layout={layout} bgColors={kanbanBgColors} />
+        <Columns
+          layout={layout}
+          bgColors={kanbanBgColors}
+          todoPosts={todoPosts}
+          wipPosts={wipPosts}
+          donePosts={donePosts}
+        />
       </ColumnsWrapper>
       <MobileColumnsWrapper>
         <CustomScroller
@@ -48,7 +54,13 @@ const KanbanThreadContainer: FC<TProps> = ({
           showShadow={false}
         >
           <MobileColumnsInner>
-            <Columns layout={layout} bgColors={kanbanBgColors} />
+            <Columns
+              layout={layout}
+              bgColors={kanbanBgColors}
+              todoPosts={todoPosts}
+              wipPosts={wipPosts}
+              donePosts={donePosts}
+            />
           </MobileColumnsInner>
         </CustomScroller>
       </MobileColumnsWrapper>

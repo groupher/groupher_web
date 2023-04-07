@@ -3,15 +3,15 @@
  *
  */
 
-import { FC, useEffect, useState } from 'react'
+import { FC } from 'react'
 
 // import { buildLog } from '@/utils/logger'
-import type { TKanbanLayout, TColorName } from '@/spec'
-import { getRandomInt } from '@/utils/helper'
+import type { TKanbanLayout, TColorName, TPagedArticles } from '@/spec'
 
 import { SpaceGrow } from '@/widgets/Common'
 import IconButton from '@/widgets/Buttons/IconButton'
 import KanbanItem from '@/widgets/KanbanItem'
+import EmptyItem from '@/widgets/KanbanItem/EmptyItem'
 
 import {
   Column,
@@ -27,15 +27,13 @@ import {
 type TProps = {
   layout: TKanbanLayout
   bgColors: TColorName[]
+  todoPosts: TPagedArticles
+  wipPosts: TPagedArticles
+  donePosts: TPagedArticles
 }
 
-const Columns: FC<TProps> = ({ layout, bgColors }) => {
+const Columns: FC<TProps> = ({ layout, bgColors, todoPosts, wipPosts, donePosts }) => {
   const [BG1, BG2, BG3] = bgColors
-
-  const [loaded, setLoaded] = useState(false)
-  useEffect(() => {
-    setLoaded(true)
-  }, [])
 
   return (
     <>
@@ -43,53 +41,51 @@ const Columns: FC<TProps> = ({ layout, bgColors }) => {
         <Header>
           <TODOIcon />
           <Label>待办</Label>
-          <SubTitle>{loaded && getRandomInt(10, 20)}</SubTitle>
+          <SubTitle>{todoPosts.totalCount}</SubTitle>
           <SpaceGrow />
           <IconButton path="shape/add.svg" right={12} />
         </Header>
         <Body color={BG1}>
-          <KanbanItem layout={layout} />
-          <KanbanItem layout={layout} />
-          <KanbanItem layout={layout} />
-          <KanbanItem layout={layout} />
-          <KanbanItem layout={layout} />
-          <KanbanItem layout={layout} />
-          <KanbanItem layout={layout} />
+          {todoPosts.totalCount === 0 && <EmptyItem />}
+
+          {todoPosts.totalCount !== 0 &&
+            todoPosts.entries.map((item) => (
+              <KanbanItem key={item.innerId} layout={layout} article={item} />
+            ))}
         </Body>
       </Column>
       <Column>
         <Header>
           <WipIcon />
           <Label>进行中</Label>
-          <SubTitle>{loaded && getRandomInt(10, 20)}</SubTitle>
+          <SubTitle>{wipPosts.totalCount}</SubTitle>
           <SpaceGrow />
           <IconButton path="shape/add.svg" right={12} />
         </Header>
         <Body color={BG2}>
-          <KanbanItem layout={layout} />
-          <KanbanItem layout={layout} />
-          <KanbanItem layout={layout} />
-          <KanbanItem layout={layout} />
-          <KanbanItem layout={layout} />
-          <KanbanItem layout={layout} />
-          <KanbanItem layout={layout} />
+          {wipPosts.totalCount === 0 && <EmptyItem />}
+
+          {wipPosts.totalCount !== 0 &&
+            wipPosts.entries.map((item) => (
+              <KanbanItem key={item.innerId} layout={layout} article={item} />
+            ))}
         </Body>
       </Column>
       <Column>
         <Header>
           <DoneIcon />
           <Label>已完成</Label>
-          <SubTitle>{loaded && getRandomInt(10, 20)}</SubTitle>
+          <SubTitle>{donePosts.totalCount}</SubTitle>
           <SpaceGrow />
           <IconButton path="shape/add.svg" right={12} />
         </Header>
         <Body color={BG3}>
-          <KanbanItem layout={layout} />
-          <KanbanItem layout={layout} />
-          <KanbanItem layout={layout} />
-          <KanbanItem layout={layout} />
-          <KanbanItem layout={layout} />
-          <KanbanItem layout={layout} />
+          {donePosts.totalCount === 0 && <EmptyItem />}
+
+          {donePosts.totalCount !== 0 &&
+            donePosts.entries.map((item) => (
+              <KanbanItem key={item.innerId} layout={layout} article={item} />
+            ))}
         </Body>
       </Column>
     </>

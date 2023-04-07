@@ -58,11 +58,15 @@ type TBaseArticle = {
   archivedAt?: string
   activeAt?: string
 
-  category?: TArticleCat
+  cat?: TArticleCat
   state?: TArticleState
 }
 
 export type TPost = TBaseArticle & {
+  digest?: string
+}
+
+export type TChangelog = TBaseArticle & {
   digest?: string
 }
 
@@ -90,7 +94,7 @@ export type TTechCommunities = {
 }
 
 export type TArticle = TPost
-export type TArticleEntries = TPost[]
+export type TArticleEntries = TPost[] | TChangelog[]
 
 type TPagi = {
   totalCount: number

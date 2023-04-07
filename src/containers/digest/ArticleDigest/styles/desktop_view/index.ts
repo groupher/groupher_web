@@ -18,7 +18,7 @@ export const Wrapper = styled.nav.attrs(({ testid }: TTestable) => ({
   margin-bottom: 24px;
   width: 100%;
   max-width: ${WIDTH.ARTICLE.PAGE};
-  margin-left: 60px;
+  margin-left: 20px;
 `
 export const InnerWrapper = styled.div`
   width: 100%;
