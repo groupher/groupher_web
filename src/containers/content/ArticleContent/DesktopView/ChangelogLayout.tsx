@@ -7,7 +7,6 @@
 import { FC, useRef } from 'react'
 import dynamic from 'next/dynamic'
 
-import type { TMetric } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
@@ -41,10 +40,9 @@ const Comments = dynamic(() => import('@/containers/unit/Comments'), {
 type TProps = {
   articleContent?: TStore
   testid?: string
-  metric?: TMetric
 }
 
-const ArticleContentContainer: FC<TProps> = ({ articleContent: store, metric, testid }) => {
+const ArticleContentContainer: FC<TProps> = ({ articleContent: store, testid }) => {
   useInit(store)
 
   const { viewingArticle: article } = store

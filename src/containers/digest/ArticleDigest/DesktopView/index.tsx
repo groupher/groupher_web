@@ -56,7 +56,7 @@ const ArticleDigestContainer: FC<TProps> = ({
           activeThread={activeThread}
         />
         <BannerContent>
-          <Layout article={viewingArticle} thread={activeThread} metric={metric} />
+          <Layout article={viewingArticle} metric={metric} />
         </BannerContent>
       </InnerWrapper>
       <ViewportTracker onEnter={inAnchor} onLeave={outAnchor} />
