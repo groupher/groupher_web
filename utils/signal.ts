@@ -179,7 +179,7 @@ export const sessionChanged = (user: TUser): void => {
   send(EVENT.SESSION_CHANGED)
   BStore.set('accountInfo', user as string)
   // see: https://stackoverflow.com/a/55349670/4050784
-  Global.dispatchEvent(new Event(EVENT.SESSION_CHANGED))
+  Global?.dispatchEvent(new Event(EVENT.SESSION_CHANGED))
 }
 
 /**

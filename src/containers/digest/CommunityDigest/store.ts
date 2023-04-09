@@ -4,6 +4,7 @@
  */
 
 import type {
+  TAccount,
   TRootStore,
   TViewing,
   TRoute,
@@ -23,6 +24,10 @@ const CommunityDigest = T.model('CommunityDigest', {
     get isLogin(): boolean {
       const root = getParent(self) as TRootStore
       return root.account.isLogin
+    },
+    get accountInfo(): TAccount {
+      const root = getParent(self) as TRootStore
+      return root.accountInfo
     },
     get curRoute(): TRoute {
       const root = getParent(self) as TRootStore

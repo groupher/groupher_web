@@ -507,8 +507,11 @@ const DashboardThread = T.model('DashboardThread', {
         slf.editingAlias = null
       }
 
+      /**
+       * TODO: only for Guest user
       slf._saveToLocal()
       slf.mark({ demoAlertEnable: true })
+      */
     },
 
     // save to local settings should omit subTabs,

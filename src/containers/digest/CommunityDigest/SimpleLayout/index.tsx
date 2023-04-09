@@ -57,7 +57,7 @@ const SimpleLayout: FC<TProps> = ({ community, activeThread, metric, enable }) =
               active={activeThread}
               onChange={(data) => send(EVENT.COMMUNITY_THREAD_CHANGE, { data })}
             />
-            <AccountUnit />
+            <AccountUnit community={community} />
           </CommunityBaseInfo>
         </BannerContentWrapper>
       </InnerWrapper>

@@ -14,6 +14,8 @@ import type { TSettingField, TAlias } from '../spec'
 import { SETTING_FIELD } from '../constant'
 import { init as linksLogicInit } from './links'
 
+import S from '../schema'
+
 const { SR71, $solver, asyncRes } = asyncSuit
 const sr71$ = new SR71({
   // @ts-ignore
@@ -27,7 +29,7 @@ let sub$ = null
 const log = buildLog('L:DashboardThread')
 
 export const enableThread = (key: string, toggle: boolean) => {
-  const { enableSettings } = store
+  const { enableSettings, curCommunity } = store
 
   const enable = {
     ...enableSettings,
@@ -36,6 +38,8 @@ export const enableThread = (key: string, toggle: boolean) => {
 
   store.mark({ enable })
   store.onSave('enable')
+
+  sr71$.mutate(S.updateDashboardEnable, { community: curCommunity.raw, [key]: toggle })
 }
 
 export const editTag = (key: 'settingTag' | 'editingTag', tag: TTag): void => {
@@ -145,6 +149,12 @@ export const onSave = (field: TSettingField, force = false): void => {
 // ###############################
 
 const DataSolver = [
+  {
+    match: asyncRes('updateDashboardEnable'),
+    action: (data) => {
+      console.log('## data: ', data)
+    },
+  },
   {
     match: asyncRes(EVENT.DRAWER.AFTER_CLOSE),
     action: () => {
