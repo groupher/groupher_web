@@ -12,7 +12,8 @@ import type { TSettingField, TWidgetType, TFooterEditType } from './spec'
 
 import { Icon } from './styles/side_menu'
 
-export const SETTING_FIELD = {
+// do not change, it's map to GQ endpoint updateDashboardLayout
+export const SETTING_LAYOUT_FIELD = {
   PRIMARY_COLOR: 'primaryColor',
   POST_LAYOUT: 'postLayout',
   KANBAN_LAYOUT: 'kanbanLayout',
@@ -30,6 +31,10 @@ export const SETTING_FIELD = {
   BROADCAST_BG: 'broadcastBg',
   BROADCAST_ARTICLE_BG: 'broadcastArticleBg',
   CHANGELOG_LAYOUT: 'changelogLayout',
+}
+
+export const SETTING_FIELD = {
+  ...SETTING_LAYOUT_FIELD,
   TAG: 'tag',
   ALIAS: 'alias',
   RSS_FEED_TYPE: 'rssFeedType',

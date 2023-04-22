@@ -12,9 +12,20 @@ const updateDashboardEnable = gql`
     }
   }
 `
-const simpleQuery = gql`
-  query ($filter: filter!) {
-    post(id: $id) {
+
+const updateDashboardLayout = gql`
+  mutation (
+    $community: Stirng!
+    $postLayout: String
+    $broadcastEnable: Boolean
+    $kanbanBgColors: [String]
+  ) {
+    updateDashboardLayout(
+      community: $community
+      postLayout: $postLayout
+      broadcastEnable: $broadcastEnable
+      kanbanBgColors: $kanbanBgColors
+    ) {
       id
     }
   }
@@ -22,7 +33,7 @@ const simpleQuery = gql`
 
 const schema = {
   updateDashboardEnable,
-  simpleQuery,
+  updateDashboardLayout,
 }
 
 export default schema

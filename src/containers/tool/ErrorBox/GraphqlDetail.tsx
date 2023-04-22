@@ -6,7 +6,7 @@ import type { TGQError } from '@/spec'
 import uid from '@/utils/uid'
 import { nilOrEmpty } from '@/utils/validator'
 
-import { Wrapper, TitleWrapper, Dot, Title, Desc } from './styles/details'
+import { Wrapper, TitleWrapper, Title, Desc } from './styles/details'
 
 const ChangesetMessages = ({ items }) => (
   <>
@@ -25,7 +25,6 @@ const ChangesetDetails = ({ errors }) => (
       errors.map((item) => (
         <div key={uid.gen()}>
           <TitleWrapper>
-            <Dot />
             <Title>
               错误码:&nbsp;
               {item.code}
@@ -43,7 +42,6 @@ const ParseDetails = ({ errors }) => (
       errors.map((item, idx) => (
         <div key={uid.gen()}>
           <TitleWrapper>
-            <Dot />
             <Title>{idx}:</Title>
             <Desc>{item.message}</Desc>
           </TitleWrapper>
@@ -58,7 +56,6 @@ const CustomDetails = ({ errors }) => (
       errors.map((item) => (
         <div key={uid.gen()}>
           <TitleWrapper>
-            <Dot />
             <Title>错误码: {item.code}</Title>
             <Desc>{item.message}</Desc>
           </TitleWrapper>
@@ -74,12 +71,7 @@ type TProps = {
   customError: TGQError[]
 }
 
-const GraphqlDetail: FC<TProps> = ({
-  graphqlType,
-  changesetError,
-  parseError,
-  customError,
-}) => {
+const GraphqlDetail: FC<TProps> = ({ graphqlType, changesetError, parseError, customError }) => {
   switch (graphqlType) {
     case 'changeset':
       return (

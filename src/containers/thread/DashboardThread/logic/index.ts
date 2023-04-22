@@ -1,22 +1,25 @@
 import { useEffect } from 'react'
+import { includes, values } from 'ramda'
 
 import type { TEditValue, TTag } from '@/spec'
 import { COLOR_NAME } from '@/constant/colors'
 import EVENT from '@/constant/event'
+import ERR from '@/constant/err'
 
 import { buildLog } from '@/utils/logger'
 import { updateEditing, toJS } from '@/utils/mobx'
+import { errRescue } from '@/utils/signal'
 import asyncSuit from '@/utils/async'
 
 import type { TStore } from '../store'
 import type { TSettingField, TAlias } from '../spec'
 
-import { SETTING_FIELD } from '../constant'
+import { SETTING_FIELD, SETTING_LAYOUT_FIELD } from '../constant'
 import { init as linksLogicInit } from './links'
 
 import S from '../schema'
 
-const { SR71, $solver, asyncRes } = asyncSuit
+const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
 const sr71$ = new SR71({
   // @ts-ignore
   receive: [EVENT.DRAWER.AFTER_CLOSE],
@@ -120,40 +123,65 @@ export const broadcastOnCancel = (isArticle = false): void => {
   store.rollbackEdit(bgKey)
 }
 
+const _doMutation = (field: string, e: TEditValue): void => {
+  const { curCommunity } = store
+
+  if (includes(field, values(SETTING_LAYOUT_FIELD))) {
+    sr71$.mutate(S.updateDashboardLayout, { community: curCommunity.raw, [field]: e })
+  }
+}
+
 /**
  * rollback editing value to init value
  */
 export const rollbackEdit = (field: TSettingField): void => store.rollbackEdit(field)
 export const resetEdit = (field: TSettingField): void => store.resetEdit(field)
-export const edit = (e: TEditValue, key: string): void => updateEditing(store, key, e)
+export const edit = (e: TEditValue, field: string): void => updateEditing(store, field, e)
 
 /**
  * save to server
  */
-export const onSave = (field: TSettingField, force = false): void => {
-  store.mark({ saving: true })
+export const onSave = (field: TSettingField): void => {
+  store.mark({ saving: true, savingField: field })
   store.onSave(field)
 
-  const time = force ? 0 : 1200
+  _doMutation(field, store[field])
 
-  setTimeout(() => {
-    store.mark({ saving: false })
-    const initSettings = { ...store.initSettings, [field]: toJS(store[field]) }
+  // const time = 1200
 
-    store.mark({ initSettings })
-  }, time)
+  // setTimeout(() => {
+  //   store.mark({ saving: false })
+  //   const initSettings = { ...store.initSettings, [field]: toJS(store[field]) }
+
+  //   store.mark({ initSettings })
+  // }, time)
 }
 
 // ###############################
 // init & uninit handlers
 // ###############################
+const _handleDone = () => {
+  const field = store.savingField
+
+  store.mark({ saving: false, savingField: null })
+  const initSettings = { ...store.initSettings, [field]: toJS(store[field]) }
+  store.mark({ initSettings })
+}
+
+const _handleError = () => {
+  const field = store.savingField
+  store.mark({ saving: false, savingField: null })
+  store.rollbackEdit(field as TSettingField)
+}
 
 const DataSolver = [
   {
     match: asyncRes('updateDashboardEnable'),
-    action: (data) => {
-      console.log('## data: ', data)
-    },
+    action: () => _handleDone(),
+  },
+  {
+    match: asyncRes('updateDashboardLayout'),
+    action: () => _handleDone(),
   },
   {
     match: asyncRes(EVENT.DRAWER.AFTER_CLOSE),
@@ -163,7 +191,30 @@ const DataSolver = [
   },
 ]
 
-const ErrSolver = []
+const ErrSolver = [
+  {
+    match: asyncErr(ERR.GRAPHQL),
+    action: ({ details }) => {
+      _handleError()
+      errRescue({ type: ERR.GRAPHQL, details, path: 'DashboardThread' })
+    },
+  },
+  {
+    match: asyncErr(ERR.TIMEOUT),
+    action: ({ details }) => {
+      _handleError()
+      errRescue({ type: ERR.TIMEOUT, details, path: 'DashboardThread' })
+    },
+  },
+  {
+    match: asyncErr(ERR.NETWORK),
+    action: () => {
+      _handleError()
+      errRescue({ type: ERR.NETWORK, path: 'DashboardThread' })
+    },
+  },
+]
+
 export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store

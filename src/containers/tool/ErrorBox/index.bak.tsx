@@ -9,15 +9,16 @@ import { FC } from 'react'
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 
+import Modal from '@/widgets/Modal'
 import useShortcut from '@/hooks/useShortcut'
 
 import type { TStore } from './store'
 
-import { SpaceGrow } from '@/widgets/Common'
-
+import Header from './Header'
 import Details from './Details'
+import Footer from './Footer'
 
-import { Wrapper, WarningIcon, ResetButton, LearnMoreButton, MoreLink } from './styles'
+import { Wrapper } from './styles'
 import { useInit, onClose } from './logic'
 
 /* eslint-disable-next-line */
@@ -34,8 +35,8 @@ const ErrorBoxContainer: FC<TProps> = ({ errorBox: store }) => {
   const {
     show,
     type,
-    // operation,
-    // path,
+    operation,
+    path,
     timeoutError,
     graphqlType,
     changesetErrorData,
@@ -43,25 +44,22 @@ const ErrorBoxContainer: FC<TProps> = ({ errorBox: store }) => {
     customErrorData,
   } = store
 
-  if (!show) return null
-
   return (
-    <Wrapper>
-      <WarningIcon />
-      <Details
-        type={type}
-        timeoutError={timeoutError}
-        graphqlType={graphqlType}
-        changesetError={changesetErrorData}
-        parseError={parseErrorData}
-        customError={customErrorData}
-      />
-      <SpaceGrow />
-      <LearnMoreButton>
-        <MoreLink href="/">报告问题</MoreLink>
-      </LearnMoreButton>
-      <ResetButton onClick={() => onClose()}>关闭</ResetButton>
-    </Wrapper>
+    <Modal width="520px" show={show} mode="error" showCloseBtn onClose={onClose}>
+      <Wrapper>
+        <Header type={type} operation={operation} path={path} graphqlType={graphqlType} />
+        <br />
+        <Details
+          type={type}
+          timeoutError={timeoutError}
+          graphqlType={graphqlType}
+          changesetError={changesetErrorData}
+          parseError={parseErrorData}
+          customError={customErrorData}
+        />
+        <Footer />
+      </Wrapper>
+    </Modal>
   )
 }
 

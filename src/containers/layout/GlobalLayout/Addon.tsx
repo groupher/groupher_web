@@ -8,6 +8,7 @@ import useShortcut from '@/hooks/useShortcut'
 import Drawer from '@/containers/tool/Drawer'
 import Subscriber from '@/containers/tool/Subscriber'
 import AuthWall from '@/containers/tool/AuthWall'
+import ErrorBox from '@/containers/tool/ErrorBox'
 
 import { logBuddha } from './logic'
 // import { Drawer } from './dynamic'
@@ -34,7 +35,7 @@ const Addon: FC<TProps> = ({ metric }) => {
       {/* @ts-ignore */}
       {/* @ts-ignore */}
       {/* @ts-ignore */}
-      {/* <ErrorBox /> */}
+      <ErrorBox />
     </Fragment>
   )
 }

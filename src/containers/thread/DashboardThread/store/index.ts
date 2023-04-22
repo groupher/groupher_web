@@ -69,6 +69,7 @@ const log = buildLog('S:DashboardThread')
 const DASHBOARD_DEMO_KEY = 'dashboard_demo'
 
 const DashboardThread = T.model('DashboardThread', {
+  savingField: T.maybeNull(T.str),
   saving: T.opt(T.bool, false),
   // tab
   curTab: T.opt(T.enum(values(ROUTE.DASHBOARD)), ROUTE.DASHBOARD.INFO),
@@ -507,11 +508,9 @@ const DashboardThread = T.model('DashboardThread', {
         slf.editingAlias = null
       }
 
-      /**
-       * TODO: only for Guest user
-      slf._saveToLocal()
-      slf.mark({ demoAlertEnable: true })
-      */
+      // TODO: only for Guest user
+      // slf._saveToLocal()
+      // slf.mark({ demoAlertEnable: true })
     },
 
     // save to local settings should omit subTabs,

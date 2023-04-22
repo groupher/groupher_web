@@ -35,10 +35,18 @@ export const community = `
         }
 
         layout {
+          primaryColor
           postLayout
-          kanbanLayout
           helpLayout
+          avatarLayout
+          brandLayout
+          topbarLayout
+          topbarBg
+          broadcastLayout
+          kanbanLayout
+          helpFaqLayout
           changelogLayout
+          footerLayout
         }
 
         baseInfo {

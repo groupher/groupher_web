@@ -52,7 +52,7 @@ const Widgets: FC<TProps> = ({ settings, touched }) => {
             bottomSpace={4}
             onChange={(raw) => {
               edit(raw, 'widgetsType')
-              onSave('widgetsType', true)
+              onSave('widgetsType')
             }}
           />
         </TabWrapper>
