@@ -145,6 +145,8 @@ export const onSave = (field: TSettingField): void => {
   store.mark({ saving: true, savingField: field })
   store.onSave(field)
 
+  console.log('## save field: ', field)
+
   _doMutation(field, store[field])
 
   // const time = 1200

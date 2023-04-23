@@ -44,6 +44,7 @@ export const community = `
           topbarBg
           broadcastLayout
           kanbanLayout
+          kanbanBgColors
           helpFaqLayout
           changelogLayout
           footerLayout

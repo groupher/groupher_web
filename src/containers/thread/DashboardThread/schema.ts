@@ -17,12 +17,14 @@ const updateDashboardLayout = gql`
   mutation (
     $community: Stirng!
     $postLayout: String
+    $kanbanLayout: String
     $broadcastEnable: Boolean
     $kanbanBgColors: [String]
   ) {
     updateDashboardLayout(
       community: $community
       postLayout: $postLayout
+      kanbanLayout: $kanbanLayout
       broadcastEnable: $broadcastEnable
       kanbanBgColors: $kanbanBgColors
     ) {
