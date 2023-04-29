@@ -35,7 +35,7 @@ const Group: FC<TProps> = ({ group, curTab, touched }) => {
           {group.children.map((item) => (
             <Item $active={item.raw === curTab} key={item.raw} href={`/home/dashboard/${item.raw}`}>
               {item.title}
-              {touched && touched[item.raw] && <TouchedDot />}
+              {touched && (touched[item.raw] || touched[item.alias]) && <TouchedDot />}
             </Item>
           ))}
         </MenuWrapper>

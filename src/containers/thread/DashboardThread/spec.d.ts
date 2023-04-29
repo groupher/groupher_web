@@ -35,7 +35,7 @@ export type TMenuGroup = {
   children: TMenuItem[]
 }
 
-type TMenuItem = { title: string; raw: TDashboardPath }
+type TMenuItem = { title: string; raw: TDashboardPath; alias?: string }
 
 export type TMenu = {
   [k: TMenuGroupName]: TMenuGroup

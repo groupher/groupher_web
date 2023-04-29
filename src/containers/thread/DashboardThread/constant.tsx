@@ -71,6 +71,7 @@ export const MENU = {
       {
         title: '别名',
         raw: DASHBOARD_ROUTE.ALIAS,
+        alias: SETTING_FIELD.NAME_ALIAS,
       },
       {
         title: '管理员',
