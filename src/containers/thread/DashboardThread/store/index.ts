@@ -52,7 +52,7 @@ import type {
   TAliasSettings,
   TTouched,
   TSettingField,
-  TAlias,
+  TNameAlias,
   TWidgetsSettings,
   TBroadcastSettings,
   TWidgetType,
@@ -60,7 +60,7 @@ import type {
 
 import { SETTING_FIELD } from '../constant'
 
-import { Alias, settingsModalFields, InitSettings } from './Models'
+import { NameAlias, settingsModalFields, InitSettings } from './Models'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:DashboardThread')
@@ -82,7 +82,7 @@ const DashboardThread = T.model('DashboardThread', {
   // editing
   editingTag: T.maybeNull(Tag),
   settingTag: T.maybeNull(Tag),
-  editingAlias: T.maybeNull(Alias),
+  editingAlias: T.maybeNull(NameAlias),
 
   ...settingsModalFields,
   initSettings: T.opt(InitSettings, {}),
@@ -188,7 +188,7 @@ const DashboardThread = T.model('DashboardThread', {
       const glowTypeTouched = _isChanged('glowType')
       const glowOpacityTouched = _isChanged('glowOpacity')
 
-      const aliasTouched = !isNil(slf.editingAlias)
+      const nameAliasTouched = !isNil(slf.editingAlias)
       const tagsTouched = !isNil(slf.editingTag)
 
       const rssFeedTypeTouched = _isChanged('rssFeedType')
@@ -217,7 +217,7 @@ const DashboardThread = T.model('DashboardThread', {
         helpLayout: helpLayoutTouched,
         helpFaqLayout: helpFaqLayoutTouched,
         changelogLayout: changelogLayoutTouched,
-        alias: aliasTouched,
+        nameAlias: nameAliasTouched,
         tags: tagsTouched,
 
         glowFixed: glowFixedTouched,
@@ -321,7 +321,7 @@ const DashboardThread = T.model('DashboardThread', {
       return {
         aliasTab: slf.aliasTab,
         editingAlias: toJS(slf.editingAlias),
-        alias: toJS(slf.alias),
+        nameAlias: toJS(slf.nameAlias),
         saving: slf.saving,
       }
     },
@@ -498,13 +498,13 @@ const DashboardThread = T.model('DashboardThread', {
         slf.editingTag = null
       }
 
-      if (field === SETTING_FIELD.ALIAS) {
+      if (field === SETTING_FIELD.NAME_ALIAS) {
         const { editingAlias } = slf
 
         const targetIdx = slf._findAliasIdx()
         if (targetIdx < 0) return
 
-        slf.alias[targetIdx] = clone(toJS(editingAlias))
+        slf.nameAlias[targetIdx] = clone(toJS(editingAlias))
         slf.editingAlias = null
       }
 
@@ -537,11 +537,11 @@ const DashboardThread = T.model('DashboardThread', {
         return
       }
 
-      if (field === SETTING_FIELD.ALIAS) {
+      if (field === SETTING_FIELD.NAME_ALIAS) {
         const targetIdx = slf._findAliasIdx()
         if (targetIdx < 0) return
 
-        slf.alias[targetIdx] = toJS(slf.alias[targetIdx])
+        slf.nameAlias[targetIdx] = toJS(slf.nameAlias[targetIdx])
         slf.editingAlias = null
         return
       }
@@ -555,11 +555,11 @@ const DashboardThread = T.model('DashboardThread', {
     resetEdit(field: TSettingField): void {
       const slf = self as TStore
 
-      if (field === SETTING_FIELD.ALIAS) {
+      if (field === SETTING_FIELD.NAME_ALIAS) {
         const targetIdx = slf._findAliasIdx()
         if (targetIdx < 0) return
 
-        slf.alias[targetIdx].name = slf.alias[targetIdx].original
+        slf.nameAlias[targetIdx].name = slf.nameAlias[targetIdx].original
         slf.editingAlias = null
       }
 
@@ -578,8 +578,11 @@ const DashboardThread = T.model('DashboardThread', {
     _findAliasIdx(): number {
       const slf = self as TStore
 
-      const { alias, editingAlias } = slf
-      const targetIdx = findIndex((item: TAlias) => item.raw === editingAlias.raw, toJS(alias))
+      const { nameAlias, editingAlias } = slf
+      const targetIdx = findIndex(
+        (item: TNameAlias) => item.raw === editingAlias.raw,
+        toJS(nameAlias),
+      )
 
       return targetIdx
     },

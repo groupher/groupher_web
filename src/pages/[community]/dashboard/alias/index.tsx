@@ -17,6 +17,7 @@ import {
   ssrError,
   ssrPagedArticleSchema,
   ssrPagedArticlesFilter,
+  ssrParseDashboard,
   ssrRescue,
   communitySEO,
   singular,
@@ -96,6 +97,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const { community, pagedArticleTags } = resp
+  const dashboard = ssrParseDashboard(community)
+
+  console.log('## dashboard ssr: ', dashboard)
 
   const initProps = merge(
     {
@@ -114,6 +118,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         activeThread: thread,
       },
       dashboardThread: {
+        ...dashboard,
         curTab: ROUTE.DASHBOARD.ALIAS,
         aliasTab: DASHBOARD_ALIAS_ROUTE.GENERAL,
       },

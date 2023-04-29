@@ -62,7 +62,7 @@ export type TFooterSettings = {
   saving: boolean
 }
 
-export type TAlias = {
+export type TNameAlias = {
   raw: string
   name: string
   original?: string
@@ -70,8 +70,8 @@ export type TAlias = {
 }
 export type TAliasSettings = {
   saving: boolean
-  alias: TAlias[]
-  editingAlias: TAlias
+  nameAlias: TNameAlias[]
+  editingAlias: TNameAlias
   aliasTab: TDashboardAliasRoute
 }
 
@@ -164,7 +164,7 @@ export type TTouched = {
   kanbanLayout: boolean
   kanbanBgColors: boolean
   changelogLayout: boolean
-  alias: boolean
+  nameAlias: boolean
   tags: boolean
 
   rssFeed: boolean
@@ -204,7 +204,7 @@ export type TSettingField =
   | 'broadcastArticleEnable'
   | 'changelogLayout'
   | 'tag'
-  | 'alias'
+  | 'nameAlias'
   | 'rssFeedType'
   | 'rssFeedCount'
   | 'enable'

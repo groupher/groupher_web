@@ -12,7 +12,7 @@ import { errRescue } from '@/utils/signal'
 import asyncSuit from '@/utils/async'
 
 import type { TStore } from '../store'
-import type { TSettingField, TAlias } from '../spec'
+import type { TSettingField, TNameAlias } from '../spec'
 
 import { SETTING_FIELD, SETTING_LAYOUT_FIELD } from '../constant'
 import { init as linksLogicInit } from './links'
@@ -49,7 +49,7 @@ export const editTag = (key: 'settingTag' | 'editingTag', tag: TTag): void => {
   store.mark({ [key]: tag })
 }
 
-export const updateEditingAlias = (alias: TAlias): void => {
+export const updateEditingAlias = (alias: TNameAlias): void => {
   store.mark({ editingAlias: alias })
 }
 
@@ -125,9 +125,15 @@ export const broadcastOnCancel = (isArticle = false): void => {
 
 const _doMutation = (field: string, e: TEditValue): void => {
   const { curCommunity } = store
+  const community = curCommunity.raw
 
   if (includes(field, values(SETTING_LAYOUT_FIELD))) {
-    sr71$.mutate(S.updateDashboardLayout, { community: curCommunity.raw, [field]: e })
+    sr71$.mutate(S.updateDashboardLayout, { community, [field]: e })
+  }
+
+  if (field === SETTING_FIELD.NAME_ALIAS) {
+    const nameAlias = toJS(store.nameAlias)
+    sr71$.mutate(S.updateDashboardNameAlias, { community, nameAlias })
   }
 }
 
@@ -145,8 +151,6 @@ export const onSave = (field: TSettingField): void => {
   store.mark({ saving: true, savingField: field })
   store.onSave(field)
 
-  console.log('## save field: ', field)
-
   _doMutation(field, store[field])
 
   // const time = 1200
@@ -162,6 +166,7 @@ export const onSave = (field: TSettingField): void => {
 // ###############################
 // init & uninit handlers
 // ###############################
+// TODO: handle error for tottle/passport error
 const _handleDone = () => {
   const field = store.savingField
 
@@ -183,6 +188,10 @@ const DataSolver = [
   },
   {
     match: asyncRes('updateDashboardLayout'),
+    action: () => _handleDone(),
+  },
+  {
+    match: asyncRes('updateDashboardNameAlias'),
     action: () => _handleDone(),
   },
   {

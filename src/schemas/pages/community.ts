@@ -33,7 +33,12 @@ export const community = `
           ogTitle
           ogDescription
         }
-
+        nameAlias {
+          raw
+          name
+          original
+          group
+        }
         layout {
           primaryColor
           postLayout

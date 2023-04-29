@@ -36,7 +36,7 @@ export const SETTING_LAYOUT_FIELD = {
 export const SETTING_FIELD = {
   ...SETTING_LAYOUT_FIELD,
   TAG: 'tag',
-  ALIAS: 'alias',
+  NAME_ALIAS: 'nameAlias',
   RSS_FEED_TYPE: 'rssFeedType',
   RSS_FEED_COUNT: 'rssFeedCount',
   WIDGETS_PRIMARY_COLOR: 'widgetsPrimaryColor',
@@ -155,61 +155,64 @@ export const ALIAS_GROUP = {
   KANBAN: DASHBOARD_ALIAS_ROUTE.KANBAN,
 }
 
+export const BUILDIN_ALIAS_SUGGESTIONS = {
+  post: ['帖子', '讨论区', '论坛'],
+  kanban: ['路线图', '规划', '蓝图'],
+  changelog: ['新功能', '发布日志', '里程碑', '开发计划'],
+  upvote: ['支持', '顶', '赞', '有帮助'],
+  upvote_bug: ['同样问题', '复现', '求解决'],
+  todo: ['Todo', '已排期', '审核中', '计划中'],
+  doing: ['Doing', '完善中'],
+  done: ['Done', '已解决'],
+}
+
 export const BUILDIN_ALIAS = [
   {
     raw: 'post',
     name: '讨论',
     original: '讨论',
-    suggestions: ['帖子', '讨论区', '论坛'],
     group: ALIAS_GROUP.GENERAL,
   },
   {
     raw: 'changelog',
     name: '更新日志',
     original: '更新日志',
-    suggestions: ['新功能', '发布日志', '里程碑', '开发计划'],
     group: ALIAS_GROUP.GENERAL,
   },
   {
     raw: 'kanban',
     name: '看板',
     original: '看板',
-    suggestions: ['路线图', '规划', '蓝图'],
     group: ALIAS_GROUP.GENERAL,
   },
   {
     raw: 'upvote',
     name: '赞同',
     original: '赞同',
-    suggestions: ['支持', '顶', '赞', '有帮助'],
     group: ALIAS_GROUP.GENERAL,
   },
   {
     raw: 'upvote_bug',
     name: '相同问题',
     original: '相同问题',
-    suggestions: ['同样问题', '复现', '求解决'],
     group: ALIAS_GROUP.GENERAL,
   },
   {
     raw: 'todo',
     name: '待办',
     original: '待办',
-    suggestions: ['Todo', '已排期', '审核中', '计划中'],
     group: ALIAS_GROUP.KANBAN,
   },
   {
     raw: 'doing',
     name: '进行中',
     original: '进行中',
-    suggestions: ['Doing', '完善中'],
     group: ALIAS_GROUP.KANBAN,
   },
   {
     raw: 'done',
     name: '已完成',
     original: '已完成',
-    suggestions: ['Done', '已解决'],
     group: ALIAS_GROUP.KANBAN,
   },
 ]

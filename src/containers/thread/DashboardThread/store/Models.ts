@@ -43,11 +43,10 @@ export const Enable = T.model('Enable', {
   aboutMediaReport: T.opt(T.bool, true),
 })
 
-export const Alias = T.model('Alias', {
+export const NameAlias = T.model('NameAlias', {
   raw: T.opt(T.string, ''),
   name: T.opt(T.string, ''),
   original: T.opt(T.string, ''),
-  suggestions: T.opt(T.array(T.string), []),
   group: T.opt(T.string, ''),
 })
 
@@ -146,7 +145,7 @@ export const settingsModalFields = {
   // tags
   tags: T.opt(T.array(Tag), mockTags(12)),
   activeTagCategory: T.maybeNull(T.string),
-  alias: T.opt(T.array(Alias), BUILDIN_ALIAS),
+  nameAlias: T.opt(T.array(NameAlias), BUILDIN_ALIAS),
   enable: T.opt(Enable, {}),
 
   rssFeedType: T.opt(T.enum(values(RSS_TYPE)), RSS_TYPE.DIGEST),

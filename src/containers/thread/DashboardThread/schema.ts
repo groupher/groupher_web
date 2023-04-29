@@ -33,9 +33,19 @@ const updateDashboardLayout = gql`
   }
 `
 
+const updateDashboardNameAlias = gql`
+  mutation ($community: String!, $nameAlias: [dashboardAliasMap]) {
+    updateDashboardNameAlias(community: $community, nameAlias: $nameAlias) {
+      id
+      title
+    }
+  }
+`
+
 const schema = {
   updateDashboardEnable,
   updateDashboardLayout,
+  updateDashboardNameAlias,
 }
 
 export default schema

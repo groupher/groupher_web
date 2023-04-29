@@ -22,8 +22,8 @@ type TProps = {
 }
 
 const Alias: FC<TProps> = ({ settings }) => {
-  const { alias, editingAlias, aliasTab } = settings
-  const groupedAlias = groupByKey(alias, 'group')
+  const { nameAlias, editingAlias, aliasTab } = settings
+  const groupedAlias = groupByKey(nameAlias, 'group')
 
   const generalAlias = groupedAlias[ALIAS_GROUP.GENERAL]
   const kanbanAlias = groupedAlias[ALIAS_GROUP.KANBAN]

@@ -3,11 +3,11 @@ import { FC, memo, Fragment } from 'react'
 import AddButton from '@/widgets/Buttons/AddButton'
 import { SpaceGrow } from '@/widgets/Common'
 
-import { SETTING_FIELD } from '../constant'
+import { SETTING_FIELD, BUILDIN_ALIAS_SUGGESTIONS } from '../constant'
 import Suggestion from './Suggestion'
 import SavingBar from '../SavingBar'
 
-import type { TAlias } from '../spec'
+import type { TNameAlias } from '../spec'
 
 import {
   Wrapper,
@@ -24,8 +24,8 @@ import {
 import { updateEditingAlias, resetEdit } from '../logic'
 
 type TProps = {
-  alias: TAlias
-  editingAlias: TAlias
+  alias: TNameAlias
+  editingAlias: TNameAlias
 }
 
 const Item: FC<TProps> = ({ alias, editingAlias }) => {
@@ -36,14 +36,12 @@ const Item: FC<TProps> = ({ alias, editingAlias }) => {
     <Wrapper>
       <Header>
         {isEditMode ? (
-          <SavingBar isTouched field={SETTING_FIELD.ALIAS}>
+          <SavingBar isTouched field={SETTING_FIELD.NAME_ALIAS}>
             <InputWrapper>
               <Inputer
                 value={editingAlias?.name}
                 autoFocus
-                onChange={(e) =>
-                  updateEditingAlias({ ...editingAlias, name: e.target.value })
-                }
+                onChange={(e) => updateEditingAlias({ ...editingAlias, name: e.target.value })}
               />
             </InputWrapper>
           </SavingBar>
@@ -64,10 +62,8 @@ const Item: FC<TProps> = ({ alias, editingAlias }) => {
       <Footer>
         {isEditMode ? (
           <Suggestion
-            items={alias.suggestions}
-            onChange={(name) => {
-              updateEditingAlias({ ...alias, name })
-            }}
+            items={BUILDIN_ALIAS_SUGGESTIONS[alias.raw]}
+            onChange={(name) => updateEditingAlias({ ...alias, name })}
           />
         ) : (
           <Fragment>
@@ -87,7 +83,7 @@ const Item: FC<TProps> = ({ alias, editingAlias }) => {
                 dimWhenIdle
                 onClick={() => {
                   updateEditingAlias({ ...alias, name: alias.original })
-                  resetEdit(SETTING_FIELD.ALIAS)
+                  resetEdit(SETTING_FIELD.NAME_ALIAS)
                 }}
               >
                 恢复默认
