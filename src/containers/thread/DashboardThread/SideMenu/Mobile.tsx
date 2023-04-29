@@ -3,6 +3,7 @@ import { keys } from 'ramda'
 
 import type { TDashboardPath } from '@/spec'
 import { Br } from '@/widgets/Common'
+import useCurCommunity from '@/hooks/useCurCommunity'
 
 import { MENU } from '../constant'
 import type { TTouched, TMenuGroup } from '../spec'
@@ -18,12 +19,18 @@ type TProps = {
 
 const SideMenu: FC<TProps> = ({ curTab = '', touched = null }) => {
   const groupKeys = keys(MENU)
+  const community = useCurCommunity()
 
   return (
     <MobileWrapper>
       {groupKeys.map((key) => (
         <Fragment key={key}>
-          <Group group={MENU[key] as TMenuGroup} curTab={curTab} touched={touched} />
+          <Group
+            group={MENU[key] as TMenuGroup}
+            curTab={curTab}
+            touched={touched}
+            community={community}
+          />
           <Br top={30} />
         </Fragment>
       ))}

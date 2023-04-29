@@ -47,6 +47,7 @@ const DashboardThreadContainer: FC<TProps> = ({
   useInit(store)
   const {
     curTab,
+    curCommunity,
     baseInfoSettings,
     seoSettings,
     enableSettings,
@@ -65,7 +66,7 @@ const DashboardThreadContainer: FC<TProps> = ({
 
   return (
     <Wrapper testid={testid}>
-      <SideMenu curTab={curTab} touched={touched} />
+      <SideMenu curTab={curTab} touched={touched} community={curCommunity} />
 
       <MainWrapper>
         {curTab === DASHBOARD.DASHBOARD && <Overview />}

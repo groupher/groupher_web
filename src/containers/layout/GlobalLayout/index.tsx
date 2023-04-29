@@ -13,6 +13,7 @@ import { TOPBAR_LAYOUT } from '@/constant/layout'
 
 import type { TSEO, TMetric } from '@/spec'
 import { bond } from '@/utils/mobx'
+import { communityChanged } from '@/utils/signal'
 
 import ThemePalette from '@/containers/layout/ThemePalette'
 import ModeLine from '@/containers/unit/ModeLine'
@@ -64,6 +65,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
   const [showDashboardAlertUI, setShowDashboardAlertUI] = useState(false)
 
   const {
+    curCommunity,
     isMobile,
     wallpaperInfo,
     hasShadow,
@@ -72,6 +74,10 @@ const GlobalLayoutContainer: FC<TProps> = ({
     broadcastConfig,
     showDashboardAlert,
   } = store
+
+  useEffect(() => {
+    communityChanged(curCommunity)
+  }, [curCommunity, curCommunity?.raw])
 
   useEffect(() => {
     const handleRouteComplete = () => loadDemoSetting()

@@ -99,8 +99,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { community, pagedArticleTags } = resp
   const dashboard = ssrParseDashboard(community)
 
-  console.log('## dashboard ssr: ', dashboard)
-
   const initProps = merge(
     {
       ...ssrBaseStates(resp),

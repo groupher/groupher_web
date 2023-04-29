@@ -182,6 +182,17 @@ export const sessionChanged = (user: TUser): void => {
   Global?.dispatchEvent(new Event(EVENT.SESSION_CHANGED))
 }
 
+export const communityChanged = (community: TCommunity): void => {
+  // @ts-ignore
+  BStore.set('curCommunity', community)
+
+  setTimeout(() => {
+    // see: https://stackoverflow.com/a/55349670/4050784
+    send(EVENT.COMMUNITY_CHANGED)
+    Global?.dispatchEvent(new Event(EVENT.COMMUNITY_CHANGED))
+  })
+}
+
 /**
  * handle user account state change
  */
