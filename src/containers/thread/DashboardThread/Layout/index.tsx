@@ -4,6 +4,7 @@ import Router from 'next/router'
 import { DASHBOARD_LAYOUT_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
 
+import useCurCommunity from '@/hooks/useCurCommunity'
 import { Divider } from '@/widgets/Common'
 import Tabs from '@/widgets/Switcher/Tabs'
 
@@ -33,6 +34,8 @@ type TProps = {
 }
 
 const UI: FC<TProps> = ({ settings, touched }) => {
+  const curCommunity = useCurCommunity()
+
   const {
     layoutTab,
     // brandLayout,
@@ -69,8 +72,8 @@ const UI: FC<TProps> = ({ settings, touched }) => {
               edit(tab, 'layoutTab')
               const targetPath =
                 tab === DASHBOARD_LAYOUT_ROUTE.GLOBAL
-                  ? '/home/dashboard/layout'
-                  : `/home/dashboard/layout/${tab}`
+                  ? `/${curCommunity.raw}/dashboard/layout`
+                  : `/${curCommunity.raw}/dashboard/layout/${tab}`
 
               Router.push(targetPath)
             }}

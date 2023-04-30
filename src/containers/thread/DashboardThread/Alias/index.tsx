@@ -5,6 +5,7 @@ import { DASHBOARD_ALIAS_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
 
 import { groupByKey } from '@/utils/helper'
+import useCurCommunity from '@/hooks/useCurCommunity'
 
 import Tabs from '@/widgets/Switcher/Tabs'
 
@@ -22,6 +23,8 @@ type TProps = {
 }
 
 const Alias: FC<TProps> = ({ settings }) => {
+  const curCommunity = useCurCommunity()
+
   const { nameAlias, editingAlias, aliasTab } = settings
   const groupedAlias = groupByKey(nameAlias, 'group')
 
@@ -45,8 +48,8 @@ const Alias: FC<TProps> = ({ settings }) => {
               edit(tab, 'aliasTab')
               const targetPath =
                 tab === DASHBOARD_ALIAS_ROUTE.GENERAL
-                  ? '/home/dashboard/alias'
-                  : `/home/dashboard/alias/${tab}`
+                  ? `/${curCommunity.raw}/dashboard/alias`
+                  : `/${curCommunity.raw}/dashboard/alias/${tab}`
 
               Router.push(targetPath)
             }}

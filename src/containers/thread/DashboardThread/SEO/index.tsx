@@ -5,6 +5,7 @@ import type { TPostLayout } from '@/spec'
 import { DASHBOARD_SEO_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
 
+import useCurCommunity from '@/hooks/useCurCommunity'
 import Tabs from '@/widgets/Switcher/Tabs'
 
 import type { TSEOSettings } from '../spec'
@@ -23,6 +24,7 @@ type TProps = {
 }
 
 const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
+  const curCommunity = useCurCommunity()
   const { seoTab } = settings
 
   return (
@@ -39,8 +41,8 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
               edit(tab, 'seoTab')
               const targetPath =
                 tab === DASHBOARD_SEO_ROUTE.SEARCH_ENGINE
-                  ? '/home/dashboard/seo'
-                  : `/home/dashboard/seo/${tab}`
+                  ? `/${curCommunity.raw}/dashboard/seo`
+                  : `/${curCommunity.raw}/dashboard/seo/${tab}`
 
               Router.push(targetPath)
             }}

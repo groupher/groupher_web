@@ -19,7 +19,7 @@ type TProps = {
 
 const SideMenu: FC<TProps> = ({ curTab = '', touched = null }) => {
   const groupKeys = keys(MENU)
-  const community = useCurCommunity()
+  const curCommunity = useCurCommunity()
 
   return (
     <MobileWrapper>
@@ -29,7 +29,7 @@ const SideMenu: FC<TProps> = ({ curTab = '', touched = null }) => {
             group={MENU[key] as TMenuGroup}
             curTab={curTab}
             touched={touched}
-            community={community}
+            community={curCommunity}
           />
           <Br top={30} />
         </Fragment>

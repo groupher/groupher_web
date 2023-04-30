@@ -5,6 +5,7 @@ import type { TPostLayout } from '@/spec'
 import { DASHBOARD_BASEINFO_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
 
+import useCurCommunity from '@/hooks/useCurCommunity'
 import Tabs from '@/widgets/Switcher/Tabs'
 
 import { BASEINFO_TABS } from '../constant'
@@ -25,6 +26,8 @@ type TProps = {
 }
 
 const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
+  const curCommunity = useCurCommunity()
+
   const { baseInfoTab } = settings
 
   return (
@@ -41,8 +44,8 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
               edit(tab, 'baseInfoTab')
               const targetPath =
                 tab === DASHBOARD_BASEINFO_ROUTE.BASIC
-                  ? '/home/dashboard/info'
-                  : `/home/dashboard/info/${tab}`
+                  ? `/${curCommunity.raw}/dashboard/info`
+                  : `/${curCommunity.raw}/dashboard/info/${tab}`
 
               Router.push(targetPath)
             }}
