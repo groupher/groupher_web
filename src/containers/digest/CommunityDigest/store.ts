@@ -11,7 +11,7 @@ import type {
   TCommunity,
   TThread,
   TGlobalLayout,
-  TEnableConfig,
+  TDashboardThreadConfig,
 } from '@/spec'
 import { T, getParent, markStates, toJS, Instance } from '@/utils/mobx'
 
@@ -49,10 +49,13 @@ const CommunityDigest = T.model('CommunityDigest', {
 
       return toJS(root.viewing.community)
     },
-    get enable(): TEnableConfig {
+    get dashboardSettings(): TDashboardThreadConfig {
       const root = getParent(self) as TRootStore
 
-      return toJS(root.dashboardThread.enableSettings)
+      return {
+        enable: toJS(root.dashboardThread.enableSettings),
+        nameAlias: toJS(root.dashboardThread.nameAlias),
+      }
     },
     get globalLayout(): TGlobalLayout {
       const root = getParent(self) as TRootStore

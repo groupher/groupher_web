@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 // import Router from 'next/router'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TThread, TCommunity, TMetric, TEnableConfig } from '@/spec'
+import type { TThread, TCommunity, TMetric, TDashboardThreadConfig } from '@/spec'
 
 import EVENT from '@/constant/event'
 import { THREAD } from '@/constant/thread'
@@ -32,10 +32,11 @@ type TProps = {
   community: TCommunity
   activeThread: TThread
   metric: TMetric
-  enable: TEnableConfig
+  dashboardSettings: TDashboardThreadConfig
 }
 
-const SidebarLayout: FC<TProps> = ({ community, activeThread, metric, enable }) => {
+const SidebarLayout: FC<TProps> = ({ community, activeThread, metric, dashboardSettings }) => {
+  const { enable } = dashboardSettings
   const { isMobile } = useMobileDetect()
 
   return (

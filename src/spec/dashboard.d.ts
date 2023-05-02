@@ -43,6 +43,17 @@ export type TEnableConfig = {
   aboutMediaReport: boolean
 }
 
+export type TNameAliasConfig = {
+  raw: string
+  name: string
+  original?: string
+}
+
+export type TDashboardThreadConfig = {
+  enable: TEnableConfig
+  nameAlias: TNameAliasConfig[]
+}
+
 export type TGlobalLayout = {
   primaryColor: TColorName
   brand: TBrandLayout

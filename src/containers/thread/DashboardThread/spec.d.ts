@@ -25,6 +25,7 @@ import type {
   TDashboardBroadcastRoute,
   TDashboardAliasRoute,
   TLinkItem,
+  TNameAliasConfig,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'MANAGEMENT' | 'INTEGRATE'
@@ -62,12 +63,8 @@ export type TFooterSettings = {
   saving: boolean
 }
 
-export type TNameAlias = {
-  raw: string
-  name: string
-  original?: string
-  suggestions?: string[]
-}
+export type TNameAlias = TNameAliasConfig
+
 export type TAliasSettings = {
   saving: boolean
   nameAlias: TNameAlias[]

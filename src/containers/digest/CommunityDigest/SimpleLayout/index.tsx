@@ -1,11 +1,11 @@
 import { FC, memo } from 'react'
 
-import type { TThread, TCommunity, TMetric, TEnableConfig, TCommunityThread } from '@/spec'
+import type { TThread, TCommunity, TMetric, TDashboardThreadConfig } from '@/spec'
 import EVENT from '@/constant/event'
 import { ANCHOR } from '@/constant/dom'
 
 import { send } from '@/utils/signal'
-import { sortByIndex } from '@/utils/helper'
+import { washThreads } from '@/utils/helper'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
 import MobileThreadNavi from '@/widgets/MobileThreadNavi'
@@ -31,13 +31,11 @@ type TProps = {
   community: TCommunity
   activeThread: TThread
   metric: TMetric
-  enable: TEnableConfig
+  dashboardSettings: TDashboardThreadConfig
 }
 
-const SimpleLayout: FC<TProps> = ({ community, activeThread, metric, enable }) => {
-  const publicThreads = sortByIndex(
-    community.threads.filter((thread) => enable[thread.raw]),
-  ) as TCommunityThread[]
+const SimpleLayout: FC<TProps> = ({ community, activeThread, metric, dashboardSettings }) => {
+  const washedThreads = washThreads(community.threads, dashboardSettings)
 
   return (
     <Wrapper testid="community-digest" id={ANCHOR.GLOBAL_HEADER_ID}>
@@ -48,12 +46,12 @@ const SimpleLayout: FC<TProps> = ({ community, activeThread, metric, enable }) =
             <MobileNaviWrapper>
               <MobileThreadNavi
                 community={community}
-                threads={publicThreads}
+                threads={washedThreads}
                 active={activeThread}
               />
             </MobileNaviWrapper>
             <ThreadTab
-              threads={publicThreads}
+              threads={washedThreads}
               active={activeThread}
               onChange={(data) => send(EVENT.COMMUNITY_THREAD_CHANGE, { data })}
             />

@@ -38,7 +38,7 @@ const ArticleDigestContainer: FC<TProps> = ({
   // const { isMobile } = useMobileDetect()
   useInit(store)
 
-  const { viewingArticle, inViewport, activeThread, enable } = store
+  const { viewingArticle, inViewport, activeThread, dashboardSettings } = store
 
   if (isNil(viewingArticle.id)) return null
 
@@ -52,7 +52,7 @@ const ArticleDigestContainer: FC<TProps> = ({
         <Header
           metric={metric}
           community={viewingArticle.originalCommunity}
-          enable={enable}
+          dashboardSettings={dashboardSettings}
           activeThread={activeThread}
         />
         <BannerContent>

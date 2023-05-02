@@ -102,6 +102,8 @@ export type {
   TBroadcastLayout,
   TBroadcastArticleLayout,
   TEnableConfig,
+  TNameAliasConfig,
+  TDashboardThreadConfig,
   TRSSType,
 } from './dashboard'
 

@@ -1,11 +1,11 @@
 import { FC } from 'react'
 
-import type { TCommunity, TMetric, TEnableConfig, TThread, TCommunityThread } from '@/spec'
+import type { TCommunity, TMetric, TThread, TDashboardThreadConfig } from '@/spec'
 
 import { ANCHOR } from '@/constant/dom'
 import { ROUTE } from '@/constant/route'
 
-import { sortByIndex } from '@/utils/helper'
+import { washThreads } from '@/utils/helper'
 import MobileThreadNavi from '@/widgets/MobileThreadNavi'
 
 import {
@@ -24,14 +24,12 @@ import {
 type TProps = {
   metric: TMetric
   community: TCommunity
-  enable: TEnableConfig
+  dashboardSettings: TDashboardThreadConfig
   activeThread: TThread
 }
 
-const Header: FC<TProps> = ({ metric, community, enable, activeThread }) => {
-  const publicThreads = sortByIndex(
-    community.threads.filter((thread) => enable[thread.raw]),
-  ) as TCommunityThread[]
+const Header: FC<TProps> = ({ metric, community, activeThread, dashboardSettings }) => {
+  const washedThreads = washThreads(community.threads, dashboardSettings)
 
   return (
     <Wrapper id={ANCHOR.GLOBAL_HEADER_ID}>
@@ -50,7 +48,7 @@ const Header: FC<TProps> = ({ metric, community, enable, activeThread }) => {
         </Main>
 
         <MobileNaviWrapper>
-          <MobileThreadNavi community={community} threads={publicThreads} active={activeThread} />
+          <MobileThreadNavi community={community} threads={washedThreads} active={activeThread} />
         </MobileNaviWrapper>
 
         <Account>

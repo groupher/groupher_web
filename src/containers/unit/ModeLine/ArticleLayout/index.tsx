@@ -5,10 +5,10 @@ import type {
   TArticle,
   TCommunity,
   TMetric,
-  TEnableConfig,
   TThread,
   TTag,
   TGroupedTags,
+  TDashboardThreadConfig,
 } from '@/spec'
 
 import { scrollToHeader } from '@/utils/dom'
@@ -41,7 +41,7 @@ type TProps = {
   article: TArticle | null
   community: TCommunity
   activeThread: TThread
-  enable: TEnableConfig
+  dashboardSettings: TDashboardThreadConfig
   activeTag: TTag
   groupedTags: TGroupedTags
 }
@@ -55,9 +55,9 @@ const ArticleLayout: FC<TProps> = ({
   community,
   activeMenu,
   activeThread,
-  enable,
   activeTag,
   groupedTags,
+  dashboardSettings,
 }) => {
   const [expand, setExpand] = useState(false)
 
