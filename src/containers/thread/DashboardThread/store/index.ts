@@ -486,6 +486,12 @@ const DashboardThread = T.model('DashboardThread', {
       const slf = self as TStore
       slf.glowType = glowType
     },
+    /**
+     * this is for mutation params after on save
+     */
+    _clearEditingTag(): void {
+      self.editingTag = null
+    },
     onSave(field: TSettingField): void {
       const slf = self as TStore
 
@@ -495,7 +501,10 @@ const DashboardThread = T.model('DashboardThread', {
         if (targetIdx < 0) return
 
         slf.tags[targetIdx] = clone(toJS(editingTag))
-        slf.editingTag = null
+        // slf.editingTag = null
+        setTimeout(() => {
+          slf._clearEditingTag()
+        })
       }
 
       if (field === SETTING_FIELD.NAME_ALIAS) {

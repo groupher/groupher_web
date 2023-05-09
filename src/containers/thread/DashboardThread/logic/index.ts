@@ -144,12 +144,21 @@ export const rollbackEdit = (field: TSettingField): void => store.rollbackEdit(f
 export const resetEdit = (field: TSettingField): void => store.resetEdit(field)
 export const edit = (e: TEditValue, field: string): void => updateEditing(store, field, e)
 
+export const loadTags = (): void => {
+  const filter = { community: 'home' }
+  //
+  sr71$.query(S.pagedArticleTags, { filter })
+}
+
 /**
  * save to server
  */
 export const onSave = (field: TSettingField): void => {
   store.mark({ saving: true, savingField: field })
   store.onSave(field)
+
+  console.log('## on save: ', field)
+  console.log('## editingTag: ', toJS(store.editingTag))
 
   _doMutation(field, store[field])
 
@@ -195,6 +204,13 @@ const DataSolver = [
     action: () => _handleDone(),
   },
   {
+    match: asyncRes('pagedArticleTags'),
+    action: ({ pagedArticleTags }) => {
+      console.log('## pagedArticleTags: ', pagedArticleTags)
+      store.mark({ tags: pagedArticleTags.entries })
+    },
+  },
+  {
     match: asyncRes(EVENT.DRAWER.AFTER_CLOSE),
     action: () => {
       store.mark({ settingTag: null })
@@ -231,6 +247,7 @@ export const useInit = (_store: TStore): void => {
     store = _store
     linksLogicInit(store)
     log('useInit: ', store)
+
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
 
     return () => {

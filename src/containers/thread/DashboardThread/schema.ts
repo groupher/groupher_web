@@ -1,4 +1,5 @@
 import { gql } from 'urql/core'
+import { F } from '@/schemas'
 
 const updateDashboardEnable = gql`
   mutation ($community: String!, $post: Boolean, $changelog: Boolean, $about: Boolean) {
@@ -42,7 +43,19 @@ const updateDashboardNameAlias = gql`
   }
 `
 
+const pagedArticleTags = gql`
+  query ($filter: ArticleTagsFilter) {
+    pagedArticleTags(filter: $filter) {
+      entries {
+        ${F.tag}
+      }
+      totalCount
+    }
+  }
+`
+
 const schema = {
+  pagedArticleTags,
   updateDashboardEnable,
   updateDashboardLayout,
   updateDashboardNameAlias,

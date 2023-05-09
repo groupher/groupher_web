@@ -20,6 +20,7 @@ export const community = `
   }
 `
 export const tag = `
+  id
   title
   raw
   color

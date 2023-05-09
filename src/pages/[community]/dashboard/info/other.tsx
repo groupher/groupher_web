@@ -19,7 +19,6 @@ import {
   ssrPagedArticlesFilter,
   ssrRescue,
   communitySEO,
-  singular,
   log,
 } from '@/utils'
 
@@ -44,16 +43,6 @@ const loader = async (context, opt = {}) => {
     userHasLogin,
   })
 
-  // tmply
-  const pagedArticleTags = isArticleThread(thread)
-    ? gqClient.request(P.pagedArticleTags, {
-        filter: {
-          communityRaw: community,
-          thread: singular(thread, 'upperCase'),
-        },
-      })
-    : {}
-
   const filter = ssrPagedArticlesFilter(context, userHasLogin)
 
   const pagedArticles = isArticleThread(thread)
@@ -69,7 +58,6 @@ const loader = async (context, opt = {}) => {
 
   return {
     filter,
-    ...(await pagedArticleTags),
     ...(await sessionState),
     ...(await curCommunity),
     ...(await pagedArticles),
@@ -95,7 +83,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  const { community, pagedArticleTags } = resp
+  const { community } = resp
 
   const initProps = merge(
     {
@@ -105,9 +93,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         mainPath: community.raw === HCN ? '' : community.raw,
         subPath: thread,
         thread,
-      },
-      tagsBar: {
-        tags: pagedArticleTags?.entries || [],
       },
       viewing: {
         community,

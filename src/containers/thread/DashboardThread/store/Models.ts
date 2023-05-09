@@ -23,7 +23,7 @@ import {
 } from '@/constant/layout'
 
 import { T } from '@/utils/mobx'
-import { mockTags } from '@/utils/mock'
+// import { mockTags } from '@/utils/mock'
 
 import { BUILDIN_ALIAS, WIDGET_TYPE, TW_CARD, DEFAULT_LINK_ITEMS } from '../constant'
 
@@ -143,7 +143,8 @@ export const settingsModalFields = {
 
   // contents
   // tags
-  tags: T.opt(T.array(Tag), mockTags(12)),
+  // tags: T.opt(T.array(Tag), mockTags(12)),
+  tags: T.opt(T.array(Tag), []),
   activeTagCategory: T.maybeNull(T.string),
   nameAlias: T.opt(T.array(NameAlias), BUILDIN_ALIAS),
   enable: T.opt(Enable, {}),

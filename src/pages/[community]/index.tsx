@@ -51,7 +51,7 @@ const loader = async (context, opt = {}) => {
   const pagedArticleTags = isArticleThread(thread)
     ? gqClient.request(P.pagedArticleTags, {
         filter: {
-          communityRaw: community,
+          community,
           thread: singular(thread, 'upperCase'),
         },
       })
