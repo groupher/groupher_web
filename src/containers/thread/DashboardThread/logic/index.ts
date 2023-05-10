@@ -179,7 +179,6 @@ export const onSave = (field: TSettingField): void => {
 // ###############################
 // init & uninit handlers
 // ###############################
-// TODO: handle error for tottle/passport error
 const _handleDone = () => {
   const field = store.savingField
 
@@ -189,13 +188,8 @@ const _handleDone = () => {
 
   // manually update in here not in store is because if this action fails,
   // store will rollback to previous value
-  if (field === SETTING_FIELD.TAG) {
-    store.mark({ editingTag: null })
-  }
-
-  if (field === SETTING_FIELD.NAME_ALIAS) {
-    store.mark({ editingAlias: null })
-  }
+  if (field === SETTING_FIELD.TAG) store.mark({ editingTag: null })
+  if (field === SETTING_FIELD.NAME_ALIAS) store.mark({ editingAlias: null })
 }
 
 const _handleError = () => {
