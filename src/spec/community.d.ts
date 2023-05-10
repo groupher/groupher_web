@@ -10,11 +10,6 @@ type TMeta = {
   radarsCount: number
 }
 
-export type TCommunityThread = {
-  title: string
-  raw: TThread
-}
-
 export type TCommunity = {
   id?: string
   index?: number
@@ -43,6 +38,7 @@ export type TTag = {
   index?: number
   raw: string
   title?: string
+  thread?: string
   color?: string
   group?: string
 }

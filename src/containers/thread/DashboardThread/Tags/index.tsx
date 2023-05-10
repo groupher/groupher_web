@@ -14,13 +14,14 @@ type TProps = {
 }
 
 const Tags: FC<TProps> = ({ settings }) => {
-  const { tags, editingTag, settingTag, categories, activeTagCategory } = settings
+  const { tags, editingTag, settingTag, categories, activeTagCategory, activeTagThread, threads } =
+    settings
 
   return (
     <Wrapper>
       <Portal title="标签设置" desc="编辑各板块标签，标签分组，颜色名称等均可编辑。" />
       <InnerWrapper>
-        <ThreadSelector />
+        <ThreadSelector threads={threads} active={activeTagThread} />
         <ContentWrapper>
           <CategorySelector categories={categories} active={activeTagCategory} />
           {tags.map((tag) => (

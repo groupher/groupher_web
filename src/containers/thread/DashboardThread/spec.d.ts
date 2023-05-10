@@ -12,6 +12,7 @@ import type {
   TBannerLayout,
   TTag,
   TThread,
+  TCommunityThread,
   TSizeSML,
   THelpLayout,
   TDashboardPath,
@@ -44,11 +45,13 @@ export type TMenu = {
 
 export type TTagSettings = {
   saving: boolean
+  threads: TCommunityThread[]
   tags: TTag[]
   editingTag: TTag
   settingTag: TTag
   categories: string[]
   activeTagCategory: string
+  activeTagThread: string
 }
 
 export type TRSSSettings = {

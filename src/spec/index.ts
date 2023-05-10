@@ -27,7 +27,6 @@ export type { TAccount, TUser, TPagedUsers, TSimpleUser, TMembership, TC11N } fr
 export type { TC11NLayout } from './c11n'
 export type {
   TCommunity,
-  TCommunityThread,
   TPagedCommunities,
   TTag,
   TNaviTag,
@@ -36,7 +35,7 @@ export type {
   TCategory,
 } from './community'
 
-export type { TThread, TArticleThread } from './thread'
+export type { TThread, TArticleThread, TCommunityThread } from './thread'
 
 export type {
   TID,

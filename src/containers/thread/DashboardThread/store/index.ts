@@ -11,9 +11,14 @@ import {
   equals,
   omit,
   pluck,
+  find,
+  propEq,
   uniq,
   filter,
+  reject,
   mapObjIndexed,
+  includes,
+  toUpper,
 } from 'ramda'
 
 import type {
@@ -25,16 +30,18 @@ import type {
   TSizeSML,
   TColorName,
   TEnableConfig,
+  TNameAliasConfig,
 } from '@/spec'
 
 import {
-  ROUTE,
+  DASHBOARD_ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
   DASHBOARD_BASEINFO_ROUTE,
   DASHBOARD_ALIAS_ROUTE,
   DASHBOARD_BROADCAST_ROUTE,
   DASHBOARD_SEO_ROUTE,
 } from '@/constant/route'
+import { THREAD } from '@/constant/thread'
 
 import BStore from '@/utils/bstore'
 import { buildLog } from '@/utils/logger'
@@ -72,7 +79,7 @@ const DashboardThread = T.model('DashboardThread', {
   savingField: T.maybeNull(T.str),
   saving: T.opt(T.bool, false),
   // tab
-  curTab: T.opt(T.enum(values(ROUTE.DASHBOARD)), ROUTE.DASHBOARD.INFO),
+  curTab: T.opt(T.enum(values(DASHBOARD_ROUTE)), DASHBOARD_ROUTE.INFO),
   baseInfoTab: T.opt(T.enum(values(DASHBOARD_BASEINFO_ROUTE)), DASHBOARD_BASEINFO_ROUTE.BASIC),
   aliasTab: T.opt(T.enum(values(DASHBOARD_ALIAS_ROUTE)), DASHBOARD_ALIAS_ROUTE.GENERAL),
   seoTab: T.opt(T.enum(values(DASHBOARD_SEO_ROUTE)), DASHBOARD_SEO_ROUTE.SEARCH_ENGINE),
@@ -272,10 +279,30 @@ const DashboardThread = T.model('DashboardThread', {
     get tagSettings(): TTagSettings {
       const slf = self as TStore
       const tags = toJS(slf.tags)
-      const { activeTagCategory } = slf
+      const { activeTagCategory, activeTagThread, curCommunity, nameAlias } = slf
 
-      const filterdTags =
+      const filterdTagsByCat =
         activeTagCategory === null ? tags : filter((t: TTag) => t.group === activeTagCategory, tags)
+
+      const filterdTags = filter(
+        (t: TTag) => t.thread === toUpper(activeTagThread || ''),
+        filterdTagsByCat,
+      )
+
+      const mappedThreads = curCommunity.threads.map((pThread) => {
+        const aliasItem = find(propEq('raw', pThread.raw))(nameAlias) as TNameAliasConfig
+
+        return {
+          ...pThread,
+          title: aliasItem?.name || pThread.title,
+        }
+      })
+
+      const curThreads = reject(
+        // @ts-ignore
+        (thread) => includes(thread.raw, [THREAD.ABOUT, THREAD.HELP]),
+        mappedThreads,
+      )
 
       return {
         editingTag: toJS(slf.editingTag),
@@ -283,7 +310,9 @@ const DashboardThread = T.model('DashboardThread', {
         tags: filterdTags,
         saving: slf.saving,
         categories: toJS(slf.tagCategories),
+        activeTagThread,
         activeTagCategory,
+        threads: curThreads,
       }
     },
 
@@ -436,8 +465,31 @@ const DashboardThread = T.model('DashboardThread', {
     afterCreate(): void {
       const slf = self as TStore
 
+      slf._initActiveTagThreadIfneed()
+
       if (!slf._loadLocalSettings()) {
         slf.mark({ demoAlertEnable: false })
+      }
+    },
+
+    /**
+     * init activeTagThread for dashboard tags settings
+     * based on enableSettings
+     */
+    _initActiveTagThreadIfneed(): void {
+      const slf = self as TStore
+      const { curTab, enableSettings } = slf
+
+      if (curTab !== DASHBOARD_ROUTE.TAGS) return
+
+      if (enableSettings.post) {
+        setTimeout(() => slf.mark({ activeTagThread: THREAD.POST }))
+      } else if (enableSettings.kanban) {
+        setTimeout(() => slf.mark({ activeTagThread: THREAD.KANBAN }))
+      } else if (enableSettings.changelog) {
+        setTimeout(() => slf.mark({ activeTagThread: THREAD.CHANGELOG }))
+      } else {
+        setTimeout(() => slf.mark({ activeTagThread: null }))
       }
     },
 
@@ -489,9 +541,6 @@ const DashboardThread = T.model('DashboardThread', {
     /**
      * this is for mutation params after on save
      */
-    _clearEditingTag(): void {
-      self.editingTag = null
-    },
     onSave(field: TSettingField): void {
       const slf = self as TStore
 
@@ -503,7 +552,7 @@ const DashboardThread = T.model('DashboardThread', {
         slf.tags[targetIdx] = clone(toJS(editingTag))
         // slf.editingTag = null
         setTimeout(() => {
-          slf._clearEditingTag()
+          slf.mark({ editingTag: null })
         })
       }
 

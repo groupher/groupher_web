@@ -6,9 +6,10 @@ export type TArticleThread =
   | 'help'
   | 'about'
 
-export type TThread =
-  | TArticleThread
-  | 'dashboard'
-  | 'kanban'
-  | 'team'
-  | 'account'
+export type TThread = TArticleThread | 'dashboard' | 'kanban' | 'team' | 'account'
+
+export type TCommunityThread = {
+  title: string
+  raw: TThread
+  index?: number
+}
