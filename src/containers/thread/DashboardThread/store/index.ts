@@ -550,10 +550,6 @@ const DashboardThread = T.model('DashboardThread', {
         if (targetIdx < 0) return
 
         slf.tags[targetIdx] = clone(toJS(editingTag))
-        // slf.editingTag = null
-        setTimeout(() => {
-          slf.mark({ editingTag: null })
-        })
       }
 
       if (field === SETTING_FIELD.NAME_ALIAS) {
@@ -563,12 +559,7 @@ const DashboardThread = T.model('DashboardThread', {
         if (targetIdx < 0) return
 
         slf.nameAlias[targetIdx] = clone(toJS(editingAlias))
-        slf.editingAlias = null
       }
-
-      // TODO: only for Guest user
-      // slf._saveToLocal()
-      // slf.mark({ demoAlertEnable: true })
     },
 
     // save to local settings should omit subTabs,

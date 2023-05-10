@@ -54,11 +54,43 @@ const pagedArticleTags = gql`
   }
 `
 
+const updateArticleTag = gql`
+  mutation (
+    $id: ID!
+    $color: RainbowColor
+    $title: String
+    $raw: String
+    $community: String!
+    $extra: [String]
+    $icon: String
+    $group: String
+  ) {
+    updateArticleTag(
+      id: $id
+      color: $color
+      title: $title
+      raw: $raw
+      community: $community
+      extra: $extra
+      icon: $icon
+      group: $group
+    ) {
+      id
+      title
+      color
+      group
+      extra
+      icon
+    }
+  }
+`
+
 const schema = {
   pagedArticleTags,
   updateDashboardEnable,
   updateDashboardLayout,
   updateDashboardNameAlias,
+  updateArticleTag,
 }
 
 export default schema

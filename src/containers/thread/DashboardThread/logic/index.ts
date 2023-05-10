@@ -135,6 +135,11 @@ const _doMutation = (field: string, e: TEditValue): void => {
     const nameAlias = toJS(store.nameAlias)
     sr71$.mutate(S.updateDashboardNameAlias, { community, nameAlias })
   }
+
+  if (field === SETTING_FIELD.TAG) {
+    const community = store.curCommunity.raw
+    sr71$.mutate(S.updateArticleTag, { ...toJS(store.editingTag), community })
+  }
 }
 
 /**
@@ -144,7 +149,7 @@ export const rollbackEdit = (field: TSettingField): void => store.rollbackEdit(f
 export const resetEdit = (field: TSettingField): void => store.resetEdit(field)
 export const edit = (e: TEditValue, field: string): void => updateEditing(store, field, e)
 
-export const loadTags = (): void => {
+const _reloadArticleTags = (): void => {
   const filter = { community: 'home' }
   //
   sr71$.query(S.pagedArticleTags, { filter })
@@ -158,7 +163,6 @@ export const onSave = (field: TSettingField): void => {
   store.onSave(field)
 
   console.log('## on save: ', field)
-  console.log('## editingTag: ', toJS(store.editingTag))
 
   _doMutation(field, store[field])
 
@@ -182,6 +186,16 @@ const _handleDone = () => {
   store.mark({ saving: false, savingField: null })
   const initSettings = { ...store.initSettings, [field]: toJS(store[field]) }
   store.mark({ initSettings })
+
+  // manually update in here not in store is because if this action fails,
+  // store will rollback to previous value
+  if (field === SETTING_FIELD.TAG) {
+    store.mark({ editingTag: null })
+  }
+
+  if (field === SETTING_FIELD.NAME_ALIAS) {
+    store.mark({ editingAlias: null })
+  }
 }
 
 const _handleError = () => {
@@ -204,11 +218,12 @@ const DataSolver = [
     action: () => _handleDone(),
   },
   {
+    match: asyncRes('updateArticleTag'),
+    action: () => _handleDone(),
+  },
+  {
     match: asyncRes('pagedArticleTags'),
-    action: ({ pagedArticleTags }) => {
-      console.log('## pagedArticleTags: ', pagedArticleTags)
-      store.mark({ tags: pagedArticleTags.entries })
-    },
+    action: ({ pagedArticleTags }) => store.mark({ tags: pagedArticleTags.entries }),
   },
   {
     match: asyncRes(EVENT.DRAWER.AFTER_CLOSE),
