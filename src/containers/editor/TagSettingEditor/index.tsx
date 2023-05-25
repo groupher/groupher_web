@@ -88,7 +88,7 @@ const TagSettingEditorContainer: FC<TProps> = ({ tagSettingEditor: store, testid
         <Br bottom={20} />
         <PostLayout layout="upvote_first" />
       </CustomScroller>
-      <Footer />
+      <Footer tag={settingTag} />
     </Wrapper>
   )
 }

@@ -22,7 +22,7 @@ import S from '../schema'
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
 const sr71$ = new SR71({
   // @ts-ignore
-  receive: [EVENT.DRAWER.AFTER_CLOSE],
+  receive: [EVENT.DRAWER.AFTER_CLOSE, EVENT.REFRESH_TAGS],
 })
 
 let store: TStore | undefined
@@ -149,6 +149,7 @@ export const rollbackEdit = (field: TSettingField): void => store.rollbackEdit(f
 export const resetEdit = (field: TSettingField): void => store.resetEdit(field)
 export const edit = (e: TEditValue, field: string): void => updateEditing(store, field, e)
 
+// reload after create/delete tag
 const _reloadArticleTags = (): void => {
   const filter = { community: 'home' }
   //
@@ -218,6 +219,13 @@ const DataSolver = [
   {
     match: asyncRes('pagedArticleTags'),
     action: ({ pagedArticleTags }) => store.mark({ tags: pagedArticleTags.entries }),
+  },
+  {
+    match: asyncRes(EVENT.REFRESH_TAGS),
+    action: () => {
+      _reloadArticleTags()
+      store.mark({ settingTag: null })
+    },
   },
   {
     match: asyncRes(EVENT.DRAWER.AFTER_CLOSE),

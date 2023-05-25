@@ -26,6 +26,9 @@ export const tag = `
   color
   thread
   group
+  community {
+    raw
+  }
 `
 export const author = `
   login

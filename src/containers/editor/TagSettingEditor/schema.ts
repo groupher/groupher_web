@@ -1,8 +1,8 @@
 import { gql } from 'urql/core'
 
-const simpleMutation = gql`
-  mutation ($id: ID!) {
-    post(id: $id) {
+const deleteArticleTag = gql`
+  mutation ($id: ID!, $community: String!, $thread: Thread) {
+    deleteArticleTag(id: $id, community: $community, thread: $thread) {
       id
     }
   }
@@ -17,7 +17,7 @@ const simpleQuery = gql`
 `
 
 const schema = {
-  simpleMutation,
+  deleteArticleTag,
   simpleQuery,
 }
 

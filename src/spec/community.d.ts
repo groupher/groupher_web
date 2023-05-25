@@ -41,6 +41,7 @@ export type TTag = {
   thread?: string
   color?: string
   group?: string
+  community?: TCommunity
 }
 
 export type TFilterTag = {
