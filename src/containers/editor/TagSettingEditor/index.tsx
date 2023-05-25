@@ -9,6 +9,9 @@ import { FC } from 'react'
 import { bond } from '@/utils/mobx'
 import { ROUTE } from '@/constant/route'
 import { DRAWER_SCROLLER } from '@/constant/dom'
+import { COLORS } from '@/constant/colors'
+
+import ColorSelector from '@/widgets/ColorSelector'
 
 import { Br } from '@/widgets/Common'
 import Select from '@/widgets/Select'
@@ -21,13 +24,14 @@ import type { TStore } from './store'
 
 import {
   Wrapper,
-  TagItem,
-  Dot,
-  TagName,
+  BasicInfo,
+  DotSelector,
+  TitleDot,
   SelectorWrapper,
   Title,
   Desc,
   Navi,
+  TitleInputer,
   Inputer,
 } from './styles'
 import { useInit } from './logic' /* eslint-disable-next-line */
@@ -37,20 +41,22 @@ import { useInit } from './logic' /* eslint-disable-next-line */
 type TProps = {
   tagSettingEditor?: TStore
   testid: string
+  mode?: 'create' | 'edit'
 }
 
-const TagSettingEditorContainer: FC<TProps> = ({ tagSettingEditor: store, testid }) => {
-  useInit(store)
+const TagSettingEditorContainer: FC<TProps> = ({
+  tagSettingEditor: store,
+  testid,
+  mode = 'edit',
+}) => {
+  useInit(store, mode)
 
-  const { settingTag, curCategory, categoryOptions } = store
+  const { curTag, curCategory, categoryOptions } = store
+
+  console.log('## curTag: ', curTag)
 
   return (
     <Wrapper testid={testid}>
-      <TagItem>
-        <Dot color={settingTag.color} />
-        <TagName>{settingTag.title}</TagName>
-      </TagItem>
-
       <CustomScroller
         instanceKey={DRAWER_SCROLLER}
         direction="vertical"
@@ -59,6 +65,27 @@ const TagSettingEditorContainer: FC<TProps> = ({ tagSettingEditor: store, testid
         showShadow={false}
         autoHide={false}
       >
+        <Title>标签名称</Title>
+        <BasicInfo>
+          <ColorSelector
+            activeColor={curTag.color || COLORS.BLACK}
+            // onChange={(color) => editTag('editingTag', { ...curTag, color })}
+            onChange={(color) => console.log('## color: ', color)}
+            placement="bottom-start"
+            offset={[-8, 0]}
+          >
+            <DotSelector>
+              <TitleDot color={COLORS[curTag.color] || COLORS.BLACK} />
+            </DotSelector>
+          </ColorSelector>
+
+          <TitleInputer
+            value={curTag.title}
+            // onChange={(e) => editTag('editingTag', { ...curTag, title: e.target.value })}
+            onChange={(e) => console.log(e)}
+          />
+        </BasicInfo>
+
         <Title>标签分组</Title>
         <Br bottom={5} />
         <SelectorWrapper>
@@ -88,7 +115,7 @@ const TagSettingEditorContainer: FC<TProps> = ({ tagSettingEditor: store, testid
         <Br bottom={20} />
         <PostLayout layout="upvote_first" />
       </CustomScroller>
-      <Footer tag={settingTag} />
+      <Footer tag={curTag} mode={mode} />
     </Wrapper>
   )
 }

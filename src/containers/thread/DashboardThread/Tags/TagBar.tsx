@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 import type { TTag } from '@/spec'
 import { COLORS } from '@/constant/colors'
 
-import { callTagSettingEditor } from '@/utils/signal'
+import { callTagEditEditor } from '@/utils/signal'
 import { Space, SpaceGrow } from '@/widgets/Common'
 import ColorSelector from '@/widgets/ColorSelector'
 
@@ -73,7 +73,7 @@ const TagBar: FC<TProps> = ({ tag, editingTag, settingTag }) => {
             <SettingIcon
               onClick={() => {
                 editTag('settingTag', tag)
-                callTagSettingEditor()
+                callTagEditEditor()
               }}
             />
           </Actions>

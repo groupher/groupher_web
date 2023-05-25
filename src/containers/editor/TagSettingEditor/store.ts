@@ -2,22 +2,30 @@
  * TagSettingEditor store
  */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
-// import {} from 'ramda'
-
 import type { TCommunity, TRootStore, TTag, TSelectOption } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import { markStates, toJS } from '@/utils/mobx'
+import { markStates, toJS, T, getParent, Instance } from '@/utils/mobx'
+
+import { Tag } from '@/model'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:TagSettingEditor')
 
-const TagSettingEditor = T.model('TagSettingEditor', {})
+const TagSettingEditor = T.model('TagSettingEditor', {
+  mode: T.opt(T.enum('mode', ['create', 'edit']), 'edit'),
+  editingTag: T.maybeNull(Tag),
+})
   .views((self) => ({
     get curCommunity(): TCommunity {
       const root = getParent(self) as TRootStore
 
       return toJS(root.viewing.community)
+    },
+
+    get curTag(): TTag {
+      const slf = self as TStore
+
+      return slf.mode === 'create' ? slf.editingTag : slf.settingTag
     },
 
     get categoryOptions(): TSelectOption[] {

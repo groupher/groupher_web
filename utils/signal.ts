@@ -115,9 +115,10 @@ export const callGEditor = (): void => {
   send(EVENT.DRAWER.OPEN, { type: TYPE.DRAWER.G_EDITOR })
 }
 
-export const callTagSettingEditor = (): void => {
-  send(EVENT.DRAWER.OPEN, { type: TYPE.DRAWER.TAG_SETTING })
-}
+export const callTagCreateEditor = (): void =>
+  send(EVENT.DRAWER.OPEN, { type: TYPE.DRAWER.CREATE_TAG })
+
+export const callTagEditEditor = (): void => send(EVENT.DRAWER.OPEN, { type: TYPE.DRAWER.EDIT_TAG })
 
 export const callAuth = (): void => {
   send(EVENT.AUTH, {})

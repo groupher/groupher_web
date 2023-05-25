@@ -1,5 +1,7 @@
 import { FC, memo } from 'react'
 
+import { callTagCreateEditor } from '@/utils/signal'
+
 import Portal from '../Portal'
 
 import ThreadSelector from './ThreadSelector'
@@ -7,7 +9,7 @@ import CategorySelector from './CategorySelector'
 import TagBar from './TagBar'
 
 import type { TTagSettings } from '../spec'
-import { Wrapper, InnerWrapper, ContentWrapper } from '../styles/tags'
+import { Wrapper, InnerWrapper, ContentWrapper, AddButton, AddIcon } from '../styles/tags'
 
 type TProps = {
   settings: TTagSettings
@@ -28,6 +30,11 @@ const Tags: FC<TProps> = ({ settings }) => {
             <TagBar key={tag.id} tag={tag} editingTag={editingTag} settingTag={settingTag} />
           ))}
         </ContentWrapper>
+
+        <AddButton ghost left={-8} top={10} size="small" onClick={() => callTagCreateEditor()}>
+          <AddIcon />
+          新增标签
+        </AddButton>
       </InnerWrapper>
     </Wrapper>
   )

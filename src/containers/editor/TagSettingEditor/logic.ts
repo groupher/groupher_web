@@ -10,6 +10,7 @@ import { buildLog } from '@/utils/logger'
 import asyncSuit from '@/utils/async'
 import { send, errRescue, closeDrawer } from '@/utils/signal'
 
+import { DEFAULT_CREATE_TAG } from './constant'
 import S from './schema'
 import type { TStore } from './store'
 
@@ -26,6 +27,14 @@ export const deleteArticleTag = (tag: TTag): void => {
   const { id, thread, community } = tag
 
   sr71$.mutate(S.deleteArticleTag, { id, community: community.raw, thread })
+}
+
+const _initCurTag = (mode) => {
+  if (mode === 'create') {
+    store.mark({ editingTag: DEFAULT_CREATE_TAG })
+  } else {
+    store.mark({ editingTag: store.settingTag })
+  }
 }
 
 export const edit = (layout: TPostLayout): void => {
@@ -68,12 +77,13 @@ const ErrSolver = [
   },
 ]
 
-export const useInit = (_store: TStore): void => {
+export const useInit = (_store: TStore, mode: 'create' | 'edit'): void => {
   useEffect(() => {
     store = _store
     log('useInit: ', store)
+    _initCurTag(mode)
 
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
     // return () => store.reset()
-  }, [_store])
+  }, [_store, mode])
 }

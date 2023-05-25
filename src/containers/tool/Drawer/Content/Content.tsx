@@ -73,7 +73,12 @@ const Content: FC<TProps> = ({ type, attUser, extraInfo }) => {
       return <UserLister type={extraInfo.userListerType} />
     }
 
-    case DRAWER.TAG_SETTING: {
+    case DRAWER.CREATE_TAG: {
+      // @ts-ignore
+      return <TagSettingEditor mode="create" />
+    }
+
+    case DRAWER.EDIT_TAG: {
       // @ts-ignore
       return <TagSettingEditor />
     }
