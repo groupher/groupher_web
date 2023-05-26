@@ -22,8 +22,9 @@ export const ContentWrapper = styled.div`
 `
 
 export const AddButton = styled(Button)`
+  ${css.flex('align-center')};
   height: 32px;
-  width: 112px;
+  width: 100px;
   border-color: ${theme('divider')};
 `
 
@@ -31,7 +32,7 @@ export const AddIcon = styled(AdderSVG)`
   ${css.size(12)};
   fill: ${theme('article.digest')};
   margin-right: 8px;
-  margin-left: -20px;
+  margin-left: -10px;
 
   ${AddButton}:hover & {
     fill: ${theme('article.title')};

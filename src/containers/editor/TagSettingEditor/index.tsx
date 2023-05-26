@@ -34,7 +34,7 @@ import {
   TitleInputer,
   Inputer,
 } from './styles'
-import { useInit } from './logic' /* eslint-disable-next-line */
+import { useInit, edit } from './logic'
 
 // const log = buildLog('C:TagSettingEditor')
 
@@ -53,14 +53,17 @@ const TagSettingEditorContainer: FC<TProps> = ({
 
   const { curTag, curCategory, categoryOptions } = store
 
-  console.log('## curTag: ', curTag)
+  console.log('## mode: ', mode)
+  console.log('### curTag: ', curTag.color)
+  // console.log('### curTag.color: ', curTag.color)
+  // console.log('## editingTagData: ', editingTagData)
 
   return (
     <Wrapper testid={testid}>
       <CustomScroller
         instanceKey={DRAWER_SCROLLER}
         direction="vertical"
-        height="calc(100vh - 210px)"
+        height="calc(100vh - 200px)"
         barSize="small"
         showShadow={false}
         autoHide={false}
@@ -68,22 +71,17 @@ const TagSettingEditorContainer: FC<TProps> = ({
         <Title>标签名称</Title>
         <BasicInfo>
           <ColorSelector
-            activeColor={curTag.color || COLORS.BLACK}
-            // onChange={(color) => editTag('editingTag', { ...curTag, color })}
-            onChange={(color) => console.log('## color: ', color)}
+            activeColor={curTag?.color || COLORS.BLACK}
+            onChange={(color) => edit(color, 'color')}
             placement="bottom-start"
             offset={[-8, 0]}
           >
             <DotSelector>
-              <TitleDot color={COLORS[curTag.color] || COLORS.BLACK} />
+              <TitleDot color={curTag?.color || COLORS.BLACK} />
             </DotSelector>
           </ColorSelector>
 
-          <TitleInputer
-            value={curTag.title}
-            // onChange={(e) => editTag('editingTag', { ...curTag, title: e.target.value })}
-            onChange={(e) => console.log(e)}
-          />
+          <TitleInputer value={curTag.title} onChange={(e) => edit(e.target.value, 'title')} />
         </BasicInfo>
 
         <Title>标签分组</Title>

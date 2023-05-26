@@ -7,10 +7,44 @@ const deleteArticleTag = gql`
     }
   }
 `
-
-const simpleQuery = gql`
-  query ($filter: filter!) {
-    post(id: $id) {
+const createArticleTag = gql`
+  mutation (
+    $thread: Thread!
+    $title: String!
+    $raw: String!
+    $color: RainbowColor!
+    $group: String
+    $community: String!
+  ) {
+    createArticleTag(
+      thread: $thread
+      title: $title
+      raw: $raw
+      color: $color
+      group: $group
+      community: $community
+    ) {
+      id
+    }
+  }
+`
+const updateArticleTag = gql`
+  mutation (
+    $id: ID!
+    $color: RainbowColor
+    $title: String
+    $raw: String
+    $community: String!
+    $group: String
+  ) {
+    updateArticleTag(
+      id: $id
+      color: $color
+      title: $title
+      raw: $raw
+      community: $community
+      group: $group
+    ) {
       id
     }
   }
@@ -18,7 +52,8 @@ const simpleQuery = gql`
 
 const schema = {
   deleteArticleTag,
-  simpleQuery,
+  createArticleTag,
+  updateArticleTag,
 }
 
 export default schema

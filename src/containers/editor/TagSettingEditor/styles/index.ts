@@ -3,6 +3,7 @@ import Link from 'next/link'
 
 import type { TTestable } from '@/spec'
 
+import { COLORS } from '@/constant/colors'
 import css, { theme } from '@/utils/css'
 
 import Input from '@/widgets/Input'
@@ -30,7 +31,7 @@ export const DotSelector = styled.div`
 export const TitleDot = styled.div<{ color: string }>`
   ${css.size(24)};
   border-radius: 5px;
-  background: ${({ color }) => color};
+  background: ${({ color }) => COLORS[color]};
 `
 export const TitleInputer = styled(Input)`
   margin-left: 10px;

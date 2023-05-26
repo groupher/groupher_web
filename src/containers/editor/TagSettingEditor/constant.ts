@@ -1,9 +1,9 @@
-import { COLORS } from '@/constant/colors'
+import { COLOR_NAME } from '@/constant/colors'
 import { THREAD } from '@/constant/thread'
 
 export const DEFAULT_CREATE_TAG = {
   id: '',
-  color: COLORS.BLACK,
+  color: COLOR_NAME.BLACK,
   // index?: number
   raw: '',
   title: '',

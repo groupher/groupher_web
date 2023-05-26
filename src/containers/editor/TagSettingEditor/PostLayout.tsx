@@ -20,7 +20,6 @@ import {
   UpvoteIcon,
   CommentIcon,
 } from './styles/post_layout'
-import { edit } from './logic'
 
 type TProps = {
   layout: TPostLayout
@@ -31,7 +30,7 @@ type TProps = {
 const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
   return (
     <Wrapper>
-      <Layout onClick={() => edit(POST_LAYOUT.UPVOTE_FIRST)}>
+      <Layout onClick={() => console.log(POST_LAYOUT.UPVOTE_FIRST)}>
         <Block $active={layout === POST_LAYOUT.UPVOTE_FIRST}>
           <Bar thin long={30} />
           <Br bottom={7} />
@@ -63,7 +62,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           />
         </LayoutTitle>
       </Layout>
-      <Layout onClick={() => edit(POST_LAYOUT.COMMENT_FIRST)}>
+      <Layout onClick={() => console.log(POST_LAYOUT.COMMENT_FIRST)}>
         <Block $active={layout === POST_LAYOUT.COMMENT_FIRST}>
           <Row>
             <Column center>
@@ -107,7 +106,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         </LayoutTitle>
       </Layout>
 
-      <Layout onClick={() => edit(POST_LAYOUT.MASONRY)}>
+      <Layout onClick={() => console.log(POST_LAYOUT.MASONRY)}>
         <Block $active={layout === POST_LAYOUT.MASONRY}>
           <Row>
             <Column grow>
@@ -131,7 +130,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         </LayoutTitle>
       </Layout>
 
-      <Layout onClick={() => edit(POST_LAYOUT.MINIMAL)}>
+      <Layout onClick={() => console.log(POST_LAYOUT.MINIMAL)}>
         <Block $active={layout === POST_LAYOUT.MINIMAL}>
           <Row>
             <Space right={5} />
@@ -165,7 +164,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         </LayoutTitle>
       </Layout>
 
-      <Layout onClick={() => edit(POST_LAYOUT.COVER)}>
+      <Layout onClick={() => console.log(POST_LAYOUT.COVER)}>
         <Block $active={layout === POST_LAYOUT.COVER}>
           <Row>
             <Cover />

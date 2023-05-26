@@ -3,7 +3,7 @@ import { FC } from 'react'
 import type { TTag } from '@/spec'
 import { Wrapper, UpdateWrapper, ActionButton } from './styles/footer'
 
-import { deleteArticleTag } from './logic'
+import { onCreate, onDelete } from './logic'
 
 type TProps = {
   tag: TTag
@@ -14,14 +14,16 @@ const Footer: FC<TProps> = ({ tag, mode }) => {
   return (
     <Wrapper>
       {mode === 'create' ? (
-        <ActionButton onClick={() => deleteArticleTag(tag)}>创建新标签</ActionButton>
+        <ActionButton top={15} onClick={() => onCreate()}>
+          创建新标签
+        </ActionButton>
       ) : (
         <UpdateWrapper>
-          <ActionButton bottom={15} onClick={() => deleteArticleTag(tag)}>
+          <ActionButton bottom={15} onClick={() => onDelete(tag)}>
             更新标签
           </ActionButton>
 
-          <ActionButton type="red" ghost onClick={() => deleteArticleTag(tag)}>
+          <ActionButton type="red" ghost onClick={() => onDelete(tag)}>
             删除标签
           </ActionButton>
         </UpdateWrapper>

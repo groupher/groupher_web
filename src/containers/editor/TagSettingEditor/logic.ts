@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
-// import { } from 'ramda'
+import { merge } from 'ramda'
 
-import type { TPostLayout, TTag } from '@/spec'
+import type { TEditValue, TTag } from '@/spec'
 
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
@@ -23,22 +23,44 @@ let store: TStore | undefined
 /* eslint-disable-next-line */
 const log = buildLog('L:TagSettingEditor')
 
-export const deleteArticleTag = (tag: TTag): void => {
+export const onDelete = (tag: TTag): void => {
   const { id, thread, community } = tag
 
   sr71$.mutate(S.deleteArticleTag, { id, community: community.raw, thread })
 }
 
-const _initCurTag = (mode) => {
-  if (mode === 'create') {
-    store.mark({ editingTag: DEFAULT_CREATE_TAG })
-  } else {
-    store.mark({ editingTag: store.settingTag })
-  }
+export const edit = (e: TEditValue, key): void => {
+  const { editingTagData } = store
+
+  store.mark({ editingTag: merge(editingTagData, { [key]: e }) })
 }
 
-export const edit = (layout: TPostLayout): void => {
-  //
+export const onCreate = (): void => {
+  const { curTag, curCommunity } = store
+
+  const tag = {
+    ...curTag,
+    raw: curTag.title,
+    community: curCommunity.raw,
+    group: '',
+  }
+
+  console.log('## onCreate: ', tag)
+  sr71$.mutate(S.createArticleTag, tag)
+}
+
+export const onUpate = (): void => {
+  console.log('## onUpdate')
+}
+
+/**
+ */
+const _initCurTag = (mode) => {
+  if (mode === 'create') {
+    store.mark({ editingTag: DEFAULT_CREATE_TAG, mode })
+  } else {
+    store.mark({ editingTag: store.settingTag, mode })
+  }
 }
 
 // ###############################
@@ -47,16 +69,18 @@ export const edit = (layout: TPostLayout): void => {
 
 const _handleDone = (): void => {
   closeDrawer()
+  send(EVENT.REFRESH_TAGS)
   // refresh the tag list
 }
 
 const DataSolver = [
   {
     match: asyncRes('deleteArticleTag'),
-    action: () => {
-      _handleDone()
-      send(EVENT.REFRESH_TAGS)
-    },
+    action: () => _handleDone(),
+  },
+  {
+    match: asyncRes('createArticleTag'),
+    action: () => _handleDone(),
   },
 ]
 

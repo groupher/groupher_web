@@ -22,10 +22,20 @@ const TagSettingEditor = T.model('TagSettingEditor', {
       return toJS(root.viewing.community)
     },
 
+    get settingTag(): TTag {
+      const root = getParent(self) as TRootStore
+
+      return toJS(root.dashboardThread.settingTag || {})
+    },
+
+    get editingTagData(): TTag {
+      return toJS(self.editingTag)
+    },
+
     get curTag(): TTag {
       const slf = self as TStore
 
-      return slf.mode === 'create' ? slf.editingTag : slf.settingTag
+      return slf.mode === 'create' ? slf.editingTagData : slf.settingTag
     },
 
     get categoryOptions(): TSelectOption[] {
@@ -38,12 +48,6 @@ const TagSettingEditor = T.model('TagSettingEditor', {
           value: cat,
         }
       })
-    },
-
-    get settingTag(): TTag {
-      const root = getParent(self) as TRootStore
-
-      return toJS(root.dashboardThread.settingTag || {})
     },
 
     get curCategory(): TSelectOption {
