@@ -1,5 +1,7 @@
 import { FC, memo } from 'react'
+import { reject } from 'ramda'
 
+import { nilOrEmpty } from '@/utils/validator'
 import Button from '@/widgets/Buttons/Button'
 
 import { Wrapper, CatsWrapper, Hint } from '../styles/tags/category_selector'
@@ -24,7 +26,7 @@ const CategorySelector: FC<TProps> = ({ categories, active }) => {
           全部
         </Button>
 
-        {categories.map((cat) => (
+        {reject((cat) => nilOrEmpty(cat), categories).map((cat) => (
           <Button
             key={cat}
             ghost

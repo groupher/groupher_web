@@ -43,7 +43,6 @@ export const onUpdate = (): void => {
     ...editingTagData,
     raw: editingTagData.title,
     community: curCommunity.raw,
-    group: '',
   }
 
   sr71$.mutate(S.updateArticleTag, tag)
@@ -57,7 +56,6 @@ export const onCreate = (): void => {
     ...editingTagData,
     raw: editingTagData.title,
     community: curCommunity.raw,
-    group: '',
   }
 
   console.log('## onCreate: ', tag)

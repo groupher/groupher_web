@@ -12,7 +12,6 @@ export const Wrapper = styled.div`
 `
 export const UpdateWrapper = styled.div`
   ${css.flexColumn()};
-  margin-top: -30px;
 `
 export const ActionButton = styled(Button)`
   width: 180px;

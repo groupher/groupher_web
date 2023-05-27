@@ -1,9 +1,11 @@
 /*
  * TagSettingEditor store
  */
+import { uniq, reject, find } from 'ramda'
 
 import type { TCommunity, TRootStore, TTag, TSelectOption } from '@/spec'
 import { buildLog } from '@/utils/logger'
+import { nilOrEmpty } from '@/utils/validator'
 import { markStates, toJS, T, getParent, Instance } from '@/utils/mobx'
 
 import { Tag } from '@/model'
@@ -22,7 +24,30 @@ const TagSettingEditor = T.model('TagSettingEditor', {
 
       return toJS(root.viewing.community)
     },
+    get curThread(): TSelectOption {
+      const slf = self as TStore
+      const { threadOptions, editingTag } = slf
 
+      if (!editingTag?.thread) {
+        return {
+          label: '',
+          value: '',
+        }
+      }
+
+      return find((t: TSelectOption) => t.value === editingTag.thread.toLowerCase(), threadOptions)
+    },
+    get threadOptions(): TSelectOption[] {
+      const slf = self as TStore
+
+      const { curCommunity } = slf
+      const { threads } = curCommunity
+
+      return threads.map(({ title, raw }) => ({
+        label: title,
+        value: raw,
+      }))
+    },
     get settingTag(): TTag {
       const root = getParent(self) as TRootStore
 
@@ -35,23 +60,42 @@ const TagSettingEditor = T.model('TagSettingEditor', {
 
     get categoryOptions(): TSelectOption[] {
       const root = getParent(self) as TRootStore
+      const slf = self as TStore
+
       const tagCategories = toJS(root.dashboardThread.tagCategories)
 
-      return tagCategories.map((cat) => {
-        return {
-          label: cat,
-          value: cat,
-        }
-      })
+      const { editingTagData } = slf
+
+      const existOptions = tagCategories.map((cat) => ({
+        label: cat,
+        value: cat,
+      }))
+
+      let retOptions = existOptions
+
+      const { group } = editingTagData
+      if (group) {
+        retOptions = uniq([
+          {
+            label: group,
+            value: group,
+          },
+          ...existOptions,
+        ])
+      }
+
+      return reject((opt: TSelectOption) => nilOrEmpty(opt.value), uniq(retOptions))
     },
 
     get curCategory(): TSelectOption {
       const slf = self as TStore
-      const { settingTag } = slf
+      const {
+        editingTagData: { group },
+      } = slf
 
       return {
-        label: settingTag.group,
-        value: settingTag.group,
+        label: group,
+        value: group,
       }
     },
   }))
