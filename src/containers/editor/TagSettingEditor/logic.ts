@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { merge } from 'ramda'
 
 import type { TEditValue, TTag } from '@/spec'
 
@@ -23,24 +22,40 @@ let store: TStore | undefined
 /* eslint-disable-next-line */
 const log = buildLog('L:TagSettingEditor')
 
+export const edit = (e: TEditValue, key): void => {
+  const { editingTagData } = store
+
+  store.mark({ editingTag: { ...editingTagData, [key]: e } })
+}
+
 export const onDelete = (tag: TTag): void => {
+  store.mark({ processing: true })
   const { id, thread, community } = tag
 
   sr71$.mutate(S.deleteArticleTag, { id, community: community.raw, thread })
 }
 
-export const edit = (e: TEditValue, key): void => {
-  const { editingTagData } = store
+export const onUpdate = (): void => {
+  store.mark({ processing: true })
+  const { editingTagData, curCommunity } = store
 
-  store.mark({ editingTag: merge(editingTagData, { [key]: e }) })
+  const tag = {
+    ...editingTagData,
+    raw: editingTagData.title,
+    community: curCommunity.raw,
+    group: '',
+  }
+
+  sr71$.mutate(S.updateArticleTag, tag)
 }
 
 export const onCreate = (): void => {
-  const { curTag, curCommunity } = store
+  store.mark({ processing: true })
+  const { editingTagData, curCommunity } = store
 
   const tag = {
-    ...curTag,
-    raw: curTag.title,
+    ...editingTagData,
+    raw: editingTagData.title,
     community: curCommunity.raw,
     group: '',
   }
@@ -49,13 +64,10 @@ export const onCreate = (): void => {
   sr71$.mutate(S.createArticleTag, tag)
 }
 
-export const onUpate = (): void => {
-  console.log('## onUpdate')
-}
-
 /**
+ * init editing tag for create/edit action
  */
-const _initCurTag = (mode) => {
+const _initEditingTag = (mode) => {
   if (mode === 'create') {
     store.mark({ editingTag: DEFAULT_CREATE_TAG, mode })
   } else {
@@ -70,7 +82,7 @@ const _initCurTag = (mode) => {
 const _handleDone = (): void => {
   closeDrawer()
   send(EVENT.REFRESH_TAGS)
-  // refresh the tag list
+  store.mark({ processing: false })
 }
 
 const DataSolver = [
@@ -82,22 +94,33 @@ const DataSolver = [
     match: asyncRes('createArticleTag'),
     action: () => _handleDone(),
   },
+  {
+    match: asyncRes('updateArticleTag'),
+    action: () => _handleDone(),
+  },
 ]
 
 const ErrSolver = [
   {
     match: asyncErr(ERR.GRAPHQL),
     action: ({ details }) => {
+      store.mark({ processing: false })
       errRescue({ type: ERR.GRAPHQL, details, path: 'TagSettingEditor' })
     },
   },
   {
     match: asyncErr(ERR.TIMEOUT),
-    action: ({ details }) => errRescue({ type: ERR.TIMEOUT, details, path: 'TagSettingEditor' }),
+    action: ({ details }) => {
+      store.mark({ processing: false })
+      errRescue({ type: ERR.TIMEOUT, details, path: 'TagSettingEditor' })
+    },
   },
   {
     match: asyncErr(ERR.NETWORK),
-    action: () => errRescue({ type: ERR.NETWORK, path: 'TagSettingEditor' }),
+    action: () => {
+      store.mark({ processing: false })
+      errRescue({ type: ERR.NETWORK, path: 'TagSettingEditor' })
+    },
   },
 ]
 
@@ -105,7 +128,7 @@ export const useInit = (_store: TStore, mode: 'create' | 'edit'): void => {
   useEffect(() => {
     store = _store
     log('useInit: ', store)
-    _initCurTag(mode)
+    _initEditingTag(mode)
 
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
     // return () => store.reset()

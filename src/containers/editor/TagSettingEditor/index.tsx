@@ -51,12 +51,10 @@ const TagSettingEditorContainer: FC<TProps> = ({
 }) => {
   useInit(store, mode)
 
-  const { curTag, curCategory, categoryOptions } = store
+  const { editingTagData: editingTag, curCategory, categoryOptions, processing } = store
 
   console.log('## mode: ', mode)
-  console.log('### curTag: ', curTag.color)
-  // console.log('### curTag.color: ', curTag.color)
-  // console.log('## editingTagData: ', editingTagData)
+  console.log('### editingTag: ', editingTag.color)
 
   return (
     <Wrapper testid={testid}>
@@ -71,17 +69,17 @@ const TagSettingEditorContainer: FC<TProps> = ({
         <Title>标签名称</Title>
         <BasicInfo>
           <ColorSelector
-            activeColor={curTag?.color || COLORS.BLACK}
+            activeColor={editingTag.color || COLORS.BLACK}
             onChange={(color) => edit(color, 'color')}
             placement="bottom-start"
             offset={[-8, 0]}
           >
             <DotSelector>
-              <TitleDot color={curTag?.color || COLORS.BLACK} />
+              <TitleDot color={editingTag?.color || COLORS.BLACK} />
             </DotSelector>
           </ColorSelector>
 
-          <TitleInputer value={curTag.title} onChange={(e) => edit(e.target.value, 'title')} />
+          <TitleInputer value={editingTag.title} onChange={(e) => edit(e.target.value, 'title')} />
         </BasicInfo>
 
         <Title>标签分组</Title>
@@ -113,7 +111,7 @@ const TagSettingEditorContainer: FC<TProps> = ({
         <Br bottom={20} />
         <PostLayout layout="upvote_first" />
       </CustomScroller>
-      <Footer tag={curTag} mode={mode} />
+      <Footer tag={editingTag} mode={mode} processing={processing} />
     </Wrapper>
   )
 }

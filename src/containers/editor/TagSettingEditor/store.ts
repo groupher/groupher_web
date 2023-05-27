@@ -14,6 +14,7 @@ const log = buildLog('S:TagSettingEditor')
 const TagSettingEditor = T.model('TagSettingEditor', {
   mode: T.opt(T.enum('mode', ['create', 'edit']), 'edit'),
   editingTag: T.maybeNull(Tag),
+  processing: T.opt(T.bool, false),
 })
   .views((self) => ({
     get curCommunity(): TCommunity {
@@ -29,13 +30,7 @@ const TagSettingEditor = T.model('TagSettingEditor', {
     },
 
     get editingTagData(): TTag {
-      return toJS(self.editingTag)
-    },
-
-    get curTag(): TTag {
-      const slf = self as TStore
-
-      return slf.mode === 'create' ? slf.editingTagData : slf.settingTag
+      return toJS(self.editingTag || {})
     },
 
     get categoryOptions(): TSelectOption[] {
