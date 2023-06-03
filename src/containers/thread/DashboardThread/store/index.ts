@@ -159,11 +159,15 @@ const DashboardThread = T.model('DashboardThread', {
 
       return toJS(root.viewing.community)
     },
+    get tagsIndexTouched(): boolean {
+      const { tags, initSettings } = self
 
+      return JSON.stringify(toJS(tags)) !== JSON.stringify(toJS(initSettings.tags))
+    },
     get touched(): TTouched {
       const slf = self as TStore
 
-      const { initSettings: init } = slf
+      const { initSettings: init, tagsIndexTouched } = slf
 
       const _isChanged = (field: TSettingField): boolean => {
         return !equals(slf[field], init[field])
@@ -226,6 +230,7 @@ const DashboardThread = T.model('DashboardThread', {
         changelogLayout: changelogLayoutTouched,
         nameAlias: nameAliasTouched,
         tags: tagsTouched,
+        tagsIndex: tagsIndexTouched,
 
         glowFixed: glowFixedTouched,
         glowType: glowTypeTouched,
@@ -268,7 +273,7 @@ const DashboardThread = T.model('DashboardThread', {
       return toJS(slf.enable)
     },
 
-    get tagCategories(): string[] {
+    get tagGroups(): string[] {
       const slf = self as TStore
       const tags = toJS(slf.tags)
 
@@ -279,14 +284,15 @@ const DashboardThread = T.model('DashboardThread', {
     get tagSettings(): TTagSettings {
       const slf = self as TStore
       const tags = toJS(slf.tags)
-      const { activeTagCategory, activeTagThread, curCommunity, nameAlias } = slf
 
-      const filterdTagsByCat =
-        activeTagCategory === null ? tags : filter((t: TTag) => t.group === activeTagCategory, tags)
+      const { activeTagGroup, activeTagThread, curCommunity, nameAlias } = slf
+
+      const filterdTagsByGroup =
+        activeTagGroup === null ? tags : filter((t: TTag) => t.group === activeTagGroup, tags)
 
       const filterdTags = filter(
         (t: TTag) => t.thread === toUpper(activeTagThread || ''),
-        filterdTagsByCat,
+        filterdTagsByGroup,
       )
 
       const mappedThreads = curCommunity.threads.map((pThread) => {
@@ -309,9 +315,9 @@ const DashboardThread = T.model('DashboardThread', {
         settingTag: toJS(slf.settingTag),
         tags: filterdTags,
         saving: slf.saving,
-        categories: toJS(slf.tagCategories),
+        groups: toJS(slf.tagGroups),
         activeTagThread,
-        activeTagCategory,
+        activeTagGroup,
         threads: curThreads,
       }
     },

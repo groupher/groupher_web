@@ -4,15 +4,15 @@ import { reject } from 'ramda'
 import { nilOrEmpty } from '@/utils/validator'
 import Button from '@/widgets/Buttons/Button'
 
-import { Wrapper, CatsWrapper, Hint } from '../styles/tags/category_selector'
+import { Wrapper, CatsWrapper, Hint } from '../styles/tags/group_selector'
 import { edit } from '../logic'
 
 type TProps = {
-  categories: string[]
+  groups: string[]
   active: null | string
 }
 
-const CategorySelector: FC<TProps> = ({ categories, active }) => {
+const GroupSelector: FC<TProps> = ({ groups, active }) => {
   return (
     <Wrapper>
       <Hint>标签分组:</Hint>
@@ -21,18 +21,18 @@ const CategorySelector: FC<TProps> = ({ categories, active }) => {
           ghost
           size="small"
           noBorder={active !== null}
-          onClick={() => edit(null, 'activeTagCategory')}
+          onClick={() => edit(null, 'activeTagGroup')}
         >
           全部
         </Button>
 
-        {reject((cat) => nilOrEmpty(cat), categories).map((cat) => (
+        {reject((cat) => nilOrEmpty(cat), groups).map((cat) => (
           <Button
             key={cat}
             ghost
             size="small"
             noBorder={active !== cat}
-            onClick={() => edit(cat, 'activeTagCategory')}
+            onClick={() => edit(cat, 'activeTagGroup')}
           >
             {cat}
           </Button>
@@ -42,4 +42,4 @@ const CategorySelector: FC<TProps> = ({ categories, active }) => {
   )
 }
 
-export default memo(CategorySelector)
+export default memo(GroupSelector)

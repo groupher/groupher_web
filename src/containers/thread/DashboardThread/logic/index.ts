@@ -137,6 +137,16 @@ const _doMutation = (field: string, e: TEditValue): void => {
     const community = store.curCommunity.raw
     sr71$.mutate(S.updateArticleTag, { ...toJS(store.editingTag), community })
   }
+
+  if (field === SETTING_FIELD.TAG_INDEX) {
+    const { activeTagThread, activeTagGroup } = store
+    const thread = activeTagThread.toUpperCase()
+
+    console.log('## call reIndex api thread: ', thread)
+    console.log('## call reIndex api group: ', activeTagGroup)
+
+    // sr71$.mutate(S.reindexTagsInGroup, { community, thread })
+  }
 }
 
 /**
@@ -180,6 +190,8 @@ export const onSave = (field: TSettingField): void => {
 // ###############################
 const _handleDone = () => {
   const field = store.savingField
+
+  console.log('## _handleDone field: ', field)
 
   store.mark({ saving: false, savingField: null })
   const initSettings = { ...store.initSettings, [field]: toJS(store[field]) }

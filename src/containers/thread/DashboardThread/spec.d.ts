@@ -49,8 +49,8 @@ export type TTagSettings = {
   tags: TTag[]
   editingTag: TTag
   settingTag: TTag
-  categories: string[]
-  activeTagCategory: string
+  groups: string[]
+  activeTagGroup: string
   activeTagThread: string
 }
 
@@ -166,6 +166,7 @@ export type TTouched = {
   changelogLayout: boolean
   nameAlias: boolean
   tags: boolean
+  tagsIndex: boolean
 
   rssFeed: boolean
 
@@ -204,6 +205,7 @@ export type TSettingField =
   | 'broadcastArticleEnable'
   | 'changelogLayout'
   | 'tag'
+  | 'tagIndex'
   | 'nameAlias'
   | 'rssFeedType'
   | 'rssFeedCount'

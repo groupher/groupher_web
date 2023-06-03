@@ -145,7 +145,7 @@ export const settingsModalFields = {
   // tags
   // tags: T.opt(T.array(Tag), mockTags(12)),
   tags: T.opt(T.array(Tag), []),
-  activeTagCategory: T.maybeNull(T.string),
+  activeTagGroup: T.maybeNull(T.string),
   activeTagThread: T.maybeNull(T.string),
   nameAlias: T.opt(T.array(NameAlias), BUILDIN_ALIAS),
   enable: T.opt(Enable, {}),

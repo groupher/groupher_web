@@ -110,6 +110,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       dashboardThread: {
         curTab: ROUTE.DASHBOARD.TAGS,
         tags: pagedArticleTags.entries,
+        initSettings: {
+          tags: pagedArticleTags.entries,
+        },
       },
     },
     {

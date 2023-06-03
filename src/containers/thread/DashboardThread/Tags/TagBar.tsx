@@ -31,21 +31,14 @@ import { editTag, moveTagUp, moveTagDown, moveTag2Top, moveTag2Bottom } from '..
 
 type TProps = {
   tag: TTag
-  activeTagCategory: null | string
+  activeTagGroup: null | string
   editingTag: TTag
   settingTag: TTag
   isFirst: boolean
   isLast: boolean
 }
 
-const TagBar: FC<TProps> = ({
-  tag,
-  activeTagCategory,
-  editingTag,
-  settingTag,
-  isFirst,
-  isLast,
-}) => {
+const TagBar: FC<TProps> = ({ tag, activeTagGroup, editingTag, settingTag, isFirst, isLast }) => {
   const isEditMode = editingTag?.id === tag.id
 
   return (
@@ -81,14 +74,14 @@ const TagBar: FC<TProps> = ({
         ) : (
           <Title>
             {tag.title}
-            {!activeTagCategory && <CatNote>{tag.group}</CatNote>}
+            {!activeTagGroup && <CatNote>{tag.group}</CatNote>}
           </Title>
         )}
         <SpaceGrow />
         {!isEditMode && (
           <Actions>
-            {activeTagCategory && !isFirst && <ArrowUpIcon onClick={() => moveTagUp(tag)} />}
-            {activeTagCategory && !isLast && <ArrowDownIcon onClick={() => moveTagDown(tag)} />}
+            {activeTagGroup && !isFirst && <ArrowUpIcon onClick={() => moveTagUp(tag)} />}
+            {activeTagGroup && !isLast && <ArrowDownIcon onClick={() => moveTagDown(tag)} />}
             <EditIcon onClick={() => editTag('editingTag', tag)} />
             <Space right={8} />
             <Tooltip
@@ -96,7 +89,7 @@ const TagBar: FC<TProps> = ({
                 <ActionMenu
                   isFirst={isFirst}
                   isLast={isLast}
-                  activeTagCategory={activeTagCategory}
+                  activeTagGroup={activeTagGroup}
                   move2Top={() => moveTag2Top(tag)}
                   move2Bottom={() => moveTag2Bottom(tag)}
                   onSetting={() => {

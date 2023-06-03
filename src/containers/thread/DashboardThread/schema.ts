@@ -85,12 +85,21 @@ const updateArticleTag = gql`
   }
 `
 
+const reindexTagsInGroup = gql`
+  mutation ($community: String!, $thread: Thread, $group: String!, $tags: [ArticleTagIndex]) {
+    reindexTagsInGroup(community: $community, thread: $thread, group: $group, tags: $tags) {
+      done
+    }
+  }
+`
+
 const schema = {
   pagedArticleTags,
   updateDashboardEnable,
   updateDashboardLayout,
   updateDashboardNameAlias,
   updateArticleTag,
+  reindexTagsInGroup,
 }
 
 export default schema

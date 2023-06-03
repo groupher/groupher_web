@@ -76,7 +76,7 @@ const DashboardThreadContainer: FC<TProps> = ({
         {curTab === DASHBOARD.ALIAS && <Alias settings={aliasSettings} />}
         {curTab === DASHBOARD.ADMINS && <Admin />}
         {curTab === DASHBOARD.THREADS && <Threads settings={enableSettings} />}
-        {curTab === DASHBOARD.TAGS && <Tags settings={tagSettings} />}
+        {curTab === DASHBOARD.TAGS && <Tags settings={tagSettings} touched={touched} />}
 
         {curTab === DASHBOARD.RSS && <RSS settings={rssSettings} touched={touched} />}
 

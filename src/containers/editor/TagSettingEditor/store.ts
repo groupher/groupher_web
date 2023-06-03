@@ -43,11 +43,11 @@ const TagSettingEditor = T.model('TagSettingEditor', {
       const root = getParent(self) as TRootStore
       const slf = self as TStore
 
-      const tagCategories = toJS(root.dashboardThread.tagCategories)
+      const tagGroups = toJS(root.dashboardThread.tagGroups)
 
       const { editingTagData } = slf
 
-      const existOptions = tagCategories.map((cat) => ({
+      const existOptions = tagGroups.map((cat) => ({
         label: cat,
         value: cat,
       }))

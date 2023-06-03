@@ -36,6 +36,7 @@ export const SETTING_LAYOUT_FIELD = {
 export const SETTING_FIELD = {
   ...SETTING_LAYOUT_FIELD,
   TAG: 'tag',
+  TAG_INDEX: 'tagIndex',
   NAME_ALIAS: 'nameAlias',
   RSS_FEED_TYPE: 'rssFeedType',
   RSS_FEED_COUNT: 'rssFeedCount',
