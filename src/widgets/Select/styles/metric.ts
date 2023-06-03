@@ -80,12 +80,18 @@ export const getSelectStyles = (theme: TThemeMap) => {
     }),
     menu: (base) => ({
       ...base,
+      zIndex: 9999,
       // background: '#00262F',
     }),
     menuList: (base) => ({
       ...base,
       border: '1px solid',
       borderColor: theme.divider,
+      zIndex: 9999,
+    }),
+    menuPortal: (base) => ({
+      ...base,
+      zIndex: 9999,
     }),
     clearIndicator: (base, state) => ({
       ...base,

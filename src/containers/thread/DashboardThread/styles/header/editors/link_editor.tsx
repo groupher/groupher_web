@@ -6,7 +6,9 @@ import Input from '@/widgets/Input'
 import MoreSVG from '@/icons/menu/MoreL'
 import EditPenSVG from '@/icons/EditPen'
 
-export const Wrapper = styled.div``
+export const Wrapper = styled.div`
+  border: 1px solid green;
+`
 export const ReadonlyWrapper = styled.div<{ editing: boolean }>`
   ${css.flex('align-start', 'justify-between')};
   gap: 0 10px;

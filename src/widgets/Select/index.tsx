@@ -64,8 +64,8 @@ const Select: FC<TProps> = ({
     components: { IndicatorsContainer },
     styles: {
       ...styles,
-      menuPortal: (provided) => ({ ...provided, zIndex: 9999 }),
-      menu: (provided) => ({ ...provided, zIndex: 9999 }),
+      // menuPortal: (provided) => ({ ...provided, zIndex: 9999 }),
+      // menu: (provided) => ({ ...provided, zIndex: 9999 }),
     },
     theme: (theme) => ({
       ...theme,

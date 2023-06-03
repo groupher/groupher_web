@@ -6,30 +6,46 @@ import { COLORS } from '@/constant/colors'
 import { callTagEditEditor } from '@/utils/signal'
 import { Space, SpaceGrow } from '@/widgets/Common'
 import ColorSelector from '@/widgets/ColorSelector'
+import Tooltip from '@/widgets/Tooltip'
 
 import { SETTING_FIELD } from '../constant'
+
 import SavingBar from '../SavingBar'
+import ActionMenu from './ActionMenu'
 
 import {
   Wrapper,
   Dot,
   DotSelector,
   Title,
+  CatNote,
   InputWrapper,
   Inputer,
   Actions,
   EditIcon,
-  SettingIcon,
+  MoreIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
 } from '../styles/tags/tag_bar'
-import { editTag } from '../logic'
+import { editTag, moveTagUp, moveTagDown, moveTag2Top, moveTag2Bottom } from '../logic/tags'
 
 type TProps = {
   tag: TTag
+  activeTagCategory: null | string
   editingTag: TTag
   settingTag: TTag
+  isFirst: boolean
+  isLast: boolean
 }
 
-const TagBar: FC<TProps> = ({ tag, editingTag, settingTag }) => {
+const TagBar: FC<TProps> = ({
+  tag,
+  activeTagCategory,
+  editingTag,
+  settingTag,
+  isFirst,
+  isLast,
+}) => {
   const isEditMode = editingTag?.id === tag.id
 
   return (
@@ -63,19 +79,41 @@ const TagBar: FC<TProps> = ({ tag, editingTag, settingTag }) => {
             />
           </InputWrapper>
         ) : (
-          <Title>{tag.title}</Title>
+          <Title>
+            {tag.title}
+            {!activeTagCategory && <CatNote>{tag.group}</CatNote>}
+          </Title>
         )}
         <SpaceGrow />
         {!isEditMode && (
           <Actions>
+            {activeTagCategory && !isFirst && <ArrowUpIcon onClick={() => moveTagUp(tag)} />}
+            {activeTagCategory && !isLast && <ArrowDownIcon onClick={() => moveTagDown(tag)} />}
             <EditIcon onClick={() => editTag('editingTag', tag)} />
             <Space right={8} />
-            <SettingIcon
-              onClick={() => {
-                editTag('settingTag', tag)
-                callTagEditEditor()
-              }}
-            />
+            <Tooltip
+              content={
+                <ActionMenu
+                  isFirst={isFirst}
+                  isLast={isLast}
+                  activeTagCategory={activeTagCategory}
+                  move2Top={() => moveTag2Top(tag)}
+                  move2Bottom={() => moveTag2Bottom(tag)}
+                  onSetting={() => {
+                    editTag('settingTag', tag)
+                    callTagEditEditor()
+                  }}
+                />
+              }
+              placement="bottom-end"
+              trigger="mouseenter focus"
+              offset={[4, 0]}
+              delay={300}
+              hideOnClick
+              noPadding
+            >
+              <MoreIcon />
+            </Tooltip>
           </Actions>
         )}
       </SavingBar>

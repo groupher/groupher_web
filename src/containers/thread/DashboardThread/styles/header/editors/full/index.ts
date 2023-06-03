@@ -60,6 +60,7 @@ export const LinkGroup = styled.div`
 `
 export const ColumnWrapper = styled.div`
   ${css.flexColumn()};
+  border: 1px solid tomato;
 
   gap: 25px 0;
   width: 32%;

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { includes, values } from 'ramda'
 
-import type { TEditValue, TTag } from '@/spec'
+import type { TEditValue } from '@/spec'
 import { COLOR_NAME } from '@/constant/colors'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
@@ -16,6 +16,7 @@ import type { TSettingField, TNameAlias } from '../spec'
 
 import { SETTING_FIELD, SETTING_LAYOUT_FIELD } from '../constant'
 import { init as linksLogicInit } from './links'
+import { init as tagsLogicInit } from './tags'
 
 import S from '../schema'
 
@@ -43,10 +44,6 @@ export const enableThread = (key: string, toggle: boolean) => {
   store.onSave('enable')
 
   sr71$.mutate(S.updateDashboardEnable, { community: curCommunity.raw, [key]: toggle })
-}
-
-export const editTag = (key: 'settingTag' | 'editingTag', tag: TTag): void => {
-  store.mark({ [key]: tag })
 }
 
 export const updateEditingAlias = (alias: TNameAlias): void => {
@@ -263,6 +260,7 @@ export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
     linksLogicInit(store)
+    tagsLogicInit(store)
     log('useInit: ', store)
 
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))

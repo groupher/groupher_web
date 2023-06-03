@@ -19,7 +19,6 @@ import {
   ssrPagedArticlesFilter,
   ssrRescue,
   communitySEO,
-  singular,
   log,
 } from '@/utils'
 
@@ -92,6 +91,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
+  console.log('## resp: ', resp)
   const { community, pagedArticleTags } = resp
 
   const initProps = merge(

@@ -26,6 +26,7 @@ export const tag = `
   color
   thread
   group
+  index
   community {
     raw
   }

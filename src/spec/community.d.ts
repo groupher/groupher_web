@@ -1,7 +1,5 @@
 import type { TID } from './utils'
 
-import type { TThread } from './thread'
-
 type TMeta = {
   postsCount: number
   jobsCount: number

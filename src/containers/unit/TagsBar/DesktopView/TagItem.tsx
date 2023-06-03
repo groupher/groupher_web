@@ -7,13 +7,7 @@ import { Trans } from '@/utils/i18n'
 // import DotDivider from '@/widgets/DotDivider'
 // import TagCount from './TagCount'
 
-import {
-  Wrapper,
-  DotWrapper,
-  DotSign,
-  Tag,
-  Title,
-} from '../styles/desktop_view/tag_item'
+import { Wrapper, DotWrapper, DotSign, Tag, Title } from '../styles/desktop_view/tag_item'
 
 type TProps = {
   tag: TTag

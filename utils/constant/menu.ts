@@ -11,6 +11,7 @@ const MENU = {
   ARROW_TO_TOP: 'ARROW_TO_TOP',
   ARROW_DOWN: 'ARROW_DOWN',
   ARROW_TO_BOTTOM: 'ARROW_TO_BOTTOM',
+  SETTING: 'SETTING',
 } as Record<Uppercase<TMenu>, Uppercase<TMenu>>
 
 export default MENU
