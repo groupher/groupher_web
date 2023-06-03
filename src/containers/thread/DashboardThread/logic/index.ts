@@ -146,9 +146,10 @@ export const rollbackEdit = (field: TSettingField): void => store.rollbackEdit(f
 export const resetEdit = (field: TSettingField): void => store.resetEdit(field)
 export const edit = (e: TEditValue, field: string): void => updateEditing(store, field, e)
 
-// reload after create/delete tag
-const _reloadArticleTags = (): void => {
-  const filter = { community: 'home' }
+// reload after create/delete tag and swtich between tag threads
+export const reloadArticleTags = (): void => {
+  const { curCommunity, activeTagThread } = store
+  const filter = { community: curCommunity.raw, thread: activeTagThread.toUpperCase() }
   //
   sr71$.query(S.pagedArticleTags, { filter })
 }
@@ -220,7 +221,7 @@ const DataSolver = [
   {
     match: asyncRes(EVENT.REFRESH_TAGS),
     action: () => {
-      _reloadArticleTags()
+      reloadArticleTags()
       store.mark({ settingTag: null })
     },
   },

@@ -37,12 +37,13 @@ export const onDelete = (tag: TTag): void => {
 
 export const onUpdate = (): void => {
   store.mark({ processing: true })
-  const { editingTagData, curCommunity } = store
+  const { editingTagData, curCommunity, curThread } = store
 
   const tag = {
     ...editingTagData,
     raw: editingTagData.title,
     community: curCommunity.raw,
+    thread: curThread,
   }
 
   sr71$.mutate(S.updateArticleTag, tag)
@@ -50,15 +51,15 @@ export const onUpdate = (): void => {
 
 export const onCreate = (): void => {
   store.mark({ processing: true })
-  const { editingTagData, curCommunity } = store
+  const { editingTagData, curCommunity, curThread } = store
 
   const tag = {
     ...editingTagData,
     raw: editingTagData.title,
     community: curCommunity.raw,
+    thread: curThread,
   }
 
-  console.log('## onCreate: ', tag)
   sr71$.mutate(S.createArticleTag, tag)
 }
 

@@ -1,9 +1,9 @@
 /*
  * TagSettingEditor store
  */
-import { uniq, reject, find } from 'ramda'
+import { uniq, reject } from 'ramda'
 
-import type { TCommunity, TRootStore, TTag, TSelectOption } from '@/spec'
+import type { TCommunity, TRootStore, TTag, TSelectOption, TThread } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { nilOrEmpty } from '@/utils/validator'
 import { markStates, toJS, T, getParent, Instance } from '@/utils/mobx'
@@ -24,29 +24,10 @@ const TagSettingEditor = T.model('TagSettingEditor', {
 
       return toJS(root.viewing.community)
     },
-    get curThread(): TSelectOption {
-      const slf = self as TStore
-      const { threadOptions, editingTag } = slf
+    get curThread(): TThread {
+      const root = getParent(self) as TRootStore
 
-      if (!editingTag?.thread) {
-        return {
-          label: '',
-          value: '',
-        }
-      }
-
-      return find((t: TSelectOption) => t.value === editingTag.thread.toLowerCase(), threadOptions)
-    },
-    get threadOptions(): TSelectOption[] {
-      const slf = self as TStore
-
-      const { curCommunity } = slf
-      const { threads } = curCommunity
-
-      return threads.map(({ title, raw }) => ({
-        label: title,
-        value: raw,
-      }))
+      return root.dashboardThread.activeTagThread.toUpperCase() as TThread
     },
     get settingTag(): TTag {
       const root = getParent(self) as TRootStore

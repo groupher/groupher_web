@@ -5,7 +5,7 @@ import type { TCommunityThread } from '@/spec'
 import Button from '@/widgets/Buttons/Button'
 
 import { Wrapper, Hint, CatsWrapper } from '../styles/tags/thread_selector'
-import { edit } from '../logic'
+import { edit, reloadArticleTags } from '../logic'
 
 type TProps = {
   threads: TCommunityThread[]
@@ -23,7 +23,10 @@ const ThreadSelector: FC<TProps> = ({ threads, active }) => {
             ghost={thread.raw !== active}
             size="small"
             noBorder={thread.raw !== active}
-            onClick={() => edit(thread.raw, 'activeTagThread')}
+            onClick={() => {
+              edit(thread.raw, 'activeTagThread')
+              reloadArticleTags()
+            }}
             space={10}
           >
             {thread.title}

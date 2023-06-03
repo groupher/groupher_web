@@ -52,14 +52,7 @@ const TagSettingEditorContainer: FC<TProps> = ({
 }) => {
   useInit(store, mode)
 
-  const {
-    editingTagData: editingTag,
-    curCategory,
-    categoryOptions,
-    processing,
-    curThread,
-    threadOptions,
-  } = store
+  const { editingTagData: editingTag, curCategory, categoryOptions, processing } = store
 
   return (
     <Wrapper testid={testid}>
@@ -87,16 +80,6 @@ const TagSettingEditorContainer: FC<TProps> = ({
           <TitleInputer value={editingTag.title} onChange={(e) => edit(e.target.value, 'title')} />
         </BasicInfo>
 
-        <Title>板块分组</Title>
-        <Br bottom={5} />
-        <SelectorWrapper>
-          <Select
-            value={curThread}
-            options={threadOptions}
-            placeholder="请选择标签所在板块"
-            onChange={(option: TSelectOption) => edit(option.value.toUpperCase(), 'thread')}
-          />
-        </SelectorWrapper>
         <Br bottom={25} />
         <Title>标签分组</Title>
         <Br bottom={5} />

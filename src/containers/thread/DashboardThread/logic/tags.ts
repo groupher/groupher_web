@@ -32,12 +32,11 @@ const _moveTag = (tag: TTag, opt: 'up' | 'down'): void => {
   store.mark({ tags: [...restTags, ..._reindex(groupTags)] })
 }
 
-const _reindex = (tags: TTag[]): TTag[] => {
-  return tags.map((item, index) => ({
+const _reindex = (tags: TTag[]): TTag[] =>
+  tags.map((item, index) => ({
     ...item,
     index,
   }))
-}
 
 const _moveTag2Edge = (tag: TTag, opt: 'top' | 'bottom'): void => {
   const { group } = tag
