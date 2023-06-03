@@ -592,6 +592,11 @@ const DashboardThread = T.model('DashboardThread', {
         return
       }
 
+      if (field === SETTING_FIELD.TAG_INDEX) {
+        self.tags = toJS(self.initSettings.tags)
+        return
+      }
+
       if (field === SETTING_FIELD.NAME_ALIAS) {
         const targetIdx = slf._findAliasIdx()
         if (targetIdx < 0) return
@@ -602,7 +607,6 @@ const DashboardThread = T.model('DashboardThread', {
       }
 
       const initValue = toJS(slf.initSettings[field])
-
       // @ts-ignore
       self[field] = initValue
     },

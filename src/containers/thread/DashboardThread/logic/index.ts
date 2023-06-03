@@ -46,9 +46,7 @@ export const enableThread = (key: string, toggle: boolean) => {
   sr71$.mutate(S.updateDashboardEnable, { community: curCommunity.raw, [key]: toggle })
 }
 
-export const updateEditingAlias = (alias: TNameAlias): void => {
-  store.mark({ editingAlias: alias })
-}
+export const updateEditingAlias = (alias: TNameAlias): void => store.mark({ editingAlias: alias })
 
 export const addHelpCategory = (): void => {
   const helpCategories = store.helpSettings.categories.concat({
@@ -139,13 +137,15 @@ const _doMutation = (field: string, e: TEditValue): void => {
   }
 
   if (field === SETTING_FIELD.TAG_INDEX) {
-    const { activeTagThread, activeTagGroup } = store
+    const { activeTagThread, activeTagGroup: group, tags } = store
     const thread = activeTagThread.toUpperCase()
 
-    console.log('## call reIndex api thread: ', thread)
-    console.log('## call reIndex api group: ', activeTagGroup)
+    const tagIndex = toJS(tags).map((item) => ({
+      id: item.id,
+      index: item.index,
+    }))
 
-    // sr71$.mutate(S.reindexTagsInGroup, { community, thread })
+    sr71$.mutate(S.reindexTagsInGroup, { community, thread, group, tags: tagIndex })
   }
 }
 
@@ -174,15 +174,6 @@ export const onSave = (field: TSettingField): void => {
   console.log('## on save: ', field)
 
   _doMutation(field, store[field])
-
-  // const time = 1200
-
-  // setTimeout(() => {
-  //   store.mark({ saving: false })
-  //   const initSettings = { ...store.initSettings, [field]: toJS(store[field]) }
-
-  //   store.mark({ initSettings })
-  // }, time)
 }
 
 // ###############################
@@ -191,10 +182,15 @@ export const onSave = (field: TSettingField): void => {
 const _handleDone = () => {
   const field = store.savingField
 
-  console.log('## _handleDone field: ', field)
-
   store.mark({ saving: false, savingField: null })
-  const initSettings = { ...store.initSettings, [field]: toJS(store[field]) }
+  let initSettings
+
+  if (field === SETTING_FIELD.TAG_INDEX) {
+    initSettings = { ...store.initSettings, tags: toJS(store.tags) }
+  } else {
+    initSettings = { ...store.initSettings, [field]: toJS(store[field]) }
+  }
+
   store.mark({ initSettings })
 
   // manually update in here not in store is because if this action fails,
@@ -224,6 +220,10 @@ const DataSolver = [
   },
   {
     match: asyncRes('updateArticleTag'),
+    action: () => _handleDone(),
+  },
+  {
+    match: asyncRes('reindexTagsInGroup'),
     action: () => _handleDone(),
   },
   {

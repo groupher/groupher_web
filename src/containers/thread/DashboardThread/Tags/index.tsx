@@ -3,6 +3,7 @@ import { FC, memo } from 'react'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import { callTagCreateEditor } from '@/utils/signal'
+import { sortByIndex } from '@/utils/helper'
 
 import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'
@@ -33,7 +34,7 @@ const Tags: FC<TProps> = ({ settings, touched }) => {
         <ThreadSelector threads={threads} active={activeTagThread} />
         <ContentWrapper ref={animateRef}>
           <GroupSelector groups={groups} active={activeTagGroup} />
-          {tags.map((tag, index) => (
+          {sortByIndex(tags).map((tag, index) => (
             <TagBar
               key={tag.id}
               tag={tag}
