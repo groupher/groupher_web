@@ -47,6 +47,7 @@ const loader = async (context, opt = {}) => {
   const pagedArticleTags = gqClient.request(P.pagedArticleTags, {
     filter: {
       community,
+      thread: THREAD.POST.toUpperCase(),
     },
   })
 
@@ -91,7 +92,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  console.log('## resp: ', resp)
   const { community, pagedArticleTags } = resp
 
   const initProps = merge(
