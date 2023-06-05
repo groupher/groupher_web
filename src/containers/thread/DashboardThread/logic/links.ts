@@ -4,9 +4,31 @@ import type { TLinkItem, TGroupedLinks } from '@/spec'
 import { sortByIndex, groupByKey } from '@/utils/helper'
 import { toJS } from '@/utils/mobx'
 
+import { EMPTY_LINK_ITEM } from '../constant'
 import type { TStore } from '../store'
 
 let store: TStore | undefined
+
+/**
+ * add new link item to group
+ */
+export const add2Group = (group: string, index: number): void => {
+  const { footerLinks } = store.footerSettings
+
+  const grouplinks = filter((link) => link.group === group, footerLinks)
+
+  if (grouplinks.length <= 0) return
+  const { groupIndex } = grouplinks[0]
+
+  const newItem = {
+    ...EMPTY_LINK_ITEM,
+    index,
+    group,
+    groupIndex,
+  }
+
+  store.mark({ footerLinks: [...footerLinks, newItem] })
+}
 
 /**
  * move links actions

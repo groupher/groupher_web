@@ -27,10 +27,13 @@ import {
   ActionRow,
   PlusIcon,
   ColumnWrapper,
+  Adder,
   TopLeft,
   TopRight,
 } from '../../../styles/footer/editors/full'
+
 import {
+  add2Group,
   moveLinkUp,
   moveLinkDown,
   moveLink2Top,
@@ -100,7 +103,7 @@ const Full: FC<TProps> = ({ links }) => {
                 {/* @ts-ignore */}
                 {sortByIndex(curGroupLinks).map((item, index) => (
                   <LinkEditor
-                    key={`${item.title}${item.addr}`}
+                    key={`${item.group}${item.groupIndex}`}
                     linkItem={item as TLinkItem}
                     moveLinkUp={moveLinkUp}
                     moveLinkDown={moveLinkDown}
@@ -110,6 +113,18 @@ const Full: FC<TProps> = ({ links }) => {
                     isLast={index === curGroupLinks.length - 1}
                   />
                 ))}
+
+                <Adder>
+                  <Button
+                    size="small"
+                    ghost
+                    space={8}
+                    onClick={() => add2Group(groupKey, curGroupLinks.length)}
+                  >
+                    添加项
+                    <PlusIcon />
+                  </Button>
+                </Adder>
               </ColumnWrapper>
             )
           })}

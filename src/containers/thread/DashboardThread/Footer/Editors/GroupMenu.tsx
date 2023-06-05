@@ -15,6 +15,7 @@ type TProps = {
 
   moveEdgeLeft?: () => void
   moveEdgeRight?: () => void
+  onDelete?: () => void
 
   isEdgeLeft: boolean
   isEdgeRight: boolean
@@ -25,6 +26,7 @@ const GroupMenu: FC<TProps> = ({
   moveRight = log,
   moveEdgeLeft = log,
   moveEdgeRight = log,
+  onDelete = log,
 
   isEdgeLeft,
   isEdgeRight,
@@ -39,6 +41,7 @@ const GroupMenu: FC<TProps> = ({
       {!isEdgeRight && (
         <MenuItem icon={MENU.ARROW_TO_RIGHT} title="移至最后" onClick={() => moveEdgeRight()} />
       )}
+      <MenuItem icon={MENU.DELETE} title="删除" onClick={() => onDelete()} />
     </Wrapper>
   )
 }

@@ -219,8 +219,7 @@ export type TSocial = {
 export type TLinkItem = {
   index: number
   title: string
-  addr: string
-  raw?: string
+  link?: string
   group?: string
   groupIndex?: number
 }

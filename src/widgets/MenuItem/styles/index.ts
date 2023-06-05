@@ -9,6 +9,7 @@ import css, { theme } from '@/utils/css'
 import ArrowSVG from '@/icons/Arrow'
 import Arrow2TopSVG from '@/icons/Arrow2Top'
 import SettingSVG from '@/icons/Setting'
+import DeleteSVG from '@/icons/Trash'
 
 export const Wrapper = styled.div`
   ${css.flex('justify-between', 'align-center')};
@@ -26,6 +27,12 @@ export const Title = styled.div`
 
   ${Wrapper}:hover & {
     color: ${theme('article.title')};
+  }
+`
+
+export const DeleteTitle = styled(Title)`
+  ${Wrapper}:hover & {
+    color: ${theme('baseColor.red')};
   }
 `
 
@@ -88,7 +95,16 @@ export const SettingIcon = styled(SettingSVG)`
   margin-left: 1px;
 
   ${Wrapper}:hover & {
-    color: ${theme('article.title')};
+    fill: ${theme('article.title')};
+  }
+`
+
+export const DeleteIcon = styled(DeleteSVG)`
+  ${css.size(12)};
+  fill: ${theme('article.digest')};
+
+  ${Wrapper}:hover & {
+    fill: ${theme('baseColor.red')};
   }
 `
 
@@ -104,4 +120,5 @@ export const MenuIcon = {
   [MENU.ARROW_TO_TOP]: Arrow2TopIcon,
   [MENU.ARROW_TO_BOTTOM]: Arrow2BottomIcon,
   [MENU.SETTING]: SettingIcon,
+  [MENU.DELETE]: DeleteIcon,
 }

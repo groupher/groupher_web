@@ -58,3 +58,9 @@ export const ColumnWrapper = styled.div`
   width: 30%;
   height: 100%;
 `
+
+export const Adder = styled.div`
+  width: 120px;
+  margin-left: -5px;
+  transform: scale(0.95);
+`

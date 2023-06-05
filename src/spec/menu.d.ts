@@ -8,3 +8,4 @@ export type TMenu =
   | 'ARROW_TO_TOP'
   | 'ARROW_TO_BOTTOM'
   | 'SETTING'
+  | 'DELETE'

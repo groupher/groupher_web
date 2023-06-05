@@ -29,7 +29,7 @@ import {
 
 const DEFAULT_LINK = {
   title: '讨论',
-  addr: 'https://groupher.com',
+  link: 'https://groupher.com',
 }
 
 /* eslint-disable-next-line */
@@ -66,7 +66,8 @@ const LinkEditor: FC<TProps> = ({
       <ReadonlyWrapper editing={editing}>
         <ReadOnlyHeader>
           <Label>
-            {linkItem.title} <Space right={6} /> {notifyText && <NotifyLabel>New</NotifyLabel>}
+            {linkItem.title || '--'} <Space right={6} />{' '}
+            {notifyText && <NotifyLabel>New</NotifyLabel>}
           </Label>
           <SpaceGrow />
           <ActionWrapper editing={editing}>
@@ -80,6 +81,7 @@ const LinkEditor: FC<TProps> = ({
                   isLast={isLast}
                   move2Top={() => moveLink2Top(linkItem)}
                   move2Bottom={() => moveLink2Bottom(linkItem)}
+                  onDelete={() => log('delete')}
                 />
               }
               placement="bottom-end"
@@ -94,7 +96,7 @@ const LinkEditor: FC<TProps> = ({
           </ActionWrapper>
         </ReadOnlyHeader>
         <SpaceGrow />
-        <Linker src={linkItem.addr} left={-2} top={5} external />
+        {linkItem.link ? <Linker src={linkItem.link} left={-2} top={5} external /> : '--'}
       </ReadonlyWrapper>
       {editing && (
         <EditWrapper>

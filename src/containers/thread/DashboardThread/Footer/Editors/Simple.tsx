@@ -30,6 +30,7 @@ const Simple: FC = () => {
       </LeftWrapper>
       <CenterWrapper ref={parent}>
         <Title>链接</Title>
+        {/* @ts-ignore */}
         {sortByIndex(DEFAULT_LINK_ITEMS).map((item) => (
           <LinkEditor key={item.index} linkItem={item as TLinkItem} />
         ))}
