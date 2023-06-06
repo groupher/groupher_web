@@ -28,8 +28,9 @@ export const ReadonlyWrapper = styled.div<{ editing: boolean }>`
   border-image-slice: 1;
 `
 
-export const ReadOnlyHeader = styled.div`
+export const ReadOnlyHeader = styled.div<{ editing: boolean }>`
   ${css.flex('align-center')};
+  display: ${({ editing }) => (editing ? 'none' : 'flex')};
 `
 
 export const ActionWrapper = styled.div<{ editing: boolean }>`
@@ -100,6 +101,13 @@ export const EditWrapper = styled.div`
 
   border-image-slice: 1;
 `
+export const EditFooter = styled.div`
+  ${css.flex()};
+  width: 100%;
+  gap: 0 6px;
+  margin-bottom: 8px;
+  margin-bottom: 10px;
+`
 
 export const Label = styled.div`
   ${css.flex('align-center')};
@@ -118,15 +126,13 @@ export const NotifyLabel = styled.div`
 export const EditItem = styled.div`
   ${css.flex('align-center')};
   width: 100%;
-  gap: 0 10px;
-  margin-left: 1px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 `
-export const EditLabel = styled(Label)`
-  font-size: 12px;
-  white-space: nowrap;
-  margin-right: 6px;
-  opacity: 0.7;
+export const EditTitle = styled(Label)`
+  font-size: 13px;
+  color: ${theme('article.title')};
+  font-weight: 600;
+  margin-bottom: 8px;
 `
 
 export const Inputer = styled(Input)`

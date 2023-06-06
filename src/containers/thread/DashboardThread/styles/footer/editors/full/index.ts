@@ -45,7 +45,7 @@ export const ActionRow = styled.div`
 export const PlusIcon = styled(PlusSVG)`
   ${css.size(12)};
   fill: ${theme('article.digest')};
-  margin-left: 6px;
+  margin-right: 6px;
 `
 export const LinkGroup = styled.div`
   ${css.flex('justify-between')};

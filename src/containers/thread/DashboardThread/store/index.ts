@@ -67,7 +67,7 @@ import type {
 
 import { SETTING_FIELD } from '../constant'
 
-import { NameAlias, settingsModalFields, InitSettings } from './Models'
+import { NameAlias, LinkItem, InitSettings, settingsModalFields } from './Models'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:DashboardThread')
@@ -90,6 +90,7 @@ const DashboardThread = T.model('DashboardThread', {
   editingTag: T.maybeNull(Tag),
   settingTag: T.maybeNull(Tag),
   editingAlias: T.maybeNull(NameAlias),
+  editingLink: T.maybeNull(LinkItem),
 
   ...settingsModalFields,
   initSettings: T.opt(InitSettings, {}),
@@ -333,11 +334,12 @@ const DashboardThread = T.model('DashboardThread', {
 
     get footerSettings(): TFooterSettings {
       const slf = self as TStore
-      const { footerLayout, footerLinks } = slf
+      const { footerLayout, footerLinks, editingLink } = slf
 
       return {
         footerLayout: toJS(footerLayout),
         footerLinks: toJS(footerLinks),
+        editingLink: toJS(editingLink),
         saving: slf.saving,
       }
     },

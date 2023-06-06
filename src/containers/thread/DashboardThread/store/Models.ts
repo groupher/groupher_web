@@ -50,6 +50,14 @@ export const NameAlias = T.model('NameAlias', {
   group: T.opt(T.string, ''),
 })
 
+export const LinkItem = T.model('LinkItem', {
+  index: T.opt(T.int, 0),
+  title: T.opt(T.str, ''),
+  link: T.opt(T.str, ''),
+  group: T.opt(T.str, ''),
+  groupIndex: T.opt(T.int, 0),
+})
+
 const File = T.model('File', {
   index: T.int,
   name: T.str,
@@ -62,14 +70,6 @@ const GroupCategory = T.model('GroupGategory', {
   index: T.int,
   color: T.opt(T.enum(values(COLOR_NAME)), COLOR_NAME.BLACK),
   files: T.opt(T.array(File), []),
-})
-
-const LinkItem = T.model('LinkItem', {
-  index: T.opt(T.int, 0),
-  title: T.opt(T.str, ''),
-  link: T.opt(T.str, ''),
-  group: T.opt(T.str, ''),
-  groupIndex: T.opt(T.int, 0),
 })
 
 export const settingsModalFields = {

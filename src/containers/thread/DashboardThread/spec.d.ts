@@ -63,6 +63,7 @@ export type TRSSSettings = {
 export type TFooterSettings = {
   footerLayout: TFooterLayout
   footerLinks: TLinkItem[]
+  editingLink: TLinkItem
   saving: boolean
 }
 

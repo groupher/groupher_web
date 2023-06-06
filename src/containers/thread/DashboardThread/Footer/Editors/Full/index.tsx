@@ -46,9 +46,10 @@ import {
 
 type TProps = {
   links: TLinkItem[]
+  editingLink: TLinkItem | null
 }
 
-const Full: FC<TProps> = ({ links }) => {
+const Full: FC<TProps> = ({ links, editingLink }) => {
   const [editMode, setEditMode] = useState(false)
   const [editType, setEditType] = useState<TFooterEditType>(FOOTER_EDIT_TYPE.LOGO)
 
@@ -81,14 +82,15 @@ const Full: FC<TProps> = ({ links }) => {
       <BottomWrapper>
         <ActionRow>
           <Button size="small" ghost space={10}>
-            添加组
             <PlusIcon />
+            添加分组&nbsp;
           </Button>
         </ActionRow>
         <LinkGroup ref={groupAnimateRef}>
           {groupKeys.map((groupKey: string, index) => {
             const curGroupLinks = groupedLinks[groupKey]
 
+            // key={`${item.group}_${item.index}`}
             return (
               <ColumnWrapper key={groupKey} ref={animateRef}>
                 <GroupHead
@@ -100,11 +102,12 @@ const Full: FC<TProps> = ({ links }) => {
                   isEdgeLeft={index === 0}
                   isEdgeRight={index === groupKeys.length - 1}
                 />
-                {/* @ts-ignore */}
-                {sortByIndex(curGroupLinks).map((item, index) => (
+                {curGroupLinks.map((item, index) => (
                   <LinkEditor
-                    key={`${item.group}${item.groupIndex}`}
+                    // must use item.title as key, or the sort animation will fail, wired
+                    key={`${item.title}`}
                     linkItem={item as TLinkItem}
+                    editingLink={editingLink}
                     moveLinkUp={moveLinkUp}
                     moveLinkDown={moveLinkDown}
                     moveLink2Top={moveLink2Top}
@@ -121,8 +124,8 @@ const Full: FC<TProps> = ({ links }) => {
                     space={8}
                     onClick={() => add2Group(groupKey, curGroupLinks.length)}
                   >
-                    添加项
                     <PlusIcon />
+                    添加项&nbsp;
                   </Button>
                 </Adder>
               </ColumnWrapper>

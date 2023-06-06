@@ -1,4 +1,4 @@
-import { keys, findIndex, clone, remove, filter, reject } from 'ramda'
+import { keys, find, findIndex, clone, remove, filter, reject } from 'ramda'
 
 import type { TLinkItem, TGroupedLinks } from '@/spec'
 import { sortByIndex, groupByKey } from '@/utils/helper'
@@ -27,7 +27,64 @@ export const add2Group = (group: string, index: number): void => {
     groupIndex,
   }
 
-  store.mark({ footerLinks: [...footerLinks, newItem] })
+  store.mark({ footerLinks: [...footerLinks, newItem], editingLink: newItem })
+}
+
+export const deleteLink = (linkItem: TLinkItem): void => {
+  const { footerLinks } = store.footerSettings
+
+  const footerLinksAfter = reject(
+    (link: TLinkItem) => link.group === linkItem.group && link.index === linkItem.index,
+    footerLinks,
+  )
+
+  store.mark({ footerLinks: _reindex(footerLinksAfter) })
+}
+
+export const cancelLinkEditing = (): void => {
+  const { editingLink, footerLinks } = store.footerSettings
+
+  const footerLinksAfter = reject(
+    (link: TLinkItem) => link.group === editingLink.group && link.index === editingLink.index,
+    footerLinks,
+  )
+
+  store.mark({ footerLinks: footerLinksAfter, editingLink: null })
+}
+
+export const confirmLinkEditing = (): void => {
+  const { editingLink, footerLinks } = store.footerSettings
+
+  const curGroupLinks = filter((link: TLinkItem) => editingLink.group === link.group, footerLinks)
+
+  const newAddLink = find(
+    (link: TLinkItem) =>
+      editingLink.group === link.group && link.index === curGroupLinks.length - 1,
+    footerLinks,
+  )
+
+  const editingLinkAfter = {
+    ...editingLink,
+    index: newAddLink.index,
+    group: newAddLink.group,
+    groupIndex: newAddLink.groupIndex,
+  }
+
+  const footerLinksAfter = reject(
+    (link: TLinkItem) => link.group === newAddLink.group && link.index === newAddLink.index,
+    footerLinks,
+  ).concat(editingLinkAfter)
+
+  store.mark({ footerLinks: footerLinksAfter, editingLink: null })
+  // TODO: do real network mutation
+}
+
+export const updateEditingLink = (key: string, value: string): void => {
+  const { editingLink } = store
+
+  const editingLinkAfter = { ...editingLink, [key]: value }
+
+  store.mark({ editingLink: editingLinkAfter })
 }
 
 /**
