@@ -8,6 +8,10 @@ import type { TStore } from '../store'
 
 let store: TStore | undefined
 
+export const updateInGroup = (link: TLinkItem): void => {
+  store.mark({ editingLink: link, editingLinkMode: 'update' })
+}
+
 /**
  * add new link item to group
  */
@@ -26,7 +30,11 @@ export const add2Group = (group: string, index: number): void => {
     groupIndex,
   }
 
-  store.mark({ footerLinks: [...footerLinks, newItem], editingLink: newItem })
+  store.mark({
+    footerLinks: [...footerLinks, newItem],
+    editingLink: newItem,
+    editingLinkMode: 'create',
+  })
 }
 
 export const deleteLink = (linkItem: TLinkItem): void => {
@@ -48,7 +56,14 @@ export const deleteGroup = (groupIndex: number): void => {
 }
 
 export const cancelLinkEditing = (): void => {
-  const { editingLink, footerLinks } = store.footerSettings
+  const { editingLink, footerLinks, editingLinkMode } = store.footerSettings
+
+  console.log('## editingLinkMode: ', editingLinkMode)
+
+  if (editingLinkMode === 'update') {
+    store.mark({ editingLink: null })
+    return
+  }
 
   const footerLinksAfter = reject(
     (link: TLinkItem) => link.group === editingLink.group && link.index === editingLink.index,
@@ -59,7 +74,9 @@ export const cancelLinkEditing = (): void => {
 }
 
 export const confirmLinkEditing = (): void => {
-  const { editingLink, footerLinks } = store.footerSettings
+  const { editingLink, footerLinks, editingLinkMode } = store.footerSettings
+
+  console.log('## editingLinkMode: ', editingLinkMode)
 
   const curGroupLinks = filter((link: TLinkItem) => editingLink.group === link.group, footerLinks)
 

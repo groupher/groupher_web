@@ -16,7 +16,7 @@ import LinkEditor from '../LinkEditor'
 import GroupHead from './GroupHead'
 import MainEditor from './MainEditor'
 
-import type { TFooterEditType } from '../../../spec'
+import type { TFooterSettings, TFooterEditType } from '../../../spec'
 import { FOOTER_EDIT_TYPE } from '../../../constant'
 
 import {
@@ -46,11 +46,12 @@ import {
 } from '../../../logic/links'
 
 type TProps = {
-  links: TLinkItem[]
-  editingLink: TLinkItem | null
+  settings: TFooterSettings
 }
 
-const Full: FC<TProps> = ({ links, editingLink }) => {
+const Full: FC<TProps> = ({ settings }) => {
+  const { footerLinks: links, editingLink } = settings
+
   const [editMode, setEditMode] = useState(false)
   const [editType, setEditType] = useState<TFooterEditType>(FOOTER_EDIT_TYPE.LOGO)
 

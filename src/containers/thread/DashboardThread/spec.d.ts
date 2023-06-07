@@ -26,6 +26,7 @@ import type {
   TDashboardBroadcastRoute,
   TDashboardAliasRoute,
   TLinkItem,
+  TChangeMode,
   TNameAliasConfig,
 } from '@/spec'
 
@@ -65,6 +66,7 @@ export type TFooterSettings = {
   footerLinks: TLinkItem[]
   editingLink: TLinkItem
   saving: boolean
+  editingLinkMode: TChangeMode
 }
 
 export type TNameAlias = TNameAliasConfig

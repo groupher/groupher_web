@@ -34,6 +34,7 @@ import {
   deleteLink,
   updateEditingLink,
   confirmLinkEditing,
+  updateInGroup,
 } from '../../logic/links'
 
 /* eslint-disable-next-line */
@@ -65,6 +66,7 @@ const LinkEditor: FC<TProps> = ({
   moveLink2Top = log,
   moveLink2Bottom = log,
 }) => {
+  // const isEditExisting = linkItem
   const editing = linkItem.group === editingLink?.group && linkItem.index === editingLink?.index
 
   return (
@@ -79,7 +81,7 @@ const LinkEditor: FC<TProps> = ({
           <ActionWrapper editing={editing}>
             {!isFirst && <ArrowUpIcon onClick={() => moveLinkUp(linkItem)} />}
             {!isLast && <ArrowDownIcon onClick={() => moveLinkDown(linkItem)} />}
-            <EditPenIcon />
+            <EditPenIcon onClick={() => updateInGroup(linkItem)} />
             <Tooltip
               content={
                 <LinkMenu

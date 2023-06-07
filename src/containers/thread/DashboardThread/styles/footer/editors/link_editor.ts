@@ -58,7 +58,7 @@ const iconBase = `
   transition: all 0.2s;
 `
 
-export const EditPenIcon = styled(EditPenSVG)`
+export const EditPenIcon = styled(EditPenSVG)<{ onClick: () => void }>`
   ${css.size(12)};
   ${iconBase};
   margin-left: 1px;

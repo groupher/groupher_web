@@ -31,6 +31,7 @@ import type {
   TColorName,
   TEnableConfig,
   TNameAliasConfig,
+  TChangeMode,
 } from '@/spec'
 
 import {
@@ -91,6 +92,9 @@ const DashboardThread = T.model('DashboardThread', {
   settingTag: T.maybeNull(Tag),
   editingAlias: T.maybeNull(NameAlias),
   editingLink: T.maybeNull(LinkItem),
+  editingLinkMode: T.opt(T.enum(['create', 'update']), 'create'),
+  // editingGroup: T.maybeNull(T.str),
+  // editingGroupMode: T.opt(T.enum(['create', 'update']), 'create'),
 
   ...settingsModalFields,
   initSettings: T.opt(InitSettings, {}),
@@ -334,13 +338,14 @@ const DashboardThread = T.model('DashboardThread', {
 
     get footerSettings(): TFooterSettings {
       const slf = self as TStore
-      const { footerLayout, footerLinks, editingLink } = slf
+      const { footerLayout, footerLinks, editingLink, editingLinkMode } = slf
 
       return {
         footerLayout: toJS(footerLayout),
         footerLinks: toJS(footerLinks),
         editingLink: toJS(editingLink),
         saving: slf.saving,
+        editingLinkMode: editingLinkMode as TChangeMode,
       }
     },
 

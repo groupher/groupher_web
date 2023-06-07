@@ -227,3 +227,5 @@ export type TLinkItem = {
 export type TGroupedLinks = {
   [key: string]: TLinkItem[]
 }
+
+export type TChangeMode = 'create' | 'update'
