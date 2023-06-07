@@ -33,8 +33,12 @@ const GroupMenu: FC<TProps> = ({
 }) => {
   return (
     <Wrapper>
-      <MenuItem icon={MENU.ARROW_LEFT} title="左移" onClick={() => moveLeft()} />
-      <MenuItem icon={MENU.ARROW_RIGHT} title="右移" onClick={() => moveRight()} />
+      {!isEdgeLeft && <MenuItem icon={MENU.ARROW_LEFT} title="左移" onClick={() => moveLeft()} />}
+
+      {!isEdgeRight && (
+        <MenuItem icon={MENU.ARROW_RIGHT} title="右移" onClick={() => moveRight()} />
+      )}
+
       {!isEdgeLeft && (
         <MenuItem icon={MENU.ARROW_TO_LEFT} title="移至最前" onClick={() => moveEdgeLeft()} />
       )}

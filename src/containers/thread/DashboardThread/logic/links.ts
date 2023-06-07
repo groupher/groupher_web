@@ -41,6 +41,13 @@ export const deleteLink = (linkItem: TLinkItem): void => {
   store.mark({ footerLinks: _reindex(footerLinksAfter) })
 }
 
+export const deleteGroup = (groupIndex: number): void => {
+  const { footerLinks } = store.footerSettings
+
+  const footerLinksAfter = reject((link: TLinkItem) => link.groupIndex === groupIndex, footerLinks)
+  store.mark({ footerLinks: _reindexGroup(footerLinksAfter) })
+}
+
 export const cancelLinkEditing = (): void => {
   const { editingLink, footerLinks } = store.footerSettings
 
@@ -147,7 +154,24 @@ export const moveLink2Bottom = (link: TLinkItem): void => _moveLink2Edge(link, '
  * move group actions
  */
 
-const _reindexGroup = (groupKeys: string[], groupedLinks: TGroupedLinks): TGroupedLinks => {
+const _reindexGroup = (targetLinks: TLinkItem[]): TLinkItem[] => {
+  const _groupedLinks = groupByKey(targetLinks, 'group')
+  const groupKeys = keys(_groupedLinks) as string[]
+
+  for (let i = 0; i < groupKeys.length; i += 1) {
+    const gkey = groupKeys[i]
+
+    for (let j = 0; j < targetLinks.length; j += 1) {
+      if (targetLinks[j].group === gkey) {
+        targetLinks[j].groupIndex = i
+      }
+    }
+  }
+
+  return targetLinks
+}
+
+const _reindexByGroup = (groupKeys: string[], groupedLinks: TGroupedLinks): TGroupedLinks => {
   for (let index = 0; index < groupKeys.length; index += 1) {
     const gkey = groupKeys[index]
 
@@ -161,12 +185,13 @@ const _reindexGroup = (groupKeys: string[], groupedLinks: TGroupedLinks): TGroup
 }
 
 const _moveGroup = (group: string, opt: 'left' | 'right' | 'edge-left' | 'edge-right'): void => {
-  const { footerLinks } = store
+  const { footerLinks } = store.footerSettings
 
-  const _groupedLinks = groupByKey(sortByIndex(toJS(footerLinks), 'groupIndex'), 'group')
+  // @ts-ignore
+  const _groupedLinks = groupByKey(sortByIndex(footerLinks, 'groupIndex'), 'group')
   const groupKeys = keys(_groupedLinks) as string[]
 
-  const groupedLinks = _reindexGroup(groupKeys, _groupedLinks)
+  const groupedLinks = _reindexByGroup(groupKeys, _groupedLinks)
   const curIndex = groupedLinks[group][0].groupIndex
 
   let nextIndex
@@ -215,9 +240,7 @@ export const moveGroup2Right = (group: string): void => _moveGroup(group, 'right
 export const moveGroup2EdgeLeft = (group: string): void => _moveGroup(group, 'edge-left')
 export const moveGroup2EdgeRight = (group: string): void => _moveGroup(group, 'edge-right')
 
-export const moveLink2Group = () => {
-  return []
-}
+// export const moveLink2Group = (link: TLinkItem, group: string): void => {
 
 export const init = (_store: TStore): void => {
   store = _store

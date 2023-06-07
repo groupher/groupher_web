@@ -91,9 +91,8 @@ const LinkEditor: FC<TProps> = ({
                 />
               }
               placement="bottom-end"
-              trigger="mouseenter focus"
+              trigger="click"
               offset={[4, 0]}
-              delay={300}
               hideOnClick
               noPadding
             >

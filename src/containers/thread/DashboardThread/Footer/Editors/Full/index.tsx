@@ -35,6 +35,7 @@ import {
 import {
   add2Group,
   moveLinkUp,
+  deleteGroup,
   moveLinkDown,
   moveLink2Top,
   moveLink2Bottom,
@@ -59,6 +60,9 @@ const Full: FC<TProps> = ({ links, editingLink }) => {
   // @ts-ignore
   const groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
   const groupKeys = keys(groupedLinks)
+
+  console.log('## groupedLinks: ', groupedLinks)
+  console.log('## groupKeys: ', groupKeys)
 
   return (
     <Wrapper>
@@ -90,7 +94,6 @@ const Full: FC<TProps> = ({ links, editingLink }) => {
           {groupKeys.map((groupKey: string, index) => {
             const curGroupLinks = groupedLinks[groupKey]
 
-            // key={`${item.group}_${item.index}`}
             return (
               <ColumnWrapper key={groupKey} ref={animateRef}>
                 <GroupHead
@@ -101,6 +104,7 @@ const Full: FC<TProps> = ({ links, editingLink }) => {
                   moveEdgeRight={() => moveGroup2EdgeRight(groupKey)}
                   isEdgeLeft={index === 0}
                   isEdgeRight={index === groupKeys.length - 1}
+                  onDelete={() => deleteGroup(curGroupLinks[0].groupIndex)}
                 />
                 {curGroupLinks.map((item, index) => (
                   <LinkEditor

@@ -12,6 +12,7 @@ type TProps = {
   moveLeft: () => void
   moveEdgeLeft: () => void
   moveEdgeRight: () => void
+  onDelete: () => void
 
   isEdgeLeft: boolean
   isEdgeRight: boolean
@@ -23,6 +24,7 @@ const GroupHead: FC<TProps> = ({
   moveRight,
   moveEdgeLeft,
   moveEdgeRight,
+  onDelete,
   isEdgeLeft,
   isEdgeRight,
 }) => {
@@ -38,14 +40,14 @@ const GroupHead: FC<TProps> = ({
             moveEdgeRight={moveEdgeRight}
             isEdgeLeft={isEdgeLeft}
             isEdgeRight={isEdgeRight}
+            onDelete={onDelete}
           />
         }
         placement="bottom-end"
-        trigger="mouseenter focus"
+        trigger="click"
         offset={[4, 0]}
         hideOnClick
         noPadding
-        delay={300}
       >
         <SettingIcon />
       </Tooltip>

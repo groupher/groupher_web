@@ -48,8 +48,9 @@ export const PlusIcon = styled(PlusSVG)`
   margin-right: 6px;
 `
 export const LinkGroup = styled.div`
-  ${css.flex('justify-between')};
+  ${css.flex('justify-start')};
   width: calc(100% + 50px);
+  gap: 30px;
 `
 export const ColumnWrapper = styled.div`
   ${css.flexColumn()};
