@@ -61,9 +61,6 @@ const Full: FC<TProps> = ({ links, editingLink }) => {
   const groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
   const groupKeys = keys(groupedLinks)
 
-  console.log('## groupedLinks: ', groupedLinks)
-  console.log('## groupKeys: ', groupKeys)
-
   return (
     <Wrapper>
       <TopWrapper>

@@ -2,7 +2,6 @@ import { keys, find, findIndex, clone, remove, filter, reject } from 'ramda'
 
 import type { TLinkItem, TGroupedLinks } from '@/spec'
 import { sortByIndex, groupByKey } from '@/utils/helper'
-import { toJS } from '@/utils/mobx'
 
 import { EMPTY_LINK_ITEM } from '../constant'
 import type { TStore } from '../store'
