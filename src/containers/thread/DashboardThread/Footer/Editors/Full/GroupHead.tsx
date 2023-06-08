@@ -1,10 +1,16 @@
 import { FC, memo } from 'react'
 
 import Tooltip from '@/widgets/Tooltip'
+import { SpaceGrow } from '@/widgets/Common'
 
 import GroupMenu from '../GroupMenu'
 
-import { Wrapper, Title, SettingIcon } from '../../../styles/footer/editors/full/group_head'
+import {
+  Wrapper,
+  Title,
+  EditIcon,
+  SettingIcon,
+} from '../../../styles/footer/editors/full/group_head'
 
 type TProps = {
   title: string
@@ -31,6 +37,8 @@ const GroupHead: FC<TProps> = ({
   return (
     <Wrapper>
       <Title>{title}</Title>
+      <SpaceGrow />
+      <EditIcon />
       <Tooltip
         content={
           <GroupMenu

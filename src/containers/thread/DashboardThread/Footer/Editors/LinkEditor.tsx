@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import type { TLinkItem } from '@/spec'
+import type { TChangeMode, TLinkItem } from '@/spec'
 
 import { buildLog } from '@/utils/logger'
 
@@ -36,6 +36,7 @@ import {
   confirmLinkEditing,
   updateInGroup,
 } from '../../logic/links'
+import { CHANGE_MODE } from '@/constant/mode'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:Dashboard:LinkEditor')
@@ -46,6 +47,7 @@ type TProps = {
   editingLink?: TLinkItem
   isFirst?: boolean
   isLast?: boolean
+  mode?: TChangeMode
 
   moveLinkUp?: (linkItem: TLinkItem) => void
   moveLinkDown?: (linkItem: TLinkItem) => void
@@ -60,9 +62,10 @@ const LinkEditor: FC<TProps> = ({
   editingLink = null,
   isFirst = false,
   isLast = false,
+  mode = CHANGE_MODE.CREATE,
+
   moveLinkUp = log,
   moveLinkDown = log,
-
   moveLink2Top = log,
   moveLink2Bottom = log,
 }) => {
@@ -108,7 +111,7 @@ const LinkEditor: FC<TProps> = ({
 
       {editing && (
         <EditWrapper>
-          <EditTitle>添加标签</EditTitle>
+          <EditTitle>{mode === CHANGE_MODE.CREATE ? '添加' : '更新'}标签</EditTitle>
           <EditItem>
             <Inputer
               value={editingLink?.title || ''}
@@ -131,7 +134,7 @@ const LinkEditor: FC<TProps> = ({
               取消
             </Button>
             <Button size="small" onClick={() => confirmLinkEditing()}>
-              确定
+              {mode === CHANGE_MODE.CREATE ? '确定' : '更新'}
             </Button>
             <SpaceGrow />
           </EditFooter>

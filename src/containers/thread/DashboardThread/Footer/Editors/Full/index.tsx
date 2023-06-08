@@ -27,6 +27,7 @@ import {
   ActionRow,
   PlusIcon,
   ColumnWrapper,
+  ItemsWrapper,
   Adder,
   TopLeft,
   TopRight,
@@ -50,7 +51,7 @@ type TProps = {
 }
 
 const Full: FC<TProps> = ({ settings }) => {
-  const { footerLinks: links, editingLink } = settings
+  const { footerLinks: links, editingLink, editingLinkMode } = settings
 
   const [editMode, setEditMode] = useState(false)
   const [editType, setEditType] = useState<TFooterEditType>(FOOTER_EDIT_TYPE.LOGO)
@@ -93,43 +94,48 @@ const Full: FC<TProps> = ({ settings }) => {
             const curGroupLinks = groupedLinks[groupKey]
 
             return (
-              <ColumnWrapper key={groupKey} ref={animateRef}>
-                <GroupHead
-                  title={groupKey as string}
-                  moveLeft={() => moveGroup2Left(groupKey)}
-                  moveRight={() => moveGroup2Right(groupKey)}
-                  moveEdgeLeft={() => moveGroup2EdgeLeft(groupKey)}
-                  moveEdgeRight={() => moveGroup2EdgeRight(groupKey)}
-                  isEdgeLeft={index === 0}
-                  isEdgeRight={index === groupKeys.length - 1}
-                  onDelete={() => deleteGroup(curGroupLinks[0].groupIndex)}
-                />
-                {curGroupLinks.map((item, index) => (
-                  <LinkEditor
-                    // must use item.title as key, or the sort animation will fail, wired
-                    key={`${item.title}`}
-                    linkItem={item as TLinkItem}
-                    editingLink={editingLink}
-                    moveLinkUp={moveLinkUp}
-                    moveLinkDown={moveLinkDown}
-                    moveLink2Top={moveLink2Top}
-                    moveLink2Bottom={moveLink2Bottom}
-                    isFirst={index === 0}
-                    isLast={index === curGroupLinks.length - 1}
+              <ColumnWrapper key={groupKey}>
+                <ItemsWrapper ref={animateRef}>
+                  <GroupHead
+                    title={groupKey as string}
+                    moveLeft={() => moveGroup2Left(groupKey)}
+                    moveRight={() => moveGroup2Right(groupKey)}
+                    moveEdgeLeft={() => moveGroup2EdgeLeft(groupKey)}
+                    moveEdgeRight={() => moveGroup2EdgeRight(groupKey)}
+                    isEdgeLeft={index === 0}
+                    isEdgeRight={index === groupKeys.length - 1}
+                    onDelete={() => deleteGroup(curGroupLinks[0].groupIndex)}
                   />
-                ))}
+                  {curGroupLinks.map((item, index) => (
+                    <LinkEditor
+                      // must use item.title as key, or the sort animation will fail, wired
+                      key={`${item.title}`}
+                      mode={editingLinkMode}
+                      linkItem={item as TLinkItem}
+                      editingLink={editingLink}
+                      moveLinkUp={moveLinkUp}
+                      moveLinkDown={moveLinkDown}
+                      moveLink2Top={moveLink2Top}
+                      moveLink2Bottom={moveLink2Bottom}
+                      isFirst={index === 0}
+                      isLast={index === curGroupLinks.length - 1}
+                    />
+                  ))}
+                </ItemsWrapper>
 
-                <Adder>
-                  <Button
-                    size="small"
-                    ghost
-                    space={8}
-                    onClick={() => add2Group(groupKey, curGroupLinks.length)}
-                  >
-                    <PlusIcon />
-                    添加项&nbsp;
-                  </Button>
-                </Adder>
+                {!editingLink && (
+                  <Adder>
+                    <Button
+                      size="small"
+                      ghost
+                      space={8}
+                      onClick={() => add2Group(groupKey, curGroupLinks.length)}
+                    >
+                      <PlusIcon />
+                      添加项&nbsp;
+                    </Button>
+                  </Adder>
+                )}
               </ColumnWrapper>
             )
           })}

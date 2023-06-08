@@ -2,9 +2,12 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
 import MoreSVG from '@/icons/menu/MoreL'
+import EditSVG from '@/icons/EditPen'
+
+import { ColumnWrapper } from '.'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.flex('align-center')};
   width: 100%;
 `
 
@@ -25,12 +28,24 @@ const iconBase = `
   transition: all 0.2s;
 `
 
+export const EditIcon = styled(EditSVG)`
+  ${css.size(14)};
+  ${iconBase};
+  opacity: 0;
+  margin-right: 3px;
+
+  ${ColumnWrapper}:hover & {
+    opacity: 0.8;
+  }
+`
+
 export const SettingIcon = styled(MoreSVG)`
   ${css.size(14)};
   ${iconBase};
   opacity: 0;
+  margin-right: 5px;
 
-  ${Wrapper}:hover & {
+  ${ColumnWrapper}:hover & {
     opacity: 1;
   }
 `

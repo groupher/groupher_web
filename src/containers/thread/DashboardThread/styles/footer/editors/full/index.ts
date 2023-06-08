@@ -53,15 +53,24 @@ export const LinkGroup = styled.div`
   gap: 30px;
 `
 export const ColumnWrapper = styled.div`
-  ${css.flexColumn()};
-
-  gap: 25px 0;
   width: 30%;
   height: 100%;
+`
+export const ItemsWrapper = styled.div`
+  ${css.flexColumn()};
+  gap: 25px 0;
+  margin-bottom: 32px;
 `
 
 export const Adder = styled.div`
   width: 120px;
   margin-left: -5px;
   transform: scale(0.95);
+  opacity: 0.8;
+
+  ${ColumnWrapper}:hover & {
+    opacity: 1;
+  }
+
+  transition: all 0.25s;
 `
