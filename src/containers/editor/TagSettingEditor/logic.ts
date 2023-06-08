@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import type { TEditValue, TTag } from '@/spec'
+import type { TChangeMode, TEditValue, TTag } from '@/spec'
 
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
@@ -8,6 +8,7 @@ import ERR from '@/constant/err'
 import { buildLog } from '@/utils/logger'
 import asyncSuit from '@/utils/async'
 import { send, errRescue, closeDrawer } from '@/utils/signal'
+import { CHANGE_MODE } from '@/constant/mode'
 
 import { DEFAULT_CREATE_TAG } from './constant'
 import S from './schema'
@@ -67,7 +68,7 @@ export const onCreate = (): void => {
  * init editing tag for create/edit action
  */
 const _initEditingTag = (mode) => {
-  if (mode === 'create') {
+  if (mode === CHANGE_MODE.CREATE) {
     store.mark({ editingTag: DEFAULT_CREATE_TAG, mode })
   } else {
     store.mark({ editingTag: store.settingTag, mode })
@@ -123,7 +124,7 @@ const ErrSolver = [
   },
 ]
 
-export const useInit = (_store: TStore, mode: 'create' | 'edit'): void => {
+export const useInit = (_store: TStore, mode: TChangeMode): void => {
   useEffect(() => {
     store = _store
     log('useInit: ', store)

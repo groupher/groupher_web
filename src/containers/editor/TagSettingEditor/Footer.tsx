@@ -1,20 +1,21 @@
 import { FC } from 'react'
 
-import type { TTag } from '@/spec'
-import { Wrapper, UpdateWrapper, ActionButton } from './styles/footer'
+import type { TChangeMode, TTag } from '@/spec'
+import { CHANGE_MODE } from '@/constant/mode'
 
+import { Wrapper, UpdateWrapper, ActionButton } from './styles/footer'
 import { onCreate, onUpdate, onDelete } from './logic'
 
 type TProps = {
   tag: TTag
-  mode: 'create' | 'edit'
+  mode: TChangeMode
   processing: boolean
 }
 
 const Footer: FC<TProps> = ({ tag, mode, processing }) => {
   return (
     <Wrapper>
-      {mode === 'create' ? (
+      {mode === CHANGE_MODE.CREATE ? (
         <ActionButton top={15} onClick={() => onCreate()} loading={processing}>
           创建新标签
         </ActionButton>

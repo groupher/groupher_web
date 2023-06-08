@@ -5,12 +5,13 @@
 
 import { FC } from 'react'
 
-import type { TSelectOption } from '@/spec'
+import type { TChangeMode, TSelectOption } from '@/spec'
 // import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
 import { ROUTE } from '@/constant/route'
 import { DRAWER_SCROLLER } from '@/constant/dom'
 import { COLORS } from '@/constant/colors'
+import { CHANGE_MODE } from '@/constant/mode'
 
 import ColorSelector from '@/widgets/ColorSelector'
 
@@ -42,13 +43,13 @@ import { useInit, edit } from './logic'
 type TProps = {
   tagSettingEditor?: TStore
   testid: string
-  mode?: 'create' | 'edit'
+  mode?: TChangeMode
 }
 
 const TagSettingEditorContainer: FC<TProps> = ({
   tagSettingEditor: store,
   testid,
-  mode = 'edit',
+  mode = CHANGE_MODE.UPDATE,
 }) => {
   useInit(store, mode)
 

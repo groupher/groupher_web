@@ -1,12 +1,13 @@
 /*
  * TagSettingEditor store
  */
-import { uniq, reject } from 'ramda'
+import { uniq, reject, values } from 'ramda'
 
 import type { TCommunity, TRootStore, TTag, TSelectOption, TThread } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { nilOrEmpty } from '@/utils/validator'
 import { markStates, toJS, T, getParent, Instance } from '@/utils/mobx'
+import { CHANGE_MODE } from '@/constant/mode'
 
 import { Tag } from '@/model'
 
@@ -14,7 +15,7 @@ import { Tag } from '@/model'
 const log = buildLog('S:TagSettingEditor')
 
 const TagSettingEditor = T.model('TagSettingEditor', {
-  mode: T.opt(T.enum('mode', ['create', 'edit']), 'edit'),
+  mode: T.opt(T.enum('mode', values(CHANGE_MODE)), CHANGE_MODE.UPDATE),
   editingTag: T.maybeNull(Tag),
   processing: T.opt(T.bool, false),
 })

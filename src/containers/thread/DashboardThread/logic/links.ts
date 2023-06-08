@@ -1,6 +1,7 @@
 import { keys, find, findIndex, clone, remove, filter, reject } from 'ramda'
 
 import type { TLinkItem, TGroupedLinks } from '@/spec'
+import { CHANGE_MODE } from '@/constant/mode'
 import { sortByIndex, groupByKey } from '@/utils/helper'
 
 import { EMPTY_LINK_ITEM } from '../constant'
@@ -9,7 +10,7 @@ import type { TStore } from '../store'
 let store: TStore | undefined
 
 export const updateInGroup = (link: TLinkItem): void => {
-  store.mark({ editingLink: link, editingLinkMode: 'update' })
+  store.mark({ editingLink: link, editingLinkMode: CHANGE_MODE.UPDATE })
 }
 
 /**
@@ -33,7 +34,7 @@ export const add2Group = (group: string, index: number): void => {
   store.mark({
     footerLinks: [...footerLinks, newItem],
     editingLink: newItem,
-    editingLinkMode: 'create',
+    editingLinkMode: CHANGE_MODE.CREATE,
   })
 }
 
@@ -58,9 +59,7 @@ export const deleteGroup = (groupIndex: number): void => {
 export const cancelLinkEditing = (): void => {
   const { editingLink, footerLinks, editingLinkMode } = store.footerSettings
 
-  console.log('## editingLinkMode: ', editingLinkMode)
-
-  if (editingLinkMode === 'update') {
+  if (editingLinkMode === CHANGE_MODE.UPDATE) {
     store.mark({ editingLink: null })
     return
   }
@@ -76,7 +75,18 @@ export const cancelLinkEditing = (): void => {
 export const confirmLinkEditing = (): void => {
   const { editingLink, footerLinks, editingLinkMode } = store.footerSettings
 
-  console.log('## editingLinkMode: ', editingLinkMode)
+  if (editingLinkMode === CHANGE_MODE.UPDATE) {
+    const editingIndex = findIndex(
+      (item: TLinkItem) => item.index === editingLink.index && item.group === editingLink.group,
+      footerLinks,
+    )
+
+    footerLinks[editingIndex].title = editingLink.title
+    footerLinks[editingIndex].link = editingLink.link
+
+    store.mark({ footerLinks, editingLink: null })
+    return
+  }
 
   const curGroupLinks = filter((link: TLinkItem) => editingLink.group === link.group, footerLinks)
 

@@ -42,6 +42,7 @@ import {
   DASHBOARD_BROADCAST_ROUTE,
   DASHBOARD_SEO_ROUTE,
 } from '@/constant/route'
+import { CHANGE_MODE } from '@/constant/mode'
 import { THREAD } from '@/constant/thread'
 
 import BStore from '@/utils/bstore'
@@ -92,9 +93,9 @@ const DashboardThread = T.model('DashboardThread', {
   settingTag: T.maybeNull(Tag),
   editingAlias: T.maybeNull(NameAlias),
   editingLink: T.maybeNull(LinkItem),
-  editingLinkMode: T.opt(T.enum(['create', 'update']), 'create'),
+  editingLinkMode: T.opt(T.enum(values(CHANGE_MODE)), CHANGE_MODE.CREATE),
   // editingGroup: T.maybeNull(T.str),
-  // editingGroupMode: T.opt(T.enum(['create', 'update']), 'create'),
+  // editingGroupMode: T.opt(T.enum(values(CHANGE_MODE)), CHANGE_MODE.CREATE),
 
   ...settingsModalFields,
   initSettings: T.opt(InitSettings, {}),
