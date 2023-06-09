@@ -12,6 +12,7 @@ import { sortByIndex, groupByKey } from '@/utils/helper'
 
 import BrandInfo from '../BrandInfo'
 import LinkEditor from '../LinkEditor'
+import GroupInputer from '../GroupInputer'
 
 import GroupHead from './GroupHead'
 import MainEditor from './MainEditor'
@@ -25,8 +26,6 @@ import {
   LinkGroup,
   BottomWrapper,
   ActionRow,
-  AdderGroupWrapper,
-  AddGroupInput,
   PlusIcon,
   ColumnWrapper,
   ItemsWrapper,
@@ -48,7 +47,8 @@ import {
   moveGroup2EdgeRight,
   updateEditingGroup,
   triggerGroupAdd,
-  cancelGroupAdd,
+  cancelGroupChange,
+  confirmGroupAdd,
 } from '../../../logic/links'
 
 type TProps = {
@@ -56,7 +56,13 @@ type TProps = {
 }
 
 const Full: FC<TProps> = ({ settings }) => {
-  const { footerLinks: links, editingLink, editingLinkMode, editingGroup } = settings
+  const {
+    footerLinks: links,
+    editingLink,
+    editingLinkMode,
+    editingGroup,
+    editingGroupIndex,
+  } = settings
 
   const [editMode, setEditMode] = useState(false)
   const [editType, setEditType] = useState<TFooterEditType>(FOOTER_EDIT_TYPE.LOGO)
@@ -89,24 +95,19 @@ const Full: FC<TProps> = ({ settings }) => {
       </TopWrapper>
       <BottomWrapper>
         <ActionRow>
-          {editingGroup === null ? (
+          {editingGroup !== null && editingGroupIndex === null ? (
+            <GroupInputer
+              width="30%"
+              value={editingGroup}
+              onChange={updateEditingGroup}
+              onConfirm={confirmGroupAdd}
+              onCancel={cancelGroupChange}
+            />
+          ) : (
             <Button size="small" ghost space={10} onClick={() => triggerGroupAdd()}>
               <PlusIcon />
               添加分组&nbsp;
             </Button>
-          ) : (
-            <AdderGroupWrapper>
-              <AddGroupInput
-                value={editingGroup}
-                onChange={(e) => updateEditingGroup(e.target.value)}
-                onBlur={() => cancelGroupAdd()}
-                placeholder="// 新分组名称"
-                autoFocus
-              />
-              <Button size="small" space={10} left={15}>
-                确定
-              </Button>
-            </AdderGroupWrapper>
           )}
         </ActionRow>
         <LinkGroup ref={groupAnimateRef}>
@@ -118,6 +119,9 @@ const Full: FC<TProps> = ({ settings }) => {
                 <ItemsWrapper ref={animateRef}>
                   <GroupHead
                     title={groupKey as string}
+                    editingGroup={editingGroup}
+                    editingGroupIndex={editingGroupIndex}
+                    curGroupIndex={index}
                     moveLeft={() => moveGroup2Left(groupKey)}
                     moveRight={() => moveGroup2Right(groupKey)}
                     moveEdgeLeft={() => moveGroup2EdgeLeft(groupKey)}

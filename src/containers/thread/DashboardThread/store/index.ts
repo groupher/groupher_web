@@ -96,6 +96,7 @@ const DashboardThread = T.model('DashboardThread', {
   editingLinkMode: T.opt(T.enum(values(CHANGE_MODE)), CHANGE_MODE.CREATE),
 
   editingGroup: T.maybeNull(T.str),
+  editingGroupIndex: T.maybeNull(T.int),
   // editingGroupMode: T.opt(T.enum(values(CHANGE_MODE)), CHANGE_MODE.CREATE),
 
   ...settingsModalFields,
@@ -340,7 +341,14 @@ const DashboardThread = T.model('DashboardThread', {
 
     get footerSettings(): TFooterSettings {
       const slf = self as TStore
-      const { footerLayout, footerLinks, editingLink, editingLinkMode, editingGroup } = slf
+      const {
+        footerLayout,
+        footerLinks,
+        editingLink,
+        editingLinkMode,
+        editingGroup,
+        editingGroupIndex,
+      } = slf
 
       return {
         footerLayout: toJS(footerLayout),
@@ -349,6 +357,7 @@ const DashboardThread = T.model('DashboardThread', {
         saving: slf.saving,
         editingLinkMode: editingLinkMode as TChangeMode,
         editingGroup,
+        editingGroupIndex,
       }
     },
 

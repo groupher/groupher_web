@@ -4,6 +4,7 @@ import Tooltip from '@/widgets/Tooltip'
 import { SpaceGrow } from '@/widgets/Common'
 
 import GroupMenu from '../GroupMenu'
+import GroupInputer from '../GroupInputer'
 
 import {
   Wrapper,
@@ -11,21 +12,33 @@ import {
   EditIcon,
   SettingIcon,
 } from '../../../styles/footer/editors/full/group_head'
+import {
+  triggerGroupUpdate,
+  cancelGroupChange,
+  updateEditingGroup,
+  confirmGroupUpdate,
+} from '../../../logic/links'
 
 type TProps = {
   title: string
+  editingGroup: string | null
+  editingGroupIndex: number | null
+  curGroupIndex: number
+  isEdgeLeft: boolean
+  isEdgeRight: boolean
+
   moveRight: () => void
   moveLeft: () => void
   moveEdgeLeft: () => void
   moveEdgeRight: () => void
   onDelete: () => void
-
-  isEdgeLeft: boolean
-  isEdgeRight: boolean
 }
 
 const GroupHead: FC<TProps> = ({
   title,
+  editingGroup,
+  curGroupIndex,
+  editingGroupIndex,
   moveLeft,
   moveRight,
   moveEdgeLeft,
@@ -34,11 +47,23 @@ const GroupHead: FC<TProps> = ({
   isEdgeLeft,
   isEdgeRight,
 }) => {
+  if (editingGroup && editingGroupIndex === curGroupIndex) {
+    return (
+      <Wrapper>
+        <GroupInputer
+          value={editingGroup}
+          onChange={updateEditingGroup}
+          onConfirm={confirmGroupUpdate}
+          onCancel={cancelGroupChange}
+        />
+      </Wrapper>
+    )
+  }
   return (
     <Wrapper>
       <Title>{title}</Title>
       <SpaceGrow />
-      <EditIcon />
+      <EditIcon onClick={() => triggerGroupUpdate(title, curGroupIndex)} />
       <Tooltip
         content={
           <GroupMenu

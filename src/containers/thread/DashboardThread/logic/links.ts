@@ -120,8 +120,48 @@ export const updateEditingLink = (key: string, value: string): void => {
   store.mark({ editingLink: editingLinkAfter })
 }
 
-export const triggerGroupAdd = (): void => store.mark({ editingGroup: '' })
-export const cancelGroupAdd = (): void => store.mark({ editingGroup: null })
+export const triggerGroupUpdate = (title: string, index: number): void => {
+  store.mark({ editingGroup: title, editingGroupIndex: index })
+}
+
+export const triggerGroupAdd = (): void => store.mark({ editingGroup: '', editingGroupIndex: null })
+
+export const cancelGroupChange = (): void => {
+  store.mark({ editingGroup: null, editingGroupIndex: null })
+}
+
+export const confirmGroupAdd = (): void => {
+  const { footerLinks, editingGroup } = store
+
+  const _groupedLinks = groupByKey(footerLinks, 'group')
+  const groupKeys = keys(_groupedLinks) as string[]
+
+  const newLinkItem = {
+    ...EMPTY_LINK_ITEM,
+    group: editingGroup,
+    groupIndex: groupKeys.length,
+  }
+
+  const footerLinksAfter = [...footerLinks, newLinkItem]
+
+  store.mark({ editingGroup: null, editingLink: newLinkItem, footerLinks: footerLinksAfter })
+}
+
+export const confirmGroupUpdate = (): void => {
+  const { footerLinks, editingGroup, editingGroupIndex } = store
+
+  const footerLinksAfter = clone(footerLinks)
+
+  for (let i = 0; i < footerLinks.length; i += 1) {
+    const linkItem = footerLinks[i]
+
+    if (linkItem.groupIndex === editingGroupIndex) {
+      footerLinksAfter[i].group = editingGroup
+    }
+  }
+
+  store.mark({ editingGroup: null, editingGroupIndex: null, footerLinks: footerLinksAfter })
+}
 
 export const updateEditingGroup = (title: string): void => {
   store.mark({ editingGroup: title })

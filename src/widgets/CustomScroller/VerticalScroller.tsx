@@ -100,8 +100,6 @@ const VerticalScroller: FC<TProps> = ({
           const currentY = position.y
           setLastYPosition(currentY)
 
-          console.log('## 222')
-
           currentY > lastYPosition
             ? onScrollDirectionChange?.('up')
             : onScrollDirectionChange?.('down')
@@ -110,7 +108,6 @@ const VerticalScroller: FC<TProps> = ({
       onScrollStop: () => {
         const position = scrollInstance?.scroll().position
         if (position) {
-          console.log('## 333')
           const currentY = position.y
           currentY > lastYPosition
             ? onScrollDirectionChange?.('up')

@@ -28,7 +28,7 @@ const iconBase = `
   transition: all 0.2s;
 `
 
-export const EditIcon = styled(EditSVG)`
+export const EditIcon = styled(EditSVG)<{ onClick: () => void }>`
   ${css.size(14)};
   ${iconBase};
   opacity: 0;

@@ -117,6 +117,7 @@ const LinkEditor: FC<TProps> = ({
               value={editingLink?.title || ''}
               placeholder="标签"
               onChange={(e) => updateEditingLink('title', e.target.value)}
+              autoFocus
             />
           </EditItem>
 
