@@ -120,6 +120,13 @@ export const updateEditingLink = (key: string, value: string): void => {
   store.mark({ editingLink: editingLinkAfter })
 }
 
+export const triggerGroupAdd = (): void => store.mark({ editingGroup: '' })
+export const cancelGroupAdd = (): void => store.mark({ editingGroup: null })
+
+export const updateEditingGroup = (title: string): void => {
+  store.mark({ editingGroup: title })
+}
+
 /**
  * move links actions
  */

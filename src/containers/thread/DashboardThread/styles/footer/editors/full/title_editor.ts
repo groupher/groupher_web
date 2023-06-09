@@ -2,7 +2,6 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
 import ArrowSVG from '@/icons/Arrow'
-import InfoSVG from '@/icons/Info'
 
 import Input from '@/widgets/Input'
 

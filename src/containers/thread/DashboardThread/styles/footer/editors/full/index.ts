@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import css, { theme } from '@/utils/css'
 import PlusSVG from '@/icons/Plus'
 
+import Input from '@/widgets/Input'
+
 export const Wrapper = styled.div`
   ${css.flexColumn('align-start', 'justify-between')};
 `
@@ -42,6 +44,24 @@ export const ActionRow = styled.div`
   margin-bottom: 30px;
   margin-left: -2px;
 `
+export const AdderGroupWrapper = styled.div`
+  ${css.flex('align-center')}
+  width: 30%;
+`
+export const AddGroupInput = styled(Input)`
+  flex-grow: 1;
+  height: 28px;
+  font-size: 13px;
+  background: transparent;
+  /* border: 1px solid;
+  border-color: ${theme('divider')}; */
+
+  ::placeholder {
+    color: ${theme('article.digest')};
+    opacity: 0.8;
+  }
+`
+
 export const PlusIcon = styled(PlusSVG)`
   ${css.size(12)};
   fill: ${theme('article.digest')};

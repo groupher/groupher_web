@@ -67,6 +67,8 @@ export type TFooterSettings = {
   editingLink: TLinkItem
   saving: boolean
   editingLinkMode: TChangeMode
+
+  editingGroup: string
 }
 
 export type TNameAlias = TNameAliasConfig
