@@ -1,6 +1,6 @@
 import { keys, find, findIndex, clone, remove, filter, reject } from 'ramda'
 
-import type { TLinkItem, TGroupedLinks, TLink } from '@/spec'
+import type { TLinkItem, TGroupedLinks } from '@/spec'
 import { CHANGE_MODE } from '@/constant/mode'
 import { sortByIndex, groupByKey } from '@/utils/helper'
 
