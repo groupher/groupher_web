@@ -27,12 +27,12 @@ const Templates: FC<TProps> = ({ settings, isTouched }) => {
     <Wrapper>
       {showAll ? (
         <>
-          <Simple $active={footerLayout === FOOTER_LAYOUT.SIMPLE} />
+          <Simple $active={footerLayout === FOOTER_LAYOUT.SIMPLE} links={footerLinks} />
           <Full $active={footerLayout === FOOTER_LAYOUT.FULL} links={footerLinks} />
         </>
       ) : (
         <>
-          {footerLayout === FOOTER_LAYOUT.SIMPLE && <Simple $active />}
+          {footerLayout === FOOTER_LAYOUT.SIMPLE && <Simple $active links={footerLinks} />}
           {footerLayout === FOOTER_LAYOUT.FULL && <Full $active links={footerLinks} />}
         </>
       )}

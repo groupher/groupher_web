@@ -43,7 +43,7 @@ const Full: FC<TProps> = ({ links, $active }) => {
           <BrandText>Groupher</BrandText>
         </BrandWrapper>
         <Desc>让你的产品聆听用户的声音</Desc>
-        <SocialList top={20} left={-15} size="tiny" selected={DEME_SOCIALS} />
+        <SocialList top={20} left={-5} size="tiny" selected={DEME_SOCIALS} />
       </LeftWrapper>
 
       <RightWrapper ref={groupAnimateRef}>

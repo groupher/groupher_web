@@ -13,7 +13,7 @@ export const Wrapper = styled(TemplateBlock)`
   transition: all 0.2s;
 `
 export const LeftWrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.flexColumn('align-start')};
   flex-grow: 1;
 `
 export const RightWrapper = styled.div`
@@ -51,6 +51,7 @@ export const GroupTitle = styled.div`
   margin-bottom: 4px;
 `
 export const LinkItem = styled.a`
+  ${css.cutRest('80px')};
   color: ${theme('article.digest')};
   font-size: 11px;
   text-decoration: none;
