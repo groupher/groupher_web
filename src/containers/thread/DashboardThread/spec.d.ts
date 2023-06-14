@@ -242,3 +242,8 @@ export type THelpSettings = {
 }
 
 export type TFooterEditType = 'logo' | 'title' | 'social'
+
+export type TCurPageLinksKey = {
+  links: 'footerLinks' | 'headerLinks'
+  settings: 'footerSettings' | 'headerSettings'
+}

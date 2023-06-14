@@ -1,6 +1,6 @@
 import { keys, find, findIndex, clone, remove, filter, reject } from 'ramda'
 
-import type { TLinkItem, TGroupedLinks } from '@/spec'
+import type { TLinkItem, TGroupedLinks, TLink } from '@/spec'
 import { CHANGE_MODE } from '@/constant/mode'
 import { sortByIndex, groupByKey } from '@/utils/helper'
 
@@ -17,9 +17,10 @@ export const updateInGroup = (link: TLinkItem): void => {
  * add new link item to group
  */
 export const add2Group = (group: string, index: number): void => {
-  const { footerLinks } = store.footerSettings
+  const { curPageLinksKey } = store
+  const links = store[curPageLinksKey.settings][curPageLinksKey.links]
 
-  const grouplinks = filter((link) => link.group === group, footerLinks)
+  const grouplinks = filter((link: TLinkItem) => link.group === group, links)
 
   if (grouplinks.length <= 0) return
   const { groupIndex } = grouplinks[0]
@@ -32,68 +33,72 @@ export const add2Group = (group: string, index: number): void => {
   }
 
   store.mark({
-    footerLinks: [...footerLinks, newItem],
+    [curPageLinksKey.links]: [...links, newItem],
     editingLink: newItem,
     editingLinkMode: CHANGE_MODE.CREATE,
   })
 }
 
 export const deleteLink = (linkItem: TLinkItem): void => {
-  const { footerLinks } = store.footerSettings
+  const { curPageLinksKey } = store
+  const links = store[curPageLinksKey.settings][curPageLinksKey.links]
 
-  const footerLinksAfter = reject(
+  const linksAfter = reject(
     (link: TLinkItem) => link.group === linkItem.group && link.index === linkItem.index,
-    footerLinks,
+    links,
   )
 
-  store.mark({ footerLinks: _reindex(footerLinksAfter) })
+  store.mark({ [curPageLinksKey.links]: _reindex(linksAfter) })
 }
 
 export const deleteGroup = (groupIndex: number): void => {
-  const { footerLinks } = store.footerSettings
+  const { curPageLinksKey } = store
+  const links = store[curPageLinksKey.settings][curPageLinksKey.links]
 
-  const footerLinksAfter = reject((link: TLinkItem) => link.groupIndex === groupIndex, footerLinks)
-  store.mark({ footerLinks: _reindexGroup(footerLinksAfter) })
+  const linksAfter = reject((link: TLinkItem) => link.groupIndex === groupIndex, links)
+  store.mark({ [curPageLinksKey.links]: _reindexGroup(linksAfter) })
 }
 
 export const cancelLinkEditing = (): void => {
-  const { editingLink, footerLinks, editingLinkMode } = store.footerSettings
+  const { curPageLinksKey, editingLink, editingLinkMode } = store
+  const links = store[curPageLinksKey.settings][curPageLinksKey.links]
 
   if (editingLinkMode === CHANGE_MODE.UPDATE) {
     store.mark({ editingLink: null })
     return
   }
 
-  const footerLinksAfter = reject(
+  const linksAfter = reject(
     (link: TLinkItem) => link.group === editingLink.group && link.index === editingLink.index,
-    footerLinks,
+    links,
   )
 
-  store.mark({ footerLinks: footerLinksAfter, editingLink: null })
+  store.mark({ [curPageLinksKey.links]: linksAfter, editingLink: null })
 }
 
 export const confirmLinkEditing = (): void => {
-  const { editingLink, footerLinks, editingLinkMode } = store.footerSettings
+  const { curPageLinksKey, editingLink, editingLinkMode } = store
+  const links = store[curPageLinksKey.settings][curPageLinksKey.links]
 
   if (editingLinkMode === CHANGE_MODE.UPDATE) {
     const editingIndex = findIndex(
       (item: TLinkItem) => item.index === editingLink.index && item.group === editingLink.group,
-      footerLinks,
+      links,
     )
 
-    footerLinks[editingIndex].title = editingLink.title
-    footerLinks[editingIndex].link = editingLink.link
+    links[editingIndex].title = editingLink.title
+    links[editingIndex].link = editingLink.link
 
-    store.mark({ footerLinks, editingLink: null })
+    store.mark({ [curPageLinksKey.links]: links, editingLink: null })
     return
   }
 
-  const curGroupLinks = filter((link: TLinkItem) => editingLink.group === link.group, footerLinks)
+  const curGroupLinks = filter((link: TLinkItem) => editingLink.group === link.group, links)
 
   const newAddLink = find(
     (link: TLinkItem) =>
       editingLink.group === link.group && link.index === curGroupLinks.length - 1,
-    footerLinks,
+    links,
   )
 
   const editingLinkAfter = {
@@ -103,12 +108,12 @@ export const confirmLinkEditing = (): void => {
     groupIndex: newAddLink.groupIndex,
   }
 
-  const footerLinksAfter = reject(
+  const linksAfter = reject(
     (link: TLinkItem) => link.group === newAddLink.group && link.index === newAddLink.index,
-    footerLinks,
+    links,
   ).concat(editingLinkAfter)
 
-  store.mark({ footerLinks: footerLinksAfter, editingLink: null })
+  store.mark({ [curPageLinksKey.links]: linksAfter, editingLink: null })
   // TODO: do real network mutation
 }
 
@@ -131,9 +136,10 @@ export const cancelGroupChange = (): void => {
 }
 
 export const confirmGroupAdd = (): void => {
-  const { footerLinks, editingGroup } = store
+  const { curPageLinksKey, editingGroup } = store
+  const links = store[curPageLinksKey.settings][curPageLinksKey.links]
 
-  const _groupedLinks = groupByKey(footerLinks, 'group')
+  const _groupedLinks = groupByKey(links, 'group')
   const groupKeys = keys(_groupedLinks) as string[]
 
   const newLinkItem = {
@@ -142,25 +148,26 @@ export const confirmGroupAdd = (): void => {
     groupIndex: groupKeys.length,
   }
 
-  const footerLinksAfter = [...footerLinks, newLinkItem]
+  const linksAfter = [...links, newLinkItem]
 
-  store.mark({ editingGroup: null, editingLink: newLinkItem, footerLinks: footerLinksAfter })
+  store.mark({ editingGroup: null, editingLink: newLinkItem, [curPageLinksKey.links]: linksAfter })
 }
 
 export const confirmGroupUpdate = (): void => {
-  const { footerLinks, editingGroup, editingGroupIndex } = store
+  const { curPageLinksKey, editingGroup, editingGroupIndex } = store
+  const links = store[curPageLinksKey.settings][curPageLinksKey.links]
 
-  const footerLinksAfter = clone(footerLinks)
+  const linksAfter = clone(links)
 
-  for (let i = 0; i < footerLinks.length; i += 1) {
-    const linkItem = footerLinks[i]
+  for (let i = 0; i < links.length; i += 1) {
+    const linkItem = links[i]
 
     if (linkItem.groupIndex === editingGroupIndex) {
-      footerLinksAfter[i].group = editingGroup
+      linksAfter[i].group = editingGroup
     }
   }
 
-  store.mark({ editingGroup: null, editingGroupIndex: null, footerLinks: footerLinksAfter })
+  store.mark({ editingGroup: null, editingGroupIndex: null, [curPageLinksKey.links]: linksAfter })
 }
 
 // used when switching between template
@@ -177,24 +184,25 @@ export const updateEditingGroup = (title: string): void => {
  */
 const _moveLink = (link: TLinkItem, opt: 'up' | 'down'): void => {
   const { group } = link
-  const { footerLinks } = store.footerSettings
+  const { curPageLinksKey } = store
+  const links = store[curPageLinksKey.settings][curPageLinksKey.links]
 
-  const groupFooterLinks = filter((item: TLinkItem) => item.group === group, footerLinks)
-  const restFooterLinks = reject((item: TLinkItem) => item.group === group, footerLinks)
+  const groupLinks = filter((item: TLinkItem) => item.group === group, links)
+  const restLinks = reject((item: TLinkItem) => item.group === group, links)
 
-  const linkIndex = findIndex((item) => item.index === link.index, groupFooterLinks)
+  const linkIndex = findIndex((item: TLinkItem) => item.index === link.index, groupLinks)
 
   const targetIndex = opt === 'up' ? linkIndex - 1 : linkIndex + 1
 
-  const tmp = groupFooterLinks[targetIndex]
-  groupFooterLinks[targetIndex] = groupFooterLinks[linkIndex]
-  groupFooterLinks[linkIndex] = tmp
+  const tmp = groupLinks[targetIndex]
+  groupLinks[targetIndex] = groupLinks[linkIndex]
+  groupLinks[linkIndex] = tmp
 
-  const tmpIndex = groupFooterLinks[targetIndex].index
-  groupFooterLinks[targetIndex].index = groupFooterLinks[linkIndex].index
-  groupFooterLinks[linkIndex].index = tmpIndex
+  const tmpIndex = groupLinks[targetIndex].index
+  groupLinks[targetIndex].index = groupLinks[linkIndex].index
+  groupLinks[linkIndex].index = tmpIndex
 
-  store.mark({ footerLinks: [...restFooterLinks, ..._reindex(groupFooterLinks)] })
+  store.mark({ [curPageLinksKey.links]: [...restLinks, ..._reindex(groupLinks)] })
 }
 
 const _reindex = (links: TLinkItem[]): TLinkItem[] => {
@@ -206,20 +214,21 @@ const _reindex = (links: TLinkItem[]): TLinkItem[] => {
 
 const _moveLink2Edge = (link: TLinkItem, opt: 'top' | 'bottom'): void => {
   const { group } = link
-  const { footerLinks } = store.footerSettings
+  const { curPageLinksKey } = store
+  const links = store[curPageLinksKey.settings][curPageLinksKey.links]
 
-  const groupFooterLinks = filter((item: TLinkItem) => item.group === group, footerLinks)
-  const restFooterLinks = reject((item: TLinkItem) => item.group === group, footerLinks)
+  const groupLinks = filter((item: TLinkItem) => item.group === group, links)
+  const restLinks = reject((item: TLinkItem) => item.group === group, links)
 
-  const curLinkItemIndex = findIndex((item) => item.index === link.index, groupFooterLinks)
-  const curLinkItem = clone(groupFooterLinks[curLinkItemIndex])
+  const curLinkItemIndex = findIndex((item: TLinkItem) => item.index === link.index, groupLinks)
+  const curLinkItem = clone(groupLinks[curLinkItemIndex])
 
-  const newFooterLinks =
+  const newLinks =
     opt === 'top'
-      ? [curLinkItem, ...remove(curLinkItemIndex, 1, groupFooterLinks)]
-      : [...remove(curLinkItemIndex, 1, groupFooterLinks), curLinkItem]
+      ? [curLinkItem, ...remove(curLinkItemIndex, 1, groupLinks)]
+      : [...remove(curLinkItemIndex, 1, groupLinks), curLinkItem]
 
-  store.mark({ footerLinks: [...restFooterLinks, ..._reindex(newFooterLinks)] })
+  store.mark({ [curPageLinksKey.links]: [...restLinks, ..._reindex(newLinks)] })
 }
 
 export const moveLinkUp = (link: TLinkItem): void => _moveLink(link, 'up')
@@ -263,10 +272,11 @@ const _reindexByGroup = (groupKeys: string[], groupedLinks: TGroupedLinks): TGro
 }
 
 const _moveGroup = (group: string, opt: 'left' | 'right' | 'edge-left' | 'edge-right'): void => {
-  const { footerLinks } = store.footerSettings
+  const { curPageLinksKey } = store
+  const links = store[curPageLinksKey.settings][curPageLinksKey.links]
 
   // @ts-ignore
-  const _groupedLinks = groupByKey(sortByIndex(footerLinks, 'groupIndex'), 'group')
+  const _groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
   const groupKeys = keys(_groupedLinks) as string[]
 
   const groupedLinks = _reindexByGroup(groupKeys, _groupedLinks)
@@ -306,10 +316,10 @@ const _moveGroup = (group: string, opt: 'left' | 'right' | 'edge-left' | 'edge-r
     groupIndex: curIndex,
   }))
 
-  const newFooterLinks = []
-  groupKeys.forEach((key) => newFooterLinks.push(...groupedLinks[key]))
+  const newLinks = []
+  groupKeys.forEach((key) => newLinks.push(...groupedLinks[key]))
 
-  store.mark({ footerLinks: newFooterLinks })
+  store.mark({ [curPageLinksKey.links]: newLinks })
 }
 
 export const moveGroup2Left = (group: string): void => _moveGroup(group, 'left')

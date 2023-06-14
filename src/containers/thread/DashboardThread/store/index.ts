@@ -65,6 +65,7 @@ import type {
   TWidgetsSettings,
   TBroadcastSettings,
   TWidgetType,
+  TCurPageLinksKey,
 } from '../spec'
 
 import { SETTING_FIELD } from '../constant'
@@ -336,6 +337,17 @@ const DashboardThread = T.model('DashboardThread', {
         feedType: slf.rssFeedType,
         feedCount: slf.rssFeedCount,
         saving: slf.saving,
+      }
+    },
+
+    get curPageLinksKey(): TCurPageLinksKey {
+      const slf = self as TStore
+
+      const isFooter = slf.curTab === DASHBOARD_ROUTE.FOOTER
+
+      return {
+        links: isFooter ? 'footerLinks' : 'headerLinks',
+        settings: isFooter ? 'footerSettings' : 'footerSettings',
       }
     },
 
