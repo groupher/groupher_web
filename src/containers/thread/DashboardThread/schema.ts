@@ -19,6 +19,8 @@ const updateDashboardLayout = gql`
     $community: Stirng!
     $postLayout: String
     $kanbanLayout: String
+    $footerLayout: String
+    $headerLayout: String
     $broadcastEnable: Boolean
     $kanbanBgColors: [String]
   ) {
@@ -26,6 +28,8 @@ const updateDashboardLayout = gql`
       community: $community
       postLayout: $postLayout
       kanbanLayout: $kanbanLayout
+      footerLayout: $footerLayout
+      headerLayout: $headerLayout
       broadcastEnable: $broadcastEnable
       kanbanBgColors: $kanbanBgColors
     ) {
