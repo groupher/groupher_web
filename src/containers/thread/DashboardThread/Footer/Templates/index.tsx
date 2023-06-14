@@ -11,6 +11,7 @@ import Simple from './Simple'
 import Full from './Full'
 
 import { Wrapper, ArrowIcon, ToggleButton, ToggleText } from '../../styles/footer/templates'
+import { resetEditingLink } from '../../logic/links'
 
 type TProps = {
   settings: TFooterSettings
@@ -45,7 +46,15 @@ const Templates: FC<TProps> = ({ settings, isTouched }) => {
         bottom={30}
       />
 
-      <ToggleButton size="small" ghost noBorder onClick={() => setShowAll(!showAll)}>
+      <ToggleButton
+        size="small"
+        ghost
+        noBorder
+        onClick={() => {
+          setShowAll(!showAll)
+          resetEditingLink()
+        }}
+      >
         <ToggleText>
           {showAll ? '收起' : '更换模板'}
           {/* @ts-ignore */}

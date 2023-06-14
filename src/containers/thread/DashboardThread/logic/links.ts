@@ -163,6 +163,11 @@ export const confirmGroupUpdate = (): void => {
   store.mark({ editingGroup: null, editingGroupIndex: null, footerLinks: footerLinksAfter })
 }
 
+// used when switching between template
+export const resetEditingLink = (): void => {
+  store.mark({ editingLink: null, editingGroup: null, editingGroupIndex: null })
+}
+
 export const updateEditingGroup = (title: string): void => {
   store.mark({ editingGroup: title })
 }

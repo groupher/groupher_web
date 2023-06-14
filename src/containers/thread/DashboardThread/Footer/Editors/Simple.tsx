@@ -1,16 +1,16 @@
 import { FC } from 'react'
-
+import { keys } from 'ramda'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import type { TLinkItem } from '@/spec'
-
-import { sortByIndex } from '@/utils/helper'
+import { sortByIndex, groupByKey } from '@/utils/helper'
 
 import SocialEditor from '@/widgets/SocialEditor'
 
-import { DEFAULT_LINK_ITEMS } from '../../constant'
 import BrandInfo from './BrandInfo'
 import LinkEditor from './LinkEditor'
+
+import type { TFooterSettings } from '../../spec'
 
 import {
   Wrapper,
@@ -19,9 +19,20 @@ import {
   CenterWrapper,
   RightWrapper,
 } from '../../styles/footer/editors/simple'
+import { moveLinkUp, moveLinkDown, moveLink2Top, moveLink2Bottom } from '../../logic/links'
 
-const Simple: FC = () => {
+type TProps = {
+  settings: TFooterSettings
+}
+
+const Simple: FC<TProps> = ({ settings }) => {
   const [parent] = useAutoAnimate({ duration: 220 })
+
+  const { footerLinks: links, editingLink, editingLinkMode } = settings
+
+  // @ts-ignore
+  const groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
+  const groupKeys = keys(groupedLinks)
 
   return (
     <Wrapper>
@@ -30,9 +41,17 @@ const Simple: FC = () => {
       </LeftWrapper>
       <CenterWrapper ref={parent}>
         <Title>链接</Title>
-        {/* @ts-ignore */}
-        {sortByIndex(DEFAULT_LINK_ITEMS).map((item) => (
-          <LinkEditor key={item.index} linkItem={item as TLinkItem} />
+        {groupedLinks[groupKeys[0]].map((item: TLinkItem) => (
+          <LinkEditor
+            key={`${item.title}`}
+            mode={editingLinkMode}
+            linkItem={item}
+            editingLink={editingLink}
+            moveLinkUp={moveLinkUp}
+            moveLinkDown={moveLinkDown}
+            moveLink2Top={moveLink2Top}
+            moveLink2Bottom={moveLink2Bottom}
+          />
         ))}
       </CenterWrapper>
       <RightWrapper>

@@ -183,6 +183,7 @@ const _handleDone = () => {
   const field = store.savingField
 
   store.mark({ saving: false, savingField: null })
+
   let initSettings
 
   if (field === SETTING_FIELD.TAG_INDEX) {

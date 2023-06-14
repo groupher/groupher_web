@@ -15,7 +15,7 @@ const Editor: FC<TProps> = ({ settings }) => {
 
   return (
     <>
-      {footerLayout === FOOTER_LAYOUT.SIMPLE && <SimpleEditor />}
+      {footerLayout === FOOTER_LAYOUT.SIMPLE && <SimpleEditor settings={settings} />}
       {footerLayout === FOOTER_LAYOUT.FULL && <FullEditor settings={settings} />}
     </>
   )
