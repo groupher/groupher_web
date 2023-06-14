@@ -182,8 +182,6 @@ export const onSave = (field: TSettingField): void => {
 const _handleDone = () => {
   const field = store.savingField
 
-  store.mark({ saving: false, savingField: null })
-
   let initSettings
 
   if (field === SETTING_FIELD.TAG_INDEX) {
@@ -198,6 +196,11 @@ const _handleDone = () => {
   // store will rollback to previous value
   if (field === SETTING_FIELD.TAG) store.mark({ editingTag: null })
   if (field === SETTING_FIELD.NAME_ALIAS) store.mark({ editingAlias: null })
+
+  // avoid page component jump caused by saving state
+  setTimeout(() => {
+    store.mark({ saving: false, savingField: null })
+  }, 800)
 }
 
 const _handleError = () => {

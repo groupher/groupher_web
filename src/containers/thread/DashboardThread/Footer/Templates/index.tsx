@@ -21,19 +21,19 @@ type TProps = {
 const Templates: FC<TProps> = ({ settings, isTouched }) => {
   const [showAll, setShowAll] = useState<boolean>(false)
 
-  const { footerLayout, saving } = settings
+  const { footerLayout, saving, footerLinks } = settings
 
   return (
     <Wrapper>
       {showAll ? (
         <>
           <Simple $active={footerLayout === FOOTER_LAYOUT.SIMPLE} />
-          <Full $active={footerLayout === FOOTER_LAYOUT.FULL} />
+          <Full $active={footerLayout === FOOTER_LAYOUT.FULL} links={footerLinks} />
         </>
       ) : (
         <>
           {footerLayout === FOOTER_LAYOUT.SIMPLE && <Simple $active />}
-          {footerLayout === FOOTER_LAYOUT.FULL && <Full $active />}
+          {footerLayout === FOOTER_LAYOUT.FULL && <Full $active links={footerLinks} />}
         </>
       )}
 
@@ -46,21 +46,23 @@ const Templates: FC<TProps> = ({ settings, isTouched }) => {
         bottom={30}
       />
 
-      <ToggleButton
-        size="small"
-        ghost
-        noBorder
-        onClick={() => {
-          setShowAll(!showAll)
-          resetEditingLink()
-        }}
-      >
-        <ToggleText>
-          {showAll ? '收起' : '更换模板'}
-          {/* @ts-ignore */}
-          <ArrowIcon rotate={showAll} />
-        </ToggleText>
-      </ToggleButton>
+      {!isTouched && !saving && (
+        <ToggleButton
+          size="small"
+          ghost
+          noBorder
+          onClick={() => {
+            setShowAll(!showAll)
+            resetEditingLink()
+          }}
+        >
+          <ToggleText>
+            {showAll ? '收起' : '更换模板'}
+            {/* @ts-ignore */}
+            <ArrowIcon rotate={showAll} />
+          </ToggleText>
+        </ToggleButton>
+      )}
     </Wrapper>
   )
 }

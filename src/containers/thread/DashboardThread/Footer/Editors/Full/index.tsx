@@ -133,7 +133,7 @@ const Full: FC<TProps> = ({ settings }) => {
                   {curGroupLinks.map((item, index) => (
                     <LinkEditor
                       // must use item.title as key, or the sort animation will fail, wired
-                      key={`${item.title}`}
+                      key={item.title}
                       mode={editingLinkMode}
                       linkItem={item as TLinkItem}
                       editingLink={editingLink}

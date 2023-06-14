@@ -5,13 +5,20 @@ import css, { theme } from '@/utils/css'
 import { TemplateBlock } from '.'
 
 export const Wrapper = styled(TemplateBlock)`
-  padding: 12px 20px;
   ${css.flex('align-start', 'justify-between')};
-  height: 150px !important;
+  padding: 12px 20px;
+  height: auto;
+  min-height: 150px !important;
   background: ${theme('alphaBg')};
+  transition: all 0.2s;
 `
 export const LeftWrapper = styled.div`
   ${css.flexColumn()};
+  flex-grow: 1;
+`
+export const RightWrapper = styled.div`
+  ${css.flex()};
+  gap: 0 60px;
 `
 export const BrandWrapper = styled.div`
   ${css.flex('align-center')};
@@ -33,16 +40,24 @@ export const Desc = styled.div`
   margin-top: 4px;
 `
 export const CenterWrapper = styled.div`
-  ${css.flex('align-center')};
-  gap: 0 14px;
+  ${css.flexColumn()};
+  gap: 5px 0;
 `
 
-export const LinkItem = styled.div`
-  color: ${theme('article.digest')};
+export const GroupTitle = styled.div`
+  color: ${theme('article.title')};
   font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 4px;
+`
+export const LinkItem = styled.a`
+  color: ${theme('article.digest')};
+  font-size: 11px;
+  text-decoration: none;
 
   &:hover {
     color: ${theme('article.title')};
     cursor: pointer;
+    text-decoration: underline;
   }
 `
