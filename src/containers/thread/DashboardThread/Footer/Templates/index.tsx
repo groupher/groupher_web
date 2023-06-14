@@ -8,7 +8,7 @@ import { SETTING_FIELD } from '../../constant'
 import SavingBar from '../../SavingBar'
 
 import Simple from './Simple'
-import Full from './Full'
+import Group from './Group'
 
 import { Wrapper, ArrowIcon, ToggleButton, ToggleText } from '../../styles/footer/templates'
 import { resetEditingLink } from '../../logic/links'
@@ -28,12 +28,12 @@ const Templates: FC<TProps> = ({ settings, isTouched }) => {
       {showAll ? (
         <>
           <Simple $active={footerLayout === FOOTER_LAYOUT.SIMPLE} links={footerLinks} />
-          <Full $active={footerLayout === FOOTER_LAYOUT.FULL} links={footerLinks} />
+          <Group $active={footerLayout === FOOTER_LAYOUT.GROUP} links={footerLinks} />
         </>
       ) : (
         <>
           {footerLayout === FOOTER_LAYOUT.SIMPLE && <Simple $active links={footerLinks} />}
-          {footerLayout === FOOTER_LAYOUT.FULL && <Full $active links={footerLinks} />}
+          {footerLayout === FOOTER_LAYOUT.GROUP && <Group $active links={footerLinks} />}
         </>
       )}
 

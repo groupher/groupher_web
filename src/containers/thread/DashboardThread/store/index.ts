@@ -56,6 +56,7 @@ import type {
   TUiSettings,
   TTagSettings,
   TRSSSettings,
+  THeaderSettings,
   TFooterSettings,
   THelpSettings,
   TAliasSettings,
@@ -119,6 +120,7 @@ const DashboardThread = T.model('DashboardThread', {
         kanbanBgColors,
         helpLayout,
         helpFaqLayout,
+        headerLayout,
         footerLayout,
         bannerLayout,
         topbarLayout,
@@ -146,6 +148,7 @@ const DashboardThread = T.model('DashboardThread', {
         kanbanBgColors: kanbanBgColors as TColorName[],
         help: helpLayout,
         helpFaq: helpFaqLayout,
+        header: headerLayout,
         footer: footerLayout,
         changelog: changelogLayout,
         banner: bannerLayout,
@@ -203,6 +206,7 @@ const DashboardThread = T.model('DashboardThread', {
       const topbarBgTouched = _isChanged('topbarBg')
       const changelogLayoutTouched = _isChanged('changelogLayout')
       const footerLayoutTouched = _isChanged('footerLayout')
+      const headerLayoutTouched = _isChanged('headerLayout')
 
       const glowFixedTouched = _isChanged('glowFixed')
       const glowTypeTouched = _isChanged('glowType')
@@ -232,6 +236,7 @@ const DashboardThread = T.model('DashboardThread', {
 
         postLayout: postLayoutTouched,
         footerLayout: footerLayoutTouched,
+        headerLayout: headerLayoutTouched,
         kanbanLayout: kanbanLayoutTouched,
         kanbanBgColors: kanbanBgColorsTouched,
         helpLayout: helpLayoutTouched,
@@ -264,6 +269,7 @@ const DashboardThread = T.model('DashboardThread', {
           glowFixedTouched ||
           glowTypeTouched ||
           glowOpacityTouched ||
+          headerLayoutTouched ||
           footerLayoutTouched,
 
         widgets: widgetsPrimaryColorTouched || widgetsThreadsTouched || widgetsSizeTouched,
@@ -348,6 +354,28 @@ const DashboardThread = T.model('DashboardThread', {
       return {
         links: isFooter ? 'footerLinks' : 'headerLinks',
         settings: isFooter ? 'footerSettings' : 'footerSettings',
+      }
+    },
+
+    get headerSettings(): THeaderSettings {
+      const slf = self as TStore
+      const {
+        headerLayout,
+        headerLinks,
+        editingLink,
+        editingLinkMode,
+        editingGroup,
+        editingGroupIndex,
+      } = slf
+
+      return {
+        headerLayout: toJS(headerLayout),
+        headerLinks: toJS(headerLinks),
+        editingLink: toJS(editingLink),
+        saving: slf.saving,
+        editingLinkMode: editingLinkMode as TChangeMode,
+        editingGroup,
+        editingGroupIndex,
       }
     },
 

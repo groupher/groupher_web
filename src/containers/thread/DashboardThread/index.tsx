@@ -54,6 +54,7 @@ const DashboardThreadContainer: FC<TProps> = ({
     uiSettings,
     tagSettings,
     rssSettings,
+    headerSettings,
     footerSettings,
     aliasSettings,
     widgetsSettings,
@@ -80,7 +81,7 @@ const DashboardThreadContainer: FC<TProps> = ({
 
         {curTab === DASHBOARD.RSS && <RSS settings={rssSettings} touched={touched} />}
 
-        {curTab === DASHBOARD.HEADER && <Header settings={footerSettings} touched={touched} />}
+        {curTab === DASHBOARD.HEADER && <Header settings={headerSettings} touched={touched} />}
         {curTab === DASHBOARD.FOOTER && <Footer settings={footerSettings} touched={touched} />}
         {curTab === DASHBOARD.BROADCAST && (
           <Broadcast settings={broadcastSettings} touched={touched} />

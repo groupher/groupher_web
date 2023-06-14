@@ -32,7 +32,7 @@ import {
   Adder,
   TopLeft,
   TopRight,
-} from '../../../styles/footer/editors/full'
+} from '../../../styles/footer/editors/group'
 
 import {
   add2Group,
@@ -55,7 +55,7 @@ type TProps = {
   settings: TFooterSettings
 }
 
-const Full: FC<TProps> = ({ settings }) => {
+const Group: FC<TProps> = ({ settings }) => {
   const {
     footerLinks: links,
     editingLink,
@@ -79,7 +79,7 @@ const Full: FC<TProps> = ({ settings }) => {
       <TopWrapper>
         <TopLeft>
           <BrandInfo
-            footerLayout={FOOTER_LAYOUT.FULL}
+            footerLayout={FOOTER_LAYOUT.GROUP}
             onEdit={(type) => {
               setEditMode(true)
               setEditType(type)
@@ -169,4 +169,4 @@ const Full: FC<TProps> = ({ settings }) => {
   )
 }
 
-export default memo(Full)
+export default memo(Group)

@@ -12,7 +12,6 @@ import {
   Wrapper,
   InnerWrapper,
   BrandWrapper,
-  BrandTitle,
   BrandLogo,
   BrandDesc,
   Column,
@@ -21,7 +20,7 @@ import {
   LinkItem,
   HeartIcon,
   Item,
-} from '../styles/desktop_view/full_layout'
+} from '../styles/desktop_view/group_layout'
 
 type TProps = {
   metric: TMetric

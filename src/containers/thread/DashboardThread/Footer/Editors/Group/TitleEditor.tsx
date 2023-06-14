@@ -9,7 +9,7 @@ import {
   Label,
   ArrowIcon,
   Inputer,
-} from '../../../styles/footer/editors/full/title_editor'
+} from '../../../styles/footer/editors/group/title_editor'
 
 type TProps = {
   onHide: () => void

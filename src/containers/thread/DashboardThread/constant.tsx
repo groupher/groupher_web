@@ -23,6 +23,7 @@ export const SETTING_LAYOUT_FIELD = {
   BRAND_LAYOUT: 'brandLayout',
   AVATAR_LAYOUT: 'avatarLayout',
   BANNER_LAYOUT: 'bannerLayout',
+  HEADER_LAYOUT: 'headerLayout',
   FOOTER_LAYOUT: 'footerLayout',
   TOPBAR_LAYOUT: 'topbarLayout',
   TOPBAR_BG: 'topbarBg',

@@ -20,14 +20,14 @@ import {
   CenterWrapper,
   LinkItem,
   GroupTitle,
-} from '../../styles/footer/templates/full'
+} from '../../styles/footer/templates/group'
 import { edit } from '../../logic'
 
 type TProps = {
   links: TLinkItem[]
 } & TActive
 
-const Full: FC<TProps> = ({ links, $active }) => {
+const Group: FC<TProps> = ({ links, $active }) => {
   const [animateRef] = useAutoAnimate()
   const [groupAnimateRef] = useAutoAnimate()
 
@@ -36,7 +36,7 @@ const Full: FC<TProps> = ({ links, $active }) => {
   const groupKeys = keys(groupedLinks)
 
   return (
-    <Wrapper $active={$active} onClick={() => edit(FOOTER_LAYOUT.FULL, 'footerLayout')}>
+    <Wrapper $active={$active} onClick={() => edit(FOOTER_LAYOUT.GROUP, 'footerLayout')}>
       <LeftWrapper>
         <BrandWrapper>
           <BrandLogo />
@@ -67,4 +67,4 @@ const Full: FC<TProps> = ({ links, $active }) => {
   )
 }
 
-export default Full
+export default Group

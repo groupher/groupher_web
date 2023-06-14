@@ -45,11 +45,11 @@ const BrandInfo: FC<TProps> = ({
           Groupher
           {editable && <EditIcon.Title onClick={() => onEdit(FOOTER_EDIT_TYPE.TITLE)} />}
         </Title>
-        {footerLayout === FOOTER_LAYOUT.FULL && <Desc>让你的产品聆听用户的声音</Desc>}
+        {footerLayout === FOOTER_LAYOUT.GROUP && <Desc>让你的产品聆听用户的声音</Desc>}
       </BaseInfo>
 
       <SocialWrapper>
-        {footerLayout === FOOTER_LAYOUT.FULL && <SocialList selected={DEME_SOCIALS} />}
+        {footerLayout === FOOTER_LAYOUT.GROUP && <SocialList selected={DEME_SOCIALS} />}
         <EditIcon.Social onClick={() => onEdit(FOOTER_EDIT_TYPE.SOCIAL)} />
       </SocialWrapper>
     </Wrapper>

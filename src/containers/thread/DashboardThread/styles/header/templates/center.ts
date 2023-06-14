@@ -2,6 +2,8 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
 
+import AccountSVG from '@/icons/Acount'
+
 import { TemplateBlock } from '.'
 
 export const Wrapper = styled(TemplateBlock)`
@@ -21,12 +23,11 @@ export const BrandLogo = styled.div`
 export const BrandText = styled.div`
   color: ${theme('article.title')};
 `
-
 export const CenterWrapper = styled.div`
   ${css.flex('align-center')};
   gap: 0 14px;
+  margin-left: -50px;
 `
-
 export const LinkItem = styled.div`
   color: ${theme('article.digest')};
   font-size: 12px;
@@ -36,8 +37,11 @@ export const LinkItem = styled.div`
     cursor: pointer;
   }
 `
-
 export const RightWrapper = styled.div`
   ${css.flex('align-center')};
-  gap: 0 10px;
+`
+export const AccountIcon = styled(AccountSVG)`
+  ${css.size(12)};
+  fill: ${theme('article.digest')};
+  margin-top: -1px;
 `

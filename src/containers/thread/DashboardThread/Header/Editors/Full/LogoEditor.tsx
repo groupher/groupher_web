@@ -15,7 +15,7 @@ import {
   InfoIcon,
   ArrowIcon,
   Inputer,
-} from '../../../styles/footer/editors/full/logo_editor'
+} from '../../../styles/footer/editors/group/logo_editor'
 
 type TProps = {
   onHide: () => void

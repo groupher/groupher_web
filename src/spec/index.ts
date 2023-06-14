@@ -96,6 +96,7 @@ export type {
   TChangelogLayout,
   THelpLayout,
   THelpFAQLayout,
+  THeaderLayout,
   TFooterLayout,
   TGlobalLayout,
   TBroadcastConfig,

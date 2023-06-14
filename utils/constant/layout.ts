@@ -14,6 +14,7 @@ import type {
   THelpLayout,
   THelpFAQLayout,
   TFooterLayout,
+  THeaderLayout,
   TRSSType,
 } from '@/spec'
 
@@ -97,9 +98,14 @@ export const HELP_FAQ_LAYOUT = {
   SEARCH_HINT: 'search_hint',
 } as Record<TSnakeUpperCase<THelpFAQLayout>, THelpFAQLayout>
 
+export const HEADER_LAYOUT = {
+  CENTER: 'center',
+  RIGHT: 'right',
+} as Record<Uppercase<THeaderLayout>, THeaderLayout>
+
 export const FOOTER_LAYOUT = {
   SIMPLE: 'simple',
-  FULL: 'full',
+  GROUP: 'group',
 } as Record<Uppercase<TFooterLayout>, TFooterLayout>
 
 export const RSS_TYPE = {

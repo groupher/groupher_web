@@ -11,7 +11,7 @@ import {
   Title,
   EditIcon,
   SettingIcon,
-} from '../../../styles/footer/editors/full/group_head'
+} from '../../../styles/footer/editors/group/group_head'
 import {
   triggerGroupUpdate,
   cancelGroupChange,

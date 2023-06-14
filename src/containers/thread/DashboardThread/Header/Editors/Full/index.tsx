@@ -33,7 +33,7 @@ const Full: FC = () => {
       <TopWrapper>
         <TopLeft>
           <BrandInfo
-            footerLayout={FOOTER_LAYOUT.FULL}
+            footerLayout={FOOTER_LAYOUT.GROUP}
             onEdit={(type) => {
               setEditMode(true)
               setEditType(type)

@@ -6,6 +6,7 @@ import type {
   TColorName,
   TPostLayout,
   TChangelogLayout,
+  THeaderLayout,
   TFooterLayout,
   TBrandLayout,
   TTopbarLayout,
@@ -61,16 +62,23 @@ export type TRSSSettings = {
   saving: boolean
 }
 
-export type TFooterSettings = {
-  footerLayout: TFooterLayout
-  footerLinks: TLinkItem[]
+type TLinkState = {
   editingLink: TLinkItem
   saving: boolean
   editingLinkMode: TChangeMode
-
   editingGroup: string | null
   editingGroupIndex: number | null
 }
+
+export type THeaderSettings = {
+  headerLayout: THeaderLayout
+  headerLinks: TLinkItem[]
+} & TLinkState
+
+export type TFooterSettings = {
+  footerLayout: TFooterLayout
+  footerLinks: TLinkItem[]
+} & TLinkState
 
 export type TNameAlias = TNameAliasConfig
 
@@ -135,6 +143,7 @@ export type TUiSettings = {
   kanbanLayout: TKanbanLayout
   kanbanBgColors: TColorName[]
   changelogLayout: TChangelogLayout
+  headerLayout: THeaderLayout
   footerLayout: TFooterLayout
 
   layoutTab: TDashboardLayoutRoute
@@ -158,6 +167,7 @@ export type TTouched = {
   brandLayout: boolean
   avatarLayout: boolean
   bannerLayout: boolean
+  headerLayout: boolean
   footerLayout: boolean
   glowType: boolean
   glowFixed: boolean
@@ -195,6 +205,7 @@ export type TSettingField =
   | 'brandLayout'
   | 'avatarLayout'
   | 'bannerLayout'
+  | 'headerLayout'
   | 'footerLayout'
   | 'glowType'
   | 'glowFixed'

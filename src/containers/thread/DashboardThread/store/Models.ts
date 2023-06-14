@@ -18,6 +18,7 @@ import {
   HELP_FAQ_LAYOUT,
   POST_LAYOUT,
   KANBAN_LAYOUT,
+  HEADER_LAYOUT,
   FOOTER_LAYOUT,
   RSS_TYPE,
 } from '@/constant/layout'
@@ -154,7 +155,8 @@ export const settingsModalFields = {
   rssFeedCount: T.opt(T.int, 5),
 
   // footer
-  footerLayout: T.opt(T.enum(values(FOOTER_LAYOUT)), FOOTER_LAYOUT.FULL),
+  headerLayout: T.opt(T.enum(values(HEADER_LAYOUT)), HEADER_LAYOUT.CENTER),
+  footerLayout: T.opt(T.enum(values(FOOTER_LAYOUT)), FOOTER_LAYOUT.GROUP),
 
   footerLinks: T.opt(T.array(LinkItem), DEFAULT_LINK_ITEMS),
   headerLinks: T.opt(T.array(LinkItem), DEFAULT_LINK_ITEMS),

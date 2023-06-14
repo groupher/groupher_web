@@ -39,7 +39,7 @@ const BrandInfo: FC<TProps> = ({
 
       <BaseInfo>
         <Title>Groupher</Title>
-        {footerLayout === FOOTER_LAYOUT.FULL && <Desc>让你的产品聆听用户的声音</Desc>}
+        {footerLayout === FOOTER_LAYOUT.GROUP && <Desc>让你的产品聆听用户的声音</Desc>}
       </BaseInfo>
       <DisplayOption onClick={() => onEdit(FOOTER_EDIT_TYPE.TITLE)}>显示选项</DisplayOption>
     </Wrapper>

@@ -3,7 +3,7 @@ import { FC } from 'react'
 import Button from '@/widgets/Buttons/Button'
 import RealSocialEditor from '@/widgets/SocialEditor'
 
-import { ArrowIcon } from '../../../styles/footer/editors/full/social_editor'
+import { ArrowIcon } from '../../../styles/footer/editors/group/social_editor'
 
 type TProps = {
   onHide: () => void

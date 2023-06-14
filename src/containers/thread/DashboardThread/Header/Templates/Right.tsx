@@ -1,43 +1,39 @@
 import { FC } from 'react'
 
 import type { TActive } from '@/spec'
-import { FOOTER_LAYOUT } from '@/constant/layout'
-import { DEME_SOCIALS } from '@/constant/social'
-
-import SocialList from '@/widgets/SocialList'
+import { HEADER_LAYOUT } from '@/constant/layout'
 
 import {
   Wrapper,
   LeftWrapper,
   BrandLogo,
   BrandText,
-  CenterWrapper,
   LinkItem,
   RightWrapper,
-} from '../../styles/header/templates/simple'
+  AccountIcon,
+} from '../../styles/header/templates/right'
 import { edit } from '../../logic'
 
 type TProps = TActive
 
-const Simple: FC<TProps> = ({ $active }) => {
+const Right: FC<TProps> = ({ $active }) => {
   return (
-    <Wrapper $active={$active} onClick={() => edit(FOOTER_LAYOUT.SIMPLE, 'footerLayout')}>
+    <Wrapper $active={$active} onClick={() => edit(HEADER_LAYOUT.RIGHT, 'headerLayout')}>
       <LeftWrapper>
         <BrandLogo />
         <BrandText>Groupher</BrandText>
       </LeftWrapper>
-      <CenterWrapper>
+
+      <RightWrapper>
         <LinkItem>讨论</LinkItem>
         <LinkItem>看板</LinkItem>
         <LinkItem>更新日志</LinkItem>
         <LinkItem>帮助台</LinkItem>
         <LinkItem>关于</LinkItem>
-      </CenterWrapper>
-      <RightWrapper>
-        <SocialList top={0} size="tiny" selected={DEME_SOCIALS} />
+        <AccountIcon />
       </RightWrapper>
     </Wrapper>
   )
 }
 
-export default Simple
+export default Right

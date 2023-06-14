@@ -10,7 +10,8 @@ export type TKanbanLayout = 'simple' | 'full'
 export type TChangelogLayout = 'classic' | 'simple'
 export type THelpLayout = 'blocks' | 'lists' | 'article'
 export type THelpFAQLayout = 'flat' | 'collapse' | 'search_hint'
-export type TFooterLayout = 'simple' | 'full'
+export type THeaderLayout = 'center' | 'right'
+export type TFooterLayout = 'simple' | 'group'
 export type TRSSType = 'digest' | 'full'
 
 export type TBroadcastLayout = 'default' | 'center'
@@ -65,6 +66,7 @@ export type TGlobalLayout = {
   banner: TBannerLayout
   avatar: TAvatarLayout
   changelog: TChangelogLayout
+  header: THeaderLayout
   footer: TFooterLayout
 
   broadcast: TBroadcastLayout
