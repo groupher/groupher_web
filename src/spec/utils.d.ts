@@ -222,6 +222,7 @@ export type TLinkItem = {
   link?: string
   group?: string
   groupIndex?: number
+  oneChild?: boolean
 }
 
 export type TGroupedLinks = {
