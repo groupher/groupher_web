@@ -10,10 +10,7 @@ import ArrowSVG from '@/icons/ArrowSimple'
 export const Wrapper = styled.div<TSpace>`
   ${css.flex('justify-center')};
   width: 100%;
-  margin-top: ${({ top }) => `${top}px` || 0};
-  margin-bottom: ${({ bottom }) => `${bottom}px` || 0};
-  margin-left: ${({ left }) => `${left}px` || 0};
-  margin-right: ${({ right }) => `${right}px` || 0};
+  ${(props) => css.spaceMargins(props)};
 `
 export const InnerWrapper = styled.div`
   ${css.flex('align-center', 'justify-between')};
@@ -22,10 +19,7 @@ export const InnerWrapper = styled.div`
 export const EmptyWrapper = styled(Wrapper)<TSpace>`
   ${css.flex('align-both')};
 
-  margin-top: ${({ top }) => `${top}px` || 0};
-  margin-bottom: ${({ bottom }) => `${bottom}px` || 0};
-  margin-left: ${({ left }) => `${left}px` || 0};
-  margin-right: ${({ right }) => `${right}px` || 0};
+  ${(props) => css.spaceMargins(props)};
 `
 
 export const ArrowLeftIcon = styled(ArrowSVG)<{ disabled: boolean }>`
@@ -35,8 +29,7 @@ export const ArrowLeftIcon = styled(ArrowSVG)<{ disabled: boolean }>`
   opacity: ${({ disabled }) => (disabled ? 0.4 : 1)};
 
   &:hover {
-    fill: ${({ disabled }) =>
-      disabled ? theme('article.digest') : theme('article.title')};
+    fill: ${({ disabled }) => (disabled ? theme('article.digest') : theme('article.title'))};
     cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   }
 `

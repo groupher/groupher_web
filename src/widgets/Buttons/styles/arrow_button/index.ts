@@ -30,10 +30,7 @@ export const Wrapper = styled.button<TWrapper>`
   font-size: 15px;
 
   transform: ${({ size }) => (size === SIZE.SMALL ? 'scale(0.82);' : 'none')};
-  margin-top: ${({ top }) => `${top}px` || 0};
-  margin-bottom: ${({ bottom }) => `${bottom}px` || 0};
-  margin-left: ${({ left }) => `${left}px` || 0};
-  margin-right: ${({ right }) => `${right}px` || 0};
+  ${(props) => css.spaceMargins(props)};
 
   &:hover {
     cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};

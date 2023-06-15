@@ -13,10 +13,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 }))<TWrapper>`
   ${css.flex('align-center')};
 
-  margin-top: ${({ top }) => `${top}px` || 0};
-  margin-bottom: ${({ bottom }) => `${bottom}px` || 0};
-  margin-left: ${({ left }) => `${left}px` || 0};
-  margin-right: ${({ right }) => `${right}px` || 0};
+  ${(props) => css.spaceMargins(props)};
 `
 export const CheckIcon = styled(HookSVG)<TActive>`
   ${css.size(13)}
@@ -29,7 +26,6 @@ export const CheckIcon = styled(HookSVG)<TActive>`
   transition: all 0.2s;
 `
 export const Title = styled.div<TActive>`
-  color: ${({ $active }) =>
-    $active ? theme('article.title') : theme('article.digest')};
+  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   font-size: 13px;
 `
