@@ -8,8 +8,8 @@ import { buildLog } from '@/utils/logger'
 
 import SocialList from '@/widgets/SocialList'
 
-import type { TFooterEditType } from '../../spec'
-import { FOOTER_EDIT_TYPE } from '../../constant'
+import type { TFooterEditType } from '../../../spec'
+import { FOOTER_EDIT_TYPE } from '../../../constant'
 
 import {
   Wrapper,
@@ -19,14 +19,14 @@ import {
   Title,
   EditIcon,
   Desc,
-} from '../../styles/footer/editors/brand_info'
+} from '../../../styles/footer/editors/group/brand_info'
 
 const log = buildLog('C:Dashboard:BrandInfo')
 
 type TProps = {
   editable?: boolean
-  onEdit?: (type: TFooterEditType) => void
   footerLayout?: TFooterLayout
+  onEdit?: (type: TFooterEditType) => void
 }
 
 const BrandInfo: FC<TProps> = ({

@@ -129,10 +129,10 @@ export const EditItem = styled.div`
   margin-bottom: 12px;
 `
 export const EditTitle = styled(Label)`
-  font-size: 13px;
+  font-size: 12px;
   color: ${theme('article.title')};
-  font-weight: 600;
   margin-bottom: 8px;
+  margin-left: 1px;
 `
 
 export const Inputer = styled(Input)`

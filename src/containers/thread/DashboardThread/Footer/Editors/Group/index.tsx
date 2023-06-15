@@ -10,7 +10,7 @@ import Button from '@/widgets/Buttons/Button'
 
 import { sortByIndex, groupByKey } from '@/utils/helper'
 
-import BrandInfo from '../BrandInfo'
+import BrandInfo from './BrandInfo'
 import LinkEditor from '../LinkEditor'
 import GroupInputer from '../GroupInputer'
 

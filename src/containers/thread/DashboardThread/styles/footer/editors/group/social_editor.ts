@@ -6,7 +6,7 @@ import ArrowSVG from '@/icons/Arrow'
 export const ArrowIcon = styled(ArrowSVG)`
   ${css.size(10)};
   fill: ${theme('article.digest')};
-  margin-right: 10px;
+  margin-right: 8px;
 `
 
 export const holder = 1

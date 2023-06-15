@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TTestable, TSpace } from '@/spec'
 import css, { theme } from '@/utils/css'
 
-import InfoSVG from '@/icons/Info'
+import InfoSVG from '@/icons/Save'
 
 type TWrapper = { gradientDirection: 'left' | 'right' } & TTestable & TSpace
 export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
@@ -27,10 +27,9 @@ export const HintWrapper = styled.div`
   ${css.flex('align-center')};
 `
 export const InfoIcon = styled(InfoSVG)`
-  fill: ${theme('article.info')};
-  ${css.size(14)};
+  fill: ${theme('article.digest')};
+  ${css.size(13)};
   margin-right: 6px;
-  opacity: 0.6;
 `
 export const HintText = styled.div`
   font-size: 13px;

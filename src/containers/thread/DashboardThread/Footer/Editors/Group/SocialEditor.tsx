@@ -13,7 +13,7 @@ const SocialEditor: FC<TProps> = ({ onHide }) => {
   return (
     <>
       <RealSocialEditor />
-      <Button left={-3} size="small" noBorder ghost onClick={() => onHide()}>
+      <Button left={-4} size="small" noBorder ghost onClick={() => onHide()}>
         <ArrowIcon />
         收起
       </Button>

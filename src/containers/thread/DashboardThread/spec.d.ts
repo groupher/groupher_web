@@ -252,7 +252,8 @@ export type THelpSettings = {
   categories: THelpCategory[]
 }
 
-export type TFooterEditType = 'logo' | 'title' | 'social'
+export type THeaderEditType = 'logo' | 'title'
+export type TFooterEditType = THeaderEditType | 'social'
 
 export type TCurPageLinksKey = {
   links: 'footerLinks' | 'headerLinks'

@@ -22,7 +22,7 @@ const Footer: FC<TProps> = ({ tag, mode, processing }) => {
       ) : (
         <UpdateWrapper>
           <ActionButton bottom={15} onClick={() => onUpdate()} loading={processing}>
-            更新标签
+            更新链接
           </ActionButton>
 
           <ActionButton type="red" ghost onClick={() => onDelete(tag)} loading={processing}>

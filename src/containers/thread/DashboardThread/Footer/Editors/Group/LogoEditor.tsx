@@ -35,7 +35,7 @@ const LogoEditor: FC<TProps> = ({ onHide }) => {
         </InputWrapper>
 
         <SpaceGrow />
-        <Button left={-3} size="small" noBorder ghost onClick={() => onHide()}>
+        <Button left={-6} size="small" noBorder ghost onClick={() => onHide()}>
           <ArrowIcon />
           收起
         </Button>

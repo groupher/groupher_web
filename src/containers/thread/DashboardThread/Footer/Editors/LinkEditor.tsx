@@ -111,11 +111,11 @@ const LinkEditor: FC<TProps> = ({
 
       {editing && (
         <EditWrapper>
-          <EditTitle>{mode === CHANGE_MODE.CREATE ? '添加' : '更新'}标签</EditTitle>
+          <EditTitle>{mode === CHANGE_MODE.CREATE ? '添加' : '更新'}链接：</EditTitle>
           <EditItem>
             <Inputer
               value={editingLink?.title || ''}
-              placeholder="标签"
+              placeholder="链接名称"
               onChange={(e) => updateEditingLink('title', e.target.value)}
               autoFocus
             />

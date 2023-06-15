@@ -8,7 +8,7 @@ import {
   DASHBOARD_SEO_ROUTE,
 } from '@/constant/route'
 
-import type { TSettingField, TWidgetType, TFooterEditType } from './spec'
+import type { TSettingField, TWidgetType, THeaderEditType, TFooterEditType } from './spec'
 
 import { Icon } from './styles/side_menu'
 
@@ -250,6 +250,11 @@ export const WIDGET_TYPES = [
     raw: WIDGET_TYPE.LINK,
   },
 ]
+
+export const HEADER_EDIT_TYPE = {
+  LOGO: 'logo',
+  TITLE: 'title',
+} as Record<Uppercase<THeaderEditType>, THeaderEditType>
 
 export const FOOTER_EDIT_TYPE = {
   LOGO: 'logo',

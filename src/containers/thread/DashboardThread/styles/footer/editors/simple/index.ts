@@ -5,7 +5,6 @@ import css, { theme } from '@/utils/css'
 export const Wrapper = styled.div`
   ${css.flex('align-start', 'justify-between')};
 `
-
 export const Title = styled.div`
   color: ${theme('article.title')};
   font-size: 14px;

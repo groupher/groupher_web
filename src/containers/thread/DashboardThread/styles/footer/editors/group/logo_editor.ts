@@ -79,5 +79,5 @@ export const InfoIcon = styled(InfoSVG)`
 export const ArrowIcon = styled(ArrowSVG)`
   ${css.size(10)};
   fill: ${theme('article.digest')};
-  margin-right: 10px;
+  margin-right: 6px;
 `
