@@ -5,17 +5,6 @@ import css, { theme } from '@/utils/css'
 
 import BackSVG from '@/icons/Back'
 
-const spaceStyles = (props: TSpace) => {
-  const { top = 0, bottom = 0, left = 0, right = 0 } = props
-
-  return `
-    margin-top: ${top}px;
-    margin-bottom: ${bottom}px;
-    margin-left: ${left}px;
-    margin-right: ${right}px;
-  `
-}
-
 export const Wrapper = styled.div<TSpace>`
   ${css.flex('align-both')};
   font-size: 12px;
@@ -29,7 +18,7 @@ export const Wrapper = styled.div<TSpace>`
   cursor: pointer;
   transition: all 0.2s;
 
-  ${(props) => spaceStyles(props)};
+  ${(props) => css.spaceMargins(props)};
 `
 
 export const BackIcon = styled(BackSVG)`

@@ -4,6 +4,8 @@
  *
  */
 
+import type { TSpace } from '@/spec'
+
 import { mediaBreakPoints } from './metric'
 import { media, fitContentWidth, fitStickerWidth, fitPageWidth } from './media'
 import { flex, flexGrow, flexColumn, flexColumnGrow } from './flex'
@@ -35,6 +37,20 @@ const lineClamp = (num = 1): string => `
   -webkit-box-orient: vertical;
 `
 
+/**
+ * expand space margin styles
+ */
+const spaceMargins = (props: TSpace) => {
+  const { top = 0, bottom = 0, left = 0, right = 0 } = props
+
+  return `
+    margin-top: ${top}px;
+    margin-bottom: ${bottom}px;
+    margin-left: ${left}px;
+    margin-right: ${right}px;
+  `
+}
+
 const cardShadow = 'rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;'
 
 const css = {
@@ -53,6 +69,7 @@ const css = {
   fitStickerWidth,
   fitPageWidth,
   cardShadow,
+  spaceMargins,
 }
 
 export { theme } from '../themes'
