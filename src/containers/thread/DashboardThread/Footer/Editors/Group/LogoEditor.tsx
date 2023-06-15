@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import Button from '@/widgets/Buttons/Button'
+import CancelButton from '@/widgets/Buttons/CancelButton'
 import OSSUploader from '@/widgets/OSSUploader'
 import { SpaceGrow } from '@/widgets/Common'
 
@@ -13,7 +13,6 @@ import {
   RightWrapper,
   Note,
   InfoIcon,
-  ArrowIcon,
   Inputer,
 } from '../../../styles/footer/editors/group/logo_editor'
 
@@ -35,10 +34,7 @@ const LogoEditor: FC<TProps> = ({ onHide }) => {
         </InputWrapper>
 
         <SpaceGrow />
-        <Button left={-6} size="small" noBorder ghost onClick={() => onHide()}>
-          <ArrowIcon />
-          收起
-        </Button>
+        <CancelButton onClick={onHide} />
       </LeftWrapper>
       <RightWrapper>
         <Note>

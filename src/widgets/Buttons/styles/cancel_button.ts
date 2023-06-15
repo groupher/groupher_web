@@ -5,11 +5,14 @@ import css, { theme } from '@/utils/css'
 
 import BackSVG from '@/icons/Back'
 
-export const Wrapper = styled.div<TSpace>`
+export const Wrapper = styled.button<TSpace>`
   ${css.flex('align-both')};
+  width: auto;
   font-size: 12px;
   color: ${theme('article.digest')};
   font-weight: 500;
+  background: transparent;
+  border: none;
 
   &:hover {
     color: ${theme('article.title')};

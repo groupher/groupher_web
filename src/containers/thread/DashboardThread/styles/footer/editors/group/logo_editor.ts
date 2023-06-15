@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
-import ArrowSVG from '@/icons/Arrow'
 import InfoSVG from '@/icons/Info'
 
 import Input from '@/widgets/Input'
@@ -74,10 +73,4 @@ export const InfoIcon = styled(InfoSVG)`
   ${css.size(12)};
   fill: ${theme('article.digest')};
   margin-right: 7px;
-`
-
-export const ArrowIcon = styled(ArrowSVG)`
-  ${css.size(10)};
-  fill: ${theme('article.digest')};
-  margin-right: 6px;
 `

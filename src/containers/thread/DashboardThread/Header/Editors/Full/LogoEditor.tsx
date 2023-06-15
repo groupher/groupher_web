@@ -13,7 +13,6 @@ import {
   RightWrapper,
   Note,
   InfoIcon,
-  ArrowIcon,
   Inputer,
 } from '../../../styles/footer/editors/group/logo_editor'
 
@@ -36,7 +35,6 @@ const LogoEditor: FC<TProps> = ({ onHide }) => {
 
         <SpaceGrow />
         <Button left={-3} size="small" noBorder ghost onClick={() => onHide()}>
-          <ArrowIcon />
           收起
         </Button>
       </LeftWrapper>
