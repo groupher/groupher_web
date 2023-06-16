@@ -40,5 +40,5 @@ export const Hint = styled.span`
 export const ActionWrapper = styled.div<{ minimal: boolean }>`
   ${css.flex('align-center')};
 
-  ${({ minimal }) => (minimal ? ' transform: scale(0.85);  margin-right: -12px;' : '')};
+  ${({ minimal }) => (minimal ? ' transform: scale(0.85);  margin-right: -8px;' : '')};
 `

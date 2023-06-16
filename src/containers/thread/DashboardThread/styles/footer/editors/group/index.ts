@@ -38,9 +38,9 @@ export const BottomWrapper = styled.div`
 `
 export const ActionRow = styled.div`
   ${css.flex('justify-start', 'align-center')};
-  width: 100%;
+  width: 250px;
   margin-bottom: 30px;
-  margin-left: -2px;
+  margin-left: -1px;
 `
 
 export const PlusIcon = styled(PlusSVG)`

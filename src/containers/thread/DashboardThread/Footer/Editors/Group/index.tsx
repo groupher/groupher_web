@@ -97,7 +97,6 @@ const Group: FC<TProps> = ({ settings }) => {
         <ActionRow>
           {editingGroup !== null && editingGroupIndex === null ? (
             <GroupInputer
-              width="30%"
               value={editingGroup}
               onChange={updateEditingGroup}
               onConfirm={confirmGroupAdd}

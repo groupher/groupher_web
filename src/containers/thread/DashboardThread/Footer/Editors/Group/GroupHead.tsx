@@ -47,7 +47,8 @@ const GroupHead: FC<TProps> = ({
   isEdgeLeft,
   isEdgeRight,
 }) => {
-  if (editingGroup && editingGroupIndex === curGroupIndex) {
+  // null is void empty checked when input value is ""
+  if (editingGroup !== null && editingGroupIndex === curGroupIndex) {
     return (
       <Wrapper>
         <GroupInputer

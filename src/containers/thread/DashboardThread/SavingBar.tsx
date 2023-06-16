@@ -21,6 +21,7 @@ type TProps = {
   loading?: boolean
   isTouched?: boolean
   minimal?: boolean
+  disabled?: boolean
   onCancel?: () => void
   onConfirm?: () => void
 } & TSpace
@@ -33,6 +34,7 @@ const SavingBar: FC<TProps> = ({
   isTouched = false,
   loading = false,
   minimal = false,
+  disabled = false,
   onCancel = log,
   onConfirm = log,
   ...restProps
@@ -47,6 +49,7 @@ const SavingBar: FC<TProps> = ({
             <YesOrNoButtons
               cancelText="取消"
               confirmText="确定"
+              disabled={disabled}
               loading={loading}
               space={4}
               onCancel={() => {
@@ -84,6 +87,7 @@ const SavingBar: FC<TProps> = ({
       <ActionWrapper minimal={minimal}>
         <YesOrNoButtons
           cancelText="取消"
+          disabled={disabled}
           confirmText="确定"
           loading={loading}
           space={4}
