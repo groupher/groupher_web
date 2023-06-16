@@ -102,13 +102,9 @@ export const EditWrapper = styled.div`
   border-image-slice: 1;
 `
 export const EditFooter = styled.div`
-  ${css.flex()};
+  ${css.flex('justify-center')};
   width: 100%;
-  gap: 0 6px;
-  margin-bottom: 8px;
-  margin-bottom: 10px;
 `
-
 export const Label = styled.div`
   ${css.flex('align-center')};
   font-size: 13px;

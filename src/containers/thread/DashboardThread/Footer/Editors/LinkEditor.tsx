@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 
 import type { TChangeMode, TLinkItem } from '@/spec'
 
@@ -7,7 +7,8 @@ import { buildLog } from '@/utils/logger'
 import { Space, SpaceGrow } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'
 import Linker from '@/widgets/Linker'
-import Button from '@/widgets/Buttons/Button'
+import CancelButton from '@/widgets/Buttons/CancelButton'
+import SavingBar from '../../SavingBar'
 
 import { EMPTY_LINK_ITEM } from '../../constant'
 import LinkMenu from './LinkMenu'
@@ -69,8 +70,26 @@ const LinkEditor: FC<TProps> = ({
   moveLink2Top = log,
   moveLink2Bottom = log,
 }) => {
-  // const isEditExisting = linkItem
+  const [snapshot, setSnapshot] = useState<TLinkItem | null>(null)
+
   const editing = linkItem.group === editingLink?.group && linkItem.index === editingLink?.index
+
+  useEffect(() => {
+    return () => {
+      setSnapshot(null)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!snapshot && editing && editingLink) {
+      setSnapshot(editingLink)
+    }
+  }, [editing, snapshot, editingLink])
+
+  const isTouched =
+    editing &&
+    snapshot &&
+    (snapshot?.title !== editingLink?.title || snapshot?.link !== editingLink?.link)
 
   return (
     <Wrapper>
@@ -130,14 +149,16 @@ const LinkEditor: FC<TProps> = ({
           </EditItem>
 
           <EditFooter>
-            <SpaceGrow />
-            <Button ghost size="small" noBorder onClick={() => cancelLinkEditing()}>
-              取消
-            </Button>
-            <Button size="small" onClick={() => confirmLinkEditing()}>
-              {mode === CHANGE_MODE.CREATE ? '确定' : '更新'}
-            </Button>
-            <SpaceGrow />
+            {isTouched ? (
+              <SavingBar
+                onConfirm={confirmLinkEditing}
+                onCancel={cancelLinkEditing}
+                isTouched
+                minimal
+              />
+            ) : (
+              <CancelButton onClick={cancelLinkEditing} top={5} left={-15} />
+            )}
           </EditFooter>
         </EditWrapper>
       )}
