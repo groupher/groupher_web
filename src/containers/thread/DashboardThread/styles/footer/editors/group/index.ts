@@ -6,36 +6,6 @@ import PlusSVG from '@/icons/Plus'
 export const Wrapper = styled.div`
   ${css.flexColumn('align-start', 'justify-between')};
 `
-export const TopWrapper = styled.div`
-  ${css.flex('align-start')};
-  width: 100%;
-  padding: 10px 20px;
-  padding-left: 0;
-  margin-bottom: 50px;
-`
-export const TopLeft = styled.div`
-  width: 45%;
-`
-export const TopRight = styled.div`
-  ${css.flexColumn('align-both')};
-  flex-grow: 1;
-  min-height: 145px;
-  height: auto;
-  border-left: 1px solid transparent;
-  border-image: linear-gradient(
-    0.51turn,
-    transparent,
-    ${theme('divider')},
-    ${theme('divider')},
-    ${theme('divider')},
-    transparent
-  );
-
-  border-image-slice: 1;
-`
-export const BottomWrapper = styled.div`
-  width: 100%;
-`
 export const ActionRow = styled.div`
   ${css.flex('justify-start', 'align-center')};
   width: 250px;
