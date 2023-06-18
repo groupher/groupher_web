@@ -46,7 +46,7 @@ const Simple: FC<TProps> = ({ settings }) => {
       <LeftPart ref={parent}>
         {groupedLinks[groupKeys[0]].map((item: TLinkItem) => (
           <LinkEditor
-            key={`${item.title}`}
+            key={item.title}
             mode={editingLinkMode}
             linkItem={item}
             editingLink={editingLink}
