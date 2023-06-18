@@ -1,61 +1,49 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { keys } from 'ramda'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import type { TLinkItem } from '@/spec'
 import { sortByIndex, groupByKey } from '@/utils/helper'
 
-import SocialEditor from '@/widgets/SocialEditor'
+import Button from '@/widgets/Buttons/Button'
 
-import BrandInfo from './BrandInfo'
 import LinkEditor from '../LinkEditor'
-import TitleEditor from './TitleEditor'
 
-import type { THeaderEditType, TFooterSettings } from '../../../spec'
-import { HEADER_EDIT_TYPE } from '../../../constant'
+import type { TFooterSettings } from '../../../spec'
 
 import {
   Wrapper,
-  Title,
-  LeftWrapper,
-  CenterWrapper,
-  RightWrapper,
+  LeftPart,
+  RightPart,
+  NoteTitle,
+  NoteP,
+  Adder,
+  PlusIcon,
 } from '../../../styles/footer/editors/simple'
-import { moveLinkUp, moveLinkDown, moveLink2Top, moveLink2Bottom } from '../../../logic/links'
+import {
+  moveLinkUp,
+  moveLinkDown,
+  moveLink2Top,
+  moveLink2Bottom,
+  add2Group,
+} from '../../../logic/links'
 
 type TProps = {
   settings: TFooterSettings
 }
 
 const Simple: FC<TProps> = ({ settings }) => {
-  const [editMode, setEditMode] = useState(false)
-  const [editType, setEditType] = useState<THeaderEditType>(HEADER_EDIT_TYPE.LOGO)
-
   const [parent] = useAutoAnimate({ duration: 220 })
 
   const { footerLinks: links, editingLink, editingLinkMode } = settings
 
   // @ts-ignore
   const groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
-  const groupKeys = keys(groupedLinks)
+  const groupKeys = keys(groupedLinks) as string[]
 
   return (
     <Wrapper>
-      <LeftWrapper>
-        {!editMode && (
-          <BrandInfo
-            onEdit={(type) => {
-              setEditType(type)
-              setEditMode(true)
-            }}
-            editable
-          />
-        )}
-        {editMode && editType === HEADER_EDIT_TYPE.TITLE && (
-          <TitleEditor onHide={() => setEditMode(false)} />
-        )}
-      </LeftWrapper>
-      <CenterWrapper ref={parent}>
+      <LeftPart ref={parent}>
         {groupedLinks[groupKeys[0]].map((item: TLinkItem) => (
           <LinkEditor
             key={`${item.title}`}
@@ -68,11 +56,26 @@ const Simple: FC<TProps> = ({ settings }) => {
             moveLink2Bottom={moveLink2Bottom}
           />
         ))}
-      </CenterWrapper>
-      <RightWrapper>
-        <Title>社交媒体</Title>
-        <SocialEditor width="200px" withTitle={false} top={12} left={-5} />
-      </RightWrapper>
+
+        {!editingLink && (
+          <Adder>
+            <Button
+              size="small"
+              ghost
+              space={8}
+              onClick={() => add2Group(groupKeys[0], groupedLinks[groupKeys[0]].length)}
+            >
+              <PlusIcon />
+              添加项&nbsp;
+            </Button>
+          </Adder>
+        )}
+      </LeftPart>
+      <RightPart>
+        <NoteTitle>注意事项</NoteTitle>
+        <NoteP>改变顺序后可通过上方模板预览效果。</NoteP>
+        <NoteP>不同模板间切换时，本组（第一组）链接组会被保留。</NoteP>
+      </RightPart>
     </Wrapper>
   )
 }

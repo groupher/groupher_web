@@ -2,31 +2,48 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
 
+import PlusSVG from '@/icons/Plus'
+
 export const Wrapper = styled.div`
-  ${css.flex('align-start', 'justify-between')};
+  ${css.flex('justify-between')};
 `
-export const Title = styled.div`
-  color: ${theme('article.title')};
-  font-size: 14px;
-`
-export const LeftWrapper = styled.div`
-  /* border: 1px solid;
-  border-color: ${theme('divider')}; */
-  flex-grow: 1;
-  height: 200px;
-  padding: 10px 20px;
-  padding-left: 5px;
-`
-export const CenterWrapper = styled.div`
+export const LeftPart = styled.div`
   ${css.flexColumn()};
-  width: 280px;
-  height: auto;
+  width: 260px;
   gap: 25px 0;
-  padding: 10px 20px;
-  margin-right: 40px;
 `
-export const RightWrapper = styled.div`
-  ${css.flexColumn('align-start')};
-  width: 200px;
-  margin-top: 8px;
+
+export const RightPart = styled.div`
+  width: 220px;
+  margin-right: 15px;
+`
+export const NoteTitle = styled.div`
+  color: ${theme('article.digest')};
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: bold;
+`
+export const NoteP = styled.p`
+  font-size: 12px;
+  color: ${theme('article.digest')};
+  margin-bottom: 12px;
+  opacity: 0.8;
+`
+export const Adder = styled.div`
+  width: 120px;
+  margin-left: -5px;
+  transform: scale(0.95);
+  opacity: 0.8;
+
+  ${Wrapper}:hover & {
+    opacity: 1;
+  }
+
+  transition: all 0.25s;
+`
+
+export const PlusIcon = styled(PlusSVG)`
+  ${css.size(12)};
+  fill: ${theme('article.digest')};
+  margin-right: 6px;
 `
