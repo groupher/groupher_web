@@ -18,7 +18,7 @@ const Header: FC<TProps> = ({ settings, touched }) => {
       <Templates settings={settings} isTouched={touched.headerLayout} />
       <br />
       <br />
-      <Editor headerLayout={settings.headerLayout} />
+      <Editor settings={settings} />
     </Wrapper>
   )
 }

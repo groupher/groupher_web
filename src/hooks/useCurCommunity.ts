@@ -8,7 +8,7 @@ import type { TCommunity } from '@/spec'
 import BStore from '@/utils/bstore'
 import { Global } from '@/utils/helper'
 
-const initState = { raw: HCN }
+const initState = { raw: HCN, threads: [] }
 
 const useCurCommunity = (): TCommunity | null => {
   const [community, setCommunity] = useState(initState)
