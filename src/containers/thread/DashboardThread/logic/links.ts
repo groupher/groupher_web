@@ -5,6 +5,7 @@ import { CHANGE_MODE } from '@/constant/mode'
 import { ROUTE } from '@/constant/route'
 import { sortByIndex, groupByKey } from '@/utils/helper'
 
+import type { TMoveLinkDir } from '../spec'
 import { ONE_LINK_GROUP, EMPTY_LINK_ITEM, MORE_GROUP } from '../constant'
 import type { TStore } from '../store'
 
@@ -154,7 +155,7 @@ const _moveAboutLink2Bottom = (): void => {
     headerSettings.headerLinks,
   )
 
-  moveLink2Bottom(aboutLink)
+  moveLink(aboutLink, 'bottom')
 }
 
 const _keepMoreGroup2EndIfNeed = (): void => {
@@ -335,11 +336,20 @@ const _moveLink2Edge = (link: TLinkItem, opt: 'top' | 'bottom'): void => {
   store.mark({ [curPageLinksKey.links]: [...restLinks, ..._reindex(newLinks)] })
 }
 
-export const moveLinkUp = (link: TLinkItem): void => _moveLink(link, 'up')
-export const moveLinkDown = (link: TLinkItem): void => _moveLink(link, 'down')
+export const moveLink = (link: TLinkItem, dir: TMoveLinkDir): void => {
+  switch (dir) {
+    case 'up':
+      return _moveLink(link, 'up')
+    case 'down':
+      return _moveLink(link, 'down')
+    case 'top':
+      return _moveLink2Edge(link, 'top')
+    case 'bottom':
+      return _moveLink2Edge(link, 'bottom')
 
-export const moveLink2Top = (link: TLinkItem): void => _moveLink2Edge(link, 'top')
-export const moveLink2Bottom = (link: TLinkItem): void => _moveLink2Edge(link, 'bottom')
+    default:
+  }
+}
 
 /**
  * move group actions

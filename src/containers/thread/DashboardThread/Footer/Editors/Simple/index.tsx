@@ -20,13 +20,7 @@ import {
   Adder,
   PlusIcon,
 } from '../../../styles/footer/editors/simple'
-import {
-  moveLinkUp,
-  moveLinkDown,
-  moveLink2Top,
-  moveLink2Bottom,
-  add2Group,
-} from '../../../logic/links'
+import { add2Group } from '../../../logic/links'
 
 type TProps = {
   settings: TFooterSettings
@@ -50,10 +44,6 @@ const Simple: FC<TProps> = ({ settings }) => {
             mode={editingLinkMode}
             linkItem={item}
             editingLink={editingLink}
-            moveLinkUp={moveLinkUp}
-            moveLinkDown={moveLinkDown}
-            moveLink2Top={moveLink2Top}
-            moveLink2Bottom={moveLink2Bottom}
           />
         ))}
 

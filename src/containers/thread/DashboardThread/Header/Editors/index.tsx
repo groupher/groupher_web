@@ -34,11 +34,7 @@ import {
   ItemsWrapper,
 } from '../../styles/header/editors'
 import {
-  moveLinkUp,
   deleteGroup,
-  moveLinkDown,
-  moveLink2Top,
-  moveLink2Bottom,
   moveGroup2Left,
   moveGroup2Right,
   moveGroup2EdgeLeft,
@@ -149,10 +145,6 @@ const Editor: FC<TProps> = ({ settings }) => {
                         mode={editingLinkMode}
                         linkItem={item as TLinkItem}
                         editingLink={editingLink}
-                        moveLinkUp={moveLinkUp}
-                        moveLinkDown={moveLinkDown}
-                        moveLink2Top={moveLink2Top}
-                        moveLink2Bottom={moveLink2Bottom}
                         isFirst={index === 0}
                         isLast={index === curGroupLinks.length - 1}
                         disableSetting={

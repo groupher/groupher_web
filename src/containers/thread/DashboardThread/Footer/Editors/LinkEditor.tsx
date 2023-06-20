@@ -36,6 +36,7 @@ import {
   updateEditingLink,
   confirmLinkEditing,
   updateInGroup,
+  moveLink,
 } from '../../logic/links'
 import { CHANGE_MODE } from '@/constant/mode'
 
@@ -50,12 +51,6 @@ type TProps = {
   isLast?: boolean
   mode?: TChangeMode
   disableSetting?: boolean
-
-  moveLinkUp?: (linkItem: TLinkItem) => void
-  moveLinkDown?: (linkItem: TLinkItem) => void
-
-  moveLink2Top?: (linkItem: TLinkItem) => void
-  moveLink2Bottom?: (linkItem: TLinkItem) => void
 }
 
 const LinkEditor: FC<TProps> = ({
@@ -66,11 +61,6 @@ const LinkEditor: FC<TProps> = ({
   isLast = false,
   mode = CHANGE_MODE.CREATE,
   disableSetting = false,
-
-  moveLinkUp = log,
-  moveLinkDown = log,
-  moveLink2Top = log,
-  moveLink2Bottom = log,
 }) => {
   const [snapshot, setSnapshot] = useState<TLinkItem | null>(null)
 
@@ -103,8 +93,8 @@ const LinkEditor: FC<TProps> = ({
           </Label>
           <SpaceGrow />
           <ActionWrapper editing={editing}>
-            {!isFirst && <ArrowUpIcon onClick={() => moveLinkUp(linkItem)} />}
-            {!isLast && <ArrowDownIcon onClick={() => moveLinkDown(linkItem)} />}
+            {!isFirst && <ArrowUpIcon onClick={() => moveLink(linkItem, 'up')} />}
+            {!isLast && <ArrowDownIcon onClick={() => moveLink(linkItem, 'down')} />}
             <EditPenIcon onClick={() => updateInGroup(linkItem)} />
             {!disableSetting && (
               <Tooltip
@@ -112,8 +102,8 @@ const LinkEditor: FC<TProps> = ({
                   <LinkMenu
                     isFirst={isFirst}
                     isLast={isLast}
-                    move2Top={() => moveLink2Top(linkItem)}
-                    move2Bottom={() => moveLink2Bottom(linkItem)}
+                    move2Top={() => moveLink(linkItem, 'top')}
+                    move2Bottom={() => moveLink(linkItem, 'bottom')}
                     onDelete={() => deleteLink(linkItem)}
                   />
                 }

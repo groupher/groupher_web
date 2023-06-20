@@ -259,3 +259,5 @@ export type TCurPageLinksKey = {
   links: 'footerLinks' | 'headerLinks'
   settings: 'footerSettings' | 'headerSettings'
 }
+
+export type TMoveLinkDir = 'up' | 'down' | 'top' | 'bottom'
