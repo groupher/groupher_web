@@ -1,4 +1,4 @@
-import { keys, find, findIndex, clone, remove, filter, reject, isEmpty } from 'ramda'
+import { keys, find, findIndex, clone, remove, filter, reject } from 'ramda'
 
 import type { TLinkItem, TGroupedLinks } from '@/spec'
 import { CHANGE_MODE } from '@/constant/mode'
