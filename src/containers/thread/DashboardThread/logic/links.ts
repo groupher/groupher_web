@@ -2,6 +2,7 @@ import { keys, find, findIndex, clone, remove, filter, reject } from 'ramda'
 
 import type { TLinkItem, TGroupedLinks } from '@/spec'
 import { CHANGE_MODE } from '@/constant/mode'
+import { ROUTE } from '@/constant/route'
 import { sortByIndex, groupByKey } from '@/utils/helper'
 
 import { ONE_LINK_GROUP, EMPTY_LINK_ITEM, MORE_GROUP } from '../constant'
@@ -43,10 +44,12 @@ export const deleteLink = (linkItem: TLinkItem): void => {
   const { curPageLinksKey } = store
   const links = store[curPageLinksKey.settings][curPageLinksKey.links]
 
-  const linksAfter = reject(
+  let linksAfter = reject(
     (link: TLinkItem) => link.group === linkItem.group && link.index === linkItem.index,
     links,
   )
+
+  linksAfter = _emptyLinksIfNedd(linksAfter)
 
   store.mark({ [curPageLinksKey.links]: _reindex(linksAfter) })
 }
@@ -55,8 +58,26 @@ export const deleteGroup = (groupIndex: number): void => {
   const { curPageLinksKey } = store
   const links = store[curPageLinksKey.settings][curPageLinksKey.links]
 
-  const linksAfter = reject((link: TLinkItem) => link.groupIndex === groupIndex, links)
+  let linksAfter = reject((link: TLinkItem) => link.groupIndex === groupIndex, links)
+
+  linksAfter = _emptyLinksIfNedd(linksAfter)
+
   store.mark({ [curPageLinksKey.links]: _reindexGroup(linksAfter) })
+}
+
+// if only fold about links leave, empty them all
+const _emptyLinksIfNedd = (links: TLinkItem[]): TLinkItem[] => {
+  const { curPageLinksKey } = store
+
+  if (
+    curPageLinksKey.links === 'headerLinks' &&
+    links.length === 1 &&
+    links[0].group === MORE_GROUP
+  ) {
+    return []
+  }
+
+  return links
 }
 
 export const cancelLinkEditing = (): void => {
@@ -68,10 +89,12 @@ export const cancelLinkEditing = (): void => {
     return
   }
 
-  const linksAfter = reject(
+  let linksAfter = reject(
     (link: TLinkItem) => link.group === editingLink.group && link.index === editingLink.index,
     links,
   )
+
+  linksAfter = _emptyLinksIfNedd(linksAfter)
 
   store.mark({ [curPageLinksKey.links]: linksAfter, editingLink: null })
 }
@@ -115,11 +138,27 @@ export const confirmLinkEditing = (): void => {
 
   store.mark({ [curPageLinksKey.links]: linksAfter, editingLink: null })
 
-  _keepMoreGroupIfNeed()
+  _keepMoreGroup2EndIfNeed()
+
+  if (newAddLink.group === MORE_GROUP) {
+    _moveAboutLink2Bottom()
+  }
 }
 
-const _keepMoreGroupIfNeed = (): void => {
-  const { curPageLinksKey } = store
+const _moveAboutLink2Bottom = (): void => {
+  const { curPageLinksKey, headerSettings } = store
+  if (curPageLinksKey.links !== 'headerLinks') return
+
+  const aboutLink = find(
+    (item) => item.group === MORE_GROUP && item.title === '关于',
+    headerSettings.headerLinks,
+  )
+
+  moveLink2Bottom(aboutLink)
+}
+
+const _keepMoreGroup2EndIfNeed = (): void => {
+  const { curPageLinksKey, curCommunity } = store
   if (curPageLinksKey.links !== 'headerLinks') return
 
   const links = store.headerSettings.headerLinks
@@ -134,7 +173,7 @@ const _keepMoreGroupIfNeed = (): void => {
     const newLinkItem = {
       ...EMPTY_LINK_ITEM,
       title: '关于',
-      link: '/home/about',
+      link: `${curCommunity.raw}/${ROUTE.ABOUT}`,
       group: MORE_GROUP,
       // make sure the "more" gorup is always in the end
       groupIndex: groupKeys.length + 2,
@@ -212,7 +251,7 @@ export const confirmGroupAdd = (): void => {
   const linksAfter = [...links, newLinkItem]
 
   store.mark({ editingGroup: null, editingLink: newLinkItem, [curPageLinksKey.links]: linksAfter })
-  _keepMoreGroupIfNeed()
+  _keepMoreGroup2EndIfNeed()
 }
 
 export const confirmGroupUpdate = (): void => {
@@ -224,10 +263,6 @@ export const confirmGroupUpdate = (): void => {
   // const linksAfter = clone(_reindexGroup(links))
   const linksAfter = clone(links)
 
-  console.log('## editingGroup: ', editingGroup)
-  console.log('## editingGroupIndex: ', editingGroupIndex)
-  console.log('## linksAfter before: ', linksAfter)
-
   for (let i = 0; i < links.length; i += 1) {
     const linkItem = links[i]
 
@@ -235,8 +270,6 @@ export const confirmGroupUpdate = (): void => {
       linksAfter[i].group = editingGroup
     }
   }
-
-  console.log('## updated linksAfter: ', linksAfter)
 
   store.mark({ editingGroup: null, editingGroupIndex: null, [curPageLinksKey.links]: linksAfter })
 }

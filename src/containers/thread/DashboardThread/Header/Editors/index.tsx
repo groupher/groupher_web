@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import { FC } from 'react'
-import { keys, startsWith } from 'ramda'
+import { keys, startsWith, filter, length } from 'ramda'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import type { TLinkItem } from '@/spec'
@@ -9,7 +9,7 @@ import { sortByIndex, groupByKey } from '@/utils/helper'
 import Button from '@/widgets/Buttons/Button'
 
 import type { THeaderSettings } from '../../spec'
-import { ONE_LINK_GROUP } from '../../constant'
+import { MORE_GROUP, ONE_LINK_GROUP } from '../../constant'
 
 import LinkEditor from '../../Footer/Editors/LinkEditor'
 import GroupInputer from '../../Footer/Editors/GroupInputer'
@@ -67,6 +67,9 @@ const Editor: FC<TProps> = ({ settings }) => {
     editingGroupIndex,
   } = settings
 
+  const isAboutLinkFold =
+    length(filter((item) => item.title !== '' && item.group !== MORE_GROUP, links)) >= 1
+
   // @ts-ignore
   const groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
   const groupKeys = keys(groupedLinks) as string[]
@@ -75,7 +78,7 @@ const Editor: FC<TProps> = ({ settings }) => {
     <Wrapper>
       <TopWrapper>
         <LeftPart>
-          <FixedLinks />
+          <FixedLinks isAboutLinkFold={isAboutLinkFold} />
         </LeftPart>
         <RightPart>
           <NoteTitle>注意事项</NoteTitle>
@@ -113,6 +116,15 @@ const Editor: FC<TProps> = ({ settings }) => {
           {groupKeys.map((groupKey: string, index) => {
             const curGroupLinks = groupedLinks[groupKey]
 
+            if (
+              // isAboutLinkFold
+              links.length === 2 &&
+              links[0].title === '' &&
+              curGroupLinks[0].group === MORE_GROUP
+            ) {
+              return null
+            }
+
             return (
               <ColumnWrapper key={groupKey}>
                 <ItemsWrapper ref={animateRef}>
@@ -129,21 +141,26 @@ const Editor: FC<TProps> = ({ settings }) => {
                     isEdgeRight={index === groupKeys.length - 2}
                     onDelete={() => deleteGroup(curGroupLinks[0].groupIndex)}
                   />
-                  {curGroupLinks.map((item, index) => (
-                    <LinkEditor
-                      // must use item.title as key, or the sort animation will fail, wired
-                      key={item.title}
-                      mode={editingLinkMode}
-                      linkItem={item as TLinkItem}
-                      editingLink={editingLink}
-                      moveLinkUp={moveLinkUp}
-                      moveLinkDown={moveLinkDown}
-                      moveLink2Top={moveLink2Top}
-                      moveLink2Bottom={moveLink2Bottom}
-                      isFirst={index === 0}
-                      isLast={index === curGroupLinks.length - 1}
-                    />
-                  ))}
+                  {curGroupLinks.map((item, index) => {
+                    return (
+                      <LinkEditor
+                        // must use item.title as key, or the sort animation will fail, wired
+                        key={item.title}
+                        mode={editingLinkMode}
+                        linkItem={item as TLinkItem}
+                        editingLink={editingLink}
+                        moveLinkUp={moveLinkUp}
+                        moveLinkDown={moveLinkDown}
+                        moveLink2Top={moveLink2Top}
+                        moveLink2Bottom={moveLink2Bottom}
+                        isFirst={index === 0}
+                        isLast={index === curGroupLinks.length - 1}
+                        disableSetting={
+                          item.group === MORE_GROUP && index === curGroupLinks.length - 1
+                        }
+                      />
+                    )
+                  })}
                 </ItemsWrapper>
 
                 {!editingLink && !startsWith(ONE_LINK_GROUP, groupKey) && (

@@ -49,6 +49,7 @@ type TProps = {
   isFirst?: boolean
   isLast?: boolean
   mode?: TChangeMode
+  disableSetting?: boolean
 
   moveLinkUp?: (linkItem: TLinkItem) => void
   moveLinkDown?: (linkItem: TLinkItem) => void
@@ -64,6 +65,7 @@ const LinkEditor: FC<TProps> = ({
   isFirst = false,
   isLast = false,
   mode = CHANGE_MODE.CREATE,
+  disableSetting = false,
 
   moveLinkUp = log,
   moveLinkDown = log,
@@ -104,24 +106,26 @@ const LinkEditor: FC<TProps> = ({
             {!isFirst && <ArrowUpIcon onClick={() => moveLinkUp(linkItem)} />}
             {!isLast && <ArrowDownIcon onClick={() => moveLinkDown(linkItem)} />}
             <EditPenIcon onClick={() => updateInGroup(linkItem)} />
-            <Tooltip
-              content={
-                <LinkMenu
-                  isFirst={isFirst}
-                  isLast={isLast}
-                  move2Top={() => moveLink2Top(linkItem)}
-                  move2Bottom={() => moveLink2Bottom(linkItem)}
-                  onDelete={() => deleteLink(linkItem)}
-                />
-              }
-              placement="bottom-end"
-              trigger="click"
-              offset={[4, 0]}
-              hideOnClick
-              noPadding
-            >
-              <SettingIcon />
-            </Tooltip>
+            {!disableSetting && (
+              <Tooltip
+                content={
+                  <LinkMenu
+                    isFirst={isFirst}
+                    isLast={isLast}
+                    move2Top={() => moveLink2Top(linkItem)}
+                    move2Bottom={() => moveLink2Bottom(linkItem)}
+                    onDelete={() => deleteLink(linkItem)}
+                  />
+                }
+                placement="bottom-end"
+                trigger="click"
+                offset={[4, 0]}
+                hideOnClick
+                noPadding
+              >
+                <SettingIcon />
+              </Tooltip>
+            )}
           </ActionWrapper>
         </ReadOnlyHeader>
         <SpaceGrow />

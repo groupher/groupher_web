@@ -1,6 +1,8 @@
 import { FC } from 'react'
+import { reject } from 'ramda'
 
 import type { TCommunityThread } from '@/spec'
+import { ROUTE } from '@/constant/route'
 
 import useCurCommunity from '@/hooks/useCurCommunity'
 
@@ -10,10 +12,15 @@ import {
   Note,
   Item,
   Title,
+  ArrowIcon,
   LinkRaw,
 } from '../../styles/header/editors/fixed_links'
 
-const FixedLinks: FC = () => {
+type TProps = {
+  isAboutLinkFold: boolean
+}
+
+const FixedLinks: FC<TProps> = ({ isAboutLinkFold }) => {
   const { raw, threads } = useCurCommunity()
 
   return (
@@ -21,14 +28,31 @@ const FixedLinks: FC = () => {
       <Note>固定链接:</Note>
 
       <ItemsWrapper>
-        {threads.map((item: TCommunityThread) => (
-          <Item key={item.raw}>
-            <Title>{item.title}</Title>
-            <LinkRaw>
-              /{raw}/{item.raw}
-            </LinkRaw>
+        {reject((t: TCommunityThread) => t.raw === ROUTE.ABOUT, threads).map(
+          (item: TCommunityThread) => (
+            <Item key={item.raw}>
+              <Title>{item.title}</Title>
+              <LinkRaw>
+                /{raw}/{item.raw}
+              </LinkRaw>
+            </Item>
+          ),
+        )}
+
+        {isAboutLinkFold ? (
+          <Item>
+            <Title>
+              更多
+              <ArrowIcon />
+            </Title>
+            <LinkRaw>关于</LinkRaw>
           </Item>
-        ))}
+        ) : (
+          <Item>
+            <Title>关于</Title>
+            <LinkRaw>/{raw}/about</LinkRaw>
+          </Item>
+        )}
       </ItemsWrapper>
     </Wrapper>
   )
