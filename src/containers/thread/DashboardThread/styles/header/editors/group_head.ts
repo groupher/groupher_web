@@ -10,6 +10,7 @@ import { ColumnWrapper } from '.'
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
   width: 100%;
+  height: 22px;
 `
 export const Title = styled.div`
   ${css.flex('align-center')};
@@ -18,8 +19,7 @@ export const Title = styled.div`
 `
 export const HintTitle = styled(Title)`
   color: ${theme('article.ditest')};
-  line-height: 20px;
-  margin-bottom: 2px;
+  margin-top: 4px;
   font-size: 12px;
   font-style: italic;
   opacity: 0.6;

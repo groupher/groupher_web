@@ -26,6 +26,9 @@ export const BottomWrapper = styled.div`
   /* ${css.flex('justify-between')}; */
   /* margin-bottom: 20px; */
 `
+export const GroupInputerWrapper = styled.div`
+  width: 250px;
+`
 export const LeftPart = styled.div`
   ${css.flexColumn()};
   width: 260px;
@@ -81,7 +84,7 @@ export const LinkGroup = styled.div`
   gap: 30px;
 `
 export const ColumnWrapper = styled.div`
-  width: 28%;
+  width: 30%;
   height: 100%;
 `
 export const ItemsWrapper = styled.div`

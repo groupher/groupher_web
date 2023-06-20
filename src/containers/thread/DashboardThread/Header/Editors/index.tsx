@@ -12,6 +12,7 @@ import type { THeaderSettings } from '../../spec'
 import { ONE_LINK_GROUP } from '../../constant'
 
 import LinkEditor from '../../Footer/Editors/LinkEditor'
+import GroupInputer from '../../Footer/Editors/GroupInputer'
 
 import FixedLinks from './FixedLinks'
 import GroupHead from './GroupHead'
@@ -20,6 +21,7 @@ import {
   Wrapper,
   TopWrapper,
   BottomWrapper,
+  GroupInputerWrapper,
   LeftPart,
   RightPart,
   NoteTitle,
@@ -43,6 +45,10 @@ import {
   moveGroup2EdgeRight,
   add2Group,
   addHeaderLinkGroup,
+  triggerGroupAdd,
+  updateEditingGroup,
+  confirmGroupAdd,
+  cancelGroupChange,
 } from '../../logic/links'
 
 type TProps = {
@@ -60,8 +66,6 @@ const Editor: FC<TProps> = ({ settings }) => {
     editingGroup,
     editingGroupIndex,
   } = settings
-
-  console.log('## header links: ', links)
 
   // @ts-ignore
   const groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
@@ -82,19 +86,23 @@ const Editor: FC<TProps> = ({ settings }) => {
       </TopWrapper>
 
       <BottomWrapper>
-        {!editingLink && (
+        {editingGroup !== null && editingGroupIndex === null ? (
+          <GroupInputerWrapper>
+            <GroupInputer
+              value={editingGroup}
+              onChange={updateEditingGroup}
+              onConfirm={confirmGroupAdd}
+              onCancel={cancelGroupChange}
+            />
+          </GroupInputerWrapper>
+        ) : (
           <Adder>
             <Button size="small" onClick={addHeaderLinkGroup} space={8} ghost>
               <PlusIcon />
               链接&nbsp;
             </Button>
             <Slash>/</Slash>
-            <Button
-              size="small"
-              onClick={() => add2Group(groupKeys[0], groupedLinks[groupKeys[0]].length)}
-              space={10}
-              ghost
-            >
+            <Button size="small" onClick={triggerGroupAdd} space={10} ghost>
               <PlusIcon />
               链接组&nbsp;
             </Button>

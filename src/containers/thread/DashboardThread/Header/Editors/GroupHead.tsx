@@ -40,7 +40,11 @@ const GroupTitle: FC<TGroupTitle> = ({ title }) => {
     )
   }
 
-  return <Title>{title}</Title>
+  return (
+    <Title>
+      {title} <ArrowIcon />
+    </Title>
+  )
 }
 
 type TProps = {
@@ -91,7 +95,7 @@ const GroupHead: FC<TProps> = ({
 
       <SpaceGrow />
 
-      {!startsWith(ONE_LINK_GROUP, title) && title !== MORE_GROUP && (
+      {!(startsWith(ONE_LINK_GROUP, title) || title === MORE_GROUP) && (
         <EditIcon onClick={() => triggerGroupUpdate(title, curGroupIndex)} />
       )}
 

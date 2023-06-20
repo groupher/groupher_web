@@ -142,15 +142,17 @@ const _keepMoreGroupIfNeed = (): void => {
 
     const linksAfter = [...links, newLinkItem]
 
-    store.mark({ headerLinks: linksAfter })
+    store.mark({ headerLinks: _reindexGroup(linksAfter) })
   } else {
     // make sure the "more" gorup is always in the end
-    const linksAfter = links.map((item) => ({
-      ...item,
-      groupIndex: item.group === MORE_GROUP ? links.length + 2 : item.groupIndex,
-    }))
+    const linksAfter = links.map((item) => {
+      return {
+        ...item,
+        groupIndex: item.group === MORE_GROUP ? links.length + 2 : item.groupIndex,
+      }
+    })
 
-    store.mark({ headerLinks: linksAfter })
+    store.mark({ headerLinks: _reindexGroup(linksAfter) })
   }
 }
 
@@ -166,12 +168,27 @@ export const triggerGroupUpdate = (title: string, index: number): void => {
   store.mark({ editingGroup: title, editingGroupIndex: index })
 }
 
-export const triggerGroupAdd = (): void => store.mark({ editingGroup: '', editingGroupIndex: null })
+export const triggerGroupAdd = (): void => {
+  store.mark({ editingGroup: '', editingGroupIndex: null })
+}
 
 export const cancelGroupChange = (): void => {
   store.mark({ editingGroup: null, editingGroupIndex: null })
 }
 
+/**
+ * header links only
+ */
+// export const addHeaderGroup = () => {
+//   const time = new Date().getTime()
+
+//   store.mark({ editingGroup: `${ONE_LINK_GROUP}_${time}` })
+//   confirmGroupAdd()
+// }
+
+/**
+ * header links only
+ */
 export const addHeaderLinkGroup = () => {
   const time = new Date().getTime()
 
@@ -195,13 +212,21 @@ export const confirmGroupAdd = (): void => {
   const linksAfter = [...links, newLinkItem]
 
   store.mark({ editingGroup: null, editingLink: newLinkItem, [curPageLinksKey.links]: linksAfter })
+  _keepMoreGroupIfNeed()
 }
 
 export const confirmGroupUpdate = (): void => {
   const { curPageLinksKey, editingGroup, editingGroupIndex } = store
   const links = store[curPageLinksKey.settings][curPageLinksKey.links]
 
+  // store.mark({ [curPageLinksKey.links]: _reindexGroup(links) })
+
+  // const linksAfter = clone(_reindexGroup(links))
   const linksAfter = clone(links)
+
+  console.log('## editingGroup: ', editingGroup)
+  console.log('## editingGroupIndex: ', editingGroupIndex)
+  console.log('## linksAfter before: ', linksAfter)
 
   for (let i = 0; i < links.length; i += 1) {
     const linkItem = links[i]
@@ -210,6 +235,8 @@ export const confirmGroupUpdate = (): void => {
       linksAfter[i].group = editingGroup
     }
   }
+
+  console.log('## updated linksAfter: ', linksAfter)
 
   store.mark({ editingGroup: null, editingGroupIndex: null, [curPageLinksKey.links]: linksAfter })
 }
@@ -285,11 +312,12 @@ export const moveLink2Bottom = (link: TLinkItem): void => _moveLink2Edge(link, '
  * move group actions
  */
 
-const _reindexGroup = (targetLinks: TLinkItem[]): TLinkItem[] => {
+const _reindexGroup = (_targetLinks: TLinkItem[]): TLinkItem[] => {
+  // @ts-ignore
+  const targetLinks = clone(sortByIndex(_targetLinks, 'groupIndex'))
+
   const _groupedLinks = groupByKey(targetLinks, 'group')
   const groupKeys = keys(_groupedLinks) as string[]
-
-  console.log('## _reindexGroup')
 
   for (let i = 0; i < groupKeys.length; i += 1) {
     const gkey = groupKeys[i]
@@ -301,7 +329,7 @@ const _reindexGroup = (targetLinks: TLinkItem[]): TLinkItem[] => {
     }
   }
 
-  return targetLinks
+  return targetLinks as TLinkItem[]
 }
 
 const _reindexByGroup = (groupKeys: string[], groupedLinks: TGroupedLinks): TGroupedLinks => {
