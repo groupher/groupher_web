@@ -56,7 +56,7 @@ type TProps = {
 }
 
 const Editor: FC<TProps> = ({ settings }) => {
-  const [animateRef] = useAutoAnimate({ duration: 220 })
+  const [animateRef] = useAutoAnimate()
   const [groupAnimateRef] = useAutoAnimate()
 
   const {
