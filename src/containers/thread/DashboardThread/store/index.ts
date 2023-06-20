@@ -353,7 +353,7 @@ const DashboardThread = T.model('DashboardThread', {
 
       return {
         links: isFooter ? 'footerLinks' : 'headerLinks',
-        settings: isFooter ? 'footerSettings' : 'footerSettings',
+        settings: isFooter ? 'footerSettings' : 'headerSettings',
       }
     },
 

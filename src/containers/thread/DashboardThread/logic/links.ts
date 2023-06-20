@@ -1,10 +1,10 @@
-import { keys, find, findIndex, clone, remove, filter, reject } from 'ramda'
+import { keys, find, findIndex, clone, remove, filter, reject, isEmpty } from 'ramda'
 
 import type { TLinkItem, TGroupedLinks } from '@/spec'
 import { CHANGE_MODE } from '@/constant/mode'
 import { sortByIndex, groupByKey } from '@/utils/helper'
 
-import { EMPTY_LINK_ITEM } from '../constant'
+import { ONE_LINK_GROUP, EMPTY_LINK_ITEM, MORE_GROUP } from '../constant'
 import type { TStore } from '../store'
 
 let store: TStore | undefined
@@ -114,7 +114,44 @@ export const confirmLinkEditing = (): void => {
   ).concat(editingLinkAfter)
 
   store.mark({ [curPageLinksKey.links]: linksAfter, editingLink: null })
-  // TODO: do real network mutation
+
+  _keepMoreGroupIfNeed()
+}
+
+const _keepMoreGroupIfNeed = (): void => {
+  const { curPageLinksKey } = store
+  if (curPageLinksKey.links !== 'headerLinks') return
+
+  const links = store.headerSettings.headerLinks
+
+  const _groupedLinks = groupByKey(links, 'group')
+  const groupKeys = keys(_groupedLinks) as string[]
+
+  const moreGroup = find((item: string) => item === MORE_GROUP, groupKeys)
+
+  // create if no custom link exists
+  if (links.length > 0 && !moreGroup) {
+    const newLinkItem = {
+      ...EMPTY_LINK_ITEM,
+      title: '关于',
+      link: '/home/about',
+      group: MORE_GROUP,
+      // make sure the "more" gorup is always in the end
+      groupIndex: groupKeys.length + 2,
+    }
+
+    const linksAfter = [...links, newLinkItem]
+
+    store.mark({ headerLinks: linksAfter })
+  } else {
+    // make sure the "more" gorup is always in the end
+    const linksAfter = links.map((item) => ({
+      ...item,
+      groupIndex: item.group === MORE_GROUP ? links.length + 2 : item.groupIndex,
+    }))
+
+    store.mark({ headerLinks: linksAfter })
+  }
 }
 
 export const updateEditingLink = (key: string, value: string): void => {
@@ -133,6 +170,13 @@ export const triggerGroupAdd = (): void => store.mark({ editingGroup: '', editin
 
 export const cancelGroupChange = (): void => {
   store.mark({ editingGroup: null, editingGroupIndex: null })
+}
+
+export const addHeaderLinkGroup = () => {
+  const time = new Date().getTime()
+
+  store.mark({ editingGroup: `${ONE_LINK_GROUP}_${time}` })
+  confirmGroupAdd()
 }
 
 export const confirmGroupAdd = (): void => {
@@ -244,6 +288,8 @@ export const moveLink2Bottom = (link: TLinkItem): void => _moveLink2Edge(link, '
 const _reindexGroup = (targetLinks: TLinkItem[]): TLinkItem[] => {
   const _groupedLinks = groupByKey(targetLinks, 'group')
   const groupKeys = keys(_groupedLinks) as string[]
+
+  console.log('## _reindexGroup')
 
   for (let i = 0; i < groupKeys.length; i += 1) {
     const gkey = groupKeys[i]

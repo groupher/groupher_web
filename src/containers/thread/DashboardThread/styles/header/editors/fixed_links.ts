@@ -2,9 +2,7 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
 
-export const Wrapper = styled.div`
-  margin-bottom: 20px;
-`
+export const Wrapper = styled.div``
 export const Note = styled.div`
   color: ${theme('article.title')};
   font-size: 12px;

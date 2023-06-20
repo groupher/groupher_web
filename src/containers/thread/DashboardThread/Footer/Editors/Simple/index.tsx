@@ -66,7 +66,7 @@ const Simple: FC<TProps> = ({ settings }) => {
               onClick={() => add2Group(groupKeys[0], groupedLinks[groupKeys[0]].length)}
             >
               <PlusIcon />
-              添加项&nbsp;
+              链接&nbsp;
             </Button>
           </Adder>
         )}

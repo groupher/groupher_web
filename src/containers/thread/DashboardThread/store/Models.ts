@@ -57,7 +57,6 @@ export const LinkItem = T.model('LinkItem', {
   link: T.opt(T.str, ''),
   group: T.opt(T.str, ''),
   groupIndex: T.opt(T.int, 0),
-  oneChild: T.maybeNull(T.bool),
 })
 
 const File = T.model('File', {
@@ -159,7 +158,7 @@ export const settingsModalFields = {
   footerLayout: T.opt(T.enum(values(FOOTER_LAYOUT)), FOOTER_LAYOUT.GROUP),
 
   footerLinks: T.opt(T.array(LinkItem), DEFAULT_LINK_ITEMS),
-  headerLinks: T.opt(T.array(LinkItem), DEFAULT_LINK_ITEMS),
+  headerLinks: T.opt(T.array(LinkItem), []),
 
   // widgets
   widgetsPrimaryColor: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),

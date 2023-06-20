@@ -358,6 +358,9 @@ export const EMPTY_LINK_ITEM = {
   groupIndex: 0,
 }
 
+export const ONE_LINK_GROUP = '__ONE_LINK_GROUP__'
+export const MORE_GROUP = '__MORE_GROUP__'
+
 export const DEFAULT_LINK_ITEMS = [
   {
     title: '讨论区',

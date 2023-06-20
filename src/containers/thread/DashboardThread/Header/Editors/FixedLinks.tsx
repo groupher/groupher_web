@@ -14,18 +14,18 @@ import {
 } from '../../styles/header/editors/fixed_links'
 
 const FixedLinks: FC = () => {
-  const curCommunity = useCurCommunity()
+  const { raw, threads } = useCurCommunity()
 
   return (
     <Wrapper>
       <Note>固定链接:</Note>
 
       <ItemsWrapper>
-        {curCommunity.threads.map((item: TCommunityThread) => (
+        {threads.map((item: TCommunityThread) => (
           <Item key={item.raw}>
             <Title>{item.title}</Title>
             <LinkRaw>
-              /{curCommunity.raw}/{item.raw}
+              /{raw}/{item.raw}
             </LinkRaw>
           </Item>
         ))}
