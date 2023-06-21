@@ -13,7 +13,7 @@ import Portal from '../Portal'
 import AvatarLayout from './AvatarLayout'
 // import BrandLayout from './BrandLayout'
 import BannerLayout from './BannerLayout'
-import HelpLayout from './HelpLayout'
+import DocLayout from './DocLayout'
 import ChangelogLayout from './ChangelogLayout'
 import PostLayout from './PostLayout'
 import KanbanLayout from './KanbanLayout'
@@ -41,8 +41,8 @@ const UI: FC<TProps> = ({ settings, touched }) => {
     // brandLayout,
     avatarLayout,
     bannerLayout,
-    helpLayout,
-    helpFaqLayout,
+    docLayout,
+    docFaqLayout,
     topbarLayout,
     topbarBg,
     postLayout,
@@ -141,12 +141,12 @@ const UI: FC<TProps> = ({ settings, touched }) => {
         />
       )}
 
-      {layoutTab === DASHBOARD_LAYOUT_ROUTE.HELP && (
-        <HelpLayout
-          layout={helpLayout}
-          faqLayout={helpFaqLayout}
-          isTouched={touched.helpLayout}
-          isFaqTouched={touched.helpFaqLayout}
+      {layoutTab === DASHBOARD_LAYOUT_ROUTE.DOC && (
+        <DocLayout
+          layout={docLayout}
+          faqLayout={docFaqLayout}
+          isTouched={touched.docLayout}
+          isFaqTouched={touched.docFaqLayout}
           saving={saving}
         />
       )}

@@ -21,8 +21,8 @@ export {
   KANBAN_LAYOUT,
   CHANGELOG_LAYOUT,
   DASHBOARD_DESC_LAYOUT,
-  HELP_LAYOUT,
-  HELP_FAQ_LAYOUT,
+  DOC_LAYOUT,
+  DOC_FAQ_LAYOUT,
   FOOTER_LAYOUT,
 } from './layout'
 export { default as METRIC } from './metric'

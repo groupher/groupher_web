@@ -50,7 +50,7 @@ const SidebarLayout: FC<TProps> = ({ community, activeThread, metric, dashboardS
           barSize="small"
           showShadow
         >
-          {activeThread !== THREAD.HELP && (
+          {activeThread !== THREAD.DOC && (
             <>
               <MainMenu community={community} activeThread={activeThread} enable={enable} />
               <Divider top={8} />
@@ -62,7 +62,7 @@ const SidebarLayout: FC<TProps> = ({ community, activeThread, metric, dashboardS
               <TagsBar onSelect={() => send(EVENT.REFRESH_ARTICLES)} />
             </TabBarWrapper>
           )}
-          {activeThread === THREAD.HELP && enable.help && (
+          {activeThread === THREAD.DOC && enable.doc && (
             <FileTreeWrapper>
               <PinedTree />
               <FileTree />

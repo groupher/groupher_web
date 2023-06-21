@@ -18,8 +18,8 @@ export const SETTING_LAYOUT_FIELD = {
   POST_LAYOUT: 'postLayout',
   KANBAN_LAYOUT: 'kanbanLayout',
   KANBAN_BG_COLORS: 'kanbanBgColors',
-  HELP_LAYOUT: 'helpLayout',
-  HELP_FAQ_LAYOUT: 'helpFaqLayout',
+  DOC_LAYOUT: 'docLayout',
+  DOC_FAQ_LAYOUT: 'docFaqLayout',
   BRAND_LAYOUT: 'brandLayout',
   AVATAR_LAYOUT: 'avatarLayout',
   BANNER_LAYOUT: 'bannerLayout',
@@ -116,7 +116,7 @@ export const MENU = {
       },
       {
         title: '帮助台',
-        raw: DASHBOARD_ROUTE.HELP,
+        raw: DASHBOARD_ROUTE.DOC,
       },
       {
         title: '广播',
@@ -307,7 +307,7 @@ export const LAYOUT_TABS = [
   },
   {
     title: '帮助台',
-    raw: DASHBOARD_LAYOUT_ROUTE.HELP,
+    raw: DASHBOARD_LAYOUT_ROUTE.DOC,
   },
 ]
 

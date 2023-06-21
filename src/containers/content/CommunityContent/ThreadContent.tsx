@@ -38,7 +38,7 @@ const ThreadContent: FC<TProps> = ({ thread }) => {
       return <ChangeLogThread />
     }
 
-    case THREAD.HELP: {
+    case THREAD.DOC: {
       return <HelpThread />
     }
 

@@ -15,7 +15,7 @@ import type {
   TThread,
   TCommunityThread,
   TSizeSML,
-  THelpLayout,
+  TDocLayout,
   TDashboardPath,
   TKanbanLayout,
   TWallpaperInfo,
@@ -137,8 +137,8 @@ export type TUiSettings = {
   glowType: string
   glowFixed: boolean
   glowOpacity: string
-  helpLayout: THelpLayout
-  helpFaqLayout: THelpFaqLayout
+  docLayout: TDocLayout
+  docFaqLayout: TDocFaqLayout
   postLayout: TPostLayout
   kanbanLayout: TKanbanLayout
   kanbanBgColors: TColorName[]
@@ -172,8 +172,8 @@ export type TTouched = {
   glowType: boolean
   glowFixed: boolean
   glowOpacity: boolean
-  helpLayout: boolean
-  helpFaqLayout: boolean
+  docLayout: boolean
+  docFaqLayout: boolean
   topbarLayout: boolean
   topbarBg: boolean
   postLayout: boolean
@@ -210,8 +210,8 @@ export type TSettingField =
   | 'glowType'
   | 'glowFixed'
   | 'glowOpacity'
-  | 'helpLayout'
-  | 'helpFaqLayout'
+  | 'docLayout'
+  | 'docFaqLayout'
   | 'topbarLayout'
   | 'topbarBg'
   | 'broadcastLayout'
@@ -234,22 +234,22 @@ export type TSettingField =
 
 export type TWidgetType = 'sidebar' | 'modal' | 'popup' | 'iframe' | 'link'
 
-type THelpFile = {
+type TDocFile = {
   index: number
   name: string
   articleId: string
   linkAddr: string
 }
 
-type THelpCategory = {
+type TDocCategory = {
   name: string
   index: number
   color: TColorName
-  files: THelpFile[]
+  files: TDocFile[]
 }
 
-export type THelpSettings = {
-  categories: THelpCategory[]
+export type TDocSettings = {
+  categories: TDocCategory[]
 }
 
 export type THeaderEditType = 'logo' | 'title'

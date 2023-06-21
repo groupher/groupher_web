@@ -1,17 +1,17 @@
 // import FileTree from '@/widgets/FileTree'
 import { FC } from 'react'
 
-import type { THelpSettings } from '../spec'
+import type { TDocSettings } from '../spec'
 import Header from './Header'
 import BlockLayout from './BlockLayout'
 
-import { Wrapper } from '../styles/help'
+import { Wrapper } from '../styles/doc'
 
 type TProps = {
-  settings: THelpSettings
+  settings: TDocSettings
 }
 
-const Help: FC<TProps> = ({ settings }) => {
+const Doc: FC<TProps> = ({ settings }) => {
   return (
     <Wrapper>
       <Header />
@@ -21,4 +21,4 @@ const Help: FC<TProps> = ({ settings }) => {
   )
 }
 
-export default Help
+export default Doc

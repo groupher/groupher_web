@@ -45,7 +45,7 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
         </MobileCardsWrapper>
       ) : (
         <InnerWrapper>
-          {isSidebarLayout && <SidebarLayoutHeader thread={THREAD.HELP} />}
+          {isSidebarLayout && <SidebarLayoutHeader thread={THREAD.DOC} />}
           <ContentWrapper>
             <HelpThread isSidebarLayout={globalLayout.banner === BANNER_LAYOUT.SIDEBAR} />
           </ContentWrapper>

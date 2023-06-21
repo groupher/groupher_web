@@ -70,8 +70,8 @@ const MainMenu: FC<TProps> = ({ community, activeThread, enable }) => {
           <MenuTitle>更新日志</MenuTitle>
         </MenuItem>
       )}
-      {enable.help && (
-        <MenuItem $active={activeThread === THREAD.HELP} href={`/${communityPath}/${THREAD.HELP}`}>
+      {enable.doc && (
+        <MenuItem $active={activeThread === THREAD.DOC} href={`/${communityPath}/${THREAD.DOC}`}>
           <IconWrapper>
             <GuideIcon />
           </IconWrapper>

@@ -7,13 +7,13 @@ import { FC, memo } from 'react'
 import { ROUTE } from '@/constant/route'
 
 import { Space } from '@/widgets/Common'
-import { Wrapper, MainArea, MenuLink, MenuItem, Icon, AccountWrapper } from './styles/help_layout'
+import { Wrapper, MainArea, MenuLink, MenuItem, Icon, AccountWrapper } from './styles/doc_layout'
 
 type TProps = {
   testid?: string
 }
 
-const HelpLayout: FC<TProps> = ({ testid = 'sidebar-layout-header' }) => {
+const DocLayout: FC<TProps> = ({ testid = 'sidebar-layout-header' }) => {
   const margin = 8
   const community = 'home'
 
@@ -50,4 +50,4 @@ const HelpLayout: FC<TProps> = ({ testid = 'sidebar-layout-header' }) => {
   )
 }
 
-export default memo(HelpLayout)
+export default memo(DocLayout)

@@ -13,7 +13,7 @@ export const THREAD = {
   // for groupher
   KANBAN: 'kanban',
   CHANGELOG: 'changelog',
-  HELP: 'help',
+  DOC: 'doc',
   ABOUT: 'about',
   DASHBOARD: 'dashboard',
 } as Record<Uppercase<TThread>, TThread>

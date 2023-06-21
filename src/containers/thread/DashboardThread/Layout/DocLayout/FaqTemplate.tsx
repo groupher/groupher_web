@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
-import type { THelpFAQLayout } from '@/spec'
-import { HELP_FAQ_LAYOUT } from '@/constant/layout'
+import type { TDocFAQLayout } from '@/spec'
+import { DOC_FAQ_LAYOUT } from '@/constant/layout'
 
 import { Br, Row } from '@/widgets/Common'
 
@@ -14,14 +14,14 @@ import {
   FlatLayoutWrapper,
   FlatLists,
   CollapseLayoutWrapper,
-} from '../../styles/layout/help_layout/faq_template'
+} from '../../styles/layout/doc_layout/faq_template'
 
 type TProps = {
-  layout: THelpFAQLayout
+  layout: TDocFAQLayout
 }
 
 const FaqTemplate: FC<TProps> = ({ layout }) => {
-  if (layout === HELP_FAQ_LAYOUT.COLLAPSE) {
+  if (layout === DOC_FAQ_LAYOUT.COLLAPSE) {
     return (
       <CollapseLayoutWrapper>
         <FAQTitle>常见问题</FAQTitle>

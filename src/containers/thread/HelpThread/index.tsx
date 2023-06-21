@@ -8,7 +8,7 @@ import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 // import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
-import { HELP_LAYOUT } from '@/constant/layout'
+import { DOC_LAYOUT } from '@/constant/layout'
 
 import { Divider } from '@/widgets/Common'
 import FaqList from '@/widgets/FaqList'
@@ -50,8 +50,8 @@ const HelpThreadContainer: FC<TProps> = ({
 
   return (
     <Wrapper testid={testid} isSidebarLayout={isSidebarLayout}>
-      {layout === HELP_LAYOUT.BLOCKS && <BlocksLayout />}
-      {layout === HELP_LAYOUT.LISTS && <ListsLayout />}
+      {layout === DOC_LAYOUT.BLOCKS && <BlocksLayout />}
+      {layout === DOC_LAYOUT.LISTS && <ListsLayout />}
 
       <Divider top={50} bottom={80} width={isMobile ? '90%' : '100%'} />
 

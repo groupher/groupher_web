@@ -28,7 +28,7 @@ export const DASHBOARD_ROUTE = {
   POST: 'post',
   KANBAN: 'kanban',
   CHANGELOG: 'changelog',
-  HELP: 'help',
+  DOC: 'doc',
   HEADER: 'header',
   FOOTER: 'footer',
   BROADCAST: 'broadcast',
@@ -56,7 +56,7 @@ export const DASHBOARD_LAYOUT_ROUTE = {
   POST: 'post',
   KANBAN: 'kanban',
   CHANGELOG: 'changelog',
-  HELP: 'help',
+  DOC: 'doc',
 } as Record<Uppercase<TDashboardLayoutRoute>, TDashboardLayoutRoute>
 
 export const DASHBOARD_BROADCAST_ROUTE = {

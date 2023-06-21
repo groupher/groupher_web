@@ -4,7 +4,7 @@ import type { TEnableConfig } from '@/spec'
 import { SpaceGrow } from '@/widgets/Common'
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
 
-import { Wrapper, Section, Header, Title, Desc } from '../styles/threads/help_thread'
+import { Wrapper, Section, Header, Title, Desc } from '../styles/threads/doc_thread'
 import { enableThread } from '../logic'
 
 type TProps = {

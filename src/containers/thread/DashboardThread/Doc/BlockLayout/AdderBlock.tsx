@@ -1,11 +1,11 @@
 import { FC, memo } from 'react'
 
-import { Wrapper, AddIcon, Title } from '../../styles/help/block_layout/adder_block'
-import { addHelpCategory } from '../../logic'
+import { Wrapper, AddIcon, Title } from '../../styles/doc/block_layout/adder_block'
+import { addDocCategory } from '../../logic'
 
 const AdderBlock: FC = () => {
   return (
-    <Wrapper onClick={() => addHelpCategory()}>
+    <Wrapper onClick={() => addDocCategory()}>
       <AddIcon />
       <Title>添加新分类</Title>
     </Wrapper>

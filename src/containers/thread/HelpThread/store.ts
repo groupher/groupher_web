@@ -4,7 +4,7 @@
 
 // import {} from 'ramda'
 
-import type { TCommunity, THelpFAQLayout, THelpLayout, TRootStore } from '@/spec'
+import type { TCommunity, TDocFAQLayout, TDocLayout, TRootStore } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
@@ -21,15 +21,15 @@ const HelpThread = T.model('HelpThread', {
 
       return toJS(root.viewing.community)
     },
-    get layout(): THelpLayout {
+    get layout(): TDocLayout {
       const root = getParent(self) as TRootStore
 
-      return toJS(root.dashboardThread.uiSettings.helpLayout)
+      return toJS(root.dashboardThread.uiSettings.docLayout)
     },
-    get faqLayout(): THelpFAQLayout {
+    get faqLayout(): TDocFAQLayout {
       const root = getParent(self) as TRootStore
 
-      return toJS(root.dashboardThread.uiSettings.helpFaqLayout)
+      return toJS(root.dashboardThread.uiSettings.docFaqLayout)
     },
   }))
   .actions((self) => ({

@@ -48,15 +48,15 @@ export const enableThread = (key: string, toggle: boolean) => {
 
 export const updateEditingAlias = (alias: TNameAlias): void => store.mark({ editingAlias: alias })
 
-export const addHelpCategory = (): void => {
-  const helpCategories = store.helpSettings.categories.concat({
+export const addDocCategory = (): void => {
+  const docCategories = store.docSettings.categories.concat({
     name: '新分类',
-    index: store.helpCategories.length,
+    index: store.docCategories.length,
     color: COLOR_NAME.BLACK,
     files: [],
   })
 
-  store.mark({ helpCategories })
+  store.mark({ docCategories })
 }
 
 export const rssOnSave = (): void => {

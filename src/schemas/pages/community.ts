@@ -42,7 +42,7 @@ export const community = `
         layout {
           primaryColor
           postLayout
-          helpLayout
+          docLayout
           avatarLayout
           brandLayout
           topbarLayout
@@ -68,7 +68,7 @@ export const community = `
           post
           kanban
           changelog
-          help
+          doc
           about
         }
       }

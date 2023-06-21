@@ -58,7 +58,7 @@ import type {
   TRSSSettings,
   THeaderSettings,
   TFooterSettings,
-  THelpSettings,
+  TDocSettings,
   TAliasSettings,
   TTouched,
   TSettingField,
@@ -118,8 +118,8 @@ const DashboardThread = T.model('DashboardThread', {
         postLayout,
         kanbanLayout,
         kanbanBgColors,
-        helpLayout,
-        helpFaqLayout,
+        docLayout,
+        docFaqLayout,
         headerLayout,
         footerLayout,
         bannerLayout,
@@ -146,8 +146,8 @@ const DashboardThread = T.model('DashboardThread', {
         post: postLayout,
         kanban: kanbanLayout,
         kanbanBgColors: kanbanBgColors as TColorName[],
-        help: helpLayout,
-        helpFaq: helpFaqLayout,
+        doc: docLayout,
+        docFaq: docFaqLayout,
         header: headerLayout,
         footer: footerLayout,
         changelog: changelogLayout,
@@ -193,8 +193,8 @@ const DashboardThread = T.model('DashboardThread', {
       const postLayoutTouched = _isChanged('postLayout')
       const kanbanLayoutTouched = _isChanged('kanbanLayout')
       const kanbanBgColorsTouched = _isChanged('kanbanBgColors')
-      const helpLayoutTouched = _isChanged('helpLayout')
-      const helpFaqLayoutTouched = _isChanged('helpFaqLayout')
+      const docLayoutTouched = _isChanged('docLayout')
+      const docFaqLayoutTouched = _isChanged('docFaqLayout')
 
       const broadcastLayoutTouched = _isChanged('broadcastLayout')
       const broadcastBgTouched = _isChanged('broadcastBg')
@@ -239,8 +239,8 @@ const DashboardThread = T.model('DashboardThread', {
         headerLayout: headerLayoutTouched,
         kanbanLayout: kanbanLayoutTouched,
         kanbanBgColors: kanbanBgColorsTouched,
-        helpLayout: helpLayoutTouched,
-        helpFaqLayout: helpFaqLayoutTouched,
+        docLayout: docLayoutTouched,
+        docFaqLayout: docFaqLayoutTouched,
         changelogLayout: changelogLayoutTouched,
         nameAlias: nameAliasTouched,
         tags: tagsTouched,
@@ -321,7 +321,7 @@ const DashboardThread = T.model('DashboardThread', {
 
       const curThreads = reject(
         // @ts-ignore
-        (thread) => includes(thread.raw, [THREAD.ABOUT, THREAD.HELP]),
+        (thread) => includes(thread.raw, [THREAD.ABOUT, THREAD.DOC]),
         mappedThreads,
       )
 
@@ -401,11 +401,11 @@ const DashboardThread = T.model('DashboardThread', {
       }
     },
 
-    get helpSettings(): THelpSettings {
+    get docSettings(): TDocSettings {
       const slf = self as TStore
 
       return {
-        categories: toJS(slf.helpCategories),
+        categories: toJS(slf.docCategories),
       }
     },
 
@@ -484,8 +484,8 @@ const DashboardThread = T.model('DashboardThread', {
             'topbarBg',
             'postLayout',
             'kanbanLayout',
-            'helpLayout',
-            'helpFaqLayout',
+            'docLayout',
+            'docFaqLayout',
             'changelogLayout',
             'glowFixed',
             'glowType',

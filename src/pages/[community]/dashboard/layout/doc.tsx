@@ -94,12 +94,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         subPath: thread,
         thread,
       },
+
       viewing: {
         community,
         activeThread: thread,
       },
       dashboardThread: {
-        curTab: ROUTE.DASHBOARD.HELP,
+        curTab: ROUTE.DASHBOARD.LAYOUT,
+        layoutTab: THREAD.DOC,
       },
     },
     {

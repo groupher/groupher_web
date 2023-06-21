@@ -1,8 +1,8 @@
 import { FC, memo } from 'react'
 
-import type { THelpFAQLayout, THelpLayout } from '@/spec'
+import type { TDocFAQLayout, TDocLayout } from '@/spec'
 
-import { HELP_LAYOUT, HELP_FAQ_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
+import { DOC_LAYOUT, DOC_FAQ_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { callDashboardDesc } from '@/utils/signal'
 
 import { Br, Divider } from '@/widgets/Common'
@@ -23,18 +23,18 @@ import {
   LayoutTitle,
   Block,
   Main,
-} from '../../styles/layout/help_layout'
+} from '../../styles/layout/doc_layout'
 import { edit } from '../../logic'
 
 type TProps = {
-  layout: THelpLayout
-  faqLayout: THelpFAQLayout
+  layout: TDocLayout
+  faqLayout: TDocFAQLayout
   isTouched: boolean
   isFaqTouched: boolean
   saving: boolean
 }
 
-const HelpLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, saving }) => {
+const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, saving }) => {
   return (
     <Wrapper>
       <SectionLabel
@@ -54,34 +54,34 @@ const HelpLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sa
         }
       />
       <SelectWrapper>
-        <Layout onClick={() => edit(HELP_LAYOUT.BLOCKS, 'helpLayout')}>
-          <Block $active={layout === HELP_LAYOUT.BLOCKS}>
+        <Layout onClick={() => edit(DOC_LAYOUT.BLOCKS, 'docLayout')}>
+          <Block $active={layout === DOC_LAYOUT.BLOCKS}>
             <Br bottom={14} />
             <Main>
-              <MainTemplate layout={HELP_LAYOUT.BLOCKS} />
+              <MainTemplate layout={DOC_LAYOUT.BLOCKS} />
             </Main>
           </Block>
-          <LayoutTitle $active={layout === HELP_LAYOUT.BLOCKS}>
+          <LayoutTitle $active={layout === DOC_LAYOUT.BLOCKS}>
             <CheckLabel
               title="块状排列"
-              $active={layout === HELP_LAYOUT.BLOCKS}
+              $active={layout === DOC_LAYOUT.BLOCKS}
               top={15}
               left={-15}
             />
           </LayoutTitle>
         </Layout>
 
-        <Layout onClick={() => edit(HELP_LAYOUT.LISTS, 'helpLayout')}>
-          <Block $active={layout === HELP_LAYOUT.LISTS}>
+        <Layout onClick={() => edit(DOC_LAYOUT.LISTS, 'helpLayout')}>
+          <Block $active={layout === DOC_LAYOUT.LISTS}>
             <Br bottom={14} />
             <Main>
-              <MainTemplate layout={HELP_LAYOUT.LISTS} />
+              <MainTemplate layout={DOC_LAYOUT.LISTS} />
             </Main>
           </Block>
-          <LayoutTitle $active={layout === HELP_LAYOUT.LISTS}>
+          <LayoutTitle $active={layout === DOC_LAYOUT.LISTS}>
             <CheckLabel
               title="列表排列"
-              $active={layout === HELP_LAYOUT.LISTS}
+              $active={layout === DOC_LAYOUT.LISTS}
               top={15}
               left={-15}
             />
@@ -90,7 +90,7 @@ const HelpLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sa
       </SelectWrapper>
       <SavingBar
         isTouched={isTouched}
-        field={SETTING_FIELD.HELP_LAYOUT}
+        field={SETTING_FIELD.DOC_LAYOUT}
         loading={saving}
         top={20}
         bottom={30}
@@ -115,33 +115,33 @@ const HelpLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sa
         }
       />
       <SelectWrapper>
-        <Layout onClick={() => edit(HELP_FAQ_LAYOUT.COLLAPSE, 'helpFaqLayout')}>
-          <Block $active={faqLayout === HELP_FAQ_LAYOUT.COLLAPSE}>
+        <Layout onClick={() => edit(DOC_FAQ_LAYOUT.COLLAPSE, 'helpFaqLayout')}>
+          <Block $active={faqLayout === DOC_FAQ_LAYOUT.COLLAPSE}>
             <Br bottom={14} />
             <Main>
-              <FaqTemplate layout={HELP_FAQ_LAYOUT.COLLAPSE} />
+              <FaqTemplate layout={DOC_FAQ_LAYOUT.COLLAPSE} />
             </Main>
           </Block>
-          <LayoutTitle $active={faqLayout === HELP_FAQ_LAYOUT.COLLAPSE}>
+          <LayoutTitle $active={faqLayout === DOC_FAQ_LAYOUT.COLLAPSE}>
             <CheckLabel
               title="可折叠"
-              $active={faqLayout === HELP_FAQ_LAYOUT.COLLAPSE}
+              $active={faqLayout === DOC_FAQ_LAYOUT.COLLAPSE}
               top={15}
               left={-15}
             />
           </LayoutTitle>
         </Layout>
-        <Layout onClick={() => edit(HELP_FAQ_LAYOUT.FLAT, 'helpFaqLayout')}>
-          <Block $active={faqLayout === HELP_FAQ_LAYOUT.FLAT}>
+        <Layout onClick={() => edit(DOC_FAQ_LAYOUT.FLAT, 'helpFaqLayout')}>
+          <Block $active={faqLayout === DOC_FAQ_LAYOUT.FLAT}>
             <Br bottom={14} />
             <Main>
-              <FaqTemplate layout={HELP_FAQ_LAYOUT.FLAT} />
+              <FaqTemplate layout={DOC_FAQ_LAYOUT.FLAT} />
             </Main>
           </Block>
-          <LayoutTitle $active={faqLayout === HELP_FAQ_LAYOUT.FLAT}>
+          <LayoutTitle $active={faqLayout === DOC_FAQ_LAYOUT.FLAT}>
             <CheckLabel
               title="铺开式"
-              $active={faqLayout === HELP_FAQ_LAYOUT.FLAT}
+              $active={faqLayout === DOC_FAQ_LAYOUT.FLAT}
               top={15}
               left={-15}
             />
@@ -150,7 +150,7 @@ const HelpLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sa
       </SelectWrapper>
       <SavingBar
         isTouched={isFaqTouched}
-        field={SETTING_FIELD.HELP_FAQ_LAYOUT}
+        field={SETTING_FIELD.DOC_FAQ_LAYOUT}
         loading={saving}
         top={20}
         bottom={30}
@@ -159,4 +159,4 @@ const HelpLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sa
   )
 }
 
-export default memo(HelpLayout)
+export default memo(DocLayout)

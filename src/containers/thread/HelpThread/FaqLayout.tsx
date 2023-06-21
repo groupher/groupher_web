@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TSpace } from '@/spec'
-import { HELP_FAQ_LAYOUT } from '@/constant/layout'
+import { DOC_FAQ_LAYOUT } from '@/constant/layout'
 
 import FaqList from '@/widgets/FaqList'
 
@@ -14,7 +14,7 @@ type TProps = {
 const FaqLayout: FC<TProps> = ({ testid = 'FaqLayout', ...restProps }) => {
   return (
     <Wrapper {...restProps}>
-      <FaqList layout={HELP_FAQ_LAYOUT.COLLAPSE} />
+      <FaqList layout={DOC_FAQ_LAYOUT.COLLAPSE} />
     </Wrapper>
   )
 }

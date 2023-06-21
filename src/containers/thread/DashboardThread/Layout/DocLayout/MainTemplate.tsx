@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
-import type { THelpLayout } from '@/spec'
-import { HELP_LAYOUT } from '@/constant/layout'
+import type { TDocLayout } from '@/spec'
+import { DOC_LAYOUT } from '@/constant/layout'
 import { COLOR_NAME } from '@/constant/colors'
 
 import { Br, Row } from '@/widgets/Common'
@@ -15,14 +15,14 @@ import {
   IconWrapper,
   ToolIcon,
   ListContent,
-} from '../../styles/layout/help_layout/main_template'
+} from '../../styles/layout/doc_layout/main_template'
 
 type TProps = {
-  layout: THelpLayout
+  layout: TDocLayout
 }
 
 const MainTemplate: FC<TProps> = ({ layout }) => {
-  if (layout === HELP_LAYOUT.LISTS) {
+  if (layout === DOC_LAYOUT.LISTS) {
     return (
       <ListsLayoutWrapper>
         <Box>

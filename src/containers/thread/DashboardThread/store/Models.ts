@@ -14,8 +14,8 @@ import {
   BROADCAST_LAYOUT,
   BROADCAST_ARTICLE_LAYOUT,
   CHANGELOG_LAYOUT,
-  HELP_LAYOUT,
-  HELP_FAQ_LAYOUT,
+  DOC_LAYOUT,
+  DOC_FAQ_LAYOUT,
   POST_LAYOUT,
   KANBAN_LAYOUT,
   HEADER_LAYOUT,
@@ -33,9 +33,9 @@ export const Enable = T.model('Enable', {
   kanban: T.opt(T.bool, true),
   changelog: T.opt(T.bool, true),
   //
-  help: T.opt(T.bool, true),
-  helpLastUpdate: T.opt(T.bool, true),
-  helpReaction: T.opt(T.bool, true),
+  doc: T.opt(T.bool, true),
+  docLastUpdate: T.opt(T.bool, true),
+  docReaction: T.opt(T.bool, true),
   //
   about: T.opt(T.bool, true),
   aboutTechstack: T.opt(T.bool, true),
@@ -112,8 +112,8 @@ export const settingsModalFields = {
     COLOR_NAME.GREEN_LIGHT,
   ]),
 
-  helpLayout: T.opt(T.enum(values(HELP_LAYOUT)), HELP_LAYOUT.BLOCKS),
-  helpFaqLayout: T.opt(T.enum(values(HELP_FAQ_LAYOUT)), HELP_FAQ_LAYOUT.COLLAPSE),
+  docLayout: T.opt(T.enum(values(DOC_LAYOUT)), DOC_LAYOUT.BLOCKS),
+  docFaqLayout: T.opt(T.enum(values(DOC_FAQ_LAYOUT)), DOC_FAQ_LAYOUT.COLLAPSE),
   avatarLayout: T.opt(T.enum(values(AVATAR_LAYOUT)), AVATAR_LAYOUT.SQUARE),
   brandLayout: T.opt(T.enum(values(BRAND_LAYOUT)), BRAND_LAYOUT.BOTH),
   bannerLayout: T.opt(T.enum(values(BANNER_LAYOUT)), BANNER_LAYOUT.HEADER),
@@ -133,8 +133,8 @@ export const settingsModalFields = {
 
   changelogLayout: T.opt(T.enum(values(CHANGELOG_LAYOUT)), CHANGELOG_LAYOUT.CLASSIC),
 
-  // help
-  helpCategories: T.opt(T.array(GroupCategory), []),
+  // doc
+  docCategories: T.opt(T.array(GroupCategory), []),
 
   // glow effect
   glowType: T.opt(T.string, keys(GLOW_EFFECTS)[0]),

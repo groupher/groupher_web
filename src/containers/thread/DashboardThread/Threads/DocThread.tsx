@@ -5,14 +5,14 @@ import type { TEnableConfig } from '@/spec'
 import { SpaceGrow } from '@/widgets/Common'
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
 
-import { Wrapper, Section, Header, Title, Desc } from '../styles/threads/help_thread'
+import { Wrapper, Section, Header, Title, Desc } from '../styles/threads/doc_thread'
 import { enableThread } from '../logic'
 
 type TProps = {
   settings: TEnableConfig
 }
 
-const HelpThread: FC<TProps> = ({ settings }) => {
+const DocThread: FC<TProps> = ({ settings }) => {
   return (
     <Wrapper>
       <Section>
@@ -20,7 +20,7 @@ const HelpThread: FC<TProps> = ({ settings }) => {
           <Title>最后更新时间</Title>
           <SpaceGrow />
           <ToggleSwitch
-            checked={settings.helpLastUpdate}
+            checked={settings.docLastUpdate}
             onChange={(c) => enableThread('helpLastUpdate', c)}
           />
         </Header>
@@ -32,8 +32,8 @@ const HelpThread: FC<TProps> = ({ settings }) => {
           <Title>反馈调查</Title>
           <SpaceGrow />
           <ToggleSwitch
-            checked={settings.helpReaction}
-            onChange={(c) => enableThread('helpReaction', c)}
+            checked={settings.docReaction}
+            onChange={(c) => enableThread('docReaction', c)}
           />
         </Header>
         <Desc>是否在文档底部显示 “本文是否有帮助?” 的反馈组件（含 Emoji）</Desc>
@@ -42,4 +42,4 @@ const HelpThread: FC<TProps> = ({ settings }) => {
   )
 }
 
-export default memo(HelpThread)
+export default memo(DocThread)

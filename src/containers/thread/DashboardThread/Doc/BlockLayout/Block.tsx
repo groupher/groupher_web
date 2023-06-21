@@ -8,7 +8,7 @@ import FaIconSelector from '@/widgets/FaIcons/Selector'
 import Tooltip from '@/widgets/Tooltip'
 
 import BlockMenu from './BlockMenu'
-import FileItem from './FileItem'
+// import FileItem from './FileItem'
 
 import {
   Wrapper,
@@ -18,7 +18,7 @@ import {
   // MoreLink,
   AdderButton,
   PlusIcon,
-} from '../../styles/help/block_layout/block'
+} from '../../styles/doc/block_layout/block'
 
 type TProps = {
   color: TColorName

@@ -1,7 +1,7 @@
 import MenuItem from '@/widgets/MenuItem'
 import MENU from '@/constant/menu'
 
-import { Wrapper, Item, Title, Icon } from '../../styles/help/block_layout/file_menu'
+import { Wrapper, Item, Title, Icon } from '../../styles/doc/block_layout/file_menu'
 
 const FileMenu = () => {
   return (

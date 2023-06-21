@@ -3,11 +3,11 @@ import { FC, memo } from 'react'
 import Block from './Block'
 import AdderBlock from './AdderBlock'
 
-import type { THelpSettings } from '../../spec'
-import { Wrapper, CatsWrapper } from '../../styles/help/block_layout'
+import type { TDocSettings } from '../../spec'
+import { Wrapper, CatsWrapper } from '../../styles/doc/block_layout'
 
 type TProps = {
-  settings: THelpSettings
+  settings: TDocSettings
 }
 
 const BlockList: FC<TProps> = ({ settings }) => {

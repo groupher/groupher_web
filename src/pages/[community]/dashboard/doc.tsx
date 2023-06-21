@@ -5,6 +5,7 @@ import { Provider } from 'mobx-react'
 import type { TCommunity } from '@/spec'
 import { PAGE_SIZE } from '@/config'
 import { HCN } from '@/constant/name'
+import { ROUTE } from '@/constant/route'
 import { THREAD } from '@/constant/thread'
 import METRIC from '@/constant/metric'
 import { useStore } from '@/stores/init'
@@ -22,11 +23,11 @@ import {
 } from '@/utils'
 
 import GlobalLayout from '@/containers/layout/GlobalLayout'
-import HelpContent from '@/containers/content/CommunityContent/HelpContent'
+import DashboardContent from '@/containers/content/CommunityContent/DashboardContent'
 
 import { P } from '@/schemas'
 
-const thread = THREAD.HELP
+const thread = THREAD.DASHBOARD
 
 const loader = async (context, opt = {}) => {
   const { query } = context
@@ -97,6 +98,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         community,
         activeThread: thread,
       },
+      dashboardThread: {
+        curTab: ROUTE.DASHBOARD.DOC,
+      },
     },
     {
       articleThread: thread,
@@ -106,7 +110,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return { props: { errorCode: null, ...initProps } }
 }
 
-const CommunityHelpPage = (props) => {
+const CommunityDashboardPage = (props) => {
   const store = useStore(props)
 
   const { viewing } = props
@@ -118,10 +122,10 @@ const CommunityHelpPage = (props) => {
         metric={METRIC.COMMUNITY}
         seoConfig={communitySEO(community as TCommunity, activeThread)}
       >
-        <HelpContent />
+        <DashboardContent />
       </GlobalLayout>
     </Provider>
   )
 }
 
-export default CommunityHelpPage
+export default CommunityDashboardPage

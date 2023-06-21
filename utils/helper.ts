@@ -346,7 +346,10 @@ export const washThreads = (
 ): TCommunityThread[] => {
   const { enable, nameAlias } = dashboardSettings
 
+  console.log('## community.threads 0 : ', threads)
+  console.log('## enable: ', enable)
   const enabledThreads = sortByIndex(threads.filter((thread) => enable[thread.raw]))
+  console.log('## enabledThreads: ', enabledThreads)
 
   const mappedThreads = enabledThreads.map((pThread) => {
     const aliasItem = find(propEq('raw', pThread.raw))(nameAlias) as TNameAliasConfig

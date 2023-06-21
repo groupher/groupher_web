@@ -5,7 +5,7 @@ import type { TEnableConfig } from '@/spec'
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
 import { Divider, Br } from '@/widgets/Common'
 
-import HelpThread from './HelpThread'
+import DocThread from './DocThread'
 import AboutThread from './AboutThread'
 
 import Portal from '../Portal'
@@ -57,10 +57,10 @@ const Threads: FC<TProps> = ({ testid = 'threads', settings }) => {
       <SectionLabel
         title="帮助台"
         desc={<Desc>和社区内容相关的开发文档，指南，知识库等等信息。</Desc>}
-        addon={<ToggleSwitch checked={settings.help} onChange={(c) => enableThread('help', c)} />}
+        addon={<ToggleSwitch checked={settings.doc} onChange={(c) => enableThread('help', c)} />}
       />
-      {settings.help && <HelpThread settings={settings} />}
-      <Divider top={settings.help ? 45 : 20} bottom={30} />
+      {settings.doc && <DocThread settings={settings} />}
+      <Divider top={settings.doc ? 45 : 20} bottom={30} />
       <SectionLabel
         title="关于"
         desc={<Desc>社区基本信息。若更新请到基本信息设置区。</Desc>}

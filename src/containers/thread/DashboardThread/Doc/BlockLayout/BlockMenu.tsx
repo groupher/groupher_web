@@ -1,7 +1,7 @@
 import MenuItem from '@/widgets/MenuItem'
 import MENU from '@/constant/menu'
 
-import { Wrapper } from '../../styles/help/block_layout/block_menu'
+import { Wrapper } from '../../styles/doc/block_layout/block_menu'
 
 const BlockMenu = () => {
   return (

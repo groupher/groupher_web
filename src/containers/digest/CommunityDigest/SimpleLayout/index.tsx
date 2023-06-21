@@ -37,6 +37,9 @@ type TProps = {
 const SimpleLayout: FC<TProps> = ({ community, activeThread, metric, dashboardSettings }) => {
   const washedThreads = washThreads(community.threads, dashboardSettings)
 
+  console.log('## dashboardSettings: ', dashboardSettings)
+  console.log('## washedThreads: ', washedThreads)
+
   return (
     <Wrapper testid="community-digest" id={ANCHOR.GLOBAL_HEADER_ID}>
       <InnerWrapper metric={metric}>

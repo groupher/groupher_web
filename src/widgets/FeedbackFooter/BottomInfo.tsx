@@ -9,7 +9,7 @@ import { FC, memo, useState } from 'react'
 import type { TSpace } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
-import type { THelpFeedback } from './spec'
+import type { TDocFeedback } from './spec'
 import { HELP_FEEDBACK } from './constant'
 import {
   Wrapper,
@@ -33,7 +33,7 @@ type TProps = {
 
 const FeedbackFooter: FC<TProps> = ({ offsetRight = 30, withLastUpdated = true }) => {
   const { GOOD, BAD, SOSO } = HELP_FEEDBACK
-  const [feedback, setFeedback] = useState<THelpFeedback | ''>('')
+  const [feedback, setFeedback] = useState<TDocFeedback | ''>('')
 
   return (
     <Wrapper offsetRight={offsetRight} withLastUpdated={withLastUpdated}>
