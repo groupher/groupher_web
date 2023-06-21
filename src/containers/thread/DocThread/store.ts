@@ -9,9 +9,9 @@ import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
 /* eslint-disable-next-line */
-const log = buildLog('S:HelpThread')
+const log = buildLog('S:DocThread')
 
-const HelpThread = T.model('HelpThread', {
+const DocThread = T.model('DocThread', {
   isArticleLayout: T.opt(T.bool, false),
   isFAQArticleLayout: T.opt(T.bool, true),
 })
@@ -38,6 +38,6 @@ const HelpThread = T.model('HelpThread', {
     },
   }))
 
-export type TStore = Instance<typeof HelpThread>
+export type TStore = Instance<typeof DocThread>
 
-export default HelpThread
+export default DocThread

@@ -89,7 +89,7 @@ import {
   // RecipesContentStore,
   JoinModalStore,
   C11NSettingPanelStore,
-} from '../index'
+} from '..'
 
 const rootStore = T.model({
   // domain stores
