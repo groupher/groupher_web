@@ -10,7 +10,7 @@ import { BANNER_LAYOUT } from '@/constant/layout'
 import { THREAD } from '@/constant/thread'
 
 import CommunityDigest from '@/containers/digest/CommunityDigest'
-import HelpThread from '@/containers//thread/HelpThread'
+import DocThread from '@/containers//thread/DocThread'
 import SidebarLayoutHeader from '@/widgets/SidebarLayoutHeader'
 
 import type { TStore } from './store'
@@ -35,19 +35,19 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   const LayoutWrapper = isSidebarLayout ? SidebarWrapper : Wrapper
 
   return (
-    <LayoutWrapper testid="help-thread-content">
+    <LayoutWrapper testid="doc-thread-content">
       <CommunityDigest />
       {isMobile ? (
         <MobileCardsWrapper>
           <ContentWrapper>
-            <HelpThread />
+            <DocThread />
           </ContentWrapper>
         </MobileCardsWrapper>
       ) : (
         <InnerWrapper>
           {isSidebarLayout && <SidebarLayoutHeader thread={THREAD.DOC} />}
           <ContentWrapper>
-            <HelpThread isSidebarLayout={globalLayout.banner === BANNER_LAYOUT.SIDEBAR} />
+            <DocThread isSidebarLayout={globalLayout.banner === BANNER_LAYOUT.SIDEBAR} />
           </ContentWrapper>
         </InnerWrapper>
       )}

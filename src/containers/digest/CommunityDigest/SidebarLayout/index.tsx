@@ -10,7 +10,7 @@ import { DEME_SOCIALS } from '@/constant/social'
 
 import { send } from '@/utils/signal'
 
-import PinedTree from '@/containers/thread/HelpThread/ArticleLayout/PinedTree'
+import PinedTree from '@/containers/thread/DocThread/ArticleLayout/PinedTree'
 import TagsBar from '@/containers/unit/TagsBar'
 
 import Sticky from '@/widgets/Sticky'

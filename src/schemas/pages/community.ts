@@ -50,7 +50,7 @@ export const community = `
           broadcastLayout
           kanbanLayout
           kanbanBgColors
-          helpFaqLayout
+          docFaqLayout
           changelogLayout
           footerLayout
         }

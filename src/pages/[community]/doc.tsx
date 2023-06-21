@@ -22,7 +22,7 @@ import {
 } from '@/utils'
 
 import GlobalLayout from '@/containers/layout/GlobalLayout'
-import HelpContent from '@/containers/content/CommunityContent/HelpContent'
+import DocContent from '@/containers/content/CommunityContent/DocContent'
 
 import { P } from '@/schemas'
 
@@ -118,7 +118,7 @@ const CommunityDocPage = (props) => {
         metric={METRIC.COMMUNITY}
         seoConfig={communitySEO(community as TCommunity, activeThread)}
       >
-        <HelpContent />
+        <DocContent />
       </GlobalLayout>
     </Provider>
   )

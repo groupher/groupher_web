@@ -31,7 +31,7 @@ type TProps = {
   isSidebarLayout?: boolean
 }
 
-const HelpThreadContainer: FC<TProps> = ({
+const DocThreadContainer: FC<TProps> = ({
   helpThread: store,
   testid = 'help-thread',
   title = 'title',
@@ -62,4 +62,4 @@ const HelpThreadContainer: FC<TProps> = ({
   )
 }
 
-export default bond(HelpThreadContainer, 'helpThread') as FC<TProps>
+export default bond(DocThreadContainer, 'docThread') as FC<TProps>
