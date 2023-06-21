@@ -1,6 +1,5 @@
 /* *
- * HelpThread
- *
+ * DocThread
  */
 
 import { FC } from 'react'
@@ -19,12 +18,12 @@ import ArticleLayout from './ArticleLayout'
 
 import type { TStore } from './store'
 import { Wrapper, FAQWrapper } from './styles'
-import { useInit } from './logic' /* eslint-disable-next-line */
+import { useInit } from './logic'
 
-// const log = buildLog('C:HelpThread')
+// const log = buildLog('C:DocThread')
 
 type TProps = {
-  helpThread?: TStore
+  docThread?: TStore
   testid?: string
   title?: string
   desc?: string
@@ -32,13 +31,14 @@ type TProps = {
 }
 
 const DocThreadContainer: FC<TProps> = ({
-  helpThread: store,
-  testid = 'help-thread',
+  docThread: store,
+  testid = 'doc-thread',
   title = 'title',
   desc = 'desc',
   isSidebarLayout = false,
 }) => {
   useInit(store)
+
   const { isArticleLayout, layout, faqLayout, isFAQArticleLayout } = store
   const { isMobile } = useMobileDetect()
 

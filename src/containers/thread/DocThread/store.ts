@@ -1,8 +1,6 @@
 /*
- * HelpThread store
+ * DocThread store
  */
-
-// import {} from 'ramda'
 
 import type { TCommunity, TDocFAQLayout, TDocLayout, TRootStore } from '@/spec'
 import { buildLog } from '@/utils/logger'
@@ -39,5 +37,4 @@ const DocThread = T.model('DocThread', {
   }))
 
 export type TStore = Instance<typeof DocThread>
-
 export default DocThread

@@ -1,10 +1,10 @@
 /*
- * HelpThread store test
+ * DocThread store test
  *
  */
 
-// import HelpThread from '../index'
+// import DocThread from '../index'
 
-it('TODO: store test HelpThread', () => {
+it('TODO: store test DocThread', () => {
   expect(1 + 1).toBe(2)
 })

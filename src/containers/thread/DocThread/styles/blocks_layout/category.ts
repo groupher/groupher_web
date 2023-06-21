@@ -42,7 +42,7 @@ export const IconWrapper = styled.div<{ color: TColorName }>`
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   margin-top: 8px;
 

@@ -9,7 +9,7 @@ import type { TStore } from './store'
 let store: TStore | undefined
 
 /* eslint-disable-next-line */
-const log = buildLog('L:HelpThread')
+const log = buildLog('L:DocThread')
 
 export const gotoDetailLayout = (): void => {
   store.mark({ isArticleLayout: true, isFAQArticleLayout: false })
