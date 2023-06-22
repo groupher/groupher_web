@@ -46,6 +46,7 @@ const CommunityDigestContainer: FC<TProps> = ({
         community={curCommunity}
         activeThread={curThread}
         dashboardSettings={dashboardSettings}
+        headerLayout={globalLayout.header}
       />
     )
   }
@@ -74,6 +75,7 @@ const CommunityDigestContainer: FC<TProps> = ({
           community={curCommunity}
           activeThread={curThread}
           dashboardSettings={dashboardSettings}
+          headerLayout={globalLayout.header}
         />
       )}
     </Fragment>

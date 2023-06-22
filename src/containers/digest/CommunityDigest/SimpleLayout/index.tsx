@@ -1,12 +1,14 @@
 import { FC, memo } from 'react'
 
-import type { TThread, TCommunity, TMetric, TDashboardThreadConfig } from '@/spec'
+import type { TThread, TCommunity, TMetric, TDashboardThreadConfig, THeaderLayout } from '@/spec'
 import { ANCHOR } from '@/constant/dom'
 
 import { washThreads } from '@/utils/helper'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
 import MobileThreadNavi from '@/widgets/MobileThreadNavi'
+import { SpaceGrow } from '@/widgets/Common'
+import { HEADER_LAYOUT } from '@/constant/layout'
 
 import ThreadTab from './ThreadTab'
 import CommunityBrief from './CommunityBrief'
@@ -30,9 +32,16 @@ type TProps = {
   activeThread: TThread
   metric: TMetric
   dashboardSettings: TDashboardThreadConfig
+  headerLayout: THeaderLayout
 }
 
-const SimpleLayout: FC<TProps> = ({ community, activeThread, metric, dashboardSettings }) => {
+const SimpleLayout: FC<TProps> = ({
+  community,
+  activeThread,
+  metric,
+  dashboardSettings,
+  headerLayout,
+}) => {
   const washedThreads = washThreads(community.threads, dashboardSettings)
   const { extraLinks } = dashboardSettings
 
@@ -49,7 +58,14 @@ const SimpleLayout: FC<TProps> = ({ community, activeThread, metric, dashboardSe
                 active={activeThread}
               />
             </MobileNaviWrapper>
-            <ThreadTab threads={washedThreads} active={activeThread} extraLinks={extraLinks} />
+            {headerLayout === HEADER_LAYOUT.RIGHT && <SpaceGrow />}
+            <ThreadTab
+              threads={washedThreads}
+              active={activeThread}
+              extraLinks={extraLinks}
+              left={headerLayout === HEADER_LAYOUT.CENTER ? -50 : 0}
+              right={headerLayout === HEADER_LAYOUT.RIGHT ? 20 : 0}
+            />
             <AccountUnit community={community} />
           </CommunityBaseInfo>
         </BannerContentWrapper>

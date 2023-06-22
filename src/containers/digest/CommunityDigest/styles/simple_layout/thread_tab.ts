@@ -1,13 +1,14 @@
 import Link from 'next/link'
 import styled from 'styled-components'
 
-import type { TActive } from '@/spec'
+import type { TActive, TSpace } from '@/spec'
 import css, { theme } from '@/utils/css'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<TSpace>`
   ${css.flex('align-center')};
-  margin-left: -100px;
   gap: 0 32px;
+
+  ${(props) => css.spaceMargins(props)};
 
   ${css.media.mobile`
     display: none;
