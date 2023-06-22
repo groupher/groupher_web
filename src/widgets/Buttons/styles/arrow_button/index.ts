@@ -27,9 +27,8 @@ export const Wrapper = styled.button<TWrapper>`
   vertical-align: middle;
 
   gap: 0 0.5em;
-  font-size: 15px;
 
-  transform: ${({ size }) => (size === SIZE.SMALL ? 'scale(0.82);' : 'none')};
+  transform: ${({ size }) => (size === SIZE.SMALL ? 'scale(0.85);' : 'none')};
   ${(props) => css.spaceMargins(props)};
 
   &:hover {
@@ -41,5 +40,5 @@ export const Wrapper = styled.button<TWrapper>`
 `
 export const Text = styled.div`
   line-height: 15px;
-  font-size: 14px;
+  font-size: 13px;
 `

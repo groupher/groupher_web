@@ -39,6 +39,6 @@ export const RightWrapper = styled.div`
 export const AccountIcon = styled(AccountSVG)`
   ${css.size(12)};
   fill: ${theme('article.digest')};
-  margin-left: 14px;
+  margin-left: 5px;
   margin-top: -2px;
 `

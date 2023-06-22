@@ -26,8 +26,9 @@ export const BrandText = styled.div`
 export const CenterWrapper = styled.div`
   ${css.flex('align-center')};
   gap: 0 14px;
-  margin-left: -50px;
+  margin-left: -15px;
 `
+
 export const LinkItem = styled.div`
   color: ${theme('article.digest')};
   font-size: 12px;

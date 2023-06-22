@@ -73,11 +73,13 @@ type TLinkState = {
 export type THeaderSettings = {
   headerLayout: THeaderLayout
   headerLinks: TLinkItem[]
+  threads: TCommunityThread[]
 } & TLinkState
 
 export type TFooterSettings = {
   footerLayout: TFooterLayout
   footerLinks: TLinkItem[]
+  threads: TCommunityThread[]
 } & TLinkState
 
 export type TNameAlias = TNameAliasConfig

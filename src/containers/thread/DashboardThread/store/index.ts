@@ -48,6 +48,8 @@ import { THREAD } from '@/constant/thread'
 import BStore from '@/utils/bstore'
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
+import { washThreads } from '@/utils/helper'
+
 import { Tag } from '@/model'
 
 import type {
@@ -366,6 +368,9 @@ const DashboardThread = T.model('DashboardThread', {
         editingLinkMode,
         editingGroup,
         editingGroupIndex,
+        enableSettings,
+        curCommunity,
+        aliasSettings,
       } = slf
 
       return {
@@ -376,6 +381,10 @@ const DashboardThread = T.model('DashboardThread', {
         editingLinkMode: editingLinkMode as TChangeMode,
         editingGroup,
         editingGroupIndex,
+        threads: washThreads(curCommunity.threads, {
+          enable: enableSettings,
+          nameAlias: aliasSettings.nameAlias,
+        }),
       }
     },
 
@@ -388,6 +397,9 @@ const DashboardThread = T.model('DashboardThread', {
         editingLinkMode,
         editingGroup,
         editingGroupIndex,
+        enableSettings,
+        curCommunity,
+        aliasSettings,
       } = slf
 
       return {
@@ -398,6 +410,10 @@ const DashboardThread = T.model('DashboardThread', {
         editingLinkMode: editingLinkMode as TChangeMode,
         editingGroup,
         editingGroupIndex,
+        threads: washThreads(curCommunity.threads, {
+          enable: enableSettings,
+          nameAlias: aliasSettings.nameAlias,
+        }),
       }
     },
 

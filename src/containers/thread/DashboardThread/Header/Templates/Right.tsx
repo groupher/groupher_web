@@ -1,7 +1,11 @@
 import { FC } from 'react'
+import { reject } from 'ramda'
 
-import type { TActive } from '@/spec'
+import type { TActive, TCommunityThread, TLinkItem } from '@/spec'
+import { THREAD } from '@/constant/thread'
 import { HEADER_LAYOUT } from '@/constant/layout'
+
+import ExtraLinks from './ExtraLinks'
 
 import {
   Wrapper,
@@ -14,9 +18,17 @@ import {
 } from '../../styles/header/templates/right'
 import { edit } from '../../logic'
 
-type TProps = TActive
+type TProps = {
+  threads: TCommunityThread[]
+  links: TLinkItem[]
+} & TActive
 
-const Right: FC<TProps> = ({ $active }) => {
+const Right: FC<TProps> = ({ $active, threads, links }) => {
+  const isAboutFold = links.length >= 2 && links[0].title !== ''
+  const _threads = isAboutFold
+    ? reject((t: TCommunityThread) => t.raw === THREAD.ABOUT, threads)
+    : threads
+
   return (
     <Wrapper $active={$active} onClick={() => edit(HEADER_LAYOUT.RIGHT, 'headerLayout')}>
       <LeftWrapper>
@@ -25,11 +37,12 @@ const Right: FC<TProps> = ({ $active }) => {
       </LeftWrapper>
 
       <RightWrapper>
-        <LinkItem>讨论</LinkItem>
-        <LinkItem>看板</LinkItem>
-        <LinkItem>更新日志</LinkItem>
-        <LinkItem>帮助台</LinkItem>
-        <LinkItem>关于</LinkItem>
+        {_threads.map((thread: TCommunityThread) => (
+          <LinkItem key={thread.raw}>{thread.title}</LinkItem>
+        ))}
+
+        <ExtraLinks links={links} />
+
         <AccountIcon />
       </RightWrapper>
     </Wrapper>

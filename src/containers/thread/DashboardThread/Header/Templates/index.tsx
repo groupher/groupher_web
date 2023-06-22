@@ -20,19 +20,20 @@ type TProps = {
 const Templates: FC<TProps> = ({ settings, isTouched }) => {
   const [showAll, setShowAll] = useState<boolean>(false)
 
-  const { headerLayout, saving } = settings
+  const { headerLayout, saving, headerLinks: links, threads } = settings
 
+  const linksProps = { threads, links }
   return (
     <Wrapper>
       {showAll ? (
         <>
-          <Center $active={headerLayout === HEADER_LAYOUT.CENTER} />
-          <Right $active={headerLayout === HEADER_LAYOUT.RIGHT} />
+          <Center {...linksProps} $active={headerLayout === HEADER_LAYOUT.CENTER} />
+          <Right {...linksProps} $active={headerLayout === HEADER_LAYOUT.RIGHT} />
         </>
       ) : (
         <>
-          {headerLayout === HEADER_LAYOUT.CENTER && <Center $active />}
-          {headerLayout === HEADER_LAYOUT.RIGHT && <Right $active />}
+          {headerLayout === HEADER_LAYOUT.CENTER && <Center {...linksProps} $active />}
+          {headerLayout === HEADER_LAYOUT.RIGHT && <Right {...linksProps} $active />}
         </>
       )}
 
