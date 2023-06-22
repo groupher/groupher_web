@@ -99,12 +99,13 @@ export type {
   THeaderLayout,
   TFooterLayout,
   TGlobalLayout,
-  TBroadcastConfig,
   TBroadcastLayout,
   TBroadcastArticleLayout,
+  TBroadcastConfig,
   TEnableConfig,
   TNameAliasConfig,
   TDashboardThreadConfig,
+  TFooterConfig,
   TRSSType,
 } from './dashboard'
 

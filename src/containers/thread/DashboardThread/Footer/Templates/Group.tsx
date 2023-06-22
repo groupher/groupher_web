@@ -47,12 +47,12 @@ const Group: FC<TProps> = ({ links, $active }) => {
       </LeftWrapper>
 
       <RightWrapper ref={groupAnimateRef}>
-        {groupKeys.map((groupKey: string) => {
-          const curGroupLinks = groupedLinks[groupKey]
+        {groupKeys.map((groupTitle: string) => {
+          const curGroupLinks = groupedLinks[groupTitle]
 
           return (
-            <CenterWrapper key={groupKey} ref={animateRef}>
-              <GroupTitle>{groupKey}</GroupTitle>
+            <CenterWrapper key={groupTitle} ref={animateRef}>
+              <GroupTitle>{groupTitle}</GroupTitle>
 
               {curGroupLinks.map((item) => (
                 <LinkItem key={item.title} href={item.link}>

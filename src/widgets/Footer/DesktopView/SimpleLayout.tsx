@@ -1,7 +1,12 @@
 import { FC } from 'react'
+import { keys } from 'ramda'
 
-import { ROUTE } from '@/constant/route'
+import type { TLinkItem } from '@/spec'
+
 import { DEME_SOCIALS } from '@/constant/social'
+
+import { sortByIndex, groupByKey } from '@/utils/helper'
+
 import SocialList from '@/widgets/SocialList'
 
 import {
@@ -13,18 +18,26 @@ import {
   SocialInfo,
 } from '../styles/desktop_view/simple_layout'
 
-const SimpleLayout: FC = () => {
+type TProps = {
+  links: TLinkItem[]
+}
+
+const SimpleLayout: FC<TProps> = ({ links }) => {
+  // @ts-ignore
+  const groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
+  const groupKeys = keys(groupedLinks)
+
   return (
     <Wrapper>
       <BrandInfo>
         <BrandText href="/">Groupher</BrandText>
       </BrandInfo>
       <LinksInfo>
-        <LinkItem href={`/${ROUTE.HOME}/${ROUTE.POST}`}>讨论</LinkItem>
-        <LinkItem href={`/${ROUTE.HOME}/${ROUTE.KANBAN}`}>看板</LinkItem>
-        <LinkItem href={`/${ROUTE.HOME}/${ROUTE.CHANGELOG}`}>更新日志</LinkItem>
-        <LinkItem href={`/${ROUTE.HOME}/${ROUTE.HELP}`}>帮助台</LinkItem>
-        <LinkItem href={`/${ROUTE.HOME}/${ROUTE.ABOUT}`}>关于</LinkItem>
+        {groupedLinks[groupKeys[0]].map((item: TLinkItem) => (
+          <LinkItem key={item.index} href={item.link}>
+            {item.title}
+          </LinkItem>
+        ))}
       </LinksInfo>
       <SocialInfo>
         <SocialList selected={DEME_SOCIALS} />

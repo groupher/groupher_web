@@ -5,7 +5,7 @@ export type TProps = {
 }
 
 export type TLinkGroup = {
-  groupKey: string
+  groupTitle: string
   links: TLinkItem[]
   showMoreFold: boolean
 }

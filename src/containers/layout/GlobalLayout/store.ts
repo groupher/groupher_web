@@ -12,6 +12,7 @@ import type {
   TGlowEffect,
   TWallpaperInfo,
   TBroadcastConfig,
+  TFooterConfig,
 } from '@/spec'
 
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
@@ -94,6 +95,14 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
         ],
         root.dashboardThread,
       )
+    },
+    get footerConfig(): TFooterConfig {
+      const root = getParent(self) as TRootStore
+
+      return {
+        layout: root.dashboardThread.footerLayout,
+        links: toJS(root.dashboardThread.footerLinks),
+      }
     },
     get globalLayout(): TGlobalLayout {
       const root = getParent(self) as TRootStore

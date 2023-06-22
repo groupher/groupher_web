@@ -72,6 +72,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
     glowEffect,
     globalLayout,
     broadcastConfig,
+    footerConfig,
     showDashboardAlert,
   } = store
 
@@ -116,7 +117,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
               <Broadcast metric={metric} settings={broadcastConfig} />
               <ContentWrapper>
                 <BodyWrapper>{childrenWithProps(children, { metric })}</BodyWrapper>
-                <Footer metric={metric} />
+                <Footer metric={metric} config={footerConfig} />
               </ContentWrapper>
               {!!glowEffect.glowType && (
                 <GrowBackground

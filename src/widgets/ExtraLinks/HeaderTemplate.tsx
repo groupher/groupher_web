@@ -12,7 +12,7 @@ import type { TProps, TLinkGroup } from './spec'
 
 import { Wrapper, LinkItem, GroupItem, ArrowIcon, MenuPanel } from './styles/header_template'
 
-const LinkGroup: FC<TLinkGroup> = ({ groupKey, links, showMoreFold }) => {
+const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold }) => {
   if (!showMoreFold) return null
 
   return (
@@ -30,7 +30,7 @@ const LinkGroup: FC<TLinkGroup> = ({ groupKey, links, showMoreFold }) => {
       offset={[-5, 5]}
     >
       <GroupItem as="div">
-        {groupKey === MORE_GROUP ? '更多' : groupKey} <ArrowIcon />
+        {groupTitle === MORE_GROUP ? '更多' : groupTitle} <ArrowIcon />
       </GroupItem>
     </Tooltip>
   )
@@ -45,18 +45,18 @@ const ExtraLinks: FC<TProps> = ({ links }) => {
 
   return (
     <Wrapper ref={animateRef}>
-      {groupKeys.map((groupKey: string) => {
-        const curGroupLinks = groupedLinks[groupKey]
+      {groupKeys.map((groupTitle: string) => {
+        const curGroupLinks = groupedLinks[groupTitle]
 
         if (curGroupLinks.length === 1 && curGroupLinks[0].title === '') return null
 
         return (
-          <Fragment key={groupKey}>
-            {startsWith(ONE_LINK_GROUP, groupKey) ? (
+          <Fragment key={groupTitle}>
+            {startsWith(ONE_LINK_GROUP, groupTitle) ? (
               <LinkItem href={curGroupLinks[0].link}>{curGroupLinks[0].title}</LinkItem>
             ) : (
               <LinkGroup
-                groupKey={groupKey}
+                groupTitle={groupTitle}
                 links={curGroupLinks}
                 showMoreFold={links.length >= 2 && links[0].title !== ''}
               />

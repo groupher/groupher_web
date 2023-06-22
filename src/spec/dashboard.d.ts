@@ -57,6 +57,11 @@ export type TDashboardThreadConfig = {
   extraLinks?: TLinkItem[]
 }
 
+export type TFooterConfig = {
+  layout: TFooterLayout
+  links: TLinkItem[]
+}
+
 export type TGlobalLayout = {
   primaryColor: TColorName
   brand: TBrandLayout
