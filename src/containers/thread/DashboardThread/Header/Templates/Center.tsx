@@ -6,7 +6,7 @@ import type { TActive, TCommunityThread, TLinkItem } from '@/spec'
 import { THREAD } from '@/constant/thread'
 import { HEADER_LAYOUT } from '@/constant/layout'
 
-import ExtraLinks from './ExtraLinks'
+import ExtraLinks from '@/widgets/ExtraLinks/HeaderTemplate'
 
 import {
   Wrapper,

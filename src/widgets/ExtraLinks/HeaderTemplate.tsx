@@ -2,6 +2,8 @@ import { FC } from 'react'
 import { keys, startsWith } from 'ramda'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
+import { MORE_GROUP, ONE_LINK_GROUP } from '@/constant/dashboard'
+
 import { sortByIndex, groupByKey } from '@/utils/helper'
 import Tooltip from '@/widgets/Tooltip'
 
@@ -14,8 +16,7 @@ import {
   GroupItem,
   ArrowIcon,
   MenuPanel,
-} from '../../styles/header/templates/extra_links'
-import { MORE_GROUP, ONE_LINK_GROUP } from '../../constant'
+} from './styles/header_template'
 
 type TProps = {
   links: TLinkItem[]

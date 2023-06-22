@@ -3,10 +3,11 @@ import { keys, find, findIndex, clone, remove, filter, reject } from 'ramda'
 import type { TLinkItem, TGroupedLinks } from '@/spec'
 import { CHANGE_MODE } from '@/constant/mode'
 import { ROUTE } from '@/constant/route'
+import { ONE_LINK_GROUP, MORE_GROUP } from '@/constant/dashboard'
 import { sortByIndex, groupByKey } from '@/utils/helper'
 
 import type { TMoveLinkDir } from '../spec'
-import { ONE_LINK_GROUP, EMPTY_LINK_ITEM, MORE_GROUP } from '../constant'
+import { EMPTY_LINK_ITEM } from '../constant'
 import type { TStore } from '../store'
 
 let store: TStore | undefined

@@ -4,12 +4,20 @@ import css, { theme } from '@/utils/css'
 
 import ArrowSVG from '@/icons/ArrowSimple'
 
-import { LinkItem } from './center'
-
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
   gap: 0 14px;
 `
+export const LinkItem = styled.div`
+  color: ${theme('article.digest')};
+  font-size: 12px;
+
+  &:hover {
+    color: ${theme('article.title')};
+    cursor: pointer;
+  }
+`
+
 export const LinkItemWrapper = styled(LinkItem)``
 export const GroupItem = styled(LinkItem)`
   ${css.flex('align-center')};

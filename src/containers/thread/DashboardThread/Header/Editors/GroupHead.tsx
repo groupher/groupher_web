@@ -1,13 +1,14 @@
 import { FC, memo } from 'react'
 import { startsWith } from 'ramda'
 
+import { ONE_LINK_GROUP, MORE_GROUP } from '@/constant/dashboard'
+
 import Tooltip from '@/widgets/Tooltip'
 import { SpaceGrow } from '@/widgets/Common'
 
 import GroupMenu from './GroupMenu'
 import GroupInputer from './GroupInputer'
 
-import { ONE_LINK_GROUP, MORE_GROUP } from '../../constant'
 import {
   Wrapper,
   Title,

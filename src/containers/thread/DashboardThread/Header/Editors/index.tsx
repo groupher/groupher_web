@@ -4,12 +4,12 @@ import { keys, startsWith, filter, length } from 'ramda'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import type { TLinkItem } from '@/spec'
+import { MORE_GROUP, ONE_LINK_GROUP } from '@/constant/dashboard'
 import { sortByIndex, groupByKey } from '@/utils/helper'
 
 import Button from '@/widgets/Buttons/Button'
 
 import type { THeaderSettings } from '../../spec'
-import { MORE_GROUP, ONE_LINK_GROUP } from '../../constant'
 
 import LinkEditor from '../../Footer/Editors/LinkEditor'
 import GroupInputer from '../../Footer/Editors/GroupInputer'
