@@ -1,10 +1,8 @@
 import { FC, memo } from 'react'
 
 import type { TThread, TCommunity, TMetric, TDashboardThreadConfig } from '@/spec'
-import EVENT from '@/constant/event'
 import { ANCHOR } from '@/constant/dom'
 
-import { send } from '@/utils/signal'
 import { washThreads } from '@/utils/helper'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
@@ -36,9 +34,7 @@ type TProps = {
 
 const SimpleLayout: FC<TProps> = ({ community, activeThread, metric, dashboardSettings }) => {
   const washedThreads = washThreads(community.threads, dashboardSettings)
-
-  console.log('## dashboardSettings: ', dashboardSettings)
-  console.log('## washedThreads: ', washedThreads)
+  const { extraLinks } = dashboardSettings
 
   return (
     <Wrapper testid="community-digest" id={ANCHOR.GLOBAL_HEADER_ID}>
@@ -53,11 +49,7 @@ const SimpleLayout: FC<TProps> = ({ community, activeThread, metric, dashboardSe
                 active={activeThread}
               />
             </MobileNaviWrapper>
-            <ThreadTab
-              threads={washedThreads}
-              active={activeThread}
-              onChange={(data) => send(EVENT.COMMUNITY_THREAD_CHANGE, { data })}
-            />
+            <ThreadTab threads={washedThreads} active={activeThread} extraLinks={extraLinks} />
             <AccountUnit community={community} />
           </CommunityBaseInfo>
         </BannerContentWrapper>

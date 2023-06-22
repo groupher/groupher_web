@@ -138,6 +138,9 @@ const Editor: FC<TProps> = ({ settings }) => {
                     onDelete={() => deleteGroup(curGroupLinks[0].groupIndex)}
                   />
                   {curGroupLinks.map((item, index) => {
+                    const isAboutLink =
+                      item.group === MORE_GROUP && index === curGroupLinks.length - 1
+
                     return (
                       <LinkEditor
                         // must use item.title as key, or the sort animation will fail, wired
@@ -147,9 +150,8 @@ const Editor: FC<TProps> = ({ settings }) => {
                         editingLink={editingLink}
                         isFirst={index === 0}
                         isLast={index === curGroupLinks.length - 1}
-                        disableSetting={
-                          item.group === MORE_GROUP && index === curGroupLinks.length - 1
-                        }
+                        disableEdit={isAboutLink}
+                        disableSetting={isAboutLink}
                       />
                     )
                   })}

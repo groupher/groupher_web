@@ -1,6 +1,5 @@
 import { FC, Fragment } from 'react'
 import { keys, startsWith } from 'ramda'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import type { TLinkItem } from '@/spec'
 import { MORE_GROUP, ONE_LINK_GROUP } from '@/constant/dashboard'
@@ -10,7 +9,7 @@ import Tooltip from '@/widgets/Tooltip'
 
 import type { TProps, TLinkGroup } from './spec'
 
-import { Wrapper, LinkItem, GroupItem, ArrowIcon, MenuPanel } from './styles/header_template'
+import { Wrapper, LinkItem, GroupItem, ArrowIcon, MenuPanel } from './styles/simple_layout'
 
 const LinkGroup: FC<TLinkGroup> = ({ groupKey, links, showMoreFold }) => {
   if (!showMoreFold) return null
@@ -37,14 +36,12 @@ const LinkGroup: FC<TLinkGroup> = ({ groupKey, links, showMoreFold }) => {
 }
 
 const ExtraLinks: FC<TProps> = ({ links }) => {
-  const [animateRef] = useAutoAnimate()
-
   // @ts-ignore
   const groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
   const groupKeys = keys(groupedLinks)
 
   return (
-    <Wrapper ref={animateRef}>
+    <Wrapper>
       {groupKeys.map((groupKey: string) => {
         const curGroupLinks = groupedLinks[groupKey]
 

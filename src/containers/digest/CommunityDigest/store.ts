@@ -55,6 +55,7 @@ const CommunityDigest = T.model('CommunityDigest', {
       return {
         enable: toJS(root.dashboardThread.enableSettings),
         nameAlias: toJS(root.dashboardThread.nameAlias),
+        extraLinks: toJS(root.dashboardThread.headerSettings.headerLinks),
       }
     },
     get globalLayout(): TGlobalLayout {

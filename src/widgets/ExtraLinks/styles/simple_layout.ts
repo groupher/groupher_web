@@ -7,21 +7,19 @@ import { Wrapper as WrapperBase, LinkItem as LinkItemBase, ArrowIcon as ArrowIco
 export { MenuPanel } from '.'
 
 export const Wrapper = styled(WrapperBase)`
-  gap: 0 14px;
-  height: 18px;
+  gap: 0 32px;
 `
 export const LinkItem = styled(LinkItemBase)`
-  font-size: 12px;
-  line-height: 18px;
-`
-export const GroupItem = styled(LinkItem)`
-  ${css.flex('align-center')};
-  min-width: 50px;
-  position: relative;
+  font-size: 14px;
 `
 
-export const ArrowIcon = styled(ArrowIconBase)`
-  ${css.size(12)};
+export const GroupItem = styled(LinkItem)`
+  ${css.flex('align-center')};
   position: relative;
-  margin-left: 3px;
+  margin-right: 5px;
+`
+export const ArrowIcon = styled(ArrowIconBase)`
+  ${css.size(14)};
+  position: absolute;
+  right: -16px;
 `

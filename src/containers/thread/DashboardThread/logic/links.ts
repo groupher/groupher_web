@@ -175,7 +175,7 @@ const _keepMoreGroup2EndIfNeed = (): void => {
     const newLinkItem = {
       ...EMPTY_LINK_ITEM,
       title: '关于',
-      link: `${curCommunity.raw}/${ROUTE.ABOUT}`,
+      link: `/${curCommunity.raw}/${ROUTE.ABOUT}`,
       group: MORE_GROUP,
       // make sure the "more" gorup is always in the end
       groupIndex: groupKeys.length + 2,

@@ -7,6 +7,7 @@ import css, { theme } from '@/utils/css'
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
   margin-left: -100px;
+  gap: 0 32px;
 
   ${css.media.mobile`
     display: none;
@@ -17,7 +18,6 @@ export const Title = styled(Link)<TActive>`
   font-size: 14px;
   opacity: ${({ $active }) => ($active ? 1 : 0.9)};
   font-weight: ${({ $active }) => ($active ? 600 : 400)};
-  margin-right: 35px;
   text-decoration: none;
 
   &:hover {

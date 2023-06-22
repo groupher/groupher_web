@@ -51,6 +51,7 @@ type TProps = {
   isLast?: boolean
   mode?: TChangeMode
   disableSetting?: boolean
+  disableEdit?: boolean
 }
 
 const LinkEditor: FC<TProps> = ({
@@ -61,6 +62,7 @@ const LinkEditor: FC<TProps> = ({
   isLast = false,
   mode = CHANGE_MODE.CREATE,
   disableSetting = false,
+  disableEdit = false,
 }) => {
   const [snapshot, setSnapshot] = useState<TLinkItem | null>(null)
 
@@ -95,7 +97,7 @@ const LinkEditor: FC<TProps> = ({
           <ActionWrapper editing={editing}>
             {!isFirst && <ArrowUpIcon onClick={() => moveLink(linkItem, 'up')} />}
             {!isLast && <ArrowDownIcon onClick={() => moveLink(linkItem, 'down')} />}
-            <EditPenIcon onClick={() => updateInGroup(linkItem)} />
+            {!disableEdit && <EditPenIcon onClick={() => updateInGroup(linkItem)} />}
             {!disableSetting && (
               <Tooltip
                 content={
