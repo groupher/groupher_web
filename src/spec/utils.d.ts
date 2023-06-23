@@ -208,7 +208,7 @@ export type TSocialType =
 
 export type TSocialItem = {
   type: TSocialType
-  addr: string
+  link: string
 }
 
 export type TSocial = {

@@ -5,6 +5,7 @@ import css, { theme } from '@/utils/css'
 import Input from '@/widgets/Input'
 
 export const Wrapper = styled.div`
+  width: 310px;
   padding-bottom: 30px;
   margin-bottom: 20px;
 `

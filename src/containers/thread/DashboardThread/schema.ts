@@ -38,6 +38,15 @@ const updateDashboardLayout = gql`
   }
 `
 
+const updateDashboardSocialLinks = gql`
+  mutation ($community: String!, $socialLinks: [dashboardSocialLinkMap]) {
+    updateDashboardSocialLinks(community: $community, socialLinks: $socialLinks) {
+      id
+      title
+    }
+  }
+`
+
 const updateDashboardNameAlias = gql`
   mutation ($community: String!, $nameAlias: [dashboardAliasMap]) {
     updateDashboardNameAlias(community: $community, nameAlias: $nameAlias) {
@@ -101,6 +110,7 @@ const schema = {
   pagedArticleTags,
   updateDashboardEnable,
   updateDashboardLayout,
+  updateDashboardSocialLinks,
   updateDashboardNameAlias,
   updateArticleTag,
   reindexTagsInGroup,

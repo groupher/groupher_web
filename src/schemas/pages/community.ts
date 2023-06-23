@@ -59,6 +59,11 @@ export const community = `
           favicon
         }
 
+        socialLinks {
+          type
+          link
+        }
+
         rss {
           rssFeedType
           rssFeedCount

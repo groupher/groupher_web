@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { includes, values } from 'ramda'
 
-import type { TEditValue } from '@/spec'
+import type { TEditValue, TSocialItem } from '@/spec'
 import { COLOR_NAME } from '@/constant/colors'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
@@ -147,6 +147,15 @@ const _doMutation = (field: string, e: TEditValue): void => {
 
     sr71$.mutate(S.reindexTagsInGroup, { community, thread, group, tags: tagIndex })
   }
+
+  if (field === SETTING_FIELD.SOCIAL_LINKS) {
+    const { socialLinks } = store.baseInfoSettings
+    sr71$.mutate(S.updateDashboardSocialLinks, { community, socialLinks })
+  }
+}
+
+export const updateSocialLinks = (socialLinks: TSocialItem[]): void => {
+  store.mark({ socialLinks })
 }
 
 /**
@@ -224,6 +233,10 @@ const DataSolver = [
   },
   {
     match: asyncRes('updateArticleTag'),
+    action: () => _handleDone(),
+  },
+  {
+    match: asyncRes('updateDashboardSocialLinks'),
     action: () => _handleDone(),
   },
   {

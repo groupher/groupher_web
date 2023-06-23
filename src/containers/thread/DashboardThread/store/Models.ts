@@ -59,6 +59,11 @@ export const LinkItem = T.model('LinkItem', {
   groupIndex: T.opt(T.int, 0),
 })
 
+export const SocialLink = T.model('SocialLink', {
+  type: T.opt(T.str, ''),
+  link: T.opt(T.str, ''),
+})
+
 const File = T.model('File', {
   index: T.int,
   name: T.str,
@@ -83,6 +88,8 @@ export const settingsModalFields = {
   url: T.opt(T.string, ''),
   city: T.opt(T.string, ''),
   techstack: T.opt(T.string, ''),
+  // social
+  socialLinks: T.opt(T.array(SocialLink), []),
 
   // seo
   ogSiteName: T.opt(T.string, ''),

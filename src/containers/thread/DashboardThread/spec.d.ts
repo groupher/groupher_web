@@ -29,6 +29,7 @@ import type {
   TLinkItem,
   TChangeMode,
   TNameAliasConfig,
+  TSocialItem,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'MANAGEMENT' | 'INTEGRATE'
@@ -92,6 +93,8 @@ export type TAliasSettings = {
 }
 
 export type TBaseInfoSettings = {
+  saving: boolean
+
   favicon: string
   logo: string
   title: string
@@ -101,6 +104,7 @@ export type TBaseInfoSettings = {
   city: string
   techstack: string
 
+  socialLinks: TSocialItem[]
   baseInfoTab: TDashboardBaseInfoRoute
 }
 
@@ -186,6 +190,7 @@ export type TTouched = {
   tags: boolean
   tagsIndex: boolean
 
+  socialLinks: boolean
   rssFeed: boolean
 
   widgetsPrimaryColor: boolean
@@ -223,6 +228,7 @@ export type TSettingField =
   | 'broadcastArticleBg'
   | 'broadcastArticleEnable'
   | 'changelogLayout'
+  | 'socialLinks'
   | 'tag'
   | 'tagIndex'
   | 'nameAlias'

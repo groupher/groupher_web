@@ -4,8 +4,8 @@
  *
  */
 
-import { FC, memo, useState, useCallback } from 'react'
-import { keys, includes, reject } from 'ramda'
+import { FC, memo, useState, useCallback, useEffect } from 'react'
+import { keys, includes, reject, findIndex, update } from 'ramda'
 
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
@@ -24,30 +24,48 @@ type TProps = {
   testid?: string
   width?: string
   withTitle?: boolean
+  value?: TSocialItem[]
+  onChange?: (items: TSocialItem[]) => void
 } & TSpace
 
 const SocialEditor: FC<TProps> = ({
   testid = 'social-editor',
   width = '310px',
   withTitle = true,
+  onChange = log,
+  value = [],
   ...restProps
 }) => {
   const [parent] = useAutoAnimate({ duration: 100 })
 
   const [selected, setSelected] = useState<TSocialItem[]>([
-    { type: SOCIAL_LIST.HOMEPAGE, addr: 'https://groupher.com' },
+    { type: SOCIAL_LIST.HOMEPAGE, link: '' },
   ])
 
-  const remove = useCallback(
+  useEffect(() => {
+    setSelected(value)
+  }, [])
+
+  const removeSocial = useCallback(
     (social: TSocialItem) => {
-      // @ts-ignore
       const after: TSocialItem[] = reject(
         (item: TSocialItem) => item.type === social.type,
         selected,
       )
       setSelected(after)
+      onChange(after)
     },
-    [selected],
+    [selected, onChange],
+  )
+
+  const updateSocial = useCallback(
+    (type: string, value: string) => {
+      const targetIndex = findIndex((item: TSocialItem) => item.type === type, selected)
+      const after = update(targetIndex, { type, link: value }, selected)
+      setSelected(after as TSocialItem[])
+      onChange(after)
+    },
+    [selected, onChange],
   )
 
   return (
@@ -65,7 +83,7 @@ const SocialEditor: FC<TProps> = ({
               $active={includes(social, selectedTypes)}
               onClick={() => {
                 if (!includes(social, selectedTypes)) {
-                  setSelected([...selected, { type: social, addr: '' }])
+                  setSelected([...selected, { type: social, link: '' }])
                 }
               }}
             />
@@ -75,7 +93,8 @@ const SocialEditor: FC<TProps> = ({
 
       <InputsWrapper ref={parent}>
         {selected.map((item: TSocialItem) => (
-          <InputBar key={item.type} social={item} onDelete={(social) => remove(social)} />
+          // @ts-ignore
+          <InputBar key={item.type} social={item} onDelete={removeSocial} onChange={updateSocial} />
         ))}
       </InputsWrapper>
     </Wrapper>

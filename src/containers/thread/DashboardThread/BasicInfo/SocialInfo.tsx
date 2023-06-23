@@ -4,20 +4,39 @@ import type { TPostLayout } from '@/spec'
 
 import SocialEditor from '@/widgets/SocialEditor'
 
-import type { TBaseInfoSettings } from '../spec'
+import { SETTING_FIELD } from '../constant'
+import SavingBar from '../SavingBar'
+
+import type { TBaseInfoSettings, TTouched } from '../spec'
 
 import { Wrapper } from '../styles/basic_info/base_info'
-// import { edit } from '../logic'
+import { updateSocialLinks } from '../logic'
 
 type TProps = {
   testid?: TPostLayout
   settings: TBaseInfoSettings
+  touched: TTouched
 }
 
-const SocialInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
+const SocialInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => {
+  const { socialLinks, saving } = settings
+
   return (
     <Wrapper>
-      <SocialEditor />
+      <SocialEditor
+        width="100%"
+        value={socialLinks}
+        onChange={(socials) => {
+          updateSocialLinks(socials)
+        }}
+      />
+
+      <SavingBar
+        isTouched={touched.socialLinks}
+        field={SETTING_FIELD.SOCIAL_LINKS}
+        loading={saving}
+        top={50}
+      />
     </Wrapper>
   )
 }

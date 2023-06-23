@@ -225,11 +225,12 @@ export const ssrParseArticleThread = (resp, thread, filters = {}) => {
 
 export const ssrParseDashboard = (community) => {
   const { dashboard } = community
-  const { enable, nameAlias } = dashboard
+  const { enable, nameAlias, socialLinks } = dashboard
 
   const fieldsObj = removeEmptyValuesFromObject({
     enable,
     nameAlias,
+    socialLinks,
     ...dashboard.layout,
     ...dashboard.rss,
   })

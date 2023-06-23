@@ -173,15 +173,20 @@ const DashboardThread = T.model('DashboardThread', {
 
       return toJS(root.viewing.community)
     },
-    get tagsIndexTouched(): boolean {
+    get _tagsIndexTouched(): boolean {
       const { tags, initSettings } = self
 
       return JSON.stringify(toJS(tags)) !== JSON.stringify(toJS(initSettings.tags))
     },
+    get _socialLinksTouched(): boolean {
+      const { socialLinks, initSettings } = self
+
+      return JSON.stringify(toJS(socialLinks)) !== JSON.stringify(toJS(initSettings.socialLinks))
+    },
     get touched(): TTouched {
       const slf = self as TStore
 
-      const { initSettings: init, tagsIndexTouched } = slf
+      const { initSettings: init, _tagsIndexTouched, _socialLinksTouched } = slf
 
       const _isChanged = (field: TSettingField): boolean => {
         return !equals(slf[field], init[field])
@@ -246,7 +251,8 @@ const DashboardThread = T.model('DashboardThread', {
         changelogLayout: changelogLayoutTouched,
         nameAlias: nameAliasTouched,
         tags: tagsTouched,
-        tagsIndex: tagsIndexTouched,
+        tagsIndex: _tagsIndexTouched,
+        socialLinks: _socialLinksTouched,
 
         glowFixed: glowFixedTouched,
         glowType: glowTypeTouched,
@@ -466,10 +472,16 @@ const DashboardThread = T.model('DashboardThread', {
     get baseInfoSettings(): TBaseInfoSettings {
       const slf = self as TStore
 
-      return pick(
+      const baseInfo = pick(
         ['favicon', 'logo', 'title', 'desc', 'homepage', 'url', 'city', 'techstack', 'baseInfoTab'],
         slf,
       )
+
+      return {
+        ...baseInfo,
+        saving: slf.saving,
+        socialLinks: toJS(slf.socialLinks),
+      }
     },
     get uiSettings(): TUiSettings {
       const slf = self as TStore

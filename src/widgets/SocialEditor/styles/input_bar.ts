@@ -33,7 +33,7 @@ export const DeleteWrapper = styled.div`
 export const DeleteIcon = styled(DeleteSVG)`
   ${css.size(18)};
   fill: ${theme('article.digest')};
-  opacity: 0.5;
+  opacity: 1;
 
   ${DeleteWrapper}:hover & {
     fill: ${theme('baseColor.red')};

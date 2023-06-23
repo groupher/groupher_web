@@ -17,14 +17,14 @@ export const SOCIAL_LIST = {
 export const DEME_SOCIALS = [
   {
     type: SOCIAL_LIST.GITHUB,
-    addr: 'https://github.com',
+    link: 'https://github.com',
   },
   {
     type: SOCIAL_LIST.WECHAT,
-    addr: 'https://twitter.com',
+    link: 'https://twitter.com',
   },
   {
     type: SOCIAL_LIST.ZHIHU,
-    addr: 'https://zhipin.com',
+    link: 'https://zhipin.com',
   },
 ]
