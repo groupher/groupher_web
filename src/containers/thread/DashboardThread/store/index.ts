@@ -19,6 +19,7 @@ import {
   mapObjIndexed,
   includes,
   toUpper,
+  any,
 } from 'ramda'
 
 import type {
@@ -188,20 +189,8 @@ const DashboardThread = T.model('DashboardThread', {
 
       const { initSettings: init, _tagsIndexTouched, _socialLinksTouched } = slf
 
-      const _isChanged = (field: TSettingField): boolean => {
-        return !equals(slf[field], init[field])
-      }
-
-      // baseInfo
-      const faviconTouched = _isChanged('favicon')
-      const logoTouched = _isChanged('logo')
-      const titleTouched = _isChanged('title')
-      const rawTouched = _isChanged('raw')
-      const descTouched = _isChanged('desc')
-      const homepageTouched = _isChanged('homepage')
-      // baseInfo-other
-      const cityTouched = _isChanged('city')
-      const techstackTouched = _isChanged('techstack')
+      const _isChanged = (field: TSettingField): boolean => !equals(slf[field], init[field])
+      const _anyChanged = (fields: TSettingField[]): boolean => any(_isChanged)(fields)
 
       const primaryColorTouched = _isChanged('primaryColor')
       const brandLayoutTouched = _isChanged('brandLayout')
@@ -276,15 +265,8 @@ const DashboardThread = T.model('DashboardThread', {
         widgetsSize: widgetsSizeTouched,
 
         //
-        baseInfo:
-          faviconTouched ||
-          logoTouched ||
-          titleTouched ||
-          rawTouched ||
-          descTouched ||
-          homepageTouched ||
-          cityTouched ||
-          techstackTouched,
+        baseInfo: _anyChanged(BASEINFO_KEYS as TSettingField[]),
+        seo: _anyChanged(SEO_KEYS as TSettingField[]),
 
         // sidebar-item
         ui:
@@ -667,6 +649,19 @@ const DashboardThread = T.model('DashboardThread', {
       if (field === SETTING_FIELD.BASE_INFO) {
         for (let i = 0; i < BASEINFO_KEYS.length; i += 1) {
           const key = BASEINFO_KEYS[i]
+          const initValue = slf.initSettings[key]
+          if (self[key] !== initValue) {
+            // @ts-ignore
+            self[key] = initValue
+          }
+        }
+
+        return
+      }
+
+      if (field === SETTING_FIELD.SEO) {
+        for (let i = 0; i < SEO_KEYS.length; i += 1) {
+          const key = SEO_KEYS[i]
           const initValue = slf.initSettings[key]
           if (self[key] !== initValue) {
             // @ts-ignore

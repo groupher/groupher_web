@@ -8,24 +8,26 @@ import VIEW from '@/constant/view'
 import useCurCommunity from '@/hooks/useCurCommunity'
 import Tabs from '@/widgets/Switcher/Tabs'
 
-import type { TSEOSettings } from '../spec'
-import { SEO_TABS } from '../constant'
+import type { TSEOSettings, TTouched } from '../spec'
+import { SEO_TABS, SETTING_FIELD } from '../constant'
 
+import SavingBar from '../SavingBar'
 import Portal from '../Portal'
 import OpenGraph from './OpenGraph'
 import TwitterGraph from './TwitterGraph'
 
-import { Wrapper, Banner, TabsWrapper } from '../styles/basic_info'
+import { Wrapper, SavingWrapper, Banner, TabsWrapper } from '../styles/basic_info'
 import { edit } from '../logic'
 
 type TProps = {
   testid?: TPostLayout
   settings: TSEOSettings
+  touched: TTouched
 }
 
-const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
+const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => {
   const curCommunity = useCurCommunity()
-  const { seoTab } = settings
+  const { seoTab, saving } = settings
 
   return (
     <Wrapper>
@@ -54,6 +56,10 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
 
       {seoTab === DASHBOARD_SEO_ROUTE.SEARCH_ENGINE && <OpenGraph settings={settings} />}
       {seoTab === DASHBOARD_SEO_ROUTE.TWITTER && <TwitterGraph settings={settings} />}
+
+      <SavingWrapper>
+        <SavingBar field={SETTING_FIELD.SEO} isTouched={touched.seo} loading={saving} top={10} />
+      </SavingWrapper>
     </Wrapper>
   )
 }

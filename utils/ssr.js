@@ -232,6 +232,7 @@ export const ssrParseDashboard = (community) => {
     nameAlias,
     socialLinks,
     ...dashboard.baseInfo,
+    ...dashboard.seo,
     ...dashboard.layout,
     ...dashboard.rss,
   })

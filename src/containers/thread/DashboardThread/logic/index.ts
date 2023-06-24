@@ -14,7 +14,7 @@ import asyncSuit from '@/utils/async'
 import type { TStore } from '../store'
 import type { TSettingField, TNameAlias } from '../spec'
 
-import { SETTING_FIELD, SETTING_LAYOUT_FIELD, BASEINFO_KEYS } from '../constant'
+import { SETTING_FIELD, SETTING_LAYOUT_FIELD, BASEINFO_KEYS, SEO_KEYS } from '../constant'
 import { init as linksLogicInit } from './links'
 import { init as tagsLogicInit } from './tags'
 
@@ -124,12 +124,21 @@ const _doMutation = (field: string, e: TEditValue): void => {
 
   if (field === SETTING_FIELD.BASE_INFO) {
     const params = {}
-
     BASEINFO_KEYS.forEach((key) => {
       params[key] = store[key]
     })
 
     sr71$.mutate(S.updateDashboardBaseInfo, { community, ...params })
+    return
+  }
+
+  if (field === SETTING_FIELD.SEO) {
+    const params = {}
+    SEO_KEYS.forEach((key) => {
+      params[key] = store[key]
+    })
+
+    sr71$.mutate(S.updateDashboardSeo, { community, ...params })
     return
   }
 
@@ -220,6 +229,16 @@ const _handleDone = () => {
     initSettings = { ...store.initSettings, ...current }
   }
 
+  if (field === SETTING_FIELD.SEO) {
+    const current = {}
+
+    SEO_KEYS.forEach((key) => {
+      current[key] = store[key]
+    })
+
+    initSettings = { ...store.initSettings, ...current }
+  }
+
   store.mark({ initSettings })
 
   // manually update in here not in store is because if this action fails,
@@ -242,6 +261,10 @@ const _handleError = () => {
 const DataSolver = [
   {
     match: asyncRes('updateDashboardBaseInfo'),
+    action: () => _handleDone(),
+  },
+  {
+    match: asyncRes('updateDashboardSeo'),
     action: () => _handleDone(),
   },
   {

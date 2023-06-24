@@ -25,7 +25,48 @@ const updateDashboardBaseInfo = gql`
     }
   }
 `
-
+const updateDashboardSeo = gql`
+  mutation (
+    $community: String!
+    $ogSiteName: String
+    $ogTitle: String
+    $ogDescription: String
+    $ogUrl: String
+    $ogImage: String
+    $ogLocale: String
+    $ogPublisher: String
+    $twTitle: String
+    $twDescription: String
+    $twUrl: String
+    $twCard: String
+    $twSite: String
+    $twImage: String
+    $twImageWidth: String
+    $twImageHeight: String
+  ) {
+    updateDashboardSeo(
+      community: $community
+      ogSiteName: $ogSiteName
+      ogTitle: $ogTitle
+      ogDescription: $ogDescription
+      ogUrl: $ogUrl
+      ogImage: $ogImage
+      ogLocale: $ogLocale
+      ogPublisher: $ogPublisher
+      twTitle: $twTitle
+      twDescription: $twDescription
+      twUrl: $twUrl
+      twCard: $twCard
+      twSite: $twSite
+      twImage: $twImage
+      twImageWidth: $twImageWidth
+      twImageHeight: $twImageHeight
+    ) {
+      id
+      title
+    }
+  }
+`
 const updateDashboardEnable = gql`
   mutation ($community: String!, $post: Boolean, $changelog: Boolean, $about: Boolean) {
     updateDashboardEnable(
@@ -133,6 +174,7 @@ const reindexTagsInGroup = gql`
 
 const schema = {
   updateDashboardBaseInfo,
+  updateDashboardSeo,
   pagedArticleTags,
   updateDashboardEnable,
   updateDashboardLayout,

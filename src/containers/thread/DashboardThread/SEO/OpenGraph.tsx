@@ -40,11 +40,11 @@ const OpenGraph: FC<TProps> = ({ testid = 'seo', settings }) => {
       <Label>og:url</Label>
       <Inputer value={settings.ogUrl} onChange={(e) => edit(e, 'ogUrl')} />
       <Label>og:image</Label>
-      <Inputer />
+      <Inputer value={settings.ogImage} onChange={(e) => edit(e, 'ogImage')} />
       <Label>og:locale</Label>
-      <Inputer />
+      <Inputer value={settings.ogLocale} onChange={(e) => edit(e, 'ogLocale')} />
       <Label>article:publisher</Label>
-      <Inputer />
+      <Inputer value={settings.ogPublisher} onChange={(e) => edit(e, 'ogPublisher')} />
     </Wrapper>
   )
 }

@@ -38,8 +38,21 @@ export const community = `
           desc
         }
         seo {
+          ogSiteName
           ogTitle
           ogDescription
+          ogUrl
+          ogImage
+          ogLocale
+          ogPublisher
+          twTitle
+          twDescription
+          twUrl
+          twCard
+          twSite
+          twImage
+          twImageWidth
+          twImageHeight
         }
         nameAlias {
           raw

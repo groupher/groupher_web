@@ -37,6 +37,7 @@ export const SETTING_LAYOUT_FIELD = {
 export const SETTING_FIELD = {
   ...SETTING_LAYOUT_FIELD,
   BASE_INFO: 'baseInfo',
+  SEO: 'seo',
   SOCIAL_LINKS: 'socialLinks',
   TAG: 'tag',
   TAG_INDEX: 'tagIndex',

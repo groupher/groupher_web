@@ -200,6 +200,7 @@ export type TTouched = {
 
   // sidebar
   baseInfo: boolean
+  seo: boolean
   ui: boolean
   widgets: boolean
   broadcast: boolean
@@ -208,6 +209,7 @@ export type TTouched = {
 
 export type TSettingField =
   | 'baseInfo'
+  | 'seo'
   | 'favicon'
   | 'logo'
   | 'title'
