@@ -29,6 +29,14 @@ export const community = `
         blogsCount
       }
       dashboard {
+        baseInfo {
+          title
+          favicon
+          homepage
+          logo
+          raw
+          desc
+        }
         seo {
           ogTitle
           ogDescription

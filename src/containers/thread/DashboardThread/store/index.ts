@@ -71,7 +71,7 @@ import type {
   TCurPageLinksKey,
 } from '../spec'
 
-import { SETTING_FIELD } from '../constant'
+import { SETTING_FIELD, BASEINFO_KEYS, SEO_KEYS, BROADCAST_KEYS } from '../constant'
 
 import { NameAlias, LinkItem, InitSettings, settingsModalFields } from './Models'
 
@@ -192,6 +192,17 @@ const DashboardThread = T.model('DashboardThread', {
         return !equals(slf[field], init[field])
       }
 
+      // baseInfo
+      const faviconTouched = _isChanged('favicon')
+      const logoTouched = _isChanged('logo')
+      const titleTouched = _isChanged('title')
+      const rawTouched = _isChanged('raw')
+      const descTouched = _isChanged('desc')
+      const homepageTouched = _isChanged('homepage')
+      // baseInfo-other
+      const cityTouched = _isChanged('city')
+      const techstackTouched = _isChanged('techstack')
+
       const primaryColorTouched = _isChanged('primaryColor')
       const brandLayoutTouched = _isChanged('brandLayout')
       const avatarTouched = _isChanged('avatarLayout')
@@ -263,6 +274,17 @@ const DashboardThread = T.model('DashboardThread', {
         widgetsPrimaryColor: widgetsPrimaryColorTouched,
         widgetsThreads: widgetsThreadsTouched,
         widgetsSize: widgetsSizeTouched,
+
+        //
+        baseInfo:
+          faviconTouched ||
+          logoTouched ||
+          titleTouched ||
+          rawTouched ||
+          descTouched ||
+          homepageTouched ||
+          cityTouched ||
+          techstackTouched,
 
         // sidebar-item
         ui:
@@ -445,40 +467,21 @@ const DashboardThread = T.model('DashboardThread', {
     get seoSettings(): TSEOSettings {
       const slf = self as TStore
 
-      return pick(
-        [
-          'seoTab',
-          'ogSiteName',
-          'ogTitle',
-          'ogDescription',
-          'ogUrl',
-          'ogImage',
-          'ogLocale',
-          'ogPublisher',
-
-          'twTitle',
-          'twDescription',
-          'twUrl',
-          'twCard',
-          'twSite',
-          'twImage',
-          'twImageWidth',
-          'twImageHeight',
-        ],
-        slf,
-      )
+      return {
+        ...pick(SEO_KEYS, slf),
+        saving: slf.saving,
+        seoTab: slf.seoTab,
+      }
     },
 
     get baseInfoSettings(): TBaseInfoSettings {
       const slf = self as TStore
 
-      const baseInfo = pick(
-        ['favicon', 'logo', 'title', 'desc', 'homepage', 'url', 'city', 'techstack', 'baseInfoTab'],
-        slf,
-      )
+      const baseInfo = pick(BASEINFO_KEYS, slf)
 
       return {
         ...baseInfo,
+        baseInfoTab: slf.baseInfoTab,
         saving: slf.saving,
         socialLinks: toJS(slf.socialLinks),
       }
@@ -502,8 +505,8 @@ const DashboardThread = T.model('DashboardThread', {
         kanbanBgColors: toJS(slf.kanbanBgColors) as TColorName[],
         ...pick(
           [
-            'layoutTab',
             'saving',
+            'layoutTab',
             'primaryColor',
             'brandLayout',
             'avatarLayout',
@@ -527,19 +530,10 @@ const DashboardThread = T.model('DashboardThread', {
     get broadcastSettings(): TBroadcastSettings {
       const slf = self as TStore
 
-      return pick(
-        [
-          'saving',
-          'broadcastTab',
-          'broadcastLayout',
-          'broadcastBg',
-          'broadcastEnable',
-          'broadcastArticleLayout',
-          'broadcastArticleBg',
-          'broadcastArticleEnable',
-        ],
-        slf,
-      )
+      return {
+        ...pick(BROADCAST_KEYS, slf),
+        saving: slf.saving,
+      }
     },
 
     get widgetsSettings(): TWidgetsSettings {
@@ -669,6 +663,19 @@ const DashboardThread = T.model('DashboardThread', {
 
     rollbackEdit(field: TSettingField): void {
       const slf = self as TStore
+
+      if (field === SETTING_FIELD.BASE_INFO) {
+        for (let i = 0; i < BASEINFO_KEYS.length; i += 1) {
+          const key = BASEINFO_KEYS[i]
+          const initValue = slf.initSettings[key]
+          if (self[key] !== initValue) {
+            // @ts-ignore
+            self[key] = initValue
+          }
+        }
+
+        return
+      }
 
       if (field === SETTING_FIELD.TAG) {
         const targetIdx = slf._findTagIdx()

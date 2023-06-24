@@ -231,6 +231,7 @@ export const ssrParseDashboard = (community) => {
     enable,
     nameAlias,
     socialLinks,
+    ...dashboard.baseInfo,
     ...dashboard.layout,
     ...dashboard.rss,
   })

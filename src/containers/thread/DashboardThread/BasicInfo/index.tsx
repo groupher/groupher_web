@@ -56,7 +56,9 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => 
         </TabsWrapper>
       </Banner>
 
-      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.BASIC && <BaseInfo settings={settings} />}
+      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.BASIC && (
+        <BaseInfo settings={settings} touched={touched} />
+      )}
       {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.SOCIAL && (
         <SocialInfo settings={settings} touched={touched} />
       )}

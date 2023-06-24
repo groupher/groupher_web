@@ -36,6 +36,7 @@ export const SETTING_LAYOUT_FIELD = {
 
 export const SETTING_FIELD = {
   ...SETTING_LAYOUT_FIELD,
+  BASE_INFO: 'baseInfo',
   SOCIAL_LINKS: 'socialLinks',
   TAG: 'tag',
   TAG_INDEX: 'tagIndex',
@@ -441,4 +442,44 @@ export const DEFAULT_LINK_ITEMS = [
     group: 'Group 2',
     groupIndex: 2,
   },
+]
+
+export const BASEINFO_KEYS = [
+  'favicon',
+  'logo',
+  'title',
+  'desc',
+  'homepage',
+  'raw',
+  'city',
+  'techstack',
+]
+
+export const SEO_KEYS = [
+  'ogSiteName',
+  'ogTitle',
+  'ogDescription',
+  'ogUrl',
+  'ogImage',
+  'ogLocale',
+  'ogPublisher',
+
+  'twTitle',
+  'twDescription',
+  'twUrl',
+  'twCard',
+  'twSite',
+  'twImage',
+  'twImageWidth',
+  'twImageHeight',
+]
+
+export const BROADCAST_KEYS = [
+  'broadcastTab',
+  'broadcastLayout',
+  'broadcastBg',
+  'broadcastEnable',
+  'broadcastArticleLayout',
+  'broadcastArticleBg',
+  'broadcastArticleEnable',
 ]

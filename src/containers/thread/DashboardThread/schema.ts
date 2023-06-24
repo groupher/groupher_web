@@ -1,6 +1,31 @@
 import { gql } from 'urql/core'
 import { F } from '@/schemas'
 
+const updateDashboardBaseInfo = gql`
+  mutation (
+    $community: String!
+    $homepage: String
+    $title: String
+    $raw: String
+    $desc: String
+    $logo: String
+    $favicon: String
+  ) {
+    updateDashboardBaseInfo(
+      community: $community
+      homepage: $homepage
+      title: $title
+      raw: $raw
+      desc: $desc
+      logo: $logo
+      favicon: $favicon
+    ) {
+      id
+      title
+    }
+  }
+`
+
 const updateDashboardEnable = gql`
   mutation ($community: String!, $post: Boolean, $changelog: Boolean, $about: Boolean) {
     updateDashboardEnable(
@@ -107,6 +132,7 @@ const reindexTagsInGroup = gql`
 `
 
 const schema = {
+  updateDashboardBaseInfo,
   pagedArticleTags,
   updateDashboardEnable,
   updateDashboardLayout,

@@ -100,7 +100,7 @@ export type TBaseInfoSettings = {
   title: string
   desc: string
   homepage: string
-  url: string
+  raw: string
   city: string
   techstack: string
 
@@ -109,6 +109,7 @@ export type TBaseInfoSettings = {
 }
 
 export type TSEOSettings = {
+  saving: boolean
   ogSiteName: string
   ogTitle: string
   ogDescription: string
@@ -198,6 +199,7 @@ export type TTouched = {
   widgetsSize: boolean
 
   // sidebar
+  baseInfo: boolean
   ui: boolean
   widgets: boolean
   broadcast: boolean
@@ -205,6 +207,15 @@ export type TTouched = {
 }
 
 export type TSettingField =
+  | 'baseInfo'
+  | 'favicon'
+  | 'logo'
+  | 'title'
+  | 'raw'
+  | 'desc'
+  | 'homepage'
+  | 'techstack'
+  | 'city'
   | 'primaryColor'
   | 'postLayout'
   | 'kanbanLayout'

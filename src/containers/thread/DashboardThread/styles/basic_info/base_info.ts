@@ -50,3 +50,11 @@ export const Inputer = styled(Input)`
   width: 300px;
   background: transparent;
 `
+export const Hint = styled.div`
+  font-size: 11px;
+  color: ${theme('article.digest')};
+  opacity: 0.8;
+  margin-top: -10px;
+  margin-bottom: 20px;
+  line-break: anywhere;
+`
