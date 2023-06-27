@@ -8,7 +8,7 @@ import { asyncSuit, buildLog, errRescue, updateEditing } from '@/utils'
 
 import type { TStore } from './store'
 import type { TCommunityType } from './spec'
-import { COMMUNITY_TYPE, STEP } from './constant'
+import { STEP } from './constant'
 
 import S from './schema'
 

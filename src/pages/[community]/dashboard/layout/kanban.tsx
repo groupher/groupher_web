@@ -20,7 +20,6 @@ import {
   ssrParseDashboard,
   ssrRescue,
   communitySEO,
-  singular,
   log,
 } from '@/utils'
 

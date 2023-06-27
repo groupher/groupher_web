@@ -19,7 +19,6 @@ import {
   ssrPagedArticlesFilter,
   ssrRescue,
   communitySEO,
-  singular,
   log,
 } from '@/utils'
 

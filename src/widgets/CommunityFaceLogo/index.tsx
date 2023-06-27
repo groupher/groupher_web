@@ -5,13 +5,12 @@
  */
 
 import { FC, memo } from 'react'
-import { isEmpty } from 'ramda'
 
 import { HCN } from '@/constant/name'
 // import { ICON_BASE } from '@/config'
 import { buildLog } from '@/utils/logger'
 
-import { Logo, HomeLogo } from './styles'
+import { Logo } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:CommunityFaceLogo:index')

@@ -1,7 +1,6 @@
 import { FC, memo } from 'react'
 import { isEmpty } from 'ramda'
 
-import SIZE from '@/constant/size'
 import { cutRest } from '@/utils/fmt'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
