@@ -51,14 +51,6 @@ const BaseTaberThreads = [
     title: '讨论',
     raw: 'comments',
   },
-  // {
-  //   title: '收藏',
-  //   raw: 'favorites',
-  // },
-  // {
-  //   title: '喜欢',
-  //   raw: 'likes',
-  // },
 ]
 
 const FullTaberThreads = [

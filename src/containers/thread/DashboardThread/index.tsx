@@ -10,6 +10,8 @@ import { bond } from '@/utils/mobx'
 import { ROUTE } from '@/constant/route'
 
 import SideMenu from './SideMenu'
+import PostManage from './CMS/PostManage'
+
 import {
   Overview,
   BasicInfo,
@@ -90,6 +92,7 @@ const DashboardThreadContainer: FC<TProps> = ({
         {curTab === DASHBOARD.DOMAIN && <Domain />}
         {curTab === DASHBOARD.THIRD_PART && <ThirdPart />}
         {curTab === DASHBOARD.WIDGETS && <Widgets settings={widgetsSettings} touched={touched} />}
+        {curTab === DASHBOARD.POST && <PostManage />}
       </MainWrapper>
     </Wrapper>
   )
