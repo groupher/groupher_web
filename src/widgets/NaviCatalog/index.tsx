@@ -93,7 +93,7 @@ const NaviCatalog: FC<TProps> = ({
       }
     }
     // }, [items])
-  }, []) // TODO: use raw instead
+  }, []) // TODO: use slug instead
 
   // reset select states
   const handleReset = useCallback(() => {

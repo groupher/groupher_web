@@ -73,7 +73,7 @@ export type TChangelog = TBaseArticle & {
 export type TTechStack = {
   title?: string
   logo: string
-  raw: string
+  slug: string
   category?: string
 }
 type TCity = {

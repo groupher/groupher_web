@@ -10,18 +10,18 @@ export const TAGS_MODE = {
 export const TABS_MODE_OPTIONS = [
   {
     title: '全部',
-    raw: TAGS_MODE.ALL,
+    slug: TAGS_MODE.ALL,
   },
   {
     title: '标签',
-    raw: TAGS_MODE.TAG,
+    slug: TAGS_MODE.TAG,
   },
   {
     title: '时间',
-    raw: TAGS_MODE.TIME,
+    slug: TAGS_MODE.TIME,
   },
   {
     title: '版本',
-    raw: TAGS_MODE.VERSION,
+    slug: TAGS_MODE.VERSION,
   },
 ]

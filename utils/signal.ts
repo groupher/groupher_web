@@ -213,7 +213,7 @@ export const viewingChanged = (article: TArticle | null): void => {
  * - 如果已经在子社区，只需要重新加载数据
  * - 如果在其他页面，那么需要重新请求页面
  */
-export const changeToCommunity = (raw = ''): void => {
+export const changeToCommunity = (slug = ''): void => {
   const isClient = typeof window === 'object'
   if (!isClient) return
 
@@ -225,16 +225,16 @@ export const changeToCommunity = (raw = ''): void => {
     // works detail page
     'w',
   ])
-  const isTargetNonCommunityPage = includes(raw, values(NON_COMMUNITY_ROUTE))
+  const isTargetNonCommunityPage = includes(slug, values(NON_COMMUNITY_ROUTE))
 
   if (isNonCommunityPage || isArticlePage || isTargetNonCommunityPage) {
-    const target = raw === HCN ? '' : raw
+    const target = slug === HCN ? '' : slug
     Router.push(`/${target}`)
     send(EVENT.DRAWER.CLOSE)
     return
   }
 
-  send(EVENT.COMMUNITY_CHANGE_BEFORE, { path: raw })
+  send(EVENT.COMMUNITY_CHANGE_BEFORE, { path: slug })
   send(EVENT.DRAWER.CLOSE)
 }
 

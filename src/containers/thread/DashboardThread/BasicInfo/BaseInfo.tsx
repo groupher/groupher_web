@@ -58,7 +58,7 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => 
       <Inputer value={settings.homepage} onChange={(v) => edit(v, 'homepage')} />
       <Hint>您产品或服务的官方地址。</Hint>
       <Label>路径（slug）</Label>
-      <Inputer value={settings.raw} onChange={(v) => edit(v, 'raw')} />
+      <Inputer value={settings.slug} onChange={(v) => edit(v, 'slug')} />
       <Hint>
         社区的 URL 地址段，填写后可通过 https://groupher.com/[slug] 或 https://[slug].groupher.com
         访问。

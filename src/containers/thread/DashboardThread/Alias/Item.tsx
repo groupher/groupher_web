@@ -29,7 +29,7 @@ type TProps = {
 }
 
 const Item: FC<TProps> = ({ alias, editingAlias }) => {
-  const isEditMode: boolean = alias.raw === editingAlias?.raw
+  const isEditMode: boolean = alias.slug === editingAlias?.slug
   const isChanged: boolean = alias.original !== alias.name
 
   return (
@@ -62,7 +62,7 @@ const Item: FC<TProps> = ({ alias, editingAlias }) => {
       <Footer>
         {isEditMode ? (
           <Suggestion
-            items={BUILDIN_ALIAS_SUGGESTIONS[alias.raw]}
+            items={BUILDIN_ALIAS_SUGGESTIONS[alias.slug]}
             onChange={(name) => updateEditingAlias({ ...alias, name })}
           />
         ) : (

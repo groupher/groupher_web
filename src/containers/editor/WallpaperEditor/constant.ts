@@ -8,10 +8,10 @@ export const TAB = {
 export const TAB_OPTIONS = [
   {
     title: '内置壁纸',
-    raw: TAB.BUILDIN,
+    slug: TAB.BUILDIN,
   },
   {
     title: '上传壁纸',
-    raw: TAB.CUSTOM,
+    slug: TAB.CUSTOM,
   },
 ]

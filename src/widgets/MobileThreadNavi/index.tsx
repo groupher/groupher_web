@@ -26,7 +26,7 @@ const MobileThreadNav: FC<TProps> = ({
   active,
   mode = 'mobile',
 }) => {
-  const curThread = threads.filter((t) => t.raw === active)[0] as TCommunityThread
+  const curThread = threads.filter((t) => t.slug === active)[0] as TCommunityThread
 
   const placement = mode === 'mobile' ? 'bottom' : 'bottom-start'
   const offset = mode === 'mobile' ? [-5, 5] : [-28, 5]
@@ -37,12 +37,12 @@ const MobileThreadNav: FC<TProps> = ({
         content={
           <Panel>
             {threads.map((thread) => (
-              <Item key={thread.raw} href={`/${community.raw}/${thread.raw}`}>
+              <Item key={thread.slug} href={`/${community.slug}/${thread.slug}`}>
                 {thread.title}
               </Item>
             ))}
             <Divider top={0} bottom={0} />
-            <Item href={`/${community.raw}/${ROUTE.DASHBOARD.DASHBOARD}`}>管理后台</Item>
+            <Item href={`/${community.slug}/${ROUTE.DASHBOARD.DASHBOARD}`}>管理后台</Item>
             <CopyToClipboard text={community.title}>
               <ShareItem onClick={() => toast('success', '已复制到剪切板')}>分享链接</ShareItem>
             </CopyToClipboard>

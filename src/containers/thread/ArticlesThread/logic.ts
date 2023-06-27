@@ -59,7 +59,7 @@ export const onFilterSelect = (option: TArticleFilter): void => {
 const loadArticles = (page = 1): void => {
   scrollToHeader()
   doQuery(page)
-  // store.markRoute({ tag: tag.raw })
+  // store.markRoute({ tag: tag.slug })
   store.markRoute({ page })
 }
 

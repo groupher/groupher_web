@@ -5,7 +5,7 @@ export const DEFAULT_CREATE_TAG = {
   id: '',
   color: COLOR_NAME.BLACK,
   // index?: number
-  raw: '',
+  slug: '',
   title: '',
   thread: THREAD.POST.toUpperCase(),
   group: '',

@@ -12,7 +12,7 @@ const subscribeCommunity = gql`
       contributesDigest
       threads {
         title
-        raw
+        slug
       }
     }
   }

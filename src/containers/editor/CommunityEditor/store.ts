@@ -22,7 +22,7 @@ const CommunityEditor = T.model('CommunityEditorStore', {
   hasPendingApply: T.opt(T.bool, false),
 
   //
-  raw: T.opt(T.string, ''),
+  slug: T.opt(T.string, ''),
   logo: T.maybeNull(T.string),
   title: T.opt(T.string, ''),
   desc: T.opt(T.string, ''),
@@ -43,14 +43,14 @@ const CommunityEditor = T.model('CommunityEditorStore', {
       return { communityType }
     },
     get setupDomainStatus(): TSetupDomainStatus {
-      const { raw } = self
+      const { slug } = self
 
-      return { raw }
+      return { slug }
     },
     get setupInfoStatus(): TSetupInfoStatus {
-      const { raw, title, desc, logo, applyMsg } = self
+      const { slug, title, desc, logo, applyMsg } = self
 
-      return { raw, title, desc, logo, applyMsg }
+      return { slug, title, desc, logo, applyMsg }
     },
     get isCommunityTypeValid(): boolean {
       const slf = self as TStore
@@ -62,10 +62,10 @@ const CommunityEditor = T.model('CommunityEditorStore', {
       if (self.communityExist) return false
 
       const rule = /^[0-9a-zA-Z]+$/
-      return rule.test(self.raw)
+      return rule.test(self.slug)
     },
     get isTitleValid(): boolean {
-      return !isEmpty(self.raw)
+      return !isEmpty(self.slug)
     },
     get isDescValid(): boolean {
       return !isEmpty(self.desc)

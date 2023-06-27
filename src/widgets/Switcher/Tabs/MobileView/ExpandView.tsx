@@ -64,7 +64,7 @@ const MobileView: FC<TProps> = ({
     (index) => {
       const item = items[index]
 
-      onChange(isString(item) ? item : item.raw || item.title)
+      onChange(isString(item) ? item : item.slug || item.title)
     },
     [onChange, items],
   )
@@ -79,7 +79,7 @@ const MobileView: FC<TProps> = ({
       <Nav ref={navRef}>
         {items.map((item, index) => (
           <TabItem
-            key={item.raw || item.title}
+            key={item.slug || item.title}
             mobileView={isMobile}
             activeKey={activeKey}
             index={index}

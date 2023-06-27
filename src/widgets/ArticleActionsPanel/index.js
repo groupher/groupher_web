@@ -68,7 +68,7 @@ ArticleActionsPanel.propTypes = {
         id: T.string,
         title: T.string,
         color: T.string,
-        raw: T.string,
+        slug: T.string,
       }),
     ),
   }).isRequired,

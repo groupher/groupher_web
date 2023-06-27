@@ -8,7 +8,7 @@ const subscribeCommunity = gql`
   mutation ($communityId: ID!) {
     subscribeCommunity(communityId: $communityId) {
       id
-      raw
+      slug
     }
   }
 `
@@ -16,7 +16,7 @@ const unsubscribeCommunity = gql`
   mutation ($communityId: ID!) {
     unsubscribeCommunity(communityId: $communityId) {
       id
-      raw
+      slug
     }
   }
 `

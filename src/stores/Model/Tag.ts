@@ -12,7 +12,7 @@ export const Tag = T.model('Tag', {
   id: T.maybeNull(T.string),
   title: T.maybeNull(T.string),
   index: T.opt(T.number, 0),
-  raw: T.maybeNull(T.string),
+  slug: T.maybeNull(T.string),
   // color: T.opt(T.enum('color', TAG_COLORS), TAG_COLORS[0]),
   color: T.opt(T.string, TAG_COLORS[0]),
   thread: T.opt(
@@ -33,4 +33,4 @@ export const PagedTags = T.model('PagedTags', {
   ...pagiFields(),
 })
 
-export const emptyTag = { id: '', title: '', color: '', raw: '' }
+export const emptyTag = { id: '', title: '', color: '', slug: '' }

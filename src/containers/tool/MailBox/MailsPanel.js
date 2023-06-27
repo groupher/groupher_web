@@ -14,19 +14,19 @@ import { selectChange, seeAll } from './logic'
 const mailTabs = [
   {
     title: '提及',
-    raw: 'mentions',
+    slug: 'mentions',
     count: 0,
     icon: `${ICON_CMD}/mail_mention.svg`,
   },
   {
     title: '关注',
-    raw: 'notifications',
+    slug: 'notifications',
     count: 0,
     icon: `${ICON_CMD}/mail_watching.svg`,
   },
   {
     title: '消息',
-    raw: 'sys_notifications',
+    slug: 'sys_notifications',
     count: 0,
     icon: `${ICON_CMD}/mail_notification.svg`,
   },
@@ -34,27 +34,18 @@ const mailTabs = [
 
 const MailsPannel = ({ activeRaw, mailStatus, pagedMentions }) => {
   if (mailStatus.mentionCount !== 0) {
-    const index = findIndex(propEq('raw', 'mentions'), mailTabs)
+    const index = findIndex(propEq('slug', 'mentions'), mailTabs)
     mailTabs[index].count = mailStatus.mentionCount
   }
   if (mailStatus.notificationCount !== 0) {
-    const index = findIndex(propEq('raw', 'sys_notifications'), mailTabs)
+    const index = findIndex(propEq('slug', 'sys_notifications'), mailTabs)
     mailTabs[index].count = mailStatus.notificationCount
   }
 
   return (
     <Wrapper>
-      <TabSelector
-        source={mailTabs}
-        activeRaw={activeRaw}
-        onChange={selectChange}
-      />
-      <CustomScroller
-        direction="vertical"
-        height="300px"
-        showShadow={false}
-        autoHide
-      >
+      <TabSelector source={mailTabs} activeRaw={activeRaw} onChange={selectChange} />
+      <CustomScroller direction="vertical" height="300px" showShadow={false} autoHide>
         <ContentWrapper>
           <MailLists activeRaw={activeRaw} pagedMentions={pagedMentions} />
         </ContentWrapper>

@@ -30,7 +30,7 @@ const log = buildLog('w:Tabs:index')
 const temItems = [
   {
     title: '帖子',
-    raw: 'posts',
+    slug: 'posts',
     // icon: `${ICON_CMD}/navi/fire.svg`,
     localIcon: 'settings',
   },
@@ -47,7 +47,7 @@ const temItems = [
 const getDefaultActiveTabIndex = (items: TTabItem[], activeKey: string): number => {
   if (isEmpty(activeKey)) return 0
   const index = findIndex((item) => {
-    return activeKey === (item.raw || item.title)
+    return activeKey === (item.slug || item.title)
   }, items)
 
   return index >= 0 ? index : 0
@@ -119,7 +119,7 @@ const MobileView: FC<TProps> = ({
 
       setSlipWidth(e.target.offsetWidth)
       setActive(index)
-      onChange(isString(item) ? item : item.raw || item.title)
+      onChange(isString(item) ? item : item.slug || item.title)
     },
     [setSlipWidth, setActive, onChange, items],
   )
@@ -139,7 +139,7 @@ const MobileView: FC<TProps> = ({
       <Nav ref={navRef}>
         {items.map((item, index) => (
           <TabItem
-            key={isString(item) ? item : item.raw || item.title}
+            key={isString(item) ? item : item.slug || item.title}
             mobileView={isMobile}
             activeKey={activeKey}
             index={index}

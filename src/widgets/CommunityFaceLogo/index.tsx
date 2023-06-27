@@ -19,7 +19,7 @@ const log = buildLog('w:CommunityFaceLogo:index')
 type TProps = {
   noFill?: boolean
   src?: string
-  raw?: string
+  slug?: string
   className?: string
   noLazy?: boolean
 }
@@ -27,7 +27,7 @@ type TProps = {
 const CommunityFaceLogo: FC<TProps> = ({
   noFill = false,
   src = '',
-  raw = HCN,
+  slug = HCN,
   className = 'community-facelogo-class',
   noLazy = false,
 }) => {

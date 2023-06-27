@@ -40,7 +40,7 @@ export type TMenuGroup = {
   children: TMenuItem[]
 }
 
-type TMenuItem = { title: string; raw: TDashboardPath; alias?: string }
+type TMenuItem = { title: string; slug: TDashboardPath; alias?: string }
 
 export type TMenu = {
   [k: TMenuGroupName]: TMenuGroup
@@ -100,7 +100,7 @@ export type TBaseInfoSettings = {
   title: string
   desc: string
   homepage: string
-  raw: string
+  slug: string
   city: string
   techstack: string
 
@@ -213,7 +213,7 @@ export type TSettingField =
   | 'favicon'
   | 'logo'
   | 'title'
-  | 'raw'
+  | 'slug'
   | 'desc'
   | 'homepage'
   | 'techstack'

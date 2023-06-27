@@ -5,11 +5,7 @@ import type { TCommunity, TCommunitySetterStyle } from '@/spec'
 // import Tooltip from '@/widgets/Tooltip'
 import CommunityCard from './CommunityCard'
 
-import {
-  Wrapper,
-  InnerWrapper,
-  HintTitle,
-} from '../styles/community_setter/list'
+import { Wrapper, InnerWrapper, HintTitle } from '../styles/community_setter/list'
 
 type TProps = {
   title: string
@@ -36,7 +32,7 @@ const CommunitiesList: FC<TProps> = ({
       <InnerWrapper>
         {communities.map((item) => (
           <CommunityCard
-            key={item.raw}
+            key={item.slug}
             item={item}
             checked={allChecked}
             communityStyle={communityStyle}

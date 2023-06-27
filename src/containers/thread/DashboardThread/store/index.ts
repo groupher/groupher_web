@@ -323,7 +323,7 @@ const DashboardThread = T.model('DashboardThread', {
       )
 
       const mappedThreads = curCommunity.threads.map((pThread) => {
-        const aliasItem = find(propEq('raw', pThread.raw))(nameAlias) as TNameAliasConfig
+        const aliasItem = find(propEq('slug', pThread.slug))(nameAlias) as TNameAliasConfig
 
         return {
           ...pThread,
@@ -333,7 +333,7 @@ const DashboardThread = T.model('DashboardThread', {
 
       const curThreads = reject(
         // @ts-ignore
-        (thread) => includes(thread.raw, [THREAD.ABOUT, THREAD.DOC]),
+        (thread) => includes(thread.slug, [THREAD.ABOUT, THREAD.DOC]),
         mappedThreads,
       )
 
@@ -728,7 +728,7 @@ const DashboardThread = T.model('DashboardThread', {
 
       const { nameAlias, editingAlias } = slf
       const targetIdx = findIndex(
-        (item: TNameAlias) => item.raw === editingAlias.raw,
+        (item: TNameAlias) => item.slug === editingAlias.slug,
         toJS(nameAlias),
       )
 

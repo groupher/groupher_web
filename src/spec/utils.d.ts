@@ -84,7 +84,7 @@ export type TAttInfo = {
 export type TTabItem = {
   id?: string
   title?: string
-  raw: string
+  slug: string
   alias?: string
   icon?: string | ReactNode
   localIcon?: string
@@ -213,7 +213,7 @@ export type TSocialItem = {
 
 export type TSocial = {
   title: string
-  raw: string
+  slug: string
 }
 
 export type TLinkItem = {

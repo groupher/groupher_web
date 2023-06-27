@@ -35,7 +35,7 @@ type TSORTABLE_ITEMS = {
   groupIndex?: number
   id?: string
   title?: string
-  raw: string
+  slug: string
   logo?: string
   group?: string
 }[]
@@ -346,10 +346,10 @@ export const washThreads = (
 ): TCommunityThread[] => {
   const { enable, nameAlias } = dashboardSettings
 
-  const enabledThreads = sortByIndex(threads.filter((thread) => enable[thread.raw]))
+  const enabledThreads = sortByIndex(threads.filter((thread) => enable[thread.slug]))
 
   const mappedThreads = enabledThreads.map((pThread) => {
-    const aliasItem = find(propEq('raw', pThread.raw))(nameAlias) as TNameAliasConfig
+    const aliasItem = find(propEq('slug', pThread.slug))(nameAlias) as TNameAliasConfig
 
     return {
       ...pThread,

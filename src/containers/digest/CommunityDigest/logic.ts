@@ -38,11 +38,11 @@ export const unsubscribeCommunity = (communityId: TID): void => {
 
 const loadCommunity = (): void => {
   const userHasLogin = store.isLogin
-  const { raw } = store.curCommunity
+  const { slug } = store.curCommunity
 
   markLoading(true)
 
-  sr71$.query(S.community, { raw, userHasLogin })
+  sr71$.query(S.community, { slug, userHasLogin })
 }
 
 // 查看当前社区志愿者列表

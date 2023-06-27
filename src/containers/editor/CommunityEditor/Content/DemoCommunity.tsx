@@ -10,12 +10,7 @@ import type { TCommunity } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
 // import SearchBox from './SearchBox'
-import {
-  Wrapper,
-  Community,
-  Logo,
-  Title,
-} from '../styles/content/demo_community'
+import { Wrapper, Community, Logo, Title } from '../styles/content/demo_community'
 
 // import { searchOnChange } from './logic'
 
@@ -30,8 +25,8 @@ const DemoCommunity: FC<TProps> = ({ item }) => {
   return (
     <Wrapper>
       <Community>
-        <Logo src={item.logo} raw={item.raw} />
-        <Title href={`/${item.raw}`}>{item.title}</Title>
+        <Logo src={item.logo} slug={item.slug} />
+        <Title href={`/${item.slug}`}>{item.title}</Title>
       </Community>
     </Wrapper>
   )

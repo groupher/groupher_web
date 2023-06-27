@@ -45,7 +45,7 @@ export const Enable = T.model('Enable', {
 })
 
 export const NameAlias = T.model('NameAlias', {
-  raw: T.opt(T.string, ''),
+  slug: T.opt(T.string, ''),
   name: T.opt(T.string, ''),
   original: T.opt(T.string, ''),
   group: T.opt(T.string, ''),
@@ -83,7 +83,7 @@ export const settingsModalFields = {
   favicon: T.opt(T.string, ''),
   logo: T.opt(T.string, ''),
   title: T.opt(T.string, ''),
-  raw: T.opt(T.string, ''),
+  slug: T.opt(T.string, ''),
   desc: T.opt(T.string, ''),
   homepage: T.opt(T.string, ''),
   city: T.opt(T.string, ''),

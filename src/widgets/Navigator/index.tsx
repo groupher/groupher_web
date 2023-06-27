@@ -15,7 +15,7 @@ type TProps = {
 }
 
 const Navigator: FC<TProps> = ({ metric = METRIC.COMMUNITY }) => {
-  const showLogoText = true // shouldShowLogoText(community.raw, metric, layout)
+  const showLogoText = true // shouldShowLogoText(community.slug, metric, layout)
 
   return <DigestView showLogoText={showLogoText} metric={metric} />
 }

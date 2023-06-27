@@ -27,7 +27,7 @@ const TagItem: FC<TProps> = ({ tag, active, onSelect }) => {
         <Title>{cutRest(Trans(tag.title), 10)}</Title>
         {/* <RawWrapper $active={active}>
           <DotDivider radius={2} space={6} />
-          <Raw>{tag.raw}</Raw>
+          <Raw>{tag.slug}</Raw>
         </RawWrapper> */}
       </Tag>
       {/* <SpaceGrow />

@@ -17,7 +17,7 @@ const tmpItems = [
   {
     id: '1',
     title: 'elixir',
-    raw: 'elixir',
+    slug: 'elixir',
     logo: 'https://assets.groupher.com/icons/pl/elixir.png',
     desc: 'maybe the most popular UI framework for web, maybe the most popular UI framework for web',
     subscribersCount: 100,
@@ -25,7 +25,7 @@ const tmpItems = [
   {
     id: '2',
     title: 'javascript',
-    raw: 'javascript',
+    slug: 'javascript',
     logo: 'https://assets.groupher.com/icons/pl/javascript.png',
     desc: 'maybe the most popular UI framework for web, maybe the most popular UI framework for web',
     subscribersCount: 100,
@@ -33,7 +33,7 @@ const tmpItems = [
   {
     id: '3',
     title: 'ruby',
-    raw: 'ruby',
+    slug: 'ruby',
     logo: 'https://assets.groupher.com/icons/pl/ruby.png',
     desc: 'maybe the most popular UI framework for web, maybe the most popular UI framework for web',
     subscribersCount: 100,
@@ -41,7 +41,7 @@ const tmpItems = [
   {
     id: '4',
     title: 'clojure',
-    raw: 'clojure',
+    slug: 'clojure',
     logo: 'https://assets.groupher.com/icons/pl/clojure.png',
     desc: 'maybe the most popular UI framework for web, maybe the most popular UI framework for web',
     subscribersCount: 100,

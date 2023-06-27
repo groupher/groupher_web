@@ -11,7 +11,7 @@ const createArticleTag = gql`
   mutation (
     $thread: Thread!
     $title: String!
-    $raw: String!
+    $slug: String!
     $color: RainbowColor!
     $group: String
     $community: String!
@@ -19,7 +19,7 @@ const createArticleTag = gql`
     createArticleTag(
       thread: $thread
       title: $title
-      raw: $raw
+      slug: $slug
       color: $color
       group: $group
       community: $community
@@ -33,7 +33,7 @@ const updateArticleTag = gql`
     $id: ID!
     $color: RainbowColor
     $title: String
-    $raw: String
+    $slug: String
     $community: String!
     $group: String
   ) {
@@ -41,7 +41,7 @@ const updateArticleTag = gql`
       id: $id
       color: $color
       title: $title
-      raw: $raw
+      slug: $slug
       community: $community
       group: $group
     ) {

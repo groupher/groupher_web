@@ -13,13 +13,13 @@ export const subscribedCommunities = `
   }
 `
 export const community = `
-  query community($raw: String, $userHasLogin: Boolean!) {
-    community(raw: $raw) {
+  query community($slug: String, $userHasLogin: Boolean!) {
+    community(slug: $slug) {
       ${F.community}
       viewerHasSubscribed @include(if: $userHasLogin)
       threads {
         title
-        raw
+        slug
         index
       }
       contributesDigest
@@ -34,7 +34,7 @@ export const community = `
           favicon
           homepage
           logo
-          raw
+          slug
           desc
         }
         seo {
@@ -55,7 +55,7 @@ export const community = `
           twImageHeight
         }
         nameAlias {
-          raw
+          slug
           name
           original
           group

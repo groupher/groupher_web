@@ -23,7 +23,7 @@ type TProps = {
 }
 
 const TagNote: FC<TProps> = ({ testid = 'tag-note', tag }) => {
-  if (!tag.raw) return null
+  if (!tag.slug) return null
 
   return (
     <Wrapper testid={testid}>

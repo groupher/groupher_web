@@ -40,7 +40,7 @@ const loader = async (context, opt = {}) => {
   // query data
   const sessionState = gqClient.request(P.sessionState)
   const curCommunity = gqClient.request(P.community, {
-    raw: community,
+    slug: community,
     userHasLogin,
   })
 
@@ -91,8 +91,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     {
       ...ssrBaseStates(resp),
       route: {
-        communityPath: community.raw,
-        mainPath: community.raw === HCN ? '' : community.raw,
+        communityPath: community.slug,
+        mainPath: community.slug === HCN ? '' : community.slug,
         subPath: thread,
         thread,
       },

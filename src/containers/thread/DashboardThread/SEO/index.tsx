@@ -43,8 +43,8 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => 
               edit(tab, 'seoTab')
               const targetPath =
                 tab === DASHBOARD_SEO_ROUTE.SEARCH_ENGINE
-                  ? `/${curCommunity.raw}/dashboard/seo`
-                  : `/${curCommunity.raw}/dashboard/seo/${tab}`
+                  ? `/${curCommunity.slug}/dashboard/seo`
+                  : `/${curCommunity.slug}/dashboard/seo/${tab}`
 
               Router.push(targetPath)
             }}

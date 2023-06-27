@@ -17,16 +17,16 @@ type TProps = {
 const ThreadTab: FC<TProps> = ({ active, threads, extraLinks, ...restProps }) => {
   const isAboutFold = extraLinks.length >= 2 && extraLinks[0].title !== ''
   const _threads = isAboutFold
-    ? reject((t: TCommunityThread) => t.raw === THREAD.ABOUT, threads)
+    ? reject((t: TCommunityThread) => t.slug === THREAD.ABOUT, threads)
     : threads
 
   return (
     <Wrapper {...restProps}>
       {_threads.map((item) => (
         <Title
-          href={`/home/${item.raw}`}
-          key={item.raw}
-          $active={active === item.raw}
+          href={`/home/${item.slug}`}
+          key={item.slug}
+          $active={active === item.slug}
           prefetch={false}
         >
           {item.title}

@@ -48,8 +48,8 @@ const Alias: FC<TProps> = ({ settings }) => {
               edit(tab, 'aliasTab')
               const targetPath =
                 tab === DASHBOARD_ALIAS_ROUTE.GENERAL
-                  ? `/${curCommunity.raw}/dashboard/alias`
-                  : `/${curCommunity.raw}/dashboard/alias/${tab}`
+                  ? `/${curCommunity.slug}/dashboard/alias`
+                  : `/${curCommunity.slug}/dashboard/alias/${tab}`
 
               Router.push(targetPath)
             }}
@@ -61,11 +61,13 @@ const Alias: FC<TProps> = ({ settings }) => {
 
       {aliasTab === ALIAS_GROUP.GENERAL &&
         generalAlias.map((item) => (
-          <Item key={item.raw} alias={item} editingAlias={editingAlias} />
+          <Item key={item.slug} alias={item} editingAlias={editingAlias} />
         ))}
 
       {aliasTab === ALIAS_GROUP.KANBAN &&
-        kanbanAlias.map((item) => <Item key={item.raw} alias={item} editingAlias={editingAlias} />)}
+        kanbanAlias.map((item) => (
+          <Item key={item.slug} alias={item} editingAlias={editingAlias} />
+        ))}
     </Wrapper>
   )
 }

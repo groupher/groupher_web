@@ -1,19 +1,15 @@
 import { FC, memo } from 'react'
 
-import {
-  PostIcon,
-  PublishIcon,
-  TabCommentsIcon,
-} from '../styles/tabs/local_icon'
+import { PostIcon, PublishIcon, TabCommentsIcon } from '../styles/tabs/local_icon'
 
 type TProps = {
-  raw: string
+  slug: string
   active: boolean
   small?: boolean
 }
 
-const TabIcon: FC<TProps> = ({ raw, active, small }) => {
-  switch (raw) {
+const TabIcon: FC<TProps> = ({ slug, active, small }) => {
+  switch (slug) {
     case 'publish': {
       return <PublishIcon $active={active} $small={small} />
     }

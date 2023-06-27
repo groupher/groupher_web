@@ -30,14 +30,10 @@ type TProps = {
   // slipHeight: '1px' | '2px'
 }
 
-const Tabs: FC<TProps> = ({
-  onChange = log,
-  items = temItems,
-  activeKey = '',
-}) => {
+const Tabs: FC<TProps> = ({ onChange = log, items = temItems, activeKey = '' }) => {
   const handleItemClick = useCallback(
     (item) => {
-      onChange(isString(item) ? item : item.raw || item.title)
+      onChange(isString(item) ? item : item.slug || item.title)
     },
     [onChange],
   )
@@ -46,8 +42,8 @@ const Tabs: FC<TProps> = ({
     <Wrapper testid="tabs">
       {items.map((item) => (
         <TabItem
-          key={isString(item) ? item : item.raw || item.title}
-          $active={activeKey === item.raw}
+          key={isString(item) ? item : item.slug || item.title}
+          $active={activeKey === item.slug}
           onClick={() => handleItemClick(item)}
         >
           {item.title}

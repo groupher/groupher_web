@@ -78,7 +78,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
 
   useEffect(() => {
     communityChanged(curCommunity)
-  }, [curCommunity, curCommunity?.raw])
+  }, [curCommunity, curCommunity?.slug])
 
   useEffect(() => {
     const handleRouteComplete = () => loadDemoSetting()

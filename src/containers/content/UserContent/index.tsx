@@ -41,15 +41,15 @@ const log = buildLog('C:UserContent')
 const BaseTaberThreads = [
   {
     title: 'profile',
-    raw: 'profile',
+    slug: 'profile',
   },
   {
     title: '发布',
-    raw: 'publish',
+    slug: 'publish',
   },
   {
     title: '讨论',
-    raw: 'comments',
+    slug: 'comments',
   },
 ]
 
@@ -57,11 +57,11 @@ const FullTaberThreads = [
   ...BaseTaberThreads,
   // {
   //   title: '账单',
-  //   raw: 'billing',
+  //   slug: 'billing',
   // },
   {
     title: '设置',
-    raw: 'settings',
+    slug: 'settings',
   },
 ]
 

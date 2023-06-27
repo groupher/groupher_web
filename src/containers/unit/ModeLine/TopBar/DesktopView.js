@@ -27,7 +27,7 @@ const DesktopView = ({ visible, viewing, leftOffset, hasNoBottomBorder }) => {
             active={activeThread}
             view={VIEW.DESKTOP}
             // layout={layout}
-            communityRaw={community.raw}
+            communityRaw={community.slug}
             size={SIZE.SMALL}
           />
         </TabsWrapper>

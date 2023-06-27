@@ -19,12 +19,12 @@ const ThreadSelector: FC<TProps> = ({ threads, active }) => {
       <CatsWrapper>
         {threads.map((thread) => (
           <Button
-            key={thread.raw}
-            ghost={thread.raw !== active}
+            key={thread.slug}
+            ghost={thread.slug !== active}
             size="small"
-            noBorder={thread.raw !== active}
+            noBorder={thread.slug !== active}
             onClick={() => {
-              edit(thread.raw, 'activeTagThread')
+              edit(thread.slug, 'activeTagThread')
               reloadArticleTags()
             }}
             space={10}

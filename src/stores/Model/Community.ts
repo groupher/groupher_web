@@ -6,7 +6,7 @@ import { pagiFields, timestampFields } from './helper/common'
 
 const Thread = T.model('Thread', {
   title: T.string,
-  raw: T.string,
+  slug: T.string,
   index: T.opt(T.number, 0),
 })
 
@@ -28,7 +28,7 @@ export const Community = T.model('Community', {
   id: T.maybeNull(T.string),
   title: T.maybeNull(T.string),
   desc: T.opt(T.string, ''),
-  raw: T.maybeNull(T.string),
+  slug: T.maybeNull(T.string),
   index: T.opt(T.number, 1000000),
   logo: T.maybeNull(T.string),
   categories: T.opt(T.array(SimpleCategory), []),

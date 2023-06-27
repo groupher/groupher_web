@@ -16,7 +16,7 @@ const sr71$ = new SR71()
 let sub$ = null
 let store = null
 
-export const selectChange = ({ raw: activeRaw }) => store.mark({ activeRaw })
+export const selectChange = ({ slug: activeRaw }) => store.mark({ activeRaw })
 
 export const previewUser = () => {
   // TODO

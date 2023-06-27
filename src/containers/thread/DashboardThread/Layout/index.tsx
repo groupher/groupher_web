@@ -72,8 +72,8 @@ const UI: FC<TProps> = ({ settings, touched }) => {
               edit(tab, 'layoutTab')
               const targetPath =
                 tab === DASHBOARD_LAYOUT_ROUTE.GLOBAL
-                  ? `/${curCommunity.raw}/dashboard/layout`
-                  : `/${curCommunity.raw}/dashboard/layout/${tab}`
+                  ? `/${curCommunity.slug}/dashboard/layout`
+                  : `/${curCommunity.slug}/dashboard/layout/${tab}`
 
               Router.push(targetPath)
             }}

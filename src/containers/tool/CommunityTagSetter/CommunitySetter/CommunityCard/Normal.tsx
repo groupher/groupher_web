@@ -30,14 +30,14 @@ const CommunityCard: FC<TProps> = ({
 }) => {
   return (
     <Wrapper withHover={canActOnSeleted}>
-      <Logo src={item.logo} raw={item.raw} noLazy />
+      <Logo src={item.logo} slug={item.slug} noLazy />
       <Intro>
         <Title>
           <Name>{item.title}</Name>
           {item?.title?.length < 8 && (
             <>
               <DotDivider space={5} />
-              <Raw>{item.raw}</Raw>
+              <Raw>{item.slug}</Raw>
             </>
           )}
 
@@ -54,7 +54,7 @@ const CommunityCard: FC<TProps> = ({
         </Title>
         {item?.title?.length >= 8 && (
           <>
-            <Raw>{item.raw}</Raw>
+            <Raw>{item.slug}</Raw>
           </>
         )}
         <Digest>

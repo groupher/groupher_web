@@ -3,11 +3,11 @@ import { memo } from 'react'
 import { sortByIndex } from '@/utils/helper'
 import Tabs from '@/widgets/Switcher/Tabs'
 
-// priority: icon > localIcon || raw
+// priority: icon > localIcon || slug
 // const getLocalIcon = (item) => {
 //   if (item.icon) return ''
 
-//   return item.localIcon ? item.localIcon : item.raw
+//   return item.localIcon ? item.localIcon : item.slug
 // }
 
 const NormalView = ({ layout, source, active, onChange, size }) => {

@@ -45,8 +45,8 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => 
               edit(tab, 'baseInfoTab')
               const targetPath =
                 tab === DASHBOARD_BASEINFO_ROUTE.BASIC
-                  ? `/${curCommunity.raw}/dashboard/info`
-                  : `/${curCommunity.raw}/dashboard/info/${tab}`
+                  ? `/${curCommunity.slug}/dashboard/info`
+                  : `/${curCommunity.slug}/dashboard/info/${tab}`
 
               Router.push(targetPath)
             }}

@@ -270,8 +270,8 @@ const rootStore = T.model({
       const filter = pickBy(notEmpty, {
         page,
         size,
-        articleTag: tag.raw,
-        community: community.raw,
+        articleTag: tag.slug,
+        community: community.slug,
         ...articlesfilter,
       })
 

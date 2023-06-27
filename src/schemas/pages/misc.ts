@@ -16,7 +16,7 @@ export const pagedCategories = `
       entries {
         id
         title
-        raw
+        slug
         index
       }
       ${F.pagi}

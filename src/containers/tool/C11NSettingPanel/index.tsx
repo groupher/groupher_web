@@ -26,12 +26,12 @@ const log = buildLog('C:C11NSettingPanel')
 const TAB_OPTIONS = [
   {
     title: '常规设置',
-    raw: 'general',
+    slug: 'general',
     localIcon: 'settings',
   },
   {
     title: '主题设置',
-    raw: 'theme',
+    slug: 'theme',
     icon: `${ICON_CMD}/theme_cloth.svg`,
   },
 ]

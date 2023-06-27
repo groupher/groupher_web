@@ -25,7 +25,7 @@ type TProps = {
   source: TTabItem[]
   active: string
   layout: TC11NLayout
-  communityRaw: string
+  communitySlug: string
   size: TSizeSM
   onChange?: () => void
 }
@@ -35,7 +35,7 @@ const TabBar: FC<TProps> = ({
   active = THREAD.POST,
   onChange = log,
   layout = C11N.CLASSIC,
-  communityRaw = HCN,
+  communitySlug = HCN,
   size = SIZE.MEDIUM,
 }) => {
   const sortedSource = sortByIndex(source)

@@ -51,10 +51,10 @@ const ClassicLayout: FC<TProps> = ({ community, activeThread, metric, dashboardS
             <TabBar
               source={washedThreads}
               onChange={(path) => {
-                Router.push(`/${community.raw}/${path}`)
+                Router.push(`/${community.slug}/${path}`)
               }}
               active={activeThread}
-              communityRaw={community.raw}
+              communityRaw={community.slug}
             />
             <SpaceGrow />
             {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}

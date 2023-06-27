@@ -38,12 +38,12 @@ const Group: FC<TProps> = ({ group, curTab, touched, community }) => {
         <MenuWrapper>
           {group.children.map((item) => (
             <Item
-              $active={item.raw === curTab}
-              key={item.raw}
-              href={`/${community.raw}/${DASHBOARD_ROUTE.DASHBOARD}/${item.raw}`}
+              $active={item.slug === curTab}
+              key={item.slug}
+              href={`/${community.slug}/${DASHBOARD_ROUTE.DASHBOARD}/${item.slug}`}
             >
               {item.title}
-              {touched && (touched[item.raw] || touched[item.alias]) && <TouchedDot />}
+              {touched && (touched[item.slug] || touched[item.alias]) && <TouchedDot />}
             </Item>
           ))}
         </MenuWrapper>

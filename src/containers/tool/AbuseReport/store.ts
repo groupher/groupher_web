@@ -16,7 +16,7 @@ const log = buildLog('S:AbuseReport')
 
 const initItem = {
   title: '',
-  raw: '',
+  slug: '',
   checked: false,
   info: '',
   detail: '',
@@ -24,7 +24,7 @@ const initItem = {
 
 const Item = T.model('AbuseReport', {
   title: T.string,
-  raw: T.string,
+  slug: T.string,
   checked: T.opt(T.bool, false),
   info: T.opt(T.string, ''),
   detail: T.opt(T.string, ''),
@@ -52,7 +52,7 @@ const AbuseReport = T.model('AbuseReport', {
     },
     get activeItem(): TREPORT_ITEM {
       const { itemsData, checkedItemRaw } = self as TStore
-      const findItem = find(propEq('raw', checkedItemRaw), itemsData) as TREPORT_ITEM
+      const findItem = find(propEq('slug', checkedItemRaw), itemsData) as TREPORT_ITEM
 
       return findItem || initItem
     },

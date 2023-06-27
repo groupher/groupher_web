@@ -37,7 +37,7 @@ export const previewAccount = (): void => {
 export const checkSessionState = (): void => sr71$.query(S.sessionState, {})
 
 export const onThreadChange = (activeThread: TThread): void => {
-  // const activeThread = thread.raw
+  // const activeThread = thread.slug
   const subPath = plural(activeThread)
 
   scrollToHeader()

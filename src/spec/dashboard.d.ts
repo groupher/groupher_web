@@ -46,7 +46,7 @@ export type TEnableConfig = {
 }
 
 export type TNameAliasConfig = {
-  raw: string
+  slug: string
   name: string
   original?: string
 }

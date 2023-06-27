@@ -26,7 +26,7 @@ type TProps = {
 }
 
 const MainMenu: FC<TProps> = ({ community, activeThread, enable }) => {
-  const communityPath = community?.raw || 'home'
+  const communityPath = community?.slug || 'home'
 
   // TODO: refactor later
   return (

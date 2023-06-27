@@ -6,8 +6,8 @@ const token = BStore.get('github_token')
 const rawOptions = {
   headers: {
     Authorization: `token ${token}`,
-    Accept: 'application/vnd.github.VERSION.raw',
-    'Content-Type': 'application/vnd.github.VERSION.raw',
+    Accept: 'application/vnd.github.VERSION.slug',
+    'Content-Type': 'application/vnd.github.VERSION.slug',
   },
 }
 
@@ -27,7 +27,7 @@ export const restClient = (api, fmt = 'default') => {
     case 'json': {
       return fetch(`${api}`, jsonOptions).then((r) => r.json())
     }
-    case 'raw': {
+    case 'slug': {
       return fetch(`${api}`, rawOptions).then((r) => r.text())
     }
     default: {

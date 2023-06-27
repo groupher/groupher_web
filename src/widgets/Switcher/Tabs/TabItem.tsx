@@ -66,7 +66,7 @@ const TabItem: FC<TProps> = ({
   )
 
   useEffect(() => {
-    if (item.raw === activeKey && !(mobileView || modelineView) && !wrapMode) {
+    if (item.slug === activeKey && !(mobileView || modelineView) && !wrapMode) {
       const curEl = activeRef?.current
       const inViewport = isElementInViewport(curEl)
 
@@ -91,24 +91,24 @@ const TabItem: FC<TProps> = ({
       wrapMode={wrapMode}
       size={size}
       onClick={handleWrapperClick}
-      active={item.raw === activeKey}
+      active={item.slug === activeKey}
     >
       <Label
         ref={clickableRef}
         onClick={handleLabelClick}
-        active={item.raw === activeKey}
+        active={item.slug === activeKey}
         size={size}
         bottomSpace={bottomSpace}
       >
         {!isString(item) && (item.icon || item.localIcon) && (
-          <TabIcon item={item} clickableRef={clickableRef} active={item.raw === activeKey} />
+          <TabIcon item={item} clickableRef={clickableRef} active={item.slug === activeKey} />
         )}
-        <div ref={item.raw === activeKey ? activeRef : null}>
+        <div ref={item.slug === activeKey ? activeRef : null}>
           {isString(item) ? item : item.alias || Trans(item.title)}
         </div>
       </Label>
 
-      {wrapMode && item.raw === activeKey && (
+      {wrapMode && item.slug === activeKey && (
         <ActiveLineWrapper>
           <ActiveLine />
         </ActiveLineWrapper>

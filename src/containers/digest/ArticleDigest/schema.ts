@@ -1,8 +1,8 @@
 import { gql } from 'urql/core'
 
 const community = gql`
-  query community($raw: String) {
-    community(raw: $raw) {
+  query community($slug: String) {
+    community(slug: $slug) {
       viewerHasSubscribed
       subscribersCount
     }
@@ -26,7 +26,7 @@ const subscribeCommunity = gql`
   mutation ($communityId: ID!) {
     subscribeCommunity(communityId: $communityId) {
       id
-      raw
+      slug
     }
   }
 `
@@ -34,7 +34,7 @@ const unsubscribeCommunity = gql`
   mutation ($communityId: ID!) {
     unsubscribeCommunity(communityId: $communityId) {
       id
-      raw
+      slug
     }
   }
 `

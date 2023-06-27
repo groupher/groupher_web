@@ -40,11 +40,11 @@ const Header: FC<TProps> = ({ metric, community, activeThread, dashboardSettings
         </Community>
 
         <Main metric={metric}>
-          <LinkItem href={`/${community.raw}/${ROUTE.POST}`}>讨论区</LinkItem>
-          <LinkItem href={`/${community.raw}/${ROUTE.KANBAN}`}>看板</LinkItem>
-          <LinkItem href={`/${community.raw}/${ROUTE.CHANGELOG}`}>更新日志</LinkItem>
-          <LinkItem href={`/${community.raw}/${ROUTE.HELP}`}>帮助台</LinkItem>
-          <LinkItem href={`/${community.raw}/${ROUTE.ABOUT}`}>关于</LinkItem>
+          <LinkItem href={`/${community.slug}/${ROUTE.POST}`}>讨论区</LinkItem>
+          <LinkItem href={`/${community.slug}/${ROUTE.KANBAN}`}>看板</LinkItem>
+          <LinkItem href={`/${community.slug}/${ROUTE.CHANGELOG}`}>更新日志</LinkItem>
+          <LinkItem href={`/${community.slug}/${ROUTE.HELP}`}>帮助台</LinkItem>
+          <LinkItem href={`/${community.slug}/${ROUTE.ABOUT}`}>关于</LinkItem>
         </Main>
 
         <MobileNaviWrapper>

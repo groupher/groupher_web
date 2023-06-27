@@ -6,7 +6,7 @@ const updateDashboardBaseInfo = gql`
     $community: String!
     $homepage: String
     $title: String
-    $raw: String
+    $slug: String
     $desc: String
     $logo: String
     $favicon: String
@@ -15,7 +15,7 @@ const updateDashboardBaseInfo = gql`
       community: $community
       homepage: $homepage
       title: $title
-      raw: $raw
+      slug: $slug
       desc: $desc
       logo: $logo
       favicon: $favicon
@@ -138,7 +138,7 @@ const updateArticleTag = gql`
     $id: ID!
     $color: RainbowColor
     $title: String
-    $raw: String
+    $slug: String
     $community: String!
     $extra: [String]
     $icon: String
@@ -148,7 +148,7 @@ const updateArticleTag = gql`
       id: $id
       color: $color
       title: $title
-      raw: $raw
+      slug: $slug
       community: $community
       extra: $extra
       icon: $icon

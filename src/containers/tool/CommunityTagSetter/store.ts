@@ -62,8 +62,8 @@ const CommunityTagSetter = T.model('CommunityTagSetter', {
           (c) =>
             includes(
               // @ts-ignore
-              c.raw,
-              map((s) => s.raw, selectedCommunities),
+              c.slug,
+              map((s) => s.slug, selectedCommunities),
             ),
           toJS(slf.searchedCommunities),
         ),
@@ -72,8 +72,8 @@ const CommunityTagSetter = T.model('CommunityTagSetter', {
           (c) =>
             includes(
               // @ts-ignore
-              c.raw,
-              map((s) => s.raw, selectedCommunities),
+              c.slug,
+              map((s) => s.slug, selectedCommunities),
             ),
           toJS(slf.commonUsedCommunities),
         ),
@@ -184,23 +184,23 @@ const CommunityTagSetter = T.model('CommunityTagSetter', {
     },
   }))
   .actions((self) => ({
-    selectCommunity(raw: string): void {
+    selectCommunity(slug: string): void {
       const slf = self as TStore
       const { selectableCommunities, selectedCommunities } = slf
 
-      const targetCommunities = filter((c) => c.raw === raw, selectableCommunities)
+      const targetCommunities = filter((c) => c.slug === slug, selectableCommunities)
 
       slf.mark({
         selectedCommunities: uniq([...toJS(selectedCommunities), ...targetCommunities]),
       })
     },
 
-    undoSelectCommunity(raw: string): void {
+    undoSelectCommunity(slug: string): void {
       const slf = self as TStore
       const { selectedCommunities } = slf
 
       slf.mark({
-        selectedCommunities: reject((c: TCommunity) => c.raw === raw, toJS(selectedCommunities)),
+        selectedCommunities: reject((c: TCommunity) => c.slug === slug, toJS(selectedCommunities)),
       })
     },
 

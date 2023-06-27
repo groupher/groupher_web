@@ -184,9 +184,9 @@ const CommentsStore = T.model('CommentsStore', {
     get communityRaw(): string {
       const root = getParent(self) as TRootStore
       // const viewingCommunity = toJS(self.root.viewing.community)
-      // if (viewingCommunity.raw) return viewingCommunity.raw
+      // if (viewingCommunity.slug) return viewingCommunity.slug
 
-      return root.viewing.viewingArticle.originalCommunity.raw
+      return root.viewing.viewingArticle.originalCommunity.slug
     },
     get activeThread(): Uppercase<TThread> {
       const root = getParent(self) as TRootStore

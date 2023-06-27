@@ -1,15 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TCommunity } from '@/spec'
-import {
-  Wrapper,
-  Block,
-  Logo,
-  Title,
-  AddBlock,
-  AddButton,
-  DeleteHint,
-} from './styles/row'
+import { Wrapper, Block, Logo, Title, AddBlock, AddButton, DeleteHint } from './styles/row'
 
 type TProps = {
   items: TCommunity[]
@@ -21,8 +13,8 @@ const ActiveRow: FC<TProps> = ({ onAdd, onRemove, items }) => {
   return (
     <Wrapper>
       {items?.map((t) => (
-        <Block key={t.raw}>
-          <Logo src={t.logo} raw={t.raw} />
+        <Block key={t.slug}>
+          <Logo src={t.logo} slug={t.slug} />
           <Title>{t.title}</Title>
           <DeleteHint onClick={() => onRemove(t)}>删除</DeleteHint>
         </Block>

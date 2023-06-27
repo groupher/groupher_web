@@ -40,8 +40,8 @@ const Broadcast: FC<TProps> = ({ settings, touched }) => {
               edit(tab, 'broadcastTab')
               const targetPath =
                 tab === DASHBOARD_BROADCAST_ROUTE.GLOBAL
-                  ? `/${curCommunity.raw}/dashboard/broadcast`
-                  : `/${curCommunity.raw}/dashboard/broadcast/${tab}`
+                  ? `/${curCommunity.slug}/dashboard/broadcast`
+                  : `/${curCommunity.slug}/dashboard/broadcast/${tab}`
 
               Router.push(targetPath)
             }}

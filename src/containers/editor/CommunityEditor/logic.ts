@@ -55,10 +55,10 @@ export const nextStep = (): void => {
 }
 
 const checkIfCommunityExist = () => {
-  const { raw } = store
+  const { slug } = store
 
   store.mark({ checking: true, communityExist: false })
-  sr71$.query(S.isCommunityExist, { raw })
+  sr71$.query(S.isCommunityExist, { slug })
 }
 
 const checkPendingApply = () => {
@@ -75,7 +75,7 @@ export const communityTypeOnChange = (communityType: TCommunityType): void => {
 }
 
 export const applyCommunity = (): void => {
-  const args = pick(['title', 'logo', 'desc', 'raw', 'applyMsg'], store)
+  const args = pick(['title', 'logo', 'desc', 'slug', 'applyMsg'], store)
 
   store.mark({ submitting: true })
   sr71$.mutate(S.applyCommunity, {
@@ -91,7 +91,7 @@ export const applyCommunity = (): void => {
  * @public
  */
 export const inputOnChange = (e: TEditValue, part: string): void => {
-  if (part === 'raw') {
+  if (part === 'slug') {
     store.mark({ communityExist: false })
   }
   updateEditing(store, part, e)

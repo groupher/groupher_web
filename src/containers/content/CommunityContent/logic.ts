@@ -32,7 +32,7 @@ let sub$ = null
 const tabOnChange = (activeThread: TThread): void => {
   const { curCommunity } = store
 
-  const mainPath = curCommunity.raw
+  const mainPath = curCommunity.slug
   const subPath = activeThread !== ARTICLE_THREAD.POST ? plural(activeThread) : ''
 
   // store.setViewing({ activeThread })

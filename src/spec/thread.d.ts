@@ -10,6 +10,6 @@ export type TThread = TArticleThread | 'dashboard' | 'kanban' | 'team' | 'accoun
 
 export type TCommunityThread = {
   title: string
-  raw: TThread
+  slug: TThread
   index?: number
 }

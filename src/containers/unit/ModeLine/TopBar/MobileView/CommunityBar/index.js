@@ -31,7 +31,7 @@ const CommunityBar = ({ visible, viewing, leftOffset, hasNoBottomBorder }) => {
             active={activeThread}
             view={VIEW.MODELINE}
             // layout={layout}
-            communityRaw={community.raw}
+            communityRaw={community.slug}
           />
         </TabsWrapper>
         <TagWrapper>

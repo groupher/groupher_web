@@ -188,7 +188,7 @@ const getCurView = (source) => {
 const getActiveTag = (tagRaw, tagList) => {
   if (!tagRaw || isEmpty(tagList)) return null
 
-  const index = findIndex(propEq('raw', tagRaw), tagList)
+  const index = findIndex(propEq('slug', tagRaw), tagList)
 
   if (index < 0) return null
   return tagList[index]

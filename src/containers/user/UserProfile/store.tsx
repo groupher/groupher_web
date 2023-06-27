@@ -37,7 +37,7 @@ const UserProfile = T.model('UserProfile', {
 
       return {
         // @ts-ignore
-        entries: reject((c) => c.raw === HCN, entries),
+        entries: reject((c) => c.slug === HCN, entries),
         ...rest,
       }
     },

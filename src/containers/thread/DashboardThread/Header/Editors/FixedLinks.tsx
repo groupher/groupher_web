@@ -21,19 +21,19 @@ type TProps = {
 }
 
 const FixedLinks: FC<TProps> = ({ isAboutLinkFold }) => {
-  const { raw, threads } = useCurCommunity()
+  const { slug, threads } = useCurCommunity()
 
   return (
     <Wrapper>
       <Note>固定链接:</Note>
 
       <ItemsWrapper>
-        {reject((t: TCommunityThread) => t.raw === ROUTE.ABOUT, threads).map(
+        {reject((t: TCommunityThread) => t.slug === ROUTE.ABOUT, threads).map(
           (item: TCommunityThread) => (
-            <Item key={item.raw}>
+            <Item key={item.slug}>
               <Title>{item.title}</Title>
               <LinkRaw>
-                /{raw}/{item.raw}
+                /{slug}/{item.slug}
               </LinkRaw>
             </Item>
           ),
@@ -50,7 +50,7 @@ const FixedLinks: FC<TProps> = ({ isAboutLinkFold }) => {
         ) : (
           <Item>
             <Title>关于</Title>
-            <LinkRaw>/{raw}/about</LinkRaw>
+            <LinkRaw>/{slug}/about</LinkRaw>
           </Item>
         )}
       </ItemsWrapper>

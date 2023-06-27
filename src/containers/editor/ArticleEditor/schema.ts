@@ -173,12 +173,12 @@ const updateRadar = gql`
 
 // viewer_has_subscribed
 const community = gql`
-  query ($raw: String) {
-    community(raw: $raw) {
+  query ($slug: String) {
+    community(slug: $slug) {
       id
       logo
       title
-      raw
+      slug
       desc
       subscribersCount
     }

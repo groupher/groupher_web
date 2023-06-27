@@ -43,7 +43,7 @@ export const enableThread = (key: string, toggle: boolean) => {
   store.mark({ enable })
   store.onSave('enable')
 
-  sr71$.mutate(S.updateDashboardEnable, { community: curCommunity.raw, [key]: toggle })
+  sr71$.mutate(S.updateDashboardEnable, { community: curCommunity.slug, [key]: toggle })
 }
 
 export const updateEditingAlias = (alias: TNameAlias): void => store.mark({ editingAlias: alias })
@@ -120,7 +120,7 @@ export const broadcastOnCancel = (isArticle = false): void => {
 
 const _doMutation = (field: string, e: TEditValue): void => {
   const { curCommunity } = store
-  const community = curCommunity.raw
+  const community = curCommunity.slug
 
   if (field === SETTING_FIELD.BASE_INFO) {
     const params = {}
@@ -152,7 +152,7 @@ const _doMutation = (field: string, e: TEditValue): void => {
   }
 
   if (field === SETTING_FIELD.TAG) {
-    const community = store.curCommunity.raw
+    const community = store.curCommunity.slug
     sr71$.mutate(S.updateArticleTag, { ...toJS(store.editingTag), community })
   }
 
@@ -188,7 +188,7 @@ export const edit = (e: TEditValue, field: string): void => updateEditing(store,
 // reload after create/delete tag and swtich between tag threads
 export const reloadArticleTags = (): void => {
   const { curCommunity, activeTagThread } = store
-  const filter = { community: curCommunity.raw, thread: activeTagThread.toUpperCase() }
+  const filter = { community: curCommunity.slug, thread: activeTagThread.toUpperCase() }
   //
   sr71$.query(S.pagedArticleTags, { filter })
 }

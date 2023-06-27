@@ -7,7 +7,7 @@ const pagedArticleTags = gql`
       entries {
         id
         title
-        raw
+        slug
         color
         thread
         extra

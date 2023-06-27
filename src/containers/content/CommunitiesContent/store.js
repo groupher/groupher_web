@@ -90,9 +90,9 @@ const ExploreContentStore = T.model('ExploreContentStore', {
       const { entries } = toJS(self.pagedCategories)
       return entries.map((item) => ({
         id: item.id,
-        raw: item.raw,
+        slug: item.slug,
         title: Trans(item.title),
-        icon: `${ICON_CMD}/catalogs/${item.raw}.svg`,
+        icon: `${ICON_CMD}/catalogs/${item.slug}.svg`,
       }))
     },
   }))

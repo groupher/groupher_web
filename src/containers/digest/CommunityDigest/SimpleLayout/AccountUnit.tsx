@@ -24,7 +24,7 @@ const AccountUnit: FC<TProps> = ({ community }) => {
         订阅
       </SubscribeButton> */}
 
-      <Link href={`/${community.raw}/${ROUTE.DASHBOARD.DASHBOARD}`} prefetch={false}>
+      <Link href={`/${community.slug}/${ROUTE.DASHBOARD.DASHBOARD}`} prefetch={false}>
         <DashboardIcon />
       </Link>
 

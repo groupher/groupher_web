@@ -33,7 +33,7 @@ export const onDelete = (tag: TTag): void => {
   store.mark({ processing: true })
   const { id, thread, community } = tag
 
-  sr71$.mutate(S.deleteArticleTag, { id, community: community.raw, thread })
+  sr71$.mutate(S.deleteArticleTag, { id, community: community.slug, thread })
 }
 
 export const onUpdate = (): void => {
@@ -42,8 +42,8 @@ export const onUpdate = (): void => {
 
   const tag = {
     ...editingTagData,
-    raw: editingTagData.title,
-    community: curCommunity.raw,
+    slug: editingTagData.title,
+    community: curCommunity.slug,
     thread: curThread,
   }
 
@@ -56,8 +56,8 @@ export const onCreate = (): void => {
 
   const tag = {
     ...editingTagData,
-    raw: editingTagData.title,
-    community: curCommunity.raw,
+    slug: editingTagData.title,
+    community: curCommunity.slug,
     thread: curThread,
   }
 

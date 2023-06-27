@@ -13,7 +13,7 @@ export type TCommunity = {
   index?: number
   title?: string
   logo?: string
-  raw: string
+  slug: string
   subscribersCount?: number
   articlesCount?: number
   viewerHasSubscribed?: boolean
@@ -34,7 +34,7 @@ export type TPagedCommunities = {
 export type TTag = {
   id?: string
   index?: number
-  raw: string
+  slug: string
   title?: string
   thread?: string
   color?: string
@@ -45,7 +45,7 @@ export type TTag = {
 export type TFilterTag = {
   id?: string
   index?: number
-  raw: string
+  slug: string
   title?: string
   color?: string
   group?: string
@@ -55,7 +55,7 @@ export type TFilterTag = {
 export type TNaviTag = {
   id: string
   index?: number
-  raw: string
+  slug: string
   title?: string
   color?: string
   group?: string
@@ -75,7 +75,7 @@ export type TGroupedTags = {
 export type TCategory = {
   id: TID
   title: string
-  raw: string
+  slug: string
   index: number
   // author: T
 }

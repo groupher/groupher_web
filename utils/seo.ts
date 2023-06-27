@@ -22,12 +22,12 @@ type TSEO = {
 }
 
 export const communitySEO = (community: TCommunity, thread: TThread): TSEO => {
-  const { raw, title, desc } = community
+  const { slug, title, desc } = community
 
   return {
-    url: `${SITE_URL}/${raw}/${plural(thread)}`,
-    title: raw === 'home' ? 'Groupher' : `${title} 社区`,
-    description: raw === 'home' ? SLOGAN : `${desc}`,
+    url: `${SITE_URL}/${slug}/${plural(thread)}`,
+    title: slug === 'home' ? 'Groupher' : `${title} 社区`,
+    description: slug === 'home' ? SLOGAN : `${desc}`,
   }
 }
 

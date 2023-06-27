@@ -59,36 +59,36 @@ export const MENU = {
     children: [
       {
         title: '基本信息',
-        raw: DASHBOARD_ROUTE.INFO,
+        slug: DASHBOARD_ROUTE.INFO,
       },
       {
         title: 'SEO',
-        raw: DASHBOARD_ROUTE.SEO,
+        slug: DASHBOARD_ROUTE.SEO,
       },
       {
         title: '社区板块',
-        raw: DASHBOARD_ROUTE.THREADS,
+        slug: DASHBOARD_ROUTE.THREADS,
       },
       {
         title: '布局/样式',
-        raw: DASHBOARD_ROUTE.LAYOUT,
+        slug: DASHBOARD_ROUTE.LAYOUT,
       },
       {
         title: '别名',
-        raw: DASHBOARD_ROUTE.ALIAS,
+        slug: DASHBOARD_ROUTE.ALIAS,
         alias: SETTING_FIELD.NAME_ALIAS,
       },
       {
         title: '管理员',
-        raw: DASHBOARD_ROUTE.ADMINS,
+        slug: DASHBOARD_ROUTE.ADMINS,
       },
       {
         title: '页头',
-        raw: DASHBOARD_ROUTE.HEADER,
+        slug: DASHBOARD_ROUTE.HEADER,
       },
       {
         title: '页脚',
-        raw: DASHBOARD_ROUTE.FOOTER,
+        slug: DASHBOARD_ROUTE.FOOTER,
       },
     ],
   },
@@ -103,35 +103,35 @@ export const MENU = {
     children: [
       {
         title: '标签',
-        raw: DASHBOARD_ROUTE.TAGS,
+        slug: DASHBOARD_ROUTE.TAGS,
       },
       {
         title: '帖子',
-        raw: DASHBOARD_ROUTE.POST,
+        slug: DASHBOARD_ROUTE.POST,
       },
       {
         title: '看板',
-        raw: DASHBOARD_ROUTE.KANBAN,
+        slug: DASHBOARD_ROUTE.KANBAN,
       },
       {
         title: '更新日志',
-        raw: DASHBOARD_ROUTE.CHANGELOG,
+        slug: DASHBOARD_ROUTE.CHANGELOG,
       },
       {
         title: '帮助台',
-        raw: DASHBOARD_ROUTE.DOC,
+        slug: DASHBOARD_ROUTE.DOC,
       },
       {
         title: '广播',
-        raw: DASHBOARD_ROUTE.BROADCAST,
+        slug: DASHBOARD_ROUTE.BROADCAST,
       },
       {
         title: '小黑屋',
-        raw: DASHBOARD_ROUTE.BLACKHOUSE,
+        slug: DASHBOARD_ROUTE.BLACKHOUSE,
       },
       {
         title: 'RSS',
-        raw: DASHBOARD_ROUTE.RSS,
+        slug: DASHBOARD_ROUTE.RSS,
       },
     ],
   },
@@ -142,15 +142,15 @@ export const MENU = {
     children: [
       {
         title: '自定义域名',
-        raw: DASHBOARD_ROUTE.DOMAIN,
+        slug: DASHBOARD_ROUTE.DOMAIN,
       },
       {
         title: '外部应用',
-        raw: DASHBOARD_ROUTE.THIRD_PART,
+        slug: DASHBOARD_ROUTE.THIRD_PART,
       },
       {
         title: '网站插件',
-        raw: DASHBOARD_ROUTE.WIDGETS,
+        slug: DASHBOARD_ROUTE.WIDGETS,
       },
     ],
   },
@@ -174,49 +174,49 @@ export const BUILDIN_ALIAS_SUGGESTIONS = {
 
 export const BUILDIN_ALIAS = [
   {
-    raw: 'post',
+    slug: 'post',
     name: '讨论',
     original: '讨论',
     group: ALIAS_GROUP.GENERAL,
   },
   {
-    raw: 'changelog',
+    slug: 'changelog',
     name: '更新日志',
     original: '更新日志',
     group: ALIAS_GROUP.GENERAL,
   },
   {
-    raw: 'kanban',
+    slug: 'kanban',
     name: '看板',
     original: '看板',
     group: ALIAS_GROUP.GENERAL,
   },
   {
-    raw: 'upvote',
+    slug: 'upvote',
     name: '赞同',
     original: '赞同',
     group: ALIAS_GROUP.GENERAL,
   },
   {
-    raw: 'upvote_bug',
+    slug: 'upvote_bug',
     name: '相同问题',
     original: '相同问题',
     group: ALIAS_GROUP.GENERAL,
   },
   {
-    raw: 'todo',
+    slug: 'todo',
     name: '待办',
     original: '待办',
     group: ALIAS_GROUP.KANBAN,
   },
   {
-    raw: 'doing',
+    slug: 'doing',
     name: '进行中',
     original: '进行中',
     group: ALIAS_GROUP.KANBAN,
   },
   {
-    raw: 'done',
+    slug: 'done',
     name: '已完成',
     original: '已完成',
     group: ALIAS_GROUP.KANBAN,
@@ -234,23 +234,23 @@ export const WIDGET_TYPE = {
 export const WIDGET_TYPES = [
   {
     title: '侧边栏',
-    raw: WIDGET_TYPE.SIDEBAR,
+    slug: WIDGET_TYPE.SIDEBAR,
   },
   {
     title: '居中模态框',
-    raw: WIDGET_TYPE.MODAL,
+    slug: WIDGET_TYPE.MODAL,
   },
   {
     title: '弹出提示',
-    raw: WIDGET_TYPE.POPUP,
+    slug: WIDGET_TYPE.POPUP,
   },
   {
     title: '页面内嵌',
-    raw: WIDGET_TYPE.IFRAME,
+    slug: WIDGET_TYPE.IFRAME,
   },
   {
     title: '链接',
-    raw: WIDGET_TYPE.LINK,
+    slug: WIDGET_TYPE.LINK,
   },
 ]
 
@@ -268,60 +268,60 @@ export const FOOTER_EDIT_TYPE = {
 export const BASEINFO_TABS = [
   {
     title: '基本信息',
-    raw: DASHBOARD_BASEINFO_ROUTE.BASIC,
+    slug: DASHBOARD_BASEINFO_ROUTE.BASIC,
   },
   {
     title: '社交媒体',
-    raw: DASHBOARD_BASEINFO_ROUTE.SOCIAL,
+    slug: DASHBOARD_BASEINFO_ROUTE.SOCIAL,
   },
   {
     title: '其他',
-    raw: DASHBOARD_BASEINFO_ROUTE.OTHER,
+    slug: DASHBOARD_BASEINFO_ROUTE.OTHER,
   },
 ]
 
 export const SEO_TABS = [
   {
     title: '搜索引擎',
-    raw: DASHBOARD_SEO_ROUTE.SEARCH_ENGINE,
+    slug: DASHBOARD_SEO_ROUTE.SEARCH_ENGINE,
   },
   {
     title: 'Twitter',
-    raw: DASHBOARD_SEO_ROUTE.TWITTER,
+    slug: DASHBOARD_SEO_ROUTE.TWITTER,
   },
 ]
 
 export const LAYOUT_TABS = [
   {
     title: '全局',
-    raw: DASHBOARD_LAYOUT_ROUTE.GLOBAL,
+    slug: DASHBOARD_LAYOUT_ROUTE.GLOBAL,
   },
   {
     title: '讨论区',
-    raw: DASHBOARD_LAYOUT_ROUTE.POST,
+    slug: DASHBOARD_LAYOUT_ROUTE.POST,
   },
   {
     title: '看板',
-    raw: DASHBOARD_LAYOUT_ROUTE.KANBAN,
+    slug: DASHBOARD_LAYOUT_ROUTE.KANBAN,
   },
   {
     title: '更新日志',
-    raw: DASHBOARD_LAYOUT_ROUTE.CHANGELOG,
+    slug: DASHBOARD_LAYOUT_ROUTE.CHANGELOG,
   },
   {
     title: '帮助台',
-    raw: DASHBOARD_LAYOUT_ROUTE.DOC,
+    slug: DASHBOARD_LAYOUT_ROUTE.DOC,
   },
 ]
 
 export const BROADCAST_TABS = [
   {
     title: '站顶横幅',
-    raw: DASHBOARD_BROADCAST_ROUTE.GLOBAL,
+    slug: DASHBOARD_BROADCAST_ROUTE.GLOBAL,
   },
   {
     title: '帖子页脚',
-    raw: DASHBOARD_BROADCAST_ROUTE.ARTICLE,
+    slug: DASHBOARD_BROADCAST_ROUTE.ARTICLE,
   },
 ]
 
@@ -345,11 +345,11 @@ export const TW_CARD_OPTIONS = [
 export const ALIAS_TABS = [
   {
     title: '常规',
-    raw: DASHBOARD_ALIAS_ROUTE.GENERAL,
+    slug: DASHBOARD_ALIAS_ROUTE.GENERAL,
   },
   {
     title: '看板',
-    raw: DASHBOARD_ALIAS_ROUTE.KANBAN,
+    slug: DASHBOARD_ALIAS_ROUTE.KANBAN,
   },
 ]
 
@@ -451,7 +451,7 @@ export const BASEINFO_KEYS = [
   'title',
   'desc',
   'homepage',
-  'raw',
+  'slug',
   'city',
   'techstack',
 ]

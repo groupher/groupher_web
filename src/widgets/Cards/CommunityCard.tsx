@@ -26,16 +26,16 @@ type TProps = {
   item: TCommunity
 }
 
-const CommunityCard: FC<TProps> = ({ item: { logo, title, raw, desc } }) => {
+const CommunityCard: FC<TProps> = ({ item: { logo, title, slug, desc } }) => {
   return (
-    <Wrapper key={raw}>
+    <Wrapper key={slug}>
       <Header>
-        <CommunityLogo src={logo} raw={raw} />
+        <CommunityLogo src={logo} slug={slug} />
         <Info>
           <Title>{title}</Title>
           <SubInfo>
-            <Raw href={`/${raw}`} prefetch={false}>
-              {raw}
+            <Raw href={`/${slug}`} prefetch={false}>
+              {slug}
             </Raw>
             <DotDivider space={6} />
             <SubsInfo>
