@@ -18,8 +18,8 @@ const alias = {
   python: 'Pythoner',
 }
 
-export const mapAlias = (_source: TTabItem[], communityRaw: string): TTabItem[] => {
-  const communityAlias = alias[communityRaw]
+export const mapAlias = (_source: TTabItem[], communitySlug: string): TTabItem[] => {
+  const communityAlias = alias[communitySlug]
   const source = clone(_source)
 
   if (!communityAlias) return source

@@ -34,10 +34,10 @@ export const loadTags = (): void => {
   const { curThread } = store
   // TODO: remove
 
-  const communityRaw = store.curCommunity.slug
+  const communitySlug = store.curCommunity.slug
   const thread = toUpper(curThread)
 
-  const args = { filter: { communityRaw, thread } }
+  const args = { filter: { community: communitySlug, thread } }
 
   store.mark({ loading: true })
   sr71$.query(S.pagedArticleTags, args)

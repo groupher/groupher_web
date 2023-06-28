@@ -41,7 +41,7 @@ export const author = `
 export const article = `
   id
   innerId
-  originalCommunityRaw
+  originalCommunitySlug
   isPinned
   title
   insertedAt

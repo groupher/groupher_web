@@ -54,7 +54,7 @@ const ClassicLayout: FC<TProps> = ({ community, activeThread, metric, dashboardS
                 Router.push(`/${community.slug}/${path}`)
               }}
               active={activeThread}
-              communityRaw={community.slug}
+              communitySlug={community.slug}
             />
             <SpaceGrow />
             {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}

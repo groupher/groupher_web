@@ -46,7 +46,7 @@ type TProps = {
 const PostLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
   const { id, author, title, upvotesCount, meta, viewerHasUpvoted } = article
 
-  const backUrl = `/${article.originalCommunityRaw}/${ARTICLE_THREAD.POST}`
+  const backUrl = `/${article.originalCommunitySlug}/${ARTICLE_THREAD.POST}`
 
   return (
     <Wrapper metric={metric}>

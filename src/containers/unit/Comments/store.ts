@@ -181,7 +181,7 @@ const CommentsStore = T.model('CommentsStore', {
       const root = getParent(self) as TRootStore
       return toJS(root.viewing.community)
     },
-    get communityRaw(): string {
+    get communitySlug(): string {
       const root = getParent(self) as TRootStore
       // const viewingCommunity = toJS(self.root.viewing.community)
       // if (viewingCommunity.slug) return viewingCommunity.slug

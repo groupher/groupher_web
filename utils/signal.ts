@@ -200,7 +200,7 @@ export const communityChanged = (community: TCommunity): void => {
 export const viewingChanged = (article: TArticle | null): void => {
   if (article) {
     // @ts-ignore
-    BStore.set('viewingArticle', { community: article.originalCommunityRaw, id: article.innerId })
+    BStore.set('viewingArticle', { community: article.originalCommunitySlug, id: article.innerId })
   } else {
     BStore.set('viewingArticle', null)
   }

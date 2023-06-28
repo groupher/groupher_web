@@ -40,7 +40,7 @@ type TBaseArticle = {
   author?: TAccount
   upvotesCount?: number
   originalCommunity?: TCommunity
-  originalCommunityRaw?: string
+  originalCommunitySlug?: string
   communities?: TCommunity[]
   commentsParticipants?: TUser[]
   commentsParticipantsCount?: number

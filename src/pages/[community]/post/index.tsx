@@ -53,7 +53,7 @@ const loader = async (context, opt = {}) => {
   const pagedArticleTags = isArticleThread(thread)
     ? gqClient.request(P.pagedArticleTags, {
         filter: {
-          communityRaw: community,
+          community,
           thread: singular(thread, 'upperCase'),
         },
       })
@@ -65,20 +65,12 @@ const loader = async (context, opt = {}) => {
     ? gqClient.request(ssrPagedArticleSchema(thread), filter)
     : {}
 
-  // const subscribedCommunities = gqClient.request(P.subscribedCommunities, {
-  //   filter: {
-  //     page: 1,
-  //     size: PAGE_SIZE.M,
-  //   },
-  // })
-
   return {
     filter,
     ...(await pagedArticleTags),
     ...(await sessionState),
     ...(await curCommunity),
     ...(await pagedArticles),
-    // ...(await subscribedCommunities),
   }
 }
 

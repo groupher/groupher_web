@@ -41,7 +41,7 @@ type TProps = {
 
 const ChangelogLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
   const { id, author, title } = article
-  const backUrl = `/${article.originalCommunityRaw}/${ARTICLE_THREAD.CHANGELOG}`
+  const backUrl = `/${article.originalCommunitySlug}/${ARTICLE_THREAD.CHANGELOG}`
 
   return (
     <Wrapper metric={metric}>
