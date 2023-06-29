@@ -4,6 +4,9 @@ import { Cell } from 'rsuite-table'
 import TimeAgo from 'timeago-react'
 
 import ArticleCatState from '@/widgets/ArticleCatState'
+import TagsList from '@/widgets/TagsList'
+
+// import { mockTags } from '@/utils/mock'
 
 import {
   ArticleWrapper,
@@ -24,7 +27,7 @@ export const StateCell = ({ rowData, ...props }) => {
   return (
     <Cell {...props}>
       <StateWrapper>
-        <ArticleCatState cat={cat} state={state} left={-4} smaller noBg />
+        <ArticleCatState cat={cat} state={state} left={-8} smaller noBg />
       </StateWrapper>
     </Cell>
   )
@@ -35,6 +38,7 @@ export const ArticleCell = ({ rowData, ...props }) => {
     <Cell {...props}>
       <ArticleWrapper>
         <ArticleTitle>{rowData.title}</ArticleTitle>
+        <TagsList items={rowData.articleTags} left={0} />
       </ArticleWrapper>
     </Cell>
   )
