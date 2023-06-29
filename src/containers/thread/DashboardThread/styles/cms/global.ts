@@ -4,7 +4,9 @@ const GlobalTableStyle = createGlobalStyle`
   .rs-table-bordered {
     border: none;
   }
-  .rs-table-row-header {
+
+  // .rs-table-cell-group-fixed-right
+  .rs-table-cell, .rs-table-row-header {
     background: transparent;
   }
   /* .rs-table-cell-group-fixed-left {

@@ -16,13 +16,13 @@ import {
   NoBgIcon,
 } from './styles/state'
 
-type TProps = Pick<TArticleStateBadgeProps, 'state' | 'cat' | 'smaller'>
+type TProps = Pick<TArticleStateBadgeProps, 'state' | 'cat' | 'smaller' | 'noBg'>
 
-const State: FC<TProps> = ({ state, cat, smaller }) => {
+const State: FC<TProps> = ({ state, cat, smaller, noBg }) => {
   switch (state) {
     case ARTICLE_STATE.DONE: {
       return (
-        <Wrapper cat={cat} smaller={smaller}>
+        <Wrapper cat={cat} smaller={smaller} noBg={noBg}>
           <DoneIcon cat={cat} smaller={smaller} />
         </Wrapper>
       )
@@ -30,7 +30,7 @@ const State: FC<TProps> = ({ state, cat, smaller }) => {
 
     case ARTICLE_STATE.WIP: {
       return (
-        <Wrapper cat={cat} smaller={smaller}>
+        <Wrapper cat={cat} smaller={smaller} noBg={noBg}>
           <WipIcon cat={cat} smaller={smaller} />
         </Wrapper>
       )
@@ -38,7 +38,7 @@ const State: FC<TProps> = ({ state, cat, smaller }) => {
 
     case ARTICLE_STATE.TODO: {
       return (
-        <Wrapper cat={cat} smaller={smaller}>
+        <Wrapper cat={cat} smaller={smaller} noBg={noBg}>
           <TODOIcon cat={cat} smaller={smaller} />
         </Wrapper>
       )

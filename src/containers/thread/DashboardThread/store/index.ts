@@ -51,7 +51,7 @@ import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { washThreads } from '@/utils/helper'
 
-import { Tag } from '@/model'
+import { PagedPosts, Tag, emptyPagi } from '@/model'
 
 import type {
   TBaseInfoSettings,
@@ -70,6 +70,7 @@ import type {
   TBroadcastSettings,
   TWidgetType,
   TCurPageLinksKey,
+  TCMSPosts,
 } from '../spec'
 
 import { SETTING_FIELD, BASEINFO_KEYS, SEO_KEYS, BROADCAST_KEYS } from '../constant'
@@ -85,6 +86,7 @@ const DASHBOARD_DEMO_KEY = 'dashboard_demo'
 const DashboardThread = T.model('DashboardThread', {
   savingField: T.maybeNull(T.str),
   saving: T.opt(T.bool, false),
+  loading: T.opt(T.bool, false),
   // tab
   curTab: T.opt(T.enum(values(DASHBOARD_ROUTE)), DASHBOARD_ROUTE.INFO),
   baseInfoTab: T.opt(T.enum(values(DASHBOARD_BASEINFO_ROUTE)), DASHBOARD_BASEINFO_ROUTE.BASIC),
@@ -107,6 +109,9 @@ const DashboardThread = T.model('DashboardThread', {
   ...settingsModalFields,
   initSettings: T.opt(InitSettings, {}),
   defaultSettings: T.opt(InitSettings, {}),
+
+  // cms
+  pagedPosts: T.opt(PagedPosts, emptyPagi),
 
   // for global alert
   demoAlertEnable: T.opt(T.bool, false),
@@ -173,6 +178,13 @@ const DashboardThread = T.model('DashboardThread', {
       const root = getParent(self) as TRootStore
 
       return toJS(root.viewing.community)
+    },
+    get cmsPosts(): TCMSPosts {
+      const slf = self as TStore
+      return {
+        loading: slf.loading,
+        pagedPosts: toJS(slf.pagedPosts),
+      }
     },
     get _tagsIndexTouched(): boolean {
       const { tags, initSettings } = self

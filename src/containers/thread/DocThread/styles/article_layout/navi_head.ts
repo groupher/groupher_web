@@ -6,20 +6,21 @@ import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
-  font-size: 13px;
+  line-height: 22px;
   margin-bottom: 3px;
 `
 export const Home = styled(ArrowButton)`
-  transform: scale(0.8);
-  margin-left: -2px;
+  opacity: 0.7;
+  min-width: 42px;
 `
 export const Slash = styled.div`
   font-size: 10px;
-  margin-top: -1px;
   color: ${theme('article.info')};
-  margin-left: 3px;
+  margin-left: 6px;
   margin-right: 7px;
 `
 export const Cur = styled.div`
   color: ${theme('article.digest')};
+  font-size: 13px;
+  margin-top: -1px;
 `

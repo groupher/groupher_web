@@ -30,9 +30,15 @@ import type {
   TChangeMode,
   TNameAliasConfig,
   TSocialItem,
+  TPagedArticles,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'MANAGEMENT' | 'INTEGRATE'
+
+export type TCMSPosts = {
+  pagedPosts: TPagedArticles
+  loading: boolean
+}
 
 export type TMenuGroup = {
   title: string

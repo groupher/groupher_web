@@ -63,6 +63,7 @@ const DashboardThreadContainer: FC<TProps> = ({
     docSettings,
     broadcastSettings,
     touched,
+    cmsPosts,
   } = store
 
   const { DASHBOARD } = ROUTE
@@ -92,7 +93,7 @@ const DashboardThreadContainer: FC<TProps> = ({
         {curTab === DASHBOARD.DOMAIN && <Domain />}
         {curTab === DASHBOARD.THIRD_PART && <ThirdPart />}
         {curTab === DASHBOARD.WIDGETS && <Widgets settings={widgetsSettings} touched={touched} />}
-        {curTab === DASHBOARD.POST && <PostManage />}
+        {curTab === DASHBOARD.POST && <PostManage cmsPosts={cmsPosts} />}
       </MainWrapper>
     </Wrapper>
   )

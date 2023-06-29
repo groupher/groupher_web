@@ -205,6 +205,16 @@ export const onSave = (field: TSettingField): void => {
   _doMutation(field, store[field])
 }
 
+export const loadArticles = () => {
+  console.log('## loadArticles')
+
+  store.mark({ loading: true })
+  sr71$.query(S.pagedPosts, {
+    filter: { page: 1, size: 20, community: 'home' },
+    userHasLogin: false,
+  })
+}
+
 // ###############################
 // init & uninit handlers
 // ###############################
@@ -291,6 +301,13 @@ const DataSolver = [
     match: asyncRes('reindexTagsInGroup'),
     action: () => _handleDone(),
   },
+  {
+    match: asyncRes('pagedPosts'),
+    action: ({ pagedPosts }) => {
+      store.mark({ pagedPosts, loading: false })
+    },
+  },
+
   {
     match: asyncRes('pagedArticleTags'),
     action: ({ pagedArticleTags }) => store.mark({ tags: pagedArticleTags.entries }),

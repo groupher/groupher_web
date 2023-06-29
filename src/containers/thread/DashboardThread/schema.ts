@@ -1,5 +1,5 @@
 import { gql } from 'urql/core'
-import { F } from '@/schemas'
+import { P, F } from '@/schemas'
 
 const updateDashboardBaseInfo = gql`
   mutation (
@@ -182,6 +182,7 @@ const schema = {
   updateDashboardNameAlias,
   updateArticleTag,
   reindexTagsInGroup,
+  pagedPosts: P.pagedPosts,
 }
 
 export default schema
