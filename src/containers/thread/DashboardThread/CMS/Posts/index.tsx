@@ -1,15 +1,12 @@
 import { FC, useCallback, useEffect, useState } from 'react'
 
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table'
-import 'rsuite-table/dist/css/rsuite-table.css'
 
-import type { TCMSPosts } from '../spec'
-import { ArticleCell, StateCell, AuthorDateCell, DateCell } from './Cell'
+import type { TPagedArticles } from '@/spec'
+import { ArticleCell, StateCell, AuthorDateCell, DateCell } from '../Cell'
 
-import GlobalTableStyle from '../styles/cms/global'
-
-import { Wrapper, Title, SortIcon } from '../styles/cms/post_manage'
-import { loadArticles } from '../logic'
+import { Title, SortIcon } from '../../styles/cms/posts'
+import { loadArticles } from '../../logic'
 
 /**
  * example: https://table.rsuitejs.com/#fixed-column
@@ -17,10 +14,11 @@ import { loadArticles } from '../logic'
  */
 
 type TProps = {
-  cmsPosts: TCMSPosts
+  pagedPosts: TPagedArticles
+  loading: boolean
 }
 
-const PostManage: FC<TProps> = ({ cmsPosts }) => {
+const PostManage: FC<TProps> = ({ pagedPosts, loading }) => {
   useEffect(() => {
     setTimeout(() => {
       loadArticles()
@@ -34,8 +32,6 @@ const PostManage: FC<TProps> = ({ cmsPosts }) => {
     commentsCount: '',
     upvotesCount: '',
   })
-
-  const { loading, pagedPosts } = cmsPosts
 
   const handleSortColumn = useCallback(
     (sortColumn, sortType) => {
@@ -65,7 +61,7 @@ const PostManage: FC<TProps> = ({ cmsPosts }) => {
   )
 
   return (
-    <Wrapper>
+    <>
       <Table
         data={pagedPosts.entries}
         sortColumn={sortColumn}
@@ -135,9 +131,7 @@ const PostManage: FC<TProps> = ({ cmsPosts }) => {
           <AuthorDateCell />
         </Column>
       </Table>
-
-      <GlobalTableStyle />
-    </Wrapper>
+    </>
   )
 }
 

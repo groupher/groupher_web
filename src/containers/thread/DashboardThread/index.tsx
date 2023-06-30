@@ -4,13 +4,14 @@
  */
 
 import { FC } from 'react'
+import { includes } from 'ramda'
 
 // import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
-import { ROUTE } from '@/constant/route'
+import { ROUTE, DASHBORD_CMS_ROUTES } from '@/constant/route'
 
 import SideMenu from './SideMenu'
-import PostManage from './CMS/PostManage'
+import CMS from './CMS'
 
 import {
   Overview,
@@ -63,7 +64,7 @@ const DashboardThreadContainer: FC<TProps> = ({
     docSettings,
     broadcastSettings,
     touched,
-    cmsPosts,
+    cmsContents,
   } = store
 
   const { DASHBOARD } = ROUTE
@@ -93,7 +94,8 @@ const DashboardThreadContainer: FC<TProps> = ({
         {curTab === DASHBOARD.DOMAIN && <Domain />}
         {curTab === DASHBOARD.THIRD_PART && <ThirdPart />}
         {curTab === DASHBOARD.WIDGETS && <Widgets settings={widgetsSettings} touched={touched} />}
-        {curTab === DASHBOARD.POST && <PostManage cmsPosts={cmsPosts} />}
+
+        {includes(curTab, DASHBORD_CMS_ROUTES) && <CMS cmsContents={cmsContents} route={curTab} />}
       </MainWrapper>
     </Wrapper>
   )

@@ -70,7 +70,7 @@ import type {
   TBroadcastSettings,
   TWidgetType,
   TCurPageLinksKey,
-  TCMSPosts,
+  TCMSContents,
 } from '../spec'
 
 import { SETTING_FIELD, BASEINFO_KEYS, SEO_KEYS, BROADCAST_KEYS } from '../constant'
@@ -179,13 +179,16 @@ const DashboardThread = T.model('DashboardThread', {
 
       return toJS(root.viewing.community)
     },
-    get cmsPosts(): TCMSPosts {
+
+    get cmsContents(): TCMSContents {
       const slf = self as TStore
+
       return {
         loading: slf.loading,
         pagedPosts: toJS(slf.pagedPosts),
       }
     },
+
     get _tagsIndexTouched(): boolean {
       const { tags, initSettings } = self
 

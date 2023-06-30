@@ -17,11 +17,13 @@ export type TDashboardPath =
   | 'alias'
   | 'domain'
   // analysis
+  | 'trend'
+  | 'log'
+  | 'domain'
   // --
   // contents
   | 'tags'
   | 'post'
-  | 'kanban'
   | 'changelog'
   | 'doc'
   | 'header'

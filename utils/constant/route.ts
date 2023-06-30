@@ -22,11 +22,12 @@ export const DASHBOARD_ROUTE = {
   ALIAS: 'alias',
   DOMAIN: 'domain',
   // analysis
+  TREND: 'trend',
+  LOG: 'log',
   // --
   // contents
   TAGS: 'tags',
   POST: 'post',
-  KANBAN: 'kanban',
   CHANGELOG: 'changelog',
   DOC: 'doc',
   HEADER: 'header',
@@ -39,6 +40,12 @@ export const DASHBOARD_ROUTE = {
   ADMINS: 'admins',
   WIDGETS: 'widgets',
 } as Record<Uppercase<TDashboardPath>, TDashboardPath>
+
+export const DASHBORD_CMS_ROUTES = [
+  DASHBOARD_ROUTE.POST,
+  DASHBOARD_ROUTE.DOC,
+  DASHBOARD_ROUTE.CHANGELOG,
+]
 
 export const DASHBOARD_BASEINFO_ROUTE = {
   BASIC: 'basic',

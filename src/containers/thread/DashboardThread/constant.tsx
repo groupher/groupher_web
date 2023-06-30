@@ -92,12 +92,8 @@ export const MENU = {
       },
     ],
   },
-  ANALYSIS: {
-    title: '统计分析',
-    icon: <Icon.Analysis />,
-    children: [],
-  },
-  MANAGEMENT: {
+
+  CMS: {
     title: '内容管理',
     icon: <Icon.Management />,
     children: [
@@ -108,10 +104,6 @@ export const MENU = {
       {
         title: '帖子',
         slug: DASHBOARD_ROUTE.POST,
-      },
-      {
-        title: '看板',
-        slug: DASHBOARD_ROUTE.KANBAN,
       },
       {
         title: '更新日志',
@@ -132,6 +124,21 @@ export const MENU = {
       {
         title: 'RSS',
         slug: DASHBOARD_ROUTE.RSS,
+      },
+    ],
+  },
+
+  ANALYSIS: {
+    title: '统计分析',
+    icon: <Icon.Analysis />,
+    children: [
+      {
+        title: '趋势',
+        slug: DASHBOARD_ROUTE.TREND,
+      },
+      {
+        title: '日志',
+        slug: DASHBOARD_ROUTE.LOG,
       },
     ],
   },

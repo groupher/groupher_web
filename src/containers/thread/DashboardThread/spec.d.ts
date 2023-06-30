@@ -33,9 +33,9 @@ import type {
   TPagedArticles,
 } from '@/spec'
 
-type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'MANAGEMENT' | 'INTEGRATE'
+type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'CMS' | 'INTEGRATE'
 
-export type TCMSPosts = {
+export type TCMSContents = {
   pagedPosts: TPagedArticles
   loading: boolean
 }
