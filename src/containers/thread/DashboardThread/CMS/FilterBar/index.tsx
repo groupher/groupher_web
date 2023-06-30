@@ -17,13 +17,15 @@ import {
   DateRangeWrapper,
   DubbleCheckIcon,
 } from '../../styles/cms/filter_bar'
+import { batchSelectAll } from '../../logic'
 
 type TProps = {
   triggerCheckbox: (show: boolean) => void
   checkboxActive: boolean
+  selectedCount: number
 }
 
-const FilterBar: FC<TProps> = ({ checkboxActive, triggerCheckbox }) => {
+const FilterBar: FC<TProps> = ({ checkboxActive, triggerCheckbox, selectedCount }) => {
   return (
     <Wrapper>
       <MainWrapper>
@@ -31,7 +33,12 @@ const FilterBar: FC<TProps> = ({ checkboxActive, triggerCheckbox }) => {
           size="small"
           left={-6}
           right={5}
-          onClick={() => triggerCheckbox(!checkboxActive)}
+          onClick={() => {
+            if (checkboxActive) {
+              batchSelectAll(false)
+            }
+            triggerCheckbox(!checkboxActive)
+          }}
           ghost
           noBorder
         >
@@ -53,9 +60,11 @@ const FilterBar: FC<TProps> = ({ checkboxActive, triggerCheckbox }) => {
           重置
         </Button>
       </MainWrapper>
-      {checkboxActive && (
+      {checkboxActive && selectedCount > 0 && (
         <ActionBar
+          selectedCount={selectedCount}
           onCancel={() => {
+            batchSelectAll(false)
             triggerCheckbox(false)
           }}
         />

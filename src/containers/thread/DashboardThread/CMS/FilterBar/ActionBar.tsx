@@ -15,14 +15,15 @@ import {
 
 type TProps = {
   onCancel: () => void
+  selectedCount: number
 }
 
-const ActionBar: FC<TProps> = ({ onCancel }) => {
+const ActionBar: FC<TProps> = ({ onCancel, selectedCount }) => {
   return (
     <Wrapper>
       <MainWrapper>
         <Note>
-          共选中 <Focus>3</Focus> 条，
+          共选中 <Focus>{selectedCount}</Focus> 条，
         </Note>
         <ActionNotes>
           <Note>操作:</Note>

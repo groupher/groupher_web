@@ -69,6 +69,7 @@ const Posts: FC<TProps> = ({ pagedPosts, loading, batchSelectedIDs }) => {
       <FilterBar
         checkboxActive={showCheckColumn}
         triggerCheckbox={(show) => setShowCheckColumn(show)}
+        selectedCount={batchSelectedIDs.length}
       />
       <Table
         data={pagedPosts.entries}
