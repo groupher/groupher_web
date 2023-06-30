@@ -17,7 +17,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
-  productionBrowserSourceMaps: true,
+  productionBrowserSourceMaps: false,
   compiler: {
     styledComponents: true,
     // removeConsole: {
