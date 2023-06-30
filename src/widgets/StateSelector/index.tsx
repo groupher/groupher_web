@@ -1,7 +1,7 @@
 import { FC, memo, useState, Fragment } from 'react'
 import dynamic from 'next/dynamic'
 
-import type { TArticleState, TArticleCatMode, TTooltipPlacement } from '@/spec'
+import type { TArticleState, TArticleCatMode, TTooltipPlacement, TSpace } from '@/spec'
 import { ARTICLE_STATE_MODE } from '@/constant/gtd'
 
 import Tooltip from '@/widgets/Tooltip'
@@ -19,13 +19,14 @@ type TProps = {
   state?: string
   noArrow?: boolean
   tooltipPlacement?: TTooltipPlacement
-}
+} & TSpace
 
 const StateSelector: FC<TProps> = ({
   mode = ARTICLE_STATE_MODE.FULL,
   state = 'todo',
   noArrow = false,
   tooltipPlacement = 'bottom-start',
+  ...restProps
 }) => {
   const [show, setShow] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -39,7 +40,7 @@ const StateSelector: FC<TProps> = ({
   const offset = mode === ARTICLE_STATE_MODE.FILTER ? [-22, 5] : [-42, 5]
 
   return (
-    <Wrapper menuOpen={menuOpen}>
+    <Wrapper menuOpen={menuOpen} {...restProps}>
       {mode === ARTICLE_STATE_MODE.FULL && <Label>状态</Label>}
       <Tooltip
         placement={tooltipPlacement}

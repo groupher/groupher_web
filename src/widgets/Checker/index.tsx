@@ -6,7 +6,7 @@
 
 import { FC, ReactNode, memo } from 'react'
 
-import type { TSizeSM } from '@/spec'
+import type { TSizeSM, TSpace } from '@/spec'
 import SIZE from '@/constant/size'
 import { buildLog } from '@/utils/logger'
 
@@ -23,7 +23,7 @@ type TProps = {
   dimWhenIdle?: boolean
   disabled?: boolean
   onChange?: (checked: boolean) => void
-}
+} & TSpace
 
 const Checker: FC<TProps> = ({
   checked = false,
@@ -33,6 +33,7 @@ const Checker: FC<TProps> = ({
   children = null,
   disabled = false,
   dimWhenIdle = false,
+  ...restProps
 }) => {
   const show = checked || !hiddenMode
 
@@ -42,6 +43,7 @@ const Checker: FC<TProps> = ({
       dimWhenIdle={dimWhenIdle}
       disabled={disabled}
       onClick={() => show && !disabled && onChange(!checked)}
+      {...restProps}
     >
       <IconWrapper checked={checked} size={size} disabled={disabled}>
         <CheckIcon checked={checked} size={size} disabled={disabled} />

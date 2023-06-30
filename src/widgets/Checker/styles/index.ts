@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TActive } from '@/spec'
+import type { TActive, TSpace } from '@/spec'
 import css, { theme } from '@/utils/css'
 
 import CheckedSVG from '@/icons/CheckBold'
@@ -9,11 +9,13 @@ import { getIconSize, getFontSize, getBorderRadius } from './metric'
 
 type TItem = { checked: boolean; size: string; disabled?: boolean }
 
-type TWrapper = { dimWhenIdle: boolean; disabled?: boolean } & TActive
+type TWrapper = { dimWhenIdle: boolean; disabled?: boolean } & TActive & TSpace
 export const Wrapper = styled.div<TWrapper>`
   ${css.flex('align-center')};
   visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
   opacity: ${({ dimWhenIdle }) => (dimWhenIdle ? 0.7 : 1)};
+
+  ${(props) => css.spaceMargins(props)};
 
   &:hover {
     fill: #00a59b;

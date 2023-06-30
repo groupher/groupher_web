@@ -1,7 +1,7 @@
 import { FC, memo, useState, Fragment } from 'react'
 import dynamic from 'next/dynamic'
 
-import type { TArticleCatMode, TArticleCat, TTooltipPlacement } from '@/spec'
+import type { TArticleCatMode, TArticleCat, TTooltipPlacement, TSpace } from '@/spec'
 import { ARTICLE_CAT, ARTICLE_CAT_MODE } from '@/constant/gtd'
 
 import Tooltip from '@/widgets/Tooltip'
@@ -20,7 +20,7 @@ type TProps = {
   onSelect: (cat: TArticleCat) => void
   noArrow?: boolean
   tooltipPlacement?: TTooltipPlacement
-}
+} & TSpace
 
 const CatSelector: FC<TProps> = ({
   mode = ARTICLE_CAT_MODE.FILTER,
@@ -28,6 +28,7 @@ const CatSelector: FC<TProps> = ({
   onSelect,
   noArrow = false,
   tooltipPlacement = 'bottom-start',
+  ...restProps
 }) => {
   const [show, setShow] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -41,7 +42,7 @@ const CatSelector: FC<TProps> = ({
   const offset = mode === ARTICLE_CAT_MODE.FILTER ? [-30, 5] : [-44, 5]
 
   return (
-    <Wrapper menuOpen={menuOpen}>
+    <Wrapper menuOpen={menuOpen} {...restProps}>
       {mode === ARTICLE_CAT_MODE.FULL && <Label>类别</Label>}
       <Tooltip
         placement={tooltipPlacement}

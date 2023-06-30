@@ -1,12 +1,15 @@
 import styled from 'styled-components'
 
-import type { TActive } from '@/spec'
+import type { TActive, TSpace } from '@/spec'
 import css, { theme } from '@/utils/css'
 
-export const FilterWrapper = styled.div<{ menuOpen?: boolean }>`
+type TWrapper = { menuOpen?: boolean } & TSpace
+export const FilterWrapper = styled.div<TWrapper>`
   ${css.flex('align-center')};
   color: ${theme('article.digest')};
   font-size: 13px;
+
+  ${(props) => css.spaceMargins(props)};
 `
 export const FullWrapper = styled(FilterWrapper)`
   border: 1px solid;

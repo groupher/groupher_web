@@ -13,6 +13,11 @@ export const ArticleTitle = styled.div`
   color: ${theme('article.title')};
   ${css.cutRest('260px')};
   font-size: 14px;
+
+  &:hover {
+    font-weight: 500;
+    cursor: pointer;
+  }
 `
 export const StateWrapper = styled.div`
   transform: scale(0.95);
