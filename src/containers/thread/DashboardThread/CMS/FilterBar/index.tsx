@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 
 import { SpaceGrow } from '@/widgets/Common'
 import Button from '@/widgets/Buttons/Button'

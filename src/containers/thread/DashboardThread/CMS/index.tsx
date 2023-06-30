@@ -28,7 +28,13 @@ const CMS: FC<TProps> = ({ route, cmsContents }) => {
       break
     }
     case DASHBOARD_ROUTE.CHANGELOG: {
-      contents = <Changelogs pagedChangelogs={pagedChangelogs} loading={loading} />
+      contents = (
+        <Changelogs
+          pagedChangelogs={pagedChangelogs}
+          batchSelectedIDs={batchSelectedIDs}
+          loading={loading}
+        />
+      )
       break
     }
     default:

@@ -1,12 +1,16 @@
 import { FC, useCallback, useState } from 'react'
+import { pluck } from 'ramda'
 
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table'
 
-import type { TPagedArticles } from '@/spec'
-import { ArticleCell, StateCell, AuthorDateCell, DateCell } from '../Cell'
+import type { TID, TPagedArticles } from '@/spec'
+import Checker from '@/widgets/Checker'
 
-import { Title, SortIcon } from '../../styles/cms/posts'
-import { loadPosts } from '../../logic'
+import { CheckCell, ArticleCell, StateCell, AuthorDateCell, DateCell } from '../Cell'
+import FilterBar from '../FilterBar'
+
+import { Title, SortIcon } from '../../styles/cms/changelogs'
+import { loadChangelogs, batchSelectAll } from '../../logic'
 
 /**
  * example: https://table.rsuitejs.com/#fixed-column
@@ -16,10 +20,15 @@ import { loadPosts } from '../../logic'
 type TProps = {
   pagedChangelogs: TPagedArticles
   loading: boolean
+  batchSelectedIDs: TID[]
 }
 
-const Changelogs: FC<TProps> = ({ pagedChangelogs, loading }) => {
+const Changelogs: FC<TProps> = ({ pagedChangelogs, loading, batchSelectedIDs }) => {
+  const [showCheckColumn, setShowCheckColumn] = useState(false)
   const [sortColumn, setSortColumn] = useState('id')
+
+  const allIDs = pluck('id', pagedChangelogs.entries)
+  const isAllSelected = allIDs.length === batchSelectedIDs?.length
 
   const [sortState, setSortState] = useState({
     views: '', // '' / asc / desc
@@ -56,6 +65,12 @@ const Changelogs: FC<TProps> = ({ pagedChangelogs, loading }) => {
 
   return (
     <>
+      <FilterBar
+        checkboxActive={showCheckColumn}
+        triggerCheckbox={(show) => setShowCheckColumn(show)}
+        selectedCount={batchSelectedIDs.length}
+      />
+
       <Table
         data={pagedChangelogs.entries}
         sortColumn={sortColumn}
@@ -67,9 +82,31 @@ const Changelogs: FC<TProps> = ({ pagedChangelogs, loading }) => {
         cellBordered
         bordered
       >
+        {showCheckColumn && (
+          <Column width={40} fixed>
+            <HeaderCell>
+              <Checker
+                checked={isAllSelected}
+                size="small"
+                top={4}
+                onChange={(checked) => {
+                  if (checked) {
+                    batchSelectAll(true, allIDs)
+                    return
+                  }
+
+                  batchSelectAll(false, [])
+                }}
+              />
+            </HeaderCell>
+            {/* @ts-ignore */}
+            <CheckCell />
+          </Column>
+        )}
+
         <Column width={280} fixed>
           <HeaderCell>
-            <Title onClick={() => loadPosts()}>标题</Title>
+            <Title onClick={() => loadChangelogs()}>标题</Title>
           </HeaderCell>
           {/* @ts-ignore */}
           <ArticleCell dataKey="title" />
