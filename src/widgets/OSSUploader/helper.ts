@@ -11,6 +11,7 @@ const getOSSDir = (): string => {
 }
 
 export const initOSSClient = (): any => {
+  // @ts-ignore
   const ossClient = new OSS.Wrapper({
     region: process.env.NEXT_PUBLIC_ALI_OSS_RESION,
     accessKeyId: process.env.NEXT_PUBLIC_ALI_ACCESS_KEY,
