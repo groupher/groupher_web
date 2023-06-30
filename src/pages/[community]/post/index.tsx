@@ -4,7 +4,6 @@ import { Provider } from 'mobx-react'
 import { getSelectorsByUserAgent } from 'react-device-detect'
 
 import type { TCommunity } from '@/spec'
-// import { PAGE_SIZE } from '@/config'
 import { HCN } from '@/constant/name'
 import { THREAD } from '@/constant/thread'
 import METRIC from '@/constant/metric'

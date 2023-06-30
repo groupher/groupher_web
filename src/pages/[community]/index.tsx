@@ -4,7 +4,6 @@ import { Provider } from 'mobx-react'
 import { getSelectorsByUserAgent } from 'react-device-detect'
 
 import type { TCommunity } from '@/spec'
-import { PAGE_SIZE } from '@/config'
 import { HCN } from '@/constant/name'
 import { THREAD } from '@/constant/thread'
 import METRIC from '@/constant/metric'
@@ -63,20 +62,12 @@ const loader = async (context, opt = {}) => {
     ? gqClient.request(ssrPagedArticleSchema(thread), filter)
     : {}
 
-  const subscribedCommunities = gqClient.request(P.subscribedCommunities, {
-    filter: {
-      page: 1,
-      size: PAGE_SIZE.M,
-    },
-  })
-
   return {
     filter,
     ...(await pagedArticleTags),
     ...(await sessionState),
     ...(await curCommunity),
     ...(await pagedArticles),
-    ...(await subscribedCommunities),
   }
 }
 

@@ -11,16 +11,14 @@ import METRIC from '@/constant/metric'
 import { useStore } from '@/stores/init'
 
 import {
-  isArticleThread,
   ssrBaseStates,
   ssrFetchPrepare,
-  ssrError,
-  ssrPagedArticleSchema,
   ssrPagedArticlesFilter,
+  ssrParseDashboard,
+  ssrError,
   ssrRescue,
   communitySEO,
   log,
-  ssrParseDashboard,
 } from '@/utils'
 
 import GlobalLayout from '@/containers/layout/GlobalLayout'
