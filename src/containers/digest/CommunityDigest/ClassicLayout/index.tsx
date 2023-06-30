@@ -2,9 +2,9 @@ import { FC, memo } from 'react'
 import Router from 'next/router'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TThread, TCommunity, TMetric, TEnableConfig } from '@/spec'
+import type { TThread, TCommunity, TMetric, TDashboardThreadConfig } from '@/spec'
 
-import { sortByIndex } from '@/utils/helper'
+import { washThreads } from '@/utils/helper'
 
 import { SpaceGrow } from '@/widgets/Common'
 import TabBar from '@/widgets/TabBar'
@@ -31,12 +31,12 @@ type TProps = {
   community: TCommunity
   activeThread: TThread
   metric: TMetric
-  enable: TEnableConfig
+  dashboardSettings: TDashboardThreadConfig
 }
 
-const ClassicLayout: FC<TProps> = ({ community, activeThread, metric, enable }) => {
+const ClassicLayout: FC<TProps> = ({ community, activeThread, metric, dashboardSettings }) => {
   const { isMobile } = useMobileDetect()
-  const publicThreads = sortByIndex(community.threads.filter((thread) => enable[thread.raw]))
+  const washedThreads = washThreads(community.threads, dashboardSettings)
 
   return (
     <Wrapper testid="community-digest" isMobile={isMobile}>
@@ -49,12 +49,12 @@ const ClassicLayout: FC<TProps> = ({ community, activeThread, metric, enable }) 
           <SpaceGrow />
           <TabBarWrapper>
             <TabBar
-              source={publicThreads}
+              source={washedThreads}
               onChange={(path) => {
-                Router.push(`/home/${path}`)
+                Router.push(`/${community.slug}/${path}`)
               }}
               active={activeThread}
-              communityRaw={community.raw}
+              communitySlug={community.slug}
             />
             <SpaceGrow />
             {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}

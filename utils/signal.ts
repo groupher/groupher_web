@@ -115,9 +115,10 @@ export const callGEditor = (): void => {
   send(EVENT.DRAWER.OPEN, { type: TYPE.DRAWER.G_EDITOR })
 }
 
-export const callTagSettingEditor = (): void => {
-  send(EVENT.DRAWER.OPEN, { type: TYPE.DRAWER.TAG_SETTING })
-}
+export const callTagCreateEditor = (): void =>
+  send(EVENT.DRAWER.OPEN, { type: TYPE.DRAWER.CREATE_TAG })
+
+export const callTagEditEditor = (): void => send(EVENT.DRAWER.OPEN, { type: TYPE.DRAWER.EDIT_TAG })
 
 export const callAuth = (): void => {
   send(EVENT.AUTH, {})
@@ -179,7 +180,18 @@ export const sessionChanged = (user: TUser): void => {
   send(EVENT.SESSION_CHANGED)
   BStore.set('accountInfo', user as string)
   // see: https://stackoverflow.com/a/55349670/4050784
-  Global.dispatchEvent(new Event(EVENT.SESSION_CHANGED))
+  Global?.dispatchEvent(new Event(EVENT.SESSION_CHANGED))
+}
+
+export const communityChanged = (community: TCommunity): void => {
+  // @ts-ignore
+  BStore.set('curCommunity', community)
+
+  setTimeout(() => {
+    // see: https://stackoverflow.com/a/55349670/4050784
+    send(EVENT.COMMUNITY_CHANGED)
+    Global?.dispatchEvent(new Event(EVENT.COMMUNITY_CHANGED))
+  })
 }
 
 /**
@@ -188,7 +200,7 @@ export const sessionChanged = (user: TUser): void => {
 export const viewingChanged = (article: TArticle | null): void => {
   if (article) {
     // @ts-ignore
-    BStore.set('viewingArticle', { community: article.originalCommunityRaw, id: article.innerId })
+    BStore.set('viewingArticle', { community: article.originalCommunitySlug, id: article.innerId })
   } else {
     BStore.set('viewingArticle', null)
   }
@@ -201,7 +213,7 @@ export const viewingChanged = (article: TArticle | null): void => {
  * - 如果已经在子社区，只需要重新加载数据
  * - 如果在其他页面，那么需要重新请求页面
  */
-export const changeToCommunity = (raw = ''): void => {
+export const changeToCommunity = (slug = ''): void => {
   const isClient = typeof window === 'object'
   if (!isClient) return
 
@@ -213,16 +225,16 @@ export const changeToCommunity = (raw = ''): void => {
     // works detail page
     'w',
   ])
-  const isTargetNonCommunityPage = includes(raw, values(NON_COMMUNITY_ROUTE))
+  const isTargetNonCommunityPage = includes(slug, values(NON_COMMUNITY_ROUTE))
 
   if (isNonCommunityPage || isArticlePage || isTargetNonCommunityPage) {
-    const target = raw === HCN ? '' : raw
+    const target = slug === HCN ? '' : slug
     Router.push(`/${target}`)
     send(EVENT.DRAWER.CLOSE)
     return
   }
 
-  send(EVENT.COMMUNITY_CHANGE_BEFORE, { path: raw })
+  send(EVENT.COMMUNITY_CHANGE_BEFORE, { path: slug })
   send(EVENT.DRAWER.CLOSE)
 }
 

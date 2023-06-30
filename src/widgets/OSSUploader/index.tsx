@@ -2,16 +2,9 @@
 /*
  * OSSUploader
  */
+import Script from 'next/script'
 
-import {
-  FC,
-  memo,
-  ReactNode,
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-} from 'react'
+import { FC, memo, ReactNode, useState, useEffect, useRef, useCallback } from 'react'
 
 import { buildLog } from '@/utils/logger'
 import uid from '@/utils/uid'
@@ -35,6 +28,7 @@ const OSSUploader: FC<TProps> = ({
   filePrefix = null,
   onUploadDone = log,
 }) => {
+  const [loaded, setOnLoad] = useState(false)
   const [uniqueId, setUniqueId] = useState(null)
   const [loading, setLoading] = useState(false)
   const [ossClient, setOSSClient] = useState(null)
@@ -42,11 +36,13 @@ const OSSUploader: FC<TProps> = ({
   const labelRef = useRef(null)
 
   useEffect(() => {
-    const ossClient = initOSSClient()
+    if (loaded) {
+      const ossClient = initOSSClient()
 
-    setOSSClient(ossClient)
-    setUniqueId(uid.gen())
-  }, [])
+      setOSSClient(ossClient)
+      setUniqueId(uid.gen())
+    }
+  }, [loaded])
 
   const onStart = useCallback(() => {
     setLoading(true)
@@ -69,6 +65,10 @@ const OSSUploader: FC<TProps> = ({
 
   return (
     <Wrapper>
+      <Script
+        src="https://gosspublic.alicdn.com/aliyun-oss-sdk-6.16.0.min.js"
+        onLoad={() => setOnLoad(true)}
+      />
       <InputFile
         type="file"
         name={`file-${uniqueId}`}

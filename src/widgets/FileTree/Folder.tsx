@@ -83,7 +83,7 @@ const Folder: FC<TProps> = ({
       <Content $isOpen={isFolderOpen}>
         {sortedTags.slice(0, curDisplayCount).map((tag) => (
           <FileItem
-            key={tag.raw}
+            key={tag.slug}
             tag={tag}
             active={activeTag.title === tag.title}
             onSelect={onSelect}

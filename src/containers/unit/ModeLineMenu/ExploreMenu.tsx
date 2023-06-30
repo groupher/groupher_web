@@ -30,9 +30,9 @@ const ExploreMenu: FC<TProps> = ({ communities }) => {
       </Header>
       <CommunityWrapper>
         {communities.map((c, index) => (
-          <Link key={c.raw} href={`/${c.raw}`}>
+          <Link key={c.slug} href={`/${c.slug}`}>
             <CommunityCard margin={index % 2 !== 0}>
-              <CommunityLogo src={c.logo} raw={c.raw} />
+              <CommunityLogo src={c.logo} slug={c.slug} />
               <CommunityTitle>{c.title}</CommunityTitle>
             </CommunityCard>
           </Link>

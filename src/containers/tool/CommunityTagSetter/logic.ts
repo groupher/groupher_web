@@ -47,9 +47,9 @@ export const communityOnSearch = (e: TInput): void => {
 
 export const toggleCommunity = (community: TCommunity, checked: boolean): void => {
   const { type, selectCommunity, undoSelectCommunity } = store
-  const { raw } = community
+  const { slug } = community
 
-  checked ? selectCommunity(raw) : undoSelectCommunity(raw)
+  checked ? selectCommunity(slug) : undoSelectCommunity(slug)
 
   if (type === TYPE.SELECT_COMMUNITY) {
     onClose()

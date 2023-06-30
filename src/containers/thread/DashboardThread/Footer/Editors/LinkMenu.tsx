@@ -15,6 +15,7 @@ type TProps = {
 
   move2Top?: () => void
   move2Bottom?: () => void
+  onDelete?: () => void
 }
 
 const LinkMenu: FC<TProps> = ({
@@ -22,6 +23,7 @@ const LinkMenu: FC<TProps> = ({
   isLast = false,
   move2Top = log,
   move2Bottom = log,
+  onDelete = log,
 }) => {
   return (
     <Wrapper>
@@ -35,6 +37,8 @@ const LinkMenu: FC<TProps> = ({
       {!isLast && (
         <MenuItem icon={MENU.ARROW_TO_BOTTOM} title="移至最后" onClick={() => move2Bottom()} />
       )}
+
+      <MenuItem icon={MENU.DELETE} title="删除" onClick={() => onDelete()} />
     </Wrapper>
   )
 }

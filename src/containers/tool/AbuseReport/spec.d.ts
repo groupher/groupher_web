@@ -1,6 +1,6 @@
 export type TREPORT_ITEM = {
   title: string
-  raw: string
+  slug: string
   checked: boolean
   info?: string
   detail: string

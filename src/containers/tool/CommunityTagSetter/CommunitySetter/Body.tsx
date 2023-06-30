@@ -21,15 +21,10 @@ type TProps = {
 }
 
 const isValid = (communities: TCommunity[]): boolean => {
-  return filter((c) => !!c.raw, communities).length !== 0
+  return filter((c) => !!c.slug, communities).length !== 0
 }
 
-const Body: FC<TProps> = ({
-  texts,
-  communitiesList,
-  onCommunitySelect,
-  communityStyle,
-}) => {
+const Body: FC<TProps> = ({ texts, communitiesList, onCommunitySelect, communityStyle }) => {
   const {
     canActOnSeleted,
     searching,
@@ -50,12 +45,7 @@ const Body: FC<TProps> = ({
           <Br bottom={0}>&nbsp;</Br>
         )}
 
-        <CustomScroller
-          direction="vertical"
-          height="250px"
-          showShadow={false}
-          autoHide={false}
-        >
+        <CustomScroller direction="vertical" height="250px" showShadow={false} autoHide={false}>
           {isValid(selectedCommunities) && (
             <List
               title="目标社区"
@@ -70,13 +60,7 @@ const Body: FC<TProps> = ({
 
           {searching && <LavaLampLoading size="small" />}
           {searched && isEmpty(searchedCommunities) && (
-            <NoticeBar
-              type="notice"
-              content={texts.notFoundHint}
-              top={-15}
-              bottom={20}
-              noBg
-            />
+            <NoticeBar type="notice" content={texts.notFoundHint} top={-15} bottom={20} noBg />
           )}
 
           {isEmpty(searchValue) && (
@@ -87,16 +71,14 @@ const Body: FC<TProps> = ({
               onCommunitySelect={onCommunitySelect}
             />
           )}
-          {!searching &&
-            !isEmpty(searchValue) &&
-            !isEmpty(searchedCommunities) && (
-              <List
-                title="找到相关"
-                communityStyle={communityStyle}
-                communities={searchedCommunities}
-                onCommunitySelect={onCommunitySelect}
-              />
-            )}
+          {!searching && !isEmpty(searchValue) && !isEmpty(searchedCommunities) && (
+            <List
+              title="找到相关"
+              communityStyle={communityStyle}
+              communities={searchedCommunities}
+              onCommunitySelect={onCommunitySelect}
+            />
+          )}
         </CustomScroller>
       </InnerWrapper>
     </Wrapper>

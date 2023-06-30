@@ -60,7 +60,6 @@ export const sessionState = `
         social {
           ${F.userSocial}
         }
-        sex
         cmsPassport
         subscribedCommunitiesCount
         customization {

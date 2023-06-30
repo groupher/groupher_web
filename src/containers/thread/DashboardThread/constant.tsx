@@ -8,20 +8,22 @@ import {
   DASHBOARD_SEO_ROUTE,
 } from '@/constant/route'
 
-import type { TSettingField, TWidgetType, TFooterEditType } from './spec'
+import type { TSettingField, TWidgetType, THeaderEditType, TFooterEditType } from './spec'
 
 import { Icon } from './styles/side_menu'
 
-export const SETTING_FIELD = {
+// do not change, it's map to GQ endpoint updateDashboardLayout
+export const SETTING_LAYOUT_FIELD = {
   PRIMARY_COLOR: 'primaryColor',
   POST_LAYOUT: 'postLayout',
   KANBAN_LAYOUT: 'kanbanLayout',
   KANBAN_BG_COLORS: 'kanbanBgColors',
-  HELP_LAYOUT: 'helpLayout',
-  HELP_FAQ_LAYOUT: 'helpFaqLayout',
+  DOC_LAYOUT: 'docLayout',
+  DOC_FAQ_LAYOUT: 'docFaqLayout',
   BRAND_LAYOUT: 'brandLayout',
   AVATAR_LAYOUT: 'avatarLayout',
   BANNER_LAYOUT: 'bannerLayout',
+  HEADER_LAYOUT: 'headerLayout',
   FOOTER_LAYOUT: 'footerLayout',
   TOPBAR_LAYOUT: 'topbarLayout',
   TOPBAR_BG: 'topbarBg',
@@ -30,8 +32,16 @@ export const SETTING_FIELD = {
   BROADCAST_BG: 'broadcastBg',
   BROADCAST_ARTICLE_BG: 'broadcastArticleBg',
   CHANGELOG_LAYOUT: 'changelogLayout',
+}
+
+export const SETTING_FIELD = {
+  ...SETTING_LAYOUT_FIELD,
+  BASE_INFO: 'baseInfo',
+  SEO: 'seo',
+  SOCIAL_LINKS: 'socialLinks',
   TAG: 'tag',
-  ALIAS: 'alias',
+  TAG_INDEX: 'tagIndex',
+  NAME_ALIAS: 'nameAlias',
   RSS_FEED_TYPE: 'rssFeedType',
   RSS_FEED_COUNT: 'rssFeedCount',
   WIDGETS_PRIMARY_COLOR: 'widgetsPrimaryColor',
@@ -49,78 +59,86 @@ export const MENU = {
     children: [
       {
         title: '基本信息',
-        raw: DASHBOARD_ROUTE.INFO,
+        slug: DASHBOARD_ROUTE.INFO,
       },
       {
         title: 'SEO',
-        raw: DASHBOARD_ROUTE.SEO,
+        slug: DASHBOARD_ROUTE.SEO,
       },
       {
         title: '社区板块',
-        raw: DASHBOARD_ROUTE.THREADS,
+        slug: DASHBOARD_ROUTE.THREADS,
       },
       {
         title: '布局/样式',
-        raw: DASHBOARD_ROUTE.LAYOUT,
+        slug: DASHBOARD_ROUTE.LAYOUT,
       },
       {
         title: '别名',
-        raw: DASHBOARD_ROUTE.ALIAS,
+        slug: DASHBOARD_ROUTE.ALIAS,
+        alias: SETTING_FIELD.NAME_ALIAS,
       },
       {
         title: '管理员',
-        raw: DASHBOARD_ROUTE.ADMINS,
+        slug: DASHBOARD_ROUTE.ADMINS,
       },
       {
         title: '页头',
-        raw: DASHBOARD_ROUTE.HEADER,
+        slug: DASHBOARD_ROUTE.HEADER,
       },
       {
         title: '页脚',
-        raw: DASHBOARD_ROUTE.FOOTER,
+        slug: DASHBOARD_ROUTE.FOOTER,
       },
     ],
   },
-  ANALYSIS: {
-    title: '统计分析',
-    icon: <Icon.Analysis />,
-    children: [],
-  },
-  MANAGEMENT: {
+
+  CMS: {
     title: '内容管理',
     icon: <Icon.Management />,
     children: [
       {
         title: '标签',
-        raw: DASHBOARD_ROUTE.TAGS,
+        slug: DASHBOARD_ROUTE.TAGS,
       },
       {
         title: '帖子',
-        raw: DASHBOARD_ROUTE.POST,
-      },
-      {
-        title: '看板',
-        raw: DASHBOARD_ROUTE.KANBAN,
+        slug: DASHBOARD_ROUTE.POST,
       },
       {
         title: '更新日志',
-        raw: DASHBOARD_ROUTE.CHANGELOG,
+        slug: DASHBOARD_ROUTE.CHANGELOG,
       },
       {
         title: '帮助台',
-        raw: DASHBOARD_ROUTE.HELP,
+        slug: DASHBOARD_ROUTE.DOC,
       },
       {
         title: '广播',
-        raw: DASHBOARD_ROUTE.BROADCAST,
+        slug: DASHBOARD_ROUTE.BROADCAST,
       },
       {
         title: '小黑屋',
-        raw: DASHBOARD_ROUTE.BLACKHOUSE,
+        slug: DASHBOARD_ROUTE.BLACKHOUSE,
       },
       {
         title: 'RSS',
-        raw: DASHBOARD_ROUTE.RSS,
+        slug: DASHBOARD_ROUTE.RSS,
+      },
+    ],
+  },
+
+  ANALYSIS: {
+    title: '统计分析',
+    icon: <Icon.Analysis />,
+    children: [
+      {
+        title: '趋势',
+        slug: DASHBOARD_ROUTE.TREND,
+      },
+      {
+        title: '日志',
+        slug: DASHBOARD_ROUTE.LOG,
       },
     ],
   },
@@ -131,15 +149,15 @@ export const MENU = {
     children: [
       {
         title: '自定义域名',
-        raw: DASHBOARD_ROUTE.DOMAIN,
+        slug: DASHBOARD_ROUTE.DOMAIN,
       },
       {
         title: '外部应用',
-        raw: DASHBOARD_ROUTE.THIRD_PART,
+        slug: DASHBOARD_ROUTE.THIRD_PART,
       },
       {
         title: '网站插件',
-        raw: DASHBOARD_ROUTE.WIDGETS,
+        slug: DASHBOARD_ROUTE.WIDGETS,
       },
     ],
   },
@@ -150,61 +168,64 @@ export const ALIAS_GROUP = {
   KANBAN: DASHBOARD_ALIAS_ROUTE.KANBAN,
 }
 
+export const BUILDIN_ALIAS_SUGGESTIONS = {
+  post: ['帖子', '讨论区', '论坛'],
+  kanban: ['路线图', '规划', '蓝图'],
+  changelog: ['新功能', '发布日志', '里程碑', '开发计划'],
+  upvote: ['支持', '顶', '赞', '有帮助'],
+  upvote_bug: ['同样问题', '复现', '求解决'],
+  todo: ['Todo', '已排期', '审核中', '计划中'],
+  doing: ['Doing', '完善中'],
+  done: ['Done', '已解决'],
+}
+
 export const BUILDIN_ALIAS = [
   {
-    raw: 'post',
+    slug: 'post',
     name: '讨论',
     original: '讨论',
-    suggestions: ['帖子', '讨论区', '论坛'],
     group: ALIAS_GROUP.GENERAL,
   },
   {
-    raw: 'changelog',
+    slug: 'changelog',
     name: '更新日志',
     original: '更新日志',
-    suggestions: ['新功能', '发布日志', '里程碑', '开发计划'],
     group: ALIAS_GROUP.GENERAL,
   },
   {
-    raw: 'kanban',
+    slug: 'kanban',
     name: '看板',
     original: '看板',
-    suggestions: ['路线图', '规划', '蓝图'],
     group: ALIAS_GROUP.GENERAL,
   },
   {
-    raw: 'upvote',
+    slug: 'upvote',
     name: '赞同',
     original: '赞同',
-    suggestions: ['支持', '顶', '赞', '有帮助'],
     group: ALIAS_GROUP.GENERAL,
   },
   {
-    raw: 'upvote_bug',
+    slug: 'upvote_bug',
     name: '相同问题',
     original: '相同问题',
-    suggestions: ['同样问题', '复现', '求解决'],
     group: ALIAS_GROUP.GENERAL,
   },
   {
-    raw: 'todo',
+    slug: 'todo',
     name: '待办',
     original: '待办',
-    suggestions: ['Todo', '已排期', '审核中', '计划中'],
     group: ALIAS_GROUP.KANBAN,
   },
   {
-    raw: 'doing',
+    slug: 'doing',
     name: '进行中',
     original: '进行中',
-    suggestions: ['Doing', '完善中'],
     group: ALIAS_GROUP.KANBAN,
   },
   {
-    raw: 'done',
+    slug: 'done',
     name: '已完成',
     original: '已完成',
-    suggestions: ['Done', '已解决'],
     group: ALIAS_GROUP.KANBAN,
   },
 ]
@@ -220,25 +241,30 @@ export const WIDGET_TYPE = {
 export const WIDGET_TYPES = [
   {
     title: '侧边栏',
-    raw: WIDGET_TYPE.SIDEBAR,
+    slug: WIDGET_TYPE.SIDEBAR,
   },
   {
     title: '居中模态框',
-    raw: WIDGET_TYPE.MODAL,
+    slug: WIDGET_TYPE.MODAL,
   },
   {
     title: '弹出提示',
-    raw: WIDGET_TYPE.POPUP,
+    slug: WIDGET_TYPE.POPUP,
   },
   {
     title: '页面内嵌',
-    raw: WIDGET_TYPE.IFRAME,
+    slug: WIDGET_TYPE.IFRAME,
   },
   {
     title: '链接',
-    raw: WIDGET_TYPE.LINK,
+    slug: WIDGET_TYPE.LINK,
   },
 ]
+
+export const HEADER_EDIT_TYPE = {
+  LOGO: 'logo',
+  TITLE: 'title',
+} as Record<Uppercase<THeaderEditType>, THeaderEditType>
 
 export const FOOTER_EDIT_TYPE = {
   LOGO: 'logo',
@@ -249,60 +275,60 @@ export const FOOTER_EDIT_TYPE = {
 export const BASEINFO_TABS = [
   {
     title: '基本信息',
-    raw: DASHBOARD_BASEINFO_ROUTE.BASIC,
+    slug: DASHBOARD_BASEINFO_ROUTE.BASIC,
   },
   {
     title: '社交媒体',
-    raw: DASHBOARD_BASEINFO_ROUTE.SOCIAL,
+    slug: DASHBOARD_BASEINFO_ROUTE.SOCIAL,
   },
   {
     title: '其他',
-    raw: DASHBOARD_BASEINFO_ROUTE.OTHER,
+    slug: DASHBOARD_BASEINFO_ROUTE.OTHER,
   },
 ]
 
 export const SEO_TABS = [
   {
     title: '搜索引擎',
-    raw: DASHBOARD_SEO_ROUTE.SEARCH_ENGINE,
+    slug: DASHBOARD_SEO_ROUTE.SEARCH_ENGINE,
   },
   {
     title: 'Twitter',
-    raw: DASHBOARD_SEO_ROUTE.TWITTER,
+    slug: DASHBOARD_SEO_ROUTE.TWITTER,
   },
 ]
 
 export const LAYOUT_TABS = [
   {
     title: '全局',
-    raw: DASHBOARD_LAYOUT_ROUTE.GLOBAL,
+    slug: DASHBOARD_LAYOUT_ROUTE.GLOBAL,
   },
   {
     title: '讨论区',
-    raw: DASHBOARD_LAYOUT_ROUTE.POST,
+    slug: DASHBOARD_LAYOUT_ROUTE.POST,
   },
   {
     title: '看板',
-    raw: DASHBOARD_LAYOUT_ROUTE.KANBAN,
+    slug: DASHBOARD_LAYOUT_ROUTE.KANBAN,
   },
   {
     title: '更新日志',
-    raw: DASHBOARD_LAYOUT_ROUTE.CHANGELOG,
+    slug: DASHBOARD_LAYOUT_ROUTE.CHANGELOG,
   },
   {
     title: '帮助台',
-    raw: DASHBOARD_LAYOUT_ROUTE.HELP,
+    slug: DASHBOARD_LAYOUT_ROUTE.DOC,
   },
 ]
 
 export const BROADCAST_TABS = [
   {
     title: '站顶横幅',
-    raw: DASHBOARD_BROADCAST_ROUTE.GLOBAL,
+    slug: DASHBOARD_BROADCAST_ROUTE.GLOBAL,
   },
   {
     title: '帖子页脚',
-    raw: DASHBOARD_BROADCAST_ROUTE.ARTICLE,
+    slug: DASHBOARD_BROADCAST_ROUTE.ARTICLE,
   },
 ]
 
@@ -326,52 +352,55 @@ export const TW_CARD_OPTIONS = [
 export const ALIAS_TABS = [
   {
     title: '常规',
-    raw: DASHBOARD_ALIAS_ROUTE.GENERAL,
+    slug: DASHBOARD_ALIAS_ROUTE.GENERAL,
   },
   {
     title: '看板',
-    raw: DASHBOARD_ALIAS_ROUTE.KANBAN,
+    slug: DASHBOARD_ALIAS_ROUTE.KANBAN,
   },
 ]
+
+export const EMPTY_LINK_ITEM = {
+  title: '',
+  link: '',
+  index: 0,
+  group: '',
+  groupIndex: 0,
+}
 
 export const DEFAULT_LINK_ITEMS = [
   {
     title: '讨论区',
-    addr: 'https://groupher.com/home/post',
+    link: 'https://groupher.com/home/post',
     index: 0,
-    raw: '0',
     group: 'Group 0',
     groupIndex: 0,
   },
   {
     title: '看板',
-    addr: 'https://groupher.com/home/kanban',
+    link: 'https://groupher.com/home/kanban',
     index: 1,
-    raw: '1',
     group: 'Group 0',
     groupIndex: 0,
   },
   {
     title: '更新日志',
-    addr: 'https://groupher.com/home/changelog',
+    link: 'https://groupher.com/home/changelog',
     index: 2,
-    raw: '2',
     group: 'Group 0',
     groupIndex: 0,
   },
   {
     title: '帮助台',
-    addr: 'https://groupher.com/home/help',
+    link: 'https://groupher.com/home/help',
     index: 3,
-    raw: '3',
     group: 'Group 0',
     groupIndex: 0,
   },
   {
     title: '关于',
-    addr: 'https://groupher.com/home/about',
+    link: 'https://groupher.com/home/about',
     index: 4,
-    raw: '4',
     group: 'Group 0',
     groupIndex: 0,
   },
@@ -379,25 +408,22 @@ export const DEFAULT_LINK_ITEMS = [
   // group 1
   {
     title: '布局设置',
-    addr: 'https://groupher.com/home/post',
+    link: 'https://groupher.com/home/post',
     index: 0,
-    raw: '0',
     group: 'Group 1',
     groupIndex: 1,
   },
   {
     title: '看板设置',
-    addr: 'https://groupher.com/home/kanban',
+    link: 'https://groupher.com/home/kanban',
     index: 1,
-    raw: '1',
     group: 'Group 1',
     groupIndex: 1,
   },
   {
     title: '更新日志设置',
-    addr: 'https://groupher.com/home/changelog',
+    link: 'https://groupher.com/home/changelog',
     index: 2,
-    raw: '2',
     group: 'Group 1',
     groupIndex: 1,
   },
@@ -405,26 +431,63 @@ export const DEFAULT_LINK_ITEMS = [
   //
   {
     title: '与 xxx 的对比',
-    addr: 'https://groupher.com/home/post',
+    link: 'https://groupher.com/home/post',
     index: 0,
-    raw: '0',
     group: 'Group 2',
     groupIndex: 2,
   },
   {
     title: '帮助中心',
-    addr: 'https://groupher.com/home/kanban',
+    link: 'https://groupher.com/home/kanban',
     index: 1,
-    raw: '1',
     group: 'Group 2',
     groupIndex: 2,
   },
   {
     title: '联系我们',
-    addr: 'https://groupher.com/home/changelog',
+    link: 'https://groupher.com/home/changelog',
     index: 2,
-    raw: '2',
     group: 'Group 2',
     groupIndex: 2,
   },
+]
+
+export const BASEINFO_KEYS = [
+  'favicon',
+  'logo',
+  'title',
+  'desc',
+  'homepage',
+  'slug',
+  'city',
+  'techstack',
+]
+
+export const SEO_KEYS = [
+  'ogSiteName',
+  'ogTitle',
+  'ogDescription',
+  'ogUrl',
+  'ogImage',
+  'ogLocale',
+  'ogPublisher',
+
+  'twTitle',
+  'twDescription',
+  'twUrl',
+  'twCard',
+  'twSite',
+  'twImage',
+  'twImageWidth',
+  'twImageHeight',
+]
+
+export const BROADCAST_KEYS = [
+  'broadcastTab',
+  'broadcastLayout',
+  'broadcastBg',
+  'broadcastEnable',
+  'broadcastArticleLayout',
+  'broadcastArticleBg',
+  'broadcastArticleEnable',
 ]

@@ -8,7 +8,7 @@ import { FC, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 
 import type { TResState, TArticleFilterMode } from '@/spec'
-import { BANNER_LAYOUT, HELP_FAQ_LAYOUT } from '@/constant/layout'
+import { BANNER_LAYOUT, DOC_FAQ_LAYOUT } from '@/constant/layout'
 
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
@@ -98,7 +98,7 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
 
         <TagNote tag={activeTagData} />
 
-        {mode === 'search' && <FaqList layout={HELP_FAQ_LAYOUT.SEARCH_HINT} left={6} />}
+        {mode === 'search' && <FaqList layout={DOC_FAQ_LAYOUT.SEARCH_HINT} left={6} />}
 
         {mode === 'default' && (
           <PagedArticles

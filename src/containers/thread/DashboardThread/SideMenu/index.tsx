@@ -1,8 +1,7 @@
-import { FC, memo, Fragment } from 'react'
+import { FC, memo } from 'react'
 import { keys } from 'ramda'
 
-import type { TDashboardPath } from '@/spec'
-import { Br } from '@/widgets/Common'
+import type { TCommunity, TDashboardPath } from '@/spec'
 import Sticky from '@/widgets/Sticky'
 
 import { MENU } from '../constant'
@@ -15,20 +14,26 @@ import { Wrapper } from '../styles/side_menu'
 type TProps = {
   curTab?: TDashboardPath
   touched?: TTouched
+  community: TCommunity
 }
 
-const SideMenu: FC<TProps> = ({ curTab = '', touched = null }) => {
+const SideMenu: FC<TProps> = ({ curTab = '', touched = null, community }) => {
   const groupKeys = keys(MENU)
 
   return (
     <Wrapper>
       <Sticky offsetTop={30}>
-        {groupKeys.map((key) => (
-          <Fragment key={key}>
-            <Group group={MENU[key] as TMenuGroup} curTab={curTab} touched={touched} />
-            <Br top={30} />
-          </Fragment>
-        ))}
+        {groupKeys.map((key) => {
+          return (
+            <Group
+              key={key}
+              community={community}
+              group={MENU[key] as TMenuGroup}
+              curTab={curTab}
+              touched={touched}
+            />
+          )
+        })}
       </Sticky>
     </Wrapper>
   )

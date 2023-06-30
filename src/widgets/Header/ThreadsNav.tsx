@@ -5,12 +5,7 @@ import { Trans } from '@/utils/i18n'
 
 import DotDivider from '@/widgets/DotDivider'
 
-import {
-  Wrapper,
-  CommunityLogo,
-  MobileHint,
-  MiniTab,
-} from './styles/threads_nav'
+import { Wrapper, CommunityLogo, MobileHint, MiniTab } from './styles/threads_nav'
 
 // import { onThreadChange } from './logic'
 
@@ -21,12 +16,10 @@ type TProps = {
   }
 }
 
-const ThreadsNav: FC<TProps> = ({
-  activeInfo: { community, activeThread },
-}) => {
+const ThreadsNav: FC<TProps> = ({ activeInfo: { community, activeThread } }) => {
   return (
     <Wrapper>
-      <CommunityLogo src={community.logo || ''} raw={community.raw} />
+      <CommunityLogo src={community.logo || ''} slug={community.slug} />
       <MobileHint>
         <DotDivider />
         {Trans(activeThread)}

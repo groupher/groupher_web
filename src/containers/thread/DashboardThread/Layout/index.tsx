@@ -4,6 +4,7 @@ import Router from 'next/router'
 import { DASHBOARD_LAYOUT_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
 
+import useCurCommunity from '@/hooks/useCurCommunity'
 import { Divider } from '@/widgets/Common'
 import Tabs from '@/widgets/Switcher/Tabs'
 
@@ -12,7 +13,7 @@ import Portal from '../Portal'
 import AvatarLayout from './AvatarLayout'
 // import BrandLayout from './BrandLayout'
 import BannerLayout from './BannerLayout'
-import HelpLayout from './HelpLayout'
+import DocLayout from './DocLayout'
 import ChangelogLayout from './ChangelogLayout'
 import PostLayout from './PostLayout'
 import KanbanLayout from './KanbanLayout'
@@ -33,13 +34,15 @@ type TProps = {
 }
 
 const UI: FC<TProps> = ({ settings, touched }) => {
+  const curCommunity = useCurCommunity()
+
   const {
     layoutTab,
     // brandLayout,
     avatarLayout,
     bannerLayout,
-    helpLayout,
-    helpFaqLayout,
+    docLayout,
+    docFaqLayout,
     topbarLayout,
     topbarBg,
     postLayout,
@@ -69,8 +72,8 @@ const UI: FC<TProps> = ({ settings, touched }) => {
               edit(tab, 'layoutTab')
               const targetPath =
                 tab === DASHBOARD_LAYOUT_ROUTE.GLOBAL
-                  ? '/home/dashboard/layout'
-                  : `/home/dashboard/layout/${tab}`
+                  ? `/${curCommunity.slug}/dashboard/layout`
+                  : `/${curCommunity.slug}/dashboard/layout/${tab}`
 
               Router.push(targetPath)
             }}
@@ -138,12 +141,12 @@ const UI: FC<TProps> = ({ settings, touched }) => {
         />
       )}
 
-      {layoutTab === DASHBOARD_LAYOUT_ROUTE.HELP && (
-        <HelpLayout
-          layout={helpLayout}
-          faqLayout={helpFaqLayout}
-          isTouched={touched.helpLayout}
-          isFaqTouched={touched.helpFaqLayout}
+      {layoutTab === DASHBOARD_LAYOUT_ROUTE.DOC && (
+        <DocLayout
+          layout={docLayout}
+          faqLayout={docFaqLayout}
+          isTouched={touched.docLayout}
+          isFaqTouched={touched.docFaqLayout}
           saving={saving}
         />
       )}

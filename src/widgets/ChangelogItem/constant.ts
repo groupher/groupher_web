@@ -3,12 +3,12 @@ import { COLOR_NAME } from '@/constant/colors'
 export const demoTags = [
   {
     title: 'Bug 修复',
-    raw: 'fix',
+    slug: 'fix',
     color: COLOR_NAME.GREEN,
   },
   {
     title: '新功能',
-    raw: 'feature',
+    slug: 'feature',
     color: COLOR_NAME.PURPLE,
   },
 ]

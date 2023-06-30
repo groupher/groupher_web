@@ -44,6 +44,7 @@ module.exports = {
     },
   },
   rules: {
+    'import/no-unresolved': [2, { caseSensitive: false }],
     'react/no-unknown-property': 0,
     'no-extra-boolean-cast': 0,
     'react/require-default-props': 0,
@@ -53,10 +54,7 @@ module.exports = {
     'no-dupe-else-if': 0,
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
-    'react/jsx-filename-extension': [
-      2,
-      { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
-    ],
+    'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     'import/no-named-as-default': 0,
     'import/extensions': [
       'error',

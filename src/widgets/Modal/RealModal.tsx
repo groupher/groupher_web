@@ -30,7 +30,7 @@ const RealModal: FC<TProps> = ({
   showCloseBtn,
   mode,
   background,
-  offsetTop,
+  offsetTop = '20%',
   offsetLeft,
   handleCloseModal,
 }) => {
@@ -70,9 +70,7 @@ const RealModal: FC<TProps> = ({
           <ViewportTracker onEnter={() => setVisibleOnPage(true)} />
           {showCloseBtn && <CloseBtn mode={mode} onClick={handleClose} />}
           {/* {showCloseBtn && <EscHint mode={mode}>Esc</EscHint>} */}
-          <ChildrenWrapper onClick={(e) => e.stopPropagation()}>
-            {children}
-          </ChildrenWrapper>
+          <ChildrenWrapper onClick={(e) => e.stopPropagation()}>{children}</ChildrenWrapper>
         </Wrapper>
       </Mask>
     </Portal>

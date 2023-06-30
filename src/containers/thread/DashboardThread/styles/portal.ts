@@ -39,4 +39,9 @@ export const MobileMenu = styled.div`
   width: 200px;
   height: 500px;
   overflow: scroll;
+  display: none;
+
+  ${css.media.mobile`
+    display: block;
+  `};
 `

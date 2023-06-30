@@ -3,12 +3,13 @@ export type TArticleThread =
   // for groupher
   | 'changelog'
   | 'kanban'
-  | 'help'
+  | 'doc'
   | 'about'
 
-export type TThread =
-  | TArticleThread
-  | 'dashboard'
-  | 'kanban'
-  | 'team'
-  | 'account'
+export type TThread = TArticleThread | 'dashboard' | 'kanban' | 'team' | 'account'
+
+export type TCommunityThread = {
+  title: string
+  slug: TThread
+  index?: number
+}

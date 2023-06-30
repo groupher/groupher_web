@@ -14,10 +14,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   padding-bottom: 40px;
   width: 100%;
 
-  margin-top: ${({ top }) => `${top}px` || 0};
-  margin-bottom: ${({ bottom }) => `${bottom}px` || 0};
-  margin-left: ${({ left }) => `${left}px` || 0};
-  margin-right: ${({ right }) => `${right}px` || 0};
+  ${(props) => css.spaceMargins(props)};
 
   ${css.media.mobile`
     padding-bottom: 15px;

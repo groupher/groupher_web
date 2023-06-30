@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 
-import type { TTestable } from '@/spec'
 import css, { theme } from '@/utils/css'
 
 import AdderSVG from '@/icons/Plus'

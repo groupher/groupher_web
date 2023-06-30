@@ -31,14 +31,11 @@ const BriefView: FC<TProps> = ({ community }) => {
       <CardWrapper>
         <CommunityWrapper>
           {community.logo ? (
-            <CommunityLogo src={community.logo} raw={community.raw} />
+            <CommunityLogo src={community.logo} slug={community.slug} />
           ) : (
             <LogoHolder src={CommunityLogoHolder} />
           )}
-          <Tooltip
-            placement="bottom-start"
-            content={<CardPopover community={community} />}
-          >
+          <Tooltip placement="bottom-start" content={<CardPopover community={community} />}>
             <CommunityInfo>
               <LogoText href="/home" prefetch={false}>
                 groupher

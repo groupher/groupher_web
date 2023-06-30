@@ -3,11 +3,11 @@ import { memo } from 'react'
 import { sortByIndex } from '@/utils/helper'
 import Tabs from '@/widgets/Switcher/Tabs'
 
-// priority: icon > localIcon || raw
+// priority: icon > localIcon || slug
 const getLocalIcon = (item) => {
   if (item.icon) return ''
 
-  return item.localIcon ? item.localIcon : item.raw
+  return item.localIcon ? item.localIcon : item.slug
 }
 
 const MobileView = ({ source, active, onChange, view }) => {
@@ -16,14 +16,7 @@ const MobileView = ({ source, active, onChange, view }) => {
     localIcon: getLocalIcon(item),
   }))
 
-  return (
-    <Tabs
-      items={sortByIndex(items)}
-      activeKey={active}
-      onChange={onChange}
-      view={view}
-    />
-  )
+  return <Tabs items={sortByIndex(items)} activeKey={active} onChange={onChange} view={view} />
 }
 
 export default memo(MobileView)

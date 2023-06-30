@@ -5,7 +5,9 @@ import type { TPostLayout } from '@/spec'
 import { Br } from '@/widgets/Common'
 import OSSUploader from '@/widgets/OSSUploader'
 
-import type { TBaseInfoSettings } from '../spec'
+import type { TBaseInfoSettings, TTouched } from '../spec'
+import { SETTING_FIELD } from '../constant'
+import SavingBar from '../SavingBar'
 
 import {
   Wrapper,
@@ -17,15 +19,19 @@ import {
   Logo,
   Title,
   Desc,
+  Hint,
 } from '../styles/basic_info/base_info'
 import { edit } from '../logic'
 
 type TProps = {
   testid?: TPostLayout
   settings: TBaseInfoSettings
+  touched: TTouched
 }
 
-const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
+const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => {
+  const { saving } = settings
+
   return (
     <Wrapper>
       <Title>favicon</Title>
@@ -47,12 +53,25 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
       <Br bottom={30} />
       <Label>社区名称</Label>
       <Inputer value={settings.title} onChange={(v) => edit(v, 'title')} />
-      <Label>社区简介</Label>
-      <Inputer value={settings.desc} onChange={(v) => edit(v, 'desc')} />
+
       <Label>官方主页</Label>
       <Inputer value={settings.homepage} onChange={(v) => edit(v, 'homepage')} />
-      <Label>社区 URL</Label>
-      <Inputer value={settings.url} onChange={(v) => edit(v, 'url')} />
+      <Hint>您产品或服务的官方地址。</Hint>
+      <Label>路径（slug）</Label>
+      <Inputer value={settings.slug} onChange={(v) => edit(v, 'slug')} />
+      <Hint>
+        社区的 URL 地址段，填写后可通过 https://groupher.com/[slug] 或 https://[slug].groupher.com
+        访问。
+      </Hint>
+      <Label>社区简介</Label>
+      <Inputer behavior="textarea" value={settings.desc} onChange={(v) => edit(v, 'desc')} />
+
+      <SavingBar
+        field={SETTING_FIELD.BASE_INFO}
+        isTouched={touched.baseInfo}
+        loading={saving}
+        top={30}
+      />
     </Wrapper>
   )
 }

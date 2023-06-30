@@ -1,18 +1,20 @@
 import { FC } from 'react'
 import { isEmpty } from 'ramda'
 
-import type { TMetric } from '@/spec'
+import type { TMetric, TFooterConfig } from '@/spec'
 import METRIC from '@/constant/metric'
 import { LineDivider, DesktopOnly, MobileOnly, Row, Br } from '@/widgets/Common'
 
 import { BEIAN_ADDR, BEIAN_TEXT } from '@/config'
+
 import { Wrapper, Note, Addr, BottomWrapper } from '../styles/desktop_view/powerby_info'
 
 type TProps = {
-  metric?: TMetric
+  config: TFooterConfig
+  metric: TMetric
 }
 
-const PowerbyInfo: FC<TProps> = ({ metric }) => {
+const PowerbyInfo: FC<TProps> = ({ metric, config }) => {
   return (
     <Wrapper testid="power-by">
       {metric !== METRIC.HOME && (

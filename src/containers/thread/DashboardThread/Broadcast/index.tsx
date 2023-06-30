@@ -4,6 +4,7 @@ import Router from 'next/router'
 import { DASHBOARD_BROADCAST_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
 
+import useCurCommunity from '@/hooks/useCurCommunity'
 import Tabs from '@/widgets/Switcher/Tabs'
 
 import type { TBroadcastSettings, TTouched } from '../spec'
@@ -21,6 +22,8 @@ type TProps = {
 }
 
 const Broadcast: FC<TProps> = ({ settings, touched }) => {
+  const curCommunity = useCurCommunity()
+
   const { broadcastTab } = settings
 
   return (
@@ -37,8 +40,8 @@ const Broadcast: FC<TProps> = ({ settings, touched }) => {
               edit(tab, 'broadcastTab')
               const targetPath =
                 tab === DASHBOARD_BROADCAST_ROUTE.GLOBAL
-                  ? '/home/dashboard/broadcast'
-                  : `/home/dashboard/broadcast/${tab}`
+                  ? `/${curCommunity.slug}/dashboard/broadcast`
+                  : `/${curCommunity.slug}/dashboard/broadcast/${tab}`
 
               Router.push(targetPath)
             }}

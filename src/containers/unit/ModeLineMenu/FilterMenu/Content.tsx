@@ -30,14 +30,8 @@ const Content: FC<TProps> = ({ curActive }) => {
   const { community, thread } = curActive
 
   const scrollableHeight = getFilterMenuScrollHeight()
-  const handleDisableDrawerContentDrag = useCallback(
-    disableDrawerContentDrag,
-    [],
-  )
-  const handleRestoreDrawerContentDrag = useCallback(
-    restoreDrawerContentDrag,
-    [],
-  )
+  const handleDisableDrawerContentDrag = useCallback(disableDrawerContentDrag, [])
+  const handleRestoreDrawerContentDrag = useCallback(restoreDrawerContentDrag, [])
 
   return (
     <Wrapper>
@@ -57,11 +51,9 @@ const Content: FC<TProps> = ({ curActive }) => {
           >
             <ThreadWrapper>
               {community.threads.map((item) => (
-                <ItemBar key={item.raw} active={item.raw === thread}>
+                <ItemBar key={item.slug} active={item.slug === thread}>
                   {Trans(item.title)}
-                  {item.raw === thread && (
-                    <ArrowIcon src={`${ICON}/shape/arrow-solid.svg`} />
-                  )}
+                  {item.slug === thread && <ArrowIcon src={`${ICON}/shape/arrow-solid.svg`} />}
                 </ItemBar>
               ))}
             </ThreadWrapper>

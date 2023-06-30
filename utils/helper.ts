@@ -1,7 +1,28 @@
 import hotToast from 'react-hot-toast'
-import { curry, reduce, keys, sort, uniq, tap, includes, remove, isEmpty } from 'ramda'
+import {
+  curry,
+  find,
+  propEq,
+  reduce,
+  keys,
+  sort,
+  uniq,
+  tap,
+  includes,
+  remove,
+  isEmpty,
+} from 'ramda'
 
-import type { TWindow, TToastType, TToastOption, TArticleState, TColorName } from '@/spec'
+import type {
+  TWindow,
+  TToastType,
+  TToastOption,
+  TArticleState,
+  TColorName,
+  TCommunityThread,
+  TNameAliasConfig,
+  TDashboardThreadConfig,
+} from '@/spec'
 
 import { TAG_COLOR_ORDER } from '@/config'
 import { ARTICLE_STATE } from '@/constant/gtd'
@@ -14,9 +35,9 @@ type TSORTABLE_ITEMS = {
   groupIndex?: number
   id?: string
   title?: string
-  raw: string
+  slug: string
   logo?: string
-  addr?: string
+  group?: string
 }[]
 
 export const Global: TWindow = typeof window !== 'undefined' ? window : null
@@ -314,4 +335,27 @@ export const removeEmptyValuesFromObject = (object) => {
   })
 
   return newObject
+}
+
+/**
+ * filter public threads & map alias name for community's threads
+ */
+export const washThreads = (
+  threads: TCommunityThread[],
+  dashboardSettings: TDashboardThreadConfig,
+): TCommunityThread[] => {
+  const { enable, nameAlias } = dashboardSettings
+
+  const enabledThreads = sortByIndex(threads.filter((thread) => enable[thread.slug]))
+
+  const mappedThreads = enabledThreads.map((pThread) => {
+    const aliasItem = find(propEq('slug', pThread.slug))(nameAlias) as TNameAliasConfig
+
+    return {
+      ...pThread,
+      title: aliasItem?.name || pThread.title,
+    }
+  })
+
+  return mappedThreads as TCommunityThread[]
 }

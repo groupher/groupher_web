@@ -20,11 +20,7 @@ import { Wrapper } from './styles'
 /* eslint-disable-next-line */
 const log = buildLog('w:TechStack:index')
 
-const FULL_TECHS = reduce(
-  (acc, key) => ({ ...acc, [key]: [] }),
-  {},
-  CATEGORYS_RAWS,
-)
+const FULL_TECHS = reduce((acc, key) => ({ ...acc, [key]: [] }), {}, CATEGORYS_RAWS)
 
 type TProps = {
   techCommunities: TTechCommunities
@@ -34,30 +30,22 @@ type TProps = {
   onRemove?: (t: TCommunity) => void
 }
 
-const TechStacks: FC<TProps> = ({
-  onAdd,
-  onRemove,
-  techCommunities = {},
-  interactive = true,
-}) => {
+const TechStacks: FC<TProps> = ({ onAdd, onRemove, techCommunities = {}, interactive = true }) => {
   const techs = merge(FULL_TECHS, techCommunities)
 
   return (
     <Fragment>
       {TECHSTACK_CATEGORYS.map((category) => (
-        <Wrapper key={category.raw}>
+        <Wrapper key={category.slug}>
           <Category title={category.title} />
           {interactive ? (
             <InteractiveRow
               onAdd={() => onAdd(category)}
               onRemove={onRemove}
-              items={techs[category.raw]}
+              items={techs[category.slug]}
             />
           ) : (
-            <ReadOnlyRow
-              items={techs[category.raw]}
-              noSet={techs[category.raw].length === 0}
-            />
+            <ReadOnlyRow items={techs[category.slug]} noSet={techs[category.slug].length === 0} />
           )}
         </Wrapper>
       ))}

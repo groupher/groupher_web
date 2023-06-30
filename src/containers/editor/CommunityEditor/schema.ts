@@ -36,7 +36,7 @@ const subscribeCommunity = gql`
       contributesDigest
       threads {
         title
-        raw
+        slug
       }
     }
   }
@@ -54,7 +54,7 @@ const pagedCategories = gql`
       entries {
         id
         title
-        raw
+        slug
         index
       }
       totalCount
@@ -74,8 +74,8 @@ const hasPendingCommunityApply = gql`
 `
 
 const isCommunityExist = gql`
-  query ($raw: String!) {
-    isCommunityExist(raw: $raw) {
+  query ($slug: String!) {
+    isCommunityExist(slug: $slug) {
       exist
     }
   }
@@ -86,7 +86,7 @@ const applyCommunity = gql`
     $title: String!
     $desc: String!
     $logo: String!
-    $raw: String!
+    $slug: String!
     $applyMsg: String
     $applyCategory: String
   ) {
@@ -94,7 +94,7 @@ const applyCommunity = gql`
       title: $title
       desc: $desc
       logo: $logo
-      raw: $raw
+      slug: $slug
       applyMsg: $applyMsg
       applyCategory: $applyCategory
     ) {

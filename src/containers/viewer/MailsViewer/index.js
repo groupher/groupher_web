@@ -21,19 +21,19 @@ const log = buildLog('C:MailsViewer')
 const mailTabs = [
   {
     title: '提及',
-    raw: 'mentions',
+    slug: 'mentions',
     count: 0,
     icon: `${ICON_CMD}/mail_mention.svg`,
   },
   {
     title: '关注',
-    raw: 'notifications',
+    slug: 'notifications',
     count: 0,
     icon: `${ICON_CMD}/mail_watching.svg`,
   },
   {
     title: '消息',
-    raw: 'sys_notifications',
+    slug: 'sys_notifications',
     count: 0,
     icon: `${ICON_CMD}/mail_notification.svg`,
   },
@@ -46,17 +46,9 @@ const MailsViewerContainer = ({ mailsViewer: store }) => {
 
   return (
     <div>
-      <TabSelector
-        source={mailTabs}
-        activeRaw={activeRaw}
-        onChange={selectChange}
-      />
+      <TabSelector source={mailTabs} activeRaw={activeRaw} onChange={selectChange} />
 
-      <MailLists
-        activeRaw={activeRaw}
-        pagedMentions={pagedMentionsData}
-        readState={readState}
-      />
+      <MailLists activeRaw={activeRaw} pagedMentions={pagedMentionsData} readState={readState} />
     </div>
   )
 }

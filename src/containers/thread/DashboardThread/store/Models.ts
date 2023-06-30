@@ -14,16 +14,17 @@ import {
   BROADCAST_LAYOUT,
   BROADCAST_ARTICLE_LAYOUT,
   CHANGELOG_LAYOUT,
-  HELP_LAYOUT,
-  HELP_FAQ_LAYOUT,
+  DOC_LAYOUT,
+  DOC_FAQ_LAYOUT,
   POST_LAYOUT,
   KANBAN_LAYOUT,
+  HEADER_LAYOUT,
   FOOTER_LAYOUT,
   RSS_TYPE,
 } from '@/constant/layout'
 
 import { T } from '@/utils/mobx'
-import { mockTags } from '@/utils/mock'
+// import { mockTags } from '@/utils/mock'
 
 import { BUILDIN_ALIAS, WIDGET_TYPE, TW_CARD, DEFAULT_LINK_ITEMS } from '../constant'
 
@@ -32,9 +33,9 @@ export const Enable = T.model('Enable', {
   kanban: T.opt(T.bool, true),
   changelog: T.opt(T.bool, true),
   //
-  help: T.opt(T.bool, true),
-  helpLastUpdate: T.opt(T.bool, true),
-  helpReaction: T.opt(T.bool, true),
+  doc: T.opt(T.bool, true),
+  docLastUpdate: T.opt(T.bool, true),
+  docReaction: T.opt(T.bool, true),
   //
   about: T.opt(T.bool, true),
   aboutTechstack: T.opt(T.bool, true),
@@ -43,12 +44,24 @@ export const Enable = T.model('Enable', {
   aboutMediaReport: T.opt(T.bool, true),
 })
 
-export const Alias = T.model('Alias', {
-  raw: T.opt(T.string, ''),
+export const NameAlias = T.model('NameAlias', {
+  slug: T.opt(T.string, ''),
   name: T.opt(T.string, ''),
   original: T.opt(T.string, ''),
-  suggestions: T.opt(T.array(T.string), []),
   group: T.opt(T.string, ''),
+})
+
+export const LinkItem = T.model('LinkItem', {
+  index: T.opt(T.int, 0),
+  title: T.opt(T.str, ''),
+  link: T.opt(T.str, ''),
+  group: T.opt(T.str, ''),
+  groupIndex: T.opt(T.int, 0),
+})
+
+export const SocialLink = T.model('SocialLink', {
+  type: T.opt(T.str, ''),
+  link: T.opt(T.str, ''),
 })
 
 const File = T.model('File', {
@@ -65,25 +78,19 @@ const GroupCategory = T.model('GroupGategory', {
   files: T.opt(T.array(File), []),
 })
 
-const LinkItem = T.model('LinkItem', {
-  index: T.opt(T.int, 0),
-  title: T.opt(T.str, ''),
-  raw: T.opt(T.str, ''),
-  addr: T.opt(T.str, ''),
-  group: T.opt(T.str, ''),
-  groupIndex: T.opt(T.int, 0),
-})
-
 export const settingsModalFields = {
   // baseInfo
   favicon: T.opt(T.string, ''),
   logo: T.opt(T.string, ''),
   title: T.opt(T.string, ''),
+  slug: T.opt(T.string, ''),
   desc: T.opt(T.string, ''),
   homepage: T.opt(T.string, ''),
-  url: T.opt(T.string, ''),
   city: T.opt(T.string, ''),
   techstack: T.opt(T.string, ''),
+
+  // social
+  socialLinks: T.opt(T.array(SocialLink), []),
 
   // seo
   ogSiteName: T.opt(T.string, ''),
@@ -113,8 +120,8 @@ export const settingsModalFields = {
     COLOR_NAME.GREEN_LIGHT,
   ]),
 
-  helpLayout: T.opt(T.enum(values(HELP_LAYOUT)), HELP_LAYOUT.BLOCKS),
-  helpFaqLayout: T.opt(T.enum(values(HELP_FAQ_LAYOUT)), HELP_FAQ_LAYOUT.COLLAPSE),
+  docLayout: T.opt(T.enum(values(DOC_LAYOUT)), DOC_LAYOUT.BLOCKS),
+  docFaqLayout: T.opt(T.enum(values(DOC_FAQ_LAYOUT)), DOC_FAQ_LAYOUT.COLLAPSE),
   avatarLayout: T.opt(T.enum(values(AVATAR_LAYOUT)), AVATAR_LAYOUT.SQUARE),
   brandLayout: T.opt(T.enum(values(BRAND_LAYOUT)), BRAND_LAYOUT.BOTH),
   bannerLayout: T.opt(T.enum(values(BANNER_LAYOUT)), BANNER_LAYOUT.HEADER),
@@ -134,8 +141,8 @@ export const settingsModalFields = {
 
   changelogLayout: T.opt(T.enum(values(CHANGELOG_LAYOUT)), CHANGELOG_LAYOUT.CLASSIC),
 
-  // help
-  helpCategories: T.opt(T.array(GroupCategory), []),
+  // doc
+  docCategories: T.opt(T.array(GroupCategory), []),
 
   // glow effect
   glowType: T.opt(T.string, keys(GLOW_EFFECTS)[0]),
@@ -144,19 +151,22 @@ export const settingsModalFields = {
 
   // contents
   // tags
-  tags: T.opt(T.array(Tag), mockTags(12)),
-  activeTagCategory: T.maybeNull(T.string),
-  alias: T.opt(T.array(Alias), BUILDIN_ALIAS),
+  // tags: T.opt(T.array(Tag), mockTags(12)),
+  tags: T.opt(T.array(Tag), []),
+  activeTagGroup: T.maybeNull(T.string),
+  activeTagThread: T.maybeNull(T.string),
+  nameAlias: T.opt(T.array(NameAlias), BUILDIN_ALIAS),
   enable: T.opt(Enable, {}),
 
   rssFeedType: T.opt(T.enum(values(RSS_TYPE)), RSS_TYPE.DIGEST),
   rssFeedCount: T.opt(T.int, 5),
 
   // footer
-  footerLayout: T.opt(T.enum(values(FOOTER_LAYOUT)), FOOTER_LAYOUT.FULL),
+  headerLayout: T.opt(T.enum(values(HEADER_LAYOUT)), HEADER_LAYOUT.CENTER),
+  footerLayout: T.opt(T.enum(values(FOOTER_LAYOUT)), FOOTER_LAYOUT.GROUP),
 
   footerLinks: T.opt(T.array(LinkItem), DEFAULT_LINK_ITEMS),
-  headerLinks: T.opt(T.array(LinkItem), DEFAULT_LINK_ITEMS),
+  headerLinks: T.opt(T.array(LinkItem), []),
 
   // widgets
   widgetsPrimaryColor: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),

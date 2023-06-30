@@ -13,13 +13,13 @@ export const subscribedCommunities = `
   }
 `
 export const community = `
-  query community($raw: String, $userHasLogin: Boolean!) {
-    community(raw: $raw) {
+  query community($slug: String, $userHasLogin: Boolean!) {
+    community(slug: $slug) {
       ${F.community}
       viewerHasSubscribed @include(if: $userHasLogin)
       threads {
         title
-        raw
+        slug
         index
       }
       contributesDigest
@@ -29,20 +29,60 @@ export const community = `
         blogsCount
       }
       dashboard {
+        baseInfo {
+          title
+          favicon
+          homepage
+          logo
+          slug
+          desc
+        }
         seo {
+          ogSiteName
           ogTitle
           ogDescription
+          ogUrl
+          ogImage
+          ogLocale
+          ogPublisher
+          twTitle
+          twDescription
+          twUrl
+          twCard
+          twSite
+          twImage
+          twImageWidth
+          twImageHeight
         }
-
+        nameAlias {
+          slug
+          name
+          original
+          group
+        }
         layout {
+          primaryColor
           postLayout
+          docLayout
+          avatarLayout
+          brandLayout
+          topbarLayout
+          topbarBg
+          broadcastLayout
           kanbanLayout
-          helpLayout
+          kanbanBgColors
+          docFaqLayout
           changelogLayout
+          footerLayout
         }
 
         baseInfo {
           favicon
+        }
+
+        socialLinks {
+          type
+          link
         }
 
         rss {
@@ -54,7 +94,7 @@ export const community = `
           post
           kanban
           changelog
-          help
+          doc
           about
         }
       }

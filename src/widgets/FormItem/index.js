@@ -79,7 +79,7 @@ const FormItem = ({
   className,
   type,
   label,
-  raw,
+  slug,
   ratKey,
   value,
   onChange,
@@ -93,13 +93,13 @@ const FormItem = ({
 }) => (
   <FormItemWrapper className={className} bottom={bottom}>
     <Maybe test={!isEmpty(label)}>
-      <FormLabel error={hasValue(raw) && raw === ratKey}>{label}</FormLabel>
+      <FormLabel error={hasValue(slug) && slug === ratKey}>{label}</FormLabel>
     </Maybe>
 
     <FormContent
       type={type}
       value={value}
-      error={hasValue(raw) && raw === ratKey}
+      error={hasValue(slug) && slug === ratKey}
       size={size}
       onChange={onChange}
       placeholder={placeholder}
@@ -115,7 +115,7 @@ FormItem.propTypes = {
   className: T.string,
   value: T.string,
   label: T.string,
-  raw: T.string,
+  slug: T.string,
   ratKey: T.string,
   placeholder: T.string,
   onChange: T.func,
@@ -132,7 +132,7 @@ FormItem.defaultProps = {
   className: 'normal-form',
   value: '',
   label: '',
-  raw: '',
+  slug: '',
   ratKey: '',
   size: SIZE.MEDIUM,
   placeholder: '',

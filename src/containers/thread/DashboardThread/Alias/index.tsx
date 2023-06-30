@@ -5,6 +5,7 @@ import { DASHBOARD_ALIAS_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
 
 import { groupByKey } from '@/utils/helper'
+import useCurCommunity from '@/hooks/useCurCommunity'
 
 import Tabs from '@/widgets/Switcher/Tabs'
 
@@ -22,8 +23,10 @@ type TProps = {
 }
 
 const Alias: FC<TProps> = ({ settings }) => {
-  const { alias, editingAlias, aliasTab } = settings
-  const groupedAlias = groupByKey(alias, 'group')
+  const curCommunity = useCurCommunity()
+
+  const { nameAlias, editingAlias, aliasTab } = settings
+  const groupedAlias = groupByKey(nameAlias, 'group')
 
   const generalAlias = groupedAlias[ALIAS_GROUP.GENERAL]
   const kanbanAlias = groupedAlias[ALIAS_GROUP.KANBAN]
@@ -45,8 +48,8 @@ const Alias: FC<TProps> = ({ settings }) => {
               edit(tab, 'aliasTab')
               const targetPath =
                 tab === DASHBOARD_ALIAS_ROUTE.GENERAL
-                  ? '/home/dashboard/alias'
-                  : `/home/dashboard/alias/${tab}`
+                  ? `/${curCommunity.slug}/dashboard/alias`
+                  : `/${curCommunity.slug}/dashboard/alias/${tab}`
 
               Router.push(targetPath)
             }}
@@ -58,11 +61,13 @@ const Alias: FC<TProps> = ({ settings }) => {
 
       {aliasTab === ALIAS_GROUP.GENERAL &&
         generalAlias.map((item) => (
-          <Item key={item.raw} alias={item} editingAlias={editingAlias} />
+          <Item key={item.slug} alias={item} editingAlias={editingAlias} />
         ))}
 
       {aliasTab === ALIAS_GROUP.KANBAN &&
-        kanbanAlias.map((item) => <Item key={item.raw} alias={item} editingAlias={editingAlias} />)}
+        kanbanAlias.map((item) => (
+          <Item key={item.slug} alias={item} editingAlias={editingAlias} />
+        ))}
     </Wrapper>
   )
 }

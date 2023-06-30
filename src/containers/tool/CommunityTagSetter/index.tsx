@@ -36,20 +36,12 @@ const CommunityTagSetterContainer: FC<TProps> = ({
   communityTagSetter: store,
   onCommunitySelect = log,
   onTagSelect = log,
-  selectedCommunity = { raw: 'home' },
+  selectedCommunity = { slug: 'home' },
 }) => {
   useInit(store, selectedCommunity)
 
-  const {
-    show,
-    type,
-    communityStyle,
-    tagView,
-    communityView,
-    communitiesList,
-    tagsList,
-    texts,
-  } = store
+  const { show, type, communityStyle, tagView, communityView, communitiesList, tagsList, texts } =
+    store
 
   return (
     <Modal width="520px" show={show} onClose={onClose} showCloseBtn>
@@ -77,7 +69,4 @@ const CommunityTagSetterContainer: FC<TProps> = ({
   )
 }
 
-export default bond(
-  CommunityTagSetterContainer,
-  'communityTagSetter',
-) as FC<TProps>
+export default bond(CommunityTagSetterContainer, 'communityTagSetter') as FC<TProps>

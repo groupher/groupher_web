@@ -5,6 +5,7 @@ import css, { theme } from '@/utils/css'
 import Input from '@/widgets/Input'
 
 export const Wrapper = styled.div`
+  width: 310px;
   padding-bottom: 30px;
   margin-bottom: 20px;
 `
@@ -48,4 +49,12 @@ export const Inputer = styled(Input)`
   margin-bottom: 20px;
   width: 300px;
   background: transparent;
+`
+export const Hint = styled.div`
+  font-size: 11px;
+  color: ${theme('article.digest')};
+  opacity: 0.8;
+  margin-top: -10px;
+  margin-bottom: 20px;
+  line-break: anywhere;
 `

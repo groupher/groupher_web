@@ -34,7 +34,7 @@ const ModeLineContainer: FC<TProps> = ({ modeLine: store, metric = METRIC.COMMUN
     activeMenu,
     curCommunity,
     activeThread,
-    enable,
+    dashboardSettings,
     activeTag,
     groupedTags,
   } = store
@@ -51,7 +51,7 @@ const ModeLineContainer: FC<TProps> = ({ modeLine: store, metric = METRIC.COMMUN
         community={curCommunity}
         activeMenu={activeMenu}
         activeThread={activeThread}
-        enable={enable}
+        dashboardSettings={dashboardSettings}
       />
     )
   }
@@ -75,7 +75,7 @@ const ModeLineContainer: FC<TProps> = ({ modeLine: store, metric = METRIC.COMMUN
         community={curCommunity}
         activeMenu={activeMenu}
         activeThread={activeThread}
-        enable={enable}
+        dashboardSettings={dashboardSettings}
       />
     </Fragment>
   )

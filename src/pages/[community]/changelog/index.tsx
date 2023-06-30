@@ -1,5 +1,4 @@
 import { GetServerSideProps } from 'next'
-import { merge } from 'ramda'
 import { Provider } from 'mobx-react'
 
 import type { TCommunity } from '@/spec'
@@ -14,7 +13,6 @@ import {
   ssrFetchPrepare,
   ssrPagedArticleSchema,
   ssrPagedArticlesFilter,
-  ssrParseArticleThread,
   ssrParseDashboard,
   communitySEO,
 } from '@/utils'
@@ -36,7 +34,7 @@ const loader = async (context, opt = {}) => {
   // query data
   const sessionState = gqClient.request(P.sessionState)
   const curCommunity = gqClient.request(P.community, {
-    raw: community,
+    slug: community,
     userHasLogin,
   })
 
@@ -67,8 +65,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const initProps = {
     ...ssrBaseStates(resp),
     route: {
-      communityPath: community.raw,
-      mainPath: community.raw === HCN ? '' : community.raw,
+      communityPath: community.slug,
+      mainPath: community.slug === HCN ? '' : community.slug,
       subPath: thread,
       thread,
     },

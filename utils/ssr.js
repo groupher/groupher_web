@@ -188,7 +188,7 @@ const getCurView = (source) => {
 const getActiveTag = (tagRaw, tagList) => {
   if (!tagRaw || isEmpty(tagList)) return null
 
-  const index = findIndex(propEq('raw', tagRaw), tagList)
+  const index = findIndex(propEq('slug', tagRaw), tagList)
 
   if (index < 0) return null
   return tagList[index]
@@ -225,12 +225,24 @@ export const ssrParseArticleThread = (resp, thread, filters = {}) => {
 
 export const ssrParseDashboard = (community) => {
   const { dashboard } = community
+  const { enable, nameAlias, socialLinks } = dashboard
 
-  return removeEmptyValuesFromObject({
-    enable: dashboard.enable,
+  const fieldsObj = removeEmptyValuesFromObject({
+    enable,
+    nameAlias,
+    socialLinks,
+    ...dashboard.baseInfo,
+    ...dashboard.seo,
     ...dashboard.layout,
     ...dashboard.rss,
   })
+
+  return {
+    ...fieldsObj,
+    initSettings: {
+      ...fieldsObj,
+    },
+  }
 }
 
 export const validCommunityFilters = [

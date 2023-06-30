@@ -18,11 +18,8 @@ const alias = {
   python: 'Pythoner',
 }
 
-export const mapAlias = (
-  _source: TTabItem[],
-  communityRaw: string,
-): TTabItem[] => {
-  const communityAlias = alias[communityRaw]
+export const mapAlias = (_source: TTabItem[], communitySlug: string): TTabItem[] => {
+  const communityAlias = alias[communitySlug]
   const source = clone(_source)
 
   if (!communityAlias) return source
@@ -30,7 +27,7 @@ export const mapAlias = (
   const aliasKeys = keys(communityAlias)
 
   forEach((key) => {
-    const index = findIndex((item) => item.raw === key, source)
+    const index = findIndex((item) => item.slug === key, source)
     if (index >= 0) {
       source[index] = merge(source[index], { alias: communityAlias[key] })
     }

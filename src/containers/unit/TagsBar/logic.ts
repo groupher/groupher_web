@@ -34,10 +34,10 @@ export const loadTags = (): void => {
   const { curThread } = store
   // TODO: remove
 
-  const communityRaw = store.curCommunity.raw
+  const communitySlug = store.curCommunity.slug
   const thread = toUpper(curThread)
 
-  const args = { filter: { communityRaw, thread } }
+  const args = { filter: { community: communitySlug, thread } }
 
   store.mark({ loading: true })
   sr71$.query(S.pagedArticleTags, args)
@@ -47,7 +47,7 @@ export const loadTags = (): void => {
 const setActiveTagFromURL = (tags: TTag[]): void => {
   const tagOnURL = getParameterByName('tag')
   if (!tagOnURL) return
-  const idx = findIndex((t) => t.raw === tagOnURL, tags)
+  const idx = findIndex((t) => t.slug === tagOnURL, tags)
   if (idx >= 0) {
     onTagSelect(tags[idx])
   }

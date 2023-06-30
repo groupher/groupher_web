@@ -24,19 +24,19 @@ const ArticleBelongCommunity: FC<TProps> = ({ article, onFollow, onUndoFollow })
 
   return (
     <Wrapper>
-      {oc.raw === HCN ? <HomeLogo /> : <Icon src={oc.logo} />}
+      {oc.slug === HCN ? <HomeLogo /> : <Icon src={oc.logo} />}
       {hasMirror && <MirrorHint communities={mirrorCommunities as TCommunity[]} />}
-      <Name href={`/${oc.raw}`} prefetch={false}>
+      <Name href={`/${oc.slug}`} prefetch={false}>
         {oc.title}
       </Name>
       <JoinDesc>{oc.subscribersCount} 人加入</JoinDesc>
       <FollowButton
         size="tiny"
-        hasFollowed={oc.raw !== HCN ? oc.viewerHasSubscribed : true}
+        hasFollowed={oc.slug !== HCN ? oc.viewerHasSubscribed : true}
         followingOffset={-6}
         onFollow={onFollow}
         onUndoFollow={() => {
-          if (oc.raw === HCN) return
+          if (oc.slug === HCN) return
           onUndoFollow()
         }}
       />

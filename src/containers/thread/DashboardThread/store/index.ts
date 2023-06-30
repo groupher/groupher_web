@@ -11,9 +11,15 @@ import {
   equals,
   omit,
   pluck,
+  find,
+  propEq,
   uniq,
   filter,
+  reject,
   mapObjIndexed,
+  includes,
+  toUpper,
+  any,
 } from 'ramda'
 
 import type {
@@ -25,21 +31,27 @@ import type {
   TSizeSML,
   TColorName,
   TEnableConfig,
+  TNameAliasConfig,
+  TChangeMode,
 } from '@/spec'
 
 import {
-  ROUTE,
+  DASHBOARD_ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
   DASHBOARD_BASEINFO_ROUTE,
   DASHBOARD_ALIAS_ROUTE,
   DASHBOARD_BROADCAST_ROUTE,
   DASHBOARD_SEO_ROUTE,
 } from '@/constant/route'
+import { CHANGE_MODE } from '@/constant/mode'
+import { THREAD } from '@/constant/thread'
 
 import BStore from '@/utils/bstore'
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
-import { Tag } from '@/model'
+import { washThreads } from '@/utils/helper'
+
+import { PagedPosts, Tag, emptyPagi } from '@/model'
 
 import type {
   TBaseInfoSettings,
@@ -47,20 +59,23 @@ import type {
   TUiSettings,
   TTagSettings,
   TRSSSettings,
+  THeaderSettings,
   TFooterSettings,
-  THelpSettings,
+  TDocSettings,
   TAliasSettings,
   TTouched,
   TSettingField,
-  TAlias,
+  TNameAlias,
   TWidgetsSettings,
   TBroadcastSettings,
   TWidgetType,
+  TCurPageLinksKey,
+  TCMSContents,
 } from '../spec'
 
-import { SETTING_FIELD } from '../constant'
+import { SETTING_FIELD, BASEINFO_KEYS, SEO_KEYS, BROADCAST_KEYS } from '../constant'
 
-import { Alias, settingsModalFields, InitSettings } from './Models'
+import { NameAlias, LinkItem, InitSettings, settingsModalFields } from './Models'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:DashboardThread')
@@ -69,9 +84,11 @@ const log = buildLog('S:DashboardThread')
 const DASHBOARD_DEMO_KEY = 'dashboard_demo'
 
 const DashboardThread = T.model('DashboardThread', {
+  savingField: T.maybeNull(T.str),
   saving: T.opt(T.bool, false),
+  loading: T.opt(T.bool, false),
   // tab
-  curTab: T.opt(T.enum(values(ROUTE.DASHBOARD)), ROUTE.DASHBOARD.INFO),
+  curTab: T.opt(T.enum(values(DASHBOARD_ROUTE)), DASHBOARD_ROUTE.INFO),
   baseInfoTab: T.opt(T.enum(values(DASHBOARD_BASEINFO_ROUTE)), DASHBOARD_BASEINFO_ROUTE.BASIC),
   aliasTab: T.opt(T.enum(values(DASHBOARD_ALIAS_ROUTE)), DASHBOARD_ALIAS_ROUTE.GENERAL),
   seoTab: T.opt(T.enum(values(DASHBOARD_SEO_ROUTE)), DASHBOARD_SEO_ROUTE.SEARCH_ENGINE),
@@ -81,11 +98,20 @@ const DashboardThread = T.model('DashboardThread', {
   // editing
   editingTag: T.maybeNull(Tag),
   settingTag: T.maybeNull(Tag),
-  editingAlias: T.maybeNull(Alias),
+  editingAlias: T.maybeNull(NameAlias),
+  editingLink: T.maybeNull(LinkItem),
+  editingLinkMode: T.opt(T.enum(values(CHANGE_MODE)), CHANGE_MODE.CREATE),
+
+  editingGroup: T.maybeNull(T.str),
+  editingGroupIndex: T.maybeNull(T.int),
+  // editingGroupMode: T.opt(T.enum(values(CHANGE_MODE)), CHANGE_MODE.CREATE),
 
   ...settingsModalFields,
   initSettings: T.opt(InitSettings, {}),
   defaultSettings: T.opt(InitSettings, {}),
+
+  // cms
+  pagedPosts: T.opt(PagedPosts, emptyPagi),
 
   // for global alert
   demoAlertEnable: T.opt(T.bool, false),
@@ -100,8 +126,9 @@ const DashboardThread = T.model('DashboardThread', {
         postLayout,
         kanbanLayout,
         kanbanBgColors,
-        helpLayout,
-        helpFaqLayout,
+        docLayout,
+        docFaqLayout,
+        headerLayout,
         footerLayout,
         bannerLayout,
         topbarLayout,
@@ -127,8 +154,9 @@ const DashboardThread = T.model('DashboardThread', {
         post: postLayout,
         kanban: kanbanLayout,
         kanbanBgColors: kanbanBgColors as TColorName[],
-        help: helpLayout,
-        helpFaq: helpFaqLayout,
+        doc: docLayout,
+        docFaq: docFaqLayout,
+        header: headerLayout,
         footer: footerLayout,
         changelog: changelogLayout,
         banner: bannerLayout,
@@ -152,14 +180,32 @@ const DashboardThread = T.model('DashboardThread', {
       return toJS(root.viewing.community)
     },
 
+    get cmsContents(): TCMSContents {
+      const slf = self as TStore
+
+      return {
+        loading: slf.loading,
+        pagedPosts: toJS(slf.pagedPosts),
+      }
+    },
+
+    get _tagsIndexTouched(): boolean {
+      const { tags, initSettings } = self
+
+      return JSON.stringify(toJS(tags)) !== JSON.stringify(toJS(initSettings.tags))
+    },
+    get _socialLinksTouched(): boolean {
+      const { socialLinks, initSettings } = self
+
+      return JSON.stringify(toJS(socialLinks)) !== JSON.stringify(toJS(initSettings.socialLinks))
+    },
     get touched(): TTouched {
       const slf = self as TStore
 
-      const { initSettings: init } = slf
+      const { initSettings: init, _tagsIndexTouched, _socialLinksTouched } = slf
 
-      const _isChanged = (field: TSettingField): boolean => {
-        return !equals(slf[field], init[field])
-      }
+      const _isChanged = (field: TSettingField): boolean => !equals(slf[field], init[field])
+      const _anyChanged = (fields: TSettingField[]): boolean => any(_isChanged)(fields)
 
       const primaryColorTouched = _isChanged('primaryColor')
       const brandLayoutTouched = _isChanged('brandLayout')
@@ -169,8 +215,8 @@ const DashboardThread = T.model('DashboardThread', {
       const postLayoutTouched = _isChanged('postLayout')
       const kanbanLayoutTouched = _isChanged('kanbanLayout')
       const kanbanBgColorsTouched = _isChanged('kanbanBgColors')
-      const helpLayoutTouched = _isChanged('helpLayout')
-      const helpFaqLayoutTouched = _isChanged('helpFaqLayout')
+      const docLayoutTouched = _isChanged('docLayout')
+      const docFaqLayoutTouched = _isChanged('docFaqLayout')
 
       const broadcastLayoutTouched = _isChanged('broadcastLayout')
       const broadcastBgTouched = _isChanged('broadcastBg')
@@ -182,12 +228,13 @@ const DashboardThread = T.model('DashboardThread', {
       const topbarBgTouched = _isChanged('topbarBg')
       const changelogLayoutTouched = _isChanged('changelogLayout')
       const footerLayoutTouched = _isChanged('footerLayout')
+      const headerLayoutTouched = _isChanged('headerLayout')
 
       const glowFixedTouched = _isChanged('glowFixed')
       const glowTypeTouched = _isChanged('glowType')
       const glowOpacityTouched = _isChanged('glowOpacity')
 
-      const aliasTouched = !isNil(slf.editingAlias)
+      const nameAliasTouched = !isNil(slf.editingAlias)
       const tagsTouched = !isNil(slf.editingTag)
 
       const rssFeedTypeTouched = _isChanged('rssFeedType')
@@ -211,13 +258,16 @@ const DashboardThread = T.model('DashboardThread', {
 
         postLayout: postLayoutTouched,
         footerLayout: footerLayoutTouched,
+        headerLayout: headerLayoutTouched,
         kanbanLayout: kanbanLayoutTouched,
         kanbanBgColors: kanbanBgColorsTouched,
-        helpLayout: helpLayoutTouched,
-        helpFaqLayout: helpFaqLayoutTouched,
+        docLayout: docLayoutTouched,
+        docFaqLayout: docFaqLayoutTouched,
         changelogLayout: changelogLayoutTouched,
-        alias: aliasTouched,
+        nameAlias: nameAliasTouched,
         tags: tagsTouched,
+        tagsIndex: _tagsIndexTouched,
+        socialLinks: _socialLinksTouched,
 
         glowFixed: glowFixedTouched,
         glowType: glowTypeTouched,
@@ -228,6 +278,10 @@ const DashboardThread = T.model('DashboardThread', {
         widgetsPrimaryColor: widgetsPrimaryColorTouched,
         widgetsThreads: widgetsThreadsTouched,
         widgetsSize: widgetsSizeTouched,
+
+        //
+        baseInfo: _anyChanged(BASEINFO_KEYS as TSettingField[]),
+        seo: _anyChanged(SEO_KEYS as TSettingField[]),
 
         // sidebar-item
         ui:
@@ -242,6 +296,7 @@ const DashboardThread = T.model('DashboardThread', {
           glowFixedTouched ||
           glowTypeTouched ||
           glowOpacityTouched ||
+          headerLayoutTouched ||
           footerLayoutTouched,
 
         widgets: widgetsPrimaryColorTouched || widgetsThreadsTouched || widgetsSizeTouched,
@@ -260,7 +315,7 @@ const DashboardThread = T.model('DashboardThread', {
       return toJS(slf.enable)
     },
 
-    get tagCategories(): string[] {
+    get tagGroups(): string[] {
       const slf = self as TStore
       const tags = toJS(slf.tags)
 
@@ -271,18 +326,41 @@ const DashboardThread = T.model('DashboardThread', {
     get tagSettings(): TTagSettings {
       const slf = self as TStore
       const tags = toJS(slf.tags)
-      const { activeTagCategory } = slf
 
-      const filterdTags =
-        activeTagCategory === null ? tags : filter((t: TTag) => t.group === activeTagCategory, tags)
+      const { activeTagGroup, activeTagThread, curCommunity, nameAlias } = slf
+
+      const filterdTagsByGroup =
+        activeTagGroup === null ? tags : filter((t: TTag) => t.group === activeTagGroup, tags)
+
+      const filterdTags = filter(
+        (t: TTag) => t.thread === toUpper(activeTagThread || ''),
+        filterdTagsByGroup,
+      )
+
+      const mappedThreads = curCommunity.threads.map((pThread) => {
+        const aliasItem = find(propEq('slug', pThread.slug))(nameAlias) as TNameAliasConfig
+
+        return {
+          ...pThread,
+          title: aliasItem?.name || pThread.title,
+        }
+      })
+
+      const curThreads = reject(
+        // @ts-ignore
+        (thread) => includes(thread.slug, [THREAD.ABOUT, THREAD.DOC]),
+        mappedThreads,
+      )
 
       return {
         editingTag: toJS(slf.editingTag),
         settingTag: toJS(slf.settingTag),
         tags: filterdTags,
         saving: slf.saving,
-        categories: toJS(slf.tagCategories),
-        activeTagCategory,
+        groups: toJS(slf.tagGroups),
+        activeTagThread,
+        activeTagGroup,
+        threads: curThreads,
       }
     },
 
@@ -295,22 +373,80 @@ const DashboardThread = T.model('DashboardThread', {
       }
     },
 
+    get curPageLinksKey(): TCurPageLinksKey {
+      const slf = self as TStore
+
+      const isFooter = slf.curTab === DASHBOARD_ROUTE.FOOTER
+
+      return {
+        links: isFooter ? 'footerLinks' : 'headerLinks',
+        settings: isFooter ? 'footerSettings' : 'headerSettings',
+      }
+    },
+
+    get headerSettings(): THeaderSettings {
+      const slf = self as TStore
+      const {
+        headerLayout,
+        headerLinks,
+        editingLink,
+        editingLinkMode,
+        editingGroup,
+        editingGroupIndex,
+        enableSettings,
+        curCommunity,
+        aliasSettings,
+      } = slf
+
+      return {
+        headerLayout: toJS(headerLayout),
+        headerLinks: toJS(headerLinks),
+        editingLink: toJS(editingLink),
+        saving: slf.saving,
+        editingLinkMode: editingLinkMode as TChangeMode,
+        editingGroup,
+        editingGroupIndex,
+        threads: washThreads(curCommunity.threads, {
+          enable: enableSettings,
+          nameAlias: aliasSettings.nameAlias,
+        }),
+      }
+    },
+
     get footerSettings(): TFooterSettings {
       const slf = self as TStore
-      const { footerLayout, footerLinks } = slf
+      const {
+        footerLayout,
+        footerLinks,
+        editingLink,
+        editingLinkMode,
+        editingGroup,
+        editingGroupIndex,
+        enableSettings,
+        curCommunity,
+        aliasSettings,
+      } = slf
 
       return {
         footerLayout: toJS(footerLayout),
         footerLinks: toJS(footerLinks),
+        editingLink: toJS(editingLink),
         saving: slf.saving,
+        editingLinkMode: editingLinkMode as TChangeMode,
+        editingGroup,
+        editingGroupIndex,
+        threads: washThreads(curCommunity.threads, {
+          enable: enableSettings,
+          nameAlias: aliasSettings.nameAlias,
+        }),
       }
     },
 
-    get helpSettings(): THelpSettings {
+    get docSettings(): TDocSettings {
       const slf = self as TStore
 
       return {
-        categories: toJS(slf.helpCategories),
+        categories: toJS(slf.docCategories),
       }
     },
 
@@ -320,7 +456,7 @@ const DashboardThread = T.model('DashboardThread', {
       return {
         aliasTab: slf.aliasTab,
         editingAlias: toJS(slf.editingAlias),
-        alias: toJS(slf.alias),
+        nameAlias: toJS(slf.nameAlias),
         saving: slf.saving,
       }
     },
@@ -328,37 +464,24 @@ const DashboardThread = T.model('DashboardThread', {
     get seoSettings(): TSEOSettings {
       const slf = self as TStore
 
-      return pick(
-        [
-          'seoTab',
-          'ogSiteName',
-          'ogTitle',
-          'ogDescription',
-          'ogUrl',
-          'ogImage',
-          'ogLocale',
-          'ogPublisher',
-
-          'twTitle',
-          'twDescription',
-          'twUrl',
-          'twCard',
-          'twSite',
-          'twImage',
-          'twImageWidth',
-          'twImageHeight',
-        ],
-        slf,
-      )
+      return {
+        ...pick(SEO_KEYS, slf),
+        saving: slf.saving,
+        seoTab: slf.seoTab,
+      }
     },
 
     get baseInfoSettings(): TBaseInfoSettings {
       const slf = self as TStore
 
-      return pick(
-        ['favicon', 'logo', 'title', 'desc', 'homepage', 'url', 'city', 'techstack', 'baseInfoTab'],
-        slf,
-      )
+      const baseInfo = pick(BASEINFO_KEYS, slf)
+
+      return {
+        ...baseInfo,
+        baseInfoTab: slf.baseInfoTab,
+        saving: slf.saving,
+        socialLinks: toJS(slf.socialLinks),
+      }
     },
     get uiSettings(): TUiSettings {
       const slf = self as TStore
@@ -379,8 +502,8 @@ const DashboardThread = T.model('DashboardThread', {
         kanbanBgColors: toJS(slf.kanbanBgColors) as TColorName[],
         ...pick(
           [
-            'layoutTab',
             'saving',
+            'layoutTab',
             'primaryColor',
             'brandLayout',
             'avatarLayout',
@@ -389,8 +512,8 @@ const DashboardThread = T.model('DashboardThread', {
             'topbarBg',
             'postLayout',
             'kanbanLayout',
-            'helpLayout',
-            'helpFaqLayout',
+            'docLayout',
+            'docFaqLayout',
             'changelogLayout',
             'glowFixed',
             'glowType',
@@ -404,19 +527,10 @@ const DashboardThread = T.model('DashboardThread', {
     get broadcastSettings(): TBroadcastSettings {
       const slf = self as TStore
 
-      return pick(
-        [
-          'saving',
-          'broadcastTab',
-          'broadcastLayout',
-          'broadcastBg',
-          'broadcastEnable',
-          'broadcastArticleLayout',
-          'broadcastArticleBg',
-          'broadcastArticleEnable',
-        ],
-        slf,
-      )
+      return {
+        ...pick(BROADCAST_KEYS, slf),
+        saving: slf.saving,
+      }
     },
 
     get widgetsSettings(): TWidgetsSettings {
@@ -435,8 +549,31 @@ const DashboardThread = T.model('DashboardThread', {
     afterCreate(): void {
       const slf = self as TStore
 
+      slf._initActiveTagThreadIfneed()
+
       if (!slf._loadLocalSettings()) {
         slf.mark({ demoAlertEnable: false })
+      }
+    },
+
+    /**
+     * init activeTagThread for dashboard tags settings
+     * based on enableSettings
+     */
+    _initActiveTagThreadIfneed(): void {
+      const slf = self as TStore
+      const { curTab, enableSettings } = slf
+
+      if (curTab !== DASHBOARD_ROUTE.TAGS) return
+
+      if (enableSettings.post) {
+        setTimeout(() => slf.mark({ activeTagThread: THREAD.POST }))
+      } else if (enableSettings.kanban) {
+        setTimeout(() => slf.mark({ activeTagThread: THREAD.KANBAN }))
+      } else if (enableSettings.changelog) {
+        setTimeout(() => slf.mark({ activeTagThread: THREAD.CHANGELOG }))
+      } else {
+        setTimeout(() => slf.mark({ activeTagThread: null }))
       }
     },
 
@@ -485,6 +622,9 @@ const DashboardThread = T.model('DashboardThread', {
       const slf = self as TStore
       slf.glowType = glowType
     },
+    /**
+     * this is for mutation params after on save
+     */
     onSave(field: TSettingField): void {
       const slf = self as TStore
 
@@ -494,21 +634,16 @@ const DashboardThread = T.model('DashboardThread', {
         if (targetIdx < 0) return
 
         slf.tags[targetIdx] = clone(toJS(editingTag))
-        slf.editingTag = null
       }
 
-      if (field === SETTING_FIELD.ALIAS) {
+      if (field === SETTING_FIELD.NAME_ALIAS) {
         const { editingAlias } = slf
 
         const targetIdx = slf._findAliasIdx()
         if (targetIdx < 0) return
 
-        slf.alias[targetIdx] = clone(toJS(editingAlias))
-        slf.editingAlias = null
+        slf.nameAlias[targetIdx] = clone(toJS(editingAlias))
       }
-
-      slf._saveToLocal()
-      slf.mark({ demoAlertEnable: true })
     },
 
     // save to local settings should omit subTabs,
@@ -526,6 +661,32 @@ const DashboardThread = T.model('DashboardThread', {
     rollbackEdit(field: TSettingField): void {
       const slf = self as TStore
 
+      if (field === SETTING_FIELD.BASE_INFO) {
+        for (let i = 0; i < BASEINFO_KEYS.length; i += 1) {
+          const key = BASEINFO_KEYS[i]
+          const initValue = slf.initSettings[key]
+          if (self[key] !== initValue) {
+            // @ts-ignore
+            self[key] = initValue
+          }
+        }
+
+        return
+      }
+
+      if (field === SETTING_FIELD.SEO) {
+        for (let i = 0; i < SEO_KEYS.length; i += 1) {
+          const key = SEO_KEYS[i]
+          const initValue = slf.initSettings[key]
+          if (self[key] !== initValue) {
+            // @ts-ignore
+            self[key] = initValue
+          }
+        }
+
+        return
+      }
+
       if (field === SETTING_FIELD.TAG) {
         const targetIdx = slf._findTagIdx()
         if (targetIdx < 0) return
@@ -535,17 +696,21 @@ const DashboardThread = T.model('DashboardThread', {
         return
       }
 
-      if (field === SETTING_FIELD.ALIAS) {
+      if (field === SETTING_FIELD.TAG_INDEX) {
+        self.tags = toJS(self.initSettings.tags)
+        return
+      }
+
+      if (field === SETTING_FIELD.NAME_ALIAS) {
         const targetIdx = slf._findAliasIdx()
         if (targetIdx < 0) return
 
-        slf.alias[targetIdx] = toJS(slf.alias[targetIdx])
+        slf.nameAlias[targetIdx] = toJS(slf.nameAlias[targetIdx])
         slf.editingAlias = null
         return
       }
 
       const initValue = toJS(slf.initSettings[field])
-
       // @ts-ignore
       self[field] = initValue
     },
@@ -553,11 +718,11 @@ const DashboardThread = T.model('DashboardThread', {
     resetEdit(field: TSettingField): void {
       const slf = self as TStore
 
-      if (field === SETTING_FIELD.ALIAS) {
+      if (field === SETTING_FIELD.NAME_ALIAS) {
         const targetIdx = slf._findAliasIdx()
         if (targetIdx < 0) return
 
-        slf.alias[targetIdx].name = slf.alias[targetIdx].original
+        slf.nameAlias[targetIdx].name = slf.nameAlias[targetIdx].original
         slf.editingAlias = null
       }
 
@@ -576,8 +741,11 @@ const DashboardThread = T.model('DashboardThread', {
     _findAliasIdx(): number {
       const slf = self as TStore
 
-      const { alias, editingAlias } = slf
-      const targetIdx = findIndex((item: TAlias) => item.raw === editingAlias.raw, toJS(alias))
+      const { nameAlias, editingAlias } = slf
+      const targetIdx = findIndex(
+        (item: TNameAlias) => item.slug === editingAlias.slug,
+        toJS(nameAlias),
+      )
 
       return targetIdx
     },

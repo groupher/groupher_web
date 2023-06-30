@@ -11,7 +11,7 @@ import KanbanThread from '@/containers//thread/KanbanThread'
 import ChangeLogThread from '@/containers//thread/ChangelogThread'
 // import WipThread from './WipThread'
 import AboutThread from '@/containers/thread/AboutThread'
-import HelpThread from '@/containers/thread/HelpThread'
+import DocThread from '@/containers/thread/DocThread'
 // import DashboardThread from '@/containers/thread/DashboardThread'
 
 const DashboardThread = dynamic(() => import('@/containers/thread/DashboardThread'), {
@@ -38,8 +38,8 @@ const ThreadContent: FC<TProps> = ({ thread }) => {
       return <ChangeLogThread />
     }
 
-    case THREAD.HELP: {
-      return <HelpThread />
+    case THREAD.DOC: {
+      return <DocThread />
     }
 
     case THREAD.DASHBOARD: {

@@ -15,17 +15,25 @@ import LightSVG from '@/icons/Light'
 import BugSVG from '@/icons/Bug'
 import QuestionSVG from '@/icons/Question'
 
-type TType = { cat: TArticleCat; smaller: boolean }
+type TType = { cat: TArticleCat; noBg?: boolean; smaller: boolean }
 
 export const Wrapper = styled.div<TType>`
   ${({ smaller }) => (smaller ? css.size(20) : css.size(26))};
 
   ${css.flex('align-both')};
-  background: ${({ cat }) =>
-    cat === ARTICLE_CAT.BUG ? theme('gtdBadge.bugBg') : theme('gtdBadge.featBg')};
+  background: ${({ cat, noBg }) => {
+    if (noBg) return 'transparent'
+
+    return cat === ARTICLE_CAT.BUG ? theme('gtdBadge.bugBg') : theme('gtdBadge.featBg')
+  }};
+
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
-  margin-right: ${({ smaller }) => (smaller ? '-6px' : '-8px')};
+  margin-right: ${({ smaller, noBg }) => {
+    if (noBg) return '-2px'
+
+    return smaller ? '-6px' : '-8px'
+  }};
 `
 export const NoBgWrapper = styled.div`
   margin-right: 2px;

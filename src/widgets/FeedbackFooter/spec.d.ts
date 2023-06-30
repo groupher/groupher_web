@@ -1,1 +1,1 @@
-export type THelpFeedback = 'good' | 'soso' | 'bad'
+export type TDocFeedback = 'good' | 'soso' | 'bad'

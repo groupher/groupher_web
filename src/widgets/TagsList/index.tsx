@@ -40,7 +40,7 @@ const TagsList: FC<TProps> = ({
   size = SIZE.TINY,
   withSetter = false,
   mode = TAG_MODE.DEFAULT,
-  community = { raw: 'home' },
+  community = { slug: 'home' },
   thread = THREAD.POST,
   ...restProps
 }) => {

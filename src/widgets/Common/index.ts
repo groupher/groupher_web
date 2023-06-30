@@ -75,10 +75,7 @@ export const Bar = styled.div<TBar>`
   border-radius: 5px;
   opacity: ${({ opacity }) => opacity || 1};
 
-  margin-top: ${({ top }) => `${top}px` || 0};
-  margin-bottom: ${({ bottom }) => `${bottom}px` || 0};
-  margin-left: ${({ left }) => `${left}px` || 0};
-  margin-right: ${({ right }) => `${right}px` || 0};
+  ${(props) => css.spaceMargins(props)};
 `
 
 type TDesktopOnly = { flex?: boolean; width?: string }

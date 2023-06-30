@@ -12,14 +12,7 @@ import { Trans } from '@/utils/i18n'
 import Tooltip from '@/widgets/Tooltip'
 import Maybe from '@/widgets/Maybe'
 
-import {
-  Wrapper,
-  PopoverInfo,
-  CommunityWrapper,
-  CommunityLogo,
-  MoreText,
-  Linker,
-} from './styles'
+import { Wrapper, PopoverInfo, CommunityWrapper, CommunityLogo, MoreText, Linker } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:InlineCommunities:index')
@@ -33,7 +26,7 @@ const FullList = ({ data }) => (
         content={
           <PopoverInfo>
             来自{' '}
-            <Linker href={`/${c.raw}`} prefetch={false}>
+            <Linker href={`/${c.slug}`} prefetch={false}>
               {c.title}
             </Linker>{' '}
             社区
@@ -85,7 +78,7 @@ InlineCommunities.propTypes = {
     T.shape({
       title: T.string,
       logo: T.string,
-      raw: T.string,
+      slug: T.string,
     }),
   ),
   max: T.number,

@@ -20,7 +20,7 @@ export const Wrapper = styled.div`
   `};
 `
 export const Avatar = styled(Img)`
-  ${css.circle(24)};
+  ${css.circle(18)};
   ${css.flex('justify-between')};
 `
 export const SubscribeButton = styled(Button)`

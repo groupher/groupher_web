@@ -71,6 +71,8 @@ export const titleCase = (str: string): string => {
 }
 
 export const camelize = (str: string): string => {
+  if (!str) return ''
+
   const a = str.toLowerCase().replace(/[-_\s.]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ''))
   return a.substring(0, 1).toLowerCase() + a.substring(1)
 }
@@ -139,7 +141,7 @@ export const singular = (value: string, opt = null): string => {
  */
 export const plural = (value: string, opt = null): string => {
   if (
-    includes(value, [THREAD.ACCOUNT, THREAD.HELP, THREAD.KANBAN, THREAD.ABOUT, THREAD.DASHBOARD])
+    includes(value, [THREAD.ACCOUNT, THREAD.DOC, THREAD.KANBAN, THREAD.ABOUT, THREAD.DASHBOARD])
   ) {
     return doCovert(value, opt)
   }

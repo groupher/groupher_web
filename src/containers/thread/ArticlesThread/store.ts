@@ -95,7 +95,7 @@ const ArticlesThread = T.model('ArticlesThread', {
 
       const curTag = toJS(root.tagsBar.activeTag)
       if (nilOrEmpty(curTag)) return {}
-      return { tag: curTag.raw }
+      return { tag: curTag.slug }
     },
     get showFilters(): boolean {
       const slf = self as TStore

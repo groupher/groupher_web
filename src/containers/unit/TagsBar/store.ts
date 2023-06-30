@@ -58,7 +58,7 @@ const TagsBar = T.model('TagsBar', {
   }))
   .actions((self) => ({
     selectTag(tag): void {
-      const cur = tag.raw === '' ? null : tag
+      const cur = tag.slug === '' ? null : tag
 
       self.activeTag = cur
     },

@@ -28,7 +28,7 @@ const PostLayoutExample: FC<TProps> = ({ articles, layout }) => {
       {layout === POST_LAYOUT.UPVOTE_FIRST && (
         <>
           {articles.map((item) => (
-            <PostItem key={item.id} article={item} c11n={{}} curCommunity={{ raw: 'demo' }} />
+            <PostItem key={item.id} article={item} c11n={{}} curCommunity={{ slug: 'demo' }} />
           ))}
         </>
       )}
@@ -40,7 +40,7 @@ const PostLayoutExample: FC<TProps> = ({ articles, layout }) => {
               key={item.id}
               article={item}
               c11n={{}}
-              curCommunity={{ raw: 'demo' }}
+              curCommunity={{ slug: 'demo' }}
               layout={POST_LAYOUT.COMMENT_FIRST}
             />
           ))}
@@ -55,7 +55,7 @@ const PostLayoutExample: FC<TProps> = ({ articles, layout }) => {
                 key={item.id}
                 article={item}
                 c11n={{}}
-                curCommunity={{ raw: 'demo' }}
+                curCommunity={{ slug: 'demo' }}
                 layout={POST_LAYOUT.MASONRY}
               />
             ))}
@@ -70,7 +70,7 @@ const PostLayoutExample: FC<TProps> = ({ articles, layout }) => {
               key={item.id}
               article={item}
               c11n={{}}
-              curCommunity={{ raw: 'demo' }}
+              curCommunity={{ slug: 'demo' }}
               layout={POST_LAYOUT.MINIMAL}
             />
           ))}
@@ -84,7 +84,7 @@ const PostLayoutExample: FC<TProps> = ({ articles, layout }) => {
               key={item.id}
               article={item}
               c11n={{}}
-              curCommunity={{ raw: 'demo' }}
+              curCommunity={{ slug: 'demo' }}
               layout={POST_LAYOUT.COVER}
             />
           ))}

@@ -6,14 +6,16 @@ import type {
   TColorName,
   TPostLayout,
   TChangelogLayout,
+  THeaderLayout,
   TFooterLayout,
   TBrandLayout,
   TTopbarLayout,
   TBannerLayout,
   TTag,
   TThread,
+  TCommunityThread,
   TSizeSML,
-  THelpLayout,
+  TDocLayout,
   TDashboardPath,
   TKanbanLayout,
   TWallpaperInfo,
@@ -25,9 +27,18 @@ import type {
   TDashboardBroadcastRoute,
   TDashboardAliasRoute,
   TLinkItem,
+  TChangeMode,
+  TNameAliasConfig,
+  TSocialItem,
+  TPagedArticles,
 } from '@/spec'
 
-type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'MANAGEMENT' | 'INTEGRATE'
+type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'CMS' | 'INTEGRATE'
+
+export type TCMSContents = {
+  pagedPosts: TPagedArticles
+  loading: boolean
+}
 
 export type TMenuGroup = {
   title: string
@@ -35,7 +46,7 @@ export type TMenuGroup = {
   children: TMenuItem[]
 }
 
-type TMenuItem = { title: string; raw: TDashboardPath }
+type TMenuItem = { title: string; slug: TDashboardPath; alias?: string }
 
 export type TMenu = {
   [k: TMenuGroupName]: TMenuGroup
@@ -43,11 +54,13 @@ export type TMenu = {
 
 export type TTagSettings = {
   saving: boolean
+  threads: TCommunityThread[]
   tags: TTag[]
   editingTag: TTag
   settingTag: TTag
-  categories: string[]
-  activeTagCategory: string
+  groups: string[]
+  activeTagGroup: string
+  activeTagThread: string
 }
 
 export type TRSSSettings = {
@@ -56,39 +69,53 @@ export type TRSSSettings = {
   saving: boolean
 }
 
+type TLinkState = {
+  editingLink: TLinkItem
+  saving: boolean
+  editingLinkMode: TChangeMode
+  editingGroup: string | null
+  editingGroupIndex: number | null
+}
+
+export type THeaderSettings = {
+  headerLayout: THeaderLayout
+  headerLinks: TLinkItem[]
+  threads: TCommunityThread[]
+} & TLinkState
+
 export type TFooterSettings = {
   footerLayout: TFooterLayout
   footerLinks: TLinkItem[]
-  saving: boolean
-}
+  threads: TCommunityThread[]
+} & TLinkState
 
-export type TAlias = {
-  raw: string
-  name: string
-  original?: string
-  suggestions?: string[]
-}
+export type TNameAlias = TNameAliasConfig
+
 export type TAliasSettings = {
   saving: boolean
-  alias: TAlias[]
-  editingAlias: TAlias
+  nameAlias: TNameAlias[]
+  editingAlias: TNameAlias
   aliasTab: TDashboardAliasRoute
 }
 
 export type TBaseInfoSettings = {
+  saving: boolean
+
   favicon: string
   logo: string
   title: string
   desc: string
   homepage: string
-  url: string
+  slug: string
   city: string
   techstack: string
 
+  socialLinks: TSocialItem[]
   baseInfoTab: TDashboardBaseInfoRoute
 }
 
 export type TSEOSettings = {
+  saving: boolean
   ogSiteName: string
   ogTitle: string
   ogDescription: string
@@ -123,12 +150,13 @@ export type TUiSettings = {
   glowType: string
   glowFixed: boolean
   glowOpacity: string
-  helpLayout: THelpLayout
-  helpFaqLayout: THelpFaqLayout
+  docLayout: TDocLayout
+  docFaqLayout: TDocFaqLayout
   postLayout: TPostLayout
   kanbanLayout: TKanbanLayout
   kanbanBgColors: TColorName[]
   changelogLayout: TChangelogLayout
+  headerLayout: THeaderLayout
   footerLayout: TFooterLayout
 
   layoutTab: TDashboardLayoutRoute
@@ -152,21 +180,24 @@ export type TTouched = {
   brandLayout: boolean
   avatarLayout: boolean
   bannerLayout: boolean
+  headerLayout: boolean
   footerLayout: boolean
   glowType: boolean
   glowFixed: boolean
   glowOpacity: boolean
-  helpLayout: boolean
-  helpFaqLayout: boolean
+  docLayout: boolean
+  docFaqLayout: boolean
   topbarLayout: boolean
   topbarBg: boolean
   postLayout: boolean
   kanbanLayout: boolean
   kanbanBgColors: boolean
   changelogLayout: boolean
-  alias: boolean
+  nameAlias: boolean
   tags: boolean
+  tagsIndex: boolean
 
+  socialLinks: boolean
   rssFeed: boolean
 
   widgetsPrimaryColor: boolean
@@ -174,6 +205,8 @@ export type TTouched = {
   widgetsSize: boolean
 
   // sidebar
+  baseInfo: boolean
+  seo: boolean
   ui: boolean
   widgets: boolean
   broadcast: boolean
@@ -181,6 +214,16 @@ export type TTouched = {
 }
 
 export type TSettingField =
+  | 'baseInfo'
+  | 'seo'
+  | 'favicon'
+  | 'logo'
+  | 'title'
+  | 'slug'
+  | 'desc'
+  | 'homepage'
+  | 'techstack'
+  | 'city'
   | 'primaryColor'
   | 'postLayout'
   | 'kanbanLayout'
@@ -188,12 +231,13 @@ export type TSettingField =
   | 'brandLayout'
   | 'avatarLayout'
   | 'bannerLayout'
+  | 'headerLayout'
   | 'footerLayout'
   | 'glowType'
   | 'glowFixed'
   | 'glowOpacity'
-  | 'helpLayout'
-  | 'helpFaqLayout'
+  | 'docLayout'
+  | 'docFaqLayout'
   | 'topbarLayout'
   | 'topbarBg'
   | 'broadcastLayout'
@@ -203,8 +247,10 @@ export type TSettingField =
   | 'broadcastArticleBg'
   | 'broadcastArticleEnable'
   | 'changelogLayout'
+  | 'socialLinks'
   | 'tag'
-  | 'alias'
+  | 'tagIndex'
+  | 'nameAlias'
   | 'rssFeedType'
   | 'rssFeedCount'
   | 'enable'
@@ -215,22 +261,30 @@ export type TSettingField =
 
 export type TWidgetType = 'sidebar' | 'modal' | 'popup' | 'iframe' | 'link'
 
-type THelpFile = {
+type TDocFile = {
   index: number
   name: string
   articleId: string
   linkAddr: string
 }
 
-type THelpCategory = {
+type TDocCategory = {
   name: string
   index: number
   color: TColorName
-  files: THelpFile[]
+  files: TDocFile[]
 }
 
-export type THelpSettings = {
-  categories: THelpCategory[]
+export type TDocSettings = {
+  categories: TDocCategory[]
 }
 
-export type TFooterEditType = 'logo' | 'title' | 'social'
+export type THeaderEditType = 'logo' | 'title'
+export type TFooterEditType = THeaderEditType | 'social'
+
+export type TCurPageLinksKey = {
+  links: 'footerLinks' | 'headerLinks'
+  settings: 'footerSettings' | 'headerSettings'
+}
+
+export type TMoveLinkDir = 'up' | 'down' | 'top' | 'bottom'

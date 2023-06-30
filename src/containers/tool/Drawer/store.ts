@@ -61,7 +61,8 @@ const DrawerStore = T.model('DrawerStore', {
       TYPE.DRAWER.USER_LISTER,
       TYPE.DRAWER.DASHBOARD_DESC,
       TYPE.DRAWER.G_EDITOR,
-      TYPE.DRAWER.TAG_SETTING,
+      TYPE.DRAWER.CREATE_TAG,
+      TYPE.DRAWER.EDIT_TAG,
 
       ...ARTICLE_THREAD_CURD_TYPES,
     ]),
@@ -209,7 +210,8 @@ const DrawerStore = T.model('DrawerStore', {
         type !== DRAWER.DASHBOARD_DESC &&
         type !== DRAWER.CUSTOM_BG_EDITOR &&
         type !== DRAWER.G_EDITOR &&
-        type !== DRAWER.TAG_SETTING
+        type !== DRAWER.CREATE_TAG &&
+        type !== DRAWER.EDIT_TAG
       ) {
         slf.markPreviewURLIfNeed(data)
       }
@@ -242,13 +244,13 @@ const DrawerStore = T.model('DrawerStore', {
     },
 
     markPreviewURLIfNeed(article: TArticle): void {
-      const { innerId, title, meta, originalCommunityRaw } = article
+      const { innerId, title, meta, originalCommunitySlug } = article
 
       if (!innerId || !contains(self.type, ARTICLE_VIEWER_TYPES)) return
       self.previousURL = Global.location.href
 
       const thread = meta.thread.toLowerCase()
-      const nextURL = `${Global.location.origin}/${originalCommunityRaw}/${thread}/${innerId}`
+      const nextURL = `${Global.location.origin}/${originalCommunitySlug}/${thread}/${innerId}`
 
       Global.history.replaceState(null, title, nextURL)
     },

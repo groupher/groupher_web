@@ -25,11 +25,11 @@ let store: TStore | undefined
 
 const loadCommunity = () => {
   const userHasLogin = store.isLogin
-  const { raw } = store.curCommunity
+  const { slug } = store.curCommunity
 
   markLoading(true)
 
-  sr71$.query(S.community, { raw, userHasLogin })
+  sr71$.query(S.community, { slug, userHasLogin })
 }
 
 export const onSubscribe = (community: TCommunity): void => {

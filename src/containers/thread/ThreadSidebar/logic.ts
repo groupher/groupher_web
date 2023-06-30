@@ -49,11 +49,11 @@ export const onShowSubscriberList = (): void => {
 
 const loadCommunity = (): void => {
   const userHasLogin = store.isLogin
-  const { raw } = store.curCommunity
+  const { slug } = store.curCommunity
 
   markLoading(true)
 
-  sr71$.query(S.community, { raw, userHasLogin })
+  sr71$.query(S.community, { slug, userHasLogin })
 }
 
 const markLoading = (maybe = true) => store.mark({ loading: maybe })

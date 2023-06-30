@@ -43,20 +43,14 @@ const CommunityList: FC<TProps> = ({
   return (
     <Wrapper>
       {items.map((community) => (
-        <Tooltip
-          key={community.id}
-          placement="bottom"
-          content={<CommunityCard item={community} />}
-        >
-          <Linker href={`/${community.raw}`} bottom={bottom} right={right}>
-            <Logo src={community.logo} size={size} raw={community.raw} />
+        <Tooltip key={community.id} placement="bottom" content={<CommunityCard item={community} />}>
+          <Linker href={`/${community.slug}`} bottom={bottom} right={right}>
+            <Logo src={community.logo} size={size} slug={community.slug} />
           </Linker>
         </Tooltip>
       ))}
 
-      {totalCount > items.length && (
-        <MoreWrapper onClick={onMoreClick}>{totalCount}+</MoreWrapper>
-      )}
+      {totalCount > items.length && <MoreWrapper onClick={onMoreClick}>{totalCount}+</MoreWrapper>}
     </Wrapper>
   )
 }

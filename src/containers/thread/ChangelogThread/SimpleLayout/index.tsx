@@ -32,7 +32,7 @@ const SimpleLayout: FC<TProps> = ({
   pagedChangelogs,
 }) => {
   const [filterExpand, setFilterExpand] = useState(false)
-  const [tab, setTab] = useState(TABS_MODE_OPTIONS[0].raw)
+  const [tab, setTab] = useState(TABS_MODE_OPTIONS[0].slug)
 
   const alignLeft = globalLayout.changelog === CHANGELOG_LAYOUT.SIMPLE
 
@@ -47,10 +47,10 @@ const SimpleLayout: FC<TProps> = ({
             size="small"
             activeKey={tab}
             bottomSpace={4}
-            onChange={(raw) => {
-              setTab(raw)
+            onChange={(slug) => {
+              setTab(slug)
 
-              if (raw === TABS_MODE_OPTIONS[0].raw) {
+              if (slug === TABS_MODE_OPTIONS[0].slug) {
                 return setFilterExpand(false)
               }
               setFilterExpand(true)

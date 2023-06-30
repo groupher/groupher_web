@@ -4,7 +4,7 @@ import { FOOTER_LAYOUT } from '@/constant/layout'
 
 import type { TFooterSettings } from '../../spec'
 import SimpleEditor from './Simple'
-import FullEditor from './Full'
+import GroupEditor from './Group'
 
 type TProps = {
   settings: TFooterSettings
@@ -15,8 +15,8 @@ const Editor: FC<TProps> = ({ settings }) => {
 
   return (
     <>
-      {footerLayout === FOOTER_LAYOUT.SIMPLE && <SimpleEditor />}
-      {footerLayout === FOOTER_LAYOUT.FULL && <FullEditor links={settings.footerLinks} />}
+      {footerLayout === FOOTER_LAYOUT.SIMPLE && <SimpleEditor settings={settings} />}
+      {footerLayout === FOOTER_LAYOUT.GROUP && <GroupEditor settings={settings} />}
     </>
   )
 }

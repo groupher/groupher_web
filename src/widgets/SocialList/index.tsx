@@ -22,7 +22,7 @@ const SocialList: FC<TProps> = ({
       {selected.map((social) => {
         const SocialIcon = Icon[social.type]
         return (
-          <SocialWrapper key={social.type} href={social.addr} target="_blank">
+          <SocialWrapper key={social.type} href={social.link} target="_blank">
             <SocialIcon />
           </SocialWrapper>
         )

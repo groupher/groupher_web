@@ -22,13 +22,14 @@ export const DASHBOARD_ROUTE = {
   ALIAS: 'alias',
   DOMAIN: 'domain',
   // analysis
+  TREND: 'trend',
+  LOG: 'log',
   // --
   // contents
   TAGS: 'tags',
   POST: 'post',
-  KANBAN: 'kanban',
   CHANGELOG: 'changelog',
-  HELP: 'help',
+  DOC: 'doc',
   HEADER: 'header',
   FOOTER: 'footer',
   BROADCAST: 'broadcast',
@@ -39,6 +40,12 @@ export const DASHBOARD_ROUTE = {
   ADMINS: 'admins',
   WIDGETS: 'widgets',
 } as Record<Uppercase<TDashboardPath>, TDashboardPath>
+
+export const DASHBORD_CMS_ROUTES = [
+  DASHBOARD_ROUTE.POST,
+  DASHBOARD_ROUTE.DOC,
+  DASHBOARD_ROUTE.CHANGELOG,
+]
 
 export const DASHBOARD_BASEINFO_ROUTE = {
   BASIC: 'basic',
@@ -56,7 +63,7 @@ export const DASHBOARD_LAYOUT_ROUTE = {
   POST: 'post',
   KANBAN: 'kanban',
   CHANGELOG: 'changelog',
-  HELP: 'help',
+  DOC: 'doc',
 } as Record<Uppercase<TDashboardLayoutRoute>, TDashboardLayoutRoute>
 
 export const DASHBOARD_BROADCAST_ROUTE = {

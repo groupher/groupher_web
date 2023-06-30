@@ -1,14 +1,14 @@
 import { FC, memo } from 'react'
 
-import type { TThread, TCommunity, TMetric, TEnableConfig, TCommunityThread } from '@/spec'
-import EVENT from '@/constant/event'
+import type { TThread, TCommunity, TMetric, TDashboardThreadConfig, THeaderLayout } from '@/spec'
 import { ANCHOR } from '@/constant/dom'
 
-import { send } from '@/utils/signal'
-import { sortByIndex } from '@/utils/helper'
+import { washThreads } from '@/utils/helper'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
 import MobileThreadNavi from '@/widgets/MobileThreadNavi'
+import { SpaceGrow } from '@/widgets/Common'
+import { HEADER_LAYOUT } from '@/constant/layout'
 
 import ThreadTab from './ThreadTab'
 import CommunityBrief from './CommunityBrief'
@@ -31,13 +31,19 @@ type TProps = {
   community: TCommunity
   activeThread: TThread
   metric: TMetric
-  enable: TEnableConfig
+  dashboardSettings: TDashboardThreadConfig
+  headerLayout: THeaderLayout
 }
 
-const SimpleLayout: FC<TProps> = ({ community, activeThread, metric, enable }) => {
-  const publicThreads = sortByIndex(
-    community.threads.filter((thread) => enable[thread.raw]),
-  ) as TCommunityThread[]
+const SimpleLayout: FC<TProps> = ({
+  community,
+  activeThread,
+  metric,
+  dashboardSettings,
+  headerLayout,
+}) => {
+  const washedThreads = washThreads(community.threads, dashboardSettings)
+  const { extraLinks } = dashboardSettings
 
   return (
     <Wrapper testid="community-digest" id={ANCHOR.GLOBAL_HEADER_ID}>
@@ -48,16 +54,19 @@ const SimpleLayout: FC<TProps> = ({ community, activeThread, metric, enable }) =
             <MobileNaviWrapper>
               <MobileThreadNavi
                 community={community}
-                threads={publicThreads}
+                threads={washedThreads}
                 active={activeThread}
               />
             </MobileNaviWrapper>
+            {headerLayout === HEADER_LAYOUT.RIGHT && <SpaceGrow />}
             <ThreadTab
-              threads={publicThreads}
+              threads={washedThreads}
               active={activeThread}
-              onChange={(data) => send(EVENT.COMMUNITY_THREAD_CHANGE, { data })}
+              extraLinks={extraLinks}
+              left={headerLayout === HEADER_LAYOUT.CENTER ? -50 : 0}
+              right={headerLayout === HEADER_LAYOUT.RIGHT ? 20 : 0}
             />
-            <AccountUnit />
+            <AccountUnit community={community} />
           </CommunityBaseInfo>
         </BannerContentWrapper>
       </InnerWrapper>

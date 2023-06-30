@@ -9,27 +9,27 @@ const COMMUNITY_INTRO = {
     demos: [
       {
         title: 'javascript',
-        raw: 'JavaScript',
+        slug: 'JavaScript',
         logo: `${ICON_BASE}/pl/javascript.png`,
       },
       {
         title: 'React',
-        raw: 'react',
+        slug: 'react',
         logo: `${ICON_BASE}/framework/react.png`,
       },
       {
         title: 'Phoenix',
-        raw: 'phoneix',
+        slug: 'phoneix',
         logo: `${ICON_BASE}/framework/phoenix.png`,
       },
       {
         title: 'Elixir',
-        raw: 'elixir',
+        slug: 'elixir',
         logo: `${ICON_BASE}/pl/elixir.png`,
       },
       {
         title: 'Nim',
-        raw: 'Nim',
+        slug: 'Nim',
         logo: `${ICON_BASE}/pl/nim.png`,
       },
     ],
@@ -41,7 +41,7 @@ const COMMUNITY_INTRO = {
     demos: [
       {
         title: 'Groupher',
-        raw: HCN,
+        slug: HCN,
         logo: '',
       },
     ],
@@ -53,7 +53,7 @@ const COMMUNITY_INTRO = {
     demos: [
       {
         title: 'CP-feedback',
-        raw: HCN,
+        slug: HCN,
       },
     ],
   },
@@ -64,28 +64,28 @@ const COMMUNITY_INTRO = {
     demos: [
       {
         title: '北京',
-        raw: 'beijing',
+        slug: 'beijing',
         logo: `${ICON_BASE}/city/beijing.svg`,
       },
       {
         title: '上海',
-        raw: 'shanghai',
+        slug: 'shanghai',
         logo: `${ICON_BASE}/city/shanghai.svg`,
       },
       {
         title: '杭州',
-        raw: 'hangzhou',
+        slug: 'hangzhou',
         logo: `${ICON_BASE}/city/hangzhou.svg`,
       },
       {
         title: '深圳',
-        raw: 'shenzhen',
+        slug: 'shenzhen',
         logo: `${ICON_BASE}/city/shenzhen.svg`,
       },
 
       {
         title: '成都',
-        raw: 'chengdu',
+        slug: 'chengdu',
         logo: `${ICON_BASE}/city/chengdu.svg`,
       },
     ],

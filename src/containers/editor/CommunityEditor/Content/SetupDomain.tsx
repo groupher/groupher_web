@@ -11,11 +11,11 @@ type TProps = {
 }
 
 const SetupDomain: FC<TProps> = ({ status }) => {
-  const { raw } = status
+  const { slug } = status
 
   return (
     <Wrapper>
-      <FakeBrowser domain={raw} step={STEP.SETUP_DOMAIN} />
+      <FakeBrowser domain={slug} step={STEP.SETUP_DOMAIN} />
     </Wrapper>
   )
 }

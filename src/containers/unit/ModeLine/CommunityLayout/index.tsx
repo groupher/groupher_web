@@ -4,20 +4,18 @@ import type {
   TArticle,
   TCommunity,
   TMetric,
-  TEnableConfig,
   TThread,
   TTag,
   TGroupedTags,
-  TCommunityThread,
+  TDashboardThreadConfig,
 } from '@/spec'
 
 import { scrollToHeader } from '@/utils/dom'
-import { sortByIndex } from '@/utils/helper'
+import { washThreads } from '@/utils/helper'
 
 import MobileThreadNavi from '@/widgets/MobileThreadNavi'
 import ArticlesFilter from '@/widgets/ArticlesFilter'
 
-// import { MenuBlock, CommunityBlock, MainBlock, ExploreBlock, AccountBlock } from './ArrowBlock'
 import {
   Wrapper,
   InnerWrapper,
@@ -28,11 +26,6 @@ import {
   GotoTopIcon,
 } from '../styles/community_layout'
 
-// import { changeCommunity } from '@/containers/editor/ArticleEditor/logic'
-
-// import { openMenu } from '../logic'
-// import { communityPageMenus, getArticlePageMenus } from './menus'
-
 type TProps = {
   testid?: string
   isMobile: boolean
@@ -42,7 +35,7 @@ type TProps = {
   article: TArticle | null
   community: TCommunity
   activeThread: TThread
-  enable: TEnableConfig
+  dashboardSettings: TDashboardThreadConfig
   activeTag: TTag
   groupedTags: TGroupedTags
 }
@@ -54,20 +47,15 @@ const CommunityLayout: FC<TProps> = ({
   metric,
   article = null,
   community,
+  dashboardSettings,
   activeMenu,
   activeThread,
-  enable,
   activeTag,
   groupedTags,
 }) => {
   const [expand, setExpand] = useState(false)
 
-  const publicThreads = sortByIndex(
-    community.threads.filter((thread) => enable[thread.raw]),
-  ) as TCommunityThread[]
-
-  // const communityInfo = article?.originalCommunity?.raw ? article.originalCommunity : community
-  //               onClick={multiClick(() => openMenu(item.raw))}
+  const washedThreads = washThreads(community.threads, dashboardSettings)
 
   return (
     <Wrapper testid={testid} show={show} isMenuActive={!!activeMenu}>
@@ -76,7 +64,7 @@ const CommunityLayout: FC<TProps> = ({
           <CommunityLogo src={community.logo} />
           <MobileThreadNavi
             community={community}
-            threads={publicThreads}
+            threads={washedThreads}
             active={activeThread}
             mode="modeline"
           />

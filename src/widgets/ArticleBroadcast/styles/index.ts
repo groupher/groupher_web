@@ -22,10 +22,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   background-color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}Bg`)};
   border-radius: 15px;
 
-  margin-top: ${({ top }) => `${top}px` || 0};
-  margin-bottom: ${({ bottom }) => `${bottom}px` || 0};
-  margin-left: ${({ left }) => `${left}px` || 0};
-  margin-right: ${({ right }) => `${right}px` || 0};
+  ${(props) => css.spaceMargins(props)};
 
   overflow: hidden;
   border-top: 1px solid transparent;

@@ -13,6 +13,7 @@ import { TOPBAR_LAYOUT } from '@/constant/layout'
 
 import type { TSEO, TMetric } from '@/spec'
 import { bond } from '@/utils/mobx'
+import { communityChanged } from '@/utils/signal'
 
 import ThemePalette from '@/containers/layout/ThemePalette'
 import ModeLine from '@/containers/unit/ModeLine'
@@ -64,14 +65,20 @@ const GlobalLayoutContainer: FC<TProps> = ({
   const [showDashboardAlertUI, setShowDashboardAlertUI] = useState(false)
 
   const {
+    curCommunity,
     isMobile,
     wallpaperInfo,
     hasShadow,
     glowEffect,
     globalLayout,
     broadcastConfig,
+    footerConfig,
     showDashboardAlert,
   } = store
+
+  useEffect(() => {
+    communityChanged(curCommunity)
+  }, [curCommunity, curCommunity?.slug])
 
   useEffect(() => {
     const handleRouteComplete = () => loadDemoSetting()
@@ -110,7 +117,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
               <Broadcast metric={metric} settings={broadcastConfig} />
               <ContentWrapper>
                 <BodyWrapper>{childrenWithProps(children, { metric })}</BodyWrapper>
-                <Footer metric={metric} />
+                <Footer metric={metric} config={footerConfig} />
               </ContentWrapper>
               {!!glowEffect.glowType && (
                 <GrowBackground

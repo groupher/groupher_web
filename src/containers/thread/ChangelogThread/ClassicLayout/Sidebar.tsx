@@ -18,7 +18,7 @@ type TProps = {
 const Sidebar: FC<TProps> = ({ tagsMode }) => {
   useEffect(() => {
     setTimeout(() => {
-      tagsModeChange(TABS_MODE_OPTIONS[1].raw)
+      tagsModeChange(TABS_MODE_OPTIONS[1].slug)
     }, 100)
   }, [])
 

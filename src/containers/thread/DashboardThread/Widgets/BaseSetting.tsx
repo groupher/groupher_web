@@ -107,8 +107,8 @@ const BaseSetting: FC<TProps> = ({ settings, touched }) => {
             <ThreadTitle>帮助台</ThreadTitle>
             <SpaceGrow />
             <ToggleSwitch
-              checked={includes(THREAD.HELP, widgetsThreads)}
-              onChange={(checked) => threadOnChange(checked, THREAD.HELP)}
+              checked={includes(THREAD.DOC, widgetsThreads)}
+              onChange={(checked) => threadOnChange(checked, THREAD.DOC)}
             />
           </Header>
           <Desc>常见问题与帮助中心文档</Desc>

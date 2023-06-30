@@ -3,13 +3,7 @@ import { FC, memo } from 'react'
 import type { TCommunity } from '@/spec'
 import CommunityStatesPad from '@/widgets/CommunityStatesPad/ModelineView'
 
-import {
-  Wrapper,
-  CommunityWrapper,
-  Logo,
-  Title,
-  Desc,
-} from './styles/community_menu'
+import { Wrapper, CommunityWrapper, Logo, Title, Desc } from './styles/community_menu'
 
 type TProps = {
   community: TCommunity
@@ -19,7 +13,7 @@ const CommunityMenu: FC<TProps> = ({ community }) => {
   return (
     <Wrapper>
       <CommunityWrapper>
-        <Logo src={community.logo} raw={community.raw} />
+        <Logo src={community.logo} slug={community.slug} />
         <Title>{community.title}</Title>
         <Desc>{community.desc}</Desc>
       </CommunityWrapper>

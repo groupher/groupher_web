@@ -4,13 +4,14 @@
  */
 
 import type {
+  TAccount,
   TRootStore,
   TViewing,
   TRoute,
   TCommunity,
   TThread,
   TGlobalLayout,
-  TEnableConfig,
+  TDashboardThreadConfig,
 } from '@/spec'
 import { T, getParent, markStates, toJS, Instance } from '@/utils/mobx'
 
@@ -23,6 +24,10 @@ const CommunityDigest = T.model('CommunityDigest', {
     get isLogin(): boolean {
       const root = getParent(self) as TRootStore
       return root.account.isLogin
+    },
+    get accountInfo(): TAccount {
+      const root = getParent(self) as TRootStore
+      return root.accountInfo
     },
     get curRoute(): TRoute {
       const root = getParent(self) as TRootStore
@@ -44,10 +49,14 @@ const CommunityDigest = T.model('CommunityDigest', {
 
       return toJS(root.viewing.community)
     },
-    get enable(): TEnableConfig {
+    get dashboardSettings(): TDashboardThreadConfig {
       const root = getParent(self) as TRootStore
 
-      return toJS(root.dashboardThread.enableSettings)
+      return {
+        enable: toJS(root.dashboardThread.enableSettings),
+        nameAlias: toJS(root.dashboardThread.nameAlias),
+        extraLinks: toJS(root.dashboardThread.headerSettings.headerLinks),
+      }
     },
     get globalLayout(): TGlobalLayout {
       const root = getParent(self) as TRootStore

@@ -27,13 +27,16 @@ export const CenterWrapper = styled.div`
   gap: 0 14px;
 `
 
-export const LinkItem = styled.div`
+export const LinkItem = styled.a`
+  ${css.cutRest('50px')};
   color: ${theme('article.digest')};
   font-size: 12px;
+  text-decoration: none;
 
   &:hover {
     color: ${theme('article.title')};
     cursor: pointer;
+    text-decoration: underline;
   }
 `
 

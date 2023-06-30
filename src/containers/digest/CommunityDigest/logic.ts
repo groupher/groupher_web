@@ -9,7 +9,7 @@ import TYPE from '@/constant/type'
 
 import asyncSuit from '@/utils/async'
 import { singular } from '@/utils/fmt'
-import { errRescue, listUsers } from '@/utils/signal'
+import { errRescue, listUsers, sessionChanged } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 
 import type { TStore } from './store'
@@ -38,11 +38,11 @@ export const unsubscribeCommunity = (communityId: TID): void => {
 
 const loadCommunity = (): void => {
   const userHasLogin = store.isLogin
-  const { raw } = store.curCommunity
+  const { slug } = store.curCommunity
 
   markLoading(true)
 
-  sr71$.query(S.community, { raw, userHasLogin })
+  sr71$.query(S.community, { slug, userHasLogin })
 }
 
 // 查看当前社区志愿者列表
@@ -68,6 +68,14 @@ const markLoading = (maybe = true) => store.mark({ loading: maybe })
  * @param {Boolean} inView
  */
 export const setViewport = (inViewport: boolean): void => store.mark({ inViewport })
+
+export const initAccount = () => {
+  const { isLogin, accountInfo } = store
+
+  if (isLogin) {
+    sessionChanged(accountInfo)
+  }
+}
 
 // ###############################
 // Data & Error handlers
@@ -133,6 +141,8 @@ export const useInit = (_store: TStore): void => {
     store = _store
     // log('effect init')
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
+
+    initAccount()
 
     return () => {
       if (sub$ && !store.loading) {

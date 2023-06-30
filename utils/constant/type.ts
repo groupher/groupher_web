@@ -61,7 +61,8 @@ const TYPE = {
     MODELINE_MENU: 'MODELINE_MENU',
 
     // tag
-    TAG_SETTING: 'TAG_SETTING',
+    CREATE_TAG: 'CREATE_TAG',
+    EDIT_TAG: 'EDIT_TAG',
   },
 
   REPORT: {

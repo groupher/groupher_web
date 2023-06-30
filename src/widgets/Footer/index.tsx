@@ -4,9 +4,10 @@
  *
  */
 
-import { useState } from 'react'
+import { FC } from 'react'
 // import dynamic from 'next/dynamic'
 
+import type { TMetric, TFooterConfig } from '@/spec'
 // import { Waypoint } from 'react-waypoint'
 
 import DesktopView from './DesktopView'
@@ -16,13 +17,16 @@ import DesktopView from './DesktopView'
 //   ssr: false,
 // })
 
-const Footer = (props) => {
-  const [inView, setInView] = useState(true)
+export type TProps = {
+  metric?: TMetric
+  config: TFooterConfig
+  testid?: string
+}
 
+const Footer: FC<TProps> = (props) => {
   return (
     <>
-      {/* <Waypoint onEnter={() => setInView(true)} topOffset="500px" /> */}
-      {inView && <DesktopView {...props} />}
+      <DesktopView {...props} />
     </>
   )
 }

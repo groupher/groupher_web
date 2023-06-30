@@ -44,23 +44,23 @@ const switchItems = [
 export const TABS_MODE_OPTIONS = [
   {
     title: '侧重投票',
-    raw: POST_LAYOUT.UPVOTE_FIRST,
+    slug: POST_LAYOUT.UPVOTE_FIRST,
   },
   {
     title: '侧重评论',
-    raw: POST_LAYOUT.COMMENT_FIRST,
+    slug: POST_LAYOUT.COMMENT_FIRST,
   },
   {
     title: '瀑布流卡片',
-    raw: POST_LAYOUT.MASONRY,
+    slug: POST_LAYOUT.MASONRY,
   },
   {
     title: '极简',
-    raw: POST_LAYOUT.MINIMAL,
+    slug: POST_LAYOUT.MINIMAL,
   },
   {
     title: '封面图',
-    raw: POST_LAYOUT.COVER,
+    slug: POST_LAYOUT.COVER,
   },
 ]
 

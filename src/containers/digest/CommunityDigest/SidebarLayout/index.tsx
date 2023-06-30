@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 // import Router from 'next/router'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TThread, TCommunity, TMetric, TEnableConfig } from '@/spec'
+import type { TThread, TCommunity, TMetric, TDashboardThreadConfig } from '@/spec'
 
 import EVENT from '@/constant/event'
 import { THREAD } from '@/constant/thread'
@@ -10,7 +10,7 @@ import { DEME_SOCIALS } from '@/constant/social'
 
 import { send } from '@/utils/signal'
 
-import PinedTree from '@/containers/thread/HelpThread/ArticleLayout/PinedTree'
+import PinedTree from '@/containers/thread/DocThread/ArticleLayout/PinedTree'
 import TagsBar from '@/containers/unit/TagsBar'
 
 import Sticky from '@/widgets/Sticky'
@@ -32,10 +32,11 @@ type TProps = {
   community: TCommunity
   activeThread: TThread
   metric: TMetric
-  enable: TEnableConfig
+  dashboardSettings: TDashboardThreadConfig
 }
 
-const SidebarLayout: FC<TProps> = ({ community, activeThread, metric, enable }) => {
+const SidebarLayout: FC<TProps> = ({ community, activeThread, metric, dashboardSettings }) => {
+  const { enable } = dashboardSettings
   const { isMobile } = useMobileDetect()
 
   return (
@@ -49,7 +50,7 @@ const SidebarLayout: FC<TProps> = ({ community, activeThread, metric, enable }) 
           barSize="small"
           showShadow
         >
-          {activeThread !== THREAD.HELP && (
+          {activeThread !== THREAD.DOC && (
             <>
               <MainMenu community={community} activeThread={activeThread} enable={enable} />
               <Divider top={8} />
@@ -61,7 +62,7 @@ const SidebarLayout: FC<TProps> = ({ community, activeThread, metric, enable }) 
               <TagsBar onSelect={() => send(EVENT.REFRESH_ARTICLES)} />
             </TabBarWrapper>
           )}
-          {activeThread === THREAD.HELP && enable.help && (
+          {activeThread === THREAD.DOC && enable.doc && (
             <FileTreeWrapper>
               <PinedTree />
               <FileTree />

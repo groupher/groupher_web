@@ -183,8 +183,8 @@ export const ssrParseURL = (req) => {
   }
 }
 
-export const akaTranslate = (communityRaw) => {
-  switch (communityRaw) {
+export const akaTranslate = (communitySlug) => {
+  switch (communitySlug) {
     case 'k8s':
       return 'kubernetes'
 
@@ -202,7 +202,7 @@ export const akaTranslate = (communityRaw) => {
       return HCN
 
     default:
-      return communityRaw
+      return communitySlug
   }
 }
 

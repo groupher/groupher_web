@@ -1,57 +1,60 @@
 import { FC, useState } from 'react'
 
-import { FOOTER_LAYOUT } from '@/constant/layout'
+import { HEADER_LAYOUT } from '@/constant/layout'
 
-import type { TFooterSettings } from '../../spec'
+import type { THeaderSettings } from '../../spec'
 
 import { SETTING_FIELD } from '../../constant'
 import SavingBar from '../../SavingBar'
 
-import Simple from './Simple'
-import Full from './Full'
+import Center from './Center'
+import Right from './Right'
 
 import { Wrapper, ArrowIcon, ToggleButton, ToggleText } from '../../styles/header/templates'
 
 type TProps = {
-  settings: TFooterSettings
+  settings: THeaderSettings
   isTouched: boolean
 }
 
 const Templates: FC<TProps> = ({ settings, isTouched }) => {
   const [showAll, setShowAll] = useState<boolean>(false)
 
-  const { footerLayout, saving } = settings
+  const { headerLayout, saving, headerLinks: links, threads } = settings
 
+  const linksProps = { threads, links }
   return (
     <Wrapper>
       {showAll ? (
         <>
-          <Simple $active={footerLayout === FOOTER_LAYOUT.SIMPLE} />
-          <Full $active={footerLayout === FOOTER_LAYOUT.FULL} />
+          <Center {...linksProps} $active={headerLayout === HEADER_LAYOUT.CENTER} />
+          <Right {...linksProps} $active={headerLayout === HEADER_LAYOUT.RIGHT} />
         </>
       ) : (
         <>
-          {footerLayout === FOOTER_LAYOUT.SIMPLE && <Simple $active />}
-          {footerLayout === FOOTER_LAYOUT.FULL && <Full $active />}
+          {headerLayout === HEADER_LAYOUT.CENTER && <Center {...linksProps} $active />}
+          {headerLayout === HEADER_LAYOUT.RIGHT && <Right {...linksProps} $active />}
         </>
       )}
 
       <SavingBar
         isTouched={isTouched}
-        field={SETTING_FIELD.FOOTER_LAYOUT}
+        field={SETTING_FIELD.HEADER_LAYOUT}
         onConfirm={() => setShowAll(false)}
         loading={saving}
         top={20}
         bottom={30}
       />
 
-      <ToggleButton size="small" ghost noBorder onClick={() => setShowAll(!showAll)}>
-        <ToggleText>
-          {showAll ? '收起' : '更换模板'}
-          {/* @ts-ignore */}
-          <ArrowIcon rotate={showAll} />
-        </ToggleText>
-      </ToggleButton>
+      {!isTouched && !saving && (
+        <ToggleButton size="small" ghost noBorder onClick={() => setShowAll(!showAll)}>
+          <ToggleText>
+            {showAll ? '收起' : '更换模板'}
+            {/* @ts-ignore */}
+            <ArrowIcon rotate={showAll} />
+          </ToggleText>
+        </ToggleButton>
+      )}
     </Wrapper>
   )
 }

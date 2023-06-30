@@ -17,7 +17,7 @@ type TProps = {
 }
 
 const CommunityBadgeSelector: FC<TProps> = ({ community, mode = 'publish' }) => {
-  const targetHint = community.raw === HCN ? '首页' : '子社区'
+  const targetHint = community.slug === HCN ? '首页' : '子社区'
 
   return (
     <Wrapper>
@@ -29,7 +29,7 @@ const CommunityBadgeSelector: FC<TProps> = ({ community, mode = 'publish' }) => 
             <PubHint>所属社区:</PubHint>
           )}
           <Title>
-            <Logo src={community.logo} raw={community.raw} />
+            <Logo src={community.logo} slug={community.slug} />
             <Tooltip content={<CommunityCard item={community} />} delay={500} placement="bottom">
               <div>{cutRest(community.title || '--', 15)}</div>
             </Tooltip>

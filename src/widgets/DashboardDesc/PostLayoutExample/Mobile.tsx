@@ -28,7 +28,7 @@ const Mobile: FC<TProps> = ({ articles }) => {
             key={item.id}
             article={item}
             c11n={{}}
-            curCommunity={{ raw: 'demo' }}
+            curCommunity={{ slug: 'demo' }}
             isMobilePreview
           />
         ))}
@@ -43,7 +43,7 @@ const Mobile: FC<TProps> = ({ articles }) => {
             key={item.id}
             article={item}
             c11n={{}}
-            curCommunity={{ raw: 'demo' }}
+            curCommunity={{ slug: 'demo' }}
             layout={POST_LAYOUT.COMMENT_FIRST}
             isMobilePreview
           />

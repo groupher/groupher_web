@@ -5,10 +5,11 @@ import type { TPostLayout } from '@/spec'
 import { DASHBOARD_BASEINFO_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
 
+import useCurCommunity from '@/hooks/useCurCommunity'
 import Tabs from '@/widgets/Switcher/Tabs'
 
 import { BASEINFO_TABS } from '../constant'
-import type { TBaseInfoSettings } from '../spec'
+import type { TBaseInfoSettings, TTouched } from '../spec'
 
 import Portal from '../Portal'
 
@@ -22,9 +23,12 @@ import { edit } from '../logic'
 type TProps = {
   testid?: TPostLayout
   settings: TBaseInfoSettings
+  touched: TTouched
 }
 
-const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
+const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => {
+  const curCommunity = useCurCommunity()
+
   const { baseInfoTab } = settings
 
   return (
@@ -41,8 +45,8 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
               edit(tab, 'baseInfoTab')
               const targetPath =
                 tab === DASHBOARD_BASEINFO_ROUTE.BASIC
-                  ? '/home/dashboard/info'
-                  : `/home/dashboard/info/${tab}`
+                  ? `/${curCommunity.slug}/dashboard/info`
+                  : `/${curCommunity.slug}/dashboard/info/${tab}`
 
               Router.push(targetPath)
             }}
@@ -52,8 +56,12 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
         </TabsWrapper>
       </Banner>
 
-      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.BASIC && <BaseInfo settings={settings} />}
-      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.SOCIAL && <SocialInfo settings={settings} />}
+      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.BASIC && (
+        <BaseInfo settings={settings} touched={touched} />
+      )}
+      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.SOCIAL && (
+        <SocialInfo settings={settings} touched={touched} />
+      )}
       {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.OTHER && <OtherInfo settings={settings} />}
     </Wrapper>
   )

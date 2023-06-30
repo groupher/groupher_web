@@ -18,7 +18,7 @@ const contributorsQuery = (owner, name) => {
 }
 
 const readmeQuery = (owner, name) => {
-  return restClient(`${restEndpoint}/repos/${owner}/${name}/readme`, 'raw')
+  return restClient(`${restEndpoint}/repos/${owner}/${name}/readme`, 'slug')
 }
 
 /**

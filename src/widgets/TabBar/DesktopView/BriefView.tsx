@@ -14,7 +14,7 @@ type TProps = {
 }
 
 const BriefView: FC<TProps> = ({ source, active, onChange }) => {
-  const items = source.map((item) => ({ ...item, localIcon: item.raw }))
+  const items = source.map((item) => ({ ...item, localIcon: item.slug }))
 
   return (
     <Wrapper>

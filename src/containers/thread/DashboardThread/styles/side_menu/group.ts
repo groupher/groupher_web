@@ -6,6 +6,10 @@ import css, { theme } from '@/utils/css'
 
 import ArrowSVG from '@/icons/ArrowSimple'
 
+export const Wrapper = styled.div`
+  margin-bottom: 20px;
+`
+
 export const Folder = styled.div`
   ${css.flex('align-center', 'justify-between')};
   cursor: pointer;

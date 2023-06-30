@@ -1,9 +1,12 @@
 import { FC } from 'react'
+import { keys } from 'ramda'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
-import type { TActive } from '@/spec'
+import type { TActive, TLinkItem } from '@/spec'
 import { FOOTER_LAYOUT } from '@/constant/layout'
 import { DEME_SOCIALS } from '@/constant/social'
 
+import { sortByIndex, groupByKey } from '@/utils/helper'
 import SocialList from '@/widgets/SocialList'
 
 import {
@@ -17,21 +20,30 @@ import {
 } from '../../styles/footer/templates/simple'
 import { edit } from '../../logic'
 
-type TProps = TActive
+type TProps = {
+  links: TLinkItem[]
+} & TActive
 
-const Simple: FC<TProps> = ({ $active }) => {
+const Simple: FC<TProps> = ({ links, $active }) => {
+  const [animateRef] = useAutoAnimate()
+
+  // @ts-ignore
+  const groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
+  const groupKeys = keys(groupedLinks)
+
   return (
     <Wrapper $active={$active} onClick={() => edit(FOOTER_LAYOUT.SIMPLE, 'footerLayout')}>
       <LeftWrapper>
         <BrandLogo />
         <BrandText>Groupher</BrandText>
       </LeftWrapper>
-      <CenterWrapper>
-        <LinkItem>讨论</LinkItem>
-        <LinkItem>看板</LinkItem>
-        <LinkItem>更新日志</LinkItem>
-        <LinkItem>帮助台</LinkItem>
-        <LinkItem>关于</LinkItem>
+
+      <CenterWrapper ref={animateRef}>
+        {groupedLinks[groupKeys[0]].map((item) => (
+          <LinkItem key={item.title} href={item.link}>
+            {item.title}
+          </LinkItem>
+        ))}
       </CenterWrapper>
       <RightWrapper>
         <SocialList top={0} size="tiny" selected={DEME_SOCIALS} />

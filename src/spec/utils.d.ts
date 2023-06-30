@@ -84,7 +84,7 @@ export type TAttInfo = {
 export type TTabItem = {
   id?: string
   title?: string
-  raw: string
+  slug: string
   alias?: string
   icon?: string | ReactNode
   localIcon?: string
@@ -208,19 +208,18 @@ export type TSocialType =
 
 export type TSocialItem = {
   type: TSocialType
-  addr: string
+  link: string
 }
 
 export type TSocial = {
   title: string
-  raw: string
+  slug: string
 }
 
 export type TLinkItem = {
   index: number
   title: string
-  addr: string
-  raw?: string
+  link?: string
   group?: string
   groupIndex?: number
 }
@@ -228,3 +227,5 @@ export type TLinkItem = {
 export type TGroupedLinks = {
   [key: string]: TLinkItem[]
 }
+
+export type TChangeMode = 'create' | 'update'

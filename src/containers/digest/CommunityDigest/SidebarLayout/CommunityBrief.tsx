@@ -23,7 +23,7 @@ const CommunityBrief: FC<TProps> = ({ community }) => {
     <Wrapper>
       <MainWrapper>
         <LogoWrapper>
-          <Logo src={community.logo} raw={community.raw} />
+          <Logo src={community.logo} slug={community.slug} />
         </LogoWrapper>
         <CommunityInfo>
           <Title>Groupher</Title>

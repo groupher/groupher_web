@@ -43,9 +43,9 @@ const loadArticle = (): void => {
   markLoading()
 
   const userHasLogin = store.isLogin
-  const { originalCommunityRaw, innerId, meta } = store.viewingArticle
+  const { originalCommunitySlug, innerId, meta } = store.viewingArticle
 
-  const variables = { community: originalCommunityRaw, id: innerId, userHasLogin }
+  const variables = { community: originalCommunitySlug, id: innerId, userHasLogin }
 
   return sr71$.query(S.getArticleSchema(meta.thread), variables)
 }

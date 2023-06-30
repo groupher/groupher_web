@@ -7,7 +7,7 @@ import { titleCase } from '@/utils/fmt'
 export const community = `
   id
   title
-  raw
+  slug
   index
   desc
   logo
@@ -15,16 +15,21 @@ export const community = `
   articlesCount
 
   threads {
-    raw
+    slug
     title
   }
 `
 export const tag = `
+  id
   title
-  raw
+  slug
   color
   thread
   group
+  index
+  community {
+    slug
+  }
 `
 export const author = `
   login
@@ -36,7 +41,7 @@ export const author = `
 export const article = `
   id
   innerId
-  originalCommunityRaw
+  originalCommunitySlug
   isPinned
   title
   insertedAt

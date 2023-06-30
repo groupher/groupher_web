@@ -7,13 +7,7 @@ import { Trans } from '@/utils/i18n'
 // import DotDivider from '@/widgets/DotDivider'
 // import TagCount from './TagCount'
 
-import {
-  Wrapper,
-  DotWrapper,
-  DotSign,
-  Tag,
-  Title,
-} from '../styles/desktop_view/tag_item'
+import { Wrapper, DotWrapper, DotSign, Tag, Title } from '../styles/desktop_view/tag_item'
 
 type TProps = {
   tag: TTag
@@ -33,7 +27,7 @@ const TagItem: FC<TProps> = ({ tag, active, onSelect }) => {
         <Title>{cutRest(Trans(tag.title), 10)}</Title>
         {/* <RawWrapper $active={active}>
           <DotDivider radius={2} space={6} />
-          <Raw>{tag.raw}</Raw>
+          <Raw>{tag.slug}</Raw>
         </RawWrapper> */}
       </Tag>
       {/* <SpaceGrow />

@@ -23,7 +23,7 @@ const log = buildLog('w:ArticleActionsPanel:index')
 
 const ArticleActionsPanel = ({
   data,
-  communityRaw,
+  communitySlug,
   thread,
   onUndoPin,
   onPin,
@@ -35,14 +35,14 @@ const ArticleActionsPanel = ({
   return (
     <Wrapper>
       <PinOption
-        passport={`${communityRaw}->${thread}.pin`}
+        passport={`${communitySlug}->${thread}.pin`}
         data={data}
         thread={thread}
         onPin={onPin}
         onUndoPin={onUndoPin}
       />
       <RefineOption
-        passport={`${communityRaw}->${thread}.refinedtag.set`}
+        passport={`${communitySlug}->${thread}.refinedtag.set`}
         data={data}
         thread={thread}
         onSetRefined={onSetRefined}
@@ -68,11 +68,11 @@ ArticleActionsPanel.propTypes = {
         id: T.string,
         title: T.string,
         color: T.string,
-        raw: T.string,
+        slug: T.string,
       }),
     ),
   }).isRequired,
-  communityRaw: T.string.isRequired,
+  communitySlug: T.string.isRequired,
   thread: T.oneOf(values(THREAD)),
   onDelete: T.func,
   onEdit: T.func,

@@ -42,9 +42,9 @@ export const loadCommunity = (): void => {
   const { mode } = store
 
   if (mode !== 'publish') return
-  const raw = getParameterByName('community')?.toLowerCase()
+  const slug = getParameterByName('community')?.toLowerCase()
 
-  sr71$.query(S.community, { raw })
+  sr71$.query(S.community, { slug })
 }
 
 export const loadArticle = (): void => {
@@ -71,9 +71,9 @@ const gotoArticleDetail = () => {
 
 const gotoBackToCommunity = () => {
   const { communityData } = store
-  const { raw } = communityData
+  const { slug } = communityData
 
-  const path = raw === HCN ? '/' : `/${raw}`
+  const path = slug === HCN ? '/' : `/${slug}`
   Router.push(path)
 }
 

@@ -25,7 +25,7 @@ const CommunityCard: FC<TProps> = ({
 }) => {
   return (
     <Wrapper withHover={canActOnSeleted}>
-      <Logo src={item.logo} raw={item.raw} noLazy />
+      <Logo src={item.logo} slug={item.slug} noLazy />
       <Intro>
         <Title>
           <Name>{item.title}</Name>

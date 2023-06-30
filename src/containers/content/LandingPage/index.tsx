@@ -9,7 +9,7 @@ import Router from 'next/router'
 
 // import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
-import { BANNER_LAYOUT, HELP_FAQ_LAYOUT } from '@/constant/layout'
+import { BANNER_LAYOUT, DOC_FAQ_LAYOUT } from '@/constant/layout'
 
 // import Link from 'next/link'
 
@@ -157,7 +157,7 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
           <Divider top={50} bottom={50} />
         </MobileOnly>
         <FAQWrapper>
-          <FaqList layout={HELP_FAQ_LAYOUT.FLAT} large />
+          <FaqList layout={DOC_FAQ_LAYOUT.FLAT} large />
         </FAQWrapper>
       </Wrapper>
     </ParallaxProvider>

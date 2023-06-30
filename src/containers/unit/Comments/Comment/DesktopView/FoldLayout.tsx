@@ -5,7 +5,6 @@ import type { TComment, TAvatarLayout } from '@/spec'
 import { ICON } from '@/config'
 
 import ImgFallback from '@/widgets/ImgFallback'
-import { SpaceGrow } from '@/widgets/Common'
 
 import IllegalBar from './IllegalBar'
 

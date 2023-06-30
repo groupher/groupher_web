@@ -18,7 +18,7 @@ const ViewingSign: FC<TProps> = ({ article, top = 30 }) => {
 
   const { id, community } = viewingArticle
 
-  if (!(article.innerId === id && community === article.originalCommunityRaw)) return null
+  if (!(article.innerId === id && community === article.originalCommunitySlug)) return null
 
   return (
     <Wrapper top={top}>

@@ -11,13 +11,7 @@ import { nilOrEmpty } from '@/utils/validator'
 import { buildLog } from '@/utils/logger'
 
 import Textarea from './Textarea'
-import {
-  Wrapper,
-  PrefixWrapper,
-  SuffixWrapper,
-  Icon,
-  InputWrapper,
-} from './styles'
+import { Wrapper, PrefixWrapper, SuffixWrapper, Icon, InputWrapper } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Input:index')
@@ -36,6 +30,7 @@ type TProps = {
   disableEnter?: boolean
 
   onFocus?: (e) => void | null
+  onBlur?: (e) => void | null
   onChange?: (e) => void | null
   onEnter?: () => void | null
 }
@@ -45,6 +40,7 @@ const Input: FC<TProps> = ({
   onChange = null,
   onEnter = null,
   onFocus = null,
+  onBlur = null,
   prefixIcon = null,
   prefixActive = false,
   suffixIcon = null,
@@ -65,6 +61,7 @@ const Input: FC<TProps> = ({
   )
 
   const handleOnFocus = useCallback((e) => onFocus && onFocus(e), [onFocus])
+  const handleOnBlur = useCallback((e) => onBlur && onBlur(e), [onBlur])
   const validProps = pickBy((v) => v !== null, restProps)
 
   return behavior === 'default' ? (
@@ -76,6 +73,7 @@ const Input: FC<TProps> = ({
         onChange={handleOnChange}
         onKeyDown={handleOnKeydown}
         onFocus={handleOnFocus}
+        onBlur={handleOnBlur}
         spellCheck="false"
         // prefix={false}
         hasPrefix={!nilOrEmpty(prefixIcon)}

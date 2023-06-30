@@ -17,9 +17,9 @@ import {
   ssrError,
   ssrPagedArticleSchema,
   ssrPagedArticlesFilter,
+  ssrParseDashboard,
   ssrRescue,
   communitySEO,
-  singular,
   log,
 } from '@/utils'
 
@@ -40,19 +40,9 @@ const loader = async (context, opt = {}) => {
   // query data
   const sessionState = gqClient.request(P.sessionState)
   const curCommunity = gqClient.request(P.community, {
-    raw: community,
+    slug: community,
     userHasLogin,
   })
-
-  // tmply
-  const pagedArticleTags = isArticleThread(thread)
-    ? gqClient.request(P.pagedArticleTags, {
-        filter: {
-          communityRaw: community,
-          thread: singular(thread, 'upperCase'),
-        },
-      })
-    : {}
 
   const filter = ssrPagedArticlesFilter(context, userHasLogin)
 
@@ -69,7 +59,6 @@ const loader = async (context, opt = {}) => {
 
   return {
     filter,
-    ...(await pagedArticleTags),
     ...(await sessionState),
     ...(await curCommunity),
     ...(await pagedArticles),
@@ -95,25 +84,24 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  const { community, pagedArticleTags } = resp
+  const { community } = resp
+  const dashboard = ssrParseDashboard(community)
 
   const initProps = merge(
     {
       ...ssrBaseStates(resp),
       route: {
-        communityPath: community.raw,
-        mainPath: community.raw === HCN ? '' : community.raw,
+        communityPath: community.slug,
+        mainPath: community.slug === HCN ? '' : community.slug,
         subPath: thread,
         thread,
-      },
-      tagsBar: {
-        tags: pagedArticleTags?.entries || [],
       },
       viewing: {
         community,
         activeThread: thread,
       },
       dashboardThread: {
+        ...dashboard,
         curTab: ROUTE.DASHBOARD.SEO,
       },
     },

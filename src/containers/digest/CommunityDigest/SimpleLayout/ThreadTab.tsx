@@ -1,27 +1,39 @@
 import { FC, memo } from 'react'
+import { reject } from 'ramda'
 
-import type { TCommunityThread, TThread } from '@/spec'
+import type { TCommunityThread, TLinkItem, TSpace } from '@/spec'
+import { THREAD } from '@/constant/thread'
+
+import ExtraLinks from '@/widgets/ExtraLinks/SimpleLayout'
+
 import { Wrapper, Title } from '../styles/simple_layout/thread_tab'
 
 type TProps = {
   threads: TCommunityThread[]
   active: string
-  onChange: (thread: TThread) => void
-}
+  extraLinks: TLinkItem[]
+} & TSpace
 
-const ThreadTab: FC<TProps> = ({ active, threads, onChange }) => {
+const ThreadTab: FC<TProps> = ({ active, threads, extraLinks, ...restProps }) => {
+  const isAboutFold = extraLinks.length >= 2 && extraLinks[0].title !== ''
+  const _threads = isAboutFold
+    ? reject((t: TCommunityThread) => t.slug === THREAD.ABOUT, threads)
+    : threads
+
   return (
-    <Wrapper>
-      {threads.map((item) => (
+    <Wrapper {...restProps}>
+      {_threads.map((item) => (
         <Title
-          href={`/home/${item.raw}`}
-          key={item.raw}
-          $active={active === item.raw}
+          href={`/home/${item.slug}`}
+          key={item.slug}
+          $active={active === item.slug}
           prefetch={false}
         >
           {item.title}
         </Title>
       ))}
+
+      <ExtraLinks links={extraLinks} />
     </Wrapper>
   )
 }

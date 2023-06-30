@@ -20,6 +20,8 @@ type TProps = {
   children?: ReactNode
   loading?: boolean
   isTouched?: boolean
+  minimal?: boolean
+  disabled?: boolean
   onCancel?: () => void
   onConfirm?: () => void
 } & TSpace
@@ -31,6 +33,8 @@ const SavingBar: FC<TProps> = ({
   children = null,
   isTouched = false,
   loading = false,
+  minimal = false,
+  disabled = false,
   onCancel = log,
   onConfirm = log,
   ...restProps
@@ -38,13 +42,14 @@ const SavingBar: FC<TProps> = ({
   if (children !== null) {
     if (isTouched) {
       return (
-        <Wrapper gradientDirection="left" {...restProps}>
+        <Wrapper gradientDirection="left" minimal={minimal} {...restProps}>
           <Fragment>{children}</Fragment>
           <SpaceGrow />
-          <ActionWrapper>
+          <ActionWrapper minimal={minimal}>
             <YesOrNoButtons
               cancelText="取消"
               confirmText="确定"
+              disabled={disabled}
               loading={loading}
               space={4}
               onCancel={() => {
@@ -70,18 +75,19 @@ const SavingBar: FC<TProps> = ({
   if (!isTouched) return null
 
   return (
-    <Wrapper gradientDirection="right" {...restProps}>
+    <Wrapper gradientDirection="right" minimal={minimal} {...restProps}>
       <HintWrapper>
-        <InfoIcon />
-        <HintText>
+        <InfoIcon minimal={minimal} />
+        <HintText minimal={minimal}>
           {prefix}
           {hint && <Hint>{hint}</Hint>} ?
         </HintText>
       </HintWrapper>
       <SpaceGrow />
-      <ActionWrapper>
+      <ActionWrapper minimal={minimal}>
         <YesOrNoButtons
           cancelText="取消"
+          disabled={disabled}
           confirmText="确定"
           loading={loading}
           space={4}

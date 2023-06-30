@@ -40,7 +40,7 @@ type TBaseArticle = {
   author?: TAccount
   upvotesCount?: number
   originalCommunity?: TCommunity
-  originalCommunityRaw?: string
+  originalCommunitySlug?: string
   communities?: TCommunity[]
   commentsParticipants?: TUser[]
   commentsParticipantsCount?: number
@@ -73,7 +73,7 @@ export type TChangelog = TBaseArticle & {
 export type TTechStack = {
   title?: string
   logo: string
-  raw: string
+  slug: string
   category?: string
 }
 type TCity = {

@@ -2,30 +2,29 @@ import { FC, memo } from 'react'
 
 import Link from 'next/link'
 
+import type { TCommunity } from '@/spec'
+
+import useAccount from '@/hooks/useAccount'
 import { ROUTE } from '@/constant/route'
 // import { callSubscriber, callAuth } from '@/utils/signal'
 import { callAuth } from '@/utils/signal'
 
-import { DesktopOnly } from '@/widgets/Common'
+import { Wrapper, DashboardIcon, Avatar, AccountIcon } from '../styles/simple_layout/account_unit'
 
-import {
-  Wrapper,
-  DashboardIcon,
-  // NotifyIcon,
-  // SubscribeButton,
-  AccountIcon,
-} from '../styles/simple_layout/account_unit'
-// import { mockUsers } from '@/utils/mock'
-// import { onShowEditorList, onShowSubscriberList, setViewport } from '../logic'
+type TProps = {
+  community: TCommunity
+}
 
-const AccountUnit: FC = () => {
+const AccountUnit: FC<TProps> = ({ community }) => {
+  const accountInfo = useAccount()
+
   return (
     <Wrapper>
       {/* <SubscribeButton type="primary" ghost size="small" onClick={callSubscriber}>
         订阅
       </SubscribeButton> */}
 
-      <Link href={`/home/${ROUTE.DASHBOARD.DASHBOARD}`} prefetch={false}>
+      <Link href={`/${community.slug}/${ROUTE.DASHBOARD.DASHBOARD}`} prefetch={false}>
         <DashboardIcon />
       </Link>
 
@@ -33,8 +32,11 @@ const AccountUnit: FC = () => {
         <NotifyIcon />
       </div> */}
 
-      <AccountIcon onClick={callAuth} />
-      {/* <Avatar src={`${mockUsers(1)[0].avatar}`} onClick={callAuth} /> */}
+      {accountInfo?.login ? (
+        <Avatar src={accountInfo.avatar} />
+      ) : (
+        <AccountIcon onClick={callAuth} />
+      )}
     </Wrapper>
   )
 }

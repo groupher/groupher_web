@@ -6,10 +6,11 @@
 
 import { FC, memo } from 'react'
 
+import MENU from '@/constant/menu'
 import { buildLog } from '@/utils/logger'
 
 import type { TMenu } from '@/spec'
-import { Wrapper, Title, MenuIcon } from './styles'
+import { Wrapper, Title, MenuIcon, DeleteTitle } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('c:MenuItem:index')
@@ -26,7 +27,7 @@ const MenuItem: FC<TProps> = ({ title, icon, onClick = log }) => {
   return (
     <Wrapper onClick={onClick}>
       <Icon />
-      <Title>{title}</Title>
+      {icon === MENU.DELETE ? <DeleteTitle>{title}</DeleteTitle> : <Title>{title}</Title>}
     </Wrapper>
   )
 }

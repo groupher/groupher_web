@@ -49,8 +49,8 @@ export const loadCommunity = (): void => {
   const { viewingArticle, isLogin } = store
   if (!isLogin) return
 
-  const { raw } = viewingArticle.originalCommunity
-  sr71$.query(S.community, { raw })
+  const { slug } = viewingArticle.originalCommunity
+  sr71$.query(S.community, { slug })
 }
 
 export const handleWorksUpvote = (viewerHasUpvoted: boolean): void => {

@@ -1,4 +1,5 @@
 import type { TColorName } from './color'
+import type { TLinkItem } from './utils'
 
 export type TAvatarLayout = 'circle' | 'square'
 export type TBrandLayout = 'both' | 'logo' | 'text'
@@ -8,9 +9,10 @@ export type TTopbarLayout = 'yes' | 'no'
 export type TPostLayout = 'upvote_first' | 'comment_first' | 'masonry' | 'minimal' | 'cover'
 export type TKanbanLayout = 'simple' | 'full'
 export type TChangelogLayout = 'classic' | 'simple'
-export type THelpLayout = 'blocks' | 'lists' | 'article'
-export type THelpFAQLayout = 'flat' | 'collapse' | 'search_hint'
-export type TFooterLayout = 'simple' | 'full'
+export type TDocLayout = 'blocks' | 'lists' | 'article'
+export type TDocFAQLayout = 'flat' | 'collapse' | 'search_hint'
+export type THeaderLayout = 'center' | 'right'
+export type TFooterLayout = 'simple' | 'group'
 export type TRSSType = 'digest' | 'full'
 
 export type TBroadcastLayout = 'default' | 'center'
@@ -32,9 +34,9 @@ export type TEnableConfig = {
   kanban: boolean
   changelog: boolean
   //
-  help: boolean
-  helpLastUpdate: boolean
-  helpReaction: boolean
+  doc: boolean
+  docLastUpdate: boolean
+  docReaction: boolean
   //
   about: boolean
   aboutTechstack: boolean
@@ -43,17 +45,35 @@ export type TEnableConfig = {
   aboutMediaReport: boolean
 }
 
+export type TNameAliasConfig = {
+  slug: string
+  name: string
+  original?: string
+}
+
+export type TDashboardThreadConfig = {
+  enable: TEnableConfig
+  nameAlias: TNameAliasConfig[]
+  extraLinks?: TLinkItem[]
+}
+
+export type TFooterConfig = {
+  layout: TFooterLayout
+  links: TLinkItem[]
+}
+
 export type TGlobalLayout = {
   primaryColor: TColorName
   brand: TBrandLayout
   post: TPostLayout
   kanban: TKanbanLayout
   kanbanBgColors: TColorName[]
-  help: THelpLayout
-  helpFaq: THelpFAQLayout
+  doc: TDocLayout
+  docFaq: TDocFAQLayout
   banner: TBannerLayout
   avatar: TAvatarLayout
   changelog: TChangelogLayout
+  header: THeaderLayout
   footer: TFooterLayout
 
   broadcast: TBroadcastLayout

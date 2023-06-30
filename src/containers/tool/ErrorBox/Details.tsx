@@ -4,7 +4,7 @@ import type { TGQError } from '@/spec'
 import ERR from '@/constant/err'
 import GraphqlDetail from './GraphqlDetail'
 
-import { Wrapper, TitleWrapper, Dot, Title, Desc } from './styles/details'
+import { Wrapper, TitleWrapper, Title, Desc } from './styles/details'
 
 type TProps = {
   type: string
@@ -28,13 +28,11 @@ const Details: FC<TProps> = ({
       return (
         <Wrapper>
           <TitleWrapper>
-            <Dot />
             <Title>网络错误</Title>
           </TitleWrapper>
           <Desc>请检查您的网络设置.</Desc>
           <br />
           <TitleWrapper>
-            <Dot />
             <Title>服务器发生错误</Title>
           </TitleWrapper>
           <Desc>若您的网络没有问题，很可能是服务器发生错误，恳请您提交 issue </Desc>
@@ -55,7 +53,6 @@ const Details: FC<TProps> = ({
       return (
         <Wrapper>
           <TitleWrapper>
-            <Dot />
             <Title>请求超时</Title>
           </TitleWrapper>
           <Desc>{timeoutError}</Desc>

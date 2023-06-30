@@ -27,7 +27,6 @@ export type { TAccount, TUser, TPagedUsers, TSimpleUser, TMembership, TC11N } fr
 export type { TC11NLayout } from './c11n'
 export type {
   TCommunity,
-  TCommunityThread,
   TPagedCommunities,
   TTag,
   TNaviTag,
@@ -36,7 +35,7 @@ export type {
   TCategory,
 } from './community'
 
-export type { TThread, TArticleThread } from './thread'
+export type { TThread, TArticleThread, TCommunityThread } from './thread'
 
 export type {
   TID,
@@ -82,6 +81,7 @@ export type {
   TSocialItem,
   TLinkItem,
   TGroupedLinks,
+  TChangeMode,
 } from './utils'
 
 export type { TGQLError } from './graphql'
@@ -94,14 +94,18 @@ export type {
   TPostLayout,
   TKanbanLayout,
   TChangelogLayout,
-  THelpLayout,
-  THelpFAQLayout,
+  TDocLayout,
+  TDocFAQLayout,
+  THeaderLayout,
   TFooterLayout,
   TGlobalLayout,
-  TBroadcastConfig,
   TBroadcastLayout,
   TBroadcastArticleLayout,
+  TBroadcastConfig,
   TEnableConfig,
+  TNameAliasConfig,
+  TDashboardThreadConfig,
+  TFooterConfig,
   TRSSType,
 } from './dashboard'
 

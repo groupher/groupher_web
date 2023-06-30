@@ -2,7 +2,7 @@ export type TNonCommunityPath = 'apply_community'
 
 export type TDashboardBaseInfoRoute = 'basic' | 'social' | 'other'
 export type TDashboardSEORoute = 'search_engine' | 'twitter'
-export type TDashboardLayoutRoute = 'global' | 'post' | 'kanban' | 'changelog' | 'help'
+export type TDashboardLayoutRoute = 'global' | 'post' | 'kanban' | 'changelog' | 'doc'
 export type TDashboardBroadcastRoute = 'global' | 'article'
 export type TDashboardAliasRoute = 'general' | 'kanban'
 
@@ -17,13 +17,15 @@ export type TDashboardPath =
   | 'alias'
   | 'domain'
   // analysis
+  | 'trend'
+  | 'log'
+  | 'domain'
   // --
   // contents
   | 'tags'
   | 'post'
-  | 'kanban'
   | 'changelog'
-  | 'help'
+  | 'doc'
   | 'header'
   | 'footer'
   | 'broadcast'

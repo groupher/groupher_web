@@ -26,10 +26,10 @@ const Main: FC<TProps> = ({ items, activeItem }) => {
       <OptionsWrapper>
         {items &&
           items.map((item) => (
-            <Option key={item.raw}>
-              <SelectWrapper onClick={() => selectItem(item.raw)}>
-                <Checker checked={item.raw === activeItem.raw} />
-                <Title active={item.raw === activeItem.raw}>{item.title}</Title>
+            <Option key={item.slug}>
+              <SelectWrapper onClick={() => selectItem(item.slug)}>
+                <Checker checked={item.slug === activeItem.slug} />
+                <Title active={item.slug === activeItem.slug}>{item.title}</Title>
               </SelectWrapper>
               <SpaceGrow />
             </Option>

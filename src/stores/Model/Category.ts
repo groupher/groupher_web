@@ -7,7 +7,7 @@ const SimpleCommunity = T.model('SimpleCommunity', {
   id: T.maybeNull(T.string),
   title: T.maybeNull(T.string),
   desc: T.opt(T.string, ''),
-  raw: T.maybeNull(T.string),
+  slug: T.maybeNull(T.string),
   logo: T.maybeNull(T.string),
 })
 
@@ -21,7 +21,7 @@ const SimpleUser = T.model('SimpleUser', {
 export const Category = T.model('Category', {
   id: T.maybeNull(T.string),
   title: T.maybeNull(T.string),
-  raw: T.maybeNull(T.string),
+  slug: T.maybeNull(T.string),
   index: T.maybeNull(T.number),
   communities: T.opt(T.array(SimpleCommunity), []),
   author: T.opt(SimpleUser, {}),

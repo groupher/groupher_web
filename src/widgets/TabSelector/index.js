@@ -8,14 +8,7 @@ import React from 'react'
 import T from 'prop-types'
 
 import { buildLog } from '@/utils/logger'
-import {
-  Wrapper,
-  OptionsWrapper,
-  Option,
-  Icon,
-  Title,
-  HeaderDivider,
-} from './styles'
+import { Wrapper, OptionsWrapper, Option, Icon, Title, HeaderDivider } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:TabSelector:index')
@@ -24,12 +17,8 @@ const TabSelector = ({ source, activeRaw, onChange }) => (
   <Wrapper>
     <OptionsWrapper>
       {source.map((opt) => (
-        <Option
-          key={opt.raw}
-          active={activeRaw === opt.raw}
-          onClick={() => onChange(opt)}
-        >
-          <Icon src={opt.icon} active={activeRaw === opt.raw} />
+        <Option key={opt.slug} active={activeRaw === opt.slug} onClick={() => onChange(opt)}>
+          <Icon src={opt.icon} active={activeRaw === opt.slug} />
           <Title>
             {opt.title}
             {opt.count > 0 && <span>({opt.count})</span>}
@@ -48,7 +37,7 @@ TabSelector.propTypes = {
     T.shape({
       title: T.string.isRequired,
       icon: T.string.isRequired,
-      raw: T.string.isRequired,
+      slug: T.string.isRequired,
       count: T.number,
     }),
   ).isRequired,

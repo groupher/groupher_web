@@ -12,12 +12,12 @@ type TProps = {
 }
 
 const SetupInfo: FC<TProps> = ({ status, communityType }) => {
-  const { raw, title, desc, logo } = status
+  const { slug, title, desc, logo } = status
 
   return (
     <Wrapper>
       <FakeBrowser
-        domain={raw}
+        domain={slug}
         communityType={communityType}
         title={title || '// 社区名称'}
         desc={desc || '// 社区一句话描述'}

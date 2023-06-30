@@ -10,7 +10,7 @@ import type { TThread } from '@/spec'
 import { THREAD } from '@/constant/thread'
 
 import PostLayout from './PostLayout'
-import HelpLayout from './HelpLayout'
+import DocLayout from './DocLayout'
 
 type TProps = {
   testid?: string
@@ -22,8 +22,8 @@ const SidebarLayoutHeader: FC<TProps> = ({ testid = 'sidebar-layout-header', thr
     case THREAD.POST: {
       return <PostLayout />
     }
-    case THREAD.HELP: {
-      return <HelpLayout />
+    case THREAD.DOC: {
+      return <DocLayout />
     }
 
     default: {

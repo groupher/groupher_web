@@ -16,13 +16,13 @@ const demoPost = {
     {
       color: 'GREEN',
       title: 'UI交互',
-      raw: 'roadmap',
+      slug: 'roadmap',
     },
   ],
   category: ARTICLE_CAT.FEATURE,
   state: ARTICLE_STATE.TODO,
   originalCommunity: {
-    raw: 'demo',
+    slug: 'demo',
   },
   commentsParticipants: mockUsers(3),
 
@@ -45,7 +45,7 @@ export const DEMO_POSTS = [
       {
         color: 'ORANGE',
         title: '移动端',
-        raw: 'mobile',
+        slug: 'mobile',
       },
     ],
     views: getRandomInt(5, 39),
@@ -63,7 +63,7 @@ export const DEMO_POSTS = [
       {
         color: 'CYAN',
         title: '官方公告',
-        raw: 'mobile',
+        slug: 'mobile',
       },
     ],
     views: getRandomInt(5, 39),
@@ -81,7 +81,7 @@ export const DEMO_POSTS = [
       {
         color: 'GREEN',
         title: '账户设置',
-        raw: 'account',
+        slug: 'account',
       },
     ],
     views: getRandomInt(10, 399),
@@ -99,7 +99,7 @@ export const DEMO_POSTS = [
       {
         color: 'RED',
         title: '部署',
-        raw: 'account',
+        slug: 'account',
       },
     ],
     views: getRandomInt(10, 399),

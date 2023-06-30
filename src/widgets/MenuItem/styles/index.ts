@@ -4,11 +4,12 @@ import MENU from '@/constant/menu'
 
 // import type { TTestable } from '@/spec'
 
-// import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 
 import ArrowSVG from '@/icons/Arrow'
 import Arrow2TopSVG from '@/icons/Arrow2Top'
+import SettingSVG from '@/icons/Setting'
+import DeleteSVG from '@/icons/Trash'
 
 export const Wrapper = styled.div`
   ${css.flex('justify-between', 'align-center')};
@@ -26,6 +27,12 @@ export const Title = styled.div`
 
   ${Wrapper}:hover & {
     color: ${theme('article.title')};
+  }
+`
+
+export const DeleteTitle = styled(Title)`
+  ${Wrapper}:hover & {
+    color: ${theme('baseColor.red')};
   }
 `
 
@@ -81,6 +88,26 @@ const Arrow2BottomIcon = styled(Arrow2TopIcon)`
   transform: rotate(180deg);
 `
 
+export const SettingIcon = styled(SettingSVG)`
+  ${css.size(9)};
+  fill: ${theme('article.digest')};
+  opacity: 0.8;
+  margin-left: 1px;
+
+  ${Wrapper}:hover & {
+    fill: ${theme('article.title')};
+  }
+`
+
+export const DeleteIcon = styled(DeleteSVG)`
+  ${css.size(12)};
+  fill: ${theme('article.digest')};
+
+  ${Wrapper}:hover & {
+    fill: ${theme('baseColor.red')};
+  }
+`
+
 export const MenuIcon = {
   [MENU.ARROW_LEFT]: ArrowLeftIcon,
   [MENU.ARROW_TO_LEFT]: Arrow2LeftIcon,
@@ -92,4 +119,6 @@ export const MenuIcon = {
 
   [MENU.ARROW_TO_TOP]: Arrow2TopIcon,
   [MENU.ARROW_TO_BOTTOM]: Arrow2BottomIcon,
+  [MENU.SETTING]: SettingIcon,
+  [MENU.DELETE]: DeleteIcon,
 }

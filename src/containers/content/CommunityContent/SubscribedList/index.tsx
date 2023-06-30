@@ -57,12 +57,12 @@ const SubscribedList: FC<TProps> = ({ community, communities }) => {
       {communities.slice(0, 15).map((community) => (
         <Fragment key={community.id}>
           <Item>
-            {community.raw === activeCommunity.raw && <ActiveDot />}
+            {community.slug === activeCommunity.slug && <ActiveDot />}
 
             <Logo src={community.logo} />
             <Title
-              $active={community.raw === activeCommunity.raw}
-              onClick={() => changeToCommunity(community.raw)}
+              $active={community.slug === activeCommunity.slug}
+              onClick={() => changeToCommunity(community.slug)}
             >
               {community.title}
             </Title>

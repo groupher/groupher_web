@@ -1,9 +1,12 @@
-import { FC, memo, Fragment, useState } from 'react'
+import { FC, memo, useState } from 'react'
 
-import type { TDashboardPath } from '@/spec'
+import type { TCommunity, TDashboardPath } from '@/spec'
+import { DASHBOARD_ROUTE } from '@/constant/route'
+
 import type { TMenuGroup, TTouched } from '../spec'
 
 import {
+  Wrapper,
   Folder,
   Item,
   FoldArrowIcon,
@@ -17,13 +20,14 @@ type TProps = {
   group: TMenuGroup
   curTab: TDashboardPath | string
   touched: TTouched | null
+  community: TCommunity
 }
 
-const Group: FC<TProps> = ({ group, curTab, touched }) => {
+const Group: FC<TProps> = ({ group, curTab, touched, community }) => {
   const [fold, setFold] = useState(false)
 
   return (
-    <Fragment key={group.title}>
+    <Wrapper>
       <Folder onClick={() => setFold(!fold)}>
         <IconWrapper>{group.icon}</IconWrapper>
         <Title>{group.title}</Title>
@@ -33,14 +37,18 @@ const Group: FC<TProps> = ({ group, curTab, touched }) => {
       {!fold && (
         <MenuWrapper>
           {group.children.map((item) => (
-            <Item $active={item.raw === curTab} key={item.raw} href={`/home/dashboard/${item.raw}`}>
+            <Item
+              $active={item.slug === curTab}
+              key={item.slug}
+              href={`/${community.slug}/${DASHBOARD_ROUTE.DASHBOARD}/${item.slug}`}
+            >
               {item.title}
-              {touched && touched[item.raw] && <TouchedDot />}
+              {touched && (touched[item.slug] || touched[item.alias]) && <TouchedDot />}
             </Item>
           ))}
         </MenuWrapper>
       )}
-    </Fragment>
+    </Wrapper>
   )
 }
 

@@ -43,7 +43,7 @@ const loader = async (context, opt = {}) => {
   // query data
   const sessionState = gqClient.request(P.sessionState)
   const curCommunity = gqClient.request(P.community, {
-    raw: community,
+    slug: community,
     userHasLogin,
   })
 
@@ -51,7 +51,7 @@ const loader = async (context, opt = {}) => {
   const pagedArticleTags = isArticleThread(thread)
     ? gqClient.request(P.pagedArticleTags, {
         filter: {
-          communityRaw: community,
+          community,
           thread: singular(thread, 'upperCase'),
         },
       })
@@ -119,8 +119,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         isMobile: device?.isMobile,
       },
       route: {
-        communityPath: community.raw,
-        mainPath: community.raw === HCN ? '' : community.raw,
+        communityPath: community.slug,
+        mainPath: community.slug === HCN ? '' : community.slug,
         subPath: '',
         thread,
       },

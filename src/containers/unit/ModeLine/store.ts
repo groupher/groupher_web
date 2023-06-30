@@ -12,9 +12,9 @@ import type {
   TArticle,
   TArticleFilter,
   TThread,
-  TEnableConfig,
   TGroupedTags,
   TTag,
+  TDashboardThreadConfig,
 } from '@/spec'
 
 import METRIC from '@/constant/metric'
@@ -33,12 +33,14 @@ const ModeLine = T.model('ModeLine', {
       return root.isMobile
     },
 
-    get enable(): TEnableConfig {
+    get dashboardSettings(): TDashboardThreadConfig {
       const root = getParent(self) as TRootStore
 
-      return toJS(root.dashboardThread.enableSettings)
+      return {
+        enable: toJS(root.dashboardThread.enableSettings),
+        nameAlias: toJS(root.dashboardThread.nameAlias),
+      }
     },
-
     get curCommunity(): TCommunity {
       const root = getParent(self) as TRootStore
 

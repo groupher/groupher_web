@@ -11,9 +11,10 @@ import type {
   TKanbanLayout,
   TChangelogLayout,
   TSnakeUpperCase,
-  THelpLayout,
-  THelpFAQLayout,
+  TDocLayout,
+  TDocFAQLayout,
   TFooterLayout,
+  THeaderLayout,
   TRSSType,
 } from '@/spec'
 
@@ -85,21 +86,26 @@ export const DASHBOARD_DESC_LAYOUT = {
   CHANGELOG_LIST: 'changelog_list',
 } as Record<TSnakeUpperCase<TDashboardLayout>, TDashboardLayout>
 
-export const HELP_LAYOUT = {
+export const DOC_LAYOUT = {
   BLOCKS: 'blocks',
   LISTS: 'lists',
   ARTICLE: 'article',
-} as Record<TSnakeUpperCase<THelpLayout>, THelpLayout>
+} as Record<TSnakeUpperCase<TDocLayout>, TDocLayout>
 
-export const HELP_FAQ_LAYOUT = {
+export const DOC_FAQ_LAYOUT = {
   FLAT: 'flat',
   COLLAPSE: 'collapse',
   SEARCH_HINT: 'search_hint',
-} as Record<TSnakeUpperCase<THelpFAQLayout>, THelpFAQLayout>
+} as Record<TSnakeUpperCase<TDocFAQLayout>, TDocFAQLayout>
+
+export const HEADER_LAYOUT = {
+  CENTER: 'center',
+  RIGHT: 'right',
+} as Record<Uppercase<THeaderLayout>, THeaderLayout>
 
 export const FOOTER_LAYOUT = {
   SIMPLE: 'simple',
-  FULL: 'full',
+  GROUP: 'group',
 } as Record<Uppercase<TFooterLayout>, TFooterLayout>
 
 export const RSS_TYPE = {

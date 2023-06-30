@@ -34,7 +34,7 @@ const CommunityDigestContainer: FC<TProps> = ({
 }) => {
   useInit(store)
 
-  const { curThread, curCommunity, globalLayout, enable } = store
+  const { curThread, curCommunity, globalLayout, dashboardSettings } = store
 
   const router = useRouter()
 
@@ -45,7 +45,8 @@ const CommunityDigestContainer: FC<TProps> = ({
         metric={metric}
         community={curCommunity}
         activeThread={curThread}
-        enable={enable}
+        dashboardSettings={dashboardSettings}
+        headerLayout={globalLayout.header}
       />
     )
   }
@@ -57,7 +58,7 @@ const CommunityDigestContainer: FC<TProps> = ({
           metric={metric}
           community={curCommunity}
           activeThread={curThread}
-          enable={enable}
+          dashboardSettings={dashboardSettings}
         />
       )}
       {globalLayout.banner === BANNER_LAYOUT.SIDEBAR && (
@@ -65,7 +66,7 @@ const CommunityDigestContainer: FC<TProps> = ({
           metric={metric}
           community={curCommunity}
           activeThread={curThread}
-          enable={enable}
+          dashboardSettings={dashboardSettings}
         />
       )}
       {globalLayout.banner === BANNER_LAYOUT.HEADER && (
@@ -73,7 +74,8 @@ const CommunityDigestContainer: FC<TProps> = ({
           metric={metric}
           community={curCommunity}
           activeThread={curThread}
-          enable={enable}
+          dashboardSettings={dashboardSettings}
+          headerLayout={globalLayout.header}
         />
       )}
     </Fragment>

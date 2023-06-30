@@ -64,7 +64,7 @@ import {
   SubscriberStore,
   DashboardThreadStore,
   WallpaperEditorStore,
-  HelpThreadStore,
+  DocThreadStore,
   AboutThreadStore,
   ChangelogThreadStore,
   KanbanThreadStore,
@@ -89,7 +89,7 @@ import {
   // RecipesContentStore,
   JoinModalStore,
   C11NSettingPanelStore,
-} from '../index'
+} from '..'
 
 const rootStore = T.model({
   // domain stores
@@ -157,7 +157,7 @@ const rootStore = T.model({
   subscriber: T.opt(SubscriberStore, {}),
   dashboardThread: T.opt(DashboardThreadStore, {}),
   wallpaperEditor: T.opt(WallpaperEditorStore, {}),
-  helpThread: T.opt(HelpThreadStore, {}),
+  docThread: T.opt(DocThreadStore, {}),
   aboutThread: T.opt(AboutThreadStore, {}),
   changelogThread: T.opt(ChangelogThreadStore, {}),
   kanbanThread: T.opt(KanbanThreadStore, {}),
@@ -270,8 +270,8 @@ const rootStore = T.model({
       const filter = pickBy(notEmpty, {
         page,
         size,
-        articleTag: tag.raw,
-        community: community.raw,
+        articleTag: tag.slug,
+        community: community.slug,
         ...articlesfilter,
       })
 
