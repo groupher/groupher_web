@@ -1,4 +1,3 @@
-import OSS from 'ali-oss'
 import { startsWith } from 'ramda'
 import { ASSETS_ENDPOINT } from '@/config'
 

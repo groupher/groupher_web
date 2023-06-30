@@ -48,7 +48,6 @@
     "@next/bundle-analyzer": "^12.2.5",
     "@soywod/pin-field": "^0.1.9",
     "@tippyjs/react": "^4.2.6",
-    "ali-oss": "^5.3.2",
     "chalk": "^2.4.1",
     "compatible-debug": "^1.0.0",
     "cookies-next": "^2.1.1",
