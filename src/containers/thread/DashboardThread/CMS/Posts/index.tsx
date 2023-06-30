@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react'
+import { FC, useCallback, useState } from 'react'
 
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table'
 
@@ -19,12 +19,6 @@ type TProps = {
 }
 
 const PostManage: FC<TProps> = ({ pagedPosts, loading }) => {
-  useEffect(() => {
-    setTimeout(() => {
-      loadArticles()
-    }, 1000)
-  }, [])
-
   const [sortColumn, setSortColumn] = useState('id')
 
   const [sortState, setSortState] = useState({

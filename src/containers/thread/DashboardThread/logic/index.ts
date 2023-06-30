@@ -206,8 +206,6 @@ export const onSave = (field: TSettingField): void => {
 }
 
 export const loadArticles = () => {
-  console.log('## loadArticles')
-
   store.mark({ loading: true })
   sr71$.query(S.pagedPosts, {
     filter: { page: 1, size: 20, community: 'home' },

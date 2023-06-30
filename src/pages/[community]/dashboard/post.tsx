@@ -20,6 +20,7 @@ import {
   ssrRescue,
   communitySEO,
   log,
+  ssrParseDashboard,
 } from '@/utils'
 
 import GlobalLayout from '@/containers/layout/GlobalLayout'
@@ -45,23 +46,20 @@ const loader = async (context, opt = {}) => {
 
   const filter = ssrPagedArticlesFilter(context, userHasLogin)
 
-  const pagedArticles = isArticleThread(thread)
-    ? gqClient.request(ssrPagedArticleSchema(thread), filter)
-    : {}
-
-  const subscribedCommunities = gqClient.request(P.subscribedCommunities, {
+  const pagedPosts = gqClient.request(P.pagedPosts, {
     filter: {
       page: 1,
       size: PAGE_SIZE.M,
+      community,
     },
+    userHasLogin,
   })
 
   return {
     filter,
     ...(await sessionState),
     ...(await curCommunity),
-    ...(await pagedArticles),
-    ...(await subscribedCommunities),
+    ...(await pagedPosts),
   }
 }
 
@@ -83,7 +81,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  const { community } = resp
+  const { community, pagedPosts } = resp
+  const dashboard = ssrParseDashboard(community)
 
   const initProps = merge(
     {
@@ -99,7 +98,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         activeThread: thread,
       },
       dashboardThread: {
+        ...dashboard,
         curTab: ROUTE.DASHBOARD.POST,
+        pagedPosts,
       },
     },
     {
