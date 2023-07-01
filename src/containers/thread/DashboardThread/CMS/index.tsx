@@ -6,7 +6,9 @@ import { DASHBOARD_ROUTE } from '@/constant/route'
 import type { TCMSContents } from '../spec'
 import GlobalTableStyle from '../styles/cms/global'
 import { Wrapper } from '../styles/cms'
+
 import Posts from './Posts'
+import Changelogs from './Changelogs'
 
 type TProps = {
   cmsContents: TCMSContents
@@ -14,24 +16,36 @@ type TProps = {
 }
 
 const CMS: FC<TProps> = ({ route, cmsContents }) => {
-  const { pagedPosts, loading } = cmsContents
+  const { pagedPosts, pagedChangelogs, loading, batchSelectedIDs } = cmsContents
 
   let contents = null
 
   switch (route) {
     case DASHBOARD_ROUTE.POST: {
-      contents = <Posts pagedPosts={pagedPosts} loading={loading} />
+      contents = (
+        <Posts pagedPosts={pagedPosts} batchSelectedIDs={batchSelectedIDs} loading={loading} />
+      )
+      break
+    }
+    case DASHBOARD_ROUTE.CHANGELOG: {
+      contents = (
+        <Changelogs
+          pagedChangelogs={pagedChangelogs}
+          batchSelectedIDs={batchSelectedIDs}
+          loading={loading}
+        />
+      )
       break
     }
     default:
-      contents = <Posts pagedPosts={pagedPosts} loading={loading} />
+      contents = <div>no such route</div>
       break
   }
 
   return (
     <Wrapper>
-      <GlobalTableStyle />
       {contents}
+      <GlobalTableStyle />
     </Wrapper>
   )
 }

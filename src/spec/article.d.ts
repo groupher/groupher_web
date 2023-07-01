@@ -60,6 +60,9 @@ type TBaseArticle = {
 
   cat?: TArticleCat
   state?: TArticleState
+
+  // for dashboard cmd tmp check state
+  _checked?: boolean
 }
 
 export type TPost = TBaseArticle & {

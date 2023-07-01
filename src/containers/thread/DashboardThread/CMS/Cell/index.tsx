@@ -3,6 +3,9 @@
 import { Cell } from 'rsuite-table'
 import TimeAgo from 'timeago-react'
 
+import { previewArticle } from '@/utils/signal'
+
+import Checker from '@/widgets/Checker'
 import ArticleCatState from '@/widgets/ArticleCatState'
 import TagsList from '@/widgets/TagsList'
 
@@ -20,6 +23,23 @@ import {
   // PublishIcon,
   PulseIcon,
 } from '../../styles/cms/cell'
+import { batchSelect } from '../../logic'
+
+export const CheckCell = ({ rowData, ...props }) => {
+  // const { cat, state } = rowData
+  const { id, _checked } = rowData
+
+  return (
+    <Cell {...props}>
+      <Checker
+        checked={_checked}
+        size="small"
+        top={5}
+        onChange={(checked) => batchSelect(id, checked)}
+      />
+    </Cell>
+  )
+}
 
 export const StateCell = ({ rowData, ...props }) => {
   const { cat, state } = rowData
@@ -37,7 +57,7 @@ export const ArticleCell = ({ rowData, ...props }) => {
   return (
     <Cell {...props}>
       <ArticleWrapper>
-        <ArticleTitle>{rowData.title}</ArticleTitle>
+        <ArticleTitle onClick={() => previewArticle(rowData)}>{rowData.title}</ArticleTitle>
         <TagsList items={rowData.articleTags} left={0} />
       </ArticleWrapper>
     </Cell>

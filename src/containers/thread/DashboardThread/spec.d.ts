@@ -31,13 +31,16 @@ import type {
   TNameAliasConfig,
   TSocialItem,
   TPagedArticles,
+  TID,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'CMS' | 'INTEGRATE'
 
 export type TCMSContents = {
   pagedPosts: TPagedArticles
+  pagedChangelogs: TPagedArticles
   loading: boolean
+  batchSelectedIDs: TID[]
 }
 
 export type TMenuGroup = {

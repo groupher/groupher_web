@@ -4,14 +4,13 @@ import { pluck } from 'ramda'
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table'
 
 import type { TID, TPagedArticles } from '@/spec'
-
 import Checker from '@/widgets/Checker'
 
 import { CheckCell, ArticleCell, StateCell, AuthorDateCell, DateCell } from '../Cell'
 import FilterBar from '../FilterBar'
 
-import { Title, SortIcon } from '../../styles/cms/posts'
-import { loadPosts, batchSelectAll } from '../../logic'
+import { Title, SortIcon } from '../../styles/cms/changelogs'
+import { loadChangelogs, batchSelectAll } from '../../logic'
 
 /**
  * example: https://table.rsuitejs.com/#fixed-column
@@ -19,16 +18,16 @@ import { loadPosts, batchSelectAll } from '../../logic'
  */
 
 type TProps = {
-  pagedPosts: TPagedArticles
+  pagedChangelogs: TPagedArticles
   loading: boolean
   batchSelectedIDs: TID[]
 }
 
-const Posts: FC<TProps> = ({ pagedPosts, loading, batchSelectedIDs }) => {
+const Changelogs: FC<TProps> = ({ pagedChangelogs, loading, batchSelectedIDs }) => {
   const [showCheckColumn, setShowCheckColumn] = useState(false)
   const [sortColumn, setSortColumn] = useState('id')
 
-  const allIDs = pluck('id', pagedPosts.entries)
+  const allIDs = pluck('id', pagedChangelogs.entries)
   const isAllSelected = allIDs.length === batchSelectedIDs?.length
 
   const [sortState, setSortState] = useState({
@@ -71,8 +70,9 @@ const Posts: FC<TProps> = ({ pagedPosts, loading, batchSelectedIDs }) => {
         triggerCheckbox={(show) => setShowCheckColumn(show)}
         selectedCount={batchSelectedIDs.length}
       />
+
       <Table
-        data={pagedPosts.entries}
+        data={pagedChangelogs.entries}
         sortColumn={sortColumn}
         onSortColumn={handleSortColumn}
         rowHeight={68}
@@ -106,7 +106,7 @@ const Posts: FC<TProps> = ({ pagedPosts, loading, batchSelectedIDs }) => {
 
         <Column width={280} fixed>
           <HeaderCell>
-            <Title onClick={() => loadPosts()}>标题</Title>
+            <Title onClick={() => loadChangelogs()}>标题</Title>
           </HeaderCell>
           {/* @ts-ignore */}
           <ArticleCell dataKey="title" />
@@ -149,7 +149,7 @@ const Posts: FC<TProps> = ({ pagedPosts, loading, batchSelectedIDs }) => {
           <DateCell />
         </Column>
 
-        <Column width={115}>
+        <Column width={110}>
           <HeaderCell align="right">
             <Title>作者</Title>
           </HeaderCell>
@@ -161,4 +161,4 @@ const Posts: FC<TProps> = ({ pagedPosts, loading, batchSelectedIDs }) => {
   )
 }
 
-export default Posts
+export default Changelogs

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
-import { includes, values } from 'ramda'
+import { includes, values, uniq, reject } from 'ramda'
 
-import type { TEditValue, TSocialItem } from '@/spec'
+import type { TEditValue, TID, TSocialItem } from '@/spec'
 import { COLOR_NAME } from '@/constant/colors'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
@@ -205,14 +205,47 @@ export const onSave = (field: TSettingField): void => {
   _doMutation(field, store[field])
 }
 
-export const loadArticles = () => {
-  console.log('## loadArticles')
-
+export const loadPosts = () => {
+  const { curCommunity } = store
   store.mark({ loading: true })
   sr71$.query(S.pagedPosts, {
-    filter: { page: 1, size: 20, community: 'home' },
+    filter: { page: 1, size: 20, community: curCommunity.slug },
     userHasLogin: false,
   })
+}
+
+export const loadChangelogs = () => {
+  const { curCommunity } = store
+
+  store.mark({ loading: true })
+  sr71$.query(S.pagedChangelogs, {
+    filter: { page: 1, size: 20, community: curCommunity.slug },
+    userHasLogin: false,
+  })
+}
+
+/**
+ * batch select any TID list
+ */
+export const batchSelect = (id: TID, selected = true): void => {
+  const {
+    cmsContents: { batchSelectedIDs },
+  } = store
+
+  const _batchSelectedIds = selected
+    ? [...batchSelectedIDs, id]
+    : reject((_id) => id === _id, batchSelectedIDs)
+
+  store.mark({ batchSelectedIDs: uniq(_batchSelectedIds) })
+}
+
+export const batchSelectAll = (selected: boolean, ids = []): void => {
+  if (!selected) {
+    store.mark({ batchSelectedIDs: [] })
+    return
+  }
+
+  store.mark({ batchSelectedIDs: ids })
 }
 
 // ###############################

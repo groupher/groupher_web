@@ -51,7 +51,7 @@ import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { washThreads } from '@/utils/helper'
 
-import { PagedPosts, Tag, emptyPagi } from '@/model'
+import { PagedPosts, PagedChangelogs, Tag, emptyPagi } from '@/model'
 
 import type {
   TBaseInfoSettings,
@@ -111,7 +111,9 @@ const DashboardThread = T.model('DashboardThread', {
   defaultSettings: T.opt(InitSettings, {}),
 
   // cms
+  batchSelectedIDs: T.opt(T.array(T.str), []),
   pagedPosts: T.opt(PagedPosts, emptyPagi),
+  pagedChangelogs: T.opt(PagedChangelogs, emptyPagi),
 
   // for global alert
   demoAlertEnable: T.opt(T.bool, false),
@@ -182,10 +184,32 @@ const DashboardThread = T.model('DashboardThread', {
 
     get cmsContents(): TCMSContents {
       const slf = self as TStore
+      const { batchSelectedIDs } = slf
+      const _batchSelectedIds = toJS(batchSelectedIDs)
+      const _pagedPosts = toJS(slf.pagedPosts)
+      const _pagedChangelogs = toJS(slf.pagedChangelogs)
+
+      const _postsEntries = _pagedPosts.entries.map((article) => ({
+        ...article,
+        _checked: includes(article.id, _batchSelectedIds),
+      }))
+
+      const _changelogsEntries = _pagedChangelogs.entries.map((article) => ({
+        ...article,
+        _checked: includes(article.id, _batchSelectedIds),
+      }))
 
       return {
         loading: slf.loading,
-        pagedPosts: toJS(slf.pagedPosts),
+        batchSelectedIDs: _batchSelectedIds,
+        pagedPosts: {
+          ..._pagedPosts,
+          entries: _postsEntries,
+        },
+        pagedChangelogs: {
+          ..._pagedChangelogs,
+          entries: _changelogsEntries,
+        },
       }
     },
 

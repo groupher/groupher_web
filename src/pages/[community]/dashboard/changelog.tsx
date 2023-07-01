@@ -11,12 +11,11 @@ import METRIC from '@/constant/metric'
 import { useStore } from '@/stores/init'
 
 import {
-  isArticleThread,
   ssrBaseStates,
   ssrFetchPrepare,
-  ssrError,
-  ssrPagedArticleSchema,
   ssrPagedArticlesFilter,
+  ssrParseDashboard,
+  ssrError,
   ssrRescue,
   communitySEO,
   log,
@@ -45,23 +44,20 @@ const loader = async (context, opt = {}) => {
 
   const filter = ssrPagedArticlesFilter(context, userHasLogin)
 
-  const pagedArticles = isArticleThread(thread)
-    ? gqClient.request(ssrPagedArticleSchema(thread), filter)
-    : {}
-
-  const subscribedCommunities = gqClient.request(P.subscribedCommunities, {
+  const pagedChangelogs = gqClient.request(P.pagedChangelogs, {
     filter: {
       page: 1,
       size: PAGE_SIZE.M,
+      community,
     },
+    userHasLogin,
   })
 
   return {
     filter,
     ...(await sessionState),
     ...(await curCommunity),
-    ...(await pagedArticles),
-    ...(await subscribedCommunities),
+    ...(await pagedChangelogs),
   }
 }
 
@@ -83,7 +79,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  const { community } = resp
+  const { community, pagedChangelogs } = resp
+  const dashboard = ssrParseDashboard(community)
 
   const initProps = merge(
     {
@@ -99,7 +96,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         activeThread: thread,
       },
       dashboardThread: {
+        ...dashboard,
         curTab: ROUTE.DASHBOARD.CHANGELOG,
+        pagedChangelogs,
       },
     },
     {

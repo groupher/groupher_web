@@ -38,7 +38,6 @@ const loader = async (context, opt = {}) => {
   return {
     ...(await sessionState),
     ...(await user),
-    ...(await subscribedCommunities),
   }
 }
 
