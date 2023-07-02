@@ -33,6 +33,7 @@ import type {
   TEnableConfig,
   TNameAliasConfig,
   TChangeMode,
+  TArticleEntries,
 } from '@/spec'
 
 import {
@@ -74,7 +75,7 @@ import type {
   TCMSContents,
 } from '../spec'
 
-import { SETTING_FIELD, BASEINFO_KEYS, SEO_KEYS, BROADCAST_KEYS } from '../constant'
+import { SETTING_FIELD, UI_KEYS, BASEINFO_KEYS, SEO_KEYS, BROADCAST_KEYS } from '../constant'
 
 import { NameAlias, LinkItem, InitSettings, settingsModalFields } from './Models'
 
@@ -193,36 +194,21 @@ const DashboardThread = T.model('DashboardThread', {
       const _pagedDocs = toJS(slf.pagedDocs)
       const _pagedChangelogs = toJS(slf.pagedChangelogs)
 
-      const _postsEntries = _pagedPosts.entries.map((article) => ({
-        ...article,
-        _checked: includes(article.id, _batchSelectedIds),
-      }))
-
-      const _docsEntries = _pagedDocs.entries.map((article) => ({
-        ...article,
-        _checked: includes(article.id, _batchSelectedIds),
-      }))
-
-      const _changelogsEntries = _pagedChangelogs.entries.map((article) => ({
-        ...article,
-        _checked: includes(article.id, _batchSelectedIds),
-      }))
-
       return {
         loading: slf.loading,
         docTab,
         batchSelectedIDs: _batchSelectedIds,
         pagedPosts: {
           ..._pagedPosts,
-          entries: _postsEntries,
+          entries: slf._assignChecked(_pagedPosts.entries),
         },
         pagedDocs: {
           ..._pagedDocs,
-          entries: _docsEntries,
+          entries: slf._assignChecked(_pagedDocs.entries),
         },
         pagedChangelogs: {
           ..._pagedChangelogs,
-          entries: _changelogsEntries,
+          entries: slf._assignChecked(_pagedChangelogs.entries),
         },
       }
     },
@@ -525,9 +511,8 @@ const DashboardThread = T.model('DashboardThread', {
       const slf = self as TStore
       const root = getParent(self) as TRootStore
 
-      const {
-        wallpaperEditor: { wallpapers, wallpaper, customWallpaper, hasShadow },
-      } = root
+      const { wallpaperEditor } = root
+      const { wallpapers, wallpaper, customWallpaper, hasShadow } = wallpaperEditor
 
       // @ts-ignore
       return {
@@ -537,28 +522,10 @@ const DashboardThread = T.model('DashboardThread', {
           wallpapers,
           hasShadow,
         },
+        // @ts-ignore
         kanbanBgColors: toJS(slf.kanbanBgColors) as TColorName[],
-        ...pick(
-          [
-            'saving',
-            'layoutTab',
-            'primaryColor',
-            'brandLayout',
-            'avatarLayout',
-            'bannerLayout',
-            'topbarLayout',
-            'topbarBg',
-            'postLayout',
-            'kanbanLayout',
-            'docLayout',
-            'docFaqLayout',
-            'changelogLayout',
-            'glowFixed',
-            'glowType',
-            'glowOpacity',
-          ],
-          slf,
-        ),
+        ...pick(UI_KEYS, slf),
+        saving: slf.saving,
       }
     },
 
@@ -696,33 +663,28 @@ const DashboardThread = T.model('DashboardThread', {
       BStore.set(DASHBOARD_DEMO_KEY, JSON.stringify(saveSlf))
     },
 
+    _rollbackByKeys(keys: string[]): void {
+      const slf = self as TStore
+
+      for (let i = 0; i < keys.length; i += 1) {
+        const key = keys[i]
+        const initValue = slf.initSettings[key]
+        if (self[key] !== initValue) {
+          // @ts-ignore
+          self[key] = initValue
+        }
+      }
+    },
+
     rollbackEdit(field: TSettingField): void {
       const slf = self as TStore
 
       if (field === SETTING_FIELD.BASE_INFO) {
-        for (let i = 0; i < BASEINFO_KEYS.length; i += 1) {
-          const key = BASEINFO_KEYS[i]
-          const initValue = slf.initSettings[key]
-          if (self[key] !== initValue) {
-            // @ts-ignore
-            self[key] = initValue
-          }
-        }
-
-        return
+        return slf._rollbackByKeys(BASEINFO_KEYS)
       }
 
       if (field === SETTING_FIELD.SEO) {
-        for (let i = 0; i < SEO_KEYS.length; i += 1) {
-          const key = SEO_KEYS[i]
-          const initValue = slf.initSettings[key]
-          if (self[key] !== initValue) {
-            // @ts-ignore
-            self[key] = initValue
-          }
-        }
-
-        return
+        return slf._rollbackByKeys(SEO_KEYS)
       }
 
       if (field === SETTING_FIELD.TAG) {
@@ -786,6 +748,17 @@ const DashboardThread = T.model('DashboardThread', {
       )
 
       return targetIdx
+    },
+
+    _assignChecked(entries: TArticleEntries): TArticleEntries {
+      const slf = self as TStore
+      const { batchSelectedIDs } = slf
+      const _batchSelectedIds = toJS(batchSelectedIDs)
+
+      return entries.map((article) => ({
+        ...article,
+        _checked: includes(article.id, _batchSelectedIds),
+      }))
     },
 
     updateEditing(sobj): void {

@@ -475,6 +475,24 @@ export const BASEINFO_KEYS = [
   'techstack',
 ]
 
+export const UI_KEYS = [
+  'layoutTab',
+  'primaryColor',
+  'brandLayout',
+  'avatarLayout',
+  'bannerLayout',
+  'topbarLayout',
+  'topbarBg',
+  'postLayout',
+  'kanbanLayout',
+  'docLayout',
+  'docFaqLayout',
+  'changelogLayout',
+  'glowFixed',
+  'glowType',
+  'glowOpacity',
+]
+
 export const SEO_KEYS = [
   'ogSiteName',
   'ogTitle',
