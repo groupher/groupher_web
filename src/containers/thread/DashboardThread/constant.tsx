@@ -6,6 +6,7 @@ import {
   DASHBOARD_ALIAS_ROUTE,
   DASHBOARD_BASEINFO_ROUTE,
   DASHBOARD_SEO_ROUTE,
+  DASHBOARD_DOC_ROUTE,
 } from '@/constant/route'
 
 import type { TSettingField, TWidgetType, THeaderEditType, TFooterEditType } from './spec'
@@ -329,6 +330,17 @@ export const BROADCAST_TABS = [
   {
     title: '帖子页脚',
     slug: DASHBOARD_BROADCAST_ROUTE.ARTICLE,
+  },
+]
+
+export const DOC_TABS = [
+  {
+    title: '表格视图',
+    slug: DASHBOARD_DOC_ROUTE.TABLE,
+  },
+  {
+    title: '目录视图',
+    slug: DASHBOARD_DOC_ROUTE.TREE,
   },
 ]
 

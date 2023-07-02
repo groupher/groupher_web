@@ -9,6 +9,7 @@ import { Wrapper } from '../styles/cms'
 
 import Posts from './Posts'
 import Changelogs from './Changelogs'
+import Docs from './Docs'
 
 type TProps = {
   cmsContents: TCMSContents
@@ -16,7 +17,7 @@ type TProps = {
 }
 
 const CMS: FC<TProps> = ({ route, cmsContents }) => {
-  const { pagedPosts, pagedChangelogs, loading, batchSelectedIDs } = cmsContents
+  const { pagedPosts, pagedDocs, docTab, pagedChangelogs, loading, batchSelectedIDs } = cmsContents
 
   let contents = null
 
@@ -31,6 +32,17 @@ const CMS: FC<TProps> = ({ route, cmsContents }) => {
       contents = (
         <Changelogs
           pagedChangelogs={pagedChangelogs}
+          batchSelectedIDs={batchSelectedIDs}
+          loading={loading}
+        />
+      )
+      break
+    }
+    case DASHBOARD_ROUTE.DOC: {
+      contents = (
+        <Docs
+          pagedDocs={pagedDocs}
+          docTab={docTab}
           batchSelectedIDs={batchSelectedIDs}
           loading={loading}
         />

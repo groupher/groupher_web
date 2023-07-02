@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
   min-height: 52px;
   padding-right: 5px;
   margin-left: 5px;
-  margin-top: -2px;
+  margin-top: 1px;
   padding-bottom: 15px;
   border-bottom: 1px solid;
   border-bottom-color: ${theme('divider')};

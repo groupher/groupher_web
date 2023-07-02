@@ -3,22 +3,21 @@ import { merge } from 'ramda'
 import { Provider } from 'mobx-react'
 
 import type { TCommunity } from '@/spec'
+import { PAGE_SIZE } from '@/config'
 import { HCN } from '@/constant/name'
-import { ROUTE } from '@/constant/route'
+import { ROUTE, DASHBOARD_DOC_ROUTE } from '@/constant/route'
 import { THREAD } from '@/constant/thread'
 import METRIC from '@/constant/metric'
 import { useStore } from '@/stores/init'
 
 import {
-  isArticleThread,
   ssrBaseStates,
   ssrFetchPrepare,
   ssrError,
-  ssrPagedArticleSchema,
+  ssrParseDashboard,
   ssrPagedArticlesFilter,
   ssrRescue,
   communitySEO,
-  log,
 } from '@/utils'
 
 import GlobalLayout from '@/containers/layout/GlobalLayout'
@@ -44,15 +43,20 @@ const loader = async (context, opt = {}) => {
 
   const filter = ssrPagedArticlesFilter(context, userHasLogin)
 
-  const pagedArticles = isArticleThread(thread)
-    ? gqClient.request(ssrPagedArticleSchema(thread), filter)
-    : {}
+  const pagedDocs = gqClient.request(P.pagedDocs, {
+    filter: {
+      page: 1,
+      size: PAGE_SIZE.M,
+      community,
+    },
+    userHasLogin,
+  })
 
   return {
     filter,
     ...(await sessionState),
     ...(await curCommunity),
-    ...(await pagedArticles),
+    ...(await pagedDocs),
   }
 }
 
@@ -65,7 +69,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     resp = await loader(context)
   } catch (e) {
-    log('#### error from server: ', e)
     if (ssrRescue.hasLoginError(e.response?.errors)) {
       // token 过期了，重新用匿名方式请求一次
       await loader(context, { tokenExpired: true })
@@ -74,7 +77,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  const { community } = resp
+  const { community, pagedDocs } = resp
+  const dashboard = ssrParseDashboard(community)
 
   const initProps = merge(
     {
@@ -90,7 +94,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         activeThread: thread,
       },
       dashboardThread: {
+        ...dashboard,
         curTab: ROUTE.DASHBOARD.DOC,
+        docTab: DASHBOARD_DOC_ROUTE.TREE,
+        pagedDocs,
       },
     },
     {

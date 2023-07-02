@@ -42,6 +42,7 @@ import {
   DASHBOARD_ALIAS_ROUTE,
   DASHBOARD_BROADCAST_ROUTE,
   DASHBOARD_SEO_ROUTE,
+  DASHBOARD_DOC_ROUTE,
 } from '@/constant/route'
 import { CHANGE_MODE } from '@/constant/mode'
 import { THREAD } from '@/constant/thread'
@@ -51,7 +52,7 @@ import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { washThreads } from '@/utils/helper'
 
-import { PagedPosts, PagedChangelogs, Tag, emptyPagi } from '@/model'
+import { PagedPosts, PagedDocs, PagedChangelogs, Tag, emptyPagi } from '@/model'
 
 import type {
   TBaseInfoSettings,
@@ -92,6 +93,7 @@ const DashboardThread = T.model('DashboardThread', {
   baseInfoTab: T.opt(T.enum(values(DASHBOARD_BASEINFO_ROUTE)), DASHBOARD_BASEINFO_ROUTE.BASIC),
   aliasTab: T.opt(T.enum(values(DASHBOARD_ALIAS_ROUTE)), DASHBOARD_ALIAS_ROUTE.GENERAL),
   seoTab: T.opt(T.enum(values(DASHBOARD_SEO_ROUTE)), DASHBOARD_SEO_ROUTE.SEARCH_ENGINE),
+  docTab: T.opt(T.enum(values(DASHBOARD_DOC_ROUTE)), DASHBOARD_DOC_ROUTE.TABLE),
   layoutTab: T.opt(T.enum(values(DASHBOARD_LAYOUT_ROUTE)), DASHBOARD_LAYOUT_ROUTE.GLOBAL),
   broadcastTab: T.opt(T.enum(values(DASHBOARD_BROADCAST_ROUTE)), DASHBOARD_BROADCAST_ROUTE.GLOBAL),
 
@@ -113,6 +115,7 @@ const DashboardThread = T.model('DashboardThread', {
   // cms
   batchSelectedIDs: T.opt(T.array(T.str), []),
   pagedPosts: T.opt(PagedPosts, emptyPagi),
+  pagedDocs: T.opt(PagedDocs, emptyPagi),
   pagedChangelogs: T.opt(PagedChangelogs, emptyPagi),
 
   // for global alert
@@ -184,12 +187,18 @@ const DashboardThread = T.model('DashboardThread', {
 
     get cmsContents(): TCMSContents {
       const slf = self as TStore
-      const { batchSelectedIDs } = slf
+      const { batchSelectedIDs, docTab } = slf
       const _batchSelectedIds = toJS(batchSelectedIDs)
       const _pagedPosts = toJS(slf.pagedPosts)
+      const _pagedDocs = toJS(slf.pagedDocs)
       const _pagedChangelogs = toJS(slf.pagedChangelogs)
 
       const _postsEntries = _pagedPosts.entries.map((article) => ({
+        ...article,
+        _checked: includes(article.id, _batchSelectedIds),
+      }))
+
+      const _docsEntries = _pagedDocs.entries.map((article) => ({
         ...article,
         _checked: includes(article.id, _batchSelectedIds),
       }))
@@ -201,10 +210,15 @@ const DashboardThread = T.model('DashboardThread', {
 
       return {
         loading: slf.loading,
+        docTab,
         batchSelectedIDs: _batchSelectedIds,
         pagedPosts: {
           ..._pagedPosts,
           entries: _postsEntries,
+        },
+        pagedDocs: {
+          ..._pagedDocs,
+          entries: _docsEntries,
         },
         pagedChangelogs: {
           ..._pagedChangelogs,

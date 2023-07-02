@@ -6,6 +6,7 @@ import type {
   TDashboardAliasRoute,
   TDashboardBaseInfoRoute,
   TDashboardSEORoute,
+  TDashboardDocRoute,
 } from '@/spec'
 
 export const NON_COMMUNITY_ROUTE = {
@@ -57,6 +58,11 @@ export const DASHBOARD_SEO_ROUTE = {
   SEARCH_ENGINE: 'search_engine',
   TWITTER: 'twitter',
 } as Record<Uppercase<TDashboardSEORoute>, TDashboardSEORoute>
+
+export const DASHBOARD_DOC_ROUTE = {
+  TABLE: 'table',
+  TREE: 'tree',
+} as Record<Uppercase<TDashboardDocRoute>, TDashboardDocRoute>
 
 export const DASHBOARD_LAYOUT_ROUTE = {
   GLOBAL: 'global',

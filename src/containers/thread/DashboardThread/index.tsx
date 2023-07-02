@@ -26,7 +26,7 @@ import {
   Domain,
   ThirdPart,
   Widgets,
-  Doc,
+  // Doc,
   Header,
   Footer,
   RSS,
@@ -90,7 +90,7 @@ const DashboardThreadContainer: FC<TProps> = ({
         {curTab === DASHBOARD.BROADCAST && (
           <Broadcast settings={broadcastSettings} touched={touched} />
         )}
-        {curTab === DASHBOARD.DOC && <Doc settings={docSettings} />}
+        {/* {curTab === DASHBOARD.DOC && <Doc settings={docSettings} />} */}
         {curTab === DASHBOARD.DOMAIN && <Domain />}
         {curTab === DASHBOARD.THIRD_PART && <ThirdPart />}
         {curTab === DASHBOARD.WIDGETS && <Widgets settings={widgetsSettings} touched={touched} />}

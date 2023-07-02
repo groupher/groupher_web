@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import { TUser, TAccount } from '@/spec'
+import type { TUser, TAccount } from '@/spec'
 // import { ICON } from '@/config'
 import ImgFallback from '@/widgets/ImgFallback'
 
@@ -14,10 +14,7 @@ type TProps = {
 const ArticleAuthorAvatar: FC<TProps> = ({ user, onSelect }) => {
   return (
     <Wrapper onClick={() => onSelect(user)}>
-      <Avatar
-        src={user.avatar}
-        fallback={<ImgFallback user={user} size={38} top={2} />}
-      />
+      <Avatar src={user.avatar} fallback={<ImgFallback user={user} size={38} top={2} />} />
       {/* <Tail src={`${ICON}/shape/tail.svg`} /> */}
     </Wrapper>
   )

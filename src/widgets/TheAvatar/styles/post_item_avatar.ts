@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 
-import { Tail as TailBase } from './index'
+import { Tail as TailBase } from '.'
 
 export const Wrapper = styled.div`
   cursor: pointer;

@@ -1,7 +1,7 @@
 import { theme } from '@/utils/css'
 import SIZE from '@/constant/size'
 
-import { TTheme } from '@/spec'
+import type { TTheme } from '@/spec'
 
 export const getActiveBackground = (dimOnActive: boolean): TTheme => {
   return dimOnActive ? theme('divider') : theme('button.primary')

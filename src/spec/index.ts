@@ -175,6 +175,7 @@ export type {
   TDashboardLayoutRoute,
   TDashboardBaseInfoRoute,
   TDashboardSEORoute,
+  TDashboardDocRoute,
   TDashboardBroadcastRoute,
   TDashboardAliasRoute,
 } from './route'
