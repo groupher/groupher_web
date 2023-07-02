@@ -125,59 +125,33 @@ const DashboardThread = T.model('DashboardThread', {
   .views((self) => ({
     get globalLayout(): TGlobalLayout {
       const slf = self as TStore
-      const { initSettings } = slf
-      const {
-        primaryColor,
-        changelogLayout,
-        postLayout,
-        kanbanLayout,
-        kanbanBgColors,
-        docLayout,
-        docFaqLayout,
-        headerLayout,
-        footerLayout,
-        bannerLayout,
-        topbarLayout,
-        topbarBg,
-
-        broadcastLayout,
-        broadcastBg,
-        broadcastEnable,
-
-        broadcastArticleLayout,
-        broadcastArticleBg,
-        broadcastArticleEnable,
-
-        brandLayout,
-        avatarLayout,
-        enable,
-      } = initSettings
+      const { initSettings: init } = slf
 
       return {
-        primaryColor,
-        brand: brandLayout,
-        avatar: avatarLayout,
-        post: postLayout,
-        kanban: kanbanLayout,
-        kanbanBgColors: kanbanBgColors as TColorName[],
-        doc: docLayout,
-        docFaq: docFaqLayout,
-        header: headerLayout,
-        footer: footerLayout,
-        changelog: changelogLayout,
-        banner: bannerLayout,
-        topbar: topbarLayout,
-        topbarBg,
+        primaryColor: init.primaryColor,
+        brand: init.brandLayout,
+        avatar: init.avatarLayout,
+        post: init.postLayout,
+        kanban: init.kanbanLayout,
+        kanbanBgColors: init.kanbanBgColors as TColorName[],
+        doc: init.docLayout,
+        docFaq: init.docFaqLayout,
+        header: init.headerLayout,
+        footer: init.footerLayout,
+        changelog: init.changelogLayout,
+        banner: init.bannerLayout,
+        topbar: init.topbarLayout,
+        topbarBg: init.topbarBg,
 
-        broadcast: broadcastLayout,
-        broadcastBg,
-        broadcastEnable,
+        broadcast: init.broadcastLayout,
+        broadcastBg: init.broadcastBg,
+        broadcastEnable: init.broadcastEnable,
 
-        broadcastArticle: broadcastArticleLayout,
-        broadcastArticleBg,
-        broadcastArticleEnable,
+        broadcastArticle: init.broadcastArticleLayout,
+        broadcastArticleBg: init.broadcastArticleBg,
+        broadcastArticleEnable: init.broadcastArticleEnable,
 
-        enable,
+        enable: init.enable,
       }
     },
     get curCommunity(): TCommunity {
