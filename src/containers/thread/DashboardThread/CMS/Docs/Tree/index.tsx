@@ -122,7 +122,7 @@ function Input({ node }: { node: NodeApi<TTreeItem> }) {
   )
 }
 
-function Cursor({ top, left }: CursorProps) {
+const Cursor: FC<CursorProps> = ({ top, left }) => {
   // @ts-ignore
   return <CustomCursor top={top} left={left} />
 }
