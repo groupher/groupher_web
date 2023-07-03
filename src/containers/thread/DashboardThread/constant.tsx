@@ -335,12 +335,20 @@ export const BROADCAST_TABS = [
 
 export const DOC_TABS = [
   {
-    title: '表格视图',
+    title: '概览',
     slug: DASHBOARD_DOC_ROUTE.TABLE,
   },
   {
-    title: '目录视图',
+    title: '目录编排',
     slug: DASHBOARD_DOC_ROUTE.TREE,
+  },
+  {
+    title: '封面图标',
+    slug: DASHBOARD_DOC_ROUTE.COVER,
+  },
+  {
+    title: '常见问题',
+    slug: DASHBOARD_DOC_ROUTE.FAQ,
   },
 ]
 

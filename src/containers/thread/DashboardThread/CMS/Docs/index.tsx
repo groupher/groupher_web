@@ -8,10 +8,12 @@ import useCurCommunity from '@/hooks/useCurCommunity'
 
 import Tabs from '@/widgets/Switcher/Tabs'
 
-import { DOC_TABS } from '../../constant'
 import TableView from './Table'
 import TreeView from './Tree'
+import Cover from './Cover'
+import FAQ from './FAQ'
 
+import { DOC_TABS } from '../../constant'
 import { Wrapper, TabsWrapper } from '../../styles/cms/docs'
 import { edit } from '../../logic'
 
@@ -33,6 +35,7 @@ const Docs: FC<TProps> = ({ pagedDocs, docTab, batchSelectedIDs, loading }) => {
           activeKey={docTab}
           onChange={(tab) => {
             edit(tab, 'docTab')
+
             const targetPath =
               tab === DASHBOARD_DOC_ROUTE.TABLE
                 ? `/${curCommunity.slug}/dashboard/doc`
@@ -44,11 +47,13 @@ const Docs: FC<TProps> = ({ pagedDocs, docTab, batchSelectedIDs, loading }) => {
           noAnimation
         />
       </TabsWrapper>
-      {docTab === DASHBOARD_DOC_ROUTE.TREE ? (
-        <TreeView pagedDocs={pagedDocs} />
-      ) : (
+
+      {docTab === DASHBOARD_DOC_ROUTE.TREE && <TreeView pagedDocs={pagedDocs} />}
+      {docTab === DASHBOARD_DOC_ROUTE.TABLE && (
         <TableView pagedDocs={pagedDocs} loading={loading} batchSelectedIDs={batchSelectedIDs} />
       )}
+      {docTab === DASHBOARD_DOC_ROUTE.COVER && <Cover />}
+      {docTab === DASHBOARD_DOC_ROUTE.FAQ && <FAQ />}
     </Wrapper>
   )
 }

@@ -62,6 +62,8 @@ export const DASHBOARD_SEO_ROUTE = {
 export const DASHBOARD_DOC_ROUTE = {
   TABLE: 'table',
   TREE: 'tree',
+  COVER: 'cover',
+  FAQ: 'faq',
 } as Record<Uppercase<TDashboardDocRoute>, TDashboardDocRoute>
 
 export const DASHBOARD_LAYOUT_ROUTE = {
