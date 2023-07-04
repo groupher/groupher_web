@@ -29,7 +29,6 @@ type TContent = { isRightLayout?: boolean; open?: boolean; isSidebarLayout: bool
 export const Content = styled(MainWrapper)<TContent>`
   flex-grow: 1;
   background: transparent;
-  margin-top: 24px;
   font-size: 16px;
   line-height: 1.8;
   padding-right: ${({ isRightLayout }) => (isRightLayout ? '10px' : '90px')};
@@ -42,6 +41,7 @@ export const Content = styled(MainWrapper)<TContent>`
     return '100%'
   }};
 `
+
 type TSidebar = { isLeftLayout?: boolean; open?: boolean }
 export const Sidebar = styled.div<TSidebar>`
   ${css.flexColumn()};
