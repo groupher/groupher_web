@@ -4,7 +4,7 @@ import type { TTestable, TActive } from '@/spec'
 import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flex('justify-between')};
@@ -39,8 +39,7 @@ export const TagWrapper = styled.div`
 `
 export const ItemBar = styled.div<TActive>`
   ${css.flex('align-center', 'justify-between')};
-  color: ${({ active }) =>
-    active ? theme('article.title') : theme('article.digest')};
+  color: ${({ active }) => (active ? theme('article.title') : theme('article.digest'))};
   font-weight: ${({ active }) => (active ? 'bold' : 'normal')};
   padding: 5px 8px;
   font-size: 13px;

@@ -7,7 +7,7 @@ import css, { theme } from '@/utils/css'
 
 import { getLocalSVG } from '@/icons'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flex('align-center')};

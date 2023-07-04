@@ -10,7 +10,7 @@ import PlusSVG from '@/icons/Plus'
 import MoreSVG from '@/icons/menu/More'
 
 type TWrapper = TTestable
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.flexColumn()};

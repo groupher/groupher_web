@@ -18,6 +18,7 @@ export const openMobileNaviMenu = (): void => {
 const MainEntries: FC = () => {
   return (
     <Wrapper onClick={openMobileNaviMenu}>
+      {/* @ts-ignore */}
       <SiteLink as="span" testid="header-mobile">
         <MobileIcon />
       </SiteLink>

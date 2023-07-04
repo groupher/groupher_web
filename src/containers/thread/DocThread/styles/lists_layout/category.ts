@@ -7,7 +7,7 @@ import { camelize } from '@/utils/fmt'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
 type TWrapper = TTestable & { color?: string }
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.flex('align-center')};

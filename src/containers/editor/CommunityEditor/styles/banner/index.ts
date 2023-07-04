@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TTestable } from '@/spec'
 import css, { theme } from '@/utils/css'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flexColumn('justify-center')};
@@ -19,6 +19,5 @@ export const SloganTextWrapper = styled.div<{ highlight: boolean }>`
   margin-right: 3px;
 
   font-weight: ${({ highlight }) => (highlight ? 'bold' : '')};
-  color: ${({ highlight }) =>
-    highlight ? theme('article.title') : theme('article.digest')};
+  color: ${({ highlight }) => (highlight ? theme('article.title') : theme('article.digest'))};
 `

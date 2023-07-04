@@ -13,7 +13,7 @@ type TPos = {
 
 type IWrapper = TPos & TTestable
 
-export const Wrapper = styled.header.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.header.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<IWrapper>`
   width: 100%;
@@ -44,11 +44,9 @@ export const RouterWrapper = styled.div`
   ${css.flexGrow('align-center')};
   height: 100%;
 `
-export const HeaderSearchIcon = styled(HeaderSearchSVG).attrs(
-  ({ testid }: TTestable) => ({
-    'data-test-id': testid,
-  }),
-)<TTestable>`
+export const HeaderSearchIcon = styled(HeaderSearchSVG).attrs<TTestable>(({ testid }) => ({
+  'data-test-id': testid,
+}))<TTestable>`
   fill: ${theme('header.fg')};
   ${css.size(18)};
   display: block;
@@ -58,7 +56,7 @@ export const HeaderSearchIcon = styled(HeaderSearchSVG).attrs(
 export const Operations = styled.div`
   ${css.flex('align-center')};
 `
-export const Search = styled.div.attrs(({ testid }: TTestable) => ({
+export const Search = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   color: ${theme('header.fg')};

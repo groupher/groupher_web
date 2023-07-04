@@ -35,7 +35,7 @@ export const DrawerOverlay = styled.div<TActive>`
 // TL;DR:
 // - Use styled components for static styles and dynamic styles that don't change very often;
 // - Use inline styles (through .attrs) for styles that change frequently, like for animations.
-export const DrawerWrapper = styled.div.attrs(
+export const DrawerWrapper = styled.div.attrs<TDrawer>(
   ({
     testid,
     visible,
@@ -106,7 +106,7 @@ export const DrawerMobileContent = styled.div<TDrawerMobile>`
   background: ${({ options, bgColor }) => getContentLinearGradient(options, bgColor)};
 `
 
-export const MobileInnerContent = styled.div.attrs(({ swipeUpY, swipeDownY, options }: TSwipe) => ({
+export const MobileInnerContent = styled.div.attrs<TSwipe>(({ swipeUpY, swipeDownY, options }) => ({
   style: {
     filter: getDim(swipeUpY, swipeDownY, options),
   },

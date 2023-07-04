@@ -27,13 +27,12 @@ export const Count = styled.div`
 `
 const MAX_WIDTH = 50
 
-export const ChartBar = styled.div.attrs(
-  ({ percent }: { percent: number }) => ({
-    style: {
-      width: `${MAX_WIDTH * percent}px`,
-    },
-  }),
-)<{ percent: number }>`
+type TChartBar = { percent: number }
+export const ChartBar = styled.div.attrs<TChartBar>(({ percent }: { percent: number }) => ({
+  style: {
+    width: `${MAX_WIDTH * percent}px`,
+  },
+}))<TChartBar>`
   position: absolute;
   bottom: -1px;
   right: 0;

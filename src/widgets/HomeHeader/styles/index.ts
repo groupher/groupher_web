@@ -11,7 +11,7 @@ import DemoSVG from '@/icons/DemoTV'
 import ArrowSVG from '@/icons/ArrowSimple'
 import GithubSVT from '@/icons/social/Github'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flex('align-center', 'justify-between')};

@@ -9,7 +9,7 @@ import css, { theme } from '@/utils/css'
 
 type TWrapper = TTestable & TSpace
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   width: auto;

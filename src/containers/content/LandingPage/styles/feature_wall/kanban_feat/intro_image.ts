@@ -8,7 +8,7 @@ import GtdWipSVG from '@/icons/GtdWip'
 import GtdDoneSVG from '@/icons/GtdDone'
 import GtdTodoSVG from '@/icons/GtdTodo'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flexColumn('align-both')};

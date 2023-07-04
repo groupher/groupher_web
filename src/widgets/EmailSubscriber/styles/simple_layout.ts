@@ -6,7 +6,7 @@ import css from '@/utils/css'
 import Img from '@/Img'
 import Input from '@/widgets/Input'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   position: relative;

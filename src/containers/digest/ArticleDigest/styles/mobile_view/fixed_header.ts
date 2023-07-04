@@ -5,7 +5,7 @@ import css, { theme, zIndex } from '@/utils/css'
 import Img from '@/Img'
 
 type TWrapper = TTestable & TActive
-export const Wrapper = styled.nav.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.nav.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.flex('justify-center')};

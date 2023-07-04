@@ -8,7 +8,7 @@ import css, { theme } from '@/utils/css'
 
 import Input from '@/widgets/Input'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   margin-top: 40px;

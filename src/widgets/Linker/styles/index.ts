@@ -8,7 +8,7 @@ import LinkSVG from '@/icons/Link'
 import LinkOutSVG from '@/icons/LinkOut'
 
 type TWrapper = { inline: boolean } & TSpace & TTestable
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   display: ${({ inline }) => (inline ? 'inline-flex' : 'flex')};

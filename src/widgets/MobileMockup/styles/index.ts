@@ -5,7 +5,7 @@ import type { TTestable } from '@/spec'
 // import Img from '@/Img'
 import { theme } from '@/utils/css'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   position: relative;
@@ -15,8 +15,8 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   width: 320px; // 360px;
   height: 680px; // 780px;
   border-radius: 40px;
-  box-shadow: 0px 0px 0px 11px ${theme('divider')},
-    0px 0px 0px 12px ${theme('divider')}, 0px 0px 0px 6px ${theme('divider')};
+  box-shadow: 0px 0px 0px 11px ${theme('divider')}, 0px 0px 0px 12px ${theme('divider')},
+    0px 0px 0px 6px ${theme('divider')};
 
   &:before {
     content: '';

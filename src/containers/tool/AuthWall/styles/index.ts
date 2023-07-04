@@ -13,7 +13,7 @@ import TwitterSVG from '@/icons/social/Twitter'
 import FacebookSVG from '@/icons/social/Facebook'
 import GoogleSVG from '@/icons/social/Google'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   padding: 0 20px;

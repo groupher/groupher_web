@@ -29,6 +29,7 @@ const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold }) => {
       placement="bottom"
       offset={[-5, 5]}
     >
+      {/* @ts-ignore */}
       <GroupItem as="div">
         {groupTitle === MORE_GROUP ? '更多' : groupTitle} <ArrowIcon />
       </GroupItem>

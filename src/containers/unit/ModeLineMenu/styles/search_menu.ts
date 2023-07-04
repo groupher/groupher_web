@@ -6,7 +6,7 @@ import css, { theme } from '@/utils/css'
 
 import ArrowSVG from '@/icons/ArrowSimple'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flexColumn('align-center', 'justify-start')};

@@ -6,7 +6,7 @@ import Img from '@/Img'
 
 import { Wrapper as HeaderWrapper } from './index'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   position: absolute;

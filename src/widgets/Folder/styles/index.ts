@@ -5,7 +5,7 @@ import css from '@/utils/css'
 
 import { getWidth, getHeight } from './metric'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable & { size: string }>`
   position: relative;

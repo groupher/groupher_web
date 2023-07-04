@@ -4,6 +4,7 @@ import type { TActive } from '@/spec'
 
 import css, { theme } from '@/utils/css'
 
+import DragSVG from '@/icons/Dragble'
 import ArrowSVG from '@/icons/ArrowSimple'
 import DeleteSVG from '@/icons/Trash'
 import EditSVG from '@/icons/EditPen'
@@ -37,6 +38,7 @@ export const FolderName = styled.div<TFolderWrapper>`
   font-size: 14px;
   color: ${theme('article.title')};
   padding: 3px 10px;
+  padding-left: 18px;
 
   font-weight: ${({ hasChild, $active }) => (hasChild || $active ? 500 : 400)};
   line-height: ${({ hasChild }) => (hasChild ? '30px' : 'auto')};
@@ -56,6 +58,19 @@ export const ActionWrapper = styled.div`
 
   transition: all 0.2s;
 `
+
+export const DragIcon = styled(DragSVG)`
+  ${css.size(12)};
+  position: absolute;
+  left: 3px;
+  fill: ${theme('article.title')};
+  opacity: 0;
+
+  ${FolderWrapper}:hover & {
+    opacity: 1;
+  }
+`
+
 export const EditIcon = styled(EditSVG)`
   ${css.size(12)};
   fill: ${theme('article.digest')};
@@ -85,10 +100,10 @@ type TCursor = {
   top: number
   left: number
 }
-export const CustomCursor = styled.div.attrs(({ top, left }: TCursor) => ({
+export const CustomCursor = styled.div.attrs<TCursor>(({ top, left }) => ({
   style: {
-    top: top - 6,
-    left: left + 10,
+    top: top - 5,
+    left: left + 25,
   },
 }))`
   position: absolute;

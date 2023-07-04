@@ -9,7 +9,7 @@ import SiteLogoSVG from '@/icons/CPLogo'
 
 // import PromptIcon from '@/widgets/PromptIcon'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flexColumn('align-center', 'justify-between')};
@@ -19,7 +19,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   // background: ${theme('banner.bg')};
   background: rgba(0, 59, 74, 0.5);
 `
-export const LogoWrapper = styled(Link).attrs(({ testid }: TTestable) => ({
+export const LogoWrapper = styled(Link).attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flex('align-center')};
@@ -75,7 +75,7 @@ export const TextWrapper = styled.div`
 export const HintWrapper = styled.div`
   ${css.flexColumn('align-center')};
 `
-export const HintTitle = styled.div.attrs(({ testid }: TTestable) => ({
+export const HintTitle = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   color: ${theme('article.title')};

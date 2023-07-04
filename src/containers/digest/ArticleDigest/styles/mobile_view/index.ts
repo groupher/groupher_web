@@ -4,7 +4,7 @@ import type { TTestable, TMetric } from '@/spec'
 import css, { theme } from '@/utils/css'
 
 type TWrapper = { metric: TMetric } & TTestable
-export const Wrapper = styled.nav.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.nav.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.flexColumn('justify-center')};

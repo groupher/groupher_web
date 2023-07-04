@@ -17,6 +17,7 @@ const MoreLink: FC = () => {
       trigger="click"
       noPadding
     >
+      {/* @ts-ignore */}
       <SiteLink as="div" testid="header-more-link">
         更多 <ArrowIcon />
       </SiteLink>

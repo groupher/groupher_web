@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TTestable } from '@/spec'
 import css from '@/utils/css'
 
-export const BaseBanner = styled.nav.attrs(({ testid }: TTestable) => ({
+export const BaseBanner = styled.nav.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flexColumn('justify-center', 'align-center')};

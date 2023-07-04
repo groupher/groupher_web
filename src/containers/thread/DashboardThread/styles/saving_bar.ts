@@ -6,7 +6,7 @@ import css, { theme } from '@/utils/css'
 import InfoSVG from '@/icons/Save'
 
 type TWrapper = { gradientDirection: 'left' | 'right'; minimal: boolean } & TTestable & TSpace
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.flex('align-center')};

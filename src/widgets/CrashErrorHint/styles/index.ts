@@ -8,7 +8,7 @@ type TThemeName = {
   t: string
 }
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flexColumn('align-center', 'justify-between')};
@@ -49,8 +49,7 @@ export const Action = styled.span<{ t: string; noUnderline: boolean }>`
 
   &:hover {
     cursor: pointer;
-    text-decoration: ${({ noUnderline }) =>
-      noUnderline ? 'none' : 'underline'};
+    text-decoration: ${({ noUnderline }) => (noUnderline ? 'none' : 'underline')};
   }
 `
 export const Footer = styled.div`

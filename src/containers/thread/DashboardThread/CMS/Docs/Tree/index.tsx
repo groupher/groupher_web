@@ -19,6 +19,7 @@ import {
   ActionWrapper,
   EditIcon,
   DeleteIcon,
+  DragIcon,
 } from '../../../styles/cms/docs/tree'
 
 type TProps = {
@@ -87,6 +88,7 @@ function Node({ node, style, dragHandle }: NodeRendererProps<TTreeItem>) {
       hasChild={node.isInternal && !!node.data.children}
       $active={node.isSelected}
     >
+      <DragIcon />
       <FolderName hasChild={!!node.data.children} $active={node.isSelected}>
         {node.isEditing ? <Input node={node} /> : node.data.name}
         <FolderArrow node={node} />

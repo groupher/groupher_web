@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import type { TTestable } from '@/spec'
 import css, { theme } from '@/utils/css'
 
-export const Wrapper = styled.article.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.article.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flexColumn('align-both')};

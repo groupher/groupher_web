@@ -4,13 +4,9 @@ import type { TTestable } from '@/spec'
 import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 
-import {
-  Nav as NavBase,
-  RealBar as RealBarBase,
-  SlipBar as SlipBarBase,
-} from '../index'
+import { Nav as NavBase, RealBar as RealBarBase, SlipBar as SlipBarBase } from '../index'
 
-export const Wrapper = styled.nav.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.nav.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   position: relative;

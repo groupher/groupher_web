@@ -9,6 +9,7 @@ export type TView = 'desktop' | 'mobile' | 'modeline' | 'drawer'
 
 export type TTestable = {
   testid?: string
+  'data-test-id'?: string
 }
 
 export type TActive = {
