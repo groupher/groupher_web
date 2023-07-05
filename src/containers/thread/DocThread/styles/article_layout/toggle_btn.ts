@@ -9,7 +9,7 @@ type TWrapper = { open: boolean; onClick: () => void }
 export const Wrapper = styled.div<TWrapper>`
   position: absolute;
   top: 12%;
-  left: ${({ open }) => (open ? '214px' : '20px')};
+  left: ${({ open }) => (open ? '210px' : '20px')};
   transform: ${({ open }) => (open ? '' : 'rotate(180deg)')};
 
   ${({ open }) => (open ? css.circle(24) : css.circle(28))};

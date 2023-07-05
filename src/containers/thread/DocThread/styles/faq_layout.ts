@@ -7,10 +7,9 @@ import { MainWrapper } from './index'
 
 export const Wrapper = styled(MainWrapper)<TSpace>`
   ${css.flexColumn('align-center')};
-  padding-left: 22px;
-  padding-right: 0;
-  margin-top: -25px;
   border-right: none;
+  width: 100%;
+  max-width: 500px;
 
   ${(props) => css.spaceMargins(props)};
 `

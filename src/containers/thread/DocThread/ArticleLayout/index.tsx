@@ -64,7 +64,7 @@ const ArticleLayout: FC<TProps> = ({
         </Header>
 
         {isFAQArticleLayout ? (
-          <FaqLayout left={-25} top={-18} />
+          <FaqLayout left={50} />
         ) : (
           <>
             <div>
