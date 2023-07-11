@@ -42,7 +42,7 @@ const SavingBar: FC<TProps> = ({
   if (children !== null) {
     if (isTouched) {
       return (
-        <Wrapper gradientDirection="left" minimal={minimal} {...restProps}>
+        <Wrapper direction="left" minimal={minimal} {...restProps}>
           <Fragment>{children}</Fragment>
           <SpaceGrow />
           <ActionWrapper minimal={minimal}>
@@ -75,7 +75,7 @@ const SavingBar: FC<TProps> = ({
   if (!isTouched) return null
 
   return (
-    <Wrapper gradientDirection="right" minimal={minimal} {...restProps}>
+    <Wrapper key={field} direction="right" minimal={minimal} {...restProps}>
       <HintWrapper>
         <InfoIcon minimal={minimal} />
         <HintText minimal={minimal}>

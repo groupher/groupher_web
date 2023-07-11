@@ -24,7 +24,7 @@ export const Item = styled.div<TActive>`
     cursor: pointer;
   }
 
-  :last-child {
+  &:last-child {
     margin-bottom: 10px;
   }
 

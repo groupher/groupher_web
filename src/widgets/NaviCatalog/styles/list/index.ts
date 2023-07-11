@@ -36,7 +36,7 @@ export const Item = styled.div<TItem>`
     cursor: pointer;
   }
 
-  :last-child {
+  &:last-child {
     border-bottom: none;
   }
 `

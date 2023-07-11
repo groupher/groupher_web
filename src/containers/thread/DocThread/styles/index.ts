@@ -34,8 +34,8 @@ export const MainWrapper = styled.div`
   `};
 `
 export const FAQWrapper = styled.div`
-  margin-left: -14%;
-  margin-bottom: 20px;
+  margin-left: -5%;
+  margin-bottom: 15px;
   max-width: 90%;
 
   ${css.media.mobile`

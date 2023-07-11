@@ -71,7 +71,7 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
           </LayoutTitle>
         </Layout>
 
-        <Layout onClick={() => edit(DOC_LAYOUT.LISTS, 'helpLayout')}>
+        <Layout onClick={() => edit(DOC_LAYOUT.LISTS, 'docLayout')}>
           <Block $active={layout === DOC_LAYOUT.LISTS}>
             <Br bottom={14} />
             <Main>
@@ -82,6 +82,23 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
             <CheckLabel
               title="列表排列"
               $active={layout === DOC_LAYOUT.LISTS}
+              top={15}
+              left={-15}
+            />
+          </LayoutTitle>
+        </Layout>
+
+        <Layout onClick={() => edit(DOC_LAYOUT.CARDS, 'docLayout')}>
+          <Block $active={layout === DOC_LAYOUT.CARDS}>
+            <Br bottom={14} />
+            <Main>
+              <MainTemplate layout={DOC_LAYOUT.CARDS} />
+            </Main>
+          </Block>
+          <LayoutTitle $active={layout === DOC_LAYOUT.CARDS}>
+            <CheckLabel
+              title="卡片排列"
+              $active={layout === DOC_LAYOUT.CARDS}
               top={15}
               left={-15}
             />
@@ -115,7 +132,7 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
         }
       />
       <SelectWrapper>
-        <Layout onClick={() => edit(DOC_FAQ_LAYOUT.COLLAPSE, 'helpFaqLayout')}>
+        <Layout onClick={() => edit(DOC_FAQ_LAYOUT.COLLAPSE, 'docFaqLayout')}>
           <Block $active={faqLayout === DOC_FAQ_LAYOUT.COLLAPSE}>
             <Br bottom={14} />
             <Main>
@@ -131,7 +148,7 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
             />
           </LayoutTitle>
         </Layout>
-        <Layout onClick={() => edit(DOC_FAQ_LAYOUT.FLAT, 'helpFaqLayout')}>
+        <Layout onClick={() => edit(DOC_FAQ_LAYOUT.FLAT, 'docFaqLayout')}>
           <Block $active={faqLayout === DOC_FAQ_LAYOUT.FLAT}>
             <Br bottom={14} />
             <Main>

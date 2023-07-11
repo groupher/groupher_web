@@ -41,7 +41,7 @@ export const Option = styled.div`
   border-bottom: 1px solid;
   border-bottom-color: #114b5f;
 
-  :last-child {
+  &:last-child {
     border-bottom: none;
   }
 `

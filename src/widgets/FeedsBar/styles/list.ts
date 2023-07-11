@@ -9,7 +9,8 @@ export const ListItemWrapper = styled.div`
   border-bottom: 1px solid;
   border-bottom-color: #034256;
   padding: 10px;
-  :last-child {
+
+  &:last-child {
     border-bottom: none;
   }
 `

@@ -14,7 +14,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   border-bottom-color: ${theme('divider')};
   margin-bottom: 30px;
 
-  :last-child {
+  &:last-child {
     border-bottom: none;
   }
 `

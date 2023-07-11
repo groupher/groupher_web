@@ -12,6 +12,7 @@ type TWrapper = {
   color: TColorName
   linkColor: boolean
   size: TSize
+  width: number
 } & TSpace
 
 export const Wrapper = styled.button<TWrapper>`
@@ -30,6 +31,8 @@ export const Wrapper = styled.button<TWrapper>`
 
   transform: ${({ size }) => (size === SIZE.SMALL ? 'scale(0.85);' : 'none')};
   ${(props) => css.spaceMargins(props)};
+
+  width: ${({ width }) => `${width + 25}px`};
 
   &:hover {
     cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};

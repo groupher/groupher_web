@@ -51,12 +51,7 @@ const ArticleEditorHeader: FC<TProps> = ({ header: store, metric }) => {
   }, [isLogin])
 
   return (
-    <Wrapper
-      id="whereCallShowDoraemon"
-      testid="header"
-      leftOffset={leftOffset}
-      noBorder
-    >
+    <Wrapper id="whereCallShowDoraemon" testid="header" leftOffset={leftOffset} noBorder>
       <InnerWrapper>
         <RouterWrapper metric={metric}>
           <Navigator metric={metric} />

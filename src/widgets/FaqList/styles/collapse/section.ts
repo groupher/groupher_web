@@ -34,10 +34,10 @@ export const Title = styled.div<TActive>`
 `
 export const ArrowIcon = styled(ArrowSVG)<TActive>`
   ${css.size(16)};
-  fill: ${theme('article.info')};
+  fill: ${theme('article.digest')};
   margin-left: 20px;
   margin-right: 10px;
-  opacity: 0.5;
+  opacity: 0.65;
 
   ${Header}:hover & {
     opacity: 1;

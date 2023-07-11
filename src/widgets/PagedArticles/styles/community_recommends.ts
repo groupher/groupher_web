@@ -46,7 +46,7 @@ export const Community = styled.div`
     opacity: 1;
   }
 
-  :last-child {
+  &:last-child {
     margin-right: 0;
   }
   transition: all 0.2s;

@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, ReactNode, memo } from 'react'
+import { FC, ReactNode, memo, useRef, useEffect, useState } from 'react'
 
 import type { TColorName, TSize, TSpace } from '@/spec'
 import SIZE from '@/constant/size'
@@ -31,6 +31,7 @@ type TProps = {
   up?: boolean
   down?: boolean
   size?: TSize
+  initWidth?: number
 } & TSpace
 
 const ArrowButton: FC<TProps> = ({
@@ -45,10 +46,22 @@ const ArrowButton: FC<TProps> = ({
   up = false,
   down = false,
   size = SIZE.MEDIUM,
+  initWidth = 55,
   ...restProps
 }) => {
+  const ref = useRef()
+  const [width, setWidth] = useState(initWidth)
+
+  useEffect(() => {
+    if (ref.current) {
+      // @ts-ignore
+      setWidth(ref.current.offsetWidth)
+    }
+  }, [ref])
+
   return (
     <Wrapper
+      width={width}
       className={className}
       onClick={() => !disabled && onClick()}
       dimWhenIdle={dimWhenIdle}
@@ -61,7 +74,7 @@ const ArrowButton: FC<TProps> = ({
       {leftLayout && (
         <Arrow color={color} linkColor={linkColor} leftLayout={leftLayout} up={up} down={down} />
       )}
-      <Text>{children}</Text>
+      <Text ref={ref}>{children}</Text>
       {!leftLayout && (
         <Arrow color={color} linkColor={linkColor} leftLayout={leftLayout} up={up} down={down} />
       )}

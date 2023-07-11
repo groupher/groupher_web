@@ -15,9 +15,9 @@ const ListsLayout: FC<TProps> = ({ testid = 'home' }) => {
   return (
     <Wrapper>
       <CatsWrapper>
-        {cats.map((cat) => {
-          return <Category key={cat.id} color={cat.color} title={cat.title} desc={cat.desc} />
-        })}
+        {cats.map((cat) => (
+          <Category key={cat.id} color={cat.color} title={cat.title} desc={cat.desc} />
+        ))}
       </CatsWrapper>
     </Wrapper>
   )

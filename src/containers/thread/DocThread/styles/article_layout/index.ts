@@ -42,6 +42,11 @@ export const Content = styled(MainWrapper)<TContent>`
   }};
 `
 
+export const FAQWrapper = styled.div`
+  margin-left: 32px;
+  margin-top: -10px;
+`
+
 type TSidebar = { isLeftLayout?: boolean; open?: boolean }
 export const Sidebar = styled.div<TSidebar>`
   ${css.flexColumn()};

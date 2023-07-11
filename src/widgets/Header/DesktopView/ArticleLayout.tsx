@@ -38,9 +38,7 @@ const ArticleHeader: FC<TProps> = ({ metric, accountInfo }) => {
         </RouterWrapper>
         <Operations metric={metric}>
           {!accountInfo.login ? (
-            <LoginHint onClick={() => authWarn({ hideToast: true })}>
-              登入
-            </LoginHint>
+            <LoginHint onClick={() => authWarn({ hideToast: true })}>登入</LoginHint>
           ) : (
             <Tooltip
               content={<UserCard user={accountInfo as TUser} />}

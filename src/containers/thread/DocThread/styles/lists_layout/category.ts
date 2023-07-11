@@ -14,11 +14,10 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   width: 580px;
   min-height: 80px;
   padding: 30px 0;
-  margin-left: -40px;
   border-bottom: 1px solid;
   border-bottom-color: ${theme('divider')};
 
-  :last-child {
+  &:last-child {
     border-bottom: none;
   }
 

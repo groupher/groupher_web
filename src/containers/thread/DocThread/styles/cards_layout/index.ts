@@ -7,22 +7,19 @@ export const Wrapper = styled.div`
   ${css.flexColumn('align-both')};
   width: 100%;
   margin-top: 30px;
-  margin-left: 58px;
+  margin-left: -30px;
 `
 export const CatsWrapper = styled(MainWrapper)`
   ${css.flex('justify-between')};
   flex-wrap: wrap;
-
   flex-grow: 1;
+  gap: 20px 10px;
+
   width: 100%;
   min-height: 600px;
   margin-top: 8px;
 
   background: transparent;
-  border-radius: 6px;
-  padding-left: 22px;
-  padding-right: 50px;
-
   border-right: none;
 
   ${css.media.mobile`
