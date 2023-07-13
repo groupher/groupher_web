@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { TActive } from '@/spec'
+import type { TActive } from '@/spec'
 
 import css, { theme } from '@/utils/css'
 import { camelize } from '@/utils/fmt'

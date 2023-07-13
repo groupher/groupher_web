@@ -25,7 +25,7 @@ type TText = {
   hideTextOnInit: boolean
 }
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable & TText>`
   ${css.flex('align-center')};
@@ -33,8 +33,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   cursor: pointer;
   background: ${({ hideTextOnInit, active }) =>
     !hideTextOnInit || active ? '#0f3f4e' : 'transparent'};
-  padding: ${({ hideTextOnInit, active }) =>
-    !hideTextOnInit || active ? '0 5px' : '0'};
+  padding: ${({ hideTextOnInit, active }) => (!hideTextOnInit || active ? '0 5px' : '0')};
   border-radius: ${({ active }) => (active ? '5px' : '0')};
 
   &:hover {
@@ -46,33 +45,26 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   transition: all 0.2s;
 `
 export const Icon = styled(Img)<TIcon>`
-  fill: ${({ active, type }) =>
-    active ? getActiveColor(type) : getNormalColor(type)};
+  fill: ${({ active, type }) => (active ? getActiveColor(type) : getNormalColor(type))};
   display: block;
   padding: 0;
   margin-right: 4px;
-  width: ${({ active, size }) =>
-    active ? getActiveIconSize(size) : getNormalIconSize(size)};
-  height: ${({ active, size }) =>
-    active ? getActiveIconSize(size) : getNormalIconSize(size)};
+  width: ${({ active, size }) => (active ? getActiveIconSize(size) : getNormalIconSize(size))};
+  height: ${({ active, size }) => (active ? getActiveIconSize(size) : getNormalIconSize(size))};
 
   ${Wrapper}:hover & {
     /* fill: ${theme('article.title')}; */
-    width: ${({ active, size }) =>
-      active ? getActiveIconSize(size) : getNormalIconSize(size)};
-    height: ${({ active, size }) =>
-      active ? getActiveIconSize(size) : getNormalIconSize(size)};
+    width: ${({ active, size }) => (active ? getActiveIconSize(size) : getNormalIconSize(size))};
+    height: ${({ active, size }) => (active ? getActiveIconSize(size) : getNormalIconSize(size))};
   }
   transition: all 0.2s;
 `
 
 export const Text = styled.div<TText>`
-  color: ${({ active, type }) =>
-    active ? getActiveColor(type) : getNormalColor(type)};
+  color: ${({ active, type }) => (active ? getActiveColor(type) : getNormalColor(type))};
   font-size: ${({ size }) => getNormalTextSize(size)};
   /* opacity: ${({ active }) => (active ? 1 : 0)}; */
-  display: ${({ active, hideTextOnInit }) =>
-    !hideTextOnInit || active ? 'block' : 'none'};
+  display: ${({ active, hideTextOnInit }) => (!hideTextOnInit || active ? 'block' : 'none')};
   outline: none;
 
   ${Wrapper}:hover & {

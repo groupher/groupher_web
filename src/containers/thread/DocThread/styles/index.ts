@@ -4,7 +4,7 @@ import type { TTestable } from '@/spec'
 import css from '@/utils/css'
 
 type TWrapper = TTestable & { isSidebarLayout: boolean }
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.flexColumn('align-center')};
@@ -34,8 +34,8 @@ export const MainWrapper = styled.div`
   `};
 `
 export const FAQWrapper = styled.div`
-  margin-left: -14%;
-  margin-bottom: 20px;
+  margin-left: -5%;
+  margin-bottom: 15px;
   max-width: 90%;
 
   ${css.media.mobile`

@@ -8,6 +8,7 @@ export const Wrapper = styled.div`
   ${css.flex('align-center')};
   line-height: 22px;
   margin-bottom: 3px;
+  margin-top: 18px;
 `
 export const Home = styled(ArrowButton)`
   opacity: 0.7;

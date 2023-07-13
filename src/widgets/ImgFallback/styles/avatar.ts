@@ -11,7 +11,7 @@ import { getFontSize } from './metric/avatar'
 
 type TWrapper = TTestable & TAvatarProps & { avatarLayout: TAvatarLayout; color: TColorName }
 
-export const Wrapper = styled.div.attrs(({ testid }: TWrapper) => ({
+export const Wrapper = styled.div.attrs<TWrapper>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.flex('align-both')};

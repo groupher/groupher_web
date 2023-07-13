@@ -4,7 +4,7 @@ import type { TTestable, TActive } from '@/spec'
 import css, { theme } from '@/utils/css'
 import { LineDivider } from '@/widgets/Common'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   position: relative;

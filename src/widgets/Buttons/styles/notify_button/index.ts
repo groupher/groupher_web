@@ -4,7 +4,7 @@ import type { TTestable } from '@/spec'
 import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flexColumn()};
@@ -28,8 +28,7 @@ export const NotifyOffIcon = styled(NotifyIcon)`
   }
 `
 export const Title = styled.div<{ active?: boolean }>`
-  color: ${({ active }) =>
-    active ? theme('article.title') : theme('article.digest')};
+  color: ${({ active }) => (active ? theme('article.title') : theme('article.digest'))};
   font-size: 13px;
 
   ${Wrapper}:hover & {

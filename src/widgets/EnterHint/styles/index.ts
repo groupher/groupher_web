@@ -7,7 +7,7 @@ import css, { theme } from '@/utils/css'
 
 type TWrapper = TSpace & TTestable
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.flex('align-center')};

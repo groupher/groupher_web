@@ -19,7 +19,7 @@ import LagouSVG from '@/icons/social/Lagou'
 // import { theme } from '@/utils/themes'
 
 type TWrapper = TTestable & { width: string } & TSpace
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   margin-bottom: 20px;

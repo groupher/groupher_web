@@ -4,7 +4,7 @@ import type { TTestable } from '@/spec'
 import css, { theme, WIDTH } from '@/utils/css'
 import { pixelAdd } from '@/utils/dom'
 
-export const BaseWrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const BaseWrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   min-height: 70vh;

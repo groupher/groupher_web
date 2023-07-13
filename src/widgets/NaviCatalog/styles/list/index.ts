@@ -8,7 +8,7 @@ const activeColor = '#009C9E'
 
 type TItem = TActive & { withDivider?: boolean; isRootMenu?: boolean }
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable & TItem>`
   padding-bottom: 10px;
@@ -26,8 +26,7 @@ export const Item = styled.div<TItem>`
   color: ${({ active }) => (active ? activeColor : theme('article.digest'))};
   font-size: 14px;
   border-bottom: ${({ withDivider }) => (withDivider ? '1px solid' : 'none')};
-  border-bottom-color: ${({ withDivider }) =>
-    withDivider ? '#ebebeb' : 'none'}; // to-theme
+  border-bottom-color: ${({ withDivider }) => (withDivider ? '#ebebeb' : 'none')}; // to-theme
 
   padding: ${({ withDivider }) => (withDivider ? '11px 6px' : '6px 8px')};
   padding-left: ${({ isRootMenu }) => (isRootMenu ? '4px' : '8px')};
@@ -37,7 +36,7 @@ export const Item = styled.div<TItem>`
     cursor: pointer;
   }
 
-  :last-child {
+  &:last-child {
     border-bottom: none;
   }
 `

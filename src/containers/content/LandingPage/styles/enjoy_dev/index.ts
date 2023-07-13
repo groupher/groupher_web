@@ -12,7 +12,7 @@ import YesSVG from '@/icons/CheckBold'
 
 type TPos = { top: string; left: string }
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flexColumn('align-both')};

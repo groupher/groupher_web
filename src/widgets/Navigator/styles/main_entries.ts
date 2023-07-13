@@ -14,7 +14,7 @@ export const DotDivider = styled(DotDividerBase)`
   background-color: transparent;
 `
 type TSiteLink = TTestable & TActive
-export const SiteLink = styled(Link).attrs(({ testid }: TTestable) => ({
+export const SiteLink = styled(Link).attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TSiteLink>`
   ${css.flex('align-center')};

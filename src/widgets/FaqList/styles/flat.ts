@@ -7,7 +7,7 @@ import css, { theme } from '@/utils/css'
 import FAQSVG from '@/icons/FAQ'
 import CheckSVG from '@/icons/Check'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flexColumn()};

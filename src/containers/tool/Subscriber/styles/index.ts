@@ -6,7 +6,7 @@ import css, { theme } from '@/utils/css'
 import MailSVG from '@/icons/Mail'
 import RSSSVG from '@/icons/RSS'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   padding: 0 20px;
@@ -23,8 +23,7 @@ export const IconWrapper = styled.div<TActive>`
   ${css.flexColumn('align-both')};
   border: 1px solid;
   border-radius: 8px;
-  border-color: ${({ $active }) =>
-    $active ? theme('article.digest') : '#dcdcdc'};
+  border-color: ${({ $active }) => ($active ? theme('article.digest') : '#dcdcdc')};
 
   &:hover {
     cursor: pointer;

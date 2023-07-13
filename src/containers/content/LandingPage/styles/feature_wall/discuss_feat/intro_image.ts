@@ -8,7 +8,7 @@ import UpvoteSVG from '@/icons/Upvote'
 import CommentSVG from '@/icons/Comment'
 import ShareSVG from '@/icons/Share'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flexColumn('align-both')};

@@ -40,7 +40,7 @@ const Category: FC<TProps> = ({ color, title, desc }) => {
         <Title>{title}</Title>
         {desc && <Desc>{desc}</Desc>}
         <Footer>
-          <Facepile size="medium" users={mockUsers(6)} total={20} showTotalNumber />
+          <Facepile size="small" users={mockUsers(6)} total={20} showTotalNumber />
           <AuthorHint>6 位共同编辑</AuthorHint>
           <SpaceGrow />
           <MoreLink linkColor onClick={() => gotoDetailLayout()}>

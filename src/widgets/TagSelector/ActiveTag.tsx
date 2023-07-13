@@ -1,5 +1,6 @@
 import { FC } from 'react'
-import { TTag } from '@/spec'
+
+import type { TTag } from '@/spec'
 
 import { Wrapper, TagItem, DotSign, TagTitle } from './styles/active_tag'
 

@@ -14,7 +14,7 @@ type TIcon = {
 }
 
 type TWrapper = { dimWhenIdle: boolean } & TTestable
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.flex('align-center')};
@@ -26,8 +26,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
 `
 export const Icon = styled(Img)<TIcon>`
   fill: ${theme('article.info')};
-  /* fill: ${({ highlight }) =>
-    highlight ? theme('article.title') : theme('article.digest')}; */
+  /* fill: ${({ highlight }) => (highlight ? theme('article.title') : theme('article.digest'))}; */
   ${({ size }) => css.size(getIconSize(size))};
   margin-right: ${({ size, margin }) => margin || getMargin(size)};
   border-radius: ${({ round }) => (round ? '100%' : '0')};
@@ -40,7 +39,6 @@ type TText = {
 export const Text = styled.div<TText>`
   ${css.flex('align-center')};
   color: ${theme('article.info')};
-  /* color: ${({ highlight }) =>
-    highlight ? theme('article.title') : theme('article.digest')}; */
+  /* color: ${({ highlight }) => (highlight ? theme('article.title') : theme('article.digest'))}; */
   font-size: ${({ size }) => getTextSize(size)};
 `

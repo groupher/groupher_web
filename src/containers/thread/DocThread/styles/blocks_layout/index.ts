@@ -6,7 +6,8 @@ import { MainWrapper } from '../index'
 export const Wrapper = styled.div`
   ${css.flexColumn('align-both')};
   width: 100%;
-  margin-top: 10px;
+  margin-top: 30px;
+  margin-left: 58px;
 `
 export const CatsWrapper = styled(MainWrapper)`
   ${css.flex('justify-between')};

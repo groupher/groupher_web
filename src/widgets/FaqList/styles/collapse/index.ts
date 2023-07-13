@@ -5,8 +5,8 @@ import css from '@/utils/css'
 export const Wrapper = styled.div`
   ${css.flexColumn()};
   width: 55%;
-  min-width: 550px;
-  max-width: 550px;
+  min-width: 500px;
+  max-width: 500px;
 
   ${css.media.mobile`
     width: 100%;

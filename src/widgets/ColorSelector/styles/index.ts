@@ -7,7 +7,7 @@ import HookSVG from '@/icons/Hook'
 import css, { theme } from '@/utils/css'
 import { camelize } from '@/utils/fmt'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flex('align-center')};

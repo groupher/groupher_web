@@ -5,7 +5,7 @@ import Img from '@/Img'
 import css, { theme, animate } from '@/utils/css'
 
 type TWrapper = { metric: TMetric } & TTestable
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.flexColumn('align-center', 'justify-start')};

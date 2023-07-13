@@ -5,7 +5,7 @@ import css, { theme } from '@/utils/css'
 
 import CloseSVG from '@/widgets/Icons/CloseCross'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable & { closeable: boolean }>`
   ${css.flex('align-both')};

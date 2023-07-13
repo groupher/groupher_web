@@ -31,11 +31,7 @@ type TProps = {
   hasFollowedUser: boolean | null
 }
 
-const Numberspad: FC<TProps> = ({
-  user,
-  subscribedCommunities,
-  hasFollowedUser,
-}) => {
+const Numberspad: FC<TProps> = ({ user, subscribedCommunities, hasFollowedUser }) => {
   const { isMobile } = useMobileDetect()
 
   return (

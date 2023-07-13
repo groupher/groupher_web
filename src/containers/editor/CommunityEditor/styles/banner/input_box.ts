@@ -34,6 +34,8 @@ export const MaskNumer = styled.span`
   color: #327faf;
   margin-right: 4px;
 `
+
+// @ts-ignore
 export const InputBar = styled.input.attrs(() => ({
   spellCheck: 'false',
   autoComplete: 'off',

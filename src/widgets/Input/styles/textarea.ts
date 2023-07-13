@@ -8,7 +8,7 @@ import { baseInput } from './index'
 
 type TWrapper = TTestable | { spellCheck: string }
 
-export const Wrapper = styled(TextareaAutosize).attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled(TextareaAutosize).attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${baseInput};

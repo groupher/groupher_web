@@ -10,9 +10,12 @@ import {
   Bar,
   Box,
   Box3,
+  BorderBox3,
+  CardssLayoutWrapper,
   ListsLayoutWrapper,
   BlocksLayoutWrapper,
   IconWrapper,
+  FooterMore,
   ToolIcon,
   ListContent,
 } from '../../styles/layout/doc_layout/main_template'
@@ -22,6 +25,66 @@ type TProps = {
 }
 
 const MainTemplate: FC<TProps> = ({ layout }) => {
+  if (layout === DOC_LAYOUT.CARDS) {
+    return (
+      <CardssLayoutWrapper>
+        <BorderBox3>
+          <Bar long={30} thin />
+          <Br bottom={5} />
+          <Bar long={80} thin bold />
+          <Br bottom={10} />
+          <Bar long={50} thin />
+          <Br bottom={6} />
+          <Bar long={40} thin />
+          <Br bottom={20} />
+          <FooterMore>
+            <Bar long={30} thin />
+          </FooterMore>
+        </BorderBox3>
+        <BorderBox3>
+          <Bar long={30} thin />
+          <Br bottom={5} />
+          <Bar long={60} thin bold />
+          <Br bottom={10} />
+          <Bar long={50} thin />
+          <Br bottom={6} />
+          <Bar long={40} thin />
+          <Br bottom={20} />
+          <FooterMore>
+            <Bar long={30} thin />
+          </FooterMore>
+        </BorderBox3>
+        <BorderBox3>
+          <Bar long={30} thin />
+          <Br bottom={5} />
+          <Bar long={60} thin bold />
+          <Br bottom={10} />
+          <Bar long={50} thin />
+          <Br bottom={6} />
+          <Bar long={40} thin />
+          <Br bottom={20} />
+          <FooterMore>
+            <Bar long={30} thin />
+          </FooterMore>
+        </BorderBox3>
+        <BorderBox3>
+          <Bar long={60} thin bold />
+          <Br bottom={10} />
+          <Bar long={50} thin />
+          <Br bottom={6} />
+          <Bar long={40} thin />
+        </BorderBox3>
+        <BorderBox3>
+          <Bar long={60} thin bold />
+          <Br bottom={10} />
+          <Bar long={50} thin />
+          <Br bottom={6} />
+          <Bar long={40} thin />
+        </BorderBox3>
+      </CardssLayoutWrapper>
+    )
+  }
+
   if (layout === DOC_LAYOUT.LISTS) {
     return (
       <ListsLayoutWrapper>

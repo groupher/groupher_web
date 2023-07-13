@@ -9,6 +9,22 @@ import ToolSVG from '@/icons/Heart'
 
 export { Bar, Circle } from '..'
 
+export const CardssLayoutWrapper = styled.div`
+  ${css.flex()};
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+`
+export const FooterMore = styled.div`
+  position: absolute;
+  bottom: 5px;
+  left: 10%;
+  ${css.flex('align-both')};
+  background: ${theme('hoverBg')};
+  border-radius: 3px;
+  height: 10px;
+  width: 80%;
+`
 export const BlocksLayoutWrapper = styled.div<{ withDivider?: boolean }>`
   ${css.flex()};
   flex-wrap: wrap;
@@ -27,6 +43,13 @@ export const Box = styled.div`
 `
 export const Box3 = styled.div`
   width: 33.3%;
+`
+export const BorderBox3 = styled.div`
+  position: relative;
+  width: 30%;
+  border: 1px solid;
+  border-color: ${theme('divider')};
+  padding: 10px;
 `
 export const IconWrapper = styled.div<{ color: TColorName }>`
   ${css.size(15)};

@@ -6,7 +6,7 @@ import css, { theme } from '@/utils/css'
 
 import CurlyLineSVG from './U2DSVG'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flexColumn('align-both')};

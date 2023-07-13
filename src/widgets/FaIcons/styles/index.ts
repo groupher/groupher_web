@@ -6,7 +6,7 @@ import css from '@/utils/css'
 
 type TWrapper = { opacity?: number } & TTestable & TSpace
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   opacity: ${({ opacity }) => opacity || 1};

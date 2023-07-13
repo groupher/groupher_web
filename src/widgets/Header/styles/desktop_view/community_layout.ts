@@ -10,7 +10,7 @@ type TPos = {
 
 type IWrapper = TPos & TTestable
 
-export const Wrapper = styled.header.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.header.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<IWrapper>`
   width: 100%;

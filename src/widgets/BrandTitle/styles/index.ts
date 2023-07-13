@@ -6,7 +6,7 @@ import type { TTestable } from '@/spec'
 import css, { theme } from '@/utils/css'
 
 type TWrapper = TTestable & { mBottom: number }
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   margin-bottom: ${({ mBottom }) => `${mBottom}px`};
@@ -30,10 +30,5 @@ export const BrandText = styled.div<TBrandText>`
   border-radius: 3px;
   letter-spacing: 1px;
 
-  background: linear-gradient(
-    to top,
-    #003b49 35%,
-    transparent 35%,
-    transparent 80%
-  );
+  background: linear-gradient(to top, #003b49 35%, transparent 35%, transparent 80%);
 `

@@ -5,7 +5,7 @@ import css from '@/utils/css'
 
 type TWrapper = { type: string } & TTestable
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.flexColumn('justify-between')};

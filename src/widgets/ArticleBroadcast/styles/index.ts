@@ -10,7 +10,7 @@ import css, { theme } from '@/utils/css'
 import { camelize } from '@/utils/fmt'
 
 type TWrapper = { color: TColorName } & TSpace & TTestable
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.flex('align-center')};

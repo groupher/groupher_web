@@ -4,7 +4,7 @@ import type { TTestable, TActive } from '@/spec'
 import css, { theme, WIDTH, zIndex } from '@/utils/css'
 
 type TWrapper = TTestable & { noBorder: boolean; leftOffset: string }
-export const WrapperBase = styled.div.attrs(({ testid }: TTestable) => ({
+export const WrapperBase = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   z-index: 2;

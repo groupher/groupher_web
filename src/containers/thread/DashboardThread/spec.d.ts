@@ -32,15 +32,19 @@ import type {
   TSocialItem,
   TPagedArticles,
   TID,
+  TDashboardDocRoute,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'CMS' | 'INTEGRATE'
 
 export type TCMSContents = {
-  pagedPosts: TPagedArticles
-  pagedChangelogs: TPagedArticles
   loading: boolean
   batchSelectedIDs: TID[]
+  docTab: TDashboardDocRoute
+
+  pagedPosts: TPagedArticles
+  pagedDocs: TPagedArticles
+  pagedChangelogs: TPagedArticles
 }
 
 export type TMenuGroup = {

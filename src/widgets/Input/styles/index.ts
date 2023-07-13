@@ -10,7 +10,7 @@ type IInput = {
   spellCheck: string
 }
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   position: relative;
@@ -32,8 +32,7 @@ export const SuffixWrapper = styled(AddOn)`
   right: 0;
 `
 export const Icon = styled(Img)<TActive>`
-  fill: ${({ active }) =>
-    active ? theme('button.primary') : theme('article.digest')};
+  fill: ${({ active }) => (active ? theme('button.primary') : theme('article.digest'))};
   ${css.size(14)};
   opacity: 0.8;
 

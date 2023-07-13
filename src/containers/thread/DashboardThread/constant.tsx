@@ -6,6 +6,7 @@ import {
   DASHBOARD_ALIAS_ROUTE,
   DASHBOARD_BASEINFO_ROUTE,
   DASHBOARD_SEO_ROUTE,
+  DASHBOARD_DOC_ROUTE,
 } from '@/constant/route'
 
 import type { TSettingField, TWidgetType, THeaderEditType, TFooterEditType } from './spec'
@@ -332,6 +333,25 @@ export const BROADCAST_TABS = [
   },
 ]
 
+export const DOC_TABS = [
+  {
+    title: '概览',
+    slug: DASHBOARD_DOC_ROUTE.TABLE,
+  },
+  {
+    title: '目录编排',
+    slug: DASHBOARD_DOC_ROUTE.TREE,
+  },
+  {
+    title: '封面图标',
+    slug: DASHBOARD_DOC_ROUTE.COVER,
+  },
+  {
+    title: '常见问题',
+    slug: DASHBOARD_DOC_ROUTE.FAQ,
+  },
+]
+
 export const TW_CARD = {
   SUMMARY: 'summary',
   SUMMARY_LARGE_IMAGE: 'summary_large_image',
@@ -461,6 +481,24 @@ export const BASEINFO_KEYS = [
   'slug',
   'city',
   'techstack',
+]
+
+export const UI_KEYS = [
+  'layoutTab',
+  'primaryColor',
+  'brandLayout',
+  'avatarLayout',
+  'bannerLayout',
+  'topbarLayout',
+  'topbarBg',
+  'postLayout',
+  'kanbanLayout',
+  'docLayout',
+  'docFaqLayout',
+  'changelogLayout',
+  'glowFixed',
+  'glowType',
+  'glowOpacity',
 ]
 
 export const SEO_KEYS = [

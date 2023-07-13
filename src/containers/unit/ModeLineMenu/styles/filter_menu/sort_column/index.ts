@@ -4,7 +4,7 @@ import type { TTestable, TActive } from '@/spec'
 import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flexColumn('align-start')};
@@ -21,8 +21,7 @@ export const ItemBar = styled.div<TActive>`
   border-radius: 4px;
   border: 1px solid;
   background: #0f323e;
-  /* color: ${({ active }) =>
-    active ? theme('article.title') : theme('article.digest')}; */
+  /* color: ${({ active }) => (active ? theme('article.title') : theme('article.digest'))}; */
   border-color: ${({ active }) => (active ? '#194d5f' : 'transparent')};
 `
 export const Title = styled.div`

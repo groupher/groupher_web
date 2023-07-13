@@ -10,7 +10,7 @@ type TItem = TActive & { withDivider: boolean }
 
 const activeColor = '#009C9E'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   width: ${WIDTH};
@@ -22,8 +22,7 @@ export const Item = styled.div<TItem>`
   color: ${({ active }) => (active ? activeColor : theme('article.digest'))};
   font-size: 14px;
   border-bottom: ${({ withDivider }) => (withDivider ? '1px solid' : 'none')};
-  border-bottom-color: ${({ withDivider }) =>
-    withDivider ? '#EFEEEE' : 'none'}; // to-theme
+  border-bottom-color: ${({ withDivider }) => (withDivider ? '#EFEEEE' : 'none')}; // to-theme
 
   padding: ${({ withDivider }) => (withDivider ? '8px 6px' : '6px')};
 

@@ -6,7 +6,7 @@ import css, { WIDTH, theme } from '@/utils/css'
 import { getDigestHeight } from './metric'
 
 type TWrapper = { metric: TMetric } & TTestable
-export const Wrapper = styled.nav.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.nav.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.flexColumn('justify-start')};

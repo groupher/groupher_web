@@ -14,7 +14,15 @@ import ArticleCover from './ArticleCover'
 
 import ToggleBtn from './ToggleBtn'
 
-import { Wrapper, Header, Title, Content, Sidebar, TreeWrapper } from '../styles/article_layout'
+import {
+  Wrapper,
+  Header,
+  Title,
+  Content,
+  FAQWrapper,
+  Sidebar,
+  TreeWrapper,
+} from '../styles/article_layout'
 import { gotoDetailLayout } from '../logic'
 
 type TProps = {
@@ -64,7 +72,9 @@ const ArticleLayout: FC<TProps> = ({
         </Header>
 
         {isFAQArticleLayout ? (
-          <FaqLayout left={-25} top={-18} />
+          <FAQWrapper>
+            <FaqLayout left={50} />
+          </FAQWrapper>
         ) : (
           <>
             <div>

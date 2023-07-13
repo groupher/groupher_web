@@ -23,11 +23,9 @@ export const Divider = styled.div`
   margin-right: 6px;
   opacity: 0.7;
 `
-export const HeaderSearchIcon = styled(HeaderSearchSVG).attrs(
-  ({ testid }: TTestable) => ({
-    'data-test-id': testid,
-  }),
-)<TTestable>`
+export const HeaderSearchIcon = styled(HeaderSearchSVG).attrs<TTestable>(({ testid }) => ({
+  'data-test-id': testid,
+}))<TTestable>`
   fill: ${theme('header.fg')};
   ${css.size(18)};
   display: block;
@@ -38,7 +36,7 @@ export const HeaderSearchIcon = styled(HeaderSearchSVG).attrs(
 export const Operations = styled.div`
   ${css.flex('align-center')};
 `
-export const Search = styled.div.attrs(({ testid }: TTestable) => ({
+export const Search = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   color: ${theme('header.fg')};

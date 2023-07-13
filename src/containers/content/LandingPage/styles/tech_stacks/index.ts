@@ -8,7 +8,7 @@ import Img from '@/Img'
 
 import GithubSVG from '@/icons/social/Github'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flexColumn('align-both')};

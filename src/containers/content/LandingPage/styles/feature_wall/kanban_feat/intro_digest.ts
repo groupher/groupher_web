@@ -7,7 +7,7 @@ import { FEAT } from '../../../constant'
 
 export { FeatList } from '..'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flexColumn('align-start')};

@@ -21,24 +21,13 @@ type TProps = {
   onClick: () => void
 }
 
-const FollowingBtn: FC<TProps> = ({
-  size,
-  loading,
-  followingOffset,
-  text,
-  onClick,
-}) => {
+const FollowingBtn: FC<TProps> = ({ size, loading, followingOffset, text, onClick }) => {
   return (
     <>
       {loading ? (
         <LavaLampLoading size="small" />
       ) : (
-        <Tooltip
-          placement="bottom"
-          delay={800}
-          content={<Popinfo>点击取消关注</Popinfo>}
-          noPadding
-        >
+        <Tooltip placement="bottom" delay={800} content={<Popinfo>点击取消关注</Popinfo>} noPadding>
           <FollowingButton
             size={size}
             followingOffset={followingOffset}

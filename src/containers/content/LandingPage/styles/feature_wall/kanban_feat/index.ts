@@ -13,7 +13,7 @@ export const DesktopOnly = styled.div`
   `};
 `
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.flex('align-center', 'justify-between')};

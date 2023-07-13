@@ -89,6 +89,7 @@ export const DASHBOARD_DESC_LAYOUT = {
 export const DOC_LAYOUT = {
   BLOCKS: 'blocks',
   LISTS: 'lists',
+  CARDS: 'cards',
   ARTICLE: 'article',
 } as Record<TSnakeUpperCase<TDocLayout>, TDocLayout>
 

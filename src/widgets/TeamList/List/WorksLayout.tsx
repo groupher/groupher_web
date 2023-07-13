@@ -13,11 +13,7 @@ import { buildLog } from '@/utils/logger'
 import Button from '@/widgets/Buttons/Button'
 import UserItem from '../UserItem'
 
-import {
-  Wrapper,
-  SettingWrapper,
-  SettingIcon,
-} from '../styles/list/works_layout'
+import { Wrapper, SettingWrapper, SettingIcon } from '../styles/list/works_layout'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:TeamList:index')

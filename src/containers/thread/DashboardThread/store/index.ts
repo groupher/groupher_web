@@ -33,6 +33,7 @@ import type {
   TEnableConfig,
   TNameAliasConfig,
   TChangeMode,
+  TArticleEntries,
 } from '@/spec'
 
 import {
@@ -42,6 +43,7 @@ import {
   DASHBOARD_ALIAS_ROUTE,
   DASHBOARD_BROADCAST_ROUTE,
   DASHBOARD_SEO_ROUTE,
+  DASHBOARD_DOC_ROUTE,
 } from '@/constant/route'
 import { CHANGE_MODE } from '@/constant/mode'
 import { THREAD } from '@/constant/thread'
@@ -51,7 +53,7 @@ import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { washThreads } from '@/utils/helper'
 
-import { PagedPosts, PagedChangelogs, Tag, emptyPagi } from '@/model'
+import { PagedPosts, PagedDocs, PagedChangelogs, Tag, emptyPagi } from '@/model'
 
 import type {
   TBaseInfoSettings,
@@ -73,7 +75,7 @@ import type {
   TCMSContents,
 } from '../spec'
 
-import { SETTING_FIELD, BASEINFO_KEYS, SEO_KEYS, BROADCAST_KEYS } from '../constant'
+import { SETTING_FIELD, UI_KEYS, BASEINFO_KEYS, SEO_KEYS, BROADCAST_KEYS } from '../constant'
 
 import { NameAlias, LinkItem, InitSettings, settingsModalFields } from './Models'
 
@@ -92,6 +94,7 @@ const DashboardThread = T.model('DashboardThread', {
   baseInfoTab: T.opt(T.enum(values(DASHBOARD_BASEINFO_ROUTE)), DASHBOARD_BASEINFO_ROUTE.BASIC),
   aliasTab: T.opt(T.enum(values(DASHBOARD_ALIAS_ROUTE)), DASHBOARD_ALIAS_ROUTE.GENERAL),
   seoTab: T.opt(T.enum(values(DASHBOARD_SEO_ROUTE)), DASHBOARD_SEO_ROUTE.SEARCH_ENGINE),
+  docTab: T.opt(T.enum(values(DASHBOARD_DOC_ROUTE)), DASHBOARD_DOC_ROUTE.TABLE),
   layoutTab: T.opt(T.enum(values(DASHBOARD_LAYOUT_ROUTE)), DASHBOARD_LAYOUT_ROUTE.GLOBAL),
   broadcastTab: T.opt(T.enum(values(DASHBOARD_BROADCAST_ROUTE)), DASHBOARD_BROADCAST_ROUTE.GLOBAL),
 
@@ -113,6 +116,7 @@ const DashboardThread = T.model('DashboardThread', {
   // cms
   batchSelectedIDs: T.opt(T.array(T.str), []),
   pagedPosts: T.opt(PagedPosts, emptyPagi),
+  pagedDocs: T.opt(PagedDocs, emptyPagi),
   pagedChangelogs: T.opt(PagedChangelogs, emptyPagi),
 
   // for global alert
@@ -121,59 +125,33 @@ const DashboardThread = T.model('DashboardThread', {
   .views((self) => ({
     get globalLayout(): TGlobalLayout {
       const slf = self as TStore
-      const { initSettings } = slf
-      const {
-        primaryColor,
-        changelogLayout,
-        postLayout,
-        kanbanLayout,
-        kanbanBgColors,
-        docLayout,
-        docFaqLayout,
-        headerLayout,
-        footerLayout,
-        bannerLayout,
-        topbarLayout,
-        topbarBg,
-
-        broadcastLayout,
-        broadcastBg,
-        broadcastEnable,
-
-        broadcastArticleLayout,
-        broadcastArticleBg,
-        broadcastArticleEnable,
-
-        brandLayout,
-        avatarLayout,
-        enable,
-      } = initSettings
+      const { initSettings: init } = slf
 
       return {
-        primaryColor,
-        brand: brandLayout,
-        avatar: avatarLayout,
-        post: postLayout,
-        kanban: kanbanLayout,
-        kanbanBgColors: kanbanBgColors as TColorName[],
-        doc: docLayout,
-        docFaq: docFaqLayout,
-        header: headerLayout,
-        footer: footerLayout,
-        changelog: changelogLayout,
-        banner: bannerLayout,
-        topbar: topbarLayout,
-        topbarBg,
+        primaryColor: init.primaryColor,
+        brand: init.brandLayout,
+        avatar: init.avatarLayout,
+        post: init.postLayout,
+        kanban: init.kanbanLayout,
+        kanbanBgColors: init.kanbanBgColors as TColorName[],
+        doc: init.docLayout,
+        docFaq: init.docFaqLayout,
+        header: init.headerLayout,
+        footer: init.footerLayout,
+        changelog: init.changelogLayout,
+        banner: init.bannerLayout,
+        topbar: init.topbarLayout,
+        topbarBg: init.topbarBg,
 
-        broadcast: broadcastLayout,
-        broadcastBg,
-        broadcastEnable,
+        broadcast: init.broadcastLayout,
+        broadcastBg: init.broadcastBg,
+        broadcastEnable: init.broadcastEnable,
 
-        broadcastArticle: broadcastArticleLayout,
-        broadcastArticleBg,
-        broadcastArticleEnable,
+        broadcastArticle: init.broadcastArticleLayout,
+        broadcastArticleBg: init.broadcastArticleBg,
+        broadcastArticleEnable: init.broadcastArticleEnable,
 
-        enable,
+        enable: init.enable,
       }
     },
     get curCommunity(): TCommunity {
@@ -184,31 +162,27 @@ const DashboardThread = T.model('DashboardThread', {
 
     get cmsContents(): TCMSContents {
       const slf = self as TStore
-      const { batchSelectedIDs } = slf
+      const { batchSelectedIDs, docTab } = slf
       const _batchSelectedIds = toJS(batchSelectedIDs)
       const _pagedPosts = toJS(slf.pagedPosts)
+      const _pagedDocs = toJS(slf.pagedDocs)
       const _pagedChangelogs = toJS(slf.pagedChangelogs)
-
-      const _postsEntries = _pagedPosts.entries.map((article) => ({
-        ...article,
-        _checked: includes(article.id, _batchSelectedIds),
-      }))
-
-      const _changelogsEntries = _pagedChangelogs.entries.map((article) => ({
-        ...article,
-        _checked: includes(article.id, _batchSelectedIds),
-      }))
 
       return {
         loading: slf.loading,
+        docTab,
         batchSelectedIDs: _batchSelectedIds,
         pagedPosts: {
           ..._pagedPosts,
-          entries: _postsEntries,
+          entries: slf._assignChecked(_pagedPosts.entries),
+        },
+        pagedDocs: {
+          ..._pagedDocs,
+          entries: slf._assignChecked(_pagedDocs.entries),
         },
         pagedChangelogs: {
           ..._pagedChangelogs,
-          entries: _changelogsEntries,
+          entries: slf._assignChecked(_pagedChangelogs.entries),
         },
       }
     },
@@ -511,9 +485,8 @@ const DashboardThread = T.model('DashboardThread', {
       const slf = self as TStore
       const root = getParent(self) as TRootStore
 
-      const {
-        wallpaperEditor: { wallpapers, wallpaper, customWallpaper, hasShadow },
-      } = root
+      const { wallpaperEditor } = root
+      const { wallpapers, wallpaper, customWallpaper, hasShadow } = wallpaperEditor
 
       // @ts-ignore
       return {
@@ -523,28 +496,10 @@ const DashboardThread = T.model('DashboardThread', {
           wallpapers,
           hasShadow,
         },
+        // @ts-ignore
         kanbanBgColors: toJS(slf.kanbanBgColors) as TColorName[],
-        ...pick(
-          [
-            'saving',
-            'layoutTab',
-            'primaryColor',
-            'brandLayout',
-            'avatarLayout',
-            'bannerLayout',
-            'topbarLayout',
-            'topbarBg',
-            'postLayout',
-            'kanbanLayout',
-            'docLayout',
-            'docFaqLayout',
-            'changelogLayout',
-            'glowFixed',
-            'glowType',
-            'glowOpacity',
-          ],
-          slf,
-        ),
+        ...pick(UI_KEYS, slf),
+        saving: slf.saving,
       }
     },
 
@@ -682,33 +637,28 @@ const DashboardThread = T.model('DashboardThread', {
       BStore.set(DASHBOARD_DEMO_KEY, JSON.stringify(saveSlf))
     },
 
+    _rollbackByKeys(keys: string[]): void {
+      const slf = self as TStore
+
+      for (let i = 0; i < keys.length; i += 1) {
+        const key = keys[i]
+        const initValue = slf.initSettings[key]
+        if (self[key] !== initValue) {
+          // @ts-ignore
+          self[key] = initValue
+        }
+      }
+    },
+
     rollbackEdit(field: TSettingField): void {
       const slf = self as TStore
 
       if (field === SETTING_FIELD.BASE_INFO) {
-        for (let i = 0; i < BASEINFO_KEYS.length; i += 1) {
-          const key = BASEINFO_KEYS[i]
-          const initValue = slf.initSettings[key]
-          if (self[key] !== initValue) {
-            // @ts-ignore
-            self[key] = initValue
-          }
-        }
-
-        return
+        return slf._rollbackByKeys(BASEINFO_KEYS)
       }
 
       if (field === SETTING_FIELD.SEO) {
-        for (let i = 0; i < SEO_KEYS.length; i += 1) {
-          const key = SEO_KEYS[i]
-          const initValue = slf.initSettings[key]
-          if (self[key] !== initValue) {
-            // @ts-ignore
-            self[key] = initValue
-          }
-        }
-
-        return
+        return slf._rollbackByKeys(SEO_KEYS)
       }
 
       if (field === SETTING_FIELD.TAG) {
@@ -772,6 +722,17 @@ const DashboardThread = T.model('DashboardThread', {
       )
 
       return targetIdx
+    },
+
+    _assignChecked(entries: TArticleEntries): TArticleEntries {
+      const slf = self as TStore
+      const { batchSelectedIDs } = slf
+      const _batchSelectedIds = toJS(batchSelectedIDs)
+
+      return entries.map((article) => ({
+        ...article,
+        _checked: includes(article.id, _batchSelectedIds),
+      }))
     },
 
     updateEditing(sobj): void {

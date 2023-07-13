@@ -7,7 +7,7 @@ import AccountSVG from '@/icons/Acount'
 
 export { Menu, MenuItem, Icon } from '.'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flex('align-center', 'justify-between')};

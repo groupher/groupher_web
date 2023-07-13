@@ -6,7 +6,7 @@ import css, { theme, animate } from '@/utils/css'
 
 import { Wrapper as ParentWrapper } from './index'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.flex('align-center')};

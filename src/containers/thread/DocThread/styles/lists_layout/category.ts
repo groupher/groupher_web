@@ -7,18 +7,17 @@ import { camelize } from '@/utils/fmt'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
 type TWrapper = TTestable & { color?: string }
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.flex('align-center')};
   width: 580px;
   min-height: 80px;
   padding: 30px 0;
-  margin-left: -40px;
   border-bottom: 1px solid;
   border-bottom-color: ${theme('divider')};
 
-  :last-child {
+  &:last-child {
     border-bottom: none;
   }
 

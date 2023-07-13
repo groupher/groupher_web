@@ -7,7 +7,7 @@ import Img from '@/Img'
 import { FadeToggle } from '@/widgets/Common'
 
 // see https://stackoverflow.com/questions/6794000/fixed-position-but-relative-to-container
-export const Wrapper = styled(FadeToggle).attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled(FadeToggle).attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable & TActive>`
   width: calc(100% - 45px);

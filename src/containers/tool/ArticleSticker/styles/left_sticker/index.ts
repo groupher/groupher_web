@@ -6,7 +6,7 @@ import Img from '@/Img'
 import css, { theme } from '@/utils/css'
 
 // see https://stackoverflow.com/questions/6794000/fixed-position-but-relative-to-container
-export const Wrapper = styled(FadeToggle).attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled(FadeToggle).attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable & TActive>`
   ${css.flexColumn('align-center')};
