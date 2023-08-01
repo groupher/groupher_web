@@ -16,19 +16,6 @@ import {
 } from '../../../styles/cms/docs/faq/block'
 import { triggerEditFAQ, deleteFAQSection } from '../../../logic'
 
-const markdown = `
-  this is a paragraph 
-
-  - this is a list
-  - this is a list 2
-  - this is a list 3
-
-
-  \`\`\`js
-  var some = code();
-  \`\`\`
-`
-
 type TProps = {
   section: TFAQSection
   editingFAQIndex: number | null
@@ -50,7 +37,7 @@ const Block: FC<TProps> = ({ section, editingFAQIndex, editingFAQ }) => {
       </Actions>
       <Title>{section.title}</Title>
       <Body>
-        <Markdown>{markdown}</Markdown>
+        <Markdown>{section.body}</Markdown>
       </Body>
     </Wrapper>
   )

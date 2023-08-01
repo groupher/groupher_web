@@ -388,6 +388,19 @@ export const EMPTY_LINK_ITEM = {
   groupIndex: 0,
 }
 
+const demoMarkdown = `
+  this is a paragraph 
+
+  - this is a list
+  - this is a list 2
+  - this is a list 3
+
+
+  \`\`\`js
+  var some = code();
+  \`\`\`
+`
+
 export const DEFAULT_FAQ_ITEMS = [
   {
     index: 0,
@@ -397,7 +410,7 @@ export const DEFAULT_FAQ_ITEMS = [
   {
     index: 1,
     title: 'Groupher 是免费的吗',
-    body: '如何使用 Groupher 的内容，我将在这片文档继续分享相关话题',
+    body: demoMarkdown,
   },
 ]
 
