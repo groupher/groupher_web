@@ -33,6 +33,7 @@ import type {
   TPagedArticles,
   TID,
   TDashboardDocRoute,
+  TFAQSection,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'CMS' | 'INTEGRATE'
@@ -45,6 +46,10 @@ export type TCMSContents = {
   pagedPosts: TPagedArticles
   pagedDocs: TPagedArticles
   pagedChangelogs: TPagedArticles
+
+  editingFAQ: TFAQSection
+  faqSections: TFAQSection[]
+  editingFAQIndex: number | null
 }
 
 export type TMenuGroup = {

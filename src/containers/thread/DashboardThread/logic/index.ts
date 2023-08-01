@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
-import { includes, values, uniq, reject } from 'ramda'
+import { includes, values, uniq, reject, find } from 'ramda'
 
-import type { TEditValue, TID, TSocialItem } from '@/spec'
+import type { TEditValue, TFAQSection, TID, TSocialItem } from '@/spec'
 import { COLOR_NAME } from '@/constant/colors'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
@@ -14,7 +14,13 @@ import asyncSuit from '@/utils/async'
 import type { TStore } from '../store'
 import type { TSettingField, TNameAlias } from '../spec'
 
-import { SETTING_FIELD, SETTING_LAYOUT_FIELD, BASEINFO_KEYS, SEO_KEYS } from '../constant'
+import {
+  SETTING_FIELD,
+  SETTING_LAYOUT_FIELD,
+  BASEINFO_KEYS,
+  SEO_KEYS,
+  DEFAULT_NEW_FAQ,
+} from '../constant'
 import { init as linksLogicInit } from './links'
 import { init as tagsLogicInit } from './tags'
 
@@ -47,6 +53,30 @@ export const enableThread = (key: string, toggle: boolean) => {
 }
 
 export const updateEditingAlias = (alias: TNameAlias): void => store.mark({ editingAlias: alias })
+export const updateEditingFAQ = (faq: TFAQSection): void => store.mark({ editingFAQ: faq })
+
+export const deleteFAQSection = (index: number): void => {
+  const { faqSections } = store
+
+  store.mark({ faqSections: reject((faq: TFAQSection) => faq.index === index, toJS(faqSections)) })
+}
+
+export const addFAQSection = (): void => {
+  const { faqSections } = store
+  const index = toJS(faqSections).length
+
+  store.mark({ editingFAQ: { ...DEFAULT_NEW_FAQ, index }, editingFAQIndex: index })
+}
+export const triggerEditFAQ = (index: number | null): void => {
+  if (index === null) {
+    store.mark({ editingFAQ: null, editingFAQIndex: null })
+    return
+  }
+  const { faqSections } = store
+  const editingFAQ = find((faq: TFAQSection) => faq.index === index, toJS(faqSections))
+
+  store.mark({ editingFAQIndex: index, editingFAQ })
+}
 
 export const addDocCategory = (): void => {
   const docCategories = store.docSettings.categories.concat({

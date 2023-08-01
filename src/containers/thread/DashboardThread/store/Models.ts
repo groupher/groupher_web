@@ -1,6 +1,6 @@
 import { keys, values } from 'ramda'
 
-import { Tag } from '@/model'
+import { FAQSection, Tag } from '@/model'
 
 import SIZE from '@/constant/size'
 import { COLORS, COLOR_NAME } from '@/constant/colors'
@@ -26,7 +26,13 @@ import {
 import { T } from '@/utils/mobx'
 // import { mockTags } from '@/utils/mock'
 
-import { BUILDIN_ALIAS, WIDGET_TYPE, TW_CARD, DEFAULT_LINK_ITEMS } from '../constant'
+import {
+  BUILDIN_ALIAS,
+  WIDGET_TYPE,
+  TW_CARD,
+  DEFAULT_LINK_ITEMS,
+  DEFAULT_FAQ_ITEMS,
+} from '../constant'
 
 export const Enable = T.model('Enable', {
   post: T.opt(T.bool, true),
@@ -157,6 +163,8 @@ export const settingsModalFields = {
   activeTagThread: T.maybeNull(T.string),
   nameAlias: T.opt(T.array(NameAlias), BUILDIN_ALIAS),
   enable: T.opt(Enable, {}),
+
+  faqSections: T.opt(T.array(FAQSection), DEFAULT_FAQ_ITEMS),
 
   rssFeedType: T.opt(T.enum(values(RSS_TYPE)), RSS_TYPE.DIGEST),
   rssFeedCount: T.opt(T.int, 5),

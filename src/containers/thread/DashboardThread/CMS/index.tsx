@@ -17,7 +17,17 @@ type TProps = {
 }
 
 const CMS: FC<TProps> = ({ route, cmsContents }) => {
-  const { pagedPosts, pagedDocs, docTab, pagedChangelogs, loading, batchSelectedIDs } = cmsContents
+  const {
+    pagedPosts,
+    pagedDocs,
+    docTab,
+    pagedChangelogs,
+    loading,
+    batchSelectedIDs,
+    faqSections,
+    editingFAQ,
+    editingFAQIndex,
+  } = cmsContents
 
   let contents = null
 
@@ -41,10 +51,13 @@ const CMS: FC<TProps> = ({ route, cmsContents }) => {
     case DASHBOARD_ROUTE.DOC: {
       contents = (
         <Docs
+          loading={loading}
           pagedDocs={pagedDocs}
           docTab={docTab}
           batchSelectedIDs={batchSelectedIDs}
-          loading={loading}
+          faqSections={faqSections}
+          editingFAQ={editingFAQ}
+          editingFAQIndex={editingFAQIndex}
         />
       )
       break

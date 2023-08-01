@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import Router from 'next/router'
 
-import type { TID, TDashboardDocRoute, TPagedArticles } from '@/spec'
+import type { TID, TDashboardDocRoute, TPagedArticles, TFAQSection } from '@/spec'
 import { DASHBOARD_DOC_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
 import useCurCommunity from '@/hooks/useCurCommunity'
@@ -22,9 +22,20 @@ type TProps = {
   docTab: TDashboardDocRoute
   loading: boolean
   batchSelectedIDs: TID[]
+  faqSections: TFAQSection[]
+  editingFAQ: TFAQSection
+  editingFAQIndex: number | null
 }
 
-const Docs: FC<TProps> = ({ pagedDocs, docTab, batchSelectedIDs, loading }) => {
+const Docs: FC<TProps> = ({
+  pagedDocs,
+  docTab,
+  batchSelectedIDs,
+  loading,
+  faqSections,
+  editingFAQ,
+  editingFAQIndex,
+}) => {
   const curCommunity = useCurCommunity()
 
   return (
@@ -53,7 +64,9 @@ const Docs: FC<TProps> = ({ pagedDocs, docTab, batchSelectedIDs, loading }) => {
         <TableView pagedDocs={pagedDocs} loading={loading} batchSelectedIDs={batchSelectedIDs} />
       )}
       {docTab === DASHBOARD_DOC_ROUTE.COVER && <Cover />}
-      {docTab === DASHBOARD_DOC_ROUTE.FAQ && <FAQ />}
+      {docTab === DASHBOARD_DOC_ROUTE.FAQ && (
+        <FAQ sections={faqSections} editingFAQIndex={editingFAQIndex} editingFAQ={editingFAQ} />
+      )}
     </Wrapper>
   )
 }

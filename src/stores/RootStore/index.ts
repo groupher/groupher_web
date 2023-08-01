@@ -242,14 +242,14 @@ const rootStore = T.model({
         // pass
       } else {
         // @ts-ignore TODO:
-        toast('warn', merge(defaultOpt, options))
+        toast(merge(defaultOpt, options), 'warn')
       }
 
       send(EVENT.LOGIN_PANEL)
     },
     changesetErr(options): void {
       // @ts-ignore TODO:
-      toast('error', options)
+      // toast('error', options)
     },
     updateC11N(options): void {
       self.account.updateC11N(options)

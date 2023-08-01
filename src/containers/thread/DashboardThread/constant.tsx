@@ -388,6 +388,19 @@ export const EMPTY_LINK_ITEM = {
   groupIndex: 0,
 }
 
+export const DEFAULT_FAQ_ITEMS = [
+  {
+    index: 0,
+    title: '如何使用 Groupher？',
+    body: '如何使用 Groupher 的内容，我将在这片文档继续分享相关话题',
+  },
+  {
+    index: 1,
+    title: 'Groupher 是免费的吗',
+    body: '如何使用 Groupher 的内容，我将在这片文档继续分享相关话题',
+  },
+]
+
 export const DEFAULT_LINK_ITEMS = [
   {
     title: '讨论区',
@@ -529,3 +542,9 @@ export const BROADCAST_KEYS = [
   'broadcastArticleBg',
   'broadcastArticleEnable',
 ]
+
+export const DEFAULT_NEW_FAQ = {
+  title: '',
+  body: '',
+  index: 0,
+}

@@ -54,7 +54,7 @@ export const Wrapper = styled.button<TWrapper>`
     height: 100%;
     top: 0;
     filter: blur(5px);
-    transform: translateX(-100px) skewX(-15deg);
+    transform: translateX(-180px) skewX(-15deg);
   }
 
   &:hover {

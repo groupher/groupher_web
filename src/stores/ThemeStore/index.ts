@@ -38,7 +38,7 @@ export const ThemeStore = T.model('ThemeStore', {
         return false
       }
 
-      toast('info', '保存主题设置失败: 仅支持高级会员以打赏用户')
+      toast('保存主题设置失败: 仅支持高级会员以打赏用户')
       return false
     },
     changeTheme(name: TThemeName): void {
