@@ -412,6 +412,11 @@ export const DEFAULT_FAQ_ITEMS = [
     title: 'Groupher 是免费的吗',
     body: demoMarkdown,
   },
+  {
+    index: 2,
+    title: 'Groupher 可以独立部署吗',
+    body: demoMarkdown,
+  },
 ]
 
 export const DEFAULT_LINK_ITEMS = [

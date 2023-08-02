@@ -5,6 +5,7 @@ import css, { theme } from '@/utils/css'
 
 import EditSVG from '@/icons/EditPen'
 import DeleteSVG from '@/icons/Delete'
+import ArrowSVG from '@/icons/Arrow'
 
 export const Wrapper = styled.div`
   position: relative;
@@ -18,7 +19,7 @@ export const Title = styled.div<TActive>`
 export const Actions = styled.div`
   ${css.flex('align-center')}
   position: absolute;
-  right: -150px;
+  right: -208px;
   top: 5px;
   opacity: 0.5;
 
@@ -52,5 +53,20 @@ export const DeleteIcon = styled(DeleteSVG)`
 `
 export const Body = styled.div`
   margin-top: 10px;
-  margin-bottom: 18px;
+  margin-bottom: 25px;
+`
+
+export const ArrowUpIcon = styled(ArrowSVG)`
+  ${css.size(10)};
+  fill: ${theme('article.digest')};
+  transform: rotate(90deg);
+  margin-right: 5px;
+  cursor: pointer;
+
+  ${Wrapper}:hover & {
+    color: ${theme('article.title')};
+  }
+`
+export const ArrowDownIcon = styled(ArrowUpIcon)`
+  transform: rotate(-90deg);
 `

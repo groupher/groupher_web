@@ -5,7 +5,7 @@ import type { TFAQSection } from '@/spec'
 import SavingBar from '../../../SavingBar'
 
 import { Wrapper, TitleInput, BodyInput } from '../../../styles/cms/docs/faq/editor'
-import { triggerEditFAQ, updateEditingFAQ } from '../../../logic'
+import { triggerEditFAQ, updateEditingFAQ, addFAQSectionConfirm } from '../../../logic/faq'
 
 type TProps = {
   editingFAQ: TFAQSection
@@ -25,7 +25,12 @@ const Editor: FC<TProps> = ({ editingFAQ }) => {
         value={editingFAQ?.body}
         onChange={(e) => updateEditingFAQ({ ...editingFAQ, body: e.target.value })}
       />
-      <SavingBar isTouched onCancel={() => triggerEditFAQ(null)} />
+      <SavingBar
+        onCancel={() => triggerEditFAQ(null)}
+        onConfirm={() => addFAQSectionConfirm()}
+        bottom={30}
+        isTouched
+      />
     </Wrapper>
   )
 }

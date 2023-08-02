@@ -29,4 +29,6 @@ export const InnerWrapper = styled.div`
   width: 360px;
 `
 
-export const holder = 1
+export const ItemsWrapper = styled.div`
+  ${css.flexColumn()};
+`
