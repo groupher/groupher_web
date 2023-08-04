@@ -12,7 +12,7 @@ import Block from './Block'
 
 import { Wrapper, InnerWrapper, ItemsWrapper } from '../../../styles/cms/docs/faq'
 
-type TProps = {
+export type TProps = {
   sections: TFAQSection[]
   editingFAQIndex: number | null
   editingFAQ: TFAQSection

@@ -20,14 +20,14 @@ import {
 import { deleteFAQSection } from '../../../logic'
 import { triggerEditFAQ, moveUpFAQ, moveDownFAQ } from '../../../logic/faq'
 
+import type { TProps as TIndex } from '.'
+
 type TProps = {
   section: TFAQSection
-  editingFAQIndex: number | null
-  editingFAQ: TFAQSection
   isFirst: boolean
   isLast: boolean
   sortOnly: boolean
-}
+} & Pick<TIndex, 'editingFAQIndex' | 'editingFAQ'>
 
 const Block: FC<TProps> = ({ section, editingFAQIndex, editingFAQ, isFirst, isLast, sortOnly }) => {
   if (editingFAQIndex === section.index) {

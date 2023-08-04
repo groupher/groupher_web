@@ -1,7 +1,7 @@
 import { FC, memo, useState, useCallback, useEffect } from 'react'
 import { isEmpty, includes, reject, pluck } from 'ramda'
 
-import type { TID, TMenuOption } from '@/spec'
+import type { TMenuOption } from '@/spec'
 
 import { MENU, DEFAULT_MENU } from './constant'
 

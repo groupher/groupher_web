@@ -9,7 +9,7 @@ import { Wrapper, Header, Title, ArrowIcon, Body } from '../styles/collapse/sect
 type TProps = {
   item: TFAQSection
   openedIndexes: number[]
-  toggle: (id: number) => void
+  toggle: (index: number) => void
 }
 
 const Section: FC<TProps> = ({ item, openedIndexes, toggle }) => {
