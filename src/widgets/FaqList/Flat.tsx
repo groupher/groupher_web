@@ -1,5 +1,7 @@
 import { FC, memo } from 'react'
 
+import Markdown from 'markdown-to-jsx'
+
 import {
   Wrapper,
   Header,
@@ -10,21 +12,21 @@ import {
   CheckIconWrapper,
   CheckIcon,
   Title,
-  Desc,
+  Body,
 } from './styles/flat'
 
 import type { TProps as TIndex } from './index'
 
-type TProps = Pick<TIndex, 'articles' | 'large'>
+type TProps = Pick<TIndex, 'sections' | 'large'>
 
-const Flat: FC<TProps> = ({ articles, large }) => {
+const Flat: FC<TProps> = ({ sections, large }) => {
   return (
     <Wrapper>
       <Header large={large}>
         <BrandText large={large}>常见问题</BrandText>
       </Header>
       <Content large={large}>
-        {articles.map((item) => (
+        {sections.map((item) => (
           <Section key={item.title} large={large}>
             <SectionHead>
               <CheckIconWrapper large={large}>
@@ -32,7 +34,9 @@ const Flat: FC<TProps> = ({ articles, large }) => {
               </CheckIconWrapper>
               <Title large={large}>{item.title}</Title>
             </SectionHead>
-            <Desc large={large}>{item.body}</Desc>
+            <Body large={large}>
+              <Markdown>{item.body}</Markdown>
+            </Body>
           </Section>
         ))}
       </Content>

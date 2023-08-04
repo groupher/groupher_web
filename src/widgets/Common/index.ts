@@ -94,3 +94,24 @@ export const MobileOnly = styled.div`
     display: block;
   `};
 `
+
+/**
+ * used for markdown render component
+ */
+export const MarkdownStyles = styled.div`
+  ul {
+    margin-left: 2px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: ${theme('article.title')};
+  }
+  li {
+    list-style: disc inside;
+  }
+`

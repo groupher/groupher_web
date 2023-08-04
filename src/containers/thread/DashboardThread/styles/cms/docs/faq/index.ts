@@ -1,30 +1,14 @@
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
+import { MarkdownStyles } from '@/widgets/Common'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled(MarkdownStyles)`
   ${css.flex('justify-center')};
   width: 85%;
   padding: 10px;
   color: ${theme('article.digest')};
-
-  ul {
-    margin-left: 2px;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    color: ${theme('article.title')};
-  }
-  li {
-    list-style: disc inside;
-  }
 `
-
 export const InnerWrapper = styled.div`
   width: 360px;
   margin-top: 20px;

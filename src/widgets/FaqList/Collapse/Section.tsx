@@ -1,27 +1,30 @@
 import { FC, memo } from 'react'
 
 import { includes } from 'ramda'
+import Markdown from 'markdown-to-jsx'
 
-import type { TID, TArticle } from '@/spec'
+import type { TFAQSection } from '@/spec'
 import { Wrapper, Header, Title, ArrowIcon, Body } from '../styles/collapse/section'
 
 type TProps = {
-  item: TArticle
-  openedIDs: TID[]
-  toggle: (id: TID) => void
+  item: TFAQSection
+  openedIDs: number[]
+  toggle: (id: number) => void
 }
 
 const Section: FC<TProps> = ({ item, openedIDs, toggle }) => {
-  const isOpened = includes(item.id, openedIDs)
+  const isOpened = includes(item.index, openedIDs)
 
   return (
     <Wrapper>
-      <Header onClick={() => toggle(item.id)}>
+      <Header onClick={() => toggle(item.index)}>
         <Title $active={isOpened}>{item.title}</Title>
         <ArrowIcon $active={isOpened} />
       </Header>
 
-      <Body show={isOpened}>{item.body}</Body>
+      <Body show={isOpened}>
+        <Markdown>{item.body}</Markdown>
+      </Body>
     </Wrapper>
   )
 }

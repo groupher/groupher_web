@@ -7,6 +7,8 @@ import css, { theme } from '@/utils/css'
 import FAQSVG from '@/icons/FAQ'
 import CheckSVG from '@/icons/Check'
 
+import { MarkdownStyles } from '@/widgets/Common'
+
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
@@ -92,7 +94,7 @@ export const CheckIcon = styled(CheckSVG)<{ large: boolean }>`
     ${css.size(14)};
   `};
 `
-export const Desc = styled.div<{ large: boolean }>`
+export const Body = styled(MarkdownStyles)<{ large: boolean }>`
   ${css.lineClamp(3)};
   color: ${theme('article.digest')};
   font-size: ${({ large }) => (large ? '15px' : '14px')};
