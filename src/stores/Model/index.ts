@@ -7,6 +7,7 @@ export { Post, PagedPosts } from './Post'
 export { Doc, PagedDocs } from './Doc'
 export { Changelog, PagedChangelogs } from './Changelog'
 export { Tag, PagedTags, emptyTag } from './Tag'
+export { FAQSection, emptyFAQSection } from './FAQSection'
 export { Category, PagedCategories } from './Category'
 export { FavoriteCategory, PagedFavoriteCategories } from './FavoriteCategory'
 

@@ -1,4 +1,5 @@
-import hotToast from 'react-hot-toast'
+import { toast as hotToast } from 'sonner'
+
 import {
   curry,
   find,
@@ -16,7 +17,6 @@ import {
 import type {
   TWindow,
   TToastType,
-  TToastOption,
   TArticleState,
   TColorName,
   TCommunityThread,
@@ -26,7 +26,6 @@ import type {
 
 import { TAG_COLOR_ORDER } from '@/config'
 import { ARTICLE_STATE } from '@/constant/gtd'
-import DEFAULT_TOAST_OPTIONS from '@/constant/toast'
 import { COLOR_NAME } from '@/constant/colors'
 
 type TSORTABLE_ITEMS = {
@@ -93,19 +92,12 @@ export const countWords = (str: string): number => {
   return matches ? matches.length : 0
 }
 
-export const toast = (
-  type: TToastType,
-  msg: string,
-  option: TToastOption = DEFAULT_TOAST_OPTIONS,
-): void => {
-  const { position, duration } = option
-
-  if (type === 'info') {
-    hotToast(msg, { position, duration })
-    return
+export const toast = (msg: string, type: TToastType = 'info'): void => {
+  if (type === 'error') {
+    hotToast.error(msg)
   }
 
-  hotToast[type](msg, { position, duration })
+  hotToast.success(msg)
 }
 
 // errRescue({type: ERR.GRAPHQL, operation: operationName, details: graphQLErrors})

@@ -53,7 +53,7 @@ import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { washThreads } from '@/utils/helper'
 
-import { PagedPosts, PagedDocs, PagedChangelogs, Tag, emptyPagi } from '@/model'
+import { PagedPosts, PagedDocs, PagedChangelogs, Tag, emptyPagi, FAQSection } from '@/model'
 
 import type {
   TBaseInfoSettings,
@@ -107,6 +107,8 @@ const DashboardThread = T.model('DashboardThread', {
 
   editingGroup: T.maybeNull(T.str),
   editingGroupIndex: T.maybeNull(T.int),
+  editingFAQIndex: T.maybeNull(T.int),
+  editingFAQ: T.maybeNull(FAQSection),
   // editingGroupMode: T.opt(T.enum(values(CHANGE_MODE)), CHANGE_MODE.CREATE),
 
   ...settingsModalFields,
@@ -162,15 +164,19 @@ const DashboardThread = T.model('DashboardThread', {
 
     get cmsContents(): TCMSContents {
       const slf = self as TStore
-      const { batchSelectedIDs, docTab } = slf
+      const { batchSelectedIDs, docTab, editingFAQIndex } = slf
       const _batchSelectedIds = toJS(batchSelectedIDs)
       const _pagedPosts = toJS(slf.pagedPosts)
       const _pagedDocs = toJS(slf.pagedDocs)
       const _pagedChangelogs = toJS(slf.pagedChangelogs)
 
+      const faqSections = toJS(slf.faqSections)
+      const editingFAQ = toJS(slf.editingFAQ)
+
       return {
         loading: slf.loading,
         docTab,
+        editingFAQIndex,
         batchSelectedIDs: _batchSelectedIds,
         pagedPosts: {
           ..._pagedPosts,
@@ -184,6 +190,9 @@ const DashboardThread = T.model('DashboardThread', {
           ..._pagedChangelogs,
           entries: slf._assignChecked(_pagedChangelogs.entries),
         },
+
+        faqSections,
+        editingFAQ,
       }
     },
 
@@ -204,6 +213,10 @@ const DashboardThread = T.model('DashboardThread', {
 
       const _isChanged = (field: TSettingField): boolean => !equals(slf[field], init[field])
       const _anyChanged = (fields: TSettingField[]): boolean => any(_isChanged)(fields)
+
+      const _mapArrayChanged = (key: string): boolean => {
+        return JSON.stringify(toJS(self[key])) !== JSON.stringify(toJS(self.initSettings[key]))
+      }
 
       const primaryColorTouched = _isChanged('primaryColor')
       const brandLayoutTouched = _isChanged('brandLayout')
@@ -234,6 +247,7 @@ const DashboardThread = T.model('DashboardThread', {
 
       const nameAliasTouched = !isNil(slf.editingAlias)
       const tagsTouched = !isNil(slf.editingTag)
+      const faqSectionsTouched = _mapArrayChanged('faqSections')
 
       const rssFeedTypeTouched = _isChanged('rssFeedType')
       const rssFeedCountTouched = _isChanged('rssFeedCount')
@@ -266,6 +280,8 @@ const DashboardThread = T.model('DashboardThread', {
         tags: tagsTouched,
         tagsIndex: _tagsIndexTouched,
         socialLinks: _socialLinksTouched,
+
+        faqSections: faqSectionsTouched,
 
         glowFixed: glowFixedTouched,
         glowType: glowTypeTouched,
@@ -672,6 +688,11 @@ const DashboardThread = T.model('DashboardThread', {
 
       if (field === SETTING_FIELD.TAG_INDEX) {
         self.tags = toJS(self.initSettings.tags)
+        return
+      }
+
+      if (field === SETTING_FIELD.FAQ_SECTIONS) {
+        self.faqSections = toJS(self.initSettings.faqSections)
         return
       }
 

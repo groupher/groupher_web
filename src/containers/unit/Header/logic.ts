@@ -73,7 +73,7 @@ const DataSolver = [
     match: asyncRes(EVENT.SET_C11N),
     action: (res) => {
       if (!store.isLogin) {
-        toast('error', '设置未保存: 请登录.')
+        toast('设置未保存: 请登录.', 'error')
         return false
       }
       const { data } = res[EVENT.SET_C11N]

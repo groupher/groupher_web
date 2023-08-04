@@ -39,7 +39,7 @@ export const transferAccountChange = ({ target: { value } }) =>
 export const onPaymentConfirm = (): void => {
   if (!store.isLogin) return store.authWarning({ hideToast: true })
   if (isEmpty(store.transferAccount)) {
-    return toast('error', '提交失败: 请填写转账信息')
+    return toast('提交失败: 请填写转账信息', 'error')
   }
 
   const { paymentMethod, paymentUsage, amount, transferAccount: note } = store
@@ -85,7 +85,7 @@ const DataSolver = [
 const ErrSolver = [
   {
     match: asyncErr(ERR.GRAPHQL),
-    action: ({ details }) => toast('error', `提交失败: ${errorForHuman(details)}`),
+    action: ({ details }) => toast(`提交失败: ${errorForHuman(details)}`, 'error'),
   },
   {
     match: asyncErr(ERR.TIMEOUT),

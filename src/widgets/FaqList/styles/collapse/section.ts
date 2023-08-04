@@ -4,6 +4,7 @@ import type { TActive } from '@/spec'
 
 import css, { theme } from '@/utils/css'
 import ArrowSVG from '@/icons/ArrowSimple'
+import { MarkdownStyles } from '@/widgets/Common'
 
 export const Wrapper = styled.div`
   padding: 18px 0;
@@ -46,7 +47,7 @@ export const ArrowIcon = styled(ArrowSVG)<TActive>`
   transform: ${({ $active }) => ($active ? 'rotate(270deg)' : 'rotate(90deg)')};
   transition: all 0.3s;
 `
-export const Body = styled.div<TActive>`
+export const Body = styled(MarkdownStyles)<TActive>`
   color: ${theme('article.digest')};
   font-size: 16px;
   margin-top: ${({ show }) => (show ? '12px' : 0)};

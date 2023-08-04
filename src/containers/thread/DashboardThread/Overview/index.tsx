@@ -5,7 +5,7 @@ import type { TPostLayout } from '@/spec'
 // import { Br } from '@/widgets/Common'
 
 import Portal from '../Portal'
-import SectionLabel from '../SectionLabel'
+// import SectionLabel from '../SectionLabel'
 // import CheckLabel from '@/widgets/CheckLabel'
 
 import { Wrapper, Section, Title } from '../styles/overview'

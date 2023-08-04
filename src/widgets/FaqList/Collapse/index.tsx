@@ -1,7 +1,7 @@
 import { FC, memo, useState, useCallback, useEffect } from 'react'
 import { isEmpty, includes, reject, pluck } from 'ramda'
 
-import type { TID, TMenuOption } from '@/spec'
+import type { TMenuOption } from '@/spec'
 
 import { MENU, DEFAULT_MENU } from './constant'
 
@@ -13,39 +13,39 @@ import { Wrapper } from '../styles/collapse'
 
 import type { TProps as TIndex } from '../index'
 
-type TProps = Pick<TIndex, 'articles'>
+type TProps = Pick<TIndex, 'sections'>
 
-const Collapse: FC<TProps> = ({ articles }) => {
-  const [openedIDs, setOpenedIDs] = useState<TID[]>([])
+const Collapse: FC<TProps> = ({ sections }) => {
+  const [openedIndexes, setOpenedIndexes] = useState<number[]>([])
   const [menuOptions, setMenuOptions] = useState<TMenuOption[]>(DEFAULT_MENU)
 
   useEffect(() => {
-    const articleIds = pluck('id', articles)
-    if (isEmpty(openedIDs)) {
+    const articleIds = pluck('index', sections)
+    if (isEmpty(openedIndexes)) {
       setMenuOptions([MENU.UNFOLD_ALL, MENU.AUTH_EDIT])
-    } else if (openedIDs.length === articleIds.length) {
+    } else if (openedIndexes.length === articleIds.length) {
       setMenuOptions([MENU.FOLD_ALL, MENU.AUTH_EDIT])
     } else {
       setMenuOptions(DEFAULT_MENU)
     }
-  }, [openedIDs, articles])
+  }, [openedIndexes, sections])
 
   // fold/unfold one item
   const toggle = useCallback(
     (id) => {
-      includes(id, openedIDs)
-        ? setOpenedIDs(reject((_id) => _id === id, openedIDs))
-        : setOpenedIDs([id, ...openedIDs])
+      includes(id, openedIndexes)
+        ? setOpenedIndexes(reject((_id) => _id === id, openedIndexes))
+        : setOpenedIndexes([id, ...openedIndexes])
     },
-    [openedIDs],
+    [openedIndexes],
   )
 
   return (
     <Wrapper>
-      <Banner menuOptions={menuOptions} setOpenedIDs={setOpenedIDs} articles={articles} />
+      <Banner menuOptions={menuOptions} setOpenedIndexes={setOpenedIndexes} sections={sections} />
 
-      {articles.map((item) => (
-        <Section key={item.id} item={item} openedIDs={openedIDs} toggle={toggle} />
+      {sections.map((item) => (
+        <Section key={item.index} item={item} openedIndexes={openedIndexes} toggle={toggle} />
       ))}
 
       <Footer />

@@ -61,7 +61,7 @@ const DashboardThreadContainer: FC<TProps> = ({
     footerSettings,
     aliasSettings,
     widgetsSettings,
-    docSettings,
+    // docSettings,
     broadcastSettings,
     touched,
     cmsContents,
@@ -95,7 +95,9 @@ const DashboardThreadContainer: FC<TProps> = ({
         {curTab === DASHBOARD.THIRD_PART && <ThirdPart />}
         {curTab === DASHBOARD.WIDGETS && <Widgets settings={widgetsSettings} touched={touched} />}
 
-        {includes(curTab, DASHBORD_CMS_ROUTES) && <CMS cmsContents={cmsContents} route={curTab} />}
+        {includes(curTab, DASHBORD_CMS_ROUTES) && (
+          <CMS cmsContents={cmsContents} route={curTab} touched={touched} />
+        )}
       </MainWrapper>
     </Wrapper>
   )

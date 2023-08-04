@@ -3,7 +3,7 @@ import 'rsuite-table/dist/css/rsuite-table.css'
 
 import { DASHBOARD_ROUTE } from '@/constant/route'
 
-import type { TCMSContents } from '../spec'
+import type { TCMSContents, TTouched } from '../spec'
 import GlobalTableStyle from '../styles/cms/global'
 import { Wrapper } from '../styles/cms'
 
@@ -14,10 +14,21 @@ import Docs from './Docs'
 type TProps = {
   cmsContents: TCMSContents
   route: string
+  touched: TTouched
 }
 
-const CMS: FC<TProps> = ({ route, cmsContents }) => {
-  const { pagedPosts, pagedDocs, docTab, pagedChangelogs, loading, batchSelectedIDs } = cmsContents
+const CMS: FC<TProps> = ({ route, cmsContents, touched }) => {
+  const {
+    pagedPosts,
+    pagedDocs,
+    docTab,
+    pagedChangelogs,
+    loading,
+    batchSelectedIDs,
+    faqSections,
+    editingFAQ,
+    editingFAQIndex,
+  } = cmsContents
 
   let contents = null
 
@@ -41,10 +52,14 @@ const CMS: FC<TProps> = ({ route, cmsContents }) => {
     case DASHBOARD_ROUTE.DOC: {
       contents = (
         <Docs
+          loading={loading}
           pagedDocs={pagedDocs}
           docTab={docTab}
           batchSelectedIDs={batchSelectedIDs}
-          loading={loading}
+          faqSections={faqSections}
+          editingFAQ={editingFAQ}
+          editingFAQIndex={editingFAQIndex}
+          touched={touched}
         />
       )
       break

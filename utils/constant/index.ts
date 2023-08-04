@@ -39,8 +39,6 @@ export { COMMUNITY_MAP_ALIAS } from './alias'
 
 export { ARTICLE_STATE, ARTICLE_CAT, ARTICLE_CAT_REJECT, ARTICLE_CAT_MODE } from './gtd'
 
-export { default as DEFAULT_TOAST_OPTIONS } from './toast'
-
 export {
   PATTERN_WALLPAPER,
   GRADIENT_WALLPAPER,

@@ -42,6 +42,10 @@ export const SETTING_FIELD = {
   SOCIAL_LINKS: 'socialLinks',
   TAG: 'tag',
   TAG_INDEX: 'tagIndex',
+  FAQ_SECTIONS: 'faqSections',
+  FAQ_SECTION_ITEM: 'faqSectionItem',
+  FAQ_SECTION_ADD: 'faqSectionAdd',
+  FAQ_SECTION_DELETE: 'faqSectionDelete',
   NAME_ALIAS: 'nameAlias',
   RSS_FEED_TYPE: 'rssFeedType',
   RSS_FEED_COUNT: 'rssFeedCount',
@@ -388,6 +392,37 @@ export const EMPTY_LINK_ITEM = {
   groupIndex: 0,
 }
 
+const demoMarkdown = `
+  this is a paragraph 
+
+  - this is a list
+  - this is a list 2
+  - this is a list 3
+
+
+  \`\`\`js
+  var some = code();
+  \`\`\`
+`
+
+export const DEFAULT_FAQ_ITEMS = [
+  // {
+  //   index: 0,
+  //   title: '如何使用 Groupher？',
+  //   body: '如何使用 Groupher 的内容，我将在这片文档继续分享相关话题',
+  // },
+  // {
+  //   index: 1,
+  //   title: 'Groupher 是免费的吗',
+  //   body: demoMarkdown,
+  // },
+  // {
+  //   index: 2,
+  //   title: 'Groupher 可以独立部署吗',
+  //   body: demoMarkdown,
+  // },
+]
+
 export const DEFAULT_LINK_ITEMS = [
   {
     title: '讨论区',
@@ -529,3 +564,9 @@ export const BROADCAST_KEYS = [
   'broadcastArticleBg',
   'broadcastArticleEnable',
 ]
+
+export const DEFAULT_NEW_FAQ = {
+  title: '',
+  body: '',
+  index: 0,
+}

@@ -208,3 +208,9 @@ export type TArticlePubSelector = {
   cat?: TArticleCat | null
   tag?: TTag | null
 }
+
+export type TFAQSection = {
+  title: string
+  body: string
+  index: number
+}

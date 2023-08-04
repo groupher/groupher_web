@@ -66,7 +66,6 @@ export type {
   TTechStackCategory,
   TCommunitySetterStyle,
   TToastType,
-  TToastOption,
   TView,
   TUserActivity,
   TEditMode,
@@ -136,6 +135,7 @@ export type {
   TArticlePubSelector,
   TArticleCatReject,
   TArticleState,
+  TFAQSection,
 } from './article'
 
 export type {

@@ -44,7 +44,7 @@ const MobileThreadNav: FC<TProps> = ({
             <Divider top={0} bottom={0} />
             <Item href={`/${community.slug}/${ROUTE.DASHBOARD.DASHBOARD}`}>管理后台</Item>
             <CopyToClipboard text={community.title}>
-              <ShareItem onClick={() => toast('success', '已复制到剪切板')}>分享链接</ShareItem>
+              <ShareItem onClick={() => toast('已复制到剪切板')}>分享链接</ShareItem>
             </CopyToClipboard>
           </Panel>
         }

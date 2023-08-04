@@ -97,6 +97,12 @@ export const community = `
           doc
           about
         }
+
+        faqs {
+          title
+          body
+          index
+        }
       }
     }
   }

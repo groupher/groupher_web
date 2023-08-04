@@ -1,7 +1,7 @@
 import { FC, memo, useCallback } from 'react'
 import { pluck } from 'ramda'
 
-import type { TID, TMenuOption, TArticle } from '@/spec'
+import type { TMenuOption, TFAQSection } from '@/spec'
 
 import MenuButton from '@/widgets/Buttons/MenuButton'
 
@@ -9,13 +9,16 @@ import { Wrapper, Title, MenuWrapper, MenuIcon } from '../styles/collapse/banner
 
 type TProps = {
   menuOptions: TMenuOption[]
-  setOpenedIDs: (ids: TID[]) => void
-  articles: TArticle[]
+  setOpenedIndexes: (ids: number[]) => void
+  sections: TFAQSection[]
 }
 
-const Banner: FC<TProps> = ({ menuOptions, setOpenedIDs, articles }) => {
-  const foldAll = useCallback(() => setOpenedIDs([]), [])
-  const unFoldAll = useCallback(() => setOpenedIDs(pluck('id', articles)), [articles, setOpenedIDs])
+const Banner: FC<TProps> = ({ menuOptions, setOpenedIndexes, sections }) => {
+  const foldAll = useCallback(() => setOpenedIndexes([]), [])
+  const unFoldAll = useCallback(
+    () => setOpenedIndexes(pluck('index', sections)),
+    [sections, setOpenedIndexes],
+  )
 
   const handleMenu = useCallback(
     (key) => {

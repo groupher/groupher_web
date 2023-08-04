@@ -17,6 +17,7 @@ import {
   ssrPagedArticlesFilter,
   ssrRescue,
   communitySEO,
+  ssrParseDashboard,
   log,
 } from '@/utils'
 
@@ -74,6 +75,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const { community } = resp
+  const dashboard = ssrParseDashboard(community)
 
   const initProps = merge(
     {
@@ -87,6 +89,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       viewing: {
         community,
         activeThread: thread,
+      },
+      dashboardThread: {
+        ...dashboard,
       },
     },
     {

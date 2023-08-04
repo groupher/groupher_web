@@ -40,7 +40,7 @@ const DocThreadContainer: FC<TProps> = ({
 }) => {
   useInit(store)
 
-  const { isArticleLayout, layout, faqLayout, isFAQArticleLayout } = store
+  const { isArticleLayout, layout, faqLayout, isFAQArticleLayout, faqSections } = store
   const { isMobile } = useMobileDetect()
 
   if (isArticleLayout) {
@@ -58,7 +58,7 @@ const DocThreadContainer: FC<TProps> = ({
       <Divider top={50} bottom={80} width={isMobile ? '90%' : '100%'} />
 
       <FAQWrapper>
-        <FaqList layout={faqLayout} />
+        <FaqList layout={faqLayout} sections={faqSections} />
       </FAQWrapper>
     </Wrapper>
   )

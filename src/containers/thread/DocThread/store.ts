@@ -2,7 +2,7 @@
  * DocThread store
  */
 
-import type { TCommunity, TDocFAQLayout, TDocLayout, TRootStore } from '@/spec'
+import type { TCommunity, TDocFAQLayout, TDocLayout, TFAQSection, TRootStore } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
@@ -18,6 +18,11 @@ const DocThread = T.model('DocThread', {
       const root = getParent(self) as TRootStore
 
       return toJS(root.viewing.community)
+    },
+    get faqSections(): TFAQSection[] {
+      const root = getParent(self) as TRootStore
+
+      return toJS(root.dashboardThread.faqSections)
     },
     get layout(): TDocLayout {
       const root = getParent(self) as TRootStore

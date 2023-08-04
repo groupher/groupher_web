@@ -6,7 +6,6 @@ import { Br } from '@/widgets/Common'
 import {
   Wrapper,
   Header,
-  FAQIcon,
   Title,
   Body,
   Section,
@@ -20,9 +19,9 @@ import {
 
 import type { TProps as TIndex } from './index'
 
-type TProps = Pick<TIndex, 'articles'>
+type TProps = Pick<TIndex, 'sections'>
 
-const SearchHint: FC<TProps> = ({ articles }) => {
+const SearchHint: FC<TProps> = ({ sections }) => {
   const cats = mockHelpCats()
 
   return (
@@ -31,7 +30,7 @@ const SearchHint: FC<TProps> = ({ articles }) => {
         <Title>常见问题</Title>
       </Header>
       <Body>
-        {articles.map((item) => (
+        {sections.map((item) => (
           <Section key={item.title}>
             <Item>{item.title}</Item>
           </Section>

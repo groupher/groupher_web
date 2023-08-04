@@ -174,6 +174,22 @@ const reindexTagsInGroup = gql`
   }
 `
 
+const updateDashboardFaqs = gql`
+  mutation ($community: String!, $faqs: [dashboardFaqMap]) {
+    updateDashboardFaqs(community: $community, faqs: $faqs) {
+      id
+      title
+      dashboard {
+        faqs {
+          title
+          body
+          index
+        }
+      }
+    }
+  }
+`
+
 const schema = {
   updateDashboardBaseInfo,
   updateDashboardSeo,
@@ -186,6 +202,7 @@ const schema = {
   reindexTagsInGroup,
   pagedPosts,
   pagedChangelogs,
+  updateDashboardFaqs,
 }
 
 export default schema
