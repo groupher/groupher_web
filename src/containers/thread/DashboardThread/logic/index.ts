@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
-import { includes, values, uniq, reject } from 'ramda'
+import { includes, values, uniq, reject, update, findIndex } from 'ramda'
 
-import type { TEditValue, TID, TSocialItem } from '@/spec'
+import type { TEditValue, TFAQSection, TID, TSocialItem } from '@/spec'
 import { COLOR_NAME } from '@/constant/colors'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
@@ -119,6 +119,17 @@ export const broadcastOnCancel = (isArticle = false): void => {
   store.rollbackEdit(bgKey)
 }
 
+export const deleteFAQSection = (index: number): void => {
+  const { curCommunity, faqSections } = store
+  const community = curCommunity.slug
+
+  store.mark({
+    faqSections: reject((faq: TFAQSection) => faq.index === index, toJS(faqSections)),
+    savingField: SETTING_FIELD.FAQ_SECTION_DELETE,
+  })
+  sr71$.mutate(S.updateDashboardFaqs, { faqs: toJS(store.faqSections), community })
+}
+
 const _doMutation = (field: string, e: TEditValue): void => {
   const { curCommunity } = store
   const community = curCommunity.slug
@@ -153,8 +164,33 @@ const _doMutation = (field: string, e: TEditValue): void => {
   }
 
   if (field === SETTING_FIELD.TAG) {
-    const community = store.curCommunity.slug
     sr71$.mutate(S.updateArticleTag, { ...toJS(store.editingTag), community })
+  }
+
+  if (field === SETTING_FIELD.FAQ_SECTIONS) {
+    sr71$.mutate(S.updateDashboardFaqs, { faqs: toJS(store.faqSections), community })
+  }
+
+  if (field === SETTING_FIELD.FAQ_SECTION_ITEM) {
+    const { editingFAQ, faqSections } = store
+    const _editingFAQ = toJS(editingFAQ)
+    const _faqSections = toJS(faqSections)
+    const targetIndex = findIndex(
+      (item: TFAQSection) => item.index === editingFAQ.index,
+      _faqSections,
+    )
+
+    const updatedSections = update(targetIndex, _editingFAQ, _faqSections)
+    store.mark({ faqSections: updatedSections, editingFAQ: null, editingFAQIndex: null })
+    sr71$.mutate(S.updateDashboardFaqs, { faqs: updatedSections, community })
+  }
+
+  if (field === SETTING_FIELD.FAQ_SECTION_ADD) {
+    const { faqSections, editingFAQ } = store
+    const _faqSections = [...toJS(faqSections), toJS(editingFAQ)]
+
+    store.mark({ faqSections: _faqSections, editingFAQ: null, editingFAQIndex: null })
+    sr71$.mutate(S.updateDashboardFaqs, { faqs: _faqSections, community })
   }
 
   if (field === SETTING_FIELD.TAG_INDEX) {
@@ -257,8 +293,12 @@ const _handleDone = () => {
 
   let initSettings
 
+  console.log('## the field: ', field)
+
   if (field === SETTING_FIELD.TAG_INDEX) {
     initSettings = { ...store.initSettings, tags: toJS(store.tags) }
+  } else if (includes(field, [SETTING_FIELD.FAQ_SECTION_ADD, SETTING_FIELD.FAQ_SECTION_DELETE])) {
+    initSettings = { ...store.initSettings, faqSections: toJS(store.faqSections) }
   } else {
     initSettings = { ...store.initSettings, [field]: toJS(store[field]) }
   }
@@ -325,6 +365,10 @@ const DataSolver = [
   },
   {
     match: asyncRes('updateArticleTag'),
+    action: () => _handleDone(),
+  },
+  {
+    match: asyncRes('updateDashboardFaqs'),
     action: () => _handleDone(),
   },
   {

@@ -9,6 +9,7 @@ import {
   Wrapper,
   Actions,
   Hint,
+  DeleteHint,
   EditIcon,
   DeleteIcon,
   Title,
@@ -16,7 +17,8 @@ import {
   ArrowUpIcon,
   ArrowDownIcon,
 } from '../../../styles/cms/docs/faq/block'
-import { triggerEditFAQ, deleteFAQSection, moveUpFAQ, moveDownFAQ } from '../../../logic/faq'
+import { deleteFAQSection } from '../../../logic'
+import { triggerEditFAQ, moveUpFAQ, moveDownFAQ } from '../../../logic/faq'
 
 type TProps = {
   section: TFAQSection
@@ -24,27 +26,34 @@ type TProps = {
   editingFAQ: TFAQSection
   isFirst: boolean
   isLast: boolean
+  sortOnly: boolean
 }
 
-const Block: FC<TProps> = ({ section, editingFAQIndex, editingFAQ, isFirst, isLast }) => {
+const Block: FC<TProps> = ({ section, editingFAQIndex, editingFAQ, isFirst, isLast, sortOnly }) => {
   if (editingFAQIndex === section.index) {
     return <Editor editingFAQ={editingFAQ} />
   }
 
   return (
     <Wrapper>
-      <Actions>
-        <EditIcon />
-        <Hint onClick={() => triggerEditFAQ(section.index)}>编辑</Hint>
-        <DeleteIcon />
-        <Hint onClick={() => deleteFAQSection(section.index)}>删除</Hint>
-        {!isFirst && <ArrowUpIcon onClick={() => moveUpFAQ(section)} />}
-        {!isLast && <ArrowDownIcon onClick={() => moveDownFAQ(section)} />}
-      </Actions>
       <Title>{section.title}</Title>
       <Body>
         <Markdown>{section.body}</Markdown>
       </Body>
+
+      <Actions rightOffset={!isFirst && !isLast}>
+        {!sortOnly && !editingFAQ && (
+          <>
+            <EditIcon />
+            <Hint onClick={() => triggerEditFAQ(section.index)}>编辑</Hint>
+            <DeleteIcon />
+            <DeleteHint onClick={() => deleteFAQSection(section.index)}>删除</DeleteHint>
+          </>
+        )}
+
+        {!isFirst && <ArrowUpIcon onClick={() => moveUpFAQ(section)} />}
+        {!isLast && <ArrowDownIcon onClick={() => moveDownFAQ(section)} />}
+      </Actions>
     </Wrapper>
   )
 }

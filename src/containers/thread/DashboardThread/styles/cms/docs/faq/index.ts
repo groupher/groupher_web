@@ -27,6 +27,7 @@ export const Wrapper = styled.div`
 
 export const InnerWrapper = styled.div`
   width: 360px;
+  margin-top: 20px;
 `
 
 export const ItemsWrapper = styled.div`

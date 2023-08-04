@@ -3,6 +3,9 @@ import { FC } from 'react'
 import type { TFAQSection } from '@/spec'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
+import { SETTING_FIELD } from '../../../constant'
+
+import SavingBar from '../../../SavingBar'
 import Editor from './Editor'
 import Adder from './Adder'
 import Block from './Block'
@@ -13,9 +16,10 @@ type TProps = {
   sections: TFAQSection[]
   editingFAQIndex: number | null
   editingFAQ: TFAQSection
+  isTouched: boolean
 }
 
-const FAQ: FC<TProps> = ({ sections, editingFAQIndex, editingFAQ }) => {
+const FAQ: FC<TProps> = ({ sections, editingFAQIndex, editingFAQ, isTouched }) => {
   const showAdder = editingFAQIndex === sections.length
   const [animateRef] = useAutoAnimate()
 
@@ -29,14 +33,22 @@ const FAQ: FC<TProps> = ({ sections, editingFAQIndex, editingFAQ }) => {
               section={section}
               editingFAQIndex={editingFAQIndex}
               editingFAQ={editingFAQ}
+              sortOnly={isTouched}
               isFirst={index === 0}
               isLast={index === sections.length - 1}
             />
           ))}
         </ItemsWrapper>
 
-        {showAdder && <Editor editingFAQ={editingFAQ} />}
-        {!showAdder && <Adder />}
+        {showAdder && !isTouched && <Editor editingFAQ={editingFAQ} addNew />}
+        {!showAdder && !isTouched && <Adder />}
+
+        <SavingBar
+          field={SETTING_FIELD.FAQ_SECTIONS}
+          prefix="是否保存排序"
+          isTouched={isTouched}
+          top={30}
+        />
       </InnerWrapper>
     </Wrapper>
   )

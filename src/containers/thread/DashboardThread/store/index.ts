@@ -214,6 +214,10 @@ const DashboardThread = T.model('DashboardThread', {
       const _isChanged = (field: TSettingField): boolean => !equals(slf[field], init[field])
       const _anyChanged = (fields: TSettingField[]): boolean => any(_isChanged)(fields)
 
+      const _mapArrayChanged = (key: string): boolean => {
+        return JSON.stringify(toJS(self[key])) !== JSON.stringify(toJS(self.initSettings[key]))
+      }
+
       const primaryColorTouched = _isChanged('primaryColor')
       const brandLayoutTouched = _isChanged('brandLayout')
       const avatarTouched = _isChanged('avatarLayout')
@@ -243,6 +247,7 @@ const DashboardThread = T.model('DashboardThread', {
 
       const nameAliasTouched = !isNil(slf.editingAlias)
       const tagsTouched = !isNil(slf.editingTag)
+      const faqSectionsTouched = _mapArrayChanged('faqSections')
 
       const rssFeedTypeTouched = _isChanged('rssFeedType')
       const rssFeedCountTouched = _isChanged('rssFeedCount')
@@ -275,6 +280,8 @@ const DashboardThread = T.model('DashboardThread', {
         tags: tagsTouched,
         tagsIndex: _tagsIndexTouched,
         socialLinks: _socialLinksTouched,
+
+        faqSections: faqSectionsTouched,
 
         glowFixed: glowFixedTouched,
         glowType: glowTypeTouched,
@@ -681,6 +688,11 @@ const DashboardThread = T.model('DashboardThread', {
 
       if (field === SETTING_FIELD.TAG_INDEX) {
         self.tags = toJS(self.initSettings.tags)
+        return
+      }
+
+      if (field === SETTING_FIELD.FAQ_SECTIONS) {
+        self.faqSections = toJS(self.initSettings.faqSections)
         return
       }
 

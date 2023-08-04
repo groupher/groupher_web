@@ -15,13 +15,6 @@ export const addFAQSection = (): void => {
   store.mark({ editingFAQ: { ...DEFAULT_NEW_FAQ, index }, editingFAQIndex: index })
 }
 
-export const addFAQSectionConfirm = (): void => {
-  const { faqSections, editingFAQ } = store
-  const _faqSections = [...toJS(faqSections), toJS(editingFAQ)]
-
-  store.mark({ faqSections: _faqSections, editingFAQ: null, editingFAQIndex: null })
-}
-
 export const triggerEditFAQ = (index: number | null): void => {
   if (index === null) {
     store.mark({ editingFAQ: null, editingFAQIndex: null })
@@ -34,12 +27,6 @@ export const triggerEditFAQ = (index: number | null): void => {
 }
 
 export const updateEditingFAQ = (faq: TFAQSection): void => store.mark({ editingFAQ: faq })
-
-export const deleteFAQSection = (index: number): void => {
-  const { faqSections } = store
-
-  store.mark({ faqSections: reject((faq: TFAQSection) => faq.index === index, toJS(faqSections)) })
-}
 
 export const moveUpFAQ = (faqSection: TFAQSection): void => _moveFAQ(faqSection, 'up')
 export const moveDownFAQ = (faqSection: TFAQSection): void => _moveFAQ(faqSection, 'down')

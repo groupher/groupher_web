@@ -209,6 +209,8 @@ export type TTouched = {
   tags: boolean
   tagsIndex: boolean
 
+  faqSections: boolean
+
   socialLinks: boolean
   rssFeed: boolean
 
@@ -262,6 +264,10 @@ export type TSettingField =
   | 'socialLinks'
   | 'tag'
   | 'tagIndex'
+  | 'faqSections'
+  | 'faqSectionItem'
+  | 'faqSectionAdd'
+  | 'faqSectionDelete'
   | 'nameAlias'
   | 'rssFeedType'
   | 'rssFeedCount'

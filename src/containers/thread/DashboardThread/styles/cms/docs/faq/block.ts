@@ -16,18 +16,21 @@ export const Title = styled.div<TActive>`
   font-size: 17px;
   font-weight: 500;
 `
-export const Actions = styled.div`
+export const Actions = styled.div<{ rightOffset: boolean }>`
   ${css.flex('align-center')}
   position: absolute;
-  right: -208px;
+  right: ${({ rightOffset }) => (rightOffset ? '-223px' : '-210px')};
   top: 5px;
-  opacity: 0.5;
+  opacity: 0.4;
 
   ${Wrapper}:hover & {
     opacity: 1;
   }
 
   transition: all 0.2s;
+`
+export const DeleteWrapper = styled.div`
+  ${css.flex('align-center')};
 `
 export const Hint = styled.div`
   color: ${theme('article.digest')};
@@ -37,6 +40,12 @@ export const Hint = styled.div`
   &:hover {
     color: ${theme('article.title')};
     cursor: pointer;
+  }
+`
+export const DeleteHint = styled(Hint)`
+  &:hover {
+    font-weight: 500;
+    color: ${theme('baseColor.red')};
   }
 `
 export const EditIcon = styled(EditSVG)`
@@ -54,6 +63,7 @@ export const DeleteIcon = styled(DeleteSVG)`
 export const Body = styled.div`
   margin-top: 10px;
   margin-bottom: 25px;
+  word-wrap: break-word;
 `
 
 export const ArrowUpIcon = styled(ArrowSVG)`

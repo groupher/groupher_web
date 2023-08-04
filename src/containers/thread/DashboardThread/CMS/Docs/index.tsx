@@ -8,6 +8,8 @@ import useCurCommunity from '@/hooks/useCurCommunity'
 
 import Tabs from '@/widgets/Switcher/Tabs'
 
+import type { TTouched } from '../../spec'
+
 import TableView from './Table'
 import TreeView from './Tree'
 import Cover from './Cover'
@@ -25,6 +27,7 @@ type TProps = {
   faqSections: TFAQSection[]
   editingFAQ: TFAQSection
   editingFAQIndex: number | null
+  touched: TTouched
 }
 
 const Docs: FC<TProps> = ({
@@ -35,6 +38,7 @@ const Docs: FC<TProps> = ({
   faqSections,
   editingFAQ,
   editingFAQIndex,
+  touched,
 }) => {
   const curCommunity = useCurCommunity()
 
@@ -65,7 +69,12 @@ const Docs: FC<TProps> = ({
       )}
       {docTab === DASHBOARD_DOC_ROUTE.COVER && <Cover />}
       {docTab === DASHBOARD_DOC_ROUTE.FAQ && (
-        <FAQ sections={faqSections} editingFAQIndex={editingFAQIndex} editingFAQ={editingFAQ} />
+        <FAQ
+          sections={faqSections}
+          editingFAQIndex={editingFAQIndex}
+          editingFAQ={editingFAQ}
+          isTouched={touched.faqSections}
+        />
       )}
     </Wrapper>
   )
