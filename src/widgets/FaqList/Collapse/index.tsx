@@ -16,36 +16,36 @@ import type { TProps as TIndex } from '../index'
 type TProps = Pick<TIndex, 'sections'>
 
 const Collapse: FC<TProps> = ({ sections }) => {
-  const [openedIDs, setOpenedIDs] = useState<number[]>([])
+  const [openedIndexes, setOpenedIndexes] = useState<number[]>([])
   const [menuOptions, setMenuOptions] = useState<TMenuOption[]>(DEFAULT_MENU)
 
   useEffect(() => {
     const articleIds = pluck('index', sections)
-    if (isEmpty(openedIDs)) {
+    if (isEmpty(openedIndexes)) {
       setMenuOptions([MENU.UNFOLD_ALL, MENU.AUTH_EDIT])
-    } else if (openedIDs.length === articleIds.length) {
+    } else if (openedIndexes.length === articleIds.length) {
       setMenuOptions([MENU.FOLD_ALL, MENU.AUTH_EDIT])
     } else {
       setMenuOptions(DEFAULT_MENU)
     }
-  }, [openedIDs, sections])
+  }, [openedIndexes, sections])
 
   // fold/unfold one item
   const toggle = useCallback(
     (id) => {
-      includes(id, openedIDs)
-        ? setOpenedIDs(reject((_id) => _id === id, openedIDs))
-        : setOpenedIDs([id, ...openedIDs])
+      includes(id, openedIndexes)
+        ? setOpenedIndexes(reject((_id) => _id === id, openedIndexes))
+        : setOpenedIndexes([id, ...openedIndexes])
     },
-    [openedIDs],
+    [openedIndexes],
   )
 
   return (
     <Wrapper>
-      <Banner menuOptions={menuOptions} setOpenedIDs={setOpenedIDs} sections={sections} />
+      <Banner menuOptions={menuOptions} setOpenedIndexes={setOpenedIndexes} sections={sections} />
 
       {sections.map((item) => (
-        <Section key={item.index} item={item} openedIDs={openedIDs} toggle={toggle} />
+        <Section key={item.index} item={item} openedIndexes={openedIndexes} toggle={toggle} />
       ))}
 
       <Footer />

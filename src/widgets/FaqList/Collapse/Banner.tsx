@@ -9,15 +9,15 @@ import { Wrapper, Title, MenuWrapper, MenuIcon } from '../styles/collapse/banner
 
 type TProps = {
   menuOptions: TMenuOption[]
-  setOpenedIDs: (ids: number[]) => void
+  setOpenedIndexes: (ids: number[]) => void
   sections: TFAQSection[]
 }
 
-const Banner: FC<TProps> = ({ menuOptions, setOpenedIDs, sections }) => {
-  const foldAll = useCallback(() => setOpenedIDs([]), [])
+const Banner: FC<TProps> = ({ menuOptions, setOpenedIndexes, sections }) => {
+  const foldAll = useCallback(() => setOpenedIndexes([]), [])
   const unFoldAll = useCallback(
-    () => setOpenedIDs(pluck('index', sections)),
-    [sections, setOpenedIDs],
+    () => setOpenedIndexes(pluck('index', sections)),
+    [sections, setOpenedIndexes],
   )
 
   const handleMenu = useCallback(
