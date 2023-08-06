@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import type { TActive } from '@/spec'
 import css, { theme } from '@/utils/css'
 
+import { MarkdownStyles } from '@/widgets/Common'
 import EditSVG from '@/icons/EditPen'
 import DeleteSVG from '@/icons/Delete'
 import ArrowSVG from '@/icons/Arrow'
@@ -60,7 +61,7 @@ export const DeleteIcon = styled(DeleteSVG)`
   margin-right: 3px;
   margin-top: -1px;
 `
-export const Body = styled.div`
+export const Body = styled(MarkdownStyles)`
   margin-top: 10px;
   margin-bottom: 25px;
   word-wrap: break-word;

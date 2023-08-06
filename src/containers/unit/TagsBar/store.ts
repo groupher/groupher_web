@@ -9,7 +9,7 @@ import { THREAD } from '@/constant/thread'
 import type { TRootStore, TCommunity, TTag, TGroupedTags, TThread } from '@/spec'
 
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
-import { mockTags } from '@/utils/mock'
+// import { mockTags } from '@/utils/mock'
 import { groupByKey } from '@/utils/helper'
 
 import { Tag, emptyTag } from '@/model'
@@ -37,8 +37,8 @@ const TagsBar = T.model('TagsBar', {
       if (curThread === THREAD.CHANGELOG) {
         return root.changelogThread.tagsData
       }
-      return mockTags(15)
-      // return toJS(self.tags)
+      // return mockTags(15)
+      return toJS(self.tags)
     },
     get activeTagData(): TTag {
       return toJS(self.activeTag) || emptyTag

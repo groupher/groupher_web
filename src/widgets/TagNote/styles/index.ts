@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import type { TTestable } from '@/spec'
 
 import { COLORS } from '@/constant/colors'
-
 import InfoSVG from '@/icons/Info'
+import { MarkdownStyles } from '@/widgets/Common'
 
 // import Img from '@/Img'
 import css, { theme } from '@/utils/css'
@@ -52,7 +52,7 @@ export const Title = styled.h2<{ color: string }>`
     z-index: -1;
   }
 `
-export const Desc = styled.p`
+export const Desc = styled(MarkdownStyles)`
   line-height: 1.75em;
   font-size: 13px;
   color: ${theme('article.digest')};
