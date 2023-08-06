@@ -8,6 +8,7 @@ import { SETTING_FIELD } from '../../constant'
 import SavingBar from '../../SavingBar'
 
 import Center from './Center'
+import Float from './Float'
 import Right from './Right'
 
 import { Wrapper, ArrowIcon, ToggleButton, ToggleText } from '../../styles/header/templates'
@@ -29,11 +30,13 @@ const Templates: FC<TProps> = ({ settings, isTouched }) => {
         <>
           <Center {...linksProps} $active={headerLayout === HEADER_LAYOUT.CENTER} />
           <Right {...linksProps} $active={headerLayout === HEADER_LAYOUT.RIGHT} />
+          <Float {...linksProps} $active={headerLayout === HEADER_LAYOUT.FLOAT} />
         </>
       ) : (
         <>
           {headerLayout === HEADER_LAYOUT.CENTER && <Center {...linksProps} $active />}
           {headerLayout === HEADER_LAYOUT.RIGHT && <Right {...linksProps} $active />}
+          {headerLayout === HEADER_LAYOUT.FLOAT && <Float {...linksProps} $active />}
         </>
       )}
 

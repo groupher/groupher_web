@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import type { TActive, TSpace } from '@/spec'
 import css, { theme } from '@/utils/css'
 
-export const Wrapper = styled.div<TSpace>`
+export const NormalWrapper = styled.div<TSpace>`
   ${css.flex('align-center')};
   gap: 0 32px;
 
@@ -14,6 +14,18 @@ export const Wrapper = styled.div<TSpace>`
     display: none;
   `};
 `
+export const FloatWrapper = styled(NormalWrapper)`
+  border: 1px solid;
+  border-color: ${theme('divider')};
+  border-radius: 18px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  padding: 5px 30px;
+  padding-right: 0;
+  background: ${theme('alphaBg')};
+  margin-top: -4px;
+  margin-left: -100px;
+`
+
 export const Title = styled(Link)<TActive>`
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   font-size: 14px;

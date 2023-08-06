@@ -1,20 +1,23 @@
 import styled from 'styled-components'
 
-import type { TMetric } from '@/spec'
+import type { THeaderLayout, TMetric } from '@/spec'
 import css, { WIDTH, theme } from '@/utils/css'
 import { pixelAdd } from '@/utils/dom'
 
 import { BaseBanner } from '../index'
+import { HEADER_LAYOUT } from '@/constant/layout'
 
 type TWrapper = {
   metric?: TMetric
+  headerLayout?: THeaderLayout
 }
 export const Wrapper = styled(BaseBanner)<TWrapper>`
   width: 100%;
-  min-height: 64px;
+  min-height: ${({ headerLayout }) => (headerLayout === HEADER_LAYOUT.FLOAT ? '74px' : '64px')};
   background: transparent;
 
-  border-bottom: 1px solid transparent;
+  border-bottom: ${({ headerLayout }) =>
+    headerLayout === HEADER_LAYOUT.FLOAT ? 'none' : '1px solid transparent'};
   border-image: linear-gradient(
     0.2turn,
     transparent,

@@ -45,7 +45,6 @@ const ClassicLayout: FC<TProps> = ({ community, activeThread, metric, dashboardS
           <CommunityBaseInfo>
             <CommunityBrief community={community} />
           </CommunityBaseInfo>
-
           <SpaceGrow />
           <TabBarWrapper>
             <TabBar

@@ -46,7 +46,7 @@ const SimpleLayout: FC<TProps> = ({
   const { extraLinks } = dashboardSettings
 
   return (
-    <Wrapper testid="community-digest" id={ANCHOR.GLOBAL_HEADER_ID}>
+    <Wrapper testid="community-digest" id={ANCHOR.GLOBAL_HEADER_ID} headerLayout={headerLayout}>
       <InnerWrapper metric={metric}>
         <BannerContentWrapper>
           <CommunityBaseInfo>
@@ -63,6 +63,7 @@ const SimpleLayout: FC<TProps> = ({
               threads={washedThreads}
               active={activeThread}
               extraLinks={extraLinks}
+              headerLayout={headerLayout}
               left={headerLayout === HEADER_LAYOUT.CENTER ? -50 : 0}
               right={headerLayout === HEADER_LAYOUT.RIGHT ? 20 : 0}
             />
