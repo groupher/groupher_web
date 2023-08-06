@@ -11,9 +11,10 @@ import { Community } from './Community'
 export const Tag = T.model('Tag', {
   id: T.maybeNull(T.string),
   title: T.maybeNull(T.string),
+  desc: T.maybeNull(T.string),
   index: T.opt(T.number, 0),
   slug: T.maybeNull(T.string),
-  // color: T.opt(T.enum('color', TAG_COLORS), TAG_COLORS[0]),
+  layout: T.maybeNull(T.string),
   color: T.opt(T.string, TAG_COLORS[0]),
   thread: T.opt(
     T.enum(

@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { FC, memo, useEffect } from 'react'
 
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
@@ -25,7 +25,13 @@ const Tags: FC<TProps> = ({ settings, touched }) => {
   const { tags, editingTag, settingTag, groups, activeTagGroup, activeTagThread, threads } =
     settings
 
-  const [animateRef] = useAutoAnimate()
+  const [animateRef, enable] = useAutoAnimate()
+
+  useEffect(() => {
+    enable(false)
+  }, [])
+
+  // console.log('## touched.tagsIndex: ', touched.tagsIndex)
 
   return (
     <Wrapper>
@@ -42,6 +48,7 @@ const Tags: FC<TProps> = ({ settings, touched }) => {
               settingTag={settingTag}
               isFirst={index === 0}
               isLast={index === tags.length - 1}
+              total={tags.length}
               activeTagGroup={activeTagGroup}
             />
           ))}
@@ -55,6 +62,7 @@ const Tags: FC<TProps> = ({ settings, touched }) => {
         <SavingBar
           isTouched={touched.tagsIndex}
           field={SETTING_FIELD.TAG_INDEX}
+          prefix="是否保存标签排序"
           top={24}
           left={-10}
         />

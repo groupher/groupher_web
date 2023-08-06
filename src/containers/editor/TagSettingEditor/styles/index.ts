@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import Link from 'next/link'
 
 import type { TTestable } from '@/spec'
-
 import { COLORS } from '@/constant/colors'
 import css, { theme } from '@/utils/css'
 
@@ -36,6 +35,13 @@ export const TitleDot = styled.div<{ color: string }>`
 export const TitleInputer = styled(Input)`
   margin-left: 10px;
   width: 314px;
+`
+
+export const BannerTitle = styled.div`
+  font-size: 16px;
+  font-weight: 500;
+  margin-left: 26px;
+  color: ${theme('article.title')};
 `
 export const SelectorWrapper = styled.div`
   padding: 0 28px;

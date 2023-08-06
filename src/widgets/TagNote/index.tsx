@@ -7,6 +7,7 @@
 
 import { FC, memo } from 'react'
 
+import Markdown from 'markdown-to-jsx'
 import type { TTag } from '@/spec'
 
 import { buildLog } from '@/utils/logger'
@@ -33,8 +34,7 @@ const TagNote: FC<TProps> = ({ testid = 'tag-note', tag }) => {
         <InfoIcon />
       </Header>
       <Desc>
-        本标签下收集使用过程中的截图或者主题，欢迎分享到这个标签下，开发团队会定期像参与讨论者发送福利，欢迎参与
-        🙏
+        <Markdown>{tag.desc}</Markdown>
       </Desc>
     </Wrapper>
   )

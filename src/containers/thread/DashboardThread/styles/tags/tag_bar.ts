@@ -2,10 +2,6 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
 
-import MoreSVG from '@/icons/menu/MoreL'
-import EditSVG from '@/icons/EditPen'
-import ArrowSVG from '@/icons/Arrow'
-
 import Input from '@/widgets/Input'
 
 type TWrapper = { isEditMode: boolean; isSetting: boolean; hasSettingTag: boolean }
@@ -16,7 +12,11 @@ export const Wrapper = styled.div<TWrapper>`
   /* margin-left: -8px; */
   padding: ${({ isEditMode }) => (isEditMode ? 0 : '10px')};
   border: ${({ isEditMode }) => (isEditMode ? 'none' : '1px solid')};
-  border-color: ${theme('divider')};
+  border-color: ${({ hasSettingTag }) => {
+    if (!hasSettingTag) return theme('divider')
+
+    return theme('article.digest')
+  }};
   border-radius: 5px;
   margin-bottom: 12px;
 
@@ -32,10 +32,9 @@ export const Wrapper = styled.div<TWrapper>`
   }};
 
   &:hover {
-    background: ${({ isEditMode }) => (!isEditMode ? theme('hoverBg') : 'transparent')};
+    border-color: ${({ isEditMode }) => (!isEditMode ? theme('article.digest') : 'divider')};
   }
-
-  transition: all 0.2s;
+  transition: all 0.1s;
 `
 type TDot = { color: string; isEditMode?: boolean }
 export const Dot = styled.div<TDot>`
@@ -76,54 +75,6 @@ export const CatNote = styled.span`
     opacity: 0.5;
     margin-left: 1px;
   }
-`
-export const Actions = styled.div`
-  ${css.flex('align-center')};
-  opacity: 1;
-
-  ${Wrapper}:hover & {
-    opacity: 1;
-  }
-
-  transition: all 0.2s;
-`
-export const EditIcon = styled(EditSVG)<{ onClick: () => void }>`
-  ${css.size(14)};
-  fill: ${theme('article.digest')};
-  margin-right: -4px;
-
-  &:hover {
-    fill: ${theme('article.title')};
-    cursor: pointer;
-  }
-
-  transition: all 0.2s;
-`
-export const MoreIcon = styled(MoreSVG)`
-  ${css.size(14)};
-  fill: ${theme('article.digest')};
-
-  &:hover {
-    fill: ${theme('article.title')};
-    cursor: pointer;
-  }
-
-  transition: all 0.2s;
-`
-
-export const ArrowUpIcon = styled(ArrowSVG)`
-  ${css.size(11)};
-  fill: ${theme('article.digest')};
-  transform: rotate(90deg);
-  margin-right: 6px;
-
-  &:hover {
-    opacity: 1;
-    cursor: pointer;
-  }
-`
-export const ArrowDownIcon = styled(ArrowUpIcon)`
-  transform: rotate(-90deg);
 `
 
 export const InputWrapper = styled.div`

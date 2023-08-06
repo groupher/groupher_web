@@ -11,6 +11,7 @@ import {
   equals,
   omit,
   pluck,
+  update,
   find,
   propEq,
   uniq,
@@ -51,7 +52,7 @@ import { THREAD } from '@/constant/thread'
 import BStore from '@/utils/bstore'
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
-import { washThreads } from '@/utils/helper'
+import { washThreads, sortByIndex } from '@/utils/helper'
 
 import { PagedPosts, PagedDocs, PagedChangelogs, Tag, emptyPagi, FAQSection } from '@/model'
 
@@ -199,7 +200,10 @@ const DashboardThread = T.model('DashboardThread', {
     get _tagsIndexTouched(): boolean {
       const { tags, initSettings } = self
 
-      return JSON.stringify(toJS(tags)) !== JSON.stringify(toJS(initSettings.tags))
+      return (
+        JSON.stringify(sortByIndex(toJS(tags), 'id')) !==
+        JSON.stringify(sortByIndex(toJS(initSettings.tags), 'id'))
+      )
     },
     get _socialLinksTouched(): boolean {
       const { socialLinks, initSettings } = self
@@ -754,6 +758,21 @@ const DashboardThread = T.model('DashboardThread', {
         ...article,
         _checked: includes(article.id, _batchSelectedIds),
       }))
+    },
+
+    updateEditingTag() {
+      const slf = self as TStore
+      const { editingTag, tags } = slf
+
+      const _editingTag = toJS(editingTag)
+      const _tags = toJS(tags)
+      const _initSettings = toJS(slf.initSettings)
+
+      const targetIndex = findIndex((item: TTag) => item.id === editingTag.id, _tags)
+      const updatedTags = update(targetIndex, _editingTag, _tags)
+
+      const initSettings = { ..._initSettings, tags: updatedTags }
+      slf.mark({ initSettings })
     },
 
     updateEditing(sobj): void {

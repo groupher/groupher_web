@@ -22,15 +22,14 @@ import {
 } from './styles/post_layout'
 
 type TProps = {
-  layout: TPostLayout
-  isTouched?: boolean
-  saving?: boolean
+  layout: string
+  onChange: (layout: TPostLayout) => void
 }
 
-const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
+const PostListLayout: FC<TProps> = ({ layout, onChange }) => {
   return (
     <Wrapper>
-      <Layout onClick={() => console.log(POST_LAYOUT.UPVOTE_FIRST)}>
+      <Layout onClick={() => onChange(POST_LAYOUT.UPVOTE_FIRST)}>
         <Block $active={layout === POST_LAYOUT.UPVOTE_FIRST}>
           <Bar thin long={30} />
           <Br bottom={7} />
@@ -62,7 +61,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           />
         </LayoutTitle>
       </Layout>
-      <Layout onClick={() => console.log(POST_LAYOUT.COMMENT_FIRST)}>
+      <Layout onClick={() => onChange(POST_LAYOUT.COMMENT_FIRST)}>
         <Block $active={layout === POST_LAYOUT.COMMENT_FIRST}>
           <Row>
             <Column center>
@@ -106,7 +105,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         </LayoutTitle>
       </Layout>
 
-      <Layout onClick={() => console.log(POST_LAYOUT.MASONRY)}>
+      <Layout onClick={() => onChange(POST_LAYOUT.MASONRY)}>
         <Block $active={layout === POST_LAYOUT.MASONRY}>
           <Row>
             <Column grow>
@@ -130,7 +129,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         </LayoutTitle>
       </Layout>
 
-      <Layout onClick={() => console.log(POST_LAYOUT.MINIMAL)}>
+      <Layout onClick={() => onChange(POST_LAYOUT.MINIMAL)}>
         <Block $active={layout === POST_LAYOUT.MINIMAL}>
           <Row>
             <Space right={5} />
@@ -164,7 +163,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         </LayoutTitle>
       </Layout>
 
-      <Layout onClick={() => console.log(POST_LAYOUT.COVER)}>
+      <Layout onClick={() => onChange(POST_LAYOUT.COVER)}>
         <Block $active={layout === POST_LAYOUT.COVER}>
           <Row>
             <Cover />
@@ -186,13 +185,6 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           <CheckLabel title="封面图" $active={layout === POST_LAYOUT.COVER} top={15} left={-15} />
         </LayoutTitle>
       </Layout>
-
-      {/* <SavingBar
-        isTouched={isTouched}
-        field={SETTING_FIELD.POST_LAYOUT}
-        loading={saving}
-        top={20}
-      /> */}
     </Wrapper>
   )
 }

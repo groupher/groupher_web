@@ -22,6 +22,8 @@ export const community = `
 export const tag = `
   id
   title
+  layout
+  desc
   slug
   color
   thread

@@ -71,9 +71,9 @@ const TagSettingEditor = T.model('TagSettingEditor', {
 
     get curCategory(): TSelectOption {
       const slf = self as TStore
-      const {
-        editingTagData: { group },
-      } = slf
+      const { editingTagData } = slf
+
+      const { group } = editingTagData
 
       return {
         label: group,

@@ -36,6 +36,8 @@ export type TTag = {
   index?: number
   slug: string
   title?: string
+  layout?: string
+  desc?: string
   thread?: string
   color?: string
   group?: string

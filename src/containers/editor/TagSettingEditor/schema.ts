@@ -12,6 +12,8 @@ const createArticleTag = gql`
     $thread: Thread!
     $title: String!
     $slug: String!
+    $desc: String
+    $layout: String
     $color: RainbowColor!
     $group: String
     $community: String!
@@ -19,6 +21,7 @@ const createArticleTag = gql`
     createArticleTag(
       thread: $thread
       title: $title
+      desc: $desc
       slug: $slug
       color: $color
       group: $group
@@ -33,6 +36,8 @@ const updateArticleTag = gql`
     $id: ID!
     $color: RainbowColor
     $title: String
+    $layout: String
+    $desc: String
     $slug: String
     $community: String!
     $group: String
@@ -41,6 +46,8 @@ const updateArticleTag = gql`
       id: $id
       color: $color
       title: $title
+      desc: $desc
+      layout: $layout
       slug: $slug
       community: $community
       group: $group
