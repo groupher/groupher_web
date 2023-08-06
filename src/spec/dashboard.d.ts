@@ -11,7 +11,7 @@ export type TKanbanLayout = 'simple' | 'full'
 export type TChangelogLayout = 'classic' | 'simple'
 export type TDocLayout = 'blocks' | 'lists' | 'cards' | 'article'
 export type TDocFAQLayout = 'flat' | 'collapse' | 'search_hint'
-export type THeaderLayout = 'center' | 'right'
+export type THeaderLayout = 'center' | 'right' | 'float'
 export type TFooterLayout = 'simple' | 'group'
 export type TRSSType = 'digest' | 'full'
 

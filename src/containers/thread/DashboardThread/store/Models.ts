@@ -169,7 +169,6 @@ export const settingsModalFields = {
   rssFeedType: T.opt(T.enum(values(RSS_TYPE)), RSS_TYPE.DIGEST),
   rssFeedCount: T.opt(T.int, 5),
 
-  // footer
   headerLayout: T.opt(T.enum(values(HEADER_LAYOUT)), HEADER_LAYOUT.CENTER),
   footerLayout: T.opt(T.enum(values(FOOTER_LAYOUT)), FOOTER_LAYOUT.GROUP),
 

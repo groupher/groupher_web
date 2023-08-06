@@ -102,6 +102,7 @@ export const DOC_FAQ_LAYOUT = {
 export const HEADER_LAYOUT = {
   CENTER: 'center',
   RIGHT: 'right',
+  FLOAT: 'float',
 } as Record<Uppercase<THeaderLayout>, THeaderLayout>
 
 export const FOOTER_LAYOUT = {
