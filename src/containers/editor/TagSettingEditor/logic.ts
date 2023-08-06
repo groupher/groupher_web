@@ -61,6 +61,7 @@ export const onCreate = (): void => {
     thread: curThread,
   }
 
+  console.log('## create tag: ', tag)
   sr71$.mutate(S.createArticleTag, tag)
 }
 
@@ -130,7 +131,9 @@ export const useInit = (_store: TStore, mode: TChangeMode): void => {
     log('useInit: ', store)
     _initEditingTag(mode)
 
-    sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
+    if (!sub$) {
+      sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
+    }
     // return () => store.reset()
   }, [_store, mode])
 }

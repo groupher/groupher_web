@@ -2,6 +2,7 @@ import { findIndex, clone, remove, filter, reject } from 'ramda'
 
 import type { TTag } from '@/spec'
 import { toJS } from '@/utils/mobx'
+import { sortByIndex } from '@/utils/helper'
 // import { sortByIndex, groupByKey } from '@/utils/helper'
 
 import type { TStore } from '../store'
@@ -15,7 +16,7 @@ const _moveTag = (tag: TTag, opt: 'up' | 'down'): void => {
   const { group } = tag
   const tags = toJS(store.tags)
 
-  const groupTags = filter((item: TTag) => item.group === group, tags)
+  const groupTags = sortByIndex(filter((item: TTag) => item.group === group, tags))
   const restTags = reject((item: TTag) => item.group === group, tags)
   const tagIndex = findIndex((item: TTag) => item.id === tag.id, groupTags)
 

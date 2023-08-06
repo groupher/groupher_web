@@ -164,6 +164,7 @@ const _doMutation = (field: string, e: TEditValue): void => {
   }
 
   if (field === SETTING_FIELD.TAG) {
+    store.updateEditingTag()
     sr71$.mutate(S.updateArticleTag, { ...toJS(store.editingTag), community })
   }
 
@@ -293,17 +294,14 @@ const _handleDone = () => {
 
   let initSettings
 
-  console.log('## the field: ', field)
-
   if (field === SETTING_FIELD.TAG_INDEX) {
     initSettings = { ...store.initSettings, tags: toJS(store.tags) }
   } else if (includes(field, [SETTING_FIELD.FAQ_SECTION_ADD, SETTING_FIELD.FAQ_SECTION_DELETE])) {
     initSettings = { ...store.initSettings, faqSections: toJS(store.faqSections) }
-  } else {
-    initSettings = { ...store.initSettings, [field]: toJS(store[field]) }
-  }
-
-  if (field === SETTING_FIELD.BASE_INFO) {
+  } else if (field === SETTING_FIELD.TAG) {
+    store.updateEditingTag()
+    initSettings = { ...store.initSettings }
+  } else if (field === SETTING_FIELD.BASE_INFO) {
     const current = {}
 
     BASEINFO_KEYS.forEach((key) => {
@@ -311,9 +309,7 @@ const _handleDone = () => {
     })
 
     initSettings = { ...store.initSettings, ...current }
-  }
-
-  if (field === SETTING_FIELD.SEO) {
+  } else if (field === SETTING_FIELD.SEO) {
     const current = {}
 
     SEO_KEYS.forEach((key) => {
@@ -321,6 +317,8 @@ const _handleDone = () => {
     })
 
     initSettings = { ...store.initSettings, ...current }
+  } else {
+    initSettings = { ...store.initSettings, [field]: toJS(store[field]) }
   }
 
   store.mark({ initSettings })
@@ -388,7 +386,12 @@ const DataSolver = [
 
   {
     match: asyncRes('pagedArticleTags'),
-    action: ({ pagedArticleTags }) => store.mark({ tags: pagedArticleTags.entries }),
+    action: ({ pagedArticleTags }) => {
+      const { initSettings } = store
+      const tags = pagedArticleTags.entries
+
+      store.mark({ tags, initSettings: { ...initSettings, tags } })
+    },
   },
   {
     match: asyncRes(EVENT.REFRESH_TAGS),

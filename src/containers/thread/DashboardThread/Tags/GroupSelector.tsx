@@ -26,7 +26,7 @@ const GroupSelector: FC<TProps> = ({ groups, active }) => {
           全部
         </Button>
 
-        {reject((cat) => nilOrEmpty(cat), groups).map((cat) => (
+        {reject((cat) => nilOrEmpty(cat), groups.sort()).map((cat) => (
           <Button
             key={cat}
             ghost

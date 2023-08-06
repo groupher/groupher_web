@@ -12,6 +12,7 @@ import { ROUTE } from '@/constant/route'
 import { DRAWER_SCROLLER } from '@/constant/dom'
 import { COLORS } from '@/constant/colors'
 import { CHANGE_MODE } from '@/constant/mode'
+import { POST_LAYOUT } from '@/constant/layout'
 
 import ColorSelector from '@/widgets/ColorSelector'
 
@@ -36,6 +37,7 @@ import {
   TitleInputer,
   Inputer,
 } from './styles'
+
 import { useInit, edit } from './logic'
 
 // const log = buildLog('C:TagSettingEditor')
@@ -65,21 +67,29 @@ const TagSettingEditorContainer: FC<TProps> = ({
         showShadow={false}
         autoHide={false}
       >
-        <Title>标签名称</Title>
-        <BasicInfo>
-          <ColorSelector
-            activeColor={editingTag.color || COLORS.BLACK}
-            onChange={(color) => edit(color, 'color')}
-            placement="bottom-start"
-            offset={[-8, 0]}
-          >
-            <DotSelector>
-              <TitleDot color={editingTag?.color || COLORS.BLACK} />
-            </DotSelector>
-          </ColorSelector>
+        {mode === CHANGE_MODE.CREATE && (
+          <>
+            <Br bottom={25} />
+            <Title>标签名称</Title>
+            <BasicInfo>
+              <ColorSelector
+                activeColor={editingTag.color || COLORS.BLACK}
+                onChange={(color) => edit(color, 'color')}
+                placement="bottom-start"
+                offset={[-8, 0]}
+              >
+                <DotSelector>
+                  <TitleDot color={editingTag?.color || COLORS.BLACK} />
+                </DotSelector>
+              </ColorSelector>
 
-          <TitleInputer value={editingTag.title} onChange={(e) => edit(e.target.value, 'title')} />
-        </BasicInfo>
+              <TitleInputer
+                value={editingTag.title}
+                onChange={(e) => edit(e.target.value, 'title')}
+              />
+            </BasicInfo>
+          </>
+        )}
 
         <Br bottom={25} />
         <Title>标签分组</Title>
@@ -98,10 +108,10 @@ const TagSettingEditorContainer: FC<TProps> = ({
         <Title>标签说明</Title>
         <Br bottom={5} />
         <Inputer
-          value=""
-          placeholder="标签说明, 支持 Markdown"
+          value={editingTag.desc}
+          placeholder="标签说明 (支持 Markdown 语法)"
           behavior="textarea"
-          onChange={(e) => console.log(e)}
+          onChange={(e) => edit(e.target.value, 'desc')}
         />
         <Br bottom={25} />
         <Title>标签布局</Title>
@@ -111,7 +121,10 @@ const TagSettingEditorContainer: FC<TProps> = ({
           中设置。{' '}
         </Desc>
         <Br bottom={20} />
-        <PostLayout layout="upvote_first" />
+        <PostLayout
+          layout={editingTag.layout || POST_LAYOUT.UPVOTE_FIRST}
+          onChange={(v) => edit(v, 'layout')}
+        />
       </CustomScroller>
       <Footer tag={editingTag} mode={mode} processing={processing} />
     </Wrapper>

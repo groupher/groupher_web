@@ -7,6 +7,7 @@ export const DEFAULT_CREATE_TAG = {
   // index?: number
   slug: '',
   title: '',
+  desc: '',
   thread: THREAD.POST.toUpperCase(),
   group: '',
 }
