@@ -1,6 +1,6 @@
 export type TCommunityType = 'PUBLIC' | 'CITY' | 'WORKS' | 'TEAM' | null
 
-export type TStep = 'SELECT_TYPE' | 'SETUP_DOMAIN' | 'SETUP_INFO' | 'MORE_INFO' | 'FINISHED'
+export type TStep = 'SELECT_TYPE' | 'SETUP_DOMAIN' | 'SETUP_INFO' | 'FINISHED'
 
 export type TSelectTypeStatus = {
   communityType: TCommunityType

@@ -37,7 +37,6 @@ const KanbanItemLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
               <ArrowButton
                 onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
                 size="small"
-                linkColor
               >
                 查看示例
               </ArrowButton>

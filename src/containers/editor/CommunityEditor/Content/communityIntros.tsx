@@ -3,8 +3,8 @@ import { HCN } from '@/constant/name'
 
 const COMMUNITY_INTRO = {
   PUBLIC: {
-    title: '什么是公共社区?',
-    desc: '编程语言，编程框架，DevOps 等公共领域的社区，包含帖子，雷达，博客, 101，分布地图，招聘等版块。志愿者参与日常维护管理。',
+    title: '什么是互联网服务?',
+    desc: '你的产品主要通过浏览器 web 端为用户提供服务，如网站，H5 页面等。',
     threads: ['帖子', '雷达', '博客', '酷导航', '成员分布', '工作'],
     demos: [
       {

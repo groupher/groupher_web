@@ -4,18 +4,11 @@ import { isEmpty } from 'ramda'
 import { cutRest } from '@/utils/fmt'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
+import NextStepButton from './NextStepButton'
 import InputBox from './InputBox'
 
-import {
-  Wrapper,
-  IntroTitle,
-  DomainIcon,
-  StepHint,
-  NextBtn,
-  ErrorMsg,
-} from '../styles/banner/setup_domain'
+import { Wrapper, IntroTitle, DomainIcon, NextBtn, ErrorMsg } from '../styles/banner/setup_domain'
 
 import type { TSetupDomainStatus, TValidState } from '../spec'
 import { pervStep, nextStep, inputOnChange } from '../logic'
@@ -32,10 +25,9 @@ const SetupDomain: FC<TProps> = ({ status, validState }) => {
     <Wrapper>
       <IntroTitle>
         <DomainIcon />
-        社区的子域名
-        <StepHint>2 / 4</StepHint>
+        社区域名
       </IntroTitle>
-      <InputBox value={slug} placeholder="my-domain" onChange={(e) => inputOnChange(e, 'slug')} />
+      <InputBox value={slug} placeholder="your-domain" onChange={(e) => inputOnChange(e, 'slug')} />
       {!isEmpty(slug) && !communityExist && !isRawValid && (
         <ErrorMsg>仅支持英文、拼音或数字组合</ErrorMsg>
       )}
@@ -48,13 +40,7 @@ const SetupDomain: FC<TProps> = ({ status, validState }) => {
           上一步
         </ArrowButton>
 
-        {checking ? (
-          <LavaLampLoading />
-        ) : (
-          <ArrowButton onClick={nextStep} disabled={!isRawValid}>
-            下一步
-          </ArrowButton>
-        )}
+        <NextStepButton loading={checking} onClick={nextStep} disabled={!isRawValid} />
       </NextBtn>
     </Wrapper>
   )

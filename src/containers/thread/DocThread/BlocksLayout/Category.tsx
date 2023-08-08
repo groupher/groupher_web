@@ -47,13 +47,13 @@ const Category: FC<TProps> = ({ color, title, desc, articles }) => {
       </ItemsWrapper>
 
       {articles.length >= FOLD_LIMIT && sliceCount <= FOLD_LIMIT && (
-        <ArrowButton linkColor down onClick={() => setSliceCount(articles.length)} top={18}>
+        <ArrowButton down onClick={() => setSliceCount(articles.length)} top={18}>
           查看全部
         </ArrowButton>
       )}
 
       {articles.length >= FOLD_LIMIT && sliceCount > FOLD_LIMIT && (
-        <ArrowButton linkColor up onClick={() => setSliceCount(FOLD_LIMIT)} top={18}>
+        <ArrowButton up onClick={() => setSliceCount(FOLD_LIMIT)} top={18}>
           收起
         </ArrowButton>
       )}

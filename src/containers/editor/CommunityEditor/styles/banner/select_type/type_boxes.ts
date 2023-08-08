@@ -13,6 +13,7 @@ export const Wrapper = styled.div`
 export const Box = styled.div<TActive>`
   ${css.flexColumn('align-start', 'justify-between')};
   padding: 10px 12px;
+  padding-right: 5px;
   width: ${({ active }) => (active ? '160px' : '154px')};
   height: ${({ active }) => (active ? '105px' : '100px')};
   border-radius: 5px;
@@ -22,11 +23,8 @@ export const Box = styled.div<TActive>`
   border: ${({ active }) => (active ? '1px solid' : '1px solid')};
   border-top: ${({ active }) => (active ? '3px solid' : '1px solid')};
 
-  border-color: ${({ active }) =>
-    active ? theme('button.primary') : '#31576f;'};
-  box-shadow: ${({ active }) =>
-    active ? '0px 7px 20px 10px rgba(0, 0, 0, 0.15);' : 'none'};
-
+  border-color: ${({ active }) => (active ? theme('button.primary') : theme('lightText'))};
+  box-shadow: ${({ active }) => (active ? 'rgba(0, 0, 0, 0.1) 0px 10px 50px;' : 'none')};
   &:hover {
     cursor: pointer;
     border: 1px solid;

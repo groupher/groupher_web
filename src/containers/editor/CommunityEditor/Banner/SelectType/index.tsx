@@ -14,6 +14,7 @@ import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
 import type { TCommunityType, TValidState } from '../../spec'
 import TypeBoxes from './TypeBoxes'
+import NextStepButton from '../NextStepButton'
 
 import {
   Wrapper,
@@ -40,8 +41,9 @@ const SelectType: FC<TProps> = ({ status: { communityType }, validState }) => {
     <Wrapper>
       <IntroTitle>
         <AddNewIcon src={`${ICON_CMD}/community_new.svg`} />
-        你想创建一个什么类型的子社区?
+        你创建的反馈社区将服务于?
       </IntroTitle>
+
       <TypeBoxes communityType={communityType} />
 
       {communityType && (
@@ -54,13 +56,7 @@ const SelectType: FC<TProps> = ({ status: { communityType }, validState }) => {
           )}
 
           {!validState.hasPendingApply && (
-            <ArrowButton
-              size={SIZE.MEDIUM}
-              onClick={nextStep}
-              disabled={!validState.isCommunityTypeValid}
-            >
-              下一步
-            </ArrowButton>
+            <NextStepButton onClick={nextStep} disabled={!validState.isCommunityTypeValid} />
           )}
         </NextBtn>
       )}

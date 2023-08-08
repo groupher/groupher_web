@@ -13,14 +13,13 @@ export const BannerWrapper = styled.div`
   height: 130px;
   padding: 0 80px;
   border-radius: 6px;
-  background: ${theme('banner.bg')};
 `
 export const IconBlock = styled.div`
   ${css.size(52)};
   margin-top: -20px;
-  background: #083542; /* browser header bg */
+  background: ${theme('hoverBg')};
   border: 1px solid;
-  border-color: #042a35; /* browser tab bg */
+  border-color: ${theme('hoverBg')};
   border-radius: 3px;
 `
 export const RealLogo = styled(Img)`
@@ -63,6 +62,6 @@ export const Feed = styled.div<{ width: string }>`
   height: 10px;
   width: ${({ width }) => width};
   border-radius: 4px;
-  background: ${theme('banner.bg')};
+  background: ${theme('hoverBg')};
   margin-bottom: 16px;
 `

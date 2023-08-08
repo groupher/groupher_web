@@ -43,7 +43,7 @@ export const InputBar = styled.input.attrs(() => ({
   autoCapitalize: 'off',
 }))`
   text-align: center;
-  caret-color: #33b7b3;
+  caret-color: ${theme('article.title')};
   flex-grow: 1;
   height: 100%;
   width: auto;
@@ -52,19 +52,19 @@ export const InputBar = styled.input.attrs(() => ({
   color: ${theme('article.title')};
   font-size: 18px;
   max-height: none;
-  background-color: #0b2631;
+  background-color: transparent;
   padding: 10px 18px;
   border-radius: 15px;
   transition: all 400ms ease;
 
   border: 1px solid;
-  border-color: ${theme('content.cardBg')};
+  border-color: ${theme('editor.border')};
   &:hover {
     opacity: 1;
     border-color: ${theme('button.primary')};
   }
 
   ::placeholder {
-    color: #135868;
+    color: ${theme('lightText')};
   }
 `

@@ -6,7 +6,6 @@ import type { TCommunity } from '@/spec'
 
 import useAccount from '@/hooks/useAccount'
 import { ROUTE } from '@/constant/route'
-// import { callSubscriber, callAuth } from '@/utils/signal'
 import { callAuth } from '@/utils/signal'
 
 import { Wrapper, DashboardIcon, Avatar, AccountIcon } from '../styles/simple_layout/account_unit'

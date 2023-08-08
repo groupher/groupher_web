@@ -11,7 +11,6 @@ export const STEP = {
   SELECT_TYPE: 'SELECT_TYPE' as TStep,
   SETUP_DOMAIN: 'SETUP_DOMAIN' as TStep,
   SETUP_INFO: 'SETUP_INFO' as TStep,
-  MORE_INFO: 'MORE_INFO' as TStep,
   FINISHED: 'FINNISHED' as TStep,
 }
 

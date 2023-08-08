@@ -47,7 +47,7 @@ const SelectType: FC<TProps> = ({ status: { communityType } }) => {
         </Header>
         <Desc>{intro.desc}</Desc>
         <br />
-        <MoreLink href="/explore">查看详细</MoreLink>
+        <MoreLink href="/">查看详细</MoreLink>
       </LeftBlock>
       <RightBlock>
         <Header>
@@ -60,7 +60,7 @@ const SelectType: FC<TProps> = ({ status: { communityType } }) => {
           ))}
         </CommunityDemoWrapper>
 
-        <MoreLink href="/explore">查看更多</MoreLink>
+        <MoreLink href="/">查看更多</MoreLink>
       </RightBlock>
     </Wrapper>
   )

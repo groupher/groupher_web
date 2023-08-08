@@ -11,17 +11,11 @@ import { buildLog } from '@/utils/logger'
 import SelectType from './SelectType'
 import SetupDomain from './SetupDomain'
 import SetupInfo from './SetupInfo'
-import MoreInfo from './MoreInfo'
+
+import type { TStep, TSelectTypeStatus, TSetupDomainStatus, TSetupInfoStatus } from '../spec'
+import { STEP } from '../constant'
 
 import { Wrapper } from '../styles/content'
-
-import type {
-  TStep,
-  TSelectTypeStatus,
-  TSetupDomainStatus,
-  TSetupInfoStatus,
-} from '../spec'
-import { STEP } from '../constant'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:NewExploreContent')
@@ -33,12 +27,7 @@ type TProps = {
   setupInfoStatus: TSetupInfoStatus
 }
 
-const Content: FC<TProps> = ({
-  step,
-  selectTypeStatus,
-  setupDomainStatus,
-  setupInfoStatus,
-}) => {
+const Content: FC<TProps> = ({ step, selectTypeStatus, setupDomainStatus, setupInfoStatus }) => {
   if (step === STEP.FINISHED) return null
 
   let stepComp
@@ -52,16 +41,9 @@ const Content: FC<TProps> = ({
       stepComp = <SetupDomain status={setupDomainStatus} />
       break
     }
-    case STEP.MORE_INFO: {
-      stepComp = <MoreInfo status={setupInfoStatus} />
-      break
-    }
     default: {
       stepComp = (
-        <SetupInfo
-          status={setupInfoStatus}
-          communityType={selectTypeStatus.communityType}
-        />
+        <SetupInfo status={setupInfoStatus} communityType={selectTypeStatus.communityType} />
       )
       break
     }

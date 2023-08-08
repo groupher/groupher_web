@@ -64,7 +64,7 @@ const WallpaperBar: FC<TProps> = ({
       </MainWrapper>
       <Desc>
         壁纸仅在宽屏模式下显示，更多自定义设置
-        <ArrowButton size="small" top={1} left={-3} linkColor>
+        <ArrowButton size="small" top={1} left={-3}>
           查看这里
         </ArrowButton>
       </Desc>

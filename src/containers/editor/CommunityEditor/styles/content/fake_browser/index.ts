@@ -3,18 +3,17 @@ import styled from 'styled-components'
 import css, { theme } from '@/utils/css'
 import Img from '@/Img'
 
-const headerBg = '#053542'
-const taberBg = '#022A35'
-const contentBg = '#03303c'
+const taberBg = '#F1F3F4'
 
 export const Wrapper = styled.div`
   ${css.flexColumn('align-center')};
   width: 100%;
   height: 70vh; /* TODO  */
   border-radius: 6px;
-  background: ${contentBg};
+  background: ${theme('alplaBg')};
   border: 1px solid;
-  border-color: ${contentBg};
+  border-color: #c9ccd1;
+  /* border-color: ${theme('lightText')}; */
 `
 export const Header = styled.div`
   ${css.flex()};
@@ -25,7 +24,7 @@ export const Header = styled.div`
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   height: 36px;
-  background: ${headerBg};
+  background: ${theme('alplaBg')};
 `
 export const Tab = styled.div`
   ${css.flex('align-center')};
@@ -113,7 +112,7 @@ export const LockIcon = styled(ToolIcon)`
 export const Form = styled.form`
   ${css.flex('align-center')};
   flex-grow: 1;
-  background: ${headerBg};
+  background: ${theme('alphaBg2')};
   height: 28px;
   border-radius: 15px;
   margin-left: 4px;
@@ -127,6 +126,6 @@ export const Input = styled.div`
   font-size: 14px;
 `
 export const DomainText = styled.span`
-  color: #309999;
+  color: ${theme('link')};
   margin-left: 1px;
 `

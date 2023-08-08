@@ -28,7 +28,7 @@ const PrimaryColor: FC<TProps> = ({ primaryColor, isTouched, saving }) => {
           <>
             设置后会在常见组件，功能性文字等位置显示该个性化主题色。参考
             <Inline>
-              <ArrowButton size="small" linkColor top={-2}>
+              <ArrowButton size="small" top={-2}>
                 影响范围
               </ArrowButton>
             </Inline>

@@ -6,11 +6,12 @@ import OSSUploader from '@/widgets/OSSUploader'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import { Br, Space } from '@/widgets/Common'
 
+import NextStepButton from './NextStepButton'
+
 import {
   Wrapper,
   IntroTitle,
   ApplyIcon,
-  StepHint,
   NextBtn,
   InfoWrapper,
   HolderWrapper,
@@ -39,7 +40,6 @@ const SetupInfo: FC<TProps> = ({ status, validState }) => {
       <IntroTitle>
         <ApplyIcon />
         基本信息
-        <StepHint>3 / 4</StepHint>
       </IntroTitle>
       <InfoWrapper>
         <OSSUploader onUploadDone={(url) => inputOnChange(url, 'logo')}>
@@ -71,9 +71,7 @@ const SetupInfo: FC<TProps> = ({ status, validState }) => {
           上一步
         </ArrowButton>
         <Space right={30} />
-        <ArrowButton onClick={nextStep} disabled={!isValid}>
-          下一步
-        </ArrowButton>
+        <NextStepButton onClick={nextStep} disabled={!isValid} />
       </NextBtn>
     </Wrapper>
   )

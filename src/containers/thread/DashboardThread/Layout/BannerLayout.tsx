@@ -46,7 +46,6 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
             <ArrowButton
               onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
               size="small"
-              linkColor
               top={-1}
             >
               查看示例

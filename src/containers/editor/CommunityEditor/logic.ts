@@ -4,7 +4,10 @@ import { pick } from 'ramda'
 import type { TEditValue } from '@/spec'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
-import { asyncSuit, buildLog, errRescue, updateEditing } from '@/utils'
+import { sessionChanged, errRescue } from '@/utils/signal'
+import asyncSuit from '@/utils/async'
+import { buildLog } from '@/utils/logger'
+import { updateEditing } from '@/utils/mobx'
 
 import type { TStore } from './store'
 import type { TCommunityType } from './spec'
@@ -34,7 +37,6 @@ export const pervStep = (): void => {
 
   if (step === STEP.SETUP_DOMAIN) store.mark({ step: STEP.SELECT_TYPE })
   if (step === STEP.SETUP_INFO) store.mark({ step: STEP.SETUP_DOMAIN })
-  if (step === STEP.MORE_INFO) store.mark({ step: STEP.SETUP_INFO })
 }
 
 /**
@@ -50,7 +52,7 @@ export const nextStep = (): void => {
     checkIfCommunityExist()
   }
   if (step === STEP.SETUP_INFO) {
-    store.mark({ step: STEP.MORE_INFO })
+    store.mark({ step: STEP.FINISHED })
   }
 }
 
@@ -153,6 +155,14 @@ const ErrSolver = [
   },
 ]
 
+export const initAccount = () => {
+  const { isLogin, accountInfo } = store
+
+  if (isLogin) {
+    sessionChanged(accountInfo)
+  }
+}
+
 // ###############################
 // init & uninit
 // ###############################
@@ -161,6 +171,8 @@ export const useInit = (_store: TStore): void => {
     store = _store
     // log('effect init')
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
+
+    initAccount()
 
     if (store.isLogin) {
       checkPendingApply()

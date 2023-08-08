@@ -25,7 +25,7 @@ type TProps = {
   dimWhenIdle?: boolean
   disabled?: boolean
   color?: TColorName
-  linkColor?: boolean
+  reverseColor?: boolean
   className?: string
   leftLayout?: boolean
   up?: boolean
@@ -42,7 +42,7 @@ const ArrowButton: FC<TProps> = ({
   color = COLOR_NAME.BLACK,
   className = '',
   leftLayout = false,
-  linkColor = false,
+  reverseColor = false,
   up = false,
   down = false,
   size = SIZE.MEDIUM,
@@ -67,16 +67,28 @@ const ArrowButton: FC<TProps> = ({
       dimWhenIdle={dimWhenIdle}
       disabled={disabled}
       color={color}
-      linkColor={linkColor}
+      reverseColor={reverseColor}
       size={size}
       {...restProps}
     >
       {leftLayout && (
-        <Arrow color={color} linkColor={linkColor} leftLayout={leftLayout} up={up} down={down} />
+        <Arrow
+          color={color}
+          reverseColor={reverseColor}
+          leftLayout={leftLayout}
+          up={up}
+          down={down}
+        />
       )}
       <Text ref={ref}>{children}</Text>
       {!leftLayout && (
-        <Arrow color={color} linkColor={linkColor} leftLayout={leftLayout} up={up} down={down} />
+        <Arrow
+          color={color}
+          reverseColor={reverseColor}
+          leftLayout={leftLayout}
+          up={up}
+          down={down}
+        />
       )}
     </Wrapper>
   )

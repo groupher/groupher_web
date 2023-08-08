@@ -5,7 +5,7 @@
 
 import { pick, values, isEmpty } from 'ramda'
 
-import type { TRootStore, TRoute } from '@/spec'
+import type { TRootStore, TRoute, TAccount } from '@/spec'
 import { T, getParent, markStates, Instance } from '@/utils/mobx'
 
 import type { TSelectTypeStatus, TSetupDomainStatus, TSetupInfoStatus, TValidState } from './spec'
@@ -32,6 +32,10 @@ const CommunityEditor = T.model('CommunityEditorStore', {
     get isLogin(): boolean {
       const root = getParent(self) as TRootStore
       return root.account.isLogin
+    },
+    get accountInfo(): TAccount {
+      const root = getParent(self) as TRootStore
+      return root.accountInfo
     },
     get curRoute(): TRoute {
       const root = getParent(self) as TRootStore
@@ -71,7 +75,8 @@ const CommunityEditor = T.model('CommunityEditorStore', {
       return !isEmpty(self.desc)
     },
     get isLogoValid(): boolean {
-      return self.logo && !isEmpty(self.logo)
+      // return self.logo && !isEmpty(self.logo)
+      return true
     },
     get validState(): TValidState {
       const slf = self as TStore

@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   /* background-image: linear-gradient(#043B49, #022A35); */
   background-image: ${theme('banner.linearGradient')};
   width: 100%;
-  height: 440px;
+  height: 400px;
 `
 export const IntroTitle = styled.div`
   ${css.flex('align-center')};
@@ -25,8 +25,7 @@ export const SloganTextWrapper = styled.div<{ highlight: boolean }>`
   margin-right: 3px;
 
   font-weight: ${({ highlight }) => (highlight ? 'bold' : '')};
-  color: ${({ highlight }) =>
-    highlight ? theme('article.title') : theme('article.digest')};
+  color: ${({ highlight }) => (highlight ? theme('article.title') : theme('article.digest'))};
 `
 export const AddNewIcon = styled(Img)`
   fill: ${theme('article.title')};

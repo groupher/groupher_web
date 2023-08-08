@@ -12,10 +12,9 @@ export const Wrapper = styled.div`
   position: relative;
   ${css.flexColumn('align-both')};
   color: ${theme('article.digest')};
-  /* background-image: linear-gradient(#043B49, #022A35); */
   background-image: ${theme('banner.linearGradient')};
   width: 100%;
-  height: 350px;
+  height: 300px;
 `
 export const IntroTitle = styled.div`
   position: relative;
@@ -23,10 +22,10 @@ export const IntroTitle = styled.div`
   color: ${theme('article.title')};
   font-size: 18px;
   margin-bottom: 20px;
-  margin-left: -10px;
 `
 export const InfoWrapper = styled.div`
   ${css.flex('align-center')};
+  margin-bottom: 38px;
 `
 export const RealCover = styled(Img)`
   ${css.size(80)};
@@ -36,12 +35,12 @@ export const HolderWrapper = styled.div`
   ${css.size(80)};
   ${css.flex('align-both')};
   border-radius: 6px;
-  background: #0c2631;
+  background: ${theme('hoverBg')};
 `
 
 export const HolderIcon = styled(WorksHolderSVG)`
   ${css.size(58)};
-  fill: #043b49;
+  fill: ${theme('lightText')};
   opacity: 0.6;
   transform: rotate(90deg);
 
@@ -76,17 +75,10 @@ export const Title = styled.div`
   color: ${theme('banner.title')};
   font-size: 1.1rem;
 `
-export const StepHint = styled.div`
-  position: absolute;
-  color: ${theme('article.title')};
-  font-size: 15px;
-  top: -35px;
-  left: 41%;
-  opacity: 0.5;
-`
 export const NextBtn = styled.div`
   position: absolute;
   ${css.flex('align-center', 'justify-center')};
   width: 200px;
-  bottom: 30px;
+  bottom: 20px;
+  filter: grayscale(1);
 `

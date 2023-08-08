@@ -13,8 +13,6 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 }))<TTestable>`
   ${css.flexColumn('align-both')};
   flex-grow: 1;
-  /* width: 500px;
-  height: 440px; */
   position: relative;
 
   ${css.media.mobile`

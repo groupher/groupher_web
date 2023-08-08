@@ -53,9 +53,7 @@ const GlowEffect: FC<TProps> = ({
         desc={
           <>
             设置后每个页面的展示光晕（阅览页面除外），可配合壁纸风格搭配。
-            <ArrowButton size="small" linkColor>
-              了解更多
-            </ArrowButton>
+            <ArrowButton size="small">了解更多</ArrowButton>
           </>
         }
       />

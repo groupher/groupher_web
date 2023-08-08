@@ -46,7 +46,6 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
               onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
               bottom={1}
               size="small"
-              linkColor
             >
               查看示例
             </ArrowButton>
@@ -124,7 +123,6 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
               onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
               bottom={1}
               size="small"
-              linkColor
             >
               查看示例
             </ArrowButton>
