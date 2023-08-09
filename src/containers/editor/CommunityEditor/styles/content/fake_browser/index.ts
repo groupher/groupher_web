@@ -8,12 +8,15 @@ const taberBg = '#F1F3F4'
 export const Wrapper = styled.div`
   ${css.flexColumn('align-center')};
   width: 100%;
-  height: 70vh; /* TODO  */
-  border-radius: 6px;
+  height: 600px;
+  border-radius: 12px;
   background: ${theme('alplaBg')};
   border: 1px solid;
-  border-color: #c9ccd1;
-  /* border-color: ${theme('lightText')}; */
+  border-color: #e5e5e5;
+  /* border-color: ${theme('hoverBg')}; */
+  border-bottom: none;
+
+  position: relative;
 `
 export const Header = styled.div`
   ${css.flex()};
@@ -126,6 +129,6 @@ export const Input = styled.div`
   font-size: 14px;
 `
 export const DomainText = styled.span`
-  color: ${theme('link')};
+  color: ${theme('baseColor.pink')};
   margin-left: 1px;
 `

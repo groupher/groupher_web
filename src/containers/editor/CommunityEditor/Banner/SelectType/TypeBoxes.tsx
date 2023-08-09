@@ -32,7 +32,7 @@ const TypeBoxes: FC<TProps> = ({ communityType }) => {
       </Box>
       <Box active={communityType === WORKS} onClick={() => communityTypeOnChange(WORKS)}>
         <HeaderText>
-          <HeaderText>免费 / 高级</HeaderText>
+          <HeaderText>免费</HeaderText>
           <Checker checked={communityType === WORKS} hiddenMode />
         </HeaderText>
         <MainText>客户端软件</MainText>
@@ -40,7 +40,7 @@ const TypeBoxes: FC<TProps> = ({ communityType }) => {
       </Box>
       <Box active={communityType === TEAM} onClick={() => communityTypeOnChange(TEAM)}>
         <HeaderText>
-          <HeaderText>免费 / 高级</HeaderText>
+          <HeaderText>免费</HeaderText>
           <Checker checked={communityType === TEAM} hiddenMode />
         </HeaderText>
         <MainText>硬件产品</MainText>

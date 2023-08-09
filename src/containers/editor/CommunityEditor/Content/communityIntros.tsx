@@ -5,7 +5,7 @@ const COMMUNITY_INTRO = {
   PUBLIC: {
     title: '什么是互联网服务?',
     desc: '你的产品主要通过浏览器 web 端为用户提供服务，如网站，H5 页面等。',
-    threads: ['帖子', '雷达', '博客', '酷导航', '成员分布', '工作'],
+    threads: ['讨论', '看板', '更新日志', '帮助台', '关于'],
     demos: [
       {
         title: 'javascript',
@@ -37,7 +37,7 @@ const COMMUNITY_INTRO = {
   WORKS: {
     title: '什么是作品社区?',
     desc: '为你的作品讨论需求，收集反馈，公布进度等，包含帖子，看板，技术栈，团队信息等版块。管理权限属于作者。',
-    threads: ['讨论', '看板', '技术栈', '团队'],
+    threads: ['讨论', '看板', '更新日志', '帮助台', '关于'],
     demos: [
       {
         title: 'Groupher',
@@ -49,7 +49,7 @@ const COMMUNITY_INTRO = {
   TEAM: {
     title: '什么是团队社区?',
     desc: '为你的团队收集意见反馈，展示作品，动态，招聘等的专门社区。管理权限属于团队成员。',
-    threads: ['帖子', '博客', '作品', '技术栈', '工作'],
+    threads: ['讨论', '看板', '更新日志', '帮助台', '关于'],
     demos: [
       {
         title: 'CP-feedback',
@@ -60,7 +60,7 @@ const COMMUNITY_INTRO = {
   CITY: {
     title: '什么事同城社区？',
     desc: '以城市为单元的社区，包含同城的话题讨论，酷团队，作品以及工作招聘等。志愿者参与日常维护管理。',
-    threads: ['帖子', '酷团队', '作品', '工作'],
+    threads: ['讨论', '看板', '更新日志', '帮助台', '关于'],
     demos: [
       {
         title: '北京',

@@ -11,10 +11,11 @@ import {
   Wrapper,
   BannerWrapper,
   IconBlock,
+  AccountIcon,
   RealLogo,
   Intro,
   Title,
-  Desc,
+  TitleHolder,
   ThreadWrapper,
   ThreadItem,
   FeedWrapper,
@@ -61,10 +62,9 @@ const Content: FC<TProps> = ({
   return (
     <Wrapper>
       <BannerWrapper>
-        {logo ? <RealLogo src={logo} /> : <IconBlock />}
         <Intro>
-          <Title>{title}</Title>
-          <Desc>{desc}</Desc>
+          {logo ? <RealLogo src={logo} /> : <IconBlock />}
+          {title ? <Title>{title}</Title> : <TitleHolder>社区名称</TitleHolder>}
         </Intro>
         {communityType && (
           <ThreadWrapper>
@@ -73,12 +73,12 @@ const Content: FC<TProps> = ({
             ))}
           </ThreadWrapper>
         )}
+        <AccountIcon />
       </BannerWrapper>
       <FeedWrapper>
         <Feed width="50%" />
         <Feed width="40%" />
-        <Feed width="80%" />
-        <Feed width="30%" />
+        <Feed width="46%" />
       </FeedWrapper>
     </Wrapper>
   )

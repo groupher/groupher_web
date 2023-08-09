@@ -7,10 +7,7 @@
 import { FC, memo } from 'react'
 
 import { ICON_CMD } from '@/config'
-import SIZE from '@/constant/size'
 import { buildLog } from '@/utils/logger'
-
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
 import type { TCommunityType, TValidState } from '../../spec'
 import TypeBoxes from './TypeBoxes'

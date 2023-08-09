@@ -28,6 +28,7 @@ const SetupDomain: FC<TProps> = ({ status, validState }) => {
         社区域名
       </IntroTitle>
       <InputBox value={slug} placeholder="your-domain" onChange={(e) => inputOnChange(e, 'slug')} />
+
       {!isEmpty(slug) && !communityExist && !isRawValid && (
         <ErrorMsg>仅支持英文、拼音或数字组合</ErrorMsg>
       )}
@@ -35,13 +36,16 @@ const SetupDomain: FC<TProps> = ({ status, validState }) => {
       {!checking && communityExist && (
         <ErrorMsg>{cutRest(slug, 8)} 已存在（或他人在申请中），请尝试其他域名</ErrorMsg>
       )}
-      <NextBtn>
-        <ArrowButton leftLayout onClick={pervStep} dimWhenIdle>
-          上一步
-        </ArrowButton>
 
-        <NextStepButton loading={checking} onClick={nextStep} disabled={!isRawValid} />
-      </NextBtn>
+      {!(!isEmpty(slug) && !communityExist && !isRawValid) && (
+        <NextBtn>
+          <ArrowButton leftLayout onClick={pervStep} dimWhenIdle>
+            上一步
+          </ArrowButton>
+
+          <NextStepButton loading={checking} onClick={nextStep} disabled={!isRawValid} />
+        </NextBtn>
+      )}
     </Wrapper>
   )
 }

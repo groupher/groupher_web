@@ -19,7 +19,7 @@ const SetupInfo: FC<TProps> = ({ status, communityType }) => {
       <FakeBrowser
         domain={slug}
         communityType={communityType}
-        title={title || '// 社区名称'}
+        title={title}
         desc={desc || '// 社区一句话描述'}
         logo={logo}
         step={STEP.SETUP_INFO}

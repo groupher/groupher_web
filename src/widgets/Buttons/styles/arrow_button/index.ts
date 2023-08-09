@@ -52,6 +52,7 @@ export const Wrapper = styled.button<TWrapper>`
   transition: all 0.2s;
 `
 export const Text = styled.div`
+  word-break: keep-all;
   line-height: 15px;
   font-size: 13px;
 `

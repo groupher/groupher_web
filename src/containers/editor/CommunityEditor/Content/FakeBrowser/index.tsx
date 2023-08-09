@@ -5,6 +5,7 @@ import { ICON_CMD } from '@/config'
 
 import Favicon from './Favicon'
 import Content from './Content'
+import MaskPanel from './MaskPanel'
 
 import type { TStep, TCommunityType } from '../../spec'
 
@@ -88,6 +89,7 @@ const FakeBrowser: FC<TProps> = ({
         domain={domain}
         communityType={communityType}
       />
+      <MaskPanel />
     </Wrapper>
   )
 }
