@@ -54,13 +54,13 @@ const SetupInfo: FC<TProps> = ({ status, validState }) => {
         <InputsWrapper>
           <InputBox
             value={title}
-            placeholder="// 社区名称"
+            placeholder="社区名称"
             onChange={(e) => inputOnChange(e, 'title')}
           />
           <Br bottom={10} />
           <InputBox
             value={desc}
-            placeholder="// 社区一句话描述"
+            placeholder="社区一句话描述"
             onChange={(e) => inputOnChange(e, 'desc')}
           />
         </InputsWrapper>

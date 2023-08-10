@@ -20,3 +20,7 @@ export const IntroTitle = styled.div`
   margin-bottom: 20px;
   margin-left: -10px;
 `
+
+export const Text = styled.div<{ disabled: boolean }>`
+  color: ${({ disabled }) => (disabled ? theme('article.title') : 'white')};
+`

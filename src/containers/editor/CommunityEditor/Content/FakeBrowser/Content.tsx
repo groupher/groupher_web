@@ -15,10 +15,12 @@ import {
   RealLogo,
   Intro,
   Title,
+  Desc,
   TitleHolder,
   ThreadWrapper,
   ThreadItem,
   FeedWrapper,
+  TagWrapper,
   Feed,
 } from '../../styles/content/fake_browser/content'
 
@@ -75,6 +77,13 @@ const Content: FC<TProps> = ({
         )}
         <AccountIcon />
       </BannerWrapper>
+      <Desc>{desc}</Desc>
+      <TagWrapper hasDesc={!!desc}>
+        <Feed width="50%" />
+        <Feed width="30%" />
+        <Feed width="6%" />
+        <Feed width="50%" />
+      </TagWrapper>
       <FeedWrapper>
         <Feed width="50%" />
         <Feed width="40%" />

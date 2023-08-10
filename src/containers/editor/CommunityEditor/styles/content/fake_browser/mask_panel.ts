@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Link from 'next/link'
 
 import css, { theme } from '@/utils/css'
 
@@ -22,10 +23,23 @@ export const InnerWrapper = styled.div`
   flex-wrap: wrap;
   gap: 16px 0;
 `
+export const InnerWrapperColumn = styled.div`
+  ${css.flexColumn()};
+  width: calc(100% + 118px);
+  gap: 12px;
+`
 export const Item = styled.div`
   ${css.flex('align-center')};
   color: ${theme('article.title')};
   width: 33%;
+`
+export const ColumnItem = styled(Item)`
+  width: 100%;
+`
+export const Dot = styled.div`
+  ${css.circle(4)};
+  background: ${theme('article.digest')};
+  margin-right: 8px;
 `
 export const CheckIcon = styled(CheckSVG)`
   ${css.size(15)};
@@ -36,4 +50,15 @@ export const Footer = styled.div`
   ${css.flex('align-both')};
   width: 100%;
   margin-top: 40px;
+`
+export const TheLink = styled(Link)`
+  color: ${theme('link')};
+  text-decoration: none;
+  margin-left: 1px;
+  margin-right: 1px;
+
+  &:hover {
+    color: ${theme('link')};
+    text-decoration: underline;
+  }
 `

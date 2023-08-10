@@ -65,7 +65,7 @@ const CommunityEditor = T.model('CommunityEditorStore', {
     get isRawValid(): boolean {
       if (self.communityExist) return false
 
-      const rule = /^[0-9a-zA-Z]+$/
+      const rule = /^[0-9a-zA-Z-_]+$/
       return rule.test(self.slug)
     },
     get isTitleValid(): boolean {

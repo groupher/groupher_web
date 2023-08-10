@@ -35,7 +35,7 @@ export const NextBtn = styled.div`
   position: absolute;
   ${css.flex('align-center', 'justify-around')};
   width: 200px;
-  bottom: 42px;
+  bottom: 25px;
   margin-left: 10px;
   filter: grayscale(1);
 `

@@ -89,7 +89,7 @@ const FakeBrowser: FC<TProps> = ({
         domain={domain}
         communityType={communityType}
       />
-      <MaskPanel />
+      <MaskPanel step={step} />
     </Wrapper>
   )
 }

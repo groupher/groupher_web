@@ -104,13 +104,14 @@ export const ToolbarWrapper = styled.div`
   height: 24px;
 `
 export const ToolIcon = styled(Img)<{ reverse?: boolean }>`
-  fill: ${theme('article.title')};
+  fill: ${theme('article.digest')};
+  opacity: 0.6;
   ${css.size(16)};
   transform: ${({ reverse }) => (reverse ? 'rotate(180deg)' : '')};
 `
 export const LockIcon = styled(ToolIcon)`
-  ${css.size(12)};
-  margin-top: 2px;
+  ${css.size(11)};
+  margin-top: 3px;
 `
 export const Form = styled.form`
   ${css.flex('align-center')};
@@ -129,6 +130,6 @@ export const Input = styled.div`
   font-size: 14px;
 `
 export const DomainText = styled.span`
-  color: ${theme('baseColor.pink')};
+  color: ${theme('link')};
   margin-left: 1px;
 `

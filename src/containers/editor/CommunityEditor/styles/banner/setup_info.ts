@@ -56,7 +56,7 @@ export const InputsWrapper = styled.div`
 export const InputBox = styled(InputBar)`
   width: 300px;
   min-width: 300px;
-  font-size: 16px;
+  font-size: 14px;
   text-align: left;
   padding: 6px 18px;
   border-radius: 8px;

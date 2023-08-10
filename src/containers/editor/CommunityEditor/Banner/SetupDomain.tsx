@@ -30,7 +30,7 @@ const SetupDomain: FC<TProps> = ({ status, validState }) => {
       <InputBox value={slug} placeholder="your-domain" onChange={(e) => inputOnChange(e, 'slug')} />
 
       {!isEmpty(slug) && !communityExist && !isRawValid && (
-        <ErrorMsg>仅支持英文、拼音或数字组合</ErrorMsg>
+        <ErrorMsg>仅支持字母、数字与-_的组合</ErrorMsg>
       )}
 
       {!checking && communityExist && (

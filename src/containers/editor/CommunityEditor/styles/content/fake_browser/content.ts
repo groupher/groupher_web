@@ -6,6 +6,17 @@ import Img from '@/Img'
 export const Wrapper = styled.div`
   ${css.flexColumn()};
   width: 100%;
+  position: relative;
+`
+export const Desc = styled.div`
+  ${css.lineClamp(2)};
+  position: absolute;
+  right: 70px;
+  top: 100px;
+  font-size: 12px;
+  color: ${theme('article.digest')};
+  opacity: 0.5;
+  width: 150px;
 `
 export const BannerWrapper = styled.div`
   position: relative;
@@ -62,6 +73,14 @@ export const FeedWrapper = styled.div`
   ${css.flexColumn('align-start')}
   margin-top: 10px;
   padding: 25px 80px;
+`
+export const TagWrapper = styled.div<{ hasDesc: boolean }>`
+  position: absolute;
+  right: 70px;
+  top: 150px;
+  top: ${({ hasDesc }) => (hasDesc ? '150px' : '105px')};
+  width: 150px;
+  transition: all 0.2s;
 `
 export const Feed = styled.div<{ width: string }>`
   height: 10px;

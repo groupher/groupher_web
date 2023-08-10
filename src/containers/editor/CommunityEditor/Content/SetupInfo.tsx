@@ -20,7 +20,7 @@ const SetupInfo: FC<TProps> = ({ status, communityType }) => {
         domain={slug}
         communityType={communityType}
         title={title}
-        desc={desc || '// 社区一句话描述'}
+        desc={desc}
         logo={logo}
         step={STEP.SETUP_INFO}
       />
