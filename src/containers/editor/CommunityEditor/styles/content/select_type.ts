@@ -7,7 +7,7 @@ import Img from '@/Img'
 export const Wrapper = styled.div`
   ${css.flex('justify-between')};
   width: 700px;
-  margin-top: 120px;
+  margin-top: -200px;
   min-height: 300px;
 `
 const Block = styled.div`

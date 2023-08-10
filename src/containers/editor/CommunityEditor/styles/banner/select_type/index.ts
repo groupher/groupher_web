@@ -4,14 +4,21 @@ import css, { theme } from '@/utils/css'
 
 import Img from '@/Img'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ marginTop: boolean }>`
   position: relative;
-  ${css.flexColumn('align-both')};
+  ${css.flexColumn('align-center')};
   color: ${theme('article.digest')};
   /* background-image: linear-gradient(#043B49, #022A35); */
   background-image: ${theme('banner.linearGradient')};
   width: 100%;
-  height: 400px;
+  min-height: 680px;
+  margin-top: ${({ marginTop }) => (marginTop ? '68px' : '0')};
+  transition: all 0.2s;
+`
+export const InnerWrapper = styled.div`
+  ${css.flexColumn('align-center')};
+  height: 380px;
+  margin-top: 50px;
 `
 export const IntroTitle = styled.div`
   ${css.flex('align-center')};
@@ -40,9 +47,8 @@ export const Title = styled.div`
 `
 export const NextBtn = styled.div`
   ${css.flex('justify-center')};
-  position: absolute;
   width: 280px;
-  bottom: 5px;
+  margin-top: 80px;
 `
 export const ErrorMsg = styled.div`
   position: absolute;

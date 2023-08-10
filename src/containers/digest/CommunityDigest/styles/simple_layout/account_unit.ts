@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
+import Link from 'next/link'
 
 import Button from '@/widgets/Buttons/Button'
 import Img from '@/Img'
@@ -43,13 +44,11 @@ export const NotifyIcon = styled(NotifySVG)`
   fill: ${theme('article.digest')};
   ${css.size(16)};
   margin-right: 18px;
-
-  ${hoverEffect}
 `
 export const DashboardIcon = styled(DashboardSVG)`
   fill: ${theme('article.digest')};
-  ${css.size(15)};
-  margin-right: 16px;
+  ${css.size(12)};
+  margin-right: 5px;
 
   ${hoverEffect}
 
@@ -57,6 +56,22 @@ export const DashboardIcon = styled(DashboardSVG)`
     display: none;
   `};
 `
+
+export const DashboardLink = styled(Link)`
+  ${css.flex('align-center')};
+  color: ${theme('article.digest')};
+  text-decoration: none;
+  margin-right: 16px;
+  font-weight: 400;
+  font-size: 14px;
+  ${hoverEffect}
+
+  &:hover {
+    text-decoration: none;
+    color: ${theme('article.title')};
+  }
+`
+
 export const AccountIcon = styled(AccountSVG)`
   fill: ${theme('article.digest')};
   ${css.size(14)};

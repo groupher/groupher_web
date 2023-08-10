@@ -8,7 +8,13 @@ import useAccount from '@/hooks/useAccount'
 import { ROUTE } from '@/constant/route'
 import { callAuth } from '@/utils/signal'
 
-import { Wrapper, DashboardIcon, Avatar, AccountIcon } from '../styles/simple_layout/account_unit'
+import {
+  Wrapper,
+  DashboardIcon,
+  Avatar,
+  AccountIcon,
+  DashboardLink,
+} from '../styles/simple_layout/account_unit'
 
 type TProps = {
   community: TCommunity
@@ -23,9 +29,9 @@ const AccountUnit: FC<TProps> = ({ community }) => {
         订阅
       </SubscribeButton> */}
 
-      <Link href={`/${community.slug}/${ROUTE.DASHBOARD.DASHBOARD}`} prefetch={false}>
-        <DashboardIcon />
-      </Link>
+      <DashboardLink href={`/${community.slug}/${ROUTE.DASHBOARD.DASHBOARD}`} prefetch={false}>
+        <DashboardIcon /> 后台
+      </DashboardLink>
 
       {/* <div data-test-id="header-notify-icon">
         <NotifyIcon />

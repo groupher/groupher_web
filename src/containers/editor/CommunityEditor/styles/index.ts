@@ -6,6 +6,8 @@ import css, { theme } from '@/utils/css'
 export const Wrapper = styled.div<{ metric: TMetric }>`
   ${css.flexColumn('align-both')};
   width: 100%;
+  height: 100%;
+
   ${({ metric }) => css.fitPageWidth(metric)};
 `
 export const InnerWrapper = styled.div<{ metric: TMetric }>`

@@ -9,12 +9,15 @@ import { FC, memo } from 'react'
 import { ICON_CMD } from '@/config'
 import { buildLog } from '@/utils/logger'
 
+import { Br } from '@/widgets/Common'
+
 import type { TCommunityType, TValidState } from '../../spec'
 import TypeBoxes from './TypeBoxes'
 import NextStepButton from '../NextStepButton'
 
 import {
   Wrapper,
+  InnerWrapper,
   IntroTitle,
   AddNewIcon,
   NextBtn,
@@ -35,28 +38,32 @@ type TProps = {
 
 const SelectType: FC<TProps> = ({ status: { communityType }, validState }) => {
   return (
-    <Wrapper>
-      <IntroTitle>
-        <AddNewIcon src={`${ICON_CMD}/community_new.svg`} />
-        你创建的反馈社区将服务于?
-      </IntroTitle>
+    <Wrapper marginTop={communityType === null}>
+      <InnerWrapper>
+        <IntroTitle>
+          <AddNewIcon src={`${ICON_CMD}/community_new.svg`} />
+          你创建的反馈社区将服务于?
+        </IntroTitle>
 
-      <TypeBoxes communityType={communityType} />
+        <TypeBoxes communityType={communityType} />
 
-      {communityType && (
-        <NextBtn>
-          {!validState.hasPendingApply && !validState.isLogin && (
-            <ErrorMsg>创建社区需要先登录</ErrorMsg>
-          )}
-          {validState.isLogin && validState.hasPendingApply && (
-            <InfoMsg>你上次申请的创建请求还在处理中，请等待处理后再次创建，谢谢!</InfoMsg>
-          )}
+        {!communityType && <Br bottom={200} />}
 
-          {!validState.hasPendingApply && (
-            <NextStepButton onClick={nextStep} disabled={!validState.isCommunityTypeValid} />
-          )}
-        </NextBtn>
-      )}
+        {communityType && (
+          <NextBtn>
+            {!validState.hasPendingApply && !validState.isLogin && (
+              <ErrorMsg>创建社区需要先登录</ErrorMsg>
+            )}
+            {validState.isLogin && validState.hasPendingApply && (
+              <InfoMsg>你上次申请的创建请求还在处理中，请等待处理后再次创建，谢谢!</InfoMsg>
+            )}
+
+            {!validState.hasPendingApply && (
+              <NextStepButton onClick={nextStep} disabled={!validState.isCommunityTypeValid} />
+            )}
+          </NextBtn>
+        )}
+      </InnerWrapper>
     </Wrapper>
   )
 }

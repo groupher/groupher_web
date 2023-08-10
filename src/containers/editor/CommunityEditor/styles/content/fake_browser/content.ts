@@ -37,6 +37,8 @@ export const Title = styled.div`
   color: ${theme('article.title')};
   font-size: 15px;
   margin-left: 8px;
+  min-width: 100px;
+  ${css.cutRest('100px')};
 `
 export const TitleHolder = styled(Title)`
   color: ${theme('article.digest')};
@@ -46,6 +48,7 @@ export const TitleHolder = styled(Title)`
 export const ThreadWrapper = styled.div`
   ${css.flex('align-center')};
   gap: 0 15px;
+  margin-left: -60px;
 `
 export const ThreadItem = styled.div`
   font-size: 13px;

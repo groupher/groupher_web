@@ -8,7 +8,7 @@ const taberBg = '#F1F3F4'
 export const Wrapper = styled.div`
   ${css.flexColumn('align-center')};
   width: 100%;
-  height: 600px;
+  min-height: 500px;
   border-radius: 12px;
   background: ${theme('alplaBg')};
   border: 1px solid;

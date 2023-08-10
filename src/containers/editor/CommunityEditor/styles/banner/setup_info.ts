@@ -80,5 +80,6 @@ export const NextBtn = styled.div`
   ${css.flex('align-center', 'justify-center')};
   width: 200px;
   bottom: 20px;
+  margin-left: 30px;
   filter: grayscale(1);
 `

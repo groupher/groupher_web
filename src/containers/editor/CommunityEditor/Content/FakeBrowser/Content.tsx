@@ -79,6 +79,11 @@ const Content: FC<TProps> = ({
         <Feed width="50%" />
         <Feed width="40%" />
         <Feed width="46%" />
+        <Feed width="50%" />
+        <Feed width="40%" />
+        <Feed width="46%" />
+        <Feed width="46%" />
+        <Feed width="50%" />
       </FeedWrapper>
     </Wrapper>
   )
