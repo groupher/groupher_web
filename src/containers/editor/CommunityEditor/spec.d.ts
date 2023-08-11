@@ -1,4 +1,4 @@
-export type TCommunityType = 'PUBLIC' | 'CITY' | 'WORKS' | 'TEAM' | null
+export type TCommunityType = 'WEB' | 'CLIENT' | 'HARDWARE' | 'GAME' | null
 
 export type TStep = 'SELECT_TYPE' | 'SETUP_DOMAIN' | 'SETUP_INFO' | 'FINISHED'
 
@@ -20,6 +20,7 @@ export type TSetupInfoStatus = {
 
 export type TValidState = {
   isCommunityTypeValid: boolean
+  isOfficalValid: boolean
   isRawValid: boolean
   isTitleValid: boolean
   isDescValid: boolean

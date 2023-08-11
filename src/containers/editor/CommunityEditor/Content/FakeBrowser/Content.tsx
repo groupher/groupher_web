@@ -1,11 +1,8 @@
 import { FC, memo } from 'react'
-import { includes } from 'ramda'
 
-import NoticeBar from '@/widgets/NoticeBar'
 import communityIntros from '../communityIntros'
 
 import type { TStep, TCommunityType } from '../../spec'
-import { STEP, COMMUNITY_TYPE } from '../../constant'
 
 import {
   Wrapper,
@@ -41,26 +38,6 @@ const Content: FC<TProps> = ({
   domain = null,
   communityType,
 }) => {
-  if (
-    includes(communityType, [COMMUNITY_TYPE.WORKS, COMMUNITY_TYPE.TEAM]) &&
-    step === STEP.SETUP_DOMAIN
-  ) {
-    const customDomain = domain || 'my-domain'
-
-    return (
-      <Wrapper>
-        <NoticeBar
-          type="info"
-          content={`绑定域名功能即将开放，届时社区功能会开放给你的自主域名，比如：forum.${customDomain}.com, 敬请期待。`}
-          top={8}
-          left={95}
-          right={30}
-          noBg
-        />
-      </Wrapper>
-    )
-  }
-
   return (
     <Wrapper>
       <BannerWrapper>

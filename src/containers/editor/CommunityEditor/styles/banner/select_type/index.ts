@@ -13,7 +13,7 @@ export const Wrapper = styled.div<{ marginTop: boolean }>`
   width: 100%;
   min-height: 680px;
   margin-top: ${({ marginTop }) => (marginTop ? '68px' : '0')};
-  transition: all 0.2s;
+  transition: all 0.4s;
 `
 export const InnerWrapper = styled.div`
   ${css.flexColumn('align-center')};
@@ -48,7 +48,11 @@ export const Title = styled.div`
 export const NextBtn = styled.div`
   ${css.flex('justify-center')};
   width: 280px;
-  margin-top: 80px;
+  margin-top: 24px;
+`
+export const Note = styled.div`
+  ${css.flex('align-center')};
+  margin-top: 50px;
 `
 export const ErrorMsg = styled.div`
   position: absolute;

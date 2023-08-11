@@ -2,8 +2,8 @@ import { ICON_BASE } from '@/config'
 import { HCN } from '@/constant/name'
 
 const COMMUNITY_INTRO = {
-  PUBLIC: {
-    title: '什么是互联网服务?',
+  WEB: {
+    title: '什么是 Web 应用?',
     desc: '你的产品主要通过浏览器 web 端为用户提供服务，如网站，H5 页面等。',
     threads: ['讨论', '看板', '更新日志', '帮助台', '关于'],
     demos: [
@@ -34,7 +34,7 @@ const COMMUNITY_INTRO = {
       },
     ],
   },
-  WORKS: {
+  CLIENT: {
     title: '什么是客户端软件?',
     desc: '包括但不限于各行业 PC / Mac 端生产力工具，手机 APP 等。',
     threads: ['讨论', '看板', '更新日志', '帮助台', '关于'],
@@ -46,7 +46,7 @@ const COMMUNITY_INTRO = {
       },
     ],
   },
-  TEAM: {
+  HARDWARE: {
     title: '什么是硬件产品',
     desc: '各类机器人，无人机及其类似可玩性较强的硬件类及工业类产品。',
     threads: ['讨论', '看板', '更新日志', '帮助台', '关于'],
@@ -57,7 +57,7 @@ const COMMUNITY_INTRO = {
       },
     ],
   },
-  CITY: {
+  GAME: {
     title: '什么是独立游戏',
     desc: '个人或小团队开发的平台或手机游戏，Indie Game Rocks!',
     threads: ['讨论', '看板', '更新日志', '帮助台', '关于'],

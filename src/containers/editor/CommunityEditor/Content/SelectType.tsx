@@ -13,7 +13,6 @@ import DemoCommunity from './DemoCommunity'
 import COMMUNITY_INTRO from './communityIntros'
 import type { TSelectTypeStatus } from '../spec'
 
-// import SearchBox from './SearchBox'
 import {
   Wrapper,
   LeftBlock,
@@ -60,7 +59,7 @@ const SelectType: FC<TProps> = ({ status: { communityType } }) => {
           ))}
         </CommunityDemoWrapper>
 
-        <MoreLink href="/">查看更多</MoreLink>
+        <MoreLink href="/">探索更多</MoreLink>
       </RightBlock>
     </Wrapper>
   )

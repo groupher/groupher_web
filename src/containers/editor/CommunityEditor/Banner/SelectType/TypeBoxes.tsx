@@ -1,12 +1,12 @@
 import { FC, memo } from 'react'
 
-import Checker from '@/widgets/Checker'
 import {
   Wrapper,
   Box,
   HeaderText,
   MainText,
   FooterText,
+  TheChecker,
 } from '../../styles/banner/select_type/type_boxes'
 
 import type { TCommunityType } from '../../spec'
@@ -18,38 +18,54 @@ type TProps = {
 }
 
 const TypeBoxes: FC<TProps> = ({ communityType }) => {
-  const { PUBLIC, CITY, WORKS, TEAM } = COMMUNITY_TYPE
+  const { WEB, CLIENT, HARDWARE, GAME } = COMMUNITY_TYPE
 
   return (
     <Wrapper>
-      <Box active={communityType === PUBLIC} onClick={() => communityTypeOnChange(PUBLIC)}>
+      <Box
+        touched={!!communityType}
+        active={communityType === WEB}
+        onClick={() => communityTypeOnChange(WEB)}
+      >
         <HeaderText>
           <div>免费</div>
-          <Checker checked={communityType === PUBLIC} hiddenMode />
+          <TheChecker checked={communityType === WEB} hiddenMode />
         </HeaderText>
-        <MainText>互联网服务</MainText>
+        <MainText>Web 应用</MainText>
         <FooterText>已有 114 +</FooterText>
       </Box>
-      <Box active={communityType === WORKS} onClick={() => communityTypeOnChange(WORKS)}>
+      <Box
+        touched={!!communityType}
+        active={communityType === CLIENT}
+        onClick={() => communityTypeOnChange(CLIENT)}
+      >
         <HeaderText>
           <HeaderText>免费</HeaderText>
-          <Checker checked={communityType === WORKS} hiddenMode />
+          <TheChecker checked={communityType === CLIENT} hiddenMode />
         </HeaderText>
         <MainText>客户端软件</MainText>
         <FooterText>已有 12 +</FooterText>
       </Box>
-      <Box active={communityType === TEAM} onClick={() => communityTypeOnChange(TEAM)}>
+      <Box
+        touched={!!communityType}
+        active={communityType === HARDWARE}
+        onClick={() => communityTypeOnChange(HARDWARE)}
+      >
         <HeaderText>
           <HeaderText>免费</HeaderText>
-          <Checker checked={communityType === TEAM} hiddenMode />
+          <TheChecker checked={communityType === HARDWARE} hiddenMode />
         </HeaderText>
         <MainText>硬件产品</MainText>
         <FooterText>已有 14 +</FooterText>
       </Box>
-      <Box active={communityType === CITY} onClick={() => communityTypeOnChange(CITY)}>
+      <Box
+        touched={!!communityType}
+        active={communityType === GAME}
+        onClick={() => communityTypeOnChange(GAME)}
+      >
         <HeaderText>
           <div>免费</div>
-          <Checker checked={communityType === CITY} hiddenMode />
+          <TheChecker checked={communityType === GAME} hiddenMode />
         </HeaderText>
         <MainText>独立游戏</MainText>
         <FooterText>已有 114 +</FooterText>

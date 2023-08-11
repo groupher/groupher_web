@@ -76,6 +76,10 @@ export const communityTypeOnChange = (communityType: TCommunityType): void => {
   store.mark({ communityType })
 }
 
+export const isOfficalOnChange = (isOfficalValid: boolean): void => {
+  store.mark({ isOfficalValid })
+}
+
 export const applyCommunity = (): void => {
   const args = pick(['title', 'logo', 'desc', 'slug', 'applyMsg'], store)
 

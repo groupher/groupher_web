@@ -130,6 +130,10 @@ export const Input = styled.div`
   font-size: 14px;
 `
 export const DomainText = styled.span`
-  color: ${theme('link')};
+  /* color: ${theme('link')}; */
+  background: linear-gradient(to right, rgb(196, 121, 222), rgb(248, 190, 109));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-left: 1px;
 `

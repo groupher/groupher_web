@@ -6,25 +6,26 @@
 
 import { FC, memo } from 'react'
 
-import { ICON_CMD } from '@/config'
 import { buildLog } from '@/utils/logger'
 
 import { Br } from '@/widgets/Common'
 
+import Checker from '@/widgets/Checker'
+
 import type { TCommunityType, TValidState } from '../../spec'
-import TypeBoxes from './TypeBoxes'
 import NextStepButton from '../NextStepButton'
+import TypeBoxes from './TypeBoxes'
 
 import {
   Wrapper,
   InnerWrapper,
   IntroTitle,
-  AddNewIcon,
+  Note,
   NextBtn,
   ErrorMsg,
   InfoMsg,
 } from '../../styles/banner/select_type'
-import { nextStep } from '../../logic'
+import { nextStep, isOfficalOnChange } from '../../logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:CommunitiesBanner')
@@ -40,14 +41,21 @@ const SelectType: FC<TProps> = ({ status: { communityType }, validState }) => {
   return (
     <Wrapper marginTop={communityType === null}>
       <InnerWrapper>
-        <IntroTitle>
-          <AddNewIcon src={`${ICON_CMD}/community_new.svg`} />
-          你创建的反馈社区将服务于?
-        </IntroTitle>
+        <IntroTitle>你创建的反馈社区将服务于?</IntroTitle>
 
         <TypeBoxes communityType={communityType} />
 
         {!communityType && <Br bottom={200} />}
+        {communityType && (
+          <Note>
+            <Checker
+              checked={validState.isOfficalValid}
+              size="small"
+              onChange={isOfficalOnChange}
+            />
+            我来自产品官方团队, 选项解释.
+          </Note>
+        )}
 
         {communityType && (
           <NextBtn>
@@ -59,7 +67,10 @@ const SelectType: FC<TProps> = ({ status: { communityType }, validState }) => {
             )}
 
             {!validState.hasPendingApply && (
-              <NextStepButton onClick={nextStep} disabled={!validState.isCommunityTypeValid} />
+              <NextStepButton
+                onClick={nextStep}
+                disabled={!(validState.isCommunityTypeValid && validState.isOfficalValid)}
+              />
             )}
           </NextBtn>
         )}

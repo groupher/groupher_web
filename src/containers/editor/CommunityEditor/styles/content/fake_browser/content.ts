@@ -17,6 +17,7 @@ export const Desc = styled.div`
   color: ${theme('article.digest')};
   opacity: 0.5;
   width: 150px;
+  word-break: break-all;
 `
 export const BannerWrapper = styled.div`
   position: relative;

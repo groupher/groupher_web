@@ -7,8 +7,8 @@ export const Wrapper = styled.div`
   padding: 2px 10px;
 `
 
-export const NextButton = styled(Button)`
-  padding-right: 8px;
+export const NextButton = styled(Button)<{ noPaddingRight: boolean }>`
+  padding-right: ${({ noPaddingRight }) => (noPaddingRight ? '0px' : '8px')};
   padding-left: 24px;
 `
 
@@ -23,4 +23,5 @@ export const IntroTitle = styled.div`
 
 export const Text = styled.div<{ disabled: boolean }>`
   color: ${({ disabled }) => (disabled ? theme('article.title') : 'white')};
+  transition: all 0.2s;
 `

@@ -17,6 +17,7 @@ const CommunityEditor = T.model('CommunityEditorStore', {
   // if community exist / has pending apply
   checking: T.opt(T.bool, false),
   submitting: T.opt(T.bool, false),
+  isOfficalValid: T.opt(T.bool, false),
 
   communityExist: T.opt(T.bool, false),
   hasPendingApply: T.opt(T.bool, false),
@@ -83,6 +84,7 @@ const CommunityEditor = T.model('CommunityEditorStore', {
 
       return pick(
         [
+          'isOfficalValid',
           'isCommunityTypeValid',
           'isRawValid',
           'isTitleValid',
