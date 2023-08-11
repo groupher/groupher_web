@@ -81,7 +81,6 @@
     "react-highlight-words": "^0.18.0",
     "react-lazy-load-image-component": "^1.5.6",
     "react-masonry-css": "^1.0.14",
-    "react-particles": "^2.12.1",
     "react-pin-field": "3.0.16",
     "react-portal": "^4.2.2",
     "react-scroll-parallax": "^3.3.2",
@@ -108,6 +107,7 @@
     "stylis": "^4.3.0",
     "timeago-react": "^3.0.5",
     "tinykeys": "^1.4.0",
+    "tsparticles-confetti": "^2.12.0",
     "typewriter-effect": "^2.19.0",
     "urql": "^3.0.3"
   },
