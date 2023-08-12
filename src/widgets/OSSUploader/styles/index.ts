@@ -9,6 +9,22 @@ export const Wrapper = styled.div`
   position: relative;
   cursor: pointer;
 `
+export const InnerBorder = styled.div`
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
+  border: 2px dotted white;
+  border-radius: 4px;
+  opacity: 0;
+  z-index: 1;
+
+  ${Wrapper}:hover & {
+    opacity: 1;
+  }
+  transition: all 0.2s;
+`
 export const InputFile = styled.input`
   width: 0.1px;
   height: 0.1px;

@@ -137,7 +137,6 @@ export const SubDomain = styled.div`
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-left: 2px;
 `
 export const Slash = styled.div`
   display: inline-block;
