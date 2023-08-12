@@ -1,8 +1,9 @@
-import { FC, memo } from 'react'
+import { FC, memo, useState } from 'react'
 import { isEmpty } from 'ramda'
 
 import { ICON_CMD } from '@/config'
 
+import { Row } from '@/widgets/Common'
 import Favicon from './Favicon'
 import Content from './Content'
 import MaskPanel from './MaskPanel'
@@ -20,7 +21,10 @@ import {
   LockIcon,
   Form,
   Input,
-  DomainText,
+  Slash,
+  SubDomain,
+  ThreadPath,
+  ThreadText,
 } from '../../styles/content/fake_browser'
 
 type TProps = {
@@ -41,6 +45,7 @@ const FakeBrowser: FC<TProps> = ({
   communityType = null,
 }) => {
   const tabTitle = title || domain || 'groupher'
+  const [activePath, setActivePath] = useState('')
 
   return (
     <Wrapper>
@@ -68,9 +73,14 @@ const FakeBrowser: FC<TProps> = ({
             {isEmpty(domain) ? (
               <div>groupher.com</div>
             ) : (
-              <div>
-                groupher.com/<DomainText>{domain.toLowerCase()}</DomainText>
-              </div>
+              <Row>
+                groupher.com<Slash>/</Slash>
+                <SubDomain>{domain.toLowerCase()}</SubDomain>
+                <ThreadPath $active={!!activePath}>
+                  <Slash>/</Slash>
+                  <ThreadText>{activePath}</ThreadText>
+                </ThreadPath>
+              </Row>
             )}
           </Input>
           <ToolbarWrapper>
@@ -82,12 +92,11 @@ const FakeBrowser: FC<TProps> = ({
         </ToolbarWrapper>
       </AddressBar>
       <Content
-        step={step}
         title={title}
         desc={desc}
         logo={logo}
-        domain={domain}
         communityType={communityType}
+        onHoverThread={setActivePath}
       />
       <MaskPanel step={step} />
     </Wrapper>

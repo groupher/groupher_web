@@ -1,13 +1,13 @@
-import Link from 'next/link'
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
+
+import { Link } from '@/widgets/Common'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
   ${css.flex('justify-between')};
   width: 700px;
-  margin-top: -200px;
   min-height: 300px;
 `
 const Block = styled.div`
@@ -46,22 +46,13 @@ export const Desc = styled.div`
   color: ${theme('article.digest')};
   line-height: 1.7;
 `
-
 export const CommunityDemoWrapper = styled.div`
   ${css.flex('align-center')};
   flex-wrap: wrap;
   margin-bottom: 10px;
+  margin-top: -4px;
 `
 export const MoreLink = styled(Link)`
   font-size: 13px;
-  color: ${theme('link')};
-  cursor: pointer;
-  text-decoration: none;
   opacity: 0.8;
-
-  &:hover {
-    opacity: 1;
-    text-decoration: underline;
-    color: ${theme('link')};
-  }
 `

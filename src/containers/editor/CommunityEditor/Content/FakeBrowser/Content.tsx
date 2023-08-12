@@ -1,8 +1,9 @@
 import { FC, memo } from 'react'
 
-import communityIntros from '../communityIntros'
+import { Trans } from '@/utils/i18n'
 
-import type { TStep, TCommunityType } from '../../spec'
+import communityIntros from '../communityIntros'
+import type { TCommunityType } from '../../spec'
 
 import {
   Wrapper,
@@ -22,22 +23,14 @@ import {
 } from '../../styles/content/fake_browser/content'
 
 type TProps = {
-  step: TStep
   title?: string
   desc?: string
   logo?: string | null
-  domain?: string | null
   communityType: TCommunityType
+  onHoverThread: (thread: string) => void
 }
 
-const Content: FC<TProps> = ({
-  step,
-  title = '',
-  desc = '',
-  logo,
-  domain = null,
-  communityType,
-}) => {
+const Content: FC<TProps> = ({ title = '', desc = '', logo, communityType, onHoverThread }) => {
   return (
     <Wrapper>
       <BannerWrapper>
@@ -48,7 +41,9 @@ const Content: FC<TProps> = ({
         {communityType && (
           <ThreadWrapper>
             {communityIntros[communityType].threads.map((thread) => (
-              <ThreadItem key={thread}>{thread}</ThreadItem>
+              <ThreadItem key={thread} onMouseOver={(e) => onHoverThread(thread)}>
+                {Trans(thread)}
+              </ThreadItem>
             ))}
           </ThreadWrapper>
         )}

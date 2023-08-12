@@ -6,7 +6,7 @@ import { InputBar } from './input_box'
 
 import Img from '@/Img'
 import ApplySVG from '@/icons/Apply'
-import WorksHolderSVG from '@/icons/WorksHolder'
+import UploadSVG from '@/icons/Upload'
 
 export const Wrapper = styled.div`
   position: relative;
@@ -33,23 +33,32 @@ export const RealCover = styled(Img)`
 `
 export const HolderWrapper = styled.div`
   ${css.size(80)};
-  ${css.flex('align-both')};
   border-radius: 6px;
   background: ${theme('hoverBg')};
 `
-
-export const HolderIcon = styled(WorksHolderSVG)`
-  ${css.size(58)};
-  fill: ${theme('lightText')};
+export const HolderInner = styled.div`
+  width: 100%;
+  height: 100%;
+  ${css.flexColumn('align-both')};
   opacity: 0.6;
-  transform: rotate(90deg);
 
   ${HolderWrapper}:hover & {
     opacity: 0;
   }
   transition: all 0.2s;
 `
-
+export const HolderIcon = styled(UploadSVG)`
+  ${css.size(28)};
+  fill: ${theme('lightText')};
+  margin-bottom: 4px;
+  margin-top: 3px;
+`
+export const HolderText = styled.div`
+  font-size: 15px;
+  font-weight: 600;
+  color: ${theme('lightText')};
+  font-style: italic;
+`
 export const InputsWrapper = styled.div`
   margin-left: 15px;
 `
@@ -80,6 +89,6 @@ export const NextBtn = styled.div`
   ${css.flex('align-center', 'justify-center')};
   width: 200px;
   bottom: 20px;
-  margin-left: 30px;
+  margin-left: 16px;
   filter: grayscale(1);
 `

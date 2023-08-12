@@ -8,7 +8,7 @@ import { FC, memo } from 'react'
 
 import { buildLog } from '@/utils/logger'
 
-import { Br } from '@/widgets/Common'
+import { Br, Link } from '@/widgets/Common'
 
 import Checker from '@/widgets/Checker'
 
@@ -53,7 +53,7 @@ const SelectType: FC<TProps> = ({ status: { communityType }, validState }) => {
               size="small"
               onChange={isOfficalOnChange}
             />
-            我来自产品官方团队, 选项解释.
+            我来自产品官方团队，<Link href="/">选项说明</Link>
           </Note>
         )}
 

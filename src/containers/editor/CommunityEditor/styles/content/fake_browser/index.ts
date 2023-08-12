@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import type { TActive } from '@/spec'
+
 import css, { theme } from '@/utils/css'
 import Img from '@/Img'
 
@@ -129,11 +131,28 @@ export const Input = styled.div`
   padding-left: 4px;
   font-size: 14px;
 `
-export const DomainText = styled.span`
-  /* color: ${theme('link')}; */
+export const SubDomain = styled.div`
   background: linear-gradient(to right, rgb(196, 121, 222), rgb(248, 190, 109));
+  font-weight: 550;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-left: 1px;
+  margin-left: 2px;
+`
+export const Slash = styled.div`
+  display: inline-block;
+  margin-left: 2px;
+  margin-right: 1px;
+  font-size: 10px;
+  margin-top: 1px;
+  color: ${theme('article.digest')};
+  opacity: 0.8;
+`
+export const ThreadPath = styled.div<TActive>`
+  ${css.flex('align-center')};
+  opacity: ${({ $active }) => ($active ? 1 : 0)};
+`
+export const ThreadText = styled.div`
+  color: ${theme('article.digest')};
+  opacity: 0.6;
 `

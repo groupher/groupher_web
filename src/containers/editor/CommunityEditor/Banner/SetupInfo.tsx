@@ -15,7 +15,9 @@ import {
   NextBtn,
   InfoWrapper,
   HolderWrapper,
+  HolderInner,
   HolderIcon,
+  HolderText,
   RealCover,
   InputsWrapper,
   InputBox,
@@ -45,7 +47,10 @@ const SetupInfo: FC<TProps> = ({ status, validState }) => {
         <OSSUploader onUploadDone={(url) => inputOnChange(url, 'logo')}>
           {nilOrEmpty(logo) ? (
             <HolderWrapper>
-              <HolderIcon />
+              <HolderInner>
+                <HolderIcon />
+                <HolderText>LOGO</HolderText>
+              </HolderInner>
             </HolderWrapper>
           ) : (
             <RealCover src={logo} />
@@ -70,7 +75,7 @@ const SetupInfo: FC<TProps> = ({ status, validState }) => {
         <ArrowButton leftLayout onClick={pervStep} dimWhenIdle>
           上一步
         </ArrowButton>
-        <Space right={30} />
+        <Space right={26} />
         <NextStepButton onClick={nextStep} disabled={!isValid} />
       </NextBtn>
     </Wrapper>

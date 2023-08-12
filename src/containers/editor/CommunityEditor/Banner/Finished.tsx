@@ -45,9 +45,7 @@ const Finished: FC = () => {
   }
 
   useEffect(() => {
-    setTimeout(() => {
-      tada()
-    }, 300)
+    tada()
   }, [])
 
   return (

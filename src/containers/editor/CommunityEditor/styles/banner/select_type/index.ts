@@ -1,17 +1,14 @@
 import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
-
 import Img from '@/Img'
 
 export const Wrapper = styled.div<{ marginTop: boolean }>`
   position: relative;
   ${css.flexColumn('align-center')};
   color: ${theme('article.digest')};
-  /* background-image: linear-gradient(#043B49, #022A35); */
-  background-image: ${theme('banner.linearGradient')};
   width: 100%;
-  min-height: 680px;
+  min-height: ${({ marginTop }) => (!marginTop ? '480px' : '680px;')};
   margin-top: ${({ marginTop }) => (marginTop ? '68px' : '0')};
   transition: all 0.4s;
 `
@@ -53,6 +50,7 @@ export const NextBtn = styled.div`
 export const Note = styled.div`
   ${css.flex('align-center')};
   margin-top: 50px;
+  font-size: 13px;
 `
 export const ErrorMsg = styled.div`
   position: absolute;
