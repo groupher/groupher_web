@@ -47,6 +47,7 @@ const Banner: FC<TProps> = ({
   validState,
 }) => {
   let stepComp
+  const { slug } = setupInfoStatus
 
   switch (step) {
     case STEP.SELECT_TYPE: {
@@ -62,7 +63,7 @@ const Banner: FC<TProps> = ({
       break
     }
     case STEP.FINISHED: {
-      stepComp = <Finished />
+      stepComp = <Finished community={slug} />
       break
     }
     default: {

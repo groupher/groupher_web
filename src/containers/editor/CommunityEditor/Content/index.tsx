@@ -13,7 +13,13 @@ import SetupDomain from './SetupDomain'
 import SetupInfo from './SetupInfo'
 import SetupExtra from './SetupExtra'
 
-import type { TStep, TSelectTypeStatus, TSetupDomainStatus, TSetupInfoStatus } from '../spec'
+import type {
+  TStep,
+  TValidState,
+  TSelectTypeStatus,
+  TSetupDomainStatus,
+  TSetupInfoStatus,
+} from '../spec'
 import { STEP } from '../constant'
 
 import { Wrapper } from '../styles/content'
@@ -23,13 +29,28 @@ const log = buildLog('C:NewExploreContent')
 
 type TProps = {
   step: TStep
+  validState: TValidState
   selectTypeStatus: TSelectTypeStatus
   setupDomainStatus: TSetupDomainStatus
   setupInfoStatus: TSetupInfoStatus
 }
 
-const Content: FC<TProps> = ({ step, selectTypeStatus, setupDomainStatus, setupInfoStatus }) => {
+const Content: FC<TProps> = ({
+  step,
+  validState,
+  selectTypeStatus,
+  setupDomainStatus,
+  setupInfoStatus,
+}) => {
   if (step === STEP.FINISHED) return null
+
+  if (!validState.hasPendingApply && !validState.isLogin) {
+    return null
+  }
+
+  if (validState.isLogin && validState.hasPendingApply) {
+    return null
+  }
 
   let stepComp
 

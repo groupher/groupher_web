@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Link from 'next/link'
 
 import css, { theme } from '@/utils/css'
 
@@ -35,4 +36,11 @@ export const DashboardIcon = styled(DashboardSVG)`
   fill: white;
   ${css.size(14)};
   margin-right: 10px;
+`
+
+export const TheLink = styled(Link)`
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
 `

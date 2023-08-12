@@ -60,6 +60,7 @@ const CommunityEditorContainer: FC<TProps> = ({
             selectTypeStatus={selectTypeStatus}
             setupDomainStatus={setupDomainStatus}
             setupInfoStatus={setupInfoStatus}
+            validState={validState}
           />
         </ContentWrapper>
       </InnerWrapper>

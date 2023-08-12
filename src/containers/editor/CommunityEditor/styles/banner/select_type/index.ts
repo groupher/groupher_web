@@ -52,15 +52,3 @@ export const Note = styled.div`
   margin-top: 50px;
   font-size: 13px;
 `
-export const ErrorMsg = styled.div`
-  position: absolute;
-  text-align: center;
-  width: 100%;
-  bottom: 45px;
-  color: ${theme('baseColor.red')};
-  font-size: 13px;
-`
-export const InfoMsg = styled(ErrorMsg)`
-  color: ${theme('button.primary')};
-  bottom: 35px;
-`

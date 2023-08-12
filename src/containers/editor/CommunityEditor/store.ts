@@ -35,7 +35,6 @@ const CommunityEditor = T.model('CommunityEditorStore', {
   homepage: T.opt(T.string, ''),
   extraInfo: T.opt(T.string, ''),
   desc: T.opt(T.string, ''),
-  applyMsg: T.opt(T.string, ''),
 })
   .views((self) => ({
     get isLogin(): boolean {
@@ -50,6 +49,11 @@ const CommunityEditor = T.model('CommunityEditorStore', {
       const root = getParent(self) as TRootStore
       return root.curRoute
     },
+    get applyMsg(): string {
+      const { homepage, extraInfo } = self
+
+      return `${homepage}\n${extraInfo}`
+    },
     get selectTypeStatus(): TSelectTypeStatus {
       const { communityType } = self
 
@@ -61,9 +65,9 @@ const CommunityEditor = T.model('CommunityEditorStore', {
       return { slug }
     },
     get setupInfoStatus(): TSetupInfoStatus {
-      const { slug, title, desc, logo, applyMsg } = self
+      const { slug, title, desc, logo } = self
 
-      return { slug, title, desc, logo, applyMsg }
+      return { slug, title, desc, logo }
     },
     get setupExtraStatus(): TSetupExtraStatus {
       const { homepage, extraInfo } = self

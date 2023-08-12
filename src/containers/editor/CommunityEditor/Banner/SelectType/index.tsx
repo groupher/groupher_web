@@ -13,18 +13,12 @@ import { Br, Link } from '@/widgets/Common'
 import Checker from '@/widgets/Checker'
 
 import type { TCommunityType, TValidState } from '../../spec'
+
 import NextStepButton from '../NextStepButton'
 import TypeBoxes from './TypeBoxes'
+import WarnBox from './WarnBox'
 
-import {
-  Wrapper,
-  InnerWrapper,
-  IntroTitle,
-  Note,
-  NextBtn,
-  ErrorMsg,
-  InfoMsg,
-} from '../../styles/banner/select_type'
+import { Wrapper, InnerWrapper, IntroTitle, Note, NextBtn } from '../../styles/banner/select_type'
 import { nextStep, isOfficalOnChange } from '../../logic'
 
 /* eslint-disable-next-line */
@@ -38,6 +32,19 @@ type TProps = {
 }
 
 const SelectType: FC<TProps> = ({ status: { communityType }, validState }) => {
+  if (!validState.hasPendingApply && !validState.isLogin) {
+    return <WarnBox title="未登录" desc="创建社区需要先登录，谢谢~" />
+  }
+
+  if (validState.isLogin && validState.hasPendingApply) {
+    return (
+      <WarnBox
+        title="申请处理中"
+        desc="你上次申请的创建请求还在处理中，请等待处理后再次创建，谢谢~"
+      />
+    )
+  }
+
   return (
     <Wrapper marginTop={communityType === null}>
       <InnerWrapper>
@@ -59,19 +66,10 @@ const SelectType: FC<TProps> = ({ status: { communityType }, validState }) => {
 
         {communityType && (
           <NextBtn>
-            {!validState.hasPendingApply && !validState.isLogin && (
-              <ErrorMsg>创建社区需要先登录</ErrorMsg>
-            )}
-            {validState.isLogin && validState.hasPendingApply && (
-              <InfoMsg>你上次申请的创建请求还在处理中，请等待处理后再次创建，谢谢!</InfoMsg>
-            )}
-
-            {!validState.hasPendingApply && (
-              <NextStepButton
-                onClick={nextStep}
-                disabled={!(validState.isCommunityTypeValid && validState.isOfficalValid)}
-              />
-            )}
+            <NextStepButton
+              onClick={nextStep}
+              disabled={!(validState.isCommunityTypeValid && validState.isOfficalValid)}
+            />
           </NextBtn>
         )}
       </InnerWrapper>

@@ -27,7 +27,7 @@ type TProps = {
 const SetupExtra: FC<TProps> = ({ status, validState }) => {
   const { homepage, extraInfo } = status
 
-  const { isTitleValid, isDescValid, isLogoValid } = validState
+  const { isTitleValid, isDescValid, isLogoValid, submitting } = validState
   const isValid = isTitleValid && isDescValid && isLogoValid
 
   return (
@@ -58,7 +58,7 @@ const SetupExtra: FC<TProps> = ({ status, validState }) => {
           上一步
         </ArrowButton>
         <Space right={26} />
-        <NextStepButton onClick={nextStep} disabled={!isValid} text="提 交" />
+        <NextStepButton onClick={nextStep} disabled={!isValid} text="提 交" loading={submitting} />
       </NextBtn>
     </Wrapper>
   )

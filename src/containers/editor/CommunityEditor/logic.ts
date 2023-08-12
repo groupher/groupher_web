@@ -57,7 +57,7 @@ export const nextStep = (): void => {
     store.mark({ step: STEP.SETUP_EXTRA })
   }
   if (step === STEP.SETUP_EXTRA) {
-    store.mark({ step: STEP.FINISHED })
+    applyCommunity()
   }
 }
 
@@ -89,9 +89,12 @@ export const applyCommunity = (): void => {
   const args = pick(['title', 'logo', 'desc', 'slug', 'applyMsg'], store)
 
   store.mark({ submitting: true })
+
   sr71$.mutate(S.applyCommunity, {
-    applyCategory: store.communityType,
     ...args,
+    applyCategory: store.communityType,
+    // tmp
+    logo: 'https://assets.groupher.com/communities/groupher-alpha.png',
   })
 }
 
@@ -177,7 +180,7 @@ const DataSolver = [
   },
   {
     match: asyncRes('applyCommunity'),
-    action: () => store.mark({ step: STEP.FINISHED }),
+    action: () => store.mark({ step: STEP.FINISHED, submitting: false }),
   },
 ]
 

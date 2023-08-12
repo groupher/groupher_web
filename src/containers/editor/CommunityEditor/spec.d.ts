@@ -15,7 +15,6 @@ export type TSetupInfoStatus = {
   title: string
   desc: string
   logo: string
-  applyMsg: string
 }
 
 export type TSetupExtraStatus = {
