@@ -14,7 +14,8 @@ import {
   TheLink,
   ColumnItem,
   Dot,
-  Footer,
+  Header,
+  Divider,
 } from '../../styles/content/fake_browser/mask_panel'
 
 type TProps = {
@@ -28,7 +29,7 @@ const MaskPanel: FC<TProps> = ({ step }) => {
         <InnerWrapperColumn>
           <ColumnItem>
             <Dot />
-            域名和 SEO 相关联，请确保其和产品 / 服务相关联。
+            域名对 SEO 有影响，请确保其和你的官方产品 / 服务相关联。
           </ColumnItem>
           <ColumnItem>
             <Dot />
@@ -43,8 +44,34 @@ const MaskPanel: FC<TProps> = ({ step }) => {
     )
   }
 
+  if (step === STEP.SETUP_EXTRA) {
+    return (
+      <Wrapper>
+        <InnerWrapperColumn>
+          <ColumnItem>
+            <Dot />
+            出于测试目的或不真实信息创建的社区会被驳回 / 删除。
+          </ColumnItem>
+          <ColumnItem>
+            <Dot />
+            系统会定期自动清理违法 / 垃圾信息，相关账号会被禁言。
+          </ColumnItem>
+          <ColumnItem>
+            <Dot />
+            如需更多定制化服务，请在<TheLink href="/feedback">这里反馈</TheLink>。
+          </ColumnItem>
+        </InnerWrapperColumn>
+      </Wrapper>
+    )
+  }
+
   return (
     <Wrapper>
+      <Header>
+        <ArrowButton>自带丰富功能，查看完整特性</ArrowButton>
+        <Divider />
+      </Header>
+
       <InnerWrapper>
         <Item>
           <CheckIcon />
@@ -83,9 +110,6 @@ const MaskPanel: FC<TProps> = ({ step }) => {
           丰富第三方集成
         </Item>
       </InnerWrapper>
-      <Footer>
-        <ArrowButton>更多社区特性</ArrowButton>
-      </Footer>
     </Wrapper>
   )
 }

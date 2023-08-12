@@ -1,6 +1,6 @@
 export type TCommunityType = 'WEB' | 'CLIENT' | 'HARDWARE' | 'GAME' | null
 
-export type TStep = 'SELECT_TYPE' | 'SETUP_DOMAIN' | 'SETUP_INFO' | 'FINISHED'
+export type TStep = 'SELECT_TYPE' | 'SETUP_DOMAIN' | 'SETUP_INFO' | 'SETUP_EXTRA' | 'FINISHED'
 
 export type TSelectTypeStatus = {
   communityType: TCommunityType
@@ -16,6 +16,11 @@ export type TSetupInfoStatus = {
   desc: string
   logo: string
   applyMsg: string
+}
+
+export type TSetupExtraStatus = {
+  homepage: string
+  extraInfo: string
 }
 
 export type TValidState = {

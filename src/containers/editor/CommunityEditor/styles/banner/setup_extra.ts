@@ -2,11 +2,10 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/utils/css'
 
-import { InputBar } from './input_box'
-
-import Img from '@/Img'
+import FormInput from '@/widgets/Input'
 import ApplySVG from '@/icons/Apply'
-import UploadSVG from '@/icons/Upload'
+
+import { InputBar } from './input_box'
 
 export const Wrapper = styled.div`
   position: relative;
@@ -14,7 +13,8 @@ export const Wrapper = styled.div`
   color: ${theme('article.digest')};
   background-image: ${theme('banner.linearGradient')};
   width: 100%;
-  height: 300px;
+  min-height: 330px;
+  padding-bottom: 20px;
 `
 export const IntroTitle = styled.div`
   position: relative;
@@ -26,38 +26,6 @@ export const IntroTitle = styled.div`
 export const InfoWrapper = styled.div`
   ${css.flex('align-center')};
   margin-bottom: 38px;
-`
-export const RealCover = styled(Img)`
-  ${css.size(80)};
-  border-radius: 6px;
-`
-export const HolderWrapper = styled.div`
-  ${css.size(80)};
-  border-radius: 6px;
-  background: ${theme('hoverBg')};
-`
-export const HolderInner = styled.div`
-  width: 100%;
-  height: 100%;
-  ${css.flexColumn('align-both')};
-  opacity: 0.6;
-
-  ${HolderWrapper}:hover & {
-    opacity: 0;
-  }
-  transition: all 0.2s;
-`
-export const HolderIcon = styled(UploadSVG)`
-  ${css.size(28)};
-  fill: ${theme('lightText')};
-  margin-bottom: 4px;
-  margin-top: 3px;
-`
-export const HolderText = styled.div`
-  font-size: 15px;
-  font-weight: 600;
-  color: ${theme('lightText')};
-  font-style: italic;
 `
 export const InputsWrapper = styled.div`
   margin-left: 15px;
@@ -75,6 +43,21 @@ export const InputBox = styled(InputBar)`
     font-size: 13px;
   }
 `
+
+export const ExtraInputBox = styled(FormInput)`
+  width: 300px;
+  background: transparent;
+  min-width: 300px;
+  font-size: 14px;
+  text-align: left;
+  padding: 6px 18px;
+  border-radius: 8px;
+
+  ::placeholder {
+    font-size: 14px;
+  }
+`
+
 export const ApplyIcon = styled(ApplySVG)`
   fill: ${theme('article.title')};
   ${css.size(18)};

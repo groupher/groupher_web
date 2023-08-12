@@ -53,6 +53,7 @@ export const Wrapper = styled.button<TWrapper>`
 `
 export const Text = styled.div`
   word-break: keep-all;
+  white-space: nowrap;
   line-height: 15px;
   font-size: 13px;
 `

@@ -4,6 +4,7 @@ export const STEP = {
   SELECT_TYPE: 'SELECT_TYPE',
   SETUP_DOMAIN: 'SETUP_DOMAIN',
   SETUP_INFO: 'SETUP_INFO',
+  SETUP_EXTRA: 'SETUP_EXTRA',
   FINISHED: 'FINISHED',
 } as Record<Uppercase<TStep>, Uppercase<TStep>>
 

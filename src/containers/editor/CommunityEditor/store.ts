@@ -8,7 +8,13 @@ import { pick, values, isEmpty } from 'ramda'
 import type { TRootStore, TRoute, TAccount } from '@/spec'
 import { T, getParent, markStates, Instance } from '@/utils/mobx'
 
-import type { TSelectTypeStatus, TSetupDomainStatus, TSetupInfoStatus, TValidState } from './spec'
+import type {
+  TSelectTypeStatus,
+  TSetupDomainStatus,
+  TSetupInfoStatus,
+  TSetupExtraStatus,
+  TValidState,
+} from './spec'
 import { STEP, COMMUNITY_TYPE } from './constant'
 
 const CommunityEditor = T.model('CommunityEditorStore', {
@@ -26,6 +32,8 @@ const CommunityEditor = T.model('CommunityEditorStore', {
   slug: T.opt(T.string, ''),
   logo: T.maybeNull(T.string),
   title: T.opt(T.string, ''),
+  homepage: T.opt(T.string, ''),
+  extraInfo: T.opt(T.string, ''),
   desc: T.opt(T.string, ''),
   applyMsg: T.opt(T.string, ''),
 })
@@ -56,6 +64,11 @@ const CommunityEditor = T.model('CommunityEditorStore', {
       const { slug, title, desc, logo, applyMsg } = self
 
       return { slug, title, desc, logo, applyMsg }
+    },
+    get setupExtraStatus(): TSetupExtraStatus {
+      const { homepage, extraInfo } = self
+
+      return { homepage, extraInfo }
     },
     get isCommunityTypeValid(): boolean {
       const slf = self as TStore

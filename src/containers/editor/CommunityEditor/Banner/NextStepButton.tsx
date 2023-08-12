@@ -9,9 +9,10 @@ type TProps = {
   loading?: boolean
   onClick: () => void
   disabled: boolean
+  text?: string
 }
 
-const NextStepButton: FC<TProps> = ({ loading = false, onClick, disabled }) => {
+const NextStepButton: FC<TProps> = ({ loading = false, onClick, disabled, text = '下一步' }) => {
   return (
     <>
       {loading ? (
@@ -19,7 +20,7 @@ const NextStepButton: FC<TProps> = ({ loading = false, onClick, disabled }) => {
       ) : (
         <NextButton onClick={onClick} disabled={disabled} noPaddingRight={disabled}>
           <ArrowButton disabled={disabled} reverseColor>
-            <Text disabled={disabled}>下一步</Text>
+            <Text disabled={disabled}>{text}</Text>
           </ArrowButton>
         </NextButton>
       )}

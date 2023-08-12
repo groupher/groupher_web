@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 
 import StatusBall from './StatusBall'
 
@@ -6,12 +6,19 @@ import type { TStep } from '../spec'
 import { STEP } from '../constant'
 
 import { Wrapper, Line, TadaIcon } from '../styles/header/step_map'
+import { tada } from '../logic'
 
 type TProps = {
   step: TStep
 }
 
 const StepMap: FC<TProps> = ({ step }) => {
+  useEffect(() => {
+    if (step === STEP.FINISHED) {
+      tada()
+    }
+  }, [step])
+
   switch (step) {
     case STEP.SELECT_TYPE: {
       return (
@@ -55,6 +62,20 @@ const StepMap: FC<TProps> = ({ step }) => {
       )
     }
 
+    case STEP.SETUP_EXTRA: {
+      return (
+        <Wrapper>
+          <StatusBall done />
+          <Line />
+          <StatusBall done />
+          <Line />
+          <StatusBall done />
+          <Line />
+          <StatusBall doing />
+        </Wrapper>
+      )
+    }
+
     case STEP.FINISHED: {
       return (
         <Wrapper>
@@ -64,7 +85,9 @@ const StepMap: FC<TProps> = ({ step }) => {
           <Line />
           <StatusBall done />
           <Line />
-          <TadaIcon />
+          <StatusBall done />
+          <Line />
+          <TadaIcon onClick={() => tada()} />
         </Wrapper>
       )
     }

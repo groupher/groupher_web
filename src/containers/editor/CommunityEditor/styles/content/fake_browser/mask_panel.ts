@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import Link from 'next/link'
 
 import css, { theme } from '@/utils/css'
+import { Link } from '@/widgets/Common'
 
 import CheckSVG from '@/icons/Check'
 
@@ -18,7 +18,7 @@ export const Wrapper = styled.div`
   padding-top: 150px;
 `
 export const InnerWrapper = styled.div`
-  width: calc(100% + 118px);
+  width: calc(100% + 148px);
   ${css.flex()};
   flex-wrap: wrap;
   gap: 16px 0;
@@ -46,19 +46,31 @@ export const CheckIcon = styled(CheckSVG)`
   margin-right: 8px;
   fill: ${theme('baseColor.green')};
 `
-export const Footer = styled.div`
-  ${css.flex('align-both')};
+export const Header = styled.div`
+  ${css.flexColumn('align-both')};
   width: 100%;
-  margin-top: 40px;
+  margin-bottom: 30px;
+  margin-left: 25px;
 `
+export const Divider = styled.div`
+  width: 160px;
+  height: 2px;
+  margin-left: -10px;
+  margin-top: 20px;
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(
+    0.25turn,
+    transparent,
+    ${theme('divider')},
+    ${theme('divider')},
+    ${theme('divider')},
+    transparent
+  );
+
+  border-image-slice: 1;
+`
+
 export const TheLink = styled(Link)`
-  color: ${theme('link')};
-  text-decoration: none;
   margin-left: 1px;
   margin-right: 1px;
-
-  &:hover {
-    color: ${theme('link')};
-    text-decoration: underline;
-  }
 `
