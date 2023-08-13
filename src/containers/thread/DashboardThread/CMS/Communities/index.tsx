@@ -7,7 +7,7 @@ import type { TID, TPagedCommunities } from '@/spec'
 
 import Checker from '@/widgets/Checker'
 
-import { CheckCell, CommunityCell, TimestampCell, AuthorDateCell, DateCell } from '../Cell'
+import { CheckCell, CommunityCell, TimestampCell } from '../Cell'
 import FilterBar from '../FilterBar'
 
 import { Title, SortIcon } from '../../styles/cms/communities'
