@@ -21,6 +21,7 @@ export const StateTitle = styled(Title)`
 export const IconWrapper = styled.div`
   margin-top: -1px;
   transform: scale(0.9);
+  margin-right: 4px;
 `
 export const RejectIcon = styled(RejectIconBase)`
   fill: ${theme('baseColor.red')};

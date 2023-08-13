@@ -103,6 +103,10 @@ export const MENU = {
     icon: <Icon.Management />,
     children: [
       {
+        title: '社区',
+        slug: DASHBOARD_ROUTE.COMMUNITIES,
+      },
+      {
         title: '标签',
         slug: DASHBOARD_ROUTE.TAGS,
       },

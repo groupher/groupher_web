@@ -27,6 +27,7 @@ export type TDashboardPath =
   | 'post'
   | 'changelog'
   | 'doc'
+  | 'communities'
   | 'header'
   | 'footer'
   | 'broadcast'

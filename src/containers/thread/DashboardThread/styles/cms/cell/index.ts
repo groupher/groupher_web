@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Link from 'next/link'
 
 import css, { theme } from '@/utils/css'
 
@@ -9,6 +10,28 @@ import PublishSVG from '@/icons/EditPen'
 
 export const ArticleWrapper = styled.div``
 
+export const CommunityLogo = styled(Img)`
+  ${css.size(24)};
+  margin-right: 10px;
+  margin-top: -5px;
+`
+export const CommunityTitle = styled.div`
+  font-size: 15px;
+  color: ${theme('article.title')};
+  font-weight: 500;
+`
+export const CommunitySlug = styled(Link)`
+  font-size: 14px;
+  color: ${theme('article.digest')};
+  text-decoration: none;
+  display: block;
+  margin-top: -2px;
+
+  &:hover {
+    text-decoration: underline;
+    color: ${theme('link')};
+  }
+`
 export const ArticleTitle = styled.div`
   color: ${theme('article.title')};
   ${css.cutRest('260px')};

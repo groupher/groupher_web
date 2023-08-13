@@ -13,11 +13,15 @@ export const community = `
   logo
   subscribersCount
   articlesCount
+  views
 
   threads {
     slug
     title
   }
+
+  insertedAt
+  updatedAt
 `
 export const tag = `
   id

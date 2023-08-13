@@ -49,9 +49,7 @@ const StateSelector: FC<TProps> = ({
           setShow(true)
           setMenuOpen(true)
         }}
-        onHide={() => {
-          setMenuOpen(false)
-        }}
+        onHide={() => setMenuOpen(false)}
         offset={offset as [number, number]}
         content={
           <Fragment>

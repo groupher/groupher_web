@@ -8,6 +8,7 @@ import GlobalTableStyle from '../styles/cms/global'
 import { Wrapper } from '../styles/cms'
 
 import Posts from './Posts'
+import Communities from './Communities'
 import Changelogs from './Changelogs'
 import Docs from './Docs'
 
@@ -19,6 +20,7 @@ type TProps = {
 
 const CMS: FC<TProps> = ({ route, cmsContents, touched }) => {
   const {
+    pagedCommunities,
     pagedPosts,
     pagedDocs,
     docTab,
@@ -33,6 +35,16 @@ const CMS: FC<TProps> = ({ route, cmsContents, touched }) => {
   let contents = null
 
   switch (route) {
+    case DASHBOARD_ROUTE.COMMUNITIES: {
+      contents = (
+        <Communities
+          pagedCommunities={pagedCommunities}
+          batchSelectedIDs={batchSelectedIDs}
+          loading={loading}
+        />
+      )
+      break
+    }
     case DASHBOARD_ROUTE.POST: {
       contents = (
         <Posts pagedPosts={pagedPosts} batchSelectedIDs={batchSelectedIDs} loading={loading} />

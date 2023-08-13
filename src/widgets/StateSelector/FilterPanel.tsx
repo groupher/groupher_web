@@ -51,8 +51,8 @@ const FilterPanel: FC<TProps> = ({ activeState, onSelect }) => {
       </SelectItem>
 
       <SelectItem
-        active={activeState === ARTICLE_STATE.DONE}
-        onClick={() => onSelect(ARTICLE_STATE.DONE)}
+        active={activeState === ARTICLE_STATE.REJECT_DUP}
+        onClick={() => onSelect(ARTICLE_STATE.REJECT_DUP)}
       >
         <IconWrapper>
           <RejectIcon />

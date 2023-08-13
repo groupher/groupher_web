@@ -54,7 +54,15 @@ import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { washThreads, sortByIndex } from '@/utils/helper'
 
-import { PagedPosts, PagedDocs, PagedChangelogs, Tag, emptyPagi, FAQSection } from '@/model'
+import {
+  PagedCommunities,
+  PagedPosts,
+  PagedDocs,
+  PagedChangelogs,
+  Tag,
+  emptyPagi,
+  FAQSection,
+} from '@/model'
 
 import type {
   TBaseInfoSettings,
@@ -118,6 +126,7 @@ const DashboardThread = T.model('DashboardThread', {
 
   // cms
   batchSelectedIDs: T.opt(T.array(T.str), []),
+  pagedCommunities: T.opt(PagedCommunities, emptyPagi),
   pagedPosts: T.opt(PagedPosts, emptyPagi),
   pagedDocs: T.opt(PagedDocs, emptyPagi),
   pagedChangelogs: T.opt(PagedChangelogs, emptyPagi),
@@ -167,6 +176,7 @@ const DashboardThread = T.model('DashboardThread', {
       const slf = self as TStore
       const { batchSelectedIDs, docTab, editingFAQIndex } = slf
       const _batchSelectedIds = toJS(batchSelectedIDs)
+      const _pagedCommunities = toJS(slf.pagedCommunities)
       const _pagedPosts = toJS(slf.pagedPosts)
       const _pagedDocs = toJS(slf.pagedDocs)
       const _pagedChangelogs = toJS(slf.pagedChangelogs)
@@ -179,6 +189,10 @@ const DashboardThread = T.model('DashboardThread', {
         docTab,
         editingFAQIndex,
         batchSelectedIDs: _batchSelectedIds,
+        pagedCommunities: {
+          ..._pagedCommunities,
+          entries: slf._assignChecked(_pagedCommunities.entries),
+        },
         pagedPosts: {
           ..._pagedPosts,
           entries: slf._assignChecked(_pagedPosts.entries),

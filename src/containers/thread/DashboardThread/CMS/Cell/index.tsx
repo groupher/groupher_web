@@ -7,6 +7,7 @@ import { previewArticle } from '@/utils/signal'
 
 import Checker from '@/widgets/Checker'
 import ArticleCatState from '@/widgets/ArticleCatState'
+import { Row } from '@/widgets/Common'
 import TagsList from '@/widgets/TagsList'
 
 // import { mockTags } from '@/utils/mock'
@@ -20,6 +21,9 @@ import {
   AuthorAvatar,
   DateItem,
   Nickname,
+  CommunityLogo,
+  CommunityTitle,
+  CommunitySlug,
   // PublishIcon,
   PulseIcon,
 } from '../../styles/cms/cell'
@@ -53,6 +57,22 @@ export const StateCell = ({ rowData, ...props }) => {
   )
 }
 
+export const CommunityCell = ({ rowData, ...props }) => {
+  const { logo, title, slug } = rowData
+
+  return (
+    <Cell {...props}>
+      <Row>
+        <CommunityLogo src={logo} />
+        <div>
+          <CommunityTitle>{title}</CommunityTitle>
+          <CommunitySlug href={`/${slug}`}>/{slug}</CommunitySlug>
+        </div>
+      </Row>
+    </Cell>
+  )
+}
+
 export const ArticleCell = ({ rowData, ...props }) => {
   return (
     <Cell {...props}>
@@ -76,16 +96,39 @@ export const AuthorDateCell = ({ rowData, ...props }) => {
 }
 
 export const DateCell = ({ rowData, ...props }) => {
+  const { insertedAt, activeAt } = rowData
+
   return (
     <Cell {...props}>
       <DateCellWrapper>
         <DateItem>
           {/* <PublishIcon /> */}
-          <TimeAgo datetime={rowData.insertedAt} locale="zh_CN" />
+          <TimeAgo datetime={insertedAt} locale="zh_CN" />
         </DateItem>
         <DateItem>
           <PulseIcon />
-          <TimeAgo datetime={rowData.activeAt} locale="zh_CN" />
+          <TimeAgo datetime={activeAt} locale="zh_CN" />
+        </DateItem>
+      </DateCellWrapper>
+    </Cell>
+  )
+}
+
+export const TimestampCell = ({ rowData, ...props }) => {
+  const { insertedAt, updatedAt } = rowData
+
+  console.log('## insertedAt: ', insertedAt)
+
+  return (
+    <Cell {...props}>
+      <DateCellWrapper>
+        <DateItem>
+          {/* <PublishIcon /> */}
+          <TimeAgo datetime={insertedAt} locale="zh_CN" />
+        </DateItem>
+        <DateItem>
+          <PulseIcon />
+          <TimeAgo datetime={updatedAt} locale="zh_CN" />
         </DateItem>
       </DateCellWrapper>
     </Cell>
