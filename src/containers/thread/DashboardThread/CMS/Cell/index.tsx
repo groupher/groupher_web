@@ -61,7 +61,7 @@ export const StateCell = ({ rowData, ...props }) => {
 }
 
 export const CommunityCell = ({ rowData, ...props }) => {
-  const { logo, title, slug, pending } = rowData
+  const { logo, title, slug } = rowData
 
   return (
     <Cell {...props}>

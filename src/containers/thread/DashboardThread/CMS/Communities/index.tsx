@@ -64,7 +64,6 @@ const Communities: FC<TProps> = ({ pagedCommunities, loading, batchSelectedIDs }
     [sortState],
   )
 
-  console.log('## pagedCommunities.entries: ', pagedCommunities.entries)
   return (
     <>
       <FilterBar
