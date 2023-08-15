@@ -40,6 +40,7 @@ export const Community = T.model('Community', {
   meta: T.maybeNull(Meta),
   viewerHasSubscribed: T.maybeNull(T.bool),
   threads: T.opt(T.array(Thread), []),
+  pending: T.opt(T.bool, false),
 
   ...timestampFields(),
 })

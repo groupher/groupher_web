@@ -8,6 +8,8 @@ import Img from '@/Img'
 import PulseSVG from '@/icons/Pulse'
 import PublishSVG from '@/icons/EditPen'
 
+import Button from '@/widgets/Buttons/Button'
+
 export const ArticleWrapper = styled.div``
 
 export const CommunityLogo = styled(Img)`
@@ -19,6 +21,26 @@ export const CommunityTitle = styled.div`
   font-size: 15px;
   color: ${theme('article.title')};
   font-weight: 500;
+`
+export const ActionCell = styled.div`
+  ${css.flexColumn('align-center')};
+`
+export const SwitchButton = styled(Button)`
+  margin-top: 2px;
+  padding: 2px 7px;
+  padding-bottom: 1px;
+  opacity: 0;
+
+  ${ActionCell}:hover & {
+    opacity: 1;
+  }
+
+  transition: all 0.2s;
+`
+export const Pending = styled.div<{ blocked?: boolean }>`
+  color: ${({ blocked }) => (blocked ? theme('baseColor.red') : theme('article.digest'))};
+  font-weight: bold;
+  font-size: 13px;
 `
 export const CommunitySlug = styled(Link)`
   font-size: 14px;
@@ -52,8 +74,9 @@ export const DateCellWrapper = styled.div`
   gap: 3px 0;
   margin-top: 1px;
 `
-export const DateItem = styled.div`
+export const DateItem = styled.div<{ warn?: boolean }>`
   ${css.flex('align-center')};
+  color: ${({ warn }) => (warn ? theme('baseColor.red') : theme('article.digest'))};
   font-size: 11px;
 `
 export const PublishIcon = styled(PublishSVG)`

@@ -7,7 +7,7 @@ import type { TID, TPagedCommunities } from '@/spec'
 
 import Checker from '@/widgets/Checker'
 
-import { CheckCell, CommunityCell, TimestampCell } from '../Cell'
+import { CheckCell, CommunityCell, PendingCell, TimestampCell } from '../Cell'
 import FilterBar from '../FilterBar'
 
 import { Title, SortIcon } from '../../styles/cms/communities'
@@ -113,9 +113,9 @@ const Communities: FC<TProps> = ({ pagedCommunities, loading, batchSelectedIDs }
           <CommunityCell />
         </Column>
 
-        <Column width={200} fixed sortable>
-          <HeaderCell align="center" renderSortIcon={() => renderSortIcon('commentsCount')}>
-            <Title>描述</Title>
+        <Column width={200} fixed>
+          <HeaderCell align="left" renderSortIcon={() => renderSortIcon('commentsCount')}>
+            <Title>简介</Title>
           </HeaderCell>
           <Cell dataKey="desc" align="left" />
         </Column>
@@ -125,14 +125,14 @@ const Communities: FC<TProps> = ({ pagedCommunities, loading, batchSelectedIDs }
             <Title>状态</Title>
           </HeaderCell>
           {/* @ts-ignore */}
-          <Cell dataKey="desc" align="left" />
+          <PendingCell />
         </Column>
 
-        <Column width={65} fixed sortable>
+        <Column width={65} sortable>
           <HeaderCell align="center" renderSortIcon={() => renderSortIcon('commentsCount')}>
-            <Title>投票</Title>
+            <Title>关注</Title>
           </HeaderCell>
-          <Cell dataKey="commentsCount" align="center" />
+          <Cell dataKey="subscribersCount" align="center" />
         </Column>
 
         <Column width={65} sortable>
@@ -144,9 +144,9 @@ const Communities: FC<TProps> = ({ pagedCommunities, loading, batchSelectedIDs }
 
         <Column width={60} sortable>
           <HeaderCell align="center" renderSortIcon={() => renderSortIcon('commentsCount')}>
-            <Title>评论</Title>
+            <Title>内容</Title>
           </HeaderCell>
-          <Cell dataKey="commentsCount" align="center" />
+          <Cell dataKey="articlesCount" align="center" />
         </Column>
 
         <Column width={100}>
@@ -155,15 +155,6 @@ const Communities: FC<TProps> = ({ pagedCommunities, loading, batchSelectedIDs }
           </HeaderCell>
           {/* @ts-ignore */}
           <TimestampCell />
-        </Column>
-
-        <Column width={115}>
-          <HeaderCell align="right">
-            <Title>作者</Title>
-          </HeaderCell>
-          {/* @ts-ignore */}
-          <div>author</div>
-          {/* <AuthorDateCell /> */}
         </Column>
       </Table>
     </>

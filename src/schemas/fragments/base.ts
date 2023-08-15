@@ -14,6 +14,7 @@ export const community = `
   subscribersCount
   articlesCount
   views
+  pending
 
   threads {
     slug
