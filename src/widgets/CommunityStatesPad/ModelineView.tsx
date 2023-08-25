@@ -38,8 +38,7 @@ const CommunityStatesPad: FC<TProps> = ({
   onShowEditorList = log,
   onShowSubscriberList = log,
 }) => {
-  const { editorsCount, subscribersCount, contributesDigest, articlesCount } =
-    community
+  const { moderatorsCount, subscribersCount, contributesDigest, articlesCount } = community
 
   return (
     <Wrapper>
@@ -54,17 +53,14 @@ const CommunityStatesPad: FC<TProps> = ({
       <NumberDivider />
       <ContentSection>
         <NumberTitle readOnly>内容</NumberTitle>
-        <ContentStatus
-          count={articlesCount}
-          contributesDigest={contributesDigest}
-        />
+        <ContentStatus count={articlesCount} contributesDigest={contributesDigest} />
       </ContentSection>
 
       <NumberDivider />
 
-      <VolunteerSection alignCenter={editorsCount < 99}>
+      <VolunteerSection alignCenter={moderatorsCount < 99}>
         <NumberTitle readOnly>志愿者</NumberTitle>
-        <VolunteerStatus count={editorsCount} onClick={onShowEditorList} />
+        <VolunteerStatus count={moderatorsCount} onClick={onShowEditorList} />
       </VolunteerSection>
     </Wrapper>
   )

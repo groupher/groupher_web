@@ -5,6 +5,7 @@ export type TMetric =
   // articles
   | 'ARTICLE'
   | 'CHANGELOG_ARTICLE'
+  | 'DASHBOARD'
 
   // 版块
   | 'WORKS'

@@ -40,7 +40,8 @@ export const SwitchButton = styled(Button)`
 export const Pending = styled.div<{ blocked?: boolean }>`
   color: ${({ blocked }) => (blocked ? theme('baseColor.red') : theme('article.digest'))};
   font-weight: bold;
-  font-size: 13px;
+  font-size: 12px;
+  margin-top: 2px;
 `
 export const CommunitySlug = styled(Link)`
   font-size: 14px;

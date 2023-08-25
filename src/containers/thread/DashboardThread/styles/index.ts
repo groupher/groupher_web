@@ -16,7 +16,7 @@ export const MainWrapper = styled.div`
   background: transparent;
   margin-top: 30px;
   padding-left: 80px;
-  margin-left: 20px;
+  margin-left: 35px;
 
   ${css.media.mobile`
     margin-top: 20px;

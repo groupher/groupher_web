@@ -18,7 +18,7 @@ import {
   InnerWrapper,
   ContentWrapper,
   MobileCardsWrapper,
-} from './styles'
+} from './styles/dashboard_content'
 
 type TProps = {
   communityContent?: TStore
@@ -27,14 +27,14 @@ type TProps = {
 /**
  * only for AboutThread, but link to the common communityContent store
  */
-const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
+const DashboardContainer: FC<TProps> = ({ communityContent: store }) => {
   useInit(store)
 
   const { isMobile } = useMobileDetect()
 
   return (
     <Wrapper testid="dashboard-thread-content">
-      <CommunityDigest />
+      <CommunityDigest metric="DASHBOARD" />
       {isMobile ? (
         <MobileCardsWrapper>
           <ContentWrapper>
@@ -52,4 +52,4 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   )
 }
 
-export default bond(CommunityContentContainer, 'communityContent') as FC<TProps>
+export default bond(DashboardContainer, 'communityContent') as FC<TProps>

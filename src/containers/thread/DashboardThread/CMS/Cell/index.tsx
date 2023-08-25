@@ -4,6 +4,7 @@ import { Cell } from 'rsuite-table'
 import TimeAgo from 'timeago-react'
 
 import { previewArticle } from '@/utils/signal'
+import { COMMUNITY_STATUS } from '@/constant/mode'
 
 import Checker from '@/widgets/Checker'
 import ArticleCatState from '@/widgets/ArticleCatState'
@@ -79,10 +80,12 @@ export const CommunityCell = ({ rowData, ...props }) => {
 export const PendingCell = ({ rowData, ...props }) => {
   const { pending } = rowData
 
+  const _pending = pending === COMMUNITY_STATUS.PENDING
+
   return (
     <Cell {...props} align="center">
       <ActionCell>
-        <Pending blocked={pending}>{pending ? '审核中' : '正常'}</Pending>
+        <Pending blocked={_pending}>{_pending ? '待审核' : '正常'}</Pending>
         <SwitchButton size="tiny" ghost>
           开关
         </SwitchButton>

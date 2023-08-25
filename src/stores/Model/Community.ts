@@ -36,11 +36,11 @@ export const Community = T.model('Community', {
   subscribersCount: T.opt(T.number, 0),
   views: T.opt(T.number, 0),
   articlesCount: T.opt(T.number, 0),
-  editorsCount: T.opt(T.number, 0),
+  moderatorsCount: T.opt(T.number, 0),
   meta: T.maybeNull(Meta),
   viewerHasSubscribed: T.maybeNull(T.bool),
   threads: T.opt(T.array(Thread), []),
-  pending: T.opt(T.bool, false),
+  pending: T.opt(T.int, 0),
 
   ...timestampFields(),
 })

@@ -1,10 +1,7 @@
 import { FC, memo } from 'react'
-import dynamic from 'next/dynamic'
 
 import type { TThread } from '@/spec'
 import { THREAD } from '@/constant/thread'
-
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
 import ArticlesThread from '@/containers//thread/ArticlesThread'
 import KanbanThread from '@/containers//thread/KanbanThread'
@@ -13,12 +10,6 @@ import ChangeLogThread from '@/containers//thread/ChangelogThread'
 import AboutThread from '@/containers/thread/AboutThread'
 import DocThread from '@/containers/thread/DocThread'
 // import DashboardThread from '@/containers/thread/DashboardThread'
-
-const DashboardThread = dynamic(() => import('@/containers/thread/DashboardThread'), {
-  /* eslint-disable react/display-name */
-  loading: () => <LavaLampLoading />,
-  ssr: false,
-})
 
 type TProps = {
   thread: TThread
@@ -40,10 +31,6 @@ const ThreadContent: FC<TProps> = ({ thread }) => {
 
     case THREAD.DOC: {
       return <DocThread />
-    }
-
-    case THREAD.DASHBOARD: {
-      return <DashboardThread />
     }
 
     default:

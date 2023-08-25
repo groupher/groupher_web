@@ -23,7 +23,7 @@ export const community = `
         index
       }
       contributesDigest
-      editorsCount
+      moderatorsCount
       meta {
         postsCount
         blogsCount

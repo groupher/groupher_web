@@ -18,10 +18,11 @@ export type TCommunity = {
   articlesCount?: number
   viewerHasSubscribed?: boolean
   contributesDigest?: number[]
-  editorsCount?: number
+  moderatorsCount?: number
   desc?: string
   meta?: TMeta
   threads?: TCommunityThread[]
+  pending?: number
 }
 
 export type TPagedCommunities = {
