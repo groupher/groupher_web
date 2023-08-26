@@ -28,6 +28,16 @@ export const community = `
         postsCount
         blogsCount
       }
+      moderators {
+        role
+        passportItemCount
+        user {
+          login
+          avatar
+          nickname
+          bio
+        }
+      }
       dashboard {
         baseInfo {
           title

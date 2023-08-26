@@ -74,6 +74,7 @@ import type {
   TFooterSettings,
   TDocSettings,
   TAliasSettings,
+  TAdminSettings,
   TTouched,
   TSettingField,
   TNameAlias,
@@ -482,6 +483,13 @@ const DashboardThread = T.model('DashboardThread', {
       }
     },
 
+    get adminSettings(): TAdminSettings {
+      const slf = self as TStore
+
+      return {
+        moderators: toJS(slf.moderators),
+      }
+    },
     get aliasSettings(): TAliasSettings {
       const slf = self as TStore
 

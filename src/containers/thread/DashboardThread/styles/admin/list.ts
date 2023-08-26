@@ -24,10 +24,20 @@ export const Name = styled.div`
 export const Login = styled.div`
   color: ${theme('lightText')};
   font-size: 14px;
-  margin-left: 10px;
+  margin-left: 8px;
+  margin-top: -1px;
+`
+export const RootSign = styled.div`
+  background: ${theme('baseColor.blue')};
+  color: white;
+  font-size: 10px;
+  padding: 0 5px;
+  margin-left: 8px;
+  border-radius: 5px;
 `
 export const Bio = styled.div`
   color: ${theme('lightText')};
-  font-size: 14px;
+  font-size: 13px;
   width: 75%;
+  ${css.lineClamp(2)};
 `

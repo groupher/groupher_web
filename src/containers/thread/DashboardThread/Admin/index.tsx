@@ -3,6 +3,8 @@ import { FC, memo } from 'react'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import { Inline } from '@/widgets/Common'
 
+import type { TAdminSettings } from '../spec'
+
 import Portal from '../Portal'
 import Adder from './Adder'
 import List from './List'
@@ -10,10 +12,14 @@ import List from './List'
 import { Wrapper } from '../styles/admin'
 
 type TProps = {
-  testid?: string
+  settings: TAdminSettings
 }
 
-const Admin: FC<TProps> = ({ testid = 'admin' }) => {
+const Admin: FC<TProps> = ({ settings }) => {
+  console.log('## adminSettings: ', settings.moderators)
+
+  const { moderators } = settings
+
   return (
     <Wrapper>
       <Portal
@@ -28,7 +34,7 @@ const Admin: FC<TProps> = ({ testid = 'admin' }) => {
         }
       />
       <Adder />
-      <List />
+      <List moderators={moderators} />
     </Wrapper>
   )
 }

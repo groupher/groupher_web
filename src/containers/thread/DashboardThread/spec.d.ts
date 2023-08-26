@@ -35,6 +35,7 @@ import type {
   TDashboardDocRoute,
   TFAQSection,
   TPagedCommunities,
+  TModerator,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'CMS' | 'INTEGRATE'
@@ -104,6 +105,10 @@ export type TFooterSettings = {
 } & TLinkState
 
 export type TNameAlias = TNameAliasConfig
+
+export type TAdminSettings = {
+  moderators: TModerator[]
+}
 
 export type TAliasSettings = {
   saving: boolean

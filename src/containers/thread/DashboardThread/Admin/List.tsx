@@ -1,35 +1,35 @@
 import { FC, memo } from 'react'
 
-import { mockUsers } from '@/utils/mock'
+import type { TModerator } from '@/spec'
+
+import { sortByIndex } from '@/utils/helper'
 
 import { SpaceGrow } from '@/widgets/Common'
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
 import AdminAvatar from '@/widgets/AdminAvatar'
 
-import {
-  Wrapper,
-  User,
-  Intro,
-  Title,
-  Name,
-  Login,
-  Bio,
-} from '../styles/admin/list'
+import { Wrapper, User, Intro, Title, Name, Login, Bio, RootSign } from '../styles/admin/list'
 
-const List: FC = () => {
+type TProps = {
+  moderators: TModerator[]
+}
+
+const List: FC<TProps> = ({ moderators }) => {
   return (
     <Wrapper>
-      {mockUsers(5).map((item) => (
-        <User key={item.login}>
-          <AdminAvatar user={item} right={14} top={5} />
+      {/* @ts-ignore */}
+      {sortByIndex(moderators, 'passportItemCount').map((item: TModerator) => (
+        <User key={item.user.login}>
+          <AdminAvatar user={item.user} right={14} top={5} />
           <Intro>
             <Title>
-              <Name>{item.nickname}</Name>
-              <Login>@{item.login}</Login>
+              <Name>{item.user.nickname}</Name>
+              <Login>@{item.user.login}</Login>
+              {item.role === 'root' && <RootSign>ROOT</RootSign>}
               <SpaceGrow />
-              <DropdownButton top={2}>全部</DropdownButton>
+              <DropdownButton top={2}>{item.passportItemCount} 项权限</DropdownButton>
             </Title>
-            <Bio>{item.bio}</Bio>
+            <Bio>{item.user.bio}</Bio>
           </Intro>
         </User>
       ))}

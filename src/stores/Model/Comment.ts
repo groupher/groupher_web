@@ -4,7 +4,7 @@ import EMOTION from '@/constant/emotion'
 import { titleCase } from '@/utils/fmt'
 import { T } from '@/utils/mobx'
 
-import { SimpleUser } from './User'
+import { SimpleUser } from './Common'
 
 import { pagiFields, timestampFields } from './helper/common'
 
