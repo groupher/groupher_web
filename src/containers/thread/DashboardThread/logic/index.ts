@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { includes, values, uniq, reject, update, findIndex } from 'ramda'
 
-import type { TEditValue, TFAQSection, TID, TSocialItem } from '@/spec'
+import type { TEditValue, TFAQSection, TID, TSocialItem, TUser } from '@/spec'
 import { COLOR_NAME } from '@/constant/colors'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
@@ -286,6 +286,11 @@ export const batchSelectAll = (selected: boolean, ids = []): void => {
   store.mark({ batchSelectedIDs: ids })
 }
 
+// set current setting moderator in admins page
+export const setActiveSettingAdmin = (user: TUser): void => {
+  store.mark({ activeModerator: user })
+}
+
 // ###############################
 // init & uninit handlers
 // ###############################
@@ -403,7 +408,7 @@ const DataSolver = [
   {
     match: asyncRes(EVENT.DRAWER.AFTER_CLOSE),
     action: () => {
-      store.mark({ settingTag: null })
+      store.mark({ settingTag: null, activeModerator: null })
     },
   },
 ]

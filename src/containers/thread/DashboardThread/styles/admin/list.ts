@@ -1,15 +1,37 @@
 import styled from 'styled-components'
 
+import type { TActive } from '@/spec'
+
+import SettingSVG from '@/icons/Setting'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.flexColumn()};
   padding-right: 5px;
 `
-export const User = styled.div`
+type TUser = TActive & { $noActive: boolean }
+
+export const User = styled.div<TUser>`
   ${css.flex()};
   margin-bottom: 25px;
+  opacity: ${({ $active, $noActive }) => {
+    if ($noActive) return 1
+
+    return $active ? 1 : 0.6
+  }};
+  position: relative;
+
+  transition: opacity 0.25s;
 `
+
+export const SettingIcon = styled(SettingSVG)`
+  ${css.size(12)};
+  fill: ${theme('lightText')};
+  position: absolute;
+  left: -30px;
+  top: 10px;
+`
+
 export const Intro = styled.div`
   width: 100%;
 `

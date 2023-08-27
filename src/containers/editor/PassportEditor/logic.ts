@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { uniq, reject } from 'ramda'
+import { uniq, reject, keys } from 'ramda'
 
 import { buildLog } from '@/utils/logger'
 import asyncSuit from '@/utils/async'
@@ -28,7 +28,17 @@ export const toggleCheck = (rule: string, checked: boolean): void => {
   store.mark({ selectedRules: uniq(_selectedRules) })
 }
 
+export const loadUserPassport = (): void => {
+  sr71$.query(S.userPassport, { login: store.activeModerator.login })
+}
+
 export const loadAllPassportRules = (): void => {
+  const { allPassportLoaded } = store
+  if (allPassportLoaded) {
+    loadUserPassport()
+    return
+  }
+
   sr71$.query(S.allPassportRules)
 }
 
@@ -37,10 +47,20 @@ export const loadAllPassportRules = (): void => {
 // ###############################
 const DataSolver = [
   {
+    match: asyncRes('user'),
+    action: ({ user }) => {
+      const { cmsPassportString } = user
+      const passportJson = JSON.parse(cmsPassportString)
+      store.mark({ selectedRules: keys(passportJson) })
+    },
+  },
+
+  {
     match: asyncRes('allPassportRules'),
     action: ({ allPassportRules }) => {
       const { moderator, root } = allPassportRules
-      store.mark({ allModeratorRules: moderator, allRootRules: root })
+      store.setAllPassportRules(root, moderator)
+      sr71$.query(S.userPassport, { login: store.activeModerator.login })
     },
   },
 ]

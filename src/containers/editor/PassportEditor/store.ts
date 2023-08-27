@@ -2,7 +2,7 @@
  * PassportEditor store
  */
 
-import type { TCommunity, TRootStore } from '@/spec'
+import type { TCommunity, TRootStore, TUser } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { markStates, toJS, T, getParent, Instance } from '@/utils/mobx'
 
@@ -10,8 +10,6 @@ import { markStates, toJS, T, getParent, Instance } from '@/utils/mobx'
 const log = buildLog('S:PassportEditor')
 
 const PassportEditor = T.model('PassportEditor', {
-  allModeratorRules: T.opt(T.str, '{}'),
-  allRootRules: T.opt(T.str, '{}'),
   selectedRules: T.opt(T.array(T.str), []),
 })
   .views((self) => ({
@@ -20,12 +18,37 @@ const PassportEditor = T.model('PassportEditor', {
 
       return toJS(root.viewing.community)
     },
+    get activeModerator(): TUser {
+      const root = getParent(self) as TRootStore
 
+      return toJS(root.dashboardThread.activeModerator)
+    },
+    get allRootRules(): string {
+      const root = getParent(self) as TRootStore
+
+      return toJS(root.dashboardThread.allRootRules)
+    },
+    get allModeratorRules(): string {
+      const root = getParent(self) as TRootStore
+
+      return toJS(root.dashboardThread.allModeratorRules)
+    },
     get selectedRulesData(): string[] {
       return toJS(self.selectedRules)
     },
+
+    get allPassportLoaded(): boolean {
+      const root = getParent(self) as TRootStore
+
+      return toJS(root.dashboardThread.allModeratorRules) !== '{}'
+    },
   }))
   .actions((self) => ({
+    setAllPassportRules(rootRules: string, moderatorRules): void {
+      const root = getParent(self) as TRootStore
+
+      root.dashboardThread.setAllPassportRules(rootRules, moderatorRules)
+    },
     mark(sobj: Record<string, unknown>): void {
       markStates(sobj, self)
     },

@@ -1,9 +1,9 @@
 import { gql } from 'urql/core'
 
-const simpleMutation = gql`
-  mutation ($id: ID!) {
-    post(id: $id) {
-      id
+const userPassport = gql`
+  query ($login: String) {
+    user(login: $login) {
+      cmsPassportString
     }
   }
 `
@@ -18,7 +18,7 @@ const allPassportRules = gql`
 `
 
 const schema = {
-  simpleMutation,
+  userPassport,
   allPassportRules,
 }
 

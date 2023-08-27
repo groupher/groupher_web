@@ -62,6 +62,7 @@ import {
   Tag,
   emptyPagi,
   FAQSection,
+  User,
 } from '@/model'
 
 import type {
@@ -134,6 +135,11 @@ const DashboardThread = T.model('DashboardThread', {
 
   // for global alert
   demoAlertEnable: T.opt(T.bool, false),
+
+  // for admins
+  activeModerator: T.maybeNull(User),
+  allModeratorRules: T.opt(T.str, '{}'),
+  allRootRules: T.opt(T.str, '{}'),
 })
   .views((self) => ({
     get globalLayout(): TGlobalLayout {
@@ -488,6 +494,7 @@ const DashboardThread = T.model('DashboardThread', {
 
       return {
         moderators: toJS(slf.moderators),
+        activeModerator: toJS(slf.activeModerator),
       }
     },
     get aliasSettings(): TAliasSettings {
@@ -575,6 +582,11 @@ const DashboardThread = T.model('DashboardThread', {
       if (!slf._loadLocalSettings()) {
         slf.mark({ demoAlertEnable: false })
       }
+    },
+
+    setAllPassportRules(rootRules: string, moderatorRules): void {
+      self.allRootRules = rootRules
+      self.allModeratorRules = moderatorRules
     },
 
     /**

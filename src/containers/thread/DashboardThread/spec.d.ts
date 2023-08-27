@@ -20,6 +20,7 @@ import type {
   TKanbanLayout,
   TWallpaperInfo,
   TAvatarLayout,
+  TUser,
   TDashboardLayoutRoute,
   TDashboardBaseInfoRoute,
   TDashboardSEORoute,
@@ -108,6 +109,7 @@ export type TNameAlias = TNameAliasConfig
 
 export type TAdminSettings = {
   moderators: TModerator[]
+  activeModerator: TUser | null
 }
 
 export type TAliasSettings = {

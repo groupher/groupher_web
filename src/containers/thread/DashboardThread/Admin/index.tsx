@@ -16,9 +16,7 @@ type TProps = {
 }
 
 const Admin: FC<TProps> = ({ settings }) => {
-  console.log('## adminSettings: ', settings.moderators)
-
-  const { moderators } = settings
+  const { moderators, activeModerator } = settings
 
   return (
     <Wrapper>
@@ -34,7 +32,7 @@ const Admin: FC<TProps> = ({ settings }) => {
         }
       />
       <Adder />
-      <List moderators={moderators} />
+      <List moderators={moderators} activeModerator={activeModerator} />
     </Wrapper>
   )
 }
