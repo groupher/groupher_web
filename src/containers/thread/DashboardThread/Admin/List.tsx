@@ -55,7 +55,7 @@ const List: FC<TProps> = ({ moderators, activeModerator }) => {
                     callPassportEditor()
                   }}
                 >
-                  {passportItemCount} 项权限
+                  {role === 'root' ? <>全部权限</> : <>{passportItemCount} 项权限</>}
                 </DropdownButton>
               </Title>
               <Bio>{user.bio}</Bio>

@@ -190,6 +190,23 @@ const updateDashboardFaqs = gql`
   }
 `
 
+const updateModerators = gql`
+  query community($slug: String) {
+    community(slug: $slug) {
+      moderators {
+        role
+        passportItemCount
+        user {
+          login
+          avatar
+          nickname
+          bio
+        }
+      }
+    }
+  }
+`
+
 const schema = {
   updateDashboardBaseInfo,
   updateDashboardSeo,
@@ -203,6 +220,7 @@ const schema = {
   pagedPosts,
   pagedChangelogs,
   updateDashboardFaqs,
+  updateModerators,
 }
 
 export default schema

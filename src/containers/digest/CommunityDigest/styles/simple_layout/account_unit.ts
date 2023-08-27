@@ -47,7 +47,7 @@ export const NotifyIcon = styled(NotifySVG)`
 `
 export const DashboardIcon = styled(DashboardSVG)`
   fill: ${theme('article.digest')};
-  ${css.size(12)};
+  ${css.size(14)};
   margin-right: 5px;
 
   ${hoverEffect}

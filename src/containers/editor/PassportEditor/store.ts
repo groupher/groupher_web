@@ -2,7 +2,9 @@
  * PassportEditor store
  */
 
-import type { TCommunity, TRootStore, TUser } from '@/spec'
+import { find } from 'ramda'
+
+import type { TCommunity, TRootStore, TUser, TAccount } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { markStates, toJS, T, getParent, Instance } from '@/utils/mobx'
 
@@ -13,6 +15,10 @@ const PassportEditor = T.model('PassportEditor', {
   selectedRules: T.opt(T.array(T.str), []),
 })
   .views((self) => ({
+    get accountInfo(): TAccount {
+      const root = getParent(self) as TRootStore
+      return root.accountInfo
+    },
     get curCommunity(): TCommunity {
       const root = getParent(self) as TRootStore
 
@@ -22,6 +28,24 @@ const PassportEditor = T.model('PassportEditor', {
       const root = getParent(self) as TRootStore
 
       return toJS(root.dashboardThread.activeModerator)
+    },
+    get isCurUserModeratorRoot(): boolean {
+      const slf = self as TStore
+      const { curCommunity, accountInfo } = slf
+
+      const curModerators = curCommunity.moderators
+      const curRoot = find((moderator) => moderator.role === 'root', curModerators)
+
+      return curRoot.user.login === accountInfo.login
+    },
+    get isActiveModeratorRoot(): boolean {
+      const slf = self as TStore
+      const { curCommunity, activeModerator } = slf
+
+      const curModerators = curCommunity.moderators
+      const curRoot = find((moderator) => moderator.role === 'root', curModerators)
+
+      return curRoot.user.login === activeModerator.login
     },
     get allRootRules(): string {
       const root = getParent(self) as TRootStore

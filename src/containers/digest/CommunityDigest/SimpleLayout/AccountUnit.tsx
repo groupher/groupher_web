@@ -30,7 +30,7 @@ const AccountUnit: FC<TProps> = ({ community }) => {
       </SubscribeButton> */}
 
       <DashboardLink href={`/${community.slug}/${ROUTE.DASHBOARD.DASHBOARD}`} prefetch={false}>
-        <DashboardIcon /> 后台
+        <DashboardIcon />
       </DashboardLink>
 
       {/* <div data-test-id="header-notify-icon">

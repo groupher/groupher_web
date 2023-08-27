@@ -6,6 +6,8 @@ import { COLOR_NAME } from '@/constant/colors'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 
+import { DASHBOARD_ROUTE } from '@/constant/route'
+
 import { buildLog } from '@/utils/logger'
 import { updateEditing, toJS } from '@/utils/mobx'
 import { errRescue } from '@/utils/signal'
@@ -24,7 +26,7 @@ import S from '../schema'
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
 const sr71$ = new SR71({
   // @ts-ignore
-  receive: [EVENT.DRAWER.AFTER_CLOSE, EVENT.REFRESH_TAGS],
+  receive: [EVENT.DRAWER.AFTER_CLOSE, EVENT.REFRESH_TAGS, EVENT.REFRESH_MODERATORS],
 })
 
 let store: TStore | undefined
@@ -223,6 +225,11 @@ export const rollbackEdit = (field: TSettingField): void => store.rollbackEdit(f
 export const resetEdit = (field: TSettingField): void => store.resetEdit(field)
 export const edit = (e: TEditValue, field: string): void => updateEditing(store, field, e)
 
+export const reloadModerators = (): void => {
+  const { curCommunity } = store
+
+  sr71$.query(S.updateModerators, { slug: curCommunity.slug })
+}
 // reload after create/delete tag and swtich between tag threads
 export const reloadArticleTags = (): void => {
   const { curCommunity, activeTagThread } = store
@@ -388,7 +395,6 @@ const DataSolver = [
       store.mark({ pagedPosts, loading: false })
     },
   },
-
   {
     match: asyncRes('pagedArticleTags'),
     action: ({ pagedArticleTags }) => {
@@ -397,6 +403,18 @@ const DataSolver = [
 
       store.mark({ tags, initSettings: { ...initSettings, tags } })
     },
+  },
+  {
+    match: asyncRes('community'),
+    action: ({ community }) => {
+      if (store.curTab === DASHBOARD_ROUTE.ADMINS) {
+        store.mark({ moderators: community.moderators })
+      }
+    },
+  },
+  {
+    match: asyncRes(EVENT.REFRESH_MODERATORS),
+    action: () => reloadModerators(),
   },
   {
     match: asyncRes(EVENT.REFRESH_TAGS),

@@ -2,9 +2,11 @@ import { useEffect } from 'react'
 
 import { uniq, reject, keys } from 'ramda'
 
+import EVENT from '@/constant/event'
+
 import { buildLog } from '@/utils/logger'
 import asyncSuit from '@/utils/async'
-import { errRescue } from '@/utils/signal'
+import { send, errRescue, closeDrawer } from '@/utils/signal'
 import { toJS } from '@/utils/mobx'
 import ERR from '@/constant/err'
 
@@ -50,6 +52,7 @@ export const updatePassport = (): void => {
 }
 
 export const loadUserPassport = (): void => {
+  store.mark({ selectedRules: [] })
   sr71$.query(S.userPassport, { login: store.activeModerator.login })
 }
 
@@ -73,6 +76,7 @@ const DataSolver = [
       const { curCommunity } = store
       const { cmsPassportString } = user
       const passportJson = JSON.parse(cmsPassportString)
+
       if (passportJson[curCommunity.slug]) {
         store.mark({ selectedRules: keys(passportJson[curCommunity.slug]) })
       }
@@ -89,8 +93,9 @@ const DataSolver = [
   },
   {
     match: asyncRes('updateModeratorPassport'),
-    action: ({ updateModeratorPassport }) => {
-      console.log('## done, close and refresh')
+    action: () => {
+      closeDrawer()
+      send(EVENT.REFRESH_MODERATORS)
     },
   },
 ]
@@ -117,12 +122,15 @@ const ErrSolver = [
 export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
-    log('useInit: ', store)
 
     if (!sub$) {
       sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
     }
     loadAllPassportRules()
-    // return () => store.reset()
+
+    return () => {
+      sub$.unsubscribe()
+      sub$ = null
+    }
   }, [_store])
 }
