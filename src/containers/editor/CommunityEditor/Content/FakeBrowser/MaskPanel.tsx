@@ -44,27 +44,6 @@ const MaskPanel: FC<TProps> = ({ step }) => {
     )
   }
 
-  if (step === STEP.SETUP_EXTRA) {
-    return (
-      <Wrapper>
-        <InnerWrapperColumn>
-          <ColumnItem>
-            <Dot />
-            出于测试目的或不真实信息创建的社区会被驳回 / 删除。
-          </ColumnItem>
-          <ColumnItem>
-            <Dot />
-            系统会定期自动清理违法 / 垃圾信息，相关账号会被禁言。
-          </ColumnItem>
-          <ColumnItem>
-            <Dot />
-            如需更多定制化服务，请在<TheLink href="/feedback">这里反馈</TheLink>。
-          </ColumnItem>
-        </InnerWrapperColumn>
-      </Wrapper>
-    )
-  }
-
   return (
     <Wrapper>
       <Header>

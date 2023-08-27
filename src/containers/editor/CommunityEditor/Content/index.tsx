@@ -11,7 +11,6 @@ import { buildLog } from '@/utils/logger'
 import SelectType from './SelectType'
 import SetupDomain from './SetupDomain'
 import SetupInfo from './SetupInfo'
-import SetupExtra from './SetupExtra'
 
 import type {
   TStep,
@@ -64,9 +63,7 @@ const Content: FC<TProps> = ({
       break
     }
     case STEP.SETUP_EXTRA: {
-      stepComp = (
-        <SetupExtra status={setupInfoStatus} communityType={selectTypeStatus.communityType} />
-      )
+      stepComp = null
       break
     }
     default: {

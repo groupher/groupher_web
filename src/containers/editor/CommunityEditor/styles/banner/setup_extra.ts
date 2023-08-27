@@ -13,15 +13,20 @@ export const Wrapper = styled.div`
   color: ${theme('article.digest')};
   background-image: ${theme('banner.linearGradient')};
   width: 100%;
-  min-height: 330px;
-  padding-bottom: 20px;
+  min-height: 740px;
 `
 export const IntroTitle = styled.div`
   position: relative;
   ${css.flex('align-center')};
   color: ${theme('article.title')};
   font-size: 18px;
-  margin-bottom: 20px;
+`
+export const IntroDesc = styled.div`
+  color: ${theme('article.digest')};
+  opacity: 0.8;
+  font-size: 13px;
+  margin-top: 8px;
+  margin-bottom: 42px;
 `
 export const InfoWrapper = styled.div`
   ${css.flex('align-center')};
@@ -29,6 +34,12 @@ export const InfoWrapper = styled.div`
 `
 export const InputsWrapper = styled.div`
   margin-left: 15px;
+`
+export const Label = styled.div`
+  color: ${theme('article.title')};
+  font-size: 13px;
+  margin-left: 1px;
+  margin-bottom: 8px;
 `
 export const InputBox = styled(InputBar)`
   width: 300px;
@@ -39,6 +50,7 @@ export const InputBox = styled(InputBar)`
   border-radius: 8px;
   height: 38px;
   flex-grow: 0;
+  padding-left: 10px;
 
   ::placeholder {
     font-size: 13px;
@@ -71,6 +83,6 @@ export const Title = styled.div`
 export const NextBtn = styled.div`
   ${css.flex('align-center', 'justify-center')};
   width: 200px;
-  margin-left: 16px;
+  margin-left: 0;
   filter: grayscale(1);
 `
