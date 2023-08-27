@@ -64,6 +64,11 @@ export const InputBar = styled.input.attrs(() => ({
     border-color: ${theme('button.primary')};
   }
 
+  &:focus {
+    opacity: 1;
+    border-color: ${theme('editor.borderActive')};
+  }
+
   ::placeholder {
     color: ${theme('lightText')};
   }

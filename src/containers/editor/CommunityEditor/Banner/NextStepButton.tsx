@@ -3,7 +3,7 @@ import { FC } from 'react'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
-import { NextButton, Text } from '../styles/banner/next_step_button'
+import { Wrapper, Text } from '../styles/banner/next_step_button'
 
 type TProps = {
   loading?: boolean
@@ -18,11 +18,11 @@ const NextStepButton: FC<TProps> = ({ loading = false, onClick, disabled, text =
       {loading ? (
         <LavaLampLoading />
       ) : (
-        <NextButton onClick={onClick} disabled={disabled} noPaddingRight={disabled}>
+        <Wrapper onClick={onClick} disabled={disabled} noPaddingRight={disabled}>
           <ArrowButton disabled={disabled} reverseColor>
             <Text disabled={disabled}>{text}</Text>
           </ArrowButton>
-        </NextButton>
+        </Wrapper>
       )}
     </>
   )

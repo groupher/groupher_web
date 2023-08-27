@@ -39,6 +39,7 @@ export const InputBox = styled(InputBar)`
   border-radius: 8px;
   height: 38px;
   flex-grow: 0;
+
   ::placeholder {
     font-size: 13px;
   }

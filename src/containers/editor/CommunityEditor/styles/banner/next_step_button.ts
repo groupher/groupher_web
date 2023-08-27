@@ -3,12 +3,8 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 import Button from '@/widgets/Buttons/Button'
 
-export const Wrapper = styled.div`
-  padding: 2px 10px;
-`
-
-export const NextButton = styled(Button)<{ noPaddingRight: boolean }>`
-  padding-right: ${({ noPaddingRight }) => (noPaddingRight ? '0px' : '8px')};
+export const Wrapper = styled(Button)<{ noPaddingRight: boolean }>`
+  padding-right: ${({ noPaddingRight }) => (noPaddingRight ? '0px' : '6px')};
   padding-left: 24px;
 `
 

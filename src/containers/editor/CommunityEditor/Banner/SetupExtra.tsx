@@ -58,7 +58,7 @@ const SetupExtra: FC<TProps> = ({ status, validState }) => {
           上一步
         </ArrowButton>
         <Space right={26} />
-        <NextStepButton onClick={nextStep} disabled={!isValid} text="提 交" loading={submitting} />
+        <NextStepButton onClick={nextStep} disabled={!isValid} text="完 成" loading={submitting} />
       </NextBtn>
     </Wrapper>
   )
