@@ -34,6 +34,7 @@ export const RootSign = styled.div`
   padding: 0 5px;
   margin-left: 8px;
   border-radius: 5px;
+  margin-top: -1px;
 `
 export const Bio = styled.div`
   color: ${theme('lightText')};

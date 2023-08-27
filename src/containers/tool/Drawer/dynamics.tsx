@@ -57,6 +57,10 @@ export const ArticleEditor = dynamic(() => import('@/containers/editor/ArticleEd
   loading: () => <CommonLoading />,
 })
 
+export const PassportEditor = dynamic(() => import('@/containers/editor/PassportEditor'), {
+  loading: () => <CommonLoading />,
+})
+
 export const TagSettingEditor = dynamic(() => import('@/containers/editor/TagSettingEditor'), {
   loading: () => <CommonLoading />,
 })

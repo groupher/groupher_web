@@ -3,6 +3,7 @@ import { FC, memo } from 'react'
 import type { TModerator } from '@/spec'
 
 import { sortByIndex } from '@/utils/helper'
+import { callPassportEditor } from '@/utils/signal'
 
 import { SpaceGrow } from '@/widgets/Common'
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
@@ -27,7 +28,9 @@ const List: FC<TProps> = ({ moderators }) => {
               <Login>@{item.user.login}</Login>
               {item.role === 'root' && <RootSign>ROOT</RootSign>}
               <SpaceGrow />
-              <DropdownButton top={2}>{item.passportItemCount} 项权限</DropdownButton>
+              <DropdownButton top={2} onClick={() => callPassportEditor()}>
+                {item.passportItemCount} 项权限
+              </DropdownButton>
             </Title>
             <Bio>{item.user.bio}</Bio>
           </Intro>

@@ -19,6 +19,7 @@ import {
   UserLister,
   DashboardDesc,
   ArticleEditor,
+  PassportEditor,
   TagSettingEditor,
 } from '../dynamics'
 
@@ -38,6 +39,9 @@ const Content: FC<TProps> = ({ type, attUser, extraInfo }) => {
       // @ts-ignore
       return <AccountEditor />
 
+    case DRAWER.PASSPORT_EDITOR:
+      // @ts-ignore
+      return <PassportEditor />
     case DRAWER.G_EDITOR:
       return <ArticleEditor />
 

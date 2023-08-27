@@ -2,7 +2,7 @@ import { FC, Fragment, ReactNode, memo, useState } from 'react'
 
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 
-import { Wrapper, FallbackWrapper } from './styles/lazy_load_image'
+import { Wrapper, LazyImageWrapper, FallbackWrapper } from './styles/lazy_load_image'
 
 type TProps = {
   className?: string
@@ -34,18 +34,20 @@ const LazyLoadImg: FC<TProps> = ({
   return (
     <Wrapper onClick={onClick}>
       <FallbackWrapper>{!imgLoaded && <Fragment>{fallback}</Fragment>}</FallbackWrapper>
-      <LazyLoadImage
-        className={className}
-        src={src}
-        alt={alt}
-        // placeholder={fallback}
-        effect="blur"
-        scrollPosition={null}
-        visibleByDefault={visibleByDefault}
-        afterLoad={() => setImgLoaded(true)}
-        // beforeLoad={() => setImgLoaded(true)}
-        threshold={threshold}
-      />
+      <LazyImageWrapper>
+        <LazyLoadImage
+          className={className}
+          src={src}
+          alt={alt}
+          // placeholder={fallback}
+          effect="blur"
+          scrollPosition={null}
+          visibleByDefault={visibleByDefault}
+          onLoad={() => setImgLoaded(true)}
+          // beforeLoad={() => setImgLoaded(true)}
+          threshold={threshold}
+        />
+      </LazyImageWrapper>
     </Wrapper>
   )
 }

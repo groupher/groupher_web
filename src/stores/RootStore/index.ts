@@ -57,6 +57,7 @@ import {
   //
 
   // GEN: IMPORT SUBSTORE
+  PassportEditorStore,
   LandingPageStore,
   CoverEditorStore,
   TagSettingEditorStore,
@@ -150,6 +151,7 @@ const rootStore = T.model({
   // have a drink
 
   // GEN: PLUG SUBSTORE TO ROOTSTORE
+  passportEditor: T.opt(PassportEditorStore, {}),
   landingPage: T.opt(LandingPageStore, {}),
   coverEditor: T.opt(CoverEditorStore, {}),
   tagSettingEditor: T.opt(TagSettingEditorStore, {}),
