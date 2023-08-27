@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TSizeTS, TSpace } from '@/spec'
 import SIZE from '@/constant/size'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import Button from '@/widgets/Buttons/Button'
 import ArrowSVG from '@/icons/ArrowSimple'

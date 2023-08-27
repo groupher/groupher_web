@@ -1,7 +1,7 @@
 import type { TArticleState } from '@/spec'
 
 import { ARTICLE_STATE } from '@/constant/gtd'
-import { theme } from '@/utils/css'
+import { theme } from '@/css'
 import { isRejectedState } from '@/utils/helper'
 
 export const isNoBgCase = (kanbanLayout: boolean, state: TArticleState): boolean => {

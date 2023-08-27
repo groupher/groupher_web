@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable, TMetric } from '@/spec'
-import css, { theme, WIDTH } from '@/utils/css'
+import css, { theme, WIDTH } from '@/css'
 import { pixelAdd } from '@/utils/dom'
 
 type TPos = {

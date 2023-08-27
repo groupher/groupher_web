@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import Input from '@/widgets/Input'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import LinkSVG from '@/icons/Link'
 
@@ -17,7 +17,6 @@ export const LinkInput = styled(Input)<{ invalid?: boolean }>`
   background: none;
   height: 26px;
   width: 100px;
-  color: ${({ invalid }) =>
-    invalid ? theme('baseColor.red') : theme('article.digest')};
+  color: ${({ invalid }) => (invalid ? theme('baseColor.red') : theme('article.digest'))};
   width: 200px;
 `

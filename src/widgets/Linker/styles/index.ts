@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TTestable, TSpace } from '@/spec'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import LinkSVG from '@/icons/Link'
 import LinkOutSVG from '@/icons/LinkOut'

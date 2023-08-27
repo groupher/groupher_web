@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.flex('align-end')};

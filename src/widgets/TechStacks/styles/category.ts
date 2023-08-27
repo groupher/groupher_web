@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import CodeSVG from '@/icons/Code'
 import DevopsSVG from '@/icons/Devops'
 import FrameworkSVG from '@/icons/Framework'

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import { COLORS } from '@/constant/colors'
 import type { TColorName, TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import Button from '@/widgets/Buttons/Button'
 import LaptopSVG from '@/icons/Works'

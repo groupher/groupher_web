@@ -4,7 +4,7 @@ import { includes } from 'ramda'
 import type { TActive, TColorName } from '@/spec'
 import { COLORS, COLOR_NAME } from '@/constant/colors'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import { lighten, darken } from '@/utils/color'
 
 import CrossSVG from '@/icons/CloseCross'

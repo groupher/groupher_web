@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 const MarkDownStyle = styled.div`
   @font-face {
@@ -12,8 +12,8 @@ const MarkDownStyle = styled.div`
     -webkit-text-size-adjust: 100%;
     line-height: 1.5;
     color: ${theme('markdown.fg')};
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
-      sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif,
+      'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
     font-size: 16px;
     line-height: 1.7;
     word-wrap: break-word;
@@ -340,16 +340,14 @@ const MarkDownStyle = styled.div`
   }
 
   .markdown-body code {
-    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
-      monospace;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
     font-size: 12px;
   }
 
   .markdown-body pre {
     margin-top: 0;
     margin-bottom: 0;
-    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
-      monospace;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
     font-size: 1.2rem;
   }
 
@@ -714,8 +712,7 @@ const MarkDownStyle = styled.div`
   .markdown-body kbd {
     display: inline-block;
     padding: 3px 5px;
-    font: 11px 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
-      monospace;
+    font: 11px 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
     line-height: 10px;
     color: #444d56;
     vertical-align: middle;

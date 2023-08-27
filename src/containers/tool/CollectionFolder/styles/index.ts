@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme, animate } from '@/utils/css'
+import css, { theme, animate } from '@/css'
 import { MODAL_MIN_HEIGHT } from './metric'
 
 export const Wrapper = styled.div`

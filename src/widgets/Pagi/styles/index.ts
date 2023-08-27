@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TSpace } from '@/spec'
-import css, { theme, animate } from '@/utils/css'
+import css, { theme, animate } from '@/css'
 
 import Img from '@/Img'
 

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import { Bar as BarBase } from '@/widgets/Common'
 
-import css, { theme, animate } from '@/utils/css'
+import css, { theme, animate } from '@/css'
 
 import StarSVG from './Star'
 

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.flexColumn('align-start', 'justify-center')};
@@ -28,12 +28,9 @@ export const ParentCatalogCard = styled(CatalogCard)<TParentCatalogCard>`
   margin-top: ${({ isFirst }) => (isFirst ? '0' : '-10px')};
   padding-top: ${({ isFirst }) => (isFirst ? '6px' : '16px')};
   box-shadow: ${({ isLast }) =>
-    isLast
-      ? '0px 5px 10px 0px rgb(0 0 0 / 2%)'
-      : '0px 5px 10px 0px rgb(0 0 0 / 15%)'};
+    isLast ? '0px 5px 10px 0px rgb(0 0 0 / 2%)' : '0px 5px 10px 0px rgb(0 0 0 / 15%)'};
   border-bottom: 1px solid;
-  border-bottom-color: ${({ isFirst }) =>
-    isFirst ? 'transparent' : '#042f3c'};
+  border-bottom-color: ${({ isFirst }) => (isFirst ? 'transparent' : '#042f3c')};
 `
 export const ReadOnlyCatalogCard = styled(CatalogCard)`
   background: #05303e;

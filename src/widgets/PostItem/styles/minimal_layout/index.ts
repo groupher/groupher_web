@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TC11N } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 type TWrapper = {
   c11n: TC11N

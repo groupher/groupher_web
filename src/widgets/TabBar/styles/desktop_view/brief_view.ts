@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.flex('align-center')};
@@ -16,8 +16,7 @@ export const TabItem = styled.div<TActive>`
   margin-right: 10px;
   border-bottom: 1px dashed;
 
-  color: ${({ active }) =>
-    active ? theme('tabs.headerActive') : theme('tabs.header')};
+  color: ${({ active }) => (active ? theme('tabs.headerActive') : theme('tabs.header'))};
   border-bottom-color: ${({ active }) =>
     active ? theme('tabs.headerActive') : theme('banner.bg')};
 

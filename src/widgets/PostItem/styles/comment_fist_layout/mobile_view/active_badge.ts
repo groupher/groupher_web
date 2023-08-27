@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import TimeAgo from 'timeago-react'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<{ hasComments: boolean }>`
   ${css.flex('align-center')};

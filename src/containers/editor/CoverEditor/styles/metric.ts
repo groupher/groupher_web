@@ -1,4 +1,4 @@
-// import { theme } from '@/utils/css'
+// import { theme } from '@/css'
 
 import type { TWallpaperGradientDir } from '@/spec'
 import { GRADIENT_DIRECTION } from '@/constant/wallpaper'

@@ -6,7 +6,7 @@ import type { TSpace, TTestable } from '@/spec'
 import Button from '@/widgets/Buttons/Button'
 import LinkSVG from '@/icons/LinkOutside'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import InfoSVG from '@/icons/Info'
 import ArrowSVG from '@/icons/ArrowSimple'
 

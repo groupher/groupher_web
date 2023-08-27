@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import { ARTICLE_CAT } from '@/constant/gtd'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import LightSVG from '@/icons/Light'
 import BugSVG from '@/icons/Bug'

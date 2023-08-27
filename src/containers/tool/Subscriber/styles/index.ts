@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive, TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import MailSVG from '@/icons/Mail'
 import RSSSVG from '@/icons/RSS'

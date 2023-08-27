@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TSizeSML } from '@/spec'
 
 import SIZE from '@/constant/size'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`

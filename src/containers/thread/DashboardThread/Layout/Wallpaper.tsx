@@ -1,7 +1,7 @@
 import { FC, memo, useCallback } from 'react'
 
 import type { TWallpaperInfo } from '@/spec'
-import { WIDTH } from '@/utils/css'
+import { WIDTH } from '@/css'
 import { callWallpaperEditor } from '@/utils/signal'
 import { parseWallpaper } from '@/utils/wallpaper'
 

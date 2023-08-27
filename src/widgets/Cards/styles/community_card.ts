@@ -4,7 +4,7 @@ import Link from 'next/link'
 // import type { TTestable } from '@/spec'
 
 // import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import UserSVG from '@/icons/User'
 import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'

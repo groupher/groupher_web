@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import type { TTestable, TActive } from '@/spec'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import Img from '@/Img'
 import { LineDivider } from '@/widgets/Common'

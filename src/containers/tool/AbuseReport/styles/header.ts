@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<{ showShadow: boolean }>`
   ${css.flex('align-center')};
@@ -9,8 +9,7 @@ export const Wrapper = styled.div<{ showShadow: boolean }>`
   background: ${theme('modal.bg')};
   /* padding: 20px 38px; */
   padding: ${({ showShadow }) => (showShadow ? '12px 38px' : '20px 38px')};
-  filter: ${({ showShadow }) =>
-    showShadow ? theme('modal.subPanelShadow') : ''};
+  filter: ${({ showShadow }) => (showShadow ? theme('modal.subPanelShadow') : '')};
   z-index: 1;
 
   ${css.media.mobile`

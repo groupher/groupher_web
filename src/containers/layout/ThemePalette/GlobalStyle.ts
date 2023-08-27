@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components'
 
 // import { media } from '@/utils/css/media'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import normalize from './normalize'
 
 const GlobalStyle = createGlobalStyle`

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TSpace, TTestable } from '@/spec'
 
 // import Img from '@/Img'
-import css from '@/utils/css'
+import css from '@/css'
 
 type TWrapper = TTestable & TSpace
 

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { animate } from '@/utils/css'
+import { animate } from '@/css'
 
 export const Wrapper = styled.div<{ effect: string }>`
   position: fixed;

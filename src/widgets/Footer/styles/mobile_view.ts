@@ -2,7 +2,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import SiteLogo from '@/icons/CPLogo'
 import DotDivider from '@/widgets/DotDivider'

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import TransforSVG from '@/icons/Transfor'
 
 export const Wrapper = styled.div`

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import WeChatSVG from '@/icons/social/WeChat'
 import GithubSVG from '@/icons/social/Github'

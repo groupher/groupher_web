@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import ManSVG from '@/icons/Man'
 import WomanSVG from '@/icons/Woman'
@@ -19,12 +19,10 @@ const sexIcon = `
 `
 export const DudeIcon = styled(ManSVG)<{ value: string }>`
   ${sexIcon};
-  fill: ${({ value }) =>
-    value === SEX.DUDE ? theme('baseColor.blue') : theme('article.digest')};
+  fill: ${({ value }) => (value === SEX.DUDE ? theme('baseColor.blue') : theme('article.digest'))};
 `
 export const GirlIcon = styled(WomanSVG)<{ value: string }>`
   ${sexIcon};
-  fill: ${({ value }) =>
-    value === SEX.GIRL ? theme('baseColor.pink') : theme('article.digest')};
+  fill: ${({ value }) => (value === SEX.GIRL ? theme('baseColor.pink') : theme('article.digest'))};
   margin-top: 1px;
 `

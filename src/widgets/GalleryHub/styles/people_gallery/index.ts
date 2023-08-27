@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css from '@/utils/css'
+import css from '@/css'
 
 type TBlock = { borderRight: boolean; borderTop: boolean }
 export const Block = styled.div<TBlock>`

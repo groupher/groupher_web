@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TSpace } from '@/spec'
 // import Img from '@/Img'
-import css from '@/utils/css'
+import css from '@/css'
 
 import Button from '../../Button'
 // see example: https://codepen.io/mydearxym2/pen/qBEvvpo

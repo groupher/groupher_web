@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import type { TTestable } from '@/spec'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import Img from '@/Img'
 
 import GithubSVG from '@/icons/social/Github'

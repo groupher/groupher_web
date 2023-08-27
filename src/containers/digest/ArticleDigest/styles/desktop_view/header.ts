@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import Link from 'next/link'
 
 import type { TMetric } from '@/spec'
-import css, { theme, WIDTH } from '@/utils/css'
+import css, { theme, WIDTH } from '@/css'
 
 import AccountSVG from '@/icons/Acount'
 import Img from '@/Img'

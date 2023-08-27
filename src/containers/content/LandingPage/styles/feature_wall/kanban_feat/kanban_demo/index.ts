@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css from '@/utils/css'
+import css from '@/css'
 
 export const BoardsWrapper = styled.div`
   ${css.flex('justify-center', 'align-end')};

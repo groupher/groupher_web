@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import FormInput from '@/widgets/Input'
 import ApplySVG from '@/icons/Apply'

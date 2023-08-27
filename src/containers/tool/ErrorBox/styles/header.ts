@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme, animate } from '@/utils/css'
+import css, { theme, animate } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.flex()};

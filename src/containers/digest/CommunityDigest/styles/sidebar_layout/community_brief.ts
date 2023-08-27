@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { WIDTH, theme } from '@/utils/css'
+import css, { WIDTH, theme } from '@/css'
 
 import ArrowSVG from '@/icons/Arrow'
 import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'

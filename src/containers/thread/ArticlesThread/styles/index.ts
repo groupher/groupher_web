@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { values, includes } from 'ramda'
 import type { TThread } from '@/spec'
 import { CARD_THREAD } from '@/constant/thread'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.flex()};

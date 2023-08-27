@@ -7,7 +7,7 @@
 import { FC, useState, useRef, memo, useEffect } from 'react'
 import { hideAll } from 'tippy.js'
 
-import { zIndex } from '@/utils/css'
+import { zIndex } from '@/css'
 import { buildLog } from '@/utils/logger'
 import { isString } from '@/utils/validator'
 import { isDescendant, isWechatBrower } from '@/utils/dom'

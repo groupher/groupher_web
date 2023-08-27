@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import DotDivider from '@/widgets/DotDivider'
 
 export const Wrapper = styled.div`

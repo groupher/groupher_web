@@ -4,7 +4,7 @@ import type { TColorName, TSize, TSpace } from '@/spec'
 import SIZE from '@/constant/size'
 import { COLOR_NAME } from '@/constant/colors'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import { camelize } from '@/utils/fmt'
 
 type TWrapper = {

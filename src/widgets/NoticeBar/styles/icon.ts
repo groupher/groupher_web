@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import ArchivedSVG from '@/icons/Archived'
 import LockSVG from '@/icons/Lock'

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import DotDivider from '@/widgets/DotDivider'
 

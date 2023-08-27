@@ -5,7 +5,7 @@ import { includes } from 'ramda'
 import type { TMetric, TTestable, TColorName } from '@/spec'
 import { COLORS, COLOR_NAME } from '@/constant/colors'
 
-import css from '@/utils/css'
+import css from '@/css'
 import CrossSVG from '@/icons/CloseCross'
 import ArrowSVG from '@/icons/Arrow'
 import NotifySVG from '@/icons/Trumpet'

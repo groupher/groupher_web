@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TAvatarLayout } from '@/spec'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
-import css from '@/utils/css'
+import css from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`

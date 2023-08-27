@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
 // import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 const activeColor = '#009C9E'
 
@@ -27,8 +27,7 @@ export const Dot = styled.div<TActive>`
   transition: opacity 0.25s;
 `
 export const FoldDot = styled(Dot)`
-  background: ${({ active }) =>
-    active ? activeColor : theme('article.digest')};
+  background: ${({ active }) => (active ? activeColor : theme('article.digest'))};
   width: 6px;
   height: 6px;
   border-radius: 50%;

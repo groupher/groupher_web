@@ -4,7 +4,7 @@ import type { TSizeSM } from '@/spec'
 import SIZE from '@/constant/size'
 
 import HookSVG from '@/icons/Hook'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<{ size: TSizeSM }>`
   ${css.flex('align-center')};

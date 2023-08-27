@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TArticleCat } from '@/spec'
 import { ARTICLE_CAT } from '@/constant/gtd'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import GtdWipSVG from '@/icons/GtdWip'
 import GtdDoneSVG from '@/icons/GtdDone'

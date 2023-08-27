@@ -7,7 +7,7 @@ import GtdWipSVG from '@/icons/GtdWip'
 import GtdDoneSVG from '@/icons/GtdDone'
 import GtdTodoSVG from '@/icons/GtdTodo'
 
-import css from '@/utils/css'
+import css from '@/css'
 
 export const Wrapper = styled.div`
   ${css.flexColumn()};

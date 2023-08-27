@@ -32,6 +32,7 @@ module.exports = {
           '@/stores': 'src/stores',
           '@/model': 'src/stores/Model',
           '@/utils': 'utils',
+          '@/css': 'utils/css',
           '@/schemas': 'src/schemas',
           '@/Img': 'src/widgets/Img',
           '@/SvgIcons': 'src/widgets/SvgIcons',

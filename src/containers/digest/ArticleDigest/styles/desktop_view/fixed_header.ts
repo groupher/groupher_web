@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable, TMetric, TActive } from '@/spec'
-import css, { theme, zIndex } from '@/utils/css'
+import css, { theme, zIndex } from '@/css'
 import Img from '@/Img'
 
 type TWrapper = TTestable & TActive

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TSpace } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<TSpace>`
   ${css.flex('align-end')};
@@ -22,8 +22,7 @@ export const Main = styled.div`
   margin-right: 4px;
 `
 export const CurNum = styled.div<{ invalid: boolean }>`
-  color: ${({ invalid }) =>
-    invalid ? theme('baseColor.red') : theme('article.title')};
+  color: ${({ invalid }) => (invalid ? theme('baseColor.red') : theme('article.title'))};
   font-size: 14px;
 `
 export const Slash = styled.div`

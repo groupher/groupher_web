@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.flex('align-center', 'justify-between')};
@@ -39,8 +39,7 @@ export const SelectWrapper = styled.div`
 `
 export const SelectLabel = styled.div<TActive>`
   ${css.flex('align-center')};
-  color: ${({ $active }) =>
-    $active ? theme('article.title') : theme('article.digest')};
+  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   background: ${({ $active }) => ($active ? '#014150' : 'transparent')};
   border-radius: 8px;
   padding: 2px 8px;

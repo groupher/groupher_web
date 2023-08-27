@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { animate, theme } from '@/utils/css'
+import css, { animate, theme } from '@/css'
 
 type TWrapper = TActive & { alignLeft: boolean }
 export const Wrapper = styled.div<TWrapper>`

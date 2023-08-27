@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import ViewSVG from '@/icons/View'
 import Input from '@/widgets/Input'

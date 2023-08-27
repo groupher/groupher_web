@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TMetric } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.flexColumn('align-center')};
@@ -40,8 +40,7 @@ export const ContentWrapper = styled.div<{ hasContentBg: boolean }>`
   padding: 20px;
   padding-top: 15px;
 
-  background: ${({ hasContentBg }) =>
-    hasContentBg ? theme('thread.bg') : 'transparent'};
+  background: ${({ hasContentBg }) => (hasContentBg ? theme('thread.bg') : 'transparent')};
 
   ${css.media.mobile`
     padding: 0;

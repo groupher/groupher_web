@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TActive, TGlowEffect } from '@/spec'
 import GLOW_EFFECTS from '@/constant/glow_effect'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import DLightSVG from '@/icons/DLight'
 import ClossSVG from '@/icons/CloseLight'

@@ -3,7 +3,7 @@ import { includes } from 'ramda'
 
 import type { TActive } from '@/spec'
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.flex('align-center', 'justify-center')};

@@ -4,7 +4,7 @@ import type { TColorName, TMetric, TGlowEffect } from '@/spec'
 import { COLORS } from '@/constant/colors'
 import GLOW_EFFECTS from '@/constant/glow_effect'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 /**
  * see layout details:

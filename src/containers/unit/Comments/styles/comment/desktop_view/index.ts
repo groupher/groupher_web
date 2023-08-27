@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme, animate } from '@/utils/css'
+import css, { theme, animate } from '@/css'
 
 import PinSVG from '@/icons/Pin'
 import UserBadge from '@/icons/UserBadge'

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-// import css from '@/utils/css'
+// import css from '@/css'
 
 import { WrapperBase, ScrollWrapperBase, ShadowBarBase } from './index'
 import { getShadowBackground, getShadowSize, getScrollbarThin } from './metrics'
@@ -22,8 +22,7 @@ export const Wrapper = styled(WrapperBase)<TBar>`
 
   .os-theme-dark > .os-scrollbar-vertical,
   .os-theme-light > .os-scrollbar-vertical {
-    width: ${({ barSize }) =>
-      `${getScrollbarThin(barSize, 'vertical')} !important`};
+    width: ${({ barSize }) => `${getScrollbarThin(barSize, 'vertical')} !important`};
   }
 `
 export const ScrollWrapper = styled(ScrollWrapperBase)``
@@ -31,8 +30,7 @@ const ShadowBar = styled(ShadowBarBase)<TBar>`
   left: 0px;
   height: ${({ shadowSize }) => getShadowSize(shadowSize)};
   width: 100%;
-  background: ${({ shadowSize }) =>
-    getShadowBackground(shadowSize, 'vertical')};
+  background: ${({ shadowSize }) => getShadowBackground(shadowSize, 'vertical')};
   border-top: ${({ withBorder }) => (withBorder ? '1px solid' : 'none')};
   border-color: ${({ withBorder }) => (withBorder ? '#084255' : 'none')};
 `

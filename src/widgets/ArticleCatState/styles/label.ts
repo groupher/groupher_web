@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TArticleState } from '@/spec'
 import { isNoBgCase, getPadding, getFeatureColor, getBugColor } from './metric'
 
-import { theme } from '@/utils/css'
+import { theme } from '@/css'
 
 type TWrapper = {
   noBg: boolean

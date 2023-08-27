@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import type { TTestable } from '@/spec'
 import { COLORS } from '@/constant/colors'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import Input from '@/widgets/Input'
 

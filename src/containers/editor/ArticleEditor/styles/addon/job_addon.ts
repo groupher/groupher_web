@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import Input from '@/widgets/Input'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import LaptopSVG from '@/icons/Laptop'
 import LinkSVG from '@/icons/Link'

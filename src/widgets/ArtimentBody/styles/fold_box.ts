@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 type TWrapper = { fold: boolean; mode: 'article' | 'comment' }
 export const Wrapper = styled.div<TWrapper>`

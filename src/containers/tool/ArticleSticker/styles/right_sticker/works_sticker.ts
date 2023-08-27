@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import { theme } from '@/utils/css'
+import { theme } from '@/css'
 
 export const Wrapper = styled.div<TActive>`
   background: #0a313e;

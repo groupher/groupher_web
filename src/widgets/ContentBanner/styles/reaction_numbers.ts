@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme, animate } from '@/utils/css'
+import css, { theme, animate } from '@/css'
 
 export const NumbersWrapper = styled.div`
   ${css.flex('align-center')};
@@ -17,8 +17,7 @@ export const NumberSection = styled.div<{ readOnly: boolean }>`
   border-radius: 4px;
 
   &:hover {
-    background: ${({ readOnly }) =>
-      readOnly ? '' : theme('banner.numberHoverBg')};
+    background: ${({ readOnly }) => (readOnly ? '' : theme('banner.numberHoverBg'))};
     cursor: ${({ readOnly }) => (readOnly ? '' : 'pointer')};
   }
 `

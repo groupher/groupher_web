@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css from '@/utils/css'
+import css from '@/css'
 
 export const SwitchWrapper = styled.div`
   ${css.flexColumn('justify-between')};

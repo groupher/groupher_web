@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
 
-import css from '@/utils/css'
+import css from '@/css'
 
 import { Divider } from '@/widgets/Common'
 import { BaseSection, BlockBase } from '..'

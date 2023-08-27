@@ -5,7 +5,7 @@ import Link from 'next/link'
 import type { TFeatType } from '../../spec'
 import { FEAT } from '../../constant'
 
-import css from '@/utils/css'
+import css from '@/css'
 import ArrowSVG from '@/icons/Arrow'
 
 export const Wrapper = styled(Link)`

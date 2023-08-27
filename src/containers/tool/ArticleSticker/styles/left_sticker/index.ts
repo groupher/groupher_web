@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TTestable, TActive } from '@/spec'
 import { FadeToggle } from '@/widgets/Common'
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 // see https://stackoverflow.com/questions/6794000/fixed-position-but-relative-to-container
 export const Wrapper = styled(FadeToggle).attrs<TTestable>(({ testid }) => ({

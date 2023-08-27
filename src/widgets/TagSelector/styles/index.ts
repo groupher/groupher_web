@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const EditorWrapper = styled.div<{ menuOpen?: boolean }>`
   ${css.flex('align-center')};

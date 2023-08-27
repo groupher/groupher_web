@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TButton, TSize } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import { Wrapper as BaseBtnWrapper } from '../button'
 import { OrSignBase } from './index'
@@ -15,15 +15,12 @@ const BaseButton = styled(BaseBtnWrapper)<TButton>`
   width: 50%;
   color: ${({ active }) => (active ? theme('button.fg') : '#99b9bf')};
   background: ${({ active }) => (active ? theme('button.primary') : '#024250')};
-  border-color: ${({ active }) =>
-    active ? theme('button.primary') : '#024250'};
+  border-color: ${({ active }) => (active ? theme('button.primary') : '#024250')};
 
   &:hover {
     color: ${({ active }) => (active ? theme('button.fg') : '#99b9bf')};
-    border-color: ${({ active }) =>
-      active ? theme('button.hoverBg') : '#065061'};
-    background-color: ${({ active }) =>
-      active ? theme('button.hoverBg') : '#065061'};
+    border-color: ${({ active }) => (active ? theme('button.hoverBg') : '#065061')};
+    background-color: ${({ active }) => (active ? theme('button.hoverBg') : '#065061')};
   }
 `
 export const LeftButton = styled(BaseButton)<TButton>`

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import Input from '@/widgets/Input'
 
@@ -13,8 +13,7 @@ export const TabWrapper = styled.div`
 `
 export const TabName = styled.div<TActive>`
   font-size: 14px;
-  color: ${({ $active }) =>
-    $active ? theme('article.title') : theme('article.digest')};
+  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   margin-right: 12px;
   font-weight: ${({ $active }) => ($active ? 'bold' : 'normal')};
 

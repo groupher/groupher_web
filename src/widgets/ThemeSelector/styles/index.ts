@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive, TThemeName } from '@/spec'
 import { theme, themeCoverMap, themeCoverIndexMap } from '@/utils/themes'
-import css from '@/utils/css'
+import css from '@/css'
 
 type TDot = TActive & { name: TThemeName }
 export const Dot = styled.div<TDot>`
@@ -13,8 +13,7 @@ export const Dot = styled.div<TDot>`
   border: ${({ name }) => (name === 'github' ? '1px solid lightgrey' : '')};
   position: relative;
   cursor: pointer;
-  color: ${({ active, name }) =>
-    active ? theme('bodyBg') : themeCoverMap[name]};
+  color: ${({ active, name }) => (active ? theme('bodyBg') : themeCoverMap[name])};
 
   &:after {
     content: 'T';

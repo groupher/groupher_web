@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { zIndex } from '@/utils/css'
+import css, { zIndex } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.flex()};

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { animate } from '@/utils/css'
+import { animate } from '@/css'
 // import Img from '@/Img'
 // import PromptIcon from '@/widgets/PromptIcon'
 
@@ -13,8 +13,7 @@ export const Wrapper = styled.div<{ scale: number }>`
   margin: auto;
   border-radius: 50%;
 
-  box-shadow: inset 0 -5px 10px rgba(22, 48, 64, 0.5),
-    0 0 1.5rem rgba(170, 194, 194, 0.3);
+  box-shadow: inset 0 -5px 10px rgba(22, 48, 64, 0.5), 0 0 1.5rem rgba(170, 194, 194, 0.3);
   background-image: linear-gradient(to top left, #24b88b 20%, #21776f);
 
   transform: ${({ scale }) => `scale(${scale})`};

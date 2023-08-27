@@ -6,7 +6,7 @@ import ViewSVG from '@/icons/View'
 import UpvoteSVG from '@/icons/Upvote'
 import CommentSVG from '@/icons/Comment'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.flex('justify-between')};

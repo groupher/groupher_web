@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import PostSVG from '@/icons/EditPen'
 import CommentSVG from '@/icons/Comment'
 import UserSVG from '@/icons/Users'

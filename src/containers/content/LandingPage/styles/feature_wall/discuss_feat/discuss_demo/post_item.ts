@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Bar as BarBase } from '@/widgets/Common'
 import UpvoteSVG from '@/icons/Upvote'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<{ opacity: number }>`
   ${css.flex()};

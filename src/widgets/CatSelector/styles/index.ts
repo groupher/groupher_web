@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive, TSpace } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 type TWrapper = { menuOpen?: boolean } & TSpace
 export const FilterWrapper = styled.div<TWrapper>`

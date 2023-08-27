@@ -4,7 +4,7 @@ import type { TUpvoteLayout, TActive } from '@/spec'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
 import UpvoteIcon from '@/icons/Upvote'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import { getIconSize, getIconColor } from './metric'
 

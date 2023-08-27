@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css, { animate, theme, zIndex } from '@/utils/css'
+import css, { animate, theme, zIndex } from '@/css'
 
 import Img from '@/Img'
 import GotoTopSVG from '@/icons/Arrow2Top'

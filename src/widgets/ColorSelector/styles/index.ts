@@ -4,7 +4,7 @@ import type { TTestable, TActive, TColorName } from '@/spec'
 
 // import Img from '@/Img'
 import HookSVG from '@/icons/Hook'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import { camelize } from '@/utils/fmt'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({

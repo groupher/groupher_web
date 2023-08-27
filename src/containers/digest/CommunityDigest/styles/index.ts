@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css from '@/utils/css'
+import css from '@/css'
 
 export const BaseBanner = styled.nav.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,

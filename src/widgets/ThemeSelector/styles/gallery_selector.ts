@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import { Dot } from './index'
 
@@ -35,8 +35,7 @@ export const IntroBox = styled.div<TIntroBox>`
 
   &:hover {
     border: 1px solid;
-    border-color: ${({ active }) =>
-      active ? '#0f4858' : theme('banner.desc')};
+    border-color: ${({ active }) => (active ? '#0f4858' : theme('banner.desc'))};
   }
   transition: border 0.3s;
 

@@ -1,7 +1,7 @@
 import type { TUpvoteLayout } from '@/spec'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
-import { theme } from '@/utils/css'
+import { theme } from '@/css'
 
 export const getIconColor = ($active: boolean): string => {
   if ($active) return theme('article.title')

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import { TSpace } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<TSpace>`
   width: 280px;

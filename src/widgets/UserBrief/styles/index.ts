@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import WomanSVG from '@/icons/Woman'
 import { Divider as DividerBase } from '@/widgets/Common'
 
@@ -38,8 +38,7 @@ export const UserDesc = styled.div<TUserDesc>`
   &:hover {
     cursor: ${({ clickable }) => (clickable ? 'pointer' : '')};
     font-weight: ${({ clickable }) => (clickable ? 'bolder' : '')};
-    color: ${({ clickable }) =>
-      clickable ? theme('banner.title') : theme('banner.desc')};
+    color: ${({ clickable }) => (clickable ? theme('banner.title') : theme('banner.desc'))};
   }
 `
 export const Divider = styled(DividerBase)`

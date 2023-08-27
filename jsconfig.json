@@ -17,6 +17,8 @@
       "@/model*": ["src/stores/Model/*"],
       "@/utils": ["utils"],
       "@/utils/*": ["utils/*"],
+      "@/css": ["utils/css"],
+      "@/css/*": ["utils/css/*"],
       "@/schemas": ["src/schemas"],
       "@/Img": ["src/widgets/Img"],
       "@/SvgIcons/*": ["src/widgets/SvgIcons/*"],

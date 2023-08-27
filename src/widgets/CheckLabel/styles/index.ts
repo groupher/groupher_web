@@ -4,7 +4,7 @@ import type { TTestable, TActive, TSpace } from '@/spec'
 import HookSVG from '@/icons/Hook'
 
 // import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 type TWrapper = TTestable & TSpace
 

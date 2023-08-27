@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import { Wrapper as WrapperDesktop, Main as MainDesktop } from '../desktop_view'
 

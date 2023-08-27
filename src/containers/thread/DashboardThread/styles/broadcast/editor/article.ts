@@ -4,7 +4,7 @@ import type { TColorName } from '@/spec'
 import { COLORS } from '@/constant/colors'
 
 import Input from '@/widgets/Input'
-import css from '@/utils/css'
+import css from '@/css'
 
 export const Wrapper = styled.div`
   width: 100%;

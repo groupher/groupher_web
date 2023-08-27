@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 
-import css, { WIDTH, theme } from '@/utils/css'
+import css, { WIDTH, theme } from '@/css'
 import Img from '@/Img'
 
 import ArrowSVG from '@/icons/Arrow'

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { THeaderLayout, TMetric } from '@/spec'
-import css, { WIDTH, theme } from '@/utils/css'
+import css, { WIDTH, theme } from '@/css'
 import { pixelAdd } from '@/utils/dom'
 
 import { BaseBanner } from '../index'

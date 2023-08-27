@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
 
-import css, { theme, animate } from '@/utils/css'
+import css, { theme, animate } from '@/css'
 import SiteLogo from '@/icons/CPLogo' // TODO:
 // import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
 

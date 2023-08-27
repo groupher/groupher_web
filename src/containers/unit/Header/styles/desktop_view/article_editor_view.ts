@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { WIDTH } from '@/utils/css'
+import css, { WIDTH } from '@/css'
 
 import { Wrapper as CommunityWrapper } from './community_view'
 

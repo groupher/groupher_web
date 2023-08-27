@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme, zIndex } from '@/utils/css'
+import css, { theme, zIndex } from '@/css'
 import { pixelAdd } from '@/utils/dom'
 
 import type { TDrawer, TSwipe } from '../spec'
