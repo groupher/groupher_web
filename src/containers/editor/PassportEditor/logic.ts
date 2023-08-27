@@ -5,6 +5,7 @@ import { uniq, reject, keys } from 'ramda'
 import { buildLog } from '@/utils/logger'
 import asyncSuit from '@/utils/async'
 import { errRescue } from '@/utils/signal'
+import { toJS } from '@/utils/mobx'
 import ERR from '@/constant/err'
 
 import S from './schema'
@@ -28,6 +29,26 @@ export const toggleCheck = (rule: string, checked: boolean): void => {
   store.mark({ selectedRules: uniq(_selectedRules) })
 }
 
+export const updatePassport = (): void => {
+  const { curCommunity, allModeratorRules, selectedRules, activeModerator } = store
+  const community = curCommunity.slug
+
+  const innerRules = {}
+  toJS(keys(JSON.parse(allModeratorRules))).forEach((key) => {
+    innerRules[key] = false
+  })
+
+  toJS(selectedRules).forEach((key) => {
+    innerRules[key] = true
+  })
+
+  const rules = JSON.stringify({
+    [community]: innerRules,
+  })
+
+  sr71$.mutate(S.updateModeratorPassport, { community, user: activeModerator.login, rules })
+}
+
 export const loadUserPassport = (): void => {
   sr71$.query(S.userPassport, { login: store.activeModerator.login })
 }
@@ -49,9 +70,12 @@ const DataSolver = [
   {
     match: asyncRes('user'),
     action: ({ user }) => {
+      const { curCommunity } = store
       const { cmsPassportString } = user
       const passportJson = JSON.parse(cmsPassportString)
-      store.mark({ selectedRules: keys(passportJson) })
+      if (passportJson[curCommunity.slug]) {
+        store.mark({ selectedRules: keys(passportJson[curCommunity.slug]) })
+      }
     },
   },
 
@@ -61,6 +85,12 @@ const DataSolver = [
       const { moderator, root } = allPassportRules
       store.setAllPassportRules(root, moderator)
       sr71$.query(S.userPassport, { login: store.activeModerator.login })
+    },
+  },
+  {
+    match: asyncRes('updateModeratorPassport'),
+    action: ({ updateModeratorPassport }) => {
+      console.log('## done, close and refresh')
     },
   },
 ]

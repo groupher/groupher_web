@@ -28,10 +28,12 @@ type TProps = {
 }
 
 const List: FC<TProps> = ({ moderators, activeModerator }) => {
+  // @ts-ignore
+  const sortedModerators = sortByIndex(moderators, 'passportItemCount').reverse() as TModerator[]
+
   return (
     <Wrapper>
-      {/* @ts-ignore */}
-      {sortByIndex(moderators, 'passportItemCount').map((item: TModerator) => {
+      {sortedModerators.map((item) => {
         const { user, passportItemCount, role } = item
         const active = user.login === activeModerator?.login
 

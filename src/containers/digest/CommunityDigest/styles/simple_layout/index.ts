@@ -41,7 +41,7 @@ export const InnerWrapper = styled.div<TWrapper>`
   // if use margin-left will cause horizontal scrollbar
   // 70 是经典布局为缩小帖子列表"视觉宽度"手动缩小的值
   padding-left: ${pixelAdd(WIDTH.COMMUNITY.CONTENT_OFFSET, 70)};
-  ${({ metric }) => (metric === 'DASHBOARD' ? 'padding-left: 35px;' : '')};
+  ${({ metric }) => (metric === 'DASHBOARD' ? 'padding-left: 55px;' : '')};
   ${({ metric }) => css.fitPageWidth(metric)};
   transition: min-height 0.25s;
 

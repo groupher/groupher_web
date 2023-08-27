@@ -66,7 +66,7 @@ export const Item = styled(Link)<TActive>`
   display: block;
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   background: ${({ $active }) => ($active ? theme('menuActive') : 'transparent')};
-  width: 140px;
+  width: 160px;
   padding: 2px 5px;
   padding-left: 18px;
   margin-left: 0;
