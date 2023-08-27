@@ -2,11 +2,11 @@
 * {{ properCase name }} store
 */
 
-import { types as T, getParent, Instance } from 'mobx-state-tree'
 // import {} from 'ramda'
 
 import type { TCommunity, TRootStore } from '@/spec'
 import { buildLog } from '@/utils/logger'
+import { T, getParent, Instance } from '@/utils/mobx'
 import { markStates, toJS } from '@/utils/mobx'
 
 /* eslint-disable-next-line */
