@@ -3,7 +3,10 @@ import { FC, memo } from 'react'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import { Br, Space } from '@/widgets/Common'
 
+import { CITY_OPTIONS, SOURCE_OPTIONS } from '../constant'
+
 import ScaleSelector from './ScaleSelector'
+import BlockSelector from './BlockSelector'
 import NextStepButton from './NextStepButton'
 
 import {
@@ -28,7 +31,7 @@ type TProps = {
 }
 
 const SetupExtra: FC<TProps> = ({ status, validState }) => {
-  const { homepage, extraInfo } = status
+  const { homepage, city, source } = status
 
   const { isTitleValid, isDescValid, isLogoValid, submitting } = validState
   const isValid = isTitleValid && isDescValid && isLogoValid
@@ -57,20 +60,21 @@ const SetupExtra: FC<TProps> = ({ status, validState }) => {
           <Br bottom={26} />
 
           <Label>您（的团队）所在城市是？</Label>
-          <InputBox
-            value={homepage}
-            placeholder="https://"
-            onChange={(e) => inputOnChange(e, 'homepage')}
+          <BlockSelector
+            options={CITY_OPTIONS}
+            activeValue={city}
+            onChange={(v) => inputOnChange(v, 'city')}
           />
-          <Br bottom={26} />
+          <Br bottom={28} />
 
-          <Label>您从哪里知道 Groupher 的？</Label>
-          <InputBox
-            value={homepage}
-            placeholder="https://"
-            onChange={(e) => inputOnChange(e, 'homepage')}
+          <Label>您是从哪里知道 Groupher 的？</Label>
+          <BlockSelector
+            options={SOURCE_OPTIONS}
+            radius={20}
+            activeValue={source}
+            onChange={(v) => inputOnChange(v, 'source')}
           />
-          <Br bottom={26} />
+          <Br bottom={28} />
           {/* <ExtraInputBox
             value={extraInfo}
             placeholder="其他信息（支持 Markdown）"

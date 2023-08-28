@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
   color: ${theme('article.digest')};
   background-image: ${theme('banner.linearGradient')};
   width: 100%;
-  min-height: 740px;
+  min-height: 780px;
 `
 export const IntroTitle = styled.div`
   position: relative;
@@ -83,6 +83,6 @@ export const Title = styled.div`
 export const NextBtn = styled.div`
   ${css.flex('align-center', 'justify-center')};
   width: 200px;
-  margin-left: 0;
+  margin-left: -10px;
   filter: grayscale(1);
 `

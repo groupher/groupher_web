@@ -20,6 +20,8 @@ export type TSetupInfoStatus = {
 export type TSetupExtraStatus = {
   homepage: string
   extraInfo: string
+  city: string
+  source: string
 }
 
 export type TValidState = {

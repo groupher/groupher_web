@@ -34,6 +34,10 @@ const CommunityEditor = T.model('CommunityEditorStore', {
   title: T.opt(T.string, ''),
   homepage: T.opt(T.string, ''),
   extraInfo: T.opt(T.string, ''),
+
+  city: T.opt(T.string, ''),
+  source: T.opt(T.string, ''),
+
   desc: T.opt(T.string, ''),
 })
   .views((self) => ({
@@ -65,14 +69,10 @@ const CommunityEditor = T.model('CommunityEditorStore', {
       return { slug }
     },
     get setupInfoStatus(): TSetupInfoStatus {
-      const { slug, title, desc, logo } = self
-
-      return { slug, title, desc, logo }
+      return pick(['slug', 'title', 'desc', 'logo'], self)
     },
     get setupExtraStatus(): TSetupExtraStatus {
-      const { homepage, extraInfo } = self
-
-      return { homepage, extraInfo }
+      return pick(['homepage', 'extraInfo', 'city', 'source'], self)
     },
     get isCommunityTypeValid(): boolean {
       const slf = self as TStore
