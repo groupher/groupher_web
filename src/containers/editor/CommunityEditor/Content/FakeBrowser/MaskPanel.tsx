@@ -1,6 +1,7 @@
 import { FC } from 'react'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
+import ArrowLinker from '@/widgets/ArrowLinker'
 
 import type { TStep } from '../../spec'
 import { STEP } from '../../constant'
@@ -11,7 +12,6 @@ import {
   InnerWrapperColumn,
   Item,
   CheckIcon,
-  TheLink,
   ColumnItem,
   Dot,
   Header,
@@ -37,7 +37,11 @@ const MaskPanel: FC<TProps> = ({ step }) => {
           </ColumnItem>
           <ColumnItem>
             <Dot />
-            如果你的产品 / 服务域名已被占用，请在<TheLink href="/feedback">这里反馈</TheLink>。
+            如果你的产品 / 服务域名已被占用，请在
+            <ArrowLinker href="/feedback" size={14} left={1}>
+              这里反馈
+            </ArrowLinker>
+            。
           </ColumnItem>
         </InnerWrapperColumn>
       </Wrapper>
@@ -47,7 +51,9 @@ const MaskPanel: FC<TProps> = ({ step }) => {
   return (
     <Wrapper>
       <Header>
-        <ArrowButton>自带丰富功能，查看完整特性</ArrowButton>
+        <ArrowLinker href="/" left={-8}>
+          自带丰富功能，查看完整特性
+        </ArrowLinker>
         <Divider />
       </Header>
 

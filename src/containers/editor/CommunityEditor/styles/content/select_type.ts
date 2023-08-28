@@ -2,7 +2,6 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/css'
 
-import { Link } from '@/widgets/Common'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
@@ -51,8 +50,4 @@ export const CommunityDemoWrapper = styled.div`
   flex-wrap: wrap;
   margin-bottom: 10px;
   margin-top: -4px;
-`
-export const MoreLink = styled(Link)`
-  font-size: 13px;
-  opacity: 0.8;
 `

@@ -9,6 +9,8 @@ import { FC, memo } from 'react'
 import { ICON_CMD } from '@/config'
 import { buildLog } from '@/utils/logger'
 
+import ArrowLinker from '@/widgets/ArrowLinker'
+
 import DemoCommunity from './DemoCommunity'
 import COMMUNITY_INTRO from './communityIntros'
 import type { TSelectTypeStatus } from '../spec'
@@ -23,7 +25,6 @@ import {
   Title,
   Desc,
   CommunityDemoWrapper,
-  MoreLink,
 } from '../styles/content/select_type'
 
 /* eslint-disable-next-line */
@@ -46,7 +47,7 @@ const SelectType: FC<TProps> = ({ status: { communityType } }) => {
         </Header>
         <Desc>{intro.desc}</Desc>
         <br />
-        <MoreLink href="/">查看详细</MoreLink>
+        <ArrowLinker href="/">查看详细</ArrowLinker>
       </LeftBlock>
       <RightBlock>
         <Header>
@@ -59,7 +60,7 @@ const SelectType: FC<TProps> = ({ status: { communityType } }) => {
           ))}
         </CommunityDemoWrapper>
 
-        <MoreLink href="/">探索更多</MoreLink>
+        <ArrowLinker href="/">探索更多</ArrowLinker>
       </RightBlock>
     </Wrapper>
   )

@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
 import css, { theme } from '@/css'
-import { Link } from '@/widgets/Common'
 
 import CheckSVG from '@/icons/Check'
 
@@ -68,9 +67,4 @@ export const Divider = styled.div`
   );
 
   border-image-slice: 1;
-`
-
-export const TheLink = styled(Link)`
-  margin-left: 1px;
-  margin-right: 1px;
 `
