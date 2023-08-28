@@ -15,11 +15,11 @@ const STEP = {
   S: '15%',
   X: '40%',
   M: '65%',
-  L: '92%',
+  L: '91%',
 }
 
 const ScaleSelector: FC = () => {
-  const [step, setStep] = useState(STEP.S)
+  const [step, setStep] = useState(STEP.X)
 
   return (
     <Wrapper>

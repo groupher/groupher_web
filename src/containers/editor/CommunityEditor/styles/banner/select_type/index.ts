@@ -51,4 +51,5 @@ export const Note = styled.div`
   ${css.flex('align-center')};
   margin-top: 50px;
   font-size: 13px;
+  margin-left: 5px;
 `

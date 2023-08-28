@@ -24,8 +24,10 @@ export const Footer = styled.div`
 
 export const RootSign = styled.span`
   display: inline-block;
-  background: ${theme('baseColor.blue')};
-  color: white;
+  background: ${theme('baseColor.blueBg')};
+  color: ${theme('baseColor.blue')};
+  border: 1px solid;
+  border-color: ${theme('baseColor.blue')};
   font-size: 12px;
   font-weight: bold;
   padding: 1px 6px;

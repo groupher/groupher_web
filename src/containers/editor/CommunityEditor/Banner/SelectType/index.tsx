@@ -60,7 +60,7 @@ const SelectType: FC<TProps> = ({ status: { communityType }, validState }) => {
               size="small"
               onChange={isOfficalOnChange}
             />
-            我来自产品官方团队，<Link href="/">选项说明</Link>
+            我来自产品官方团队，<Link href="/">为什么需要官方？</Link>
           </Note>
         )}
 

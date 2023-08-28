@@ -15,7 +15,7 @@ import {
   InfoWrapper,
   InputsWrapper,
   InputBox,
-  ExtraInputBox,
+  // ExtraInputBox,
   Label,
 } from '../styles/banner/setup_extra'
 
@@ -39,7 +39,9 @@ const SetupExtra: FC<TProps> = ({ status, validState }) => {
         <ApplyIcon />
         更多信息
       </IntroTitle>
-      <IntroDesc>此处填写信息会在社区创建成功后，同步到该社区的 &quot;关于&quot; 页面中</IntroDesc>
+      <IntroDesc>
+        此处填写的相关信息会在创建成功后，自动同步到该社区的 &quot;关于&quot; 页面
+      </IntroDesc>
       <InfoWrapper>
         <InputsWrapper>
           <Label>官方主页</Label>

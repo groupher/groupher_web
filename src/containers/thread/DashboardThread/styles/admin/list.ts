@@ -50,8 +50,10 @@ export const Login = styled.div`
   margin-top: -1px;
 `
 export const RootSign = styled.div`
-  background: ${theme('baseColor.blue')};
-  color: white;
+  background: ${theme('baseColor.blueBg')};
+  color: ${theme('baseColor.blue')};
+  border: 1px solid;
+  border-color: ${theme('baseColor.blue')};
   font-size: 10px;
   padding: 0 5px;
   margin-left: 8px;

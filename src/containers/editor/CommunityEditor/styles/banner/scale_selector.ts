@@ -28,7 +28,7 @@ export const Bar = styled.div<{ width: string }>`
   width: ${({ width }) => width};
   /* background: ${theme('article.title')}; */
   /* background: linear-gradient(to right, #333333, #828282); */
-  background: linear-gradient(to right, rgb(196, 121, 222), rgb(248, 190, 109));
+  background: linear-gradient(to right, #e29aaa, #c479de);
   transition: width 0.25s;
 `
 export const BarDot = styled.div`
@@ -75,7 +75,7 @@ export const Note = styled.div<TNote>`
 `
 export const ShineNote = styled.div`
   font-size: 12px;
-  background: linear-gradient(to right, rgb(196, 121, 222), rgb(248, 190, 109));
+  background: linear-gradient(to right, #e29aaa, #c479de);
   font-weight: 550;
   background-clip: text;
   -webkit-background-clip: text;
