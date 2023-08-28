@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
   color: ${theme('article.digest')};
   background-image: ${theme('banner.linearGradient')};
   width: 100%;
-  min-height: 780px;
+  min-height: 840px;
 `
 export const IntroTitle = styled.div`
   position: relative;

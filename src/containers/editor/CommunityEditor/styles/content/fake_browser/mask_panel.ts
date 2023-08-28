@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
   background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 40%);
   border-radius: 10px;
   padding: 0 82px;
-  padding-top: 150px;
+  padding-top: 120px;
 `
 export const InnerWrapper = styled.div`
   width: calc(100% + 148px);

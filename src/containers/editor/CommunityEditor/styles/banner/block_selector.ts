@@ -15,6 +15,7 @@ type TBox = TActive & { radius: number }
 export const Box = styled.div<TBox>`
   font-size: 13px;
   padding: 2px 15px;
+  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   border: 1px solid;
   border-color: ${({ $active }) => ($active ? theme('article.title') : theme('editor.border'))};
   border-radius: ${({ radius }) => `${radius}px;`};

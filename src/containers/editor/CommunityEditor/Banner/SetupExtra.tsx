@@ -53,11 +53,11 @@ const SetupExtra: FC<TProps> = ({ status, validState }) => {
             placeholder="https://"
             onChange={(e) => inputOnChange(e, 'homepage')}
           />
-          <Br bottom={26} />
+          <Br bottom={35} />
 
           <Label>团队规模</Label>
           <ScaleSelector />
-          <Br bottom={26} />
+          <Br bottom={40} />
 
           <Label>您（的团队）所在城市是？</Label>
           <BlockSelector
@@ -65,7 +65,7 @@ const SetupExtra: FC<TProps> = ({ status, validState }) => {
             activeValue={city}
             onChange={(v) => inputOnChange(v, 'city')}
           />
-          <Br bottom={28} />
+          <Br bottom={40} />
 
           <Label>您是从哪里知道 Groupher 的？</Label>
           <BlockSelector
@@ -74,7 +74,7 @@ const SetupExtra: FC<TProps> = ({ status, validState }) => {
             activeValue={source}
             onChange={(v) => inputOnChange(v, 'source')}
           />
-          <Br bottom={28} />
+          <Br bottom={20} />
           {/* <ExtraInputBox
             value={extraInfo}
             placeholder="其他信息（支持 Markdown）"
