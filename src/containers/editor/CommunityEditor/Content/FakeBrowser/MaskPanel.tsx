@@ -1,6 +1,5 @@
 import { FC } from 'react'
 
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import ArrowLinker from '@/widgets/ArrowLinker'
 
 import type { TStep } from '../../spec'
