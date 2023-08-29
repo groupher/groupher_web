@@ -9,12 +9,12 @@ import NotifySVG from '@/icons/Notify'
 import DashboardSVG from '@/icons/Dashboard'
 import AccountSVG from '@/icons/Acount'
 
+import GithubSVG from '@/icons/Github8'
+
 export const Wrapper = styled.div`
   ${css.flex('align-both')};
   color: ${theme('article.digest')};
-  margin-right: 14px;
-  font-weight: 600;
-  margin-top: 0;
+  margin-bottom: 1px;
 
   ${css.media.mobile`
     margin-right: 0;
@@ -45,6 +45,30 @@ export const NotifyIcon = styled(NotifySVG)`
   ${css.size(16)};
   margin-right: 18px;
 `
+
+export const GithubItem = styled(Link)`
+  ${css.flex('align-center')};
+  text-decoration: none;
+  gap: 0 8px;
+  font-size: 14px;
+  margin-right: 25px;
+  color: ${theme('article.title')};
+  opacity: 0.65;
+
+  &:hover {
+    text-decoration: none;
+    opacity: 0.85;
+    cursor: pointer;
+  }
+
+  transition: all 0.2s;
+`
+
+export const GithubIcon = styled(GithubSVG)`
+  ${css.size(15)};
+  fill: ${theme('article.digest')};
+`
+
 export const DashboardIcon = styled(DashboardSVG)`
   fill: ${theme('article.digest')};
   ${css.size(14)};

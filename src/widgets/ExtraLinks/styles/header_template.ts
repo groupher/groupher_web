@@ -16,10 +16,8 @@ export const LinkItem = styled(LinkItemBase)`
 `
 export const GroupItem = styled(LinkItem)`
   ${css.flex('align-center')};
-  min-width: 50px;
   position: relative;
 `
-
 export const ArrowIcon = styled(ArrowIconBase)`
   ${css.size(12)};
   position: relative;

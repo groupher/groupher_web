@@ -64,7 +64,7 @@ const SimpleLayout: FC<TProps> = ({
               active={activeThread}
               extraLinks={extraLinks}
               headerLayout={headerLayout}
-              left={headerLayout === HEADER_LAYOUT.CENTER ? -50 : 0}
+              left={headerLayout === HEADER_LAYOUT.CENTER ? 4 : 0}
               right={headerLayout === HEADER_LAYOUT.RIGHT ? 20 : 0}
             />
             <AccountUnit community={community} />

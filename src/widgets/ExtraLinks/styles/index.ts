@@ -10,6 +10,7 @@ export const Wrapper = styled.div`
 export const LinkItem = styled(Link)`
   color: ${theme('article.digest')};
   text-decoration: none;
+  display: block;
 
   &:hover {
     color: ${theme('article.title')};
@@ -27,8 +28,10 @@ export const ColumnWrapper = styled.div`
 `
 
 export const MenuPanel = styled.div`
+  ${css.flexColumn()};
   width: 80px;
   padding: 4px 5px;
+  gap: 5px 0;
 `
 
 export const ArrowIcon = styled(ArrowSVG)`

@@ -3,9 +3,9 @@
  *
  */
 
-import { merge, clone, remove, insert, findIndex, propEq } from 'ramda'
+import { merge, clone, remove, insert, findIndex, propEq, includes } from 'ramda'
 
-import type { TRootStore, TAccount, TCommunity, TPagedCommunities, TC11N } from '@/spec'
+import type { TRootStore, TAccount, TCommunity, TPagedCommunities, TC11N, TModerator } from '@/spec'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import BStore from '@/utils/bstore'
 
@@ -17,13 +17,21 @@ const AccountStore = T.model('AccountStore', {
   userSubscribedCommunities: T.maybeNull(PagedCommunities),
 })
   .views((self) => ({
+    get curCommunity(): TCommunity {
+      const root = getParent(self) as TRootStore
+      return toJS(root.viewing.community)
+    },
     get accountInfo(): TAccount {
-      const user = toJS(self.user)
+      const slf = self as TStore
+
+      const { user, curCommunity } = slf
+      const moderatorLogins = curCommunity.moderators.map((item: TModerator) => item.user.login)
 
       return {
-        ...user,
+        ...toJS(user),
         isLogin: self.isValidSession,
         isValidSession: self.isValidSession,
+        isModerator: includes(slf.user.login, moderatorLogins),
       }
     },
     get c11n(): TC11N {

@@ -26,7 +26,7 @@ const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold }) => {
         </MenuPanel>
       }
       placement="bottom"
-      offset={[-5, 5]}
+      offset={[8, 5]}
     >
       {/* @ts-ignore */}
       <GroupItem as="div">

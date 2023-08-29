@@ -41,7 +41,6 @@ const Center: FC<TProps> = ({ $active, threads, links }) => {
         {_threads.map((thread: TCommunityThread) => (
           <LinkItem key={thread.slug}>{thread.title}</LinkItem>
         ))}
-
         <ExtraLinks links={links} />
       </CenterWrapper>
       <RightWrapper>
