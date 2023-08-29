@@ -25,7 +25,7 @@ const SearchBox: FC<TProps> = ({ searchMode, onSearch, closeSearch }) => {
     return (
       <InputWrapper>
         <Back>
-          <ArrowButton size="small" leftLayout color="BLACK" onClick={() => closeSearch()}>
+          <ArrowButton fontSize={12} leftLayout color="BLACK" onClick={() => closeSearch()}>
             返回
           </ArrowButton>
         </Back>

@@ -6,8 +6,7 @@
 
 import { FC, ReactNode, memo, useRef, useEffect, useState } from 'react'
 
-import type { TColorName, TSize, TSpace } from '@/spec'
-import SIZE from '@/constant/size'
+import type { TColorName, TSpace } from '@/spec'
 
 import { COLOR_NAME } from '@/constant/colors'
 
@@ -19,7 +18,7 @@ import { Wrapper, Text } from '../styles/arrow_button'
 /* eslint-disable-next-line */
 const log = buildLog('w:Buttons:ArrowButton')
 
-type TProps = {
+export type TProps = {
   children?: ReactNode
   onClick?: () => void
   dimWhenIdle?: boolean
@@ -30,7 +29,7 @@ type TProps = {
   leftLayout?: boolean
   up?: boolean
   down?: boolean
-  size?: TSize
+  fontSize?: number
   initWidth?: number
 } & TSpace
 
@@ -45,7 +44,7 @@ const ArrowButton: FC<TProps> = ({
   reverseColor = false,
   up = false,
   down = false,
-  size = SIZE.MEDIUM,
+  fontSize = 13,
   initWidth = 55,
   ...restProps
 }) => {
@@ -68,7 +67,7 @@ const ArrowButton: FC<TProps> = ({
       disabled={disabled}
       color={color}
       reverseColor={reverseColor}
-      size={size}
+      fontSize={fontSize}
       {...restProps}
     >
       {leftLayout && (
@@ -80,7 +79,9 @@ const ArrowButton: FC<TProps> = ({
           down={down}
         />
       )}
-      <Text ref={ref}>{children}</Text>
+      <Text ref={ref} fontSize={fontSize}>
+        {children}
+      </Text>
       {!leftLayout && (
         <Arrow
           color={color}

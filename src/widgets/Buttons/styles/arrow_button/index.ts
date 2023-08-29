@@ -1,18 +1,14 @@
 import styled from 'styled-components'
 
-import type { TColorName, TSize, TSpace } from '@/spec'
-import SIZE from '@/constant/size'
+import type { TSpace } from '@/spec'
 import { COLOR_NAME } from '@/constant/colors'
 
 import css, { theme } from '@/css'
 import { camelize } from '@/utils/fmt'
 
-type TWrapper = {
-  disabled: boolean
-  dimWhenIdle: boolean
-  color: TColorName
-  reverseColor: boolean
-  size: TSize
+import type { TProps } from '../../ArrowButton'
+
+type TWrapper = Pick<TProps, 'disabled' | 'dimWhenIdle' | 'color' | 'reverseColor' | 'fontSize'> & {
   width: number
 } & TSpace
 
@@ -32,14 +28,8 @@ export const Wrapper = styled.button<TWrapper>`
   vertical-align: middle;
   font-weight: 500;
 
-  gap: 0 0.5em;
+  gap: 0 0.6em;
 
-  transform: ${({ size }) => {
-    if (size === SIZE.SMALL) return 'scale(0.85);'
-    if (size === SIZE.LARGE) return 'scale(1.2);'
-
-    return 'none'
-  }};
   ${(props) => css.spaceMargins(props)};
 
   width: ${({ width }) => `${width + 25}px`};
@@ -51,9 +41,9 @@ export const Wrapper = styled.button<TWrapper>`
 
   transition: all 0.2s;
 `
-export const Text = styled.div`
+export const Text = styled.div<{ fontSize: number }>`
   word-break: keep-all;
   white-space: nowrap;
   line-height: 15px;
-  font-size: 13px;
+  font-size: ${({ fontSize }) => `${fontSize}px`};
 `

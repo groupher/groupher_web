@@ -12,6 +12,7 @@ import { Wrapper as ButtonWrapper } from '.'
 type TArrow = { color: TColorName; reverseColor: boolean; down?: boolean; up?: boolean }
 
 const BaseArrow = styled.div<TArrow>`
+  opacity: 0.65;
   width: 0;
   height: 0;
 
@@ -32,6 +33,7 @@ const BaseArrow = styled.div<TArrow>`
   ${ButtonWrapper}:hover & {
     width: 8px;
     height: 1px;
+    opacity: 0.9;
   }
 
   ${ButtonWrapper}:hover &:before {

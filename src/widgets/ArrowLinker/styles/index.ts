@@ -15,15 +15,15 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   ${(props) => css.spaceMargins(props)};
 `
 
-export const ArrowIcon = styled(ArrowSVG)<{ size: number }>`
+export const ArrowIcon = styled(ArrowSVG)<{ fontSize: number }>`
   fill: ${theme('link')};
-  width: ${({ size }) => `${size - 1}px`};
-  height: ${({ size }) => `${size - 1}px`};
+  width: ${({ fontSize }) => `${fontSize - 1}px`};
+  height: ${({ fontSize }) => `${fontSize - 1}px`};
   margin-left: 1px;
   opacity: 0.6;
 `
 
-export const Title = styled.span<{ size: number }>`
+export const Title = styled.span<{ fontSize: number }>`
   display: inline-block;
-  font-size: ${({ size }) => `${size}px`};
+  font-fontsize: ${({ fontSize }) => `${fontSize}px`};
 `

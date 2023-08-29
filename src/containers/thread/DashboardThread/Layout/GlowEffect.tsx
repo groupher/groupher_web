@@ -3,8 +3,8 @@ import { keys } from 'ramda'
 
 import GLOW_EFFECTS, { GLOW_OPACITY } from '@/constant/glow_effect'
 
-import { Br } from '@/widgets/Common'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
+import { Br, Row as RowBase } from '@/widgets/Common'
+import ArrowLinker from '@/widgets/ArrowLinker'
 import Radio from '@/widgets/Switcher/Radio'
 
 import SectionLabel from '../SectionLabel'
@@ -51,10 +51,12 @@ const GlowEffect: FC<TProps> = ({
       <SectionLabel
         title="页面辉光"
         desc={
-          <>
+          <RowBase>
             设置后每个页面的展示光晕（阅览页面除外），可配合壁纸风格搭配。
-            <ArrowButton size="small">了解更多</ArrowButton>
-          </>
+            <ArrowLinker href="/" fontSize={13}>
+              了解更多
+            </ArrowLinker>
+          </RowBase>
         }
       />
 

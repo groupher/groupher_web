@@ -16,7 +16,9 @@ export const Title = styled.div<{ noDesc: boolean }>`
 `
 export const Desc = styled.div`
   color: ${theme('article.digest')};
+  opacity: 0.8;
   font-size: 13px;
   margin-top: 10px;
   margin-bottom: 25px;
+  line-height: 22px;
 `

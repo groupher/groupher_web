@@ -50,7 +50,7 @@ const TopbarLayout: FC<TProps> = ({ layout, isLayoutTouched, isBgTouched, saving
             <Inline>
               <ArrowButton
                 onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
-                size="small"
+                fontSize={12}
               >
                 查看示例
               </ArrowButton>

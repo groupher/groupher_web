@@ -50,7 +50,7 @@ const ArticleBroadcast: FC<TProps> = ({
       </Content>
       <SpaceGrow />
 
-      <LinkButton color={color} size="small">
+      <LinkButton color={color} fontSize={12}>
         详情
       </LinkButton>
     </Wrapper>

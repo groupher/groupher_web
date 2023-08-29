@@ -19,22 +19,22 @@ const log = buildLog('c:ArrowLinker:index')
 type TProps = {
   testid?: string
   href?: string
-  size?: number
+  fontSize?: number
   children: ReactNode
 } & TSpace
 
 const ArrowLinker: FC<TProps> = ({
   testid = 'arrow-linker',
-  size = 13,
+  fontSize = 13,
   href = '/',
   children,
   ...restProps
 }) => {
   return (
     <Link href={href}>
-      <Wrapper {...restProps}>
-        <Title size={size}>{children}</Title>
-        <ArrowIcon size={size} />
+      <Wrapper testid={testid} {...restProps}>
+        <Title fontSize={fontSize}>{children}</Title>
+        <ArrowIcon fontSize={fontSize} />
       </Wrapper>
     </Link>
   )

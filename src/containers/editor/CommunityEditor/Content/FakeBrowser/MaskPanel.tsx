@@ -37,7 +37,7 @@ const MaskPanel: FC<TProps> = ({ step }) => {
           <ColumnItem>
             <Dot />
             如果你的产品 / 服务域名已被占用，请在
-            <ArrowLinker href="/feedback" size={14} left={1}>
+            <ArrowLinker href="/feedback" fontSize={14} left={1}>
               这里反馈
             </ArrowLinker>
             。
