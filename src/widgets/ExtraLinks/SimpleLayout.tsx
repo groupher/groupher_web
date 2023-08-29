@@ -1,9 +1,10 @@
 import { FC, Fragment } from 'react'
-import { keys, startsWith } from 'ramda'
+import { keys, startsWith, filter } from 'ramda'
 
 import type { TLinkItem } from '@/spec'
 import { MORE_GROUP, ONE_LINK_GROUP } from '@/constant/dashboard'
 import { sortByIndex, groupByKey } from '@/utils/helper'
+import useAccount from '@/hooks/useAccount'
 
 import Tooltip from '@/widgets/Tooltip'
 
@@ -37,8 +38,12 @@ const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold }) => {
 }
 
 const ExtraLinks: FC<TProps> = ({ links }) => {
+  const { isModerator } = useAccount()
+
+  const _links = filter((item) => item.title !== '', links)
+
   // @ts-ignore
-  const groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
+  const groupedLinks = groupByKey(sortByIndex(_links, 'groupIndex'), 'group')
   const groupKeys = keys(groupedLinks)
 
   return (
@@ -56,7 +61,7 @@ const ExtraLinks: FC<TProps> = ({ links }) => {
               <LinkGroup
                 groupTitle={groupTitle}
                 links={curGroupLinks}
-                showMoreFold={links.length >= 2 && links[0].title !== ''}
+                showMoreFold={(links.length >= 2 && links[0].title !== '') || isModerator}
               />
             )}
           </Fragment>

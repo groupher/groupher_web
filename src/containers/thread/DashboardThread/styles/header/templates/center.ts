@@ -25,7 +25,7 @@ export const BrandText = styled.div`
 `
 export const CenterWrapper = styled.div`
   ${css.flex('align-center')};
-  gap: 0 14px;
+  gap: 0 20px;
   margin-left: -15px;
 `
 
