@@ -1,12 +1,13 @@
 import styled from 'styled-components'
 
 import css, { theme } from '@/css'
-
 import Input from '@/widgets/Input'
+
+import { ALIGN_HEADER_OFFSET } from '../../constant'
 
 export const Wrapper = styled.div`
   ${css.flexColumn()};
-  padding: 0 150px;
+  padding: ${() => `0 ${ALIGN_HEADER_OFFSET}`};
 `
 export const Section = styled.div`
   padding-bottom: 30px;
