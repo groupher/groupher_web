@@ -11,9 +11,12 @@ export const LinkItem = styled(Link)`
   color: ${theme('article.digest')};
   text-decoration: none;
   display: block;
+  padding: 2px 8px;
+  border-radius: 3px;
 
   &:hover {
     color: ${theme('article.title')};
+    background: ${theme('hoverBg')};
     text-decoration: none;
     cursor: pointer;
   }
@@ -29,9 +32,9 @@ export const ColumnWrapper = styled.div`
 
 export const MenuPanel = styled.div`
   ${css.flexColumn()};
-  width: 80px;
-  padding: 4px 5px;
-  gap: 5px 0;
+  width: 90px;
+  padding: 2px 2px;
+  gap: 8px 0;
 `
 
 export const ArrowIcon = styled(ArrowSVG)`

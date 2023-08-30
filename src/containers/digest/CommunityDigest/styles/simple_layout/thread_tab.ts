@@ -6,7 +6,7 @@ import css, { theme } from '@/css'
 
 export const NormalWrapper = styled.div<TSpace>`
   ${css.flex('align-center')};
-  gap: 0 32px;
+  gap: 0 16px;
 
   ${(props) => css.spaceMargins(props)};
 
@@ -30,13 +30,16 @@ export const Title = styled(Link)<TActive>`
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   font-size: 14px;
   opacity: ${({ $active }) => ($active ? 1 : 0.9)};
-  font-weight: ${({ $active }) => ($active ? 600 : 400)};
+  font-weight: ${({ $active }) => ($active ? 500 : 400)};
   text-decoration: none;
+  padding: 3px 10px;
+  border-radius: 5px;
 
   &:hover {
     color: ${theme('article.title')};
     opacity: 1;
     cursor: pointer;
+    background: ${theme('hoverBg')};
   }
 
   transition: all 0.2s;

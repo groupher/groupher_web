@@ -20,13 +20,12 @@ export const Block = styled.div<TActive>`
   width: 100%;
   border-radius: 8px;
 
-  background-color: ${({ active }) => (active ? theme('textBadge') : 'transparent')}; // to-theme
+  background-color: ${({ active }) => (active ? theme('hoverBg') : 'transparent')}; // to-theme
   color: ${({ active }) => (active ? theme('article.title') : theme('article.digest'))};
 
   &:hover {
     cursor: pointer;
-    background-color: ${({ active }) =>
-      active ? theme('textBadge') : theme('hoverBg')}; // to-theme
+    background: ${theme('hoverBg')};
     color: ${theme('article.title')};
   }
 `

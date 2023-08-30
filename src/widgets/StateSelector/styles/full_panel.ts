@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
   ${css.flexColumn()};
   width: 120px;
   padding: 10px 8px;
-  gap: 5px 0;
+  gap: 8px 0;
   cursor: auto;
 `
 export const SelectItem = styled(SelectItemBase)`

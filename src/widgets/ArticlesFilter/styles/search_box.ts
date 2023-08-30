@@ -11,6 +11,13 @@ export const Wrapper = styled.div`
   ${css.flex('align-center')};
   position: relative;
   cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-right: -8px;
+
+  &:hover {
+    background: ${theme('hoverBg')};
+  }
 `
 export const Back = styled.div`
   ${css.flex('align-both')};

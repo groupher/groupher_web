@@ -64,7 +64,7 @@ const StateSelector: FC<TProps> = ({
         }
         noPadding
       >
-        <DropdownButton noArrow={noArrow}>
+        <DropdownButton noArrow={noArrow} $active={menuOpen}>
           <ActiveState activeState={activeState} mode={mode} />
         </DropdownButton>
       </Tooltip>

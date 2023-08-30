@@ -45,8 +45,6 @@ const SimpleLayout: FC<TProps> = ({
   const washedThreads = washThreads(community.threads, dashboardSettings)
   const { extraLinks } = dashboardSettings
 
-  console.log('## metric in simple layout: ', metric)
-
   return (
     <Wrapper
       testid="community-digest"

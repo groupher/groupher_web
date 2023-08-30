@@ -16,12 +16,12 @@ export const Wrapper = styled.div<TTag>`
   margin-left: -2px;
   padding: 4px;
   max-width: 180px;
-  border-radius: 5px;
+  border-radius: 8px;
 
   background: ${({ $active }) => (!$active ? 'transparent' : theme('hoverBg'))};
 
   &:hover {
-    background: ${theme('textBadge')}; // to-theme
+    background: ${theme('hoverBg')};
     cursor: pointer;
   }
 `

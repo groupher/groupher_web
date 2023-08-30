@@ -37,15 +37,14 @@ export const SelectItem = styled.div<TActive>`
   width: 100%;
   border-radius: 6px;
 
-  background-color: ${({ active }) => (active ? theme('textBadge') : 'transparent')}; // to-theme
+  background-color: ${({ active }) => (active ? theme('hoverBg') : 'transparent')}; // to-theme
   color: ${({ active }) => (active ? theme('article.title') : theme('article.digest'))};
   font-weight: ${({ active }) => (active ? 500 : 400)};
   position: relative;
 
   &:hover {
     cursor: pointer;
-    background-color: ${({ active }) =>
-      active ? theme('textBadge') : theme('hoverBg')}; // to-theme
+    background-color: ${theme('hoverBg')};
     color: ${theme('article.title')};
     border-color: ${theme('popover.activeBorder')};
   }
