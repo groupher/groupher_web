@@ -1,11 +1,12 @@
 import styled from 'styled-components'
 
 import css, { theme } from '@/css'
+import { ALIGN_HEADER_OFFSET } from '../../constant'
 
 export const Wrapper = styled.div`
   ${css.flexColumn()};
   padding: 0 80px;
-  padding-left: 156px;
+  padding: ${() => `0 ${ALIGN_HEADER_OFFSET}`};
   padding-right: 120px;
 
   ${css.media.mobile`

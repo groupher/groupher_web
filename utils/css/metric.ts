@@ -25,7 +25,7 @@ export const WIDTH = {
   },
   DASHBOARD: {
     PAGE: '1400px',
-    CONTENT: '1100px',
+    CONTENT: '1080px',
   },
   USER: {
     PAGE: '1380px',

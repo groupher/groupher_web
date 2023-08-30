@@ -1,4 +1,5 @@
 import type { TSnakeUpperCase } from '@/spec'
+
 import {
   DASHBOARD_ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
@@ -12,6 +13,8 @@ import {
 import type { TSettingField, TWidgetType, THeaderEditType, TFooterEditType } from './spec'
 
 import { Icon } from './styles/side_menu'
+
+export const ALIGN_HEADER_OFFSET = '148px'
 
 // do not change, it's map to GQ endpoint updateDashboardLayout
 export const SETTING_LAYOUT_FIELD = {
