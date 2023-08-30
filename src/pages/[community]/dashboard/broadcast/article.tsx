@@ -111,7 +111,7 @@ const CommunityDashboardPage = (props) => {
   return (
     <Provider store={store}>
       <GlobalLayout
-        metric={METRIC.COMMUNITY}
+        metric={METRIC.DASHBOARD}
         seoConfig={communitySEO(community as TCommunity, activeThread)}
       >
         <DashboardContent />

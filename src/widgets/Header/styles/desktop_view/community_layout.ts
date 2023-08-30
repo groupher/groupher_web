@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable, TMetric } from '@/spec'
-import css, { theme, WIDTH } from '@/css'
-import { pixelAdd } from '@/utils/dom'
+import css, { theme } from '@/css'
 
 type TPos = {
   noBorder: boolean
@@ -31,10 +30,9 @@ const InnerWrapper = styled.div<TInnerWrapper>`
   height: 33px;
   ${({ metric }) => css.fitContentWidth(metric)};
 `
-export const ClassicInnerWrapper = styled(InnerWrapper)`
-  padding-left: ${pixelAdd(WIDTH.COMMUNITY.CONTENT_OFFSET, 10)};
-  padding-right: ${WIDTH.COMMUNITY.CONTENT_OFFSET};
-`
+// padding-left: ${pixelAdd(WIDTH.COMMUNITY.CONTENT_OFFSET, 10)};
+//  padding-right: ${WIDTH.COMMUNITY.CONTENT_OFFSET};
+export const ClassicInnerWrapper = styled(InnerWrapper)``
 
 export const RouterWrapper = styled.div`
   ${css.flexGrow('align-center')};

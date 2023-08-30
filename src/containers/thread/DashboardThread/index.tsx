@@ -10,6 +10,7 @@ import { includes } from 'ramda'
 import { bond } from '@/utils/mobx'
 import { ROUTE, DASHBORD_CMS_ROUTES } from '@/constant/route'
 
+import type { TMetric } from '@/spec'
 import SideMenu from './SideMenu'
 import CMS from './CMS'
 
@@ -41,11 +42,13 @@ import { useInit } from './logic'
 type TProps = {
   dashboardThread?: TStore
   testid?: string
+  metric: TMetric
 }
 
 const DashboardThreadContainer: FC<TProps> = ({
   dashboardThread: store,
   testid = 'dashboard-thread',
+  metric,
 }) => {
   useInit(store)
   const {
@@ -71,7 +74,7 @@ const DashboardThreadContainer: FC<TProps> = ({
   const { DASHBOARD } = ROUTE
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper testid={testid} metric={metric}>
       <SideMenu curTab={curTab} touched={touched} community={curCommunity} />
 
       <MainWrapper>

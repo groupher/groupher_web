@@ -21,9 +21,11 @@ export const WIDTH = {
   },
   COMMUNITY: {
     PAGE: '1360px',
-    CONTENT: '1024px',
-    CONTENT_OFFSET: '34px',
-    LAPTOP_M_PADDING: '0',
+    CONTENT: '900px',
+  },
+  DASHBOARD: {
+    PAGE: '1400px',
+    CONTENT: '1100px',
   },
   USER: {
     PAGE: '1380px',

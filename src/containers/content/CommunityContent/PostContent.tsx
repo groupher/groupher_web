@@ -4,6 +4,9 @@
 
 import { FC } from 'react'
 
+import type { TMetric } from '@/spec'
+import METRIC from '@/constant/metric'
+
 import { bond } from '@/utils/mobx'
 import { BANNER_LAYOUT } from '@/constant/layout'
 import { THREAD } from '@/constant/thread'
@@ -19,12 +22,16 @@ import { Wrapper, SidebarWrapper, InnerWrapper, ContentWrapper, MobileCardsWrapp
 
 type TProps = {
   communityContent?: TStore
+  metric?: TMetric
 }
 
 /**
  * only for AboutThread, but link to the common communityContent store
  */
-const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
+const CommunityContentContainer: FC<TProps> = ({
+  communityContent: store,
+  metric = METRIC.COMMUNITY,
+}) => {
   useInit(store)
 
   const { globalLayout, isMobile } = store
@@ -34,7 +41,7 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
 
   return (
     <LayoutWrapper testid="post-thread-content">
-      <CommunityDigest />
+      <CommunityDigest metric={metric} />
       {isMobile && (
         <MobileCardsWrapper>
           <ContentWrapper>
@@ -44,7 +51,7 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
       )}
 
       {!isMobile && (
-        <InnerWrapper>
+        <InnerWrapper metric={metric}>
           {isSidebarLayout && <SidebarLayoutHeader thread={THREAD.POST} />}
           <ContentWrapper>
             <ArticlesThread />

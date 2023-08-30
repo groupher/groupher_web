@@ -35,7 +35,7 @@ export const MainWrapper = styled.div<TMainWrapper>`
 
   margin-top: 12px;
   /* padding-top: ${({ thread }) => (includes(thread, values(CARD_THREAD)) ? '13px' : '16px')}; */
-  padding-left: ${({ thread }) => (includes(thread, values(CARD_THREAD)) ? '15px' : '25px')};
+  padding-left: ${({ thread }) => (includes(thread, values(CARD_THREAD)) ? '15px' : 0)};
   padding-right: ${({ thread }) => (includes(thread, values(CARD_THREAD)) ? 0 : '80px')};
   margin-right: ${({ thread }) => (includes(thread, values(CARD_THREAD)) ? '35px' : '65px')};
 

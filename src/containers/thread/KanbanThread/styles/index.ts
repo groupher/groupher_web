@@ -10,7 +10,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   width: 100%;
   min-height: 100vh;
   height: 100%;
-  padding: 10px 25px;
+  padding: 10px 0;
   margin-bottom: 30px;
   margin-left: ${({ isSidebarLayout }) => (isSidebarLayout ? '-35px' : 0)};
 

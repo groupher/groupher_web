@@ -17,7 +17,6 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   min-width: 168px;
   color: ${theme('article.digest')};
   padding-top: 32px;
-  padding-left: 6px;
 
   ${css.media.mobile`
     display: none;

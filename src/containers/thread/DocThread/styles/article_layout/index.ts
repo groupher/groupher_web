@@ -53,10 +53,9 @@ export const Sidebar = styled.div<TSidebar>`
   width: 300px;
   color: ${theme('article.digest')};
   padding-top: 30px;
-  padding-left: 25px;
 
   width: ${({ isLeftLayout }) => (isLeftLayout ? '320px' : '300px')};
-  padding-left: ${({ isLeftLayout }) => (isLeftLayout ? '26px' : '32px')};
+  padding-left: ${({ isLeftLayout }) => (isLeftLayout ? '0' : '32px')};
 
   max-width: ${({ open }) => (open ? 'auto' : 0)};
   max-height: ${({ open }) => (open ? 'auto' : 0)};

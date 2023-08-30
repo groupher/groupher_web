@@ -21,7 +21,7 @@ export const MainWrapper = styled.div<{ isSidebarLayout: boolean }>`
   background: transparent;
   border-radius: 6px;
   margin-top: 25px;
-  padding-left: ${({ isSidebarLayout }) => (isSidebarLayout ? 0 : '22px')};
+  padding-left: ${({ isSidebarLayout }) => (isSidebarLayout ? 0 : '')};
 
   ${css.media.mobile`
     width: 100%;

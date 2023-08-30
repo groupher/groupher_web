@@ -53,7 +53,11 @@ export const GithubItem = styled(Link)`
   font-size: 14px;
   margin-right: 25px;
   color: ${theme('article.title')};
-  opacity: 0.65;
+  opacity: 0.6;
+
+  img {
+    transform: scale(1.15);
+  }
 
   &:hover {
     text-decoration: none;

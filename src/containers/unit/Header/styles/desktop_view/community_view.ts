@@ -35,10 +35,7 @@ const InnerWrapper = styled.div<TInnerWrapper>`
   height: 33px;
   ${({ metric }) => css.fitContentWidth(metric)};
 `
-export const ClassicInnerWrapper = styled(InnerWrapper)`
-  padding-left: ${pixelAdd(WIDTH.COMMUNITY.CONTENT_OFFSET, 10)};
-  padding-right: ${WIDTH.COMMUNITY.CONTENT_OFFSET};
-`
+export const ClassicInnerWrapper = styled(InnerWrapper)``
 
 export const RouterWrapper = styled.div`
   ${css.flexGrow('align-center')};
