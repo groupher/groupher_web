@@ -4,8 +4,8 @@ import css from '@/css'
 
 export const Wrapper = styled.div`
   padding: 0;
-  padding-left: 95px;
-  padding-right: 100px;
+  padding-left: 156px;
+  padding-right: 120px;
 
   ${css.media.mobile`
     padding: 0 20px;

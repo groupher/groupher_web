@@ -4,7 +4,7 @@ import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.flexColumn()};
-  padding: 0 150px;
+  padding: 0 156px;
 
   ${css.media.mobile`
     padding: 0 20px;
