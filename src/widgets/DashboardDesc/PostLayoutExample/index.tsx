@@ -89,7 +89,6 @@ const PostLayoutExample: FC<TProps> = ({ activePostLayout }) => {
           items={TABS_MODE_OPTIONS}
           size="small"
           activeKey={postLayout}
-          bottomSpace={4}
           onChange={setPostLayout}
           view={VIEW.DESKTOP}
         />

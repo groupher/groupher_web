@@ -10,22 +10,29 @@ export const BodyWrapper = styled.div`
   margin-bottom: 14px;
 `
 export const Title = styled.div`
-  color: ${theme('article.title')};
+  margin-left: 2px;
+  position: relative;
+`
+export const TitleText = styled.h3`
   font-size: 25px;
+  font-weight: 400;
+  width: calc(100% - 30px);
+  color: ${theme('article.title')};
 `
 export const SubTitle = styled.span`
-  display: inline-block;
-  color: ${theme('article.digest')};
-  opacity: 0.4;
-  font-size: 22px;
-  margin-left: 10px;
-  margin-top: -2px;
+  position: absolute;
+  top: 5px;
+  right: 0;
+  color: ${theme('lightText')};
+  opacity: 0.8;
+  font-size: 20px;
 
   &:before {
     content: '#';
     margin-top: 1px;
     margin-right: 3px;
-    font-size: 19px;
+    font-size: 18px;
+    font-family: system-ui;
   }
 `
 

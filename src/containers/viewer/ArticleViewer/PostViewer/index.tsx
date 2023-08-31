@@ -3,6 +3,7 @@
  */
 
 import { FC, memo, Fragment, useCallback, useState, useEffect } from 'react'
+import Balancer from 'react-wrap-balancer'
 
 import type { TPost, TBroadcastConfig } from '@/spec'
 import { buildLog } from '@/utils/logger'
@@ -26,6 +27,7 @@ import {
   Wrapper,
   BodyWrapper,
   Title,
+  TitleText,
   SubTitle,
   UpvoteWrapper,
   GoTopWrapper,
@@ -62,7 +64,9 @@ const PostViewer: FC<TProps> = ({ article, loading, broadcastConfig }) => {
       <Wrapper>
         <Header article={article} />
         <Title>
-          <span>{article.title}</span>
+          <Balancer>
+            <TitleText>{article.title}</TitleText>
+          </Balancer>
           <SubTitle>{article.id}</SubTitle>
         </Title>
         <ArticleInfo article={article} />

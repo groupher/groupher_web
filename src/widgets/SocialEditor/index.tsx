@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, memo, useState, useCallback, useEffect } from 'react'
+import { FC, memo, useState, useCallback, useEffect, Fragment } from 'react'
 import { keys, includes, reject, findIndex, update } from 'ramda'
 
 import { useAutoAnimate } from '@formkit/auto-animate/react'
@@ -13,9 +13,19 @@ import type { TSocialType, TSocialItem, TSpace } from '@/spec'
 import { SOCIAL_LIST } from '@/constant/social'
 import { buildLog } from '@/utils/logger'
 
+import { Br } from '@/widgets/Common'
+
 import InputBar from './InputBar'
 
-import { Wrapper, Hint, PlatformWrapper, InputsWrapper, Label, Icon } from './styles'
+import {
+  Wrapper,
+  Hint,
+  PlatformWrapper,
+  IconItemWrapper,
+  InputsWrapper,
+  Label,
+  Icon,
+} from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:SocialEditor:index')
@@ -38,9 +48,7 @@ const SocialEditor: FC<TProps> = ({
 }) => {
   const [parent] = useAutoAnimate({ duration: 100 })
 
-  const [selected, setSelected] = useState<TSocialItem[]>([
-    { type: SOCIAL_LIST.HOMEPAGE, link: '' },
-  ])
+  const [selected, setSelected] = useState<TSocialItem[]>([{ type: SOCIAL_LIST.EMAIL, link: '' }])
 
   useEffect(() => {
     setSelected(value)
@@ -70,31 +78,40 @@ const SocialEditor: FC<TProps> = ({
 
   return (
     <Wrapper testid={testid} width={width} {...restProps}>
-      {withTitle && <Label>更新社交账号</Label>}
-      <Hint>点击选择社交平台:</Hint>
+      {withTitle && <Label>社交平台账号</Label>}
+      <Br top={18} />
+      <Hint>点击选择社交平台，相关信息会展示在页脚以及社区关于页面。</Hint>
+
       <PlatformWrapper>
         {keys(SOCIAL_LIST).map((social: TSocialType) => {
           const SocialIcon = Icon[social]
           const selectedTypes = selected.map((s) => s.type)
+          const $active = includes(social, selectedTypes)
 
           return (
-            <SocialIcon
-              key={social}
-              $active={includes(social, selectedTypes)}
-              onClick={() => {
-                if (!includes(social, selectedTypes)) {
-                  setSelected([...selected, { type: social, link: '' }])
-                }
-              }}
-            />
+            <IconItemWrapper key={social} $active={$active}>
+              <SocialIcon
+                $active={$active}
+                onClick={() => {
+                  if (!includes(social, selectedTypes)) {
+                    setSelected([...selected, { type: social, link: '' }])
+                  }
+                }}
+              />
+            </IconItemWrapper>
           )
         })}
       </PlatformWrapper>
 
       <InputsWrapper ref={parent}>
         {selected.map((item: TSocialItem) => (
+          <Fragment key={item.type}>
+            <InputBar social={item} onDelete={removeSocial} onChange={updateSocial} />
+            {item.type === 'GITHUB' && (
+              <Hint>填写 Github 仓库地址后，会在页首右侧显示仓库实时 Stars 信息</Hint>
+            )}
+          </Fragment>
           // @ts-ignore
-          <InputBar key={item.type} social={item} onDelete={removeSocial} onChange={updateSocial} />
         ))}
       </InputsWrapper>
     </Wrapper>

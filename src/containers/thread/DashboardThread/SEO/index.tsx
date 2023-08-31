@@ -38,7 +38,6 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => 
           <Tabs
             items={SEO_TABS}
             activeKey={seoTab}
-            bottomSpace={4}
             onChange={(tab) => {
               edit(tab, 'seoTab')
               const targetPath =

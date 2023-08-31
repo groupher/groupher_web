@@ -45,11 +45,15 @@ const SimpleLayout: FC<TProps> = ({
   const washedThreads = washThreads(community.threads, dashboardSettings)
   const { extraLinks } = dashboardSettings
 
+  // console.log('## dashboardSettings: ', dashboardSettings.nameAlias)
+  // console.log('## washedThreads: ', washedThreads)
+  // console.log('## community.threads: ', community.threads)
+
   return (
     <Wrapper
+      id={ANCHOR.GLOBAL_HEADER_ID}
       testid="community-digest"
       metric={metric}
-      id={ANCHOR.GLOBAL_HEADER_ID}
       headerLayout={headerLayout}
     >
       <InnerWrapper metric={metric}>

@@ -40,7 +40,6 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => 
           <Tabs
             items={BASEINFO_TABS}
             activeKey={baseInfoTab}
-            bottomSpace={4}
             onChange={(tab) => {
               edit(tab, 'baseInfoTab')
               const targetPath =

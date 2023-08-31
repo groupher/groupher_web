@@ -5,7 +5,7 @@ import { SOCIAL_LIST } from '@/constant/social'
 
 import css, { theme } from '@/css'
 
-import GlobalSVG from '@/icons/social/Global'
+import TikTokSVG from '@/widgets/Icons/social/TikTok'
 import EmailSVG from '@/icons/social/Email'
 import WeChatSVG from '@/icons/social/WeChat'
 import TwitterSVG from '@/icons/social/Twitter'
@@ -14,7 +14,7 @@ import ZhihuSVG from '@/icons/social/Zhihu'
 import GithubSVG from '@/icons/social/Github'
 import BiliBiliSVG from '@/icons/social/BiliBili'
 import BossSVG from '@/icons/social/Boss'
-import LagouSVG from '@/icons/social/Lagou'
+// import LagouSVG from '@/icons/social/Lagou'
 
 // import { theme } from '@/utils/themes'
 
@@ -34,13 +34,12 @@ export const Label = styled.div`
   color: ${theme('article.title')};
   font-size: 14px;
   margin-bottom: 12px;
-  margin-left: 4px;
 `
 export const Hint = styled.div`
   font-size: 12px;
   color: ${theme('article.digest')};
-  margin-top: 10px;
-  margin-left: 4px;
+  opacity: 0.85;
+  margin-top: -10px;
 `
 export const InputsWrapper = styled.div`
   ${css.flexColumn()};
@@ -56,15 +55,26 @@ export const IconWrapper = styled.div`
   border-bottom-left-radius: 5px;
   border-right: none;
 `
+
+export const IconItemWrapper = styled.div<TActive>`
+  padding: 4px;
+  border-radius: 3px;
+  background: ${({ $active }) => ($active ? theme('hoverBg') : '')};
+
+  &:hover {
+    background: ${theme('hoverBg')};
+    cursor: pointer;
+  }
+`
+
 export const PlatformWrapper = styled.div`
   ${css.flex('align-center')};
   flex-wrap: wrap;
-  gap: 12px 15px;
-  margin-top: 10px;
+  gap: 12px 10px;
+  margin-top: 20px;
   margin-bottom: 15px;
   border: 1px solid;
   border-color: ${theme('divider')};
-  /* background: ${theme('hoverBg')}; */
   padding: 12px 10px;
   border-radius: 5px;
   width: 100%;
@@ -84,7 +94,7 @@ const getIcon = (SVG, size = 15) => {
     filter: ${({ $active }) => ($active ? 'saturate(1)' : 'saturate(0)')};
     opacity: ${({ $active }) => ($active ? 1 : 0.7)};
 
-    &:hover {
+    ${IconItemWrapper}:hover & {
       cursor: pointer;
       filter: saturate(1);
       opacity: 1;
@@ -94,7 +104,7 @@ const getIcon = (SVG, size = 15) => {
 }
 
 export const Icon = {
-  [SOCIAL_LIST.HOMEPAGE]: getIcon(GlobalSVG),
+  [SOCIAL_LIST.TIKTOK]: getIcon(TikTokSVG),
   [SOCIAL_LIST.EMAIL]: getIcon(EmailSVG),
   [SOCIAL_LIST.TWITTER]: getIcon(TwitterSVG),
   [SOCIAL_LIST.ZHIHU]: getIcon(ZhihuSVG),
@@ -102,6 +112,6 @@ export const Icon = {
   [SOCIAL_LIST.BILIBILI]: getIcon(BiliBiliSVG),
   [SOCIAL_LIST.WECHAT]: getIcon(WeChatSVG),
   [SOCIAL_LIST.BOSS]: getIcon(BossSVG, 14),
-  [SOCIAL_LIST.LAGOU]: getIcon(LagouSVG, 14),
+  // [SOCIAL_LIST.LAGOU]: getIcon(LagouSVG, 14),
   [SOCIAL_LIST.WEIBO]: getIcon(WeiboSVG, 17),
 }

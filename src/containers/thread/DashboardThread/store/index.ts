@@ -503,7 +503,7 @@ const DashboardThread = T.model('DashboardThread', {
       return {
         aliasTab: slf.aliasTab,
         editingAlias: toJS(slf.editingAlias),
-        nameAlias: toJS(slf.nameAlias),
+        nameAlias: reject((item: TNameAlias) => item.slug === '', toJS(slf.nameAlias)),
         saving: slf.saving,
       }
     },

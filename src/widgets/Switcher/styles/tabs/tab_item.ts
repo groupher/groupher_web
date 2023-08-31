@@ -68,13 +68,16 @@ type TLabel = TActive & {
 export const Label = styled.span<TLabel>`
   ${css.flex('align-center')};
   white-space: nowrap;
+  padding: 1px 6px;
+  border-radius: 3px;
   color: ${({ active }) => (active ? theme('article.title') : '#878b8f')}; // to-theme
   margin-bottom: ${({ bottomSpace }) => `${bottomSpace}px`};
 
   font-weight: 500;
 
   &:hover {
-    color: ${theme('article.title')};
+    background: ${theme('hoverBg')};
+
     svg {
       fill: ${theme('article.title')};
     }

@@ -26,5 +26,5 @@ export const Banner = styled.div`
 export const TabsWrapper = styled.div`
   position: absolute;
   bottom: 0;
-  left: -8px;
+  left: -14px;
 `

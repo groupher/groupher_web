@@ -42,6 +42,7 @@ const I18nDict = {
 
   // osocial
   HOMEPAGE: '官方主页',
+  TICTOC: '抖音',
   GITHUB: 'Github',
   TWITTER: '推特',
   ZHIHU: '知乎',

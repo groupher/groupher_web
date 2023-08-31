@@ -25,11 +25,16 @@ type TProps = {
 const Alias: FC<TProps> = ({ settings }) => {
   const curCommunity = useCurCommunity()
 
+  // console.log('## ALIAS_GROUP: ', ALIAS_GROUP)
+
   const { nameAlias, editingAlias, aliasTab } = settings
   const groupedAlias = groupByKey(nameAlias, 'group')
 
-  const generalAlias = groupedAlias[ALIAS_GROUP.GENERAL]
-  const kanbanAlias = groupedAlias[ALIAS_GROUP.KANBAN]
+  const generalAlias = groupedAlias[ALIAS_GROUP.GENERAL] || []
+  const kanbanAlias = groupedAlias[ALIAS_GROUP.KANBAN] || []
+
+  console.log('## groupedAlias: ', groupedAlias)
+  console.log('## generalAlias: ', generalAlias)
 
   return (
     <Wrapper>
@@ -43,7 +48,6 @@ const Alias: FC<TProps> = ({ settings }) => {
           <Tabs
             items={ALIAS_TABS}
             activeKey={aliasTab}
-            bottomSpace={4}
             onChange={(tab) => {
               edit(tab, 'aliasTab')
               const targetPath =

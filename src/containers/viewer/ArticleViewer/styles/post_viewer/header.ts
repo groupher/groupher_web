@@ -16,14 +16,16 @@ export const Avatar = styled(Img)`
   margin-right: 10px;
 `
 export const AuthorName = styled.div`
-  color: ${theme('article.info')};
-  font-size: 15px;
+  color: ${theme('article.digest')};
+  font-size: 14px;
+  opacity: 0.8;
 `
 export const PublishWrapper = styled.div`
   ${css.flex('align-center')}
 `
 export const PubDate = styled.div`
-  color: ${theme('article.info')};
+  color: ${theme('article.digest')};
+  opacity: 0.8;
   font-size: 13px;
 `
 export const EditedHint = styled.div`

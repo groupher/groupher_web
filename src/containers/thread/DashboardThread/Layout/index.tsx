@@ -67,7 +67,6 @@ const UI: FC<TProps> = ({ settings, touched }) => {
           <Tabs
             items={LAYOUT_TABS}
             activeKey={layoutTab}
-            bottomSpace={4}
             onChange={(tab) => {
               edit(tab, 'layoutTab')
               const targetPath =
