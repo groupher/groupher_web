@@ -14,7 +14,7 @@ type TWrapper = TTestable & TAvatarProps & { avatarLayout: TAvatarLayout; color:
 export const Wrapper = styled.div.attrs<TWrapper>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 
   background: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
 

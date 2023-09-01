@@ -10,7 +10,7 @@ import ArrowSVG from '@/icons/ArrowSimple'
 type TWrapper = { withBorder: boolean; size: TSizeTS } & TSpace & TActive
 
 export const Wrapper = styled.div<TWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
 
   border: ${({ withBorder }) => (withBorder ? '1px solid' : 'none')};
@@ -34,7 +34,7 @@ export const Label = styled.div`
   opacity: 0.7;
 `
 export const InnerBtnWrapper = styled.div<TActive>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 2px;
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   font-weight: 400;

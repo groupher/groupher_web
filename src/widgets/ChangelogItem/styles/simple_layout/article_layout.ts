@@ -8,7 +8,7 @@ import ShareSVG from '@/icons/Share'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-start')};
+  ${css.row('align-start')};
   padding-top: 12px;
 `
 export const DateTime = styled.div`
@@ -30,7 +30,7 @@ export const Title = styled.div`
   margin-bottom: 8px;
 `
 export const TagsWrapper = styled.div`
-  ${css.flex('align-both', 'justify-between')};
+  ${css.row('align-both', 'justify-between')};
   margin-bottom: 8px;
 `
 export const Body = styled.div`
@@ -39,7 +39,7 @@ export const Body = styled.div`
   line-height: 1.85;
 `
 export const Footer = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 20px;
   margin-left: -5px;
   margin-right: 12px;

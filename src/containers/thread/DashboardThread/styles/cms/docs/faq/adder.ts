@@ -6,7 +6,7 @@ import AdderSVG from '@/icons/Plus'
 import Button from '@/widgets/Buttons/Button'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('justify-center')};
+  ${css.column('justify-center')};
   margin-top: 50px;
 `
 export const Notes = styled.div`

@@ -6,7 +6,7 @@ import DomainSVG from '@/icons/Domain'
 
 export const Wrapper = styled.div`
   position: relative;
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   color: ${theme('article.digest')};
   /* background-image: linear-gradient(#043B49, #022A35); */
   background-image: ${theme('banner.linearGradient')};
@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
 `
 export const IntroTitle = styled.div`
   position: relative;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   font-size: 18px;
   margin-bottom: 20px;
@@ -33,7 +33,7 @@ export const DomainIcon = styled(DomainSVG)`
 `
 export const NextBtn = styled.div`
   position: absolute;
-  ${css.flex('align-center', 'justify-around')};
+  ${css.row('align-center', 'justify-around')};
   width: 200px;
   bottom: 25px;
   margin-left: 10px;

@@ -8,7 +8,7 @@ import { LineDivider } from '@/widgets/Common'
 import ArrowSVG from '@/icons/ArrowSimple'
 
 export const Wrapper = styled.div<{ lineHeight: boolean }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   line-height: ${({ lineHeight }) => (lineHeight ? '24px' : '')};
 `
 export const Title = styled.div<{ withMaxWidth: boolean }>`
@@ -34,7 +34,7 @@ export const ModelineDivider = styled(LineDivider)`
 `
 
 export const Panel = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   gap: 14px;
   width: 140px;
   padding: 15px 20px;

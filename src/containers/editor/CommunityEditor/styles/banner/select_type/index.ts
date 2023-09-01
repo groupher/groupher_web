@@ -5,7 +5,7 @@ import Img from '@/Img'
 
 export const Wrapper = styled.div<{ marginTop: boolean }>`
   position: relative;
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   color: ${theme('article.digest')};
   width: 100%;
   min-height: ${({ marginTop }) => (!marginTop ? '480px' : '680px;')};
@@ -13,12 +13,12 @@ export const Wrapper = styled.div<{ marginTop: boolean }>`
   transition: all 0.4s;
 `
 export const InnerWrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   height: 380px;
   margin-top: 50px;
 `
 export const IntroTitle = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   font-size: 18px;
   margin-bottom: 20px;
@@ -43,12 +43,12 @@ export const Title = styled.div`
   font-size: 1.1rem;
 `
 export const NextBtn = styled.div`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   width: 280px;
   margin-top: 24px;
 `
 export const Note = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 50px;
   font-size: 13px;
   margin-left: 5px;

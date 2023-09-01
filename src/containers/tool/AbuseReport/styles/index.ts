@@ -7,7 +7,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   color: ${theme('article.digest')};
-  ${css.flexColumn()};
+  ${css.column()};
   min-height: 320px;
 `
 export const ContentWrapper = styled.div``

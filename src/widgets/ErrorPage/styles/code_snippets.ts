@@ -6,7 +6,7 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   color: ${theme('article.title')};
   line-height: 24px;
   font-size: 15px;

@@ -4,11 +4,11 @@ import Img from '@/Img'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-start', 'justify-center')};
+  ${css.column('align-start', 'justify-center')};
   width: 100%;
 `
 const CatalogCard = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   width: 100%;
   height: 36px;
   color: #7c8f90;

@@ -4,7 +4,7 @@ import type { TActive, TSpace } from '@/spec'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   color: ${theme('article.digest')};
   width: 100%;
   margin-top: 10px;
@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
 
 export const SlideBox = styled.div`
   position: relative;
-  ${css.flex('align-center', 'justify-around')};
+  ${css.row('align-center', 'justify-around')};
   width: 100%;
   height: 28px;
   border: 1px solid;
@@ -52,7 +52,7 @@ export const IndexDot = styled.div`
   transition: all 0.2s;
 `
 export const Footer = styled.div`
-  ${css.flex('align-center', 'justify-around')};
+  ${css.row('align-center', 'justify-around')};
   width: 100%;
   margin-top: 7px;
 `

@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   width: 100%;
 
   ${css.media.mobile`
-    ${css.flexColumnGrow()};
+    ${css.columnGrow()};
   `};
 `
 export const holder = 1

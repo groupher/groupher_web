@@ -13,7 +13,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   `};
 `
 export const PopMenu = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const MenuItem = styled.div`
   padding: 4px 13px;

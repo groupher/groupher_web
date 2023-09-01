@@ -6,7 +6,7 @@ import LinkSVG from '@/icons/Link'
 import GithubSVG from '@/icons/GithubCat'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 
   height: 100vh;
   background: ${theme('banner.bg')};
@@ -14,10 +14,10 @@ export const Wrapper = styled.div`
   border-top-color: ${theme('drawer.topLine')};
 `
 export const IconsWrapper = styled.div`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
 `
 export const TextWrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   margin-top: 15px;
 `
 export const HintTitle = styled.div`
@@ -48,7 +48,7 @@ export const GithubLogoIcon = styled(GithubSVG)`
   ${css.size(50)};
 `
 export const HintWrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   color: ${theme('banner.title')};
 `
 export const FooterWrapper = styled.div`

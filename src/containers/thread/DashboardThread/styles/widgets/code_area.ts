@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   position: relative;
   min-height: 80px;
   width: 100%;

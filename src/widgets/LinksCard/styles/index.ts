@@ -24,7 +24,7 @@ export const Title = styled.span`
   border-bottom-color: ${theme('banner.desc')}; */
 `
 export const ListWrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   margin-top: 15px;
 `
 export const MoreWrapper = styled.div`

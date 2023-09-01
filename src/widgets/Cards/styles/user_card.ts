@@ -10,7 +10,7 @@ import Img from '@/Img'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 200px;
   min-height: 100px;
   padding: 5px 10px;
@@ -25,11 +25,11 @@ export const ShortBio = styled.div`
   margin-top: 2px;
 `
 export const Info = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   margin-left: 12px;
 `
 export const Header = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 10px;
 `
 export const Title = styled(Link)`

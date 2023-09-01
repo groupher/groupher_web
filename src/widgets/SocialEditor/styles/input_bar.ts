@@ -9,7 +9,7 @@ export { Icon } from './index'
 // import { theme } from '@/utils/themes'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   position: relative;
 `
 export const Inputer = styled(Input)`
@@ -23,7 +23,7 @@ export const Inputer = styled(Input)`
 `
 export const DeleteWrapper = styled.div`
   ${css.circle(18)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   position: absolute;
   top: 8px;
   right: -8px;
@@ -53,7 +53,7 @@ export const DeleteIcon = styled(DeleteSVG)`
 export const IconWrapper = styled.div`
   border: 1px solid;
   border-color: ${theme('editor.border')};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 38px;
   height: 34px;
   border-top-left-radius: 5px;
@@ -67,7 +67,7 @@ export const Hint = styled.div`
   margin-left: 2px;
 `
 export const PlatformWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   gap: 12px 15px;
   margin-top: 10px;

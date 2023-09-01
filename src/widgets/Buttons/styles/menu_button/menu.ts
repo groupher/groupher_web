@@ -7,7 +7,7 @@ import css, { theme } from '@/css'
 import { getLocalSVG } from '@/icons'
 
 export const Wrapper = styled.div<{ panelMinWidth: string }>`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   width: 100%;
   min-width: ${({ panelMinWidth }) => panelMinWidth};
   max-height: 300px;
@@ -15,7 +15,7 @@ export const Wrapper = styled.div<{ panelMinWidth: string }>`
   padding: 4px 3px;
 `
 export const Block = styled.div`
-  ${css.flex('align-start')};
+  ${css.row('align-start')};
   width: 100%;
   padding: 4px 10px;
   padding-left: 15px;
@@ -48,7 +48,7 @@ export const BlockA = styled(Block)`
   text-decoration: none;
 `
 export const Item = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 
 export const Title = styled.div`

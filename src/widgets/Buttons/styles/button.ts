@@ -16,7 +16,7 @@ import {
 
 type TWrapper = TButton & TSpace
 export const Wrapper = styled.button<TWrapper>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   -webkit-appearance: button;
   outline: none;
   // otherwise the slim effect will appear outside
@@ -88,7 +88,7 @@ export const Wrapper = styled.button<TWrapper>`
 `
 type TChildrenWrapper = { size: TSize; ghost: boolean; noBorder: boolean }
 export const ChildrenWrapper = styled.div<TChildrenWrapper>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 100%;
   font-size: ${({ size }) => getFontSize(size)};
   font-weight: ${({ ghost, noBorder }) => (ghost && noBorder ? 400 : 600)};

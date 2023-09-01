@@ -5,12 +5,12 @@ import SettingSVG from '@/icons/Setting'
 import { BaseSection } from '.'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const Section = styled(BaseSection)``
 
 export const PreviewWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   gap: 30px;
   width: calc(100% + 40px);
@@ -20,7 +20,7 @@ export const PreviewWrapper = styled.div`
   `}
 `
 export const HoverMask = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   position: relative;
 `
 export const UploadIcon = styled(SettingSVG)`
@@ -40,7 +40,7 @@ export const UploadIcon = styled(SettingSVG)`
 
 type TPreviewImage = { effect: string; noHover?: boolean }
 export const PreviewImage = styled.div<TPreviewImage>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   border: 1px solid;
   border-color: ${theme('divider')};
   background-color: ${theme('hoverBg')};
@@ -61,10 +61,10 @@ export const PreviewImage = styled.div<TPreviewImage>`
   transition: all 0.2s;
 `
 export const PreviewerWrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
 `
 export const RealPreview = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   position: relative;
   overflow: hidden;
 `

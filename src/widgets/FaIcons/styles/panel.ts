@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
   width: 145px;
 `
 export const Item = styled.div<TActive>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding: 4px 5px;
   padding-left: 10px;
   line-height: 20px;
@@ -32,7 +32,7 @@ export const Item = styled.div<TActive>`
 `
 export const IconWrapper = styled.div`
   ${css.size(15)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   margin-top: -2px;
   opacity: 0.8;
 
@@ -51,7 +51,7 @@ export const Title = styled.div`
 `
 
 export const ColorWrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   flex-wrap: wrap;
   margin-top: 8px;
   padding-bottom: 14px;
@@ -73,7 +73,7 @@ export const ColorWrapper = styled.div`
 type TColorBlock = { color: TColorName } & TActive
 export const ColorBlock = styled.div<TColorBlock>`
   ${css.size(24)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   border-radius: 6px;
   background: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
   border: 1px dotted;

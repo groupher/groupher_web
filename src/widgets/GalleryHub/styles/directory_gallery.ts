@@ -4,7 +4,7 @@ import Img from '@/Img'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   flex-wrap: wrap;
   color: ${theme('article.digest')};
   width: 100%;
@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
 
 type TBlock = { borderRight: boolean; borderTop: boolean; clickable: boolean }
 export const Block = styled.div<TBlock>`
-  ${css.flexColumn('justify-between')};
+  ${css.column('justify-between')};
   width: 25%;
   height: 230px;
   padding: 15px;
@@ -35,10 +35,10 @@ export const Block = styled.div<TBlock>`
   transition: all 0.2s;
 `
 export const Header = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const IntroHead = styled.div<{ clickable: boolean }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   &:hover {
     cursor: ${({ clickable }) => (clickable ? 'pointer' : 'normal')};
   }
@@ -53,7 +53,7 @@ export const Title = styled.div`
   margin-left: 12px;
 `
 export const Footer = styled.div<{ clickable: boolean }>`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   &:hover {
     cursor: ${({ clickable }) => (clickable ? 'pointer' : 'normal')};
   }

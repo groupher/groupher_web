@@ -21,7 +21,7 @@ export const TextAreaInput = styled(Input)<{ error: string }>`
 `
 
 export const FormItemWrapper = styled.div<TSpace>`
-  ${css.flex()};
+  ${css.row()};
   margin-bottom: ${({ bottom }) => `${bottom}px`};
   width: 100%;
 `

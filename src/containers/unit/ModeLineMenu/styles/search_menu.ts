@@ -9,14 +9,14 @@ import ArrowSVG from '@/icons/ArrowSimple'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-center', 'justify-start')};
+  ${css.column('align-center', 'justify-start')};
   margin-top: 42px;
   width: 100%;
   min-height: 200px;
   padding: 0;
 `
 export const SearchBoxWrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   padding: 0 8px;
   height: 30px;
   width: 75%;
@@ -41,11 +41,11 @@ export const NoteWrapper = styled.div`
   margin-bottom: 20px;
 `
 export const ContentWrapper = styled.div`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   width: 75%;
 `
 export const Item = styled.div`
-  ${css.flex('justify-between', 'align-center')}
+  ${css.row('justify-between', 'align-center')}
   width: 100%;
   margin-bottom: 10px;
 `

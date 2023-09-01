@@ -16,7 +16,7 @@ import SettingSVG from '@/icons/Setting'
 import TabFavoritesSVG from '@/widgets/SvgIcons/TabFavoritesSVG'
 
 export const LableWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 
 type TCommonIcon = { $active: boolean; $small: boolean }

@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 
 type TWrapper = { menuOpen?: boolean } & TSpace
 export const FilterWrapper = styled.div<TWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
   font-size: 13px;
 
@@ -32,7 +32,7 @@ export const Label = styled.div`
   word-break: keep-all;
 `
 export const SelectItem = styled.div<TActive>`
-  ${css.flex('align-start')};
+  ${css.row('align-start')};
   padding: 10px 6px;
   width: 100%;
   border-radius: 6px;

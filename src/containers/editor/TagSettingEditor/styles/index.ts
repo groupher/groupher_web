@@ -14,13 +14,13 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   padding-bottom: 100px;
 `
 export const BasicInfo = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 28px;
   margin-bottom: 24px;
 `
 export const DotSelector = styled.div`
   ${css.size(34)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   border: 1px solid;
   border-color: ${theme('editor.border')};
   background: white;

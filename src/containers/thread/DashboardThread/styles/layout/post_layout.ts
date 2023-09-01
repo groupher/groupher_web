@@ -13,7 +13,7 @@ export { Bar, Circle } from '.'
 
 export const Wrapper = styled(BaseSection)``
 export const SelectWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   gap: 20px 30px;
   width: 100%;
@@ -35,12 +35,12 @@ export const Cover = styled.div`
 
 type TColumn = { center?: boolean; grow?: boolean }
 export const Column = styled.div<TColumn>`
-  ${css.flexColumn()};
+  ${css.column()};
   ${({ center }) => (center ? 'align-items: center;' : '')};
   ${({ grow }) => (grow ? 'flex-grow: 1;' : '')};
 `
 export const Layout = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 export const LayoutTitle = styled.div<TActive>`
   opacity: ${({ $active }) => ($active ? 1 : 0.65)};
@@ -58,7 +58,7 @@ export const Block = styled(BlockBase)`
 `
 
 export const Border = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   border: 1px solid;
   border-color: ${theme('divider')};
 

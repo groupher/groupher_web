@@ -9,7 +9,7 @@ import { MainWrapper } from '..'
 
 export const Wrapper = styled.div<{ isSidebarLayout: boolean }>`
   ${({ isSidebarLayout }) =>
-    isSidebarLayout ? css.flex('justify-start') : css.flex('justify-center')};
+    isSidebarLayout ? css.row('justify-start') : css.row('justify-center')};
   width: 100%;
   position: relative;
 `
@@ -49,7 +49,7 @@ export const FAQWrapper = styled.div`
 
 type TSidebar = { isLeftLayout?: boolean; open?: boolean }
 export const Sidebar = styled.div<TSidebar>`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 300px;
   color: ${theme('article.digest')};
   padding-top: 30px;
@@ -85,7 +85,7 @@ export const ToggleBtn = styled.div<{ open: boolean }>`
   transform: ${({ open }) => (open ? '' : 'rotate(180deg)')};
 
   ${({ open }) => (open ? css.circle(24) : css.circle(28))};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   background: white;
   border: 1px solid;
   border-color: ${theme('divider')};

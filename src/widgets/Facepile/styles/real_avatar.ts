@@ -52,7 +52,7 @@ export const AvatarsImg = styled(Img)<TAvatarsImg>`
 `
 type TAvatarsMore = { size: TAvatarSize; total: number }
 export const AvatarsMore = styled.span<TAvatarsMore>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   font-size: 14px;
   border-color: #113744;
   color: ${theme('article.title')};

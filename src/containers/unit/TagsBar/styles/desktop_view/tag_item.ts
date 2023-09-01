@@ -12,7 +12,7 @@ import { TagsWrapper } from '.'
 type TTag = TActive & { color?: string }
 
 export const Wrapper = styled.div<TTag>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: -2px;
   padding: 4px;
   max-width: 180px;
@@ -51,7 +51,7 @@ export const DotSign = styled.div<THashSign>`
   transition: filter 0.1s;
 `
 export const Tag = styled.div<TTag>`
-  ${css.flex('align-end', 'justify-between')};
+  ${css.row('align-end', 'justify-between')};
   width: 100%;
   font-size: 13px;
   padding-left: 4px;
@@ -76,7 +76,7 @@ export const Title = styled.div`
   }
 `
 export const RawWrapper = styled.div<TActive>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   opacity: ${({ $active }) => ($active ? 1 : 0)};
 
   ${Wrapper}:hover & {

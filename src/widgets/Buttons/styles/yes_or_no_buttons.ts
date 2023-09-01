@@ -4,7 +4,7 @@ import css, { theme } from '@/css'
 
 type TWrapper = { align: 'center' | 'right' }
 export const Wrapper = styled.div<TWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: auto;
   justify-content: ${({ align }) => (align === 'center' ? 'center' : 'flex-end')};
 `

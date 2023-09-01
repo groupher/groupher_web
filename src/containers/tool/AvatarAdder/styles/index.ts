@@ -5,7 +5,7 @@ import Img from '@/Img'
 
 export const Wrapper = styled.div`
   ${css.circle(36)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 
   background: #03343f;
   &:hover {

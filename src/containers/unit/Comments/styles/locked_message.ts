@@ -4,7 +4,7 @@ import Img from '@/Img'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 16px;
   padding: 15px;
   padding-left: 30px;

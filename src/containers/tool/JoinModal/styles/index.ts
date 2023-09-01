@@ -11,5 +11,5 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 `
 
 export const ContentWrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
 `

@@ -4,7 +4,7 @@ import type { TActive } from '@/spec'
 import css, { theme } from '@/css'
 
 export const EditorWrapper = styled.div<{ menuOpen?: boolean }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
   border: 1px solid;
   border-color: ${({ menuOpen }) =>
@@ -22,7 +22,7 @@ export const EditorWrapper = styled.div<{ menuOpen?: boolean }>`
   transition: all 0.2s;
 `
 export const MobileWrapper = styled.div<{ menuOpen?: boolean }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
 `
 

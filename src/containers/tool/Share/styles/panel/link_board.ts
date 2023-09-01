@@ -6,10 +6,10 @@ import css, { theme } from '@/css'
 import Input from '@/widgets/Input'
 
 export const Header = styled.div`
-  ${css.flex('justify-between', 'align-center')};
+  ${css.row('justify-between', 'align-center')};
 `
 export const TabWrapper = styled.div`
-  ${css.flex('align-end')};
+  ${css.row('align-end')};
 `
 export const TabName = styled.div<TActive>`
   font-size: 14px;
@@ -26,7 +26,7 @@ export const TabName = styled.div<TActive>`
   transition: color 0.2s;
 `
 export const BoxWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 8px;
   margin-left: -8px;
 `

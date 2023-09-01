@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 import TadaSVG from '@/icons/Tada'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   margin-left: -160px;
 `
 export const Line = styled.div`

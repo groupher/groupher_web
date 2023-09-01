@@ -6,7 +6,7 @@ import css from '@/css'
 import { MainWrapper } from './index'
 
 export const Wrapper = styled(MainWrapper)<TSpace>`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   border-right: none;
   width: 100%;
   max-width: 500px;

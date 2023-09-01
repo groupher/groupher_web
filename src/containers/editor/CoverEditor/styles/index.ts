@@ -6,7 +6,7 @@ import css from '@/css'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   margin-bottom: 30px;
   position: relative;
   padding-bottom: 30px;

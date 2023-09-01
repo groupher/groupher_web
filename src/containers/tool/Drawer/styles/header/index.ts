@@ -37,7 +37,7 @@ export const TopWrapper = styled(BaseWrapper)`
   bottom: 10px;
 `
 export const TextWrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   height: 100%;
   transform: rotate(180deg);
   font-size: 12px;

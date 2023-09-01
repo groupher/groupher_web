@@ -10,7 +10,7 @@ export { AvatarFallback } from './real_avatar'
 type TWrapper = { total: number } & TSpace
 
 export const Wrapper = styled.ul<TWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-direction: row-reverse;
   list-style-type: none;
   margin: auto;
@@ -20,7 +20,7 @@ export const Wrapper = styled.ul<TWrapper>`
   margin-right: ${({ total }) => getUlMarginRight(total)};
 `
 export const AvatarsWrapper = styled.div`
-  ${css.flex()}
+  ${css.row()}
 `
 export const TotalOneOffset = styled.span`
   margin-right: 10px;

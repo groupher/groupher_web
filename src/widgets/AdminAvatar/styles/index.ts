@@ -26,7 +26,7 @@ export const Avatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
 `
 export const BadgeWrapper = styled.div<{ avatarLayout: TAvatarLayout }>`
   ${css.circle(14)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   background: ${theme('article.title')};
   padding: 1px;
   border: 2px solid white;

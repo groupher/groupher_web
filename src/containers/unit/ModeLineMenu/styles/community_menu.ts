@@ -8,14 +8,14 @@ import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 100%;
   min-height: 150px;
   margin-top: 40px;
   padding: 0;
 `
 export const CommunityWrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   margin-top: 30px;
 `
 export const Logo = styled(CommunityFaceLogo)`

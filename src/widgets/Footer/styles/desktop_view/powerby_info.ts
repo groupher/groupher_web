@@ -7,7 +7,7 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.article.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 100%;
   margin-top: 50px;
 
@@ -38,9 +38,9 @@ export const Addr = styled(Link)`
 
 export const BottomWrapper = styled.div`
   margin-top: 5px;
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 
   ${css.media.mobile`
-    ${css.flexColumn()};
+    ${css.column()};
   `};
 `

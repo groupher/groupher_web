@@ -4,11 +4,11 @@ import Img from '@/Img'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   margin-bottom: 8px;
 `
 export const Title = styled.div`
-  /* ${css.flex('align-center')}; */
+  /* ${css.row('align-center')}; */
   ${css.cutRest('200px')};
   color: ${theme('banner.desc')};
 
@@ -18,7 +18,7 @@ export const Title = styled.div`
   }
 `
 export const Reaction = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   opacity: 0.8;
 
   ${Wrapper}:hover & {

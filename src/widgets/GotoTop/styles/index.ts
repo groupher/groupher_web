@@ -9,7 +9,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.size(30)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 `
 export const AirBalloonIcon = styled(AirBalloonSVG)`
   ${css.size(16)};

@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
 export const BgLabel = styled.div<{ bg: TColorName }>`
   width: 44px;
   height: 24px;
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   border: 1px solid;
   border-color: ${({ bg }) => COLORS[bg]};
   border-radius: 6px;
@@ -28,7 +28,7 @@ export const TheColor = styled.div<{ color: TColorName }>`
 `
 
 export const Item = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 20px;
 `
 export const Label = styled.div`

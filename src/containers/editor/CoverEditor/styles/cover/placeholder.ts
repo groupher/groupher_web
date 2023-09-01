@@ -6,7 +6,7 @@ import css, { theme } from '@/css'
 import UploadSVG from '@/icons/Upload'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 680px;
   height: 400px;
   border: 1px solid;

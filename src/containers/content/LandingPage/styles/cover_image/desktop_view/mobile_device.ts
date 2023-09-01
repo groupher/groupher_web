@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   position: absolute;
   bottom: -5px;
   right: 45px;
@@ -34,14 +34,14 @@ export const Bar = styled.div`
   opacity: 0.5;
 `
 export const Content = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 100%;
   height: 360px;
   position: relative;
   overflow: hidden;
 `
 export const Background = styled.div<{ effect: string }>`
-  ${css.flex('align-both')}
+  ${css.row('align-both')}
   width: 100%;
   height: 100%;
   background transparent;

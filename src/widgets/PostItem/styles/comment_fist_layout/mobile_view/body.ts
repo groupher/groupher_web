@@ -15,7 +15,7 @@ export const Digest = styled.div`
   transition: all 0.2s;
 `
 export const Footer = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 7px;
 `
 export const ArticleStateBadgeWrapper = styled.div`

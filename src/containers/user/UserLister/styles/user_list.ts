@@ -4,13 +4,13 @@ import Img from '@/Img'
 import css, { theme } from '@/css'
 
 export const TableWrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   flex-wrap: wrap;
 `
 // background: ${theme('drawer.articleBg')};
 
 export const UserWrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   width: 48%;
   margin-bottom: 10px;
   margin-right: 5px;
@@ -28,22 +28,22 @@ export const UserAvatar = styled(Img)`
 `};
 `
 export const UserBrief = styled.div`
-  ${css.flexColumnGrow('justify-between')};
+  ${css.columnGrow('justify-between')};
   margin-left: 18px;
 `
 export const Title = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
 
   ${css.media.tablet`
-    ${css.flexColumn('align-start')};
+    ${css.column('align-start')};
   `};
 `
 export const Nickname = styled.div`
   font-size: 1rem;
 `
 export const Location = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
   margin-left: 10px;
 

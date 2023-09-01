@@ -7,7 +7,7 @@ import SadSVG from '@/icons/SadFace'
 import PlaneSVG from '@/icons/Plane'
 
 export const Wrapper = styled.div<{ grey: boolean }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   position: relative;
   border: 1px solid;
   border-bottom: 3px solid;

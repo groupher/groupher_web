@@ -7,12 +7,12 @@ import { AVATAR_LAYOUT } from '@/constant/layout'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   position: relative;
   width: 100%;
 `
 export const Item = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('lightText')};
   font-size: 12px;
   margin-bottom: 12px;

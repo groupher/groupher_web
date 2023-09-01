@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 import ImageSVG from '@/icons/Image'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   background: ${theme('alphaBg')};
   margin-bottom: 30px;
   border-radius: 16px;
@@ -18,7 +18,7 @@ export const Wrapper = styled.div`
   overflow: hidden;
 `
 export const CoverWrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 123px;
   height: 124px;
   border-right: 1px solid;

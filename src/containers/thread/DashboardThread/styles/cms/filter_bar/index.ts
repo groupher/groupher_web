@@ -19,7 +19,7 @@ export const Wrapper = styled.div`
   border-bottom-color: ${theme('divider')};
 `
 export const MainWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
 `
 export const InputerWrapper = styled.div`

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   height: 100%;
   box-shadow: 0 2px 40px 0 rgb(224 226 228 / 27%);
   transition: box-shadow 0.3s ease-out, transform 0.3s ease-out, opacity 0.2s ease-out;

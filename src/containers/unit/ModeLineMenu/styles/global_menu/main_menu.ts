@@ -8,13 +8,13 @@ import ArrowSVG from '@/icons/ArrowSimple'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('justify-center')};
+  ${css.column('justify-center')};
   width: 100%;
   margin-top: 30px;
   margin-bottom: 40px;
 `
 const Block = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   border-radius: 3px;
   height: 70px;
   width: 100%;
@@ -27,7 +27,7 @@ export const HomeBlock = styled(Block)`
   margin-bottom: 18px;
 `
 export const JoinLink = styled.div`
-  ${css.flex('align-center', 'justify-end')};
+  ${css.row('align-center', 'justify-end')};
   color: ${theme('article.digest')};
   font-size: 11px;
   width: 100px;

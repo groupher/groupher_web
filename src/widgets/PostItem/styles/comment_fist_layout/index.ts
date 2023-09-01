@@ -8,7 +8,7 @@ type TWrapper = {
 }
 
 export const Wrapper = styled.article<TWrapper>`
-  ${css.flex()};
+  ${css.row()};
   position: relative;
 
   padding-top: ${({ c11n }) => (c11n.contentDivider ? '10px' : '8px')};
@@ -20,6 +20,6 @@ export const Wrapper = styled.article<TWrapper>`
   transition: all 0.2s;
 `
 export const Main = styled.div`
-  ${css.flexColumnGrow()};
+  ${css.columnGrow()};
 `
 export const holder = 1

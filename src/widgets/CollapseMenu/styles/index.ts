@@ -8,7 +8,7 @@ export const Wrapper = styled.div``
 export const TagsWrapper = styled.div``
 
 export const Header = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 8px;
   margin-left: 3px;
   &:hover {
@@ -44,7 +44,7 @@ export const Content = styled.div<{ $isOpen: boolean }>`
   margin-bottom: 15px;
 `
 export const SubToggle = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 5px;
   opacity: 0.5;
 

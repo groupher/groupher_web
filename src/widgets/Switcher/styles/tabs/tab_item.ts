@@ -14,7 +14,7 @@ type TTab = {
 } & TActive
 
 export const Wrapper = styled.div<TTab>`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   color: ${theme('article.title')};
   position: relative;
   height: 100%;
@@ -43,7 +43,7 @@ export const Wrapper = styled.div<TTab>`
 export const ActiveLineWrapper = styled.div`
   position: absolute;
   bottom: 0;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
 `
 export const ActiveLine = styled.div`
@@ -55,7 +55,7 @@ export const ActiveLine = styled.div`
 `
 export const Nav = styled.nav`
   position: relative;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-flow: row wrap;
   margin: 0 auto;
   padding: 0;
@@ -66,7 +66,7 @@ type TLabel = TActive & {
   bottomSpace: number
 }
 export const Label = styled.span<TLabel>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   white-space: nowrap;
   padding: 1px 6px;
   border-radius: 3px;

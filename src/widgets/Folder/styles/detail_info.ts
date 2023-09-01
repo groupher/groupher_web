@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   padding: 10px;
 `
 export const Title = styled.div`

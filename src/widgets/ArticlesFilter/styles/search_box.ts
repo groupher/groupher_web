@@ -8,7 +8,7 @@ import CloseSVG from '@/icons/CloseCross'
 import FilterSVG from '@/icons/FilterList'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   position: relative;
   cursor: pointer;
   padding: 2px 8px;
@@ -20,7 +20,7 @@ export const Wrapper = styled.div`
   }
 `
 export const Back = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 70px;
   margin-right: 10px;
   padding-right: 8px;

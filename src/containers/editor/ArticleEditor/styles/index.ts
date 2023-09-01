@@ -6,19 +6,19 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   width: 100%;
   margin-top: 40px;
 `
 export const InnerWrapper = styled.div<{ metric: TMetric }>`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   width: 100%;
   margin-top: 30px;
   ${({ metric }) => css.fitContentWidth(metric)};
 `
 
 export const FuncRow = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 10px;
   margin-bottom: 10px;
   margin-left: 28px;
@@ -31,7 +31,7 @@ export const ContentWrapper = styled.div`
   /* min-height: 40vh; */
 `
 export const Footer = styled.div`
-  ${css.flex('align-center', 'justify-end')};
+  ${css.row('align-center', 'justify-end')};
   width: 100%;
   border-top: 2px solid;
   border-top-color: #03343f;

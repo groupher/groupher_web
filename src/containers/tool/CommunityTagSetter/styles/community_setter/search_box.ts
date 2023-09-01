@@ -6,7 +6,7 @@ import Input from '@/widgets/Input'
 
 export const Wrapper = styled.div`
   width: 100%;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding-right: 20px;
 `
 export const SearchInput = styled(Input)`

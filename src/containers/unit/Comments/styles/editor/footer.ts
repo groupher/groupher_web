@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import css from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   margin-bottom: 8px;
   padding: 0 30px;
 `

@@ -8,7 +8,7 @@ import Img from '@/Img'
 const taberBg = '#F1F3F4'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   width: 100%;
   min-height: 500px;
   border-radius: 12px;
@@ -21,7 +21,7 @@ export const Wrapper = styled.div`
   position: relative;
 `
 export const Header = styled.div`
-  ${css.flex()};
+  ${css.row()};
   width: 100%;
   display: flex;
   padding: 8px 20px 0 12px;
@@ -32,7 +32,7 @@ export const Header = styled.div`
   background: ${theme('alplaBg')};
 `
 export const Tab = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-basis: 218px;
   background: ${taberBg};
   border-bottom: 1px solid;
@@ -90,7 +90,7 @@ export const TabContent = styled.div`
 `
 export const AddressBar = styled.div`
   width: 100%;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   background: ${taberBg};
   border-bottom: 1px solid;
   border-bottom-color: ${taberBg};
@@ -116,7 +116,7 @@ export const LockIcon = styled(ToolIcon)`
   margin-top: 3px;
 `
 export const Form = styled.form`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-grow: 1;
   background: ${theme('alphaBg2')};
   height: 28px;
@@ -148,7 +148,7 @@ export const Slash = styled.div`
   opacity: 0.8;
 `
 export const ThreadPath = styled.div<TActive>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   opacity: ${({ $active }) => ($active ? 1 : 0)};
 `
 export const ThreadText = styled.div`

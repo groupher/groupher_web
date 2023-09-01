@@ -12,7 +12,7 @@ type TTag = TActive & { color?: string }
 export const Wrapper = styled.div<TTag>`
   position: relative;
   /* margin-left: 20px; */
-  ${css.flexColumn()};
+  ${css.column()};
   padding: 4px;
   max-width: 180px;
   padding-left: 0;
@@ -28,7 +28,7 @@ export const AllTagIcon = styled(Img)`
   transform: rotate(17deg);
 `
 export const File = styled.div<TTag>`
-  ${css.flex('align-end', 'justify-between')};
+  ${css.row('align-end', 'justify-between')};
   width: 100%;
   font-size: 14px;
   padding-left: 5px;
@@ -53,7 +53,7 @@ export const Title = styled.div<TActive>`
   }
 `
 export const RawWrapper = styled.div<TActive>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   opacity: ${({ $active }) => ($active ? 1 : 0)};
 
   ${Wrapper}:hover & {

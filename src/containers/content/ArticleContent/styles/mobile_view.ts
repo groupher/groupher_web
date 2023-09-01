@@ -6,7 +6,7 @@ import css, { WIDTH } from '@/css'
 export const Wrapper = styled.article.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexGrow('justify-center')};
+  ${css.rowGrow('justify-center')};
   position: relative;
   padding-top: 20px;
   min-height: 300px;
@@ -16,7 +16,7 @@ export const Wrapper = styled.article.attrs<TTestable>(({ testid }) => ({
   `};
 `
 export const InnerWrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   width: 100%;
   padding: 0 6vw;
 `

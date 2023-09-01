@@ -9,7 +9,7 @@ import { Wrapper as ParentWrapper } from './index'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const MailIcon = styled(Img)`
   fill: ${theme('article.digest')};

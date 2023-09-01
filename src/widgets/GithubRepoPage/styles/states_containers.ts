@@ -4,14 +4,14 @@ import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
   width: 100%;
   margin-top: 15px;
   margin-bottom: 10px;
 `
 type TBox = { grow: boolean; nomargin: boolean; nohover: boolean }
 export const BoxWrapper = styled.div<TBox>`
-  ${css.flexColumn('justify-evenly', 'align-center')};
+  ${css.column('justify-evenly', 'align-center')};
   flex-grow: ${({ grow }) => (grow ? 1 : 0)};
 
   border-radius: 4px;
@@ -42,7 +42,7 @@ export const Number = styled.div<{ small: string }>`
 `
 
 export const BuilderWrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
 `
 export const Avatar = styled(Img)`
   ${css.size(20)};
@@ -65,7 +65,7 @@ export const Linker = styled.a`
   }
 `
 export const PopInfo = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 
   padding: 10px;
   padding-bottom: 0px;

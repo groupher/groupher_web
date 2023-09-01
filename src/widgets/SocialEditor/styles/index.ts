@@ -42,13 +42,13 @@ export const Hint = styled.div`
   margin-top: -10px;
 `
 export const InputsWrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   gap: 20px 0;
 `
 export const IconWrapper = styled.div`
   border: 1px solid;
   border-color: ${theme('editor.border')};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 38px;
   height: 34px;
   border-top-left-radius: 5px;
@@ -68,7 +68,7 @@ export const IconItemWrapper = styled.div<TActive>`
 `
 
 export const PlatformWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   gap: 12px 10px;
   margin-top: 20px;

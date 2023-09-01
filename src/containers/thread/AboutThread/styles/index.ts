@@ -6,11 +6,11 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-start')};
+  ${css.row('align-start')};
   width: 100%;
 
   ${css.media.mobile`
-    ${css.flexColumn('align-start')};
+    ${css.column('align-start')};
   `};
 `
 export const MainWrapper = styled.div<{ isSidebarLayout: boolean }>`

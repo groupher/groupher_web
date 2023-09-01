@@ -8,7 +8,7 @@ import css from '@/css'
 type TWrapper = TTestable & TSpace
 
 export const Wrapper = styled.div<TWrapper>`
-  ${css.flexColumn('')};
+  ${css.column('')};
 
   ${(props) => css.spaceMargins(props)};
 `

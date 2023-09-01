@@ -7,7 +7,7 @@ type TWrapper = TTestable & { color?: string }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   width: 32%;
   min-height: 80px;
   padding: 16px 22px;
@@ -29,7 +29,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 `
 
 export const Header = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   margin-bottom: 12px;
 `
 export const UpdateDate = styled.div`
@@ -38,7 +38,7 @@ export const UpdateDate = styled.div`
   font-size: 12px;
 `
 export const Topping = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
@@ -61,12 +61,12 @@ export const Desc = styled.div`
 `
 export const ItemsWrapper = styled.div`
   margin-top: 6px;
-  ${css.flexColumn()};
+  ${css.column()};
   gap: 12px;
   transition: all 0.2s;
 `
 export const Footer = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   background: ${theme('hoverBg')};
   height: 32px;
   width: 100%;

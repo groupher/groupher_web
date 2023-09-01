@@ -22,7 +22,7 @@ export const Wrapper = styled(BaseBanner)<TWrapper>`
   min-height: ${({ isMobile }) => getMinHeight(isMobile)};
 `
 export const InnerWrapper = styled.div<TWrapper>`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   min-height: ${({ isMobile }) => getMinHeight(isMobile)};
   width: 100%;
   // if use margin-left will cause horizontal scrollbar
@@ -35,15 +35,15 @@ export const InnerWrapper = styled.div<TWrapper>`
   `};
 `
 export const BaseBannerContent = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   width: 100%;
   max-width: ${WIDTH.COMMUNITY.PAGE};
 `
 export const BannerContentWrapper = styled(BaseBannerContent)`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const TabBarWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
   max-width: ${WIDTH.COMMUNITY.CONTENT};
   margin-left: 85px;
@@ -69,7 +69,7 @@ export const CustomPart = styled.div`
   /* color: #f8604e; */
 `
 export const CommunityBaseInfo = styled.div`
-  ${css.flex('justify-between', 'align-start')};
+  ${css.row('justify-between', 'align-start')};
   width: 100%;
 
   ${css.media.mobile`

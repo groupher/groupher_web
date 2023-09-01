@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css from '@/css'
 
 export const Wrapper = styled.article`
-  ${css.flex()};
+  ${css.row()};
   position: relative;
 
   padding: 8px 0;
@@ -14,5 +14,5 @@ export const Wrapper = styled.article`
   `};
 `
 export const Main = styled.div`
-  ${css.flexColumnGrow()};
+  ${css.columnGrow()};
 `

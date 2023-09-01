@@ -9,7 +9,7 @@ type TWrapper = {
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flex()};
+  ${css.row()};
   width: 100%;
   ${({ metric }) => css.fitPageWidth(metric)};
 `

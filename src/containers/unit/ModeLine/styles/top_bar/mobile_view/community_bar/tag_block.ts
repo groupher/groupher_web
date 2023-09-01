@@ -4,7 +4,7 @@ import css, { theme } from '@/css'
 
 const Block = styled.div<{ bgColor: string }>`
   position: relative;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   height: 100%;
   background: ${({ bgColor }) => bgColor};
@@ -33,7 +33,7 @@ export const ArrowShapeLeft = styled(ArrowShape)<{ bgColor: string }>`
   box-shadow: -5px 6px 37px -8px rgba(0, 0, 0, 0.42);
 `
 export const InnerWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Dot = styled.div`
   ${css.circle(5)};

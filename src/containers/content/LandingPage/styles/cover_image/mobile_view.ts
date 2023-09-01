@@ -24,7 +24,7 @@ export const Wrapper = styled.div`
   display: none;
 
   ${css.media.mobile`
-    ${css.flexColumn('align-center')};
+    ${css.column('align-center')};
     width: calc(100% - 20px);
     height: 220px;
     padding-top: 25px;
@@ -32,7 +32,7 @@ export const Wrapper = styled.div`
   `};
 `
 export const BrowerHead = styled.div`
-  ${css.flex('align-center', 'justify-center')};
+  ${css.row('align-center', 'justify-center')};
   color: ${theme('article.digest')};
   width: 100%;
   position: absolute;
@@ -45,7 +45,7 @@ export const BrowerHead = styled.div`
   `};
 `
 export const AddrBar = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: -65px;
 
   ${css.media.mobile`
@@ -100,14 +100,14 @@ export const Dot = styled.div`
   `};
 `
 export const Content = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 100%;
   height: 700px;
   position: relative;
   overflow: hidden;
 `
 export const Background = styled.div<{ effect: string }>`
-  ${css.flex('align-both')}
+  ${css.row('align-both')}
   width: 100%;
   height: 700px;
   background transparent;

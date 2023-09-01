@@ -4,7 +4,7 @@ import type { TActive } from '@/spec'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<TActive>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   cursor: pointer;
   margin-right: 6px;
   padding: 4px 8px;

@@ -7,7 +7,7 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  /* ${css.flex('align-start', 'justify-between')}; */
+  /* ${css.row('align-start', 'justify-between')}; */
   width: 100%;
   position: relative;
   background: ${theme('alphaBg')};
@@ -28,7 +28,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   /* transition: all 0.1s; */
 `
 export const Header = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   margin-bottom: 10px;
 `
 export const TimeStamp = styled.div`
@@ -54,7 +54,7 @@ export const Desc = styled.div`
   margin-bottom: 5px;
 `
 export const Footer = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   font-size: 12px;
   color: ${theme('article.info')};
   margin-top: 18px;
@@ -66,7 +66,7 @@ export const UpvotesWrapper = styled.div`
   margin-left: -6px;
 `
 export const Author = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Avatar = styled(Img)`
   ${css.circle(14)};

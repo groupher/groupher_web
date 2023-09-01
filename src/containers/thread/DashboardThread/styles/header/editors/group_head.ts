@@ -8,12 +8,12 @@ import EditSVG from '@/icons/EditPen'
 import { ColumnWrapper } from '.'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
   height: 22px;
 `
 export const Title = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   font-size: 14px;
 `

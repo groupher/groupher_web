@@ -4,14 +4,14 @@ import Img from '@/Img'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   flex-wrap: wrap;
   color: ${theme('article.digest')};
   width: 100%;
 `
 type TBlock = { borderRight: boolean; borderTop: boolean }
 export const Block = styled.div<TBlock>`
-  ${css.flexColumn('justify-between')};
+  ${css.column('justify-between')};
   width: 33%;
   height: 300px;
   border: 1px solid;
@@ -32,11 +32,11 @@ export const Block = styled.div<TBlock>`
   transition: all 0.2s;
 `
 export const Header = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 
 export const IntroHead = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   &:hover {
     cursor: pointer;
   }
@@ -57,7 +57,7 @@ export const Title = styled.div`
   cursor: pointer;
 `
 export const Footer = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   &:hover {
     cursor: pointer;
   }

@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 
 type TWrapper = { fold: boolean; mode: 'article' | 'comment' }
 export const Wrapper = styled.div<TWrapper>`
-  ${css.flex('align-end', 'justify-center')};
+  ${css.row('align-end', 'justify-center')};
   width: 100%;
   /* width: ${({ mode }) => (mode === 'article' ? '100%' : '95%')}; */
   position: relative;
@@ -27,7 +27,7 @@ export const Wrapper = styled.div<TWrapper>`
   transition: all 0.2s;
 `
 export const Hint = styled.div<{ mode: 'article' | 'comment' }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.info')};
   font-size: ${({ mode }) => (mode === 'article' ? '15px' : '13px')};
   padding-right: 5%;

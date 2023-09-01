@@ -12,7 +12,7 @@ import SettingSVG from '@/icons/Setting'
 import DeleteSVG from '@/icons/Trash'
 
 export const Wrapper = styled.div`
-  ${css.flex('justify-between', 'align-center')};
+  ${css.row('justify-between', 'align-center')};
   padding: 3px 4px;
 
   &:hover {

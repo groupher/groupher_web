@@ -3,13 +3,13 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-end', 'justify-between')};
+  ${css.row('align-end', 'justify-between')};
   color: ${theme('article.digest')};
   margin-left: 0;
   margin-bottom: 3px;
 `
 export const AuthorInfo = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.info')};
   font-size: 12px;
 `
@@ -18,7 +18,7 @@ export const TimeStamp = styled.div`
   margin-top: 2px;
 `
 export const Brief = styled.div`
-  ${css.flexGrow('align-center')};
+  ${css.rowGrow('align-center')};
   margin-bottom: 10px;
   color: ${theme('article.title')};
   &:hover {

@@ -9,7 +9,7 @@ import LinkSVG from '@/icons/Link'
 export { LinkInput } from './index'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const LaptopIcon = styled(LaptopSVG)`
   ${css.size(16)};

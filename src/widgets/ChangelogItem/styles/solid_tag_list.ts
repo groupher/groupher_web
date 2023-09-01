@@ -6,7 +6,7 @@ import css, { theme } from '@/css'
 import { camelize } from '@/utils/fmt'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   gap: 0 8px;
   margin-left: -2px;
 

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   padding-right: 30px;
   width: 100%;
   margin-bottom: 20px;
@@ -21,7 +21,7 @@ export const Hint = styled.div`
   min-width: 70px;
 `
 export const CatsWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   margin-left: 15px;
   gap: 14px;

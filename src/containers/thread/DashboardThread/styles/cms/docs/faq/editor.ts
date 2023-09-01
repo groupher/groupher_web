@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 import Input from '@/widgets/Input'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
 `
 

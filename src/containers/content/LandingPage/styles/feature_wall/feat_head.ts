@@ -8,11 +8,11 @@ import type { TFeatType } from '../../spec'
 import { FEAT } from '../../constant'
 
 export const Wrapper = styled.div<{ alignRight: boolean }>`
-  ${css.flexColumn()};
+  ${css.column()};
   align-items: ${({ alignRight }) => (alignRight ? 'flex-end' : 'flex-start')};
 `
 export const Title = styled.div<{ featType: TFeatType }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   /* color: ${({ featType }) => FEAT[featType].COLOR}; */
   color: ${theme('article.title')};
   font-size: 21px;

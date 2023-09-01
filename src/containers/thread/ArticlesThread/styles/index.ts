@@ -6,7 +6,7 @@ import { CARD_THREAD } from '@/constant/thread'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   width: 100%;
 `
 
@@ -52,7 +52,7 @@ export const MobileCardsMainWrapper = styled(MainWrapper)`
   padding-right: 10px;
 `
 export const FilterWrapper = styled.div<{ thread: TThread }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 5px;
 
   ${css.media.mobile`

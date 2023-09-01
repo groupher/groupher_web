@@ -10,14 +10,14 @@ import GtdTodoSVG from '@/icons/GtdTodo'
 import GtdRejectSVG from '@/icons/Reject'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 120px;
   padding: 10px 8px;
   gap: 8px 0;
   cursor: auto;
 `
 export const SelectItem = styled(SelectItemBase)`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-right: 3px;
 `
 export const TodoIcon = styled(GtdTodoSVG)`
@@ -66,7 +66,7 @@ export const RejectIndexIcon = styled(RejectIcon)`
 `
 
 export const RejectGroup = styled.div`
-  ${css.flex()};
+  ${css.row()};
   flex-wrap: wrap;
   display: none;
 

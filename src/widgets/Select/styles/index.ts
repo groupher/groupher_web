@@ -10,7 +10,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 }))<TTestable>``
 
 export const OptionRow = styled.div`
-  ${css.flex('align-end')};
+  ${css.row('align-end')};
 `
 export const OptionTitle = styled.div<TActive>`
   font-size: 14px;

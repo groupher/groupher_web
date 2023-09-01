@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 import { getPathGradient } from '../../metric'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   position: relative;
   width: 1080px;
   border-radius: 12px;
@@ -39,7 +39,7 @@ export const FreeLabel = styled.div<{ wallpaper: string }>`
 `
 
 export const FreeLabel2 = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 80px;
   height: 35px;
   border-radius: 8px;

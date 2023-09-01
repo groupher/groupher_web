@@ -8,7 +8,7 @@ type TWrapper = { metric: TMetric } & TTestable
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flexColumn('align-center', 'justify-start')};
+  ${css.column('align-center', 'justify-start')};
   /* ${({ metric }) => css.fitStickerWidth(metric)}; */
   min-height: 60vh;
 
@@ -17,12 +17,12 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   `};
 `
 export const InnerWrapper = styled.div`
-  ${css.flexColumn('justify-between')}
+  ${css.column('justify-between')}
   height: 100%;
   width: 100%;
 `
 export const MainWrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
 `
 const Icon = styled(Img)`
   ${css.size(22)};
@@ -65,7 +65,7 @@ export const ShareIcon = styled(Icon)`
   margin-left: -1px;
 `
 export const Number = styled.div`
-  ${css.flex('align-baseline')};
+  ${css.row('align-baseline')};
   color: ${theme('article.title')};
   font-size: 13px;
   margin-top: 5px;
@@ -76,7 +76,7 @@ export const Text = styled.div`
 `
 
 export const GoTopWrapper = styled.div<TActive>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   display: ${({ show }) => (show ? 'flex' : 'none')};
   position: absolute;
   bottom: -200px;

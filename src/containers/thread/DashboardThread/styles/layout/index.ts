@@ -4,7 +4,7 @@ import type { TActive } from '@/spec'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   padding-left: 90px;
   padding-right: 75px;
 

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   padding: 10px 0;
   background: transparent;
   min-height: 100px;

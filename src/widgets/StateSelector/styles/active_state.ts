@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
   opacity: 0.8;
 `
 export const Item = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const StateTitle = styled(Title)`
   color: ${theme('article.title')};

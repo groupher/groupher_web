@@ -7,11 +7,11 @@ import Img from '@/Img'
 import JoinEyeSVG from '@/icons/JoinEye'
 
 export const BtnWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding: 2px 4px;
 `
 export const FollowingBtnWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding: 2px 0px;
 `
 const BtnIcon = styled(Img)`

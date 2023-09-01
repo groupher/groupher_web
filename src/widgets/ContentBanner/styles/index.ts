@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const BaseBanner = styled.nav`
-  ${css.flexColumn('justify-center')};
+  ${css.column('justify-center')};
 
   position: relative;
   min-height: 108px;
@@ -15,7 +15,7 @@ export const BaseBanner = styled.nav`
   `};
 `
 export const BaseBannerContent = styled.div`
-  ${css.flex()};
+  ${css.row()};
   margin-left: 8%;
   margin-right: 8%;
 `
@@ -25,10 +25,10 @@ export const BannerContainer = styled(BaseBanner)`
   padding-bottom: 10px;
 `
 export const BannerContentWrapper = styled(BaseBannerContent)`
-  ${css.flex()};
+  ${css.row()};
 `
 export const PostBrief = styled.div`
-  ${css.flexColumnGrow()};
+  ${css.columnGrow()};
   width: 60%;
 `
 
@@ -39,7 +39,7 @@ export const Title = styled.div`
   ${css.cutRest('100%')};
 `
 export const Desc = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 5px;
   margin-bottom: 8px;
   font-size: 0.9rem;

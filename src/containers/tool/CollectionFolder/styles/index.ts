@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   min-height: ${MODAL_MIN_HEIGHT};
 `
 export const AdderWrapper = styled.div`
-  ${css.flex('justify-end')};
+  ${css.row('justify-end')};
   width: 80px;
   text-align: right;
   &:active {

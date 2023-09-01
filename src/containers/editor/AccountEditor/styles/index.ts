@@ -7,7 +7,7 @@ import GithubSVG from '@/icons/Github8'
 import FormInput from '@/widgets/Input'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
 
   padding-top: 20px;
   padding-bottom: 50px;
@@ -27,7 +27,7 @@ export const AvatarPic = styled(Img)`
   margin-left: -5px;
 `
 export const FormsWrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
 `
 export const Section = styled.div`
   width: 100%;
@@ -35,12 +35,12 @@ export const Section = styled.div`
   outline: none;
 `
 export const RowSection = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 28px;
 `
 export const LoginSection = styled.div`
   width: 100%;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 15px;
 `
 export const LoginDesc = styled.div`
@@ -62,7 +62,7 @@ export const SectionHint = styled.div`
   margin-left: 12px;
 `
 export const Label = styled.div`
-  ${css.flex('justify-between', 'align-end')};
+  ${css.row('justify-between', 'align-end')};
   color: ${theme('article.digest')};
   font-size: 14px;
   margin-bottom: 8px;

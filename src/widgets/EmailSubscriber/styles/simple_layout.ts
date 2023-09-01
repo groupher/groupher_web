@@ -24,7 +24,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   }
 `
 export const InnerWrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   width: 100%;
   min-width: 260px;
   height: 35px;

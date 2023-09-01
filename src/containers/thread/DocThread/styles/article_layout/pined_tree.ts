@@ -10,18 +10,18 @@ import QuestionSVG from '@/icons/Question'
 import BookSVG from '@/icons/Book'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('justify-center')};
+  ${css.column('justify-center')};
   gap: 16px 0;
   width: 100%;
   margin-bottom: 35px;
 `
 export const Item = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   cursor: pointer;
 `
 export const IconBox = styled.div`
   ${css.size(25)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   position: relative;
   margin-right: 14px;
 `

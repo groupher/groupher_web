@@ -20,7 +20,7 @@ export const Input = styled(FormInput)`
   font-size: 15px;
 `
 export const Section = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 20px;
   width: 100%;
   margin-left: 12px;

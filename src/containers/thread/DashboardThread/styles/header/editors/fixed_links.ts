@@ -11,15 +11,15 @@ export const Note = styled.div`
   margin-bottom: 15px;
 `
 export const ItemsWrapper = styled.div`
-  ${css.flexColumn('')};
+  ${css.column('')};
   width: 260px;
   gap: 10px 0;
 `
 export const Item = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Title = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 12px;
   color: ${theme('article.title')};
   width: 80px;

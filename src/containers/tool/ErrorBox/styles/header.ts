@@ -4,7 +4,7 @@ import Img from '@/Img'
 import css, { theme, animate } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   padding: 15px 22px;
 `
 export const ErrorIcon = styled(Img)`
@@ -14,7 +14,7 @@ export const ErrorIcon = styled(Img)`
   animation: ${animate.breath} 1.5s linear infinite;
 `
 export const Info = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 // color: ${theme('article.title')};
 export const Title = styled.div`

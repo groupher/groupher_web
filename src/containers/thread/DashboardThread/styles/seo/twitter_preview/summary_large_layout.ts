@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 import ImageSVG from '@/icons/Image'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   background: ${theme('alphaBg')};
   margin-bottom: 30px;
   border-radius: 16px;
@@ -17,7 +17,7 @@ export const Wrapper = styled.div`
   overflow: hidden;
 `
 export const CoverWrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 566px;
   height: 296px;
   /* border-radius: 15px; */

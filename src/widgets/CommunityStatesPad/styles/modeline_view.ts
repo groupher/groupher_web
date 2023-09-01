@@ -4,12 +4,12 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('justify-around')};
+  ${css.row('justify-around')};
   width: 100%;
   padding: 0 45px;
 `
 export const NumberSection = styled.div`
-  ${css.flexColumn('align-end')};
+  ${css.column('align-end')};
 
   padding: 0 5px;
 `

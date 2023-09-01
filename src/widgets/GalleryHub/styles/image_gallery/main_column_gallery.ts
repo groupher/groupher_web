@@ -21,7 +21,7 @@ export const Block = styled(BlockBase)`
   padding-right: 0;
 `
 export const ImageWrapper = styled.div`
-  ${css.flexGrow('justify-between')};
+  ${css.rowGrow('justify-between')};
   width: 100%;
 `
 export const MainImageWrapper = styled.div`
@@ -34,7 +34,7 @@ export const MainImage = styled(ImageBase)`
   border-radius: 2px;
 `
 export const SubImageWrapper = styled.div`
-  ${css.flexGrow()};
+  ${css.rowGrow()};
   flex-wrap: wrap;
   width: 412px;
 `

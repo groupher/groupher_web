@@ -14,7 +14,7 @@ export const Wrapper = styled.header.attrs<TTestable>(({ testid }) => ({
 }))<IWrapper>`
   width: 100%;
   height: 33px;
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   background: ${theme('header.bg')};
   opacity: 1;
   border-bottom: ${({ noBorder }) => (noBorder ? 'none' : '1px solid')};
@@ -24,7 +24,7 @@ export const Wrapper = styled.header.attrs<TTestable>(({ testid }) => ({
 
 type TInnerWrapper = { metric: TMetric }
 const InnerWrapper = styled.div<TInnerWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding: 0 4px;
   width: 100%;
   height: 33px;
@@ -35,6 +35,6 @@ const InnerWrapper = styled.div<TInnerWrapper>`
 export const ClassicInnerWrapper = styled(InnerWrapper)``
 
 export const RouterWrapper = styled.div`
-  ${css.flexGrow('align-center')};
+  ${css.rowGrow('align-center')};
   height: 100%;
 `

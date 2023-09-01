@@ -4,7 +4,7 @@ import css, { theme } from '@/css'
 import CopySVG from '@/icons/Copy'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const CopyIcon = styled(CopySVG)`
   fill: ${theme('article.digest')};
@@ -18,7 +18,7 @@ export const CopyIcon = styled(CopySVG)`
   }
 `
 export const CopyedHint = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 `
 export const CopyedText = styled.div`
   font-size: 12px;

@@ -18,7 +18,7 @@ export const Title = styled.div<TActive>`
   font-weight: 500;
 `
 export const Actions = styled.div<{ rightOffset: boolean }>`
-  ${css.flex('align-center')}
+  ${css.row('align-center')}
   position: absolute;
   right: ${({ rightOffset }) => (rightOffset ? '-223px' : '-210px')};
   top: 5px;
@@ -31,7 +31,7 @@ export const Actions = styled.div<{ rightOffset: boolean }>`
   transition: all 0.2s;
 `
 export const DeleteWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Hint = styled.div`
   color: ${theme('article.digest')};

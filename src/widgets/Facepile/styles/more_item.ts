@@ -28,7 +28,7 @@ type TTextMore = { size: TAvatarSize; total: number; avatarLayout: TAvatarLayout
 export const TextMore = styled.div<TTextMore>`
   font-size: 17px;
   ${({ size }) => css.size(pixelAdd(getAvatarSize(size) as string, -3))};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 
   background-color: ${theme('hoverBg')};
   border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '5px' : '100%')};
@@ -46,7 +46,7 @@ export const StateInfoWrapper = styled.div`
   padding: 8px 10px;
 `
 export const TotalCommentStateHint = styled.div`
-  ${css.flex('justify-end')};
+  ${css.row('justify-end')};
   color: ${theme('article.digest')};
   width: 100%;
   font-size: 12px;

@@ -6,12 +6,12 @@ import ViewSVG from '@/icons/View'
 import Input from '@/widgets/Input'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   padding-left: 25px;
   padding-right: 50px;
 `
 export const TypeSelect = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   margin-left: -10px;
   margin-bottom: 20px;
 `
@@ -20,7 +20,7 @@ export const TabWrapper = styled.div`
   border-bottom-color: ${theme('divider')};
 `
 export const BtnWrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 `
 export const ViewIcon = styled(ViewSVG)`
   fill: ${theme('button.primary')};
@@ -37,7 +37,7 @@ export const HintDesc = styled.div`
   font-size: 12px;
 `
 export const InputWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 10px;
   margin-bottom: 10px;
 `

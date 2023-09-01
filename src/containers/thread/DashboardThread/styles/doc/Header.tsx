@@ -4,7 +4,7 @@ import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   width: 100%;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding-bottom: 10px;
   margin-bottom: 10px;
   border-bottom: 1px solid transparent;

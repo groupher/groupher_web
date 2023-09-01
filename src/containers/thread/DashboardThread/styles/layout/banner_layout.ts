@@ -11,7 +11,7 @@ export { Bar, Circle } from '.'
 
 export const Wrapper = styled(BaseSection)``
 export const SelectWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   gap: 30px;
   width: calc(100% + 40px);
@@ -21,7 +21,7 @@ export const SelectWrapper = styled.div`
   `}
 `
 export const Main = styled.div`
-  ${css.flex()};
+  ${css.row()};
   width: 100%%;
 `
 export const ListsWrapper = styled.div<{ noBorder?: boolean }>`
@@ -44,7 +44,7 @@ export const ExampleBtn = styled.div`
   display: inline-block;
 `
 export const Layout = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 export const LayoutTitle = styled.div<TActive>`
   opacity: ${({ $active }) => ($active ? 1 : 0.65)};

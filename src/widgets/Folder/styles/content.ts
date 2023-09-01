@@ -4,7 +4,7 @@ import Img from '@/Img'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<{ inactive: boolean }>`
-  ${css.flex('align-end', 'justify-end')};
+  ${css.row('align-end', 'justify-end')};
   position: relative;
   width: 100%;
   height: 100%;

@@ -6,10 +6,10 @@ import css from '@/css'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 export const UpWrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 26px;
   transform: scale(0.8);
   padding-left: 3px;

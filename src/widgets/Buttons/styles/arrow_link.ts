@@ -6,7 +6,7 @@ import ArrowSVG from '@/icons/Arrow'
 import { getTextSize, getIconSize } from './metircs/arrow_link'
 
 export const Wrapper = styled.a`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   text-decoration: none;
   cursor: pointer;
 

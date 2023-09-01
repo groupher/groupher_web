@@ -9,7 +9,7 @@ import { BaseSection } from '.'
 export const Wrapper = styled(BaseSection)``
 
 export const Label = styled.div<{ color: TColorName }>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 100px;
   height: 30px;
   border: 1px solid;

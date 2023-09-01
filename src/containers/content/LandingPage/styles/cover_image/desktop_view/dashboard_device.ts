@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   position: absolute;
   bottom: 15px;
   left: -20px;
@@ -26,7 +26,7 @@ export const Wrapper = styled.div`
   z-index: 3;
 `
 export const Content = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 100%;
   height: 240px;
   position: relative;

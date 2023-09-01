@@ -5,10 +5,10 @@ import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const OptionsWrapper = styled.div`
-  ${css.flex('justify-evenly')};
+  ${css.row('justify-evenly')};
   padding-top: 3px;
 `
 export const HeaderDivider = styled.div`
@@ -22,7 +22,7 @@ export const HeaderDivider = styled.div`
 `
 
 export const Option = styled.div<TActive>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 
   color: ${({ active }) => (active ? theme('banner.title') : theme('banner.desc'))};
   background: ${({ active }) => (active ? theme('mailBox.headHightBg') : '')};

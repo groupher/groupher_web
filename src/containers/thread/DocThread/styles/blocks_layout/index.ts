@@ -4,13 +4,13 @@ import css, { theme } from '@/css'
 import { MainWrapper } from '../index'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 100%;
   margin-top: 30px;
   margin-left: 58px;
 `
 export const CatsWrapper = styled(MainWrapper)`
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
   flex-wrap: wrap;
 
   flex-grow: 1;

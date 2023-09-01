@@ -7,7 +7,7 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
   min-height: 90px;
 `

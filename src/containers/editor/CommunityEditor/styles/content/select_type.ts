@@ -5,12 +5,12 @@ import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
   width: 700px;
   min-height: 300px;
 `
 const Block = styled.div`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   padding: 15px;
   width: 45%;
 `
@@ -22,7 +22,7 @@ export const RightBlock = styled(Block)`
   padding-left: 40px;
 `
 export const Header = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 18px;
 `
 const Icon = styled(Img)`
@@ -46,7 +46,7 @@ export const Desc = styled.div`
   line-height: 1.7;
 `
 export const CommunityDemoWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   margin-bottom: 10px;
   margin-top: -4px;

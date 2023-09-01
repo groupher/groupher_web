@@ -12,7 +12,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   position: absolute;
   top: -8px;
   left: -78px;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 60px;
   cursor: pointer;
   visibility: hidden;

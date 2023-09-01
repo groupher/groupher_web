@@ -13,7 +13,7 @@ export { Bar, Circle } from '.'
 
 export const Wrapper = styled(BaseSection)``
 export const SelectWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   gap: 30px;
   width: calc(100% + 50px);
@@ -24,7 +24,7 @@ export const SelectWrapper = styled.div`
 `
 type TTopBar = { center?: boolean; bg: TColorName }
 export const TopBar = styled.div<TTopBar>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   justify-content: ${({ center }) => (center ? 'center' : 'flex-start')};
   width: calc(100% + 2px);
   height: 5px;
@@ -39,7 +39,7 @@ export const TopBar = styled.div<TTopBar>`
   padding-bottom: 2px;
 `
 export const Main = styled.div`
-  ${css.flex()};
+  ${css.row()};
   padding: 0 20px;
   margin-top: 25px;
 `
@@ -56,7 +56,7 @@ export const ExampleBtn = styled.div`
   display: inline-block;
 `
 export const Layout = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 export const LayoutTitle = styled.div<TActive>`
   opacity: ${({ $active }) => ($active ? 1 : 0.65)};
@@ -79,13 +79,13 @@ export const DividerLine = styled(Divider)`
 `
 
 export const BgWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 12px;
 `
 export const BgLabel = styled.div<{ bg: TColorName }>`
   width: 44px;
   height: 24px;
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   border: 1px solid;
   border-color: ${({ bg }) => COLORS[bg]};
   border-radius: 6px;

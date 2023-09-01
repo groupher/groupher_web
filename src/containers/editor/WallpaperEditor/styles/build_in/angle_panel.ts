@@ -69,7 +69,7 @@ const Point = styled.div<TActive>`
   position: absolute;
   font-size: 8px;
   ${css.circle(16)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   z-index: 2;
 
   font-weight: ${({ $active }) => ($active ? 600 : 'bormal')};
@@ -89,7 +89,7 @@ const Point = styled.div<TActive>`
 
 const SidePoint = styled(Point)`
   ${css.circle(10)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 
   opacity: ${({ $active }) => ($active ? 1 : 0.4)};
 

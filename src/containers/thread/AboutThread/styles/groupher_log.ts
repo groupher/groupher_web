@@ -5,7 +5,7 @@ import UpvoteSVG from '@/icons/Upvote'
 
 export const Wrapper = styled.div`
   ${css.size(60)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   padding-left: 4px;
   padding-top: 6px;
   position: relative;
@@ -26,7 +26,7 @@ export const Cover = styled.div`
 export const Box = styled.div`
   width: 44px;
   height: 40px;
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   border-radius: 5px;
   background: white;
   z-index: 2;

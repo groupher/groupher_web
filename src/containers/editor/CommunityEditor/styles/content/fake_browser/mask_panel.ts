@@ -18,17 +18,17 @@ export const Wrapper = styled.div`
 `
 export const InnerWrapper = styled.div`
   width: calc(100% + 148px);
-  ${css.flex()};
+  ${css.row()};
   flex-wrap: wrap;
   gap: 16px 0;
 `
 export const InnerWrapperColumn = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: calc(100% + 118px);
   gap: 12px;
 `
 export const Item = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   width: 33%;
 `
@@ -46,7 +46,7 @@ export const CheckIcon = styled(CheckSVG)`
   fill: ${theme('baseColor.green')};
 `
 export const Header = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 100%;
   margin-bottom: 30px;
   margin-left: 25px;

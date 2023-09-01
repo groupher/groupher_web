@@ -6,7 +6,7 @@ import Input from '@/widgets/Input'
 import ArrowSVG from '@/icons/ArrowSolid'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   border-bottom: 1px solid;
   border-bottom-color: ${theme('divider')};
   padding: 15px 0;
@@ -18,10 +18,10 @@ export const Title = styled.div`
   width: 130px;
 `
 export const Header = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const ArrowWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-grow: 1;
   padding-right: 50px;
 `
@@ -46,7 +46,7 @@ export const Inputer = styled(Input)`
   height: 28px;
 `
 export const Footer = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   height: 40px;
   margin-left: -1px;
 `

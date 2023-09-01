@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
 `
 export const InputWrapper = styled.div`
   position: relative;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 8px;
 
   transition: all 0.25s ease-in;
@@ -22,7 +22,7 @@ export const InputWrapper = styled.div`
   `};
 `
 export const InputMask = styled.div<TActive>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   position: absolute;
   display: ${({ show }) => (show ? 'flex' : 'none')};
   top: 0;

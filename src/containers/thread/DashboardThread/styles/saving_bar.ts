@@ -7,7 +7,7 @@ import InfoSVG from '@/icons/Save'
 
 type TWrapper = { direction: 'left' | 'right'; minimal: boolean } & TSpace
 export const Wrapper = styled.div<TWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: ${({ direction }) => (direction === 'right' ? 'calc(100% + 10px)' : '100%')};
   background: ${({ direction }) => `linear-gradient(to ${direction}, #f7f7f7 60%, transparent)`};
 
@@ -19,7 +19,7 @@ export const Wrapper = styled.div<TWrapper>`
   ${(props) => css.spaceMargins(props)};
 `
 export const HintWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const InfoIcon = styled(InfoSVG)<{ minimal: boolean }>`
   ${css.size(13)};
@@ -36,7 +36,7 @@ export const Hint = styled.span`
   margin-left: 2px;
 `
 export const ActionWrapper = styled.div<{ minimal: boolean }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 
   ${({ minimal }) => (minimal ? ' transform: scale(0.85);  margin-right: -8px;' : '')};
 `

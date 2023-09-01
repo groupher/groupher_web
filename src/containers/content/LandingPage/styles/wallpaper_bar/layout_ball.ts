@@ -7,7 +7,7 @@ import Layout2SVG from './Layout2'
 
 export const Wrapper = styled.div`
   ${css.size(26)};
-  ${css.flex('align-both')}
+  ${css.row('align-both')}
   border-radius: 5px;
   background: ${theme('hoverBg')};
   border: 1px solid;

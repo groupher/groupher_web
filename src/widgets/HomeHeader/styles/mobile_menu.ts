@@ -17,7 +17,7 @@ export const ListIcon = styled(ListSVG)`
 `
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   padding: 20px 30px;
   gap: 15px;
   height: auto;

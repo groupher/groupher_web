@@ -5,7 +5,7 @@ import Img from '@/Img'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 150px;
   border-right: 1px solid;
   border-right-color: ${theme('banner.desc')};
@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
   padding-bottom: 0;
 `
 export const TransWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const AccountIcon = styled(Img)`
   ${css.circle(30)};
@@ -44,7 +44,7 @@ export const TitleDivider = styled.div`
   opacity: 0.5;
 `
 const OptionWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 8px;
   &:hover {
     cursor: pointer;
@@ -62,7 +62,7 @@ export const Holder = styled.div<{ margin?: string }>`
   margin-top: ${({ margin }) => margin || '80px'};
 `
 export const QuestionWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
   &:hover {
     color: ${theme('thread.articeTitle')};

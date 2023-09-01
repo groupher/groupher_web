@@ -10,7 +10,7 @@ type TWrapper = TTestable & { width: number }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flexColumn()};
+  ${css.column()};
   width: ${({ width }) => `${width}px`};
 `
 export const Option = styled.div<TActive>`

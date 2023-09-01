@@ -6,11 +6,11 @@ export const Wrapper = styled.div`
   color: ${theme('article.digest')};
 `
 export const Section = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 7px;
 `
 export const Text = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 12px;
   color: ${theme('article.digest')};
 `

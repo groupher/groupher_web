@@ -14,12 +14,12 @@ export const Wrapper = styled.div`
   padding-top: 2x;
 `
 export const Header = styled.div`
-  ${css.flex()};
+  ${css.row()};
   color: ${theme('article.digest')};
 `
 // padding: 10px 2px;
 export const Block = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   margin-right: 5px;
 
   &:hover {

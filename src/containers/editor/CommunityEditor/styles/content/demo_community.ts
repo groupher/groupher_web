@@ -5,12 +5,12 @@ import css, { theme } from '@/css'
 import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
 `
 /* header bg */
 export const Community = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   height: 30px;
   margin-right: 16px;
   margin-bottom: 5px;

@@ -6,7 +6,7 @@ import CheckSVG from '@/icons/CheckBold'
 
 const Wrapper = styled.div`
   ${css.circle(20)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   border: 1px solid;
   border-color: ${theme('article.digest')};
 `

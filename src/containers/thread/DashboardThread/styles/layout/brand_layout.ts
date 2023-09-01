@@ -9,12 +9,12 @@ import { BaseSection, BlockBase } from '.'
 
 export const Wrapper = styled(BaseSection)``
 export const SelectWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   gap: 0 42px;
   width: 100%;
 `
 export const Brand = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const BrandIcon = styled(BrandSVG)`
   fill: ${theme('article.digest')};
@@ -26,7 +26,7 @@ export const BrandTitle = styled.div`
   font-weight: 600;
 `
 export const Layout = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 export const Block = styled(BlockBase)`
   width: 184px;

@@ -5,10 +5,10 @@ import WomanSVG from '@/icons/Woman'
 import { Divider as DividerBase } from '@/widgets/Common'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const UserTitle = styled.div`
-  ${css.flex('justify-between', 'align-center')};
+  ${css.row('justify-between', 'align-center')};
   color: ${theme('article.title')};
   font-size: 24px;
   margin-bottom: 2px;

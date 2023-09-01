@@ -18,7 +18,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   cursor: pointer;
 `
 export const InnerWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   max-width: 70px;
 `
 
@@ -29,7 +29,7 @@ export const IconWrapper = styled.div<TIconWrapper>`
     $active ? theme(`baseColor.${camelize(color)}`) : 'transparent'};
   background: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
   ${css.size(35)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   border-radius: 7px;
 
   ${InnerWrapper}:hover & {

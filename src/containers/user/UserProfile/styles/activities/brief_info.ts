@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<{ first: boolean }>`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   padding: 10px 15px;
   padding-top: ${({ first }) => (first ? '40px' : '10px')};
   padding-left: 0;
@@ -16,7 +16,7 @@ export const Wrapper = styled.div<{ first: boolean }>`
   `};
 `
 export const DateInfo = styled.div`
-  ${css.flex('align-end')};
+  ${css.row('align-end')};
   font-size: 12px;
 `
 export const DayNum = styled.div`

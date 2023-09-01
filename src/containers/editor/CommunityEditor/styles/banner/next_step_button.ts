@@ -10,7 +10,7 @@ export const Wrapper = styled(Button)<{ noPaddingRight: boolean }>`
 
 export const IntroTitle = styled.div`
   position: relative;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   font-size: 18px;
   margin-bottom: 20px;

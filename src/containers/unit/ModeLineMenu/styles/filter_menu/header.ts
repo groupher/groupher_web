@@ -7,7 +7,7 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
   width: 100%;
   /* border-bottom: 1px solid;
   border-bottom-color: #183d54; */
@@ -20,7 +20,7 @@ export const Title = styled.div`
   padding-left: 8px;
 `
 export const ButtonsWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const ConfirmBtn = styled.div`
   margin-top: -2px;

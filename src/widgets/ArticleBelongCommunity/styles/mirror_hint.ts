@@ -19,7 +19,7 @@ export const MirrorIcon = styled(ArticleMirrorSVG)`
   transition: opacity 0.2s;
 `
 export const PopHint = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
   font-size: 12px;
   margin-top: 6px;

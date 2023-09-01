@@ -14,7 +14,7 @@ type TWrapper = TTestable & { bg: TColorName }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 100%;
   height: 33px;
   background: ${({ bg }) => COLORS[bg]};
@@ -22,7 +22,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 `
 type TInner = { metric: TMetric; center: boolean }
 export const InnerWrapper = styled.div<TInner>`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   justify-content: ${({ center }) => (center ? 'center' : 'justify-between')};
   ${({ metric }) => css.fitContentWidth(metric)};
   width: 100%;
@@ -54,7 +54,7 @@ export const LinkBtn = styled.div<{ bg: TColorName }>`
   }
 `
 export const Row = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 10px;
 `
 export const NotifyIcon = styled(NotifySVG)`

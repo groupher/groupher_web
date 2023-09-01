@@ -10,7 +10,7 @@ import { getLocalSVG } from '@/icons'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   position: relative;
 `
 export const AccessZone = styled.div`
@@ -21,7 +21,7 @@ export const AccessZone = styled.div`
   left: 0;
 `
 export const Tabs = styled.div`
-  ${css.flex()};
+  ${css.row()};
   position: relative;
   padding: 2px;
   border-radius: 5px;
@@ -40,7 +40,7 @@ export const Tabs = styled.div`
 `
 export const Label = styled.label`
   ${css.size(25)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   font-size: 15px;
   transition: color 0.15s ease-in;
 
@@ -49,7 +49,7 @@ export const Label = styled.label`
   }
 `
 export const DescText = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   color: ${theme('article.title')};
   min-width: 90px;
   padding: 5px 10px;
@@ -83,7 +83,7 @@ export const getLocalIcon = (type: string): FC<TActive> => {
 }
 
 export const Slider = styled.span<{ index: number }>`
-  ${css.flex()};
+  ${css.row()};
   position: absolute;
   background-color: #fff; // to-theme
   ${css.size(25)};

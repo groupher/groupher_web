@@ -4,13 +4,13 @@ import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   max-width: 300px;
   width: 100%;
   padding: 10px;
 `
 export const Header = styled.div`
-  ${css.flex()};
+  ${css.row()};
 `
 export const DiscussIcon = styled(Img)`
   fill: ${theme('article.title')};
@@ -18,7 +18,7 @@ export const DiscussIcon = styled(Img)`
   margin-right: 15px;
 `
 export const Info = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const Title = styled.div`
   font-size: 1rem;
@@ -40,7 +40,7 @@ export const Divider = styled.div`
   margin-bottom: 6px;
 `
 export const Footer = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const GithubIcon = styled(Img)`
   fill: ${theme('article.digest')};

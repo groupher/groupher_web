@@ -7,7 +7,7 @@ import Img from '@/Img'
 import ArrowSVG from '@/icons/Arrow'
 
 export const Wrapper = styled.div`
-  ${css.flexColumnGrow('align-center')};
+  ${css.columnGrow('align-center')};
 `
 export const CoverImage = styled(Img)`
   width: 100%;
@@ -30,7 +30,7 @@ export const LogoWrapper = styled.div`
   ${css.size(100)};
   margin-top: -50px;
   z-index: 2;
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   border-radius: 5px;
   background: white;
   box-shadow: ${css.cardShadow};
@@ -39,21 +39,21 @@ export const Logo = styled(Img)`
   ${css.size(60)};
 `
 export const CommunityInfo = styled.div`
-  ${css.flexColumn('justify-center')};
+  ${css.column('justify-center')};
   margin-top: 18px;
 `
 export const Title = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   font-size: 22px;
   font-weight: 600;
 `
 export const Digest = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 6px;
 `
 export const BackHome = styled(Link)`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
 `
 export const Divider = styled.div`

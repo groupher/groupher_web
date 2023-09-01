@@ -10,7 +10,7 @@ import ArrowSVG from '@/icons/Arrow'
 import DotDivider from '@/widgets/DotDivider'
 
 export const Wrapper = styled.div<{ metric: TMetric }>`
-  ${css.flex('align-start', 'justify-between')};
+  ${css.row('align-start', 'justify-between')};
   width: 100%;
   margin-top: 50px;
   position: relative;
@@ -26,14 +26,14 @@ export const RightPart = styled.div`
   padding-right: 15px;
 `
 export const Topping = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   margin-left: -2px;
   margin-bottom: 16px;
   margin-top: -5px;
   position: relative;
 `
 export const BackBtnWrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   padding: 2px 5px;
   border-radius: 8px;
   color: ${theme('article.digest')};
@@ -57,7 +57,7 @@ export const ArrowIcon = styled(ArrowSVG)`
   }
 `
 export const CommunityInfo = styled.div`
-  ${css.flex('align-start', 'justify-center')};
+  ${css.row('align-start', 'justify-center')};
   margin-top: 5px;
   ${css.fitStickerWidth(METRIC.ARTICLE)};
 `
@@ -89,7 +89,7 @@ export const SubTitle = styled.span`
   }
 `
 export const BottomInfo = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   padding-bottom: 30px;
 
   width: 100%;
@@ -101,7 +101,7 @@ export const Avatar = styled(Img)`
   margin-right: 8px;
 `
 export const AuthorName = styled(Link)`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
   text-decoration: none;
   font-size: 14px;

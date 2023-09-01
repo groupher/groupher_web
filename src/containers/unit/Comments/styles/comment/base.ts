@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const ReplyBarBase = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('comment.reply')};
   background: ${theme('comment.replyBg')};
   border-radius: 3px;

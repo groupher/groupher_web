@@ -7,15 +7,15 @@ import css from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   width: 100%;
   position: relative;
 `
 export const Main = styled.div`
-  ${css.flexColumnGrow()};
+  ${css.columnGrow()};
 `
 export const AvatarWrapper = styled.div`
-  ${css.flexColumn('align-center', 'justify-between')};
+  ${css.column('align-center', 'justify-between')};
   padding-top: 10px;
   padding-bottom: 2px;
   margin-right: 8px;

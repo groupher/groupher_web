@@ -8,7 +8,7 @@ import BugSVG from '@/icons/Bug'
 import OtherSVG from '@/icons/menu/Feedback'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   font-weight: 600;
 `

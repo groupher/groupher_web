@@ -7,7 +7,7 @@ import LinkSVG from '@/icons/Link'
 export const Wrapper = styled.div``
 
 export const LinkWraper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const LinkIcon = styled(LinkSVG)`
   fill: ${theme('article.digest')};

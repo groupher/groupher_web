@@ -8,7 +8,7 @@ import FAQSVG from '@/icons/FAQ'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 320px;
   min-width: 320px;
   color: ${theme('article.digest')};
@@ -16,7 +16,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   padding-left: 50px;
 `
 export const Header = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 20px;
 `
 export const FAQIcon = styled(FAQSVG)`
@@ -43,7 +43,7 @@ export const Section = styled.div`
   transition: all 0.2s;
 `
 export const Footer = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 15px;
   border-top: 1px solid;
   border-top-color: ${theme('divider')};

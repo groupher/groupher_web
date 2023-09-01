@@ -4,7 +4,7 @@ import Img from '@/Img'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   margin-bottom: 16px;
   padding-left: 0;
   padding-bottom: 16px;
@@ -22,11 +22,11 @@ export const CommentWrapper = styled.div`
   width: 100%;
 `
 export const HeaderWrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   width: 100%;
 `
 export const CommentBodyInfo = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: calc(100% - 60px);
   margin-left: 40px;
   margin-top: -20px;
@@ -48,7 +48,7 @@ export const ReplyIcon = styled(Img)`
 `
 
 export const ReplyAction = styled.div`
-  ${css.flex()};
+  ${css.row()};
   color: ${theme('comment.action')};
   margin-right: 12px;
   cursor: pointer;

@@ -4,13 +4,13 @@ import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   width: 100%;
   position: relative;
   margin-bottom: 10px;
 `
 export const Main = styled.div`
-  ${css.flexColumnGrow()};
+  ${css.columnGrow()};
 `
 export const CoverWrapper = styled.div`
   width: 180px;

@@ -9,7 +9,7 @@ type TWrapper = TTestable
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   position: relative;
   background: transparent;
   width: 225px;

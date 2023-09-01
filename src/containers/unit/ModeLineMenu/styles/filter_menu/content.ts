@@ -7,12 +7,12 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
   width: 100%;
   padding: 0;
 `
 export const RightPartWrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   width: 65%;
 `
 export const SortWrapper = styled.div`
@@ -38,7 +38,7 @@ export const TagWrapper = styled.div`
   border-right-color: #183d54;
 `
 export const ItemBar = styled.div<TActive>`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   color: ${({ active }) => (active ? theme('article.title') : theme('article.digest'))};
   font-weight: ${({ active }) => (active ? 'bold' : 'normal')};
   padding: 5px 8px;

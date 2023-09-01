@@ -12,7 +12,7 @@ import Input from '@/widgets/Input'
 import { Wrapper as BarWrapper } from './tag_bar'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   opacity: 0.5;
 
   ${BarWrapper}:hover & {

@@ -5,7 +5,7 @@ import Img from '@/Img'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 0;
   margin-left: 5px;
 `
@@ -22,7 +22,7 @@ export const FloorNum = styled.div`
   opacity: 0.8;
 `
 export const CommentHeaderFirst = styled.div`
-  ${css.flex()};
+  ${css.row()};
 `
 export const Avatar = styled(Img)`
   ${css.circle(24)};
@@ -31,11 +31,11 @@ export const Avatar = styled(Img)`
   margin-top: 10px;
 `
 export const HeaderBaseInfo = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
 `
 export const CommentUserName = styled.div`
-  ${css.flexGrow('align-center')};
+  ${css.rowGrow('align-center')};
   color: ${theme('comment.username')};
   font-size: 14px;
 
@@ -44,7 +44,7 @@ export const CommentUserName = styled.div`
   `};
 `
 export const ReplyUsers = styled.div`
-  ${css.flex()};
+  ${css.row()};
   margin-top: -4px;
 `
 export const ReplyTitle = styled.div`

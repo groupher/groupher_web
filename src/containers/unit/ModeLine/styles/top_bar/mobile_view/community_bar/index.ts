@@ -4,7 +4,7 @@ import type { TActive } from '@/spec'
 import css, { theme, zIndex } from '@/css'
 
 export const Wrapper = styled.div<TActive>`
-  ${css.flex('justify-start')};
+  ${css.row('justify-start')};
   position: fixed;
   z-index: ${zIndex.header};
   top: ${({ visible }) => (visible ? '0' : '-33px')};
@@ -21,7 +21,7 @@ export const Wrapper = styled.div<TActive>`
 export const InnerWrapper = styled.div`
   width: 100%;
   height: 33px;
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   padding-left: 0;
   padding-right: 0vw;
   transition: all 0.2s;

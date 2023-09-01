@@ -4,7 +4,7 @@ import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   max-width: 300px;
 `
 export const PopAvatarWrapper = styled.div`
@@ -16,7 +16,7 @@ export const PopAvatar = styled(Img)`
   height: 80px;
 `
 export const UserPopInfo = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const Username = styled.div`
   color: ${theme('article.title')};
@@ -29,7 +29,7 @@ export const UserBio = styled.div`
   margin-bottom: 10px;
 `
 export const UserLocation = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const LabelIcon = styled(Img)`
   fill: ${theme('article.title')};
@@ -40,5 +40,5 @@ export const LabelText = styled.div`
   color: ${theme('article.title')};
 `
 export const UserCompany = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `

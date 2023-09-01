@@ -5,7 +5,7 @@ import Img from '@/Img'
 import Input from '@/widgets/Input'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding: 0 18px;
   margin-top: 20px;
 `

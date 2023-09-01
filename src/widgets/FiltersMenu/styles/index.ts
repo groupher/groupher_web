@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   min-width: 110px;
 `
 export const ItemWrapper = styled.div<{ withDivider: boolean }>`
-  ${css.flexColumn()};
+  ${css.column()};
   border-bottom: ${({ withDivider }) => (withDivider ? '1px solid' : 'none')};
   border-bottom-color: ${({ withDivider }) => (withDivider ? '#EFEEEE' : 'none')}; // to-theme
   margin-bottom: 10px;
@@ -25,7 +25,7 @@ type TItem = TActive & {
   topMargin: boolean
 }
 export const Item = styled.div<TItem>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   justify-content: ${({ revert }) => (revert ? 'flex-start' : 'flex-end')};
   color: ${theme('article.title')};
   font-size: ${({ active }) => (active ? '15px' : '14px')};

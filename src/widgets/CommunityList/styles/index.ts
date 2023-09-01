@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
 `
 export const Linker = styled.a<TSpace>`
@@ -21,7 +21,7 @@ export const Logo = styled(CommunityFaceLogo)<{ size: number }>`
 `
 
 export const MoreWrapper = styled.div`
-  ${css.flex('align-center')}
+  ${css.row('align-center')}
   color: ${theme('button.primary')};
   font-weight: bold;
   font-size: 12px;

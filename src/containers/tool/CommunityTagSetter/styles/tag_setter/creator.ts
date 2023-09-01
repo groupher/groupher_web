@@ -9,5 +9,5 @@ export const Wrapper = styled.div`
 `
 export const InnerWrapper = styled.div`
   color: ${theme('article.digest')};
-  /* ${css.flex()}; */
+  /* ${css.row()}; */
 `

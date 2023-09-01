@@ -7,7 +7,7 @@ import css, { theme } from '@/css'
 const activeColor = '#009C9E'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 8px;
   margin-right: -1px;
   letter-spacing: 1px;

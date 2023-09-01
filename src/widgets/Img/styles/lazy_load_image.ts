@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css, { zIndex } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   position: relative;
   z-index: ${zIndex.img};
 `

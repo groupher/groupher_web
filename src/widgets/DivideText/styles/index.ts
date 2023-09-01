@@ -7,7 +7,7 @@ import css from '@/css'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
 `
 export const Content = styled.div`

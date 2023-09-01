@@ -8,7 +8,7 @@ import ArrowSVG from '@/icons/ArrowSimple'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 100%;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -19,7 +19,7 @@ export const Logo = styled(SiteLogo)`
   margin-top: -2px;
 `
 export const Block = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 8px;
 `
 export const Title = styled.div`

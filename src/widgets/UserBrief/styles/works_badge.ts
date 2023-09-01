@@ -12,11 +12,11 @@ export const Title = styled.div`
   margin-bottom: 12px;
 `
 export const List = styled.div`
-  ${css.flex()};
+  ${css.row()};
   flex-wrap: wrap;
 `
 export const Item = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   margin-right: 18px;
 `
 export const Cover = styled(Img)`

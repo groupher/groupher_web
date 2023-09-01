@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   margin-top: -5px;
 
   ${css.media.mobile`
@@ -35,7 +35,7 @@ export const Title = styled.div`
   `}
 `
 export const ListWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Community = styled.div`
   margin-right: 10px;

@@ -4,12 +4,12 @@ import Img from '@/Img'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
   height: 60px;
 `
 export const AuthorWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Avatar = styled(Img)`
   ${css.circle(18)};
@@ -21,7 +21,7 @@ export const AuthorName = styled.div`
   opacity: 0.8;
 `
 export const PublishWrapper = styled.div`
-  ${css.flex('align-center')}
+  ${css.row('align-center')}
 `
 export const PubDate = styled.div`
   color: ${theme('article.digest')};

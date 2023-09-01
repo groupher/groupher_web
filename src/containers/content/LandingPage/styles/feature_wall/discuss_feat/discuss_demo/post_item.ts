@@ -6,7 +6,7 @@ import UpvoteSVG from '@/icons/Upvote'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<{ opacity: number }>`
-  ${css.flex()};
+  ${css.row()};
   background: ${theme('alphaBg2')};
   border-radius: 6px;
   height: 50px;
@@ -16,7 +16,7 @@ export const Wrapper = styled.div<{ opacity: number }>`
 `
 export const UpvotesWrapper = styled.div`
   ${css.size(40)};
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 
   border: 1px solid;
   border-color: #dac7e3;
@@ -25,11 +25,11 @@ export const UpvotesWrapper = styled.div`
   box-shadow: rgb(151 149 165 / 15%) 0px 8px 24px;
 `
 export const RightPart = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   margin-left: 14px;
 `
 export const Footer = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const UpvoteIcon = styled(UpvoteSVG)`
   ${css.size(12)};

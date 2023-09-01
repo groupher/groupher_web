@@ -6,7 +6,7 @@ import Img from '@/Img'
 export const Wrapper = styled.div`
   width: 100%;
   position: relative;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 10px;
 
   &:hover {
@@ -22,7 +22,7 @@ export const Intro = styled.div`
   flex-grow: 1;
 `
 export const Name = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   font-size: 16px;
 

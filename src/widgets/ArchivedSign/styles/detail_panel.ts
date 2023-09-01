@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 230px;
 `
 export const Title = styled.div`
@@ -16,7 +16,7 @@ export const Text = styled.div`
   font-size: 13px;
 `
 export const LinksWrapper = styled.div`
-  ${css.flex('justify-start')};
+  ${css.row('justify-start')};
   margin-top: 15px;
   margin-left: -3px;
 `

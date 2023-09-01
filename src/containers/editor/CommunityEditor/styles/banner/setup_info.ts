@@ -10,7 +10,7 @@ import UploadSVG from '@/icons/Upload'
 
 export const Wrapper = styled.div`
   position: relative;
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   color: ${theme('article.digest')};
   background-image: ${theme('banner.linearGradient')};
   width: 100%;
@@ -18,13 +18,13 @@ export const Wrapper = styled.div`
 `
 export const IntroTitle = styled.div`
   position: relative;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   font-size: 18px;
   margin-bottom: 20px;
 `
 export const InfoWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 38px;
 `
 export const RealCover = styled(Img)`
@@ -39,7 +39,7 @@ export const HolderWrapper = styled.div`
 export const HolderInner = styled.div`
   width: 100%;
   height: 100%;
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   opacity: 0.6;
 
   ${HolderWrapper}:hover & {
@@ -85,7 +85,7 @@ export const Title = styled.div`
   font-size: 1.1rem;
 `
 export const NextBtn = styled.div`
-  ${css.flex('align-center', 'justify-center')};
+  ${css.row('align-center', 'justify-center')};
   width: 200px;
   margin-left: 16px;
   filter: grayscale(1);

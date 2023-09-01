@@ -17,7 +17,7 @@ export const Desc = styled.div`
 `
 export const Footer = styled.div`
   width: 100%;
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   padding-right: 50px;
   gap: 0 14px;
 `

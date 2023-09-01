@@ -7,11 +7,11 @@ import CheckSVG from '@/icons/Check'
 export { Bar, Circle } from '..'
 
 export const FlatLayoutWrapper = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 100%;
 `
 export const FlatLists = styled.div`
-  ${css.flex()};
+  ${css.row()};
   flex-wrap: wrap;
   gap: 22px 0;
   width: 100%;

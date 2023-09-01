@@ -5,7 +5,7 @@ import css from '@/css'
 import { SwitchBarBase } from './gallery_base'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   width: 26px;
   height: 16px;
   cursor: pointer;
@@ -16,7 +16,7 @@ export const MainBar = styled(SwitchBarBase)`
   height: 100%;
 `
 export const SubBarWrapper = styled.div`
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
   flex-wrap: wrap;
   width: 11px;
   height: 100%;

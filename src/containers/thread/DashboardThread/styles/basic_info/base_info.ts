@@ -38,7 +38,7 @@ export const Desc = styled.div`
   margin-bottom: 20px;
 `
 export const Row = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Label = styled.div`
   color: ${theme('article.title')};

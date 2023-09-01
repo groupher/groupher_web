@@ -7,11 +7,11 @@ import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.size(60)};
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 export const Block = styled.div`
   ${css.size(47)};
-  ${css.flex()};
+  ${css.row()};
   flex-wrap: wrap;
   border-radius: 2px;
   border: 1px solid;

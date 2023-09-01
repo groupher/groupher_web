@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   position: relative;
-  ${css.flexColumn('align-end')};
+  ${css.column('align-end')};
 `
 export const ActivitySpark = styled.div`
   position: absolute;

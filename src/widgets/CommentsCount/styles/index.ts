@@ -9,7 +9,7 @@ import CommentSVG from '@/icons/Comment'
 
 type TWrapper = { size: TSizeSM } & TSpace
 export const Wrapper = styled.div<TWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.info')};
   font-size: ${({ size }) => (size === SIZE.MEDIUM ? '14px' : '13px')};
   font-weight: 500;

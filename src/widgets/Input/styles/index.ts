@@ -19,7 +19,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 const AddOn = styled.div<TActive>`
   position: absolute;
   top: 0;
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   display: ${({ show }) => (show ? 'flex' : 'none')};
   width: 30px;
   height: 32px;

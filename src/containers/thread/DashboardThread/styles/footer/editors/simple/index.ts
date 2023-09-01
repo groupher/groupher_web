@@ -5,10 +5,10 @@ import css, { theme } from '@/css'
 import PlusSVG from '@/icons/Plus'
 
 export const Wrapper = styled.div`
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
 `
 export const LeftPart = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 260px;
   gap: 25px 0;
 `

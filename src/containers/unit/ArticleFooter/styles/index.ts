@@ -8,7 +8,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 }))<TTestable>``
 
 export const BaseInfo = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   margin-bottom: 30px;
   margin-top: 10px;
   padding-left: 0;

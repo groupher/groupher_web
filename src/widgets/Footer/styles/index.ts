@@ -7,7 +7,7 @@ type TWrapper = TTestable & { metric?: TMetric }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 100%;
   min-height: 50px;
   margin-top: 80px;

@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 import { TemplateBlock } from '.'
 
 export const Wrapper = styled(TemplateBlock)`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   height: 180px !important;
   background: ${({ $active }) => ($active ? theme('alphaBg') : 'transparent')};
 `

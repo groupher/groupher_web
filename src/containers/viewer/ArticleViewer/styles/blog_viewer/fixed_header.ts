@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<{ visible: boolean }>`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   position: fixed;
   top: ${({ visible }) => (visible ? 0 : '-60px;')};
   opacity: ${({ visible }) => (visible ? 1 : 0)};
@@ -17,7 +17,7 @@ export const Wrapper = styled.div<{ visible: boolean }>`
   transition: all 0.2s;
 `
 export const ArticleWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const ArticleTitle = styled.div`
   font-size: 18px;

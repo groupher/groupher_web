@@ -14,13 +14,13 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 export const Title = styled.div``
 
 export const ByWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   gap: 18px;
 `
 export const IconWrapper = styled.div<TActive>`
   width: 80px;
   height: 90px;
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   border: 1px solid;
   border-radius: 8px;
   border-color: ${({ $active }) => ($active ? theme('article.digest') : '#dcdcdc')};
@@ -33,7 +33,7 @@ export const IconWrapper = styled.div<TActive>`
 `
 export const IconBox = styled.div`
   ${css.size(40)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 `
 export const IconTitle = styled.div`
   margin-top: 5px;

@@ -12,7 +12,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   margin-bottom: ${({ mBottom }) => `${mBottom}px`};
 `
 export const Title = styled.div`
-  ${css.flex()};
+  ${css.row()};
   cursor: pointer;
 `
 export const Desc = styled.div`

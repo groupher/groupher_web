@@ -7,12 +7,12 @@ type TWrapper = TTestable & { isSidebarLayout: boolean }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   width: 100%;
   margin-left: ${({ isSidebarLayout }) => (isSidebarLayout ? '-60px' : '0')};
 `
 export const Banner = styled.div<{ alignLeft: boolean }>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   align-items: ${({ alignLeft }) => (alignLeft ? 'flex-start' : 'center')};
   padding-left: ${({ alignLeft }) => (alignLeft ? '186px' : '')};
 

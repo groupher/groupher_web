@@ -7,7 +7,7 @@ import CCForbidSVG from '@/icons/article/CCForbid'
 import CCApproveSVG from '@/icons/article/CCApprove'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   cursor: pointer;
 `
 const icon = `

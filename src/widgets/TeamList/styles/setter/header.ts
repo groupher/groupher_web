@@ -4,7 +4,7 @@ import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   height: 50px;
   width: 100%;
   background: ${theme('modal.bg')};
@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
   padding-right: 11px;
 `
 export const SearchWrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   width: 100%;
   padding-left: 3px;
 `

@@ -5,14 +5,14 @@ import css, { theme } from '@/css'
 import EditPenSVG from '@/icons/EditPen'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 10px;
 `
 export const TotalCountWrapper = styled.div`
   flex-grow: 1;
 `
 export const TotalTitle = styled.div`
-  ${css.flex('align-end')};
+  ${css.row('align-end')};
   color: ${theme('article.title')};
   font-size: 15px;
   font-weight: bold;
@@ -26,7 +26,7 @@ export const TotalNum = styled.span`
 `
 
 export const CommentBlock = styled.div`
-  ${css.flex()};
+  ${css.row()};
   margin-bottom: 16px;
   padding: 15px;
   padding-left: 20px;
@@ -36,7 +36,7 @@ export const CommentBlock = styled.div`
   background: ${theme('drawer.articleBg')};
 `
 export const ActionsWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const EditIcon = styled(EditPenSVG)`
   ${css.size(12)};

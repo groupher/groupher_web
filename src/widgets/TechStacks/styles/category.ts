@@ -8,7 +8,7 @@ import DatabaseSVG from '@/icons/Database'
 import DesignSVG from '@/icons/Design'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   width: 150px;
   margin-top: 26px;
   position: relative;
@@ -53,7 +53,7 @@ export const DesignIcon = styled(DesignSVG)`
   fill: ${theme('article.digest')};
 `
 export const Title = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   font-size: 15px;
 

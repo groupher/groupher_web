@@ -7,7 +7,7 @@ import { Wrapper as TagItem } from './tag_item'
 
 export const Wrapper = styled.div`
   position: relative;
-  ${css.flex()};
+  ${css.row()};
   color: ${theme('banner.desc')};
   margin-top: -2px;
 `

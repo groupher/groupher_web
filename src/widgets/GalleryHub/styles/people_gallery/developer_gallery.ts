@@ -6,7 +6,7 @@ import css, { theme } from '@/css'
 import { Block as BlockBase, Footer as FooterBase } from './index'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   flex-wrap: wrap;
   color: ${theme('article.digest')};
   width: 100%;
@@ -16,17 +16,17 @@ export const Block = styled(BlockBase)`
   height: 308px;
 `
 export const Header = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const Body = styled.div`
-  ${css.flexColumnGrow('align-both')};
+  ${css.columnGrow('align-both')};
   cursor: pointer;
 `
 export const Avatar = styled(Img)`
   ${css.circle(58)};
 `
 export const Intro = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   margin-top: 15px;
 `
 export const Title = styled.div`
@@ -61,7 +61,7 @@ export const SocialWrapper = styled.div`
   transition: all 0.2s;
 `
 export const WorksWrapper = styled.div`
-  ${css.flex('align-center')}
+  ${css.row('align-center')}
 `
 export const WorkIcon = styled(Img)`
   ${css.circle(16)};

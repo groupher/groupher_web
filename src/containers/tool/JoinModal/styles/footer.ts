@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   padding: 8px 30px;
   height: 70px;
   border-top: 1px solid;
@@ -15,7 +15,7 @@ export const Note = styled.div`
   width: 60%;
 `
 export const WelcomeWrapper = styled.div`
-  ${css.flexColumn('align-end')};
+  ${css.column('align-end')};
 `
 export const Welcome = styled.div`
   color: ${theme('baseColor.green')};

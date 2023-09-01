@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
   opacity: 0.8;
 `
 export const TagItem = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 
 export const TagTitle = styled(Title)`

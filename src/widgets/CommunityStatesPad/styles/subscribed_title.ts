@@ -4,10 +4,10 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('justify-center')}
+  ${css.row('justify-center')}
 `
 export const PopoverInfo = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   padding: 10px;
   padding-bottom: 5px;
   width: 200px;

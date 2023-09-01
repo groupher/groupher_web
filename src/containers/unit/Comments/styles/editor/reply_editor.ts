@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   padding: 10px 0;
   background: ${theme('modal.subPanel')};
   min-height: 300px;
@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
 `
 
 export const Header = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   height: 68px;
   padding: 0 28px;
   padding-bottom: 8px;
@@ -24,7 +24,7 @@ export const Header = styled.div`
   font-size: 16px;
 `
 export const ReplyToHint = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 6px;
 `
 export const ReplyToContent = styled.div`

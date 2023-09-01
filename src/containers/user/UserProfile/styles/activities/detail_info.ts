@@ -5,7 +5,7 @@ import EditPenSVG from '@/icons/EditPen'
 
 export const Wrapper = styled.div<{ first: boolean }>`
   position: relative;
-  ${css.flexColumn()};
+  ${css.column()};
   padding: 10px 30px;
   color: ${theme('article.digest')};
   min-height: ${({ first }) => (first ? '130px' : '100px')};
@@ -19,7 +19,7 @@ export const IconWrapper = styled.div<{ first: boolean }>`
   top: ${({ first }) => (first ? '43px' : '13px')};
   left: -13px;
   ${css.circle(23)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   background: #033d45;
 `
 export const Icon = styled(EditPenSVG)`

@@ -34,7 +34,7 @@ export const CommunityLabel = styled.div`
   }
 `
 export const Extra = styled.li`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 5px;
   margin-bottom: 4px;
   transition: opacity 0.2s;
@@ -55,7 +55,7 @@ export const CommentIcon = styled(CommentSVG)`
   margin-right: 6px;
 `
 export const BasicState = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 12px;
   color: ${theme('article.info')};
 `

@@ -4,13 +4,13 @@ import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   padding: 5px;
   padding-left: 10px;
   padding-bottom: 0;
 `
 export const Option = styled.div<{ red: boolean }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('banner.desc')};
   margin-bottom: 8px;
 

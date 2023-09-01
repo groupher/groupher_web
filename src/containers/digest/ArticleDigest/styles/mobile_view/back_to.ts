@@ -6,7 +6,7 @@ import css, { theme } from '@/css'
 import ArrowSVG from '@/icons/Arrow'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   position: absolute;
   left: -180px;
   top: 50px;

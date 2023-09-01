@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-start')};
+  ${css.row('align-start')};
   margin-bottom: 15px;
 `
 export const Info = styled.div``

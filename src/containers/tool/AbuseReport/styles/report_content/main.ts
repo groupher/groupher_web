@@ -4,7 +4,7 @@ import type { TActive } from '@/spec'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   height: 100%;
 `
 export const OptionsWrapper = styled.div`
@@ -19,7 +19,7 @@ export const OptionsWrapper = styled.div`
   `};
 `
 export const FooterPanel = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding-left: 35px;
   width: 100%;
   background: ${theme('modal.subPanel')};
@@ -35,7 +35,7 @@ export const FooterPanel = styled.div`
   `};
 `
 export const Option = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 16px;
   padding: 12px 0;
   border-bottom: 1px solid;
@@ -46,7 +46,7 @@ export const Option = styled.div`
   }
 `
 export const SelectWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Title = styled.div<TActive>`
   color: ${theme('article.title')};

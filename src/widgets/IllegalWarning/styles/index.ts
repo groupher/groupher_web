@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   color: ${theme('article.digest')};
   width: 280px;
   border: 1px solid;
@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
   margin-bottom: 20px;
 `
 export const Title = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   font-size: 13px;
   color: ${theme('article.digest')};
@@ -26,7 +26,7 @@ export const Reason = styled.div`
   color: ${theme('article.title')};
 `
 export const Content = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
 `
 export const IllegalItem = styled.div`

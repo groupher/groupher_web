@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   background: #06303b;
   padding: 10px;
   width: 100%;
@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
   margin-left: -8px;
 `
 export const Header = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   margin-left: 2px;
 `
 export const Title = styled.div`
@@ -26,7 +26,7 @@ export const Desc = styled.div`
   margin-top: 12px;
 `
 export const JoinWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
   font-size: 12px;
 `

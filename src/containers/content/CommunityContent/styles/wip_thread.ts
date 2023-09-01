@@ -40,5 +40,5 @@ export const Li = styled.li`
   font-size: 14px;
 `
 export const InnerLinker = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `

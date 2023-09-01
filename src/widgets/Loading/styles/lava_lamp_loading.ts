@@ -17,7 +17,7 @@ const move = keyframes`
 
 type TWrapper = TSpace & { size: TSizeTSM }
 export const Wrapper = styled.div<TWrapper>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   overflow: hidden;
   width: 80px;
   height: 18px;
@@ -29,7 +29,7 @@ export const Wrapper = styled.div<TWrapper>`
   transform: ${({ size }) => getLavaLampScale(size)};
 `
 export const Container = styled.div`
-  ${css.flex()};
+  ${css.row()};
   width: 100%;
   position: relative;
 `

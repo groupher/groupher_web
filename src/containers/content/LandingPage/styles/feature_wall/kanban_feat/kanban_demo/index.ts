@@ -3,12 +3,12 @@ import styled from 'styled-components'
 import css from '@/css'
 
 export const BoardsWrapper = styled.div`
-  ${css.flex('justify-center', 'align-end')};
+  ${css.row('justify-center', 'align-end')};
   gap: 0 18px;
   width: 100%;
 `
 export const Board = styled.div<{ shadow?: boolean }>`
-  ${css.flexColumn()};
+  ${css.column()};
   padding: 6px;
   gap: 6px;
   overflow: hidden;

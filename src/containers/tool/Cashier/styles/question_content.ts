@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumnGrow()};
+  ${css.columnGrow()};
   margin-top: 10px;
   padding-left: 15px;
 `

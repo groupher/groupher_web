@@ -9,7 +9,7 @@ import CommentSVG from '@/icons/Comment'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
   position: relative;
   padding: 30px;
   opacity: 0.8;
@@ -31,12 +31,12 @@ export const DetailWrapper = styled.div`
   border-image-slice: 1;
 `
 export const Status = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 10px;
   margin-bottom: 22px;
 `
 export const UpvoteWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   border: 1px solid;
   color: ${theme('baseColor.purple')};
   font-size: 11px;
@@ -74,7 +74,7 @@ export const Bar = styled(BarBase)`
   background: ${theme('baseColor.purple')};
 `
 export const CommentsHeader = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('baseColor.purple')};
   font-weight: 500;
   font-size: 12px;

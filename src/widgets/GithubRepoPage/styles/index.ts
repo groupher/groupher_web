@@ -8,7 +8,7 @@ export const Wrapper = styled.div<{ updating: boolean }>`
   animation: ${({ updating }) => (updating ? `${animate.breath} 1.2s linear infinite` : '')};
 `
 export const BodyWrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   padding: 20px 30px;
   height: auto;
   min-height: 600px;

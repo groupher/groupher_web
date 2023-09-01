@@ -4,13 +4,13 @@ import css, { theme } from '@/css'
 import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 
   padding: 10px;
   width: 320px;
 `
 export const Body = styled.div`
-  ${css.flex()};
+  ${css.row()};
 `
 export const CommunityLogo = styled(CommunityFaceLogo)`
   width: 80px;
@@ -18,7 +18,7 @@ export const CommunityLogo = styled(CommunityFaceLogo)`
   margin-right: 15px;
 `
 export const CommunityInfo = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const Title = styled.div`
   font-size: 1.2rem;
@@ -40,5 +40,5 @@ export const Divider = styled.div`
 `
 
 export const Footer = styled.div`
-  ${css.flex('justify-start')};
+  ${css.row('justify-start')};
 `

@@ -13,7 +13,7 @@ type TWrapper = {
 
 export const Wrapper = styled.div<TWrapper>`
   position: relative;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   opacity: ${({ dimWhenIdle, disabled }) => (dimWhenIdle || disabled ? '0.65' : 1)};
 
   ${(props) => css.spaceMargins(props)};

@@ -6,7 +6,7 @@ import ShareSVG from '@/icons/Share'
 import ReportSVG from '@/icons/WarningLight'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding: 0 6px;
   gap: 0 12px;
 `

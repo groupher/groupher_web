@@ -33,12 +33,12 @@ export const Title = styled.div`
   margin-left: 2px;
 `
 export const SettingWrapper = styled.div<TActive>`
-  ${css.flex()};
+  ${css.row()};
   display: ${({ show }) => (show ? 'flex' : 'none')};
   margin-left: 3px;
 `
 export const SwitchWrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   padding-right: 10px;
   margin-left: 1px;
 `

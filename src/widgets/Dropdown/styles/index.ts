@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 
 type TSize = { size: string }
 export const Wrapper = styled.div<TSize>`
-  ${css.flex()};
+  ${css.row()};
   font-size: ${({ size }) => size};
   background: ${theme('dropdown.bg')};
   padding: 0 3px;
@@ -15,7 +15,7 @@ export const Wrapper = styled.div<TSize>`
 // export const Title = styled.div``
 
 export const IconWrapper = styled.span<TSize>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   max-width: 0;
   ${Wrapper}:hover & {
     margin-left: 3px;

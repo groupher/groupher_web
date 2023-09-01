@@ -11,7 +11,7 @@ import OtherSVG from '@/icons/menu/Feedback'
 import { SelectItem as SelectItemBase } from '.'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   min-width: 120px;
   margin-top: 2px;
   font-size: 14px;
@@ -19,7 +19,7 @@ export const Wrapper = styled.div`
 `
 export const IconWrapper = styled.div`
   ${css.circle(16)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   margin-right: 10px;
 `
 
@@ -53,7 +53,7 @@ export const OtherIcon = styled(OtherSVG)`
   fill: ${theme('article.digest')};
 `
 export const SelectItem = styled(SelectItemBase)`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding: 7px 5px;
   border-radius: 5px;
 `

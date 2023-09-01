@@ -17,7 +17,7 @@ type TWrapper = { dimWhenIdle: boolean } & TTestable
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   opacity: ${({ dimWhenIdle }) => (dimWhenIdle ? 0.7 : 1)};
 
   &:hover {
@@ -37,7 +37,7 @@ type TText = {
 }
 
 export const Text = styled.div<TText>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.info')};
   /* color: ${({ highlight }) => (highlight ? theme('article.title') : theme('article.digest'))}; */
   font-size: ${({ size }) => getTextSize(size)};

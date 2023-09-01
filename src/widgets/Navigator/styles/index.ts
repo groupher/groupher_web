@@ -7,7 +7,7 @@ import SiteLogo from '@/icons/CPLogo' // TODO:
 // import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
 
 export const Breadcrumbs = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   max-width: 650px;
   width: 100%;
   height: 100%;
@@ -26,7 +26,7 @@ export const LogoLink = styled.div`
   left: -220px;
   top: 15px;
 
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   cursor: pointer;
 `
 export const LogoMargin = styled.div`
@@ -72,7 +72,7 @@ export const A = styled.a`
   cursor: pointer;
 `
 export const OfflineWrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   background: ${theme('baseColor.red')};
   color: ${theme('header.bg')};
   margin-left: 20px;

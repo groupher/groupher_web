@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css, { theme, animate } from '@/css'
 
 export const NumbersWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: -2.1rem;
 `
 export const NumbersInfo = styled(NumbersWrapper)`
@@ -11,7 +11,7 @@ export const NumbersInfo = styled(NumbersWrapper)`
 `
 // background: ${theme('banner.numberHoverBg')};
 export const NumberSection = styled.div<{ readOnly: boolean }>`
-  ${css.flexColumn('justify-center')};
+  ${css.column('justify-center')};
 
   padding: 0 5px;
   border-radius: 4px;

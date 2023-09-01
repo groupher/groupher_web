@@ -20,7 +20,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   `};
 `
 export const ColumnsWrapper = styled.div`
-  ${css.flex('align-start', 'justify-between')};
+  ${css.row('align-start', 'justify-between')};
   min-height: 500px;
   margin-top: 60px;
 
@@ -40,5 +40,5 @@ export const MobileColumnsWrapper = styled.div`
 `
 
 export const MobileColumnsInner = styled.div`
-  ${css.flex('align-start', 'justify-between')};
+  ${css.row('align-start', 'justify-between')};
 `

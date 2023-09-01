@@ -14,7 +14,7 @@ type TWrapper = Pick<TProps, 'disabled' | 'dimWhenIdle' | 'color' | 'reverseColo
 
 export const Wrapper = styled.button<TWrapper>`
   position: relative;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   display: inline-flex;
   opacity: ${({ dimWhenIdle, disabled }) => (dimWhenIdle || disabled ? '0.65' : 1)};
   color: ${({ color, reverseColor }) => {

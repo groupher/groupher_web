@@ -6,13 +6,13 @@ import SettingSVG from '@/icons/Setting'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   padding-right: 5px;
 `
 type TUser = TActive & { $noActive: boolean }
 
 export const User = styled.div<TUser>`
-  ${css.flex()};
+  ${css.row()};
   margin-bottom: 25px;
   opacity: ${({ $active, $noActive }) => {
     if ($noActive) return 1
@@ -36,7 +36,7 @@ export const Intro = styled.div`
   width: 100%;
 `
 export const Title = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-weight: 600;
 `
 export const Name = styled.div`

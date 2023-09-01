@@ -6,7 +6,7 @@ import Input from '@/widgets/Input'
 import { ALIGN_HEADER_OFFSET } from '../../constant'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   padding: ${() => `0 ${ALIGN_HEADER_OFFSET}`};
 `
 export const Section = styled.div`
@@ -34,7 +34,7 @@ export const Desc = styled.div`
   margin-bottom: 20px;
 `
 export const Row = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Label = styled.div`
   color: ${theme('article.title')};

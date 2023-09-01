@@ -8,7 +8,7 @@ import UpvoteSVG from '@/icons/Upvote'
 import CommentSVG from '@/icons/Comment'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   gap: 0 45px;
   width: 100%;
@@ -73,12 +73,12 @@ export const Cover = styled.div`
 
 type TColumn = { center?: boolean; grow?: boolean }
 export const Column = styled.div<TColumn>`
-  ${css.flexColumn()};
+  ${css.column()};
   ${({ center }) => (center ? 'align-items: center;' : '')};
   ${({ grow }) => (grow ? 'flex-grow: 1;' : '')};
 `
 export const Layout = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 150px;
   height: 100px;
 `

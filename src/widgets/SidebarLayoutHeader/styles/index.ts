@@ -10,7 +10,7 @@ import InfoSVG from '@/icons/Info'
 import GuideSVG from '@/icons/Guide'
 
 export const Menu = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const MenuItem = styled.div`
   color: ${theme('article.title')};
@@ -18,7 +18,7 @@ export const MenuItem = styled.div`
 `
 export const IconWrapper = styled.div`
   ${css.size(16)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 `
 export const HomeIcon = styled(HomeSVG)`
   ${css.size(13)};

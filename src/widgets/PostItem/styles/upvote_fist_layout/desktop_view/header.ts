@@ -5,14 +5,14 @@ import css, { theme } from '@/css'
 import DotDivider from '@/widgets/DotDivider'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const Topping = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 4px;
 `
 export const Main = styled.div`
-  ${css.flexGrow('align-center')};
+  ${css.rowGrow('align-center')};
   color: ${theme('article.title')};
 `
 export const Title = styled.a`

@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   line-height: 22px;
   margin-bottom: 3px;
   margin-top: 18px;

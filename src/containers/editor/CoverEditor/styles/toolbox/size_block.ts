@@ -8,12 +8,12 @@ import { SettingBlock, SettingTitle } from '.'
 
 export const Wrapper = styled.div`
   ${css.size(60)};
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 export const Block = styled(SettingBlock)``
 
 export const Panel = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   gap: 0 15px;
   color: ${theme('article.digest')};
   width: 200px;
@@ -26,7 +26,7 @@ export const Panel = styled.div`
 type TItem = { fontSize: number } & TActive
 export const Item = styled.div<TItem>`
   ${css.size(26)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   font-size: ${({ fontSize }) => `${fontSize}px`};
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   border: 1px solid transparent;

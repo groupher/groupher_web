@@ -17,7 +17,7 @@ export const Link = styled(NextLink)`
 `
 
 export const Row = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Br = styled.div<TSpace>`
   margin-top: ${({ top }) => `${top}px` || 0};

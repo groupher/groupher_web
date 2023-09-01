@@ -7,7 +7,7 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 15px;
   padding-bottom: 18px;
   border-bottom: 1px solid;
@@ -18,7 +18,7 @@ export const Logo = styled(Img)`
   ${css.size(30)};
 `
 export const Digest = styled.div`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   margin-left: 12px;
 `
 export const Title = styled.div`

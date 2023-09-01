@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   padding: 20px;
 `
 export const MsgWrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 90%;
   height: 180px;
 `

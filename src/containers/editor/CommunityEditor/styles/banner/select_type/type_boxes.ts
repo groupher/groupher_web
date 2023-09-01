@@ -7,14 +7,14 @@ import css, { theme } from '@/css'
 import Checker from '@/widgets/Checker'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   margin-top: 30px;
   height: 105px;
   width: 700px;
 `
 type TBox = { touched: boolean } & TActive
 export const Box = styled.div<TBox>`
-  ${css.flexColumn('align-start', 'justify-between')};
+  ${css.column('align-start', 'justify-between')};
   padding: 10px 12px;
   padding-right: 5px;
   width: 154px;
@@ -43,7 +43,7 @@ export const Box = styled.div<TBox>`
   transition: all 0.2s;
 `
 export const HeaderText = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   width: 100%;
   font-size: 12px;
 `

@@ -8,16 +8,16 @@ import Img from '@/Img'
 import ArrowSVG from '@/icons/ArrowSimple'
 
 export const Wrapper = styled.div<TSpace>`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   width: 100%;
   ${(props) => css.spaceMargins(props)};
 `
 export const InnerWrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   width: 220px;
 `
 export const EmptyWrapper = styled(Wrapper)<TSpace>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 
   ${(props) => css.spaceMargins(props)};
 `
@@ -84,7 +84,7 @@ export const ArrowRightIcon = styled(ArrowLeftIcon)`
 `
 
 export const Main = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 50px;
   margin-right: 50px;
 `

@@ -11,15 +11,15 @@ export const Wrapper = styled.div`
   `};
 `
 export const InnerWrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   margin-top: 50px;
 `
 export const SettingsRow = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 40px;
 `
 export const NumRow = styled.div`
-  ${css.flex('align-end')};
+  ${css.row('align-end')};
 `
 export const SettingTitle = styled.div`
   color: ${theme('article.digest')};

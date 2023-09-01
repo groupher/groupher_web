@@ -7,5 +7,5 @@ import { InnerWrapper as BaseInnerWrapper } from '.'
 export { Wrapper, ContentWrapper, MobileCardsWrapper } from '.'
 
 export const InnerWrapper = styled(BaseInnerWrapper)`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
 `

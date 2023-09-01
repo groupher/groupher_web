@@ -6,10 +6,10 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Button = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   border: 1px solid;
   border-color: ${theme('comment.indentLine')};
 

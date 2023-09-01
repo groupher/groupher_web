@@ -7,7 +7,7 @@ import Img from '@/Img'
 import css from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   gap: 10px;
 `

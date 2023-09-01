@@ -6,12 +6,12 @@ import css, { theme } from '@/css'
 import CitySVG from '@/icons/City'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   flex-wrap: wrap;
 `
 
 export const UserWrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   width: 48%;
   margin-bottom: 10px;
   margin-right: 5px;
@@ -30,12 +30,12 @@ export const UserAvatar = styled(Img)`
 `};
 `
 export const UserBrief = styled.div`
-  ${css.flexColumnGrow('justify-between')};
+  ${css.columnGrow('justify-between')};
   margin-left: 18px;
 `
 export const Title = styled.div`
   ${css.media.tablet`
-    ${css.flexColumn('align-start')};
+    ${css.column('align-start')};
   `};
 `
 export const Nickname = styled(Link)`
@@ -49,7 +49,7 @@ export const Nickname = styled(Link)`
   }
 `
 export const Location = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
 `
 export const City = styled.div`

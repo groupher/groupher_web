@@ -6,7 +6,7 @@ import Input from '@/widgets/Input'
 
 type TWrapper = { isEditMode: boolean; isSetting: boolean; hasSettingTag: boolean }
 export const Wrapper = styled.div<TWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
   height: ${({ isEditMode }) => (isEditMode ? '46px' : '40px')};
   /* margin-left: -8px; */
@@ -44,7 +44,7 @@ export const Dot = styled.div<TDot>`
 `
 export const DotSelector = styled.div`
   ${css.size(26)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   border: 1px solid;
   border-color: ${theme('editor.border')};
   background: white;

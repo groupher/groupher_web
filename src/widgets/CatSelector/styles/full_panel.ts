@@ -11,7 +11,7 @@ import OtherSVG from '@/icons/menu/Feedback'
 export { SelectItem } from '.'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   min-width: 190px;
   cursor: auto;
 `

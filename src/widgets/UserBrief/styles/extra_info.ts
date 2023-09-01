@@ -11,7 +11,7 @@ import CitySVG from '@/icons/City'
 import CompanySVG from '@/icons/Company'
 
 export const Section = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 13px;
   margin-bottom: 10px;
 `

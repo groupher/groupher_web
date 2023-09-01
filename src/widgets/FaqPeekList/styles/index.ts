@@ -37,7 +37,7 @@ export const ArrowIcon = styled(Img)`
   transform: rotate(-90deg);
 `
 export const ContentWrapper = styled.div<TActive>`
-  ${css.flex('align-center', 'justify-start')};
+  ${css.row('align-center', 'justify-start')};
   display: ${({ active }) => (active ? 'flex' : 'none')};
   height: 100%;
   background: ;

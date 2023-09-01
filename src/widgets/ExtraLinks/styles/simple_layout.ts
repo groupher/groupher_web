@@ -15,7 +15,7 @@ export const LinkItem = styled(LinkItemBase)`
 `
 
 export const GroupItem = styled(LinkItem)<TActive>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   position: relative;
   margin-right: 5px;
   background: ${({ $active }) => ($active ? theme('hoverBg') : theme(''))};

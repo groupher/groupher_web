@@ -8,14 +8,14 @@ import { LineDivider as LineDividerBase } from '@/widgets/Common'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const UpvoteBtnWrapper = styled.div`
   transform: scale(0.8);
   margin-top: 6px;
 `
 export const DescWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 2px;
 `
 export const Text = styled.div`

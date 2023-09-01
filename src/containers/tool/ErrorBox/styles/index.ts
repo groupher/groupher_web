@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   position: fixed;
   left: calc(50% - 245px);
   bottom: 30px;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   border: 1px solid;
   border-color: ${theme('baseColor.red')};
   height: 40px;
@@ -30,7 +30,7 @@ export const WarningIcon = styled(WarningSVG)`
   margin-bottom: 1px;
 `
 export const ResetButton = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   color: ${theme('article.title')};
   width: 40px;
   height: 20px;
@@ -47,7 +47,7 @@ export const ResetButton = styled.div`
   transition: all 0.2s;
 `
 export const LearnMoreButton = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 60px;
   height: 18px;
   border-radius: 6px;

@@ -8,7 +8,7 @@ import { camelize } from '@/utils/fmt'
 import { getIconSize, getTitleSize, getInnerSpace } from './metric'
 
 export const Wrapper = styled.div<TSpace>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 
   margin-left: ${({ left }) => `${left || 0}px`};
   margin-right: ${({ right }) => `${right || 0}px`};
@@ -18,7 +18,7 @@ export const Wrapper = styled.div<TSpace>`
   position: relative;
 `
 export const Tag = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-right: 5px;
   min-width: 40px;
 `

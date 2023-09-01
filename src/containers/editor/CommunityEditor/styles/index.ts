@@ -4,14 +4,14 @@ import type { TMetric } from '@/spec'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<{ metric: TMetric }>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 100%;
   height: 100%;
 
   ${({ metric }) => css.fitPageWidth(metric)};
 `
 export const InnerWrapper = styled.div<{ metric: TMetric }>`
-  ${css.flexColumn('justify-center')};
+  ${css.column('justify-center')};
   width: 100%;
   ${({ metric }) => css.fitContentWidth(metric)};
 `

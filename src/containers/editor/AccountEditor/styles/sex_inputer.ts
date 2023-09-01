@@ -8,7 +8,7 @@ import WomanSVG from '@/icons/Woman'
 import { SEX } from '../constant'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   width: 250px;
 `
 const sexIcon = `

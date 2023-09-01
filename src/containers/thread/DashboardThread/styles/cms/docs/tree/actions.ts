@@ -6,7 +6,7 @@ import AdderSVG from '@/icons/Plus'
 import EditPenSVG from '@/icons/EditPen'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 400px;
   margin-bottom: 36px;
 `
@@ -17,11 +17,11 @@ export const Preview = styled.div`
   border-bottom-color: ${theme('divider')};
 `
 export const PreviewButtonsWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 8px;
 `
 export const Head = styled.div`
-  ${css.flex('align-start')};
+  ${css.row('align-start')};
 `
 export const Title = styled.div`
   flex-grow: 1;

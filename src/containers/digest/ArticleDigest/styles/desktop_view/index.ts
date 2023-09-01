@@ -9,7 +9,7 @@ type TWrapper = { metric: TMetric } & TTestable
 export const Wrapper = styled.nav.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flexColumn('justify-start')};
+  ${css.column('justify-start')};
   position: relative;
   background: transparent;
   min-height: ${({ metric }) => getDigestHeight(metric)};
@@ -24,7 +24,7 @@ export const InnerWrapper = styled.div`
   width: 100%;
 `
 export const BannerContent = styled.div`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   width: calc(100% - 360px);
   margin-left: 180px;
   border-bottom: 1px solid;

@@ -4,11 +4,11 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumnGrow()};
+  ${css.columnGrow()};
   font-size: 13px;
 `
 export const TitleWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Title = styled.div`
   color: ${theme('baseColor.red')};

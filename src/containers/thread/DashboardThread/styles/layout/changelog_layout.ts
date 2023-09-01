@@ -14,7 +14,7 @@ export { Bar } from '.'
 export const Wrapper = styled(BaseSection)``
 
 export const SelectWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   gap: 20px 30px;
 
@@ -27,13 +27,13 @@ export const SelectWrapper = styled.div`
 
 type TColumn = { center?: boolean; grow?: boolean }
 export const Column = styled.div<TColumn>`
-  ${css.flexColumn()};
+  ${css.column()};
   ${({ center }) => (center ? 'align-items: center;' : '')};
   ${({ grow }) => (grow ? 'flex-grow: 1;' : '')};
   padding: 0 18px;
 `
 export const Layout = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 export const LayoutTitle = styled.div<TActive>`
   opacity: ${({ $active }) => ($active ? 1 : 0.65)};
@@ -57,7 +57,7 @@ export const Picture = styled.div`
   background: ${theme('divider')};
 `
 export const MiniItem = styled.div`
-  ${css.flex('align-start')};
+  ${css.row('align-start')};
   width: 100%;
   margin-left: 5px;
   padding: 0 10px;

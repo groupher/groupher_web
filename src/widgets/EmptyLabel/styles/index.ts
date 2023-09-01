@@ -7,7 +7,7 @@ import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   color: ${theme('article.digest')};
   margin-left: -3%;
   height: 300px;

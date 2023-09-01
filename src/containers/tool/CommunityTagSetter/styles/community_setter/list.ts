@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   margin-bottom: 8px;
 `
 export const InnerWrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   flex-wrap: wrap;
 `
 export const HintTitle = styled.div<{ highlight: boolean }>`

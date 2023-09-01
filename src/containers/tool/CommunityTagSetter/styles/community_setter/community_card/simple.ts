@@ -4,7 +4,7 @@ import css, { theme } from '@/css'
 import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
 
 export const Wrapper = styled.div<{ withHover: boolean }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: auto;
   height: 30px;
   background: ${theme('modal.bg')};
@@ -29,7 +29,7 @@ export const Intro = styled.div`
   margin-left: 8px;
 `
 export const Title = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
 `
 export const Name = styled.div`

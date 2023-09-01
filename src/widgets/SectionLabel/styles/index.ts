@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   margin-top: 10px;
 `
 export const Label = styled.div`
-  ${css.flex()};
+  ${css.row()};
 `
 export const Title = styled.div`
   /* color: ${theme('tabs.headerActive')}; */

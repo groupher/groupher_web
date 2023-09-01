@@ -65,7 +65,7 @@ export const UpvoteWrapper = styled(FadeToggle)<TUpvoteWrapper>`
 `
 
 export const GoTopWrapper = styled.div<{ show: boolean }>`
-  ${css.flex('align-end', 'justify-center')};
+  ${css.row('align-end', 'justify-center')};
   position: fixed;
   bottom: 40px;
   left: 102px;

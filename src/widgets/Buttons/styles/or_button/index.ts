@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css from '@/css'
 
 export const OrSignBase = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   position: absolute;
   top: 5px;
   left: calc(50% - 8.5px);

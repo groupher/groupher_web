@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   margin-top: 15px;
 `
 export const Header = styled.div`
-  ${css.flex('justify-between', 'align-center')};
+  ${css.row('justify-between', 'align-center')};
   margin-bottom: 12px;
   padding-top: 20px;
   border-top: 1px solid;

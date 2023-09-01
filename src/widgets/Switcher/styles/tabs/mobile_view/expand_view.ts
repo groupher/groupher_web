@@ -24,7 +24,7 @@ export const Nav = styled(NavBase)`
   margin: 0;
 `
 export const MoreWrapper = styled.div`
-  ${css.flex('align-start', 'justify-end')};
+  ${css.row('align-start', 'justify-end')};
   position: absolute;
   top: 1px;
   right: 0;

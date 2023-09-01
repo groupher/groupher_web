@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
   margin-top: 15px;
 `
 export const MainWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
   margin-left: -8px;
   border-radius: 5px;
@@ -22,7 +22,7 @@ export const MainWrapper = styled.div`
   background: linear-gradient(to right, #fffbe9 30%, transparent);
 `
 export const Note = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
   font-size: 12px;
 `
@@ -36,7 +36,7 @@ export const Focus = styled.div`
 `
 
 export const ActionNotes = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 5px;
 `
 export const DeleteNote = styled.div`

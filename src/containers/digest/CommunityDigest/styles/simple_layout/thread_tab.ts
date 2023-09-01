@@ -5,7 +5,7 @@ import type { TActive, TSpace } from '@/spec'
 import css, { theme } from '@/css'
 
 export const NormalWrapper = styled.div<TSpace>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   gap: 0 16px;
 
   ${(props) => css.spaceMargins(props)};

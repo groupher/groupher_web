@@ -8,11 +8,11 @@ import Button from '../../Button'
 // see example: https://codepen.io/mydearxym2/pen/qBEvvpo
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
 `
 export const PubButton = styled(Button)<{ smaller?: boolean }>`
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
   width: 100%;
 
   border: none;
@@ -23,7 +23,7 @@ export const PubButton = styled(Button)<{ smaller?: boolean }>`
   border-radius: 15px;
 `
 export const MoreOption = styled.div<TSpace>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   margin-left: ${({ left }) => `${left}px` || 0};
   margin-right: ${({ right }) => `${right}px` || 0};
 `

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   width: 100%;
 `
 export const Banner = styled.div`
@@ -24,5 +24,5 @@ export const TabsWrapper = styled.div`
 export const InnerWrapper = styled.div`
   width: 480px;
   margin-left: -20px;
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
 `

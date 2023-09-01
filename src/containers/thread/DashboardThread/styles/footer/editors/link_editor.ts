@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   width: 100%;
 `
 export const ReadonlyWrapper = styled.div<{ editing: boolean }>`
-  ${css.flexColumn()};
+  ${css.column()};
   gap: 0 10px;
 
   ${({ editing }) => editing && 'padding-top: 20px; border-top: 1px solid transparent;'};
@@ -29,12 +29,12 @@ export const ReadonlyWrapper = styled.div<{ editing: boolean }>`
 `
 
 export const ReadOnlyHeader = styled.div<{ editing: boolean }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   display: ${({ editing }) => (editing ? 'none' : 'flex')};
 `
 
 export const ActionWrapper = styled.div<{ editing: boolean }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-right: 2px;
   gap: 0 5px;
 
@@ -85,7 +85,7 @@ export const ArrowDownIcon = styled(ArrowUpIcon)`
 `
 
 export const EditWrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   margin-top: 10px;
   padding-bottom: 20px;
 
@@ -102,11 +102,11 @@ export const EditWrapper = styled.div`
   border-image-slice: 1;
 `
 export const EditFooter = styled.div`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   width: 100%;
 `
 export const Label = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 13px;
   color: ${theme('article.title')};
 `
@@ -120,7 +120,7 @@ export const NotifyLabel = styled.div`
   padding: 0 2px;
 `
 export const EditItem = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
   margin-bottom: 12px;
 `

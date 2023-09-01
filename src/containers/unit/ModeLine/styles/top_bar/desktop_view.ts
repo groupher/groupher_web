@@ -9,7 +9,7 @@ export const WrapperBase = styled.div.attrs<TTestable>(({ testid }) => ({
 }))<TWrapper>`
   z-index: 2;
   width: 100%;
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   background: ${theme('header.bg')};
   opacity: 1;
   border-bottom: ${({ noBorder }) => (noBorder ? 'none' : '1px solid')};
@@ -19,7 +19,7 @@ export const WrapperBase = styled.div.attrs<TTestable>(({ testid }) => ({
 `
 /* padding: ${({ type, layout }) => getPadding(type, layout)}; */
 export const InnerWrapperBase = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
   max-width: ${WIDTH.COMMUNITY.CONTENT};
   height: 33px;
@@ -27,7 +27,7 @@ export const InnerWrapperBase = styled.div`
   margin-left: -24px;
 `
 export const Wrapper = styled.div<TActive>`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   position: fixed;
   z-index: ${zIndex.header};
   top: ${({ visible }) => (visible ? '0' : '-33px')};
@@ -43,7 +43,7 @@ export const Wrapper = styled.div<TActive>`
   transition-delay: 1s;
 `
 export const InnerWrapper = styled(InnerWrapperBase)`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
 `
 export const TabsWrapper = styled.div`
   flex-grow: 1;

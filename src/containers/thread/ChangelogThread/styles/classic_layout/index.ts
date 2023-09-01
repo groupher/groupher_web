@@ -6,7 +6,7 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex()};
+  ${css.row()};
   width: 100%;
 `
 export const MainWrapper = styled.div`

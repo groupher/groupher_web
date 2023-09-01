@@ -10,17 +10,17 @@ import DeleteSVG from '@/icons/Trash'
 import EditSVG from '@/icons/EditPen'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-start')};
+  ${css.row('align-start')};
   gap: 0 65px;
   margin-top: 32px;
   /* padding-left: 10px; */
 `
 export const Content = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 type TFolderWrapper = TActive & { hasChild?: boolean }
 export const FolderWrapper = styled.div<TFolderWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   /* background: ${({ $active }) => ($active ? theme('hoverBg') : 'transparent')}; */
   background: ${({ $active }) =>
     $active ? 'linear-gradient(to right, #f7f7f7 50%, transparent)' : 'transparent'};
@@ -33,7 +33,7 @@ export const FolderWrapper = styled.div<TFolderWrapper>`
 `
 
 export const FolderName = styled.div<TFolderWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-grow: 1;
   font-size: 14px;
   color: ${theme('article.title')};
@@ -48,7 +48,7 @@ export const FolderName = styled.div<TFolderWrapper>`
   }
 `
 export const ActionWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   gap: 0 5px;
   opacity: 0;
 

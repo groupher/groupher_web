@@ -9,7 +9,7 @@ type TWrapper = TTestable & TSpace & { width: string }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   width: ${({ width }) => width};
 
   margin-top: ${({ top }) => `${top}px` || 0};
@@ -46,7 +46,7 @@ export const RangeInput = styled.input`
   }
 `
 export const Value = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 18px;
   color: ${theme('article.title')};
   margin-bottom: 15px;

@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 import { getWidth, getMinHeight } from './metric'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   position: relative;
   width: 100%;
   /* height: 100%; */

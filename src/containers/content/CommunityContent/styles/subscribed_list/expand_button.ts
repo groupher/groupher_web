@@ -4,7 +4,7 @@ import Img from '@/Img'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   cursor: pointer;
 `
 export const ArrowIcon = styled(Img)<{ reverse?: boolean }>`

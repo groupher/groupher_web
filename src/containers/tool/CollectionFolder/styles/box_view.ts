@@ -5,6 +5,6 @@ import css from '@/css'
 
 export const Wrapper = styled.div``
 export const MsgWrapper = styled.div`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   width: 90%;
 `

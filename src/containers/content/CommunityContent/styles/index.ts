@@ -31,18 +31,18 @@ export const BaseInnerWrapper = styled.div<{ metric?: TMetric }>`
   `};
 `
 export const BaseContentWrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
 `
 export const Wrapper = styled(BaseWrapper)`
-  ${css.flexColumn('justify-start', 'align-center')};
+  ${css.column('justify-start', 'align-center')};
 
   ${css.media.mobile`
     padding-left: 0;
   `};
 `
 export const SidebarWrapper = styled(BaseWrapper)`
-  ${css.flex('justify-start')};
+  ${css.row('justify-start')};
 `
 export const MobileCardsWrapper = styled.div`
   width: 100%;
@@ -51,7 +51,7 @@ export const MobileCardsWrapper = styled.div`
   display: none;
 
   ${css.media.mobile`
-    ${css.flexColumn()};
+    ${css.column()};
   `};
 `
 export const InnerWrapper = styled(BaseInnerWrapper)`

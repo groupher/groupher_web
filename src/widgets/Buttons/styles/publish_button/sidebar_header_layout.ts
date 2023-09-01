@@ -5,7 +5,7 @@ import css from '@/css'
 import EditPenSVG from '@/icons/Plus'
 
 export const Wrapper = styled.div`
-  ${css.flex('justify-between', 'align-center')};
+  ${css.row('justify-between', 'align-center')};
   width: 120px;
   padding-left: 5px;
   padding-right: 5px;

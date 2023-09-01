@@ -6,7 +6,7 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 200px;
   min-width: 200px;
   color: ${theme('article.digest')};
@@ -24,7 +24,7 @@ export const Desc = styled.div`
   margin-bottom: 25px;
 `
 export const TabWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   position: relative;
   margin-bottom: 25px;
   margin-left: -10px;

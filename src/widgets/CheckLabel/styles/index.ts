@@ -11,7 +11,7 @@ type TWrapper = TTestable & TSpace
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 
   ${(props) => css.spaceMargins(props)};
 `

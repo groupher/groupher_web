@@ -5,7 +5,7 @@ import css, { animate, theme } from '@/css'
 
 type TWrapper = TActive & { alignLeft: boolean }
 export const Wrapper = styled.div<TWrapper>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   justify-content: ${({ alignLeft }) => (alignLeft ? 'flex-start' : 'center')};
   padding-left: ${({ alignLeft }) => (alignLeft ? '186px' : '')};
 

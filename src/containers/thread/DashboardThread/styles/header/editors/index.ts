@@ -6,7 +6,7 @@ import PlusSVG from '@/icons/Plus'
 
 export const Wrapper = styled.div``
 export const TopWrapper = styled.div`
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
   margin-bottom: 20px;
   padding-bottom: 40px;
   border-bottom: 1px solid transparent;
@@ -23,14 +23,14 @@ export const TopWrapper = styled.div`
 `
 export const BottomWrapper = styled.div`
   margin-top: 25px;
-  /* ${css.flex('justify-between')}; */
+  /* ${css.row('justify-between')}; */
   /* margin-bottom: 20px; */
 `
 export const GroupInputerWrapper = styled.div`
   width: 250px;
 `
 export const LeftPart = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 260px;
   gap: 25px 0;
 `
@@ -51,7 +51,7 @@ export const NoteP = styled.p`
   opacity: 0.8;
 `
 export const Adder = styled.div`
-  ${css.flex('align-center')}
+  ${css.row('align-center')}
   width: 180px;
   margin-left: -5px;
   transform: scale(0.95);
@@ -77,7 +77,7 @@ export const PlusIcon = styled(PlusSVG)`
 `
 
 export const LinkGroup = styled.div`
-  ${css.flex('justify-start')};
+  ${css.row('justify-start')};
   margin-top: 30px;
   flex-wrap: wrap;
   width: calc(100% + 50px);
@@ -88,7 +88,7 @@ export const ColumnWrapper = styled.div`
   height: 100%;
 `
 export const ItemsWrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   gap: 20px 0;
   margin-bottom: 32px;
 `

@@ -6,7 +6,7 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn()};
+  ${css.column()};
   position: relative;
   border-top: 1px solid;
   border-bottom: 2px solid;
@@ -43,5 +43,5 @@ export const ReportWrapper = styled.div`
   color: ${theme('article.digest')};
 `
 export const ContentWrapper = styled.div`
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
 `

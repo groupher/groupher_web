@@ -7,7 +7,7 @@ import AccountSVG from '@/icons/Acount'
 import { LineDivider } from '@/widgets/Common'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding: 0 10%;
   width: 100%;
   height: 78px;
@@ -32,7 +32,7 @@ export const SubTitle = styled.div`
 
 export const Avatar = styled(Img)`
   ${css.circle(18)};
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
   margin-top: -4px;
 `
 

@@ -7,7 +7,7 @@ import DashboardSVG from '@/icons/Dashboard'
 
 export const Wrapper = styled.div`
   position: relative;
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   color: ${theme('article.digest')};
   /* background-image: linear-gradient(#043B49, #022A35); */
   background-image: ${theme('banner.linearGradient')};
@@ -27,7 +27,7 @@ export const Desc = styled.div`
 `
 
 export const Footer = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   gap: 0 20px;
   margin-top: 50px;
 `

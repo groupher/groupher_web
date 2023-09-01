@@ -9,7 +9,7 @@ import DashboardSVG from '@/icons/Dashboard'
 import SearchSVG from '@/icons/HeaderSearch'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   color: ${theme('article.digest')};
   margin-right: 10px;
   margin-top: 15px;
@@ -17,7 +17,7 @@ export const Wrapper = styled.div`
 `
 export const Avatar = styled(Img)`
   ${css.circle(20)};
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
 `
 export const SubscribeButton = styled(Button)`
   margin-right: 18px;

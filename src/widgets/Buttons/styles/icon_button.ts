@@ -17,7 +17,7 @@ type TWrapper = Omit<TIconButtonProps, 'path'>
 export const Wrapper = styled.div<TWrapper>`
   ${({ size }) => css.size(size)}
   position: relative;
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 
   margin-left: ${({ left }) => `${left || 0}px`};
   margin-right: ${({ right }) => `${right || 0}px`};

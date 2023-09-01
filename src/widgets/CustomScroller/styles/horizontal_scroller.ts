@@ -23,7 +23,7 @@ export const Wrapper = styled(WrapperBase)<{ barSize: string }>`
 export const ScrollWrapper = styled(ScrollWrapperBase)``
 
 export const InnerWrapper = styled.div<{ innerHeight: string }>`
-  ${css.flex()};
+  ${css.row()};
   width: 100%;
   height: ${({ innerHeight }) => innerHeight};
   box-sizing: content-box;

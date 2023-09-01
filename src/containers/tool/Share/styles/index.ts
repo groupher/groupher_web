@@ -8,7 +8,7 @@ type TWrapper = { type: string } & TTestable
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flexColumn('justify-between')};
+  ${css.column('justify-between')};
   height: auto;
 
   ${css.media.mobile`

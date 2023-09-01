@@ -9,7 +9,7 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
 `
 export const Block = styled.div`
@@ -28,7 +28,7 @@ export const BottomBlock = styled(Block)`
   padding-top: 30px;
 `
 export const Header = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 30px;
 `
 export const Title = styled.div`
@@ -47,11 +47,11 @@ export const Count = styled.div`
   margin-top: 1px;
 `
 export const Row = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
 `
 export const Admin = styled.div`
-  ${css.flex('align-start')};
+  ${css.row('align-start')};
   width: 33.3%;
 
   ${css.media.mobile`

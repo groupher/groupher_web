@@ -20,7 +20,7 @@ export const Wrapper = styled.div`
 `
 
 export const Header = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 10px;
 `
 

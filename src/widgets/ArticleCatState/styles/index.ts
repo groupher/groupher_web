@@ -7,7 +7,7 @@ type TWrapper = TTestable & TSpace
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
 
   margin-left: ${({ left }) => `${left}px` || 0};

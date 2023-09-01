@@ -52,24 +52,15 @@ export const flex = (rule1: TFlexRule = '', rule2: TFlexRule = ''): string => `
   display: flex;
   ${flexOpts(rule1, rule2)};
 `
-export const flexGrow = (
-  rule1: TFlexRule = '',
-  rule2: TFlexRule = '',
-): string => `
+export const flexGrow = (rule1: TFlexRule = '', rule2: TFlexRule = ''): string => `
   ${flex(rule1, rule2)};
   flex-grow: 1;
 `
-export const flexColumn = (
-  rule1: TFlexRule = '',
-  rule2: TFlexRule = '',
-): string => `
+export const flexColumn = (rule1: TFlexRule = '', rule2: TFlexRule = ''): string => `
   ${flex(rule1, rule2)};
   flex-direction: column;
 `
-export const flexColumnGrow = (
-  rule1: TFlexRule = '',
-  rule2: TFlexRule = '',
-): string => `
+export const flexColumnGrow = (rule1: TFlexRule = '', rule2: TFlexRule = ''): string => `
   ${flexColumn(rule1, rule2)};
   flex-grow: 1;
 `

@@ -10,7 +10,7 @@ export { FeatList } from '..'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   width: 48%;
   height: 430px;
   padding-left: 12%;

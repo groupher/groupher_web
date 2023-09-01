@@ -7,7 +7,7 @@ import CheckSVG from '@/icons/CheckBold'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   margin-bottom: 5px;
   margin-top: -12px;
   margin-left: -8px;
@@ -18,7 +18,7 @@ export const Wrapper = styled.div`
 `
 
 export const MainWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 
   ${css.media.mobile`
     flex-wrap: wrap;
@@ -27,12 +27,12 @@ export const MainWrapper = styled.div`
 `
 
 export const ExtraWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 14px;
   padding: 0 8px;
 `
 export const AnwserWrapper = styled.span`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 12px;
   color: ${theme('baseColor.green')};
   font-weight: 600;
@@ -47,7 +47,7 @@ export const CheckSVGIcon = styled(CheckSVG)`
   opacity: 0.6;
 `
 export const AuthorUpvoteWrapper = styled.span`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 11px;
   color: ${theme('article.info')};
   opacity: 0.8;

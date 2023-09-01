@@ -4,7 +4,7 @@ import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
   position: relative;
 `
@@ -21,7 +21,7 @@ export const Desc = styled.div`
 `
 export const BannerWrapper = styled.div`
   position: relative;
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   height: 68px;
   padding: 0 80px;
   border-radius: 6px;
@@ -43,7 +43,7 @@ export const RealLogo = styled(Img)`
   border-radius: 3px;
 `
 export const Intro = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
@@ -58,7 +58,7 @@ export const TitleHolder = styled(Title)`
   opacity: 0.6;
 `
 export const ThreadWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   gap: 0 15px;
   margin-left: -60px;
 `
@@ -71,7 +71,7 @@ export const ThreadItem = styled.div`
   }
 `
 export const FeedWrapper = styled.div`
-  ${css.flexColumn('align-start')}
+  ${css.column('align-start')}
   margin-top: 10px;
   padding: 25px 80px;
 `

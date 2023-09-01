@@ -8,7 +8,7 @@ import css from '@/css'
 
 export const Wrapper = styled.div<TSpace>`
   position: relative;
-  ${css.flexColumn()};
+  ${css.column()};
 
   margin-left: ${({ left }) => `${left}px` || 0};
   margin-right: ${({ right }) => `${right}px` || 0};

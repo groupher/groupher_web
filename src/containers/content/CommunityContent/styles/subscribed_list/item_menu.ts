@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   padding-bottom: 2px;
 `
 export const Item = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 8px;
   cursor: pointer;
 `

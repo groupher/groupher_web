@@ -7,7 +7,7 @@ import HookSVG from '@/icons/Hook'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<{ size: TSizeSM }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 60px;
 
   transform: ${({ size }) => (size === SIZE.SMALL ? 'scale(0.6)' : 'scale(1)')};
@@ -30,7 +30,7 @@ export const Indicator = styled.span<{ checked: boolean }>`
   width: 68px;
   height: 26px;
   border-radius: 20px;
-  ${css.flex('align-center', 'justify-start')};
+  ${css.row('align-center', 'justify-start')};
   background: white;
   transform: ${({ checked }) => (checked ? 'translateX(30px)' : 'translateX(-30px)')};
   transition: 0.5s;

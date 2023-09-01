@@ -4,7 +4,7 @@ import css from '@/css'
 
 type TBlock = { borderRight: boolean; borderTop: boolean }
 export const Block = styled.div<TBlock>`
-  ${css.flexColumn('justify-between')};
+  ${css.column('justify-between')};
   /* width: 25%;
   height: 308px; */
   border: 1px solid;
@@ -26,7 +26,7 @@ export const Block = styled.div<TBlock>`
 `
 
 export const Footer = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   &:hover {
     cursor: pointer;
   }

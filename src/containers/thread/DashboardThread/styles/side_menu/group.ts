@@ -11,12 +11,12 @@ export const Wrapper = styled.div`
 `
 
 export const Folder = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   cursor: pointer;
 `
 export const IconWrapper = styled.div`
   ${css.size(18)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   margin-left: -1px;
 `
 export const FoldArrowIcon = styled(ArrowSVG)<{ fold: boolean }>`

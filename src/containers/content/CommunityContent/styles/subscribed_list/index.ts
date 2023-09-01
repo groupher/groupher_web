@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
   padding-left: 10px;
 `
 export const HeadTitle = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 14px;
   font-weight: bold;
 `
@@ -36,7 +36,7 @@ export const Divider = styled.div`
 `
 export const Item = styled.div`
   position: relative;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 14px;
   margin-bottom: 15px;
 
@@ -90,7 +90,7 @@ export const Menu = styled.div`
   padding-bottom: 2px;
 `
 export const MenuItem = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 8px;
   cursor: pointer;
 `

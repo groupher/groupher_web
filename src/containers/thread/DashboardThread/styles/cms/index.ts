@@ -6,7 +6,7 @@ import ArrowSVG from '@/icons/Arrow'
 import FilterSVG from '@/icons/Filter'
 
 export const Wrapper = styled.div`
-  // ${css.flexColumn()};
+  // ${css.column()};
   width: calc(100% + 50px);
   margin-left: -30px;
 `

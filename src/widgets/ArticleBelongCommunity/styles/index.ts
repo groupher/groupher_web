@@ -9,7 +9,7 @@ import SiteLogo from '@/icons/CPLogo'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   position: relative;
 `
 export const HomeLogo = styled(SiteLogo)`

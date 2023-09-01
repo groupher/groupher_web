@@ -9,7 +9,7 @@ const commonHoverAffix = `
   content: '';
   position: absolute;
   top: 0;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   height: 100%;
   transition: 0.25s linear;
   z-index: 1;
@@ -17,7 +17,7 @@ const commonHoverAffix = `
 
 export const Wrapper = styled.div`
   position: relative;
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 100%;
   max-width: 300px;
   height: 32px;
@@ -66,7 +66,7 @@ export const Wrapper = styled.div`
   }
 `
 export const Label = styled.span`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   padding-left: 16px;
   padding-right: 16px;
   position: absolute;
@@ -88,7 +88,7 @@ export const LabelIcon = styled(Img)`
 `
 export const ActionLink = styled.a`
   position: relative;
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   /* width: 25%; */
   width: 45px;
   /* height: 100%; */

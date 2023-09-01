@@ -7,7 +7,7 @@ import CheckSVG from '@/icons/Check'
 
 export const Wrapper = styled.div`
   width: 100%;
-  ${css.flex()};
+  ${css.row()};
   flex-wrap: wrap;
   gap: 10px 0;
   position: relative;
@@ -16,7 +16,7 @@ export const Item = styled.div`
   width: 50%;
 `
 export const ReadonlyItem = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 50%;
 `
 export const CheckIcon = styled(CheckSVG)`

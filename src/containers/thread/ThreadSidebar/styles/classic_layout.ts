@@ -17,16 +17,16 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   ${css.media.mobile`display: none;`};
 `
 export const StickyWrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const DividerTitle = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   font-size: 14px;
   font-weight: 600;
 `
 export const CommunityJoinersWrapper = styled.div<TActive>`
-  ${css.flex()};
+  ${css.row()};
   visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
   margin-bottom: ${({ show }) => (show ? '15px' : 0)};
   height: ${({ show }) => (show ? 'auto' : 0)};

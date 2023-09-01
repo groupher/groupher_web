@@ -10,7 +10,7 @@ type TWrapper = TSpace & TTestable
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   padding-bottom: 40px;
   width: 100%;
 

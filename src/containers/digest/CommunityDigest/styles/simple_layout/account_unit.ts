@@ -12,7 +12,7 @@ import AccountSVG from '@/icons/Acount'
 import GithubSVG from '@/icons/Github8'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   color: ${theme('article.digest')};
   margin-bottom: 1px;
 
@@ -22,7 +22,7 @@ export const Wrapper = styled.div`
 `
 export const Avatar = styled(Img)`
   ${css.circle(18)};
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
 `
 export const SubscribeButton = styled(Button)`
   margin-right: 18px;
@@ -47,7 +47,7 @@ export const NotifyIcon = styled(NotifySVG)`
 `
 
 export const GithubItem = styled(Link)`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   text-decoration: none;
   gap: 0 8px;
   font-size: 14px;
@@ -86,7 +86,7 @@ export const DashboardIcon = styled(DashboardSVG)`
 `
 
 export const DashboardLink = styled(Link)`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
   text-decoration: none;
   margin-right: 16px;

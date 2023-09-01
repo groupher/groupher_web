@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<{ hasComments: boolean }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   display: ${({ hasComments }) => (hasComments ? 'flex' : 'none')};
   position: absolute;
   top: 4px;
@@ -13,7 +13,7 @@ export const Wrapper = styled.div<{ hasComments: boolean }>`
   margin-top: 8px;
 `
 export const Hint = styled.div`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   color: ${theme('article.digest')};
   width: 180px;
   padding-left: 5px;

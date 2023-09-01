@@ -26,7 +26,7 @@ export const Wrapper = styled(BaseBanner)<TWrapper>`
   border-image-slice: 1;
 `
 export const TabBarWrapper = styled.div`
-  ${css.flex('align-center', 'justify-start')};
+  ${css.row('align-center', 'justify-start')};
   margin-left: 42px;
   margin-top: 20px;
 `

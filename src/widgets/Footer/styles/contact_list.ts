@@ -7,7 +7,7 @@ import EmailSVG from '@/icons/social/Email'
 import WeChatSVG from '@/widgets/Icons/social/WeChat'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
 `
 export const Item = styled.div``
 

@@ -9,7 +9,7 @@ export const ContentWrapper = styled.div`
   margin: 20px 0;
 `
 export const Footer = styled.div`
-  ${css.flex('align-center', 'justify-end')};
+  ${css.row('align-center', 'justify-end')};
   width: 100%;
   border-top: 2px solid;
   border-top-color: #03343f;

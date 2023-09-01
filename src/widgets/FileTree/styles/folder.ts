@@ -7,7 +7,7 @@ import ArrowSVG from '@/icons/ArrowSimple'
 
 export const Wrapper = styled.div``
 export const Header = styled.div<TActive>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   display: ${({ show }) => (show ? 'flex' : 'none')};
   margin-bottom: 8px;
   position: relative;
@@ -44,7 +44,7 @@ export const ArrowHintIcon = styled(ArrowSVG)`
   transition: transform 0.2s;
 `
 export const Title = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-weight: 600;
   margin-bottom: 5px;
 `
@@ -67,7 +67,7 @@ export const Content = styled.div<{ $isOpen: boolean }>`
   margin-left: -5px;
 `
 export const SubToggle = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 5px;
   margin-left: 3px;
 

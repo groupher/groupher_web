@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 import MoreSVG from '@/icons/menu/More'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   margin-bottom: 6px;
   position: relative;
 `

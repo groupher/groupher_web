@@ -6,10 +6,10 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Button = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   border: 1px solid;
   border-color: ${theme('button.upvoteBorder')};
   margin-right: 16px;
@@ -43,14 +43,14 @@ export const Alias = styled.div`
   `}
 `
 export const UpvoteBtnWrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 
   ${css.media.mobile`
     margin-top: 4px;
   `}
 `
 export const DescWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 2px;
 `
 export const Count = styled.div`
@@ -66,7 +66,7 @@ export const FacesWrapper = styled.div`
 `
 
 export const Digest = styled.div`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
 `
 export const Note = styled.div`
   color: ${theme('lightText')};

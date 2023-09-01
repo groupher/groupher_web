@@ -3,13 +3,13 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   padding: 6px;
   width: 100px;
 `
 
 export const Item = styled.div`
-  ${css.flex('justify-between', 'align-center')};
+  ${css.row('justify-between', 'align-center')};
   padding: 3px 4px;
 
   &:hover {

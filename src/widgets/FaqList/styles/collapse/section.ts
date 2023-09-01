@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
   `};
 `
 export const Header = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   cursor: pointer;
 `
 export const Title = styled.div<TActive>`

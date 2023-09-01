@@ -8,7 +8,7 @@ import ArrowSVG from '@/icons/ArrowSimple'
 import Button from '@/widgets/Buttons/Button'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 100%;
   height: 100%;
   gap: 15px;
@@ -48,7 +48,7 @@ export const ArrowIcon = styled(ArrowSVG)<{ rotate?: boolean }>`
 export const ToggleButton = styled(Button)``
 
 export const ToggleText = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   opacity: 0.8;
 
   ${ToggleButton}:hover & {

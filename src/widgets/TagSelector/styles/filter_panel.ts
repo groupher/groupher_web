@@ -8,24 +8,24 @@ import { camelize } from '@/utils/fmt'
 import { SelectItem as SelectItemBase } from '.'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 240px;
   cursor: auto;
 `
 export const GroupWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   width: 100%;
   margin-bottom: 10px;
 `
 export const SelectItem = styled(SelectItemBase)`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 2px;
   margin-right: 3px;
 `
 export const DotBox = styled.div`
   ${css.circle(12)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 `
 type THashSign = TActive & { color?: string }
 export const DotSign = styled.div<THashSign>`

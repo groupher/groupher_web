@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 import ArrowSVG from '@/icons/ArrowSimple'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const LinkItem = styled(Link)`
   color: ${theme('article.digest')};
@@ -23,15 +23,15 @@ export const LinkItem = styled(Link)`
 `
 
 export const GroupItem = styled(LinkItem)`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 
 export const ColumnWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 
 export const MenuPanel = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 90px;
   padding: 2px 2px;
   gap: 8px 0;

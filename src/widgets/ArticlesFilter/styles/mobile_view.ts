@@ -7,34 +7,34 @@ import Img from '@/Img'
 import Input from '@/widgets/Input'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
   margin-bottom: 10px;
 `
 export const ModelineWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Inputer = styled(Input)`
   height: 30px;
 `
 export const FilterPanelWrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   min-width: 180px;
   padding: 6px;
 `
 
 export const ColumnWrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   min-width: 60px;
   margin-right: 22px;
 `
 export const CatColumnWrapper = styled.div`
-  ${css.flexColumn('align-end')};
+  ${css.column('align-end')};
   width: 100%;
   margin-right: 0;
 `
 export const SelectLabel = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const LabelDivider = styled.div`
   border-bottom: 1px solid;

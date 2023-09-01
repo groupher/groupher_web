@@ -8,7 +8,7 @@ import UploadSVG from '@/icons/Upload'
 import { Wrapper as Container } from '..'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   position: absolute;
   bottom: 0;
   width: 440px;
@@ -47,7 +47,7 @@ export const Desc = styled.div`
 `
 export const SettingBlock = styled.div<TActive>`
   ${css.size(29)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   border-radius: 2px;
   border: 1px solid;
   border-color: ${({ $active }) => ($active ? theme('article.digest') : theme('divider'))};

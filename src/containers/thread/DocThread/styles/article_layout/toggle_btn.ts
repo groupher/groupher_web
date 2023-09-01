@@ -13,7 +13,7 @@ export const Wrapper = styled.div<TWrapper>`
   transform: ${({ open }) => (open ? '' : 'rotate(180deg)')};
 
   ${({ open }) => (open ? css.circle(24) : css.circle(28))};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   background: ${theme('hoverBg')};
   border: 1px solid;
   border-color: ${theme('divider')};

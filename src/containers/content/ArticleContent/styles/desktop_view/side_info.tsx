@@ -53,13 +53,13 @@ export const Value = styled.div`
 `
 
 export const UserList = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   flex-wrap: wrap;
   gap: 10px 0;
 `
 
 export const User = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Avatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
   ${css.size(18)};

@@ -12,7 +12,7 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 168px;
   min-width: 168px;
   color: ${theme('article.digest')};
@@ -26,7 +26,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 export const MobileWrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 175px;
   min-width: 175px;
   color: ${theme('article.digest')};
@@ -35,7 +35,7 @@ export const MobileWrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 `
 
 export const Folder = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 13px;
 `
 const BasicIcon = styled(InfoSVG)`

@@ -6,7 +6,7 @@ import Button from '@/widgets/Buttons/Button'
 import PlusSVG from '@/icons/Plus'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 42px;
 `
 export const Inputer = styled(Input)`

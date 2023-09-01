@@ -22,7 +22,7 @@ type TWrapper = TTestable & TSpace & { size: TSizeTSM }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   gap: 14px;
 
@@ -40,7 +40,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   margin-right: ${({ right }) => `${right}px` || 0};
 `
 export const SocialWrapper = styled(Link)`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('banner.desc')};
   font-size: 12px;
 

@@ -31,7 +31,7 @@ export const MobileTitle = styled.div`
   display: none;
 
   ${css.media.mobile`
-    ${css.flex('align-center')};
+    ${css.row('align-center')};
   `};
 `
 

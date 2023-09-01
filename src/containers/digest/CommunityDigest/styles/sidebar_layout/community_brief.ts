@@ -6,7 +6,7 @@ import ArrowSVG from '@/icons/Arrow'
 import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
 `
 export const MainWrapper = styled.div`
   width: 100%;
@@ -18,24 +18,24 @@ export const LogoWrapper = styled.div`
   position: relative;
   ${css.size(30)};
   z-index: 2;
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   margin-top: 20px;
 `
 export const Logo = styled(CommunityFaceLogo)`
   ${css.size(30)};
 `
 export const CommunityInfo = styled.div`
-  ${css.flexColumn('justify-center')};
+  ${css.column('justify-center')};
   margin-top: 14px;
 `
 export const Title = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   font-size: 18px;
   font-weight: 600;
 `
 export const Digest = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const ArrowIcon = styled(ArrowSVG)`
   ${css.size(10)};

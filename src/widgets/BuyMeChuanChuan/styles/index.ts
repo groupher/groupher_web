@@ -5,7 +5,7 @@ import Img from '@/Img'
 
 // background: #f9fcfc;
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 
   height: 100%;
   min-height: 400px;
@@ -20,7 +20,7 @@ export const Header = styled.div`
   margin-bottom: 20px;
 `
 export const BuyChuanChuan = styled.div`
-  ${css.flex()};
+  ${css.row()};
 `
 export const ChuanChuanDesc = styled.div`
   width: 50%;
@@ -34,17 +34,17 @@ export const FoodPic = styled.img`
   border-radius: 10px;
 `
 export const ChuanChuanSelect = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 50%;
 `
 export const SelectTitle = styled.div`
-  ${css.flex()};
+  ${css.row()};
   margin-left: 5px;
   color: ${theme('article.title')};
   font-size: 18px;
 `
 export const TeamName = styled.a`
-  ${css.flex()};
+  ${css.row()};
   color: ${theme('article.title')};
   margin-left: 6px;
   margin-right: 6px;

@@ -11,18 +11,18 @@ import ChartSVG from '@/icons/menu/Chart'
 import SubscribeSVG from '@/icons/menu/Subscribe'
 
 export const Wrapper = styled.div<{ mobile?: boolean }>`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   width: ${({ mobile }) => (!mobile ? '430px' : '100%')};
   min-height: 300px;
   margin-top: 0;
 `
 export const BodyWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   margin-top: 25px;
 `
 export const Entry = styled.div<{ mobile?: boolean }>`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   width: ${({ mobile }) => (!mobile ? '210px' : '48%')};
   height: 75px;
   padding-left: 20px;
@@ -32,11 +32,11 @@ export const Entry = styled.div<{ mobile?: boolean }>`
   `};
 `
 export const Main = styled(Link)`
-  ${css.flex('align-start')};
+  ${css.row('align-start')};
   text-decoration: none;
 `
 export const Title = styled.div<{ offset?: string }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   font-weight: bold;
   margin-left: ${({ offset }) => offset || '10px'};

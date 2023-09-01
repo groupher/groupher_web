@@ -6,7 +6,7 @@ import css, { theme } from '@/css'
 import BackSVG from '@/icons/Back'
 
 export const Wrapper = styled.button<TSpace>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: auto;
   font-size: 12px;
   color: ${theme('article.digest')};

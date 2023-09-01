@@ -34,7 +34,7 @@ export const Wrapper = styled(BaseBanner)<TWrapper>`
   `};
 `
 export const InnerWrapper = styled.div<TWrapper>`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   /* padding-top: 10px; */
   margin-bottom: 8px;
   width: 100%;
@@ -47,7 +47,7 @@ export const InnerWrapper = styled.div<TWrapper>`
   `};
 `
 export const BaseBannerContent = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   width: 100%;
 
   ${css.media.mobile`
@@ -56,14 +56,14 @@ export const BaseBannerContent = styled.div`
   `};
 `
 export const BannerContentWrapper = styled(BaseBannerContent)`
-  ${css.flexColumn('justify-between')};
+  ${css.column('justify-between')};
   align-items: 'center';
 `
 export const BannerContainer = styled(BaseBanner)`
   /* min-height: 125px; */
 `
 export const CommunityBaseInfo = styled.div`
-  ${css.flex('justify-between', 'align-center')};
+  ${css.row('justify-between', 'align-center')};
   width: 100%;
   padding-top: 10px;
 `
@@ -72,6 +72,6 @@ export const MobileNaviWrapper = styled.div`
   display: none;
 
   ${css.media.mobile`
-    ${css.flexGrow()};
+    ${css.rowGrow()};
   `};
 `

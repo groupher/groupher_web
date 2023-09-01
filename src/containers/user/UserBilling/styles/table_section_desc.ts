@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   display: flex;
   color: ${theme('banner.desc')};
   font-size: 0.8rem;

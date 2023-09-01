@@ -4,17 +4,17 @@ import Img from '@/Img'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
 `
 export const BlockWrapper = styled.div`
-  ${css.flex('justify-start')};
+  ${css.row('justify-start')};
   flex-wrap: wrap;
   color: ${theme('article.digest')};
   width: 100%;
   min-height: 500px;
 `
 export const Block = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 200px;
   max-width: 200px;
   height: 60px;
@@ -37,10 +37,10 @@ export const Block = styled.div`
   transition-delay: 0.1s;
 `
 export const Header = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const IntroHead = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
   &:hover {
     cursor: pointer;

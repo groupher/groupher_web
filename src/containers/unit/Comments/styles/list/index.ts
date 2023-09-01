@@ -4,11 +4,11 @@ import css, { theme } from '@/css'
 
 // min-height: 300px;
 export const ListsWrapper = styled.div`
-  ${css.flexColumn('')};
+  ${css.column('')};
   border-radius: 4px;
 `
 export const CommentBlock = styled.div`
-  ${css.flex()};
+  ${css.row()};
   margin-bottom: 16px;
   padding: 15px;
   padding-left: 20px;

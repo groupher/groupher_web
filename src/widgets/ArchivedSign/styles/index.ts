@@ -8,7 +8,7 @@ import ArchivedSVG from '@/icons/Archived'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding: 0 8px;
   cursor: default;
 `

@@ -10,7 +10,7 @@ import FAQSVG from '@/icons/FAQ'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
   min-width: 320px;
   color: ${theme('article.digest')};
@@ -22,7 +22,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   `};
 `
 export const Header = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 20px;
 `
 export const FAQIcon = styled(FAQSVG)`
@@ -37,7 +37,7 @@ export const Title = styled.div`
   font-size: 14px;
 `
 export const Body = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
 `
 export const Section = styled.div`
@@ -95,7 +95,7 @@ export const Item = styled.span`
 `
 
 export const Footer = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 15px;
   padding-top: 20px;
   font-size: 12px;

@@ -13,13 +13,13 @@ import { getLinearBorder } from '../metric'
 
 export const Wrapper = styled.div`
   ${css.size(60)};
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 
 export const Block = styled(SettingBlock)``
 
 export const Panel = styled.div`
-  ${css.flexColumn('justify-center', 'align-start')};
+  ${css.column('justify-center', 'align-start')};
   color: ${theme('article.digest')};
   width: 252px;
   height: 180px;
@@ -44,10 +44,10 @@ export const Desc = styled(SettingTitle)`
   }
 `
 export const Row = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const RadiusContentsRow = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 160px;
   gap: 10px 12px;
   margin-left: 13px;
@@ -66,11 +66,11 @@ export const RowTitle = styled.div`
   width: 45px;
 `
 export const BorderRow = styled.div`
-  ${css.flex('align-start')};
+  ${css.row('align-start')};
   gap: 0 18px;
 `
 export const BorderContentsRow = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   width: 160px;
   gap: 10px 12px;
@@ -140,7 +140,7 @@ export const BorderBox = styled.div<TBorderBox>`
 `
 export const SelectBox = styled.div<TActive>`
   ${css.size(16)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   border: 1px solid;
   border-radius: 3px;
   background: white;

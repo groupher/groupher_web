@@ -23,7 +23,7 @@ export const CommunityTitle = styled.div`
   font-weight: 500;
 `
 export const ActionCell = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
 `
 export const SwitchButton = styled(Button)`
   margin-top: 2px;
@@ -71,12 +71,12 @@ export const StateWrapper = styled.div`
   margin-top: 1px;
 `
 export const DateCellWrapper = styled.div`
-  ${css.flexColumn('align-end')};
+  ${css.column('align-end')};
   gap: 3px 0;
   margin-top: 1px;
 `
 export const DateItem = styled.div<{ warn?: boolean }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${({ warn }) => (warn ? theme('baseColor.red') : theme('article.digest'))};
   font-size: 11px;
 `
@@ -93,7 +93,7 @@ export const PulseIcon = styled(PulseSVG)`
 `
 
 export const AuthorWrapper = styled.div`
-  ${css.flexColumn('align-end')};
+  ${css.column('align-end')};
   gap: 3px 0;
 `
 export const AuthorAvatar = styled(Img)`

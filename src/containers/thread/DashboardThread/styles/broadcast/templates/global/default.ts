@@ -32,18 +32,18 @@ export const Bar = styled.div<TBar>`
 `
 
 export const Wrapper = styled(TemplateBlock)`
-  ${css.flex('align-start', 'justify-between')};
+  ${css.row('align-start', 'justify-between')};
   height: 100px !important;
   background: ${({ $active }) => ($active ? theme('alphaBg') : 'transparent')};
 `
 
 export const Row = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 
 type TNotifyBar = { center?: boolean; bg: TColorName } & TActive
 export const NotifyBar = styled.div<TNotifyBar>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   justify-content: ${({ center }) => (center ? 'center' : 'flex-start')};
   opacity: ${({ $active }) => ($active ? 1 : 0.6)};
   width: calc(100% + 2px);
@@ -96,13 +96,13 @@ export const NotifyTextBar = styled(Bar)`
   background: white;
 `
 export const BgWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 12px;
 `
 export const BgLabel = styled.div<{ bg: TColorName }>`
   width: 44px;
   height: 24px;
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   border: 1px solid;
   border-color: ${({ bg }) => COLORS[bg]};
   border-radius: 6px;

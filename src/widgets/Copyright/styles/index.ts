@@ -10,7 +10,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 }))<TTestable>``
 
 export const Label = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Icon = styled(Img)`
   ${css.size(14)};

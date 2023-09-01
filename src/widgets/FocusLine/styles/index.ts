@@ -5,11 +5,11 @@ import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-end')};
+  ${css.row('align-end')};
   color: ${theme('banner.desc')};
 `
 export const TextWrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   font-size: 0.9rem;
   align-items: baseline;
 `

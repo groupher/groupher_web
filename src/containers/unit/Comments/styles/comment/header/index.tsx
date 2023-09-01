@@ -5,12 +5,12 @@ import css, { theme } from '@/css'
 import { Wrapper as CommentBlock } from '../desktop_view'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 15px;
   margin-left: -38px;
 `
 export const HeaderBaseInfo = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
 
   ${css.media.mobile`
@@ -18,7 +18,7 @@ export const HeaderBaseInfo = styled.div`
   `};
 `
 export const BaseInfo = styled.div`
-  ${css.flexGrow('align-center')};
+  ${css.rowGrow('align-center')};
   color: ${theme('comment.username')};
 `
 
@@ -35,7 +35,7 @@ export const FloorNum = styled.div`
   transition: opacity 0.25s;
 `
 export const CreateDate = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('comment.floor')};
   font-size: 12px;
   margin-left: 2px;

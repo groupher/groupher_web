@@ -8,20 +8,20 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div``
 
 export const MobileWrapper = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 export const TabsWrapper = styled.div`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   width: 100%;
   margin-bottom: 20px;
 `
 
 export const MediaWrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   margin-bottom: 30px;
 `
 export const Title = styled.div`
-  ${css.flex('align-end')};
+  ${css.row('align-end')};
   color: ${theme('article.info')};
   font-size: 16px;
   margin-left: 3px;

@@ -4,7 +4,7 @@ import Img from '@/Img'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   margin-bottom: 5px;
   margin-top: -1px;
 `
@@ -27,7 +27,7 @@ export const MobileAvatar = styled.div`
 `
 
 export const CommentHeaderFirst = styled.div`
-  ${css.flex()};
+  ${css.row()};
 `
 
 export const CommentAvatar = styled(Img)`
@@ -36,12 +36,12 @@ export const CommentAvatar = styled(Img)`
 `
 
 export const HeaderBaseInfo = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
 `
 
 export const CommentUserName = styled.div`
-  ${css.flexGrow()};
+  ${css.rowGrow()};
 
   color: ${theme('comment.username')};
   font-size: 1rem;
@@ -53,7 +53,7 @@ export const TimeStamps = styled.div`
 `
 
 export const ReplyUsers = styled.div`
-  ${css.flex()};
+  ${css.row()};
   margin-top: -4px;
 `
 export const ReplyTitle = styled.div`

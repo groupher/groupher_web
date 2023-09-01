@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   `};
 `
 export const CountHint = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.info')};
   font-size: 12px;
   margin-left: 18px;

@@ -7,11 +7,11 @@ import { Wrapper as BaseBtnWrapper } from '../button'
 import { OrSignBase } from './index'
 
 export const Wrapper = styled.div<{ size: TSize }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   position: relative;
 `
 const BaseButton = styled(BaseBtnWrapper)<TButton>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 50%;
   color: ${({ active }) => (active ? theme('button.fg') : '#99b9bf')};
   background: ${({ active }) => (active ? theme('button.primary') : '#024250')};

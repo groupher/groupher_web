@@ -4,12 +4,12 @@ import type { TMetric } from '@/spec'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   width: 100%;
   overflow-x: hidden;
 `
 export const InnerWrapper = styled.div<{ metric: TMetric }>`
-  ${css.flex()};
+  ${css.row()};
   width: 100%;
   ${({ metric }) => css.fitContentWidth(metric)};
 

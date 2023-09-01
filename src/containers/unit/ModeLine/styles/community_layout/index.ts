@@ -11,7 +11,7 @@ type TWrapper = TTestable & { isMenuActive: boolean; show: boolean }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   display: ${({ show }) => (show ? 'flex' : 'none')};
   position: fixed;
   left: 0;
@@ -23,7 +23,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   animation: ${animate.fadeInUp} 0.2s linear;
 `
 export const InnerWrapper = styled.div<{ expand: boolean }>`
-  ${css.flex('justify-between', 'align-center')};
+  ${css.row('justify-between', 'align-center')};
   height: 100%;
   padding: 0 10px;
   /* width: calc(100% - 45px); */
@@ -42,7 +42,7 @@ export const MoreIcon = styled(MoreSVG)`
 `
 
 export const MainMenusWrapper = styled.div`
-  ${css.flex('justify-between', 'align-center')};
+  ${css.row('justify-between', 'align-center')};
   flex-grow: 1;
   background: ${theme('alphaBg2')};
   height: 100%;
@@ -60,7 +60,7 @@ export const CommunityLogo = styled(Img)`
 `
 
 export const Go2TopWrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 36px;
   height: 100%;
   border-radius: 15px;
@@ -76,7 +76,7 @@ export const GotoTopIcon = styled(GotoTopSVG)`
   fill: ${theme('article.title')};
 `
 export const MenuItem = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const MenuDesc = styled.div`
   color: ${theme('article.title')};

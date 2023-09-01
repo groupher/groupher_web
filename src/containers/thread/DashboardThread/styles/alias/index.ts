@@ -4,7 +4,7 @@ import css, { theme } from '@/css'
 import { ALIGN_HEADER_OFFSET } from '../../constant'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   padding: 0 80px;
   padding: ${() => `0 ${ALIGN_HEADER_OFFSET}`};
   padding-right: 120px;
