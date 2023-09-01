@@ -17,7 +17,6 @@ export const Folder = styled.div`
 export const IconWrapper = styled.div`
   ${css.size(18)};
   ${css.row('align-both')};
-  margin-left: -1px;
 `
 export const FoldArrowIcon = styled(ArrowSVG)<{ fold: boolean }>`
   ${css.size(15)};
