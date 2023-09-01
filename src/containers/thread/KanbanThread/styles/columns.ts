@@ -30,8 +30,7 @@ export const Body = styled.div<{ color: TColorName }>`
   width: 100%;
 `
 export const SubTitle = styled.div`
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
   font-size: 13px;
   margin-left: 6px;
 `

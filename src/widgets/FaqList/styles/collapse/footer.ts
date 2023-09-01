@@ -33,8 +33,7 @@ export const Wrapper = styled.div`
 
 export const Note = styled.div`
   font-size: 13px;
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
 `
 
 export const BookIcon = styled(BookSVG)`

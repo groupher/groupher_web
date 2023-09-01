@@ -59,8 +59,7 @@ export const Title = styled.div`
   margin-left: 10px;
 `
 export const CatNote = styled.span`
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
   font-size: 12px;
   margin-left: 12px;
 

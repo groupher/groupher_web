@@ -32,10 +32,10 @@ const DigestView: FC<TProps> = ({ article }) => {
   const { upvotesCount, meta, viewerHasUpvoted } = article
 
   return (
-    <Wrapper>
+    <Wrapper onClick={() => send(EVENT.PREVIEW_ARTICLE, { article })}>
       <ArticleReadLabel article={article} top={8} />
       <ArticlePinLabel article={article} />
-      <ViewingSign article={article} top={8} />
+      <ViewingSign article={article} top={20} />
       <UpvoteWrapper>
         <Upvote
           count={upvotesCount}
@@ -48,9 +48,7 @@ const DigestView: FC<TProps> = ({ article }) => {
       </UpvoteWrapper>
       <Main>
         <Header article={article} />
-        <DigestWrapper onClick={() => send(EVENT.PREVIEW_ARTICLE, { article })}>
-          {article.digest}
-        </DigestWrapper>
+        <DigestWrapper>{article.digest}</DigestWrapper>
         <Footer article={article} />
       </Main>
     </Wrapper>

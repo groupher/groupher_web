@@ -10,8 +10,7 @@ export const Wrapper = styled.div`
 export const Section = styled(BaseSection)``
 
 export const PreviewWrapper = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
   gap: 30px;
   width: calc(100% + 40px);
 

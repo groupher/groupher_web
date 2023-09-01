@@ -38,7 +38,7 @@ const SortFilter: FC<TProps> = ({
         )
       }
     >
-      <DropdownButton left={-8} noArrow={noArrow} $active={menuOpen}>
+      <DropdownButton left={-10} noArrow={noArrow} $active={menuOpen}>
         <DesktopOnly>默认排序</DesktopOnly>
         <MobileOnly>排序</MobileOnly>
       </DropdownButton>

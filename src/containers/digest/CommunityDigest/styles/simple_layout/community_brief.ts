@@ -13,12 +13,9 @@ export const Wrapper = styled.div`
     max-width: 150px;
   `};
 `
-export const LogoWrapper = styled.div`
-  position: relative;
-  width: 20px;
-`
 export const Logo = styled(Img)`
   ${css.size(20)};
+  margin-left: -1px;
 `
 export const CommunityInfo = styled.div`
   ${css.column('justify-center')};

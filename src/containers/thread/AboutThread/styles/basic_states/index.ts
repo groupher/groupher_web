@@ -88,9 +88,8 @@ export const Title = styled.div`
   margin-bottom: 2px;
 `
 export const Desc = styled.div`
-  color: ${theme('article.digest')};
+  color: ${theme('hint')};
   font-size: 10px;
-  opacity: 0.8;
 `
 export const Num = styled.div`
   color: ${theme('article.title')};

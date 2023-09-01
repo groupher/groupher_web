@@ -66,6 +66,7 @@ import {
 } from '@/model'
 
 import type {
+  TOverview,
   TBaseInfoSettings,
   TSEOSettings,
   TUiSettings,
@@ -88,7 +89,7 @@ import type {
 
 import { SETTING_FIELD, UI_KEYS, BASEINFO_KEYS, SEO_KEYS, BROADCAST_KEYS } from '../constant'
 
-import { NameAlias, LinkItem, InitSettings, settingsModalFields } from './Models'
+import { NameAlias, LinkItem, InitSettings, settingsModalFields, Overview } from './Models'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:DashboardThread')
@@ -108,6 +109,9 @@ const DashboardThread = T.model('DashboardThread', {
   docTab: T.opt(T.enum(values(DASHBOARD_DOC_ROUTE)), DASHBOARD_DOC_ROUTE.TABLE),
   layoutTab: T.opt(T.enum(values(DASHBOARD_LAYOUT_ROUTE)), DASHBOARD_LAYOUT_ROUTE.GLOBAL),
   broadcastTab: T.opt(T.enum(values(DASHBOARD_BROADCAST_ROUTE)), DASHBOARD_BROADCAST_ROUTE.GLOBAL),
+
+  // overview
+  overview: T.opt(Overview, {}),
 
   // editing
   editingTag: T.maybeNull(Tag),
@@ -142,6 +146,9 @@ const DashboardThread = T.model('DashboardThread', {
   allRootRules: T.opt(T.str, '{}'),
 })
   .views((self) => ({
+    get overviewData(): TOverview {
+      return toJS(self.overview)
+    },
     get globalLayout(): TGlobalLayout {
       const slf = self as TStore
       const { initSettings: init } = slf
@@ -581,6 +588,16 @@ const DashboardThread = T.model('DashboardThread', {
 
       if (!slf._loadLocalSettings()) {
         slf.mark({ demoAlertEnable: false })
+      }
+    },
+
+    updateOverview(community: TCommunity): void {
+      const { meta, views, subscribersCount } = community
+
+      self.overview = {
+        views,
+        subscribersCount,
+        ...meta,
       }
     },
 

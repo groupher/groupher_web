@@ -13,8 +13,7 @@ export const Wrapper = styled.div`
   cursor: auto;
 `
 export const GroupWrapper = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
   width: 100%;
   margin-bottom: 10px;
 `

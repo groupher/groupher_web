@@ -11,8 +11,7 @@ export { Bar, Circle } from '.'
 
 export const Wrapper = styled(BaseSection)``
 export const SelectWrapper = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
   gap: 30px;
   width: calc(100% + 40px);
 

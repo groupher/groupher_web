@@ -122,7 +122,7 @@ const TagSettingEditorContainer: FC<TProps> = ({
         </Desc>
         <Br bottom={20} />
         <PostLayout
-          layout={editingTag.layout || POST_LAYOUT.UPVOTE_FIRST}
+          layout={editingTag.layout || POST_LAYOUT.QUORA}
           onChange={(v) => edit(v, 'layout')}
         />
       </CustomScroller>

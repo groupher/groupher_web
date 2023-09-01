@@ -46,6 +46,7 @@ const github = {
   alphaBg: '#ffffff95',
   alphaBg2: '#fffffff2',
   hoverBg,
+  hoverLinear: 'linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, #fafafa 100%)',
   menuActive: '#e9e9e991',
   linkHover: lighten(link, 5),
   heightIcon: '#e48a3d',
@@ -55,6 +56,7 @@ const github = {
   selectionBg: '#FFFEDE',
   textBadge: '#e2e2e287', // with alpha
   lightText: '#999999',
+  hint: '#9d9999',
 
   gtdBadge: {
     feat: '#3871e0',
@@ -254,7 +256,7 @@ const github = {
     activeBg: darken(primaryColor, 5),
     clicked: primaryColor,
     ghostBorder: descText,
-    upvoteBorder: '#74839e66',
+    upvoteBorder: '#dadada',
   },
   navigator: {
     activeBottom: primaryColor,

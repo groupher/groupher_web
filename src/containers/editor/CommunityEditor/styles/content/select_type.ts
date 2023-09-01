@@ -46,8 +46,7 @@ export const Desc = styled.div`
   line-height: 1.7;
 `
 export const CommunityDemoWrapper = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
   margin-bottom: 10px;
   margin-top: -4px;
 `

@@ -28,5 +28,6 @@ export const CommentsIcon = styled(CommentSVG)<TCommentsIcon>`
   ${({ size }) => (size === SIZE.MEDIUM ? css.size(11) : css.size(10))};
   margin-right: 4px;
   margin-top: 2px;
+  opacity: 0.7;
 `
 export const Count = styled.div``

@@ -39,8 +39,7 @@ export const Footer = styled.div`
 
 export const NoteText = styled.div`
   font-size: 11px;
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
 `
 
 export const Note = styled(Link)`

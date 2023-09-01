@@ -16,8 +16,7 @@ export const Wrapper = styled.div`
   margin-bottom: 20px;
 `
 export const Title = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
   font-size: 13px;
   color: ${theme('article.digest')};
   margin-bottom: 12px;
@@ -26,8 +25,7 @@ export const Reason = styled.div`
   color: ${theme('article.title')};
 `
 export const Content = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
 `
 export const IllegalItem = styled.div`
   color: ${theme('article.title')};

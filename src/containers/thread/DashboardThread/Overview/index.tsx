@@ -1,27 +1,33 @@
-import { FC, memo } from 'react'
+import { FC, memo, useEffect } from 'react'
 
 import type { TPostLayout } from '@/spec'
 
-// import { Br } from '@/widgets/Common'
+import type { TOverview } from '../spec'
 
 import Portal from '../Portal'
-// import SectionLabel from '../SectionLabel'
-// import CheckLabel from '@/widgets/CheckLabel'
+import BasicNumbers from './BasicNumbers'
 
-import { Wrapper, Section, Title } from '../styles/overview'
+import { Wrapper, Section } from '../styles/overview'
+import { loadCommunityOverview } from '../logic'
 
-type TProps = {
+export type TProps = {
   testid?: TPostLayout
+  data: TOverview
 }
 
-const Overview: FC<TProps> = ({ testid = 'basic-info' }) => {
+const Overview: FC<TProps> = ({ testid = 'basic-info', data }) => {
+  useEffect(() => {
+    setTimeout(() => {
+      loadCommunityOverview()
+    })
+  }, [])
+
   return (
     <Wrapper>
       <Portal title="设置概览" desc="基础设置向导，帮助文档等等" />
       <Section>
+        <BasicNumbers data={data} />
         {/* <SectionLabel title="基本信息" /> */}
-        <Title>外观设置：xxx, xxx</Title>
-        <Title>设置指南：xxx, xxx</Title>
       </Section>
     </Wrapper>
   )

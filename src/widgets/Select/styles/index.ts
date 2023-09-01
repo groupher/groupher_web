@@ -21,7 +21,6 @@ export const OptionTitle = styled.div<TActive>`
 `
 export const OptionDesc = styled.div`
   font-size: 12px;
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
   margin-left: 15px;
 `

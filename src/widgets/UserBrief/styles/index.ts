@@ -21,8 +21,7 @@ export const WomanIcon = styled(WomanSVG)`
   margin-left: 8px;
 `
 export const ShortBio = styled.div`
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
 `
 export const Bio = styled.div`
   color: ${theme('article.digest')};

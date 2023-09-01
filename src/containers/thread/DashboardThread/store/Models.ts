@@ -34,6 +34,14 @@ import {
   DEFAULT_FAQ_ITEMS,
 } from '../constant'
 
+export const Overview = T.model('Overview', {
+  views: T.opt(T.int, -1),
+  subscribersCount: T.opt(T.int, -1),
+  postsCount: T.opt(T.int, -1),
+  changelogsCount: T.opt(T.int, -1),
+  docsCount: T.opt(T.int, -1),
+})
+
 export const Enable = T.model('Enable', {
   post: T.opt(T.bool, true),
   kanban: T.opt(T.bool, true),
@@ -118,7 +126,7 @@ export const settingsModalFields = {
 
   // layout
   primaryColor: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
-  postLayout: T.opt(T.enum(values(POST_LAYOUT)), POST_LAYOUT.UPVOTE_FIRST),
+  postLayout: T.opt(T.enum(values(POST_LAYOUT)), POST_LAYOUT.QUORA),
   kanbanLayout: T.opt(T.enum(values(KANBAN_LAYOUT)), KANBAN_LAYOUT.SIMPLE),
   kanbanBgColors: T.opt(T.array(T.string), [
     COLOR_NAME.PURPLE,

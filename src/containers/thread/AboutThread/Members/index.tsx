@@ -1,9 +1,10 @@
 import { FC, memo } from 'react'
 
-import type { TAvatarLayout } from '@/spec'
+import type { TAvatarLayout, TModerator } from '@/spec'
 import { mockUsers } from '@/utils/mock'
 
 import ImgFallback from '@/widgets/ImgFallback'
+import NoteTip from '@/widgets/NoteTip'
 
 import AdminMember from './AdminMember'
 
@@ -13,38 +14,45 @@ import {
   BottomBlock,
   Header,
   Title,
-  Row,
+  AdminsRow,
   Admin,
-  NormalAvatar,
+  JoinersRow,
+  JoinersAvatar,
 } from '../styles/members'
 
 type TProps = {
   avatarLayout: TAvatarLayout
+  moderators: TModerator[]
 }
 
-const Members: FC<TProps> = ({ avatarLayout }) => {
+const Members: FC<TProps> = ({ avatarLayout, moderators }) => {
   return (
     <Wrapper>
       <Block>
         <Header>
-          <Title>团队成员</Title>
+          <Title>社区管理员</Title>
         </Header>
-        <Row>
-          {mockUsers(6).map((user) => (
-            <Admin key={user.id}>
-              <AdminMember user={user} avatarLayout={avatarLayout} />
+        <AdminsRow>
+          {moderators.map((moderator: TModerator) => (
+            <Admin key={moderator.user.login}>
+              <AdminMember user={moderator.user} avatarLayout={avatarLayout} />
             </Admin>
           ))}
-        </Row>
+        </AdminsRow>
       </Block>
 
       <BottomBlock>
         <Header>
-          <Title>参与者</Title>
+          <Title>
+            参与互动
+            <NoteTip fontSize={14} left={4} placement="right" offset={[-6, 10]}>
+              参与发布，投票，评论，以及 Emoji 反馈的用户
+            </NoteTip>
+          </Title>
         </Header>
-        <Row>
+        <JoinersRow>
           {mockUsers(15).map((user) => (
-            <NormalAvatar
+            <JoinersAvatar
               key={user.id}
               src={user.avatar}
               avatarLayout={avatarLayout}
@@ -52,14 +60,14 @@ const Members: FC<TProps> = ({ avatarLayout }) => {
             />
           ))}
           {mockUsers(15).map((user) => (
-            <NormalAvatar
+            <JoinersAvatar
               key={user.id}
               src={user.avatar}
               avatarLayout={avatarLayout}
               fallback={<ImgFallback size={26} user={user} avatarLayout={avatarLayout} />}
             />
           ))}
-        </Row>
+        </JoinersRow>
       </BottomBlock>
     </Wrapper>
   )

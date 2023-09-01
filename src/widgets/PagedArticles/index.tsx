@@ -4,7 +4,7 @@
  *
  */
 
-import { Fragment, FC, memo } from 'react'
+import { FC, memo } from 'react'
 import Pagi from '@/widgets/Pagi'
 
 import type { TCommunity, TThread, TPagedArticles, TResState, TC11N, TGlobalLayout } from '@/spec'
@@ -42,7 +42,7 @@ const PagedArticles: FC<TProps> = ({
   const { entries, ...pagi } = data
 
   return (
-    <Fragment>
+    <>
       <ArticleList
         curCommunity={curCommunity}
         thread={thread}
@@ -59,7 +59,7 @@ const PagedArticles: FC<TProps> = ({
         top={80}
         bottom={30}
       />
-    </Fragment>
+    </>
   )
 }
 

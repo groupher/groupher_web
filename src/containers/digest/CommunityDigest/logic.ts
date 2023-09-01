@@ -42,7 +42,7 @@ const loadCommunity = (): void => {
 
   markLoading(true)
 
-  sr71$.query(S.community, { slug, userHasLogin })
+  sr71$.query(S.community, { slug, userHasLogin, incViews: false })
 }
 
 // 查看当前社区志愿者列表

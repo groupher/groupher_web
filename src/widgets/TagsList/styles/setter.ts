@@ -25,8 +25,7 @@ export const Wrapper = styled.div`
 
 export const EmptyWrapper = styled.div`
   ${css.row('align-center')};
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
   &:hover {
     opacity: 1;
     cursor: pointer;

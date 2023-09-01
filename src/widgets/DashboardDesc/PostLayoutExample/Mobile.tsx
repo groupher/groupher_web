@@ -44,7 +44,7 @@ const Mobile: FC<TProps> = ({ articles }) => {
             article={item}
             c11n={{}}
             curCommunity={{ slug: 'demo' }}
-            layout={POST_LAYOUT.COMMENT_FIRST}
+            layout={POST_LAYOUT.PH}
             isMobilePreview
           />
         ))}

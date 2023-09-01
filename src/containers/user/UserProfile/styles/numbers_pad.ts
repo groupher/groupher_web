@@ -85,8 +85,7 @@ export const InfoIcon = styled(InfoSVG)`
 export const Title = styled.div`
   margin-top: 4px;
   font-size: 12px;
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
 `
 
 export const Divider = styled.div`

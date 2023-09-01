@@ -3,10 +3,9 @@ import type { TSimpleUse } from './account'
 
 type TMeta = {
   postsCount: number
-  jobsCount: number
-  worksCount: number
+  docsCount: number
   blogsCount: number
-  radarsCount: number
+  changelogsCount: number
 }
 
 export type TModerator = {
@@ -31,6 +30,7 @@ export type TCommunity = {
   threads?: TCommunityThread[]
   pending?: number
   moderators?: TModerator[]
+  views?: number
 }
 
 export type TPagedCommunities = {

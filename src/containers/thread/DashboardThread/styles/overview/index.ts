@@ -27,8 +27,7 @@ export const Title = styled.div`
   margin-bottom: 12px;
 `
 export const Desc = styled.div`
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
   font-size: 12px;
   margin-top: 10px;
   margin-bottom: 20px;

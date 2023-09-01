@@ -55,8 +55,7 @@ export const GithubIcon = styled(GithubSVG)`
   margin-bottom: 7px;
 `
 export const SectionHint = styled.div`
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
   font-size: 12px;
   margin-top: 6px;
   margin-left: 12px;

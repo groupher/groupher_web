@@ -7,7 +7,6 @@ import type { TCommunity } from '@/spec'
 import {
   Wrapper,
   Logo,
-  LogoWrapper,
   CommunityInfo,
   TitleWrapper,
   Title,
@@ -22,9 +21,7 @@ type TProps = {
 const CommunityBrief: FC<TProps> = ({ community }) => {
   return (
     <Wrapper>
-      <LogoWrapper>
-        <Logo src={community.logo} noLazy />
-      </LogoWrapper>
+      <Logo src={community.logo} noLazy />
       <CommunityInfo>
         <TitleWrapper>
           <Title>

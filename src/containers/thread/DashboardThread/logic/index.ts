@@ -228,7 +228,7 @@ export const edit = (e: TEditValue, field: string): void => updateEditing(store,
 export const reloadModerators = (): void => {
   const { curCommunity } = store
 
-  sr71$.query(S.updateModerators, { slug: curCommunity.slug })
+  sr71$.query(S.updateModerators, { slug: curCommunity.slug, incViews: false })
 }
 // reload after create/delete tag and swtich between tag threads
 export const reloadArticleTags = (): void => {
@@ -259,13 +259,23 @@ export const loadPosts = () => {
   })
 }
 
-export const loadChangelogs = () => {
+export const loadChangelogs = (): void => {
   const { curCommunity } = store
 
   store.mark({ loading: true })
   sr71$.query(S.pagedChangelogs, {
     filter: { page: 1, size: 20, community: curCommunity.slug },
     userHasLogin: false,
+  })
+}
+
+export const loadCommunityOverview = (): void => {
+  const { curCommunity } = store
+
+  sr71$.query(S.communityOverview, {
+    slug: curCommunity.slug,
+    userHasLogin: false,
+    incViews: false,
   })
 }
 
@@ -409,6 +419,10 @@ const DataSolver = [
     action: ({ community }) => {
       if (store.curTab === DASHBOARD_ROUTE.ADMINS) {
         store.mark({ moderators: community.moderators })
+      }
+
+      if (store.curTab === DASHBOARD_ROUTE.DASHBOARD) {
+        store.updateOverview(community)
       }
     },
   },

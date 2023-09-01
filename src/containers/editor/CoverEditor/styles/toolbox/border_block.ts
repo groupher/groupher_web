@@ -70,8 +70,7 @@ export const BorderRow = styled.div`
   gap: 0 18px;
 `
 export const BorderContentsRow = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
   width: 160px;
   gap: 10px 12px;
   margin-left: -5px;

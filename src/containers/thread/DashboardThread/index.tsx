@@ -51,8 +51,10 @@ const DashboardThreadContainer: FC<TProps> = ({
   metric,
 }) => {
   useInit(store)
+
   const {
     curTab,
+    overviewData,
     curCommunity,
     baseInfoSettings,
     seoSettings,
@@ -78,7 +80,7 @@ const DashboardThreadContainer: FC<TProps> = ({
       <SideMenu curTab={curTab} touched={touched} community={curCommunity} />
 
       <MainWrapper>
-        {curTab === DASHBOARD.DASHBOARD && <Overview />}
+        {curTab === DASHBOARD.DASHBOARD && <Overview data={overviewData} />}
         {curTab === DASHBOARD.INFO && <BasicInfo settings={baseInfoSettings} touched={touched} />}
         {curTab === DASHBOARD.SEO && <SEO settings={seoSettings} touched={touched} />}
         {curTab === DASHBOARD.LAYOUT && <Layout settings={uiSettings} touched={touched} />}

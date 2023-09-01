@@ -13,8 +13,7 @@ import { BaseSection } from '.'
 export const Wrapper = styled(BaseSection)``
 
 export const Row = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
   gap: 26px 20px;
 
   width: calc(100% + 40px);

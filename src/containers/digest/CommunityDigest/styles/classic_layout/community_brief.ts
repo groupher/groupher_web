@@ -73,8 +73,7 @@ export const ArrowIcon = styled(ArrowSVG)`
   margin-right: 5px;
 `
 export const Desc = styled.div`
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
   font-size: 15px;
 `
 export const LogoHolder = styled(Img)`

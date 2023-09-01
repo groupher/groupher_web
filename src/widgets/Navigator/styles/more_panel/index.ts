@@ -17,8 +17,7 @@ export const Wrapper = styled.div<{ mobile?: boolean }>`
   margin-top: 0;
 `
 export const BodyWrapper = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
   margin-top: 25px;
 `
 export const Entry = styled.div<{ mobile?: boolean }>`

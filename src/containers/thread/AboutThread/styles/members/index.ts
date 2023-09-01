@@ -14,7 +14,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 `
 export const Block = styled.div`
   margin-bottom: 30px;
-  width: 665px;
+  width: 620px;
 
   ${css.media.mobile`
     width: 100%;
@@ -32,6 +32,7 @@ export const Header = styled.div`
   margin-bottom: 30px;
 `
 export const Title = styled.div`
+  ${css.row('align-center')};
   font-size: 16px;
   color: ${theme('article.digest')};
   font-weight: 600;
@@ -46,21 +47,19 @@ export const Count = styled.div`
   font-weight: 600;
   margin-top: 1px;
 `
-export const Row = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+export const AdminsRow = styled.div`
+  ${css.rowWrap('align-center')};
 `
 export const Admin = styled.div`
   ${css.row('align-start')};
-  width: 33.3%;
-
-  ${css.media.mobile`
-    width: 50%;
-  `}
+  width: 50%;
 `
-export const NormalAvatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
-  ${css.size(26)};
+export const JoinersRow = styled.div`
+  ${css.rowWrap('align-center')};
+  gap: 10px;
+  padding-right: 20px;
+`
+export const JoinersAvatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
+  ${css.size(20)};
   border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
-  margin-right: 10px;
-  margin-bottom: 16px;
 `

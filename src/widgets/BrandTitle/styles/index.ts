@@ -16,8 +16,7 @@ export const Title = styled.div`
   cursor: pointer;
 `
 export const Desc = styled.div`
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
   font-size: 13px;
   margin-top: 15px;
 `

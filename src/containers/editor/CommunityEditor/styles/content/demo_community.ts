@@ -5,8 +5,7 @@ import css, { theme } from '@/css'
 import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
 
 export const Wrapper = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
 `
 /* header bg */
 export const Community = styled.div`

@@ -4,6 +4,7 @@ import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<{ isSidebarLayout: boolean }>`
   width: ${({ isSidebarLayout }) => (isSidebarLayout ? '280px' : '300px')};
+  min-width: ${({ isSidebarLayout }) => (isSidebarLayout ? '280px' : '300px')};
   height: auto;
   border-left: 1px solid;
   border-left-color: ${theme('divider')};

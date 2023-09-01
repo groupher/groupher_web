@@ -7,9 +7,8 @@ import css, { theme } from '@/css'
 import ArrowSVG from '@/icons/ArrowSimple'
 
 export const Wrapper = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 `
-
 export const Folder = styled.div`
   ${css.row('align-center', 'justify-between')};
   cursor: pointer;
@@ -17,7 +16,6 @@ export const Folder = styled.div`
 export const IconWrapper = styled.div`
   ${css.size(18)};
   ${css.row('align-both')};
-  margin-left: -1px;
 `
 export const FoldArrowIcon = styled(ArrowSVG)<{ fold: boolean }>`
   ${css.size(15)};
@@ -45,8 +43,7 @@ export const Title = styled.div`
 `
 export const MenuWrapper = styled.div`
   margin-left: 7px;
-  margin-top: 12px;
-  padding-bottom: 5px;
+  margin-top: 8px;
 
   border-left: 1px solid transparent;
   border-image: linear-gradient(
@@ -67,16 +64,13 @@ export const Item = styled(Link)<TActive>`
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   background: ${({ $active }) => ($active ? theme('menuActive') : 'transparent')};
   width: 160px;
-  padding: 2px 5px;
-  padding-left: 18px;
+  padding: 5px 5px;
+  padding-left: 20px;
   margin-left: 0;
   border-radius: 8px;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  font-size: 14px;
-
-  margin-top: ${({ $active }) => ($active ? '4px' : '3px')};
-  margin-bottom: ${({ $active }) => ($active ? '8px' : '7px')};
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  font-size: 13px;
 
   &:hover {
     cursor: pointer;
@@ -88,12 +82,12 @@ export const Item = styled(Link)<TActive>`
     content: '';
     display: ${({ $active }) => ($active ? 'block' : 'none')};
     position: absolute;
-    top: 7px;
+    top: 8px;
     left: -2px;
-    width: 3px;
-    height: 13px;
-    border-radius: 5px;
-    background: ${theme('article.digest')};
+    width: 4px;
+    height: 12px;
+    border-radius: 8px;
+    background: ${theme('lightText')};
   }
 
   transition: all 0.2s;

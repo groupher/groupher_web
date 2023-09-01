@@ -191,8 +191,8 @@ const updateDashboardFaqs = gql`
 `
 
 const updateModerators = gql`
-  query community($slug: String) {
-    community(slug: $slug) {
+  query community($slug: String, $incViews: Boolean) {
+    community(slug: $slug, incViews: $incViews) {
       moderators {
         role
         passportItemCount
@@ -202,6 +202,20 @@ const updateModerators = gql`
           nickname
           bio
         }
+      }
+    }
+  }
+`
+
+const communityOverview = gql`
+  query community($slug: String, $incViews: Boolean) {
+    community(slug: $slug, incViews: $incViews) {
+      views
+      subscribersCount
+      meta {
+        postsCount
+        changelogsCount
+        docsCount
       }
     }
   }
@@ -221,6 +235,7 @@ const schema = {
   pagedChangelogs,
   updateDashboardFaqs,
   updateModerators,
+  communityOverview,
 }
 
 export default schema

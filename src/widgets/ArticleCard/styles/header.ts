@@ -16,8 +16,7 @@ export const LinkIcon = styled(LinkSVG)`
 export const LinkSrc = styled.a`
   ${css.cutRest('240px')};
   font-size: 13px;
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
   margin-left: 3px;
 
   &:hover {

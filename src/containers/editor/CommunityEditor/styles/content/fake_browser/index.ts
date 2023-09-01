@@ -144,8 +144,7 @@ export const Slash = styled.div`
   margin-right: 1px;
   font-size: 10px;
   margin-top: 1px;
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
 `
 export const ThreadPath = styled.div<TActive>`
   ${css.row('align-center')};

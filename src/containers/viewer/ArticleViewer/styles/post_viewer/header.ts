@@ -24,8 +24,7 @@ export const PublishWrapper = styled.div`
   ${css.row('align-center')}
 `
 export const PubDate = styled.div`
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
   font-size: 13px;
 `
 export const EditedHint = styled.div`

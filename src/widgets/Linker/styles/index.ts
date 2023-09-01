@@ -21,8 +21,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 
 export const Hint = styled.div`
   font-size: 12px;
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
   margin-right: 5px;
   margin-top: 2px;
 `

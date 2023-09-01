@@ -4,8 +4,7 @@ import css, { theme } from '@/css'
 import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
 
 export const Wrapper = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
   margin-top: 14px;
   margin-left: -10px;
   margin-bottom: 10px;
