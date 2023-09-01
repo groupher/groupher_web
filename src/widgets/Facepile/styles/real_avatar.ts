@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TAvatarLayout, TColorName } from '@/spec'
+import type { TAvatarLayout } from '@/spec'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
 import css, { theme } from '@/css'

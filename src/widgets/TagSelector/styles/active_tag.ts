@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 
-import type { TActive } from '@/spec'
 import css, { theme } from '@/css'
 
 import { Title } from './filter_panel'
@@ -15,7 +14,6 @@ export const Wrapper = styled.div`
 export const TagItem = styled.div`
   ${css.row('align-center')};
 `
-
 export const TagTitle = styled(Title)`
   color: ${theme('article.title')};
   font-weight: 600;

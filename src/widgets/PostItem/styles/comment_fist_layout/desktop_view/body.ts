@@ -1,9 +1,6 @@
-import Link from 'next/link'
 import styled from 'styled-components'
 
 import css, { theme } from '@/css'
-
-import DotDivider from '@/widgets/DotDivider'
 
 export const Wrapper = styled.div`
   margin-left: 10px;
