@@ -2,7 +2,10 @@ import { memo, FC } from 'react'
 
 import type { TArticle } from '@/spec'
 
+// import { mockUsers } from '@/utils/mock'
 // import { addCollection } from '@/utils/helper'
+import { UPVOTE_LAYOUT } from '@/constant/layout'
+
 import { SpaceGrow } from '@/widgets/Common'
 import Upvote from '@/widgets/Upvote'
 import ArticleBaseStats from '@/widgets/ArticleBaseStats'
@@ -28,11 +31,11 @@ const ArticleInfo: FC<TProps> = ({ article }) => {
       <BaseWrapper>
         <Upvote
           count={upvotesCount}
+          type={UPVOTE_LAYOUT.DEFAULT}
           avatarList={meta.latestUpvotedUsers}
+          // avatarList={mockUsers(5)}
           viewerHasUpvoted={viewerHasUpvoted}
-          onAction={(viewerHasUpvoted) =>
-            handleUpvote(article, viewerHasUpvoted)
-          }
+          onAction={(viewerHasUpvoted) => handleUpvote(article, viewerHasUpvoted)}
         />
         <SpaceGrow />
         <ArticleBaseStats article={article} container="drawer" />

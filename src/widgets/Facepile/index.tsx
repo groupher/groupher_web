@@ -9,7 +9,7 @@ import dynamic from 'next/dynamic'
 import { compose, not, isNil, filter, reverse as reverseFn, slice } from 'ramda'
 import { trackWindowScroll } from 'react-lazy-load-image-component'
 
-import type { TUser, TSize, TAvatarLayout } from '@/spec'
+import type { TUser, TSize, TAvatarLayout, TSpace } from '@/spec'
 import { AVATARS_LIST_LENGTH } from '@/config'
 
 import SIZE from '@/constant/size'
@@ -73,7 +73,7 @@ export type TProps = {
   avatarLayout?: TAvatarLayout
   onUserSelect?: (user: TUser) => void
   onTotalSelect?: () => void
-}
+} & TSpace
 
 const Facepile: FC<TProps> = ({
   size = SIZE.SMALL,
@@ -88,6 +88,7 @@ const Facepile: FC<TProps> = ({
   reverse = false,
   popCardPlacement = 'bottom',
   avatarLayout = AVATAR_LAYOUT.SQUARE,
+  ...restProps
 }) => {
   if (users.length === 0) {
     return <span />
@@ -99,7 +100,7 @@ const Facepile: FC<TProps> = ({
   const sortedUsers = reverse ? reverseFn(users) : users
 
   return (
-    <Wrapper total={totalCount}>
+    <Wrapper total={totalCount} {...restProps}>
       {totalCount <= 1 || !showMore ? (
         <TotalOneOffset />
       ) : (

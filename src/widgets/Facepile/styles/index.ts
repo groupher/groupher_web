@@ -1,17 +1,22 @@
 import styled from 'styled-components'
 
+import type { TSpace } from '@/spec'
 import css from '@/css'
 
 import { getUlMarginRight } from './metric'
 
 export { AvatarFallback } from './real_avatar'
 
-export const Wrapper = styled.ul<{ total: number }>`
+type TWrapper = { total: number } & TSpace
+
+export const Wrapper = styled.ul<TWrapper>`
   ${css.flex('align-center')};
   flex-direction: row-reverse;
   list-style-type: none;
   margin: auto;
   padding: 0px 8px 0px 0px;
+  ${(props) => css.spaceMargins(props)};
+
   margin-right: ${({ total }) => getUlMarginRight(total)};
 `
 export const AvatarsWrapper = styled.div`

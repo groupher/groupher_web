@@ -10,6 +10,7 @@ export const Wrapper = styled.div`
   border-bottom: 1px solid;
   border-bottom-color: ${theme('drawer.divider')};
   padding-bottom: 12px;
+  margin-top: 8px;
 `
 export const CollectWrapper = styled.div`
   ${css.flex('align-center')};
