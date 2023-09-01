@@ -47,7 +47,7 @@ const BasicStates: FC = () => {
         <UsersWrapper>
           <UsersIcon />
         </UsersWrapper>
-        <Title>参与者</Title>
+        <Title>互动人数</Title>
         <Desc>参与互动的用户</Desc>
         <Num>28</Num>
       </Block>
@@ -72,7 +72,7 @@ const BasicStates: FC = () => {
           <EmojiIcon />
         </EmojisWrapper>
         <Title>回应</Title>
-        <Desc>赞同与表情</Desc>
+        <Desc>投票和表情</Desc>
         <Num>374</Num>
       </Block>
     </Wrapper>

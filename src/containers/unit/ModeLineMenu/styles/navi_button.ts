@@ -29,8 +29,7 @@ export const Title = styled.div`
 export const Desc = styled.div`
   position: absolute;
   bottom: -18px;
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
   font-size: 12px;
   ${css.cutRest('80px')};
 `

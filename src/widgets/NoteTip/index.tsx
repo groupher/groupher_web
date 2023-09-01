@@ -31,7 +31,7 @@ const NoteTip: FC<TProps> = ({
   ...restProps
 }) => {
   return (
-    <Wrapper {...restProps}>
+    <Wrapper fontSize={fontSize} {...restProps}>
       <Tooltip placement={placement} content={<Note>{children}</Note>} offset={offset} noPadding>
         <InfoIcon fontSize={fontSize} />
       </Tooltip>

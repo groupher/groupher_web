@@ -33,8 +33,7 @@ export const Header = styled.div`
   margin-bottom: 12px;
 `
 export const UpdateDate = styled.div`
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
   font-size: 12px;
 `
 export const Topping = styled.div`

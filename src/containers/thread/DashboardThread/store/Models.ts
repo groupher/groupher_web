@@ -34,6 +34,14 @@ import {
   DEFAULT_FAQ_ITEMS,
 } from '../constant'
 
+export const Overview = T.model('Overview', {
+  views: T.opt(T.int, -1),
+  subscribersCount: T.opt(T.int, -1),
+  postsCount: T.opt(T.int, -1),
+  changelogsCount: T.opt(T.int, -1),
+  docsCount: T.opt(T.int, -1),
+})
+
 export const Enable = T.model('Enable', {
   post: T.opt(T.bool, true),
   kanban: T.opt(T.bool, true),

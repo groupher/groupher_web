@@ -14,8 +14,7 @@ export const Wrapper = styled.div`
 `
 export const Hint = styled.div`
   font-size: 13px;
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
   margin-top: 3px;
   width: 70px;
   min-width: 70px;

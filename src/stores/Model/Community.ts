@@ -18,10 +18,9 @@ export const SimpleCategory = T.model('Category', {
 
 const Meta = T.model('CommunityMeta', {
   postsCount: T.opt(T.number, 0),
-  worksCount: T.maybeNull(T.number),
+  changelogsCount: T.maybeNull(T.number),
+  docsCount: T.maybeNull(T.number),
   blogsCount: T.opt(T.number, 0),
-  radarsCount: T.opt(T.number, 0),
-  jobsCount: T.opt(T.number, 0),
   // reposCount: T.opt(T.number, 0),
 })
 

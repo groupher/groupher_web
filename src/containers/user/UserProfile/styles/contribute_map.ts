@@ -58,8 +58,7 @@ export const TitleCount = styled.div`
 `
 export const DotText = styled.div`
   font-size: 12px;
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
 `
 export const DotList = styled.div`
   ${css.row('align-center')};

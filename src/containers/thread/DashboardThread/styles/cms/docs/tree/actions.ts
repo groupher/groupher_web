@@ -34,8 +34,7 @@ export const UpdateHint = styled.div`
   width: 20%;
   text-align: right;
   font-size: 10px;
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
   margin-top: 4px;
 `
 

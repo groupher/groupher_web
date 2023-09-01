@@ -22,8 +22,7 @@ export const IntroTitle = styled.div`
   font-size: 18px;
 `
 export const IntroDesc = styled.div`
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
   font-size: 13px;
   margin-top: 8px;
   margin-bottom: 42px;

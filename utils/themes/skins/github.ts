@@ -55,6 +55,7 @@ const github = {
   selectionBg: '#FFFEDE',
   textBadge: '#e2e2e287', // with alpha
   lightText: '#999999',
+  hint: '#9d9999',
 
   gtdBadge: {
     feat: '#3871e0',

@@ -36,16 +36,20 @@ const Group: FC<TProps> = ({ group, curTab, touched, community }) => {
 
       {!fold && (
         <MenuWrapper>
-          {group.children.map((item) => (
-            <Item
-              $active={item.slug === curTab}
-              key={item.slug}
-              href={`/${community.slug}/${DASHBOARD_ROUTE.DASHBOARD}/${item.slug}`}
-            >
-              {item.title}
-              {touched && (touched[item.slug] || touched[item.alias]) && <TouchedDot />}
-            </Item>
-          ))}
+          {group.children.map((item) => {
+            const subPath = item.slug === DASHBOARD_ROUTE.DASHBOARD ? '' : item.slug
+
+            return (
+              <Item
+                $active={item.slug === curTab}
+                key={item.slug}
+                href={`/${community.slug}/${DASHBOARD_ROUTE.DASHBOARD}/${subPath}`}
+              >
+                {item.title}
+                {touched && (touched[item.slug] || touched[item.alias]) && <TouchedDot />}
+              </Item>
+            )
+          })}
         </MenuWrapper>
       )}
     </Wrapper>

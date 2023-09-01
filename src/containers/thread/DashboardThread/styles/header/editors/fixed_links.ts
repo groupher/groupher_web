@@ -32,6 +32,5 @@ export const ArrowIcon = styled(ArrowSVG)`
 `
 export const LinkRaw = styled.div`
   font-size: 12px;
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
 `

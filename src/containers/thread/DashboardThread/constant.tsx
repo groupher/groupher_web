@@ -62,9 +62,13 @@ export const SETTING_FIELD = {
 
 export const MENU = {
   BASIC: {
-    title: '基础设置',
+    title: '常规设置',
     icon: <Icon.Basic />,
     children: [
+      {
+        title: '概览',
+        slug: DASHBOARD_ROUTE.DASHBOARD,
+      },
       {
         title: '基本信息',
         slug: DASHBOARD_ROUTE.INFO,

@@ -64,8 +64,7 @@ export const PublishWrapper = styled.div<TActive>`
   max-width: 185px;
 `
 export const NoteWrapper = styled.div`
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
   font-size: 12px;
   padding-bottom: 20px;
   border-bottom: 1px solid;

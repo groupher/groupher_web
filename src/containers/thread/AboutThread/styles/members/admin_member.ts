@@ -15,8 +15,7 @@ export const Name = styled.div`
   font-weight: 500;
 `
 export const Bio = styled.div`
-  color: ${theme('article.digest')};
-  opacity: 0.8;
+  color: ${theme('hint')};
   font-size: 12px;
   ${css.lineClamp(2)};
   width: 80%;
