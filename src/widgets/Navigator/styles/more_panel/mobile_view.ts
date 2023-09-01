@@ -9,8 +9,7 @@ export const Wrapper = styled(WrapperBase)`
   width: 100%;
 `
 export const BodyWrapper = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
 `
 export const Entry = styled(EntryBase)<{ index: number }>`
   ${css.row('align-center')};

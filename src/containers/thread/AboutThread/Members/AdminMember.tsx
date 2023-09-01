@@ -14,7 +14,7 @@ type TProps = {
 const AdminMember: FC<TProps> = ({ user, avatarLayout }) => {
   return (
     <Wrapper>
-      <AdminAvatar user={user} right={10} avatarLayout={avatarLayout} />
+      <AdminAvatar user={user} right={15} top={4} avatarLayout={avatarLayout} />
       <Info>
         <Name>{user.nickname}</Name>
         <Bio>{user.bio}</Bio>

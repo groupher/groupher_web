@@ -37,8 +37,7 @@ export const Title = styled.div`
   font-size: 14px;
 `
 export const Body = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
 `
 export const Section = styled.div`
   width: 44%;

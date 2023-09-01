@@ -22,8 +22,7 @@ type TWrapper = TTestable & TSpace & { size: TSizeTSM }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
   gap: 14px;
 
   transform: ${({ size }) => {

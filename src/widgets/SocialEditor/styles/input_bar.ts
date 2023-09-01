@@ -67,8 +67,7 @@ export const Hint = styled.div`
   margin-left: 2px;
 `
 export const PlatformWrapper = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
   gap: 12px 15px;
   margin-top: 10px;
   background: ${theme('hoverBg')};

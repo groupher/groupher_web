@@ -21,8 +21,7 @@ export const Hint = styled.div`
   min-width: 70px;
 `
 export const CatsWrapper = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
   margin-left: 15px;
   gap: 14px;
 

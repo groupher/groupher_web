@@ -52,6 +52,10 @@ export const flex = (rule1: TFlexRule = '', rule2: TFlexRule = ''): string => `
   display: flex;
   ${flexOpts(rule1, rule2)};
 `
+export const flexWrap = (rule1: TFlexRule = '', rule2: TFlexRule = ''): string => `
+  ${flex(rule1, rule2)};
+  flex-wrap: wrap;
+`
 export const flexGrow = (rule1: TFlexRule = '', rule2: TFlexRule = ''): string => `
   ${flex(rule1, rule2)};
   flex-grow: 1;

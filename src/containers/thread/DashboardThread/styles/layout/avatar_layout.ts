@@ -10,8 +10,7 @@ import { BaseSection, BlockBase } from '.'
 export const Wrapper = styled(BaseSection)``
 
 export const SelectWrapper = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
   gap: 20px 30px;
   width: 100%;
 `

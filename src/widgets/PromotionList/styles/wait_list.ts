@@ -4,8 +4,7 @@ import type { TActive } from '@/spec'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
   width: 100%;
   margin-top: 10px;
 `

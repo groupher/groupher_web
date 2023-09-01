@@ -68,8 +68,7 @@ export const IconItemWrapper = styled.div<TActive>`
 `
 
 export const PlatformWrapper = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
   gap: 12px 10px;
   margin-top: 20px;
   margin-bottom: 15px;

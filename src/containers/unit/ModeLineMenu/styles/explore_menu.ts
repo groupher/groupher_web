@@ -27,8 +27,7 @@ export const Title = styled.div`
 `
 export const CommunityWrapper = styled.div`
   width: 100%;
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
   margin-top: 8px;
   margin-bottom: 50px;
 `

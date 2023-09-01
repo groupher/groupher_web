@@ -35,8 +35,7 @@ export const Title = styled.div`
 `
 
 export const BgRow = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
   gap: 10px;
 `
 
@@ -50,8 +49,7 @@ export const Divider = styled.div`
 `
 
 export const DirRow = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
   gap: 0 12px;
 `
 

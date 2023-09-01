@@ -21,8 +21,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 export const Title = styled.div``
 
 export const ByWrapper = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
   gap: 18px;
 `
 export const IconWrapper = styled.div`

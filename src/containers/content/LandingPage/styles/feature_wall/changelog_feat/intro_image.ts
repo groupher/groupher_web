@@ -11,8 +11,7 @@ import CommentSVG from '@/icons/Heart'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.column('align-both')};
-  flex-grow: 1;
+  ${css.columnGrow('align-both')};
   position: relative;
 
   ${css.media.mobile`

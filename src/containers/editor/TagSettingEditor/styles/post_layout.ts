@@ -8,8 +8,7 @@ import UpvoteSVG from '@/icons/Upvote'
 import CommentSVG from '@/icons/Comment'
 
 export const Wrapper = styled.div`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-center')};
   gap: 0 45px;
   width: 100%;
   padding-left: 35px;
