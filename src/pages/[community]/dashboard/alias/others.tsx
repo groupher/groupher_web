@@ -41,7 +41,6 @@ const loader = async (context, opt = {}) => {
   const curCommunity = gqClient.request(P.community, {
     slug: community,
     userHasLogin,
-    incViews: false,
   })
 
   const filter = ssrPagedArticlesFilter(context, userHasLogin)
@@ -96,7 +95,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       dashboardThread: {
         ...dashboard,
         curTab: ROUTE.DASHBOARD.ALIAS,
-        aliasTab: DASHBOARD_ALIAS_ROUTE.THREAD,
+        aliasTab: DASHBOARD_ALIAS_ROUTE.OTHERS,
       },
     },
     {

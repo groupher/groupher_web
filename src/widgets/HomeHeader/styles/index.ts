@@ -54,7 +54,7 @@ export const BrandTitle = styled.div`
 
 export const LinksWrapper = styled.div`
   ${css.flex('align-center')};
-  gap: 0 28px;
+  gap: 0 24px;
   margin-top: 2px;
   flex-flow: 1;
   padding-left: 45px;
@@ -67,9 +67,11 @@ export const LinkItem = styled(Link)<TActive>`
   font-size: 15px;
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   text-decoration: none;
+  padding: 2px 6px;
+  border-radius: 5px;
 
   &:hover {
-    color: ${theme('article.title')};
+    background: ${theme('hoverBg')};
     font-weight: 500;
   }
 
@@ -80,11 +82,14 @@ export const MoreLink = styled.div<TActive>`
   ${css.flex('align-center')};
   font-size: 15px;
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
+  background: ${({ $active }) => ($active ? theme('hoverBg') : '')};
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
   cursor: default;
+  padding: 2px 6px;
+  border-radius: 5px;
 
   &:hover {
-    color: ${theme('article.title')};
+    background: ${theme('hoverBg')};
     font-weight: 500;
   }
 
@@ -174,20 +179,18 @@ export const MenuItem = styled(Link)<{ noDesc?: boolean }>`
   padding: ${({ noDesc }) => (noDesc ? '6px 12px;' : '10px 12px')};
 
   text-decoration: none;
-  border: 1px solid transparent;
   border-radius: 8px;
 
   &:hover {
     cursor: pointer;
-    background: #e4e4e457;
+    background: ${theme('hoverBg')};
     text-decoration: none;
-    border-color: ${theme('popover.activeBorder')};
   }
 
   will-change: background;
 `
 export const MenuTitle = styled.div`
-  color: ${theme('article.title')};
+  color: ${theme('article.digest')};
   font-size: 14px;
   font-weight: 500;
   opacity: 0.8;

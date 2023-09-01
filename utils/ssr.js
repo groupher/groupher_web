@@ -1,4 +1,6 @@
-import { merge, pick, isEmpty, findIndex, propEq, includes, values } from 'ramda'
+import { merge, pick, isEmpty, findIndex, propEq, includes, values, reject } from 'ramda'
+
+// import type { TNameAliasConfig } from '@/spec'
 
 import { DEFAULT_THEME } from '@/config'
 import { HCN } from '@/constant/name'
@@ -6,6 +8,7 @@ import TYPE from '@/constant/type'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
 import { removeEmptyValuesFromObject } from '@/utils/helper'
+import { BUILDIN_ALIAS } from '@/containers/thread/DashboardThread/constant'
 
 import { plural } from './fmt'
 
@@ -223,13 +226,23 @@ export const ssrParseArticleThread = (resp, thread, filters = {}) => {
   }
 }
 
+/**
+ * server only stored "changed" alias, so need an merge action
+ */
+const parseDashboardAlias = (nameAlias) => {
+  const changedAliasKeys = nameAlias.map((item) => item.original)
+  const unChangedAlias = reject((item) => includes(item.original, changedAliasKeys), BUILDIN_ALIAS)
+
+  return reject((item) => item.slug === '', [...nameAlias, ...unChangedAlias])
+}
+
 export const ssrParseDashboard = (community) => {
   const { dashboard, moderators } = community
   const { enable, nameAlias, socialLinks, faqs } = dashboard
 
   const fieldsObj = removeEmptyValuesFromObject({
     enable,
-    nameAlias,
+    nameAlias: parseDashboardAlias(nameAlias),
     socialLinks,
     faqSections: faqs,
     ...dashboard.baseInfo,

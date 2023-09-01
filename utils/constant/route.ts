@@ -82,8 +82,9 @@ export const DASHBOARD_BROADCAST_ROUTE = {
 } as Record<Uppercase<TDashboardBroadcastRoute>, TDashboardBroadcastRoute>
 
 export const DASHBOARD_ALIAS_ROUTE = {
-  GENERAL: 'general',
+  THREAD: 'thread',
   KANBAN: 'kanban',
+  OTHERS: 'others',
 } as Record<Uppercase<TDashboardAliasRoute>, TDashboardAliasRoute>
 
 export const ROUTE = {

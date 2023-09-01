@@ -49,6 +49,7 @@ export type TNameAliasConfig = {
   slug: string
   name: string
   original?: string
+  group?: string
 }
 
 export type TDashboardThreadConfig = {

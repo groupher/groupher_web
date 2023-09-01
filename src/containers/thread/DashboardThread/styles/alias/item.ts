@@ -48,4 +48,5 @@ export const Inputer = styled(Input)`
 export const Footer = styled.div`
   ${css.flex('align-center')};
   height: 40px;
+  margin-left: -1px;
 `

@@ -9,7 +9,7 @@ import { FC, memo, ReactNode } from 'react'
 import type { TSpace } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
-import { Wrapper, PlusIcon, Text } from './styles/add_button'
+import { Wrapper, PlusIcon, EditIcon, Text } from './styles/add_button'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Buttons:AddButton')
@@ -20,6 +20,7 @@ type TProps = {
   dimWhenIdle?: boolean
   disabled?: boolean
   withIcon?: boolean
+  icon?: 'adder' | 'edit'
 } & TSpace
 
 const AddButton: FC<TProps> = ({
@@ -28,6 +29,7 @@ const AddButton: FC<TProps> = ({
   dimWhenIdle = false,
   disabled = false,
   withIcon = true,
+  icon = 'adder',
   ...restProps
 }) => {
   return (
@@ -37,7 +39,8 @@ const AddButton: FC<TProps> = ({
       disabled={disabled}
       {...restProps}
     >
-      {withIcon && <PlusIcon />}
+      {withIcon && icon === 'adder' && <PlusIcon />}
+      {withIcon && icon === 'edit' && <EditIcon />}
       <Text>{children}</Text>
     </Wrapper>
   )

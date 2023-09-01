@@ -103,7 +103,7 @@ const DashboardThread = T.model('DashboardThread', {
   // tab
   curTab: T.opt(T.enum(values(DASHBOARD_ROUTE)), DASHBOARD_ROUTE.INFO),
   baseInfoTab: T.opt(T.enum(values(DASHBOARD_BASEINFO_ROUTE)), DASHBOARD_BASEINFO_ROUTE.BASIC),
-  aliasTab: T.opt(T.enum(values(DASHBOARD_ALIAS_ROUTE)), DASHBOARD_ALIAS_ROUTE.GENERAL),
+  aliasTab: T.opt(T.enum(values(DASHBOARD_ALIAS_ROUTE)), DASHBOARD_ALIAS_ROUTE.THREAD),
   seoTab: T.opt(T.enum(values(DASHBOARD_SEO_ROUTE)), DASHBOARD_SEO_ROUTE.SEARCH_ENGINE),
   docTab: T.opt(T.enum(values(DASHBOARD_DOC_ROUTE)), DASHBOARD_DOC_ROUTE.TABLE),
   layoutTab: T.opt(T.enum(values(DASHBOARD_LAYOUT_ROUTE)), DASHBOARD_LAYOUT_ROUTE.GLOBAL),
@@ -503,7 +503,7 @@ const DashboardThread = T.model('DashboardThread', {
       return {
         aliasTab: slf.aliasTab,
         editingAlias: toJS(slf.editingAlias),
-        nameAlias: reject((item: TNameAlias) => item.slug === '', toJS(slf.nameAlias)),
+        nameAlias: toJS(slf.nameAlias),
         saving: slf.saving,
       }
     },
