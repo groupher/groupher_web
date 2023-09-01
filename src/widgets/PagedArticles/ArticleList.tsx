@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 
-import { Fragment, memo, FC } from 'react'
+import { memo, FC } from 'react'
 
 import { POST_LAYOUT } from '@/constant/layout'
 import TYPE from '@/constant/type'
@@ -59,7 +59,7 @@ const ArticleList: FC<TProps> = ({
   }
 
   return (
-    <Fragment>
+    <>
       {entries.map((entry) => (
         <PostItem
           key={entry.id}
@@ -70,7 +70,7 @@ const ArticleList: FC<TProps> = ({
           avatarLayout={globalLayout.avatar}
         />
       ))}
-    </Fragment>
+    </>
   )
 }
 

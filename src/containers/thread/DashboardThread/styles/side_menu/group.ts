@@ -7,9 +7,8 @@ import css, { theme } from '@/css'
 import ArrowSVG from '@/icons/ArrowSimple'
 
 export const Wrapper = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 `
-
 export const Folder = styled.div`
   ${css.row('align-center', 'justify-between')};
   cursor: pointer;
@@ -45,7 +44,6 @@ export const Title = styled.div`
 export const MenuWrapper = styled.div`
   margin-left: 7px;
   margin-top: 8px;
-  padding-bottom: 5px;
 
   border-left: 1px solid transparent;
   border-image: linear-gradient(

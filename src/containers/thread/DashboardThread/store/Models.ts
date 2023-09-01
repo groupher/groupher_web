@@ -126,7 +126,7 @@ export const settingsModalFields = {
 
   // layout
   primaryColor: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
-  postLayout: T.opt(T.enum(values(POST_LAYOUT)), POST_LAYOUT.UPVOTE_FIRST),
+  postLayout: T.opt(T.enum(values(POST_LAYOUT)), POST_LAYOUT.QUORA),
   kanbanLayout: T.opt(T.enum(values(KANBAN_LAYOUT)), KANBAN_LAYOUT.SIMPLE),
   kanbanBgColors: T.opt(T.array(T.string), [
     COLOR_NAME.PURPLE,

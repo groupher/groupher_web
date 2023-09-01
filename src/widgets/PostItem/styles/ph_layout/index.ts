@@ -11,8 +11,6 @@ export const Wrapper = styled.article<TWrapper>`
   ${css.row()};
   position: relative;
 
-  margin-bottom: 5px;
-
   transition: all 0.2s;
 `
 export const Main = styled.div`

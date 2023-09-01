@@ -56,8 +56,8 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         }
       />
       <SelectWrapper>
-        <Layout onClick={() => edit(POST_LAYOUT.UPVOTE_FIRST, 'postLayout')}>
-          <Block $active={layout === POST_LAYOUT.UPVOTE_FIRST}>
+        <Layout onClick={() => edit(POST_LAYOUT.QUORA, 'postLayout')}>
+          <Block $active={layout === POST_LAYOUT.QUORA}>
             <Bar thin long={30} />
             <Br bottom={7} />
             <Row>
@@ -79,17 +79,17 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
               <Bar long={12} thin />
             </Row>
           </Block>
-          <LayoutTitle $active={layout === POST_LAYOUT.UPVOTE_FIRST}>
+          <LayoutTitle $active={layout === POST_LAYOUT.QUORA}>
             <CheckLabel
               title="侧重投票"
-              $active={layout === POST_LAYOUT.UPVOTE_FIRST}
+              $active={layout === POST_LAYOUT.QUORA}
               top={15}
               left={-15}
             />
           </LayoutTitle>
         </Layout>
-        <Layout onClick={() => edit(POST_LAYOUT.COMMENT_FIRST, 'postLayout')}>
-          <Block $active={layout === POST_LAYOUT.COMMENT_FIRST}>
+        <Layout onClick={() => edit(POST_LAYOUT.PH, 'postLayout')}>
+          <Block $active={layout === POST_LAYOUT.PH}>
             <Row>
               <Column center>
                 <Circle />
@@ -122,13 +122,8 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
               </Column>
             </Row>
           </Block>
-          <LayoutTitle $active={layout === POST_LAYOUT.COMMENT_FIRST}>
-            <CheckLabel
-              title="侧重评论"
-              $active={layout === POST_LAYOUT.COMMENT_FIRST}
-              top={15}
-              left={-15}
-            />
+          <LayoutTitle $active={layout === POST_LAYOUT.PH}>
+            <CheckLabel title="侧重评论" $active={layout === POST_LAYOUT.PH} top={15} left={-15} />
           </LayoutTitle>
         </Layout>
 

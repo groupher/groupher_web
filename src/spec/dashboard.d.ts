@@ -6,7 +6,7 @@ export type TBrandLayout = 'both' | 'logo' | 'text'
 export type TBannerLayout = 'header' | 'tabber' | 'sidebar'
 
 export type TTopbarLayout = 'yes' | 'no'
-export type TPostLayout = 'upvote_first' | 'comment_first' | 'masonry' | 'minimal' | 'cover'
+export type TPostLayout = 'quora' | 'ph' | 'masonry' | 'minimal' | 'cover'
 export type TKanbanLayout = 'simple' | 'full'
 export type TChangelogLayout = 'classic' | 'simple'
 export type TDocLayout = 'blocks' | 'lists' | 'cards' | 'article'

@@ -25,7 +25,7 @@ type TProps = {
 const PostLayoutExample: FC<TProps> = ({ articles, layout }) => {
   return (
     <Fragment>
-      {layout === POST_LAYOUT.UPVOTE_FIRST && (
+      {layout === POST_LAYOUT.QUORA && (
         <>
           {articles.map((item) => (
             <PostItem key={item.id} article={item} c11n={{}} curCommunity={{ slug: 'demo' }} />
@@ -33,7 +33,7 @@ const PostLayoutExample: FC<TProps> = ({ articles, layout }) => {
         </>
       )}
 
-      {layout === POST_LAYOUT.COMMENT_FIRST && (
+      {layout === POST_LAYOUT.PH && (
         <>
           {articles.map((item) => (
             <PostItem
@@ -41,7 +41,7 @@ const PostLayoutExample: FC<TProps> = ({ articles, layout }) => {
               article={item}
               c11n={{}}
               curCommunity={{ slug: 'demo' }}
-              layout={POST_LAYOUT.COMMENT_FIRST}
+              layout={POST_LAYOUT.PH}
             />
           ))}
         </>

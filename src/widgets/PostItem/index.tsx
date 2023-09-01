@@ -4,15 +4,15 @@
  *
  */
 
-import { FC, memo, Fragment } from 'react'
+import { FC, memo } from 'react'
 
 import type { TCommunity, TPost, TAccount, TC11N, TPostLayout, TAvatarLayout } from '@/spec'
 import { AVATAR_LAYOUT, POST_LAYOUT } from '@/constant/layout'
 
 import { buildLog } from '@/utils/logger'
 
-import CommentFirstLayout from './CommentFirstLayout'
-import UpvoteFirstLayout from './UpvoteFirstLayout'
+import PHLayout from './PHLayout'
+import QuoraLayout from './QuoraLayout'
 import MinimalLayout from './MinimalLayout'
 import CoverLayout from './CoverLayout'
 import MasonryLayout from './MasonryLayout'
@@ -35,13 +35,13 @@ const PostItem: FC<TProps> = ({
   curCommunity,
   article,
   onAuthorSelect = log,
-  layout = POST_LAYOUT.UPVOTE_FIRST,
+  layout = POST_LAYOUT.QUORA,
   isMobilePreview = false,
   c11n,
   avatarLayout = AVATAR_LAYOUT.SQUARE,
 }) => {
   return (
-    <Fragment>
+    <>
       {layout === POST_LAYOUT.MINIMAL && (
         <MinimalLayout
           c11n={c11n}
@@ -51,8 +51,8 @@ const PostItem: FC<TProps> = ({
         />
       )}
 
-      {layout === POST_LAYOUT.UPVOTE_FIRST && (
-        <UpvoteFirstLayout
+      {layout === POST_LAYOUT.QUORA && (
+        <QuoraLayout
           article={article}
           onAuthorSelect={onAuthorSelect}
           isMobilePreview={isMobilePreview}
@@ -60,8 +60,8 @@ const PostItem: FC<TProps> = ({
         />
       )}
 
-      {layout === POST_LAYOUT.COMMENT_FIRST && (
-        <CommentFirstLayout
+      {layout === POST_LAYOUT.PH && (
+        <PHLayout
           c11n={c11n}
           article={article}
           onAuthorSelect={onAuthorSelect}
@@ -80,7 +80,7 @@ const PostItem: FC<TProps> = ({
       )}
 
       {layout === POST_LAYOUT.MASONRY && <MasonryLayout article={article} />}
-    </Fragment>
+    </>
   )
 }
 

@@ -63,8 +63,8 @@ export const BROADCAST_ARTICLE_LAYOUT = {
 } as Record<TSnakeUpperCase<TBroadcastArticleLayout>, TBroadcastArticleLayout>
 
 export const POST_LAYOUT = {
-  UPVOTE_FIRST: 'upvote_first',
-  COMMENT_FIRST: 'comment_first',
+  QUORA: 'quora',
+  PH: 'ph',
   MASONRY: 'masonry',
   MINIMAL: 'minimal',
   COVER: 'cover',
