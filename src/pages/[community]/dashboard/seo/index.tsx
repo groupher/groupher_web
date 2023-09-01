@@ -41,6 +41,7 @@ const loader = async (context, opt = {}) => {
   const curCommunity = gqClient.request(P.community, {
     slug: community,
     userHasLogin,
+    incViews: false,
   })
 
   const filter = ssrPagedArticlesFilter(context, userHasLogin)
