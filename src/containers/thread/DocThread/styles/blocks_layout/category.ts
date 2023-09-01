@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 
 import type { TColorName, TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import { camelize } from '@/utils/fmt'
 
 type TWrapper = TTestable & { color?: string }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   width: 28%;
   min-height: 80px;
   padding: 15px 20px;
@@ -27,14 +27,14 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 `
 
 export const Header = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   margin-bottom: 12px;
 `
 export const IconWrapper = styled.div<{ color: TColorName }>`
   ${css.size(35)};
   border-radius: 12px;
   margin-left: -1px;
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   background: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
   margin-bottom: 8px;
 
@@ -52,7 +52,7 @@ export const Title = styled.div`
 `
 export const ItemsWrapper = styled.div`
   margin-top: 3px;
-  ${css.flexColumn()};
+  ${css.column()};
   gap: 10px;
   transition: all 0.2s;
 `

@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const OptionsWrapper = styled.div`
-  ${css.flex('justify-evenly')};
+  ${css.row('justify-evenly')};
   padding-top: 3px;
 `
 export const HeaderDivider = styled.div`
@@ -22,10 +22,9 @@ export const HeaderDivider = styled.div`
 `
 
 export const Option = styled.div<TActive>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 
-  color: ${({ active }) =>
-    active ? theme('banner.title') : theme('banner.desc')};
+  color: ${({ active }) => (active ? theme('banner.title') : theme('banner.desc'))};
   background: ${({ active }) => (active ? theme('mailBox.headHightBg') : '')};
   padding: 2px 8px;
   border-radius: 5px;
@@ -37,8 +36,7 @@ export const Option = styled.div<TActive>`
   }
 `
 export const Icon = styled(Img)<TActive>`
-  fill: ${({ active }) =>
-    active ? theme('banner.title') : theme('banner.desc')};
+  fill: ${({ active }) => (active ? theme('banner.title') : theme('banner.desc'))};
   ${css.size(18)};
   margin-right: 3px;
 `

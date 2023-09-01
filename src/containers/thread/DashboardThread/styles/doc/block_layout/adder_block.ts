@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import PlusSVG from '@/icons/BoxAdd'
 
@@ -9,7 +9,7 @@ type TWrapper = TTestable
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   position: relative;
   background: transparent;
   width: 225px;

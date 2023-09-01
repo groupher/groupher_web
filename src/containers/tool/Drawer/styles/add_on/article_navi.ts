@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import ArrowSVG from '@/icons/ArrowSimple'
 
 import { Wrapper as AddonWrapper } from './index'
 
 export const Wrapper = styled.div<TActive>`
-  ${css.flexColumn('justify-evenly', 'align-center')};
+  ${css.column('justify-evenly', 'align-center')};
   position: relative;
   left: 85px;
   z-index: 1;
@@ -29,7 +29,7 @@ const SwitchBlock = styled.div`
   cursor: pointer;
   position: absolute;
   ${css.circle(50)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   opacity: 0.4;
 
   &:hover {

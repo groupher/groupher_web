@@ -1,16 +1,16 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-start')};
+  ${css.row('align-start')};
   width: 100%;
 
   ${css.media.mobile`
-    ${css.flexColumn('align-start')};
+    ${css.column('align-start')};
   `};
 `
 export const MainWrapper = styled.div<{ isSidebarLayout: boolean }>`
@@ -21,7 +21,7 @@ export const MainWrapper = styled.div<{ isSidebarLayout: boolean }>`
   background: transparent;
   border-radius: 6px;
   margin-top: 25px;
-  padding-left: ${({ isSidebarLayout }) => (isSidebarLayout ? 0 : '22px')};
+  padding-left: ${({ isSidebarLayout }) => (isSidebarLayout ? 0 : '')};
 
   ${css.media.mobile`
     width: 100%;

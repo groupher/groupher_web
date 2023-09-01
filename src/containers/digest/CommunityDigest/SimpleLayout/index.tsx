@@ -45,8 +45,17 @@ const SimpleLayout: FC<TProps> = ({
   const washedThreads = washThreads(community.threads, dashboardSettings)
   const { extraLinks } = dashboardSettings
 
+  // console.log('## dashboardSettings: ', dashboardSettings.nameAlias)
+  // console.log('## washedThreads: ', washedThreads)
+  // console.log('## community.threads: ', community.threads)
+
   return (
-    <Wrapper testid="community-digest" id={ANCHOR.GLOBAL_HEADER_ID} headerLayout={headerLayout}>
+    <Wrapper
+      id={ANCHOR.GLOBAL_HEADER_ID}
+      testid="community-digest"
+      metric={metric}
+      headerLayout={headerLayout}
+    >
       <InnerWrapper metric={metric}>
         <BannerContentWrapper>
           <CommunityBaseInfo>
@@ -64,7 +73,7 @@ const SimpleLayout: FC<TProps> = ({
               active={activeThread}
               extraLinks={extraLinks}
               headerLayout={headerLayout}
-              left={headerLayout === HEADER_LAYOUT.CENTER ? -50 : 0}
+              left={headerLayout === HEADER_LAYOUT.CENTER ? 4 : 0}
               right={headerLayout === HEADER_LAYOUT.RIGHT ? 20 : 0}
             />
             <AccountUnit community={community} />

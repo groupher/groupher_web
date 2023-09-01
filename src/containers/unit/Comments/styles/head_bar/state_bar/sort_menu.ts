@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import ArrowSVG from '@/icons/ArrowSolid'
 
 import ReplyModeSVG from '@/icons/CommentReplyMode'
@@ -12,10 +12,10 @@ import ExpandSVG from '@/icons/Expand'
 import FoldSVG from '@/icons/Fold'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Title = styled.div<TActive>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 12px;
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   margin-right: 15px;
@@ -57,7 +57,7 @@ export const ArrowIcon = styled(ArrowSVG)<TActive>`
 `
 
 export const Panel = styled.div<{ width?: string }>`
-  ${css.flexColumn()};
+  ${css.column()};
   margin-top: 3px;
   margin-bottom: 3px;
   gap: 3px 0;
@@ -68,7 +68,7 @@ export const Panel = styled.div<{ width?: string }>`
 `
 
 export const MenuItem = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 14px;
   padding: 6px 8px;
 

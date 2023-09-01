@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
+import { ALIGN_HEADER_OFFSET } from '../../constant'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
-  padding: 0 150px;
+  ${css.column()};
+  padding: ${() => `0 ${ALIGN_HEADER_OFFSET}`};
 
   ${css.media.mobile`
     padding: 0 20px;
@@ -25,5 +26,5 @@ export const Banner = styled.div`
 export const TabsWrapper = styled.div`
   position: absolute;
   bottom: 0;
-  left: -8px;
+  left: -14px;
 `

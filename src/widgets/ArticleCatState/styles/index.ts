@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 
 import type { TSpace, TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 type TWrapper = TTestable & TSpace
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
 
   margin-left: ${({ left }) => `${left}px` || 0};

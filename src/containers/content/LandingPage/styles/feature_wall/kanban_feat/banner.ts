@@ -7,17 +7,17 @@ import GtdWipSVG from '@/icons/GtdWip'
 import GtdDoneSVG from '@/icons/GtdDone'
 import GtdTodoSVG from '@/icons/GtdTodo'
 
-import css from '@/utils/css'
+import css from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   flex-grow: 1;
   width: 100%;
   padding: 15px 32px;
   position: relative;
 `
 export const Header = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Bar = styled(BarBase)`
   background: #c3d6f3;
@@ -31,7 +31,7 @@ export const KanbenIcon = styled(KanbenSVG)`
 `
 
 export const Item = styled.div<{ left: number }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   position: absolute;
   bottom: 8px;
   left: ${({ left }) => `${left}px`};

@@ -1,18 +1,18 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 // import Img from '@/Img'
 import ArrowSVG from '@/icons/ArrowSolid'
 import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
 
 export const Wrapper = styled.div`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   width: 280px;
   height: 116px;
   padding-left: 25px;
 `
 export const BadgeWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding-bottom: 33px;
 `
 export const Logo = styled(CommunityFaceLogo)`
@@ -40,13 +40,13 @@ export const PubHint = styled.div`
 `
 export const Title = styled.div`
   position: relative;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 16px;
   color: ${theme('article.title')};
   margin-bottom: 5px;
 `
 export const ChangeBtn = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   position: absolute;
   top: 4px;
   right: -45px;

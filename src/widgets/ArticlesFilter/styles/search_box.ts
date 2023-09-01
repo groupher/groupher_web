@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import Input from '@/widgets/Input'
 import SearchSVG from '@/icons/HeaderSearch'
@@ -8,12 +8,19 @@ import CloseSVG from '@/icons/CloseCross'
 import FilterSVG from '@/icons/FilterList'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   position: relative;
   cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-right: -8px;
+
+  &:hover {
+    background: ${theme('hoverBg')};
+  }
 `
 export const Back = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 70px;
   margin-right: 10px;
   padding-right: 8px;

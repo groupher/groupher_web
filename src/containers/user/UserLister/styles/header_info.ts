@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   margin-bottom: 12px;
   margin-left: 4px;
 `
@@ -14,7 +14,7 @@ export const Title = styled.div`
   margin-bottom: 3px;
 `
 export const DescLabel = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const DescIcon = styled(Img)`
   fill: ${theme('article.digest')};

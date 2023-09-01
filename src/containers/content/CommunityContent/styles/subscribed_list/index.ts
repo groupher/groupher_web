@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import Img from '@/Img'
 
@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
   padding-left: 10px;
 `
 export const HeadTitle = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 14px;
   font-weight: bold;
 `
@@ -36,7 +36,7 @@ export const Divider = styled.div`
 `
 export const Item = styled.div`
   position: relative;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 14px;
   margin-bottom: 15px;
 
@@ -60,8 +60,7 @@ export const Logo = styled(Img)`
 `
 export const Title = styled.div<TActive>`
   ${css.cutRest('70px')};
-  color: ${({ $active }) =>
-    $active ? theme('article.title') : theme('article.digest')};
+  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
 
   ${Item}:hover & {
     color: ${theme('article.title')};
@@ -91,7 +90,7 @@ export const Menu = styled.div`
   padding-bottom: 2px;
 `
 export const MenuItem = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 8px;
   cursor: pointer;
 `

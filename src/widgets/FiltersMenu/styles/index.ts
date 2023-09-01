@@ -2,14 +2,14 @@ import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   width: 100%;
   min-width: 110px;
 `
 export const ItemWrapper = styled.div<{ withDivider: boolean }>`
-  ${css.flexColumn()};
+  ${css.column()};
   border-bottom: ${({ withDivider }) => (withDivider ? '1px solid' : 'none')};
   border-bottom-color: ${({ withDivider }) => (withDivider ? '#EFEEEE' : 'none')}; // to-theme
   margin-bottom: 10px;
@@ -25,7 +25,7 @@ type TItem = TActive & {
   topMargin: boolean
 }
 export const Item = styled.div<TItem>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   justify-content: ${({ revert }) => (revert ? 'flex-start' : 'flex-end')};
   color: ${theme('article.title')};
   font-size: ${({ active }) => (active ? '15px' : '14px')};

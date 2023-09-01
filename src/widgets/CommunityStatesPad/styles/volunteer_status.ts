@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 
 // import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   position: relative;
-  ${css.flexColumn('align-end')};
+  ${css.column('align-end')};
 `
 export const SubNumberWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('banner.numberDesc')};
   font-size: 13px;
   margin-top: -1px;

@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
 `
 export const Header = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Title = styled.div<{ noDesc: boolean }>`
   color: ${theme('article.title')};
@@ -16,7 +16,9 @@ export const Title = styled.div<{ noDesc: boolean }>`
 `
 export const Desc = styled.div`
   color: ${theme('article.digest')};
+  opacity: 0.8;
   font-size: 13px;
   margin-top: 10px;
   margin-bottom: 25px;
+  line-height: 22px;
 `

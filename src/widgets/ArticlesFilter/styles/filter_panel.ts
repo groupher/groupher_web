@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import AllSVG from '@/icons/menu/Dots'
 import TimeSVG from '@/icons/TimelineMode'
@@ -10,29 +10,28 @@ import CommentSVG from '@/icons/Comment'
 import ViewSVG from '@/icons/View'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 120px;
   padding-right: 0;
 `
 export const Block = styled.div<TActive>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding: 7px 5px;
   width: 100%;
   border-radius: 8px;
 
-  background-color: ${({ active }) => (active ? theme('textBadge') : 'transparent')}; // to-theme
+  background-color: ${({ active }) => (active ? theme('hoverBg') : 'transparent')}; // to-theme
   color: ${({ active }) => (active ? theme('article.title') : theme('article.digest'))};
 
   &:hover {
     cursor: pointer;
-    background-color: ${({ active }) =>
-      active ? theme('textBadge') : theme('hoverBg')}; // to-theme
+    background: ${theme('hoverBg')};
     color: ${theme('article.title')};
   }
 `
 export const IconWrapper = styled.div`
   ${css.circle(18)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   margin-right: 10px;
 `
 export const Title = styled.div`

@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
 // import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<{ revert: boolean }>`
-  ${css.flexColumn()};
+  ${css.column()};
   align-items: ${({ revert }) => (revert ? 'flex-start' : 'flex-end')};
   color: ${theme('article.digest')};
   font-size: 14px;
@@ -13,13 +13,13 @@ export const Wrapper = styled.div<{ revert: boolean }>`
 `
 type TagsWrapper = { revert?: boolean }
 export const TagsWrapper = styled.div<TagsWrapper>`
-  ${css.flexColumn()};
+  ${css.column()};
   align-items: ${({ revert }) => (revert ? 'flex-start' : 'flex-end')};
   margin-top: 5px;
 `
 
 export const Item = styled.div<{ revert: boolean }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   justify-content: ${({ revert }) => (revert ? 'flex-start' : 'flex-end')};
   width: 100%;
 `

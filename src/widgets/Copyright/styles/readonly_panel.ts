@@ -1,18 +1,18 @@
 import styled from 'styled-components'
 import IconText from '@/widgets/IconText'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export { Icon } from './label'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 240px;
   padding: 16px 10px;
   padding-left: 15px;
 `
 export const Header = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Title = styled.div`
   font-size: 16px;
@@ -33,5 +33,5 @@ export const DescItem = styled(IconText)`
   color: ${theme('article.info')};
 `
 export const Footer = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `

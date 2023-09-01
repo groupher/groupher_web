@@ -44,9 +44,7 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
             全部文档的目录布局。
             <ArrowButton
               onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
-              bottom={1}
-              size="small"
-              linkColor
+              fontSize={12}
             >
               查看示例
             </ArrowButton>
@@ -122,9 +120,7 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
             当前设置仅针对常见问题的展示样式。
             <ArrowButton
               onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
-              bottom={1}
-              size="small"
-              linkColor
+              fontSize={12}
             >
               查看示例
             </ArrowButton>

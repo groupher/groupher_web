@@ -35,7 +35,6 @@ const Broadcast: FC<TProps> = ({ settings, touched }) => {
           <Tabs
             items={BROADCAST_TABS}
             activeKey={broadcastTab}
-            bottomSpace={4}
             onChange={(tab) => {
               edit(tab, 'broadcastTab')
               const targetPath =

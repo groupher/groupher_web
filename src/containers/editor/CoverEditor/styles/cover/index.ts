@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Img from '@/Img'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import { pixelAdd } from '@/utils/dom'
 
 import type { TCoverImage, TImagePos } from '../../spec'
@@ -19,7 +19,7 @@ import { getImageTranslate, getLinearBorder, getImageSize, getLightPos } from '.
 
 type TWrapper = { hasImage: boolean; background: string }
 export const Wrapper = styled.div<TWrapper>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: ${IMAGE_CONTAINER_SIZE.WIDTH};
   height: ${IMAGE_CONTAINER_SIZE.HEIGHT};
   border: 1px solid;
@@ -36,7 +36,7 @@ type TGlassBorder = TCoverImage & { hasGlassBorder: boolean }
 export const GlassBorder = styled.div<TGlassBorder>`
   border-radius: ${({ borderRadiusLevel }) => pixelAdd(IMAGE_BORDER_RADIUS[borderRadiusLevel], 5)};
 
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 
   min-width: ${({ size, ratio, hasGlassBorder }) =>
     pixelAdd(getImageSize(size, ratio).width, hasGlassBorder ? 15 : 0)};

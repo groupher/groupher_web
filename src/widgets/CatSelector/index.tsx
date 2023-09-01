@@ -64,7 +64,7 @@ const CatSelector: FC<TProps> = ({
           </Fragment>
         }
       >
-        <DropdownButton noArrow={noArrow}>
+        <DropdownButton noArrow={noArrow} $active={menuOpen}>
           {activeCat === ARTICLE_CAT.ALL ? '类别' : <ActiveLabel cat={activeCat} />}
         </DropdownButton>
       </Tooltip>

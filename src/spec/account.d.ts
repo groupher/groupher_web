@@ -75,6 +75,7 @@ export type TAccount = TUser & {
   isLogin?: boolean
   isValidSession?: boolean
   subscribedCommunitiesCount?: number
+  isModerator?: boolean
   // ...
 }
 

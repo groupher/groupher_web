@@ -1,17 +1,17 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<{ panelMinWidth: string }>`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
   min-width: ${({ panelMinWidth }) => panelMinWidth};
   max-height: 200px;
   overflow: hidden;
 `
 export const Block = styled.div`
-  ${css.flex('align-start')};
+  ${css.row('align-start')};
   padding: 8px 10px;
   border-bottom: 1px solid;
   border-bottom-color: #0d3e4e;
@@ -31,7 +31,7 @@ export const BlockA = styled(Block)`
   text-decoration: none;
 `
 export const IconWrapper = styled.div`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   width: 28px;
 `
 /* width: ${({ bigger }) => (bigger ? '24px' : '18px')};
@@ -49,12 +49,12 @@ export const Icon = styled(Img)<{ index: number }>`
   transition: opacity 0.25s;
 `
 export const Intro = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   margin-left: 7px;
   width: 100%;
 `
 export const Header = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
 `
 export const Title = styled.div`

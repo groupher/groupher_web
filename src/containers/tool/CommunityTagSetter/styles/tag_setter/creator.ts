@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -9,5 +9,5 @@ export const Wrapper = styled.div`
 `
 export const InnerWrapper = styled.div`
   color: ${theme('article.digest')};
-  /* ${css.flex()}; */
+  /* ${css.row()}; */
 `

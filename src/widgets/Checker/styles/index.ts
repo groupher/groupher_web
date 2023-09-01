@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive, TSpace } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import CheckedSVG from '@/icons/CheckBold'
 
@@ -11,7 +11,7 @@ type TItem = { checked: boolean; size: string; disabled?: boolean }
 
 type TWrapper = { dimWhenIdle: boolean; disabled?: boolean } & TActive & TSpace
 export const Wrapper = styled.div<TWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
   opacity: ${({ dimWhenIdle }) => (dimWhenIdle ? 0.7 : 1)};
 
@@ -24,11 +24,11 @@ export const Wrapper = styled.div<TWrapper>`
   }
 `
 export const IconWrapper = styled.div<TItem>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   background: ${({ checked }) => (checked ? theme('article.digest') : 'transparent')};
   width: ${({ size }) => getIconSize(size)};
   height: ${({ size }) => getIconSize(size)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   padding: 1px;
 
   border: ${({ disabled }) => (!disabled ? '1px solid' : 'none')};

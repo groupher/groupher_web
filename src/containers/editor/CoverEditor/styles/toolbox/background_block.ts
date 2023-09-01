@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive, TWallpaperGradientDir } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import ArchSVG from '@/icons/Arch'
 import ArrowSVG from '@/icons/Arrow'
@@ -11,12 +11,12 @@ import { getBgGradientDirAngle } from '../metric'
 
 export const Wrapper = styled.div`
   ${css.size(60)};
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 export const Block = styled(SettingBlock)``
 
 export const Panel = styled.div`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   width: 320px;
   height: 200px;
   padding: 10px;
@@ -35,7 +35,7 @@ export const Title = styled.div`
 `
 
 export const BgRow = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   gap: 10px;
 `
@@ -50,7 +50,7 @@ export const Divider = styled.div`
 `
 
 export const DirRow = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   gap: 0 12px;
 `
@@ -65,7 +65,7 @@ export const BgImage = styled.div<{ background: string }>`
 
 export const ImageWrapper = styled.div<TActive>`
   ${css.size(28)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   border: 1px solid transparent;
   background-color: white;
   border-radius: 3px;
@@ -82,7 +82,7 @@ export const ImageWrapper = styled.div<TActive>`
 
 export const DirWrapper = styled(ImageWrapper)`
   ${css.size(24)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 `
 
 type TImageBlock = { background: string }

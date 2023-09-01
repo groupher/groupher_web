@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import CloseSVG from '@/widgets/Icons/CloseCross'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable & { closeable: boolean }>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   font-size: 14px;
   font-variant: tabular-nums;
   line-height: 1.5;

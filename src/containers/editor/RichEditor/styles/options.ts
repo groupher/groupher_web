@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 
-import css from '@/utils/css'
+import css from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   width: calc(100% + 10px);
   margin-top: 20px;
   margin-bottom: 20px;

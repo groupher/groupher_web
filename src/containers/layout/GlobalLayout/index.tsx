@@ -7,6 +7,7 @@
 import { FC, ReactNode, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
+import { Provider as BalancerTextProvider } from 'react-wrap-balancer'
 
 import METRIC from '@/constant/metric'
 import { TOPBAR_LAYOUT } from '@/constant/layout'
@@ -101,39 +102,41 @@ const GlobalLayoutContainer: FC<TProps> = ({
   }, [showDashboardAlert])
 
   return (
-    <ThemePalette>
-      {load && <Addon metric={metric} />}
-      <Skeleton>
-        <Wallpaper wallpaperInfo={wallpaperInfo} />
-        <ScrollWrapper noMobilePadding={metric === METRIC.HOME}>
-          <Wrapper>
-            <SEO metric={metric} config={seoConfig} />
-            <InnerWrapper
-              metric={metric}
-              hasShadow={hasShadow}
-              hasTopbar={metric !== METRIC.HOME && globalLayout.topbar === TOPBAR_LAYOUT.YES}
-              topbarBg={globalLayout.topbarBg}
-            >
-              <Broadcast metric={metric} settings={broadcastConfig} />
-              <ContentWrapper>
-                <BodyWrapper>{childrenWithProps(children, { metric })}</BodyWrapper>
-                <Footer metric={metric} config={footerConfig} />
-              </ContentWrapper>
-              {!!glowEffect.glowType && (
-                <GrowBackground
-                  glowType={glowEffect.glowType}
-                  glowPosition={getGlowPosition(metric, glowEffect.glowFixed)}
-                  glowOpacity={glowEffect.glowOpacity}
-                />
-              )}
-            </InnerWrapper>
-            {isMobile && load && <ModeLine metric={metric} />}
-          </Wrapper>
-        </ScrollWrapper>
-      </Skeleton>
+    <BalancerTextProvider>
+      <ThemePalette>
+        {load && <Addon metric={metric} />}
+        <Skeleton>
+          <Wallpaper wallpaperInfo={wallpaperInfo} />
+          <ScrollWrapper noMobilePadding={metric === METRIC.HOME}>
+            <Wrapper>
+              <SEO metric={metric} config={seoConfig} />
+              <InnerWrapper
+                metric={metric}
+                hasShadow={hasShadow}
+                hasTopbar={metric !== METRIC.HOME && globalLayout.topbar === TOPBAR_LAYOUT.YES}
+                topbarBg={globalLayout.topbarBg}
+              >
+                <Broadcast metric={metric} settings={broadcastConfig} />
+                <ContentWrapper>
+                  <BodyWrapper>{childrenWithProps(children, { metric })}</BodyWrapper>
+                  <Footer metric={metric} config={footerConfig} />
+                </ContentWrapper>
+                {!!glowEffect.glowType && (
+                  <GrowBackground
+                    glowType={glowEffect.glowType}
+                    glowPosition={getGlowPosition(metric, glowEffect.glowFixed)}
+                    glowOpacity={glowEffect.glowOpacity}
+                  />
+                )}
+              </InnerWrapper>
+              {isMobile && load && <ModeLine metric={metric} />}
+            </Wrapper>
+          </ScrollWrapper>
+        </Skeleton>
 
-      {showDashboardAlertUI && <DashboardAlert />}
-    </ThemePalette>
+        {showDashboardAlertUI && <DashboardAlert />}
+      </ThemePalette>
+    </BalancerTextProvider>
   )
 }
 

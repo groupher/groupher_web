@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import type { TTestable } from '@/spec'
 
@@ -12,7 +12,7 @@ import SiteLogoSVG from '@/icons/CPLogo'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-center', 'justify-between')};
+  ${css.column('align-center', 'justify-between')};
   height: 100vh;
   width: 100%;
   z-index: 1;
@@ -22,7 +22,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 export const LogoWrapper = styled(Link).attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 20px;
   text-decoration: none;
 `
@@ -38,7 +38,7 @@ export const SiteTitle = styled.div`
   margin-left: 4px;
 `
 export const IconsWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 380px;
   margin-left: 50px;
   ${css.media.mobile`
@@ -64,7 +64,7 @@ export const OopsLetter = styled.div`
   opacity: 0.6;
 `
 export const TextWrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   margin-top: 80px;
   width: 520px;
 
@@ -73,7 +73,7 @@ export const TextWrapper = styled.div`
   `};
 `
 export const HintWrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
 `
 export const HintTitle = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,

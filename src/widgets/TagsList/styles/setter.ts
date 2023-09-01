@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import HashTagSVG from '@/icons/HashTag'
 import SettingSVG from '@/icons/Setting'
@@ -10,7 +10,7 @@ import { Wrapper as ParentWrapper } from './index'
 export const Wrapper = styled.div`
   position: absolute;
   right: -50px;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
   margin-left: 5px;
   opacity: 0;
@@ -24,7 +24,7 @@ export const Wrapper = styled.div`
 `
 
 export const EmptyWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
   opacity: 0.8;
   &:hover {

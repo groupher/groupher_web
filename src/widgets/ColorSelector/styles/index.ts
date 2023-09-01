@@ -4,23 +4,23 @@ import type { TTestable, TActive, TColorName } from '@/spec'
 
 // import Img from '@/Img'
 import HookSVG from '@/icons/Hook'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import { camelize } from '@/utils/fmt'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding: 5px;
 `
 export const DotWrapper = styled.div`
   ${css.circle(28)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 `
 type TDot = TActive & { color: string; colorName: TColorName; bgMode: boolean }
 export const Dot = styled.div<TDot>`
   ${({ $active }) => ($active ? css.circle(20) : css.circle(16))};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   background-color: ${({ color, bgMode, colorName }) =>
     !bgMode ? color : theme(`baseColor.${camelize(colorName)}Bg`)};
 
@@ -31,7 +31,7 @@ export const Dot = styled.div<TDot>`
 
   &:hover {
     ${css.circle(20)};
-    ${css.flex('align-both')};
+    ${css.row('align-both')};
     cursor: pointer;
   }
 

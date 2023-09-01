@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable, TMetric } from '@/spec'
-import css, { theme, WIDTH } from '@/utils/css'
-import { pixelAdd } from '@/utils/dom'
+import css, { theme } from '@/css'
 
 import HeaderSearchSVG from '@/icons/HeaderSearch'
 
@@ -18,7 +17,7 @@ export const Wrapper = styled.header.attrs<TTestable>(({ testid }) => ({
 }))<IWrapper>`
   width: 100%;
   height: 33px;
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   background: ${theme('header.bg')};
   opacity: 1;
   border-bottom: ${({ noBorder }) => (noBorder ? 'none' : '1px solid')};
@@ -29,19 +28,16 @@ export const Wrapper = styled.header.attrs<TTestable>(({ testid }) => ({
 
 type TInnerWrapper = { metric: TMetric }
 const InnerWrapper = styled.div<TInnerWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding: 0 4px;
   width: 100%;
   height: 33px;
   ${({ metric }) => css.fitContentWidth(metric)};
 `
-export const ClassicInnerWrapper = styled(InnerWrapper)`
-  padding-left: ${pixelAdd(WIDTH.COMMUNITY.CONTENT_OFFSET, 10)};
-  padding-right: ${WIDTH.COMMUNITY.CONTENT_OFFSET};
-`
+export const ClassicInnerWrapper = styled(InnerWrapper)``
 
 export const RouterWrapper = styled.div`
-  ${css.flexGrow('align-center')};
+  ${css.rowGrow('align-center')};
   height: 100%;
 `
 export const HeaderSearchIcon = styled(HeaderSearchSVG).attrs<TTestable>(({ testid }) => ({
@@ -54,7 +50,7 @@ export const HeaderSearchIcon = styled(HeaderSearchSVG).attrs<TTestable>(({ test
   margin-right: 12px;
 `
 export const Operations = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Search = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,

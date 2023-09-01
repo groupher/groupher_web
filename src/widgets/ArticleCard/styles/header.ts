@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 
 // import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import LinkSVG from '@/icons/Link'
 
 export const Wrapper = styled.div``
 
 export const LinkWraper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const LinkIcon = styled(LinkSVG)`
   fill: ${theme('article.digest')};

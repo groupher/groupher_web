@@ -31,6 +31,8 @@
       "@/model/*": ["src/stores/Model/*"],
       "@/utils": ["utils"],
       "@/utils/*": ["utils/*"],
+      "@/css": ["utils/css"],
+      "@/css/*": ["utils/css/*"],
       "@/schemas": ["src/schemas"],
       "@/spec": ["src/spec"],
       "@/Img": ["src/widgets/Img"],

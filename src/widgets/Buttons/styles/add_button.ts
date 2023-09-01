@@ -1,9 +1,10 @@
 import styled from 'styled-components'
 
 import type { TSpace } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import PlusSVG from '@/icons/Plus'
+import EditSVG from '@/icons/EditPen'
 
 type TWrapper = {
   disabled: boolean
@@ -12,7 +13,7 @@ type TWrapper = {
 
 export const Wrapper = styled.div<TWrapper>`
   position: relative;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   opacity: ${({ dimWhenIdle, disabled }) => (dimWhenIdle || disabled ? '0.65' : 1)};
 
   ${(props) => css.spaceMargins(props)};
@@ -20,6 +21,18 @@ export const Wrapper = styled.div<TWrapper>`
   &:hover {
     cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
     opacity: ${({ disabled }) => (disabled ? 0.65 : 1)};
+  }
+
+  transition: all 0.2s;
+`
+export const EditIcon = styled(EditSVG)`
+  ${css.size(12)};
+  fill: ${theme('article.digest')};
+  margin-right: 3px;
+
+  ${Wrapper}:hover & {
+    color: ${theme('article.title')};
+    opacity: 1;
   }
 
   transition: all 0.2s;

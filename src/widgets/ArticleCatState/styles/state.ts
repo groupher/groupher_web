@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TArticleCat } from '@/spec'
 import { ARTICLE_CAT } from '@/constant/gtd'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import GtdWipSVG from '@/icons/GtdWip'
 import GtdDoneSVG from '@/icons/GtdDone'
@@ -20,7 +20,7 @@ type TType = { cat: TArticleCat; noBg?: boolean; smaller: boolean }
 export const Wrapper = styled.div<TType>`
   ${({ smaller }) => (smaller ? css.size(20) : css.size(26))};
 
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   background: ${({ cat, noBg }) => {
     if (noBg) return 'transparent'
 
@@ -37,7 +37,7 @@ export const Wrapper = styled.div<TType>`
 `
 export const NoBgWrapper = styled.div`
   margin-right: 2px;
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 `
 export const WipIcon = styled(GtdWipSVG)<TType>`
   ${({ smaller }) => (smaller ? css.size(13) : css.size(15))};

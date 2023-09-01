@@ -1,15 +1,11 @@
 import { FC, memo } from 'react'
 
-import Link from 'next/link'
-
 import type { TCommunity } from '@/spec'
 
 import useAccount from '@/hooks/useAccount'
-import { ROUTE } from '@/constant/route'
-// import { callSubscriber, callAuth } from '@/utils/signal'
 import { callAuth } from '@/utils/signal'
 
-import { Wrapper, DashboardIcon, Avatar, AccountIcon } from '../styles/simple_layout/account_unit'
+import { Wrapper, Avatar, AccountIcon, GithubItem } from '../styles/simple_layout/account_unit'
 
 type TProps = {
   community: TCommunity
@@ -24,9 +20,18 @@ const AccountUnit: FC<TProps> = ({ community }) => {
         订阅
       </SubscribeButton> */}
 
-      <Link href={`/${community.slug}/${ROUTE.DASHBOARD.DASHBOARD}`} prefetch={false}>
+      <GithubItem href="/">
+        {/* <GithubIcon /> */}
+        {/* <div>19.5k</div> */}
+        <img
+          alt="GitHub Repo stars"
+          src="https://img.shields.io/github/stars/vercel/next.js?style=social&logo=github&label=%20%20&labelColor=black&color=white"
+        />
+      </GithubItem>
+
+      {/* <DashboardLink href={`/${community.slug}/${ROUTE.DASHBOARD.DASHBOARD}`} prefetch={false}>
         <DashboardIcon />
-      </Link>
+      </DashboardLink> */}
 
       {/* <div data-test-id="header-notify-icon">
         <NotifyIcon />

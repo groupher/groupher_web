@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable, TMetric } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 type TPos = {
   noBorder: boolean
@@ -14,7 +14,7 @@ export const Wrapper = styled.header.attrs<TTestable>(({ testid }) => ({
 }))<IWrapper>`
   width: 100%;
   height: 33px;
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   background: ${theme('header.bg')};
   opacity: 1;
   border-bottom: ${({ noBorder }) => (noBorder ? 'none' : '1px solid')};
@@ -25,7 +25,7 @@ export const Wrapper = styled.header.attrs<TTestable>(({ testid }) => ({
 type TInnerWrapper = { metric: TMetric }
 
 export const InnerWrapper = styled.div<TInnerWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
   height: 33px;
   ${({ metric }) => css.fitContentWidth(metric)};
@@ -33,6 +33,6 @@ export const InnerWrapper = styled.div<TInnerWrapper>`
   padding-right: 0;
 `
 export const RouterWrapper = styled.div`
-  ${css.flexGrow('align-center')};
+  ${css.rowGrow('align-center')};
   height: 100%;
 `

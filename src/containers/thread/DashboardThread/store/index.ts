@@ -54,7 +54,16 @@ import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { washThreads, sortByIndex } from '@/utils/helper'
 
-import { PagedPosts, PagedDocs, PagedChangelogs, Tag, emptyPagi, FAQSection } from '@/model'
+import {
+  PagedCommunities,
+  PagedPosts,
+  PagedDocs,
+  PagedChangelogs,
+  Tag,
+  emptyPagi,
+  FAQSection,
+  User,
+} from '@/model'
 
 import type {
   TBaseInfoSettings,
@@ -66,6 +75,7 @@ import type {
   TFooterSettings,
   TDocSettings,
   TAliasSettings,
+  TAdminSettings,
   TTouched,
   TSettingField,
   TNameAlias,
@@ -93,7 +103,7 @@ const DashboardThread = T.model('DashboardThread', {
   // tab
   curTab: T.opt(T.enum(values(DASHBOARD_ROUTE)), DASHBOARD_ROUTE.INFO),
   baseInfoTab: T.opt(T.enum(values(DASHBOARD_BASEINFO_ROUTE)), DASHBOARD_BASEINFO_ROUTE.BASIC),
-  aliasTab: T.opt(T.enum(values(DASHBOARD_ALIAS_ROUTE)), DASHBOARD_ALIAS_ROUTE.GENERAL),
+  aliasTab: T.opt(T.enum(values(DASHBOARD_ALIAS_ROUTE)), DASHBOARD_ALIAS_ROUTE.THREAD),
   seoTab: T.opt(T.enum(values(DASHBOARD_SEO_ROUTE)), DASHBOARD_SEO_ROUTE.SEARCH_ENGINE),
   docTab: T.opt(T.enum(values(DASHBOARD_DOC_ROUTE)), DASHBOARD_DOC_ROUTE.TABLE),
   layoutTab: T.opt(T.enum(values(DASHBOARD_LAYOUT_ROUTE)), DASHBOARD_LAYOUT_ROUTE.GLOBAL),
@@ -118,12 +128,18 @@ const DashboardThread = T.model('DashboardThread', {
 
   // cms
   batchSelectedIDs: T.opt(T.array(T.str), []),
+  pagedCommunities: T.opt(PagedCommunities, emptyPagi),
   pagedPosts: T.opt(PagedPosts, emptyPagi),
   pagedDocs: T.opt(PagedDocs, emptyPagi),
   pagedChangelogs: T.opt(PagedChangelogs, emptyPagi),
 
   // for global alert
   demoAlertEnable: T.opt(T.bool, false),
+
+  // for admins
+  activeModerator: T.maybeNull(User),
+  allModeratorRules: T.opt(T.str, '{}'),
+  allRootRules: T.opt(T.str, '{}'),
 })
   .views((self) => ({
     get globalLayout(): TGlobalLayout {
@@ -167,6 +183,7 @@ const DashboardThread = T.model('DashboardThread', {
       const slf = self as TStore
       const { batchSelectedIDs, docTab, editingFAQIndex } = slf
       const _batchSelectedIds = toJS(batchSelectedIDs)
+      const _pagedCommunities = toJS(slf.pagedCommunities)
       const _pagedPosts = toJS(slf.pagedPosts)
       const _pagedDocs = toJS(slf.pagedDocs)
       const _pagedChangelogs = toJS(slf.pagedChangelogs)
@@ -179,6 +196,10 @@ const DashboardThread = T.model('DashboardThread', {
         docTab,
         editingFAQIndex,
         batchSelectedIDs: _batchSelectedIds,
+        pagedCommunities: {
+          ..._pagedCommunities,
+          entries: slf._assignChecked(_pagedCommunities.entries),
+        },
         pagedPosts: {
           ..._pagedPosts,
           entries: slf._assignChecked(_pagedPosts.entries),
@@ -468,6 +489,14 @@ const DashboardThread = T.model('DashboardThread', {
       }
     },
 
+    get adminSettings(): TAdminSettings {
+      const slf = self as TStore
+
+      return {
+        moderators: toJS(slf.moderators),
+        activeModerator: toJS(slf.activeModerator),
+      }
+    },
     get aliasSettings(): TAliasSettings {
       const slf = self as TStore
 
@@ -553,6 +582,11 @@ const DashboardThread = T.model('DashboardThread', {
       if (!slf._loadLocalSettings()) {
         slf.mark({ demoAlertEnable: false })
       }
+    },
+
+    setAllPassportRules(rootRules: string, moderatorRules): void {
+      self.allRootRules = rootRules
+      self.allModeratorRules = moderatorRules
     },
 
     /**

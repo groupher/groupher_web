@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { theme } from '@/utils/css'
+import { theme } from '@/css'
 import { pixelAdd } from '@/utils/dom'
 
 import { getAvatarSize, getMoreTextWidth } from './metric'

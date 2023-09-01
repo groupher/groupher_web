@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import { Title, RejectIcon as RejectIconBase } from './filter_panel'
 
@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
   opacity: 0.8;
 `
 export const Item = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const StateTitle = styled(Title)`
   color: ${theme('article.title')};
@@ -21,6 +21,7 @@ export const StateTitle = styled(Title)`
 export const IconWrapper = styled.div`
   margin-top: -1px;
   transform: scale(0.9);
+  margin-right: 4px;
 `
 export const RejectIcon = styled(RejectIconBase)`
   fill: ${theme('baseColor.red')};

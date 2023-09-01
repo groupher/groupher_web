@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<TActive>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 3px;
   padding: 5px;
   padding-left: 10px;

@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import type { TTestable } from '@/spec'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import Img from '@/Img'
 
 import GithubSVG from '@/icons/social/Github'
@@ -11,7 +11,7 @@ import GithubSVG from '@/icons/social/Github'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 100%;
 
   ${css.media.mobile`
@@ -19,7 +19,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   `};
 `
 export const Slogan = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
@@ -35,7 +35,7 @@ export const Title = styled.div`
   `};
 `
 export const Desc = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 17px;
   color: ${theme('article.digest')};
   margin-top: 12px;
@@ -49,7 +49,7 @@ export const Desc = styled.div`
   `};
 `
 export const Wall = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 80%;
   height: 440px;
   margin-top: 35px;
@@ -71,7 +71,7 @@ export const CADBackground = styled(Img)`
   `};
 `
 export const TechsWrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   flex-wrap: wrap;
   gap: 15px 50px;
   height: 440px;
@@ -88,7 +88,7 @@ export const TechsWrapper = styled.div`
   `};
 `
 export const GithubLink = styled(Link)`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 18px;
   font-weight: 500;
   text-decoration: none;

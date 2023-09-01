@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { FC, memo, useState } from 'react'
 
 import type { TArticleFilter, TTooltipPlacement } from '@/spec'
 
@@ -21,11 +21,15 @@ const SortFilter: FC<TProps> = ({
   noArrow = false,
   tooltipPlacement = 'bottom-start',
 }) => {
+  const [menuOpen, setMenuOpen] = useState(false)
+
   return (
     <Tooltip
       placement={tooltipPlacement}
       trigger="click"
       hideOnClick={false}
+      onShow={() => setMenuOpen(true)}
+      onHide={() => setMenuOpen(false)}
       offset={[-30, 5]}
       content={
         FilterPanel && (
@@ -34,7 +38,7 @@ const SortFilter: FC<TProps> = ({
         )
       }
     >
-      <DropdownButton left={-8} noArrow={noArrow}>
+      <DropdownButton left={-8} noArrow={noArrow} $active={menuOpen}>
         <DesktopOnly>默认排序</DesktopOnly>
         <MobileOnly>排序</MobileOnly>
       </DropdownButton>

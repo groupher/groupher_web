@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div``
 export const InnerWrapper = styled.div`
-  ${css.flex('align-start', 'justify-between')};
+  ${css.row('align-start', 'justify-between')};
   padding: 20px 30px;
   min-height: 320px;
   margin-top: 16px;
@@ -25,7 +25,7 @@ export const Title = styled.h3`
   margin-bottom: 10px;
 `
 export const DescWrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 260px;
   color: ${theme('article.digest')};
 `

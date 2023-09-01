@@ -1,20 +1,24 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
-
+import css, { theme } from '@/css'
 import Img from '@/Img'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ marginTop: boolean }>`
   position: relative;
-  ${css.flexColumn('align-both')};
+  ${css.column('align-center')};
   color: ${theme('article.digest')};
-  /* background-image: linear-gradient(#043B49, #022A35); */
-  background-image: ${theme('banner.linearGradient')};
   width: 100%;
-  height: 440px;
+  min-height: ${({ marginTop }) => (!marginTop ? '480px' : '680px;')};
+  margin-top: ${({ marginTop }) => (marginTop ? '68px' : '0')};
+  transition: all 0.4s;
+`
+export const InnerWrapper = styled.div`
+  ${css.column('align-center')};
+  height: 380px;
+  margin-top: 50px;
 `
 export const IntroTitle = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   font-size: 18px;
   margin-bottom: 20px;
@@ -25,8 +29,7 @@ export const SloganTextWrapper = styled.div<{ highlight: boolean }>`
   margin-right: 3px;
 
   font-weight: ${({ highlight }) => (highlight ? 'bold' : '')};
-  color: ${({ highlight }) =>
-    highlight ? theme('article.title') : theme('article.digest')};
+  color: ${({ highlight }) => (highlight ? theme('article.title') : theme('article.digest'))};
 `
 export const AddNewIcon = styled(Img)`
   fill: ${theme('article.title')};
@@ -40,20 +43,13 @@ export const Title = styled.div`
   font-size: 1.1rem;
 `
 export const NextBtn = styled.div`
-  ${css.flex('justify-center')};
-  position: absolute;
+  ${css.row('justify-center')};
   width: 280px;
-  bottom: 5px;
+  margin-top: 24px;
 `
-export const ErrorMsg = styled.div`
-  position: absolute;
-  text-align: center;
-  width: 100%;
-  bottom: 45px;
-  color: ${theme('baseColor.red')};
+export const Note = styled.div`
+  ${css.row('align-center')};
+  margin-top: 50px;
   font-size: 13px;
-`
-export const InfoMsg = styled(ErrorMsg)`
-  color: ${theme('button.primary')};
-  bottom: 35px;
+  margin-left: 5px;
 `

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import Button from '@/widgets/Buttons/Button'
 import AdderSVG from '@/icons/Plus'
@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
   `};
 `
 export const InnerWrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const ContentWrapper = styled.div`
   height: 100%;
@@ -22,7 +22,7 @@ export const ContentWrapper = styled.div`
 `
 
 export const AddButton = styled(Button)`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   height: 32px;
   width: 100px;
   border-color: ${theme('divider')};

@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 
 import type { TTestable, TMetric, TActive } from '@/spec'
-import css, { theme, zIndex } from '@/utils/css'
+import css, { theme, zIndex } from '@/css'
 import Img from '@/Img'
 
 type TWrapper = TTestable & TActive
 export const Wrapper = styled.nav.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   top: ${({ show }) => (show ? 0 : '-48px;')};
   opacity: ${({ show }) => (show ? 1 : 0)};
   z-index: ${({ show }) => (show ? zIndex.articleFixedHeader : -1)};
@@ -23,7 +23,7 @@ export const Wrapper = styled.nav.attrs<TTestable>(({ testid }) => ({
   transition-timing-function: ease-out;
 `
 export const InnerWrapper = styled.div<{ metric: TMetric }>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   /* background: white; */
   background: radial-gradient(circle, rgb(255 255 255) 15%, rgb(255 255 255 / 0%) 56%),
     radial-gradient(circle, rgb(255 255 255 / 53%) 30%, transparent 68%);
@@ -39,7 +39,7 @@ export const InnerWrapper = styled.div<{ metric: TMetric }>`
   padding-left: 0;
 `
 export const ContentWrapper = styled.div<{ metric: TMetric }>`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   width: 100%;
   height: 100%;
   padding: 0 200px;

@@ -31,6 +31,7 @@ export const DASHBOARD_ROUTE = {
   POST: 'post',
   CHANGELOG: 'changelog',
   DOC: 'doc',
+  COMMUNITIES: 'communities',
   HEADER: 'header',
   FOOTER: 'footer',
   BROADCAST: 'broadcast',
@@ -46,6 +47,7 @@ export const DASHBORD_CMS_ROUTES = [
   DASHBOARD_ROUTE.POST,
   DASHBOARD_ROUTE.DOC,
   DASHBOARD_ROUTE.CHANGELOG,
+  DASHBOARD_ROUTE.COMMUNITIES,
 ]
 
 export const DASHBOARD_BASEINFO_ROUTE = {
@@ -80,8 +82,9 @@ export const DASHBOARD_BROADCAST_ROUTE = {
 } as Record<Uppercase<TDashboardBroadcastRoute>, TDashboardBroadcastRoute>
 
 export const DASHBOARD_ALIAS_ROUTE = {
-  GENERAL: 'general',
+  THREAD: 'thread',
   KANBAN: 'kanban',
+  OTHERS: 'others',
 } as Record<Uppercase<TDashboardAliasRoute>, TDashboardAliasRoute>
 
 export const ROUTE = {

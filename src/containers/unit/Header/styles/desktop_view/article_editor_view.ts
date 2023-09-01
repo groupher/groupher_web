@@ -1,16 +1,16 @@
 import styled from 'styled-components'
 
-import css, { WIDTH } from '@/utils/css'
+import css, { WIDTH } from '@/css'
 
 import { Wrapper as CommunityWrapper } from './community_view'
 
 export { RouterWrapper, MoreIcon } from './article_view'
 
 export const Wrapper = styled(CommunityWrapper)`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 `
 export const InnerWrapper = styled.div`
-  ${css.flex('justify-start', 'align-center')};
+  ${css.row('justify-start', 'align-center')};
   width: ${WIDTH.ARTICLE_EDITOR.CONTENT};
 `
 

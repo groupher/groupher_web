@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
 
 export const Wrapper = styled.div<{ withHover: boolean }>`
-  ${css.flex()};
+  ${css.row()};
   width: 235px;
   height: 80px;
   background: ${theme('modal.bg')};
@@ -31,7 +31,7 @@ export const Intro = styled.div`
   margin-left: 15px;
 `
 export const Title = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
 `
 export const Name = styled.div`

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   position: absolute;
@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
 `
 export const ViewerWrapper = styled.div`
   width: 60px;
-  ${css.flexColumn('align-end')};
+  ${css.column('align-end')};
 
   ${css.media.mobile`
     width: 0;
@@ -27,7 +27,7 @@ export const TopArea = styled.div<{ showShare: boolean }>`
   border-top-left-radius: 8px;
   border-bottom-left-radius: 28px;
   box-shadow: ${theme('drawer.closerShadow')};
-  ${css.flexColumn('align-both')}
+  ${css.column('align-both')}
   padding-left: 12px;
   z-index: 100000;
 

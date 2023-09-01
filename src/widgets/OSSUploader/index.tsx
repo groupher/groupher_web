@@ -9,7 +9,7 @@ import { FC, memo, ReactNode, useState, useEffect, useRef, useCallback } from 'r
 import { buildLog } from '@/utils/logger'
 import uid from '@/utils/uid'
 
-import { Wrapper, Label, HintIcon, TurboIcon, InputFile } from './styles'
+import { Wrapper, InnerBorder, Label, HintIcon, TurboIcon, InputFile } from './styles'
 import { initOSSClient, handleUploadFile } from './helper'
 
 /* eslint-disable-next-line */
@@ -82,6 +82,8 @@ const OSSUploader: FC<TProps> = ({
 
       {!loading && <HintIcon onClick={() => labelRef.current.click()} />}
       {loading && <TurboIcon />}
+
+      <InnerBorder />
     </Wrapper>
   )
 }

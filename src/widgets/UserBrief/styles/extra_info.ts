@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import MailSVG from '@/icons/Mail'
 import TwitterSVG from '@/icons/Twitter'
@@ -11,7 +11,7 @@ import CitySVG from '@/icons/City'
 import CompanySVG from '@/icons/Company'
 
 export const Section = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 13px;
   margin-bottom: 10px;
 `

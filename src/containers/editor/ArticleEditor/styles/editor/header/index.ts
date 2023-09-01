@@ -2,12 +2,12 @@ import styled from 'styled-components'
 import Input from '@/widgets/Input'
 
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
   min-height: 90px;
 `

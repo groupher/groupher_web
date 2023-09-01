@@ -12,6 +12,7 @@ import { buildLog } from '@/utils/logger'
 import SelectType from './SelectType'
 import SetupDomain from './SetupDomain'
 import SetupInfo from './SetupInfo'
+import SetupExtra from './SetupExtra'
 import Finished from './Finished'
 
 import { Wrapper } from '../styles/banner'
@@ -21,6 +22,7 @@ import type {
   TSetupDomainStatus,
   TSetupInfoStatus,
   TValidState,
+  TSetupExtraStatus,
 } from '../spec'
 import { STEP } from '../constant'
 
@@ -32,6 +34,7 @@ type TProps = {
   selectTypeStatus: TSelectTypeStatus
   setupDomainStatus: TSetupDomainStatus
   setupInfoStatus: TSetupInfoStatus
+  setupExtraStatus: TSetupExtraStatus
   validState: TValidState
 }
 
@@ -40,30 +43,31 @@ const Banner: FC<TProps> = ({
   selectTypeStatus,
   setupDomainStatus,
   setupInfoStatus,
+  setupExtraStatus,
   validState,
 }) => {
   let stepComp
+  const { slug } = setupInfoStatus
 
   switch (step) {
     case STEP.SELECT_TYPE: {
-      stepComp = (
-        <SelectType status={selectTypeStatus} validState={validState} />
-      )
+      stepComp = <SelectType status={selectTypeStatus} validState={validState} />
       break
     }
     case STEP.SETUP_INFO: {
       stepComp = <SetupInfo status={setupInfoStatus} validState={validState} />
       break
     }
-
+    case STEP.SETUP_EXTRA: {
+      stepComp = <SetupExtra status={setupExtraStatus} validState={validState} />
+      break
+    }
     case STEP.FINISHED: {
-      stepComp = <Finished />
+      stepComp = <Finished community={slug} />
       break
     }
     default: {
-      stepComp = (
-        <SetupDomain status={setupDomainStatus} validState={validState} />
-      )
+      stepComp = <SetupDomain status={setupDomainStatus} validState={validState} />
       break
     }
   }

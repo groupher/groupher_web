@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   background: ${theme('modal.subPanel')};
   width: 100%;
   height: 60px;
@@ -14,7 +14,7 @@ export const Selector = styled.div`
   flex-grow: 1;
 `
 export const Issue = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-right: 4px;
 `
 export const GithubIcon = styled(Img)`

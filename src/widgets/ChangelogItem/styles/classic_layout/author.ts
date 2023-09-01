@@ -3,11 +3,11 @@ import styled from 'styled-components'
 import type { TAvatarLayout } from '@/spec'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 20px;
   margin-left: 5px;
 `

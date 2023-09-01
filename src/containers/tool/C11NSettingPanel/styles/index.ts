@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-start', 'justify-start')};
+  ${css.column('align-start', 'justify-start')};
   width: auto;
   height: 100%;
   padding: 10px;
@@ -20,13 +20,13 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   `};
 `
 export const Title = styled.div`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   width: 100%;
   font-size: 18px;
   color: ${theme('article.title')};
 `
 export const TabBarWrapper = styled.div`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   margin-top: 20px;
   margin-bottom: 20px;
   width: 100%;

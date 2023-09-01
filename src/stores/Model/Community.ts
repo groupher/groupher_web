@@ -1,6 +1,7 @@
 import { T } from '@/utils/mobx'
 
 import { pagiFields, timestampFields } from './helper/common'
+import { SimpleUser } from './Common'
 
 // NOTE: the SimpleXXX version is to avoid circle import issue which cause MST error
 
@@ -24,6 +25,12 @@ const Meta = T.model('CommunityMeta', {
   // reposCount: T.opt(T.number, 0),
 })
 
+export const Moderator = T.model('Moderator', {
+  passportItemCount: T.opt(T.number, 0),
+  role: T.opt(T.str, 'moderator'),
+  user: T.opt(SimpleUser, {}),
+})
+
 export const Community = T.model('Community', {
   id: T.maybeNull(T.string),
   title: T.maybeNull(T.string),
@@ -34,11 +41,14 @@ export const Community = T.model('Community', {
   categories: T.opt(T.array(SimpleCategory), []),
   contributesDigest: T.opt(T.array(T.number), []),
   subscribersCount: T.opt(T.number, 0),
+  views: T.opt(T.number, 0),
   articlesCount: T.opt(T.number, 0),
-  editorsCount: T.opt(T.number, 0),
+  moderatorsCount: T.opt(T.number, 0),
   meta: T.maybeNull(Meta),
   viewerHasSubscribed: T.maybeNull(T.bool),
   threads: T.opt(T.array(Thread), []),
+  pending: T.opt(T.int, 0),
+  moderators: T.opt(T.array(Moderator), []),
 
   ...timestampFields(),
 })

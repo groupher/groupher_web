@@ -2,12 +2,12 @@ import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  /* ${css.flex('align-start', 'justify-between')}; */
+  /* ${css.row('align-start', 'justify-between')}; */
   width: 100%;
   position: relative;
   background: ${theme('alphaBg2')};
@@ -27,7 +27,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   /* transition: all 0.1s; */
 `
 export const Header = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   margin-bottom: 4px;
 `
 export const TimeStamp = styled.div`
@@ -45,7 +45,7 @@ export const Title = styled.div`
   line-height: 1.62;
 `
 export const Footer = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   line-height: 20px;
   color: ${theme('article.info')};
   margin-top: 10px;
@@ -54,7 +54,7 @@ export const Footer = styled.div`
   transform: scale(0.9);
 `
 export const Author = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Avatar = styled(Img)`
   ${css.circle(14)};

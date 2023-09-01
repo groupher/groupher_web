@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import ArrowSVG from '@/icons/ArrowSolid'
 
 export const Wrapper = styled.div`
   position: relative;
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   margin-bottom: 34px;
 `
 export const Title = styled.div`

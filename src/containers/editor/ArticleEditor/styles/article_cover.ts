@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import AdderSVG from '@/icons/Plus'
 import ImageSVG from '@/icons/Image'
@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   margin-bottom: 20px;
 `
 export const Adder = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 25px;
   opacity: 0.7;
 

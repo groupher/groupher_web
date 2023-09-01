@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive, TTestable } from '@/spec'
 
-import css from '@/utils/css'
+import css from '@/css'
 
 import UpvoteSVG from '@/icons/Upvote'
 import CommentSVG from '@/icons/Comment'
@@ -11,7 +11,7 @@ import ShareSVG from '@/icons/Share'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   flex-grow: 1;
   position: relative;
 
@@ -63,7 +63,7 @@ export const ColorBlockHolder = styled(ColorBlock)`
 `
 export const IconsWrapper = styled.div`
   position: absolute;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   gap: 0 18px;
   bottom: -30px;
   right: -250px;

@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 
 import type { TActive, TSpace } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 type TWrapper = { menuOpen?: boolean } & TSpace
 export const FilterWrapper = styled.div<TWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
   font-size: 13px;
 
@@ -32,20 +32,19 @@ export const Label = styled.div`
   word-break: keep-all;
 `
 export const SelectItem = styled.div<TActive>`
-  ${css.flex('align-start')};
+  ${css.row('align-start')};
   padding: 10px 6px;
   width: 100%;
   border-radius: 6px;
 
-  background-color: ${({ active }) => (active ? theme('textBadge') : 'transparent')}; // to-theme
+  background-color: ${({ active }) => (active ? theme('hoverBg') : 'transparent')}; // to-theme
   color: ${({ active }) => (active ? theme('article.title') : theme('article.digest'))};
   font-weight: ${({ active }) => (active ? 500 : 400)};
   position: relative;
 
   &:hover {
     cursor: pointer;
-    background-color: ${({ active }) =>
-      active ? theme('textBadge') : theme('hoverBg')}; // to-theme
+    background-color: ${theme('hoverBg')};
     color: ${theme('article.title')};
     border-color: ${theme('popover.activeBorder')};
   }

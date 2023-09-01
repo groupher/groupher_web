@@ -1,18 +1,18 @@
 import styled from 'styled-components'
 
-import css from '@/utils/css'
+import css from '@/css'
 
 import { SwitchBarBase } from './gallery_base'
 
 export const Wrapper = styled.div`
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
   width: 20px;
   height: 16px;
   cursor: pointer;
   transform: scale(0.8);
 `
 export const BarRow = styled.div`
-  ${css.flexColumn('justify-between')};
+  ${css.column('justify-between')};
 `
 export const Bar = styled(SwitchBarBase)`
   width: 4px;

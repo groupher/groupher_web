@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 
 // import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import InfoSVG from '@/icons/Info'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   background: #0f3644;
   border-radius: 8px;
   border-bottom-right-radius: 15px;
@@ -23,7 +23,7 @@ export const Wrapper = styled.div`
   `};
 `
 const Section = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 100px;
   height: 82px;
 
@@ -68,7 +68,7 @@ export const Num = styled.div`
   color: ${theme('article.title')};
 `
 export const Gravity = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
   margin-top: 4px;
   font-size: 12px;

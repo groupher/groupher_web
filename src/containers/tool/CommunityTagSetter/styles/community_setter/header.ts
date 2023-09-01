@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   height: 50px;
   width: 100%;
   background: ${theme('modal.bg')};
@@ -15,13 +15,13 @@ export const Wrapper = styled.div`
 `
 
 export const Title = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Actions = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const CommunityLabel = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 10px;
   font-size: 15px;
 `

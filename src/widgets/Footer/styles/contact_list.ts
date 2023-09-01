@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import GithubSVG from '@/icons/GithubCat'
 import EmailSVG from '@/icons/social/Email'
 import WeChatSVG from '@/widgets/Icons/social/WeChat'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
 `
 export const Item = styled.div``
 

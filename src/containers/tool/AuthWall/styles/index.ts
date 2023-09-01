@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import WeChatSVG from '@/icons/social/WeChat'
 import GithubSVG from '@/icons/social/Github'
@@ -21,14 +21,14 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 export const Title = styled.div``
 
 export const ByWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   gap: 18px;
 `
 export const IconWrapper = styled.div`
   width: 75px;
   height: 80px;
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   border: 1px solid;
   border-color: ${theme('divider')};
   border-radius: 8px;
@@ -42,7 +42,7 @@ export const IconWrapper = styled.div`
 `
 export const IconBox = styled.div`
   ${css.size(40)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 `
 export const IconTitle = styled.div`
   margin-top: 5px;

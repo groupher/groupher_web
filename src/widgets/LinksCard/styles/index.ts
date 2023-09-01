@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import { TSpace } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<TSpace>`
   width: 280px;
@@ -24,7 +24,7 @@ export const Title = styled.span`
   border-bottom-color: ${theme('banner.desc')}; */
 `
 export const ListWrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   margin-top: 15px;
 `
 export const MoreWrapper = styled.div`

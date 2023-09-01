@@ -20,6 +20,7 @@ import type {
   TKanbanLayout,
   TWallpaperInfo,
   TAvatarLayout,
+  TUser,
   TDashboardLayoutRoute,
   TDashboardBaseInfoRoute,
   TDashboardSEORoute,
@@ -34,6 +35,8 @@ import type {
   TID,
   TDashboardDocRoute,
   TFAQSection,
+  TPagedCommunities,
+  TModerator,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'CMS' | 'INTEGRATE'
@@ -44,6 +47,7 @@ export type TCMSContents = {
   docTab: TDashboardDocRoute
 
   pagedPosts: TPagedArticles
+  pagedCommunities: TPagedCommunities
   pagedDocs: TPagedArticles
   pagedChangelogs: TPagedArticles
 
@@ -102,6 +106,11 @@ export type TFooterSettings = {
 } & TLinkState
 
 export type TNameAlias = TNameAliasConfig
+
+export type TAdminSettings = {
+  moderators: TModerator[]
+  activeModerator: TUser | null
+}
 
 export type TAliasSettings = {
   saving: boolean

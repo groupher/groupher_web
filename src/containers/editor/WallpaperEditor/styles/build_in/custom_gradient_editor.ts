@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import Input from '@/widgets/Input'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
   margin-top: 25px;
   padding: 20px;
@@ -33,7 +33,7 @@ export const Inputer = styled(Input)`
   }
 `
 export const Footer = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 15px;
 `
 

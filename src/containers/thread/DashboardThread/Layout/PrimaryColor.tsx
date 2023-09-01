@@ -2,9 +2,9 @@ import { FC, memo } from 'react'
 
 import type { TColorName } from '@/spec'
 
-import { Inline } from '@/widgets/Common'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
+import { Row } from '@/widgets/Common'
 import ColorSelector from '@/widgets/ColorSelector'
+import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
 import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
@@ -25,14 +25,10 @@ const PrimaryColor: FC<TProps> = ({ primaryColor, isTouched, saving }) => {
       <SectionLabel
         title="主题色"
         desc={
-          <>
+          <Row>
             设置后会在常见组件，功能性文字等位置显示该个性化主题色。参考
-            <Inline>
-              <ArrowButton size="small" linkColor top={-2}>
-                影响范围
-              </ArrowButton>
-            </Inline>
-          </>
+            <ArrowButton left={1}>影响范围</ArrowButton>
+          </Row>
         }
       />
       <SavingBar isTouched={isTouched} field={SETTING_FIELD.PRIMARY_COLOR} loading={saving}>

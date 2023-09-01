@@ -1,16 +1,16 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import { Wrapper as FolderWrapper } from './index'
 
 export const Wrapper = styled.div`
   position: relative;
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   text-align: center;
   margin-top: 4px;
 `
 export const Title = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   text-align: center;
   margin-top: 5px;
 `
@@ -37,7 +37,7 @@ export const MenuWrapper = styled.div`
   }
 `
 export const HintWrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   height: 14px;
   width: 100%;
 `

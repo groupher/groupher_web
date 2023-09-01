@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   padding: 8px;
   padding-bottom: 2px;
 `
 export const Item = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 8px;
   cursor: pointer;
 `

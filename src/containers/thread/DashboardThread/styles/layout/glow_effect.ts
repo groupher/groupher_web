@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TActive, TGlowEffect } from '@/spec'
 import GLOW_EFFECTS from '@/constant/glow_effect'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import DLightSVG from '@/icons/DLight'
 import ClossSVG from '@/icons/CloseLight'
@@ -13,7 +13,7 @@ import { BaseSection } from '.'
 export const Wrapper = styled(BaseSection)``
 
 export const Row = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   gap: 26px 20px;
 
@@ -43,7 +43,7 @@ export const Box = styled.div<TActive>`
   transition: all 0.2s;
 `
 export const NoBox = styled(Box)`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 export const ForbidIcon = styled(DLightSVG)`
   ${css.size(40)};
@@ -63,7 +63,7 @@ export const SettingTitle = styled.div`
   width: 80px;
 `
 export const SettingsRow = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 4px;
 `
 

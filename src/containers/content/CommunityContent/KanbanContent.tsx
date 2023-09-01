@@ -4,6 +4,9 @@
 
 import { FC } from 'react'
 
+import type { TMetric } from '@/spec'
+import METRIC from '@/constant/metric'
+
 import { bond } from '@/utils/mobx'
 import { BANNER_LAYOUT } from '@/constant/layout'
 
@@ -17,12 +20,16 @@ import { Wrapper, InnerWrapper, SidebarWrapper, ContentWrapper, MobileCardsWrapp
 
 type TProps = {
   communityContent?: TStore
+  metric?: TMetric
 }
 
 /**
  * only for AboutThread, but link to the common communityContent store
  */
-const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
+const CommunityContentContainer: FC<TProps> = ({
+  communityContent: store,
+  metric = METRIC.COMMUNITY,
+}) => {
   useInit(store)
 
   const { globalLayout } = store
@@ -31,13 +38,13 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
 
   return (
     <LayoutWrapper testid="kanban-thread-content">
-      <CommunityDigest />
+      <CommunityDigest metric={metric} />
       <MobileCardsWrapper>
         <ContentWrapper>
           <KanbanThread />
         </ContentWrapper>
       </MobileCardsWrapper>
-      <InnerWrapper>
+      <InnerWrapper metric={metric}>
         <ContentWrapper>
           <KanbanThread isSidebarLayout={globalLayout.banner === BANNER_LAYOUT.SIDEBAR} />
         </ContentWrapper>

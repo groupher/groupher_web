@@ -1,10 +1,14 @@
 import { useEffect } from 'react'
 import { pick } from 'ramda'
+import { confetti } from 'tsparticles-confetti'
 
 import type { TEditValue } from '@/spec'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
-import { asyncSuit, buildLog, errRescue, updateEditing } from '@/utils'
+import { sessionChanged, errRescue } from '@/utils/signal'
+import asyncSuit from '@/utils/async'
+import { buildLog } from '@/utils/logger'
+import { updateEditing } from '@/utils/mobx'
 
 import type { TStore } from './store'
 import type { TCommunityType } from './spec'
@@ -34,7 +38,7 @@ export const pervStep = (): void => {
 
   if (step === STEP.SETUP_DOMAIN) store.mark({ step: STEP.SELECT_TYPE })
   if (step === STEP.SETUP_INFO) store.mark({ step: STEP.SETUP_DOMAIN })
-  if (step === STEP.MORE_INFO) store.mark({ step: STEP.SETUP_INFO })
+  if (step === STEP.SETUP_EXTRA) store.mark({ step: STEP.SETUP_INFO })
 }
 
 /**
@@ -50,7 +54,10 @@ export const nextStep = (): void => {
     checkIfCommunityExist()
   }
   if (step === STEP.SETUP_INFO) {
-    store.mark({ step: STEP.MORE_INFO })
+    store.mark({ step: STEP.SETUP_EXTRA })
+  }
+  if (step === STEP.SETUP_EXTRA) {
+    applyCommunity()
   }
 }
 
@@ -74,13 +81,20 @@ export const communityTypeOnChange = (communityType: TCommunityType): void => {
   store.mark({ communityType })
 }
 
+export const isOfficalOnChange = (isOfficalValid: boolean): void => {
+  store.mark({ isOfficalValid })
+}
+
 export const applyCommunity = (): void => {
   const args = pick(['title', 'logo', 'desc', 'slug', 'applyMsg'], store)
 
   store.mark({ submitting: true })
+
   sr71$.mutate(S.applyCommunity, {
-    applyCategory: store.communityType,
     ...args,
+    applyCategory: store.communityType,
+    // tmp
+    logo: 'https://assets.groupher.com/communities/groupher-alpha.png',
   })
 }
 
@@ -95,6 +109,44 @@ export const inputOnChange = (e: TEditValue, part: string): void => {
     store.mark({ communityExist: false })
   }
   updateEditing(store, part, e)
+}
+
+/**
+ * finish tada effect
+ */
+export const tada = () => {
+  const defaults = {
+    spread: 360,
+    ticks: 100,
+    gravity: 0,
+    decay: 0.94,
+    startVelocity: 30,
+  }
+
+  function shoot() {
+    confetti({
+      ...defaults,
+      particleCount: 20,
+      scalar: 1.2,
+      shapes: ['circle', 'square', 'heart'],
+      colors: ['#F8D678', '#F5C5C8', '#BDA3F0', '#C9D8FD', '#DCF8FD'],
+    })
+
+    confetti({
+      ...defaults,
+      particleCount: 20,
+      scalar: 1.8,
+      shapes: ['text'],
+      shapeOptions: {
+        text: {
+          value: ['🦄', '🌈'],
+        },
+      },
+    })
+  }
+
+  setTimeout(shoot, 0)
+  setTimeout(shoot, 100)
 }
 
 /* when error occured cancel all the loading state */
@@ -123,12 +175,12 @@ const DataSolver = [
   {
     match: asyncRes('hasPendingCommunityApply'),
     action: ({ hasPendingCommunityApply }) => {
-      store.mark({ hasPendingApply: hasPendingCommunityApply.exist })
+      // store.mark({ hasPendingApply: hasPendingCommunityApply.exist })
     },
   },
   {
     match: asyncRes('applyCommunity'),
-    action: () => store.mark({ step: STEP.FINISHED }),
+    action: () => store.mark({ step: STEP.FINISHED, submitting: false }),
   },
 ]
 
@@ -153,6 +205,14 @@ const ErrSolver = [
   },
 ]
 
+export const initAccount = () => {
+  const { isLogin, accountInfo } = store
+
+  if (isLogin) {
+    sessionChanged(accountInfo)
+  }
+}
+
 // ###############################
 // init & uninit
 // ###############################
@@ -161,6 +221,8 @@ export const useInit = (_store: TStore): void => {
     store = _store
     // log('effect init')
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
+
+    initAccount()
 
     if (store.isLogin) {
       checkPendingApply()

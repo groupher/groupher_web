@@ -1,35 +1,35 @@
 import styled from 'styled-components'
 
-import type { TColorName, TSize, TSpace } from '@/spec'
-import { SIZE } from '@/constant'
+import type { TSpace } from '@/spec'
+import { COLOR_NAME } from '@/constant/colors'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import { camelize } from '@/utils/fmt'
 
-type TWrapper = {
-  disabled: boolean
-  dimWhenIdle: boolean
-  color: TColorName
-  linkColor: boolean
-  size: TSize
+import type { TProps } from '../../ArrowButton'
+
+type TWrapper = Pick<TProps, 'disabled' | 'dimWhenIdle' | 'color' | 'reverseColor' | 'fontSize'> & {
   width: number
 } & TSpace
 
 export const Wrapper = styled.button<TWrapper>`
   position: relative;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   display: inline-flex;
   opacity: ${({ dimWhenIdle, disabled }) => (dimWhenIdle || disabled ? '0.65' : 1)};
-  color: ${({ color, linkColor }) =>
-    linkColor ? theme('link') : theme(`baseColor.${camelize(color)}`)};
+  color: ${({ color, reverseColor }) => {
+    if (reverseColor) return 'white'
+
+    return color === COLOR_NAME.BLACK ? theme('link') : theme(`baseColor.${camelize(color)}`)
+  }};
 
   border: none;
   background: transparent;
   vertical-align: middle;
+  font-weight: 500;
 
-  gap: 0 0.5em;
+  gap: 0 0.6em;
 
-  transform: ${({ size }) => (size === SIZE.SMALL ? 'scale(0.85);' : 'none')};
   ${(props) => css.spaceMargins(props)};
 
   width: ${({ width }) => `${width + 25}px`};
@@ -41,7 +41,9 @@ export const Wrapper = styled.button<TWrapper>`
 
   transition: all 0.2s;
 `
-export const Text = styled.div`
+export const Text = styled.div<{ fontSize: number }>`
+  word-break: keep-all;
+  white-space: nowrap;
   line-height: 15px;
-  font-size: 13px;
+  font-size: ${({ fontSize }) => `${fontSize}px`};
 `

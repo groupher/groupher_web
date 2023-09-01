@@ -12,6 +12,7 @@ import { bond } from '@/utils/mobx'
 import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
 
+import Header from './Header'
 import Banner from './Banner'
 import Content from './Content'
 
@@ -32,15 +33,24 @@ const CommunityEditorContainer: FC<TProps> = ({
   metric = METRIC.COMMUNITY_EDITOR,
 }) => {
   useInit(store)
-  const { step, selectTypeStatus, setupDomainStatus, setupInfoStatus, validState } = store
+  const {
+    step,
+    selectTypeStatus,
+    setupDomainStatus,
+    setupInfoStatus,
+    setupExtraStatus,
+    validState,
+  } = store
 
   return (
     <Wrapper metric={metric}>
+      <Header step={step} showStep={!!selectTypeStatus.communityType} />
       <Banner
         step={step}
         selectTypeStatus={selectTypeStatus}
         setupDomainStatus={setupDomainStatus}
         setupInfoStatus={setupInfoStatus}
+        setupExtraStatus={setupExtraStatus}
         validState={validState}
       />
       <InnerWrapper metric={metric}>
@@ -50,6 +60,7 @@ const CommunityEditorContainer: FC<TProps> = ({
             selectTypeStatus={selectTypeStatus}
             setupDomainStatus={setupDomainStatus}
             setupInfoStatus={setupInfoStatus}
+            validState={validState}
           />
         </ContentWrapper>
       </InnerWrapper>

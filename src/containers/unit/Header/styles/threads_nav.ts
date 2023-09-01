@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
 import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-end')};
+  ${css.row('align-end')};
 `
 export const CommunityLogo = styled(CommunityFaceLogo)`
   ${css.size(22)};
@@ -12,7 +12,7 @@ export const CommunityLogo = styled(CommunityFaceLogo)`
   margin-bottom: 4px;
 `
 export const MobileHint = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   margin-bottom: 4px;
   margin-left: -10px;

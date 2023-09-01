@@ -3,19 +3,19 @@ import styled from 'styled-components'
 import type { TAvatarLayout } from '@/spec'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
-import css from '@/utils/css'
+import css from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   width: 100%;
   position: relative;
 `
 export const Main = styled.div`
-  ${css.flexColumnGrow()};
+  ${css.columnGrow()};
 `
 export const AvatarWrapper = styled.div`
-  ${css.flexColumn('align-center', 'justify-between')};
+  ${css.column('align-center', 'justify-between')};
   padding-top: 10px;
   padding-bottom: 2px;
   margin-right: 8px;

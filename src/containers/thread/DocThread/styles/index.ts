@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css from '@/utils/css'
+import css from '@/css'
 
 type TWrapper = TTestable & { isSidebarLayout: boolean }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   width: 100%;
   margin-top: 10px;
   margin-left: ${({ isSidebarLayout }) => (isSidebarLayout ? '-30px' : 0)};

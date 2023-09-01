@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import Img from '@/Img'
 import LockSVG from '@/icons/Lock'
@@ -8,7 +8,7 @@ import LockSVG from '@/icons/Lock'
 import { getPathGradient } from '../../metric'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   position: relative;
   width: 714px;
   border-radius: 12px;
@@ -24,7 +24,7 @@ export const Wrapper = styled.div`
   z-index: 0;
 `
 export const BrowerHead = styled.div`
-  ${css.flex('align-center', 'justify-center')};
+  ${css.row('align-center', 'justify-center')};
   color: ${theme('article.digest')};
   width: 100%;
   position: absolute;
@@ -33,7 +33,7 @@ export const BrowerHead = styled.div`
   padding-left: 8px;
 `
 export const AddrBar = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: -65px;
 `
 export const LockIcon = styled(LockSVG)`
@@ -62,14 +62,14 @@ export const Dot = styled.div`
   margin-right: 6px;
 `
 export const Content = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 100%;
   height: 480px;
   position: relative;
   overflow: hidden;
 `
 export const Background = styled.div<{ effect: string }>`
-  ${css.flex('align-both')}
+  ${css.row('align-both')}
   width: 100%;
   height: 100%;
   background transparent;

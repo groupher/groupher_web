@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TColorName, TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import { camelize } from '@/utils/fmt'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
@@ -10,7 +10,7 @@ type TWrapper = TTestable & { color?: string }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 580px;
   min-height: 80px;
   padding: 30px 0;
@@ -25,16 +25,16 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   background: transparent;
 `
 export const Cover = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   margin-right: 50px;
 `
 export const Content = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   flex-grow: 1;
 `
 export const IconWrapper = styled.div<{ color: TColorName }>`
   ${css.size(50)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   margin-top: -35px;
   border-radius: 12px;
   background: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
@@ -55,7 +55,7 @@ export const Desc = styled.div`
 export const Footer = styled.div`
   width: 100%;
   margin-top: 16px;
-  ${css.flex('align-center', 'justify-between')}
+  ${css.row('align-center', 'justify-between')}
 `
 
 export const AuthorHint = styled.div`

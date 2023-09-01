@@ -6,8 +6,8 @@ import { BANNER_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { callDashboardDesc } from '@/utils/signal'
 
 import { Row, Br, Space, SpaceGrow } from '@/widgets/Common'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import CheckLabel from '@/widgets/CheckLabel'
+import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
 import { SETTING_FIELD } from '../constant'
 import SectionLabel from '../SectionLabel'
@@ -41,17 +41,12 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
       <SectionLabel
         title="整体布局"
         desc={
-          <>
+          <Row>
             整体页面的 Header 布局，适用于除文章页的所有页面。
-            <ArrowButton
-              onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
-              size="small"
-              linkColor
-              top={-1}
-            >
+            <ArrowButton onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}>
               查看示例
             </ArrowButton>
-          </>
+          </Row>
         }
       />
       <SelectWrapper>

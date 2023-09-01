@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
   flex-wrap: wrap;
 
   border-left: 2px solid;
@@ -17,7 +17,7 @@ export const Section = styled.div`
   padding-top: 4px;
 `
 export const Header = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
 `
 export const Title = styled.div`

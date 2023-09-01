@@ -2,27 +2,27 @@ import styled from 'styled-components'
 import Link from 'next/link'
 
 import type { TMetric } from '@/spec'
-import css, { theme, WIDTH } from '@/utils/css'
+import css, { theme, WIDTH } from '@/css'
 
 import AccountSVG from '@/icons/Acount'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   position: relative;
   background: transparent;
   max-width: ${WIDTH.ARTICLE.PAGE};
   width: 100%;
 `
 export const InnerWrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   width: 78%;
   height: 54px;
   padding-top: 2px;
   margin-left: -50px;
 `
 export const Community = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 100px;
 `
 export const CommunityLogo = styled(Img)`
@@ -36,7 +36,7 @@ export const CommunityTitle = styled.div`
 `
 
 export const Main = styled.div<{ metric: TMetric }>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   gap: 0 32px;
   width: 100%;
   ${({ metric }) => css.fitContentWidth(metric)};
@@ -99,7 +99,7 @@ export const MobileNaviWrapper = styled.div`
   display: none;
 
   ${css.media.mobile`
-    ${css.flexGrow('align-center')};
+    ${css.rowGrow('align-center')};
     margin-left: 10px;
   `}
 `

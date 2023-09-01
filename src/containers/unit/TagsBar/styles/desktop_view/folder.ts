@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import ArrowSVG from '@/icons/ArrowSimple'
 import MoreSVG from '@/icons/menu/MoreL'
 
 export const Wrapper = styled.div``
 export const Header = styled.div<TActive>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   display: ${({ show }) => (show ? 'flex' : 'none')};
   margin-bottom: 8px;
   margin-left: 2px;
@@ -33,7 +33,7 @@ export const ArrowIcon = styled(ArrowSVG)<{ $isOpen: boolean }>`
   transition: all 0.2s;
 `
 export const Title = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 5px;
 `
 export const FolderTitle = styled.div<{ $isOpen: boolean }>`
@@ -70,7 +70,7 @@ export const Content = styled.div<{ $isOpen: boolean }>`
   margin-bottom: 15px;
 `
 export const SubToggle = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 5px;
   margin-left: 2px;
 

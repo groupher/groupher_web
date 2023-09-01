@@ -1,6 +1,6 @@
 import { keys, values } from 'ramda'
 
-import { FAQSection, Tag } from '@/model'
+import { FAQSection, Tag, Moderator } from '@/model'
 
 import SIZE from '@/constant/size'
 import { COLORS, COLOR_NAME } from '@/constant/colors'
@@ -174,6 +174,10 @@ export const settingsModalFields = {
 
   footerLinks: T.opt(T.array(LinkItem), DEFAULT_LINK_ITEMS),
   headerLinks: T.opt(T.array(LinkItem), []),
+
+  // moderators
+
+  moderators: T.opt(T.array(Moderator), []),
 
   // widgets
   widgetsPrimaryColor: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),

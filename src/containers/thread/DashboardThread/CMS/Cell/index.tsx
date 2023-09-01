@@ -4,9 +4,11 @@ import { Cell } from 'rsuite-table'
 import TimeAgo from 'timeago-react'
 
 import { previewArticle } from '@/utils/signal'
+import { COMMUNITY_STATUS } from '@/constant/mode'
 
 import Checker from '@/widgets/Checker'
 import ArticleCatState from '@/widgets/ArticleCatState'
+import { Row } from '@/widgets/Common'
 import TagsList from '@/widgets/TagsList'
 
 // import { mockTags } from '@/utils/mock'
@@ -20,6 +22,12 @@ import {
   AuthorAvatar,
   DateItem,
   Nickname,
+  CommunityLogo,
+  CommunityTitle,
+  CommunitySlug,
+  Pending,
+  SwitchButton,
+  ActionCell,
   // PublishIcon,
   PulseIcon,
 } from '../../styles/cms/cell'
@@ -53,6 +61,39 @@ export const StateCell = ({ rowData, ...props }) => {
   )
 }
 
+export const CommunityCell = ({ rowData, ...props }) => {
+  const { logo, title, slug } = rowData
+
+  return (
+    <Cell {...props}>
+      <Row>
+        <CommunityLogo src={logo} />
+        <div>
+          <CommunityTitle>{title}</CommunityTitle>
+          <CommunitySlug href={`/${slug}`}>/{slug}</CommunitySlug>
+        </div>
+      </Row>
+    </Cell>
+  )
+}
+
+export const PendingCell = ({ rowData, ...props }) => {
+  const { pending } = rowData
+
+  const _pending = pending === COMMUNITY_STATUS.PENDING
+
+  return (
+    <Cell {...props} align="center">
+      <ActionCell>
+        <Pending blocked={_pending}>{_pending ? '待审核' : '正常'}</Pending>
+        <SwitchButton size="tiny" ghost>
+          开关
+        </SwitchButton>
+      </ActionCell>
+    </Cell>
+  )
+}
+
 export const ArticleCell = ({ rowData, ...props }) => {
   return (
     <Cell {...props}>
@@ -76,16 +117,48 @@ export const AuthorDateCell = ({ rowData, ...props }) => {
 }
 
 export const DateCell = ({ rowData, ...props }) => {
+  const { insertedAt, activeAt } = rowData
+
   return (
     <Cell {...props}>
       <DateCellWrapper>
         <DateItem>
           {/* <PublishIcon /> */}
-          <TimeAgo datetime={rowData.insertedAt} locale="zh_CN" />
+          <TimeAgo datetime={insertedAt} locale="zh_CN" />
         </DateItem>
         <DateItem>
           <PulseIcon />
-          <TimeAgo datetime={rowData.activeAt} locale="zh_CN" />
+          <TimeAgo datetime={activeAt} locale="zh_CN" />
+        </DateItem>
+      </DateCellWrapper>
+    </Cell>
+  )
+}
+
+export const TimestampCell = ({ rowData, ...props }) => {
+  const { insertedAt, updatedAt } = rowData
+  if (insertedAt === updatedAt) {
+    return (
+      <Cell {...props}>
+        <DateCellWrapper>
+          <DateItem warn>
+            <TimeAgo datetime={insertedAt} locale="zh_CN" />
+          </DateItem>
+        </DateCellWrapper>
+      </Cell>
+    )
+  }
+
+  return (
+    <Cell {...props}>
+      <DateCellWrapper>
+        <DateItem>
+          {/* <PublishIcon /> */}
+          <TimeAgo datetime={insertedAt} locale="zh_CN" />
+        </DateItem>
+        <DateItem>
+          <PulseIcon />
+          <TimeAgo datetime={updatedAt} locale="zh_CN" />
         </DateItem>
       </DateCellWrapper>
     </Cell>

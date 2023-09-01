@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import Img from '@/Img'
 import Input from '@/widgets/Input'
 
 export const Wrapper = styled.div`
   width: 100%;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding-right: 20px;
 `
 export const SearchInput = styled(Input)`

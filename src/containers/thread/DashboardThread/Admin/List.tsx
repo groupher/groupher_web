@@ -1,6 +1,9 @@
 import { FC, memo } from 'react'
 
-import { mockUsers } from '@/utils/mock'
+import type { TModerator, TUser } from '@/spec'
+
+import { sortByIndex } from '@/utils/helper'
+import { callPassportEditor } from '@/utils/signal'
 
 import { SpaceGrow } from '@/widgets/Common'
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
@@ -9,30 +12,57 @@ import AdminAvatar from '@/widgets/AdminAvatar'
 import {
   Wrapper,
   User,
+  SettingIcon,
   Intro,
   Title,
   Name,
   Login,
   Bio,
+  RootSign,
 } from '../styles/admin/list'
+import { setActiveSettingAdmin } from '../logic'
 
-const List: FC = () => {
+type TProps = {
+  moderators: TModerator[]
+  activeModerator: TUser | null
+}
+
+const List: FC<TProps> = ({ moderators, activeModerator }) => {
+  // @ts-ignore
+  const sortedModerators = sortByIndex(moderators, 'passportItemCount').reverse() as TModerator[]
+
   return (
     <Wrapper>
-      {mockUsers(5).map((item) => (
-        <User key={item.login}>
-          <AdminAvatar user={item} right={14} top={5} />
-          <Intro>
-            <Title>
-              <Name>{item.nickname}</Name>
-              <Login>@{item.login}</Login>
-              <SpaceGrow />
-              <DropdownButton top={2}>全部</DropdownButton>
-            </Title>
-            <Bio>{item.bio}</Bio>
-          </Intro>
-        </User>
-      ))}
+      {sortedModerators.map((item) => {
+        const { user, passportItemCount, role } = item
+        const active = user.login === activeModerator?.login
+
+        return (
+          <User key={user.login} $active={active} $noActive={activeModerator === null}>
+            {active && <SettingIcon />}
+
+            <AdminAvatar user={user} right={14} top={5} />
+            <Intro>
+              <Title>
+                <Name>{user.nickname}</Name>
+                <Login>@{user.login}</Login>
+                {role === 'root' && <RootSign>ROOT</RootSign>}
+                <SpaceGrow />
+                <DropdownButton
+                  top={2}
+                  onClick={() => {
+                    setActiveSettingAdmin(user)
+                    callPassportEditor()
+                  }}
+                >
+                  {role === 'root' ? <>全部权限</> : <>{passportItemCount} 项权限</>}
+                </DropdownButton>
+              </Title>
+              <Bio>{user.bio}</Bio>
+            </Intro>
+          </User>
+        )
+      })}
     </Wrapper>
   )
 }

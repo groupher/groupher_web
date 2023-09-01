@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 // import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import PostSVG from '@/icons/Post'
 import CitySVG from '@/icons/City'
 //
@@ -16,7 +16,7 @@ import SettingSVG from '@/icons/Setting'
 import TabFavoritesSVG from '@/widgets/SvgIcons/TabFavoritesSVG'
 
 export const LableWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 
 type TCommonIcon = { $active: boolean; $small: boolean }

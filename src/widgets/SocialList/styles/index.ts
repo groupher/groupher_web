@@ -5,9 +5,9 @@ import type { TActive, TTestable, TSpace, TSizeTSM } from '@/spec'
 import { SOCIAL_LIST } from '@/constant/social'
 import SIZE from '@/constant/size'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
-import GlobalSVG from '@/icons/social/Global'
+import TikTokSVG from '@/widgets/Icons/social/TikTok'
 import EmailSVG from '@/icons/social/Email'
 import WeChatSVG from '@/icons/social/WeChat'
 import TwitterSVG from '@/icons/social/Twitter'
@@ -16,13 +16,13 @@ import ZhihuSVG from '@/icons/social/Zhihu'
 import GithubSVG from '@/icons/social/Github'
 import BiliBiliSVG from '@/icons/social/BiliBili'
 import BossSVG from '@/icons/social/Boss'
-import LagouSVG from '@/icons/social/Lagou'
+// import LagouSVG from '@/icons/social/Lagou'
 
 type TWrapper = TTestable & TSpace & { size: TSizeTSM }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   gap: 14px;
 
@@ -40,7 +40,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   margin-right: ${({ right }) => `${right}px` || 0};
 `
 export const SocialWrapper = styled(Link)`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('banner.desc')};
   font-size: 12px;
 
@@ -69,7 +69,7 @@ const getIcon = (SVG, size = 17) => {
 }
 
 export const Icon = {
-  [SOCIAL_LIST.HOMEPAGE]: getIcon(GlobalSVG),
+  [SOCIAL_LIST.TIKTOK]: getIcon(TikTokSVG),
   [SOCIAL_LIST.EMAIL]: getIcon(EmailSVG),
   [SOCIAL_LIST.TWITTER]: getIcon(TwitterSVG),
   [SOCIAL_LIST.ZHIHU]: getIcon(ZhihuSVG),
@@ -77,7 +77,6 @@ export const Icon = {
   [SOCIAL_LIST.BILIBILI]: getIcon(BiliBiliSVG),
   [SOCIAL_LIST.WECHAT]: getIcon(WeChatSVG),
   [SOCIAL_LIST.BOSS]: getIcon(BossSVG, 14),
-  [SOCIAL_LIST.LAGOU]: getIcon(LagouSVG, 14),
   [SOCIAL_LIST.WEIBO]: getIcon(WeiboSVG, 17),
 }
 

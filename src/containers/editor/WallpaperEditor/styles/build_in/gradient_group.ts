@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { animate, theme } from '@/utils/css'
+import css, { animate, theme } from '@/css'
 
 import PenSVG from '@/icons/EditPen'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   width: calc(100% + 30px);
   flex-wrap: wrap;
   gap: 0 12px;
@@ -19,7 +19,7 @@ export const Wrapper = styled.div`
 `
 export const BallWrapper = styled.div<TActive>`
   ${css.size(36)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   border-radius: 100%;
   border: 1.5px solid;
   border-color: ${({ $active }) => ($active ? theme('article.title') : 'transparent')};
@@ -54,7 +54,7 @@ export const ColorBall = styled.div<TColorBall>`
 
 export const CustomColorBall = styled(ColorBall)`
   ${({ $active }) => ($active ? css.circle(26) : css.circle(30))};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   background: ${theme('hoverBg')};
   background: conic-gradient(
     rgb(235, 87, 87),
@@ -71,7 +71,7 @@ export const CustomColorBall = styled(ColorBall)`
 
 export const PenWrapper = styled.div`
   ${css.circle(16)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   background: radial-gradient(circle, white 40%, transparent 100%);
 `
 export const PenIcon = styled(PenSVG)`

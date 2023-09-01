@@ -69,7 +69,7 @@ const Item: FC<TProps> = ({ alias, editingAlias }) => {
           <Fragment>
             <AddButton
               top={10}
-              withIcon={false}
+              icon="edit"
               dimWhenIdle
               right={15}
               onClick={() => updateEditingAlias(alias)}

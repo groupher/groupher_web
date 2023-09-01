@@ -1,32 +1,31 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import { InputBar } from './input_box'
 
 import Img from '@/Img'
 import ApplySVG from '@/icons/Apply'
-import WorksHolderSVG from '@/icons/WorksHolder'
+import UploadSVG from '@/icons/Upload'
 
 export const Wrapper = styled.div`
   position: relative;
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   color: ${theme('article.digest')};
-  /* background-image: linear-gradient(#043B49, #022A35); */
   background-image: ${theme('banner.linearGradient')};
   width: 100%;
-  height: 350px;
+  height: 300px;
 `
 export const IntroTitle = styled.div`
   position: relative;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   font-size: 18px;
   margin-bottom: 20px;
-  margin-left: -10px;
 `
 export const InfoWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
+  margin-bottom: 38px;
 `
 export const RealCover = styled(Img)`
   ${css.size(80)};
@@ -34,30 +33,39 @@ export const RealCover = styled(Img)`
 `
 export const HolderWrapper = styled.div`
   ${css.size(80)};
-  ${css.flex('align-both')};
   border-radius: 6px;
-  background: #0c2631;
+  background: ${theme('hoverBg')};
 `
-
-export const HolderIcon = styled(WorksHolderSVG)`
-  ${css.size(58)};
-  fill: #043b49;
+export const HolderInner = styled.div`
+  width: 100%;
+  height: 100%;
+  ${css.column('align-both')};
   opacity: 0.6;
-  transform: rotate(90deg);
 
   ${HolderWrapper}:hover & {
     opacity: 0;
   }
   transition: all 0.2s;
 `
-
+export const HolderIcon = styled(UploadSVG)`
+  ${css.size(28)};
+  fill: ${theme('lightText')};
+  margin-bottom: 4px;
+  margin-top: 3px;
+`
+export const HolderText = styled.div`
+  font-size: 15px;
+  font-weight: 600;
+  color: ${theme('lightText')};
+  font-style: italic;
+`
 export const InputsWrapper = styled.div`
   margin-left: 15px;
 `
 export const InputBox = styled(InputBar)`
   width: 300px;
   min-width: 300px;
-  font-size: 16px;
+  font-size: 14px;
   text-align: left;
   padding: 6px 18px;
   border-radius: 8px;
@@ -76,17 +84,9 @@ export const Title = styled.div`
   color: ${theme('banner.title')};
   font-size: 1.1rem;
 `
-export const StepHint = styled.div`
-  position: absolute;
-  color: ${theme('article.title')};
-  font-size: 15px;
-  top: -35px;
-  left: 41%;
-  opacity: 0.5;
-`
 export const NextBtn = styled.div`
-  position: absolute;
-  ${css.flex('align-center', 'justify-center')};
+  ${css.row('align-center', 'justify-center')};
   width: 200px;
-  bottom: 30px;
+  margin-left: 16px;
+  filter: grayscale(1);
 `

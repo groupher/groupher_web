@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 
-import css from '@/utils/css'
+import css from '@/css'
 
 export const Wrapper = styled.div`
   display: none;
   width: 100%;
 
   ${css.media.mobile`
-    ${css.flexColumnGrow()};
+    ${css.columnGrow()};
   `};
 `
 export const holder = 1

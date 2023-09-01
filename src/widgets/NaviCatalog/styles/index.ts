@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TTestable, TActive } from '@/spec'
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import { WIDTH } from './metric'
 
@@ -17,7 +17,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 `
 
 export const Item = styled.div<TItem>`
-  ${css.flex('justify-end', 'align-center')};
+  ${css.row('justify-end', 'align-center')};
   fill: ${theme('article.digest')};
   color: ${({ active }) => (active ? activeColor : theme('article.digest'))};
   font-size: 14px;

@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 400px;
   height: auto;
   padding: 20px;

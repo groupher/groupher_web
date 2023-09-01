@@ -1,16 +1,16 @@
 import styled from 'styled-components'
 
-import css from '@/utils/css'
+import css from '@/css'
 
 export const UserCellWrapper = styled.div`
-  ${css.flex('justify-start', 'align-center')};
+  ${css.row('justify-start', 'align-center')};
   margin-left: 10px;
 `
 export const Avatar = styled.img`
   ${css.circle(38)};
 `
 export const UserInfo = styled.div`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   margin-left: 10px;
 `
 

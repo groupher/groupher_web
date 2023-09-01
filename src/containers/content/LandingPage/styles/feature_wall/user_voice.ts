@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TTestable, TColorName } from '@/spec'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import { camelize } from '@/utils/fmt'
 
 import TreesSVG from '@/icons/Trees'
@@ -10,7 +10,7 @@ import TreesSVG from '@/icons/Trees'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   flex-wrap: wrap;
   gap: 40px 25px;
   height: auto;
@@ -56,7 +56,7 @@ export const TreesIcon = styled(TreesSVG)`
   `};
 `
 export const Card = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   background: white;
   /* border: 1px solid; */
   border-color: ${theme('divider')};
@@ -74,7 +74,7 @@ export const Card = styled.div`
 `
 export const Avatar = styled.div<{ color: TColorName }>`
   ${css.circle(30)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   padding: 2px;
   color: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
   font-size: 12px;
@@ -85,7 +85,7 @@ export const Avatar = styled.div<{ color: TColorName }>`
 
   ${css.media.mobile`
     ${css.circle(20)};
-    ${css.flex('align-both')};
+    ${css.row('align-both')};
     font-size: 8px;
   `};
 `

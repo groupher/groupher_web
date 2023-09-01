@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import CheckSVG from '@/icons/CheckBold'
 
@@ -9,7 +9,7 @@ import type { TFeatType } from '../../spec'
 import { FEAT } from '../../constant'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 18px;
 
   ${css.media.mobile`

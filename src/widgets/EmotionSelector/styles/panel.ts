@@ -3,17 +3,17 @@ import { includes } from 'ramda'
 
 import type { TActive } from '@/spec'
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center', 'justify-center')};
+  ${css.row('align-center', 'justify-center')};
   background: ${theme('alphaBg2')};
   width: 230px;
   padding: 8px 10px;
   padding-top: 12px;
 `
 export const Item = styled.div<{ name: string }>`
-  ${css.flexColumn('align-center', 'justify-center')};
+  ${css.column('align-center', 'justify-center')};
   margin-right: ${({ name }) => (name === 'pill' ? 0 : '15px')};
 `
 type TEIcon = { name: string } & TActive

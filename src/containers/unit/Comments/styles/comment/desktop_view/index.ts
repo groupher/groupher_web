@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme, animate } from '@/utils/css'
+import css, { theme, animate } from '@/css'
 
 import PinSVG from '@/icons/Pin'
 import UserBadge from '@/icons/UserBadge'
@@ -12,7 +12,7 @@ type TWrapper = {
 
 export const Wrapper = styled.div<TWrapper>`
   position: relative;
-  ${css.flex()};
+  ${css.row()};
   padding-top: ${({ isPinned }) => (isPinned ? '24px' : '20px')};
   position: relative;
   background: transparent;
@@ -21,7 +21,7 @@ export const PinState = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 1px;
 `
 export const PinIcon = styled(PinSVG)`
@@ -38,12 +38,12 @@ export const PinText = styled.div`
 `
 
 export const CommentWrapper = styled.div`
-  ${css.flexGrow()};
+  ${css.rowGrow()};
   width: 100%;
 `
 export const SidebarWrapper = styled.div`
   color: ${theme('article.title')};
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   height: 100%;
   min-width: 33px;
 `
@@ -105,7 +105,7 @@ export const IndentLine = styled.div`
   transition: all 0.2s;
 `
 export const CommentBodyInfo = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
 
   ${css.media.mobile`

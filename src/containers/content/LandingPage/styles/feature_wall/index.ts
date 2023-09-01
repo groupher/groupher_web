@@ -2,17 +2,17 @@ import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 100%;
   height: auto;
 `
 export const Slogan = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
@@ -43,23 +43,23 @@ export const Desc = styled.div`
 `
 //
 export const Wall = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 100%;
   margin-top: -120px;
 `
 
 export const FeatList = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   gap: 18px 0;
   margin-top: 28px;
 
   ${css.media.mobile`
-    ${css.flex()};
+    ${css.row()};
   `};
 `
 
 export const MobileIntroLists = styled.div`
-  ${css.flex()};
+  ${css.row()};
   flex-wrap: wrap;
   gap: 16px 0;
   padding-left: 10px;

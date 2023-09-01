@@ -49,9 +49,7 @@ const StateSelector: FC<TProps> = ({
           setShow(true)
           setMenuOpen(true)
         }}
-        onHide={() => {
-          setMenuOpen(false)
-        }}
+        onHide={() => setMenuOpen(false)}
         offset={offset as [number, number]}
         content={
           <Fragment>
@@ -66,7 +64,7 @@ const StateSelector: FC<TProps> = ({
         }
         noPadding
       >
-        <DropdownButton noArrow={noArrow}>
+        <DropdownButton noArrow={noArrow} $active={menuOpen}>
           <ActiveState activeState={activeState} mode={mode} />
         </DropdownButton>
       </Tooltip>

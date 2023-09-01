@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css from '@/utils/css'
+import css from '@/css'
 
 type TWrapper = TTestable & { isSidebarLayout: boolean }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
@@ -10,7 +10,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   width: 100%;
   min-height: 100vh;
   height: 100%;
-  padding: 10px 25px;
+  padding: 10px 0;
   margin-bottom: 30px;
   margin-left: ${({ isSidebarLayout }) => (isSidebarLayout ? '-35px' : 0)};
 
@@ -20,7 +20,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   `};
 `
 export const ColumnsWrapper = styled.div`
-  ${css.flex('align-start', 'justify-between')};
+  ${css.row('align-start', 'justify-between')};
   min-height: 500px;
   margin-top: 60px;
 
@@ -40,5 +40,5 @@ export const MobileColumnsWrapper = styled.div`
 `
 
 export const MobileColumnsInner = styled.div`
-  ${css.flex('align-start', 'justify-between')};
+  ${css.row('align-start', 'justify-between')};
 `

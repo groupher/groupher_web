@@ -2,14 +2,14 @@ import styled from 'styled-components'
 
 import type { TTestable, TActive } from '@/spec'
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 const activeColor = '#009C9E'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-center', 'justify-between')}
+  ${css.row('align-center', 'justify-between')}
   width: 100%;
   margin-bottom: 8px;
 `
@@ -20,7 +20,7 @@ export const Title = styled.div<TActive>`
   padding-left: 5px;
 `
 export const OperatorsWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Operator = styled.div<TActive>`
   display: ${({ show }) => (show ? 'block' : 'none')};

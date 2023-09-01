@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
 import { theme, themeSkins } from '@/utils/themes'
-import css from '@/utils/css'
+import css from '@/css'
 
 type TThemeName = {
   t: string
@@ -11,7 +11,7 @@ type TThemeName = {
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-center', 'justify-between')};
+  ${css.column('align-center', 'justify-between')};
   height: 100vh;
   width: 100%;
   color: #6b7f83;
@@ -20,7 +20,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   /* background: ${theme('thread.bg')}; */
 `
 export const Header = styled.div`
-  ${css.flex()};
+  ${css.row()};
 `
 // do not use common @/Img, because the theme in Img may not work
 export const HintIcon = styled.img`

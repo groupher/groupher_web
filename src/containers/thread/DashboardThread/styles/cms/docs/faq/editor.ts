@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css from '@/css'
 
 import Input from '@/widgets/Input'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
 `
 

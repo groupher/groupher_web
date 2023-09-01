@@ -1,16 +1,16 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('justify-center')};
+  ${css.column('justify-center')};
 
   padding: 5px 12px;
   padding-top: 12px;
 `
 export const Item = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 
   color: ${theme('article.title')};
   margin-bottom: 8px;

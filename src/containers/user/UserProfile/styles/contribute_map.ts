@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import type { TTheme } from '@/spec'
 
 const dotColor = (scale: string): TTheme => {
@@ -21,7 +21,7 @@ export const Wrapper = styled.div`
   `};
 `
 export const Header = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Divider = styled.div`
   width: 100%;
@@ -44,7 +44,7 @@ export const CalendarInnerWrapper = styled.div`
   `};
 `
 export const Title = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 13px;
   color: ${theme('article.digest')};
   flex-grow: 1;
@@ -62,7 +62,7 @@ export const DotText = styled.div`
   opacity: 0.8;
 `
 export const DotList = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 5px;
   margin-right: 3px;
 `

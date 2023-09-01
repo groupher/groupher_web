@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import { values, includes } from 'ramda'
 import type { TThread } from '@/spec'
 import { CARD_THREAD } from '@/constant/thread'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   width: 100%;
 `
 
@@ -35,7 +35,7 @@ export const MainWrapper = styled.div<TMainWrapper>`
 
   margin-top: 12px;
   /* padding-top: ${({ thread }) => (includes(thread, values(CARD_THREAD)) ? '13px' : '16px')}; */
-  padding-left: ${({ thread }) => (includes(thread, values(CARD_THREAD)) ? '15px' : '25px')};
+  padding-left: ${({ thread }) => (includes(thread, values(CARD_THREAD)) ? '15px' : 0)};
   padding-right: ${({ thread }) => (includes(thread, values(CARD_THREAD)) ? 0 : '80px')};
   margin-right: ${({ thread }) => (includes(thread, values(CARD_THREAD)) ? '35px' : '65px')};
 
@@ -52,7 +52,7 @@ export const MobileCardsMainWrapper = styled(MainWrapper)`
   padding-right: 10px;
 `
 export const FilterWrapper = styled.div<{ thread: TThread }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 5px;
 
   ${css.media.mobile`

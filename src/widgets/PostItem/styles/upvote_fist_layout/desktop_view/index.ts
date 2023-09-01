@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   width: 100%;
   position: relative;
 
@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
   `};
 `
 export const Main = styled.div`
-  ${css.flexColumnGrow()};
+  ${css.columnGrow()};
 `
 export const DigestWrapper = styled.div`
   ${css.cutRest('530px')};

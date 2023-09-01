@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css from '@/utils/css'
+import css from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable & { active: boolean }>`
-  ${css.flexColumn('justify-center')};
+  ${css.column('justify-center')};
   position: relative;
   width: 100%;
   height: ${({ active }) => (active ? '180px' : '50px')};

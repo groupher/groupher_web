@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
@@ -21,7 +21,7 @@ export const Wrapper = styled.div`
   `};
 `
 export const Header = styled.div`
-  ${css.flex('align-end')};
+  ${css.row('align-end')};
   margin-top: 15px;
   padding-left: 25px;
   margin-bottom: 20px;
@@ -38,7 +38,7 @@ export const Article = styled.div`
   margin-right: 5px;
 `
 export const InnerWrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   flex-wrap: wrap;
 
   ${css.media.mobile`
@@ -47,18 +47,18 @@ export const InnerWrapper = styled.div`
 `
 export const Media = styled.div`
   ${css.size(80)};
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   cursor: pointer;
 
   ${css.media.mobile`
     ${css.size(70)};
-    ${css.flexColumn('align-both')};
+    ${css.column('align-both')};
     margin-bottom: 12px;
   `};
 `
 export const LogoWrapper = styled.div<{ noBg: boolean }>`
   ${css.circle(28)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   background: ${({ noBg }) => (noBg ? 'transparent' : theme('hoverBg'))};
   margin-bottom: 8px;
 

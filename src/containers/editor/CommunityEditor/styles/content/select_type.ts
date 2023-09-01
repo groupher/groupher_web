@@ -1,17 +1,16 @@
-import Link from 'next/link'
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
+
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
   width: 700px;
-  margin-top: 60px;
   min-height: 300px;
 `
 const Block = styled.div`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   padding: 15px;
   width: 45%;
 `
@@ -23,7 +22,7 @@ export const RightBlock = styled(Block)`
   padding-left: 40px;
 `
 export const Header = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 18px;
 `
 const Icon = styled(Img)`
@@ -46,22 +45,9 @@ export const Desc = styled.div`
   color: ${theme('article.digest')};
   line-height: 1.7;
 `
-
 export const CommunityDemoWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   margin-bottom: 10px;
-`
-export const MoreLink = styled(Link)`
-  font-size: 13px;
-  color: #139c9e;
-  cursor: pointer;
-  text-decoration: none;
-  opacity: 0.8;
-
-  &:hover {
-    opacity: 1;
-    text-decoration: underline;
-    color: #139c9e;
-  }
+  margin-top: -4px;
 `

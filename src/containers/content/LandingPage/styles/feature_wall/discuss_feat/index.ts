@@ -2,14 +2,14 @@ import styled from 'styled-components'
 
 import type { TActive, TTestable } from '@/spec'
 
-import css from '@/utils/css'
+import css from '@/css'
 
 type TWrapper = TActive
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   width: 100%;
   height: 730px;
   padding: 0 12%;
@@ -31,7 +31,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   }
 
   ${css.media.mobile`
-    ${css.flexColumn()};
+    ${css.column()};
     margin-top: 200px;
     padding: 0 18px;
     height: auto;
@@ -42,5 +42,5 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   `};
 `
 export const Slogan = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `

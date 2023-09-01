@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TTestable, TSpace } from '@/spec'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 type TWrapper = {
   noBg: boolean
@@ -13,7 +13,7 @@ type TWrapper = {
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flex('align-start')};
+  ${css.row('align-start')};
   color: ${({ noBg }) => (noBg ? theme('article.digest') : theme('article.title'))};
   padding-left: ${({ noBg }) => (noBg ? '5px' : '12px')};
   padding-right: 15px;

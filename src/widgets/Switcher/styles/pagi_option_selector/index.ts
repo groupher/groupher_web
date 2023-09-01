@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 
-import css from '@/utils/css'
+import css from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 export const Title = styled.div`
   font-size: 12px;

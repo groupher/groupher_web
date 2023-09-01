@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<{ isSidebarLayout: boolean }>`
   width: ${({ isSidebarLayout }) => (isSidebarLayout ? '280px' : '300px')};
@@ -44,7 +44,7 @@ export const Desc = styled.div`
   line-height: 1.6;
 `
 export const Reports = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const ReportsArticle = styled(Desc)`
   ${css.lineClamp(1)};

@@ -5,6 +5,9 @@
 import { FC } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
+import type { TMetric } from '@/spec'
+import METRIC from '@/constant/metric'
+
 import { bond } from '@/utils/mobx'
 import { BANNER_LAYOUT } from '@/constant/layout'
 
@@ -18,12 +21,16 @@ import { Wrapper, SidebarWrapper, InnerWrapper, ContentWrapper, MobileCardsWrapp
 
 type TProps = {
   communityContent?: TStore
+  metric?: TMetric
 }
 
 /**
  * only for AboutThread, but link to the common communityContent store
  */
-const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
+const CommunityContentContainer: FC<TProps> = ({
+  communityContent: store,
+  metric = METRIC.COMMUNITY,
+}) => {
   useInit(store)
 
   const { globalLayout } = store
@@ -32,7 +39,7 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
 
   return (
     <LayoutWrapper testid="changelog-thread-content">
-      <CommunityDigest />
+      <CommunityDigest metric={metric} />
       {isMobile ? (
         <MobileCardsWrapper>
           <ContentWrapper>
@@ -40,7 +47,7 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
           </ContentWrapper>
         </MobileCardsWrapper>
       ) : (
-        <InnerWrapper>
+        <InnerWrapper metric={metric}>
           <ContentWrapper>
             <ChangelogThread isSidebarLayout={globalLayout.banner === BANNER_LAYOUT.SIDEBAR} />
           </ContentWrapper>

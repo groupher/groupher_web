@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import BotSVG from '@/icons/Bot'
 
 export const Wrapper = styled.div<{ isFold: boolean }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding: ${({ isFold }) => (isFold ? '0 5px' : '5px 10px')};
   border-radius: 5px;
   background: ${({ isFold }) => (isFold ? 'transparent' : '#00313d')};
@@ -21,7 +21,7 @@ export const BotIcon = styled(BotSVG)`
   opacity: 0.6;
 `
 export const Content = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
   margin-left: 10px;
   font-size: 13px;

@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import { Wrapper as CommentWrapper } from './desktop_view'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
 
   ${css.media.mobile`

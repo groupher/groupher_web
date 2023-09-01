@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import Link from 'next/link'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import ArrowSVG from '@/icons/ArrowSimple'
 
@@ -11,12 +11,12 @@ export const Wrapper = styled.div`
 `
 
 export const Folder = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   cursor: pointer;
 `
 export const IconWrapper = styled.div`
   ${css.size(18)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   margin-left: -1px;
 `
 export const FoldArrowIcon = styled(ArrowSVG)<{ fold: boolean }>`
@@ -66,7 +66,7 @@ export const Item = styled(Link)<TActive>`
   display: block;
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   background: ${({ $active }) => ($active ? theme('menuActive') : 'transparent')};
-  width: 140px;
+  width: 160px;
   padding: 2px 5px;
   padding-left: 18px;
   margin-left: 0;

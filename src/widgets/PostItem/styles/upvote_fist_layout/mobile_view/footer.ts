@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Extra = styled.li`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 5px;
   margin-bottom: 4px;
   transition: opacity 0.2s;
@@ -14,7 +14,7 @@ export const UpvotesWrapper = styled.div`
   transform: scale(0.9);
 `
 export const BasicState = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   gap: 0 10px;
   font-size: 12px;
   margin-top: 1px;

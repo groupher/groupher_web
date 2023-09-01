@@ -57,7 +57,7 @@ const PromotionList: FC<TProps> = ({
           <Header>
             <Title>热门社区</Title>
             <MoreHint onClick={onAbout}>
-              <ArrowButton size="small">全部</ArrowButton>
+              <ArrowButton fontSize={12}>全部</ArrowButton>
             </MoreHint>
           </Header>
           <Spotlight item={activeItem} />

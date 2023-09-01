@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import MoreSVG from '@/icons/menu/MoreL'
 import EditSVG from '@/icons/EditPen'
 
 import { ColumnWrapper } from '.'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
 `
 

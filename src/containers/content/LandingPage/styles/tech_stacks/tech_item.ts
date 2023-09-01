@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 export const IconWrapper = styled.div`
   ${css.size(50)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 
   ${css.media.mobile`
     ${css.size(30)};

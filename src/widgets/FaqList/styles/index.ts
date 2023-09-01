@@ -3,14 +3,14 @@ import styled from 'styled-components'
 import type { TSpace, TTestable } from '@/spec'
 
 // import Img from '@/Img'
-import css from '@/utils/css'
+import css from '@/css'
 
 type TWrapper = TSpace & TTestable
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   padding-bottom: 40px;
   width: 100%;
 

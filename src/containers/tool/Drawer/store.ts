@@ -49,24 +49,7 @@ const DrawerStore = T.model('DrawerStore', {
   // end of only works for mobile view
 
   windowWidth: T.opt(T.number, 1520),
-  type: T.maybeNull(
-    T.enum('previewType', [
-      // account
-      TYPE.DRAWER.ACCOUNT_EDIT,
-      TYPE.DRAWER.MAILS_VIEW,
-      //
-      TYPE.DRAWER.C11N_SETTINGS,
-      TYPE.DRAWER.CUSTOM_BG_EDITOR,
-      TYPE.DRAWER.MODELINE_MENU,
-      TYPE.DRAWER.USER_LISTER,
-      TYPE.DRAWER.DASHBOARD_DESC,
-      TYPE.DRAWER.G_EDITOR,
-      TYPE.DRAWER.CREATE_TAG,
-      TYPE.DRAWER.EDIT_TAG,
-
-      ...ARTICLE_THREAD_CURD_TYPES,
-    ]),
-  ),
+  type: T.maybeNull(T.enum('previewType', [...values(TYPE.DRAWER), ...ARTICLE_THREAD_CURD_TYPES])),
   attUser: T.maybeNull(User),
   userListerType: T.opt(T.string, ''),
 
@@ -211,6 +194,7 @@ const DrawerStore = T.model('DrawerStore', {
         type !== DRAWER.CUSTOM_BG_EDITOR &&
         type !== DRAWER.G_EDITOR &&
         type !== DRAWER.CREATE_TAG &&
+        type !== DRAWER.PASSPORT_EDITOR &&
         type !== DRAWER.EDIT_TAG
       ) {
         slf.markPreviewURLIfNeed(data)

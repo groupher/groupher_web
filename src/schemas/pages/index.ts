@@ -11,7 +11,6 @@ import { mentions } from './mail'
 import { reaction, undoReaction, setTag, unsetTag, follow, undoFollow } from './action'
 
 const P = {
-  // community
   community,
   subscribedCommunities,
   pagedCommunities,

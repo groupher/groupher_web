@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components'
 
 // import { media } from '@/utils/css/media'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import normalize from './normalize'
 
 const GlobalStyle = createGlobalStyle`
@@ -176,10 +176,10 @@ const GlobalStyle = createGlobalStyle`
 
   // ngpress
   #nprogress .bar {
-    background: ${theme('article.title')} !important;
+    background: ${theme('lightText')} !important;
   }
   #nprogress .peg {
-    box-shadow: 0 0 10px ${theme('article.title')}, 0 0 5px ${theme('article.title')} !important;
+    box-shadow: 0 0 5px ${theme('hoverBg')}, 0 0 3px ${theme('hoverBg')} !important;
   }
   #nprogress .spinner {
     display: none !important;

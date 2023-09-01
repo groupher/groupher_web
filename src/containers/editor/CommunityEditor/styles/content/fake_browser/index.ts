@@ -1,23 +1,27 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import type { TActive } from '@/spec'
+
+import css, { theme } from '@/css'
 import Img from '@/Img'
 
-const headerBg = '#053542'
-const taberBg = '#022A35'
-const contentBg = '#03303c'
+const taberBg = '#F1F3F4'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   width: 100%;
-  height: 70vh; /* TODO  */
-  border-radius: 6px;
-  background: ${contentBg};
+  min-height: 500px;
+  border-radius: 12px;
+  background: ${theme('alplaBg')};
   border: 1px solid;
-  border-color: ${contentBg};
+  border-color: #e5e5e5;
+  /* border-color: ${theme('hoverBg')}; */
+  border-bottom: none;
+
+  position: relative;
 `
 export const Header = styled.div`
-  ${css.flex()};
+  ${css.row()};
   width: 100%;
   display: flex;
   padding: 8px 20px 0 12px;
@@ -25,10 +29,10 @@ export const Header = styled.div`
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   height: 36px;
-  background: ${headerBg};
+  background: ${theme('alplaBg')};
 `
 export const Tab = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-basis: 218px;
   background: ${taberBg};
   border-bottom: 1px solid;
@@ -86,7 +90,7 @@ export const TabContent = styled.div`
 `
 export const AddressBar = styled.div`
   width: 100%;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   background: ${taberBg};
   border-bottom: 1px solid;
   border-bottom-color: ${taberBg};
@@ -102,18 +106,19 @@ export const ToolbarWrapper = styled.div`
   height: 24px;
 `
 export const ToolIcon = styled(Img)<{ reverse?: boolean }>`
-  fill: ${theme('article.title')};
+  fill: ${theme('article.digest')};
+  opacity: 0.6;
   ${css.size(16)};
   transform: ${({ reverse }) => (reverse ? 'rotate(180deg)' : '')};
 `
 export const LockIcon = styled(ToolIcon)`
-  ${css.size(12)};
-  margin-top: 2px;
+  ${css.size(11)};
+  margin-top: 3px;
 `
 export const Form = styled.form`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-grow: 1;
-  background: ${headerBg};
+  background: ${theme('alphaBg2')};
   height: 28px;
   border-radius: 15px;
   margin-left: 4px;
@@ -126,7 +131,27 @@ export const Input = styled.div`
   padding-left: 4px;
   font-size: 14px;
 `
-export const DomainText = styled.span`
-  color: #309999;
-  margin-left: 1px;
+export const SubDomain = styled.div`
+  background: linear-gradient(to right, rgb(196, 121, 222), rgb(248, 190, 109));
+  font-weight: 550;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+`
+export const Slash = styled.div`
+  display: inline-block;
+  margin-left: 2px;
+  margin-right: 1px;
+  font-size: 10px;
+  margin-top: 1px;
+  color: ${theme('article.digest')};
+  opacity: 0.8;
+`
+export const ThreadPath = styled.div<TActive>`
+  ${css.row('align-center')};
+  opacity: ${({ $active }) => ($active ? 1 : 0)};
+`
+export const ThreadText = styled.div`
+  color: ${theme('article.digest')};
+  opacity: 0.6;
 `

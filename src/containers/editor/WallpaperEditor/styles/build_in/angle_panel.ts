@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TActive } from '@/spec'
 import { GRADIENT_DIRECTION } from '@/constant/wallpaper'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import ArrowSVG from '@/icons/ArrowSolid'
 
 const metric = {
@@ -69,7 +69,7 @@ const Point = styled.div<TActive>`
   position: absolute;
   font-size: 8px;
   ${css.circle(16)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   z-index: 2;
 
   font-weight: ${({ $active }) => ($active ? 600 : 'bormal')};
@@ -89,7 +89,7 @@ const Point = styled.div<TActive>`
 
 const SidePoint = styled(Point)`
   ${css.circle(10)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 
   opacity: ${({ $active }) => ($active ? 1 : 0.4)};
 

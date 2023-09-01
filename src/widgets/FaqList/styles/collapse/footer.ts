@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import Button from '@/widgets/Buttons/Button'
 import BookSVG from '@/icons/Book'
 import PeopleSVG from '@/icons/People'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   font-size: 14px;
   margin-top: 60px;
   margin-left: -30px;
@@ -58,6 +58,6 @@ export const AskButton = styled(Button)`
 
 export const Bottom = styled.div`
   margin-top: 15px;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   gap: 0 18px;
 `

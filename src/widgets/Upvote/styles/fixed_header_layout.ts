@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   transform: scale(0.95);
 `
 export const UpvoteBtnWrapper = styled.div`

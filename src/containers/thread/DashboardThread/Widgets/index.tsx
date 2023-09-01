@@ -49,7 +49,6 @@ const Widgets: FC<TProps> = ({ settings, touched }) => {
             items={WIDGET_TYPES}
             size="small"
             activeKey={widgetsType}
-            bottomSpace={4}
             onChange={(slug) => {
               edit(slug, 'widgetsType')
               onSave('widgetsType')

@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import TagSVG from '@/icons/Tag'
 
 export { Item, Content, Highlight } from '.'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   position: relative;
   width: 100%;
 `

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import TextareaAutosize from 'react-textarea-autosize'
 
 import type { TTestable } from '@/spec'
-import { theme } from '@/utils/css'
+import { theme } from '@/css'
 
 import { baseInput } from './index'
 

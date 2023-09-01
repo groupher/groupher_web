@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
-import css from '@/utils/css'
+import type { TActive } from '@/spec'
+import css, { theme } from '@/css'
 
 import { Wrapper as WrapperBase, LinkItem as LinkItemBase, ArrowIcon as ArrowIconBase } from '.'
 
@@ -13,13 +14,18 @@ export const LinkItem = styled(LinkItemBase)`
   font-size: 14px;
 `
 
-export const GroupItem = styled(LinkItem)`
-  ${css.flex('align-center')};
+export const GroupItem = styled(LinkItem)<TActive>`
+  ${css.row('align-center')};
   position: relative;
   margin-right: 5px;
+  background: ${({ $active }) => ($active ? theme('hoverBg') : theme(''))};
+
+  &:hover {
+    background: ${theme('hoverBg')};
+  }
 `
 export const ArrowIcon = styled(ArrowIconBase)`
   ${css.size(14)};
   position: absolute;
-  right: -16px;
+  right: -12px;
 `

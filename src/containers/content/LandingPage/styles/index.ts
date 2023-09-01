@@ -6,7 +6,7 @@ import type { TSpace, TTestable } from '@/spec'
 import Button from '@/widgets/Buttons/Button'
 import LinkSVG from '@/icons/LinkOutside'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import InfoSVG from '@/icons/Info'
 import ArrowSVG from '@/icons/ArrowSimple'
 
@@ -16,14 +16,14 @@ type TWrapper = TTestable
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   height: 100%;
   width: 100%;
   position: relative;
   overflow: hidden;
 `
 export const Banner = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   height: 700px;
   width: 100%;
   position: relative;
@@ -113,13 +113,13 @@ export const InfoIcon = styled(InfoSVG)`
 `
 export const Note = styled.div`
   color: ${theme('article.digest')};
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 13px;
   margin-top: 20px;
 `
 
 export const ButtonGroup = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   gap: 0 22px;
   margin-top: 40px;
   margin-left: 10px;
@@ -129,14 +129,14 @@ export const ButtonGroup = styled.div`
   `};
 `
 export const DemoPanel = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   gap: 5px 0;
   padding: 6px 2px;
   width: 100px;
 `
 
 export const DemoMenuItem = styled(Link)`
-  ${css.flex('justify-between', 'align-center')};
+  ${css.row('justify-between', 'align-center')};
   color: ${theme('article.title')};
   font-size: 14px;
   padding: 2px 4px;

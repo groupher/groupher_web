@@ -11,23 +11,24 @@ import { buildLog } from '@/utils/logger'
 import SelectType from './SelectType'
 import SetupDomain from './SetupDomain'
 import SetupInfo from './SetupInfo'
-import MoreInfo from './MoreInfo'
-
-import { Wrapper } from '../styles/content'
 
 import type {
   TStep,
+  TValidState,
   TSelectTypeStatus,
   TSetupDomainStatus,
   TSetupInfoStatus,
 } from '../spec'
 import { STEP } from '../constant'
 
+import { Wrapper } from '../styles/content'
+
 /* eslint-disable-next-line */
 const log = buildLog('C:NewExploreContent')
 
 type TProps = {
   step: TStep
+  validState: TValidState
   selectTypeStatus: TSelectTypeStatus
   setupDomainStatus: TSetupDomainStatus
   setupInfoStatus: TSetupInfoStatus
@@ -35,11 +36,20 @@ type TProps = {
 
 const Content: FC<TProps> = ({
   step,
+  validState,
   selectTypeStatus,
   setupDomainStatus,
   setupInfoStatus,
 }) => {
   if (step === STEP.FINISHED) return null
+
+  if (!validState.hasPendingApply && !validState.isLogin) {
+    return null
+  }
+
+  if (validState.isLogin && validState.hasPendingApply) {
+    return null
+  }
 
   let stepComp
 
@@ -52,16 +62,13 @@ const Content: FC<TProps> = ({
       stepComp = <SetupDomain status={setupDomainStatus} />
       break
     }
-    case STEP.MORE_INFO: {
-      stepComp = <MoreInfo status={setupInfoStatus} />
+    case STEP.SETUP_EXTRA: {
+      stepComp = null
       break
     }
     default: {
       stepComp = (
-        <SetupInfo
-          status={setupInfoStatus}
-          communityType={selectTypeStatus.communityType}
-        />
+        <SetupInfo status={setupInfoStatus} communityType={selectTypeStatus.communityType} />
       )
       break
     }

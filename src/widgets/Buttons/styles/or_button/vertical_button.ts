@@ -1,31 +1,28 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import { Wrapper as BaseBtnWrapper } from '../button'
 import { OrSignBase } from './index'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   position: relative;
 `
 const BaseButton = styled(BaseBtnWrapper)<TActive>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 32px;
   min-height: 70px;
   white-space: pre-line;
   color: ${({ active }) => (active ? theme('button.fg') : '#99b9bf')};
   background: ${({ active }) => (active ? theme('button.primary') : '#024250')};
-  border-color: ${({ active }) =>
-    active ? theme('button.primary') : '#024250'};
+  border-color: ${({ active }) => (active ? theme('button.primary') : '#024250')};
 
   &:hover {
     color: ${({ active }) => (active ? theme('button.fg') : '#99b9bf')};
-    border-color: ${({ active }) =>
-      active ? theme('button.hoverBg') : '#065061'};
-    background-color: ${({ active }) =>
-      active ? theme('button.hoverBg') : '#065061'};
+    border-color: ${({ active }) => (active ? theme('button.hoverBg') : '#065061')};
+    background-color: ${({ active }) => (active ? theme('button.hoverBg') : '#065061')};
   }
 `
 

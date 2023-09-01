@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import { ARTICLE_CAT } from '@/constant/gtd'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import LightSVG from '@/icons/Light'
 import BugSVG from '@/icons/Bug'
@@ -13,7 +13,7 @@ import ToolSVG from '@/icons/Tool'
 type TWrapper = { color: string; longer: boolean }
 export const Wrapper = styled.div<TWrapper>`
   position: relative;
-  ${css.flexColumn()};
+  ${css.column()};
   width: 150px;
   height: ${({ longer }) => (longer ? '165px' : '140px')};
   border: 1px solid;
@@ -23,7 +23,7 @@ export const Wrapper = styled.div<TWrapper>`
   box-shadow: 0 5px 25px rgb(35 35 35 / 10%);
 `
 export const Header = styled.div<{ bg: string }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   background: ${({ bg }) => bg || theme('hoverBg')};
   padding: 2px 10px;
   height: 30px;
@@ -71,7 +71,7 @@ export const Icon = {
 }
 
 export const Content = styled.div<{ bg: string }>`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
   height: 100%;
   padding: 10px;
@@ -88,7 +88,7 @@ export const Bar = styled.div<TBar>`
   background: ${({ bg }) => bg || theme('hoverBg')};
 `
 export const Footer = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 `
 type TLeftDot = { bg?: string }
 export const LeftDot = styled.div<TLeftDot>`
@@ -101,7 +101,7 @@ export const LeftInfo = styled.div<TLeftInfo>`
   position: absolute;
   bottom: ${({ bottom }) => bottom || '20px'};
   left: -3px;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   line-height: 18px;
 `
 

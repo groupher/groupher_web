@@ -1,16 +1,16 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 
 export const Button = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   border: 1px solid;
   border-color: ${theme('button.upvoteBorder')};
 

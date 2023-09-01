@@ -2,13 +2,13 @@ import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import CommentSVG from '@/icons/Comment'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-start')};
+  ${css.row('align-start')};
   padding-top: 12px;
   border-bottom: 1px solid;
   border-bottom-color: ${theme('divider')};
@@ -34,12 +34,12 @@ export const Body = styled.div`
   line-height: 1.85;
 `
 export const Footer = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 20px;
   margin-left: -5px;
 `
 export const CommentWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 20px;
 `
 export const CommentIcon = styled(CommentSVG)`
@@ -52,7 +52,7 @@ export const Text = styled.div`
   margin-left: 6px;
 `
 export const Side = styled.div`
-  ${css.flexColumn('align-end')};
+  ${css.column('align-end')};
   color: ${theme('article.digest')};
   flex-grow: 1;
   margin-top: 10px;

@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import type { TTestable, TActive } from '@/spec'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import Img from '@/Img'
 import { LineDivider } from '@/widgets/Common'
@@ -14,7 +14,7 @@ import GithubSVT from '@/icons/social/Github'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   max-width: 1200px;
   padding: 0 30px;
   height: 68px;
@@ -26,7 +26,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   `};
 `
 export const Brand = styled(Link)`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   text-decoration: none;
   max-width: 150px;
 
@@ -53,8 +53,8 @@ export const BrandTitle = styled.div`
 `
 
 export const LinksWrapper = styled.div`
-  ${css.flex('align-center')};
-  gap: 0 28px;
+  ${css.row('align-center')};
+  gap: 0 24px;
   margin-top: 2px;
   flex-flow: 1;
   padding-left: 45px;
@@ -67,9 +67,11 @@ export const LinkItem = styled(Link)<TActive>`
   font-size: 15px;
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   text-decoration: none;
+  padding: 2px 6px;
+  border-radius: 5px;
 
   &:hover {
-    color: ${theme('article.title')};
+    background: ${theme('hoverBg')};
     font-weight: 500;
   }
 
@@ -77,14 +79,17 @@ export const LinkItem = styled(Link)<TActive>`
 `
 
 export const MoreLink = styled.div<TActive>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 15px;
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
+  background: ${({ $active }) => ($active ? theme('hoverBg') : '')};
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
   cursor: default;
+  padding: 2px 6px;
+  border-radius: 5px;
 
   &:hover {
-    color: ${theme('article.title')};
+    background: ${theme('hoverBg')};
     font-weight: 500;
   }
 
@@ -108,7 +113,7 @@ export const ArrowIcon = styled(ArrowSVG)`
 `
 
 export const RightSideInfo = styled.div`
-  ${css.flex('align-center', 'justify-end')};
+  ${css.row('align-center', 'justify-end')};
   width: 150px;
 
   ${css.media.mobile`
@@ -116,7 +121,7 @@ export const RightSideInfo = styled.div`
   `};
 `
 export const MobileRightSide = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   display: none;
 
   ${css.media.mobile`
@@ -134,7 +139,7 @@ export const Divider = styled(LineDivider)`
   height: 10px;
 `
 export const RequestDemo = styled(Link)`
-  ${css.flex('align-end')};
+  ${css.row('align-end')};
   color: ${theme('article.digest')};
   text-decoration: none;
 
@@ -159,7 +164,7 @@ export const DemoIcon = styled(DemoSVG)`
 `
 
 export const Panel = styled.div<{ width?: string }>`
-  ${css.flexColumn()};
+  ${css.column()};
   margin-top: 3px;
   gap: 3px 0;
   padding: 6px 4px;
@@ -168,26 +173,24 @@ export const Panel = styled.div<{ width?: string }>`
 `
 
 export const MenuItem = styled(Link)<{ noDesc?: boolean }>`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   font-size: 14px;
 
   padding: ${({ noDesc }) => (noDesc ? '6px 12px;' : '10px 12px')};
 
   text-decoration: none;
-  border: 1px solid transparent;
   border-radius: 8px;
 
   &:hover {
     cursor: pointer;
-    background: #e4e4e457;
+    background: ${theme('hoverBg')};
     text-decoration: none;
-    border-color: ${theme('popover.activeBorder')};
   }
 
   will-change: background;
 `
 export const MenuTitle = styled.div`
-  color: ${theme('article.title')};
+  color: ${theme('article.digest')};
   font-size: 14px;
   font-weight: 500;
   opacity: 0.8;

@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
 import type { TSpace } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<TSpace>`
-  ${css.flex('align-end')};
+  ${css.row('align-end')};
   margin-left: ${({ left }) => `${left}px` || 0};
   margin-right: ${({ right }) => `${right}px` || 0};
   margin-top: ${({ top }) => `${top}px` || 0};
@@ -17,13 +17,12 @@ export const Hint = styled.div`
   opacity: 0.8;
 `
 export const Main = styled.div`
-  ${css.flex('align-end')};
+  ${css.row('align-end')};
   margin-left: 4px;
   margin-right: 4px;
 `
 export const CurNum = styled.div<{ invalid: boolean }>`
-  color: ${({ invalid }) =>
-    invalid ? theme('baseColor.red') : theme('article.title')};
+  color: ${({ invalid }) => (invalid ? theme('baseColor.red') : theme('article.title'))};
   font-size: 14px;
 `
 export const Slash = styled.div`

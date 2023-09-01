@@ -2,14 +2,14 @@ import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import CurlyLineSVG from './K2CSVG'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 100%;
   height: auto;
   position: relative;
@@ -24,7 +24,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 export const DescBlock = styled.div`
   position: absolute;
   top: 100px;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
   font-size: 13px;
   font-weight: 400;

@@ -5,4 +5,7 @@ export const CHANGE_MODE = {
   UPDATE: 'update',
 } as Record<Uppercase<TChangeMode>, TChangeMode>
 
-export const holder = 1
+export const COMMUNITY_STATUS = {
+  NORMAL: 0,
+  PENDING: 1,
+}

@@ -2,15 +2,15 @@ import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const Main = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 80px;
 `
 const NotifyIcon = styled(Img)`

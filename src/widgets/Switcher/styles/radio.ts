@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable, TSpace } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import {
   getActiveBackground,
@@ -23,7 +23,7 @@ type TWrapper = TTestable & TSpace
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flex('align-center')}
+  ${css.row('align-center')}
 
   ${(props) => css.spaceMargins(props)};
 `

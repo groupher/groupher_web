@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import UpvoteSVG from '@/icons/Upvote'
 
 export const Wrapper = styled.div<{ color: string }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding: 0 5px;
   border: 1px solid;
   border-color: ${({ color }) => color || theme('divider')};

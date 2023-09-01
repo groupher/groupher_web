@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import LinkSVG from '@/icons/Link'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   margin-top: 2px;
 `
 export const Brief = styled.div`
-  ${css.flexGrow('align-center')};
+  ${css.rowGrow('align-center')};
   margin-bottom: 7px;
   margin-left: 10px;
   color: ${theme('article.title')};

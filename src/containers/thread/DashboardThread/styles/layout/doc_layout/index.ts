@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
 
-import css from '@/utils/css'
+import css from '@/css'
 
 import { Divider } from '@/widgets/Common'
 import { BaseSection, BlockBase } from '..'
@@ -11,13 +11,13 @@ export { Bar, Circle } from '..'
 
 export const Wrapper = styled(BaseSection)``
 export const SelectWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   gap: 20px 30px;
   width: 100%;
 `
 export const Main = styled.div`
-  ${css.flex()};
+  ${css.row()};
   width: 100%;
 `
 export const FAQWrapper = styled.div`
@@ -28,7 +28,7 @@ export const ExampleBtn = styled.div`
   display: inline-block;
 `
 export const Layout = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   margin-bottom: 30px;
 `
 export const LayoutTitle = styled.div<TActive>`
@@ -49,5 +49,5 @@ export const DividerLine = styled(Divider)`
   opacity: 0.8;
 `
 export const FileTreeSettings = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import { COLORS } from '@/constant/colors'
 import type { TColorName, TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import Button from '@/widgets/Buttons/Button'
 import LaptopSVG from '@/icons/Works'
@@ -13,7 +13,7 @@ type TWrapper = TTestable
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flexColumn()};
+  ${css.column()};
   position: relative;
   background: transparent;
   width: 225px;
@@ -56,7 +56,7 @@ export const GlobalSettingIcon = styled(MoreSVG)`
 `
 
 export const Header = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   margin-bottom: 12px;
 `
 export const Icon = styled(LaptopSVG)<{ color: TColorName }>`

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import { MODAL_MIN_HEIGHT } from './metric'
 
@@ -13,7 +13,7 @@ export const Wrapper = styled.div<TActive>`
   min-height: ${MODAL_MIN_HEIGHT};
 `
 export const Header = styled.div`
-  ${css.flex('align-end')};
+  ${css.row('align-end')};
   color: ${theme('article.digest')};
   background: ${theme('modal.bg')};
   padding: 20px;
@@ -39,7 +39,7 @@ export const Artiment = styled.div`
   margin-right: 5px;
 `
 export const ListWrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   flex-wrap: wrap;
   flex-grow: 1;
   padding-top: 35px;
@@ -61,7 +61,7 @@ export const FolderWrapper = styled.div`
   margin-bottom: 30px;
 `
 export const Footer = styled.div`
-  ${css.flex('justify-start')};
+  ${css.row('justify-start')};
   font-size: 14px;
   color: ${theme('article.digest')};
   background: ${theme('modal.subPanel')};

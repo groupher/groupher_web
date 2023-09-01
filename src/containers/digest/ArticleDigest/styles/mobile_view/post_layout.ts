@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import DotDivider from '@/widgets/DotDivider'
 
@@ -20,7 +20,7 @@ export const Wrapper = styled.div<{ metric: TMetric }>`
   `};
 `
 export const Topping = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 14px;
   position: relative;
 
@@ -33,7 +33,7 @@ export const PublishDateInfo = styled.div`
   color: ${theme('article.digest')};
 `
 export const CommunityInfo = styled.div`
-  ${css.flex('align-start', 'justify-center')};
+  ${css.row('align-start', 'justify-center')};
   margin-top: 5px;
   ${css.fitStickerWidth(METRIC.ARTICLE)};
 `
@@ -49,7 +49,7 @@ export const Title = styled.div`
   `};
 `
 export const BottomInfo = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   padding-bottom: 30px;
   border-bottom: 1px solid;
   padding-left: 2px;

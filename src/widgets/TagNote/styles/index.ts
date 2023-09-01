@@ -7,12 +7,12 @@ import InfoSVG from '@/icons/Info'
 import { MarkdownStyles } from '@/widgets/Common'
 
 // import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
   flex-wrap: wrap;
 
   border-bottom: 1px solid;
@@ -26,7 +26,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   margin-top: -8px;
 `
 export const Header = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 8px;
   width: 100%;
 `

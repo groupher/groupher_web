@@ -5,7 +5,7 @@ export type TDashboardSEORoute = 'search_engine' | 'twitter'
 export type TDashboardDocRoute = 'table' | 'tree' | 'cover' | 'faq'
 export type TDashboardLayoutRoute = 'global' | 'post' | 'kanban' | 'changelog' | 'doc'
 export type TDashboardBroadcastRoute = 'global' | 'article'
-export type TDashboardAliasRoute = 'general' | 'kanban'
+export type TDashboardAliasRoute = 'thread' | 'kanban' | 'others'
 
 export type TDashboardPath =
   | 'dashboard'
@@ -27,6 +27,7 @@ export type TDashboardPath =
   | 'post'
   | 'changelog'
   | 'doc'
+  | 'communities'
   | 'header'
   | 'footer'
   | 'broadcast'

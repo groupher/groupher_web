@@ -1,12 +1,13 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
-
+import css, { theme } from '@/css'
 import Input from '@/widgets/Input'
 
+import { ALIGN_HEADER_OFFSET } from '../../constant'
+
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
-  padding: 0 150px;
+  ${css.column()};
+  padding: ${() => `0 ${ALIGN_HEADER_OFFSET}`};
 `
 export const Section = styled.div`
   padding-bottom: 30px;
@@ -33,7 +34,7 @@ export const Desc = styled.div`
   margin-bottom: 20px;
 `
 export const Row = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Label = styled.div`
   color: ${theme('article.title')};

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TAvatarLayout } from '@/spec'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import Img from '@/Img'
 
@@ -12,7 +12,7 @@ export { HeaderBaseInfo, BaseInfo, FloorNum } from './index'
 type TAvatar = { avatarSize: number; avatarLayout: TAvatarLayout }
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   position: relative;
   width: 100%;
 `
@@ -47,7 +47,7 @@ export const Avatar = styled(Img)<TAvatar>`
   `}
 `
 export const UserBase = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 15px;
   flex-grow: 1;
 `
@@ -79,7 +79,7 @@ export const AuthorTag = styled.div`
   `}
 `
 export const RefToOther = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('comment.username')};
   margin-left: 8px;
 `
@@ -108,7 +108,7 @@ export const ShortIntro = styled.div`
   `};
 `
 export const CreateDate = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('comment.floor')};
   font-size: 12px;
   margin-left: 2px;

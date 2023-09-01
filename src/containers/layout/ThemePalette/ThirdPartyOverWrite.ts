@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 
-import { theme } from '@/utils/css'
+import { theme } from '@/css'
 
 // third party style overwrite
 const CustomOverWrite = createGlobalStyle`

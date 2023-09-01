@@ -2,12 +2,12 @@ import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding: 3px 6px;
   padding-right: 0;
   border-radius: 8px;
@@ -16,7 +16,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 `
 export const SelectEmotionWrapper = styled.div`
   ${css.circle(24)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   background: ${theme('hoverBg')};
   margin-left: 2px;
 `

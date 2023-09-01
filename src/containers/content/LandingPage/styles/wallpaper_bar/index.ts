@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { animate, theme } from '@/utils/css'
+import css, { animate, theme } from '@/css'
 
 import { LineDivider } from '@/widgets/Common'
 
 import ThemeSVG from '@/icons/Theme'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-both')}
+  ${css.column('align-both')}
   width: 100%;
   margin-top: 60px;
 
@@ -17,7 +17,7 @@ export const Wrapper = styled.div`
   `};
 `
 export const MainWrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   gap: 0 18px;
 
   ${css.media.mobile`
@@ -25,7 +25,7 @@ export const MainWrapper = styled.div`
   `};
 `
 export const Desc = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
   margin-top: 25px;
   font-size: 12px;
@@ -38,7 +38,7 @@ export const Desc = styled.div`
 `
 export const BallWrapper = styled.div<TActive>`
   ${css.size(30)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   border-radius: 100%;
   border: 1px solid;
   border-color: ${({ $active }) => ($active ? theme('article.digest') : 'transparent')};

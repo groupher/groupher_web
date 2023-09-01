@@ -4,7 +4,7 @@ import MENU from '@/constant/menu'
 
 // import type { TTestable } from '@/spec'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import ArrowSVG from '@/icons/Arrow'
 import Arrow2TopSVG from '@/icons/Arrow2Top'
@@ -12,7 +12,7 @@ import SettingSVG from '@/icons/Setting'
 import DeleteSVG from '@/icons/Trash'
 
 export const Wrapper = styled.div`
-  ${css.flex('justify-between', 'align-center')};
+  ${css.row('justify-between', 'align-center')};
   padding: 3px 4px;
 
   &:hover {

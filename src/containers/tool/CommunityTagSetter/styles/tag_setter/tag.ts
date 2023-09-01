@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import Img from '@/Img'
 import HashTagSVG from '@/icons/HashTag'
 
@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   width: auto;
   height: 30px;
   background: ${theme('modal.bg')};
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 15px;
   margin-right: 10px;
   border: 1px solid;
@@ -32,7 +32,7 @@ export const HashTag = styled(HashTagSVG)<{ color: string }>`
   opacity: 0.8;
 `
 export const Name = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   font-size: 14px;
 `

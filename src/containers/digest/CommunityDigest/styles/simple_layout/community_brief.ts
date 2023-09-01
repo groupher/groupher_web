@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   transition: all 0.2s;
   width: 200px;
 
@@ -21,14 +21,14 @@ export const Logo = styled(Img)`
   ${css.size(20)};
 `
 export const CommunityInfo = styled.div`
-  ${css.flexColumn('justify-center')};
+  ${css.column('justify-center')};
   margin-left: 10px;
 `
 export const TitleWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Title = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.digest')};
   font-size: 16px;
   font-weight: 600;

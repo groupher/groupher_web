@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive, TTestable } from '@/spec'
 
-import css from '@/utils/css'
+import css from '@/css'
 
 import GtdWipSVG from '@/icons/GtdWip'
 import GtdDoneSVG from '@/icons/GtdDone'
@@ -11,10 +11,8 @@ import GtdTodoSVG from '@/icons/GtdTodo'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   flex-grow: 1;
-  /* width: 500px;
-  height: 440px; */
   position: relative;
 
   ${css.media.mobile`
@@ -23,7 +21,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   `};
 `
 export const ImageWrapper = styled.div`
-  ${css.flexColumn('align-end')};
+  ${css.column('align-end')};
   width: 600px;
   height: 400px;
   background: white;
@@ -57,7 +55,7 @@ export const ColorBlockHolder = styled(ColorBlock)`
 `
 export const IconsWrapper = styled.div`
   position: absolute;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   gap: 0 15px;
   bottom: -38px;
   left: -270px;

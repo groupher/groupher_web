@@ -1,22 +1,21 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
-
-import { LineDivider as LineDividerBase } from '@/widgets/Common'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Button = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   border: 1px solid;
   border-color: ${theme('button.upvoteBorder')};
+  margin-right: 16px;
 
   border-radius: 10px;
-  padding: 0 10px;
+  padding: 12px 15px;
 
   &:hover {
     border-color: ${theme('lightText')};
@@ -44,36 +43,38 @@ export const Alias = styled.div`
   `}
 `
 export const UpvoteBtnWrapper = styled.div`
-  transform: scale(0.8);
-  margin-top: 5px;
+  ${css.row('align-both')};
 
   ${css.media.mobile`
     margin-top: 4px;
   `}
 `
 export const DescWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 2px;
+`
+export const Count = styled.div`
+  margin-left: 3px;
+  ${css.media.mobile`
+    transform: scale(0.9);
+  `}
+`
+export const FacesWrapper = styled.div`
+  transform: scale(0.95);
+  margin-top: 3px;
+  margin-bottom: 2px;
+`
+
+export const Digest = styled.div`
+  ${css.column('align-start')};
+`
+export const Note = styled.div`
+  color: ${theme('lightText')};
+  font-size: 12px;
+  font-weight: 400;
 `
 export const Text = styled.div`
   color: ${theme('article.info')};
   font-size: 12px;
   margin-top: 1px;
-`
-export const Count = styled.div`
-  ${css.media.mobile`
-    transform: scale(0.9);
-  `}
-`
-export const LineDivider = styled(LineDividerBase)`
-  height: 10px;
-  background: ${theme('article.digest')};
-  opacity: 0.8;
-  margin-left: 12px;
-  margin-right: 10px;
-
-  ${css.media.mobile`
-    margin-left: 10px;
-    margin-right: 8px;
-  `}
 `

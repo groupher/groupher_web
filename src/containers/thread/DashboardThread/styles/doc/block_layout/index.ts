@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 
-import css from '@/utils/css'
+import css from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
   margin-top: 10px;
 `
 export const CatsWrapper = styled.div`
-  ${css.flex('justify-start')};
+  ${css.row('justify-start')};
   flex-wrap: wrap;
   gap: 15px 20px;
 

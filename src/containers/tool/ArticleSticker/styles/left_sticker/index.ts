@@ -3,13 +3,13 @@ import styled from 'styled-components'
 import type { TTestable, TActive } from '@/spec'
 import { FadeToggle } from '@/widgets/Common'
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 // see https://stackoverflow.com/questions/6794000/fixed-position-but-relative-to-container
 export const Wrapper = styled(FadeToggle).attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable & TActive>`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   position: fixed;
   width: 100px;
   left: 0;
@@ -26,10 +26,10 @@ export const Wrapper = styled(FadeToggle).attrs<TTestable>(({ testid }) => ({
   `}
 `
 export const InnerWrapper = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
 `
 export const BackWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-bottom: 8px;
   margin-left: -4px;
 `

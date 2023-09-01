@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   margin-top: 14px;
   margin-left: -10px;
@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
   width: 100%;
 `
 export const Block = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   position: relative;
   height: 74px;
   width: 76px;
@@ -54,7 +54,7 @@ export const AddBlock = styled(Block)`
 `
 export const AddButton = styled.div`
   ${css.size(23)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   background: #00343e;
   font-size: 18px;
   color: ${theme('article.digest')};

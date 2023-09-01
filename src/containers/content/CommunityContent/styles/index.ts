@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 
-import type { TTestable } from '@/spec'
-import css, { theme, WIDTH } from '@/utils/css'
-import { pixelAdd } from '@/utils/dom'
+import type { TMetric, TTestable } from '@/spec'
+import css, { theme } from '@/css'
 
 export const BaseWrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
@@ -18,7 +17,9 @@ export const BaseWrapper = styled.div.attrs<TTestable>(({ testid }) => ({
     padding-right: 0;
   `};
 `
-export const BaseInnerWrapper = styled.div`
+export const BaseInnerWrapper = styled.div<{ metric?: TMetric }>`
+  ${({ metric }) => css.fitContentWidth(metric)};
+
   color: ${theme('font')};
   width: 100%;
   margin-top: 15px;
@@ -30,18 +31,18 @@ export const BaseInnerWrapper = styled.div`
   `};
 `
 export const BaseContentWrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
 `
 export const Wrapper = styled(BaseWrapper)`
-  ${css.flexColumn('justify-start', 'align-center')};
+  ${css.column('justify-start', 'align-center')};
 
   ${css.media.mobile`
     padding-left: 0;
   `};
 `
 export const SidebarWrapper = styled(BaseWrapper)`
-  ${css.flex('justify-start')};
+  ${css.row('justify-start')};
 `
 export const MobileCardsWrapper = styled.div`
   width: 100%;
@@ -50,17 +51,10 @@ export const MobileCardsWrapper = styled.div`
   display: none;
 
   ${css.media.mobile`
-    ${css.flexColumn()};
+    ${css.column()};
   `};
 `
 export const InnerWrapper = styled(BaseInnerWrapper)`
-  max-width: ${pixelAdd(WIDTH.COMMUNITY.CONTENT, 46)};
-  margin-left: ${WIDTH.COMMUNITY.CONTENT_OFFSET};
-
-  /* 经典布局在统一宽度下再缩减 35px, 否则列表页会太宽 */
-  padding-left: 35px;
-  padding-right: 35px;
-
   ${css.media.mobile`
     display: none;
     padding-left: 0;

@@ -56,7 +56,7 @@ const ApplyCommunityPage = (props) => {
 
   return (
     <Provider store={store}>
-      <GlobalLayout metric={METRIC.COMMUNITY_EDITOR} seoConfig={seoConfig}>
+      <GlobalLayout metric={METRIC.COMMUNITY} seoConfig={seoConfig}>
         <CommunityEditor />
       </GlobalLayout>
     </Provider>

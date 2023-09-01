@@ -2,10 +2,10 @@ import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   filter: ${theme('modal.subPanelShadow')};
   background: ${theme('modal.bg')};
   padding: 0 28px;
@@ -17,15 +17,15 @@ export const WechatLogo = styled(Img)`
   filter: saturate(0.6);
 `
 export const Title = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 15px;
   color: ${theme('article.title')};
 `
 export const SelectWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Letter = styled.div<TActive>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   color: ${({ $active }) => ($active ? '#139c9e' : theme('article.digest'))};
   font-size: ${({ $active }) => ($active ? '15px' : '14px')};
   font-weight: ${({ $active }) => ($active ? 'bold' : 'normal')};

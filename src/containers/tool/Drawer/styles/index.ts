@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme, zIndex } from '@/utils/css'
+import css, { theme, zIndex } from '@/css'
 import { pixelAdd } from '@/utils/dom'
 
 import type { TDrawer, TSwipe } from '../spec'
@@ -51,7 +51,7 @@ export const DrawerWrapper = styled.div.attrs<TDrawer>(
     },
   }),
 )<TDrawer>`
-  ${css.flex()};
+  ${css.row()};
   position: fixed;
   right: ${({ rightOffset, type }) =>
     isWideMode(type) ? rightOffset : pixelAdd(rightOffset, -30)};
@@ -119,7 +119,7 @@ export const MobileInnerContent = styled.div.attrs<TSwipe>(({ swipeUpY, swipeDow
   box-shadow: ${theme('drawer.shadow')};
 `
 export const PreviewHeader = styled.div`
-  ${css.flex()};
+  ${css.row()};
   border-bottom: 1px solid grey;
   line-height: 30px;
 `

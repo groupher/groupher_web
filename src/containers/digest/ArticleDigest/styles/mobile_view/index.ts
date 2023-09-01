@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 
 import type { TTestable, TMetric } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 type TWrapper = { metric: TMetric } & TTestable
 export const Wrapper = styled.nav.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flexColumn('justify-center')};
+  ${css.column('justify-center')};
   position: relative;
   background: transparent;
   border-bottom: ${theme('banner.spliter')};
@@ -21,6 +21,6 @@ export const InnerWrapper = styled.div`
   width: 100%;
 `
 export const BannerContent = styled.div`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   width: 100%;
 `

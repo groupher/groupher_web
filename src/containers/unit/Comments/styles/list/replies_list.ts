@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   margin-left: 15px;
@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   `};
 `
 export const CountHint = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.info')};
   font-size: 12px;
   margin-left: 18px;

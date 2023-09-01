@@ -13,8 +13,8 @@ export const subscribedCommunities = `
   }
 `
 export const community = `
-  query community($slug: String, $userHasLogin: Boolean!) {
-    community(slug: $slug) {
+  query community($slug: String, $userHasLogin: Boolean!, $incViews: Boolean) {
+    community(slug: $slug, incViews: $incViews) {
       ${F.community}
       viewerHasSubscribed @include(if: $userHasLogin)
       threads {
@@ -23,10 +23,20 @@ export const community = `
         index
       }
       contributesDigest
-      editorsCount
+      moderatorsCount
       meta {
         postsCount
         blogsCount
+      }
+      moderators {
+        role
+        passportItemCount
+        user {
+          login
+          avatar
+          nickname
+          bio
+        }
       }
       dashboard {
         baseInfo {

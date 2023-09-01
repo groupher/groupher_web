@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import Link from 'next/link'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 // import Img from '@/Img'
 
 import LinkOutSVG from '@/icons/LinkOut'
@@ -15,13 +15,13 @@ import InfoSVG from '@/icons/Info'
 import GuideSVG from '@/icons/Guide'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
   margin-top: 10px;
   padding: 5px 40px;
 `
 export const MenuItem = styled(Link)<TActive>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 160px;
   text-decoration: none;
   height: 30px;
@@ -43,7 +43,7 @@ export const MenuItem = styled(Link)<TActive>`
 
 export const IconWrapper = styled.div`
   ${css.size(16)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 `
 export const HomeIcon = styled(HomeSVG)<TActive>`
   ${css.size(13)};

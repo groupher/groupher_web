@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import WomanSVG from '@/icons/Woman'
 import { Divider as DividerBase } from '@/widgets/Common'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const UserTitle = styled.div`
-  ${css.flex('justify-between', 'align-center')};
+  ${css.row('justify-between', 'align-center')};
   color: ${theme('article.title')};
   font-size: 24px;
   margin-bottom: 2px;
@@ -38,8 +38,7 @@ export const UserDesc = styled.div<TUserDesc>`
   &:hover {
     cursor: ${({ clickable }) => (clickable ? 'pointer' : '')};
     font-weight: ${({ clickable }) => (clickable ? 'bolder' : '')};
-    color: ${({ clickable }) =>
-      clickable ? theme('banner.title') : theme('banner.desc')};
+    color: ${({ clickable }) => (clickable ? theme('banner.title') : theme('banner.desc'))};
   }
 `
 export const Divider = styled(DividerBase)`

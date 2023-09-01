@@ -34,7 +34,7 @@ const TagNote: FC<TProps> = ({ testid = 'tag-note', tag }) => {
         <InfoIcon />
       </Header>
       <Desc>
-        <Markdown>{tag.desc}</Markdown>
+        <Markdown>{tag.desc || ''}</Markdown>
       </Desc>
     </Wrapper>
   )

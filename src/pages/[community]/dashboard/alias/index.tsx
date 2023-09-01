@@ -41,6 +41,7 @@ const loader = async (context, opt = {}) => {
   const curCommunity = gqClient.request(P.community, {
     slug: community,
     userHasLogin,
+    incViews: false,
   })
 
   const filter = ssrPagedArticlesFilter(context, userHasLogin)
@@ -95,7 +96,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       dashboardThread: {
         ...dashboard,
         curTab: ROUTE.DASHBOARD.ALIAS,
-        aliasTab: DASHBOARD_ALIAS_ROUTE.GENERAL,
+        aliasTab: DASHBOARD_ALIAS_ROUTE.THREAD,
       },
     },
     {
@@ -115,7 +116,7 @@ const CommunityDashboardPage = (props) => {
   return (
     <Provider store={store}>
       <GlobalLayout
-        metric={METRIC.COMMUNITY}
+        metric={METRIC.DASHBOARD}
         seoConfig={communitySEO(community as TCommunity, activeThread)}
       >
         <DashboardContent />

@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import { Block as BlockBase, Footer as FooterBase } from './index'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   flex-wrap: wrap;
   color: ${theme('article.digest')};
   width: 100%;
@@ -16,7 +16,7 @@ export const Block = styled(BlockBase)`
   height: 260px;
 `
 export const Body = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   &:hover {
     cursor: pointer;
   }
@@ -26,7 +26,7 @@ export const Avatar = styled(Img)`
   object-fit: cover;
 `
 export const Intro = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   margin-left: 14px;
 `
 export const Title = styled.div`

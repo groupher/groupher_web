@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TTestable, TActive } from '@/spec'
 
 // import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import GoodSVG from './GoodSVG'
 import SoSoSVG from './SoSoSVG'
@@ -13,7 +13,7 @@ type TWrapper = { offsetRight: number; withLastUpdated } & TTestable
 
 export const Wrapper = styled.div<TWrapper>`
   ${({ withLastUpdated }) =>
-    withLastUpdated ? css.flex('align-center', 'justify-between') : css.flexColumn('align-both')}
+    withLastUpdated ? css.row('align-center', 'justify-between') : css.column('align-both')}
 
   width: 100%;
   padding-top: 50px;
@@ -32,8 +32,7 @@ export const LastUpdateWrapper = styled.div`
 `
 
 export const FeedbackWrapper = styled.div<{ withLastUpdated: boolean }>`
-  ${({ withLastUpdated }) =>
-    withLastUpdated ? css.flex('align-center') : css.flexColumn('align-both')}
+  ${({ withLastUpdated }) => (withLastUpdated ? css.row('align-center') : css.column('align-both'))}
 `
 
 export const Title = styled.div<{ small: boolean }>`
@@ -45,13 +44,13 @@ export const Title = styled.div<{ small: boolean }>`
   opacity: ${({ small }) => (small ? 0.7 : 1)};
 `
 export const FaceWraper = styled.div<{ small: boolean }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   gap: ${({ small }) => (small ? '0 6px' : '0 25px')};
   margin-right: ${({ small }) => (small ? '2px' : '0')};
 `
 export const IconWrapper = styled.div<TActive>`
   ${css.size(30)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 
   filter: ${({ $active }) => ($active ? 'grayscale(0)' : 'grayscale(0.8)')};
   transform: ${({ $active }) => ($active ? 'scale(1.2)' : 'scale(1)')};

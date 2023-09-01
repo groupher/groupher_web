@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 
 import type { TTestable, TMetric } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.article.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
   position: relative;
   padding-top: 2px;
   min-height: 300px;

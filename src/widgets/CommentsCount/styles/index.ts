@@ -3,13 +3,13 @@ import styled from 'styled-components'
 import type { TSizeSM, TSpace } from '@/spec'
 import SIZE from '@/constant/size'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import CommentSVG from '@/icons/Comment'
 
 type TWrapper = { size: TSizeSM } & TSpace
 export const Wrapper = styled.div<TWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.info')};
   font-size: ${({ size }) => (size === SIZE.MEDIUM ? '14px' : '13px')};
   font-weight: 500;

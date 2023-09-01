@@ -1,4 +1,5 @@
 import type { TSnakeUpperCase } from '@/spec'
+
 import {
   DASHBOARD_ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
@@ -12,6 +13,8 @@ import {
 import type { TSettingField, TWidgetType, THeaderEditType, TFooterEditType } from './spec'
 
 import { Icon } from './styles/side_menu'
+
+export const ALIGN_HEADER_OFFSET = '140px'
 
 // do not change, it's map to GQ endpoint updateDashboardLayout
 export const SETTING_LAYOUT_FIELD = {
@@ -103,6 +106,10 @@ export const MENU = {
     icon: <Icon.Management />,
     children: [
       {
+        title: '社区',
+        slug: DASHBOARD_ROUTE.COMMUNITIES,
+      },
+      {
         title: '标签',
         slug: DASHBOARD_ROUTE.TAGS,
       },
@@ -169,8 +176,9 @@ export const MENU = {
 }
 
 export const ALIAS_GROUP = {
-  GENERAL: DASHBOARD_ALIAS_ROUTE.GENERAL,
+  THREAD: DASHBOARD_ALIAS_ROUTE.THREAD,
   KANBAN: DASHBOARD_ALIAS_ROUTE.KANBAN,
+  OTHERS: DASHBOARD_ALIAS_ROUTE.OTHERS,
 }
 
 export const BUILDIN_ALIAS_SUGGESTIONS = {
@@ -178,8 +186,9 @@ export const BUILDIN_ALIAS_SUGGESTIONS = {
   kanban: ['路线图', '规划', '蓝图'],
   changelog: ['新功能', '发布日志', '里程碑', '开发计划'],
   upvote: ['支持', '顶', '赞', '有帮助'],
+  doc: ['文档', '帮助中心'],
   upvote_bug: ['同样问题', '复现', '求解决'],
-  todo: ['Todo', '已排期', '审核中', '计划中'],
+  todo: ['Todo', '已排期', '评估中', '计划中'],
   doing: ['Doing', '完善中'],
   done: ['Done', '已解决'],
 }
@@ -189,31 +198,25 @@ export const BUILDIN_ALIAS = [
     slug: 'post',
     name: '讨论',
     original: '讨论',
-    group: ALIAS_GROUP.GENERAL,
+    group: ALIAS_GROUP.THREAD,
   },
   {
     slug: 'changelog',
     name: '更新日志',
     original: '更新日志',
-    group: ALIAS_GROUP.GENERAL,
+    group: ALIAS_GROUP.THREAD,
   },
   {
     slug: 'kanban',
     name: '看板',
     original: '看板',
-    group: ALIAS_GROUP.GENERAL,
+    group: ALIAS_GROUP.THREAD,
   },
   {
-    slug: 'upvote',
-    name: '赞同',
-    original: '赞同',
-    group: ALIAS_GROUP.GENERAL,
-  },
-  {
-    slug: 'upvote_bug',
-    name: '相同问题',
-    original: '相同问题',
-    group: ALIAS_GROUP.GENERAL,
+    slug: 'doc',
+    name: '帮助台',
+    original: '帮助台',
+    group: ALIAS_GROUP.THREAD,
   },
   {
     slug: 'todo',
@@ -232,6 +235,18 @@ export const BUILDIN_ALIAS = [
     name: '已完成',
     original: '已完成',
     group: ALIAS_GROUP.KANBAN,
+  },
+  {
+    slug: 'upvote',
+    name: '投票',
+    original: '投票',
+    group: ALIAS_GROUP.OTHERS,
+  },
+  {
+    slug: 'upvote_bug',
+    name: '相同问题',
+    original: '相同问题',
+    group: ALIAS_GROUP.OTHERS,
   },
 ]
 
@@ -375,12 +390,16 @@ export const TW_CARD_OPTIONS = [
 
 export const ALIAS_TABS = [
   {
-    title: '常规',
-    slug: DASHBOARD_ALIAS_ROUTE.GENERAL,
+    title: '板块入口',
+    slug: DASHBOARD_ALIAS_ROUTE.THREAD,
   },
   {
-    title: '看板',
+    title: '看板列',
     slug: DASHBOARD_ALIAS_ROUTE.KANBAN,
+  },
+  {
+    title: '其他',
+    slug: DASHBOARD_ALIAS_ROUTE.OTHERS,
   },
 ]
 

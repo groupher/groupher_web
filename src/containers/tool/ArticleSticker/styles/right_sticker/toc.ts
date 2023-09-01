@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable, TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import Img from '@/Img'
 import { FadeToggle } from '@/widgets/Common'
@@ -14,11 +14,11 @@ export const Wrapper = styled(FadeToggle).attrs<TTestable>(({ testid }) => ({
   margin-left: 120px;
 `
 export const HeaderWrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   cursor: pointer;
 `
 export const TitleWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const TocIcon = styled(Img)`
   fill: ${theme('article.digest')};

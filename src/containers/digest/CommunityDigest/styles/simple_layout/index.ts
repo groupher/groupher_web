@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 
 import type { THeaderLayout, TMetric } from '@/spec'
-import css, { WIDTH, theme } from '@/utils/css'
-import { pixelAdd } from '@/utils/dom'
+import css, { theme } from '@/css'
 
 import { BaseBanner } from '../index'
 import { HEADER_LAYOUT } from '@/constant/layout'
@@ -15,6 +14,7 @@ export const Wrapper = styled(BaseBanner)<TWrapper>`
   width: 100%;
   min-height: ${({ headerLayout }) => (headerLayout === HEADER_LAYOUT.FLOAT ? '74px' : '64px')};
   background: transparent;
+  ${({ metric }) => css.fitPageWidth(metric)};
 
   border-bottom: ${({ headerLayout }) =>
     headerLayout === HEADER_LAYOUT.FLOAT ? 'none' : '1px solid transparent'};
@@ -34,14 +34,12 @@ export const Wrapper = styled(BaseBanner)<TWrapper>`
   `};
 `
 export const InnerWrapper = styled.div<TWrapper>`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   /* padding-top: 10px; */
   margin-bottom: 8px;
   width: 100%;
   // if use margin-left will cause horizontal scrollbar
-  // 70 是经典布局为缩小帖子列表"视觉宽度"手动缩小的值
-  padding-left: ${pixelAdd(WIDTH.COMMUNITY.CONTENT_OFFSET, 70)};
-  ${({ metric }) => css.fitPageWidth(metric)};
+  ${({ metric }) => css.fitContentWidth(metric)};
   transition: min-height 0.25s;
 
   ${css.media.mobile`
@@ -49,9 +47,8 @@ export const InnerWrapper = styled.div<TWrapper>`
   `};
 `
 export const BaseBannerContent = styled.div`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   width: 100%;
-  max-width: ${WIDTH.COMMUNITY.CONTENT};
 
   ${css.media.mobile`
     padding-left: 18px;
@@ -59,14 +56,14 @@ export const BaseBannerContent = styled.div`
   `};
 `
 export const BannerContentWrapper = styled(BaseBannerContent)`
-  ${css.flexColumn('justify-between')};
+  ${css.column('justify-between')};
   align-items: 'center';
 `
 export const BannerContainer = styled(BaseBanner)`
   /* min-height: 125px; */
 `
 export const CommunityBaseInfo = styled.div`
-  ${css.flex('justify-between', 'align-center')};
+  ${css.row('justify-between', 'align-center')};
   width: 100%;
   padding-top: 10px;
 `
@@ -75,6 +72,6 @@ export const MobileNaviWrapper = styled.div`
   display: none;
 
   ${css.media.mobile`
-    ${css.flexGrow()};
+    ${css.rowGrow()};
   `};
 `

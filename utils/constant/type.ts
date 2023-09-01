@@ -57,6 +57,9 @@ const TYPE = {
     // user lister
     USER_LISTER: 'USER_LISTER',
 
+    // passport
+    PASSPORT_EDITOR: 'PASSPORT_EDITOR',
+
     // modeline
     MODELINE_MENU: 'MODELINE_MENU',
 

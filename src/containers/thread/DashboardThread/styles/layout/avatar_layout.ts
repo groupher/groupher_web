@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import { LineDivider } from '@/widgets/Common'
 
@@ -10,7 +10,7 @@ import { BaseSection, BlockBase } from '.'
 export const Wrapper = styled(BaseSection)``
 
 export const SelectWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   gap: 20px 30px;
   width: 100%;
@@ -26,10 +26,10 @@ export const Avatar = styled.div<TAvatar>`
   border-color: ${theme('alphaBg')};
 `
 export const AvatarList = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Layout = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 export const Divider = styled(LineDivider)`
   background: ${theme('article.digest')};
@@ -37,7 +37,7 @@ export const Divider = styled(LineDivider)`
   opacity: 0.6;
 `
 export const Block = styled(BlockBase)`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   width: 200px;
   height: 80px;
 `

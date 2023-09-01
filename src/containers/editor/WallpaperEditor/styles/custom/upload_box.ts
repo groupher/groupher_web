@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import UploadSVG from '@/icons/Upload'
 import MoreSVG from '@/icons/menu/More'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   position: relative;
   border: 1px dashed;
   border-radius: 5px;
@@ -40,7 +40,7 @@ export const Title = styled.div`
 `
 export const Menu = styled.div`
   ${css.size(30)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   position: absolute;
   right: 10px;
   top: 10px;

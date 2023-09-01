@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
 // import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   padding: 10px 0;
   background: ${theme('modal.subPanel')};
   min-height: 300px;
@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
   transition: all 0.2s;
 `
 export const Header = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   height: 32px;
   padding: 0 28px;
   padding-bottom: 8px;

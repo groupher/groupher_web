@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import Img from '@/Img'
 
 import { Wrapper as HeaderWrapper } from './index'
@@ -12,7 +12,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   position: absolute;
   top: -8px;
   left: -78px;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 60px;
   cursor: pointer;
   visibility: hidden;

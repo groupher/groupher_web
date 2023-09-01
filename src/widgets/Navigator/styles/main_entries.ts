@@ -2,11 +2,11 @@ import Link from 'next/link'
 import styled from 'styled-components'
 
 import type { TTestable, TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import DotDividerBase from '@/widgets/DotDivider'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   font-size: 15px;
   width: 100%;
 `
@@ -17,7 +17,7 @@ type TSiteLink = TTestable & TActive
 export const SiteLink = styled(Link).attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TSiteLink>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   font-weight: ${({ active }) => (active ? 600 : 400)};
 

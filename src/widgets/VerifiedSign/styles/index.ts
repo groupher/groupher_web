@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const PopContentWrapper = styled.div`
   text-align: left;
@@ -10,7 +10,7 @@ export const PopContentWrapper = styled.div`
   line-height: 1.6;
 `
 export const PopHeader = styled.div`
-  ${css.flex('align-center')}
+  ${css.row('align-center')}
   margin-bottom: 10px;
 `
 export const PopHeaderIcon = styled(Img)`

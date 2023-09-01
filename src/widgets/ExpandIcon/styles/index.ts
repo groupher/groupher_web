@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import {
   getNormalColor,
@@ -28,7 +28,7 @@ type TText = {
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable & TText>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   /* margin-left: 12px; */
   cursor: pointer;
   background: ${({ hideTextOnInit, active }) =>

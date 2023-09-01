@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import { Bar as BarBase } from '@/widgets/Common'
 import UpvoteSVG from '@/icons/Upvote'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<{ opacity: number }>`
-  ${css.flexColumn()};
+  ${css.column()};
   border-radius: 6px;
   height: 50px;
   padding: 3px 6px;
@@ -17,7 +17,7 @@ export const Bar = styled(BarBase)`
   background: ${theme('article.digest')};
 `
 export const Footer = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const UpvoteIcon = styled(UpvoteSVG)`
   ${css.size(10)};

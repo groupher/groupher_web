@@ -4,7 +4,7 @@ import type { TAvatarLayout } from '@/spec'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import ExpandSVG from '@/icons/Expand'
 import PinSVG from '@/icons/Pin'
@@ -13,7 +13,7 @@ import { CreateDate as HeaderCreateDate } from '../header'
 
 export const Wrapper = styled.div`
   position: relative;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding-top: 20px;
   position: relative;
   background: transparent;
@@ -66,7 +66,7 @@ export const RepliesHint = styled.div`
   margin-right: 6px;
 `
 export const CreateDate = styled(HeaderCreateDate)`
-  ${css.flex('justify-end')};
+  ${css.row('justify-end')};
   min-width: 40px;
   margin-right: 4px;
   word-break: keep-all;
@@ -75,7 +75,7 @@ export const PinState = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 1px;
 `
 export const PinIcon = styled(PinSVG)`
@@ -107,7 +107,7 @@ export const SolutionIcon = styled(Img)<{ isAuthorUpvoted: boolean }>`
   margin-left: 1px;
 `
 export const CommentBodyInfo = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
 `
 export const CommentContent = styled.div`
@@ -128,7 +128,7 @@ export const ReplyIcon = styled(Img)`
 `
 
 export const ReplyAction = styled.div`
-  ${css.flex()};
+  ${css.row()};
   color: ${theme('comment.action')};
   margin-right: 12px;
   cursor: pointer;

@@ -3,14 +3,14 @@ import styled from 'styled-components'
 import type { TColorName } from '@/spec'
 
 import { COLORS } from '@/constant/colors'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const Label = styled.div<{ color: TColorName }>`
   ${css.circle(28)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   border: 1px solid;
   border-color: ${({ color }) => COLORS[color]};
   cursor: pointer;
@@ -23,7 +23,7 @@ export const TheColor = styled.div<{ color: TColorName }>`
 
 // threads
 export const ThreadsWrapper = styled.div`
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
   flex-wrap: wrap;
 
   border: 1px solid;
@@ -40,7 +40,7 @@ export const Section = styled.div`
   margin-bottom: 15px;
 `
 export const Header = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
 `
 export const ThreadTitle = styled.div`

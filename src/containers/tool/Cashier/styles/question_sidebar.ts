@@ -1,15 +1,15 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 150px;
   padding: 10px;
 `
 export const BackBtnWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('banner.title')};
   font-size: 1rem;
 

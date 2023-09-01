@@ -2,12 +2,12 @@ import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import CheckedSVG from '@/icons/CheckBold'
 import CircleArrowSVG from '@/icons/CircleArrow'
 
 export const Wrapper = styled.div<{ showMore: boolean }>`
-  ${css.flex()};
+  ${css.row()};
   width: calc(100% + 30px);
   flex-wrap: wrap;
   gap: 15px 16px;
@@ -67,7 +67,7 @@ export const CheckIcon = styled(CheckedSVG)`
 `
 
 export const ShowMoreMask = styled.div<{ showMore: boolean }>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   position: absolute;
   bottom: ${({ showMore }) => (!showMore ? 0 : '-25px')};
   width: 350px;

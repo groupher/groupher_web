@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding: 3px 5px;
   padding-left: 10px;
 `
 export const UsersWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 13px;
 `
 export const Username = styled.div`

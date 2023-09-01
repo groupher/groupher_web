@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   width: 700px;
@@ -13,7 +13,7 @@ export const PublishFooter = styled.div`
   border-top-color: ${theme('divider')};
   margin-top: 28px;
   padding-top: 20px;
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   width: 100%;
   padding-left: 20px;
   padding-right: 35px;

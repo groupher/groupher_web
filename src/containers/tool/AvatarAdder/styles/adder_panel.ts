@@ -1,22 +1,22 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('justify-center')};
+  ${css.column('justify-center')};
 
   padding: 15px;
   width: 270px;
 `
 export const Header = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Result = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const SearchWrapper = styled.div`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   margin-top: 20px;
 `
 export const Divider = styled.div`
@@ -28,7 +28,7 @@ export const Divider = styled.div`
   margin-bottom: 10px;
 `
 export const Footer = styled.div`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
 `
 export const AdderIcon = styled(Img)`
   ${css.size(17)};
@@ -39,7 +39,7 @@ export const AdderIcon = styled(Img)`
   }
 `
 export const AddBtn = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 80px;
   color: ${theme('article.title')};
   border: 1px solid;

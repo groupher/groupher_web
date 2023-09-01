@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 // import Img from '@/Img'
 // import { theme } from '@/utils/themes'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   font-size: 13px;
   margin-top: 5px;
   margin-bottom: 5px;

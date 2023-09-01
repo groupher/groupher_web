@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import { SelectItem as SelectItemBase } from '.'
 
@@ -10,18 +10,18 @@ import GtdTodoSVG from '@/icons/GtdTodo'
 import GtdRejectSVG from '@/icons/Reject'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 110px;
   padding: 8px 10px;
   cursor: auto;
 `
 export const SelectItem = styled(SelectItemBase)`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding: 7px 5px;
 `
 export const IconWrapper = styled.div`
   ${css.circle(16)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 
   opacity: 0.6;
   margin-right: 9px;

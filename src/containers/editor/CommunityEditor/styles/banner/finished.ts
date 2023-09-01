@@ -1,10 +1,13 @@
 import styled from 'styled-components'
+import Link from 'next/link'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
+
+import DashboardSVG from '@/icons/Dashboard'
 
 export const Wrapper = styled.div`
   position: relative;
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   color: ${theme('article.digest')};
   /* background-image: linear-gradient(#043B49, #022A35); */
   background-image: ${theme('banner.linearGradient')};
@@ -15,9 +18,29 @@ export const Title = styled.div`
   color: ${theme('article.title')};
   font-size: 18px;
   margin-bottom: 20px;
+  font-weight: 550;
   margin-left: -10px;
 `
 export const Desc = styled.div`
   color: ${theme('article.digest')};
   font-size: 15px;
+`
+
+export const Footer = styled.div`
+  ${css.row('align-center')};
+  gap: 0 20px;
+  margin-top: 50px;
+`
+
+export const DashboardIcon = styled(DashboardSVG)`
+  fill: white;
+  ${css.size(14)};
+  margin-right: 10px;
+`
+
+export const TheLink = styled(Link)`
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
 `

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import CollectionSVG from '@/icons/CollectionBookmark'
 
 export const Wrapper = styled.div`
@@ -8,18 +8,18 @@ export const Wrapper = styled.div`
   border-bottom-color: ${theme('drawer.divider')};
 `
 export const InfoWrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   width: 100%;
   height: 60px;
 `
 export const BottomWrapper = styled.div`
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
 `
 export const TabsWrapper = styled.div`
   margin-left: -10px;
 `
 export const CollectWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   cursor: pointer;
 `
 export const CollectIcon = styled(CollectionSVG)`
@@ -43,7 +43,7 @@ export const CollectText = styled.div`
   transition: color 0.2s;
 `
 export const BaseWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const UpvoteWrapper = styled.div`
   margin-top: 3px;

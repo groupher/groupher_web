@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import Img from '@/Img'
 
 import { Wrapper as WrapperBase, Entry as EntryBase } from './index'
@@ -9,11 +9,11 @@ export const Wrapper = styled(WrapperBase)`
   width: 100%;
 `
 export const BodyWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
 `
 export const Entry = styled(EntryBase)<{ index: number }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 48%;
   height: auto;
   margin-bottom: 10px;
@@ -32,11 +32,11 @@ export const Logo = styled(Img)`
   }
 `
 export const Intro = styled.div`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   margin-top: 8px;
 `
 export const Title = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   font-size: 12px;
 

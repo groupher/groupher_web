@@ -20,7 +20,9 @@ import {
   Alias,
   UpvoteBtnWrapper,
   Count,
-  LineDivider,
+  Digest,
+  FacesWrapper,
+  Note,
 } from './styles/default_layout'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
@@ -40,7 +42,7 @@ type TProps = {
 const Upvote: FC<TProps> = ({
   testid = 'upvote',
   count = 4,
-  alias = '赞同',
+  alias = '参与了投票',
   viewerHasUpvoted = false,
   onAction = log,
   avatarList,
@@ -54,13 +56,18 @@ const Upvote: FC<TProps> = ({
         <UpvoteBtnWrapper>
           <UpvoteBtn viewerHasUpvoted={viewerHasUpvoted} onAction={onAction} count={count} />
         </UpvoteBtnWrapper>
-        <Alias>{alias}</Alias>
         <Count>
           <AnimatedCount count={count} active={viewerHasUpvoted} size="medium" />
         </Count>
       </Button>
-      {!noOne && <LineDivider />}
-      {!noOne && <Facepile users={avatarList} avatarLayout={avatarLayout} showMore />}
+      {!noOne && (
+        <Digest>
+          <FacesWrapper>
+            <Facepile left={-4} users={avatarList} avatarLayout={avatarLayout} showMore={false} />
+          </FacesWrapper>
+          <Note>xx, xx {alias}</Note>
+        </Digest>
+      )}
     </Wrapper>
   )
 }

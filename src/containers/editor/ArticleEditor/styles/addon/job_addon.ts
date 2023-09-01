@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import Input from '@/widgets/Input'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import LaptopSVG from '@/icons/Laptop'
 import LinkSVG from '@/icons/Link'
@@ -9,7 +9,7 @@ import LinkSVG from '@/icons/Link'
 export { LinkInput } from './index'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const LaptopIcon = styled(LaptopSVG)`
   ${css.size(16)};

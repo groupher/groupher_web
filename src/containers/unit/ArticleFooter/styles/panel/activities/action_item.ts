@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   color: ${theme('article.digest')};
   font-size: 12px;
   margin-bottom: 10px;
@@ -12,11 +12,11 @@ export const Wrapper = styled.div`
 `
 export const MainInfo = styled.div`
   position: relative;
-  ${css.flex('align-end')};
+  ${css.row('align-end')};
 `
 export const IconBgWrapper = styled.div`
   ${css.circle(18)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   background: ${theme('hoverBg')};
   margin-right: 10px;
 `

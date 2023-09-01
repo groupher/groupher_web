@@ -2,13 +2,13 @@ import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import ShareSVG from '@/icons/Share'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-start')};
+  ${css.row('align-start')};
   padding-top: 12px;
   border-bottom: 1px solid;
   border-bottom-color: ${theme('divider')};
@@ -40,7 +40,7 @@ export const Title = styled.div`
   `};
 `
 export const TagsWrapper = styled.div`
-  ${css.flex('align-both', 'justify-between')};
+  ${css.row('align-both', 'justify-between')};
   margin-bottom: 15px;
 `
 export const Body = styled.div`
@@ -49,7 +49,7 @@ export const Body = styled.div`
   line-height: 1.85;
 `
 export const Footer = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 20px;
   margin-left: -5px;
   margin-right: 12px;

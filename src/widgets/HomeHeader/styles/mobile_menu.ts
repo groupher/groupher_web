@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import ListSVG from '@/icons/List'
 
@@ -17,7 +17,7 @@ export const ListIcon = styled(ListSVG)`
 `
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   padding: 20px 30px;
   gap: 15px;
   height: auto;

@@ -1,6 +1,6 @@
 import { FC, ReactNode, memo } from 'react'
 
-import type { TSizeTS, TSpace } from '@/spec'
+import type { TActive, TSizeTS, TSpace } from '@/spec'
 import SIZE from '@/constant/size'
 
 import { buildLog } from '@/utils/logger'
@@ -15,7 +15,8 @@ type TProps = {
   withBorder?: boolean
   onClick?: () => void
   noArrow?: boolean
-} & TSpace
+} & TSpace &
+  TActive
 
 const DropdownButton: FC<TProps> = ({
   children,
@@ -23,13 +24,14 @@ const DropdownButton: FC<TProps> = ({
   withBorder = false,
   onClick = log,
   noArrow = false,
+  $active = false,
   ...restProps
 }) => {
   return (
     // @ts-ignore
-    <Wrapper withBorder={withBorder} size={size} onClick={onClick} {...restProps}>
+    <Wrapper withBorder={withBorder} size={size} onClick={onClick} $active={$active} {...restProps}>
       <ButtonWrapper size="small" type="primary" ghost>
-        <InnerBtnWrapper>
+        <InnerBtnWrapper $active={$active}>
           <>{children}</>
           {!noArrow && <FilterIcon />}
         </InnerBtnWrapper>

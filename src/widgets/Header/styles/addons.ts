@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import MagicStickSVG from '@/icons/MagicStick'
 import HeaderSearchSVG from '@/icons/HeaderSearch'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const SettingIcon = styled(MagicStickSVG)`
   fill: ${theme('header.fg')};
@@ -34,7 +34,7 @@ export const HeaderSearchIcon = styled(HeaderSearchSVG).attrs<TTestable>(({ test
 `
 
 export const Operations = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Search = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,

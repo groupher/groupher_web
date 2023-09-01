@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
 import Link from 'next/link'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   width: 100%;
   /* border: 1px solid;
   border-color: ${theme('divider')}; */
@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
   `};
 `
 export const BrandInfo = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 
 export const BrandText = styled(Link)`
@@ -31,7 +31,7 @@ export const BrandText = styled(Link)`
 `
 
 export const LinksInfo = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   gap: 0 18px;
 
   ${css.media.mobile`

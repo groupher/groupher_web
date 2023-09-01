@@ -1,10 +1,23 @@
 import styled from 'styled-components'
+import * as NextLink from 'next/link'
 
 import type { TActive, TSpace } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
+
+// @ts-ignore
+export const Link = styled(NextLink)`
+  color: ${theme('link')};
+  text-decoration: none;
+
+  &:hover {
+    color: ${theme('link')};
+    text-decoration: underline;
+    cursor: pointer;
+  }
+`
 
 export const Row = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Br = styled.div<TSpace>`
   margin-top: ${({ top }) => `${top}px` || 0};

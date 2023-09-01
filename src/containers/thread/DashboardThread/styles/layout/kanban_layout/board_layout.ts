@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive, TColorName } from '@/spec'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import { camelize } from '@/utils/fmt'
 
 import DiceSVG from '@/icons/Dice'
@@ -10,7 +10,7 @@ import DiceSVG from '@/icons/Dice'
 export { Bar, Circle } from '..'
 
 export const BoardsWrapper = styled.div`
-  ${css.flex('justify-center', 'align-end')};
+  ${css.row('justify-center', 'align-end')};
   gap: 0 18px;
   width: calc(100% + 100px);
   margin-left: -45px;
@@ -31,13 +31,13 @@ export const MobileBoardsWrapper = styled.div`
   `}
 `
 export const MobileBoardsInnerWrapper = styled.div`
-  ${css.flex('justify-center', 'align-end')};
+  ${css.row('justify-center', 'align-end')};
   width: 150%;
   gap: 0 18px;
 `
 type TBoard = { color?: TColorName } & TActive
 export const Board = styled.div<TBoard>`
-  ${css.flexColumn()};
+  ${css.column()};
   padding: 8px;
   gap: 6px;
   overflow: hidden;
@@ -59,13 +59,13 @@ export const Board = styled.div<TBoard>`
   transition: all 0.2s;
 `
 export const ColorsWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   gap: 0 10px;
   margin-bottom: 18px;
 `
 
 export const Action = styled.div<TActive>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('article.info')};
   font-size: 12px;
   opacity: ${({ $active }) => ($active ? 1 : 0.85)};
@@ -88,7 +88,7 @@ export const DiceIcon = styled(DiceSVG)<{ rotate: number }>`
 `
 
 export const Preset = styled.div<{ setable?: boolean }>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   border: 1px solid;
   border-color: ${theme('divider')};
   border-radius: 10px;

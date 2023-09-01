@@ -1,19 +1,19 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import AccountSVG from '@/icons/Acount'
 
 import { TemplateBlock } from '.'
 
 export const Wrapper = styled(TemplateBlock)`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   height: 60px;
   padding: 0 20px;
   background: ${theme('alphaBg')};
 `
 export const LeftWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   gap: 0 10px;
 `
 export const BrandLogo = styled.div`
@@ -24,8 +24,8 @@ export const BrandText = styled.div`
   color: ${theme('article.title')};
 `
 export const CenterWrapper = styled.div`
-  ${css.flex('align-center')};
-  gap: 0 14px;
+  ${css.row('align-center')};
+  gap: 0 20px;
   margin-left: -15px;
 `
 
@@ -39,7 +39,7 @@ export const LinkItem = styled.div`
   }
 `
 export const RightWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const AccountIcon = styled(AccountSVG)`
   ${css.size(12)};

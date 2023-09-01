@@ -3,15 +3,15 @@
 const I18nDict = {
   community: '社区',
   posts: '帖子',
+  kanban: '看板',
+  changelog: '更新日志',
+  doc: '帮助台',
+  help: '帮助台',
+  about: '关于',
   post: '帖子',
-  radar: '雷达',
-  city: '同城',
   share: '分享',
   users: '用户',
-  jobs: '工作',
-  job: '工作',
   blog: '博客',
-  works: '作品',
   user: '用户',
   profile: '主页',
 
@@ -42,6 +42,7 @@ const I18nDict = {
 
   // osocial
   HOMEPAGE: '官方主页',
+  TICTOC: '抖音',
   GITHUB: 'Github',
   TWITTER: '推特',
   ZHIHU: '知乎',

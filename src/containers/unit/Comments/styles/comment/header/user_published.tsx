@@ -2,7 +2,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 // import { Wrapper as CommentBlock } from '../desktop_view'
 
@@ -14,7 +14,7 @@ export const Avatar = styled(Img)<{ avatarSize: number }>`
   margin-right: 13px;
 `
 export const ArticleBase = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-grow: 1;
 `
 export const AuthorTitle = styled(Link)`
@@ -56,7 +56,7 @@ export const ShortIntro = styled.div`
   `};
 `
 export const CreateDate = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('comment.floor')};
   font-size: 12px;
   opacity: 0.8;

@@ -1,17 +1,17 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   overflow: hidden;
 `
 export const ListsWrapper = styled.div`
   width: 340px;
 `
 export const UserLabel = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 
   &:hover {
     cursor: pointer;
@@ -39,7 +39,7 @@ export const MessageLinker = styled.a`
 `
 
 export const Message = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   padding: 6px 5px;
   &:hover {
     background: #113744;
@@ -52,11 +52,11 @@ export const MessageDivider = styled.div`
   opacity: 0.3;
 `
 export const MessageHeader = styled.div`
-  ${css.flex()};
+  ${css.row()};
 `
 export const MessageBody = styled.div``
 export const TitleHeader = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const TypeLabel = styled.div`
   color: ${theme('article.digest')};
@@ -73,7 +73,7 @@ export const SourceTitle = styled.div`
   }
 `
 export const SourcePreview = styled.div`
-  ${css.flex()};
+  ${css.row()};
   color: ${theme('article.digest')};
   font-size: 0.8rem;
   margin-top: 3px;

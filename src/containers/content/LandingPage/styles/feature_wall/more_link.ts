@@ -5,11 +5,11 @@ import Link from 'next/link'
 import type { TFeatType } from '../../spec'
 import { FEAT } from '../../constant'
 
-import css from '@/utils/css'
+import css from '@/css'
 import ArrowSVG from '@/icons/Arrow'
 
 export const Wrapper = styled(Link)`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   text-decoration: none;
   opacity: 0.8;
   margin-top: 55px;
@@ -21,7 +21,7 @@ export const Wrapper = styled(Link)`
   }
 
   ${css.media.mobile`
-    ${css.flex('justify-center')};
+    ${css.row('justify-center')};
     margin-top: 20px;
     transform: scale(0.9);
     width: 90%;

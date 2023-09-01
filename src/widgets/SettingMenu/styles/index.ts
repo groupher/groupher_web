@@ -3,14 +3,14 @@ import styled from 'styled-components'
 import type { TTestable, TActive } from '@/spec'
 
 // import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 type TWrapper = TTestable & { width: number }
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flexColumn()};
+  ${css.column()};
   width: ${({ width }) => `${width}px`};
 `
 export const Option = styled.div<TActive>`

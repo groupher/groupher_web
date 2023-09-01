@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TMetric } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import Img from '@/Img'
 import { Wrapper as CommunityWrapper } from './community_layout'
 
@@ -12,20 +12,20 @@ export const Wrapper = styled(CommunityWrapper)`
   justify-content: flex-start !important;
 `
 export const InnerWrapper = styled.div`
-  ${css.flex('justify-start', 'align-center')};
+  ${css.row('justify-start', 'align-center')};
   width: 100%;
   height: 50px;
   /* border-bottom: 1px solid;
   border-bottom-color: ${theme('divider')}; */
 `
 export const RouterWrapper = styled.div<{ metric: TMetric }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
   height: 100%;
   ${({ metric }) => css.fitContentWidth(metric)};
 `
 export const Operations = styled.div<{ metric: TMetric }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   justify-content: ${({ metric }) => getStickerJustify(metric)};
   ${({ metric }) => css.fitStickerWidth(metric)};
 

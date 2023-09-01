@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 type TSlipBar = {
   slipHeight: string
@@ -24,7 +24,7 @@ export const Wrapper = styled.nav.attrs<TTestable>(({ testid }) => ({
 `
 export const Nav = styled.nav`
   position: relative;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-flow: nowrap;
   margin: 0 auto;
   padding: 0;
@@ -32,7 +32,7 @@ export const Nav = styled.nav`
 
 export const SlipBar = styled.span<TSlipBar>`
   position: absolute;
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
   width: ${({ width }) => width};
   bottom: 1px;
   left: 0;

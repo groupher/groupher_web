@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme, animate } from '@/utils/css'
+import css, { theme, animate } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
   margin-top: 10px;
 `
 export const Label = styled.div`
-  ${css.flex()};
+  ${css.row()};
 `
 export const Title = styled.div`
   /* color: ${theme('tabs.headerActive')}; */

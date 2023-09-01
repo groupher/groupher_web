@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import WipSVG from '@/icons/Wip'
 
 export const Wrapper = styled.div`
@@ -40,5 +40,5 @@ export const Li = styled.li`
   font-size: 14px;
 `
 export const InnerLinker = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `

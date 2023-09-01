@@ -5,10 +5,16 @@
 
 import { pick, values, isEmpty } from 'ramda'
 
-import type { TRootStore, TRoute } from '@/spec'
+import type { TRootStore, TRoute, TAccount } from '@/spec'
 import { T, getParent, markStates, Instance } from '@/utils/mobx'
 
-import type { TSelectTypeStatus, TSetupDomainStatus, TSetupInfoStatus, TValidState } from './spec'
+import type {
+  TSelectTypeStatus,
+  TSetupDomainStatus,
+  TSetupInfoStatus,
+  TSetupExtraStatus,
+  TValidState,
+} from './spec'
 import { STEP, COMMUNITY_TYPE } from './constant'
 
 const CommunityEditor = T.model('CommunityEditorStore', {
@@ -17,6 +23,7 @@ const CommunityEditor = T.model('CommunityEditorStore', {
   // if community exist / has pending apply
   checking: T.opt(T.bool, false),
   submitting: T.opt(T.bool, false),
+  isOfficalValid: T.opt(T.bool, false),
 
   communityExist: T.opt(T.bool, false),
   hasPendingApply: T.opt(T.bool, false),
@@ -25,17 +32,31 @@ const CommunityEditor = T.model('CommunityEditorStore', {
   slug: T.opt(T.string, ''),
   logo: T.maybeNull(T.string),
   title: T.opt(T.string, ''),
+  homepage: T.opt(T.string, ''),
+  extraInfo: T.opt(T.string, ''),
+
+  city: T.opt(T.string, ''),
+  source: T.opt(T.string, ''),
+
   desc: T.opt(T.string, ''),
-  applyMsg: T.opt(T.string, ''),
 })
   .views((self) => ({
     get isLogin(): boolean {
       const root = getParent(self) as TRootStore
       return root.account.isLogin
     },
+    get accountInfo(): TAccount {
+      const root = getParent(self) as TRootStore
+      return root.accountInfo
+    },
     get curRoute(): TRoute {
       const root = getParent(self) as TRootStore
       return root.curRoute
+    },
+    get applyMsg(): string {
+      const { homepage, extraInfo } = self
+
+      return `${homepage}\n${extraInfo}`
     },
     get selectTypeStatus(): TSelectTypeStatus {
       const { communityType } = self
@@ -48,9 +69,10 @@ const CommunityEditor = T.model('CommunityEditorStore', {
       return { slug }
     },
     get setupInfoStatus(): TSetupInfoStatus {
-      const { slug, title, desc, logo, applyMsg } = self
-
-      return { slug, title, desc, logo, applyMsg }
+      return pick(['slug', 'title', 'desc', 'logo'], self)
+    },
+    get setupExtraStatus(): TSetupExtraStatus {
+      return pick(['homepage', 'extraInfo', 'city', 'source'], self)
     },
     get isCommunityTypeValid(): boolean {
       const slf = self as TStore
@@ -61,7 +83,7 @@ const CommunityEditor = T.model('CommunityEditorStore', {
     get isRawValid(): boolean {
       if (self.communityExist) return false
 
-      const rule = /^[0-9a-zA-Z]+$/
+      const rule = /^[0-9a-zA-Z-_]+$/
       return rule.test(self.slug)
     },
     get isTitleValid(): boolean {
@@ -71,13 +93,15 @@ const CommunityEditor = T.model('CommunityEditorStore', {
       return !isEmpty(self.desc)
     },
     get isLogoValid(): boolean {
-      return self.logo && !isEmpty(self.logo)
+      // return self.logo && !isEmpty(self.logo)
+      return true
     },
     get validState(): TValidState {
       const slf = self as TStore
 
       return pick(
         [
+          'isOfficalValid',
           'isCommunityTypeValid',
           'isRawValid',
           'isTitleValid',

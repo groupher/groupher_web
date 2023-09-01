@@ -1,4 +1,5 @@
 import type { TID } from './utils'
+import type { TSimpleUse } from './account'
 
 type TMeta = {
   postsCount: number
@@ -6,6 +7,12 @@ type TMeta = {
   worksCount: number
   blogsCount: number
   radarsCount: number
+}
+
+export type TModerator = {
+  role: string
+  passportItemCount: number
+  user: TSimpleUse
 }
 
 export type TCommunity = {
@@ -18,10 +25,12 @@ export type TCommunity = {
   articlesCount?: number
   viewerHasSubscribed?: boolean
   contributesDigest?: number[]
-  editorsCount?: number
+  moderatorsCount?: number
   desc?: string
   meta?: TMeta
   threads?: TCommunityThread[]
+  pending?: number
+  moderators?: TModerator[]
 }
 
 export type TPagedCommunities = {

@@ -7,21 +7,21 @@ import { RightArrow, LeftArrow, UpArrow, DownArrow } from '../styles/arrow_butto
 type TProps = {
   color: TColorName
   leftLayout: boolean
-  linkColor: boolean
+  reverseColor: boolean
 
   up: boolean
   down: boolean
 }
 
-const Arrow: FC<TProps> = ({ color, leftLayout, linkColor, up, down }) => {
+const Arrow: FC<TProps> = ({ color, leftLayout, reverseColor, up, down }) => {
   if (!leftLayout) {
-    if (down) return <DownArrow color={color} linkColor={linkColor} down />
-    if (up) return <UpArrow color={color} linkColor={linkColor} up />
+    if (down) return <DownArrow color={color} reverseColor={reverseColor} down />
+    if (up) return <UpArrow color={color} reverseColor={reverseColor} up />
 
-    return <RightArrow color={color} linkColor={linkColor} />
+    return <RightArrow color={color} reverseColor={reverseColor} />
   }
 
-  return <LeftArrow color={color} linkColor={linkColor} up={up} down={down} />
+  return <LeftArrow color={color} reverseColor={reverseColor} up={up} down={down} />
 }
 
 export default Arrow

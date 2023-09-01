@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import UserSVG from '@/icons/User'
 
@@ -14,7 +14,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   `};
 `
 export const PopMenu = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const MenuItem = styled.div`
   padding: 4px 13px;

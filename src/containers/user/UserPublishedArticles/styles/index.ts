@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css from '@/utils/css'
+import css from '@/css'
 
 export const ArticlesWrapper = styled.div<{ hasContentBg: boolean }>`
   margin-top: 10px;

@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 
-import css, { theme, animate } from '@/utils/css'
+import css, { theme, animate } from '@/css'
 import WarningSVG from '@/icons/Warning'
 
 export const Wrapper = styled.div`
   position: fixed;
   left: calc(50% - 210px);
   bottom: 30px;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   background: ${theme('article.title')};
   height: 40px;
   width: 420px;
@@ -32,7 +32,7 @@ export const Title = styled.div`
   font-size: 13px;
 `
 export const ResetButton = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   color: ${theme('article.title')};
   width: 60px;
   height: 20px;
@@ -50,7 +50,7 @@ export const ResetButton = styled.div`
 `
 
 export const LearnMoreButton = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 60px;
   height: 18px;
   border-radius: 6px;

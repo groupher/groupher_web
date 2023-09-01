@@ -23,6 +23,9 @@ const client = createClient({
   },
   // the default:
   exchanges: defaultExchanges,
+  // requestPolicy: 'network-only',
+  // see https://formidable.com/open-source/urql/docs/basics/document-caching/#request-policies
+  requestPolicy: 'cache-and-network',
   // the same as:
   // exchanges: [dedupExchange, cacheExchange, fetchExchange],
 })

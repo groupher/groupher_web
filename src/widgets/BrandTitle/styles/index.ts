@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TTestable } from '@/spec'
 
 // import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 type TWrapper = TTestable & { mBottom: number }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
@@ -12,7 +12,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   margin-bottom: ${({ mBottom }) => `${mBottom}px`};
 `
 export const Title = styled.div`
-  ${css.flex()};
+  ${css.row()};
   cursor: pointer;
 `
 export const Desc = styled.div`

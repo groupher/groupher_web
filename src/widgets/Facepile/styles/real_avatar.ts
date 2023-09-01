@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 
-import type { TAvatarLayout, TColorName } from '@/spec'
+import type { TAvatarLayout } from '@/spec'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import Img from '@/Img'
 import ImgFallback from '@/widgets/ImgFallback'
@@ -52,7 +52,7 @@ export const AvatarsImg = styled(Img)<TAvatarsImg>`
 `
 type TAvatarsMore = { size: TAvatarSize; total: number }
 export const AvatarsMore = styled.span<TAvatarsMore>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   font-size: 14px;
   border-color: #113744;
   color: ${theme('article.title')};

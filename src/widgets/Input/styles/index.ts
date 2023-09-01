@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TTestable, TActive } from '@/spec'
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 type IInput = {
   hasPrefix: boolean
@@ -19,7 +19,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 const AddOn = styled.div<TActive>`
   position: absolute;
   top: 0;
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   display: ${({ show }) => (show ? 'flex' : 'none')};
   width: 30px;
   height: 32px;

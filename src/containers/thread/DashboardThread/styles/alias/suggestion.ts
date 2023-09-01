@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import Button from '@/widgets/Buttons/Button'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 10px;
 `
 export const Hint = styled.div`
@@ -14,7 +14,7 @@ export const Hint = styled.div`
   margin-left: 2px;
 `
 export const List = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 12px;
   gap: 10px;
 `

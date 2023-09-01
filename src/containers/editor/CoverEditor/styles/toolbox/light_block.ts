@@ -1,17 +1,17 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 // import UploadSVG from '@/icons/Upload'
 
 export const Wrapper = styled.div`
   ${css.size(60)};
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 export const Block = styled.div`
   ${css.size(48)};
-  ${css.flex()};
+  ${css.row()};
   flex-wrap: wrap;
   gap: 3px;
   padding: 4px;

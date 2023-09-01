@@ -1,7 +1,8 @@
 import { THREAD } from '@/constant/thread'
 import { T } from '@/utils/mobx'
 
-import { User, SimpleUser, PagedUsers } from '../User'
+import { User, PagedUsers } from '../User'
+import { SimpleUser } from '../Common'
 import { Community } from '../Community'
 import { Comment } from '../Comment'
 import { Tag } from '../Tag'

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import { camelize } from '@/utils/fmt'
 
 import GtdWipSVG from '@/icons/GtdWip'
@@ -9,7 +9,7 @@ import GtdDoneSVG from '@/icons/GtdDone'
 import GtdTodoSVG from '@/icons/GtdTodo'
 
 export const Column = styled.div`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   width: 32%;
   min-width: 32%;
   min-height: 70vh;
@@ -17,7 +17,7 @@ export const Column = styled.div`
   /* border-color: ${theme('article.info')}; */
 `
 export const Header = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding-bottom: 15px;
   width: 100%;
   padding-left: 3px;

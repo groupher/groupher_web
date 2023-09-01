@@ -4,12 +4,12 @@ import type { TAvatarLayout } from '@/spec'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import CommentSVG from '@/icons/Comment'
 import UserSVG from '@/icons/User'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   height: 44px;
 
   cursor: pointer;
@@ -26,7 +26,7 @@ export const Wrapper = styled.div`
   }
 `
 export const ExpandWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   height: 60px;
   margin-left: 0;
   position: relative;

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import LightSVG from '@/icons/Light'
 import QuestionSVG from '@/icons/Question'
@@ -11,7 +11,7 @@ import OtherSVG from '@/icons/menu/Feedback'
 export { SelectItem } from '.'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   min-width: 190px;
   cursor: auto;
 `

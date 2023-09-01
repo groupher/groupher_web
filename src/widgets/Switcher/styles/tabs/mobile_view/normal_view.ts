@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import { Nav as NavBase, RealBar as RealBarBase, SlipBar as SlipBarBase } from '../index'
 
@@ -24,7 +24,7 @@ export const Nav = styled(NavBase)`
   margin: 0;
 `
 export const MoreWrapper = styled.div`
-  ${css.flex('align-center', 'justify-end')};
+  ${css.row('align-center', 'justify-end')};
   position: absolute;
   top: 10px;
   right: -4px;

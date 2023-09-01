@@ -1,18 +1,18 @@
 import styled from 'styled-components'
 
-import css, { theme, animate } from '@/utils/css'
+import css, { theme, animate } from '@/css'
 import CheckedSVG from '@/icons/Checked'
 
 export const Wrapper = styled.div``
 
 export const PublishFooter = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   width: 100%;
   padding-left: 26px;
   padding-right: 35px;
 `
 export const DonwWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   animation: ${animate.zoomIn} 0.3s linear;
 `
 export const DoneIcon = styled(CheckedSVG)`

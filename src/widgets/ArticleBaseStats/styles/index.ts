@@ -5,12 +5,12 @@ import type { TTestable } from '@/spec'
 import ViewSVG from '@/icons/View'
 import CommentSVG from '@/icons/Comment'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   line-height: 20px;
 
   ${css.media.mobile`
@@ -24,7 +24,7 @@ export const ViewsIcon = styled(ViewSVG)`
   transition: fill 0.25s;
 `
 export const CommentWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const CommentIcon = styled(CommentSVG)`
   fill: ${theme('article.info')};

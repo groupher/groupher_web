@@ -1,6 +1,6 @@
-export type TCommunityType = 'PUBLIC' | 'CITY' | 'WORKS' | 'TEAM' | null
+export type TCommunityType = 'WEB' | 'CLIENT' | 'HARDWARE' | 'GAME' | null
 
-export type TStep = 'SELECT_TYPE' | 'SETUP_DOMAIN' | 'SETUP_INFO' | 'MORE_INFO' | 'FINISHED'
+export type TStep = 'SELECT_TYPE' | 'SETUP_DOMAIN' | 'SETUP_INFO' | 'SETUP_EXTRA' | 'FINISHED'
 
 export type TSelectTypeStatus = {
   communityType: TCommunityType
@@ -15,11 +15,18 @@ export type TSetupInfoStatus = {
   title: string
   desc: string
   logo: string
-  applyMsg: string
+}
+
+export type TSetupExtraStatus = {
+  homepage: string
+  extraInfo: string
+  city: string
+  source: string
 }
 
 export type TValidState = {
   isCommunityTypeValid: boolean
+  isOfficalValid: boolean
   isRawValid: boolean
   isTitleValid: boolean
   isDescValid: boolean

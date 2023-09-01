@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import UpvoteSVG from '@/icons/Upvote'
 import CommentSVG from '@/icons/Comment'
@@ -12,7 +12,7 @@ import { BlockBase } from '..'
 export { Bar, Circle } from '..'
 
 export const SelectWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   gap: 20px 30px;
   width: 100%;
@@ -20,12 +20,12 @@ export const SelectWrapper = styled.div`
 
 type TColumn = { center?: boolean; grow?: boolean }
 export const Column = styled.div<TColumn>`
-  ${css.flexColumn()};
+  ${css.column()};
   ${({ center }) => (center ? 'align-items: center;' : '')};
   ${({ grow }) => (grow ? 'flex-grow: 1;' : '')};
 `
 export const Layout = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 export const LayoutTitle = styled.div<TActive>`
   opacity: ${({ $active }) => ($active ? 1 : 0.65)};

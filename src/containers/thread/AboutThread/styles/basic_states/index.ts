@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import PostSVG from '@/icons/EditPen'
 import CommentSVG from '@/icons/Comment'
 import UserSVG from '@/icons/Users'
@@ -11,7 +11,7 @@ import PulseSVG from '@/icons/Pulse'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex()};
+  ${css.row()};
   width: calc(100% + 38px);
   margin-top: 30px;
   margin-bottom: 22px;
@@ -23,7 +23,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   `};
 `
 export const Block = styled.div`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   width: 20%;
   height: 100px;
 
@@ -33,7 +33,7 @@ export const Block = styled.div`
 `
 const IconWrapper = styled.div`
   ${css.circle(28)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   margin-bottom: 12px;
   margin-left: -2px;
 `

@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const ItemWrapper = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   position: relative;
   width: 80px;
 `
@@ -28,7 +28,7 @@ export const Divider = styled.div`
   margin-bottom: 20px;
 `
 export const Number = styled.div`
-  ${css.flex('align-baseline')};
+  ${css.row('align-baseline')};
   color: ${theme('article.title')};
   font-size: 13px;
   margin-top: 5px;

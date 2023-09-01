@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import { camelize } from '@/utils/fmt'
 
 import CommentSVG from '@/icons/Comment'
@@ -10,7 +10,7 @@ import CommentSVG from '@/icons/Comment'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flex('align-start')};
+  ${css.row('align-start')};
   margin-bottom: 20px;
   cursor: pointer;
 `
@@ -49,12 +49,12 @@ export const Body = styled.div`
   }
 `
 export const Footer = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 20px;
   margin-left: -5px;
 `
 export const CommentWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 20px;
 `
 export const CommentIcon = styled(CommentSVG)`
@@ -67,7 +67,7 @@ export const Text = styled.div`
   margin-left: 6px;
 `
 export const Side = styled.div`
-  ${css.flexColumn('align-end')};
+  ${css.column('align-end')};
   color: ${theme('article.digest')};
   margin-top: -1px;
 `
@@ -77,7 +77,7 @@ export const DateTime = styled.div`
   opacity: 0.6;
 `
 export const TagsWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 13px;
   opacity: 0.8;
   margin-right: 3px;

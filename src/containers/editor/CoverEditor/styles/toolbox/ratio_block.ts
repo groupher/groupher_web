@@ -1,20 +1,20 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import RatioSVG from '@/icons/Ratio'
 
 import { SettingBlock, SettingTitle } from '.'
 
 export const Wrapper = styled.div`
   ${css.size(60)};
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 
 export const Block = styled(SettingBlock)``
 
 export const Panel = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   gap: 0 15px;
   color: ${theme('article.digest')};
   width: 200px;

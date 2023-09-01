@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import Input from '@/widgets/Input'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')}
+  ${css.row('align-center')}
   margin-left: -10px;
 `
 export const Inputer = styled(Input)`

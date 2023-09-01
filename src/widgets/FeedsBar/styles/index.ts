@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 const bgColor = '#02303e'
 
@@ -21,7 +21,7 @@ export const Wrapper = styled.div`
 `
 export const Header = styled.div`
   position: relative;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding: 6px 8px 5px 0;
   color: ${theme('article.digest')};
 `

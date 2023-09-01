@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
-import css, { animate, theme } from '@/utils/css'
+import css, { animate, theme } from '@/css'
 import ViewSVG from '@/icons/View'
 
 export const Wrapper = styled.div<{ top: number }>`
-  ${css.flex()};
+  ${css.row()};
   position: absolute;
   left: -30px;
   top: ${({ top }) => `${top}px`};

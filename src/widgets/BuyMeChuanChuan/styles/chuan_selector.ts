@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme, animate } from '@/utils/css'
+import css, { theme, animate } from '@/css'
 import Img from '@/Img'
 
 export const SelectBox = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 
   margin-top: 10px;
   border: 1px solid;
@@ -28,11 +28,11 @@ export const ChuanChuanIcon = styled(Img)`
 `
 
 export const Selectors = styled.div`
-  ${css.flex()};
+  ${css.row()};
 `
 export const By = styled.div`
   ${css.size(40)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 
   font-size: 30px;
   color: ${theme('article.digest')};
@@ -43,7 +43,7 @@ export const By = styled.div`
 `
 export const Circle = styled.div<TActive>`
   ${css.circle(38)};
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   border: 1px solid;
   border-color: ${theme('font')};
   margin-right: 10px;

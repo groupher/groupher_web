@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import { Dot } from './index'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   flex-wrap: wrap;
 `
 export const ThemeDot = styled(Dot)`
@@ -20,7 +20,7 @@ export const ThemeDot = styled(Dot)`
 `
 type TIntroBox = TActive & { index: number }
 export const IntroBox = styled.div<TIntroBox>`
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
   margin-right: ${({ index }) => (index % 2 === 0 ? '5%' : 0)};
   background: ${({ active }) => (active ? theme('banner.bg') : 'transparent')};
   border: 1px solid;
@@ -35,8 +35,7 @@ export const IntroBox = styled.div<TIntroBox>`
 
   &:hover {
     border: 1px solid;
-    border-color: ${({ active }) =>
-      active ? '#0f4858' : theme('banner.desc')};
+    border-color: ${({ active }) => (active ? '#0f4858' : theme('banner.desc'))};
   }
   transition: border 0.3s;
 
@@ -47,7 +46,7 @@ export const IntroBox = styled.div<TIntroBox>`
   `};
 `
 export const IntroDesc = styled.div`
-  ${css.flexColumn('justify-between')};
+  ${css.column('justify-between')};
   width: calc(100% - 30px);
   position: relative;
   padding-top: 5px;

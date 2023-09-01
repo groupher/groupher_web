@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<{ center: boolean }>`
-  ${css.flex()};
+  ${css.row()};
   justify-content: ${({ center }) => (center ? 'center' : 'flex-start')};
   flex-wrap: wrap;
   color: ${theme('article.digest')};
@@ -17,7 +17,7 @@ export const Wrapper = styled.div<{ center: boolean }>`
 `
 type TBlock = { level: string }
 export const Block = styled.div<TBlock>`
-  ${css.flexColumn('justify-between')};
+  ${css.column('justify-between')};
   width: ${({ level }) => (level === 'gold' ? '20%' : '25%')};
   height: ${({ level }) => (level === 'gold' ? '280px' : '130px')};
   padding: ${({ level }) => (level === 'gold' ? '25px 25px' : '18px 25px')};
@@ -43,17 +43,17 @@ export const Block = styled.div<TBlock>`
   `};
 `
 export const Header = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 export const IntroHead = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   width: 100%;
   &:hover {
     cursor: pointer;
   }
 
   ${css.media.mobile`
-    ${css.flex('align-both')};
+    ${css.row('align-both')};
     padding-right: 20%;
     margin-top: 45px;
   `};

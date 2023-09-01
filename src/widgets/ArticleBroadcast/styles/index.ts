@@ -6,14 +6,14 @@ import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import BroadcastSVG from '@/icons/Broadcast'
 
 // import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import { camelize } from '@/utils/fmt'
 
 type TWrapper = { color: TColorName } & TSpace & TTestable
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   position: relative;
   padding: 0 22px;
 
@@ -53,7 +53,7 @@ export const Content = styled.div`
   width: 55%;
 `
 export const Title = styled.span<{ color: TColorName }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   display: inline-flex;
   font-size: 15px;
   color: ${theme('article.title')};

@@ -1,17 +1,17 @@
 import styled from 'styled-components'
 
 // import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex()};
+  ${css.row()};
   text-align: center;
   ${css.media.mobile`
     margin-top: -4px;
   `};
 `
 export const NumberSection = styled.div`
-  ${css.flexColumn('align-end')};
+  ${css.column('align-end')};
 
   padding: 0 5px;
 `
@@ -20,7 +20,7 @@ export const VolunteerSection = styled(NumberSection)<{ alignCenter: boolean }>`
   align-items: ${({ alignCenter }) => (alignCenter ? 'center' : 'flex-end')};
 `
 export const ChargeSection = styled(NumberSection)`
-  ${css.flexColumn('align-center', 'justify-between')};
+  ${css.column('align-center', 'justify-between')};
   ${css.media.mobile`display: none`};
 `
 type TNumberTitle = { small?: boolean; readOnly?: boolean }

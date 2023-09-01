@@ -2,17 +2,17 @@ import styled from 'styled-components'
 
 import { Bar as BarBase } from '@/widgets/Common'
 
-import css, { theme, animate } from '@/utils/css'
+import css, { theme, animate } from '@/css'
 
 import StarSVG from './Star'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   position: relative;
   padding-left: 10px;
 `
 export const Header = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 260px;
   margin-top: 25px;
   margin-bottom: 10px;
@@ -30,7 +30,7 @@ export const Cover = styled.div`
   opacity: 0.4;
 `
 export const Title = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: #f9b7b6;
   font-weight: 600;
   font-size: 12px;
@@ -39,17 +39,17 @@ export const GreyTitle = styled(Title)`
   color: ${theme('article.digest')};
 `
 export const TagsWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 10px;
 `
 export const Content = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
   margin-top: 15px;
   width: 260px;
   gap: 10px;
 `
 export const Footer = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   margin-top: 20px;
   width: 260px;
 `

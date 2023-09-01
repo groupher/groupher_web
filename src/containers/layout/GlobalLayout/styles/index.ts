@@ -4,7 +4,7 @@ import type { TColorName, TMetric, TGlowEffect } from '@/spec'
 import { COLORS } from '@/constant/colors'
 import GLOW_EFFECTS from '@/constant/glow_effect'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 /**
  * see layout details:
@@ -17,7 +17,7 @@ export const Skeleton = styled.div`
 
 // background: #3b5456;
 export const Wrapper = styled.div`
-  ${css.flex('justify-center')};
+  ${css.row('justify-center')};
 `
 
 export const ScrollWrapper = styled.div<{ noMobilePadding: boolean }>`
@@ -55,7 +55,7 @@ export const GrowBackground = styled.div<TGlowEffect>`
 
 type TInner = { metric: TMetric; hasTopbar: boolean; topbarBg: TColorName; hasShadow: boolean }
 export const InnerWrapper = styled.div<TInner>`
-  ${css.flexColumn()};
+  ${css.column()};
   ${({ metric }) => css.fitPageWidth(metric)};
   width: 100%;
   position: relative;
@@ -78,7 +78,7 @@ export const InnerWrapper = styled.div<TInner>`
   `};
 `
 export const BodyWrapper = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 
   width: 100%;
 `

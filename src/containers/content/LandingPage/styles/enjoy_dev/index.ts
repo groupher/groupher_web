@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import SeedSVG from '@/icons/Seed'
 import TadaSVG from '@/icons/Tada'
@@ -15,12 +15,12 @@ type TPos = { top: string; left: string }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 100%;
   height: auto;
 `
 export const Slogan = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
@@ -36,7 +36,7 @@ export const Title = styled.div`
   `};
 `
 export const Desc = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   font-size: 17px;
   color: ${theme('article.digest')};
   margin-top: 12px;
@@ -49,7 +49,7 @@ export const Desc = styled.div`
   `};
 `
 export const Wall = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 80%;
   height: auto;
   margin-top: 35px;
@@ -84,7 +84,7 @@ export const BgWrapper = styled.div`
   border-radius: 30px;
 `
 export const BadWrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   gap: 15px 0px;
   height: 140px;
   width: 100%;
@@ -179,7 +179,7 @@ export const TailConnectLine = styled(HeadConnectLine)`
   width: 50px;
 `
 export const GoodWrapper = styled.div`
-  ${css.flex('align-both', 'justify-between')};
+  ${css.row('align-both', 'justify-between')};
   position: relative;
   height: 560px;
   width: 1000px;
@@ -206,7 +206,7 @@ export const VS = styled.div`
   background: white;
 `
 const BottonNote = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-top: 8px;
   color: ${theme('article.digest')};
   font-size: 20px;

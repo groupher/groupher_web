@@ -2,7 +2,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import SiteLogo from '@/icons/CPLogo'
 import DotDivider from '@/widgets/DotDivider'
@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
   width: 100%;
 `
 export const SiteWrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   width: 100%;
   height: 40px;
   margin-top: 20px;
@@ -28,10 +28,10 @@ export const SiteTitle = styled.div`
   margin-bottom: 1px;
 `
 export const SiteInfoWrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 `
 export const Item = styled(Link)`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   color: ${theme('footer.text')};
   text-decoration: none;
   font-size: 12px;
@@ -48,6 +48,6 @@ export const Divider = styled(DotDivider)`
   background: ${theme('footer.text')};
 `
 export const VersionWrapper = styled.div`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   margin-top: 10px;
 `

@@ -1,11 +1,13 @@
 import { ICON_BASE } from '@/config'
 import { HCN } from '@/constant/name'
 
+import { ROUTE } from '@/constant/route'
+
 const COMMUNITY_INTRO = {
-  PUBLIC: {
-    title: '什么是公共社区?',
-    desc: '编程语言，编程框架，DevOps 等公共领域的社区，包含帖子，雷达，博客, 101，分布地图，招聘等版块。志愿者参与日常维护管理。',
-    threads: ['帖子', '雷达', '博客', '酷导航', '成员分布', '工作'],
+  WEB: {
+    title: '什么是 Web 应用?',
+    desc: '你的产品主要通过浏览器 web 端为用户提供服务，如网站，H5 页面等。',
+    threads: [ROUTE.POST, ROUTE.KANBAN, ROUTE.CHANGELOG, ROUTE.HELP, ROUTE.ABOUT],
     demos: [
       {
         title: 'javascript',
@@ -34,10 +36,10 @@ const COMMUNITY_INTRO = {
       },
     ],
   },
-  WORKS: {
-    title: '什么是作品社区?',
-    desc: '为你的作品讨论需求，收集反馈，公布进度等，包含帖子，看板，技术栈，团队信息等版块。管理权限属于作者。',
-    threads: ['讨论', '看板', '技术栈', '团队'],
+  CLIENT: {
+    title: '什么是客户端软件?',
+    desc: '包括但不限于各行业 PC / Mac 端生产力工具，手机 APP 等。',
+    threads: [ROUTE.POST, ROUTE.KANBAN, ROUTE.CHANGELOG, ROUTE.HELP, ROUTE.ABOUT],
     demos: [
       {
         title: 'Groupher',
@@ -46,10 +48,10 @@ const COMMUNITY_INTRO = {
       },
     ],
   },
-  TEAM: {
-    title: '什么是团队社区?',
-    desc: '为你的团队收集意见反馈，展示作品，动态，招聘等的专门社区。管理权限属于团队成员。',
-    threads: ['帖子', '博客', '作品', '技术栈', '工作'],
+  HARDWARE: {
+    title: '什么是硬件产品',
+    desc: '各类机器人，无人机及其类似可玩性较强的硬件类及工业类产品。',
+    threads: [ROUTE.POST, ROUTE.KANBAN, ROUTE.CHANGELOG, ROUTE.HELP, ROUTE.ABOUT],
     demos: [
       {
         title: 'CP-feedback',
@@ -57,10 +59,10 @@ const COMMUNITY_INTRO = {
       },
     ],
   },
-  CITY: {
-    title: '什么事同城社区？',
-    desc: '以城市为单元的社区，包含同城的话题讨论，酷团队，作品以及工作招聘等。志愿者参与日常维护管理。',
-    threads: ['帖子', '酷团队', '作品', '工作'],
+  GAME: {
+    title: '什么是独立游戏',
+    desc: '个人或小团队开发的平台或手机游戏，Indie Game Rocks!',
+    threads: [ROUTE.POST, ROUTE.KANBAN, ROUTE.CHANGELOG, ROUTE.HELP, ROUTE.ABOUT],
     demos: [
       {
         title: '北京',

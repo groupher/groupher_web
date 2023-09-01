@@ -95,6 +95,11 @@ export const listUsers = (data): void => {
   send(EVENT.DRAWER.OPEN, { type, data })
 }
 
+export const callPassportEditor = (): void => {
+  const type = TYPE.DRAWER.PASSPORT_EDITOR
+  send(EVENT.DRAWER.OPEN, { type })
+}
+
 export const c11nSettings = (): void => {
   send(EVENT.DRAWER.OPEN, { type: TYPE.DRAWER.C11N_SETTINGS })
 }

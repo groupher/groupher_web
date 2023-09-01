@@ -6,15 +6,18 @@ import OSSUploader from '@/widgets/OSSUploader'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import { Br, Space } from '@/widgets/Common'
 
+import NextStepButton from './NextStepButton'
+
 import {
   Wrapper,
   IntroTitle,
   ApplyIcon,
-  StepHint,
   NextBtn,
   InfoWrapper,
   HolderWrapper,
+  HolderInner,
   HolderIcon,
+  HolderText,
   RealCover,
   InputsWrapper,
   InputBox,
@@ -39,13 +42,15 @@ const SetupInfo: FC<TProps> = ({ status, validState }) => {
       <IntroTitle>
         <ApplyIcon />
         基本信息
-        <StepHint>3 / 4</StepHint>
       </IntroTitle>
       <InfoWrapper>
         <OSSUploader onUploadDone={(url) => inputOnChange(url, 'logo')}>
           {nilOrEmpty(logo) ? (
             <HolderWrapper>
-              <HolderIcon />
+              <HolderInner>
+                <HolderIcon />
+                <HolderText>LOGO</HolderText>
+              </HolderInner>
             </HolderWrapper>
           ) : (
             <RealCover src={logo} />
@@ -54,13 +59,13 @@ const SetupInfo: FC<TProps> = ({ status, validState }) => {
         <InputsWrapper>
           <InputBox
             value={title}
-            placeholder="// 社区名称"
+            placeholder="社区名称"
             onChange={(e) => inputOnChange(e, 'title')}
           />
           <Br bottom={10} />
           <InputBox
             value={desc}
-            placeholder="// 社区一句话描述"
+            placeholder="社区一句话描述"
             onChange={(e) => inputOnChange(e, 'desc')}
           />
         </InputsWrapper>
@@ -70,10 +75,8 @@ const SetupInfo: FC<TProps> = ({ status, validState }) => {
         <ArrowButton leftLayout onClick={pervStep} dimWhenIdle>
           上一步
         </ArrowButton>
-        <Space right={30} />
-        <ArrowButton onClick={nextStep} disabled={!isValid}>
-          下一步
-        </ArrowButton>
+        <Space right={26} />
+        <NextStepButton onClick={nextStep} disabled={!isValid} />
       </NextBtn>
     </Wrapper>
   )

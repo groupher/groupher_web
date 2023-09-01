@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TSpace } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import Input from '@/widgets/Input'
 
 // import Img from '@/Img'
@@ -21,7 +21,7 @@ export const TextAreaInput = styled(Input)<{ error: string }>`
 `
 
 export const FormItemWrapper = styled.div<TSpace>`
-  ${css.flex()};
+  ${css.row()};
   margin-bottom: ${({ bottom }) => `${bottom}px`};
   width: 100%;
 `

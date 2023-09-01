@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import ShareSVG from '@/icons/Share'
 import ReportSVG from '@/icons/WarningLight'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding: 0 6px;
   gap: 0 12px;
 `

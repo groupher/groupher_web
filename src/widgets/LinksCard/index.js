@@ -28,7 +28,7 @@ const LinksCard = ({ testid, title, items, onSelect, left, right, bottom }) => {
           <Item key={item.id} item={item} onSelect={onSelect} />
         ))}
         <MoreWrapper>
-          <ArrowButton size="small" onClick={() => onSelect()}>
+          <ArrowButton fontSize={12} onClick={() => onSelect()}>
             更多
           </ArrowButton>
         </MoreWrapper>

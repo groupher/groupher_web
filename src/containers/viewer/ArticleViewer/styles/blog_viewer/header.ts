@@ -1,15 +1,15 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   width: 100%;
   height: 50px;
 `
 export const AuthorWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Avatar = styled(Img)`
   ${css.circle(18)};
@@ -25,7 +25,7 @@ export const AuthorDesc = styled.div`
 `
 
 export const PublishWrapper = styled.div`
-  ${css.flex('align-center')}
+  ${css.row('align-center')}
   margin-right: 5px;
 `
 export const PublishHint = styled.div`

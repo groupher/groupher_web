@@ -187,19 +187,15 @@ export type TPublishMode = 'default' | 'changelog' | 'help' | 'sidebar_layout_he
 export type TDashboardLayout = 'post_list' | 'banner' | 'changelog_list'
 
 export type TSocialType =
-  | 'HOMEPAGE'
   | 'EMAIL'
   | 'WECHAT'
   | 'TWITTER'
   | 'WEIBO'
-  // | 'qq'
-  // | 'douban'
-  // | 'steam'
   | 'ZHIHU'
   | 'GITHUB'
   | 'BILIBILI'
   | 'BOSS'
-  | 'LAGOU'
+  | 'TIKTOK'
 
 export type TSocialItem = {
   type: TSocialType

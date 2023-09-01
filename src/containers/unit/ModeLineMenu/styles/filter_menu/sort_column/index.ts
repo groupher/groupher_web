@@ -2,18 +2,18 @@ import styled from 'styled-components'
 
 import type { TTestable, TActive } from '@/spec'
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   width: 32vw;
   max-width: 32vw;
   height: 100%;
 `
 export const ItemBar = styled.div<TActive>`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   width: 95%;
   margin-bottom: 10px;
   padding: 4px 8px;
@@ -25,7 +25,7 @@ export const ItemBar = styled.div<TActive>`
   border-color: ${({ active }) => (active ? '#194d5f' : 'transparent')};
 `
 export const Title = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   width: 100%;
   color: ${theme('article.title')};
   font-size: 12px;

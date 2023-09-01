@@ -4,7 +4,7 @@ import type { TUpvoteLayout, TActive } from '@/spec'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
 import UpvoteIcon from '@/icons/Upvote'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import { getIconSize, getIconColor } from './metric'
 
@@ -114,10 +114,10 @@ export const Wrapper = styled.div<TWrapper>`
 `
 
 export const ContentWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const IconWrapper = styled.div<{ type: TUpvoteLayout }>`
-  ${css.flex('align-center', 'justify-start')};
+  ${css.row('align-center', 'justify-start')};
   width: ${({ type }) => (type !== UPVOTE_LAYOUT.ARTICLE ? '20px' : 'auto')};
   margin-right: ${({ type }) => (type !== UPVOTE_LAYOUT.ARTICLE ? '0' : '0')};
   position: relative;

@@ -5,6 +5,9 @@
 import { FC } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
+import type { TMetric } from '@/spec'
+import METRIC from '@/constant/metric'
+
 import { bond } from '@/utils/mobx'
 
 import CommunityDigest from '@/containers/digest/CommunityDigest'
@@ -18,33 +21,34 @@ import {
   InnerWrapper,
   ContentWrapper,
   MobileCardsWrapper,
-} from './styles'
+} from './styles/dashboard_content'
 
 type TProps = {
   communityContent?: TStore
+  metric?: TMetric
 }
 
 /**
  * only for AboutThread, but link to the common communityContent store
  */
-const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
+const DashboardContainer: FC<TProps> = ({ communityContent: store, metric = METRIC.DASHBOARD }) => {
   useInit(store)
 
   const { isMobile } = useMobileDetect()
 
   return (
     <Wrapper testid="dashboard-thread-content">
-      <CommunityDigest />
+      <CommunityDigest metric={metric} />
       {isMobile ? (
         <MobileCardsWrapper>
           <ContentWrapper>
-            <DashboardThread />
+            <DashboardThread metric={metric} />
           </ContentWrapper>
         </MobileCardsWrapper>
       ) : (
-        <InnerWrapper>
+        <InnerWrapper metric={metric}>
           <ContentWrapper>
-            <DashboardThread />
+            <DashboardThread metric={metric} />
           </ContentWrapper>
         </InnerWrapper>
       )}
@@ -52,4 +56,4 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   )
 }
 
-export default bond(CommunityContentContainer, 'communityContent') as FC<TProps>
+export default bond(DashboardContainer, 'communityContent') as FC<TProps>

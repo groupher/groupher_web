@@ -3,14 +3,14 @@ import styled from 'styled-components'
 import type { TTestable, TSpace } from '@/spec'
 
 import EnterSVG from '@/icons/Enter'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 type TWrapper = TSpace & TTestable
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   position: absolute;
   left: ${({ left }) => `${left}px`};
   right: ${({ right }) => `${right}px`};

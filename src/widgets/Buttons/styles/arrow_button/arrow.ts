@@ -2,19 +2,17 @@ import styled from 'styled-components'
 
 // import Img from '@/Img'
 import type { TColorName } from '@/spec'
+import { COLOR_NAME } from '@/constant/colors'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import { camelize } from '@/utils/fmt'
 
 import { Wrapper as ButtonWrapper } from '.'
 
-type TArrow = { color: TColorName; linkColor: boolean; down?: boolean; up?: boolean }
-
-const getColor = (color: TColorName, linkColor: boolean) => {
-  return linkColor ? theme('link') : theme(`baseColor.${camelize(color)}`)
-}
+type TArrow = { color: TColorName; reverseColor: boolean; down?: boolean; up?: boolean }
 
 const BaseArrow = styled.div<TArrow>`
+  opacity: 0.65;
   width: 0;
   height: 0;
 
@@ -32,11 +30,10 @@ const BaseArrow = styled.div<TArrow>`
     return 'none'
   }};
 
-  /* background: ${({ color, linkColor }) => getColor(color, linkColor)}; */
-
   ${ButtonWrapper}:hover & {
     width: 8px;
     height: 1px;
+    opacity: 0.9;
   }
 
   ${ButtonWrapper}:hover &:before {
@@ -50,8 +47,11 @@ const BaseArrow = styled.div<TArrow>`
     box-sizing: border-box;
     position: absolute;
     border: solid;
-    border-color: ${({ color, linkColor }) =>
-      linkColor ? theme('link') : theme(`baseColor.${camelize(color)}`)};
+    border-color: ${({ color, reverseColor }) => {
+      if (reverseColor) return 'white'
+
+      return color === COLOR_NAME.BLACK ? theme('link') : theme(`baseColor.${camelize(color)}`)
+    }};
     border-width: 0 1px 1px 0;
     padding: 3px;
     transform: rotate(-45deg);

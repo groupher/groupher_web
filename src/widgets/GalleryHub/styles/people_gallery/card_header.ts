@@ -1,15 +1,15 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   font-size: 12px;
   margin-bottom: 15px;
 `
 export const NationsWrapper = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: 5px;
 
   transition: all 0.2s;

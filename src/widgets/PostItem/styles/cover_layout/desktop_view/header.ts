@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn()};
+  ${css.column()};
 `
 
 export const Main = styled.div`
-  ${css.flexGrow('align-center')};
+  ${css.rowGrow('align-center')};
   color: ${theme('article.title')};
   margin-top: 6px;
 `

@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<{ hasFollowed: boolean }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   margin-left: ${({ hasFollowed }) => (hasFollowed ? '-8px' : '5px')};
   margin-top: 1px;
 `
@@ -15,7 +15,7 @@ export const PopContentWrapper = styled.div`
   line-height: 1.6;
 `
 export const PopHeader = styled.div`
-  ${css.flex('align-center')}
+  ${css.row('align-center')}
   margin-bottom: 10px;
 `
 export const PopHeaderIcon = styled(Img)`

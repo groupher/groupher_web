@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TAvatarLayout, TColorName, TTestable } from '@/spec'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import { camelize } from '@/utils/fmt'
 
 import type { TAvatarProps } from '../index'
@@ -14,7 +14,7 @@ type TWrapper = TTestable & TAvatarProps & { avatarLayout: TAvatarLayout; color:
 export const Wrapper = styled.div.attrs<TWrapper>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
 
   background: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
 

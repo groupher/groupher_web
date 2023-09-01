@@ -2,19 +2,19 @@ import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
 import Img from '@/Img'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   width: 100%;
   height: auto;
   margin-top: 10px;
   margin-bottom: 5px;
 `
 export const Title = styled.div`
-  ${css.flex('justify-between', 'align-center')};
+  ${css.row('justify-between', 'align-center')};
   color: ${theme('article.digest')};
   font-size: 12px;
   margin-bottom: 4px;

@@ -1,21 +1,21 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 100%;
   min-height: 150px;
   margin-top: 30px;
   padding: 0;
 `
 export const Header = styled.div`
-  ${css.flex('align-center', 'justify-between')};
+  ${css.row('align-center', 'justify-between')};
   height: 50px;
   width: 100%;
   padding-left: 10px;
@@ -27,13 +27,13 @@ export const Title = styled.div`
 `
 export const CommunityWrapper = styled.div`
   width: 100%;
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   flex-wrap: wrap;
   margin-top: 8px;
   margin-bottom: 50px;
 `
 export const CommunityCard = styled.div<{ margin: boolean }>`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   padding-left: 15px;
   border-radius: 10px;
   height: 40px;

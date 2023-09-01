@@ -1,16 +1,16 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import { MainWrapper } from '../index'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-both')};
+  ${css.column('align-both')};
   width: 100%;
   margin: 0 5%;
   margin-top: 10px;
 `
 export const CatsWrapper = styled(MainWrapper)`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   width: 100%;
   min-height: 600px;
   margin-top: 8px;

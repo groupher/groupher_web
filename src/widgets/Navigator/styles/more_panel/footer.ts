@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import FeedbackSVG from '@/icons/menu/Feedback'
 import GithubSVG from '@/icons/Github8'
@@ -9,7 +9,7 @@ import GithubSVG from '@/icons/Github8'
 import { Wip } from './index'
 
 export const Wrapper = styled.div`
-  ${css.flexColumn('align-start')};
+  ${css.column('align-start')};
   width: 100%;
   min-height: 80px;
   background: #023a48;
@@ -17,12 +17,12 @@ export const Wrapper = styled.div`
   padding-bottom: 2px;
 `
 export const Entry = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   width: 100%;
   margin-bottom: 15px;
 `
 export const Main = styled(Link)`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
   text-decoration: none;
 `
 const baseIcon = `

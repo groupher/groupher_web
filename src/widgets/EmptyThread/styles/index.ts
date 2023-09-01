@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 import PromptIcon from '@/widgets/PromptIcon'
 
 export const Wrapper = styled.div<{ noShiftRight: boolean }>`
-  ${css.flexColumn('align-center')};
+  ${css.column('align-center')};
   width: 100%;
   margin-top: 8%;
   padding-right: ${({ noShiftRight }) => (noShiftRight ? '10px' : '15%')};

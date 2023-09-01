@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
 
-import css, { theme } from '@/utils/css'
+import css, { theme } from '@/css'
 
 import FAQSVG from '@/icons/FAQ'
 import CheckSVG from '@/icons/Check'
@@ -12,12 +12,12 @@ import { MarkdownStyles } from '@/widgets/Common'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.flexColumn()};
+  ${css.column()};
   width: 100%;
   min-width: 320px;
 `
 export const Header = styled.div<{ large: boolean }>`
-  ${css.flex('align-both')};
+  ${css.row('align-both')};
   margin-bottom: ${({ large }) => (large ? '65px' : '50px')};
 
   ${css.media.mobile`
@@ -41,12 +41,12 @@ export const BrandText = styled.div<{ large: boolean }>`
   `};
 `
 export const Content = styled.div<{ large: boolean }>`
-  ${css.flex('justify-between')};
+  ${css.row('justify-between')};
   flex-wrap: wrap;
   gap: ${({ large }) => (large ? '45px' : '50px')};
 
   ${css.media.mobile`
-    ${css.flex('justify-around')};
+    ${css.row('justify-around')};
     gap: 20px 10px;
     padding: 0 15px;
   `};
@@ -65,7 +65,7 @@ export const Section = styled.div<{ large: boolean }>`
   `};
 `
 export const SectionHead = styled.div`
-  ${css.flex('align-center')};
+  ${css.row('align-center')};
 `
 export const Title = styled.div<{ large: boolean }>`
   ${css.cutRest('250px')};
