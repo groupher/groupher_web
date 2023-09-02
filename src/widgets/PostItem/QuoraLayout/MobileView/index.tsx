@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import type { TPost, TAccount } from '@/spec'
+import type { TPost } from '@/spec'
 
 import Header from './Header'
 import Body from './Body'
@@ -10,13 +10,12 @@ import { Wrapper } from '../../styles/quora_layout/mobile_view'
 
 type TProps = {
   article: TPost
-  onAuthorSelect?: (obj: TAccount) => void
 }
 
-const MobileView: FC<TProps> = ({ article, onAuthorSelect }) => {
+const MobileView: FC<TProps> = ({ article }) => {
   return (
     <Wrapper>
-      <Header article={article} onAuthorSelect={onAuthorSelect} />
+      <Header article={article} />
       <Body article={article} />
       <Footer article={article} />
     </Wrapper>

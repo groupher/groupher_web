@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import styled from 'styled-components'
 
 import css, { theme } from '@/css'
@@ -58,6 +57,10 @@ export const AuthorName = styled.div`
   display: block;
   color: ${theme('hint')};
   font-size: 13px;
+
+  &:hover {
+    color: ${theme('article.digest')};
+  }
 `
 export const PublishTime = styled.div`
   color: ${theme('hint')};

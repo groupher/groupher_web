@@ -2,9 +2,8 @@ import { FC, memo } from 'react'
 
 import type { TPost } from '@/spec'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
-import EVENT from '@/constant/event'
 
-import { send } from '@/utils/signal'
+import { previewArticle } from '@/utils/signal'
 
 import ArticleReadLabel from '@/widgets/ArticleReadLabel'
 import ArticlePinLabel from '@/widgets/ArticlePinLabel'
@@ -15,24 +14,18 @@ import ViewingSign from '../../ViewingSign'
 import Header from './Header'
 import Footer from './Footer'
 
-import {
-  Wrapper,
-  UpvoteWrapper,
-  Main,
-  DigestWrapper,
-} from '../../styles/minimal_layout/desktop_view'
+import { Wrapper, UpvoteWrapper, Main, Digest } from '../../styles/minimal_layout/desktop_view'
 
 type TProps = {
   article: TPost
   // onUserSelect?: (obj: TUser) => void
-  // onAuthorSelect?: (obj: TAccount) => void
 }
 
 const DigestView: FC<TProps> = ({ article }) => {
   const { upvotesCount, meta, viewerHasUpvoted } = article
 
   return (
-    <Wrapper onClick={() => send(EVENT.PREVIEW_ARTICLE, { article })}>
+    <Wrapper onClick={() => previewArticle(article)}>
       <ArticleReadLabel article={article} top={8} />
       <ArticlePinLabel article={article} />
       <ViewingSign article={article} top={20} />
@@ -48,7 +41,7 @@ const DigestView: FC<TProps> = ({ article }) => {
       </UpvoteWrapper>
       <Main>
         <Header article={article} />
-        <DigestWrapper>{article.digest}</DigestWrapper>
+        <Digest>{article.digest}</Digest>
         <Footer article={article} />
       </Main>
     </Wrapper>

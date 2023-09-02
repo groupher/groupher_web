@@ -60,7 +60,6 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
     isMobile,
     pagedArticlesData,
     filtersData,
-    curCommunity,
     curThread,
     showFilters,
     c11n,
@@ -103,7 +102,6 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
         {mode === 'default' && (
           <PagedArticles
             data={pagedArticlesData}
-            curCommunity={curCommunity}
             thread={curThread}
             resState={resState as TResState}
             c11n={c11n}

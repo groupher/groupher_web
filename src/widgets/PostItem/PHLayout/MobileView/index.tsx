@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import type { TAvatarLayout, TPost, TAccount } from '@/spec'
+import type { TAvatarLayout, TPost } from '@/spec'
 import { AVATAR_LAYOUT, UPVOTE_LAYOUT } from '@/constant/layout'
 
 import { upvoteOnArticleList } from '@/utils/signal'
@@ -15,16 +15,9 @@ import { Wrapper, Avatar, AvatarWrapper, Main } from '../../styles/ph_layout/mob
 type TProps = {
   article: TPost
   avatarLayout?: TAvatarLayout
-
-  // onUserSelect?: (obj: TUser) => void
-  onAuthorSelect?: (obj: TAccount) => void
 }
 
-const DigestView: FC<TProps> = ({
-  article,
-  avatarLayout = AVATAR_LAYOUT.SQUARE,
-  onAuthorSelect,
-}) => {
+const DigestView: FC<TProps> = ({ article, avatarLayout = AVATAR_LAYOUT.SQUARE }) => {
   const { author } = article
 
   return (
@@ -33,7 +26,6 @@ const DigestView: FC<TProps> = ({
         <Avatar
           src={author.avatar}
           avatarLayout={avatarLayout}
-          onClick={() => onAuthorSelect(author)}
           fallback={<ImgFallback size={22} user={author} avatarLayout={avatarLayout} />}
         />
         <Upvote

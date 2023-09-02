@@ -15,7 +15,9 @@ export const Button = styled.div`
   border-color: ${theme('button.upvoteBorder')};
 
   border-radius: 6px;
-  padding: 6px 8px;
+  padding: 0 8px;
+  padding-top: 4px;
+  padding-bottom: 7px;
 
   &:hover {
     border-color: ${theme('lightText')};

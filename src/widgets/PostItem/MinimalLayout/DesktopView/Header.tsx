@@ -1,9 +1,9 @@
 import { FC } from 'react'
 
 import type { TPost } from '@/spec'
-import EVENT from '@/constant/event'
+import useCurCommunity from '@/hooks/useCurCommunity'
 import SIZE from '@/constant/size'
-import { send } from '@/utils/signal'
+import { THREAD } from '@/constant/thread'
 
 import { SpaceGrow } from '@/widgets/Common'
 import TagsList from '@/widgets/TagsList'
@@ -16,23 +16,17 @@ type TProps = {
 }
 
 const Header: FC<TProps> = ({ article }) => {
-  const { commentsCount } = article
+  const { slug } = useCurCommunity()
+  const { innerId, title, commentsCount, articleTags } = article
 
   return (
     <Wrapper>
       <Main>
-        <Title
-          onClick={(e) => {
-            // make page can open by user right click the menu
-            e.preventDefault()
-            send(EVENT.PREVIEW_ARTICLE, { article })
-          }}
-          href={`/post/${article.id}`}
-        >
-          {article.title}{' '}
+        <Title onClick={(e) => e.preventDefault()} href={`/${slug}/${THREAD.POST}/${innerId}`}>
+          {title}
         </Title>
         {/*  @ts-ignore */}
-        <TagsList items={article.articleTags} left={12} />
+        <TagsList items={articleTags} left={12} />
         <SpaceGrow />
         {commentsCount !== 0 && <CommentsCount count={commentsCount} size={SIZE.MEDIUM} />}
       </Main>

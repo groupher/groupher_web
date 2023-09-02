@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 import type { TAvatarLayout, TPost } from '@/spec'
 import { AVATAR_LAYOUT, UPVOTE_LAYOUT } from '@/constant/layout'
 
-import { upvoteOnArticleList } from '@/utils/signal'
+import { upvoteOnArticleList, previewArticle } from '@/utils/signal'
 import ArticleReadLabel from '@/widgets/ArticleReadLabel'
 import ArticlePinLabel from '@/widgets/ArticlePinLabel'
 import Upvote from '@/widgets/Upvote'
@@ -25,20 +25,17 @@ import {
 type TProps = {
   article: TPost
   avatarLayout?: TAvatarLayout
-
-  // onUserSelect?: (obj: TUser) => void
-  // onAuthorSelect?: (obj: TAccount) => void
 }
 
 const DigestView: FC<TProps> = ({ article, avatarLayout = AVATAR_LAYOUT.SQUARE }) => {
   const { author } = article
 
   return (
-    <Wrapper>
+    <Wrapper onClick={() => previewArticle(article)}>
       <ArticleReadLabel article={article} />
       <ArticlePinLabel article={article} />
+      <ViewingSign article={article} top={24} />
 
-      <ViewingSign article={article} top={12} />
       <AvatarWrapper>
         <Avatar
           src={author.avatar}

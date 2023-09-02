@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 import Pagi from '@/widgets/Pagi'
 
-import type { TCommunity, TThread, TPagedArticles, TResState, TC11N, TGlobalLayout } from '@/spec'
+import type { TThread, TPagedArticles, TResState, TC11N, TGlobalLayout } from '@/spec'
 import EVENT from '@/constant/event'
 
 import { send } from '@/utils/signal'
@@ -20,7 +20,6 @@ import ArticleList from './ArticleList'
 const log = buildLog('w:PagedArticles:index')
 
 export type TProps = {
-  curCommunity?: TCommunity | null
   thread: TThread
   data: TPagedArticles
   resState: TResState
@@ -30,21 +29,12 @@ export type TProps = {
   globalLayout: TGlobalLayout
 }
 
-const PagedArticles: FC<TProps> = ({
-  curCommunity = null,
-  thread,
-  data,
-  resState,
-  emptyPrefix,
-  c11n,
-  globalLayout,
-}) => {
+const PagedArticles: FC<TProps> = ({ thread, data, resState, emptyPrefix, c11n, globalLayout }) => {
   const { entries, ...pagi } = data
 
   return (
     <>
       <ArticleList
-        curCommunity={curCommunity}
         thread={thread}
         entries={entries}
         resState={resState}

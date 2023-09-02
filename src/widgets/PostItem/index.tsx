@@ -6,7 +6,7 @@
 
 import { FC, memo } from 'react'
 
-import type { TCommunity, TPost, TAccount, TC11N, TPostLayout, TAvatarLayout } from '@/spec'
+import type { TPost, TC11N, TPostLayout, TAvatarLayout } from '@/spec'
 import { AVATAR_LAYOUT, POST_LAYOUT } from '@/constant/layout'
 
 import { buildLog } from '@/utils/logger'
@@ -21,20 +21,16 @@ import MasonryLayout from './MasonryLayout'
 const log = buildLog('w:PostItem:index')
 
 type TProps = {
-  curCommunity: TCommunity | null
   article: TPost
   c11n: TC11N
   layout?: TPostLayout
   isMobilePreview?: boolean
 
-  onAuthorSelect?: (obj: TAccount) => void
   avatarLayout?: TAvatarLayout
 }
 
 const PostItem: FC<TProps> = ({
-  curCommunity,
   article,
-  onAuthorSelect = log,
   layout = POST_LAYOUT.QUORA,
   isMobilePreview = false,
   c11n,
@@ -43,18 +39,12 @@ const PostItem: FC<TProps> = ({
   return (
     <>
       {layout === POST_LAYOUT.MINIMAL && (
-        <MinimalLayout
-          c11n={c11n}
-          article={article}
-          onAuthorSelect={onAuthorSelect}
-          isMobilePreview={isMobilePreview}
-        />
+        <MinimalLayout c11n={c11n} article={article} isMobilePreview={isMobilePreview} />
       )}
 
       {layout === POST_LAYOUT.QUORA && (
         <QuoraLayout
           article={article}
-          onAuthorSelect={onAuthorSelect}
           isMobilePreview={isMobilePreview}
           avatarLayout={avatarLayout}
         />
@@ -64,19 +54,13 @@ const PostItem: FC<TProps> = ({
         <PHLayout
           c11n={c11n}
           article={article}
-          onAuthorSelect={onAuthorSelect}
           isMobilePreview={isMobilePreview}
           avatarLayout={avatarLayout}
         />
       )}
 
       {layout === POST_LAYOUT.COVER && (
-        <CoverLayout
-          c11n={c11n}
-          article={article}
-          onAuthorSelect={onAuthorSelect}
-          isMobilePreview={isMobilePreview}
-        />
+        <CoverLayout c11n={c11n} article={article} isMobilePreview={isMobilePreview} />
       )}
 
       {layout === POST_LAYOUT.MASONRY && <MasonryLayout article={article} />}
