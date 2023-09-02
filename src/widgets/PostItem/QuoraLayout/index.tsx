@@ -6,7 +6,7 @@
 
 import { FC, memo } from 'react'
 
-import type { TPost, TAccount, TAvatarLayout } from '@/spec'
+import type { TPost, TAvatarLayout } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
 import DesktopView from './DesktopView'
@@ -22,18 +22,17 @@ type TProps = {
   article: TPost
   isMobilePreview: boolean
 
-  onAuthorSelect?: (obj: TAccount) => void
   avatarLayout: TAvatarLayout
 }
 
-const PostItem: FC<TProps> = ({ article, onAuthorSelect = log, isMobilePreview, avatarLayout }) => {
+const PostItem: FC<TProps> = ({ article, isMobilePreview, avatarLayout }) => {
   if (isMobilePreview) {
-    return <MobileView article={article} onAuthorSelect={onAuthorSelect} />
+    return <MobileView article={article} />
   }
 
   return (
     <Wrapper>
-      <MobileView article={article} onAuthorSelect={onAuthorSelect} />
+      <MobileView article={article} />
       <DesktopView article={article} avatarLayout={avatarLayout} />
     </Wrapper>
   )

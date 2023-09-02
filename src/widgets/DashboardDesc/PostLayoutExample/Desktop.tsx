@@ -28,7 +28,7 @@ const PostLayoutExample: FC<TProps> = ({ articles, layout }) => {
       {layout === POST_LAYOUT.QUORA && (
         <>
           {articles.map((item) => (
-            <PostItem key={item.id} article={item} c11n={{}} curCommunity={{ slug: 'demo' }} />
+            <PostItem key={item.id} article={item} c11n={{}} />
           ))}
         </>
       )}
@@ -36,13 +36,7 @@ const PostLayoutExample: FC<TProps> = ({ articles, layout }) => {
       {layout === POST_LAYOUT.PH && (
         <>
           {articles.map((item) => (
-            <PostItem
-              key={item.id}
-              article={item}
-              c11n={{}}
-              curCommunity={{ slug: 'demo' }}
-              layout={POST_LAYOUT.PH}
-            />
+            <PostItem key={item.id} article={item} c11n={{}} layout={POST_LAYOUT.PH} />
           ))}
         </>
       )}
@@ -51,13 +45,7 @@ const PostLayoutExample: FC<TProps> = ({ articles, layout }) => {
         <>
           <MasonryCards column={2}>
             {articles.map((item) => (
-              <PostItem
-                key={item.id}
-                article={item}
-                c11n={{}}
-                curCommunity={{ slug: 'demo' }}
-                layout={POST_LAYOUT.MASONRY}
-              />
+              <PostItem key={item.id} article={item} c11n={{}} layout={POST_LAYOUT.MASONRY} />
             ))}
           </MasonryCards>
         </>
@@ -66,13 +54,7 @@ const PostLayoutExample: FC<TProps> = ({ articles, layout }) => {
       {layout === POST_LAYOUT.MINIMAL && (
         <>
           {articles.map((item) => (
-            <PostItem
-              key={item.id}
-              article={item}
-              c11n={{}}
-              curCommunity={{ slug: 'demo' }}
-              layout={POST_LAYOUT.MINIMAL}
-            />
+            <PostItem key={item.id} article={item} c11n={{}} layout={POST_LAYOUT.MINIMAL} />
           ))}
         </>
       )}
@@ -80,13 +62,7 @@ const PostLayoutExample: FC<TProps> = ({ articles, layout }) => {
       {layout === POST_LAYOUT.COVER && (
         <>
           {articles.map((item) => (
-            <PostItem
-              key={item.id}
-              article={item}
-              c11n={{}}
-              curCommunity={{ slug: 'demo' }}
-              layout={POST_LAYOUT.COVER}
-            />
+            <PostItem key={item.id} article={item} c11n={{}} layout={POST_LAYOUT.COVER} />
           ))}
         </>
       )}

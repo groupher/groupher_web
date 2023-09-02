@@ -3,36 +3,13 @@ import styled from 'styled-components'
 import type { TAvatarLayout } from '@/spec'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
-import css, { theme } from '@/css'
+import css from '@/css'
 import Img from '@/Img'
 
-export const Wrapper = styled.div`
-  ${css.row()};
-  width: 100%;
-  position: relative;
+import { DesktopHoverable } from '../..'
 
+export const Wrapper = styled(DesktopHoverable)`
   padding: 12px 0;
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  &:hover::before {
-    opacity: 1;
-  }
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0px;
-    left: -16px;
-    width: calc(100% + 32px);
-    height: 100%;
-    background: ${theme('hoverLinear')};
-    border-radius: 10px;
-    z-index: -1;
-    opacity: 0;
-  }
 `
 export const Main = styled.div`
   ${css.columnGrow()};

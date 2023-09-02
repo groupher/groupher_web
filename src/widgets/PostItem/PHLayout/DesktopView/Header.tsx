@@ -2,9 +2,8 @@ import { FC } from 'react'
 import dynamic from 'next/dynamic'
 
 import type { TPost } from '@/spec'
-
-import EVENT from '@/constant/event'
-import { send } from '@/utils/signal'
+import useCurCommunity from '@/hooks/useCurCommunity'
+import { THREAD } from '@/constant/thread'
 
 import { Wrapper, Brief, Title } from '../../styles/ph_layout/desktop_view/header'
 
@@ -17,21 +16,17 @@ type TProps = {
 }
 
 const Header: FC<TProps> = ({ article }) => {
+  const { innerId, title, articleTags } = article
+  const { slug } = useCurCommunity()
+
   return (
     <Wrapper>
       <Brief>
-        <Title
-          onClick={(e) => {
-            // make page can open by user right click the menu
-            e.preventDefault()
-            send(EVENT.PREVIEW_ARTICLE, { article })
-          }}
-          href={`/post/${article.id}`}
-        >
-          {article.title}
+        <Title onClick={(e) => e.preventDefault()} href={`/${slug}/${THREAD.POST}/${innerId}`}>
+          {title}
         </Title>
         {/*  @ts-ignore */}
-        <TagsList items={article.articleTags} left={12} />
+        <TagsList items={articleTags} left={12} />
       </Brief>
     </Wrapper>
   )

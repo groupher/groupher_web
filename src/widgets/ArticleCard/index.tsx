@@ -1,12 +1,12 @@
 import { FC, memo } from 'react'
 
-import type { TArticle, TThread } from '@/spec'
+import type { TArticle } from '@/spec'
 import { THREAD } from '@/constant/thread'
-import EVENT from '@/constant/event'
 import SIZE from '@/constant/size'
-
 import { cutRest } from '@/utils/fmt'
-import { send } from '@/utils/signal'
+import { previewArticle } from '@/utils/signal'
+import useCurCommunity from '@/hooks/useCurCommunity'
+
 import DigestSentence from '@/widgets/DigestSentence'
 import { Br, SpaceGrow, DesktopOnly, MobileOnly } from '@/widgets/Common'
 import ArticleImgWindow from '@/widgets/ArticleImgWindow'
@@ -17,31 +17,37 @@ import { Wrapper, Title, MobileDigest } from './styles'
 
 export type TProps = {
   data: TArticle
-  thread?: TThread
 }
 
-const ArticleCard: FC<TProps> = ({ data, thread = THREAD.POST }) => {
+const ArticleCard: FC<TProps> = ({ data }) => {
+  const { slug } = useCurCommunity()
+  const { innerId, title, digest } = data
+
   return (
-    <Wrapper>
-      <Br top={8} />
-      <Title>{data.title}</Title>
+    <Wrapper onClick={() => previewArticle(data)}>
+      <Br top={5} />
+      <Title onClick={(e) => e.preventDefault()} href={`/${slug}/${THREAD.POST}/${innerId}`}>
+        {title}
+      </Title>
 
       <DesktopOnly>
         <DigestSentence
           top={5}
           bottom={16}
           size={SIZE.SMALL}
-          onPreview={() => send(EVENT.PREVIEW_ARTICLE, { article: data })}
+          onPreview={() => {
+            //
+          }}
         >
-          {cutRest(data.digest, 150)}
+          {cutRest(digest, 150)}
         </DigestSentence>
       </DesktopOnly>
 
       <MobileOnly>
-        <MobileDigest>{data.digest}</MobileDigest>
+        <MobileDigest>{digest}</MobileDigest>
       </MobileOnly>
 
-      <Br top={6} />
+      <Br top={4} />
       <ArticleImgWindow />
       <Br top={18} />
       <SpaceGrow />

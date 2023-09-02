@@ -1,9 +1,8 @@
 import { FC, memo, useState, useEffect } from 'react'
 
-import EVENT from '@/constant/event'
 import type { TPost } from '@/spec'
 
-import { send } from '@/utils/signal'
+import { previewArticle } from '@/utils/signal'
 import { mockImage } from '@/utils/mock'
 
 import ArticleReadLabel from '@/widgets/ArticleReadLabel'
@@ -19,13 +18,12 @@ import {
   CoverWrapper,
   CoverImg,
   Main,
-  DigestWrapper,
+  Digest,
 } from '../../styles/cover_layout/desktop_view'
 
 type TProps = {
   article: TPost
   // onUserSelect?: (obj: TUser) => void
-  // onAuthorSelect?: (obj: TAccount) => void
 }
 
 const DigestView: FC<TProps> = ({ article }) => {
@@ -36,7 +34,7 @@ const DigestView: FC<TProps> = ({ article }) => {
   }, [])
 
   return (
-    <Wrapper>
+    <Wrapper onClick={() => previewArticle(article)}>
       <ArticleReadLabel article={article} top={8} />
       <ArticlePinLabel article={article} />
       <ViewingSign article={article} top={8} />
@@ -45,9 +43,7 @@ const DigestView: FC<TProps> = ({ article }) => {
       </CoverWrapper>
       <Main>
         <Header article={article} />
-        <DigestWrapper onClick={() => send(EVENT.PREVIEW_ARTICLE, { article })}>
-          {article.digest}
-        </DigestWrapper>
+        <Digest>{article.digest}</Digest>
         <Footer article={article} />
       </Main>
     </Wrapper>

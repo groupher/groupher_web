@@ -3,9 +3,9 @@ import dynamic from 'next/dynamic'
 import TimeAgo from 'timeago-react'
 
 import type { TPost } from '@/spec'
-import EVENT from '@/constant/event'
+import useCurCommunity from '@/hooks/useCurCommunity'
+import { THREAD } from '@/constant/thread'
 import SIZE from '@/constant/size'
-import { send } from '@/utils/signal'
 
 import Tooltip from '@/widgets/Tooltip'
 import { SpaceGrow, Space } from '@/widgets/Common'
@@ -31,7 +31,8 @@ type TProps = {
 }
 
 const Header: FC<TProps> = ({ article }) => {
-  const { author, commentsCount } = article
+  const { slug } = useCurCommunity()
+  const { author, title, commentsCount, innerId, articleTags, insertedAt } = article
 
   return (
     <Wrapper>
@@ -47,22 +48,15 @@ const Header: FC<TProps> = ({ article }) => {
         <Dot radius={2.5} space={10} />
         <Space right={2} />
         <PublishTime>
-          <TimeAgo datetime={article.insertedAt} locale="zh_CN" />
+          <TimeAgo datetime={insertedAt} locale="zh_CN" />
         </PublishTime>
       </Topping>
       <Main>
-        <Title
-          onClick={(e) => {
-            // make page can open by user right click the menu
-            e.preventDefault()
-            send(EVENT.PREVIEW_ARTICLE, { article })
-          }}
-          href={`/post/${article.id}`}
-        >
-          {article.title}{' '}
+        <Title onClick={(e) => e.preventDefault()} href={`/${slug}/${THREAD.POST}/${innerId}`}>
+          {title}
         </Title>
         {/*  @ts-ignore */}
-        <TagsList items={article.articleTags} left={12} />
+        <TagsList items={articleTags} left={12} />
         <SpaceGrow />
         {commentsCount !== 0 && <CommentsCount count={commentsCount} size={SIZE.MEDIUM} />}
       </Main>

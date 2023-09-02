@@ -21,7 +21,6 @@ import {
 type TProps = {
   article: TPost
   // onUserSelect?: (obj: TUser) => void
-  // onAuthorSelect?: (obj: TAccount) => void
 }
 
 const DigestView: FC<TProps> = ({ article }) => {

@@ -24,13 +24,7 @@ const Mobile: FC<TProps> = ({ articles }) => {
       <Divider />
       <MobileMockup>
         {articles.map((item) => (
-          <PostItem
-            key={item.id}
-            article={item}
-            c11n={{}}
-            curCommunity={{ slug: 'demo' }}
-            isMobilePreview
-          />
+          <PostItem key={item.id} article={item} c11n={{}} isMobilePreview />
         ))}
       </MobileMockup>
       <Br bottom={80} />
@@ -43,7 +37,6 @@ const Mobile: FC<TProps> = ({ articles }) => {
             key={item.id}
             article={item}
             c11n={{}}
-            curCommunity={{ slug: 'demo' }}
             layout={POST_LAYOUT.PH}
             isMobilePreview
           />

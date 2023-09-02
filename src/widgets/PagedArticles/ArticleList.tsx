@@ -17,14 +17,7 @@ import { MasonryCardsWrapper } from './styles/article_list'
 
 type TProps = { entries: TArticleEntries } & Omit<TBaseTProps, 'data'>
 
-const ArticleList: FC<TProps> = ({
-  curCommunity,
-  thread,
-  resState,
-  entries,
-  c11n,
-  globalLayout,
-}) => {
+const ArticleList: FC<TProps> = ({ thread, resState, entries, c11n, globalLayout }) => {
   // switch between threads
   if (resState === TYPE.RES_STATE.LOADING && entries.length === 0) {
     return <LavaLampLoading top={20} left={30} />
@@ -48,7 +41,6 @@ const ArticleList: FC<TProps> = ({
               key={entry.id}
               article={entry}
               c11n={c11n}
-              curCommunity={curCommunity}
               layout={globalLayout.post}
               avatarLayout={globalLayout.avatar}
             />
@@ -65,7 +57,6 @@ const ArticleList: FC<TProps> = ({
           key={entry.id}
           article={entry}
           c11n={c11n}
-          curCommunity={curCommunity}
           layout={globalLayout.post}
           avatarLayout={globalLayout.avatar}
         />
