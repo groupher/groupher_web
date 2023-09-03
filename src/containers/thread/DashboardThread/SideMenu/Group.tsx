@@ -24,7 +24,7 @@ type TProps = {
 }
 
 const Group: FC<TProps> = ({ group, curTab, touched, community }) => {
-  const [fold, setFold] = useState(false)
+  const [fold, setFold] = useState(group.initFold)
 
   return (
     <Wrapper>

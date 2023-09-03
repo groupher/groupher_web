@@ -30,6 +30,7 @@ const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold }) => {
       }
       onHide={() => setMenuOpen(false)}
       onShow={() => setMenuOpen(true)}
+      trigger="click"
       placement="bottom"
       offset={[8, 5]}
     >

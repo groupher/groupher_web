@@ -62,8 +62,9 @@ export const SETTING_FIELD = {
 
 export const MENU = {
   BASIC: {
-    title: '常规设置',
+    title: '工作区',
     icon: <Icon.Basic />,
+    initFold: false,
     children: [
       {
         title: '概览',
@@ -95,11 +96,15 @@ export const MENU = {
         slug: DASHBOARD_ROUTE.ADMINS,
       },
       {
-        title: '页头',
+        title: '页眉',
         slug: DASHBOARD_ROUTE.HEADER,
       },
       {
         title: '页脚',
+        slug: DASHBOARD_ROUTE.FOOTER,
+      },
+      {
+        title: '导入/导出',
         slug: DASHBOARD_ROUTE.FOOTER,
       },
     ],
@@ -108,6 +113,7 @@ export const MENU = {
   CMS: {
     title: '内容管理',
     icon: <Icon.Management />,
+    initFold: false,
     children: [
       {
         title: '社区',
@@ -147,6 +153,7 @@ export const MENU = {
   ANALYSIS: {
     title: '统计分析',
     icon: <Icon.Analysis />,
+    initFold: true,
     children: [
       {
         title: '趋势',
@@ -162,6 +169,7 @@ export const MENU = {
   INTEGRATE: {
     title: '绑定集成',
     icon: <Icon.Bind />,
+    initFold: true,
     children: [
       {
         title: '自定义域名',

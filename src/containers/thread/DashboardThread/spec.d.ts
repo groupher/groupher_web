@@ -67,6 +67,7 @@ export type TCMSContents = {
 export type TMenuGroup = {
   title: string
   icon: ReactNode
+  initFold: boolean
   children: TMenuItem[]
 }
 
