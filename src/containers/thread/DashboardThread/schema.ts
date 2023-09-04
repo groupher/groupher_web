@@ -3,13 +3,34 @@ import { P, F } from '@/schemas'
 
 const { pagedPosts, pagedChangelogs } = P
 
+const communityBaseInfo = gql`
+  query community($slug: String, $incViews: Boolean) {
+    community(slug: $slug, incViews: $incViews) {
+      dashboard {
+        baseInfo {
+          title
+          favicon
+          logo
+          slug
+          bio
+          introduction
+          homepage
+          city
+          techstack
+        }
+      }
+    }
+  }
+`
+
 const updateDashboardBaseInfo = gql`
   mutation (
     $community: String!
     $homepage: String
     $title: String
     $slug: String
-    $desc: String
+    $bio: String
+    $introduction: String
     $logo: String
     $favicon: String
   ) {
@@ -18,7 +39,8 @@ const updateDashboardBaseInfo = gql`
       homepage: $homepage
       title: $title
       slug: $slug
-      desc: $desc
+      bio: $bio
+      introduction: $introduction
       logo: $logo
       favicon: $favicon
     ) {
@@ -222,6 +244,7 @@ const communityOverview = gql`
 `
 
 const schema = {
+  communityBaseInfo,
   updateDashboardBaseInfo,
   updateDashboardSeo,
   pagedArticleTags,

@@ -279,6 +279,16 @@ export const loadCommunityOverview = (): void => {
   })
 }
 
+export const loadBaseInfo = (): void => {
+  const { curCommunity } = store
+
+  sr71$.query(S.communityBaseInfo, {
+    slug: curCommunity.slug,
+    userHasLogin: false,
+    incViews: false,
+  })
+}
+
 /**
  * batch select any TID list
  */
@@ -417,13 +427,9 @@ const DataSolver = [
   {
     match: asyncRes('community'),
     action: ({ community }) => {
-      if (store.curTab === DASHBOARD_ROUTE.ADMINS) {
-        store.mark({ moderators: community.moderators })
-      }
-
-      if (store.curTab === DASHBOARD_ROUTE.DASHBOARD) {
-        store.updateOverview(community)
-      }
+      if (store.curTab === DASHBOARD_ROUTE.ADMINS) store.mark({ moderators: community.moderators })
+      if (store.curTab === DASHBOARD_ROUTE.DASHBOARD) store.updateOverview(community)
+      if (store.curTab === DASHBOARD_ROUTE.INFO) store.updateBaseInfo(community)
     },
   },
   {
@@ -475,6 +481,7 @@ export const useInit = (_store: TStore): void => {
     linksLogicInit(store)
     tagsLogicInit(store)
     faqInit(store)
+
     log('useInit: ', store)
 
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))

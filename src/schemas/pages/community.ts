@@ -40,12 +40,10 @@ export const community = `
       }
       dashboard {
         baseInfo {
-          title
           favicon
           homepage
           logo
-          slug
-          desc
+          bio
         }
         seo {
           ogSiteName
@@ -86,10 +84,6 @@ export const community = `
           footerLayout
         }
 
-        baseInfo {
-          favicon
-        }
-
         socialLinks {
           type
           link
@@ -106,12 +100,6 @@ export const community = `
           changelog
           doc
           about
-        }
-
-        faqs {
-          title
-          body
-          index
         }
       }
     }

@@ -14,7 +14,7 @@ import type { TSettingField, TWidgetType, THeaderEditType, TFooterEditType } fro
 
 import { Icon } from './styles/side_menu'
 
-export const ALIGN_HEADER_OFFSET = '140px'
+export const ALIGN_HEADER_OFFSET = '130px'
 
 // do not change, it's map to GQ endpoint updateDashboardLayout
 export const SETTING_LAYOUT_FIELD = {
@@ -542,7 +542,8 @@ export const BASEINFO_KEYS = [
   'favicon',
   'logo',
   'title',
-  'desc',
+  'bio',
+  'introduction',
   'homepage',
   'slug',
   'city',

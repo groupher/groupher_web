@@ -30,7 +30,7 @@ type TProps = {
 }
 
 const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => {
-  const { saving } = settings
+  const { saving, bio, title, introduction } = settings
 
   return (
     <Wrapper>
@@ -60,7 +60,7 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => 
       <Br bottom={10} />
 
       <Label>社区名称</Label>
-      <Inputer value={settings.title} onChange={(v) => edit(v, 'title')} />
+      <Inputer value={title} onChange={(v) => edit(v, 'title')} />
 
       <Br bottom={10} />
 
@@ -69,15 +69,15 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => 
       <Hint>您产品或服务的官方地址。</Hint>
 
       <Label>社区简介</Label>
-      <Inputer placeholder="一句话简介" value={settings.desc} onChange={(v) => edit(v, 'desc')} />
+      <Inputer placeholder="一句话简介" value={bio} onChange={(v) => edit(v, 'bio')} />
       <Br bottom={15} />
 
       <Label>关于社区</Label>
       <Inputer
         behavior="textarea"
         placeholder="支持 Markdown 语法"
-        value={settings.desc}
-        onChange={(v) => edit(v, 'desc')}
+        value={introduction}
+        onChange={(v) => edit(v, 'introduction')}
       />
 
       <SavingBar

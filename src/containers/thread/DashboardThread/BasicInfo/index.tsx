@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { FC, memo, useEffect } from 'react'
 import Router from 'next/router'
 
 import type { TPostLayout } from '@/spec'
@@ -18,7 +18,7 @@ import SocialInfo from './SocialInfo'
 import OtherInfo from './OtherInfo'
 
 import { Wrapper, Banner, TabsWrapper } from '../styles/basic_info'
-import { edit } from '../logic'
+import { edit, loadBaseInfo } from '../logic'
 
 type TProps = {
   testid?: TPostLayout
@@ -30,6 +30,10 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => 
   const curCommunity = useCurCommunity()
 
   const { baseInfoTab } = settings
+
+  useEffect(() => {
+    setTimeout(() => loadBaseInfo())
+  }, [])
 
   return (
     <Wrapper>

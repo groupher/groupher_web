@@ -601,6 +601,16 @@ const DashboardThread = T.model('DashboardThread', {
       }
     },
 
+    updateBaseInfo(community: TCommunity): void {
+      const { dashboard } = community
+      const { baseInfo } = dashboard
+
+      BASEINFO_KEYS.forEach((key) => {
+        self[key] = baseInfo[key]
+        self.initSettings[key] = baseInfo[key]
+      })
+    },
+
     setAllPassportRules(rootRules: string, moderatorRules): void {
       self.allRootRules = rootRules
       self.allModeratorRules = moderatorRules

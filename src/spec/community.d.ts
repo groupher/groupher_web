@@ -31,6 +31,14 @@ export type TCommunity = {
   pending?: number
   moderators?: TModerator[]
   views?: number
+
+  // TODO:
+  dashboard?: {
+    baseInfo?: {
+      title?: string
+      bio?: string
+    }
+  }
 }
 
 export type TPagedCommunities = {
