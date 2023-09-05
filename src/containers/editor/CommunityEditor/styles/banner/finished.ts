@@ -30,8 +30,8 @@ export const Desc = styled.div`
 `
 export const Frame = styled.div`
   ${css.row()};
-  width: 680px;
-  height: 500px;
+  width: 700px;
+  height: 540px;
   border-radius: 12px;
   margin-top: 30px;
 `
@@ -43,6 +43,7 @@ export const LeftFrame = styled.div`
   height: 100%;
   border-top-left-radius: 30px;
   border-bottom-left-radius: 30px;
+  padding-bottom: 20px;
 `
 export const RightFrame = styled.div`
   ${css.column('align-both')};
@@ -50,6 +51,7 @@ export const RightFrame = styled.div`
   width: 50%;
   height: 100%;
   padding: 20px 40px;
+  padding-top: 30px;
 
   border-top-right-radius: 30px;
   border-bottom-right-radius: 30px;

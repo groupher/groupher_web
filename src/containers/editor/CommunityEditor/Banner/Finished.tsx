@@ -64,6 +64,13 @@ const Finished: FC<TProps> = ({ status }) => {
             </DashIntro>
           </DashItem>
 
+          <DashItem href={`/${slug}/${ROUTE.DASHBOARD.TAGS}`}>
+            <DashIntro>
+              <DashTitle>标签编辑</DashTitle>
+              <DashDesc>编辑讨论区，更新日志等板块的标签。</DashDesc>
+            </DashIntro>
+          </DashItem>
+
           <DashItem href={`/${slug}/${ROUTE.DASHBOARD.ADMINS}`}>
             <DashIntro>
               <DashTitle>数据导入</DashTitle>
