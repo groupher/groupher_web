@@ -39,6 +39,7 @@ const CommunityEditorContainer: FC<TProps> = ({
     setupDomainStatus,
     setupInfoStatus,
     setupExtraStatus,
+    finishedStatus,
     validState,
   } = store
 
@@ -51,6 +52,7 @@ const CommunityEditorContainer: FC<TProps> = ({
         setupDomainStatus={setupDomainStatus}
         setupInfoStatus={setupInfoStatus}
         setupExtraStatus={setupExtraStatus}
+        finishedStatus={finishedStatus}
         validState={validState}
       />
       <InnerWrapper metric={metric}>

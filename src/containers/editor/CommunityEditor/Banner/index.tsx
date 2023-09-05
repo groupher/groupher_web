@@ -23,6 +23,7 @@ import type {
   TSetupInfoStatus,
   TValidState,
   TSetupExtraStatus,
+  TFinishedStatus,
 } from '../spec'
 import { STEP } from '../constant'
 
@@ -35,6 +36,7 @@ type TProps = {
   setupDomainStatus: TSetupDomainStatus
   setupInfoStatus: TSetupInfoStatus
   setupExtraStatus: TSetupExtraStatus
+  finishedStatus: TFinishedStatus
   validState: TValidState
 }
 
@@ -44,10 +46,10 @@ const Banner: FC<TProps> = ({
   setupDomainStatus,
   setupInfoStatus,
   setupExtraStatus,
+  finishedStatus,
   validState,
 }) => {
   let stepComp
-  const { slug } = setupInfoStatus
 
   switch (step) {
     case STEP.SELECT_TYPE: {
@@ -63,7 +65,7 @@ const Banner: FC<TProps> = ({
       break
     }
     case STEP.FINISHED: {
-      stepComp = <Finished community={slug} />
+      stepComp = <Finished status={finishedStatus} />
       break
     }
     default: {

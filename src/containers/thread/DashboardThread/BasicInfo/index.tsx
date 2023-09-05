@@ -37,7 +37,11 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => 
 
   return (
     <Wrapper>
-      <Portal title="社区信息" desc="社区基本信息，关于页面主要信息等。" withDivider={false} />
+      <Portal
+        title="社区信息"
+        desc="社区基本信息，社交媒体，关于页面主要信息等。"
+        withDivider={false}
+      />
 
       <Banner>
         <TabsWrapper>
