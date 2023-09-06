@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 import HashTagSVG from '@/icons/HashTag'
 import SettingSVG from '@/icons/Setting'
 
-import { Wrapper as ParentWrapper } from './index'
+import { Wrapper as ParentWrapper } from '.'
 
 export const Wrapper = styled.div`
   position: absolute;

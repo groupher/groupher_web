@@ -4,7 +4,7 @@ import type { TTestable } from '@/spec'
 import Img from '@/Img'
 import css, { theme, animate } from '@/css'
 
-import { Wrapper as ParentWrapper } from './index'
+import { Wrapper as ParentWrapper } from '.'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,

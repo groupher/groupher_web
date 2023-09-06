@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import css from '@/css'
 
 import { getShadowBackground, getShadowSize, getScrollbarThin } from './metrics'
-import { WrapperBase, ScrollWrapperBase, ShadowBarBase } from './index'
+import { WrapperBase, ScrollWrapperBase, ShadowBarBase } from '.'
 
 type TBar = {
   showOnHover?: boolean

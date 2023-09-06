@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 import { SpaceGrow } from '@/widgets/Common'
 import Checker from '@/widgets/Checker'
 
-import type { TProps as TBaseProps } from './index'
+import type { TProps as TBaseProps } from '.'
 
 // import { TAG_VIEW } from '../constant'
 import {

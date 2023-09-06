@@ -6,7 +6,7 @@ import css, { theme } from '@/css'
 import LaptopSVG from '@/icons/Laptop'
 import LinkSVG from '@/icons/Link'
 
-export { LinkInput } from './index'
+export { LinkInput } from '.'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};

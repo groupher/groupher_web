@@ -4,7 +4,7 @@ import type { TActive } from '@/spec'
 import Img from '@/Img'
 import css, { theme } from '@/css'
 
-import { Dot } from './index'
+import { Dot } from '.'
 
 export const Wrapper = styled.div`
   ${css.row()};

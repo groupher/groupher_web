@@ -15,7 +15,7 @@ import {
   Body,
 } from './styles/flat'
 
-import type { TProps as TIndex } from './index'
+import type { TProps as TIndex } from '.'
 
 type TProps = Pick<TIndex, 'sections' | 'large'>
 

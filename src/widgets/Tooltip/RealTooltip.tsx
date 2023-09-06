@@ -14,7 +14,7 @@ import { isDescendant, isWechatBrower } from '@/utils/dom'
 
 import useOutsideClick from '@/hooks/useOutsideClick'
 
-import type { TProps } from './index'
+import type { TProps } from '.'
 import ConfirmFooter from './ConfirmFooter'
 import { FOOTER_BEHAVIOR } from './constant'
 

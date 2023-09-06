@@ -6,7 +6,7 @@ import css, { theme } from '@/css'
 
 // import { Wrapper as CommentBlock } from '../desktop_view'
 
-export { HeaderBaseInfo, BaseInfo, FloorNum } from './index'
+export { HeaderBaseInfo, BaseInfo, FloorNum } from '.'
 
 export const Avatar = styled(Img)<{ avatarSize: number }>`
   ${({ avatarSize }) => css.circle(avatarSize)};

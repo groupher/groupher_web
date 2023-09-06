@@ -11,7 +11,7 @@ import {
   TitleBase,
   FooterBase,
   FlagIconBase,
-} from './index'
+} from '.'
 
 export const Wrapper = styled(WrapperBase)``
 

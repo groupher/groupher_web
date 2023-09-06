@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Img from '@/Img'
 import css, { theme } from '@/css'
 
-import { Block as BlockBase, Footer as FooterBase } from './index'
+import { Block as BlockBase, Footer as FooterBase } from '.'
 
 export const Wrapper = styled.div`
   ${css.row()};

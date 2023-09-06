@@ -4,7 +4,7 @@ import type { TButton, TSize } from '@/spec'
 import css, { theme } from '@/css'
 
 import { Wrapper as BaseBtnWrapper } from '../button'
-import { OrSignBase } from './index'
+import { OrSignBase } from '.'
 
 export const Wrapper = styled.div<{ size: TSize }>`
   ${css.row('align-center')};

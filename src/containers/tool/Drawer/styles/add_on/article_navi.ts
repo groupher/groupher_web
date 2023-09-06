@@ -4,7 +4,7 @@ import type { TActive } from '@/spec'
 import css, { theme } from '@/css'
 import ArrowSVG from '@/icons/ArrowSimple'
 
-import { Wrapper as AddonWrapper } from './index'
+import { Wrapper as AddonWrapper } from '.'
 
 export const Wrapper = styled.div<TActive>`
   ${css.column('justify-evenly', 'align-center')};

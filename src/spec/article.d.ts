@@ -1,4 +1,4 @@
-import type { TCommunity, TTag } from './index'
+import type { TCommunity, TTag } from '.'
 import type { TUser, TAccount, TSimpleUser } from './account'
 import type { TID } from './utils'
 import type { TEmotion } from './emotion'

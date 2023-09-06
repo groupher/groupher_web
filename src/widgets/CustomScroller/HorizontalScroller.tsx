@@ -13,7 +13,7 @@ import useCustomScroll from '@/hooks/useCustomScroll'
 // import ViewportTracker from '@/widgets/ViewportTracker'
 import SIZE from '@/constant/size'
 
-import type { TProps as TScrollProps } from './index'
+import type { TProps as TScrollProps } from '.'
 
 import {
   Wrapper,

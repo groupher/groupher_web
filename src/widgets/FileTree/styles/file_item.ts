@@ -5,7 +5,7 @@ import Img from '@/Img'
 // import HashTagSVG from '@/icons/HashTag'
 import css, { theme } from '@/css'
 
-import { TagsWrapper } from './index'
+import { TagsWrapper } from '.'
 
 type TTag = TActive & { color?: string }
 

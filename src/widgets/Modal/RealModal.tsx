@@ -6,7 +6,7 @@ import useShortcut from '@/hooks/useShortcut'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
 
-import type { TProps as BaseTProps } from './index'
+import type { TProps as BaseTProps } from '.'
 import { Mask, Wrapper, CloseBtn, ChildrenWrapper } from './styles'
 
 type TProps = Pick<

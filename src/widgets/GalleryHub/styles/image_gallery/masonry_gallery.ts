@@ -2,13 +2,7 @@ import styled from 'styled-components'
 
 import Img from '@/Img'
 
-import {
-  IntroBase,
-  IntroHeadBase,
-  TitleBase,
-  FooterBase,
-  FlagIconBase,
-} from './index'
+import { IntroBase, IntroHeadBase, TitleBase, FooterBase, FlagIconBase } from '.'
 
 export const Wrapper = styled.div`
   margin-left: auto;

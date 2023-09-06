@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import type { TTag } from '@/spec'
 
-import type { TProps as TFilter } from './index'
+import type { TProps as TFilter } from '.'
 import { Wrapper, FoldDot, Title } from '../styles/filter/tag'
 
 type TProps = Pick<TFilter, 'expandMenuId' | 'onSelect' | 'revert'> & {
@@ -15,9 +15,7 @@ const SelectedTag: FC<TProps> = ({ tag, expandMenuId, onSelect, revert }) => {
       {!revert ? (
         <>
           <FoldDot active={tag.title !== '不限'} />
-          <Title active={tag.title !== '不限'}>
-            {tag ? tag.title || '不限' : '不限'}
-          </Title>
+          <Title active={tag.title !== '不限'}>{tag ? tag.title || '不限' : '不限'}</Title>
         </>
       ) : (
         <>

@@ -3,7 +3,7 @@ import { FC, memo, Fragment } from 'react'
 import { prettyNum } from '@/utils/fmt'
 import { Wrapper, HighlightNumber } from './styles/real_number'
 
-import type { TProps as TAvatarsProps } from './index'
+import type { TProps as TAvatarsProps } from '.'
 
 type TProps = Pick<TAvatarsProps, 'size' | 'total'>
 

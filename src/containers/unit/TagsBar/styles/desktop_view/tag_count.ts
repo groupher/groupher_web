@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/css'
 
-// import { CountAreaMask } from './index'
+// import { CountAreaMask } from '.'
 import { Wrapper as TagItem } from './tag_item'
 
 export const Wrapper = styled.div`
