@@ -59,8 +59,8 @@ export const TitleHolder = styled(Title)`
 `
 export const ThreadWrapper = styled.div`
   ${css.row('align-center')};
-  gap: 0 15px;
-  margin-left: -60px;
+  gap: 0 20px;
+  margin-left: -70px;
 `
 export const ThreadItem = styled.div`
   font-size: 13px;
