@@ -12,11 +12,26 @@ const communityBaseInfo = gql`
           favicon
           logo
           slug
-          bio
+          desc
           introduction
           homepage
           city
           techstack
+        }
+      }
+    }
+  }
+`
+
+const communitySocialLinks = gql`
+  query community($slug: String, $incViews: Boolean) {
+    community(slug: $slug, incViews: $incViews) {
+      dashboard {
+        baseInfo {
+          socialLinks {
+            type
+            link
+          }
         }
       }
     }
@@ -29,7 +44,7 @@ const updateDashboardBaseInfo = gql`
     $homepage: String
     $title: String
     $slug: String
-    $bio: String
+    $desc: String
     $introduction: String
     $logo: String
     $favicon: String
@@ -39,7 +54,7 @@ const updateDashboardBaseInfo = gql`
       homepage: $homepage
       title: $title
       slug: $slug
-      bio: $bio
+      desc: $desc
       introduction: $introduction
       logo: $logo
       favicon: $favicon
@@ -123,7 +138,7 @@ const updateDashboardLayout = gql`
       broadcastEnable: $broadcastEnable
       kanbanBgColors: $kanbanBgColors
     ) {
-      id
+      slug
     }
   }
 `
@@ -131,8 +146,7 @@ const updateDashboardLayout = gql`
 const updateDashboardSocialLinks = gql`
   mutation ($community: String!, $socialLinks: [dashboardSocialLinkMap]) {
     updateDashboardSocialLinks(community: $community, socialLinks: $socialLinks) {
-      id
-      title
+      slug
     }
   }
 `
@@ -140,8 +154,7 @@ const updateDashboardSocialLinks = gql`
 const updateDashboardNameAlias = gql`
   mutation ($community: String!, $nameAlias: [dashboardAliasMap]) {
     updateDashboardNameAlias(community: $community, nameAlias: $nameAlias) {
-      id
-      title
+      slug
     }
   }
 `
@@ -245,6 +258,8 @@ const communityOverview = gql`
 
 const schema = {
   communityBaseInfo,
+  communitySocialLinks,
+
   updateDashboardBaseInfo,
   updateDashboardSeo,
   pagedArticleTags,

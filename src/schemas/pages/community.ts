@@ -43,8 +43,14 @@ export const community = `
           favicon
           homepage
           logo
-          bio
+          desc
         }
+
+        socialLinks {
+          type
+          link
+        }
+
         seo {
           ogSiteName
           ogTitle
@@ -82,12 +88,7 @@ export const community = `
           docFaqLayout
           changelogLayout
           footerLayout
-        }
-
-        socialLinks {
-          type
-          link
-        }
+        } 
 
         rss {
           rssFeedType

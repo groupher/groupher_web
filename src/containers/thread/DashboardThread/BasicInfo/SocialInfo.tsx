@@ -26,9 +26,7 @@ const SocialInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) =>
       <SocialEditor
         width="100%"
         value={socialLinks}
-        onChange={(socials) => {
-          updateSocialLinks(socials)
-        }}
+        onChange={(socials) => updateSocialLinks(socials)}
       />
 
       <SavingBar

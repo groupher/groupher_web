@@ -134,7 +134,7 @@ export type TBaseInfoSettings = {
   favicon: string
   logo: string
   title: string
-  bio: string
+  desc: string
   introduction: string
   homepage: string
   slug: string

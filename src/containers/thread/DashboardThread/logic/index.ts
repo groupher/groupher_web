@@ -6,7 +6,7 @@ import { COLOR_NAME } from '@/constant/colors'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 
-import { DASHBOARD_ROUTE } from '@/constant/route'
+import { DASHBOARD_ROUTE, DASHBOARD_BASEINFO_ROUTE } from '@/constant/route'
 
 import { buildLog } from '@/utils/logger'
 import { updateEditing, toJS } from '@/utils/mobx'
@@ -146,6 +146,11 @@ const _doMutation = (field: string, e: TEditValue): void => {
     return
   }
 
+  if (field === SETTING_FIELD.SOCIAL_LINKS) {
+    const { socialLinks } = store.baseInfoSettings
+    sr71$.mutate(S.updateDashboardSocialLinks, { community, socialLinks })
+  }
+
   if (field === SETTING_FIELD.SEO) {
     const params = {}
     SEO_KEYS.forEach((key) => {
@@ -206,11 +211,6 @@ const _doMutation = (field: string, e: TEditValue): void => {
     }))
 
     sr71$.mutate(S.reindexTagsInGroup, { community, thread, group, tags: tagIndex })
-  }
-
-  if (field === SETTING_FIELD.SOCIAL_LINKS) {
-    const { socialLinks } = store.baseInfoSettings
-    sr71$.mutate(S.updateDashboardSocialLinks, { community, socialLinks })
   }
 }
 
@@ -283,6 +283,16 @@ export const loadBaseInfo = (): void => {
   const { curCommunity } = store
 
   sr71$.query(S.communityBaseInfo, {
+    slug: curCommunity.slug,
+    userHasLogin: false,
+    incViews: false,
+  })
+}
+
+export const loadSocialLinks = (): void => {
+  const { curCommunity } = store
+
+  sr71$.query(S.communitySocialLinks, {
     slug: curCommunity.slug,
     userHasLogin: false,
     incViews: false,
@@ -427,9 +437,16 @@ const DataSolver = [
   {
     match: asyncRes('community'),
     action: ({ community }) => {
-      if (store.curTab === DASHBOARD_ROUTE.ADMINS) store.mark({ moderators: community.moderators })
-      if (store.curTab === DASHBOARD_ROUTE.DASHBOARD) store.updateOverview(community)
-      if (store.curTab === DASHBOARD_ROUTE.INFO) store.updateBaseInfo(community)
+      const { curTab, baseInfoTab } = store
+
+      if (curTab === DASHBOARD_ROUTE.ADMINS) store.mark({ moderators: community.moderators })
+      if (curTab === DASHBOARD_ROUTE.DASHBOARD && baseInfoTab === DASHBOARD_BASEINFO_ROUTE.BASIC) {
+        store.updateOverview(community)
+      }
+
+      if (curTab === DASHBOARD_ROUTE.INFO && store.baseInfoTab === DASHBOARD_BASEINFO_ROUTE.OTHER) {
+        // store.updateSocialLinks(community)
+      }
     },
   },
   {

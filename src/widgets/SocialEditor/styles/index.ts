@@ -83,7 +83,7 @@ export const PlatformWrapper = styled.div`
     box-shadow: ${css.cardShadow};
   }
 
-  transition: all 0.2s;
+  transition: all 0.1s;
 `
 
 const getIcon = (SVG, size = 15) => {
@@ -98,6 +98,11 @@ const getIcon = (SVG, size = 15) => {
       filter: saturate(1);
       opacity: 1;
     }
+
+    &:active {
+      transform: scale(1.2);
+    }
+
     transition: all 0.2s;
   `
 }

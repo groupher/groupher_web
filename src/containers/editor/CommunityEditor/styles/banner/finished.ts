@@ -47,7 +47,7 @@ export const LeftFrame = styled.div`
 `
 export const RightFrame = styled.div`
   ${css.column('align-both')};
-  background: #eae9e98a;
+  background: #eae9e96e;
   width: 50%;
   height: 100%;
   padding: 20px 40px;
@@ -78,7 +78,7 @@ export const GotoLink = styled(Link)`
   min-width: 90px;
   height: 34px;
   border-radius: 8px;
-  background: #eae9e98a;
+  background: #eae9e96e;
   margin-top: 30px;
 
   &:hover {

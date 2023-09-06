@@ -5,6 +5,7 @@
 import {
   values,
   pick,
+  isEmpty,
   findIndex,
   clone,
   isNil,
@@ -35,6 +36,7 @@ import type {
   TNameAliasConfig,
   TChangeMode,
   TArticleEntries,
+  TSocialItem,
 } from '@/spec'
 
 import {
@@ -529,12 +531,13 @@ const DashboardThread = T.model('DashboardThread', {
       const slf = self as TStore
 
       const baseInfo = pick(BASEINFO_KEYS, slf)
+      const socialLinks = reject((item: TSocialItem) => isEmpty(item.type), toJS(slf.socialLinks))
 
       return {
         ...baseInfo,
         baseInfoTab: slf.baseInfoTab,
         saving: slf.saving,
-        socialLinks: toJS(slf.socialLinks),
+        socialLinks,
       }
     },
     get uiSettings(): TUiSettings {

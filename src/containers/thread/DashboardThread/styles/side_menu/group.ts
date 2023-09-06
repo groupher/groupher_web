@@ -81,12 +81,12 @@ export const Item = styled(Link)<TActive>`
     content: '';
     display: ${({ $active }) => ($active ? 'block' : 'none')};
     position: absolute;
-    top: 8px;
+    top: 10px;
     left: -2px;
     width: 4px;
-    height: 12px;
+    height: 13px;
     border-radius: 8px;
-    background: ${theme('lightText')};
+    background: ${theme('article.digest')};
   }
 
   transition: all 0.2s;

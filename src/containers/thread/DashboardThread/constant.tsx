@@ -542,7 +542,7 @@ export const BASEINFO_KEYS = [
   'favicon',
   'logo',
   'title',
-  'bio',
+  'desc',
   'introduction',
   'homepage',
   'slug',

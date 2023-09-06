@@ -30,7 +30,7 @@ type TProps = {
 }
 
 const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => {
-  const { saving, bio, title, introduction } = settings
+  const { saving, desc, title, introduction } = settings
 
   return (
     <Wrapper>
@@ -69,7 +69,7 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => 
       <Hint>您产品或服务的官方地址。</Hint>
 
       <Label>社区简介</Label>
-      <Inputer placeholder="一句话简介" value={bio} onChange={(v) => edit(v, 'bio')} />
+      <Inputer placeholder="一句话简介" value={desc} onChange={(v) => edit(v, 'desc')} />
       <Br bottom={15} />
 
       <Label>关于社区</Label>
