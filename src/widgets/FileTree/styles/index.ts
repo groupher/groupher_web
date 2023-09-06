@@ -4,7 +4,6 @@ import type { TSpace } from '@/spec'
 import css from '@/css'
 
 // import Img from '@/Img'
-// import { theme } from '@/utils/themes'
 
 export const Wrapper = styled.div<TSpace>`
   position: relative;

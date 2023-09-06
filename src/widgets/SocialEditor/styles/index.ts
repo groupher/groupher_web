@@ -14,9 +14,6 @@ import ZhihuSVG from '@/icons/social/Zhihu'
 import GithubSVG from '@/icons/social/Github'
 import BiliBiliSVG from '@/icons/social/BiliBili'
 import BossSVG from '@/icons/social/Boss'
-// import LagouSVG from '@/icons/social/Lagou'
-
-// import { theme } from '@/utils/themes'
 
 type TWrapper = TTestable & { width: string } & TSpace
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({

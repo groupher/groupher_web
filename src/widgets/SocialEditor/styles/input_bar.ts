@@ -5,8 +5,7 @@ import css, { theme } from '@/css'
 import DeleteSVG from '@/icons/DeleteSolid'
 import Input from '@/widgets/Input'
 
-export { Icon } from './index'
-// import { theme } from '@/utils/themes'
+export { Icon } from '.'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};
