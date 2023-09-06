@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import CommunityList from '../index'
+// import CommunityList from '..'
 
 describe('TODO <CommunityList />', () => {
   it('Expect to have unit tests specified', () => {

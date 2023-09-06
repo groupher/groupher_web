@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import JoinModal from '../index'
+// import JoinModal from '..'
 
 describe('TODO <JoinModal />', () => {
   it('Expect to have unit tests specified', () => {

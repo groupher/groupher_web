@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { THeaderLayout, TMetric } from '@/spec'
 import css, { theme } from '@/css'
 
-import { BaseBanner } from '../index'
+import { BaseBanner } from '..'
 import { HEADER_LAYOUT } from '@/constant/layout'
 
 type TWrapper = {

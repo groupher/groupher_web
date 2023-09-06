@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import ArticleBlongCommunity from '../index'
+// import ArticleBlongCommunity from '..'
 
 describe('TODO <ArticleBlongCommunity />', () => {
   it('Expect to have unit tests specified', () => {

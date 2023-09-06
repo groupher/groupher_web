@@ -3,7 +3,7 @@
  *
  */
 
-// import CollectionFolder from '../index'
+// import CollectionFolder from '..'
 
 it('TODO: store test CollectionFolder', () => {
   expect(1 + 1).toBe(2)

@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import ArticleViewer from '../index'
+// import ArticleViewer from '..'
 
 describe('TODO <ArticleViewer />', () => {
   it('Expect to have unit tests specified', () => {

@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import UserContent from '../index'
+// import UserContent from '..'
 
 describe('TODO <UserContent />', () => {
   it('Expect to have unit tests specified', () => {

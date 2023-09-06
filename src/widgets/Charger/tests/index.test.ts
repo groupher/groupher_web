@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import Charger from '../index'
+// import Charger from '..'
 
 describe('TODO <Charger />', () => {
   it('Expect to have unit tests specified', () => {

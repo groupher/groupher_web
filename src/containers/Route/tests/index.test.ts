@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import Route from '../index'
+// import Route from '..'
 
 describe('<Route />', () => {
   it('Expect to have unit tests specified', () => {

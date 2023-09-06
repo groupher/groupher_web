@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import CommentsCount from '../index'
+// import CommentsCount from '..'
 
 describe('TODO <CommentsCount />', () => {
   it('Expect to have unit tests specified', () => {

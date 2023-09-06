@@ -3,7 +3,7 @@
  *
  */
 
-// import CommentsStore from '../index'
+// import CommentsStore from '..'
 
 it('TODO: test CommentsStore', () => {
   expect(1 + 1).toBe(2)

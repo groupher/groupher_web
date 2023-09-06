@@ -5,7 +5,7 @@ import Button from '@/widgets/Buttons/Button'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
 import SortMenu from './SortMenu'
-import type { TProps as TBase } from '../index'
+import type { TProps as TBase } from '..'
 
 import {
   Wrapper,

@@ -3,7 +3,7 @@
  *
  */
 
-// import TagSettingEditor from '../index'
+// import TagSettingEditor from '..'
 
 it('TODO: store test TagSettingEditor', () => {
   expect(1 + 1).toBe(2)

@@ -3,7 +3,7 @@
  *
  */
 
-// import AboutThread from '../index'
+// import AboutThread from '..'
 
 it('TODO: store test AboutThread', () => {
   expect(1 + 1).toBe(2)

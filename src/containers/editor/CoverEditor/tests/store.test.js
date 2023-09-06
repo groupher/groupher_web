@@ -3,7 +3,7 @@
  *
  */
 
-// import CoverEditor from '../index'
+// import CoverEditor from '..'
 
 it('TODO: store test CoverEditor', () => {
   expect(1 + 1).toBe(2)

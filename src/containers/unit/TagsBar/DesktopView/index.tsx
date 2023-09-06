@@ -10,7 +10,7 @@ import { keys, reverse } from 'ramda'
 import { bond } from '@/utils/mobx'
 import { buildLog } from '@/utils/logger'
 
-import type { TProps as TTagProps } from '../index'
+import type { TProps as TTagProps } from '..'
 
 import GobackTag from './GobackTag'
 import Folder from './Folder'
@@ -27,13 +27,7 @@ type TProps = Omit<TTagProps, 'view'>
 const TagsBarContainer: FC<TProps> = ({ tagsBar: store, onSelect }) => {
   useInit(store)
 
-  const {
-    groupedTags,
-    tagsData,
-    activeTagData,
-    maxDisplayCount,
-    totalCountThrold,
-  } = store
+  const { groupedTags, tagsData, activeTagData, maxDisplayCount, totalCountThrold } = store
   const groupsKeys = reverse(keys(groupedTags)) as string[]
 
   return (

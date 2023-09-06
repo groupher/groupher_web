@@ -4,7 +4,7 @@ import Tooltip from '@/widgets/Tooltip'
 
 import { MODE } from '../../constant'
 
-import type { TProps as TBase } from '../index'
+import type { TProps as TBase } from '..'
 
 import {
   Wrapper,

@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import MarkDownRender from '../index'
+// import MarkDownRender from '..'
 
 describe('TODO <MarkDownRender />', () => {
   it('Expect to have unit tests specified', () => {

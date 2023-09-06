@@ -14,7 +14,7 @@ import { buildLog } from '@/utils/logger'
 
 import Navigator from '@/widgets/Navigator'
 
-import type { TProps } from '../index'
+import type { TProps } from '..'
 import {
   Wrapper,
   ClassicInnerWrapper,

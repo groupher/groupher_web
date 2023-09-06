@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import CollapseMenu from '../index'
+// import CollapseMenu from '..'
 
 describe('TODO <CollapseMenu />', () => {
   it('Expect to have unit tests specified', () => {

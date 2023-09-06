@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import EmptyThread from '../index'
+// import EmptyThread from '..'
 
 describe('TODO <EmptyThread />', () => {
   it('Expect to have unit tests specified', () => {

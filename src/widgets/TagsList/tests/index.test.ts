@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import TagsList from '../index'
+// import TagsList from '..'
 
 describe('TODO <TagsList />', () => {
   it('Expect to have unit tests specified', () => {
