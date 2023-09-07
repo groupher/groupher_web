@@ -1,4 +1,4 @@
-export const CITY_OPTIONS = [
+export const HOME_CITY_OPTIONS = [
   {
     label: '北京',
     value: 'beijing',
@@ -35,6 +35,9 @@ export const CITY_OPTIONS = [
     label: '西安',
     value: 'xian',
   },
+]
+
+export const OVERSEA_CITY_OPTIONS = [
   {
     label: '湾区',
     value: 'bay-area',
@@ -91,11 +94,6 @@ export const CITY_OPTIONS = [
     value: 'bangkok',
     flag: 'TH',
   },
-
-  {
-    label: '其他',
-    value: 'others',
-  },
 ]
 
-export const holder = 1
+export const CITY_OPTIONS = [...HOME_CITY_OPTIONS, ...OVERSEA_CITY_OPTIONS]

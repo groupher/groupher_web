@@ -4,14 +4,14 @@
  *
  */
 
-import { FC, memo, useCallback, useEffect, useState } from 'react'
+import { FC, memo, useEffect, useState } from 'react'
 import { find, includes, without, reject, isEmpty } from 'ramda'
 
-import type { TCityOption } from '@/spec'
-import { CITY_OPTIONS } from '@/constant/city'
+import type { TCityOption, TSpace } from '@/spec'
+import { CITY_OPTIONS, HOME_CITY_OPTIONS } from '@/constant/city'
 import { buildLog } from '@/utils/logger'
 
-import { Wrapper, Box, Flag } from './styles'
+import { Wrapper, Box, MoreBtn, Flag, InputLabel, Inputer } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('c:CitySelector:index')
@@ -19,23 +19,28 @@ const log = buildLog('c:CitySelector:index')
 type TProps = {
   radius?: number
   value?: string
-  options?: TCityOption[]
   onChange: (value: string) => void
-}
+} & TSpace
 
-const CitySelector: FC<TProps> = ({ radius = 5, value = '', onChange, options = CITY_OPTIONS }) => {
-  const [selected, setSelected] = useState([])
+const CitySelector: FC<TProps> = ({ radius = 5, value = '', onChange, ...restProps }) => {
+  const [selected, setSelected] = useState(value.split(','))
+  const [showMore, setShowMore] = useState(false)
+  const [extraCities, setExtraCities] = useState('')
 
   useEffect(() => {
-    setSelected(value.split(','))
-  }, [value])
+    const selectedCityValue = reject(isEmpty, selected).join(',')
 
-  const onValueChange = useCallback(() => {
-    onChange(reject(isEmpty, selected).join(','))
-  }, [selected, onChange])
+    const cityVal = extraCities.trim()
+      ? `${selectedCityValue},${extraCities.replaceAll('，', ',')}`
+      : selectedCityValue
+
+    onChange(reject(isEmpty, cityVal.split(',')).join(','))
+  }, [selected, extraCities, onChange])
+
+  const options = !showMore ? HOME_CITY_OPTIONS : CITY_OPTIONS
 
   return (
-    <Wrapper>
+    <Wrapper {...restProps}>
       {options.map((option: TCityOption) => {
         const NationFlag = Flag[option.flag] || null
 
@@ -49,11 +54,9 @@ const CitySelector: FC<TProps> = ({ radius = 5, value = '', onChange, options = 
             hasFlag={!!option.flag}
             onClick={() => {
               if (!find((item) => item === option.value, selected)) {
-                // @ts-ignore
-                setSelected([...selected, option.value], () => onValueChange())
+                setSelected([...selected, option.value])
               } else {
-                // @ts-ignore
-                setSelected(without([option.value], selected), () => onValueChange())
+                setSelected(without([option.value], selected))
               }
             }}
           >
@@ -62,6 +65,17 @@ const CitySelector: FC<TProps> = ({ radius = 5, value = '', onChange, options = 
           </Box>
         )
       })}
+      {!showMore && <MoreBtn onClick={() => setShowMore(true)}>更多..</MoreBtn>}
+      {showMore && (
+        <>
+          <InputLabel>或者，其他城市（地区）？</InputLabel>
+          <Inputer
+            placeholder="多个城市请用 , 分隔开"
+            value={extraCities}
+            onChange={(e) => setExtraCities(e.target.value)}
+          />
+        </>
+      )}
     </Wrapper>
   )
 }

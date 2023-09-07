@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import styled from 'styled-components'
 
-import type { TActive } from '@/spec'
+import type { TActive, TSpace } from '@/spec'
 import css, { theme } from '@/css'
 
 import USSVG from '@/icons/nation/US'
@@ -13,12 +13,26 @@ import CASVG from '@/icons/nation/CA'
 import THSVG from '@/icons/nation/TH'
 import SGSVG from '@/icons/nation/SG'
 
-export const Wrapper = styled.div`
+import Input from '@/widgets/Input'
+
+export const Inputer = styled(Input)`
+  margin-top: -2px;
+`
+
+export const InputLabel = styled.div`
+  font-size: 13px;
+  color: ${theme('article.digest')};
+  margin-top: 8px;
+`
+
+export const Wrapper = styled.div<TSpace>`
   ${css.rowWrap('align-center')};
   color: ${theme('article.digest')};
   width: 300px;
   margin-top: 14px;
   gap: 12px 14px;
+
+  ${(props) => css.spaceMargins(props)};
 `
 type TBox = TActive & { radius: number; hasFlag: boolean }
 export const Box = styled.div<TBox>`
@@ -44,6 +58,17 @@ export const Box = styled.div<TBox>`
   }
 
   transition: all 0.2s;
+`
+
+export const MoreBtn = styled.div`
+  color: ${theme('article.info')};
+  padding: 0 14px;
+  font-size: 14px;
+
+  &:hover {
+    font-weight: 500;
+    cursor: pointer;
+  }
 `
 
 const FlagIcon = (comp: FC): FC<TActive> => {

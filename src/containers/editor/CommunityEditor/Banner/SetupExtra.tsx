@@ -19,7 +19,6 @@ import {
   InfoWrapper,
   InputsWrapper,
   InputBox,
-  // ExtraInputBox,
   Label,
 } from '../styles/banner/setup_extra'
 
@@ -49,6 +48,7 @@ const SetupExtra: FC<TProps> = ({ status, validState }) => {
       <InfoWrapper>
         <InputsWrapper>
           <Label>官方主页</Label>
+          <Br bottom={10} />
           <InputBox
             value={homepage}
             placeholder="https://"

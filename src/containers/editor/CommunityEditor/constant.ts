@@ -92,7 +92,7 @@ export const SOURCE_OPTIONS = [
     value: 'xiaohongshu',
   },
   {
-    label: '其他开发者/同事',
+    label: '朋友/同事',
     value: 'otherdude',
   },
   {

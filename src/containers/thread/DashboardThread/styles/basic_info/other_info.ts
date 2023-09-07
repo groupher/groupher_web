@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/css'
+import { theme } from '@/css'
 
 import Input from '@/widgets/Input'
 
@@ -10,9 +10,11 @@ export const Wrapper = styled.div`
   padding-bottom: 30px;
   margin-bottom: 20px;
 `
-export const Label = styled.div`
-  color: ${theme('article.title')};
+export const Label = styled.div<{ left?: number }>`
+  color: ${theme('article.digest')};
   font-size: 14px;
+  font-weight: 500;
+  margin-left: ${({ left }) => `${left || 0}px`};
 `
 export const Inputer = styled(Input)`
   margin-top: 10px;
