@@ -2,8 +2,9 @@ import { FC, memo } from 'react'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import { Br, Space } from '@/widgets/Common'
+import CitySelector from '@/widgets/CitySelector'
 
-import { CITY_OPTIONS, SOURCE_OPTIONS } from '../constant'
+import { SOURCE_OPTIONS } from '../constant'
 
 import ScaleSelector from './ScaleSelector'
 import BlockSelector from './BlockSelector'
@@ -60,14 +61,12 @@ const SetupExtra: FC<TProps> = ({ status, validState }) => {
           <Br bottom={40} />
 
           <Label>您（的团队）所在城市是？</Label>
-          <BlockSelector
-            options={CITY_OPTIONS}
-            activeValue={city}
-            onChange={(v) => inputOnChange(v, 'city')}
-          />
+          <Br bottom={20} />
+          <CitySelector value={city} onChange={(v) => inputOnChange(v, 'city')} />
           <Br bottom={40} />
 
           <Label>您是从哪里知道 Groupher 的？</Label>
+          <Br bottom={20} />
           <BlockSelector
             options={SOURCE_OPTIONS}
             radius={20}

@@ -82,6 +82,6 @@ export const Title = styled.div`
 export const NextBtn = styled.div`
   ${css.row('align-center', 'justify-center')};
   width: 200px;
-  margin-left: -10px;
+  margin-left: -26px;
   filter: grayscale(1);
 `

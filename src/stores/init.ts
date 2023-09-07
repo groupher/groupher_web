@@ -31,5 +31,3 @@ export const useStore = (initialState = {}): TRootStore => {
   const store = useMemo(() => initRootStore(initialState), [initialState])
   return store
 }
-
-export const holder = 1

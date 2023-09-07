@@ -25,5 +25,5 @@ export const ArrowIcon = styled(ArrowSVG)<{ fontSize: number }>`
 
 export const Title = styled.span<{ fontSize: number }>`
   display: inline-block;
-  font-fontsize: ${({ fontSize }) => `${fontSize}px`};
+  font-size: ${({ fontSize }) => `${fontSize}px`};
 `

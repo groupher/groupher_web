@@ -72,7 +72,11 @@ export const SOURCE_OPTIONS = [
     value: 'wechat',
   },
   {
-    label: '微博/Twitter',
+    label: 'Twitter',
+    value: 'Twitter',
+  },
+  {
+    label: '微博',
     value: 'weibo',
   },
   {

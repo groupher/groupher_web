@@ -64,6 +64,7 @@ export type {
   TEditValue,
   TSubmitState,
   TSelectOption,
+  TCityOption,
   TTechStackCategory,
   TCommunitySetterStyle,
   TToastType,

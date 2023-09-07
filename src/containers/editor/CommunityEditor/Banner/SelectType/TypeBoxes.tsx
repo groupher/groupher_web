@@ -3,10 +3,11 @@ import { FC, memo } from 'react'
 import {
   Wrapper,
   Box,
-  HeaderText,
+  Header,
   MainText,
   FooterText,
   TheChecker,
+  Icon,
 } from '../../styles/banner/select_type/type_boxes'
 
 import type { TCommunityType } from '../../spec'
@@ -27,10 +28,10 @@ const TypeBoxes: FC<TProps> = ({ communityType }) => {
         active={communityType === WEB}
         onClick={() => communityTypeOnChange(WEB)}
       >
-        <HeaderText>
-          <div>免费</div>
+        <Header>
+          <Icon.Browser />
           <TheChecker checked={communityType === WEB} hiddenMode />
-        </HeaderText>
+        </Header>
         <MainText>Web 应用</MainText>
         <FooterText>已有 114 +</FooterText>
       </Box>
@@ -39,10 +40,10 @@ const TypeBoxes: FC<TProps> = ({ communityType }) => {
         active={communityType === CLIENT}
         onClick={() => communityTypeOnChange(CLIENT)}
       >
-        <HeaderText>
-          <HeaderText>免费</HeaderText>
+        <Header>
+          <Icon.Hammer />
           <TheChecker checked={communityType === CLIENT} hiddenMode />
-        </HeaderText>
+        </Header>
         <MainText>客户端软件</MainText>
         <FooterText>已有 12 +</FooterText>
       </Box>
@@ -51,10 +52,10 @@ const TypeBoxes: FC<TProps> = ({ communityType }) => {
         active={communityType === HARDWARE}
         onClick={() => communityTypeOnChange(HARDWARE)}
       >
-        <HeaderText>
-          <HeaderText>免费</HeaderText>
+        <Header>
+          <Icon.Robot />
           <TheChecker checked={communityType === HARDWARE} hiddenMode />
-        </HeaderText>
+        </Header>
         <MainText>硬件产品</MainText>
         <FooterText>已有 14 +</FooterText>
       </Box>
@@ -63,10 +64,10 @@ const TypeBoxes: FC<TProps> = ({ communityType }) => {
         active={communityType === GAME}
         onClick={() => communityTypeOnChange(GAME)}
       >
-        <HeaderText>
-          <div>免费</div>
+        <Header>
+          <Icon.Game />
           <TheChecker checked={communityType === GAME} hiddenMode />
-        </HeaderText>
+        </Header>
         <MainText>独立游戏</MainText>
         <FooterText>已有 114 +</FooterText>
       </Box>

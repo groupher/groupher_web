@@ -137,6 +137,10 @@ export type TSelectOption = {
   desc?: string
 }
 
+export type TCityOption = TSelectOption & {
+  flag?: string
+}
+
 export type TTechStackCategory = 'lang' | 'framework' | 'database' | 'devOps' | 'design'
 
 export type TCommunitySetterStyle = 'normal' | TTechStackCategory
