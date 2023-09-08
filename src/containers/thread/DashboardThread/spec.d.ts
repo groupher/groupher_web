@@ -325,3 +325,11 @@ export type TCurPageLinksKey = {
 }
 
 export type TMoveLinkDir = 'up' | 'down' | 'top' | 'bottom'
+
+export type TMediaReport = {
+  id: TID
+  favicon: string
+  siteName: string
+  title: string
+  url: string
+}

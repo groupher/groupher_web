@@ -89,7 +89,7 @@ export const Title = styled.div`
 `
 export const Desc = styled.div`
   color: ${theme('hint')};
-  font-size: 10px;
+  font-size: 11px;
 `
 export const Num = styled.div`
   color: ${theme('article.title')};

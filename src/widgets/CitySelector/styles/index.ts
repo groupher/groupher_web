@@ -61,7 +61,7 @@ export const Box = styled.div<TBox>`
 `
 
 export const MoreBtn = styled.div`
-  color: ${theme('article.info')};
+  color: ${theme('article.digest')};
   padding: 0 14px;
   font-size: 14px;
 

@@ -4,7 +4,7 @@ import { theme } from '@/css'
 
 import Input from '@/widgets/Input'
 
-export { Desc } from './base_info'
+export { Desc } from '../base_info'
 
 export const Wrapper = styled.div`
   padding-bottom: 30px;
@@ -14,10 +14,9 @@ export const Label = styled.div<{ left?: number }>`
   color: ${theme('article.digest')};
   font-size: 14px;
   font-weight: 500;
+  margin-bottom: 10px;
   margin-left: ${({ left }) => `${left || 0}px`};
 `
 export const Inputer = styled(Input)`
-  margin-top: 10px;
   width: 300px;
-  background: transparent;
 `

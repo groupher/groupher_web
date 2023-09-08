@@ -70,6 +70,7 @@ export const InputWrapper = styled.input<IInput>`
   border: 1px solid;
   border-color: ${theme('editor.border')};
   border-radius: 4px;
+  background-color: ${theme('alphaBg')};
 
   ::placeholder {
     color: ${theme('article.digest')};

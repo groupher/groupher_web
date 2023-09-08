@@ -68,7 +68,7 @@ const CitySelector: FC<TProps> = ({ radius = 5, value = '', onChange, ...restPro
       {!showMore && <MoreBtn onClick={() => setShowMore(true)}>更多..</MoreBtn>}
       {showMore && (
         <>
-          <InputLabel>或者，其他城市（地区）？</InputLabel>
+          <InputLabel>或者，其他城市（地区）</InputLabel>
           <Inputer
             placeholder="多个城市请用 , 分隔开"
             value={extraCities}
