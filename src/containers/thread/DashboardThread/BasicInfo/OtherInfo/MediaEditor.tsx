@@ -22,7 +22,7 @@ const MediaEditor: FC<TProps> = ({ reports, queringMediaReportIndex }) => {
       <Label>
         媒体报道
         <SpaceGrow />
-        <AddButton onClick={addMediaReport} dimWhenIdle>
+        <AddButton onClick={addMediaReport} top={2} dimWhenIdle>
           添加
         </AddButton>
       </Label>

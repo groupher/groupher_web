@@ -33,6 +33,8 @@ import {
   BASEINFO_KEYS,
   SEO_KEYS,
   EMPTY_MEDIA_REPORT,
+  BASEINFO_BASIC_KEYS,
+  BASEINFO_OTHER_KEYS,
 } from '../constant'
 import { init as linksLogicInit } from './links'
 import { init as tagsLogicInit } from './tags'
@@ -165,10 +167,20 @@ const _doMutation = (field: string, e: TEditValue): void => {
   }
 
   if (field === SETTING_FIELD.BASE_INFO) {
+    const { baseInfoTab } = store
+
     const params = {}
-    BASEINFO_KEYS.forEach((key) => {
-      params[key] = store[key]
-    })
+    if (baseInfoTab === DASHBOARD_BASEINFO_ROUTE.BASIC) {
+      BASEINFO_BASIC_KEYS.forEach((key) => {
+        params[key] = store[key]
+      })
+    }
+
+    if (baseInfoTab === DASHBOARD_BASEINFO_ROUTE.OTHER) {
+      BASEINFO_OTHER_KEYS.forEach((key) => {
+        params[key] = store[key]
+      })
+    }
 
     sr71$.mutate(S.updateDashboardBaseInfo, { community, ...params })
     return

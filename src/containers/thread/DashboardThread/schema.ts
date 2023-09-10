@@ -55,6 +55,8 @@ const updateDashboardBaseInfo = gql`
     $introduction: String
     $logo: String
     $favicon: String
+    $city: String
+    $techstack: String
   ) {
     updateDashboardBaseInfo(
       community: $community
@@ -65,8 +67,9 @@ const updateDashboardBaseInfo = gql`
       introduction: $introduction
       logo: $logo
       favicon: $favicon
+      city: $city
+      techstack: $techstack
     ) {
-      id
       title
     }
   }
