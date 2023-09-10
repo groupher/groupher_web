@@ -256,6 +256,17 @@ const communityOverview = gql`
   }
 `
 
+const openGraphInfo = gql`
+  query ($url: String!) {
+    openGraphInfo(url: $url) {
+      title
+      favicon
+      url
+      siteName
+    }
+  }
+`
+
 const schema = {
   communityBaseInfo,
   communitySocialLinks,
@@ -274,6 +285,7 @@ const schema = {
   updateDashboardFaqs,
   updateModerators,
   communityOverview,
+  openGraphInfo,
 }
 
 export default schema

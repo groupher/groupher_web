@@ -18,5 +18,5 @@ export const Label = styled.div<{ left?: number }>`
   margin-left: ${({ left }) => `${left || 0}px`};
 `
 export const Inputer = styled(Input)`
-  width: 300px;
+  width: 300px !important;
 `

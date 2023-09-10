@@ -423,6 +423,15 @@ export const EMPTY_LINK_ITEM = {
   groupIndex: 0,
 }
 
+export const EMPTY_MEDIA_REPORT = {
+  id: 0,
+  title: '',
+  favicon: '',
+  siteName: '',
+  url: '',
+  editUrl: '',
+}
+
 const demoMarkdown = `
   this is a paragraph 
 

@@ -28,7 +28,10 @@ const OtherInfo: FC<TProps> = ({ testid = 'basic-info', settings }) => {
       <Desc>团队主要使用的开发或创作工具等，多项请用 , 隔开。</Desc>
 
       <Br top={22} />
-      <MediaEditor />
+      <MediaEditor
+        reports={settings.mediaReports}
+        queringMediaReportId={settings.queringMediaReportId}
+      />
     </Wrapper>
   )
 }

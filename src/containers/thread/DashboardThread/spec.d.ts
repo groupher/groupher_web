@@ -129,6 +129,8 @@ export type TAliasSettings = {
 }
 
 export type TBaseInfoSettings = {
+  loading: boolean
+  queringMediaReportId: number | null
   saving: boolean
 
   favicon: string
@@ -143,6 +145,7 @@ export type TBaseInfoSettings = {
 
   socialLinks: TSocialItem[]
   baseInfoTab: TDashboardBaseInfoRoute
+  mediaReports: TMediaReport[]
 }
 
 export type TSEOSettings = {
@@ -327,9 +330,10 @@ export type TCurPageLinksKey = {
 export type TMoveLinkDir = 'up' | 'down' | 'top' | 'bottom'
 
 export type TMediaReport = {
-  id: TID
+  id: number
   favicon: string
   siteName: string
   title: string
   url: string
+  editUrl?: string
 }

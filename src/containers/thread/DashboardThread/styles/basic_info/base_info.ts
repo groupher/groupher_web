@@ -36,6 +36,7 @@ export const Desc = styled.div`
   margin-top: 10px;
   margin-bottom: 20px;
 `
+
 export const Row = styled.div`
   ${css.row('align-center')};
 `

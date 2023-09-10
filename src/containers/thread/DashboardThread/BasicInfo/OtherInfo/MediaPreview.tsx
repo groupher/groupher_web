@@ -26,7 +26,9 @@ const MediaPreview: FC<TProps> = ({ item }) => {
         <SiteName>{siteName}</SiteName>
       </Brand>
 
-      <Title href={url}>{title}</Title>
+      <Title href={url} target="_blank">
+        {title}
+      </Title>
       <ArrowBox>
         <ArrowIcon />
       </ArrowBox>

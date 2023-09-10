@@ -126,6 +126,8 @@ const DashboardThread = T.model('DashboardThread', {
   editingGroupIndex: T.maybeNull(T.int),
   editingFAQIndex: T.maybeNull(T.int),
   editingFAQ: T.maybeNull(FAQSection),
+
+  queringMediaReportId: T.maybeNull(T.int),
   // editingGroupMode: T.opt(T.enum(values(CHANGE_MODE)), CHANGE_MODE.CREATE),
 
   ...settingsModalFields,
@@ -535,11 +537,15 @@ const DashboardThread = T.model('DashboardThread', {
 
       return {
         ...baseInfo,
-        baseInfoTab: slf.baseInfoTab,
+        loading: slf.loading,
+        queringMediaReportId: slf.queringMediaReportId,
         saving: slf.saving,
+        baseInfoTab: slf.baseInfoTab,
         socialLinks,
+        mediaReports: toJS(slf.mediaReports),
       }
     },
+
     get uiSettings(): TUiSettings {
       const slf = self as TStore
       const root = getParent(self) as TRootStore

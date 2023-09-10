@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { includes, values, uniq, reject, update, findIndex } from 'ramda'
+import { includes, values, uniq, reject, update, findIndex, merge, find, startsWith } from 'ramda'
 
 import type { TEditValue, TFAQSection, TID, TSocialItem, TUser } from '@/spec'
 import { COLOR_NAME } from '@/constant/colors'
@@ -14,9 +14,15 @@ import { errRescue } from '@/utils/signal'
 import asyncSuit from '@/utils/async'
 
 import type { TStore } from '../store'
-import type { TSettingField, TNameAlias } from '../spec'
+import type { TSettingField, TNameAlias, TMediaReport } from '../spec'
 
-import { SETTING_FIELD, SETTING_LAYOUT_FIELD, BASEINFO_KEYS, SEO_KEYS } from '../constant'
+import {
+  SETTING_FIELD,
+  SETTING_LAYOUT_FIELD,
+  BASEINFO_KEYS,
+  SEO_KEYS,
+  EMPTY_MEDIA_REPORT,
+} from '../constant'
 import { init as linksLogicInit } from './links'
 import { init as tagsLogicInit } from './tags'
 import { init as faqInit } from './faq'
@@ -328,6 +334,44 @@ export const setActiveSettingAdmin = (user: TUser): void => {
   store.mark({ activeModerator: user })
 }
 
+export const queryOpenGraphInfo = (item: TMediaReport): void => {
+  const { url, editUrl } = item
+
+  if ((startsWith('https://', editUrl) || startsWith('http://', editUrl)) && url !== editUrl) {
+    store.mark({ queringMediaReportId: item.id, loading: true })
+    sr71$.query(S.openGraphInfo, { url: editUrl })
+  }
+}
+
+export const mediaReportOnChange = (id: number, url: string): void => {
+  const { baseInfoSettings } = store
+  const { mediaReports } = baseInfoSettings
+
+  const restReports = reject((item: TMediaReport) => item.id === id, mediaReports)
+  const report = find((item: TMediaReport) => item.id === id, mediaReports)
+
+  report.editUrl = url
+
+  store.mark({ mediaReports: [...restReports, report] })
+}
+
+export const addMediaReport = (): void => {
+  const { baseInfoSettings } = store
+  const newReport = merge(EMPTY_MEDIA_REPORT, { id: new Date().getTime() })
+
+  store.mark({
+    mediaReports: [...baseInfoSettings.mediaReports, newReport],
+  })
+}
+
+export const removeMediaReport = (id): void => {
+  const { baseInfoSettings } = store
+  const { mediaReports } = baseInfoSettings
+  const newReports = reject((item: TMediaReport) => item.id === id, mediaReports)
+
+  store.mark({ mediaReports: newReports })
+}
+
 // ###############################
 // init & uninit handlers
 // ###############################
@@ -423,6 +467,26 @@ const DataSolver = [
     match: asyncRes('pagedPosts'),
     action: ({ pagedPosts }) => {
       store.mark({ pagedPosts, loading: false })
+    },
+  },
+  {
+    match: asyncRes('openGraphInfo'),
+    action: ({ openGraphInfo }) => {
+      const { queringMediaReportId, baseInfoSettings } = store
+      const { mediaReports } = baseInfoSettings
+
+      const restReports = reject(
+        (item: TMediaReport) => item.id === queringMediaReportId,
+        mediaReports,
+      )
+      const report = find((item: TMediaReport) => item.id === queringMediaReportId, mediaReports)
+      const updatedReport = merge(report, openGraphInfo)
+
+      store.mark({
+        mediaReports: [...restReports, updatedReport],
+        queringMediaReportId: null,
+        loading: false,
+      })
     },
   },
   {

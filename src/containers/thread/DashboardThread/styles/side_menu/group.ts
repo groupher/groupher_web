@@ -62,7 +62,8 @@ export const Item = styled(Link)<TActive>`
   position: relative;
   display: block;
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
-  background: ${({ $active }) => ($active ? theme('menuActive') : 'transparent')};
+  background: ${({ $active }) => ($active ? theme('activeLinear') : 'transparent')};
+
   width: 160px;
   padding: 6px 5px;
   padding-left: 20px;
@@ -74,7 +75,7 @@ export const Item = styled(Link)<TActive>`
   &:hover {
     cursor: pointer;
     color: ${theme('article.title')};
-    background: ${({ $active }) => ($active ? theme('menuActive') : theme('hoverBg'))};
+    background: ${theme('activeLinear')};
   }
 
   &:before {
