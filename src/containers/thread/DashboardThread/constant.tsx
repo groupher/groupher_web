@@ -41,6 +41,7 @@ export const SETTING_LAYOUT_FIELD = {
 export const SETTING_FIELD = {
   ...SETTING_LAYOUT_FIELD,
   BASE_INFO: 'baseInfo',
+  MEDIA_REPORTS: 'mediaReports',
   SEO: 'seo',
   SOCIAL_LINKS: 'socialLinks',
   TAG: 'tag',
@@ -424,7 +425,7 @@ export const EMPTY_LINK_ITEM = {
 }
 
 export const EMPTY_MEDIA_REPORT = {
-  id: 0,
+  index: 0,
   title: '',
   favicon: '',
   siteName: '',

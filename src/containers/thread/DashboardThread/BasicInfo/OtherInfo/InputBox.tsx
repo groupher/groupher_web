@@ -1,9 +1,8 @@
 import { FC } from 'react'
 
+import type { TMediaReport } from '@/spec'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 import { Br } from '@/widgets/Common'
-
-import type { TMediaReport } from '../../spec'
 
 import MediaPreview from './MediaPreview'
 
@@ -19,28 +18,30 @@ import { removeMediaReport, mediaReportOnChange, queryOpenGraphInfo } from '../.
 
 type TProps = {
   item: TMediaReport
-  queringMediaReportId: number | null
+  queringMediaReportIndex: number | null
 }
 
-const InputBox: FC<TProps> = ({ item, queringMediaReportId }) => {
-  const { id, editUrl, title } = item
+const InputBox: FC<TProps> = ({ item, queringMediaReportIndex }) => {
+  const { index, editUrl, title } = item
 
   return (
     <Wrapper>
-      {queringMediaReportId === id && <LavaLampLoading size="tiny" top={-2} />}
+      {index !== null && queringMediaReportIndex === index && (
+        <LavaLampLoading size="tiny" top={-2} />
+      )}
       {title && <MediaPreview item={item} />}
       <InputWrapper>
         <Inputer
           value={editUrl}
-          onChange={(e) => mediaReportOnChange(item.id, e.target.value)}
+          onChange={(e) => mediaReportOnChange(item.index, e.target.value)}
           onBlur={() => queryOpenGraphInfo(item)}
         />
-        <DeleteWrapper onClick={() => removeMediaReport(id)}>
+        <DeleteWrapper onClick={() => removeMediaReport(index)}>
           <DeleteIcon />
         </DeleteWrapper>
       </InputWrapper>
       {editUrl && <Br bottom={20} />}
-      {!editUrl && <Desc>相关媒体报道的 URL 链接</Desc>}
+      {!editUrl && <Desc>复制相关媒体报道的 URL 链接</Desc>}
     </Wrapper>
   )
 }

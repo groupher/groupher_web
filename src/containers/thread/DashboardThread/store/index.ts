@@ -37,6 +37,7 @@ import type {
   TChangeMode,
   TArticleEntries,
   TSocialItem,
+  TMediaReport,
 } from '@/spec'
 
 import {
@@ -127,7 +128,7 @@ const DashboardThread = T.model('DashboardThread', {
   editingFAQIndex: T.maybeNull(T.int),
   editingFAQ: T.maybeNull(FAQSection),
 
-  queringMediaReportId: T.maybeNull(T.int),
+  queringMediaReportIndex: T.maybeNull(T.int),
   // editingGroupMode: T.opt(T.enum(values(CHANGE_MODE)), CHANGE_MODE.CREATE),
 
   ...settingsModalFields,
@@ -242,10 +243,29 @@ const DashboardThread = T.model('DashboardThread', {
 
       return JSON.stringify(toJS(socialLinks)) !== JSON.stringify(toJS(initSettings.socialLinks))
     },
+    get _mediaReportsTouched(): boolean {
+      const { mediaReports, initSettings } = self
+      const curValues = reject((item: TMediaReport) => !item.editUrl, toJS(mediaReports))
+      const initValues = reject(
+        (item: TMediaReport) => !item.editUrl,
+        toJS(initSettings.mediaReports),
+      )
+
+      const curValueTitles = filter((item: TMediaReport) => !isEmpty(item?.title), curValues)
+      const isCurAllvalid =
+        curValueTitles.length !== 0 && curValueTitles.length === curValues.length
+
+      return isCurAllvalid && JSON.stringify(curValues) !== JSON.stringify(initValues)
+    },
     get touched(): TTouched {
       const slf = self as TStore
 
-      const { initSettings: init, _tagsIndexTouched, _socialLinksTouched } = slf
+      const {
+        initSettings: init,
+        _tagsIndexTouched,
+        _socialLinksTouched,
+        _mediaReportsTouched,
+      } = slf
 
       const _isChanged = (field: TSettingField): boolean => !equals(slf[field], init[field])
       const _anyChanged = (fields: TSettingField[]): boolean => any(_isChanged)(fields)
@@ -316,6 +336,7 @@ const DashboardThread = T.model('DashboardThread', {
         tags: tagsTouched,
         tagsIndex: _tagsIndexTouched,
         socialLinks: _socialLinksTouched,
+        mediaReports: _mediaReportsTouched,
 
         faqSections: faqSectionsTouched,
 
@@ -538,7 +559,7 @@ const DashboardThread = T.model('DashboardThread', {
       return {
         ...baseInfo,
         loading: slf.loading,
-        queringMediaReportId: slf.queringMediaReportId,
+        queringMediaReportIndex: slf.queringMediaReportIndex,
         saving: slf.saving,
         baseInfoTab: slf.baseInfoTab,
         socialLinks,
@@ -612,12 +633,25 @@ const DashboardThread = T.model('DashboardThread', {
 
     updateBaseInfo(community: TCommunity): void {
       const { dashboard } = community
-      const { baseInfo } = dashboard
+      const { baseInfo, mediaReports } = dashboard
 
       BASEINFO_KEYS.forEach((key) => {
         self[key] = baseInfo[key]
         self.initSettings[key] = baseInfo[key]
       })
+
+      if (!isEmpty(mediaReports)) {
+        const initMediaReports = mediaReports.map((item: TMediaReport, index) => ({
+          ...item,
+          editUrl: item.url,
+          index: item.index || index,
+        }))
+
+        // @ts-ignore
+        self.mediaReports = initMediaReports
+        // @ts-ignore
+        self.initSettings.mediaReports = initMediaReports
+      }
     },
 
     setAllPassportRules(rootRules: string, moderatorRules): void {

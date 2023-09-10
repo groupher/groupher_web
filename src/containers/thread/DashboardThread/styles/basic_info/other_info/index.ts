@@ -9,6 +9,7 @@ export { Desc } from '../base_info'
 export const Wrapper = styled.div`
   padding-bottom: 30px;
   margin-bottom: 20px;
+  width: 300px;
 `
 export const Label = styled.div<{ left?: number }>`
   color: ${theme('article.digest')};

@@ -18,6 +18,13 @@ const communityBaseInfo = gql`
           city
           techstack
         }
+        mediaReports {
+          url
+          title
+          siteName
+          favicon
+          index
+        }
       }
     }
   }
@@ -61,6 +68,22 @@ const updateDashboardBaseInfo = gql`
     ) {
       id
       title
+    }
+  }
+`
+const updateDashboardMediaReports = gql`
+  mutation ($community: String!, $mediaReports: [dashboardMediaReportMap]) {
+    updateDashboardMediaReports(community: $community, mediaReports: $mediaReports) {
+      title
+      dashboard {
+        mediaReports {
+          index
+          title
+          url
+          favicon
+          siteName
+        }
+      }
     }
   }
 `
@@ -272,6 +295,7 @@ const schema = {
   communitySocialLinks,
 
   updateDashboardBaseInfo,
+  updateDashboardMediaReports,
   updateDashboardSeo,
   pagedArticleTags,
   updateDashboardEnable,

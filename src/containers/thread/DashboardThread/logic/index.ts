@@ -1,7 +1,18 @@
 import { useEffect } from 'react'
-import { includes, values, uniq, reject, update, findIndex, merge, find, startsWith } from 'ramda'
+import {
+  includes,
+  values,
+  uniq,
+  reject,
+  omit,
+  update,
+  findIndex,
+  merge,
+  find,
+  startsWith,
+} from 'ramda'
 
-import type { TEditValue, TFAQSection, TID, TSocialItem, TUser } from '@/spec'
+import type { TEditValue, TFAQSection, TID, TSocialItem, TUser, TMediaReport } from '@/spec'
 import { COLOR_NAME } from '@/constant/colors'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
@@ -14,7 +25,7 @@ import { errRescue } from '@/utils/signal'
 import asyncSuit from '@/utils/async'
 
 import type { TStore } from '../store'
-import type { TSettingField, TNameAlias, TMediaReport } from '../spec'
+import type { TSettingField, TNameAlias } from '../spec'
 
 import {
   SETTING_FIELD,
@@ -142,6 +153,17 @@ const _doMutation = (field: string, e: TEditValue): void => {
   const { curCommunity } = store
   const community = curCommunity.slug
 
+  if (field === SETTING_FIELD.MEDIA_REPORTS) {
+    const { baseInfoSettings } = store
+    const { mediaReports } = baseInfoSettings
+
+    sr71$.mutate(S.updateDashboardMediaReports, {
+      community,
+      mediaReports: mediaReports.map((item) => omit(['editUrl'], item)),
+    })
+    return
+  }
+
   if (field === SETTING_FIELD.BASE_INFO) {
     const params = {}
     BASEINFO_KEYS.forEach((key) => {
@@ -155,6 +177,7 @@ const _doMutation = (field: string, e: TEditValue): void => {
   if (field === SETTING_FIELD.SOCIAL_LINKS) {
     const { socialLinks } = store.baseInfoSettings
     sr71$.mutate(S.updateDashboardSocialLinks, { community, socialLinks })
+    return
   }
 
   if (field === SETTING_FIELD.SEO) {
@@ -169,20 +192,24 @@ const _doMutation = (field: string, e: TEditValue): void => {
 
   if (includes(field, values(SETTING_LAYOUT_FIELD))) {
     sr71$.mutate(S.updateDashboardLayout, { community, [field]: e })
+    return
   }
 
   if (field === SETTING_FIELD.NAME_ALIAS) {
     const nameAlias = toJS(store.nameAlias)
     sr71$.mutate(S.updateDashboardNameAlias, { community, nameAlias })
+    return
   }
 
   if (field === SETTING_FIELD.TAG) {
     store.updateEditingTag()
     sr71$.mutate(S.updateArticleTag, { ...toJS(store.editingTag), community })
+    return
   }
 
   if (field === SETTING_FIELD.FAQ_SECTIONS) {
     sr71$.mutate(S.updateDashboardFaqs, { faqs: toJS(store.faqSections), community })
+    return
   }
 
   if (field === SETTING_FIELD.FAQ_SECTION_ITEM) {
@@ -197,6 +224,7 @@ const _doMutation = (field: string, e: TEditValue): void => {
     const updatedSections = update(targetIndex, _editingFAQ, _faqSections)
     store.mark({ faqSections: updatedSections, editingFAQ: null, editingFAQIndex: null })
     sr71$.mutate(S.updateDashboardFaqs, { faqs: updatedSections, community })
+    return
   }
 
   if (field === SETTING_FIELD.FAQ_SECTION_ADD) {
@@ -205,6 +233,7 @@ const _doMutation = (field: string, e: TEditValue): void => {
 
     store.mark({ faqSections: _faqSections, editingFAQ: null, editingFAQIndex: null })
     sr71$.mutate(S.updateDashboardFaqs, { faqs: _faqSections, community })
+    return
   }
 
   if (field === SETTING_FIELD.TAG_INDEX) {
@@ -280,7 +309,6 @@ export const loadCommunityOverview = (): void => {
 
   sr71$.query(S.communityOverview, {
     slug: curCommunity.slug,
-    userHasLogin: false,
     incViews: false,
   })
 }
@@ -290,7 +318,6 @@ export const loadBaseInfo = (): void => {
 
   sr71$.query(S.communityBaseInfo, {
     slug: curCommunity.slug,
-    userHasLogin: false,
     incViews: false,
   })
 }
@@ -300,7 +327,6 @@ export const loadSocialLinks = (): void => {
 
   sr71$.query(S.communitySocialLinks, {
     slug: curCommunity.slug,
-    userHasLogin: false,
     incViews: false,
   })
 }
@@ -338,17 +364,19 @@ export const queryOpenGraphInfo = (item: TMediaReport): void => {
   const { url, editUrl } = item
 
   if ((startsWith('https://', editUrl) || startsWith('http://', editUrl)) && url !== editUrl) {
-    store.mark({ queringMediaReportId: item.id, loading: true })
+    store.mark({ queringMediaReportIndex: item.index, loading: true })
     sr71$.query(S.openGraphInfo, { url: editUrl })
   }
 }
 
-export const mediaReportOnChange = (id: number, url: string): void => {
+export const mediaReportOnChange = (index: number, url: string): void => {
   const { baseInfoSettings } = store
   const { mediaReports } = baseInfoSettings
 
-  const restReports = reject((item: TMediaReport) => item.id === id, mediaReports)
-  const report = find((item: TMediaReport) => item.id === id, mediaReports)
+  console.log('## onChange index: ', index)
+
+  const restReports = reject((item: TMediaReport) => item.index === index, mediaReports)
+  const report = find((item: TMediaReport) => item.index === index, mediaReports)
 
   report.editUrl = url
 
@@ -357,17 +385,17 @@ export const mediaReportOnChange = (id: number, url: string): void => {
 
 export const addMediaReport = (): void => {
   const { baseInfoSettings } = store
-  const newReport = merge(EMPTY_MEDIA_REPORT, { id: new Date().getTime() })
+  const newReport = merge(EMPTY_MEDIA_REPORT, { index: new Date().getTime() })
 
   store.mark({
     mediaReports: [...baseInfoSettings.mediaReports, newReport],
   })
 }
 
-export const removeMediaReport = (id): void => {
+export const removeMediaReport = (index: number): void => {
   const { baseInfoSettings } = store
   const { mediaReports } = baseInfoSettings
-  const newReports = reject((item: TMediaReport) => item.id === id, mediaReports)
+  const newReports = reject((item: TMediaReport) => item.index === index, mediaReports)
 
   store.mark({ mediaReports: newReports })
 }
@@ -432,6 +460,10 @@ const DataSolver = [
     action: () => _handleDone(),
   },
   {
+    match: asyncRes('updateDashboardMediaReports'),
+    action: () => _handleDone(),
+  },
+  {
     match: asyncRes('updateDashboardSeo'),
     action: () => _handleDone(),
   },
@@ -472,19 +504,22 @@ const DataSolver = [
   {
     match: asyncRes('openGraphInfo'),
     action: ({ openGraphInfo }) => {
-      const { queringMediaReportId, baseInfoSettings } = store
+      const { queringMediaReportIndex, baseInfoSettings } = store
       const { mediaReports } = baseInfoSettings
 
       const restReports = reject(
-        (item: TMediaReport) => item.id === queringMediaReportId,
+        (item: TMediaReport) => item.index === queringMediaReportIndex,
         mediaReports,
       )
-      const report = find((item: TMediaReport) => item.id === queringMediaReportId, mediaReports)
+      const report = find(
+        (item: TMediaReport) => item.index === queringMediaReportIndex,
+        mediaReports,
+      )
       const updatedReport = merge(report, openGraphInfo)
 
       store.mark({
         mediaReports: [...restReports, updatedReport],
-        queringMediaReportId: null,
+        queringMediaReportIndex: null,
         loading: false,
       })
     },
@@ -508,8 +543,8 @@ const DataSolver = [
         store.updateOverview(community)
       }
 
-      if (curTab === DASHBOARD_ROUTE.INFO && store.baseInfoTab === DASHBOARD_BASEINFO_ROUTE.OTHER) {
-        // store.updateSocialLinks(community)
+      if (curTab === DASHBOARD_ROUTE.INFO) {
+        store.updateBaseInfo(community)
       }
     },
   },

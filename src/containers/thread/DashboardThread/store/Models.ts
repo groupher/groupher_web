@@ -80,7 +80,7 @@ export const SocialLink = T.model('SocialLink', {
 })
 
 export const MediaReport = T.model('MediaReport', {
-  id: T.maybeNull(T.number),
+  index: T.maybeNull(T.number),
   title: T.opt(T.str, ''),
   favicon: T.opt(T.str, ''),
   siteName: T.opt(T.str, ''),

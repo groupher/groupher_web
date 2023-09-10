@@ -37,6 +37,7 @@ import type {
   TFAQSection,
   TPagedCommunities,
   TModerator,
+  TMediaReport,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'CMS' | 'INTEGRATE'
@@ -130,7 +131,7 @@ export type TAliasSettings = {
 
 export type TBaseInfoSettings = {
   loading: boolean
-  queringMediaReportId: number | null
+  queringMediaReportIndex: number | null
   saving: boolean
 
   favicon: string
@@ -234,6 +235,7 @@ export type TTouched = {
   faqSections: boolean
 
   socialLinks: boolean
+  mediaReports: boolean
   rssFeed: boolean
 
   widgetsPrimaryColor: boolean
@@ -251,6 +253,8 @@ export type TTouched = {
 
 export type TSettingField =
   | 'baseInfo'
+  | 'mediaReports'
+  | 'socialLinks'
   | 'seo'
   | 'favicon'
   | 'logo'
@@ -283,7 +287,6 @@ export type TSettingField =
   | 'broadcastArticleBg'
   | 'broadcastArticleEnable'
   | 'changelogLayout'
-  | 'socialLinks'
   | 'tag'
   | 'tagIndex'
   | 'faqSections'
@@ -328,12 +331,3 @@ export type TCurPageLinksKey = {
 }
 
 export type TMoveLinkDir = 'up' | 'down' | 'top' | 'bottom'
-
-export type TMediaReport = {
-  id: number
-  favicon: string
-  siteName: string
-  title: string
-  url: string
-  editUrl?: string
-}
