@@ -548,7 +548,7 @@ export const DEFAULT_LINK_ITEMS = [
   },
 ]
 
-export const BASEINFO_KEYS = [
+export const BASEINFO_BASIC_KEYS = [
   'favicon',
   'logo',
   'title',
@@ -556,9 +556,11 @@ export const BASEINFO_KEYS = [
   'introduction',
   'homepage',
   'slug',
-  'city',
-  'techstack',
 ]
+
+export const BASEINFO_OTHER_KEYS = ['city', 'techstack']
+
+export const BASEINFO_KEYS = [...BASEINFO_BASIC_KEYS, ...BASEINFO_OTHER_KEYS]
 
 export const UI_KEYS = [
   'layoutTab',

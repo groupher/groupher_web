@@ -19,23 +19,17 @@ const log = buildLog('c:CitySelector:index')
 type TProps = {
   radius?: number
   value?: string
-  onChange: (value: string) => void
+  onChange?: (value: string) => void
 } & TSpace
 
-const CitySelector: FC<TProps> = ({ radius = 5, value = '', onChange, ...restProps }) => {
+const CitySelector: FC<TProps> = ({ radius = 5, value = '', onChange = log, ...restProps }) => {
   const [selected, setSelected] = useState(value.split(','))
   const [showMore, setShowMore] = useState(false)
   const [extraCities, setExtraCities] = useState('')
 
   useEffect(() => {
-    const selectedCityValue = reject(isEmpty, selected).join(',')
-
-    const cityVal = extraCities.trim()
-      ? `${selectedCityValue},${extraCities.replaceAll('，', ',')}`
-      : selectedCityValue
-
-    onChange(reject(isEmpty, cityVal.split(',')).join(','))
-  }, [selected, extraCities, onChange])
+    setSelected(value.split(','))
+  }, [value])
 
   const options = !showMore ? HOME_CITY_OPTIONS : CITY_OPTIONS
 
@@ -53,11 +47,21 @@ const CitySelector: FC<TProps> = ({ radius = 5, value = '', onChange, ...restPro
             radius={radius}
             hasFlag={!!option.flag}
             onClick={() => {
+              let selectedAfter
               if (!find((item) => item === option.value, selected)) {
-                setSelected([...selected, option.value])
+                selectedAfter = [...selected, option.value]
               } else {
-                setSelected(without([option.value], selected))
+                selectedAfter = without([option.value], selected)
               }
+
+              setSelected(selectedAfter)
+
+              const selectedCityValue = reject(isEmpty, selectedAfter).join(',')
+              const cityVal = extraCities.trim()
+                ? `${selectedCityValue},${extraCities.replaceAll('，', ',')}`
+                : selectedCityValue
+
+              onChange(reject(isEmpty, cityVal.split(',')).join(','))
             }}
           >
             {option.label}
