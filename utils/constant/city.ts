@@ -1,3 +1,5 @@
+import { pluck } from 'ramda'
+
 export const HOME_CITY_OPTIONS = [
   {
     label: '北京',
@@ -97,3 +99,5 @@ export const OVERSEA_CITY_OPTIONS = [
 ]
 
 export const CITY_OPTIONS = [...HOME_CITY_OPTIONS, ...OVERSEA_CITY_OPTIONS]
+
+export const CITY_OPTION_VALUES = pluck('value', CITY_OPTIONS)

@@ -23,6 +23,8 @@ type TProps = {
 const OtherInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => {
   const { city, techstack } = settings
 
+  console.log('## city: ', city)
+
   return (
     <Wrapper>
       <Label left={-6}>（团队）所在城市</Label>

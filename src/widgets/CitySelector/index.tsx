@@ -4,11 +4,11 @@
  *
  */
 
-import { FC, memo, useEffect, useState } from 'react'
+import { FC, memo, useCallback, useEffect, useState } from 'react'
 import { find, includes, without, reject, isEmpty } from 'ramda'
 
 import type { TCityOption, TSpace } from '@/spec'
-import { CITY_OPTIONS, HOME_CITY_OPTIONS } from '@/constant/city'
+import { CITY_OPTIONS, HOME_CITY_OPTIONS, CITY_OPTION_VALUES } from '@/constant/city'
 import { buildLog } from '@/utils/logger'
 
 import { Wrapper, Box, MoreBtn, Flag, InputLabel, Inputer } from './styles'
@@ -28,10 +28,56 @@ const CitySelector: FC<TProps> = ({ radius = 5, value = '', onChange = log, ...r
   const [extraCities, setExtraCities] = useState('')
 
   useEffect(() => {
-    setSelected(value.split(','))
+    const splitedValue = value.split(',')
+    const extraCities = []
+    const selectedCities = []
+
+    splitedValue.forEach((item) => {
+      if (!includes(item, CITY_OPTION_VALUES)) {
+        extraCities.push(item)
+      } else {
+        selectedCities.push(item)
+      }
+    })
+
+    setSelected(selectedCities)
+
+    if (!isEmpty(extraCities)) {
+      setExtraCities(extraCities.join(','))
+      setShowMore(true)
+    }
   }, [value])
 
   const options = !showMore ? HOME_CITY_OPTIONS : CITY_OPTIONS
+
+  const calcCityValue = useCallback((extraCityValue: string, selectedCityValue: string) => {
+    return extraCityValue.trim()
+      ? `${selectedCityValue},${extraCityValue.replaceAll('，', ',')}`
+      : selectedCityValue
+  }, [])
+
+  const cityOnChange = (option) => {
+    let selectedAfter
+    if (!find((item) => item === option.value, selected)) {
+      selectedAfter = [...selected, option.value]
+    } else {
+      selectedAfter = without([option.value], selected)
+    }
+
+    setSelected(selectedAfter)
+
+    const selectedCityValue = reject(isEmpty, selectedAfter).join(',')
+    const cityVal = calcCityValue(extraCities, selectedCityValue)
+
+    onChange(reject(isEmpty, cityVal.split(',')).join(','))
+  }
+
+  const extraCityOnBlur = () => {
+    const selectedCityValue = reject(isEmpty, selected).join(',')
+    const cityVal = calcCityValue(extraCities, selectedCityValue)
+
+    onChange(reject(isEmpty, cityVal.split(',')).join(','))
+  }
 
   return (
     <Wrapper {...restProps}>
@@ -46,23 +92,7 @@ const CitySelector: FC<TProps> = ({ radius = 5, value = '', onChange = log, ...r
             key={option.value}
             radius={radius}
             hasFlag={!!option.flag}
-            onClick={() => {
-              let selectedAfter
-              if (!find((item) => item === option.value, selected)) {
-                selectedAfter = [...selected, option.value]
-              } else {
-                selectedAfter = without([option.value], selected)
-              }
-
-              setSelected(selectedAfter)
-
-              const selectedCityValue = reject(isEmpty, selectedAfter).join(',')
-              const cityVal = extraCities.trim()
-                ? `${selectedCityValue},${extraCities.replaceAll('，', ',')}`
-                : selectedCityValue
-
-              onChange(reject(isEmpty, cityVal.split(',')).join(','))
-            }}
+            onClick={() => cityOnChange(option)}
           >
             {option.label}
             {NationFlag && <NationFlag $active={active} />}
@@ -72,11 +102,12 @@ const CitySelector: FC<TProps> = ({ radius = 5, value = '', onChange = log, ...r
       {!showMore && <MoreBtn onClick={() => setShowMore(true)}>更多..</MoreBtn>}
       {showMore && (
         <>
-          <InputLabel>或者，其他城市（地区）</InputLabel>
+          <InputLabel>或者/以及，其他城市（地区）：</InputLabel>
           <Inputer
             placeholder="多个城市请用 , 分隔开"
             value={extraCities}
             onChange={(e) => setExtraCities(e.target.value)}
+            onBlur={() => extraCityOnBlur()}
           />
         </>
       )}
