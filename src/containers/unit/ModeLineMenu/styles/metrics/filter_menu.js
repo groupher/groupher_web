@@ -1,4 +1,4 @@
-import { M_MENU_HEIGHT } from './index'
+import { M_MENU_HEIGHT } from '.'
 
 export const getFilterMenuScrollHeight = () => {
   const SCROLL_BUTTOM_OFFSET = '100px'

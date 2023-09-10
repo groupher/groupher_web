@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 
 import { SexyDivider } from '@/widgets/Common'
 
-import { BaseBanner } from '../index'
+import { BaseBanner } from '..'
 
 type TWrapper = {
   isMobile: boolean

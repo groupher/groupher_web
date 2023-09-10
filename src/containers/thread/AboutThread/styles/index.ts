@@ -48,13 +48,13 @@ export const MemberBlock = styled(Block)`
   border-bottom: none;
 `
 export const Title = styled.div`
-  font-size: 16px;
+  font-size: 14.5px;
   color: ${theme('article.digest')};
   font-weight: 600;
-  margin-bottom: 15px;
+  margin-bottom: 18px;
 `
 export const Desc = styled.div`
-  font-size: 15px;
+  font-size: 14.5px;
   color: ${theme('article.digest')};
   line-height: 1.8;
 `

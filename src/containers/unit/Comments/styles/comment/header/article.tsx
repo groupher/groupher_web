@@ -7,7 +7,7 @@ import css, { theme } from '@/css'
 
 import Img from '@/Img'
 
-export { HeaderBaseInfo, BaseInfo, FloorNum } from './index'
+export { HeaderBaseInfo, BaseInfo, FloorNum } from '.'
 
 type TAvatar = { avatarSize: number; avatarLayout: TAvatarLayout }
 

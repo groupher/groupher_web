@@ -35,7 +35,7 @@ export const Block = styled.div`
 export const Title = styled.div`
   font-size: 14px;
   color: ${theme('article.digest')};
-  font-weight: 600;
+  font-weight: 500;
   margin-bottom: 10px;
 `
 export const Desc = styled.div`

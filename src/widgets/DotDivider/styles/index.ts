@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { theme } from '@/css'
 
-import type { TProps } from '../index'
+import type { TProps } from '..'
 
 export const Wrapper = styled.div<TProps>`
   width: ${({ radius }) => `${radius}px`};

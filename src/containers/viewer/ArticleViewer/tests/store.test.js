@@ -3,7 +3,7 @@
  *
  */
 
-// import ArticleViewer from '../index'
+// import ArticleViewer from '..'
 
 it('TODO: store test ArticleViewer', () => {
   expect(1 + 1).toBe(2)

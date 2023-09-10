@@ -67,7 +67,7 @@ const ThreadTab: FC<TProps> = ({ active, threads, extraLinks, headerLayout, ...r
         </Title>
       ))}
 
-      <ExtraLinks links={_extraLinks} />
+      <ExtraLinks links={_extraLinks} activePath={active} />
     </Wrapper>
   )
 }

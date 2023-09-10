@@ -72,7 +72,11 @@ export const SOURCE_OPTIONS = [
     value: 'wechat',
   },
   {
-    label: '微博/Twitter',
+    label: 'Twitter',
+    value: 'Twitter',
+  },
+  {
+    label: '微博',
     value: 'weibo',
   },
   {
@@ -88,7 +92,7 @@ export const SOURCE_OPTIONS = [
     value: 'xiaohongshu',
   },
   {
-    label: '其他开发者/同事',
+    label: '朋友/同事',
     value: 'otherdude',
   },
   {

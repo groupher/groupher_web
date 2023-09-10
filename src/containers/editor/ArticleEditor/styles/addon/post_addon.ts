@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import css from '@/css'
 
-export { LinkIcon, LinkInput } from './index'
+export { LinkIcon, LinkInput } from '.'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};

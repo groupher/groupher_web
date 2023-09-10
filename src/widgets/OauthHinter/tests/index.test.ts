@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import OauthHinter from '../index'
+// import OauthHinter from '..'
 
 describe('TODO <OauthHinter />', () => {
   it('Expect to have unit tests specified', () => {

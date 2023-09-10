@@ -3,7 +3,7 @@
  *
  */
 
-// import AbuseReport from '../index'
+// import AbuseReport from '..'
 
 it('TODO: store test AbuseReport', () => {
   expect(1 + 1).toBe(2)

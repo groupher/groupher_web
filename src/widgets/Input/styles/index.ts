@@ -45,7 +45,6 @@ export const baseInput = `
   outline: none; 
   font-variant: tabular-nums;
   box-sizing: border-box;
-  caret-color: #33b7b3;
   margin: 0;
   list-style: none;
   position: relative;
@@ -70,6 +69,8 @@ export const InputWrapper = styled.input<IInput>`
   border: 1px solid;
   border-color: ${theme('editor.border')};
   border-radius: 4px;
+  background-color: ${theme('alphaBg')};
+  caret-color: ${theme('article.title')};
 
   ::placeholder {
     color: ${theme('article.digest')};
@@ -80,10 +81,12 @@ export const InputWrapper = styled.input<IInput>`
   }
   &:focus {
     border-color: ${theme('editor.borderActive')};
+    background-color: ${theme('alphaBg2')};
     /* box-shadow: -2px 1px 0px 0px rgba(0, 0, 0, 0.2); */
   }
   &:active {
     border-color: ${theme('editor.borderActive')};
+    background-color: ${theme('alphaBg2')};
     /* box-shadow: -2px 1px 0px 0px rgba(0, 0, 0, 0.2); */
   }
 `

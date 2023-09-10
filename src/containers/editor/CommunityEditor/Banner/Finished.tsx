@@ -2,31 +2,86 @@
 import { FC, memo } from 'react'
 
 import { ROUTE } from '@/constant/route'
-import Button from '@/widgets/Buttons/Button'
 
-import { Wrapper, Title, Desc, Footer, TheLink, DashboardIcon } from '../styles/banner/finished'
+import { SexyDivider } from '@/widgets/Common'
+
+import type { TFinishedStatus } from '../spec'
+
+import {
+  Wrapper,
+  Title,
+  Desc,
+  Frame,
+  LeftFrame,
+  RightFrame,
+  CommunityLogo,
+  CommunityTitle,
+  CommunityDesc,
+  GotoLink,
+  GoDashLink,
+  DashItem,
+  DashIntro,
+  DashTitle,
+  DashDesc,
+} from '../styles/banner/finished'
 
 type TProps = {
-  community: string
+  status: TFinishedStatus
 }
 
-const Finished: FC<TProps> = ({ community }) => {
+const Finished: FC<TProps> = ({ status }) => {
+  const { logo, title, slug, desc } = status
   return (
     <Wrapper>
-      <Title>👏🏻 &nbsp;&nbsp;感谢你的信任</Title>
-      <Desc>申请处理中，在此之前你可以去管理后台完善社区设置</Desc>
-      <Footer>
-        <TheLink href={`/${community}`}>
-          <Button ghost>社区主页</Button>
-        </TheLink>
+      <Title>👏🏻 &nbsp;&nbsp;社区已创建成功</Title>
+      <Desc>感谢您的信任，在此之前你可以去管理后台完善相关社区设置</Desc>
+      <Frame>
+        <LeftFrame>
+          <CommunityLogo src={logo} />
+          <CommunityTitle>{title}</CommunityTitle>
+          <CommunityDesc>{desc}</CommunityDesc>
+          <GotoLink href={`/${slug}`}>社区主页</GotoLink>
+        </LeftFrame>
+        <RightFrame>
+          <DashItem href={`/${slug}/${ROUTE.DASHBOARD.LAYOUT}`}>
+            <DashIntro>
+              <DashTitle>布局样式</DashTitle>
+              <DashDesc>社区外观，展现样式，关于信息等</DashDesc>
+            </DashIntro>
+          </DashItem>
 
-        <TheLink href={`/${community}/${ROUTE.DASHBOARD.DASHBOARD}`}>
-          <Button>
-            <DashboardIcon />
-            管理后台
-          </Button>
-        </TheLink>
-      </Footer>
+          <DashItem href={`/${slug}/${ROUTE.DASHBOARD.THREADS}`}>
+            <DashIntro>
+              <DashTitle>社区板块</DashTitle>
+              <DashDesc>是否开通看板，更新日志，文档等</DashDesc>
+            </DashIntro>
+          </DashItem>
+
+          <DashItem href={`/${slug}/${ROUTE.DASHBOARD.ADMINS}`}>
+            <DashIntro>
+              <DashTitle>管理员</DashTitle>
+              <DashDesc>添加社区管理员，权限设置等。</DashDesc>
+            </DashIntro>
+          </DashItem>
+
+          <DashItem href={`/${slug}/${ROUTE.DASHBOARD.TAGS}`}>
+            <DashIntro>
+              <DashTitle>标签编辑</DashTitle>
+              <DashDesc>编辑讨论区，更新日志等板块的标签。</DashDesc>
+            </DashIntro>
+          </DashItem>
+
+          <DashItem href={`/${slug}/${ROUTE.DASHBOARD.ADMINS}`}>
+            <DashIntro>
+              <DashTitle>数据导入</DashTitle>
+              <DashDesc>从兔小巢，Github Discusstion 等平台导入历史数据</DashDesc>
+            </DashIntro>
+          </DashItem>
+
+          <SexyDivider />
+          <GoDashLink href={`/${slug}/${ROUTE.DASHBOARD.DASHBOARD}`}>前往控制台</GoDashLink>
+        </RightFrame>
+      </Frame>
     </Wrapper>
   )
 }

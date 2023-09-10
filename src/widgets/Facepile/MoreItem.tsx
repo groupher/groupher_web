@@ -3,7 +3,7 @@ import { FC } from 'react'
 // import { Br } from '@/widgets/Common'
 // import Tooltip from '@/widgets/Tooltip'
 
-import type { TProps as TAvatarsProps } from './index'
+import type { TProps as TAvatarsProps } from '.'
 
 // import RealNumber from './RealNumber'
 

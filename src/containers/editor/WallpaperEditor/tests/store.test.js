@@ -3,7 +3,7 @@
  *
  */
 
-// import WallpaperEditor from '../index'
+// import WallpaperEditor from '..'
 
 it('TODO: store test WallpaperEditor', () => {
   expect(1 + 1).toBe(2)

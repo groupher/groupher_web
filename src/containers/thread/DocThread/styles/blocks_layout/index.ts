@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import css, { theme } from '@/css'
-import { MainWrapper } from '../index'
+import { MainWrapper } from '..'
 
 export const Wrapper = styled.div`
   ${css.column('align-both')};

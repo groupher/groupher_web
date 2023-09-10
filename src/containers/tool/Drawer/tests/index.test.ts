@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import Preview from '../index'
+// import Preview from '..'
 
 describe('<Preview />', () => {
   it('Expect to have unit tests specified', () => {

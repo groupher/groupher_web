@@ -11,7 +11,7 @@ import Footer from './Footer'
 
 import { Wrapper } from '../styles/collapse'
 
-import type { TProps as TIndex } from '../index'
+import type { TProps as TIndex } from '..'
 
 type TProps = Pick<TIndex, 'sections'>
 

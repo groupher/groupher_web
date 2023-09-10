@@ -3,6 +3,48 @@ import { P, F } from '@/schemas'
 
 const { pagedPosts, pagedChangelogs } = P
 
+const communityBaseInfo = gql`
+  query community($slug: String, $incViews: Boolean) {
+    community(slug: $slug, incViews: $incViews) {
+      dashboard {
+        baseInfo {
+          title
+          favicon
+          logo
+          slug
+          desc
+          introduction
+          homepage
+          city
+          techstack
+        }
+        mediaReports {
+          url
+          title
+          siteName
+          favicon
+          index
+        }
+      }
+    }
+  }
+`
+
+const communitySocialLinks = gql`
+  query community($slug: String, $incViews: Boolean) {
+    community(slug: $slug, incViews: $incViews) {
+      dashboard {
+        baseInfo {
+          socialLinks {
+            type
+            link
+          }
+        }
+      }
+    }
+  }
+`
+
 const updateDashboardBaseInfo = gql`
   mutation (
     $community: String!
@@ -10,6 +52,7 @@ const updateDashboardBaseInfo = gql`
     $title: String
     $slug: String
     $desc: String
+    $introduction: String
     $logo: String
     $favicon: String
   ) {
@@ -19,11 +62,28 @@ const updateDashboardBaseInfo = gql`
       title: $title
       slug: $slug
       desc: $desc
+      introduction: $introduction
       logo: $logo
       favicon: $favicon
     ) {
       id
       title
+    }
+  }
+`
+const updateDashboardMediaReports = gql`
+  mutation ($community: String!, $mediaReports: [dashboardMediaReportMap]) {
+    updateDashboardMediaReports(community: $community, mediaReports: $mediaReports) {
+      title
+      dashboard {
+        mediaReports {
+          index
+          title
+          url
+          favicon
+          siteName
+        }
+      }
     }
   }
 `
@@ -101,7 +161,7 @@ const updateDashboardLayout = gql`
       broadcastEnable: $broadcastEnable
       kanbanBgColors: $kanbanBgColors
     ) {
-      id
+      slug
     }
   }
 `
@@ -109,8 +169,7 @@ const updateDashboardLayout = gql`
 const updateDashboardSocialLinks = gql`
   mutation ($community: String!, $socialLinks: [dashboardSocialLinkMap]) {
     updateDashboardSocialLinks(community: $community, socialLinks: $socialLinks) {
-      id
-      title
+      slug
     }
   }
 `
@@ -118,8 +177,7 @@ const updateDashboardSocialLinks = gql`
 const updateDashboardNameAlias = gql`
   mutation ($community: String!, $nameAlias: [dashboardAliasMap]) {
     updateDashboardNameAlias(community: $community, nameAlias: $nameAlias) {
-      id
-      title
+      slug
     }
   }
 `
@@ -221,8 +279,23 @@ const communityOverview = gql`
   }
 `
 
+const openGraphInfo = gql`
+  query ($url: String!) {
+    openGraphInfo(url: $url) {
+      title
+      favicon
+      url
+      siteName
+    }
+  }
+`
+
 const schema = {
+  communityBaseInfo,
+  communitySocialLinks,
+
   updateDashboardBaseInfo,
+  updateDashboardMediaReports,
   updateDashboardSeo,
   pagedArticleTags,
   updateDashboardEnable,
@@ -236,6 +309,7 @@ const schema = {
   updateDashboardFaqs,
   updateModerators,
   communityOverview,
+  openGraphInfo,
 }
 
 export default schema

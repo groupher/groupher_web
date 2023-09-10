@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import FeedbackFooter from '../index'
+// import FeedbackFooter from '..'
 
 describe('TODO <FeedbackFooter />', () => {
   it('Expect to have unit tests specified', () => {

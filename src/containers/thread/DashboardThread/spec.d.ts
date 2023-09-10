@@ -37,6 +37,7 @@ import type {
   TFAQSection,
   TPagedCommunities,
   TModerator,
+  TMediaReport,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'CMS' | 'INTEGRATE'
@@ -67,6 +68,7 @@ export type TCMSContents = {
 export type TMenuGroup = {
   title: string
   icon: ReactNode
+  initFold: boolean
   children: TMenuItem[]
 }
 
@@ -128,12 +130,15 @@ export type TAliasSettings = {
 }
 
 export type TBaseInfoSettings = {
+  loading: boolean
+  queringMediaReportIndex: number | null
   saving: boolean
 
   favicon: string
   logo: string
   title: string
   desc: string
+  introduction: string
   homepage: string
   slug: string
   city: string
@@ -141,6 +146,7 @@ export type TBaseInfoSettings = {
 
   socialLinks: TSocialItem[]
   baseInfoTab: TDashboardBaseInfoRoute
+  mediaReports: TMediaReport[]
 }
 
 export type TSEOSettings = {
@@ -229,6 +235,7 @@ export type TTouched = {
   faqSections: boolean
 
   socialLinks: boolean
+  mediaReports: boolean
   rssFeed: boolean
 
   widgetsPrimaryColor: boolean
@@ -246,6 +253,8 @@ export type TTouched = {
 
 export type TSettingField =
   | 'baseInfo'
+  | 'mediaReports'
+  | 'socialLinks'
   | 'seo'
   | 'favicon'
   | 'logo'
@@ -278,7 +287,6 @@ export type TSettingField =
   | 'broadcastArticleBg'
   | 'broadcastArticleEnable'
   | 'changelogLayout'
-  | 'socialLinks'
   | 'tag'
   | 'tagIndex'
   | 'faqSections'

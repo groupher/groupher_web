@@ -4,7 +4,7 @@ import TextareaAutosize from 'react-textarea-autosize'
 import type { TTestable } from '@/spec'
 import { theme } from '@/css'
 
-import { baseInput } from './index'
+import { baseInput } from '.'
 
 type TWrapper = TTestable | { spellCheck: string }
 

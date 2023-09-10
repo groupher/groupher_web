@@ -13,6 +13,7 @@ import type {
   TSetupDomainStatus,
   TSetupInfoStatus,
   TSetupExtraStatus,
+  TFinishedStatus,
   TValidState,
 } from './spec'
 import { STEP, COMMUNITY_TYPE } from './constant'
@@ -73,6 +74,9 @@ const CommunityEditor = T.model('CommunityEditorStore', {
     },
     get setupExtraStatus(): TSetupExtraStatus {
       return pick(['homepage', 'extraInfo', 'city', 'source'], self)
+    },
+    get finishedStatus(): TFinishedStatus {
+      return pick(['slug', 'title', 'desc', 'logo'], self)
     },
     get isCommunityTypeValid(): boolean {
       const slf = self as TStore

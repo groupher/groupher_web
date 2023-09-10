@@ -20,7 +20,7 @@ export const Banner = styled.div`
   width: 100%;
   border-bottom: 1px solid;
   border-bottom-color: ${theme('divider')};
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   position: relative;
 `
 export const TabsWrapper = styled.div`

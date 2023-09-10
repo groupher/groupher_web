@@ -14,9 +14,6 @@ import ZhihuSVG from '@/icons/social/Zhihu'
 import GithubSVG from '@/icons/social/Github'
 import BiliBiliSVG from '@/icons/social/BiliBili'
 import BossSVG from '@/icons/social/Boss'
-// import LagouSVG from '@/icons/social/Lagou'
-
-// import { theme } from '@/utils/themes'
 
 type TWrapper = TTestable & { width: string } & TSpace
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
@@ -83,7 +80,7 @@ export const PlatformWrapper = styled.div`
     box-shadow: ${css.cardShadow};
   }
 
-  transition: all 0.2s;
+  transition: all 0.1s;
 `
 
 const getIcon = (SVG, size = 15) => {
@@ -98,6 +95,11 @@ const getIcon = (SVG, size = 15) => {
       filter: saturate(1);
       opacity: 1;
     }
+
+    &:active {
+      transform: scale(1.2);
+    }
+
     transition: all 0.2s;
   `
 }

@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import SettingMenu from '../index'
+// import SettingMenu from '..'
 
 describe('TODO <SettingMenu />', () => {
   it('Expect to have unit tests specified', () => {

@@ -16,7 +16,7 @@ import { debounce } from '@/utils/helper'
 import useCustomScroll from '@/hooks/useCustomScroll'
 // import ViewportTracker from '@/widgets/ViewportTracker'
 
-import type { TProps as TScrollProps } from './index'
+import type { TProps as TScrollProps } from '.'
 
 import {
   Wrapper,

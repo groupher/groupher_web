@@ -17,7 +17,7 @@ import {
   MoreLink,
 } from './styles/search_hint'
 
-import type { TProps as TIndex } from './index'
+import type { TProps as TIndex } from '.'
 
 type TProps = Pick<TIndex, 'sections'>
 

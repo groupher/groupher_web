@@ -6,7 +6,7 @@ import SIZE from '@/constant/size'
 
 import FlipNumbers from 'react-flip-numbers'
 
-import type { TProps } from './index'
+import type { TProps } from '.'
 import { Wrapper } from './styles'
 import { getFontSize, getFlipNumOffset } from './styles/metric'
 

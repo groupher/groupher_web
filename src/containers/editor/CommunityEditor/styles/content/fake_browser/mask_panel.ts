@@ -54,7 +54,7 @@ export const Header = styled.div`
 export const Divider = styled.div`
   width: 160px;
   height: 2px;
-  margin-left: -10px;
+  margin-left: -20px;
   margin-top: 20px;
   border-bottom: 1px solid transparent;
   border-image: linear-gradient(

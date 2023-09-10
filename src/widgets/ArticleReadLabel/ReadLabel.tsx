@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 import useAccount from '@/hooks/useAccount'
 
 import { ReadedLabel } from './styles'
-import type { TProps } from './index'
+import type { TProps } from '.'
 
 const ReadLabel: FC<TProps> = ({ article, top, left }) => {
   const accountInfo = useAccount()

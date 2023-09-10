@@ -6,7 +6,7 @@ import css, { theme } from '@/css'
 import FeedbackSVG from '@/icons/menu/Feedback'
 import GithubSVG from '@/icons/Github8'
 
-import { Wip } from './index'
+import { Wip } from '.'
 
 export const Wrapper = styled.div`
   ${css.column('align-start')};

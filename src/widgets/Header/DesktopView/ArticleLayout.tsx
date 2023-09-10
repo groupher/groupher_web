@@ -16,7 +16,7 @@ import Tooltip from '@/widgets/Tooltip'
 import UserCard from '@/widgets/Cards/UserCard'
 import Navigator from '@/widgets/Navigator'
 
-import type { TProps } from '../index'
+import type { TProps } from '..'
 import {
   Wrapper,
   InnerWrapper,

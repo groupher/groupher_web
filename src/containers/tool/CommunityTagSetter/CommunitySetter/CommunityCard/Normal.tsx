@@ -6,7 +6,7 @@ import { SpaceGrow } from '@/widgets/Common'
 import Checker from '@/widgets/Checker'
 import DotDivider from '@/widgets/DotDivider'
 
-import type { TProps as TBaseProps } from './index'
+import type { TProps as TBaseProps } from '.'
 
 // import { TAG_VIEW } from '../constant'
 import {

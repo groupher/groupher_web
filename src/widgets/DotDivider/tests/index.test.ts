@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import DotDivider from '../index'
+// import DotDivider from '..'
 
 describe('TODO <DotDivider />', () => {
   it('Expect to have unit tests specified', () => {

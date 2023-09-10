@@ -1,12 +1,11 @@
 import { shallow } from 'enzyme'
 
-import Img from '../index'
+import Img from '..'
 
 const src = 'test.png'
 const alt = 'test'
 
-const renderComponent = (props = {}) =>
-  shallow(<Img src={src} alt={alt} {...props} />)
+const renderComponent = (props = {}) => shallow(<Img src={src} alt={alt} {...props} />)
 
 describe('<Img />', () => {
   it('should have an src attribute', () => {

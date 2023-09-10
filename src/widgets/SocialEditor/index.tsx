@@ -52,7 +52,7 @@ const SocialEditor: FC<TProps> = ({
 
   useEffect(() => {
     setSelected(value)
-  }, [])
+  }, [value])
 
   const removeSocial = useCallback(
     (social: TSocialItem) => {
@@ -111,7 +111,6 @@ const SocialEditor: FC<TProps> = ({
               <Hint>填写 Github 仓库地址后，会在页首右侧显示仓库实时 Stars 信息</Hint>
             )}
           </Fragment>
-          // @ts-ignore
         ))}
       </InputsWrapper>
     </Wrapper>

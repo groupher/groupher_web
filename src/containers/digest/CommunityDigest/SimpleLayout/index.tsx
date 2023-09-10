@@ -24,9 +24,6 @@ import {
 
 import { setViewport } from '../logic'
 
-// 没有各种外链接，打赏信息等的官方社区
-// const NON_STANDARD_COMMUNITIES = [HCN, 'feedback']
-
 type TProps = {
   community: TCommunity
   activeThread: TThread
@@ -44,10 +41,6 @@ const SimpleLayout: FC<TProps> = ({
 }) => {
   const washedThreads = washThreads(community.threads, dashboardSettings)
   const { extraLinks } = dashboardSettings
-
-  // console.log('## dashboardSettings: ', dashboardSettings.nameAlias)
-  // console.log('## washedThreads: ', washedThreads)
-  // console.log('## community.threads: ', community.threads)
 
   return (
     <Wrapper

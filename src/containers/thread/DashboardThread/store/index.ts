@@ -5,6 +5,7 @@
 import {
   values,
   pick,
+  isEmpty,
   findIndex,
   clone,
   isNil,
@@ -35,6 +36,8 @@ import type {
   TNameAliasConfig,
   TChangeMode,
   TArticleEntries,
+  TSocialItem,
+  TMediaReport,
 } from '@/spec'
 
 import {
@@ -124,6 +127,8 @@ const DashboardThread = T.model('DashboardThread', {
   editingGroupIndex: T.maybeNull(T.int),
   editingFAQIndex: T.maybeNull(T.int),
   editingFAQ: T.maybeNull(FAQSection),
+
+  queringMediaReportIndex: T.maybeNull(T.int),
   // editingGroupMode: T.opt(T.enum(values(CHANGE_MODE)), CHANGE_MODE.CREATE),
 
   ...settingsModalFields,
@@ -238,10 +243,29 @@ const DashboardThread = T.model('DashboardThread', {
 
       return JSON.stringify(toJS(socialLinks)) !== JSON.stringify(toJS(initSettings.socialLinks))
     },
+    get _mediaReportsTouched(): boolean {
+      const { mediaReports, initSettings } = self
+      const curValues = reject((item: TMediaReport) => !item.editUrl, toJS(mediaReports))
+      const initValues = reject(
+        (item: TMediaReport) => !item.editUrl,
+        toJS(initSettings.mediaReports),
+      )
+
+      const curValueTitles = filter((item: TMediaReport) => !isEmpty(item?.title), curValues)
+      const isCurAllvalid =
+        curValueTitles.length !== 0 && curValueTitles.length === curValues.length
+
+      return isCurAllvalid && JSON.stringify(curValues) !== JSON.stringify(initValues)
+    },
     get touched(): TTouched {
       const slf = self as TStore
 
-      const { initSettings: init, _tagsIndexTouched, _socialLinksTouched } = slf
+      const {
+        initSettings: init,
+        _tagsIndexTouched,
+        _socialLinksTouched,
+        _mediaReportsTouched,
+      } = slf
 
       const _isChanged = (field: TSettingField): boolean => !equals(slf[field], init[field])
       const _anyChanged = (fields: TSettingField[]): boolean => any(_isChanged)(fields)
@@ -312,6 +336,7 @@ const DashboardThread = T.model('DashboardThread', {
         tags: tagsTouched,
         tagsIndex: _tagsIndexTouched,
         socialLinks: _socialLinksTouched,
+        mediaReports: _mediaReportsTouched,
 
         faqSections: faqSectionsTouched,
 
@@ -529,14 +554,19 @@ const DashboardThread = T.model('DashboardThread', {
       const slf = self as TStore
 
       const baseInfo = pick(BASEINFO_KEYS, slf)
+      const socialLinks = reject((item: TSocialItem) => isEmpty(item.type), toJS(slf.socialLinks))
 
       return {
         ...baseInfo,
-        baseInfoTab: slf.baseInfoTab,
+        loading: slf.loading,
+        queringMediaReportIndex: slf.queringMediaReportIndex,
         saving: slf.saving,
-        socialLinks: toJS(slf.socialLinks),
+        baseInfoTab: slf.baseInfoTab,
+        socialLinks,
+        mediaReports: toJS(slf.mediaReports),
       }
     },
+
     get uiSettings(): TUiSettings {
       const slf = self as TStore
       const root = getParent(self) as TRootStore
@@ -598,6 +628,29 @@ const DashboardThread = T.model('DashboardThread', {
         views,
         subscribersCount,
         ...meta,
+      }
+    },
+
+    updateBaseInfo(community: TCommunity): void {
+      const { dashboard } = community
+      const { baseInfo, mediaReports } = dashboard
+
+      BASEINFO_KEYS.forEach((key) => {
+        self[key] = baseInfo[key]
+        self.initSettings[key] = baseInfo[key]
+      })
+
+      if (!isEmpty(mediaReports)) {
+        const initMediaReports = mediaReports.map((item: TMediaReport, index) => ({
+          ...item,
+          editUrl: item.url,
+          index: item.index || index,
+        }))
+
+        // @ts-ignore
+        self.mediaReports = initMediaReports
+        // @ts-ignore
+        self.initSettings.mediaReports = initMediaReports
       }
     },
 

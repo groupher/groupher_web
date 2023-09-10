@@ -10,7 +10,7 @@ import { AVATAR_LAYOUT } from '@/constant/layout'
 import { buildLog } from '@/utils/logger'
 import { getLetterColor } from '@/utils/color'
 
-import type { TAvatarProps as TProps } from './index'
+import type { TAvatarProps as TProps } from '.'
 import { Wrapper, Name } from './styles/avatar'
 
 /* eslint-disable-next-line */

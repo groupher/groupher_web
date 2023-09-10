@@ -41,8 +41,10 @@ const I18nDict = {
   REJECT_STALE: '陈帖归档',
 
   // osocial
+  EMAIL: '邮箱地址',
   HOMEPAGE: '官方主页',
-  TICTOC: '抖音',
+  TIKTOK: '抖音',
+  WECHAT: '微信',
   GITHUB: 'Github',
   TWITTER: '推特',
   ZHIHU: '知乎',

@@ -3,7 +3,7 @@
  *
  */
 
-// import ChangelogThread from '../index'
+// import ChangelogThread from '..'
 
 it('TODO: store test ChangelogThread', () => {
   expect(1 + 1).toBe(2)

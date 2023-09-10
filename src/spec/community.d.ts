@@ -8,6 +8,15 @@ type TMeta = {
   changelogsCount: number
 }
 
+export type TMediaReport = {
+  index: number
+  favicon: string
+  siteName: string
+  title: string
+  url: string
+  editUrl?: string
+}
+
 export type TModerator = {
   role: string
   passportItemCount: number
@@ -31,6 +40,15 @@ export type TCommunity = {
   pending?: number
   moderators?: TModerator[]
   views?: number
+
+  // TODO:
+  dashboard?: {
+    baseInfo?: {
+      title?: string
+      bio?: string
+    }
+    mediaReports?: TMediaReport[]
+  }
 }
 
 export type TPagedCommunities = {

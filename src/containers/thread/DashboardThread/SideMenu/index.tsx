@@ -23,17 +23,15 @@ const SideMenu: FC<TProps> = ({ curTab = '', touched = null, community }) => {
   return (
     <Wrapper>
       <Sticky offsetTop={30}>
-        {groupKeys.map((key) => {
-          return (
-            <Group
-              key={key}
-              community={community}
-              group={MENU[key] as TMenuGroup}
-              curTab={curTab}
-              touched={touched}
-            />
-          )
-        })}
+        {groupKeys.map((key) => (
+          <Group
+            key={key}
+            community={community}
+            group={MENU[key] as TMenuGroup}
+            curTab={curTab}
+            touched={touched}
+          />
+        ))}
       </Sticky>
     </Wrapper>
   )

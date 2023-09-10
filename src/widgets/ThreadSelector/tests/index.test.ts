@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import ThreadSelector from '../index'
+// import ThreadSelector from '..'
 
 describe('TODO <ThreadSelector />', () => {
   it('Expect to have unit tests specified', () => {

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TMetric } from '@/spec'
 import css, { WIDTH, theme } from '@/css'
 
-import { BaseBanner } from '../index'
+import { BaseBanner } from '..'
 
 const getMinHeight = (isMobile) => {
   if (isMobile) {

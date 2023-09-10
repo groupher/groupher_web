@@ -31,7 +31,7 @@ export const FoldArrowIcon = styled(ArrowSVG)<{ fold: boolean }>`
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
-  font-size: 14px;
+  font-size: 13px;
   margin-left: 10px;
   font-weight: 500;
   flex-grow: 1;
@@ -62,32 +62,32 @@ export const Item = styled(Link)<TActive>`
   position: relative;
   display: block;
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
-  background: ${({ $active }) => ($active ? theme('menuActive') : 'transparent')};
+  background: ${({ $active }) => ($active ? theme('activeLinear') : 'transparent')};
+
   width: 160px;
-  padding: 5px 5px;
+  padding: 6px 5px;
   padding-left: 20px;
-  margin-left: 0;
   border-radius: 8px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-  font-size: 13px;
+  font-size: 13.5px;
 
   &:hover {
     cursor: pointer;
     color: ${theme('article.title')};
-    background: ${({ $active }) => ($active ? theme('menuActive') : theme('hoverBg'))};
+    background: ${theme('activeLinear')};
   }
 
   &:before {
     content: '';
     display: ${({ $active }) => ($active ? 'block' : 'none')};
     position: absolute;
-    top: 8px;
+    top: 10px;
     left: -2px;
     width: 4px;
-    height: 12px;
+    height: 13px;
     border-radius: 8px;
-    background: ${theme('lightText')};
+    background: ${theme('article.digest')};
   }
 
   transition: all 0.2s;

@@ -98,8 +98,11 @@ const applyCommunity = gql`
       applyMsg: $applyMsg
       applyCategory: $applyCategory
     ) {
-      id
       pending
+      logo
+      desc
+      title
+      slug
     }
   }
 `

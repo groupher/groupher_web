@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
   color: ${theme('article.digest')};
   background-image: ${theme('banner.linearGradient')};
   width: 100%;
-  min-height: 840px;
+  padding-top: 3%;
 `
 export const IntroTitle = styled.div`
   position: relative;
@@ -35,10 +35,11 @@ export const InputsWrapper = styled.div`
   margin-left: 15px;
 `
 export const Label = styled.div`
-  color: ${theme('article.title')};
+  color: ${theme('article.digest')};
   font-size: 13px;
   margin-left: 1px;
   margin-bottom: 8px;
+  font-weight: 500;
 `
 export const InputBox = styled(InputBar)`
   width: 300px;
@@ -82,6 +83,6 @@ export const Title = styled.div`
 export const NextBtn = styled.div`
   ${css.row('align-center', 'justify-center')};
   width: 200px;
-  margin-left: -10px;
+  margin-left: -26px;
   filter: grayscale(1);
 `

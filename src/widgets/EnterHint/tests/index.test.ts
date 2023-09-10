@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import EnterHint from '../index'
+// import EnterHint from '..'
 
 describe('TODO <EnterHint />', () => {
   it('Expect to have unit tests specified', () => {

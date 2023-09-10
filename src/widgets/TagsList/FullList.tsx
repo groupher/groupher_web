@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 import { sortByColor } from '@/utils/helper'
 import { Trans } from '@/utils/i18n'
 
-import type { TProps as TTagProps } from './index'
+import type { TProps as TTagProps } from '.'
 
 import { Wrapper, Tag, DotSign, LabelDotSign, Title, SolidTitle } from './styles'
 

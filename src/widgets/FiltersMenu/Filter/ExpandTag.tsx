@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TTag } from '@/spec'
-import type { TProps as TFilter } from './index'
+import type { TProps as TFilter } from '.'
 import { Wrapper, Dot, Title } from '../styles/filter/tag'
 
 const isActive = (activeMap, expandMenuId, itemId) => {
@@ -9,26 +9,15 @@ const isActive = (activeMap, expandMenuId, itemId) => {
   return activeMap[expandMenuId].id === itemId
 }
 
-type TProps = Pick<
-  TFilter,
-  'expandMenuId' | 'onSelect' | 'revert' | 'activeMap'
-> & { tag: TTag }
+type TProps = Pick<TFilter, 'expandMenuId' | 'onSelect' | 'revert' | 'activeMap'> & { tag: TTag }
 
-const ExpandTag: FC<TProps> = ({
-  tag,
-  expandMenuId,
-  activeMap,
-  onSelect,
-  revert,
-}) => {
+const ExpandTag: FC<TProps> = ({ tag, expandMenuId, activeMap, onSelect, revert }) => {
   return (
     <Wrapper onClick={() => onSelect(expandMenuId, tag)}>
       {!revert ? (
         <>
           <Dot active={isActive(activeMap, expandMenuId, tag.id)} />
-          <Title active={isActive(activeMap, expandMenuId, tag.id)}>
-            {tag.title}
-          </Title>
+          <Title active={isActive(activeMap, expandMenuId, tag.id)}>{tag.title}</Title>
         </>
       ) : (
         <>

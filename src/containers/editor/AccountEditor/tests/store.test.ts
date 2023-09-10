@@ -3,7 +3,7 @@
  *
  */
 
-// import AccountEditorStore from '../index'
+// import AccountEditorStore from '..'
 
 it('TODO: test AccountEditorStore', () => {
   expect(1 + 1).toBe(2)

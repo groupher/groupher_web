@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import BookDemo from '../index'
+// import BookDemo from '..'
 
 describe('TODO <BookDemo />', () => {
   it('Expect to have unit tests specified', () => {

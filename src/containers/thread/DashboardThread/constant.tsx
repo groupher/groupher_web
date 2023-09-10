@@ -14,7 +14,7 @@ import type { TSettingField, TWidgetType, THeaderEditType, TFooterEditType } fro
 
 import { Icon } from './styles/side_menu'
 
-export const ALIGN_HEADER_OFFSET = '140px'
+export const ALIGN_HEADER_OFFSET = '142px'
 
 // do not change, it's map to GQ endpoint updateDashboardLayout
 export const SETTING_LAYOUT_FIELD = {
@@ -41,6 +41,7 @@ export const SETTING_LAYOUT_FIELD = {
 export const SETTING_FIELD = {
   ...SETTING_LAYOUT_FIELD,
   BASE_INFO: 'baseInfo',
+  MEDIA_REPORTS: 'mediaReports',
   SEO: 'seo',
   SOCIAL_LINKS: 'socialLinks',
   TAG: 'tag',
@@ -62,8 +63,9 @@ export const SETTING_FIELD = {
 
 export const MENU = {
   BASIC: {
-    title: '常规设置',
+    title: '工作区',
     icon: <Icon.Basic />,
+    initFold: false,
     children: [
       {
         title: '概览',
@@ -95,11 +97,15 @@ export const MENU = {
         slug: DASHBOARD_ROUTE.ADMINS,
       },
       {
-        title: '页头',
+        title: '页眉',
         slug: DASHBOARD_ROUTE.HEADER,
       },
       {
         title: '页脚',
+        slug: DASHBOARD_ROUTE.FOOTER,
+      },
+      {
+        title: '导入/导出',
         slug: DASHBOARD_ROUTE.FOOTER,
       },
     ],
@@ -108,6 +114,7 @@ export const MENU = {
   CMS: {
     title: '内容管理',
     icon: <Icon.Management />,
+    initFold: false,
     children: [
       {
         title: '社区',
@@ -147,6 +154,7 @@ export const MENU = {
   ANALYSIS: {
     title: '统计分析',
     icon: <Icon.Analysis />,
+    initFold: true,
     children: [
       {
         title: '趋势',
@@ -162,6 +170,7 @@ export const MENU = {
   INTEGRATE: {
     title: '绑定集成',
     icon: <Icon.Bind />,
+    initFold: true,
     children: [
       {
         title: '自定义域名',
@@ -415,6 +424,15 @@ export const EMPTY_LINK_ITEM = {
   groupIndex: 0,
 }
 
+export const EMPTY_MEDIA_REPORT = {
+  index: 0,
+  title: '',
+  favicon: '',
+  siteName: '',
+  url: '',
+  editUrl: '',
+}
+
 const demoMarkdown = `
   this is a paragraph 
 
@@ -535,6 +553,7 @@ export const BASEINFO_KEYS = [
   'logo',
   'title',
   'desc',
+  'introduction',
   'homepage',
   'slug',
   'city',

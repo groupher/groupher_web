@@ -36,6 +36,7 @@ export const Desc = styled.div`
   margin-top: 10px;
   margin-bottom: 20px;
 `
+
 export const Row = styled.div`
   ${css.row('align-center')};
 `
@@ -47,7 +48,6 @@ export const Inputer = styled(Input)`
   margin-top: 10px;
   margin-bottom: 20px;
   width: 300px;
-  background: transparent;
 `
 export const Hint = styled.div`
   font-size: 11px;

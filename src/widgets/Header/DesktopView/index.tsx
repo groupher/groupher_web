@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import METRIC from '@/constant/metric'
 
-import type { TProps } from '../index'
+import type { TProps } from '..'
 // import CommunityLayout from './CommunityLayout'
 import ArticleLayout from './ArticleLayout'
 import GeneralLayout from './GeneralLayout'

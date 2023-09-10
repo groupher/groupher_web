@@ -6,7 +6,7 @@ import { AVATAR_LAYOUT } from '@/constant/layout'
 import css, { theme } from '@/css'
 import { camelize } from '@/utils/fmt'
 
-import type { TAvatarProps } from '../index'
+import type { TAvatarProps } from '..'
 import { getFontSize } from './metric/avatar'
 
 type TWrapper = TTestable & TAvatarProps & { avatarLayout: TAvatarLayout; color: TColorName }

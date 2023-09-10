@@ -32,6 +32,7 @@ import {
   TW_CARD,
   DEFAULT_LINK_ITEMS,
   DEFAULT_FAQ_ITEMS,
+  EMPTY_MEDIA_REPORT,
 } from '../constant'
 
 export const Overview = T.model('Overview', {
@@ -78,6 +79,15 @@ export const SocialLink = T.model('SocialLink', {
   link: T.opt(T.str, ''),
 })
 
+export const MediaReport = T.model('MediaReport', {
+  index: T.maybeNull(T.number),
+  title: T.opt(T.str, ''),
+  favicon: T.opt(T.str, ''),
+  siteName: T.opt(T.str, ''),
+  url: T.opt(T.str, ''),
+  editUrl: T.opt(T.str, ''),
+})
+
 const File = T.model('File', {
   index: T.int,
   name: T.str,
@@ -99,12 +109,14 @@ export const settingsModalFields = {
   title: T.opt(T.string, ''),
   slug: T.opt(T.string, ''),
   desc: T.opt(T.string, ''),
+  introduction: T.opt(T.string, ''),
   homepage: T.opt(T.string, ''),
   city: T.opt(T.string, ''),
   techstack: T.opt(T.string, ''),
 
   // social
   socialLinks: T.opt(T.array(SocialLink), []),
+  mediaReports: T.opt(T.array(MediaReport), [EMPTY_MEDIA_REPORT]),
 
   // seo
   ogSiteName: T.opt(T.string, ''),

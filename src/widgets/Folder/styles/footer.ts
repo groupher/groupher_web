@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import css, { theme } from '@/css'
-import { Wrapper as FolderWrapper } from './index'
+import { Wrapper as FolderWrapper } from '.'
 
 export const Wrapper = styled.div`
   position: relative;

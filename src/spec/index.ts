@@ -27,6 +27,7 @@ export type { TAccount, TUser, TPagedUsers, TSimpleUser, TMembership, TC11N } fr
 export type { TC11NLayout } from './c11n'
 export type {
   TCommunity,
+  TMediaReport,
   TModerator,
   TPagedCommunities,
   TTag,
@@ -64,6 +65,7 @@ export type {
   TEditValue,
   TSubmitState,
   TSelectOption,
+  TCityOption,
   TTechStackCategory,
   TCommunitySetterStyle,
   TToastType,

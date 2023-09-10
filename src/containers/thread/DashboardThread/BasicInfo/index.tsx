@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { FC, memo, useEffect } from 'react'
 import Router from 'next/router'
 
 import type { TPostLayout } from '@/spec'
@@ -18,7 +18,7 @@ import SocialInfo from './SocialInfo'
 import OtherInfo from './OtherInfo'
 
 import { Wrapper, Banner, TabsWrapper } from '../styles/basic_info'
-import { edit } from '../logic'
+import { edit, loadBaseInfo } from '../logic'
 
 type TProps = {
   testid?: TPostLayout
@@ -31,9 +31,17 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => 
 
   const { baseInfoTab } = settings
 
+  useEffect(() => {
+    setTimeout(() => loadBaseInfo())
+  }, [])
+
   return (
     <Wrapper>
-      <Portal title="社区信息" desc="社区基本信息，关于页面主要信息等。" withDivider={false} />
+      <Portal
+        title="社区信息"
+        desc="社区基本信息，社交媒体，关于页面主要信息等。"
+        withDivider={false}
+      />
 
       <Banner>
         <TabsWrapper>
@@ -61,7 +69,9 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => 
       {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.SOCIAL && (
         <SocialInfo settings={settings} touched={touched} />
       )}
-      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.OTHER && <OtherInfo settings={settings} />}
+      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.OTHER && (
+        <OtherInfo settings={settings} touched={touched} />
+      )}
     </Wrapper>
   )
 }

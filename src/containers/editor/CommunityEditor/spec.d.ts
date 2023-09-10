@@ -24,6 +24,13 @@ export type TSetupExtraStatus = {
   source: string
 }
 
+export type TFinishedStatus = {
+  slug: string
+  title: string
+  desc: string
+  logo: string
+}
+
 export type TValidState = {
   isCommunityTypeValid: boolean
   isOfficalValid: boolean

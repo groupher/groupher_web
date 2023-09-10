@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import { ARTICLE_STATE } from '@/constant/gtd'
 
-import type { TProps as TArticleStateBadgeProps } from './index'
+import type { TProps as TArticleStateBadgeProps } from '.'
 
 import {
   Wrapper,

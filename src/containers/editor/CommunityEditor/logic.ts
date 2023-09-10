@@ -180,7 +180,11 @@ const DataSolver = [
   },
   {
     match: asyncRes('applyCommunity'),
-    action: () => store.mark({ step: STEP.FINISHED, submitting: false }),
+    action: ({ applyCommunity }) => {
+      const { slug, title, desc, logo } = applyCommunity
+
+      store.mark({ step: STEP.FINISHED, submitting: false, slug, title, desc, logo })
+    },
   },
 ]
 

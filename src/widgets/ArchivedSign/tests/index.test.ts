@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import ArchivedSign from '../index'
+// import ArchivedSign from '..'
 
 describe('TODO <ArchivedSign />', () => {
   it('Expect to have unit tests specified', () => {

@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import CatSelector from '../index'
+// import CatSelector from '..'
 
 describe('TODO <CatSelector />', () => {
   it('Expect to have unit tests specified', () => {

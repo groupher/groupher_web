@@ -1,7 +1,7 @@
 // import React from 'react'
 // import { shallow } from 'enzyme'
 
-// import DiscussLinker from '../index'
+// import DiscussLinker from '..'
 
 describe('TODO <DiscussLinker />', () => {
   it('Expect to have unit tests specified', () => {
