@@ -17,7 +17,7 @@ import { COLOR_NAME } from '@/constant/colors'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 
-import { DASHBOARD_ROUTE, DASHBOARD_BASEINFO_ROUTE } from '@/constant/route'
+import { DASHBOARD_ROUTE, DASHBOARD_BASEINFO_ROUTE, DASHBOARD_SEO_ROUTE } from '@/constant/route'
 
 import { toast } from '@/utils/helper'
 import { buildLog } from '@/utils/logger'
@@ -33,6 +33,8 @@ import {
   SETTING_LAYOUT_FIELD,
   BASEINFO_KEYS,
   SEO_KEYS,
+  SEO_OG_KEYS,
+  SEO_TW_KEYS,
   EMPTY_MEDIA_REPORT,
   BASEINFO_BASIC_KEYS,
   BASEINFO_OTHER_KEYS,
@@ -195,9 +197,19 @@ const _doMutation = (field: string, e: TEditValue): void => {
 
   if (field === SETTING_FIELD.SEO) {
     const params = {}
-    SEO_KEYS.forEach((key) => {
-      params[key] = store[key]
-    })
+    const { seoTab } = store
+
+    if (seoTab === DASHBOARD_SEO_ROUTE.SEARCH_ENGINE) {
+      SEO_OG_KEYS.forEach((key) => {
+        params[key] = store[key]
+      })
+    }
+
+    if (seoTab === DASHBOARD_SEO_ROUTE.TWITTER) {
+      SEO_TW_KEYS.forEach((key) => {
+        params[key] = store[key]
+      })
+    }
 
     sr71$.mutate(S.updateDashboardSeo, { community, ...params })
     return
