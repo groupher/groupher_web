@@ -8,14 +8,7 @@ import { Provider } from 'mobx-react'
 import { ROUTE } from '@/constant/route'
 import METRIC from '@/constant/metric'
 
-import {
-  publishCommunitySEO,
-  ssrFetchPrepare,
-  ssrBaseStates,
-  refreshIfneed,
-  ssrError,
-  log,
-} from '@/utils'
+import { ssrFetchPrepare, ssrBaseStates, refreshIfneed, ssrError, log } from '@/utils'
 
 import GlobalLayout from '@/containers/layout/GlobalLayout'
 import CommunityEditor from '@/containers/editor/CommunityEditor'
@@ -52,11 +45,10 @@ export const getServerSideProps = async (context) => {
 
 const ApplyCommunityPage = (props) => {
   const store = useStore(props)
-  const seoConfig = publishCommunitySEO()
 
   return (
     <Provider store={store}>
-      <GlobalLayout metric={METRIC.COMMUNITY} seoConfig={seoConfig}>
+      <GlobalLayout metric={METRIC.COMMUNITY}>
         <CommunityEditor />
       </GlobalLayout>
     </Provider>

@@ -14,6 +14,8 @@ import type { TSettingField, TWidgetType, THeaderEditType, TFooterEditType } fro
 
 import { Icon } from './styles/side_menu'
 
+export { SEO_KEYS, SEO_OG_KEYS, SEO_TW_KEYS } from '@/constant/seo'
+
 export const ALIGN_HEADER_OFFSET = '142px'
 
 // do not change, it's map to GQ endpoint updateDashboardLayout
@@ -578,25 +580,6 @@ export const UI_KEYS = [
   'glowFixed',
   'glowType',
   'glowOpacity',
-]
-
-export const SEO_KEYS = [
-  'ogSiteName',
-  'ogTitle',
-  'ogDescription',
-  'ogUrl',
-  'ogImage',
-  'ogLocale',
-  'ogPublisher',
-
-  'twTitle',
-  'twDescription',
-  'twUrl',
-  'twCard',
-  'twSite',
-  'twImage',
-  'twImageWidth',
-  'twImageHeight',
 ]
 
 export const BROADCAST_KEYS = [

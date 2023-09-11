@@ -4,7 +4,7 @@ import { Provider } from 'mobx-react'
 import { ARTICLE_THREAD } from '@/constant/thread'
 import METRIC from '@/constant/metric'
 
-import { articleUpdateSEO, ssrBaseStates, ssrRescue, ssrFetchPrepare, ssrGetParam } from '@/utils'
+import { ssrBaseStates, ssrRescue, ssrFetchPrepare, ssrGetParam } from '@/utils'
 import { P } from '@/schemas'
 
 import { useStore } from '@/stores/init'
@@ -50,11 +50,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 export const UpdatePostPage = (props) => {
   const store = useStore(props)
 
-  const seoConfig = articleUpdateSEO()
-
   return (
     <Provider store={store}>
-      <GlobalLayout metric={METRIC.ARTICLE_EDITOR} seoConfig={seoConfig}>
+      <GlobalLayout metric={METRIC.ARTICLE_EDITOR}>
         <ArticleEditor />
       </GlobalLayout>
     </Provider>

@@ -116,13 +116,3 @@ export { Trans } from './i18n'
 export { default as GA } from './analytics/ga'
 
 export { mockImage, mockImages } from './mock'
-
-export {
-  communitySEO,
-  articleSEO,
-  articlePublishSEO,
-  articleUpdateSEO,
-  userSEO,
-  publishCommunitySEO,
-  landingSEO,
-} from './seo'

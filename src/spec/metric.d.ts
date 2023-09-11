@@ -8,17 +8,11 @@ export type TMetric =
   | 'DASHBOARD'
 
   // 版块
-  | 'WORKS'
   | 'EXPLORE'
   | 'SPONSOR'
   | 'FRIENDS'
   | 'SUPPORT_US'
   | 'SUBSCRIBE'
-  | 'MEETUPS'
-  | 'TRENDING'
-  | 'COOL_GUIDE'
-  | 'HAVE_A_DRINK'
-  | 'RECIPES'
   | 'MEMBERSHIP'
 
   // editor

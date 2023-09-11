@@ -58,6 +58,25 @@ export type TDashboardThreadConfig = {
   extraLinks?: TLinkItem[]
 }
 
+export type TDashboardSEOConfig = {
+  ogSiteName: string
+  ogTitle: string
+  ogDescription?: string
+  ogUrl: string
+  ogImage?: string
+  ogLocale?: string
+  ogPublisher?: string
+
+  twTitle: string
+  twDescription: string
+  twUrl: string
+  twCard: string // 'summary' | 'summary_large_image'
+  twSite: string
+  twImage: string
+  twImageWidth: string
+  twImageHeight: string
+}
+
 export type TFooterConfig = {
   layout: TFooterLayout
   links: TLinkItem[]

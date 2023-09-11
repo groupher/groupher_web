@@ -45,7 +45,6 @@ export type {
   TActive,
   TSpace,
   TGAEvent,
-  TSEO,
   TLink,
   TPlatform,
   Nullable,
@@ -109,6 +108,7 @@ export type {
   TDashboardThreadConfig,
   TFooterConfig,
   TRSSType,
+  TDashboardSEOConfig,
 } from './dashboard'
 
 export type {

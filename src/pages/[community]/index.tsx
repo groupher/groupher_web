@@ -3,7 +3,6 @@ import { merge, toLower } from 'ramda'
 import { Provider } from 'mobx-react'
 import { getSelectorsByUserAgent } from 'react-device-detect'
 
-import type { TCommunity } from '@/spec'
 import { HCN } from '@/constant/name'
 import { THREAD } from '@/constant/thread'
 import METRIC from '@/constant/metric'
@@ -18,7 +17,6 @@ import {
   ssrPagedArticlesFilter,
   ssrParseArticleThread,
   ssrRescue,
-  communitySEO,
   singular,
   log,
 } from '@/utils'
@@ -132,15 +130,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const CommunityPage = (props) => {
   const store = useStore(props)
 
-  const { viewing } = props
-  const { community, activeThread } = viewing
-
   return (
     <Provider store={store}>
-      <GlobalLayout
-        metric={METRIC.COMMUNITY}
-        seoConfig={communitySEO(community as TCommunity, activeThread)}
-      >
+      <GlobalLayout metric={METRIC.COMMUNITY}>
         <PostContent />
       </GlobalLayout>
     </Provider>

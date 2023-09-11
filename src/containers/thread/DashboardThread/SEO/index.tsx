@@ -57,7 +57,7 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => 
       {seoTab === DASHBOARD_SEO_ROUTE.TWITTER && <TwitterGraph settings={settings} />}
 
       <SavingWrapper>
-        <SavingBar field={SETTING_FIELD.SEO} isTouched={touched.seo} loading={saving} top={10} />
+        <SavingBar field={SETTING_FIELD.SEO} isTouched={touched.seo} loading={saving} />
       </SavingWrapper>
     </Wrapper>
   )

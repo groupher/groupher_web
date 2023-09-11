@@ -8,7 +8,7 @@ import { HCN } from '@/constant/name'
 import { ARTICLE_THREAD } from '@/constant/thread'
 import METRIC from '@/constant/metric'
 
-import { articleSEO, ssrFetchPrepare, ssrRescue, ssrError } from '@/utils'
+import { ssrFetchPrepare, ssrRescue, ssrError } from '@/utils'
 import { useStore } from '@/stores/init'
 
 import GlobalLayout from '@/containers/layout/GlobalLayout'
@@ -76,14 +76,11 @@ const ChangelogPage = (props) => {
   const { isFallback } = useRouter()
   if (isFallback) return <LavaLampLoading top={20} left={30} />
 
-  const { viewing, globalLayout } = props
-  const { changelog } = viewing
-
-  const seoConfig = articleSEO(ARTICLE_THREAD.CHANGELOG, changelog)
+  const { globalLayout } = props
 
   return (
     <Provider store={store}>
-      <GlobalLayout metric={METRIC.CHANGELOG_ARTICLE} seoConfig={seoConfig}>
+      <GlobalLayout metric={METRIC.CHANGELOG_ARTICLE}>
         <ArticleDigest isMobile={globalLayout.isMobile} />
         <ArticleContent isMobile={globalLayout.isMobile} />
       </GlobalLayout>

@@ -19,6 +19,7 @@ import ERR from '@/constant/err'
 
 import { DASHBOARD_ROUTE, DASHBOARD_BASEINFO_ROUTE } from '@/constant/route'
 
+import { toast } from '@/utils/helper'
 import { buildLog } from '@/utils/logger'
 import { updateEditing, toJS } from '@/utils/mobx'
 import { errRescue } from '@/utils/signal'
@@ -417,6 +418,7 @@ export const removeMediaReport = (index: number): void => {
 // ###############################
 const _handleDone = () => {
   const field = store.savingField
+  toast('设置已经保存')
 
   let initSettings
 

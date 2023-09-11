@@ -2,7 +2,6 @@ import { GetServerSideProps } from 'next'
 import { merge } from 'ramda'
 import { Provider } from 'mobx-react'
 
-import type { TCommunity } from '@/spec'
 import { HCN } from '@/constant/name'
 import { ROUTE } from '@/constant/route'
 import { THREAD } from '@/constant/thread'
@@ -17,7 +16,6 @@ import {
   ssrPagedArticleSchema,
   ssrPagedArticlesFilter,
   ssrRescue,
-  communitySEO,
   log,
 } from '@/utils'
 
@@ -106,15 +104,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const CommunityDashboardPage = (props) => {
   const store = useStore(props)
 
-  const { viewing } = props
-  const { community, activeThread } = viewing
-
   return (
     <Provider store={store}>
-      <GlobalLayout
-        metric={METRIC.DASHBOARD}
-        seoConfig={communitySEO(community as TCommunity, activeThread)}
-      >
+      <GlobalLayout metric={METRIC.DASHBOARD}>
         <DashboardContent />
       </GlobalLayout>
     </Provider>

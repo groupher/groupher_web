@@ -2,6 +2,7 @@
  * GlobalLayout store
  *
  */
+import { pick } from 'ramda'
 
 import type {
   TRootStore,
@@ -13,10 +14,12 @@ import type {
   TWallpaperInfo,
   TBroadcastConfig,
   TFooterConfig,
+  TDashboardSEOConfig,
 } from '@/spec'
 
+import { SEO_KEYS } from '@/constant/seo'
+
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
-import { pick } from 'ramda'
 
 const Platform = T.model('Platform', {
   isChrome: T.opt(T.bool, true),
@@ -46,6 +49,11 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
       const root = getParent(self) as TRootStore
 
       return toJS(root.viewing.community)
+    },
+    get seo(): TDashboardSEOConfig {
+      const root = getParent(self) as TRootStore
+
+      return pick(SEO_KEYS, root.dashboardThread)
     },
     get sidebarPin(): boolean {
       // const root = getParent(self) as TRootStore

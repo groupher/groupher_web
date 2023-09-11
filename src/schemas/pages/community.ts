@@ -50,15 +50,12 @@ export const community = `
           type
           link
         }
-
         seo {
           ogSiteName
           ogTitle
           ogDescription
           ogUrl
           ogImage
-          ogLocale
-          ogPublisher
           twTitle
           twDescription
           twUrl

@@ -1,7 +1,6 @@
 import { GetServerSideProps } from 'next'
 import { Provider } from 'mobx-react'
 
-import type { TCommunity } from '@/spec'
 import { HCN } from '@/constant/name'
 import { THREAD } from '@/constant/thread'
 import METRIC from '@/constant/metric'
@@ -14,7 +13,6 @@ import {
   ssrPagedArticleSchema,
   ssrPagedArticlesFilter,
   ssrParseDashboard,
-  communitySEO,
 } from '@/utils'
 
 import GlobalLayout from '@/containers/layout/GlobalLayout'
@@ -88,15 +86,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const CommunityChangelogPage = (props) => {
   const store = useStore(props)
 
-  const { viewing } = props
-  const { community, activeThread } = viewing
-
   return (
     <Provider store={store}>
-      <GlobalLayout
-        metric={METRIC.COMMUNITY}
-        seoConfig={communitySEO(community as TCommunity, activeThread)}
-      >
+      <GlobalLayout metric={METRIC.COMMUNITY}>
         <ChangeLogContent />
       </GlobalLayout>
     </Provider>
