@@ -33,6 +33,7 @@ import {
   DEFAULT_LINK_ITEMS,
   DEFAULT_FAQ_ITEMS,
   EMPTY_MEDIA_REPORT,
+  INIT_KANBAN_COLORS,
 } from '../constant'
 
 export const Overview = T.model('Overview', {
@@ -141,11 +142,7 @@ export const settingsModalFields = {
   primaryColor: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
   postLayout: T.opt(T.enum(values(POST_LAYOUT)), POST_LAYOUT.QUORA),
   kanbanLayout: T.opt(T.enum(values(KANBAN_LAYOUT)), KANBAN_LAYOUT.SIMPLE),
-  kanbanBgColors: T.opt(T.array(T.string), [
-    COLOR_NAME.PURPLE,
-    COLOR_NAME.ORANGE,
-    COLOR_NAME.GREEN_LIGHT,
-  ]),
+  kanbanBgColors: T.opt(T.array(T.string), INIT_KANBAN_COLORS),
 
   docLayout: T.opt(T.enum(values(DOC_LAYOUT)), DOC_LAYOUT.BLOCKS),
   docFaqLayout: T.opt(T.enum(values(DOC_FAQ_LAYOUT)), DOC_FAQ_LAYOUT.COLLAPSE),

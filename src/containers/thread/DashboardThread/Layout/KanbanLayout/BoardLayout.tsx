@@ -1,5 +1,7 @@
 import { FC, memo, useEffect, useState, useRef } from 'react'
 
+import { isEmpty } from 'ramda'
+
 import { DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { COLOR_NAME } from '@/constant/colors'
 
@@ -12,7 +14,7 @@ import { Inline, SpaceGrow, Space } from '@/widgets/Common'
 import ColorSelector from '@/widgets/ColorSelector'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
-import { SETTING_FIELD } from '../../constant'
+import { SETTING_FIELD, INIT_KANBAN_COLORS } from '../../constant'
 import SectionLabel from '../../SectionLabel'
 import SavingBar from '../../SavingBar'
 
@@ -30,6 +32,7 @@ import {
   ColorBall,
   Action,
   DiceIcon,
+  ResetIcon,
 } from '../../styles/layout/kanban_layout/board_layout'
 import { edit } from '../../logic'
 
@@ -54,7 +57,7 @@ const BoardLayout: FC<TProps> = ({ kanbanBgColors, isBgColorsTouched, saving }) 
   const [board2Ref, isBoard2Hovered] = useHover<HTMLDivElement>()
   const [board3Ref, isBoard3Hovered] = useHover<HTMLDivElement>()
 
-  const [BG1, BG2, BG3] = kanbanBgColors
+  const [BG1, BG2, BG3] = isEmpty(kanbanBgColors) ? INIT_KANBAN_COLORS : kanbanBgColors
 
   return (
     <>
@@ -110,9 +113,12 @@ const BoardLayout: FC<TProps> = ({ kanbanBgColors, isBgColorsTouched, saving }) 
             <ColorBall ref={board3Ref} color={BG3} setable />
           </ColorSelector>
         </Preset>
-
         <SpaceGrow />
-
+        <Action onClick={() => edit(INIT_KANBAN_COLORS, 'kanbanBgColors')}>
+          <ResetIcon />
+          重置
+        </Action>
+        <Space right={0} />
         <Action
           onClick={() => {
             setDiceRotate(diceRotate + 80)

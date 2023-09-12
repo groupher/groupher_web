@@ -267,7 +267,8 @@ const DashboardThread = T.model('DashboardThread', {
         _mediaReportsTouched,
       } = slf
 
-      const _isChanged = (field: TSettingField): boolean => !equals(slf[field], init[field])
+      const _isChanged = (field: TSettingField): boolean =>
+        !equals(toJS(slf[field]), toJS(init[field]))
       const _anyChanged = (fields: TSettingField[]): boolean => any(_isChanged)(fields)
 
       const _mapArrayChanged = (key: string): boolean => {

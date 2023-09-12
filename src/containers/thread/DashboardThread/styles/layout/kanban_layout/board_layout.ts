@@ -6,14 +6,15 @@ import css, { theme } from '@/css'
 import { camelize } from '@/utils/fmt'
 
 import DiceSVG from '@/icons/Dice'
+import ResetSVG from '@/icons/Reset'
 
 export { Bar, Circle } from '..'
 
 export const BoardsWrapper = styled.div`
   ${css.row('justify-center', 'align-end')};
-  gap: 0 18px;
-  width: calc(100% + 100px);
-  margin-left: -45px;
+  gap: 0 16px;
+  width: calc(100% + 16px);
+  margin-left: -7px;
   margin-top: 26px;
 
   ${css.media.mobile`
@@ -42,7 +43,7 @@ export const Board = styled.div<TBoard>`
   gap: 6px;
   overflow: hidden;
 
-  width: 33%;
+  width: 33.3%;
   height: 280px;
   background-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
 
@@ -69,7 +70,7 @@ export const Action = styled.div<TActive>`
   color: ${theme('article.info')};
   font-size: 12px;
   opacity: ${({ $active }) => ($active ? 1 : 0.85)};
-  margin-top: 4px;
+  margin-top: 5px;
 
   &:hover {
     cursor: pointer;
@@ -78,6 +79,12 @@ export const Action = styled.div<TActive>`
 
   transition: all 0.2s;
 `
+export const ResetIcon = styled(ResetSVG)`
+  ${css.size(13)};
+  fill: ${theme('article.info')};
+  margin-right: 5px;
+`
+
 export const DiceIcon = styled(DiceSVG)<{ rotate: number }>`
   margin-top: -1px;
   ${css.size(13)};

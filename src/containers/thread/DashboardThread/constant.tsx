@@ -9,6 +9,7 @@ import {
   DASHBOARD_SEO_ROUTE,
   DASHBOARD_DOC_ROUTE,
 } from '@/constant/route'
+import { COLOR_NAME } from '@/constant/colors'
 
 import type { TSettingField, TWidgetType, THeaderEditType, TFooterEditType } from './spec'
 
@@ -597,3 +598,5 @@ export const DEFAULT_NEW_FAQ = {
   body: '',
   index: 0,
 }
+
+export const INIT_KANBAN_COLORS = [COLOR_NAME.BLACK, COLOR_NAME.BLACK, COLOR_NAME.BLACK]
