@@ -73,15 +73,14 @@ const SEO: FC<TProps> = ({ metric, data }) => {
           <meta property="og:url" content={ogUrl} />
           <meta property="og:type" content="website" />
           {/* <link rel="icon" href="/favicon.ico" /> */}
-          <meta property="twitter:title" content={twTitle} />
-          <meta property="twitter:description" content={twDescription} />
-          <meta property="twitter:site" content={twSite} />
+          {twTitle && <meta property="twitter:title" content={twTitle} />}
+          {twDescription && <meta property="twitter:description" content={twDescription} />}
+          {twSite && <meta property="twitter:site" content={twSite} />}
 
           {twImage && <meta property="twitter:image:src" content={twImage} />}
           {twImageWidth && <meta property="twitter:image:width" content={twImageWidth} />}
           {twImageHeight && <meta property="twitter:image:width" content={twImageHeight} />}
-
-          <meta property="twitter:card" content={twCard} />
+          {twCard && <meta property="twitter:card" content={twCard} />}
         </Head>
       )
   }
