@@ -38,6 +38,7 @@ import type {
   TPagedCommunities,
   TModerator,
   TMediaReport,
+  TDashboardSEOConfig,
 } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'CMS' | 'INTEGRATE'
@@ -149,25 +150,8 @@ export type TBaseInfoSettings = {
   mediaReports: TMediaReport[]
 }
 
-export type TSEOSettings = {
+export type TSEOSettings = TDashboardSEOConfig & {
   saving: boolean
-  ogSiteName: string
-  ogTitle: string
-  ogDescription: string
-  ogUrl: string
-  ogImage: string
-  ogLocale: string
-  ogPublisher: string
-
-  twTitle: string
-  twDescription: string
-  twUrl: string
-  twCard: string // 'summary' | 'summary_large_image'
-  twSite: string
-  twImage: string
-  twImageWidth: string
-  twImageHeight: string
-
   seoTab: TDashboardSEORoute
 }
 

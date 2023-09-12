@@ -238,17 +238,17 @@ const parseDashboardAlias = (nameAlias) => {
 
 export const ssrParseDashboard = (community) => {
   const { dashboard, moderators } = community
-  const { enable, nameAlias, socialLinks, faqs } = dashboard
+  const { enable, nameAlias, socialLinks, faqs, seo, layout, rss, baseInfo } = dashboard
 
   const fieldsObj = removeEmptyValuesFromObject({
     enable,
     nameAlias: parseDashboardAlias(nameAlias),
     socialLinks,
     faqSections: faqs,
-    ...dashboard.baseInfo,
-    ...dashboard.seo,
-    ...dashboard.layout,
-    ...dashboard.rss,
+    ...baseInfo,
+    ...seo,
+    ...layout,
+    ...rss,
     moderators,
   })
 

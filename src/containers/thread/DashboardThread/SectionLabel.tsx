@@ -8,11 +8,12 @@ type TProps = {
   title: string
   desc?: ReactNode
   addon?: ReactNode
+  width?: string
 }
 
-const SectionLabel: FC<TProps> = ({ title, desc = null, addon = null }) => {
+const SectionLabel: FC<TProps> = ({ title, desc = null, addon = null, width = '100%' }) => {
   return (
-    <Wrapper>
+    <Wrapper width={width}>
       <Header>
         <Title noDesc={desc === null}>{title}</Title>
         <SpaceGrow />

@@ -13,6 +13,10 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   ${css.row('align-center')};
 
   ${(props) => css.spaceMargins(props)};
+
+  &:hover {
+    text-decoration: underline;
+  }
 `
 
 export const ArrowIcon = styled(ArrowSVG)<{ fontSize: number }>`

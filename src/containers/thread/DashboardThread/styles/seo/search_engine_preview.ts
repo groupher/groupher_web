@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   margin-bottom: 30px;
   padding: 20px 20px;
   border-radius: 5px;
-  width: 460px;
+  width: 450px;
   margin-left: -10px;
   box-shadow: ${css.cardShadow};
   position: relative;

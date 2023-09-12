@@ -17,8 +17,9 @@ import { COLOR_NAME } from '@/constant/colors'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 
-import { DASHBOARD_ROUTE, DASHBOARD_BASEINFO_ROUTE } from '@/constant/route'
+import { DASHBOARD_ROUTE, DASHBOARD_BASEINFO_ROUTE, DASHBOARD_SEO_ROUTE } from '@/constant/route'
 
+import { toast } from '@/utils/helper'
 import { buildLog } from '@/utils/logger'
 import { updateEditing, toJS } from '@/utils/mobx'
 import { errRescue } from '@/utils/signal'
@@ -32,6 +33,8 @@ import {
   SETTING_LAYOUT_FIELD,
   BASEINFO_KEYS,
   SEO_KEYS,
+  SEO_OG_KEYS,
+  SEO_TW_KEYS,
   EMPTY_MEDIA_REPORT,
   BASEINFO_BASIC_KEYS,
   BASEINFO_OTHER_KEYS,
@@ -54,7 +57,7 @@ let sub$ = null
 /* eslint-disable-next-line */
 const log = buildLog('L:DashboardThread')
 
-export const enableThread = (key: string, toggle: boolean) => {
+export const enableThread = (key: string, toggle: boolean): void => {
   const { enableSettings, curCommunity } = store
 
   const enable = {
@@ -66,6 +69,13 @@ export const enableThread = (key: string, toggle: boolean) => {
   store.onSave('enable')
 
   sr71$.mutate(S.updateDashboardEnable, { community: curCommunity.slug, [key]: toggle })
+}
+
+export const toggleSEO = (seoEnable: boolean): void => {
+  const { curCommunity } = store
+  console.log('## toggleSEO seoEnable: ', seoEnable)
+
+  sr71$.mutate(S.updateDashboardSeo, { community: curCommunity.slug, seoEnable })
 }
 
 export const updateEditingAlias = (alias: TNameAlias): void => store.mark({ editingAlias: alias })
@@ -194,9 +204,19 @@ const _doMutation = (field: string, e: TEditValue): void => {
 
   if (field === SETTING_FIELD.SEO) {
     const params = {}
-    SEO_KEYS.forEach((key) => {
-      params[key] = store[key]
-    })
+    const { seoTab } = store
+
+    if (seoTab === DASHBOARD_SEO_ROUTE.SEARCH_ENGINE) {
+      SEO_OG_KEYS.forEach((key) => {
+        params[key] = store[key]
+      })
+    }
+
+    if (seoTab === DASHBOARD_SEO_ROUTE.TWITTER) {
+      SEO_TW_KEYS.forEach((key) => {
+        params[key] = store[key]
+      })
+    }
 
     sr71$.mutate(S.updateDashboardSeo, { community, ...params })
     return
@@ -417,6 +437,7 @@ export const removeMediaReport = (index: number): void => {
 // ###############################
 const _handleDone = () => {
   const field = store.savingField
+  toast('设置已经保存')
 
   let initSettings
 
@@ -477,7 +498,17 @@ const DataSolver = [
   },
   {
     match: asyncRes('updateDashboardSeo'),
-    action: () => _handleDone(),
+    action: ({ updateDashboardSeo }) => {
+      const {
+        dashboard: {
+          seo: { seoEnable },
+        },
+      } = updateDashboardSeo
+      const { initSettings } = store
+      store.mark({ seoEnable, initSettings: { ...toJS(initSettings), seoEnable } })
+
+      _handleDone()
+    },
   },
   {
     match: asyncRes('updateDashboardEnable'),

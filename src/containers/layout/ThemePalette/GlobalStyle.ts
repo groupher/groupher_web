@@ -184,5 +184,13 @@ const GlobalStyle = createGlobalStyle`
   #nprogress .spinner {
     display: none !important;
   }
+
+  // toast
+  [data-sonner-toast][data-styled=true] {
+    padding: 7px 13px !important;
+    width: 180px !important;
+    margin-left: 100px;
+    justify-content: center;
+  }
 `
 export default GlobalStyle

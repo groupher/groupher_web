@@ -34,12 +34,6 @@ export type TGAEvent = {
   value: string
 }
 
-export type TSEO = {
-  url: string
-  title: string
-  description: string
-}
-
 export type TLink = {
   href: string
 }

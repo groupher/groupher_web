@@ -12,7 +12,7 @@ import { Provider as BalancerTextProvider } from 'react-wrap-balancer'
 import METRIC from '@/constant/metric'
 import { TOPBAR_LAYOUT } from '@/constant/layout'
 
-import type { TSEO, TMetric } from '@/spec'
+import type { TMetric } from '@/spec'
 import { bond } from '@/utils/mobx'
 import { communityChanged } from '@/utils/signal'
 
@@ -47,16 +47,10 @@ let DashboardAlert = null
 type TProps = {
   globalLayout?: TStore
   children: ReactNode
-  seoConfig: TSEO
   metric: TMetric
 }
 
-const GlobalLayoutContainer: FC<TProps> = ({
-  globalLayout: store,
-  seoConfig,
-  children,
-  metric,
-}) => {
+const GlobalLayoutContainer: FC<TProps> = ({ globalLayout: store, children, metric }) => {
   // load debug graph
   useInit(store)
 
@@ -75,6 +69,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
     broadcastConfig,
     footerConfig,
     showDashboardAlert,
+    seo,
   } = store
 
   useEffect(() => {
@@ -109,7 +104,7 @@ const GlobalLayoutContainer: FC<TProps> = ({
           <Wallpaper wallpaperInfo={wallpaperInfo} />
           <ScrollWrapper noMobilePadding={metric === METRIC.HOME}>
             <Wrapper>
-              <SEO metric={metric} config={seoConfig} />
+              <SEO metric={metric} data={seo} />
               <InnerWrapper
                 metric={metric}
                 hasShadow={hasShadow}

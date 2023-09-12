@@ -33,8 +33,6 @@ const Addon: FC<TProps> = ({ metric }) => {
       <AuthWall />
       <Toaster position="top-center" closeButton />
       {/* @ts-ignore */}
-      {/* @ts-ignore */}
-      {/* @ts-ignore */}
       <ErrorBox />
     </Fragment>
   )

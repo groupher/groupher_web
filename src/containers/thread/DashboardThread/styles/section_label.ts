@@ -2,9 +2,9 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/css'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ width: string }>`
   ${css.column()};
-  width: 100%;
+  width: ${({ width }) => width};
 `
 export const Header = styled.div`
   ${css.row('align-center')};

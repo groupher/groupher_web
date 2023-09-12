@@ -119,6 +119,7 @@ export const settingsModalFields = {
   mediaReports: T.opt(T.array(MediaReport), [EMPTY_MEDIA_REPORT]),
 
   // seo
+  seoEnable: T.opt(T.bool, true),
   ogSiteName: T.opt(T.string, ''),
   ogTitle: T.opt(T.string, ''),
   ogDescription: T.opt(T.string, ''),

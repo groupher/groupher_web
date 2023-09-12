@@ -5,15 +5,7 @@
 import { Provider } from 'mobx-react'
 
 import METRIC from '@/constant/metric'
-import {
-  ssrGetParam,
-  ssrFetchPrepare,
-  ssrBaseStates,
-  ssrError,
-  refreshIfneed,
-  userSEO,
-  log,
-} from '@/utils'
+import { ssrGetParam, ssrFetchPrepare, ssrBaseStates, ssrError, refreshIfneed, log } from '@/utils'
 
 import { useStore } from '@/stores/init'
 
@@ -29,11 +21,6 @@ const loader = async (context, opt = {}) => {
 
   const sessionState = gqClient.request(P.sessionState)
   const user = gqClient.request(P.user, { login, userHasLogin })
-  const filter = { page: 1, size: 10 }
-  const subscribedCommunities = gqClient.request(P.subscribedCommunities, {
-    login,
-    filter,
-  })
 
   return {
     ...(await sessionState),
@@ -71,14 +58,9 @@ export const getServerSideProps = async (context) => {
 const UserPage = (props) => {
   const store = useStore(props)
 
-  const { viewing } = props
-  const { user } = viewing
-
-  const seoConfig = userSEO(user)
-
   return (
     <Provider store={store}>
-      <GlobalLayout metric={METRIC.USER} seoConfig={seoConfig}>
+      <GlobalLayout metric={METRIC.USER}>
         <UserContent />
       </GlobalLayout>
     </Provider>
