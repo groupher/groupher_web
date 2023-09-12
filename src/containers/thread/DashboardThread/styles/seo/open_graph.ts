@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 import css, { theme } from '@/css'
+import ArrowLinker from '@/widgets/ArrowLinker'
 
 import Input from '@/widgets/Input'
 
@@ -22,6 +23,11 @@ export const Inputer = styled(Input)`
   background: transparent;
 `
 export const EnableDesc = styled.div`
+  ${css.row('align-center')};
   width: 80%;
   line-height: 1.65;
+`
+export const DetailLink = styled(ArrowLinker)`
+  display: inline-block;
+  opacity: 0.8;
 `

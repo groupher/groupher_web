@@ -21,17 +21,19 @@ type TProps = {
   href?: string
   fontSize?: number
   children: ReactNode
+  target?: string
 } & TSpace
 
 const ArrowLinker: FC<TProps> = ({
   testid = 'arrow-linker',
   fontSize = 13,
   href = '/',
+  target = '_blank',
   children,
   ...restProps
 }) => {
   return (
-    <Link href={href}>
+    <Link href={href} target={target}>
       <Wrapper testid={testid} {...restProps}>
         <Title fontSize={fontSize}>{children}</Title>
         <ArrowIcon fontSize={fontSize} />

@@ -57,7 +57,7 @@ let sub$ = null
 /* eslint-disable-next-line */
 const log = buildLog('L:DashboardThread')
 
-export const enableThread = (key: string, toggle: boolean) => {
+export const enableThread = (key: string, toggle: boolean): void => {
   const { enableSettings, curCommunity } = store
 
   const enable = {
@@ -69,6 +69,13 @@ export const enableThread = (key: string, toggle: boolean) => {
   store.onSave('enable')
 
   sr71$.mutate(S.updateDashboardEnable, { community: curCommunity.slug, [key]: toggle })
+}
+
+export const toggleSEO = (seoEnable: boolean): void => {
+  const { curCommunity } = store
+  console.log('## toggleSEO seoEnable: ', seoEnable)
+
+  sr71$.mutate(S.updateDashboardSeo, { community: curCommunity.slug, seoEnable })
 }
 
 export const updateEditingAlias = (alias: TNameAlias): void => store.mark({ editingAlias: alias })
@@ -491,7 +498,17 @@ const DataSolver = [
   },
   {
     match: asyncRes('updateDashboardSeo'),
-    action: () => _handleDone(),
+    action: ({ updateDashboardSeo }) => {
+      const {
+        dashboard: {
+          seo: { seoEnable },
+        },
+      } = updateDashboardSeo
+      const { initSettings } = store
+      store.mark({ seoEnable, initSettings: { ...toJS(initSettings), seoEnable } })
+
+      _handleDone()
+    },
   },
   {
     match: asyncRes('updateDashboardEnable'),

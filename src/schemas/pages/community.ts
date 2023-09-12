@@ -51,6 +51,7 @@ export const community = `
           link
         }
         seo {
+          seoEnable
           ogSiteName
           ogTitle
           ogDescription

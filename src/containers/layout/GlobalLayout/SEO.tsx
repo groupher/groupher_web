@@ -19,6 +19,7 @@ type TProps = {
 
 const SEO: FC<TProps> = ({ metric, data }) => {
   const {
+    seoEnable,
     ogTitle,
     ogSiteName,
     ogUrl,
@@ -41,6 +42,7 @@ const SEO: FC<TProps> = ({ metric, data }) => {
       return (
         <Head>
           <title>{ogTitle}</title>
+          {!seoEnable && <meta name="robots" content="noindex" />}
           <meta property="og:title" content={title} />
           <meta name="description" content={description} />
           <meta property="og:description" content={description} />
@@ -63,6 +65,7 @@ const SEO: FC<TProps> = ({ metric, data }) => {
       return (
         <Head>
           <title>{ogTitle}</title>
+          {!seoEnable && <meta name="robots" content="noindex" />}
           <meta property="og:title" content={ogTitle} />
           <meta name="description" content={ogDescription} />
           <meta property="og:description" content={ogDescription} />

@@ -18,7 +18,7 @@ export const Label = styled.div`
 export const Inputer = styled(Input)`
   margin-top: 10px;
   margin-bottom: 20px;
-  width: 300px;
+  width: 300px !important;
   background: transparent;
 `
 export const SelectWrapper = styled.div`

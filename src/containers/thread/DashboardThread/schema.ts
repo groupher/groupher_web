@@ -93,6 +93,7 @@ const updateDashboardMediaReports = gql`
 const updateDashboardSeo = gql`
   mutation (
     $community: String!
+    $seoEnable: Boolean
     $ogSiteName: String
     $ogTitle: String
     $ogDescription: String
@@ -111,6 +112,7 @@ const updateDashboardSeo = gql`
   ) {
     updateDashboardSeo(
       community: $community
+      seoEnable: $seoEnable
       ogSiteName: $ogSiteName
       ogTitle: $ogTitle
       ogDescription: $ogDescription
@@ -127,8 +129,12 @@ const updateDashboardSeo = gql`
       twImageWidth: $twImageWidth
       twImageHeight: $twImageHeight
     ) {
-      id
-      title
+      slug
+      dashboard {
+        seo {
+          seoEnable
+        }
+      }
     }
   }
 `
@@ -140,7 +146,7 @@ const updateDashboardEnable = gql`
       changelog: $changelog
       about: $about
     ) {
-      id
+      slug
     }
   }
 `
@@ -238,7 +244,6 @@ const reindexTagsInGroup = gql`
 const updateDashboardFaqs = gql`
   mutation ($community: String!, $faqs: [dashboardFaqMap]) {
     updateDashboardFaqs(community: $community, faqs: $faqs) {
-      id
       title
       dashboard {
         faqs {

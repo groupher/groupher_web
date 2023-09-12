@@ -59,6 +59,7 @@ export type TDashboardThreadConfig = {
 }
 
 export type TDashboardSEOConfig = {
+  seoEnable: boolean
   ogSiteName: string
   ogTitle: string
   ogDescription?: string
