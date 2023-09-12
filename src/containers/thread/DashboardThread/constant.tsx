@@ -109,7 +109,7 @@ export const MENU = {
       },
       {
         title: '导入/导出',
-        slug: DASHBOARD_ROUTE.FOOTER,
+        slug: DASHBOARD_ROUTE.INOUT,
       },
     ],
   },

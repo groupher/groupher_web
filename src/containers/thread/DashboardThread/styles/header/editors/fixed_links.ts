@@ -6,7 +6,7 @@ import ArrowSVG from '@/icons/ArrowSimple'
 export const Wrapper = styled.div``
 export const Note = styled.div`
   color: ${theme('article.title')};
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   margin-bottom: 15px;
 `
@@ -20,7 +20,7 @@ export const Item = styled.div`
 `
 export const Title = styled.div`
   ${css.row('align-center')};
-  font-size: 12px;
+  font-size: 13px;
   color: ${theme('article.title')};
   width: 80px;
 `
@@ -30,7 +30,7 @@ export const ArrowIcon = styled(ArrowSVG)`
   margin-left: 5px;
   transform: rotate(180deg);
 `
-export const LinkRaw = styled.div`
-  font-size: 12px;
+export const LinkSlug = styled.div`
+  font-size: 13px;
   color: ${theme('hint')};
 `

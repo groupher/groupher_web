@@ -5,6 +5,7 @@ import css, { theme } from '@/css'
 import PlusSVG from '@/icons/Plus'
 
 export const Wrapper = styled.div``
+
 export const TopWrapper = styled.div`
   ${css.row('justify-between')};
   margin-bottom: 20px;
@@ -23,8 +24,6 @@ export const TopWrapper = styled.div`
 `
 export const BottomWrapper = styled.div`
   margin-top: 25px;
-  /* ${css.row('justify-between')}; */
-  /* margin-bottom: 20px; */
 `
 export const GroupInputerWrapper = styled.div`
   width: 250px;
@@ -41,11 +40,11 @@ export const RightPart = styled.div`
 export const NoteTitle = styled.div`
   color: ${theme('article.digest')};
   margin-bottom: 10px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: bold;
 `
 export const NoteP = styled.p`
-  font-size: 12px;
+  font-size: 13px;
   color: ${theme('article.digest')};
   margin-bottom: 12px;
   opacity: 0.8;
@@ -54,14 +53,7 @@ export const Adder = styled.div`
   ${css.row('align-center')}
   width: 180px;
   margin-left: -5px;
-  transform: scale(0.95);
-  opacity: 0.8;
-
-  ${Wrapper}:hover & {
-    opacity: 1;
-  }
-
-  transition: all 0.25s;
+  transform: scale(0.96);
 `
 export const Slash = styled.div`
   font-size: 12px;

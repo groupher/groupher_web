@@ -37,6 +37,7 @@ export type TDashboardPath =
   | 'third_part'
   | 'admins'
   | 'widgets'
+  | 'inout'
 
 export type TPath =
   | 'home'

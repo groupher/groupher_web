@@ -41,6 +41,7 @@ export const DASHBOARD_ROUTE = {
   THIRD_PART: 'third_part',
   ADMINS: 'admins',
   WIDGETS: 'widgets',
+  INOUT: 'inout',
 } as Record<Uppercase<TDashboardPath>, TDashboardPath>
 
 export const DASHBORD_CMS_ROUTES = [

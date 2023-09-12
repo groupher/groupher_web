@@ -12,7 +12,6 @@ export const ActionRow = styled.div`
   margin-bottom: 30px;
   margin-left: -1px;
 `
-
 export const PlusIcon = styled(PlusSVG)`
   ${css.size(12)};
   fill: ${theme('article.digest')};

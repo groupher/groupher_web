@@ -33,6 +33,7 @@ import {
   ColumnWrapper,
   ItemsWrapper,
 } from '../../styles/header/editors'
+
 import {
   deleteGroup,
   moveGroup2Left,

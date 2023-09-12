@@ -91,7 +91,7 @@ export const ChildrenWrapper = styled.div<TChildrenWrapper>`
   ${css.row('align-both')};
   width: 100%;
   font-size: ${({ size }) => getFontSize(size)};
-  font-weight: ${({ ghost, noBorder }) => (ghost && noBorder ? 400 : 600)};
+  font-weight: ${({ ghost, noBorder }) => (ghost && noBorder ? 400 : 500)};
   position: relative;
   z-index: 2;
 `

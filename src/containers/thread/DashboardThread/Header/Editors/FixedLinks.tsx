@@ -13,7 +13,7 @@ import {
   Item,
   Title,
   ArrowIcon,
-  LinkRaw,
+  LinkSlug,
 } from '../../styles/header/editors/fixed_links'
 
 type TProps = {
@@ -32,9 +32,9 @@ const FixedLinks: FC<TProps> = ({ isAboutLinkFold }) => {
           (item: TCommunityThread) => (
             <Item key={item.slug}>
               <Title>{item.title}</Title>
-              <LinkRaw>
+              <LinkSlug>
                 /{slug}/{item.slug}
-              </LinkRaw>
+              </LinkSlug>
             </Item>
           ),
         )}
@@ -45,12 +45,14 @@ const FixedLinks: FC<TProps> = ({ isAboutLinkFold }) => {
               更多
               <ArrowIcon />
             </Title>
-            <LinkRaw>关于</LinkRaw>
+            <LinkSlug>关于</LinkSlug>
           </Item>
         ) : (
           <Item>
             <Title>关于</Title>
-            <LinkRaw>/{slug}/about</LinkRaw>
+            <LinkSlug>
+              /{slug}/{ROUTE.ABOUT}
+            </LinkSlug>
           </Item>
         )}
       </ItemsWrapper>

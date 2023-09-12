@@ -17,6 +17,7 @@ const actionText = '#647392'
 const descText = '#666'
 const threadTitle = '#333333'
 const hoverBg = '#efefef9c' // with alpha
+const hint = '#9d9999'
 // const primaryMate = 'orange'
 
 const github = {
@@ -57,7 +58,7 @@ const github = {
   selectionBg: '#FFFEDE',
   textBadge: '#e2e2e287', // with alpha
   lightText: '#999999',
-  hint: '#9d9999',
+  hint,
 
   gtdBadge: {
     feat: '#3871e0',
@@ -256,7 +257,7 @@ const github = {
     hoverBg: lighten(primaryColor, 10),
     activeBg: darken(primaryColor, 5),
     clicked: primaryColor,
-    ghostBorder: descText,
+    ghostBorder: hint,
     upvoteBorder: '#dadada',
   },
   navigator: {

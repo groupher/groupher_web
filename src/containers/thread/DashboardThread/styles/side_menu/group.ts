@@ -65,11 +65,11 @@ export const Item = styled(Link)<TActive>`
   background: ${({ $active }) => ($active ? theme('activeLinear') : 'transparent')};
 
   width: 160px;
-  padding: 6px 5px;
+  padding: 3px 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   padding-left: 20px;
-  border-radius: 8px;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+  border-radius: 10px;
   font-size: 13.5px;
 
   &:hover {
@@ -82,7 +82,7 @@ export const Item = styled(Link)<TActive>`
     content: '';
     display: ${({ $active }) => ($active ? 'block' : 'none')};
     position: absolute;
-    top: 10px;
+    top: 8px;
     left: -2px;
     width: 4px;
     height: 13px;
