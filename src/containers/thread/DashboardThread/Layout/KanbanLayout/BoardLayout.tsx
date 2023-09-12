@@ -2,17 +2,12 @@ import { FC, memo, useEffect, useState, useRef } from 'react'
 
 import { isEmpty } from 'ramda'
 
-import { DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { COLOR_NAME } from '@/constant/colors'
-
-import { callDashboardDesc } from '@/utils/signal'
 import { randomBgNames } from '@/utils/helper'
-
 import useHover from '@/hooks/useHover'
 
-import { Inline, SpaceGrow, Space } from '@/widgets/Common'
+import { SpaceGrow, Space } from '@/widgets/Common'
 import ColorSelector from '@/widgets/ColorSelector'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
 import { SETTING_FIELD, INIT_KANBAN_COLORS } from '../../constant'
 import SectionLabel from '../../SectionLabel'
@@ -61,22 +56,7 @@ const BoardLayout: FC<TProps> = ({ kanbanBgColors, isBgColorsTouched, saving }) 
 
   return (
     <>
-      <SectionLabel
-        title="看板背景色"
-        desc={
-          <>
-            看板背景颜色，与标签颜色无关联。默认为灰色。
-            <Inline>
-              <ArrowButton
-                onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
-                fontSize={12}
-              >
-                查看示例
-              </ArrowButton>
-            </Inline>
-          </>
-        }
-      />
+      <SectionLabel title="看板背景色" desc={<>看板页面每列的背景版颜色，默认为浅灰色。</>} />
 
       <ColorsWrapper>
         <Preset setable>

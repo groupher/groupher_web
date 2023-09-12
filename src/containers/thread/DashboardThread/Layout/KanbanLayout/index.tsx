@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import type { TColorName, TKanbanLayout } from '@/spec'
 
-import { Divider } from '@/widgets/Common'
+import { SexyDivider } from '@/widgets/Common'
 
 import ItemLayout from './ItemLayout'
 import BoardLayout from './BoardLayout'
@@ -27,7 +27,7 @@ const KanbanListLayout: FC<TProps> = ({
   return (
     <Wrapper>
       <ItemLayout layout={layout} isTouched={isTouched} saving={saving} />
-      <Divider top={50} bottom={60} />
+      <SexyDivider top={50} bottom={50} />
       <BoardLayout
         layout={layout}
         kanbanBgColors={kanbanBgColors}

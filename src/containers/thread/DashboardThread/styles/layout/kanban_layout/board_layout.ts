@@ -62,9 +62,7 @@ export const Board = styled.div<TBoard>`
 export const ColorsWrapper = styled.div`
   ${css.row('align-center')};
   gap: 0 10px;
-  margin-bottom: 18px;
 `
-
 export const Action = styled.div<TActive>`
   ${css.row('align-center')};
   color: ${theme('article.info')};
