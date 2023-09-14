@@ -216,6 +216,9 @@ export type TTouched = {
   tags: boolean
   tagsIndex: boolean
 
+  headerLinks: boolean
+  footerLinks: boolean
+
   faqSections: boolean
 
   socialLinks: boolean
@@ -260,6 +263,8 @@ export type TSettingField =
   | 'glowType'
   | 'glowFixed'
   | 'glowOpacity'
+  | 'headerLinks'
+  | 'footerLinks'
   | 'docLayout'
   | 'docFaqLayout'
   | 'topbarLayout'

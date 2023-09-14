@@ -12,6 +12,7 @@ export const Wrapper = styled.div`
 export const Folder = styled.div`
   ${css.row('align-center', 'justify-between')};
   cursor: pointer;
+  margin-bottom: 12px;
 `
 export const IconWrapper = styled.div`
   ${css.size(18)};
@@ -47,7 +48,7 @@ export const MenuWrapper = styled.div`
 
   border-left: 1px solid transparent;
   border-image: linear-gradient(
-    0.55turn,
+    0.48turn,
     ${theme('divider')},
     ${theme('divider')},
     ${theme('divider')},
@@ -67,7 +68,6 @@ export const Item = styled(Link)<TActive>`
   width: 160px;
   padding: 3px 5px;
   margin-top: 5px;
-  margin-bottom: 5px;
   padding-left: 20px;
   border-radius: 10px;
   font-size: 13.5px;
@@ -83,7 +83,7 @@ export const Item = styled(Link)<TActive>`
     display: ${({ $active }) => ($active ? 'block' : 'none')};
     position: absolute;
     top: 8px;
-    left: -2px;
+    left: -3px;
     width: 4px;
     height: 13px;
     border-radius: 8px;

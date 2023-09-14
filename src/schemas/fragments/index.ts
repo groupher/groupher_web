@@ -28,6 +28,7 @@ import {
   pagi,
   getUpvoteSchema,
   getUndoUpvoteSchema,
+  customLink,
 } from './base'
 
 import { pagedPosts } from './paged'
@@ -38,9 +39,9 @@ const F = {
   articleDetail,
   pageArticleMeta,
   author,
+  customLink,
   tag,
   pagedPosts,
-
   user,
   userSocial,
   c11n,

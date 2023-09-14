@@ -8,7 +8,7 @@ import { Wrapper as WrapperBase, LinkItem as LinkItemBase, ArrowIcon as ArrowIco
 export { MenuPanel } from '.'
 
 export const Wrapper = styled(WrapperBase)`
-  gap: 0 32px;
+  gap: 0 16px;
 `
 export const LinkItem = styled(LinkItemBase)`
   font-size: 14px;

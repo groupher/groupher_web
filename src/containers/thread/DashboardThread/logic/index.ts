@@ -176,6 +176,14 @@ const _doMutation = (field: string, e: TEditValue): void => {
     return
   }
 
+  if (field === SETTING_FIELD.HEADER_LINKS) {
+    const { headerSettings } = store
+    const { headerLinks } = headerSettings
+
+    sr71$.mutate(S.updateDashboardHeaderLinks, { community, headerLinks })
+    return
+  }
+
   if (field === SETTING_FIELD.BASE_INFO) {
     const { baseInfoTab } = store
 
@@ -536,6 +544,10 @@ const DataSolver = [
   },
   {
     match: asyncRes('reindexTagsInGroup'),
+    action: () => _handleDone(),
+  },
+  {
+    match: asyncRes('updateDashboardHeaderLinks'),
     action: () => _handleDone(),
   },
   {

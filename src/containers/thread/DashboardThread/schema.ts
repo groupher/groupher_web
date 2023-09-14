@@ -287,6 +287,33 @@ const communityOverview = gql`
   }
 `
 
+const updateDashboardHeaderLinks = gql`
+  mutation ($community: String!, $headerLinks: [dashboardLinkMap]) {
+    updateDashboardHeaderLinks(community: $community, headerLinks: $headerLinks) {
+      slug
+      dashboard {
+        headerLinks {
+          ${F.customLink}
+        }
+      }
+    }
+  }
+`
+const updateDashboardFooterLinks = gql`
+  mutation ($community: String!, $footerLinks: [dashboardLinkMap]) {
+    updateDashboardFooterLinks(community: $community, footerLinks: $footerLinks) {
+      slug
+      headerLinks {
+        title
+        link
+        group
+        groupIndex
+        index
+      }
+    }
+  }
+`
+
 const openGraphInfo = gql`
   query ($url: String!) {
     openGraphInfo(url: $url) {
@@ -318,6 +345,8 @@ const schema = {
   updateModerators,
   communityOverview,
   openGraphInfo,
+  updateDashboardHeaderLinks,
+  updateDashboardFooterLinks,
 }
 
 export default schema

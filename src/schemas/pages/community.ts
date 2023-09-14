@@ -45,6 +45,12 @@ export const community = `
           logo
           desc
         }
+        headerLinks {
+          ${F.customLink}
+        }
+        footerLinks {
+          ${F.customLink}
+        }
 
         socialLinks {
           type
