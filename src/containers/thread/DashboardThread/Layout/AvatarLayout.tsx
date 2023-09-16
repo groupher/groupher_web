@@ -3,6 +3,7 @@ import { FC, memo } from 'react'
 import type { TAvatarLayout } from '@/spec'
 
 import { AVATAR_LAYOUT } from '@/constant/layout'
+import { COLOR_NAME } from '@/constant/colors'
 
 import CheckLabel from '@/widgets/CheckLabel'
 
@@ -35,13 +36,19 @@ const AvatarLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
       <SelectWrapper>
         <Layout onClick={() => edit(AVATAR_LAYOUT.SQUARE, 'avatarLayout')}>
           <Block $active={layout === AVATAR_LAYOUT.SQUARE}>
-            <Avatar />
+            <Avatar color={COLOR_NAME.BLUE}>YM</Avatar>
             <Divider />
             <AvatarList>
-              <Avatar />
-              <Avatar left="-5px" />
-              <Avatar left="-5px" />
-              <Avatar left="-5px" />
+              <Avatar color={COLOR_NAME.GREEN}>ST</Avatar>
+              <Avatar left="-5px" color={COLOR_NAME.RED}>
+                LH
+              </Avatar>
+              <Avatar left="-5px" color={COLOR_NAME.ORANGE}>
+                UV
+              </Avatar>
+              <Avatar left="-5px" color={COLOR_NAME.PURPLE}>
+                WN
+              </Avatar>
             </AvatarList>
           </Block>
 
@@ -56,13 +63,23 @@ const AvatarLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         </Layout>
         <Layout onClick={() => edit(AVATAR_LAYOUT.CIRCLE, 'avatarLayout')}>
           <Block $active={layout === AVATAR_LAYOUT.CIRCLE}>
-            <Avatar circle />
+            <Avatar color={COLOR_NAME.BLUE} circle>
+              YM
+            </Avatar>
             <Divider />
             <AvatarList>
-              <Avatar circle />
-              <Avatar left="-5px" circle />
-              <Avatar left="-5px" circle />
-              <Avatar left="-5px" circle />
+              <Avatar color={COLOR_NAME.GREEN} circle>
+                ST
+              </Avatar>
+              <Avatar left="-5px" color={COLOR_NAME.RED} circle>
+                LH
+              </Avatar>
+              <Avatar left="-5px" color={COLOR_NAME.ORANGE} circle>
+                UV
+              </Avatar>
+              <Avatar left="-5px" color={COLOR_NAME.PURPLE} circle>
+                WN
+              </Avatar>
             </AvatarList>
           </Block>
 

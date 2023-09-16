@@ -5,7 +5,7 @@ import { DASHBOARD_LAYOUT_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
 
 import useCurCommunity from '@/hooks/useCurCommunity'
-import { Divider } from '@/widgets/Common'
+import { SexyDivider as Divider } from '@/widgets/Common'
 import Tabs from '@/widgets/Switcher/Tabs'
 
 import { LAYOUT_TABS } from '../constant'

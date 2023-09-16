@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import type { TActive } from '@/spec'
 import css, { theme } from '@/css'
 
+import { camelize } from '@/utils/fmt'
 import { LineDivider } from '@/widgets/Common'
 
 import { BaseSection, BlockBase } from '.'
@@ -17,12 +18,17 @@ export const SelectWrapper = styled.div`
 
 type TAvatar = { left?: string; circle?: boolean }
 export const Avatar = styled.div<TAvatar>`
-  ${css.size(25)};
+  ${css.size(30)};
+  ${css.row('align-both')};
+  font-size: 13px;
+  font-weight: bold;
   border-radius: ${({ circle }) => (circle ? '100px' : '6px')};
-  background: ${theme('article.digest')};
+  color: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
+  background-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
   margin-left: ${({ left }) => left};
-  border: 2px solid;
-  border-color: ${theme('alphaBg')};
+  margin-left: 5px;
+  border: 1px solid;
+  border-color: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
 `
 export const AvatarList = styled.div`
   ${css.row('align-center')};
@@ -37,8 +43,9 @@ export const Divider = styled(LineDivider)`
 `
 export const Block = styled(BlockBase)`
   ${css.row('align-center', 'justify-between')};
-  width: 200px;
-  height: 80px;
+  width: 270px;
+  height: 100px;
+  padding: 0 20px;
 `
 export const LayoutTitle = styled.div<TActive>`
   opacity: ${({ $active }) => ($active ? 1 : 0.65)};

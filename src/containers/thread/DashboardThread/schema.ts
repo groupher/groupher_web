@@ -158,6 +158,7 @@ const updateDashboardLayout = gql`
     $kanbanLayout: String
     $footerLayout: String
     $headerLayout: String
+    $avatarLayout: String
     $broadcastEnable: Boolean
     $kanbanBgColors: [String]
     $glowType: String
@@ -170,6 +171,7 @@ const updateDashboardLayout = gql`
       kanbanLayout: $kanbanLayout
       footerLayout: $footerLayout
       headerLayout: $headerLayout
+      avatarLayout: $avatarLayout
       broadcastEnable: $broadcastEnable
       kanbanBgColors: $kanbanBgColors
       glowType: $glowType
