@@ -160,6 +160,9 @@ const updateDashboardLayout = gql`
     $headerLayout: String
     $broadcastEnable: Boolean
     $kanbanBgColors: [String]
+    $glowType: String
+    $glowFixed: Boolean
+    $glowOpacity: String
   ) {
     updateDashboardLayout(
       community: $community
@@ -169,6 +172,9 @@ const updateDashboardLayout = gql`
       headerLayout: $headerLayout
       broadcastEnable: $broadcastEnable
       kanbanBgColors: $kanbanBgColors
+      glowType: $glowType
+      glowFixed: $glowFixed
+      glowOpacity: $glowOpacity
     ) {
       slug
     }

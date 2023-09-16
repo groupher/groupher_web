@@ -92,6 +92,9 @@ export const community = `
           docFaqLayout
           changelogLayout
           footerLayout
+          glowType
+          glowFixed
+          glowOpacity
         } 
 
         rss {

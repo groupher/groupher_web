@@ -62,9 +62,9 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
     },
     get wallpaperInfo(): TWallpaperInfo {
       const root = getParent(self) as TRootStore
-      const {
-        wallpaperEditor: { customWallpaper, wallpaper, wallpapers },
-      } = root
+
+      const { wallpaperEditor } = root
+      const { customWallpaper, wallpaper, wallpapers } = wallpaperEditor
 
       return {
         customWallpaper: toJS(customWallpaper),
