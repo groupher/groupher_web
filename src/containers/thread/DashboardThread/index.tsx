@@ -71,10 +71,7 @@ const DashboardThreadContainer: FC<TProps> = ({
     broadcastSettings,
     touched,
     cmsContents,
-    glowType,
   } = store
-
-  console.log('## glowType: ', glowType)
 
   const { DASHBOARD } = ROUTE
 

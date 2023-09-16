@@ -1,6 +1,9 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+
+import { observer } from 'mobx-react'
 
 import type { TCommunity } from '@/spec'
+import useAvatarLayout from '@/hooks/useAvatarLayout'
 
 import useAccount from '@/hooks/useAccount'
 import { callAuth } from '@/utils/signal'
@@ -13,6 +16,8 @@ type TProps = {
 
 const AccountUnit: FC<TProps> = ({ community }) => {
   const accountInfo = useAccount()
+
+  const avatarLayout = useAvatarLayout()
 
   return (
     <Wrapper>
@@ -46,4 +51,4 @@ const AccountUnit: FC<TProps> = ({ community }) => {
   )
 }
 
-export default memo(AccountUnit)
+export default observer(AccountUnit)
