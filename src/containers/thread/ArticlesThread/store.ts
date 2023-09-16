@@ -17,7 +17,6 @@ import type {
   TArticleFilter,
   TC11N,
   TGlobalLayout,
-  TAvatarLayout,
   TGroupedTags,
 } from '@/spec'
 
@@ -116,11 +115,6 @@ const ArticlesThread = T.model('ArticlesThread', {
       const root = getParent(self) as TRootStore
 
       return root.drawer.open && !!root.viewing.viewingArticle?.id
-    },
-    get avatarLayout(): TAvatarLayout {
-      const root = getParent(self) as TRootStore
-
-      return root.dashboardThread.avatarLayout
     },
   }))
   .actions((self) => ({

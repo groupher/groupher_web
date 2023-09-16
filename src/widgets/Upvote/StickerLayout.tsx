@@ -6,10 +6,10 @@
 
 import { FC, memo } from 'react'
 
-import type { TUser, TAvatarLayout } from '@/spec'
+import type { TUser } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
-import { AVATAR_LAYOUT, UPVOTE_LAYOUT } from '@/constant/layout'
+import { UPVOTE_LAYOUT } from '@/constant/layout'
 import AnimatedCount from '@/widgets/AnimatedCount'
 import Facepile from '@/widgets/Facepile'
 
@@ -24,7 +24,6 @@ type TProps = {
   count?: number
   viewerHasUpvoted?: boolean
   onAction?: (viewerHasUpvoted: boolean) => void
-  avatarLayout?: TAvatarLayout
   avatarList: TUser[]
 }
 
@@ -34,7 +33,6 @@ const Upvote: FC<TProps> = ({
   viewerHasUpvoted = false,
   onAction = log,
   avatarList = [],
-  avatarLayout = AVATAR_LAYOUT.SQUARE,
 }) => {
   const noOne = count === 0
 
@@ -55,7 +53,7 @@ const Upvote: FC<TProps> = ({
       </Button>
       {!noOne && (
         <FacesWrapper count={count}>
-          <Facepile users={avatarList} avatarLayout={avatarLayout} showMore={false} limit={3} />
+          <Facepile users={avatarList} showMore={false} limit={3} />
         </FacesWrapper>
       )}
     </Wrapper>

@@ -5,7 +5,7 @@
 
 import { FC, useState } from 'react'
 
-import type { TAvatarLayout, TGlobalLayout, TPagedArticles } from '@/spec'
+import type { TGlobalLayout, TPagedArticles } from '@/spec'
 import { CHANGELOG_LAYOUT } from '@/constant/layout'
 
 import ChangelogItem from '@/widgets/ChangelogItem'
@@ -21,16 +21,10 @@ import { Wrapper, Banner, TabsWrapper, Title, Desc, MainWrapper } from '../style
 type TProps = {
   globalLayout: TGlobalLayout
   isSidebarLayout: boolean
-  avatarLayout: TAvatarLayout
   pagedChangelogs: TPagedArticles
 }
 
-const SimpleLayout: FC<TProps> = ({
-  globalLayout,
-  isSidebarLayout,
-  avatarLayout,
-  pagedChangelogs,
-}) => {
+const SimpleLayout: FC<TProps> = ({ globalLayout, isSidebarLayout, pagedChangelogs }) => {
   const [filterExpand, setFilterExpand] = useState(false)
   const [tab, setTab] = useState(TABS_MODE_OPTIONS[0].slug)
 
@@ -62,12 +56,7 @@ const SimpleLayout: FC<TProps> = ({
       {filterExpand && <FilterBar tab={tab} alignLeft={alignLeft} />}
       <MainWrapper>
         {pagedChangelogs.entries.map((item) => (
-          <ChangelogItem
-            key={item.innerId}
-            layout={globalLayout.changelog}
-            avatarLayout={avatarLayout}
-            article={item}
-          />
+          <ChangelogItem key={item.innerId} layout={globalLayout.changelog} article={item} />
         ))}
       </MainWrapper>
     </Wrapper>

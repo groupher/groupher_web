@@ -2,10 +2,11 @@
  * cards for user
  */
 
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
-import type { TAccount, TAvatarLayout, TUser } from '@/spec'
-import { AVATAR_LAYOUT } from '@/constant/layout'
+import type { TAccount, TUser } from '@/spec'
+import useAvatarLayout from '@/hooks/useAvatarLayout'
 
 import { cutRest } from '@/utils/fmt'
 
@@ -23,11 +24,13 @@ import {
 
 type TProps = {
   user: TUser | TAccount
-  avatarLayout?: TAvatarLayout
 }
 
-const UserCard: FC<TProps> = ({ user, avatarLayout = AVATAR_LAYOUT.SQUARE }) => {
+const UserCard: FC<TProps> = ({ user }) => {
   const { avatar, nickname, login, bio } = user
+
+  const avatarLayout = useAvatarLayout()
+
   return (
     <Wrapper>
       <Header>
@@ -45,4 +48,4 @@ const UserCard: FC<TProps> = ({ user, avatarLayout = AVATAR_LAYOUT.SQUARE }) => 
   )
 }
 
-export default memo(UserCard)
+export default observer(UserCard)

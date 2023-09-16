@@ -6,7 +6,7 @@
 
 import { FC, memo } from 'react'
 
-import type { TPost, TC11N, TAvatarLayout } from '@/spec'
+import type { TPost, TC11N } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
 import { DesktopOnly, MobileOnly } from '@/widgets/Common'
@@ -24,10 +24,9 @@ type TProps = {
   article: TPost
   c11n: TC11N
   isMobilePreview: boolean
-  avatarLayout: TAvatarLayout
 }
 
-const PostItem: FC<TProps> = ({ article, isMobilePreview, avatarLayout, c11n }) => {
+const PostItem: FC<TProps> = ({ article, isMobilePreview, c11n }) => {
   if (isMobilePreview) {
     return <MobileView article={article} />
   }
@@ -39,7 +38,7 @@ const PostItem: FC<TProps> = ({ article, isMobilePreview, avatarLayout, c11n }) 
       </MobileOnly>
 
       <DesktopOnly>
-        <DesktopView article={article} avatarLayout={avatarLayout} />
+        <DesktopView article={article} />
       </DesktopOnly>
     </Wrapper>
   )

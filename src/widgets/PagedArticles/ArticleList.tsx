@@ -37,13 +37,7 @@ const ArticleList: FC<TProps> = ({ thread, resState, entries, c11n, globalLayout
       <MasonryCardsWrapper>
         <MasonryCards column={2}>
           {entries.map((entry) => (
-            <PostItem
-              key={entry.id}
-              article={entry}
-              c11n={c11n}
-              layout={globalLayout.post}
-              avatarLayout={globalLayout.avatar}
-            />
+            <PostItem key={entry.id} article={entry} c11n={c11n} layout={globalLayout.post} />
           ))}
         </MasonryCards>
       </MasonryCardsWrapper>
@@ -53,13 +47,7 @@ const ArticleList: FC<TProps> = ({ thread, resState, entries, c11n, globalLayout
   return (
     <>
       {entries.map((entry) => (
-        <PostItem
-          key={entry.id}
-          article={entry}
-          c11n={c11n}
-          layout={globalLayout.post}
-          avatarLayout={globalLayout.avatar}
-        />
+        <PostItem key={entry.id} article={entry} c11n={c11n} layout={globalLayout.post} />
       ))}
     </>
   )

@@ -6,7 +6,7 @@
 
 import { FC, memo } from 'react'
 
-import type { TPost, TAvatarLayout } from '@/spec'
+import type { TPost } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
 import DesktopView from './DesktopView'
@@ -21,11 +21,9 @@ const log = buildLog('w:PostItem:index')
 type TProps = {
   article: TPost
   isMobilePreview: boolean
-
-  avatarLayout: TAvatarLayout
 }
 
-const PostItem: FC<TProps> = ({ article, isMobilePreview, avatarLayout }) => {
+const PostItem: FC<TProps> = ({ article, isMobilePreview }) => {
   if (isMobilePreview) {
     return <MobileView article={article} />
   }
@@ -33,7 +31,7 @@ const PostItem: FC<TProps> = ({ article, isMobilePreview, avatarLayout }) => {
   return (
     <Wrapper>
       <MobileView article={article} />
-      <DesktopView article={article} avatarLayout={avatarLayout} />
+      <DesktopView article={article} />
     </Wrapper>
   )
 }

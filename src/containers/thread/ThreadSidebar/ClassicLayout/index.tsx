@@ -6,10 +6,12 @@
  *
  */
 
-import { FC, Fragment, memo, useEffect, useState } from 'react'
+import { FC, Fragment, useEffect, useState } from 'react'
+import { observer } from 'mobx-react'
 
-import type { TThread, TCommunity, TAvatarLayout } from '@/spec'
+import type { TThread, TCommunity } from '@/spec'
 
+import useAvatarLayout from '@/hooks/useAvatarLayout'
 import EVENT from '@/constant/event'
 import { ARTICLE_CAT } from '@/constant/gtd'
 
@@ -46,10 +48,10 @@ export type TProps = {
   showCommunityBadge: boolean
   thread: TThread
   community: TCommunity
-  avatarLayout: TAvatarLayout
 }
 
-const ClassicLayout: FC<TProps> = ({ showCommunityBadge, thread, community, avatarLayout }) => {
+const ClassicLayout: FC<TProps> = ({ showCommunityBadge, thread, community }) => {
+  const avatarLayout = useAvatarLayout()
   const [load, setLoad] = useState(false)
 
   useEffect(() => {
@@ -114,4 +116,4 @@ const ClassicLayout: FC<TProps> = ({ showCommunityBadge, thread, community, avat
   )
 }
 
-export default memo(ClassicLayout)
+export default observer(ClassicLayout)

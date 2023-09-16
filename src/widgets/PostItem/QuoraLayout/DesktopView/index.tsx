@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import type { TPost, TAvatarLayout } from '@/spec'
+import type { TPost } from '@/spec'
 
 import { previewArticle } from '@/utils/signal'
 
@@ -16,10 +16,9 @@ import { Wrapper, Main, Digest } from '../../styles/quora_layout/desktop_view'
 
 type TProps = {
   article: TPost
-  avatarLayout: TAvatarLayout
 }
 
-const DesktopView: FC<TProps> = ({ article, avatarLayout }) => {
+const DesktopView: FC<TProps> = ({ article }) => {
   return (
     <Wrapper onClick={() => previewArticle(article)}>
       <ArticleReadLabel article={article} />
@@ -28,7 +27,7 @@ const DesktopView: FC<TProps> = ({ article, avatarLayout }) => {
       <Main>
         <Header article={article} />
         <Digest>{article.digest}</Digest>
-        <Footer article={article} avatarLayout={avatarLayout} />
+        <Footer article={article} />
       </Main>
     </Wrapper>
   )

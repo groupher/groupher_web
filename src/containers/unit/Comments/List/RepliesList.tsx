@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import type { TComment, TID, TAvatarLayout } from '@/spec'
+import type { TComment, TID } from '@/spec'
 
 import type { TRepliesState, TAPIMode } from '../spec'
 import TogglerButton from './TogglerButton'
@@ -17,7 +17,6 @@ type TProps = {
   repliesCount: number
   repliesState: TRepliesState
   foldedIds: TID[]
-  avatarLayout: TAvatarLayout
 }
 
 const RepliesList: FC<TProps> = ({
@@ -27,7 +26,6 @@ const RepliesList: FC<TProps> = ({
   repliesCount,
   repliesState,
   foldedIds,
-  avatarLayout,
 }) => {
   const loading = parentId === repliesState.repliesParentId && repliesState.repliesLoading
 
@@ -42,14 +40,7 @@ const RepliesList: FC<TProps> = ({
       {entries.map((comment) => {
         return (
           <ListWrapper key={comment.id}>
-            <Comment
-              apiMode={apiMode}
-              data={comment}
-              foldedIds={foldedIds}
-              avatarLayout={avatarLayout}
-              showInnerRef
-              isReply
-            />
+            <Comment apiMode={apiMode} data={comment} foldedIds={foldedIds} showInnerRef isReply />
           </ListWrapper>
         )
       })}

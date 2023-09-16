@@ -1,7 +1,7 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react'
 
-// import { Br } from '@/widgets/Common'
-// import Tooltip from '@/widgets/Tooltip'
+import useAvatarLayout from '@/hooks/useAvatarLayout'
 
 import type { TProps as TAvatarsProps } from '.'
 
@@ -9,12 +9,11 @@ import type { TProps as TAvatarsProps } from '.'
 
 import { Wrapper, TextMore, DotText } from './styles/more_item'
 
-type TProps = Pick<
-  TAvatarsProps,
-  'size' | 'total' | 'showTotalNumber' | 'onTotalSelect' | 'avatarLayout'
->
+type TProps = Pick<TAvatarsProps, 'size' | 'total' | 'showTotalNumber' | 'onTotalSelect'>
 
-const MoreItem: FC<TProps> = ({ size, total, onTotalSelect, showTotalNumber, avatarLayout }) => {
+const MoreItem: FC<TProps> = ({ size, total, onTotalSelect, showTotalNumber }) => {
+  const avatarLayout = useAvatarLayout()
+
   return (
     <Wrapper size={size} onClick={() => onTotalSelect()}>
       <TextMore size={size} total={total} avatarLayout={avatarLayout}>
@@ -24,4 +23,4 @@ const MoreItem: FC<TProps> = ({ size, total, onTotalSelect, showTotalNumber, ava
   )
 }
 
-export default MoreItem
+export default observer(MoreItem)

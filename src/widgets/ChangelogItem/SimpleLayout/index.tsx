@@ -6,7 +6,7 @@
 
 import { FC, memo } from 'react'
 
-import type { TAvatarLayout, TChangelog } from '@/spec'
+import type { TChangelog } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
 import { SpaceGrow } from '@/widgets/Common'
@@ -36,11 +36,10 @@ const log = buildLog('w:ChangelogItem:index')
 
 type TProps = {
   testid?: string
-  avatarLayout: TAvatarLayout
   article: TChangelog
 }
 
-const SimpleLayout: FC<TProps> = ({ testid = 'changelog-item', avatarLayout, article }) => {
+const SimpleLayout: FC<TProps> = ({ testid = 'changelog-item', article }) => {
   return (
     <Wrapper testid={testid}>
       <DateTime>{article.insertedAt}</DateTime>

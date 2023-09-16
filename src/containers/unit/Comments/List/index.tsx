@@ -1,6 +1,6 @@
 import { FC, Fragment, memo } from 'react'
 
-import type { TAvatarLayout, TPagedComments } from '@/spec'
+import type { TPagedComments } from '@/spec'
 import Pagi from '@/widgets/Pagi'
 import { Br } from '@/widgets/Common'
 
@@ -19,7 +19,6 @@ type TProps = {
   repliesState: TRepliesState
   // basicState: TCommentsState
   loading: boolean
-  avatarLayout: TAvatarLayout
 }
 
 const CommentsList: FC<TProps> = ({
@@ -29,7 +28,6 @@ const CommentsList: FC<TProps> = ({
   apiMode,
   repliesState,
   loading,
-  avatarLayout,
 }) => {
   const { entries, totalCount, pageSize, pageNumber } = pagedComments
   const { foldedIds } = foldState
@@ -43,7 +41,6 @@ const CommentsList: FC<TProps> = ({
           entries={entries}
           repliesState={repliesState}
           foldedIds={foldedIds}
-          avatarLayout={avatarLayout}
         />
       </ListsWrapper>
       <Br bottom={50} />

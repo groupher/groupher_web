@@ -39,7 +39,7 @@ const AboutThreadContainer: FC<TProps> = ({
 }) => {
   useInit(store)
 
-  const { avatarLayout, curCommunity } = store
+  const { curCommunity } = store
 
   return (
     <Wrapper testid={testid}>
@@ -55,7 +55,7 @@ const AboutThreadContainer: FC<TProps> = ({
           <BasicStates />
         </StateBlock>
         <MemberBlock>
-          <Members avatarLayout={avatarLayout} moderators={curCommunity.moderators} />
+          <Members moderators={curCommunity.moderators} />
         </MemberBlock>
       </MainWrapper>
       <Sidebar isSidebarLayout={isSidebarLayout} />

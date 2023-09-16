@@ -1,6 +1,8 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
-import type { TAvatarLayout, TModerator } from '@/spec'
+import type { TModerator } from '@/spec'
+import useAvatarLayout from '@/hooks/useAvatarLayout'
 import { mockUsers } from '@/utils/mock'
 
 import ImgFallback from '@/widgets/ImgFallback'
@@ -21,11 +23,12 @@ import {
 } from '../styles/members'
 
 type TProps = {
-  avatarLayout: TAvatarLayout
   moderators: TModerator[]
 }
 
-const Members: FC<TProps> = ({ avatarLayout, moderators }) => {
+const Members: FC<TProps> = ({ moderators }) => {
+  const avatarLayout = useAvatarLayout()
+
   return (
     <Wrapper>
       <Block>
@@ -35,7 +38,7 @@ const Members: FC<TProps> = ({ avatarLayout, moderators }) => {
         <AdminsRow>
           {moderators.map((moderator: TModerator) => (
             <Admin key={moderator.user.login}>
-              <AdminMember user={moderator.user} avatarLayout={avatarLayout} />
+              <AdminMember user={moderator.user} />
             </Admin>
           ))}
         </AdminsRow>
@@ -73,4 +76,4 @@ const Members: FC<TProps> = ({ avatarLayout, moderators }) => {
   )
 }
 
-export default memo(Members)
+export default observer(Members)

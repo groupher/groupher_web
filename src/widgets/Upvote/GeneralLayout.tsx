@@ -6,7 +6,7 @@
 
 import { FC, memo } from 'react'
 
-import type { TUser, TAvatarLayout } from '@/spec'
+import type { TUser } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
 import Facepile from '@/widgets/Facepile'
@@ -16,7 +16,6 @@ import AnimatedCount from '../AnimatedCount'
 import UpvoteBtn from './UpvoteBtn'
 
 import { Wrapper, UpvoteBtnWrapper, LineDivider } from './styles/general_layout'
-import { AVATAR_LAYOUT } from '@/constant/layout'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Upvote:index')
@@ -27,7 +26,6 @@ type TProps = {
   viewerHasUpvoted?: boolean
   avatarList?: TUser[]
   onAction?: (viewerHasUpvoted: boolean) => void
-  avatarLayout?: TAvatarLayout
 }
 
 const Upvote: FC<TProps> = ({
@@ -36,7 +34,6 @@ const Upvote: FC<TProps> = ({
   viewerHasUpvoted = false,
   onAction = log,
   avatarList,
-  avatarLayout = AVATAR_LAYOUT.SQUARE,
 }) => {
   const noOne = count === 0
 
@@ -51,9 +48,7 @@ const Upvote: FC<TProps> = ({
         size={count === 0 ? 'small' : 'medium'}
       />
       <DesktopOnly>{!noOne && <LineDivider />}</DesktopOnly>
-      <DesktopOnly>
-        {!noOne && <Facepile users={avatarList} avatarLayout={avatarLayout} showMore />}
-      </DesktopOnly>
+      <DesktopOnly>{!noOne && <Facepile users={avatarList} showMore />}</DesktopOnly>
     </Wrapper>
   )
 }

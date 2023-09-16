@@ -1,16 +1,19 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react'
 
-import type { TUser, TAvatarLayout } from '@/spec'
+import type { TUser } from '@/spec'
+import useAvatarLayout from '@/hooks/useAvatarLayout'
 import ImgFallback from '@/widgets/ImgFallback'
 
 import { Wrapper, Avatar } from '../../styles/panel/user_list'
 
 type TProps = {
-  avatarLayout: TAvatarLayout
   users: TUser[]
 }
 
-const UserList: FC<TProps> = ({ avatarLayout, users }) => {
+const UserList: FC<TProps> = ({ users }) => {
+  const avatarLayout = useAvatarLayout()
+
   return (
     <Wrapper>
       {users.map((user) => (
@@ -25,4 +28,4 @@ const UserList: FC<TProps> = ({ avatarLayout, users }) => {
   )
 }
 
-export default UserList
+export default observer(UserList)

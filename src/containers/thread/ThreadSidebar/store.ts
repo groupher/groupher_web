@@ -4,7 +4,7 @@
 
 // import {} from 'ramda'
 
-import type { TAccount, TC11N, TCommunity, TThread, TRootStore, TTag, TAvatarLayout } from '@/spec'
+import type { TAccount, TC11N, TCommunity, TThread, TRootStore, TTag } from '@/spec'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 import { buildLog } from '@/utils/logger'
 
@@ -49,12 +49,6 @@ const ThreadSidebar = T.model('ThreadSidebar', {})
       const root = getParent(self) as TRootStore
 
       return root.tagsBar.activeTagData
-    },
-
-    get avatarLayout(): TAvatarLayout {
-      const root = getParent(self) as TRootStore
-
-      return root.dashboardThread.avatarLayout
     },
   }))
   .actions((self) => ({

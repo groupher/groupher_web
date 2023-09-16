@@ -4,14 +4,7 @@
 
 // import {} from 'ramda'
 
-import type {
-  TCommunity,
-  TKanbanLayout,
-  TRootStore,
-  TAvatarLayout,
-  TColorName,
-  TPagedArticles,
-} from '@/spec'
+import type { TCommunity, TKanbanLayout, TRootStore, TColorName, TPagedArticles } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
@@ -40,11 +33,6 @@ const KanbanThread = T.model('KanbanThread', {
       const root = getParent(self) as TRootStore
 
       return root.dashboardThread.kanbanBgColors as TColorName[]
-    },
-    get avatarLayout(): TAvatarLayout {
-      const root = getParent(self) as TRootStore
-
-      return root.dashboardThread.avatarLayout
     },
     get todoPosts(): TPagedArticles {
       return toJS(self.todo)

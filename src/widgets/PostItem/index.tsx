@@ -6,8 +6,8 @@
 
 import { FC, memo } from 'react'
 
-import type { TPost, TC11N, TPostLayout, TAvatarLayout } from '@/spec'
-import { AVATAR_LAYOUT, POST_LAYOUT } from '@/constant/layout'
+import type { TPost, TC11N, TPostLayout } from '@/spec'
+import { POST_LAYOUT } from '@/constant/layout'
 
 import { buildLog } from '@/utils/logger'
 
@@ -25,8 +25,6 @@ type TProps = {
   c11n: TC11N
   layout?: TPostLayout
   isMobilePreview?: boolean
-
-  avatarLayout?: TAvatarLayout
 }
 
 const PostItem: FC<TProps> = ({
@@ -34,7 +32,6 @@ const PostItem: FC<TProps> = ({
   layout = POST_LAYOUT.QUORA,
   isMobilePreview = false,
   c11n,
-  avatarLayout = AVATAR_LAYOUT.SQUARE,
 }) => {
   return (
     <>
@@ -43,20 +40,11 @@ const PostItem: FC<TProps> = ({
       )}
 
       {layout === POST_LAYOUT.QUORA && (
-        <QuoraLayout
-          article={article}
-          isMobilePreview={isMobilePreview}
-          avatarLayout={avatarLayout}
-        />
+        <QuoraLayout article={article} isMobilePreview={isMobilePreview} />
       )}
 
       {layout === POST_LAYOUT.PH && (
-        <PHLayout
-          c11n={c11n}
-          article={article}
-          isMobilePreview={isMobilePreview}
-          avatarLayout={avatarLayout}
-        />
+        <PHLayout c11n={c11n} article={article} isMobilePreview={isMobilePreview} />
       )}
 
       {layout === POST_LAYOUT.COVER && (

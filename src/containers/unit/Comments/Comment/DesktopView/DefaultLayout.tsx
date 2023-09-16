@@ -1,6 +1,6 @@
 import { FC, memo, Fragment } from 'react'
 
-import type { TComment, TAvatarLayout } from '@/spec'
+import type { TComment } from '@/spec'
 
 // import Tooltip from '@/widgets/Tooltip'
 import ArtimentBody from '@/widgets/ArtimentBody'
@@ -33,16 +33,9 @@ type TProps = {
   apiMode: TAPIMode
   isReply?: boolean
   showInnerRef?: boolean
-  avatarLayout: TAvatarLayout
 }
 
-const DefaultLayout: FC<TProps> = ({
-  data,
-  isReply = false,
-  showInnerRef = false,
-  apiMode,
-  avatarLayout,
-}) => {
+const DefaultLayout: FC<TProps> = ({ data, isReply = false, showInnerRef = false, apiMode }) => {
   const { isPinned, meta } = data
   const { isLegal, illegalReason, illegalWords } = meta
 
@@ -60,13 +53,7 @@ const DefaultLayout: FC<TProps> = ({
         </SidebarWrapper>
 
         <CommentBodyInfo>
-          <Header
-            data={data}
-            showInnerRef={showInnerRef}
-            apiMode={apiMode}
-            avatarLayout={avatarLayout}
-            isReply={isReply}
-          />
+          <Header data={data} showInnerRef={showInnerRef} apiMode={apiMode} isReply={isReply} />
           <CommentContent>
             {isLegal ? (
               <Fragment>

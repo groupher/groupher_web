@@ -1,15 +1,18 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react'
 
-import type { TAvatarLayout, TUser } from '@/spec'
+import type { TUser } from '@/spec'
+import useAvatarLayout from '@/hooks/useAvatarLayout'
 
 import { Wrapper, Avatar, Name } from '../styles/classic_layout/author'
 
 type TProps = {
-  avatarLayout: TAvatarLayout
   user: TUser
 }
 
-const Author: FC<TProps> = ({ avatarLayout, user }) => {
+const Author: FC<TProps> = ({ user }) => {
+  const avatarLayout = useAvatarLayout()
+
   return (
     <Wrapper>
       <Avatar src={user.avatar} avatarLayout={avatarLayout} />
@@ -18,4 +21,4 @@ const Author: FC<TProps> = ({ avatarLayout, user }) => {
   )
 }
 
-export default Author
+export default observer(Author)

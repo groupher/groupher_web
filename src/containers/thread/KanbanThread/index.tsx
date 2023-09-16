@@ -31,11 +31,11 @@ const KanbanThreadContainer: FC<TProps> = ({
 }) => {
   useInit(store)
 
-  const { layout, avatarLayout, kanbanBgColors, todoPosts, wipPosts, donePosts } = store
+  const { layout, kanbanBgColors, todoPosts, wipPosts, donePosts } = store
 
   return (
     <Wrapper testid={testid} isSidebarLayout={isSidebarLayout}>
-      <Actions avatarLayout={avatarLayout} />
+      <Actions />
       <ColumnsWrapper>
         <Columns
           layout={layout}
