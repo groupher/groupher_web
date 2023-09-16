@@ -265,12 +265,12 @@ const DashboardThread = T.model('DashboardThread', {
         _tagsIndexTouched,
         _socialLinksTouched,
         _mediaReportsTouched,
+        editingLink,
       } = slf
 
       const _isChanged = (field: TSettingField): boolean =>
         !equals(toJS(slf[field]), toJS(init[field]))
       const _anyChanged = (fields: TSettingField[]): boolean => any(_isChanged)(fields)
-
       const _mapArrayChanged = (key: string): boolean => {
         return JSON.stringify(toJS(self[key])) !== JSON.stringify(toJS(self.initSettings[key]))
       }
@@ -285,6 +285,9 @@ const DashboardThread = T.model('DashboardThread', {
       const kanbanBgColorsTouched = _isChanged('kanbanBgColors')
       const docLayoutTouched = _isChanged('docLayout')
       const docFaqLayoutTouched = _isChanged('docFaqLayout')
+
+      const headerLinksChanged = _isChanged('headerLinks') && editingLink === null
+      const footerLinksChanged = _isChanged('footerLinks') && editingLink === null
 
       const broadcastLayoutTouched = _isChanged('broadcastLayout')
       const broadcastBgTouched = _isChanged('broadcastBg')
@@ -339,6 +342,8 @@ const DashboardThread = T.model('DashboardThread', {
         socialLinks: _socialLinksTouched,
         mediaReports: _mediaReportsTouched,
 
+        headerLinks: headerLinksChanged,
+        footerLinks: footerLinksChanged,
         faqSections: faqSectionsTouched,
 
         glowFixed: glowFixedTouched,
@@ -471,10 +476,10 @@ const DashboardThread = T.model('DashboardThread', {
       } = slf
 
       return {
+        saving: slf.saving,
         headerLayout: toJS(headerLayout),
         headerLinks: toJS(headerLinks),
         editingLink: toJS(editingLink),
-        saving: slf.saving,
         editingLinkMode: editingLinkMode as TChangeMode,
         editingGroup,
         editingGroupIndex,
@@ -500,10 +505,11 @@ const DashboardThread = T.model('DashboardThread', {
       } = slf
 
       return {
+        saving: slf.saving,
         footerLayout: toJS(footerLayout),
+        // footerLinks: reject((item) => isEmpty(item.title), toJS(footerLinks)),
         footerLinks: toJS(footerLinks),
         editingLink: toJS(editingLink),
-        saving: slf.saving,
         editingLinkMode: editingLinkMode as TChangeMode,
         editingGroup,
         editingGroupIndex,

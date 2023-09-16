@@ -6,7 +6,7 @@ import { TemplateBlock } from '.'
 
 export const Wrapper = styled(TemplateBlock)`
   ${css.row('align-start', 'justify-between')};
-  padding: 12px 20px;
+  padding: 18px 20px;
   height: auto;
   min-height: 150px !important;
   background: ${theme('alphaBg')};
@@ -41,7 +41,7 @@ export const Desc = styled.div`
 `
 export const CenterWrapper = styled.div`
   ${css.column()};
-  gap: 5px 0;
+  gap: 8px 0;
 `
 
 export const GroupTitle = styled.div`
@@ -53,7 +53,7 @@ export const GroupTitle = styled.div`
 export const LinkItem = styled.a`
   ${css.cutRest('80px')};
   color: ${theme('article.digest')};
-  font-size: 11px;
+  font-size: 12px;
   text-decoration: none;
 
   &:hover {

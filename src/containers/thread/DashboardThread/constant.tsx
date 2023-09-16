@@ -47,6 +47,8 @@ export const SETTING_FIELD = {
   MEDIA_REPORTS: 'mediaReports',
   SEO: 'seo',
   SOCIAL_LINKS: 'socialLinks',
+  HEADER_LINKS: 'headerLinks',
+  FOOTER_LINKS: 'footerLinks',
   TAG: 'tag',
   TAG_INDEX: 'tagIndex',
   FAQ_SECTIONS: 'faqSections',

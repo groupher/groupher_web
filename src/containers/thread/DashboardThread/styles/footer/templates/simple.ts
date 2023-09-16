@@ -24,7 +24,7 @@ export const BrandText = styled.div`
 
 export const CenterWrapper = styled.div`
   ${css.row('align-center')};
-  gap: 0 14px;
+  gap: 0 20px;
 `
 
 export const LinkItem = styled.a`

@@ -24,6 +24,13 @@ export const community = `
   insertedAt
   updatedAt
 `
+export const customLink = `
+  title
+  link
+  group
+  groupIndex
+  index
+`
 export const tag = `
   id
   title

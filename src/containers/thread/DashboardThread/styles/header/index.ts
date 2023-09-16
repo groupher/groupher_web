@@ -6,4 +6,6 @@ export const Wrapper = styled.div`
   ${css.column()};
 `
 
-export const Title = styled.div``
+export const SavingWrapper = styled.div`
+  width: 97%;
+`
