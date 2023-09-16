@@ -43,7 +43,7 @@ const AccountUnit: FC<TProps> = ({ community }) => {
       </div> */}
 
       {accountInfo?.login ? (
-        <Avatar src={accountInfo.avatar} />
+        <Avatar src={accountInfo.avatar} avatarLayout={avatarLayout} />
       ) : (
         <AccountIcon onClick={callAuth} />
       )}
