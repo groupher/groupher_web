@@ -5,6 +5,7 @@ import { CHANGE_MODE } from '@/constant/mode'
 import { ROUTE } from '@/constant/route'
 import { ONE_LINK_GROUP, MORE_GROUP } from '@/constant/dashboard'
 import { sortByIndex, groupByKey } from '@/utils/helper'
+import { toJS } from '@/utils/mobx'
 
 import type { TMoveLinkDir } from '../spec'
 import { EMPTY_LINK_ITEM } from '../constant'
@@ -83,7 +84,7 @@ const _emptyLinksIfNedd = (links: TLinkItem[]): TLinkItem[] => {
 }
 
 export const cancelLinkEditing = (): void => {
-  const { curPageLinksKey, editingLink, editingLinkMode } = store
+  const { curPageLinksKey, editingLink, editingLinkMode, initSettings } = store
   const links = store[curPageLinksKey.settings][curPageLinksKey.links]
 
   if (editingLinkMode === CHANGE_MODE.UPDATE) {
@@ -98,7 +99,11 @@ export const cancelLinkEditing = (): void => {
 
   linksAfter = _emptyLinksIfNedd(linksAfter)
 
-  store.mark({ [curPageLinksKey.links]: linksAfter, editingLink: null })
+  store.mark({
+    [curPageLinksKey.links]: linksAfter,
+    editingLink: null,
+    initSettings: { ...toJS(initSettings), [curPageLinksKey.links]: linksAfter },
+  })
 }
 
 export const confirmLinkEditing = (): void => {

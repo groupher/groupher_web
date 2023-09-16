@@ -271,7 +271,6 @@ const DashboardThread = T.model('DashboardThread', {
       const _isChanged = (field: TSettingField): boolean =>
         !equals(toJS(slf[field]), toJS(init[field]))
       const _anyChanged = (fields: TSettingField[]): boolean => any(_isChanged)(fields)
-
       const _mapArrayChanged = (key: string): boolean => {
         return JSON.stringify(toJS(self[key])) !== JSON.stringify(toJS(self.initSettings[key]))
       }
@@ -288,6 +287,9 @@ const DashboardThread = T.model('DashboardThread', {
       const docFaqLayoutTouched = _isChanged('docFaqLayout')
 
       const headerLinksChanged = _isChanged('headerLinks') && editingLink === null
+      console.log('## headerLinks: ', toJS(slf.headerLinks))
+      console.log('## init headerLinks: ', toJS(slf.initSettings.headerLinks))
+
       const footerLinksChanged = _isChanged('footerLinks')
 
       const broadcastLayoutTouched = _isChanged('broadcastLayout')
