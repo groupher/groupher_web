@@ -5,7 +5,7 @@ import { FAQSection, Tag, Moderator } from '@/model'
 import SIZE from '@/constant/size'
 import { COLORS, COLOR_NAME } from '@/constant/colors'
 import { THREAD } from '@/constant/thread'
-import GLOW_EFFECTS, { GLOW_OPACITY } from '@/constant/glow_effect'
+import { GLOW_OPACITY } from '@/constant/glow_effect'
 import {
   AVATAR_LAYOUT,
   BRAND_LAYOUT,
@@ -30,7 +30,6 @@ import {
   BUILDIN_ALIAS,
   WIDGET_TYPE,
   TW_CARD,
-  DEFAULT_LINK_ITEMS,
   DEFAULT_FAQ_ITEMS,
   EMPTY_MEDIA_REPORT,
   INIT_KANBAN_COLORS,
