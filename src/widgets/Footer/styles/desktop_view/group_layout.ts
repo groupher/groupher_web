@@ -89,6 +89,7 @@ export const LinkItem = styled(Link)`
   text-decoration: none;
 
   &:hover {
+    text-decoration: underline;
     color: ${theme('article.title')};
     cursor: pointer;
   }

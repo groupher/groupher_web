@@ -184,6 +184,14 @@ const _doMutation = (field: string, e: TEditValue): void => {
     return
   }
 
+  if (field === SETTING_FIELD.FOOTER_LINKS) {
+    const { footerSettings } = store
+    const { footerLinks } = footerSettings
+
+    sr71$.mutate(S.updateDashboardFooterLinks, { community, footerLinks })
+    return
+  }
+
   if (field === SETTING_FIELD.BASE_INFO) {
     const { baseInfoTab } = store
 
@@ -548,6 +556,10 @@ const DataSolver = [
   },
   {
     match: asyncRes('updateDashboardHeaderLinks'),
+    action: () => _handleDone(),
+  },
+  {
+    match: asyncRes('updateDashboardFooterLinks'),
     action: () => _handleDone(),
   },
   {

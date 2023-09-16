@@ -287,10 +287,7 @@ const DashboardThread = T.model('DashboardThread', {
       const docFaqLayoutTouched = _isChanged('docFaqLayout')
 
       const headerLinksChanged = _isChanged('headerLinks') && editingLink === null
-      console.log('## headerLinks: ', toJS(slf.headerLinks))
-      console.log('## init headerLinks: ', toJS(slf.initSettings.headerLinks))
-
-      const footerLinksChanged = _isChanged('footerLinks')
+      const footerLinksChanged = _isChanged('footerLinks') && editingLink === null
 
       const broadcastLayoutTouched = _isChanged('broadcastLayout')
       const broadcastBgTouched = _isChanged('broadcastBg')
@@ -510,6 +507,7 @@ const DashboardThread = T.model('DashboardThread', {
       return {
         saving: slf.saving,
         footerLayout: toJS(footerLayout),
+        // footerLinks: reject((item) => isEmpty(item.title), toJS(footerLinks)),
         footerLinks: toJS(footerLinks),
         editingLink: toJS(editingLink),
         editingLinkMode: editingLinkMode as TChangeMode,

@@ -4,6 +4,7 @@ import { keys } from 'ramda'
 
 import type { TThemeMap, TMetric, TLinkItem } from '@/spec'
 import { DEME_SOCIALS } from '@/constant/social'
+import useCurCommunity from '@/hooks/useCurCommunity'
 
 import { sortByIndex, groupByKey } from '@/utils/helper'
 
@@ -29,6 +30,7 @@ type TProps = {
 
 const GroupLayout: FC<TProps> = ({ metric, links }) => {
   const theme = useTheme() as TThemeMap
+  const curCommunity = useCurCommunity()
 
   const linkColors = {
     color: theme.footer.text,
@@ -43,11 +45,11 @@ const GroupLayout: FC<TProps> = ({ metric, links }) => {
     <Wrapper>
       <InnerWrapper metric={metric}>
         <BrandWrapper>
-          <BrandLogo src="/groupher-alpha.png" />
-          <BrandDesc>让你的产品聆听用户的声音</BrandDesc>
+          <BrandLogo src={curCommunity.logo} />
+          <BrandDesc>{curCommunity.desc}</BrandDesc>
           <SpaceGrow />
 
-          <SocialList size="medium" selected={DEME_SOCIALS} />
+          <SocialList size="medium" selected={DEME_SOCIALS} top={10} />
         </BrandWrapper>
 
         {groupKeys.map((groupTitle: string) => {

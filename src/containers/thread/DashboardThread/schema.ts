@@ -303,12 +303,10 @@ const updateDashboardFooterLinks = gql`
   mutation ($community: String!, $footerLinks: [dashboardLinkMap]) {
     updateDashboardFooterLinks(community: $community, footerLinks: $footerLinks) {
       slug
-      headerLinks {
-        title
-        link
-        group
-        groupIndex
-        index
+      dashboard {
+        footerLinks {
+          ${F.customLink}
+        }
       }
     }
   }

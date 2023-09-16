@@ -190,7 +190,8 @@ export const settingsModalFields = {
   headerLayout: T.opt(T.enum(values(HEADER_LAYOUT)), HEADER_LAYOUT.CENTER),
   footerLayout: T.opt(T.enum(values(FOOTER_LAYOUT)), FOOTER_LAYOUT.GROUP),
 
-  footerLinks: T.opt(T.array(LinkItem), DEFAULT_LINK_ITEMS),
+  // footerLinks: T.opt(T.array(LinkItem), DEFAULT_LINK_ITEMS),
+  footerLinks: T.opt(T.array(LinkItem), []),
   headerLinks: T.opt(T.array(LinkItem), []),
 
   // moderators

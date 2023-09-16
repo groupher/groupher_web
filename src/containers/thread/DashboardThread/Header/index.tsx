@@ -2,11 +2,12 @@ import { FC } from 'react'
 
 import type { THeaderSettings, TTouched } from '../spec'
 
+import { SETTING_FIELD } from '../constant'
+
+import SavingBar from '../SavingBar'
+
 import Templates from './Templates'
 import Editor from './Editors'
-
-import { SETTING_FIELD } from '../constant'
-import SavingBar from '../SavingBar'
 
 import { Wrapper, SavingWrapper } from '../styles/header'
 
