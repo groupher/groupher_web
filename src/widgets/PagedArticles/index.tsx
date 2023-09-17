@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 import Pagi from '@/widgets/Pagi'
 
-import type { TThread, TPagedArticles, TResState, TC11N, TGlobalLayout } from '@/spec'
+import type { TThread, TPagedArticles, TResState } from '@/spec'
 import EVENT from '@/constant/event'
 
 import { send } from '@/utils/signal'

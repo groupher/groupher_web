@@ -6,7 +6,7 @@
 
 import { FC, memo } from 'react'
 
-import type { TPost, TC11N } from '@/spec'
+import type { TPost } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
 import { DesktopOnly, MobileOnly } from '@/widgets/Common'

@@ -1,7 +1,6 @@
 import { FC, memo } from 'react'
 
 import type { TPost } from '@/spec'
-import { POST_LAYOUT } from '@/constant/layout'
 
 import { Divider, Br } from '@/widgets/Common'
 import MobileMockup from '@/widgets/MobileMockup'
