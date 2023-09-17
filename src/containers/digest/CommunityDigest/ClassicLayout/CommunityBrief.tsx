@@ -1,6 +1,7 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
-import type { TCommunity } from '@/spec'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 import { DEME_SOCIALS } from '@/constant/social'
 
 import SocialList from '@/widgets/SocialList'
@@ -23,10 +24,12 @@ import {
 // import { subscribeCommunity, unsubscribeCommunity } from '../logic'
 
 type TProps = {
-  community: TCommunity
+  //
 }
 
-const CommunityBrief: FC<TProps> = ({ community }) => {
+const CommunityBrief: FC<TProps> = () => {
+  const community = useViewingCommunity()
+
   return (
     <Wrapper>
       <CoverImage src="/banner-cover.webp" noLazy />
@@ -56,4 +59,4 @@ const CommunityBrief: FC<TProps> = ({ community }) => {
   )
 }
 
-export default memo(CommunityBrief)
+export default observer(CommunityBrief)

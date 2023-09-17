@@ -32,9 +32,6 @@ const ModeLineContainer: FC<TProps> = ({ modeLine: store, metric = METRIC.COMMUN
     topBarVisiable,
     viewingArticle,
     activeMenu,
-    curCommunity,
-    activeThread,
-    dashboardSettings,
     activeTag,
     groupedTags,
   } = store
@@ -45,13 +42,8 @@ const ModeLineContainer: FC<TProps> = ({ modeLine: store, metric = METRIC.COMMUN
         isMobile={isMobile}
         show={isArticleBarVisiable}
         metric={metric}
-        activeTag={activeTag}
-        groupedTags={groupedTags}
         article={viewingArticle}
-        community={curCommunity}
         activeMenu={activeMenu}
-        activeThread={activeThread}
-        dashboardSettings={dashboardSettings}
       />
     )
   }
@@ -72,10 +64,7 @@ const ModeLineContainer: FC<TProps> = ({ modeLine: store, metric = METRIC.COMMUN
         activeTag={activeTag}
         groupedTags={groupedTags}
         article={viewingArticle}
-        community={curCommunity}
         activeMenu={activeMenu}
-        activeThread={activeThread}
-        dashboardSettings={dashboardSettings}
       />
     </Fragment>
   )

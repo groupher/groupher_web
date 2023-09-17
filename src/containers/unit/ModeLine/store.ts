@@ -14,7 +14,6 @@ import type {
   TThread,
   TGroupedTags,
   TTag,
-  TDashboardThreadConfig,
 } from '@/spec'
 
 import METRIC from '@/constant/metric'
@@ -32,28 +31,6 @@ const ModeLine = T.model('ModeLine', {
       const root = getParent(self) as TRootStore
       return root.isMobile
     },
-
-    get dashboardSettings(): TDashboardThreadConfig {
-      const root = getParent(self) as TRootStore
-
-      return {
-        enable: toJS(root.dashboardThread.enableSettings),
-        nameAlias: toJS(root.dashboardThread.nameAlias),
-      }
-    },
-    get curCommunity(): TCommunity {
-      const root = getParent(self) as TRootStore
-
-      return toJS(root.viewing.community)
-    },
-
-    get activeThread(): TThread {
-      const root = getParent(self) as TRootStore
-
-      const { activeThread } = root.viewing
-      return activeThread
-    },
-
     get activeTag(): TTag {
       const root = getParent(self) as TRootStore
       return toJS(root.tagsBar.activeTagData)

@@ -1,15 +1,11 @@
-import { FC, memo, useState } from 'react'
+import { FC, useState } from 'react'
+import { observer } from 'mobx-react'
 import Router from 'next/router'
 
-import type {
-  TArticle,
-  TCommunity,
-  TMetric,
-  TThread,
-  TTag,
-  TGroupedTags,
-  TDashboardThreadConfig,
-} from '@/spec'
+import type { TArticle, TMetric } from '@/spec'
+
+import useViewingThread from '@/hooks/useViewingThread'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import { scrollToHeader } from '@/utils/dom'
 import { mockUsers } from '@/utils/mock'
@@ -39,11 +35,6 @@ type TProps = {
   metric: TMetric
   activeMenu: string // TModelineType
   article: TArticle | null
-  community: TCommunity
-  activeThread: TThread
-  dashboardSettings: TDashboardThreadConfig
-  activeTag: TTag
-  groupedTags: TGroupedTags
 }
 
 const ArticleLayout: FC<TProps> = ({
@@ -52,14 +43,11 @@ const ArticleLayout: FC<TProps> = ({
   show,
   metric,
   article = null,
-  community,
   activeMenu,
-  activeThread,
-  activeTag,
-  groupedTags,
-  dashboardSettings,
 }) => {
   const [expand, setExpand] = useState(false)
+  const community = useViewingCommunity()
+  const activeThread = useViewingThread()
 
   const users = mockUsers(3)
 
@@ -100,4 +88,4 @@ const ArticleLayout: FC<TProps> = ({
   )
 }
 
-export default memo(ArticleLayout)
+export default observer(ArticleLayout)

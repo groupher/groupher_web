@@ -2,7 +2,6 @@ import { FC } from 'react'
 
 import { observer } from 'mobx-react'
 
-import type { TCommunity } from '@/spec'
 import useAvatarLayout from '@/hooks/useAvatarLayout'
 
 import useAccount from '@/hooks/useAccount'
@@ -11,12 +10,11 @@ import { callAuth } from '@/utils/signal'
 import { Wrapper, Avatar, AccountIcon, GithubItem } from '../styles/simple_layout/account_unit'
 
 type TProps = {
-  community: TCommunity
+  //
 }
 
-const AccountUnit: FC<TProps> = ({ community }) => {
+const AccountUnit: FC<TProps> = () => {
   const accountInfo = useAccount()
-
   const avatarLayout = useAvatarLayout()
 
   return (

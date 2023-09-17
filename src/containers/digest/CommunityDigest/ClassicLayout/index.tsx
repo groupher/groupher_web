@@ -1,10 +1,12 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 import Router from 'next/router'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TThread, TCommunity, TMetric, TDashboardThreadConfig } from '@/spec'
-
-import { washThreads } from '@/utils/helper'
+import type { TMetric } from '@/spec'
+import usePublicThreads from '@/hooks/usePublicThreads'
+import useViewingThread from '@/hooks/useViewingThread'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import { SpaceGrow } from '@/widgets/Common'
 import TabBar from '@/widgets/TabBar'
@@ -28,27 +30,27 @@ import { setViewport } from '../logic'
 // const NON_STANDARD_COMMUNITIES = [HCN, 'feedback']
 
 type TProps = {
-  community: TCommunity
-  activeThread: TThread
   metric: TMetric
-  dashboardSettings: TDashboardThreadConfig
 }
 
-const ClassicLayout: FC<TProps> = ({ community, activeThread, metric, dashboardSettings }) => {
+const ClassicLayout: FC<TProps> = ({ metric }) => {
   const { isMobile } = useMobileDetect()
-  const washedThreads = washThreads(community.threads, dashboardSettings)
+  // const { links: extraLinks, layout: headerLayout } = useHeaderLinks()
+  const publicThreads = usePublicThreads()
+  const activeThread = useViewingThread()
+  const community = useViewingCommunity()
 
   return (
     <Wrapper testid="community-digest" isMobile={isMobile}>
       <InnerWrapper metric={metric} isMobile={isMobile}>
         <BannerContentWrapper>
           <CommunityBaseInfo>
-            <CommunityBrief community={community} />
+            <CommunityBrief />
           </CommunityBaseInfo>
           <SpaceGrow />
           <TabBarWrapper>
             <TabBar
-              source={washedThreads}
+              source={publicThreads}
               onChange={(path) => {
                 Router.push(`/${community.slug}/${path}`)
               }}
@@ -66,4 +68,4 @@ const ClassicLayout: FC<TProps> = ({ community, activeThread, metric, dashboardS
   )
 }
 
-export default memo(ClassicLayout)
+export default observer(ClassicLayout)

@@ -1,11 +1,9 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react'
 
-import type { TThread, TCommunity, TMetric, TDashboardThreadConfig, THeaderLayout } from '@/spec'
+import type { TMetric } from '@/spec'
 import { ANCHOR } from '@/constant/dom'
 import useHeaderLinks from '@/hooks/useHeaderLinks'
-
-import { washThreads } from '@/utils/helper'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
 import MobileThreadNavi from '@/widgets/MobileThreadNavi'
@@ -27,22 +25,11 @@ import {
 import { setViewport } from '../logic'
 
 type TProps = {
-  community: TCommunity
-  activeThread: TThread
   metric: TMetric
-  dashboardSettings: TDashboardThreadConfig
-  headerLayout: THeaderLayout
 }
 
-const SimpleLayout: FC<TProps> = ({
-  community,
-  activeThread,
-  metric,
-  dashboardSettings,
-  headerLayout,
-}) => {
-  const washedThreads = washThreads(community.threads, dashboardSettings)
-  const { links: extraLinks } = useHeaderLinks()
+const SimpleLayout: FC<TProps> = ({ metric }) => {
+  const { layout: headerLayout } = useHeaderLinks()
 
   return (
     <Wrapper
@@ -54,24 +41,16 @@ const SimpleLayout: FC<TProps> = ({
       <InnerWrapper metric={metric}>
         <BannerContentWrapper>
           <CommunityBaseInfo>
-            <CommunityBrief community={community} />
+            <CommunityBrief />
             <MobileNaviWrapper>
-              <MobileThreadNavi
-                community={community}
-                threads={washedThreads}
-                active={activeThread}
-              />
+              <MobileThreadNavi />
             </MobileNaviWrapper>
             {headerLayout === HEADER_LAYOUT.RIGHT && <SpaceGrow />}
             <ThreadTab
-              threads={washedThreads}
-              active={activeThread}
-              extraLinks={extraLinks}
-              headerLayout={headerLayout}
               left={headerLayout === HEADER_LAYOUT.CENTER ? 4 : 0}
               right={headerLayout === HEADER_LAYOUT.RIGHT ? 20 : 0}
             />
-            <AccountUnit community={community} />
+            <AccountUnit />
           </CommunityBaseInfo>
         </BannerContentWrapper>
       </InnerWrapper>

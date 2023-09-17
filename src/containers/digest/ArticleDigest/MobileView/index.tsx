@@ -36,7 +36,7 @@ const ArticleDigestContainer: FC<TProps> = ({
 }) => {
   useInit(store)
 
-  const { viewingArticle, inViewport, activeThread, dashboardSettings } = store
+  const { viewingArticle, inViewport } = store
 
   if (isNil(viewingArticle.id)) return null
 
@@ -44,14 +44,9 @@ const ArticleDigestContainer: FC<TProps> = ({
     <Wrapper testid={testid} metric={metric}>
       <FixedHeader show={!inViewport} article={viewingArticle} metric={metric} />
       <InnerWrapper>
-        <Header
-          metric={metric}
-          community={viewingArticle.originalCommunity}
-          dashboardSettings={dashboardSettings}
-          activeThread={activeThread}
-        />
+        <Header metric={metric} />
         <BannerContent>
-          <Layout article={viewingArticle} thread={activeThread} metric={metric} />
+          <Layout article={viewingArticle} metric={metric} />
         </BannerContent>
       </InnerWrapper>
       <ViewportTracker onEnter={inAnchor} onLeave={outAnchor} />

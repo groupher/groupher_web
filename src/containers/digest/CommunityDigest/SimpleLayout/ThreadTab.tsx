@@ -2,27 +2,29 @@ import { FC } from 'react'
 import { observer } from 'mobx-react'
 import { reject, find } from 'ramda'
 
-import type { TCommunityThread, TLinkItem, TSpace, THeaderLayout } from '@/spec'
+import type { TCommunityThread, TSpace } from '@/spec'
 import { THREAD } from '@/constant/thread'
 import { HEADER_LAYOUT } from '@/constant/layout'
 import { MORE_GROUP } from '@/constant/dashboard'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
+import usePublicThreads from '@/hooks/usePublicThreads'
+import useHeaderLinks from '@/hooks/useHeaderLinks'
 import useAccount from '@/hooks/useAccount'
+import useViewingThread from '@/hooks/useViewingThread'
 
 import ExtraLinks from '@/widgets/ExtraLinks/SimpleLayout'
 
 import { NormalWrapper, FloatWrapper, Title } from '../styles/simple_layout/thread_tab'
 
-type TProps = {
-  threads: TCommunityThread[]
-  active: string
-  extraLinks: TLinkItem[]
-  headerLayout: THeaderLayout
-} & TSpace
+type TProps = TSpace
 
-const ThreadTab: FC<TProps> = ({ active, threads, extraLinks, headerLayout, ...restProps }) => {
+const ThreadTab: FC<TProps> = ({ ...restProps }) => {
   const curCommunity = useViewingCommunity()
+  const { links: extraLinks, layout: headerLayout } = useHeaderLinks()
+  const threads = usePublicThreads()
+  const activeThread = useViewingThread()
+
   const { isModerator } = useAccount()
 
   const hasExtraLinks = extraLinks.length >= 2 && extraLinks[0].title !== ''
@@ -61,14 +63,14 @@ const ThreadTab: FC<TProps> = ({ active, threads, extraLinks, headerLayout, ...r
         <Title
           href={`/${curCommunity.slug}/${item.slug}`}
           key={item.slug}
-          $active={active === item.slug}
+          $active={activeThread === item.slug}
           prefetch={false}
         >
           {item.title}
         </Title>
       ))}
 
-      <ExtraLinks links={_extraLinks} activePath={active} />
+      <ExtraLinks links={_extraLinks} activePath={activeThread} />
     </Wrapper>
   )
 }
