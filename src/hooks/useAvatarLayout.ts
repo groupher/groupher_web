@@ -6,7 +6,7 @@ import type { TAvatarLayout } from '@/spec'
 /**
  * NOTE: should use observer to wrap the component who use this hook
  */
-const useAvatarLayout = (): TAvatarLayout | null => {
+const useAvatarLayout = (): TAvatarLayout => {
   const { store } = useContext(MobXProviderContext)
 
   if (store === null) {
