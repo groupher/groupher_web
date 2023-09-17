@@ -5,16 +5,7 @@
 
 import { values } from 'ramda'
 
-import type {
-  TRootStore,
-  TViewing,
-  TCommunity,
-  TArticle,
-  TArticleFilter,
-  TThread,
-  TGroupedTags,
-  TTag,
-} from '@/spec'
+import type { TRootStore, TViewing, TArticle, TArticleFilter, TGroupedTags, TTag } from '@/spec'
 
 import METRIC from '@/constant/metric'
 import TYPE from '@/constant/type'

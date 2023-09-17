@@ -5,7 +5,7 @@ import Router from 'next/router'
 import type { TArticle, TMetric } from '@/spec'
 
 import useViewingThread from '@/hooks/useViewingThread'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+// import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import { scrollToHeader } from '@/utils/dom'
 import { mockUsers } from '@/utils/mock'
@@ -46,7 +46,7 @@ const ArticleLayout: FC<TProps> = ({
   activeMenu,
 }) => {
   const [expand, setExpand] = useState(false)
-  const community = useViewingCommunity()
+  // const community = useViewingCommunity()
   const activeThread = useViewingThread()
 
   const users = mockUsers(3)
