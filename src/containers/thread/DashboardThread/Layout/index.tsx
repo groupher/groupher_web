@@ -1,10 +1,11 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 import Router from 'next/router'
 
 import { DASHBOARD_LAYOUT_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
 
-import useCurCommunity from '@/hooks/useCurCommunity'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 import { SexyDivider as Divider } from '@/widgets/Common'
 import Tabs from '@/widgets/Switcher/Tabs'
 
@@ -34,7 +35,7 @@ type TProps = {
 }
 
 const UI: FC<TProps> = ({ settings, touched }) => {
-  const curCommunity = useCurCommunity()
+  const curCommunity = useViewingCommunity()
 
   const {
     layoutTab,
@@ -153,4 +154,4 @@ const UI: FC<TProps> = ({ settings, touched }) => {
   )
 }
 
-export default memo(UI)
+export default observer(UI)

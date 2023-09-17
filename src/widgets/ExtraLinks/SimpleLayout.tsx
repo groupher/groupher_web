@@ -1,11 +1,12 @@
 import { FC, Fragment, useState } from 'react'
+import { observer } from 'mobx-react'
 import { keys, startsWith, filter } from 'ramda'
 
 import type { TLinkItem } from '@/spec'
 import { MORE_GROUP, ONE_LINK_GROUP } from '@/constant/dashboard'
 import { sortByIndex, groupByKey } from '@/utils/helper'
 import useAccount from '@/hooks/useAccount'
-import useCurCommunity from '@/hooks/useCurCommunity'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import Tooltip from '@/widgets/Tooltip'
 
@@ -15,7 +16,7 @@ import { Wrapper, LinkItem, GroupItem, ArrowIcon, MenuPanel } from './styles/sim
 
 const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold, activePath }) => {
   const [menuOpen, setMenuOpen] = useState(false)
-  const { slug } = useCurCommunity()
+  const { slug } = useViewingCommunity()
 
   if (!showMoreFold) return null
 
@@ -83,4 +84,4 @@ const ExtraLinks: FC<TProps> = ({ links, activePath = '' }) => {
   )
 }
 
-export default ExtraLinks
+export default observer(ExtraLinks)

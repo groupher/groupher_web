@@ -1,9 +1,10 @@
-import { FC, memo, Fragment } from 'react'
+import { FC, Fragment } from 'react'
+import { observer } from 'mobx-react'
 import { keys } from 'ramda'
 
 import type { TDashboardPath } from '@/spec'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 import { Br } from '@/widgets/Common'
-import useCurCommunity from '@/hooks/useCurCommunity'
 
 import { MENU } from '../constant'
 import type { TTouched, TMenuGroup } from '../spec'
@@ -18,8 +19,9 @@ type TProps = {
 }
 
 const SideMenu: FC<TProps> = ({ curTab = '', touched = null }) => {
+  const curCommunity = useViewingCommunity()
+
   const groupKeys = keys(MENU)
-  const curCommunity = useCurCommunity()
 
   return (
     <MobileWrapper>
@@ -38,4 +40,4 @@ const SideMenu: FC<TProps> = ({ curTab = '', touched = null }) => {
   )
 }
 
-export default memo(SideMenu)
+export default observer(SideMenu)

@@ -1,11 +1,12 @@
-import { FC, memo, useEffect } from 'react'
+import { FC, useEffect } from 'react'
+import { observer } from 'mobx-react'
 import Router from 'next/router'
 
 import type { TPostLayout } from '@/spec'
 import { DASHBOARD_BASEINFO_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
 
-import useCurCommunity from '@/hooks/useCurCommunity'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 import Tabs from '@/widgets/Switcher/Tabs'
 
 import { BASEINFO_TABS } from '../constant'
@@ -27,8 +28,7 @@ type TProps = {
 }
 
 const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => {
-  const curCommunity = useCurCommunity()
-
+  const curCommunity = useViewingCommunity()
   const { baseInfoTab } = settings
 
   useEffect(() => {
@@ -76,4 +76,4 @@ const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => 
   )
 }
 
-export default memo(BasicInfo)
+export default observer(BasicInfo)

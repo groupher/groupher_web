@@ -1,11 +1,12 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 import Router from 'next/router'
 
 import { DASHBOARD_ALIAS_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
 
 import { groupByKey } from '@/utils/helper'
-import useCurCommunity from '@/hooks/useCurCommunity'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import Tabs from '@/widgets/Switcher/Tabs'
 
@@ -23,7 +24,7 @@ type TProps = {
 }
 
 const Alias: FC<TProps> = ({ settings }) => {
-  const curCommunity = useCurCommunity()
+  const curCommunity = useViewingCommunity()
 
   const { nameAlias, editingAlias, aliasTab } = settings
   const groupedAlias = groupByKey(nameAlias, 'group')
@@ -74,4 +75,4 @@ const Alias: FC<TProps> = ({ settings }) => {
   )
 }
 
-export default memo(Alias)
+export default observer(Alias)

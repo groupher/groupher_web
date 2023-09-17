@@ -1,8 +1,9 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react'
 import dynamic from 'next/dynamic'
 
 import type { TPost } from '@/spec'
-import useCurCommunity from '@/hooks/useCurCommunity'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 import { THREAD } from '@/constant/thread'
 
 import { Wrapper, Brief, Title } from '../../styles/ph_layout/desktop_view/header'
@@ -17,7 +18,7 @@ type TProps = {
 
 const Header: FC<TProps> = ({ article }) => {
   const { innerId, title, articleTags } = article
-  const { slug } = useCurCommunity()
+  const { slug } = useViewingCommunity()
 
   return (
     <Wrapper>
@@ -32,4 +33,4 @@ const Header: FC<TProps> = ({ article }) => {
   )
 }
 
-export default Header
+export default observer(Header)

@@ -1,10 +1,11 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react'
 import { reject } from 'ramda'
 
 import type { TCommunityThread } from '@/spec'
 import { ROUTE } from '@/constant/route'
 
-import useCurCommunity from '@/hooks/useCurCommunity'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import {
   Wrapper,
@@ -21,7 +22,7 @@ type TProps = {
 }
 
 const FixedLinks: FC<TProps> = ({ isAboutLinkFold }) => {
-  const { slug, threads } = useCurCommunity()
+  const { slug, threads } = useViewingCommunity()
 
   return (
     <Wrapper>
@@ -60,4 +61,4 @@ const FixedLinks: FC<TProps> = ({ isAboutLinkFold }) => {
   )
 }
 
-export default FixedLinks
+export default observer(FixedLinks)

@@ -1,23 +1,19 @@
 import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 
-import { toJS } from '@/utils/mobx'
-// import { merge } from 'ramda'
-
 import type { TCommunity } from '@/spec'
 
 /**
- * please use useCurCommmunity instead, this hook works
- * but it will only update by a re-render due to mobx
+ * NOTE: should use observer to wrap the component who use this hook
  */
-const useCommunity = (): TCommunity | null => {
+const useViewingCommunity = (): TCommunity => {
   const { store } = useContext(MobXProviderContext)
 
   if (store === null) {
     throw new Error('Store cannot be null, please add a context provider')
   }
 
-  return toJS(store.viewing.community)
+  return store.viewing.community
 }
 
-export default useCommunity
+export default useViewingCommunity

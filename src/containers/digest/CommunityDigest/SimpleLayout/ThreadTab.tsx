@@ -1,4 +1,5 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 import { reject, find } from 'ramda'
 
 import type { TCommunityThread, TLinkItem, TSpace, THeaderLayout } from '@/spec'
@@ -6,7 +7,7 @@ import { THREAD } from '@/constant/thread'
 import { HEADER_LAYOUT } from '@/constant/layout'
 import { MORE_GROUP } from '@/constant/dashboard'
 
-import useCurCommunity from '@/hooks/useCurCommunity'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useAccount from '@/hooks/useAccount'
 
 import ExtraLinks from '@/widgets/ExtraLinks/SimpleLayout'
@@ -21,7 +22,7 @@ type TProps = {
 } & TSpace
 
 const ThreadTab: FC<TProps> = ({ active, threads, extraLinks, headerLayout, ...restProps }) => {
-  const curCommunity = useCurCommunity()
+  const curCommunity = useViewingCommunity()
   const { isModerator } = useAccount()
 
   const hasExtraLinks = extraLinks.length >= 2 && extraLinks[0].title !== ''
@@ -72,4 +73,4 @@ const ThreadTab: FC<TProps> = ({ active, threads, extraLinks, headerLayout, ...r
   )
 }
 
-export default memo(ThreadTab)
+export default observer(ThreadTab)
