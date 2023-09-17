@@ -1,7 +1,9 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TThread, TCommunity, TMetric, TDashboardThreadConfig, THeaderLayout } from '@/spec'
 import { ANCHOR } from '@/constant/dom'
+import useHeaderLinks from '@/hooks/useHeaderLinks'
 
 import { washThreads } from '@/utils/helper'
 
@@ -40,7 +42,7 @@ const SimpleLayout: FC<TProps> = ({
   headerLayout,
 }) => {
   const washedThreads = washThreads(community.threads, dashboardSettings)
-  const { extraLinks } = dashboardSettings
+  const { links: extraLinks } = useHeaderLinks()
 
   return (
     <Wrapper
@@ -78,4 +80,4 @@ const SimpleLayout: FC<TProps> = ({
   )
 }
 
-export default memo(SimpleLayout)
+export default observer(SimpleLayout)
