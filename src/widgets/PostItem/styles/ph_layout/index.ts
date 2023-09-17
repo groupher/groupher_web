@@ -1,13 +1,8 @@
 import styled from 'styled-components'
 
-import type { TC11N } from '@/spec'
 import css from '@/css'
 
-type TWrapper = {
-  c11n: TC11N
-}
-
-export const Wrapper = styled.article<TWrapper>`
+export const Wrapper = styled.article`
   ${css.row()};
   position: relative;
 

@@ -4,15 +4,7 @@
 
 import { values } from 'ramda'
 
-import type {
-  TCommunity,
-  TRootStore,
-  TUser,
-  TArticleThread,
-  TPagedArticles,
-  TC11N,
-  TGlobalLayout,
-} from '@/spec'
+import type { TCommunity, TRootStore, TUser, TArticleThread, TPagedArticles } from '@/spec'
 import TYPE from '@/constant/type'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
@@ -36,10 +28,6 @@ const UserPublishedArticles = T.model('UserPublishedArticles', {
       const root = getParent(self) as TRootStore
       return root.account.isLogin
     },
-    get c11n(): TC11N {
-      const root = getParent(self) as TRootStore
-      return root.account.c11n
-    },
     get curCommunity(): TCommunity {
       const root = getParent(self) as TRootStore
 
@@ -61,10 +49,6 @@ const UserPublishedArticles = T.model('UserPublishedArticles', {
 
     get hasContentBg(): boolean {
       return true
-    },
-    get globalLayout(): TGlobalLayout {
-      const root = getParent(self) as TRootStore
-      return root.dashboardThread.globalLayout
     },
   }))
   .actions((self) => ({

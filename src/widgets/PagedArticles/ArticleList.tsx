@@ -1,10 +1,12 @@
 /* eslint-disable react/display-name */
 
-import { memo, FC } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
 import { POST_LAYOUT } from '@/constant/layout'
 import TYPE from '@/constant/type'
 import type { TArticleEntries } from '@/spec'
+import usePostLayout from '@/hooks/usePostLayout'
 
 import PostItem from '@/widgets/PostItem'
 
@@ -17,7 +19,9 @@ import { MasonryCardsWrapper } from './styles/article_list'
 
 type TProps = { entries: TArticleEntries } & Omit<TBaseTProps, 'data'>
 
-const ArticleList: FC<TProps> = ({ thread, resState, entries, c11n, globalLayout }) => {
+const ArticleList: FC<TProps> = ({ thread, resState, entries }) => {
+  const postLayout = usePostLayout()
+
   // switch between threads
   if (resState === TYPE.RES_STATE.LOADING && entries.length === 0) {
     return <LavaLampLoading top={20} left={30} />
@@ -32,12 +36,12 @@ const ArticleList: FC<TProps> = ({ thread, resState, entries, c11n, globalLayout
     return <EmptyThread thread={thread} />
   }
 
-  if (globalLayout.post === POST_LAYOUT.MASONRY) {
+  if (postLayout === POST_LAYOUT.MASONRY) {
     return (
       <MasonryCardsWrapper>
         <MasonryCards column={2}>
           {entries.map((entry) => (
-            <PostItem key={entry.id} article={entry} c11n={c11n} layout={globalLayout.post} />
+            <PostItem key={entry.id} article={entry} />
           ))}
         </MasonryCards>
       </MasonryCardsWrapper>
@@ -47,10 +51,10 @@ const ArticleList: FC<TProps> = ({ thread, resState, entries, c11n, globalLayout
   return (
     <>
       {entries.map((entry) => (
-        <PostItem key={entry.id} article={entry} c11n={c11n} layout={globalLayout.post} />
+        <PostItem key={entry.id} article={entry} />
       ))}
     </>
   )
 }
 
-export default memo(ArticleList)
+export default observer(ArticleList)

@@ -4,11 +4,12 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
-import type { TPost, TC11N, TPostLayout } from '@/spec'
+import type { TPost } from '@/spec'
 import { POST_LAYOUT } from '@/constant/layout'
-
+import usePostLayout from '@/hooks/usePostLayout'
 import { buildLog } from '@/utils/logger'
 
 import PHLayout from './PHLayout'
@@ -22,38 +23,33 @@ const log = buildLog('w:PostItem:index')
 
 type TProps = {
   article: TPost
-  c11n: TC11N
-  layout?: TPostLayout
   isMobilePreview?: boolean
 }
 
-const PostItem: FC<TProps> = ({
-  article,
-  layout = POST_LAYOUT.QUORA,
-  isMobilePreview = false,
-  c11n,
-}) => {
-  return (
-    <>
-      {layout === POST_LAYOUT.MINIMAL && (
-        <MinimalLayout c11n={c11n} article={article} isMobilePreview={isMobilePreview} />
-      )}
+const PostItem: FC<TProps> = ({ article, isMobilePreview = false }) => {
+  const postLayout = usePostLayout()
 
-      {layout === POST_LAYOUT.QUORA && (
-        <QuoraLayout article={article} isMobilePreview={isMobilePreview} />
-      )}
+  switch (postLayout) {
+    case POST_LAYOUT.MINIMAL: {
+      return <MinimalLayout article={article} isMobilePreview={isMobilePreview} />
+    }
 
-      {layout === POST_LAYOUT.PH && (
-        <PHLayout c11n={c11n} article={article} isMobilePreview={isMobilePreview} />
-      )}
+    case POST_LAYOUT.PH: {
+      return <PHLayout article={article} isMobilePreview={isMobilePreview} />
+    }
 
-      {layout === POST_LAYOUT.COVER && (
-        <CoverLayout c11n={c11n} article={article} isMobilePreview={isMobilePreview} />
-      )}
+    case POST_LAYOUT.COVER: {
+      return <CoverLayout article={article} isMobilePreview={isMobilePreview} />
+    }
 
-      {layout === POST_LAYOUT.MASONRY && <MasonryLayout article={article} />}
-    </>
-  )
+    case POST_LAYOUT.MASONRY: {
+      return <MasonryLayout article={article} />
+    }
+
+    default: {
+      return <QuoraLayout article={article} isMobilePreview={isMobilePreview} />
+    }
+  }
 }
 
-export default memo(PostItem)
+export default observer(PostItem)

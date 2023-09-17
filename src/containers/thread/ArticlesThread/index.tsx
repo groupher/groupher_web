@@ -62,7 +62,6 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
     filtersData,
     curThread,
     showFilters,
-    c11n,
     resState,
     mode,
     globalLayout,
@@ -104,8 +103,6 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
             data={pagedArticlesData}
             thread={curThread}
             resState={resState as TResState}
-            c11n={c11n}
-            globalLayout={globalLayout}
           />
         )}
       </LayoutWrapper>

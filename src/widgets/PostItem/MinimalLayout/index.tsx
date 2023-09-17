@@ -22,17 +22,16 @@ const log = buildLog('w:PostItem:index')
 
 type TProps = {
   article: TPost
-  c11n: TC11N
   isMobilePreview: boolean
 }
 
-const PostItem: FC<TProps> = ({ article, isMobilePreview, c11n }) => {
+const PostItem: FC<TProps> = ({ article, isMobilePreview }) => {
   if (isMobilePreview) {
     return <MobileView article={article} />
   }
 
   return (
-    <Wrapper c11n={c11n}>
+    <Wrapper>
       <MobileOnly>
         <MobileView article={article} />
       </MobileOnly>

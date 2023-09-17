@@ -15,7 +15,6 @@ import type {
   TCommunity,
   TThread,
   TArticleFilter,
-  TC11N,
   TGlobalLayout,
   TGroupedTags,
 } from '@/spec'
@@ -73,10 +72,6 @@ const ArticlesThread = T.model('ArticlesThread', {
     get accountInfo(): TAccount {
       const root = getParent(self) as TRootStore
       return root.account.accountInfo
-    },
-    get c11n(): TC11N {
-      const root = getParent(self) as TRootStore
-      return root.account.c11n
     },
     get filtersData(): TArticleFilter {
       return toJS(pickBy((v) => !isEmpty(v), self.filters))
