@@ -106,7 +106,6 @@ export type {
   TEnableConfig,
   TNameAliasConfig,
   TDashboardThreadConfig,
-  TFooterConfig,
   TRSSType,
   TDashboardSEOConfig,
 } from './dashboard'

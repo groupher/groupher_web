@@ -3,9 +3,10 @@ import { observer } from 'mobx-react'
 import { useTheme } from 'styled-components'
 import { keys } from 'ramda'
 
-import type { TThemeMap, TMetric, TLinkItem } from '@/spec'
+import type { TThemeMap, TMetric } from '@/spec'
 import { DEME_SOCIALS } from '@/constant/social'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useFooterLinks from '@/hooks/useFooterLinks'
 
 import { sortByIndex, groupByKey } from '@/utils/helper'
 
@@ -26,12 +27,12 @@ import {
 
 type TProps = {
   metric: TMetric
-  links: TLinkItem[]
 }
 
-const GroupLayout: FC<TProps> = ({ metric, links }) => {
+const GroupLayout: FC<TProps> = ({ metric }) => {
   const theme = useTheme() as TThemeMap
   const curCommunity = useViewingCommunity()
+  const { links } = useFooterLinks()
 
   const linkColors = {
     color: theme.footer.text,

@@ -13,7 +13,6 @@ import type {
   TGlowEffect,
   TWallpaperInfo,
   TBroadcastConfig,
-  TFooterConfig,
   TDashboardSEOConfig,
 } from '@/spec'
 
@@ -103,14 +102,6 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
         ],
         root.dashboardThread,
       )
-    },
-    get footerConfig(): TFooterConfig {
-      const root = getParent(self) as TRootStore
-
-      return {
-        layout: root.dashboardThread.footerLayout,
-        links: toJS(root.dashboardThread.footerLinks),
-      }
     },
     get globalLayout(): TGlobalLayout {
       const root = getParent(self) as TRootStore
