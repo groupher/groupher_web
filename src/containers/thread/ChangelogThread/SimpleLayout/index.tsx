@@ -4,8 +4,10 @@
  */
 
 import { FC, useState } from 'react'
+import { observer } from 'mobx-react'
 
-import type { TGlobalLayout, TPagedArticles } from '@/spec'
+import type { TPagedArticles } from '@/spec'
+import useChangelogLayout from '@/hooks/useChangelogLayout'
 import { CHANGELOG_LAYOUT } from '@/constant/layout'
 
 import ChangelogItem from '@/widgets/ChangelogItem'
@@ -19,16 +21,17 @@ import { Wrapper, Banner, TabsWrapper, Title, Desc, MainWrapper } from '../style
 // const log = buildLog('C:ChangelogThread')
 
 type TProps = {
-  globalLayout: TGlobalLayout
   isSidebarLayout: boolean
   pagedChangelogs: TPagedArticles
 }
 
-const SimpleLayout: FC<TProps> = ({ globalLayout, isSidebarLayout, pagedChangelogs }) => {
+const SimpleLayout: FC<TProps> = ({ isSidebarLayout, pagedChangelogs }) => {
+  const changelogLayout = useChangelogLayout()
+
   const [filterExpand, setFilterExpand] = useState(false)
   const [tab, setTab] = useState(TABS_MODE_OPTIONS[0].slug)
 
-  const alignLeft = globalLayout.changelog === CHANGELOG_LAYOUT.SIMPLE
+  const alignLeft = changelogLayout === CHANGELOG_LAYOUT.SIMPLE
 
   return (
     <Wrapper isSidebarLayout={isSidebarLayout}>
@@ -56,11 +59,11 @@ const SimpleLayout: FC<TProps> = ({ globalLayout, isSidebarLayout, pagedChangelo
       {filterExpand && <FilterBar tab={tab} alignLeft={alignLeft} />}
       <MainWrapper>
         {pagedChangelogs.entries.map((item) => (
-          <ChangelogItem key={item.innerId} layout={globalLayout.changelog} article={item} />
+          <ChangelogItem key={item.innerId} article={item} />
         ))}
       </MainWrapper>
     </Wrapper>
   )
 }
 
-export default SimpleLayout
+export default observer(SimpleLayout)

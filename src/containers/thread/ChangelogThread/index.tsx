@@ -31,17 +31,9 @@ const ChangelogThreadContainer: FC<TProps> = ({
   const { globalLayout, tagsMode, pagedChangelogsData } = store
 
   return globalLayout.banner === BANNER_LAYOUT.TABBER ? (
-    <ClassicLayout
-      globalLayout={globalLayout}
-      tagsMode={tagsMode}
-      pagedChangelogs={pagedChangelogsData}
-    />
+    <ClassicLayout tagsMode={tagsMode} pagedChangelogs={pagedChangelogsData} />
   ) : (
-    <SimpleLayout
-      globalLayout={globalLayout}
-      isSidebarLayout={isSidebarLayout}
-      pagedChangelogs={pagedChangelogsData}
-    />
+    <SimpleLayout isSidebarLayout={isSidebarLayout} pagedChangelogs={pagedChangelogsData} />
   )
 }
 

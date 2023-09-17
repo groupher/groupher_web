@@ -1,7 +1,9 @@
-import { FC, memo, Fragment } from 'react'
+import { FC, Fragment } from 'react'
+import { observer } from 'mobx-react'
 
-import type { TChangelogLayout, TChangelog } from '@/spec'
+import type { TChangelog } from '@/spec'
 import { CHANGELOG_LAYOUT } from '@/constant/layout'
+import useChangelogLayout from '@/hooks/useChangelogLayout'
 
 import ClassicLayout from './ClassicLayout'
 import SimpleLayout from './SimpleLayout'
@@ -9,17 +11,18 @@ import SimpleLayout from './SimpleLayout'
 // import OutlineLayout from './OutlineLayout'
 
 type TProps = {
-  layout: TChangelogLayout
   article: TChangelog
 }
 
-const ChangelogItem: FC<TProps> = ({ layout, article }) => {
+const ChangelogItem: FC<TProps> = ({ article }) => {
+  const changelogLayout = useChangelogLayout()
+
   return (
     <Fragment>
-      {layout === CHANGELOG_LAYOUT.CLASSIC && <ClassicLayout article={article} />}
-      {layout === CHANGELOG_LAYOUT.SIMPLE && <SimpleLayout article={article} />}
+      {changelogLayout === CHANGELOG_LAYOUT.CLASSIC && <ClassicLayout article={article} />}
+      {changelogLayout === CHANGELOG_LAYOUT.SIMPLE && <SimpleLayout article={article} />}
     </Fragment>
   )
 }
 
-export default memo(ChangelogItem)
+export default observer(ChangelogItem)
