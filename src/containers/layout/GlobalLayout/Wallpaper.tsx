@@ -1,16 +1,13 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
-import type { TWallpaperInfo } from '@/spec'
+import useWallpaper from '@/hooks/useWallpaper'
 import { parseWallpaper } from '@/utils/wallpaper'
 
 import { Wrapper } from './styles/wallpaper'
 
-type TProps = {
-  wallpaperInfo: TWallpaperInfo
-}
-
-const Wallpaper: FC<TProps> = ({ wallpaperInfo }) => {
-  const { wallpapers, wallpaper, customWallpaper } = wallpaperInfo
+const Wallpaper: FC = () => {
+  const { wallpapers, wallpaper, customWallpaper } = useWallpaper()
   const { background, effect } = parseWallpaper(wallpapers, wallpaper, customWallpaper)
 
   // for custom image/svg
@@ -19,4 +16,4 @@ const Wallpaper: FC<TProps> = ({ wallpaperInfo }) => {
   return <Wrapper style={{ background }} effect={effect} />
 }
 
-export default memo(Wallpaper)
+export default observer(Wallpaper)

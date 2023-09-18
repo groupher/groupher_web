@@ -11,7 +11,6 @@ import type {
   TCommunity,
   TGlobalLayout,
   TGlowEffect,
-  TWallpaperInfo,
   TBroadcastConfig,
   TDashboardSEOConfig,
 } from '@/spec'
@@ -54,23 +53,6 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
 
       return pick(SEO_KEYS, root.dashboardThread)
     },
-    get sidebarPin(): boolean {
-      // const root = getParent(self) as TRootStore
-      // return root.sidebar.pin
-      return false
-    },
-    get wallpaperInfo(): TWallpaperInfo {
-      const root = getParent(self) as TRootStore
-
-      const { wallpaperEditor } = root
-      const { customWallpaper, wallpaper, wallpapers } = wallpaperEditor
-
-      return {
-        customWallpaper: toJS(customWallpaper),
-        wallpaper,
-        wallpapers,
-      }
-    },
     get glowEffect(): TGlowEffect {
       const root = getParent(self) as TRootStore
       const { wallpaper } = root.wallpaperEditor
@@ -82,11 +64,6 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
         glowFixed,
         glowOpacity,
       }
-    },
-    get hasShadow(): boolean {
-      const root = getParent(self) as TRootStore
-
-      return root.wallpaperEditor.wallpaper && root.wallpaperEditor.hasShadow
     },
     get broadcastConfig(): TBroadcastConfig {
       const root = getParent(self) as TRootStore

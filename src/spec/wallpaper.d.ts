@@ -43,6 +43,5 @@ export type TWallpaperInfo = {
   customWallpaper: TCustomWallpaper
   wallpaper: string
   wallpapers: Record<string, TWallpaper>
-
   hasShadow?: boolean
 }

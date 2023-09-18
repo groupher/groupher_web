@@ -13,6 +13,7 @@ import METRIC from '@/constant/metric'
 import { TOPBAR_LAYOUT } from '@/constant/layout'
 
 import type { TMetric } from '@/spec'
+import useWallpaper from '@/hooks/useWallpaper'
 import { bond } from '@/utils/mobx'
 import { communityChanged } from '@/utils/signal'
 
@@ -55,6 +56,7 @@ const GlobalLayoutContainer: FC<TProps> = ({ globalLayout: store, children, metr
   useInit(store)
 
   const router = useRouter()
+  const { hasShadow } = useWallpaper()
 
   const [load, setLoad] = useState(false)
   const [showDashboardAlertUI, setShowDashboardAlertUI] = useState(false)
@@ -62,8 +64,6 @@ const GlobalLayoutContainer: FC<TProps> = ({ globalLayout: store, children, metr
   const {
     curCommunity,
     isMobile,
-    wallpaperInfo,
-    hasShadow,
     glowEffect,
     globalLayout,
     broadcastConfig,
@@ -100,7 +100,7 @@ const GlobalLayoutContainer: FC<TProps> = ({ globalLayout: store, children, metr
       <ThemePalette>
         {load && <Addon metric={metric} />}
         <Skeleton>
-          <Wallpaper wallpaperInfo={wallpaperInfo} />
+          <Wallpaper />
           <ScrollWrapper noMobilePadding={metric === METRIC.HOME}>
             <Wrapper>
               <SEO metric={metric} data={seo} />
