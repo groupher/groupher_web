@@ -8,18 +8,15 @@ import { FC } from 'react'
 import { observer } from 'mobx-react'
 import Head from 'next/head'
 
-import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
 import { SITE_URL, SITE_SLOGAN, SITE_NAME } from '@/config'
 
 import useSEO from '@/hooks/useSEO'
-// import  METRIC  from '@/constant/metric'
+import useMetric from '@/hooks/useMetric'
 
-type TProps = {
-  metric: TMetric
-}
+const SEO: FC = () => {
+  const metric = useMetric()
 
-const SEO: FC<TProps> = ({ metric }) => {
   const {
     seoEnable,
     ogTitle,

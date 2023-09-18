@@ -8,6 +8,7 @@ import { FC } from 'react'
 
 import { FOOTER_LAYOUT } from '@/constant/layout'
 import useFooterLinks from '@/hooks/useFooterLinks'
+import useMetric from '@/hooks/useMetric'
 
 import { buildLog } from '@/utils/logger'
 import { bond } from '@/utils/mobx'
@@ -22,8 +23,9 @@ import { Wrapper, InnerWrapper } from '../styles'
 /* eslint-disable-next-line */
 const log = buildLog('C:Footer')
 
-const FooterContainer: FC<TProps> = ({ metric, testid = 'footer' }) => {
+const FooterContainer: FC<TProps> = ({ testid = 'footer' }) => {
   const { layout } = useFooterLinks()
+  const metric = useMetric()
 
   return (
     <Wrapper testid={testid} metric={metric}>

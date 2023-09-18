@@ -12,9 +12,8 @@ import { Provider as BalancerTextProvider } from 'react-wrap-balancer'
 import METRIC from '@/constant/metric'
 import { TOPBAR_LAYOUT } from '@/constant/layout'
 
-import type { TMetric } from '@/spec'
+import useMetric from '@/hooks/useMetric'
 import useWallpaper from '@/hooks/useWallpaper'
-import useGlow from '@/hooks/useGlow'
 
 import { bond } from '@/utils/mobx'
 
@@ -31,39 +30,37 @@ import type { TStore } from './store'
 import SEO from './SEO'
 import Wallpaper from './Wallpaper'
 
-import { Addon } from './dynamic'
+import { Addon, GlowBackground } from './dynamic'
 
 import {
   Skeleton,
   Wrapper,
   ScrollWrapper,
-  GrowBackground,
   InnerWrapper,
   BodyWrapper,
   ContentWrapper,
 } from './styles'
-import { useInit, childrenWithProps, getGlowPosition, loadDemoSetting } from './logic'
+import { useInit, loadDemoSetting } from './logic'
 
 let DashboardAlert = null
 
 type TProps = {
   globalLayout?: TStore
   children: ReactNode
-  metric: TMetric
 }
 
-const GlobalLayoutContainer: FC<TProps> = ({ globalLayout: store, children, metric }) => {
+const GlobalLayoutContainer: FC<TProps> = ({ globalLayout: store, children }) => {
   // load debug graph
   useInit(store)
 
+  const metric = useMetric()
   const router = useRouter()
   const { hasShadow } = useWallpaper()
-  const glowEffect = useGlow()
 
   const [load, setLoad] = useState(false)
   const [showDashboardAlertUI, setShowDashboardAlertUI] = useState(false)
 
-  const { isMobile, globalLayout, broadcastConfig, showDashboardAlert } = store
+  const { isMobile, globalLayout, showDashboardAlert } = store
 
   useEffect(() => {
     const handleRouteComplete = () => loadDemoSetting()
@@ -88,32 +85,27 @@ const GlobalLayoutContainer: FC<TProps> = ({ globalLayout: store, children, metr
   return (
     <BalancerTextProvider>
       <ThemePalette>
-        {load && <Addon metric={metric} />}
+        {load && <Addon />}
         <Skeleton>
           <Wallpaper />
           <ScrollWrapper noMobilePadding={metric === METRIC.HOME}>
             <Wrapper>
-              <SEO metric={metric} />
+              <SEO />
+              {/* TODO: extract */}
               <InnerWrapper
                 metric={metric}
                 hasShadow={hasShadow}
                 hasTopbar={metric !== METRIC.HOME && globalLayout.topbar === TOPBAR_LAYOUT.YES}
                 topbarBg={globalLayout.topbarBg}
               >
-                <Broadcast metric={metric} settings={broadcastConfig} />
+                <Broadcast />
                 <ContentWrapper>
-                  <BodyWrapper>{childrenWithProps(children, { metric })}</BodyWrapper>
-                  <Footer metric={metric} />
+                  <BodyWrapper>{children}</BodyWrapper>
+                  <Footer />
                 </ContentWrapper>
-                {!!glowEffect.glowType && (
-                  <GrowBackground
-                    glowType={glowEffect.glowType}
-                    glowPosition={getGlowPosition(metric, glowEffect.glowFixed)}
-                    glowOpacity={glowEffect.glowOpacity}
-                  />
-                )}
+                <GlowBackground />
               </InnerWrapper>
-              {isMobile && load && <ModeLine metric={metric} />}
+              {isMobile && load && <ModeLine />}
             </Wrapper>
           </ScrollWrapper>
         </Skeleton>

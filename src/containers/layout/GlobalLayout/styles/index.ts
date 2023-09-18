@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 
-import type { TColorName, TMetric, TGlowEffect } from '@/spec'
+import type { TColorName, TMetric } from '@/spec'
 import { COLORS } from '@/constant/colors'
-import GLOW_EFFECTS from '@/constant/glow_effect'
 
 import css, { theme } from '@/css'
 
@@ -31,26 +30,6 @@ export const ScrollWrapper = styled.div<{ noMobilePadding: boolean }>`
 
   ${({ noMobilePadding }) =>
     noMobilePadding ? 'width: 100% !important; margin-left: 0 !important;' : ''};
-`
-
-export const GrowBackground = styled.div<TGlowEffect>`
-  background: ${({ glowType }) => `
-    radial-gradient(circle at ${GLOW_EFFECTS[glowType].LEFT.X} ${GLOW_EFFECTS[glowType].LEFT.Y}, ${GLOW_EFFECTS[glowType].LEFT.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].LEFT.RADIUS}),
-    radial-gradient(circle at ${GLOW_EFFECTS[glowType].RIGHT1.X} ${GLOW_EFFECTS[glowType].RIGHT1.Y}, ${GLOW_EFFECTS[glowType].RIGHT1.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].RIGHT1.RADIUS}),
-    radial-gradient(circle at ${GLOW_EFFECTS[glowType].MAIN.X} ${GLOW_EFFECTS[glowType].MAIN.Y}, ${GLOW_EFFECTS[glowType].MAIN.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].MAIN.RADIUS}),
-    radial-gradient(circle at ${GLOW_EFFECTS[glowType].RIGHT2.X} ${GLOW_EFFECTS[glowType].RIGHT2.Y}, ${GLOW_EFFECTS[glowType].RIGHT2.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].RIGHT1.RADIUS});
-  `};
-
-  filter: saturate(1.2);
-
-  inset: 0;
-  position: ${({ glowPosition }) => glowPosition};
-  // width & height must be 100%, without it the wechat will not work
-  height: ${({ glowPosition }) => (glowPosition === 'absolute' ? '600px' : '100%')};
-  width: 100%;
-  opacity: ${({ glowOpacity }) => `${parseFloat(glowOpacity)}` || 1};
-
-  z-index: -1;
 `
 
 type TInner = { metric: TMetric; hasTopbar: boolean; topbarBg: TColorName; hasShadow: boolean }

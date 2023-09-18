@@ -1,9 +1,11 @@
-import { FC, Fragment, memo, useEffect } from 'react'
+import { FC, Fragment, useEffect } from 'react'
+import { observer } from 'mobx-react'
 // import useMobileDetect from '@groupher/use-mobile-detect-hook'
 import { Toaster } from 'sonner'
 
 import type { TMetric } from '@/spec'
 import useShortcut from '@/hooks/useShortcut'
+import useMetric from '@/hooks/useMetric'
 
 import Drawer from '@/containers/tool/Drawer'
 import Subscriber from '@/containers/tool/Subscriber'
@@ -13,15 +15,12 @@ import ErrorBox from '@/containers/tool/ErrorBox'
 import { logBuddha } from './logic'
 // import { Drawer } from './dynamic'
 
-type TProps = {
-  metric: TMetric
-}
-
-const Addon: FC<TProps> = ({ metric }) => {
+const Addon: FC = () => {
   // const { isMobile } = useMobileDetect()
 
   useEffect(() => logBuddha(), [])
   useShortcut('Control+P', () => console.log('# Ctrl P pressed'))
+  const metric = useMetric()
 
   return (
     <Fragment>
@@ -38,4 +37,4 @@ const Addon: FC<TProps> = ({ metric }) => {
   )
 }
 
-export default memo(Addon)
+export default observer(Addon)

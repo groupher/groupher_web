@@ -11,6 +11,8 @@ import { merge, pickBy } from 'ramda'
 import type { TAccount, TRoute, TThread, TArticle } from '@/spec'
 
 import EVENT from '@/constant/event'
+import METRIC from '@/constant/metric'
+
 import { T, markStates, Instance } from '@/utils/mobx'
 import { toast } from '@/utils/helper'
 import { send } from '@/utils/signal'
@@ -98,6 +100,7 @@ const rootStore = T.model({
   route: T.opt(RouteStore, {}),
   viewing: T.opt(ViewingStore, {}),
   comments: T.opt(CommentsStore, {}),
+  metric: T.opt(T.string, METRIC.COMMUNITY),
   // @ts-ignore TODO:
   theme: T.opt(ThemeStore, ThemeDefaults),
   locale: T.opt(T.enum('locale', ['zh', 'en']), 'zh'),

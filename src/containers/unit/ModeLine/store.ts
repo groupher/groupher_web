@@ -7,15 +7,14 @@ import { values } from 'ramda'
 
 import type { TRootStore, TViewing, TArticle, TArticleFilter, TGroupedTags, TTag } from '@/spec'
 
-import METRIC from '@/constant/metric'
 import TYPE from '@/constant/type'
+import METRIC from '@/constant/metric'
 
 import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
 
 const ModeLine = T.model('ModeLine', {
   topBarVisiable: T.opt(T.bool, false),
   activeMenu: T.opt(T.enum([...values(TYPE.MM_TYPE), '']), ''),
-  metric: T.opt(T.enum(values(METRIC)), METRIC.COMMUNITY),
 })
   .views((self) => ({
     get isMobile(): boolean {
@@ -48,10 +47,11 @@ const ModeLine = T.model('ModeLine', {
     },
     get isTopBarVisiable(): boolean {
       const slf = self as TStore
-
-      const { isMobile, topBarVisiable, metric, isArticleDigestInViewport } = slf
       const root = getParent(self) as TRootStore
-      const { bodyScrollDirection } = root.globalLayout
+      const { metric, globalLayout } = root
+
+      const { isMobile, topBarVisiable, isArticleDigestInViewport } = slf
+      const { bodyScrollDirection } = globalLayout
 
       if (metric === METRIC.COMMUNITY && bodyScrollDirection === 'down') {
         return topBarVisiable

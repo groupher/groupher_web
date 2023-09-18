@@ -2,15 +2,17 @@
  * ArticleViewer
  */
 
-import { FC, memo, Fragment, useCallback, useState, useEffect } from 'react'
+import { FC, Fragment, useCallback, useState, useEffect } from 'react'
+import { observer } from 'mobx-react'
 import Balancer from 'react-wrap-balancer'
 
-import type { TPost, TBroadcastConfig } from '@/spec'
+import type { TPost } from '@/spec'
 import { buildLog } from '@/utils/logger'
 import { scrollDrawerToTop } from '@/utils/dom'
 import { BROADCAST_ARTICLE_LAYOUT } from '@/constant/layout'
 
 import ArticleFooter from '@/containers/unit/ArticleFooter'
+import useBroadcast from '@/hooks/useBroadcast'
 
 import GotoTop from '@/widgets/GotoTop'
 import ViewportTracker from '@/widgets/ViewportTracker'
@@ -39,10 +41,11 @@ const log = buildLog('C:ArticleViewer')
 type TProps = {
   article: TPost
   loading: boolean
-  broadcastConfig: TBroadcastConfig
 }
 
-const PostViewer: FC<TProps> = ({ article, loading, broadcastConfig }) => {
+const PostViewer: FC<TProps> = ({ article, loading }) => {
+  const broadcastConfig = useBroadcast()
+
   const [fixedHeaderVisible, setFixedHeaderVisible] = useState(false)
   const [footerVisible, setFooterVisible] = useState(false)
 
@@ -105,4 +108,4 @@ const PostViewer: FC<TProps> = ({ article, loading, broadcastConfig }) => {
   )
 }
 
-export default memo(PostViewer)
+export default observer(PostViewer)

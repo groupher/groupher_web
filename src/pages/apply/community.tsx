@@ -6,7 +6,6 @@ import { useStore } from '@/stores/init'
 import { Provider } from 'mobx-react'
 
 import { ROUTE } from '@/constant/route'
-import METRIC from '@/constant/metric'
 
 import { ssrFetchPrepare, ssrBaseStates, refreshIfneed, ssrError, log } from '@/utils'
 
@@ -48,7 +47,7 @@ const ApplyCommunityPage = (props) => {
 
   return (
     <Provider store={store}>
-      <GlobalLayout metric={METRIC.COMMUNITY}>
+      <GlobalLayout>
         <CommunityEditor />
       </GlobalLayout>
     </Provider>

@@ -39,6 +39,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const initProps = {
     ...ssrBaseStates(resp),
+    metric: METRIC.ARTICLE_EDITOR,
     viewing: {
       viewingThread: ARTICLE_THREAD.POST,
     },
@@ -52,7 +53,7 @@ export const PublishPostPage = (props) => {
 
   return (
     <Provider store={store}>
-      <GlobalLayout metric={METRIC.ARTICLE_EDITOR}>
+      <GlobalLayout>
         <ArticleEditor />
       </GlobalLayout>
     </Provider>

@@ -2,7 +2,7 @@ import { FC, useState } from 'react'
 import { observer } from 'mobx-react'
 import Router from 'next/router'
 
-import type { TArticle, TMetric } from '@/spec'
+import type { TArticle } from '@/spec'
 
 import useViewingThread from '@/hooks/useViewingThread'
 // import useViewingCommunity from '@/hooks/useViewingCommunity'
@@ -32,7 +32,6 @@ type TProps = {
   testid?: string
   isMobile: boolean
   show: boolean
-  metric: TMetric
   activeMenu: string // TModelineType
   article: TArticle | null
 }
@@ -41,7 +40,6 @@ const ArticleLayout: FC<TProps> = ({
   testid = 'modeline-bottom-bar',
   isMobile,
   show,
-  metric,
   article = null,
   activeMenu,
 }) => {

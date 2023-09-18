@@ -4,12 +4,14 @@
  *
  */
 
-import { FC, memo, Fragment } from 'react'
+import { FC, Fragment } from 'react'
+import { observer } from 'mobx-react'
 
-import type { TMetric, TBroadcastConfig } from '@/spec'
 import { ANCHOR } from '@/constant/dom'
 import { BROADCAST_LAYOUT } from '@/constant/layout'
 import { buildLog } from '@/utils/logger'
+import useMetric from '@/hooks/useMetric'
+import useBroadcast from '@/hooks/useBroadcast'
 
 import {
   Wrapper,
@@ -28,14 +30,15 @@ const log = buildLog('w:Broadcast:index')
 
 type TProps = {
   testid?: string
-  settings: TBroadcastConfig
-  metric: TMetric
 }
 
 const DETAIL_TEXT =
   'Groupher.com, 为中小产品团队提供社区反馈服务，如果你对此有兴趣，欢迎加 v(mydearxym) 详聊。'
 
-const Broadcast: FC<TProps> = ({ testid = 'banner-notify', metric, settings }) => {
+const Broadcast: FC<TProps> = ({ testid = 'banner-notify' }) => {
+  const metric = useMetric()
+  const settings = useBroadcast()
+
   const { broadcastBg: bg, broadcastLayout: layout, broadcastEnable: enabled } = settings
   if (!enabled) return null
 
@@ -67,4 +70,4 @@ const Broadcast: FC<TProps> = ({ testid = 'banner-notify', metric, settings }) =
   )
 }
 
-export default memo(Broadcast)
+export default observer(Broadcast)

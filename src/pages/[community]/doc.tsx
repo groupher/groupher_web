@@ -4,7 +4,6 @@ import { Provider } from 'mobx-react'
 
 import { HCN } from '@/constant/name'
 import { THREAD } from '@/constant/thread'
-import METRIC from '@/constant/metric'
 import { useStore } from '@/stores/init'
 
 import {
@@ -105,7 +104,7 @@ const CommunityDocPage = (props) => {
 
   return (
     <Provider store={store}>
-      <GlobalLayout metric={METRIC.COMMUNITY}>
+      <GlobalLayout>
         <DocContent />
       </GlobalLayout>
     </Provider>

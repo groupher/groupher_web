@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 import { observer } from 'mobx-react'
 
-import type { TArticle, TMetric, TTag, TGroupedTags } from '@/spec'
+import type { TArticle, TTag, TGroupedTags } from '@/spec'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import { scrollToHeader } from '@/utils/dom'
@@ -23,7 +23,6 @@ type TProps = {
   testid?: string
   isMobile: boolean
   show: boolean
-  metric: TMetric
   activeMenu: string // TModelineType
   article: TArticle | null
   activeTag: TTag
@@ -34,7 +33,6 @@ const CommunityLayout: FC<TProps> = ({
   testid = 'modeline-bottom-bar',
   isMobile,
   show,
-  metric,
   article = null,
   activeMenu,
   activeTag,
