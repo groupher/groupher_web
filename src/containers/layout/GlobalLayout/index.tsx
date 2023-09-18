@@ -14,8 +14,9 @@ import { TOPBAR_LAYOUT } from '@/constant/layout'
 
 import type { TMetric } from '@/spec'
 import useWallpaper from '@/hooks/useWallpaper'
+import useGlow from '@/hooks/useGlow'
+
 import { bond } from '@/utils/mobx'
-import { communityChanged } from '@/utils/signal'
 
 import ThemePalette from '@/containers/layout/ThemePalette'
 import ModeLine from '@/containers/unit/ModeLine'
@@ -57,23 +58,12 @@ const GlobalLayoutContainer: FC<TProps> = ({ globalLayout: store, children, metr
 
   const router = useRouter()
   const { hasShadow } = useWallpaper()
+  const glowEffect = useGlow()
 
   const [load, setLoad] = useState(false)
   const [showDashboardAlertUI, setShowDashboardAlertUI] = useState(false)
 
-  const {
-    curCommunity,
-    isMobile,
-    glowEffect,
-    globalLayout,
-    broadcastConfig,
-    showDashboardAlert,
-    seo,
-  } = store
-
-  useEffect(() => {
-    communityChanged(curCommunity)
-  }, [curCommunity, curCommunity?.slug])
+  const { isMobile, globalLayout, broadcastConfig, showDashboardAlert } = store
 
   useEffect(() => {
     const handleRouteComplete = () => loadDemoSetting()
@@ -103,7 +93,7 @@ const GlobalLayoutContainer: FC<TProps> = ({ globalLayout: store, children, metr
           <Wallpaper />
           <ScrollWrapper noMobilePadding={metric === METRIC.HOME}>
             <Wrapper>
-              <SEO metric={metric} data={seo} />
+              <SEO metric={metric} />
               <InnerWrapper
                 metric={metric}
                 hasShadow={hasShadow}

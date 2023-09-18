@@ -4,20 +4,9 @@
  */
 import { pick } from 'ramda'
 
-import type {
-  TRootStore,
-  TAccount,
-  TC11N,
-  TCommunity,
-  TGlobalLayout,
-  TGlowEffect,
-  TBroadcastConfig,
-  TDashboardSEOConfig,
-} from '@/spec'
+import type { TRootStore, TGlobalLayout, TBroadcastConfig } from '@/spec'
 
-import { SEO_KEYS } from '@/constant/seo'
-
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance } from '@/utils/mobx'
 
 const Platform = T.model('Platform', {
   isChrome: T.opt(T.bool, true),
@@ -35,36 +24,6 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
   bodyScrollDirection: T.opt(T.enum(['up', 'down']), 'up'),
 })
   .views((self) => ({
-    get accountInfo(): TAccount {
-      const root = getParent(self) as TRootStore
-      return root.account.accountInfo
-    },
-    get c11n(): TC11N {
-      const root = getParent(self) as TRootStore
-      return root.account.c11n
-    },
-    get curCommunity(): TCommunity {
-      const root = getParent(self) as TRootStore
-
-      return toJS(root.viewing.community)
-    },
-    get seo(): TDashboardSEOConfig {
-      const root = getParent(self) as TRootStore
-
-      return pick(SEO_KEYS, root.dashboardThread)
-    },
-    get glowEffect(): TGlowEffect {
-      const root = getParent(self) as TRootStore
-      const { wallpaper } = root.wallpaperEditor
-      const { uiSettings } = root.dashboardThread
-      const { glowType, glowFixed, glowOpacity } = uiSettings
-
-      return {
-        glowType: wallpaper && glowType,
-        glowFixed,
-        glowOpacity,
-      }
-    },
     get broadcastConfig(): TBroadcastConfig {
       const root = getParent(self) as TRootStore
 

@@ -5,19 +5,21 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react'
 import Head from 'next/head'
 
-import type { TMetric, TDashboardSEOConfig } from '@/spec'
+import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
 import { SITE_URL, SITE_SLOGAN, SITE_NAME } from '@/config'
+
+import useSEO from '@/hooks/useSEO'
 // import  METRIC  from '@/constant/metric'
 
 type TProps = {
   metric: TMetric
-  data: TDashboardSEOConfig
 }
 
-const SEO: FC<TProps> = ({ metric, data }) => {
+const SEO: FC<TProps> = ({ metric }) => {
   const {
     seoEnable,
     ogTitle,
@@ -32,7 +34,7 @@ const SEO: FC<TProps> = ({ metric, data }) => {
     twTitle,
     twImage,
     twDescription,
-  } = data
+  } = useSEO()
 
   switch (metric) {
     case METRIC.HOME: {
@@ -86,4 +88,4 @@ const SEO: FC<TProps> = ({ metric, data }) => {
   }
 }
 
-export default SEO
+export default observer(SEO)
