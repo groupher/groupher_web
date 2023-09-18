@@ -3,7 +3,6 @@ import { observer } from 'mobx-react'
 // import useMobileDetect from '@groupher/use-mobile-detect-hook'
 import { Toaster } from 'sonner'
 
-import type { TMetric } from '@/spec'
 import useShortcut from '@/hooks/useShortcut'
 import useMetric from '@/hooks/useMetric'
 
