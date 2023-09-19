@@ -15,3 +15,15 @@ export const TAB_OPTIONS = [
     slug: TAB.UPLOAD,
   },
 ]
+
+export const QUERY_KEYS = [
+  'wallpaper',
+  'wallpaperType',
+  'direction',
+  'customColorValue',
+  'bgSize',
+  'uploadBgImage',
+  'hasPattern',
+  'hasBlur',
+  'hasShadow',
+]

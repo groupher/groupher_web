@@ -8,7 +8,6 @@ import { Wrapper } from './styles/wallpaper'
 
 const Wallpaper: FC = () => {
   const theWallpaper = useWallpaper()
-  console.log('## theWallpaper: ', theWallpaper)
 
   const { wallpapers, wallpaper, customWallpaper } = theWallpaper
   const { background, effect } = parseWallpaper(wallpapers, wallpaper, customWallpaper)

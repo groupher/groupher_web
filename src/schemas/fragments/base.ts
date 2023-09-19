@@ -31,6 +31,17 @@ export const customLink = `
   groupIndex
   index
 `
+export const wallpaper = `
+  wallpaperType
+  wallpaper
+  direction
+  customColorValue
+  bgSize
+  uploadBgImage
+  hasPattern
+  hasBlur
+  hasShadow
+`
 export const tag = `
   id
   title

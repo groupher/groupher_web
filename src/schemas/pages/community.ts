@@ -45,6 +45,9 @@ export const community = `
           logo
           desc
         }
+        wallpaper {
+          ${F.wallpaper}
+        }
         headerLinks {
           ${F.customLink}
         }

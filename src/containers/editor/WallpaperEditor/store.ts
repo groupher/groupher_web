@@ -10,11 +10,13 @@ import type {
   TWallpaperPic,
   TWallpaperGradientDir,
   TCustomWallpaper,
+  TCommunity,
+  TRootStore,
 } from '@/spec'
 import { GRADIENT_WALLPAPER, PATTERN_WALLPAPER, WALLPAPER_TYPE } from '@/constant/wallpaper'
 
 import { buildLog } from '@/utils/logger'
-import { T, markStates, Instance } from '@/utils/mobx'
+import { T, markStates, Instance, getParent, toJS } from '@/utils/mobx'
 
 import type { TWallpaperData } from './spec'
 import { TAB } from './constant'
@@ -40,12 +42,18 @@ const InitWallpaper = T.model('WallpaperInit', initWallpaperModalFields)
 
 const WallpaperEditor = T.model('WallpaperEditor', {
   ...initWallpaperModalFields,
+  loading: T.opt(T.bool, false),
   tab: T.opt(T.enum(values(TAB)), TAB.BUILDIN),
   customColorValue: T.opt(T.str, ''),
   uploadBgImage: T.opt(T.str, ''),
   initWallpaper: T.opt(InitWallpaper, {}),
 })
   .views((self) => ({
+    get curCommunity(): TCommunity {
+      const root = getParent(self) as TRootStore
+      return toJS(root.viewing.community)
+    },
+
     get isTouched(): boolean {
       const slf = self as TStore
       const init = slf.initWallpaper

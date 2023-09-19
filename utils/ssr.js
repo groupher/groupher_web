@@ -236,6 +236,18 @@ const parseDashboardAlias = (nameAlias) => {
   return reject((item) => item.slug === '', [...nameAlias, ...unChangedAlias])
 }
 
+export const ssrParseWallpaper = (community) => {
+  const { dashboard } = community
+  const { wallpaper } = dashboard
+
+  return {
+    ...wallpaper,
+    initWallpaper: {
+      ...wallpaper,
+    },
+  }
+}
+
 export const ssrParseDashboard = (community) => {
   const { dashboard, moderators } = community
   const {

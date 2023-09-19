@@ -453,7 +453,7 @@ export const removeMediaReport = (index: number): void => {
 // ###############################
 const _handleDone = () => {
   const field = store.savingField
-  toast('设置已经保存')
+  toast('设置已保存')
 
   let initSettings
 

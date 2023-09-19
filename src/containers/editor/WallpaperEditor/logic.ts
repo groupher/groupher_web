@@ -1,17 +1,19 @@
 import { useEffect } from 'react'
-// import { } from 'ramda'
+import { pick } from 'ramda'
 
 import type { TWallpaperGradientDir } from '@/spec'
 import EVENT from '@/constant/event'
 import { WALLPAPER_TYPE } from '@/constant/wallpaper'
 
+import { toast } from '@/utils/helper'
 import { buildLog } from '@/utils/logger'
 import { closeDrawer } from '@/utils/signal'
 import asyncSuit from '@/utils/async'
 
-// import S from './schma'
+import S from './schema'
 import type { TTab } from './spec'
 import type { TStore } from './store'
+import { QUERY_KEYS } from './constant'
 
 const { SR71, $solver, asyncRes } = asyncSuit
 const sr71$ = new SR71({
@@ -68,10 +70,32 @@ export const close = (): void => {
   closeDrawer()
 }
 
+export const onSave = (): void => {
+  const { curCommunity } = store
+  const community = curCommunity.slug
+
+  const args = { community, ...pick(QUERY_KEYS, store) }
+
+  store.mark({ loading: true })
+
+  sr71$.mutate(S.updateDashboardWallpaper, args)
+}
+
 const DataResolver = [
   {
     match: asyncRes(EVENT.DRAWER.AFTER_CLOSE),
     action: () => store.reset(),
+  },
+  {
+    match: asyncRes('updateDashboardWallpaper'),
+    action: ({ updateDashboardWallpaper }) => {
+      store.mark({
+        initWallpaper: pick(QUERY_KEYS, updateDashboardWallpaper.dashboard.wallpaper),
+        loading: false,
+      })
+      closeDrawer()
+      toast('壁纸已保存')
+    },
   },
 ]
 
