@@ -7,7 +7,7 @@ import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 import TYPE from '@/constant/type'
 
-import { titleCase, plural } from '@/utils/fmt'
+import { titleCase, plural } from '@/fmt'
 import { previewArticle, errRescue } from '@/signal'
 import { buildLog } from '@/logger'
 import asyncSuit from '@/utils/async'

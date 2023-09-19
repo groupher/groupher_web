@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TColorName, TTestable } from '@/spec'
 import css, { theme } from '@/css'
-import { camelize } from '@/utils/fmt'
+import { camelize } from '@/fmt'
 
 type TWrapper = TTestable & { color?: string }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({

@@ -8,7 +8,7 @@ import { FC, memo } from 'react'
 
 import type { TGallery } from '@/spec'
 import { ICON, ASSETS_ENDPOINT } from '@/config'
-import { cutRest } from '@/utils/fmt'
+import { cutRest } from '@/fmt'
 import { buildLog } from '@/logger'
 
 import IconText from '@/widgets/IconText'

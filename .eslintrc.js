@@ -31,6 +31,7 @@ module.exports = {
           '@/mobx': 'utils/mobx',
           '@/dom': 'utils/dom',
           '@/logger': 'utils/logger',
+          '@/fmt': 'utils/fmt',
           '@/hooks': 'src/hooks',
           '@/hoc': 'src/hoc',
           '@/stores': 'src/stores',

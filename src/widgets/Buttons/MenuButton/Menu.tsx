@@ -6,7 +6,7 @@ import type { TMenuOption } from '@/spec'
 
 import { ICON } from '@/config'
 import SVG from '@/constant/svg'
-import { cutRest } from '@/utils/fmt'
+import { cutRest } from '@/fmt'
 
 import {
   Wrapper,

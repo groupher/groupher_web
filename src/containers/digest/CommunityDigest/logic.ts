@@ -8,7 +8,7 @@ import ERR from '@/constant/err'
 import TYPE from '@/constant/type'
 
 import asyncSuit from '@/utils/async'
-import { singular } from '@/utils/fmt'
+import { singular } from '@/fmt'
 import { errRescue, listUsers, sessionChanged } from '@/signal'
 import { buildLog } from '@/logger'
 

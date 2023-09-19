@@ -4,7 +4,7 @@ import type { TPost } from '@/spec'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 import { ARTICLE_CAT } from '@/constant/gtd'
 
-import { cutRest } from '@/utils/fmt'
+import { cutRest } from '@/fmt'
 
 import ArticleCatState from '@/widgets/ArticleCatState'
 import Upvote from '@/widgets/Upvote'

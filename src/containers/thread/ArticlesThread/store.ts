@@ -24,7 +24,7 @@ import { ARTICLE_THREAD } from '@/constant/thread'
 
 import { T, markStates, getParent, Instance, toJS } from '@/mobx'
 import { nilOrEmpty } from '@/utils/validator'
-import { plural } from '@/utils/fmt'
+import { plural } from '@/fmt'
 
 import { PagedPosts, ArticlesFilter, emptyPagi } from '@/model'
 

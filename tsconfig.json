@@ -39,6 +39,8 @@
       "@/dom/*": ["utils/dom/*"],
       "@/logger": ["utils/logger"],
       "@/logger/*": ["utils/logger/*"],
+      "@/fmt": ["utils/fmt"],
+      "@/fmt/*": ["utils/fmt/*"],
       "@/css": ["utils/css"],
       "@/css/*": ["utils/css/*"],
       "@/schemas": ["src/schemas"],

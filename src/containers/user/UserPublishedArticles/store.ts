@@ -10,7 +10,7 @@ import { ARTICLE_THREAD } from '@/constant/thread'
 
 import { buildLog } from '@/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/mobx'
-import { plural } from '@/utils/fmt'
+import { plural } from '@/fmt'
 
 import { PagedPosts, emptyPagi } from '@/model'
 

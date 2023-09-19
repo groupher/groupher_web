@@ -6,7 +6,7 @@ import { ARTICLE_THREAD } from '@/constant/thread'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 
-import { plural } from '@/utils/fmt'
+import { plural } from '@/fmt'
 import asyncSuit from '@/utils/async'
 import { send, errRescue } from '@/signal'
 import { buildLog } from '@/logger'

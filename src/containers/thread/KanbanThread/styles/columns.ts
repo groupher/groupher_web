@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
 import css, { theme } from '@/css'
-import { camelize } from '@/utils/fmt'
+import { camelize } from '@/fmt'
 
 import GtdWipSVG from '@/icons/GtdWip'
 import GtdDoneSVG from '@/icons/GtdDone'

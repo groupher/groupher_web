@@ -4,7 +4,7 @@ import type { TSpace } from '@/spec'
 import { COLOR_NAME } from '@/constant/colors'
 
 import css, { theme } from '@/css'
-import { camelize } from '@/utils/fmt'
+import { camelize } from '@/fmt'
 
 import type { TProps } from '../../ArrowButton'
 

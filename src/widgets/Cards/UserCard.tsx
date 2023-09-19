@@ -8,7 +8,7 @@ import { observer } from 'mobx-react'
 import type { TAccount, TUser } from '@/spec'
 import useAvatarLayout from '@/hooks/useAvatarLayout'
 
-import { cutRest } from '@/utils/fmt'
+import { cutRest } from '@/fmt'
 
 import {
   Wrapper,

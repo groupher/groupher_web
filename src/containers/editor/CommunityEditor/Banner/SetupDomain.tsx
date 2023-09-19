@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 import { isEmpty } from 'ramda'
 
-import { cutRest } from '@/utils/fmt'
+import { cutRest } from '@/fmt'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 

@@ -5,7 +5,7 @@ import type { TUser, TArticleThread } from '@/spec'
 
 import { ARTICLE_THREAD } from '@/constant/thread'
 
-import { titleCase, plural } from '@/utils/fmt'
+import { titleCase, plural } from '@/fmt'
 import { Trans } from '@/utils/i18n'
 
 import { SpaceGrow } from '@/widgets/Common'

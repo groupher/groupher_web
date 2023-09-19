@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { prettyNum } from '@/utils/fmt'
+import { prettyNum } from '@/fmt'
 
 import NoteTip from '@/widgets/NoteTip'
 

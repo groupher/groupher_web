@@ -7,7 +7,7 @@ import EVENT from '@/constant/event'
 import TYPE from '@/constant/type'
 
 import asyncSuit from '@/utils/async'
-import { plural } from '@/utils/fmt'
+import { plural } from '@/fmt'
 import { send } from '@/signal'
 import { buildLog } from '@/logger'
 

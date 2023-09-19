@@ -8,7 +8,7 @@ import ERR from '@/constant/err'
 
 import asyncSuit from '@/utils/async'
 import BStore from '@/utils/bstore'
-import { titleCase } from '@/utils/fmt'
+import { titleCase } from '@/fmt'
 import { errRescue, authWarn } from '@/signal'
 import { buildLog } from '@/logger'
 import { scrollIntoEle } from '@/dom'

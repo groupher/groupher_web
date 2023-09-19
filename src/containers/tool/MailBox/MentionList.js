@@ -3,7 +3,7 @@ import { isEmpty } from 'ramda'
 
 import EmptyLabel from '@/widgets/EmptyLabel'
 
-import { cutRest } from '@/utils/fmt'
+import { cutRest } from '@/fmt'
 import {
   Wrapper,
   ListsWrapper,
@@ -79,9 +79,7 @@ const MentionList = ({ data }) => {
               <MessageHeader>
                 <UserLabel onClick={() => previewUser(item.fromUser)}>
                   <UserAvatar src={item.fromUser.avatar} />
-                  <UserNickname>
-                    {cutRest(item.fromUser.nickname, 8)}
-                  </UserNickname>
+                  <UserNickname>{cutRest(item.fromUser.nickname, 8)}</UserNickname>
                 </UserLabel>
                 <TitleHeader>
                   <TypeLabel>在帖子</TypeLabel>

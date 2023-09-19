@@ -4,7 +4,7 @@ import type { TTestable, TSpace, TColorName, TActive } from '@/spec'
 
 import ArrowSVG from '@/icons/ArrowSolid'
 
-import { camelize } from '@/utils/fmt'
+import { camelize } from '@/fmt'
 import css, { theme } from '@/css'
 
 type TWrapper = TTestable & TSpace

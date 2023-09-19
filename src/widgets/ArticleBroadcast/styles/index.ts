@@ -7,7 +7,7 @@ import BroadcastSVG from '@/icons/Broadcast'
 
 // import Img from '@/Img'
 import css, { theme } from '@/css'
-import { camelize } from '@/utils/fmt'
+import { camelize } from '@/fmt'
 
 type TWrapper = { color: TColorName } & TSpace & TTestable
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({

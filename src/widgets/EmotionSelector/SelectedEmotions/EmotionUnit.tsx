@@ -7,7 +7,7 @@ import { buildLog } from '@/logger'
 
 import type { TEmotion, TSimpleUser, TEmotionType } from '@/spec'
 
-import { titleCase } from '@/utils/fmt'
+import { titleCase } from '@/fmt'
 import Tooltip from '@/widgets/Tooltip'
 import AnimatedCount from '@/widgets/AnimatedCount'
 

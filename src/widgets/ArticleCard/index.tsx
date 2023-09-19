@@ -4,7 +4,7 @@ import { observer } from 'mobx-react'
 import type { TArticle } from '@/spec'
 import { THREAD } from '@/constant/thread'
 import SIZE from '@/constant/size'
-import { cutRest } from '@/utils/fmt'
+import { cutRest } from '@/fmt'
 import { previewArticle } from '@/signal'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 

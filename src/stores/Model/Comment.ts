@@ -1,7 +1,7 @@
 import { values, reduce, merge } from 'ramda'
 
 import EMOTION from '@/constant/emotion'
-import { titleCase } from '@/utils/fmt'
+import { titleCase } from '@/fmt'
 import { T } from '@/mobx'
 
 import { SimpleUser } from './Common'
