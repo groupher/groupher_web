@@ -5,7 +5,7 @@
  */
 
 import { FC, memo, useState, useCallback } from 'react'
-import { authWarn } from '@/utils/signal'
+import { authWarn } from '@/signal'
 import useAccount from '@/hooks/useAccount'
 
 import type { TUpvoteLayout } from '@/spec'

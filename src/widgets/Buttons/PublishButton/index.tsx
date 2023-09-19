@@ -17,7 +17,7 @@ import SVG from '@/constant/svg'
 
 import Tooltip from '@/widgets/Tooltip'
 import { buildLog } from '@/logger'
-// import { authWarn } from '@/utils/signal'
+// import { authWarn } from '@/signal'
 import useAccount from '@/hooks/useAccount'
 
 import { MORE_MENU } from './constant'

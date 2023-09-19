@@ -9,7 +9,7 @@ import SIZE from '@/constant/size'
 import useAccount from '@/hooks/useAccount'
 
 import { buildLog } from '@/logger'
-import { authWarn } from '@/utils/signal'
+import { authWarn } from '@/signal'
 
 import FollowingBtn from './FollowingBtn'
 import FollowedBtn from './FollowedBtn'

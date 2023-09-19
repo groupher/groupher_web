@@ -10,7 +10,7 @@ import { ICON } from '@/config'
 
 import type { TUser } from '@/spec'
 import { buildLog } from '@/logger'
-import { authWarn } from '@/utils/signal'
+import { authWarn } from '@/signal'
 
 import Tooltip from '@/widgets/Tooltip'
 import UserCard from '@/widgets/Cards/UserCard'
