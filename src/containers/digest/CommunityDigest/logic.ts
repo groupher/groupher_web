@@ -7,7 +7,7 @@ import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 import TYPE from '@/constant/type'
 
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 import { singular } from '@/fmt'
 import { errRescue, listUsers, sessionChanged } from '@/signal'
 import { buildLog } from '@/logger'

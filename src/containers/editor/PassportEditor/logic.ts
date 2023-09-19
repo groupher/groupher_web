@@ -5,7 +5,7 @@ import { uniq, reject, keys } from 'ramda'
 import EVENT from '@/constant/event'
 
 import { buildLog } from '@/logger'
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 import { send, errRescue, closeDrawer } from '@/signal'
 import { toJS } from '@/mobx'
 import ERR from '@/constant/err'

@@ -4,7 +4,7 @@ import { isEmpty } from 'ramda'
 import type { TCommunity, TTag, TInput, TThread } from '@/spec'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 import { errRescue } from '@/signal'
 import { buildLog } from '@/logger'
 

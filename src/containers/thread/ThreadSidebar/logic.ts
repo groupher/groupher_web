@@ -8,7 +8,7 @@ import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 import TYPE from '@/constant/type'
 
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 import { errRescue, listUsers, callGEditor, callSyncSelector } from '@/signal'
 import { buildLog } from '@/logger'
 

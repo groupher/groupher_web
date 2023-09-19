@@ -4,7 +4,7 @@ import { isEmpty } from 'ramda'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 import { errorForHuman } from '@/utils/errors'
 import { Global } from '@/helper'
 import { send, errRescue, toast } from '@/signal'

@@ -6,7 +6,7 @@ import ERR from '@/constant/err'
 import EVENT from '@/constant/event'
 import TYPE from '@/constant/type'
 
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 import { buildLog } from '@/logger'
 import { Global } from '@/helper'
 import { plural } from '@/fmt'

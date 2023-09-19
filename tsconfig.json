@@ -43,6 +43,8 @@
       "@/fmt/*": ["utils/fmt/*"],
       "@/helper": ["utils/helper"],
       "@/helper/*": ["utils/helper/*"],
+      "@/async": ["utils/async"],
+      "@/async/*": ["utils/async/*"],
       "@/mock": ["utils/mock"],
       "@/mock/*": ["utils/mock/*"],
       "@/css": ["utils/css"],

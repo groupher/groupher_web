@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import ERR from '@/constant/err'
 
 import { buildLog } from '@/logger'
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 import { errRescue } from '@/signal'
 
 import S from './schema'

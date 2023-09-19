@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import copy from 'copy-to-clipboard'
 
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 import { openShareWindow } from '@/helper'
 import { buildLog } from '@/logger'
 import { toast } from '@/signal'

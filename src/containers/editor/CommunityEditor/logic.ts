@@ -6,7 +6,7 @@ import type { TEditValue } from '@/spec'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 import { sessionChanged, errRescue } from '@/signal'
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 import { buildLog } from '@/logger'
 import { updateEditing } from '@/mobx'
 

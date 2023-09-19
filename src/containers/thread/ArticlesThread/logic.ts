@@ -8,7 +8,7 @@ import ERR from '@/constant/err'
 import TYPE from '@/constant/type'
 
 import { scrollToHeader } from '@/dom'
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 import { buildLog } from '@/logger'
 import { plural } from '@/fmt'
 import { errRescue, previewArticle, authWarn } from '@/signal'

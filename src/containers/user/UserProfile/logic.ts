@@ -7,7 +7,7 @@ import TYPE from '@/constant/type'
 
 import { errRescue } from '@/signal'
 import { buildLog } from '@/logger'
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 
 import S from './schema'
 import type { TStore } from './store'

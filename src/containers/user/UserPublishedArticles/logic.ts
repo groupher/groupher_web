@@ -10,7 +10,7 @@ import TYPE from '@/constant/type'
 import { titleCase, plural } from '@/fmt'
 import { previewArticle, errRescue } from '@/signal'
 import { buildLog } from '@/logger'
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 import { matchPublishedArticles } from '@/utils/macros'
 
 import S from './schema'

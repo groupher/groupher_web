@@ -6,7 +6,7 @@ import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 
 import { buildLog } from '@/logger'
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 import { send, errRescue, closeDrawer } from '@/signal'
 import { CHANGE_MODE } from '@/constant/mode'
 

@@ -6,7 +6,7 @@ import ERR from '@/constant/err'
 import { isElementInViewport } from '@/dom'
 import { errRescue } from '@/signal'
 import { buildLog } from '@/logger'
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 
 import type { TStore } from './store'
 import S from './schema'

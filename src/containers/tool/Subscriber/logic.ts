@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 
 import { buildLog } from '@/logger'
 import EVENT from '@/constant/event'
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 
 // import S from './schma'
 import type { TBy } from './spec'

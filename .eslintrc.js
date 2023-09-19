@@ -34,6 +34,7 @@ module.exports = {
           '@/fmt': 'utils/fmt',
           '@/helper': 'utils/helper',
           '@/mock': 'utils/mock',
+          '@/async': 'utils/async',
           '@/hooks': 'src/hooks',
           '@/hoc': 'src/hoc',
           '@/stores': 'src/stores',

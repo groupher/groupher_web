@@ -6,7 +6,7 @@ import { ANCHOR } from '@/constant/dom'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 import BStore from '@/utils/bstore'
 import { titleCase } from '@/fmt'
 import { errRescue, authWarn } from '@/signal'

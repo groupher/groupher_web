@@ -21,7 +21,7 @@ import { DASHBOARD_ROUTE, DASHBOARD_BASEINFO_ROUTE, DASHBOARD_SEO_ROUTE } from '
 
 import { buildLog } from '@/logger'
 import { updateEditing, toJS } from '@/mobx'
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 import { toast, errRescue } from '@/signal'
 
 import type { TStore } from '../store'

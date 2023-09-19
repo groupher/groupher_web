@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 import { send, errRescue } from '@/signal'
 import { buildLog } from '@/logger'
 

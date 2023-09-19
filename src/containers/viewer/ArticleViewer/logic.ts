@@ -7,7 +7,7 @@ import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 import { buildLog } from '@/logger'
 import { errRescue, authWarn } from '@/signal'
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 import { scrollDrawerToTop } from '@/dom'
 import { matchArticleUpvotes, matchArticles } from '@/utils/macros'
 

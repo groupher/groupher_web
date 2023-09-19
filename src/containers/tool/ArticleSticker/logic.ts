@@ -5,7 +5,7 @@ import EVENT from '@/constant/event'
 
 import { authWarn, addCollection } from '@/signal'
 import { buildLog } from '@/logger'
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 import { matchArticleUpvotes } from '@/utils/macros'
 
 import S from './schema'

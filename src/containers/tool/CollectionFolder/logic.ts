@@ -6,7 +6,7 @@ import { PAGE_SIZE } from '@/config'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 
-import asyncSuit from '@/utils/async'
+import asyncSuit from '@/async'
 import { buildLog } from '@/logger'
 import { errRescue } from '@/signal'
 import { updateEditing } from '@/mobx'
