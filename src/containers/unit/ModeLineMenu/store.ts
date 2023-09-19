@@ -7,7 +7,7 @@ import { prop, trim, filter, contains } from 'ramda'
 
 import type { TRootStore, TArticle, TCommunity } from '@/spec'
 import { T, getParent, markStates, Instance, toJS } from '@/mobx'
-import { notEmpty } from '@/utils/validator'
+import { notEmpty } from '@/validator'
 
 import type { TCurActive } from './spec'
 

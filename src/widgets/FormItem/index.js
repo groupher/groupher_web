@@ -9,7 +9,7 @@ import T from 'prop-types'
 import { isEmpty } from 'ramda'
 
 import { buildLog } from '@/logger'
-import { hasValue } from '@/utils/validator'
+import { hasValue } from '@/validator'
 import SIZE from '@/constant/size'
 import Maybe from '@/widgets/Maybe'
 

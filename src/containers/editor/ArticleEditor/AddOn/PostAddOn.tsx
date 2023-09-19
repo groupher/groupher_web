@@ -1,15 +1,10 @@
 import { FC, memo, useState, useEffect } from 'react'
 
-import { isURL } from '@/utils/validator'
+import { isURL } from '@/validator'
 import Checker from '@/widgets/Checker'
 
 import type { TEditData } from '../spec'
-import {
-  Wrapper,
-  LinkWrapper,
-  LinkInput,
-  LinkIcon,
-} from '../styles/addon/post_addon'
+import { Wrapper, LinkWrapper, LinkInput, LinkIcon } from '../styles/addon/post_addon'
 import { editOnChange } from '../logic'
 
 type TProps = {

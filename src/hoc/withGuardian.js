@@ -10,7 +10,7 @@ import T from 'prop-types'
 import { startsWith, isEmpty, path, split } from 'ramda'
 
 import BStore from '@/utils/bstore'
-import { nilOrEmpty } from '@/utils/validator'
+import { nilOrEmpty } from '@/validator'
 import { buildLog } from '@/logger'
 
 /* eslint-disable-next-line */

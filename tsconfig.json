@@ -49,6 +49,8 @@
       "@/wallpaper/*": ["utils/wallpaper/*"],
       "@/i18n": ["utils/i18n"],
       "@/i18n/*": ["utils/i18n/*"],
+      "@/validator": ["utils/validator"],
+      "@/validator/*": ["utils/validator/*"],
       "@/mock": ["utils/mock"],
       "@/mock/*": ["utils/mock/*"],
       "@/css": ["utils/css"],

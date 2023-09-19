@@ -8,7 +8,7 @@ import { FC, ReactNode, memo } from 'react'
 
 import type { TSize } from '@/spec'
 import { ICON } from '@/config'
-import { nilOrEmpty } from '@/utils/validator'
+import { nilOrEmpty } from '@/validator'
 import { buildLog } from '@/logger'
 import SIZE from '@/constant/size'
 

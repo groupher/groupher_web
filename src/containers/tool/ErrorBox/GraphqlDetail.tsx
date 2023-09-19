@@ -4,7 +4,7 @@ import type { TGQError } from '@/spec'
 // import { ICON_CMD } from '@/config'
 // import { Wrapper } from './styles'
 import uid from '@/utils/uid'
-import { nilOrEmpty } from '@/utils/validator'
+import { nilOrEmpty } from '@/validator'
 
 import { Wrapper, TitleWrapper, Title, Desc } from './styles/details'
 

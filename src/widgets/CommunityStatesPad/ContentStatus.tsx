@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import { prettyNum } from '@/fmt'
-import { nilOrEmpty } from '@/utils/validator'
+import { nilOrEmpty } from '@/validator'
 import { buildLog } from '@/logger'
 import TrendLine from '@/widgets/TrendLine'
 

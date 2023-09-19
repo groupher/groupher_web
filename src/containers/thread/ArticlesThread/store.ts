@@ -23,7 +23,7 @@ import TYPE from '@/constant/type'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
 import { T, markStates, getParent, Instance, toJS } from '@/mobx'
-import { nilOrEmpty } from '@/utils/validator'
+import { nilOrEmpty } from '@/validator'
 import { plural } from '@/fmt'
 
 import { PagedPosts, ArticlesFilter, emptyPagi } from '@/model'

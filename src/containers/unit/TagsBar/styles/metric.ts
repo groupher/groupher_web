@@ -1,10 +1,6 @@
-import { nilOrEmpty } from '@/utils/validator'
+import { nilOrEmpty } from '@/validator'
 
-export const getActiveColor = (
-  active: boolean,
-  color: string,
-  activeid: string | null,
-): string => {
+export const getActiveColor = (active: boolean, color: string, activeid: string | null): string => {
   if (!nilOrEmpty(activeid)) return active ? color : '#497684'
 
   return !active ? color : '#497684'

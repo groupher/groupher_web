@@ -37,6 +37,7 @@ module.exports = {
           '@/async': 'utils/async',
           '@/i18n': 'utils/i18n',
           '@/wallpaper': 'utils/wallpaper',
+          '@/validator': 'utils/validator',
           '@/hooks': 'src/hooks',
           '@/hoc': 'src/hoc',
           '@/stores': 'src/stores',

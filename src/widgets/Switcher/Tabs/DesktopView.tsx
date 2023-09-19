@@ -12,7 +12,7 @@ import type { TSizeSM, TTabItem, TC11NLayout } from '@/spec'
 import SIZE from '@/constant/size'
 import C11N from '@/constant/c11n'
 
-import { isString } from '@/utils/validator'
+import { isString } from '@/validator'
 import { buildLog } from '@/logger'
 
 import TabItem from './TabItem'

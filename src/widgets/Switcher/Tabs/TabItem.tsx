@@ -8,7 +8,7 @@ import { FC, useEffect, useCallback, useRef, memo } from 'react'
 
 import type { TSizeSM, TTabItem } from '@/spec'
 import { Trans } from '@/i18n'
-import { isString } from '@/utils/validator'
+import { isString } from '@/validator'
 import { buildLog } from '@/logger'
 import { isElementInViewport } from '@/dom'
 

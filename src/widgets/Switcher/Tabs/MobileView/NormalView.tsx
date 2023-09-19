@@ -10,7 +10,7 @@ import { isEmpty, findIndex } from 'ramda'
 import type { TSizeSM, TTabItem } from '@/spec'
 import { ICON } from '@/config'
 import SIZE from '@/constant/size'
-import { isString } from '@/utils/validator'
+import { isString } from '@/validator'
 import { buildLog } from '@/logger'
 
 import TabItem from '../TabItem'

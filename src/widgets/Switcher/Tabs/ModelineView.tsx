@@ -10,7 +10,7 @@ import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TSizeSM, TTabItem } from '@/spec'
 import SIZE from '@/constant/size'
-import { isString } from '@/utils/validator'
+import { isString } from '@/validator'
 import { buildLog } from '@/logger'
 
 import TabItem from './TabItem'

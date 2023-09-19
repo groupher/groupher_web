@@ -12,7 +12,7 @@ import type { TNaviTag } from '@/spec'
 
 import { findDeepMatch } from '@/helper'
 import { buildLog } from '@/logger'
-import { nilOrEmpty } from '@/utils/validator'
+import { nilOrEmpty } from '@/validator'
 import { getQueryFromUrl, markRoute } from '@/utils/route'
 
 import type { TMenuMode } from './spec'
