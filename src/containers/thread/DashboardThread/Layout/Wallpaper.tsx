@@ -2,7 +2,7 @@ import { FC, memo, useCallback } from 'react'
 
 import type { TWallpaperInfo } from '@/spec'
 import { WIDTH } from '@/css'
-import { callWallpaperEditor } from '@/utils/signal'
+import { callWallpaperEditor } from '@/signal'
 import { parseWallpaper } from '@/utils/wallpaper'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'

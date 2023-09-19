@@ -10,7 +10,7 @@ import EVENT from '@/constant/event'
 import TYPE from '@/constant/type'
 
 import { buildLog } from '@/logger'
-import { send } from '@/utils/signal'
+import { send } from '@/signal'
 import { Br } from '@/widgets/Common'
 
 import ExtraInfo from './ExtraInfo'

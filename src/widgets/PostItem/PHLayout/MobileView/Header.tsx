@@ -3,7 +3,7 @@ import { FC } from 'react'
 import type { TPost } from '@/spec'
 
 import EVENT from '@/constant/event'
-import { send } from '@/utils/signal'
+import { send } from '@/signal'
 
 import CommentsCount from '@/widgets/CommentsCount'
 

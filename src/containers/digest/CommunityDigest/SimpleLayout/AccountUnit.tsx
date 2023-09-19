@@ -5,7 +5,7 @@ import { observer } from 'mobx-react'
 import useAvatarLayout from '@/hooks/useAvatarLayout'
 
 import useAccount from '@/hooks/useAccount'
-import { callAuth } from '@/utils/signal'
+import { callAuth } from '@/signal'
 
 import { Wrapper, Avatar, AccountIcon, GithubItem } from '../styles/simple_layout/account_unit'
 

@@ -5,7 +5,7 @@ import type { TArticle } from '@/spec'
 import { THREAD } from '@/constant/thread'
 import SIZE from '@/constant/size'
 import { cutRest } from '@/utils/fmt'
-import { previewArticle } from '@/utils/signal'
+import { previewArticle } from '@/signal'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import DigestSentence from '@/widgets/DigestSentence'

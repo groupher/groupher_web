@@ -2,7 +2,7 @@ import { Fragment, FC, memo } from 'react'
 
 import type { TAccount } from '@/spec'
 
-import { authWarn, logout } from '@/utils/signal'
+import { authWarn, logout } from '@/signal'
 
 import Tooltip from '@/widgets/Tooltip'
 

@@ -3,7 +3,7 @@
 import { Cell } from 'rsuite-table'
 import TimeAgo from 'timeago-react'
 
-import { previewArticle } from '@/utils/signal'
+import { previewArticle } from '@/signal'
 import { COMMUNITY_STATUS } from '@/constant/mode'
 
 import Checker from '@/widgets/Checker'

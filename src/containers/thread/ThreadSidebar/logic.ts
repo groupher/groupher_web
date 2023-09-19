@@ -9,7 +9,7 @@ import ERR from '@/constant/err'
 import TYPE from '@/constant/type'
 
 import asyncSuit from '@/utils/async'
-import { errRescue, listUsers, callGEditor, callSyncSelector } from '@/utils/signal'
+import { errRescue, listUsers, callGEditor, callSyncSelector } from '@/signal'
 import { buildLog } from '@/logger'
 
 import type { TStore } from './store'

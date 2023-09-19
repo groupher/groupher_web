@@ -10,7 +10,7 @@ import Pagi from '@/widgets/Pagi'
 import type { TThread, TPagedArticles, TResState } from '@/spec'
 import EVENT from '@/constant/event'
 
-import { send } from '@/utils/signal'
+import { send } from '@/signal'
 import { buildLog } from '@/logger'
 
 import ArticleList from './ArticleList'

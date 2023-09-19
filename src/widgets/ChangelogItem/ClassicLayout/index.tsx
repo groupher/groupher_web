@@ -9,7 +9,7 @@ import { FC, memo } from 'react'
 import type { TChangelog } from '@/spec'
 
 import { buildLog } from '@/logger'
-import { previewArticle } from '@/utils/signal'
+import { previewArticle } from '@/signal'
 
 import { SpaceGrow } from '@/widgets/Common'
 import CoverImage from '@/widgets/CoverImage'

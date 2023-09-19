@@ -6,7 +6,7 @@ import EVENT from '@/constant/event'
 import TYPE from '@/constant/type'
 
 import asyncSuit from '@/utils/async'
-import { send, errRescue } from '@/utils/signal'
+import { send, errRescue } from '@/signal'
 import { buildLog } from '@/logger'
 
 import type { TStore } from './store'

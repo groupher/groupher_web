@@ -12,7 +12,7 @@ import useViewingThread from '@/hooks/useViewingThread'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useEnable from '@/hooks/useEnable'
 
-import { send } from '@/utils/signal'
+import { send } from '@/signal'
 
 import PinedTree from '@/containers/thread/DocThread/ArticleLayout/PinedTree'
 import TagsBar from '@/containers/unit/TagsBar'

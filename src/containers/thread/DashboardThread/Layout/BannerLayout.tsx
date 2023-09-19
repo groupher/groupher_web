@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 import type { TBannerLayout } from '@/spec'
 
 import { BANNER_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
-import { callDashboardDesc } from '@/utils/signal'
+import { callDashboardDesc } from '@/signal'
 
 import { Row, Br, Space, SpaceGrow } from '@/widgets/Common'
 import CheckLabel from '@/widgets/CheckLabel'

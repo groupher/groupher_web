@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import { ICON } from '@/config'
 
-import { changeToCommunity } from '@/utils/signal'
+import { changeToCommunity } from '@/signal'
 
 import { Wrapper, BodyWrapper, Entry, Logo, Intro, Title } from '../styles/more_panel/mobile_view'
 

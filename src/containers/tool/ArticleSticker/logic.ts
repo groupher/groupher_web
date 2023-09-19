@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 
 import EVENT from '@/constant/event'
 
-import { authWarn, addCollection } from '@/utils/signal'
+import { authWarn, addCollection } from '@/signal'
 import { buildLog } from '@/logger'
 import asyncSuit from '@/utils/async'
 import { matchArticleUpvotes } from '@/utils/macros'

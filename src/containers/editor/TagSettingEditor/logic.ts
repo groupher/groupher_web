@@ -7,7 +7,7 @@ import ERR from '@/constant/err'
 
 import { buildLog } from '@/logger'
 import asyncSuit from '@/utils/async'
-import { send, errRescue, closeDrawer } from '@/utils/signal'
+import { send, errRescue, closeDrawer } from '@/signal'
 import { CHANGE_MODE } from '@/constant/mode'
 
 import { DEFAULT_CREATE_TAG } from './constant'

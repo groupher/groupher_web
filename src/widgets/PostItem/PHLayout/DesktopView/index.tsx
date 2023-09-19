@@ -6,7 +6,7 @@ import { UPVOTE_LAYOUT } from '@/constant/layout'
 
 import useAvatarLayout from '@/hooks/useAvatarLayout'
 
-import { upvoteOnArticleList, previewArticle } from '@/utils/signal'
+import { upvoteOnArticleList, previewArticle } from '@/signal'
 import ArticleReadLabel from '@/widgets/ArticleReadLabel'
 import ArticlePinLabel from '@/widgets/ArticlePinLabel'
 import Upvote from '@/widgets/Upvote'

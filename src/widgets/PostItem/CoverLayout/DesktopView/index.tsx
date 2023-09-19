@@ -2,7 +2,7 @@ import { FC, memo, useState, useEffect } from 'react'
 
 import type { TPost } from '@/spec'
 
-import { previewArticle } from '@/utils/signal'
+import { previewArticle } from '@/signal'
 import { mockImage } from '@/utils/mock'
 
 import ArticleReadLabel from '@/widgets/ArticleReadLabel'

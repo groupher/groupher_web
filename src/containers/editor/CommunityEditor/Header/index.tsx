@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 import { ASSETS_ENDPOINT } from '@/config'
 import useAccount from '@/hooks/useAccount'
-import { callAuth } from '@/utils/signal'
+import { callAuth } from '@/signal'
 import { SpaceGrow } from '@/widgets/Common'
 
 import type { TStep } from '../spec'

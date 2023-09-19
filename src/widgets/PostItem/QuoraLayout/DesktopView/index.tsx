@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import type { TPost } from '@/spec'
 
-import { previewArticle } from '@/utils/signal'
+import { previewArticle } from '@/signal'
 
 import ArticleReadLabel from '@/widgets/ArticleReadLabel'
 import ArticlePinLabel from '@/widgets/ArticlePinLabel'

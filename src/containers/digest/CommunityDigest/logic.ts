@@ -9,7 +9,7 @@ import TYPE from '@/constant/type'
 
 import asyncSuit from '@/utils/async'
 import { singular } from '@/utils/fmt'
-import { errRescue, listUsers, sessionChanged } from '@/utils/signal'
+import { errRescue, listUsers, sessionChanged } from '@/signal'
 import { buildLog } from '@/logger'
 
 import type { TStore } from './store'

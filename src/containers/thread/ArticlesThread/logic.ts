@@ -11,7 +11,7 @@ import { scrollToHeader } from '@/dom'
 import asyncSuit from '@/utils/async'
 import { buildLog } from '@/logger'
 import { plural } from '@/utils/fmt'
-import { errRescue, previewArticle, authWarn } from '@/utils/signal'
+import { errRescue, previewArticle, authWarn } from '@/signal'
 import { matchPagedArticles, matchArticleUpvotes } from '@/utils/macros'
 
 import type { TStore } from './store'

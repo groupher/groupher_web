@@ -5,7 +5,7 @@ import type { TPost } from '@/spec'
 import useAvatarLayout from '@/hooks/useAvatarLayout'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
-import { upvoteOnArticleList } from '@/utils/signal'
+import { upvoteOnArticleList } from '@/signal'
 import Upvote from '@/widgets/Upvote'
 import ImgFallback from '@/widgets/ImgFallback'
 

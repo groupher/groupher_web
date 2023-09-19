@@ -5,7 +5,7 @@ import { UPVOTE_LAYOUT } from '@/constant/layout'
 import SIZE from '@/constant/size'
 
 import type { TArticle } from '@/spec'
-import { upvoteOnArticleList } from '@/utils/signal'
+import { upvoteOnArticleList } from '@/signal'
 import Upvote from '@/widgets/Upvote'
 import DotDivider from '@/widgets/DotDivider'
 import CommentsCount from '@/widgets/CommentsCount'

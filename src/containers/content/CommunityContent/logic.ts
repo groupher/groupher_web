@@ -7,8 +7,8 @@ import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 
 import { plural } from '@/utils/fmt'
-import { send, errRescue } from '@/utils/signal'
 import asyncSuit from '@/utils/async'
+import { send, errRescue } from '@/signal'
 import { buildLog } from '@/logger'
 
 import type { TStore } from './store'

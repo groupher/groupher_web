@@ -16,7 +16,7 @@ import EVENT from '@/constant/event'
 import { ARTICLE_CAT } from '@/constant/gtd'
 
 import { buildLog } from '@/logger'
-import { send } from '@/utils/signal'
+import { send } from '@/signal'
 import { mockUsers } from '@/utils/mock'
 
 import ImgFallback from '@/widgets/ImgFallback'
