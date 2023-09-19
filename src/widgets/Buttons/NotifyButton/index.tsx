@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import { ICON } from '@/config'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Tooltip from '@/widgets/Tooltip'
 
@@ -28,10 +28,7 @@ type TProps = {
   testid?: string
   subscribed?: boolean
 }
-const NotifyButton: FC<TProps> = ({
-  testid = 'notify-button',
-  subscribed = false,
-}) => {
+const NotifyButton: FC<TProps> = ({ testid = 'notify-button', subscribed = false }) => {
   return (
     <Wrapper testid={testid}>
       {subscribed ? (
@@ -40,8 +37,8 @@ const NotifyButton: FC<TProps> = ({
           <Tooltip
             content={
               <Desc>
-                当前<Focus>已订阅</Focus>，你将能在<Focus>站内消息</Focus>或
-                <Focus>邮件</Focus>中收到提醒。
+                当前<Focus>已订阅</Focus>，你将能在<Focus>站内消息</Focus>或<Focus>邮件</Focus>
+                中收到提醒。
               </Desc>
             }
             placement="bottom"

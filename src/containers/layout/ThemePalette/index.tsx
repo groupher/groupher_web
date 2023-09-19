@@ -9,7 +9,7 @@ import Head from 'next/head'
 import { ThemeProvider } from 'styled-components'
 
 import type { TThemeMap } from '@/spec'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import ThirdPartyOverWrite from './ThirdPartyOverWrite'
 import ScrollBarStyle from './ScrollBarStyle'

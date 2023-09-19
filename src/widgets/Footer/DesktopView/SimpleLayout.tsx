@@ -1,11 +1,12 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react'
 import { keys } from 'ramda'
 
 import type { TLinkItem } from '@/spec'
-
+import useFooterLinks from '@/hooks/useFooterLinks'
 import { DEME_SOCIALS } from '@/constant/social'
 
-import { sortByIndex, groupByKey } from '@/utils/helper'
+import { sortByIndex, groupByKey } from '@/helper'
 
 import SocialList from '@/widgets/SocialList'
 
@@ -19,10 +20,12 @@ import {
 } from '../styles/desktop_view/simple_layout'
 
 type TProps = {
-  links: TLinkItem[]
+  //
 }
 
-const SimpleLayout: FC<TProps> = ({ links }) => {
+const SimpleLayout: FC<TProps> = () => {
+  const { links } = useFooterLinks()
+
   // @ts-ignore
   const groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
   const groupKeys = keys(groupedLinks)
@@ -46,4 +49,4 @@ const SimpleLayout: FC<TProps> = ({ links }) => {
   )
 }
 
-export default SimpleLayout
+export default observer(SimpleLayout)

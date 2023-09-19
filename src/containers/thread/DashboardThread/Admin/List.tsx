@@ -2,8 +2,8 @@ import { FC, memo } from 'react'
 
 import type { TModerator, TUser } from '@/spec'
 
-import { sortByIndex } from '@/utils/helper'
-import { callPassportEditor } from '@/utils/signal'
+import { sortByIndex } from '@/helper'
+import { callPassportEditor } from '@/signal'
 
 import { SpaceGrow } from '@/widgets/Common'
 import DropdownButton from '@/widgets/Buttons/DropdownButton'

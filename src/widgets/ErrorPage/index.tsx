@@ -9,7 +9,7 @@ import { useRouter } from 'next/router'
 
 import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import SpinPlanet from './SpinPlanet'
 // import CodeSnippets from './CodeSnippets'

@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 
 import { ICON } from '@/config'
-// import { cutRest } from '@/utils/fmt'
+// import { cutRest } from '@/fmt'
 import {
   Wrapper,
   HeaderWrapper,
@@ -29,15 +29,9 @@ const Toc: FC<TProps> = ({ show, testid = 'article-sticker-toc' }) => {
           <TocTitle>大纲</TocTitle>
         </TitleWrapper>
         {!expand ? (
-          <MenuClosedIcon
-            src={`${ICON}/shape/menu-closed.svg`}
-            onClick={() => setExpand(true)}
-          />
+          <MenuClosedIcon src={`${ICON}/shape/menu-closed.svg`} onClick={() => setExpand(true)} />
         ) : (
-          <MenuOpenedIcon
-            src={`${ICON}/shape/menu-opened.svg`}
-            onClick={() => setExpand(false)}
-          />
+          <MenuOpenedIcon src={`${ICON}/shape/menu-opened.svg`} onClick={() => setExpand(false)} />
         )}
       </HeaderWrapper>
       {expand && (

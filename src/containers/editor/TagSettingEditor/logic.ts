@@ -5,9 +5,9 @@ import type { TChangeMode, TEditValue, TTag } from '@/spec'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 
-import { buildLog } from '@/utils/logger'
-import asyncSuit from '@/utils/async'
-import { send, errRescue, closeDrawer } from '@/utils/signal'
+import { buildLog } from '@/logger'
+import asyncSuit from '@/async'
+import { send, errRescue, closeDrawer } from '@/signal'
 import { CHANGE_MODE } from '@/constant/mode'
 
 import { DEFAULT_CREATE_TAG } from './constant'

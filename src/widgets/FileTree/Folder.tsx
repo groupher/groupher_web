@@ -2,7 +2,7 @@ import { FC, useState, useRef, useEffect } from 'react'
 import { findIndex, reverse } from 'ramda'
 
 import type { TTag } from '@/spec'
-import { sortByColor } from '@/utils/helper'
+import { sortByColor } from '@/helper'
 
 import FileItem from './FileItem'
 

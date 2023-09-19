@@ -7,8 +7,8 @@
 import { FC } from 'react'
 import { keys, reverse } from 'ramda'
 
-import { bond } from '@/utils/mobx'
-import { buildLog } from '@/utils/logger'
+import { bond } from '@/mobx'
+import { buildLog } from '@/logger'
 
 import type { TProps as TTagProps } from '..'
 

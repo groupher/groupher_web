@@ -4,21 +4,13 @@
 
 import { values } from 'ramda'
 
-import type {
-  TCommunity,
-  TRootStore,
-  TUser,
-  TArticleThread,
-  TPagedArticles,
-  TC11N,
-  TGlobalLayout,
-} from '@/spec'
+import type { TCommunity, TRootStore, TUser, TArticleThread, TPagedArticles } from '@/spec'
 import TYPE from '@/constant/type'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
-import { buildLog } from '@/utils/logger'
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
-import { plural } from '@/utils/fmt'
+import { buildLog } from '@/logger'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { plural } from '@/fmt'
 
 import { PagedPosts, emptyPagi } from '@/model'
 
@@ -35,10 +27,6 @@ const UserPublishedArticles = T.model('UserPublishedArticles', {
     get isLogin(): boolean {
       const root = getParent(self) as TRootStore
       return root.account.isLogin
-    },
-    get c11n(): TC11N {
-      const root = getParent(self) as TRootStore
-      return root.account.c11n
     },
     get curCommunity(): TCommunity {
       const root = getParent(self) as TRootStore
@@ -61,10 +49,6 @@ const UserPublishedArticles = T.model('UserPublishedArticles', {
 
     get hasContentBg(): boolean {
       return true
-    },
-    get globalLayout(): TGlobalLayout {
-      const root = getParent(self) as TRootStore
-      return root.dashboardThread.globalLayout
     },
   }))
   .actions((self) => ({

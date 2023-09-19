@@ -1,10 +1,14 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
-import type { TCommunity, TCommunityThread } from '@/spec'
+import type { TCommunityThread } from '@/spec'
 import { ROUTE } from '@/constant/route'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
+import usePublicThreads from '@/hooks/usePublicThreads'
+import useViewingThread from '@/hooks/useViewingThread'
 
-import { toast } from '@/utils/helper'
+import { toast } from '@/signal'
 
 import Tooltip from '@/widgets/Tooltip'
 import { Divider } from '@/widgets/Common'
@@ -13,20 +17,15 @@ import { Wrapper, Title, ArrowIcon, Panel, Item, ShareItem, ModelineDivider } fr
 
 type TProps = {
   testid?: string
-  community: TCommunity
-  threads: TCommunityThread[]
-  active: string
   mode?: 'mobile' | 'modeline'
 }
 
-const MobileThreadNav: FC<TProps> = ({
-  testid = 'mobile-thread-nav',
-  community,
-  threads,
-  active,
-  mode = 'mobile',
-}) => {
-  const curThread = threads.filter((t) => t.slug === active)[0] as TCommunityThread
+const MobileThreadNav: FC<TProps> = ({ testid = 'mobile-thread-nav', mode = 'mobile' }) => {
+  const community = useViewingCommunity()
+  const threads = usePublicThreads()
+  const activeThread = useViewingThread()
+
+  const curThread = threads.filter((t) => t.slug === activeThread)[0] as TCommunityThread
 
   const placement = mode === 'mobile' ? 'bottom' : 'bottom-start'
   const offset = mode === 'mobile' ? [-5, 5] : [-28, 5]
@@ -63,4 +62,4 @@ const MobileThreadNav: FC<TProps> = ({
   )
 }
 
-export default memo(MobileThreadNav)
+export default observer(MobileThreadNav)

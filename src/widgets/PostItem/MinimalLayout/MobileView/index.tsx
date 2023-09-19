@@ -4,7 +4,7 @@ import type { TPost } from '@/spec'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 import EVENT from '@/constant/event'
 
-import { send } from '@/utils/signal'
+import { send } from '@/signal'
 
 import Upvote from '@/widgets/Upvote'
 

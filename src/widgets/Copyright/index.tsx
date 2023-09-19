@@ -8,7 +8,7 @@ import { FC, memo } from 'react'
 
 import type { TCopyright } from '@/spec'
 import Tooltip from '@/widgets/Tooltip'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Label from './Label'
 import SettingMenu from '@/widgets/SettingMenu'
@@ -56,11 +56,7 @@ const Copyright: FC<TProps> = ({
           mode === 'readonly' ? (
             <ReadOnlyPanel type={type} />
           ) : (
-            <SettingMenu
-              options={options}
-              activeKey={type}
-              onChange={onChange}
-            />
+            <SettingMenu options={options} activeKey={type} onChange={onChange} />
           )
         }
         placement="top"

@@ -6,7 +6,7 @@
 
 import { memo, FC, Fragment } from 'react'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 // import Button from './Button'
 import { Wrapper, Title, EditIcon } from '../styles/publish_button/sidebar_header_layout'

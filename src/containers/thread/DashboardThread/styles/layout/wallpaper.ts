@@ -29,7 +29,8 @@ export const UploadIcon = styled(SettingSVG)`
   ${css.size(25)};
   fill: white;
   opacity: 0;
-  z-index: 10;
+  z-index: 1;
+  cursor: pointer;
 
   ${HoverMask}:hover & {
     opacity: 1;

@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import type { TSpace } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import TopInfo from './TopInfo'
 import BottomInfo from './BottomInfo'

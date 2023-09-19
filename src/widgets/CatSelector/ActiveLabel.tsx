@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import type { TArticleCat } from '@/spec'
-import { Trans } from '@/utils/i18n'
+import { Trans } from '@/i18n'
 
 import { Wrapper, Icon } from './styles/active_label'
 

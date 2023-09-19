@@ -1,12 +1,14 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 import { useTheme } from 'styled-components'
 import { keys } from 'ramda'
 
-import type { TThemeMap, TMetric, TLinkItem } from '@/spec'
+import type { TThemeMap, TMetric } from '@/spec'
 import { DEME_SOCIALS } from '@/constant/social'
-import useCurCommunity from '@/hooks/useCurCommunity'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useFooterLinks from '@/hooks/useFooterLinks'
 
-import { sortByIndex, groupByKey } from '@/utils/helper'
+import { sortByIndex, groupByKey } from '@/helper'
 
 import { SpaceGrow } from '@/widgets/Common'
 import SocialList from '@/widgets/SocialList'
@@ -25,12 +27,12 @@ import {
 
 type TProps = {
   metric: TMetric
-  links: TLinkItem[]
 }
 
-const GroupLayout: FC<TProps> = ({ metric, links }) => {
+const GroupLayout: FC<TProps> = ({ metric }) => {
   const theme = useTheme() as TThemeMap
-  const curCommunity = useCurCommunity()
+  const curCommunity = useViewingCommunity()
+  const { links } = useFooterLinks()
 
   const linkColors = {
     color: theme.footer.text,
@@ -73,4 +75,4 @@ const GroupLayout: FC<TProps> = ({ metric, links }) => {
   )
 }
 
-export default memo(GroupLayout)
+export default observer(GroupLayout)

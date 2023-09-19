@@ -6,7 +6,7 @@
 import { reduce, keys, merge, pick, startsWith } from 'ramda'
 
 import type { TRootStore, TSubmitState, TUser } from '@/spec'
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 
 import type { TEditData } from './spec'
 import { SEX } from './constant'

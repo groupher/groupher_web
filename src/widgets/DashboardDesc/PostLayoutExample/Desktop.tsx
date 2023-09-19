@@ -9,7 +9,7 @@ import { FC, memo, Fragment } from 'react'
 import type { TPost, TPostLayout } from '@/spec'
 import { POST_LAYOUT } from '@/constant/layout'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import MasonryCards from '@/widgets/MasonryCards'
 import PostItem from '@/widgets/PostItem'
@@ -28,7 +28,7 @@ const PostLayoutExample: FC<TProps> = ({ articles, layout }) => {
       {layout === POST_LAYOUT.QUORA && (
         <>
           {articles.map((item) => (
-            <PostItem key={item.id} article={item} c11n={{}} />
+            <PostItem key={item.id} article={item} />
           ))}
         </>
       )}
@@ -36,7 +36,7 @@ const PostLayoutExample: FC<TProps> = ({ articles, layout }) => {
       {layout === POST_LAYOUT.PH && (
         <>
           {articles.map((item) => (
-            <PostItem key={item.id} article={item} c11n={{}} layout={POST_LAYOUT.PH} />
+            <PostItem key={item.id} article={item} />
           ))}
         </>
       )}
@@ -45,7 +45,7 @@ const PostLayoutExample: FC<TProps> = ({ articles, layout }) => {
         <>
           <MasonryCards column={2}>
             {articles.map((item) => (
-              <PostItem key={item.id} article={item} c11n={{}} layout={POST_LAYOUT.MASONRY} />
+              <PostItem key={item.id} article={item} />
             ))}
           </MasonryCards>
         </>
@@ -54,7 +54,7 @@ const PostLayoutExample: FC<TProps> = ({ articles, layout }) => {
       {layout === POST_LAYOUT.MINIMAL && (
         <>
           {articles.map((item) => (
-            <PostItem key={item.id} article={item} c11n={{}} layout={POST_LAYOUT.MINIMAL} />
+            <PostItem key={item.id} article={item} />
           ))}
         </>
       )}
@@ -62,7 +62,7 @@ const PostLayoutExample: FC<TProps> = ({ articles, layout }) => {
       {layout === POST_LAYOUT.COVER && (
         <>
           {articles.map((item) => (
-            <PostItem key={item.id} article={item} c11n={{}} layout={POST_LAYOUT.COVER} />
+            <PostItem key={item.id} article={item} />
           ))}
         </>
       )}

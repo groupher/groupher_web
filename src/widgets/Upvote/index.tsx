@@ -6,9 +6,9 @@
 
 import { FC, memo } from 'react'
 
-import type { TUser, TUpvoteLayout, TSpace, TAvatarLayout } from '@/spec'
-import { AVATAR_LAYOUT, UPVOTE_LAYOUT } from '@/constant/layout'
-import { buildLog } from '@/utils/logger'
+import type { TUser, TUpvoteLayout, TSpace } from '@/spec'
+import { UPVOTE_LAYOUT } from '@/constant/layout'
+import { buildLog } from '@/logger'
 
 import DefaultLayout from './DefaultLayout'
 import GeneralLayout from './GeneralLayout'
@@ -34,7 +34,6 @@ type TProps = {
   alias?: string // 觉得很赞(default), 觉得很酷(works), 学到了(blog), 感兴趣(meetup), 有意思(Radar)
   avatarList?: TUser[]
   onAction?: (did: boolean) => void
-  avatarLayout?: TAvatarLayout
 } & TSpace
 
 const Upvote: FC<TProps> = ({
@@ -43,7 +42,6 @@ const Upvote: FC<TProps> = ({
   right = 0,
   top = 0,
   bottom = 0,
-  avatarLayout = AVATAR_LAYOUT.SQUARE,
   ...restProps
 }) => {
   let Layout = null
@@ -89,7 +87,7 @@ const Upvote: FC<TProps> = ({
 
   return (
     <Wrapper left={left} right={right} top={top} bottom={bottom}>
-      <Layout {...restProps} avatarLayout={avatarLayout} />
+      <Layout {...restProps} />
     </Wrapper>
   )
 }

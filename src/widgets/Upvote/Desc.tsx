@@ -4,7 +4,7 @@
 
 import { FC, memo } from 'react'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import { Text, DescWrapper } from './styles/default_layout'
 
@@ -18,12 +18,7 @@ type TProps = {
   alias?: string // 觉得很赞(default), 觉得很酷(works), 学到了(blog), 感兴趣(meetup), 有意思(Radar)
 }
 
-const Desc: FC<TProps> = ({
-  noOne,
-  count = 4,
-  avatarsRowLimit = 3,
-  alias = '觉得很赞',
-}) => {
+const Desc: FC<TProps> = ({ noOne, count = 4, avatarsRowLimit = 3, alias = '觉得很赞' }) => {
   const onlyOne = count === 1
 
   return (

@@ -4,18 +4,11 @@
 
 import { values } from 'ramda'
 
-import type {
-  TCommunity,
-  TRootStore,
-  TGlobalLayout,
-  TTag,
-  TAvatarLayout,
-  TPagedArticles,
-} from '@/spec'
-import { buildLog } from '@/utils/logger'
+import type { TCommunity, TRootStore, TGlobalLayout, TTag, TPagedArticles } from '@/spec'
+import { buildLog } from '@/logger'
 
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
-import { mockTags, mockChangelogTimeTags, mockChangelogVersionTags } from '@/utils/mock'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { mockTags, mockChangelogTimeTags, mockChangelogVersionTags } from '@/mock'
 
 import { PagedChangelogs, emptyPagi } from '@/model'
 
@@ -49,11 +42,6 @@ const ChangelogThread = T.model('ChangelogThread', {
       }
 
       return mockChangelogTimeTags(15)
-    },
-    get avatarLayout(): TAvatarLayout {
-      const root = getParent(self) as TRootStore
-
-      return root.dashboardThread.avatarLayout
     },
     get pagedChangelogsData(): TPagedArticles {
       return toJS(self.pagedChangelogs)

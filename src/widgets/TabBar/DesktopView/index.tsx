@@ -12,8 +12,8 @@ import { ANCHOR } from '@/constant/dom'
 import C11N from '@/constant/c11n'
 import { HCN } from '@/constant/name'
 
-import { sortByIndex } from '@/utils/helper'
-import { buildLog } from '@/utils/logger'
+import { sortByIndex } from '@/helper'
+import { buildLog } from '@/logger'
 
 import type { TTabItem } from '../spec'
 import NormalView from './NormalView'

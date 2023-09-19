@@ -5,7 +5,7 @@ import useAccount from '@/hooks/useAccount'
 import type { TComment } from '@/spec'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
-import { authWarn } from '@/utils/signal'
+import { authWarn } from '@/signal'
 
 import DotDivider from '@/widgets/DotDivider'
 import { DesktopOnly, Space, SpaceGrow } from '@/widgets/Common'

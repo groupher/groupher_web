@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import { cutRest } from '@/utils/fmt'
+import { cutRest } from '@/fmt'
 
 import { SpaceGrow } from '@/widgets/Common'
 import Checker from '@/widgets/Checker'

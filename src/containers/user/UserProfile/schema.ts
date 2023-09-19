@@ -1,7 +1,7 @@
 import { gql } from 'urql/core'
 import { P } from '@/schemas'
 
-import { titleCase, plural } from '@/utils/fmt'
+import { titleCase, plural } from '@/fmt'
 
 const getPagedPublishedArticlesSchema = (thread) => {
   return gql`

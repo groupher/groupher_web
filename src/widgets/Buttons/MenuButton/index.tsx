@@ -2,7 +2,7 @@ import { FC, ReactNode, memo } from 'react'
 
 import type { TTooltipPlacement, TMenuOption } from '@/spec'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import Tooltip from '@/widgets/Tooltip'
 
 import Menu from './Menu'

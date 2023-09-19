@@ -3,9 +3,9 @@ import { useEffect } from 'react'
 import { PAGE_SIZE } from '@/config'
 import ERR from '@/constant/err'
 
-import asyncSuit from '@/utils/async'
-import { buildLog } from '@/utils/logger'
-import { errRescue } from '@/utils/signal'
+import asyncSuit from '@/async'
+import { buildLog } from '@/logger'
+import { errRescue } from '@/signal'
 
 import S from './schema'
 

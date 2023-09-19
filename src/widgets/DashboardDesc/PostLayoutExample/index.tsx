@@ -12,7 +12,7 @@ import { POST_LAYOUT } from '@/constant/layout'
 import SVG from '@/constant/svg'
 import VIEW from '@/constant/view'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Tabs from '@/widgets/Switcher/Tabs'
 import IconSwitcher from '@/widgets/Switcher/IconSwitcher'

@@ -9,7 +9,7 @@ import { last } from 'ramda'
 
 import type { TNaviTag } from '@/spec'
 import { ICON } from '@/config'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 // import { SpaceGrow } from '@/widgets/Common'
 import {
@@ -71,9 +71,7 @@ const Dashboard: FC<TProps> = ({ viewPath, goCatalog }) => {
           index={index}
         >
           <Title>{item.title}</Title>
-          <Operator
-            onClick={() => (is2ecLevel ? goCatalog() : goCatalog(item.id))}
-          >
+          <Operator onClick={() => (is2ecLevel ? goCatalog() : goCatalog(item.id))}>
             <BackIcon src={`${ICON}/shape/navi-back.svg`} />
           </Operator>
         </ParentCatalogCard>

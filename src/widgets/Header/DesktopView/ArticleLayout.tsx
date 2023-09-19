@@ -9,8 +9,8 @@ import { FC } from 'react'
 import { ICON } from '@/config'
 
 import type { TUser } from '@/spec'
-import { buildLog } from '@/utils/logger'
-import { authWarn } from '@/utils/signal'
+import { buildLog } from '@/logger'
+import { authWarn } from '@/signal'
 
 import Tooltip from '@/widgets/Tooltip'
 import UserCard from '@/widgets/Cards/UserCard'

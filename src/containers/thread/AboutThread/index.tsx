@@ -6,8 +6,8 @@
 import { FC } from 'react'
 import Markdown from 'markdown-to-jsx'
 
-// import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+// import { buildLog } from '@/logger'
+import { bond } from '@/mobx'
 
 import Members from './Members'
 import BasicStates from './BasicStates'
@@ -39,7 +39,7 @@ const AboutThreadContainer: FC<TProps> = ({
 }) => {
   useInit(store)
 
-  const { avatarLayout, curCommunity } = store
+  const { curCommunity } = store
 
   return (
     <Wrapper testid={testid}>
@@ -55,7 +55,7 @@ const AboutThreadContainer: FC<TProps> = ({
           <BasicStates />
         </StateBlock>
         <MemberBlock>
-          <Members avatarLayout={avatarLayout} moderators={curCommunity.moderators} />
+          <Members moderators={curCommunity.moderators} />
         </MemberBlock>
       </MainWrapper>
       <Sidebar isSidebarLayout={isSidebarLayout} />

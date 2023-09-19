@@ -6,8 +6,8 @@
 
 import { FC, memo } from 'react'
 
-import type { TPost, TC11N } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import type { TPost } from '@/spec'
+import { buildLog } from '@/logger'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import DesktopView from './DesktopView'
@@ -21,15 +21,14 @@ const log = buildLog('w:PostItem:index')
 
 type TProps = {
   article: TPost
-  c11n: TC11N
   isMobilePreview: boolean
 }
 
-const PostItem: FC<TProps> = ({ article, isMobilePreview, c11n }) => {
+const PostItem: FC<TProps> = ({ article, isMobilePreview }) => {
   const { isMobile } = useMobileDetect()
 
   return (
-    <Wrapper c11n={c11n}>
+    <Wrapper>
       {isMobile || isMobilePreview ? (
         <MobileView article={article} />
       ) : (

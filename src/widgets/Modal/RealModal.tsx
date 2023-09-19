@@ -1,7 +1,7 @@
 import { FC, useEffect, useState, useCallback } from 'react'
 import { Portal } from 'react-portal'
 
-import { toggleGlobalBlur, lockPage, unlockPage } from '@/utils/dom'
+import { toggleGlobalBlur, lockPage, unlockPage } from '@/dom'
 import useShortcut from '@/hooks/useShortcut'
 
 import ViewportTracker from '@/widgets/ViewportTracker'

@@ -2,24 +2,9 @@
  * GlobalLayout store
  *
  */
-import { pick } from 'ramda'
+import type { TRootStore, TGlobalLayout } from '@/spec'
 
-import type {
-  TRootStore,
-  TAccount,
-  TC11N,
-  TCommunity,
-  TGlobalLayout,
-  TGlowEffect,
-  TWallpaperInfo,
-  TBroadcastConfig,
-  TFooterConfig,
-  TDashboardSEOConfig,
-} from '@/spec'
-
-import { SEO_KEYS } from '@/constant/seo'
-
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance } from '@/mobx'
 
 const Platform = T.model('Platform', {
   isChrome: T.opt(T.bool, true),
@@ -37,81 +22,6 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
   bodyScrollDirection: T.opt(T.enum(['up', 'down']), 'up'),
 })
   .views((self) => ({
-    get accountInfo(): TAccount {
-      const root = getParent(self) as TRootStore
-      return root.account.accountInfo
-    },
-    get c11n(): TC11N {
-      const root = getParent(self) as TRootStore
-      return root.account.c11n
-    },
-    get curCommunity(): TCommunity {
-      const root = getParent(self) as TRootStore
-
-      return toJS(root.viewing.community)
-    },
-    get seo(): TDashboardSEOConfig {
-      const root = getParent(self) as TRootStore
-
-      return pick(SEO_KEYS, root.dashboardThread)
-    },
-    get sidebarPin(): boolean {
-      // const root = getParent(self) as TRootStore
-      // return root.sidebar.pin
-      return false
-    },
-    get wallpaperInfo(): TWallpaperInfo {
-      const root = getParent(self) as TRootStore
-      const {
-        wallpaperEditor: { customWallpaper, wallpaper, wallpapers },
-      } = root
-
-      return {
-        customWallpaper: toJS(customWallpaper),
-        wallpaper,
-        wallpapers,
-      }
-    },
-    get glowEffect(): TGlowEffect {
-      const root = getParent(self) as TRootStore
-      const { wallpaper } = root.wallpaperEditor
-      const { uiSettings } = root.dashboardThread
-      const { glowType, glowFixed, glowOpacity } = uiSettings
-
-      return {
-        glowType: wallpaper && glowType,
-        glowFixed,
-        glowOpacity,
-      }
-    },
-    get hasShadow(): boolean {
-      const root = getParent(self) as TRootStore
-
-      return root.wallpaperEditor.wallpaper && root.wallpaperEditor.hasShadow
-    },
-    get broadcastConfig(): TBroadcastConfig {
-      const root = getParent(self) as TRootStore
-
-      return pick(
-        [
-          'broadcastLayout',
-          'broadcastBg',
-          'broadcastEnable',
-          'broadcastArticleLayout',
-          'broadcastArticleBg',
-          'broadcastArticleEnable',
-        ],
-        root.dashboardThread,
-      )
-    },
-    get footerConfig(): TFooterConfig {
-      const root = getParent(self) as TRootStore
-
-      return {
-        layout: root.dashboardThread.footerLayout,
-        links: toJS(root.dashboardThread.footerLinks),
-      }
-    },
     get globalLayout(): TGlobalLayout {
       const root = getParent(self) as TRootStore
       return root.dashboardThread.globalLayout

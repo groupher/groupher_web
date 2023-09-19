@@ -11,7 +11,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css'
 
 import { COLORS } from '@/constant/colors'
 import type { TSpace, TColorName } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import FaIcon from './icons'
 import type { TIcon } from './spec'

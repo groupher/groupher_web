@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 import { keys } from 'ramda'
 
 import type { TArticleFilter } from '@/spec'
-import { isEmptyValue } from '@/utils/validator'
+import { isEmptyValue } from '@/validator'
 
 import Tag from '@/widgets/Tag'
 import { Wrapper, TagWrapper } from './styles/selected_filters'
@@ -30,9 +30,7 @@ const FilterTag: FC<TFilterTag> = ({ onSelect, active, type }) => {
   return (
     !isEmptyValue(active) && (
       <TagWrapper>
-        <Tag onClose={() => onSelect({ [type]: '' })}>
-          {filterDict[active] || active}
-        </Tag>
+        <Tag onClose={() => onSelect({ [type]: '' })}>{filterDict[active] || active}</Tag>
       </TagWrapper>
     )
   )

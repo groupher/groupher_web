@@ -10,11 +10,10 @@ import type {
   TArticleMeta,
   TThread,
   TDocument,
-  TBroadcastConfig,
 } from '@/spec'
 
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
-import { buildLog } from '@/utils/logger'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { buildLog } from '@/logger'
 import { Document } from '@/model'
 
 /* eslint-disable-next-line */
@@ -51,10 +50,6 @@ const ArticleViewer = T.model('ArticleViewer', {
     get viewingArticle(): TArticle {
       const root = getParent(self) as TRootStore
       return toJS(root.viewing.viewingArticle)
-    },
-    get broadcastConfig(): TBroadcastConfig {
-      const root = getParent(self) as TRootStore
-      return root.globalLayout.broadcastConfig
     },
   }))
   .actions((self) => ({

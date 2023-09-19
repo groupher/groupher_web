@@ -8,8 +8,8 @@ import { FC, memo, useState, ReactNode } from 'react'
 
 import type { TSizeSM } from '@/spec'
 
-import { isString } from '@/utils/validator'
-import { buildLog } from '@/utils/logger'
+import { isString } from '@/validator'
+import { buildLog } from '@/logger'
 import SIZE from '@/constant/size'
 
 import Tooltip from '@/widgets/Tooltip'

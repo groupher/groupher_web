@@ -1,18 +1,14 @@
-import { FC, memo, useState } from 'react'
+import { FC, useState } from 'react'
+import { observer } from 'mobx-react'
 import Router from 'next/router'
 
-import type {
-  TArticle,
-  TCommunity,
-  TMetric,
-  TThread,
-  TTag,
-  TGroupedTags,
-  TDashboardThreadConfig,
-} from '@/spec'
+import type { TArticle } from '@/spec'
 
-import { scrollToHeader } from '@/utils/dom'
-import { mockUsers } from '@/utils/mock'
+import useViewingThread from '@/hooks/useViewingThread'
+// import useViewingCommunity from '@/hooks/useViewingCommunity'
+
+import { scrollToHeader } from '@/dom'
+import { mockUsers } from '@/mock'
 
 import CommentsCount from '@/widgets/CommentsCount'
 import Upvote from '@/widgets/Upvote'
@@ -36,30 +32,20 @@ type TProps = {
   testid?: string
   isMobile: boolean
   show: boolean
-  metric: TMetric
   activeMenu: string // TModelineType
   article: TArticle | null
-  community: TCommunity
-  activeThread: TThread
-  dashboardSettings: TDashboardThreadConfig
-  activeTag: TTag
-  groupedTags: TGroupedTags
 }
 
 const ArticleLayout: FC<TProps> = ({
   testid = 'modeline-bottom-bar',
   isMobile,
   show,
-  metric,
   article = null,
-  community,
   activeMenu,
-  activeThread,
-  activeTag,
-  groupedTags,
-  dashboardSettings,
 }) => {
   const [expand, setExpand] = useState(false)
+  // const community = useViewingCommunity()
+  const activeThread = useViewingThread()
 
   const users = mockUsers(3)
 
@@ -100,4 +86,4 @@ const ArticleLayout: FC<TProps> = ({
   )
 }
 
-export default memo(ArticleLayout)
+export default observer(ArticleLayout)

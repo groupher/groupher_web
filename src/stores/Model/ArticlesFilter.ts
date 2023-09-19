@@ -1,5 +1,5 @@
 import FILTER from '@/constant/filter'
-import { T } from '@/utils/mobx'
+import { T } from '@/mobx'
 
 export const ArticlesFilter = T.model('ArticlesFilter', {
   when: T.opt(

@@ -10,7 +10,7 @@ import type { TArticle, TSpace, TDocFAQLayout, TFAQSection } from '@/spec'
 import { DOC_FAQ_LAYOUT } from '@/constant/layout'
 // import { FAQ as DefaultFAQ } from '@/constant/landingPage'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Flat from './Flat'
 import SearchHint from './SearchHint'

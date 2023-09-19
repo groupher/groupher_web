@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react'
 import T from 'prop-types'
 
 import { ICON } from '@/config'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import LinksCard from '@/widgets/LinksCard'
 
@@ -47,23 +47,9 @@ const FaqPeekList = ({ active }) => {
     <Wrapper testid="faqPeekList" active={active}>
       {active && <ArrowIcon src={`${ICON}/shape/arrow-solid.svg`} />}
       <ContentWrapper active={showContent}>
-        <LinksCard
-          title="安装使用"
-          items={items}
-          onSelect={log}
-          bottom={0}
-          left={5}
-          right={24}
-        />
+        <LinksCard title="安装使用" items={items} onSelect={log} bottom={0} left={5} right={24} />
 
-        <LinksCard
-          title="常见问题"
-          items={items}
-          onSelect={log}
-          bottom={0}
-          left={5}
-          right={24}
-        />
+        <LinksCard title="常见问题" items={items} onSelect={log} bottom={0} left={5} right={24} />
       </ContentWrapper>
     </Wrapper>
   )

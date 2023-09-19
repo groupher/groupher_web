@@ -2,7 +2,7 @@ import { keys, isEmpty, filter } from 'ramda'
 
 import type { TTag } from '@/spec'
 import { ICON_CMD } from '@/config'
-import { groupByKey } from '@/utils/helper'
+import { groupByKey } from '@/helper'
 
 import type { TMenu } from './spec'
 
@@ -11,10 +11,7 @@ export const tags2Options = (tags: TTag[]): TMenu => {
   const formated = []
 
   keys(groupedTags).forEach((group, index) => {
-    const icon =
-      group === '城市'
-        ? `${ICON_CMD}/navi/location.svg`
-        : `${ICON_CMD}/navi/topic.svg`
+    const icon = group === '城市' ? `${ICON_CMD}/navi/location.svg` : `${ICON_CMD}/navi/topic.svg`
     formated.push({
       id: index,
       title: group,
@@ -41,10 +38,7 @@ export const initActiveMap = (items: TMenu) => {
 export const getSelectedTags = (activeMap: Record<string, TTag>): TTag[] => {
   const tagList = []
 
-  const selectedIdx = filter(
-    (key) => !isEmpty(activeMap[key].id),
-    keys(activeMap),
-  )
+  const selectedIdx = filter((key) => !isEmpty(activeMap[key].id), keys(activeMap))
 
   selectedIdx.forEach((idx) => {
     if (activeMap[idx]) {

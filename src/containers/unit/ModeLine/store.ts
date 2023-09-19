@@ -5,55 +5,22 @@
 
 import { values } from 'ramda'
 
-import type {
-  TRootStore,
-  TViewing,
-  TCommunity,
-  TArticle,
-  TArticleFilter,
-  TThread,
-  TGroupedTags,
-  TTag,
-  TDashboardThreadConfig,
-} from '@/spec'
+import type { TRootStore, TViewing, TArticle, TArticleFilter, TGroupedTags, TTag } from '@/spec'
 
-import METRIC from '@/constant/metric'
 import TYPE from '@/constant/type'
+import METRIC from '@/constant/metric'
 
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 
 const ModeLine = T.model('ModeLine', {
   topBarVisiable: T.opt(T.bool, false),
   activeMenu: T.opt(T.enum([...values(TYPE.MM_TYPE), '']), ''),
-  metric: T.opt(T.enum(values(METRIC)), METRIC.COMMUNITY),
 })
   .views((self) => ({
     get isMobile(): boolean {
       const root = getParent(self) as TRootStore
       return root.isMobile
     },
-
-    get dashboardSettings(): TDashboardThreadConfig {
-      const root = getParent(self) as TRootStore
-
-      return {
-        enable: toJS(root.dashboardThread.enableSettings),
-        nameAlias: toJS(root.dashboardThread.nameAlias),
-      }
-    },
-    get curCommunity(): TCommunity {
-      const root = getParent(self) as TRootStore
-
-      return toJS(root.viewing.community)
-    },
-
-    get activeThread(): TThread {
-      const root = getParent(self) as TRootStore
-
-      const { activeThread } = root.viewing
-      return activeThread
-    },
-
     get activeTag(): TTag {
       const root = getParent(self) as TRootStore
       return toJS(root.tagsBar.activeTagData)
@@ -80,10 +47,11 @@ const ModeLine = T.model('ModeLine', {
     },
     get isTopBarVisiable(): boolean {
       const slf = self as TStore
-
-      const { isMobile, topBarVisiable, metric, isArticleDigestInViewport } = slf
       const root = getParent(self) as TRootStore
-      const { bodyScrollDirection } = root.globalLayout
+      const { metric, globalLayout } = root
+
+      const { isMobile, topBarVisiable, isArticleDigestInViewport } = slf
+      const { bodyScrollDirection } = globalLayout
 
       if (metric === METRIC.COMMUNITY && bodyScrollDirection === 'down') {
         return topBarVisiable

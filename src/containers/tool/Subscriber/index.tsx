@@ -5,8 +5,8 @@
 
 import { FC } from 'react'
 
-// import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+// import { buildLog } from '@/logger'
+import { bond } from '@/mobx'
 
 import { Br, Divider } from '@/widgets/Common'
 import Modal from '@/widgets/Modal'
@@ -17,15 +17,7 @@ import type { TBy } from './spec'
 
 import SubscribeInfo from './SubscribeInfo'
 
-import {
-  Wrapper,
-  ByWrapper,
-  IconWrapper,
-  MailIcon,
-  RSSIcon,
-  IconTitle,
-  IconBox,
-} from './styles'
+import { Wrapper, ByWrapper, IconWrapper, MailIcon, RSSIcon, IconTitle, IconBox } from './styles'
 
 import { useInit, onClose, changeBy } from './logic'
 
@@ -36,10 +28,7 @@ type TProps = {
   testid?: string
 }
 
-const SubscriberContainer: FC<TProps> = ({
-  subscriber: store,
-  testid = 'subscriber',
-}) => {
+const SubscriberContainer: FC<TProps> = ({ subscriber: store, testid = 'subscriber' }) => {
   useInit(store)
 
   const { visible, by } = store
@@ -57,10 +46,7 @@ const SubscriberContainer: FC<TProps> = ({
         <h3>订阅更新</h3>
         <Br top={20} />
         <ByWrapper>
-          <IconWrapper
-            $active={by === BY.EMAIL}
-            onClick={() => changeBy(BY.EMAIL)}
-          >
+          <IconWrapper $active={by === BY.EMAIL} onClick={() => changeBy(BY.EMAIL)}>
             <IconBox>
               <MailIcon />
             </IconBox>

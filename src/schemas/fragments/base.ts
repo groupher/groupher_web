@@ -2,7 +2,7 @@ import { gql } from 'urql/core'
 import { values, flatten } from 'ramda'
 
 import EMOTION from '@/constant/emotion'
-import { titleCase } from '@/utils/fmt'
+import { titleCase } from '@/fmt'
 
 export const community = `
   id
@@ -30,6 +30,17 @@ export const customLink = `
   group
   groupIndex
   index
+`
+export const wallpaper = `
+  wallpaperType
+  wallpaper
+  direction
+  customColorValue
+  bgSize
+  uploadBgImage
+  hasPattern
+  hasBlur
+  hasShadow
 `
 export const tag = `
   id

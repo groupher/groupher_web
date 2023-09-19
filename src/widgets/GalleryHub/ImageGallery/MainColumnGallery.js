@@ -8,7 +8,7 @@ import React from 'react'
 import T from 'prop-types'
 
 import { ICON_CMD, ASSETS_ENDPOINT } from '@/config'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import IconText from '@/widgets/IconText'
 
@@ -34,11 +34,7 @@ const MainColumnGallery = ({ items }) => {
   return (
     <Wrapper>
       {items.map((item, index) => (
-        <Block
-          key={item.id}
-          borderTop={index <= 2}
-          borderRight={(index + 1) % 3 !== 0}
-        >
+        <Block key={item.id} borderTop={index <= 2} borderRight={(index + 1) % 3 !== 0}>
           <ImageWrapper>
             <MainImageWrapper>
               <MainImage src={item.imgSrc} />
@@ -53,14 +49,10 @@ const MainColumnGallery = ({ items }) => {
           <Intro>
             <IntroHead>
               <Title>{item.title}</Title>
-              <FlagIcon
-                src={`${ASSETS_ENDPOINT}/navi/nation/${item.nation}.png`}
-              />
+              <FlagIcon src={`${ASSETS_ENDPOINT}/navi/nation/${item.nation}.png`} />
             </IntroHead>
             <Footer>
-              <IconText iconSrc={`${ICON_CMD}/history_clock.svg`}>
-                1233 - 1430
-              </IconText>
+              <IconText iconSrc={`${ICON_CMD}/history_clock.svg`}>1233 - 1430</IconText>
               <IconText iconSrc={`${ICON_CMD}/view-o.svg`}>4567</IconText>
             </Footer>
           </Intro>

@@ -3,7 +3,7 @@ import { FC, memo, ReactNode } from 'react'
 import type { TSpace } from '@/spec'
 import { ICON } from '@/config'
 import SVG from '@/constant/svg'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Tooltip from '@/widgets/Tooltip'
 import { Wrapper, Content, Icon, Hint, getLocalIcon, HoverBg } from './styles/icon_button'

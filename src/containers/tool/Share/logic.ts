@@ -1,12 +1,13 @@
 import { useEffect } from 'react'
 import copy from 'copy-to-clipboard'
 
-import asyncSuit from '@/utils/async'
-import { openShareWindow, toast } from '@/utils/helper'
-import { buildLog } from '@/utils/logger'
-import { SHARE_TYPE, MENU } from './constant'
+import asyncSuit from '@/async'
+import { openShareWindow } from '@/helper'
+import { buildLog } from '@/logger'
+import { toast } from '@/signal'
 
 import type { TMenu } from './spec'
+import { SHARE_TYPE, MENU } from './constant'
 // import S from './schma'
 import type { TStore } from './store'
 

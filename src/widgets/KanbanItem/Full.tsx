@@ -8,9 +8,9 @@ import { FC, memo, useState, useEffect } from 'react'
 
 import type { TArticle } from '@/spec'
 
-import { buildLog } from '@/utils/logger'
-import { mockTags, mockUsers } from '@/utils/mock'
-import { getRandomInt } from '@/utils/helper'
+import { buildLog } from '@/logger'
+import { mockTags, mockUsers } from '@/mock'
+import { getRandomInt } from '@/helper'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
 // import IconButton from '@/widgets/Buttons/IconButton'

@@ -7,7 +7,7 @@
 import { FC, memo, ReactNode } from 'react'
 
 import type { TSpace, TTooltipPlacement } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Tooltip from '@/widgets/Tooltip'
 

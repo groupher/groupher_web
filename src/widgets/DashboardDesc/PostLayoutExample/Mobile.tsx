@@ -1,7 +1,6 @@
 import { FC, memo } from 'react'
 
 import type { TPost } from '@/spec'
-import { POST_LAYOUT } from '@/constant/layout'
 
 import { Divider, Br } from '@/widgets/Common'
 import MobileMockup from '@/widgets/MobileMockup'
@@ -24,7 +23,7 @@ const Mobile: FC<TProps> = ({ articles }) => {
       <Divider />
       <MobileMockup>
         {articles.map((item) => (
-          <PostItem key={item.id} article={item} c11n={{}} isMobilePreview />
+          <PostItem key={item.id} article={item} isMobilePreview />
         ))}
       </MobileMockup>
       <Br bottom={80} />
@@ -33,13 +32,7 @@ const Mobile: FC<TProps> = ({ articles }) => {
       <Divider />
       <MobileMockup>
         {articles.map((item) => (
-          <PostItem
-            key={item.id}
-            article={item}
-            c11n={{}}
-            layout={POST_LAYOUT.PH}
-            isMobilePreview
-          />
+          <PostItem key={item.id} article={item} isMobilePreview />
         ))}
       </MobileMockup>
     </MobileWrapper>

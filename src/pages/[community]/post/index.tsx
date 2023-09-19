@@ -5,7 +5,6 @@ import { getSelectorsByUserAgent } from 'react-device-detect'
 
 import { HCN } from '@/constant/name'
 import { THREAD } from '@/constant/thread'
-import METRIC from '@/constant/metric'
 import { useStore } from '@/stores/init'
 
 import {
@@ -17,6 +16,7 @@ import {
   ssrPagedArticlesFilter,
   ssrParseArticleThread,
   ssrParseDashboard,
+  ssrParseWallpaper,
   ssrRescue,
   singular,
   log,
@@ -104,6 +104,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const articleThread = ssrParseArticleThread(resp, thread, filter)
 
   const dashboard = ssrParseDashboard(community)
+  const wallpaper = ssrParseWallpaper(community)
 
   const initProps = merge(
     {
@@ -124,6 +125,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         community,
         activeThread: toLower(thread),
       },
+      wallpaperEditor: {
+        ...wallpaper,
+      },
       dashboardThread: {
         ...dashboard,
       },
@@ -139,7 +143,7 @@ const CommunityPage = (props) => {
 
   return (
     <Provider store={store}>
-      <GlobalLayout metric={METRIC.COMMUNITY}>
+      <GlobalLayout>
         <PostContent />
       </GlobalLayout>
     </Provider>

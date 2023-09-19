@@ -13,6 +13,7 @@ import {
   ssrBaseStates,
   ssrFetchPrepare,
   ssrParseDashboard,
+  ssrParseWallpaper,
   ssrError,
   ssrPagedArticleSchema,
   ssrPagedArticlesFilter,
@@ -76,10 +77,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const { community } = resp
   const dashboard = ssrParseDashboard(community)
+  const wallpaper = ssrParseWallpaper(community)
 
   const initProps = merge(
     {
       ...ssrBaseStates(resp),
+      metric: METRIC.DASHBOARD,
       route: {
         communityPath: community.slug,
         mainPath: community.slug === HCN ? '' : community.slug,
@@ -89,6 +92,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       viewing: {
         community,
         activeThread: thread,
+      },
+      wallpaperEditor: {
+        ...wallpaper,
       },
       dashboardThread: {
         ...dashboard,
@@ -108,7 +114,7 @@ const CommunityDashboardPage = (props) => {
 
   return (
     <Provider store={store}>
-      <GlobalLayout metric={METRIC.DASHBOARD}>
+      <GlobalLayout>
         <DashboardContent />
       </GlobalLayout>
     </Provider>

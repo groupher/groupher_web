@@ -5,11 +5,11 @@ import type { TArticle, TDirection, TMetric } from '@/spec'
 import EVENT from '@/constant/event'
 import TYPE from '@/constant/type'
 
-import { toggleGlobalBlur, clearGlobalBlur } from '@/utils/dom'
-import { Global, debounce } from '@/utils/helper'
-import { send, previewArticle } from '@/utils/signal'
-import { buildLog } from '@/utils/logger'
-import asyncSuit from '@/utils/async'
+import { toggleGlobalBlur, clearGlobalBlur } from '@/dom'
+import { Global, debounce } from '@/helper'
+import { send, previewArticle } from '@/signal'
+import { buildLog } from '@/logger'
+import asyncSuit from '@/async'
 
 import type { TStore } from './store'
 

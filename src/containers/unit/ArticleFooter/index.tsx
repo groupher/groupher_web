@@ -6,8 +6,8 @@
 
 import { FC } from 'react'
 
-import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { buildLog } from '@/logger'
+import { bond } from '@/mobx'
 
 // import { SpaceGrow } from '@/widgets/Common'
 import TagsList from '@/widgets/TagsList'
@@ -31,7 +31,7 @@ const ArticleFooterContainer: FC<TProps> = ({
   testid = 'article-footer',
 }) => {
   useInit(store)
-  const { viewingArticle, avatarLayout } = store
+  const { viewingArticle } = store
   const { author, articleTags } = viewingArticle
 
   return (
@@ -40,7 +40,7 @@ const ArticleFooterContainer: FC<TProps> = ({
         <TagsList items={articleTags} size="small" />
       </BaseInfo>
 
-      <Panel author={author} avatarLayout={avatarLayout} article={viewingArticle} />
+      <Panel author={author} article={viewingArticle} />
     </Wrapper>
   )
 }

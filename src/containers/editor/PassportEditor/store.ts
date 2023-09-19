@@ -5,8 +5,8 @@
 import { find } from 'ramda'
 
 import type { TCommunity, TRootStore, TUser, TAccount } from '@/spec'
-import { buildLog } from '@/utils/logger'
-import { markStates, toJS, T, getParent, Instance } from '@/utils/mobx'
+import { buildLog } from '@/logger'
+import { markStates, toJS, T, getParent, Instance } from '@/mobx'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:PassportEditor')

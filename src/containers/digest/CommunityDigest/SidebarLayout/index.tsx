@@ -2,13 +2,17 @@ import { FC, memo } from 'react'
 // import Router from 'next/router'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TThread, TCommunity, TMetric, TDashboardThreadConfig } from '@/spec'
+import type { TMetric } from '@/spec'
 
 import EVENT from '@/constant/event'
 import { THREAD } from '@/constant/thread'
 import { DEME_SOCIALS } from '@/constant/social'
 
-import { send } from '@/utils/signal'
+import useViewingThread from '@/hooks/useViewingThread'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useEnable from '@/hooks/useEnable'
+
+import { send } from '@/signal'
 
 import PinedTree from '@/containers/thread/DocThread/ArticleLayout/PinedTree'
 import TagsBar from '@/containers/unit/TagsBar'
@@ -29,15 +33,15 @@ import { Wrapper, FileTreeWrapper, TabBarWrapper, Divider } from '../styles/side
 // const NON_STANDARD_COMMUNITIES = [HCN, 'feedback']
 
 type TProps = {
-  community: TCommunity
-  activeThread: TThread
   metric: TMetric
-  dashboardSettings: TDashboardThreadConfig
 }
 
-const SidebarLayout: FC<TProps> = ({ community, activeThread, metric, dashboardSettings }) => {
-  const { enable } = dashboardSettings
+const SidebarLayout: FC<TProps> = ({ metric }) => {
   const { isMobile } = useMobileDetect()
+
+  const community = useViewingCommunity()
+  const activeThread = useViewingThread()
+  const enable = useEnable()
 
   return (
     <Wrapper testid="community-digest" isMobile={isMobile}>

@@ -2,8 +2,8 @@ import { FC, memo, useCallback } from 'react'
 
 import type { TWallpaperInfo } from '@/spec'
 import { WIDTH } from '@/css'
-import { callWallpaperEditor } from '@/utils/signal'
-import { parseWallpaper } from '@/utils/wallpaper'
+import { callWallpaperEditor } from '@/signal'
+import { parseWallpaper } from '@/wallpaper'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import CheckLabel from '@/widgets/CheckLabel'
@@ -40,7 +40,7 @@ const Wallpaper: FC<TProps> = ({ wallpaperInfo }) => {
           title="壁纸设置"
           desc={
             <>
-              「壁纸」为宽屏（屏幕尺寸大于 ${WIDTH.COMMUNITY.PAGE}
+              「壁纸」为宽屏（屏幕尺寸大于 {WIDTH.COMMUNITY.PAGE}
               ）下，超出内容部分显示的背景图片，除内置壁纸外，你还可以上传和社区话题相关的自定义图片。
               <ArrowButton onClick={handleCallEditor}>更换壁纸</ArrowButton>
             </>

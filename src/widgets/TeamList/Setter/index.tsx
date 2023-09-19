@@ -7,7 +7,7 @@
 import { FC, memo, useEffect, useState } from 'react'
 
 import type { TUser } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import Modal from '@/widgets/Modal'
 
 import Header from './Header'
@@ -30,15 +30,7 @@ export type TProps = {
   onRemove: (u: TUser) => void
 }
 
-const Setter: FC<TProps> = ({
-  show,
-  users,
-  searchedUsers,
-  onSearch,
-  onClose,
-  onAdd,
-  onRemove,
-}) => {
+const Setter: FC<TProps> = ({ show, users, searchedUsers, onSearch, onClose, onAdd, onRemove }) => {
   const [view, setView] = useState('list') // list or search
 
   useEffect(() => {

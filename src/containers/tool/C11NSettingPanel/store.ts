@@ -4,7 +4,7 @@
  */
 
 import type { TRootStore, TThread, TAccount, TThemeName } from '@/spec'
-import { T, markStates, Instance, getParent } from '@/utils/mobx'
+import { T, markStates, Instance, getParent } from '@/mobx'
 
 const C11NSettingPanel = T.model('C11NSettingPanel', {
   activeTab: T.opt(T.enum('activeTab', ['general', 'theme']), 'general'),

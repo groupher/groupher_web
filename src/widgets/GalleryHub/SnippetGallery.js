@@ -8,7 +8,7 @@ import React from 'react'
 import T from 'prop-types'
 
 import { ICON } from '@/config'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import IconText from '@/widgets/IconText'
 
@@ -102,11 +102,7 @@ const SnippetGallery = ({ items }) => {
   return (
     <Wrapper>
       {items.map((item, index) => (
-        <Block
-          key={item.id}
-          borderTop={index <= 2}
-          borderRight={(index + 1) % 3 !== 0}
-        >
+        <Block key={item.id} borderTop={index <= 2} borderRight={(index + 1) % 3 !== 0}>
           <Header>
             <IntroHead>
               <LangPrefix color={item.langColor}>{item.lang}</LangPrefix>

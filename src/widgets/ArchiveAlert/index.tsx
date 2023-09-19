@@ -9,7 +9,7 @@ import { FC, memo } from 'react'
 import type { TSpace } from '@/spec'
 
 import NoticeBar from '@/widgets/NoticeBar'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:ArchiveAlert:index')

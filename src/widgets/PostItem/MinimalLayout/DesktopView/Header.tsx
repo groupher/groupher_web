@@ -1,7 +1,8 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TPost } from '@/spec'
-import useCurCommunity from '@/hooks/useCurCommunity'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 import SIZE from '@/constant/size'
 import { THREAD } from '@/constant/thread'
 
@@ -16,7 +17,7 @@ type TProps = {
 }
 
 const Header: FC<TProps> = ({ article }) => {
-  const { slug } = useCurCommunity()
+  const { slug } = useViewingCommunity()
   const { innerId, title, commentsCount, articleTags } = article
 
   return (
@@ -34,4 +35,4 @@ const Header: FC<TProps> = ({ article }) => {
   )
 }
 
-export default Header
+export default observer(Header)

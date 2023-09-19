@@ -1,7 +1,7 @@
 import { FC, memo, Fragment } from 'react'
 import { includes } from 'ramda'
 
-import type { TID, TAccount, TComment, TAvatarLayout } from '@/spec'
+import type { TID, TAccount, TComment } from '@/spec'
 import type { TAPIMode } from '../../spec'
 
 import DefaultLayout from './DefaultLayout'
@@ -14,7 +14,6 @@ type TProps = {
   hasReplies?: boolean
   foldedIds: TID[]
   showInnerRef?: boolean
-  avatarLayout: TAvatarLayout
   isReply?: boolean
 }
 

@@ -7,8 +7,8 @@
 import { FC } from 'react'
 
 import { ANCHOR } from '@/constant/dom'
-import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { buildLog } from '@/logger'
+import { bond } from '@/mobx'
 
 // import NoticeBar from '@/widgets/NoticeBar'
 
@@ -40,16 +40,7 @@ const CommentsContainer: FC<TProps> = ({
 }) => {
   useInit(store, locked, apiMode)
 
-  const {
-    mode,
-    pagedCommentsData,
-    foldState,
-    editState,
-    repliesState,
-    loading,
-    basicState,
-    avatarLayout,
-  } = store
+  const { mode, pagedCommentsData, foldState, editState, repliesState, loading, basicState } = store
 
   const { isAllFolded } = foldState
   const { totalCount } = pagedCommentsData
@@ -75,7 +66,6 @@ const CommentsContainer: FC<TProps> = ({
           mode={mode}
           loading={loading}
           editState={editState}
-          avatarLayout={avatarLayout}
         />
       )}
 
@@ -86,7 +76,6 @@ const CommentsContainer: FC<TProps> = ({
         pagedComments={pagedCommentsData}
         repliesState={repliesState}
         loading={loading}
-        avatarLayout={avatarLayout}
       />
     </Wrapper>
   )

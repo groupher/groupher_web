@@ -8,7 +8,7 @@ import { FC, useState, useCallback, memo, useEffect } from 'react'
 import { merge, isEmpty } from 'ramda'
 
 import type { TTag } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import { SpaceGrow } from '@/widgets/Common'
 
@@ -54,9 +54,7 @@ const FiltersMenu: FC<TProps> = ({
 
   const handleExpand = useCallback(
     (item) => {
-      item.id === expandMenuId
-        ? setExpandMenuId(null)
-        : setExpandMenuId(item.id)
+      item.id === expandMenuId ? setExpandMenuId(null) : setExpandMenuId(item.id)
     },
     [expandMenuId],
   )
@@ -65,17 +63,11 @@ const FiltersMenu: FC<TProps> = ({
     <Wrapper>
       <Header showReset={!isEmpty(selectedTags)} onReset={handleReset} />
       {items.map((item, index) => (
-        <ItemWrapper
-          key={item.id}
-          withDivider={withDivider}
-          onClick={() => handleExpand(item)}
-        >
+        <ItemWrapper key={item.id} withDivider={withDivider} onClick={() => handleExpand(item)}>
           <Item
             active={item.id === expandMenuId}
             noFilter={noFilter}
-            topMargin={
-              itemBgHighlight && item.id === expandMenuId && index !== 0
-            }
+            topMargin={itemBgHighlight && item.id === expandMenuId && index !== 0}
             itemBgHighlight={itemBgHighlight}
             revert={revert}
           >

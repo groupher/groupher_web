@@ -1,7 +1,8 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
-import type { TAvatarLayout } from '@/spec'
-import { mockUsers } from '@/utils/mock'
+import useAvatarLayout from '@/hooks/useAvatarLayout'
+import { mockUsers } from '@/mock'
 
 import Button from '@/widgets/Buttons/Button'
 
@@ -16,10 +17,11 @@ import {
 
 type TProps = {
   closeEditor: () => void
-  avatarLayout: TAvatarLayout
 }
 
-const PublishBar: FC<TProps> = ({ closeEditor, avatarLayout }) => {
+const PublishBar: FC<TProps> = ({ closeEditor }) => {
+  const avatarLayout = useAvatarLayout()
+
   return (
     <Wrapper>
       <AccountWrapper>
@@ -39,4 +41,4 @@ const PublishBar: FC<TProps> = ({ closeEditor, avatarLayout }) => {
   )
 }
 
-export default memo(PublishBar)
+export default observer(PublishBar)

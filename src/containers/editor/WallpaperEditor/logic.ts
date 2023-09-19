@@ -1,14 +1,18 @@
 import { useEffect } from 'react'
-// import { } from 'ramda'
+import { pick } from 'ramda'
 
 import type { TWallpaperGradientDir } from '@/spec'
-import { buildLog } from '@/utils/logger'
 import EVENT from '@/constant/event'
-import asyncSuit from '@/utils/async'
+import { WALLPAPER_TYPE } from '@/constant/wallpaper'
 
-// import S from './schma'
+import { buildLog } from '@/logger'
+import asyncSuit from '@/async'
+import { toast, closeDrawer } from '@/signal'
+
+import S from './schema'
 import type { TTab } from './spec'
 import type { TStore } from './store'
+import { QUERY_KEYS } from './constant'
 
 const { SR71, $solver, asyncRes } = asyncSuit
 const sr71$ = new SR71({
@@ -29,35 +33,68 @@ export const changeDirection = (direction: TWallpaperGradientDir): void => {
   store.mark({ direction })
 }
 
-export const changeWallpaper = (wallpaper: string): void => {
-  store.changeWallpaper(wallpaper)
+export const removeWallpaper = (): void => {
+  store.mark({ wallpaper: '', wallpaperType: WALLPAPER_TYPE.NONE })
 }
 
-export const changeCustomColor = (customColorValue: string): void => {
-  store.mark({ customColorValue })
+export const changeGradientWallpaper = (wallpaper: string): void => {
+  store.mark({ wallpaper, wallpaperType: WALLPAPER_TYPE.GRADIENT })
 }
 
-export const rollbackEdit = (): void => store.rollbackEdit()
+export const changePatternWallpaper = (wallpaper: string): void => {
+  store.mark({ wallpaper, wallpaperType: WALLPAPER_TYPE.PATTERN })
+}
+
+export const changeCustomGradientWallpaper = (): void => {
+  store.mark({ wallpaper: '', wallpaperType: WALLPAPER_TYPE.CUSTOM_GRADIENT })
+}
+
+export const changeWallpaperType = (wallpaperType: string): void => {
+  store.mark({ wallpaperType })
+}
+
+export const confirmCustomColor = (customColorValue: string): void => {
+  store.mark({ customColorValue, wallpaperType: WALLPAPER_TYPE.CUSTOM_GRADIENT })
+}
 
 /**
  * toggle pattern mark only for gradient backgrounds
  */
-export const togglePattern = (hasPattern: boolean): void => {
-  store.mark({ hasPattern })
+export const togglePattern = (hasPattern: boolean): void => store.mark({ hasPattern })
+export const toggleBlur = (hasBlur: boolean): void => store.mark({ hasBlur })
+export const toggleShadow = (hasShadow: boolean): void => store.mark({ hasShadow })
+
+export const close = (): void => {
+  store.rollbackEdit()
+  closeDrawer()
 }
 
-export const toggleBlur = (hasBlur: boolean): void => {
-  store.mark({ hasBlur })
-}
+export const onSave = (): void => {
+  const { curCommunity } = store
+  const community = curCommunity.slug
 
-export const toggleShadow = (hasShadow: boolean): void => {
-  store.mark({ hasShadow })
+  const args = { community, ...pick(QUERY_KEYS, store) }
+
+  store.mark({ loading: true })
+
+  sr71$.mutate(S.updateDashboardWallpaper, args)
 }
 
 const DataResolver = [
   {
     match: asyncRes(EVENT.DRAWER.AFTER_CLOSE),
     action: () => store.reset(),
+  },
+  {
+    match: asyncRes('updateDashboardWallpaper'),
+    action: ({ updateDashboardWallpaper }) => {
+      store.mark({
+        initWallpaper: pick(QUERY_KEYS, updateDashboardWallpaper.dashboard.wallpaper),
+        loading: false,
+      })
+      closeDrawer()
+      toast('壁纸已保存')
+    },
   },
 ]
 

@@ -1,15 +1,17 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react'
 
-import type { TAvatarLayout } from '@/spec'
-import { mockUsers } from '@/utils/mock'
+import useAvatarLayout from '@/hooks/useAvatarLayout'
+import { mockUsers } from '@/mock'
 
 import { Wrapper, Avatar, Name } from '../styles/simple_layout/author'
 
 type TProps = {
-  avatarLayout: TAvatarLayout
+  //
 }
 
-const Author: FC<TProps> = ({ avatarLayout }) => {
+const Author: FC<TProps> = () => {
+  const avatarLayout = useAvatarLayout()
   const user = mockUsers(1)[0]
 
   return (
@@ -20,4 +22,4 @@ const Author: FC<TProps> = ({ avatarLayout }) => {
   )
 }
 
-export default Author
+export default observer(Author)

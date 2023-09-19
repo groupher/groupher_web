@@ -6,10 +6,10 @@ import type { TThread } from '@/spec'
 import EVENT from '@/constant/event'
 import TYPE from '@/constant/type'
 
-import asyncSuit from '@/utils/async'
-import { plural } from '@/utils/fmt'
-import { send } from '@/utils/signal'
-import { buildLog } from '@/utils/logger'
+import asyncSuit from '@/async'
+import { plural } from '@/fmt'
+import { send } from '@/signal'
+import { buildLog } from '@/logger'
 
 import type { TStore } from './store'
 // import S from './service'
@@ -181,11 +181,10 @@ const DataSolver = [
   },
 ]
 
-export const useInit = (_store: TStore, metric): void => {
+export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
     log('useInit: ', store)
-    store.mark({ metric })
     sub$ = sr71$.data().subscribe($solver(DataSolver, []))
 
     return () => {

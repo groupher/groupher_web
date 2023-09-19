@@ -3,7 +3,7 @@ import { FC } from 'react'
 import type { TArticleState, TArticleCatMode } from '@/spec'
 import { ARTICLE_STATE, ARTICLE_STATE_MODE } from '@/constant/gtd'
 
-import { Trans } from '@/utils/i18n'
+import { Trans } from '@/i18n'
 
 import {
   Wrapper,

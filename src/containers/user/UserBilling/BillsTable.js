@@ -1,7 +1,7 @@
 import React from 'react'
 import TimeAgo from 'timeago-react'
 
-import { Trans } from '@/utils/i18n'
+import { Trans } from '@/i18n'
 
 import { ArticleContentLoading } from '@/widgets/Loading'
 import {

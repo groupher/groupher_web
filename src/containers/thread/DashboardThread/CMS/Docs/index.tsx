@@ -1,10 +1,11 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react'
 import Router from 'next/router'
 
 import type { TID, TDashboardDocRoute, TPagedArticles, TFAQSection } from '@/spec'
 import { DASHBOARD_DOC_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
-import useCurCommunity from '@/hooks/useCurCommunity'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import Tabs from '@/widgets/Switcher/Tabs'
 
@@ -40,7 +41,7 @@ const Docs: FC<TProps> = ({
   editingFAQIndex,
   touched,
 }) => {
-  const curCommunity = useCurCommunity()
+  const curCommunity = useViewingCommunity()
 
   return (
     <Wrapper>
@@ -80,4 +81,4 @@ const Docs: FC<TProps> = ({
   )
 }
 
-export default Docs
+export default observer(Docs)

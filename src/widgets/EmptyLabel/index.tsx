@@ -10,7 +10,7 @@ import type { TSizeSML } from '@/spec'
 
 import { ICON_CMD } from '@/config'
 import SIZE from '@/constant/size'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import { Wrapper, Icon, Title } from './styles'
 

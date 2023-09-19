@@ -3,8 +3,8 @@ import { FC, memo } from 'react'
 import { THREAD } from '@/constant/thread'
 import EVENT from '@/constant/event'
 
-import { send } from '@/utils/signal'
-import { mockUsers } from '@/utils/mock'
+import { send } from '@/signal'
+import { mockUsers } from '@/mock'
 
 import { Wrapper, Avatar, NotifyIcon, DashboardIcon } from '../styles/classic_layout/account_unit'
 

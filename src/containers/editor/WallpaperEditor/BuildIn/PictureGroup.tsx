@@ -15,7 +15,7 @@ import {
   CircleArrow,
 } from '../styles/build_in/pictrue_group'
 
-import { changeWallpaper } from '../logic'
+import { changePatternWallpaper } from '../logic'
 
 type TProps = {
   wallpaper: string
@@ -44,7 +44,7 @@ const PictureGroup: FC<TProps> = ({ wallpaper, patternWallpapers }) => {
             <Image
               src={bgSrc}
               height={name === 'ms' ? '110px' : 'auto'}
-              onClick={() => changeWallpaper(name)}
+              onClick={() => changePatternWallpaper(name)}
             />
           </Block>
         )

@@ -5,7 +5,7 @@
 
 import { FC } from 'react'
 
-// import { buildLog } from '@/utils/logger'
+// import { buildLog } from '@/logger'
 import type { TKanbanLayout, TColorName, TPagedArticles } from '@/spec'
 
 import { SpaceGrow } from '@/widgets/Common'

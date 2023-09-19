@@ -1,9 +1,12 @@
+import { toast as hotToast } from 'sonner'
+
 import PubSub from 'pubsub-js'
 import Router from 'next/router'
 
 import { values, includes } from 'ramda'
 
 import type {
+  TToastType,
   TUser,
   TAttInfo,
   TPaymentUsage,
@@ -27,6 +30,14 @@ import BStore from './bstore'
 import { scrollToHeader } from './dom'
 
 export const Global: TWindow = typeof window !== 'undefined' ? window : null
+
+export const toast = (msg: string, type: TToastType = 'info'): void => {
+  if (type === 'error') {
+    hotToast.error(msg)
+  }
+
+  hotToast.success(msg)
+}
 
 /**
  * publish event message, 'send' inspired by Elixir

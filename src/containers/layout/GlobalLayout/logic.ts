@@ -4,8 +4,8 @@ import { APP_VERSION } from '@/config'
 import type { TMetric, TScrollDirection, TGlowPosition } from '@/spec'
 import METRIC from '@/constant/metric'
 
-import { buildLog } from '@/utils/logger'
-import { Global } from '@/utils/helper'
+import { buildLog } from '@/logger'
+import { Global } from '@/helper'
 
 import type { TStore } from './store'
 

@@ -1,8 +1,8 @@
 import { FC } from 'react'
 
 import type { TTag } from '@/spec'
-import { cutRest } from '@/utils/fmt'
-import { Trans } from '@/utils/i18n'
+import { cutRest } from '@/fmt'
+import { Trans } from '@/i18n'
 
 import Outline from './Outline'
 // import DotDivider from '@/widgets/DotDivider'

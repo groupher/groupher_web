@@ -5,12 +5,8 @@
 
 import { FC } from 'react' 
 
-// import { buildLog } from '@/utils/logger' 
-import { bond } from '@/utils/mobx'
-
-{{#if wantI18n}}
-  import { useTrans } from '@/hooks'
-{{/if}}
+// import { buildLog } from '@/logger' 
+import { bond } from '@/mobx'
 
 import type { TStore } from './store' 
 import { Wrapper } from './styles' 
@@ -25,10 +21,6 @@ type TProps = {
 
 const {{properCase name}}Container: FC<TProps> = ({{preCurly ''}}{{camelCase name}}: store, testid, {{afterCurly ''}}) => { 
   useInit(store)
-
-  {{#if wantI18n}}
-    const { t } = useTrans()
-  {{/if}}
 
   return (
     <Wrapper testid={testid}>

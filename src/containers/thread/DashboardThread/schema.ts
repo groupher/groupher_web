@@ -158,8 +158,12 @@ const updateDashboardLayout = gql`
     $kanbanLayout: String
     $footerLayout: String
     $headerLayout: String
+    $avatarLayout: String
     $broadcastEnable: Boolean
     $kanbanBgColors: [String]
+    $glowType: String
+    $glowFixed: Boolean
+    $glowOpacity: String
   ) {
     updateDashboardLayout(
       community: $community
@@ -167,8 +171,12 @@ const updateDashboardLayout = gql`
       kanbanLayout: $kanbanLayout
       footerLayout: $footerLayout
       headerLayout: $headerLayout
+      avatarLayout: $avatarLayout
       broadcastEnable: $broadcastEnable
       kanbanBgColors: $kanbanBgColors
+      glowType: $glowType
+      glowFixed: $glowFixed
+      glowOpacity: $glowOpacity
     ) {
       slug
     }

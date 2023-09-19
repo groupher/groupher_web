@@ -1,17 +1,10 @@
-import { FC, memo, useState } from 'react'
+import { FC, useState } from 'react'
+import { observer } from 'mobx-react'
 
-import type {
-  TArticle,
-  TCommunity,
-  TMetric,
-  TThread,
-  TTag,
-  TGroupedTags,
-  TDashboardThreadConfig,
-} from '@/spec'
+import type { TArticle, TTag, TGroupedTags } from '@/spec'
 
-import { scrollToHeader } from '@/utils/dom'
-import { washThreads } from '@/utils/helper'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
+import { scrollToHeader } from '@/dom'
 
 import MobileThreadNavi from '@/widgets/MobileThreadNavi'
 import ArticlesFilter from '@/widgets/ArticlesFilter'
@@ -30,12 +23,8 @@ type TProps = {
   testid?: string
   isMobile: boolean
   show: boolean
-  metric: TMetric
   activeMenu: string // TModelineType
   article: TArticle | null
-  community: TCommunity
-  activeThread: TThread
-  dashboardSettings: TDashboardThreadConfig
   activeTag: TTag
   groupedTags: TGroupedTags
 }
@@ -44,30 +33,20 @@ const CommunityLayout: FC<TProps> = ({
   testid = 'modeline-bottom-bar',
   isMobile,
   show,
-  metric,
   article = null,
-  community,
-  dashboardSettings,
   activeMenu,
-  activeThread,
   activeTag,
   groupedTags,
 }) => {
+  const community = useViewingCommunity()
   const [expand, setExpand] = useState(false)
-
-  const washedThreads = washThreads(community.threads, dashboardSettings)
 
   return (
     <Wrapper testid={testid} show={show} isMenuActive={!!activeMenu}>
       <InnerWrapper expand={expand}>
         <MainMenusWrapper>
           <CommunityLogo src={community.logo} />
-          <MobileThreadNavi
-            community={community}
-            threads={washedThreads}
-            active={activeThread}
-            mode="modeline"
-          />
+          <MobileThreadNavi mode="modeline" />
           <ArticlesFilter
             isMobile={isMobile}
             mode="modeline"
@@ -91,4 +70,4 @@ const CommunityLayout: FC<TProps> = ({
   )
 }
 
-export default memo(CommunityLayout)
+export default observer(CommunityLayout)

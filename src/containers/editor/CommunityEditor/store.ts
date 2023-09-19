@@ -6,7 +6,7 @@
 import { pick, values, isEmpty } from 'ramda'
 
 import type { TRootStore, TRoute, TAccount } from '@/spec'
-import { T, getParent, markStates, Instance } from '@/utils/mobx'
+import { T, getParent, markStates, Instance } from '@/mobx'
 
 import type {
   TSelectTypeStatus,

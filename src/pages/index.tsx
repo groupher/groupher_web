@@ -18,7 +18,11 @@ import LandingPage from '@/containers/content/LandingPage'
 // }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  return { props: { errorCode: null } }
+  const initProps = {
+    metric: METRIC.HOME,
+  }
+
+  return { props: { errorCode: null, ...initProps } }
 }
 
 export const HomePage = (props) => {
@@ -26,7 +30,7 @@ export const HomePage = (props) => {
 
   return (
     <Provider store={store}>
-      <GlobalLayout metric={METRIC.HOME}>
+      <GlobalLayout>
         <LandingPage />
       </GlobalLayout>
     </Provider>

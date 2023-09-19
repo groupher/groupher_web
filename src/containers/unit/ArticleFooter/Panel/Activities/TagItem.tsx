@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import { Br } from '@/widgets/Common'
-import { mockUsers } from '@/utils/mock'
+import { mockUsers } from '@/mock'
 
 import { Item, TagIcon, Highlight, Content } from '../../styles/panel/activities/tab_item'
 

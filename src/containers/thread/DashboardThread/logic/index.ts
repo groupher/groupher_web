@@ -19,11 +19,10 @@ import ERR from '@/constant/err'
 
 import { DASHBOARD_ROUTE, DASHBOARD_BASEINFO_ROUTE, DASHBOARD_SEO_ROUTE } from '@/constant/route'
 
-import { toast } from '@/utils/helper'
-import { buildLog } from '@/utils/logger'
-import { updateEditing, toJS } from '@/utils/mobx'
-import { errRescue } from '@/utils/signal'
-import asyncSuit from '@/utils/async'
+import { buildLog } from '@/logger'
+import { updateEditing, toJS } from '@/mobx'
+import asyncSuit from '@/async'
+import { toast, errRescue } from '@/signal'
 
 import type { TStore } from '../store'
 import type { TSettingField, TNameAlias } from '../spec'
@@ -453,7 +452,7 @@ export const removeMediaReport = (index: number): void => {
 // ###############################
 const _handleDone = () => {
   const field = store.savingField
-  toast('设置已经保存')
+  toast('设置已保存')
 
   let initSettings
 

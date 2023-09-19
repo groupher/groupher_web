@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 import type { TAccount } from '@/spec'
 import EVENT from '@/constant/event'
 
-import { send, c11nSettings } from '@/utils/signal'
+import { send, c11nSettings } from '@/signal'
 
 import UserAccount from './UserAccount'
 

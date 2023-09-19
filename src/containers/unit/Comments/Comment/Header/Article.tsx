@@ -1,8 +1,10 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 import TimeAgo from 'timeago-react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TAvatarLayout, TComment } from '@/spec'
+import type { TComment } from '@/spec'
+import useAvatarLayout from '@/hooks/useAvatarLayout'
 
 import ImgFallback from '@/widgets/ImgFallback'
 import { Space } from '@/widgets/Common'
@@ -28,12 +30,12 @@ import {
 type TProps = {
   data: TComment
   showInnerRef: boolean
-  avatarLayout: TAvatarLayout
   isReply: boolean
 }
 
-const CommentHeader: FC<TProps> = ({ data, showInnerRef, avatarLayout, isReply }) => {
+const CommentHeader: FC<TProps> = ({ data, showInnerRef, isReply }) => {
   const { isMobile } = useMobileDetect()
+  const avatarLayout = useAvatarLayout()
 
   const { author, meta } = data
   const avatarSize = author.bio ? 26 : 24
@@ -83,4 +85,4 @@ const CommentHeader: FC<TProps> = ({ data, showInnerRef, avatarLayout, isReply }
   )
 }
 
-export default memo(CommentHeader)
+export default observer(CommentHeader)

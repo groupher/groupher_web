@@ -10,7 +10,10 @@ export const Addon = dynamic(() => import('./Addon'), {
   ssr: false,
 })
 
-export const holder = 1
+export const GlowBackground = dynamic(() => import('./GlowBackground'), {
+  ssr: false,
+})
+
 // export const Share = dynamic(() => import('@/containers/tool/Share'), {
 //   /* eslint-disable react/display-name */
 //   loading: () => <div />,

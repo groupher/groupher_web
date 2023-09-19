@@ -7,9 +7,11 @@
 import { FC } from 'react'
 
 import { FOOTER_LAYOUT } from '@/constant/layout'
+import useFooterLinks from '@/hooks/useFooterLinks'
+import useMetric from '@/hooks/useMetric'
 
-import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { buildLog } from '@/logger'
+import { bond } from '@/mobx'
 
 import SimpleLayout from './SimpleLayout'
 import GroupLayout from './GroupLayout'
@@ -21,18 +23,15 @@ import { Wrapper, InnerWrapper } from '../styles'
 /* eslint-disable-next-line */
 const log = buildLog('C:Footer')
 
-const FooterContainer: FC<TProps> = ({ metric, testid = 'footer', config }) => {
-  const { layout, links } = config
+const FooterContainer: FC<TProps> = ({ testid = 'footer' }) => {
+  const { layout } = useFooterLinks()
+  const metric = useMetric()
 
   return (
     <Wrapper testid={testid} metric={metric}>
       <InnerWrapper metric={metric}>
-        {layout === FOOTER_LAYOUT.GROUP ? (
-          <GroupLayout links={links} metric={metric} />
-        ) : (
-          <SimpleLayout links={links} />
-        )}
-        <PowerbyInfo config={config} metric={metric} />
+        {layout === FOOTER_LAYOUT.GROUP ? <GroupLayout metric={metric} /> : <SimpleLayout />}
+        <PowerbyInfo metric={metric} />
       </InnerWrapper>
     </Wrapper>
   )

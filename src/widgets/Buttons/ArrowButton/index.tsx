@@ -10,7 +10,7 @@ import type { TColorName, TSpace } from '@/spec'
 
 import { COLOR_NAME } from '@/constant/colors'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Arrow from './Arrow'
 import { Wrapper, Text } from '../styles/arrow_button'

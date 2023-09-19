@@ -4,7 +4,7 @@
  */
 
 import { PAGE_SIZE } from '@/config'
-import { T, getParent, markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, toJS } from '@/mobx'
 import { emptyPagi } from '@/model'
 
 const Bill = T.model('Bill', {

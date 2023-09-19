@@ -1,7 +1,9 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
 import TimeAgo from 'timeago-react'
+import { observer } from 'mobx-react'
 
-import type { TComment, TAvatarLayout } from '@/spec'
+import type { TComment } from '@/spec'
+import useAvatarLayout from '@/hooks/useAvatarLayout'
 import { ICON } from '@/config'
 
 import ImgFallback from '@/widgets/ImgFallback'
@@ -22,11 +24,12 @@ import { expandComment } from '../../logic'
 
 type TProps = {
   data: TComment
-  avatarLayout: TAvatarLayout
   isReply?: boolean
 }
 
-const FoldLayout: FC<TProps> = ({ data, avatarLayout, isReply = false }) => {
+const FoldLayout: FC<TProps> = ({ data, isReply = false }) => {
+  const avatarLayout = useAvatarLayout()
+
   const isSolution = false //
   const { meta } = data
   const { isLegal, illegalReason, illegalWords } = meta
@@ -65,4 +68,4 @@ const FoldLayout: FC<TProps> = ({ data, avatarLayout, isReply = false }) => {
   )
 }
 
-export default memo(FoldLayout)
+export default observer(FoldLayout)

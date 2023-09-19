@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TTestable } from '@/spec'
 
 import css, { theme } from '@/css'
-import { camelize } from '@/utils/fmt'
+import { camelize } from '@/fmt'
 
 import CommentSVG from '@/icons/Comment'
 

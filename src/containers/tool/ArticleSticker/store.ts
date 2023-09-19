@@ -6,7 +6,7 @@
 // import {} from 'ramda'
 
 import type { TRootStore, TArticle, TScrollDirection, TThread, TCommentsState } from '@/spec'
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 import { PagedUsers, emptyPagi } from '@/model'
 
 const ArticleSticker = T.model('ArticleSticker', {

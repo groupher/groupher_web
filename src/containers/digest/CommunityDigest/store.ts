@@ -3,17 +3,8 @@
  *
  */
 
-import type {
-  TAccount,
-  TRootStore,
-  TViewing,
-  TRoute,
-  TCommunity,
-  TThread,
-  TGlobalLayout,
-  TDashboardThreadConfig,
-} from '@/spec'
-import { T, getParent, markStates, toJS, Instance } from '@/utils/mobx'
+import type { TAccount, TRootStore, TViewing, TRoute, TCommunity } from '@/spec'
+import { T, getParent, markStates, toJS, Instance } from '@/mobx'
 
 const CommunityDigest = T.model('CommunityDigest', {
   loading: T.opt(T.bool, false),
@@ -29,6 +20,10 @@ const CommunityDigest = T.model('CommunityDigest', {
       const root = getParent(self) as TRootStore
       return root.accountInfo
     },
+    get curCommunity(): TCommunity {
+      const root = getParent(self) as TRootStore
+      return toJS(root.viewing.community)
+    },
     get curRoute(): TRoute {
       const root = getParent(self) as TRootStore
       return root.curRoute
@@ -36,31 +31,6 @@ const CommunityDigest = T.model('CommunityDigest', {
     get viewing(): TViewing {
       const root = getParent(self) as TRootStore
       return toJS(root.viewing)
-    },
-    get realtimeVisitors(): number {
-      return 0
-    },
-    get curThread(): TThread {
-      const root = getParent(self) as TRootStore
-      return root.viewing.activeThread
-    },
-    get curCommunity(): TCommunity {
-      const root = getParent(self) as TRootStore
-
-      return toJS(root.viewing.community)
-    },
-    get dashboardSettings(): TDashboardThreadConfig {
-      const root = getParent(self) as TRootStore
-
-      return {
-        enable: toJS(root.dashboardThread.enableSettings),
-        nameAlias: toJS(root.dashboardThread.nameAlias),
-        extraLinks: toJS(root.dashboardThread.headerSettings.headerLinks),
-      }
-    },
-    get globalLayout(): TGlobalLayout {
-      const root = getParent(self) as TRootStore
-      return root.dashboardThread.globalLayout
     },
   }))
   .actions((self) => ({

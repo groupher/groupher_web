@@ -16,8 +16,8 @@ import { THREAD } from '@/constant/thread'
 import SVG from '@/constant/svg'
 
 import Tooltip from '@/widgets/Tooltip'
-import { buildLog } from '@/utils/logger'
-// import { authWarn } from '@/utils/signal'
+import { buildLog } from '@/logger'
+// import { authWarn } from '@/signal'
 import useAccount from '@/hooks/useAccount'
 
 import { MORE_MENU } from './constant'

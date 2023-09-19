@@ -8,7 +8,7 @@ import { FC, ReactNode, memo } from 'react'
 
 import type { TSizeSM, TSpace } from '@/spec'
 import SIZE from '@/constant/size'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import { Wrapper, IconWrapper, CheckIcon, ChildWrapper } from './styles'
 

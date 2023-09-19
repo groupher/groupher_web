@@ -8,9 +8,9 @@ import { THREAD } from '@/constant/thread'
 
 import type { TRootStore, TCommunity, TTag, TGroupedTags, TThread } from '@/spec'
 
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
-// import { mockTags } from '@/utils/mock'
-import { groupByKey } from '@/utils/helper'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+// import { mockTags } from '@/mock'
+import { groupByKey } from '@/helper'
 
 import { Tag, emptyTag } from '@/model'
 

@@ -6,7 +6,7 @@
 
 import { FC, memo, Fragment } from 'react'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import type { TEditData } from './spec'
 import { Input, Section, ICON } from './styles/social_inputer'

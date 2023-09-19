@@ -3,8 +3,8 @@ import { useEffect } from 'react'
 import EVENT from '@/constant/event'
 import TYPE from '@/constant/type'
 
-import asyncSuit from '@/utils/async'
-import { buildLog } from '@/utils/logger'
+import asyncSuit from '@/async'
+import { buildLog } from '@/logger'
 
 import articleItems from './defaults/article'
 import userItems from './defaults/user'

@@ -5,10 +5,10 @@
 
 import { merge } from 'ramda'
 
-import type { TRootStore, TThread, TArticle, TDashboardThreadConfig } from '@/spec'
+import type { TRootStore, TThread, TArticle } from '@/spec'
 import TYPE from '@/constant/type'
 
-import { T, getParent, markStates, toJS, Instance } from '@/utils/mobx'
+import { T, getParent, markStates, toJS, Instance } from '@/mobx'
 
 const ArticleDigest = T.model('ArticleDigest', {
   loading: T.opt(T.bool, false),
@@ -63,15 +63,6 @@ const ArticleDigest = T.model('ArticleDigest', {
       const { action, loading } = self
       if (action === TYPE.FAVORITE && loading) return true
       return false
-    },
-
-    get dashboardSettings(): TDashboardThreadConfig {
-      const root = getParent(self) as TRootStore
-
-      return {
-        enable: toJS(root.dashboardThread.enableSettings),
-        nameAlias: toJS(root.dashboardThread.nameAlias),
-      }
     },
   }))
   .actions((self) => ({

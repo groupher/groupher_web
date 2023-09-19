@@ -39,6 +39,9 @@ export const SETTING_LAYOUT_FIELD = {
   BROADCAST_BG: 'broadcastBg',
   BROADCAST_ARTICLE_BG: 'broadcastArticleBg',
   CHANGELOG_LAYOUT: 'changelogLayout',
+  GLOW_TYPE: 'glowType',
+  GLOW_FIXED: 'glowFixed',
+  GLOW_OPACITY: 'glowOpacity',
 }
 
 export const SETTING_FIELD = {

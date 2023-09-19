@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import type { TActive, TSpace } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import { Wrapper, CheckIcon, Title } from './styles'
 

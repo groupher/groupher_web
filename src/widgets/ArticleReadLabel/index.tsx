@@ -4,8 +4,8 @@
 
 import { FC, memo } from 'react'
 
-import { buildLog } from '@/utils/logger'
-import { nilOrEmpty } from '@/utils/validator'
+import { buildLog } from '@/logger'
+import { nilOrEmpty } from '@/validator'
 import useAccount from '@/hooks/useAccount'
 
 import { ReadedLabel } from './styles'

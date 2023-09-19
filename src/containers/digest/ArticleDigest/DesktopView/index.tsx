@@ -9,8 +9,8 @@ import { isNil } from 'ramda'
 import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
 
-import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { buildLog } from '@/logger'
+import { bond } from '@/mobx'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
 import FixedHeader from './FixedHeader'
@@ -38,7 +38,7 @@ const ArticleDigestContainer: FC<TProps> = ({
   // const { isMobile } = useMobileDetect()
   useInit(store)
 
-  const { viewingArticle, inViewport, activeThread, dashboardSettings } = store
+  const { viewingArticle, inViewport } = store
 
   if (isNil(viewingArticle.id)) return null
 
@@ -49,12 +49,7 @@ const ArticleDigestContainer: FC<TProps> = ({
       {/* @ts-ignore */}
       <FixedHeader show={!inViewport} article={viewingArticle} metric={metric} />
       <InnerWrapper>
-        <Header
-          metric={metric}
-          community={viewingArticle.originalCommunity}
-          dashboardSettings={dashboardSettings}
-          activeThread={activeThread}
-        />
+        <Header metric={metric} />
         <BannerContent>
           <Layout article={viewingArticle} metric={metric} />
         </BannerContent>

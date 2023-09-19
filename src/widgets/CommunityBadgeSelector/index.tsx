@@ -3,8 +3,8 @@ import { FC, memo } from 'react'
 import type { TCommunity, TEditMode } from '@/spec'
 import { HCN } from '@/constant/name'
 
-import { cutRest } from '@/utils/fmt'
-import { selectCommunity } from '@/utils/signal'
+import { cutRest } from '@/fmt'
+import { selectCommunity } from '@/signal'
 
 import Tooltip from '@/widgets/Tooltip'
 import CommunityCard from '@/widgets/Cards/CommunityCard'

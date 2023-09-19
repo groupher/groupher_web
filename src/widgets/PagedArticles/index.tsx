@@ -7,11 +7,11 @@
 import { FC, memo } from 'react'
 import Pagi from '@/widgets/Pagi'
 
-import type { TThread, TPagedArticles, TResState, TC11N, TGlobalLayout } from '@/spec'
+import type { TThread, TPagedArticles, TResState } from '@/spec'
 import EVENT from '@/constant/event'
 
-import { send } from '@/utils/signal'
-import { buildLog } from '@/utils/logger'
+import { send } from '@/signal'
+import { buildLog } from '@/logger'
 
 import ArticleList from './ArticleList'
 // import CommunityRecommends from './CommunityRecommends'
@@ -25,11 +25,9 @@ export type TProps = {
   resState: TResState
   // TODO: remove
   emptyPrefix?: string
-  c11n: TC11N
-  globalLayout: TGlobalLayout
 }
 
-const PagedArticles: FC<TProps> = ({ thread, data, resState, emptyPrefix, c11n, globalLayout }) => {
+const PagedArticles: FC<TProps> = ({ thread, data, resState, emptyPrefix }) => {
   const { entries, ...pagi } = data
 
   return (
@@ -39,8 +37,6 @@ const PagedArticles: FC<TProps> = ({ thread, data, resState, emptyPrefix, c11n, 
         entries={entries}
         resState={resState}
         emptyPrefix={emptyPrefix}
-        c11n={c11n}
-        globalLayout={globalLayout}
       />
 
       <Pagi

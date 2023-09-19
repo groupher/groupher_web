@@ -5,8 +5,8 @@
 
 import { FC } from 'react'
 
-// import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+// import { buildLog } from '@/logger'
+import { bond } from '@/mobx'
 import CustomScroller from '@/widgets/CustomScroller'
 
 import Actions from './Actions'
@@ -31,11 +31,11 @@ const KanbanThreadContainer: FC<TProps> = ({
 }) => {
   useInit(store)
 
-  const { layout, avatarLayout, kanbanBgColors, todoPosts, wipPosts, donePosts } = store
+  const { layout, kanbanBgColors, todoPosts, wipPosts, donePosts } = store
 
   return (
     <Wrapper testid={testid} isSidebarLayout={isSidebarLayout}>
-      <Actions avatarLayout={avatarLayout} />
+      <Actions />
       <ColumnsWrapper>
         <Columns
           layout={layout}

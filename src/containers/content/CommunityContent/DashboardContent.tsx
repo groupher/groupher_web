@@ -8,7 +8,7 @@ import useMobileDetect from '@groupher/use-mobile-detect-hook'
 import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
 
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import CommunityDigest from '@/containers/digest/CommunityDigest'
 import DashboardThread from '@/containers//thread/DashboardThread'

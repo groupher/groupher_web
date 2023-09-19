@@ -4,10 +4,10 @@ import { uniq, reject, keys } from 'ramda'
 
 import EVENT from '@/constant/event'
 
-import { buildLog } from '@/utils/logger'
-import asyncSuit from '@/utils/async'
-import { send, errRescue, closeDrawer } from '@/utils/signal'
-import { toJS } from '@/utils/mobx'
+import { buildLog } from '@/logger'
+import asyncSuit from '@/async'
+import { send, errRescue, closeDrawer } from '@/signal'
+import { toJS } from '@/mobx'
 import ERR from '@/constant/err'
 
 import S from './schema'

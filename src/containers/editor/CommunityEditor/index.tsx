@@ -6,8 +6,8 @@
 
 import { FC } from 'react'
 
-import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { buildLog } from '@/logger'
+import { bond } from '@/mobx'
 
 import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'

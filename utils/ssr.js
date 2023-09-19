@@ -7,7 +7,7 @@ import { HCN } from '@/constant/name'
 import TYPE from '@/constant/type'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
-import { removeEmptyValuesFromObject } from '@/utils/helper'
+import { removeEmptyValuesFromObject } from '@/helper'
 import { BUILDIN_ALIAS } from '@/containers/thread/DashboardThread/constant'
 
 import { plural } from './fmt'
@@ -234,6 +234,18 @@ const parseDashboardAlias = (nameAlias) => {
   const unChangedAlias = reject((item) => includes(item.original, changedAliasKeys), BUILDIN_ALIAS)
 
   return reject((item) => item.slug === '', [...nameAlias, ...unChangedAlias])
+}
+
+export const ssrParseWallpaper = (community) => {
+  const { dashboard } = community
+  const { wallpaper } = dashboard
+
+  return {
+    ...wallpaper,
+    initWallpaper: {
+      ...wallpaper,
+    },
+  }
 }
 
 export const ssrParseDashboard = (community) => {

@@ -78,11 +78,6 @@ export type TDashboardSEOConfig = {
   twImageHeight: string
 }
 
-export type TFooterConfig = {
-  layout: TFooterLayout
-  links: TLinkItem[]
-}
-
 export type TGlobalLayout = {
   primaryColor: TColorName
   brand: TBrandLayout

@@ -7,8 +7,8 @@
 import { FC, useCallback, memo } from 'react'
 
 import type { TTabItem } from '@/spec'
-import { isString } from '@/utils/validator'
-import { buildLog } from '@/utils/logger'
+import { isString } from '@/validator'
+import { buildLog } from '@/logger'
 
 import { Wrapper, TabItem } from '../styles/tabs/drawer_view'
 

@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import { KANBAN_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
-import { callDashboardDesc } from '@/utils/signal'
+import { callDashboardDesc } from '@/signal'
 
 import { Row, Br, Space, SpaceGrow, Inline } from '@/widgets/Common'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'

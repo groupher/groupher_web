@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic'
 
 import type { TPost } from '@/spec'
 import EVENT from '@/constant/event'
-import { send } from '@/utils/signal'
+import { send } from '@/signal'
 
 import ArticleCatState from '@/widgets/ArticleCatState'
 import ViewsCount from '@/widgets/ViewsCount'

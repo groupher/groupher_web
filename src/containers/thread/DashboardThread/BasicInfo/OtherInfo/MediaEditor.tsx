@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { sortByIndex } from '@/utils/helper'
+import { sortByIndex } from '@/helper'
 
 import type { TMediaReport } from '@/spec'
 import AddButton from '@/widgets/Buttons/AddButton'

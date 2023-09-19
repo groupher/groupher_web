@@ -3,9 +3,9 @@ import { FC, memo, useCallback } from 'react'
 import type { TComment } from '@/spec'
 import { ICON } from '@/config'
 import useAccount from '@/hooks/useAccount'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
-import { authWarn } from '@/utils/signal'
+import { authWarn } from '@/signal'
 
 import IconButton from '@/widgets/Buttons/IconButton'
 import MenuButton from '@/widgets/Buttons/MenuButton'
@@ -102,11 +102,7 @@ const Actions: FC<TProps> = ({ data }) => {
       )}
 
       <SpaceGrow />
-      <MenuButton
-        options={menuOptions}
-        extraOptions={extraOptions}
-        onClick={handleAction}
-      >
+      <MenuButton options={menuOptions} extraOptions={extraOptions} onClick={handleAction}>
         <MoreWrapper>
           <IconButton path="shape/more.svg" size={16} />
         </MoreWrapper>

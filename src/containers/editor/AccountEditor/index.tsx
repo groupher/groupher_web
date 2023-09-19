@@ -6,9 +6,9 @@
 
 import { FC } from 'react'
 
-import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
-import { closeDrawer } from '@/utils/signal'
+import { buildLog } from '@/logger'
+import { bond } from '@/mobx'
+import { closeDrawer } from '@/signal'
 
 import SubmitButton from '@/widgets/Buttons/SubmitButton'
 import Tooltip from '@/widgets/Tooltip'

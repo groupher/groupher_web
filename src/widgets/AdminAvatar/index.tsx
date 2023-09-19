@@ -4,11 +4,12 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
-import type { TUser, TSpace, TAvatarLayout } from '@/spec'
-import { AVATAR_LAYOUT } from '@/constant/layout'
-import { buildLog } from '@/utils/logger'
+import type { TUser, TSpace } from '@/spec'
+import useAvatarLayout from '@/hooks/useAvatarLayout'
+import { buildLog } from '@/logger'
 
 import ImgFallback from '@/widgets/ImgFallback'
 
@@ -20,15 +21,11 @@ const log = buildLog('w:AdminAvatar:index')
 type TProps = {
   testid?: string
   user: TUser
-  avatarLayout?: TAvatarLayout
 } & TSpace
 
-const AdminAvatar: FC<TProps> = ({
-  testid = 'admin-avatar',
-  user,
-  avatarLayout = AVATAR_LAYOUT.SQUARE,
-  ...restProps
-}) => {
+const AdminAvatar: FC<TProps> = ({ testid = 'admin-avatar', user, ...restProps }) => {
+  const avatarLayout = useAvatarLayout()
+
   return (
     <Wrapper testid={testid} {...restProps}>
       <Avatar
@@ -43,4 +40,4 @@ const AdminAvatar: FC<TProps> = ({
   )
 }
 
-export default memo(AdminAvatar)
+export default observer(AdminAvatar)

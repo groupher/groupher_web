@@ -13,4 +13,4 @@ export type TWallpaperData = {
   customColor: string
 }
 
-export type TTab = 'buildin' | 'custom'
+export type TTab = 'buildin' | 'upload'

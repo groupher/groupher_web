@@ -7,16 +7,10 @@
 import { memo, FC } from 'react'
 
 import { ICON_CMD } from '@/config'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Tooltip from '@/widgets/Tooltip'
-import {
-  Wrapper,
-  Label,
-  LabelIcon,
-  ActionLink,
-  Icon,
-} from './styles/fancy_publish_button'
+import { Wrapper, Label, LabelIcon, ActionLink, Icon } from './styles/fancy_publish_button'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:PublishButton:index')

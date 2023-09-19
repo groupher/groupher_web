@@ -6,10 +6,10 @@
 
 import { FC, memo } from 'react'
 
-import type { TAvatarLayout, TChangelog } from '@/spec'
+import type { TChangelog } from '@/spec'
 
-import { buildLog } from '@/utils/logger'
-import { previewArticle } from '@/utils/signal'
+import { buildLog } from '@/logger'
+import { previewArticle } from '@/signal'
 
 import { SpaceGrow } from '@/widgets/Common'
 import CoverImage from '@/widgets/CoverImage'
@@ -39,11 +39,10 @@ const log = buildLog('w:ChangelogItem:index')
 
 type TProps = {
   testid?: string
-  avatarLayout: TAvatarLayout
   article: TChangelog
 }
 
-const ClassicLayout: FC<TProps> = ({ testid = 'changelog-item', avatarLayout, article }) => {
+const ClassicLayout: FC<TProps> = ({ testid = 'changelog-item', article }) => {
   return (
     <Wrapper testid={testid}>
       <Main onClick={() => previewArticle(article)}>
@@ -63,7 +62,7 @@ const ClassicLayout: FC<TProps> = ({ testid = 'changelog-item', avatarLayout, ar
           这种行为十分危险，战争期间各种武装组织骚动，随时对我国在乌克兰撤侨的6000人直接造成生命威胁。前段时间，刘学州那个找爸妈的孩子，也是被1450它们网暴死的。
           （1450罪恶滔天啊！1450是九世恶人下凡！连孩子都不放过。
         </Body>
-        <Author avatarLayout={avatarLayout} user={article.author} />
+        <Author user={article.author} />
         <Footer>
           <EmotionSelector emotions={demoEmotion} isLegal />
           <SpaceGrow />

@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { roundUpNumber } from '@/utils/fmt'
+import { roundUpNumber } from '@/fmt'
 import type { TSpace } from '@/spec'
 
 import {

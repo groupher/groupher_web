@@ -1,7 +1,8 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
-import type { TAccount, TAvatarLayout } from '@/spec'
-import { AVATAR_LAYOUT } from '@/constant/layout'
+import type { TAccount } from '@/spec'
+import useAvatarLayout from '@/hooks/useAvatarLayout'
 
 import { SpaceGrow } from '@/widgets/Common'
 
@@ -21,14 +22,11 @@ import { openEditor } from '../logic'
 type TProps = {
   accountInfo: TAccount
   showEditor: boolean
-  avatarLayout?: TAvatarLayout
 }
 
-const EditorHeader: FC<TProps> = ({
-  accountInfo,
-  showEditor,
-  avatarLayout = AVATAR_LAYOUT.SQUARE,
-}) => {
+const EditorHeader: FC<TProps> = ({ accountInfo, showEditor }) => {
+  const avatarLayout = useAvatarLayout()
+
   if (showEditor) {
     return (
       <ExpandWrapper>
@@ -52,4 +50,4 @@ const EditorHeader: FC<TProps> = ({
   )
 }
 
-export default memo(EditorHeader)
+export default observer(EditorHeader)

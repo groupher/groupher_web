@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TSubmitState } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import YesOrNoButtons from './YesOrNoButtons'
 import Button from './Button'

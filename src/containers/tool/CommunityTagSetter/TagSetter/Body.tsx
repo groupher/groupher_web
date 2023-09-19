@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 import { keys } from 'ramda'
 
 import type { TTag } from '@/spec'
-import { groupByKey } from '@/utils/helper'
+import { groupByKey } from '@/helper'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 import CustomScroller from '@/widgets/CustomScroller'
@@ -60,12 +60,7 @@ const Body: FC<TProps> = ({ view, tagsList, onTagSelect }) => {
       return (
         <Wrapper>
           <InnerWrapper>
-            <CustomScroller
-              direction="vertical"
-              height="360px"
-              showShadow={false}
-              autoHide={false}
-            >
+            <CustomScroller direction="vertical" height="360px" showShadow={false} autoHide={false}>
               {tagFolders.map((folder) => (
                 <GroupTags
                   key={folder}

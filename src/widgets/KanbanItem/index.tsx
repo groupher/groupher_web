@@ -8,7 +8,7 @@ import { FC, memo } from 'react'
 
 import type { TArticle, TKanbanLayout } from '@/spec'
 import { KANBAN_LAYOUT } from '@/constant/layout'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 // import IconButton from '@/widgets/Buttons/IconButton'
 

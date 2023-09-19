@@ -8,7 +8,7 @@ import { FC, memo } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TCommunity } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 // import Charger from '@/widgets/Charger'
 

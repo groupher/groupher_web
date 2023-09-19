@@ -10,14 +10,13 @@ import T from 'prop-types'
 import { startsWith, isEmpty, path, split } from 'ramda'
 
 import BStore from '@/utils/bstore'
-import { nilOrEmpty } from '@/utils/validator'
-import { buildLog } from '@/utils/logger'
+import { nilOrEmpty } from '@/validator'
+import { buildLog } from '@/logger'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Guardian:index')
 
-const getDisplayName = (WrappedComp) =>
-  WrappedComp.displayName || WrappedComp.name || 'Component'
+const getDisplayName = (WrappedComp) => WrappedComp.displayName || WrappedComp.name || 'Component'
 
 const getRawPassport = (passport) => {
   if (startsWith('owner;', passport)) {

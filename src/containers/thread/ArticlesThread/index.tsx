@@ -10,8 +10,8 @@ import dynamic from 'next/dynamic'
 import type { TResState, TArticleFilterMode } from '@/spec'
 import { BANNER_LAYOUT, DOC_FAQ_LAYOUT } from '@/constant/layout'
 
-import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { buildLog } from '@/logger'
+import { bond } from '@/mobx'
 
 import PagedArticles from '@/widgets/PagedArticles'
 import TagNote from '@/widgets/TagNote'
@@ -62,7 +62,6 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
     filtersData,
     curThread,
     showFilters,
-    c11n,
     resState,
     mode,
     globalLayout,
@@ -104,8 +103,6 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
             data={pagedArticlesData}
             thread={curThread}
             resState={resState as TResState}
-            c11n={c11n}
-            globalLayout={globalLayout}
           />
         )}
       </LayoutWrapper>

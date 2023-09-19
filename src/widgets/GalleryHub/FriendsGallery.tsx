@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import type { TID } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import Linker from '@/widgets/Linker'
 
 import {

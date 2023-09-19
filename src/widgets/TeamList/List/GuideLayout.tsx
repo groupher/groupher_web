@@ -8,15 +8,10 @@ import { FC, memo } from 'react'
 
 import type { TUser } from '@/spec'
 import { ICON } from '@/config'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 // import Setter from './Setter'
-import {
-  Wrapper,
-  Avatar,
-  SettingWrapper,
-  SettingIcon,
-} from '../styles/list/guide_layout'
+import { Wrapper, Avatar, SettingWrapper, SettingIcon } from '../styles/list/guide_layout'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:TeamList:index')

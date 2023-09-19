@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import { callTagEditEditor } from '@/utils/signal'
+import { callTagEditEditor } from '@/signal'
 import { Space } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'
 

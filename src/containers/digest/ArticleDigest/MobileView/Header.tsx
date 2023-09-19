@@ -1,11 +1,13 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react'
 
-import type { TCommunity, TMetric, TThread, TDashboardThreadConfig } from '@/spec'
+import type { TCommunity, TMetric } from '@/spec'
+
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import { ANCHOR } from '@/constant/dom'
 import { ROUTE } from '@/constant/route'
 
-import { washThreads } from '@/utils/helper'
 import MobileThreadNavi from '@/widgets/MobileThreadNavi'
 
 import {
@@ -23,13 +25,10 @@ import {
 
 type TProps = {
   metric: TMetric
-  community: TCommunity
-  dashboardSettings: TDashboardThreadConfig
-  activeThread: TThread
 }
 
-const Header: FC<TProps> = ({ metric, community, activeThread, dashboardSettings }) => {
-  const washedThreads = washThreads(community.threads, dashboardSettings)
+const Header: FC<TProps> = ({ metric }) => {
+  const community = useViewingCommunity()
 
   return (
     <Wrapper id={ANCHOR.GLOBAL_HEADER_ID}>
@@ -48,7 +47,7 @@ const Header: FC<TProps> = ({ metric, community, activeThread, dashboardSettings
         </Main>
 
         <MobileNaviWrapper>
-          <MobileThreadNavi community={community} threads={washedThreads} active={activeThread} />
+          <MobileThreadNavi />
         </MobileNaviWrapper>
 
         <Account>
@@ -59,4 +58,4 @@ const Header: FC<TProps> = ({ metric, community, activeThread, dashboardSettings
   )
 }
 
-export default Header
+export default observer(Header)

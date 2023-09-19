@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import type { TArticleFilter, TResState, TArticleFilterMode, TGroupedTags, TTag } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import DesktopView from './DesktopView'
 import MobileView from './MobileView'

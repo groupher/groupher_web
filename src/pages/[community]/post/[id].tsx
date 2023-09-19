@@ -53,6 +53,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const initProps = {
+    metric: METRIC.ARTICLE,
     globalLayout: {
       isMobile: device?.isMobile,
     },
@@ -80,7 +81,7 @@ const PostPage = (props) => {
 
   return (
     <Provider store={store}>
-      <GlobalLayout metric={METRIC.ARTICLE}>
+      <GlobalLayout>
         <ArticleDigest isMobile={globalLayout.isMobile} />
         <ArticleContent isMobile={globalLayout.isMobile} />
       </GlobalLayout>

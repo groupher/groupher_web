@@ -1,9 +1,9 @@
 import { memo, FC } from 'react'
 
-import type { TPost, TAvatarLayout } from '@/spec'
+import type { TPost } from '@/spec'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
-// import { mockUsers } from '@/utils/mock'
+// import { mockUsers } from '@/mock'
 
 import Upvote from '@/widgets/Upvote'
 import { Space } from '@/widgets/Common'
@@ -14,10 +14,9 @@ import { Wrapper } from '../../styles/quora_layout/desktop_view/footer'
 
 type TProps = {
   article: TPost
-  avatarLayout: TAvatarLayout
 }
 
-const Footer: FC<TProps> = ({ article, avatarLayout }) => {
+const Footer: FC<TProps> = ({ article }) => {
   const { upvotesCount, meta, viewerHasUpvoted } = article
 
   return (
@@ -29,7 +28,6 @@ const Footer: FC<TProps> = ({ article, avatarLayout }) => {
         // avatarList={mockUsers(5)}
         viewerHasUpvoted={viewerHasUpvoted}
         type={UPVOTE_LAYOUT.GENERAL}
-        avatarLayout={avatarLayout}
         left={-2}
         top={-1}
       />

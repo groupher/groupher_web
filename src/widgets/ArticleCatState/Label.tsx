@@ -2,8 +2,8 @@ import { FC, memo } from 'react'
 
 import { ARTICLE_STATE, ARTICLE_CAT } from '@/constant/gtd'
 
-import { Trans } from '@/utils/i18n'
-import { isRejectedState } from '@/utils/helper'
+import { Trans } from '@/i18n'
+import { isRejectedState } from '@/helper'
 
 import type { TProps as TArticleStateBadgeProps } from '.'
 

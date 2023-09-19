@@ -1,9 +1,9 @@
 import { FC, memo } from 'react'
 
 import UploadBox from './UploadBox'
-import { Wrapper } from '../styles/custom'
+import { Wrapper } from '../styles/upload_pic'
 
-const Custom: FC = () => {
+const UploadPic: FC = () => {
   return (
     <Wrapper>
       <UploadBox />
@@ -11,4 +11,4 @@ const Custom: FC = () => {
   )
 }
 
-export default memo(Custom)
+export default memo(UploadPic)

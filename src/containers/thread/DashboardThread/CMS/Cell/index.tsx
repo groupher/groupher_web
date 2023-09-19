@@ -3,7 +3,7 @@
 import { Cell } from 'rsuite-table'
 import TimeAgo from 'timeago-react'
 
-import { previewArticle } from '@/utils/signal'
+import { previewArticle } from '@/signal'
 import { COMMUNITY_STATUS } from '@/constant/mode'
 
 import Checker from '@/widgets/Checker'
@@ -11,7 +11,7 @@ import ArticleCatState from '@/widgets/ArticleCatState'
 import { Row } from '@/widgets/Common'
 import TagsList from '@/widgets/TagsList'
 
-// import { mockTags } from '@/utils/mock'
+// import { mockTags } from '@/mock'
 
 import {
   ArticleWrapper,

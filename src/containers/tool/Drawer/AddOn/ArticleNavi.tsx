@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import type { TArticleNavi } from '../spec'
 

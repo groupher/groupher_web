@@ -6,9 +6,9 @@
 
 import { FC, memo, useState, useCallback } from 'react'
 
-import type { TAccount, TAvatarLayout, TArticle } from '@/spec'
+import type { TAccount, TArticle } from '@/spec'
 import SVG from '@/constant/svg'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Tabs from '@/widgets/Switcher/Tabs'
 import IconButton from '@/widgets/Buttons/IconButton'
@@ -28,7 +28,6 @@ const log = buildLog('w:AuthorInfo:index')
 type TProps = {
   testid?: string
   author: TAccount
-  avatarLayout: TAvatarLayout
   article: TArticle
 }
 
@@ -40,7 +39,7 @@ const menuOptions = [
   },
 ]
 
-const Panel: FC<TProps> = ({ testid = 'author-info', author, avatarLayout, article }) => {
+const Panel: FC<TProps> = ({ testid = 'author-info', author, article }) => {
   const [tab, setTab] = useState(TAB_ACTIVITIES)
 
   const handleMenu = useCallback((key) => setTab(key), [])
@@ -62,8 +61,8 @@ const Panel: FC<TProps> = ({ testid = 'author-info', author, avatarLayout, artic
         </MenuButton>
       </ReportWrapper>
       <ContentWrapper>
-        {tab === TAB_ACTIVITIES && <Activities avatarLayout={avatarLayout} />}
-        {tab === TAB_MEMBERS && <Members avatarLayout={avatarLayout} article={article} />}
+        {tab === TAB_ACTIVITIES && <Activities />}
+        {tab === TAB_MEMBERS && <Members article={article} />}
       </ContentWrapper>
     </Wrapper>
   )

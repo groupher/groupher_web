@@ -4,9 +4,9 @@
 import { uniq, reject, values } from 'ramda'
 
 import type { TCommunity, TRootStore, TTag, TSelectOption, TThread } from '@/spec'
-import { buildLog } from '@/utils/logger'
-import { nilOrEmpty } from '@/utils/validator'
-import { markStates, toJS, T, getParent, Instance } from '@/utils/mobx'
+import { buildLog } from '@/logger'
+import { nilOrEmpty } from '@/validator'
+import { markStates, toJS, T, getParent, Instance } from '@/mobx'
 import { CHANGE_MODE } from '@/constant/mode'
 
 import { Tag } from '@/model'

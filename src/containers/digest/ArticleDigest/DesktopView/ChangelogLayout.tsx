@@ -9,7 +9,7 @@ import type { TChangelog, TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 // import ArchivedSign from '@/widgets/ArchivedSign'
 import { SpaceGrow } from '@/widgets/Common'

@@ -3,7 +3,7 @@
  *
  */
 
-import { T, getParent, markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, toJS } from '@/mobx'
 import { PagedMentionMessages, emptyPagi } from '@/model'
 
 const MailsViewer = T.model('MailsViewer', {

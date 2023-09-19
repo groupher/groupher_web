@@ -5,7 +5,7 @@
 import { FC, memo } from 'react'
 
 import type { TEmotion, TEmotionType } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import IconButton from '@/widgets/Buttons/IconButton'
 import Tooltip from '@/widgets/Tooltip'
 

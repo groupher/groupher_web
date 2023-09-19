@@ -1,9 +1,12 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
-import type { TAvatarLayout, TPost } from '@/spec'
-import { AVATAR_LAYOUT, UPVOTE_LAYOUT } from '@/constant/layout'
+import type { TPost } from '@/spec'
+import { UPVOTE_LAYOUT } from '@/constant/layout'
 
-import { upvoteOnArticleList, previewArticle } from '@/utils/signal'
+import useAvatarLayout from '@/hooks/useAvatarLayout'
+
+import { upvoteOnArticleList, previewArticle } from '@/signal'
 import ArticleReadLabel from '@/widgets/ArticleReadLabel'
 import ArticlePinLabel from '@/widgets/ArticlePinLabel'
 import Upvote from '@/widgets/Upvote'
@@ -24,10 +27,10 @@ import {
 
 type TProps = {
   article: TPost
-  avatarLayout?: TAvatarLayout
 }
 
-const DigestView: FC<TProps> = ({ article, avatarLayout = AVATAR_LAYOUT.SQUARE }) => {
+const DigestView: FC<TProps> = ({ article }) => {
+  const avatarLayout = useAvatarLayout()
   const { author } = article
 
   return (
@@ -60,4 +63,4 @@ const DigestView: FC<TProps> = ({ article, avatarLayout = AVATAR_LAYOUT.SQUARE }
   )
 }
 
-export default memo(DigestView)
+export default observer(DigestView)

@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import type { TCommunity } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import SubscribeStatus from './SubscribeStatus'
 import ContentStatus from './ContentStatus'

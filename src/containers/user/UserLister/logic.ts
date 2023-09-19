@@ -5,9 +5,9 @@ import ERR from '@/constant/err'
 import EVENT from '@/constant/event'
 import TYPE from '@/constant/type'
 
-import { errRescue } from '@/utils/signal'
-import { buildLog } from '@/utils/logger'
-import asyncSuit from '@/utils/async'
+import { errRescue } from '@/signal'
+import { buildLog } from '@/logger'
+import asyncSuit from '@/async'
 
 import type { TStore } from './store'
 import S from './schema'

@@ -2,7 +2,7 @@ import { FC, ReactNode, memo } from 'react'
 
 import type { TSizeTSM, TSpace } from '@/spec'
 import SIZE from '@/constant/size'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 import { Wrapper, RedWrapper, ChildrenWrapper } from './styles/button'

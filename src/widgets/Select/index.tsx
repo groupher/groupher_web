@@ -12,7 +12,7 @@ import ReactSelect from 'react-select'
 import CreatableReactSelect from 'react-select/creatable'
 
 import type { TSelectOption, TThemeMap } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import { IndicatorsContainer } from './components'
 

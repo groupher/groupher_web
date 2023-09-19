@@ -8,7 +8,7 @@ import { FC, memo } from 'react'
 
 import type { TUser } from '@/spec'
 import { ICON } from '@/config'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Button from '@/widgets/Buttons/Button'
 import UserItem from '../UserItem'

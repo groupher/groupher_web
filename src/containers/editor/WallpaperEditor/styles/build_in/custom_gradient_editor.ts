@@ -38,7 +38,7 @@ export const Footer = styled.div`
 `
 
 export const NoteText = styled.div`
-  font-size: 11px;
+  font-size: 12px;
   color: ${theme('hint')};
 `
 

@@ -3,7 +3,7 @@
  *
  */
 
-import { T, markStates, Instance } from '@/utils/mobx'
+import { T, markStates, Instance } from '@/mobx'
 
 const JoinModal = T.model('JoinModal', {
   show: T.opt(T.bool, false),

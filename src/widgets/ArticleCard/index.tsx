@@ -1,11 +1,12 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TArticle } from '@/spec'
 import { THREAD } from '@/constant/thread'
 import SIZE from '@/constant/size'
-import { cutRest } from '@/utils/fmt'
-import { previewArticle } from '@/utils/signal'
-import useCurCommunity from '@/hooks/useCurCommunity'
+import { cutRest } from '@/fmt'
+import { previewArticle } from '@/signal'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import DigestSentence from '@/widgets/DigestSentence'
 import { Br, SpaceGrow, DesktopOnly, MobileOnly } from '@/widgets/Common'
@@ -20,7 +21,7 @@ export type TProps = {
 }
 
 const ArticleCard: FC<TProps> = ({ data }) => {
-  const { slug } = useCurCommunity()
+  const { slug } = useViewingCommunity()
   const { innerId, title, digest } = data
 
   return (
@@ -56,4 +57,4 @@ const ArticleCard: FC<TProps> = ({ data }) => {
   )
 }
 
-export default memo(ArticleCard)
+export default observer(ArticleCard)

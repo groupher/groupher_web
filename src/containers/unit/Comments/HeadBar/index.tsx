@@ -1,6 +1,6 @@
 import { FC, memo, useState, Fragment } from 'react'
 
-import type { TAvatarLayout, TCommentsState } from '@/spec'
+import type { TCommentsState } from '@/spec'
 
 import StateBar from './StateBar'
 import PublishBar from './PublishBar'
@@ -17,18 +17,9 @@ export type TProps = {
   loading: boolean
   basicState: TCommentsState
   editState: TEditState
-  avatarLayout: TAvatarLayout
 }
 
-const Header: FC<TProps> = ({
-  basicState,
-  mode,
-  isAllFolded,
-  loading,
-  apiMode,
-  editState,
-  avatarLayout,
-}) => {
+const Header: FC<TProps> = ({ basicState, mode, isAllFolded, loading, apiMode, editState }) => {
   const { commentBody, submitState } = editState
   const [barMode, setBarMode] = useState('normal')
 
@@ -47,7 +38,7 @@ const Header: FC<TProps> = ({
 
       {barMode === 'publish' && (
         <Fragment>
-          <PublishBar closeEditor={() => setBarMode('normal')} avatarLayout={avatarLayout} />
+          <PublishBar closeEditor={() => setBarMode('normal')} />
           <PublishEditor body={commentBody} submitState={submitState} />
         </Fragment>
       )}

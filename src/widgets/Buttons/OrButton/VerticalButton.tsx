@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import SIZE from '@/constant/size'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import type { TProps as TButtonProps } from '.'
 import { Wrapper, UpButton, OrSign, BottomButton } from '../styles/or_button/vertical_button'

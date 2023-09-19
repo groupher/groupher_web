@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import { ICON } from '@/config'
 import type { TCollectionFolder } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Input from '@/widgets/Input'
 import Button from '@/widgets/Buttons/Button'

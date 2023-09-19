@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { merge } from 'ramda'
 
-import { debounce } from '@/utils/helper'
+import { debounce } from '@/helper'
 
 type TScrollState = {
   direction: string
@@ -24,8 +24,7 @@ const useScroll = (cb?: () => void): TScrollState => {
     let scrollPos = scroll.scrollPos
     const handleScroll = debounce(() => {
       // detects new state and compares it with the new one
-      let direction =
-        document.body.getBoundingClientRect().top > scrollPos ? 'up' : 'down'
+      let direction = document.body.getBoundingClientRect().top > scrollPos ? 'up' : 'down'
 
       // saves the new position for iteration.
       scrollPos = document.body.getBoundingClientRect().top

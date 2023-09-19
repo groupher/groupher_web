@@ -8,7 +8,7 @@ import { values } from 'ramda'
 import type { TRootStore, TAccount } from '@/spec'
 
 import { PAYMENT_USAGE, PAYMENT_METHOD } from '@/constant/payment'
-import { T, markStates, Instance, getParent } from '@/utils/mobx'
+import { T, markStates, Instance, getParent } from '@/mobx'
 
 import { AMOUNT, SIDEBAR_VIEW, SUBCONTENT_VIEW } from './constant'
 

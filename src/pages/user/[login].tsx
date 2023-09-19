@@ -45,6 +45,7 @@ export const getServerSideProps = async (context) => {
 
   const initProps = {
     ...ssrBaseStates(resp),
+    metric: METRIC.USER,
     // userContent: { activeThread: query.tab || USER_THREAD.PROFILE },
     viewing: { user },
     userProfile: { subscribedCommunities },
@@ -60,7 +61,7 @@ const UserPage = (props) => {
 
   return (
     <Provider store={store}>
-      <GlobalLayout metric={METRIC.USER}>
+      <GlobalLayout>
         <UserContent />
       </GlobalLayout>
     </Provider>

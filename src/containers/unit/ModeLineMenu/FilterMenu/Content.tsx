@@ -1,7 +1,7 @@
 import { FC, memo, useCallback } from 'react'
 
 import { ICON } from '@/config'
-import { Trans } from '@/utils/i18n'
+import { Trans } from '@/i18n'
 
 import CustomScroller from '@/widgets/CustomScroller'
 

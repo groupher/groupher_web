@@ -1,9 +1,10 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react'
 import dynamic from 'next/dynamic'
 import TimeAgo from 'timeago-react'
 
 import type { TPost } from '@/spec'
-import useCurCommunity from '@/hooks/useCurCommunity'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 import { THREAD } from '@/constant/thread'
 import SIZE from '@/constant/size'
 
@@ -31,7 +32,7 @@ type TProps = {
 }
 
 const Header: FC<TProps> = ({ article }) => {
-  const { slug } = useCurCommunity()
+  const { slug } = useViewingCommunity()
   const { author, title, commentsCount, innerId, articleTags, insertedAt } = article
 
   return (
@@ -64,4 +65,4 @@ const Header: FC<TProps> = ({ article }) => {
   )
 }
 
-export default Header
+export default observer(Header)

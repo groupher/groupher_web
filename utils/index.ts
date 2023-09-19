@@ -78,6 +78,7 @@ export {
   ssrError,
   ssrParseArticleThread,
   ssrParseDashboard,
+  ssrParseWallpaper,
   validCommunityFilters,
   parseTheme,
   ssrGetParam,

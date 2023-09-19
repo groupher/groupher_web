@@ -6,10 +6,10 @@ import { ARTICLE_THREAD } from '@/constant/thread'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 
-import { plural } from '@/utils/fmt'
-import { send, errRescue } from '@/utils/signal'
-import asyncSuit from '@/utils/async'
-import { buildLog } from '@/utils/logger'
+import { plural } from '@/fmt'
+import asyncSuit from '@/async'
+import { send, errRescue } from '@/signal'
+import { buildLog } from '@/logger'
 
 import type { TStore } from './store'
 

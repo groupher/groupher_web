@@ -4,7 +4,7 @@
 
 import { FC, memo } from 'react'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import FollowButton from '@/widgets/Buttons/FollowButton'
 

@@ -4,7 +4,6 @@ import { Provider } from 'mobx-react'
 
 import { HCN } from '@/constant/name'
 import { THREAD } from '@/constant/thread'
-import METRIC from '@/constant/metric'
 import { useStore } from '@/stores/init'
 
 import { ssrBaseStates, ssrFetchPrepare, ssrError, ssrRescue, log } from '@/utils'
@@ -90,7 +89,7 @@ const CommunityKanbanPage = (props) => {
 
   return (
     <Provider store={store}>
-      <GlobalLayout metric={METRIC.COMMUNITY}>
+      <GlobalLayout>
         <KanbanContent />
       </GlobalLayout>
     </Provider>

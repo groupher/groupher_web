@@ -2,8 +2,8 @@ import { memo, FC } from 'react'
 
 import type { TArticle } from '@/spec'
 
-// import { mockUsers } from '@/utils/mock'
-// import { addCollection } from '@/utils/helper'
+// import { mockUsers } from '@/mock'
+// import { addCollection } from '@/helper'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
 import { SpaceGrow } from '@/widgets/Common'

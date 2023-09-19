@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import InActiveView from './InActiveView'
 import ActiveView from './ActiveView'

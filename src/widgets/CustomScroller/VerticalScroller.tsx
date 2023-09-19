@@ -12,7 +12,7 @@ import { Waypoint } from 'react-waypoint'
 import type { TThemeMap } from '@/spec'
 
 import SIZE from '@/constant/size'
-import { debounce } from '@/utils/helper'
+import { debounce } from '@/helper'
 import useCustomScroll from '@/hooks/useCustomScroll'
 // import ViewportTracker from '@/widgets/ViewportTracker'
 

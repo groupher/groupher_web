@@ -10,8 +10,10 @@ import type { TMetric } from '@/spec'
 import { BANNER_LAYOUT } from '@/constant/layout'
 import { ROUTE } from '@/constant/route'
 import METRIC from '@/constant/metric'
-import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import useBannerLayout from '@/hooks/useBannerLayout'
+
+import { buildLog } from '@/logger'
+import { bond } from '@/mobx'
 
 import SidebarLayout from './SidebarLayout'
 import ClassicLayout from './ClassicLayout'
@@ -34,50 +36,19 @@ const CommunityDigestContainer: FC<TProps> = ({
 }) => {
   useInit(store)
 
-  const { curThread, curCommunity, globalLayout, dashboardSettings } = store
-
   const router = useRouter()
+  const bannerLayout = useBannerLayout()
 
   // always use SimpleLayout in dashboard settings
   if (router.pathname.split('/')[2] === ROUTE.DASHBOARD.DASHBOARD) {
-    return (
-      <SimpleLayout
-        metric={metric}
-        community={curCommunity}
-        activeThread={curThread}
-        dashboardSettings={dashboardSettings}
-        headerLayout={globalLayout.header}
-      />
-    )
+    return <SimpleLayout metric={metric} />
   }
 
   return (
     <Fragment>
-      {globalLayout.banner === BANNER_LAYOUT.TABBER && (
-        <ClassicLayout
-          metric={metric}
-          community={curCommunity}
-          activeThread={curThread}
-          dashboardSettings={dashboardSettings}
-        />
-      )}
-      {globalLayout.banner === BANNER_LAYOUT.SIDEBAR && (
-        <SidebarLayout
-          metric={metric}
-          community={curCommunity}
-          activeThread={curThread}
-          dashboardSettings={dashboardSettings}
-        />
-      )}
-      {globalLayout.banner === BANNER_LAYOUT.HEADER && (
-        <SimpleLayout
-          metric={metric}
-          community={curCommunity}
-          activeThread={curThread}
-          dashboardSettings={dashboardSettings}
-          headerLayout={globalLayout.header}
-        />
-      )}
+      {bannerLayout === BANNER_LAYOUT.TABBER && <ClassicLayout metric={metric} />}
+      {bannerLayout === BANNER_LAYOUT.SIDEBAR && <SidebarLayout metric={metric} />}
+      {bannerLayout === BANNER_LAYOUT.HEADER && <SimpleLayout metric={metric} />}
     </Fragment>
   )
 }

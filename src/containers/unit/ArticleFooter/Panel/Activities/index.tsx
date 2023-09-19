@@ -1,7 +1,8 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
-import type { TAvatarLayout } from '@/spec'
-import { mockUsers } from '@/utils/mock'
+import useAvatarLayout from '@/hooks/useAvatarLayout'
+import { mockUsers } from '@/mock'
 
 import ImgFallback from '@/widgets/ImgFallback'
 
@@ -19,10 +20,12 @@ import {
 } from '../../styles/panel/activities'
 
 type TProps = {
-  avatarLayout: TAvatarLayout
+  //
 }
 
-const Activities: FC<TProps> = ({ avatarLayout }) => {
+const Activities: FC<TProps> = () => {
+  const avatarLayout = useAvatarLayout()
+
   const user = mockUsers(1)[0]
 
   return (
@@ -55,4 +58,4 @@ const Activities: FC<TProps> = ({ avatarLayout }) => {
   )
 }
 
-export default memo(Activities)
+export default observer(Activities)

@@ -2,9 +2,9 @@
  * AboutThread store
  */
 
-import type { TCommunity, TRootStore, TAvatarLayout } from '@/spec'
-import { buildLog } from '@/utils/logger'
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
+import type { TCommunity, TRootStore } from '@/spec'
+import { buildLog } from '@/logger'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:AboutThread')
@@ -15,12 +15,6 @@ const AboutThread = T.model('AboutThread', {})
       const root = getParent(self) as TRootStore
 
       return toJS(root.viewing.community)
-    },
-
-    get avatarLayout(): TAvatarLayout {
-      const root = getParent(self) as TRootStore
-
-      return root.dashboardThread.avatarLayout
     },
   }))
   .actions((self) => ({

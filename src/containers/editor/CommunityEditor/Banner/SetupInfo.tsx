@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import { nilOrEmpty } from '@/utils/validator'
+import { nilOrEmpty } from '@/validator'
 
 import OSSUploader from '@/widgets/OSSUploader'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'

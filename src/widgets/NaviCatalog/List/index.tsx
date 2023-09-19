@@ -8,20 +8,12 @@ import { FC, memo } from 'react'
 import { map, prop, includes } from 'ramda'
 
 import type { TNaviTag } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { SpaceGrow, Space } from '@/widgets/Common'
 
 import { ROOT_MENU } from '../constant'
 
-import {
-  Wrapper,
-  Item,
-  MoreItem,
-  FixedIcon,
-  Icon,
-  ActiveDot,
-  TotalNumber,
-} from '../styles/list'
+import { Wrapper, Item, MoreItem, FixedIcon, Icon, ActiveDot, TotalNumber } from '../styles/list'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:NaviCatalog:List')
@@ -31,15 +23,7 @@ const renderRightIcon = (item, active, showItemTotal) => {
     return <TotalNumber active={active}>{item.total}</TotalNumber>
   }
 
-  return (
-    <>
-      {item.icon ? (
-        <Icon src={item.icon} active={active} />
-      ) : (
-        <ActiveDot active={active} />
-      )}
-    </>
-  )
+  return <>{item.icon ? <Icon src={item.icon} active={active} /> : <ActiveDot active={active} />}</>
 }
 
 type TProps = {

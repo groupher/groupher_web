@@ -1,7 +1,7 @@
 import { FC, Fragment, memo } from 'react'
 
 import type { TSpace } from '@/spec'
-import { getRandomInt } from '@/utils/helper'
+import { getRandomInt } from '@/helper'
 import { Wrapper, Row, Dice } from './styles/work'
 
 const rollTheDice = () => {

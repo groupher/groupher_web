@@ -3,7 +3,7 @@ import { keys, values } from 'ramda'
 
 import type { TWallpaper, TWallpaperGradientDir } from '@/spec'
 import { COVER_GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '@/constant/wallpaper'
-import { parseWallpaper } from '@/utils/wallpaper'
+import { parseWallpaper } from '@/wallpaper'
 
 import Tooltip from '@/widgets/Tooltip'
 

@@ -5,7 +5,7 @@ import { FAQSection, Tag, Moderator } from '@/model'
 import SIZE from '@/constant/size'
 import { COLORS, COLOR_NAME } from '@/constant/colors'
 import { THREAD } from '@/constant/thread'
-import GLOW_EFFECTS, { GLOW_OPACITY } from '@/constant/glow_effect'
+import { GLOW_OPACITY } from '@/constant/glow_effect'
 import {
   AVATAR_LAYOUT,
   BRAND_LAYOUT,
@@ -23,14 +23,13 @@ import {
   RSS_TYPE,
 } from '@/constant/layout'
 
-import { T } from '@/utils/mobx'
-// import { mockTags } from '@/utils/mock'
+import { T } from '@/mobx'
+// import { mockTags } from '@/mock'
 
 import {
   BUILDIN_ALIAS,
   WIDGET_TYPE,
   TW_CARD,
-  DEFAULT_LINK_ITEMS,
   DEFAULT_FAQ_ITEMS,
   EMPTY_MEDIA_REPORT,
   INIT_KANBAN_COLORS,
@@ -169,7 +168,8 @@ export const settingsModalFields = {
   docCategories: T.opt(T.array(GroupCategory), []),
 
   // glow effect
-  glowType: T.opt(T.string, keys(GLOW_EFFECTS)[0]),
+  // glowType: T.opt(T.string, keys(GLOW_EFFECTS)[0]),
+  glowType: T.opt(T.string, ''),
   glowFixed: T.opt(T.bool, true),
   glowOpacity: T.opt(T.enum(values(GLOW_OPACITY)), GLOW_OPACITY.NORMAL),
 

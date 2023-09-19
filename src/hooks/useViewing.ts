@@ -5,7 +5,7 @@ import EVENT from '@/constant/event'
 import type { TViewingInfo } from '@/spec'
 
 import BStore from '@/utils/bstore'
-import { Global } from '@/utils/helper'
+import { Global } from '@/helper'
 
 const initState = {
   community: 'home',

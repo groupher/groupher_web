@@ -15,18 +15,16 @@ import type {
   TCommunity,
   TThread,
   TArticleFilter,
-  TC11N,
   TGlobalLayout,
-  TAvatarLayout,
   TGroupedTags,
 } from '@/spec'
 
 import TYPE from '@/constant/type'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
-import { T, markStates, getParent, Instance, toJS } from '@/utils/mobx'
-import { nilOrEmpty } from '@/utils/validator'
-import { plural } from '@/utils/fmt'
+import { T, markStates, getParent, Instance, toJS } from '@/mobx'
+import { nilOrEmpty } from '@/validator'
+import { plural } from '@/fmt'
 
 import { PagedPosts, ArticlesFilter, emptyPagi } from '@/model'
 
@@ -75,10 +73,6 @@ const ArticlesThread = T.model('ArticlesThread', {
       const root = getParent(self) as TRootStore
       return root.account.accountInfo
     },
-    get c11n(): TC11N {
-      const root = getParent(self) as TRootStore
-      return root.account.c11n
-    },
     get filtersData(): TArticleFilter {
       return toJS(pickBy((v) => !isEmpty(v), self.filters))
     },
@@ -116,11 +110,6 @@ const ArticlesThread = T.model('ArticlesThread', {
       const root = getParent(self) as TRootStore
 
       return root.drawer.open && !!root.viewing.viewingArticle?.id
-    },
-    get avatarLayout(): TAvatarLayout {
-      const root = getParent(self) as TRootStore
-
-      return root.dashboardThread.avatarLayout
     },
   }))
   .actions((self) => ({

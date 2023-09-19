@@ -8,7 +8,7 @@ import { FC, memo } from 'react'
 
 import type { TCommentsState } from '@/spec'
 import { ICON } from '@/config'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import NotifyButton from '@/widgets/Buttons/NotifyButton'
 import Tooltip from '@/widgets/Tooltip'
@@ -45,17 +45,11 @@ const CommentSticker: FC<TProps> = ({ show, commentsState }) => {
       {participantsCount !== 0 && (
         <UsersWrapper>
           {participants.map((user) => (
-            <Tooltip
-              key={user.login}
-              placement="bottom"
-              content={<UserCard user={user} />}
-            >
+            <Tooltip key={user.login} placement="bottom" content={<UserCard user={user} />}>
               <Avatar
                 src={user.avatar}
                 alt={`@${user.nickname}`}
-                fallback={
-                  <ImgFallback user={user} size={20} right={10} bottom={6} />
-                }
+                fallback={<ImgFallback user={user} size={20} right={10} bottom={6} />}
               />
             </Tooltip>
           ))}

@@ -6,7 +6,7 @@
 
 import { FC, memo } from 'react'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { Wrapper } from './styles'
 
 /* eslint-disable-next-line */
@@ -17,11 +17,7 @@ export type TProps = {
   radius?: number
   space?: number
 }
-const DotDivider: FC<TProps> = ({
-  radius = 2,
-  space = 3,
-  className = 'dot-divider-class',
-}) => {
+const DotDivider: FC<TProps> = ({ radius = 2, space = 3, className = 'dot-divider-class' }) => {
   return <Wrapper radius={radius} space={space} className={className} />
 }
 

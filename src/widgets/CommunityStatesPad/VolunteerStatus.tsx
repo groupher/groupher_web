@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
-import { prettyNum } from '@/utils/fmt'
-import { buildLog } from '@/utils/logger'
+import { prettyNum } from '@/fmt'
+import { buildLog } from '@/logger'
 
 import {
   Wrapper,

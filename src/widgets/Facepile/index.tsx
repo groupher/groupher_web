@@ -9,13 +9,12 @@ import dynamic from 'next/dynamic'
 import { compose, not, isNil, filter, reverse as reverseFn, slice } from 'ramda'
 import { trackWindowScroll } from 'react-lazy-load-image-component'
 
-import type { TUser, TSize, TAvatarLayout, TSpace } from '@/spec'
+import type { TUser, TSize, TSpace } from '@/spec'
 import { AVATARS_LIST_LENGTH } from '@/config'
 
 import SIZE from '@/constant/size'
-import { AVATAR_LAYOUT } from '@/constant/layout'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import type { TAvatarSize } from './spec'
 import MoreItem from './MoreItem'
@@ -70,7 +69,6 @@ export type TProps = {
   popCardPlacement?: 'top' | 'bottom'
   noLazyLoad?: boolean
 
-  avatarLayout?: TAvatarLayout
   onUserSelect?: (user: TUser) => void
   onTotalSelect?: () => void
 } & TSpace
@@ -87,7 +85,6 @@ const Facepile: FC<TProps> = ({
   showTotalNumber = false,
   reverse = false,
   popCardPlacement = 'bottom',
-  avatarLayout = AVATAR_LAYOUT.SQUARE,
   ...restProps
 }) => {
   if (users.length === 0) {
@@ -109,7 +106,6 @@ const Facepile: FC<TProps> = ({
           total={totalCount}
           showTotalNumber={showTotalNumber}
           onTotalSelect={onTotalSelect}
-          avatarLayout={avatarLayout}
         />
       )}
       {totalCount === 1 ? (
@@ -121,7 +117,6 @@ const Facepile: FC<TProps> = ({
             noLazyLoad={noLazyLoad}
             onUserSelect={onUserSelect}
             popCardPlacement={popCardPlacement}
-            avatarLayout={avatarLayout}
           />
         </RealAvatarContext.Provider>
       ) : (
@@ -135,7 +130,6 @@ const Facepile: FC<TProps> = ({
                 noLazyLoad={noLazyLoad}
                 onUserSelect={onUserSelect}
                 popCardPlacement={popCardPlacement}
-                avatarLayout={avatarLayout}
               />
             </RealAvatarContext.Provider>
           ))}

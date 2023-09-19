@@ -9,7 +9,7 @@ import { FC, memo } from 'react'
 import type { TDashboardLayout, TPostLayout } from '@/spec'
 import { DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import PostLayoutxample from './PostLayoutExample'
 
 import { Wrapper } from './styles'

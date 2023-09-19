@@ -8,15 +8,10 @@ import { FC, memo } from 'react'
 
 import type { TUser } from '@/spec'
 import { ICON } from '@/config'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 // import Setter from './Setter'
-import {
-  Wrapper,
-  Avatar,
-  SettingWrapper,
-  SettingIcon,
-} from '../styles/list/edit_works_layout'
+import { Wrapper, Avatar, SettingWrapper, SettingIcon } from '../styles/list/edit_works_layout'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:TeamList:index')
@@ -27,11 +22,7 @@ type TProps = {
   onSetting: () => void
 }
 
-const EditWorksLayout: FC<TProps> = ({
-  users,
-  withSetter = false,
-  onSetting,
-}) => {
+const EditWorksLayout: FC<TProps> = ({ users, withSetter = false, onSetting }) => {
   return (
     <Wrapper>
       {users.map((user) => (

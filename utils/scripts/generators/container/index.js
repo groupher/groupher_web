@@ -45,12 +45,6 @@ module.exports = {
       default: true,
       message: '[是否需要 GraphQL schema] Do you want network GraphQL schema?',
     },
-    {
-      type: 'confirm',
-      name: 'wantI18n',
-      default: false,
-      message: '[是否需要国际化] Do you want i18n messages?',
-    },
   ],
   actions: (data) => {
     // Generate index.js and index.test.js

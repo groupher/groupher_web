@@ -5,17 +5,12 @@
 import { FC, memo } from 'react'
 
 import type { TSimpleUser, TEmotionType } from '@/spec'
-import { buildLog } from '@/utils/logger'
-import { cutRest } from '@/utils/fmt'
+import { buildLog } from '@/logger'
+import { cutRest } from '@/fmt'
 
 import EmotionIcon from './EmotionIcon'
 
-import {
-  Wrapper,
-  UsersWrapper,
-  Units,
-  Username,
-} from '../styles/selected_emotions/users_panel'
+import { Wrapper, UsersWrapper, Units, Username } from '../styles/selected_emotions/users_panel'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:UsersPanel:index')

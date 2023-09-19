@@ -4,7 +4,6 @@ import { Provider } from 'mobx-react'
 
 import { HCN } from '@/constant/name'
 import { THREAD } from '@/constant/thread'
-import METRIC from '@/constant/metric'
 import { useStore } from '@/stores/init'
 
 import {
@@ -16,6 +15,7 @@ import {
   ssrPagedArticlesFilter,
   ssrRescue,
   ssrParseDashboard,
+  ssrParseWallpaper,
   log,
 } from '@/utils'
 
@@ -74,6 +74,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const { community } = resp
   const dashboard = ssrParseDashboard(community)
+  const wallpaper = ssrParseWallpaper(community)
 
   const initProps = merge(
     {
@@ -87,6 +88,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       viewing: {
         community,
         activeThread: thread,
+      },
+      wallpaperEditor: {
+        ...wallpaper,
       },
       dashboardThread: {
         ...dashboard,
@@ -105,7 +109,7 @@ const CommunityDocPage = (props) => {
 
   return (
     <Provider store={store}>
-      <GlobalLayout metric={METRIC.COMMUNITY}>
+      <GlobalLayout>
         <DocContent />
       </GlobalLayout>
     </Provider>

@@ -4,8 +4,8 @@ import { useEffect } from 'react'
 import EVENT from '@/constant/event'
 import TYPE from '@/constant/type'
 
-import { send, report } from '@/utils/signal'
-import { buildLog } from '@/utils/logger'
+import { send, report } from '@/signal'
+import { buildLog } from '@/logger'
 // import S from './service'
 
 import type { TStore } from './store'

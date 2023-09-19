@@ -8,7 +8,7 @@ import { FC, Fragment, memo, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 
 import type { TUser } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import type { TLayout } from './spec'
 import type { TProps as TSetter } from './Setter'

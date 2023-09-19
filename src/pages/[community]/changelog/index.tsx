@@ -3,7 +3,6 @@ import { Provider } from 'mobx-react'
 
 import { HCN } from '@/constant/name'
 import { THREAD } from '@/constant/thread'
-import METRIC from '@/constant/metric'
 import { useStore } from '@/stores/init'
 
 import {
@@ -13,6 +12,7 @@ import {
   ssrPagedArticleSchema,
   ssrPagedArticlesFilter,
   ssrParseDashboard,
+  ssrParseWallpaper,
 } from '@/utils'
 
 import GlobalLayout from '@/containers/layout/GlobalLayout'
@@ -59,6 +59,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const { community, pagedChangelogs } = resp
   const dashboard = ssrParseDashboard(community)
+  const wallpaper = ssrParseWallpaper(community)
 
   const initProps = {
     ...ssrBaseStates(resp),
@@ -88,7 +89,7 @@ const CommunityChangelogPage = (props) => {
 
   return (
     <Provider store={store}>
-      <GlobalLayout metric={METRIC.COMMUNITY}>
+      <GlobalLayout>
         <ChangeLogContent />
       </GlobalLayout>
     </Provider>

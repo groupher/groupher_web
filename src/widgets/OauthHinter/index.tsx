@@ -6,7 +6,7 @@
 
 import { FC, memo } from 'react'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import Linker from '@/widgets/Linker'
 
 import {
@@ -40,15 +40,7 @@ const OauthHinter: FC = () => {
         </TextWrapper>
       </HintWrapper>
       <FooterWrapper>
-        please{' '}
-        <Linker
-          src="/feedback"
-          external={false}
-          text="feedback"
-          inline
-          left={4}
-          right={4}
-        />
+        please <Linker src="/feedback" external={false} text="feedback" inline left={4} right={4} />
         if you think sth goes wrong.
       </FooterWrapper>
     </Wrapper>

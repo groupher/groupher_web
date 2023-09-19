@@ -1,10 +1,11 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react'
 import Router from 'next/router'
 
 import { DASHBOARD_BROADCAST_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
 
-import useCurCommunity from '@/hooks/useCurCommunity'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 import Tabs from '@/widgets/Switcher/Tabs'
 
 import type { TBroadcastSettings, TTouched } from '../spec'
@@ -22,7 +23,7 @@ type TProps = {
 }
 
 const Broadcast: FC<TProps> = ({ settings, touched }) => {
-  const curCommunity = useCurCommunity()
+  const curCommunity = useViewingCommunity()
 
   const { broadcastTab } = settings
 
@@ -57,4 +58,4 @@ const Broadcast: FC<TProps> = ({ settings, touched }) => {
   )
 }
 
-export default Broadcast
+export default observer(Broadcast)

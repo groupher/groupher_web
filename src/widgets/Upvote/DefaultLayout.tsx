@@ -3,11 +3,10 @@
  * Upvote
  *
  */
+import { FC } from 'react'
 
-import { FC, memo } from 'react'
-
-import type { TUser, TAvatarLayout } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import type { TUser } from '@/spec'
+import { buildLog } from '@/logger'
 
 import Facepile from '@/widgets/Facepile'
 
@@ -24,7 +23,6 @@ import {
   FacesWrapper,
   Note,
 } from './styles/default_layout'
-import { AVATAR_LAYOUT } from '@/constant/layout'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Upvote:index')
@@ -36,7 +34,6 @@ type TProps = {
   viewerHasUpvoted?: boolean
   avatarList?: TUser[]
   onAction?: (viewerHasUpvoted: boolean) => void
-  avatarLayout?: TAvatarLayout
 }
 
 const Upvote: FC<TProps> = ({
@@ -46,7 +43,6 @@ const Upvote: FC<TProps> = ({
   viewerHasUpvoted = false,
   onAction = log,
   avatarList,
-  avatarLayout = AVATAR_LAYOUT.SQUARE,
 }) => {
   const noOne = count === 0
 
@@ -63,7 +59,7 @@ const Upvote: FC<TProps> = ({
       {!noOne && (
         <Digest>
           <FacesWrapper>
-            <Facepile left={-4} users={avatarList} avatarLayout={avatarLayout} showMore={false} />
+            <Facepile left={-4} users={avatarList} showMore={false} />
           </FacesWrapper>
           <Note>xx, xx {alias}</Note>
         </Digest>
@@ -72,4 +68,4 @@ const Upvote: FC<TProps> = ({
   )
 }
 
-export default memo(Upvote)
+export default Upvote

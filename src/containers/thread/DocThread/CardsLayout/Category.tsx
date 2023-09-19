@@ -3,7 +3,7 @@ import { FC, memo, useState } from 'react'
 // import { config, library } from '@fortawesome/fontawesome-svg-core'
 // config.autoAddCss = false
 
-import { mockUsers } from '@/utils/mock'
+import { mockUsers } from '@/mock'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import Facepile from '@/widgets/Facepile'

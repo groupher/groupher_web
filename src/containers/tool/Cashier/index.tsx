@@ -6,8 +6,8 @@
 
 import { FC } from 'react'
 
-import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { buildLog } from '@/logger'
+import { bond } from '@/mobx'
 
 import Modal from '@/widgets/Modal'
 
@@ -28,15 +28,8 @@ type TProps = {
 const CashierContainer: FC<TProps> = ({ cashier: store }) => {
   useInit(store)
 
-  const {
-    show,
-    sidebarView,
-    contentView,
-    subContentView,
-    paymentMethod,
-    amount,
-    transferAccount,
-  } = store
+  const { show, sidebarView, contentView, subContentView, paymentMethod, amount, transferAccount } =
+    store
 
   return (
     <Modal width="520px" show={show} showCloseBtn onClose={onClose}>

@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 import EVENT from '@/constant/event'
 import TYPE from '@/constant/type'
 
-import { send } from '@/utils/signal'
+import { send } from '@/signal'
 import { Wrapper, SiteLink } from '../styles/main_entries'
 import { MobileIcon } from '../styles/more_links'
 

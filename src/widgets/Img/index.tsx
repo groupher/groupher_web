@@ -6,7 +6,7 @@
  */
 
 import { FC, ReactNode, memo } from 'react'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import SvgLoader from './SvgLoader'
 import NormalImg from './NormalImg'

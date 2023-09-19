@@ -1,5 +1,8 @@
 import styled from 'styled-components'
 
+import type { TAvatarLayout } from '@/spec'
+import { AVATAR_LAYOUT } from '@/constant/layout'
+
 import css, { theme } from '@/css'
 import Link from 'next/link'
 
@@ -20,8 +23,10 @@ export const Wrapper = styled.div`
     margin-right: 0;
   `};
 `
-export const Avatar = styled(Img)`
-  ${css.circle(18)};
+export const Avatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
+  ${css.size(18)};
+  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
+
   ${css.row('justify-between')};
 `
 export const SubscribeButton = styled(Button)`
