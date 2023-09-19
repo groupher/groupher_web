@@ -10,7 +10,7 @@ import { FC, Fragment } from 'react'
 
 import type { TMetric } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 import METRIC from '@/constant/metric'
 
 import Sticky from '@/widgets/Sticky'

@@ -1,7 +1,7 @@
 import { findIndex, clone, remove, filter, reject } from 'ramda'
 
 import type { TTag } from '@/spec'
-import { toJS } from '@/utils/mobx'
+import { toJS } from '@/mobx'
 import { sortByIndex } from '@/utils/helper'
 // import { sortByIndex, groupByKey } from '@/utils/helper'
 

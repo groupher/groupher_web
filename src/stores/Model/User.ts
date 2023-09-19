@@ -1,5 +1,5 @@
 import C11N from '@/constant/c11n'
-import { T } from '@/utils/mobx'
+import { T } from '@/mobx'
 
 import { Community /* PagedCommunities */ } from './Community'
 import { pagiFields } from './helper/common'

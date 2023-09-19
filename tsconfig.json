@@ -33,6 +33,8 @@
       "@/utils/*": ["utils/*"],
       "@/signal": ["utils/signal"],
       "@/signal/*": ["utils/signal/*"],
+      "@/mobx": ["utils/mobx"],
+      "@/mobx/*": ["utils/mobx/*"],
       "@/css": ["utils/css"],
       "@/css/*": ["utils/css/*"],
       "@/schemas": ["src/schemas"],

@@ -9,7 +9,7 @@ import { FC } from 'react'
 import { ICON_CMD } from '@/config'
 import VIEW from '@/constant/view'
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import Tabs from '@/widgets/Switcher/Tabs'
 import type { TStore } from './store'

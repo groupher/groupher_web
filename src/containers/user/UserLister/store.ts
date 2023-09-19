@@ -7,7 +7,7 @@ import { findIndex, propEq } from 'ramda'
 
 import type { TRootStore, TCommunity, TPagedUsers, TAccount } from '@/spec'
 import TYPE from '@/constant/type'
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 import { PagedUsers, emptyPagi } from '@/model'
 
 const UserLister = T.model('UserLister', {

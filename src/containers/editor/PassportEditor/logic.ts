@@ -7,7 +7,7 @@ import EVENT from '@/constant/event'
 import { buildLog } from '@/utils/logger'
 import asyncSuit from '@/utils/async'
 import { send, errRescue, closeDrawer } from '@/utils/signal'
-import { toJS } from '@/utils/mobx'
+import { toJS } from '@/mobx'
 import ERR from '@/constant/err'
 
 import S from './schema'

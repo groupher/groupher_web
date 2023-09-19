@@ -11,7 +11,7 @@ import type { TResState, TArticleFilterMode } from '@/spec'
 import { BANNER_LAYOUT, DOC_FAQ_LAYOUT } from '@/constant/layout'
 
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import PagedArticles from '@/widgets/PagedArticles'
 import TagNote from '@/widgets/TagNote'

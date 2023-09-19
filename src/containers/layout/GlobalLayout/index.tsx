@@ -15,7 +15,7 @@ import { TOPBAR_LAYOUT } from '@/constant/layout'
 import useMetric from '@/hooks/useMetric'
 import useWallpaper from '@/hooks/useWallpaper'
 
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import ThemePalette from '@/containers/layout/ThemePalette'
 import ModeLine from '@/containers/unit/ModeLine'

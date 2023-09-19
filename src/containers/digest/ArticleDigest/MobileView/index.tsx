@@ -9,7 +9,7 @@ import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
 
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
 import FixedHeader from './FixedHeader'

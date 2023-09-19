@@ -6,7 +6,7 @@
 // import {} from 'ramda'
 
 import type { TRootStore, TCommunity, TRoute } from '@/spec'
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 
 const CommunityJoinBadge = T.model('CommunityJoinBadge', {
   subscribeLoading: T.opt(T.bool, false),

@@ -4,7 +4,7 @@
  */
 
 import type { TAccount, TRootStore, TViewing, TRoute, TCommunity } from '@/spec'
-import { T, getParent, markStates, toJS, Instance } from '@/utils/mobx'
+import { T, getParent, markStates, toJS, Instance } from '@/mobx'
 
 const CommunityDigest = T.model('CommunityDigest', {
   loading: T.opt(T.bool, false),

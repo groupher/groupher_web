@@ -1,4 +1,4 @@
-import { T } from '@/utils/mobx'
+import { T } from '@/mobx'
 
 export const FAQSection = T.model('FAQSection', {
   title: T.maybeNull(T.string),

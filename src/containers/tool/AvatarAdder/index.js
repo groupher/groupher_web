@@ -8,7 +8,7 @@ import T from 'prop-types'
 
 import { ICON } from '@/config'
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import Tooltip from '@/widgets/Tooltip'
 

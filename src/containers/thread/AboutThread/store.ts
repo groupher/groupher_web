@@ -4,7 +4,7 @@
 
 import type { TCommunity, TRootStore } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:AboutThread')

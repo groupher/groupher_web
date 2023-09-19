@@ -8,7 +8,7 @@ import React from 'react'
 
 import { ICON_CMD } from '@/config'
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import TabSelector from '@/widgets/TabSelector'
 import MailLists from './MailLists'

@@ -1,4 +1,4 @@
-import { T } from '@/utils/mobx'
+import { T } from '@/mobx'
 
 import { pagiFields, timestampFields } from './helper/common'
 

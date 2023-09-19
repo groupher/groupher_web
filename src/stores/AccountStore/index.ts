@@ -6,7 +6,7 @@
 import { merge, clone, remove, insert, findIndex, propEq, includes } from 'ramda'
 
 import type { TRootStore, TAccount, TCommunity, TPagedCommunities, TC11N, TModerator } from '@/spec'
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 import BStore from '@/utils/bstore'
 
 import { User, EmptyUser, PagedCommunities } from '@/model'

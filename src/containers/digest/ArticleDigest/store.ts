@@ -8,7 +8,7 @@ import { merge } from 'ramda'
 import type { TRootStore, TThread, TArticle } from '@/spec'
 import TYPE from '@/constant/type'
 
-import { T, getParent, markStates, toJS, Instance } from '@/utils/mobx'
+import { T, getParent, markStates, toJS, Instance } from '@/mobx'
 
 const ArticleDigest = T.model('ArticleDigest', {
   loading: T.opt(T.bool, false),

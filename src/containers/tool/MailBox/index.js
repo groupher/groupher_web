@@ -7,7 +7,7 @@
 import React from 'react'
 
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 import Tooltip from '@/widgets/Tooltip'
 
 import MailsPanel from './MailsPanel'

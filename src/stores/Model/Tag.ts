@@ -1,6 +1,6 @@
 import { values } from 'ramda'
 
-import { T } from '@/utils/mobx'
+import { T } from '@/mobx'
 
 import { TAG_COLORS } from '@/config'
 import { THREAD } from '@/constant/thread'

@@ -18,7 +18,7 @@ import type {
   TTag,
 } from '@/spec'
 
-import { T, getParent, markStates, toJS, Instance } from '@/utils/mobx'
+import { T, getParent, markStates, toJS, Instance } from '@/mobx'
 import { Community, Tag, User } from '@/model'
 import { ARTICLE_CAT } from '@/constant/gtd'
 

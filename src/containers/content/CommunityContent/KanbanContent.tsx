@@ -7,7 +7,7 @@ import { FC } from 'react'
 import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
 
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 import { BANNER_LAYOUT } from '@/constant/layout'
 
 import CommunityDigest from '@/containers/digest/CommunityDigest'

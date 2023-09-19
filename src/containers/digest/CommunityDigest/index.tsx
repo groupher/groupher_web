@@ -13,7 +13,7 @@ import METRIC from '@/constant/metric'
 import useBannerLayout from '@/hooks/useBannerLayout'
 
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import SidebarLayout from './SidebarLayout'
 import ClassicLayout from './ClassicLayout'

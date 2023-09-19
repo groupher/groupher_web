@@ -28,6 +28,7 @@ module.exports = {
           '@/services': 'src/services',
           '@/constant': 'utils/constant',
           '@/signal': 'utils/signal',
+          '@/mobx': 'utils/mobx',
           '@/hooks': 'src/hooks',
           '@/hoc': 'src/hoc',
           '@/stores': 'src/stores',

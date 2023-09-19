@@ -1,4 +1,4 @@
-import { T } from '@/utils/mobx'
+import { T } from '@/mobx'
 
 export const GithubUser = T.model('GithubUser', {
   githubId: T.maybeNull(T.string),

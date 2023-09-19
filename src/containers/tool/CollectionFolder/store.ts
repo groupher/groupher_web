@@ -7,7 +7,7 @@ import { merge } from 'ramda'
 
 import type { TUser, TRootStore, TArticle } from '@/spec'
 import { THREAD } from '@/constant/thread'
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 import { changeset } from '@/utils/validator'
 
 import { FavoriteCategory, PagedFavoriteCategories, emptyPagi } from '@/model'

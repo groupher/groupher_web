@@ -1,4 +1,4 @@
-import { T } from '@/utils/mobx'
+import { T } from '@/mobx'
 
 import { articleFields } from './helper/article'
 import { pagiFields } from './helper/common'

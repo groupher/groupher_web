@@ -7,7 +7,7 @@ import { FC } from 'react'
 import { includes } from 'ramda'
 
 // import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 import { ROUTE, DASHBORD_CMS_ROUTES } from '@/constant/route'
 
 import type { TMetric } from '@/spec'

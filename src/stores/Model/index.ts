@@ -1,4 +1,4 @@
-import { T } from '@/utils/mobx'
+import { T } from '@/mobx'
 
 export { Community, Moderator, PagedCommunities } from './Community'
 export { default as Article } from './Article'

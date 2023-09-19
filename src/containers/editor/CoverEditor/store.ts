@@ -14,7 +14,7 @@ import type {
 import { COVER_GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '@/constant/wallpaper'
 
 import { buildLog } from '@/utils/logger'
-import { markStates, toJS, getParent, Instance, T } from '@/utils/mobx'
+import { markStates, toJS, getParent, Instance, T } from '@/mobx'
 
 import type {
   TToolboxSetting,

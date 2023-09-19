@@ -7,7 +7,7 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 import { useInit } from './logic'
 
 const RouteContainer = ({ route }) => {

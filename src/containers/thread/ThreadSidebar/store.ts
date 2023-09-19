@@ -5,7 +5,7 @@
 // import {} from 'ramda'
 
 import type { TAccount, TC11N, TCommunity, TThread, TRootStore, TTag } from '@/spec'
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 import { buildLog } from '@/utils/logger'
 
 /* eslint-disable-next-line */

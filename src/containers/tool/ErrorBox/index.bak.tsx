@@ -7,7 +7,7 @@
 import { FC } from 'react'
 
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import Modal from '@/widgets/Modal'
 import useShortcut from '@/hooks/useShortcut'

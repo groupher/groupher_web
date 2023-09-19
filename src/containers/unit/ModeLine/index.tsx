@@ -6,7 +6,7 @@ import { Fragment, FC } from 'react'
 
 import METRIC from '@/constant/metric'
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import useMetric from '@/hooks/useMetric'
 

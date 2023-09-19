@@ -5,7 +5,7 @@
 
 import type { TRootStore, TRoute, TArticle } from '@/spec'
 
-import { T, getParent, markStates, Instance } from '@/utils/mobx'
+import { T, getParent, markStates, Instance } from '@/mobx'
 import { buildLog } from '@/utils/logger'
 
 /* eslint-disable-next-line */

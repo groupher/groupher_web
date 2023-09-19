@@ -7,7 +7,7 @@ import { values } from 'ramda'
 
 import type { TRootStore, TAccount, TUser, TPagedCommunities } from '@/spec'
 import { USER_THREAD } from '@/constant/thread'
-import { T, getParent, Instance, markStates, toJS } from '@/utils/mobx'
+import { T, getParent, Instance, markStates, toJS } from '@/mobx'
 import { PagedCommunities, emptyPagi } from '@/model'
 
 const UserContent = T.model('UserContent', {

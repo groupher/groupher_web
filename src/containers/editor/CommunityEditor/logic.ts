@@ -8,7 +8,7 @@ import ERR from '@/constant/err'
 import { sessionChanged, errRescue } from '@/utils/signal'
 import asyncSuit from '@/utils/async'
 import { buildLog } from '@/utils/logger'
-import { updateEditing } from '@/utils/mobx'
+import { updateEditing } from '@/mobx'
 
 import type { TStore } from './store'
 import type { TCommunityType } from './spec'

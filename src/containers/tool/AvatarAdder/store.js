@@ -4,7 +4,7 @@
  */
 
 import ERR from '@/constant/err'
-import { T, getParent, markStates, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, toJS } from '@/mobx'
 import { GithubUser } from '@/model'
 
 const AvatarAdder = T.model('AvatarAdder', {

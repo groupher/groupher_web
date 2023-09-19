@@ -12,7 +12,7 @@ import { titleCase } from '@/utils/fmt'
 import { errRescue, authWarn } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'
 import { scrollIntoEle } from '@/utils/dom'
-import { updateEditing } from '@/utils/mobx'
+import { updateEditing } from '@/mobx'
 
 import uid from '@/utils/uid'
 

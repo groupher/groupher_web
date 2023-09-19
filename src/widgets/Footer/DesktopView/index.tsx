@@ -11,7 +11,7 @@ import useFooterLinks from '@/hooks/useFooterLinks'
 import useMetric from '@/hooks/useMetric'
 
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import SimpleLayout from './SimpleLayout'
 import GroupLayout from './GroupLayout'

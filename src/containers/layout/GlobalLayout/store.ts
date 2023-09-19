@@ -4,7 +4,7 @@
  */
 import type { TRootStore, TGlobalLayout } from '@/spec'
 
-import { T, getParent, markStates, Instance } from '@/utils/mobx'
+import { T, getParent, markStates, Instance } from '@/mobx'
 
 const Platform = T.model('Platform', {
   isChrome: T.opt(T.bool, true),

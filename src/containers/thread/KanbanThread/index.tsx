@@ -6,7 +6,7 @@
 import { FC } from 'react'
 
 // import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 import CustomScroller from '@/widgets/CustomScroller'
 
 import Actions from './Actions'

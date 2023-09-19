@@ -8,7 +8,7 @@ import { reject } from 'ramda'
 import type { TRootStore, TUser, TPagedCommunities, TUserActivity } from '@/spec'
 import { HCN } from '@/constant/name'
 
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 import { PagedCommunities, emptyPagi, PagedPosts } from '@/model'
 
 const UserProfile = T.model('UserProfile', {

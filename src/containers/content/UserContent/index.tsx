@@ -10,7 +10,7 @@ import useMobileDetect from '@groupher/use-mobile-detect-hook'
 import type { TMetric } from '@/spec'
 import { USER_THREAD } from '@/constant/thread'
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import MobileBanner from './MobileBanner'
 import Comments from '@/containers/unit/Comments'

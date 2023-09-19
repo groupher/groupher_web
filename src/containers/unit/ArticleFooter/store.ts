@@ -6,7 +6,7 @@
 // import {} from 'ramda'
 
 import type { TArticle, TRootStore } from '@/spec'
-import { T, markStates, Instance, getParent, toJS } from '@/utils/mobx'
+import { T, markStates, Instance, getParent, toJS } from '@/mobx'
 
 const ArticleFooter = T.model('ArticleFooter', {
   hasFollowedAuthor: T.opt(T.bool, false),

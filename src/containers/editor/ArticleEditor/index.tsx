@@ -9,7 +9,7 @@ import { ARTICLE_CAT_MODE } from '@/constant/gtd'
 import METRIC from '@/constant/metric'
 
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import { Space } from '@/widgets/Common'
 import ArchiveAlert from '@/widgets/ArchiveAlert'

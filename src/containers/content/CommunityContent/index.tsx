@@ -4,7 +4,7 @@
 
 import { FC } from 'react'
 
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import CommunityDigest from '@/containers/digest/CommunityDigest'
 import ThreadContent from './ThreadContent'

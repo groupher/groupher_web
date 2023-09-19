@@ -9,7 +9,7 @@ import type { TSpace } from '@/spec'
 import SVG from '@/constant/svg'
 
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import MenuButton from '@/widgets/Buttons/MenuButton'
 import IconButton from '@/widgets/Buttons/IconButton'

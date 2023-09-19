@@ -10,7 +10,7 @@ import { FC } from 'react'
 
 import type { TCommunity, TTag } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import Modal from '@/widgets/Modal'
 

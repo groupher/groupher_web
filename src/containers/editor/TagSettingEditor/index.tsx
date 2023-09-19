@@ -7,7 +7,7 @@ import { FC } from 'react'
 
 import type { TChangeMode, TSelectOption } from '@/spec'
 // import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 import { ROUTE } from '@/constant/route'
 import { DRAWER_SCROLLER } from '@/constant/dom'
 import { COLORS } from '@/constant/colors'

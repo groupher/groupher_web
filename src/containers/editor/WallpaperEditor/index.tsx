@@ -5,7 +5,7 @@
 
 import { FC } from 'react'
 
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 import { DRAWER_SCROLLER } from '@/constant/dom'
 import VIEW from '@/constant/view'
 

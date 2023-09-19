@@ -9,7 +9,7 @@
 import { FC } from 'react'
 
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import NumbersPad from './NumbersPad'
 import ContributeMap from './ContributeMap'
@@ -27,18 +27,10 @@ type TProps = {
   testid?: string
 }
 
-const UserProfileContainer: FC<TProps> = ({
-  userProfile: store,
-  testid = 'user-profile',
-}) => {
+const UserProfileContainer: FC<TProps> = ({ userProfile: store, testid = 'user-profile' }) => {
   useInit(store)
 
-  const {
-    viewingUser,
-    pagedSubscribedCommunitiesData,
-    activities,
-    hasFollowedUser,
-  } = store
+  const { viewingUser, pagedSubscribedCommunitiesData, activities, hasFollowedUser } = store
 
   return (
     <Wrapper testid={testid}>

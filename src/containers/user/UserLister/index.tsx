@@ -8,7 +8,7 @@ import { FC } from 'react'
 
 import TYPE from '@/constant/type'
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import EmptyLabel from '@/widgets/EmptyLabel'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'

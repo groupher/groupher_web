@@ -6,7 +6,7 @@
 import { FC } from 'react'
 
 import { BANNER_LAYOUT } from '@/constant/layout'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import ClassicLayout from './ClassicLayout'
 import SimpleLayout from './SimpleLayout'

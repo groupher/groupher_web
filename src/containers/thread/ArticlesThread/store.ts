@@ -22,7 +22,7 @@ import type {
 import TYPE from '@/constant/type'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
-import { T, markStates, getParent, Instance, toJS } from '@/utils/mobx'
+import { T, markStates, getParent, Instance, toJS } from '@/mobx'
 import { nilOrEmpty } from '@/utils/validator'
 import { plural } from '@/utils/fmt'
 

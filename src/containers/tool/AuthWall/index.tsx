@@ -6,7 +6,7 @@
 import { FC } from 'react'
 
 // import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import { Br, Divider } from '@/widgets/Common'
 import Modal from '@/widgets/Modal'
@@ -40,10 +40,7 @@ type TProps = {
   testid?: string
 }
 
-const AuthWallContainer: FC<TProps> = ({
-  authWall: store,
-  testid = 'authWall',
-}) => {
+const AuthWallContainer: FC<TProps> = ({ authWall: store, testid = 'authWall' }) => {
   useInit(store)
 
   const { visible } = store

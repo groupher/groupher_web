@@ -5,7 +5,7 @@ import { CHANGE_MODE } from '@/constant/mode'
 import { ROUTE } from '@/constant/route'
 import { ONE_LINK_GROUP, MORE_GROUP } from '@/constant/dashboard'
 import { sortByIndex, groupByKey } from '@/utils/helper'
-import { toJS } from '@/utils/mobx'
+import { toJS } from '@/mobx'
 
 import type { TMoveLinkDir } from '../spec'
 import { EMPTY_LINK_ITEM } from '../constant'

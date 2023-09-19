@@ -9,7 +9,7 @@ import { FC, ReactNode } from 'react'
 import RichEditor from '@groupher/react-editor'
 
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 // import Options from './Options'
 

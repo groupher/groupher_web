@@ -10,7 +10,7 @@ import { THREAD } from '@/constant/thread'
 
 import type { TArticle, TCommunity, TRootStore, TThread, TMenuOption } from '@/spec'
 
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 import { buildLog } from '@/utils/logger'
 
 import type { TLinksData, TShareData } from './spec'

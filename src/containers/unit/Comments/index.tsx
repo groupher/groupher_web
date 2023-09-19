@@ -8,7 +8,7 @@ import { FC } from 'react'
 
 import { ANCHOR } from '@/constant/dom'
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 // import NoticeBar from '@/widgets/NoticeBar'
 

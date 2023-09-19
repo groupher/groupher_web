@@ -9,7 +9,7 @@ import TYPE from '@/constant/type'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
 import { buildLog } from '@/utils/logger'
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 import { plural } from '@/utils/fmt'
 
 import { PagedPosts, emptyPagi } from '@/model'

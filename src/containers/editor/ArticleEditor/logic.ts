@@ -12,7 +12,7 @@ import asyncSuit from '@/utils/async'
 import { getParameterByName } from '@/utils/route'
 import { titleCase } from '@/utils/fmt'
 import { errRescue } from '@/utils/signal'
-import { updateEditing } from '@/utils/mobx'
+import { updateEditing } from '@/mobx'
 import { matchArticles } from '@/utils/macros'
 
 import type { TStore } from './store'

@@ -6,7 +6,7 @@
 
 import type { TCommunity, TKanbanLayout, TRootStore, TColorName, TPagedArticles } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 
 import { emptyPagi, PagedPosts } from '@/model'
 

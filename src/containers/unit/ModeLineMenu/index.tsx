@@ -9,7 +9,7 @@ import { FC } from 'react'
 import type { TModelineType } from '@/spec'
 import TYPE from '@/constant/type'
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 // TODO: 全部动态加载
 import GlobalMenu from './GlobalMenu/index'

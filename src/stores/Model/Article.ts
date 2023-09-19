@@ -1,4 +1,4 @@
-import { T } from '@/utils/mobx'
+import { T } from '@/mobx'
 
 const Article = T.model('Article', {
   id: T.maybeNull(T.string),

@@ -9,7 +9,7 @@ import { FC, Fragment } from 'react'
 import type { TResState } from '@/spec'
 
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import PagedArticles from '@/widgets/PagedArticles'
 import ThreadSelector from './ThreadSelector'

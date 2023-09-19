@@ -3,7 +3,7 @@
  *
  */
 
-import { T, getParent, markStates } from '@/utils/mobx'
+import { T, getParent, markStates } from '@/mobx'
 
 const UserSettings = T.model('UserSettings', {})
   .views((self) => ({

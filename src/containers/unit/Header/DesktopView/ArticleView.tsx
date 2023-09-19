@@ -10,7 +10,7 @@ import dynamic from 'next/dynamic'
 import type { TMetric } from '@/spec'
 import { ICON } from '@/config'
 import { buildLog } from '@/utils/logger'
-import { bond } from '@/utils/mobx'
+import { bond } from '@/mobx'
 
 import Navigator from '@/widgets/Navigator'
 

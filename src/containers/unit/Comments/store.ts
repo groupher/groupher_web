@@ -21,7 +21,7 @@ import type {
   TCommentsState,
 } from '@/spec'
 // import TYPE from '@/constant/type'
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 import { Comment, PagedComments, emptyPagi, SimpleUser } from '@/model'
 
 import type { TFoldState, TEditMode, TEditState, TRepliesState } from './spec'

@@ -8,7 +8,7 @@ import { merge, pickBy, omit, isEmpty } from 'ramda'
 import type { TRootStore, TRoute } from '@/spec'
 import { PAGE_SIZE } from '@/config'
 
-import { T, getParent, Instance, markStates } from '@/utils/mobx'
+import { T, getParent, Instance, markStates } from '@/mobx'
 import { Global } from '@/utils/helper'
 import { isClientSide } from '@/utils/ssr'
 import { serializeQuery } from '@/utils/route'

@@ -7,7 +7,7 @@ import { values } from 'ramda'
 import type { TCommunity, TRootStore, TGlobalLayout, TTag, TPagedArticles } from '@/spec'
 import { buildLog } from '@/utils/logger'
 
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 import { mockTags, mockChangelogTimeTags, mockChangelogVersionTags } from '@/utils/mock'
 
 import { PagedChangelogs, emptyPagi } from '@/model'
