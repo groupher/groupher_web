@@ -7,7 +7,10 @@ import { parseWallpaper } from '@/utils/wallpaper'
 import { Wrapper } from './styles/wallpaper'
 
 const Wallpaper: FC = () => {
-  const { wallpapers, wallpaper, customWallpaper } = useWallpaper()
+  const theWallpaper = useWallpaper()
+  console.log('## theWallpaper: ', theWallpaper)
+
+  const { wallpapers, wallpaper, customWallpaper } = theWallpaper
   const { background, effect } = parseWallpaper(wallpapers, wallpaper, customWallpaper)
 
   // for custom image/svg

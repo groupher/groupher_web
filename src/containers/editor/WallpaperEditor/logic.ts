@@ -2,8 +2,11 @@ import { useEffect } from 'react'
 // import { } from 'ramda'
 
 import type { TWallpaperGradientDir } from '@/spec'
-import { buildLog } from '@/utils/logger'
 import EVENT from '@/constant/event'
+import { WALLPAPER_TYPE } from '@/constant/wallpaper'
+
+import { buildLog } from '@/utils/logger'
+import { closeDrawer } from '@/utils/signal'
 import asyncSuit from '@/utils/async'
 
 // import S from './schma'
@@ -29,29 +32,40 @@ export const changeDirection = (direction: TWallpaperGradientDir): void => {
   store.mark({ direction })
 }
 
-export const changeWallpaper = (wallpaper: string): void => {
-  store.changeWallpaper(wallpaper)
+export const removeWallpaper = (): void => {
+  store.mark({ wallpaper: '', wallpaperType: WALLPAPER_TYPE.NONE })
 }
 
-export const changeCustomColor = (customColorValue: string): void => {
-  store.mark({ customColorValue })
+export const changeGradientWallpaper = (wallpaper: string): void => {
+  store.mark({ wallpaper, wallpaperType: WALLPAPER_TYPE.GRADIENT })
 }
 
-export const rollbackEdit = (): void => store.rollbackEdit()
+export const changePatternWallpaper = (wallpaper: string): void => {
+  store.mark({ wallpaper, wallpaperType: WALLPAPER_TYPE.PATTERN })
+}
+
+export const changeCustomGradientWallpaper = (): void => {
+  store.mark({ wallpaper: '', wallpaperType: WALLPAPER_TYPE.CUSTOM_GRADIENT })
+}
+
+export const changeWallpaperType = (wallpaperType: string): void => {
+  store.mark({ wallpaperType })
+}
+
+export const confirmCustomColor = (customColorValue: string): void => {
+  store.mark({ customColorValue, wallpaperType: WALLPAPER_TYPE.CUSTOM_GRADIENT })
+}
 
 /**
  * toggle pattern mark only for gradient backgrounds
  */
-export const togglePattern = (hasPattern: boolean): void => {
-  store.mark({ hasPattern })
-}
+export const togglePattern = (hasPattern: boolean): void => store.mark({ hasPattern })
+export const toggleBlur = (hasBlur: boolean): void => store.mark({ hasBlur })
+export const toggleShadow = (hasShadow: boolean): void => store.mark({ hasShadow })
 
-export const toggleBlur = (hasBlur: boolean): void => {
-  store.mark({ hasBlur })
-}
-
-export const toggleShadow = (hasShadow: boolean): void => {
-  store.mark({ hasShadow })
+export const close = (): void => {
+  store.rollbackEdit()
+  closeDrawer()
 }
 
 const DataResolver = [

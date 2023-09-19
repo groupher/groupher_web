@@ -1,12 +1,10 @@
-import { isEmpty, keys, includes } from 'ramda'
-import { PATTERN_WALLPAPER, WALLPAPER_TYPE } from '@/constant/wallpaper'
+import { isEmpty } from 'ramda'
 
 import type {
   TWallpaperFmt,
   TWallpaperGradient,
   TWallpaperPic,
   TWallpaper,
-  TWallpaperType,
   TCustomWallpaper,
 } from '@/spec'
 
@@ -28,13 +26,7 @@ export const parseWallpaper = (
   return _parseWallpaper(wallpapers[name], customWallpaper)
 }
 
-export const getWallpaperType = (name: string): TWallpaperType => {
-  if (isEmpty(name)) return WALLPAPER_TYPE.NONE
-  if (includes(name, keys(PATTERN_WALLPAPER))) return WALLPAPER_TYPE.PATTERN
-
-  return WALLPAPER_TYPE.GRADIENT
-}
-
+export const holder = 1
 /**
  * parse wallpaper both for gradient and picture background
  */
@@ -76,11 +68,11 @@ const _parsePicBackground = (pic: TWallpaperPic): TWallpaperFmt => {
     }
   }
 
-  const { bgImage, bgColor = '', bgSize = 'contain', hasBlur } = pic
+  const { bgImage, bgSize = 'contain', hasBlur } = pic
   const background = `url(${bgImage})`
 
   const blur = hasBlur ? 'filter: blur(3px)' : ''
-  const effect = `background-color: ${bgColor}; background-size: ${bgSize} !important; ${blur}`
+  const effect = `background-size: ${bgSize} !important; ${blur}`
 
   return {
     effect,

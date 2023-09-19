@@ -1,17 +1,16 @@
 import { FC, memo, useState } from 'react'
 
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow, Row } from '@/widgets/Common'
 import Button from '@/widgets/Buttons/Button'
 import {
   Wrapper,
   Label,
   Inputer,
   Footer,
-  Note,
   NoteText,
 } from '../styles/build_in/custom_gradient_editor'
 
-import { changeCustomColor } from '../logic'
+import { confirmCustomColor } from '../logic'
 
 type TProps = {
   customColor: string
@@ -30,31 +29,22 @@ const CustomGradientEditor: FC<TProps> = ({ customColor }) => {
         onChange={(e) => setColorVal(e.target.value)}
       />
       <Footer>
-        <>
+        <Row>
           <NoteText>支持多组 HEX 颜色值，</NoteText>
-          <Note href="/">了解更多</Note>
-        </>
+        </Row>
 
         <SpaceGrow />
         {changed && (
           <>
-            <Button
-              ghost
-              size="tiny"
-              noBorder
-              right={8}
-              onClick={() => {
-                setColorVal(customColor)
-              }}
-            >
+            <Button ghost size="small" noBorder right={8} onClick={() => setColorVal(customColor)}>
               取消
             </Button>
 
             <Button
               disabled={!changed}
-              size="tiny"
-              space={6}
-              onClick={() => changeCustomColor(colorVal)}
+              size="small"
+              space={10}
+              onClick={() => confirmCustomColor(colorVal)}
             >
               确定
             </Button>

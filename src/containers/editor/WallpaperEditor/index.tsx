@@ -9,7 +9,7 @@ import { bond } from '@/utils/mobx'
 import { DRAWER_SCROLLER } from '@/constant/dom'
 import VIEW from '@/constant/view'
 
-import { DesktopOnly, MobileOnly, Br } from '@/widgets/Common'
+import { DesktopOnly, MobileOnly } from '@/widgets/Common'
 import Tabs from '@/widgets/Switcher/Tabs'
 import CustomScroller from '@/widgets/CustomScroller'
 
@@ -17,7 +17,7 @@ import type { TStore } from './store'
 import { TAB, TAB_OPTIONS } from './constant'
 
 import BuildIn from './BuildIn'
-import Custom from './Custom'
+import UploadPic from './UploadPic'
 import Footer from './Footer'
 
 import { Wrapper, Banner, Title, Content } from './styles'
@@ -45,7 +45,7 @@ const WallpaperEditorContainer: FC<TProps> = ({
       <MobileOnly>
         <Content>
           {tab === TAB.BUILDIN && <BuildIn wallpaperData={wallpaperData} />}
-          {tab === TAB.CUSTOM && <Custom />}
+          {tab === TAB.UPLOAD && <UploadPic />}
         </Content>
       </MobileOnly>
       <DesktopOnly>
@@ -59,7 +59,7 @@ const WallpaperEditorContainer: FC<TProps> = ({
         >
           <Content>
             {tab === TAB.BUILDIN && <BuildIn wallpaperData={wallpaperData} />}
-            {tab === TAB.CUSTOM && <Custom />}
+            {tab === TAB.UPLOAD && <UploadPic />}
           </Content>
         </CustomScroller>
       </DesktopOnly>

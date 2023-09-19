@@ -8,7 +8,7 @@ import YesOrNoButtons from '@/widgets/Buttons/YesOrNoButtons'
 import Button from '@/widgets/Buttons/Button'
 
 import { Wrapper, ForbidImgIcon } from './styles/footer'
-import { changeWallpaper, rollbackEdit } from './logic'
+import { removeWallpaper, close } from './logic'
 
 type TProps = {
   wallpaperType: TWallpaperType
@@ -18,7 +18,7 @@ const Footer: FC<TProps> = ({ wallpaperType, isTouched }) => {
   return (
     <Wrapper>
       {wallpaperType !== WALLPAPER_TYPE.NONE ? (
-        <Button size="small" ghost onClick={() => changeWallpaper('')}>
+        <Button size="small" ghost onClick={() => removeWallpaper()}>
           <ForbidImgIcon /> 空白壁纸
         </Button>
       ) : (
@@ -31,7 +31,8 @@ const Footer: FC<TProps> = ({ wallpaperType, isTouched }) => {
           cancelText="放弃变更"
           confirmText="确定"
           space={4}
-          onCancel={() => rollbackEdit()}
+          onCancel={() => close()}
+          onConfirm={() => close()}
         />
       ) : (
         <Button size="small" space={10}>

@@ -5,7 +5,7 @@
 
 import { FC, Fragment } from 'react'
 
-import { WALLPAPER_CUSTOM, WALLPAPER_TYPE } from '@/constant/wallpaper'
+import { WALLPAPER_TYPE } from '@/constant/wallpaper'
 
 import { Br } from '@/widgets/Common'
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
@@ -50,7 +50,9 @@ const BuildIn: FC<TProps> = ({ wallpaperData }) => {
     <Wrapper>
       <Title>渐变:</Title>
       <GradientGroup wallpaper={wallpaper} gradientWallpapers={gradientWallpapers} />
-      {wallpaper === WALLPAPER_CUSTOM && <CustomGradientEditor customColor={customColor} />}
+      {wallpaperType === WALLPAPER_TYPE.CUSTOM_GRADIENT && (
+        <CustomGradientEditor customColor={customColor} />
+      )}
       <Br top={25} />
       <Title>图片:</Title>
       <PictureGroup wallpaper={wallpaper} patternWallpapers={patternWallpapers} />

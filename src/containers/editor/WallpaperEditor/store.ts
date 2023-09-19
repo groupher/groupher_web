@@ -5,20 +5,16 @@
 import { keys, values, clone, forEach, pick } from 'ramda'
 
 import type {
-  TCommunity,
-  TRootStore,
   TWallpaper,
-  TWallpaperType,
   TWallpaperGradient,
   TWallpaperPic,
   TWallpaperGradientDir,
   TCustomWallpaper,
 } from '@/spec'
-import { GRADIENT_WALLPAPER, PATTERN_WALLPAPER, WALLPAPER_CUSTOM } from '@/constant/wallpaper'
+import { GRADIENT_WALLPAPER, PATTERN_WALLPAPER, WALLPAPER_TYPE } from '@/constant/wallpaper'
 
 import { buildLog } from '@/utils/logger'
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
-import { getWallpaperType } from '@/utils/wallpaper'
+import { T, markStates, Instance } from '@/utils/mobx'
 
 import type { TWallpaperData } from './spec'
 import { TAB } from './constant'
@@ -27,33 +23,45 @@ import { TAB } from './constant'
 const log = buildLog('S:WallpaperEditor')
 
 const initWallpaperModalFields = {
+  wallpaperType: T.opt(T.enum(values(WALLPAPER_TYPE)), WALLPAPER_TYPE.GRADIENT),
   wallpaper: T.opt(T.string, 'pink'),
-  // for gradient colors
+  // for gradient & custom colors
   hasPattern: T.opt(T.bool, true),
+  direction: T.opt(T.string, 'bottom'),
+
+  // for uploaded bg image
+  bgSize: T.opt(T.string, 'cover'),
+  // common
   hasBlur: T.opt(T.bool, false),
   hasShadow: T.opt(T.bool, false),
-  direction: T.opt(T.string, 'bottom'),
 }
 
 const InitWallpaper = T.model('WallpaperInit', initWallpaperModalFields)
 
 const WallpaperEditor = T.model('WallpaperEditor', {
-  tab: T.opt(T.enum(values(TAB)), TAB.BUILDIN),
   ...initWallpaperModalFields,
+  tab: T.opt(T.enum(values(TAB)), TAB.BUILDIN),
   customColorValue: T.opt(T.str, ''),
+  uploadBgImage: T.opt(T.str, ''),
   initWallpaper: T.opt(InitWallpaper, {}),
 })
   .views((self) => ({
-    get curCommunity(): TCommunity {
-      const root = getParent(self) as TRootStore
+    get isTouched(): boolean {
+      const slf = self as TStore
+      const init = slf.initWallpaper
 
-      return toJS(root.viewing.community)
+      return (
+        self.wallpaper !== init.wallpaper ||
+        self.hasPattern !== init.hasPattern ||
+        self.hasBlur !== init.hasBlur ||
+        self.direction !== init.direction
+      )
     },
     get customWallpaper(): TCustomWallpaper {
       const slf = self as TStore
       const { hasPattern, hasBlur, hasShadow, direction, customColorValue } = slf
 
-      if (slf.wallpaper === WALLPAPER_CUSTOM) {
+      if (slf.wallpaperType === WALLPAPER_TYPE.CUSTOM_GRADIENT) {
         const customColors = customColorValue.split(',').map((c) => c.trim())
 
         return {
@@ -66,17 +74,6 @@ const WallpaperEditor = T.model('WallpaperEditor', {
       }
 
       return null
-    },
-    get isTouched(): boolean {
-      const slf = self as TStore
-      const init = slf.initWallpaper
-
-      return (
-        self.wallpaper !== init.wallpaper ||
-        self.hasPattern !== init.hasPattern ||
-        self.hasBlur !== init.hasBlur ||
-        self.direction !== init.direction
-      )
     },
     get patternWallpapers(): Record<string, TWallpaper> {
       const slf = self as TStore
@@ -114,11 +111,6 @@ const WallpaperEditor = T.model('WallpaperEditor', {
         ...slf.gradientWallpapers,
         ...slf.patternWallpapers,
       }
-    },
-
-    get wallpaperType(): TWallpaperType {
-      const slf = self as TStore
-      return getWallpaperType(slf.wallpaper)
     },
 
     get wallpaperData(): TWallpaperData {

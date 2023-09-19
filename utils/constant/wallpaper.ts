@@ -5,7 +5,8 @@ const DIR = '/wallpaper'
 export const WALLPAPER_TYPE = {
   PATTERN: 'pattern',
   GRADIENT: 'gradient',
-  CUSTOM: 'custom',
+  CUSTOM_GRADIENT: 'custom_gradient',
+  UPLOAD: 'upload',
   NONE: 'none',
 } as Record<Uppercase<TWallpaperType>, TWallpaperType>
 
@@ -215,5 +216,3 @@ export const GRADIENT_DIRECTION = {
   LEFT: 'left',
   TOP_LEFT: 'top left',
 } as Record<TSnakeUpperCase<TWallpaperGradientDir>, TWallpaperGradientDir>
-
-export const WALLPAPER_CUSTOM = 'custom'

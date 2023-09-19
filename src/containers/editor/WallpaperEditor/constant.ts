@@ -2,7 +2,7 @@ import type { TTab } from './spec'
 
 export const TAB = {
   BUILDIN: 'buildin',
-  CUSTOM: 'custom',
+  UPLOAD: 'upload',
 } as Record<Uppercase<TTab>, TTab>
 
 export const TAB_OPTIONS = [
@@ -12,6 +12,6 @@ export const TAB_OPTIONS = [
   },
   {
     title: '上传壁纸',
-    slug: TAB.CUSTOM,
+    slug: TAB.UPLOAD,
   },
 ]
