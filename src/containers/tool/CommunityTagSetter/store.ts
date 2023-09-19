@@ -7,7 +7,7 @@ import { values, filter, reject, includes, map, uniq } from 'ramda'
 import type { TCommunity, TRootStore } from '@/spec'
 import { buildLog } from '@/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/mobx'
-// import { mockCommunities } from '@/utils/mock'
+// import { mockCommunities } from '@/mock'
 
 import type { TCommunitiesList, TTagsList, TTexts } from './spec'
 import { TAG_VIEW, COMMUNITY_VIEW, COMMUNITY_STYLE, TYPE, COMMON_COMMUNITIES } from './constant'

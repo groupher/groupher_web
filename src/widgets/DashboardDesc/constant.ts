@@ -1,5 +1,5 @@
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
-import { mockUsers } from '@/utils/mock'
+import { mockUsers } from '@/mock'
 import { getRandomInt } from '@/helper'
 
 import type { TPreviewDevice } from './spec'

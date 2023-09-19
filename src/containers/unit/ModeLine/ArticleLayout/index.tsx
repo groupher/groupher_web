@@ -8,7 +8,7 @@ import useViewingThread from '@/hooks/useViewingThread'
 // import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import { scrollToHeader } from '@/dom'
-import { mockUsers } from '@/utils/mock'
+import { mockUsers } from '@/mock'
 
 import CommentsCount from '@/widgets/CommentsCount'
 import Upvote from '@/widgets/Upvote'

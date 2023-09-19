@@ -3,7 +3,7 @@ import { observer } from 'mobx-react'
 
 import type { TModerator } from '@/spec'
 import useAvatarLayout from '@/hooks/useAvatarLayout'
-import { mockUsers } from '@/utils/mock'
+import { mockUsers } from '@/mock'
 
 import ImgFallback from '@/widgets/ImgFallback'
 import NoteTip from '@/widgets/NoteTip'

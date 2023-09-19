@@ -11,7 +11,7 @@ import type { TArticle } from '@/spec'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
 import { buildLog } from '@/logger'
-import { mockTags, mockUsers } from '@/utils/mock'
+import { mockTags, mockUsers } from '@/mock'
 import { previewArticle } from '@/signal'
 import { getRandomInt } from '@/helper'
 

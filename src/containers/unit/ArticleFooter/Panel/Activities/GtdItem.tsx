@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import { mockUsers } from '@/utils/mock'
+import { mockUsers } from '@/mock'
 
 import { Item, GtdWipIcon, Highlight, Content } from '../../styles/panel/activities/gtd_item'
 

@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import { mockUsers } from '@/utils/mock'
+import { mockUsers } from '@/mock'
 
 import Facepile from '@/widgets/Facepile'
 

@@ -23,8 +23,8 @@ import {
   RSS_TYPE,
 } from '@/constant/layout'
 
-import { T } from '@/utils/mobx'
-// import { mockTags } from '@/utils/mock'
+import { T } from '@/mobx'
+// import { mockTags } from '@/mock'
 
 import {
   BUILDIN_ALIAS,

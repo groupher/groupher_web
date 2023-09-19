@@ -3,7 +3,7 @@ import { Parallax } from 'react-scroll-parallax'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { COLOR_NAME } from '@/constant/colors'
-import { mockUsers } from '@/utils/mock'
+import { mockUsers } from '@/mock'
 
 import { DesktopOnly } from '@/widgets/Common'
 import MasonryCards from '@/widgets/MasonryCards'

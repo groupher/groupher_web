@@ -11,7 +11,7 @@ import ArticleCatState from '@/widgets/ArticleCatState'
 import { Row } from '@/widgets/Common'
 import TagsList from '@/widgets/TagsList'
 
-// import { mockTags } from '@/utils/mock'
+// import { mockTags } from '@/mock'
 
 import {
   ArticleWrapper,

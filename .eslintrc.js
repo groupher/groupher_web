@@ -33,6 +33,7 @@ module.exports = {
           '@/logger': 'utils/logger',
           '@/fmt': 'utils/fmt',
           '@/helper': 'utils/helper',
+          '@/mock': 'utils/mock',
           '@/hooks': 'src/hooks',
           '@/hoc': 'src/hoc',
           '@/stores': 'src/stores',

@@ -9,7 +9,7 @@ import { FC, memo, useState, useEffect } from 'react'
 import type { TArticle } from '@/spec'
 
 import { buildLog } from '@/logger'
-import { mockTags, mockUsers } from '@/utils/mock'
+import { mockTags, mockUsers } from '@/mock'
 import { getRandomInt } from '@/helper'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 

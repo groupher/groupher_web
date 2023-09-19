@@ -8,7 +8,7 @@ import type { TCommunity, TRootStore, TGlobalLayout, TTag, TPagedArticles } from
 import { buildLog } from '@/logger'
 
 import { T, getParent, markStates, Instance, toJS } from '@/mobx'
-import { mockTags, mockChangelogTimeTags, mockChangelogVersionTags } from '@/utils/mock'
+import { mockTags, mockChangelogTimeTags, mockChangelogVersionTags } from '@/mock'
 
 import { PagedChangelogs, emptyPagi } from '@/model'
 

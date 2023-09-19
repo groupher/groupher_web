@@ -4,7 +4,7 @@ import { THREAD } from '@/constant/thread'
 import EVENT from '@/constant/event'
 
 import { send } from '@/signal'
-import { mockUsers } from '@/utils/mock'
+import { mockUsers } from '@/mock'
 
 import { Wrapper, Avatar, NotifyIcon, DashboardIcon } from '../styles/classic_layout/account_unit'
 

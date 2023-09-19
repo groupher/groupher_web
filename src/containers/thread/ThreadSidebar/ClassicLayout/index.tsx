@@ -17,7 +17,7 @@ import { ARTICLE_CAT } from '@/constant/gtd'
 
 import { buildLog } from '@/logger'
 import { send } from '@/signal'
-import { mockUsers } from '@/utils/mock'
+import { mockUsers } from '@/mock'
 
 import ImgFallback from '@/widgets/ImgFallback'
 import Sticky from '@/widgets/Sticky'

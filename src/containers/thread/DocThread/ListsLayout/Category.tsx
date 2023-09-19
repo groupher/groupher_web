@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 // import { config, library } from '@fortawesome/fontawesome-svg-core'
 // config.autoAddCss = false
 import type { TColorName } from '@/spec'
-import { mockUsers } from '@/utils/mock'
+import { mockUsers } from '@/mock'
 
 import { SpaceGrow } from '@/widgets/Common'
 import Facepile from '@/widgets/Facepile'

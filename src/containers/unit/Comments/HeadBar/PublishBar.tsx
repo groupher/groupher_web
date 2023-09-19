@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { observer } from 'mobx-react'
 
 import useAvatarLayout from '@/hooks/useAvatarLayout'
-import { mockUsers } from '@/utils/mock'
+import { mockUsers } from '@/mock'
 
 import Button from '@/widgets/Buttons/Button'
 

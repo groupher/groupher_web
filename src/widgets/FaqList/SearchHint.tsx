@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import { mockHelpCats } from '@/utils/mock'
+import { mockHelpCats } from '@/mock'
 import { Br } from '@/widgets/Common'
 
 import {
