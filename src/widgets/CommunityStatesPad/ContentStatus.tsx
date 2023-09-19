@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import { prettyNum } from '@/utils/fmt'
 import { nilOrEmpty } from '@/utils/validator'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import TrendLine from '@/widgets/TrendLine'
 
 import { Wrapper, NumberItem, ActivitySpark } from './styles/content_status'
@@ -16,14 +16,8 @@ type TProps = {
   onClick?: () => void
 }
 
-const ContentStatus: FC<TProps> = ({
-  count,
-  onClick = null,
-  contributesDigest,
-}) => {
-  const trendData = !nilOrEmpty(contributesDigest)
-    ? contributesDigest
-    : [0, 0, 0, 0, 0, 0]
+const ContentStatus: FC<TProps> = ({ count, onClick = null, contributesDigest }) => {
+  const trendData = !nilOrEmpty(contributesDigest) ? contributesDigest : [0, 0, 0, 0, 0, 0]
 
   return (
     <Wrapper>

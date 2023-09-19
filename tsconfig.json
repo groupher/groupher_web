@@ -37,6 +37,8 @@
       "@/mobx/*": ["utils/mobx/*"],
       "@/dom": ["utils/dom"],
       "@/dom/*": ["utils/dom/*"],
+      "@/logger": ["utils/logger"],
+      "@/logger/*": ["utils/logger/*"],
       "@/css": ["utils/css"],
       "@/css/*": ["utils/css/*"],
       "@/schemas": ["src/schemas"],

@@ -12,7 +12,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css'
 
 import { COLORS, COLOR_NAME } from '@/constant/colors'
 import type { TSpace, TColorName } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import { Row } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'

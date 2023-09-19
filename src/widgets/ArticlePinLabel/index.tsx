@@ -6,7 +6,7 @@
 
 import { FC, memo } from 'react'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { PinIcon } from './styles'
 
 /* eslint-disable-next-line */

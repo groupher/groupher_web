@@ -7,7 +7,7 @@ import { FC, useEffect, useState } from 'react'
 import { ParallaxProvider } from 'react-scroll-parallax'
 import Router from 'next/router'
 
-// import { buildLog } from '@/utils/logger'
+// import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 import { BANNER_LAYOUT, DOC_FAQ_LAYOUT } from '@/constant/layout'
 

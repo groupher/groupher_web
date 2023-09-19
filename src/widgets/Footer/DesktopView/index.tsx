@@ -10,7 +10,7 @@ import { FOOTER_LAYOUT } from '@/constant/layout'
 import useFooterLinks from '@/hooks/useFooterLinks'
 import useMetric from '@/hooks/useMetric'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 
 import SimpleLayout from './SimpleLayout'

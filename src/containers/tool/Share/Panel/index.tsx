@@ -6,7 +6,7 @@ import { FC, Fragment, memo } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TArticle } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Modal from '@/widgets/Modal'
 
@@ -52,13 +52,7 @@ const SharePanel: FC<TProps> = ({
 
   return (
     <Fragment>
-      <Modal
-        width="450px"
-        show={show}
-        offsetLeft={offsetLeft}
-        onClose={close}
-        showCloseBtn
-      >
+      <Modal width="450px" show={show} offsetLeft={offsetLeft} onClose={close} showCloseBtn>
         <Wrapper testid={testid} type={siteShareType}>
           <Platforms article={article} />
           <InfoPanel type={siteShareType} linksData={linksData} />

@@ -9,7 +9,7 @@ import dynamic from 'next/dynamic'
 
 import type { TSpace } from '@/spec'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import { EmptyWrapper, BottomMsg } from './styles'
 

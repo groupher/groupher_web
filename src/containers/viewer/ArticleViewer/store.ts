@@ -13,7 +13,7 @@ import type {
 } from '@/spec'
 
 import { T, getParent, markStates, Instance, toJS } from '@/mobx'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { Document } from '@/model'
 
 /* eslint-disable-next-line */

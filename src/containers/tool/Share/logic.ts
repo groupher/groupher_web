@@ -3,7 +3,7 @@ import copy from 'copy-to-clipboard'
 
 import asyncSuit from '@/utils/async'
 import { openShareWindow } from '@/utils/helper'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { toast } from '@/signal'
 
 import type { TMenu } from './spec'

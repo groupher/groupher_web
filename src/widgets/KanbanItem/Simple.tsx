@@ -10,7 +10,7 @@ import type { TArticle } from '@/spec'
 
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { mockTags, mockUsers } from '@/utils/mock'
 import { previewArticle } from '@/utils/signal'
 import { getRandomInt } from '@/utils/helper'

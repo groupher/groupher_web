@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { Space } from '@/widgets/Common'
 
 import Button from './Button'

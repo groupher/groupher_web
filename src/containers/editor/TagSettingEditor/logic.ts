@@ -5,7 +5,7 @@ import type { TChangeMode, TEditValue, TTag } from '@/spec'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import asyncSuit from '@/utils/async'
 import { send, errRescue, closeDrawer } from '@/utils/signal'
 import { CHANGE_MODE } from '@/constant/mode'

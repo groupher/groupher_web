@@ -7,13 +7,9 @@
 import { FC, memo } from 'react'
 
 import { ICON } from '@/config'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
-import {
-  Wrapper,
-  ArrowIcon,
-  Text,
-} from '../styles/subscribed_list/expand_button'
+import { Wrapper, ArrowIcon, Text } from '../styles/subscribed_list/expand_button'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:CommunityContent')

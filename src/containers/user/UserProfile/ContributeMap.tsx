@@ -9,7 +9,7 @@ import CalendarHeatmap from 'react-calendar-heatmap'
 // import ReactTooltip from 'react-tooltip'
 
 import type { TUser } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import {
   Wrapper,
   Title,
@@ -74,8 +74,8 @@ const UserContributeMap: FC<TProps> = ({ user }) => {
     <Wrapper className="banner-heatmap">
       <Header>
         <Title>
-          过去 <TitleCount>1</TitleCount> 年共创作{' '}
-          <TitleCount>{contributes.totalCount}</TitleCount> 次内容
+          过去 <TitleCount>1</TitleCount> 年共创作 <TitleCount>{contributes.totalCount}</TitleCount>{' '}
+          次内容
         </Title>
         <DotList>
           <DotText>潜水&nbsp;&nbsp;</DotText>

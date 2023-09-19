@@ -15,7 +15,7 @@ import type {
 } from '@/spec'
 import { GRADIENT_WALLPAPER, PATTERN_WALLPAPER, WALLPAPER_TYPE } from '@/constant/wallpaper'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { T, markStates, Instance, getParent, toJS } from '@/mobx'
 
 import type { TWallpaperData } from './spec'

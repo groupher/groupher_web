@@ -10,7 +10,7 @@ import { includes } from 'ramda'
 import type { TThread } from '@/spec'
 import { THREAD } from '@/constant/thread'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { Trans } from '@/utils/i18n'
 
 import { Icon404, Wrapper, Icon, Text, Title, DescWrapper, Desc, IssueLink } from './styles'

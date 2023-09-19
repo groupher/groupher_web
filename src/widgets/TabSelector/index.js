@@ -7,7 +7,7 @@
 import React from 'react'
 import T from 'prop-types'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { Wrapper, OptionsWrapper, Option, Icon, Title, HeaderDivider } from './styles'
 
 /* eslint-disable-next-line */

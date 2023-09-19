@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import type { TUser } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Facepile from '@/widgets/Facepile'
 import { DesktopOnly } from '@/widgets/Common'

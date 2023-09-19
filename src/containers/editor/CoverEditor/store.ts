@@ -13,7 +13,7 @@ import type {
 } from '@/spec'
 import { COVER_GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '@/constant/wallpaper'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { markStates, toJS, getParent, Instance, T } from '@/mobx'
 
 import type {

@@ -3,7 +3,7 @@
  */
 
 import { FC, memo, Fragment } from 'react'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import type { TEmotion, TEmotionType } from '@/spec'
 

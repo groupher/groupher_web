@@ -5,7 +5,7 @@ import type { TWallpaperGradientDir } from '@/spec'
 import EVENT from '@/constant/event'
 import { WALLPAPER_TYPE } from '@/constant/wallpaper'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import asyncSuit from '@/utils/async'
 import { toast, closeDrawer } from '@/signal'
 

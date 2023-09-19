@@ -5,7 +5,7 @@ import ERR from '@/constant/err'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
 import asyncSuit from '@/utils/async'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { errRescue } from '@/signal'
 import { singular } from '@/utils/fmt'
 

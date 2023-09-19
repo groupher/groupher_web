@@ -5,7 +5,7 @@
 import { FC, memo, useRef, useState, useEffect } from 'react'
 
 import type { TDocument } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import FoldBox from './FoldBox'
 import { Br } from '@/widgets/Common'

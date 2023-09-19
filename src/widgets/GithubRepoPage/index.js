@@ -7,7 +7,7 @@
 import React from 'react'
 import T from 'prop-types'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import Maybe from '@/widgets/Maybe'
 import MarkDownRender from '@/widgets/MarkDownRender'
 

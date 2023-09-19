@@ -9,7 +9,7 @@ import { find, includes, without, reject, isEmpty } from 'ramda'
 
 import type { TCityOption, TSpace } from '@/spec'
 import { CITY_OPTIONS, HOME_CITY_OPTIONS, CITY_OPTION_VALUES } from '@/constant/city'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import { Wrapper, Box, MoreBtn, Flag, InputLabel, Inputer } from './styles'
 

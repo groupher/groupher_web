@@ -8,7 +8,7 @@ import dynamic from 'next/dynamic'
 import type { TSpace } from '@/spec'
 import SVG from '@/constant/svg'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 
 import MenuButton from '@/widgets/Buttons/MenuButton'

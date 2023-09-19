@@ -8,7 +8,7 @@ import { FC, memo } from 'react'
 import { reverse, keys } from 'ramda'
 
 import type { TSpace } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { groupByKey } from '@/utils/helper'
 import { mockTags } from '@/utils/mock'
 

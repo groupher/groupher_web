@@ -10,7 +10,7 @@ import type { TGallery } from '@/spec'
 import { ICON } from '@/config'
 import { getRandomInt } from '@/utils/helper'
 import { cutRest } from '@/utils/fmt'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Linker from '@/widgets/Linker'
 import Upvote from '@/widgets/Upvote'
@@ -44,11 +44,7 @@ const ProductGallery: FC<TProps> = ({ items = mockProducts() }) => {
   return (
     <Wrapper>
       {items.map((item, index) => (
-        <Block
-          key={item.id}
-          borderTop={index <= 2}
-          borderRight={(index + 1) % 3 !== 0}
-        >
+        <Block key={item.id} borderTop={index <= 2} borderRight={(index + 1) % 3 !== 0}>
           <Header>
             <LinkHead>
               <Linker src={item.homeLink} plainColor />
@@ -63,11 +59,7 @@ const ProductGallery: FC<TProps> = ({ items = mockProducts() }) => {
           {item.tags && <InlineTags items={item.tags} />}
           <SpaceGrow />
           <Footer>
-            <Upvote
-              count={getRandomInt(10, 100)}
-              avatarList={[]}
-              type="general"
-            />
+            <Upvote count={getRandomInt(10, 100)} avatarList={[]} type="general" />
             <CommentWrapper>
               <IconText iconSrc={`${ICON}/article/comment.svg`} size="medium">
                 {getRandomInt(10, 100)}

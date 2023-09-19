@@ -7,7 +7,7 @@
 import { FC, useRef } from 'react'
 import dynamic from 'next/dynamic'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 
 // import ArticleSticker from '@/containers/tool/ArticleSticker'

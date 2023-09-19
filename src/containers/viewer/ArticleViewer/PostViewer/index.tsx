@@ -7,7 +7,7 @@ import { observer } from 'mobx-react'
 import Balancer from 'react-wrap-balancer'
 
 import type { TPost } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { scrollDrawerToTop } from '@/dom'
 import { BROADCAST_ARTICLE_LAYOUT } from '@/constant/layout'
 

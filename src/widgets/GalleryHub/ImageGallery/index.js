@@ -8,7 +8,7 @@ import React, { useState } from 'react'
 import T from 'prop-types'
 
 import GALLERY from '@/constant/gallery'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 // import Pagi from '@/widgets/Pagi'
 // import PagiOptionSwitcher from '@/widgets/Switcher/PagiOptionSwitcher'

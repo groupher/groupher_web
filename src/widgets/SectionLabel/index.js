@@ -8,19 +8,11 @@ import React from 'react'
 import T from 'prop-types'
 
 import { ICON_CMD } from '@/config'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Maybe from '@/widgets/Maybe'
 
-import {
-  Wrapper,
-  Label,
-  Title,
-  Desc,
-  Divider,
-  LabelIcon,
-  AddonWrapper,
-} from './styles'
+import { Wrapper, Label, Title, Desc, Divider, LabelIcon, AddonWrapper } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:SectionLabel:index')

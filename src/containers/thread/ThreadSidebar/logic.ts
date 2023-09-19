@@ -10,7 +10,7 @@ import TYPE from '@/constant/type'
 
 import asyncSuit from '@/utils/async'
 import { errRescue, listUsers, callGEditor, callSyncSelector } from '@/utils/signal'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import type { TStore } from './store'
 import S from './schema'

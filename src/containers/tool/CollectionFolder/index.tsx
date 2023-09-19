@@ -9,7 +9,7 @@
 import { FC, Fragment } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 import { ICON_CMD } from '@/config'
 

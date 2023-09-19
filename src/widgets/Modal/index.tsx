@@ -7,7 +7,7 @@
 import { FC, ReactNode, useCallback, memo } from 'react'
 import dynamic from 'next/dynamic'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import useShortcut from '@/hooks/useShortcut'
 
 /* eslint-disable-next-line */
@@ -34,13 +34,7 @@ const Modal: FC<TProps> = ({ show = false, onClose = log, ...restProps }) => {
 
   useShortcut('Escape', handleClose)
 
-  return (
-    <>
-      {show && (
-        <RealModal {...restProps} handleCloseModal={handleClose} show={show} />
-      )}
-    </>
-  )
+  return <>{show && <RealModal {...restProps} handleCloseModal={handleClose} show={show} />}</>
 }
 
 export default memo(Modal)

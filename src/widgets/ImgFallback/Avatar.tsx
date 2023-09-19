@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import { AVATAR_LAYOUT } from '@/constant/layout'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { getLetterColor } from '@/utils/color'
 
 import type { TAvatarProps as TProps } from '.'

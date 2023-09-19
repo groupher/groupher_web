@@ -10,7 +10,7 @@ import dynamic from 'next/dynamic'
 import type { TResState, TArticleFilterMode } from '@/spec'
 import { BANNER_LAYOUT, DOC_FAQ_LAYOUT } from '@/constant/layout'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 
 import PagedArticles from '@/widgets/PagedArticles'

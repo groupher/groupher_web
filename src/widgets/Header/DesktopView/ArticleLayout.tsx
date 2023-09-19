@@ -9,7 +9,7 @@ import { FC } from 'react'
 import { ICON } from '@/config'
 
 import type { TUser } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { authWarn } from '@/utils/signal'
 
 import Tooltip from '@/widgets/Tooltip'

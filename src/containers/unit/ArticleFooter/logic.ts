@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import ERR from '@/constant/err'
 
 import { errRescue } from '@/signal'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import asyncSuit from '@/utils/async'
 
 import type { TStore } from './store'

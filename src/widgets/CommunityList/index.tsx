@@ -8,7 +8,7 @@ import { FC, memo, ReactNode } from 'react'
 import { isEmpty } from 'ramda'
 
 import type { TCommunity } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import Tooltip from '@/widgets/Tooltip'
 import CommunityCard from '@/widgets/Cards/CommunityCard'
 

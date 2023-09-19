@@ -7,7 +7,7 @@
 import { FC, useState, memo } from 'react'
 
 import { ICON_CMD, GITHUB } from '@/config'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import useAccount from '@/hooks/useAccount'
 
 import Modal from '@/widgets/Modal'
@@ -74,9 +74,7 @@ const BuyMeChuanChuan: FC<TProps> = ({
               撸个串
             </SelectTitle>
 
-            <SelectDesc>
-              你的远程投喂将有助于开发团队在饱腹状态下工作， 冲!
-            </SelectDesc>
+            <SelectDesc>你的远程投喂将有助于开发团队在饱腹状态下工作， 冲!</SelectDesc>
 
             <ChuanSelector active={activeChuan} onSelect={setActiveChuan} />
             <SelectHolder />

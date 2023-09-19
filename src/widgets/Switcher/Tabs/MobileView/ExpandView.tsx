@@ -11,7 +11,7 @@ import type { TSizeSM, TTabItem } from '@/spec'
 import { ICON } from '@/config'
 import SIZE from '@/constant/size'
 import { isString } from '@/utils/validator'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import TabItem from '../TabItem'
 import { Wrapper, Nav, MoreWrapper, ArrowIcon } from '../../styles/tabs/mobile_view/expand_view'

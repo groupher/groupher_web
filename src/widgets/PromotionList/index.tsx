@@ -8,7 +8,7 @@ import { FC, useState, useRef, memo, Fragment } from 'react'
 import { findIndex } from 'ramda'
 import useHoverDirty from 'react-use/lib/useHoverDirty'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import useInterval from '@/hooks/useInterval'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'

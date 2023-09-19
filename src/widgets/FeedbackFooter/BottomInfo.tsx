@@ -7,7 +7,7 @@
 import { FC, memo, useState } from 'react'
 
 import type { TSpace } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import type { TDocFeedback } from './spec'
 import { HELP_FEEDBACK } from './constant'

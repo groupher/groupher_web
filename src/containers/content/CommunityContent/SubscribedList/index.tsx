@@ -9,7 +9,7 @@ import { ICON } from '@/config'
 import { HCN } from '@/constant/name'
 
 import { changeToCommunity } from '@/utils/signal'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import DotDivider from '@/widgets/DotDivider'
 import Tooltip from '@/widgets/Tooltip'

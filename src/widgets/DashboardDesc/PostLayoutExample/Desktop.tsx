@@ -9,7 +9,7 @@ import { FC, memo, Fragment } from 'react'
 import type { TPost, TPostLayout } from '@/spec'
 import { POST_LAYOUT } from '@/constant/layout'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import MasonryCards from '@/widgets/MasonryCards'
 import PostItem from '@/widgets/PostItem'

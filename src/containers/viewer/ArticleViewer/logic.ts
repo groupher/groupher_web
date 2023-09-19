@@ -5,7 +5,7 @@ import type { TArticle } from '@/spec'
 
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { errRescue, authWarn } from '@/utils/signal'
 import asyncSuit from '@/utils/async'
 import { scrollDrawerToTop } from '@/dom'

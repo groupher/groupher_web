@@ -6,7 +6,7 @@
 import { FC } from 'react'
 
 import type { TUser } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Facepile from '@/widgets/Facepile'
 

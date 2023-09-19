@@ -4,7 +4,7 @@
 
 import { FC } from 'react'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 
 import Modal from '@/widgets/Modal'

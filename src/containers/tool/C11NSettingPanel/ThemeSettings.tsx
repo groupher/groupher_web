@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import type { TThemeName } from '@/spec'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import ThemeSelector from '@/widgets/ThemeSelector'
 import NoticeBar from '@/widgets/NoticeBar'
 
@@ -18,17 +18,9 @@ type TProps = {
 const ThemeSettings: FC<TProps> = ({ curTheme }) => {
   return (
     <Wrapper>
-      <NoticeBar
-        type="info"
-        content="目前仅开放了 Solarized 主题，其他主题调试中。"
-        bottom={25}
-      />
+      <NoticeBar type="info" content="目前仅开放了 Solarized 主题，其他主题调试中。" bottom={25} />
 
-      <ThemeSelector
-        curTheme={curTheme}
-        changeTheme={log}
-        displayStyle="gallery"
-      />
+      <ThemeSelector curTheme={curTheme} changeTheme={log} displayStyle="gallery" />
     </Wrapper>
   )
 }

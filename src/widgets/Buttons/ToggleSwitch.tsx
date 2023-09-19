@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import type { TSizeSM } from '@/spec'
 import SIZE from '@/constant/size'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import { Wrapper, Track, Indicator, CheckIcon } from './styles/toggle_switch'
 

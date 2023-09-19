@@ -6,7 +6,7 @@
 import { FC } from 'react'
 
 import type { TChangeMode, TSelectOption } from '@/spec'
-// import { buildLog } from '@/utils/logger'
+// import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 import { ROUTE } from '@/constant/route'
 import { DRAWER_SCROLLER } from '@/constant/dom'

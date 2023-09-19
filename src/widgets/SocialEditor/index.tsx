@@ -11,7 +11,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import type { TSocialType, TSocialItem, TSpace } from '@/spec'
 import { SOCIAL_LIST } from '@/constant/social'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import { Br } from '@/widgets/Common'
 

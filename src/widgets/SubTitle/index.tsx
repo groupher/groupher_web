@@ -7,7 +7,7 @@
 import { FC, memo, ReactNode } from 'react'
 import Router from 'next/router'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
 import { Wrapper, Title, OptionWrapper } from './styles'

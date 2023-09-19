@@ -9,7 +9,7 @@ import { FC, memo } from 'react'
 import type { TPagedUsers } from '@/spec'
 import TYPE from '@/constant/type'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Pagi from '@/widgets/Pagi'
 import EditorLayout from './EditorLayout'

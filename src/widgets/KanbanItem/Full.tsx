@@ -8,7 +8,7 @@ import { FC, memo, useState, useEffect } from 'react'
 
 import type { TArticle } from '@/spec'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { mockTags, mockUsers } from '@/utils/mock'
 import { getRandomInt } from '@/utils/helper'
 import { UPVOTE_LAYOUT } from '@/constant/layout'

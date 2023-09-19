@@ -19,7 +19,7 @@ import ERR from '@/constant/err'
 
 import { DASHBOARD_ROUTE, DASHBOARD_BASEINFO_ROUTE, DASHBOARD_SEO_ROUTE } from '@/constant/route'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { updateEditing, toJS } from '@/mobx'
 import asyncSuit from '@/utils/async'
 import { toast, errRescue } from '@/signal'

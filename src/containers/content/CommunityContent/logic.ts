@@ -9,7 +9,7 @@ import ERR from '@/constant/err'
 import { plural } from '@/utils/fmt'
 import { send, errRescue } from '@/utils/signal'
 import asyncSuit from '@/utils/async'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import type { TStore } from './store'
 

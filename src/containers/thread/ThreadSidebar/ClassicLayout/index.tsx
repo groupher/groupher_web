@@ -15,7 +15,7 @@ import useAvatarLayout from '@/hooks/useAvatarLayout'
 import EVENT from '@/constant/event'
 import { ARTICLE_CAT } from '@/constant/gtd'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { send } from '@/utils/signal'
 import { mockUsers } from '@/utils/mock'
 

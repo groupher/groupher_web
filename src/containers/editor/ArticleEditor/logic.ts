@@ -7,7 +7,7 @@ import { HCN } from '@/constant/name'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import asyncSuit from '@/utils/async'
 import { getParameterByName } from '@/utils/route'
 import { titleCase } from '@/utils/fmt'

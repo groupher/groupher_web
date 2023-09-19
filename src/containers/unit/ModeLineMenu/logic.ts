@@ -5,7 +5,7 @@ import EVENT from '@/constant/event'
 import TYPE from '@/constant/type'
 
 import { send, report } from '@/utils/signal'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 // import S from './service'
 
 import type { TStore } from './store'

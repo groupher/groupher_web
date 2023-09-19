@@ -12,7 +12,7 @@ import { ROUTE } from '@/constant/route'
 import METRIC from '@/constant/metric'
 import useBannerLayout from '@/hooks/useBannerLayout'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 
 import SidebarLayout from './SidebarLayout'

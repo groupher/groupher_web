@@ -11,7 +11,7 @@ import useMobileDetect from '@groupher/use-mobile-detect-hook'
 import type { TSizeSM, TTabItem } from '@/spec'
 import SIZE from '@/constant/size'
 import { isString } from '@/utils/validator'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import TabItem from './TabItem'
 import { Wrapper, Nav, SlipBar, RealBar } from '../styles/tabs/mobile_view/normal_view'

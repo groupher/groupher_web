@@ -8,7 +8,7 @@ import { FC, memo, ReactNode } from 'react'
 import { keys, includes, isEmpty } from 'ramda'
 
 import type { TColorName, TTooltipPlacement } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { COLORS } from '@/constant/colors'
 
 import Tooltip from '@/widgets/Tooltip'

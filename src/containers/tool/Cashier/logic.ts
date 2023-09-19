@@ -8,7 +8,7 @@ import asyncSuit from '@/utils/async'
 import { errorForHuman } from '@/utils/errors'
 import { Global } from '@/utils/helper'
 import { send, errRescue, toast } from '@/signal'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import type { TStore } from './store'
 import S from './schema'

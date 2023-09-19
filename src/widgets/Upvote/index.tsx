@@ -8,7 +8,7 @@ import { FC, memo } from 'react'
 
 import type { TUser, TUpvoteLayout, TSpace } from '@/spec'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import DefaultLayout from './DefaultLayout'
 import GeneralLayout from './GeneralLayout'

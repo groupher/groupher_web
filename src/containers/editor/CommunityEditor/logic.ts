@@ -7,7 +7,7 @@ import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 import { sessionChanged, errRescue } from '@/utils/signal'
 import asyncSuit from '@/utils/async'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { updateEditing } from '@/mobx'
 
 import type { TStore } from './store'

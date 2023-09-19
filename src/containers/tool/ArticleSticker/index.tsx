@@ -9,7 +9,7 @@
 import { FC, Fragment } from 'react'
 
 import type { TMetric } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 import METRIC from '@/constant/metric'
 

@@ -5,7 +5,7 @@
 import { FC, memo, ReactNode } from 'react'
 import { isEmpty } from 'ramda'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Maybe:index')

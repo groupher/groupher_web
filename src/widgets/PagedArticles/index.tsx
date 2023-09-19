@@ -11,7 +11,7 @@ import type { TThread, TPagedArticles, TResState } from '@/spec'
 import EVENT from '@/constant/event'
 
 import { send } from '@/utils/signal'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import ArticleList from './ArticleList'
 // import CommunityRecommends from './CommunityRecommends'

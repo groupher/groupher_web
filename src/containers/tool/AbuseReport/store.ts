@@ -8,7 +8,7 @@ import { REPORT_TYPE } from '@/constant/report'
 
 import type { TCommunity, TArticle, TRootStore } from '@/spec'
 import { T, getParent, markStates, Instance, toJS } from '@/mobx'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import type { TREPORT_ITEM } from './spec'
 /* eslint-disable-next-line */

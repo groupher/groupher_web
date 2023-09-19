@@ -8,7 +8,7 @@ import { FC, memo } from 'react'
 import { findIndex, propEq } from 'ramda'
 
 import SVG from '@/constant/svg'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import Tooltip from '@/widgets/Tooltip'
 
 import { Wrapper, Tabs, DescText, Label, Slider, getLocalIcon } from './styles/icon_selector'

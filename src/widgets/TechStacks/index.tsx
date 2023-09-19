@@ -8,7 +8,7 @@ import { FC, memo, Fragment } from 'react'
 import { reduce, merge } from 'ramda'
 
 import type { TTechCommunities, TCommunity } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import { TECHSTACK_CATEGORYS, CATEGORYS_RAWS } from './constant'
 import Category from './Category'

@@ -6,7 +6,7 @@
 import { FC } from 'react'
 import Markdown from 'markdown-to-jsx'
 
-// import { buildLog } from '@/utils/logger'
+// import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 
 import Members from './Members'

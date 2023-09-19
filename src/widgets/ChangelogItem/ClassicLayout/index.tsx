@@ -8,7 +8,7 @@ import { FC, memo } from 'react'
 
 import type { TChangelog } from '@/spec'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { previewArticle } from '@/utils/signal'
 
 import { SpaceGrow } from '@/widgets/Common'

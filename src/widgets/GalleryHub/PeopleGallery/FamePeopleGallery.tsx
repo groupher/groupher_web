@@ -9,7 +9,7 @@ import { FC, memo } from 'react'
 import type { TGallery } from '@/spec'
 import { ICON } from '@/config'
 import { getRandomInt } from '@/utils/helper'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Upvote from '@/widgets/Upvote'
 import IconText from '@/widgets/IconText'
@@ -43,11 +43,7 @@ const FamePeopleList: FC<TProps> = ({ items = mockFameous() }) => {
   return (
     <Wrapper>
       {items.map((item, index) => (
-        <Block
-          key={item.id}
-          borderTop={index <= 2}
-          borderRight={(index + 1) % 3 !== 0}
-        >
+        <Block key={item.id} borderTop={index <= 2} borderRight={(index + 1) % 3 !== 0}>
           <CardHeader item={item} />
           <Body>
             <Avatar src={item.icon} />
@@ -62,11 +58,7 @@ const FamePeopleList: FC<TProps> = ({ items = mockFameous() }) => {
           <SpaceGrow />
 
           <Footer>
-            <Upvote
-              count={getRandomInt(10, 100)}
-              avatarList={[]}
-              type="general"
-            />
+            <Upvote count={getRandomInt(10, 100)} avatarList={[]} type="general" />
             <CommentWrapper>
               <IconText iconSrc={`${ICON}/article/comment.svg`} size="medium">
                 {getRandomInt(10, 100)}

@@ -30,6 +30,7 @@ module.exports = {
           '@/signal': 'utils/signal',
           '@/mobx': 'utils/mobx',
           '@/dom': 'utils/dom',
+          '@/logger': 'utils/logger',
           '@/hooks': 'src/hooks',
           '@/hoc': 'src/hoc',
           '@/stores': 'src/stores',

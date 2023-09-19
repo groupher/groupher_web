@@ -11,7 +11,7 @@ import { THREAD } from '@/constant/thread'
 import type { TArticle, TCommunity, TRootStore, TThread, TMenuOption } from '@/spec'
 
 import { T, getParent, markStates, Instance, toJS } from '@/mobx'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import type { TLinksData, TShareData } from './spec'
 import { SITE_SHARE_TYPE, MENU } from './constant'

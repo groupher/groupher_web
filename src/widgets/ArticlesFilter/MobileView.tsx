@@ -11,7 +11,7 @@ import type { TArticleCat } from '@/spec'
 import { ARTICLE_CAT, ARTICLE_STATE_MODE } from '@/constant/gtd'
 import TYPE from '@/constant/type'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import { SpaceGrow } from '@/widgets/Common'
 

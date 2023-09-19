@@ -8,7 +8,7 @@ import React from 'react'
 import T from 'prop-types'
 
 import { ICON } from '@/config'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import { Wrapper, Title, Reaction, Icon, Count } from './styles/item'
 

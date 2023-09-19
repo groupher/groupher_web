@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 // import { } from 'ramda'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import EVENT from '@/constant/event'
 import asyncSuit from '@/utils/async'
 

@@ -7,7 +7,7 @@
 import { FC, ReactNode, memo, createContext } from 'react'
 
 import type { TTooltipPlacement } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import RealTooltip from './RealTooltip'
 
 // @ts-ignore

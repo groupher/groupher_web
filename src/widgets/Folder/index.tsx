@@ -9,7 +9,7 @@ import { FC, memo } from 'react'
 import { TSizeSM } from '@/spec'
 
 import SIZE from '@/constant/size'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Content from './Content'
 import Footer from './Footer'

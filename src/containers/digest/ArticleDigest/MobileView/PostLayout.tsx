@@ -7,7 +7,7 @@ import { FC, memo } from 'react'
 import type { TPost, TMetric } from '@/spec'
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import METRIC from '@/constant/metric'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 // import ArchivedSign from '@/widgets/ArchivedSign'
 import Upvote from '@/widgets/Upvote'

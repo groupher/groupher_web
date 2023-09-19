@@ -8,7 +8,7 @@ import type { TCommunity, TRootStore, TUser, TArticleThread, TPagedArticles } fr
 import TYPE from '@/constant/type'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 import { plural } from '@/utils/fmt'
 

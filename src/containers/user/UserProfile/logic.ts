@@ -6,7 +6,7 @@ import ERR from '@/constant/err'
 import TYPE from '@/constant/type'
 
 import { errRescue } from '@/signal'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import asyncSuit from '@/utils/async'
 
 import S from './schema'

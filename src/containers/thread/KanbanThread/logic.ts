@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 
 import ERR from '@/constant/err'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import asyncSuit from '@/utils/async'
 import { errRescue } from '@/signal'
 

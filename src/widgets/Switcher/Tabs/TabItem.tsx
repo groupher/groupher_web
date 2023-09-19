@@ -9,7 +9,7 @@ import { FC, useEffect, useCallback, useRef, memo } from 'react'
 import type { TSizeSM, TTabItem } from '@/spec'
 import { Trans } from '@/utils/i18n'
 import { isString } from '@/utils/validator'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { isElementInViewport } from '@/dom'
 
 import TabIcon from './TabIcon'

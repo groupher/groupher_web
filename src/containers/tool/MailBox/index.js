@@ -6,7 +6,7 @@
 
 import React from 'react'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 import Tooltip from '@/widgets/Tooltip'
 

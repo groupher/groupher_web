@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react'
 
 import type { TChangeMode, TLinkItem } from '@/spec'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import { Space, SpaceGrow } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'

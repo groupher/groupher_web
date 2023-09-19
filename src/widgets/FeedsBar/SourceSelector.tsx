@@ -6,7 +6,7 @@
 
 import { FC, memo } from 'react'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import CustomScroller from '@/widgets/CustomScroller'
 import { Wrapper, Icon, Block, Title } from './styles/source_selector'
 
@@ -20,11 +20,7 @@ const SourceSelector: FC = () => {
 
   return (
     <Wrapper>
-      <CustomScroller
-        direction="horizontal"
-        innerHeight="70px"
-        shadowSize="small"
-      >
+      <CustomScroller direction="horizontal" innerHeight="70px" shadowSize="small">
         {items.map((item) => (
           <Block key={item.id}>
             <Icon src={item.icon} />

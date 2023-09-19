@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import type { TTag } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Header from './Header'
 // import SearchBox from './SearchBox'

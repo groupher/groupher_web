@@ -7,7 +7,7 @@
 import React from 'react'
 
 import { ICON_CMD } from '@/config'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 
 import SectionLabel from '@/widgets/SectionLabel'

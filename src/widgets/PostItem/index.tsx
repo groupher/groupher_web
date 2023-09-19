@@ -10,7 +10,7 @@ import { observer } from 'mobx-react'
 import type { TPost } from '@/spec'
 import { POST_LAYOUT } from '@/constant/layout'
 import usePostLayout from '@/hooks/usePostLayout'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import PHLayout from './PHLayout'
 import QuoraLayout from './QuoraLayout'

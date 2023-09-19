@@ -9,7 +9,7 @@ import TYPE from '@/constant/type'
 
 import { scrollToHeader } from '@/dom'
 import asyncSuit from '@/utils/async'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { plural } from '@/utils/fmt'
 import { errRescue, previewArticle, authWarn } from '@/utils/signal'
 import { matchPagedArticles, matchArticleUpvotes } from '@/utils/macros'

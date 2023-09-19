@@ -11,7 +11,7 @@ import SIZE from '@/constant/size'
 
 import { sortByColor } from '@/utils/helper'
 import { Trans } from '@/utils/i18n'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import Tooltip from '@/widgets/Tooltip'
 
 import FullList from './FullList'

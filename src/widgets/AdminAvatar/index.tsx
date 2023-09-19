@@ -9,7 +9,7 @@ import { observer } from 'mobx-react'
 
 import type { TUser, TSpace } from '@/spec'
 import useAvatarLayout from '@/hooks/useAvatarLayout'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import ImgFallback from '@/widgets/ImgFallback'
 

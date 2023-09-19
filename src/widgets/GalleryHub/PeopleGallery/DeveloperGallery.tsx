@@ -9,7 +9,7 @@ import { FC, memo } from 'react'
 import type { TGallery } from '@/spec'
 import { ICON, ASSETS_ENDPOINT } from '@/config'
 import { cutRest } from '@/utils/fmt'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import IconText from '@/widgets/IconText'
 
@@ -41,11 +41,7 @@ const DeveloperGallery: FC<TProps> = ({ items = mockDevelopers() }) => {
   return (
     <Wrapper>
       {items.map((item, index) => (
-        <Block
-          key={item.id}
-          borderTop={index <= 3}
-          borderRight={(index + 1) % 4 !== 0}
-        >
+        <Block key={item.id} borderTop={index <= 3} borderRight={(index + 1) % 4 !== 0}>
           <CardHeader item={item} />
           <Body>
             <Avatar src={item.icon} />

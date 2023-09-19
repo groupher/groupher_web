@@ -9,7 +9,7 @@ import dynamic from 'next/dynamic'
 
 import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 
 import Navigator from '@/widgets/Navigator'

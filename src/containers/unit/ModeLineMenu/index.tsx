@@ -8,7 +8,7 @@ import { FC } from 'react'
 
 import type { TModelineType } from '@/spec'
 import TYPE from '@/constant/type'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 
 // TODO: 全部动态加载

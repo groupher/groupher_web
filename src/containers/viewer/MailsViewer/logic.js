@@ -4,7 +4,7 @@ import { PAGE_SIZE } from '@/config'
 import ERR from '@/constant/err'
 
 import asyncSuit from '@/utils/async'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { errRescue } from '@/signal'
 
 import S from './schema'

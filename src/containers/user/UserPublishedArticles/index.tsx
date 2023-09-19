@@ -8,7 +8,7 @@ import { FC, Fragment } from 'react'
 
 import type { TResState } from '@/spec'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 
 import PagedArticles from '@/widgets/PagedArticles'

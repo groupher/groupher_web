@@ -9,7 +9,7 @@ import type { TUser, TPagedCommunities } from '@/spec'
 import EVENT from '@/constant/event'
 import TYPE from '@/constant/type'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { send } from '@/utils/signal'
 import { Br } from '@/widgets/Common'
 

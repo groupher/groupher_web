@@ -10,7 +10,7 @@ import asyncSuit from '@/utils/async'
 import BStore from '@/utils/bstore'
 import { titleCase } from '@/utils/fmt'
 import { errRescue, authWarn } from '@/utils/signal'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { scrollIntoEle } from '@/dom'
 import { updateEditing } from '@/mobx'
 

@@ -9,7 +9,7 @@ import { observer } from 'mobx-react'
 
 import { ANCHOR } from '@/constant/dom'
 import { BROADCAST_LAYOUT } from '@/constant/layout'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import useMetric from '@/hooks/useMetric'
 import useBroadcast from '@/hooks/useBroadcast'
 

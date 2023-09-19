@@ -11,7 +11,7 @@ import React from 'react'
 import T from 'prop-types'
 import ResizeObserver from 'resize-observer-polyfill'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { Global } from '@/utils/helper'
 
 const log = buildLog('w:Sticky')
@@ -20,9 +20,7 @@ const getScrollParent = (node) => {
   let parent = node
   // eslint-disable-next-line no-cond-assign
   while ((parent = parent.parentElement)) {
-    const overflowYVal = getComputedStyle(parent, null).getPropertyValue(
-      'overflow-y',
-    )
+    const overflowYVal = getComputedStyle(parent, null).getPropertyValue('overflow-y')
     if (parent === document.body) return Global
     if (overflowYVal === 'auto' || overflowYVal === 'scroll') return parent
   }
@@ -93,16 +91,10 @@ class StickyBox extends React.Component {
     this.node = n
     if (n) {
       this.scrollPane = getScrollParent(this.node)
-      this.latestScrollY =
-        this.scrollPane === Global ? Global.scrollY : this.scrollPane.scrollTop
+      this.latestScrollY = this.scrollPane === Global ? Global.scrollY : this.scrollPane.scrollTop
 
       this.addListener(this.scrollPane, 'scroll', this.handleScroll, passiveArg)
-      this.addListener(
-        this.scrollPane,
-        'mousewheel',
-        this.handleScroll,
-        passiveArg,
-      )
+      this.addListener(this.scrollPane, 'mousewheel', this.handleScroll, passiveArg)
       if (this.scrollPane === Global) {
         this.addListener(Global, 'resize', this.handleWindowResize)
         this.handleWindowResize()
@@ -131,10 +123,7 @@ class StickyBox extends React.Component {
     if (newMode === 'relative') {
       this.node.style.position = 'relative'
       if (bottom) {
-        const nextBottom = Math.max(
-          0,
-          this.parentHeight - this.nodeHeight - this.offset,
-        )
+        const nextBottom = Math.max(0, this.parentHeight - this.nodeHeight - this.offset)
         this.node.style.bottom = `${nextBottom}px`
       } else {
         this.node.style.top = `${this.offset}px`
@@ -145,17 +134,13 @@ class StickyBox extends React.Component {
         if (bottom) {
           this.node.style.bottom = `${offsetBottom}px`
         } else {
-          this.node.style.top = `${
-            this.viewPortHeight - this.nodeHeight - offsetBottom
-          }px`
+          this.node.style.top = `${this.viewPortHeight - this.nodeHeight - offsetBottom}px`
         }
       } else {
         // stickyTop
         // eslint-disable-next-line no-lonely-if
         if (bottom) {
-          this.node.style.bottom = `${
-            this.viewPortHeight - this.nodeHeight - offsetBottom
-          }px`
+          this.node.style.bottom = `${this.viewPortHeight - this.nodeHeight - offsetBottom}px`
         } else {
           this.node.style.top = `${offsetTop}px`
         }
@@ -177,13 +162,7 @@ class StickyBox extends React.Component {
     if (this.mode === 'relative') return this.offset
     const { offsetTop, offsetBottom } = this.props
     if (this.mode === 'stickyTop') {
-      return Math.max(
-        0,
-        this.scrollPaneOffset +
-          this.latestScrollY -
-          this.naturalTop +
-          offsetTop,
-      )
+      return Math.max(0, this.scrollPaneOffset + this.latestScrollY - this.naturalTop + offsetTop)
     }
     if (this.mode === 'stickyBottom') {
       return Math.max(
@@ -232,22 +211,13 @@ class StickyBox extends React.Component {
   handleParentNodeResize = () => {
     const { parentNode } = this.node
     const computedParentStyle = getComputedStyle(parentNode, null)
-    const parentPaddingTop = parseInt(
-      computedParentStyle.getPropertyValue('padding-top'),
-      10,
-    )
-    const parentPaddingBottom = parseInt(
-      computedParentStyle.getPropertyValue('padding-bottom'),
-      10,
-    )
+    const parentPaddingTop = parseInt(computedParentStyle.getPropertyValue('padding-top'), 10)
+    const parentPaddingBottom = parseInt(computedParentStyle.getPropertyValue('padding-bottom'), 10)
     const verticalParentPadding = parentPaddingTop + parentPaddingBottom
     this.naturalTop =
-      offsetTill(parentNode, this.scrollPane) +
-      parentPaddingTop +
-      this.scrollPaneOffset
+      offsetTill(parentNode, this.scrollPane) + parentPaddingTop + this.scrollPaneOffset
     const oldParentHeight = this.parentHeight
-    this.parentHeight =
-      parentNode.getBoundingClientRect().height - verticalParentPadding
+    this.parentHeight = parentNode.getBoundingClientRect().height - verticalParentPadding
 
     if (this.mode === 'relative') {
       const { bottom } = this.props
@@ -276,10 +246,7 @@ class StickyBox extends React.Component {
       } else {
         const diff = prevHeight - this.nodeHeight
         const lowestPossible = this.parentHeight - this.nodeHeight
-        const nextOffset = Math.min(
-          lowestPossible,
-          this.getCurrentOffset() + (bottom ? diff : 0),
-        )
+        const nextOffset = Math.min(lowestPossible, this.getCurrentOffset() + (bottom ? diff : 0))
         this.offset = Math.max(0, nextOffset)
         if (!bottom || this.mode !== 'stickyBottom') this.changeMode('relative')
       }
@@ -288,8 +255,7 @@ class StickyBox extends React.Component {
 
   handleScroll = () => {
     const { offsetTop, offsetBottom } = this.props
-    const scrollY =
-      this.scrollPane === Global ? Global.scrollY : this.scrollPane.scrollTop
+    const scrollY = this.scrollPane === Global ? Global.scrollY : this.scrollPane.scrollTop
     if (scrollY === this.latestScrollY) return
     if (this.nodeHeight + offsetTop + offsetBottom <= this.viewPortHeight) {
       // Just make it sticky if node smaller than viewport
@@ -323,20 +289,14 @@ class StickyBox extends React.Component {
           this.scrollPaneOffset + scrollY + this.viewPortHeight <
           this.naturalTop + this.parentHeight + offsetBottom
         ) {
-          if (
-            this.scrollPaneOffset + scrollY + offsetTop >=
-            this.naturalTop + this.offset
-          ) {
+          if (this.scrollPaneOffset + scrollY + offsetTop >= this.naturalTop + this.offset) {
             this.changeMode('relative')
           } else {
             this.changeMode('stickyTop')
           }
         }
       } else if (this.mode === 'relative') {
-        if (
-          this.scrollPaneOffset + scrollY + offsetTop <
-          this.naturalTop + this.offset
-        ) {
+        if (this.scrollPaneOffset + scrollY + offsetTop < this.naturalTop + this.offset) {
           this.changeMode('stickyTop')
         }
       }

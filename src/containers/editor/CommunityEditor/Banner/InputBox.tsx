@@ -1,15 +1,9 @@
 import { FC, memo, useRef } from 'react'
 
 import type { TInput } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
-import {
-  Wrapper,
-  InputWrapper,
-  InputMask,
-  MaskNumer,
-  InputBar,
-} from '../styles/banner/input_box'
+import { Wrapper, InputWrapper, InputMask, MaskNumer, InputBar } from '../styles/banner/input_box'
 
 const log = buildLog('C:CommunityEditor/InputBox')
 

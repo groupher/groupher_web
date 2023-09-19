@@ -7,7 +7,7 @@ import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 
 import asyncSuit from '@/utils/async'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { errRescue } from '@/signal'
 import { updateEditing } from '@/mobx'
 

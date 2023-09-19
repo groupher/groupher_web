@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import EVENT from '@/constant/event'
 import asyncSuit from '@/utils/async'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import type { TStore } from './store'
 

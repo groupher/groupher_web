@@ -6,7 +6,7 @@ import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 import asyncSuit from '@/utils/async'
 import { errRescue } from '@/signal'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import S from './schema'
 import { TYPE, COMMUNITY_STYLE } from './constant'

@@ -8,7 +8,7 @@ import type { TID, TSizeTSM } from '@/spec'
 import SIZE from '@/constant/size'
 import useAccount from '@/hooks/useAccount'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { authWarn } from '@/utils/signal'
 
 import FollowingBtn from './FollowingBtn'

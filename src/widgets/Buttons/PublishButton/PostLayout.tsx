@@ -6,7 +6,7 @@
 
 import { memo, FC, Fragment } from 'react'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { SpaceGrow } from '@/widgets/Common'
 
 // import Button from './Button'

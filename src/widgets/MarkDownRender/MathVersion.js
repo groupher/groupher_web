@@ -23,7 +23,7 @@ import Prism from 'mastani-codehighlight'
 
 import MarkDownStyle from '@/containers/layout/ThemePalette/MarkDownStyle'
 import { MENTION_USER_ADDR } from '@/config'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { PreviewerContainer } from './styles'
 
 const log = buildLog('w:MarkDownRender:index')

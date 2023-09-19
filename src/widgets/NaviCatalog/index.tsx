@@ -11,7 +11,7 @@ import URL_QUERY from '@/constant/url_query'
 import type { TNaviTag } from '@/spec'
 
 import { findDeepMatch } from '@/utils/helper'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { nilOrEmpty } from '@/utils/validator'
 import { getQueryFromUrl, markRoute } from '@/utils/route'
 

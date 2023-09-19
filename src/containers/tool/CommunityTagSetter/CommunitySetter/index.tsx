@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import type { TCommunity, TCommunitySetterStyle } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Header from './Header'
 import Body from './Body'

@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 
 import { GRADIENT_WALLPAPER_NAME } from '@/constant/wallpaper'
 import { GLOW_EFFECT_NAME } from '@/constant/glow_effect'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 // import S from './schma'
 import type { TStore } from './store'

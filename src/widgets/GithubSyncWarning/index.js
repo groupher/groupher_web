@@ -8,7 +8,7 @@ import React from 'react'
 import T from 'prop-types'
 
 import { ISSUE_ADDR, ICON_CMD } from '@/config'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Modal from '@/widgets/Modal'
 

@@ -1,7 +1,7 @@
 import { FC, memo, Fragment, ReactNode } from 'react'
 
 import type { TSpace } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import { SpaceGrow } from '@/widgets/Common'
 import YesOrNoButtons from '@/widgets/Buttons/YesOrNoButtons'

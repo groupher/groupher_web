@@ -3,7 +3,7 @@ import { FC, ReactNode, memo } from 'react'
 import type { TActive, TSizeTS, TSpace } from '@/spec'
 import SIZE from '@/constant/size'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import { Wrapper, ButtonWrapper, InnerBtnWrapper, FilterIcon } from '../styles/dropdown_button'
 

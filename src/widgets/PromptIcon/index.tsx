@@ -6,7 +6,7 @@
 
 import { FC, memo } from 'react'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import PlanetDriver from './PlanetDriver'
 
 /* eslint-disable-next-line */
@@ -17,10 +17,7 @@ type TProps = {
   className?: string
 }
 
-const PromptIcon: FC<TProps> = ({
-  type = 'planet-driver',
-  className = 'promotIcon-class',
-}) => {
+const PromptIcon: FC<TProps> = ({ type = 'planet-driver', className = 'promotIcon-class' }) => {
   switch (type) {
     case 'planet-driver':
       return <PlanetDriver className={className} />

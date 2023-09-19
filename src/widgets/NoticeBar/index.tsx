@@ -9,7 +9,7 @@ import Link from 'next/link'
 import TimeAgo from 'timeago-react'
 
 import type { TSpace } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { ICON } from '@/config'
 
 import Icon from './Icon'

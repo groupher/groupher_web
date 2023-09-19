@@ -6,7 +6,7 @@
 
 import { FC, memo, ReactNode } from 'react'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import { Wrapper, Content } from './styles'
 

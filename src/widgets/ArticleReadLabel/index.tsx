@@ -4,7 +4,7 @@
 
 import { FC, memo } from 'react'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { nilOrEmpty } from '@/utils/validator'
 import useAccount from '@/hooks/useAccount'
 

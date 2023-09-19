@@ -8,7 +8,7 @@ import TYPE from '@/constant/type'
 import { toggleGlobalBlur, clearGlobalBlur } from '@/dom'
 import { Global, debounce } from '@/utils/helper'
 import { send, previewArticle } from '@/utils/signal'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import asyncSuit from '@/utils/async'
 
 import type { TStore } from './store'

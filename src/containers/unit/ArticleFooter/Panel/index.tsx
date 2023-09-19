@@ -8,7 +8,7 @@ import { FC, memo, useState, useCallback } from 'react'
 
 import type { TAccount, TArticle } from '@/spec'
 import SVG from '@/constant/svg'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Tabs from '@/widgets/Switcher/Tabs'
 import IconButton from '@/widgets/Buttons/IconButton'

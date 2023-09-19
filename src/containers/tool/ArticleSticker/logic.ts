@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import EVENT from '@/constant/event'
 
 import { authWarn, addCollection } from '@/utils/signal'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import asyncSuit from '@/utils/async'
 import { matchArticleUpvotes } from '@/utils/macros'
 

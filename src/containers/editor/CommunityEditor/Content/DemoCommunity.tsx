@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import type { TCommunity } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 // import SearchBox from './SearchBox'
 import { Wrapper, Community, Logo, Title } from '../styles/content/demo_community'

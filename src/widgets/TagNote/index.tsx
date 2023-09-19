@@ -10,7 +10,7 @@ import { FC, memo } from 'react'
 import Markdown from 'markdown-to-jsx'
 import type { TTag } from '@/spec'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 import { SpaceGrow } from '@/widgets/Common'
 
 import { Wrapper, Header, Desc, Title, InfoIcon } from './styles'

@@ -9,14 +9,9 @@ import { authWarn } from '@/utils/signal'
 import useAccount from '@/hooks/useAccount'
 
 import type { TUpvoteLayout } from '@/spec'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
-import {
-  Wrapper,
-  ContentWrapper,
-  IconWrapper,
-  UpIcon,
-} from './styles/upvote_btn'
+import { Wrapper, ContentWrapper, IconWrapper, UpIcon } from './styles/upvote_btn'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Upvote:index')

@@ -14,7 +14,7 @@ import { AVATARS_LIST_LENGTH } from '@/config'
 
 import SIZE from '@/constant/size'
 
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import type { TAvatarSize } from './spec'
 import MoreItem from './MoreItem'

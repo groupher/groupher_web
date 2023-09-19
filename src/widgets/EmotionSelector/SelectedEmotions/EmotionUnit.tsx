@@ -3,7 +3,7 @@
  */
 
 import { FC, memo } from 'react'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import type { TEmotion, TSimpleUser, TEmotionType } from '@/spec'
 
@@ -37,10 +37,7 @@ const EmotionUnit: FC<TProps> = ({ item, onAction }) => {
       interactive={false}
       noPadding
     >
-      <Wrapper
-        $active={hasEmotioned}
-        onClick={() => onAction(name as TEmotionType, hasEmotioned)}
-      >
+      <Wrapper $active={hasEmotioned} onClick={() => onAction(name as TEmotionType, hasEmotioned)}>
         <EmotionIcon name={name} />
         <Count>
           <AnimatedCount count={count} size="small" active={hasEmotioned} />

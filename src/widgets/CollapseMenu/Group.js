@@ -4,7 +4,7 @@ import T from 'prop-types'
 import { findIndex } from 'ramda'
 
 import { ICON } from '@/config'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import Item from './Item'
 
@@ -33,8 +33,7 @@ const Group = ({
   totalToggleThrold,
 }) => {
   // 决定是否显示 '展示更多' 的时候参考标签总数
-  const needSubToggle =
-    items?.length > totalToggleThrold && groupItems.length > maxDisplayCount
+  const needSubToggle = items?.length > totalToggleThrold && groupItems.length > maxDisplayCount
 
   const initDisplayCount = needSubToggle ? maxDisplayCount : groupItems.length
 
@@ -43,8 +42,7 @@ const Group = ({
 
   const sortedItems = groupItems // sortByColor(groupItems)
 
-  const isActiveTagInFolder =
-    findIndex((item) => item.id === activeItem.id, groupItems) >= 0
+  const isActiveTagInFolder = findIndex((item) => item.id === activeItem.id, groupItems) >= 0
 
   const subToggleRef = useRef(null)
   // 当选中的 Tag 被折叠在展示更多里面时，将其展开
@@ -67,10 +65,7 @@ const Group = ({
           }
         }}
       >
-        <ArrowIcon
-          $isOpen={isFolderOpen}
-          src={`${ICON}/shape/arrow-simple.svg`}
-        />
+        <ArrowIcon $isOpen={isFolderOpen} src={`${ICON}/shape/arrow-simple.svg`} />
         <Title>{title}</Title>
       </Header>
 
@@ -91,9 +86,7 @@ const Group = ({
             ref={subToggleRef}
             onClick={() => {
               setCurDisplayCount(
-                curDisplayCount === maxDisplayCount
-                  ? groupItems.length
-                  : maxDisplayCount,
+                curDisplayCount === maxDisplayCount ? groupItems.length : maxDisplayCount,
               )
             }}
           >

@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import { ICON_CMD } from '@/config'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import ExpandIcon from '@/widgets/ExpandIcon'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'

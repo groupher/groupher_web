@@ -6,7 +6,7 @@
 
 import type { TAccount, TC11N, TCommunity, TThread, TRootStore, TTag } from '@/spec'
 import { T, getParent, markStates, Instance, toJS } from '@/mobx'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:ThreadSidebar')

@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import MENU from '@/constant/menu'
-import { buildLog } from '@/utils/logger'
+import { buildLog } from '@/logger'
 
 import type { TMenu } from '@/spec'
 import { Wrapper, Title, MenuIcon, DeleteTitle } from './styles'
