@@ -6,7 +6,7 @@ import { ARTICLE_THREAD } from '@/constant/thread'
 
 import asyncSuit from '@/utils/async'
 import { buildLog } from '@/utils/logger'
-import { errRescue } from '@/utils/signal'
+import { errRescue } from '@/signal'
 import { singular } from '@/utils/fmt'
 
 import type { TCommunity } from '@/spec'

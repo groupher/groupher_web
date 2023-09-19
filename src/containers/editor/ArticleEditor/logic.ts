@@ -11,7 +11,7 @@ import { buildLog } from '@/utils/logger'
 import asyncSuit from '@/utils/async'
 import { getParameterByName } from '@/utils/route'
 import { titleCase } from '@/utils/fmt'
-import { errRescue } from '@/utils/signal'
+import { errRescue } from '@/signal'
 import { updateEditing } from '@/mobx'
 import { matchArticles } from '@/utils/macros'
 

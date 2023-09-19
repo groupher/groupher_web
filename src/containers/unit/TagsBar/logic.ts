@@ -7,7 +7,7 @@ import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 
 import asyncSuit from '@/utils/async'
-import { errRescue } from '@/utils/signal'
+import { errRescue } from '@/signal'
 import { buildLog } from '@/utils/logger'
 import { getParameterByName } from '@/utils/route'
 

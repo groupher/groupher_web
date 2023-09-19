@@ -4,7 +4,7 @@ import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 
 import { isElementInViewport } from '@/utils/dom'
-import { errRescue } from '@/utils/signal'
+import { errRescue } from '@/signal'
 import { buildLog } from '@/utils/logger'
 import asyncSuit from '@/utils/async'
 
