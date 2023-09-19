@@ -10,7 +10,7 @@ import { DEFAULT_THEME } from '@/config'
 
 import { T, markStates, getParent, Instance } from '@/utils/mobx'
 import { themeSkins } from '@/utils/themes'
-import { toast } from '@/utils/helper'
+import { toast } from '@/signal'
 
 export const ThemeDefaults = {
   curTheme: DEFAULT_THEME,

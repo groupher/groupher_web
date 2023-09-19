@@ -8,7 +8,7 @@ import useViewingCommunity from '@/hooks/useViewingCommunity'
 import usePublicThreads from '@/hooks/usePublicThreads'
 import useViewingThread from '@/hooks/useViewingThread'
 
-import { toast } from '@/utils/helper'
+import { toast } from '@/signal'
 
 import Tooltip from '@/widgets/Tooltip'
 import { Divider } from '@/widgets/Common'

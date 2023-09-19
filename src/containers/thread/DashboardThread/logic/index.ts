@@ -19,11 +19,10 @@ import ERR from '@/constant/err'
 
 import { DASHBOARD_ROUTE, DASHBOARD_BASEINFO_ROUTE, DASHBOARD_SEO_ROUTE } from '@/constant/route'
 
-import { toast } from '@/utils/helper'
 import { buildLog } from '@/utils/logger'
 import { updateEditing, toJS } from '@/utils/mobx'
-import { errRescue } from '@/utils/signal'
 import asyncSuit from '@/utils/async'
+import { toast, errRescue } from '@/signal'
 
 import type { TStore } from '../store'
 import type { TSettingField, TNameAlias } from '../spec'

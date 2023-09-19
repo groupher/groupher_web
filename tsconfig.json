@@ -31,6 +31,8 @@
       "@/model/*": ["src/stores/Model/*"],
       "@/utils": ["utils"],
       "@/utils/*": ["utils/*"],
+      "@/signal": ["utils/signal"],
+      "@/signal/*": ["utils/signal/*"],
       "@/css": ["utils/css"],
       "@/css/*": ["utils/css/*"],
       "@/schemas": ["src/schemas"],

@@ -1,5 +1,3 @@
-import { toast as hotToast } from 'sonner'
-
 import {
   curry,
   find,
@@ -16,7 +14,6 @@ import {
 
 import type {
   TWindow,
-  TToastType,
   TArticleState,
   TColorName,
   TCommunityThread,
@@ -90,14 +87,6 @@ export const Rlog = (arg = 'Rlog: ') => tap(log(arg))
 export const countWords = (str: string): number => {
   const matches = str.match(/[\u00ff-\uffff]|\S+/g)
   return matches ? matches.length : 0
-}
-
-export const toast = (msg: string, type: TToastType = 'info'): void => {
-  if (type === 'error') {
-    hotToast.error(msg)
-  }
-
-  hotToast.success(msg)
 }
 
 // errRescue({type: ERR.GRAPHQL, operation: operationName, details: graphQLErrors})
