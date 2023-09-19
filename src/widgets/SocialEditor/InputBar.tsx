@@ -9,7 +9,7 @@ import { FC, memo } from 'react'
 import type { TSocialItem } from '@/spec'
 
 import { buildLog } from '@/logger'
-import { Trans } from '@/utils/i18n'
+import { Trans } from '@/i18n'
 
 import { Wrapper, IconWrapper, DeleteWrapper, DeleteIcon, Inputer, Icon } from './styles/input_bar'
 

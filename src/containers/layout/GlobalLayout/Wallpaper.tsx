@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { observer } from 'mobx-react'
 
 import useWallpaper from '@/hooks/useWallpaper'
-import { parseWallpaper } from '@/utils/wallpaper'
+import { parseWallpaper } from '@/wallpaper'
 
 import { Wrapper } from './styles/wallpaper'
 

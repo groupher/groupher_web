@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { parseWallpaper } from '@/utils/wallpaper'
+import { parseWallpaper } from '@/wallpaper'
 
 import {
   Wrapper,

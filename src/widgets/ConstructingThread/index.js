@@ -9,7 +9,7 @@ import T from 'prop-types'
 
 import { ICON_BASE, ISSUE_ADDR } from '@/config'
 import { buildLog } from '@/logger'
-import { Trans } from '@/utils/i18n'
+import { Trans } from '@/i18n'
 import { Wrapper, ConstructIcon, Icon, Text, Title, DescWrapper, IssueLink } from './styles'
 
 /* eslint-disable-next-line */

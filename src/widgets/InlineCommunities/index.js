@@ -8,7 +8,7 @@ import React from 'react'
 import T from 'prop-types'
 
 import { buildLog } from '@/logger'
-import { Trans } from '@/utils/i18n'
+import { Trans } from '@/i18n'
 import Tooltip from '@/widgets/Tooltip'
 import Maybe from '@/widgets/Maybe'
 

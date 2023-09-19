@@ -16,7 +16,7 @@ import TYPE from '@/constant/type'
 import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 import { lockPage, unlockPage } from '@/dom'
 import { Global } from '@/helper'
-import { WIDTH, mediaBreakPoints } from '@/utils/css/metric'
+import { WIDTH, mediaBreakPoints } from '@/css/metric'
 import { User } from '@/model'
 
 import type { TSwipeOption, TArticleNavi, TExtraInfo } from './spec'

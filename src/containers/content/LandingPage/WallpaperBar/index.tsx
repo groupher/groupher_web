@@ -3,7 +3,7 @@ import { keys, includes } from 'ramda'
 
 import type { TBannerLayout, TWallpaperGradient } from '@/spec'
 
-import { parseWallpaper } from '@/utils/wallpaper'
+import { parseWallpaper } from '@/wallpaper'
 import { callWallpaperEditor } from '@/signal'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'

@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 import type { TArticleCat } from '@/spec'
 import { ARTICLE_CAT } from '@/constant/gtd'
 
-import { Trans } from '@/utils/i18n'
+import { Trans } from '@/i18n'
 
 import { Wrapper, SelectItem, IconWrapper, Icon } from './styles/filter_panel'
 

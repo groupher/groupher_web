@@ -10,7 +10,7 @@ import TAG_MODE from '@/constant/tag'
 import SIZE from '@/constant/size'
 
 import { sortByColor } from '@/helper'
-import { Trans } from '@/utils/i18n'
+import { Trans } from '@/i18n'
 import { buildLog } from '@/logger'
 import Tooltip from '@/widgets/Tooltip'
 

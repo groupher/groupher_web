@@ -5,7 +5,7 @@ import type { TBannerLayout } from '@/spec'
 import { BANNER_LAYOUT } from '@/constant/layout'
 
 import { Space, SpaceGrow } from '@/widgets/Common'
-import { parseWallpaper } from '@/utils/wallpaper'
+import { parseWallpaper } from '@/wallpaper'
 
 import {
   Wrapper,

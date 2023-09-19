@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 import { keys } from 'ramda'
 
 import type { TWallpaperGradient } from '@/spec'
-import { parseWallpaper } from '@/utils/wallpaper'
+import { parseWallpaper } from '@/wallpaper'
 import { WALLPAPER_TYPE } from '@/constant/wallpaper'
 
 import {

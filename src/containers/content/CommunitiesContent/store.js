@@ -7,7 +7,7 @@ import { propEq, findIndex } from 'ramda'
 
 import { ICON_CMD } from '@/config'
 import { T, getParent, markStates, toJS } from '@/mobx'
-import { Trans } from '@/utils/i18n'
+import { Trans } from '@/i18n'
 import { PagedCommunities, PagedCategories, emptyPagi } from '@/model'
 
 const ExploreContentStore = T.model('ExploreContentStore', {

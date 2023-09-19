@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import { Trans } from '@/utils/i18n'
+import { Trans } from '@/i18n'
 
 import communityIntros from '../communityIntros'
 import type { TCommunityType } from '../../spec'

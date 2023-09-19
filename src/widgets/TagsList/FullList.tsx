@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import { sortByColor } from '@/helper'
-import { Trans } from '@/utils/i18n'
+import { Trans } from '@/i18n'
 
 import type { TProps as TTagProps } from '.'
 

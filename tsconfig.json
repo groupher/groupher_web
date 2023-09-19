@@ -45,6 +45,10 @@
       "@/helper/*": ["utils/helper/*"],
       "@/async": ["utils/async"],
       "@/async/*": ["utils/async/*"],
+      "@/wallpaper": ["utils/wallpaper"],
+      "@/wallpaper/*": ["utils/wallpaper/*"],
+      "@/i18n": ["utils/i18n"],
+      "@/i18n/*": ["utils/i18n/*"],
       "@/mock": ["utils/mock"],
       "@/mock/*": ["utils/mock/*"],
       "@/css": ["utils/css"],
@@ -54,8 +58,7 @@
       "@/Img": ["src/widgets/Img"],
       "@/SvgIcons/*": ["src/widgets/SvgIcons/*"],
       "@/icons": ["src/widgets/Icons"],
-      "@/icons/*": ["src/widgets/Icons/*"],
-      "@/i18n": ["i18n"]
+      "@/icons/*": ["src/widgets/Icons/*"]
     },
     "plugins": [
       {
