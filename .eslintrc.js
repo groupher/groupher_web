@@ -29,6 +29,7 @@ module.exports = {
           '@/constant': 'utils/constant',
           '@/signal': 'utils/signal',
           '@/mobx': 'utils/mobx',
+          '@/dom': 'utils/dom',
           '@/hooks': 'src/hooks',
           '@/hoc': 'src/hoc',
           '@/stores': 'src/stores',

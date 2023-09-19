@@ -4,7 +4,7 @@ import { observer } from 'mobx-react'
 import type { TArticle, TTag, TGroupedTags } from '@/spec'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
-import { scrollToHeader } from '@/utils/dom'
+import { scrollToHeader } from '@/dom'
 
 import MobileThreadNavi from '@/widgets/MobileThreadNavi'
 import ArticlesFilter from '@/widgets/ArticlesFilter'

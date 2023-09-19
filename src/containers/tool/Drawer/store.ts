@@ -14,7 +14,7 @@ import METRIC from '@/constant/metric'
 import TYPE from '@/constant/type'
 
 import { T, getParent, markStates, Instance, toJS } from '@/mobx'
-import { lockPage, unlockPage } from '@/utils/dom'
+import { lockPage, unlockPage } from '@/dom'
 import { Global } from '@/utils/helper'
 import { WIDTH, mediaBreakPoints } from '@/utils/css/metric'
 import { User } from '@/model'

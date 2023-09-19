@@ -5,7 +5,7 @@ import type { TArticle, TDirection, TMetric } from '@/spec'
 import EVENT from '@/constant/event'
 import TYPE from '@/constant/type'
 
-import { toggleGlobalBlur, clearGlobalBlur } from '@/utils/dom'
+import { toggleGlobalBlur, clearGlobalBlur } from '@/dom'
 import { Global, debounce } from '@/utils/helper'
 import { send, previewArticle } from '@/utils/signal'
 import { buildLog } from '@/utils/logger'

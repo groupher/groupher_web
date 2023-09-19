@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import type { TArticle, TContainer } from '@/spec'
-import { scrollToComments } from '@/utils/dom'
+import { scrollToComments } from '@/dom'
 
 import { Space } from '@/widgets/Common'
 import {

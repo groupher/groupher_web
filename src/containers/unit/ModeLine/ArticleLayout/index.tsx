@@ -7,7 +7,7 @@ import type { TArticle } from '@/spec'
 import useViewingThread from '@/hooks/useViewingThread'
 // import useViewingCommunity from '@/hooks/useViewingCommunity'
 
-import { scrollToHeader } from '@/utils/dom'
+import { scrollToHeader } from '@/dom'
 import { mockUsers } from '@/utils/mock'
 
 import CommentsCount from '@/widgets/CommentsCount'

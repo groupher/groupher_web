@@ -8,7 +8,7 @@ import Balancer from 'react-wrap-balancer'
 
 import type { TPost } from '@/spec'
 import { buildLog } from '@/utils/logger'
-import { scrollDrawerToTop } from '@/utils/dom'
+import { scrollDrawerToTop } from '@/dom'
 import { BROADCAST_ARTICLE_LAYOUT } from '@/constant/layout'
 
 import ArticleFooter from '@/containers/unit/ArticleFooter'

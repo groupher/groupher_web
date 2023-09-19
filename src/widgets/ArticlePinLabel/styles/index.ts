@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/css'
 import PinSVG from '@/icons/Pin'
-import { pixelAdd } from '@/utils/dom'
+import { pixelAdd } from '@/dom'
 
 type TPos = { top: number; left: number }
 

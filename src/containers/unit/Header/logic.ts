@@ -11,7 +11,7 @@ import { buildLog } from '@/utils/logger'
 import { Global } from '@/utils/helper'
 import { plural } from '@/utils/fmt'
 import { atomizeValues } from '@/utils/graphql'
-import { scrollToHeader } from '@/utils/dom'
+import { scrollToHeader } from '@/dom'
 import { toast, send, errRescue } from '@/signal'
 
 import type { TStore } from './store'

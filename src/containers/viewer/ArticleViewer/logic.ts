@@ -8,7 +8,7 @@ import ERR from '@/constant/err'
 import { buildLog } from '@/utils/logger'
 import { errRescue, authWarn } from '@/utils/signal'
 import asyncSuit from '@/utils/async'
-import { scrollDrawerToTop } from '@/utils/dom'
+import { scrollDrawerToTop } from '@/dom'
 import { matchArticleUpvotes, matchArticles } from '@/utils/macros'
 
 import S from './schema'

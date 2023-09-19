@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 
-import { isElementInViewport } from '@/utils/dom'
+import { isElementInViewport } from '@/dom'
 import { errRescue } from '@/signal'
 import { buildLog } from '@/utils/logger'
 import asyncSuit from '@/utils/async'

@@ -10,7 +10,7 @@ import type { TSizeSM, TTabItem } from '@/spec'
 import { Trans } from '@/utils/i18n'
 import { isString } from '@/utils/validator'
 import { buildLog } from '@/utils/logger'
-import { isElementInViewport } from '@/utils/dom'
+import { isElementInViewport } from '@/dom'
 
 import TabIcon from './TabIcon'
 import { Wrapper, Label, ActiveLineWrapper, ActiveLine } from '../styles/tabs/tab_item'

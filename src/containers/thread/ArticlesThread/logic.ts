@@ -7,7 +7,7 @@ import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 import TYPE from '@/constant/type'
 
-import { scrollToHeader } from '@/utils/dom'
+import { scrollToHeader } from '@/dom'
 import asyncSuit from '@/utils/async'
 import { buildLog } from '@/utils/logger'
 import { plural } from '@/utils/fmt'

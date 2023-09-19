@@ -10,7 +10,7 @@ import { hideAll } from 'tippy.js'
 import { zIndex } from '@/css'
 import { buildLog } from '@/utils/logger'
 import { isString } from '@/utils/validator'
-import { isDescendant, isWechatBrower } from '@/utils/dom'
+import { isDescendant, isWechatBrower } from '@/dom'
 
 import useOutsideClick from '@/hooks/useOutsideClick'
 
