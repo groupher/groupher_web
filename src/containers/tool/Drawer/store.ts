@@ -15,7 +15,7 @@ import TYPE from '@/constant/type'
 
 import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 import { lockPage, unlockPage } from '@/dom'
-import { Global } from '@/utils/helper'
+import { Global } from '@/helper'
 import { WIDTH, mediaBreakPoints } from '@/utils/css/metric'
 import { User } from '@/model'
 

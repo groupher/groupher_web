@@ -3,7 +3,7 @@ import { FC, memo, useEffect, useState, useRef } from 'react'
 import { isEmpty } from 'ramda'
 
 import { COLOR_NAME } from '@/constant/colors'
-import { randomBgNames } from '@/utils/helper'
+import { randomBgNames } from '@/helper'
 import useHover from '@/hooks/useHover'
 
 import { SpaceGrow, Space } from '@/widgets/Common'

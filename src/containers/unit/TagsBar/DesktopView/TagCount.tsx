@@ -1,5 +1,5 @@
 import { FC, memo } from 'react'
-import { getRandomInt } from '@/utils/helper'
+import { getRandomInt } from '@/helper'
 import { Wrapper, Count, ChartBar } from '../styles/desktop_view/tag_count'
 
 type TProps = {

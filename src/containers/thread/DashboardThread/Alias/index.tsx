@@ -5,7 +5,7 @@ import Router from 'next/router'
 import { DASHBOARD_ALIAS_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
 
-import { groupByKey } from '@/utils/helper'
+import { groupByKey } from '@/helper'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import Tabs from '@/widgets/Switcher/Tabs'

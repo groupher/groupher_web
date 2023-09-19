@@ -4,7 +4,7 @@ import { keys, startsWith, filter } from 'ramda'
 
 import type { TLinkItem } from '@/spec'
 import { MORE_GROUP, ONE_LINK_GROUP } from '@/constant/dashboard'
-import { sortByIndex, groupByKey } from '@/utils/helper'
+import { sortByIndex, groupByKey } from '@/helper'
 import useAccount from '@/hooks/useAccount'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 

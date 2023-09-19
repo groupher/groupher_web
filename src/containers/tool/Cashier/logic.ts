@@ -6,7 +6,7 @@ import ERR from '@/constant/err'
 
 import asyncSuit from '@/utils/async'
 import { errorForHuman } from '@/utils/errors'
-import { Global } from '@/utils/helper'
+import { Global } from '@/helper'
 import { send, errRescue, toast } from '@/signal'
 import { buildLog } from '@/logger'
 

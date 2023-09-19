@@ -6,7 +6,7 @@ import type { TLinkItem } from '@/spec'
 import useFooterLinks from '@/hooks/useFooterLinks'
 import { DEME_SOCIALS } from '@/constant/social'
 
-import { sortByIndex, groupByKey } from '@/utils/helper'
+import { sortByIndex, groupByKey } from '@/helper'
 
 import SocialList from '@/widgets/SocialList'
 

@@ -8,7 +8,7 @@ import TYPE from '@/constant/type'
 
 import asyncSuit from '@/utils/async'
 import { buildLog } from '@/logger'
-import { Global } from '@/utils/helper'
+import { Global } from '@/helper'
 import { plural } from '@/fmt'
 import { atomizeValues } from '@/utils/graphql'
 import { scrollToHeader } from '@/dom'

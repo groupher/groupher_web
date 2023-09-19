@@ -9,7 +9,7 @@ import { reverse, keys } from 'ramda'
 
 import type { TSpace } from '@/spec'
 import { buildLog } from '@/logger'
-import { groupByKey } from '@/utils/helper'
+import { groupByKey } from '@/helper'
 import { mockTags } from '@/utils/mock'
 
 import Folder from './Folder'

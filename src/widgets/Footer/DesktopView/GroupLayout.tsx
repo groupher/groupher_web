@@ -8,7 +8,7 @@ import { DEME_SOCIALS } from '@/constant/social'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useFooterLinks from '@/hooks/useFooterLinks'
 
-import { sortByIndex, groupByKey } from '@/utils/helper'
+import { sortByIndex, groupByKey } from '@/helper'
 
 import { SpaceGrow } from '@/widgets/Common'
 import SocialList from '@/widgets/SocialList'

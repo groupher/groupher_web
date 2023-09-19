@@ -3,7 +3,7 @@ import { keys } from 'ramda'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import type { TLinkItem } from '@/spec'
-import { sortByIndex, groupByKey } from '@/utils/helper'
+import { sortByIndex, groupByKey } from '@/helper'
 
 import Button from '@/widgets/Buttons/Button'
 

@@ -12,7 +12,7 @@ import { ANCHOR } from '@/constant/dom'
 import C11N from '@/constant/c11n'
 import { HCN } from '@/constant/name'
 
-import { sortByIndex } from '@/utils/helper'
+import { sortByIndex } from '@/helper'
 import { buildLog } from '@/logger'
 
 import type { TTabItem } from '../spec'

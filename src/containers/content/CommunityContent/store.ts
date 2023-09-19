@@ -5,7 +5,7 @@
 
 import type { TRootStore, TAccount, TCommunity, TThread, TC11N, TGlobalLayout } from '@/spec'
 import { T, getParent, markStates, toJS, Instance } from '@/mobx'
-import { sortByIndex } from '@/utils/helper'
+import { sortByIndex } from '@/helper'
 
 const CommunityContent = T.model('CommunityContent', {})
   .views((self) => ({

@@ -6,7 +6,7 @@ import EVENT from '@/constant/event'
 import TYPE from '@/constant/type'
 
 import { toggleGlobalBlur, clearGlobalBlur } from '@/dom'
-import { Global, debounce } from '@/utils/helper'
+import { Global, debounce } from '@/helper'
 import { send, previewArticle } from '@/signal'
 import { buildLog } from '@/logger'
 import asyncSuit from '@/utils/async'

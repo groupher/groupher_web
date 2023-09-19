@@ -1,7 +1,7 @@
 import styled, { keyframes } from 'styled-components'
 
 import type { TSpace, TSizeTSM } from '@/spec'
-import { getRandomInt } from '@/utils/helper'
+import { getRandomInt } from '@/helper'
 import css, { theme } from '@/css'
 
 import { getLavaLampScale } from './metric'

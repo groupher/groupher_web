@@ -5,7 +5,7 @@ import type { TMetric, TScrollDirection, TGlowPosition } from '@/spec'
 import METRIC from '@/constant/metric'
 
 import { buildLog } from '@/logger'
-import { Global } from '@/utils/helper'
+import { Global } from '@/helper'
 
 import type { TStore } from './store'
 

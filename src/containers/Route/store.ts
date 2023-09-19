@@ -9,7 +9,7 @@ import type { TRootStore, TRoute } from '@/spec'
 import { PAGE_SIZE } from '@/config'
 
 import { T, getParent, Instance, markStates } from '@/mobx'
-import { Global } from '@/utils/helper'
+import { Global } from '@/helper'
 import { isClientSide } from '@/utils/ssr'
 import { serializeQuery } from '@/utils/route'
 

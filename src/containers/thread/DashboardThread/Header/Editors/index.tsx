@@ -5,7 +5,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import type { TLinkItem } from '@/spec'
 import { MORE_GROUP, ONE_LINK_GROUP } from '@/constant/dashboard'
-import { sortByIndex, groupByKey } from '@/utils/helper'
+import { sortByIndex, groupByKey } from '@/helper'
 
 import Button from '@/widgets/Buttons/Button'
 

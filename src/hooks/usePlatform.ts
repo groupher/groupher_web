@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { merge } from 'ramda'
 
 import type { TPlatform } from '@/spec'
-import { Global } from '@/utils/helper'
+import { Global } from '@/helper'
 
 const initPlatform = {
   isChrome: true,
@@ -43,8 +43,7 @@ const usePlatform = (/* { breakpoint } */): TPlatform => {
     const isEdge = !isIE && !!Global.StyleMedia
 
     // Chrome 1 - 71
-    const isChrome =
-      !!Global.chrome && (!!Global.chrome.webstore || !!Global.chrome.runtime)
+    const isChrome = !!Global.chrome && (!!Global.chrome.webstore || !!Global.chrome.runtime)
 
     const isMacOS = Global.navigator.appVersion.indexOf('Mac') != -1
     /* eslint-enable */

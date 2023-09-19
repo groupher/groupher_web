@@ -4,7 +4,7 @@ import { find, propEq } from 'ramda'
 
 import type { TCommunityThread, TNameAliasConfig } from '@/spec'
 
-import { sortByIndex } from '@/utils/helper'
+import { sortByIndex } from '@/helper'
 
 /**
  * NOTE: should use observer to wrap the component who use this hook

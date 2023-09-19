@@ -7,7 +7,7 @@ import type { TLinkItem } from '@/spec'
 
 import Button from '@/widgets/Buttons/Button'
 
-import { sortByIndex, groupByKey } from '@/utils/helper'
+import { sortByIndex, groupByKey } from '@/helper'
 
 import LinkEditor from '../LinkEditor'
 import GroupInputer from '../GroupInputer'

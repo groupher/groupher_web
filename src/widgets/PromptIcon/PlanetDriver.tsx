@@ -4,11 +4,10 @@ import { useTheme } from 'styled-components'
 import type { TThemeMap } from '@/spec'
 import { ICON_BASE } from '@/config'
 
-import { getRandomInt } from '@/utils/helper'
+import { getRandomInt } from '@/helper'
 import { PlanetDriverIcon } from './styles'
 
-const getRandomAngle = () =>
-  rotateAngles[getRandomInt(0, rotateAngles.length - 1)]
+const getRandomAngle = () => rotateAngles[getRandomInt(0, rotateAngles.length - 1)]
 
 const rotateAngles = [
   'rotate(0deg)',

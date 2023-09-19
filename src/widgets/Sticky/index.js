@@ -12,7 +12,7 @@ import T from 'prop-types'
 import ResizeObserver from 'resize-observer-polyfill'
 
 import { buildLog } from '@/logger'
-import { Global } from '@/utils/helper'
+import { Global } from '@/helper'
 
 const log = buildLog('w:Sticky')
 

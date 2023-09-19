@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import { parseURL } from '@/utils/route'
-import { Global } from '@/utils/helper'
+import { Global } from '@/helper'
 import { buildLog } from '@/logger'
 
 /* eslint-disable-next-line */

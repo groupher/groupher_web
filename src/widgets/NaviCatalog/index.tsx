@@ -10,7 +10,7 @@ import { find, findIndex, propEq, last } from 'ramda'
 import URL_QUERY from '@/constant/url_query'
 import type { TNaviTag } from '@/spec'
 
-import { findDeepMatch } from '@/utils/helper'
+import { findDeepMatch } from '@/helper'
 import { buildLog } from '@/logger'
 import { nilOrEmpty } from '@/utils/validator'
 import { getQueryFromUrl, markRoute } from '@/utils/route'

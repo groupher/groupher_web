@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TTabItem } from '@/spec'
-import { sortByIndex } from '@/utils/helper'
+import { sortByIndex } from '@/helper'
 import Tabs from '@/widgets/Switcher/Tabs'
 
 import { Wrapper } from '../styles/desktop_view/brief_view'

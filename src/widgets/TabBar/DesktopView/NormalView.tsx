@@ -1,6 +1,6 @@
 import { memo } from 'react'
 
-import { sortByIndex } from '@/utils/helper'
+import { sortByIndex } from '@/helper'
 import Tabs from '@/widgets/Switcher/Tabs'
 
 // priority: icon > localIcon || slug

@@ -13,7 +13,7 @@ import { UPVOTE_LAYOUT } from '@/constant/layout'
 import { buildLog } from '@/logger'
 import { mockTags, mockUsers } from '@/utils/mock'
 import { previewArticle } from '@/signal'
-import { getRandomInt } from '@/utils/helper'
+import { getRandomInt } from '@/helper'
 
 import CommentsCount from '@/widgets/CommentsCount'
 import { Row, Space } from '@/widgets/Common'

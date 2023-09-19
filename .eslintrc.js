@@ -32,6 +32,7 @@ module.exports = {
           '@/dom': 'utils/dom',
           '@/logger': 'utils/logger',
           '@/fmt': 'utils/fmt',
+          '@/helper': 'utils/helper',
           '@/hooks': 'src/hooks',
           '@/hoc': 'src/hoc',
           '@/stores': 'src/stores',

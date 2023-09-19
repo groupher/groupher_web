@@ -3,7 +3,7 @@ import { FC, memo, useEffect } from 'react'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import { callTagCreateEditor } from '@/signal'
-import { sortByIndex } from '@/utils/helper'
+import { sortByIndex } from '@/helper'
 
 import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'

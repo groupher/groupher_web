@@ -6,7 +6,7 @@ import type { TActive, TLinkItem } from '@/spec'
 import { FOOTER_LAYOUT } from '@/constant/layout'
 import { DEME_SOCIALS } from '@/constant/social'
 
-import { sortByIndex, groupByKey } from '@/utils/helper'
+import { sortByIndex, groupByKey } from '@/helper'
 import SocialList from '@/widgets/SocialList'
 
 import {
