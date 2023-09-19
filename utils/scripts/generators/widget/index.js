@@ -38,12 +38,6 @@ module.exports = {
     },
     {
       type: 'confirm',
-      name: 'wantI18n',
-      default: false,
-      message: 'Do you want i18n messages (i.e. will this component use text)?',
-    },
-    {
-      type: 'confirm',
       name: 'wantStyle',
       default: true,
       message: 'Does it have styles?',

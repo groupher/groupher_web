@@ -7,10 +7,6 @@
 import { FC, memo } from 'react'
 
 import { buildLog } from '@/logger'
-{{#if wantI18n}}
-import { useTrans } from '@/hooks'
-{{/if}}
-
 {{#if wantStyle}}
 import { Wrapper } from './styles'
 {{/if}}
@@ -23,9 +19,6 @@ type TProps = {
 }
 
 const {{ properCase name }}: FC<TProps> = ({{preCurly ""}} testid = '{{ dashCase name }}' {{afterCurly ""}}) => {
-  {{#if wantI18n}}
-  const { t } = useTrans()
-  {{/if}}
   return (
     {{#if wantStyle}}
     <Wrapper testid={testid}>
