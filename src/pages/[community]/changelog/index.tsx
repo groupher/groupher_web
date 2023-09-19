@@ -12,6 +12,7 @@ import {
   ssrPagedArticleSchema,
   ssrPagedArticlesFilter,
   ssrParseDashboard,
+  ssrParseWallpaper,
 } from '@/utils'
 
 import GlobalLayout from '@/containers/layout/GlobalLayout'
@@ -58,6 +59,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const { community, pagedChangelogs } = resp
   const dashboard = ssrParseDashboard(community)
+  const wallpaper = ssrParseWallpaper(community)
 
   const initProps = {
     ...ssrBaseStates(resp),

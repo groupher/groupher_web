@@ -16,6 +16,7 @@ import {
   ssrPagedArticlesFilter,
   ssrParseArticleThread,
   ssrParseDashboard,
+  ssrParseWallpaper,
   ssrRescue,
   singular,
   log,
@@ -103,6 +104,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const articleThread = ssrParseArticleThread(resp, thread, filter)
 
   const dashboard = ssrParseDashboard(community)
+  const wallpaper = ssrParseWallpaper(community)
 
   const initProps = merge(
     {
@@ -122,6 +124,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       viewing: {
         community,
         activeThread: toLower(thread),
+      },
+      wallpaperEditor: {
+        ...wallpaper,
       },
       dashboardThread: {
         ...dashboard,

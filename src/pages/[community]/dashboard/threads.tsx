@@ -16,6 +16,7 @@ import {
   ssrPagedArticleSchema,
   ssrPagedArticlesFilter,
   ssrParseDashboard,
+  ssrParseWallpaper,
   ssrRescue,
   log,
 } from '@/utils'
@@ -76,6 +77,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const { community } = resp
   const dashboard = ssrParseDashboard(community)
+  const wallpaper = ssrParseWallpaper(community)
 
   const initProps = merge(
     {
