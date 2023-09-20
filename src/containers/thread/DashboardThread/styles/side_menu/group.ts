@@ -67,17 +67,21 @@ export const Item = styled(Link)<TItem>`
   color: ${({ $active, primaryColor }) =>
     $active ? primaryTheme(primaryColor) : theme('article.digest')};
   background: ${({ $active }) => ($active ? theme('activeLinear') : 'transparent')};
+  font-weight: ${({ $active }) => ($active ? 500 : 400)};
 
   width: 160px;
   padding: 3px 5px;
-  margin-top: 5px;
+  /* margin-top: 5px; */
+  margin-top: ${({ $active }) => ($active ? '7px' : '5px')};
+  margin-bottom: ${({ $active }) => ($active ? '7px' : 0)};
+
   padding-left: 20px;
   border-radius: 10px;
   font-size: 13.5px;
 
   &:hover {
     cursor: pointer;
-    color: ${theme('article.title')};
+    color: ${({ primaryColor }) => primaryTheme(primaryColor)};
     background: ${theme('activeLinear')};
   }
 

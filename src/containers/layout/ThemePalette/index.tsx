@@ -9,6 +9,7 @@ import Head from 'next/head'
 import { ThemeProvider } from 'styled-components'
 
 import type { TThemeMap } from '@/spec'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { bond } from '@/mobx'
 
 import ThirdPartyOverWrite from './ThirdPartyOverWrite'
@@ -24,6 +25,7 @@ type TProps = {
 }
 
 const ThemeContainer: FC<TProps> = ({ children, theme: { themeData } }) => {
+  const primaryColor = usePrimaryColor()
   // see https://css-tricks.com/meta-theme-color-and-trickery/
   // theme seems conflict with manifest
   return (
@@ -36,7 +38,7 @@ const ThemeContainer: FC<TProps> = ({ children, theme: { themeData } }) => {
         />
       </Head>
 
-      <GlobalStyle />
+      <GlobalStyle primaryColor={primaryColor} />
       <Fragment>{children}</Fragment>
       <ThirdPartyOverWrite />
       <CodeSyxHighlight />
