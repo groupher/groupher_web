@@ -72,7 +72,6 @@ export const enableThread = (key: string, toggle: boolean): void => {
 
 export const toggleSEO = (seoEnable: boolean): void => {
   const { curCommunity } = store
-  console.log('## toggleSEO seoEnable: ', seoEnable)
 
   sr71$.mutate(S.updateDashboardSeo, { community: curCommunity.slug, seoEnable })
 }
@@ -419,8 +418,6 @@ export const queryOpenGraphInfo = (item: TMediaReport): void => {
 export const mediaReportOnChange = (index: number, url: string): void => {
   const { baseInfoSettings } = store
   const { mediaReports } = baseInfoSettings
-
-  console.log('## onChange index: ', index)
 
   const restReports = reject((item: TMediaReport) => item.index === index, mediaReports)
   const report = find((item: TMediaReport) => item.index === index, mediaReports)

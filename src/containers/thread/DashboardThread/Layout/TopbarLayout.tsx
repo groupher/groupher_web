@@ -142,7 +142,13 @@ const TopbarLayout: FC<TProps> = ({ layout, isLayoutTouched, isBgTouched, saving
       {layout === TOPBAR_LAYOUT.YES && (
         <>
           <Br top={30} />
-          <SavingBar isTouched={isBgTouched} field={SETTING_FIELD.TOPBAR_BG} loading={saving}>
+          <SavingBar
+            isTouched={isBgTouched}
+            field={SETTING_FIELD.TOPBAR_BG}
+            loading={saving}
+            left={-10}
+            top={-8}
+          >
             <BgWrapper>
               <div>颜色:</div>
               <BgLabel bg={bg}>

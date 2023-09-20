@@ -43,8 +43,6 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
   const primaryColor = usePrimaryColor()
   const { title } = useViewingCommunity()
 
-  console.log('## title: ', title)
-
   return (
     <Wrapper>
       <SectionLabel

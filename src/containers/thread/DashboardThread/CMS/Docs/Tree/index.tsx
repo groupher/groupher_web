@@ -33,7 +33,6 @@ const TreeView: FC<TProps> = ({ pagedDocs }) => {
 
   useEffect(() => {
     const tree = treeRef.current
-    console.log('## tree: ', tree)
     /* See the Tree API reference for all you can do with it. */
   }, [])
 
@@ -43,7 +42,7 @@ const TreeView: FC<TProps> = ({ pagedDocs }) => {
         // treeRef.current.createLeaf()
         // treeRef.current.createInternal()
         // console.log('## tree: ', treeRef.current)
-        console.log('## get Data: ', treeRef.current)
+        // console.log('## get Data: ', treeRef.current)
         // treeRef.current.unselectAll()
       }}
     >
