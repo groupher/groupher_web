@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 
-import type { TActive, TGlowEffect } from '@/spec'
+import type { TActive, TGlowEffect, TPrimaryColor } from '@/spec'
 import GLOW_EFFECTS from '@/constant/glow_effect'
 
-import css, { theme } from '@/css'
+import css, { theme, primaryTheme } from '@/css'
 
 import DLightSVG from '@/icons/DLight'
 import ClossSVG from '@/icons/CloseLight'
@@ -22,7 +22,8 @@ export const Row = styled.div`
     width: 100%;
   `}
 `
-export const Box = styled.div<TActive>`
+type TBox = TActive & TPrimaryColor
+export const Box = styled.div<TBox>`
   position: relative;
   width: 300px;
   height: 180px;
@@ -30,7 +31,9 @@ export const Box = styled.div<TActive>`
   border: 1px solid;
   z-index: 1;
 
-  border-color: ${({ $active }) => ($active ? theme('article.digest') : theme('divider'))};
+  border-color: ${({ $active, primaryColor }) =>
+    $active ? primaryTheme(primaryColor) : theme('divider')};
+
   box-shadow: ${({ $active }) => ($active ? css.cardShadow : 'none')};
   background: ${theme('alphaBg')};
 

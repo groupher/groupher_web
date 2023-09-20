@@ -1,9 +1,11 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TBannerLayout } from '@/spec'
 
 import { BANNER_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { callDashboardDesc } from '@/signal'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import { Row, Br, Space, SpaceGrow } from '@/widgets/Common'
 import CheckLabel from '@/widgets/CheckLabel'
@@ -36,6 +38,8 @@ type TProps = {
 }
 
 const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
+  const primaryColor = usePrimaryColor()
+
   return (
     <Wrapper>
       <SectionLabel
@@ -51,7 +55,7 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
       />
       <SelectWrapper>
         <Layout onClick={() => edit(BANNER_LAYOUT.HEADER, 'bannerLayout')}>
-          <Block $active={layout === BANNER_LAYOUT.HEADER}>
+          <Block $active={layout === BANNER_LAYOUT.HEADER} primaryColor={primaryColor}>
             <Row>
               <Bar thin long={16} />
               <Space right={42} />
@@ -105,7 +109,7 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(BANNER_LAYOUT.TABBER, 'bannerLayout')}>
-          <Block $active={layout === BANNER_LAYOUT.TABBER}>
+          <Block $active={layout === BANNER_LAYOUT.TABBER} primaryColor={primaryColor}>
             <Row>
               <Bar long={16} />
               <SpaceGrow />
@@ -165,7 +169,7 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(BANNER_LAYOUT.SIDEBAR, 'bannerLayout')}>
-          <Block $active={layout === BANNER_LAYOUT.SIDEBAR}>
+          <Block $active={layout === BANNER_LAYOUT.SIDEBAR} primaryColor={primaryColor}>
             <Row>
               <Space right={110} />
               <Bar thin long={10} />
@@ -236,4 +240,4 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
   )
 }
 
-export default memo(BannerLayout)
+export default observer(BannerLayout)

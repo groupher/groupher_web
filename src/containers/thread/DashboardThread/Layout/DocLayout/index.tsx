@@ -1,8 +1,10 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TDocFAQLayout, TDocLayout } from '@/spec'
 
 import { DOC_LAYOUT, DOC_FAQ_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { callDashboardDesc } from '@/signal'
 
 import { Br, Divider } from '@/widgets/Common'
@@ -35,6 +37,8 @@ type TProps = {
 }
 
 const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, saving }) => {
+  const primaryColor = usePrimaryColor()
+
   return (
     <Wrapper>
       <SectionLabel
@@ -53,7 +57,7 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
       />
       <SelectWrapper>
         <Layout onClick={() => edit(DOC_LAYOUT.BLOCKS, 'docLayout')}>
-          <Block $active={layout === DOC_LAYOUT.BLOCKS}>
+          <Block $active={layout === DOC_LAYOUT.BLOCKS} primaryColor={primaryColor}>
             <Br bottom={14} />
             <Main>
               <MainTemplate layout={DOC_LAYOUT.BLOCKS} />
@@ -70,7 +74,7 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
         </Layout>
 
         <Layout onClick={() => edit(DOC_LAYOUT.LISTS, 'docLayout')}>
-          <Block $active={layout === DOC_LAYOUT.LISTS}>
+          <Block $active={layout === DOC_LAYOUT.LISTS} primaryColor={primaryColor}>
             <Br bottom={14} />
             <Main>
               <MainTemplate layout={DOC_LAYOUT.LISTS} />
@@ -87,7 +91,7 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
         </Layout>
 
         <Layout onClick={() => edit(DOC_LAYOUT.CARDS, 'docLayout')}>
-          <Block $active={layout === DOC_LAYOUT.CARDS}>
+          <Block $active={layout === DOC_LAYOUT.CARDS} primaryColor={primaryColor}>
             <Br bottom={14} />
             <Main>
               <MainTemplate layout={DOC_LAYOUT.CARDS} />
@@ -129,7 +133,7 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
       />
       <SelectWrapper>
         <Layout onClick={() => edit(DOC_FAQ_LAYOUT.COLLAPSE, 'docFaqLayout')}>
-          <Block $active={faqLayout === DOC_FAQ_LAYOUT.COLLAPSE}>
+          <Block $active={faqLayout === DOC_FAQ_LAYOUT.COLLAPSE} primaryColor={primaryColor}>
             <Br bottom={14} />
             <Main>
               <FaqTemplate layout={DOC_FAQ_LAYOUT.COLLAPSE} />
@@ -145,7 +149,7 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(DOC_FAQ_LAYOUT.FLAT, 'docFaqLayout')}>
-          <Block $active={faqLayout === DOC_FAQ_LAYOUT.FLAT}>
+          <Block $active={faqLayout === DOC_FAQ_LAYOUT.FLAT} primaryColor={primaryColor}>
             <Br bottom={14} />
             <Main>
               <FaqTemplate layout={DOC_FAQ_LAYOUT.FLAT} />
@@ -172,4 +176,4 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
   )
 }
 
-export default memo(DocLayout)
+export default observer(DocLayout)

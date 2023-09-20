@@ -34,7 +34,7 @@ export const theme = (themePath: string): TTheme =>
 /**
  * for primary color component
  */
-export const primaryTheme = (primaryColor: TColorName, themeKey = 'article.digest'): string => {
+export const primaryTheme = (primaryColor: TColorName, themeKey = 'primary'): string => {
   if (primaryColor === COLOR_NAME.BLACK) {
     return theme(themeKey)
   }

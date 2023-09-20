@@ -24,7 +24,6 @@ export const Box = styled.div`
   background: ${theme('article.digest')};
   margin-bottom: 8px;
 `
-
 export const Cover = styled.div`
   width: 90px;
   height: 62px;

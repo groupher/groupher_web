@@ -31,7 +31,12 @@ const PrimaryColor: FC<TProps> = ({ primaryColor, isTouched, saving }) => {
           </Row>
         }
       />
-      <SavingBar isTouched={isTouched} field={SETTING_FIELD.PRIMARY_COLOR} loading={saving}>
+      <SavingBar
+        isTouched={isTouched}
+        field={SETTING_FIELD.PRIMARY_COLOR}
+        loading={saving}
+        left={-8}
+      >
         <Label color={primaryColor}>
           <ColorSelector
             activeColor={primaryColor}

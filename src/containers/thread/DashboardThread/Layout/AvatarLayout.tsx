@@ -1,9 +1,11 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TAvatarLayout } from '@/spec'
 
 import { AVATAR_LAYOUT } from '@/constant/layout'
 import { COLOR_NAME } from '@/constant/colors'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import CheckLabel from '@/widgets/CheckLabel'
 
@@ -20,6 +22,7 @@ import {
   Divider,
   Avatar,
   AvatarList,
+  SavingWrapper,
 } from '../styles/layout/avatar_layout'
 import { edit } from '../logic'
 
@@ -30,12 +33,14 @@ type TProps = {
 }
 
 const AvatarLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
+  const primaryColor = usePrimaryColor()
+
   return (
     <Wrapper>
       <SectionLabel title="头像样式" desc={<>用户/用户列表头像展示样式。</>} />
       <SelectWrapper>
         <Layout onClick={() => edit(AVATAR_LAYOUT.SQUARE, 'avatarLayout')}>
-          <Block $active={layout === AVATAR_LAYOUT.SQUARE}>
+          <Block $active={layout === AVATAR_LAYOUT.SQUARE} primaryColor={primaryColor}>
             <Avatar color={COLOR_NAME.BLUE}>YM</Avatar>
             <Divider />
             <AvatarList>
@@ -62,7 +67,7 @@ const AvatarLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(AVATAR_LAYOUT.CIRCLE, 'avatarLayout')}>
-          <Block $active={layout === AVATAR_LAYOUT.CIRCLE}>
+          <Block $active={layout === AVATAR_LAYOUT.CIRCLE} primaryColor={primaryColor}>
             <Avatar color={COLOR_NAME.BLUE} circle>
               YM
             </Avatar>
@@ -93,14 +98,16 @@ const AvatarLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
       </SelectWrapper>
-      <SavingBar
-        isTouched={isTouched}
-        field={SETTING_FIELD.AVATAR_LAYOUT}
-        loading={saving}
-        top={20}
-      />
+      <SavingWrapper>
+        <SavingBar
+          isTouched={isTouched}
+          field={SETTING_FIELD.AVATAR_LAYOUT}
+          loading={saving}
+          top={20}
+        />
+      </SavingWrapper>
     </Wrapper>
   )
 }
 
-export default memo(AvatarLayout)
+export default observer(AvatarLayout)

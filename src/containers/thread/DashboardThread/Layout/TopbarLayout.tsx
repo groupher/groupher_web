@@ -1,8 +1,10 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TTopbarLayout, TColorName } from '@/spec'
 
 import { TOPBAR_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { callDashboardDesc } from '@/signal'
 
 import { Br, Inline } from '@/widgets/Common'
@@ -40,6 +42,8 @@ type TProps = {
 }
 
 const TopbarLayout: FC<TProps> = ({ layout, isLayoutTouched, isBgTouched, saving, bg }) => {
+  const primaryColor = usePrimaryColor()
+
   return (
     <Wrapper>
       <SectionLabel
@@ -60,7 +64,7 @@ const TopbarLayout: FC<TProps> = ({ layout, isLayoutTouched, isBgTouched, saving
       />
       <SelectWrapper>
         <Layout onClick={() => edit(TOPBAR_LAYOUT.YES, 'topbarLayout')}>
-          <Block $active={layout === TOPBAR_LAYOUT.YES}>
+          <Block $active={layout === TOPBAR_LAYOUT.YES} primaryColor={primaryColor}>
             <TopBar bg={bg}>--</TopBar>
 
             <Main>
@@ -95,7 +99,7 @@ const TopbarLayout: FC<TProps> = ({ layout, isLayoutTouched, isBgTouched, saving
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(TOPBAR_LAYOUT.NO, 'topbarLayout')}>
-          <Block $active={layout === TOPBAR_LAYOUT.NO}>
+          <Block $active={layout === TOPBAR_LAYOUT.NO} primaryColor={primaryColor}>
             <Main>
               <ListsWrapper>
                 <Bar long={60} thin />
@@ -159,4 +163,4 @@ const TopbarLayout: FC<TProps> = ({ layout, isLayoutTouched, isBgTouched, saving
   )
 }
 
-export default memo(TopbarLayout)
+export default observer(TopbarLayout)

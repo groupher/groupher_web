@@ -1,6 +1,8 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
 import { KANBAN_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { callDashboardDesc } from '@/signal'
 
 import { Row, Br, Space, SpaceGrow, Inline } from '@/widgets/Common'
@@ -26,6 +28,8 @@ import { edit } from '../../logic'
 type TProps = Omit<TPropsBase, 'kanbanBgColors' | 'isBgColorsTouched'>
 
 const KanbanItemLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
+  const primaryColor = usePrimaryColor()
+
   return (
     <>
       <SectionLabel
@@ -46,7 +50,7 @@ const KanbanItemLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
       />
       <SelectWrapper>
         <Layout onClick={() => edit(KANBAN_LAYOUT.SIMPLE, 'kanbanLayout')}>
-          <Block $active={layout === KANBAN_LAYOUT.SIMPLE}>
+          <Block $active={layout === KANBAN_LAYOUT.SIMPLE} primaryColor={primaryColor}>
             <Bar thin long={15} />
             <Br bottom={15} />
             <Row>
@@ -72,7 +76,7 @@ const KanbanItemLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(KANBAN_LAYOUT.FULL, 'kanbanLayout')}>
-          <Block $active={layout === KANBAN_LAYOUT.FULL}>
+          <Block $active={layout === KANBAN_LAYOUT.FULL} primaryColor={primaryColor}>
             <Bar thin long={15} />
             <Br bottom={10} />
             <Row>
@@ -114,4 +118,4 @@ const KanbanItemLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
   )
 }
 
-export default memo(KanbanItemLayout)
+export default observer(KanbanItemLayout)

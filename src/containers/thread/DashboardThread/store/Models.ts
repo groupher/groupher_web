@@ -138,7 +138,8 @@ export const settingsModalFields = {
   twImageHeight: T.opt(T.string, ''),
 
   // layout
-  primaryColor: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
+  // primaryColor: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
+  primaryColor: T.opt(T.enum(keys(COLORS)), COLOR_NAME.PURPLE),
   postLayout: T.opt(T.enum(values(POST_LAYOUT)), POST_LAYOUT.QUORA),
   kanbanLayout: T.opt(T.enum(values(KANBAN_LAYOUT)), KANBAN_LAYOUT.SIMPLE),
   kanbanBgColors: T.opt(T.array(T.string), INIT_KANBAN_COLORS),

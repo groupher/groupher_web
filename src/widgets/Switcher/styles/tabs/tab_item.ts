@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
-import type { TSizeSM, TActive } from '@/spec'
-import css, { theme } from '@/css'
+import type { TSizeSM, TActive, TPrimaryColor } from '@/spec'
+import css, { theme, primaryTheme } from '@/css'
 
 import { getMarginRight, getPadding, getMarginBottom } from '../metric/tabs'
 
@@ -64,13 +64,15 @@ export const Nav = styled.nav`
 type TLabel = TActive & {
   size: TSizeSM
   bottomSpace: number
-}
+} & TPrimaryColor
+
 export const Label = styled.span<TLabel>`
   ${css.row('align-center')};
   white-space: nowrap;
   padding: 1px 6px;
   border-radius: 3px;
-  color: ${({ active }) => (active ? theme('article.title') : '#878b8f')}; // to-theme
+  color: ${({ active, primaryColor }) =>
+    active ? primaryTheme(primaryColor) : theme('lightText')}; // to-theme
   margin-bottom: ${({ bottomSpace }) => `${bottomSpace}px`};
 
   font-weight: 500;

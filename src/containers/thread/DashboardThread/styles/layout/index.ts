@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
-import type { TActive } from '@/spec'
-import css, { theme } from '@/css'
+import type { TActive, TPrimaryColor } from '@/spec'
+import css, { theme, primaryTheme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.column()};
@@ -46,15 +46,18 @@ export const TitleBase = styled.div`
   margin-bottom: 12px;
 `
 
-export const BlockBase = styled.div<TActive>`
+type TBlockBase = TActive & TPrimaryColor
+export const BlockBase = styled.div<TBlockBase>`
   opacity: ${({ $active }) => ($active ? 0.7 : 0.2)};
-  box-shadow: ${({ $active }) => ($active ? 'rgb(0 0 0 / 7%) 0px 0px 24px' : '')};
+  box-shadow: ${({ $active }) => ($active ? css.cardShadow : '')};
 
   background-color: ${({ $active }) => ($active ? theme('alphaBg') : 'transparent')};
 
   border: 1px solid;
   border-radius: 7px;
-  border-color: ${theme('article.title')};
+  /* border-color: ${theme('primary')}; */
+  border-color: ${({ $active, primaryColor }) =>
+    $active ? primaryTheme(primaryColor) : theme('primary')};
   padding: 16px 15px;
 
   &:hover {

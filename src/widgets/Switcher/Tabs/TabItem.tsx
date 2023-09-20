@@ -4,9 +4,11 @@
  *
  */
 
-import { FC, useEffect, useCallback, useRef, memo } from 'react'
+import { FC, useEffect, useCallback, useRef } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TSizeSM, TTabItem } from '@/spec'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { Trans } from '@/i18n'
 import { isString } from '@/validator'
 import { buildLog } from '@/logger'
@@ -45,6 +47,8 @@ const TabItem: FC<TProps> = ({
   onClick,
   setItemWidth,
 }) => {
+  const primaryColor = usePrimaryColor()
+
   const ref = useRef(null)
   const clickableRef = useRef(null)
   const activeRef = useRef(null)
@@ -99,6 +103,7 @@ const TabItem: FC<TProps> = ({
         active={item.slug === activeKey}
         size={size}
         bottomSpace={bottomSpace}
+        primaryColor={primaryColor}
       >
         {!isString(item) && (item.icon || item.localIcon) && (
           <TabIcon item={item} clickableRef={clickableRef} active={item.slug === activeKey} />
@@ -117,4 +122,4 @@ const TabItem: FC<TProps> = ({
   )
 }
 
-export default memo(TabItem)
+export default observer(TabItem)

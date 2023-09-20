@@ -1,8 +1,10 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TBrandLayout } from '@/spec'
 
 import { BRAND_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { callDashboardDesc } from '@/signal'
 
 import { Space, Divider, Inline } from '@/widgets/Common'
@@ -32,6 +34,8 @@ type TProps = {
 }
 
 const LogoLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
+  const primaryColor = usePrimaryColor()
+
   return (
     <Wrapper>
       <SectionLabel
@@ -52,7 +56,7 @@ const LogoLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
       />
       <SelectWrapper>
         <Layout onClick={() => edit(BRAND_LAYOUT.BOTH, 'brandLayout')}>
-          <Block $active={layout === BRAND_LAYOUT.BOTH}>
+          <Block $active={layout === BRAND_LAYOUT.BOTH} primaryColor={primaryColor}>
             <Brand>
               <BrandIcon />
               <Space right={7} />
@@ -70,7 +74,7 @@ const LogoLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(BRAND_LAYOUT.LOGO, 'brandLayout')}>
-          <Block $active={layout === BRAND_LAYOUT.LOGO}>
+          <Block $active={layout === BRAND_LAYOUT.LOGO} primaryColor={primaryColor}>
             <Brand>
               <BrandIcon />
             </Brand>
@@ -86,7 +90,7 @@ const LogoLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(BRAND_LAYOUT.TEXT, 'brandLayout')}>
-          <Block $active={layout === BRAND_LAYOUT.TEXT}>
+          <Block $active={layout === BRAND_LAYOUT.TEXT} primaryColor={primaryColor}>
             <Brand>
               <BrandTitle>Groupher</BrandTitle>
             </Brand>
@@ -107,4 +111,4 @@ const LogoLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
   )
 }
 
-export default memo(LogoLayout)
+export default observer(LogoLayout)
