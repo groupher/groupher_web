@@ -94,7 +94,7 @@ const github = {
     cyanLight: '#00B5CC',
     cyanLightBg: '#e1fcff94',
 
-    blue: '#456fbd',
+    blue: '#0073E3',
     blueBg: '#d8e3fd54',
 
     purple: '#7d519e',
@@ -253,7 +253,7 @@ const github = {
   },
   button: {
     primary: primaryColor,
-    fg: '#e7e7e7',
+    fg: 'white',
     disabledFg: descText,
     hoverBg: lighten(primaryColor, 10),
     activeBg: darken(primaryColor, 5),

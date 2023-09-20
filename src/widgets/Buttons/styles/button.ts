@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/css'
 import { lighten } from '@/utils/color'
-import type { TSize, TButton, TSpace } from '@/spec'
+import type { TSize, TButton, TSpace, TPrimaryColor } from '@/spec'
 
 import {
   getColor,
@@ -14,7 +14,7 @@ import {
   getFontSize,
 } from './metircs/button'
 
-type TWrapper = TButton & TSpace
+type TWrapper = TButton & TSpace & TPrimaryColor
 export const Wrapper = styled.button<TWrapper>`
   ${css.row('align-both')};
   -webkit-appearance: button;
@@ -38,8 +38,10 @@ export const Wrapper = styled.button<TWrapper>`
   position: relative;
 
   color: ${({ ghost, disabled }) => getColor(ghost, disabled)};
-  background-color: ${({ ghost, disabled }) => getBackgroundColor(ghost, disabled)};
-  border-color: ${({ noBorder, disabled, ghost }) => getBorderColor(noBorder, disabled, ghost)};
+  background-color: ${({ ghost, disabled, primaryColor }) =>
+    getBackgroundColor(primaryColor, ghost, disabled)};
+  border-color: ${({ noBorder, disabled, ghost, primaryColor }) =>
+    getBorderColor(primaryColor, noBorder, disabled, ghost)};
 
   opacity: ${({ noBorder }) => (noBorder ? '0.8' : 1)};
 
@@ -59,11 +61,9 @@ export const Wrapper = styled.button<TWrapper>`
 
   &:hover {
     color: ${({ ghost, disabled }) => getColor(ghost, disabled)};
-    border-color: ${({ noBorder, disabled, ghost }) =>
-      getBorderColor(noBorder, disabled, ghost, true)};
-    background-color: ${({ ghost, disabled }) => getBackgroundColor(ghost, disabled, true)};
     opacity: 1;
     cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+    filter: saturate(0.9) brightness(1.1);
 
     &::before,
     &::after {
@@ -74,15 +74,13 @@ export const Wrapper = styled.button<TWrapper>`
 
   &:focus {
     color: ${({ ghost, disabled }) => getColor(ghost, disabled)};
-    border-color: ${({ noBorder, disabled, ghost }) =>
-      getBorderColor(noBorder, disabled, ghost, true)};
-    background-color: ${({ ghost, disabled }) => getBackgroundColor(ghost, disabled, true)};
+    filter: brightness(0.95);
     opacity: 1;
   }
 
   &:active {
     color: ${({ ghost, disabled }) => getColor(ghost, disabled)};
-    background-color: ${({ ghost, disabled }) => getBackgroundColor(ghost, disabled, true)};
+    filter: brightness(0.95);
     opacity: 1;
   }
 `

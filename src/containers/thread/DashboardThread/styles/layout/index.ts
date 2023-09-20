@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TActive, TPrimaryColor } from '@/spec'
+import type { TActive, TColorName, TPrimaryColor } from '@/spec'
 import css, { theme, primaryTheme } from '@/css'
 
 export const Wrapper = styled.div`
@@ -12,6 +12,7 @@ export const Wrapper = styled.div`
     padding: 20px;
   `};
 `
+
 export const Banner = styled.div`
   height: 70px;
   width: 100%;
@@ -69,14 +70,16 @@ export const BlockBase = styled.div<TBlockBase>`
 `
 
 // base shapes
-type TBar = { long: number; thin?: boolean; bold?: boolean }
+type TBar = { long: number; thin?: boolean; bold?: boolean; primaryColor?: TColorName }
 export const Bar = styled.div<TBar>`
   width: ${({ long }) => `${long || 10}%`};
   height: ${({ thin }) => (thin ? '4px' : '10px;')};
-  background: ${({ thin, bold }) => {
+  background: ${({ thin, bold, primaryColor }) => {
+    if (primaryColor) return primaryTheme(primaryColor)
+
     if (bold) return theme('article.title')
 
-    return thin ? theme('article.digest') : theme('article.title')
+    return thin ? theme('article.digest') : theme('primary')
   }};
   z-index: 3;
   border-radius: 5px;

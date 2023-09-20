@@ -1,6 +1,8 @@
-import { FC, ReactNode, memo } from 'react'
+import { FC, ReactNode } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TSizeTSM, TSpace } from '@/spec'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 import SIZE from '@/constant/size'
 import { buildLog } from '@/logger'
 
@@ -36,6 +38,8 @@ const Button: FC<TProps> = ({
   disabled = false,
   ...restProps
 }) => {
+  const primaryColor = usePrimaryColor()
+
   if (loading) return <LavaLampLoading size="small" />
 
   switch (type) {
@@ -49,6 +53,7 @@ const Button: FC<TProps> = ({
           noBorder={noBorder}
           space={space}
           disabled={disabled}
+          primaryColor={primaryColor}
           {...restProps}
         >
           {children}
@@ -65,6 +70,7 @@ const Button: FC<TProps> = ({
           space={space}
           noBorder={noBorder}
           disabled={disabled}
+          primaryColor={primaryColor}
           {...restProps}
         >
           <ChildrenWrapper size={size} ghost={ghost} noBorder={noBorder}>
@@ -76,4 +82,4 @@ const Button: FC<TProps> = ({
   }
 }
 
-export default memo(Button)
+export default observer(Button)

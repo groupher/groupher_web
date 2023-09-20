@@ -1,7 +1,7 @@
 import SIZE from '@/constant/size'
-import { theme } from '@/css'
+import { theme, primaryTheme } from '@/css'
 
-import type { TTheme } from '@/spec'
+import type { TColorName, TTheme } from '@/spec'
 
 export const getColor = (ghost: boolean, disabled: boolean): TTheme => {
   if (ghost) {
@@ -15,7 +15,12 @@ export const getColor = (ghost: boolean, disabled: boolean): TTheme => {
   return theme('button.fg')
 }
 
-export const getBackgroundColor = (ghost: boolean, disabled: boolean, hover = false): TTheme => {
+export const getBackgroundColor = (
+  primaryColor: TColorName,
+  ghost: boolean,
+  disabled: boolean,
+  hover = false,
+): TTheme => {
   if (ghost) {
     return 'transparent'
   }
@@ -23,10 +28,11 @@ export const getBackgroundColor = (ghost: boolean, disabled: boolean, hover = fa
     return theme('divider') // TODO:  same as dimOnIdle background
   }
 
-  return hover ? theme('button.hoverBg') : theme('button.primary')
+  return hover ? theme('button.hoverBg') : primaryTheme(primaryColor)
 }
 
 export const getBorderColor = (
+  primaryColor: TColorName,
   noBorder: boolean,
   disabled: boolean,
   ghost: boolean,
@@ -43,7 +49,7 @@ export const getBorderColor = (
     return hover ? theme('button.primary') : theme('button.ghostBorder')
   }
 
-  return hover ? theme('button.hoverBg') : theme('button.primary')
+  return hover ? theme('button.hoverBg') : primaryTheme(primaryColor)
 }
 
 export const getHeight = (size: string): string => {
