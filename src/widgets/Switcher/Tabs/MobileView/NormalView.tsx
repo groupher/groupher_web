@@ -4,10 +4,12 @@
  *
  */
 
-import { FC, useEffect, useRef, useState, useCallback, memo } from 'react'
+import { FC, useEffect, useRef, useState, useCallback } from 'react'
+import { observer } from 'mobx-react'
 import { isEmpty, findIndex } from 'ramda'
 
 import type { TSizeSM, TTabItem } from '@/spec'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { ICON } from '@/config'
 import SIZE from '@/constant/size'
 import { isString } from '@/validator'
@@ -71,6 +73,7 @@ const MobileView: FC<TProps> = ({
   slipHeight = '2px',
   toggleExpand,
 }) => {
+  const primaryColor = usePrimaryColor()
   const isMobile = true
 
   const defaultActiveTabIndex = getDefaultActiveTabIndex(items, activeKey)
@@ -156,11 +159,11 @@ const MobileView: FC<TProps> = ({
           slipHeight={slipHeight}
         >
           {/* mobile tab slipbar looks shorter than the desktop one */}
-          <RealBar width={`${slipWidth - 11}px`} />
+          <RealBar width={`${slipWidth - 11}px`} primaryColor={primaryColor} />
         </SlipBar>
       </Nav>
     </Wrapper>
   )
 }
 
-export default memo(MobileView)
+export default observer(MobileView)

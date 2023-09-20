@@ -74,7 +74,6 @@ const Tabs: FC<TProps> = ({
 }) => {
   const { isMobile } = useMobileDetect()
   const primaryColor = usePrimaryColor()
-  console.log('##- primaryColor: ', primaryColor)
 
   const defaultActiveTabIndex = getDefaultActiveTabIndex(items, activeKey)
   // @ts-ignore

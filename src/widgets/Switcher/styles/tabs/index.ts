@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable, TPrimaryColor } from '@/spec'
-import css, { theme } from '@/css'
-import { COLORS, COLOR_NAME } from '@/constant/colors'
+import css, { primaryTheme } from '@/css'
 
 type TSlipBar = {
   slipHeight: string
@@ -42,13 +41,6 @@ export const SlipBar = styled.span<TSlipBar>`
 
   transition: ${({ noAnimation }) => (noAnimation ? 'none' : 'transform 0.25s')};
 `
-const primaryTheme = (primaryColor, themeKey = 'article.digest'): string => {
-  if (primaryColor === COLOR_NAME.BLACK) {
-    return theme(themeKey)
-  }
-
-  return COLORS[primaryColor]
-}
 
 type TRealBar = { width: string } & TPrimaryColor
 export const RealBar = styled.span<TRealBar>`

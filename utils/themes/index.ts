@@ -13,7 +13,9 @@
 
 import { map, path, split } from 'ramda'
 
-import type { TTheme } from '@/spec'
+import type { TColorName, TTheme } from '@/spec'
+import { COLORS, COLOR_NAME } from '@/constant/colors'
+
 import skinsData from './skins'
 
 export const themeSkins = { ...skinsData }
@@ -28,5 +30,16 @@ export const themeCoverIndexMap = map(path(['coverIndex']), themeSkins)
 // curried shorthand for style-components
 export const theme = (themePath: string): TTheme =>
   path(['theme', ...split('.', themePath)]) || 'wheat'
+
+/**
+ * for primary color component
+ */
+export const primaryTheme = (primaryColor: TColorName, themeKey = 'article.digest'): string => {
+  if (primaryColor === COLOR_NAME.BLACK) {
+    return theme(themeKey)
+  }
+
+  return COLORS[primaryColor]
+}
 
 export { default as themeMeta } from './theme_meta'
