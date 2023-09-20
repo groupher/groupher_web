@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 
-import type { TTestable } from '@/spec'
+import type { TTestable, TPrimaryColor } from '@/spec'
 import css, { theme } from '@/css'
+import { COLORS, COLOR_NAME } from '@/constant/colors'
 
 type TSlipBar = {
   slipHeight: string
@@ -41,12 +42,19 @@ export const SlipBar = styled.span<TSlipBar>`
 
   transition: ${({ noAnimation }) => (noAnimation ? 'none' : 'transform 0.25s')};
 `
-type TRealBar = { width: string }
+const primaryTheme = (primaryColor, themeKey = 'article.digest'): string => {
+  if (primaryColor === COLOR_NAME.BLACK) {
+    return theme(themeKey)
+  }
+
+  return COLORS[primaryColor]
+}
+
+type TRealBar = { width: string } & TPrimaryColor
 export const RealBar = styled.span<TRealBar>`
   width: ${({ width }) => width};
   height: 2px;
-  /* border-radius: 3px; */
-  background: ${theme('article.digest')}; // to-theme
+  background: ${({ primaryColor }) => primaryTheme(primaryColor, 'article.digest')};
 `
 // transform: ${({ active }) =>
 //     active ? 'translate3d(0,0,0);' : 'translate3d(0, 150%, 0);'};

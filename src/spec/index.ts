@@ -168,7 +168,7 @@ export type {
   TWallpaperInfo,
 } from './wallpaper'
 
-export type { TColorName } from './color'
+export type { TColorName, TPrimaryColor } from './color'
 
 export type {
   TPath,

@@ -15,14 +15,7 @@ const CommentLoading: FC = () => {
 
   return (
     <LoadingWrapper>
-      <ContentLoader
-        height={60}
-        width={400}
-        speed={2}
-        backgroundColor={theme.loading.basic}
-        // primaryColor={theme.loading.basic}
-        // secondaryColor={theme.loading.animate}
-      >
+      <ContentLoader height={60} width={400} speed={2} backgroundColor={theme.loading.basic}>
         <rect x="35" y="6" rx="4" ry="4" width="117" height="5.25" />
         <rect x="37" y="20" rx="3" ry="3" width="85" height="5.25" />
         <rect x="37" y="37.68" rx="3" ry="3" width="318.5" height="4.6" />

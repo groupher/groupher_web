@@ -18,14 +18,7 @@ const LoadingWrapper = styled.div`
 `
 
 const LoadingItem = ({ theme }) => (
-  <ContentLoader
-    height={70}
-    width={500}
-    speed={2}
-    backgroundColor={theme.loading.basic}
-    // primaryColor={theme.loading.basic}
-    // secondaryColor={theme.loading.animate}
-  >
+  <ContentLoader height={70} width={500} speed={2} backgroundColor={theme.loading.basic}>
     <rect x="38" y="5.58" rx="4" ry="4" width="195.55" height="8.69" />
     <rect x="38" y="19.93" rx="3" ry="3" width="130.05" height="5.36" />
     <rect x="38" y="35.16" rx="3" ry="3" width="454.96" height="6.05" />
