@@ -1,10 +1,10 @@
-import { theme } from '@/css'
+import { theme, primaryTheme } from '@/css'
 import SIZE from '@/constant/size'
 
-import type { TTheme } from '@/spec'
+import type { TColorName, TTheme } from '@/spec'
 
-export const getActiveBackground = (dimOnActive: boolean): TTheme => {
-  return dimOnActive ? theme('divider') : theme('button.primary')
+export const getActiveBackground = (dimOnActive: boolean, primaryColor: TColorName): TTheme => {
+  return dimOnActive ? theme('divider') : primaryTheme(primaryColor, 'button.primary')
 }
 
 export const getLabelColor = (checked: boolean, dimOnActive: boolean): TTheme => {
@@ -16,7 +16,7 @@ export const getLabelColor = (checked: boolean, dimOnActive: boolean): TTheme =>
 export const getLabelFontsize = (size: string): string => {
   switch (size) {
     case SIZE.SMALL: {
-      return '11px'
+      return '12px'
     }
 
     default: {
@@ -28,7 +28,7 @@ export const getLabelFontsize = (size: string): string => {
 export const getRadioBoxSize = (size: string): string => {
   switch (size) {
     case SIZE.SMALL: {
-      return '11px'
+      return '12px'
     }
 
     default: {
@@ -40,7 +40,7 @@ export const getRadioBoxSize = (size: string): string => {
 export const getRadioBoxTop = (size: string): string => {
   switch (size) {
     case SIZE.SMALL: {
-      return '3px'
+      return '5px'
     }
 
     default: {

@@ -89,7 +89,13 @@ const GlowEffect: FC<TProps> = ({
 
       <Br bottom={40} />
 
-      <SavingBar isTouched={isGrowFixedTouched} field={SETTING_FIELD.GLOW_FIXED} loading={saving}>
+      <SavingBar
+        isTouched={isGrowFixedTouched}
+        field={SETTING_FIELD.GLOW_FIXED}
+        loading={saving}
+        left={-10}
+        top={-8}
+      >
         <SettingsRow>
           <SettingTitle>滑动跟随:</SettingTitle>
           <Radio
@@ -117,6 +123,8 @@ const GlowEffect: FC<TProps> = ({
           isTouched={isGrowOpacityTouched}
           field={SETTING_FIELD.GLOW_OPACITY}
           loading={saving}
+          left={-10}
+          top={-8}
         >
           <SettingsRow>
             <SettingTitle>辉光强度:</SettingTitle>

@@ -1,7 +1,9 @@
 import { FC, memo, useState } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TCommunity, TDashboardPath } from '@/spec'
 import { DASHBOARD_ROUTE } from '@/constant/route'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import type { TMenuGroup, TTouched } from '../spec'
 
@@ -24,6 +26,7 @@ type TProps = {
 }
 
 const Group: FC<TProps> = ({ group, curTab, touched, community }) => {
+  const primaryColor = usePrimaryColor()
   const [fold, setFold] = useState(group.initFold)
 
   return (
@@ -41,9 +44,10 @@ const Group: FC<TProps> = ({ group, curTab, touched, community }) => {
 
             return (
               <Item
-                $active={item.slug === curTab}
                 key={item.slug}
+                $active={item.slug === curTab}
                 href={`/${community.slug}/${DASHBOARD_ROUTE.DASHBOARD}/${subPath}`}
+                primaryColor={primaryColor}
               >
                 {item.title}
                 {touched && (touched[item.slug] || touched[item.alias]) && <TouchedDot />}
@@ -56,4 +60,4 @@ const Group: FC<TProps> = ({ group, curTab, touched, community }) => {
   )
 }
 
-export default memo(Group)
+export default observer(Group)
