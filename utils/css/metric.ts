@@ -21,7 +21,11 @@ export const WIDTH = {
   },
   COMMUNITY: {
     PAGE: '1360px',
-    CONTENT: '900px',
+    CONTENT: '940px',
+  },
+  DOC: {
+    PAGE: '1360px',
+    CONTENT: '1020px',
   },
   DASHBOARD: {
     PAGE: '1400px',

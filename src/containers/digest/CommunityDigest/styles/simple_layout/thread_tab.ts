@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import styled from 'styled-components'
 
-import type { TActive, TSpace } from '@/spec'
-import css, { theme } from '@/css'
+import type { TActive, TPrimaryColor, TSpace } from '@/spec'
+import css, { theme, primaryTheme } from '@/css'
 
 export const NormalWrapper = styled.div<TSpace>`
   ${css.row('align-center')};
@@ -26,8 +26,10 @@ export const FloatWrapper = styled(NormalWrapper)`
   margin-left: -100px;
 `
 
-export const Title = styled(Link)<TActive>`
-  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
+type TTitle = TActive & TPrimaryColor
+export const Title = styled(Link)<TTitle>`
+  color: ${({ $active, primaryColor }) =>
+    $active ? primaryTheme(primaryColor) : theme('article.digest')};
   font-size: 14px;
   opacity: ${({ $active }) => ($active ? 1 : 0.9)};
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
@@ -36,7 +38,7 @@ export const Title = styled(Link)<TActive>`
   border-radius: 5px;
 
   &:hover {
-    color: ${theme('article.title')};
+    color: ${({ primaryColor }) => primaryTheme(primaryColor)};
     opacity: 1;
     cursor: pointer;
     background: ${theme('hoverBg')};

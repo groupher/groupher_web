@@ -5,8 +5,10 @@
  */
 
 import { FC, memo } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TSizeSM, TSpace } from '@/spec'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { buildLog } from '@/logger'
 import SIZE from '@/constant/size'
 
@@ -35,6 +37,8 @@ const Radio: FC<TProps> = ({
   onChange = log,
   ...restProps
 }) => {
+  const primaryColor = usePrimaryColor()
+
   return (
     <Wrapper testid="radio" {...restProps}>
       {items.map((item) => (
@@ -44,6 +48,7 @@ const Radio: FC<TProps> = ({
           onClick={() => onChange?.(item)}
           dimOnActive={item.dimOnActive}
           size={size}
+          primaryColor={primaryColor}
         >
           {item.value}
         </Label>

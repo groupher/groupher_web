@@ -13,11 +13,10 @@ export const Wrapper = styled(WrapperBase)`
 export const LinkItem = styled(LinkItemBase)`
   font-size: 14px;
 `
-
 export const GroupItem = styled(LinkItem)<TActive>`
   ${css.row('align-center')};
   position: relative;
-  margin-right: 5px;
+  padding-right: 22px;
   background: ${({ $active }) => ($active ? theme('hoverBg') : theme(''))};
 
   &:hover {
@@ -27,5 +26,5 @@ export const GroupItem = styled(LinkItem)<TActive>`
 export const ArrowIcon = styled(ArrowIconBase)`
   position: absolute;
   ${css.size(14)};
-  right: -10px;
+  right: 8px;
 `

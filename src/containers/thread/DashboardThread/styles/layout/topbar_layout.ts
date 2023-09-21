@@ -67,8 +67,6 @@ export const LayoutTitle = styled.div<TActive>`
   transition: all 0.2s;
 `
 export const Block = styled(BlockBase)`
-  border: 1px solid;
-  border-color: ${theme('article.digest')};
   width: 300px;
   height: 200px;
   padding: 0px;
@@ -82,18 +80,14 @@ export const BgWrapper = styled.div`
   font-size: 12px;
 `
 export const BgLabel = styled.div<{ bg: TColorName }>`
-  width: 44px;
-  height: 24px;
+  ${css.circle(32)};
   ${css.row('align-both')};
   border: 1px solid;
   border-color: ${({ bg }) => COLORS[bg]};
-  border-radius: 6px;
   cursor: pointer;
   margin-left: 15px;
 `
 export const TheColor = styled.div<{ color: TColorName }>`
-  width: 38px;
-  height: 18px;
-  border-radius: 6px;
+  ${css.circle(26)};
   background-color: ${({ color }) => COLORS[color]};
 `

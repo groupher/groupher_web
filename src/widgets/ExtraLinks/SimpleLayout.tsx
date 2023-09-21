@@ -7,6 +7,7 @@ import { MORE_GROUP, ONE_LINK_GROUP } from '@/constant/dashboard'
 import { sortByIndex, groupByKey } from '@/helper'
 import useAccount from '@/hooks/useAccount'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import Tooltip from '@/widgets/Tooltip'
 
@@ -17,6 +18,7 @@ import { Wrapper, LinkItem, GroupItem, ArrowIcon, MenuPanel } from './styles/sim
 const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold, activePath }) => {
   const [menuOpen, setMenuOpen] = useState(false)
   const { slug } = useViewingCommunity()
+  const primaryColor = usePrimaryColor()
 
   if (!showMoreFold) return null
 
@@ -29,6 +31,7 @@ const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold, activePath
               key={item.index}
               href={item.link}
               $active={`/${slug}/${activePath}` === item.link}
+              primaryColor={primaryColor}
             >
               {item.title}
             </LinkItem>
@@ -51,6 +54,7 @@ const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold, activePath
 
 const ExtraLinks: FC<TProps> = ({ links, activePath = '' }) => {
   const { isModerator } = useAccount()
+  const primaryColor = usePrimaryColor()
 
   const _links = filter((item) => item.title !== '', links)
 
@@ -68,7 +72,9 @@ const ExtraLinks: FC<TProps> = ({ links, activePath = '' }) => {
         return (
           <Fragment key={groupTitle}>
             {startsWith(ONE_LINK_GROUP, groupTitle) ? (
-              <LinkItem href={curGroupLinks[0].link}>{curGroupLinks[0].title}</LinkItem>
+              <LinkItem href={curGroupLinks[0].link} primaryColor={primaryColor}>
+                {curGroupLinks[0].title}
+              </LinkItem>
             ) : (
               <LinkGroup
                 groupTitle={groupTitle}

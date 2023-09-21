@@ -2,10 +2,7 @@ import styled from 'styled-components'
 
 // import Img from '@/Img'
 import type { TColorName } from '@/spec'
-import { COLOR_NAME } from '@/constant/colors'
-
-import css, { theme } from '@/css'
-import { camelize } from '@/fmt'
+import css, { primaryLink } from '@/css'
 
 import { Wrapper as ButtonWrapper } from '.'
 
@@ -50,7 +47,7 @@ const BaseArrow = styled.div<TArrow>`
     border-color: ${({ color, reverseColor }) => {
       if (reverseColor) return 'white'
 
-      return color === COLOR_NAME.BLACK ? theme('link') : theme(`baseColor.${camelize(color)}`)
+      return primaryLink(color)
     }};
     border-width: 0 1px 1px 0;
     padding: 3px;

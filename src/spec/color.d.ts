@@ -11,3 +11,5 @@ export type TColorName =
   | 'CYAN_LIGHT'
   | 'BLUE'
   | 'PURPLE'
+
+export type TPrimaryColor = { primaryColor: TColorName }

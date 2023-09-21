@@ -61,7 +61,6 @@ export const onCreate = (): void => {
     thread: curThread,
   }
 
-  console.log('## create tag: ', tag)
   sr71$.mutate(S.createArticleTag, tag)
 }
 

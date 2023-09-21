@@ -154,10 +154,13 @@ const updateDashboardEnable = gql`
 const updateDashboardLayout = gql`
   mutation (
     $community: Stirng!
+    $primaryColor: String
     $postLayout: String
     $kanbanLayout: String
     $footerLayout: String
     $headerLayout: String
+    $topbarLayout: String
+    $topbarBg: String
     $avatarLayout: String
     $broadcastEnable: Boolean
     $kanbanBgColors: [String]
@@ -167,10 +170,13 @@ const updateDashboardLayout = gql`
   ) {
     updateDashboardLayout(
       community: $community
+      primaryColor: $primaryColor
       postLayout: $postLayout
       kanbanLayout: $kanbanLayout
       footerLayout: $footerLayout
       headerLayout: $headerLayout
+      topbarLayout: $topbarLayout
+      topbarBg: $topbarBg
       avatarLayout: $avatarLayout
       broadcastEnable: $broadcastEnable
       kanbanBgColors: $kanbanBgColors

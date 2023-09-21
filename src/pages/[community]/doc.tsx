@@ -4,6 +4,7 @@ import { Provider } from 'mobx-react'
 
 import { HCN } from '@/constant/name'
 import { THREAD } from '@/constant/thread'
+import METRIC from '@/constant/metric'
 import { useStore } from '@/stores/init'
 
 import {
@@ -79,6 +80,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const initProps = merge(
     {
       ...ssrBaseStates(resp),
+      metric: METRIC.DOC,
       route: {
         communityPath: community.slug,
         mainPath: community.slug === HCN ? '' : community.slug,

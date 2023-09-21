@@ -4,11 +4,13 @@
  *
  */
 
-import { FC, useEffect, useRef, useState, useCallback, memo } from 'react'
+import { FC, useEffect, useRef, useState, useCallback } from 'react'
+import { observer } from 'mobx-react'
 import { isEmpty, findIndex, pluck, includes } from 'ramda'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TSizeSM, TTabItem, TC11NLayout } from '@/spec'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 import SIZE from '@/constant/size'
 import C11N from '@/constant/c11n'
 
@@ -71,6 +73,7 @@ const Tabs: FC<TProps> = ({
   noAnimation = false,
 }) => {
   const { isMobile } = useMobileDetect()
+  const primaryColor = usePrimaryColor()
 
   const defaultActiveTabIndex = getDefaultActiveTabIndex(items, activeKey)
   // @ts-ignore
@@ -144,7 +147,7 @@ const Tabs: FC<TProps> = ({
             slipHeight={slipHeight}
             noAnimation={noAnimation}
           >
-            <RealBar width={`${slipWidth}px`} />
+            <RealBar width={`${slipWidth}px`} primaryColor={primaryColor} />
           </SlipBar>
         )}
       </Nav>
@@ -152,4 +155,4 @@ const Tabs: FC<TProps> = ({
   )
 }
 
-export default memo(Tabs)
+export default observer(Tabs)

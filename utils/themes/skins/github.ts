@@ -3,7 +3,7 @@
  */
 import { lighten, darken } from '@/utils/color'
 
-const primaryColor = '#3b434a' // '#000000'
+const primaryColor = '#333333' // '#000000'
 
 const bannerBg = '#fff'
 const contentBg = '#fff'
@@ -25,6 +25,7 @@ const github = {
     category: 'light',
   },
   name: 'github',
+  primary: primaryColor,
   logoText: descText,
   cover: 'white',
   coverIndex: '#F9FCFC',
@@ -93,7 +94,7 @@ const github = {
     cyanLight: '#00B5CC',
     cyanLightBg: '#e1fcff94',
 
-    blue: '#456fbd',
+    blue: '#0073E3',
     blueBg: '#d8e3fd54',
 
     purple: '#7d519e',
@@ -252,7 +253,7 @@ const github = {
   },
   button: {
     primary: primaryColor,
-    fg: '#e7e7e7',
+    fg: 'white',
     disabledFg: descText,
     hoverBg: lighten(primaryColor, 10),
     activeBg: darken(primaryColor, 5),

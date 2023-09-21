@@ -1,8 +1,10 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TChangelogLayout } from '@/spec'
 
 import { CHANGELOG_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { callDashboardDesc } from '@/signal'
 
 import { Row, Br, Space, SpaceGrow, Divider, Inline } from '@/widgets/Common'
@@ -37,6 +39,8 @@ type TProps = {
 }
 
 const ChangelogLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
+  const primaryColor = usePrimaryColor()
+
   return (
     <Wrapper>
       <SectionLabel
@@ -57,7 +61,7 @@ const ChangelogLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
       />
       <SelectWrapper>
         <Layout onClick={() => edit(CHANGELOG_LAYOUT.CLASSIC, 'changelogLayout')}>
-          <Block $active={layout === CHANGELOG_LAYOUT.CLASSIC}>
+          <Block $active={layout === CHANGELOG_LAYOUT.CLASSIC} primaryColor={primaryColor}>
             <Column>
               <Picture />
               <Br top={14} />
@@ -108,7 +112,7 @@ const ChangelogLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(CHANGELOG_LAYOUT.SIMPLE, 'changelogLayout')}>
-          <Block $active={layout === CHANGELOG_LAYOUT.SIMPLE}>
+          <Block $active={layout === CHANGELOG_LAYOUT.SIMPLE} primaryColor={primaryColor}>
             <MiniItem>
               <MiniBar long={10} thin />
               <MiniIntro>
@@ -215,4 +219,4 @@ const ChangelogLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
   )
 }
 
-export default memo(ChangelogLayout)
+export default observer(ChangelogLayout)

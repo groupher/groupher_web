@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
-import type { TTestable, TSpace } from '@/spec'
-import css, { theme } from '@/css'
+import type { TTestable, TSpace, TPrimaryColor } from '@/spec'
+import css, { theme, primaryTheme } from '@/css'
 
 import {
   getActiveBackground,
@@ -12,12 +12,6 @@ import {
   getRadioBoxLeft,
 } from './metric/radio'
 
-type TLabel = {
-  size: string
-  checked: boolean
-  dimOnActive: boolean
-}
-
 type TWrapper = TTestable & TSpace
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
@@ -27,20 +21,26 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 
   ${(props) => css.spaceMargins(props)};
 `
+type TLabel = {
+  size: string
+  checked: boolean
+  dimOnActive: boolean
+} & TPrimaryColor
+
 export const Label = styled.label<TLabel>`
   position: relative;
   font-size: ${({ size }) => getLabelFontsize(size)};
   margin-right: ${({ checked }) => (checked ? '16px' : '8px')};
   padding-left: ${({ checked }) => (checked ? '14px' : '24px')};
-  font-weight: ${({ checked }) => (checked ? 'bold' : 'normal')};
+  font-weight: ${({ checked }) => (checked ? 600 : 400)};
 
   padding-right: 14px;
-  padding-top: 1px;
-  padding-bottom: 1px;
+  padding-top: 2px;
+  padding-bottom: 2px;
   cursor: pointer;
 
-  background: ${({ checked, dimOnActive }) =>
-    checked ? getActiveBackground(dimOnActive) : 'transparent'};
+  background: ${({ checked, dimOnActive, primaryColor }) =>
+    checked ? getActiveBackground(dimOnActive, primaryColor) : 'transparent'};
   color: ${({ checked, dimOnActive }) => getLabelColor(checked, dimOnActive)};
   border-radius: 15px;
 
@@ -55,7 +55,8 @@ export const Label = styled.label<TLabel>`
     width: ${({ size }) => getRadioBoxSize(size)};
     height: ${({ size }) => getRadioBoxSize(size)};
     border: 2px solid;
-    border-color: ${({ checked }) => (checked ? theme('button.fg') : theme('article.title'))};
+    border-color: ${({ checked, primaryColor }) =>
+      checked ? theme('button.fg') : primaryTheme(primaryColor)};
     border-radius: 50%;
   }
 

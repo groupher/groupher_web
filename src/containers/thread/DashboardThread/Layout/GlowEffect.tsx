@@ -1,7 +1,9 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 import { keys } from 'ramda'
 
 import GLOW_EFFECTS, { GLOW_OPACITY } from '@/constant/glow_effect'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import { Br, Row as RowBase } from '@/widgets/Common'
 import ArrowLinker from '@/widgets/ArrowLinker'
@@ -44,6 +46,7 @@ const GlowEffect: FC<TProps> = ({
   isGrowOpacityTouched,
   saving,
 }) => {
+  const primaryColor = usePrimaryColor()
   const EFFECTS_KEYS = keys(GLOW_EFFECTS)
 
   return (
@@ -61,13 +64,22 @@ const GlowEffect: FC<TProps> = ({
       />
 
       <Row>
-        <NoBox $active={glowType === ''} onClick={() => edit('', 'glowType')}>
+        <NoBox
+          $active={glowType === ''}
+          onClick={() => edit('', 'glowType')}
+          primaryColor={primaryColor}
+        >
           <ForbidIcon />
           <CloseIcon />
         </NoBox>
 
         {EFFECTS_KEYS.map((effect) => (
-          <Box key={effect} $active={effect === glowType} onClick={() => edit(effect, 'glowType')}>
+          <Box
+            key={effect}
+            $active={effect === glowType}
+            primaryColor={primaryColor}
+            onClick={() => edit(effect, 'glowType')}
+          >
             <GrowBackground glowPosition="absolute" glowType={effect} />
           </Box>
         ))}
@@ -77,7 +89,13 @@ const GlowEffect: FC<TProps> = ({
 
       <Br bottom={40} />
 
-      <SavingBar isTouched={isGrowFixedTouched} field={SETTING_FIELD.GLOW_FIXED} loading={saving}>
+      <SavingBar
+        isTouched={isGrowFixedTouched}
+        field={SETTING_FIELD.GLOW_FIXED}
+        loading={saving}
+        left={-10}
+        top={-8}
+      >
         <SettingsRow>
           <SettingTitle>滑动跟随:</SettingTitle>
           <Radio
@@ -105,6 +123,8 @@ const GlowEffect: FC<TProps> = ({
           isTouched={isGrowOpacityTouched}
           field={SETTING_FIELD.GLOW_OPACITY}
           loading={saving}
+          left={-10}
+          top={-8}
         >
           <SettingsRow>
             <SettingTitle>辉光强度:</SettingTitle>
@@ -130,4 +150,4 @@ const GlowEffect: FC<TProps> = ({
   )
 }
 
-export default memo(GlowEffect)
+export default observer(GlowEffect)

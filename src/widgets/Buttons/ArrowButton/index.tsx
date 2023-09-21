@@ -4,12 +4,13 @@
  *
  */
 
-import { FC, ReactNode, memo, useRef, useEffect, useState } from 'react'
+import { FC, ReactNode, useRef, useEffect, useState } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TColorName, TSpace } from '@/spec'
 
 import { COLOR_NAME } from '@/constant/colors'
-
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { buildLog } from '@/logger'
 
 import Arrow from './Arrow'
@@ -23,7 +24,7 @@ export type TProps = {
   onClick?: () => void
   dimWhenIdle?: boolean
   disabled?: boolean
-  color?: TColorName
+  color?: TColorName | null
   reverseColor?: boolean
   className?: string
   leftLayout?: boolean
@@ -38,7 +39,7 @@ const ArrowButton: FC<TProps> = ({
   onClick = log,
   dimWhenIdle = false,
   disabled = false,
-  color = COLOR_NAME.BLACK,
+  color = null,
   className = '',
   leftLayout = false,
   reverseColor = false,
@@ -48,6 +49,7 @@ const ArrowButton: FC<TProps> = ({
   initWidth = 55,
   ...restProps
 }) => {
+  const primaryColor = usePrimaryColor()
   const ref = useRef()
   const [width, setWidth] = useState(initWidth)
 
@@ -65,14 +67,14 @@ const ArrowButton: FC<TProps> = ({
       onClick={() => !disabled && onClick()}
       dimWhenIdle={dimWhenIdle}
       disabled={disabled}
-      color={color}
+      color={color || primaryColor}
       reverseColor={reverseColor}
       fontSize={fontSize}
       {...restProps}
     >
       {leftLayout && (
         <Arrow
-          color={color}
+          color={color || primaryColor}
           reverseColor={reverseColor}
           leftLayout={leftLayout}
           up={up}
@@ -84,7 +86,7 @@ const ArrowButton: FC<TProps> = ({
       </Text>
       {!leftLayout && (
         <Arrow
-          color={color}
+          color={color || primaryColor}
           reverseColor={reverseColor}
           leftLayout={leftLayout}
           up={up}
@@ -95,4 +97,4 @@ const ArrowButton: FC<TProps> = ({
   )
 }
 
-export default memo(ArrowButton)
+export default observer(ArrowButton)

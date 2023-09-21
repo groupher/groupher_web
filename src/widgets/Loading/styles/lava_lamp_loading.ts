@@ -1,8 +1,8 @@
 import styled, { keyframes } from 'styled-components'
 
-import type { TSpace, TSizeTSM } from '@/spec'
+import type { TSpace, TSizeTSM, TPrimaryColor } from '@/spec'
 import { getRandomInt } from '@/helper'
-import css, { theme } from '@/css'
+import css, { primaryTheme } from '@/css'
 
 import { getLavaLampScale } from './metric'
 
@@ -48,9 +48,10 @@ const speedMap = {
   9: 0.3,
 }
 
-export const Circle = styled.span<{ index: number }>`
+type TCircle = { index: number } & TPrimaryColor
+export const Circle = styled.span<TCircle>`
   ${css.circle(3)};
-  background-color: ${theme('article.digest')};
+  background-color: ${({ primaryColor }) => primaryTheme(primaryColor)};
   animation: ${move} 1s linear 0ms infinite;
   /* animation-duration: ${() => `${speed[getRandomInt(0, speed.length - 1)]}s`}; */
   width: ${({ index }) => (index === 2 || index === 6 ? '15px' : '4px')};

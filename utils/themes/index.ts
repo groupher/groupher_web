@@ -13,7 +13,11 @@
 
 import { map, path, split } from 'ramda'
 
-import type { TTheme } from '@/spec'
+import type { TColorName, TTheme } from '@/spec'
+import { COLORS, COLOR_NAME } from '@/constant/colors'
+
+import { camelize } from '@/fmt'
+
 import skinsData from './skins'
 
 export const themeSkins = { ...skinsData }
@@ -29,4 +33,26 @@ export const themeCoverIndexMap = map(path(['coverIndex']), themeSkins)
 export const theme = (themePath: string): TTheme =>
   path(['theme', ...split('.', themePath)]) || 'wheat'
 
+/**
+ * for primary color component
+ */
+export const primaryTheme = (primaryColor: TColorName, themeKey = 'primary'): string => {
+  if (primaryColor === COLOR_NAME.BLACK) {
+    return theme(themeKey)
+  }
+
+  return COLORS[primaryColor]
+}
+
+export const primaryLink = (primaryColor: TColorName): string => {
+  if (primaryColor === COLOR_NAME.BLACK) {
+    return theme('link')
+  }
+
+  return COLORS[primaryColor]
+}
+
+export const primaryLightTheme = (primaryColor: TColorName): string => {
+  return theme(`baseColor.${camelize(primaryColor)}Bg`)
+}
 export { default as themeMeta } from './theme_meta'

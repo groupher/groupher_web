@@ -56,3 +56,6 @@ export const LayoutTitle = styled.div<TActive>`
   }
   transition: all 0.2s;
 `
+export const SavingWrapper = styled.div`
+  width: 91%;
+`

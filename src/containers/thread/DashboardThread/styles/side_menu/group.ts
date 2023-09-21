@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 
-import type { TActive } from '@/spec'
-import css, { theme } from '@/css'
+import type { TActive, TPrimaryColor } from '@/spec'
+import css, { theme, primaryTheme } from '@/css'
 
 import ArrowSVG from '@/icons/ArrowSimple'
 
@@ -58,23 +58,30 @@ export const MenuWrapper = styled.div`
 
   border-image-slice: 1;
 `
-export const Item = styled(Link)<TActive>`
+type TItem = TActive & TPrimaryColor
+
+export const Item = styled(Link)<TItem>`
   text-decoration: none;
   position: relative;
   display: block;
-  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
+  color: ${({ $active, primaryColor }) =>
+    $active ? primaryTheme(primaryColor) : theme('article.digest')};
   background: ${({ $active }) => ($active ? theme('activeLinear') : 'transparent')};
+  font-weight: ${({ $active }) => ($active ? 500 : 400)};
 
   width: 160px;
   padding: 3px 5px;
-  margin-top: 5px;
+  /* margin-top: 5px; */
+  margin-top: ${({ $active }) => ($active ? '7px' : '5px')};
+  margin-bottom: ${({ $active }) => ($active ? '7px' : 0)};
+
   padding-left: 20px;
   border-radius: 10px;
   font-size: 13.5px;
 
   &:hover {
     cursor: pointer;
-    color: ${theme('article.title')};
+    color: ${({ primaryColor }) => primaryTheme(primaryColor)};
     background: ${theme('activeLinear')};
   }
 
@@ -85,9 +92,9 @@ export const Item = styled(Link)<TActive>`
     top: 8px;
     left: -3px;
     width: 4px;
-    height: 13px;
+    height: 12px;
     border-radius: 8px;
-    background: ${theme('article.digest')};
+    background: ${({ primaryColor }) => primaryTheme(primaryColor)};
   }
 
   transition: all 0.2s;

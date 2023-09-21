@@ -1,9 +1,12 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TBannerLayout } from '@/spec'
 
 import { BANNER_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { callDashboardDesc } from '@/signal'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import { Row, Br, Space, SpaceGrow } from '@/widgets/Common'
 import CheckLabel from '@/widgets/CheckLabel'
@@ -15,6 +18,7 @@ import SavingBar from '../SavingBar'
 
 import {
   Wrapper,
+  CommunityTitle,
   SelectWrapper,
   Layout,
   LayoutTitle,
@@ -36,6 +40,9 @@ type TProps = {
 }
 
 const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
+  const primaryColor = usePrimaryColor()
+  const { title } = useViewingCommunity()
+
   return (
     <Wrapper>
       <SectionLabel
@@ -51,9 +58,9 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
       />
       <SelectWrapper>
         <Layout onClick={() => edit(BANNER_LAYOUT.HEADER, 'bannerLayout')}>
-          <Block $active={layout === BANNER_LAYOUT.HEADER}>
+          <Block $active={layout === BANNER_LAYOUT.HEADER} primaryColor={primaryColor}>
             <Row>
-              <Bar thin long={16} />
+              <CommunityTitle>{title}</CommunityTitle>
               <Space right={42} />
               <Bar thin long={40} />
               <Space right={45} />
@@ -81,7 +88,7 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
                 <Bar long={55} thin />
               </ListsWrapper>
               <TagsWrapper>
-                <Bar long={100} />
+                <Bar long={100} primaryColor={primaryColor} />
                 <Br bottom={15} />
                 <Bar long={60} thin />
                 <Br bottom={6} />
@@ -105,9 +112,9 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(BANNER_LAYOUT.TABBER, 'bannerLayout')}>
-          <Block $active={layout === BANNER_LAYOUT.TABBER}>
+          <Block $active={layout === BANNER_LAYOUT.TABBER} primaryColor={primaryColor}>
             <Row>
-              <Bar long={16} />
+              <CommunityTitle>{title}</CommunityTitle>
               <SpaceGrow />
               <Bar thin long={6} />
               <Space right={5} />
@@ -141,7 +148,7 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
                 <Bar long={50} thin />
               </ListsWrapper>
               <TagsWrapper>
-                <Bar long={100} />
+                <Bar long={100} primaryColor={primaryColor} />
                 <Br bottom={15} />
                 <Bar long={60} thin />
                 <Br bottom={6} />
@@ -165,17 +172,17 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(BANNER_LAYOUT.SIDEBAR, 'bannerLayout')}>
-          <Block $active={layout === BANNER_LAYOUT.SIDEBAR}>
+          <Block $active={layout === BANNER_LAYOUT.SIDEBAR} primaryColor={primaryColor}>
             <Row>
               <Space right={110} />
               <Bar thin long={10} />
               <SpaceGrow />
               <Space right={5} />
-              <Circle radius={6} />
+              <Bar long={10} primaryColor={primaryColor} />
             </Row>
             <Main>
               <SidebarWrapper>
-                <Bar long={100} />
+                <CommunityTitle>{title}</CommunityTitle>
                 <Br bottom={15} />
                 <Bar long={60} thin />
                 <Br bottom={6} />
@@ -236,4 +243,4 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
   )
 }
 
-export default memo(BannerLayout)
+export default observer(BannerLayout)

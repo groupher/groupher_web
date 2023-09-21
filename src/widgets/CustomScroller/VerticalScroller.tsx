@@ -85,7 +85,6 @@ const VerticalScroller: FC<TProps> = ({
     callbacks: {
       onScroll: debounce(() => {
         const position = scrollInstance?.scroll().position
-        console.log('## 111')
         if (position) {
           const currentY = position.y
 

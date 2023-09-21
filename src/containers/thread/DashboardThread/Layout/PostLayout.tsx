@@ -1,8 +1,10 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TPostLayout } from '@/spec'
 
 import { POST_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { callDashboardDesc } from '@/signal'
 
 import { Row, Br, Space, SpaceGrow, Inline } from '@/widgets/Common'
@@ -37,6 +39,8 @@ type TProps = {
 }
 
 const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
+  const primaryColor = usePrimaryColor()
+
   return (
     <Wrapper>
       <SectionLabel
@@ -57,7 +61,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
       />
       <SelectWrapper>
         <Layout onClick={() => edit(POST_LAYOUT.QUORA, 'postLayout')}>
-          <Block $active={layout === POST_LAYOUT.QUORA}>
+          <Block $active={layout === POST_LAYOUT.QUORA} primaryColor={primaryColor}>
             <Bar thin long={30} />
             <Br bottom={7} />
             <Row>
@@ -89,7 +93,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(POST_LAYOUT.PH, 'postLayout')}>
-          <Block $active={layout === POST_LAYOUT.PH}>
+          <Block $active={layout === POST_LAYOUT.PH} primaryColor={primaryColor}>
             <Row>
               <Column center>
                 <Circle />
@@ -128,7 +132,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         </Layout>
 
         <Layout onClick={() => edit(POST_LAYOUT.MASONRY, 'postLayout')}>
-          <Block $active={layout === POST_LAYOUT.MASONRY}>
+          <Block $active={layout === POST_LAYOUT.MASONRY} primaryColor={primaryColor}>
             <Row>
               <Column grow>
                 <Box />
@@ -152,7 +156,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         </Layout>
 
         <Layout onClick={() => edit(POST_LAYOUT.MINIMAL, 'postLayout')}>
-          <Block $active={layout === POST_LAYOUT.MINIMAL}>
+          <Block $active={layout === POST_LAYOUT.MINIMAL} primaryColor={primaryColor}>
             <Row>
               <Space right={5} />
               <Column center>
@@ -188,7 +192,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         </Layout>
 
         <Layout onClick={() => edit(POST_LAYOUT.COVER, 'postLayout')}>
-          <Block $active={layout === POST_LAYOUT.COVER}>
+          <Block $active={layout === POST_LAYOUT.COVER} primaryColor={primaryColor}>
             <Row>
               <Cover />
               <Space right={17} />
@@ -221,4 +225,4 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
   )
 }
 
-export default memo(PostListLayout)
+export default observer(PostListLayout)

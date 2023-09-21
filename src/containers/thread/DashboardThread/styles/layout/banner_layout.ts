@@ -10,6 +10,12 @@ import { BaseSection, BlockBase } from '.'
 export { Bar, Circle } from '.'
 
 export const Wrapper = styled(BaseSection)``
+export const CommunityTitle = styled.div`
+  font-weight: 600;
+  color: ${theme('article.title')};
+  font-size: 12px;
+  ${css.cutRest('50px')};
+`
 export const SelectWrapper = styled.div`
   ${css.rowWrap('align-center')};
   gap: 30px;
@@ -38,6 +44,7 @@ export const SidebarWrapper = styled.div`
   border-right: 1px solid;
   border-right-color: ${theme('divider')};
   z-index: 2;
+  margin-top: -6px;
 `
 export const ExampleBtn = styled.div`
   display: inline-block;

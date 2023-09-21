@@ -12,6 +12,7 @@ import usePublicThreads from '@/hooks/usePublicThreads'
 import useHeaderLinks from '@/hooks/useHeaderLinks'
 import useAccount from '@/hooks/useAccount'
 import useViewingThread from '@/hooks/useViewingThread'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import ExtraLinks from '@/widgets/ExtraLinks/SimpleLayout'
 
@@ -24,6 +25,7 @@ const ThreadTab: FC<TProps> = ({ ...restProps }) => {
   const { links: extraLinks, layout: headerLayout } = useHeaderLinks()
   const threads = usePublicThreads()
   const activeThread = useViewingThread()
+  const primaryColor = usePrimaryColor()
 
   const { isModerator } = useAccount()
 
@@ -64,7 +66,7 @@ const ThreadTab: FC<TProps> = ({ ...restProps }) => {
           href={`/${curCommunity.slug}/${item.slug}`}
           key={item.slug}
           $active={activeThread === item.slug}
-          prefetch={false}
+          primaryColor={primaryColor}
         >
           {item.title}
         </Title>

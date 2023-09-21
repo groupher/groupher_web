@@ -1,4 +1,5 @@
 import { gql } from 'urql/core'
+import { F } from '@/schemas'
 
 const updateDashboardWallpaper = gql`
   mutation (
@@ -28,15 +29,7 @@ const updateDashboardWallpaper = gql`
       slug
       dashboard {
         wallpaper {
-          wallpaperType
-          wallpaper
-          direction
-          customColorValue
-          bgSize
-          uploadBgImage
-          hasPattern
-          hasBlur
-          hasShadow
+          ${F.wallpaper}
         }
       }
     }

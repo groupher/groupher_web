@@ -1,7 +1,9 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react'
 
 import SIZE from '@/constant/size'
 import { buildLog } from '@/logger'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import type { TProps as TButtonProps } from '.'
 import { Wrapper, UpButton, OrSign, BottomButton } from '../styles/or_button/vertical_button'
@@ -25,12 +27,15 @@ const VerticalButton: FC<TProps> = ({
     },
   ],
 }) => {
+  const primaryColor = usePrimaryColor()
+
   return (
     <Wrapper>
       <UpButton
         size={size}
         active={group[0].key === activeKey}
         onClick={() => onClick(group[0].key)}
+        primaryColor={primaryColor}
       >
         {group[0].title}
       </UpButton>
@@ -39,6 +44,7 @@ const VerticalButton: FC<TProps> = ({
         size={size}
         active={group[1].key === activeKey}
         onClick={() => onClick(group[1].key)}
+        primaryColor={primaryColor}
       >
         {group[1].title}
       </BottomButton>
@@ -46,4 +52,4 @@ const VerticalButton: FC<TProps> = ({
   )
 }
 
-export default VerticalButton
+export default observer(VerticalButton)

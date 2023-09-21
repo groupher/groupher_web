@@ -53,9 +53,9 @@ import { CHANGE_MODE } from '@/constant/mode'
 import { THREAD } from '@/constant/thread'
 
 import BStore from '@/utils/bstore'
-import { buildLog } from '@/utils/logger'
-import { T, getParent, markStates, Instance, toJS } from '@/utils/mobx'
-import { washThreads, sortByIndex } from '@/utils/helper'
+import { buildLog } from '@/logger'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { washThreads, sortByIndex } from '@/helper'
 
 import {
   PagedCommunities,

@@ -1,9 +1,11 @@
 import { FC, Fragment } from 'react'
+import { observer } from 'mobx-react'
 import { keys, startsWith } from 'ramda'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import type { TLinkItem } from '@/spec'
 import { MORE_GROUP, ONE_LINK_GROUP } from '@/constant/dashboard'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { sortByIndex, groupByKey } from '@/helper'
 
 import Tooltip from '@/widgets/Tooltip'
@@ -13,6 +15,8 @@ import type { TProps, TLinkGroup } from './spec'
 import { Wrapper, LinkItem, GroupItem, ArrowIcon, MenuPanel } from './styles/header_template'
 
 const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold }) => {
+  const primaryColor = usePrimaryColor()
+
   if (!showMoreFold) return null
 
   return (
@@ -20,7 +24,7 @@ const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold }) => {
       content={
         <MenuPanel>
           {links.map((item: TLinkItem) => (
-            <LinkItem key={item.index} href={item.link}>
+            <LinkItem key={item.index} href={item.link} primaryColor={primaryColor}>
               {item.title}
             </LinkItem>
           ))}
@@ -38,6 +42,7 @@ const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold }) => {
 }
 
 const ExtraLinks: FC<TProps> = ({ links }) => {
+  const primaryColor = usePrimaryColor()
   const [animateRef] = useAutoAnimate()
 
   // @ts-ignore
@@ -54,7 +59,9 @@ const ExtraLinks: FC<TProps> = ({ links }) => {
         return (
           <Fragment key={groupTitle}>
             {startsWith(ONE_LINK_GROUP, groupTitle) ? (
-              <LinkItem href={curGroupLinks[0].link}>{curGroupLinks[0].title}</LinkItem>
+              <LinkItem href={curGroupLinks[0].link} primaryColor={primaryColor}>
+                {curGroupLinks[0].title}
+              </LinkItem>
             ) : (
               <LinkGroup
                 groupTitle={groupTitle}
@@ -69,4 +76,4 @@ const ExtraLinks: FC<TProps> = ({ links }) => {
   )
 }
 
-export default ExtraLinks
+export default observer(ExtraLinks)

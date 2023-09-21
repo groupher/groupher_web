@@ -1,4 +1,7 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react'
+
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import { Wrapper, Item } from './styles/outline'
 
@@ -21,10 +24,12 @@ const items = [
 ]
 
 const Outline: FC = () => {
+  const primaryColor = usePrimaryColor()
+
   return (
     <Wrapper>
       {items.map((item) => (
-        <Item key={item.id} $active={item.active}>
+        <Item key={item.id} $active={item.active} primaryColor={primaryColor}>
           {item.title}
         </Item>
       ))}
@@ -32,4 +37,4 @@ const Outline: FC = () => {
   )
 }
 
-export default Outline
+export default observer(Outline)
