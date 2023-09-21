@@ -30,6 +30,16 @@ export const Moderator = T.model('Moderator', {
   user: T.opt(SimpleUser, {}),
 })
 
+// TODO:
+const DashboardBaseInfo = T.model('DashboardBaseInfo', {
+  homepage: T.opt(T.str, ''),
+})
+
+// TODO:
+const Dashboard = T.model('Dashboard', {
+  baseInfo: T.maybeNull(DashboardBaseInfo),
+})
+
 export const Community = T.model('Community', {
   id: T.maybeNull(T.string),
   title: T.maybeNull(T.string),
@@ -48,6 +58,7 @@ export const Community = T.model('Community', {
   threads: T.opt(T.array(Thread), []),
   pending: T.opt(T.int, 0),
   moderators: T.opt(T.array(Moderator), []),
+  dashboard: T.maybeNull(Dashboard),
 
   ...timestampFields(),
 })

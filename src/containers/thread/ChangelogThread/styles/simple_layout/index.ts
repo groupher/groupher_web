@@ -8,8 +8,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.column('align-center')};
-  width: 100%;
-  margin-left: ${({ isSidebarLayout }) => (isSidebarLayout ? '-60px' : '0')};
+  width: ${({ isSidebarLayout }) => (isSidebarLayout ? 'auto' : '100%')};
 `
 export const Banner = styled.div<{ alignLeft: boolean }>`
   ${css.column('align-both')};

@@ -1,6 +1,11 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
-import type { TCommunity } from '@/spec'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
+import { prettyURL } from '@/fmt'
+
+import ArrowLinker from '@/widgets/ArrowLinker'
+import { Row } from '@/widgets/Common'
 
 import {
   Wrapper,
@@ -11,25 +16,33 @@ import {
   Title,
   Digest,
   Desc,
+  GlobalIcon,
 } from '../styles/sidebar_layout/community_brief'
 // import { subscribeCommunity, unsubscribeCommunity } from '../logic'
 
-type TProps = {
-  community: TCommunity
-}
+const CommunityBrief: FC = () => {
+  const { logo, slug, title, desc, dashboard } = useViewingCommunity()
+  const { baseInfo } = dashboard
 
-const CommunityBrief: FC<TProps> = ({ community }) => {
   return (
     <Wrapper>
       <MainWrapper>
         <LogoWrapper>
-          <Logo src={community.logo} slug={community.slug} />
+          <Logo src={logo} slug={slug} />
         </LogoWrapper>
         <CommunityInfo>
-          <Title>Groupher</Title>
+          <Title>{title}</Title>
           <Digest>
-            <Desc>让你的产品聆听用户的声音</Desc>
+            <Desc>{desc}</Desc>
           </Digest>
+          {baseInfo.homepage && (
+            <ArrowLinker href={baseInfo.homepage} top={15} bold>
+              <Row>
+                <GlobalIcon />
+                {prettyURL(baseInfo.homepage)}
+              </Row>
+            </ArrowLinker>
+          )}
         </CommunityInfo>
         {/* <SocialWrapper>
           SOcial
@@ -39,4 +52,4 @@ const CommunityBrief: FC<TProps> = ({ community }) => {
   )
 }
 
-export default memo(CommunityBrief)
+export default observer(CommunityBrief)

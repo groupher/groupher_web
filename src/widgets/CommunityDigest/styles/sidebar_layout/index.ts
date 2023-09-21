@@ -12,7 +12,9 @@ type TWrapper = {
   metric?: TMetric
 }
 export const Wrapper = styled(BaseBanner)<TWrapper>`
-  width: 380px;
+  width: 280px;
+  max-width: 280px;
+  margin-left: -50px;
   border-right: 1px solid transparent;
   border-image: linear-gradient(
     0.4turn,
@@ -25,16 +27,17 @@ export const Wrapper = styled(BaseBanner)<TWrapper>`
 
   border-image-slice: 1;
 `
+export const InnerWrapper = styled.div``
+
 export const TabBarWrapper = styled.div`
   ${css.row('align-center', 'justify-start')};
-  margin-left: 42px;
-  margin-top: 20px;
+  margin-left: 10px;
+  transform: scale(1.05);
 `
 export const Divider = styled(SexyDivider)`
-  width: 180px;
-  margin-left: 32px;
+  width: 200px;
+  margin-left: -10px;
 `
 export const FileTreeWrapper = styled.div`
-  padding-left: 32px;
   margin-top: 20px;
 `

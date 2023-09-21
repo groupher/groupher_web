@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 
-import type { TActive } from '@/spec'
-import css, { theme } from '@/css'
+import type { TActive, TPrimaryColor } from '@/spec'
+import css, { theme, primaryTheme } from '@/css'
 // import Img from '@/Img'
 
 import LinkOutSVG from '@/icons/LinkOut'
@@ -18,20 +18,17 @@ export const Wrapper = styled.div`
   ${css.column()};
   width: 100%;
   margin-top: 10px;
-  padding: 5px 40px;
 `
-export const MenuItem = styled(Link)<TActive>`
+export const MenuItem = styled(Link)`
   ${css.row('align-center')};
   width: 160px;
   text-decoration: none;
-  height: 30px;
+  padding-left: 8px;
+  height: 28px;
   margin-top: 3px;
   margin-bottom: 3px;
-  background: ${({ $active }) => ($active ? theme('article.title') : 'transparent')};
-  /* background: ${({ $active }) => ($active ? theme('article.title') : 'transparent')}; */
+  margin-left: 0px;
   border-radius: 10px;
-  margin-left: -5px;
-  padding-left: 10px;
   cursor: pointer;
 
   &:hover {
@@ -40,7 +37,18 @@ export const MenuItem = styled(Link)<TActive>`
     cursor: pointer;
   }
 `
+type TMenuTitle = TActive & TPrimaryColor
+export const MenuTitle = styled.div<TMenuTitle>`
+  color: ${({ $active, primaryColor }) =>
+    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+  font-weight: ${({ $active }) => ($active ? 550 : 400)};
+  font-size: 13px;
+  margin-left: 10px;
 
+  ${MenuItem}:hover & {
+    color: ${({ primaryColor }) => primaryTheme(primaryColor)};
+  }
+`
 export const IconWrapper = styled.div`
   ${css.size(16)};
   ${css.row('align-both')};
@@ -70,13 +78,6 @@ export const InfoIcon = styled(InfoSVG)<TActive>`
 export const TadaIcon = styled(TadaSVG)<TActive>`
   ${css.size(15)};
   fill: ${({ $active }) => ($active ? 'white' : theme('article.digest'))};
-`
-
-export const MenuTitle = styled.div<TActive>`
-  color: ${({ $active }) => ($active ? 'white' : theme('article.title'))};
-  /* font-weight: ${({ $active }) => ($active ? 500 : 400)}; */
-  font-size: 14px;
-  margin-left: 10px;
 `
 
 export const OutLinkIcon = styled(LinkOutSVG)<TActive>`

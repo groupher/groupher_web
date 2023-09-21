@@ -4,18 +4,21 @@
  *
  */
 
-import { FC, Fragment, memo, useState } from 'react'
+import { FC, Fragment, useState } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TArticleCat } from '@/spec'
 
 import { ARTICLE_CAT, ARTICLE_STATE_MODE } from '@/constant/gtd'
 import TYPE from '@/constant/type'
+import { BANNER_LAYOUT } from '@/constant/layout'
+import useBannerLayout from '@/hooks/useBannerLayout'
 
 import { buildLog } from '@/logger'
 
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 import { Space, SpaceGrow, DesktopOnly } from '@/widgets/Common'
-
+import PublishButton from '@/widgets/Buttons/PublishButton'
+import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 import CatSelector from '@/widgets/CatSelector'
 import StateSelector from '@/widgets/StateSelector'
 
@@ -25,7 +28,7 @@ import SortFilter from './SortFilter'
 // import FilterResult from './FilterResult'
 
 import type { TProps } from '.'
-import { Wrapper } from './styles'
+import { Wrapper, PublishWrapper } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:ArticlesFilter:index')
@@ -38,6 +41,7 @@ const ArticlesFilter: FC<TProps> = ({
   onSearch = log,
   closeSearch = log,
 }) => {
+  const bannerLayout = useBannerLayout()
   const [activeCat, setActiveCat] = useState<TArticleCat>(ARTICLE_CAT.ALL)
 
   // const { activeThread } = useViewing()
@@ -59,9 +63,22 @@ const ArticlesFilter: FC<TProps> = ({
         </Fragment>
       )}
 
-      <SearchBox searchMode={searchMode} onSearch={onSearch} closeSearch={closeSearch} />
+      {bannerLayout === BANNER_LAYOUT.SIDEBAR ? (
+        <PublishWrapper>
+          <PublishButton
+            thread="post"
+            community="home"
+            mode="sidebar_layout_header"
+            text="参与讨论"
+            onClick={() => console.log('## publish')}
+            onMenuSelect={() => console.log('## on publish')}
+          />
+        </PublishWrapper>
+      ) : (
+        <SearchBox searchMode={searchMode} onSearch={onSearch} closeSearch={closeSearch} />
+      )}
     </Wrapper>
   )
 }
 
-export default memo(ArticlesFilter)
+export default observer(ArticlesFilter)

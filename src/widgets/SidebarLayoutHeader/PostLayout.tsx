@@ -2,19 +2,22 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
-import PublishButton from '@/widgets/Buttons/PublishButton'
+import useAccount from '@/hooks/useAccount'
+import useAvatarLayout from '@/hooks/useAvatarLayout'
+
+import { SpaceGrow, SexyDivider } from '@/widgets/Common'
 
 import {
   Wrapper,
-  EmptySpace,
+  InnerWrapper,
   Menu,
   MenuItem,
   MainArea,
-  PublishWrapper,
-  AccountWrapper,
   AccountIcon,
+  AccountAvatar,
   Icon,
 } from './styles/post_layout'
 
@@ -23,34 +26,29 @@ type TProps = {
 }
 
 const PostLayout: FC<TProps> = ({ testid = 'sidebar-layout-header' }) => {
-  return (
-    <Wrapper testid={testid}>
-      <EmptySpace />
-      <MainArea>
-        <Menu>
-          <Icon.Discuss />
-          <MenuItem>讨论区</MenuItem>
-        </Menu>
-        <PublishWrapper>
-          <PublishButton
-            thread="post"
-            community="home"
-            mode="sidebar_layout_header"
-            text="参与讨论"
-            onClick={() => console.log('## publish')}
-            onMenuSelect={() => console.log('## on publish')}
-            menuLeft
+  const accountInfo = useAccount()
+  const avatarLayout = useAvatarLayout()
 
-            // onClick={() => onPublish(ARTICLE_CAT.FEATURE)}
-            // onMenuSelect={onPublish}
-          />
-        </PublishWrapper>
-      </MainArea>
-      <AccountWrapper>
-        <AccountIcon />
-      </AccountWrapper>
+  return (
+    <Wrapper>
+      <InnerWrapper testid={testid}>
+        <MainArea>
+          <Menu>
+            <Icon.Discuss />
+            <MenuItem>搜索内容</MenuItem>
+          </Menu>
+          <SpaceGrow />
+          {accountInfo.isLogin ? (
+            <AccountAvatar src={accountInfo.avatar} avatarLayout={avatarLayout} />
+          ) : (
+            <AccountIcon />
+          )}
+        </MainArea>
+      </InnerWrapper>
+
+      <SexyDivider />
     </Wrapper>
   )
 }
 
-export default memo(PostLayout)
+export default observer(PostLayout)

@@ -31,7 +31,6 @@ export const CurveLine = styled.div`
     content: '';
     ${css.circle(20)};
     background: ${theme('alphaBg2')};
-    /* background: tomato; */
     position: absolute;
     bottom: -3px;
     right: 7px;

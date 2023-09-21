@@ -4,12 +4,11 @@
 
 import { FC } from 'react'
 
-import type { TMetric } from '@/spec'
-import METRIC from '@/constant/metric'
-
 import { bond } from '@/mobx'
 import { BANNER_LAYOUT } from '@/constant/layout'
 import { THREAD } from '@/constant/thread'
+import useMetric from '@/hooks/useMetric'
+import useBannerLayout from '@/hooks/useBannerLayout'
 
 import ArticlesThread from '@/containers//thread/ArticlesThread'
 import CommunityDigest from '@/widgets/CommunityDigest'
@@ -22,26 +21,25 @@ import { Wrapper, SidebarWrapper, InnerWrapper, ContentWrapper, MobileCardsWrapp
 
 type TProps = {
   communityContent?: TStore
-  metric?: TMetric
 }
 
 /**
  * only for AboutThread, but link to the common communityContent store
  */
-const CommunityContentContainer: FC<TProps> = ({
-  communityContent: store,
-  metric = METRIC.COMMUNITY,
-}) => {
+const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   useInit(store)
+  const metric = useMetric()
+  const bannerLayout = useBannerLayout()
 
-  const { globalLayout, isMobile } = store
+  const { isMobile } = store
 
-  const isSidebarLayout = globalLayout.banner === BANNER_LAYOUT.SIDEBAR
+  const isSidebarLayout = bannerLayout === BANNER_LAYOUT.SIDEBAR
   const LayoutWrapper = isSidebarLayout ? SidebarWrapper : Wrapper
 
   return (
     <LayoutWrapper testid="post-thread-content">
       <CommunityDigest />
+
       {isMobile && (
         <MobileCardsWrapper>
           <ContentWrapper>
@@ -51,9 +49,9 @@ const CommunityContentContainer: FC<TProps> = ({
       )}
 
       {!isMobile && (
-        <InnerWrapper metric={metric}>
-          {isSidebarLayout && <SidebarLayoutHeader thread={THREAD.POST} />}
+        <InnerWrapper metric={metric} bannerLayout={bannerLayout}>
           <ContentWrapper>
+            {isSidebarLayout && <SidebarLayoutHeader thread={THREAD.POST} />}
             <ArticlesThread />
           </ContentWrapper>
         </InnerWrapper>

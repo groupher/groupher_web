@@ -1,18 +1,20 @@
 import styled from 'styled-components'
 
 import css, { WIDTH, theme } from '@/css'
-
 import ArrowSVG from '@/icons/Arrow'
+import HomeSVG from '@/icons/Home'
 import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
 
 export const Wrapper = styled.div`
   ${css.column('align-center')};
+  margin-top: 20%;
+  padding-left: 8px;
+  width: 180px;
 `
 export const MainWrapper = styled.div`
   width: 100%;
   max-width: ${WIDTH.COMMUNITY.CONTENT};
   position: relative;
-  padding: 0 35px;
 `
 export const LogoWrapper = styled.div`
   position: relative;
@@ -43,7 +45,17 @@ export const ArrowIcon = styled(ArrowSVG)`
   opacity: 0.8;
   margin-right: 5px;
 `
+export const GlobalIcon = styled(HomeSVG)`
+  ${css.size(12)};
+  fill: ${theme('article.digest')};
+  margin-left: 1px;
+  margin-right: 10px;
+  margin-top: 1px;
+`
+
 export const Desc = styled.div`
-  color: ${theme('hint')};
+  color: ${theme('article.digest')};
   font-size: 13px;
+  margin-top: 3px;
+  ${css.lineClamp(2)};
 `
