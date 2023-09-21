@@ -62,7 +62,7 @@ const PublishButton: FC<TProps> = ({
   const menuOptions = MORE_MENU[mode]
   const hasNoMenu = isEmpty(menuOptions)
 
-  const offset = [5, 15]
+  const offset = [0, 15]
 
   return (
     <Wrapper>
