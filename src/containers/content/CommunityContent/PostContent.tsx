@@ -11,8 +11,8 @@ import { bond } from '@/mobx'
 import { BANNER_LAYOUT } from '@/constant/layout'
 import { THREAD } from '@/constant/thread'
 
-import CommunityDigest from '@/containers/digest/CommunityDigest'
 import ArticlesThread from '@/containers//thread/ArticlesThread'
+import CommunityDigest from '@/widgets/CommunityDigest'
 import SidebarLayoutHeader from '@/widgets/SidebarLayoutHeader'
 
 import type { TStore } from './store'
@@ -41,7 +41,7 @@ const CommunityContentContainer: FC<TProps> = ({
 
   return (
     <LayoutWrapper testid="post-thread-content">
-      <CommunityDigest metric={metric} />
+      <CommunityDigest />
       {isMobile && (
         <MobileCardsWrapper>
           <ContentWrapper>

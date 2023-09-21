@@ -6,7 +6,7 @@ import { FC } from 'react'
 
 import { bond } from '@/mobx'
 
-import CommunityDigest from '@/containers/digest/CommunityDigest'
+import CommunityDigest from '@/widgets/CommunityDigest'
 import ThreadContent from './ThreadContent'
 
 import type { TStore } from './store'

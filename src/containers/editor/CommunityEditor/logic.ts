@@ -5,7 +5,7 @@ import { confetti } from 'tsparticles-confetti'
 import type { TEditValue } from '@/spec'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
-import { sessionChanged, errRescue } from '@/signal'
+import { errRescue } from '@/signal'
 import asyncSuit from '@/async'
 import { buildLog } from '@/logger'
 import { updateEditing } from '@/mobx'
@@ -209,14 +209,6 @@ const ErrSolver = [
   },
 ]
 
-export const initAccount = () => {
-  const { isLogin, accountInfo } = store
-
-  if (isLogin) {
-    sessionChanged(accountInfo)
-  }
-}
-
 // ###############################
 // init & uninit
 // ###############################
@@ -225,8 +217,6 @@ export const useInit = (_store: TStore): void => {
     store = _store
     // log('effect init')
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
-
-    initAccount()
 
     if (store.isLogin) {
       checkPendingApply()

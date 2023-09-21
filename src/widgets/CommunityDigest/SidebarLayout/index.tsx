@@ -1,9 +1,11 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 // import Router from 'next/router'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TMetric } from '@/spec'
 
+import useMetric from '@/hooks/useMetric'
 import EVENT from '@/constant/event'
 import { THREAD } from '@/constant/thread'
 import { DEME_SOCIALS } from '@/constant/social'
@@ -32,11 +34,8 @@ import { Wrapper, FileTreeWrapper, TabBarWrapper, Divider } from '../styles/side
 // 没有各种外链接，打赏信息等的官方社区
 // const NON_STANDARD_COMMUNITIES = [HCN, 'feedback']
 
-type TProps = {
-  metric: TMetric
-}
-
-const SidebarLayout: FC<TProps> = ({ metric }) => {
+const SidebarLayout: FC = () => {
+  const metric = useMetric()
   const { isMobile } = useMobileDetect()
 
   const community = useViewingCommunity()
@@ -82,4 +81,4 @@ const SidebarLayout: FC<TProps> = ({ metric }) => {
   )
 }
 
-export default memo(SidebarLayout)
+export default observer(SidebarLayout)

@@ -1,35 +1,19 @@
-import { useState, useEffect } from 'react'
-// import { merge } from 'ramda'
+import { useContext } from 'react'
+import { MobXProviderContext } from 'mobx-react'
 
-import EVENT from '@/constant/event'
 import type { TAccount } from '@/spec'
 
-import BStore from '@/utils/bstore'
-import { Global } from '@/helper'
+/**
+ * NOTE: should use observer to wrap the component who use this hook
+ */
+const useAccount = (): TAccount => {
+  const { store } = useContext(MobXProviderContext)
 
-const initState = {}
+  if (store === null) {
+    throw new Error('Store cannot be null, please add a context provider')
+  }
 
-const useAccount = (): TAccount | null => {
-  const [account, setAccountInfo] = useState(initState)
-
-  /* eslint-disable */
-  useEffect(() => {
-    function checkAccount() {
-      const item = BStore.get('accountInfo')
-
-      if (item) {
-        setAccountInfo(item)
-      }
-    }
-
-    Global.addEventListener(EVENT.SESSION_CHANGED, checkAccount)
-
-    return () => {
-      Global.removeEventListener(EVENT.SESSION_CHANGED, checkAccount)
-    }
-  }, [])
-
-  return account
+  return store.account.accountInfo
 }
 
 export default useAccount

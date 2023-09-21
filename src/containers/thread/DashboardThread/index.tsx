@@ -10,7 +10,8 @@ import { includes } from 'ramda'
 import { bond } from '@/mobx'
 import { ROUTE, DASHBORD_CMS_ROUTES } from '@/constant/route'
 
-import type { TMetric } from '@/spec'
+import useMetric from '@/hooks/useMetric'
+
 import SideMenu from './SideMenu'
 import CMS from './CMS'
 
@@ -42,15 +43,14 @@ import { useInit } from './logic'
 type TProps = {
   dashboardThread?: TStore
   testid?: string
-  metric: TMetric
 }
 
 const DashboardThreadContainer: FC<TProps> = ({
   dashboardThread: store,
   testid = 'dashboard-thread',
-  metric,
 }) => {
   useInit(store)
+  const metric = useMetric()
 
   const {
     curTab,

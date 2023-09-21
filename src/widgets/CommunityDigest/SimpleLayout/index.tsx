@@ -1,9 +1,10 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react'
 
-import type { TMetric } from '@/spec'
 import { ANCHOR } from '@/constant/dom'
 import useHeaderLinks from '@/hooks/useHeaderLinks'
+import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
+import useMetric from '@/hooks/useMetric'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
 import MobileThreadNavi from '@/widgets/MobileThreadNavi'
@@ -22,14 +23,10 @@ import {
   MobileNaviWrapper,
 } from '../styles/simple_layout'
 
-import { setViewport } from '../logic'
-
-type TProps = {
-  metric: TMetric
-}
-
-const SimpleLayout: FC<TProps> = ({ metric }) => {
+const SimpleLayout: FC = () => {
+  const metric = useMetric()
   const { layout: headerLayout } = useHeaderLinks()
+  const { enterView, leaveView } = useCommunityDigestViewport()
 
   return (
     <Wrapper
@@ -54,7 +51,7 @@ const SimpleLayout: FC<TProps> = ({ metric }) => {
           </CommunityBaseInfo>
         </BannerContentWrapper>
       </InnerWrapper>
-      <ViewportTracker onEnter={() => setViewport(true)} onLeave={() => setViewport(false)} />
+      <ViewportTracker onEnter={enterView} onLeave={leaveView} />
     </Wrapper>
   )
 }
