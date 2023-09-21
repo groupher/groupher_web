@@ -5,9 +5,11 @@
  */
 
 import { FC, memo, ReactNode } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TSpace } from '@/spec'
 import { buildLog } from '@/logger'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import { Link } from '@/widgets/Common'
 
@@ -32,14 +34,18 @@ const ArrowLinker: FC<TProps> = ({
   children,
   ...restProps
 }) => {
+  const primaryColor = usePrimaryColor()
+
   return (
     <Link href={href} target={target}>
       <Wrapper testid={testid} {...restProps}>
-        <Title fontSize={fontSize}>{children}</Title>
-        <ArrowIcon fontSize={fontSize} />
+        <Title fontSize={fontSize} primaryColor={primaryColor}>
+          {children}
+        </Title>
+        <ArrowIcon fontSize={fontSize} primaryColor={primaryColor} />
       </Wrapper>
     </Link>
   )
 }
 
-export default memo(ArrowLinker)
+export default observer(ArrowLinker)

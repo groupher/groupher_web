@@ -44,6 +44,14 @@ export const primaryTheme = (primaryColor: TColorName, themeKey = 'primary'): st
   return COLORS[primaryColor]
 }
 
+export const primaryLink = (primaryColor: TColorName): string => {
+  if (primaryColor === COLOR_NAME.BLACK) {
+    return theme('link')
+  }
+
+  return COLORS[primaryColor]
+}
+
 export const primaryLightTheme = (primaryColor: TColorName): string => {
   return theme(`baseColor.${camelize(primaryColor)}Bg`)
 }

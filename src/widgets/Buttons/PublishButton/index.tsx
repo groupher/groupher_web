@@ -17,8 +17,9 @@ import SVG from '@/constant/svg'
 
 import Tooltip from '@/widgets/Tooltip'
 import { buildLog } from '@/logger'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 // import { authWarn } from '@/signal'
-import useAccount from '@/hooks/useAccount'
+// import useAccount from '@/hooks/useAccount'
 
 import { MORE_MENU } from './constant'
 import IconButton from '../IconButton'
@@ -53,8 +54,10 @@ const PublishButton: FC<TProps> = ({
   onMenuSelect = log,
   menuLeft = false,
 }) => {
+  const primaryColor = usePrimaryColor()
+
   const [show, setShow] = useState(false)
-  const accountInfo = useAccount()
+  // const accountInfo = useAccount()
 
   const menuOptions = MORE_MENU[mode]
   const hasNoMenu = isEmpty(menuOptions)
@@ -87,6 +90,7 @@ const PublishButton: FC<TProps> = ({
           // const url = getTargetPage(community, thread)
           // Router.push(url)
         }}
+        primaryColor={primaryColor}
       >
         {mode === PUBLISH_MODE.DEFAULT && <PostLayout text={text} />}
         {mode === PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER && <SidebarHeaderLayout text={text} />}

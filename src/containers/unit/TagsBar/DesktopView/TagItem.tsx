@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import type { TTag } from '@/spec'
+import type { TColorName, TTag } from '@/spec'
 import { cutRest } from '@/fmt'
 import { Trans } from '@/i18n'
 
@@ -17,13 +17,18 @@ type TProps = {
 
 const TagItem: FC<TProps> = ({ tag, active, onSelect }) => {
   return (
-    <Wrapper $active={active}>
+    <Wrapper $active={active} primaryColor={tag.color as TColorName}>
       {tag.color && (
         <DotWrapper>
           <DotSign color={tag.color} $active={active} />
         </DotWrapper>
       )}
-      <Tag $active={active} color={tag.color} onClick={() => onSelect(tag)}>
+      <Tag
+        $active={active}
+        primaryColor={tag.color as TColorName}
+        color={tag.color}
+        onClick={() => onSelect(tag)}
+      >
         <Title>{cutRest(Trans(tag.title), 10)}</Title>
         {/* <RawWrapper $active={active}>
           <DotDivider radius={2} space={6} />

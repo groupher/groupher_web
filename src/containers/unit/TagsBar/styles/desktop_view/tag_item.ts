@@ -1,15 +1,15 @@
 import styled from 'styled-components'
 
-import type { TActive } from '@/spec'
+import type { TActive, TPrimaryColor } from '@/spec'
 
-import css, { theme } from '@/css'
+import css, { theme, primaryLightTheme } from '@/css'
 import { camelize } from '@/fmt'
 
 import Img from '@/Img'
 
 import { TagsWrapper } from '.'
 
-type TTag = TActive & { color?: string }
+type TTag = TActive & { color?: string } & TPrimaryColor
 
 export const Wrapper = styled.div<TTag>`
   ${css.row('align-center')};
@@ -18,10 +18,11 @@ export const Wrapper = styled.div<TTag>`
   max-width: 180px;
   border-radius: 8px;
 
-  background: ${({ $active }) => (!$active ? 'transparent' : theme('hoverBg'))};
+  background: ${({ $active, primaryColor }) =>
+    $active ? primaryLightTheme(primaryColor) : 'transparent'};
 
   &:hover {
-    background: ${theme('hoverBg')};
+    background: ${({ primaryColor }) => primaryLightTheme(primaryColor)};
     cursor: pointer;
   }
 `
@@ -33,6 +34,7 @@ export const AllTagIcon = styled(Img)`
 `
 export const DotWrapper = styled.div`
   ${css.size(15)};
+  ${css.row('align-both')};
   margin-right: 6px;
   margin-left: 2px;
 `
@@ -40,8 +42,6 @@ type THashSign = TActive & { color?: string }
 export const DotSign = styled.div<THashSign>`
   ${css.circle(8)};
   background: ${({ color }) => (color ? theme(`baseColor.${camelize(color)}`) : 'none')};
-  margin-top: 3px;
-  margin-left: 2px;
   opacity: ${({ $active }) => ($active ? 1 : theme('tags.dotOpacity'))};
 
   ${Wrapper}:hover & {

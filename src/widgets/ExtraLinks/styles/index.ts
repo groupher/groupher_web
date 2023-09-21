@@ -1,24 +1,27 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 
-import type { TActive } from '@/spec'
-import css, { theme } from '@/css'
+import type { TActive, TPrimaryColor } from '@/spec'
+import css, { theme, primaryTheme } from '@/css'
 import ArrowSVG from '@/icons/ArrowSimple'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};
 `
-export const LinkItem = styled(Link)<TActive>`
-  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
+type TLinkItem = TActive & TPrimaryColor
+
+export const LinkItem = styled(Link)<TLinkItem>`
+  color: ${({ $active, primaryColor }) =>
+    $active ? primaryTheme(primaryColor) : theme('article.digest')};
   background: ${({ $active }) => ($active ? theme('hoverBg') : '')};
 
   text-decoration: none;
-  display: block;
+  display: flex;
   padding: 2px 8px;
   border-radius: 3px;
 
   &:hover {
-    color: ${theme('article.title')};
+    color: ${({ primaryColor }) => primaryTheme(primaryColor)};
     background: ${theme('hoverBg')};
     text-decoration: none;
     cursor: pointer;

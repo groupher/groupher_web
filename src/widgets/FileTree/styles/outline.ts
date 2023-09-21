@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
-import type { TActive } from '@/spec'
-import css, { theme } from '@/css'
+import type { TActive, TPrimaryColor } from '@/spec'
+import css, { theme, primaryTheme } from '@/css'
 
 // import Img from '@/Img'
 
@@ -12,18 +12,21 @@ export const Wrapper = styled.div`
   margin-bottom: 5px;
   margin-left: 6px;
 `
-export const Item = styled.div<TActive>`
+type TItem = TActive & TPrimaryColor
+export const Item = styled.div<TItem>`
   ${css.lineClamp(1)};
   padding-left: 14px;
   position: relative;
   padding-top: 5px;
   padding-bottom: 4px;
-  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
-  font-weight: ${({ $active }) => ($active ? 600 : 400)};
+  color: ${({ $active, primaryColor }) =>
+    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+  font-weight: ${({ $active }) => ($active ? 500 : 400)};
   border-left: 1px solid transparent;
-  border-left-color: ${({ $active }) => ($active ? theme('article.title') : theme('divider'))};
+  border-left-color: ${({ $active, primaryColor }) =>
+    $active ? primaryTheme(primaryColor) : theme('divider')};
 
   &:hover {
-    color: ${theme('article.title')};
+    color: ${({ primaryColor }) => primaryTheme(primaryColor)};
   }
 `

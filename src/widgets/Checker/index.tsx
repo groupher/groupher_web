@@ -5,6 +5,7 @@
  */
 
 import { FC, ReactNode, memo } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TSizeSM, TSpace } from '@/spec'
 import SIZE from '@/constant/size'
@@ -55,4 +56,4 @@ const Checker: FC<TProps> = ({
   )
 }
 
-export default memo(Checker)
+export default observer(Checker)
