@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 
-import type { TActive } from '@/spec'
+import type { TActive, TPrimaryColor } from '@/spec'
 import { GRADIENT_DIRECTION } from '@/constant/wallpaper'
 
-import css, { theme } from '@/css'
+import css, { theme, primaryTheme } from '@/css'
 import ArrowSVG from '@/icons/ArrowSolid'
 
 const metric = {
@@ -39,12 +39,6 @@ export const Wrapper = styled.div`
   border-color: ${theme('divider')};
   position: relative;
   margin-top: 26px;
-
-  &:hover {
-    background: ${theme('hoverBg')};
-  }
-
-  transition: all 0.2s;
 `
 export const NeedleDot = styled.div`
   ${css.circle(4)};
@@ -65,7 +59,8 @@ export const Needle = styled.div<{ direction: string }>`
   transform: ${({ direction }) => `rotate(${metric[direction].rotate}) `};
   transform-origin: right;
 `
-const Point = styled.div<TActive>`
+type TPoint = TActive & TPrimaryColor
+const Point = styled.div<TPoint>`
   position: absolute;
   font-size: 8px;
   ${css.circle(16)};
@@ -73,12 +68,14 @@ const Point = styled.div<TActive>`
   z-index: 2;
 
   font-weight: ${({ $active }) => ($active ? 600 : 'bormal')};
-  background: ${({ $active }) => ($active ? theme('article.title') : theme('divider'))};
+  background: ${({ $active, primaryColor }) =>
+    $active ? primaryTheme(primaryColor) : theme('divider')};
   color: ${({ $active }) => (!$active ? theme('article.title') : 'white')};
   border: 1px solid transparent;
 
   &:hover {
     border-color: ${theme('article.digest')};
+    border-color: ${({ primaryColor }) => primaryTheme(primaryColor)};
     font-weight: 600;
     cursor: pointer;
     color: white;
