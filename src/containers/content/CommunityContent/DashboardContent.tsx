@@ -10,8 +10,8 @@ import METRIC from '@/constant/metric'
 
 import { bond } from '@/mobx'
 
-import CommunityDigest from '@/containers/digest/CommunityDigest'
 import DashboardThread from '@/containers//thread/DashboardThread'
+import CommunityDigest from '@/widgets/CommunityDigest'
 
 import type { TStore } from './store'
 import { useInit } from './logic'
@@ -38,17 +38,17 @@ const DashboardContainer: FC<TProps> = ({ communityContent: store, metric = METR
 
   return (
     <Wrapper testid="dashboard-thread-content">
-      <CommunityDigest metric={metric} />
+      <CommunityDigest />
       {isMobile ? (
         <MobileCardsWrapper>
           <ContentWrapper>
-            <DashboardThread metric={metric} />
+            <DashboardThread />
           </ContentWrapper>
         </MobileCardsWrapper>
       ) : (
         <InnerWrapper metric={metric}>
           <ContentWrapper>
-            <DashboardThread metric={metric} />
+            <DashboardThread />
           </ContentWrapper>
         </InnerWrapper>
       )}

@@ -22,7 +22,8 @@ export const Wrapper = styled.div<TTag>`
     $active ? primaryLightTheme(primaryColor) : 'transparent'};
 
   &:hover {
-    background: ${({ primaryColor }) => primaryLightTheme(primaryColor)};
+    background: ${({ $active, primaryColor }) =>
+      $active ? primaryLightTheme(primaryColor) : theme('hoverBg')};
     cursor: pointer;
   }
 `

@@ -11,8 +11,8 @@ import METRIC from '@/constant/metric'
 import { bond } from '@/mobx'
 import { BANNER_LAYOUT } from '@/constant/layout'
 
-import CommunityDigest from '@/containers/digest/CommunityDigest'
 import ChangelogThread from '@/containers/thread/ChangelogThread'
+import CommunityDigest from '@/widgets/CommunityDigest'
 
 import type { TStore } from './store'
 import { useInit } from './logic'
@@ -39,7 +39,7 @@ const CommunityContentContainer: FC<TProps> = ({
 
   return (
     <LayoutWrapper testid="changelog-thread-content">
-      <CommunityDigest metric={metric} />
+      <CommunityDigest />
       {isMobile ? (
         <MobileCardsWrapper>
           <ContentWrapper>

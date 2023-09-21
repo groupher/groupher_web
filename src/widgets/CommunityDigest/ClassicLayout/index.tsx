@@ -3,9 +3,10 @@ import { observer } from 'mobx-react'
 import Router from 'next/router'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TMetric } from '@/spec'
+import useMetric from '@/hooks/useMetric'
 import usePublicThreads from '@/hooks/usePublicThreads'
 import useViewingThread from '@/hooks/useViewingThread'
+import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import { SpaceGrow } from '@/widgets/Common'
@@ -24,17 +25,13 @@ import {
   CustomPart,
 } from '../styles/classic_layout'
 
-import { setViewport } from '../logic'
-
 // 没有各种外链接，打赏信息等的官方社区
 // const NON_STANDARD_COMMUNITIES = [HCN, 'feedback']
 
-type TProps = {
-  metric: TMetric
-}
-
-const ClassicLayout: FC<TProps> = ({ metric }) => {
+const ClassicLayout: FC = () => {
+  const metric = useMetric()
   const { isMobile } = useMobileDetect()
+  const { enterView, leaveView } = useCommunityDigestViewport()
   // const { links: extraLinks, layout: headerLayout } = useHeaderLinks()
   const publicThreads = usePublicThreads()
   const activeThread = useViewingThread()
@@ -63,7 +60,7 @@ const ClassicLayout: FC<TProps> = ({ metric }) => {
           </TabBarWrapper>
         </BannerContentWrapper>
       </InnerWrapper>
-      <ViewportTracker onEnter={() => setViewport(true)} onLeave={() => setViewport(false)} />
+      <ViewportTracker onEnter={enterView} onLeave={leaveView} />
     </Wrapper>
   )
 }

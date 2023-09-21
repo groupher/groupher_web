@@ -31,7 +31,6 @@ export { default as UserListerStore } from '@/containers/user/UserLister/store'
 //
 
 // pages banners store
-export { default as CommunityDigestStore } from '@/containers/digest/CommunityDigest/store'
 export { default as ArticleDigestStore } from '@/containers/digest/ArticleDigest/store'
 
 // contents store

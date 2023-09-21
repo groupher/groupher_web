@@ -38,7 +38,7 @@ const ThreadSidebar = T.model('ThreadSidebar', {})
 
     get isCommunityDigestInViewport(): boolean {
       const root = getParent(self) as TRootStore
-      return root.communityDigest.inViewport
+      return root.communityDigestInView
     },
 
     get realtimeVisitors(): number {

@@ -31,7 +31,6 @@ import {
 
   // threads
   ArticleDigestStore,
-  CommunityDigestStore,
   // content
   CommunityContentStore,
   // ExploreContentStore,
@@ -104,6 +103,8 @@ const rootStore = T.model({
   theme: T.opt(ThemeStore, ThemeDefaults),
   locale: T.opt(T.enum('locale', ['zh', 'en']), 'zh'),
   errorCode: T.maybeNull(T.number),
+
+  communityDigestInView: T.opt(T.bool, true),
   // domain end
 
   // toolbox
@@ -125,7 +126,6 @@ const rootStore = T.model({
 
   // banners
   articleDigest: T.opt(ArticleDigestStore, {}),
-  communityDigest: T.opt(CommunityDigestStore, {}),
 
   // content
   communityContent: T.opt(CommunityContentStore, {}),
