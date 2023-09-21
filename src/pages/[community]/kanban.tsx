@@ -6,7 +6,15 @@ import { HCN } from '@/constant/name'
 import { THREAD } from '@/constant/thread'
 import { useStore } from '@/stores/init'
 
-import { ssrBaseStates, ssrFetchPrepare, ssrError, ssrRescue, log } from '@/utils'
+import {
+  ssrBaseStates,
+  ssrFetchPrepare,
+  ssrError,
+  ssrParseDashboard,
+  ssrParseWallpaper,
+  ssrRescue,
+  log,
+} from '@/utils'
 
 import GlobalLayout from '@/containers/layout/GlobalLayout'
 import KanbanContent from '@/containers/content/CommunityContent/KanbanContent'
@@ -57,6 +65,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const { community, groupedKanbanPosts } = resp
+  const dashboard = ssrParseDashboard(community)
+  const wallpaper = ssrParseWallpaper(community)
 
   const initProps = merge(
     {
@@ -72,6 +82,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       viewing: {
         community,
         activeThread: thread,
+      },
+      wallpaperEditor: {
+        ...wallpaper,
+      },
+      dashboardThread: {
+        ...dashboard,
       },
     },
     {

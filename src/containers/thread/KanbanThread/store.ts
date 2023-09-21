@@ -32,7 +32,7 @@ const KanbanThread = T.model('KanbanThread', {
     get kanbanBgColors(): TColorName[] {
       const root = getParent(self) as TRootStore
 
-      return root.dashboardThread.kanbanBgColors as TColorName[]
+      return toJS(root.dashboardThread.kanbanBgColors) as TColorName[]
     },
     get todoPosts(): TPagedArticles {
       return toJS(self.todo)

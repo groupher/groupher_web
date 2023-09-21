@@ -4,6 +4,7 @@ import type { TMetric } from '@/spec'
 const METRIC = {
   HOME: 'HOME',
   COMMUNITY: 'COMMUNITY',
+  DOC: 'DOC',
   USER: 'USER',
   // article
   ARTICLE: 'ARTICLE',

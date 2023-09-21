@@ -5,9 +5,6 @@
 import { FC } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TMetric } from '@/spec'
-import METRIC from '@/constant/metric'
-
 import { bond } from '@/mobx'
 import { BANNER_LAYOUT } from '@/constant/layout'
 import { THREAD } from '@/constant/thread'
@@ -20,20 +17,18 @@ import type { TStore } from './store'
 import { useInit } from './logic'
 
 import { Wrapper, InnerWrapper, SidebarWrapper, ContentWrapper, MobileCardsWrapper } from './styles'
+import useMetric from '@/hooks/useMetric'
 
 type TProps = {
   communityContent?: TStore
-  metric?: TMetric
 }
 
 /**
  * only for AboutThread, but link to the common communityContent store
  */
-const CommunityContentContainer: FC<TProps> = ({
-  communityContent: store,
-  metric = METRIC.COMMUNITY,
-}) => {
+const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   useInit(store)
+  const metric = useMetric()
 
   const { globalLayout } = store
   const { isMobile } = useMobileDetect()
