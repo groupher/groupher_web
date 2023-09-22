@@ -24,7 +24,7 @@ const MainMenu: FC = () => {
         const active = activeThread === thread.slug
 
         return (
-          <MenuItem key={thread.slug} href={`/${communityPath}/${thread.slug}`}>
+          <MenuItem key={thread.slug} href={`/${communityPath}/${thread.slug}`} $active={active}>
             <ThreadIcon thread={thread.slug} $active={active} />
             <MenuTitle $active={active} primaryColor={primaryColor}>
               {thread.title}

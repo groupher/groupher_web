@@ -19,8 +19,9 @@ export const Wrapper = styled.div`
   width: 100%;
   margin-top: 10px;
 `
-export const MenuItem = styled(Link)`
+export const MenuItem = styled(Link)<TActive>`
   ${css.row('align-center')};
+  background: ${({ $active }) => ($active ? theme('hoverBg') : 'transparent')};
   width: 160px;
   text-decoration: none;
   padding-left: 8px;

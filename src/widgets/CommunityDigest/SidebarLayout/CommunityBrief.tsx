@@ -1,10 +1,17 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react'
+import Router from 'next/router'
+
+import { BANNER_LAYOUT } from '@/constant/layout'
+import { THREAD } from '@/constant/thread'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useViewingThread from '@/hooks/useViewingThread'
+import useBannerLayout from '@/hooks/useBannerLayout'
 import { prettyURL } from '@/fmt'
 
 import ArrowLinker from '@/widgets/ArrowLinker'
+import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import { Row } from '@/widgets/Common'
 
 import {
@@ -22,6 +29,9 @@ import {
 
 const CommunityBrief: FC = () => {
   const { logo, slug, title, desc, dashboard } = useViewingCommunity()
+  const activeThread = useViewingThread()
+  const bannerLayout = useBannerLayout()
+
   const { baseInfo } = dashboard
 
   return (
@@ -35,7 +45,14 @@ const CommunityBrief: FC = () => {
           <Digest>
             <Desc>{desc}</Desc>
           </Digest>
-          {baseInfo.homepage && (
+
+          {bannerLayout === BANNER_LAYOUT.SIDEBAR && activeThread === THREAD.DOC && (
+            <ArrowButton top={12} left={-2} leftLayout onClick={() => Router.push(`/${slug}`)}>
+              返回社区
+            </ArrowButton>
+          )}
+
+          {bannerLayout !== BANNER_LAYOUT.SIDEBAR && baseInfo.homepage && (
             <ArrowLinker href={baseInfo.homepage} top={15} bold>
               <Row>
                 <GlobalIcon />
