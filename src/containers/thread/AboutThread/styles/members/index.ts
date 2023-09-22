@@ -13,7 +13,6 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   width: 100%;
 `
 export const Block = styled.div`
-  margin-bottom: 30px;
   width: 620px;
 
   ${css.media.mobile`
@@ -22,18 +21,13 @@ export const Block = styled.div`
   `}
 `
 
-export const BottomBlock = styled(Block)`
-  border-top: 1px solid;
-  border-top-color: ${theme('divider')};
-  padding-top: 30px;
-`
 export const Header = styled.div`
   ${css.row('align-center')};
   margin-bottom: 30px;
 `
 export const Title = styled.div`
   ${css.row('align-center')};
-  font-size: 16px;
+  font-size: 14px;
   color: ${theme('article.digest')};
   font-weight: 600;
 `

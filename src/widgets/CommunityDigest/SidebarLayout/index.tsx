@@ -40,8 +40,10 @@ const SidebarLayout: FC = () => {
   const activeThread = useViewingThread()
   const enable = useEnable()
 
+  const narrow = activeThread === THREAD.KANBAN
+
   return (
-    <Wrapper testid="community-digest" isMobile={isMobile}>
+    <Wrapper testid="community-digest" isMobile={isMobile} narrow={narrow}>
       <Sticky>
         <InnerWrapper>
           <CommunityBrief />

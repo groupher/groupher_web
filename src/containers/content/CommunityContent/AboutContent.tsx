@@ -7,6 +7,7 @@ import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
+import useBannerLayout from '@/hooks/useBannerLayout'
 
 import { bond } from '@/mobx'
 import { BANNER_LAYOUT } from '@/constant/layout'
@@ -33,10 +34,10 @@ const CommunityContentContainer: FC<TProps> = ({
 }) => {
   useInit(store)
 
-  const { globalLayout } = store
+  const bannerLayout = useBannerLayout()
   const { isMobile } = useMobileDetect()
 
-  const LayoutWrapper = globalLayout.banner === BANNER_LAYOUT.SIDEBAR ? SidebarWrapper : Wrapper
+  const LayoutWrapper = bannerLayout === BANNER_LAYOUT.SIDEBAR ? SidebarWrapper : Wrapper
 
   return (
     <LayoutWrapper testid="about-thread-content">
@@ -48,9 +49,9 @@ const CommunityContentContainer: FC<TProps> = ({
           </ContentWrapper>
         </MobileCardsWrapper>
       ) : (
-        <InnerWrapper metric={metric}>
+        <InnerWrapper metric={metric} bannerLayout={bannerLayout}>
           <ContentWrapper>
-            <AboutThread isSidebarLayout={globalLayout.banner === BANNER_LAYOUT.SIDEBAR} />
+            <AboutThread isSidebarLayout={bannerLayout === BANNER_LAYOUT.SIDEBAR} />
           </ContentWrapper>
         </InnerWrapper>
       )}

@@ -3,16 +3,13 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  width: 300px;
-  min-width: 300px;
+  ${css.row()};
+  flex-wrap: wrap;
+  width: 100%;
   height: auto;
-  border-left: 1px solid;
-  border-left-color: ${theme('divider')};
-  padding-left: 60px;
   padding-top: 10px;
   padding-bottom: 0;
   margin-top: 20px;
-  margin-left: 70px;
 
   ${css.media.mobile`
     display: none;
@@ -30,6 +27,7 @@ export const MobileWrapper = styled.div`
 
 export const Block = styled.div`
   margin-bottom: 20px;
+  width: 50%;
 `
 
 export const Title = styled.div`

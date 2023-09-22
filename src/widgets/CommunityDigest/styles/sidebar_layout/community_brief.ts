@@ -7,7 +7,6 @@ import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
 
 export const Wrapper = styled.div`
   ${css.column('align-center')};
-  margin-top: 20%;
   padding-left: 8px;
   width: 180px;
 `

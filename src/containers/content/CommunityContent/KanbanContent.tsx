@@ -9,6 +9,7 @@ import METRIC from '@/constant/metric'
 
 import { bond } from '@/mobx'
 import { BANNER_LAYOUT } from '@/constant/layout'
+import useBannerLayout from '@/hooks/useBannerLayout'
 
 import KanbanThread from '@/containers//thread/KanbanThread'
 import CommunityDigest from '@/widgets/CommunityDigest'
@@ -31,10 +32,9 @@ const CommunityContentContainer: FC<TProps> = ({
   metric = METRIC.COMMUNITY,
 }) => {
   useInit(store)
+  const bannerLayout = useBannerLayout()
 
-  const { globalLayout } = store
-
-  const LayoutWrapper = globalLayout.banner === BANNER_LAYOUT.SIDEBAR ? SidebarWrapper : Wrapper
+  const LayoutWrapper = bannerLayout === BANNER_LAYOUT.SIDEBAR ? SidebarWrapper : Wrapper
 
   return (
     <LayoutWrapper testid="kanban-thread-content">
@@ -46,7 +46,7 @@ const CommunityContentContainer: FC<TProps> = ({
       </MobileCardsWrapper>
       <InnerWrapper metric={metric}>
         <ContentWrapper>
-          <KanbanThread isSidebarLayout={globalLayout.banner === BANNER_LAYOUT.SIDEBAR} />
+          <KanbanThread isSidebarLayout={bannerLayout === BANNER_LAYOUT.SIDEBAR} />
         </ContentWrapper>
       </InnerWrapper>
     </LayoutWrapper>

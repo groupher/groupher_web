@@ -1,13 +1,17 @@
 import styled from 'styled-components'
 
-import type { TTestable } from '@/spec'
+import type { TBannerLayout, TTestable } from '@/spec'
 import css, { theme } from '@/css'
+import { BANNER_LAYOUT } from '@/constant'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
+type TWrapper = TTestable & { bannerLayout: TBannerLayout }
+export const Wrapper = styled.div.attrs<TWrapper>(({ testid }) => ({
   'data-test-id': testid,
-}))<TTestable>`
+}))<TWrapper>`
   ${css.row('align-start')};
   width: 100%;
+
+  padding-left: ${({ bannerLayout }) => (bannerLayout === BANNER_LAYOUT.SIDEBAR ? '85px' : '')};
 
   ${css.media.mobile`
     ${css.column('align-start')};
@@ -28,10 +32,7 @@ export const MainWrapper = styled.div<{ isSidebarLayout: boolean }>`
   `};
 `
 export const Block = styled.div`
-  margin-bottom: 30px;
   padding-bottom: 30px;
-  border-bottom: 1px solid;
-  border-bottom-color: ${theme('divider')};
   width: 620px;
 
   ${css.media.mobile`
@@ -48,7 +49,7 @@ export const MemberBlock = styled(Block)`
   border-bottom: none;
 `
 export const Title = styled.div`
-  font-size: 14.5px;
+  font-size: 14px;
   color: ${theme('article.digest')};
   font-weight: 600;
   margin-bottom: 18px;

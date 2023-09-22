@@ -6,13 +6,14 @@ import { FC } from 'react'
 
 import { bond } from '@/mobx'
 import { BANNER_LAYOUT } from '@/constant/layout'
-import { THREAD } from '@/constant/thread'
+// import { THREAD } from '@/constant/thread'
 import useMetric from '@/hooks/useMetric'
 import useBannerLayout from '@/hooks/useBannerLayout'
 
 import ArticlesThread from '@/containers//thread/ArticlesThread'
 import CommunityDigest from '@/widgets/CommunityDigest'
-import SidebarLayoutHeader from '@/widgets/SidebarLayoutHeader'
+import { Br } from '@/widgets/Common'
+// import SidebarLayoutHeader from '@/widgets/SidebarLayoutHeader'
 
 import type { TStore } from './store'
 import { useInit } from './logic'
@@ -51,7 +52,8 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
       {!isMobile && (
         <InnerWrapper metric={metric} bannerLayout={bannerLayout}>
           <ContentWrapper>
-            {isSidebarLayout && <SidebarLayoutHeader thread={THREAD.POST} />}
+            {isSidebarLayout && <Br top={20} />}
+            {/* {isSidebarLayout && <SidebarLayoutHeader thread={THREAD.POST} />} */}
             <ArticlesThread />
           </ContentWrapper>
         </InnerWrapper>

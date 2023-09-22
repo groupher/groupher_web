@@ -9,6 +9,7 @@ import { bond } from '@/mobx'
 import { BANNER_LAYOUT } from '@/constant/layout'
 import { THREAD } from '@/constant/thread'
 
+import useBannerLayout from '@/hooks/useBannerLayout'
 import DocThread from '@/containers//thread/DocThread'
 import CommunityDigest from '@/widgets/CommunityDigest'
 import SidebarLayoutHeader from '@/widgets/SidebarLayoutHeader'
@@ -29,11 +30,10 @@ type TProps = {
 const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   useInit(store)
   const metric = useMetric()
-
-  const { globalLayout } = store
+  const bannerLayout = useBannerLayout()
   const { isMobile } = useMobileDetect()
 
-  const isSidebarLayout = globalLayout.banner === BANNER_LAYOUT.SIDEBAR
+  const isSidebarLayout = bannerLayout === BANNER_LAYOUT.SIDEBAR
   const LayoutWrapper = isSidebarLayout ? SidebarWrapper : Wrapper
 
   return (
@@ -46,10 +46,10 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
           </ContentWrapper>
         </MobileCardsWrapper>
       ) : (
-        <InnerWrapper metric={metric}>
+        <InnerWrapper metric={metric} bannerLayout={bannerLayout}>
           {isSidebarLayout && <SidebarLayoutHeader thread={THREAD.DOC} />}
           <ContentWrapper>
-            <DocThread isSidebarLayout={globalLayout.banner === BANNER_LAYOUT.SIDEBAR} />
+            <DocThread isSidebarLayout={bannerLayout === BANNER_LAYOUT.SIDEBAR} />
           </ContentWrapper>
         </InnerWrapper>
       )}
