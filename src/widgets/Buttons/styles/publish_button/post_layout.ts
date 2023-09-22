@@ -1,12 +1,11 @@
 import styled from 'styled-components'
 
-// import Img from '@/Img'
-import css from '@/css'
+import css, { theme } from '@/css'
 import EditPenSVG from '@/icons/EditPen'
 
 export const Wrapper = styled.div`
   ${css.row('justify-between', 'align-center')};
-  width: 100%;
+  width: 154px;
 `
 export const Title = styled.div`
   letter-spacing: 2px;
@@ -16,5 +15,5 @@ export const Title = styled.div`
 `
 export const EditIcon = styled(EditPenSVG)`
   ${css.size(13)};
-  fill: #fff; // to-theme
+  fill: ${theme('button.fg')};
 `

@@ -53,7 +53,6 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
         <InnerWrapper metric={metric} bannerLayout={bannerLayout}>
           <ContentWrapper>
             {isSidebarLayout && <Br top={20} />}
-            {/* {isSidebarLayout && <SidebarLayoutHeader thread={THREAD.POST} />} */}
             <ArticlesThread />
           </ContentWrapper>
         </InnerWrapper>

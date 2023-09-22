@@ -96,8 +96,6 @@ const ClassicLayout: FC<TProps> = ({ showCommunityBadge, thread, community }) =>
         <StickyWrapper>
           <PublishWrapper show={showCommunityBadge}>
             <PublishButton
-              thread={thread}
-              community={community.slug}
               text="参与讨论"
               onClick={() => onPublish(ARTICLE_CAT.FEATURE)}
               onMenuSelect={onPublish}

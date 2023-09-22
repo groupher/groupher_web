@@ -91,8 +91,3 @@ export const SelectItem = styled.div<TActive>`
     top: 2px;
   }
 `
-export const PublishWrapper = styled.div`
-  ${css.row('align-center')};
-  width: 110px;
-  margin-right: -18px;
-`

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { observer } from 'mobx-react'
 // import Router from 'next/router'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
@@ -8,6 +8,7 @@ import { THREAD } from '@/constant/thread'
 import { DEME_SOCIALS } from '@/constant/social'
 
 import useViewingThread from '@/hooks/useViewingThread'
+import useWindowResize from '@/hooks/useWindowResize'
 import useEnable from '@/hooks/useEnable'
 
 import { send } from '@/signal'
@@ -17,12 +18,12 @@ import TagsBar from '@/containers/unit/TagsBar'
 
 import Sticky from '@/widgets/Sticky'
 import { SpaceGrow } from '@/widgets/Common'
+import AccountUnit from '@/widgets/AccountUnit'
 import FileTree from '@/widgets/FileTree'
 import SocialList from '@/widgets/SocialList'
 
 import CommunityBrief from './CommunityBrief'
 import MainMenu from './MainMenu'
-// import AccountUnit from './AccountUnit'
 
 import {
   Wrapper,
@@ -36,6 +37,13 @@ import {
 // const NON_STANDARD_COMMUNITIES = [HCN, 'feedback']
 
 const SidebarLayout: FC = () => {
+  const [viewHeight, setViewHeight] = useState(800)
+  const { height: windowViewHeight } = useWindowResize()
+
+  useEffect(() => {
+    setViewHeight(windowViewHeight - 80)
+  }, [windowViewHeight])
+
   const { isMobile } = useMobileDetect()
   const activeThread = useViewingThread()
   const enable = useEnable()
@@ -45,7 +53,7 @@ const SidebarLayout: FC = () => {
   return (
     <Wrapper testid="community-digest" isMobile={isMobile} narrow={narrow}>
       <Sticky>
-        <InnerWrapper>
+        <InnerWrapper minHeight={viewHeight}>
           <CommunityBrief />
           <Divider bottom={16} />
           {activeThread !== THREAD.DOC && (
@@ -72,8 +80,11 @@ const SidebarLayout: FC = () => {
           )}
 
           <SocialList top={20} left={-10} size="tiny" selected={DEME_SOCIALS} />
+          <SpaceGrow />
+          <AccountUnit top={40} withName left={6} />
         </InnerWrapper>
       </Sticky>
+
       <SpaceGrow />
     </Wrapper>
   )

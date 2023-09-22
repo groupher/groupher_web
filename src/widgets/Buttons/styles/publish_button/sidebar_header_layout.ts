@@ -6,9 +6,7 @@ import EditPenSVG from '@/icons/EditPen'
 
 export const Wrapper = styled.div`
   ${css.row('justify-between', 'align-center')};
-  width: 120px;
-  padding-left: 5px;
-  padding-right: 5px;
+  width: 72px;
 `
 export const Title = styled.div`
   letter-spacing: 2px;

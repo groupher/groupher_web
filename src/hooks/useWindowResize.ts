@@ -11,7 +11,7 @@ type TSize = {
  *
  * @returns
  */
-const useWindowSize = (cb?: (size: TSize) => void): TSize => {
+const useWindowResize = (cb?: (size: TSize) => void): TSize => {
   const isClient = typeof window === 'object'
 
   const getSize = useCallback(() => {
@@ -40,4 +40,4 @@ const useWindowSize = (cb?: (size: TSize) => void): TSize => {
   return windowSize
 }
 
-export default useWindowSize
+export default useWindowResize

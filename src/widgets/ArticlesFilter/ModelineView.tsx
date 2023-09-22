@@ -33,8 +33,6 @@ const ArticlesFilter: FC<TProps> = ({
   onSelect = log,
   resState = TYPE.RES_STATE.DONE,
   mode = 'default',
-  onSearch = log,
-  closeSearch = log,
   groupedTags,
   activeTag,
   modelineExpand = false,

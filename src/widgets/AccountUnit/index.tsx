@@ -12,22 +12,26 @@ import { buildLog } from '@/logger'
 import useAccount from '@/hooks/useAccount'
 import useAvatarLayout from '@/hooks/useAvatarLayout'
 
-import { Wrapper, Avatar, UnloginIcon } from './styles'
+import { NormalWrapper, WithNameWrapper, Avatar, UnloginIcon, NickName } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('c:AccountUnit:index')
 
 type TProps = {
   testid?: string
+  withName?: boolean
 } & TSpace
 
-const AccountUnit: FC<TProps> = ({ testid = 'account-unit', ...restProps }) => {
-  const { isLogin, avatar } = useAccount()
+const AccountUnit: FC<TProps> = ({ testid = 'account-unit', withName = false, ...restProps }) => {
+  const { isLogin, avatar, nickname } = useAccount()
   const avatarLayout = useAvatarLayout()
+
+  const Wrapper = withName ? WithNameWrapper : NormalWrapper
 
   return (
     <Wrapper {...restProps}>
       {isLogin ? <Avatar src={avatar} avatarLayout={avatarLayout} /> : <UnloginIcon />}
+      {isLogin && withName && <NickName>{nickname}</NickName>}
     </Wrapper>
   )
 }

@@ -30,10 +30,12 @@ export const Wrapper = styled(BaseBanner)<TWrapper>`
 
   border-image-slice: 1;
 `
-export const InnerWrapper = styled.div`
+export const InnerWrapper = styled.div<{ minHeight: number }>`
+  ${css.column()};
   margin-top: 20px;
+  height: 100%;
+  min-height: ${({ minHeight }) => `${minHeight}px`};
 `
-
 export const TabBarWrapper = styled.div`
   ${css.row('align-center', 'justify-start')};
   margin-left: 10px;

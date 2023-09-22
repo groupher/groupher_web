@@ -7,8 +7,9 @@ import css, { theme, primaryTheme } from '@/css'
 import Button from '../../Button'
 // see example: https://codepen.io/mydearxym2/pen/qBEvvpo
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<TSpace>`
   ${css.row('align-center')};
+  ${(props) => css.spaceMargins(props)};
   width: 100%;
 `
 
@@ -21,8 +22,8 @@ export const PubButton = styled(Button)<TPubButton>`
   font-weight: 600;
   background: ${({ primaryColor }) => primaryTheme(primaryColor)};
   color: ${theme('button.fg')};
-  height: ${({ smaller }) => (smaller ? '26px' : '33px')};
-  border-radius: 15px;
+  height: ${({ smaller }) => (smaller ? '28px' : '33px')};
+  border-radius: 10px;
 `
 export const MoreOption = styled.div<TSpace>`
   ${css.row('align-both')};

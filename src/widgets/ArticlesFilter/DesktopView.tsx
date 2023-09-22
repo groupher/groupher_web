@@ -8,6 +8,7 @@ import { FC, Fragment, useState } from 'react'
 import { observer } from 'mobx-react'
 
 import type { TArticleCat } from '@/spec'
+import { PUBLISH_MODE } from '@/constant/publish'
 
 import { ARTICLE_CAT, ARTICLE_STATE_MODE } from '@/constant/gtd'
 import TYPE from '@/constant/type'
@@ -28,7 +29,7 @@ import SortFilter from './SortFilter'
 // import FilterResult from './FilterResult'
 
 import type { TProps } from '.'
-import { Wrapper, PublishWrapper } from './styles'
+import { Wrapper } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:ArticlesFilter:index')
@@ -60,17 +61,18 @@ const ArticlesFilter: FC<TProps> = ({
         </Fragment>
       )}
 
+      {bannerLayout === BANNER_LAYOUT.SIDEBAR && <SearchBox right={8} />}
+
       {bannerLayout === BANNER_LAYOUT.SIDEBAR ? (
-        <PublishWrapper>
-          <PublishButton
-            thread="post"
-            community="home"
-            mode="sidebar_layout_header"
-            text="参与讨论"
-            onClick={() => console.log('## publish')}
-            onMenuSelect={() => console.log('## on publish')}
-          />
-        </PublishWrapper>
+        <PublishButton
+          text="参与讨论"
+          mode={PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER}
+          onClick={() => console.log('## publish')}
+          onMenuSelect={() => console.log('## on publish')}
+          offset={[5, 5]}
+          placement="bottom"
+          top={-1}
+        />
       ) : (
         <SearchBox right={-15} />
       )}
