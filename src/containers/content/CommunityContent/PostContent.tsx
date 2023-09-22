@@ -38,7 +38,7 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   const LayoutWrapper = isSidebarLayout ? SidebarWrapper : Wrapper
 
   return (
-    <LayoutWrapper testid="post-thread-content">
+    <LayoutWrapper testid="post-thread-content" metric={metric}>
       <CommunityDigest />
 
       {isMobile && (

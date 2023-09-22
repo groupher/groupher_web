@@ -12,16 +12,12 @@ export const Wrapper = styled.div`
 
 type TMainWrapper = {
   thread?: TThread
-  isViewingArticle?: boolean
 }
 
 export const SidebarWrapper = styled.div<TMainWrapper>`
   flex-grow: 1;
   width: 100%;
-  max-width: 600px;
-  margin-left: ${({ isViewingArticle }) => (isViewingArticle ? '2%' : '14%')};
-
-  transition: all 0.2s;
+  padding: 0 20%;
 `
 export const MainWrapper = styled.div<TMainWrapper>`
   flex-grow: 1;

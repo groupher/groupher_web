@@ -4,12 +4,10 @@
 
 import { FC } from 'react'
 
-import type { TMetric } from '@/spec'
-import METRIC from '@/constant/metric'
-
 import { bond } from '@/mobx'
 import { BANNER_LAYOUT } from '@/constant/layout'
 import useBannerLayout from '@/hooks/useBannerLayout'
+import useMetric from '@/hooks/useMetric'
 
 import KanbanThread from '@/containers//thread/KanbanThread'
 import CommunityDigest from '@/widgets/CommunityDigest'
@@ -21,18 +19,15 @@ import { Wrapper, InnerWrapper, SidebarWrapper, ContentWrapper, MobileCardsWrapp
 
 type TProps = {
   communityContent?: TStore
-  metric?: TMetric
 }
 
 /**
  * only for AboutThread, but link to the common communityContent store
  */
-const CommunityContentContainer: FC<TProps> = ({
-  communityContent: store,
-  metric = METRIC.COMMUNITY,
-}) => {
+const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   useInit(store)
   const bannerLayout = useBannerLayout()
+  const metric = useMetric()
 
   const LayoutWrapper = bannerLayout === BANNER_LAYOUT.SIDEBAR ? SidebarWrapper : Wrapper
 

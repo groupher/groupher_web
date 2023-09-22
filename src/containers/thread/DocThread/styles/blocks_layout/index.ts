@@ -1,13 +1,18 @@
 import styled from 'styled-components'
 
+import type { TBannerLayout } from '@/spec'
+import { BANNER_LAYOUT } from '@/constant/layout'
 import css, { theme } from '@/css'
+
 import { MainWrapper } from '..'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ bannerLayout: TBannerLayout }>`
   ${css.column('align-both')};
-  width: 100%;
-  margin-top: 30px;
-  margin-left: 58px;
+
+  ${({ bannerLayout }) =>
+    bannerLayout !== BANNER_LAYOUT.SIDEBAR
+      ? 'width: 100%;margin-left: 58px;margin-top: 30px;'
+      : 'width: auto;'}
 `
 export const CatsWrapper = styled(MainWrapper)`
   ${css.row('justify-between')};

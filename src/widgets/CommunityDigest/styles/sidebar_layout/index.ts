@@ -10,13 +10,11 @@ import { BaseBanner } from '..'
 type TWrapper = {
   isMobile: boolean
   metric?: TMetric
-  narrow?: boolean
+  left?: number
 }
 export const Wrapper = styled(BaseBanner)<TWrapper>`
-  ${({ narrow }) =>
-    narrow
-      ? 'width: 220px;max-width: 220px;margin-left: -30px;'
-      : 'width: 280px;max-width: 280px;margin-left: -50px;'};
+  width: 280px;
+  max-width: 280px;
 
   border-right: 1px solid transparent;
   border-image: linear-gradient(
@@ -46,5 +44,6 @@ export const Divider = styled(SexyDivider)`
   margin-left: -10px;
 `
 export const FileTreeWrapper = styled.div`
-  margin-top: 20px;
+  margin-top: 10px;
+  margin-left: 10px;
 `

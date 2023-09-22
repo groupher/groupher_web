@@ -10,7 +10,6 @@ import Button from '../../Button'
 export const Wrapper = styled.div<TSpace>`
   ${css.row('align-center')};
   ${(props) => css.spaceMargins(props)};
-  width: 100%;
 `
 
 type TPubButton = { smaller?: boolean } & TPrimaryColor

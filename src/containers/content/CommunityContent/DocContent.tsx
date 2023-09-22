@@ -7,12 +7,10 @@ import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { bond } from '@/mobx'
 import { BANNER_LAYOUT } from '@/constant/layout'
-import { THREAD } from '@/constant/thread'
 
 import useBannerLayout from '@/hooks/useBannerLayout'
 import DocThread from '@/containers//thread/DocThread'
 import CommunityDigest from '@/widgets/CommunityDigest'
-import SidebarLayoutHeader from '@/widgets/SidebarLayoutHeader'
 
 import type { TStore } from './store'
 import { useInit } from './logic'
@@ -47,9 +45,8 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
         </MobileCardsWrapper>
       ) : (
         <InnerWrapper metric={metric} bannerLayout={bannerLayout}>
-          {isSidebarLayout && <SidebarLayoutHeader thread={THREAD.DOC} />}
           <ContentWrapper>
-            <DocThread isSidebarLayout={bannerLayout === BANNER_LAYOUT.SIDEBAR} />
+            <DocThread />
           </ContentWrapper>
         </InnerWrapper>
       )}

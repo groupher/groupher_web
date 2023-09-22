@@ -61,7 +61,6 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
     resState,
     mode,
     globalLayout,
-    isViewingArticle,
     activeTagData,
     groupedTags,
   } = store
@@ -71,7 +70,7 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
 
   return (
     <Wrapper>
-      <LayoutWrapper thread={curThread} isViewingArticle={isViewingArticle}>
+      <LayoutWrapper thread={curThread}>
         <ViewportTracker onEnter={inAnchor} onLeave={outAnchor} />
 
         {showFilters && (

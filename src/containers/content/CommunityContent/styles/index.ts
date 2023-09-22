@@ -36,15 +36,16 @@ export const BaseContentWrapper = styled.div`
   ${css.column()};
   width: 100%;
 `
-export const Wrapper = styled(BaseWrapper)`
+export const Wrapper = styled(BaseWrapper)<{ metric?: TMetric }>`
   ${css.column('justify-start', 'align-center')};
 
   ${css.media.mobile`
     padding-left: 0;
   `};
 `
-export const SidebarWrapper = styled(BaseWrapper)`
-  ${css.row('justify-center')};
+export const SidebarWrapper = styled(BaseWrapper)<{ metric: TMetric }>`
+  ${css.row('justify-between')};
+  ${({ metric }) => css.fitContentWidth(metric)};
 `
 export const MobileCardsWrapper = styled.div`
   width: 100%;
@@ -57,7 +58,7 @@ export const MobileCardsWrapper = styled.div`
   `};
 `
 export const InnerWrapper = styled(BaseInnerWrapper)<{ bannerLayout?: TBannerLayout }>`
-  ${({ bannerLayout }) => (bannerLayout === BANNER_LAYOUT.SIDEBAR ? 'width: auto;' : '')};
+  ${({ bannerLayout }) => (bannerLayout === BANNER_LAYOUT.SIDEBAR ? 'width: 100%;' : '')};
 
   ${css.media.mobile`
     display: none;

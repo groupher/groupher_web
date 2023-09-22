@@ -101,8 +101,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const CommunityKanbanPage = (props) => {
   const store = useStore(props)
 
-  log('the kanban thread')
-
   return (
     <Provider store={store}>
       <GlobalLayout>

@@ -1,17 +1,21 @@
 import styled from 'styled-components'
 
-import type { TTestable } from '@/spec'
+import type { TBannerLayout, TTestable } from '@/spec'
 import css from '@/css'
+import { BANNER_LAYOUT } from '@/constant'
 
-type TWrapper = TTestable & { isSidebarLayout: boolean }
+type TWrapper = TTestable & { bannerLayout: TBannerLayout }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.column('align-center')};
-  width: 100%;
+  width: ${({ bannerLayout }) =>
+    bannerLayout === BANNER_LAYOUT.SIDEBAR ? 'calc(100% + 100px)' : '100px'};
+
+  padding-left: ${({ bannerLayout }) =>
+    bannerLayout === BANNER_LAYOUT.SIDEBAR ? '100px' : '50px'};
   margin-top: 10px;
-  margin-left: ${({ isSidebarLayout }) => (isSidebarLayout ? '-30px' : 0)};
-  margin: 0 6%;
+  margin: ${({ bannerLayout }) => (bannerLayout === BANNER_LAYOUT.HEADER ? '0 6%;' : '0')};
 
   ${css.media.mobile`
     margin: 0;

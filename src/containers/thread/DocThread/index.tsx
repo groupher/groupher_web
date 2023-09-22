@@ -12,6 +12,8 @@ import { DOC_LAYOUT } from '@/constant/layout'
 import { Divider } from '@/widgets/Common'
 import FaqList from '@/widgets/FaqList'
 
+import useBannerLayout from '@/hooks/useBannerLayout'
+
 import BlocksLayout from './BlocksLayout'
 import ListsLayout from './ListsLayout'
 import CardsLayout from './CardsLayout'
@@ -28,7 +30,6 @@ type TProps = {
   testid?: string
   title?: string
   desc?: string
-  isSidebarLayout?: boolean
 }
 
 const DocThreadContainer: FC<TProps> = ({
@@ -36,21 +37,19 @@ const DocThreadContainer: FC<TProps> = ({
   testid = 'doc-thread',
   title = 'title',
   desc = 'desc',
-  isSidebarLayout = false,
 }) => {
   useInit(store)
 
   const { isArticleLayout, layout, faqLayout, isFAQArticleLayout, faqSections } = store
   const { isMobile } = useMobileDetect()
+  const bannerLayout = useBannerLayout()
 
   if (isArticleLayout) {
-    return (
-      <ArticleLayout isFAQArticleLayout={isFAQArticleLayout} isSidebarLayout={isSidebarLayout} />
-    )
+    return <ArticleLayout isFAQArticleLayout={isFAQArticleLayout} />
   }
 
   return (
-    <Wrapper testid={testid} isSidebarLayout={isSidebarLayout}>
+    <Wrapper testid={testid} bannerLayout={bannerLayout}>
       {layout === DOC_LAYOUT.BLOCKS && <BlocksLayout />}
       {layout === DOC_LAYOUT.LISTS && <ListsLayout />}
       {layout === DOC_LAYOUT.CARDS && <CardsLayout />}

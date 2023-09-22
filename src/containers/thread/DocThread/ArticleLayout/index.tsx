@@ -1,11 +1,15 @@
 import { FC, memo, useState } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
+import { BANNER_LAYOUT } from '@/constant/layout'
+
 import FileTree from '@/widgets/FileTree'
 import { Space } from '@/widgets/Common'
 import FeedbackFooter from '@/widgets/FeedbackFooter'
 import Sticky from '@/widgets/Sticky'
 import CustomScroller from '@/widgets/CustomScroller'
+
+import useBannerLayout from '@/hooks/useBannerLayout'
 
 import PinedTree from './PinedTree'
 import FaqLayout from '../FaqLayout'
@@ -28,21 +32,17 @@ import { gotoDetailLayout } from '../logic'
 type TProps = {
   testid?: string
   isFAQArticleLayout: boolean
-  isSidebarLayout: boolean
 }
 
-const ArticleLayout: FC<TProps> = ({
-  testid = 'ArtileLayout',
-  isFAQArticleLayout,
-  isSidebarLayout,
-}) => {
+const ArticleLayout: FC<TProps> = ({ testid = 'ArtileLayout', isFAQArticleLayout }) => {
   const [filetreeOpen, setFileTreeOpen] = useState(true)
 
   const { isMobile } = useMobileDetect()
+  const bannerLayout = useBannerLayout()
 
   return (
-    <Wrapper isSidebarLayout={isSidebarLayout}>
-      {!isSidebarLayout && !isMobile && (
+    <Wrapper>
+      {!isMobile && bannerLayout !== BANNER_LAYOUT.SIDEBAR && (
         <>
           <ToggleBtn open={filetreeOpen} onToggle={(toggle) => setFileTreeOpen(toggle)} />
           <Sidebar isLeftLayout open={filetreeOpen}>
@@ -64,7 +64,7 @@ const ArticleLayout: FC<TProps> = ({
         </>
       )}
 
-      <Content isRightLayout open={filetreeOpen} isSidebarLayout={isSidebarLayout}>
+      <Content isRightLayout open={filetreeOpen} bannerLayout={BANNER_LAYOUT.SIDEBAR}>
         <Header>
           {!isFAQArticleLayout && <NaviHead />}
           {!isFAQArticleLayout && <Title>关于帮助台的使用</Title>}

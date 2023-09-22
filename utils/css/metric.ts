@@ -22,6 +22,12 @@ export const WIDTH = {
   COMMUNITY: {
     PAGE: '1360px',
     CONTENT: '940px',
+    CONTENT_OFFSET: '40px',
+  },
+  COMMUNITY_SIDEBAR: {
+    PAGE: '1360px',
+    CONTENT: '1180px',
+    CONTENT_OFFSET: '0',
   },
   DOC: {
     PAGE: '1360px',
