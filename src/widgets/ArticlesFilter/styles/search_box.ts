@@ -59,6 +59,23 @@ export const SearchIcon = styled(SearchSVG)`
     opacity: 0.8;
   `};
 `
+export const Text = styled.div`
+  color: ${theme('article.digest')};
+  font-size: 13px;
+  font-weight: 400;
+  opacity: 0.8;
+  word-break: keep-all;
+
+  ${Wrapper}:hover & {
+    color: ${theme('article.title')};
+    opacity: 0.8;
+  }
+
+  ${css.media.mobile`
+    display: none;
+  `};
+`
+
 export const InputSearchIcon = styled(SearchIcon)`
   position: absolute;
   left: 85px;
@@ -100,21 +117,5 @@ export const FilterIcon = styled(FilterSVG)`
   ${css.media.mobile`
     ${css.size(25)};
     margin-left: 10px;
-  `};
-`
-export const Text = styled.div`
-  color: ${theme('article.digest')};
-  font-size: 13px;
-  font-weight: 400;
-  opacity: 0.8;
-  word-break: keep-all;
-
-  ${Wrapper}:hover & {
-    color: ${theme('article.title')};
-    opacity: 0.8;
-  }
-
-  ${css.media.mobile`
-    display: none;
   `};
 `

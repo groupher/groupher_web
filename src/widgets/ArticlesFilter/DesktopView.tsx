@@ -21,8 +21,8 @@ import PublishButton from '@/widgets/Buttons/PublishButton'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 import CatSelector from '@/widgets/CatSelector'
 import StateSelector from '@/widgets/StateSelector'
+import SearchBox from '@/widgets/SearchBox'
 
-import SearchBox from './SearchBox'
 import SortFilter from './SortFilter'
 // import SelectedFilters from './SelectedFilters'
 // import FilterResult from './FilterResult'
@@ -38,14 +38,11 @@ const ArticlesFilter: FC<TProps> = ({
   onSelect = log,
   resState = TYPE.RES_STATE.DONE,
   mode = 'default',
-  onSearch = log,
-  closeSearch = log,
 }) => {
   const bannerLayout = useBannerLayout()
   const [activeCat, setActiveCat] = useState<TArticleCat>(ARTICLE_CAT.ALL)
 
-  // const { activeThread } = useViewing()
-  const searchMode = mode === 'search'
+  const searchMode = false
 
   return (
     <Wrapper>
@@ -75,7 +72,7 @@ const ArticlesFilter: FC<TProps> = ({
           />
         </PublishWrapper>
       ) : (
-        <SearchBox searchMode={searchMode} onSearch={onSearch} closeSearch={closeSearch} />
+        <SearchBox right={-15} />
       )}
     </Wrapper>
   )

@@ -43,7 +43,7 @@ const ArticlesFilter: FC<TProps> = ({
   const [activeCat, setActiveCat] = useState<TArticleCat>(ARTICLE_CAT.ALL)
 
   // const { activeThread } = useViewing()
-  const searchMode = mode === 'search'
+  const searchMode = false
 
   return (
     <Wrapper>

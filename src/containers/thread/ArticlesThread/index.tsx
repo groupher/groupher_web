@@ -23,8 +23,7 @@ import ArticlesFilter from '@/widgets/ArticlesFilter'
 import type { TStore } from './store'
 
 import { Wrapper, MainWrapper, SidebarWrapper, FilterWrapper } from './styles'
-
-import { useInit, inAnchor, outAnchor, onFilterSelect, onSearch, closeSearch } from './logic'
+import { useInit, inAnchor, outAnchor, onFilterSelect } from './logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:ArticlesThread')
@@ -88,8 +87,6 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
               onSelect={onFilterSelect}
               activeFilter={filtersData}
               mode={mode as TArticleFilterMode}
-              onSearch={onSearch}
-              closeSearch={closeSearch}
             />
           </FilterWrapper>
         )}
