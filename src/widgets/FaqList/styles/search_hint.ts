@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Link from 'next/link'
 
 import type { TColorName, TTestable } from '@/spec'
 
@@ -14,8 +15,6 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   width: 100%;
   min-width: 320px;
   color: ${theme('article.digest')};
-  padding-top: 25px;
-  margin-left: 156px;
 
   ${css.media.mobile`
     margin-left: 5px;
@@ -33,8 +32,8 @@ export const FAQIcon = styled(FAQSVG)`
   margin-top: 2px;
 `
 export const Title = styled.div`
-  color: ${theme('article.title')};
-  font-size: 14px;
+  color: ${theme('article.digest')};
+  font-size: 13px;
 `
 export const Body = styled.div`
   ${css.rowWrap('align-center')};
@@ -50,11 +49,17 @@ export const Section = styled.div`
   `};
 `
 export const CatSection = styled.div<{ color: TColorName }>`
-  width: 44%;
+  width: 45%;
   padding-left: 15px;
   margin-left: 2px;
   margin-bottom: 22px;
   position: relative;
+  opacity: 0.85;
+
+  &:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
 
   ${css.media.mobile`
     width: 48%;
@@ -71,10 +76,15 @@ export const CatSection = styled.div<{ color: TColorName }>`
     opacity: 0.5;
   }
 `
-export const CatItem = styled.div`
+export const CatItem = styled(Link)`
   ${css.lineClamp(1)}
   font-size: 13px;
   color: ${theme('article.title')};
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `
 export const CatDesc = styled.div`
   font-size: 12px;
@@ -99,14 +109,4 @@ export const Footer = styled.div`
   padding-top: 20px;
   font-size: 12px;
   color: ${theme('article.digest')};
-`
-export const MoreLink = styled.div`
-  color: ${theme('link')};
-  margin-left: 1px;
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  transition: all 0.2s;
 `

@@ -1,7 +1,11 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
 import { mockHelpCats } from '@/mock'
-import { Br } from '@/widgets/Common'
+import { THREAD } from '@/constant/thread'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
+
+import ArrowLinker from '@/widgets/ArrowLinker'
 
 import {
   Wrapper,
@@ -14,7 +18,6 @@ import {
   Item,
   CatItem,
   Footer,
-  MoreLink,
 } from './styles/search_hint'
 
 import type { TProps as TIndex } from '.'
@@ -22,6 +25,7 @@ import type { TProps as TIndex } from '.'
 type TProps = Pick<TIndex, 'sections'>
 
 const SearchHint: FC<TProps> = ({ sections }) => {
+  const community = useViewingCommunity()
   const cats = mockHelpCats()
 
   return (
@@ -37,27 +41,23 @@ const SearchHint: FC<TProps> = ({ sections }) => {
         ))}
       </Body>
 
-      <Br bottom={40} />
-
-      <Header>
-        <Title>帮助文档</Title>
-      </Header>
-      <Br bottom={5} />
       <Body>
         {cats.map((item) => (
           <CatSection key={item.title} color={item.color}>
-            <CatItem>{item.title}</CatItem>
+            <CatItem href="/">{item.title}</CatItem>
             <CatDesc>{item.articles.length} 篇内容</CatDesc>
           </CatSection>
         ))}
       </Body>
 
       <Footer>
-        <div>更多问题，请移步</div>
-        <MoreLink>帮助台</MoreLink>。
+        更多类似问题，请移步
+        <ArrowLinker href={`/${community.slug}/${THREAD.DOC}`} fontSize={12} left={1}>
+          帮助台
+        </ArrowLinker>
       </Footer>
     </Wrapper>
   )
 }
 
-export default memo(SearchHint)
+export default observer(SearchHint)

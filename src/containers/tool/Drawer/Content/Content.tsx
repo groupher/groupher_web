@@ -7,6 +7,8 @@ import type { TUser } from '@/spec'
 import type { TExtraInfo } from '../spec'
 // import PlaceHolder from './PlaceHolder'
 
+import SearchPanel from '@/containers/unit/SearchPanel'
+
 import {
   ArticleViewer,
   MailsViewer,
@@ -35,6 +37,9 @@ const Content: FC<TProps> = ({ type, attUser, extraInfo }) => {
   const { DRAWER } = TYPE
 
   switch (type) {
+    case DRAWER.SEARCH_PANEL:
+      return <SearchPanel />
+
     case DRAWER.ACCOUNT_EDIT:
       // @ts-ignore
       return <AccountEditor />

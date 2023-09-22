@@ -8,6 +8,8 @@ import { FC, memo } from 'react'
 
 import type { TSpace } from '@/spec'
 import { buildLog } from '@/logger'
+import { openSearch } from '@/signal'
+
 import { Wrapper, SearchIcon, Text } from './styles'
 
 /* eslint-disable-next-line */
@@ -19,7 +21,7 @@ type TProps = {
 
 const SearchBox: FC<TProps> = ({ testid = 'search-box', ...restProps }) => {
   return (
-    <Wrapper testid={testid} {...restProps}>
+    <Wrapper testid={testid} {...restProps} onClick={() => openSearch()}>
       <SearchIcon />
       <Text>搜索内容</Text>
     </Wrapper>

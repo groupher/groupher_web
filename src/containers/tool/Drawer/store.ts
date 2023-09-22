@@ -195,7 +195,8 @@ const DrawerStore = T.model('DrawerStore', {
         type !== DRAWER.G_EDITOR &&
         type !== DRAWER.CREATE_TAG &&
         type !== DRAWER.PASSPORT_EDITOR &&
-        type !== DRAWER.EDIT_TAG
+        type !== DRAWER.EDIT_TAG &&
+        type !== DRAWER.SEARCH_PANEL
       ) {
         slf.markPreviewURLIfNeed(data)
       }

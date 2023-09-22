@@ -8,7 +8,7 @@ import { FC, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 
 import type { TResState, TArticleFilterMode } from '@/spec'
-import { BANNER_LAYOUT, DOC_FAQ_LAYOUT } from '@/constant/layout'
+import { BANNER_LAYOUT } from '@/constant/layout'
 
 import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
@@ -27,8 +27,6 @@ import { useInit, inAnchor, outAnchor, onFilterSelect } from './logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:ArticlesThread')
-
-const FaqList = dynamic(() => import('@/widgets/FaqList'))
 
 type TProps = {
   articlesThread?: TStore
@@ -93,15 +91,11 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
 
         <TagNote tag={activeTagData} />
 
-        {mode === 'search' && <FaqList layout={DOC_FAQ_LAYOUT.SEARCH_HINT} left={6} />}
-
-        {mode === 'default' && (
-          <PagedArticles
-            data={pagedArticlesData}
-            thread={curThread}
-            resState={resState as TResState}
-          />
-        )}
+        <PagedArticles
+          data={pagedArticlesData}
+          thread={curThread}
+          resState={resState as TResState}
+        />
       </LayoutWrapper>
 
       {!isSidebarLayout && <ThreadSidebar />}

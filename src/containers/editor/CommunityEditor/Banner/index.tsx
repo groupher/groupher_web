@@ -8,7 +8,6 @@ import { FC, memo } from 'react'
 
 import { buildLog } from '@/logger'
 
-// import SearchBox from './SearchBox'
 import SelectType from './SelectType'
 import SetupDomain from './SetupDomain'
 import SetupInfo from './SetupInfo'
