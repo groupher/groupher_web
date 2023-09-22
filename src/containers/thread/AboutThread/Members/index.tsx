@@ -7,13 +7,13 @@ import { mockUsers } from '@/mock'
 
 import ImgFallback from '@/widgets/ImgFallback'
 import NoteTip from '@/widgets/NoteTip'
+import { SexyDivider as Divider } from '@/widgets/Common'
 
 import AdminMember from './AdminMember'
 
 import {
   Wrapper,
   Block,
-  BottomBlock,
   Header,
   Title,
   AdminsRow,
@@ -44,7 +44,9 @@ const Members: FC<TProps> = ({ moderators }) => {
         </AdminsRow>
       </Block>
 
-      <BottomBlock>
+      <Divider bottom={40} top={30} />
+
+      <Block>
         <Header>
           <Title>
             参与互动
@@ -71,7 +73,7 @@ const Members: FC<TProps> = ({ moderators }) => {
             />
           ))}
         </JoinersRow>
-      </BottomBlock>
+      </Block>
     </Wrapper>
   )
 }

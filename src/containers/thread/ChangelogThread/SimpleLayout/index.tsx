@@ -8,7 +8,8 @@ import { observer } from 'mobx-react'
 
 import type { TPagedArticles } from '@/spec'
 import useChangelogLayout from '@/hooks/useChangelogLayout'
-import { CHANGELOG_LAYOUT } from '@/constant/layout'
+import useBannerLayout from '@/hooks/useBannerLayout'
+import { BANNER_LAYOUT, CHANGELOG_LAYOUT } from '@/constant/layout'
 
 import ChangelogItem from '@/widgets/ChangelogItem'
 import Tabs from '@/widgets/Switcher/Tabs'
@@ -21,12 +22,12 @@ import { Wrapper, Banner, TabsWrapper, Title, Desc, MainWrapper } from '../style
 // const log = buildLog('C:ChangelogThread')
 
 type TProps = {
-  isSidebarLayout: boolean
   pagedChangelogs: TPagedArticles
 }
 
-const SimpleLayout: FC<TProps> = ({ isSidebarLayout, pagedChangelogs }) => {
+const SimpleLayout: FC<TProps> = ({ pagedChangelogs }) => {
   const changelogLayout = useChangelogLayout()
+  const bannerLayout = useBannerLayout()
 
   const [filterExpand, setFilterExpand] = useState(false)
   const [tab, setTab] = useState(TABS_MODE_OPTIONS[0].slug)
@@ -34,7 +35,7 @@ const SimpleLayout: FC<TProps> = ({ isSidebarLayout, pagedChangelogs }) => {
   const alignLeft = changelogLayout === CHANGELOG_LAYOUT.SIMPLE
 
   return (
-    <Wrapper isSidebarLayout={isSidebarLayout}>
+    <Wrapper isSidebarLayout={bannerLayout === BANNER_LAYOUT.SIDEBAR}>
       <Banner alignLeft={alignLeft}>
         <Title>更新日志</Title>
         <Desc>Groupher 的功能更新，界面调整，性能与 Bug 修复等</Desc>

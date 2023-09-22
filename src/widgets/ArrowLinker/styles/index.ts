@@ -19,7 +19,7 @@ export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
   }
 `
 
-type TArrowIcon = { fontSize: number } & TPrimaryColor
+type TArrowIcon = { fontSize: number; bold?: boolean } & TPrimaryColor
 
 export const ArrowIcon = styled(ArrowSVG)<TArrowIcon>`
   fill: ${({ primaryColor }) => primaryLink(primaryColor)};
@@ -32,4 +32,5 @@ export const Title = styled.span<TArrowIcon>`
   color: ${({ primaryColor }) => primaryLink(primaryColor)};
   display: inline-block;
   font-size: ${({ fontSize }) => `${fontSize}px`};
+  font-weight: ${({ bold }) => (bold ? 550 : 400)};
 `

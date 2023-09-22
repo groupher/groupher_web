@@ -38,6 +38,7 @@ const TYPE = {
 
   // drawer types
   DRAWER: {
+    SEARCH_PANEL: 'SEARCH_PANEL',
     ACCOUNT_VIEW: 'ACCOUNT_VIEW',
     USER_VIEW: 'USER_VIEW',
     ACCOUNT_EDIT: 'ACCOUNT_EDIT',

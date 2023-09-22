@@ -23,6 +23,15 @@ export type TModerator = {
   user: TSimpleUse
 }
 
+export type TDashboard = {
+  baseInfo?: {
+    title?: string
+    bio?: string
+    homepage?: string
+  }
+  mediaReports?: TMediaReport[]
+}
+
 export type TCommunity = {
   id?: string
   index?: number
@@ -42,13 +51,7 @@ export type TCommunity = {
   views?: number
 
   // TODO:
-  dashboard?: {
-    baseInfo?: {
-      title?: string
-      bio?: string
-    }
-    mediaReports?: TMediaReport[]
-  }
+  dashboard?: TDashboard
 }
 
 export type TPagedCommunities = {

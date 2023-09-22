@@ -1,6 +1,18 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
+import Router from 'next/router'
 
-import type { TCommunity } from '@/spec'
+import { BANNER_LAYOUT } from '@/constant/layout'
+import { THREAD } from '@/constant/thread'
+
+import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useViewingThread from '@/hooks/useViewingThread'
+import useBannerLayout from '@/hooks/useBannerLayout'
+import { prettyURL } from '@/fmt'
+
+import ArrowLinker from '@/widgets/ArrowLinker'
+import ArrowButton from '@/widgets/Buttons/ArrowButton'
+import { Row } from '@/widgets/Common'
 
 import {
   Wrapper,
@@ -11,25 +23,43 @@ import {
   Title,
   Digest,
   Desc,
+  GlobalIcon,
 } from '../styles/sidebar_layout/community_brief'
 // import { subscribeCommunity, unsubscribeCommunity } from '../logic'
 
-type TProps = {
-  community: TCommunity
-}
+const CommunityBrief: FC = () => {
+  const { logo, slug, title, desc, dashboard } = useViewingCommunity()
+  const activeThread = useViewingThread()
+  const bannerLayout = useBannerLayout()
 
-const CommunityBrief: FC<TProps> = ({ community }) => {
+  const { baseInfo } = dashboard
+
   return (
     <Wrapper>
       <MainWrapper>
         <LogoWrapper>
-          <Logo src={community.logo} slug={community.slug} />
+          <Logo src={logo} slug={slug} />
         </LogoWrapper>
         <CommunityInfo>
-          <Title>Groupher</Title>
+          <Title>{title}</Title>
           <Digest>
-            <Desc>让你的产品聆听用户的声音</Desc>
+            <Desc>{desc}</Desc>
           </Digest>
+
+          {bannerLayout === BANNER_LAYOUT.SIDEBAR && activeThread === THREAD.DOC && (
+            <ArrowButton top={12} left={-2} leftLayout onClick={() => Router.push(`/${slug}`)}>
+              返回社区
+            </ArrowButton>
+          )}
+
+          {bannerLayout !== BANNER_LAYOUT.SIDEBAR && baseInfo.homepage && (
+            <ArrowLinker href={baseInfo.homepage} top={15} bold>
+              <Row>
+                <GlobalIcon />
+                {prettyURL(baseInfo.homepage)}
+              </Row>
+            </ArrowLinker>
+          )}
         </CommunityInfo>
         {/* <SocialWrapper>
           SOcial
@@ -39,4 +69,4 @@ const CommunityBrief: FC<TProps> = ({ community }) => {
   )
 }
 
-export default memo(CommunityBrief)
+export default observer(CommunityBrief)

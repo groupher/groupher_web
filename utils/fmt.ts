@@ -159,3 +159,12 @@ export const roundUpNumber = (num: number, precision = 0): number => {
   precision = Math.pow(10, precision)
   return Math.ceil(num * precision) / precision
 }
+
+/**
+ *  make url pretty
+ *  https://bobbyhadz.com -> bobbyhadz.com
+ *  http://bobbyhadz.com -> bobbyhadz.com
+ */
+export const prettyURL = (url: string): string => {
+  return url.replace(/^https?:\/\//, '')
+}

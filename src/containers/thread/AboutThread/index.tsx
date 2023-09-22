@@ -8,11 +8,17 @@ import Markdown from 'markdown-to-jsx'
 
 // import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useBannerLayout from '@/hooks/useBannerLayout'
+import { BANNER_LAYOUT } from '@/constant/layout'
+
+import { SexyDivider as Divider } from '@/widgets/Common'
 
 import Members from './Members'
 import BasicStates from './BasicStates'
 
 import type { TStore } from './store'
+import ExtraInfo from './ExtraInfo'
 import Sidebar from './Sidebar'
 
 import { Wrapper, MainWrapper, StateBlock, IntroBlock, MemberBlock, Title, Desc } from './styles'
@@ -39,10 +45,11 @@ const AboutThreadContainer: FC<TProps> = ({
 }) => {
   useInit(store)
 
-  const { curCommunity } = store
+  const bannerLayout = useBannerLayout()
+  const community = useViewingCommunity()
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper testid={testid} bannerLayout={bannerLayout}>
       <MainWrapper isSidebarLayout={isSidebarLayout}>
         <IntroBlock>
           <Title>社区简介</Title>
@@ -50,15 +57,21 @@ const AboutThreadContainer: FC<TProps> = ({
             <Markdown>{INTRO}</Markdown>
           </Desc>
         </IntroBlock>
+
+        {bannerLayout === BANNER_LAYOUT.SIDEBAR && <ExtraInfo />}
+
         <StateBlock>
           <Title>社区概况</Title>
           <BasicStates />
         </StateBlock>
+
+        <Divider bottom={40} />
+
         <MemberBlock>
-          <Members moderators={curCommunity.moderators} />
+          <Members moderators={community.moderators} />
         </MemberBlock>
       </MainWrapper>
-      <Sidebar isSidebarLayout={isSidebarLayout} />
+      {bannerLayout === BANNER_LAYOUT.HEADER && <Sidebar />}
     </Wrapper>
   )
 }

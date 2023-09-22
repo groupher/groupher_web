@@ -18,8 +18,8 @@ import { SpaceGrow } from '@/widgets/Common'
 import CatSelector from '@/widgets/CatSelector'
 import StateSelector from '@/widgets/StateSelector'
 import TagSelector from '@/widgets/TagSelector'
+import SearchBox from '@/widgets/SearchBox'
 
-import SearchBox from './SearchBox'
 import SortFilter from './SortFilter'
 // import SelectedFilters from './SelectedFilters'
 // import FilterResult from './FilterResult'
@@ -35,15 +35,13 @@ const ArticlesFilter: FC<TProps> = ({
   onSelect = log,
   resState = TYPE.RES_STATE.DONE,
   mode = 'default',
-  onSearch = log,
-  closeSearch = log,
   groupedTags,
   activeTag,
 }) => {
   const [activeCat, setActiveCat] = useState<TArticleCat>(ARTICLE_CAT.ALL)
 
   // const { activeThread } = useViewing()
-  const searchMode = mode === 'search'
+  const searchMode = false
 
   return (
     <Wrapper>
@@ -57,7 +55,7 @@ const ArticlesFilter: FC<TProps> = ({
         </Fragment>
       )}
 
-      <SearchBox searchMode={searchMode} onSearch={onSearch} closeSearch={closeSearch} />
+      <SearchBox />
     </Wrapper>
   )
 }

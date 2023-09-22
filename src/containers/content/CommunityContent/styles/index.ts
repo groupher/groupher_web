@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 
-import type { TMetric, TTestable } from '@/spec'
+import type { TBannerLayout, TMetric, TTestable } from '@/spec'
+import { BANNER_LAYOUT } from '@/constant/layout'
+
 import css, { theme } from '@/css'
 
 export const BaseWrapper = styled.div.attrs<TTestable>(({ testid }) => ({
@@ -34,15 +36,16 @@ export const BaseContentWrapper = styled.div`
   ${css.column()};
   width: 100%;
 `
-export const Wrapper = styled(BaseWrapper)`
+export const Wrapper = styled(BaseWrapper)<{ metric?: TMetric }>`
   ${css.column('justify-start', 'align-center')};
 
   ${css.media.mobile`
     padding-left: 0;
   `};
 `
-export const SidebarWrapper = styled(BaseWrapper)`
-  ${css.row('justify-start')};
+export const SidebarWrapper = styled(BaseWrapper)<{ metric: TMetric }>`
+  ${css.row('justify-between')};
+  ${({ metric }) => css.fitContentWidth(metric)};
 `
 export const MobileCardsWrapper = styled.div`
   width: 100%;
@@ -54,7 +57,9 @@ export const MobileCardsWrapper = styled.div`
     ${css.column()};
   `};
 `
-export const InnerWrapper = styled(BaseInnerWrapper)`
+export const InnerWrapper = styled(BaseInnerWrapper)<{ bannerLayout?: TBannerLayout }>`
+  ${({ bannerLayout }) => (bannerLayout === BANNER_LAYOUT.SIDEBAR ? 'width: 100%;' : '')};
+
   ${css.media.mobile`
     display: none;
     padding-left: 0;

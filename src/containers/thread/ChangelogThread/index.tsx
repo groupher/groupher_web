@@ -19,13 +19,11 @@ import { useInit } from './logic' /* eslint-disable-next-line */
 type TProps = {
   changelogThread?: TStore
   testid?: string
-  isSidebarLayout?: boolean
 }
 
 const ChangelogThreadContainer: FC<TProps> = ({
   changelogThread: store,
   testid = 'changelog-thread',
-  isSidebarLayout = false,
 }) => {
   useInit(store)
   const { globalLayout, tagsMode, pagedChangelogsData } = store
@@ -33,7 +31,7 @@ const ChangelogThreadContainer: FC<TProps> = ({
   return globalLayout.banner === BANNER_LAYOUT.TABBER ? (
     <ClassicLayout tagsMode={tagsMode} pagedChangelogs={pagedChangelogsData} />
   ) : (
-    <SimpleLayout isSidebarLayout={isSidebarLayout} pagedChangelogs={pagedChangelogsData} />
+    <SimpleLayout pagedChangelogs={pagedChangelogsData} />
   )
 }
 

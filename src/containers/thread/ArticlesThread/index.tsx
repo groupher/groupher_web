@@ -5,10 +5,9 @@
  */
 
 import { FC, useEffect, useRef } from 'react'
-import dynamic from 'next/dynamic'
 
 import type { TResState, TArticleFilterMode } from '@/spec'
-import { BANNER_LAYOUT, DOC_FAQ_LAYOUT } from '@/constant/layout'
+import { BANNER_LAYOUT } from '@/constant/layout'
 
 import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
@@ -23,13 +22,10 @@ import ArticlesFilter from '@/widgets/ArticlesFilter'
 import type { TStore } from './store'
 
 import { Wrapper, MainWrapper, SidebarWrapper, FilterWrapper } from './styles'
-
-import { useInit, inAnchor, outAnchor, onFilterSelect, onSearch, closeSearch } from './logic'
+import { useInit, inAnchor, outAnchor, onFilterSelect } from './logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:ArticlesThread')
-
-const FaqList = dynamic(() => import('@/widgets/FaqList'))
 
 type TProps = {
   articlesThread?: TStore
@@ -65,7 +61,6 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
     resState,
     mode,
     globalLayout,
-    isViewingArticle,
     activeTagData,
     groupedTags,
   } = store
@@ -75,7 +70,7 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
 
   return (
     <Wrapper>
-      <LayoutWrapper thread={curThread} isViewingArticle={isViewingArticle}>
+      <LayoutWrapper thread={curThread}>
         <ViewportTracker onEnter={inAnchor} onLeave={outAnchor} />
 
         {showFilters && (
@@ -88,23 +83,17 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
               onSelect={onFilterSelect}
               activeFilter={filtersData}
               mode={mode as TArticleFilterMode}
-              onSearch={onSearch}
-              closeSearch={closeSearch}
             />
           </FilterWrapper>
         )}
 
         <TagNote tag={activeTagData} />
 
-        {mode === 'search' && <FaqList layout={DOC_FAQ_LAYOUT.SEARCH_HINT} left={6} />}
-
-        {mode === 'default' && (
-          <PagedArticles
-            data={pagedArticlesData}
-            thread={curThread}
-            resState={resState as TResState}
-          />
-        )}
+        <PagedArticles
+          data={pagedArticlesData}
+          thread={curThread}
+          resState={resState as TResState}
+        />
       </LayoutWrapper>
 
       {!isSidebarLayout && <ThreadSidebar />}

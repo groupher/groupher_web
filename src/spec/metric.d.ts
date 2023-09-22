@@ -1,6 +1,7 @@
 export type TMetric =
   | 'HOME'
   | 'COMMUNITY'
+  | 'COMMUNITY_SIDEBAR'
   | 'DOC'
   | 'USER'
   // articles

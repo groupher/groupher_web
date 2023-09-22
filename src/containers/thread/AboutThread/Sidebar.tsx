@@ -18,10 +18,6 @@ import {
   Desc,
 } from './styles/sidebar'
 
-type TProps = {
-  isSidebarLayout: boolean
-}
-
 const Content = () => {
   return (
     <>
@@ -66,14 +62,14 @@ const Content = () => {
   )
 }
 
-const Sidebar: FC<TProps> = ({ isSidebarLayout }) => {
+const Sidebar: FC = () => {
   return (
     <>
       <MobileWrapper>
         <Content />
       </MobileWrapper>
 
-      <Wrapper isSidebarLayout={isSidebarLayout}>
+      <Wrapper>
         <Content />
       </Wrapper>
     </>

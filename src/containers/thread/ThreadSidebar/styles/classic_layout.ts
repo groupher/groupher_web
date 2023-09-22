@@ -61,6 +61,7 @@ export const CommunityNoteWrapper = styled.div`
 export const PublishWrapper = styled.div<TActive>`
   display: ${({ show }) => (show ? 'block' : 'none')};
   width: 100%;
+  margin-left: 3px;
 `
 export const NoteWrapper = styled.div`
   color: ${theme('hint')};

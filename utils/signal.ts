@@ -7,7 +7,6 @@ import { values, includes } from 'ramda'
 
 import type {
   TToastType,
-  TUser,
   TAttInfo,
   TPaymentUsage,
   TWindow,
@@ -189,17 +188,6 @@ export const multiClick = (
   }
 }
 
-export const communityChanged = (community: TCommunity): void => {
-  // @ts-ignore
-  BStore.set('curCommunity', community)
-
-  setTimeout(() => {
-    // see: https://stackoverflow.com/a/55349670/4050784
-    send(EVENT.COMMUNITY_CHANGED)
-    Global?.dispatchEvent(new Event(EVENT.COMMUNITY_CHANGED))
-  })
-}
-
 /**
  * handle user account state change
  */
@@ -252,6 +240,15 @@ export const previewArticle = (article: TArticle): void => {
   const data = article
 
   send(EVENT.DRAWER.OPEN, { type, data })
+}
+
+/**
+ * open search panel
+ */
+export const openSearch = (): void => {
+  const type = TYPE.DRAWER.SEARCH_PANEL
+
+  send(EVENT.DRAWER.OPEN, { type })
 }
 
 export const setArticleTag = (community: TCommunity, thread: TThread, tags: TTag[]): void => {

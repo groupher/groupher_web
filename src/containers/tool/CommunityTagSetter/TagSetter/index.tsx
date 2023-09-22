@@ -10,7 +10,6 @@ import type { TTag } from '@/spec'
 import { buildLog } from '@/logger'
 
 import Header from './Header'
-// import SearchBox from './SearchBox'
 import Body from './Body'
 import Footer from './Footer'
 

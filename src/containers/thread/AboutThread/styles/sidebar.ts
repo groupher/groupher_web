@@ -2,9 +2,9 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/css'
 
-export const Wrapper = styled.div<{ isSidebarLayout: boolean }>`
-  width: ${({ isSidebarLayout }) => (isSidebarLayout ? '280px' : '300px')};
-  min-width: ${({ isSidebarLayout }) => (isSidebarLayout ? '280px' : '300px')};
+export const Wrapper = styled.div`
+  width: 300px;
+  min-width: 300px;
   height: auto;
   border-left: 1px solid;
   border-left-color: ${theme('divider')};
@@ -12,7 +12,7 @@ export const Wrapper = styled.div<{ isSidebarLayout: boolean }>`
   padding-top: 10px;
   padding-bottom: 0;
   margin-top: 20px;
-  margin-left: ${({ isSidebarLayout }) => (isSidebarLayout ? '32px' : '70px')};
+  margin-left: 70px;
 
   ${css.media.mobile`
     display: none;

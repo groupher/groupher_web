@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import type { TBannerLayout } from '@/spec'
+import { BANNER_LAYOUT } from '@/constant/layout'
 import css, { theme } from '@/css'
 
 import ArrowSVG from '@/icons/ArrowSimple'
@@ -7,9 +9,8 @@ import ListSVG from '@/icons/List'
 
 import { MainWrapper } from '..'
 
-export const Wrapper = styled.div<{ isSidebarLayout: boolean }>`
-  ${({ isSidebarLayout }) =>
-    isSidebarLayout ? css.row('justify-start') : css.row('justify-center')};
+export const Wrapper = styled.div`
+  ${css.row('justify-center')};
   width: 100%;
   position: relative;
 `
@@ -25,7 +26,7 @@ export const Title = styled.div`
     font-size: 20px;
   `};
 `
-type TContent = { isRightLayout?: boolean; open?: boolean; isSidebarLayout: boolean }
+type TContent = { isRightLayout?: boolean; open?: boolean; bannerLayout: TBannerLayout }
 export const Content = styled(MainWrapper)<TContent>`
   flex-grow: 1;
   background: transparent;
@@ -33,10 +34,10 @@ export const Content = styled(MainWrapper)<TContent>`
   line-height: 1.8;
   padding-right: ${({ isRightLayout }) => (isRightLayout ? '10px' : '90px')};
   border-right: none;
-
-  max-width: ${({ open, isSidebarLayout }) => {
-    if (isSidebarLayout || !open) {
-      return '700px'
+  max-width: 100%;
+  max-width: ${({ open, bannerLayout }) => {
+    if (bannerLayout === BANNER_LAYOUT.SIDEBAR || !open) {
+      return '680px'
     }
     return '100%'
   }};

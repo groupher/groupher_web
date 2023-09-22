@@ -11,8 +11,8 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   min-height: 100vh;
   height: 100%;
   padding: 10px 0;
+  padding-left: ${({ isSidebarLayout }) => (isSidebarLayout ? '50px' : 0)};
   margin-bottom: 30px;
-  margin-left: ${({ isSidebarLayout }) => (isSidebarLayout ? '-35px' : 0)};
 
   ${css.media.mobile`
     margin-bottom: 0;

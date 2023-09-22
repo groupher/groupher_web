@@ -22,11 +22,9 @@ type TProps = {
 const PostLayout: FC<TProps> = ({ text }) => {
   return (
     <Wrapper>
-      <Fragment>
-        <Title>{text}</Title>
-        <SpaceGrow />
-        <EditIcon />
-      </Fragment>
+      <Title>{text}</Title>
+      <SpaceGrow />
+      <EditIcon />
     </Wrapper>
   )
 }

@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, memo, ReactNode } from 'react'
+import { FC, ReactNode } from 'react'
 import { observer } from 'mobx-react'
 
 import type { TSpace } from '@/spec'
@@ -24,6 +24,7 @@ type TProps = {
   fontSize?: number
   children: ReactNode
   target?: string
+  bold?: boolean
 } & TSpace
 
 const ArrowLinker: FC<TProps> = ({
@@ -31,6 +32,7 @@ const ArrowLinker: FC<TProps> = ({
   fontSize = 13,
   href = '/',
   target = '_blank',
+  bold = false,
   children,
   ...restProps
 }) => {
@@ -39,7 +41,7 @@ const ArrowLinker: FC<TProps> = ({
   return (
     <Link href={href} target={target}>
       <Wrapper testid={testid} {...restProps}>
-        <Title fontSize={fontSize} primaryColor={primaryColor}>
+        <Title fontSize={fontSize} bold={bold} primaryColor={primaryColor}>
           {children}
         </Title>
         <ArrowIcon fontSize={fontSize} primaryColor={primaryColor} />

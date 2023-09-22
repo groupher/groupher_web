@@ -7,6 +7,7 @@ import { FC } from 'react'
 import { bond } from '@/mobx'
 
 import CommunityDigest from '@/widgets/CommunityDigest'
+
 import ThreadContent from './ThreadContent'
 
 import type { TStore } from './store'
@@ -20,7 +21,6 @@ type TProps = {
 
 const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   useInit(store)
-
   const { curThread: thread } = store
 
   return (

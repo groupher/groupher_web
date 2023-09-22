@@ -2,21 +2,13 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { FC } from 'react'
 
-import PublishButton from '@/widgets/Buttons/PublishButton'
+import { SpaceGrow, SexyDivider } from '@/widgets/Common'
+import AccountUnit from '@/widgets/AccountUnit'
+import SearchBox from '@/widgets/SearchBox'
 
-import {
-  Wrapper,
-  EmptySpace,
-  Menu,
-  MenuItem,
-  MainArea,
-  PublishWrapper,
-  AccountWrapper,
-  AccountIcon,
-  Icon,
-} from './styles/post_layout'
+import { Wrapper, InnerWrapper, MainArea } from './styles/post_layout'
 
 type TProps = {
   testid?: string
@@ -24,33 +16,18 @@ type TProps = {
 
 const PostLayout: FC<TProps> = ({ testid = 'sidebar-layout-header' }) => {
   return (
-    <Wrapper testid={testid}>
-      <EmptySpace />
-      <MainArea>
-        <Menu>
-          <Icon.Discuss />
-          <MenuItem>讨论区</MenuItem>
-        </Menu>
-        <PublishWrapper>
-          <PublishButton
-            thread="post"
-            community="home"
-            mode="sidebar_layout_header"
-            text="参与讨论"
-            onClick={() => console.log('## publish')}
-            onMenuSelect={() => console.log('## on publish')}
-            menuLeft
+    <Wrapper>
+      <InnerWrapper testid={testid}>
+        <MainArea>
+          <SearchBox left={-14} top={-5} />
+          <SpaceGrow />
+          <AccountUnit top={-5} />
+        </MainArea>
+      </InnerWrapper>
 
-            // onClick={() => onPublish(ARTICLE_CAT.FEATURE)}
-            // onMenuSelect={onPublish}
-          />
-        </PublishWrapper>
-      </MainArea>
-      <AccountWrapper>
-        <AccountIcon />
-      </AccountWrapper>
+      <SexyDivider top={16} />
     </Wrapper>
   )
 }
 
-export default memo(PostLayout)
+export default PostLayout
