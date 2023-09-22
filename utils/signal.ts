@@ -7,7 +7,6 @@ import { values, includes } from 'ramda'
 
 import type {
   TToastType,
-  TUser,
   TAttInfo,
   TPaymentUsage,
   TWindow,

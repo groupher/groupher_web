@@ -64,3 +64,7 @@ export const PassportEditor = dynamic(() => import('@/containers/editor/Passport
 export const TagSettingEditor = dynamic(() => import('@/containers/editor/TagSettingEditor'), {
   loading: () => <CommonLoading />,
 })
+
+export const SearchPanel = dynamic(() => import('@/containers/unit/SearchPanel'), {
+  loading: () => <CommonLoading />,
+})

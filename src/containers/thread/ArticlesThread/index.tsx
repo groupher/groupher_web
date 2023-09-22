@@ -5,7 +5,6 @@
  */
 
 import { FC, useEffect, useRef } from 'react'
-import dynamic from 'next/dynamic'
 
 import type { TResState, TArticleFilterMode } from '@/spec'
 import { BANNER_LAYOUT } from '@/constant/layout'
