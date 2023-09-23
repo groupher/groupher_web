@@ -1,35 +1,44 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
+import { isEmpty } from 'ramda'
 
-import { Br, SexyDivider as Divider } from '@/widgets/Common'
+import useAboutInfo from '@/hooks/useAboutInfo'
+import { SexyDivider as Divider } from '@/widgets/Common'
+import SocialList from '@/widgets/SocialList'
 
-import { Wrapper, Block, Title, Reports, ReportsArticle, Press, Desc } from './styles/extra_info'
+import LabelList from './LabelList'
+import MediaReports from './MediaReports'
+
+import { Wrapper, Block, Title } from './styles/extra_info'
 
 const Content = () => {
+  const { cities, techstacks, socialLinks, mediaReports } = useAboutInfo()
+
+  const noMediaReports = mediaReports.length <= 1 && !mediaReports[0].title
+
   return (
     <>
+      <Divider bottom={40} top={0} />
+      <Block hide={isEmpty(cities)}>
+        <Title>所在地</Title>
+        <LabelList items={cities} left={-2} />
+      </Block>
+
       <Block>
         <Title>技术栈</Title>
-        <Desc>Typescript, Elixir</Desc>
+        <LabelList items={techstacks} left={-2} />
       </Block>
-      <Block>
-        <Title>所在地</Title>
-        <Desc>成都, 厦门</Desc>
+      <Divider bottom={40} />
+      <Block hide={isEmpty(socialLinks)}>
+        <Title>关注我们</Title>
+        <SocialList size="small" selected={socialLinks} left={-10} top={12} />
       </Block>
-      <Divider bottom={30} />
-      <Block>
+
+      <Block hide={noMediaReports}>
         <Title>媒体报道</Title>
-        <Br top={10} />
-        <Reports>
-          <Press>36kr</Press>
-          <ReportsArticle>新一代xxx一体化协作平台「XXX」获1000万元Pre</ReportsArticle>
-        </Reports>
-        <Br top={6} />
-        <Reports>
-          <Press>科技周刊</Press>
-          <ReportsArticle>这个平台太酷了</ReportsArticle>
-        </Reports>
+        <MediaReports items={mediaReports} />
       </Block>
-      <Divider />
+      <Divider bottom={40} />
     </>
   )
 }
@@ -42,4 +51,4 @@ const ExtraInfo: FC = () => {
   )
 }
 
-export default memo(ExtraInfo)
+export default observer(ExtraInfo)

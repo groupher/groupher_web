@@ -11,7 +11,7 @@ export const Wrapper = styled.div.attrs<TWrapper>(({ testid }) => ({
   ${css.row('align-start')};
   width: 100%;
 
-  padding-left: ${({ bannerLayout }) => (bannerLayout === BANNER_LAYOUT.SIDEBAR ? '85px' : '')};
+  padding-left: ${({ bannerLayout }) => (bannerLayout === BANNER_LAYOUT.SIDEBAR ? '90px' : '')};
 
   ${css.media.mobile`
     ${css.column('align-start')};

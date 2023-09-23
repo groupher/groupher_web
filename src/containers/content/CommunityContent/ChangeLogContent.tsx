@@ -36,7 +36,7 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   const LayoutWrapper = globalLayout.banner === BANNER_LAYOUT.SIDEBAR ? SidebarWrapper : Wrapper
 
   return (
-    <LayoutWrapper testid="changelog-thread-content">
+    <LayoutWrapper testid="changelog-thread-content" metric={metric}>
       <CommunityDigest />
       {isMobile ? (
         <MobileCardsWrapper>

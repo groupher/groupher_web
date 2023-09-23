@@ -32,7 +32,7 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   const LayoutWrapper = bannerLayout === BANNER_LAYOUT.SIDEBAR ? SidebarWrapper : Wrapper
 
   return (
-    <LayoutWrapper testid="kanban-thread-content">
+    <LayoutWrapper testid="kanban-thread-content" metric={metric}>
       <CommunityDigest />
       <MobileCardsWrapper>
         <ContentWrapper>

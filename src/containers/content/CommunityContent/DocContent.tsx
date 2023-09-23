@@ -28,6 +28,7 @@ type TProps = {
 const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   useInit(store)
   const metric = useMetric()
+
   const bannerLayout = useBannerLayout()
   const { isMobile } = useMobileDetect()
 
@@ -35,7 +36,7 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   const LayoutWrapper = isSidebarLayout ? SidebarWrapper : Wrapper
 
   return (
-    <LayoutWrapper testid="doc-thread-content">
+    <LayoutWrapper testid="doc-thread-content" metric={metric}>
       <CommunityDigest />
       {isMobile ? (
         <MobileCardsWrapper>
