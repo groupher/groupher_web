@@ -4,7 +4,7 @@
  * use custom animation Globally at GlobalStyle.ts
  */
 
-import { FC, useState, useRef, memo, useEffect } from 'react'
+import { FC, useState, useRef, useEffect } from 'react'
 import { hideAll } from 'tippy.js'
 
 import { zIndex } from '@/css'
@@ -136,4 +136,4 @@ const Tooltip: FC<TProps> = ({
   )
 }
 
-export default memo(Tooltip)
+export default Tooltip

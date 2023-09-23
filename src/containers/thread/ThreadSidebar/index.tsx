@@ -6,7 +6,7 @@
  *
  */
 
-import { FC, Fragment } from 'react'
+import { FC } from 'react'
 
 import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
@@ -27,17 +27,9 @@ export type TProps = { threadSidebar?: TStore } & TBaseProps
 
 const ThreadSidebarContainer: FC<TProps> = ({ threadSidebar: store }) => {
   useInit(store)
-  const { curCommunity, isCommunityDigestInViewport, curThread } = store
+  const { isCommunityDigestInViewport } = store
 
-  return (
-    <Fragment>
-      <ClassicLayout
-        showCommunityBadge={isCommunityDigestInViewport}
-        thread={curThread}
-        community={curCommunity}
-      />
-    </Fragment>
-  )
+  return <ClassicLayout showCommunityBadge={isCommunityDigestInViewport} />
 }
 
 export default bond(ThreadSidebarContainer, 'threadSidebar') as FC<TProps>

@@ -1,23 +1,17 @@
 /*
- *
  * PublishButton
- *
  */
-
-import { memo, FC, useState, Fragment } from 'react'
-import dynamic from 'next/dynamic'
-// import Router from 'next/router'
-// import { isEmpty } from 'ramda'
+import { memo, FC, useState } from 'react'
 
 import type { TPublishMode, TArticleCat, TSpace, TTooltipPlacement } from '@/spec'
 import { PUBLISH_MODE } from '@/constant/publish'
 
-import Tooltip from '@/widgets/Tooltip'
 import { buildLog } from '@/logger'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import useViewingThread from '@/hooks/useViewingThread'
-// import { authWarn } from '@/signal'
-// import useAccount from '@/hooks/useAccount'
+
+import Tooltip from '@/widgets/Tooltip'
+import FullPanel from '@/widgets/CatSelector/FullPanel'
 
 import { MORE_MENU } from './constant'
 
@@ -29,8 +23,6 @@ import { getText } from './helper'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:PublishButton:index')
-
-const FullPanel = dynamic(() => import('@/widgets/CatSelector/FullPanel'))
 
 type TProps = {
   text?: string
@@ -68,13 +60,11 @@ const PublishButton: FC<TProps> = ({
         trigger="click"
         onShow={() => setShow(true)}
         offset={offset as [number, number]}
-        content={
-          <Fragment>{show && <FullPanel onSelect={onMenuSelect} activeCat={null} />}</Fragment>
-        }
+        content={<>{show && <FullPanel onSelect={onMenuSelect} activeCat={null} />}</>}
       >
         <PubButton
-          smaller={mode === PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER}
           primaryColor={primaryColor}
+          smaller={mode === PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER}
         >
           {mode === PUBLISH_MODE.DEFAULT && <PostLayout text={_text} />}
           {mode === PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER && <SidebarHeaderLayout text={text} />}

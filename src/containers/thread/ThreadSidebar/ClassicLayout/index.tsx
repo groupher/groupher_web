@@ -26,7 +26,7 @@ import { SpaceGrow, Br } from '@/widgets/Common'
 import PublishButton from '@/widgets/Buttons/PublishButton'
 import TagsBar from '@/containers/unit/TagsBar'
 
-import { CommunityJoinBadge } from './dynamic'
+// import { CommunityJoinBadge } from './dynamic'
 
 import {
   Wrapper,
@@ -46,17 +46,10 @@ const log = buildLog('w:ClassicSidebar')
 
 export type TProps = {
   showCommunityBadge: boolean
-  thread: TThread
-  community: TCommunity
 }
 
-const ClassicLayout: FC<TProps> = ({ showCommunityBadge, thread, community }) => {
+const ClassicLayout: FC<TProps> = ({ showCommunityBadge }) => {
   const avatarLayout = useAvatarLayout()
-  const [load, setLoad] = useState(false)
-
-  useEffect(() => {
-    setLoad(true)
-  }, [])
 
   return (
     <Wrapper testid="thread-sidebar">
@@ -103,7 +96,7 @@ const ClassicLayout: FC<TProps> = ({ showCommunityBadge, thread, community }) =>
             />
           </PublishWrapper>
 
-          {load && !showCommunityBadge && <CommunityJoinBadge />}
+          {/* {load && !showCommunityBadge && <CommunityJoinBadge />} */}
           <TagsBarWrapper>
             <TagsBar onSelect={() => send(EVENT.REFRESH_ARTICLES)} />
           </TagsBarWrapper>
