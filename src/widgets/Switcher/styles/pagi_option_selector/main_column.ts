@@ -16,8 +16,7 @@ export const MainBar = styled(SwitchBarBase)`
   height: 100%;
 `
 export const SubBarWrapper = styled.div`
-  ${css.row('justify-between')};
-  flex-wrap: wrap;
+  ${css.rowWrap('justify-between')};
   width: 11px;
   height: 100%;
   margin-left: 3px;

@@ -7,9 +7,8 @@ import CheckedSVG from '@/icons/CheckBold'
 import CircleArrowSVG from '@/icons/CircleArrow'
 
 export const Wrapper = styled.div<{ showMore: boolean }>`
-  ${css.row()};
+  ${css.rowWrap()};
   width: calc(100% + 30px);
-  flex-wrap: wrap;
   gap: 15px 16px;
   margin-top: 10px;
   position: relative;

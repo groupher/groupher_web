@@ -261,6 +261,7 @@ export const ssrParseDashboard = (community) => {
     baseInfo,
     headerLinks,
     footerLinks,
+    mediaReports,
   } = dashboard
 
   const fieldsObj = removeEmptyValuesFromObject({
@@ -275,6 +276,7 @@ export const ssrParseDashboard = (community) => {
     headerLinks,
     footerLinks,
     moderators,
+    mediaReports,
   })
 
   return {

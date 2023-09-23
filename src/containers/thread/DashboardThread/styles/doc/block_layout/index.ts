@@ -8,8 +8,7 @@ export const Wrapper = styled.div`
   margin-top: 10px;
 `
 export const CatsWrapper = styled.div`
-  ${css.row('justify-start')};
-  flex-wrap: wrap;
+  ${css.rowWrap('justify-start')};
   gap: 15px 20px;
 
   flex-grow: 1;

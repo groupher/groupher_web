@@ -59,8 +59,7 @@ export const FeatList = styled.div`
 `
 
 export const MobileIntroLists = styled.div`
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
   gap: 16px 0;
   padding-left: 10px;
   margin-top: -25px;

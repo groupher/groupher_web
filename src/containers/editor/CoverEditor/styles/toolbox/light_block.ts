@@ -11,8 +11,7 @@ export const Wrapper = styled.div`
 `
 export const Block = styled.div`
   ${css.size(48)};
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
   gap: 3px;
   padding: 4px;
   border-radius: 2px;

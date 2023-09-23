@@ -12,8 +12,7 @@ export const Title = styled.div`
   margin-bottom: 12px;
 `
 export const List = styled.div`
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
 `
 export const Item = styled.div`
   ${css.column('align-both')};

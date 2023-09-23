@@ -11,12 +11,11 @@ export const Wrapper = styled.div<{ bannerLayout: TBannerLayout }>`
 
   ${({ bannerLayout }) =>
     bannerLayout !== BANNER_LAYOUT.SIDEBAR
-      ? 'width: 100%;margin-left: 58px;margin-top: 30px;'
+      ? 'width: 100%; margin-left: 58px; margin-top: 30px;'
       : 'width: auto;'}
 `
 export const CatsWrapper = styled(MainWrapper)`
-  ${css.row('justify-between')};
-  flex-wrap: wrap;
+  ${css.rowWrap('justify-between')};
 
   flex-grow: 1;
   width: 100%;

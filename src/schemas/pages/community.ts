@@ -44,6 +44,16 @@ export const community = `
           homepage
           logo
           desc
+          city
+          techstack
+          introduction
+        }
+        mediaReports {
+          url
+          title
+          siteName
+          favicon
+          index
         }
         wallpaper {
           ${F.wallpaper}
@@ -54,26 +64,12 @@ export const community = `
         footerLinks {
           ${F.customLink}
         }
-
         socialLinks {
           type
           link
         }
         seo {
-          seoEnable
-          ogSiteName
-          ogTitle
-          ogDescription
-          ogUrl
-          ogImage
-          twTitle
-          twDescription
-          twUrl
-          twCard
-          twSite
-          twImage
-          twImageWidth
-          twImageHeight
+          ${F.seo}
         }
         nameAlias {
           slug

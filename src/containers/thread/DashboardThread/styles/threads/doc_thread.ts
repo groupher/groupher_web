@@ -3,8 +3,7 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.row('justify-between')};
-  flex-wrap: wrap;
+  ${css.rowWrap('justify-between')};
 
   border-left: 2px solid;
   border-left-color: ${theme('divider')};

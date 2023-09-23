@@ -63,9 +63,8 @@ const AboutThreadContainer: FC<TProps> = ({
         <StateBlock>
           <Title>社区概况</Title>
           <BasicStates />
+          <Divider bottom={40} top={60} />
         </StateBlock>
-
-        <Divider bottom={40} />
 
         <MemberBlock>
           <Members moderators={community.moderators} />

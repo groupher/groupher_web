@@ -8,7 +8,7 @@ import type { TSpace } from '@/spec'
 
 import { mediaBreakPoints } from './metric'
 import { media, fitContentWidth, fitStickerWidth, fitPageWidth } from './media'
-import { flex, flexGrow, flexWrap, flexColumn, flexColumnGrow } from './flex'
+import { flex, flexGrow, flexWrap, flexColumn, flexColumnGrow, flexColumnWrap } from './flex'
 
 import { circle, size } from './shape'
 
@@ -64,6 +64,7 @@ const css = {
   rowGrow: flexGrow,
   column: flexColumn,
   columnGrow: flexColumnGrow,
+  columnWrap: flexColumnWrap,
   mediaBreakPoints,
   media,
   fitContentWidth,

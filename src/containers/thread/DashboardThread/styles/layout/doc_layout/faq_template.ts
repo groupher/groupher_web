@@ -11,8 +11,7 @@ export const FlatLayoutWrapper = styled.div`
   width: 100%;
 `
 export const FlatLists = styled.div`
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
   gap: 22px 0;
   width: 100%;
   margin-top: 15px;

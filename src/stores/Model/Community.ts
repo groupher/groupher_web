@@ -33,6 +33,7 @@ export const Moderator = T.model('Moderator', {
 // TODO:
 const DashboardBaseInfo = T.model('DashboardBaseInfo', {
   homepage: T.opt(T.str, ''),
+  favicon: T.opt(T.str, ''),
 })
 
 // TODO:

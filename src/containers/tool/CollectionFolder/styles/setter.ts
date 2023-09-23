@@ -39,8 +39,7 @@ export const Artiment = styled.div`
   margin-right: 5px;
 `
 export const ListWrapper = styled.div`
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
   flex-grow: 1;
   padding-top: 35px;
   padding-right: 15px;

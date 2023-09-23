@@ -3,10 +3,9 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.row('align-center')};
+  ${css.rowWrap('align-center')};
   margin-top: 10px;
   color: ${theme('banner.desc')};
-  flex-wrap: wrap;
 `
 
 export const Text = styled.div`

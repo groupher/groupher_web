@@ -26,10 +26,10 @@ export const Hint = styled.div`
   margin-top: 2px;
 `
 export const LinkIcon = styled(LinkSVG)`
-  ${css.size(15)};
+  ${css.size(18)};
+  margin-top: 2px;
   fill: ${theme('article.digest')};
   margin-right: 3px;
-  opacity: 0.6;
 `
 export const LinkOutIcon = styled(LinkOutSVG)`
   ${css.size(10)};

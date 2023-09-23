@@ -52,6 +52,17 @@ const I18nDict = {
   WEIBO: '微博',
   BOSS: 'Boss 直聘',
   LAGOU: '拉钩',
+
+  // city
+  chengdu: '成都',
+  wuhan: '武汉',
+  beijing: '北京',
+  shanghai: '上海',
+  hangzhou: '杭州',
+  shenzhen: '深圳',
+  guangzhou: '广州',
+  suzhou: '苏州',
+  xian: '西安',
 }
 
 export const Trans = (key) => I18nDict[key] || key

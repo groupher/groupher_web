@@ -11,8 +11,7 @@ export const Wrapper = styled.div`
 `
 export const Block = styled.div`
   ${css.size(47)};
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
   border-radius: 2px;
   border: 1px solid;
   border-color: ${theme('divider')};

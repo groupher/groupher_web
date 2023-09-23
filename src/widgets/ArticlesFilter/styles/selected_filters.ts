@@ -3,8 +3,7 @@ import styled from 'styled-components'
 import css from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
 
   margin-left: 15px;
   margin-top: -1px;

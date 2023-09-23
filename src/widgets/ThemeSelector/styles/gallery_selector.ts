@@ -6,8 +6,7 @@ import css, { theme } from '@/css'
 import { Dot } from '.'
 
 export const Wrapper = styled.div`
-  ${css.row('align-both')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-both')};
 `
 export const ThemeDot = styled(Dot)`
   ${css.circle(20)};

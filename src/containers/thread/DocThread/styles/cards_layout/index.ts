@@ -10,8 +10,7 @@ export const Wrapper = styled.div`
   margin-left: -30px;
 `
 export const CatsWrapper = styled(MainWrapper)`
-  ${css.row('justify-between')};
-  flex-wrap: wrap;
+  ${css.rowWrap('justify-between')};
   flex-grow: 1;
   gap: 20px 10px;
 

@@ -10,7 +10,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 }))<TWrapper>`
   ${css.column('align-center')};
   width: ${({ bannerLayout }) =>
-    bannerLayout === BANNER_LAYOUT.SIDEBAR ? 'calc(100% + 100px)' : '100px'};
+    bannerLayout === BANNER_LAYOUT.SIDEBAR ? 'calc(100% + 30px)' : '100px'};
 
   padding-left: ${({ bannerLayout }) =>
     bannerLayout === BANNER_LAYOUT.SIDEBAR ? '100px' : '50px'};

@@ -38,8 +38,7 @@ export const Article = styled.div`
   margin-right: 5px;
 `
 export const InnerWrapper = styled.div`
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
 
   ${css.media.mobile`
     justify-content: space-between;

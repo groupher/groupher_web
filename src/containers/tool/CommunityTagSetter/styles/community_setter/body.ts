@@ -10,6 +10,5 @@ export const Wrapper = styled.div`
   min-height: 400px;
 `
 export const InnerWrapper = styled.div`
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
 `

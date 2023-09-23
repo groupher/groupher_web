@@ -69,9 +69,8 @@ export const PlusIcon = styled(PlusSVG)`
 `
 
 export const LinkGroup = styled.div`
-  ${css.row('justify-start')};
+  ${css.rowWrap('justify-start')};
   margin-top: 30px;
-  flex-wrap: wrap;
   width: calc(100% + 50px);
   gap: 30px;
 `

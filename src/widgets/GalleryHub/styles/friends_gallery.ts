@@ -7,8 +7,7 @@ export const Wrapper = styled.div`
   ${css.column('align-center')};
 `
 export const BlockWrapper = styled.div`
-  ${css.row('justify-start')};
-  flex-wrap: wrap;
+  ${css.rowWrap('justify-start')};
   color: ${theme('article.digest')};
   width: 100%;
   min-height: 500px;

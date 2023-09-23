@@ -6,8 +6,7 @@ import css, { theme } from '@/css'
 import CitySVG from '@/icons/City'
 
 export const Wrapper = styled.div`
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
 `
 
 export const UserWrapper = styled.div`

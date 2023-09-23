@@ -23,8 +23,7 @@ export const TheColor = styled.div<{ color: TColorName }>`
 
 // threads
 export const ThreadsWrapper = styled.div`
-  ${css.row('justify-between')};
-  flex-wrap: wrap;
+  ${css.rowWrap('justify-between')};
 
   border: 1px solid;
   border-color: ${theme('divider')};

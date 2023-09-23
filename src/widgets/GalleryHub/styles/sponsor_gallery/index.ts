@@ -4,9 +4,8 @@ import Img from '@/Img'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<{ center: boolean }>`
-  ${css.row()};
+  ${css.rowWrap()};
   justify-content: ${({ center }) => (center ? 'center' : 'flex-start')};
-  flex-wrap: wrap;
   color: ${theme('article.digest')};
   width: 100%;
 
