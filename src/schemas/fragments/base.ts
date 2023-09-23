@@ -42,6 +42,22 @@ export const wallpaper = `
   hasBlur
   hasShadow
 `
+export const seo = `
+  seoEnable
+  ogSiteName
+  ogTitle
+  ogDescription
+  ogUrl
+  ogImage
+  twTitle
+  twDescription
+  twUrl
+  twCard
+  twSite
+  twImage
+  twImageWidth
+  twImageHeight
+`
 export const tag = `
   id
   title

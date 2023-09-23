@@ -10,6 +10,7 @@ import type { TSpace } from '@/spec'
 
 import { buildLog } from '@/logger'
 
+import { prettyURL } from '@/fmt'
 import Tooltip from '@/widgets/Tooltip'
 
 import { Wrapper, LinkIcon, LinkOutIcon, Source, PopHint } from './styles'
@@ -40,18 +41,18 @@ const Linker: FC<TProps> = ({
 
   return (
     <Wrapper testid={testid} inline={inline} {...restProps}>
-      {external ? <LinkOutIcon /> : <LinkIcon />}
-
+      <LinkIcon />
+      {/* {!external ? <LinkOutIcon /> : <LinkIcon />} */}
       <Tooltip
         content={<PopHint>{src}</PopHint>}
         placement="bottom"
         hideOnClick={false}
-        delay={500}
+        delay={300}
         offset={[-10, 0] as [number, number]}
         noPadding
       >
         <Source href={src} target="_blank" plainColor={plainColor}>
-          {src}
+          {prettyURL(src)}
         </Source>
       </Tooltip>
     </Wrapper>

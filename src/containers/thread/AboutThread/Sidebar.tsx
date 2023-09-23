@@ -1,62 +1,52 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
+import { isEmpty } from 'ramda'
 
-import { DEME_SOCIALS } from '@/constant/social'
+import useAboutInfo from '@/hooks/useAboutInfo'
 
-import { Br, Divider } from '@/widgets/Common'
+import { Divider } from '@/widgets/Common'
 import Linker from '@/widgets/Linker'
-
 import SocialList from '@/widgets/SocialList'
 
-import {
-  Wrapper,
-  MobileWrapper,
-  Block,
-  Title,
-  Reports,
-  ReportsArticle,
-  Press,
-  Desc,
-} from './styles/sidebar'
+import LabelList from './LabelList'
+import MediaReports from './MediaReports'
+
+import { Wrapper, MobileWrapper, Block, Title, Desc } from './styles/sidebar'
 
 const Content = () => {
+  const { homepage, cities, techstacks, socialLinks, mediaReports } = useAboutInfo()
+
+  const noMediaReports = mediaReports.length <= 1 && !mediaReports[0].title
+
   return (
     <>
-      <Block>
+      <Block hide={isEmpty(homepage)}>
         <Title>官方主页</Title>
         <Desc>
-          <Linker src="https://groupher.com" left={-2} top={12} />
+          <Linker src={homepage} left={-2} />
         </Desc>
       </Block>
-      <Block>
+      <Block hide={isEmpty(socialLinks)}>
         <Title>关注我们</Title>
-        <SocialList top={20} size="small" selected={DEME_SOCIALS} left={-12} />
+        <SocialList size="small" selected={socialLinks} left={-10} top={12} />
       </Block>
       <Divider />
-      <Block>
-        <Title>技术栈</Title>
-        <Desc>Typescript, Elixir</Desc>
-      </Block>
-      <Block>
+      <Block hide={isEmpty(cities)}>
         <Title>所在地</Title>
-        <Desc>成都, 厦门</Desc>
+        <Desc>
+          <LabelList items={cities} left={-2} />
+        </Desc>
       </Block>
-      <Block>
-        <Title>链接</Title>
-        <Reports>喜马拉雅</Reports>
+      <Block hide={isEmpty(techstacks)}>
+        <Title>技术栈</Title>
+        <Desc>
+          <LabelList items={techstacks} left={-2} />
+        </Desc>
       </Block>
-      <Divider />
-      <Block>
+      {!noMediaReports && <Divider />}
+      <Block hide={noMediaReports}>
         <Title>媒体报道</Title>
-        <Br top={10} />
-        <Reports>
-          <Press>36kr</Press>
-          <ReportsArticle>新一代xxx一体化协作平台「XXX」获1000万元Pre</ReportsArticle>
-        </Reports>
-        <Br top={6} />
-        <Reports>
-          <Press>科技周刊</Press>
-          <ReportsArticle>这个平台太酷了</ReportsArticle>
-        </Reports>
+        <MediaReports items={mediaReports} />
       </Block>
     </>
   )
@@ -76,4 +66,4 @@ const Sidebar: FC = () => {
   )
 }
 
-export default memo(Sidebar)
+export default observer(Sidebar)

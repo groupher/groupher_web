@@ -30,6 +30,7 @@ import {
   getUndoUpvoteSchema,
   customLink,
   wallpaper,
+  seo,
 } from './base'
 
 import { pagedPosts } from './paged'
@@ -42,6 +43,7 @@ const F = {
   author,
   customLink,
   wallpaper,
+  seo,
   tag,
   pagedPosts,
   user,

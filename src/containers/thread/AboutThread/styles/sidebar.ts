@@ -28,12 +28,14 @@ export const MobileWrapper = styled.div`
   `};
 `
 
-export const Block = styled.div`
+export const Block = styled.div<{ hide?: boolean }>`
+  display: ${({ hide }) => (hide ? 'none' : 'block')};
+
   margin-bottom: 20px;
 `
 
 export const Title = styled.div`
-  font-size: 14px;
+  font-size: 13px;
   color: ${theme('article.digest')};
   font-weight: 500;
   margin-bottom: 10px;
@@ -43,23 +45,4 @@ export const Desc = styled.div`
   font-weight: 400;
   color: ${theme('article.digest')};
   line-height: 1.6;
-`
-export const Reports = styled.div`
-  ${css.row('align-center')};
-`
-export const ReportsArticle = styled(Desc)`
-  ${css.lineClamp(1)};
-`
-export const Press = styled.div`
-  /* color: #ec633f; */
-  border: 1px solid;
-  border-color: ${theme('article.info')};
-  color: ${theme('article.info')};
-  font-weight: 600;
-  padding: 0 4px;
-  border-radius: 4px;
-  font-size: 11px;
-  margin-left: -1px;
-  margin-right: 8px;
-  cursor: pointer;
 `
