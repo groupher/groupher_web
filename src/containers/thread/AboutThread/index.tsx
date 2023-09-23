@@ -70,7 +70,9 @@ const AboutThreadContainer: FC<TProps> = ({
           <Members moderators={community.moderators} />
         </MemberBlock>
       </MainWrapper>
-      {bannerLayout === BANNER_LAYOUT.HEADER && <Sidebar />}
+      {(bannerLayout === BANNER_LAYOUT.HEADER || bannerLayout === BANNER_LAYOUT.TABBER) && (
+        <Sidebar />
+      )}
     </Wrapper>
   )
 }

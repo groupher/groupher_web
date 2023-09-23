@@ -25,6 +25,10 @@ const useMetric = (): TMetric => {
     return METRIC.COMMUNITY_SIDEBAR
   }
 
+  if (store.metric === METRIC.DOC && bannerLayout === BANNER_LAYOUT.TABBER) {
+    return METRIC.COMMUNITY
+  }
+
   return store.metric as TMetric
 }
 

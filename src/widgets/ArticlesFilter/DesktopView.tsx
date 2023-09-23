@@ -60,10 +60,8 @@ const ArticlesFilter: FC<TProps> = ({
           </DesktopOnly>
         </Fragment>
       )}
-
       {bannerLayout === BANNER_LAYOUT.SIDEBAR && <SearchBox right={8} />}
-
-      {bannerLayout === BANNER_LAYOUT.SIDEBAR ? (
+      {bannerLayout === BANNER_LAYOUT.SIDEBAR && (
         <PublishButton
           text="参与讨论"
           mode={PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER}
@@ -73,9 +71,9 @@ const ArticlesFilter: FC<TProps> = ({
           placement="bottom"
           top={-1}
         />
-      ) : (
-        <SearchBox right={-15} />
       )}
+
+      {bannerLayout === BANNER_LAYOUT.HEADER && <SearchBox right={-15} />}
     </Wrapper>
   )
 }

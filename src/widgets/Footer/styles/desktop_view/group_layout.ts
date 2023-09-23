@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 
-import type { TMetric } from '@/spec'
 import css, { theme } from '@/css'
 
 import Img from '@/Img'
@@ -11,10 +10,8 @@ export const Wrapper = styled.footer`
   ${css.column('align-center')};
   width: 100%;
 `
-export const InnerWrapper = styled.div<{ metric: TMetric }>`
+export const InnerWrapper = styled.div`
   width: 100%;
-  ${({ metric }) => css.fitContentWidth(metric)};
-  // 20 是经典布局为缩小帖子列表"视觉宽度"手动缩小的值
 
   ${css.row('justify-between')};
   margin-top: 20px;

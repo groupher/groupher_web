@@ -12,6 +12,7 @@ import useViewingCommunity from '@/hooks/useViewingCommunity'
 import { SpaceGrow } from '@/widgets/Common'
 import TabBar from '@/widgets/TabBar'
 import ViewportTracker from '@/widgets/ViewportTracker'
+import SearchBox from '@/widgets/SearchBox'
 
 import CommunityBrief from './CommunityBrief'
 // import AccountUnit from './AccountUnit'
@@ -22,7 +23,6 @@ import {
   BannerContentWrapper,
   CommunityBaseInfo,
   TabBarWrapper,
-  CustomPart,
 } from '../styles/classic_layout'
 
 // 没有各种外链接，打赏信息等的官方社区
@@ -32,7 +32,6 @@ const ClassicLayout: FC = () => {
   const metric = useMetric()
   const { isMobile } = useMobileDetect()
   const { enterView, leaveView } = useCommunityDigestViewport()
-  // const { links: extraLinks, layout: headerLayout } = useHeaderLinks()
   const publicThreads = usePublicThreads()
   const activeThread = useViewingThread()
   const community = useViewingCommunity()
@@ -48,15 +47,12 @@ const ClassicLayout: FC = () => {
           <TabBarWrapper>
             <TabBar
               source={publicThreads}
-              onChange={(path) => {
-                Router.push(`/${community.slug}/${path}`)
-              }}
+              onChange={(path) => Router.push(`/${community.slug}/${path}`)}
               active={activeThread}
               communitySlug={community.slug}
             />
             <SpaceGrow />
-            {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-            <CustomPart>🔥 我们在招人!</CustomPart>
+            <SearchBox right={-14} />
           </TabBarWrapper>
         </BannerContentWrapper>
       </InnerWrapper>

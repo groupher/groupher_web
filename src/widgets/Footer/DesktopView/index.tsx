@@ -30,8 +30,8 @@ const FooterContainer: FC<TProps> = ({ testid = 'footer' }) => {
   return (
     <Wrapper testid={testid} metric={metric}>
       <InnerWrapper metric={metric}>
-        {layout === FOOTER_LAYOUT.GROUP ? <GroupLayout metric={metric} /> : <SimpleLayout />}
-        <PowerbyInfo metric={metric} />
+        {layout === FOOTER_LAYOUT.GROUP ? <GroupLayout /> : <SimpleLayout />}
+        <PowerbyInfo />
       </InnerWrapper>
     </Wrapper>
   )

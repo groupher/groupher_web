@@ -1,22 +1,25 @@
 import styled from 'styled-components'
 
+import type { TBannerLayout } from '@/spec'
+import { BANNER_LAYOUT } from '@/constant/layout'
 import css, { theme } from '@/css'
+
 import { MainWrapper } from '..'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ bannerLayout?: TBannerLayout }>`
   ${css.column('align-both')};
   width: 100%;
-  margin-top: 30px;
-  margin-left: -30px;
+  ${({ bannerLayout }) =>
+    bannerLayout === BANNER_LAYOUT.TABBER
+      ? 'margin-top: 5px;margin-left: 48px;'
+      : 'margin-top: 30px;margin-left: -30px;'}
 `
-export const CatsWrapper = styled(MainWrapper)`
+export const CatsWrapper = styled(MainWrapper)<{ bannerLayout?: TBannerLayout }>`
   ${css.rowWrap('justify-between')};
-  flex-grow: 1;
   gap: 20px 10px;
-
-  width: 100%;
+  width: ${({ bannerLayout }) =>
+    bannerLayout === BANNER_LAYOUT.TABBER ? 'calc(100% + 90px);' : '100%'};
   min-height: 600px;
-  margin-top: 8px;
 
   background: transparent;
   border-right: none;

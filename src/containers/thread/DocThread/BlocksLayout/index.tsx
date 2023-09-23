@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
 import { observer } from 'mobx-react'
 
 import useBannerLayout from '@/hooks/useBannerLayout'
@@ -17,7 +17,7 @@ const BlocksLayout: FC<TProps> = ({ testid = 'home' }) => {
 
   return (
     <Wrapper bannerLayout={bannerLayout}>
-      <CatsWrapper>
+      <CatsWrapper bannerLayout={bannerLayout}>
         {cats.map((cat) => (
           <Category
             key={cat.id}

@@ -3,7 +3,7 @@ import { observer } from 'mobx-react'
 import { useTheme } from 'styled-components'
 import { keys } from 'ramda'
 
-import type { TThemeMap, TMetric } from '@/spec'
+import type { TThemeMap } from '@/spec'
 import { DEME_SOCIALS } from '@/constant/social'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useFooterLinks from '@/hooks/useFooterLinks'
@@ -25,11 +25,7 @@ import {
   LinkItem,
 } from '../styles/desktop_view/group_layout'
 
-type TProps = {
-  metric: TMetric
-}
-
-const GroupLayout: FC<TProps> = ({ metric }) => {
+const GroupLayout: FC = () => {
   const theme = useTheme() as TThemeMap
   const curCommunity = useViewingCommunity()
   const { links } = useFooterLinks()
@@ -45,7 +41,7 @@ const GroupLayout: FC<TProps> = ({ metric }) => {
 
   return (
     <Wrapper>
-      <InnerWrapper metric={metric}>
+      <InnerWrapper>
         <BrandWrapper>
           <BrandLogo src={curCommunity.logo} />
           <BrandDesc>{curCommunity.desc}</BrandDesc>

@@ -12,12 +12,6 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   color: ${theme('article.digest')};
   padding-top: 25px;
 `
-export const Title = styled.div`
-  color: ${theme('article.title')};
-  font-size: 18px;
-  margin-bottom: 10px;
-  font-weight: 500;
-`
 export const Desc = styled.div`
   color: ${theme('article.digest')};
   font-size: 14px;
