@@ -6,8 +6,7 @@ import css, { theme } from '@/css'
 import { Block as BlockBase, Footer as FooterBase } from '.'
 
 export const Wrapper = styled.div`
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
   color: ${theme('article.digest')};
   width: 100%;
 `

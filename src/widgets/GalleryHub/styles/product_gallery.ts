@@ -4,8 +4,7 @@ import Img from '@/Img'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
   color: ${theme('article.digest')};
   width: 100%;
 `

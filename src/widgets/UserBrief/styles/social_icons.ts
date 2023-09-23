@@ -4,8 +4,7 @@ import css, { theme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
   padding: 0 2px;
   padding-right: 10px;
 `

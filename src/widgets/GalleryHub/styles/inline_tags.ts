@@ -4,8 +4,7 @@ import styled from 'styled-components'
 import css from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
   margin-top: 18px;
 `
 export const Tag = styled.div`

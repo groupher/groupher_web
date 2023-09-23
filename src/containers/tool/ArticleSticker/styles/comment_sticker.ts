@@ -27,8 +27,7 @@ export const TotalNum = styled.span<{ highlight: boolean }>`
   margin-right: 4px;
 `
 export const UsersWrapper = styled.div`
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
 `
 export const Avatar = styled(Img)`
   ${css.circle(20)};

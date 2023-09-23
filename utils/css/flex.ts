@@ -64,6 +64,11 @@ export const flexColumn = (rule1: TFlexRule = '', rule2: TFlexRule = ''): string
   ${flex(rule1, rule2)};
   flex-direction: column;
 `
+export const flexColumnWrap = (rule1: TFlexRule = '', rule2: TFlexRule = ''): string => `
+  ${flex(rule1, rule2)};
+  flex-direction: column;
+  flex-wrap: wrap;
+`
 export const flexColumnGrow = (rule1: TFlexRule = '', rule2: TFlexRule = ''): string => `
   ${flexColumn(rule1, rule2)};
   flex-grow: 1;

@@ -6,9 +6,8 @@ import css, { animate, theme } from '@/css'
 import PenSVG from '@/icons/EditPen'
 
 export const Wrapper = styled.div`
-  ${css.row()};
+  ${css.rowWrap()};
   width: calc(100% + 30px);
-  flex-wrap: wrap;
   gap: 0 12px;
   margin-top: 10px;
 

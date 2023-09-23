@@ -41,8 +41,7 @@ export const BrandText = styled.div<{ large: boolean }>`
   `};
 `
 export const Content = styled.div<{ large: boolean }>`
-  ${css.row('justify-between')};
-  flex-wrap: wrap;
+  ${css.rowWrap('justify-between')};
   gap: ${({ large }) => (large ? '45px' : '50px')};
 
   ${css.media.mobile`

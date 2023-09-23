@@ -12,8 +12,7 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.row('justify-between')};
-  flex-wrap: wrap;
+  ${css.rowWrap('justify-between')};
 
   border-bottom: 1px solid;
   border-color: ${theme('divider')};

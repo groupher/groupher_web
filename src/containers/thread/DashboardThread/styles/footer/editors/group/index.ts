@@ -18,8 +18,7 @@ export const PlusIcon = styled(PlusSVG)`
   margin-right: 6px;
 `
 export const LinkGroup = styled.div`
-  ${css.row('justify-start')};
-  flex-wrap: wrap;
+  ${css.rowWrap('justify-start')};
   width: calc(100% + 50px);
   gap: 30px;
 `

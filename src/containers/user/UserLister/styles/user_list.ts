@@ -4,8 +4,7 @@ import Img from '@/Img'
 import css, { theme } from '@/css'
 
 export const TableWrapper = styled.div`
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
 `
 // background: ${theme('drawer.articleBg')};
 

@@ -5,8 +5,7 @@ import css from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
   margin-top: 15px;
 `
 export const AvatarLink = styled.a``

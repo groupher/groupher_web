@@ -71,8 +71,7 @@ export const CADBackground = styled(Img)`
   `};
 `
 export const TechsWrapper = styled.div`
-  ${css.row('align-both')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-both')};
   gap: 15px 50px;
   height: 440px;
   width: 100%;

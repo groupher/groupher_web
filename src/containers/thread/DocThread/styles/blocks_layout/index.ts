@@ -15,8 +15,7 @@ export const Wrapper = styled.div<{ bannerLayout: TBannerLayout }>`
       : 'width: auto;'}
 `
 export const CatsWrapper = styled(MainWrapper)`
-  ${css.row('justify-between')};
-  flex-wrap: wrap;
+  ${css.rowWrap('justify-between')};
 
   flex-grow: 1;
   width: 100%;

@@ -18,8 +18,7 @@ export const Wrapper = styled.div`
 `
 export const InnerWrapper = styled.div`
   width: calc(100% + 148px);
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
   gap: 16px 0;
 `
 export const InnerWrapperColumn = styled.div`

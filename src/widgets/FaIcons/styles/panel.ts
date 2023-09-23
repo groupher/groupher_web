@@ -51,8 +51,7 @@ export const Title = styled.div`
 `
 
 export const ColorWrapper = styled.div`
-  ${css.row('align-both')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-both')};
   margin-top: 8px;
   padding-bottom: 14px;
   gap: 6px 10px;

@@ -66,8 +66,7 @@ export const RejectIndexIcon = styled(RejectIcon)`
 `
 
 export const RejectGroup = styled.div`
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
   display: none;
 
   ${RejectSection}:hover & {

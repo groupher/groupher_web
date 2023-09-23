@@ -7,8 +7,7 @@ import CheckSVG from '@/icons/Check'
 
 export const Wrapper = styled.div`
   width: 100%;
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
   gap: 10px 0;
   position: relative;
 `

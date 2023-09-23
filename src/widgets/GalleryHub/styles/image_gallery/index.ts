@@ -8,8 +8,7 @@ export const Wrapper = styled.div`
 `
 // GalleryWrapper base
 export const WrapperBase = styled.div`
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
   color: ${theme('article.digest')};
   width: 100%;
 `

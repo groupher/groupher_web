@@ -7,8 +7,7 @@ import css, { theme } from '@/css'
 import { Dot } from '.'
 
 export const Wrapper = styled.div`
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
 `
 
 export const ThemeDot = styled(Dot)``

@@ -10,8 +10,7 @@ import TreesSVG from '@/icons/Trees'
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
-  ${css.row('align-both')};
-  flex-wrap: wrap;
+  ${css.rowWrap('align-both')};
   gap: 40px 25px;
   height: auto;
   margin-top: 80px;

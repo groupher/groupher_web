@@ -10,8 +10,7 @@ import ToolSVG from '@/icons/Heart'
 export { Bar, Circle } from '..'
 
 export const CardssLayoutWrapper = styled.div`
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
   gap: 10px;
   width: 100%;
 `
@@ -26,8 +25,7 @@ export const FooterMore = styled.div`
   width: 80%;
 `
 export const BlocksLayoutWrapper = styled.div<{ withDivider?: boolean }>`
-  ${css.row()};
-  flex-wrap: wrap;
+  ${css.rowWrap()};
   gap: 22px 0;
   border-right: ${({ withDivider }) => (withDivider ? '1px solid' : 'none')};
   border-right-color: ${theme('divider')};

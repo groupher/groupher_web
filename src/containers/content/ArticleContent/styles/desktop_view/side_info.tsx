@@ -53,8 +53,7 @@ export const Value = styled.div`
 `
 
 export const UserList = styled.div`
-  ${css.column()};
-  flex-wrap: wrap;
+  ${css.columnWrap()};
   gap: 10px 0;
 `
 
