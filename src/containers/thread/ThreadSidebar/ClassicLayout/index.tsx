@@ -99,6 +99,7 @@ const ClassicLayout: FC<TProps> = ({ showCommunityBadge, thread, community }) =>
               text="参与讨论"
               onClick={() => onPublish(ARTICLE_CAT.FEATURE)}
               onMenuSelect={onPublish}
+              offset={[0, 5]}
             />
           </PublishWrapper>
 

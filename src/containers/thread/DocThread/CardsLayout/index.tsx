@@ -1,6 +1,8 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
 import { mockHelpCats } from '@/mock'
+import useBannerLayout from '@/hooks/useBannerLayout'
 
 import Category from './Category'
 import { Wrapper, CatsWrapper } from '../styles/cards_layout'
@@ -12,9 +14,11 @@ type TProps = {
 const BlocksLayout: FC<TProps> = ({ testid = 'home' }) => {
   const cats = mockHelpCats()
 
+  const bannerLayout = useBannerLayout()
+
   return (
-    <Wrapper>
-      <CatsWrapper>
+    <Wrapper bannerLayout={bannerLayout}>
+      <CatsWrapper bannerLayout={bannerLayout}>
         {cats.map((cat) => (
           <Category
             key={cat.id}
@@ -29,4 +33,4 @@ const BlocksLayout: FC<TProps> = ({ testid = 'home' }) => {
   )
 }
 
-export default memo(BlocksLayout)
+export default observer(BlocksLayout)

@@ -10,7 +10,7 @@ const getMinHeight = (isMobile) => {
     return '140px'
   }
 
-  return '430px'
+  return '412px'
 }
 
 type TWrapper = {
@@ -46,7 +46,7 @@ export const TabBarWrapper = styled.div`
   ${css.row('align-center')};
   width: 100%;
   max-width: ${WIDTH.COMMUNITY.CONTENT};
-  margin-left: 85px;
+  margin-left: 20px;
 
   border-bottom: 1px solid transparent;
   border-image: linear-gradient(
@@ -59,14 +59,6 @@ export const TabBarWrapper = styled.div`
   );
 
   border-image-slice: 1;
-`
-export const CustomPart = styled.div`
-  color: ${theme('article.digest')};
-  font-size: 13px;
-  padding-right: 45px;
-  font-weight: 500;
-  cursor: pointer;
-  /* color: #f8604e; */
 `
 export const CommunityBaseInfo = styled.div`
   ${css.row('justify-between', 'align-start')};

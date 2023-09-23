@@ -29,14 +29,12 @@ type TProps = {
   docThread?: TStore
   testid?: string
   title?: string
-  desc?: string
 }
 
 const DocThreadContainer: FC<TProps> = ({
   docThread: store,
   testid = 'doc-thread',
   title = 'title',
-  desc = 'desc',
 }) => {
   useInit(store)
 

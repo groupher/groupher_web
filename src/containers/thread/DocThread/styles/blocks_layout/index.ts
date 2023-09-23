@@ -9,12 +9,27 @@ import { MainWrapper } from '..'
 export const Wrapper = styled.div<{ bannerLayout: TBannerLayout }>`
   ${css.column('align-both')};
 
-  ${({ bannerLayout }) =>
-    bannerLayout !== BANNER_LAYOUT.SIDEBAR
+  ${({ bannerLayout }) => {
+    switch (bannerLayout) {
+      case BANNER_LAYOUT.HEADER:
+        return 'width: 100%; margin-left: 58px; margin-top: 30px;'
+
+      case BANNER_LAYOUT.SIDEBAR:
+        return 'width: auto'
+
+      case BANNER_LAYOUT.TABBER:
+        return 'width: 100%; margin-left: 15px;'
+
+      default:
+        return 'width: auto;'
+    }
+
+    return bannerLayout !== BANNER_LAYOUT.SIDEBAR
       ? 'width: 100%; margin-left: 58px; margin-top: 30px;'
-      : 'width: auto;'}
+      : 'width: auto;'
+  }}
 `
-export const CatsWrapper = styled(MainWrapper)`
+export const CatsWrapper = styled(MainWrapper)<{ bannerLayout?: TBannerLayout }>`
   ${css.rowWrap('justify-between')};
 
   flex-grow: 1;
@@ -24,8 +39,10 @@ export const CatsWrapper = styled(MainWrapper)`
 
   background: transparent;
   border-radius: 6px;
-  padding-left: 22px;
-  padding-right: 50px;
+  ${({ bannerLayout }) =>
+    bannerLayout === BANNER_LAYOUT.TABBER
+      ? 'padding-left: 0;padding-right: 0;'
+      : 'padding-left: 22px;padding-right: 50px;'};
 
   border-right: none;
 

@@ -1,10 +1,8 @@
 import styled from 'styled-components'
-import Link from 'next/link'
 
-import css, { WIDTH, theme } from '@/css'
+import type { TMetric } from '@/spec'
+import css, { theme } from '@/css'
 import Img from '@/Img'
-
-import ArrowSVG from '@/icons/Arrow'
 
 export const Wrapper = styled.div`
   ${css.columnGrow('align-center')};
@@ -14,16 +12,18 @@ export const CoverImage = styled(Img)`
   height: 220px;
   object-fit: cover;
 `
-export const MainWrapper = styled.div`
+export const MainWrapper = styled.div<{ metric: TMetric }>`
   width: 100%;
-  max-width: ${WIDTH.COMMUNITY.CONTENT};
-  margin-left: 108px;
+  ${({ metric }) => css.fitContentWidth(metric)};
   position: relative;
+`
+export const InnerWrapper = styled.div`
+  margin-left: 4px;
 `
 export const SocialWrapper = styled.div`
   position: absolute;
-  right: 50px;
-  bottom: 90px;
+  right: 2px;
+  bottom: 95px;
 `
 export const LogoWrapper = styled.div`
   position: relative;
@@ -51,26 +51,6 @@ export const Title = styled.div`
 export const Digest = styled.div`
   ${css.row('align-center')};
   margin-top: 6px;
-`
-export const BackHome = styled(Link)`
-  ${css.row('align-center')};
-  color: ${theme('article.digest')};
-`
-export const Divider = styled.div`
-  width: 1px;
-  height: 14px;
-  margin-left: 10px;
-  margin-right: 10px;
-  border-right: 1px solid;
-  border-right-color: ${theme('article.digest')};
-  opacity: 0.8;
-`
-
-export const ArrowIcon = styled(ArrowSVG)`
-  ${css.size(10)};
-  fill: ${theme('article.digest')};
-  opacity: 0.8;
-  margin-right: 5px;
 `
 export const Desc = styled.div`
   color: ${theme('hint')};

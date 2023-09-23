@@ -10,10 +10,21 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 }))<TWrapper>`
   ${css.column('align-center')};
   width: ${({ bannerLayout }) =>
-    bannerLayout === BANNER_LAYOUT.SIDEBAR ? 'calc(100% + 30px)' : '100px'};
+    bannerLayout === BANNER_LAYOUT.SIDEBAR ? 'calc(100% + 30px)' : '100%'};
 
-  padding-left: ${({ bannerLayout }) =>
-    bannerLayout === BANNER_LAYOUT.SIDEBAR ? '100px' : '50px'};
+  ${({ bannerLayout }) => {
+    switch (bannerLayout) {
+      case BANNER_LAYOUT.SIDEBAR:
+        return 'padding-left: 100px'
+
+      case BANNER_LAYOUT.HEADER:
+        return 'padding-left: 50px'
+
+      default:
+        return ''
+    }
+  }};
+
   margin-top: 10px;
   margin: ${({ bannerLayout }) => (bannerLayout === BANNER_LAYOUT.HEADER ? '0 6%;' : '0')};
 
