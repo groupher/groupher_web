@@ -6,10 +6,8 @@
  *
  */
 
-import { FC, Fragment, useEffect, useState } from 'react'
+import { FC, Fragment } from 'react'
 import { observer } from 'mobx-react'
-
-import type { TThread, TCommunity } from '@/spec'
 
 import useAvatarLayout from '@/hooks/useAvatarLayout'
 import EVENT from '@/constant/event'
