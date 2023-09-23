@@ -18,16 +18,10 @@ import {
   CommunityInfo,
   Title,
   Digest,
-  Desc,
 } from '../styles/classic_layout/community_brief'
-// import { subscribeCommunity, unsubscribeCommunity } from '../logic'
 
-type TProps = {
-  //
-}
-
-const CommunityBrief: FC<TProps> = () => {
-  const community = useViewingCommunity()
+const CommunityBrief: FC = () => {
+  const { logo, title, desc } = useViewingCommunity()
   const metric = useMetric()
 
   return (
@@ -36,16 +30,11 @@ const CommunityBrief: FC<TProps> = () => {
       <MainWrapper metric={metric}>
         <InnerWrapper>
           <LogoWrapper>
-            <Logo src={community.logo} />
+            <Logo src={logo} />
           </LogoWrapper>
           <CommunityInfo>
-            <Title>
-              Groupher
-              {/* <TitleText>{community.title}</TitleText> */}
-            </Title>
-            <Digest>
-              <Desc>让你的产品聆听用户的声音</Desc>
-            </Digest>
+            <Title>{title}</Title>
+            <Digest>{desc}</Digest>
           </CommunityInfo>
           <SocialWrapper>
             <SocialList top={0} size="small" selected={DEME_SOCIALS} />

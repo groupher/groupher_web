@@ -50,11 +50,9 @@ export const Title = styled.div`
 `
 export const Digest = styled.div`
   ${css.row('align-center')};
-  margin-top: 6px;
-`
-export const Desc = styled.div`
+  font-size: 14px;
   color: ${theme('hint')};
-  font-size: 15px;
+  margin-top: 5px;
 `
 export const LogoHolder = styled(Img)`
   fill: ${theme('banner.desc')};
