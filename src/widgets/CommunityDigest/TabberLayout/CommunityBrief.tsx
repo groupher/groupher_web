@@ -21,7 +21,7 @@ import {
   CommunityInfo,
   Title,
   Digest,
-} from '../styles/classic_layout/community_brief'
+} from '../styles/tabber_layout/community_brief'
 
 const CommunityBrief: FC = () => {
   const { logo, title, desc } = useViewingCommunity()

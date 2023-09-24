@@ -12,7 +12,7 @@ import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import ExtraLinks from '@/widgets/ExtraLinks'
 
-import { NormalWrapper, FloatWrapper, Title } from '../styles/simple_layout/thread_tab'
+import { NormalWrapper, FloatWrapper, Title } from '../styles/header_layout/thread_tab'
 
 type TProps = TSpace
 

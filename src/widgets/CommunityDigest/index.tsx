@@ -13,8 +13,8 @@ import useBannerLayout from '@/hooks/useBannerLayout'
 import { buildLog } from '@/logger'
 
 import SidebarLayout from './SidebarLayout'
-import ClassicLayout from './ClassicLayout'
-import SimpleLayout from './SimpleLayout'
+import TabberLayout from './TabberLayout'
+import HeaderLayout from './HeaderLayout'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:CommunityDigest')
@@ -23,16 +23,16 @@ const CommunityDigest: FC = () => {
   const router = useRouter()
   const bannerLayout = useBannerLayout()
 
-  // always use SimpleLayout in dashboard settings
+  // always use HeaderLayout in dashboard settings
   if (router.pathname.split('/')[2] === ROUTE.DASHBOARD.DASHBOARD) {
-    return <SimpleLayout />
+    return <HeaderLayout />
   }
 
   return (
     <Fragment>
-      {bannerLayout === BANNER_LAYOUT.TABBER && <ClassicLayout />}
+      {bannerLayout === BANNER_LAYOUT.TABBER && <TabberLayout />}
       {bannerLayout === BANNER_LAYOUT.SIDEBAR && <SidebarLayout />}
-      {bannerLayout === BANNER_LAYOUT.HEADER && <SimpleLayout />}
+      {bannerLayout === BANNER_LAYOUT.HEADER && <HeaderLayout />}
     </Fragment>
   )
 }

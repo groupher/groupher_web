@@ -22,12 +22,12 @@ import {
   BannerContentWrapper,
   CommunityBaseInfo,
   TabBarWrapper,
-} from '../styles/classic_layout'
+} from '../styles/tabber_layout'
 
 // 没有各种外链接，打赏信息等的官方社区
 // const NON_STANDARD_COMMUNITIES = [HCN, 'feedback']
 
-const ClassicLayout: FC = () => {
+const TabberLayout: FC = () => {
   const metric = useMetric()
   const { isMobile } = useMobileDetect()
   const { enterView, leaveView } = useCommunityDigestViewport()
@@ -60,4 +60,4 @@ const ClassicLayout: FC = () => {
   )
 }
 
-export default observer(ClassicLayout)
+export default observer(TabberLayout)

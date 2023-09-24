@@ -23,9 +23,9 @@ import {
   CommunityBaseInfo,
   MobileNaviWrapper,
   GithubItem,
-} from '../styles/simple_layout'
+} from '../styles/header_layout'
 
-const SimpleLayout: FC = () => {
+const HeaderLayout: FC = () => {
   const metric = useMetric()
   const { layout: headerLayout } = useHeaderLinks()
   const { enterView, leaveView } = useCommunityDigestViewport()
@@ -68,4 +68,4 @@ const SimpleLayout: FC = () => {
   )
 }
 
-export default observer(SimpleLayout)
+export default observer(HeaderLayout)
