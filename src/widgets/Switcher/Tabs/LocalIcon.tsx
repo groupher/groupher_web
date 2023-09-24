@@ -1,6 +1,17 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
-import { PostIcon, PublishIcon, TabCommentsIcon } from '../styles/tabs/local_icon'
+import { THREAD } from '@/constant/thread'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
+
+import {
+  DiscussIcon,
+  TadaIcon,
+  KanbanIcon,
+  GuideIcon,
+  InfoIcon,
+  ArrowIcon,
+} from '../styles/tabs/local_icon'
 
 type TProps = {
   slug: string
@@ -9,27 +20,33 @@ type TProps = {
 }
 
 const TabIcon: FC<TProps> = ({ slug, active, small }) => {
+  const primaryColor = usePrimaryColor()
+
   switch (slug) {
-    case 'publish': {
-      return <PublishIcon $active={active} $small={small} />
+    case THREAD.POST: {
+      return <DiscussIcon $active={active} $small={small} primaryColor={primaryColor} />
     }
 
-    // case 'billing': {
-    //   return <TabBillingIcon $active={active} $small={small} />
-    // }
-
-    case 'comments': {
-      return <TabCommentsIcon $active={active} $small={small} />
+    case THREAD.KANBAN: {
+      return <KanbanIcon $active={active} $small={small} primaryColor={primaryColor} />
     }
 
-    // case THREAD.SETTING: {
-    //   return <SettingIcon $active={active} $small={small} />
-    // }
+    case THREAD.DOC: {
+      return <GuideIcon $active={active} $small={small} primaryColor={primaryColor} />
+    }
+
+    case THREAD.CHANGELOG: {
+      return <TadaIcon $active={active} $small={small} primaryColor={primaryColor} />
+    }
+
+    case THREAD.ABOUT: {
+      return <InfoIcon $active={active} $small={small} primaryColor={primaryColor} />
+    }
 
     default: {
-      return <PostIcon $active={active} $small={small} />
+      return <ArrowIcon $active={active} $small={small} primaryColor={primaryColor} />
     }
   }
 }
 
-export default memo(TabIcon)
+export default observer(TabIcon)

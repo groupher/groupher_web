@@ -10,11 +10,11 @@ export const Wrapper = styled.div`
 `
 export const AccountWrapper = styled.div<{ metric: TMetric }>`
   ${css.row('justify-end')}
-  top: 20px;
+  top: 15px;
   width: 100%;
   height: 26px;
   ${({ metric }) => css.fitContentWidth(metric)};
-  position: fixed;
+  position: absolute;
   z-index: 2;
 `
 export const CoverHolder = styled.div`

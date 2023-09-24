@@ -79,9 +79,5 @@ export const Label = styled.span<TLabel>`
 
   &:hover {
     background: ${theme('hoverBg')};
-
-    svg {
-      fill: ${theme('article.title')};
-    }
   }
 `

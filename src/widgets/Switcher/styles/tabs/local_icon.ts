@@ -1,14 +1,18 @@
 import styled from 'styled-components'
 
-// import Img from '@/Img'
-import css, { theme } from '@/css'
+import type { TPrimaryColor } from '@/spec'
+
+import css, { theme, primaryTheme } from '@/css'
 import PostSVG from '@/icons/Post'
-import CitySVG from '@/icons/City'
-//
-// import TabRepoSVG from '@/SvgIcons/TabRepoSVG'
-// import TabCheatsheetSVG from '@/SvgIcons/TabCheatsheetSVG'
 
 // user page
+import DiscussSVG from '@/icons/Discuss'
+import KanbanSVG from '@/icons/Kanban'
+import GuideSVG from '@/icons/Book'
+import TadaSVG from '@/icons/TadaRaw'
+import InfoSVG from '@/icons/Info'
+import ArrowSVG from '@/icons/ArrowUpRight'
+
 import PublishSVG from '@/icons/Publish'
 import BillingSVG from '@/icons/Billing'
 import TabCommentsSVG from '@/SvgIcons/TabCommentsSVG'
@@ -19,32 +23,32 @@ export const LableWrapper = styled.div`
   ${css.row('align-center')};
 `
 
-type TCommonIcon = { $active: boolean; $small: boolean }
+type TCommonIcon = { $active: boolean; $small: boolean } & TPrimaryColor
 
 const commonIcon = (comp) => {
   return styled(comp)<TCommonIcon>`
-    fill: ${({ $active }: { $active: boolean }) =>
-      $active ? theme('article.title') : theme('article.digest')};
-    width: ${({ $small }: { $small: boolean }) => ($small ? '13px' : '15px')};
-    height: ${({ $small }) => ($small ? '13px' : '15px')};
+    fill: ${({ $active, primaryColor }) => ($active ? primaryTheme(primaryColor) : theme('hint'))};
+    width: ${({ $small }: { $small: boolean }) => ($small ? '12px' : '14px')};
+    height: ${({ $small }) => ($small ? '12px' : '14px')};
     margin-right: 5px;
     display: block;
   `
 }
 
-// export const PostIcon = commonIcon(PostSVG)
-export const CityIcon = commonIcon(CitySVG)
-export const PostIcon = styled(PostSVG)<TCommonIcon>`
-  fill: ${({ $active }: { $active: boolean }) =>
-    $active ? theme('article.title') : theme('article.digest')};
-  width: ${({ $small }: { $small: boolean }) => ($small ? '14px' : '15px')};
-  height: 16px;
-  margin-right: 8px;
-  display: block;
-`
-
 // export const TabRepoIcon = commonIcon(TabRepoSVG)
 // export const TabCheatsheetIcon = commonIcon(TabCheatsheetSVG)
+export const DiscussIcon = styled(commonIcon(DiscussSVG))`
+  transform: scale(0.96);
+  margin-top: 2px;
+`
+export const TadaIcon = commonIcon(TadaSVG)
+export const InfoIcon = commonIcon(InfoSVG)
+export const ArrowIcon = commonIcon(ArrowSVG)
+
+export const KanbanIcon = styled(commonIcon(KanbanSVG))`
+  transform: rotate(180deg);
+`
+export const GuideIcon = commonIcon(GuideSVG)
 
 // user page
 export const PublishIcon = commonIcon(PublishSVG)

@@ -49,16 +49,7 @@ export const TabBarWrapper = styled.div`
   margin-left: 20px;
 
   border-bottom: 1px solid transparent;
-  border-image: linear-gradient(
-    0.35turn,
-    transparent,
-    ${theme('divider')},
-    ${theme('divider')},
-    ${theme('divider')},
-    transparent
-  );
-
-  border-image-slice: 1;
+  border-bottom-color: ${theme('divider')};
 `
 export const CommunityBaseInfo = styled.div`
   ${css.row('justify-between', 'align-start')};

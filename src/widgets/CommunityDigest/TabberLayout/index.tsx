@@ -48,7 +48,7 @@ const TabberLayout: FC = () => {
               source={publicThreads}
               onChange={(path) => Router.push(`/${community.slug}/${path}`)}
               active={activeThread}
-              communitySlug={community.slug}
+              withIcon
             />
             <SpaceGrow />
             <SearchBox right={-14} />
