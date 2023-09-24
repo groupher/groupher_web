@@ -12,15 +12,17 @@ export const NormalWrapper = styled.div<TSpace>`
 
   ${(props) => css.spaceMargins(props)};
 `
-export const WithNameWrapper = styled(NormalWrapper)`
+export const WithBgWrapper = styled(NormalWrapper)`
   border: 1px solid;
   border-color: ${theme('divider')};
   border-radius: 10px;
   padding: 5px 8px;
-  width: 140px;
+  width: auto;
+  background: ${theme('alphaBg')};
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
   &:hover {
-    background: ${theme('hoverBg')};
+    background: ${theme('alphaBg2')};
     cursor: pointer;
   }
 `

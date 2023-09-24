@@ -6,14 +6,17 @@ import { DEME_SOCIALS } from '@/constant/social'
 import useMetric from '@/hooks/useMetric'
 
 import SocialList from '@/widgets/SocialList'
+import AccountUnit from '@/widgets/AccountUnit'
 
 import {
   Wrapper,
+  CoverHolder,
   CoverImage,
   SocialWrapper,
   InnerWrapper,
   Logo,
   LogoWrapper,
+  AccountWrapper,
   MainWrapper,
   CommunityInfo,
   Title,
@@ -24,9 +27,14 @@ const CommunityBrief: FC = () => {
   const { logo, title, desc } = useViewingCommunity()
   const metric = useMetric()
 
+  const COVER_IMAGE = '' // '/banner-cover.webp'
+
   return (
     <Wrapper>
-      <CoverImage src="/banner-cover.webp" noLazy />
+      <AccountWrapper metric={metric}>
+        <AccountUnit withBg />
+      </AccountWrapper>
+      {COVER_IMAGE ? <CoverImage src={COVER_IMAGE} noLazy /> : <CoverHolder />}
       <MainWrapper metric={metric}>
         <InnerWrapper>
           <LogoWrapper>

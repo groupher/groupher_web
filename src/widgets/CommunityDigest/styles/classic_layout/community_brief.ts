@@ -6,6 +6,21 @@ import Img from '@/Img'
 
 export const Wrapper = styled.div`
   ${css.columnGrow('align-center')};
+  position: relative;
+`
+export const AccountWrapper = styled.div<{ metric: TMetric }>`
+  ${css.row('justify-end')}
+  top: 20px;
+  width: 100%;
+  height: 26px;
+  ${({ metric }) => css.fitContentWidth(metric)};
+  position: fixed;
+  z-index: 2;
+`
+export const CoverHolder = styled.div`
+  width: 100%;
+  height: 220px;
+  background-color: ${theme('hoverBg')};
 `
 export const CoverImage = styled(Img)`
   width: 100%;
