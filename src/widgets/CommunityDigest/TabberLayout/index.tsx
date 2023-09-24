@@ -8,11 +8,13 @@ import usePublicThreads from '@/hooks/usePublicThreads'
 import useViewingThread from '@/hooks/useViewingThread'
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useHeaderLinks from '@/hooks/useHeaderLinks'
 
 import { SpaceGrow } from '@/widgets/Common'
 import TabBar from '@/widgets/TabBar'
 import ViewportTracker from '@/widgets/ViewportTracker'
 import SearchBox from '@/widgets/SearchBox'
+import CustomHeaderLinks from '@/widgets/CustomHeaderLinks'
 
 import CommunityBrief from './CommunityBrief'
 
@@ -35,6 +37,8 @@ const TabberLayout: FC = () => {
   const activeThread = useViewingThread()
   const community = useViewingCommunity()
 
+  const { customLinks } = useHeaderLinks()
+
   return (
     <Wrapper testid="community-digest" isMobile={isMobile}>
       <InnerWrapper metric={metric} isMobile={isMobile}>
@@ -50,6 +54,7 @@ const TabberLayout: FC = () => {
               active={activeThread}
               withIcon
             />
+            <CustomHeaderLinks links={customLinks} />
             <SpaceGrow />
             <SearchBox right={-14} />
           </TabBarWrapper>

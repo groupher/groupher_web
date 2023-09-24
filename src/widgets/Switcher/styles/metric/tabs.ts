@@ -10,7 +10,7 @@ export const getSlipMargin = (size: string, mobileView: boolean, holyGrailView =
     }
 
     default:
-      return 20
+      return 18
   }
 }
 
@@ -28,7 +28,7 @@ export const getMarginRight = (
     }
 
     default:
-      return '20px'
+      return '18px'
   }
 }
 

@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import type { TPrimaryColor } from '@/spec'
 
 import css, { theme, primaryTheme } from '@/css'
-import PostSVG from '@/icons/Post'
 
 // user page
 import DiscussSVG from '@/icons/Discuss'
@@ -19,6 +18,8 @@ import TabCommentsSVG from '@/SvgIcons/TabCommentsSVG'
 import SettingSVG from '@/icons/Setting'
 import TabFavoritesSVG from '@/widgets/SvgIcons/TabFavoritesSVG'
 
+import { Label } from './tab_item'
+
 export const LableWrapper = styled.div`
   ${css.row('align-center')};
 `
@@ -32,6 +33,10 @@ const commonIcon = (comp) => {
     height: ${({ $small }) => ($small ? '12px' : '14px')};
     margin-right: 5px;
     display: block;
+
+    ${Label}:hover & {
+      fill: ${({ primaryColor }) => primaryTheme(primaryColor)};
+    }
   `
 }
 

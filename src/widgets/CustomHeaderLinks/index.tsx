@@ -9,6 +9,7 @@ import { THREAD } from '@/constant/thread'
 
 import type { TProps } from './spec'
 
+import TabberLayout from './TabberLayout'
 import HeaderLayout from './HeaderLayout'
 import SidebarLayout from './SidebarLayout'
 
@@ -30,7 +31,7 @@ const CustomHeaderLinks: FC<TProps> = (props) => {
     }
 
     default: {
-      return <HeaderLayout {...props} />
+      return <TabberLayout {...props} />
     }
   }
 }

@@ -74,10 +74,10 @@ export const Label = styled.span<TLabel>`
   color: ${({ active, primaryColor }) =>
     active ? primaryTheme(primaryColor) : theme('lightText')}; // to-theme
   margin-bottom: ${({ bottomSpace }) => `${bottomSpace}px`};
-
   font-weight: 500;
 
   &:hover {
+    color: ${({ primaryColor }) => primaryTheme(primaryColor)};
     background: ${theme('hoverBg')};
   }
 `
