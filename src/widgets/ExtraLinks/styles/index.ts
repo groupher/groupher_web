@@ -38,8 +38,7 @@ export const ColumnWrapper = styled.div`
 
 export const MenuPanel = styled.div`
   ${css.column()};
-  width: 90px;
-  padding: 2px 2px;
+  width: 140px;
   gap: 8px 0;
 `
 

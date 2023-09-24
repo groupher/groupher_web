@@ -1,9 +1,11 @@
 import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
-import { find, propEq } from 'ramda'
+import { find, propEq, reject } from 'ramda'
 
-import type { TCommunityThread, TNameAliasConfig } from '@/spec'
+import type { TCommunityThread, TLinkItem, TNameAliasConfig } from '@/spec'
+import { THREAD } from '@/constant/thread'
 
+import { toJS } from '@/mobx'
 import { sortByIndex } from '@/helper'
 
 /**
@@ -31,6 +33,17 @@ const usePublicThreads = (): TCommunityThread[] => {
     }
   })
 
+  const { headerLinks } = store.dashboardThread
+  const headerLinksRow = toJS(headerLinks)
+
+  const hasExtraAbout = find((link: TLinkItem) => link.title === '关于', headerLinksRow)
+
+  if (hasExtraAbout) {
+    return reject(
+      (item: TCommunityThread) => item.slug === THREAD.ABOUT,
+      mappedThreads as TCommunityThread[],
+    ) as TCommunityThread[]
+  }
   return mappedThreads as TCommunityThread[]
 }
 

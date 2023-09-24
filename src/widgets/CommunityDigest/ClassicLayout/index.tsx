@@ -15,7 +15,6 @@ import ViewportTracker from '@/widgets/ViewportTracker'
 import SearchBox from '@/widgets/SearchBox'
 
 import CommunityBrief from './CommunityBrief'
-// import AccountUnit from './AccountUnit'
 
 import {
   Wrapper,

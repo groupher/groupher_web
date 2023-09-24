@@ -19,6 +19,7 @@ export const Wrapper = styled.div`
   ${css.size(16)};
   ${css.row('align-both')};
   opacity: 0.6;
+  margin-top: -1px;
 `
 
 type TIcon = TActive & TPrimaryColor
@@ -38,7 +39,9 @@ const getIcon = (SVG, size = 13) => {
 export const Icon = {
   Home: getIcon(HomeSVG),
   Tada: getIcon(TadaSVG),
-  Discuss: getIcon(DiscussSVG),
+  Discuss: styled(getIcon(DiscussSVG))`
+    margin-top: 1px;
+  `,
   Kanban: styled(getIcon(KanbanSVG, 16))`
     transform: rotate(180deg);
   `,

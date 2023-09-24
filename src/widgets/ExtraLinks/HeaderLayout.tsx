@@ -13,7 +13,7 @@ import Tooltip from '@/widgets/Tooltip'
 
 import type { TProps, TLinkGroup } from './spec'
 
-import { Wrapper, LinkItem, GroupItem, ArrowIcon, MenuPanel } from './styles/simple_layout'
+import { Wrapper, LinkItem, GroupItem, ArrowIcon, MenuPanel } from './styles/header_layout'
 
 const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold, activePath }) => {
   const [menuOpen, setMenuOpen] = useState(false)
