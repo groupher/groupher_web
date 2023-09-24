@@ -4,7 +4,6 @@ import type { TArticleFilter, TTooltipPlacement } from '@/spec'
 
 import Tooltip from '@/widgets/Tooltip'
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
-import { DesktopOnly, MobileOnly } from '@/widgets/Common'
 
 import FilterPanel from './FilterPanel'
 
@@ -25,9 +24,8 @@ const SortFilter: FC<TProps> = ({
 
   return (
     <Tooltip
-      placement={tooltipPlacement}
       trigger="click"
-      hideOnClick={false}
+      placement={tooltipPlacement}
       onShow={() => setMenuOpen(true)}
       onHide={() => setMenuOpen(false)}
       offset={[-30, 5]}
@@ -39,8 +37,7 @@ const SortFilter: FC<TProps> = ({
       }
     >
       <DropdownButton left={-10} noArrow={noArrow} $active={menuOpen}>
-        <DesktopOnly>默认排序</DesktopOnly>
-        <MobileOnly>排序</MobileOnly>
+        <div>排序</div>
       </DropdownButton>
     </Tooltip>
   )

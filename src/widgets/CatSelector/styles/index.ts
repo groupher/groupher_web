@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
-import type { TActive, TSpace } from '@/spec'
-import css, { theme } from '@/css'
+import type { TActive, TPrimaryColor, TSpace } from '@/spec'
+import css, { theme, primaryTheme } from '@/css'
 
 type TWrapper = { menuOpen?: boolean } & TSpace
 export const FilterWrapper = styled.div<TWrapper>`
@@ -37,16 +37,12 @@ export const SelectItem = styled.div<TActive>`
   width: 100%;
   border-radius: 6px;
 
-  background-color: ${({ active }) => (active ? theme('hoverBg') : 'transparent')}; // to-theme
-  color: ${({ active }) => (active ? theme('article.title') : theme('article.digest'))};
-  font-weight: ${({ active }) => (active ? 500 : 400)};
+  background-color: ${({ $active }) => ($active ? theme('hoverBg') : 'transparent')}; // to-theme
   position: relative;
 
   &:hover {
     cursor: pointer;
     background-color: ${theme('hoverBg')};
-    color: ${theme('article.title')};
-    border-color: ${theme('popover.activeBorder')};
   }
 
   transition: all 0.1s;

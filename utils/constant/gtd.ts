@@ -17,6 +17,7 @@ export const ARTICLE_CAT = {
 } as Record<Uppercase<TArticleCat>, Uppercase<TArticleCat>>
 
 export const ARTICLE_STATE = {
+  ALL: 'ALL',
   TODO: 'TODO',
   WIP: 'WIP',
   DONE: 'DONE',

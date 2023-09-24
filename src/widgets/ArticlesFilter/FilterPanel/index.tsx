@@ -18,7 +18,7 @@ const FilterPanel: FC<TProps> = ({ activeFilter, onSelect }) => {
         <IconWrapper>
           <Icon.ALL />
         </IconWrapper>
-        <Title>默认排序</Title>
+        <Title>排序</Title>
       </Block>
       <Block>
         <IconWrapper>

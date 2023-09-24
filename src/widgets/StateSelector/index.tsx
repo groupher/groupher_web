@@ -1,8 +1,8 @@
-import { FC, memo, useState, Fragment } from 'react'
+import { FC, memo, useState } from 'react'
 import dynamic from 'next/dynamic'
 
 import type { TArticleState, TArticleCatMode, TTooltipPlacement, TSpace } from '@/spec'
-import { ARTICLE_STATE_MODE } from '@/constant/gtd'
+import { ARTICLE_STATE, ARTICLE_STATE_MODE } from '@/constant/gtd'
 
 import Tooltip from '@/widgets/Tooltip'
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
@@ -17,15 +17,13 @@ const FullPanel = dynamic(() => import('./FullPanel'))
 type TProps = {
   mode?: TArticleCatMode
   state?: string
-  noArrow?: boolean
   tooltipPlacement?: TTooltipPlacement
 } & TSpace
 
 const StateSelector: FC<TProps> = ({
   mode = ARTICLE_STATE_MODE.FULL,
   state = 'todo',
-  noArrow = false,
-  tooltipPlacement = 'bottom-start',
+  tooltipPlacement = 'bottom-end',
   ...restProps
 }) => {
   const [show, setShow] = useState(false)
@@ -37,7 +35,7 @@ const StateSelector: FC<TProps> = ({
   }
 
   const Wrapper = mode === ARTICLE_STATE_MODE.FILTER ? FilterWrapper : FullWrapper
-  const offset = mode === ARTICLE_STATE_MODE.FILTER ? [-22, 5] : [-42, 5]
+  const offset = mode === ARTICLE_STATE_MODE.FILTER ? [20, 5] : [-42, 5]
 
   return (
     <Wrapper menuOpen={menuOpen} {...restProps}>
@@ -52,20 +50,26 @@ const StateSelector: FC<TProps> = ({
         onHide={() => setMenuOpen(false)}
         offset={offset as [number, number]}
         content={
-          <Fragment>
+          <>
             {show && mode === ARTICLE_STATE_MODE.FILTER && (
               <FilterPanel activeState={activeState} onSelect={handleSelect} />
             )}
-
             {show && mode === ARTICLE_STATE_MODE.FULL && (
               <FullPanel activeState={activeState} onSelect={handleSelect} />
             )}
-          </Fragment>
+          </>
         }
         noPadding
       >
-        <DropdownButton noArrow={noArrow} $active={menuOpen}>
-          <ActiveState activeState={activeState} mode={mode} />
+        <DropdownButton
+          $active={menuOpen}
+          selected={activeState && activeState !== ARTICLE_STATE.ALL}
+        >
+          {!activeState || activeState === ARTICLE_STATE.ALL ? (
+            '状态'
+          ) : (
+            <ActiveState activeState={activeState} mode={mode} />
+          )}
         </DropdownButton>
       </Tooltip>
     </Wrapper>
