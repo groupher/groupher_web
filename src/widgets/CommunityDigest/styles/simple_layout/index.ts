@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Link from 'next/link'
 
 import type { THeaderLayout, TMetric } from '@/spec'
 import css, { theme } from '@/css'
@@ -74,4 +75,26 @@ export const MobileNaviWrapper = styled.div`
   ${css.media.mobile`
     ${css.rowGrow()};
   `};
+`
+
+export const GithubItem = styled(Link)`
+  ${css.row('align-center')};
+  text-decoration: none;
+  gap: 0 8px;
+  font-size: 14px;
+  margin-right: 25px;
+  color: ${theme('article.title')};
+  opacity: 0.6;
+
+  img {
+    transform: scale(1.15);
+  }
+
+  &:hover {
+    text-decoration: none;
+    opacity: 0.85;
+    cursor: pointer;
+  }
+
+  transition: all 0.2s;
 `

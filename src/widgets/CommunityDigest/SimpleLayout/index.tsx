@@ -6,14 +6,15 @@ import useHeaderLinks from '@/hooks/useHeaderLinks'
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
 import useMetric from '@/hooks/useMetric'
 
+import { HEADER_LAYOUT } from '@/constant/layout'
+
 import ViewportTracker from '@/widgets/ViewportTracker'
 import MobileThreadNavi from '@/widgets/MobileThreadNavi'
-import { SpaceGrow } from '@/widgets/Common'
-import { HEADER_LAYOUT } from '@/constant/layout'
+import { Row, SpaceGrow } from '@/widgets/Common'
+import AccountUnit from '@/widgets/AccountUnit'
 
 import ThreadTab from './ThreadTab'
 import CommunityBrief from './CommunityBrief'
-import AccountUnit from './AccountUnit'
 
 import {
   Wrapper,
@@ -21,6 +22,7 @@ import {
   BannerContentWrapper,
   CommunityBaseInfo,
   MobileNaviWrapper,
+  GithubItem,
 } from '../styles/simple_layout'
 
 const SimpleLayout: FC = () => {
@@ -47,7 +49,17 @@ const SimpleLayout: FC = () => {
               left={headerLayout === HEADER_LAYOUT.CENTER ? 4 : 0}
               right={headerLayout === HEADER_LAYOUT.RIGHT ? 20 : 0}
             />
-            <AccountUnit />
+            <Row>
+              <GithubItem href="/">
+                {/* <GithubIcon /> */}
+                {/* <div>19.5k</div> */}
+                <img
+                  alt="GitHub Repo stars"
+                  src="https://img.shields.io/github/stars/vercel/next.js?style=social&logo=github&label=%20%20&labelColor=black&color=white"
+                />
+              </GithubItem>
+              <AccountUnit />
+            </Row>
           </CommunityBaseInfo>
         </BannerContentWrapper>
       </InnerWrapper>
