@@ -1,6 +1,9 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 
+import type { TBannerLayout } from '@/spec'
+import { BANNER_LAYOUT } from '@/constant/layout'
+
 import css, { theme } from '@/css'
 import ArrowSVG from '@/icons/ArrowUpRight'
 import Img from '@/Img'
@@ -29,11 +32,13 @@ export const SiteName = styled.div`
   font-size: 12px;
   word-break: keep-all;
 `
-export const Title = styled(Link)`
+export const Title = styled(Link)<{ bannerLayout: TBannerLayout }>`
   color: ${theme('article.digest')};
   text-decoration: none;
   font-size: 14px;
-  ${css.cutRest('130px')};
+  ${({ bannerLayout }) =>
+    bannerLayout === BANNER_LAYOUT.SIDEBAR ? css.cutRest('220px') : css.cutRest('130px')};
+
   margin-top: -1px;
 
   &:hover {

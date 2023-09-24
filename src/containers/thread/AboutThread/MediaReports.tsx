@@ -1,7 +1,10 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TMediaReport } from '@/spec'
 import { sortByIndex } from '@/helper'
+
+import useBannerLayout from '@/hooks/useBannerLayout'
 
 import {
   Wrapper,
@@ -19,6 +22,8 @@ type TProps = {
 }
 
 const MediaReports: FC<TProps> = ({ items }) => {
+  const bannerLayout = useBannerLayout()
+
   return (
     <Wrapper>
       {/* @ts-ignore */}
@@ -33,7 +38,7 @@ const MediaReports: FC<TProps> = ({ items }) => {
               <SiteName>{siteName}</SiteName>
             </Brand>
 
-            <Title href={url} target="_blank">
+            <Title href={url} target="_blank" bannerLayout={bannerLayout}>
               {title}
             </Title>
             <ArrowBox>
@@ -46,4 +51,4 @@ const MediaReports: FC<TProps> = ({ items }) => {
   )
 }
 
-export default MediaReports
+export default observer(MediaReports)
