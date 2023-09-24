@@ -12,7 +12,7 @@ import {
   TitleWrapper,
   Title,
   TitleText,
-} from '../styles/simple_layout/community_brief'
+} from '../styles/header_layout/community_brief'
 // import { subscribeCommunity, unsubscribeCommunity } from '../logic'
 
 type TProps = {

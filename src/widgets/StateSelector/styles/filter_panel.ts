@@ -1,8 +1,11 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/css'
+import css, { theme, primaryTheme } from '@/css'
+import type { TActive, TPrimaryColor } from '@/spec'
 
 import { SelectItem as SelectItemBase } from '.'
+
+import AllSVG from '@/icons/menu/Dots'
 
 import GtdWipSVG from '@/icons/GtdWip'
 import GtdDoneSVG from '@/icons/GtdDone'
@@ -26,28 +29,49 @@ export const IconWrapper = styled.div`
   opacity: 0.6;
   margin-right: 9px;
 `
-export const TodoIcon = styled(GtdTodoSVG)`
-  ${css.size(14)};
-  fill: ${theme('article.digest')};
-`
-export const WipIcon = styled(GtdWipSVG)`
-  ${css.size(16)};
-  fill: ${theme('article.digest')};
-`
-export const DoneIcon = styled(GtdDoneSVG)`
-  ${css.size(14)};
-  fill: ${theme('article.digest')};
-`
-export const RejectIcon = styled(GtdRejectSVG)`
-  ${css.size(13)};
-  fill: ${theme('article.digest')};
-`
-export const Title = styled.div`
-  font-size: 14px;
-  font-weight: 400;
-  color: ${theme('article.digest')};
 
-  ${SelectItem}:hover & {
-    color: ${theme('article.title')};
+type TIcon = TActive & TPrimaryColor
+export const AllIcon = styled(AllSVG)<TIcon>`
+  ${css.size(14)};
+  fill: ${({ $active, primaryColor }) =>
+    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+`
+export const TodoIcon = styled(GtdTodoSVG)<TIcon>`
+  ${css.size(14)};
+  fill: ${({ $active, primaryColor }) =>
+    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+`
+export const WipIcon = styled(GtdWipSVG)<TIcon>`
+  ${css.size(16)};
+  fill: ${({ $active, primaryColor }) =>
+    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+`
+export const DoneIcon = styled(GtdDoneSVG)<TIcon>`
+  ${css.size(14)};
+  fill: ${({ $active, primaryColor }) =>
+    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+`
+export const RejectIcon = styled(GtdRejectSVG)<TIcon>`
+  ${css.size(13)};
+  fill: ${({ $active, primaryColor }) =>
+    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+`
+
+type TTitle = TPrimaryColor & TActive
+export const Title = styled.div<TTitle>`
+  font-size: 14px;
+
+  color: ${({ $active, primaryColor }) =>
+    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+  font-weight: ${({ $active }) => ($active ? 500 : 400)};
+
+  /* ${SelectItem}:hover & {
+    color: ${({ $active, primaryColor }) =>
+    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+  } */
+
+  &:hover {
+    color: ${({ $active, primaryColor }) =>
+      $active ? primaryTheme(primaryColor) : theme('article.digest')};
   }
 `

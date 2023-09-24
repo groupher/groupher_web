@@ -3,10 +3,13 @@ import { FC, memo } from 'react'
 import type { TArticleState } from '@/spec'
 import { ARTICLE_STATE } from '@/constant/gtd'
 
+import usePrimaryColor from '@/hooks/usePrimaryColor'
+
 import {
   Wrapper,
   SelectItem,
   IconWrapper,
+  AllIcon,
   TodoIcon,
   WipIcon,
   DoneIcon,
@@ -20,44 +23,75 @@ type TProps = {
 }
 
 const FilterPanel: FC<TProps> = ({ activeState, onSelect }) => {
+  const primaryColor = usePrimaryColor()
+
   return (
     <Wrapper>
       <SelectItem
-        active={activeState === ARTICLE_STATE.TODO}
-        onClick={() => onSelect(ARTICLE_STATE.TODO)}
+        $active={activeState === ARTICLE_STATE.ALL}
+        onClick={() => onSelect(ARTICLE_STATE.ALL)}
       >
         <IconWrapper>
-          <TodoIcon />
+          <AllIcon
+            $active={!activeState || activeState === ARTICLE_STATE.ALL}
+            primaryColor={primaryColor}
+          />
         </IconWrapper>
-        <Title>代办项</Title>
-      </SelectItem>
-      <SelectItem
-        active={activeState === ARTICLE_STATE.WIP}
-        onClick={() => onSelect(ARTICLE_STATE.WIP)}
-      >
-        <IconWrapper>
-          <WipIcon />
-        </IconWrapper>
-        <Title>进行中</Title>
-      </SelectItem>
-      <SelectItem
-        active={activeState === ARTICLE_STATE.DONE}
-        onClick={() => onSelect(ARTICLE_STATE.DONE)}
-      >
-        <IconWrapper>
-          <DoneIcon />
-        </IconWrapper>
-        <Title>已完成</Title>
+        <Title
+          $active={!activeState || activeState === ARTICLE_STATE.ALL}
+          primaryColor={primaryColor}
+        >
+          全部
+        </Title>
       </SelectItem>
 
       <SelectItem
-        active={activeState === ARTICLE_STATE.REJECT_DUP}
+        $active={activeState === ARTICLE_STATE.TODO}
+        onClick={() => onSelect(ARTICLE_STATE.TODO)}
+      >
+        <IconWrapper>
+          <TodoIcon $active={activeState === ARTICLE_STATE.TODO} primaryColor={primaryColor} />
+        </IconWrapper>
+        <Title $active={activeState === ARTICLE_STATE.TODO} primaryColor={primaryColor}>
+          代办项
+        </Title>
+      </SelectItem>
+      <SelectItem
+        $active={activeState === ARTICLE_STATE.WIP}
+        onClick={() => onSelect(ARTICLE_STATE.WIP)}
+      >
+        <IconWrapper>
+          <WipIcon $active={activeState === ARTICLE_STATE.WIP} primaryColor={primaryColor} />
+        </IconWrapper>
+        <Title $active={activeState === ARTICLE_STATE.WIP} primaryColor={primaryColor}>
+          进行中
+        </Title>
+      </SelectItem>
+      <SelectItem
+        $active={activeState === ARTICLE_STATE.DONE}
+        onClick={() => onSelect(ARTICLE_STATE.DONE)}
+      >
+        <IconWrapper>
+          <DoneIcon $active={activeState === ARTICLE_STATE.DONE} primaryColor={primaryColor} />
+        </IconWrapper>
+        <Title $active={activeState === ARTICLE_STATE.DONE} primaryColor={primaryColor}>
+          已完成
+        </Title>
+      </SelectItem>
+
+      <SelectItem
+        $active={activeState === ARTICLE_STATE.REJECT_DUP}
         onClick={() => onSelect(ARTICLE_STATE.REJECT_DUP)}
       >
         <IconWrapper>
-          <RejectIcon />
+          <RejectIcon
+            $active={activeState === ARTICLE_STATE.REJECT_DUP}
+            primaryColor={primaryColor}
+          />
         </IconWrapper>
-        <Title>回绝</Title>
+        <Title $active={activeState === ARTICLE_STATE.REJECT_DUP} primaryColor={primaryColor}>
+          回绝
+        </Title>
       </SelectItem>
     </Wrapper>
   )

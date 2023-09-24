@@ -1,16 +1,19 @@
 import styled from 'styled-components'
 
-import type { TActive } from '@/spec'
-import css, { theme } from '@/css'
+import type { TActive, TPrimaryColor } from '@/spec'
+import css, { primaryTheme, theme } from '@/css'
+
+import ArrowUpRight from '@/icons/ArrowUpRight'
 
 import { Wrapper as WrapperBase, LinkItem as LinkItemBase, ArrowIcon as ArrowIconBase } from '.'
 
 export { MenuPanel } from '.'
 
 export const Wrapper = styled(WrapperBase)`
-  gap: 0 16px;
+  gap: 0 26px;
 `
 export const LinkItem = styled(LinkItemBase)`
+  ${css.row('align-center')};
   font-size: 14px;
 `
 export const GroupItem = styled(LinkItem)<TActive>`
@@ -23,8 +26,19 @@ export const GroupItem = styled(LinkItem)<TActive>`
     background: ${theme('hoverBg')};
   }
 `
+
+export const LinkIcon = styled(ArrowUpRight)<TPrimaryColor>`
+  ${css.size(14)};
+  margin-right: 5px;
+  fill: ${theme('article.digest')};
+
+  ${LinkItem}:hover & {
+    fill: ${({ primaryColor }) => primaryTheme(primaryColor)};
+  }
+`
+
 export const ArrowIcon = styled(ArrowIconBase)`
   position: absolute;
   ${css.size(14)};
-  right: 8px;
+  right: 4px;
 `

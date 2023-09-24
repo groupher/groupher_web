@@ -1,22 +1,20 @@
-import { memo } from 'react'
+import { FC, memo } from 'react'
 
+import VIEW from '@/constant/view'
 import { sortByIndex } from '@/helper'
 import Tabs from '@/widgets/Switcher/Tabs'
 
-// priority: icon > localIcon || slug
-const getLocalIcon = (item) => {
-  if (item.icon) return ''
+import type { TProps } from '.'
 
-  return item.localIcon ? item.localIcon : item.slug
-}
-
-const MobileView = ({ source, active, onChange, view }) => {
+const MobileView: FC<TProps> = ({ source, active, onChange, withIcon }) => {
   const items = source.map((item) => ({
     ...item,
-    localIcon: getLocalIcon(item),
+    icon: withIcon ? item.slug : '',
   }))
 
-  return <Tabs items={sortByIndex(items)} activeKey={active} onChange={onChange} view={view} />
+  return (
+    <Tabs items={sortByIndex(items)} activeKey={active} onChange={onChange} view={VIEW.MOBILE} />
+  )
 }
 
 export default memo(MobileView)

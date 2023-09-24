@@ -321,7 +321,7 @@ export const removeEmptyValuesFromObject = (object) => {
 /**
  * filter public threads & map alias name for community's threads
  */
-export const washThreads = (
+export const publicThreads = (
   threads: TCommunityThread[],
   dashboardSettings: TDashboardThreadConfig,
 ): TCommunityThread[] => {

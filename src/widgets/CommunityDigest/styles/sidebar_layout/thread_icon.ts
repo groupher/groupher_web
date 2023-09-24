@@ -11,7 +11,7 @@ import HomeSVG from '@/icons/Home'
 import DiscussSVG from '@/icons/Discuss'
 import TadaSVG from '@/icons/TadaRaw'
 import InfoSVG from '@/icons/Info'
-import GuideSVG from '@/icons/Guide'
+import GuideSVG from '@/icons/Book'
 
 import { MenuItem } from './main_menu'
 
@@ -19,6 +19,7 @@ export const Wrapper = styled.div`
   ${css.size(16)};
   ${css.row('align-both')};
   opacity: 0.6;
+  margin-top: -1px;
 `
 
 type TIcon = TActive & TPrimaryColor
@@ -38,11 +39,13 @@ const getIcon = (SVG, size = 13) => {
 export const Icon = {
   Home: getIcon(HomeSVG),
   Tada: getIcon(TadaSVG),
-  Discuss: getIcon(DiscussSVG),
+  Discuss: styled(getIcon(DiscussSVG))`
+    margin-top: 1px;
+  `,
   Kanban: styled(getIcon(KanbanSVG, 16))`
     transform: rotate(180deg);
   `,
-  Guide: getIcon(GuideSVG, 12),
+  Guide: getIcon(GuideSVG),
   Info: styled(getIcon(InfoSVG, 13))`
     margin-left: 1px;
     margin-bottom: 1px;

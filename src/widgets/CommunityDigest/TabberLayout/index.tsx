@@ -8,14 +8,15 @@ import usePublicThreads from '@/hooks/usePublicThreads'
 import useViewingThread from '@/hooks/useViewingThread'
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useHeaderLinks from '@/hooks/useHeaderLinks'
 
 import { SpaceGrow } from '@/widgets/Common'
 import TabBar from '@/widgets/TabBar'
 import ViewportTracker from '@/widgets/ViewportTracker'
 import SearchBox from '@/widgets/SearchBox'
+import CustomHeaderLinks from '@/widgets/CustomHeaderLinks'
 
 import CommunityBrief from './CommunityBrief'
-// import AccountUnit from './AccountUnit'
 
 import {
   Wrapper,
@@ -23,18 +24,20 @@ import {
   BannerContentWrapper,
   CommunityBaseInfo,
   TabBarWrapper,
-} from '../styles/classic_layout'
+} from '../styles/tabber_layout'
 
 // 没有各种外链接，打赏信息等的官方社区
 // const NON_STANDARD_COMMUNITIES = [HCN, 'feedback']
 
-const ClassicLayout: FC = () => {
+const TabberLayout: FC = () => {
   const metric = useMetric()
   const { isMobile } = useMobileDetect()
   const { enterView, leaveView } = useCommunityDigestViewport()
   const publicThreads = usePublicThreads()
   const activeThread = useViewingThread()
   const community = useViewingCommunity()
+
+  const { customLinks } = useHeaderLinks()
 
   return (
     <Wrapper testid="community-digest" isMobile={isMobile}>
@@ -49,8 +52,9 @@ const ClassicLayout: FC = () => {
               source={publicThreads}
               onChange={(path) => Router.push(`/${community.slug}/${path}`)}
               active={activeThread}
-              communitySlug={community.slug}
+              withIcon
             />
+            <CustomHeaderLinks links={customLinks} />
             <SpaceGrow />
             <SearchBox right={-14} />
           </TabBarWrapper>
@@ -61,4 +65,4 @@ const ClassicLayout: FC = () => {
   )
 }
 
-export default observer(ClassicLayout)
+export default observer(TabberLayout)

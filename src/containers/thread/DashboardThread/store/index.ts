@@ -55,7 +55,7 @@ import { THREAD } from '@/constant/thread'
 import BStore from '@/utils/bstore'
 import { buildLog } from '@/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/mobx'
-import { washThreads, sortByIndex } from '@/helper'
+import { publicThreads, sortByIndex } from '@/helper'
 
 import {
   PagedCommunities,
@@ -483,7 +483,7 @@ const DashboardThread = T.model('DashboardThread', {
         editingLinkMode: editingLinkMode as TChangeMode,
         editingGroup,
         editingGroupIndex,
-        threads: washThreads(curCommunity.threads, {
+        threads: publicThreads(curCommunity.threads, {
           enable: enableSettings,
           nameAlias: aliasSettings.nameAlias,
         }),
@@ -513,7 +513,7 @@ const DashboardThread = T.model('DashboardThread', {
         editingLinkMode: editingLinkMode as TChangeMode,
         editingGroup,
         editingGroupIndex,
-        threads: washThreads(curCommunity.threads, {
+        threads: publicThreads(curCommunity.threads, {
           enable: enableSettings,
           nameAlias: aliasSettings.nameAlias,
         }),

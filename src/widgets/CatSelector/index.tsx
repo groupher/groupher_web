@@ -18,16 +18,16 @@ type TProps = {
   mode?: TArticleCatMode
   activeCat: TArticleCat
   onSelect: (cat: TArticleCat) => void
-  noArrow?: boolean
   tooltipPlacement?: TTooltipPlacement
+  selected?: boolean
 } & TSpace
 
 const CatSelector: FC<TProps> = ({
   mode = ARTICLE_CAT_MODE.FILTER,
   activeCat,
   onSelect,
-  noArrow = false,
-  tooltipPlacement = 'bottom-start',
+  tooltipPlacement = 'bottom-end',
+  selected = false,
   ...restProps
 }) => {
   const [show, setShow] = useState(false)
@@ -39,7 +39,7 @@ const CatSelector: FC<TProps> = ({
     onSelect(cat)
   }
 
-  const offset = mode === ARTICLE_CAT_MODE.FILTER ? [-30, 5] : [-44, 5]
+  const offset = mode === ARTICLE_CAT_MODE.FILTER ? [30, 5] : [-44, 5]
 
   return (
     <Wrapper menuOpen={menuOpen} {...restProps}>
@@ -64,7 +64,7 @@ const CatSelector: FC<TProps> = ({
           </Fragment>
         }
       >
-        <DropdownButton noArrow={noArrow} $active={menuOpen}>
+        <DropdownButton $active={menuOpen} selected={selected}>
           {activeCat === ARTICLE_CAT.ALL ? '类别' : <ActiveLabel cat={activeCat} />}
         </DropdownButton>
       </Tooltip>

@@ -105,7 +105,7 @@ const TabItem: FC<TProps> = ({
         bottomSpace={bottomSpace}
         primaryColor={primaryColor}
       >
-        {!isString(item) && (item.icon || item.localIcon) && (
+        {!isString(item) && item.icon && (
           <TabIcon item={item} clickableRef={clickableRef} active={item.slug === activeKey} />
         )}
         <div ref={item.slug === activeKey ? activeRef : null}>

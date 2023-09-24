@@ -1,24 +1,18 @@
-import { memo } from 'react'
+import { FC, memo } from 'react'
 
 import { sortByIndex } from '@/helper'
 import Tabs from '@/widgets/Switcher/Tabs'
 
-// priority: icon > localIcon || slug
-// const getLocalIcon = (item) => {
-//   if (item.icon) return ''
+import type { TProps } from '..'
 
-//   return item.localIcon ? item.localIcon : item.slug
-// }
-
-const NormalView = ({ layout, source, active, onChange, size }) => {
+const NormalView: FC<TProps> = ({ source, active, onChange, size, withIcon }) => {
   const items = source.map((item) => ({
     ...item,
-    // localIcon: getLocalIcon(item),
+    icon: withIcon ? item.slug : '',
   }))
 
   return (
     <Tabs
-      layout={layout}
       items={sortByIndex(items)}
       activeKey={active}
       onChange={onChange}

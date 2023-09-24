@@ -1,7 +1,9 @@
-import { FC, ReactNode, memo } from 'react'
+import { FC, ReactNode } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TActive, TSizeTS, TSpace } from '@/spec'
 import SIZE from '@/constant/size'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import { buildLog } from '@/logger'
 
@@ -15,6 +17,7 @@ type TProps = {
   withBorder?: boolean
   onClick?: () => void
   noArrow?: boolean
+  selected?: boolean
 } & TSpace &
   TActive
 
@@ -25,19 +28,31 @@ const DropdownButton: FC<TProps> = ({
   onClick = log,
   noArrow = false,
   $active = false,
+  selected = false,
   ...restProps
 }) => {
+  const primaryColor = usePrimaryColor()
+
   return (
-    // @ts-ignore
-    <Wrapper withBorder={withBorder} size={size} onClick={onClick} $active={$active} {...restProps}>
+    <Wrapper
+      withBorder={withBorder}
+      size={size}
+      onClick={onClick}
+      $active={$active}
+      selected={selected}
+      primaryColor={primaryColor}
+      {...restProps}
+    >
       <ButtonWrapper size="small" type="primary" ghost>
-        <InnerBtnWrapper $active={$active}>
+        <InnerBtnWrapper $active={$active} primaryColor={primaryColor}>
           <>{children}</>
-          {!noArrow && <FilterIcon />}
+          {!noArrow && (
+            <FilterIcon $active={$active} selected={selected} primaryColor={primaryColor} />
+          )}
         </InnerBtnWrapper>
       </ButtonWrapper>
     </Wrapper>
   )
 }
 
-export default memo(DropdownButton)
+export default observer(DropdownButton)

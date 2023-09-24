@@ -79,7 +79,7 @@ const SidebarLayout: FC = () => {
 
           <SocialList top={20} left={-10} size="tiny" selected={DEME_SOCIALS} />
           <SpaceGrow />
-          <AccountUnit top={40} withName left={6} />
+          <AccountUnit withBg withName top={40} left={6} right={30} />
         </InnerWrapper>
       </Sticky>
 

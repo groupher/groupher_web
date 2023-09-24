@@ -2,11 +2,14 @@
  * TabBar
  */
 
-import { memo } from 'react'
+import { FC, memo } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
+import type { TSizeSM, TThread } from '@/spec'
 import VIEW from '@/constant/view'
 import { buildLog } from '@/logger'
+
+import type { TTabItem } from './spec'
 
 import DesktopView from './DesktopView'
 import MobileView from './MobileView'
@@ -14,7 +17,15 @@ import MobileView from './MobileView'
 /* eslint-disable-next-line */
 const log = buildLog('w:TabBar:index')
 
-const TabBar = (props) => {
+export type TProps = {
+  source: TTabItem[]
+  active: string
+  size?: TSizeSM
+  withIcon?: boolean
+  onChange?: (thread: TThread) => void
+}
+
+const TabBar: FC<TProps> = (props) => {
   const { isMobile } = useMobileDetect()
 
   // const { view } = props

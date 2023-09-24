@@ -53,6 +53,10 @@ export const primaryLink = (primaryColor: TColorName): string => {
 }
 
 export const primaryLightTheme = (primaryColor: TColorName): string => {
+  if (primaryColor === COLOR_NAME.BLACK) {
+    return theme('hoverBg')
+  }
+
   return theme(`baseColor.${camelize(primaryColor)}Bg`)
 }
 export { default as themeMeta } from './theme_meta'

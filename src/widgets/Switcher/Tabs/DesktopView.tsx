@@ -24,13 +24,11 @@ import { getSlipMargin } from '../styles/metric/tabs'
 /* eslint-disable-next-line */
 const log = buildLog('w:Tabs:index')
 
-// const defaultItems2 = ['帖子', '开源项目', 'Cheatsheet', '工作机会', '职场']
 const temItems = [
   {
     title: '帖子',
     slug: 'posts',
-    // icon: `${ICON_CMD}/navi/fire.svg`,
-    localIcon: 'settings',
+    icon: 'settings',
   },
 ]
 
