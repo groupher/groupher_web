@@ -10,7 +10,7 @@ import { toJS } from '@/mobx'
 type THeaderLinks = {
   layout: THeaderLayout
   links: TLinkItem[]
-  extraLinks: TLinkItem[]
+  customLinks: TLinkItem[]
 }
 
 /**
@@ -47,12 +47,12 @@ const useHeaderLinks = (): THeaderLinks => {
     link: `/${community.slug}/dashboard`,
   }
 
-  const extraLinks = isModerator ? [...headerLinksRow, aboutLink, dashboardLink] : headerLinksRow
+  const customLinks = isModerator ? [...headerLinksRow, aboutLink, dashboardLink] : headerLinksRow
 
   return {
     layout: store.dashboardThread.headerLayout,
     links: store.dashboardThread.headerLinks,
-    extraLinks,
+    customLinks,
   }
 }
 

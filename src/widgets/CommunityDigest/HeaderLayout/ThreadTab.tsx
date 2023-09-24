@@ -10,7 +10,7 @@ import useHeaderLinks from '@/hooks/useHeaderLinks'
 import useViewingThread from '@/hooks/useViewingThread'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 
-import ExtraLinks from '@/widgets/ExtraLinks'
+import CustomHeaderLinks from '@/widgets/CustomHeaderLinks'
 
 import { NormalWrapper, FloatWrapper, Title } from '../styles/header_layout/thread_tab'
 
@@ -18,7 +18,7 @@ type TProps = TSpace
 
 const ThreadTab: FC<TProps> = ({ ...restProps }) => {
   const curCommunity = useViewingCommunity()
-  const { layout: headerLayout, extraLinks } = useHeaderLinks()
+  const { layout: headerLayout, customLinks } = useHeaderLinks()
   const threads = usePublicThreads()
   const activeThread = useViewingThread()
   const primaryColor = usePrimaryColor()
@@ -38,7 +38,7 @@ const ThreadTab: FC<TProps> = ({ ...restProps }) => {
         </Title>
       ))}
 
-      <ExtraLinks links={extraLinks} activePath={activeThread} />
+      <CustomHeaderLinks links={customLinks} activePath={activeThread} />
     </Wrapper>
   )
 }

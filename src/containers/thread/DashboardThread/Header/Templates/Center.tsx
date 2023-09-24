@@ -6,7 +6,7 @@ import type { TActive, TCommunityThread, TLinkItem } from '@/spec'
 import { THREAD } from '@/constant/thread'
 import { HEADER_LAYOUT } from '@/constant/layout'
 
-import ExtraLinks from '@/widgets/ExtraLinks/HeaderTemplate'
+import CustomHeaderLinks from '@/widgets/CustomHeaderLinks/HeaderTemplate'
 
 import {
   Wrapper,
@@ -41,7 +41,7 @@ const Center: FC<TProps> = ({ $active, threads, links }) => {
         {_threads.map((thread: TCommunityThread) => (
           <LinkItem key={thread.slug}>{thread.title}</LinkItem>
         ))}
-        <ExtraLinks links={links} />
+        <CustomHeaderLinks links={links} />
       </CenterWrapper>
       <RightWrapper>
         <AccountIcon />

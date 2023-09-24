@@ -55,7 +55,6 @@ export type TNameAliasConfig = {
 export type TDashboardThreadConfig = {
   enable: TEnableConfig
   nameAlias: TNameAliasConfig[]
-  extraLinks?: TLinkItem[]
 }
 
 export type TDashboardSEOConfig = {

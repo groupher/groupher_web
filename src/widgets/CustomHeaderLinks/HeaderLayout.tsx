@@ -1,20 +1,23 @@
-import { FC, Fragment } from 'react'
+import { FC, Fragment, useState } from 'react'
 import { observer } from 'mobx-react'
-import { keys, startsWith } from 'ramda'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { keys, startsWith, filter } from 'ramda'
 
 import type { TLinkItem } from '@/spec'
 import { MORE_GROUP, ONE_LINK_GROUP } from '@/constant/dashboard'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { sortByIndex, groupByKey } from '@/helper'
+import useAccount from '@/hooks/useAccount'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import Tooltip from '@/widgets/Tooltip'
 
 import type { TProps, TLinkGroup } from './spec'
 
-import { Wrapper, LinkItem, GroupItem, ArrowIcon, MenuPanel } from './styles/header_template'
+import { Wrapper, LinkItem, GroupItem, ArrowIcon, MenuPanel } from './styles/header_layout'
 
-const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold }) => {
+const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold, activePath }) => {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const { slug } = useViewingCommunity()
   const primaryColor = usePrimaryColor()
 
   if (!showMoreFold) return null
@@ -24,33 +27,43 @@ const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold }) => {
       content={
         <MenuPanel>
           {links.map((item: TLinkItem) => (
-            <LinkItem key={item.index} href={item.link} primaryColor={primaryColor}>
+            <LinkItem
+              key={item.index}
+              href={item.link}
+              $active={`/${slug}/${activePath}` === item.link}
+              primaryColor={primaryColor}
+            >
               {item.title}
             </LinkItem>
           ))}
         </MenuPanel>
       }
+      onHide={() => setMenuOpen(false)}
+      onShow={() => setMenuOpen(true)}
+      trigger="click"
       placement="bottom"
-      offset={[-5, 5]}
+      offset={[8, 5]}
     >
       {/* @ts-ignore */}
-      <GroupItem as="div">
+      <GroupItem as="div" $active={menuOpen}>
         {groupTitle === MORE_GROUP ? '更多' : groupTitle} <ArrowIcon />
       </GroupItem>
     </Tooltip>
   )
 }
 
-const ExtraLinks: FC<TProps> = ({ links }) => {
+const CustomHeaderLinks: FC<TProps> = ({ links, activePath = '' }) => {
+  const { isModerator } = useAccount()
   const primaryColor = usePrimaryColor()
-  const [animateRef] = useAutoAnimate()
+
+  const _links = filter((item) => item.title !== '', links)
 
   // @ts-ignore
-  const groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
+  const groupedLinks = groupByKey(sortByIndex(_links, 'groupIndex'), 'group')
   const groupKeys = keys(groupedLinks)
 
   return (
-    <Wrapper ref={animateRef}>
+    <Wrapper>
       {groupKeys.map((groupTitle: string) => {
         const curGroupLinks = groupedLinks[groupTitle]
 
@@ -66,7 +79,8 @@ const ExtraLinks: FC<TProps> = ({ links }) => {
               <LinkGroup
                 groupTitle={groupTitle}
                 links={curGroupLinks}
-                showMoreFold={links.length >= 2 && links[0].title !== ''}
+                activePath={activePath}
+                showMoreFold={(links.length >= 2 && links[0].title !== '') || isModerator}
               />
             )}
           </Fragment>
@@ -76,4 +90,4 @@ const ExtraLinks: FC<TProps> = ({ links }) => {
   )
 }
 
-export default observer(ExtraLinks)
+export default observer(CustomHeaderLinks)

@@ -7,7 +7,7 @@ import usePrimaryColor from '@/hooks/usePrimaryColor'
 import useViewingThread from '@/hooks/useViewingThread'
 import useHeaderLinks from '@/hooks/useHeaderLinks'
 
-import ExtraLinks from '@/widgets/ExtraLinks'
+import CustomHeaderLinks from '@/widgets/CustomHeaderLinks'
 
 import ThreadIcon from './ThreadIcon'
 
@@ -21,7 +21,7 @@ const MainMenu: FC = () => {
   const publicThreads = usePublicThreads()
   const activeThread = useViewingThread()
 
-  const { extraLinks } = useHeaderLinks()
+  const { customLinks } = useHeaderLinks()
 
   return (
     <Wrapper>
@@ -38,7 +38,7 @@ const MainMenu: FC = () => {
         )
       })}
 
-      <ExtraLinks links={extraLinks} activePath={activeThread} />
+      <CustomHeaderLinks links={customLinks} activePath={activeThread} />
     </Wrapper>
   )
 }

@@ -64,7 +64,7 @@ const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold, activePath
   )
 }
 
-const ExtraLinks: FC<TProps> = ({ links, activePath = '' }) => {
+const CustomHeaderLinks: FC<TProps> = ({ links, activePath = '' }) => {
   const { isModerator } = useAccount()
   const primaryColor = usePrimaryColor()
 
@@ -105,4 +105,4 @@ const ExtraLinks: FC<TProps> = ({ links, activePath = '' }) => {
   )
 }
 
-export default observer(ExtraLinks)
+export default observer(CustomHeaderLinks)
