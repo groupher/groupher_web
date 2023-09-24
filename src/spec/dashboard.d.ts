@@ -1,5 +1,4 @@
 import type { TColorName } from './color'
-import type { TLinkItem } from './utils'
 
 export type TAvatarLayout = 'circle' | 'square'
 export type TBrandLayout = 'both' | 'logo' | 'text'
