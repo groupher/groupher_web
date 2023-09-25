@@ -7,7 +7,14 @@ import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import { buildLog } from '@/logger'
 
-import { Wrapper, ButtonWrapper, InnerBtnWrapper, FilterIcon } from '../styles/dropdown_button'
+import {
+  Wrapper,
+  ButtonWrapper,
+  InnerBtnWrapper,
+  FilterIcon,
+  CloseWrapper,
+  CloseIcon,
+} from '../styles/dropdown_button'
 
 const log = buildLog('C:DropdownButton')
 
@@ -16,8 +23,10 @@ type TProps = {
   size?: TSizeTS
   withBorder?: boolean
   onClick?: () => void
+  onClear?: () => void
   noArrow?: boolean
   selected?: boolean
+  closable?: boolean
 } & TSpace &
   TActive
 
@@ -26,9 +35,11 @@ const DropdownButton: FC<TProps> = ({
   size = SIZE.SMALL,
   withBorder = false,
   onClick = log,
+  onClear = log,
   noArrow = false,
   $active = false,
   selected = false,
+  closable = false,
   ...restProps
 }) => {
   const primaryColor = usePrimaryColor()
@@ -46,8 +57,20 @@ const DropdownButton: FC<TProps> = ({
       <ButtonWrapper size="small" type="primary" ghost>
         <InnerBtnWrapper $active={$active} primaryColor={primaryColor}>
           <>{children}</>
-          {!noArrow && (
+          {!noArrow && !(closable && selected) && (
             <FilterIcon $active={$active} selected={selected} primaryColor={primaryColor} />
+          )}
+
+          {closable && selected && (
+            <CloseWrapper
+              primaryColor={primaryColor}
+              onClick={(e) => {
+                e.preventDefault()
+                onClear()
+              }}
+            >
+              <CloseIcon primaryColor={primaryColor} />
+            </CloseWrapper>
           )}
         </InnerBtnWrapper>
       </ButtonWrapper>

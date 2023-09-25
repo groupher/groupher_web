@@ -1,24 +1,20 @@
-import { FC, memo, useState, Fragment } from 'react'
-import dynamic from 'next/dynamic'
+import { FC, memo, useState, useRef } from 'react'
 
-import type { TArticleCatMode, TArticleCat, TTooltipPlacement, TSpace } from '@/spec'
+import type { TArticleCatMode, TArticleCat, TSpace, TTooltipPlacement } from '@/spec'
 import { ARTICLE_CAT, ARTICLE_CAT_MODE } from '@/constant/gtd'
+import { POST_CAT_MENU_ITEMS } from '@/constant/menu'
 
-import Tooltip from '@/widgets/Tooltip'
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
+import Menu from '@/widgets/Menu'
 
 import { FilterWrapper, FullWrapper, Label } from './styles'
-
 import ActiveLabel from './ActiveLabel'
-
-const FilterPanel = dynamic(() => import('./FilterPanel'))
-const FullPanel = dynamic(() => import('./FullPanel'))
 
 type TProps = {
   mode?: TArticleCatMode
   activeCat: TArticleCat
+  placement?: TTooltipPlacement
   onSelect: (cat: TArticleCat) => void
-  tooltipPlacement?: TTooltipPlacement
   selected?: boolean
 } & TSpace
 
@@ -26,12 +22,13 @@ const CatSelector: FC<TProps> = ({
   mode = ARTICLE_CAT_MODE.FILTER,
   activeCat,
   onSelect,
-  tooltipPlacement = 'bottom-end',
   selected = false,
+  placement = 'bottom',
   ...restProps
 }) => {
-  const [show, setShow] = useState(false)
+  const [offset, setOffset] = useState([30, 5])
   const [menuOpen, setMenuOpen] = useState(false)
+  const ref = useRef(null)
 
   const Wrapper = mode === ARTICLE_CAT_MODE.FILTER ? FilterWrapper : FullWrapper
 
@@ -39,35 +36,43 @@ const CatSelector: FC<TProps> = ({
     onSelect(cat)
   }
 
-  const offset = mode === ARTICLE_CAT_MODE.FILTER ? [30, 5] : [-44, 5]
+  const popWidth = 120
 
   return (
-    <Wrapper menuOpen={menuOpen} {...restProps}>
+    <Wrapper menuOpen={menuOpen} {...restProps} ref={ref}>
       {mode === ARTICLE_CAT_MODE.FULL && <Label>类别</Label>}
-      <Tooltip
-        placement={tooltipPlacement}
-        trigger="click"
+
+      <Menu
+        offset={offset as [number, number]}
+        items={POST_CAT_MENU_ITEMS}
+        onSelect={(item) => handleSelect(item.key as TArticleCat)}
         onShow={() => {
-          setShow(true)
+          if (selected) {
+            setOffset([10, 5])
+          }
           setMenuOpen(true)
         }}
-        onHide={() => setMenuOpen(false)}
-        offset={offset as [number, number]}
-        content={
-          <Fragment>
-            {show && mode === ARTICLE_CAT_MODE.FULL && (
-              <FullPanel onSelect={handleSelect} activeCat={activeCat} />
-            )}
-            {show && mode === ARTICLE_CAT_MODE.FILTER && (
-              <FilterPanel onSelect={handleSelect} activeCat={activeCat} />
-            )}
-          </Fragment>
-        }
+        onHide={() => {
+          setOffset([30, 5])
+          setMenuOpen(false)
+        }}
+        activeKey={activeCat}
+        placement={placement}
+        popWidth={popWidth}
       >
-        <DropdownButton $active={menuOpen} selected={selected}>
+        <DropdownButton
+          $active={menuOpen}
+          selected={selected}
+          closable
+          onClear={() => {
+            // simulate click to avoid menu pop again
+            ref.current.click()
+            onSelect(ARTICLE_CAT.ALL)
+          }}
+        >
           {activeCat === ARTICLE_CAT.ALL ? '类别' : <ActiveLabel cat={activeCat} />}
         </DropdownButton>
-      </Tooltip>
+      </Menu>
     </Wrapper>
   )
 }

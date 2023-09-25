@@ -1,70 +1,69 @@
-import { FC, memo, useState, useRef } from 'react'
+import { FC, memo, useState } from 'react'
+import dynamic from 'next/dynamic'
 
-import type { TArticleState, TArticleCatMode, TSpace, TTooltipPlacement } from '@/spec'
+import type { TArticleState, TArticleCatMode, TTooltipPlacement, TSpace } from '@/spec'
 import { ARTICLE_STATE, ARTICLE_STATE_MODE } from '@/constant/gtd'
 
+import Tooltip from '@/widgets/Tooltip'
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
-import Menu from '@/widgets/Menu'
 
-import { MENU_ITEMS } from './constant'
 import ActiveState from './ActiveState'
+
 import { FilterWrapper, FullWrapper, Label } from './styles'
+
+const FilterPanel = dynamic(() => import('./FilterPanel'))
+const FullPanel = dynamic(() => import('./FullPanel'))
 
 type TProps = {
   mode?: TArticleCatMode
   state?: string
-  placement?: TTooltipPlacement
+  tooltipPlacement?: TTooltipPlacement
 } & TSpace
 
 const StateSelector: FC<TProps> = ({
   mode = ARTICLE_STATE_MODE.FULL,
   state = 'todo',
-  placement = 'bottom',
+  tooltipPlacement = 'bottom-end',
   ...restProps
 }) => {
-  const [offset, setOffset] = useState([30, 5])
+  const [show, setShow] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeState, setActiveState] = useState(null)
-  const ref = useRef(null)
 
   const handleSelect = (state: TArticleState) => {
     setActiveState(state)
   }
 
   const Wrapper = mode === ARTICLE_STATE_MODE.FILTER ? FilterWrapper : FullWrapper
+  const offset = mode === ARTICLE_STATE_MODE.FILTER ? [20, 5] : [-42, 5]
 
   return (
-    <Wrapper menuOpen={menuOpen} {...restProps} ref={ref}>
+    <Wrapper menuOpen={menuOpen} {...restProps}>
       {mode === ARTICLE_STATE_MODE.FULL && <Label>状态</Label>}
-      <Menu
-        offset={offset as [number, number]}
-        items={MENU_ITEMS}
-        onSelect={(item) => handleSelect(item.key as TArticleState)}
-        activeKey={activeState}
-        popWidth={120}
-        placement={placement}
+      <Tooltip
+        placement={tooltipPlacement}
+        trigger="click"
         onShow={() => {
-          if (activeState !== ARTICLE_STATE.ALL) {
-            setOffset([10, 5])
-          } else {
-            setOffset([30, 5])
-          }
+          setShow(true)
           setMenuOpen(true)
         }}
-        onHide={() => {
-          setOffset([22, 5])
-          setMenuOpen(false)
-        }}
+        onHide={() => setMenuOpen(false)}
+        offset={offset as [number, number]}
+        content={
+          <>
+            {show && mode === ARTICLE_STATE_MODE.FILTER && (
+              <FilterPanel activeState={activeState} onSelect={handleSelect} />
+            )}
+            {show && mode === ARTICLE_STATE_MODE.FULL && (
+              <FullPanel activeState={activeState} onSelect={handleSelect} />
+            )}
+          </>
+        }
+        noPadding
       >
         <DropdownButton
           $active={menuOpen}
           selected={activeState && activeState !== ARTICLE_STATE.ALL}
-          closable
-          onClear={() => {
-            // simulate click to avoid menu pop again
-            ref.current.click()
-            setActiveState(ARTICLE_STATE.ALL)
-          }}
         >
           {!activeState || activeState === ARTICLE_STATE.ALL ? (
             '状态'
@@ -72,7 +71,7 @@ const StateSelector: FC<TProps> = ({
             <ActiveState activeState={activeState} mode={mode} />
           )}
         </DropdownButton>
-      </Menu>
+      </Tooltip>
     </Wrapper>
   )
 }

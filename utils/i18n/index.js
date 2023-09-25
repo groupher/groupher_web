@@ -27,7 +27,7 @@ const I18nDict = {
   ALL: '全部',
   FEATURE: '功能建议',
   BUG: '问题反馈',
-  QUESTION: '求助',
+  QUESTION: '求助/疑问',
   OTHER: '其他',
   RESOLVED: '问题解决',
   // articleState;

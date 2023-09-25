@@ -10,11 +10,11 @@ import { buildLog } from '@/logger'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import useViewingThread from '@/hooks/useViewingThread'
 
-import Tooltip from '@/widgets/Tooltip'
-import FullPanel from '@/widgets/CatSelector/FullPanel'
+import { POST_CAT_MENU_ITEMS } from '@/constant/menu'
+
+import Menu from '@/widgets/Menu'
 
 import { MORE_MENU } from './constant'
-
 import PostLayout from './PostLayout'
 import SidebarHeaderLayout from './SidebarHeaderLayout'
 
@@ -55,12 +55,16 @@ const PublishButton: FC<TProps> = ({
 
   return (
     <Wrapper {...restProps}>
-      <Tooltip
-        placement={placement}
-        trigger="click"
-        onShow={() => setShow(true)}
+      <Menu
         offset={offset as [number, number]}
-        content={<>{show && <FullPanel onSelect={onMenuSelect} activeCat={null} />}</>}
+        placement={placement}
+        items={POST_CAT_MENU_ITEMS}
+        // onSelect={(item) => handleSelect(item.key as TArticleState)}
+        // onShow={() => setMenuOpen(true)}
+        // onHide={() => setMenuOpen(false)}
+        // activeKey={activeCat}
+        popWidth={192}
+        withDesc
       >
         <PubButton
           primaryColor={primaryColor}
@@ -69,7 +73,7 @@ const PublishButton: FC<TProps> = ({
           {mode === PUBLISH_MODE.DEFAULT && <PostLayout text={_text} />}
           {mode === PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER && <SidebarHeaderLayout text={text} />}
         </PubButton>
-      </Tooltip>
+      </Menu>
     </Wrapper>
   )
 }
