@@ -9,3 +9,13 @@ export type TMenu =
   | 'ARROW_TO_BOTTOM'
   | 'SETTING'
   | 'DELETE'
+  // commont
+  | 'TODO'
+  | 'WIP'
+  | 'DONE'
+  | 'FEATURE'
+  | 'BUG'
+  | 'HELP'
+  | 'OTHER'
+  | 'ALL'
+  | 'TOOL'

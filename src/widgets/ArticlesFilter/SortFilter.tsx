@@ -11,21 +11,21 @@ type TProps = {
   activeFilter: TArticleFilter
   onSelect: (filter: TArticleFilter) => void
   noArrow?: boolean
-  tooltipPlacement?: TTooltipPlacement
+  placement?: TTooltipPlacement
 }
 
 const SortFilter: FC<TProps> = ({
   onSelect,
   activeFilter,
   noArrow = false,
-  tooltipPlacement = 'bottom-start',
+  placement = 'bottom-start',
 }) => {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
     <Tooltip
       trigger="click"
-      placement={tooltipPlacement}
+      placement={placement}
       onShow={() => setMenuOpen(true)}
       onHide={() => setMenuOpen(false)}
       offset={[-30, 5]}

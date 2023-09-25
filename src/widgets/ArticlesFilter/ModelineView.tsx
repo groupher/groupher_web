@@ -43,12 +43,10 @@ const ArticlesFilter: FC<TProps> = ({
     <ModelineWrapper>
       <TagSelector groupedTags={groupedTags} activeTag={activeTag} mode="modeline" />
       <Space right={6} />
-      <SortFilter onSelect={onSelect} activeFilter={activeFilter} tooltipPlacement="top-start" />
-      <CatSelector activeCat={activeCat} onSelect={setActiveCat} tooltipPlacement="top-start" />
+      <SortFilter onSelect={onSelect} activeFilter={activeFilter} placement="top-start" />
+      <CatSelector activeCat={activeCat} onSelect={setActiveCat} placement="top-start" />
 
-      {modelineExpand && (
-        <StateSelector mode={ARTICLE_STATE_MODE.FILTER} tooltipPlacement="top-start" />
-      )}
+      {modelineExpand && <StateSelector mode={ARTICLE_STATE_MODE.FILTER} placement="top-start" />}
 
       {/* <SearchBox searchMode={searchMode} onSearch={onSearch} closeSearch={closeSearch} /> */}
     </ModelineWrapper>

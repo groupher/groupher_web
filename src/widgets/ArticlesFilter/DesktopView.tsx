@@ -50,14 +50,13 @@ const ArticlesFilter: FC<TProps> = ({
       {!searchMode && (
         <Fragment>
           <SortFilter onSelect={onSelect} activeFilter={activeFilter} />
-          <Space right={2} />
           <CatSelector
             activeCat={activeCat}
             onSelect={setActiveCat}
             selected={activeCat !== ARTICLE_CAT.ALL}
           />
-          <Space right={2} />
           <StateSelector mode={ARTICLE_STATE_MODE.FILTER} />
+          <Space right={10} />
           <SpaceGrow />
           <DesktopOnly>
             {resState === TYPE.RES_STATE.LOADING && <LavaLampLoading right={28} left={10} />}
