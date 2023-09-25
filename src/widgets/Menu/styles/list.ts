@@ -25,6 +25,7 @@ export const Item = styled.div<TItem>`
     $active ? primaryTheme(primaryColor) : theme('article.digest')};
 
   &:hover {
+    font-weight: 500;
     background: ${({ $active, primaryColor }) =>
       $active ? primaryLightTheme(primaryColor) : theme('hoverBg')};
     cursor: pointer;

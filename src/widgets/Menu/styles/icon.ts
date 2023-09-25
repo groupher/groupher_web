@@ -20,10 +20,12 @@ import OtherSVG from '@/icons/menu/MoreL'
 import css, { theme, primaryTheme } from '@/css'
 import { Item } from './list'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<TActive>`
   ${css.row('align-both')}
   ${css.size(15)};
   margin-right: 8px;
+  /*  $active state hot work on icon's hover, put it in here instead */
+  filter: ${({ $active }) => ($active ? 'saturate(1)' : 'saturate(0)')};
 `
 
 type TIcon = TActive & TPrimaryColor

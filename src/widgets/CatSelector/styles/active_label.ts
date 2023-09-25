@@ -12,10 +12,13 @@ import OtherSVG from '@/icons/menu/Feedback'
 export const Wrapper = styled.div<TPrimaryColor>`
   ${css.row('align-center')};
   color: ${({ primaryColor }) => primaryTheme(primaryColor)};
+`
+export const Title = styled.div`
+  font-size: 13px;
   font-weight: 550;
 `
 const iconBase = `
-  ${css.size(14)};
+  ${css.size(13)};
   margin-right: 5px;
 `
 

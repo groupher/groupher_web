@@ -6,6 +6,7 @@ import css, { theme, primaryTheme, primaryLightTheme } from '@/css'
 
 import Button from '@/widgets/Buttons/Button'
 import ArrowSVG from '@/icons/ArrowSimple'
+import CloseSVG from '@/icons/CloseCross'
 
 type TWrapper = { withBorder: boolean; size: TSizeTS; selected: boolean } & TSpace &
   TActive &
@@ -81,4 +82,32 @@ export const FilterIcon = styled(ArrowSVG)<TFilterIcon>`
     margin-left: 3px;
     opacity: 0.6;
   `};
+`
+
+export const CloseWrapper = styled.div<TPrimaryColor>`
+  ${css.circle(16)};
+  ${css.row('align-both')};
+  margin-left: 4px;
+
+  color: ${({ primaryColor }) => primaryTheme(primaryColor)};
+
+  &:hover {
+    color: ${theme('button.fg')};
+    background: ${({ primaryColor }) => primaryTheme(primaryColor)};
+    cursor: pointer;
+  }
+
+  transition: all 0.2s;
+`
+export const CloseIcon = styled(CloseSVG)<TPrimaryColor>`
+  fill: ${({ primaryColor }) => primaryTheme(primaryColor)};
+  ${css.size(12)};
+  transform: rotate(-90deg);
+  opacity: 0.8;
+
+  ${CloseWrapper}:hover & {
+    fill: ${theme('button.fg')};
+    opacity: 1;
+  }
+  transition: all 0.2s;
 `

@@ -1,4 +1,4 @@
-import { FC, memo, useState } from 'react'
+import { FC, memo, useState, useRef } from 'react'
 
 import type { TArticleState, TArticleCatMode, TSpace, TTooltipPlacement } from '@/spec'
 import { ARTICLE_STATE, ARTICLE_STATE_MODE } from '@/constant/gtd'
@@ -22,18 +22,19 @@ const StateSelector: FC<TProps> = ({
   placement = 'bottom',
   ...restProps
 }) => {
+  const [offset, setOffset] = useState([30, 5])
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeState, setActiveState] = useState(null)
+  const ref = useRef(null)
 
   const handleSelect = (state: TArticleState) => {
     setActiveState(state)
   }
 
   const Wrapper = mode === ARTICLE_STATE_MODE.FILTER ? FilterWrapper : FullWrapper
-  const offset = mode === ARTICLE_STATE_MODE.FILTER ? [12, 5] : [-42, 5]
 
   return (
-    <Wrapper menuOpen={menuOpen} {...restProps}>
+    <Wrapper menuOpen={menuOpen} {...restProps} ref={ref}>
       {mode === ARTICLE_STATE_MODE.FULL && <Label>状态</Label>}
       <Menu
         offset={offset as [number, number]}
@@ -42,12 +43,28 @@ const StateSelector: FC<TProps> = ({
         activeKey={activeState}
         popWidth={120}
         placement={placement}
-        onShow={() => setMenuOpen(true)}
-        onHide={() => setMenuOpen(false)}
+        onShow={() => {
+          if (activeState !== ARTICLE_STATE.ALL) {
+            setOffset([10, 5])
+          } else {
+            setOffset([30, 5])
+          }
+          setMenuOpen(true)
+        }}
+        onHide={() => {
+          setOffset([22, 5])
+          setMenuOpen(false)
+        }}
       >
         <DropdownButton
           $active={menuOpen}
           selected={activeState && activeState !== ARTICLE_STATE.ALL}
+          closable
+          onClear={() => {
+            // simulate click to avoid menu pop again
+            ref.current.click()
+            setActiveState(ARTICLE_STATE.ALL)
+          }}
         >
           {!activeState || activeState === ARTICLE_STATE.ALL ? (
             '状态'
