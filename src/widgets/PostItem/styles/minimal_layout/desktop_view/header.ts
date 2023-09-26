@@ -2,10 +2,11 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/css'
 
+import { Wrapper as ItemWrapper } from '.'
+
 export const Wrapper = styled.div`
   ${css.column()};
 `
-
 export const Main = styled.div`
   ${css.rowGrow('align-center')};
   color: ${theme('article.title')};
@@ -27,6 +28,11 @@ export const Title = styled.a`
   }
   @media (max-width: 1100px) {
     ${css.cutRest('350px')};
+  }
+
+  ${ItemWrapper}:hover & {
+    text-decoration: underline;
+    text-decoration-color: ${theme('hint')};
   }
 
   &:hover {
