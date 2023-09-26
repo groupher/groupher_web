@@ -21,11 +21,13 @@ export const LinkItem = styled(LinkItemBase)`
   border-radius: 10px;
   height: 28px;
   margin-top: 3px;
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 `
 
 export const MenuLinkItem = styled(LinkItem)`
-  width: 100%;
+  width: 140px !important;
+  margin-bottom: 0;
+  margin-top: 0;
   border-radius: 4px;
 `
 
