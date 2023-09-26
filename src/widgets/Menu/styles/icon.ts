@@ -33,12 +33,12 @@ export const Wrapper = styled.div<TWrapper>`
   }};
 `
 
-type TIcon = TActive & TPrimaryColor
+type TIcon = TActive & TPrimaryColor & { $small: boolean }
 const commonIcon = (comp): FC<TIcon> => {
   // @ts-ignore
   return styled(comp)<TIcon>`
     fill: ${({ $active, primaryColor }) => ($active ? primaryTheme(primaryColor) : theme('hint'))};
-    width: ${({ $small }: { $small: boolean }) => ($small ? '12px' : '15px')};
+    width: ${({ $small }) => ($small ? '12px' : '15px')};
     height: ${({ $small }) => ($small ? '12px' : '15px')};
     display: block;
 

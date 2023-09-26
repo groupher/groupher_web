@@ -18,6 +18,7 @@ const Icon: FC<TProps> = ({ type, $active }) => {
 
   return (
     <Wrapper $active={$active} noSaturate={type === MENU.FEATURE || type === MENU.BUG}>
+      {/* @ts-ignore */}
       <IconComp primaryColor={primaryColor} $active={$active} />
     </Wrapper>
   )
