@@ -5,7 +5,7 @@ import Input from '@/widgets/Input'
 
 import { theme } from '@/css'
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.article.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   padding: 40px 40px;

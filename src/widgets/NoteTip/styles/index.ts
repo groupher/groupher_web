@@ -9,7 +9,7 @@ import css, { theme } from '@/css'
 
 type TWrapper = TTestable & TSpace & { fontSize: number }
 
-export const Wrapper = styled.div.attrs(({ testid }: TTestable) => ({
+export const Wrapper = styled.article.attrs<TWrapper>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${(props) => css.spaceMargins(props)};
