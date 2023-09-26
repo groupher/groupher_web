@@ -7,9 +7,7 @@ import LinkSVG from '@/icons/Link'
 import ArrowUpRightSVG from '@/icons/ArrowUpRight'
 import MoreSVG from '@/icons/menu/MoreL'
 
-import { LinkItem as LinkItemBase, ArrowIcon as ArrowIconBase } from '.'
-
-export { MenuPanel } from '.'
+import { LinkItem as LinkItemBase, ArrowIcon as ArrowIconBase, MenuPanel as MenuPanelBase } from '.'
 
 export const Wrapper = styled.div`
   gap: 0 16px;
@@ -19,13 +17,15 @@ export const LinkItem = styled(LinkItemBase)`
   font-size: 13px;
   width: 160px;
   border-radius: 10px;
-  height: 28px;
-  margin-top: 3px;
+  height: 32px;
   margin-bottom: 4px;
 `
-
+export const MenuPanel = styled(MenuPanelBase)`
+  gap: 5px 0;
+`
 export const MenuLinkItem = styled(LinkItem)`
   width: 140px !important;
+  height: 28px;
   margin-bottom: 0;
   margin-top: 0;
   border-radius: 4px;

@@ -24,11 +24,9 @@ export const MenuItem = styled(Link)<TActive>`
   background: ${({ $active }) => ($active ? theme('hoverBg') : 'transparent')};
   width: 160px;
   text-decoration: none;
+  height: 32px;
   padding-left: 8px;
-  height: 28px;
-  margin-top: 3px;
   margin-bottom: 3px;
-  margin-left: 0px;
   border-radius: 10px;
   cursor: pointer;
 
