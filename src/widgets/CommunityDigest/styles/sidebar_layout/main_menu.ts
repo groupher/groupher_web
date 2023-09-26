@@ -41,7 +41,7 @@ export const MenuTitle = styled.div<TMenuTitle>`
   color: ${({ $active, primaryColor }) =>
     $active ? primaryTheme(primaryColor) : theme('article.digest')};
   font-weight: ${({ $active }) => ($active ? 550 : 400)};
-  font-size: 13px;
+  font-size: 13.5px;
   margin-left: 10px;
 
   ${MenuItem}:hover & {

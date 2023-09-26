@@ -19,7 +19,6 @@ export const Wrapper = styled.div`
   ${css.size(16)};
   ${css.row('align-both')};
   opacity: 0.6;
-  margin-top: -1px;
 `
 
 type TIcon = TActive & TPrimaryColor

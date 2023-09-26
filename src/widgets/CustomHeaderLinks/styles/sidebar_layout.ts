@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
 `
 export const LinkItem = styled(LinkItemBase)`
   ${css.row('align-center')};
-  font-size: 13px;
+  font-size: 13.5px;
   width: 160px;
   border-radius: 10px;
   height: 32px;
