@@ -19,7 +19,7 @@ export const Wrapper = styled.div<TWrapper>`
   color: ${theme('article.digest')};
   ${css.row('align-center')};
   padding: 0 5px;
-  line-height: 20px;
+  line-height: ${({ smaller }) => (smaller ? '20px' : '32px')};
   font-weight: 500;
   font-size: 12px;
 `
@@ -31,21 +31,11 @@ export const IconWrapper = styled.div`
 export const BugWrapper = styled(Wrapper)<TWrapper>`
   color: ${theme('article.digest')};
 `
-export const QuestionWrapper = styled.div<{ smaller: boolean }>`
-  color: ${theme('baseColor.green')};
-  font-weight: 600;
-  font-size: ${({ smaller }) => (smaller ? '12px' : '13px')};
-  margin-right: ${({ smaller }) => (smaller ? '0' : '6px')};
-`
+
 export const LockWrapper = styled.div<{ smaller: boolean }>`
   color: ${theme('article.info')};
   font-size: ${({ smaller }) => (smaller ? '12px' : '14px')};
   margin-right: ${({ smaller }) => (smaller ? '0' : '6px')};
-`
-
-export const OtherWrapper = styled.div`
-  color: ${theme('article.info')};
-  font-size: 12px;
 `
 
 const commonIcon = (comp) => {
@@ -61,6 +51,8 @@ export const ICON = {
   BUG: styled(commonIcon(BugSVG))`
     ${css.size(14)};
   `,
-  QUESTION: commonIcon(QuestionSVG),
+  QUESTION: styled(commonIcon(QuestionSVG))`
+    ${css.size(12)};
+  `,
   OTHER: commonIcon(OtherSVG),
 }

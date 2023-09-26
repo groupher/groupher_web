@@ -39,7 +39,7 @@ const CatSelector: FC<TProps> = ({
   const popWidth = 120
 
   return (
-    <Wrapper menuOpen={menuOpen} {...restProps} ref={ref}>
+    <Wrapper $menuOpen={menuOpen} {...restProps} ref={ref}>
       {mode === ARTICLE_CAT_MODE.FULL && <Label>类别</Label>}
 
       <Menu

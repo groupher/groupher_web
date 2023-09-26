@@ -1,7 +1,5 @@
 import { merge, pick, isEmpty, findIndex, propEq, includes, values, reject } from 'ramda'
 
-// import type { TNameAliasConfig } from '@/spec'
-
 import { DEFAULT_THEME } from '@/config'
 import { HCN } from '@/constant/name'
 import TYPE from '@/constant/type'

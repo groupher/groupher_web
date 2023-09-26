@@ -210,8 +210,15 @@ export const BUILDIN_ALIAS_SUGGESTIONS = {
   doc: ['文档', '帮助中心'],
   upvote_bug: ['同样问题', '复现', '求解决'],
   todo: ['Todo', '已排期', '评估中', '计划中'],
-  doing: ['Doing', '完善中'],
+  wip: ['Wip', '完善中'],
   done: ['Done', '已解决'],
+  // state
+  feature: ['功能建议', '功能需求', '新功能'],
+  question: ['求助 / 疑问', '使用帮助'],
+  bug: ['问题上报', '缺陷', 'issue', 'bug'],
+  other: ['其他讨论', '其他话题'],
+  // TODO
+  state_other: ['其他讨论'],
 }
 
 export const BUILDIN_ALIAS = [
@@ -246,7 +253,7 @@ export const BUILDIN_ALIAS = [
     group: ALIAS_GROUP.KANBAN,
   },
   {
-    slug: 'doing',
+    slug: 'wip',
     name: '进行中',
     original: '进行中',
     group: ALIAS_GROUP.KANBAN,
@@ -255,6 +262,30 @@ export const BUILDIN_ALIAS = [
     slug: 'done',
     name: '已完成',
     original: '已完成',
+    group: ALIAS_GROUP.KANBAN,
+  },
+  {
+    slug: 'feature',
+    name: '功能建议',
+    original: '功能建议',
+    group: ALIAS_GROUP.KANBAN,
+  },
+  {
+    slug: 'bug',
+    name: '问题上报',
+    original: '问题上报',
+    group: ALIAS_GROUP.KANBAN,
+  },
+  {
+    slug: 'question',
+    name: '求助 / 疑问',
+    original: '求助 / 疑问',
+    group: ALIAS_GROUP.KANBAN,
+  },
+  {
+    slug: 'other',
+    name: '其他讨论',
+    original: '其他讨论',
     group: ALIAS_GROUP.KANBAN,
   },
   {
@@ -415,7 +446,7 @@ export const ALIAS_TABS = [
     slug: DASHBOARD_ALIAS_ROUTE.THREAD,
   },
   {
-    title: '看板列',
+    title: '看板',
     slug: DASHBOARD_ALIAS_ROUTE.KANBAN,
   },
   {

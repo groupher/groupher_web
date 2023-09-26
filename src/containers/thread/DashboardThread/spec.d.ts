@@ -29,7 +29,7 @@ import type {
   TDashboardAliasRoute,
   TLinkItem,
   TChangeMode,
-  TNameAliasConfig,
+  TNameAlias,
   TSocialItem,
   TPagedArticles,
   TID,
@@ -40,6 +40,8 @@ import type {
   TMediaReport,
   TDashboardSEOConfig,
 } from '@/spec'
+
+export { TNameAlias } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'CMS' | 'INTEGRATE'
 
@@ -115,8 +117,6 @@ export type TFooterSettings = {
   footerLinks: TLinkItem[]
   threads: TCommunityThread[]
 } & TLinkState
-
-export type TNameAlias = TNameAliasConfig
 
 export type TAdminSettings = {
   moderators: TModerator[]

@@ -3,12 +3,12 @@ import styled from 'styled-components'
 import type { TActive } from '@/spec'
 import css, { theme } from '@/css'
 
-export const EditorWrapper = styled.div<{ menuOpen?: boolean }>`
+export const EditorWrapper = styled.div<{ $menuOpen?: boolean }>`
   ${css.row('align-center')};
   color: ${theme('article.digest')};
   border: 1px solid;
-  border-color: ${({ menuOpen }) =>
-    menuOpen ? theme('article.digest') : theme('button.ghostBorder')};
+  border-color: ${({ $menuOpen }) =>
+    $menuOpen ? theme('article.digest') : theme('button.ghostBorder')};
   font-size: 13px;
   padding: 0 5px;
   padding-left: 15px;
@@ -21,7 +21,7 @@ export const EditorWrapper = styled.div<{ menuOpen?: boolean }>`
 
   transition: all 0.2s;
 `
-export const MobileWrapper = styled.div<{ menuOpen?: boolean }>`
+export const MobileWrapper = styled.div<{ $menuOpen?: boolean }>`
   ${css.row('align-center')};
   color: ${theme('article.digest')};
 `

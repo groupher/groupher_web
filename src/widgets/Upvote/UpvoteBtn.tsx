@@ -49,7 +49,7 @@ const UpvoteBtn: FC<TProps> = ({
   }, [showAnimation, viewerHasUpvoted, num, onAction, isLogin])
 
   return (
-    <Wrapper showAnimation={showAnimation} type={type}>
+    <Wrapper $showAnimation={showAnimation} type={type}>
       <ContentWrapper>
         <IconWrapper onClick={handleClick} type={type}>
           <UpIcon type={type} $active={viewerHasUpvoted} count={count} />

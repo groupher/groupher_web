@@ -40,7 +40,6 @@ export const ArrowIcon = styled(ArrowSVG)`
 `
 export const InputWrapper = styled.div`
   width: 180px;
-  margin-left: -10px;
 `
 export const Inputer = styled(Input)`
   height: 28px;

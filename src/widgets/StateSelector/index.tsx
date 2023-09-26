@@ -34,7 +34,7 @@ const StateSelector: FC<TProps> = ({
   const Wrapper = mode === ARTICLE_STATE_MODE.FILTER ? FilterWrapper : FullWrapper
 
   return (
-    <Wrapper menuOpen={menuOpen} {...restProps} ref={ref}>
+    <Wrapper $menuOpen={menuOpen} {...restProps} ref={ref}>
       {mode === ARTICLE_STATE_MODE.FULL && <Label>状态</Label>}
       <Menu
         offset={offset as [number, number]}

@@ -29,7 +29,7 @@ const TagSelector: FC<TProps> = ({ mode = 'default', groupedTags, activeTag, onS
   const Wrapper = mode === 'default' ? EditorWrapper : MobileWrapper
 
   return (
-    <Wrapper menuOpen={menuOpen}>
+    <Wrapper $menuOpen={menuOpen}>
       {mode === 'default' && <Label>标签</Label>}
       <Tooltip
         placement="bottom-start"
@@ -38,9 +38,7 @@ const TagSelector: FC<TProps> = ({ mode = 'default', groupedTags, activeTag, onS
           setShow(true)
           setMenuOpen(true)
         }}
-        onHide={() => {
-          setMenuOpen(false)
-        }}
+        onHide={() => setMenuOpen(false)}
         offset={[-42, 5]}
         content={
           <Fragment>

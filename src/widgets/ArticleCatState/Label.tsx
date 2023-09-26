@@ -1,31 +1,27 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
-import { ARTICLE_STATE, ARTICLE_CAT } from '@/constant/gtd'
+import { ARTICLE_CAT } from '@/constant/gtd'
+import useNameAlias from '@/hooks/useNameAlias'
 
-import { Trans } from '@/i18n'
 import { isRejectedState } from '@/helper'
 
 import type { TProps as TArticleStateBadgeProps } from '.'
 
-import {
-  Wrapper,
-  IconWrapper,
-  ICON,
-  BugWrapper,
-  QuestionWrapper,
-  OtherWrapper,
-} from './styles/label'
+import { Wrapper, IconWrapper, ICON, BugWrapper } from './styles/label'
 
 type TProps = Pick<TArticleStateBadgeProps, 'cat' | 'smaller' | 'state'>
 
 const Label: FC<TProps> = ({ cat, state, smaller }) => {
+  const nameAlias = useNameAlias('kanban')
+
   if (isRejectedState(state)) {
     return (
       <Wrapper state={state} smaller={smaller}>
         <IconWrapper>
           <ICON.REJECT />
         </IconWrapper>
-        {Trans(state)}
+        {nameAlias[cat.toLowerCase()].name}
       </Wrapper>
     )
   }
@@ -37,7 +33,7 @@ const Label: FC<TProps> = ({ cat, state, smaller }) => {
           <IconWrapper>
             <ICON.FEATURE />
           </IconWrapper>
-          {Trans(ARTICLE_CAT.FEATURE)}
+          {nameAlias[cat.toLowerCase()].name}
         </Wrapper>
       )
     }
@@ -48,29 +44,29 @@ const Label: FC<TProps> = ({ cat, state, smaller }) => {
           <IconWrapper>
             <ICON.BUG />
           </IconWrapper>
-          {Trans(ARTICLE_CAT.BUG)}
+          {nameAlias[cat.toLowerCase()].name}
         </BugWrapper>
       )
     }
 
     case ARTICLE_CAT.QUESTION: {
-      if (state === ARTICLE_STATE.RESOLVED) {
-        return <QuestionWrapper smaller={smaller}>{Trans(ARTICLE_STATE.RESOLVED)}</QuestionWrapper>
-      }
-
       return (
-        <OtherWrapper>
+        <Wrapper state={state} smaller={smaller}>
           <IconWrapper>
-            <ICON.BUG />
+            <ICON.QUESTION />
           </IconWrapper>
-          {Trans(ARTICLE_CAT.QUESTION)}
-        </OtherWrapper>
+          {nameAlias[cat.toLowerCase()].name}
+        </Wrapper>
       )
     }
 
     default:
-      return <OtherWrapper>其它</OtherWrapper>
+      return (
+        <Wrapper state={state} smaller={smaller}>
+          {nameAlias[cat.toLowerCase()].name}
+        </Wrapper>
+      )
   }
 }
 
-export default memo(Label)
+export default observer(Label)

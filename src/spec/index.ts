@@ -104,7 +104,7 @@ export type {
   TBroadcastArticleLayout,
   TBroadcastConfig,
   TEnableConfig,
-  TNameAliasConfig,
+  TNameAlias,
   TDashboardThreadConfig,
   TRSSType,
   TDashboardSEOConfig,

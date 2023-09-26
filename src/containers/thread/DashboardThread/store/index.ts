@@ -33,7 +33,7 @@ import type {
   TSizeSML,
   TColorName,
   TEnableConfig,
-  TNameAliasConfig,
+  TNameAlias,
   TChangeMode,
   TArticleEntries,
   TSocialItem,
@@ -82,7 +82,6 @@ import type {
   TAdminSettings,
   TTouched,
   TSettingField,
-  TNameAlias,
   TWidgetsSettings,
   TBroadcastSettings,
   TWidgetType,
@@ -415,7 +414,7 @@ const DashboardThread = T.model('DashboardThread', {
       )
 
       const mappedThreads = curCommunity.threads.map((pThread) => {
-        const aliasItem = find(propEq('slug', pThread.slug))(nameAlias) as TNameAliasConfig
+        const aliasItem = find(propEq('slug', pThread.slug))(nameAlias) as TNameAlias
 
         return {
           ...pThread,
