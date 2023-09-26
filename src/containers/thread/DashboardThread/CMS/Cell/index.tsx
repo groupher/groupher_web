@@ -55,7 +55,7 @@ export const StateCell = ({ rowData, ...props }) => {
   return (
     <Cell {...props}>
       <StateWrapper>
-        <ArticleCatState cat={cat} state={state} left={-8} smaller noBg />
+        <ArticleCatState cat={cat} state={state} left={-8} smaller />
       </StateWrapper>
     </Cell>
   )

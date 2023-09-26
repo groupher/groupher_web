@@ -1,54 +1,55 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
 import { ARTICLE_STATE } from '@/constant/gtd'
+import { COLOR_NAME } from '@/constant/colors'
+import useKanbanBgColors from '@/hooks/useKanbanBgColors'
 
 import type { TProps as TArticleStateBadgeProps } from '.'
 
-import {
-  Wrapper,
-  NoBgWrapper,
-  WipIcon,
-  TODOIcon,
-  DoneIcon,
-  ResolveIcon,
-  RejectIcon,
-  //
-  NoBgIcon,
-} from './styles/state'
+import { Wrapper, WipIcon, TODOIcon, DoneIcon, ResolveIcon, RejectIcon } from './styles/state'
 
-type TProps = Pick<TArticleStateBadgeProps, 'state' | 'cat' | 'smaller' | 'noBg'>
+type TProps = Pick<TArticleStateBadgeProps, 'state' | 'smaller'>
 
-const State: FC<TProps> = ({ state, cat, smaller, noBg }) => {
+const State: FC<TProps> = ({ state, smaller }) => {
+  const [todoColor, wipColor, doneColor] = useKanbanBgColors()
+
   switch (state) {
     case ARTICLE_STATE.DONE: {
       return (
-        <Wrapper cat={cat} smaller={smaller} noBg={noBg}>
-          <DoneIcon cat={cat} smaller={smaller} />
+        <Wrapper smaller={smaller} color={doneColor}>
+          <DoneIcon
+            smaller={smaller}
+            color={doneColor === COLOR_NAME.BLACK ? COLOR_NAME.GREEN : doneColor}
+          />
         </Wrapper>
       )
     }
 
     case ARTICLE_STATE.WIP: {
       return (
-        <Wrapper cat={cat} smaller={smaller} noBg={noBg}>
-          <WipIcon cat={cat} smaller={smaller} />
+        <Wrapper smaller={smaller} color={wipColor}>
+          <WipIcon smaller={smaller} color={wipColor} />
         </Wrapper>
       )
     }
 
     case ARTICLE_STATE.TODO: {
       return (
-        <Wrapper cat={cat} smaller={smaller} noBg={noBg}>
-          <TODOIcon cat={cat} smaller={smaller} />
+        <Wrapper smaller={smaller} color={todoColor}>
+          <TODOIcon smaller={smaller} color={todoColor} />
         </Wrapper>
       )
     }
 
     case ARTICLE_STATE.RESOLVED: {
       return (
-        <NoBgWrapper>
-          <ResolveIcon smaller={smaller} />
-        </NoBgWrapper>
+        <Wrapper smaller={smaller} color={COLOR_NAME.GREEN}>
+          <ResolveIcon
+            smaller={smaller}
+            color={doneColor === COLOR_NAME.BLACK ? COLOR_NAME.GREEN : doneColor}
+          />
+        </Wrapper>
       )
     }
 
@@ -56,24 +57,13 @@ const State: FC<TProps> = ({ state, cat, smaller, noBg }) => {
     case ARTICLE_STATE.REJECT_NO_PLAN:
     case ARTICLE_STATE.REJECT_NO_FIX:
     case ARTICLE_STATE.REJECT_DUP: {
-      return (
-        <NoBgWrapper>
-          <RejectIcon smaller={smaller} />
-        </NoBgWrapper>
-      )
+      return <RejectIcon smaller={smaller} />
     }
 
     default: {
-      const Icon = NoBgIcon[cat]
-      if (!Icon) return null
-
-      return (
-        <NoBgWrapper>
-          <Icon />
-        </NoBgWrapper>
-      )
+      return null
     }
   }
 }
 
-export default memo(State)
+export default observer(State)

@@ -61,7 +61,7 @@ const KanbanItem: FC<TProps> = ({ testid = 'gtd-item', article }) => {
             <CommentsCount count={article.commentsCount} size="medium" />
           )}
         </Row>
-        <ArticleCatState cat={article.cat} noBg />
+        <ArticleCatState cat={article.cat} />
       </Footer>
     </Wrapper>
   )

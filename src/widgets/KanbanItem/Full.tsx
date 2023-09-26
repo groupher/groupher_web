@@ -53,7 +53,7 @@ const KanbanItem: FC<TProps> = ({ testid = 'gtd-item', article }) => {
             type={UPVOTE_LAYOUT.GENERAL}
           />
         </UpvotesWrapper>
-        <ArticleCatState cat={article.cat} noBg top={1} />
+        <ArticleCatState cat={article.cat} top={1} />
       </Footer>
     </Wrapper>
   )

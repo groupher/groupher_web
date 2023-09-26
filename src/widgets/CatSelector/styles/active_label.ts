@@ -4,9 +4,9 @@ import type { TPrimaryColor } from '@/spec'
 
 import css, { primaryTheme } from '@/css'
 
-import LightSVG from '@/icons/Light'
+import LightSVG from '@/icons/ColorLight'
 import QuestionSVG from '@/icons/Question'
-import BugSVG from '@/icons/Bug'
+import BugSVG from '@/icons/ColorBug'
 import OtherSVG from '@/icons/menu/Feedback'
 
 export const Wrapper = styled.div<TPrimaryColor>`
@@ -40,7 +40,7 @@ export const OtherIcon = styled(OtherSVG)<TPrimaryColor>`
   ${iconBase};
   fill: ${({ primaryColor }) => primaryTheme(primaryColor, 'article.digest')};
 `
-export const Icon = {
+export const ICON = {
   FEATURE: LightIcon,
   BUG: BugIcon,
   QUESTION: QuestionIcon,

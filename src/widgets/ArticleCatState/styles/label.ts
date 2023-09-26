@@ -1,31 +1,35 @@
 import styled from 'styled-components'
 
 import type { TArticleState } from '@/spec'
-import { isNoBgCase, getPadding, getFeatureColor, getBugColor } from './metric'
 
-import { theme } from '@/css'
+import css, { theme } from '@/css'
+
+import LightSVG from '@/icons/ColorLight'
+import QuestionSVG from '@/icons/Question'
+import BugSVG from '@/icons/ColorBug'
+import RejectSVG from '@/icons/Reject'
+import OtherSVG from '@/icons/menu/Feedback'
 
 type TWrapper = {
-  noBg: boolean
   state: TArticleState
   smaller: boolean
 }
 
 export const Wrapper = styled.div<TWrapper>`
-  color: ${({ state }) => getFeatureColor(state)};
-  background-color: ${({ noBg, state }) =>
-    isNoBgCase(noBg, state) ? 'transparent' : theme('gtdBadge.featBg')};
-  padding: ${({ noBg, state, smaller }) => getPadding(noBg, state, smaller)}|;
+  color: ${theme('article.digest')};
+  ${css.row('align-center')};
+  padding: 0 5px;
   line-height: 20px;
-  font-weight: ${({ noBg, state }) => (isNoBgCase(noBg, state) ? 400 : 600)};
-  border-radius: ${({ noBg, state }) => (isNoBgCase(noBg, state) ? 0 : '6px')};
+  font-weight: 500;
   font-size: 12px;
 `
+export const IconWrapper = styled.div`
+  ${css.size(16)};
+  margin-right: 3px;
+  ${css.row('align-both')};
+`
 export const BugWrapper = styled(Wrapper)<TWrapper>`
-  color: ${({ state }) => getBugColor(state)};
-  background-color: ${({ noBg, state }) =>
-    isNoBgCase(noBg, state) ? 'transparent' : theme('gtdBadge.bugBg')};
-  /* font-size: 12px; */
+  color: ${theme('article.digest')};
 `
 export const QuestionWrapper = styled.div<{ smaller: boolean }>`
   color: ${theme('baseColor.green')};
@@ -43,3 +47,20 @@ export const OtherWrapper = styled.div`
   color: ${theme('article.info')};
   font-size: 12px;
 `
+
+const commonIcon = (comp) => {
+  return styled(comp)`
+    ${css.size(13)};
+    fill: ${theme('article.digest')};
+  `
+}
+
+export const ICON = {
+  REJECT: commonIcon(RejectSVG),
+  FEATURE: commonIcon(LightSVG),
+  BUG: styled(commonIcon(BugSVG))`
+    ${css.size(14)};
+  `,
+  QUESTION: commonIcon(QuestionSVG),
+  OTHER: commonIcon(OtherSVG),
+}
