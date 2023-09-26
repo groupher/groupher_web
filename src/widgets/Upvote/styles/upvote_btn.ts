@@ -35,7 +35,7 @@ const bottomBubbles = keyframes`
 
 `
 type TWrapper = {
-  showAnimation: boolean
+  $showAnimation: boolean
   type: TUpvoteLayout
 }
 
@@ -71,7 +71,7 @@ export const Wrapper = styled.div<TWrapper>`
     background-repeat: no-repeat;
     /** base end */
 
-    display: ${({ showAnimation }) => (showAnimation ? 'block' : 'none')};
+    display: ${({ $showAnimation }) => ($showAnimation ? 'block' : 'none')};
 
     top: -75%;
     background-image: radial-gradient(circle, ${theme('button.primary')} 20%, transparent 20%),
@@ -99,7 +99,7 @@ export const Wrapper = styled.div<TWrapper>`
     background-repeat: no-repeat;
     /** base end */
 
-    display: ${({ showAnimation }) => (showAnimation ? 'block' : 'none')};
+    display: ${({ $showAnimation }) => ($showAnimation ? 'block' : 'none')};
     bottom: -60%;
     background-image: radial-gradient(circle, ${theme('button.primary')} 20%, transparent 20%),
       radial-gradient(circle, ${theme('button.primary')} 20%, transparent 20%),

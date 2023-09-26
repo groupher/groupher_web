@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TActive, TSpace } from '@/spec'
 import css, { theme } from '@/css'
 
-type TWrapper = { menuOpen?: boolean } & TSpace
+type TWrapper = { $menuOpen?: boolean } & TSpace
 export const FilterWrapper = styled.div<TWrapper>`
   ${css.row('align-center')};
   color: ${theme('article.digest')};
@@ -13,8 +13,8 @@ export const FilterWrapper = styled.div<TWrapper>`
 `
 export const FullWrapper = styled(FilterWrapper)`
   border: 1px solid;
-  border-color: ${({ menuOpen }) =>
-    menuOpen ? theme('article.digest') : theme('button.ghostBorder')};
+  border-color: ${({ $menuOpen }) =>
+    $menuOpen ? theme('article.digest') : theme('button.ghostBorder')};
 
   padding: 0 5px;
   padding-left: 15px;

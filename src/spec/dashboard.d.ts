@@ -44,7 +44,7 @@ export type TEnableConfig = {
   aboutMediaReport: boolean
 }
 
-export type TNameAliasConfig = {
+export type TNameAlias = {
   slug: string
   name: string
   original?: string
@@ -53,7 +53,7 @@ export type TNameAliasConfig = {
 
 export type TDashboardThreadConfig = {
   enable: TEnableConfig
-  nameAlias: TNameAliasConfig[]
+  nameAlias: TNameAlias[]
 }
 
 export type TDashboardSEOConfig = {

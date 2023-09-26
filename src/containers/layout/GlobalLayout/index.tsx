@@ -88,7 +88,7 @@ const GlobalLayoutContainer: FC<TProps> = ({ globalLayout: store, children }) =>
         {load && <Addon />}
         <Skeleton>
           <Wallpaper />
-          <ScrollWrapper noMobilePadding={metric === METRIC.HOME}>
+          <ScrollWrapper $noMobilePadding={metric === METRIC.HOME}>
             <Wrapper>
               <SEO />
               {/* TODO: extract */}

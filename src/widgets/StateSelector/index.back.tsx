@@ -38,7 +38,7 @@ const StateSelector: FC<TProps> = ({
   const offset = mode === ARTICLE_STATE_MODE.FILTER ? [20, 5] : [-42, 5]
 
   return (
-    <Wrapper menuOpen={menuOpen} {...restProps}>
+    <Wrapper $menuOpen={menuOpen} {...restProps}>
       {mode === ARTICLE_STATE_MODE.FULL && <Label>状态</Label>}
       <Tooltip
         placement={tooltipPlacement}

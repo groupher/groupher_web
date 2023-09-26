@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 import { find, propEq, reject } from 'ramda'
 
-import type { TCommunityThread, TLinkItem, TNameAliasConfig } from '@/spec'
+import type { TCommunityThread, TLinkItem, TNameAlias } from '@/spec'
 import { THREAD } from '@/constant/thread'
 
 import { toJS } from '@/mobx'
@@ -25,7 +25,7 @@ const usePublicThreads = (): TCommunityThread[] => {
 
   const enabledThreads = sortByIndex(threads.filter((thread) => enable[thread.slug]))
   const mappedThreads = enabledThreads.map((pThread) => {
-    const aliasItem = find(propEq('slug', pThread.slug))(nameAlias) as TNameAliasConfig
+    const aliasItem = find(propEq('slug', pThread.slug))(nameAlias) as TNameAlias
 
     return {
       ...pThread,

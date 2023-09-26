@@ -7,7 +7,15 @@ import { SpaceGrow } from '@/widgets/Common'
 import YesOrNoButtons from '@/widgets/Buttons/YesOrNoButtons'
 
 import type { TSettingField } from './spec.d'
-import { Wrapper, HintWrapper, InfoIcon, HintText, Hint, ActionWrapper } from './styles/saving_bar'
+import {
+  NormalWrapper,
+  MinimalWrapper,
+  HintWrapper,
+  InfoIcon,
+  HintText,
+  Hint,
+  ActionWrapper,
+} from './styles/saving_bar'
 
 import { rollbackEdit, onSave } from './logic'
 
@@ -39,13 +47,16 @@ const SavingBar: FC<TProps> = ({
   onConfirm = log,
   ...restProps
 }) => {
+  // cannot pass minimal to Wrapper, cuz the wired issue on styled-components@6
+  const Wrapper = !minimal ? NormalWrapper : MinimalWrapper
+
   if (children !== null) {
     if (isTouched) {
       return (
-        <Wrapper direction="left" minimal={minimal} {...restProps}>
+        <Wrapper direction="left" {...restProps}>
           <Fragment>{children}</Fragment>
           <SpaceGrow />
-          <ActionWrapper minimal={minimal}>
+          <ActionWrapper $minimal={minimal}>
             <YesOrNoButtons
               cancelText="取消"
               confirmText="确定"
@@ -75,16 +86,16 @@ const SavingBar: FC<TProps> = ({
   if (!isTouched) return null
 
   return (
-    <Wrapper key={field} direction="right" minimal={minimal} {...restProps}>
+    <Wrapper direction="right" {...restProps}>
       <HintWrapper>
-        <InfoIcon minimal={minimal} />
-        <HintText minimal={minimal}>
+        <InfoIcon $minimal={minimal} />
+        <HintText $minimal={minimal}>
           {prefix}
           {hint && <Hint>{hint}</Hint>} ?
         </HintText>
       </HintWrapper>
       <SpaceGrow />
-      <ActionWrapper minimal={minimal}>
+      <ActionWrapper $minimal={minimal}>
         <YesOrNoButtons
           cancelText="取消"
           disabled={disabled}

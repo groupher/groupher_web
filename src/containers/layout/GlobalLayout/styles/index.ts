@@ -19,7 +19,7 @@ export const Wrapper = styled.div`
   ${css.row('justify-center')};
 `
 
-export const ScrollWrapper = styled.div<{ noMobilePadding: boolean }>`
+export const ScrollWrapper = styled.div<{ $noMobilePadding: boolean }>`
   position: absolute;
   width: 100%;
 
@@ -28,8 +28,8 @@ export const ScrollWrapper = styled.div<{ noMobilePadding: boolean }>`
     margin-left: 8px;
   `};
 
-  ${({ noMobilePadding }) =>
-    noMobilePadding ? 'width: 100% !important; margin-left: 0 !important;' : ''};
+  ${({ $noMobilePadding }) =>
+    $noMobilePadding ? 'width: 100% !important; margin-left: 0 !important;' : ''};
 `
 
 type TInner = { metric: TMetric; hasTopbar: boolean; topbarBg: TColorName; hasShadow: boolean }

@@ -4,15 +4,18 @@ import { observer } from 'mobx-react'
 import { ARTICLE_STATE } from '@/constant/gtd'
 import { COLOR_NAME } from '@/constant/colors'
 import useKanbanBgColors from '@/hooks/useKanbanBgColors'
+import useNameAlias from '@/hooks/useNameAlias'
 
 import type { TProps as TArticleStateBadgeProps } from '.'
 
-import { Wrapper, WipIcon, TODOIcon, DoneIcon, ResolveIcon, RejectIcon } from './styles/state'
+import { Wrapper, WipIcon, Text, TODOIcon, DoneIcon, ResolveIcon, RejectIcon } from './styles/state'
 
 type TProps = Pick<TArticleStateBadgeProps, 'state' | 'smaller'>
 
 const State: FC<TProps> = ({ state, smaller }) => {
   const [todoColor, wipColor, doneColor] = useKanbanBgColors()
+
+  const kanbanAlias = useNameAlias('kanban')
 
   switch (state) {
     case ARTICLE_STATE.DONE: {
@@ -22,6 +25,7 @@ const State: FC<TProps> = ({ state, smaller }) => {
             smaller={smaller}
             color={doneColor === COLOR_NAME.BLACK ? COLOR_NAME.GREEN : doneColor}
           />
+          {!smaller && <Text>{kanbanAlias[ARTICLE_STATE.DONE.toLowerCase()].name}</Text>}
         </Wrapper>
       )
     }
@@ -30,6 +34,7 @@ const State: FC<TProps> = ({ state, smaller }) => {
       return (
         <Wrapper smaller={smaller} color={wipColor}>
           <WipIcon smaller={smaller} color={wipColor} />
+          {!smaller && <Text>{kanbanAlias[ARTICLE_STATE.WIP.toLowerCase()].name}</Text>}
         </Wrapper>
       )
     }
@@ -38,6 +43,7 @@ const State: FC<TProps> = ({ state, smaller }) => {
       return (
         <Wrapper smaller={smaller} color={todoColor}>
           <TODOIcon smaller={smaller} color={todoColor} />
+          {!smaller && <Text>{kanbanAlias[ARTICLE_STATE.TODO.toLowerCase()].name}</Text>}
         </Wrapper>
       )
     }
@@ -49,6 +55,7 @@ const State: FC<TProps> = ({ state, smaller }) => {
             smaller={smaller}
             color={doneColor === COLOR_NAME.BLACK ? COLOR_NAME.GREEN : doneColor}
           />
+          {!smaller && <Text>已解决</Text>}
         </Wrapper>
       )
     }
