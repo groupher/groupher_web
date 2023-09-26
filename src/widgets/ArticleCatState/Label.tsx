@@ -7,14 +7,24 @@ import { isRejectedState } from '@/helper'
 
 import type { TProps as TArticleStateBadgeProps } from '.'
 
-import { Wrapper, BugWrapper, QuestionWrapper, OtherWrapper } from './styles/label'
+import {
+  Wrapper,
+  IconWrapper,
+  ICON,
+  BugWrapper,
+  QuestionWrapper,
+  OtherWrapper,
+} from './styles/label'
 
-type TProps = Pick<TArticleStateBadgeProps, 'cat' | 'noBg' | 'smaller' | 'state'>
+type TProps = Pick<TArticleStateBadgeProps, 'cat' | 'smaller' | 'state'>
 
-const Label: FC<TProps> = ({ cat, state, noBg, smaller }) => {
+const Label: FC<TProps> = ({ cat, state, smaller }) => {
   if (isRejectedState(state)) {
     return (
-      <Wrapper state={state} smaller={smaller} noBg>
+      <Wrapper state={state} smaller={smaller}>
+        <IconWrapper>
+          <ICON.REJECT />
+        </IconWrapper>
         {Trans(state)}
       </Wrapper>
     )
@@ -23,7 +33,10 @@ const Label: FC<TProps> = ({ cat, state, noBg, smaller }) => {
   switch (cat) {
     case ARTICLE_CAT.FEATURE: {
       return (
-        <Wrapper noBg={noBg} state={state} smaller={smaller}>
+        <Wrapper state={state} smaller={smaller}>
+          <IconWrapper>
+            <ICON.FEATURE />
+          </IconWrapper>
           {Trans(ARTICLE_CAT.FEATURE)}
         </Wrapper>
       )
@@ -31,7 +44,10 @@ const Label: FC<TProps> = ({ cat, state, noBg, smaller }) => {
 
     case ARTICLE_CAT.BUG: {
       return (
-        <BugWrapper noBg={noBg} state={state} smaller={smaller}>
+        <BugWrapper state={state} smaller={smaller}>
+          <IconWrapper>
+            <ICON.BUG />
+          </IconWrapper>
           {Trans(ARTICLE_CAT.BUG)}
         </BugWrapper>
       )
@@ -42,7 +58,14 @@ const Label: FC<TProps> = ({ cat, state, noBg, smaller }) => {
         return <QuestionWrapper smaller={smaller}>{Trans(ARTICLE_STATE.RESOLVED)}</QuestionWrapper>
       }
 
-      return <OtherWrapper>{Trans(ARTICLE_CAT.QUESTION)}</OtherWrapper>
+      return (
+        <OtherWrapper>
+          <IconWrapper>
+            <ICON.BUG />
+          </IconWrapper>
+          {Trans(ARTICLE_CAT.QUESTION)}
+        </OtherWrapper>
+      )
     }
 
     default:

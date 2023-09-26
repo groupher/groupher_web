@@ -5,14 +5,14 @@ import type { TArticleCat } from '@/spec'
 import { Trans } from '@/i18n'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 
-import { Wrapper, Icon, Title } from './styles/active_label'
+import { Wrapper, ICON, Title } from './styles/active_label'
 
 type TProps = {
   cat: TArticleCat
 }
 
 const ActiveLabel: FC<TProps> = ({ cat }) => {
-  const ActiveIcon = Icon[cat]
+  const ActiveIcon = ICON[cat]
   const primaryColor = usePrimaryColor()
 
   return (

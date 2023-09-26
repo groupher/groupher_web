@@ -5,6 +5,7 @@ import type { TActive, TMenu } from '@/spec'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import { Wrapper, ICONS } from './styles/icon'
+import MENU from '@/constant/menu'
 
 type TProps = {
   type: TMenu
@@ -16,7 +17,7 @@ const Icon: FC<TProps> = ({ type, $active }) => {
   const primaryColor = usePrimaryColor()
 
   return (
-    <Wrapper $active={$active}>
+    <Wrapper $active={$active} noSaturate={type === MENU.FEATURE || type === MENU.BUG}>
       <IconComp primaryColor={primaryColor} $active={$active} />
     </Wrapper>
   )

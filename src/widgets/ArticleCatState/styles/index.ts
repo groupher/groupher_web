@@ -9,6 +9,9 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 }))<TWrapper>`
   ${css.row('align-center')};
   color: ${theme('article.digest')};
+  border: 1px solid;
+  border-color: ${theme('divider')};
+  border-radius: 6px;
 
   margin-left: ${({ left }) => `${left}px` || 0};
   margin-right: ${({ right }) => `${right}px` || 0};

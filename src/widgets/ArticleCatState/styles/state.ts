@@ -1,87 +1,43 @@
 import styled from 'styled-components'
 
-import type { TArticleCat } from '@/spec'
-import { ARTICLE_CAT } from '@/constant/gtd'
+import type { TColorName } from '@/spec'
 
-import css, { theme } from '@/css'
+import css, { primaryLightTheme, primaryTheme, theme } from '@/css'
 
-import GtdWipSVG from '@/icons/GtdWip'
-import GtdDoneSVG from '@/icons/GtdDone'
 import GtdTodoSVG from '@/icons/GtdTodo'
+import GtdWipSVG from '@/icons/GtdWip'
+// import GtdDoneSVG from '@/icons/GtdDone'
+import GtdDoneSVG from '@/icons/CheckBold'
 import ResolveSVG from '@/icons/Hook'
 import RejectSVG from '@/icons/Reject'
 
-import LightSVG from '@/icons/Light'
-import BugSVG from '@/icons/Bug'
-import QuestionSVG from '@/icons/Question'
-
-type TType = { cat: TArticleCat; noBg?: boolean; smaller: boolean }
+type TType = { smaller: boolean; color: TColorName }
 
 export const Wrapper = styled.div<TType>`
-  ${({ smaller }) => (smaller ? css.size(20) : css.size(26))};
-
+  ${({ smaller }) => (smaller ? css.size(16) : css.size(26))};
   ${css.row('align-both')};
-  background: ${({ cat, noBg }) => {
-    if (noBg) return 'transparent'
-
-    return cat === ARTICLE_CAT.BUG ? theme('gtdBadge.bugBg') : theme('gtdBadge.featBg')
-  }};
-
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
-  margin-right: ${({ smaller, noBg }) => {
-    if (noBg) return '-2px'
-
-    return smaller ? '-6px' : '-8px'
-  }};
-`
-export const NoBgWrapper = styled.div`
+  background: ${({ color }) => primaryLightTheme(color)};
+  border-radius: 3px;
   margin-right: 2px;
-  ${css.row('align-both')};
 `
 export const WipIcon = styled(GtdWipSVG)<TType>`
   ${({ smaller }) => (smaller ? css.size(13) : css.size(15))};
-  fill: ${({ cat }) => (cat === ARTICLE_CAT.BUG ? theme('gtdBadge.bug') : theme('gtdBadge.feat'))};
+  fill: ${({ color }) => primaryTheme(color, 'article.digest')};
   z-index: 2;
 `
 export const DoneIcon = styled(GtdDoneSVG)<TType>`
-  ${({ smaller }) => (smaller ? css.size(8) : css.size(10))};
-  fill: ${({ cat }) => (cat === ARTICLE_CAT.BUG ? theme('gtdBadge.bug') : theme('gtdBadge.feat'))};
-  margin-top: -1px;
+  ${({ smaller }) => (smaller ? css.size(10) : css.size(12))};
+  fill: ${({ color }) => primaryTheme(color, 'article.digest')};
 `
 export const TODOIcon = styled(GtdTodoSVG)<TType>`
   ${({ smaller }) => (smaller ? css.size(10) : css.size(12))};
-  fill: ${({ cat }) => (cat === ARTICLE_CAT.BUG ? theme('gtdBadge.bug') : theme('gtdBadge.feat'))};
+  fill: ${({ color }) => primaryTheme(color, 'article.digest')};
 `
 export const ResolveIcon = styled(ResolveSVG)<{ smaller: boolean }>`
   ${({ smaller }) => (smaller ? css.size(11) : css.size(17))};
-  margin-right: 2px;
   fill: ${theme('baseColor.green')};
 `
 export const RejectIcon = styled(RejectSVG)<{ smaller: boolean }>`
   ${({ smaller }) => (smaller ? css.size(12) : css.size(14))};
-  fill: ${theme('gtdBadge.bug')};
-  margin-right: 3px;
-  margin-top: -1px;
+  fill: ${theme('baseColor.red')};
 `
-const LightIcon = styled(LightSVG)`
-  ${css.size(12)};
-  fill: ${theme('article.info')};
-  margin-top: 1px;
-`
-const BugIcon = styled(BugSVG)`
-  ${css.size(12)};
-  fill: ${theme('article.info')};
-  margin-right: 2px;
-`
-const QuestionIcon = styled(QuestionSVG)`
-  ${css.size(9)};
-  fill: ${theme('article.info')};
-  margin-right: 2px;
-`
-
-export const NoBgIcon = {
-  [ARTICLE_CAT.FEATURE]: LightIcon,
-  [ARTICLE_CAT.BUG]: BugIcon,
-  [ARTICLE_CAT.QUESTION]: QuestionIcon,
-}

@@ -61,13 +61,6 @@ const github = {
   lightText: '#999999',
   hint,
 
-  gtdBadge: {
-    feat: '#3871e0',
-    featBg: '#e9f0ff',
-    bug: '#eb6a6a',
-    bugBg: '#ffefef',
-  },
-
   baseColor: {
     red: '#ca5f4d',
     redBg: '#ffbfba3d',
