@@ -11,12 +11,12 @@ import { BANNER_LAYOUT } from '@/constant/layout'
 
 import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
+import usePostLayout from '@/hooks/usePostLayout'
 
+import ThreadSidebar from '@/containers/thread/ThreadSidebar'
 import PagedArticles from '@/widgets/PagedArticles'
 import TagNote from '@/widgets/TagNote'
-
 import ViewportTracker from '@/widgets/ViewportTracker'
-import ThreadSidebar from '@/containers/thread/ThreadSidebar'
 import ArticlesFilter from '@/widgets/ArticlesFilter'
 
 import type { TStore } from './store'
@@ -44,6 +44,7 @@ const isInViewport = (element) => {
 const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
   useInit(store)
 
+  const postLayout = usePostLayout()
   const trackerRef = useRef(null)
 
   useEffect(() => {
@@ -70,7 +71,7 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
 
   return (
     <Wrapper>
-      <LayoutWrapper thread={curThread}>
+      <LayoutWrapper thread={curThread} postLayout={postLayout}>
         <ViewportTracker onEnter={inAnchor} onLeave={outAnchor} />
 
         {showFilters && (

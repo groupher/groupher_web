@@ -1,8 +1,9 @@
 import styled from 'styled-components'
-
 import { values, includes } from 'ramda'
-import type { TThread } from '@/spec'
+
+import type { TPostLayout, TThread } from '@/spec'
 import { CARD_THREAD } from '@/constant/thread'
+import { POST_LAYOUT } from '@/constant/layout'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
@@ -12,12 +13,13 @@ export const Wrapper = styled.div`
 
 type TMainWrapper = {
   thread?: TThread
+  postLayout?: TPostLayout
 }
 
 export const SidebarWrapper = styled.div<TMainWrapper>`
   flex-grow: 1;
   width: 100%;
-  padding: 0 20%;
+  padding: ${({ postLayout }) => (postLayout === POST_LAYOUT.MASONRY ? '0 12%;' : '0 20%;')};
 `
 export const MainWrapper = styled.div<TMainWrapper>`
   flex-grow: 1;
