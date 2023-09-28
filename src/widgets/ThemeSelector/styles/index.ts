@@ -4,13 +4,15 @@ import type { TActive, TThemeName } from '@/spec'
 import { theme, themeCoverMap, themeCoverIndexMap } from '@/utils/themes'
 import css from '@/css'
 
+import THEME from '@/constant/theme'
+
 type TDot = TActive & { name: TThemeName }
 export const Dot = styled.div<TDot>`
   ${css.circle(25)};
 
   margin-right: 10px;
   background: ${({ name }) => themeCoverMap[name]};
-  border: ${({ name }) => (name === 'github' ? '1px solid lightgrey' : '')};
+  border: ${({ name }) => (name === THEME.DAY ? '1px solid lightgrey' : '')};
   position: relative;
   cursor: pointer;
   color: ${({ active, name }) => (active ? theme('bodyBg') : themeCoverMap[name])};

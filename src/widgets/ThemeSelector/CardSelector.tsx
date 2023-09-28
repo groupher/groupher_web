@@ -1,6 +1,7 @@
 import { FC, memo } from 'react'
 import { keys } from 'ramda'
 
+import type { TThemeName } from '@/spec'
 import { ICON_CMD } from '@/config'
 import { themeMeta } from '@/utils/themes'
 
@@ -17,7 +18,7 @@ import {
 } from './styles/card_selector'
 
 type TProps = {
-  curTheme?: string
+  curTheme?: TThemeName
   changeTheme?: (theme: string) => void
 }
 
@@ -25,21 +26,12 @@ const CardSelector: FC<TProps> = ({ curTheme, changeTheme }) => (
   <Wrapper>
     {keys(themeMeta).map((name) => (
       <IntroBox key={name} active={curTheme === name}>
-        <ThemeDot
-          active={curTheme === name}
-          name={name}
-          onClick={() => changeTheme(name)}
-        />
+        <ThemeDot active={curTheme === name} name={name} onClick={() => changeTheme(name)} />
         <IntroDesc>
-          <ThemeTitle
-            active={curTheme === name}
-            onClick={() => changeTheme(name)}
-          >
+          <ThemeTitle active={curTheme === name} onClick={() => changeTheme(name)}>
             {name}
           </ThemeTitle>
-          <ThemeDesc onClick={() => changeTheme(name)}>
-            {themeMeta[name].desc}
-          </ThemeDesc>
+          <ThemeDesc onClick={() => changeTheme(name)}>{themeMeta[name].desc}</ThemeDesc>
           <AuthorInfo>
             <AuthorIcon src={`${ICON_CMD}/author.svg`} />
             <AuthorName

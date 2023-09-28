@@ -6,6 +6,7 @@
 
 import { FC, memo } from 'react'
 
+import type { TThemeName } from '@/spec'
 import { buildLog } from '@/logger'
 
 import DotSelector from './DotSelector'
@@ -24,13 +25,13 @@ type TProps = {
 const ThemeSelector: FC<TProps> = ({ displayStyle, curTheme, changeTheme }) => {
   switch (displayStyle) {
     case 'card': {
-      return <CardSelector curTheme={curTheme} changeTheme={changeTheme} />
+      return <CardSelector curTheme={curTheme as TThemeName} changeTheme={changeTheme} />
     }
     case 'gallery': {
-      return <GallerySelector curTheme={curTheme} changeTheme={changeTheme} />
+      return <GallerySelector curTheme={curTheme as TThemeName} changeTheme={changeTheme} />
     }
     default: {
-      return <DotSelector curTheme={curTheme} changeTheme={changeTheme} />
+      return <DotSelector curTheme={curTheme as TThemeName} changeTheme={changeTheme} />
     }
   }
 }

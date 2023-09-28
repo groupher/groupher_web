@@ -29,6 +29,7 @@ export const DesktopHoverable = styled.div`
     border-radius: 10px;
     z-index: -1;
     opacity: 0;
+    transition: all 0.2s;
   }
 
   ${css.media.mobile`

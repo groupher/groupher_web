@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable, TMetric } from '@/spec'
-import css from '@/css'
+import css, { theme } from '@/css'
 
 type TWrapper = TTestable & { metric?: TMetric }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
@@ -13,7 +13,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   margin-top: 80px;
   padding-top: 50px;
   padding-bottom: 30px;
-  box-shadow: rgb(241 241 241) 0px 0px 50px 0px inset;
+  box-shadow: ${theme('footer.shadow')};
 
   ${css.media.mobile`
     margin-top: 40px;

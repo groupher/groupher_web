@@ -13,20 +13,15 @@
 
 import type { TFlattenObjectKeys } from '@/spec'
 
-// import cyan from './cyan'
-// import solarizedDark from './solarized_dark'
-import github from './github'
-// import purple from './purple'
-// import monokai from './monokai'
-// import yellow from './yellow'
-// import green from './green'
-// import ironGreen from './iron_green'
+import day from './day'
+import night from './night'
 
 const skinsData = {
-  github,
+  day,
+  night,
 }
 
 // see https://www.raygesualdo.com/posts/flattening-object-keys-with-typescript-types
-export type TFlatThemeKey = TFlattenObjectKeys<typeof github>
+export type TFlatThemeKey = TFlattenObjectKeys<typeof day>
 
 export default skinsData

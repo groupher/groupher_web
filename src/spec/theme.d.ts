@@ -1,4 +1,4 @@
-export type TThemeName = 'github'
+export type TThemeName = 'day' | 'night'
 
 // export type TTheme = ((obj: any) => unknown) | string
 export type TTheme = any

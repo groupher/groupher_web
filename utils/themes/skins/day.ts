@@ -1,5 +1,5 @@
 /*
- * a theme inspired by github
+ * light mode
  */
 import { lighten, darken } from '@/utils/color'
 
@@ -19,11 +19,11 @@ const hoverBg = '#efefef9c' // with alpha
 const hint = '#9d9999'
 // const primaryMate = 'orange'
 
-const github = {
+const day = {
   _meta: {
     category: 'light',
   },
-  name: 'github',
+  name: 'day',
   primary: primaryColor,
   logoText: descText,
   cover: 'white',
@@ -147,6 +147,7 @@ const github = {
     hover: '#949CB5',
     title: '#77706B',
     bottomBg: '#252325',
+    shadow: 'rgb(241 241 241) 0px 0px 50px 0px inset',
   },
   drawer: {
     title: threadTitle,
@@ -329,4 +330,4 @@ const github = {
   },
 }
 
-export default github
+export default day
