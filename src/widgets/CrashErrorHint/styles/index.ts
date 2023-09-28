@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import { theme, themeSkins } from '@/utils/themes'
+import { themeSkins } from '@/utils/themes'
 import css from '@/css'
 
 type TThemeName = {
@@ -16,8 +16,6 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   width: 100%;
   color: #6b7f83;
   background: #072d3a;
-
-  /* background: ${theme('thread.bg')}; */
 `
 export const Header = styled.div`
   ${css.row()};

@@ -135,12 +135,6 @@ const github = {
     reactionTitle: '#7f979a',
     reactionHoverBg: '#f3f7f7',
   },
-  thread: {
-    bg: contentBoxBg,
-    articleDivider: '#dce5e6',
-    commentsUserBorder: contentBoxBg,
-    articleSpliter: '#dee8ea',
-  },
   content: {
     bg: contentBoxBg,
     border: '#EEEEEE',
@@ -212,7 +206,6 @@ const github = {
     footer: '#a6bebf',
     footerHover: darken('#a6bebf', 5),
   },
-
   markdown: {
     title: primaryColor,
     fg: markdownFont,
