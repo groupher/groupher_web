@@ -2,10 +2,8 @@ import styled from 'styled-components'
 
 import type { TTestable, TActive, TColorName } from '@/spec'
 
-// import Img from '@/Img'
 import HookSVG from '@/icons/Hook'
 import css, { theme, baseColorTheme, baseColorBgTheme } from '@/css'
-import { camelize } from '@/fmt'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
