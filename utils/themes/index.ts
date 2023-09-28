@@ -58,15 +58,7 @@ export const primaryLightTheme = (primaryColor: TColorName): string => {
     return theme('hoverBg')
   }
 
-  return theme(baseColorBg(primaryColor))
-}
-
-export const baseColor = (color: TColorName | string): TFlatThemeKey => {
-  return `baseColor.${camelize(color)}` as TFlatThemeKey
-}
-
-export const baseColorBg = (color: TColorName): TFlatThemeKey => {
-  return `baseColor.${camelize(color)}Bg` as TFlatThemeKey
+  return `baseColor.${camelize(primaryColor)}Bg` as TFlatThemeKey
 }
 
 export const baseColorTheme = (color: TColorName | string): string => {

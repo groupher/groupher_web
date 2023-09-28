@@ -115,8 +115,6 @@ export {
   themeCoverIndexMap,
   baseColorTheme,
   baseColorBgTheme,
-  baseColor,
-  baseColorBg,
 } from './themes'
 
 // helpers

@@ -79,7 +79,6 @@ export {
   primaryTheme,
   primaryLightTheme,
   primaryLink,
-  baseColor,
   baseColorTheme,
   baseColorBgTheme,
 } from '../themes'
