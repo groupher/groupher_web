@@ -18,7 +18,7 @@ export const Title = styled.div`
   font-size: 14px;
 `
 export const HintTitle = styled(Title)`
-  color: ${theme('article.ditest')};
+  color: ${theme('article.digest')};
   margin-top: 4px;
   font-size: 12px;
   font-style: italic;

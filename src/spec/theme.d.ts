@@ -4,6 +4,7 @@ export type TThemeName = 'github'
 export type TTheme = any
 // export type TTheme = string
 
+// TODO: use keyof typeof
 export type TThemeMap = {
   name?: string
   _meta?: {

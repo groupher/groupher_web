@@ -107,7 +107,17 @@ export {
 /*
  * theme related
  */
-export { theme, themeMeta, themeSkins, themeCoverMap, themeCoverIndexMap } from './themes'
+export {
+  theme,
+  themeMeta,
+  themeSkins,
+  themeCoverMap,
+  themeCoverIndexMap,
+  baseColorTheme,
+  baseColorBgTheme,
+  baseColor,
+  baseColorBg,
+} from './themes'
 
 // helpers
 export { default as css } from './css'

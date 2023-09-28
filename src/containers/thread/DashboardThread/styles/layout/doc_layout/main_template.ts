@@ -2,8 +2,7 @@ import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
 
-import css, { theme } from '@/css'
-import { camelize } from '@/fmt'
+import css, { theme, baseColorTheme, baseColorBgTheme } from '@/css'
 
 import ToolSVG from '@/icons/Heart'
 
@@ -53,13 +52,13 @@ export const IconWrapper = styled.div<{ color: TColorName }>`
   ${css.size(15)};
   ${css.row('align-both')};
   border-radius: 2px;
-  background-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
+  background-color: ${({ color }) => baseColorBgTheme(color)};
   margin-bottom: 8px;
   margin-right: 20px;
 `
 export const ToolIcon = styled(ToolSVG)<{ color: TColorName }>`
   ${css.size(8)};
-  fill: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
+  fill: ${({ color }) => baseColorTheme(color)};
 `
 
 export const ListContent = styled.div`

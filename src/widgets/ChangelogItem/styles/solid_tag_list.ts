@@ -2,8 +2,7 @@ import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
 
-import css, { theme } from '@/css'
-import { camelize } from '@/fmt'
+import css, { theme, baseColorBgTheme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};
@@ -16,7 +15,7 @@ export const Wrapper = styled.div`
 `
 
 export const TagWrapper = styled.div<{ color: TColorName }>`
-  background: ${({ color }) => theme(`baseColor.${color.toLowerCase()}Bg`)};
+  background: ${({ color }) => baseColorBgTheme(color)};
   padding: 2px 10px;
   border-radius: 10px;
 
@@ -26,7 +25,6 @@ export const TagWrapper = styled.div<{ color: TColorName }>`
 `
 
 export const Name = styled.div`
-  /* color: ${({ color }) => theme(`baseColor.${camelize(color)}`)}; */
   color: ${theme('article.digest')};
   font-size: 11px;
   font-weight: 400;

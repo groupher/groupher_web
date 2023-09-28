@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
-import css, { theme } from '@/css'
-import { camelize } from '@/fmt'
+import css, { theme, baseColorBgTheme } from '@/css'
 
 import GtdWipSVG from '@/icons/GtdWip'
 import GtdDoneSVG from '@/icons/GtdDone'
@@ -23,7 +22,7 @@ export const Header = styled.div`
   padding-left: 3px;
 `
 export const Body = styled.div<{ color: TColorName }>`
-  background-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
+  background-color: ${({ color }) => baseColorBgTheme(color)};
   padding: 8px;
   padding-bottom: 0;
   border-radius: 12px;

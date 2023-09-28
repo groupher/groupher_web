@@ -5,9 +5,7 @@ import type { TTestable, TSpace, TColorName } from '@/spec'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import BroadcastSVG from '@/icons/Broadcast'
 
-// import Img from '@/Img'
-import css, { theme } from '@/css'
-import { camelize } from '@/fmt'
+import css, { theme, baseColorTheme, baseColorBgTheme } from '@/css'
 
 type TWrapper = { color: TColorName } & TSpace & TTestable
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
@@ -19,7 +17,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 
   height: 120px;
   /* background: #fafafb; */
-  background-color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}Bg`)};
+  background-color: ${({ color }) => baseColorBgTheme(color)};
   border-radius: 15px;
 
   ${(props) => css.spaceMargins(props)};
@@ -70,7 +68,7 @@ export const Title = styled.span<{ color: TColorName }>`
     position: absolute;
     left: 0;
     bottom: 1px;
-    background-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
+    background-color: ${({ color }) => baseColorBgTheme(color)};
     opacity: 0.25;
   }
 `
@@ -101,6 +99,6 @@ export const NotifyIcon = styled(BroadcastSVG)<{ color: TColorName }>`
   margin-right: 5px;
   transform: rotateZ(20deg) rotateY(180deg);
   mix-blend-mode: color-burn;
-  fill: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
+  fill: ${({ color }) => baseColorTheme(color)};
   opacity: 0.3;
 `

@@ -7,7 +7,13 @@ import type { TRootStore as RootStoreType } from '@/stores/RootStore'
 import type { TArticle } from './article'
 import type { TCommunity } from './community'
 
-export type { TSnakeUpperCase, TNegativeInteger, TNonNegativeInteger, TValueOf } from './enhance'
+export type {
+  TSnakeUpperCase,
+  TNegativeInteger,
+  TNonNegativeInteger,
+  TValueOf,
+  TFlattenObjectKeys,
+} from './enhance'
 
 export type { TMetric } from './metric'
 export type {

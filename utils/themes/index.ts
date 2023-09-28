@@ -18,6 +18,7 @@ import { COLORS, COLOR_NAME } from '@/constant/colors'
 
 import { camelize } from '@/fmt'
 
+import type { TFlatThemeKey } from './skins'
 import skinsData from './skins'
 
 export const themeSkins = { ...skinsData }
@@ -30,15 +31,15 @@ export const themeCoverMap = map(path(['cover']), themeSkins)
 export const themeCoverIndexMap = map(path(['coverIndex']), themeSkins)
 
 // curried shorthand for style-components
-export const theme = (themePath: string): TTheme =>
-  path(['theme', ...split('.', themePath)]) || 'wheat'
+export const theme = (themeKey: TFlatThemeKey): TTheme =>
+  path(['theme', ...split('.', themeKey)]) || 'wheat'
 
 /**
  * for primary color component
  */
 export const primaryTheme = (primaryColor: TColorName, themeKey = 'primary'): string => {
   if (primaryColor === COLOR_NAME.BLACK) {
-    return theme(themeKey)
+    return theme(themeKey as TFlatThemeKey)
   }
 
   return COLORS[primaryColor]
@@ -57,6 +58,23 @@ export const primaryLightTheme = (primaryColor: TColorName): string => {
     return theme('hoverBg')
   }
 
-  return theme(`baseColor.${camelize(primaryColor)}Bg`)
+  return theme(baseColorBg(primaryColor))
 }
+
+export const baseColor = (color: TColorName | string): TFlatThemeKey => {
+  return `baseColor.${camelize(color)}` as TFlatThemeKey
+}
+
+export const baseColorBg = (color: TColorName): TFlatThemeKey => {
+  return `baseColor.${camelize(color)}Bg` as TFlatThemeKey
+}
+
+export const baseColorTheme = (color: TColorName | string): string => {
+  return theme(`baseColor.${camelize(color)}` as TFlatThemeKey)
+}
+
+export const baseColorBgTheme = (color: TColorName | string): string => {
+  return theme(`baseColor.${camelize(color)}Bg` as TFlatThemeKey)
+}
+
 export { default as themeMeta } from './theme_meta'

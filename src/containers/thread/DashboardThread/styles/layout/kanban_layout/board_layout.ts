@@ -2,8 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive, TColorName } from '@/spec'
 
-import css, { theme } from '@/css'
-import { camelize } from '@/fmt'
+import css, { theme, baseColorTheme, baseColorBgTheme } from '@/css'
 
 import DiceSVG from '@/icons/Dice'
 import ResetSVG from '@/icons/Reset'
@@ -45,7 +44,7 @@ export const Board = styled.div<TBoard>`
 
   width: 33.3%;
   height: 280px;
-  background-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
+  background-color: ${({ color }) => baseColorBgTheme(color)};
 
   border-radius: 8px;
   border-bottom-left-radius: 0;
@@ -113,16 +112,16 @@ export const Preset = styled.div<{ setable?: boolean }>`
 
 type TColorBall = { color: TColorName; setable?: boolean }
 export const ColorBall = styled.div<TColorBall>`
-  background-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
+  background-color: ${({ color }) => baseColorBgTheme(color)};
 
   border: 1px dashed;
-  border-color: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
+  border-color: ${({ color }) => baseColorTheme(color)};
   ${css.circle(16)};
   padding: 5px;
 
   &:hover {
     border: ${({ setable }) => (setable ? '1px solid' : '1px dashed')};
-    border-color: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
+    border-color: ${({ color }) => baseColorTheme(color)};
   }
 
   transition: all 0.2s;

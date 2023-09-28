@@ -2,8 +2,7 @@ import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
 
-import css, { theme } from '@/css'
-import { camelize } from '@/fmt'
+import css, { theme, baseColorTheme } from '@/css'
 
 import GithubSVG from '@/icons/social/Github'
 import QuestionSVG from '@/icons/Question'
@@ -31,7 +30,7 @@ export const Cover = styled.div<{ color?: TColorName }>`
   left: 0;
   top: 0;
 
-  background-color: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
+  background-color: ${({ color }) => baseColorTheme(color)};
   border-radius: 5px;
   opacity: 0.6;
 
@@ -68,7 +67,7 @@ export const Title = styled.div<{ color: TColorName }>`
   color: ${theme('article.digest')};
 
   &:hover {
-    color: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
+    color: ${({ color }) => baseColorTheme(color)};
     font-weight: 500;
   }
 

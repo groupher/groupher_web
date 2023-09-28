@@ -4,7 +4,6 @@
 import { lighten, darken } from '@/utils/color'
 
 const primaryColor = '#333333' // '#000000'
-
 const bannerBg = '#fff'
 const contentBg = '#fff'
 const contentBoxBg = '#fff'

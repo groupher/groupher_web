@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 
 import type { TColorName, TTestable } from '@/spec'
-import css, { theme } from '@/css'
-import { camelize } from '@/fmt'
+import css, { theme, baseColorBgTheme } from '@/css'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
@@ -37,7 +36,7 @@ export const IconWrapper = styled.div<{ color: TColorName }>`
   ${css.row('align-both')};
   margin-top: -35px;
   border-radius: 12px;
-  background: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
+  background: ${({ color }) => baseColorBgTheme(color)};
   opacity: 0.8;
 `
 export const Title = styled.div`

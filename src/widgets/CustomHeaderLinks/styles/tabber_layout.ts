@@ -20,7 +20,7 @@ export const GroupItem = styled(LinkItem)<TActive>`
   ${css.row('align-center')};
   position: relative;
   padding-right: 22px;
-  background: ${({ $active }) => ($active ? theme('hoverBg') : theme(''))};
+  background: ${({ $active }) => ($active ? theme('hoverBg') : '')};
 
   &:hover {
     background: ${theme('hoverBg')};

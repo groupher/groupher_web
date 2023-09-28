@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
-import css, { theme } from '@/css'
-import { camelize } from '@/fmt'
+import css, { theme, baseColorBgTheme } from '@/css'
 
 import Img from '@/Img'
 
@@ -29,8 +28,8 @@ export const Avatar = styled(Img)<{ color: TColorName }>`
   border: 2px solid;
   padding: 2px;
   border-color: gold;
-  border-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
-  background-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
+  border-color: ${({ color }) => baseColorBgTheme(color)};
+  background-color: ${({ color }) => baseColorBgTheme(color)};
 `
 
 export const User = styled.div``

@@ -11,6 +11,8 @@
  * Earthsung https://atom.io/themes/earthsung-by-jackson-syntax
  */
 
+import type { TFlattenObjectKeys } from '@/spec'
+
 // import cyan from './cyan'
 // import solarizedDark from './solarized_dark'
 import github from './github'
@@ -21,14 +23,10 @@ import github from './github'
 // import ironGreen from './iron_green'
 
 const skinsData = {
-  // cyan,
-  // solarizedDark,
-  // purple,
-  // yellow,
   github,
-  // monokai,
-  // green,
-  // ironGreen,
 }
+
+// see https://www.raygesualdo.com/posts/flattening-object-keys-with-typescript-types
+export type TFlatThemeKey = TFlattenObjectKeys<typeof github>
 
 export default skinsData
