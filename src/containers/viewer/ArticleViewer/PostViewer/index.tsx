@@ -82,7 +82,7 @@ const PostViewer: FC<TProps> = ({ article, loading }) => {
             type="sticker"
           />
         </UpvoteWrapper>
-        {loading && <ArticleContentLoading num={1} top={15} bottom={30} left={-25} />}
+        {!loading && <ArticleContentLoading num={1} top={15} bottom={30} left={-25} />}
         {!loading && (
           <BodyWrapper>
             <ArticeBody document={article.document} />
