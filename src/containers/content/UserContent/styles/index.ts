@@ -40,7 +40,7 @@ export const ContentWrapper = styled.div<{ hasContentBg: boolean }>`
   padding: 20px;
   padding-top: 15px;
 
-  background: ${({ hasContentBg }) => (hasContentBg ? theme('thread.bg') : 'transparent')};
+  background: ${({ hasContentBg }) => (hasContentBg ? theme('hoverBg') : 'transparent')};
 
   ${css.media.mobile`
     padding: 0;

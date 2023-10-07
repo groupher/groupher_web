@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   width: 100%;
   height: 80px;
   border-bottom: 1px solid;
-  border-bottom-color: ${theme('drawer.divider')};
+  border-bottom-color: ${theme('divider')};
   padding-bottom: 12px;
   margin-top: 8px;
 `

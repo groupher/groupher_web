@@ -15,14 +15,14 @@ export const NormalWrapper = styled.div<TSpace>`
 export const WithBgWrapper = styled(NormalWrapper)`
   border: 1px solid;
   border-color: ${theme('divider')};
+  height: 32px;
   border-radius: 10px;
   padding: 5px 8px;
   width: auto;
   background: ${theme('alphaBg')};
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  box-shadow: ${theme('popover.boxShadow')};
 
   &:hover {
-    background: ${theme('alphaBg2')};
     cursor: pointer;
   }
 `
@@ -33,11 +33,16 @@ export const Avatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
 `
 export const UnloginIcon = styled(AccountSVG)`
   fill: ${theme('article.digest')};
-  ${css.size(15)};
+  ${css.size(13)};
 `
 export const NickName = styled.div`
   color: ${theme('article.digest')};
   font-size: 13px;
   ${css.cutRest('80px')};
   margin-left: 10px;
+`
+
+export const UnLoginText = styled(NickName)`
+  font-size: 12px;
+  margin-top: 1px;
 `

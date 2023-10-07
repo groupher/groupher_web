@@ -19,7 +19,7 @@ export const Avatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
   border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
 `
 export const UserName = styled.div`
-  color: ${theme('thread.articleDIgest')};
+  color: ${theme('article.digest')};
   font-size: 14px;
   margin-left: 12px;
 `

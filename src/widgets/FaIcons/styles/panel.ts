@@ -2,8 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive, TColorName } from '@/spec'
 import { COLORS } from '@/constant/colors'
-import css, { theme } from '@/css'
-import { camelize } from '@/fmt'
+import css, { theme, baseColorTheme, baseColorBgTheme } from '@/css'
 
 import FormInput from '@/widgets/Input'
 
@@ -74,13 +73,12 @@ export const ColorBlock = styled.div<TColorBlock>`
   ${css.size(24)};
   ${css.row('align-both')};
   border-radius: 6px;
-  background: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
+  background: ${({ color }) => baseColorBgTheme(color)};
   border: 1px dotted;
-  border-color: ${({ $active, color }) =>
-    $active ? theme(`baseColor.${camelize(color)}`) : 'transparent'};
+  border-color: ${({ $active, color }) => ($active ? baseColorTheme(color) : 'transparent')};
 
   &:hover {
-    border-color: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
+    border-color: ${({ color }) => baseColorTheme(color)};
     cursor: pointer;
   }
   transition: all 0.25s;

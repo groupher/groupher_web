@@ -52,3 +52,5 @@ export {
 
 export { PUBLISH_MODE } from './publish'
 export { COLORS, COLOR_NAME } from './colors'
+
+export { default as THEME } from './theme'

@@ -13,7 +13,7 @@ export const Header = styled.div`
   margin-bottom: 12px;
   padding-top: 20px;
   border-top: 1px solid;
-  border-top-color: ${theme('thread.articleSpliter')};
+  border-top-color: ${theme('divider')};
   width: 100%;
 `
 export const Title = styled.div`

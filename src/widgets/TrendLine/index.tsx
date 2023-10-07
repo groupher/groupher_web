@@ -6,10 +6,9 @@
 
 import { FC, memo } from 'react'
 import Trend from 'react-trend'
-import { useTheme } from 'styled-components'
 
-import type { TThemeMap } from '@/spec'
 import { buildLog } from '@/logger'
+import useTheme from '@/hooks/useTheme'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:TrendLine:index')
@@ -21,11 +20,11 @@ type TProps = {
 }
 
 const TrendLine: FC<TProps> = ({ data, radius = 15, width = 5 }) => {
-  const theme = useTheme() as TThemeMap
+  const { themeMap } = useTheme()
 
   const {
     heatmap: { activityLow, activityHight },
-  } = theme
+  } = themeMap
 
   return (
     <Trend

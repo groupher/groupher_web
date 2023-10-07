@@ -3,8 +3,7 @@ import styled from 'styled-components'
 import type { TAvatarLayout, TColorName, TTestable } from '@/spec'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
-import css, { theme } from '@/css'
-import { camelize } from '@/fmt'
+import css, { theme, baseColorTheme, baseColorBgTheme } from '@/css'
 
 import type { TAvatarProps } from '..'
 import { getFontSize } from './metric/avatar'
@@ -16,7 +15,7 @@ export const Wrapper = styled.div.attrs<TWrapper>(({ testid }) => ({
 }))<TWrapper>`
   ${css.row('align-both')};
 
-  background: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
+  background: ${({ color }) => baseColorBgTheme(color)};
 
   width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};
@@ -35,6 +34,6 @@ export const Wrapper = styled.div.attrs<TWrapper>(({ testid }) => ({
 `
 type TName = { size: number; color: TColorName }
 export const Name = styled.div<TName>`
-  color: ${({ color }) => theme(`baseColor.${color?.toLowerCase()}`)};
+  color: ${({ color }) => baseColorTheme(color)};
   font-size: ${({ size }) => getFontSize(size)};
 `

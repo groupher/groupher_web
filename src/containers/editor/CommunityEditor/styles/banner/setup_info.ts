@@ -12,7 +12,6 @@ export const Wrapper = styled.div`
   position: relative;
   ${css.column('align-both')};
   color: ${theme('article.digest')};
-  background-image: ${theme('banner.linearGradient')};
   width: 100%;
   height: 300px;
 `

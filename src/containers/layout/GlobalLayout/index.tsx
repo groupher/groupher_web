@@ -91,7 +91,6 @@ const GlobalLayoutContainer: FC<TProps> = ({ globalLayout: store, children }) =>
           <ScrollWrapper $noMobilePadding={metric === METRIC.HOME}>
             <Wrapper>
               <SEO />
-              {/* TODO: extract */}
               <InnerWrapper
                 metric={metric}
                 hasShadow={hasShadow}

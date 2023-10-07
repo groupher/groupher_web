@@ -2,8 +2,7 @@ import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
 
-import css, { theme } from '@/css'
-import { camelize } from '@/fmt'
+import css, { theme, baseColorBgTheme } from '@/css'
 
 import CommentSVG from '@/icons/Comment'
 
@@ -84,6 +83,6 @@ export const TagsWrapper = styled.div`
 `
 export const TagDot = styled.div<{ color: string }>`
   ${css.circle(6)};
-  background-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
+  background-color: ${({ color }) => baseColorBgTheme(color)};
   margin-left: 6px;
 `

@@ -2,10 +2,10 @@
  * ArticleReadLabel
  */
 
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 
 import { buildLog } from '@/logger'
-import { nilOrEmpty } from '@/validator'
 import useAccount from '@/hooks/useAccount'
 
 import { ReadedLabel } from './styles'
@@ -25,7 +25,7 @@ const ArticleReadLabel: FC<TProps> = ({ article, top = 24, left = -30 }) => {
   const accountInfo = useAccount()
   const { isPinned, viewerHasViewed } = article
 
-  if (nilOrEmpty(accountInfo) || isPinned) return null
+  if (!accountInfo.isLogin || isPinned) return null
 
   const { markViewed } = accountInfo.customization
 
@@ -37,4 +37,4 @@ const ArticleReadLabel: FC<TProps> = ({ article, top = 24, left = -30 }) => {
   return null
 }
 
-export default memo(ArticleReadLabel)
+export default observer(ArticleReadLabel)

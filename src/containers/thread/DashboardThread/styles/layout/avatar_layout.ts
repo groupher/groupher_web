@@ -1,9 +1,8 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/css'
+import css, { theme, baseColorTheme, baseColorBgTheme } from '@/css'
 
-import { camelize } from '@/fmt'
 import { LineDivider } from '@/widgets/Common'
 
 import { BaseSection, BlockBase } from '.'
@@ -23,12 +22,12 @@ export const Avatar = styled.div<TAvatar>`
   font-size: 13px;
   font-weight: bold;
   border-radius: ${({ circle }) => (circle ? '100px' : '6px')};
-  color: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
-  background-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
+  color: ${({ color }) => baseColorTheme(color)};
+  background-color: ${({ color }) => baseColorBgTheme(color)};
   margin-left: ${({ left }) => left};
   margin-left: 5px;
   border: 1px solid;
-  border-color: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
+  border-color: ${({ color }) => baseColorTheme(color)};
 `
 export const AvatarList = styled.div`
   ${css.row('align-center')};

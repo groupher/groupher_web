@@ -32,7 +32,7 @@ const CommunityBrief: FC = () => {
   return (
     <Wrapper>
       <AccountWrapper metric={metric}>
-        <AccountUnit withBg />
+        <AccountUnit />
       </AccountWrapper>
       {COVER_IMAGE ? <CoverImage src={COVER_IMAGE} noLazy /> : <CoverHolder />}
       <MainWrapper metric={metric}>

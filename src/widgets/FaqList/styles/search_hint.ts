@@ -3,8 +3,7 @@ import Link from 'next/link'
 
 import type { TColorName, TTestable } from '@/spec'
 
-import css, { theme } from '@/css'
-import { camelize } from '@/fmt'
+import css, { theme, baseColorTheme } from '@/css'
 
 import FAQSVG from '@/icons/FAQ'
 
@@ -72,7 +71,7 @@ export const CatSection = styled.div<{ color: TColorName }>`
     height: 100%;
     width: 4px;
     border-radius: 5px;
-    background-color: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
+    background-color: ${({ color }) => baseColorTheme(color)};
     opacity: 0.5;
   }
 `

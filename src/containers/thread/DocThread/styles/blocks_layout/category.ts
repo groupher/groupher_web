@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 
 import type { TColorName, TTestable } from '@/spec'
-import css, { theme } from '@/css'
-import { camelize } from '@/fmt'
+import css, { theme, baseColorBgTheme } from '@/css'
 
 type TWrapper = TTestable & { color?: string }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
@@ -35,7 +34,7 @@ export const IconWrapper = styled.div<{ color: TColorName }>`
   border-radius: 12px;
   margin-left: -1px;
   ${css.row('align-both')};
-  background: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)};
+  background: ${({ color }) => baseColorBgTheme(color)};
   margin-bottom: 8px;
 
   filter: saturate(0.7);

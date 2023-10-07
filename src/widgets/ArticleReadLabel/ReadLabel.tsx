@@ -1,4 +1,5 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
 import useAccount from '@/hooks/useAccount'
 
 import { ReadedLabel } from './styles'
@@ -6,9 +7,8 @@ import type { TProps } from '.'
 
 const ReadLabel: FC<TProps> = ({ article, top, left }) => {
   const accountInfo = useAccount()
-  const isLogin = !!accountInfo
 
-  if (!isLogin) return null
+  if (!accountInfo.isLogin) return null
 
   const { markViewed } = accountInfo.customization
   const { viewerHasViewed } = article
@@ -20,4 +20,4 @@ const ReadLabel: FC<TProps> = ({ article, top, left }) => {
   return null
 }
 
-export default memo(ReadLabel)
+export default observer(ReadLabel)

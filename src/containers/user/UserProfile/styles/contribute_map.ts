@@ -8,6 +8,7 @@ const dotColor = (scale: string): TTheme => {
   if (scale === 'empty') {
     key = 'heatmap.empty'
   }
+  // @ts-ignore
   return theme(key)
 }
 

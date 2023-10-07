@@ -40,7 +40,7 @@ type TAvatarsImg = {
 }
 export const AvatarsImg = styled(Img)<TAvatarsImg>`
   border: 2px solid;
-  border-color: ${theme('thread.commentsUserBorder')};
+  border-color: ${theme('divider')};
   color: #ffffff;
   font-size: 12px;
   font-weight: 100;

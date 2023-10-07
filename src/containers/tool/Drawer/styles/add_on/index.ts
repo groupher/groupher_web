@@ -23,7 +23,7 @@ export const TopArea = styled.div<{ showShare: boolean }>`
   top: 0;
   left: 40px;
   display: block;
-  background: white;
+  background: ${theme('bodyBg')};
   border-top-left-radius: 8px;
   border-bottom-left-radius: 28px;
   box-shadow: ${theme('drawer.closerShadow')};
@@ -34,7 +34,7 @@ export const TopArea = styled.div<{ showShare: boolean }>`
   &:before {
     content: '';
     position: absolute;
-    background: white;
+    background: ${theme('bodyBg')};
     bottom: -3px;
     right: -19px;
     width: 25px;
@@ -42,14 +42,13 @@ export const TopArea = styled.div<{ showShare: boolean }>`
     transform: rotate(26deg);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 15px;
-    /* border: 1px solid lightgrey; */
   }
 
   &:after {
     // this is for cover the box-shadow
     content: '';
     position: absolute;
-    background: white;
+    background: ${theme('bodyBg')};
     top: 0;
     right: -10px;
     width: 10px;

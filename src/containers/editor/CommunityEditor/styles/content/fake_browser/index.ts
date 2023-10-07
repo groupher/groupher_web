@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
   width: 100%;
   min-height: 500px;
   border-radius: 12px;
-  background: ${theme('alplaBg')};
+  background: ${theme('alphaBg')};
   border: 1px solid;
   border-color: #e5e5e5;
   /* border-color: ${theme('hoverBg')}; */
@@ -29,7 +29,7 @@ export const Header = styled.div`
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   height: 36px;
-  background: ${theme('alplaBg')};
+  background: ${theme('alphaBg')};
 `
 export const Tab = styled.div`
   ${css.row('align-center')};

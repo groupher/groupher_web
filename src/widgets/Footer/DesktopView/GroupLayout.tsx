@@ -1,10 +1,9 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react'
-import { useTheme } from 'styled-components'
 import { keys } from 'ramda'
 
-import type { TThemeMap } from '@/spec'
 import { DEME_SOCIALS } from '@/constant/social'
+import useTheme from '@/hooks/useTheme'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useFooterLinks from '@/hooks/useFooterLinks'
 
@@ -26,13 +25,13 @@ import {
 } from '../styles/desktop_view/group_layout'
 
 const GroupLayout: FC = () => {
-  const theme = useTheme() as TThemeMap
+  const { themeMap } = useTheme()
   const curCommunity = useViewingCommunity()
   const { links } = useFooterLinks()
 
   const linkColors = {
-    color: theme.footer.text,
-    hoverColor: theme.footer.hover,
+    color: themeMap.footer.text,
+    hoverColor: themeMap.footer.hover,
   }
 
   // @ts-ignore

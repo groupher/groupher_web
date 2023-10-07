@@ -65,7 +65,7 @@ export const QuestionWrapper = styled.div`
   ${css.row('align-center')};
   color: ${theme('article.digest')};
   &:hover {
-    color: ${theme('thread.articeTitle')};
+    color: ${theme('article.title')};
     cursor: pointer;
   }
 `

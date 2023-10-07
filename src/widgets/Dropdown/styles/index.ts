@@ -7,7 +7,7 @@ type TSize = { size: string }
 export const Wrapper = styled.div<TSize>`
   ${css.row()};
   font-size: ${({ size }) => size};
-  background: ${theme('dropdown.bg')};
+  background: ${theme('button.fg')};
   padding: 0 3px;
   border-radius: 5px;
   cursor: pointer;

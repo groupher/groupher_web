@@ -1,10 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable, TColorName } from '@/spec'
-
-import css, { theme } from '@/css'
-import { camelize } from '@/fmt'
-
+import css, { theme, baseColorTheme, baseColorBgTheme } from '@/css'
 import TreesSVG from '@/icons/Trees'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
@@ -47,7 +44,7 @@ export const TreeWrapper = styled.div`
 export const TreesIcon = styled(TreesSVG)`
   height: 240px;
   width: 700px;
-  fill: ${theme('artivle.digest')};
+  fill: ${theme('article.digest')};
 
   ${css.media.mobile`
     width: 100%;
@@ -75,12 +72,9 @@ export const Avatar = styled.div<{ color: TColorName }>`
   ${css.circle(30)};
   ${css.row('align-both')};
   padding: 2px;
-  color: ${({ color }) => theme(`baseColor.${camelize(color)}`)};
+  color: ${({ color }) => baseColorTheme(color)};
   font-size: 12px;
-
-  /* border: 2px solid; */
-  /* border-color: ${({ color }) => theme(`baseColor.${camelize(color)}Bg`)}; */
-  background-color: ${({ color }) => theme(`baseColor.${color.toLowerCase()}Bg`)};
+  background-color: ${({ color }) => baseColorBgTheme(color)};
 
   ${css.media.mobile`
     ${css.circle(20)};

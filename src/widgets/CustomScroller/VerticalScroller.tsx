@@ -5,15 +5,15 @@
  */
 
 import { FC, useState, useRef, useCallback, memo } from 'react'
-import { useTheme } from 'styled-components'
 
 // NOTE: do not use ViewportTracker here, it cause crash
 import { Waypoint } from 'react-waypoint'
-import type { TThemeMap } from '@/spec'
 
 import SIZE from '@/constant/size'
 import { debounce } from '@/helper'
 import useCustomScroll from '@/hooks/useCustomScroll'
+import useTheme from '@/hooks/useTheme'
+
 // import ViewportTracker from '@/widgets/ViewportTracker'
 
 import type { TProps as TScrollProps } from '.'
@@ -74,7 +74,8 @@ const VerticalScroller: FC<TProps> = ({
   }, [onBottomEnter])
 
   // @ts-ignore
-  const { _meta: themeMeta }: TThemeMap = useTheme()
+  const { themeMap } = useTheme()
+  const { _meta: themeMeta } = themeMap
   const { category: themeCategory } = themeMeta
 
   const ref = useRef(null)

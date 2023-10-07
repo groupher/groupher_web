@@ -23,6 +23,8 @@ export const MenuItem = styled(Link)<TActive>`
   ${css.row('align-center')};
   background: ${({ $active }) => ($active ? theme('hoverBg') : 'transparent')};
   width: 160px;
+  border: 1px solid;
+  border-color: ${({ $active }) => ($active ? theme('hoverBorder') : 'transparent')};
   text-decoration: none;
   height: 32px;
   padding-left: 8px;

@@ -1,7 +1,11 @@
 import styled from 'styled-components'
+
+import type { TThemeName } from '@/spec'
+import THEME from '@/constant/theme'
 import { animate } from '@/css'
 
-export const Wrapper = styled.div<{ effect: string }>`
+type TWrapper = { effect: string; themeName: TThemeName }
+export const Wrapper = styled.div<TWrapper>`
   position: fixed;
   top: 0;
   height: 100%;
@@ -9,6 +13,7 @@ export const Wrapper = styled.div<{ effect: string }>`
 
   ${({ effect }) => effect || ''};
 
+  filter: ${({ themeName }) => (themeName === THEME.NIGHT ? 'brightness(0.85)' : '')};
   /* adjust s value for speed */
   /* position: fixed; */
   /* see https://www.zhangxinxu.com/wordpress/2015/11/css3-will-change-improve-paint/ */

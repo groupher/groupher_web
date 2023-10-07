@@ -23,7 +23,6 @@ export const FooterPanel = styled.div`
   padding-left: 35px;
   width: 100%;
   background: ${theme('modal.subPanel')};
-  /* background: ${theme('modal.panelBg')}; */
   height: 56px;
   color: ${theme('article.digest')};
   font-size: 13px;

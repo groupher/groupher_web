@@ -1,10 +1,9 @@
 /*
- * a theme inspired by github
+ * light mode
  */
 import { lighten, darken } from '@/utils/color'
 
 const primaryColor = '#333333' // '#000000'
-
 const bannerBg = '#fff'
 const contentBg = '#fff'
 const contentBoxBg = '#fff'
@@ -20,11 +19,11 @@ const hoverBg = '#efefef9c' // with alpha
 const hint = '#9d9999'
 // const primaryMate = 'orange'
 
-const github = {
+const day = {
   _meta: {
     category: 'light',
   },
-  name: 'github',
+  name: 'day',
   primary: primaryColor,
   logoText: descText,
   cover: 'white',
@@ -48,6 +47,7 @@ const github = {
   alphaBg: '#ffffff95',
   alphaBg2: '#fffffff2',
   hoverBg,
+  hoverBorder: hoverBg,
   hoverLinear: 'linear-gradient(315deg, rgba(255, 255, 255, 0) 0%, #fafafa 100%)',
   activeLinear: 'linear-gradient(315deg,rgba(255,255,255,0) 0%,#f1f1f1 70%)',
   menuActive: '#e9e9e991',
@@ -136,12 +136,6 @@ const github = {
     reactionTitle: '#7f979a',
     reactionHoverBg: '#f3f7f7',
   },
-  thread: {
-    bg: contentBoxBg,
-    articleDivider: '#dce5e6',
-    commentsUserBorder: contentBoxBg,
-    articleSpliter: '#dee8ea',
-  },
   content: {
     bg: contentBoxBg,
     border: '#EEEEEE',
@@ -154,6 +148,7 @@ const github = {
     hover: '#949CB5',
     title: '#77706B',
     bottomBg: '#252325',
+    shadow: 'rgb(241 241 241) 0px 0px 50px 0px inset',
   },
   drawer: {
     title: threadTitle,
@@ -213,7 +208,6 @@ const github = {
     footer: '#a6bebf',
     footerHover: darken('#a6bebf', 5),
   },
-
   markdown: {
     title: primaryColor,
     fg: markdownFont,
@@ -262,7 +256,7 @@ const github = {
   popover: {
     bg: '#ffffffd9',
     borderColor: '#e9e9ea',
-    boxShadow: '0 1px 4px rgba(0, 0, 0, 0.15)',
+    boxShadow: '-3px 2px 20px 0px rgb(58 58 58 / 15%)',
     activeBorder: '#70707094',
   },
   tags: {
@@ -337,4 +331,4 @@ const github = {
   },
 }
 
-export default github
+export default day

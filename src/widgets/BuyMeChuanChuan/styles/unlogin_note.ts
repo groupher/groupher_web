@@ -16,7 +16,7 @@ export const LoginLabel = styled.div`
 
   &:hover {
     cursor: pointer;
-    color: ${theme('thread.title')};
+    color: ${theme('article.title')};
     text-decoration: underline;
   }
 `
