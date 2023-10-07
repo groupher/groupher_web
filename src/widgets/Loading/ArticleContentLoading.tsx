@@ -1,9 +1,10 @@
 import { FC, memo } from 'react'
 import { range } from 'ramda'
-import { useTheme } from 'styled-components'
 import ContentLoader from 'react-content-loader'
 
 import type { TSpace } from '@/spec'
+import useTheme from '@/hooks/useTheme'
+
 import { Wrapper, LoadingWrapper } from './styles/article_content_loading'
 
 const LoadingItem = ({ theme }) => (
@@ -27,13 +28,13 @@ const LoadingItem = ({ theme }) => (
 type TProps = TSpace & { num?: number }
 
 const ArticleContentLoading: FC<TProps> = ({ num = 1, ...restProps }) => {
-  const theme = useTheme()
+  const { themeMap } = useTheme()
 
   return (
     <Wrapper {...restProps}>
       {range(0, num).map((item) => (
         <LoadingWrapper key={item}>
-          <LoadingItem theme={theme} />
+          <LoadingItem theme={themeMap} />
         </LoadingWrapper>
       ))}
     </Wrapper>

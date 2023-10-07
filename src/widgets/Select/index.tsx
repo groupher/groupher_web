@@ -7,12 +7,12 @@
  */
 
 import { FC, memo } from 'react'
-import { useTheme } from 'styled-components'
 import ReactSelect from 'react-select'
 import CreatableReactSelect from 'react-select/creatable'
 
-import type { TSelectOption, TThemeMap } from '@/spec'
+import type { TSelectOption } from '@/spec'
 import { buildLog } from '@/logger'
+import useTheme from '@/hooks/useTheme'
 
 import { IndicatorsContainer } from './components'
 
@@ -51,8 +51,8 @@ const Select: FC<TProps> = ({
   onCreateOption = log,
 }) => {
   // @ts-ignore
-  const theme: TThemeMap = useTheme()
-  const styles = getSelectStyles(theme)
+  const { themeMap } = useTheme()
+  const styles = getSelectStyles(themeMap)
 
   const baseProps = {
     value,

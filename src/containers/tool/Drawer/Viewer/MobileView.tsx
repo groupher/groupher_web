@@ -1,8 +1,7 @@
 import { FC, ReactNode, useEffect, useState, memo, useRef } from 'react'
-import { useTheme } from 'styled-components'
 
-import type { TThemeMap } from '@/spec'
 import useSwipe from '@/hooks/useSwipe'
+import useTheme from '@/hooks/useTheme'
 
 import type { TSwipeOption } from '../spec'
 import Header from '../Header'
@@ -34,8 +33,7 @@ const Viewer: FC<TProps> = ({
   disableContentDrag,
   children,
 }) => {
-  // @ts-ignore
-  const theme: TThemeMap = useTheme()
+  const { themeMap } = useTheme()
   // swipe action state for top && bottom
   // null means restore and close
   const [swipeDownY, setSwipeDownY] = useState(null)
@@ -89,7 +87,7 @@ const Viewer: FC<TProps> = ({
         options={options}
         mobile
       >
-        <DrawerMobileContent options={options} bgColor={theme.drawer.bg}>
+        <DrawerMobileContent options={options} bgColor={themeMap.drawer.bg}>
           <MobileInnerContent
             options={options}
             swipeUpY={swipeUpY}
