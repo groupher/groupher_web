@@ -245,7 +245,7 @@ const night = {
     hoverBg: '#eee',
   },
   popover: {
-    bg: 'tomato', // '#ffffffd9',
+    bg: '#2e2e2ef0',
     borderColor: '#e9e9ea',
     boxShadow: '-9px 7px 20px 9px rgb(24 24 24 / 44%)',
     activeBorder: '#70707094',

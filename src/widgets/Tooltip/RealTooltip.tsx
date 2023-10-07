@@ -15,8 +15,8 @@ import { isDescendant, isWechatBrower } from '@/dom'
 import useOutsideClick from '@/hooks/useOutsideClick'
 
 import type { TProps } from '.'
-import ConfirmFooter from './ConfirmFooter'
 import { FOOTER_BEHAVIOR } from './constant'
+import ConfirmFooter from './ConfirmFooter'
 
 import { StyledTippy, NoPaddingStyledTippy, ChildrenWrapper, ContentWrapper } from './styles'
 
@@ -35,7 +35,6 @@ const Tooltip: FC<TProps> = ({
   duration = 0,
   content,
   hideOnClick = true,
-  showArrow = false,
   forceZIndex = false,
   behavior = 'default',
   trigger = 'mouseenter focus',

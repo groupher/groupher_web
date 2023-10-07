@@ -27,7 +27,6 @@ export type TProps = {
   trigger?: 'mouseenter focus' | 'click'
   hideOnClick?: boolean
   noPadding?: boolean
-  showArrow?: boolean
   behavior?: 'default' | 'confirm' | 'delete-confirm' | 'add'
   // currently only for Facepile, it will collapse the height
   // for same reason, figure out later

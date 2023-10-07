@@ -15,8 +15,6 @@ export const StyledTippy = styled(Tippy)<{ wechatEnv?: boolean }>`
 
   border: 1px solid;
   border-color: ${theme('divider')};
-
-  // background: ${({ wechatEnv }) => (wechatEnv ? theme('alphaBg2') : theme('popover.bg'))};
   backdrop-filter: blur(5px);
 
   .tippy-arrow {
