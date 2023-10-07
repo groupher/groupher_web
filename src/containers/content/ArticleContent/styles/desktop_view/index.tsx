@@ -31,7 +31,6 @@ export const MainWrapper = styled.div<{ metric: TMetric }>`
 `
 export const ArticleWrapper = styled.div`
   font-size: 15px;
-  /* background: ${theme('drawer.articleBg')}; */
   /* border-radius: 5px; */
   background: transparent;
 

@@ -159,16 +159,7 @@ const day = {
     shadow: '-8px 8px 20px 11px rgb(143 143 143 / 2%)',
     shadowLite: '-8px 8px 20px 11px rgb(143 143 143 / 2%)',
     closerShadow: '-7px 4px 20px 0px rgb(143 143 143 / 2%)',
-    markdownHelperBg: '#F9FCFC',
-    accountBg: '#FFFFFF',
-    articleBg: '#FFFFFF',
-    helper: '#d9e5e6',
-    helperHover: '#83a2a5',
-    topLine: '#22292E',
-    icon: 'tomato',
-    divider: '#e0e6e5',
-    /* single article page sidebar divider */
-    sideDivider: '#e4e4e4',
+    border: 'transparent',
   },
   comment: {
     bg: contentBg,

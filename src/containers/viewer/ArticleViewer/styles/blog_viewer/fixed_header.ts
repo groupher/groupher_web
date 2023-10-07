@@ -12,7 +12,7 @@ export const Wrapper = styled.div<{ visible: boolean }>`
   height: 60px;
   background: #fff; // to-theme
   border-bottom: 1px solid;
-  border-bottom-color: ${theme('drawer.divider')};
+  border-bottom-color: ${theme('divider')};
   z-index: 5;
   transition: all 0.2s;
 `

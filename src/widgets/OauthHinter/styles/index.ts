@@ -11,7 +11,6 @@ export const Wrapper = styled.div`
   height: 100vh;
   background: ${theme('banner.bg')};
   border-top: 4px solid;
-  border-top-color: ${theme('drawer.topLine')};
 `
 export const IconsWrapper = styled.div`
   ${css.row('justify-center')};

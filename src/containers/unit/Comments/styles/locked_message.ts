@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   position: relative;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
   border-radius: 3px;
-  background: ${theme('drawer.articleBg')};
+  background: ${theme('drawer.bg')};
 `
 
 export const LockIcon = styled(Img)`

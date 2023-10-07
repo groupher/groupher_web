@@ -14,7 +14,7 @@ export const UserWrapper = styled.div`
   margin-right: 5px;
   padding: 20px 10px;
   border-bottom: 1px solid;
-  border-bottom-color: ${theme('drawer.divider')};
+  border-bottom-color: ${theme('divider')};
 `
 export const UserAvatar = styled(Img)`
   ${css.size(55)};

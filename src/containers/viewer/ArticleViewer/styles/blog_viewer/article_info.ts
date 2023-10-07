@@ -5,7 +5,7 @@ import CollectionSVG from '@/icons/CollectionBookmark'
 
 export const Wrapper = styled.div`
   border-bottom: 1px solid;
-  border-bottom-color: ${theme('drawer.divider')};
+  border-bottom-color: ${theme('divider')};
 `
 export const InfoWrapper = styled.div`
   ${css.row('align-center', 'justify-between')};

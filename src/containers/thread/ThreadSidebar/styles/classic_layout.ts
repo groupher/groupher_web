@@ -21,9 +21,9 @@ export const StickyWrapper = styled.div`
 `
 export const DividerTitle = styled.div`
   ${css.row('align-center')};
-  color: ${theme('article.title')};
+  color: ${theme('article.digest')};
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
 `
 export const CommunityJoinersWrapper = styled.div<TActive>`
   ${css.row()};

@@ -66,7 +66,7 @@ const ClassicLayout: FC<TProps> = ({ showCommunityBadge }) => {
 
           {showCommunityBadge && (
             <Fragment>
-              <DividerTitle>团队</DividerTitle>
+              <DividerTitle>团队成员</DividerTitle>
               <Br top={14} />
             </Fragment>
           )}
@@ -90,6 +90,7 @@ const ClassicLayout: FC<TProps> = ({ showCommunityBadge }) => {
               text="参与讨论"
               onClick={() => onPublish(ARTICLE_CAT.FEATURE)}
               onMenuSelect={onPublish}
+              left={-2}
               offset={[0, 5]}
             />
           </PublishWrapper>

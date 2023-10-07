@@ -32,7 +32,6 @@ export const InnerWrapper = styled.div`
 
   border-image-slice: 1;
 `
-/* background: ${theme('drawer.articleBg')}; */
 export const Label = styled.div`
   font-size: 13px;
   color: ${theme('article.digest')};

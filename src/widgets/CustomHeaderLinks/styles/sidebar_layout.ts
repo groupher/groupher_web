@@ -39,6 +39,7 @@ export const GroupItem = styled(LinkItem)<TGroupItem>`
   height: 28px;
   margin-top: 2px;
   margin-bottom: 2px;
+  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   background: ${({ $active }) => ($active ? theme('hoverBg') : '')};
 
   &:hover {

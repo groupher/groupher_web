@@ -30,6 +30,8 @@ export const TopArea = styled.div<{ showShare: boolean }>`
   ${css.column('align-both')}
   padding-left: 12px;
   z-index: 100000;
+  border: 1px solid;
+  border-color: ${theme('drawer.border')};
 
   &:before {
     content: '';

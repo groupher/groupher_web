@@ -28,7 +28,6 @@ export const MainWrapper = styled.div`
     width: 100%;
   `};
 `
-/* background: ${theme('drawer.articleBg')}; */
 export const ArticleWrapper = styled.div`
   font-size: 15px;
   background: transparent;
