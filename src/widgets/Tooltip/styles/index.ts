@@ -9,16 +9,14 @@ export const StyledTippy = styled(Tippy)<{ wechatEnv?: boolean }>`
   box-shadow: ${theme('popover.boxShadow')};
   outline: none;
   max-width: 480px !important;
-  border: 1px solid;
-  border-color: ${theme('popover.borderColor')};
 
   border-radius: 5px;
   padding: 5px;
 
-  box-shadow: -3px 2px 20px 0px rgb(58 58 58 / 15%);
+  border: 1px solid;
   border-color: ${theme('divider')};
 
-  background: ${({ wechatEnv }) => (wechatEnv ? theme('alphaBg2') : theme('popover.bg'))};
+  // background: ${({ wechatEnv }) => (wechatEnv ? theme('alphaBg2') : theme('popover.bg'))};
   backdrop-filter: blur(5px);
 
   .tippy-arrow {

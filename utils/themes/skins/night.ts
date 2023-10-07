@@ -12,7 +12,7 @@ const markdownFont = '#9eb8bd'
 const border = '#3c3c3c' // '#282828'
 const link = '#005196' // '#6494cd'
 
-const actionText = '#647392'
+const actionText = '#7f8695'
 const descText = '#7c7f82'
 const threadTitle = '#FFFFFF'
 const hoverBg = '#42424259' // with alpha
@@ -21,7 +21,7 @@ const hint = '#9d9999'
 
 const night = {
   _meta: {
-    category: 'light',
+    category: 'night',
   },
   name: 'night',
   primary: primaryColor,
@@ -45,7 +45,7 @@ const night = {
   link,
   divider: border,
   alphaBg: hoverBg,
-  alphaBg2: '#42424278',
+  alphaBg2: '#1c1c1cb8',
   hoverBg,
   hoverBorder: '#393939',
   hoverLinear: 'linear-gradient(315deg, rgb(104 104 104 / 0%) 0%, #2c2c2c 100%);',
@@ -254,9 +254,9 @@ const night = {
     hoverBg: '#eee',
   },
   popover: {
-    bg: '#ffffffd9',
+    bg: 'tomato', // '#ffffffd9',
     borderColor: '#e9e9ea',
-    boxShadow: '0 1px 4px rgba(0, 0, 0, 0.15)',
+    boxShadow: '-9px 7px 20px 9px rgb(24 24 24 / 44%)',
     activeBorder: '#70707094',
   },
   tags: {

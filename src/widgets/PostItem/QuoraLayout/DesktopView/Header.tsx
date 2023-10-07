@@ -5,7 +5,9 @@ import TimeAgo from 'timeago-react'
 
 import type { TPost } from '@/spec'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useBannerLayout from '@/hooks/useBannerLayout'
 import { THREAD } from '@/constant/thread'
+import { BANNER_LAYOUT } from '@/constant/layout'
 import SIZE from '@/constant/size'
 
 import Tooltip from '@/widgets/Tooltip'
@@ -33,6 +35,7 @@ type TProps = {
 
 const Header: FC<TProps> = ({ article }) => {
   const { slug } = useViewingCommunity()
+  const bannerLayout = useBannerLayout()
   const { author, title, commentsCount, innerId, articleTags, insertedAt } = article
 
   return (
@@ -59,7 +62,13 @@ const Header: FC<TProps> = ({ article }) => {
         {/*  @ts-ignore */}
         <TagsList items={articleTags} left={12} />
         <SpaceGrow />
-        {commentsCount !== 0 && <CommentsCount count={commentsCount} size={SIZE.MEDIUM} />}
+        {commentsCount !== 0 && (
+          <CommentsCount
+            count={12}
+            size={SIZE.MEDIUM}
+            right={bannerLayout === BANNER_LAYOUT.SIDEBAR ? 4 : 0}
+          />
+        )}
       </Main>
     </Wrapper>
   )

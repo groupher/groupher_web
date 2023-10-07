@@ -20,9 +20,6 @@ export const ThemeStore = T.model('ThemeStore', {
   curTheme: T.opt(T.enum('theme', keys(themeSkins)), DEFAULT_THEME),
 })
   .views((self) => ({
-    get root() {
-      return getParent(self)
-    },
     get themeData() {
       return themeSkins[self.curTheme]
     },

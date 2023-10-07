@@ -256,7 +256,7 @@ const day = {
   popover: {
     bg: '#ffffffd9',
     borderColor: '#e9e9ea',
-    boxShadow: '0 1px 4px rgba(0, 0, 0, 0.15)',
+    boxShadow: '-3px 2px 20px 0px rgb(58 58 58 / 15%)',
     activeBorder: '#70707094',
   },
   tags: {

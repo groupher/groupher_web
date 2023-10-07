@@ -2,7 +2,7 @@
  * GlobalLayout store
  *
  */
-import type { TRootStore, TGlobalLayout } from '@/spec'
+import type { TRootStore, TGlobalLayout, TThemeName } from '@/spec'
 
 import { T, getParent, markStates, Instance } from '@/mobx'
 
@@ -25,6 +25,11 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
     get globalLayout(): TGlobalLayout {
       const root = getParent(self) as TRootStore
       return root.dashboardThread.globalLayout
+    },
+
+    get curTheme(): TThemeName {
+      const root = getParent(self) as TRootStore
+      return root.theme.curTheme
     },
 
     get showDashboardAlert(): boolean {
