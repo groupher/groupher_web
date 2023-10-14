@@ -3,6 +3,8 @@ import { FC, memo } from 'react'
 import type { TCommunity } from '@/spec'
 import CommunityStatesPad from '@/widgets/CommunityStatesPad'
 
+import { assetSrc } from '@/helper'
+
 import {
   Wrapper,
   Body,
@@ -21,7 +23,7 @@ type TProps = {
 const CardPopover: FC<TProps> = ({ community }) => (
   <Wrapper>
     <Body>
-      <CommunityLogo src={community.logo} slug={community.slug} />
+      <CommunityLogo src={assetSrc(community.logo)} slug={community.slug} />
       <CommunityInfo>
         <Title>{community.title}</Title>
         <Desc>{community.desc}</Desc>

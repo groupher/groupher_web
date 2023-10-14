@@ -26,7 +26,7 @@ const user = gql`
 `
 
 const editableCommunities = gql`
-  query ($login: String, $filter: PagedFilter!) {
+  query ($login: String, $filter: PagiFilter!) {
     editableCommunities(login: $login, filter: $filter) {
       entries {
         ${F.community}
@@ -37,7 +37,7 @@ const editableCommunities = gql`
 `
 
 const pagedPublishedWorks = `
-  query($login: String!, $filter: PagedFilter!) {
+  query($login: String!, $filter: PagiFilter!) {
     pagedPublishedWorks(login: $login, filter: $filter) {
       entries {
         id

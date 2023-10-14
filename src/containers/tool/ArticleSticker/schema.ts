@@ -2,7 +2,7 @@
 import { F } from '@/schemas'
 
 // const pagedCommentsParticipants = gql`
-//   query($id: ID!, $thread: Thread, $filter: PagedFilter!) {
+//   query($id: ID!, $thread: Thread, $filter: PagiFilter!) {
 //     pagedCommentsParticipants(id: $id, thread: $thread, filter: $filter) {
 //       entries {
 //         ${F.author}

@@ -8,7 +8,7 @@ const simpleMutation = gql`
   }
 `
 const pagedBillRecords = gql`
-  query ($filter: PagedFilter!) {
+  query ($filter: PagiFilter!) {
     pagedBillRecords(filter: $filter) {
       entries {
         id

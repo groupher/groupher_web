@@ -10,6 +10,7 @@ import {
   includes,
   remove,
   isEmpty,
+  startsWith,
 } from 'ramda'
 
 import type {
@@ -21,7 +22,7 @@ import type {
   TDashboardThreadConfig,
 } from '@/spec'
 
-import { TAG_COLOR_ORDER } from '@/config'
+import { ASSETS_ENDPOINT, TAG_COLOR_ORDER } from '@/config'
 import { ARTICLE_STATE } from '@/constant/gtd'
 import { COLOR_NAME } from '@/constant/colors'
 
@@ -339,4 +340,24 @@ export const publicThreads = (
   })
 
   return mappedThreads as TCommunityThread[]
+}
+
+/**
+ * for combine OSS endpoing with path
+ */
+export const assetSrc = (path: string): string => {
+  if (startsWith('http://', path) || startsWith('https://', path)) {
+    return path
+  }
+
+  return `${ASSETS_ENDPOINT}/${path}`
+}
+
+/**
+ * for store to server
+ */
+export const assetPath = (url: string): string => {
+  const splitUrl = url.split(`${ASSETS_ENDPOINT}/`)
+
+  return splitUrl.join('')
 }

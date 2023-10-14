@@ -1,8 +1,15 @@
 import { merge, toUpper, clone } from 'ramda'
 import { createClient } from 'urql/core'
 
+import BStore from '@/utils/bstore'
+
 import { GRAPHQL_ENDPOINT, PAGE_SIZE } from '@/config'
 import { isString } from './validator'
+
+// for client(widgest most) only
+export const buildGQClient = (): any => {
+  return makeGQClient(BStore.get('token'))
+}
 
 // NOTE the client with jwt info is used for getInitialProps for SSR
 // to load user related data
@@ -39,7 +46,7 @@ export const makeGithubExplore = (GRAPHQL_ENDPOINT: string, token: string): any 
   return client
 }
 
-export const pagedFilter = (page, options = {}): Record<string, any> =>
+export const pagiFilter = (page, options = {}): Record<string, any> =>
   merge({ page, size: PAGE_SIZE.D }, options)
 
 /*

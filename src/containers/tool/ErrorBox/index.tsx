@@ -17,7 +17,15 @@ import { SpaceGrow } from '@/widgets/Common'
 
 import Details from './Details'
 
-import { Wrapper, WarningIcon, ResetButton, LearnMoreButton, MoreLink } from './styles'
+import {
+  Wrapper,
+  IconWrapper,
+  WarningIcon,
+  ResetButton,
+  LearnMoreButton,
+  MoreLink,
+  ButtonGroup,
+} from './styles'
 import { useInit, onClose } from './logic'
 
 /* eslint-disable-next-line */
@@ -47,7 +55,9 @@ const ErrorBoxContainer: FC<TProps> = ({ errorBox: store }) => {
 
   return (
     <Wrapper>
-      <WarningIcon />
+      <IconWrapper>
+        <WarningIcon />
+      </IconWrapper>
       <Details
         type={type}
         timeoutError={timeoutError}
@@ -57,10 +67,12 @@ const ErrorBoxContainer: FC<TProps> = ({ errorBox: store }) => {
         customError={customErrorData}
       />
       <SpaceGrow />
-      <LearnMoreButton>
-        <MoreLink href="/">报告问题</MoreLink>
-      </LearnMoreButton>
-      <ResetButton onClick={() => onClose()}>关闭</ResetButton>
+      <ButtonGroup>
+        <LearnMoreButton>
+          <MoreLink href="/feedback">报告问题</MoreLink>
+        </LearnMoreButton>
+        <ResetButton onClick={() => onClose()}>关闭</ResetButton>
+      </ButtonGroup>
     </Wrapper>
   )
 }

@@ -155,7 +155,7 @@ const pagedPublishedComments = gql`
   query pagedPublishedComments(
     $login: String!
     $thread: Thread,
-    $filter: PagedFilter!
+    $filter: PagiFilter!
   ) {
     pagedPublishedComments(login: $login, thread: $thread, filter: $filter) {
       entries {

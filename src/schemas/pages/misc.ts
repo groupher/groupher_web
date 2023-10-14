@@ -11,7 +11,7 @@ export const pagedArticleTags = `
 `
 
 export const pagedCategories = `
-  query($filter: PagedFilter!) {
+  query($filter: PagiFilter!) {
     pagedCategories(filter: $filter) {
       entries {
         id

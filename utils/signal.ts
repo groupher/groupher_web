@@ -33,6 +33,7 @@ export const Global: TWindow = typeof window !== 'undefined' ? window : null
 export const toast = (msg: string, type: TToastType = 'info'): void => {
   if (type === 'error') {
     hotToast.error(msg)
+    return
   }
 
   hotToast.success(msg)

@@ -9,6 +9,8 @@ import { isEmpty } from 'ramda'
 
 import type { TCommunity } from '@/spec'
 import { buildLog } from '@/logger'
+import { assetSrc } from '@/helper'
+
 import Tooltip from '@/widgets/Tooltip'
 import CommunityCard from '@/widgets/Cards/CommunityCard'
 
@@ -45,7 +47,7 @@ const CommunityList: FC<TProps> = ({
       {items.map((community) => (
         <Tooltip key={community.id} placement="bottom" content={<CommunityCard item={community} />}>
           <Linker href={`/${community.slug}`} bottom={bottom} right={right}>
-            <Logo src={community.logo} size={size} slug={community.slug} />
+            <Logo src={assetSrc(community.logo)} size={size} slug={community.slug} />
           </Linker>
         </Tooltip>
       ))}

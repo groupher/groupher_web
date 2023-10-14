@@ -7,6 +7,7 @@ import { FC, memo, Fragment, useState } from 'react'
 import type { TCommunity } from '@/spec'
 import { ICON } from '@/config'
 import { HCN } from '@/constant/name'
+import { assetSrc } from '@/helper'
 
 import { changeToCommunity } from '@/signal'
 import { buildLog } from '@/logger'
@@ -55,11 +56,11 @@ const SubscribedList: FC<TProps> = ({ community, communities }) => {
         首页
       </Item>
       {communities.slice(0, 15).map((community) => (
-        <Fragment key={community.id}>
+        <Fragment key={community.slug}>
           <Item>
             {community.slug === activeCommunity.slug && <ActiveDot />}
 
-            <Logo src={community.logo} />
+            <Logo src={assetSrc(community.logo)} />
             <Title
               $active={community.slug === activeCommunity.slug}
               onClick={() => changeToCommunity(community.slug)}

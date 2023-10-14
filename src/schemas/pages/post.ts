@@ -9,7 +9,7 @@ export const post = `
   }
 `
 export const pagedPosts = `
-  query($filter: PagedPostsFilter, $userHasLogin: Boolean!) {
+  query($filter: PagedPostsFilter!, $userHasLogin: Boolean!) {
     pagedPosts(filter: $filter) {
       entries {
         ${F.article}
@@ -22,7 +22,6 @@ export const pagedPosts = `
           }
         }
         digest
-        linkAddr
         commentsParticipants {
           ${F.author}
         }
@@ -35,7 +34,7 @@ export const pagedPosts = `
 `
 
 export const pagedPublishedPosts = `
-  query($login: String!, $filter: PagedFilter!, $userHasLogin: Boolean!) {
+  query($login: String!, $filter: PagiFilter!, $userHasLogin: Boolean!) {
     pagedPublishedPosts(login: $login, filter: $filter) {
       entries {
         ${F.article}

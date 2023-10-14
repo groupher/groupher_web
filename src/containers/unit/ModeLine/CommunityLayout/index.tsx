@@ -5,6 +5,7 @@ import type { TArticle, TTag, TGroupedTags } from '@/spec'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import { scrollToHeader } from '@/dom'
+import { assetSrc } from '@/helper'
 
 import MobileThreadNavi from '@/widgets/MobileThreadNavi'
 import ArticlesFilter from '@/widgets/ArticlesFilter'
@@ -45,7 +46,7 @@ const CommunityLayout: FC<TProps> = ({
     <Wrapper testid={testid} show={show} isMenuActive={!!activeMenu}>
       <InnerWrapper expand={expand}>
         <MainMenusWrapper>
-          <CommunityLogo src={community.logo} />
+          <CommunityLogo src={assetSrc(community.logo)} />
           <MobileThreadNavi mode="modeline" />
           <ArticlesFilter
             isMobile={isMobile}

@@ -8,13 +8,15 @@ export const Wrapper = styled.div`
   font-size: 13px;
 `
 export const TitleWrapper = styled.div`
-  ${css.row('align-center')};
+  ${css.row('align-start')};
 `
 export const Title = styled.div`
   color: ${theme('baseColor.red')};
-  opacity: 0.8;
+  font-weight: bold;
 `
 export const Desc = styled.div`
   color: ${theme('baseColor.red')};
   margin-left: 10px;
+  width: 82%;
+  max-width: 82%;
 `

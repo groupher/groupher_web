@@ -44,7 +44,7 @@ export {
   isString,
 } from './validator'
 
-export { makeGQClient, makeGithubExplore, later, pagedFilter, atomizeValues } from './graphql'
+export { makeGQClient, makeGithubExplore, later, pagiFilter, atomizeValues } from './graphql'
 
 // export { default as githubAPI } from './github_api'
 

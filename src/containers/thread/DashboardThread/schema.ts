@@ -4,7 +4,7 @@ import { P, F } from '@/schemas'
 const { pagedPosts, pagedChangelogs } = P
 
 const communityBaseInfo = gql`
-  query community($slug: String, $incViews: Boolean) {
+  query community($slug: String!, $incViews: Boolean) {
     community(slug: $slug, incViews: $incViews) {
       dashboard {
         baseInfo {
@@ -31,7 +31,7 @@ const communityBaseInfo = gql`
 `
 
 const communitySocialLinks = gql`
-  query community($slug: String, $incViews: Boolean) {
+  query community($slug: String!, $incViews: Boolean) {
     community(slug: $slug, incViews: $incViews) {
       dashboard {
         baseInfo {
@@ -71,6 +71,8 @@ const updateDashboardBaseInfo = gql`
       techstack: $techstack
     ) {
       title
+      logo
+      favicon
     }
   }
 `
@@ -271,7 +273,7 @@ const updateDashboardFaqs = gql`
 `
 
 const updateModerators = gql`
-  query community($slug: String, $incViews: Boolean) {
+  query community($slug: String!, $incViews: Boolean) {
     community(slug: $slug, incViews: $incViews) {
       moderators {
         role
@@ -288,7 +290,7 @@ const updateModerators = gql`
 `
 
 const communityOverview = gql`
-  query community($slug: String, $incViews: Boolean) {
+  query community($slug: String!, $incViews: Boolean) {
     community(slug: $slug, incViews: $incViews) {
       views
       subscribersCount
