@@ -292,13 +292,7 @@ const day = {
   toast: {
     bg: contentBoxBg,
     border,
-    message: descText,
     title: threadTitle,
-    infoBar: '#E8F0FE',
-    errorBar: '#f59381',
-    successBar: '#9dd035',
-    warnBar: '#f5a30e',
-    boxShadow: '-3px 5px 20px 0px rgb(155 155 155 / 20%)',
   },
   mailBox: {
     headHightBg: '#e8f9f8',
@@ -319,6 +313,10 @@ const day = {
     quote: '#217470',
     shadow: '0px 0px 4px 0px rgb(0 0 0 / 50%) inset',
     quoteShadow: '0px 0px 3px 0px rgb(0 0 0 / 30%) inset',
+  },
+  dashboard: {
+    menuCat: threadTitle,
+    menuTitle: descText,
   },
 }
 

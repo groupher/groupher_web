@@ -195,6 +195,9 @@ const GlobalStyle = createGlobalStyle<TPrimaryColor>`
     width: 180px !important;
     margin-left: 100px;
     justify-content: center;
+    color: ${theme('toast.title')} !important;
+    background: ${theme('toast.bg')} !important;
+    border-color: ${theme('toast.border')} !important;
   }
 `
 export default GlobalStyle

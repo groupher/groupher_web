@@ -9,7 +9,12 @@ type TWrapper = { direction: 'left' | 'right' } & TSpace
 export const NormalWrapper = styled.div<TWrapper>`
   ${css.row('align-center')};
   width: ${({ direction }) => (direction === 'right' ? 'calc(100% + 10px)' : '100%')};
-  background: ${({ direction }) => `linear-gradient(to ${direction}, #f7f7f7 60%, transparent)`};
+  background: ${(props) => {
+    const { direction } = props
+    const themeVal = theme('hoverBg')(props)
+
+    return `linear-gradient(to ${direction}, ${themeVal} 60%, transparent)`
+  }};
 
   height: 42px;
   padding: 0 10px;
@@ -23,6 +28,7 @@ export const MinimalWrapper = styled(NormalWrapper)`
 `
 export const HintWrapper = styled.div`
   ${css.row('align-center')};
+  color: ${theme('article.digest')};
 `
 export const InfoIcon = styled(InfoSVG)<{ $minimal: boolean }>`
   ${css.size(13)};
@@ -32,7 +38,6 @@ export const InfoIcon = styled(InfoSVG)<{ $minimal: boolean }>`
 `
 export const HintText = styled.div<{ $minimal: boolean }>`
   font-size: ${({ $minimal }) => ($minimal ? '11px' : '13px')}};
-  color: ${theme('article.digest')};
 `
 export const Hint = styled.span`
   color: ${theme('article.title')};

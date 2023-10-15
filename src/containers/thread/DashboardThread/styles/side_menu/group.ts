@@ -31,7 +31,7 @@ export const FoldArrowIcon = styled(ArrowSVG)<{ fold: boolean }>`
   transition: all 0.2s;
 `
 export const Title = styled.div`
-  color: ${theme('article.title')};
+  color: ${theme('dashboard.menuCat')};
   font-size: 13px;
   margin-left: 10px;
   font-weight: 500;
@@ -65,7 +65,7 @@ export const Item = styled(Link)<TItem>`
   position: relative;
   display: block;
   color: ${({ $active, primaryColor }) =>
-    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+    $active ? primaryTheme(primaryColor) : theme('dashboard.menuTitle')};
   background: ${({ $active }) => ($active ? theme('activeLinear') : 'transparent')};
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
 

@@ -62,7 +62,7 @@ export const BlockBase = styled.div<TBlockBase>`
   padding: 16px 15px;
 
   &:hover {
-    opacity: ${({ $active }) => ($active ? 0.65 : 0.3)};
+    opacity: ${({ $active }) => ($active ? 0.7 : 0.3)};
     cursor: pointer;
   }
 

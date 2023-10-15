@@ -114,7 +114,7 @@ export const DashIntro = styled.div`
 `
 export const DashTitle = styled.div`
   font-size: 13px;
-  color: ${theme('article.digest')};
+  color: ${theme('dashboard.menuTitle')};
   font-weight: 500;
   margin-bottom: 2px;
 
