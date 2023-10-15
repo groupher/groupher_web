@@ -95,7 +95,6 @@ export type {
 export type { TGQLError } from './graphql'
 
 export type {
-  TDashboard,
   TAvatarLayout,
   TTopbarLayout,
   TBrandLayout,

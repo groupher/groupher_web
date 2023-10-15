@@ -1,5 +1,4 @@
 import type { TColorName } from './color'
-import type { TMediaReport } from './community'
 
 export type TAvatarLayout = 'circle' | 'square'
 export type TBrandLayout = 'both' | 'logo' | 'text'
@@ -17,16 +16,6 @@ export type TRSSType = 'digest' | 'full'
 
 export type TBroadcastLayout = 'default' | 'center'
 export type TBroadcastArticleLayout = 'default' | 'simple'
-
-// TODO: to complete
-export type TDashboard = {
-  title?: string
-  logo?: string
-  favicon?: string
-  bio?: string
-  homepage?: string
-  mediaReports?: TMediaReport[]
-}
 
 export type TBroadcastConfig = {
   // banner
