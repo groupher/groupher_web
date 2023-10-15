@@ -16,7 +16,7 @@ export const Wrapper = styled(TextareaAutosize).attrs<TTestable>(({ testid }) =>
   opacity: 0.9;
   min-height: 56px;
   padding: 10px;
-  background-color: white;
+  background-color: ${theme('alphaBg')};
   border: 1px solid;
   resize: none;
   overflow: hidden;
