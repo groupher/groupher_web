@@ -155,7 +155,7 @@ const updateDashboardEnable = gql`
 
 const updateDashboardLayout = gql`
   mutation (
-    $community: Stirng!
+    $community: String!
     $primaryColor: String
     $postLayout: String
     $kanbanLayout: String

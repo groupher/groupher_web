@@ -47,6 +47,7 @@ const night = {
   alphaBg: hoverBg,
   alphaBg2: '#1c1c1cb8',
   hoverBg,
+  savingBarBg: '#f7f7f7',
   hoverBorder: '#393939',
   hoverLinear: 'linear-gradient(315deg, rgb(104 104 104 / 0%) 0%, #2c2c2c 100%);',
   activeLinear: 'linear-gradient(315deg,rgba(255,255,255,0) 0%,#343434 70%)',
@@ -63,46 +64,46 @@ const night = {
 
   baseColor: {
     red: '#ca5f4d',
-    redBg: '#ffbfba3d',
+    redBg: '#7d3b363d',
 
     orange: '#ce9f6f',
-    orangeBg: '#FEF7E8',
+    orangeBg: '#4c3e37',
 
     brown: '#8d691e',
-    brownBg: '#fff3df',
+    brownBg: '#3a342b',
 
     yellow: '#eddd85',
-    yellowBg: '#FEFBE8',
+    yellowBg: '#41403a',
 
     green: '#699411',
-    greenBg: '#eefdd89c',
+    greenBg: '#8a97764a',
 
     greenLight: '#37B784',
-    greenLightBg: '#e3f3cc4a',
+    greenLightBg: '#69735a4a',
 
     cyan: '#24878C',
     cyanBg: '#e1fcff',
 
     // naming, fix later
     cyanLight: '#00B5CC',
-    cyanLightBg: '#e1fcff94',
+    cyanLightBg: '#39494b94',
 
     blue: '#0073E3',
-    blueBg: '#d8e3fd54',
+    blueBg: '#76809654',
 
     purple: '#7d519e',
-    purpleBg: '#f7d8fd38',
+    purpleBg: '#7c618238',
 
     grey: '#106d8a',
 
     pink: '#b36976',
-    pinkBg: '#ffd8ea59',
+    pinkBg: '#73526159',
 
     pinkLite: '#82606b',
     pinkBtnText: '#ded0d0',
 
     black: '#333333',
-    blackBg: '#f4f4f4',
+    blackBg: '#313131',
   },
   header: {
     fg: '#8c8c8c',
@@ -290,15 +291,9 @@ const night = {
     active: darken(primaryColor, 10),
   },
   toast: {
-    bg: contentBoxBg,
+    bg: '#2c2c2c',
     border,
-    message: descText,
-    title: threadTitle,
-    infoBar: '#E8F0FE',
-    errorBar: '#f59381',
-    successBar: '#9dd035',
-    warnBar: '#f5a30e',
-    boxShadow: '-3px 5px 20px 0px rgb(155 155 155 / 20%)',
+    title: '#afafaf',
   },
   mailBox: {
     headHightBg: '#e8f9f8',
@@ -319,6 +314,11 @@ const night = {
     quote: '#217470',
     shadow: '0px 0px 4px 0px rgb(0 0 0 / 50%) inset',
     quoteShadow: '0px 0px 3px 0px rgb(0 0 0 / 30%) inset',
+  },
+
+  dashboard: {
+    menuCat: '#c1c1c1',
+    menuTitle: '#949494',
   },
 }
 

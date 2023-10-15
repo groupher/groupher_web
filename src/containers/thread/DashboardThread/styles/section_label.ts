@@ -10,7 +10,7 @@ export const Header = styled.div`
   ${css.row('align-center')};
 `
 export const Title = styled.div<{ noDesc: boolean }>`
-  color: ${theme('article.title')};
+  color: ${theme('dashboard.menuCat')};
   font-size: 16px;
   margin-bottom: ${({ noDesc }) => (noDesc ? '25px' : '0')};
 `

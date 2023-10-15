@@ -6,7 +6,7 @@ import ArrowSVG from '@/icons/ArrowSimple'
 
 export const Wrapper = styled.div``
 export const Title = styled.div`
-  color: ${theme('article.title')};
+  color: ${theme('dashboard.menuCat')};
   font-size: 19px;
   width: auto;
 

@@ -74,8 +74,8 @@ export const Block = styled(BlockBase)`
 export const DividerLine = styled(Divider)`
   opacity: 0.8;
 `
-
 export const BgWrapper = styled.div`
+  color: ${theme('article.digest')};
   ${css.row('align-center')};
   font-size: 12px;
 `

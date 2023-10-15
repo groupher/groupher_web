@@ -86,7 +86,7 @@ export const ContentBlock = styled.div<{ hasShadow?: boolean }>`
 export const ContentBar = styled.div<{ long: number }>`
   width: ${({ long }) => `${long}%`};
   height: 8px;
-  background: ${theme('divider')};
+  background: ${theme('hoverBg')};
   margin-bottom: 15px;
   z-index: 3;
   border-radius: 5px;

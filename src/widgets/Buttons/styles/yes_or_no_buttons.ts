@@ -10,7 +10,7 @@ export const Wrapper = styled.div<TWrapper>`
 `
 export const CancelBtn = styled.div`
   opacity: 0.8;
-  color: ${theme('button.primary')};
+  color: ${theme('article.digest')};
   font-size: 13px;
   margin-top: 1px;
 
