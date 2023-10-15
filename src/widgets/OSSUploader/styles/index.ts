@@ -1,29 +1,16 @@
 import styled from 'styled-components'
 
-import css, { animate } from '@/css'
+import css, { animate, theme } from '@/css'
 
-import UploadIcon from '@/icons/ImgUpload'
+import CrossSVG from '@/icons/CloseCross'
+import UploadIcon from '@/icons/Upload'
 import TurboSVG from '@/icons/Turbo'
 
 export const Wrapper = styled.div`
   position: relative;
-  cursor: pointer;
 `
-export const InnerBorder = styled.div`
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  width: calc(100% - 8px);
-  height: calc(100% - 8px);
-  border: 2px dotted white;
-  border-radius: 4px;
-  opacity: 0;
-  z-index: 1;
-
-  ${Wrapper}:hover & {
-    opacity: 1;
-  }
-  transition: all 0.2s;
+export const InnerWrapper = styled.div`
+  position: relative;
 `
 export const InputFile = styled.input`
   width: 0.1px;
@@ -31,7 +18,7 @@ export const InputFile = styled.input`
   opacity: 0;
   overflow: hidden;
   position: absolute;
-  z-index: -1;
+  z-index: 1;
 `
 export const Label = styled.label<{ $loading: boolean }>`
   display: block;
@@ -39,21 +26,24 @@ export const Label = styled.label<{ $loading: boolean }>`
 
   filter: ${({ $loading }) => ($loading ? 'brightness(0.8)' : 'none')};
 
-  ${Wrapper}:hover & {
+  z-index: 100;
+  transition: all 0.1s;
+
+  ${InnerWrapper}:hover & {
     filter: brightness(0.8);
   }
-  transition: all 0.1s;
 `
 export const HintIcon = styled(UploadIcon)`
   opacity: 0;
   position: absolute;
-  top: calc(50% - 12px);
-  left: calc(50% - 12px);
+  top: calc(50% - 10px);
+  left: calc(50% - 10px);
   fill: white;
-  ${css.size(24)};
+  ${css.size(20)};
 
-  ${Wrapper}:hover & {
+  ${InnerWrapper}:hover & {
     opacity: 1;
+    cursor: pointer;
   }
   transition: all 0.2s;
 `
@@ -66,4 +56,37 @@ export const TurboIcon = styled(TurboSVG)`
   z-index: 2;
 
   animation: ${animate.rotate360} 0.5s linear infinite;
+`
+
+export const CloseBtn = styled.div`
+  ${css.circle(16)};
+  ${css.row('align-both')};
+  background: ${theme('button.fg')};
+  box-shadow: ${css.cardShadow};
+  border: 1px solid;
+  border-color: ${theme('divider')};
+
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  z-index: 1;
+  opacity: 0;
+
+  ${Wrapper}:hover & {
+    opacity: 1;
+  }
+
+  &:hover {
+    transform: rotate(90deg);
+  }
+
+  transition: all 0.3s;
+`
+export const CrossIcon = styled(CrossSVG)`
+  ${css.size(14)};
+  fill: ${theme('article.digest')};
+
+  &:hover {
+    fill: ${theme('baseColor.red')};
+  }
 `

@@ -839,6 +839,11 @@ const DashboardThread = T.model('DashboardThread', {
       // slf.mark({ demoAlertEnable: true })
     },
 
+    updateViewingCommunity(args: TCommunity): void {
+      const root = getParent(self) as TRootStore
+      root.viewing.updateViewingCommunity(args)
+    },
+
     _findTagIdx(): number {
       const slf = self as TStore
 

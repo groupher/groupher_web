@@ -5,11 +5,19 @@
 
 import { values, merge, includes } from 'ramda'
 
-import type { TRootStore, TUser, TArticle, TArticleMeta, TThread, TAccount } from '@/spec'
+import type {
+  TRootStore,
+  TUser,
+  TArticle,
+  TArticleMeta,
+  TThread,
+  TAccount,
+  TCommunity,
+} from '@/spec'
 
 import { ARTICLE_THREAD, THREAD } from '@/constant/thread'
 
-import { T, getParent, Instance, markStates } from '@/mobx'
+import { T, getParent, Instance, markStates, toJS } from '@/mobx'
 import { viewingChanged } from '@/signal'
 import { User, Community, Post, Changelog } from '@/model'
 
@@ -55,6 +63,9 @@ const ViewingStore = T.model('ViewingStore', {
 
       mark(sobj)
       viewingChanged(viewingArticle)
+    },
+    updateViewingCommunity(args: TCommunity): void {
+      self.community = { ...toJS(self.community), ...args }
     },
     changeCommunity(slug): void {
       self.community.slug = slug

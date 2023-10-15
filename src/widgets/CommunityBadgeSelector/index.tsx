@@ -5,6 +5,7 @@ import { HCN } from '@/constant/name'
 
 import { cutRest } from '@/fmt'
 import { selectCommunity } from '@/signal'
+import { assetSrc } from '@/helper'
 
 import Tooltip from '@/widgets/Tooltip'
 import CommunityCard from '@/widgets/Cards/CommunityCard'
@@ -29,7 +30,7 @@ const CommunityBadgeSelector: FC<TProps> = ({ community, mode = 'publish' }) => 
             <PubHint>所属社区:</PubHint>
           )}
           <Title>
-            <Logo src={community.logo} slug={community.slug} />
+            <Logo src={assetSrc(community.logo)} slug={community.slug} />
             <Tooltip content={<CommunityCard item={community} />} delay={500} placement="bottom">
               <div>{cutRest(community.title || '--', 15)}</div>
             </Tooltip>

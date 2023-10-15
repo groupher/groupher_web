@@ -8,9 +8,20 @@ import { FC, memo, ReactNode, useState, useEffect, useRef, useCallback } from 'r
 
 import { buildLog } from '@/logger'
 import uid from '@/utils/uid'
+import { assetPath } from '@/helper'
 
-import { Wrapper, InnerBorder, Label, HintIcon, TurboIcon, InputFile } from './styles'
-import { initOSSClient, handleUploadFile } from './helper'
+import {
+  Wrapper,
+  InnerWrapper,
+  Label,
+  HintIcon,
+  TurboIcon,
+  InputFile,
+  CloseBtn,
+  CrossIcon,
+} from './styles'
+import PreviewBlock from './PreviewBlock'
+import { initOSSClient, handleUploadFile, applyUploadTokensIfNeed } from './helper'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:OSSUploader:index')
@@ -18,8 +29,13 @@ const log = buildLog('w:OSSUploader:index')
 type TProps = {
   children: ReactNode
   onUploadDone?: (url: string) => void
+  onDelete?: () => void
   filePrefix?: string | null
   fileType?: string
+  previewUrl?: string
+  previewHeight?: number
+  previewWidth?: number
+  previewRadius?: number
 }
 
 const OSSUploader: FC<TProps> = ({
@@ -27,6 +43,11 @@ const OSSUploader: FC<TProps> = ({
   fileType = 'image/*',
   filePrefix = null,
   onUploadDone = log,
+  onDelete = log,
+  previewUrl = '', // 'https://static.groupher.com/ugc/_tmp/2023-10-13/Linth.png',
+  previewHeight = 50,
+  previewWidth = 50,
+  previewRadius = 4,
 }) => {
   const [loaded, setOnLoad] = useState(false)
   const [uniqueId, setUniqueId] = useState(null)
@@ -37,10 +58,17 @@ const OSSUploader: FC<TProps> = ({
 
   useEffect(() => {
     if (loaded) {
-      const ossClient = initOSSClient()
+      // see https://stackoverflow.com/a/53572588
+      // eslint-disable-next-line no-inner-declarations
+      async function initOSS() {
+        await applyUploadTokensIfNeed()
+        const ossClient = initOSSClient()
 
-      setOSSClient(ossClient)
-      setUniqueId(uid.gen())
+        setOSSClient(ossClient)
+        setUniqueId(uid.gen())
+      }
+
+      initOSS()
     }
   }, [loaded])
 
@@ -51,39 +79,59 @@ const OSSUploader: FC<TProps> = ({
   const onDone = useCallback(
     (url) => {
       setLoading(false)
-      onUploadDone(url)
+      // console.log('## url: ', url)
+      // console.log('## asset url: ', assetPath(url))
+      onUploadDone(assetPath(url))
     },
     [onUploadDone],
   )
 
   const onError = useCallback((msg) => {
-    alert(msg)
     setLoading(false)
   }, [])
 
   const callbacks = { onStart, onDone, onError }
+  const showPreview = !!previewUrl
 
   return (
     <Wrapper>
       <Script
-        src="https://gosspublic.alicdn.com/aliyun-oss-sdk-6.16.0.min.js"
+        src="https://gosspublic.alicdn.com/aliyun-oss-sdk-6.18.1.min.js"
         onLoad={() => setOnLoad(true)}
       />
-      <InputFile
-        type="file"
-        name={`file-${uniqueId}`}
-        id={`file-${uniqueId}`}
-        accept={fileType}
-        onChange={(e) => handleUploadFile(ossClient, e, filePrefix, callbacks)}
-      />
-      <Label htmlFor={`file-${uniqueId}`} ref={labelRef} $loading={loading}>
-        {children}
-      </Label>
 
-      {!loading && <HintIcon onClick={() => labelRef.current.click()} />}
-      {loading && <TurboIcon />}
+      {showPreview && (
+        <CloseBtn onClick={onDelete}>
+          <CrossIcon />
+        </CloseBtn>
+      )}
 
-      <InnerBorder />
+      <InnerWrapper>
+        <InputFile
+          id={`file-${uniqueId}`}
+          type="file"
+          name={`file-${uniqueId}`}
+          accept={fileType}
+          onChange={(e) => handleUploadFile(ossClient, e, filePrefix, callbacks)}
+        />
+        <Label htmlFor={`file-${uniqueId}`} ref={labelRef} $loading={loading}>
+          <>
+            {showPreview ? (
+              <PreviewBlock
+                url={previewUrl}
+                height={previewHeight}
+                width={previewWidth}
+                radius={previewRadius}
+              />
+            ) : (
+              <>{children}</>
+            )}
+          </>
+        </Label>
+
+        {!loading && <HintIcon onClick={() => labelRef.current.click()} />}
+        {loading && <TurboIcon />}
+      </InnerWrapper>
     </Wrapper>
   )
 }

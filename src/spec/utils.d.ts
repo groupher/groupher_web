@@ -218,3 +218,9 @@ export type TGroupedLinks = {
 }
 
 export type TChangeMode = 'create' | 'update'
+
+export type TUploadPreview = {
+  height: number
+  width: number
+  radius: number
+}

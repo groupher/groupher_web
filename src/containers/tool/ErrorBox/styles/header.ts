@@ -5,7 +5,6 @@ import css, { theme, animate } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.row()};
-  padding: 15px 22px;
 `
 export const ErrorIcon = styled(Img)`
   fill: ${theme('baseColor.red')};
@@ -23,5 +22,4 @@ export const Title = styled.div`
 // color: ${theme('article.digest')};
 export const Desc = styled.div`
   color: ${theme('baseColor.red')};
-  opacity: 0.6;
 `

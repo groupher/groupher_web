@@ -54,12 +54,10 @@ const CustomDetails = ({ errors }) => (
   <>
     {!nilOrEmpty(errors) &&
       errors.map((item) => (
-        <div key={uid.gen()}>
-          <TitleWrapper>
-            <Title>错误码: {item.code}</Title>
-            <Desc>{item.message}</Desc>
-          </TitleWrapper>
-        </div>
+        <TitleWrapper key={uid.gen()}>
+          <Title>错误: {item.code}</Title>
+          <Desc>{item.message}</Desc>
+        </TitleWrapper>
       ))}
   </>
 )

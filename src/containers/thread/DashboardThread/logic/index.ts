@@ -502,7 +502,10 @@ const _handleError = () => {
 const DataSolver = [
   {
     match: asyncRes('updateDashboardBaseInfo'),
-    action: () => _handleDone(),
+    action: ({ updateDashboardBaseInfo }) => {
+      store.updateViewingCommunity({ ...updateDashboardBaseInfo })
+      _handleDone()
+    },
   },
   {
     match: asyncRes('updateDashboardMediaReports'),

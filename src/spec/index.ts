@@ -89,11 +89,13 @@ export type {
   TLinkItem,
   TGroupedLinks,
   TChangeMode,
+  TUploadPreview,
 } from './utils'
 
 export type { TGQLError } from './graphql'
 
 export type {
+  TDashboard,
   TAvatarLayout,
   TTopbarLayout,
   TBrandLayout,

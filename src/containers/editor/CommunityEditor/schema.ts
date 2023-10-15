@@ -49,7 +49,7 @@ const unsubscribeCommunity = gql`
   }
 `
 const pagedCategories = gql`
-  query ($filter: PagedFilter!) {
+  query ($filter: PagiFilter!) {
     pagedCategories(filter: $filter) {
       entries {
         id

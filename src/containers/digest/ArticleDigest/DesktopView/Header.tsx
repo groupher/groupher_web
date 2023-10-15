@@ -2,6 +2,7 @@ import { FC } from 'react'
 import { observer } from 'mobx-react'
 
 import type { TMetric } from '@/spec'
+import { assetSrc } from '@/helper'
 
 import { ANCHOR } from '@/constant/dom'
 import { ROUTE } from '@/constant/route'
@@ -33,7 +34,7 @@ const Header: FC<TProps> = ({ metric }) => {
     <Wrapper id={ANCHOR.GLOBAL_HEADER_ID}>
       <InnerWrapper>
         <Community>
-          <CommunityLogo src={community.logo} />
+          <CommunityLogo src={assetSrc(community.logo)} />
           <CommunityTitle>{community.title}</CommunityTitle>
         </Community>
 

@@ -14,7 +14,7 @@ const pagedUsers = gql`
 `
 
 const pagedCommunitySubscribers = gql`
-  query($id: ID, $community: String, $filter: PagedFilter!, $userHasLogin: Boolean!) {
+  query($id: ID, $community: String, $filter: PagiFilter!, $userHasLogin: Boolean!) {
     pagedCommunitySubscribers(id: $id, community: $community, filter: $filter) {
       entries {
         ${F.author}
@@ -27,7 +27,7 @@ const pagedCommunitySubscribers = gql`
 `
 
 const pagedFollowers = gql`
-  query($userId: ID, $filter: PagedFilter!, $userHasLogin: Boolean!) {
+  query($userId: ID, $filter: PagiFilter!, $userHasLogin: Boolean!) {
     pagedFollowers(userId: $userId, filter: $filter) {
       entries {
         ${F.author}
@@ -40,7 +40,7 @@ const pagedFollowers = gql`
 `
 
 const pagedFollowings = gql`
-  query($userId: ID, $filter: PagedFilter!, $userHasLogin: Boolean!) {
+  query($userId: ID, $filter: PagiFilter!, $userHasLogin: Boolean!) {
     pagedFollowings(userId: $userId, filter: $filter) {
       entries {
         ${F.author}
@@ -52,7 +52,7 @@ const pagedFollowings = gql`
   }
 `
 const pagedCommunityEditors = gql`
-  query($id: ID!, $filter: PagedFilter!, $userHasLogin: Boolean!) {
+  query($id: ID!, $filter: PagiFilter!, $userHasLogin: Boolean!) {
     pagedCommunityEditors(id: $id, filter: $filter) {
       entries {
         ${F.author}

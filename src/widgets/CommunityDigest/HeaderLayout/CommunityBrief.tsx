@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react'
 
+import { assetSrc } from '@/helper'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 // import CommunityJoinSign from '@/widgets/CommunityJoinSign'
@@ -15,16 +16,12 @@ import {
 } from '../styles/header_layout/community_brief'
 // import { subscribeCommunity, unsubscribeCommunity } from '../logic'
 
-type TProps = {
-  //
-}
-
-const CommunityBrief: FC<TProps> = () => {
+const CommunityBrief: FC = () => {
   const community = useViewingCommunity()
 
   return (
     <Wrapper>
-      <Logo src={community.logo} noLazy />
+      <Logo src={assetSrc(community.logo)} noLazy />
       <CommunityInfo>
         <TitleWrapper>
           <Title>

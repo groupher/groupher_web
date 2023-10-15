@@ -2,6 +2,8 @@ import { FC, memo } from 'react'
 
 import type { TCommunity } from '@/spec'
 import { ICON_CMD } from '@/config'
+import { assetSrc } from '@/helper'
+
 import Tooltip from '@/widgets/Tooltip'
 
 import {
@@ -31,7 +33,7 @@ const BriefView: FC<TProps> = ({ community }) => {
       <CardWrapper>
         <CommunityWrapper>
           {community.logo ? (
-            <CommunityLogo src={community.logo} slug={community.slug} />
+            <CommunityLogo src={assetSrc(community.logo)} slug={community.slug} />
           ) : (
             <LogoHolder src={CommunityLogoHolder} />
           )}

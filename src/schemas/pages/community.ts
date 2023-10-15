@@ -2,7 +2,7 @@ import F from '../fragments'
 
 // contributesDigest
 export const subscribedCommunities = `
-  query subscribedCommunities($login: String, $filter: PagedFilter!) {
+  query subscribedCommunities($login: String, $filter: PagiFilter!) {
     subscribedCommunities(login: $login, filter: $filter) {
       entries {
         ${F.community}
@@ -12,8 +12,9 @@ export const subscribedCommunities = `
     }
   }
 `
+
 export const community = `
-  query community($slug: String, $userHasLogin: Boolean!, $incViews: Boolean) {
+  query community($slug: String!, $userHasLogin: Boolean!, $incViews: Boolean) {
     community(slug: $slug, incViews: $incViews) {
       ${F.community}
       viewerHasSubscribed @include(if: $userHasLogin)

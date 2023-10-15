@@ -30,22 +30,27 @@ type TProps = {
 }
 
 const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => {
-  const { saving, desc, title, introduction } = settings
+  const { saving, desc, title, introduction, logo } = settings
 
   return (
     <Wrapper>
       <Title>favicon</Title>
       <FaviconWrapper>
-        <OSSUploader>
+        <OSSUploader previewHeight={30} previewWidth={30}>
           <Favicon />
         </OSSUploader>
       </FaviconWrapper>
       <Desc>上传 favicon, 仅支持 ico 格式，最大 10 KB。可选。</Desc>
       <Br bottom={30} />
-
       <Title>LOGO</Title>
       <LogoWrapper>
-        <OSSUploader>
+        <OSSUploader
+          previewUrl={logo}
+          previewHeight={70}
+          previewWidth={70}
+          onDelete={() => edit('', 'logo')}
+          onUploadDone={(v) => edit(v, 'logo')}
+        >
           <Logo />
         </OSSUploader>
       </LogoWrapper>
