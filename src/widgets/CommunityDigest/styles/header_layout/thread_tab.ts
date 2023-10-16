@@ -37,7 +37,7 @@ export const Title = styled(Link)<TTitle>`
   border-radius: 5px;
 
   &:hover {
-    color: ${({ primaryColor }) => rainbow(primaryColor)};
+    color: ${({ primaryColor }) => rainbow(primaryColor, 'article.title')};
     opacity: 1;
     cursor: pointer;
     background: ${theme('hoverBg')};

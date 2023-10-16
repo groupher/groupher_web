@@ -12,7 +12,7 @@ type TLinkItem = TActive & TPrimaryColor
 
 export const LinkItem = styled(Link)<TLinkItem>`
   color: ${({ $active, primaryColor }) =>
-    $active ? rainbow(primaryColor) : theme('article.digest')};
+    $active ? rainbow(primaryColor, 'article.title') : theme('article.digest')};
   background: ${({ $active }) => ($active ? theme('hoverBg') : '')};
 
   text-decoration: none;
@@ -21,7 +21,7 @@ export const LinkItem = styled(Link)<TLinkItem>`
   border-radius: 3px;
 
   &:hover {
-    color: ${({ primaryColor }) => rainbow(primaryColor)};
+    color: ${({ primaryColor }) => rainbow(primaryColor, 'article.title')};
     background: ${theme('hoverBg')};
     text-decoration: none;
     cursor: pointer;

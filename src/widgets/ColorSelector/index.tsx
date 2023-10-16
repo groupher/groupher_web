@@ -50,7 +50,8 @@ const ColorSelector: FC<TProps> = ({
       content={
         <Wrapper testid={testid}>
           {colorKeys.map((name) => {
-            const $active = name === activeColor || COLOR_NAME.BLACK === activeColor
+            // const $active = name === activeColor || COLOR_NAME.BLACK === activeColor
+            const $active = name === activeColor
 
             return (
               <DotWrapper key={name} onClick={() => onChange(name)}>

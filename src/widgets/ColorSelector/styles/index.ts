@@ -20,12 +20,12 @@ export const Dot = styled.div<TDot>`
   ${({ $active }) => ($active ? css.circle(20) : css.circle(16))};
   ${css.row('align-both')};
   background-color: ${({ colorName, bgMode }) =>
-    !bgMode ? rainbow(colorName, 'button.bg') : rainbowLight(colorName)};
+    !bgMode ? rainbow(colorName, 'rainbow.blackRow') : rainbowLight(colorName)};
 
   box-shadow: ${({ $active }) => ($active ? '0px 0px 7px 0px rgb(151 151 151 / 30%)' : '')};
 
-  border: ${({ bgMode }) => (bgMode ? '1px dashed' : 'none')};
-  border-color: ${({ colorName }) => rainbow(colorName)};
+  border: ${({ bgMode }) => (bgMode ? '1px dashed' : '1px solid')};
+  border-color: ${({ colorName }) => rainbow(colorName, 'divider')};
 
   &:hover {
     ${css.circle(20)};

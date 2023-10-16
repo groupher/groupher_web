@@ -11,13 +11,12 @@ export const Label = styled.div<{ color: TColorName }>`
   ${css.row('align-both')};
   ${css.circle(42)};
   border: 1px solid;
-  border-color: ${({ color }) => rainbow(color)};
-  border-color: tomato;
+  border-color: ${({ color }) => rainbow(color, 'divider')};
   cursor: pointer;
 `
 export const TheColor = styled.div<{ color: TColorName }>`
   ${css.circle(34)};
-  background-color: ${({ color }) => rainbow(color)};
+  background-color: ${({ color }) => rainbow(color, 'rainbow.blackRow')};
   margin-top: 3px;
   margin-left: 3px;
 `

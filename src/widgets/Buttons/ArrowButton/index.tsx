@@ -9,7 +9,6 @@ import { observer } from 'mobx-react'
 
 import type { TColorName, TSpace } from '@/spec'
 
-import { COLOR_NAME } from '@/constant/colors'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { buildLog } from '@/logger'
 

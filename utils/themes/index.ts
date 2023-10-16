@@ -39,9 +39,12 @@ export const rainbowLink = (primaryColor: TColorName): string => {
     return theme('link')
   }
 
-  return theme(`rainbow.${primaryColor}` as TFlatThemeKey)
+  return theme(`rainbow.${camelize(primaryColor)}` as TFlatThemeKey)
 }
 
+/**
+ * used for dynamic primary color or tag color based on pre-defined color names for each theme
+ */
 export const rainbow = (color: TColorName | string, darkThemeOverWriteKey = ''): string => {
   if (color === COLOR_NAME.BLACK) {
     return !!darkThemeOverWriteKey
