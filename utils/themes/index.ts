@@ -42,7 +42,7 @@ export const rainbowLink = (primaryColor: TColorName): string => {
   return theme(`rainbow.${primaryColor}` as TFlatThemeKey)
 }
 
-export const rainbowTheme = (color: TColorName | string, darkThemeOverWriteKey = ''): string => {
+export const rainbow = (color: TColorName | string, darkThemeOverWriteKey = ''): string => {
   if (color === COLOR_NAME.BLACK) {
     return !!darkThemeOverWriteKey
       ? theme(`${darkThemeOverWriteKey as TFlatThemeKey}`)

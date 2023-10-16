@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive, TColorName } from '@/spec'
-import css, { theme, rainbowTheme, rainbowLightTheme } from '@/css'
+import css, { theme, rainbow, rainbowLightTheme } from '@/css'
 
 import FormInput from '@/widgets/Input'
 
@@ -74,17 +74,17 @@ export const ColorBlock = styled.div<TColorBlock>`
   border-radius: 6px;
   background: ${({ color }) => rainbowLightTheme(color)};
   border: 1px dotted;
-  border-color: ${({ $active, color }) => ($active ? rainbowTheme(color) : 'transparent')};
+  border-color: ${({ $active, color }) => ($active ? rainbow(color) : 'transparent')};
 
   &:hover {
-    border-color: ${({ color }) => rainbowTheme(color)};
+    border-color: ${({ color }) => rainbow(color)};
     cursor: pointer;
   }
   transition: all 0.25s;
 `
 export const ColorCenter = styled.div<{ color: TColorName }>`
   ${css.circle(12)};
-  background: ${({ color }) => rainbowTheme(color)};
+  background: ${({ color }) => rainbow(color)};
 `
 export const Input = styled(FormInput)`
   text-align: left;

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TAvatarLayout, TColorName, TTestable } from '@/spec'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
-import css, { theme, rainbowTheme, rainbowLightTheme } from '@/css'
+import css, { theme, rainbow, rainbowLightTheme } from '@/css'
 
 import type { TAvatarProps } from '..'
 import { getFontSize } from './metric/avatar'
@@ -34,6 +34,6 @@ export const Wrapper = styled.div.attrs<TWrapper>(({ testid }) => ({
 `
 type TName = { size: number; color: TColorName }
 export const Name = styled.div<TName>`
-  color: ${({ color }) => rainbowTheme(color)};
+  color: ${({ color }) => rainbow(color)};
   font-size: ${({ size }) => getFontSize(size)};
 `

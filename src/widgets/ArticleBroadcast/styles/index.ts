@@ -5,7 +5,7 @@ import type { TTestable, TSpace, TColorName } from '@/spec'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import BroadcastSVG from '@/icons/Broadcast'
 
-import css, { theme, rainbowTheme, rainbowLightTheme } from '@/css'
+import css, { theme, rainbow, rainbowLightTheme } from '@/css'
 
 type TWrapper = { color: TColorName } & TSpace & TTestable
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
@@ -99,6 +99,6 @@ export const NotifyIcon = styled(BroadcastSVG)<{ color: TColorName }>`
   margin-right: 5px;
   transform: rotateZ(20deg) rotateY(180deg);
   mix-blend-mode: color-burn;
-  fill: ${({ color }) => rainbowTheme(color)};
+  fill: ${({ color }) => rainbow(color)};
   opacity: 0.3;
 `

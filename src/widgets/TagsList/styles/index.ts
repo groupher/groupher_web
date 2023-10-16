@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TSizeTSM, TSpace } from '@/spec'
 
-import css, { theme, rainbowTheme } from '@/css'
+import css, { theme, rainbow } from '@/css'
 
 import { getIconSize, getTitleSize, getInnerSpace } from './metric'
 
@@ -23,13 +23,13 @@ export const Tag = styled.div`
 `
 type THashSign = { color: string; size: TSizeTSM }
 export const DotSign = styled.div<THashSign>`
-  background: ${({ color }) => rainbowTheme(color)};
+  background: ${({ color }) => rainbow(color)};
   ${({ size }) => css.circle(getIconSize(size))};
   margin-right: 2px;
   margin-right: ${({ size }) => `${getInnerSpace(size)}px`};
 `
 export const LabelDotSign = styled.div<THashSign>`
-  background: ${({ color }) => rainbowTheme(color)};
+  background: ${({ color }) => rainbow(color)};
   ${css.circle(8)};
   margin-right: 4px;
 `

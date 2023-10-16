@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import Link from 'next/link'
 
 import type { TColorName, TTestable } from '@/spec'
-import css, { theme, rainbowTheme } from '@/css'
+import css, { theme, rainbow } from '@/css'
 
 import Input from '@/widgets/Input'
 
@@ -27,7 +27,7 @@ export const DotSelector = styled.div`
 `
 export const TitleDot = styled.div<{ color: TColorName }>`
   ${css.circle(28)};
-  background: ${({ color }) => rainbowTheme(color, 'rainbow.blackRow')};
+  background: ${({ color }) => rainbow(color, 'rainbow.blackRow')};
 `
 export const TitleInputer = styled(Input)`
   margin-left: 10px;

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
-import css, { theme, rainbowTheme } from '@/css'
+import css, { theme, rainbow } from '@/css'
 import Input from '@/widgets/Input'
 
 type TWrapper = { isEditMode: boolean; isSetting: boolean; hasSettingTag: boolean }
@@ -33,7 +33,7 @@ export const Wrapper = styled.div<TWrapper>`
 type TDot = { color: TColorName; isEditMode?: boolean }
 export const Dot = styled.div<TDot>`
   ${({ isEditMode }) => (!isEditMode ? css.circle(11) : css.circle(20))};
-  background: ${({ color }) => rainbowTheme(color)};
+  background: ${({ color }) => rainbow(color)};
 `
 export const DotSelector = styled.div`
   ${css.circle(26)};

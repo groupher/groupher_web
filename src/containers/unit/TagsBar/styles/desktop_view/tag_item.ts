@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive, TPrimaryColor } from '@/spec'
 
-import css, { theme, rainbowTheme, rainbowLightTheme } from '@/css'
+import css, { theme, rainbow, rainbowLightTheme } from '@/css'
 
 import Img from '@/Img'
 
@@ -41,7 +41,7 @@ export const DotWrapper = styled.div`
 type THashSign = TActive & { color?: string }
 export const DotSign = styled.div<THashSign>`
   ${css.circle(8)};
-  background: ${({ color }) => (color ? rainbowTheme(color) : 'none')};
+  background: ${({ color }) => (color ? rainbow(color) : 'none')};
   opacity: ${({ $active }) => ($active ? 1 : theme('tags.dotOpacity'))};
 
   ${Wrapper}:hover & {

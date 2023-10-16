@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import type { TColorName, TTestable } from '@/spec'
 
-import css, { theme, rainbowTheme } from '@/css'
+import css, { theme, rainbow } from '@/css'
 
 import FAQSVG from '@/icons/FAQ'
 
@@ -71,7 +71,7 @@ export const CatSection = styled.div<{ color: TColorName }>`
     height: 100%;
     width: 4px;
     border-radius: 5px;
-    background-color: ${({ color }) => rainbowTheme(color)};
+    background-color: ${({ color }) => rainbow(color)};
     opacity: 0.5;
   }
 `

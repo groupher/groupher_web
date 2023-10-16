@@ -6,7 +6,7 @@ import InfoSVG from '@/icons/Info'
 import { MarkdownStyles } from '@/widgets/Common'
 
 // import Img from '@/Img'
-import css, { rainbowTheme, theme } from '@/css'
+import css, { rainbow, theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
@@ -41,7 +41,7 @@ export const Title = styled.h2<{ color: TColorName }>`
     background: ${(props) => {
       const { color } = props
       // @ts-ignore
-      const colorVal = rainbowTheme(color)(props)
+      const colorVal = rainbow(color)(props)
 
       return `linear-gradient(180deg, transparent 30%, ${colorVal} 0)`
     }};

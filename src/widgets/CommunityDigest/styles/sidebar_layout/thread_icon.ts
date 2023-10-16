@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive, TPrimaryColor } from '@/spec'
-import css, { theme, rainbowTheme } from '@/css'
+import css, { theme, rainbow } from '@/css'
 // import Img from '@/Img'
 
 import LinkOutSVG from '@/icons/LinkOut'
@@ -27,10 +27,10 @@ const getIcon = (SVG, size = 13) => {
   return styled(SVG)<TIcon>`
     ${css.size(size)};
     fill: ${({ $active, primaryColor }) =>
-      $active ? rainbowTheme(primaryColor) : theme('article.digest')};
+      $active ? rainbow(primaryColor) : theme('article.digest')};
 
     ${MenuItem}:hover & {
-      fill: ${({ primaryColor }) => rainbowTheme(primaryColor)};
+      fill: ${({ primaryColor }) => rainbow(primaryColor)};
     }
   `
 }

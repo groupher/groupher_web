@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive, TColorName } from '@/spec'
-import css, { theme, rainbowTheme } from '@/css'
+import css, { theme, rainbow } from '@/css'
 
 import { Divider } from '@/widgets/Common'
 
@@ -30,8 +30,8 @@ export const TopBar = styled.div<TTopBar>`
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   border: 1px solid;
-  border-color: ${({ bg }) => rainbowTheme(bg)};
-  background: ${({ bg }) => rainbowTheme(bg)};
+  border-color: ${({ bg }) => rainbow(bg)};
+  background: ${({ bg }) => rainbow(bg)};
   padding: 0 20px;
   padding-bottom: 2px;
 `
@@ -81,11 +81,11 @@ export const BgLabel = styled.div<{ bg: TColorName }>`
   ${css.circle(32)};
   ${css.row('align-both')};
   border: 1px solid;
-  border-color: ${({ bg }) => rainbowTheme(bg)};
+  border-color: ${({ bg }) => rainbow(bg)};
   cursor: pointer;
   margin-left: 15px;
 `
 export const TheColor = styled.div<{ color: TColorName }>`
   ${css.circle(26)};
-  background-color: ${({ color }) => rainbowTheme(color)};
+  background-color: ${({ color }) => rainbow(color)};
 `

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive, TPrimaryColor } from '@/spec'
-import css, { rainbowTheme, theme } from '@/css'
+import css, { rainbow, theme } from '@/css'
 
 import ArrowUpRight from '@/icons/ArrowUpRight'
 
@@ -34,7 +34,7 @@ export const LinkIcon = styled(ArrowUpRight)<TPrimaryColor>`
   fill: ${theme('article.digest')};
 
   ${LinkItem}:hover & {
-    fill: ${({ primaryColor }) => rainbowTheme(primaryColor)};
+    fill: ${({ primaryColor }) => rainbow(primaryColor)};
   }
 `
 

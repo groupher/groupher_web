@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
 
-import css, { theme, rainbowTheme, rainbowLightTheme } from '@/css'
+import css, { theme, rainbow, rainbowLightTheme } from '@/css'
 
 import ToolSVG from '@/icons/Heart'
 
@@ -58,7 +58,7 @@ export const IconWrapper = styled.div<{ color: TColorName }>`
 `
 export const ToolIcon = styled(ToolSVG)<{ color: TColorName }>`
   ${css.size(8)};
-  fill: ${({ color }) => rainbowTheme(color)};
+  fill: ${({ color }) => rainbow(color)};
 `
 
 export const ListContent = styled.div`

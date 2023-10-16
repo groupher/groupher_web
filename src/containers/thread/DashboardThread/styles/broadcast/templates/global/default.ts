@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive, TColorName } from '@/spec'
-import css, { theme, rainbowTheme } from '@/css'
+import css, { theme, rainbow } from '@/css'
 
 import CrossSVG from '@/icons/CloseCross'
 import ArrowSVG from '@/icons/Arrow'
@@ -49,8 +49,8 @@ export const NotifyBar = styled.div<TNotifyBar>`
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   border: 1px solid;
-  border-color: ${({ bg }) => rainbowTheme(bg)};
-  background: ${({ bg }) => rainbowTheme(bg)};
+  border-color: ${({ bg }) => rainbow(bg)};
+  background: ${({ bg }) => rainbow(bg)};
   padding: 0 20px;
   padding-bottom: 2px;
 `
@@ -60,7 +60,7 @@ export const NotifyDesc = styled.div`
   font-weight: 600;
 `
 export const NotifySolidLink = styled.div<{ bg: TColorName }>`
-  background: ${({ bg }) => rainbowTheme(bg)};
+  background: ${({ bg }) => rainbow(bg)};
 
   color: white;
   border-radius: 5px;
@@ -99,7 +99,7 @@ export const BgLabel = styled.div<{ bg: TColorName }>`
   height: 24px;
   ${css.row('align-both')};
   border: 1px solid;
-  border-color: ${({ bg }) => rainbowTheme(bg)};
+  border-color: ${({ bg }) => rainbow(bg)};
   border-radius: 6px;
   cursor: pointer;
   margin-left: 15px;
@@ -108,5 +108,5 @@ export const TheColor = styled.div<{ color: TColorName }>`
   width: 38px;
   height: 18px;
   border-radius: 6px;
-  background-color: ${({ color }) => rainbowTheme(color)};
+  background-color: ${({ color }) => rainbow(color)};
 `

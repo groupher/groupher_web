@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable, TColorName } from '@/spec'
-import css, { theme, rainbowTheme, rainbowLightTheme } from '@/css'
+import css, { theme, rainbow, rainbowLightTheme } from '@/css'
 import TreesSVG from '@/icons/Trees'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
@@ -72,7 +72,7 @@ export const Avatar = styled.div<{ color: TColorName }>`
   ${css.circle(30)};
   ${css.row('align-both')};
   padding: 2px;
-  color: ${({ color }) => rainbowTheme(color)};
+  color: ${({ color }) => rainbow(color)};
   font-size: 12px;
   background-color: ${({ color }) => rainbowLightTheme(color)};
 

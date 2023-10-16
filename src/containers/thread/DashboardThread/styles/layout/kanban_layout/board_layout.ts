@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive, TColorName } from '@/spec'
 
-import css, { theme, rainbowTheme, rainbowLightTheme } from '@/css'
+import css, { theme, rainbow, rainbowLightTheme } from '@/css'
 
 import DiceSVG from '@/icons/Dice'
 import ResetSVG from '@/icons/Reset'
@@ -115,13 +115,13 @@ export const ColorBall = styled.div<TColorBall>`
   background-color: ${({ color }) => rainbowLightTheme(color)};
 
   border: 1px dashed;
-  border-color: ${({ color }) => rainbowTheme(color)};
+  border-color: ${({ color }) => rainbow(color)};
   ${css.circle(16)};
   padding: 5px;
 
   &:hover {
     border: ${({ setable }) => (setable ? '1px solid' : '1px dashed')};
-    border-color: ${({ color }) => rainbowTheme(color)};
+    border-color: ${({ color }) => rainbow(color)};
   }
 
   transition: all 0.2s;

@@ -113,7 +113,7 @@ export {
   themeSkins,
   themeCoverMap,
   themeCoverIndexMap,
-  rainbowTheme,
+  rainbow,
   rainbowLightTheme,
 } from './themes'
 

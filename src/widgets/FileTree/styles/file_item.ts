@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TActive, TPrimaryColor } from '@/spec'
 import Img from '@/Img'
 // import HashTagSVG from '@/icons/HashTag'
-import css, { theme, rainbowTheme } from '@/css'
+import css, { theme, rainbow } from '@/css'
 
 import { TagsWrapper } from '.'
 
@@ -43,14 +43,13 @@ export const File = styled.div<TTag>`
 `
 type TTitle = TActive & TPrimaryColor
 export const Title = styled.div<TTitle>`
-  color: ${({ $active, primaryColor }) =>
-    $active ? rainbowTheme(primaryColor) : theme('tags.text')};
+  color: ${({ $active, primaryColor }) => ($active ? rainbow(primaryColor) : theme('tags.text'))};
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
   ${css.lineClamp(2)};
 
   ${Wrapper}:hover & {
     font-weight: 500;
-    color: ${({ primaryColor }) => rainbowTheme(primaryColor)};
+    color: ${({ primaryColor }) => rainbow(primaryColor)};
   }
 `
 export const RawWrapper = styled.div<TActive>`
@@ -85,7 +84,7 @@ export const IndexDot = styled.div<TPrimaryColor>`
   left: -12px;
   top: 14px;
   background-color: ${theme('hint')};
-  background-color: ${({ primaryColor }) => rainbowTheme(primaryColor)};
+  background-color: ${({ primaryColor }) => rainbow(primaryColor)};
   ${css.circle(5)};
   opacity: 0.65;
 `

@@ -17,7 +17,7 @@ import QuestionSVG from '@/icons/Question'
 import OtherSVG from '@/icons/menu/MoreL'
 
 // import Img from '@/Img'
-import css, { theme, rainbowTheme } from '@/css'
+import css, { theme, rainbow } from '@/css'
 import { Item } from './list'
 
 type TWrapper = { noSaturate: boolean } & TActive
@@ -37,14 +37,13 @@ type TIcon = TActive & TPrimaryColor & { $small: boolean }
 const commonIcon = (comp): FC<TIcon> => {
   // @ts-ignore
   return styled(comp)<TIcon>`
-    fill: ${({ $active, primaryColor }) => ($active ? rainbowTheme(primaryColor) : theme('hint'))};
+    fill: ${({ $active, primaryColor }) => ($active ? rainbow(primaryColor) : theme('hint'))};
     width: ${({ $small }) => ($small ? '12px' : '15px')};
     height: ${({ $small }) => ($small ? '12px' : '15px')};
     display: block;
 
     ${Item}:hover & {
-      fill: ${({ primaryColor, $active }) =>
-        $active ? rainbowTheme(primaryColor) : theme('hint')};
+      fill: ${({ primaryColor, $active }) => ($active ? rainbow(primaryColor) : theme('hint'))};
     }
   `
 }

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TColorName, TTestable } from '@/spec'
-import css, { theme, rainbowTheme } from '@/css'
+import css, { theme, rainbow } from '@/css'
 
 import Button from '@/widgets/Buttons/Button'
 import LaptopSVG from '@/icons/Works'
@@ -60,7 +60,7 @@ export const Header = styled.div`
 `
 export const Icon = styled(LaptopSVG)<{ color: TColorName }>`
   ${css.size(16)};
-  fill: ${({ color }) => rainbowTheme(color)};
+  fill: ${({ color }) => rainbow(color)};
   opacity: 0.65;
 
   ${Wrapper}:hover & {

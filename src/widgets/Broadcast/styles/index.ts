@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TMetric, TTestable, TColorName } from '@/spec'
 
-import css, { rainbowTheme } from '@/css'
+import css, { rainbow } from '@/css'
 import CrossSVG from '@/icons/CloseCross'
 import ArrowSVG from '@/icons/Arrow'
 import NotifySVG from '@/icons/Trumpet'
@@ -14,7 +14,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   ${css.row('align-both')};
   width: 100%;
   height: 33px;
-  background: ${({ bg }) => rainbowTheme(bg)};
+  background: ${({ bg }) => rainbow(bg)};
   color: white;
 `
 type TInner = { metric: TMetric; center: boolean }
@@ -36,7 +36,7 @@ export const LinkText = styled(Desc)`
   text-decoration: underline;
 `
 export const LinkBtn = styled.div<{ bg: TColorName }>`
-  background: ${({ bg }) => rainbowTheme(bg)};
+  background: ${({ bg }) => rainbow(bg)};
   color: white;
   height: 18px;
   padding: 1px 12px;

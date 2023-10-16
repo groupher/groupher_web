@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TPrimaryColor, TSpace } from '@/spec'
 // import Img from '@/Img'
-import css, { theme, rainbowTheme } from '@/css'
+import css, { theme, rainbow } from '@/css'
 
 import Button from '../../Button'
 // see example: https://codepen.io/mydearxym2/pen/qBEvvpo
@@ -19,7 +19,7 @@ export const PubButton = styled(Button)<TPubButton>`
 
   border: none;
   font-weight: 600;
-  background: ${({ primaryColor }) => rainbowTheme(primaryColor, 'button.bg')};
+  background: ${({ primaryColor }) => rainbow(primaryColor, 'button.bg')};
   color: ${theme('button.fg')};
   height: ${({ smaller }) => (smaller ? '28px' : '33px')};
   border-radius: 10px;
