@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable, TPrimaryColor } from '@/spec'
-import css, { primaryTheme } from '@/css'
+import css, { rainbowTheme } from '@/css'
 
 type TSlipBar = {
   slipHeight: string
@@ -46,7 +46,7 @@ type TRealBar = { width: string } & TPrimaryColor
 export const RealBar = styled.span<TRealBar>`
   width: ${({ width }) => width};
   height: 2px;
-  background: ${({ primaryColor }) => primaryTheme(primaryColor, 'dashboard.menuTitle')};
+  background: ${({ primaryColor }) => rainbowTheme(primaryColor, 'dashboard.menuTitle')};
 `
 // transform: ${({ active }) =>
 //     active ? 'translate3d(0,0,0);' : 'translate3d(0, 150%, 0);'};

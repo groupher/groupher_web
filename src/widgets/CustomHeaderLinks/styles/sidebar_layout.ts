@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive, TPrimaryColor } from '@/spec'
-import css, { theme, primaryTheme } from '@/css'
+import css, { theme, rainbowTheme } from '@/css'
 
 import LinkSVG from '@/icons/Link'
 import ArrowUpRightSVG from '@/icons/ArrowUpRight'
@@ -56,10 +56,10 @@ export const MoreIcon = styled(MoreSVG)<TGroupItem>`
   ${css.size(14)};
   margin-right: 12px;
   margin-left: 1px;
-  fill: ${({ $active, primaryColor }) => ($active ? primaryTheme(primaryColor) : theme('hint'))};
+  fill: ${({ $active, primaryColor }) => ($active ? rainbowTheme(primaryColor) : theme('hint'))};
 
   ${LinkItem}:hover & {
-    fill: ${({ primaryColor }) => primaryTheme(primaryColor)};
+    fill: ${({ primaryColor }) => rainbowTheme(primaryColor)};
   }
 `
 
@@ -70,13 +70,13 @@ export const LinkIcon = styled(LinkSVG)<TPrimaryColor>`
   margin-left: -1px;
 
   ${LinkItem}:hover & {
-    fill: ${({ primaryColor }) => primaryTheme(primaryColor)};
+    fill: ${({ primaryColor }) => rainbowTheme(primaryColor)};
   }
 `
 
 export const ArrowUpRightIcon = styled(ArrowUpRightSVG)<TPrimaryColor>`
   ${css.size(12)};
-  fill: ${({ primaryColor }) => primaryTheme(primaryColor)};
+  fill: ${({ primaryColor }) => rainbowTheme(primaryColor)};
   margin-top: 2px;
   margin-right: 1px;
   opacity: 0;

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme, primaryTheme } from '@/css'
+import css, { theme, rainbowTheme } from '@/css'
 import type { TActive, TPrimaryColor } from '@/spec'
 
 import { Title, RejectIcon as RejectIconBase } from './filter_panel'
@@ -17,7 +17,7 @@ export const Item = styled.div`
 type TTitle = TActive & TPrimaryColor
 export const StateTitle = styled(Title)<TTitle>`
   color: ${({ $active, primaryColor }) =>
-    $active ? primaryTheme(primaryColor) : theme('article.title')};
+    $active ? rainbowTheme(primaryColor) : theme('article.title')};
   font-weight: 500;
   white-space: nowrap;
 `

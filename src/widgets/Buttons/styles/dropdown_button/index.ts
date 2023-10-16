@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive, TPrimaryColor, TSizeTS, TSpace } from '@/spec'
 import SIZE from '@/constant/size'
-import css, { theme, primaryTheme, primaryLightTheme } from '@/css'
+import css, { theme, rainbowTheme, primaryLightTheme } from '@/css'
 
 import Button from '@/widgets/Buttons/Button'
 import ArrowSVG from '@/icons/ArrowSimple'
@@ -19,7 +19,7 @@ export const Wrapper = styled.div<TWrapper>`
   /* border: ${({ withBorder, $active }) => (withBorder || $active ? '1px solid' : 'none')}; */
   border: 1px solid;
   border-color: ${({ withBorder, $active, selected, primaryColor }) =>
-    withBorder || $active || selected ? primaryTheme(primaryColor, 'lightText') : 'transparent'};
+    withBorder || $active || selected ? rainbowTheme(primaryColor, 'lightText') : 'transparent'};
 
   background: ${({ $active, selected, primaryColor }) =>
     $active || selected ? primaryLightTheme(primaryColor) : 'transparent'};
@@ -50,7 +50,7 @@ export const InnerBtnWrapper = styled.div<TInnerBtnWrapper>`
   ${css.row('align-center')};
   margin-left: 2px;
   color: ${({ $active, primaryColor }) =>
-    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+    $active ? rainbowTheme(primaryColor) : theme('article.digest')};
   font-weight: 400;
   font-size: 13px;
 
@@ -68,14 +68,14 @@ export const ButtonWrapper = styled(Button)`
 type TFilterIcon = Omit<TWrapper, 'withBorder' | 'size'>
 export const FilterIcon = styled(ArrowSVG)<TFilterIcon>`
   fill: ${({ $active, selected, primaryColor }) =>
-    $active || selected ? primaryTheme(primaryColor, 'article.digest') : theme('article.digest')};
+    $active || selected ? rainbowTheme(primaryColor, 'article.digest') : theme('article.digest')};
   ${css.size(14)};
   transform: rotate(-90deg);
   margin-left: 4px;
 
   ${InnerBtnWrapper}:hover & {
     fill: ${({ $active, primaryColor }) =>
-      $active ? primaryTheme(primaryColor, 'article.digest') : theme('article.digest')};
+      $active ? rainbowTheme(primaryColor, 'article.digest') : theme('article.digest')};
   }
 
   ${css.media.mobile`
@@ -89,18 +89,18 @@ export const CloseWrapper = styled.div<TPrimaryColor>`
   ${css.row('align-both')};
   margin-left: 4px;
 
-  color: ${({ primaryColor }) => primaryTheme(primaryColor)};
+  color: ${({ primaryColor }) => rainbowTheme(primaryColor)};
 
   &:hover {
     color: ${theme('button.fg')};
-    background: ${({ primaryColor }) => primaryTheme(primaryColor)};
+    background: ${({ primaryColor }) => rainbowTheme(primaryColor)};
     cursor: pointer;
   }
 
   transition: all 0.2s;
 `
 export const CloseIcon = styled(CloseSVG)<TPrimaryColor>`
-  fill: ${({ primaryColor }) => primaryTheme(primaryColor)};
+  fill: ${({ primaryColor }) => rainbowTheme(primaryColor)};
   ${css.size(12)};
   transform: rotate(-90deg);
   opacity: 0.8;

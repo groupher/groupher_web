@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css, { theme, primaryTheme } from '@/css'
+import css, { theme, rainbowTheme } from '@/css'
 import type { TActive, TPrimaryColor } from '@/spec'
 
 import { SelectItem as SelectItemBase } from '.'
@@ -34,27 +34,27 @@ type TIcon = TActive & TPrimaryColor
 export const AllIcon = styled(AllSVG)<TIcon>`
   ${css.size(14)};
   fill: ${({ $active, primaryColor }) =>
-    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+    $active ? rainbowTheme(primaryColor) : theme('article.digest')};
 `
 export const TodoIcon = styled(GtdTodoSVG)<TIcon>`
   ${css.size(14)};
   fill: ${({ $active, primaryColor }) =>
-    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+    $active ? rainbowTheme(primaryColor) : theme('article.digest')};
 `
 export const WipIcon = styled(GtdWipSVG)<TIcon>`
   ${css.size(16)};
   fill: ${({ $active, primaryColor }) =>
-    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+    $active ? rainbowTheme(primaryColor) : theme('article.digest')};
 `
 export const DoneIcon = styled(GtdDoneSVG)<TIcon>`
   ${css.size(14)};
   fill: ${({ $active, primaryColor }) =>
-    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+    $active ? rainbowTheme(primaryColor) : theme('article.digest')};
 `
 export const RejectIcon = styled(GtdRejectSVG)<TIcon>`
   ${css.size(13)};
   fill: ${({ $active, primaryColor }) =>
-    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+    $active ? rainbowTheme(primaryColor) : theme('article.digest')};
 `
 
 type TTitle = TPrimaryColor & TActive
@@ -62,16 +62,16 @@ export const Title = styled.div<TTitle>`
   font-size: 14px;
 
   color: ${({ $active, primaryColor }) =>
-    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+    $active ? rainbowTheme(primaryColor) : theme('article.digest')};
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
 
   /* ${SelectItem}:hover & {
     color: ${({ $active, primaryColor }) =>
-    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+    $active ? rainbowTheme(primaryColor) : theme('article.digest')};
   } */
 
   &:hover {
     color: ${({ $active, primaryColor }) =>
-      $active ? primaryTheme(primaryColor) : theme('article.digest')};
+      $active ? rainbowTheme(primaryColor) : theme('article.digest')};
   }
 `

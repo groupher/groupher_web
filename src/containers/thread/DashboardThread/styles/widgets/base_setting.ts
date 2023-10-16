@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
-import css, { theme, primaryTheme } from '@/css'
+import css, { theme, rainbowTheme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.column()};
@@ -10,13 +10,13 @@ export const Label = styled.div<{ color: TColorName }>`
   ${css.circle(28)};
   ${css.row('align-both')};
   border: 1px solid;
-  border-color: ${({ color }) => primaryTheme(color)};
+  border-color: ${({ color }) => rainbowTheme(color)};
   cursor: pointer;
   margin-left: -2px;
 `
 export const TheColor = styled.div<{ color: TColorName }>`
   ${css.circle(20)};
-  background-color: ${({ color }) => primaryTheme(color)};
+  background-color: ${({ color }) => rainbowTheme(color)};
 `
 
 // threads

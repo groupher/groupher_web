@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TPrimaryColor } from '@/spec'
 
-import css, { theme, primaryTheme } from '@/css'
+import css, { theme, rainbowTheme } from '@/css'
 
 // user page
 import DiscussSVG from '@/icons/Discuss'
@@ -28,14 +28,14 @@ type TCommonIcon = { $active: boolean; $small: boolean } & TPrimaryColor
 
 const commonIcon = (comp) => {
   return styled(comp)<TCommonIcon>`
-    fill: ${({ $active, primaryColor }) => ($active ? primaryTheme(primaryColor) : theme('hint'))};
+    fill: ${({ $active, primaryColor }) => ($active ? rainbowTheme(primaryColor) : theme('hint'))};
     width: ${({ $small }: { $small: boolean }) => ($small ? '12px' : '14px')};
     height: ${({ $small }) => ($small ? '12px' : '14px')};
     margin-right: 5px;
     display: block;
 
     ${Label}:hover & {
-      fill: ${({ primaryColor }) => primaryTheme(primaryColor)};
+      fill: ${({ primaryColor }) => rainbowTheme(primaryColor)};
     }
   `
 }

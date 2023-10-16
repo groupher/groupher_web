@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable, TSpace, TPrimaryColor } from '@/spec'
-import css, { theme, primaryTheme } from '@/css'
+import css, { theme, rainbowTheme } from '@/css'
 
 import {
   getActiveBackground,
@@ -56,7 +56,7 @@ export const Label = styled.label<TLabel>`
     height: ${({ size }) => getRadioBoxSize(size)};
     border: 2px solid;
     border-color: ${({ checked, primaryColor }) =>
-      checked ? theme('button.fg') : primaryTheme(primaryColor)};
+      checked ? theme('button.fg') : rainbowTheme(primaryColor)};
     border-radius: 50%;
   }
 

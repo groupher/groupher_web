@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components'
 
 import type { TPrimaryColor } from '@/spec'
-import css, { theme, primaryTheme, primaryLightTheme } from '@/css'
+import css, { theme, rainbowTheme, primaryLightTheme } from '@/css'
 
 import normalize from './normalize'
 
@@ -22,12 +22,12 @@ const GlobalStyle = createGlobalStyle<TPrimaryColor>`
 
   *::-moz-selection {
     background-color: ${({ primaryColor }) => primaryLightTheme(primaryColor)} !important;
-    color: ${({ primaryColor }) => primaryTheme(primaryColor)} !important;
+    color: ${({ primaryColor }) => rainbowTheme(primaryColor)} !important;
   }
 
   *::selection {
     background-color: ${({ primaryColor }) => primaryLightTheme(primaryColor)} !important;
-    color: ${({ primaryColor }) => primaryTheme(primaryColor)} !important;
+    color: ${({ primaryColor }) => rainbowTheme(primaryColor)} !important;
   }
 
   a:hover {

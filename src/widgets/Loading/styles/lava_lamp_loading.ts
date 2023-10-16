@@ -2,7 +2,7 @@ import styled, { keyframes } from 'styled-components'
 
 import type { TSpace, TSizeTSM, TPrimaryColor } from '@/spec'
 import { getRandomInt } from '@/helper'
-import css, { primaryTheme } from '@/css'
+import css, { rainbowTheme } from '@/css'
 
 import { getLavaLampScale } from './metric'
 
@@ -51,7 +51,7 @@ const speedMap = {
 type TCircle = { index: number } & TPrimaryColor
 export const Circle = styled.span<TCircle>`
   ${css.circle(3)};
-  background-color: ${({ primaryColor }) => primaryTheme(primaryColor)};
+  background-color: ${({ primaryColor }) => rainbowTheme(primaryColor)};
   animation: ${move} 1s linear 0ms infinite;
   /* animation-duration: ${() => `${speed[getRandomInt(0, speed.length - 1)]}s`}; */
   width: ${({ index }) => (index === 2 || index === 6 ? '15px' : '4px')};

@@ -74,14 +74,7 @@ const css = {
   spaceMargins,
 }
 
-export {
-  theme,
-  primaryTheme,
-  primaryLightTheme,
-  primaryLink,
-  rainbowTheme,
-  rainbowBgTheme,
-} from '../themes'
+export { theme, primaryLightTheme, primaryLink, rainbowTheme, rainbowBgTheme } from '../themes'
 export { WIDTH } from './metric'
 export { default as zIndex } from './zindex'
 

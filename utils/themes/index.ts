@@ -37,17 +37,17 @@ export const theme = (themeKey: TFlatThemeKey): TTheme =>
 /**
  * for primary color component
  */
-export const primaryTheme = (primaryColor: TColorName, themeKey = ''): string => {
-  const colorKey = primaryColor?.toLowerCase()
+// export const rainbowTheme = (primaryColor: TColorName, themeKey = ''): string => {
+//   const colorKey = primaryColor?.toLowerCase()
 
-  if (primaryColor === COLOR_NAME.BLACK) {
-    return !!themeKey
-      ? theme(`${themeKey as TFlatThemeKey}`)
-      : theme(`rainbow.${colorKey}` as TFlatThemeKey)
-  }
+//   if (primaryColor === COLOR_NAME.BLACK) {
+//     return !!themeKey
+//       ? theme(`${themeKey as TFlatThemeKey}`)
+//       : theme(`rainbow.${colorKey}` as TFlatThemeKey)
+//   }
 
-  return theme(`rainbow.${colorKey}` as TFlatThemeKey)
-}
+//   return theme(`rainbow.${colorKey}` as TFlatThemeKey)
+// }
 
 export const primaryLink = (primaryColor: TColorName): string => {
   if (primaryColor === COLOR_NAME.BLACK) {
@@ -65,10 +65,10 @@ export const primaryLightTheme = (primaryColor: TColorName): string => {
   return theme(`rainbow.${camelize(primaryColor)}Bg` as TFlatThemeKey)
 }
 
-export const rainbowTheme = (color: TColorName | string, themeKey = ''): string => {
+export const rainbowTheme = (color: TColorName | string, darkThemeOverWriteKey = ''): string => {
   if (color === COLOR_NAME.BLACK) {
-    return !!themeKey
-      ? theme(`${themeKey as TFlatThemeKey}`)
+    return !!darkThemeOverWriteKey
+      ? theme(`${darkThemeOverWriteKey as TFlatThemeKey}`)
       : theme(`rainbow.${camelize(color)}` as TFlatThemeKey)
   }
 
