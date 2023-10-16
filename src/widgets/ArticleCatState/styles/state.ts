@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
 
-import css, { primaryLightTheme, rainbowTheme, theme } from '@/css'
+import css, { rainbowBgTheme, rainbowTheme, theme } from '@/css'
 
 import GtdTodoSVG from '@/icons/GtdTodo'
 import GtdWipSVG from '@/icons/GtdWip'
@@ -20,7 +20,7 @@ export const Wrapper = styled.div<TType>`
       ? css.size(16)
       : 'width: auto; height: 22px; padding-left: 5px; margin-left: 6px; margin-right: 6px;'};
   ${css.row('align-both')};
-  background: ${({ color }) => primaryLightTheme(color)};
+  background: ${({ color }) => rainbowBgTheme(color)};
   border-radius: ${({ smaller }) => (smaller ? '3px' : '5px')};
 `
 export const Text = styled.div`

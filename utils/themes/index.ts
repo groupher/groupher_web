@@ -57,14 +57,6 @@ export const primaryLink = (primaryColor: TColorName): string => {
   return theme(`rainbow.${primaryColor}` as TFlatThemeKey)
 }
 
-export const primaryLightTheme = (primaryColor: TColorName): string => {
-  if (primaryColor === COLOR_NAME.BLACK) {
-    return theme('hoverBg')
-  }
-
-  return theme(`rainbow.${camelize(primaryColor)}Bg` as TFlatThemeKey)
-}
-
 export const rainbowTheme = (color: TColorName | string, darkThemeOverWriteKey = ''): string => {
   if (color === COLOR_NAME.BLACK) {
     return !!darkThemeOverWriteKey

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive, TPrimaryColor } from '@/spec'
 
-import css, { theme, rainbowTheme, primaryLightTheme } from '@/css'
+import css, { theme, rainbowTheme, rainbowBgTheme } from '@/css'
 
 import Img from '@/Img'
 
@@ -18,11 +18,11 @@ export const Wrapper = styled.div<TTag>`
   border-radius: 8px;
 
   background: ${({ $active, primaryColor }) =>
-    $active ? primaryLightTheme(primaryColor) : 'transparent'};
+    $active ? rainbowBgTheme(primaryColor) : 'transparent'};
 
   &:hover {
     background: ${({ $active, primaryColor }) =>
-      $active ? primaryLightTheme(primaryColor) : theme('hoverBg')};
+      $active ? rainbowBgTheme(primaryColor) : theme('hoverBg')};
     cursor: pointer;
   }
 `

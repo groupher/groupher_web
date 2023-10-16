@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components'
 
 import type { TPrimaryColor } from '@/spec'
-import css, { theme, rainbowTheme, primaryLightTheme } from '@/css'
+import css, { theme, rainbowTheme, rainbowBgTheme } from '@/css'
 
 import normalize from './normalize'
 
@@ -21,12 +21,12 @@ const GlobalStyle = createGlobalStyle<TPrimaryColor>`
   }
 
   *::-moz-selection {
-    background-color: ${({ primaryColor }) => primaryLightTheme(primaryColor)} !important;
+    background-color: ${({ primaryColor }) => rainbowBgTheme(primaryColor)} !important;
     color: ${({ primaryColor }) => rainbowTheme(primaryColor)} !important;
   }
 
   *::selection {
-    background-color: ${({ primaryColor }) => primaryLightTheme(primaryColor)} !important;
+    background-color: ${({ primaryColor }) => rainbowBgTheme(primaryColor)} !important;
     color: ${({ primaryColor }) => rainbowTheme(primaryColor)} !important;
   }
 
