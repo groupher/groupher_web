@@ -9,7 +9,7 @@ import SavingBar from '../SavingBar'
 import Templates from './Templates'
 import Editor from './Editors'
 
-import { Wrapper, SavingWrapper } from '../styles/footer'
+import { Wrapper } from '../styles/footer'
 
 type TProps = {
   settings: TFooterSettings
@@ -24,14 +24,13 @@ const Footer: FC<TProps> = ({ settings, touched }) => {
       <br />
       <Editor settings={settings} />
 
-      <SavingWrapper>
-        <SavingBar
-          field={SETTING_FIELD.FOOTER_LINKS}
-          isTouched={touched.footerLinks}
-          loading={settings.saving}
-          top={30}
-        />
-      </SavingWrapper>
+      <SavingBar
+        field={SETTING_FIELD.FOOTER_LINKS}
+        isTouched={touched.footerLinks}
+        loading={settings.saving}
+        top={30}
+        width="98%"
+      />
     </Wrapper>
   )
 }

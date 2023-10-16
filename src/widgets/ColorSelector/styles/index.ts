@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable, TActive, TColorName } from '@/spec'
+import { COLOR_NAME } from '@/constant/colors'
 
 import HookSVG from '@/icons/Hook'
 import css, { theme, rainbow, rainbowLight } from '@/css'
@@ -17,7 +18,8 @@ export const DotWrapper = styled.div`
 `
 type TDot = TActive & { colorName: TColorName; bgMode: boolean }
 export const Dot = styled.div<TDot>`
-  ${({ $active }) => ($active ? css.circle(20) : css.circle(16))};
+  ${({ $active, colorName }) =>
+    $active ? css.circle(20) : css.circle(colorName === COLOR_NAME.BLACK ? 18 : 16)};
   ${css.row('align-both')};
   background-color: ${({ colorName, bgMode }) =>
     !bgMode ? rainbow(colorName, 'rainbow.blackRow') : rainbowLight(colorName)};

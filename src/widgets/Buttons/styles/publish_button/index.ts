@@ -17,7 +17,6 @@ export const PubButton = styled(Button)<TPubButton>`
   ${css.row('justify-between')};
   width: 100%;
 
-  border: none;
   font-weight: 600;
   background: ${({ primaryColor }) => rainbow(primaryColor, 'button.bg')};
   color: ${theme('button.fg')};

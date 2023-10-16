@@ -242,7 +242,7 @@ const day = {
     clicked: primaryColor,
     ghostBorder: hint,
     upvoteBorder: '#dadada',
-    boxShadow: 'rgb(24 24 24 / 10%) -1px 1px 16px 2px',
+    boxShadow: 'rgb(202 202 202 / 10%) -1px 1px 16px 2px',
   },
   navigator: {
     activeBottom: primaryColor,

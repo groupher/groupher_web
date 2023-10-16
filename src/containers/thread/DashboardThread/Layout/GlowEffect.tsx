@@ -85,7 +85,13 @@ const GlowEffect: FC<TProps> = ({
         ))}
       </Row>
 
-      <SavingBar isTouched={isTouched} field={SETTING_FIELD.GLOW_TYPE} loading={saving} top={30} />
+      <SavingBar
+        isTouched={isTouched}
+        field={SETTING_FIELD.GLOW_TYPE}
+        loading={saving}
+        top={35}
+        width="87%"
+      />
 
       <Br bottom={40} />
 
@@ -93,6 +99,7 @@ const GlowEffect: FC<TProps> = ({
         isTouched={isGrowFixedTouched}
         field={SETTING_FIELD.GLOW_FIXED}
         loading={saving}
+        width="88%"
         left={-10}
         top={-8}
       >
@@ -123,6 +130,7 @@ const GlowEffect: FC<TProps> = ({
           isTouched={isGrowOpacityTouched}
           field={SETTING_FIELD.GLOW_OPACITY}
           loading={saving}
+          width="88%"
           left={-10}
           top={-8}
         >

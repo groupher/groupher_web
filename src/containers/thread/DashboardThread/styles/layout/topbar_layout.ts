@@ -23,6 +23,9 @@ type TTopBar = { center?: boolean; bg: TColorName }
 export const TopBar = styled.div<TTopBar>`
   ${css.row('align-center')};
   justify-content: ${({ center }) => (center ? 'center' : 'flex-start')};
+  position: absolute;
+  top: 0;
+  left: 0;
   width: calc(100% + 2px);
   height: 5px;
   margin-top: -1px;
@@ -68,6 +71,7 @@ export const Block = styled(BlockBase)`
   width: 300px;
   height: 200px;
   padding: 0px;
+  position: relative;
 `
 export const DividerLine = styled(Divider)`
   opacity: 0.8;

@@ -17,7 +17,7 @@ import { Icon } from './styles/side_menu'
 
 export { SEO_KEYS, SEO_OG_KEYS, SEO_TW_KEYS } from '@/constant/seo'
 
-export const ALIGN_HEADER_OFFSET = '142px'
+export const ALIGN_HEADER_OFFSET = '134px'
 
 // do not change, it's map to GQ endpoint updateDashboardLayout
 export const SETTING_LAYOUT_FIELD = {

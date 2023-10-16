@@ -10,6 +10,8 @@ export type TThemeMap = {
   _meta?: {
     category: string // TODO: 'dark' | 'light'
   }
+  htmlBg?: string
+  alphaBg?: string
   rainbow?: {
     red: string
     orange: string

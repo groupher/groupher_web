@@ -22,7 +22,6 @@ import {
   Divider,
   Avatar,
   AvatarList,
-  SavingWrapper,
 } from '../styles/layout/avatar_layout'
 import { edit } from '../logic'
 
@@ -98,14 +97,13 @@ const AvatarLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
       </SelectWrapper>
-      <SavingWrapper>
-        <SavingBar
-          isTouched={isTouched}
-          field={SETTING_FIELD.AVATAR_LAYOUT}
-          loading={saving}
-          top={20}
-        />
-      </SavingWrapper>
+      <SavingBar
+        isTouched={isTouched}
+        field={SETTING_FIELD.AVATAR_LAYOUT}
+        loading={saving}
+        width="80%"
+        top={25}
+      />
     </Wrapper>
   )
 }

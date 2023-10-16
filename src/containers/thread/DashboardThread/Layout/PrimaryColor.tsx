@@ -10,7 +10,7 @@ import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
 import { SETTING_FIELD } from '../constant'
-import { Wrapper, Label, TheColor } from '../styles/layout/primary_color'
+import { Wrapper, Label, ColorBall } from '../styles/layout/primary_color'
 import { edit } from '../logic'
 
 type TProps = {
@@ -35,6 +35,7 @@ const PrimaryColor: FC<TProps> = ({ primaryColor, isTouched, saving }) => {
         isTouched={isTouched}
         field={SETTING_FIELD.PRIMARY_COLOR}
         loading={saving}
+        width="90%"
         left={-8}
       >
         <Label color={primaryColor}>
@@ -44,7 +45,7 @@ const PrimaryColor: FC<TProps> = ({ primaryColor, isTouched, saving }) => {
             placement="right"
             offset={[-1, 15]}
           >
-            <TheColor color={primaryColor} />
+            <ColorBall color={primaryColor} />
           </ColorSelector>
         </Label>
       </SavingBar>

@@ -241,7 +241,7 @@ const night = {
     hoverBg: lighten(primaryColor, 10),
     activeBg: darken(primaryColor, 5),
     clicked: primaryColor,
-    ghostBorder: hint,
+    ghostBorder: '#606060',
     upvoteBorder: '#dadada',
     boxShadow: 'rgb(24 24 24 / 32%) -1px 1px 16px 2px',
   },

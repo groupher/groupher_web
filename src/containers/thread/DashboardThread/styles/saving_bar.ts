@@ -5,10 +5,10 @@ import css, { theme } from '@/css'
 
 import InfoSVG from '@/icons/Save'
 
-type TWrapper = { direction: 'left' | 'right' } & TSpace
+type TWrapper = { direction: 'left' | 'right'; width: string } & TSpace
 export const NormalWrapper = styled.div<TWrapper>`
   ${css.row('align-center')};
-  width: ${({ direction }) => (direction === 'right' ? 'calc(100% + 10px)' : '100%')};
+  width: ${({ direction, width }) => (direction === 'right' ? `calc(${width} + 10px)` : width)};
   background: ${(props) => {
     const { direction } = props
     const themeVal = theme('hoverBg')(props)

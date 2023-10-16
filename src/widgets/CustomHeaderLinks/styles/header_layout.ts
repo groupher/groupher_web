@@ -16,16 +16,17 @@ export const LinkItem = styled(LinkItemBase)`
 export const GroupItem = styled(LinkItem)<TActive>`
   ${css.row('align-center')};
   position: relative;
-  padding-right: 22px;
+  padding-right: 18px;
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   background: ${({ $active }) => ($active ? theme('hoverBg') : '')};
 
   &:hover {
     background: ${theme('hoverBg')};
+    color: ${theme('article.title')};
   }
 `
 export const ArrowIcon = styled(ArrowIconBase)`
   position: absolute;
   ${css.size(14)};
-  right: 4px;
+  right: 1px;
 `

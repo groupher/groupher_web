@@ -30,6 +30,7 @@ type TProps = {
   isTouched?: boolean
   minimal?: boolean
   disabled?: boolean
+  width?: string
   onCancel?: () => void
   onConfirm?: () => void
 } & TSpace
@@ -45,6 +46,7 @@ const SavingBar: FC<TProps> = ({
   disabled = false,
   onCancel = log,
   onConfirm = log,
+  width = '100%',
   ...restProps
 }) => {
   // cannot pass minimal to Wrapper, cuz the wired issue on styled-components@6
@@ -53,7 +55,7 @@ const SavingBar: FC<TProps> = ({
   if (children !== null) {
     if (isTouched) {
       return (
-        <Wrapper direction="left" {...restProps}>
+        <Wrapper direction="left" width={width} {...restProps}>
           <Fragment>{children}</Fragment>
           <SpaceGrow />
           <ActionWrapper $minimal={minimal}>
@@ -86,7 +88,7 @@ const SavingBar: FC<TProps> = ({
   if (!isTouched) return null
 
   return (
-    <Wrapper direction="right" {...restProps}>
+    <Wrapper direction="right" width={width} {...restProps}>
       <HintWrapper>
         <InfoIcon $minimal={minimal} />
         <HintText $minimal={minimal}>
