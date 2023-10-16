@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
 
-import css, { theme, baseColorTheme, baseColorBgTheme } from '@/css'
+import css, { theme, rainbowTheme, rainbowBgTheme } from '@/css'
 
 import ToolSVG from '@/icons/Heart'
 
@@ -52,13 +52,13 @@ export const IconWrapper = styled.div<{ color: TColorName }>`
   ${css.size(15)};
   ${css.row('align-both')};
   border-radius: 2px;
-  background-color: ${({ color }) => baseColorBgTheme(color)};
+  background-color: ${({ color }) => rainbowBgTheme(color)};
   margin-bottom: 8px;
   margin-right: 20px;
 `
 export const ToolIcon = styled(ToolSVG)<{ color: TColorName }>`
   ${css.size(8)};
-  fill: ${({ color }) => baseColorTheme(color)};
+  fill: ${({ color }) => rainbowTheme(color)};
 `
 
 export const ListContent = styled.div`

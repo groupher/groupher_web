@@ -65,11 +65,11 @@ export const primaryLightTheme = (primaryColor: TColorName): string => {
   return `rainbow.${camelize(primaryColor)}Bg` as TFlatThemeKey
 }
 
-export const baseColorTheme = (color: TColorName | string): string => {
+export const rainbowTheme = (color: TColorName | string): string => {
   return theme(`rainbow.${camelize(color)}` as TFlatThemeKey)
 }
 
-export const baseColorBgTheme = (color: TColorName | string): string => {
+export const rainbowBgTheme = (color: TColorName | string): string => {
   return theme(`rainbow.${camelize(color)}Bg` as TFlatThemeKey)
 }
 

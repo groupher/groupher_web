@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TTestable, TActive, TColorName } from '@/spec'
 
 import HookSVG from '@/icons/Hook'
-import css, { theme, baseColorTheme, baseColorBgTheme } from '@/css'
+import css, { theme, rainbowTheme, rainbowBgTheme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
@@ -19,12 +19,12 @@ type TDot = TActive & { color: string; colorName: TColorName; bgMode: boolean }
 export const Dot = styled.div<TDot>`
   ${({ $active }) => ($active ? css.circle(20) : css.circle(16))};
   ${css.row('align-both')};
-  background-color: ${({ color, bgMode }) => (!bgMode ? color : baseColorBgTheme(color))};
+  background-color: ${({ color, bgMode }) => (!bgMode ? color : rainbowBgTheme(color))};
 
   box-shadow: ${({ $active }) => ($active ? '0px 0px 7px 0px rgb(151 151 151 / 30%)' : '')};
 
   border: ${({ bgMode }) => (bgMode ? '1px dashed' : 'none')};
-  border-color: ${({ colorName }) => baseColorTheme(colorName)};
+  border-color: ${({ colorName }) => rainbowTheme(colorName)};
 
   &:hover {
     ${css.circle(20)};

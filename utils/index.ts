@@ -113,8 +113,8 @@ export {
   themeSkins,
   themeCoverMap,
   themeCoverIndexMap,
-  baseColorTheme,
-  baseColorBgTheme,
+  rainbowTheme,
+  rainbowBgTheme,
 } from './themes'
 
 // helpers

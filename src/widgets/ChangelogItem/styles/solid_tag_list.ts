@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
 
-import css, { theme, baseColorBgTheme } from '@/css'
+import css, { theme, rainbowBgTheme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};
@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
 `
 
 export const TagWrapper = styled.div<{ color: TColorName }>`
-  background: ${({ color }) => baseColorBgTheme(color)};
+  background: ${({ color }) => rainbowBgTheme(color)};
   padding: 2px 10px;
   border-radius: 10px;
 

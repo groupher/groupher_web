@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
 
-import css, { theme, baseColorTheme } from '@/css'
+import css, { theme, rainbowTheme } from '@/css'
 
 import GithubSVG from '@/icons/social/Github'
 import QuestionSVG from '@/icons/Question'
@@ -30,7 +30,7 @@ export const Cover = styled.div<{ color?: TColorName }>`
   left: 0;
   top: 0;
 
-  background-color: ${({ color }) => baseColorTheme(color)};
+  background-color: ${({ color }) => rainbowTheme(color)};
   border-radius: 5px;
   opacity: 0.6;
 
@@ -67,7 +67,7 @@ export const Title = styled.div<{ color: TColorName }>`
   color: ${theme('article.digest')};
 
   &:hover {
-    color: ${({ color }) => baseColorTheme(color)};
+    color: ${({ color }) => rainbowTheme(color)};
     font-weight: 500;
   }
 

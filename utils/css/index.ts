@@ -79,8 +79,8 @@ export {
   primaryTheme,
   primaryLightTheme,
   primaryLink,
-  baseColorTheme,
-  baseColorBgTheme,
+  rainbowTheme,
+  rainbowBgTheme,
 } from '../themes'
 export { WIDTH } from './metric'
 export { default as zIndex } from './zindex'
