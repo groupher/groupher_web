@@ -38,34 +38,34 @@ const IconWrapper = styled.div`
   margin-left: -2px;
 `
 export const UsersWrapper = styled(IconWrapper)`
-  background: ${theme('baseColor.blueBg')};
+  background: ${theme('rainbow.blueBg')};
 `
 export const ContentWrapper = styled(IconWrapper)`
-  background: ${theme('baseColor.purpleBg')};
+  background: ${theme('rainbow.purpleBg')};
 `
 export const CommentsWrapper = styled(IconWrapper)`
-  background: ${theme('baseColor.orangeBg')};
+  background: ${theme('rainbow.orangeBg')};
 `
 export const EmojisWrapper = styled(IconWrapper)`
-  background: ${theme('baseColor.redBg')};
+  background: ${theme('rainbow.redBg')};
 `
 export const TrendWrapper = styled(IconWrapper)`
-  background: ${theme('baseColor.greenBg')};
+  background: ${theme('rainbow.greenBg')};
 `
 export const UsersIcon = styled(UserSVG)`
   ${css.size(14)};
-  fill: ${theme('baseColor.blue')};
+  fill: ${theme('rainbow.blue')};
   opacity: 0.8;
   filter: drop-shadow(0 0px 5px #a9c0e2);
 `
 export const ContentIcon = styled(PostSVG)`
   ${css.size(12)};
-  fill: ${theme('baseColor.purple')};
+  fill: ${theme('rainbow.purple')};
   filter: drop-shadow(0 0px 5px #bea3cc);
 `
 export const CommentIcon = styled(CommentSVG)`
   ${css.size(12)};
-  fill: ${theme('baseColor.orange')};
+  fill: ${theme('rainbow.orange')};
   margin-left: 1px;
   margin-top: 1px;
   opacity: 0.8;
@@ -73,12 +73,12 @@ export const CommentIcon = styled(CommentSVG)`
 `
 export const EmojiIcon = styled(EmojiSVG)`
   ${css.size(14)};
-  fill: ${theme('baseColor.red')};
+  fill: ${theme('rainbow.red')};
   filter: saturate(1.3) drop-shadow(0 0px 5px #e8a7a0);
 `
 export const TrendIcon = styled(PulseSVG)`
   ${css.size(14)};
-  fill: ${theme('baseColor.green')};
+  fill: ${theme('rainbow.green')};
   filter: drop-shadow(0 0px 5px #d0e3b8);
 `
 export const Title = styled.div`

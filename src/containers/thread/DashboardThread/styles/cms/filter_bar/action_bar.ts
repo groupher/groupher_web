@@ -27,7 +27,7 @@ export const Note = styled.div`
   font-size: 12px;
 `
 export const Focus = styled.div`
-  color: ${theme('baseColor.red')};
+  color: ${theme('rainbow.red')};
   font-weight: 600;
   font-size: 14px;
   margin-left: 4px;
@@ -40,7 +40,7 @@ export const ActionNotes = styled.div`
   margin-left: 5px;
 `
 export const DeleteNote = styled.div`
-  color: ${theme('baseColor.red')};
+  color: ${theme('rainbow.red')};
   font-size: 12px;
   font-weight: 600;
   margin-left: 8px;

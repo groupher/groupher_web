@@ -49,7 +49,7 @@ export const CheckWrapper = styled.div`
 `
 export const RemoveIcon = styled(Img)`
   ${css.size(14)};
-  fill: ${theme('baseColor.red')};
+  fill: ${theme('rainbow.red')};
   margin-top: 5px;
   opacity: 0.8;
 

@@ -10,7 +10,7 @@ const contentBoxBg = '#222222' // '#161616'
 const fontColor = primaryColor
 const markdownFont = '#9eb8bd'
 const border = '#3c3c3c' // '#282828'
-const link = '#005196' // '#6494cd'
+const link = '#418ccc'
 
 const actionText = '#7f8695'
 const descText = '#7c7f82'
@@ -62,7 +62,7 @@ const night = {
   lightText: '#999999',
   hint,
 
-  baseColor: {
+  rainbow: {
     red: '#ca5f4d',
     redBg: '#7d3b363d',
 
@@ -102,7 +102,8 @@ const night = {
     pinkLite: '#82606b',
     pinkBtnText: '#ded0d0',
 
-    black: '#333333',
+    black: '#BFBFBF',
+    blackRow: '#282828',
     blackBg: '#313131',
   },
   header: {
@@ -232,13 +233,16 @@ const night = {
   },
   button: {
     primary: primaryColor,
-    fg: 'white',
+    border: '#414141',
+    bg: '#2c2c2c',
+    fg: '#c1c1c1',
     disabledFg: descText,
     hoverBg: lighten(primaryColor, 10),
     activeBg: darken(primaryColor, 5),
     clicked: primaryColor,
     ghostBorder: hint,
     upvoteBorder: '#dadada',
+    boxShadow: 'rgb(24 24 24 / 32%) -1px 1px 16px 2px',
   },
   navigator: {
     activeBottom: primaryColor,
@@ -247,7 +251,7 @@ const night = {
   },
   popover: {
     bg: '#2e2e2ef0',
-    borderColor: '#e9e9ea',
+    borderColor: border,
     boxShadow: '-9px 7px 20px 9px rgb(24 24 24 / 44%)',
     activeBorder: '#70707094',
   },

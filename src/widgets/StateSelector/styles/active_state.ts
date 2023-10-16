@@ -26,6 +26,6 @@ export const IconWrapper = styled.div`
   margin-right: 4px;
 `
 export const RejectIcon = styled(RejectIconBase)`
-  fill: ${theme('baseColor.red')};
+  fill: ${theme('rainbow.red')};
   opacity: 1;
 `

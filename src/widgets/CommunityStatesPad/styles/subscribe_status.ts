@@ -17,7 +17,7 @@ export const SubNum = styled.div`
   opacity: 0.6;
 `
 export const GreenDot = styled.div`
-  background: ${theme('baseColor.green')};
+  background: ${theme('rainbow.green')};
   width: 5px;
   height: 5px;
   border-radius: 50%;

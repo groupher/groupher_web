@@ -61,7 +61,7 @@ const day = {
   lightText: '#999999',
   hint,
 
-  baseColor: {
+  rainbow: {
     red: '#ca5f4d',
     redBg: '#ffbfba3d',
 
@@ -102,6 +102,7 @@ const day = {
     pinkBtnText: '#ded0d0',
 
     black: '#333333',
+    blackRow: '#333333',
     blackBg: '#f4f4f4',
   },
   header: {
@@ -231,13 +232,16 @@ const day = {
   },
   button: {
     primary: primaryColor,
+    bg: primaryColor,
     fg: 'white',
+    border: primaryColor,
     disabledFg: descText,
     hoverBg: lighten(primaryColor, 10),
     activeBg: darken(primaryColor, 5),
     clicked: primaryColor,
     ghostBorder: hint,
     upvoteBorder: '#dadada',
+    boxShadow: 'rgb(24 24 24 / 10%) -1px 1px 16px 2px',
   },
   navigator: {
     activeBottom: primaryColor,

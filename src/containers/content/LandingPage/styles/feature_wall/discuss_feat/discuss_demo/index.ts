@@ -38,7 +38,7 @@ export const Status = styled.div`
 export const UpvoteWrapper = styled.div`
   ${css.row('align-center')};
   border: 1px solid;
-  color: ${theme('baseColor.purple')};
+  color: ${theme('rainbow.purple')};
   font-size: 11px;
   font-weight: 500;
   border-color: #e5d7ea;
@@ -48,34 +48,34 @@ export const UpvoteWrapper = styled.div`
 `
 export const ViewIcon = styled(ViewSVG)`
   ${css.size(10)};
-  fill: ${theme('baseColor.purple')};
+  fill: ${theme('rainbow.purple')};
   opacity: 0.6;
 `
 export const UpvoteIcon = styled(UpvoteSVG)`
   ${css.size(10)};
-  fill: ${theme('baseColor.purple')};
+  fill: ${theme('rainbow.purple')};
   transform: scaleY(0.8);
   opacity: 0.8;
   margin-right: 3px;
 `
 export const CommentIcon = styled(CommentSVG)`
   ${css.size(10)};
-  fill: ${theme('baseColor.purple')};
+  fill: ${theme('rainbow.purple')};
   opacity: 0.6;
 `
 export const Count = styled.div`
-  color: ${theme('baseColor.purple')};
+  color: ${theme('rainbow.purple')};
   font-size: 12px;
   font-weight: 400;
   margin-left: 3px;
   opacity: 0.8;
 `
 export const Bar = styled(BarBase)`
-  background: ${theme('baseColor.purple')};
+  background: ${theme('rainbow.purple')};
 `
 export const CommentsHeader = styled.div`
   ${css.row('align-center')};
-  color: ${theme('baseColor.purple')};
+  color: ${theme('rainbow.purple')};
   font-weight: 500;
   font-size: 12px;
   margin-top: 24px;

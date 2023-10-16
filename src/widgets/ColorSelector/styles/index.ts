@@ -34,8 +34,7 @@ export const Dot = styled.div<TDot>`
 
   transition: all 0.2s;
 `
-type THookIcon = { colorName: TColorName; bgMode: boolean }
-export const HookIcon = styled(HookSVG)<THookIcon>`
+export const HookIcon = styled(HookSVG)`
   ${css.size(10)};
-  fill: ${({ bgMode, colorName }) => (!bgMode ? theme('alphaBg2') : baseColorTheme(colorName))};
+  fill: ${theme('button.fg')};
 `

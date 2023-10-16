@@ -41,17 +41,17 @@ export const Item = styled.div`
 `
 
 export const DeleteItem = styled(Item)`
-  color: ${theme('baseColor.red')};
+  color: ${theme('rainbow.red')};
 
   &:hover {
-    border-color: ${theme('baseColor.red')};
+    border-color: ${theme('rainbow.red')};
     font-weight: 500;
   }
 `
 
 export const DeleteIcon = styled(DeleteSVG)`
   ${css.size(12)};
-  fill: ${theme('baseColor.red')};
+  fill: ${theme('rainbow.red')};
   margin-right: 4px;
   margin-top: -1px;
   opacity: 0.6;

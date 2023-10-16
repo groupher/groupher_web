@@ -18,12 +18,12 @@ export const WelcomeWrapper = styled.div`
   ${css.column('align-end')};
 `
 export const Welcome = styled.div`
-  color: ${theme('baseColor.green')};
+  color: ${theme('rainbow.green')};
   font-size: 16px;
   font-weight: bold;
 `
 export const WelcomeDesc = styled.div`
-  color: ${theme('baseColor.green')};
+  color: ${theme('rainbow.green')};
   font-size: 12px;
   margin-top: 2px;
   opacity: 0.8;

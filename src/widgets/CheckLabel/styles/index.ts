@@ -17,7 +17,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 `
 export const CheckIcon = styled(HookSVG)<TActive>`
   ${css.size(13)}
-  fill: ${theme('baseColor.green')};
+  fill: ${theme('rainbow.green')};
   margin-right: 8px;
 
   visibility: ${({ $active }) => ($active ? 'visible' : 'hidden')};

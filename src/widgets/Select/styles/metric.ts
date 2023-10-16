@@ -74,7 +74,7 @@ export const getSelectStyles = (theme: TThemeMap) => {
       color: theme.article.digest,
       '&:hover': {
         cursor: 'pointer',
-        color: theme.baseColor.red,
+        color: theme.rainbow.red,
         // background: '#00343E',
       },
     }),

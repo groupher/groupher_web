@@ -84,7 +84,7 @@ const GlobalStyle = createGlobalStyle<TPrimaryColor>`
     display: flex;
   }
   .markdown-editor-mentionSuggestionsEntry:active {
-    background-color: ${theme('baseColor.red')};
+    background-color: ${theme('rainbow.red')};
   }
   .markdown-editor-mentionSuggestionsEntryFocused {
     background-color: ${theme('comment.mentionActiveBg')};

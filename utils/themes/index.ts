@@ -37,12 +37,16 @@ export const theme = (themeKey: TFlatThemeKey): TTheme =>
 /**
  * for primary color component
  */
-export const primaryTheme = (primaryColor: TColorName, themeKey = 'primary'): string => {
+export const primaryTheme = (primaryColor: TColorName, themeKey = ''): string => {
+  const colorKey = primaryColor?.toLowerCase()
+
   if (primaryColor === COLOR_NAME.BLACK) {
-    return theme(themeKey as TFlatThemeKey)
+    return !!themeKey
+      ? theme(`${themeKey as TFlatThemeKey}`)
+      : theme(`rainbow.${colorKey}` as TFlatThemeKey)
   }
 
-  return COLORS[primaryColor]
+  return theme(`rainbow.${colorKey}` as TFlatThemeKey)
 }
 
 export const primaryLink = (primaryColor: TColorName): string => {
@@ -58,15 +62,15 @@ export const primaryLightTheme = (primaryColor: TColorName): string => {
     return theme('hoverBg')
   }
 
-  return `baseColor.${camelize(primaryColor)}Bg` as TFlatThemeKey
+  return `rainbow.${camelize(primaryColor)}Bg` as TFlatThemeKey
 }
 
 export const baseColorTheme = (color: TColorName | string): string => {
-  return theme(`baseColor.${camelize(color)}` as TFlatThemeKey)
+  return theme(`rainbow.${camelize(color)}` as TFlatThemeKey)
 }
 
 export const baseColorBgTheme = (color: TColorName | string): string => {
-  return theme(`baseColor.${camelize(color)}Bg` as TFlatThemeKey)
+  return theme(`rainbow.${camelize(color)}Bg` as TFlatThemeKey)
 }
 
 export { default as themeMeta } from './theme_meta'

@@ -16,7 +16,7 @@ export const UserTitle = styled.div`
 `
 export const WomanIcon = styled(WomanSVG)`
   ${css.size(17)};
-  fill: ${theme('baseColor.pink')};
+  fill: ${theme('rainbow.pink')};
   margin-top: 2px;
   margin-left: 8px;
 `

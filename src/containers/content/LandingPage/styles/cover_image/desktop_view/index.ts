@@ -43,8 +43,8 @@ export const FreeLabel2 = styled.div`
   width: 80px;
   height: 35px;
   border-radius: 8px;
-  color: ${theme('baseColor.purple')};
-  background: ${theme('baseColor.purpleBg')};
+  color: ${theme('rainbow.purple')};
+  background: ${theme('rainbow.purpleBg')};
   padding-right: 10px;
   padding-left: 8px;
 

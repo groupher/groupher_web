@@ -154,7 +154,7 @@ export const Liquid = styled.div`
   left: 0;
   right: 0;
   width: 16px;
-  background: ${theme('baseColor.green')};
+  background: ${theme('rainbow.green')};
 
   ${Wrapper}:hover & {
     top: 0;
@@ -169,7 +169,7 @@ export const Liquid = styled.div`
       top: -5px;
       height: 11.25px;
       width: 14.625px;
-      background: ${theme('baseColor.green')};
+      background: ${theme('rainbow.green')};
       border-radius: 50%;
       opacity: 0;
     }
@@ -183,7 +183,7 @@ export const Liquid = styled.div`
       top: -5px;
       height: 11.25px;
       width: 14.625px;
-      background: ${theme('baseColor.green')};
+      background: ${theme('rainbow.green')};
       border-radius: 50%;
       opacity: 0;
     }

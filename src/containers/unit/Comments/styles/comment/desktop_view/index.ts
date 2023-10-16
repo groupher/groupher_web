@@ -61,7 +61,7 @@ export const AuthorUpvotedIcon = styled(UserBadge)`
 `
 export const SolutionIcon = styled(Img)<{ isAuthorUpvoted: boolean }>`
   ${css.size(14)};
-  fill: ${theme('baseColor.green')};
+  fill: ${theme('rainbow.green')};
   margin-top: ${({ isAuthorUpvoted }) => (isAuthorUpvoted ? '7px' : '3px')};
   margin-left: 1px;
 `

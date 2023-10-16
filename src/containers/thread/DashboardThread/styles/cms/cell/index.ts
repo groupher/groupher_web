@@ -38,7 +38,7 @@ export const SwitchButton = styled(Button)`
   transition: all 0.2s;
 `
 export const Pending = styled.div<{ blocked?: boolean }>`
-  color: ${({ blocked }) => (blocked ? theme('baseColor.red') : theme('article.digest'))};
+  color: ${({ blocked }) => (blocked ? theme('rainbow.red') : theme('article.digest'))};
   font-weight: bold;
   font-size: 12px;
   margin-top: 2px;
@@ -77,7 +77,7 @@ export const DateCellWrapper = styled.div`
 `
 export const DateItem = styled.div<{ warn?: boolean }>`
   ${css.row('align-center')};
-  color: ${({ warn }) => (warn ? theme('baseColor.red') : theme('article.digest'))};
+  color: ${({ warn }) => (warn ? theme('rainbow.red') : theme('article.digest'))};
   font-size: 11px;
 `
 export const PublishIcon = styled(PublishSVG)`

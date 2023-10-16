@@ -233,7 +233,7 @@ const BottonNote = styled.div`
 
 export const YesNote = styled(BottonNote)`
   margin-top: 60px;
-  color: ${theme('baseColor.green')};
+  color: ${theme('rainbow.green')};
   &:before {
     background: #d8ffca40;
   }
@@ -244,7 +244,7 @@ export const YesNote = styled(BottonNote)`
 `
 
 export const NoNote = styled(BottonNote)`
-  color: ${theme('baseColor.red')};
+  color: ${theme('rainbow.red')};
 
   &:before {
     background: #ffe7e79e;
@@ -252,13 +252,13 @@ export const NoNote = styled(BottonNote)`
 `
 
 export const YesIcon = styled(YesSVG)`
-  fill: ${theme('baseColor.green')};
+  fill: ${theme('rainbow.green')};
   ${css.size(18)};
   margin-right: 8px;
   margin-left: -14px;
 `
 export const NoIcon = styled(NoSVG)`
-  fill: ${theme('baseColor.red')};
+  fill: ${theme('rainbow.red')};
   ${css.size(18)};
   margin-right: 8px;
   margin-left: -14px;

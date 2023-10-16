@@ -26,5 +26,5 @@ export const RightPart = styled.div`
   margin-left: 15px;
 `
 export const Bar = styled(BarBase)`
-  background: ${theme('baseColor.purple')};
+  background: ${theme('rainbow.purple')};
 `

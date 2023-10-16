@@ -14,13 +14,13 @@ export const PopHeader = styled.div`
   margin-bottom: 10px;
 `
 export const PopHeaderIcon = styled(Img)`
-  fill: ${theme('baseColor.green')};
+  fill: ${theme('rainbow.green')};
   padding: 0;
   margin-right: 4px;
   ${css.size(14)};
 `
 export const PopHeaderText = styled.div`
-  color: ${theme('baseColor.green')};
+  color: ${theme('rainbow.green')};
   font-size: 13px;
   font-weight: bold;
 `

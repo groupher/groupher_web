@@ -87,6 +87,6 @@ export const CrossIcon = styled(CrossSVG)`
   fill: ${theme('article.digest')};
 
   &:hover {
-    fill: ${theme('baseColor.red')};
+    fill: ${theme('rainbow.red')};
   }
 `

@@ -42,6 +42,7 @@ export const Wrapper = styled.button<TWrapper>`
     getBackgroundColor(primaryColor, ghost, disabled)};
   border-color: ${({ noBorder, disabled, ghost, primaryColor }) =>
     getBorderColor(primaryColor, noBorder, disabled, ghost)};
+  box-shadow: ${theme('button.boxShadow')};
 
   opacity: ${({ noBorder }) => (noBorder ? '0.8' : 1)};
 
@@ -95,9 +96,9 @@ export const ChildrenWrapper = styled.div<TChildrenWrapper>`
 `
 export const RedWrapper = styled(Wrapper)`
   font-weight: 600;
-  color: ${({ ghost }) => (ghost ? theme('baseColor.red') : 'white')};
-  background-color: ${({ ghost }) => (!ghost ? theme('baseColor.red') : 'transparent')};
-  border-color: ${({ noBorder }) => (noBorder ? 'transparent' : theme('baseColor.red'))};
+  color: ${({ ghost }) => (ghost ? theme('rainbow.red') : 'white')};
+  background-color: ${({ ghost }) => (!ghost ? theme('rainbow.red') : 'transparent')};
+  border-color: ${({ noBorder }) => (noBorder ? 'transparent' : theme('rainbow.red'))};
 
   &:hover {
     background-color: ${({ ghost }) => (!ghost ? lighten('#FF634F', 10) : 'transparent')};

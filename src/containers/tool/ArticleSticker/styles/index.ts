@@ -47,7 +47,7 @@ export const LikeIcon = styled(Icon)`
   ${css.size(22)};
 
   &:hover {
-    fill: ${theme('baseColor.red')};
+    fill: ${theme('rainbow.red')};
     animation: ${animate.pulse} 0.25s linear;
   }
 `

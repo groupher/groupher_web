@@ -55,7 +55,7 @@ const ColorSelector: FC<TProps> = ({
             return (
               <DotWrapper key={name} onClick={() => onChange(name)}>
                 <Dot color={COLORS[name]} $active={$active} colorName={name} bgMode={bgMode}>
-                  {$active && <HookIcon colorName={name} bgMode={bgMode} />}
+                  {$active && <HookIcon />}
                 </Dot>
               </DotWrapper>
             )

@@ -1,5 +1,6 @@
 import type { TColorName } from '@/spec'
 
+// TODO: remove it
 export const COLORS = {
   BLACK: '#333333',
   PINK: '#DA615C',

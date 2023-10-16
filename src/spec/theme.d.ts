@@ -10,7 +10,7 @@ export type TThemeMap = {
   _meta?: {
     category: string // TODO: 'dark' | 'light'
   }
-  baseColor?: {
+  rainbow?: {
     red: string
     orange: string
     yellow: string

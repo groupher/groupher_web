@@ -34,14 +34,14 @@ export const ExtraWrapper = styled.div`
 export const AnwserWrapper = styled.span`
   ${css.row('align-center')};
   font-size: 12px;
-  color: ${theme('baseColor.green')};
+  color: ${theme('rainbow.green')};
   font-weight: 600;
   margin-right: 15px;
   text-shadow: #8bc34a2e 1px 0 8px;
 `
 export const CheckSVGIcon = styled(CheckSVG)`
   ${css.size(13)};
-  fill: ${theme('baseColor.green')};
+  fill: ${theme('rainbow.green')};
   margin-right: 5px;
   margin-top: -1px;
   opacity: 0.6;

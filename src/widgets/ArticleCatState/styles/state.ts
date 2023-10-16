@@ -42,9 +42,9 @@ export const TODOIcon = styled(GtdTodoSVG)<TType>`
 `
 export const ResolveIcon = styled(ResolveSVG)<{ smaller: boolean }>`
   ${({ smaller }) => (smaller ? css.size(11) : css.size(17))};
-  fill: ${theme('baseColor.green')};
+  fill: ${theme('rainbow.green')};
 `
 export const RejectIcon = styled(RejectSVG)<{ smaller: boolean }>`
   ${({ smaller }) => (smaller ? css.size(12) : css.size(14))};
-  fill: ${theme('baseColor.red')};
+  fill: ${theme('rainbow.red')};
 `

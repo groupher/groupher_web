@@ -40,7 +40,7 @@ export const Item = styled(Link)`
   }
 `
 export const ItemIcon = styled(Img)`
-  fill: ${theme('baseColor.red')};
+  fill: ${theme('rainbow.red')};
   ${css.size(10)};
   margin-left: 5px;
 `

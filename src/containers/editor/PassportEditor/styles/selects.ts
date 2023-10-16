@@ -20,12 +20,12 @@ export const ReadonlyItem = styled.div`
 `
 export const CheckIcon = styled(CheckSVG)`
   ${css.size(12)};
-  fill: ${theme('baseColor.green')};
+  fill: ${theme('rainbow.green')};
   margin-right: 5px;
 `
 export const RootCheckIcon = styled(RootCheckSVG)`
   ${css.size(12)};
-  fill: ${theme('baseColor.green')};
+  fill: ${theme('rainbow.green')};
   margin-right: 5px;
 `
 

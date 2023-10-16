@@ -17,10 +17,10 @@ export const DonwWrapper = styled.div`
 `
 export const DoneIcon = styled(CheckedSVG)`
   ${css.size(16)};
-  fill: ${theme('baseColor.green')};
+  fill: ${theme('rainbow.green')};
   margin-right: 6px;
 `
 export const DoneHint = styled.div`
-  color: ${theme('baseColor.green')};
+  color: ${theme('rainbow.green')};
   font-size: 14px;
 `

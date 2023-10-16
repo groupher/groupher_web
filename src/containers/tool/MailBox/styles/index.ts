@@ -19,7 +19,7 @@ export const NotifyDot = styled.div<TActive>`
   position: absolute;
   display: ${({ active }) => (active ? 'block' : 'none')};
   ${css.circle(8, false)};
-  background: ${theme('baseColor.red')};
+  background: ${theme('rainbow.red')};
   top: 5px;
   right: 8px;
 `

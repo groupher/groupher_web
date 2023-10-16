@@ -82,7 +82,7 @@ export const DeleteIcon = styled(DeleteSVG)`
   ${css.size(12)};
   fill: ${theme('article.digest')};
   &:hover {
-    fill: ${theme('baseColor.red')};
+    fill: ${theme('rainbow.red')};
   }
 `
 
