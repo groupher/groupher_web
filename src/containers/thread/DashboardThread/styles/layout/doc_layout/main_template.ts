@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
 
-import css, { theme, rainbow, rainbowLightTheme } from '@/css'
+import css, { theme, rainbow, rainbowLight } from '@/css'
 
 import ToolSVG from '@/icons/Heart'
 
@@ -52,7 +52,7 @@ export const IconWrapper = styled.div<{ color: TColorName }>`
   ${css.size(15)};
   ${css.row('align-both')};
   border-radius: 2px;
-  background-color: ${({ color }) => rainbowLightTheme(color)};
+  background-color: ${({ color }) => rainbowLight(color)};
   margin-bottom: 8px;
   margin-right: 20px;
 `

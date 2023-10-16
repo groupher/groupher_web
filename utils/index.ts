@@ -114,7 +114,7 @@ export {
   themeCoverMap,
   themeCoverIndexMap,
   rainbow,
-  rainbowLightTheme,
+  rainbowLight,
 } from './themes'
 
 // helpers

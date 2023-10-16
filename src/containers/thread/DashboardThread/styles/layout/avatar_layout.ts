@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme, rainbow, rainbowLightTheme } from '@/css'
+import css, { theme, rainbow, rainbowLight } from '@/css'
 
 import { LineDivider } from '@/widgets/Common'
 
@@ -23,7 +23,7 @@ export const Avatar = styled.div<TAvatar>`
   font-weight: bold;
   border-radius: ${({ circle }) => (circle ? '100px' : '6px')};
   color: ${({ color }) => rainbow(color)};
-  background-color: ${({ color }) => rainbowLightTheme(color)};
+  background-color: ${({ color }) => rainbowLight(color)};
   margin-left: ${({ left }) => left};
   margin-left: 5px;
   border: 1px solid;

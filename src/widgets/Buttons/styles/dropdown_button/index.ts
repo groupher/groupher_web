@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive, TPrimaryColor, TSizeTS, TSpace } from '@/spec'
 import SIZE from '@/constant/size'
-import css, { theme, rainbow, rainbowLightTheme } from '@/css'
+import css, { theme, rainbow, rainbowLight } from '@/css'
 
 import Button from '@/widgets/Buttons/Button'
 import ArrowSVG from '@/icons/ArrowSimple'
@@ -22,7 +22,7 @@ export const Wrapper = styled.div<TWrapper>`
     withBorder || $active || selected ? rainbow(primaryColor, 'lightText') : 'transparent'};
 
   background: ${({ $active, selected, primaryColor }) =>
-    $active || selected ? rainbowLightTheme(primaryColor) : 'transparent'};
+    $active || selected ? rainbowLight(primaryColor) : 'transparent'};
 
   border-radius: 10px;
 
@@ -37,7 +37,7 @@ export const Wrapper = styled.div<TWrapper>`
 
   &:hover {
     background: ${({ $active, primaryColor, selected }) =>
-      $active || selected ? rainbowLightTheme(primaryColor) : theme('hoverBg')};
+      $active || selected ? rainbowLight(primaryColor) : theme('hoverBg')};
   }
 
   transition: all 0.2s;

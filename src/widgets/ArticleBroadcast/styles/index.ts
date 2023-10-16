@@ -5,7 +5,7 @@ import type { TTestable, TSpace, TColorName } from '@/spec'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import BroadcastSVG from '@/icons/Broadcast'
 
-import css, { theme, rainbow, rainbowLightTheme } from '@/css'
+import css, { theme, rainbow, rainbowLight } from '@/css'
 
 type TWrapper = { color: TColorName } & TSpace & TTestable
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
@@ -17,7 +17,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 
   height: 120px;
   /* background: #fafafb; */
-  background-color: ${({ color }) => rainbowLightTheme(color)};
+  background-color: ${({ color }) => rainbowLight(color)};
   border-radius: 15px;
 
   ${(props) => css.spaceMargins(props)};
@@ -68,7 +68,7 @@ export const Title = styled.span<{ color: TColorName }>`
     position: absolute;
     left: 0;
     bottom: 1px;
-    background-color: ${({ color }) => rainbowLightTheme(color)};
+    background-color: ${({ color }) => rainbowLight(color)};
     opacity: 0.25;
   }
 `

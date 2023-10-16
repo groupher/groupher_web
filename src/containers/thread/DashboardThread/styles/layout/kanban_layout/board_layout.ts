@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive, TColorName } from '@/spec'
 
-import css, { theme, rainbow, rainbowLightTheme } from '@/css'
+import css, { theme, rainbow, rainbowLight } from '@/css'
 
 import DiceSVG from '@/icons/Dice'
 import ResetSVG from '@/icons/Reset'
@@ -44,7 +44,7 @@ export const Board = styled.div<TBoard>`
 
   width: 33.3%;
   height: 280px;
-  background-color: ${({ color }) => rainbowLightTheme(color)};
+  background-color: ${({ color }) => rainbowLight(color)};
 
   border-radius: 8px;
   border-bottom-left-radius: 0;
@@ -112,7 +112,7 @@ export const Preset = styled.div<{ setable?: boolean }>`
 
 type TColorBall = { color: TColorName; setable?: boolean }
 export const ColorBall = styled.div<TColorBall>`
-  background-color: ${({ color }) => rainbowLightTheme(color)};
+  background-color: ${({ color }) => rainbowLight(color)};
 
   border: 1px dashed;
   border-color: ${({ color }) => rainbow(color)};

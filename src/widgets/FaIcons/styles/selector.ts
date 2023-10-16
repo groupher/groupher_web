@@ -4,7 +4,7 @@ import type { TTestable, TSpace, TColorName, TActive } from '@/spec'
 
 import ArrowSVG from '@/icons/ArrowSolid'
 
-import css, { theme, rainbow, rainbowLightTheme } from '@/css'
+import css, { theme, rainbow, rainbowLight } from '@/css'
 
 type TWrapper = TTestable & TSpace
 
@@ -25,7 +25,7 @@ type TIconWrapper = { color: TColorName } & TActive
 export const IconWrapper = styled.div<TIconWrapper>`
   border: 1px dotted;
   border-color: ${({ $active, color }) => ($active ? rainbow(color) : 'transparent')};
-  background: ${({ color }) => rainbowLightTheme(color)};
+  background: ${({ color }) => rainbowLight(color)};
   ${css.size(35)};
   ${css.row('align-both')};
   border-radius: 7px;

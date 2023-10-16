@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TAvatarLayout, TColorName, TTestable } from '@/spec'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
-import css, { theme, rainbow, rainbowLightTheme } from '@/css'
+import css, { theme, rainbow, rainbowLight } from '@/css'
 
 import type { TAvatarProps } from '..'
 import { getFontSize } from './metric/avatar'
@@ -15,7 +15,7 @@ export const Wrapper = styled.div.attrs<TWrapper>(({ testid }) => ({
 }))<TWrapper>`
   ${css.row('align-both')};
 
-  background: ${({ color }) => rainbowLightTheme(color)};
+  background: ${({ color }) => rainbowLight(color)};
 
   width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};

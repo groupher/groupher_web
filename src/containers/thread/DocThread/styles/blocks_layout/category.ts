@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TColorName, TTestable } from '@/spec'
-import css, { theme, rainbowLightTheme } from '@/css'
+import css, { theme, rainbowLight } from '@/css'
 
 type TWrapper = TTestable & { color?: string }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
@@ -34,7 +34,7 @@ export const IconWrapper = styled.div<{ color: TColorName }>`
   border-radius: 12px;
   margin-left: -1px;
   ${css.row('align-both')};
-  background: ${({ color }) => rainbowLightTheme(color)};
+  background: ${({ color }) => rainbowLight(color)};
   margin-bottom: 8px;
 
   filter: saturate(0.7);
