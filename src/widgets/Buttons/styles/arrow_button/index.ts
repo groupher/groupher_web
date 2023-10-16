@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TSpace } from '@/spec'
 
-import css, { primaryLink } from '@/css'
+import css, { rainbowLink } from '@/css'
 
 import type { TProps } from '../../ArrowButton'
 
@@ -18,7 +18,7 @@ export const Wrapper = styled.button<TWrapper>`
   color: ${({ color, reverseColor }) => {
     if (reverseColor) return 'white'
 
-    return primaryLink(color)
+    return rainbowLink(color)
   }};
 
   border: none;

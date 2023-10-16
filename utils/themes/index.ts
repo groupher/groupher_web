@@ -34,7 +34,7 @@ export const themeCoverIndexMap = map(path(['coverIndex']), themeSkins)
 export const theme = (themeKey: TFlatThemeKey): TTheme =>
   path(['theme', ...split('.', themeKey)]) || 'wheat'
 
-export const primaryLink = (primaryColor: TColorName): string => {
+export const rainbowLink = (primaryColor: TColorName): string => {
   if (primaryColor === COLOR_NAME.BLACK) {
     return theme('link')
   }
