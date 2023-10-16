@@ -498,7 +498,7 @@ const RichEditorStyle = createGlobalStyle`
     border-bottom-color: ${theme('button.primary')} !important;
   }
   .cdx-code-tabs ul li .delete-btn svg {
-    fill: ${theme('baseColor.red')} !important;
+    fill: ${theme('rainbow.red')} !important;
   }
   /* plugin-code end */
 

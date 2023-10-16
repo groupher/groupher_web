@@ -1,9 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive, TColorName } from '@/spec'
-import { COLORS } from '@/constant/colors'
-
-import css, { theme } from '@/css'
+import css, { theme, rainbow } from '@/css'
 
 import { Divider } from '@/widgets/Common'
 
@@ -25,6 +23,9 @@ type TTopBar = { center?: boolean; bg: TColorName }
 export const TopBar = styled.div<TTopBar>`
   ${css.row('align-center')};
   justify-content: ${({ center }) => (center ? 'center' : 'flex-start')};
+  position: absolute;
+  top: 0;
+  left: 0;
   width: calc(100% + 2px);
   height: 5px;
   margin-top: -1px;
@@ -32,8 +33,8 @@ export const TopBar = styled.div<TTopBar>`
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   border: 1px solid;
-  border-color: ${({ bg }) => COLORS[bg]};
-  background: ${({ bg }) => COLORS[bg]};
+  border-color: ${({ bg }) => rainbow(bg)};
+  background: ${({ bg }) => rainbow(bg)};
   padding: 0 20px;
   padding-bottom: 2px;
 `
@@ -70,6 +71,7 @@ export const Block = styled(BlockBase)`
   width: 300px;
   height: 200px;
   padding: 0px;
+  position: relative;
 `
 export const DividerLine = styled(Divider)`
   opacity: 0.8;
@@ -83,11 +85,11 @@ export const BgLabel = styled.div<{ bg: TColorName }>`
   ${css.circle(32)};
   ${css.row('align-both')};
   border: 1px solid;
-  border-color: ${({ bg }) => COLORS[bg]};
+  border-color: ${({ bg }) => rainbow(bg)};
   cursor: pointer;
   margin-left: 15px;
 `
 export const TheColor = styled.div<{ color: TColorName }>`
   ${css.circle(26)};
-  background-color: ${({ color }) => COLORS[color]};
+  background-color: ${({ color }) => rainbow(color)};
 `

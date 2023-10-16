@@ -40,6 +40,6 @@ export const NextBtn = styled.div`
 export const ErrorMsg = styled.div`
   position: absolute;
   bottom: 55px;
-  color: ${theme('baseColor.red')};
+  color: ${theme('rainbow.red')};
   font-size: 13px;
 `

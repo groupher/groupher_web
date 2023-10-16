@@ -32,7 +32,7 @@ export const Title = styled.div`
 
 export const DeleteTitle = styled(Title)`
   ${Wrapper}:hover & {
-    color: ${theme('baseColor.red')};
+    color: ${theme('rainbow.red')};
   }
 `
 
@@ -104,7 +104,7 @@ export const DeleteIcon = styled(DeleteSVG)`
   fill: ${theme('article.digest')};
 
   ${Wrapper}:hover & {
-    fill: ${theme('baseColor.red')};
+    fill: ${theme('rainbow.red')};
   }
 `
 

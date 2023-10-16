@@ -55,7 +55,7 @@ export const LogoutItem = styled.div`
   padding-bottom: 0;
   color: ${theme('article.title')};
   &:hover {
-    color: ${theme('baseColor.red')};
+    color: ${theme('rainbow.red')};
     background: #113744;
     cursor: pointer;
   }

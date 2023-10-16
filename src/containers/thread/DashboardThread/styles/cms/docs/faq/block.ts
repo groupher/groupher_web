@@ -46,7 +46,7 @@ export const Hint = styled.div`
 export const DeleteHint = styled(Hint)`
   &:hover {
     font-weight: 500;
-    color: ${theme('baseColor.red')};
+    color: ${theme('rainbow.red')};
   }
 `
 export const EditIcon = styled(EditSVG)`
@@ -57,7 +57,7 @@ export const EditIcon = styled(EditSVG)`
 `
 export const DeleteIcon = styled(DeleteSVG)`
   ${css.size(13)};
-  fill: ${theme('baseColor.red')};
+  fill: ${theme('rainbow.red')};
   margin-right: 3px;
   margin-top: -1px;
 `

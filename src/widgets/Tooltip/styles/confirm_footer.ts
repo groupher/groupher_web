@@ -13,7 +13,7 @@ export const ButtonsWrapper = styled.div`
   ${css.row('align-both')};
 `
 export const RedButton = styled.div`
-  color: ${theme('baseColor.red')};
+  color: ${theme('rainbow.red')};
   font-size: 13px;
   filter: saturate(0.8);
 

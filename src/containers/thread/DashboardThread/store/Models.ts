@@ -1,9 +1,9 @@
-import { keys, values } from 'ramda'
+import { values } from 'ramda'
 
 import { FAQSection, Tag, Moderator } from '@/model'
 
 import SIZE from '@/constant/size'
-import { COLORS, COLOR_NAME } from '@/constant/colors'
+import { COLOR_NAME } from '@/constant/colors'
 import { THREAD } from '@/constant/thread'
 import { GLOW_OPACITY } from '@/constant/glow_effect'
 import {
@@ -138,7 +138,7 @@ export const settingsModalFields = {
   twImageHeight: T.opt(T.string, ''),
 
   // layout
-  primaryColor: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
+  primaryColor: T.opt(T.enum(values(COLOR_NAME)), COLOR_NAME.BLACK),
   postLayout: T.opt(T.enum(values(POST_LAYOUT)), POST_LAYOUT.QUORA),
   kanbanLayout: T.opt(T.enum(values(KANBAN_LAYOUT)), KANBAN_LAYOUT.SIMPLE),
   kanbanBgColors: T.opt(T.array(T.string), INIT_KANBAN_COLORS),
@@ -149,17 +149,17 @@ export const settingsModalFields = {
   brandLayout: T.opt(T.enum(values(BRAND_LAYOUT)), BRAND_LAYOUT.BOTH),
   bannerLayout: T.opt(T.enum(values(BANNER_LAYOUT)), BANNER_LAYOUT.HEADER),
   topbarLayout: T.opt(T.enum(values(TOPBAR_LAYOUT)), TOPBAR_LAYOUT.NO),
-  topbarBg: T.opt(T.enum(keys(COLORS)), COLOR_NAME.ORANGE),
+  topbarBg: T.opt(T.enum(values(COLOR_NAME)), COLOR_NAME.ORANGE),
 
   broadcastLayout: T.opt(T.enum(values(BROADCAST_LAYOUT)), BROADCAST_LAYOUT.DEFAULT),
-  broadcastBg: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
+  broadcastBg: T.opt(T.enum(values(COLOR_NAME)), COLOR_NAME.BLACK),
   broadcastEnable: T.opt(T.bool, false),
 
   broadcastArticleLayout: T.opt(
     T.enum(values(BROADCAST_ARTICLE_LAYOUT)),
     BROADCAST_ARTICLE_LAYOUT.DEFAULT,
   ),
-  broadcastArticleBg: T.opt(T.enum(keys(COLORS)), COLOR_NAME.RED),
+  broadcastArticleBg: T.opt(T.enum(values(COLOR_NAME)), COLOR_NAME.RED),
   broadcastArticleEnable: T.opt(T.bool, true),
 
   changelogLayout: T.opt(T.enum(values(CHANGELOG_LAYOUT)), CHANGELOG_LAYOUT.CLASSIC),
@@ -199,7 +199,7 @@ export const settingsModalFields = {
   moderators: T.opt(T.array(Moderator), []),
 
   // widgets
-  widgetsPrimaryColor: T.opt(T.enum(keys(COLORS)), COLOR_NAME.BLACK),
+  widgetsPrimaryColor: T.opt(T.enum(values(COLOR_NAME)), COLOR_NAME.BLACK),
   widgetsThreads: T.opt(T.array(T.string), [THREAD.POST, THREAD.KANBAN, THREAD.CHANGELOG]),
   widgetsSize: T.opt(T.enum([SIZE.SMALL, SIZE.MEDIUM, SIZE.LARGE]), SIZE.MEDIUM),
   widgetsType: T.opt(T.enum(values(WIDGET_TYPE)), WIDGET_TYPE.SIDEBAR),

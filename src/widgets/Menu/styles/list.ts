@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TActive, TPrimaryColor } from '@/spec'
 
 // import Img from '@/Img'
-import css, { theme, primaryLightTheme, primaryTheme } from '@/css'
+import css, { theme, rainbowLight, rainbow } from '@/css'
 
 type TWrapper = { popWidth: number }
 export const Wrapper = styled.div<TWrapper>`
@@ -19,15 +19,15 @@ export const Item = styled.div<TItem>`
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
 
   background: ${({ $active, primaryColor }) =>
-    $active ? primaryLightTheme(primaryColor) : 'transparent'};
+    $active ? rainbowLight(primaryColor) : 'transparent'};
 
   color: ${({ $active, primaryColor }) =>
-    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+    $active ? rainbow(primaryColor) : theme('article.digest')};
 
   &:hover {
     font-weight: 500;
     background: ${({ $active, primaryColor }) =>
-      $active ? primaryLightTheme(primaryColor) : theme('hoverBg')};
+      $active ? rainbowLight(primaryColor) : theme('hoverBg')};
     cursor: pointer;
   }
 

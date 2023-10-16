@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TActive, TGlowEffect, TPrimaryColor } from '@/spec'
 import GLOW_EFFECTS from '@/constant/glow_effect'
 
-import css, { theme, primaryTheme } from '@/css'
+import css, { theme, rainbow } from '@/css'
 
 import DLightSVG from '@/icons/DLight'
 import ClossSVG from '@/icons/CloseLight'
@@ -32,7 +32,7 @@ export const Box = styled.div<TBox>`
   z-index: 1;
 
   border-color: ${({ $active, primaryColor }) =>
-    $active ? primaryTheme(primaryColor) : theme('divider')};
+    $active ? rainbow(primaryColor) : theme('divider')};
 
   box-shadow: ${({ $active }) => ($active ? css.cardShadow : 'none')};
   background: ${theme('alphaBg')};

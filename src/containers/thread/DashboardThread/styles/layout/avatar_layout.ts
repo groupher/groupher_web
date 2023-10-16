@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme, baseColorTheme, baseColorBgTheme } from '@/css'
+import css, { theme, rainbow, rainbowLight } from '@/css'
 
 import { LineDivider } from '@/widgets/Common'
 
@@ -22,12 +22,12 @@ export const Avatar = styled.div<TAvatar>`
   font-size: 13px;
   font-weight: bold;
   border-radius: ${({ circle }) => (circle ? '100px' : '6px')};
-  color: ${({ color }) => baseColorTheme(color)};
-  background-color: ${({ color }) => baseColorBgTheme(color)};
+  color: ${({ color }) => rainbow(color)};
+  background-color: ${({ color }) => rainbowLight(color)};
   margin-left: ${({ left }) => left};
   margin-left: 5px;
   border: 1px solid;
-  border-color: ${({ color }) => baseColorTheme(color)};
+  border-color: ${({ color }) => rainbow(color)};
 `
 export const AvatarList = styled.div`
   ${css.row('align-center')};
@@ -54,7 +54,4 @@ export const LayoutTitle = styled.div<TActive>`
     cursor: pointer;
   }
   transition: all 0.2s;
-`
-export const SavingWrapper = styled.div`
-  width: 91%;
 `

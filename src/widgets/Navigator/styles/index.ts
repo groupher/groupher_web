@@ -73,7 +73,7 @@ export const A = styled.a`
 `
 export const OfflineWrapper = styled.div`
   ${css.column()};
-  background: ${theme('baseColor.red')};
+  background: ${theme('rainbow.red')};
   color: ${theme('header.bg')};
   margin-left: 20px;
   padding: 0 10px;

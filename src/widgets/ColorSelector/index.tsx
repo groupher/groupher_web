@@ -9,7 +9,7 @@ import { keys, includes, isEmpty } from 'ramda'
 
 import type { TColorName, TTooltipPlacement } from '@/spec'
 import { buildLog } from '@/logger'
-import { COLORS } from '@/constant/colors'
+import { COLOR_NAME } from '@/constant/colors'
 
 import Tooltip from '@/widgets/Tooltip'
 import { Wrapper, DotWrapper, Dot, HookIcon } from './styles'
@@ -39,8 +39,8 @@ const ColorSelector: FC<TProps> = ({
   excepts = [],
 }) => {
   const colorKeys = isEmpty(excepts)
-    ? keys(COLORS)
-    : keys(COLORS).filter((k) => !includes(k, excepts))
+    ? keys(COLOR_NAME)
+    : keys(COLOR_NAME).filter((k) => !includes(k, excepts))
 
   return (
     <Tooltip
@@ -50,12 +50,13 @@ const ColorSelector: FC<TProps> = ({
       content={
         <Wrapper testid={testid}>
           {colorKeys.map((name) => {
-            const $active = name === activeColor || COLORS[name] === activeColor
+            // const $active = name === activeColor || COLOR_NAME.BLACK === activeColor
+            const $active = name === activeColor
 
             return (
               <DotWrapper key={name} onClick={() => onChange(name)}>
-                <Dot color={COLORS[name]} $active={$active} colorName={name} bgMode={bgMode}>
-                  {$active && <HookIcon colorName={name} bgMode={bgMode} />}
+                <Dot $active={$active} colorName={name} bgMode={bgMode}>
+                  {$active && <HookIcon />}
                 </Dot>
               </DotWrapper>
             )

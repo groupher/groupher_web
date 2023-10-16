@@ -42,6 +42,7 @@ export const Wrapper = styled.button<TWrapper>`
     getBackgroundColor(primaryColor, ghost, disabled)};
   border-color: ${({ noBorder, disabled, ghost, primaryColor }) =>
     getBorderColor(primaryColor, noBorder, disabled, ghost)};
+  box-shadow: ${({ ghost, noBorder }) => (ghost && noBorder ? '' : theme('button.boxShadow'))};
 
   opacity: ${({ noBorder }) => (noBorder ? '0.8' : 1)};
 
@@ -49,7 +50,7 @@ export const Wrapper = styled.button<TWrapper>`
 
   &::after {
     content: '';
-    display: block;
+    display: ${({ ghost, noBorder }) => (ghost || noBorder ? 'block' : 'none')};
     position: absolute;
     background: rgba(255, 255, 255, 0.2);
     width: 30px;
@@ -61,6 +62,7 @@ export const Wrapper = styled.button<TWrapper>`
 
   &:hover {
     color: ${({ ghost, disabled }) => getColor(ghost, disabled)};
+    // border-color: ${({ ghost, disabled }) => theme('divider')};
     opacity: 1;
     cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
     filter: saturate(0.9) brightness(1.1);
@@ -68,7 +70,8 @@ export const Wrapper = styled.button<TWrapper>`
     &::before,
     &::after {
       transform: translateX(300px) skewX(-15deg);
-      transition: ${({ disabled }) => (disabled ? 0 : '0.8s')};
+      transition: ${({ disabled, ghost, noBorder }) =>
+        disabled || ghost || noBorder ? 0 : '0.8s'};
     }
   }
 
@@ -95,9 +98,9 @@ export const ChildrenWrapper = styled.div<TChildrenWrapper>`
 `
 export const RedWrapper = styled(Wrapper)`
   font-weight: 600;
-  color: ${({ ghost }) => (ghost ? theme('baseColor.red') : 'white')};
-  background-color: ${({ ghost }) => (!ghost ? theme('baseColor.red') : 'transparent')};
-  border-color: ${({ noBorder }) => (noBorder ? 'transparent' : theme('baseColor.red'))};
+  color: ${({ ghost }) => (ghost ? theme('rainbow.red') : 'white')};
+  background-color: ${({ ghost }) => (!ghost ? theme('rainbow.red') : 'transparent')};
+  border-color: ${({ noBorder }) => (noBorder ? 'transparent' : theme('rainbow.red'))};
 
   &:hover {
     background-color: ${({ ghost }) => (!ghost ? lighten('#FF634F', 10) : 'transparent')};

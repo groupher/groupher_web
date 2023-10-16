@@ -22,7 +22,7 @@ export const Main = styled.div`
   margin-right: 4px;
 `
 export const CurNum = styled.div<{ invalid: boolean }>`
-  color: ${({ invalid }) => (invalid ? theme('baseColor.red') : theme('article.title'))};
+  color: ${({ invalid }) => (invalid ? theme('rainbow.red') : theme('article.title'))};
   font-size: 14px;
 `
 export const Slash = styled.div`

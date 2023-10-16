@@ -14,7 +14,7 @@
 import { map, path, split } from 'ramda'
 
 import type { TColorName, TTheme } from '@/spec'
-import { COLORS, COLOR_NAME } from '@/constant/colors'
+import { COLOR_NAME } from '@/constant/colors'
 
 import { camelize } from '@/fmt'
 
@@ -34,39 +34,33 @@ export const themeCoverIndexMap = map(path(['coverIndex']), themeSkins)
 export const theme = (themeKey: TFlatThemeKey): TTheme =>
   path(['theme', ...split('.', themeKey)]) || 'wheat'
 
-/**
- * for primary color component
- */
-export const primaryTheme = (primaryColor: TColorName, themeKey = 'primary'): string => {
-  if (primaryColor === COLOR_NAME.BLACK) {
-    return theme(themeKey as TFlatThemeKey)
-  }
-
-  return COLORS[primaryColor]
-}
-
-export const primaryLink = (primaryColor: TColorName): string => {
+export const rainbowLink = (primaryColor: TColorName): string => {
   if (primaryColor === COLOR_NAME.BLACK) {
     return theme('link')
   }
 
-  return COLORS[primaryColor]
+  return theme(`rainbow.${camelize(primaryColor)}` as TFlatThemeKey)
 }
 
-export const primaryLightTheme = (primaryColor: TColorName): string => {
-  if (primaryColor === COLOR_NAME.BLACK) {
+/**
+ * used for dynamic primary color or tag color based on pre-defined color names for each theme
+ */
+export const rainbow = (color: TColorName | string, darkThemeOverWriteKey = ''): string => {
+  if (color === COLOR_NAME.BLACK) {
+    return !!darkThemeOverWriteKey
+      ? theme(`${darkThemeOverWriteKey as TFlatThemeKey}`)
+      : theme(`rainbow.${camelize(color)}` as TFlatThemeKey)
+  }
+
+  return theme(`rainbow.${camelize(color)}` as TFlatThemeKey)
+}
+
+export const rainbowLight = (color: TColorName | string): string => {
+  if (color === COLOR_NAME.BLACK) {
     return theme('hoverBg')
   }
 
-  return `baseColor.${camelize(primaryColor)}Bg` as TFlatThemeKey
-}
-
-export const baseColorTheme = (color: TColorName | string): string => {
-  return theme(`baseColor.${camelize(color)}` as TFlatThemeKey)
-}
-
-export const baseColorBgTheme = (color: TColorName | string): string => {
-  return theme(`baseColor.${camelize(color)}Bg` as TFlatThemeKey)
+  return theme(`rainbow.${camelize(color)}Bg` as TFlatThemeKey)
 }
 
 export { default as themeMeta } from './theme_meta'

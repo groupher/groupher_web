@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   bottom: 30px;
   ${css.row('align-start')};
   border: 1px solid;
-  border-color: ${theme('baseColor.red')};
+  border-color: ${theme('rainbow.red')};
   height: auto;
   width: 520px;
   border-radius: 12px;
@@ -28,7 +28,7 @@ export const IconWrapper = styled.div`
 `
 export const WarningIcon = styled(WarningSVG)`
   ${css.size(12)};
-  fill: ${theme('baseColor.red')};
+  fill: ${theme('rainbow.red')};
   margin-right: 8px;
   margin-bottom: 1px;
   margin-top: 4px;

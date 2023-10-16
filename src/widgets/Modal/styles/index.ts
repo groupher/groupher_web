@@ -39,7 +39,7 @@ export const Wrapper = styled.div<TWrapper>`
   /* border: 1px solid; */
   /* border-top: 2px solid; */
   border-color: ${({ mode }) =>
-    mode === 'default' ? theme('modal.border') : theme('baseColor.red')};
+    mode === 'default' ? theme('modal.border') : theme('rainbow.red')};
   animation: ${animate.jump} 0.3s linear;
   margin-left: ${({ offsetLeft }) => offsetLeft};
 
@@ -57,7 +57,7 @@ export const CloseBtn = styled(CloseCrossSVG)<TCloseBtn>`
   position: absolute;
   top: 16px;
   right: 18px;
-  fill: ${({ mode }) => (mode === 'default' ? theme('article.info') : theme('baseColor.red'))};
+  fill: ${({ mode }) => (mode === 'default' ? theme('article.info') : theme('rainbow.red'))};
   ${css.size(20)};
   z-index: ${zIndex.modalCloseBtn};
   opacity: 0.8;
@@ -69,7 +69,7 @@ export const CloseBtn = styled(CloseCrossSVG)<TCloseBtn>`
   }
 `
 export const EscHint = styled.div<{ mode: string }>`
-  color: ${({ mode }) => (mode === 'default' ? theme('font') : theme('baseColor.red'))};
+  color: ${({ mode }) => (mode === 'default' ? theme('font') : theme('rainbow.red'))};
   opacity: 0.7;
   position: absolute;
   top: 35px;

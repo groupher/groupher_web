@@ -10,7 +10,7 @@ export const Msg = styled.span`
 `
 
 export const SuccessMsgBox = styled.div<{ show?: boolean }>`
-  color: ${theme('baseColor.green')};
+  color: ${theme('rainbow.green')};
   display: ${({ show }) => (show ? 'block' : 'none')};
   animation: ${animate.fadeInUp} 0.5s linear;
 `
@@ -22,14 +22,14 @@ export const WarningMsgBox = styled.div<{ show?: boolean }>`
 `
 
 export const ErrorMsgBox = styled.div<{ show?: boolean }>`
-  color: ${theme('baseColor.red')};
+  color: ${theme('rainbow.red')};
   animation: ${animate.shake} 0.3s linear;
   display: ${({ show }) => (show ? 'block' : 'none')};
 `
 
 export const ErrorArrayWrapper = styled.div`
   ${css.column()};
-  color: ${theme('baseColor.red')};
+  color: ${theme('rainbow.red')};
   animation: ${animate.shake} 0.3s linear;
 `
 

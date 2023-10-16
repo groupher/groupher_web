@@ -6,7 +6,7 @@ import type { TTheme } from '@/spec'
 export const getNormalColor = (type: string): TTheme => {
   switch (type) {
     case 'green':
-      return theme('baseColor.green')
+      return theme('rainbow.green')
 
     default:
       return theme('article.digest')
@@ -16,7 +16,7 @@ export const getNormalColor = (type: string): TTheme => {
 export const getActiveColor = (type: string): TTheme => {
   switch (type) {
     case 'green':
-      return theme('baseColor.green')
+      return theme('rainbow.green')
 
     default:
       return theme('article.title')

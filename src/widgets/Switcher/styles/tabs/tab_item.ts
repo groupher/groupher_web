@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TSizeSM, TActive, TPrimaryColor } from '@/spec'
-import css, { theme, primaryTheme } from '@/css'
+import css, { theme, rainbow } from '@/css'
 
 import { getMarginRight, getPadding, getMarginBottom } from '../metric/tabs'
 
@@ -72,12 +72,12 @@ export const Label = styled.span<TLabel>`
   padding: 1px 6px;
   border-radius: 3px;
   color: ${({ active, primaryColor }) =>
-    active ? primaryTheme(primaryColor) : theme('lightText')}; // to-theme
+    active ? rainbow(primaryColor, 'dashboard.menuCat') : theme('lightText')}; // to-theme
   margin-bottom: ${({ bottomSpace }) => `${bottomSpace}px`};
   font-weight: 500;
 
   &:hover {
-    color: ${({ primaryColor }) => primaryTheme(primaryColor)};
+    color: ${({ primaryColor }) => rainbow(primaryColor)};
     background: ${theme('hoverBg')};
   }
 `

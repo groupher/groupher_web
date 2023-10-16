@@ -28,7 +28,7 @@ export const Icon = styled(Img)`
   ${css.size(12)};
 
   ${Wrapper}:hover & {
-    fill: ${theme('baseColor.red')};
+    fill: ${theme('rainbow.red')};
   }
 `
 export const Title = styled.div`
@@ -37,6 +37,6 @@ export const Title = styled.div`
   margin-left: 5px;
 
   ${Wrapper}:hover & {
-    color: ${theme('baseColor.red')};
+    color: ${theme('rainbow.red')};
   }
 `

@@ -1,9 +1,7 @@
 import styled from 'styled-components'
 
 import type { TColorName, TMetric } from '@/spec'
-import { COLORS } from '@/constant/colors'
-
-import css, { theme } from '@/css'
+import css, { rainbow, theme } from '@/css'
 
 /**
  * see layout details:
@@ -13,12 +11,9 @@ export const Skeleton = styled.div`
   height: 100vh;
   width: 100vw;
 `
-
-// background: #3b5456;
 export const Wrapper = styled.div`
   ${css.row('justify-center')};
 `
-
 export const ScrollWrapper = styled.div<{ $noMobilePadding: boolean }>`
   position: absolute;
   width: 100%;
@@ -45,7 +40,7 @@ export const InnerWrapper = styled.div<TInner>`
   z-index: 1;
   border-top: ${({ hasTopbar }) => (hasTopbar ? '3px solid;' : '1px solid;')};
   border-top-color: ${({ hasTopbar, topbarBg }) =>
-    hasTopbar ? COLORS[topbarBg] : theme('divider')};
+    hasTopbar ? rainbow(topbarBg) : theme('divider')};
 
   box-shadow: ${({ hasShadow }) =>
     hasShadow ? 'rgb(100 100 111 / 20%) 0px 7px 29px 0px;' : 'none'};

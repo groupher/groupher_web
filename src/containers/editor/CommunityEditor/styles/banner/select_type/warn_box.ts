@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   ${css.column('align-both')};
   width: 100%;
   height: 50vh;
-  color: ${theme('baseColor.red')};
+  color: ${theme('rainbow.red')};
   font-size: 14px;
 `
 export const Title = styled.div`

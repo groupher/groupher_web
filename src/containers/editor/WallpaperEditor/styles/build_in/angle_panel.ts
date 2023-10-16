@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TActive, TPrimaryColor } from '@/spec'
 import { GRADIENT_DIRECTION } from '@/constant/wallpaper'
 
-import css, { theme, primaryTheme } from '@/css'
+import css, { theme, rainbow } from '@/css'
 import ArrowSVG from '@/icons/ArrowSolid'
 
 const metric = {
@@ -69,13 +69,13 @@ const Point = styled.div<TPoint>`
 
   font-weight: ${({ $active }) => ($active ? 600 : 'bormal')};
   background: ${({ $active, primaryColor }) =>
-    $active ? primaryTheme(primaryColor) : theme('divider')};
+    $active ? rainbow(primaryColor) : theme('divider')};
   color: ${({ $active }) => (!$active ? theme('article.title') : 'white')};
   border: 1px solid transparent;
 
   &:hover {
     border-color: ${theme('article.digest')};
-    border-color: ${({ primaryColor }) => primaryTheme(primaryColor)};
+    border-color: ${({ primaryColor }) => rainbow(primaryColor)};
     font-weight: 600;
     cursor: pointer;
     color: white;

@@ -9,7 +9,7 @@ import SavingBar from '../SavingBar'
 import Templates from './Templates'
 import Editor from './Editors'
 
-import { Wrapper, SavingWrapper } from '../styles/header'
+import { Wrapper } from '../styles/header'
 
 type TProps = {
   settings: THeaderSettings
@@ -24,14 +24,13 @@ const Header: FC<TProps> = ({ settings, touched }) => {
       <br />
       <Editor settings={settings} />
 
-      <SavingWrapper>
-        <SavingBar
-          field={SETTING_FIELD.HEADER_LINKS}
-          isTouched={touched.headerLinks}
-          loading={settings.saving}
-          top={30}
-        />
-      </SavingWrapper>
+      <SavingBar
+        field={SETTING_FIELD.HEADER_LINKS}
+        isTouched={touched.headerLinks}
+        loading={settings.saving}
+        width="97%"
+        top={30}
+      />
     </Wrapper>
   )
 }

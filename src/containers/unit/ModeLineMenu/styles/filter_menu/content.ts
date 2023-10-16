@@ -52,6 +52,6 @@ export const ArrowIcon = styled(Img)`
 `
 export const TagDot = styled.div`
   ${css.circle(6)};
-  background: ${theme('baseColor.red')};
+  background: ${theme('rainbow.red')};
   margin-top: -1px;
 `

@@ -26,7 +26,7 @@ export const DeleteIcon = styled(DeleteSVG)`
   opacity: 1;
 
   ${DeleteWrapper}:hover & {
-    fill: ${theme('baseColor.red')};
+    fill: ${theme('rainbow.red')};
     opacity: 1;
     cursor: pointer;
   }

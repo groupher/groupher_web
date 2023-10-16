@@ -112,10 +112,10 @@ export const Label = styled.div`
 `
 export const NotifyLabel = styled.div`
   font-size: 9px;
-  color: ${theme('baseColor.red')};
+  color: ${theme('rainbow.red')};
   border: 1px solid;
   font-weight: 500;
-  border-color: ${theme('baseColor.red')};
+  border-color: ${theme('rainbow.red')};
   border-radius: 4px;
   padding: 0 2px;
 `

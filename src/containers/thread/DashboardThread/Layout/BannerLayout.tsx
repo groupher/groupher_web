@@ -237,6 +237,7 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         isTouched={isTouched}
         field={SETTING_FIELD.BANNER_LAYOUT}
         loading={saving}
+        width="88%"
         top={20}
       />
     </Wrapper>

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive, TPrimaryColor } from '@/spec'
 
-import css, { theme, baseColorTheme, primaryLightTheme } from '@/css'
+import css, { theme, rainbow, rainbowLight } from '@/css'
 
 import Img from '@/Img'
 
@@ -18,11 +18,11 @@ export const Wrapper = styled.div<TTag>`
   border-radius: 8px;
 
   background: ${({ $active, primaryColor }) =>
-    $active ? primaryLightTheme(primaryColor) : 'transparent'};
+    $active ? rainbowLight(primaryColor) : 'transparent'};
 
   &:hover {
     background: ${({ $active, primaryColor }) =>
-      $active ? primaryLightTheme(primaryColor) : theme('hoverBg')};
+      $active ? rainbowLight(primaryColor) : theme('hoverBg')};
     cursor: pointer;
   }
 `
@@ -41,7 +41,7 @@ export const DotWrapper = styled.div`
 type THashSign = TActive & { color?: string }
 export const DotSign = styled.div<THashSign>`
   ${css.circle(8)};
-  background: ${({ color }) => (color ? baseColorTheme(color) : 'none')};
+  background: ${({ color }) => (color ? rainbow(color) : 'none')};
   opacity: ${({ $active }) => ($active ? 1 : theme('tags.dotOpacity'))};
 
   ${Wrapper}:hover & {

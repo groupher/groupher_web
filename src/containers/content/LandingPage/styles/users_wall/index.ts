@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TColorName, TTestable } from '@/spec'
 
-import css, { theme, baseColorBgTheme } from '@/css'
+import css, { theme, rainbowLight } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
@@ -91,5 +91,5 @@ export const Hightlight = styled.span<{ color: TColorName }>`
   color: ${theme('article.title')};
   font-weight: 500;
   padding: 0 2px;
-  background-color: ${({ color }) => baseColorBgTheme(color)};
+  background-color: ${({ color }) => rainbowLight(color)};
 `

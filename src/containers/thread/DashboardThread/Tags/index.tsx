@@ -54,7 +54,7 @@ const Tags: FC<TProps> = ({ settings, touched }) => {
           ))}
         </ContentWrapper>
 
-        <AddButton ghost left={-8} top={10} size="small" onClick={() => callTagCreateEditor()}>
+        <AddButton ghost top={10} size="small" onClick={() => callTagCreateEditor()}>
           <AddIcon />
           新增标签
         </AddButton>

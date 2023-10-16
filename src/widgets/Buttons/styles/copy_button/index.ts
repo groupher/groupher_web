@@ -22,5 +22,5 @@ export const CopyedHint = styled.div`
 `
 export const CopyedText = styled.div`
   font-size: 12px;
-  color: ${theme('baseColor.green')};
+  color: ${theme('rainbow.green')};
 `

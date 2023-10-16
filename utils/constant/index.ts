@@ -51,6 +51,6 @@ export {
 /* some community svg need fill color, like city etc.. */
 
 export { PUBLISH_MODE } from './publish'
-export { COLORS, COLOR_NAME } from './colors'
+export { COLOR_NAME } from './colors'
 
 export { default as THEME } from './theme'

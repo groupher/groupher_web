@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import Link from 'next/link'
 
 import type { TActive, TPrimaryColor } from '@/spec'
-import css, { theme, primaryTheme } from '@/css'
+import css, { theme, rainbow } from '@/css'
 // import Img from '@/Img'
 
 import LinkOutSVG from '@/icons/LinkOut'
@@ -41,13 +41,13 @@ export const MenuItem = styled(Link)<TActive>`
 type TMenuTitle = TActive & TPrimaryColor
 export const MenuTitle = styled.div<TMenuTitle>`
   color: ${({ $active, primaryColor }) =>
-    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+    $active ? rainbow(primaryColor) : theme('article.digest')};
   font-weight: ${({ $active }) => ($active ? 550 : 400)};
   font-size: 13.5px;
   margin-left: 10px;
 
   ${MenuItem}:hover & {
-    color: ${({ primaryColor }) => primaryTheme(primaryColor)};
+    color: ${({ primaryColor }) => rainbow(primaryColor)};
   }
 `
 export const IconWrapper = styled.div`

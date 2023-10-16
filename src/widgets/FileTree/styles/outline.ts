@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive, TPrimaryColor } from '@/spec'
-import css, { theme, primaryTheme } from '@/css'
+import css, { theme, rainbow } from '@/css'
 
 // import Img from '@/Img'
 
@@ -20,13 +20,13 @@ export const Item = styled.div<TItem>`
   padding-top: 5px;
   padding-bottom: 4px;
   color: ${({ $active, primaryColor }) =>
-    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+    $active ? rainbow(primaryColor) : theme('article.digest')};
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
   border-left: 1px solid transparent;
   border-left-color: ${({ $active, primaryColor }) =>
-    $active ? primaryTheme(primaryColor) : theme('divider')};
+    $active ? rainbow(primaryColor) : theme('divider')};
 
   &:hover {
-    color: ${({ primaryColor }) => primaryTheme(primaryColor)};
+    color: ${({ primaryColor }) => rainbow(primaryColor)};
   }
 `

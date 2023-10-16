@@ -1,10 +1,9 @@
 import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
-import { COLORS } from '@/constant/colors'
 
 import Input from '@/widgets/Input'
-import css from '@/css'
+import css, { rainbow } from '@/css'
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -15,7 +14,7 @@ export const BgLabel = styled.div<{ bg: TColorName }>`
   height: 24px;
   ${css.row('align-both')};
   border: 1px solid;
-  border-color: ${({ bg }) => COLORS[bg]};
+  border-color: ${({ bg }) => rainbow(bg)};
   border-radius: 6px;
   margin-left: -10px;
   cursor: pointer;
@@ -24,7 +23,7 @@ export const TheColor = styled.div<{ color: TColorName }>`
   width: 38px;
   height: 18px;
   border-radius: 6px;
-  background-color: ${({ color }) => COLORS[color]};
+  background-color: ${({ color }) => rainbow(color)};
 `
 
 export const Item = styled.div`

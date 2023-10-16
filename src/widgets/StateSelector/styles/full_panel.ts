@@ -22,20 +22,20 @@ export const SelectItem = styled(SelectItemBase)`
 `
 export const TodoIcon = styled(GtdTodoSVG)`
   ${css.size(16)};
-  fill: ${theme('baseColor.orange')};
+  fill: ${theme('rainbow.orange')};
   opacity: 0.7;
   margin-left: -2px;
   margin-right: 8px;
 `
 export const WipIcon = styled(GtdWipSVG)`
   ${css.size(16)};
-  fill: ${theme('baseColor.blue')};
+  fill: ${theme('rainbow.blue')};
   margin-left: -2px;
   margin-right: 8px;
 `
 export const DoneIcon = styled(GtdDoneSVG)`
   ${css.size(14)};
-  fill: ${theme('baseColor.green')};
+  fill: ${theme('rainbow.green')};
   margin-right: 8px;
 `
 export const RejectIcon = styled(GtdRejectSVG)`
@@ -47,7 +47,7 @@ export const RejectIcon = styled(GtdRejectSVG)`
   opacity: 0.5;
 
   ${SelectItem}:hover & {
-    fill: ${theme('baseColor.red')};
+    fill: ${theme('rainbow.red')};
     opacity: 1;
   }
 `
@@ -55,7 +55,7 @@ export const RejectIcon = styled(GtdRejectSVG)`
 export const RejectSection = styled.div``
 
 export const RejectIndexIcon = styled(RejectIcon)`
-  fill: ${theme('baseColor.red')};
+  fill: ${theme('rainbow.red')};
   opacity: 1;
 
   ${RejectSection}:hover & {

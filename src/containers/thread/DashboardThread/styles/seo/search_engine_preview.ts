@@ -24,7 +24,7 @@ export const URL = styled.div`
   font-size: 13px;
   line-height: 1.3;
   font-style: normal;
-  color: #202124;
+  color: ${theme('hint')};
 `
 export const Title = styled.div`
   display: inline-block;
@@ -35,12 +35,12 @@ export const Title = styled.div`
   font-weight: 400;
   font-family: arial, sans-serif;
 
-  color: #1a0dab;
+  color: ${theme('rainbow.blue')};
   ${css.lineClamp(1)};
 `
 export const Desc = styled.div`
   font-size: 13px;
-  color: #4d5156;
+  color: ${theme('article.digest')};
   ${css.lineClamp(2)};
   line-height: 1.58;
   text-align: left;

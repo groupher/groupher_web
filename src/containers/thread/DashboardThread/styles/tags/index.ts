@@ -20,14 +20,12 @@ export const ContentWrapper = styled.div`
   height: 100%;
   width: 100%;
 `
-
 export const AddButton = styled(Button)`
   ${css.row('align-center')};
-  height: 32px;
   width: 100px;
   border-color: ${theme('divider')};
+  height: 30px !important;
 `
-
 export const AddIcon = styled(AdderSVG)`
   ${css.size(12)};
   fill: ${theme('article.digest')};

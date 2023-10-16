@@ -33,7 +33,7 @@ export const Box3 = styled.div`
 `
 export const CheckIcon = styled(CheckSVG)`
   ${css.size(10)};
-  fill: ${theme('baseColor.green')};
+  fill: ${theme('rainbow.green')};
   margin-right: 4px;
 `
 export const CollapseContent = styled.div`

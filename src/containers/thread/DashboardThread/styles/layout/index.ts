@@ -1,12 +1,11 @@
 import styled from 'styled-components'
 
 import type { TActive, TColorName, TPrimaryColor } from '@/spec'
-import css, { theme, primaryTheme } from '@/css'
+import css, { theme, rainbow } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.column()};
-  padding-left: 90px;
-  padding-right: 75px;
+  padding-left: 75px;
 
   ${css.media.mobile`
     padding: 20px;
@@ -58,7 +57,7 @@ export const BlockBase = styled.div<TBlockBase>`
   border-radius: 7px;
   /* border-color: ${theme('primary')}; */
   border-color: ${({ $active, primaryColor }) =>
-    $active ? primaryTheme(primaryColor) : theme('primary')};
+    $active ? rainbow(primaryColor) : theme('primary')};
   padding: 16px 15px;
 
   &:hover {
@@ -75,7 +74,7 @@ export const Bar = styled.div<TBar>`
   width: ${({ long }) => `${long || 10}%`};
   height: ${({ thin }) => (thin ? '4px' : '10px;')};
   background: ${({ thin, bold, primaryColor }) => {
-    if (primaryColor) return primaryTheme(primaryColor)
+    if (primaryColor) return rainbow(primaryColor)
 
     if (bold) return theme('article.title')
 

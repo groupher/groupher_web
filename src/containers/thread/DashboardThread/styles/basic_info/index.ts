@@ -11,10 +11,6 @@ export const Wrapper = styled.div`
     padding: 0 20px;
   `};
 `
-export const SavingWrapper = styled.div`
-  width: 305px;
-  margin-left: -5px;
-`
 export const Banner = styled.div`
   height: 70px;
   width: 100%;

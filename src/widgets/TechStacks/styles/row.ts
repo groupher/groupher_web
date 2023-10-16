@@ -20,7 +20,7 @@ export const ReadOnlyBlock = styled(Block)`
   width: 60px;
 `
 export const DeleteHint = styled.div`
-  color: ${theme('baseColor.red')};
+  color: ${theme('rainbow.red')};
   position: absolute;
   bottom: -8px;
   left: 27px;

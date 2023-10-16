@@ -19,7 +19,7 @@ export const Wrapper = styled.div<{ showShadow: boolean }>`
 `
 export const ReportIcon = styled(Img)`
   ${css.size(16)};
-  fill: ${theme('baseColor.red')};
+  fill: ${theme('rainbow.red')};
 `
 export const Text = styled.div`
   color: ${theme('article.title')};

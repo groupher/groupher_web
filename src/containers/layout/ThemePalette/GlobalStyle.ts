@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components'
 
 import type { TPrimaryColor } from '@/spec'
-import css, { theme, primaryTheme, primaryLightTheme } from '@/css'
+import css, { theme, rainbow, rainbowLight } from '@/css'
 
 import normalize from './normalize'
 
@@ -21,13 +21,13 @@ const GlobalStyle = createGlobalStyle<TPrimaryColor>`
   }
 
   *::-moz-selection {
-    background-color: ${({ primaryColor }) => primaryLightTheme(primaryColor)} !important;
-    color: ${({ primaryColor }) => primaryTheme(primaryColor)} !important;
+    background-color: ${({ primaryColor }) => rainbowLight(primaryColor)} !important;
+    color: ${({ primaryColor }) => rainbow(primaryColor)} !important;
   }
 
   *::selection {
-    background-color: ${({ primaryColor }) => primaryLightTheme(primaryColor)} !important;
-    color: ${({ primaryColor }) => primaryTheme(primaryColor)} !important;
+    background-color: ${({ primaryColor }) => rainbowLight(primaryColor)} !important;
+    color: ${({ primaryColor }) => rainbow(primaryColor)} !important;
   }
 
   a:hover {
@@ -84,7 +84,7 @@ const GlobalStyle = createGlobalStyle<TPrimaryColor>`
     display: flex;
   }
   .markdown-editor-mentionSuggestionsEntry:active {
-    background-color: ${theme('baseColor.red')};
+    background-color: ${theme('rainbow.red')};
   }
   .markdown-editor-mentionSuggestionsEntryFocused {
     background-color: ${theme('comment.mentionActiveBg')};

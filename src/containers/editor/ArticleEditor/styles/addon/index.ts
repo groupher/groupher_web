@@ -17,6 +17,6 @@ export const LinkInput = styled(Input)<{ invalid?: boolean }>`
   background: none;
   height: 26px;
   width: 100px;
-  color: ${({ invalid }) => (invalid ? theme('baseColor.red') : theme('article.digest'))};
+  color: ${({ invalid }) => (invalid ? theme('rainbow.red') : theme('article.digest'))};
   width: 200px;
 `

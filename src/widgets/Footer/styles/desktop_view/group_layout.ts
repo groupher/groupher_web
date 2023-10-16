@@ -94,7 +94,7 @@ export const LinkItem = styled(Link)`
 
 export const HeartIcon = styled(HeartSVG)`
   ${css.size(13)};
-  fill: ${theme('baseColor.red')};
+  fill: ${theme('rainbow.red')};
   margin-top: 2px;
   margin-right: 6px;
 `

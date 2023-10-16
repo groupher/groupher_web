@@ -40,7 +40,7 @@ export const LoadingIcon = styled(BtnIcon)<{ light: boolean }>`
   animation: ${animate.rotate360} 1s linear infinite;
 `
 export const FollowingIcon = styled(JoinEyeSVG)`
-  fill: ${theme('baseColor.green')};
+  fill: ${theme('rainbow.green')};
   ${css.size(15)};
   margin-right: 3px;
   transform: scaleX(0.9);
@@ -54,7 +54,7 @@ export const FollowedButton = styled(Button)`
   padding-top: 2px;
 `
 export const FollowingButton = styled(Button)<{ followingOffset: number }>`
-  color: ${theme('baseColor.green')};
+  color: ${theme('rainbow.green')};
   font-weight: bold;
   border: none;
   border-radius: 8px;

@@ -65,7 +65,37 @@ const Select: FC<TProps> = ({
     styles: {
       ...styles,
       // menuPortal: (provided) => ({ ...provided, zIndex: 9999 }),
-      // menu: (provided) => ({ ...provided, zIndex: 9999 }),
+      menu: (base) => ({
+        ...base,
+        backgroundColor: themeMap.htmlBg,
+        marginTop: 0,
+      }),
+      menuList: (base) => ({
+        ...base,
+        marginTop: 0,
+        marginBottom: 0,
+        paddingBottom: 1,
+      }),
+      control: (base) => ({
+        ...base,
+        backgroundColor: themeMap.alphaBg,
+        borderColor: themeMap.editor.border,
+        '&:hover': {
+          borderColor: themeMap.editor.border,
+        },
+      }),
+      option: (base, { isSelected }) => ({
+        ...base,
+        backgroundColor: isSelected ? themeMap.hoverBg : themeMap.htmlBg,
+        '&:hover': {
+          backgroundColor: themeMap.hoverBg,
+          color: themeMap.article.title,
+          cursor: 'pointer',
+        },
+        border: '1px solid',
+        borderColor: isSelected ? themeMap.divider : 'transparent',
+        color: isSelected ? themeMap.article.title : themeMap.article.digest,
+      }),
     },
     theme: (theme) => ({
       ...theme,

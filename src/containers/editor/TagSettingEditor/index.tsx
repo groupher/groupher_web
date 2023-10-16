@@ -5,12 +5,12 @@
 
 import { FC } from 'react'
 
-import type { TChangeMode, TSelectOption } from '@/spec'
+import type { TChangeMode, TColorName, TSelectOption } from '@/spec'
 // import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 import { ROUTE } from '@/constant/route'
 import { DRAWER_SCROLLER } from '@/constant/dom'
-import { COLORS } from '@/constant/colors'
+import { COLOR_NAME } from '@/constant/colors'
 import { CHANGE_MODE } from '@/constant/mode'
 import { POST_LAYOUT } from '@/constant/layout'
 
@@ -73,13 +73,13 @@ const TagSettingEditorContainer: FC<TProps> = ({
             <Title>标签名称</Title>
             <BasicInfo>
               <ColorSelector
-                activeColor={editingTag.color || COLORS.BLACK}
+                activeColor={editingTag.color || COLOR_NAME.BLACK}
                 onChange={(color) => edit(color, 'color')}
                 placement="bottom-start"
-                offset={[-8, 0]}
+                offset={[0, 0]}
               >
                 <DotSelector>
-                  <TitleDot color={editingTag?.color || COLORS.BLACK} />
+                  <TitleDot color={(editingTag?.color as TColorName) || COLOR_NAME.BLACK} />
                 </DotSelector>
               </ColorSelector>
 

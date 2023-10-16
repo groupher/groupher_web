@@ -86,7 +86,7 @@ export const CheckIconWrapper = styled.div<{ large: boolean }>`
   `};
 `
 export const CheckIcon = styled(CheckSVG)<{ large: boolean }>`
-  fill: ${theme('baseColor.greenLight')};
+  fill: ${theme('rainbow.greenLight')};
   ${({ large }) => css.size(large ? 17 : 16)};
 
   ${css.media.mobile`

@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   border: 1px solid;
   border-top: 3px solid;
   border-radius: 5px;
-  border-color: ${theme('baseColor.red')};
+  border-color: ${theme('rainbow.red')};
   min-height: 100px;
   padding: 10px 20px;
   margin-left: 20px;

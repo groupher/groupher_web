@@ -42,7 +42,7 @@ export const Dot = styled.div`
 export const CheckIcon = styled(CheckSVG)`
   ${css.size(15)};
   margin-right: 8px;
-  fill: ${theme('baseColor.green')};
+  fill: ${theme('rainbow.green')};
 `
 export const Header = styled.div`
   ${css.column('align-both')};

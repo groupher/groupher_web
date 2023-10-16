@@ -34,16 +34,16 @@ export const Footer = styled.div`
 export const UpvoteIcon = styled(UpvoteSVG)`
   ${css.size(12)};
   transform: scaleY(0.8);
-  fill: ${theme('baseColor.purple')};
+  fill: ${theme('rainbow.purple')};
   opacity: 0.8;
   margin-top: 2px;
 `
 
 export const Count = styled.div`
   font-size: 13px;
-  color: ${theme('baseColor.purple')};
+  color: ${theme('rainbow.purple')};
 `
 
 export const Bar = styled(BarBase)`
-  background: ${theme('baseColor.purple')};
+  background: ${theme('rainbow.purple')};
 `

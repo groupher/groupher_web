@@ -45,14 +45,9 @@ const HeaderLayout: FC = () => {
               <MobileThreadNavi />
             </MobileNaviWrapper>
             {headerLayout === HEADER_LAYOUT.RIGHT && <SpaceGrow />}
-            <ThreadTab
-              left={headerLayout === HEADER_LAYOUT.CENTER ? 4 : 0}
-              right={headerLayout === HEADER_LAYOUT.RIGHT ? 20 : 0}
-            />
+            <ThreadTab right={headerLayout === HEADER_LAYOUT.RIGHT ? 20 : 0} />
             <Row>
               <GithubItem href="/">
-                {/* <GithubIcon /> */}
-                {/* <div>19.5k</div> */}
                 <img
                   alt="GitHub Repo stars"
                   src="https://img.shields.io/github/stars/vercel/next.js?style=social&logo=github&label=%20%20&labelColor=black&color=white"

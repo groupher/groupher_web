@@ -8,7 +8,7 @@
 import { FC, memo } from 'react'
 
 import Markdown from 'markdown-to-jsx'
-import type { TTag } from '@/spec'
+import type { TColorName, TTag } from '@/spec'
 
 import { buildLog } from '@/logger'
 import { SpaceGrow } from '@/widgets/Common'
@@ -29,7 +29,7 @@ const TagNote: FC<TProps> = ({ testid = 'tag-note', tag }) => {
   return (
     <Wrapper testid={testid}>
       <Header>
-        <Title color={tag.color}>{tag.title}</Title>
+        <Title color={tag.color as TColorName}>{tag.title}</Title>
         <SpaceGrow />
         <InfoIcon />
       </Header>

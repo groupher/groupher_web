@@ -1,9 +1,10 @@
 import styled from 'styled-components'
 
 import type { TTestable, TActive, TColorName } from '@/spec'
+import { COLOR_NAME } from '@/constant/colors'
 
 import HookSVG from '@/icons/Hook'
-import css, { theme, baseColorTheme, baseColorBgTheme } from '@/css'
+import css, { theme, rainbow, rainbowLight } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
@@ -15,16 +16,18 @@ export const DotWrapper = styled.div`
   ${css.circle(28)};
   ${css.row('align-both')};
 `
-type TDot = TActive & { color: string; colorName: TColorName; bgMode: boolean }
+type TDot = TActive & { colorName: TColorName; bgMode: boolean }
 export const Dot = styled.div<TDot>`
-  ${({ $active }) => ($active ? css.circle(20) : css.circle(16))};
+  ${({ $active, colorName }) =>
+    $active ? css.circle(20) : css.circle(colorName === COLOR_NAME.BLACK ? 18 : 16)};
   ${css.row('align-both')};
-  background-color: ${({ color, bgMode }) => (!bgMode ? color : baseColorBgTheme(color))};
+  background-color: ${({ colorName, bgMode }) =>
+    !bgMode ? rainbow(colorName, 'rainbow.blackRow') : rainbowLight(colorName)};
 
   box-shadow: ${({ $active }) => ($active ? '0px 0px 7px 0px rgb(151 151 151 / 30%)' : '')};
 
-  border: ${({ bgMode }) => (bgMode ? '1px dashed' : 'none')};
-  border-color: ${({ colorName }) => baseColorTheme(colorName)};
+  border: ${({ bgMode }) => (bgMode ? '1px dashed' : '1px solid')};
+  border-color: ${({ colorName }) => rainbow(colorName, 'divider')};
 
   &:hover {
     ${css.circle(20)};
@@ -34,8 +37,7 @@ export const Dot = styled.div<TDot>`
 
   transition: all 0.2s;
 `
-type THookIcon = { colorName: TColorName; bgMode: boolean }
-export const HookIcon = styled(HookSVG)<THookIcon>`
+export const HookIcon = styled(HookSVG)`
   ${css.size(10)};
-  fill: ${({ bgMode, colorName }) => (!bgMode ? theme('alphaBg2') : baseColorTheme(colorName))};
+  fill: ${theme('button.fg')};
 `

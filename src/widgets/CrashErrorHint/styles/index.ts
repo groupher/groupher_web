@@ -31,7 +31,7 @@ export const Title = styled.div<TThemeName>`
   padding-bottom: 12px;
 `
 export const Desc = styled.p<TThemeName>`
-  color: ${({ t }) => themeSkins[t].baseColor.red};
+  color: ${({ t }) => themeSkins[t].rainbow.red};
 `
 export const UL = styled.ul<TThemeName>`
   margin-left: -22px;
