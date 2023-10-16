@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import type { TTestable, TActive, TColorName } from '@/spec'
 
 import HookSVG from '@/icons/Hook'
-import css, { theme, rainbowTheme, rainbowBgTheme } from '@/css'
+import css, { theme, rainbowTheme, rainbowLightTheme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
@@ -20,7 +20,7 @@ export const Dot = styled.div<TDot>`
   ${({ $active }) => ($active ? css.circle(20) : css.circle(16))};
   ${css.row('align-both')};
   background-color: ${({ colorName, bgMode }) =>
-    !bgMode ? rainbowTheme(colorName, 'button.bg') : rainbowBgTheme(colorName)};
+    !bgMode ? rainbowTheme(colorName, 'button.bg') : rainbowLightTheme(colorName)};
 
   box-shadow: ${({ $active }) => ($active ? '0px 0px 7px 0px rgb(151 151 151 / 30%)' : '')};
 

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
-import css, { theme, rainbowBgTheme } from '@/css'
+import css, { theme, rainbowLightTheme } from '@/css'
 
 import Img from '@/Img'
 
@@ -28,8 +28,8 @@ export const Avatar = styled(Img)<{ color: TColorName }>`
   border: 2px solid;
   padding: 2px;
   border-color: gold;
-  border-color: ${({ color }) => rainbowBgTheme(color)};
-  background-color: ${({ color }) => rainbowBgTheme(color)};
+  border-color: ${({ color }) => rainbowLightTheme(color)};
+  background-color: ${({ color }) => rainbowLightTheme(color)};
 `
 
 export const User = styled.div``

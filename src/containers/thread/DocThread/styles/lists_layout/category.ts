@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TColorName, TTestable } from '@/spec'
-import css, { theme, rainbowBgTheme } from '@/css'
+import css, { theme, rainbowLightTheme } from '@/css'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
@@ -36,7 +36,7 @@ export const IconWrapper = styled.div<{ color: TColorName }>`
   ${css.row('align-both')};
   margin-top: -35px;
   border-radius: 12px;
-  background: ${({ color }) => rainbowBgTheme(color)};
+  background: ${({ color }) => rainbowLightTheme(color)};
   opacity: 0.8;
 `
 export const Title = styled.div`

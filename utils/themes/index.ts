@@ -34,21 +34,6 @@ export const themeCoverIndexMap = map(path(['coverIndex']), themeSkins)
 export const theme = (themeKey: TFlatThemeKey): TTheme =>
   path(['theme', ...split('.', themeKey)]) || 'wheat'
 
-/**
- * for primary color component
- */
-// export const rainbowTheme = (primaryColor: TColorName, themeKey = ''): string => {
-//   const colorKey = primaryColor?.toLowerCase()
-
-//   if (primaryColor === COLOR_NAME.BLACK) {
-//     return !!themeKey
-//       ? theme(`${themeKey as TFlatThemeKey}`)
-//       : theme(`rainbow.${colorKey}` as TFlatThemeKey)
-//   }
-
-//   return theme(`rainbow.${colorKey}` as TFlatThemeKey)
-// }
-
 export const primaryLink = (primaryColor: TColorName): string => {
   if (primaryColor === COLOR_NAME.BLACK) {
     return theme('link')
@@ -67,7 +52,7 @@ export const rainbowTheme = (color: TColorName | string, darkThemeOverWriteKey =
   return theme(`rainbow.${camelize(color)}` as TFlatThemeKey)
 }
 
-export const rainbowBgTheme = (color: TColorName | string): string => {
+export const rainbowLightTheme = (color: TColorName | string): string => {
   if (color === COLOR_NAME.BLACK) {
     return theme('hoverBg')
   }

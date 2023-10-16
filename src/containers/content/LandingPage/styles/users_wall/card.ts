@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TColorName } from '@/spec'
 
-import css, { theme, rainbowBgTheme } from '@/css'
+import css, { theme, rainbowLightTheme } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
@@ -33,8 +33,8 @@ export const Avatar = styled(Img)<{ color: TColorName }>`
   ${css.circle(30)};
   border: 2px solid;
   padding: 2px;
-  border-color: ${({ color }) => rainbowBgTheme(color)};
-  background-color: ${({ color }) => rainbowBgTheme(color)};
+  border-color: ${({ color }) => rainbowLightTheme(color)};
+  background-color: ${({ color }) => rainbowLightTheme(color)};
 
   ${css.media.mobile`
     ${css.circle(25)};
