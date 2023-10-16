@@ -2,68 +2,70 @@ import dynamic from 'next/dynamic'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
+const Loading = () => <LavaLampLoading top={20} left={50} />
+
 export const Overview = dynamic(() => import('./Overview'), {
-  loading: () => <LavaLampLoading />,
+  loading: () => <Loading />,
 })
 
 // basic
 export const BasicInfo = dynamic(() => import('./BasicInfo'), {
-  loading: () => <LavaLampLoading />,
+  loading: () => <Loading />,
 })
 
 export const SEO = dynamic(() => import('./SEO'), {
-  loading: () => <LavaLampLoading />,
+  loading: () => <Loading />,
 })
 
 export const Layout = dynamic(() => import('./Layout'), {
-  loading: () => <LavaLampLoading />,
+  loading: () => <Loading />,
 })
 
 export const Alias = dynamic(() => import('./Alias'), {
-  loading: () => <LavaLampLoading />,
+  loading: () => <Loading />,
 })
 
 export const Admin = dynamic(() => import('./Admin'), {
-  loading: () => <LavaLampLoading />,
+  loading: () => <Loading />,
 })
 
 export const Threads = dynamic(() => import('./Threads'), {
-  loading: () => <LavaLampLoading />,
+  loading: () => <Loading />,
 })
 
 export const Tags = dynamic(() => import('./Tags'), {
-  loading: () => <LavaLampLoading />,
+  loading: () => <Loading />,
 })
 
 export const RSS = dynamic(() => import('./RSS'), {
-  loading: () => <LavaLampLoading />,
+  loading: () => <Loading />,
 })
 
 export const Broadcast = dynamic(() => import('./Broadcast'), {
-  loading: () => <LavaLampLoading />,
+  loading: () => <Loading />,
 })
 
 // integrates
 export const Domain = dynamic(() => import('./Domain'), {
-  loading: () => <LavaLampLoading />,
+  loading: () => <Loading />,
 })
 
 export const ThirdPart = dynamic(() => import('./ThirdPart'), {
-  loading: () => <LavaLampLoading />,
+  loading: () => <Loading />,
 })
 
 export const Widgets = dynamic(() => import('./Widgets'), {
-  loading: () => <LavaLampLoading />,
+  loading: () => <Loading />,
 })
 
 export const Doc = dynamic(() => import('./Doc'), {
-  loading: () => <LavaLampLoading />,
+  loading: () => <Loading />,
 })
 
 export const Header = dynamic(() => import('./Header'), {
-  loading: () => <LavaLampLoading />,
+  loading: () => <Loading />,
 })
 
 export const Footer = dynamic(() => import('./Footer'), {
-  loading: () => <LavaLampLoading />,
+  loading: () => <Loading />,
 })

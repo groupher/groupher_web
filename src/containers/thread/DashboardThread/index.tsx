@@ -6,7 +6,6 @@
 import { FC } from 'react'
 import { includes } from 'ramda'
 
-// import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 import { ROUTE, DASHBORD_CMS_ROUTES } from '@/constant/route'
 

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import tinykeys from 'tinykeys'
+import { tinykeys } from 'tinykeys'
 
 const useShortcut = (combination: string | string[], cb: () => void): void => {
   useEffect(() => {
@@ -19,6 +19,7 @@ const useShortcut = (combination: string | string[], cb: () => void): void => {
     }
 
     const unsubscribe = tinykeys(window, handlers)
+
     return () => {
       unsubscribe()
     }
