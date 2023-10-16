@@ -5,7 +5,7 @@ import type { TColorName, TTheme } from '@/spec'
 
 export const getColor = (ghost: boolean, disabled: boolean): TTheme => {
   if (ghost) {
-    return theme('button.primary')
+    return theme('button.ghost')
   }
 
   if (disabled) {

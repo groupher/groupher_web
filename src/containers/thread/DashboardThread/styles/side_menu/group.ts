@@ -65,13 +65,12 @@ export const Item = styled(Link)<TItem>`
   position: relative;
   display: block;
   color: ${({ $active, primaryColor }) =>
-    $active ? primaryTheme(primaryColor) : theme('dashboard.menuTitle')};
+    $active ? primaryTheme(primaryColor, 'dashboard.menuTitle') : theme('dashboard.menuTitle')};
   background: ${({ $active }) => ($active ? theme('activeLinear') : 'transparent')};
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
 
   width: 160px;
   padding: 3px 5px;
-  /* margin-top: 5px; */
   margin-top: ${({ $active }) => ($active ? '7px' : '5px')};
   margin-bottom: ${({ $active }) => ($active ? '7px' : 0)};
 
@@ -81,7 +80,7 @@ export const Item = styled(Link)<TItem>`
 
   &:hover {
     cursor: pointer;
-    color: ${({ primaryColor }) => primaryTheme(primaryColor)};
+    color: ${({ primaryColor }) => primaryTheme(primaryColor, 'dashboard.menuTitle')};
     background: ${theme('activeLinear')};
   }
 

@@ -1,7 +1,6 @@
 import { FC, memo } from 'react'
 
-import type { TTag } from '@/spec'
-import { COLORS } from '@/constant/colors'
+import type { TColorName, TTag } from '@/spec'
 
 import { SpaceGrow } from '@/widgets/Common'
 import ColorSelector from '@/widgets/ColorSelector'
@@ -59,11 +58,11 @@ const TagBar: FC<TProps> = ({
             offset={[-8, 0]}
           >
             <DotSelector>
-              <Dot color={COLORS[editingTag.color]} isEditMode={isEditMode} />
+              <Dot color={editingTag.color as TColorName} isEditMode={isEditMode} />
             </DotSelector>
           </ColorSelector>
         ) : (
-          <Dot color={COLORS[tag.color]} />
+          <Dot color={tag.color as TColorName} />
         )}
         {isEditMode ? (
           <InputWrapper>

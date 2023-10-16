@@ -10,7 +10,7 @@ import { keys } from 'ramda'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 
-import { COLORS, COLOR_NAME } from '@/constant/colors'
+import { COLOR_NAME } from '@/constant/colors'
 import type { TSpace, TColorName } from '@/spec'
 import { buildLog } from '@/logger'
 
@@ -69,11 +69,7 @@ const FaIcons: FC<TProps> = ({
         >
           <Row>
             <IconWrapper color={selectColor} $active={panelOpen}>
-              <FontAwesomeIcon
-                icon={FaIcon[selectIcon]}
-                fontSize={size}
-                color={COLORS[selectColor]}
-              />
+              <FontAwesomeIcon icon={FaIcon[selectIcon]} fontSize={size} color={selectColor} />
             </IconWrapper>
 
             <ArrowIcon $active={panelOpen} />

@@ -72,7 +72,7 @@ export const Label = styled.span<TLabel>`
   padding: 1px 6px;
   border-radius: 3px;
   color: ${({ active, primaryColor }) =>
-    active ? primaryTheme(primaryColor) : theme('lightText')}; // to-theme
+    active ? primaryTheme(primaryColor, 'dashboard.menuCat') : theme('lightText')}; // to-theme
   margin-bottom: ${({ bottomSpace }) => `${bottomSpace}px`};
   font-weight: 500;
 

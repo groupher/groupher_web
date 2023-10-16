@@ -46,7 +46,7 @@ type TRealBar = { width: string } & TPrimaryColor
 export const RealBar = styled.span<TRealBar>`
   width: ${({ width }) => width};
   height: 2px;
-  background: ${({ primaryColor }) => primaryTheme(primaryColor)};
+  background: ${({ primaryColor }) => primaryTheme(primaryColor, 'dashboard.menuTitle')};
 `
 // transform: ${({ active }) =>
 //     active ? 'translate3d(0,0,0);' : 'translate3d(0, 150%, 0);'};

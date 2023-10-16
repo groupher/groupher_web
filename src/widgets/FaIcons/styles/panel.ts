@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
 import type { TActive, TColorName } from '@/spec'
-import { COLORS } from '@/constant/colors'
 import css, { theme, rainbowTheme, rainbowBgTheme } from '@/css'
 
 import FormInput from '@/widgets/Input'
@@ -83,12 +82,10 @@ export const ColorBlock = styled.div<TColorBlock>`
   }
   transition: all 0.25s;
 `
-
 export const ColorCenter = styled.div<{ color: TColorName }>`
   ${css.circle(12)};
-  background: ${({ color }) => COLORS[color]};
+  background: ${({ color }) => rainbowTheme(color)};
 `
-
 export const Input = styled(FormInput)`
   text-align: left;
   padding: 3px 5px;

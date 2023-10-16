@@ -234,6 +234,7 @@ const day = {
     primary: primaryColor,
     bg: primaryColor,
     fg: 'white',
+    ghost: primaryColor,
     border: primaryColor,
     disabledFg: descText,
     hoverBg: lighten(primaryColor, 10),

@@ -1,9 +1,8 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 
-import type { TTestable } from '@/spec'
-import { COLORS } from '@/constant/colors'
-import css, { theme } from '@/css'
+import type { TColorName, TTestable } from '@/spec'
+import css, { theme, rainbowTheme } from '@/css'
 
 import Input from '@/widgets/Input'
 
@@ -19,18 +18,16 @@ export const BasicInfo = styled.div`
   margin-bottom: 24px;
 `
 export const DotSelector = styled.div`
-  ${css.size(34)};
+  ${css.circle(34)};
   ${css.row('align-both')};
   border: 1px solid;
   border-color: ${theme('editor.border')};
-  background: white;
-  border-radius: 4px;
+  background: ${theme('divider')};
   cursor: pointer;
 `
-export const TitleDot = styled.div<{ color: string }>`
-  ${css.size(24)};
-  border-radius: 5px;
-  background: ${({ color }) => COLORS[color]};
+export const TitleDot = styled.div<{ color: TColorName }>`
+  ${css.circle(28)};
+  background: ${({ color }) => rainbowTheme(color, 'rainbow.blackRow')};
 `
 export const TitleInputer = styled(Input)`
   margin-left: 10px;
@@ -49,7 +46,7 @@ export const SelectorWrapper = styled.div`
 `
 export const Title = styled.div`
   font-size: 13px;
-  color: ${theme('article.title')};
+  color: ${theme('dashboard.menuCat')};
   font-weight: 600;
   padding-left: 28px;
   margin-bottom: 8px;

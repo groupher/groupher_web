@@ -1,11 +1,7 @@
 import styled from 'styled-components'
-import { includes } from 'ramda'
 
 import type { TActive, TColorName } from '@/spec'
-import { COLORS, COLOR_NAME } from '@/constant/colors'
-
-import css, { theme } from '@/css'
-import { lighten, darken } from '@/utils/color'
+import css, { theme, rainbowTheme } from '@/css'
 
 import CrossSVG from '@/icons/CloseCross'
 import ArrowSVG from '@/icons/Arrow'
@@ -53,8 +49,8 @@ export const NotifyBar = styled.div<TNotifyBar>`
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   border: 1px solid;
-  border-color: ${({ bg }) => COLORS[bg]};
-  background: ${({ bg }) => COLORS[bg]};
+  border-color: ${({ bg }) => rainbowTheme(bg)};
+  background: ${({ bg }) => rainbowTheme(bg)};
   padding: 0 20px;
   padding-bottom: 2px;
 `
@@ -64,8 +60,7 @@ export const NotifyDesc = styled.div`
   font-weight: 600;
 `
 export const NotifySolidLink = styled.div<{ bg: TColorName }>`
-  background: ${({ bg }) =>
-    includes(bg, [COLOR_NAME.BLACK]) ? lighten(COLORS[bg], 6) : darken(COLORS[bg], 10)};
+  background: ${({ bg }) => rainbowTheme(bg)};
 
   color: white;
   border-radius: 5px;
@@ -104,7 +99,7 @@ export const BgLabel = styled.div<{ bg: TColorName }>`
   height: 24px;
   ${css.row('align-both')};
   border: 1px solid;
-  border-color: ${({ bg }) => COLORS[bg]};
+  border-color: ${({ bg }) => rainbowTheme(bg)};
   border-radius: 6px;
   cursor: pointer;
   margin-left: 15px;
@@ -113,5 +108,5 @@ export const TheColor = styled.div<{ color: TColorName }>`
   width: 38px;
   height: 18px;
   border-radius: 6px;
-  background-color: ${({ color }) => COLORS[color]};
+  background-color: ${({ color }) => rainbowTheme(color)};
 `

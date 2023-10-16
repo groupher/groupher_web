@@ -14,7 +14,7 @@
 import { map, path, split } from 'ramda'
 
 import type { TColorName, TTheme } from '@/spec'
-import { COLORS, COLOR_NAME } from '@/constant/colors'
+import { COLOR_NAME } from '@/constant/colors'
 
 import { camelize } from '@/fmt'
 
@@ -54,7 +54,7 @@ export const primaryLink = (primaryColor: TColorName): string => {
     return theme('link')
   }
 
-  return COLORS[primaryColor]
+  return theme(`rainbow.${primaryColor}` as TFlatThemeKey)
 }
 
 export const primaryLightTheme = (primaryColor: TColorName): string => {
@@ -62,10 +62,16 @@ export const primaryLightTheme = (primaryColor: TColorName): string => {
     return theme('hoverBg')
   }
 
-  return `rainbow.${camelize(primaryColor)}Bg` as TFlatThemeKey
+  return theme(`rainbow.${camelize(primaryColor)}Bg` as TFlatThemeKey)
 }
 
-export const rainbowTheme = (color: TColorName | string): string => {
+export const rainbowTheme = (color: TColorName | string, themeKey = ''): string => {
+  if (color === COLOR_NAME.BLACK) {
+    return !!themeKey
+      ? theme(`${themeKey as TFlatThemeKey}`)
+      : theme(`rainbow.${camelize(color)}` as TFlatThemeKey)
+  }
+
   return theme(`rainbow.${camelize(color)}` as TFlatThemeKey)
 }
 

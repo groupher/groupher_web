@@ -15,11 +15,12 @@ export const DotWrapper = styled.div`
   ${css.circle(28)};
   ${css.row('align-both')};
 `
-type TDot = TActive & { color: string; colorName: TColorName; bgMode: boolean }
+type TDot = TActive & { colorName: TColorName; bgMode: boolean }
 export const Dot = styled.div<TDot>`
   ${({ $active }) => ($active ? css.circle(20) : css.circle(16))};
   ${css.row('align-both')};
-  background-color: ${({ color, bgMode }) => (!bgMode ? color : rainbowBgTheme(color))};
+  background-color: ${({ colorName, bgMode }) =>
+    !bgMode ? rainbowTheme(colorName, 'button.bg') : rainbowBgTheme(colorName)};
 
   box-shadow: ${({ $active }) => ($active ? '0px 0px 7px 0px rgb(151 151 151 / 30%)' : '')};
 

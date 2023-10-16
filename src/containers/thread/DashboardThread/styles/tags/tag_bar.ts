@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/css'
-
+import type { TColorName } from '@/spec'
+import css, { theme, rainbowTheme } from '@/css'
 import Input from '@/widgets/Input'
 
 type TWrapper = { isEditMode: boolean; isSetting: boolean; hasSettingTag: boolean }
@@ -25,30 +25,22 @@ export const Wrapper = styled.div<TWrapper>`
     return isSetting ? 1 : 0.3
   }};
 
-  margin-left: ${({ isSetting, hasSettingTag }) => {
-    if (!hasSettingTag) return '-8px'
-
-    return isSetting ? '-12px' : '-8px'
-  }};
-
   &:hover {
     border-color: ${({ isEditMode }) => (!isEditMode ? theme('article.digest') : 'divider')};
   }
   transition: all 0.1s;
 `
-type TDot = { color: string; isEditMode?: boolean }
+type TDot = { color: TColorName; isEditMode?: boolean }
 export const Dot = styled.div<TDot>`
-  ${({ isEditMode }) => (!isEditMode ? css.circle(11) : css.size(18))};
-  background: ${({ color }) => color};
-  border-radius: ${({ isEditMode }) => (isEditMode ? '4px' : '100%')};
+  ${({ isEditMode }) => (!isEditMode ? css.circle(11) : css.circle(20))};
+  background: ${({ color }) => rainbowTheme(color)};
 `
 export const DotSelector = styled.div`
-  ${css.size(26)};
+  ${css.circle(26)};
   ${css.row('align-both')};
   border: 1px solid;
   border-color: ${theme('editor.border')};
-  background: white;
-  border-radius: 4px;
+  background: ${theme('divider')};
   margin-left: -6px;
   margin-right: 4px;
   cursor: pointer;
