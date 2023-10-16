@@ -14,7 +14,7 @@ const link = '#418ccc'
 
 const actionText = '#7f8695'
 const descText = '#7c7f82'
-const threadTitle = '#FFFFFF'
+const threadTitle = '#dddddd'
 const hoverBg = '#42424259' // with alpha
 const hint = '#9d9999'
 // const primaryMate = 'orange'

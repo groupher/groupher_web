@@ -25,11 +25,10 @@ export const FloatWrapper = styled(NormalWrapper)`
   margin-top: -4px;
   margin-left: -100px;
 `
-
 type TTitle = TActive & TPrimaryColor
 export const Title = styled(Link)<TTitle>`
   color: ${({ $active, primaryColor }) =>
-    $active ? primaryTheme(primaryColor) : theme('article.digest')};
+    $active ? primaryTheme(primaryColor, 'article.title') : theme('article.digest')};
   font-size: 14px;
   opacity: ${({ $active }) => ($active ? 1 : 0.9)};
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
