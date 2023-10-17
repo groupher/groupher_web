@@ -91,8 +91,7 @@ export const DrawerWrapper = styled.div.attrs<TDrawer>(
 
 export const DrawerContent = styled.div<{ type: string }>`
   position: relative;
-  /* 60 is the width of addon */
-  width: calc(100% - 60px);
+  width: 100%;
   background-color: ${theme('drawer.bg')};
   height: ${({ type }) => (isWideMode(type) ? '100vh' : 'calc(100vh - 50px)')};
   border-radius: ${({ type }) => (isWideMode(type) ? 0 : '10px')};

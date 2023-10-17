@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
 import css, { theme } from '@/css'
-import { FadeToggle } from '@/widgets/Common'
 
 export const Wrapper = styled.div``
 export const BodyWrapper = styled.div`
@@ -34,34 +33,6 @@ export const SubTitle = styled.span`
     font-size: 18px;
     font-family: system-ui;
   }
-`
-
-const getLeftOffset = (count: number): string => {
-  switch (count) {
-    case 0: {
-      return '128px;'
-    }
-    case 1: {
-      return '127px;'
-    }
-    case 2: {
-      return '123px;'
-    }
-    default: {
-      return '118px;'
-    }
-  }
-}
-
-type TUpvoteWrapper = {
-  show: boolean
-  count: number
-}
-
-export const UpvoteWrapper = styled(FadeToggle)<TUpvoteWrapper>`
-  position: fixed;
-  top: 100px;
-  left: ${({ count }) => getLeftOffset(count)};
 `
 
 export const GoTopWrapper = styled.div<{ show: boolean }>`

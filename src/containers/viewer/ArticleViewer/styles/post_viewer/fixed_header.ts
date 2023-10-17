@@ -8,10 +8,11 @@ export const Wrapper = styled.div<{ visible: boolean }>`
   position: fixed;
   top: ${({ visible }) => (visible ? 0 : '-60px;')};
   opacity: ${({ visible }) => (visible ? 1 : 0)};
-  width: calc(100% - 240px);
-  margin-left: -86px;
-  padding-left: 80px;
-  padding-right: 30px;
+  width: 100%;
+  margin-left: -66px;
+  padding: 0 66px;
+  padding-left: 66px;
+  padding-right: 60px;
   height: 60px;
   background: ${theme('alphaBg2')};
   backdrop-filter: blur(10px);
@@ -37,15 +38,11 @@ export const LeftPart = styled.div`
 export const UpvoteWrapper = styled(FadeToggle)`
   ${css.row('align-center')};
   position: absolute;
-  left: -75px;
-  top: 2px;
+  left: -65px;
 `
 export const ArticleTitle = styled.div`
   ${css.row('align-center')};
   color: ${theme('article.title')};
   font-size: 18px;
-  ${css.cutRest('400px')};
-`
-export const ArticleStateBadgeWrapper = styled.div`
-  margin-right: 10px;
+  ${css.cutRest('300px')};
 `
