@@ -39,7 +39,7 @@ export const GoTopWrapper = styled.div<{ show: boolean }>`
   ${css.row('align-end', 'justify-center')};
   position: fixed;
   bottom: 40px;
-  left: 102px;
+  left: 5px;
   width: 60px;
   height: 40px;
   opacity: 0.8;

@@ -515,7 +515,7 @@ const ScrollBarStyle = createGlobalStyle`
   }
 
   .os-theme-dark.os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgb(148 148 148 / 55%);
   }
 
   .os-theme-light.os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle {

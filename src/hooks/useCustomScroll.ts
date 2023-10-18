@@ -1,6 +1,8 @@
 import { useEffect, useState, RefObject } from 'react'
 import { OverlayScrollbars } from 'overlayscrollbars'
 
+import THEME from '@/constant/theme'
+
 type TOption = {
   className?: string
   themeCategory?: string
@@ -30,7 +32,7 @@ const useCustomScroll = (ref: RefObject<HTMLElement>, option: TOption = {}): any
 
   useEffect(() => {
     if (OverlayScrollbars && ref.current && !scrollInstance) {
-      option.className = option.themeCategory === 'dark' ? 'os-theme-light' : 'os-theme-dark'
+      option.className = option.themeCategory === THEME.NIGHT ? 'os-theme-dark' : 'os-theme-light'
       delete option.themeCategory
 
       const defaultOption = {

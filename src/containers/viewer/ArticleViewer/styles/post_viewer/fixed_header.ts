@@ -9,9 +9,8 @@ export const Wrapper = styled.div<{ visible: boolean }>`
   top: ${({ visible }) => (visible ? 0 : '-60px;')};
   opacity: ${({ visible }) => (visible ? 1 : 0)};
   width: 100%;
-  margin-left: -66px;
-  padding: 0 66px;
-  padding-left: 66px;
+  margin-left: -68px;
+  padding: 0 68px;
   padding-right: 60px;
   height: 60px;
   background: ${theme('alphaBg2')};
