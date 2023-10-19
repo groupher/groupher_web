@@ -73,7 +73,7 @@ const night = {
     brownBg: '#3a342b',
 
     yellow: '#eddd85',
-    yellowBg: '#41403a',
+    yellowBg: '#a9a06a30',
 
     green: '#699411',
     greenBg: '#8a97764a',

@@ -99,6 +99,7 @@ export const DrawerContent = styled.div<{ type: string }>`
     isWideMode(type) ? theme('drawer.shadow') : theme('drawer.shadowLite')};
   border: 1px solid;
   border-color: ${theme('drawer.border')};
+  border-top-left-radius: 10px;
 `
 type TDrawerMobile = { options: Record<string, unknown>; bgColor: string }
 export const DrawerMobileContent = styled.div<TDrawerMobile>`

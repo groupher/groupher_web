@@ -16,6 +16,7 @@ export const Wrapper = styled.div<{ visible: boolean }>`
   background: ${theme('alphaBg2')};
   backdrop-filter: blur(10px);
   border-bottom: 1px solid transparent;
+  border-top-left-radius: 10px;
   border-image: linear-gradient(
     0.35turn,
     transparent,
