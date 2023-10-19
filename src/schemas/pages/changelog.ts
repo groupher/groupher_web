@@ -9,7 +9,7 @@ export const changelog = `
   }
 `
 export const pagedChangelogs = `
-  query pagedChangelogs($filter: PagedChangelogsFilter, $userHasLogin: Boolean!) {
+  query pagedChangelogs($filter: PagedChangelogsFilter!, $userHasLogin: Boolean!) {
     pagedChangelogs(filter: $filter) {
       entries {
         ${F.article}        

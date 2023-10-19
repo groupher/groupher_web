@@ -26,11 +26,12 @@ import { T, markStates, getParent, Instance, toJS } from '@/mobx'
 import { nilOrEmpty } from '@/validator'
 import { plural } from '@/fmt'
 
-import { PagedPosts, ArticlesFilter, emptyPagi } from '@/model'
+import { PagedPosts, PagedChangelogs, ArticlesFilter, emptyPagi } from '@/model'
 
 const ArticlesThread = T.model('ArticlesThread', {
   mode: T.opt(T.enum(['default', 'modeline']), 'default'),
   pagedPosts: T.opt(PagedPosts, emptyPagi),
+  pagedChangelogs: T.opt(PagedChangelogs, emptyPagi),
   filters: T.opt(ArticlesFilter, {}),
   resState: T.opt(T.enum('resState', values(TYPE.RES_STATE)), TYPE.RES_STATE.LOADING),
 })

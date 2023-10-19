@@ -28,6 +28,8 @@ const ChangelogThreadContainer: FC<TProps> = ({
   useInit(store)
   const { globalLayout, tagsMode, pagedChangelogsData } = store
 
+  console.log('## pagedChangelogsData: ', pagedChangelogsData)
+
   return globalLayout.banner === BANNER_LAYOUT.TABBER ? (
     <ClassicLayout tagsMode={tagsMode} pagedChangelogs={pagedChangelogsData} />
   ) : (
