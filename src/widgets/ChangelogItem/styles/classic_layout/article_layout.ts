@@ -22,22 +22,25 @@ export const Main = styled.div`
   width: 100%;
   min-height: 220px;
   padding-bottom: 30px;
-
-  &:hover {
-    cursor: pointer;
-  }
 `
-export const Title = styled.div`
+export const Title = styled.a`
   color: ${theme('article.title')};
   font-size: 20px;
   font-weight: 580;
   margin-bottom: 10px;
   margin-top: 30px;
+  text-decoration: none;
+  display: block;
 
   ${css.media.mobile`
     font-size: 18px;
     margin-top: 20px;
   `};
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 `
 export const TagsWrapper = styled.div`
   ${css.row('align-both', 'justify-between')};
