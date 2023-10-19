@@ -6,14 +6,14 @@ import type { TArticleNavi } from '../spec'
 
 import {
   Wrapper,
-  LeftSwitchBlock,
-  LeftArrow,
-  RightSwitchBlock,
-  RightArrow,
+  UpSwitchBlock,
+  UpArrow,
+  DownSwitchBlock,
+  DownArrow,
   IndexWrapper,
-  LeftIndexWrapper,
-  RightIndexWrapper,
-} from '../styles/add_on/article_navi'
+  UpIndexWrapper,
+  DownIndexWrapper,
+} from '../styles/article_navi'
 
 import { naviToArticle } from '../logic'
 
@@ -29,20 +29,20 @@ const ArticleNavi: FC<TProps> = ({ articleNavi }) => {
   return (
     <Wrapper>
       {articleNavi?.previous && (
-        <LeftSwitchBlock onClick={() => naviToArticle(articleNavi.previous)}>
-          <LeftArrow />
+        <UpSwitchBlock onClick={() => naviToArticle(articleNavi.previous)}>
+          <UpArrow />
           <IndexWrapper>
-            <LeftIndexWrapper>上一篇</LeftIndexWrapper>
+            <UpIndexWrapper>上一篇</UpIndexWrapper>
           </IndexWrapper>
-        </LeftSwitchBlock>
+        </UpSwitchBlock>
       )}
       {articleNavi?.next && (
-        <RightSwitchBlock onClick={() => naviToArticle(articleNavi.next)}>
-          <RightArrow />
+        <DownSwitchBlock onClick={() => naviToArticle(articleNavi.next)}>
+          <DownArrow />
           <IndexWrapper>
-            <RightIndexWrapper>下一篇</RightIndexWrapper>
+            <DownIndexWrapper>下一篇</DownIndexWrapper>
           </IndexWrapper>
-        </RightSwitchBlock>
+        </DownSwitchBlock>
       )}
     </Wrapper>
   )

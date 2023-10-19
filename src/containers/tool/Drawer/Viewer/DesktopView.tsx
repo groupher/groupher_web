@@ -1,10 +1,13 @@
 import { Fragment, FC, ReactNode, memo } from 'react'
+import { includes } from 'ramda'
 
 import { ANCHOR } from '@/constant/dom'
 
-import type { TSwipeOption } from '../spec'
+import type { TArticleNavi, TSwipeOption } from '../spec'
+import { ARTICLE_VIEWER_TYPES } from '../constant'
 
-import { DrawerOverlay, DrawerWrapper, DrawerContent } from '../styles'
+import ArticleNavi from './ArticleNavi'
+import { DrawerOverlay, DrawerWrapper, DrawerContent, NaviArea } from '../styles'
 import { closeDrawer } from '../logic'
 
 type TProps = {
@@ -15,6 +18,7 @@ type TProps = {
   fromContentEdge: boolean
   type: string
   children: ReactNode
+  articleNavi: TArticleNavi
 }
 
 const DesktopView: FC<TProps> = ({
@@ -24,8 +28,11 @@ const DesktopView: FC<TProps> = ({
   rightOffset,
   fromContentEdge,
   type,
+  articleNavi,
   children,
 }) => {
+  const isArticleViewer = includes(type, ARTICLE_VIEWER_TYPES)
+
   return (
     <Fragment>
       <DrawerOverlay
@@ -42,7 +49,14 @@ const DesktopView: FC<TProps> = ({
         mobile={false}
         options={options}
       >
-        <DrawerContent type={type}>{children}</DrawerContent>
+        <DrawerContent type={type}>
+          {isArticleViewer && (
+            <NaviArea>
+              <ArticleNavi articleNavi={articleNavi} />
+            </NaviArea>
+          )}
+          {children}
+        </DrawerContent>
       </DrawerWrapper>
     </Fragment>
   )

@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 import { includes } from 'ramda'
 
-import ArticleNavi from './ArticleNavi'
+import ArticleNavi from '../Viewer/ArticleNavi'
 
 import type { TArticleNavi } from '../spec'
 import { ARTICLE_VIEWER_TYPES } from '../constant'

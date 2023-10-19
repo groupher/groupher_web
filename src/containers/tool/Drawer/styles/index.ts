@@ -101,6 +101,14 @@ export const DrawerContent = styled.div<{ type: string }>`
   border-color: ${theme('drawer.border')};
   border-top-left-radius: 10px;
 `
+export const NaviArea = styled.div`
+  position: absolute;
+  left: 0;
+  top: 5%;
+  height: 85%;
+  width: 50px;
+  z-index: 2;
+`
 type TDrawerMobile = { options: Record<string, unknown>; bgColor: string }
 export const DrawerMobileContent = styled.div<TDrawerMobile>`
   width: 100%;
