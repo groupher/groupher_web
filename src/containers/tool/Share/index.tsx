@@ -14,6 +14,8 @@ import { bond } from '@/mobx'
 import MenuButton from '@/widgets/Buttons/MenuButton'
 import IconButton from '@/widgets/Buttons/IconButton'
 
+import Panel from './Panel'
+
 import type { TStore } from './store'
 import { useInit, handleMenu } from './logic'
 
@@ -26,20 +28,11 @@ type TProps = {
   offsetLeft?: string
 } & TSpace
 
-let Panel = null
-
 const ShareContainer: FC<TProps> = ({ share: store, offsetLeft = 'none', ...restProps }) => {
   useInit(store)
 
   const { show, menuOptions, siteShareType, linksData, viewingArticle } = store
-  const [panelLoad, setPanelLoad] = useState(false)
-
-  useEffect(() => {
-    if (show) {
-      Panel = dynamic(() => import('./Panel'), { ssr: false })
-      setPanelLoad(true)
-    }
-  }, [show, panelLoad])
+  // const [panelLoad, setPanelLoad] = useState(false)
 
   return (
     <Fragment>
@@ -47,15 +40,13 @@ const ShareContainer: FC<TProps> = ({ share: store, offsetLeft = 'none', ...rest
         <IconButton icon={SVG.SHARE} dimWhenIdle {...restProps} />
       </MenuButton>
 
-      {panelLoad && (
-        <Panel
-          show={show}
-          offsetLeft={offsetLeft}
-          siteShareType={siteShareType as string}
-          linksData={linksData}
-          article={viewingArticle}
-        />
-      )}
+      <Panel
+        show={show}
+        offsetLeft={offsetLeft}
+        siteShareType={siteShareType as string}
+        linksData={linksData}
+        article={viewingArticle}
+      />
     </Fragment>
   )
 }

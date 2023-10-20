@@ -54,4 +54,9 @@ export const MoreIcon = styled(MoreSVG)`
   ${css.size(18)};
   fill: ${theme('hint')};
   margin-left: 16px;
+  cursor: pointer;
+
+  &:hover {
+    fill: ${theme('article.title')};
+  }
 `

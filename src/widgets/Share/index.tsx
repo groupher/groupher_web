@@ -4,7 +4,8 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { FC, useEffect, useState } from 'react'
+import { observer } from 'mobx-react'
 import copy from 'copy-to-clipboard'
 import QRCode from 'qrcode.react'
 
@@ -12,11 +13,15 @@ import { buildLog } from '@/logger'
 // import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useViewingArticle from '@/hooks/useViewingArticle'
 
-import ShareOld from '@/containers/tool/Share'
+// import ShareOld from '@/containers/tool/Share'
+
 import Tooltip from '@/widgets/Tooltip'
 import { toast } from '@/signal'
 
-import { parseArticleLink } from './helper'
+import ModalPanel from './ModalPanel'
+
+import { SITE_SHARE_TYPE } from './constant'
+import { parseArticleLink, parseLinksData, toPlatform } from './helper'
 import { Wrapper, Panel, LinkTip, QRTip, LinkIcon, QRCodeIcon, MoreIcon } from './styles'
 
 /* eslint-disable-next-line */
@@ -28,12 +33,15 @@ type TProps = {
 
 const Share: FC<TProps> = ({ testid = 'share' }) => {
   const article = useViewingArticle()
-
   const articleLink = parseArticleLink(article)
+  const linksData = parseLinksData(article)
+
+  const [showMore, setShowMore] = useState(false)
+  const [shareType, setShareType] = useState(SITE_SHARE_TYPE.LINKS)
 
   return (
     <Wrapper>
-      <Tooltip content={<LinkTip>复制链接</LinkTip>} placement="bottom">
+      <Tooltip content={<LinkTip>复制链接</LinkTip>} placement="bottom" delay={500}>
         <LinkIcon
           onClick={() => {
             copy(articleLink)
@@ -51,15 +59,30 @@ const Share: FC<TProps> = ({ testid = 'share' }) => {
           </Panel>
         }
         placement="bottom"
+        delay={200}
       >
         <QRCodeIcon />
       </Tooltip>
 
-      <MoreIcon />
+      <MoreIcon onClick={() => setShowMore(true)} />
 
-      <ShareOld size={14} offsetLeft="54%" left={15} />
+      <ModalPanel
+        show={showMore}
+        offsetLeft="50%"
+        siteShareType={shareType}
+        changeType={(type) => {
+          setShareType(type)
+          toPlatform(article, type)
+        }}
+        linksData={linksData}
+        article={article}
+        onClose={() => {
+          setShowMore(false)
+          setShareType(SITE_SHARE_TYPE.LINKS)
+        }}
+      />
     </Wrapper>
   )
 }
 
-export default memo(Share)
+export default observer(Share)
