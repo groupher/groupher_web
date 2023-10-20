@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import type { TActive, TSpace } from '@/spec'
 import css, { theme } from '@/css'
 
+import { WithMargin } from '@/widgets/Common'
+
 export const Wrapper = styled.div`
   ${css.column('align-center')};
   color: ${theme('article.digest')};
@@ -58,7 +60,7 @@ export const Footer = styled.div`
 `
 
 type TNote = TActive & TSpace
-export const Note = styled.div<TNote>`
+export const Note = styled(WithMargin)<TNote>`
   font-size: 12px;
   color: ${({ $active }) => ($active ? theme('article.title') : theme('lightText'))};
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
@@ -70,8 +72,6 @@ export const Note = styled.div<TNote>`
   }
 
   transition: color 0.2s;
-
-  ${(props) => css.spaceMargins(props)};
 `
 export const ShineNote = styled.div`
   font-size: 12px;
