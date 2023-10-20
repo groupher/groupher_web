@@ -28,22 +28,22 @@ type TProps = {
 }
 
 const Header: FC<TProps> = ({ metric }) => {
-  const community = useViewingCommunity()
+  const { slug, title, logo } = useViewingCommunity()
 
   return (
     <Wrapper id={ANCHOR.GLOBAL_HEADER_ID}>
       <InnerWrapper>
         <Community>
-          <CommunityLogo src={assetSrc(community.logo)} />
-          <CommunityTitle>{community.title}</CommunityTitle>
+          <CommunityLogo src={assetSrc(logo)} />
+          <CommunityTitle>{title}</CommunityTitle>
         </Community>
 
         <Main metric={metric}>
-          <LinkItem href={`/${community.slug}/${ROUTE.POST}`}>讨论区</LinkItem>
-          <LinkItem href={`/${community.slug}/${ROUTE.KANBAN}`}>看板</LinkItem>
-          <LinkItem href={`/${community.slug}/${ROUTE.CHANGELOG}`}>更新日志</LinkItem>
-          <LinkItem href={`/${community.slug}/${ROUTE.HELP}`}>帮助台</LinkItem>
-          <LinkItem href={`/${community.slug}/${ROUTE.ABOUT}`}>关于</LinkItem>
+          <LinkItem href={`/${slug}/${ROUTE.POST}`}>讨论区</LinkItem>
+          <LinkItem href={`/${slug}/${ROUTE.KANBAN}`}>看板</LinkItem>
+          <LinkItem href={`/${slug}/${ROUTE.CHANGELOG}`}>更新日志</LinkItem>
+          <LinkItem href={`/${slug}/${ROUTE.HELP}`}>帮助台</LinkItem>
+          <LinkItem href={`/${slug}/${ROUTE.ABOUT}`}>关于</LinkItem>
         </Main>
 
         <MobileNaviWrapper>
