@@ -1,9 +1,10 @@
 import { FC } from 'react'
 import styled from 'styled-components'
 
-import type { TActive, TSpace } from '@/spec'
+import type { TActive } from '@/spec'
 import css, { theme } from '@/css'
 
+import { WithMargin } from '@/widgets/Common'
 import USSVG from '@/icons/nation/US'
 import AUSVG from '@/icons/nation/AU'
 import DESVG from '@/icons/nation/DE'
@@ -25,14 +26,12 @@ export const InputLabel = styled.div`
   margin-top: 8px;
 `
 
-export const Wrapper = styled.div<TSpace>`
+export const Wrapper = styled(WithMargin)`
   ${css.rowWrap('align-center')};
   color: ${theme('article.digest')};
   width: 300px;
   margin-top: 14px;
   gap: 12px 14px;
-
-  ${(props) => css.spaceMargins(props)};
 `
 type TBox = TActive & { radius: number; hasFlag: boolean }
 export const Box = styled.div<TBox>`
