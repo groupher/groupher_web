@@ -6,10 +6,9 @@
 
 import { FC, memo } from 'react'
 
-import type { TArticle, TContainer } from '@/spec'
+import type { TArticle, TContainer, TSpace } from '@/spec'
 import { scrollToComments } from '@/dom'
 
-import { Space } from '@/widgets/Common'
 import {
   Wrapper,
   ViewsIcon,
@@ -24,15 +23,16 @@ type TProps = {
   testid?: string
   article: TArticle
   container?: TContainer
-}
+} & TSpace
 
 const ArticleBaseStats: FC<TProps> = ({
   testid = 'article-base-stats',
   container = 'body',
   article,
+  ...restProps
 }) => {
   return (
-    <Wrapper testid={testid}>
+    <Wrapper testid={testid} {...restProps}>
       <ViewsIcon />
       <Count>{article.views}</Count>
       <Divider />

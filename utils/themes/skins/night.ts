@@ -132,7 +132,7 @@ const night = {
   article: {
     title: threadTitle,
     digest: descText,
-    info: actionText,
+    info: descText,
     link,
     linkHover: 'orange',
     reactionTitle: '#7f979a',
@@ -242,7 +242,7 @@ const night = {
     activeBg: darken(primaryColor, 5),
     clicked: primaryColor,
     ghostBorder: '#606060',
-    upvoteBorder: '#dadada',
+    upvoteBorder: '#484848',
     boxShadow: 'rgb(24 24 24 / 32%) -1px 1px 16px 2px',
   },
   navigator: {

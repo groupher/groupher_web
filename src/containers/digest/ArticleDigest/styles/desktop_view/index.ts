@@ -1,32 +1,29 @@
 import styled from 'styled-components'
 
 import type { TTestable, TMetric } from '@/spec'
-import css, { WIDTH, theme } from '@/css'
+import css, { theme } from '@/css'
 
 import { getDigestHeight } from './metric'
 
 type TWrapper = { metric: TMetric } & TTestable
-export const Wrapper = styled.nav.attrs<TTestable>(({ testid }) => ({
+export const Wrapper = styled.nav.attrs<TWrapper>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
-  ${css.column('justify-start')};
+  ${css.column('align-center')};
   position: relative;
   background: transparent;
   min-height: ${({ metric }) => getDigestHeight(metric)};
   height: auto;
-
   margin-bottom: 24px;
   width: 100%;
-  max-width: ${WIDTH.ARTICLE.PAGE};
-  margin-left: 20px;
+  ${({ metric }) => css.fitPageWidth(metric)};
 `
-export const InnerWrapper = styled.div`
+export const InnerWrapper = styled.div<{ metric: TMetric }>`
   width: 100%;
+  ${({ metric }) => css.fitContentWidth(metric)};
 `
 export const BannerContent = styled.div`
   ${css.row('justify-center')};
-  width: calc(100% - 360px);
-  margin-left: 180px;
   border-bottom: 1px solid;
   border-bottom-color: ${theme('divider')};
 `

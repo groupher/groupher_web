@@ -1,1 +1,1 @@
-export { Wrapper, InnerWrapper, MainWrapper, ArticleWrapper, CommentsWrapper } from '.'
+export { Wrapper, InnerWrapper, ArticleWrapper, CommentsWrapper } from '.'

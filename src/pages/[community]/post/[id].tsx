@@ -8,7 +8,14 @@ import { HCN } from '@/constant/name'
 import { ARTICLE_THREAD } from '@/constant/thread'
 import METRIC from '@/constant/metric'
 
-import { ssrFetchPrepare, ssrRescue, ssrError } from '@/utils'
+import {
+  ssrFetchPrepare,
+  ssrRescue,
+  ssrError,
+  ssrParseDashboard,
+  ssrParseWallpaper,
+  ssrBaseStates,
+} from '@/utils'
 import { useStore } from '@/stores/init'
 
 import GlobalLayout from '@/containers/layout/GlobalLayout'
@@ -59,7 +66,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const { community, post } = resp
 
+  const dashboard = ssrParseDashboard(community)
+  const wallpaper = ssrParseWallpaper(community)
+
   const initProps = {
+    ...ssrBaseStates(resp),
     metric: METRIC.ARTICLE,
     globalLayout: {
       isMobile: device?.isMobile,
@@ -68,6 +79,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       community,
       post,
       activeThread: ARTICLE_THREAD.POST,
+    },
+    wallpaperEditor: {
+      ...wallpaper,
+    },
+    dashboardThread: {
+      ...dashboard,
     },
   }
 

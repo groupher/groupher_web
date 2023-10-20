@@ -4,15 +4,9 @@ import { closeDrawer } from '@/signal'
 
 import Share from '@/widgets/Share'
 import { SpaceGrow } from '@/widgets/Common'
+import ArticleSettingMenu from '@/widgets/ArticleSettingMenu'
 
-import {
-  Wrapper,
-  BackButton,
-  ArrowIcon,
-  BackText,
-  FlagIcon,
-  SettingIcon,
-} from '../styles/drawer_header'
+import { Wrapper, BackButton, ArrowIcon, BackText, FlagIcon } from '../styles/drawer_header'
 
 const DrawerHeader: FC = () => {
   return (
@@ -22,9 +16,9 @@ const DrawerHeader: FC = () => {
         <BackText>返回列表</BackText>
       </BackButton>
       <SpaceGrow />
-      <Share />
+      <Share modalOffset="53%" />
       <FlagIcon />
-      <SettingIcon />
+      <ArticleSettingMenu />
     </Wrapper>
   )
 }

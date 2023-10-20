@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
 import ArrowSVG from '@/icons/Arrow'
-import SettingSVG from '@/icons/Setting'
 import FlagSVG from '@/icons/Flag'
 
 import css, { theme } from '@/css'
@@ -59,18 +58,4 @@ export const FlagIcon = styled(FlagSVG)`
   ${css.size(18)};
   fill: ${theme('hint')};
   margin-left: 16px;
-`
-export const SettingIcon = styled(SettingSVG)`
-  ${css.size(15)};
-  fill: ${theme('article.digest')};
-  margin-left: 16px;
-  opacity: 0.8;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 1;
-    fill: ${theme('article.title')};
-  }
-
-  transition: all 0.2s;
 `

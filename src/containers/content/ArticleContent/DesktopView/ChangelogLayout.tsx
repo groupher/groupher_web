@@ -10,6 +10,7 @@ import dynamic from 'next/dynamic'
 import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 
+import useMetric from '@/hooks/useMetric'
 // import ArticleSticker from '@/containers/tool/ArticleSticker'
 // import ArticleFooter from '@/containers/unit/ArticleFooter'
 import ArtimentBody from '@/widgets/ArtimentBody'
@@ -44,6 +45,7 @@ type TProps = {
 
 const ArticleContentContainer: FC<TProps> = ({ articleContent: store, testid }) => {
   useInit(store)
+  const metric = useMetric()
 
   const { viewingArticle: article } = store
   const ref = useRef()
@@ -51,8 +53,8 @@ const ArticleContentContainer: FC<TProps> = ({ articleContent: store, testid }) 
   if (!article.id) return null
 
   return (
-    <Wrapper testid={testid}>
-      <InnerWrapper>
+    <Wrapper testid={testid} metric={metric}>
+      <InnerWrapper metric={metric}>
         {/* <ViewportTracker
           onEnter={() => checkAnchor(ref?.current)}
           onLeave={() => checkAnchor(ref?.current)}

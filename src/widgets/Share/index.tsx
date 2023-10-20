@@ -22,7 +22,7 @@ import { toast } from '@/signal'
 
 import { SITE_SHARE_TYPE } from './constant'
 import { parseArticleLink, parseLinksData, toPlatform } from './helper'
-import { Wrapper, Panel, LinkTip, QRTip, LinkIcon, QRCodeIcon, MoreIcon } from './styles'
+import { Wrapper, Panel, LinkTip, QRTip, Icon } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('c:Share:index')
@@ -31,9 +31,10 @@ let ModalPanel = null
 
 type TProps = {
   testid?: string
+  modalOffset?: string
 } & TSpace
 
-const Share: FC<TProps> = ({ testid = 'share', ...restProps }) => {
+const Share: FC<TProps> = ({ testid = 'share', modalOffset = '', ...restProps }) => {
   const article = useViewingArticle()
   const articleLink = parseArticleLink(article)
   const linksData = parseLinksData(article)
@@ -50,7 +51,7 @@ const Share: FC<TProps> = ({ testid = 'share', ...restProps }) => {
   return (
     <Wrapper {...restProps}>
       <Tooltip content={<LinkTip>复制链接</LinkTip>} placement="bottom" delay={500}>
-        <LinkIcon
+        <Icon.Link
           onClick={() => {
             copy(articleLink)
             toast('已复制到剪切板')
@@ -69,17 +70,17 @@ const Share: FC<TProps> = ({ testid = 'share', ...restProps }) => {
         placement="bottom"
         delay={200}
       >
-        <QRCodeIcon />
+        <Icon.QRCode />
       </Tooltip>
 
       <Tooltip content={<LinkTip>更多分享</LinkTip>} placement="bottom" delay={500}>
-        <MoreIcon onClick={() => setShowMore(true)} />
+        <Icon.More onClick={() => setShowMore(true)} />
       </Tooltip>
 
       {ModalPanel && (
         <ModalPanel
           show={showMore}
-          offsetLeft="53%"
+          offsetLeft={modalOffset}
           siteShareType={shareType}
           changeType={(type) => {
             setShareType(type)

@@ -1,33 +1,28 @@
 import styled from 'styled-components'
 
 import type { TTestable, TMetric } from '@/spec'
-import css, { theme } from '@/css'
+import css from '@/css'
 
-export const Wrapper = styled.article.attrs<TTestable>(({ testid }) => ({
+type TWrapper = { metric: TMetric } & TTestable
+export const Wrapper = styled.article.attrs<TWrapper>(({ testid }) => ({
   'data-test-id': testid,
-}))<TTestable>`
-  ${css.row('justify-between')};
+}))<TWrapper>`
+  ${css.row('justify-center')};
   position: relative;
-  padding-top: 2px;
-  min-height: 300px;
+  min-height: 250px;
   width: 100%;
-  padding: 0 180px;
-  margin-left: 20px;
+
+  ${({ metric }) => css.fitPageWidth(metric)};
 
   ${css.media.mobile`
     padding: 0 20px;
     margin-left: 0;
   `};
 `
-export const InnerWrapper = styled.div`
-  width: 600px;
-
-  ${css.media.mobile`
-    width: 100%;
-  `};
-`
-export const MainWrapper = styled.div<{ metric: TMetric }>`
+export const InnerWrapper = styled.div<{ metric: TMetric }>`
+  ${css.row('align-start', 'justify-between')};
   width: 100%;
+  ${({ metric }) => css.fitContentWidth(metric)};
 `
 export const ArticleWrapper = styled.div`
   font-size: 15px;

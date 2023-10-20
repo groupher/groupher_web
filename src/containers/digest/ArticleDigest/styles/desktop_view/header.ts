@@ -2,24 +2,20 @@ import styled from 'styled-components'
 import Link from 'next/link'
 
 import type { TMetric } from '@/spec'
-import css, { theme, WIDTH } from '@/css'
+import css, { theme } from '@/css'
 
-import AccountSVG from '@/icons/Acount'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
   ${css.row('align-both')};
   position: relative;
   background: transparent;
-  max-width: ${WIDTH.ARTICLE.PAGE};
   width: 100%;
 `
 export const InnerWrapper = styled.div`
   ${css.row('align-center', 'justify-between')};
-  width: 78%;
+  width: 100%;
   height: 54px;
-  padding-top: 2px;
-  margin-left: -50px;
 `
 export const Community = styled.div`
   ${css.row('align-both')};
@@ -35,12 +31,10 @@ export const CommunityTitle = styled.div`
   margin-left: 8px;
 `
 
-export const Main = styled.div<{ metric: TMetric }>`
+export const Main = styled.div`
   ${css.row('align-both')};
   gap: 0 32px;
   width: 100%;
-  ${({ metric }) => css.fitContentWidth(metric)};
-  margin-left: -20px !important;
   height: 100%;
 
   border-bottom: 1px solid transparent;
@@ -70,30 +64,6 @@ export const LinkItem = styled(Link)`
     text-decoration: none;
     color: ${theme('article.title')};
   }
-`
-
-export const Account = styled.div``
-
-const hoverEffect = `
-  opacity: 0.8;
-
-  &:hover {
-    opacity: 1;
-    cursor: pointer;
-  }
-  transition: all 0.2s;
-`
-
-export const AccountIcon = styled(AccountSVG)`
-  fill: ${theme('article.digest')};
-  ${css.size(16)};
-  margin-right: 14px;
-
-  ${css.media.mobile`
-    ${css.size(14)};
-    margin-right: 0;
-  `};
-  ${hoverEffect}
 `
 export const MobileNaviWrapper = styled.div`
   display: none;

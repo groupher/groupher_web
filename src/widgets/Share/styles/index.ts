@@ -27,38 +27,27 @@ export const LinkTip = styled(TipNote)`
   font-size: 12px;
 `
 
-export const LinkIcon = styled(LinkSVG)`
-  ${css.size(22)};
-  fill: ${theme('hint')};
-  margin-left: 12px;
-  cursor: pointer;
+const commonIcon = (comp) => {
+  return styled(comp)`
+    ${css.size(18)};
+    fill: ${theme('hint')};
+    opacity: 0.65;
+    margin-left: 15px;
+    cursor: pointer;
 
-  &:hover {
-    fill: ${theme('article.title')};
-  }
+    &:hover {
+      fill: ${theme('article.title')};
+      opacity: 1;
+    }
 
-  &:active {
-    transform: scale(0.85);
-  }
-  transition: all 0.2s;
-`
-export const QRCodeIcon = styled(QRCodeSVG)`
-  ${css.size(18)};
-  fill: ${theme('hint')};
-  margin-left: 14px;
-  cursor: pointer;
+    transition: all 0.2s;
+  `
+}
 
-  &:hover {
-    fill: ${theme('article.title')};
-  }
-`
-export const MoreIcon = styled(MoreSVG)`
-  ${css.size(18)};
-  fill: ${theme('hint')};
-  margin-left: 16px;
-  cursor: pointer;
-
-  &:hover {
-    fill: ${theme('article.title')};
-  }
-`
+export const Icon = {
+  Link: styled(commonIcon(LinkSVG))`
+    ${css.size(22)};
+  `,
+  More: commonIcon(MoreSVG),
+  QRCode: commonIcon(QRCodeSVG),
+}
