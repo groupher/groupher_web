@@ -1,16 +1,14 @@
 import styled from 'styled-components'
 
-import type { TSpace, TTestable } from '@/spec'
+import type { TTestable } from '@/spec'
 
-// import Img from '@/Img'
 import css from '@/css'
+import { WithMargin } from '@/widgets/Common'
 
-type TWrapper = TTestable & TSpace
+type TWrapper = TTestable
 
-export const Wrapper = styled.div<TWrapper>`
+export const Wrapper = styled(WithMargin)<TWrapper>`
   ${css.column('')};
-
-  ${(props) => css.spaceMargins(props)};
 `
 
 export const holder = 1
