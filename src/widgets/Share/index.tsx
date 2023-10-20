@@ -79,7 +79,7 @@ const Share: FC<TProps> = ({ testid = 'share', ...restProps }) => {
       {ModalPanel && (
         <ModalPanel
           show={showMore}
-          offsetLeft="50%"
+          offsetLeft="53%"
           siteShareType={shareType}
           changeType={(type) => {
             setShareType(type)
