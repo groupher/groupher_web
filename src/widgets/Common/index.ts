@@ -128,3 +128,7 @@ export const MarkdownStyles = styled.div`
     list-style: disc inside;
   }
 `
+
+export const WithMargin = styled.div<TSpace>`
+  ${(props) => css.spaceMargins(props)};
+`

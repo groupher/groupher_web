@@ -4,9 +4,11 @@ import LinkSVG from '@/icons/Link'
 import QRCodeSVG from '@/icons/QRCodeSolid'
 import MoreSVG from '@/icons/ShareArrow'
 
+import { WithMargin } from '@/widgets/Common'
+
 import css, { theme } from '@/css'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled(WithMargin)`
   ${css.row('align-center')};
 `
 export const Panel = styled.div`

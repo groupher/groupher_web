@@ -9,6 +9,7 @@ import { observer } from 'mobx-react'
 import copy from 'copy-to-clipboard'
 import QRCode from 'qrcode.react'
 
+import type { TSpace } from '@/spec'
 import { buildLog } from '@/logger'
 // import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useViewingArticle from '@/hooks/useViewingArticle'
@@ -29,9 +30,9 @@ const log = buildLog('c:Share:index')
 
 type TProps = {
   testid?: string
-}
+} & TSpace
 
-const Share: FC<TProps> = ({ testid = 'share' }) => {
+const Share: FC<TProps> = ({ testid = 'share', ...restProps }) => {
   const article = useViewingArticle()
   const articleLink = parseArticleLink(article)
   const linksData = parseLinksData(article)
@@ -40,7 +41,7 @@ const Share: FC<TProps> = ({ testid = 'share' }) => {
   const [shareType, setShareType] = useState(SITE_SHARE_TYPE.LINKS)
 
   return (
-    <Wrapper>
+    <Wrapper {...restProps}>
       <Tooltip content={<LinkTip>复制链接</LinkTip>} placement="bottom" delay={500}>
         <LinkIcon
           onClick={() => {
