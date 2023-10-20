@@ -1,18 +1,17 @@
 import styled from 'styled-components'
 
-import type { TSpace, TTestable } from '@/spec'
+import type { TTestable } from '@/spec'
 
 import SunSVG from '@/icons/Sun'
 import MoonSVG from '@/icons/Moon'
+import { WithMargin } from '@/widgets/Common'
 
 import css, { theme } from '@/css'
 
-type TWrapper = TTestable & TSpace
-export const Wrapper = styled.div.attrs<TWrapper>(({ testid }) => ({
+type TWrapper = TTestable
+export const Wrapper = styled(WithMargin).attrs<TWrapper>(({ testid }) => ({
   'data-test-id': testid,
-}))<TWrapper>`
-  ${(props) => css.spaceMargins(props)};
-`
+}))<TWrapper>``
 
 export const Button = styled.button`
   ${css.row('align-both')};
