@@ -1,13 +1,11 @@
 import styled from 'styled-components'
 
-import type { TSpace } from '@/spec'
-
 import css, { theme } from '@/css'
+import { WithMargin } from '@/widgets/Common'
 
-export const Wrapper = styled.div<TSpace>`
+export const Wrapper = styled(WithMargin)`
   ${css.rowWrap('align-center')};
   gap: 0 8px;
-  ${(props) => css.spaceMargins(props)};
 `
 export const Label = styled.div`
   border: 1px solid;

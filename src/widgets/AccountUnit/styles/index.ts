@@ -1,16 +1,15 @@
 import styled from 'styled-components'
 
-import type { TAvatarLayout, TSpace } from '@/spec'
+import type { TAvatarLayout } from '@/spec'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 import css, { theme } from '@/css'
 
 import Img from '@/Img'
 import AccountSVG from '@/icons/Acount'
+import { WithMargin } from '@/widgets/Common'
 
-export const NormalWrapper = styled.div<TSpace>`
+export const NormalWrapper = styled(WithMargin)`
   ${css.row('align-center')};
-
-  ${(props) => css.spaceMargins(props)};
 `
 export const WithBgWrapper = styled(NormalWrapper)`
   border: 1px solid;

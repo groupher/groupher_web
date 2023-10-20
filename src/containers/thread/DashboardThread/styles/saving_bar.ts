@@ -4,9 +4,10 @@ import type { TSpace } from '@/spec'
 import css, { theme } from '@/css'
 
 import InfoSVG from '@/icons/Save'
+import { WithMargin } from '@/widgets/Common'
 
 type TWrapper = { direction: 'left' | 'right'; width: string } & TSpace
-export const NormalWrapper = styled.div<TWrapper>`
+export const NormalWrapper = styled(WithMargin)<TWrapper>`
   ${css.row('align-center')};
   width: ${({ direction, width }) => (direction === 'right' ? `calc(${width} + 10px)` : width)};
   background: ${(props) => {
@@ -19,8 +20,6 @@ export const NormalWrapper = styled.div<TWrapper>`
   height: 42px;
   padding: 0 10px;
   border-radius: 10px;
-
-  ${(props) => css.spaceMargins(props)};
 `
 export const MinimalWrapper = styled(NormalWrapper)`
   height: 34px;
