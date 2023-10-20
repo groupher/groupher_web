@@ -1,10 +1,6 @@
 import styled from 'styled-components'
 
 import ArrowSVG from '@/icons/Arrow'
-import LinkSVG from '@/icons/Link'
-import QRCodeSVG from '@/icons/menu/QRCode'
-import WeiboSVG from '@/icons/social/WeiboRaw'
-import MoreSVG from '@/icons/menu/More'
 import SettingSVG from '@/icons/Setting'
 import FlagSVG from '@/icons/Flag'
 
@@ -58,27 +54,6 @@ export const BackText = styled.div`
   }
 
   transition: all 0.2s;
-`
-export const LinkIcon = styled(LinkSVG)`
-  ${css.size(22)};
-  fill: ${theme('hint')};
-  margin-left: 12px;
-`
-export const QRCodeIcon = styled(QRCodeSVG)`
-  ${css.size(17)};
-  fill: ${theme('hint')};
-  margin-left: 14px;
-`
-export const WeiboIcon = styled(WeiboSVG)`
-  ${css.size(18)};
-  fill: ${theme('hint')};
-  margin-top: -2px;
-  margin-left: 16px;
-`
-export const MoreIcon = styled(MoreSVG)`
-  ${css.size(18)};
-  fill: ${theme('hint')};
-  margin-left: 16px;
 `
 export const FlagIcon = styled(FlagSVG)`
   ${css.size(18)};
