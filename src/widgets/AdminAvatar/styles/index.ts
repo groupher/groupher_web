@@ -1,20 +1,19 @@
 import styled from 'styled-components'
 
-import type { TTestable, TSpace, TAvatarLayout } from '@/spec'
+import type { TTestable, TAvatarLayout } from '@/spec'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
 import css, { theme } from '@/css'
 
 import Img from '@/Img'
 import AdminStarSVG from '@/icons/AdminStar'
+import { WithMargin } from '@/widgets/Common'
 
-type TWrapper = TTestable & TSpace
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
+type TWrapper = TTestable
+export const Wrapper = styled(WithMargin).attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   position: relative;
-
-  ${(props) => css.spaceMargins(props)};
 `
 export const Avatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
   ${css.size(40)};

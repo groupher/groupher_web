@@ -2,13 +2,7 @@ import { FC, memo } from 'react'
 
 import CopyButton from '@/widgets/Buttons/CopyButton'
 
-import {
-  Wrapper,
-  Header,
-  Title,
-  CodeWrapper,
-  Inputer,
-} from '../styles/panel/iframe_board'
+import { Wrapper, Header, Title, CodeWrapper, Inputer } from '../styles/modal_panel/iframe_board'
 
 const IFrameBoard: FC = () => {
   const code =

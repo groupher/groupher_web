@@ -7,7 +7,7 @@ import useTheme from '@/hooks/useTheme'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useFooterLinks from '@/hooks/useFooterLinks'
 
-import { sortByIndex, groupByKey } from '@/helper'
+import { assetSrc, sortByIndex, groupByKey } from '@/helper'
 
 import { SpaceGrow } from '@/widgets/Common'
 import SocialList from '@/widgets/SocialList'
@@ -26,7 +26,7 @@ import {
 
 const GroupLayout: FC = () => {
   const { themeMap } = useTheme()
-  const curCommunity = useViewingCommunity()
+  const { logo, desc } = useViewingCommunity()
   const { links } = useFooterLinks()
 
   const linkColors = {
@@ -42,8 +42,8 @@ const GroupLayout: FC = () => {
     <Wrapper>
       <InnerWrapper>
         <BrandWrapper>
-          <BrandLogo src={curCommunity.logo} />
-          <BrandDesc>{curCommunity.desc}</BrandDesc>
+          <BrandLogo src={assetSrc(logo)} />
+          <BrandDesc>{desc}</BrandDesc>
           <SpaceGrow />
 
           <SocialList size="medium" selected={DEME_SOCIALS} top={10} />

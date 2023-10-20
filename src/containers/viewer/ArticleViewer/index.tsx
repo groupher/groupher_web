@@ -12,6 +12,7 @@ import { bond } from '@/mobx'
 
 import Comments from '@/containers/unit/Comments'
 
+import DrawerHeader from './DrawerHeader'
 import Viewer from './Viewer'
 
 import type { TStore } from './store'
@@ -43,6 +44,7 @@ const ArticleViewerContainer: FC<TProps> = ({
 
   return (
     <Wrapper testid={testid}>
+      <DrawerHeader />
       {/* @ts-ignore */}
       {/* <CollectionFolder /> */}
       <Viewer article={article} loading={loading} />

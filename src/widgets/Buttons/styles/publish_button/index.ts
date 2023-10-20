@@ -3,13 +3,13 @@ import styled from 'styled-components'
 import type { TPrimaryColor, TSpace } from '@/spec'
 // import Img from '@/Img'
 import css, { theme, rainbow } from '@/css'
+import { WithMargin } from '@/widgets/Common'
 
 import Button from '../../Button'
 // see example: https://codepen.io/mydearxym2/pen/qBEvvpo
 
-export const Wrapper = styled.div<TSpace>`
+export const Wrapper = styled(WithMargin)`
   ${css.row('align-center')};
-  ${(props) => css.spaceMargins(props)};
 `
 
 type TPubButton = { smaller?: boolean } & TPrimaryColor

@@ -47,6 +47,11 @@ const SideInfo: FC<TProps> = ({ article }) => {
 
         <Br bottom={25} />
 
+        <Label>类别</Label>
+        <ArticleCatState cat={ARTICLE_CAT.FEATURE} state={ARTICLE_STATE.WIP} smaller={false} />
+
+        <Br bottom={25} />
+
         <Label>标签</Label>
         <Value>
           <TagsList items={articleTags} size="small" />
@@ -54,15 +59,6 @@ const SideInfo: FC<TProps> = ({ article }) => {
 
         <Br bottom={25} />
 
-        <Label>类别</Label>
-        <ArticleCatState cat={ARTICLE_CAT.FEATURE} state={ARTICLE_STATE.WIP} smaller={false} />
-
-        <Br bottom={25} />
-
-        <Label>状态</Label>
-        <Value>进行中</Value>
-
-        <Br bottom={20} />
         <Label>发布时间</Label>
         <Value>
           <ReadableDate date={insertedAt} fmt="absolute" withTime={false} />

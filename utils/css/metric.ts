@@ -20,7 +20,7 @@ export const WIDTH = {
     CONTENT: '1180px',
   },
   COMMUNITY: {
-    PAGE: '1360px',
+    PAGE: '1300px',
     CONTENT: '940px',
     CONTENT_OFFSET: '40px',
   },

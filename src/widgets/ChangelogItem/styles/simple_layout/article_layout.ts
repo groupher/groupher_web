@@ -23,11 +23,18 @@ export const Main = styled.div`
   min-height: 220px;
   padding-bottom: 30px;
 `
-export const Title = styled.div`
+export const Title = styled.a`
   color: ${theme('article.title')};
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 400;
   margin-bottom: 8px;
+  text-decoration: none;
+  display: block;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 `
 export const TagsWrapper = styled.div`
   ${css.row('align-both', 'justify-between')};

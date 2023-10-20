@@ -8,11 +8,15 @@ import { FC, memo } from 'react'
 
 import type { TChangelog } from '@/spec'
 import { buildLog } from '@/logger'
+import { previewArticle } from '@/signal'
+import { THREAD } from '@/constant/thread'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import { SpaceGrow } from '@/widgets/Common'
 import TagsList from '@/widgets/TagsList'
 import EmotionSelector from '@/widgets/EmotionSelector'
 import CommentsCount from '@/widgets/CommentsCount'
+import ReadableDate from '@/widgets/ReadableDate'
 
 import { demoTags, demoEmotion } from '../constant'
 
@@ -40,12 +44,23 @@ type TProps = {
 }
 
 const SimpleLayout: FC<TProps> = ({ testid = 'changelog-item', article }) => {
+  const { slug } = useViewingCommunity()
+
   return (
     <Wrapper testid={testid}>
-      <DateTime>{article.insertedAt}</DateTime>
+      <DateTime>
+        <ReadableDate date={article.insertedAt} fmt="absolute" withTime={false} />
+      </DateTime>
+
       <Main>
-        <Title>
-          <span>{article.title}</span>
+        <Title
+          href={`/${slug}/${THREAD.CHANGELOG}/${article.innerId}`}
+          onClick={(e) => {
+            e.preventDefault()
+            previewArticle(article)
+          }}
+        >
+          {article.title}
           <Version>v3.21</Version>
         </Title>
         <TagsWrapper>

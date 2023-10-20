@@ -1,25 +1,21 @@
 import styled from 'styled-components'
 
-import type { TSpace } from '@/spec'
 import css, { theme, animate } from '@/css'
 
 import Img from '@/Img'
-
 import ArrowSVG from '@/icons/ArrowSimple'
+import { WithMargin } from '@/widgets/Common'
 
-export const Wrapper = styled.div<TSpace>`
+export const Wrapper = styled(WithMargin)`
   ${css.row('justify-center')};
   width: 100%;
-  ${(props) => css.spaceMargins(props)};
 `
 export const InnerWrapper = styled.div`
   ${css.row('align-center', 'justify-between')};
   width: 220px;
 `
-export const EmptyWrapper = styled(Wrapper)<TSpace>`
+export const EmptyWrapper = styled(Wrapper)`
   ${css.row('align-both')};
-
-  ${(props) => css.spaceMargins(props)};
 `
 
 export const ArrowLeftIcon = styled(ArrowSVG)<{ disabled: boolean }>`

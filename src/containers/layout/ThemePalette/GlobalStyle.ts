@@ -199,5 +199,13 @@ const GlobalStyle = createGlobalStyle<TPrimaryColor>`
     background: ${theme('toast.bg')} !important;
     border-color: ${theme('toast.border')} !important;
   }
+  [data-sonner-toast] [data-close-button] {
+    background: ${theme('hoverBg')} !important;
+    color: ${theme('hint')} !important;
+    border-color: ${theme('hint')} !important;
+  }
+  [data-sonner-toast][data-mounted=true] {
+    margin-top: -8px !important;
+  }
 `
 export default GlobalStyle

@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 
-import type { TTestable, TSpace, TPrimaryColor } from '@/spec'
+import type { TTestable, TPrimaryColor } from '@/spec'
 import css, { theme, rainbow } from '@/css'
+import { WithMargin } from '@/widgets/Common'
 
 import {
   getActiveBackground,
@@ -12,14 +13,12 @@ import {
   getRadioBoxLeft,
 } from './metric/radio'
 
-type TWrapper = TTestable & TSpace
+type TWrapper = TTestable
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
+export const Wrapper = styled(WithMargin).attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.row('align-center')}
-
-  ${(props) => css.spaceMargins(props)};
 `
 type TLabel = {
   size: string

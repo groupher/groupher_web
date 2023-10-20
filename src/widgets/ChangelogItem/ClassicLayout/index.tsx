@@ -10,6 +10,8 @@ import type { TChangelog } from '@/spec'
 
 import { buildLog } from '@/logger'
 import { previewArticle } from '@/signal'
+import { THREAD } from '@/constant/thread'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import { SpaceGrow } from '@/widgets/Common'
 import CoverImage from '@/widgets/CoverImage'
@@ -43,12 +45,20 @@ type TProps = {
 }
 
 const ClassicLayout: FC<TProps> = ({ testid = 'changelog-item', article }) => {
+  const { slug } = useViewingCommunity()
+
   return (
     <Wrapper testid={testid}>
-      <Main onClick={() => previewArticle(article)}>
+      <Main>
         <CoverImage />
-        <Title>
-          <span>{article.title}</span>
+        <Title
+          href={`/${slug}/${THREAD.CHANGELOG}/${article.innerId}`}
+          onClick={(e) => {
+            e.preventDefault()
+            previewArticle(article)
+          }}
+        >
+          {article.title}
           <Version>v3.21</Version>
         </Title>
         <TagsWrapper>

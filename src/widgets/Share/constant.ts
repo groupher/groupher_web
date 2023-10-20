@@ -18,10 +18,3 @@ export const SHARE_TYPE = {
   ...SITE_SHARE_TYPE,
   ...OUTSIDE_SHARE_TYPE,
 }
-
-export const MENU = {
-  COPY_LINK: 'copy-link',
-  EMAIL: OUTSIDE_SHARE_TYPE.EMAIL,
-  QR_CODE: 'qr-code',
-  MORE: 'more',
-}

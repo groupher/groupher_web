@@ -91,8 +91,7 @@ export const DrawerWrapper = styled.div.attrs<TDrawer>(
 
 export const DrawerContent = styled.div<{ type: string }>`
   position: relative;
-  /* 60 is the width of addon */
-  width: calc(100% - 60px);
+  width: 100%;
   background-color: ${theme('drawer.bg')};
   height: ${({ type }) => (isWideMode(type) ? '100vh' : 'calc(100vh - 50px)')};
   border-radius: ${({ type }) => (isWideMode(type) ? 0 : '10px')};
@@ -100,6 +99,15 @@ export const DrawerContent = styled.div<{ type: string }>`
     isWideMode(type) ? theme('drawer.shadow') : theme('drawer.shadowLite')};
   border: 1px solid;
   border-color: ${theme('drawer.border')};
+  border-top-left-radius: 10px;
+`
+export const NaviArea = styled.div`
+  position: absolute;
+  left: 0;
+  top: 5%;
+  height: 85%;
+  width: 50px;
+  z-index: 2;
 `
 type TDrawerMobile = { options: Record<string, unknown>; bgColor: string }
 export const DrawerMobileContent = styled.div<TDrawerMobile>`

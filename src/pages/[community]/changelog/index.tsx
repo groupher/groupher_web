@@ -1,4 +1,5 @@
 import { GetServerSideProps } from 'next'
+import { merge } from 'ramda'
 import { Provider } from 'mobx-react'
 
 import { HCN } from '@/constant/name'
@@ -10,6 +11,7 @@ import {
   ssrBaseStates,
   ssrFetchPrepare,
   ssrPagedArticleSchema,
+  ssrParseArticleThread,
   ssrPagedArticlesFilter,
   ssrParseDashboard,
   ssrParseWallpaper,
@@ -57,29 +59,34 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const resp = await loader(context)
 
-  const { community, pagedChangelogs } = resp
+  const { filter, community, pagedArticleTags } = resp
+  const articleThread = ssrParseArticleThread(resp, thread, filter)
+
   const dashboard = ssrParseDashboard(community)
   const wallpaper = ssrParseWallpaper(community)
 
-  const initProps = {
-    ...ssrBaseStates(resp),
-    route: {
-      communityPath: community.slug,
-      mainPath: community.slug === HCN ? '' : community.slug,
-      subPath: thread,
-      thread,
+  const initProps = merge(
+    {
+      ...ssrBaseStates(resp),
+      route: {
+        communityPath: community.slug,
+        mainPath: community.slug === HCN ? '' : community.slug,
+        subPath: thread,
+        thread,
+      },
+      viewing: {
+        community,
+        activeThread: thread,
+      },
+      wallpaperEditor: {
+        ...wallpaper,
+      },
+      dashboardThread: {
+        ...dashboard,
+      },
     },
-    viewing: {
-      community,
-      activeThread: thread,
-    },
-    dashboardThread: {
-      ...dashboard,
-    },
-    changelogThread: {
-      pagedChangelogs,
-    },
-  }
+    articleThread,
+  )
 
   return { props: { errorCode: null, ...initProps } }
 }

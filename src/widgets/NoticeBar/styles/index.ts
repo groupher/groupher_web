@@ -1,16 +1,16 @@
 import styled from 'styled-components'
 
-import type { TTestable, TSpace } from '@/spec'
+import type { TTestable } from '@/spec'
 
-import Img from '@/Img'
 import css, { theme } from '@/css'
+import Img from '@/Img'
+import { WithMargin } from '@/widgets/Common'
 
 type TWrapper = {
   noBg: boolean
-} & TTestable &
-  TSpace
+} & TTestable
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
+export const Wrapper = styled(WithMargin).attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.row('align-start')};
@@ -23,8 +23,6 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   min-height: 36px;
   background: ${({ noBg }) => (noBg ? 'transparent' : '#FDF6E8')};
   border-radius: 8px;
-
-  ${(props) => css.spaceMargins(props)};
 `
 export const Main = styled.div`
   flex-grow: 1;

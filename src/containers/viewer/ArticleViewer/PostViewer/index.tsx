@@ -18,7 +18,6 @@ import GotoTop from '@/widgets/GotoTop'
 import ViewportTracker from '@/widgets/ViewportTracker'
 import { ArticleContentLoading } from '@/widgets/Loading'
 import ArticeBody from '@/widgets/ArtimentBody'
-import Upvote from '@/widgets/Upvote'
 import ArticleBroadcast from '@/widgets/ArticleBroadcast'
 
 import FixedHeader from './FixedHeader'
@@ -31,7 +30,6 @@ import {
   Title,
   TitleText,
   SubTitle,
-  UpvoteWrapper,
   GoTopWrapper,
 } from '../styles/post_viewer'
 
@@ -59,8 +57,6 @@ const PostViewer: FC<TProps> = ({ article, loading }) => {
   const hideFooter = useCallback(() => setFooterVisible(false), [])
   const showFooter = useCallback(() => setFooterVisible(true), [])
 
-  const { upvotesCount, viewerHasUpvoted, meta } = article
-
   return (
     <Fragment>
       <FixedHeader article={article} visible={fixedHeaderVisible} footerVisible={footerVisible} />
@@ -74,14 +70,6 @@ const PostViewer: FC<TProps> = ({ article, loading }) => {
         </Title>
         <ArticleInfo article={article} />
         <ViewportTracker onEnter={hideFixedHeader} onLeave={showFixedHeader} />
-        <UpvoteWrapper show={fixedHeaderVisible && footerVisible} count={upvotesCount}>
-          <Upvote
-            count={upvotesCount}
-            avatarList={meta.latestUpvotedUsers}
-            viewerHasUpvoted={viewerHasUpvoted}
-            type="sticker"
-          />
-        </UpvoteWrapper>
         {loading && <ArticleContentLoading num={1} top={15} bottom={30} left={-25} />}
         {!loading && (
           <BodyWrapper>
@@ -97,7 +85,6 @@ const PostViewer: FC<TProps> = ({ article, loading }) => {
             simple={broadcastConfig.broadcastArticleLayout === BROADCAST_ARTICLE_LAYOUT.SIMPLE}
           />
         )}
-
         <ArticleFooter />
         <ViewportTracker onEnter={showFooter} onLeave={hideFooter} />
         <GoTopWrapper show={fixedHeaderVisible}>

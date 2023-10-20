@@ -1,22 +1,20 @@
 import styled from 'styled-components'
 
-import type { TSpace, TTestable } from '@/spec'
-
-import SearchSVG from '@/icons/HeaderSearch'
-// import Img from '@/Img'
+import type { TTestable } from '@/spec'
 import css, { theme } from '@/css'
 
-type TWrapper = TTestable & TSpace
+import SearchSVG from '@/icons/HeaderSearch'
+import { WithMargin } from '@/widgets/Common'
 
-export const Wrapper = styled.div.attrs<TWrapper>(({ testid }: TTestable) => ({
+type TWrapper = TTestable
+
+export const Wrapper = styled(WithMargin).attrs<TWrapper>(({ testid }: TTestable) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.row('align-center')};
   border: 1px solid transparent;
   padding: 2px 10px;
   border-radius: 5px;
-
-  ${(props) => css.spaceMargins(props)};
 
   &:hover {
     border: 1px solid;

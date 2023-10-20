@@ -1,17 +1,16 @@
 import styled from 'styled-components'
 
-import type { TActive, TSpace } from '@/spec'
+import type { TActive } from '@/spec'
 import css, { theme } from '@/css'
+import { WithMargin } from '@/widgets/Common'
 
-type TWrapper = { $menuOpen?: boolean } & TSpace
-export const FilterWrapper = styled.div<TWrapper>`
+type TWrapper = { $menuOpen?: boolean }
+export const FilterWrapper = styled(WithMargin)<TWrapper>`
   ${css.row('align-center')};
   color: ${theme('article.digest')};
   font-size: 13px;
-
-  ${(props) => css.spaceMargins(props)};
 `
-export const FullWrapper = styled(FilterWrapper)`
+export const FullWrapper = styled(FilterWrapper)<TWrapper>`
   border: 1px solid;
   border-color: ${({ $menuOpen }) =>
     $menuOpen ? theme('article.digest') : theme('button.ghostBorder')};

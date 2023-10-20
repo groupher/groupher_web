@@ -20,16 +20,21 @@ import { P } from '@/schemas'
 
 const loader = async (context, opt = {}) => {
   const { query } = context
-  const { gqClient } = ssrFetchPrepare(context, opt)
+  const { gqClient, userHasLogin } = ssrFetchPrepare(context, opt)
 
   const community = query.community || HCN
 
   // query data
   const sessionState = gqClient.request(P.sessionState)
+  const curCommunity = gqClient.request(P.community, {
+    slug: community,
+    userHasLogin,
+  })
   const post = gqClient.request(P.post, { community, id: query.id, userHasLogin: false })
 
   return {
     ...(await sessionState),
+    ...(await curCommunity),
     ...(await post),
   }
 }
@@ -52,13 +57,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
+  const { community, post } = resp
+
   const initProps = {
     metric: METRIC.ARTICLE,
     globalLayout: {
       isMobile: device?.isMobile,
     },
     viewing: {
-      post: resp.post,
+      community,
+      post,
       activeThread: ARTICLE_THREAD.POST,
     },
   }

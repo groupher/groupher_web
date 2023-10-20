@@ -3,13 +3,7 @@ import { FC, memo, Fragment, useState } from 'react'
 import CopyButton from '@/widgets/Buttons/CopyButton'
 import type { TLinksData } from '../spec'
 
-import {
-  Header,
-  TabWrapper,
-  TabName,
-  BoxWrapper,
-  Inputer,
-} from '../styles/panel/link_board'
+import { Header, TabWrapper, TabName, BoxWrapper, Inputer } from '../styles/modal_panel/link_board'
 
 type TProps = {
   linksData: TLinksData
@@ -22,28 +16,16 @@ const LinkBoard: FC<TProps> = ({ linksData }) => {
     <Fragment>
       <Header>
         <TabWrapper>
-          <TabName
-            $active={activeTab === 'link'}
-            onClick={() => setActiveTab('link')}
-          >
+          <TabName $active={activeTab === 'link'} onClick={() => setActiveTab('link')}>
             URL
           </TabName>
-          <TabName
-            $active={activeTab === 'html'}
-            onClick={() => setActiveTab('html')}
-          >
+          <TabName $active={activeTab === 'html'} onClick={() => setActiveTab('html')}>
             HTML
           </TabName>
-          <TabName
-            $active={activeTab === 'md'}
-            onClick={() => setActiveTab('md')}
-          >
+          <TabName $active={activeTab === 'md'} onClick={() => setActiveTab('md')}>
             MD
           </TabName>
-          <TabName
-            $active={activeTab === 'orgMode'}
-            onClick={() => setActiveTab('orgMode')}
-          >
+          <TabName $active={activeTab === 'orgMode'} onClick={() => setActiveTab('orgMode')}>
             OrgMode
           </TabName>
         </TabWrapper>

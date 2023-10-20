@@ -73,7 +73,7 @@ const night = {
     brownBg: '#3a342b',
 
     yellow: '#eddd85',
-    yellowBg: '#41403a',
+    yellowBg: '#a9a06a30',
 
     green: '#699411',
     greenBg: '#8a97764a',
@@ -279,8 +279,9 @@ const night = {
     bg: contentBoxBg,
     mask: 'rgba(31, 34, 37, 0.1)',
     border: primaryColor,
+    shadow: '-4px 5px 20px 5px rgb(21 21 21 / 47%)',
     innerSelectBg: '#e4eeed45',
-    subPanel: '#F5F5F5',
+    subPanel: '#1b1b1b',
     // subPanelShadow: 'drop-shadow(3px 3px 6px #EAE9E9)',
     subPanelShadow: 'none',
   },

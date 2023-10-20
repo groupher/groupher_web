@@ -8,7 +8,7 @@ import LinkBoard from './LinkBoard'
 import IFrameBoard from './IFrameBoard'
 import WechatBoard from './WechatBoard'
 
-import { Wrapper } from '../styles/panel/info_panel'
+import { Wrapper } from '../styles/modal_panel/info_panel'
 
 type TProps = {
   type: string

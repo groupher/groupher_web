@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 import type { TArticle } from '@/spec'
 
-import Share from '@/containers/tool/Share'
+import Share from '@/widgets/Share'
 import Upvote from '@/widgets/Upvote'
 
 import { Wrapper, InnerWrapper, Divider } from '../styles/left_sticker'
@@ -33,7 +33,7 @@ const LeftSticker: FC<TProps> = ({ show, article, testid = 'article-sticker-left
           onAction={handleUpvote}
         />
         <Divider />
-        <Share size={17} right={3} />
+        <Share right={3} />
       </InnerWrapper>
     </Wrapper>
   )

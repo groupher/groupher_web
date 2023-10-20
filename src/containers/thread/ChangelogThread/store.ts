@@ -44,7 +44,9 @@ const ChangelogThread = T.model('ChangelogThread', {
       return mockChangelogTimeTags(15)
     },
     get pagedChangelogsData(): TPagedArticles {
-      return toJS(self.pagedChangelogs)
+      const root = getParent(self) as TRootStore
+
+      return toJS(root.articlesThread.pagedChangelogs)
     },
   }))
   .actions((self) => ({

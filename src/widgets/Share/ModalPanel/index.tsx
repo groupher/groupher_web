@@ -14,8 +14,8 @@ import type { TLinksData } from '../spec'
 import Platforms from './Platforms'
 import InfoPanel from './InfoPanel'
 
-import { Wrapper } from '../styles/panel'
-import { close } from '../logic'
+import { Wrapper } from '../styles/modal_panel'
+// import { close } from '../logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:Share')
@@ -27,6 +27,8 @@ type TProps = {
   linksData: TLinksData
   article: TArticle
   testid?: string
+  onClose: () => void
+  changeType: (type: string) => void
 }
 
 const SharePanel: FC<TProps> = ({
@@ -35,6 +37,8 @@ const SharePanel: FC<TProps> = ({
   siteShareType,
   linksData,
   article,
+  onClose,
+  changeType,
   testid = 'share-panel',
 }) => {
   const { isMobile } = useMobileDetect()
@@ -43,7 +47,7 @@ const SharePanel: FC<TProps> = ({
     return (
       <Fragment>
         <Wrapper testid={testid} type={siteShareType}>
-          <Platforms article={article} />
+          <Platforms article={article} changeType={changeType} />
           <InfoPanel type={siteShareType} linksData={linksData} />
         </Wrapper>
       </Fragment>
@@ -52,9 +56,9 @@ const SharePanel: FC<TProps> = ({
 
   return (
     <Fragment>
-      <Modal width="450px" show={show} offsetLeft={offsetLeft} onClose={close} showCloseBtn>
+      <Modal width="450px" show={show} offsetLeft={offsetLeft} onClose={onClose} showCloseBtn>
         <Wrapper testid={testid} type={siteShareType}>
-          <Platforms article={article} />
+          <Platforms article={article} changeType={changeType} />
           <InfoPanel type={siteShareType} linksData={linksData} />
         </Wrapper>
       </Modal>

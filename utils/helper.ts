@@ -346,6 +346,8 @@ export const publicThreads = (
  * for combine OSS endpoing with path
  */
 export const assetSrc = (path: string): string => {
+  if (!path) return ''
+
   if (startsWith('http://', path) || startsWith('https://', path)) {
     return path
   }

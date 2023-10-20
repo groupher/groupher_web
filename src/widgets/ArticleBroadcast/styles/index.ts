@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 
-import type { TTestable, TSpace, TColorName } from '@/spec'
-
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
-import BroadcastSVG from '@/icons/Broadcast'
+import type { TTestable, TColorName } from '@/spec'
 
 import css, { theme, rainbow, rainbowLight } from '@/css'
+import BroadcastSVG from '@/icons/Broadcast'
+import ArrowButton from '@/widgets/Buttons/ArrowButton'
+import { WithMargin } from '@/widgets/Common'
 
-type TWrapper = { color: TColorName } & TSpace & TTestable
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
+type TWrapper = { color: TColorName } & TTestable
+export const Wrapper = styled(WithMargin).attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.row('align-center')};
@@ -19,8 +19,6 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   /* background: #fafafb; */
   background-color: ${({ color }) => rainbowLight(color)};
   border-radius: 15px;
-
-  ${(props) => css.spaceMargins(props)};
 
   overflow: hidden;
   border-top: 1px solid transparent;

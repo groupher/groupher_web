@@ -1,14 +1,13 @@
 import Link from 'next/link'
 import styled from 'styled-components'
 
-import type { TActive, TPrimaryColor, TSpace } from '@/spec'
+import type { TActive, TPrimaryColor } from '@/spec'
 import css, { theme, rainbow } from '@/css'
+import { WithMargin } from '@/widgets/Common'
 
-export const NormalWrapper = styled.div<TSpace>`
+export const NormalWrapper = styled(WithMargin)`
   ${css.row('align-center')};
   gap: 0 16px;
-
-  ${(props) => css.spaceMargins(props)};
 
   ${css.media.mobile`
     display: none;

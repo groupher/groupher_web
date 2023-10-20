@@ -14,8 +14,8 @@ import {
   Logo,
   LogoWrapper,
   Title,
-} from '../styles/panel/platform'
-import { toPlatform } from '../logic'
+} from '../styles/modal_panel/platform'
+// import { toPlatform } from '../logic'
 
 const medias = [
   {
@@ -81,9 +81,10 @@ const medias = [
 
 type TProps = {
   article: TArticle
+  changeType: (type: string) => void
 }
 
-const Platforms: FC<TProps> = ({ article }) => {
+const Platforms: FC<TProps> = ({ article, changeType }) => {
   return (
     <Wrapper>
       <Header>
@@ -93,7 +94,7 @@ const Platforms: FC<TProps> = ({ article }) => {
       </Header>
       <InnerWrapper>
         {medias.map((item) => (
-          <Media key={item.id} onClick={() => toPlatform(item.type)}>
+          <Media key={item.id} onClick={() => changeType(item.type)}>
             <LogoWrapper noBg={!!item.noBg}>
               <Logo src={item.logo} small={!!item.small} />
             </LogoWrapper>

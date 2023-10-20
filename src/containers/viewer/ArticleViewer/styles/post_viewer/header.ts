@@ -6,7 +6,8 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div`
   ${css.row('align-center')};
   width: 100%;
-  height: 60px;
+  height: 48px;
+  margin-bottom: 5px;
 `
 export const AuthorWrapper = styled.div`
   ${css.row('align-center')};
