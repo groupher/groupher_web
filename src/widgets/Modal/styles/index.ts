@@ -34,12 +34,11 @@ export const Wrapper = styled.div<TWrapper>`
   border-radius: 8px;
   min-height: 320px;
   max-height: 65vh;
-  box-shadow: -5px 6px 37px -8px rgba(0, 0, 0, 0.42);
+  box-shadow: ${theme('modal.shadow')};
   padding-top: 25px;
   /* border: 1px solid; */
   /* border-top: 2px solid; */
-  border-color: ${({ mode }) =>
-    mode === 'default' ? theme('modal.border') : theme('rainbow.red')};
+  border-color: ${({ mode }) => theme('modal.border')};
   animation: ${animate.jump} 0.3s linear;
   margin-left: ${({ offsetLeft }) => offsetLeft};
 
@@ -57,7 +56,7 @@ export const CloseBtn = styled(CloseCrossSVG)<TCloseBtn>`
   position: absolute;
   top: 16px;
   right: 18px;
-  fill: ${({ mode }) => (mode === 'default' ? theme('article.info') : theme('rainbow.red'))};
+  fill: ${theme('article.info')};
   ${css.size(20)};
   z-index: ${zIndex.modalCloseBtn};
   opacity: 0.8;

@@ -68,7 +68,7 @@ export const IndexWrapper = styled.div`
   position: absolute;
   width: 100px;
   color: ${theme('article.digest')};
-  font-size: 11px;
+  font-size: 10px;
 
   opacity: 0;
 
@@ -78,13 +78,12 @@ export const IndexWrapper = styled.div`
   }
 
   transition: opacity 0.2s;
-  transition-delay: 0.3s;
 `
 export const UpIndexWrapper = styled(IndexWrapper)`
-  left: 34px;
+  left: 35px;
   top: -46px;
 `
 export const DownIndexWrapper = styled(IndexWrapper)`
-  left: 34px;
-  top: 30px;
+  left: 35px;
+  top: 28px;
 `

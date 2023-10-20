@@ -1,15 +1,17 @@
 import { FC } from 'react'
 
 import { closeDrawer } from '@/signal'
+
+import Share from '@/containers/tool/Share'
 import { SpaceGrow } from '@/widgets/Common'
+
 import {
   Wrapper,
   BackButton,
   ArrowIcon,
   BackText,
   LinkIcon,
-  WeChatIcon,
-  WeiboIcon,
+  QRCodeIcon,
   MoreIcon,
   FlagIcon,
   SettingIcon,
@@ -23,9 +25,9 @@ const DrawerHeader: FC = () => {
         <BackText>返回列表</BackText>
       </BackButton>
       <SpaceGrow />
+      <Share size={14} offsetLeft="54%" />
       <LinkIcon />
-      <WeChatIcon />
-      <WeiboIcon />
+      <QRCodeIcon />
       <MoreIcon />
       <FlagIcon />
       <SettingIcon />

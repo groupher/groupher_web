@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import ArrowSVG from '@/icons/Arrow'
 import LinkSVG from '@/icons/Link'
-import WeChatSVG from '@/icons/social/WeChatRaw'
+import QRCodeSVG from '@/icons/menu/QRCode'
 import WeiboSVG from '@/icons/social/WeiboRaw'
 import MoreSVG from '@/icons/menu/More'
 import SettingSVG from '@/icons/Setting'
@@ -64,8 +64,8 @@ export const LinkIcon = styled(LinkSVG)`
   fill: ${theme('hint')};
   margin-left: 12px;
 `
-export const WeChatIcon = styled(WeChatSVG)`
-  ${css.size(18)};
+export const QRCodeIcon = styled(QRCodeSVG)`
+  ${css.size(17)};
   fill: ${theme('hint')};
   margin-left: 14px;
 `

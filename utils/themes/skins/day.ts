@@ -278,6 +278,7 @@ const day = {
     bg: contentBoxBg,
     mask: 'rgba(31, 34, 37, 0.1)',
     border: primaryColor,
+    shadow: '-2px 4px 20px 0px rgb(158 157 157 / 23%)',
     innerSelectBg: '#e4eeed45',
     subPanel: '#F5F5F5',
     // subPanelShadow: 'drop-shadow(3px 3px 6px #EAE9E9)',
