@@ -60,7 +60,7 @@ const PostLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
           </BackBtnWrapper>
           <SpaceGrow />
           <Share modalOffset="38%" />
-          <ArticleSettingMenu />
+          <ArticleSettingMenu left={16} />
         </Topping>
         <Title>
           {title}

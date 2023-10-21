@@ -18,7 +18,7 @@ const DrawerHeader: FC = () => {
       <SpaceGrow />
       <Share modalOffset="53%" />
       <FlagIcon />
-      <ArticleSettingMenu />
+      <ArticleSettingMenu left={16} />
     </Wrapper>
   )
 }

@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { FC, memo, useState } from 'react'
 
 import { buildLog } from '@/logger'
 
@@ -24,6 +24,8 @@ type TProps = {
 } & TSpace
 
 const ArticleSettingMenu: FC<TProps> = ({ testid = 'article-setting-menu', ...restProps }) => {
+  const [menuOpen, setMenuOpen] = useState(false)
+
   return (
     <Wrapper testid={testid} {...restProps}>
       <Tooltip
@@ -83,10 +85,12 @@ const ArticleSettingMenu: FC<TProps> = ({ testid = 'article-setting-menu', ...re
         }
         placement="bottom-end"
         hideOnClick={false}
+        onShow={() => setMenuOpen(true)}
+        onHide={() => setMenuOpen(false)}
         trigger="click"
         noPadding
       >
-        <SettingIcon />
+        <SettingIcon $active={menuOpen} />
       </Tooltip>
     </Wrapper>
   )
