@@ -27,8 +27,9 @@ export const SettingIcon = styled(SettingSVG)`
   transition: all 0.2s;
 `
 export const MainPanel = styled.div`
-  padding: 10px;
-  width: 140px;
+  padding: 8px;
+  padding-right: 4px;
+  width: 148px;
 `
 export const MenuItem = styled.div`
   ${css.row('align-center')};
@@ -36,6 +37,7 @@ export const MenuItem = styled.div`
   height: 30px;
   width: 100%;
   padding: 2px 8px;
+  padding-right: 0;
   border-radius: 5px;
 
   &:hover {
@@ -43,4 +45,19 @@ export const MenuItem = styled.div`
     color: ${theme('article.title')};
     cursor: pointer;
   }
+`
+export const DangerMenuItem = styled(MenuItem)`
+  &:hover {
+    background: ${theme('rainbow.redBg')};
+    color: ${theme('rainbow.red')};
+    cursor: pointer;
+  }
+`
+
+export const ItemDivider = styled.div`
+  height: 1px;
+  width: 100%;
+  background: ${theme('popover.borderColor')};
+  margin-top: 10px;
+  margin-bottom: 10px;
 `

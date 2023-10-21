@@ -11,9 +11,10 @@ import { buildLog } from '@/logger'
 import type { TSpace } from '@/spec'
 
 import Tooltip from '@/widgets/Tooltip'
+import { SpaceGrow } from '@/widgets/Common'
 
 import { Icon } from './styles/icon'
-import { Wrapper, SettingIcon, MainPanel, MenuItem } from './styles'
+import { Wrapper, SettingIcon, MainPanel, MenuItem, DangerMenuItem, ItemDivider } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('c:ArticleSettingMenu:index')
@@ -29,19 +30,55 @@ const ArticleSettingMenu: FC<TProps> = ({ testid = 'article-setting-menu', ...re
         content={
           <MainPanel>
             <MenuItem>
-              <Icon.Light />
-              设置 slug
+              <Icon.Slug />
+              设置路径
+              <SpaceGrow />
+              <Icon.Arrow />
             </MenuItem>
+            <ItemDivider />
+            <MenuItem>
+              <Icon.Light />
+              功能建议
+              <SpaceGrow />
+              <Icon.Arrow />
+            </MenuItem>
+            <MenuItem>
+              <Icon.Todo />
+              设置状态
+              <SpaceGrow />
+              <Icon.Arrow />
+            </MenuItem>
+            <MenuItem>
+              <Icon.Tag />
+              标签
+              <SpaceGrow />
+              <Icon.Arrow />
+            </MenuItem>
+            <ItemDivider />
             <MenuItem>
               <Icon.Pin />
               置顶
             </MenuItem>
-            <MenuItem>分类</MenuItem>
-            <MenuItem>状态</MenuItem>
-            <MenuItem>标签</MenuItem>
-            <MenuItem>关闭评论</MenuItem>
-            <MenuItem>归档</MenuItem>
-            <MenuItem>删除</MenuItem>
+            <MenuItem>
+              <Icon.Lock />
+              关闭评论
+            </MenuItem>
+            <MenuItem>
+              <Icon.Merge />
+              合并
+              <SpaceGrow />
+              <Icon.Arrow />
+            </MenuItem>
+            <MenuItem>
+              <Icon.Archived />
+              归档
+              <SpaceGrow />
+              <Icon.Arrow />
+            </MenuItem>
+            <DangerMenuItem>
+              <Icon.Delete />
+              删除
+            </DangerMenuItem>
           </MainPanel>
         }
         placement="bottom-end"
