@@ -13,8 +13,7 @@ import type { TSpace } from '@/spec'
 import Tooltip from '@/widgets/Tooltip'
 
 import Menu from './Menu'
-import GlobalStyle from './styles/global'
-import { Wrapper, SettingIcon } from './styles'
+import { Wrapper, SettingIcon, DisableTippyJump } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('c:ArticleSettingMenu:index')
@@ -71,7 +70,7 @@ const ArticleSettingMenu: FC<TProps> = ({ testid = 'article-setting-menu', ...re
       >
         <SettingIcon $active={menuOpen} />
       </Tooltip>
-      {disablePopAnimate && <GlobalStyle />}
+      {disablePopAnimate && <DisableTippyJump />}
     </Wrapper>
   )
 }

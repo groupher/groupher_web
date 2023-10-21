@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 
 import type { TActive, TTestable } from '@/spec'
 
@@ -26,4 +26,12 @@ export const SettingIcon = styled(SettingSVG)<TActive>`
   }
 
   transition: all 0.2s;
+`
+
+export const DisableTippyJump = createGlobalStyle`
+  // this is for disable pop animation
+  // should have no animation when navi to sub menu
+  .tippy-box[data-placement^=bottom][data-state='visible'] {
+    transform: translateY(0);
+  }
 `
