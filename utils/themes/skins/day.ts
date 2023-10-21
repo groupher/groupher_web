@@ -250,7 +250,7 @@ const day = {
     hoverBg: '#eee',
   },
   popover: {
-    bg: '#fffffff2',
+    bg: '#fafafa', // '#fffffff2',
     borderColor: '#e9e9ea',
     boxShadow: '-3px 2px 20px 0px rgb(58 58 58 / 15%)',
     activeBorder: '#70707094',

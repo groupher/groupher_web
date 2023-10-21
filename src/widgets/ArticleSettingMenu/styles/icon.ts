@@ -13,7 +13,7 @@ import SlugSVG from '@/icons/Slug'
 import MergeSVG from '@/icons/Merge'
 import ArchivedSVG from '@/icons/Archived'
 import DeleteSVG from '@/icons/Trash'
-import LockSVG from '@/icons/Lock'
+import LockSVG from '@/icons/LockLight'
 import ArrowSVG from '@/icons/ArrowSimple'
 // import QuestionSVG from '@/icons/Question'
 // import BugSVG from '@/icons/ColorBug'
@@ -45,16 +45,16 @@ export const Icon = {
     }
   `,
   Light: commonIcon(LightSVG),
-  Tag: commonIcon(TagSVG),
+  Tag: styled(commonIcon(TagSVG))`
+    margin-top: -1px;
+  `,
   Todo: commonIcon(TodoSVG),
   Slug: commonIcon(SlugSVG),
   Archived: styled(commonIcon(ArchivedSVG))`
     margin-top: -1px;
   `,
   Merge: commonIcon(MergeSVG),
-  Lock: styled(commonIcon(LockSVG))`
-    margin-top: -1px;
-  `,
+  Lock: commonIcon(LockSVG),
   Delete: styled(commonIcon(DeleteSVG))`
     ${MenuItem}:hover & {
       fill: ${theme('rainbow.red')};
