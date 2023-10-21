@@ -28,5 +28,5 @@ export const GroupItem = styled(LinkItem)<TActive>`
 export const ArrowIcon = styled(ArrowIconBase)`
   position: absolute;
   ${css.size(14)};
-  right: 1px;
+  right: 2px;
 `
