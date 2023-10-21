@@ -20,7 +20,7 @@ import ArrowSVG from '@/icons/ArrowSimple'
 // import RejectSVG from '@/icons/Reject'
 // import OtherSVG from '@/icons/menu/Feedback'
 
-import { MenuItem } from '.'
+import { MenuItem } from './menu'
 
 const commonIcon = (comp): FC => {
   return styled(comp)`

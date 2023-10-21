@@ -1,9 +1,6 @@
 import { useEffect, RefObject } from 'react'
 
-const useOutsideClick = (
-  ref: RefObject<HTMLElement>,
-  callback?: (e) => void,
-): void => {
+const useOutsideClick = (ref: RefObject<HTMLElement>, callback?: (e) => void): void => {
   const handleClick = (e): void => {
     if (ref.current && !ref.current.contains(e.target)) {
       callback?.(e)
@@ -11,10 +8,10 @@ const useOutsideClick = (
   }
 
   useEffect(() => {
-    document.addEventListener('click', handleClick)
+    document.addEventListener('mousedown', handleClick)
 
     return () => {
-      document.removeEventListener('click', handleClick)
+      document.removeEventListener('mousedown', handleClick)
     }
   })
 }

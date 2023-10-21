@@ -115,7 +115,7 @@ const pulse = keyframes`
 const fadeInRight = keyframes`
   from {
     opacity: 0.3;
-    transform: translate3d(50%, 0, 0);
+    transform: translate3d(6%, 0, 0);
   }
 
   to {
