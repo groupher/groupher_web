@@ -65,6 +65,6 @@ export const TagSettingEditor = dynamic(() => import('@/containers/editor/TagSet
   loading: () => <CommonLoading />,
 })
 
-export const SearchPanel = dynamic(() => import('@/containers/unit/SearchPanel'), {
+export const SearchPanel = dynamic(() => import('@/widgets/SearchPanel'), {
   loading: () => <CommonLoading />,
 })
