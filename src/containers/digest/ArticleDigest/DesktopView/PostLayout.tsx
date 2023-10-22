@@ -16,6 +16,8 @@ import { buildLog } from '@/logger'
 import { SpaceGrow } from '@/widgets/Common'
 import Upvote from '@/widgets/Upvote'
 import ArticleBaseStats from '@/widgets/ArticleBaseStats'
+import Share from '@/widgets/Share'
+import ArticleSettingMenu from '@/widgets/ArticleSettingMenu'
 
 // import ArticleBelongCommunity from '@/widgets/ArticleBelongCommunity'
 // import ArticleMenu from '@/widgets/ArticleMenu'
@@ -57,6 +59,8 @@ const PostLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
             讨论区
           </BackBtnWrapper>
           <SpaceGrow />
+          <Share modalOffset="38%" />
+          <ArticleSettingMenu left={16} />
         </Topping>
         <Title>
           {title}
@@ -67,8 +71,7 @@ const PostLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
             <Avatar src={author.avatar} />
             {author.nickname}
           </AuthorName>
-          <ArticleBaseStats article={article} />
-          {/* <ArticleMenu article={article} /> */}
+          <ArticleBaseStats article={article} right={40} />
         </BottomInfo>
       </LeftPart>
 

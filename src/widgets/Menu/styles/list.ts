@@ -38,8 +38,11 @@ export const Main = styled.div``
 
 export const Title = styled.div`
   font-size: 14px;
+  ${Item}:hover & {
+    color: ${theme('article.title')};
+  }
+  transition: all 0.15s;
 `
-// full version
 
 export const FullItem = styled(Item)`
   ${css.row('align-start')};
@@ -56,4 +59,11 @@ export const Desc = styled.div`
   font-size: 12px;
   opacity: 0.8;
   margin-top: -8px;
+
+  ${Item}:hover & {
+    color: ${theme('article.digest')};
+    opacity: 1;
+  }
+
+  transition: all 0.1s;
 `

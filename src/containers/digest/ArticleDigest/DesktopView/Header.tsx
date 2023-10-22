@@ -1,7 +1,6 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react'
 
-import type { TMetric } from '@/spec'
 import { assetSrc } from '@/helper'
 
 import { ANCHOR } from '@/constant/dom'
@@ -9,6 +8,7 @@ import { ROUTE } from '@/constant/route'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import MobileThreadNavi from '@/widgets/MobileThreadNavi'
+import AccountUnit from '@/widgets/AccountUnit'
 
 import {
   Wrapper,
@@ -18,16 +18,10 @@ import {
   CommunityTitle,
   Main,
   LinkItem,
-  Account,
-  AccountIcon,
   MobileNaviWrapper,
 } from '../styles/desktop_view/header'
 
-type TProps = {
-  metric: TMetric
-}
-
-const Header: FC<TProps> = ({ metric }) => {
+const Header: FC = () => {
   const { slug, title, logo } = useViewingCommunity()
 
   return (
@@ -38,7 +32,7 @@ const Header: FC<TProps> = ({ metric }) => {
           <CommunityTitle>{title}</CommunityTitle>
         </Community>
 
-        <Main metric={metric}>
+        <Main>
           <LinkItem href={`/${slug}/${ROUTE.POST}`}>讨论区</LinkItem>
           <LinkItem href={`/${slug}/${ROUTE.KANBAN}`}>看板</LinkItem>
           <LinkItem href={`/${slug}/${ROUTE.CHANGELOG}`}>更新日志</LinkItem>
@@ -50,9 +44,7 @@ const Header: FC<TProps> = ({ metric }) => {
           <MobileThreadNavi />
         </MobileNaviWrapper>
 
-        <Account>
-          <AccountIcon />
-        </Account>
+        <AccountUnit />
       </InnerWrapper>
     </Wrapper>
   )

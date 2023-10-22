@@ -47,7 +47,7 @@ const SideInfo: FC<TProps> = ({ article }) => {
 
         <Br bottom={25} />
 
-        <Label>类别</Label>
+        <Label>分类</Label>
         <ArticleCatState cat={ARTICLE_CAT.FEATURE} state={ARTICLE_STATE.WIP} smaller={false} />
 
         <Br bottom={25} />

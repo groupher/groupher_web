@@ -15,7 +15,6 @@ import {
   LogoWrapper,
   Title,
 } from '../styles/modal_panel/platform'
-// import { toPlatform } from '../logic'
 
 const medias = [
   {

@@ -22,6 +22,7 @@ const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold, activePath
 
   if (!showMoreFold) return null
 
+  // hideOnClick here is bug, not sure if it's caused by complex style of LinkItem
   return (
     <Tooltip
       content={
@@ -40,7 +41,7 @@ const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold, activePath
       }
       onHide={() => setMenuOpen(false)}
       onShow={() => setMenuOpen(true)}
-      trigger="click"
+      hideOnClick={false}
       placement="bottom"
       offset={[8, 5]}
     >

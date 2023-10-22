@@ -7,10 +7,10 @@
 import { FC, useRef } from 'react'
 import dynamic from 'next/dynamic'
 
-import type { TMetric } from '@/spec'
 import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 
+import useMetric from '@/hooks/useMetric'
 // import ArticleSticker from '@/containers/tool/ArticleSticker'
 // import ArticleFooter from '@/containers/unit/ArticleFooter'
 import ArtimentBody from '@/widgets/ArtimentBody'
@@ -25,7 +25,6 @@ import type { TStore } from '../store'
 import {
   Wrapper,
   InnerWrapper,
-  MainWrapper,
   ArticleWrapper,
   CommentsWrapper,
 } from '../styles/desktop_view/article_layout'
@@ -44,11 +43,11 @@ const Comments = dynamic(() => import('@/containers/unit/Comments'), {
 type TProps = {
   articleContent?: TStore
   testid?: string
-  metric?: TMetric
 }
 
-const ArticleContentContainer: FC<TProps> = ({ articleContent: store, metric, testid }) => {
+const ArticleContentContainer: FC<TProps> = ({ articleContent: store, testid }) => {
   useInit(store)
+  const metric = useMetric()
 
   const { viewingArticle: article } = store
   const ref = useRef()
@@ -56,13 +55,13 @@ const ArticleContentContainer: FC<TProps> = ({ articleContent: store, metric, te
   if (!article.id) return null
 
   return (
-    <Wrapper testid={testid}>
-      <InnerWrapper>
+    <Wrapper testid={testid} metric={metric}>
+      <InnerWrapper metric={metric}>
         {/* <ViewportTracker
           onEnter={() => checkAnchor(ref?.current)}
           onLeave={() => checkAnchor(ref?.current)}
         /> */}
-        <MainWrapper metric={metric}>
+        <div>
           <ArticleWrapper ref={ref}>
             {/* {!!article.linkAddr && <Linker src={article.linkAddr} bottom={22} />} */}
             <ArtimentBody document={article.document} />
@@ -75,10 +74,10 @@ const ArticleContentContainer: FC<TProps> = ({ articleContent: store, metric, te
           <CommentsWrapper>
             <Comments />
           </CommentsWrapper>
-        </MainWrapper>
-      </InnerWrapper>
+        </div>
 
-      <SideInfo article={article} />
+        <SideInfo article={article} />
+      </InnerWrapper>
     </Wrapper>
   )
 }

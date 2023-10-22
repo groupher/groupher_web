@@ -1,10 +1,13 @@
+import { observer } from 'mobx-react'
 import METRIC from '@/constant/metric'
+
+import useMetric from '@/hooks/useMetric'
 
 import ArticleLayout from './ArticleLayout'
 import ChangelogLayout from './ChangelogLayout'
 
 const ArticleContent = (props) => {
-  const { metric } = props
+  const metric = useMetric()
 
   switch (metric) {
     case METRIC.CHANGELOG_ARTICLE: {
@@ -16,4 +19,4 @@ const ArticleContent = (props) => {
   }
 }
 
-export default ArticleContent
+export default observer(ArticleContent)

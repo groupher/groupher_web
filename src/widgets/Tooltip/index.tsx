@@ -44,6 +44,8 @@ export type TProps = {
   forceZIndex?: boolean
   interactive?: boolean
 
+  visible?: boolean | null
+
   onShow?: () => void
   onHide?: () => void
   onConfirm?: () => void

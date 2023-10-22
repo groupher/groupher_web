@@ -31,12 +31,15 @@ export const Title = styled(Link)<TTitle>`
   font-size: 14px;
   opacity: ${({ $active }) => ($active ? 1 : 0.9)};
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
+  filter: ${({ $active }) => ($active ? 'brightness(1.2)' : '')};
+
   text-decoration: none;
   padding: 3px 10px;
   border-radius: 5px;
 
   &:hover {
     color: ${({ primaryColor }) => rainbow(primaryColor, 'article.title')};
+    filter: brightness(1.2);
     opacity: 1;
     cursor: pointer;
     background: ${theme('hoverBg')};

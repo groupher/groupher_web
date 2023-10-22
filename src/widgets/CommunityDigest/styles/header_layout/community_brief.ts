@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 import Link from 'next/link'
 
 import css, { theme } from '@/css'
@@ -87,7 +87,7 @@ export const ToolPanel = styled.div`
   width: 150px;
   min-height: 112px;
 `
-export const PanelItem = styled(Link)`
+export const PanelItem = styled(Link)<{ outside?: boolean }>`
   ${css.row('align-center')};
   color: ${theme('article.digest')};
   margin-top: 4px;
@@ -98,8 +98,9 @@ export const PanelItem = styled(Link)`
   cursor: pointer;
 
   &:hover {
+    color: ${theme('article.title')};
     background: ${theme('hoverBg')};
-    text-decoration: underline;
+    text-decoration: ${({ outside }) => (outside ? 'underline' : 'none')};
   }
 `
 export const ArrowIcon = styled(ArrowSVG)`
@@ -108,10 +109,26 @@ export const ArrowIcon = styled(ArrowSVG)`
   margin-left: -2px;
   margin-right: 10px;
   transform: rotate(-90deg);
+
+  ${PanelItem}:hover & {
+    fill: ${theme('article.title')};
+  }
 `
 export const DiscussIcon = styled(DiscussSVG)`
   ${css.size(14)};
   fill: ${theme('hint')};
   margin-left: -1px;
   margin-right: 11px;
+
+  ${PanelItem}:hover & {
+    fill: ${theme('article.title')};
+  }
+`
+
+export const DisableTippyJump = createGlobalStyle`
+  // this is for disable pop animation
+  // should have no animation when navi to sub menu
+  .tippy-box[data-placement^=bottom][data-state='visible'] {
+    transform: translateY(2px) !important;
+  }
 `

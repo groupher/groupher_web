@@ -4,10 +4,8 @@
 
 import { FC } from 'react'
 import { isNil } from 'ramda'
-// import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TMetric } from '@/spec'
-import METRIC from '@/constant/metric'
+import useMetric from '@/hooks/useMetric'
 
 import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
@@ -27,19 +25,17 @@ const log = buildLog('C:ArticleDigest')
 type TProps = {
   articleDigest?: TStore
   testid?: string
-  metric?: TMetric
 }
 
 const ArticleDigestContainer: FC<TProps> = ({
   articleDigest: store,
   testid = 'article-digest',
-  metric = METRIC.ARTICLE,
 }) => {
   // const { isMobile } = useMobileDetect()
   useInit(store)
+  const metric = useMetric()
 
   const { viewingArticle, inViewport } = store
-
   if (isNil(viewingArticle.id)) return null
 
   return (
@@ -48,8 +44,8 @@ const ArticleDigestContainer: FC<TProps> = ({
       {/* {!isMobile && <CollectionFolder />} */}
       {/* @ts-ignore */}
       <FixedHeader show={!inViewport} article={viewingArticle} metric={metric} />
-      <InnerWrapper>
-        <Header metric={metric} />
+      <InnerWrapper metric={metric}>
+        <Header />
         <BannerContent>
           <Layout article={viewingArticle} metric={metric} />
         </BannerContent>

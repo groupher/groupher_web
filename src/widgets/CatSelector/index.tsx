@@ -40,7 +40,7 @@ const CatSelector: FC<TProps> = ({
 
   return (
     <Wrapper $menuOpen={menuOpen} {...restProps} ref={ref}>
-      {mode === ARTICLE_CAT_MODE.FULL && <Label>类别</Label>}
+      {mode === ARTICLE_CAT_MODE.FULL && <Label>分类</Label>}
 
       <Menu
         offset={offset as [number, number]}
@@ -70,7 +70,7 @@ const CatSelector: FC<TProps> = ({
             onSelect(ARTICLE_CAT.ALL)
           }}
         >
-          {activeCat === ARTICLE_CAT.ALL ? '类别' : <ActiveLabel cat={activeCat} />}
+          {activeCat === ARTICLE_CAT.ALL ? '分类' : <ActiveLabel cat={activeCat} />}
         </DropdownButton>
       </Menu>
     </Wrapper>

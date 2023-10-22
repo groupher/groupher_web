@@ -14,6 +14,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   padding-top: 50px;
   padding-bottom: 30px;
   box-shadow: ${theme('footer.shadow')};
+  ${({ metric }) => css.fitPageWidth(metric)};
 
   ${css.media.mobile`
     margin-top: 40px;

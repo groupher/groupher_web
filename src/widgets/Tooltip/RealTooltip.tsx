@@ -38,6 +38,7 @@ const Tooltip: FC<TProps> = ({
   forceZIndex = false,
   behavior = 'default',
   trigger = 'mouseenter focus',
+  visible = null,
   onConfirm,
   contentHeight,
 }) => {
@@ -91,7 +92,7 @@ const Tooltip: FC<TProps> = ({
     }
   })
 
-  const props = {
+  let props = {
     ref,
     content: PopoverContent,
     placement,
@@ -120,6 +121,9 @@ const Tooltip: FC<TProps> = ({
       onShow?.()
     },
   }
+
+  // @ts-ignore
+  props = visible === null ? props : { ...props, visible }
 
   return !noPadding ? (
     <StyledTippy {...props} wechatEnv={wechatEnv}>

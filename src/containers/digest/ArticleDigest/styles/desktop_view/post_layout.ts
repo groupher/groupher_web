@@ -20,16 +20,17 @@ export const LeftPart = styled.div`
   max-width: 600px;
 `
 export const RightPart = styled.div`
+  ${css.row('justify-center')};
   height: 100%;
   width: 200px;
   margin-top: 37px;
-  padding-right: 15px;
+  padding-left: 20px;
 `
 export const Topping = styled.div`
   ${css.row('align-both')};
   margin-left: -2px;
   margin-bottom: 16px;
-  margin-top: -5px;
+  padding-right: 40px;
   position: relative;
 `
 export const BackBtnWrapper = styled.div`

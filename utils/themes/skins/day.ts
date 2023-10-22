@@ -250,7 +250,7 @@ const day = {
     hoverBg: '#eee',
   },
   popover: {
-    bg: '#fffffff2',
+    bg: '#fafafa', // '#fffffff2',
     borderColor: '#e9e9ea',
     boxShadow: '-3px 2px 20px 0px rgb(58 58 58 / 15%)',
     activeBorder: '#70707094',
@@ -285,7 +285,7 @@ const day = {
     subPanelShadow: 'none',
   },
   form: {
-    inputBg: '#FFFFFF',
+    inputBg: '#ffffff95',
     text: '#88a4ad',
     label: '#88a4ad',
     border: '#B8C6C0',

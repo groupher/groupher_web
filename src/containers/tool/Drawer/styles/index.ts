@@ -53,8 +53,7 @@ export const DrawerWrapper = styled.div.attrs<TDrawer>(
 )<TDrawer>`
   ${css.row()};
   position: fixed;
-  right: ${({ rightOffset, type }) =>
-    isWideMode(type) ? rightOffset : pixelAdd(rightOffset, -30)};
+  right: ${({ rightOffset, type }) => (isWideMode(type) ? rightOffset : pixelAdd(rightOffset, 30))};
   top: ${({ type }) => (isWideMode(type) ? 0 : '25px')};
 
   color: ${theme('drawer.font')};
