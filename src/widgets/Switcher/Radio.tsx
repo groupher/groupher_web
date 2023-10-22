@@ -5,7 +5,6 @@
  */
 
 import { FC, memo } from 'react'
-import { observer } from 'mobx-react'
 
 import type { TSizeSM, TSpace } from '@/spec'
 import usePrimaryColor from '@/hooks/usePrimaryColor'

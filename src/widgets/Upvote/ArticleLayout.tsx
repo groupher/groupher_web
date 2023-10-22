@@ -35,8 +35,6 @@ const Upvote: FC<TProps> = ({
   avatarList = [],
   avatarLayout = AVATAR_LAYOUT.SQUARE,
 }) => {
-  const noOne = count === 0
-
   return (
     <Wrapper testid={testid}>
       <Button>
