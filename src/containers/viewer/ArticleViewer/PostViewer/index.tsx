@@ -66,7 +66,7 @@ const PostViewer: FC<TProps> = ({ article, loading }) => {
           <Balancer>
             <TitleText>{article.title}</TitleText>
           </Balancer>
-          <SubTitle>{article.id}</SubTitle>
+          <SubTitle>{article.innerId}</SubTitle>
         </Title>
         <ArticleInfo article={article} />
         <ViewportTracker onEnter={hideFixedHeader} onLeave={showFixedHeader} />

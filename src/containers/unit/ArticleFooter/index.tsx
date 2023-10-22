@@ -9,13 +9,10 @@ import { FC } from 'react'
 import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 
-// import { SpaceGrow } from '@/widgets/Common'
-import TagsList from '@/widgets/TagsList'
-
 import Panel from './Panel'
 
 import type { TStore } from './store'
-import { Wrapper, BaseInfo } from './styles'
+import { Wrapper } from './styles'
 import { useInit } from './logic'
 
 /* eslint-disable-next-line */
@@ -32,14 +29,10 @@ const ArticleFooterContainer: FC<TProps> = ({
 }) => {
   useInit(store)
   const { viewingArticle } = store
-  const { author, articleTags } = viewingArticle
+  const { author } = viewingArticle
 
   return (
     <Wrapper testid={testid}>
-      <BaseInfo>
-        <TagsList items={articleTags} size="small" />
-      </BaseInfo>
-
       <Panel author={author} article={viewingArticle} />
     </Wrapper>
   )

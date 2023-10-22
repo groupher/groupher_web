@@ -18,6 +18,7 @@ import {
   SubToggle,
   SubToggleTitle,
   SubTogglePrefixIcon,
+  ArrowWrapper,
 } from '../styles/desktop_view/folder'
 
 type TProps = {
@@ -73,7 +74,10 @@ const Folder: FC<TProps> = ({
           }
         }}
       >
-        <ArrowIcon $isOpen={isFolderOpen} />
+        <ArrowWrapper>
+          <ArrowIcon $isOpen={isFolderOpen} />
+        </ArrowWrapper>
+
         <Title>
           <FolderTitle $isOpen={isFolderOpen}>{title}</FolderTitle>
           {!isFolderOpen && <Count>{sortedTags.length}</Count>}

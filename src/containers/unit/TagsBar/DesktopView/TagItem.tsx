@@ -4,10 +4,17 @@ import type { TColorName, TTag } from '@/spec'
 import { cutRest } from '@/fmt'
 import { Trans } from '@/i18n'
 
-// import DotDivider from '@/widgets/DotDivider'
-// import TagCount from './TagCount'
+import { emptyTag } from '@/model'
 
-import { Wrapper, DotWrapper, DotSign, Tag, Title } from '../styles/desktop_view/tag_item'
+import {
+  Wrapper,
+  DotWrapper,
+  HashIcon,
+  Tag,
+  Title,
+  CloseWrapper,
+  CloseIcon,
+} from '../styles/desktop_view/tag_item'
 
 type TProps = {
   tag: TTag
@@ -17,10 +24,11 @@ type TProps = {
 
 const TagItem: FC<TProps> = ({ tag, active, onSelect }) => {
   return (
-    <Wrapper $active={active} primaryColor={tag.color as TColorName}>
+    <Wrapper $active={active}>
       {tag.color && (
-        <DotWrapper>
-          <DotSign color={tag.color} $active={active} />
+        <DotWrapper primaryColor={tag.color as TColorName} $active={active}>
+          <HashIcon color={tag.color} $active={active} />
+          {/* <DotSign color={tag.color} $active={active} /> */}
         </DotWrapper>
       )}
       <Tag
@@ -29,19 +37,13 @@ const TagItem: FC<TProps> = ({ tag, active, onSelect }) => {
         color={tag.color}
         onClick={() => onSelect(tag)}
       >
-        <Title>{cutRest(Trans(tag.title), 10)}</Title>
-        {/* <RawWrapper $active={active}>
-          <DotDivider radius={2} space={6} />
-          <Raw>{tag.slug}</Raw>
-        </RawWrapper> */}
+        <Title $active={active}>{cutRest(Trans(tag.title), 10)}</Title>
       </Tag>
-      {/* <SpaceGrow />
-
-      {!inline && (
-        <CountInfoWrapper>
-          <TagCount num={getRandomInt(5, 1000)} />
-        </CountInfoWrapper>
-      )} */}
+      {active && (
+        <CloseWrapper onClick={() => onSelect(emptyTag)}>
+          <CloseIcon />
+        </CloseWrapper>
+      )}
     </Wrapper>
   )
 }

@@ -24,10 +24,6 @@ export const AuthorName = styled.div`
 export const PublishWrapper = styled.div`
   ${css.row('align-center')}
 `
-export const PubDate = styled.div`
-  color: ${theme('hint')};
-  font-size: 13px;
-`
 export const EditedHint = styled.div`
   font-size: 13px;
   color: ${theme('article.info')};

@@ -64,7 +64,7 @@ const Header: FC<TProps> = ({ article }) => {
         <SpaceGrow />
         {commentsCount !== 0 && (
           <CommentsCount
-            count={12}
+            count={commentsCount}
             size={SIZE.MEDIUM}
             right={bannerLayout === BANNER_LAYOUT.SIDEBAR ? 4 : 0}
           />

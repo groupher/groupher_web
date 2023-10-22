@@ -11,9 +11,9 @@ export const Wrapper = styled.div`
   padding: 5px 2px;
 `
 export const BackIcon = styled(ArrowSVG)`
-  ${css.size(12)};
+  ${css.size(11)};
   fill: ${theme('lightText')};
-  margin-right: 6px;
+  margin-right: 9px;
   margin-left: 4px;
 
   ${Wrapper}:hover & {
@@ -23,7 +23,7 @@ export const BackIcon = styled(ArrowSVG)`
 `
 export const TagTitle = styled.div`
   color: ${theme('tags.text')};
-  font-size: 13px;
+  font-size: 12px;
 
   ${Wrapper}:hover & {
     cursor: pointer;

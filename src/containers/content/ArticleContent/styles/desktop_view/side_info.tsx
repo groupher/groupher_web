@@ -47,7 +47,7 @@ export const Count = styled.span`
 `
 export const Value = styled.div`
   font-size: 13px;
-  color: ${theme('article.title')};
+  color: ${theme('article.digest')};
   margin-bottom: 5px;
 `
 

@@ -70,7 +70,7 @@ const ArticleLayout: FC<TProps> = ({
         <MainMenusWrapper>
           <Upvote count={8} avatarList={users} type="default" />
 
-          <CommentsCount count={12} size="medium" right={8} />
+          <CommentsCount count={0} size="medium" right={8} />
         </MainMenusWrapper>
         <ActionBallWrapper
           left={8}
