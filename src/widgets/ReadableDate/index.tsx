@@ -17,14 +17,12 @@ const log = buildLog('w:ReadableDate:index')
 type TProps = {
   testid?: string
   date: string
-  fmt?: 'relative' | 'absolute'
   withTime?: boolean
   className?: string
 }
 
 const ReadableDate: FC<TProps> = ({
   testid = 'readable-date',
-  fmt = 'relative',
   className = 'readable-date',
   withTime = true,
   date,

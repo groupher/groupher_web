@@ -175,7 +175,7 @@ const DataSolver = [
   {
     match: asyncRes('hasPendingCommunityApply'),
     action: ({ hasPendingCommunityApply }) => {
-      // store.mark({ hasPendingApply: hasPendingCommunityApply.exist })
+      store.mark({ hasPendingApply: hasPendingCommunityApply.exist })
     },
   },
   {

@@ -20,11 +20,10 @@ import { Wrapper } from './styles'
 const log = buildLog('c:FileTree:index')
 
 type TProps = {
-  testid?: string
   onSelect?: () => void
 } & TSpace
 
-const FileTree: FC<TProps> = ({ testid = 'file-tree', onSelect, ...restProps }) => {
+const FileTree: FC<TProps> = ({ onSelect, ...restProps }) => {
   const tagsData = mockTags(15)
   // console.log('## tagsData: ', tagsData)
 
@@ -43,7 +42,7 @@ const FileTree: FC<TProps> = ({ testid = 'file-tree', onSelect, ...restProps }) 
           activeTag={activeTagData}
           maxDisplayCount={3}
           totalCountThrold={10}
-          onSelect={(tag) => {
+          onSelect={() => {
             // onTagSelect(tag)
             onSelect?.()
           }}

@@ -3,10 +3,12 @@ import styled from 'styled-components'
 import type { TColorName, TTestable } from '@/spec'
 
 import InfoSVG from '@/icons/Info'
+import HashSVG from '@/icons/HashTagLight'
+
 import { MarkdownStyles } from '@/widgets/Common'
 
 // import Img from '@/Img'
-import css, { rainbow, theme } from '@/css'
+import css, { rainbow, rainbowLight, theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
@@ -25,34 +27,46 @@ export const Header = styled.div`
   margin-bottom: 8px;
   width: 100%;
 `
-export const Title = styled.h2<{ color: TColorName }>`
+export const DotWrapper = styled.div<{ color: TColorName }>`
+  ${css.size(20)};
+  ${css.row('align-both')};
+  background: ${({ color }) => rainbowLight(color)};
+  margin-right: 10px;
+  border-radius: 5px;
+`
+export const HashIcon = styled(HashSVG)<{ color: TColorName }>`
+  ${css.size(16)};
+  fill: ${({ color }) => rainbow(color)};
+`
+
+export const Title = styled.h3<{ color: TColorName }>`
   color: ${theme('article.title')};
   padding: 0 6px;
   padding-right: 8px;
-  margin-left: -4px;
+  font-weight: 450;
+  margin-left: -8px;
   position: relative;
   z-index: 2;
-
-  &:before {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 4px;
-    background: ${(props) => {
-      const { color } = props
-      // @ts-ignore
-      const colorVal = rainbow(color)(props)
-
-      return `linear-gradient(180deg, transparent 30%, ${colorVal} 0)`
-    }};
-    /* background: ${({ color }) => `linear-gradient(-90deg, transparent 60%, ${color} 0)`}; */
-    opacity: 0.2;
-    width: 100%;
-    height: 15px;
-    border-radius: 3px;
-    z-index: -1;
-  }
 `
+// &:before {
+//   content: '';
+//   position: absolute;
+//   left: 0;
+//   bottom: 4px;
+//   background: ${(props) => {
+//     const { color } = props
+//     // @ts-ignore
+//     const colorVal = rainbow(color)(props)
+
+//     return `linear-gradient(180deg, transparent 30%, ${colorVal} 0)`
+//   }};
+//   opacity: 0.2;
+//   width: 100%;
+//   height: 15px;
+//   border-radius: 3px;
+//   z-index: -1;
+// }
+
 export const Desc = styled(MarkdownStyles)`
   line-height: 1.75em;
   font-size: 13px;

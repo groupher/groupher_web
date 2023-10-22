@@ -16,16 +16,22 @@ export const Header = styled.div<TActive>`
     cursor: pointer;
   }
 `
+export const ArrowWrapper = styled.div`
+  ${css.circle(18)};
+  ${css.row('align-both')};
+  margin-left: -1px;
+
+  ${Header}:hover & {
+    background: ${theme('hoverBg')};
+  }
+  transition: all 0.2s;
+`
 export const ArrowIcon = styled(ArrowSVG)<{ $isOpen: boolean }>`
   fill: ${theme('tags.text')};
   ${css.size(15)};
   opacity: 0.8;
   transform: ${({ $isOpen }) => ($isOpen ? 'rotate(270deg)' : 'rotate(180deg)')};
   transition: transform 0.5s;
-
-  ${Wrapper}:hover & {
-    opacity: 0.8;
-  }
 
   ${Header}:hover & {
     opacity: 1;
@@ -34,7 +40,7 @@ export const ArrowIcon = styled(ArrowSVG)<{ $isOpen: boolean }>`
 `
 export const Title = styled.div`
   ${css.row('align-center')};
-  margin-left: 5px;
+  margin-left: 7px;
 `
 export const FolderTitle = styled.div<{ $isOpen: boolean }>`
   color: ${theme('article.title')};

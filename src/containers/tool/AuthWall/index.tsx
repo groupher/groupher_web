@@ -5,7 +5,7 @@
 
 import { FC } from 'react'
 
-// import { buildLog } from '@/logger'
+import { buildLog } from '@/logger'
 import { bond } from '@/mobx'
 
 import { Br, Divider } from '@/widgets/Common'
@@ -33,7 +33,7 @@ import {
 
 import { useInit, onClose } from './logic'
 
-// const log = buildLog('C:Subscriber')
+const log = buildLog('C:AuthMail')
 
 type TProps = {
   authWall?: TStore
@@ -58,50 +58,50 @@ const AuthWallContainer: FC<TProps> = ({ authWall: store, testid = 'authWall' })
         <h3>使用第三方账号登入</h3>
         <Br top={24} />
         <ByWrapper>
-          <IconWrapper onClick={() => console.log('change')}>
+          <IconWrapper onClick={() => log('change')}>
             <IconBox>
               <WeChatIcon />
             </IconBox>
             <IconTitle>微信</IconTitle>
           </IconWrapper>
-          <IconWrapper onClick={() => console.log('change')}>
+          <IconWrapper onClick={() => 'change'}>
             <IconBox>
               <WeiboIcon />
             </IconBox>
             <IconTitle>微博</IconTitle>
           </IconWrapper>
-          <IconWrapper onClick={() => console.log('change')}>
+          <IconWrapper onClick={() => log('change')}>
             <IconBox>
               <QQIcon />
             </IconBox>
             <IconTitle>QQ</IconTitle>
           </IconWrapper>
-          <IconWrapper onClick={() => console.log('change')}>
+          <IconWrapper onClick={() => log('change')}>
             <IconBox>
               <DoubanIcon />
             </IconBox>
             <IconTitle>豆瓣</IconTitle>
           </IconWrapper>
 
-          <IconWrapper onClick={() => console.log('change')}>
+          <IconWrapper onClick={() => log('change')}>
             <IconBox>
               <GithubIcon />
             </IconBox>
             <IconTitle>Github</IconTitle>
           </IconWrapper>
-          <IconWrapper onClick={() => console.log('change')}>
+          <IconWrapper onClick={() => log('change')}>
             <IconBox>
               <TwitterIcon />
             </IconBox>
             <IconTitle>Twitter</IconTitle>
           </IconWrapper>
-          <IconWrapper onClick={() => console.log('change')}>
+          <IconWrapper onClick={() => log('change')}>
             <IconBox>
               <GoogleIcon />
             </IconBox>
             <IconTitle>Google</IconTitle>
           </IconWrapper>
-          <IconWrapper onClick={() => console.log('change')}>
+          <IconWrapper onClick={() => log('change')}>
             <IconBox>
               <FacebookIcon />
             </IconBox>

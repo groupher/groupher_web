@@ -1,4 +1,4 @@
-import { find, findIndex, reject } from 'ramda'
+import { find, findIndex } from 'ramda'
 
 import type { TFAQSection } from '@/spec'
 import { toJS } from '@/mobx'

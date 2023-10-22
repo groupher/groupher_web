@@ -54,19 +54,9 @@ const ArticleEditorContainer: FC<TProps> = ({
   useInit(store)
   const { activeCat, activeTagData } = store
 
-  const {
-    isArchived,
-    archivedAt,
-    mode,
-    submitState,
-    groupedTags,
-    texts,
-    editData,
-    viewingArticle,
-    allowEdit,
-  } = store
+  const { isArchived, archivedAt, mode, submitState, groupedTags, texts, editData, allowEdit } =
+    store
 
-  const { meta } = viewingArticle
   const { title, body } = editData
 
   const initEditor = mode === 'publish' || body !== '{}'
@@ -74,14 +64,6 @@ const ArticleEditorContainer: FC<TProps> = ({
   return (
     <Wrapper testid={testid}>
       <InnerWrapper metric={metric}>
-        {/* {communityData.id && (
-          <CommunityTagSetter
-            selectedCommunity={communityData}
-            onCommunitySelect={changeCommunity}
-            onTagSelect={onTagSelect}
-          />
-        )} */}
-
         <ContentWrapper>
           {!allowEdit && <NoticeBar type="notice" content="只有作者可以编辑本内容。" left={25} />}
           {isArchived && <ArchiveAlert date={archivedAt} top={12} bottom={20} left={25} />}

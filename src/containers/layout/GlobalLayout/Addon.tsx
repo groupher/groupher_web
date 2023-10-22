@@ -1,6 +1,6 @@
 import { FC, Fragment, useEffect } from 'react'
 import { observer } from 'mobx-react'
-// import useMobileDetect from '@groupher/use-mobile-detect-hook'
+// eslint-disable-next-line import/no-unresolved
 import { Toaster } from 'sonner'
 
 import useShortcut from '@/hooks/useShortcut'

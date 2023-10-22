@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, ReactNode, memo } from 'react'
+import { FC, ReactNode } from 'react'
 import { observer } from 'mobx-react'
 
 import type { TSizeSM, TSpace } from '@/spec'

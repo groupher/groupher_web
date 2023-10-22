@@ -38,7 +38,7 @@ const CommunityBrief: FC = () => {
     <Wrapper>
       <MainWrapper>
         <LogoWrapper>
-          <Logo src={logo} slug={slug} />
+          <Logo src={logo} />
         </LogoWrapper>
         <CommunityInfo>
           <Title>{title}</Title>

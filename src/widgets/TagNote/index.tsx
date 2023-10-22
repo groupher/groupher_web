@@ -13,7 +13,7 @@ import type { TColorName, TTag } from '@/spec'
 import { buildLog } from '@/logger'
 import { SpaceGrow } from '@/widgets/Common'
 
-import { Wrapper, Header, Desc, Title, InfoIcon } from './styles'
+import { Wrapper, Header, DotWrapper, HashIcon, Desc, Title, InfoIcon } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('c:TagNote:index')
@@ -29,6 +29,9 @@ const TagNote: FC<TProps> = ({ testid = 'tag-note', tag }) => {
   return (
     <Wrapper testid={testid}>
       <Header>
+        <DotWrapper color={tag.color as TColorName}>
+          <HashIcon color={tag.color as TColorName} />
+        </DotWrapper>
         <Title color={tag.color as TColorName}>{tag.title}</Title>
         <SpaceGrow />
         <InfoIcon />

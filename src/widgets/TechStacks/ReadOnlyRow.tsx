@@ -13,7 +13,7 @@ const ReadOnlyRow: FC<TProps> = ({ items, noSet }) => {
     <Wrapper>
       {items?.map((t) => (
         <ReadOnlyBlock key={t.slug}>
-          <Logo src={t.logo} slug={t.slug} />
+          <Logo src={t.logo} />
           <Title>{t.title}</Title>
         </ReadOnlyBlock>
       ))}

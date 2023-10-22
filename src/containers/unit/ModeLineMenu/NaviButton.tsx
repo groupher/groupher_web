@@ -6,17 +6,10 @@ type TProps = {
   icon: string
   title: string
   desc?: string | null
-  menu?: string
   type?: string // 'default' | 'avatar'
 }
 
-const NaviButton: FC<TProps> = ({
-  icon,
-  title,
-  type = 'default',
-  menu = '',
-  desc = null,
-}) => {
+const NaviButton: FC<TProps> = ({ icon, title, type = 'default', desc = null }) => {
   return (
     <Wrapper>
       <Icon src={icon} type={type} />

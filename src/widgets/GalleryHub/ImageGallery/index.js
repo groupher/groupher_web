@@ -23,25 +23,6 @@ import { Wrapper } from '../styles/image_gallery'
 /* eslint-disable-next-line */
 const log = buildLog('w:ImageGallery:index')
 
-const GALLERY_TYPES = [
-  {
-    localIcon: GALLERY.MAIN_COLUMN,
-    key: GALLERY.MAIN_COLUMN,
-  },
-  {
-    localIcon: GALLERY.MASONRY_COLUMN,
-    key: GALLERY.MASONRY_COLUMN,
-  },
-  {
-    localIcon: GALLERY.TWO_COLUMN,
-    key: GALLERY.TWO_COLUMN,
-  },
-  {
-    localIcon: GALLERY.THREE_COLUMN,
-    key: GALLERY.THREE_COLUMN,
-  },
-]
-
 const tmpItems = [
   {
     id: '0',

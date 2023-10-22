@@ -53,10 +53,6 @@ export const loadCommunity = (): void => {
   sr71$.query(S.community, { slug })
 }
 
-export const handleWorksUpvote = (viewerHasUpvoted: boolean): void => {
-  //
-}
-
 // ###############################
 // Data & Error handlers
 // ###############################

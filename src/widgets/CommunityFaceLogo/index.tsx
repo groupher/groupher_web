@@ -6,8 +6,6 @@
 
 import { FC, memo } from 'react'
 
-import { HCN } from '@/constant/name'
-// import { ICON_BASE } from '@/config'
 import { buildLog } from '@/logger'
 
 import { Logo } from './styles'
@@ -18,7 +16,6 @@ const log = buildLog('w:CommunityFaceLogo:index')
 type TProps = {
   noFill?: boolean
   src?: string
-  slug?: string
   className?: string
   noLazy?: boolean
 }
@@ -26,7 +23,6 @@ type TProps = {
 const CommunityFaceLogo: FC<TProps> = ({
   noFill = false,
   src = '',
-  slug = HCN,
   className = 'community-facelogo-class',
   noLazy = false,
 }) => {

@@ -6,7 +6,7 @@
 import { T, Instance, markStates } from '@/mobx'
 
 const RichEditor = T.model('RichEditor', {})
-  .views((self) => ({}))
+  .views(() => ({}))
   .actions((self) => ({
     mark(sobj: Record<string, unknown>): void {
       markStates(sobj, self)

@@ -64,7 +64,6 @@ export type TProps = {
   total?: number | null
   limit: number
   showMore?: boolean
-  showTotalNumber?: boolean
   reverse?: boolean
   popCardPlacement?: 'top' | 'bottom'
   noLazyLoad?: boolean
@@ -82,7 +81,6 @@ const Facepile: FC<TProps> = ({
   onUserSelect = log,
   onTotalSelect = log,
   showMore = true,
-  showTotalNumber = false,
   reverse = false,
   popCardPlacement = 'bottom',
   ...restProps
@@ -101,12 +99,7 @@ const Facepile: FC<TProps> = ({
       {totalCount <= 1 || !showMore ? (
         <TotalOneOffset />
       ) : (
-        <MoreItem
-          size={size}
-          total={totalCount}
-          showTotalNumber={showTotalNumber}
-          onTotalSelect={onTotalSelect}
-        />
+        <MoreItem size={size} total={totalCount} onTotalSelect={onTotalSelect} />
       )}
       {totalCount === 1 ? (
         <RealAvatarContext.Provider value={{ size, user: sortedUsers[0] }}>

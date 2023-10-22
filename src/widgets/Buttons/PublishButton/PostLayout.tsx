@@ -4,7 +4,7 @@
  *
  */
 
-import { memo, FC, Fragment } from 'react'
+import { memo, FC } from 'react'
 
 import { buildLog } from '@/logger'
 import { SpaceGrow } from '@/widgets/Common'

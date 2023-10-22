@@ -29,17 +29,9 @@ const log = buildLog('c:FaIcons:index')
 type TProps = {
   testid?: string
   size?: number
-  icon?: TIcon
-  color?: TColorName
 } & TSpace
 
-const FaIcons: FC<TProps> = ({
-  testid = 'fa-icons',
-  size = 16,
-  icon = 'user',
-  color = 'ORANGE',
-  ...restProps
-}) => {
+const FaIcons: FC<TProps> = ({ testid = 'fa-icons', size = 16, ...restProps }) => {
   const [panelOpen, setPanelOpen] = useState(false)
   const [selectColor, setSelectColor] = useState<TColorName>(COLOR_NAME.BLACK)
 

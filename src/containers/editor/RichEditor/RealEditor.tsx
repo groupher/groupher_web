@@ -27,7 +27,6 @@ type TProps = {
   placeholder?: string
   data?: string
   type?: 'article' | 'works' | 'job' | 'comment' | 'radar'
-  addon?: ReactNode
   reinitKey?: string
   onChange?: (json) => void
 }
@@ -39,7 +38,6 @@ const RichEditorContainer: FC<TProps> = ({
   type = 'article',
   reinitKey = '',
   onChange = log,
-  addon = <div />,
 }) => {
   useInit(store)
 

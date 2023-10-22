@@ -4,27 +4,11 @@ import SIZE from '@/constant/size'
 export const getIconSize = (size: TSizeTSM): number => {
   switch (size) {
     case SIZE.MEDIUM: {
-      return 14
+      return 15
     }
 
     default: {
-      return 6
-    }
-  }
-}
-
-export const getInnerSpace = (size: TSizeTSM): number => {
-  switch (size) {
-    case SIZE.SMALL: {
-      return 4
-    }
-
-    case SIZE.MEDIUM: {
-      return 6
-    }
-
-    default: {
-      return 2
+      return 10
     }
   }
 }

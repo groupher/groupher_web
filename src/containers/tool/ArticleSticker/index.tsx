@@ -19,13 +19,12 @@ import GotoTop from '@/widgets/GotoTop'
 import type { TStore } from './store'
 
 // import LeftSticker from './LeftSticker/index'
-import RightSticker from './RightSticker'
 
-import { Wrapper, InnerWrapper, MainWrapper, GoTopWrapper } from './styles'
+import { Wrapper, InnerWrapper, GoTopWrapper } from './styles'
 import { useInit } from './logic'
 
 import LeftSticker from './LeftSticker'
-import CommentSticker from './CommentSticker'
+// import CommentSticker from './CommentSticker'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:ArticleSticker')
@@ -58,14 +57,6 @@ const ArticleStickerContainer: FC<TProps> = ({
       <Sticky offsetTop={105}>
         <Wrapper testid={testid} metric={metric}>
           <InnerWrapper>
-            {/* <MainWrapper>
-              <RightSticker
-                show={showArticleAction}
-                article={viewingArticle}
-                thread={activeThread}
-              />
-              <CommentSticker show={showCommentSticker} commentsState={commentsState} />
-            </MainWrapper> */}
             <GoTopWrapper show={!isArticleDigestInViewport}>
               <GotoTop />
             </GoTopWrapper>

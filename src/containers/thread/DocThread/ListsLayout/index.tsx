@@ -5,11 +5,7 @@ import { mockHelpCats } from '@/mock'
 import Category from './Category'
 import { Wrapper, CatsWrapper } from '../styles/lists_layout'
 
-type TProps = {
-  testid?: string
-}
-
-const ListsLayout: FC<TProps> = ({ testid = 'home' }) => {
+const ListsLayout: FC = () => {
   const cats = mockHelpCats()
 
   return (

@@ -1,12 +1,8 @@
 import { FC, memo } from 'react'
 
-import { mockUsers } from '@/mock'
-
 import { Item, GtdWipIcon, Highlight, Content } from '../../styles/panel/activities/gtd_item'
 
 const GtdItem: FC = () => {
-  const user = mockUsers(1)[0]
-
   return (
     <Item>
       <GtdWipIcon />

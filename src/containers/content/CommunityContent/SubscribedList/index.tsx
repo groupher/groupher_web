@@ -69,7 +69,7 @@ const SubscribedList: FC<TProps> = ({ community, communities }) => {
             </Title>
             <SpaceGrow />
             <Tooltip
-              content={<ItemMenu community={community} />}
+              content={<ItemMenu />}
               placement="bottom"
               hideOnClick={false}
               trigger="click"

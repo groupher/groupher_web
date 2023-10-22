@@ -6,10 +6,9 @@
 
 import { FC, memo } from 'react'
 
-import type { TUser, TAvatarLayout } from '@/spec'
 import { buildLog } from '@/logger'
 
-import { AVATAR_LAYOUT, UPVOTE_LAYOUT } from '@/constant/layout'
+import { UPVOTE_LAYOUT } from '@/constant/layout'
 import AnimatedCount from '@/widgets/AnimatedCount'
 
 import UpvoteBtn from './UpvoteBtn'
@@ -23,8 +22,6 @@ type TProps = {
   count?: number
   viewerHasUpvoted?: boolean
   onAction?: (viewerHasUpvoted: boolean) => void
-  avatarLayout?: TAvatarLayout
-  avatarList: TUser[]
 }
 
 const Upvote: FC<TProps> = ({
@@ -32,11 +29,7 @@ const Upvote: FC<TProps> = ({
   count = 0,
   viewerHasUpvoted = false,
   onAction = log,
-  avatarList = [],
-  avatarLayout = AVATAR_LAYOUT.SQUARE,
 }) => {
-  const noOne = count === 0
-
   return (
     <Wrapper testid={testid}>
       <Button>

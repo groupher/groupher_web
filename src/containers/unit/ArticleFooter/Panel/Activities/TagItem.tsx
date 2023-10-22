@@ -1,13 +1,8 @@
 import { FC, memo } from 'react'
 
-import { Br } from '@/widgets/Common'
-import { mockUsers } from '@/mock'
-
 import { Item, TagIcon, Highlight, Content } from '../../styles/panel/activities/tab_item'
 
 const TagItem: FC = () => {
-  const user = mockUsers(1)[0]
-
   return (
     <Item>
       <TagIcon />

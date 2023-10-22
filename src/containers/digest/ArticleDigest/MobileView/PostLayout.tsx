@@ -63,7 +63,7 @@ const PostLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
         </div>
         <Divider />
         <PublishDateInfo>
-          <ReadableDate date={insertedAt} fmt="absolute" withTime={false} />
+          <ReadableDate date={insertedAt} withTime={false} />
         </PublishDateInfo>
       </Topping>
       <Title>{title}</Title>

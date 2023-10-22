@@ -33,7 +33,7 @@ const BriefView: FC<TProps> = ({ community }) => {
       <CardWrapper>
         <CommunityWrapper>
           {community.logo ? (
-            <CommunityLogo src={assetSrc(community.logo)} slug={community.slug} />
+            <CommunityLogo src={assetSrc(community.logo)} />
           ) : (
             <LogoHolder src={CommunityLogoHolder} />
           )}

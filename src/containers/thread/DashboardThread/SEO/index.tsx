@@ -2,7 +2,6 @@ import { FC } from 'react'
 import { observer } from 'mobx-react'
 import Router from 'next/router'
 
-import type { TPostLayout } from '@/spec'
 import { DASHBOARD_SEO_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
 
@@ -21,12 +20,11 @@ import { Wrapper, Banner, TabsWrapper } from '../styles/basic_info'
 import { edit } from '../logic'
 
 type TProps = {
-  testid?: TPostLayout
   settings: TSEOSettings
   touched: TTouched
 }
 
-const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => {
+const BasicInfo: FC<TProps> = ({ settings, touched }) => {
   const curCommunity = useViewingCommunity()
   const { seoTab, saving } = settings
 

@@ -30,11 +30,10 @@ const log = buildLog('c:Share:index')
 let ModalPanel = null
 
 type TProps = {
-  testid?: string
   modalOffset?: string
 } & TSpace
 
-const Share: FC<TProps> = ({ testid = 'share', modalOffset = '', ...restProps }) => {
+const Share: FC<TProps> = ({ modalOffset = '', ...restProps }) => {
   const { article, articleLink } = useViewingArticle()
   const linksData = parseLinksData(article, articleLink)
 

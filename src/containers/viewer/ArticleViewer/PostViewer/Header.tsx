@@ -1,27 +1,25 @@
 import { FC, memo, Fragment } from 'react'
-import TimeAgo from 'timeago-react'
 
 import type { TPost } from '@/spec'
 
 import DotDivider from '@/widgets/DotDivider'
 import ArticleCatState from '@/widgets/ArticleCatState'
+import TagsList from '@/widgets/TagsList'
 
-import { Wrapper, PublishWrapper, PubDate, EditedHint } from '../styles/post_viewer/header'
+import { Wrapper, PublishWrapper, EditedHint } from '../styles/post_viewer/header'
 
 type TProps = {
   article: TPost
 }
 
 const Header: FC<TProps> = ({ article }) => {
-  const { meta, insertedAt, cat, state } = article
+  const { meta, cat, state, articleTags } = article
 
   return (
     <Wrapper>
       <ArticleCatState cat={cat} state={state} smaller={false} right={14} />
+      <TagsList items={articleTags} size="small" />
       <PublishWrapper>
-        <PubDate>
-          <TimeAgo datetime={insertedAt} locale="zh_CN" />
-        </PubDate>
         {meta.isEdited && (
           <Fragment>
             <DotDivider space={8} />

@@ -19,12 +19,11 @@ import Simple from './Simple'
 const log = buildLog('w:KanbanItem:index')
 
 type TProps = {
-  testid?: string
   layout: TKanbanLayout
   article: TArticle
 }
 
-const KanbanItem: FC<TProps> = ({ testid = 'gtd-item', layout, article }) => {
+const KanbanItem: FC<TProps> = ({ layout, article }) => {
   return layout === KANBAN_LAYOUT.FULL ? <Full article={article} /> : <Simple article={article} />
 }
 

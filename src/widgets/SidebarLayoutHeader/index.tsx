@@ -13,11 +13,10 @@ import PostLayout from './PostLayout'
 import DocLayout from './DocLayout'
 
 type TProps = {
-  testid?: string
   thread: TThread
 }
 
-const SidebarLayoutHeader: FC<TProps> = ({ testid = 'sidebar-layout-header', thread }) => {
+const SidebarLayoutHeader: FC<TProps> = ({ thread }) => {
   switch (thread) {
     case THREAD.POST: {
       return <PostLayout />

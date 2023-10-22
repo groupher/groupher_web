@@ -2,11 +2,7 @@ import { FC, memo } from 'react'
 
 import { Wrapper } from '../styles/third_part'
 
-type TProps = {
-  testid?: string
-}
-
-const ThirdPart: FC<TProps> = ({ testid = 'third-part' }) => {
+const ThirdPart: FC = () => {
   return (
     <Wrapper>
       <div>ThirdPart</div>

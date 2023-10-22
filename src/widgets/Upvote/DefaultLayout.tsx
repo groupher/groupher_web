@@ -16,7 +16,6 @@ import UpvoteBtn from './UpvoteBtn'
 import {
   Wrapper,
   Button,
-  Alias,
   UpvoteBtnWrapper,
   Count,
   Digest,

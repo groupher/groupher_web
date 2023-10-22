@@ -47,7 +47,7 @@ const CommunityList: FC<TProps> = ({
       {items.map((community) => (
         <Tooltip key={community.id} placement="bottom" content={<CommunityCard item={community} />}>
           <Linker href={`/${community.slug}`} bottom={bottom} right={right}>
-            <Logo src={assetSrc(community.logo)} size={size} slug={community.slug} />
+            <Logo src={assetSrc(community.logo)} size={size} />
           </Linker>
         </Tooltip>
       ))}

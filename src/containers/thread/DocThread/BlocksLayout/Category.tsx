@@ -22,11 +22,10 @@ const FOLD_LIMIT = 5
 type TProps = {
   color: TColorName
   title: string
-  desc: string
   articles: TArticle[]
 }
 
-const Category: FC<TProps> = ({ color, title, desc, articles }) => {
+const Category: FC<TProps> = ({ color, title, articles }) => {
   const [sliceCount, setSliceCount] = useState(FOLD_LIMIT)
 
   return (

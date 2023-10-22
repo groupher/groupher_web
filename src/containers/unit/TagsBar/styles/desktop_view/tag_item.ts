@@ -5,24 +5,24 @@ import type { TActive, TPrimaryColor } from '@/spec'
 import css, { theme, rainbow, rainbowLight } from '@/css'
 
 import Img from '@/Img'
-
-import { TagsWrapper } from '.'
+import HashSVG from '@/icons/HashTagLight'
+import CloseSVG from '@/icons/CloseLight'
 
 type TTag = TActive & { color?: string } & TPrimaryColor
 
-export const Wrapper = styled.div<TTag>`
+export const Wrapper = styled.div<TActive>`
   ${css.row('align-center')};
   margin-left: -2px;
   padding: 4px;
-  max-width: 180px;
+  padding-left: ${({ $active }) => ($active ? '8px' : '2px')};
+  max-width: 200px;
   border-radius: 8px;
-
-  background: ${({ $active, primaryColor }) =>
-    $active ? rainbowLight(primaryColor) : 'transparent'};
+  border: 1px solid;
+  border-color: transparent;
+  border-color: ${({ $active }) => ($active ? theme('divider') : 'transparent')};
 
   &:hover {
-    background: ${({ $active, primaryColor }) =>
-      $active ? rainbowLight(primaryColor) : theme('hoverBg')};
+    border-color: ${theme('divider')};
     cursor: pointer;
   }
 `
@@ -32,11 +32,15 @@ export const AllTagIcon = styled(Img)`
   ${css.size(14)};
   transform: rotate(17deg);
 `
-export const DotWrapper = styled.div`
-  ${css.size(15)};
+export const DotWrapper = styled.div<TTag>`
+  width: 24px;
+  height: 16px;
   ${css.row('align-both')};
   margin-right: 6px;
-  margin-left: 2px;
+  margin-left: ${({ $active }) => ($active ? '-5px' : 0)};
+  border-radius: 4px;
+  background: ${({ $active, primaryColor }) =>
+    $active ? rainbowLight(primaryColor) : 'transparent'};
 `
 type THashSign = TActive & { color?: string }
 export const DotSign = styled.div<THashSign>`
@@ -49,6 +53,11 @@ export const DotSign = styled.div<THashSign>`
   }
 
   transition: filter 0.1s;
+`
+type THashIcon = { color: string } & TActive
+export const HashIcon = styled(HashSVG)<THashIcon>`
+  ${css.size(12)};
+  fill: ${({ color }) => (color ? rainbow(color) : 'none')};
 `
 export const Tag = styled.div<TTag>`
   ${css.row('align-end', 'justify-between')};
@@ -64,40 +73,35 @@ export const Tag = styled.div<TTag>`
 
   transition: all 0.1s;
 `
-export const Title = styled.div`
+export const Title = styled.div<TActive>`
   letter-spacing: 1px;
   font-weight: 400;
-  color: ${theme('tags.text')};
   filter: saturate(0);
 
+  color: ${({ $active }) => ($active ? theme('article.title') : theme('tags.text'))};
+
   ${Wrapper}:hover & {
-    font-weight: 500;
     filter: saturate(1);
   }
 `
-export const RawWrapper = styled.div<TActive>`
-  ${css.row('align-center')};
-  opacity: ${({ $active }) => ($active ? 1 : 0)};
+export const CloseWrapper = styled.div`
+  ${css.size(20)};
+  width: 28px;
+  ${css.row('align-both')};
+  border-radius: 5px;
+  cursor: pointer;
 
-  ${Wrapper}:hover & {
-    cursor: pointer;
-    opacity: 1;
-  }
-  transition: all 0.1s;
-`
-export const Raw = styled.div`
-  color: ${theme('tags.text')};
-  font-size: 12px;
-  margin-top: 1px;
-  opacity: 0.8;
-`
-export const CountInfoWrapper = styled.div`
-  opacity: 0;
-
-  ${TagsWrapper}:hover & {
-    opacity: 1;
+  &:hover {
+    background: ${theme('hoverBg')};
   }
 
-  transition: opacity 0.3s;
-  transition-delay: 0.5s;
+  transition: all 0.2s;
+`
+export const CloseIcon = styled(CloseSVG)`
+  ${css.size(15)};
+  fill: ${theme('hint')};
+
+  &:hover {
+    fill: ${theme('article.digest')};
+  }
 `

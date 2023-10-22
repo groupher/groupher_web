@@ -64,7 +64,7 @@ const ClassicLayout: FC<TProps> = ({ testid = 'changelog-item', article }) => {
         <TagsWrapper>
           <SolidTagList tags={demoTags} />
           <DateTime>
-            <ReadableDate date={article.insertedAt} fmt="absolute" withTime={false} />
+            <ReadableDate date={article.insertedAt} withTime={false} />
           </DateTime>
         </TagsWrapper>
         <Body>

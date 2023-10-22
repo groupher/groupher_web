@@ -41,7 +41,7 @@ const Content: FC<TProps> = ({ title = '', desc = '', logo, communityType, onHov
         {communityType && (
           <ThreadWrapper>
             {communityIntros[communityType].threads.map((thread) => (
-              <ThreadItem key={thread} onMouseOver={(e) => onHoverThread(thread)}>
+              <ThreadItem key={thread} onMouseOver={() => onHoverThread(thread)}>
                 {Trans(thread)}
               </ThreadItem>
             ))}
