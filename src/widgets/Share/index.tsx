@@ -21,7 +21,7 @@ import Tooltip from '@/widgets/Tooltip'
 import { toast } from '@/signal'
 
 import { SITE_SHARE_TYPE } from './constant'
-import { parseArticleLink, parseLinksData, toPlatform } from './helper'
+import { parseLinksData, toPlatform } from './helper'
 import { Wrapper, Panel, LinkTip, QRTip, Icon } from './styles'
 
 /* eslint-disable-next-line */
@@ -35,9 +35,8 @@ type TProps = {
 } & TSpace
 
 const Share: FC<TProps> = ({ testid = 'share', modalOffset = '', ...restProps }) => {
-  const article = useViewingArticle()
-  const articleLink = parseArticleLink(article)
-  const linksData = parseLinksData(article)
+  const { article, articleLink } = useViewingArticle()
+  const linksData = parseLinksData(article, articleLink)
 
   const [showMore, setShowMore] = useState(false)
   const [shareType, setShareType] = useState(SITE_SHARE_TYPE.LINKS)
@@ -84,7 +83,7 @@ const Share: FC<TProps> = ({ testid = 'share', modalOffset = '', ...restProps })
           siteShareType={shareType}
           changeType={(type) => {
             setShareType(type)
-            toPlatform(article, type)
+            toPlatform(article, type, articleLink)
           }}
           linksData={linksData}
           article={article}

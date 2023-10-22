@@ -285,7 +285,7 @@ const day = {
     subPanelShadow: 'none',
   },
   form: {
-    inputBg: '#FFFFFF',
+    inputBg: '#ffffff95',
     text: '#88a4ad',
     label: '#88a4ad',
     border: '#B8C6C0',

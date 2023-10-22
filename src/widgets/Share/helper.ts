@@ -1,22 +1,11 @@
 import type { TArticle } from '@/spec'
 
-import { SITE_URL } from '@/config'
 import { openShareWindow } from '@/helper'
 
 import type { TLinksData } from './spec'
 import { SHARE_TYPE } from './constant'
 
-export const parseArticleLink = (article: TArticle): string => {
-  if (!article?.meta?.thread) return ''
-
-  const { meta, originalCommunity, innerId } = article
-  const community = originalCommunity.slug
-  const thread = meta.thread.toLowerCase()
-
-  return `${SITE_URL}/${community}/${thread}/${innerId}`
-}
-
-export const parseLinksData = (article: TArticle): TLinksData => {
+export const parseLinksData = (article: TArticle, link: string): TLinksData => {
   if (!article?.meta?.thread) {
     return {
       link: '',
@@ -27,7 +16,6 @@ export const parseLinksData = (article: TArticle): TLinksData => {
   }
 
   const { title } = article
-  const link = parseArticleLink(article)
 
   return {
     link,
@@ -37,8 +25,7 @@ export const parseLinksData = (article: TArticle): TLinksData => {
   }
 }
 
-export const toPlatform = (article: TArticle, type: string): void => {
-  const url = parseArticleLink(article)
+export const toPlatform = (article: TArticle, type: string, url: string): void => {
   const { title, digest } = article
 
   switch (type) {

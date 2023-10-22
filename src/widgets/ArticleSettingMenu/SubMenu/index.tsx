@@ -3,9 +3,10 @@ import { FC } from 'react'
 import type { TSubMenu } from '../spec'
 import { SUB_MENU_TYPE } from '../constant'
 
-import { Icon } from '../styles/icon'
-import { MenuItem } from '../styles/menu'
-import { Wrapper, Footer } from '../styles/sub_menu'
+import Header from './Header'
+import SlugSetting from './SlugSetting'
+
+import { Wrapper, Footer, ArrowIcon, Confirm } from '../styles/sub_menu'
 
 type TProps = {
   closeSubMenu: () => void
@@ -13,28 +14,29 @@ type TProps = {
 }
 
 const SubMenu: FC<TProps> = ({ closeSubMenu, subMenuType }) => {
+  let Content = null
+
   switch (subMenuType) {
     case SUB_MENU_TYPE.SLUG: {
-      return (
-        <Wrapper>
-          <MenuItem>
-            <Icon.Archived />
-            sub menu
-          </MenuItem>
-          <Footer>
-            <MenuItem onClick={() => closeSubMenu()}>返回</MenuItem>
-          </Footer>
-        </Wrapper>
-      )
+      Content = SlugSetting
+      break
     }
     default: {
-      return (
-        <Wrapper>
-          <MenuItem onClick={() => closeSubMenu()}>返回</MenuItem>
-        </Wrapper>
-      )
+      Content = <div>??</div>
+      break
     }
   }
+
+  return (
+    <Wrapper>
+      <Header type={subMenuType} />
+      <Content />
+      <Footer top={18}>
+        <ArrowIcon onClick={() => closeSubMenu()} />
+        <Confirm size="small">确认</Confirm>
+      </Footer>
+    </Wrapper>
+  )
 }
 
 export default SubMenu

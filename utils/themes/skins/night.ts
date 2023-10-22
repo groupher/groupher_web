@@ -286,7 +286,7 @@ const night = {
     subPanelShadow: 'none',
   },
   form: {
-    inputBg: '#FFFFFF',
+    inputBg: '#1f1f1f7a',
     text: '#88a4ad',
     label: '#88a4ad',
     border: '#B8C6C0',

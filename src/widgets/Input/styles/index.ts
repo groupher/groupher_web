@@ -69,7 +69,7 @@ export const InputWrapper = styled.input<IInput>`
   border: 1px solid;
   border-color: ${theme('editor.border')};
   border-radius: 4px;
-  background-color: ${theme('alphaBg')};
+  background-color: ${theme('form.inputBg')};
   caret-color: ${theme('article.title')};
 
   ::placeholder {
