@@ -5,6 +5,9 @@ import css, { theme } from '@/css'
 import OptionArrowSVG from '@/icons/OptionArrow'
 import ArrowSVG from '@/icons/ArrowUpRight'
 import DiscussSVG from '@/icons/Discuss'
+import GithubSVG from '@/icons/Github8'
+import GlobalSVG from '@/icons/social/Global'
+
 import Img from '@/Img'
 
 const BaseWrapper = styled.div`
@@ -32,16 +35,15 @@ export const Wrapper = styled(BaseWrapper)`
     max-width: 150px;
   `};
 `
-
 export const PanelWrapper = styled(BaseWrapper)`
   border: none;
   cursor: auto;
+  margin-bottom: 8px;
 
   &:hover {
     border-color: transparent;
   }
 `
-
 export const OptionArrowIcon = styled(OptionArrowSVG)`
   fill: ${theme('article.digest')};
   ${css.size(12)};
@@ -90,9 +92,12 @@ export const ToolPanel = styled.div`
 export const PanelItem = styled(Link)<{ outside?: boolean }>`
   ${css.row('align-center')};
   color: ${theme('article.digest')};
-  margin-top: 4px;
+  width: calc(100% + 10px);
   margin-left: -5px;
-  padding: 4px 10px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  padding: 4px 8px;
+  padding-right: 4px;
   border-radius: 4px;
   text-decoration: none;
   cursor: pointer;
@@ -104,31 +109,42 @@ export const PanelItem = styled(Link)<{ outside?: boolean }>`
   }
 `
 export const ArrowIcon = styled(ArrowSVG)`
-  ${css.size(16)};
+  ${css.size(15)};
   fill: ${theme('hint')};
-  margin-left: -2px;
-  margin-right: 10px;
-  transform: rotate(-90deg);
+  opacity: 0;
 
   ${PanelItem}:hover & {
-    fill: ${theme('article.title')};
+    opacity: 0.8;
   }
-`
-export const DiscussIcon = styled(DiscussSVG)`
-  ${css.size(14)};
-  fill: ${theme('hint')};
-  margin-left: -1px;
-  margin-right: 11px;
 
-  ${PanelItem}:hover & {
-    fill: ${theme('article.title')};
-  }
+  transition: all 0.2s;
 `
+const commonIcon = (comp) => {
+  return styled(comp)`
+    ${css.size(14)};
+    fill: ${theme('hint')};
+    margin-right: 11px;
 
-export const DisableTippyJump = createGlobalStyle`
+    ${PanelItem}:hover & {
+      fill: ${theme('article.title')};
+    }
+  `
+}
+
+export const Icon = {
+  Global: commonIcon(GlobalSVG),
+  Github: styled(commonIcon(GithubSVG))`
+    margin-left: 2px;
+    margin-right: 12px;
+    ${css.size(12)};
+  `,
+  Discuss: commonIcon(DiscussSVG),
+}
+
+export const DisableTippyJump = createGlobalStyle<{ enable: boolean }>`
   // this is for disable pop animation
   // should have no animation when navi to sub menu
   .tippy-box[data-placement^=bottom][data-state='visible'] {
-    transform: translateY(2px) !important;
+    transform: ${({ enable }) => (enable ? 'translateY(1px) !important' : 'translateY(5px)')};
   }
 `

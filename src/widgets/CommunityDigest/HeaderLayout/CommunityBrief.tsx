@@ -16,8 +16,8 @@ import {
   OptionArrowIcon,
   ToolPanel,
   PanelItem,
+  Icon,
   ArrowIcon,
-  DiscussIcon,
   DisableTippyJump,
 } from '../styles/header_layout/community_brief'
 
@@ -30,38 +30,43 @@ const CommunityBrief: FC = () => {
   useEffect(() => {
     if (isHovering && disableTippyJump !== true) {
       setDisableTippyJump(true)
-    } else if (!isHovering && disableTippyJump !== false) {
-      setDisableTippyJump(false)
     }
   }, [isHovering, disableTippyJump])
-
-  // console.log('## disableTippyJump: ', disableTippyJump)
 
   return (
     <Tooltip
       content={
-        <>
-          <ToolPanel>
-            <PanelWrapper>
-              <Logo src={assetSrc(logo)} noLazy />
-              <Title>{title}</Title>
-            </PanelWrapper>
+        <ToolPanel>
+          <PanelWrapper>
+            <Logo src={assetSrc(logo)} noLazy />
+            <Title>{title}</Title>
+          </PanelWrapper>
 
-            <PanelItem href={dashboard.baseInfo.homepage} outside>
-              <ArrowIcon />
-              <div>返回官网</div>
-            </PanelItem>
-            <PanelItem href={`/${slug}`}>
-              <DiscussIcon />
-              <div>社区主页</div>
-            </PanelItem>
-          </ToolPanel>
-        </>
+          <PanelItem href={`/${slug}`}>
+            <Icon.Discuss />
+            <div>社区主页</div>
+          </PanelItem>
+
+          <PanelItem href={dashboard.baseInfo.homepage} outside>
+            <Icon.Global />
+            <div>返回官网</div>
+            <SpaceGrow />
+            <ArrowIcon />
+          </PanelItem>
+
+          <PanelItem href={`/${slug}`} outside>
+            <Icon.Github />
+            <div>Github</div>
+            <SpaceGrow />
+            <ArrowIcon />
+          </PanelItem>
+        </ToolPanel>
       }
       placement="bottom"
       hideOnClick={false}
-      offset={[-2, -40]}
+      offset={[-7, -39]}
       trigger="click"
+      onHide={() => setDisableTippyJump(false)}
       noPadding
     >
       <Wrapper ref={ref}>
@@ -69,7 +74,7 @@ const CommunityBrief: FC = () => {
         <Title>{title}</Title>
         <SpaceGrow />
         <OptionArrowIcon />
-        {disableTippyJump && <DisableTippyJump />}
+        <DisableTippyJump enable={disableTippyJump} />
       </Wrapper>
     </Tooltip>
   )
