@@ -25,7 +25,7 @@ export const SettingIcon = styled(SettingSVG)<TActive>`
     fill: ${theme('article.title')};
   }
 
-  transition: all 0.2s;
+  transition: fill 0.2s, opacity 0.2s, transform 0.4s ease-out;
 `
 
 export const DisableTippyJump = createGlobalStyle`

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Link from 'next/link'
 
 import InfoSVG from '@/icons/Info'
 
@@ -12,13 +13,26 @@ export const Wrapper = styled.div`
   margin-top: 4px;
   margin-bottom: 15px;
 `
+export const Hint = styled.div`
+  ${css.row('align-center')};
+`
 export const InfoIcon = styled(InfoSVG)`
   ${css.size(13)};
   fill: ${theme('article.digest')};
-  margin-right: 5px;
+  margin-right: 3px;
   cursor: pointer;
+`
+export const Help = styled(Link)`
+  color: ${theme('hint')};
+  font-size: 12px;
+  text-decoration: none;
+  margin-right: 4px;
+  opacity: 0.8;
 
   &:hover {
-    fill: ${theme('article.title')};
+    color: ${theme('hint')};
+    text-decoration: underline;
+    cursor: pointer;
+    opacity: 1;
   }
 `

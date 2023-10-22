@@ -6,7 +6,7 @@ import type { TSubMenu } from '../spec'
 import { SUB_MENU_TYPE } from '../constant'
 
 import { Icon } from '../styles/icon'
-import { Wrapper, InfoIcon } from '../styles/sub_menu/header'
+import { Wrapper, Hint, InfoIcon, Help } from '../styles/sub_menu/header'
 
 type TProps = {
   type: TSubMenu
@@ -20,7 +20,10 @@ const Header: FC<TProps> = ({ type }) => {
           <Icon.Slug />
           设置路径 (Slug)
           <SpaceGrow />
-          <InfoIcon />
+          <Hint>
+            <InfoIcon />
+            <Help href="/">帮助</Help>
+          </Hint>
         </Wrapper>
       )
     }
