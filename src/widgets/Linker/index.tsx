@@ -13,7 +13,7 @@ import { buildLog } from '@/logger'
 import { prettyURL } from '@/fmt'
 import Tooltip from '@/widgets/Tooltip'
 
-import { Wrapper, LinkIcon, LinkOutIcon, Source, PopHint } from './styles'
+import { Wrapper, LinkIcon, Source, PopHint } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Linker:index')

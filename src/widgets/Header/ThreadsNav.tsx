@@ -19,7 +19,7 @@ type TProps = {
 const ThreadsNav: FC<TProps> = ({ activeInfo: { community, activeThread } }) => {
   return (
     <Wrapper>
-      <CommunityLogo src={community.logo || ''} slug={community.slug} />
+      <CommunityLogo src={community.logo || ''} />
       <MobileHint>
         <DotDivider />
         {Trans(activeThread)}

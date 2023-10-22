@@ -2,7 +2,6 @@ import { FC, useEffect } from 'react'
 import { observer } from 'mobx-react'
 import Router from 'next/router'
 
-import type { TPostLayout } from '@/spec'
 import { DASHBOARD_BASEINFO_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
 
@@ -22,12 +21,11 @@ import { Wrapper, Banner, TabsWrapper } from '../styles/basic_info'
 import { edit, loadBaseInfo } from '../logic'
 
 type TProps = {
-  testid?: TPostLayout
   settings: TBaseInfoSettings
   touched: TTouched
 }
 
-const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => {
+const BasicInfo: FC<TProps> = ({ settings, touched }) => {
   const curCommunity = useViewingCommunity()
   const { baseInfoTab } = settings
 

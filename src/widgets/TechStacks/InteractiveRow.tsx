@@ -14,7 +14,7 @@ const ActiveRow: FC<TProps> = ({ onAdd, onRemove, items }) => {
     <Wrapper>
       {items?.map((t) => (
         <Block key={t.slug}>
-          <Logo src={t.logo} slug={t.slug} />
+          <Logo src={t.logo} />
           <Title>{t.title}</Title>
           <DeleteHint onClick={() => onRemove(t)}>删除</DeleteHint>
         </Block>

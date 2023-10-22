@@ -34,7 +34,7 @@ export const changeCommunity = (community: TCommunity): void => {
   store.mark({ community })
 }
 
-export const onTagSelect = (tags: TTag[], checked: boolean): void => {
+export const onTagSelect = (tags: TTag[]): void => {
   store.mark({ articleTags: tags })
 }
 

@@ -1,6 +1,5 @@
 import type { TID } from './utils'
 import type { TSimpleUse } from './account'
-import type { TColorName } from '.'
 
 type TMeta = {
   postsCount: number

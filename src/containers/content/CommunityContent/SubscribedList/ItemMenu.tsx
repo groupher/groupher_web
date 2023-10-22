@@ -6,7 +6,6 @@
 
 import { FC, memo } from 'react'
 
-import type { TCommunity } from '@/spec'
 import { ICON } from '@/config'
 import { buildLog } from '@/logger'
 
@@ -15,11 +14,7 @@ import { Wrapper, Item, Icon, Title } from '../styles/subscribed_list/item_menu'
 /* eslint-disable-next-line */
 const log = buildLog('C:CommunityContent')
 
-type TProps = {
-  community: TCommunity
-}
-
-const ItemMenu: FC<TProps> = ({ community }) => {
+const ItemMenu: FC = () => {
   return (
     <Wrapper>
       <Item>

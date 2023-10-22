@@ -2,9 +2,6 @@ import { FC, useState } from 'react'
 
 import Tooltip from '@/widgets/Tooltip'
 
-import type { TImageRadio } from '../spec'
-import { IMAGE_RATIO } from '../constant'
-
 import {
   Wrapper,
   Block,

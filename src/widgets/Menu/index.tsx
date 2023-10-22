@@ -20,7 +20,6 @@ import { Wrapper } from './styles'
 const log = buildLog('c:Menu:index')
 
 type TProps = {
-  testid?: string
   activeKey?: string
   items?: TMenuItem[]
   onSelect?: (item: TMenuItem) => void
@@ -58,7 +57,6 @@ const DEMO_ITEMS = [
 ]
 
 const Menu: FC<TProps> = ({
-  testid = 'menu',
   activeKey = '',
   onSelect = log,
   items = DEMO_ITEMS,

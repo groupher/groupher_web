@@ -24,7 +24,7 @@ const DemoCommunity: FC<TProps> = ({ item }) => {
   return (
     <Wrapper>
       <Community>
-        <Logo src={item.logo} slug={item.slug} />
+        <Logo src={item.logo} />
         <Title href={`/${item.slug}`}>{item.title}</Title>
       </Community>
     </Wrapper>

@@ -1,7 +1,5 @@
 import { FC, memo } from 'react'
 
-import type { TPostLayout } from '@/spec'
-
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
 
 import type { TSEOSettings } from '../spec'
@@ -12,7 +10,6 @@ import { Wrapper, Label, EnableDesc, DetailLink, Inputer } from '../styles/seo/o
 import { edit, toggleSEO } from '../logic'
 
 type TProps = {
-  testid?: TPostLayout
   settings: TSEOSettings
 }
 
@@ -20,7 +17,7 @@ type TProps = {
  see: https://mintlify.com/docs/settings/seo for details
 */
 
-const OpenGraph: FC<TProps> = ({ testid = 'seo', settings }) => {
+const OpenGraph: FC<TProps> = ({ settings }) => {
   return (
     <Wrapper>
       <SectionLabel

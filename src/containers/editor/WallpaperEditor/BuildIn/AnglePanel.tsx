@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
 import { observer } from 'mobx-react'
 
 import type { TWallpaperGradientDir } from '@/spec'

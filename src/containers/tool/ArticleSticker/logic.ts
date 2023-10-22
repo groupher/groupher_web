@@ -1,7 +1,4 @@
 import { useEffect } from 'react'
-// import { } from 'ramda'
-
-import EVENT from '@/constant/event'
 
 import { authWarn, addCollection } from '@/signal'
 import { buildLog } from '@/logger'

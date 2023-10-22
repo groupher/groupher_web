@@ -18,15 +18,10 @@ import { Wrapper } from './styles'
 const log = buildLog('c:FeedbackFooter:index')
 
 type TProps = {
-  testid?: string
   offsetRight?: number
 } & TSpace
 
-const FeedbackFooter: FC<TProps> = ({
-  testid = 'feedback-footer',
-  offsetRight = 30,
-  ...restProps
-}) => {
+const FeedbackFooter: FC<TProps> = ({ offsetRight = 30, ...restProps }) => {
   return (
     <Wrapper {...restProps}>
       <TopInfo />

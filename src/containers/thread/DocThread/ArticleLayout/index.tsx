@@ -30,11 +30,10 @@ import {
 import { gotoDetailLayout } from '../logic'
 
 type TProps = {
-  testid?: string
   isFAQArticleLayout: boolean
 }
 
-const ArticleLayout: FC<TProps> = ({ testid = 'ArtileLayout', isFAQArticleLayout }) => {
+const ArticleLayout: FC<TProps> = ({ isFAQArticleLayout }) => {
   const [filetreeOpen, setFileTreeOpen] = useState(true)
 
   const { isMobile } = useMobileDetect()

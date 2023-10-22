@@ -1,7 +1,5 @@
 import { FC, memo } from 'react'
 
-import type { TPostLayout } from '@/spec'
-
 import { Br } from '@/widgets/Common'
 import OSSUploader from '@/widgets/OSSUploader'
 
@@ -24,12 +22,11 @@ import {
 import { edit } from '../logic'
 
 type TProps = {
-  testid?: TPostLayout
   settings: TBaseInfoSettings
   touched: TTouched
 }
 
-const BasicInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => {
+const BasicInfo: FC<TProps> = ({ settings, touched }) => {
   const { saving, desc, title, introduction, logo } = settings
 
   return (

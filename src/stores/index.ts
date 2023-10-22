@@ -75,7 +75,6 @@ export { default as AboutThreadStore } from '@/containers/thread/AboutThread/sto
 export { default as ChangelogThreadStore } from '@/containers/thread/ChangelogThread/store'
 export { default as KanbanThreadStore } from '@/containers/thread/KanbanThread/store'
 // export { default as BlogEditorStore } from '@/containers/editor/BlogEditor/store'
-export { default as CommunityTagSetterStore } from '@/containers/tool/CommunityTagSetter/store'
 export { default as CollectionFolderStore } from '@/containers/tool/CollectionFolder/store'
 export { default as ArticleContentStore } from '@/containers/content/ArticleContent/store'
 export { default as ArticleViewerStore } from '@/containers/viewer/ArticleViewer/store'

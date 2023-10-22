@@ -1,7 +1,5 @@
 import { FC, memo } from 'react'
 
-import type { TPostLayout } from '@/spec'
-
 import SocialEditor from '@/widgets/SocialEditor'
 
 import { SETTING_FIELD } from '../constant'
@@ -13,12 +11,11 @@ import { Wrapper } from '../styles/basic_info/base_info'
 import { updateSocialLinks } from '../logic'
 
 type TProps = {
-  testid?: TPostLayout
   settings: TBaseInfoSettings
   touched: TTouched
 }
 
-const SocialInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => {
+const SocialInfo: FC<TProps> = ({ settings, touched }) => {
   const { socialLinks, saving } = settings
 
   return (

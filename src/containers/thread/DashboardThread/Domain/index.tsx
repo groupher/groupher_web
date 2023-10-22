@@ -2,11 +2,7 @@ import { FC, memo } from 'react'
 
 import { Wrapper } from '../styles/domain'
 
-type TProps = {
-  testid?: string
-}
-
-const Domain: FC<TProps> = ({ testid = 'domain' }) => {
+const Domain: FC = () => {
   return (
     <Wrapper>
       <div>Domain</div>

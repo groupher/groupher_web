@@ -1,4 +1,4 @@
-import { FC, memo, useState } from 'react'
+import { FC, useState } from 'react'
 import { observer } from 'mobx-react'
 
 import type { TCommunity, TDashboardPath } from '@/spec'

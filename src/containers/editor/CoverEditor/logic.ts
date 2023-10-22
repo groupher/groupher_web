@@ -4,14 +4,7 @@ import { useEffect } from 'react'
 import type { TWallpaperGradientDir } from '@/spec'
 import { buildLog } from '@/logger'
 
-import type {
-  TImagePos,
-  TImageRadio,
-  TImageRotate,
-  TImageSize,
-  TLinearBorderPos,
-  TSettingLevel,
-} from './spec'
+import type { TImagePos, TImageRadio, TImageSize, TLinearBorderPos, TSettingLevel } from './spec'
 import { IMAGE_POS } from './constant'
 import type { TStore } from './store'
 

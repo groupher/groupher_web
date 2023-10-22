@@ -28,7 +28,6 @@ const TagItem: FC<TProps> = ({ tag, active, onSelect }) => {
       {tag.color && (
         <DotWrapper primaryColor={tag.color as TColorName} $active={active}>
           <HashIcon color={tag.color} $active={active} />
-          {/* <DotSign color={tag.color} $active={active} /> */}
         </DotWrapper>
       )}
       <Tag

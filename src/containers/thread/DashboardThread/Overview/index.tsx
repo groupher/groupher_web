@@ -1,7 +1,5 @@
 import { FC, memo, useEffect } from 'react'
 
-import type { TPostLayout } from '@/spec'
-
 import type { TOverview } from '../spec'
 
 import Portal from '../Portal'
@@ -11,11 +9,10 @@ import { Wrapper, Section } from '../styles/overview'
 import { loadCommunityOverview } from '../logic'
 
 export type TProps = {
-  testid?: TPostLayout
   data: TOverview
 }
 
-const Overview: FC<TProps> = ({ testid = 'basic-info', data }) => {
+const Overview: FC<TProps> = ({ data }) => {
   useEffect(() => {
     setTimeout(() => {
       loadCommunityOverview()

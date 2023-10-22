@@ -18,13 +18,9 @@ import { useInit } from './logic' /* eslint-disable-next-line */
 
 type TProps = {
   changelogThread?: TStore
-  testid?: string
 }
 
-const ChangelogThreadContainer: FC<TProps> = ({
-  changelogThread: store,
-  testid = 'changelog-thread',
-}) => {
+const ChangelogThreadContainer: FC<TProps> = ({ changelogThread: store }) => {
   useInit(store)
   const { globalLayout, tagsMode, pagedChangelogsData } = store
 

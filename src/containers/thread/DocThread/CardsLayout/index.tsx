@@ -7,11 +7,7 @@ import useBannerLayout from '@/hooks/useBannerLayout'
 import Category from './Category'
 import { Wrapper, CatsWrapper } from '../styles/cards_layout'
 
-type TProps = {
-  testid?: string
-}
-
-const BlocksLayout: FC<TProps> = ({ testid = 'home' }) => {
+const BlocksLayout: FC = () => {
   const cats = mockHelpCats()
 
   const bannerLayout = useBannerLayout()

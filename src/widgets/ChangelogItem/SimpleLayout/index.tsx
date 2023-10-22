@@ -49,7 +49,7 @@ const SimpleLayout: FC<TProps> = ({ testid = 'changelog-item', article }) => {
   return (
     <Wrapper testid={testid}>
       <DateTime>
-        <ReadableDate date={article.insertedAt} fmt="absolute" withTime={false} />
+        <ReadableDate date={article.insertedAt} withTime={false} />
       </DateTime>
 
       <Main>

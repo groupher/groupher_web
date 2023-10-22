@@ -12,13 +12,11 @@ import { FilterWrapper, FullWrapper, Label } from './styles'
 
 type TProps = {
   mode?: TArticleCatMode
-  state?: string
   placement?: TTooltipPlacement
 } & TSpace
 
 const StateSelector: FC<TProps> = ({
   mode = ARTICLE_STATE_MODE.FULL,
-  state = 'todo',
   placement = 'bottom',
   ...restProps
 }) => {

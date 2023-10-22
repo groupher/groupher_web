@@ -16,11 +16,10 @@ import { Divider } from '@/widgets/Common'
 import { Wrapper, Title, ArrowIcon, Panel, Item, ShareItem, ModelineDivider } from './styles'
 
 type TProps = {
-  testid?: string
   mode?: 'mobile' | 'modeline'
 }
 
-const MobileThreadNav: FC<TProps> = ({ testid = 'mobile-thread-nav', mode = 'mobile' }) => {
+const MobileThreadNav: FC<TProps> = ({ mode = 'mobile' }) => {
   const community = useViewingCommunity()
   const threads = usePublicThreads()
   const activeThread = useViewingThread()

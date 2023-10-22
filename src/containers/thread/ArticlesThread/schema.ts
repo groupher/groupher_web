@@ -9,7 +9,7 @@ const getPagedArticlesSchema = (thread) => {
   `
 }
 
-const getArticleFreshSchema = (thread) => {
+const getArticleFreshSchema = () => {
   // TODO: commentParticipants
   return gql`
     query post($id: ID!, $userHasLogin: Boolean!) {

@@ -94,6 +94,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         community,
         activeThread: thread,
       },
+      wallpaperEditor: {
+        ...wallpaper,
+      },
       dashboardThread: {
         curTab: ROUTE.DASHBOARD.THREADS,
         ...dashboard,

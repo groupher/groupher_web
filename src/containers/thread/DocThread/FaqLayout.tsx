@@ -7,11 +7,9 @@ import FaqList from '@/widgets/FaqList'
 
 import { Wrapper } from './styles/faq_layout'
 
-type TProps = {
-  testid?: string
-} & TSpace
+type TProps = TSpace
 
-const FaqLayout: FC<TProps> = ({ testid = 'FaqLayout', ...restProps }) => {
+const FaqLayout: FC<TProps> = ({ ...restProps }) => {
   return (
     <Wrapper {...restProps}>
       <FaqList layout={DOC_FAQ_LAYOUT.COLLAPSE} />

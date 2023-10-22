@@ -24,11 +24,9 @@ export type TAvatarProps = {
   avatarLayout?: TAvatarLayout
 } & TSpace
 
-type TProps = {
-  type?: 'avatar' | 'work'
-} & TAvatarProps
+type TProps = TAvatarProps
 
-const ImgFallback: FC<TProps> = ({ type = 'avatar', ...restProps }) => {
+const ImgFallback: FC<TProps> = ({ ...restProps }) => {
   return <Avatar {...restProps} />
 }
 

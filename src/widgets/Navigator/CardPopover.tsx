@@ -23,7 +23,7 @@ type TProps = {
 const CardPopover: FC<TProps> = ({ community }) => (
   <Wrapper>
     <Body>
-      <CommunityLogo src={assetSrc(community.logo)} slug={community.slug} />
+      <CommunityLogo src={assetSrc(community.logo)} />
       <CommunityInfo>
         <Title>{community.title}</Title>
         <Desc>{community.desc}</Desc>

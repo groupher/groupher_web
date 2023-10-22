@@ -7,11 +7,7 @@ import { mockHelpCats } from '@/mock'
 import Category from './Category'
 import { Wrapper, CatsWrapper } from '../styles/blocks_layout'
 
-type TProps = {
-  testid?: string
-}
-
-const BlocksLayout: FC<TProps> = ({ testid = 'home' }) => {
+const BlocksLayout: FC = () => {
   const cats = mockHelpCats()
   const bannerLayout = useBannerLayout()
 
@@ -19,13 +15,7 @@ const BlocksLayout: FC<TProps> = ({ testid = 'home' }) => {
     <Wrapper bannerLayout={bannerLayout}>
       <CatsWrapper bannerLayout={bannerLayout}>
         {cats.map((cat) => (
-          <Category
-            key={cat.id}
-            color={cat.color}
-            title={cat.title}
-            desc={cat.desc}
-            articles={cat.articles}
-          />
+          <Category key={cat.id} color={cat.color} title={cat.title} articles={cat.articles} />
         ))}
       </CatsWrapper>
     </Wrapper>

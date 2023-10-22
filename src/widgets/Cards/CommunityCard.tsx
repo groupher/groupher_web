@@ -30,7 +30,7 @@ const CommunityCard: FC<TProps> = ({ item: { logo, title, slug, desc } }) => {
   return (
     <Wrapper key={slug}>
       <Header>
-        <CommunityLogo src={logo} slug={slug} />
+        <CommunityLogo src={logo} />
         <Info>
           <Title>{title}</Title>
           <SubInfo>

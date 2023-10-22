@@ -1,16 +1,13 @@
 import { FC, memo } from 'react'
-import type { TArticle, TMetric } from '@/spec'
-
-import METRIC from '@/constant/metric'
+import type { TArticle } from '@/spec'
 
 import PostLayout from './PostLayout'
 
 type TProps = {
   article: TArticle
-  metric?: TMetric
 }
 
-const Layout: FC<TProps> = ({ article, metric = METRIC.ARTICLE }) => {
+const Layout: FC<TProps> = ({ article }) => {
   return <PostLayout article={article} />
 }
 

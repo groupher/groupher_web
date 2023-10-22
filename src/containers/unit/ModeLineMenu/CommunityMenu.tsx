@@ -15,7 +15,7 @@ const CommunityMenu: FC<TProps> = ({ community }) => {
   return (
     <Wrapper>
       <CommunityWrapper>
-        <Logo src={assetSrc(community.logo)} slug={community.slug} />
+        <Logo src={assetSrc(community.logo)} />
         <Title>{community.title}</Title>
         <Desc>{community.desc}</Desc>
       </CommunityWrapper>

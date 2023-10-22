@@ -24,7 +24,7 @@ const ActiveBadge: FC<TProps> = ({ article }) => {
           <Hint>
             <div>最后回复时间: </div>
             <TimeStr>
-              <ReadableDate date={article.activeAt} fmt="absolute" />
+              <ReadableDate date={article.activeAt} />
             </TimeStr>
           </Hint>
         }

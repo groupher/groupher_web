@@ -61,7 +61,7 @@ const SideInfo: FC<TProps> = ({ article }) => {
 
         <Label>发布时间</Label>
         <Value>
-          <ReadableDate date={insertedAt} fmt="absolute" withTime={false} />
+          <ReadableDate date={insertedAt} withTime={false} />
         </Value>
       </InnerWrapper>
     </Wrapper>

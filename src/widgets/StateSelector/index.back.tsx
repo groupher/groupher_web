@@ -16,13 +16,11 @@ const FullPanel = dynamic(() => import('./FullPanel'))
 
 type TProps = {
   mode?: TArticleCatMode
-  state?: string
   tooltipPlacement?: TTooltipPlacement
 } & TSpace
 
 const StateSelector: FC<TProps> = ({
   mode = ARTICLE_STATE_MODE.FULL,
-  state = 'todo',
   tooltipPlacement = 'bottom-end',
   ...restProps
 }) => {

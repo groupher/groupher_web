@@ -1,7 +1,5 @@
 import { FC, memo } from 'react'
 
-import type { TPostLayout } from '@/spec'
-
 import CitySelector from '@/widgets/CitySelector'
 import { Br, SexyDivider } from '@/widgets/Common'
 
@@ -15,12 +13,11 @@ import { Wrapper, Label, Inputer, Desc } from '../../styles/basic_info/other_inf
 import { edit } from '../../logic'
 
 type TProps = {
-  testid?: TPostLayout
   settings: TBaseInfoSettings
   touched: TTouched
 }
 
-const OtherInfo: FC<TProps> = ({ testid = 'basic-info', settings, touched }) => {
+const OtherInfo: FC<TProps> = ({ settings, touched }) => {
   const { city, techstack } = settings
 
   return (

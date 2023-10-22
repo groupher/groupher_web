@@ -472,7 +472,7 @@ export const EMPTY_MEDIA_REPORT = {
   editUrl: '',
 }
 
-const demoMarkdown = `
+export const demoMarkdown = `
   this is a paragraph 
 
   - this is a list

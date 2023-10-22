@@ -62,7 +62,6 @@ export const Wrapper = styled.button<TWrapper>`
 
   &:hover {
     color: ${({ ghost, disabled }) => getColor(ghost, disabled)};
-    // border-color: ${({ ghost, disabled }) => theme('divider')};
     opacity: 1;
     cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
     filter: saturate(0.9) brightness(1.1);

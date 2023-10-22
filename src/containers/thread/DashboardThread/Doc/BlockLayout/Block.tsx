@@ -39,7 +39,7 @@ const Block: FC<TProps> = ({ color, title }) => {
         <GlobalSettingIcon />
       </Tooltip>
       <Header>
-        <FaIconSelector size={15} color={color} left={0} bottom={5} />
+        <FaIconSelector size={15} left={0} bottom={5} />
         <Title>{title}</Title>
       </Header>
 
