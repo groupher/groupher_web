@@ -1,6 +1,5 @@
 import { FC, memo, useEffect } from 'react'
 
-import TAG_MODE from '@/constant/tag'
 import VIEW from '@/constant/view'
 
 import TagsBar from '@/containers/unit/TagsBar'
@@ -37,7 +36,7 @@ const Sidebar: FC<TProps> = ({ tagsMode }) => {
             view={VIEW.DESKTOP}
           />
         </TabWrapper>
-        <TagsBar onSelect={() => console.log} mode={TAG_MODE.LABEL} />
+        <TagsBar onSelect={() => console.log} />
       </Sticky>
     </Wrapper>
   )

@@ -7,6 +7,7 @@ import { COLOR_NAME } from '@/constant/colors'
 import { THREAD } from '@/constant/thread'
 import { GLOW_OPACITY } from '@/constant/glow_effect'
 import {
+  TAG_LAYOUT,
   AVATAR_LAYOUT,
   BRAND_LAYOUT,
   BANNER_LAYOUT,
@@ -145,6 +146,7 @@ export const settingsModalFields = {
 
   docLayout: T.opt(T.enum(values(DOC_LAYOUT)), DOC_LAYOUT.BLOCKS),
   docFaqLayout: T.opt(T.enum(values(DOC_FAQ_LAYOUT)), DOC_FAQ_LAYOUT.COLLAPSE),
+  tagLayout: T.opt(T.enum(values(TAG_LAYOUT)), TAG_LAYOUT.HASH),
   avatarLayout: T.opt(T.enum(values(AVATAR_LAYOUT)), AVATAR_LAYOUT.SQUARE),
   brandLayout: T.opt(T.enum(values(BRAND_LAYOUT)), BRAND_LAYOUT.BOTH),
   bannerLayout: T.opt(T.enum(values(BANNER_LAYOUT)), BANNER_LAYOUT.HEADER),

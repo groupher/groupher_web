@@ -39,6 +39,7 @@ import type {
   TModerator,
   TMediaReport,
   TDashboardSEOConfig,
+  TTagLayout,
 } from '@/spec'
 
 export { TNameAlias } from '@/spec'
@@ -164,6 +165,7 @@ export type TUiSettings = {
   brandLayout: TBrandLayout
   topbarLayout: TTopbarLayout
   topbarBg: TColorName
+  tagLayout: TTagLayout
   avatarLayout: TAvatarLayout
   bannerLayout: TBannerLayout
   glowType: string
@@ -197,6 +199,7 @@ export type TWidgetsSettings = {
 export type TTouched = {
   primaryColor: boolean
   brandLayout: boolean
+  tagLayout: boolean
   avatarLayout: boolean
   bannerLayout: boolean
   headerLayout: boolean
@@ -256,6 +259,7 @@ export type TSettingField =
   | 'kanbanLayout'
   | 'kanbanBgColors'
   | 'brandLayout'
+  | 'tagLayout'
   | 'avatarLayout'
   | 'bannerLayout'
   | 'headerLayout'

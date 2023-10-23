@@ -82,6 +82,7 @@ export const community = `
           primaryColor
           postLayout
           docLayout
+          tagLayout
           avatarLayout
           brandLayout
           topbarLayout

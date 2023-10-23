@@ -1,8 +1,11 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react'
 
 import type { TColorName, TTag } from '@/spec'
 import { cutRest } from '@/fmt'
 import { Trans } from '@/i18n'
+import useTagLayout from '@/hooks/useTagLayout'
+import { TAG_LAYOUT } from '@/constant/layout'
 
 import { emptyTag } from '@/model'
 
@@ -10,6 +13,7 @@ import {
   Wrapper,
   DotWrapper,
   HashIcon,
+  DotSign,
   Tag,
   Title,
   CloseWrapper,
@@ -23,13 +27,18 @@ type TProps = {
 }
 
 const TagItem: FC<TProps> = ({ tag, active, onSelect }) => {
+  const tagLayout = useTagLayout()
+
   return (
     <Wrapper $active={active}>
-      {tag.color && (
-        <DotWrapper primaryColor={tag.color as TColorName} $active={active}>
+      <DotWrapper primaryColor={tag.color as TColorName} $active={active}>
+        {tagLayout === TAG_LAYOUT.HASH ? (
           <HashIcon color={tag.color} $active={active} />
-        </DotWrapper>
-      )}
+        ) : (
+          <DotSign color={tag.color} $active={active} />
+        )}
+      </DotWrapper>
+
       <Tag
         $active={active}
         primaryColor={tag.color as TColorName}
@@ -47,4 +56,4 @@ const TagItem: FC<TProps> = ({ tag, active, onSelect }) => {
   )
 }
 
-export default TagItem
+export default observer(TagItem)

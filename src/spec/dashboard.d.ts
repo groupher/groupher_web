@@ -1,5 +1,6 @@
 import type { TColorName } from './color'
 
+export type TTagLayout = 'hash' | 'dot'
 export type TAvatarLayout = 'circle' | 'square'
 export type TBrandLayout = 'both' | 'logo' | 'text'
 export type TBannerLayout = 'header' | 'tabber' | 'sidebar'
@@ -85,6 +86,7 @@ export type TGlobalLayout = {
   doc: TDocLayout
   docFaq: TDocFAQLayout
   banner: TBannerLayout
+  tag: TTagLayout
   avatar: TAvatarLayout
   changelog: TChangelogLayout
   header: THeaderLayout

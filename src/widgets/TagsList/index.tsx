@@ -4,10 +4,10 @@
 
 import { FC, memo } from 'react'
 
-import type { TTag, TSizeTSM, TCommunity, TThread, TTagMode, TSpace } from '@/spec'
-import { THREAD } from '@/constant/thread'
-import TAG_MODE from '@/constant/tag'
+import type { TTag, TSizeTSM, TSpace } from '@/spec'
+import useTagLayout from '@/hooks/useTagLayout'
 import SIZE from '@/constant/size'
+import { TAG_LAYOUT } from '@/constant/layout'
 
 import { sortByColor } from '@/helper'
 import { Trans } from '@/i18n'
@@ -15,9 +15,8 @@ import { buildLog } from '@/logger'
 import Tooltip from '@/widgets/Tooltip'
 
 import FullList from './FullList'
-import Setter from './Setter'
 
-import { Wrapper, Tag, DotSign, Title, More } from './styles'
+import { Wrapper, Tag, HashSign, DotSign, Title, More } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:TagsList:index')
@@ -26,24 +25,11 @@ export type TProps = {
   items: TTag[]
   max?: number
   size?: TSizeTSM
-  withSetter?: boolean
-  mode?: TTagMode
-
-  // if withSetter is set to true, MUST have community and thread
-  community?: TCommunity
-  thread?: TThread
 } & TSpace
 
-const TagsList: FC<TProps> = ({
-  items,
-  max = 2,
-  size = SIZE.TINY,
-  withSetter = false,
-  mode = TAG_MODE.DEFAULT,
-  community = { slug: 'home' },
-  thread = THREAD.POST,
-  ...restProps
-}) => {
+const TagsList: FC<TProps> = ({ items, max = 2, size = SIZE.TINY, ...restProps }) => {
+  const tagLayout = useTagLayout()
+
   if (items.length > max) {
     return (
       <Wrapper {...restProps}>
@@ -51,28 +37,23 @@ const TagsList: FC<TProps> = ({
           .slice(0, max)
           .map((tag) => (
             <Tag key={tag.title}>
-              {mode === TAG_MODE.DEFAULT && <DotSign color={tag.color} size={size} />}
+              {tagLayout === TAG_LAYOUT.DOT ? (
+                <DotSign color={tag.color} size={size} />
+              ) : (
+                <HashSign color={tag.color} size={size} />
+              )}
               <Title size={size}>{Trans(tag.title)}</Title>
             </Tag>
           ))}
-        <Tooltip
-          placement="bottom"
-          content={<FullList items={items} size={size} mode={mode} {...restProps} />}
-        >
+        <Tooltip placement="bottom" content={<FullList items={items} size={size} {...restProps} />}>
           <More>..</More>
         </Tooltip>
-        {withSetter && <Setter community={community} thread={thread} tags={items} noEmpty />}
       </Wrapper>
     )
   }
 
   return (
-    <Wrapper>
-      {items.length > 0 && <FullList items={items} size={size} mode={mode} {...restProps} />}
-      {withSetter && (
-        <Setter tags={items} community={community} thread={thread} noEmpty={items.length > 0} />
-      )}
-    </Wrapper>
+    <Wrapper>{items.length > 0 && <FullList items={items} size={size} {...restProps} />}</Wrapper>
   )
 }
 

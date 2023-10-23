@@ -33,7 +33,6 @@ export { default as EMOTION } from './emotion'
 export { PAYMENT_USAGE, PAYMENT_METHOD } from './payment'
 export { REPORT, REPORT_TYPE } from './report'
 export { default as SVG } from './svg'
-export { default as TAG_MODE } from './tag'
 
 export { COMMUNITY_MAP_ALIAS } from './alias'
 

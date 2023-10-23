@@ -167,8 +167,6 @@ export type TModelineType =
   | 'search'
   | 'more'
 
-export type TTagMode = 'default' | 'label'
-
 // for menu button
 export type TMenuOption = {
   title: string

@@ -79,7 +79,6 @@ export type {
   TEditMode,
   TOnlineStatus,
   TModelineType,
-  TTagMode,
   TMenuOption,
   TPublishMode,
   TDashboardLayout,
@@ -95,6 +94,7 @@ export type {
 export type { TGQLError } from './graphql'
 
 export type {
+  TTagLayout,
   TAvatarLayout,
   TTopbarLayout,
   TBrandLayout,

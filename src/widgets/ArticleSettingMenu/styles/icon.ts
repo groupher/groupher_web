@@ -7,7 +7,7 @@ import PinSVG from '@/icons/Pin'
 
 //
 import LightSVG from '@/icons/ColorLight'
-import TagSVG from '@/icons/Tag'
+import TagSVG from '@/icons/HashTag'
 import TodoSVG from '@/icons/GtdTodo'
 import SlugSVG from '@/icons/Slug'
 import MergeSVG from '@/icons/Merge'
@@ -21,6 +21,13 @@ import ArrowSVG from '@/icons/ArrowSimple'
 // import OtherSVG from '@/icons/menu/Feedback'
 
 import { MenuItem } from './menu'
+
+const TagDot = styled.div`
+  ${css.circle(10)};
+  background: ${theme('hint')};
+  margin-right: 10px;
+  margin-left: 1px;
+`
 
 const commonIcon = (comp): FC => {
   return styled(comp)`
@@ -45,9 +52,10 @@ export const Icon = {
     }
   `,
   Light: commonIcon(LightSVG),
-  Tag: styled(commonIcon(TagSVG))`
+  TagHash: styled(commonIcon(TagSVG))`
     margin-top: -1px;
   `,
+  TagDot,
   Todo: commonIcon(TodoSVG),
   Slug: commonIcon(SlugSVG),
   Archived: styled(commonIcon(ArchivedSVG))`

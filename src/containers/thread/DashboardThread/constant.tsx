@@ -28,6 +28,7 @@ export const SETTING_LAYOUT_FIELD = {
   DOC_LAYOUT: 'docLayout',
   DOC_FAQ_LAYOUT: 'docFaqLayout',
   BRAND_LAYOUT: 'brandLayout',
+  TAG_LAYOUT: 'tagLayout',
   AVATAR_LAYOUT: 'avatarLayout',
   BANNER_LAYOUT: 'bannerLayout',
   HEADER_LAYOUT: 'headerLayout',
@@ -92,7 +93,7 @@ export const MENU = {
         slug: DASHBOARD_ROUTE.THREADS,
       },
       {
-        title: '布局/样式',
+        title: '布局与样式',
         slug: DASHBOARD_ROUTE.LAYOUT,
       },
       {
@@ -605,6 +606,7 @@ export const UI_KEYS = [
   'layoutTab',
   'primaryColor',
   'brandLayout',
+  'tagLayout',
   'avatarLayout',
   'bannerLayout',
   'topbarLayout',

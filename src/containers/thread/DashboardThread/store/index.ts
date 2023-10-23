@@ -160,6 +160,7 @@ const DashboardThread = T.model('DashboardThread', {
       return {
         primaryColor: init.primaryColor,
         brand: init.brandLayout,
+        tag: init.tagLayout,
         avatar: init.avatarLayout,
         post: init.postLayout,
         kanban: init.kanbanLayout,
@@ -277,6 +278,7 @@ const DashboardThread = T.model('DashboardThread', {
       const primaryColorTouched = _isChanged('primaryColor')
       const brandLayoutTouched = _isChanged('brandLayout')
       const avatarTouched = _isChanged('avatarLayout')
+      const tagTouched = _isChanged('tagLayout')
 
       const bannerLayoutTouched = _isChanged('bannerLayout')
       const postLayoutTouched = _isChanged('postLayout')
@@ -322,6 +324,7 @@ const DashboardThread = T.model('DashboardThread', {
       return {
         primaryColor: primaryColorTouched,
         brandLayout: brandLayoutTouched,
+        tagLayout: tagTouched,
         avatarLayout: avatarTouched,
         bannerLayout: bannerLayoutTouched,
         topbarLayout: topbarLayoutTouched,
