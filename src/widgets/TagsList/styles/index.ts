@@ -3,7 +3,8 @@ import styled from 'styled-components'
 import type { TSizeTSM, TSpace } from '@/spec'
 
 import css, { theme, rainbow } from '@/css'
-import HashSVG from '@/icons/HashTagLight'
+// import HashSVG from '@/icons/HashTagLight'
+import HashSVG from '@/icons/HashTag'
 
 import { getIconSize, getTitleSize } from './metric'
 

@@ -5,7 +5,7 @@ import type { TActive, TPrimaryColor } from '@/spec'
 import css, { theme, rainbow, rainbowLight } from '@/css'
 
 import Img from '@/Img'
-import HashSVG from '@/icons/HashTagLight'
+import HashSVG from '@/icons/HashTag'
 import CloseSVG from '@/icons/CloseLight'
 
 type TTag = TActive & { color?: string } & TPrimaryColor
@@ -14,7 +14,7 @@ export const Wrapper = styled.div<TActive>`
   ${css.row('align-center')};
   margin-left: -2px;
   padding: 4px;
-  padding-left: ${({ $active }) => ($active ? '8px' : '2px')};
+  padding-left: ${({ $active }) => ($active ? '8px' : '4px')};
   max-width: 200px;
   border-radius: 8px;
   border: 1px solid;
@@ -33,14 +33,21 @@ export const AllTagIcon = styled(Img)`
   transform: rotate(17deg);
 `
 export const DotWrapper = styled.div<TTag>`
-  width: 24px;
-  height: 16px;
+  width: 21px;
+  height: 18px;
+  margin-top: 1px;
   ${css.row('align-both')};
   margin-right: 6px;
-  margin-left: ${({ $active }) => ($active ? '-5px' : 0)};
+  margin-left: ${({ $active }) => ($active ? '-3px' : 0)};
   border-radius: 4px;
   background: ${({ $active, primaryColor }) =>
     $active ? rainbowLight(primaryColor) : 'transparent'};
+
+  ${Wrapper}:hover & {
+    background: ${({ primaryColor }) => rainbowLight(primaryColor)};
+  }
+
+  transition: background 0.2s;
 `
 type THashSign = TActive & { color?: string }
 export const DotSign = styled.div<THashSign>`
@@ -62,7 +69,7 @@ export const HashIcon = styled(HashSVG)<THashIcon>`
 export const Tag = styled.div<TTag>`
   ${css.row('align-end', 'justify-between')};
   width: 100%;
-  font-size: 13px;
+  font-size: 14px;
   padding-left: 4px;
 
   font-weight: ${({ $active }) => (!$active ? 'bold' : 'normal')};

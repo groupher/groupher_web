@@ -7,7 +7,7 @@ import PinSVG from '@/icons/Pin'
 
 //
 import LightSVG from '@/icons/ColorLight'
-import TagSVG from '@/icons/Tag'
+import TagSVG from '@/icons/HashTag'
 import TodoSVG from '@/icons/GtdTodo'
 import SlugSVG from '@/icons/Slug'
 import MergeSVG from '@/icons/Merge'
