@@ -1,12 +1,13 @@
 import styled from 'styled-components'
 
 import type { TSizeTSM, TSpace } from '@/spec'
+import SIZE from '@/constant/size'
 
 import css, { theme, rainbow } from '@/css'
 // import HashSVG from '@/icons/HashTagLight'
 import HashSVG from '@/icons/HashTag'
 
-import { getIconSize, getTitleSize } from './metric'
+import { getDotSize, getIconSize, getTitleSize, getDotMargin } from './metric'
 
 export const Wrapper = styled.div<TSpace>`
   ${css.row('align-center')};
@@ -24,29 +25,22 @@ export const Tag = styled.div`
   min-width: 40px;
 `
 type THashSign = { color: string; size: TSizeTSM }
-export const DotSign = styled(HashSVG)<THashSign>`
+export const DotSign = styled.div<THashSign>`
+  background: ${({ color }) => rainbow(color)};
+  ${({ size }) => css.circle(getDotSize(size))};
+  margin-right: ${({ size }) => getDotMargin(size)};
+`
+export const HashSign = styled(HashSVG)<THashSign>`
   fill: ${({ color }) => rainbow(color)};
   ${({ size }) => css.size(getIconSize(size))};
+  margin-top: ${({ size }) => (size === SIZE.MEDIUM ? '-2px' : '0')};
   margin-right: 2px;
-`
-export const LabelDotSign = styled.div<THashSign>`
-  background: ${({ color }) => rainbow(color)};
-  ${css.circle(8)};
-  margin-right: 4px;
 `
 export const Title = styled.div<{ size: TSizeTSM }>`
   color: ${theme('article.info')};
   font-size: ${({ size }) => getTitleSize(size)};
   word-break: keep-all;
   letter-spacing: 0.06em;
-`
-export const SolidTitle = styled.div<{ size: TSizeTSM; color: string }>`
-  color: ${theme('article.info')};
-  font-size: 13px;
-  margin-left: 3px;
-  word-break: keep-all;
-  letter-spacing: 0.06em;
-  margin-right: 10px;
 `
 export const More = styled.div`
   color: ${theme('article.info')};

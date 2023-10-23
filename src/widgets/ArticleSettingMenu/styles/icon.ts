@@ -22,6 +22,13 @@ import ArrowSVG from '@/icons/ArrowSimple'
 
 import { MenuItem } from './menu'
 
+const TagDot = styled.div`
+  ${css.circle(10)};
+  background: ${theme('hint')};
+  margin-right: 10px;
+  margin-left: 1px;
+`
+
 const commonIcon = (comp): FC => {
   return styled(comp)`
     ${css.size(13)};
@@ -45,9 +52,10 @@ export const Icon = {
     }
   `,
   Light: commonIcon(LightSVG),
-  Tag: styled(commonIcon(TagSVG))`
+  TagHash: styled(commonIcon(TagSVG))`
     margin-top: -1px;
   `,
+  TagDot,
   Todo: commonIcon(TodoSVG),
   Slug: commonIcon(SlugSVG),
   Archived: styled(commonIcon(ArchivedSVG))`

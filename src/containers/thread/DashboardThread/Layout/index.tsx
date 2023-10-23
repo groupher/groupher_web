@@ -12,6 +12,7 @@ import Tabs from '@/widgets/Switcher/Tabs'
 import { LAYOUT_TABS } from '../constant'
 import Portal from '../Portal'
 import AvatarLayout from './AvatarLayout'
+import TagLayout from './TagLayout'
 // import BrandLayout from './BrandLayout'
 import BannerLayout from './BannerLayout'
 import DocLayout from './DocLayout'
@@ -41,6 +42,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
     layoutTab,
     // brandLayout,
     avatarLayout,
+    tagLayout,
     bannerLayout,
     docLayout,
     docFaqLayout,
@@ -93,6 +95,10 @@ const UI: FC<TProps> = ({ settings, touched }) => {
           <Divider top={20} bottom={60} />
           <BannerLayout layout={bannerLayout} isTouched={touched.bannerLayout} saving={saving} />
           <Divider top={20} bottom={60} />
+          <AvatarLayout layout={avatarLayout} isTouched={touched.avatarLayout} saving={saving} />
+          <Divider top={20} bottom={60} />
+          <TagLayout layout={tagLayout} isTouched={touched.tagLayout} saving={saving} />
+          <Divider top={20} bottom={60} />
           <Wallpaper wallpaperInfo={wallpaperInfo} />
           <Divider top={20} bottom={60} />
           <GlowEffect
@@ -105,8 +111,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
             saving={saving}
           />
           <Divider top={20} bottom={60} />
-          <AvatarLayout layout={avatarLayout} isTouched={touched.avatarLayout} saving={saving} />
-          <Divider top={20} bottom={60} />
+
           {/* <BrandLayout layout={brandLayout} isTouched={touched.brandLayout} saving={saving} />
           <Divider top={20} bottom={60} /> */}
           <TopbarLayout

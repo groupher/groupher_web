@@ -18,7 +18,7 @@ const Header: FC<TProps> = ({ article }) => {
   return (
     <Wrapper>
       <ArticleCatState cat={cat} state={state} smaller={false} right={14} />
-      <TagsList items={articleTags} size="small" />
+      <TagsList items={articleTags} size="medium" />
       <PublishWrapper>
         {meta.isEdited && (
           <Fragment>

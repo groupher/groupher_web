@@ -27,12 +27,19 @@ export const Header = styled.div`
   margin-bottom: 8px;
   width: 100%;
 `
-export const DotWrapper = styled.div<{ color: TColorName }>`
+type TDotWrapper = { color: TColorName; noBg?: boolean }
+export const DotWrapper = styled.div<TDotWrapper>`
   ${css.size(20)};
   ${css.row('align-both')};
-  background: ${({ color }) => rainbowLight(color)};
-  margin-right: 10px;
+  background: ${({ color, noBg }) => (noBg ? 'transparent' : rainbowLight(color))};
+  margin-right: ${({ noBg }) => (noBg ? '8px' : '10px')};
+  margin-left: ${({ noBg }) => (noBg ? '-4px' : 0)};
   border-radius: 5px;
+`
+export const DotIcon = styled.div<{ color: TColorName }>`
+  ${css.circle(8)};
+  margin-top: 1px;
+  background: ${({ color }) => rainbow(color)};
 `
 export const HashIcon = styled(HashSVG)<{ color: TColorName }>`
   ${css.size(16)};
