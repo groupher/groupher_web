@@ -5,6 +5,7 @@ import { SUB_MENU_TYPE } from '../constant'
 
 import Header from './Header'
 import SlugSetting from './SlugSetting'
+import TagSetting from './TagSetting'
 
 import { Wrapper, Footer, ArrowIcon, Confirm } from '../styles/sub_menu'
 
@@ -21,6 +22,12 @@ const SubMenu: FC<TProps> = ({ closeSubMenu, subMenuType }) => {
       Content = SlugSetting
       break
     }
+
+    case SUB_MENU_TYPE.TAG: {
+      Content = TagSetting
+      break
+    }
+
     default: {
       Content = <div>??</div>
       break

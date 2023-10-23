@@ -1,9 +1,9 @@
 import { FC, memo, useState, useRef } from 'react'
 
-import useTagLayout from '@/hooks/useTagLayout'
 import useOutsideClick from '@/hooks/useOutsideClick'
+
 import { SpaceGrow } from '@/widgets/Common'
-import { TAG_LAYOUT } from '@/constant/layout'
+import TagNode from '@/widgets/TagNode'
 
 import type { TSubMenu } from './spec'
 import { SUB_MENU_TYPE } from './constant'
@@ -20,8 +20,6 @@ type TProps = {
 const Menu: FC<TProps> = ({ onSubMenuToggle, onClose }) => {
   const [subMenuType, setSubMenuType] = useState<TSubMenu>(null)
   const [subMenuActive, setSubMenuActive] = useState(false)
-
-  const tagLayout = useTagLayout()
 
   const ref = useRef(null)
   useOutsideClick(ref, () => {
@@ -71,8 +69,8 @@ const Menu: FC<TProps> = ({ onSubMenuToggle, onClose }) => {
             <SpaceGrow />
             <Icon.Arrow />
           </MenuItem>
-          <MenuItem>
-            {tagLayout === TAG_LAYOUT.HASH ? <Icon.TagHash /> : <Icon.TagDot />}
+          <MenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.TAG)}>
+            <TagNode opacity={0.5} dotRight={10} dotLeft={1} hashLeft={-1} hashRight={6} />
             标签
             <SpaceGrow />
             <Icon.Arrow />

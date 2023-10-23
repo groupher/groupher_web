@@ -2,10 +2,9 @@ import styled from 'styled-components'
 
 import type { TActive, TPrimaryColor } from '@/spec'
 
-import css, { theme, rainbow, rainbowLight } from '@/css'
+import css, { theme, rainbowLight } from '@/css'
 
 import Img from '@/Img'
-import HashSVG from '@/icons/HashTag'
 import CloseSVG from '@/icons/CloseLight'
 
 type TTag = TActive & { color?: string } & TPrimaryColor
@@ -32,14 +31,15 @@ export const AllTagIcon = styled(Img)`
   ${css.size(14)};
   transform: rotate(17deg);
 `
-export const DotWrapper = styled.div<TTag>`
+type TDotWrapper = TTag & { round: boolean }
+export const DotWrapper = styled.div<TDotWrapper>`
   width: 21px;
   height: 18px;
   margin-top: 1px;
   ${css.row('align-both')};
   margin-right: 6px;
-  margin-left: ${({ $active }) => ($active ? '-3px' : 0)};
-  border-radius: 4px;
+  margin-left: ${({ $active }) => ($active ? '-5px' : '-1px')};
+  border-radius: ${({ round }) => (round ? '50%' : '4px')};
   background: ${({ $active, primaryColor }) =>
     $active ? rainbowLight(primaryColor) : 'transparent'};
 
@@ -49,23 +49,7 @@ export const DotWrapper = styled.div<TTag>`
 
   transition: background 0.2s;
 `
-type THashSign = TActive & { color?: string }
-export const DotSign = styled.div<THashSign>`
-  ${css.circle(8)};
-  background: ${({ color }) => (color ? rainbow(color) : 'none')};
-  opacity: ${({ $active }) => ($active ? 1 : theme('tags.dotOpacity'))};
 
-  ${Wrapper}:hover & {
-    opacity: 0.9;
-  }
-
-  transition: filter 0.1s;
-`
-type THashIcon = { color: string } & TActive
-export const HashIcon = styled(HashSVG)<THashIcon>`
-  ${css.size(12)};
-  fill: ${({ color }) => (color ? rainbow(color) : 'none')};
-`
 export const Tag = styled.div<TTag>`
   ${css.row('align-end', 'justify-between')};
   width: 100%;

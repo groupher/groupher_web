@@ -13,9 +13,11 @@ import type { TColorName, TTag } from '@/spec'
 import useTagLayout from '@/hooks/useTagLayout'
 import { TAG_LAYOUT } from '@/constant/layout'
 import { buildLog } from '@/logger'
-import { SpaceGrow } from '@/widgets/Common'
 
-import { Wrapper, Header, DotWrapper, HashIcon, DotIcon, Desc, Title, InfoIcon } from './styles'
+import { SpaceGrow } from '@/widgets/Common'
+import TagNode from '@/widgets/TagNode'
+
+import { Wrapper, Header, DotWrapper, Desc, Title, InfoIcon } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('c:TagNote:index')
@@ -33,12 +35,16 @@ const TagNote: FC<TProps> = ({ testid = 'tag-note', tag }) => {
   return (
     <Wrapper testid={testid}>
       <Header>
-        <DotWrapper color={tag.color as TColorName} noBg={tagLayout === TAG_LAYOUT.DOT}>
-          {tagLayout === TAG_LAYOUT.HASH ? (
-            <HashIcon color={tag.color as TColorName} />
-          ) : (
-            <DotIcon color={tag.color as TColorName} />
-          )}
+        <DotWrapper color={tag.color as TColorName} round={tagLayout === TAG_LAYOUT.DOT}>
+          <TagNode
+            color={tag.color}
+            dotSize={8}
+            hashSize={12}
+            dotLeft={5}
+            hashLeft={2}
+            hashRight={3}
+            opacity={0.8}
+          />
         </DotWrapper>
         <Title color={tag.color as TColorName}>{tag.title}</Title>
         <SpaceGrow />
