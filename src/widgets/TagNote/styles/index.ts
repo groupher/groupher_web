@@ -1,14 +1,10 @@
 import styled from 'styled-components'
 
 import type { TColorName, TTestable } from '@/spec'
-
 import InfoSVG from '@/icons/Info'
-import HashSVG from '@/icons/HashTagLight'
 
 import { MarkdownStyles } from '@/widgets/Common'
-
-// import Img from '@/Img'
-import css, { rainbow, rainbowLight, theme } from '@/css'
+import css, { rainbowLight, theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,

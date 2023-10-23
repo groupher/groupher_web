@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-const TagSetting = () => {
+const TagSetting: FC = () => {
   return (
     <div>
       <div>TagSetting</div>
