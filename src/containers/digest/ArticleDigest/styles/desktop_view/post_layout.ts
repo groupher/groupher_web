@@ -30,7 +30,7 @@ export const Topping = styled.div`
   ${css.row('align-both')};
   margin-left: -2px;
   margin-bottom: 16px;
-  padding-right: 40px;
+  padding-right: 16px;
   position: relative;
 `
 export const BackBtnWrapper = styled.div`

@@ -5,18 +5,19 @@
 import { FC, memo } from 'react'
 
 import type { TTag, TSizeTSM, TSpace } from '@/spec'
-import useTagLayout from '@/hooks/useTagLayout'
 import SIZE from '@/constant/size'
-import { TAG_LAYOUT } from '@/constant/layout'
 
 import { sortByColor } from '@/helper'
 import { Trans } from '@/i18n'
 import { buildLog } from '@/logger'
+
 import Tooltip from '@/widgets/Tooltip'
+import TagNode from '@/widgets/TagNode'
 
 import FullList from './FullList'
 
-import { Wrapper, Tag, HashSign, DotSign, Title, More } from './styles'
+import { getDotSize, getIconSize, getDotMargin, getHashMargin } from './styles/metric'
+import { Wrapper, Tag, Title, More } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:TagsList:index')
@@ -28,7 +29,10 @@ export type TProps = {
 } & TSpace
 
 const TagsList: FC<TProps> = ({ items, max = 2, size = SIZE.TINY, ...restProps }) => {
-  const tagLayout = useTagLayout()
+  const dotSize = getDotSize(size)
+  const hashSize = getIconSize(size)
+  const dotRight = getDotMargin(size)
+  const hashRight = getHashMargin(size)
 
   if (items.length > max) {
     return (
@@ -36,12 +40,14 @@ const TagsList: FC<TProps> = ({ items, max = 2, size = SIZE.TINY, ...restProps }
         {sortByColor(items)
           .slice(0, max)
           .map((tag) => (
-            <Tag key={tag.title}>
-              {tagLayout === TAG_LAYOUT.DOT ? (
-                <DotSign color={tag.color} size={size} />
-              ) : (
-                <HashSign color={tag.color} size={size} />
-              )}
+            <Tag key={tag.slug}>
+              <TagNode
+                color={tag.color}
+                dotSize={dotSize}
+                hashSize={hashSize}
+                dotRight={dotRight}
+                hashRight={hashRight}
+              />
               <Title size={size}>{Trans(tag.title)}</Title>
             </Tag>
           ))}

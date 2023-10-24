@@ -4,7 +4,7 @@ import SIZE from '@/constant/size'
 export const getIconSize = (size: TSizeTSM): number => {
   switch (size) {
     case SIZE.MEDIUM: {
-      return 12
+      return 10
     }
 
     default: {
@@ -13,14 +13,26 @@ export const getIconSize = (size: TSizeTSM): number => {
   }
 }
 
-export const getDotMargin = (size: TSizeTSM): string => {
+export const getDotMargin = (size: TSizeTSM): number => {
   switch (size) {
     case SIZE.MEDIUM: {
-      return '6px'
+      return 6
     }
 
     default: {
-      return '4px'
+      return 4
+    }
+  }
+}
+
+export const getHashMargin = (size: TSizeTSM): number => {
+  switch (size) {
+    case SIZE.MEDIUM: {
+      return 3
+    }
+
+    default: {
+      return 1
     }
   }
 }

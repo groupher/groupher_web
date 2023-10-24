@@ -1,13 +1,11 @@
 import styled from 'styled-components'
 
 import type { TSizeTSM, TSpace } from '@/spec'
-import SIZE from '@/constant/size'
 
-import css, { theme, rainbow } from '@/css'
+import css, { theme } from '@/css'
 // import HashSVG from '@/icons/HashTagLight'
-import HashSVG from '@/icons/HashTag'
 
-import { getDotSize, getIconSize, getTitleSize, getDotMargin } from './metric'
+import { getTitleSize } from './metric'
 
 export const Wrapper = styled.div<TSpace>`
   ${css.row('align-center')};
@@ -23,18 +21,6 @@ export const Wrapper = styled.div<TSpace>`
 export const Tag = styled.div`
   ${css.row('align-center')};
   min-width: 40px;
-`
-type THashSign = { color: string; size: TSizeTSM }
-export const DotSign = styled.div<THashSign>`
-  background: ${({ color }) => rainbow(color)};
-  ${({ size }) => css.circle(getDotSize(size))};
-  margin-right: ${({ size }) => getDotMargin(size)};
-`
-export const HashSign = styled(HashSVG)<THashSign>`
-  fill: ${({ color }) => rainbow(color)};
-  ${({ size }) => css.size(getIconSize(size))};
-  margin-top: ${({ size }) => (size === SIZE.MEDIUM ? '-2px' : '0')};
-  margin-right: 2px;
 `
 export const Title = styled.div<{ size: TSizeTSM }>`
   color: ${theme('article.info')};

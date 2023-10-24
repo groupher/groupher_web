@@ -1,6 +1,7 @@
 import { FC } from 'react'
 
 import { SpaceGrow } from '@/widgets/Common'
+import TagNode from '@/widgets/TagNode'
 
 import type { TSubMenu } from '../spec'
 import { SUB_MENU_TYPE } from '../constant'
@@ -13,10 +14,28 @@ type TProps = {
 }
 
 const Header: FC<TProps> = ({ type }) => {
+  let Content = null
+
   switch (type) {
+    case SUB_MENU_TYPE.EDIT: {
+      Content = (
+        <>
+          <Icon.Edit />
+          修改标题
+          <SpaceGrow />
+          <Hint>
+            <InfoIcon />
+            <Help href="/">帮助</Help>
+          </Hint>
+        </>
+      )
+
+      break
+    }
+
     case SUB_MENU_TYPE.SLUG: {
-      return (
-        <Wrapper>
+      Content = (
+        <>
           <Icon.Slug />
           设置路径 (Slug)
           <SpaceGrow />
@@ -24,20 +43,38 @@ const Header: FC<TProps> = ({ type }) => {
             <InfoIcon />
             <Help href="/">帮助</Help>
           </Hint>
-        </Wrapper>
+        </>
       )
+
+      break
+    }
+    case SUB_MENU_TYPE.TAG: {
+      Content = (
+        <>
+          <TagNode opacity={0.6} dotSize={8} />
+          设置标签
+          <SpaceGrow />
+          <Hint>
+            <InfoIcon />
+            <Help href="/">帮助</Help>
+          </Hint>
+        </>
+      )
+      break
     }
 
     default: {
-      return (
-        <Wrapper>
+      Content = (
+        <>
           <div>??</div>
           <SpaceGrow />
           <InfoIcon />
-        </Wrapper>
+        </>
       )
     }
   }
+
+  return <Wrapper>{Content}</Wrapper>
 }
 
 export default Header

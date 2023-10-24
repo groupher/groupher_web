@@ -1,6 +1,7 @@
 import type { TSubMenu } from './spec'
 
 export const SUB_MENU_TYPE = {
+  EDIT: 'edit',
   SLUG: 'slug',
   CATEGORY: 'category',
   STATE: 'state',

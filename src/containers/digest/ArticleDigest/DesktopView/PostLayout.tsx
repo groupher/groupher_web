@@ -71,7 +71,7 @@ const PostLayout: FC<TProps> = ({ metric = METRIC.ARTICLE, article }) => {
             <Avatar src={author.avatar} />
             {author.nickname}
           </AuthorName>
-          <ArticleBaseStats article={article} right={40} />
+          <ArticleBaseStats article={article} right={18} />
         </BottomInfo>
       </LeftPart>
 

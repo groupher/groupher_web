@@ -1,4 +1,5 @@
 export type TSubMenu =
+  | 'edit'
   | 'slug'
   | 'category'
   | 'state'

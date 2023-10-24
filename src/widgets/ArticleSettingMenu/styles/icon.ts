@@ -6,8 +6,8 @@ import css, { theme } from '@/css'
 import PinSVG from '@/icons/Pin'
 
 //
+import EditSVG from '@/icons/EditPen'
 import LightSVG from '@/icons/ColorLight'
-import TagSVG from '@/icons/HashTag'
 import TodoSVG from '@/icons/GtdTodo'
 import SlugSVG from '@/icons/Slug'
 import MergeSVG from '@/icons/Merge'
@@ -21,13 +21,6 @@ import ArrowSVG from '@/icons/ArrowSimple'
 // import OtherSVG from '@/icons/menu/Feedback'
 
 import { MenuItem } from './menu'
-
-const TagDot = styled.div`
-  ${css.circle(10)};
-  background: ${theme('hint')};
-  margin-right: 10px;
-  margin-left: 1px;
-`
 
 const commonIcon = (comp): FC => {
   return styled(comp)`
@@ -51,25 +44,22 @@ export const Icon = {
       opacity: 1;
     }
   `,
+  Edit: commonIcon(EditSVG),
   Light: commonIcon(LightSVG),
-  TagHash: styled(commonIcon(TagSVG))`
-    margin-top: -1px;
-  `,
-  TagDot,
   Todo: commonIcon(TodoSVG),
   Slug: commonIcon(SlugSVG),
-  Archived: styled(commonIcon(ArchivedSVG))`
-    margin-top: -1px;
-  `,
+  Archived: commonIcon(ArchivedSVG),
   Merge: commonIcon(MergeSVG),
   Lock: commonIcon(LockSVG),
   Delete: styled(commonIcon(DeleteSVG))`
+    ${css.size(14)};
+    margin-top: 1px;
     ${MenuItem}:hover & {
       fill: ${theme('rainbow.red')};
     }
   `,
   Pin: styled(commonIcon(PinSVG))`
-    margin-top: 1px;
+    margin-top: 2px;
   `,
 }
 

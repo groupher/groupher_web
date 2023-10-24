@@ -13,7 +13,7 @@ export const Wrapper = styled(WithMargin).attrs<TTestable>(({ testid }) => ({
 export const Title = styled.div``
 
 export const SettingIcon = styled(SettingSVG)<TActive>`
-  ${css.size(15)};
+  ${css.size(16)};
   fill: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   opacity: ${({ $active }) => ($active ? 1 : 0.8)};
   cursor: pointer;
