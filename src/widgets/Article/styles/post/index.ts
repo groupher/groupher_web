@@ -17,12 +17,11 @@ export const Wrapper = styled.nav.attrs<TWrapper>(({ testid }) => ({
   ${({ metric }) => css.fitPageWidth(metric)};
 `
 export const HeaderWrapper = styled.div`
-  margin-left: -12px;
+  margin-left: -16px;
 `
 export const InnerWrapper = styled.div<{ metric: TMetric }>`
   width: 100%;
   ${({ metric }) => css.fitContentWidth(metric)};
-  /* border: 1px solid tomato; */
 `
 export const BannerContent = styled.div`
   ${css.row('justify-start')};

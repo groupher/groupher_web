@@ -39,7 +39,6 @@ const SideInfo: FC<TProps> = ({ article }) => {
           avatarList={meta.latestUpvotedUsers}
           viewerHasUpvoted={viewerHasUpvoted}
           type="article"
-          left={-30}
           bottom={35}
         />
 
@@ -64,7 +63,7 @@ const SideInfo: FC<TProps> = ({ article }) => {
 
         <Label>标签</Label>
         <Value>
-          <TagsList items={articleTags} size="small" />
+          <TagsList items={articleTags} size="medium" left={2} />
         </Value>
 
         <Br bottom={25} />
