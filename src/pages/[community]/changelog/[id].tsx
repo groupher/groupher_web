@@ -8,28 +8,39 @@ import { HCN } from '@/constant/name'
 import { ARTICLE_THREAD } from '@/constant/thread'
 import METRIC from '@/constant/metric'
 
-import { ssrFetchPrepare, ssrRescue, ssrError } from '@/utils'
+import {
+  ssrFetchPrepare,
+  ssrRescue,
+  ssrError,
+  ssrParseDashboard,
+  ssrParseWallpaper,
+  ssrBaseStates,
+} from '@/utils'
 import { useStore } from '@/stores/init'
 
 import GlobalLayout from '@/containers/layout/GlobalLayout'
-import ArticleDigest from '@/containers/digest/ArticleDigest'
-import ArticleContent from '@/containers/content/ArticleContent'
+import ArticleChangelog from '@/widgets/Article/Changelog'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
 import { P } from '@/schemas'
 
 const loader = async (context, opt = {}) => {
   const { query } = context
-  const { gqClient } = ssrFetchPrepare(context, opt)
+  const { gqClient, userHasLogin } = ssrFetchPrepare(context, opt)
 
   const community = query.community || HCN
 
   // query data
   const sessionState = gqClient.request(P.sessionState)
+  const curCommunity = gqClient.request(P.community, {
+    slug: community,
+    userHasLogin,
+  })
   const changelog = gqClient.request(P.changelog, { community, id: query.id, userHasLogin: false })
 
   return {
     ...(await sessionState),
+    ...(await curCommunity),
     ...(await changelog),
   }
 }
@@ -52,14 +63,27 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
+  const { community, changelog } = resp
+
+  const dashboard = ssrParseDashboard(community)
+  const wallpaper = ssrParseWallpaper(community)
+
   const initProps = {
+    ...ssrBaseStates(resp),
     metric: METRIC.CHANGELOG_ARTICLE,
     globalLayout: {
       isMobile: device?.isMobile,
     },
     viewing: {
-      changelog: resp.changelog,
+      community,
+      changelog,
       activeThread: ARTICLE_THREAD.CHANGELOG,
+    },
+    wallpaperEditor: {
+      ...wallpaper,
+    },
+    dashboardThread: {
+      ...dashboard,
     },
   }
 
@@ -77,13 +101,10 @@ const ChangelogPage = (props) => {
   const { isFallback } = useRouter()
   if (isFallback) return <LavaLampLoading top={20} left={30} />
 
-  const { globalLayout } = props
-
   return (
     <Provider store={store}>
       <GlobalLayout>
-        <ArticleDigest isMobile={globalLayout.isMobile} />
-        <ArticleContent isMobile={globalLayout.isMobile} />
+        <ArticleChangelog />
       </GlobalLayout>
     </Provider>
   )

@@ -54,11 +54,9 @@ export const WIDTH = {
     // STICKER_LAPTOPL: '220px',
   },
   CHANGELOG_ARTICLE: {
-    PAGE: '1250px',
-    CONTENT: '580px',
-    CONTENT_OFFSET: '50px',
-    CONTENT_OFFSET_LAPTOPL: '0',
-    CONTENT_OFFSET_DESKTOPL: '0',
+    PAGE: '1320px',
+    CONTENT: '860px',
+    CONTENT_OFFSET: '18px',
   },
   BLOG_ARTICLE: {
     PAGE: '1460px',

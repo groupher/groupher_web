@@ -8,11 +8,11 @@ import { FC, memo } from 'react'
 
 import { buildLog } from '@/logger'
 
-import { UPVOTE_LAYOUT } from '@/constant/layout'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
+import useTheme from '@/hooks/useTheme'
 import AnimatedCount from '@/widgets/AnimatedCount'
 
-import UpvoteBtn from './UpvoteBtn'
-import { Wrapper, Button, UpWrapper, CountWrapper, Alias } from './styles/article_layout'
+import { Wrapper, Button, UpvoteIcon, CountWrapper, Alias } from './styles/article_layout'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Upvote:index')
@@ -30,22 +30,19 @@ const Upvote: FC<TProps> = ({
   viewerHasUpvoted = false,
   onAction = log,
 }) => {
+  const primaryColor = usePrimaryColor()
+  const { themeMap } = useTheme()
+  const numColor = themeMap.rainbow[primaryColor.toLowerCase()]
+
   return (
     <Wrapper testid={testid}>
-      <Button>
-        <UpWrapper>
-          <UpvoteBtn
-            type={UPVOTE_LAYOUT.COMMENT}
-            viewerHasUpvoted={viewerHasUpvoted}
-            onAction={onAction}
-            count={count}
-          />
-        </UpWrapper>
+      <Button color={primaryColor}>
+        <UpvoteIcon color={primaryColor} />
         <CountWrapper>
-          <AnimatedCount count={count} active={viewerHasUpvoted} size="medium" />
+          <AnimatedCount count={count} active={viewerHasUpvoted} size="medium" color={numColor} />
         </CountWrapper>
+        <Alias color={primaryColor}>票</Alias>
       </Button>
-      <Alias>投票</Alias>
     </Wrapper>
   )
 }
