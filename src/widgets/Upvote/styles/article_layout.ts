@@ -8,22 +8,16 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 }))<TTestable>`
   ${css.column('align-both')};
 `
-export const Alias = styled.div`
-  font-size: 13px;
-  color: ${theme('article.info')};
-  font-weight: 400;
-`
 export const Button = styled.div`
-  ${css.column('align-both')};
+  ${css.row('align-both')};
   border: 1px solid;
   border-color: ${theme('button.upvoteBorder')};
   background: ${theme('alphaBg')};
 
-  margin-top: -3px;
   border-radius: 10px;
-  padding: 7px 10px;
-  padding-bottom: 7px;
-  margin-bottom: 8px;
+  padding: 12px 46px;
+  padding-top: 13px;
+  padding-left: 44px;
 
   &:hover {
     border-color: ${theme('lightText')};
@@ -32,9 +26,12 @@ export const Button = styled.div`
 
   transition: 0.2s all;
 `
-export const UpWrapper = styled.div`
-  margin-left: 5px;
-`
 export const CountWrapper = styled.div`
-  margin-top: -4px;
+  margin-left: 8px;
+`
+export const Alias = styled.div`
+  font-size: 15px;
+  color: ${theme('article.info')};
+  margin-left: 5px;
+  font-weight: 400;
 `

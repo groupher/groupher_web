@@ -19,8 +19,8 @@ import {
 import { useStore } from '@/stores/init'
 
 import GlobalLayout from '@/containers/layout/GlobalLayout'
-import ArticleDigest from '@/containers/digest/ArticleDigest'
-import ArticleContent from '@/containers/content/ArticleContent'
+
+import ArticlePost from '@/widgets/Article/Post/tmp'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
 import { P } from '@/schemas'
@@ -102,13 +102,10 @@ const PostPage = (props) => {
   const { isFallback } = useRouter()
   if (isFallback) return <LavaLampLoading top={20} left={30} />
 
-  const { globalLayout } = props
-
   return (
     <Provider store={store}>
       <GlobalLayout>
-        <ArticleDigest isMobile={globalLayout.isMobile} />
-        <ArticleContent isMobile={globalLayout.isMobile} />
+        <ArticlePost />
       </GlobalLayout>
     </Provider>
   )
