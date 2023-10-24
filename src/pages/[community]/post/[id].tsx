@@ -20,7 +20,7 @@ import { useStore } from '@/stores/init'
 
 import GlobalLayout from '@/containers/layout/GlobalLayout'
 
-import ArticlePost from '@/widgets/Article/Post/tmp'
+import ArticlePost from '@/widgets/Article/Post'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
 import { P } from '@/schemas'

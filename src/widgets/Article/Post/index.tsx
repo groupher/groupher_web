@@ -1,7 +1,5 @@
 import { FC, useState } from 'react'
 
-import { toJS } from '@/mobx'
-
 import useViewingArticle from '@/hooks/useViewingArticle'
 import useMetric from '@/hooks/useMetric'
 
