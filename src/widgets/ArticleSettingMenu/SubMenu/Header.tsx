@@ -17,6 +17,22 @@ const Header: FC<TProps> = ({ type }) => {
   let Content = null
 
   switch (type) {
+    case SUB_MENU_TYPE.EDIT: {
+      Content = (
+        <>
+          <Icon.Edit />
+          修改标题
+          <SpaceGrow />
+          <Hint>
+            <InfoIcon />
+            <Help href="/">帮助</Help>
+          </Hint>
+        </>
+      )
+
+      break
+    }
+
     case SUB_MENU_TYPE.SLUG: {
       Content = (
         <>

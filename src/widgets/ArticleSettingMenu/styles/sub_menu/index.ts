@@ -26,9 +26,10 @@ export const ArrowIcon = styled(ArrowSVG)`
   cursor: pointer;
 
   &:hover {
-    fill: ${theme('article.digest')};
+    opacity: 1;
+    fill: ${theme('article.title')};
   }
-  transition: all 0.2s;
+  transition: all 0.1s;
 `
 export const Confirm = styled(Button)`
   border-radius: 5px;

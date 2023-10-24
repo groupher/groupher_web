@@ -50,6 +50,13 @@ const Menu: FC<TProps> = ({ onSubMenuToggle, onClose }) => {
     <Wrapper ref={ref} subMenuType={subMenuType}>
       {!subMenuActive ? (
         <>
+          <MenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.EDIT)}>
+            <Icon.Edit />
+            修改标题
+            <SpaceGrow />
+            <Icon.Arrow />
+          </MenuItem>
+
           <MenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.SLUG)}>
             <Icon.Slug />
             设置路径
