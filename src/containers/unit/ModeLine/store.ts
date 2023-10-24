@@ -43,7 +43,8 @@ const ModeLine = T.model('ModeLine', {
     get isArticleBarVisiable(): boolean {
       const root = getParent(self) as TRootStore
 
-      return !root.articleDigest.inViewport
+      // TODO:
+      return true
     },
     get isTopBarVisiable(): boolean {
       const slf = self as TStore
@@ -79,7 +80,9 @@ const ModeLine = T.model('ModeLine', {
     },
     get isArticleDigestInViewport(): boolean {
       const root = getParent(self) as TRootStore
-      return root.articleDigest.inViewport
+      // return root.articleDigest.inViewport
+      // TODO:
+      return true
     },
     get isCommunityBlockExpand(): boolean {
       const slf = self as TStore

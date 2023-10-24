@@ -29,8 +29,6 @@ import {
   ThemeDefaults,
   ErrorBoxStore,
 
-  // threads
-  ArticleDigestStore,
   // content
   CommunityContentStore,
   // ExploreContentStore,
@@ -71,7 +69,6 @@ import {
   KanbanThreadStore,
   UserPublishedArticlesStore,
   CollectionFolderStore,
-  ArticleContentStore,
   ArticleViewerStore,
   ArticlesThreadStore,
   ThreadSidebarStore,
@@ -122,9 +119,6 @@ const rootStore = T.model({
 
   errorBox: T.opt(ErrorBoxStore, {}),
 
-  // banners
-  articleDigest: T.opt(ArticleDigestStore, {}),
-
   // content
   communityContent: T.opt(CommunityContentStore, {}),
 
@@ -165,7 +159,6 @@ const rootStore = T.model({
   kanbanThread: T.opt(KanbanThreadStore, {}),
   userPublishedArticles: T.opt(UserPublishedArticlesStore, {}),
   collectionFolder: T.opt(CollectionFolderStore, {}),
-  articleContent: T.opt(ArticleContentStore, {}),
   articleViewer: T.opt(ArticleViewerStore, {}),
   articlesThread: T.opt(ArticlesThreadStore, {}),
   threadSidebar: T.opt(ThreadSidebarStore, {}),

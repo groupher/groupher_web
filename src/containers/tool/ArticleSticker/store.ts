@@ -35,13 +35,16 @@ const ArticleSticker = T.model('ArticleSticker', {
     },
     get isArticleDigestInViewport(): boolean {
       const root = getParent(self) as TRootStore
-      return root.articleDigest.inViewport
+      // return root.articleDigest.inViewport
+      // TODO:
+      return true
     },
     get isArticleInViewport(): boolean {
       const root = getParent(self) as TRootStore
-      const { articleInViewport } = root.articleContent
+      // const { articleInViewport } = root.articleContent
 
-      return articleInViewport
+      // TODO:
+      return true
     },
     get showLeftSticker(): boolean {
       const { isArticleDigestInViewport, isLeftStickerLocked, bodyScrollDirection } = self as TStore

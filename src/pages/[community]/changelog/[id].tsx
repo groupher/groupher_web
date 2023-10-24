@@ -101,8 +101,6 @@ const ChangelogPage = (props) => {
   const { isFallback } = useRouter()
   if (isFallback) return <LavaLampLoading top={20} left={30} />
 
-  const { globalLayout } = props
-
   return (
     <Provider store={store}>
       <GlobalLayout>
