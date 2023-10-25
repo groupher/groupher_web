@@ -8,8 +8,10 @@ import { FC, memo } from 'react'
 
 import { buildLog } from '@/logger'
 
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 import AnimatedCount from '@/widgets/AnimatedCount'
+
 import UpvoteBtn from './UpvoteBtn'
 
 import { Wrapper, Button, UpWrapper, CountWrapper } from './styles/post_minimal_layout'
@@ -30,9 +32,11 @@ const Upvote: FC<TProps> = ({
   viewerHasUpvoted = false,
   onAction = log,
 }) => {
+  const primaryColor = usePrimaryColor()
+
   return (
     <Wrapper testid={testid}>
-      <Button>
+      <Button $active={viewerHasUpvoted} color={primaryColor}>
         <UpWrapper>
           <UpvoteBtn
             type={UPVOTE_LAYOUT.COMMENT}
@@ -42,7 +46,7 @@ const Upvote: FC<TProps> = ({
           />
         </UpWrapper>
         <CountWrapper>
-          <AnimatedCount count={count} active={viewerHasUpvoted} size="medium" />
+          <AnimatedCount count={count} $active={viewerHasUpvoted} size="medium" />
         </CountWrapper>
       </Button>
     </Wrapper>

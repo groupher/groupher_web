@@ -1,25 +1,28 @@
 import styled from 'styled-components'
 
-import type { TColorName, TTestable } from '@/spec'
+import type { TActive, TColorName, TTestable } from '@/spec'
 import UpvoteSVG from '@/icons/Upvote'
-import css, { theme, rainbow, rainbowLight } from '@/css'
+import css, { theme, rainbow, rainbowLink, rainbowLight } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.column('align-both')};
 `
-export const UpvoteIcon = styled(UpvoteSVG)<{ color: TColorName }>`
+type TUpvoteIcon = { color: TColorName } & TActive
+export const UpvoteIcon = styled(UpvoteSVG)<TUpvoteIcon>`
   ${css.size(15)};
-  fill: ${({ color }) => rainbow(color)};
+  fill: ${({ color, $active }) => ($active ? rainbow(color) : theme('article.digest'))};
   transform: scale(1, 0.8);
   filter: brightness(1.2);
 `
-export const Button = styled.div<{ color: TColorName }>`
+export const Button = styled.div<TUpvoteIcon>`
   ${css.row('align-both')};
   border: 1px solid;
-  border-color: ${({ color }) => rainbow(color)};
-  background: ${theme('alphaBg')};
+  border-color: ${({ $active, color }) =>
+    $active ? rainbowLink(color, 'blackActive') : theme('button.upvoteBorder')};
+
+  background-color: ${({ $active, color }) => ($active ? rainbowLight(color) : 'transparent')};
 
   border-radius: 14px;
   width: 172px;
@@ -27,7 +30,9 @@ export const Button = styled.div<{ color: TColorName }>`
   padding-top: 11px;
 
   &:hover {
+    border-color: ${({ color }) => rainbowLink(color, 'blackActive')};
     background-color: ${({ color }) => rainbowLight(color)};
+
     cursor: pointer;
   }
 
@@ -36,9 +41,10 @@ export const Button = styled.div<{ color: TColorName }>`
 export const CountWrapper = styled.div`
   margin-left: 8px;
 `
-export const Alias = styled.div<{ color: TColorName }>`
+
+export const Alias = styled.div<TUpvoteIcon>`
   font-size: 15px;
-  color: ${({ color }) => rainbow(color)};
+  color: ${({ color, $active }) => ($active ? rainbow(color) : theme('article.digest'))};
   margin-left: 5px;
   font-weight: 400;
   filter: brightness(1.2);

@@ -29,7 +29,7 @@ const UpdateBtn: FC<TProps> = ({ text = '投票', num = 13, delay, dividerColor,
       <UpvoteIcon color={mainColor} />
       <Text color={mainColor}>{text}</Text>
       <Num>
-        <AnimatedCount count={count} color={mainColor} />
+        <AnimatedCount count={count} />
       </Num>
     </Wrapper>
   )

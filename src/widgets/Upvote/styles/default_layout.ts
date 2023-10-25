@@ -1,24 +1,30 @@
 import styled from 'styled-components'
 
-import type { TTestable } from '@/spec'
-import css, { theme } from '@/css'
+import type { TActive, TColorName, TTestable } from '@/spec'
+import css, { rainbowLight, rainbowLink, theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TTestable>`
   ${css.row('align-center')};
 `
-export const Button = styled.div`
+type TButton = TActive & { color: TColorName }
+export const Button = styled.div<TButton>`
   ${css.row('align-center')};
   border: 1px solid;
-  border-color: ${theme('divider')};
   margin-right: 16px;
+
+  border-color: ${({ $active, color }) =>
+    $active ? rainbowLink(color, 'blackActive') : theme('button.upvoteBorder')};
+
+  background-color: ${({ $active, color }) => ($active ? rainbowLight(color) : 'transparent')};
 
   border-radius: 10px;
   padding: 12px 15px;
 
   &:hover {
-    border-color: ${theme('lightText')};
+    border-color: ${({ color }) => rainbowLink(color, 'blackActive')};
+    background-color: ${({ color }) => rainbowLight(color)};
     cursor: pointer;
   }
 
@@ -44,6 +50,7 @@ export const Alias = styled.div`
 `
 export const UpvoteBtnWrapper = styled.div`
   ${css.row('align-both')};
+  margin-top: 1px;
 
   ${css.media.mobile`
     margin-top: 4px;

@@ -48,7 +48,7 @@ const Upvote: FC<TProps> = ({
           />
         </UpWrapper>
         <CountWrapper>
-          <AnimatedCount count={count} active={viewerHasUpvoted} size="medium" />
+          <AnimatedCount count={count} $active={viewerHasUpvoted} size="medium" />
         </CountWrapper>
       </Button>
       {!noOne && (

@@ -43,6 +43,7 @@ const night = {
   },
   font: fontColor,
   link,
+  blackActive: '#3171DB',
   divider: border,
   alphaBg: hoverBg,
   alphaBg2: '#1c1c1cb8',
@@ -242,7 +243,7 @@ const night = {
     activeBg: darken(primaryColor, 5),
     clicked: primaryColor,
     ghostBorder: '#606060',
-    upvoteBorder: '#484848',
+    upvoteBorder: '#5f5f5f',
     boxShadow: 'rgb(24 24 24 / 32%) -1px 1px 16px 2px',
   },
   navigator: {

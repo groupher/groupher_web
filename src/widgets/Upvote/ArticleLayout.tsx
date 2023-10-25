@@ -32,16 +32,17 @@ const Upvote: FC<TProps> = ({
 }) => {
   const primaryColor = usePrimaryColor()
   const { themeMap } = useTheme()
-  const numColor = themeMap.rainbow[primaryColor.toLowerCase()]
 
   return (
     <Wrapper testid={testid}>
-      <Button color={primaryColor}>
-        <UpvoteIcon color={primaryColor} />
+      <Button color={primaryColor} $active={viewerHasUpvoted}>
+        <UpvoteIcon color={primaryColor} $active={viewerHasUpvoted} />
         <CountWrapper>
-          <AnimatedCount count={count} active={viewerHasUpvoted} size="medium" color={numColor} />
+          <AnimatedCount count={count} $active={viewerHasUpvoted} size="medium" />
         </CountWrapper>
-        <Alias color={primaryColor}>票</Alias>
+        <Alias color={primaryColor} $active={viewerHasUpvoted}>
+          票
+        </Alias>
       </Button>
     </Wrapper>
   )

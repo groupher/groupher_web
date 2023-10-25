@@ -5,8 +5,10 @@
  */
 
 import { FC, memo, useState, useCallback } from 'react'
+
 import { authWarn } from '@/signal'
 import useAccount from '@/hooks/useAccount'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import type { TUpvoteLayout } from '@/spec'
 import { buildLog } from '@/logger'
@@ -34,6 +36,8 @@ const UpvoteBtn: FC<TProps> = ({
   const accountInfo = useAccount()
   const isLogin = !!accountInfo
 
+  const primaryColor = usePrimaryColor()
+
   const handleClick = useCallback(() => {
     if (!isLogin) return authWarn()
 
@@ -52,7 +56,7 @@ const UpvoteBtn: FC<TProps> = ({
     <Wrapper $showAnimation={showAnimation} type={type}>
       <ContentWrapper>
         <IconWrapper onClick={handleClick} type={type}>
-          <UpIcon type={type} $active={viewerHasUpvoted} count={count} />
+          <UpIcon type={type} $active={viewerHasUpvoted} count={count} color={primaryColor} />
         </IconWrapper>
       </ContentWrapper>
     </Wrapper>
