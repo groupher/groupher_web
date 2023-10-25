@@ -13,6 +13,7 @@ import { UPVOTE_LAYOUT } from '@/constant/layout'
 import AnimatedCount from '@/widgets/AnimatedCount'
 import Facepile from '@/widgets/Facepile'
 
+import useUpvote from './useUpvote'
 import UpvoteBtn from './UpvoteBtn'
 import { Wrapper, Button, FacesWrapper, UpWrapper, CountWrapper } from './styles/sticker_layout'
 
@@ -34,16 +35,17 @@ const Upvote: FC<TProps> = ({
   onAction = log,
   avatarList = [],
 }) => {
+  const { handleClick, startAnimate } = useUpvote({ viewerHasUpvoted, onAction })
   const noOne = count === 0
 
   return (
     <Wrapper testid={testid}>
-      <Button>
+      <Button onClick={handleClick}>
         <UpWrapper>
           <UpvoteBtn
             type={UPVOTE_LAYOUT.COMMENT}
             viewerHasUpvoted={viewerHasUpvoted}
-            onAction={onAction}
+            startAnimate={startAnimate}
             count={count}
           />
         </UpWrapper>

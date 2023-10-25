@@ -4,10 +4,8 @@
  *
  */
 
-import { FC, memo, useState, useCallback } from 'react'
+import { FC, memo } from 'react'
 
-import { authWarn } from '@/signal'
-import useAccount from '@/hooks/useAccount'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import type { TUpvoteLayout } from '@/spec'
@@ -22,40 +20,21 @@ type TProps = {
   type?: TUpvoteLayout
   viewerHasUpvoted?: boolean
   count?: number
-  onAction: (viewerHasUpvoted: boolean) => void
+  startAnimate?: boolean
 }
 
 const UpvoteBtn: FC<TProps> = ({
   type = 'default',
   viewerHasUpvoted = false,
+  startAnimate = false,
   count = 0,
-  onAction,
 }) => {
-  const [showAnimation, setShowAnimation] = useState(false)
-  const [num, setNum] = useState(0)
-  const accountInfo = useAccount()
-  const isLogin = !!accountInfo
-
   const primaryColor = usePrimaryColor()
 
-  const handleClick = useCallback(() => {
-    if (!isLogin) return authWarn()
-
-    onAction(!viewerHasUpvoted)
-    if (viewerHasUpvoted) return
-    setNum(num + 1)
-
-    if (!showAnimation) {
-      setShowAnimation(true)
-
-      setTimeout(() => setShowAnimation(false), 950)
-    }
-  }, [showAnimation, viewerHasUpvoted, num, onAction, isLogin])
-
   return (
-    <Wrapper $showAnimation={showAnimation} type={type}>
+    <Wrapper $showAnimation={startAnimate} type={type}>
       <ContentWrapper>
-        <IconWrapper onClick={handleClick} type={type}>
+        <IconWrapper type={type}>
           <UpIcon type={type} $active={viewerHasUpvoted} count={count} color={primaryColor} />
         </IconWrapper>
       </ContentWrapper>

@@ -12,6 +12,7 @@ import { buildLog } from '@/logger'
 import Facepile from '@/widgets/Facepile'
 import { DesktopOnly } from '@/widgets/Common'
 
+import useUpvote from './useUpvote'
 import AnimatedCount from '../AnimatedCount'
 import UpvoteBtn from './UpvoteBtn'
 
@@ -35,16 +36,17 @@ const Upvote: FC<TProps> = ({
   onAction = log,
   avatarList,
 }) => {
+  const { handleClick, startAnimate } = useUpvote({ viewerHasUpvoted, onAction })
   const noOne = count === 0
 
   return (
     <Wrapper testid={testid}>
-      <UpvoteBtnWrapper>
-        <UpvoteBtn viewerHasUpvoted={viewerHasUpvoted} onAction={onAction} count={count} />
+      <UpvoteBtnWrapper onClick={handleClick}>
+        <UpvoteBtn viewerHasUpvoted={viewerHasUpvoted} count={count} startAnimate={startAnimate} />
       </UpvoteBtnWrapper>
       <AnimatedCount
         count={count}
-        active={viewerHasUpvoted}
+        $active={viewerHasUpvoted}
         size={count === 0 ? 'small' : 'medium'}
       />
       <DesktopOnly>{!noOne && <LineDivider />}</DesktopOnly>

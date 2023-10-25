@@ -10,6 +10,7 @@ import { buildLog } from '@/logger'
 
 import { Space } from '@/widgets/Common'
 
+import useUpvote from './useUpvote'
 import UpvoteBtn from './UpvoteBtn'
 
 import { Wrapper, UpvoteBtnWrapper, Count } from './styles/fixed_header_layout'
@@ -30,12 +31,14 @@ const Upvote: FC<TProps> = ({
   viewerHasUpvoted = false,
   onAction = log,
 }) => {
+  const { handleClick, startAnimate } = useUpvote({ viewerHasUpvoted, onAction })
+
   const noOne = count === 0
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper testid={testid} onClick={handleClick}>
       <UpvoteBtnWrapper>
-        <UpvoteBtn viewerHasUpvoted={viewerHasUpvoted} onAction={onAction} count={count} />
+        <UpvoteBtn viewerHasUpvoted={viewerHasUpvoted} count={count} startAnimate={startAnimate} />
       </UpvoteBtnWrapper>
       <Space right={2} />
       <Count noOne={noOne}>{count}</Count>

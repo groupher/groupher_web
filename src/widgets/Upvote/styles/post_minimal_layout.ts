@@ -36,7 +36,7 @@ export const Button = styled.div<TButton>`
 
 export const UpWrapper = styled.div`
   transform: scale(0.85);
-  margin-left: 5px;
+  margin-left: 4px;
 `
 export const CountWrapper = styled.div`
   margin-top: -2px;

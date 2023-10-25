@@ -50,7 +50,6 @@ export const Alias = styled.div`
 `
 export const UpvoteBtnWrapper = styled.div`
   ${css.row('align-both')};
-  margin-top: 1px;
 
   ${css.media.mobile`
     margin-top: 4px;

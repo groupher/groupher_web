@@ -9,6 +9,7 @@ import { FC, memo } from 'react'
 import { buildLog } from '@/logger'
 
 import AnimatedCount from '../AnimatedCount'
+import useUpvote from './useUpvote'
 import UpvoteBtn from './UpvoteBtn'
 
 import { Wrapper, UpvoteBtnWrapper, CountWrapper } from './styles/simple_layout'
@@ -29,10 +30,12 @@ const Upvote: FC<TProps> = ({
   viewerHasUpvoted = false,
   onAction = log,
 }) => {
+  const { handleClick, startAnimate } = useUpvote({ viewerHasUpvoted, onAction })
+
   return (
-    <Wrapper testid={testid}>
+    <Wrapper testid={testid} onClick={() => handleClick()}>
       <UpvoteBtnWrapper>
-        <UpvoteBtn viewerHasUpvoted={viewerHasUpvoted} onAction={onAction} count={count} />
+        <UpvoteBtn viewerHasUpvoted={viewerHasUpvoted} count={count} startAnimate={startAnimate} />
       </UpvoteBtnWrapper>
       <CountWrapper>
         <AnimatedCount count={count} $active={viewerHasUpvoted} size="small" />
