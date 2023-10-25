@@ -8,8 +8,10 @@ import { FC } from 'react'
 import type { TUser } from '@/spec'
 import { buildLog } from '@/logger'
 
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 import Facepile from '@/widgets/Facepile'
 
+import useUpvote from './useUpvote'
 import AnimatedCount from '../AnimatedCount'
 import UpvoteBtn from './UpvoteBtn'
 
@@ -43,16 +45,23 @@ const Upvote: FC<TProps> = ({
   onAction = log,
   avatarList,
 }) => {
+  const primaryColor = usePrimaryColor()
+  const { handleClick, startAnimate } = useUpvote({ viewerHasUpvoted, onAction })
+
   const noOne = count === 0
 
   return (
     <Wrapper testid={testid}>
-      <Button>
+      <Button $active={viewerHasUpvoted} color={primaryColor} onClick={handleClick}>
         <UpvoteBtnWrapper>
-          <UpvoteBtn viewerHasUpvoted={viewerHasUpvoted} onAction={onAction} count={count} />
+          <UpvoteBtn
+            viewerHasUpvoted={viewerHasUpvoted}
+            count={count}
+            startAnimate={startAnimate}
+          />
         </UpvoteBtnWrapper>
         <Count>
-          <AnimatedCount count={count} active={viewerHasUpvoted} size="medium" />
+          <AnimatedCount count={count} $active={viewerHasUpvoted} size="medium" />
         </Count>
       </Button>
       {!noOne && (

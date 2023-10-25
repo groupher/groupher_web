@@ -11,6 +11,8 @@ export type TThemeMap = {
     category: string // TODO: 'dark' | 'light'
   }
   htmlBg?: string
+  link?: string
+  blackActive?: string
   alphaBg?: string
   rainbow?: {
     red: string

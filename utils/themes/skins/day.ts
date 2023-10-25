@@ -43,6 +43,7 @@ const day = {
   },
   font: fontColor,
   link,
+  blackActive: '#3171DB',
   divider: border,
   alphaBg: '#ffffff95',
   alphaBg2: '#fffffff2',
@@ -241,7 +242,7 @@ const day = {
     activeBg: darken(primaryColor, 5),
     clicked: primaryColor,
     ghostBorder: hint,
-    upvoteBorder: '#dadada',
+    upvoteBorder: '#c5c5c5',
     boxShadow: 'rgb(202 202 202 / 10%) -1px 1px 16px 2px',
   },
   navigator: {

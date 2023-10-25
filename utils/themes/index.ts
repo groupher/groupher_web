@@ -34,9 +34,9 @@ export const themeCoverIndexMap = map(path(['coverIndex']), themeSkins)
 export const theme = (themeKey: TFlatThemeKey): TTheme =>
   path(['theme', ...split('.', themeKey)]) || 'wheat'
 
-export const rainbowLink = (primaryColor: TColorName): string => {
+export const rainbowLink = (primaryColor: TColorName, rollbackForBlack = 'link'): string => {
   if (primaryColor === COLOR_NAME.BLACK) {
-    return theme('link')
+    return theme(rollbackForBlack as TFlatThemeKey)
   }
 
   return theme(`rainbow.${camelize(primaryColor)}` as TFlatThemeKey)

@@ -1,10 +1,13 @@
 import { FC, memo } from 'react'
 
-import type { TSize } from '@/spec'
+import type { TActive, TSize } from '@/spec'
+
 import SIZE from '@/constant/size'
-import { Wrapper } from './styles'
 
 import AnimatedCount from './AnimatedCount'
+
+import { Wrapper } from './styles'
+
 // @ts-ignore
 // const LoadingValueContext = createContext()
 
@@ -31,14 +34,12 @@ import AnimatedCount from './AnimatedCount'
 export type TProps = {
   count?: number
   size?: TSize
-  active?: boolean
-  color?: string
-}
+} & TActive
 
-const Count: FC<TProps> = ({ count = 0, size = SIZE.SMALL, active = false, color = '' }) => {
+const Count: FC<TProps> = ({ count = 0, size = SIZE.SMALL, $active = false }) => {
   return (
-    <Wrapper $active={active} count={count}>
-      <AnimatedCount count={count} size={size} active={active} color={color} />
+    <Wrapper $active={$active} count={count}>
+      <AnimatedCount count={count} size={size} $active={$active} />
     </Wrapper>
     // <LoadingValueContext.Provider value={{ count, size, active }}>
     //   <AnimatedCount count={count} size={size} active={active} />

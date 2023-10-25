@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import LinkSVG from '@/icons/Link'
 import QRCodeSVG from '@/icons/QRCodeSolid'
 import MoreSVG from '@/icons/ShareArrow'
+import WeiboRawSVG from '@/icons/social/WeiboRaw'
+import WeChatRawSVG from '@/icons/social/WeChatRaw'
 
 import { WithMargin } from '@/widgets/Common'
 
@@ -31,7 +33,7 @@ const commonIcon = (comp) => {
   return styled(comp)`
     ${css.size(18)};
     fill: ${theme('hint')};
-    opacity: 0.65;
+    opacity: 0.85;
     margin-left: 15px;
     cursor: pointer;
 
@@ -50,4 +52,8 @@ export const Icon = {
   `,
   More: commonIcon(MoreSVG),
   QRCode: commonIcon(QRCodeSVG),
+  WeChat: commonIcon(WeChatRawSVG),
+  Weibo: styled(commonIcon(WeiboRawSVG))`
+    margin-top: -3px;
+  `,
 }

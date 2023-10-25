@@ -46,6 +46,7 @@ const ColorSelector: FC<TProps> = ({
     <Tooltip
       placement={placement}
       trigger="click"
+      hideOnClick={false}
       offset={offset}
       content={
         <Wrapper testid={testid}>

@@ -1,14 +1,6 @@
 import type { TUpvoteLayout } from '@/spec'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
-import { theme } from '@/css'
-
-export const getIconColor = ($active: boolean): string => {
-  if ($active) return theme('article.title')
-
-  return theme('article.info')
-}
-
 export const getIconSize = (type: TUpvoteLayout): string => {
   switch (type) {
     case UPVOTE_LAYOUT.ARTICLE: {
@@ -24,3 +16,5 @@ export const getIconSize = (type: TUpvoteLayout): string => {
     }
   }
 }
+
+export const holder = 1

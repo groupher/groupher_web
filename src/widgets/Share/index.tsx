@@ -20,7 +20,7 @@ import useViewingArticle from '@/hooks/useViewingArticle'
 import Tooltip from '@/widgets/Tooltip'
 import { toast } from '@/signal'
 
-import { SITE_SHARE_TYPE } from './constant'
+import { SITE_SHARE_TYPE, SHARE_TYPE } from './constant'
 import { parseLinksData, toPlatform } from './helper'
 import { Wrapper, Panel, LinkTip, QRTip, Icon } from './styles'
 
@@ -62,13 +62,21 @@ const Share: FC<TProps> = ({ modalOffset = '', ...restProps }) => {
           <Panel>
             <QRCode value={articleLink} size={120} />
 
-            <QRTip>打开自带扫一扫，即可将本内容分享到应用</QRTip>
+            <QRTip>打开微信 &gt; 发现 &gt; 扫一扫，即可将本文分享到微信。</QRTip>
           </Panel>
         }
         placement="bottom"
         delay={200}
       >
-        <Icon.QRCode />
+        <Icon.WeChat />
+      </Tooltip>
+
+      <Tooltip content={<LinkTip>分享到微博</LinkTip>} placement="bottom" delay={500}>
+        <Icon.Weibo
+          onClick={() => {
+            toPlatform(article, SHARE_TYPE.WEIBO, articleLink)
+          }}
+        />
       </Tooltip>
 
       <Tooltip content={<LinkTip>更多分享</LinkTip>} placement="bottom" delay={500}>

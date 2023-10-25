@@ -5,6 +5,8 @@ import type { TPost } from '@/spec'
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
+import { mockUsers } from '@/mock'
+
 import { Br } from '@/widgets/Common'
 import Upvote from '@/widgets/Upvote'
 import ArticleCatState from '@/widgets/ArticleCatState'
@@ -31,12 +33,14 @@ const SideInfo: FC<TProps> = ({ article }) => {
   const { insertedAt, articleTags, upvotesCount, meta, viewerHasUpvoted } = article
   const { latestUpvotedUsers } = meta
 
+  const users = mockUsers(5)
+
   return (
     <Wrapper>
       <InnerWrapper>
         <Upvote
           count={upvotesCount}
-          avatarList={meta.latestUpvotedUsers}
+          avatarList={users}
           viewerHasUpvoted={viewerHasUpvoted}
           type="article"
           bottom={35}

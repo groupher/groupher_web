@@ -1,12 +1,12 @@
 import styled, { keyframes } from 'styled-components'
 
-import type { TUpvoteLayout, TActive } from '@/spec'
+import type { TUpvoteLayout, TActive, TColorName } from '@/spec'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
 import UpvoteIcon from '@/icons/Upvote'
-import css, { theme } from '@/css'
+import css, { theme, rainbowLink } from '@/css'
 
-import { getIconSize, getIconColor } from './metric'
+import { getIconSize } from './metric'
 
 const topBubbles = keyframes`
   0% {
@@ -116,6 +116,7 @@ export const Wrapper = styled.div<TWrapper>`
 export const ContentWrapper = styled.div`
   ${css.row('align-center')};
 `
+
 export const IconWrapper = styled.div<{ type: TUpvoteLayout }>`
   ${css.row('align-center', 'justify-start')};
   width: ${({ type }) => (type !== UPVOTE_LAYOUT.ARTICLE ? '20px' : 'auto')};
@@ -135,10 +136,9 @@ export const IconWrapper = styled.div<{ type: TUpvoteLayout }>`
     transition: all 0.2s;
   }
 `
-type TUpIcon = { type: TUpvoteLayout; count: number } & TActive
+type TUpIcon = { type: TUpvoteLayout; count: number } & TActive & { color: TColorName }
 export const UpIcon = styled(UpvoteIcon)<TUpIcon>`
-  fill: ${({ $active }) => getIconColor($active)};
-
+  fill: ${({ $active, color }) => ($active ? rainbowLink(color, 'blackActive') : theme('hint'))};
   width: ${({ type }) => getIconSize(type)};
   height: ${({ type }) => getIconSize(type)};
 
