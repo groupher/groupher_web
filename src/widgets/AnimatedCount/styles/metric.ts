@@ -7,10 +7,10 @@ export const getFontSize = (size: TSize): number => {
       return 13
     }
     case SIZE.MEDIUM: {
-      return 17
+      return 15
     }
     case SIZE.LARGE: {
-      return 23
+      return 17
     }
     default: {
       return 14

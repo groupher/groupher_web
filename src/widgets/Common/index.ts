@@ -58,11 +58,12 @@ export const SexyDivider = styled.div<TSpace>`
   margin-bottom: ${({ bottom }) => `${bottom === undefined ? 20 : bottom}px`};
 `
 
-type TLineDivider = TSpace & { height?: number }
+type TLineDivider = TSpace & { height?: number; opacity?: number }
 export const LineDivider = styled.div<TLineDivider>`
-  background-color: ${theme('divider')};
+  background-color: ${theme('lightText')};
   width: 1px;
   height: ${({ height }) => `${height || 12}px`};
+  opacity: ${({ opacity }) => `${opacity || 0.8}`};
 
   margin-left: ${({ left }) => `${left || 15}px`};
   margin-right: ${({ right }) => `${right || 15}px`};

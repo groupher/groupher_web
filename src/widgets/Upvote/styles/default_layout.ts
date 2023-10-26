@@ -8,11 +8,12 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 }))<TTestable>`
   ${css.row('align-center')};
 `
+
 type TButton = TActive & { color: TColorName }
 export const Button = styled.div<TButton>`
   ${css.row('align-center')};
-  border: 1px solid;
-  margin-right: 16px;
+  border: ${({ $active }) => ($active ? '1px dotted' : '1px solid')};
+  margin-right: 20px;
 
   border-color: ${({ $active, color }) =>
     $active ? rainbowLink(color, 'blackActive') : theme('button.upvoteBorder')};
@@ -50,6 +51,7 @@ export const Alias = styled.div`
 `
 export const UpvoteBtnWrapper = styled.div`
   ${css.row('align-both')};
+  margin-top: 1px;
 
   ${css.media.mobile`
     margin-top: 4px;

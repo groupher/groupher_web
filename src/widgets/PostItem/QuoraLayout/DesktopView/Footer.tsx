@@ -28,12 +28,16 @@ const Footer: FC<TProps> = ({ article }) => {
         // avatarList={mockUsers(5)}
         viewerHasUpvoted={viewerHasUpvoted}
         type={UPVOTE_LAYOUT.GENERAL}
-        left={-2}
+        left={-1}
         top={-1}
       />
-
-      {article.cat && <ArticleCatState left={18} cat={article.cat} state={article.state} />}
-
+      {article.cat && (
+        <ArticleCatState
+          left={upvotesCount === 0 ? 10 : 18}
+          cat={article.cat}
+          state={article.state}
+        />
+      )}
       <Space right={18} />
       <ViewsCount count={article.views} />
     </Wrapper>

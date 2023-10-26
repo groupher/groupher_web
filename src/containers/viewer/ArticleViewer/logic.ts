@@ -31,7 +31,6 @@ export const handleUpvote = (article: TArticle, viewerHasUpvoted: boolean): void
   const { id, meta } = article
 
   store.updateUpvote(viewerHasUpvoted)
-
   const queryLatestUsers = true
 
   viewerHasUpvoted
@@ -70,7 +69,7 @@ const handleArticleRes = (article: TArticle): void => {
       upvotesCount,
       viewerHasViewed: true,
     })
-  }, 2000)
+  }, 500)
 }
 
 const handleUovoteRes = ({ upvotesCount, meta }) => {
@@ -78,6 +77,7 @@ const handleUovoteRes = ({ upvotesCount, meta }) => {
 
   const { id, viewerHasUpvoted, meta: viewingArticleMeta } = store.viewingArticle
   const syncMeta = merge(viewingArticleMeta, meta)
+
   store.syncArticle({ id, viewerHasUpvoted, upvotesCount, meta: syncMeta })
 }
 

@@ -31,15 +31,16 @@ const UserCard = dynamic(() => import('@/widgets/Cards/UserCard'), {
 
 type TProps = {
   article: TPost
+  onClick: () => void
 }
 
-const Header: FC<TProps> = ({ article }) => {
+const Header: FC<TProps> = ({ article, onClick }) => {
   const { slug } = useViewingCommunity()
   const bannerLayout = useBannerLayout()
   const { author, title, commentsCount, innerId, articleTags, insertedAt } = article
 
   return (
-    <Wrapper>
+    <Wrapper onClick={onClick}>
       <Topping>
         <Tooltip
           //  @ts-ignore

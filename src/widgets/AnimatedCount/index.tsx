@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import type { TActive, TSize } from '@/spec'
+import type { TActive, TSize, TSpace } from '@/spec'
 
 import SIZE from '@/constant/size'
 
@@ -34,11 +34,12 @@ import { Wrapper } from './styles'
 export type TProps = {
   count?: number
   size?: TSize
-} & TActive
+} & TActive &
+  TSpace
 
-const Count: FC<TProps> = ({ count = 0, size = SIZE.SMALL, $active = false }) => {
+const Count: FC<TProps> = ({ count = 0, size = SIZE.SMALL, $active = false, ...restProps }) => {
   return (
-    <Wrapper $active={$active} count={count}>
+    <Wrapper $active={$active} count={count} {...restProps}>
       <AnimatedCount count={count} size={size} $active={$active} />
     </Wrapper>
     // <LoadingValueContext.Provider value={{ count, size, active }}>
