@@ -4,8 +4,10 @@ import { APP_VERSION } from '@/config'
 import type { TMetric, TScrollDirection, TGlowPosition, TArticle } from '@/spec'
 import METRIC from '@/constant/metric'
 import EVENT from '@/constant/event'
+import ERR from '@/constant/err'
 
 import { buildLog } from '@/logger'
+import { errRescue } from '@/signal'
 import { Global } from '@/helper'
 
 import { matchArticleUpvotes } from '@/utils/macros'
@@ -129,7 +131,33 @@ const DataSolver = [
     },
   },
 ]
-const ErrSolver = []
+const _handleError = () => {
+  //
+}
+
+const ErrSolver = [
+  {
+    match: asyncErr(ERR.GRAPHQL),
+    action: ({ details }) => {
+      _handleError()
+      errRescue({ type: ERR.GRAPHQL, details, path: 'GlobalLayout' })
+    },
+  },
+  {
+    match: asyncErr(ERR.TIMEOUT),
+    action: ({ details }) => {
+      _handleError()
+      errRescue({ type: ERR.TIMEOUT, details, path: 'GlobalLayout' })
+    },
+  },
+  {
+    match: asyncErr(ERR.NETWORK),
+    action: () => {
+      _handleError()
+      errRescue({ type: ERR.NETWORK, path: 'GlobalLayout' })
+    },
+  },
+]
 
 export const useInit = (_store: TStore): void => {
   useEffect(() => {
