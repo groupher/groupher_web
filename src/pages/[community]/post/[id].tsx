@@ -37,7 +37,8 @@ const loader = async (context, opt = {}) => {
     slug: community,
     userHasLogin,
   })
-  const post = gqClient.request(P.post, { community, id: query.id, userHasLogin: false })
+
+  const post = gqClient.request(P.post, { community, id: query.id, userHasLogin })
 
   return {
     ...(await sessionState),

@@ -51,7 +51,6 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
     },
     updateViewerHasUpvoted(viewerHasUpvoted: boolean): void {
       const root = getParent(self) as TRootStore
-
       root.viewing.updateViewerUpvoted(viewerHasUpvoted)
     },
     syncUploadInfo(upvotesCount: number, meta: TArticleMeta): void {

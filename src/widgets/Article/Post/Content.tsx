@@ -7,9 +7,9 @@
 import { FC, useRef } from 'react'
 import dynamic from 'next/dynamic'
 
-import type { TPost } from '@/spec'
 import { buildLog } from '@/logger'
 
+import useViewingArticle from '@/hooks/useViewingArticle'
 import ArtimentBody from '@/widgets/ArtimentBody'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 // import ViewportTracker from '@/widgets/ViewportTracker'
@@ -25,12 +25,9 @@ const Comments = dynamic(() => import('@/containers/unit/Comments'), {
   ssr: false,
 })
 
-type TProps = {
-  article: TPost
-}
-
-const Content: FC<TProps> = ({ article }) => {
+const Content: FC = () => {
   const ref = useRef()
+  const { article } = useViewingArticle()
 
   return (
     <Wrapper>
