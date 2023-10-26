@@ -1,6 +1,5 @@
 import { FC, useState } from 'react'
 
-import useViewingArticle from '@/hooks/useViewingArticle'
 import useMetric from '@/hooks/useMetric'
 
 import Header from '@/widgets/CommunityDigest/HeaderLayout'
@@ -13,8 +12,6 @@ import SideInfo from './SideInfo'
 import { Wrapper, InnerWrapper, HeaderWrapper, BannerContent, Main } from '../styles/post'
 
 const Post: FC = () => {
-  const { article } = useViewingArticle()
-
   const metric = useMetric()
 
   const [inViewport, setInViewport] = useState(false)
@@ -28,10 +25,10 @@ const Post: FC = () => {
         </HeaderWrapper>
         <BannerContent>
           <Main>
-            <Digest article={article} />
-            <Content article={article} />
+            <Digest />
+            <Content />
           </Main>
-          <SideInfo article={article} />
+          <SideInfo />
         </BannerContent>
       </InnerWrapper>
       <ViewportTracker onEnter={() => setInViewport(true)} onLeave={() => setInViewport(false)} />

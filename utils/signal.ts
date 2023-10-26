@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 import { toast as hotToast } from 'sonner'
 
 import PubSub from 'pubsub-js'
@@ -81,6 +82,10 @@ export const report = (type: TReportType, data?: TAttInfo): void => {
   send(EVENT.REPORT, { type, data })
 }
 
+export const upvoteArticle = (article, viewerHasUpvoted): void => {
+  send(EVENT.UPVOTE_ARTICLE, { type: 'upvote_article', data: { article, viewerHasUpvoted } })
+}
+
 /**
  * hepler for call the JoinModal Container to show wechatQRCode or mail scriscribe list etc ..
  *
@@ -145,13 +150,6 @@ export const callAuth = (): void => {
  */
 export const callSyncSelector = (data: TArticlePubSelector): void => {
   send(EVENT.ARTICLE_SELECTOR, { data })
-}
-
-export const upvoteOnArticleList = (article: TArticle, viewerHasUpvoted: boolean): void => {
-  send(EVENT.UPVOTE_ON_ARTICLE_LIST, {
-    article,
-    viewerHasUpvoted,
-  })
 }
 
 export const authWarn = (option = {}): void => send(EVENT.AUTH_WARNING, option)

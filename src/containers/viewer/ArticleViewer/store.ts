@@ -62,14 +62,6 @@ const ArticleViewer = T.model('ArticleViewer', {
 
       root.articlesThread.updateArticle(item)
     },
-    updateUpvote(viewerHasUpvoted: boolean): void {
-      const root = getParent(self) as TRootStore
-      return root.viewing.updateUpvote(viewerHasUpvoted)
-    },
-    updateUpvoteCount(count: number, meta: TArticleMeta): void {
-      const root = getParent(self) as TRootStore
-      return root.viewing.updateUpvoteCount(count, meta)
-    },
     reset(): void {
       self.tab = ''
     },

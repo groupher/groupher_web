@@ -3,6 +3,7 @@ import { memo, FC } from 'react'
 import type { TPost } from '@/spec'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
+import { upvoteArticle } from '@/signal'
 // import { mockUsers } from '@/mock'
 
 import Upvote from '@/widgets/Upvote'
@@ -26,14 +27,19 @@ const Footer: FC<TProps> = ({ article }) => {
         avatarList={meta.latestUpvotedUsers}
         // count={20}
         // avatarList={mockUsers(5)}
+        onAction={(viewerHasUpvoted) => upvoteArticle(article, viewerHasUpvoted)}
         viewerHasUpvoted={viewerHasUpvoted}
         type={UPVOTE_LAYOUT.GENERAL}
-        left={-2}
+        left={-1}
         top={-1}
       />
-
-      {article.cat && <ArticleCatState left={18} cat={article.cat} state={article.state} />}
-
+      {article.cat && (
+        <ArticleCatState
+          left={upvotesCount === 0 ? 10 : 18}
+          cat={article.cat}
+          state={article.state}
+        />
+      )}
       <Space right={18} />
       <ViewsCount count={article.views} />
     </Wrapper>

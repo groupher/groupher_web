@@ -11,7 +11,7 @@ import usePrimaryColor from '@/hooks/usePrimaryColor'
 import type { TUpvoteLayout } from '@/spec'
 import { buildLog } from '@/logger'
 
-import { Wrapper, ContentWrapper, IconWrapper, UpIcon } from './styles/upvote_btn'
+import { Wrapper, IconWrapper, UpIcon } from './styles/upvote_btn'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Upvote:index')
@@ -33,11 +33,9 @@ const UpvoteBtn: FC<TProps> = ({
 
   return (
     <Wrapper $showAnimation={startAnimate} type={type}>
-      <ContentWrapper>
-        <IconWrapper type={type}>
-          <UpIcon type={type} $active={viewerHasUpvoted} count={count} color={primaryColor} />
-        </IconWrapper>
-      </ContentWrapper>
+      <IconWrapper type={type}>
+        <UpIcon type={type} $active={viewerHasUpvoted} count={count} color={primaryColor} />
+      </IconWrapper>
     </Wrapper>
   )
 }

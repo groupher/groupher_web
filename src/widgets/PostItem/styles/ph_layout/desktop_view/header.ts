@@ -16,6 +16,7 @@ export const Brief = styled.div`
   color: ${theme('article.title')};
 `
 export const Title = styled.a`
+  ${css.cutRest('350px')};
   position: relative;
   text-decoration: none;
   font-size: 15px;
@@ -23,16 +24,6 @@ export const Title = styled.a`
   letter-spacing: 0.03em;
   opacity: 0.85;
   color: ${theme('article.title')};
-
-  @media (max-width: 1450px) {
-    ${css.cutRest('500px')};
-  }
-  @media (max-width: 1250px) {
-    ${css.cutRest('450px')};
-  }
-  @media (max-width: 1100px) {
-    ${css.cutRest('350px')};
-  }
 
   ${ItemWrapper}:hover & {
     text-decoration: underline;

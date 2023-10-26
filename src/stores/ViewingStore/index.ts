@@ -58,6 +58,12 @@ const ViewingStore = T.model('ViewingStore', {
     },
   }))
   .actions((self) => ({
+    updateViewing(article: TArticle): void {
+      const { currentThread } = self as TStore
+
+      self[currentThread] = article
+    },
+
     setViewing(sobj): void {
       const { mark, viewingArticle } = self as TStore
 
@@ -78,20 +84,20 @@ const ViewingStore = T.model('ViewingStore', {
       mark({ [viewingThread]: {}, viewingThread: null })
       viewingChanged(null)
     },
-    updateUpvote(viewerHasUpvoted: boolean): void {
+    updateViewerUpvoted(viewerHasUpvoted: boolean): void {
       const { currentThread } = self as TStore
 
       if (viewerHasUpvoted) {
-        self[currentThread].upvotesCount += 1
+        // self[currentThread].upvotesCount += 1
         self[currentThread].viewerHasUpvoted = true
       } else {
-        self[currentThread].upvotesCount -= 1
+        // self[currentThread].upvotesCount -= 1
         self[currentThread].viewerHasUpvoted = false
       }
     },
     updateUpvoteCount(count: number, meta?: TArticleMeta): void {
       const { currentThread } = self as TStore
-      if (meta) {
+      if (meta?.latestUpvotedUsers) {
         self[currentThread].meta.latestUpvotedUsers = meta.latestUpvotedUsers
       }
 

@@ -12,11 +12,10 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 type TButton = TActive & { color: TColorName }
 export const Button = styled.div<TButton>`
   ${css.column('align-both')};
-  border: 1px solid;
-  border-color: ${theme('button.upvoteBorder')};
-
+  width: 40px;
+  border: ${({ $active }) => ($active ? '1px dotted' : '1px solid')};
   border-color: ${({ $active, color }) =>
-    $active ? rainbowLink(color) : theme('button.upvoteBorder')};
+    $active ? rainbowLink(color, 'blackActive') : theme('button.upvoteBorder')};
 
   background-color: ${({ $active, color }) => ($active ? rainbowLight(color) : 'transparent')};
 
@@ -34,10 +33,7 @@ export const Button = styled.div<TButton>`
   transition: 0.2s all;
 `
 
-export const UpWrapper = styled.div`
-  transform: scale(0.85);
-  margin-left: 4px;
-`
+export const UpWrapper = styled.div``
 export const CountWrapper = styled.div`
   margin-top: -2px;
 `

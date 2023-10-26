@@ -1,11 +1,12 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react'
 
-import type { TPost } from '@/spec'
-
+import { upvoteArticle } from '@/signal'
+import useViewingArticle from '@/hooks/useViewingArticle'
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
-import { mockUsers } from '@/mock'
+// import { mockUsers } from '@/mock'
 
 import { Br } from '@/widgets/Common'
 import Upvote from '@/widgets/Upvote'
@@ -25,23 +26,22 @@ import {
   Value,
 } from '../styles/post/side_info'
 
-type TProps = {
-  article: TPost
-}
+const SideInfo: FC = () => {
+  const { article } = useViewingArticle()
 
-const SideInfo: FC<TProps> = ({ article }) => {
   const { insertedAt, articleTags, upvotesCount, meta, viewerHasUpvoted } = article
   const { latestUpvotedUsers } = meta
 
-  const users = mockUsers(5)
+  // const users = mockUsers(5)
 
   return (
     <Wrapper>
       <InnerWrapper>
         <Upvote
           count={upvotesCount}
-          avatarList={users}
+          avatarList={latestUpvotedUsers}
           viewerHasUpvoted={viewerHasUpvoted}
+          onAction={(viewerHasUpvoted) => upvoteArticle(article, viewerHasUpvoted)}
           type="article"
           bottom={35}
         />
@@ -81,4 +81,4 @@ const SideInfo: FC<TProps> = ({ article }) => {
   )
 }
 
-export default SideInfo
+export default observer(SideInfo)

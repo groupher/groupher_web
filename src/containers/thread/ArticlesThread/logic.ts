@@ -11,8 +11,8 @@ import { scrollToHeader } from '@/dom'
 import asyncSuit from '@/async'
 import { buildLog } from '@/logger'
 import { plural } from '@/fmt'
-import { errRescue, previewArticle, authWarn } from '@/signal'
-import { matchPagedArticles, matchArticleUpvotes } from '@/utils/macros'
+import { errRescue, previewArticle } from '@/signal'
+import { matchPagedArticles } from '@/utils/macros'
 
 import type { TStore } from './store'
 import S from './schema'
@@ -29,7 +29,6 @@ const sr71$ = new SR71({
     EVENT.ARTICLE_THREAD_CHANGE,
     EVENT.COMMUNITY_CHANGE,
     EVENT.C11N_DENSITY_CHANGE,
-    EVENT.UPVOTE_ON_ARTICLE_LIST,
   ],
 })
 
@@ -72,22 +71,6 @@ const onPreview = (article: TArticle): void => {
   previewArticle(article)
 }
 
-const handleUpvote = (article: TArticle, viewerHasUpvoted: boolean): void => {
-  if (!store.isLogin) return authWarn({ hideToast: true })
-  const { id, meta } = article
-
-  store.updateUpvote(id, viewerHasUpvoted)
-
-  viewerHasUpvoted
-    ? sr71$.mutate(S.getUpvoteSchema(meta.thread, false), { id })
-    : sr71$.mutate(S.getUndoUpvoteSchema(meta.thread, false), { id })
-}
-
-const handleUovoteRes = ({ id, upvotesCount, meta }) => {
-  log('# handleUovoteRes: ', meta)
-  store.updateUpvoteCount(id, upvotesCount, meta)
-}
-
 const handlePagedArticlesRes = (thread: TThread, pagedArticles): void => {
   const key = `paged${plural(thread, 'titleCase')}`
   log('>> pagedArticles -> ', pagedArticles)
@@ -99,7 +82,6 @@ const handlePagedArticlesRes = (thread: TThread, pagedArticles): void => {
 // ###############################
 const DataSolver = [
   ...matchPagedArticles([THREAD.POST], handlePagedArticlesRes),
-  ...matchArticleUpvotes(handleUovoteRes),
   {
     match: asyncRes(EVENT.COMMUNITY_CHANGE),
     action: () => {
@@ -119,13 +101,6 @@ const DataSolver = [
     action: (res) => {
       const { article } = res[EVENT.PREVIEW_ARTICLE]
       onPreview(article)
-    },
-  },
-  {
-    match: asyncRes(EVENT.UPVOTE_ON_ARTICLE_LIST),
-    action: (res) => {
-      const { article, viewerHasUpvoted } = res[EVENT.UPVOTE_ON_ARTICLE_LIST]
-      handleUpvote(article, viewerHasUpvoted)
     },
   },
   {

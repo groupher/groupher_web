@@ -20,13 +20,13 @@ type TProps = {
 
 const DesktopView: FC<TProps> = ({ article }) => {
   return (
-    <Wrapper onClick={() => previewArticle(article)}>
+    <Wrapper>
       <ArticleReadLabel article={article} />
       <ArticlePinLabel article={article} />
       <ViewingSign article={article} top={40} />
       <Main>
-        <Header article={article} />
-        <Digest>{article.digest}</Digest>
+        <Header article={article} onClick={() => previewArticle(article)} />
+        <Digest onClick={() => previewArticle(article)}>{article.digest}</Digest>
         <Footer article={article} />
       </Main>
     </Wrapper>

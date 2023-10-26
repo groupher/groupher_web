@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
-import type { TTestable } from '@/spec'
-import css, { theme } from '@/css'
+import type { TTestable, TActive, TColorName } from '@/spec'
+import css, { rainbowLight, rainbowLink, theme } from '@/css'
 
 import { LineDivider as LineDividerBase } from '@/widgets/Common'
 
@@ -10,9 +10,35 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 }))<TTestable>`
   ${css.row('align-center')};
 `
+type TButton = TActive & { color: TColorName }
+export const Button = styled.div<TButton>`
+  ${css.row('align-center')};
+  border: ${({ $active }) => ($active ? '1px dotted' : '1px solid')};
+  height: 22px;
+
+  margin-left: ${({ $active }) => ($active ? 0 : '-8px')};
+  border-color: ${({ $active, color }) =>
+    $active ? rainbowLink(color, 'blackActive') : 'transparent'};
+
+  background-color: ${({ $active, color }) => ($active ? rainbowLight(color) : 'transparent')};
+
+  border-radius: 6px;
+  padding: 0 8px;
+
+  &:hover {
+    margin-left: 0;
+    border: 1px solid;
+    border-color: ${({ color }) => rainbowLink(color, 'blackActive')};
+    background-color: ${({ color }) => rainbowLight(color)};
+    cursor: pointer;
+  }
+
+  transition: 0.2s all;
+`
 export const UpvoteBtnWrapper = styled.div`
+  ${css.row('align-both')};
+  margin-top: 1px;
   transform: scale(0.8);
-  margin-top: 6px;
 `
 export const DescWrapper = styled.div`
   ${css.row('align-center')};

@@ -9,14 +9,15 @@ import { FC, memo } from 'react'
 import type { TUser } from '@/spec'
 import { buildLog } from '@/logger'
 
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 import Facepile from '@/widgets/Facepile'
-import { DesktopOnly } from '@/widgets/Common'
+import { DesktopOnly, LineDivider } from '@/widgets/Common'
 
 import useUpvote from './useUpvote'
 import AnimatedCount from '../AnimatedCount'
 import UpvoteBtn from './UpvoteBtn'
 
-import { Wrapper, UpvoteBtnWrapper, LineDivider } from './styles/general_layout'
+import { Wrapper, Button, UpvoteBtnWrapper } from './styles/general_layout'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Upvote:index')
@@ -36,20 +37,30 @@ const Upvote: FC<TProps> = ({
   onAction = log,
   avatarList,
 }) => {
+  const primaryColor = usePrimaryColor()
   const { handleClick, startAnimate } = useUpvote({ viewerHasUpvoted, onAction })
   const noOne = count === 0
 
   return (
     <Wrapper testid={testid}>
-      <UpvoteBtnWrapper onClick={handleClick}>
-        <UpvoteBtn viewerHasUpvoted={viewerHasUpvoted} count={count} startAnimate={startAnimate} />
-      </UpvoteBtnWrapper>
-      <AnimatedCount
-        count={count}
-        $active={viewerHasUpvoted}
-        size={count === 0 ? 'small' : 'medium'}
-      />
-      <DesktopOnly>{!noOne && <LineDivider />}</DesktopOnly>
+      <Button $active={viewerHasUpvoted} color={primaryColor} onClick={handleClick}>
+        <UpvoteBtnWrapper>
+          <UpvoteBtn
+            viewerHasUpvoted={viewerHasUpvoted}
+            count={count}
+            startAnimate={startAnimate}
+          />
+        </UpvoteBtnWrapper>
+        <AnimatedCount
+          left={4}
+          count={count}
+          $active={viewerHasUpvoted}
+          size={count === 0 ? 'small' : 'medium'}
+        />
+      </Button>
+      <DesktopOnly>
+        {!noOne && <LineDivider left={!viewerHasUpvoted && count > 0 ? 4 : 12} right={10} />}
+      </DesktopOnly>
       <DesktopOnly>{!noOne && <Facepile users={avatarList} showMore />}</DesktopOnly>
     </Wrapper>
   )

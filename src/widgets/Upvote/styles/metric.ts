@@ -12,7 +12,7 @@ export const getIconSize = (type: TUpvoteLayout): string => {
     }
 
     default: {
-      return ' 15px;'
+      return '16px;'
     }
   }
 }

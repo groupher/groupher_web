@@ -6,10 +6,10 @@ import type { TArticle } from '@/spec'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 import { buildLog } from '@/logger'
-import { errRescue, authWarn } from '@/signal'
+import { errRescue } from '@/signal'
 import asyncSuit from '@/async'
 import { scrollDrawerToTop } from '@/dom'
-import { matchArticleUpvotes, matchArticles } from '@/utils/macros'
+import { matchArticles } from '@/utils/macros'
 
 import S from './schema'
 import type { TStore } from './store'
@@ -25,19 +25,6 @@ let sub$ = null
 
 /* eslint-disable-next-line */
 const log = buildLog('L:ArticleViewer')
-
-export const handleUpvote = (article: TArticle, viewerHasUpvoted: boolean): void => {
-  if (!store.isLogin) return authWarn({ hideToast: true })
-  const { id, meta } = article
-
-  store.updateUpvote(viewerHasUpvoted)
-
-  const queryLatestUsers = true
-
-  viewerHasUpvoted
-    ? sr71$.mutate(S.getUpvoteSchema(meta.thread, queryLatestUsers), { id })
-    : sr71$.mutate(S.getUndoUpvoteSchema(meta.thread, queryLatestUsers), { id })
-}
 
 const loadArticle = (): void => {
   markLoading()
@@ -70,22 +57,15 @@ const handleArticleRes = (article: TArticle): void => {
       upvotesCount,
       viewerHasViewed: true,
     })
-  }, 2000)
+  }, 500)
 }
 
-const handleUovoteRes = ({ upvotesCount, meta }) => {
-  store.updateUpvoteCount(upvotesCount, meta)
-
-  const { id, viewerHasUpvoted, meta: viewingArticleMeta } = store.viewingArticle
-  const syncMeta = merge(viewingArticleMeta, meta)
-  store.syncArticle({ id, viewerHasUpvoted, upvotesCount, meta: syncMeta })
-}
+export const holder = 1
 
 // ###############################
 // init & uninit handlers
 // ###############################
 const DataSolver = [
-  ...matchArticleUpvotes(handleUovoteRes),
   ...matchArticles(handleArticleRes),
   {
     match: asyncRes(EVENT.RELOAD_ARTICLE),

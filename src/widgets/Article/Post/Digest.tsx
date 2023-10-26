@@ -5,9 +5,8 @@
 import { FC, memo } from 'react'
 import Router from 'next/router'
 
-import type { TPost } from '@/spec'
-
 import useMetric from '@/hooks/useMetric'
+import useViewingArticle from '@/hooks/useViewingArticle'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
 import { buildLog } from '@/logger'
@@ -38,12 +37,10 @@ import {
 /* eslint-disable-next-line */
 const log = buildLog('C:ArticleDigest')
 
-type TProps = {
-  article: TPost
-}
-
-const PostLayout: FC<TProps> = ({ article }) => {
+const PostLayout: FC = () => {
   const metric = useMetric()
+  const { article } = useViewingArticle()
+
   const { innerId, author, title } = article
 
   const backUrl = `/${article.originalCommunitySlug}/${ARTICLE_THREAD.POST}`

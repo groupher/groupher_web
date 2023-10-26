@@ -2,9 +2,10 @@
  * GlobalLayout store
  *
  */
-import type { TRootStore, TGlobalLayout, TThemeName } from '@/spec'
+import { merge } from 'ramda'
+import type { TRootStore, TGlobalLayout, TThemeName, TArticle, TArticleMeta } from '@/spec'
 
-import { T, getParent, markStates, Instance } from '@/mobx'
+import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 
 const Platform = T.model('Platform', {
   isChrome: T.opt(T.bool, true),
@@ -43,6 +44,25 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
       const root = getParent(self) as TRootStore
 
       return root.dashboardThread.afterCreate()
+    },
+    setViewingAlways(article: TArticle): void {
+      const root = getParent(self) as TRootStore
+      root.viewing.updateViewing(article)
+    },
+    updateViewerHasUpvoted(viewerHasUpvoted: boolean): void {
+      const root = getParent(self) as TRootStore
+      root.viewing.updateViewerUpvoted(viewerHasUpvoted)
+    },
+    syncUploadInfo(upvotesCount: number, meta: TArticleMeta): void {
+      const root = getParent(self) as TRootStore
+
+      // for viewing article
+      root.viewing.updateUpvoteCount(upvotesCount, meta)
+      const { id, viewerHasUpvoted, meta: viewingArticleMeta } = toJS(root.viewingArticle)
+      const syncMeta = merge(viewingArticleMeta, meta)
+      // for viewing article end
+
+      root.articlesThread.updateArticle({ id, viewerHasUpvoted, upvotesCount, meta: syncMeta })
     },
     clearLocalSettings(): void {
       const root = getParent(self) as TRootStore

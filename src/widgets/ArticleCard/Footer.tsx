@@ -5,7 +5,7 @@ import { UPVOTE_LAYOUT } from '@/constant/layout'
 import SIZE from '@/constant/size'
 
 import type { TArticle } from '@/spec'
-import { upvoteOnArticleList } from '@/signal'
+import { upvoteArticle } from '@/signal'
 import Upvote from '@/widgets/Upvote'
 import DotDivider from '@/widgets/DotDivider'
 import CommentsCount from '@/widgets/CommentsCount'
@@ -31,7 +31,7 @@ const Footer: FC<TProps> = ({ data }) => {
           count={upvotesCount}
           avatarList={meta.latestUpvotedUsers}
           viewerHasUpvoted={viewerHasUpvoted}
-          onAction={(viewerHasUpvoted) => upvoteOnArticleList(data, viewerHasUpvoted)}
+          onAction={(viewerHasUpvoted) => upvoteArticle(data, viewerHasUpvoted)}
         />
 
         {commentsCount !== 0 && <CommentsCount count={commentsCount} size={SIZE.MEDIUM} />}

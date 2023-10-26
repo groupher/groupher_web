@@ -5,7 +5,7 @@ import type { TPost } from '@/spec'
 import useAvatarLayout from '@/hooks/useAvatarLayout'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
-import { upvoteOnArticleList } from '@/signal'
+import { upvoteArticle } from '@/signal'
 import Upvote from '@/widgets/Upvote'
 import ImgFallback from '@/widgets/ImgFallback'
 
@@ -35,7 +35,7 @@ const DigestView: FC<TProps> = ({ article }) => {
           type={UPVOTE_LAYOUT.POST_LIST}
           count={article.upvotesCount}
           viewerHasUpvoted={article.viewerHasUpvoted}
-          onAction={(viewerHasUpvoted) => upvoteOnArticleList(article, viewerHasUpvoted)}
+          onAction={(viewerHasUpvoted) => upvoteArticle(article, viewerHasUpvoted)}
         />
       </AvatarWrapper>
       <Main>
