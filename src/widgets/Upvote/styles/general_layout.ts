@@ -36,8 +36,9 @@ export const Button = styled.div<TButton>`
   transition: 0.2s all;
 `
 export const UpvoteBtnWrapper = styled.div`
+  ${css.row('align-both')};
+  margin-top: 1px;
   transform: scale(0.8);
-  margin-top: 4px;
 `
 export const DescWrapper = styled.div`
   ${css.row('align-center')};

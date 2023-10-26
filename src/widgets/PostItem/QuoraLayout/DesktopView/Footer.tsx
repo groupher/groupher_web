@@ -3,6 +3,7 @@ import { memo, FC } from 'react'
 import type { TPost } from '@/spec'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
+import { upvoteArticle } from '@/signal'
 // import { mockUsers } from '@/mock'
 
 import Upvote from '@/widgets/Upvote'
@@ -26,6 +27,7 @@ const Footer: FC<TProps> = ({ article }) => {
         avatarList={meta.latestUpvotedUsers}
         // count={20}
         // avatarList={mockUsers(5)}
+        onAction={(viewerHasUpvoted) => upvoteArticle(article, viewerHasUpvoted)}
         viewerHasUpvoted={viewerHasUpvoted}
         type={UPVOTE_LAYOUT.GENERAL}
         left={-1}

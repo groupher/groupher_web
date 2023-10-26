@@ -3,10 +3,9 @@ import { observer } from 'mobx-react'
 
 import type { TPost } from '@/spec'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
-
 import useAvatarLayout from '@/hooks/useAvatarLayout'
 
-import { upvoteOnArticleList, previewArticle } from '@/signal'
+import { upvoteArticle, previewArticle } from '@/signal'
 import ArticleReadLabel from '@/widgets/ArticleReadLabel'
 import ArticlePinLabel from '@/widgets/ArticlePinLabel'
 import Upvote from '@/widgets/Upvote'
@@ -34,7 +33,7 @@ const DigestView: FC<TProps> = ({ article }) => {
   const { author } = article
 
   return (
-    <Wrapper onClick={() => previewArticle(article)}>
+    <Wrapper>
       <ArticleReadLabel article={article} />
       <ArticlePinLabel article={article} />
       <ViewingSign article={article} top={24} />
@@ -46,7 +45,7 @@ const DigestView: FC<TProps> = ({ article }) => {
           fallback={<ImgFallback size={26} user={author} avatarLayout={avatarLayout} />}
         />
       </AvatarWrapper>
-      <Main>
+      <Main onClick={() => previewArticle(article)}>
         <Header article={article} />
         <Body article={article} />
       </Main>
@@ -56,7 +55,7 @@ const DigestView: FC<TProps> = ({ article }) => {
           type={UPVOTE_LAYOUT.POST_MINIMAL}
           count={article.upvotesCount}
           viewerHasUpvoted={article.viewerHasUpvoted}
-          onAction={(viewerHasUpvoted) => upvoteOnArticleList(article, viewerHasUpvoted)}
+          onAction={(viewerHasUpvoted) => upvoteArticle(article, viewerHasUpvoted)}
         />
       </UpvoteWrapper>
     </Wrapper>

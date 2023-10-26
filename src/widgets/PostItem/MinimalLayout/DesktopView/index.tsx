@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 import type { TPost } from '@/spec'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
-import { previewArticle } from '@/signal'
+import { previewArticle, upvoteArticle } from '@/signal'
 
 import ArticleReadLabel from '@/widgets/ArticleReadLabel'
 import ArticlePinLabel from '@/widgets/ArticlePinLabel'
@@ -25,7 +25,7 @@ const DigestView: FC<TProps> = ({ article }) => {
   const { upvotesCount, meta, viewerHasUpvoted } = article
 
   return (
-    <Wrapper onClick={() => previewArticle(article)}>
+    <Wrapper>
       <ArticleReadLabel article={article} top={8} />
       <ArticlePinLabel article={article} />
       <ViewingSign article={article} top={20} />
@@ -35,11 +35,12 @@ const DigestView: FC<TProps> = ({ article }) => {
           avatarList={meta.latestUpvotedUsers}
           viewerHasUpvoted={viewerHasUpvoted}
           type={UPVOTE_LAYOUT.POST_MINIMAL}
+          onAction={(viewerHasUpvoted) => upvoteArticle(article, viewerHasUpvoted)}
           left={-2}
           top={-1}
         />
       </UpvoteWrapper>
-      <Main>
+      <Main onClick={() => previewArticle(article)}>
         <Header article={article} />
         <Digest>{article.digest}</Digest>
         <Footer article={article} />

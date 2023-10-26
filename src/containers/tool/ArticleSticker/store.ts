@@ -76,14 +76,6 @@ const ArticleSticker = T.model('ArticleSticker', {
     },
   }))
   .actions((self) => ({
-    updateUpvote(viewerHasUpvoted: boolean): void {
-      const root = getParent(self) as TRootStore
-      return root.viewing.updateUpvote(viewerHasUpvoted)
-    },
-    updateUpvoteCount(count: number): void {
-      const root = getParent(self) as TRootStore
-      return root.viewing.updateUpvoteCount(count)
-    },
     mark(sobj: Record<string, unknown>): void {
       markStates(sobj, self)
     },

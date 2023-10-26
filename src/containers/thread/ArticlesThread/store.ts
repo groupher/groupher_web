@@ -10,7 +10,6 @@ import type {
   TTag,
   TAccount,
   TArticle,
-  TArticleMeta,
   TPagedArticles,
   TCommunity,
   TThread,
@@ -178,33 +177,6 @@ const ArticlesThread = T.model('ArticlesThread', {
       const targetArticle = toJS(slf[pagedArticleKey].entries[index])
 
       slf[pagedArticleKey].entries[index] = merge(targetArticle, fields)
-    },
-    updateUpvote(id: TID, viewerHasUpvoted: boolean): void {
-      const slf = self as TStore
-      const { pagedArticleKey } = slf
-
-      const index = slf.targetArticleIndex(id)
-      if (index === null) return
-      const targetArticle = toJS(slf[pagedArticleKey].entries[index])
-
-      let curCount = targetArticle.upvotesCount
-      curCount = viewerHasUpvoted ? (curCount += 1) : (curCount -= 1)
-
-      self[pagedArticleKey].entries[index].upvotesCount = curCount
-      self[pagedArticleKey].entries[index].viewerHasUpvoted = viewerHasUpvoted
-    },
-    updateUpvoteCount(id: TID, count: number, meta: TArticleMeta): void {
-      const slf = self as TStore
-      const { pagedArticleKey } = slf
-
-      const index = slf.targetArticleIndex(id)
-      if (index === null) return
-
-      if (meta) {
-        slf[pagedArticleKey].entries[index].meta.latestUpvotedUsers = meta.latestUpvotedUsers
-      }
-
-      slf[pagedArticleKey].entries[index].upvotesCount = count
     },
     markRoute(params): void {
       const query = { ...self.tagQuery, ...self.filtersData, ...params }

@@ -32,7 +32,6 @@ export const Button = styled.div<TUpvote>`
 `
 export const UpWrapper = styled.div`
   margin-left: 5px;
-  transform: scale(0.8);
   margin-top: 5px;
 `
 export const Alias = styled.div<TUpvote>`

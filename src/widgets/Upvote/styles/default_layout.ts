@@ -51,7 +51,6 @@ export const Alias = styled.div`
 `
 export const UpvoteBtnWrapper = styled.div`
   ${css.row('align-both')};
-  margin-top: 1px;
 
   ${css.media.mobile`
     margin-top: 4px;
@@ -62,10 +61,7 @@ export const DescWrapper = styled.div`
   margin-left: 2px;
 `
 export const Count = styled.div`
-  margin-left: 3px;
-  ${css.media.mobile`
-    transform: scale(0.9);
-  `}
+  margin-left: 7px;
 `
 export const FacesWrapper = styled.div`
   transform: scale(0.95);

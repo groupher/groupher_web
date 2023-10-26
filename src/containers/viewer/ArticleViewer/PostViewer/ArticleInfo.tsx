@@ -2,6 +2,7 @@ import { memo, FC } from 'react'
 
 import type { TArticle } from '@/spec'
 
+import { upvoteArticle } from '@/signal'
 // import { mockUsers } from '@/mock'
 // import { addCollection } from '@/helper'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
@@ -17,7 +18,6 @@ import {
   // CollectText,
   BaseWrapper,
 } from '../styles/post_viewer/article_info'
-import { handleUpvote } from '../logic'
 
 type TProps = {
   article: TArticle
@@ -35,7 +35,7 @@ const ArticleInfo: FC<TProps> = ({ article }) => {
           avatarList={meta.latestUpvotedUsers}
           // avatarList={mockUsers(5)}
           viewerHasUpvoted={viewerHasUpvoted}
-          onAction={(viewerHasUpvoted) => handleUpvote(article, viewerHasUpvoted)}
+          onAction={(viewerHasUpvoted) => upvoteArticle(article, viewerHasUpvoted)}
         />
         <SpaceGrow />
         <ArticleBaseStats article={article} container="drawer" />

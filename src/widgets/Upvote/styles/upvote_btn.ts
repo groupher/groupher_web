@@ -113,15 +113,10 @@ export const Wrapper = styled.div<TWrapper>`
   }
 `
 
-export const ContentWrapper = styled.div`
-  ${css.row('align-center')};
-`
-
 export const IconWrapper = styled.div<{ type: TUpvoteLayout }>`
-  ${css.row('align-center', 'justify-start')};
-  width: ${({ type }) => (type !== UPVOTE_LAYOUT.ARTICLE ? '20px' : 'auto')};
-  margin-right: ${({ type }) => (type !== UPVOTE_LAYOUT.ARTICLE ? '0' : '0')};
+  ${css.row('align-both')};
   position: relative;
+  padding-bottom: 0.5px;
   z-index: 1;
 
   &:hover {
@@ -142,9 +137,7 @@ export const UpIcon = styled(UpvoteIcon)<TUpIcon>`
   width: ${({ type }) => getIconSize(type)};
   height: ${({ type }) => getIconSize(type)};
 
-  opacity: ${({ count }) => (count === 0 ? 0.6 : 1)};
-
-  transform: scale(1, 0.8);
+  opacity: ${({ count }) => (count === 0 ? 0.8 : 1)};
 
   &:hover {
     fill: ${theme('article.title')};

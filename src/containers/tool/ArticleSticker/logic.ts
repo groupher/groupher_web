@@ -3,9 +3,7 @@ import { useEffect } from 'react'
 import { authWarn, addCollection } from '@/signal'
 import { buildLog } from '@/logger'
 import asyncSuit from '@/async'
-import { matchArticleUpvotes } from '@/utils/macros'
 
-import S from './schema'
 import type { TStore } from './store'
 
 const { SR71, $solver, asyncRes } = asyncSuit
@@ -18,14 +16,7 @@ let store: TStore | undefined
 const log = buildLog('L:ArticleSticker')
 
 export const handleUpvote = (viewerHasUpvoted: boolean): void => {
-  if (!store.isLogin) return authWarn({ hideToast: true })
-
-  store.updateUpvote(viewerHasUpvoted)
-  const { id, meta } = store.viewingArticle
-
-  viewerHasUpvoted
-    ? sr71$.mutate(S.getUpvoteSchema(meta.thread), { id })
-    : sr71$.mutate(S.getUndoUpvoteSchema(meta.thread), { id })
+  //
 }
 
 export const handleCollect = (): void => {
@@ -33,25 +24,7 @@ export const handleCollect = (): void => {
   addCollection()
 }
 
-// export const loadPagedCommentsParticipants = (): void => {
-//   const { viewingArticle: article } = store
-
-//   const args = {
-//     id: article.id,
-//     thread: article.meta.thread,
-//     filter: { page: 1, size: 20 },
-//   }
-//   log('load comments query args: ', args)
-//   sr71$.query(S.pagedCommentsParticipants, args)
-// }
-
-// update the real upvoteCount after upvote action
-const handleUovoteRes = ({ upvotesCount }) => {
-  store.updateUpvoteCount(upvotesCount)
-}
-
 const DataSolver = [
-  ...matchArticleUpvotes(handleUovoteRes),
   {
     match: asyncRes('pagedCommentsParticipants'),
     action: ({ pagedCommentsParticipants }) => {
