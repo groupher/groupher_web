@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components'
 import type { TUpvoteLayout, TActive, TColorName } from '@/spec'
 
 import UpvoteIcon from '@/icons/Upvote'
-import css, { theme, rainbow, rainbowLink } from '@/css'
+import css, { theme, rainbow } from '@/css'
 
 import { getIconSize } from './metric'
 
