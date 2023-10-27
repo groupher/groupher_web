@@ -11,11 +11,11 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 type TUpvoteIcon = { color: TColorName } & TActive
 export const Button = styled.div<TUpvoteIcon>`
   ${css.row('align-both')};
+
   border: 1px solid;
   border-color: ${({ $active, color }) =>
     $active ? rainbowLink(color, 'blackActive') : theme('button.upvoteBorder')};
-
-  background-color: ${({ $active, color }) => ($active ? rainbowLight(color) : 'transparent')};
+  background: ${({ $active }) => ($active ? theme('hoverBg') : 'transparent')};
 
   border-radius: 14px;
   width: 172px;

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive, TColorName, TTestable } from '@/spec'
-import css, { theme, rainbow, rainbowLink, rainbowLight } from '@/css'
+import css, { theme, rainbow, rainbowLight } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
@@ -13,11 +13,11 @@ type TButton = TActive & { color: TColorName }
 export const Button = styled.div<TButton>`
   ${css.column('align-both')};
   width: 40px;
-  border: ${({ $active }) => ($active ? '1px dotted' : '1px solid')};
-  border-color: ${({ $active, color }) =>
-    $active ? rainbowLink(color, 'blackActive') : theme('button.upvoteBorder')};
 
-  background-color: ${({ $active, color }) => ($active ? rainbowLight(color) : 'transparent')};
+  border: 1px solid;
+  border-color: ${({ $active, color }) =>
+    $active ? rainbowLight(color) : theme('button.upvoteBorder')};
+  background-color: ${({ $active }) => ($active ? theme('hoverBg') : 'transparent')};
 
   border-radius: 6px;
   padding: 0 8px;
@@ -25,14 +25,20 @@ export const Button = styled.div<TButton>`
   padding-bottom: 7px;
 
   &:hover {
-    border-color: ${({ color }) => rainbowLink(color)};
-    background-color: ${({ color }) => rainbowLight(color)};
+    border-color: ${theme('divider')};
+    background-color: ${theme('alphaBg2')};
     cursor: pointer;
   }
 
   &:hover svg {
     fill: ${({ color }) => rainbow(color)};
     transform: scale(1.1);
+  }
+
+  &:active svg {
+    fill: ${({ color }) => rainbow(color)};
+    transform: scale(1.8);
+    margin-top: -2px;
   }
 
   transition: 0.2s all;

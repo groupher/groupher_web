@@ -4,7 +4,7 @@ import { observer } from 'mobx-react'
 import { upvoteArticle } from '@/signal'
 import useViewingArticle from '@/hooks/useViewingArticle'
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
-import { AVATAR_LAYOUT } from '@/constant/layout'
+import { AVATAR_LAYOUT, UPVOTE_LAYOUT } from '@/constant/layout'
 
 // import { mockUsers } from '@/mock'
 
@@ -42,7 +42,7 @@ const SideInfo: FC = () => {
           avatarList={latestUpvotedUsers}
           viewerHasUpvoted={viewerHasUpvoted}
           onAction={(viewerHasUpvoted) => upvoteArticle(article, viewerHasUpvoted)}
-          type="article"
+          type={UPVOTE_LAYOUT.ARTICLE}
           bottom={35}
         />
 

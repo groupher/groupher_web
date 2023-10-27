@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable, TColorName, TActive } from '@/spec'
-import css, { theme, rainbow, rainbowLight, rainbowLink } from '@/css'
+import css, { theme, rainbow, rainbowLight } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
@@ -12,25 +12,32 @@ type TUpvote = { color: TColorName } & TActive
 
 export const Button = styled.div<TUpvote>`
   ${css.row('align-center')};
-  border: 1px solid;
 
+  border: 1px solid transparent;
   border-color: ${({ $active, color }) =>
-    $active ? rainbowLink(color, 'blackActive') : theme('button.upvoteBorder')};
-  background-color: ${({ $active, color }) => ($active ? rainbowLight(color) : 'transparent')};
+    $active ? rainbowLight(color) : theme('button.upvoteBorder')};
+
+  background: ${({ $active }) => ($active ? theme('hoverBg') : 'transparent')};
 
   border-radius: 10px;
   padding: 0 2px;
   padding-right: 5px;
 
   &:hover {
-    border-color: ${({ color }) => rainbowLink(color, 'blackActive')};
-    background-color: ${({ color }) => rainbowLight(color)};
+    border-color: ${theme('button.upvoteBorder')};
+    background: ${theme('alphaBg2')};
     cursor: pointer;
   }
 
   &:hover svg {
     fill: ${({ color }) => rainbow(color)};
     transform: scale(1.1);
+  }
+
+  &:active svg {
+    fill: ${({ color }) => rainbow(color)};
+    transform: scale(1.8);
+    margin-top: -2px;
   }
 
   transition: 0.2s all;
@@ -43,8 +50,9 @@ export const Alias = styled.div<TUpvote>`
   color: ${({ color, $active }) => ($active ? rainbow(color) : theme('article.digest'))};
   margin-top: 1px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   margin-right: 5px;
+  margin-left: 3px;
   word-break: keep-all;
 `
 export const CountWrapper = styled.div`

@@ -244,7 +244,7 @@ const night = {
     activeBg: darken(primaryColor, 5),
     clicked: primaryColor,
     ghostBorder: '#606060',
-    upvoteBorder: '#5f5f5f',
+    upvoteBorder: '#5f5f5fb5',
     boxShadow: 'rgb(24 24 24 / 32%) -1px 1px 16px 2px',
   },
   navigator: {

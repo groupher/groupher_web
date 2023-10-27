@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable, TActive, TColorName } from '@/spec'
-import css, { rainbow, rainbowLight, rainbowLink, theme } from '@/css'
+import css, { rainbow, rainbowLink, theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
@@ -19,22 +19,27 @@ export const Button = styled.div<TButton>`
   border-color: ${({ $active, color }) =>
     $active ? rainbowLink(color, 'blackActive') : 'transparent'}; */
 
-  background-color: ${({ $active, color }) => ($active ? rainbowLight(color) : 'transparent')};
+  background-color: ${({ $active }) => ($active ? theme('hoverBg') : 'transparent')};
 
   border-radius: 6px;
   padding: 0 8px;
 
   &:hover {
     margin-left: 0;
-    border: 1px solid;
-    border-color: ${({ color }) => rainbowLight(color)};
-    background-color: ${({ color }) => rainbowLight(color)};
+    border-color: ${theme('divider')};
+    background-color: ${theme('alphaBg2')};
     cursor: pointer;
   }
 
   &:hover svg {
     fill: ${({ color }) => rainbow(color)};
     transform: scale(1.1);
+  }
+
+  &:active svg {
+    fill: ${({ color }) => rainbow(color)};
+    transform: scale(1.8);
+    margin-top: -2px;
   }
 
   transition: 0.2s all;

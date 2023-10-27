@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components'
 import type { TUpvoteLayout, TActive, TColorName } from '@/spec'
 
 import UpvoteIcon from '@/icons/Upvote'
+import { pixelAdd } from '@/dom'
 import css, { theme, rainbow } from '@/css'
 
 import { getIconSize } from './metric'
@@ -111,10 +112,15 @@ export const Wrapper = styled.div<TWrapper>`
     transform: rotate(200deg);
   }
 `
-
-export const IconWrapper = styled.div<{ type: TUpvoteLayout }>`
+type TIconWrapper = { type: TUpvoteLayout }
+export const IconWrapper = styled.div<TIconWrapper>`
   ${css.row('align-both')};
+  border-radius: 100%;
   position: relative;
+
+  width: ${({ type }) => pixelAdd(getIconSize(type), 2)};
+  height: ${({ type }) => pixelAdd(getIconSize(type), 2)};
+
   padding-bottom: 0.5px;
   z-index: 1;
 `
@@ -125,6 +131,7 @@ export const UpIcon = styled(UpvoteIcon)<TUpIcon>`
   height: ${({ type }) => getIconSize(type)};
 
   opacity: ${({ count }) => (count === 0 ? 0.8 : 1)};
+  filter: brightness(1.1);
 
   transition: all 0.2s;
 `

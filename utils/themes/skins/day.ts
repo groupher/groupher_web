@@ -243,7 +243,7 @@ const day = {
     activeBg: darken(primaryColor, 5),
     clicked: primaryColor,
     ghostBorder: hint,
-    upvoteBorder: '#c5c5c5',
+    upvoteBorder: '#c5c5c5b0',
     boxShadow: 'rgb(202 202 202 / 10%) -1px 1px 16px 2px',
   },
   navigator: {
