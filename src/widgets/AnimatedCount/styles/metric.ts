@@ -1,5 +1,7 @@
-import type { TSize } from '@/spec'
+import type { TThemeMap, TColorName, TSize } from '@/spec'
+
 import SIZE from '@/constant/size'
+import { COLOR_NAME } from '@/constant/colors'
 
 export const getFontSize = (size: TSize): number => {
   switch (size) {
@@ -27,4 +29,19 @@ export const getFlipNumOffset = (size: TSize): number => {
       return 6
     }
   }
+}
+
+export const getCountColor = (
+  active: boolean,
+  themeMap: TThemeMap,
+  primaryColor: TColorName,
+  count: number,
+): string => {
+  if (count === 0) return themeMap.article.digest
+
+  if (primaryColor === COLOR_NAME.BLACK) {
+    return themeMap.article.digest
+  }
+
+  return active ? themeMap.rainbow[primaryColor.toLowerCase()] : themeMap.article.digest
 }

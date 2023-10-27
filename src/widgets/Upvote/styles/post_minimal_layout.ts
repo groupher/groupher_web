@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive, TColorName, TTestable } from '@/spec'
-import css, { theme, rainbowLink, rainbowLight } from '@/css'
+import css, { theme, rainbow, rainbowLink, rainbowLight } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
@@ -28,6 +28,11 @@ export const Button = styled.div<TButton>`
     border-color: ${({ color }) => rainbowLink(color)};
     background-color: ${({ color }) => rainbowLight(color)};
     cursor: pointer;
+  }
+
+  &:hover svg {
+    fill: ${({ color }) => rainbow(color)};
+    transform: scale(1.1);
   }
 
   transition: 0.2s all;

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive, TColorName, TTestable } from '@/spec'
-import css, { rainbowLight, rainbowLink, theme } from '@/css'
+import css, { rainbow, rainbowLight, rainbowLink, theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
@@ -12,21 +12,30 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 type TButton = TActive & { color: TColorName }
 export const Button = styled.div<TButton>`
   ${css.row('align-center')};
-  border: ${({ $active }) => ($active ? '1px dotted' : '1px solid')};
   margin-right: 20px;
 
+  border: 1px solid transparent;
+  /* border: ${({ $active }) => ($active ? '1px dotted' : '1px solid')};
   border-color: ${({ $active, color }) =>
-    $active ? rainbowLink(color, 'blackActive') : theme('button.upvoteBorder')};
+    $active ? rainbowLink(color, 'blackActive') : theme('button.upvoteBorder')}; */
+
+  border-color: ${({ $active, color }) =>
+    $active ? rainbowLight(color) : theme('button.upvoteBorder')};
 
   background-color: ${({ $active, color }) => ($active ? rainbowLight(color) : 'transparent')};
 
-  border-radius: 10px;
+  border-radius: 16px;
   padding: 12px 15px;
 
   &:hover {
-    border-color: ${({ color }) => rainbowLink(color, 'blackActive')};
+    /* border-color: ${({ color }) => rainbowLink(color, 'blackActive')}; */
     background-color: ${({ color }) => rainbowLight(color)};
     cursor: pointer;
+  }
+
+  &:hover svg {
+    fill: ${({ color }) => rainbow(color)};
+    transform: scale(1.1);
   }
 
   ${css.media.mobile`

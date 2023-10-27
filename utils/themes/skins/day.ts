@@ -15,7 +15,7 @@ const link = '#005196' // '#6494cd'
 const actionText = '#647392'
 const descText = '#666'
 const threadTitle = '#333333'
-const hoverBg = '#efefef9c' // with alpha
+const hoverBg = '#efefef78' // '#efefef9c' // with alpha
 const hint = '#9d9999'
 // const primaryMate = 'orange'
 
@@ -48,6 +48,7 @@ const day = {
   alphaBg: '#ffffff95',
   alphaBg2: '#fffffff2',
   hoverBg,
+  lineDivider: '#acacacc9',
   hoverBorder: hoverBg,
   hoverLinear: 'linear-gradient(315deg, rgba(255, 255, 255, 0) 0%, #fafafa 100%)',
   activeLinear: 'linear-gradient(315deg,rgba(255,255,255,0) 0%,#f1f1f1 70%)',
