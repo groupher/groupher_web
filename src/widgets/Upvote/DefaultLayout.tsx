@@ -21,7 +21,6 @@ import {
   UpvoteBtnWrapper,
   Count,
   Digest,
-  FacesWrapper,
   Note,
   Name,
 } from './styles/default_layout'
@@ -68,9 +67,7 @@ const Upvote: FC<TProps> = ({
       </Button>
       {!noOne && (
         <Digest>
-          <FacesWrapper>
-            <Facepile left={-4} users={avatarList} showMore={false} />
-          </FacesWrapper>
+          <Facepile users={avatarList} showMore={false} left={-4} bottom={3} top={3} />
           <Note>
             {names.map((name, index) => (
               <>

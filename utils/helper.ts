@@ -1,17 +1,4 @@
-import {
-  curry,
-  find,
-  propEq,
-  reduce,
-  keys,
-  sort,
-  uniq,
-  tap,
-  includes,
-  remove,
-  isEmpty,
-  startsWith,
-} from 'ramda'
+import { find, propEq, keys, sort, uniq, tap, includes, remove, isEmpty, startsWith } from 'ramda'
 
 import type {
   TWindow,
@@ -38,18 +25,6 @@ type TSORTABLE_ITEMS = {
 }[]
 
 export const Global: TWindow = typeof window !== 'undefined' ? window : null
-
-// see https://github.com/ramda/ramda/issues/1361
-export const mapKeys = curry((fn, obj) => {
-  return reduce(
-    (acc, key) => {
-      acc[fn(key)] = obj[key]
-      return acc
-    },
-    {},
-    keys(obj),
-  )
-})
 
 /**
  * sort the array by it's color

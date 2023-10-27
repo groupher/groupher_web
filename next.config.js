@@ -15,7 +15,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 // if move pwa config to witPlugins, it will not work
 const nextConfig = {
-  reactStrictMode: false,
+  transpilePackages: ['ramda'],
+  reactStrictMode: true,
   swcMinify: true,
   productionBrowserSourceMaps: true,
   compiler: {
