@@ -12,7 +12,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 type TButton = TActive & { color: TColorName }
 export const Button = styled.div<TButton>`
   ${css.row('align-center')};
-  margin-right: 20px;
+  margin-right: 25px;
 
   border: 1px solid transparent;
   border-color: ${({ $active, color }) =>
@@ -75,12 +75,6 @@ export const DescWrapper = styled.div`
 export const Count = styled.div`
   margin-left: 7px;
 `
-export const FacesWrapper = styled.div`
-  transform: scale(0.95);
-  margin-top: 3px;
-  margin-bottom: 2px;
-`
-
 export const Digest = styled.div`
   ${css.column('align-start')};
 `

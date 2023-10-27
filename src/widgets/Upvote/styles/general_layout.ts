@@ -23,6 +23,7 @@ export const Button = styled.div<TButton>`
 
   border-radius: 6px;
   padding: 0 8px;
+  padding-left: 6px;
 
   &:hover {
     margin-left: 0;

@@ -15,7 +15,6 @@ export { default as uid } from './uid'
 export { send, joinUS, closeDrawer, report, errRescue } from './signal'
 export {
   Global,
-  mapKeys,
   getRandomInt,
   sortByColor,
   sortByIndex,
