@@ -1,9 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable, TActive, TColorName } from '@/spec'
-import css, { rainbowLight, rainbowLink, theme } from '@/css'
-
-import { LineDivider as LineDividerBase } from '@/widgets/Common'
+import css, { rainbow, rainbowLight, rainbowLink, theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
@@ -13,12 +11,13 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 type TButton = TActive & { color: TColorName }
 export const Button = styled.div<TButton>`
   ${css.row('align-center')};
-  border: ${({ $active }) => ($active ? '1px dotted' : '1px solid')};
   height: 22px;
-
   margin-left: ${({ $active }) => ($active ? 0 : '-8px')};
+
+  border: 1px solid transparent;
+  /* border: ${({ $active }) => ($active ? '1px dotted' : '1px solid')};
   border-color: ${({ $active, color }) =>
-    $active ? rainbowLink(color, 'blackActive') : 'transparent'};
+    $active ? rainbowLink(color, 'blackActive') : 'transparent'}; */
 
   background-color: ${({ $active, color }) => ($active ? rainbowLight(color) : 'transparent')};
 
@@ -28,9 +27,14 @@ export const Button = styled.div<TButton>`
   &:hover {
     margin-left: 0;
     border: 1px solid;
-    border-color: ${({ color }) => rainbowLink(color, 'blackActive')};
+    border-color: ${({ color }) => rainbowLight(color)};
     background-color: ${({ color }) => rainbowLight(color)};
     cursor: pointer;
+  }
+
+  &:hover svg {
+    fill: ${({ color }) => rainbow(color)};
+    transform: scale(1.1);
   }
 
   transition: 0.2s all;
@@ -52,12 +56,4 @@ export const Text = styled.div`
 export const Count = styled.div<{ noOne: boolean }>`
   color: ${theme('article.info')};
   font-weight: ${({ noOne }) => (noOne ? 400 : 600)};
-`
-export const LineDivider = styled(LineDividerBase)`
-  height: 10px;
-  background: ${theme('article.digest')};
-  opacity: 0.8;
-  margin-left: 12px;
-  margin-right: 10px;
-  margin-top: 1px;
 `

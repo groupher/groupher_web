@@ -23,6 +23,7 @@ import {
   Digest,
   FacesWrapper,
   Note,
+  Name,
 } from './styles/default_layout'
 
 /* eslint-disable-next-line */
@@ -49,6 +50,7 @@ const Upvote: FC<TProps> = ({
   const { handleClick, startAnimate } = useUpvote({ viewerHasUpvoted, onAction })
 
   const noOne = count === 0
+  const names = !noOne ? avatarList.map((user) => user.nickname).slice(0, 4) : []
 
   return (
     <Wrapper testid={testid}>
@@ -69,7 +71,15 @@ const Upvote: FC<TProps> = ({
           <FacesWrapper>
             <Facepile left={-4} users={avatarList} showMore={false} />
           </FacesWrapper>
-          <Note>xx, xx {alias}</Note>
+          <Note>
+            {names.map((name, index) => (
+              <>
+                <Name key={name}>{name}</Name>
+                {index !== names.length - 1 ? <>，</> : <>&nbsp;</>}
+              </>
+            ))}
+            {alias}
+          </Note>
         </Digest>
       )}
     </Wrapper>

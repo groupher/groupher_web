@@ -6,7 +6,7 @@ import { FC, memo } from 'react'
 
 import { buildLog } from '@/logger'
 
-import { Text, DescWrapper } from './styles/default_layout'
+import { DescWrapper } from './styles/default_layout'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Upvote:Desc')
@@ -25,10 +25,10 @@ const Desc: FC<TProps> = ({ noOne, count = 4, avatarsRowLimit = 3, alias = '觉�
     <DescWrapper>
       {!noOne && !onlyOne && count > avatarsRowLimit && (
         <DescWrapper>
-          <Text>等</Text>
+          <>等</>
         </DescWrapper>
       )}
-      <Text>{alias}</Text>
+      <>{alias}</>
     </DescWrapper>
   )
 }

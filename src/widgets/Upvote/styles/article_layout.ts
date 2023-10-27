@@ -28,6 +28,11 @@ export const Button = styled.div<TUpvoteIcon>`
     cursor: pointer;
   }
 
+  &:hover svg {
+    fill: ${({ color }) => rainbow(color)};
+    transform: scale(1.1);
+  }
+
   transition: 0.2s all;
 `
 export const CountWrapper = styled.div`

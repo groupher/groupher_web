@@ -60,10 +60,10 @@ export const SexyDivider = styled.div<TSpace>`
 
 type TLineDivider = TSpace & { height?: number; opacity?: number }
 export const LineDivider = styled.div<TLineDivider>`
-  background-color: ${theme('lightText')};
+  background-color: ${theme('lineDivider')};
   width: 1px;
   height: ${({ height }) => `${height || 12}px`};
-  opacity: ${({ opacity }) => `${opacity || 0.8}`};
+  opacity: ${({ opacity }) => `${opacity || 1}`};
 
   margin-left: ${({ left }) => `${left || 15}px`};
   margin-right: ${({ right }) => `${right || 15}px`};

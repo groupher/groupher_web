@@ -30,9 +30,10 @@ const ArticleInfo: FC<TProps> = ({ article }) => {
     <Wrapper>
       <BaseWrapper>
         <Upvote
-          count={upvotesCount}
           type={UPVOTE_LAYOUT.DEFAULT}
+          count={upvotesCount}
           avatarList={meta.latestUpvotedUsers}
+          // count={10}
           // avatarList={mockUsers(5)}
           viewerHasUpvoted={viewerHasUpvoted}
           onAction={(viewerHasUpvoted) => upvoteArticle(article, viewerHasUpvoted)}

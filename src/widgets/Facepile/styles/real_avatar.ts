@@ -39,14 +39,12 @@ type TAvatarsImg = {
   avatarLayout: TAvatarLayout
 }
 export const AvatarsImg = styled(Img)<TAvatarsImg>`
-  border: 2px solid;
+  border: 1px solid;
   border-color: ${theme('divider')};
-  color: #ffffff;
   font-size: 12px;
-  font-weight: 100;
 
   ${({ size }) => css.size(getAvatarSize(size))};
-  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
+  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '5px' : '100%')};
 
   text-align: center;
 `
@@ -54,9 +52,9 @@ type TAvatarsMore = { size: TAvatarSize; total: number }
 export const AvatarsMore = styled.span<TAvatarsMore>`
   ${css.row('align-both')};
   font-size: 14px;
-  border-color: #113744;
+  border-color: ${theme('divider')};
   color: ${theme('article.title')};
-  background-color: #113744;
+  background-color: ${theme('divider')};
   border-radius: 100px 100px 100px 100px;
   font-family: sans-serif;
   font-weight: ${({ total }) => (total >= 1000 ? 600 : 200)};

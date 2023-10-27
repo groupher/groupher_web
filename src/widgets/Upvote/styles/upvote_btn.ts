@@ -1,10 +1,9 @@
 import styled, { keyframes } from 'styled-components'
 
 import type { TUpvoteLayout, TActive, TColorName } from '@/spec'
-import { UPVOTE_LAYOUT } from '@/constant/layout'
 
 import UpvoteIcon from '@/icons/Upvote'
-import css, { theme, rainbowLink } from '@/css'
+import css, { theme, rainbow } from '@/css'
 
 import { getIconSize } from './metric'
 
@@ -118,36 +117,14 @@ export const IconWrapper = styled.div<{ type: TUpvoteLayout }>`
   position: relative;
   padding-bottom: 0.5px;
   z-index: 1;
-
-  &:hover {
-    &:before {
-      content: '';
-      ${css.circle(23)};
-      background: ${theme('hoverBg')};
-      left: -4px;
-      top: -4px;
-      position: absolute;
-    }
-    transition: all 0.2s;
-  }
 `
 type TUpIcon = { type: TUpvoteLayout; count: number } & TActive & { color: TColorName }
 export const UpIcon = styled(UpvoteIcon)<TUpIcon>`
-  fill: ${({ $active, color }) => ($active ? rainbowLink(color, 'blackActive') : theme('hint'))};
+  fill: ${({ $active, color }) => ($active ? rainbow(color, 'article.title') : theme('hint'))};
   width: ${({ type }) => getIconSize(type)};
   height: ${({ type }) => getIconSize(type)};
 
   opacity: ${({ count }) => (count === 0 ? 0.8 : 1)};
-
-  &:hover {
-    fill: ${theme('article.title')};
-    cursor: pointer;
-  }
-
-  ${IconWrapper}:hover & {
-    fill: ${theme('article.title')};
-    cursor: pointer;
-  }
 
   transition: all 0.2s;
 `
