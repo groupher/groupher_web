@@ -126,15 +126,5 @@ export const UpIcon = styled(UpvoteIcon)<TUpIcon>`
 
   opacity: ${({ count }) => (count === 0 ? 0.8 : 1)};
 
-  &:hover {
-    fill: ${({ $active, color }) => ($active ? rainbow(color, 'blackActive') : theme('hint'))};
-    cursor: pointer;
-  }
-
-  ${IconWrapper}:hover & {
-    fill: ${({ $active, color }) => ($active ? rainbow(color, 'blackActive') : theme('hint'))};
-    cursor: pointer;
-  }
-
   transition: all 0.2s;
 `

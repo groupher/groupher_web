@@ -82,12 +82,13 @@ export const Digest = styled.div`
   ${css.column('align-start')};
 `
 export const Note = styled.div`
+  ${css.row('align-center')};
   color: ${theme('lightText')};
   font-size: 12px;
   font-weight: 400;
+  margin-left: -2px;
 `
-export const Text = styled.div`
-  color: ${theme('article.info')};
-  font-size: 12px;
-  margin-top: 1px;
+export const Name = styled.div`
+  ${css.cutRest('50px')};
+  color: ${theme('article.digest')};
 `
