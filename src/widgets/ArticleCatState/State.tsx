@@ -20,9 +20,9 @@ const State: FC<TProps> = ({ state, smaller }) => {
   switch (state) {
     case ARTICLE_STATE.DONE: {
       return (
-        <Wrapper smaller={smaller} color={doneColor}>
+        <Wrapper $smaller={smaller} color={doneColor}>
           <DoneIcon
-            smaller={smaller}
+            $smaller={smaller}
             color={doneColor === COLOR_NAME.BLACK ? COLOR_NAME.GREEN : doneColor}
           />
           {!smaller && <Text>{kanbanAlias[ARTICLE_STATE.DONE.toLowerCase()].name}</Text>}
@@ -32,8 +32,8 @@ const State: FC<TProps> = ({ state, smaller }) => {
 
     case ARTICLE_STATE.WIP: {
       return (
-        <Wrapper smaller={smaller} color={wipColor}>
-          <WipIcon smaller={smaller} color={wipColor} />
+        <Wrapper $smaller={smaller} color={wipColor}>
+          <WipIcon $smaller={smaller} color={wipColor} />
           {!smaller && <Text>{kanbanAlias[ARTICLE_STATE.WIP.toLowerCase()].name}</Text>}
         </Wrapper>
       )
@@ -41,8 +41,8 @@ const State: FC<TProps> = ({ state, smaller }) => {
 
     case ARTICLE_STATE.TODO: {
       return (
-        <Wrapper smaller={smaller} color={todoColor}>
-          <TODOIcon smaller={smaller} color={todoColor} />
+        <Wrapper $smaller={smaller} color={todoColor}>
+          <TODOIcon $smaller={smaller} color={todoColor} />
           {!smaller && <Text>{kanbanAlias[ARTICLE_STATE.TODO.toLowerCase()].name}</Text>}
         </Wrapper>
       )
@@ -50,9 +50,9 @@ const State: FC<TProps> = ({ state, smaller }) => {
 
     case ARTICLE_STATE.RESOLVED: {
       return (
-        <Wrapper smaller={smaller} color={COLOR_NAME.GREEN}>
+        <Wrapper $smaller={smaller} color={COLOR_NAME.GREEN}>
           <ResolveIcon
-            smaller={smaller}
+            $smaller={smaller}
             color={doneColor === COLOR_NAME.BLACK ? COLOR_NAME.GREEN : doneColor}
           />
           {!smaller && <Text>已解决</Text>}
@@ -64,7 +64,7 @@ const State: FC<TProps> = ({ state, smaller }) => {
     case ARTICLE_STATE.REJECT_NO_PLAN:
     case ARTICLE_STATE.REJECT_NO_FIX:
     case ARTICLE_STATE.REJECT_DUP: {
-      return <RejectIcon smaller={smaller} />
+      return <RejectIcon $smaller={smaller} />
     }
 
     default: {

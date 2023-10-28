@@ -8,7 +8,7 @@ import SIZE from '@/constant/size'
 
 import { Wrapper, Container, Circle } from './styles/lava_lamp_loading'
 
-type TProps = TSpace & { size?: TSizeTSM }
+type TProps = TSpace & { size?: TSizeTSM; className?: string }
 
 const LavaLampLoading: FC<TProps> = (props) => {
   const primaryColor = usePrimaryColor()

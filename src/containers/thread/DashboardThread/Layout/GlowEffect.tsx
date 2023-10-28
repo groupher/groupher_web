@@ -76,7 +76,7 @@ const GlowEffect: FC<TProps> = ({
             $color={primaryColor}
             onClick={() => edit(effect, 'glowType')}
           >
-            <GrowBackground $glowPosition="absolute" $glowType={effect} />
+            <GrowBackground glowPosition="absolute" glowType={effect} />
           </Box>
         ))}
       </Row>

@@ -17,7 +17,7 @@ const Label: FC<TProps> = ({ cat, state, smaller }) => {
 
   if (isRejectedState(state)) {
     return (
-      <Wrapper state={state} smaller={smaller}>
+      <Wrapper state={state} $smaller={smaller}>
         <IconWrapper>
           <ICON.REJECT />
         </IconWrapper>
@@ -29,7 +29,7 @@ const Label: FC<TProps> = ({ cat, state, smaller }) => {
   switch (cat) {
     case ARTICLE_CAT.FEATURE: {
       return (
-        <Wrapper state={state} smaller={smaller}>
+        <Wrapper state={state} $smaller={smaller}>
           <IconWrapper>
             <ICON.FEATURE />
           </IconWrapper>
@@ -40,7 +40,7 @@ const Label: FC<TProps> = ({ cat, state, smaller }) => {
 
     case ARTICLE_CAT.BUG: {
       return (
-        <BugWrapper state={state} smaller={smaller}>
+        <BugWrapper state={state} $smaller={smaller}>
           <IconWrapper>
             <ICON.BUG />
           </IconWrapper>
@@ -51,7 +51,7 @@ const Label: FC<TProps> = ({ cat, state, smaller }) => {
 
     case ARTICLE_CAT.QUESTION: {
       return (
-        <Wrapper state={state} smaller={smaller}>
+        <Wrapper state={state} $smaller={smaller}>
           <IconWrapper>
             <ICON.QUESTION />
           </IconWrapper>
@@ -62,7 +62,7 @@ const Label: FC<TProps> = ({ cat, state, smaller }) => {
 
     default:
       return (
-        <Wrapper state={state} smaller={smaller}>
+        <Wrapper state={state} $smaller={smaller}>
           {nameAlias[cat.toLowerCase()].name}
         </Wrapper>
       )

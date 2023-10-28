@@ -9,7 +9,9 @@ export { AvatarFallback } from './real_avatar'
 
 type TWrapper = { $total: number } & TSpace
 
-export const Wrapper = styled.ul<TWrapper>`
+export const Wrapper = styled('ul').withConfig({
+  shouldForwardProp: (props) => props !== 'useIntersectionObserver' && props !== 'scrollPosition',
+})<TWrapper>`
   ${css.row('align-center')};
   flex-direction: row-reverse;
   list-style-type: none;

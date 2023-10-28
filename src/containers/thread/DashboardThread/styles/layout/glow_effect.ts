@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TActive, TColor, TGlowEffectStyle } from '@/spec'
+import type { TActive, TColor, TGlowEffect } from '@/spec'
 import GLOW_EFFECTS from '@/constant/glow_effect'
 
 import css, { theme, rainbow } from '@/css'
@@ -68,16 +68,18 @@ export const SettingsRow = styled.div`
   margin-left: 4px;
 `
 
-export const GrowBackground = styled.div<TGlowEffectStyle>`
-  background: ${({ $glowType }) => `
-    radial-gradient(circle at ${GLOW_EFFECTS[$glowType].LEFT.X} ${GLOW_EFFECTS[$glowType].LEFT.Y}, ${GLOW_EFFECTS[$glowType].LEFT.COLOR} 0, transparent ${GLOW_EFFECTS[$glowType].LEFT.RADIUS}),
-    radial-gradient(circle at ${GLOW_EFFECTS[$glowType].RIGHT1.X} ${GLOW_EFFECTS[$glowType].RIGHT1.Y}, ${GLOW_EFFECTS[$glowType].RIGHT1.COLOR} 0, transparent ${GLOW_EFFECTS[$glowType].RIGHT1.RADIUS}),
-    radial-gradient(circle at ${GLOW_EFFECTS[$glowType].MAIN.X} ${GLOW_EFFECTS[$glowType].MAIN.Y}, ${GLOW_EFFECTS[$glowType].MAIN.COLOR} 0, transparent ${GLOW_EFFECTS[$glowType].MAIN.RADIUS}),
-    radial-gradient(circle at ${GLOW_EFFECTS[$glowType].RIGHT2.X} ${GLOW_EFFECTS[$glowType].RIGHT2.Y}, ${GLOW_EFFECTS[$glowType].RIGHT2.COLOR} 0, transparent ${GLOW_EFFECTS[$glowType].RIGHT1.RADIUS});
+export const GrowBackground = styled('div').withConfig({
+  shouldForwardProp: (props) => props !== 'glowType' && props !== 'glowPosition',
+})<TGlowEffect>`
+  background: ${({ glowType }) => `
+    radial-gradient(circle at ${GLOW_EFFECTS[glowType].LEFT.X} ${GLOW_EFFECTS[glowType].LEFT.Y}, ${GLOW_EFFECTS[glowType].LEFT.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].LEFT.RADIUS}),
+    radial-gradient(circle at ${GLOW_EFFECTS[glowType].RIGHT1.X} ${GLOW_EFFECTS[glowType].RIGHT1.Y}, ${GLOW_EFFECTS[glowType].RIGHT1.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].RIGHT1.RADIUS}),
+    radial-gradient(circle at ${GLOW_EFFECTS[glowType].MAIN.X} ${GLOW_EFFECTS[glowType].MAIN.Y}, ${GLOW_EFFECTS[glowType].MAIN.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].MAIN.RADIUS}),
+    radial-gradient(circle at ${GLOW_EFFECTS[glowType].RIGHT2.X} ${GLOW_EFFECTS[glowType].RIGHT2.Y}, ${GLOW_EFFECTS[glowType].RIGHT2.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].RIGHT1.RADIUS});
   `};
 
   filter: saturate(1.2);
   inset: 0;
-  position: ${({ $glowPosition }) => $glowPosition};
+  position: ${({ glowPosition }) => glowPosition};
   z-index: -1;
 `

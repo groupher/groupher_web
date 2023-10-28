@@ -210,13 +210,6 @@ export type TGlowEffect = {
   glowOpacity?: string
 }
 
-export type TGlowEffectStyle = {
-  $glowType: string
-  $glowPosition?: TGlowPosition
-  $glowFixed?: boolean
-  $glowOpacity?: string
-}
-
 interface IWindow extends Window {
   appVersion?: string
   /**

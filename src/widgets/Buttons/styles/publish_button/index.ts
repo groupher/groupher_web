@@ -12,7 +12,7 @@ export const Wrapper = styled(WithMargin)`
   ${css.row('align-center')};
 `
 
-type TPubButton = { smaller?: boolean } & TColor
+type TPubButton = { $smaller?: boolean } & TColor
 export const PubButton = styled(Button)<TPubButton>`
   ${css.row('justify-between')};
   width: 100%;
@@ -20,7 +20,7 @@ export const PubButton = styled(Button)<TPubButton>`
   font-weight: 600;
   background: ${({ $color }) => rainbow($color, 'button.bg')};
   color: ${theme('button.fg')};
-  height: ${({ smaller }) => (smaller ? '28px' : '33px')};
+  height: ${({ $smaller }) => ($smaller ? '28px' : '33px')};
   border-radius: 10px;
 `
 export const MoreOption = styled.div<TSpace>`
