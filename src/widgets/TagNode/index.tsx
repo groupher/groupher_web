@@ -7,6 +7,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react'
 
+import type { TColorName } from '@/spec'
 import { buildLog } from '@/logger'
 import useTagLayout from '@/hooks/useTagLayout'
 import useTheme from '@/hooks/useTheme'
@@ -51,16 +52,16 @@ const TagNode: FC<TProps> = ({
     <>
       {tagLayout === TAG_LAYOUT.DOT ? (
         <Dot
-          color={color}
+          $color={color as TColorName}
           size={dotSize}
           opacity={opacity}
           left={dotLeft}
           right={dotRight}
-          dividerBorder={dividerBorder}
+          $dividerBorder={dividerBorder}
         />
       ) : (
         <HashIcon
-          color={color}
+          $color={color as TColorName}
           size={hashSize}
           opacity={opacity}
           top={hashTop}

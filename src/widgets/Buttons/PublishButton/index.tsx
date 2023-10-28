@@ -66,10 +66,7 @@ const PublishButton: FC<TProps> = ({
         popWidth={192}
         withDesc
       >
-        <PubButton
-          primaryColor={primaryColor}
-          smaller={mode === PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER}
-        >
+        <PubButton $color={primaryColor} smaller={mode === PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER}>
           {mode === PUBLISH_MODE.DEFAULT && <PostLayout text={_text} />}
           {mode === PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER && <SidebarHeaderLayout text={text} />}
         </PubButton>

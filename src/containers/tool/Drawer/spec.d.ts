@@ -16,11 +16,11 @@ export type TSwipe = {
 export type TDrawer = TTestable &
   TActive &
   TSwipe & {
-    mobile: boolean
-    rightOffset?: string
+    $mobile: boolean
+    $rightOffset?: string
     type: string
   } & {
-    fromContentEdge?: boolean
+    $fromContentEdge?: boolean
   }
 
 export type TArticleNavi = {

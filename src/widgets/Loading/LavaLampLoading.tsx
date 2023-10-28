@@ -20,7 +20,7 @@ const LavaLampLoading: FC<TProps> = (props) => {
     <Wrapper {..._props}>
       <Container>
         {range(0, 9).map((num) => (
-          <Circle key={num} index={num} primaryColor={primaryColor} />
+          <Circle key={num} index={num} $color={primaryColor} />
         ))}
       </Container>
     </Wrapper>

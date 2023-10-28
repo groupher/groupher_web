@@ -24,7 +24,7 @@ const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold }) => {
       content={
         <MenuPanel>
           {links.map((item: TLinkItem) => (
-            <LinkItem key={item.index} href={item.link} primaryColor={primaryColor}>
+            <LinkItem key={item.index} href={item.link} $color={primaryColor}>
               {item.title}
             </LinkItem>
           ))}
@@ -59,7 +59,7 @@ const CustomHeaderLinks: FC<TProps> = ({ links }) => {
         return (
           <Fragment key={groupTitle}>
             {startsWith(ONE_LINK_GROUP, groupTitle) ? (
-              <LinkItem href={curGroupLinks[0].link} primaryColor={primaryColor}>
+              <LinkItem href={curGroupLinks[0].link} $color={primaryColor}>
                 {curGroupLinks[0].title}
               </LinkItem>
             ) : (

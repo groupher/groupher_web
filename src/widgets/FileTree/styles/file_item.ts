@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TActive, TPrimaryColor } from '@/spec'
+import type { TActive, TColor } from '@/spec'
 import Img from '@/Img'
 // import HashTagSVG from '@/icons/HashTag'
 import css, { theme, rainbow } from '@/css'
@@ -41,15 +41,15 @@ export const File = styled.div<TTag>`
 
   transition: all 0.1s;
 `
-type TTitle = TActive & TPrimaryColor
+type TTitle = TActive & TColor
 export const Title = styled.div<TTitle>`
-  color: ${({ $active, primaryColor }) => ($active ? rainbow(primaryColor) : theme('tags.text'))};
+  color: ${({ $active, $color }) => ($active ? rainbow($color) : theme('tags.text'))};
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
   ${css.lineClamp(2)};
 
   ${Wrapper}:hover & {
     font-weight: 500;
-    color: ${({ primaryColor }) => rainbow(primaryColor)};
+    color: ${({ $color }) => rainbow($color)};
   }
 `
 export const RawWrapper = styled.div<TActive>`
@@ -79,12 +79,12 @@ export const CountInfoWrapper = styled.div`
   transition-delay: 0.5s;
 `
 
-export const IndexDot = styled.div<TPrimaryColor>`
+export const IndexDot = styled.div<TColor>`
   position: absolute;
   left: -12px;
   top: 14px;
   background-color: ${theme('hint')};
-  background-color: ${({ primaryColor }) => rainbow(primaryColor)};
+  background-color: ${({ $color }) => rainbow($color)};
   ${css.circle(5)};
   opacity: 0.65;
 `

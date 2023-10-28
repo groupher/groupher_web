@@ -1,15 +1,15 @@
 import styled from 'styled-components'
 
-import type { TActive, TPrimaryColor } from '@/spec'
+import type { TActive, TColor } from '@/spec'
 
 // import Img from '@/Img'
 import css, { theme, rainbowLight, rainbow } from '@/css'
 
-type TWrapper = { popWidth: number }
+type TWrapper = { $popWidth: number }
 export const Wrapper = styled.div<TWrapper>`
-  width: ${({ popWidth }) => `${popWidth}px`};
+  width: ${({ $popWidth }) => `${$popWidth}px`};
 `
-type TItem = TPrimaryColor & TActive
+type TItem = TActive & TColor
 export const Item = styled.div<TItem>`
   ${css.row('align-center')};
   padding: 2px 8px;
@@ -18,16 +18,13 @@ export const Item = styled.div<TItem>`
 
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
 
-  background: ${({ $active, primaryColor }) =>
-    $active ? rainbowLight(primaryColor) : 'transparent'};
+  background: ${({ $active, $color }) => ($active ? rainbowLight($color) : 'transparent')};
 
-  color: ${({ $active, primaryColor }) =>
-    $active ? rainbow(primaryColor) : theme('article.digest')};
+  color: ${({ $active, $color }) => ($active ? rainbow($color) : theme('article.digest'))};
 
   &:hover {
     font-weight: 500;
-    background: ${({ $active, primaryColor }) =>
-      $active ? rainbowLight(primaryColor) : theme('hoverBg')};
+    background: ${({ $active, $color }) => ($active ? rainbowLight($color) : theme('hoverBg'))};
     cursor: pointer;
   }
 

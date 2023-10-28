@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react'
 
-import type { TArticleState, TArticleCatMode, TActive, TPrimaryColor } from '@/spec'
+import type { TArticleState, TArticleCatMode, TActive, TColor } from '@/spec'
 import { ARTICLE_STATE, ARTICLE_STATE_MODE } from '@/constant/gtd'
 
 import { Trans } from '@/i18n'
@@ -23,20 +23,20 @@ type TProps = {
   mode?: TArticleCatMode
 }
 
-type TTIcon = Omit<TProps, 'mode'> & TActive & TPrimaryColor
-const Icon: FC<TTIcon> = ({ activeState, $active, primaryColor }) => {
+type TTIcon = Omit<TProps, 'mode'> & TActive & TColor
+const Icon: FC<TTIcon> = ({ activeState, $active, $color }) => {
   switch (activeState) {
     case ARTICLE_STATE.TODO: {
-      return <TodoIcon $active={$active} primaryColor={primaryColor} />
+      return <TodoIcon $active={$active} $color={$color} />
     }
     case ARTICLE_STATE.WIP: {
-      return <WipIcon $active={$active} primaryColor={primaryColor} />
+      return <WipIcon $active={$active} $color={$color} />
     }
     case ARTICLE_STATE.DONE: {
-      return <DoneIcon $active={$active} primaryColor={primaryColor} />
+      return <DoneIcon $active={$active} $color={$color} />
     }
     default: {
-      return <RejectIcon $active={$active} primaryColor={primaryColor} />
+      return <RejectIcon $active={$active} $color={$color} />
     }
   }
 }
@@ -50,9 +50,9 @@ const ActiveState: FC<TProps> = ({ activeState, mode = ARTICLE_STATE_MODE.FILTER
       {activeState ? (
         <Item>
           <IconWrapper>
-            <Icon activeState={activeState} $active={$active} primaryColor={primaryColor} />
+            <Icon activeState={activeState} $active={$active} $color={primaryColor} />
           </IconWrapper>
-          <StateTitle $active={$active} primaryColor={primaryColor}>
+          <StateTitle $active={$active} $color={primaryColor}>
             {Trans(activeState)}
           </StateTitle>
         </Item>

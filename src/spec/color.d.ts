@@ -13,3 +13,4 @@ export type TColorName =
   | 'PURPLE'
 
 export type TPrimaryColor = { primaryColor: TColorName }
+export type TColor = { color?: TColorName; $color?: TColorName }

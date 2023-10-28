@@ -44,7 +44,7 @@ const NormalImg: FC<TProps> = ({
   return (
     <>
       <Image
-        loaded={!fallback || (fallback && loaded)}
+        $loaded={!fallback || (fallback && loaded)}
         ref={ref}
         className={className}
         src={src}

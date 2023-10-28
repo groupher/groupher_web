@@ -29,7 +29,7 @@ const Outline: FC = () => {
   return (
     <Wrapper>
       {items.map((item) => (
-        <Item key={item.id} $active={item.active} primaryColor={primaryColor}>
+        <Item key={item.id} $active={item.active} $color={primaryColor}>
           {item.title}
         </Item>
       ))}

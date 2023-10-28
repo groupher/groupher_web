@@ -42,9 +42,10 @@ export const UnloginUser = styled(UserSVG)`
   ${css.size(12)};
   fill: ${theme('comment.placeholder')};
 `
-export const UserAvatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
+export const UserAvatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
   ${css.size(20)};
-  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '4px' : '100%')};
+  border-radius: ${({ $avatarLayout }) =>
+    $avatarLayout === AVATAR_LAYOUT.SQUARE ? '4px' : '100%'};
 
   fill: ${theme('comment.placeholder')};
   margin-left: 4%;

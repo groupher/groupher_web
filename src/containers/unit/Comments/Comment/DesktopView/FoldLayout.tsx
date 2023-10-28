@@ -40,8 +40,8 @@ const FoldLayout: FC<TProps> = ({ data, isReply = false }) => {
       <ExpandIcon />
       <Avatar
         src={data.author.avatar}
-        avatarLayout={avatarLayout}
-        fallback={<ImgFallback user={data.author} size={16} avatarLayout={avatarLayout} />}
+        $avatarLayout={avatarLayout}
+        fallback={<ImgFallback user={data.author} size={16} />}
       />
       {isLegal ? (
         <CommentBody

@@ -27,7 +27,7 @@ export type {
   TSizeSML,
   TSizeSM,
 } from './size'
-export type { TButton, TFiltersMenuItems } from './comp'
+export type { TButton, TButtonStyle, TFiltersMenuItems } from './comp'
 export type { TTheme, TThemeMap, TThemeName } from './theme'
 export type { TAccount, TUser, TPagedUsers, TSimpleUser, TMembership, TC11N } from './account'
 export type { TC11NLayout } from './c11n'
@@ -175,7 +175,7 @@ export type {
   TWallpaperInfo,
 } from './wallpaper'
 
-export type { TColorName, TPrimaryColor } from './color'
+export type { TColorName, TPrimaryColor, TColor } from './color'
 
 export type {
   TPath,
@@ -208,6 +208,13 @@ export type TGlowEffect = {
   glowPosition?: TGlowPosition
   glowFixed?: boolean
   glowOpacity?: string
+}
+
+export type TGlowEffectStyle = {
+  $glowType: string
+  $glowPosition?: TGlowPosition
+  $glowFixed?: boolean
+  $glowOpacity?: string
 }
 
 interface IWindow extends Window {

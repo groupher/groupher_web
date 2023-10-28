@@ -64,7 +64,7 @@ const TopbarLayout: FC<TProps> = ({ layout, isLayoutTouched, isBgTouched, saving
       />
       <SelectWrapper>
         <Layout onClick={() => edit(TOPBAR_LAYOUT.YES, 'topbarLayout')}>
-          <Block $active={layout === TOPBAR_LAYOUT.YES} primaryColor={primaryColor}>
+          <Block $active={layout === TOPBAR_LAYOUT.YES} $color={primaryColor}>
             <TopBar bg={bg}>--</TopBar>
 
             <Main>
@@ -99,7 +99,7 @@ const TopbarLayout: FC<TProps> = ({ layout, isLayoutTouched, isBgTouched, saving
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(TOPBAR_LAYOUT.NO, 'topbarLayout')}>
-          <Block $active={layout === TOPBAR_LAYOUT.NO} primaryColor={primaryColor}>
+          <Block $active={layout === TOPBAR_LAYOUT.NO} $color={primaryColor}>
             <Main>
               <ListsWrapper>
                 <Bar long={60} thin />
@@ -161,7 +161,7 @@ const TopbarLayout: FC<TProps> = ({ layout, isLayoutTouched, isBgTouched, saving
                   placement="right"
                   offset={[-1, 15]}
                 >
-                  <TheColor color={bg} />
+                  <TheColor $color={bg} />
                 </ColorSelector>
               </BgLabel>
             </BgWrapper>

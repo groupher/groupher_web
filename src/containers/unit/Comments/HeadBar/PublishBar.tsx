@@ -25,7 +25,7 @@ const PublishBar: FC<TProps> = ({ closeEditor }) => {
   return (
     <Wrapper>
       <AccountWrapper>
-        <Avatar src={mockUsers(3)[0].avatar} avatarLayout={avatarLayout} />
+        <Avatar src={mockUsers(3)[0].avatar} $avatarLayout={avatarLayout} />
         <UserName>mydearxym</UserName>
       </AccountWrapper>
       <ActionsWrapper>

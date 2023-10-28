@@ -8,8 +8,8 @@ import { WrapperBase, ScrollWrapperBase, ShadowBarBase } from '.'
 type TBar = {
   showOnHover?: boolean
   barSize?: string
-  withBorder?: boolean
-  shadowSize?: string
+  $withBorder?: boolean
+  $shadowSize?: string
   height?: string
   innerHeight?: string
 }
@@ -32,10 +32,10 @@ export const InnerWrapper = styled.div<{ innerHeight: string }>`
 const ShadowBar = styled(ShadowBarBase)<TBar>`
   top: 1%;
   height: ${({ height }) => `calc(${height} - 2%)`};
-  width: ${({ shadowSize }) => getShadowSize(shadowSize)};
-  background: ${({ shadowSize }) => getShadowBackground(shadowSize, 'horizontal')};
-  border-left: ${({ withBorder }) => (withBorder ? '1px solid' : 'none')};
-  border-color: ${({ withBorder }) => (withBorder ? '#084255' : 'none')};
+  width: ${({ $shadowSize }) => getShadowSize($shadowSize)};
+  background: ${({ $shadowSize }) => getShadowBackground($shadowSize, 'horizontal')};
+  border-left: ${({ $withBorder }) => ($withBorder ? '1px solid' : 'none')};
+  border-color: ${({ $withBorder }) => ($withBorder ? '#084255' : 'none')};
 `
 export const LeftShadowBar = styled(ShadowBar)`
   left: 0px;

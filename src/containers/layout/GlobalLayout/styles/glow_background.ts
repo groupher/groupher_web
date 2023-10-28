@@ -1,24 +1,24 @@
 import styled from 'styled-components'
 
-import type { TGlowEffect } from '@/spec'
+import type { TGlowEffectStyle } from '@/spec'
 import GLOW_EFFECTS from '@/constant/glow_effect'
 
-export const Wrapper = styled.div<TGlowEffect>`
-  background: ${({ glowType }) => `
-    radial-gradient(circle at ${GLOW_EFFECTS[glowType].LEFT.X} ${GLOW_EFFECTS[glowType].LEFT.Y}, ${GLOW_EFFECTS[glowType].LEFT.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].LEFT.RADIUS}),
-    radial-gradient(circle at ${GLOW_EFFECTS[glowType].RIGHT1.X} ${GLOW_EFFECTS[glowType].RIGHT1.Y}, ${GLOW_EFFECTS[glowType].RIGHT1.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].RIGHT1.RADIUS}),
-    radial-gradient(circle at ${GLOW_EFFECTS[glowType].MAIN.X} ${GLOW_EFFECTS[glowType].MAIN.Y}, ${GLOW_EFFECTS[glowType].MAIN.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].MAIN.RADIUS}),
-    radial-gradient(circle at ${GLOW_EFFECTS[glowType].RIGHT2.X} ${GLOW_EFFECTS[glowType].RIGHT2.Y}, ${GLOW_EFFECTS[glowType].RIGHT2.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].RIGHT1.RADIUS});
+export const Wrapper = styled.div<TGlowEffectStyle>`
+  background: ${({ $glowType }) => `
+    radial-gradient(circle at ${GLOW_EFFECTS[$glowType].LEFT.X} ${GLOW_EFFECTS[$glowType].LEFT.Y}, ${GLOW_EFFECTS[$glowType].LEFT.COLOR} 0, transparent ${GLOW_EFFECTS[$glowType].LEFT.RADIUS}),
+    radial-gradient(circle at ${GLOW_EFFECTS[$glowType].RIGHT1.X} ${GLOW_EFFECTS[$glowType].RIGHT1.Y}, ${GLOW_EFFECTS[$glowType].RIGHT1.COLOR} 0, transparent ${GLOW_EFFECTS[$glowType].RIGHT1.RADIUS}),
+    radial-gradient(circle at ${GLOW_EFFECTS[$glowType].MAIN.X} ${GLOW_EFFECTS[$glowType].MAIN.Y}, ${GLOW_EFFECTS[$glowType].MAIN.COLOR} 0, transparent ${GLOW_EFFECTS[$glowType].MAIN.RADIUS}),
+    radial-gradient(circle at ${GLOW_EFFECTS[$glowType].RIGHT2.X} ${GLOW_EFFECTS[$glowType].RIGHT2.Y}, ${GLOW_EFFECTS[$glowType].RIGHT2.COLOR} 0, transparent ${GLOW_EFFECTS[$glowType].RIGHT1.RADIUS});
   `};
 
   filter: saturate(1.2);
 
   inset: 0;
-  position: ${({ glowPosition }) => glowPosition};
+  position: ${({ $glowPosition }) => $glowPosition};
   // width & height must be 100%, without it the wechat will not work
-  height: ${({ glowPosition }) => (glowPosition === 'absolute' ? '600px' : '100%')};
+  height: ${({ $glowPosition }) => ($glowPosition === 'absolute' ? '600px' : '100%')};
   width: 100%;
-  opacity: ${({ glowOpacity }) => `${parseFloat(glowOpacity)}` || 1};
+  opacity: ${({ $glowOpacity }) => `${parseFloat($glowOpacity)}` || 1};
 
   z-index: -1;
 `

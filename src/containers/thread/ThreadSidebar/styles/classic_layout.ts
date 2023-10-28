@@ -46,9 +46,10 @@ export const MoreNum = styled.div`
     cursor: pointer;
   }
 `
-export const JoinerAvatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
+export const JoinerAvatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
   ${css.size(24)};
-  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
+  border-radius: ${({ $avatarLayout }) =>
+    $avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%'};
   margin-right: 8px;
 `
 export const CommunityNoteWrapper = styled.div`

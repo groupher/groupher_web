@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TTestable, TPrimaryColor } from '@/spec'
+import type { TTestable, TColor } from '@/spec'
 import css, { theme, rainbow } from '@/css'
 import { WithMargin } from '@/widgets/Common'
 
@@ -24,7 +24,7 @@ type TLabel = {
   size: string
   checked: boolean
   dimOnActive: boolean
-} & TPrimaryColor
+} & TColor
 
 export const Label = styled.label<TLabel>`
   position: relative;
@@ -38,8 +38,8 @@ export const Label = styled.label<TLabel>`
   padding-bottom: 2px;
   cursor: pointer;
 
-  background: ${({ checked, dimOnActive, primaryColor }) =>
-    checked ? getActiveBackground(dimOnActive, primaryColor) : 'transparent'};
+  background: ${({ checked, dimOnActive, $color }) =>
+    checked ? getActiveBackground(dimOnActive, $color) : 'transparent'};
   color: ${({ checked, dimOnActive }) => getLabelColor(checked, dimOnActive)};
   border-radius: 15px;
 
@@ -54,8 +54,7 @@ export const Label = styled.label<TLabel>`
     width: ${({ size }) => getRadioBoxSize(size)};
     height: ${({ size }) => getRadioBoxSize(size)};
     border: 2px solid;
-    border-color: ${({ checked, primaryColor }) =>
-      checked ? theme('button.fg') : rainbow(primaryColor)};
+    border-color: ${({ checked, $color }) => (checked ? theme('button.fg') : rainbow($color))};
     border-radius: 50%;
   }
 

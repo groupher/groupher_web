@@ -9,14 +9,14 @@ import type { TProps as TAvatarsProps } from '.'
 
 import { Wrapper, TextMore, DotText } from './styles/more_item'
 
-type TProps = Pick<TAvatarsProps, 'size' | 'total' | 'onTotalSelect'>
+type TProps = Pick<TAvatarsProps, 'size' | 'onTotalSelect'>
 
-const MoreItem: FC<TProps> = ({ size, total, onTotalSelect }) => {
+const MoreItem: FC<TProps> = ({ size, onTotalSelect }) => {
   const avatarLayout = useAvatarLayout()
 
   return (
     <Wrapper size={size} onClick={() => onTotalSelect()}>
-      <TextMore size={size} total={total} avatarLayout={avatarLayout}>
+      <TextMore size={size} $avatarLayout={avatarLayout}>
         <DotText>..</DotText>
       </TextMore>
     </Wrapper>

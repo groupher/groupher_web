@@ -7,15 +7,15 @@ import { LineDivider } from '@/widgets/Common'
 
 import ArrowSVG from '@/icons/ArrowSimple'
 
-export const Wrapper = styled.div<{ lineHeight: boolean }>`
+export const Wrapper = styled.div<{ $lineHeight: boolean }>`
   ${css.row('align-center')};
-  line-height: ${({ lineHeight }) => (lineHeight ? '24px' : '')};
+  line-height: ${({ $lineHeight }) => ($lineHeight ? '24px' : '')};
 `
-export const Title = styled.div<{ withMaxWidth: boolean }>`
+export const Title = styled.div<{ $withMaxWidth: boolean }>`
   font-size: 13px;
   color: ${theme('article.title')};
 
-  ${({ withMaxWidth }) => (withMaxWidth ? css.lineClamp(1) : '')};
+  ${({ $withMaxWidth }) => ($withMaxWidth ? css.lineClamp(1) : '')};
 `
 export const ArrowIcon = styled(ArrowSVG)`
   ${css.size(15)};

@@ -21,9 +21,9 @@ const ToggleSwitch: FC<TProps> = ({ size = SIZE.SMALL, checked = false, onChange
 
   return (
     <Wrapper onClick={() => onChange(!checked)} size={size}>
-      <Track checked={checked} primaryColor={primaryColor}>
-        <Indicator checked={checked} primaryColor={primaryColor}>
-          <CheckIcon checked={checked} primaryColor={primaryColor} />
+      <Track checked={checked} $color={primaryColor}>
+        <Indicator checked={checked} $color={primaryColor}>
+          <CheckIcon checked={checked} $color={primaryColor} />
         </Indicator>
       </Track>
     </Wrapper>

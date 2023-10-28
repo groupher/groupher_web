@@ -31,9 +31,9 @@ const TagItem: FC<TProps> = ({ tag, active, onSelect }) => {
   return (
     <Wrapper $active={active}>
       <DotWrapper
-        primaryColor={tag.color as TColorName}
+        $color={tag.color as TColorName}
         $active={active}
-        round={tagLayout === TAG_LAYOUT.DOT}
+        $round={tagLayout === TAG_LAYOUT.DOT}
       >
         <TagNode
           color={tag.color}
@@ -46,12 +46,7 @@ const TagItem: FC<TProps> = ({ tag, active, onSelect }) => {
         />
       </DotWrapper>
 
-      <Tag
-        $active={active}
-        primaryColor={tag.color as TColorName}
-        color={tag.color}
-        onClick={() => onSelect(tag)}
-      >
+      <Tag $active={active} $color={tag.color as TColorName} onClick={() => onSelect(tag)}>
         <Title $active={active}>{cutRest(Trans(tag.title), 10)}</Title>
       </Tag>
       {active && (

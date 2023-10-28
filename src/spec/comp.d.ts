@@ -11,6 +11,16 @@ export type TButton = {
   onClick?: (key?: string) => void
 }
 
+export type TButtonStyle = {
+  size?: TSize
+  active?: boolean
+  space?: number
+  $ghost?: boolean
+  disabled?: boolean
+  $noBorder?: boolean
+  onClick?: (key?: string) => void
+}
+
 // @/widgets/FiltersMenu
 export type TFiltersMenuItems = {
   id: string

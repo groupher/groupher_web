@@ -20,9 +20,10 @@ export const AvatarWrapper = styled.div`
   padding-bottom: 2px;
   margin-right: 8px;
 `
-export const Avatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
+export const Avatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
   ${css.size(26)};
-  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
+  border-radius: ${({ $avatarLayout }) =>
+    $avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%'};
 `
 export const UpvoteWrapper = styled.div`
   position: absolute;

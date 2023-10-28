@@ -33,8 +33,8 @@ const Activities: FC<TProps> = () => {
       <Item>
         <Avatar
           src={user.avatar}
-          avatarLayout={avatarLayout}
-          fallback={<ImgFallback size={18} user={user} avatarLayout={avatarLayout} left={-3} />}
+          $avatarLayout={avatarLayout}
+          fallback={<ImgFallback size={18} user={user} left={-3} />}
         />
 
         <Content>

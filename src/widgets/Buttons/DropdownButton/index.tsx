@@ -46,30 +46,30 @@ const DropdownButton: FC<TProps> = ({
 
   return (
     <Wrapper
-      withBorder={withBorder}
+      $withBorder={withBorder}
       size={size}
       onClick={onClick}
       $active={$active}
       selected={selected}
-      primaryColor={primaryColor}
+      $color={primaryColor}
       {...restProps}
     >
       <ButtonWrapper size="small" type="primary" ghost>
-        <InnerBtnWrapper $active={$active} primaryColor={primaryColor}>
+        <InnerBtnWrapper $active={$active} $color={primaryColor}>
           <>{children}</>
           {!noArrow && !(closable && selected) && (
-            <FilterIcon $active={$active} selected={selected} primaryColor={primaryColor} />
+            <FilterIcon $active={$active} selected={selected} $color={primaryColor} />
           )}
 
           {closable && selected && (
             <CloseWrapper
-              primaryColor={primaryColor}
+              $color={primaryColor}
               onClick={(e) => {
                 e.preventDefault()
                 onClear()
               }}
             >
-              <CloseIcon primaryColor={primaryColor} />
+              <CloseIcon $color={primaryColor} />
             </CloseWrapper>
           )}
         </InnerBtnWrapper>

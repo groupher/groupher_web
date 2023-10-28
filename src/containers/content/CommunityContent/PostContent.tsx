@@ -50,7 +50,7 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
       )}
 
       {!isMobile && (
-        <InnerWrapper metric={metric} bannerLayout={bannerLayout}>
+        <InnerWrapper metric={metric} $bannerLayout={bannerLayout}>
           <ContentWrapper>
             {isSidebarLayout && <Br top={20} />}
             <ArticlesThread />

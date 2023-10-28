@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TActive, TPrimaryColor } from '@/spec'
+import type { TActive, TColor } from '@/spec'
 import css, { theme, rainbow } from '@/css'
 // import Img from '@/Img'
 
@@ -21,31 +21,30 @@ export const Wrapper = styled.div`
   opacity: 0.6;
 `
 
-type TIcon = TActive & TPrimaryColor
+type TIcon = TActive & TColor
 
-const getIcon = (SVG, size = 13) => {
+const commonIcon = (SVG, size = 13) => {
   return styled(SVG)<TIcon>`
     ${css.size(size)};
-    fill: ${({ $active, primaryColor }) =>
-      $active ? rainbow(primaryColor) : theme('article.digest')};
+    fill: ${({ $active, $color }) => ($active ? rainbow($color) : theme('article.digest'))};
 
     ${MenuItem}:hover & {
-      fill: ${({ primaryColor }) => rainbow(primaryColor)};
+      fill: ${({ $color }) => rainbow($color)};
     }
   `
 }
 
 export const Icon = {
-  Home: getIcon(HomeSVG),
-  Tada: getIcon(TadaSVG),
-  Discuss: styled(getIcon(DiscussSVG))`
+  Home: commonIcon(HomeSVG),
+  Tada: commonIcon(TadaSVG),
+  Discuss: styled(commonIcon(DiscussSVG))`
     margin-top: 1px;
   `,
-  Kanban: styled(getIcon(KanbanSVG, 16))`
+  Kanban: styled(commonIcon(KanbanSVG, 16))`
     transform: rotate(180deg);
   `,
-  Guide: getIcon(GuideSVG),
-  Info: styled(getIcon(InfoSVG, 13))`
+  Guide: commonIcon(GuideSVG),
+  Info: styled(commonIcon(InfoSVG, 13))`
     margin-left: 1px;
     margin-bottom: 1px;
   `,

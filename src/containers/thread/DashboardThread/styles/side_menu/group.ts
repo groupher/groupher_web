@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 
-import type { TActive, TPrimaryColor } from '@/spec'
+import type { TActive, TColor } from '@/spec'
 import css, { theme, rainbow } from '@/css'
 
 import ArrowSVG from '@/icons/ArrowSimple'
@@ -58,14 +58,14 @@ export const MenuWrapper = styled.div`
 
   border-image-slice: 1;
 `
-type TItem = TActive & TPrimaryColor
+type TItem = TActive & TColor
 
 export const Item = styled(Link)<TItem>`
   text-decoration: none;
   position: relative;
   display: block;
-  color: ${({ $active, primaryColor }) =>
-    $active ? rainbow(primaryColor, 'dashboard.menuTitle') : theme('dashboard.menuTitle')};
+  color: ${({ $active, $color }) =>
+    $active ? rainbow($color, 'dashboard.menuTitle') : theme('dashboard.menuTitle')};
   background: ${({ $active }) => ($active ? theme('activeLinear') : 'transparent')};
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
 
@@ -80,7 +80,7 @@ export const Item = styled(Link)<TItem>`
 
   &:hover {
     cursor: pointer;
-    color: ${({ primaryColor }) => rainbow(primaryColor, 'dashboard.menuTitle')};
+    color: ${({ $color }) => rainbow($color, 'dashboard.menuTitle')};
     background: ${theme('activeLinear')};
   }
 
@@ -93,7 +93,7 @@ export const Item = styled(Link)<TItem>`
     width: 4px;
     height: 12px;
     border-radius: 8px;
-    background: ${({ primaryColor }) => rainbow(primaryColor)};
+    background: ${({ $color }) => rainbow($color)};
   }
 
   transition: all 0.2s;

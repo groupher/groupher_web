@@ -13,13 +13,13 @@ export const Wrapper = styled.div`
 
 type TMainWrapper = {
   thread?: TThread
-  postLayout?: TPostLayout
+  $postLayout?: TPostLayout
 }
 
 export const SidebarWrapper = styled.div<TMainWrapper>`
   flex-grow: 1;
   width: 100%;
-  padding: ${({ postLayout }) => (postLayout === POST_LAYOUT.MASONRY ? '0 12%;' : '0 20%;')};
+  padding: ${({ $postLayout }) => ($postLayout === POST_LAYOUT.MASONRY ? '0 12%;' : '0 20%;')};
 `
 export const MainWrapper = styled.div<TMainWrapper>`
   flex-grow: 1;

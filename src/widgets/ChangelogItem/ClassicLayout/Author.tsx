@@ -15,7 +15,7 @@ const Author: FC<TProps> = ({ user }) => {
 
   return (
     <Wrapper>
-      <Avatar src={user.avatar} avatarLayout={avatarLayout} />
+      <Avatar src={user.avatar} $avatarLayout={avatarLayout} />
       <Name>{user.nickname}</Name>
     </Wrapper>
   )

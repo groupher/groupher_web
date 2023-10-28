@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TPrimaryColor, TSizeSM } from '@/spec'
+import type { TColor, TSizeSM } from '@/spec'
 import SIZE from '@/constant/size'
 
 import HookSVG from '@/icons/CheckBold'
@@ -12,14 +12,12 @@ export const Wrapper = styled.div<{ size: TSizeSM }>`
 
   transform: ${({ size }) => (size === SIZE.SMALL ? 'scale(0.6)' : 'scale(1)')};
 `
-type TTrack = { checked: boolean } & TPrimaryColor
+type TTrack = { checked: boolean } & TColor
 export const Track = styled.span<TTrack>`
-  background: ${({ checked, primaryColor }) =>
-    checked ? rainbow(primaryColor) : theme('divider')};
+  background: ${({ checked, $color }) => (checked ? rainbow($color) : theme('divider'))};
   border-radius: 20px;
   border: 2px solid;
-  border-color: ${({ checked, primaryColor }) =>
-    checked ? rainbow(primaryColor) : theme('divider')};
+  border-color: ${({ checked, $color }) => (checked ? rainbow($color) : theme('divider'))};
   cursor: pointer;
   display: flex;
   height: 30px;
@@ -40,7 +38,7 @@ export const Indicator = styled.span<TTrack>`
   box-shadow: 0 0 10px 3px rgb(0, 0, 0, 0.1);
 `
 export const CheckIcon = styled(HookSVG)<TTrack>`
-  fill: ${({ primaryColor }) => rainbow(primaryColor)};
+  fill: ${({ $color }) => rainbow($color)};
   ${css.size(15)};
   margin-left: 6px;
   opacity: ${({ checked }) => (checked ? 1 : 0)};

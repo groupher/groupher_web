@@ -41,7 +41,7 @@ const Block: FC<TProps> = ({ section, editingFAQIndex, editingFAQ, isFirst, isLa
         <Markdown>{section.body}</Markdown>
       </Body>
 
-      <Actions rightOffset={!isFirst && !isLast}>
+      <Actions $rightOffset={!isFirst && !isLast}>
         {!sortOnly && !editingFAQ && (
           <>
             <EditIcon />

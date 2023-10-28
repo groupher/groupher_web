@@ -21,11 +21,11 @@ const List: FC<TProps> = ({ items, activeKey, onSelect, popWidth, withDesc }) =>
 
   if (withDesc) {
     return (
-      <Wrapper popWidth={popWidth}>
+      <Wrapper $popWidth={popWidth}>
         {items.map((item) => (
           <FullItem
             key={item.key}
-            primaryColor={primaryColor}
+            $color={primaryColor}
             $active={activeKey === item.key}
             onClick={() => onSelect(item)}
           >
@@ -43,14 +43,14 @@ const List: FC<TProps> = ({ items, activeKey, onSelect, popWidth, withDesc }) =>
   }
 
   return (
-    <Wrapper popWidth={popWidth}>
+    <Wrapper $popWidth={popWidth}>
       {items.map((item) => {
         const $active = activeKey === item.key
 
         return (
           <Item
             key={item.key}
-            primaryColor={primaryColor}
+            $color={primaryColor}
             $active={$active}
             onClick={() => onSelect(item)}
           >

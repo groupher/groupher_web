@@ -38,14 +38,14 @@ const PrimaryColor: FC<TProps> = ({ primaryColor, isTouched, saving }) => {
         width="90%"
         left={-8}
       >
-        <Label color={primaryColor}>
+        <Label $color={primaryColor}>
           <ColorSelector
             activeColor={primaryColor}
             onChange={(color) => edit(color, 'primaryColor')}
             placement="right"
             offset={[-1, 15]}
           >
-            <ColorBall color={primaryColor} />
+            <ColorBall $color={primaryColor} />
           </ColorSelector>
         </Label>
       </SavingBar>

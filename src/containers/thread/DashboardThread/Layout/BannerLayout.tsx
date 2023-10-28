@@ -58,7 +58,7 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
       />
       <SelectWrapper>
         <Layout onClick={() => edit(BANNER_LAYOUT.HEADER, 'bannerLayout')}>
-          <Block $active={layout === BANNER_LAYOUT.HEADER} primaryColor={primaryColor}>
+          <Block $active={layout === BANNER_LAYOUT.HEADER} $color={primaryColor}>
             <Row>
               <CommunityTitle>{title}</CommunityTitle>
               <Space right={42} />
@@ -88,7 +88,7 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
                 <Bar long={55} thin />
               </ListsWrapper>
               <TagsWrapper>
-                <Bar long={100} primaryColor={primaryColor} />
+                <Bar long={100} $color={primaryColor} />
                 <Br bottom={15} />
                 <Bar long={60} thin />
                 <Br bottom={6} />
@@ -112,7 +112,7 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(BANNER_LAYOUT.TABBER, 'bannerLayout')}>
-          <Block $active={layout === BANNER_LAYOUT.TABBER} primaryColor={primaryColor}>
+          <Block $active={layout === BANNER_LAYOUT.TABBER} $color={primaryColor}>
             <Row>
               <CommunityTitle>{title}</CommunityTitle>
               <SpaceGrow />
@@ -148,7 +148,7 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
                 <Bar long={50} thin />
               </ListsWrapper>
               <TagsWrapper>
-                <Bar long={100} primaryColor={primaryColor} />
+                <Bar long={100} $color={primaryColor} />
                 <Br bottom={15} />
                 <Bar long={60} thin />
                 <Br bottom={6} />
@@ -172,13 +172,13 @@ const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(BANNER_LAYOUT.SIDEBAR, 'bannerLayout')}>
-          <Block $active={layout === BANNER_LAYOUT.SIDEBAR} primaryColor={primaryColor}>
+          <Block $active={layout === BANNER_LAYOUT.SIDEBAR} $color={primaryColor}>
             <Row>
               <Space right={110} />
               <Bar thin long={10} />
               <SpaceGrow />
               <Space right={5} />
-              <Bar long={10} primaryColor={primaryColor} />
+              <Bar long={10} $color={primaryColor} />
             </Row>
             <Main>
               <SidebarWrapper>

@@ -16,8 +16,8 @@ const ActiveLabel: FC<TProps> = ({ cat }) => {
   const primaryColor = usePrimaryColor()
 
   return (
-    <Wrapper primaryColor={primaryColor}>
-      <ActiveIcon primaryColor={primaryColor} />
+    <Wrapper $color={primaryColor}>
+      <ActiveIcon $color={primaryColor} />
       <Title>{Trans(cat)}</Title>
     </Wrapper>
   )

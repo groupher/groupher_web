@@ -9,7 +9,7 @@ import { getIconSize, getTextSize, getMargin } from './metric'
 type TIcon = {
   size: TSize
   margin: string
-  round: boolean
+  $round: boolean
   highlight: boolean
 }
 
@@ -29,7 +29,7 @@ export const Icon = styled(Img)<TIcon>`
   /* fill: ${({ highlight }) => (highlight ? theme('article.title') : theme('article.digest'))}; */
   ${({ size }) => css.size(getIconSize(size))};
   margin-right: ${({ size, margin }) => margin || getMargin(size)};
-  border-radius: ${({ round }) => (round ? '100%' : '0')};
+  border-radius: ${({ $round }) => ($round ? '100%' : '0')};
 `
 type TText = {
   size: TSize

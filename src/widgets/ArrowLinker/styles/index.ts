@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TTestable, TSpace, TPrimaryColor } from '@/spec'
+import type { TTestable, TSpace, TColor } from '@/spec'
 
 import css, { rainbowLink } from '@/css'
 import ArrowSVG from '@/icons/ArrowUpRight'
@@ -19,17 +19,17 @@ export const Wrapper = styled.article.attrs<TTestable>(({ testid }) => ({
   }
 `
 
-type TArrowIcon = { fontSize: number; bold?: boolean } & TPrimaryColor
+type TArrowIcon = { fontSize: number; bold?: boolean } & TColor
 
 export const ArrowIcon = styled(ArrowSVG)<TArrowIcon>`
-  fill: ${({ primaryColor }) => rainbowLink(primaryColor)};
+  fill: ${({ $color }) => rainbowLink($color)};
   width: ${({ fontSize }) => `${fontSize - 1}px`};
   height: ${({ fontSize }) => `${fontSize - 1}px`};
   margin-left: 1px;
   opacity: 0.6;
 `
 export const Title = styled.span<TArrowIcon>`
-  color: ${({ primaryColor }) => rainbowLink(primaryColor)};
+  color: ${({ $color }) => rainbowLink($color)};
   display: inline-block;
   font-size: ${({ fontSize }) => `${fontSize}px`};
   font-weight: ${({ bold }) => (bold ? 550 : 400)};

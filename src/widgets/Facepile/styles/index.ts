@@ -7,7 +7,7 @@ import { getUlMarginRight } from './metric'
 
 export { AvatarFallback } from './real_avatar'
 
-type TWrapper = { total: number } & TSpace
+type TWrapper = { $total: number } & TSpace
 
 export const Wrapper = styled.ul<TWrapper>`
   ${css.row('align-center')};
@@ -17,7 +17,7 @@ export const Wrapper = styled.ul<TWrapper>`
   padding: 0px 8px 0px 0px;
   ${(props) => css.spaceMargins(props)};
 
-  margin-right: ${({ total }) => getUlMarginRight(total)};
+  margin-right: ${({ $total }) => getUlMarginRight($total)};
 `
 export const AvatarsWrapper = styled.div`
   ${css.row()}

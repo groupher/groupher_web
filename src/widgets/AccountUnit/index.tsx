@@ -43,7 +43,7 @@ const AccountUnit: FC<TProps> = ({ testid = 'account-unit', withName = false, ..
         <ThemeSwitch right={10} />
       )}
 
-      {isLogin ? <Avatar src={avatar} avatarLayout={avatarLayout} /> : <UnloginIcon />}
+      {isLogin ? <Avatar src={avatar} $avatarLayout={avatarLayout} /> : <UnloginIcon />}
       {!isLogin && withName && <UnLoginText>未登入</UnLoginText>}
       {isLogin && withName && <NickName>{nickname}</NickName>}
 

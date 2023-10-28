@@ -17,10 +17,10 @@ export const Title = styled.div<TActive>`
   font-size: 17px;
   font-weight: 500;
 `
-export const Actions = styled.div<{ rightOffset: boolean }>`
+export const Actions = styled.div<{ $rightOffset: boolean }>`
   ${css.row('align-center')}
   position: absolute;
-  right: ${({ rightOffset }) => (rightOffset ? '-223px' : '-210px')};
+  right: ${({ $rightOffset }) => ($rightOffset ? '-223px' : '-210px')};
   top: 5px;
   opacity: 0.4;
 

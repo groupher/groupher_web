@@ -13,8 +13,8 @@ const BlocksLayout: FC = () => {
   const bannerLayout = useBannerLayout()
 
   return (
-    <Wrapper bannerLayout={bannerLayout}>
-      <CatsWrapper bannerLayout={bannerLayout}>
+    <Wrapper $bannerLayout={bannerLayout}>
+      <CatsWrapper $bannerLayout={bannerLayout}>
         {cats.map((cat) => (
           <Category
             key={cat.id}

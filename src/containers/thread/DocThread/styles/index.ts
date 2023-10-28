@@ -4,16 +4,16 @@ import type { TBannerLayout, TTestable } from '@/spec'
 import css from '@/css'
 import { BANNER_LAYOUT } from '@/constant'
 
-type TWrapper = TTestable & { bannerLayout: TBannerLayout }
+type TWrapper = TTestable & { $bannerLayout: TBannerLayout }
 export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.column('align-center')};
-  width: ${({ bannerLayout }) =>
-    bannerLayout === BANNER_LAYOUT.SIDEBAR ? 'calc(100% + 30px)' : '100%'};
+  width: ${({ $bannerLayout }) =>
+    $bannerLayout === BANNER_LAYOUT.SIDEBAR ? 'calc(100% + 30px)' : '100%'};
 
-  ${({ bannerLayout }) => {
-    switch (bannerLayout) {
+  ${({ $bannerLayout }) => {
+    switch ($bannerLayout) {
       case BANNER_LAYOUT.SIDEBAR:
         return 'padding-left: 100px'
 
@@ -26,7 +26,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   }};
 
   margin-top: 10px;
-  margin: ${({ bannerLayout }) => (bannerLayout === BANNER_LAYOUT.HEADER ? '0 6%;' : '0')};
+  margin: ${({ $bannerLayout }) => ($bannerLayout === BANNER_LAYOUT.HEADER ? '0 6%;' : '0')};
 
   ${css.media.mobile`
     margin: 0;

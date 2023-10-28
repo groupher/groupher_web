@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TActive, TColorName, TPrimaryColor } from '@/spec'
+import type { TActive, TColor, TColorName } from '@/spec'
 import css, { theme, rainbow } from '@/css'
 
 export const Wrapper = styled.div`
@@ -46,7 +46,7 @@ export const TitleBase = styled.div`
   margin-bottom: 12px;
 `
 
-type TBlockBase = TActive & TPrimaryColor
+type TBlockBase = TActive & TColor
 export const BlockBase = styled.div<TBlockBase>`
   opacity: ${({ $active }) => ($active ? 0.7 : 0.2)};
   box-shadow: ${({ $active }) => ($active ? css.cardShadow : '')};
@@ -56,8 +56,7 @@ export const BlockBase = styled.div<TBlockBase>`
   border: 1px solid;
   border-radius: 7px;
   /* border-color: ${theme('primary')}; */
-  border-color: ${({ $active, primaryColor }) =>
-    $active ? rainbow(primaryColor) : theme('primary')};
+  border-color: ${({ $active, $color }) => ($active ? rainbow($color) : theme('primary'))};
   padding: 16px 15px;
 
   &:hover {
@@ -69,12 +68,12 @@ export const BlockBase = styled.div<TBlockBase>`
 `
 
 // base shapes
-type TBar = { long: number; thin?: boolean; bold?: boolean; primaryColor?: TColorName }
+type TBar = { long: number; thin?: boolean; bold?: boolean; $color?: TColorName }
 export const Bar = styled.div<TBar>`
   width: ${({ long }) => `${long || 10}%`};
   height: ${({ thin }) => (thin ? '4px' : '10px;')};
-  background: ${({ thin, bold, primaryColor }) => {
-    if (primaryColor) return rainbow(primaryColor)
+  background: ${({ thin, bold, $color }) => {
+    if ($color) return rainbow($color)
 
     if (bold) return theme('article.title')
 

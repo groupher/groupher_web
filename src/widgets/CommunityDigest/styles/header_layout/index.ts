@@ -9,16 +9,16 @@ import { HEADER_LAYOUT } from '@/constant/layout'
 
 type TWrapper = {
   metric?: TMetric
-  headerLayout?: THeaderLayout
+  $headerLayout?: THeaderLayout
 }
 export const Wrapper = styled(BaseBanner)<TWrapper>`
   width: 100%;
-  min-height: ${({ headerLayout }) => (headerLayout === HEADER_LAYOUT.FLOAT ? '74px' : '64px')};
+  min-height: ${({ $headerLayout }) => ($headerLayout === HEADER_LAYOUT.FLOAT ? '74px' : '64px')};
   background: transparent;
   ${({ metric }) => css.fitPageWidth(metric)};
 
-  border-bottom: ${({ headerLayout }) =>
-    headerLayout === HEADER_LAYOUT.FLOAT ? 'none' : '1px solid transparent'};
+  border-bottom: ${({ $headerLayout }) =>
+    $headerLayout === HEADER_LAYOUT.FLOAT ? 'none' : '1px solid transparent'};
   border-image: linear-gradient(
     0.2turn,
     transparent,

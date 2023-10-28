@@ -61,7 +61,7 @@ const ChangelogLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
       />
       <SelectWrapper>
         <Layout onClick={() => edit(CHANGELOG_LAYOUT.CLASSIC, 'changelogLayout')}>
-          <Block $active={layout === CHANGELOG_LAYOUT.CLASSIC} primaryColor={primaryColor}>
+          <Block $active={layout === CHANGELOG_LAYOUT.CLASSIC} $color={primaryColor}>
             <Column>
               <Picture />
               <Br top={14} />
@@ -112,7 +112,7 @@ const ChangelogLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(CHANGELOG_LAYOUT.SIMPLE, 'changelogLayout')}>
-          <Block $active={layout === CHANGELOG_LAYOUT.SIMPLE} primaryColor={primaryColor}>
+          <Block $active={layout === CHANGELOG_LAYOUT.SIMPLE} $color={primaryColor}>
             <MiniItem>
               <MiniBar long={10} thin />
               <MiniIntro>

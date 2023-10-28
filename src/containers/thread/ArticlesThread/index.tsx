@@ -71,7 +71,7 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
 
   return (
     <Wrapper>
-      <LayoutWrapper thread={curThread} postLayout={postLayout}>
+      <LayoutWrapper thread={curThread} $postLayout={postLayout}>
         <ViewportTracker onEnter={inAnchor} onLeave={outAnchor} />
 
         {showFilters && (

@@ -6,11 +6,11 @@ import css, { theme } from '@/css'
 
 import { MainWrapper } from '..'
 
-export const Wrapper = styled.div<{ bannerLayout: TBannerLayout }>`
+export const Wrapper = styled.div<{ $bannerLayout: TBannerLayout }>`
   ${css.column('align-both')};
 
-  ${({ bannerLayout }) => {
-    switch (bannerLayout) {
+  ${({ $bannerLayout }) => {
+    switch ($bannerLayout) {
       case BANNER_LAYOUT.HEADER:
         return 'width: 100%; margin-left: 58px; margin-top: 30px;'
 
@@ -24,12 +24,12 @@ export const Wrapper = styled.div<{ bannerLayout: TBannerLayout }>`
         return 'width: auto;'
     }
 
-    return bannerLayout !== BANNER_LAYOUT.SIDEBAR
+    return $bannerLayout !== BANNER_LAYOUT.SIDEBAR
       ? 'width: 100%; margin-left: 58px; margin-top: 30px;'
       : 'width: auto;'
   }}
 `
-export const CatsWrapper = styled(MainWrapper)<{ bannerLayout?: TBannerLayout }>`
+export const CatsWrapper = styled(MainWrapper)<{ $bannerLayout?: TBannerLayout }>`
   ${css.rowWrap('justify-between')};
 
   flex-grow: 1;
@@ -39,8 +39,8 @@ export const CatsWrapper = styled(MainWrapper)<{ bannerLayout?: TBannerLayout }>
 
   background: transparent;
   border-radius: 6px;
-  ${({ bannerLayout }) =>
-    bannerLayout === BANNER_LAYOUT.TABBER
+  ${({ $bannerLayout }) =>
+    $bannerLayout === BANNER_LAYOUT.TABBER
       ? 'padding-left: 0;padding-right: 0;'
       : 'padding-left: 22px;padding-right: 50px;'};
 

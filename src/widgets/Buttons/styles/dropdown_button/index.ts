@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TActive, TPrimaryColor, TSizeTS, TSpace } from '@/spec'
+import type { TActive, TColor, TSizeTS, TSpace } from '@/spec'
 import SIZE from '@/constant/size'
 import css, { theme, rainbow, rainbowLight } from '@/css'
 
@@ -8,21 +8,20 @@ import Button from '@/widgets/Buttons/Button'
 import ArrowSVG from '@/icons/ArrowSimple'
 import CloseSVG from '@/icons/CloseCross'
 
-type TWrapper = { withBorder: boolean; size: TSizeTS; selected: boolean } & TSpace &
+type TWrapper = { $withBorder: boolean; size: TSizeTS; selected: boolean } & TSpace &
   TActive &
-  TPrimaryColor
+  TColor
 
 export const Wrapper = styled.div<TWrapper>`
   ${css.row('align-center')};
   color: ${theme('article.digest')};
 
-  /* border: ${({ withBorder, $active }) => (withBorder || $active ? '1px solid' : 'none')}; */
   border: 1px solid;
-  border-color: ${({ withBorder, $active, selected, primaryColor }) =>
-    withBorder || $active || selected ? rainbow(primaryColor, 'lightText') : 'transparent'};
+  border-color: ${({ $withBorder, $active, selected, $color }) =>
+    $withBorder || $active || selected ? rainbow($color, 'lightText') : 'transparent'};
 
-  background: ${({ $active, selected, primaryColor }) =>
-    $active || selected ? rainbowLight(primaryColor) : 'transparent'};
+  background: ${({ $active, selected, $color }) =>
+    $active || selected ? rainbowLight($color) : 'transparent'};
 
   border-radius: 10px;
 
@@ -36,8 +35,8 @@ export const Wrapper = styled.div<TWrapper>`
     selected || $active ? `${(right || 0) + 10}px` : `${right}px`};
 
   &:hover {
-    background: ${({ $active, primaryColor, selected }) =>
-      $active || selected ? rainbowLight(primaryColor) : theme('hoverBg')};
+    background: ${({ $active, $color, selected }) =>
+      $active || selected ? rainbowLight($color) : theme('hoverBg')};
   }
 
   transition: all 0.2s;
@@ -45,12 +44,11 @@ export const Wrapper = styled.div<TWrapper>`
 export const Label = styled.div`
   opacity: 0.7;
 `
-type TInnerBtnWrapper = TActive & TPrimaryColor
+type TInnerBtnWrapper = TActive & TColor
 export const InnerBtnWrapper = styled.div<TInnerBtnWrapper>`
   ${css.row('align-center')};
   margin-left: 2px;
-  color: ${({ $active, primaryColor }) =>
-    $active ? rainbow(primaryColor) : theme('article.digest')};
+  color: ${({ $active, $color }) => ($active ? rainbow($color) : theme('article.digest'))};
   font-weight: 400;
   font-size: 13px;
 
@@ -65,17 +63,17 @@ export const ButtonWrapper = styled(Button)`
   padding-left: 6px;
   padding-right: 4px;
 `
-type TFilterIcon = Omit<TWrapper, 'withBorder' | 'size'>
+type TFilterIcon = Omit<TWrapper, '$withBorder' | 'size'>
 export const FilterIcon = styled(ArrowSVG)<TFilterIcon>`
-  fill: ${({ $active, selected, primaryColor }) =>
-    $active || selected ? rainbow(primaryColor, 'article.digest') : theme('article.digest')};
+  fill: ${({ $active, selected, $color }) =>
+    $active || selected ? rainbow($color, 'article.digest') : theme('article.digest')};
   ${css.size(14)};
   transform: rotate(-90deg);
   margin-left: 4px;
 
   ${InnerBtnWrapper}:hover & {
-    fill: ${({ $active, primaryColor }) =>
-      $active ? rainbow(primaryColor, 'article.digest') : theme('article.digest')};
+    fill: ${({ $active, $color }) =>
+      $active ? rainbow($color, 'article.digest') : theme('article.digest')};
   }
 
   ${css.media.mobile`
@@ -84,23 +82,23 @@ export const FilterIcon = styled(ArrowSVG)<TFilterIcon>`
   `};
 `
 
-export const CloseWrapper = styled.div<TPrimaryColor>`
+export const CloseWrapper = styled.div<TColor>`
   ${css.circle(16)};
   ${css.row('align-both')};
   margin-left: 4px;
 
-  color: ${({ primaryColor }) => rainbow(primaryColor)};
+  color: ${({ $color }) => rainbow($color)};
 
   &:hover {
     color: ${theme('button.fg')};
-    background: ${({ primaryColor }) => rainbow(primaryColor)};
+    background: ${({ $color }) => rainbow($color)};
     cursor: pointer;
   }
 
   transition: all 0.2s;
 `
-export const CloseIcon = styled(CloseSVG)<TPrimaryColor>`
-  fill: ${({ primaryColor }) => rainbow(primaryColor)};
+export const CloseIcon = styled(CloseSVG)<TColor>`
+  fill: ${({ $color }) => rainbow($color)};
   ${css.size(12)};
   transform: rotate(-90deg);
   opacity: 0.8;

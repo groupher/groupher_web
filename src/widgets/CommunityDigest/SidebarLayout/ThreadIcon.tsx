@@ -19,28 +19,28 @@ const ThreadIcon: FC<TProps> = ({ thread, $active }) => {
     case THREAD.POST: {
       return (
         <Wrapper>
-          <Icon.Discuss $active={$active} primaryColor={primaryColor} />
+          <Icon.Discuss $active={$active} $color={primaryColor} />
         </Wrapper>
       )
     }
     case THREAD.CHANGELOG: {
       return (
         <Wrapper>
-          <Icon.Tada $active={$active} primaryColor={primaryColor} />
+          <Icon.Tada $active={$active} $color={primaryColor} />
         </Wrapper>
       )
     }
     case THREAD.KANBAN: {
       return (
         <Wrapper>
-          <Icon.Kanban $active={$active} primaryColor={primaryColor} />
+          <Icon.Kanban $active={$active} $color={primaryColor} />
         </Wrapper>
       )
     }
     case THREAD.DOC: {
       return (
         <Wrapper>
-          <Icon.Guide $active={$active} primaryColor={primaryColor} />
+          <Icon.Guide $active={$active} $color={primaryColor} />
         </Wrapper>
       )
     }
@@ -48,7 +48,7 @@ const ThreadIcon: FC<TProps> = ({ thread, $active }) => {
     case THREAD.ABOUT: {
       return (
         <Wrapper>
-          <Icon.Info $active={$active} primaryColor={primaryColor} />
+          <Icon.Info $active={$active} $color={primaryColor} />
         </Wrapper>
       )
     }
@@ -56,7 +56,7 @@ const ThreadIcon: FC<TProps> = ({ thread, $active }) => {
     default: {
       return (
         <Wrapper>
-          <Icon.Info $active={$active} primaryColor={primaryColor} />
+          <Icon.Info $active={$active} $color={primaryColor} />
         </Wrapper>
       )
     }

@@ -17,9 +17,9 @@ const Icon: FC<TProps> = ({ type, $active }) => {
   const primaryColor = usePrimaryColor()
 
   return (
-    <Wrapper $active={$active} noSaturate={type === MENU.FEATURE || type === MENU.BUG}>
+    <Wrapper $active={$active} $noSaturate={type === MENU.FEATURE || type === MENU.BUG}>
       {/* @ts-ignore */}
-      <IconComp primaryColor={primaryColor} $active={$active} />
+      <IconComp $color={primaryColor} $active={$active} />
     </Wrapper>
   )
 }

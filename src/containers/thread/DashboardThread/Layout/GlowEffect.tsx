@@ -64,11 +64,7 @@ const GlowEffect: FC<TProps> = ({
       />
 
       <Row>
-        <NoBox
-          $active={glowType === ''}
-          onClick={() => edit('', 'glowType')}
-          primaryColor={primaryColor}
-        >
+        <NoBox $active={glowType === ''} onClick={() => edit('', 'glowType')} $color={primaryColor}>
           <ForbidIcon />
           <CloseIcon />
         </NoBox>
@@ -77,10 +73,10 @@ const GlowEffect: FC<TProps> = ({
           <Box
             key={effect}
             $active={effect === glowType}
-            primaryColor={primaryColor}
+            $color={primaryColor}
             onClick={() => edit(effect, 'glowType')}
           >
-            <GrowBackground glowPosition="absolute" glowType={effect} />
+            <GrowBackground $glowPosition="absolute" $glowType={effect} />
           </Box>
         ))}
       </Row>

@@ -30,7 +30,7 @@ const MobileThreadNav: FC<TProps> = ({ mode = 'mobile' }) => {
   const offset = mode === 'mobile' ? [-5, 5] : [-28, 5]
 
   return (
-    <Wrapper lineHeight={mode === 'mobile'}>
+    <Wrapper $lineHeight={mode === 'mobile'}>
       <Tooltip
         content={
           <Panel>
@@ -51,9 +51,8 @@ const MobileThreadNav: FC<TProps> = ({ mode = 'mobile' }) => {
         trigger="click"
         noPadding
       >
-        <Wrapper lineHeight={mode === 'mobile'}>
-          {/* <Title withMaxWidth={mode === 'modeline'}>管理后台</Title> */}
-          <Title withMaxWidth={mode === 'modeline'}>{curThread?.title || '管理后台'}</Title>
+        <Wrapper $lineHeight={mode === 'mobile'}>
+          <Title $withMaxWidth={mode === 'modeline'}>{curThread?.title || '管理后台'}</Title>
           {mode === 'mobile' ? <ArrowIcon /> : <ModelineDivider left={8} right={4} />}
         </Wrapper>
       </Tooltip>

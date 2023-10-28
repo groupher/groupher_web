@@ -25,9 +25,9 @@ const GlowBackground: FC = () => {
 
   return (
     <Wrapper
-      glowType={glowType}
-      glowPosition={getGlowPosition(metric, glowFixed)}
-      glowOpacity={glowOpacity}
+      $glowType={glowType}
+      $glowPosition={getGlowPosition(metric, glowFixed)}
+      $glowOpacity={glowOpacity}
     />
   )
 }

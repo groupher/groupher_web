@@ -9,7 +9,6 @@ type TProps = {
   src: string
   alt?: string
   fallback?: ReactNode | null
-  // scrollPosition: any
   visibleByDefault?: boolean
   onClick?: () => void
   threshold?: number
@@ -41,7 +40,6 @@ const LazyLoadImg: FC<TProps> = ({
           alt={alt}
           // placeholder={fallback}
           effect="blur"
-          scrollPosition={null}
           visibleByDefault={visibleByDefault}
           onLoad={() => setImgLoaded(true)}
           // beforeLoad={() => setImgLoaded(true)}

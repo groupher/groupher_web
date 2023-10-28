@@ -145,7 +145,7 @@ const Tabs: FC<TProps> = ({
             slipHeight={slipHeight}
             noAnimation={noAnimation}
           >
-            <RealBar width={`${slipWidth}px`} primaryColor={primaryColor} />
+            <RealBar width={`${slipWidth}px`} $color={primaryColor} />
           </SlipBar>
         )}
       </Nav>

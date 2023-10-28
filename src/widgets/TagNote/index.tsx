@@ -35,7 +35,7 @@ const TagNote: FC<TProps> = ({ testid = 'tag-note', tag }) => {
   return (
     <Wrapper testid={testid}>
       <Header>
-        <DotWrapper color={tag.color as TColorName} round={tagLayout === TAG_LAYOUT.DOT}>
+        <DotWrapper color={tag.color as TColorName} $round={tagLayout === TAG_LAYOUT.DOT}>
           <TagNode
             color={tag.color}
             dotSize={8}

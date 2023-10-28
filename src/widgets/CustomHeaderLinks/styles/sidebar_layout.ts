@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TActive, TPrimaryColor } from '@/spec'
+import type { TActive, TColor } from '@/spec'
 import css, { theme, rainbow } from '@/css'
 
 import LinkSVG from '@/icons/Link'
@@ -31,7 +31,7 @@ export const MenuLinkItem = styled(LinkItem)`
   border-radius: 4px;
 `
 
-type TGroupItem = TActive & TPrimaryColor
+type TGroupItem = TActive & TColor
 export const GroupItem = styled(LinkItem)<TGroupItem>`
   ${css.row('align-center')};
   position: relative;
@@ -56,27 +56,27 @@ export const MoreIcon = styled(MoreSVG)<TGroupItem>`
   ${css.size(14)};
   margin-right: 12px;
   margin-left: 1px;
-  fill: ${({ $active, primaryColor }) => ($active ? rainbow(primaryColor) : theme('hint'))};
+  fill: ${({ $active, $color }) => ($active ? rainbow($color) : theme('hint'))};
 
   ${LinkItem}:hover & {
-    fill: ${({ primaryColor }) => rainbow(primaryColor)};
+    fill: ${({ $color }) => rainbow($color)};
   }
 `
 
-export const LinkIcon = styled(LinkSVG)<TPrimaryColor>`
+export const LinkIcon = styled(LinkSVG)<TColor>`
   ${css.size(20)};
   fill: ${theme('hint')};
   margin-right: 9px;
   margin-left: -1px;
 
   ${LinkItem}:hover & {
-    fill: ${({ primaryColor }) => rainbow(primaryColor)};
+    fill: ${({ $color }) => rainbow($color)};
   }
 `
 
-export const ArrowUpRightIcon = styled(ArrowUpRightSVG)<TPrimaryColor>`
+export const ArrowUpRightIcon = styled(ArrowUpRightSVG)<TColor>`
   ${css.size(12)};
-  fill: ${({ primaryColor }) => rainbow(primaryColor)};
+  fill: ${({ $color }) => rainbow($color)};
   margin-top: 2px;
   margin-right: 1px;
   opacity: 0;

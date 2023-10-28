@@ -17,7 +17,7 @@ const Wallpaper: FC = () => {
   // for custom image/svg
   // for use style object not passing props
   // @link see https://github.com/styled-components/styled-components/issues/3315#issuecomment-885977691
-  return <Wrapper style={{ background }} effect={effect} themeName={curTheme} />
+  return <Wrapper style={{ background }} $effect={effect} $themeName={curTheme} />
 }
 
 export default observer(Wallpaper)

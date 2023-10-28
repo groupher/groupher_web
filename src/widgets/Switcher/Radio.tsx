@@ -47,7 +47,7 @@ const Radio: FC<TProps> = ({
           onClick={() => onChange?.(item)}
           dimOnActive={item.dimOnActive}
           size={size}
-          primaryColor={primaryColor}
+          $color={primaryColor}
         >
           {item.value}
         </Label>

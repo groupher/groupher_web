@@ -32,7 +32,7 @@ const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold, activePath
               key={item.index}
               href={item.link}
               $active={`/${slug}/${activePath}` === item.link}
-              primaryColor={primaryColor}
+              $color={primaryColor}
             >
               {item.title}
             </LinkItem>
@@ -73,7 +73,7 @@ const CustomHeaderLinks: FC<TProps> = ({ links, activePath = '' }) => {
         return (
           <Fragment key={groupTitle}>
             {startsWith(ONE_LINK_GROUP, groupTitle) ? (
-              <LinkItem href={curGroupLinks[0].link} primaryColor={primaryColor}>
+              <LinkItem href={curGroupLinks[0].link} $color={primaryColor}>
                 {curGroupLinks[0].title}
               </LinkItem>
             ) : (

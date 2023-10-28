@@ -33,30 +33,26 @@ const AnglePanel: FC<TProps> = ({ direction }) => {
 
   return (
     <Wrapper>
-      <Top
-        $active={direction === TOP}
-        primaryColor={primaryColor}
-        onClick={() => changeDirection(TOP)}
-      >
+      <Top $active={direction === TOP} $color={primaryColor} onClick={() => changeDirection(TOP)}>
         <ArrowIcon deg="-90deg" $active={direction === TOP} />
       </Top>
       <TopLeft
         $active={direction === TOP_LEFT}
-        primaryColor={primaryColor}
+        $color={primaryColor}
         onClick={() => changeDirection(TOP_LEFT)}
       >
         <ArrowIcon deg="-135deg" $active={direction === TOP_LEFT} />
       </TopLeft>
       <TopRight
         $active={direction === TOP_RIGHT}
-        primaryColor={primaryColor}
+        $color={primaryColor}
         onClick={() => changeDirection(TOP_RIGHT)}
       >
         <ArrowIcon deg="-45deg" $active={direction === TOP_RIGHT} />
       </TopRight>
       <Bottom
         $active={direction === BOTTOM}
-        primaryColor={primaryColor}
+        $color={primaryColor}
         onClick={() => changeDirection(BOTTOM)}
       >
         <ArrowIcon deg="90deg" $active={direction === BOTTOM} />
@@ -64,7 +60,7 @@ const AnglePanel: FC<TProps> = ({ direction }) => {
 
       <BottomLeft
         $active={direction === BOTTOM_LEFT}
-        primaryColor={primaryColor}
+        $color={primaryColor}
         onClick={() => changeDirection(BOTTOM_LEFT)}
       >
         <ArrowIcon deg="135deg" $active={direction === BOTTOM_LEFT} />
@@ -73,21 +69,21 @@ const AnglePanel: FC<TProps> = ({ direction }) => {
       <BottomRight
         $active={direction === BOTTOM_RIGHT}
         onClick={() => changeDirection(BOTTOM_RIGHT)}
-        primaryColor={primaryColor}
+        $color={primaryColor}
       >
         <ArrowIcon deg="42deg" $active={direction === BOTTOM_RIGHT} />
       </BottomRight>
 
       <Left
         $active={direction === LEFT}
-        primaryColor={primaryColor}
+        $color={primaryColor}
         onClick={() => changeDirection(LEFT)}
       >
         <ArrowIcon deg="-180deg" $active={direction === LEFT} />
       </Left>
       <Right
         $active={direction === RIGHT}
-        primaryColor={primaryColor}
+        $color={primaryColor}
         onClick={() => changeDirection(RIGHT)}
       >
         <ArrowIcon deg="0" $active={direction === RIGHT} />

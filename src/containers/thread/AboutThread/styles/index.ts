@@ -4,15 +4,15 @@ import type { TBannerLayout, TTestable } from '@/spec'
 import css, { theme } from '@/css'
 import { BANNER_LAYOUT } from '@/constant'
 
-type TWrapper = TTestable & { bannerLayout: TBannerLayout }
+type TWrapper = TTestable & { $bannerLayout: TBannerLayout }
 export const Wrapper = styled.div.attrs<TWrapper>(({ testid }) => ({
   'data-test-id': testid,
 }))<TWrapper>`
   ${css.row('align-start')};
   width: 100%;
 
-  padding-left: ${({ bannerLayout }) => (bannerLayout === BANNER_LAYOUT.SIDEBAR ? '90px' : '')};
-  ${({ bannerLayout }) => (bannerLayout === BANNER_LAYOUT.TABBER ? 'padding: 0 6px;' : '')};
+  padding-left: ${({ $bannerLayout }) => ($bannerLayout === BANNER_LAYOUT.SIDEBAR ? '90px' : '')};
+  ${({ $bannerLayout }) => ($bannerLayout === BANNER_LAYOUT.TABBER ? 'padding: 0 6px;' : '')};
 
   ${css.media.mobile`
     ${css.column('align-start')};

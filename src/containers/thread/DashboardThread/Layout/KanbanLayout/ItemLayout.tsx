@@ -50,7 +50,7 @@ const KanbanItemLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
       />
       <SelectWrapper>
         <Layout onClick={() => edit(KANBAN_LAYOUT.SIMPLE, 'kanbanLayout')}>
-          <Block $active={layout === KANBAN_LAYOUT.SIMPLE} primaryColor={primaryColor}>
+          <Block $active={layout === KANBAN_LAYOUT.SIMPLE} $color={primaryColor}>
             <Bar thin long={15} />
             <Br bottom={15} />
             <Row>
@@ -76,7 +76,7 @@ const KanbanItemLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(KANBAN_LAYOUT.FULL, 'kanbanLayout')}>
-          <Block $active={layout === KANBAN_LAYOUT.FULL} primaryColor={primaryColor}>
+          <Block $active={layout === KANBAN_LAYOUT.FULL} $color={primaryColor}>
             <Bar thin long={15} />
             <Br bottom={10} />
             <Row>
