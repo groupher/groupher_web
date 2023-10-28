@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import styled from 'styled-components'
 
-import type { TActive, TPrimaryColor } from '@/spec'
+import type { TActive, TColor } from '@/spec'
 
 import MENU from '@/constant/menu'
 
@@ -20,30 +20,30 @@ import OtherSVG from '@/icons/menu/MoreL'
 import css, { theme, rainbow } from '@/css'
 import { Item } from './list'
 
-type TWrapper = { noSaturate: boolean } & TActive
+type TWrapper = { $noSaturate: boolean } & TActive
 export const Wrapper = styled.div<TWrapper>`
   ${css.row('align-both')}
   ${css.size(16)};
   margin-right: 8px;
   /*  $active state hot work on icon's hover, put it in here instead */
-  filter: ${({ $active, noSaturate }) => {
-    if (noSaturate) return 'saturate(1)'
+  filter: ${({ $active, $noSaturate }) => {
+    if ($noSaturate) return 'saturate(1)'
 
     return $active ? 'saturate(1)' : 'saturate(0)'
   }};
 `
 
-type TIcon = TActive & TPrimaryColor & { $small: boolean }
+type TIcon = TActive & TColor & { $small: boolean }
 const commonIcon = (comp): FC<TIcon> => {
   // @ts-ignore
   return styled(comp)<TIcon>`
-    fill: ${({ $active, primaryColor }) => ($active ? rainbow(primaryColor) : theme('hint'))};
+    fill: ${({ $active, $$color }) => ($active ? rainbow($$color) : theme('hint'))};
     width: ${({ $small }) => ($small ? '12px' : '15px')};
     height: ${({ $small }) => ($small ? '12px' : '15px')};
     display: block;
 
     ${Item}:hover & {
-      fill: ${({ primaryColor, $active }) => ($active ? rainbow(primaryColor) : theme('hint'))};
+      fill: ${({ $$color, $active }) => ($active ? rainbow($$color) : theme('hint'))};
     }
   `
 }

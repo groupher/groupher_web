@@ -47,7 +47,7 @@ export const loadDemoSetting = () => store.loadDemoSetting()
  * 控制台打印佛祖保佑
  */
 export const logBuddha = (): void => {
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.CUR_ENV === 'production') {
     /* eslint-disable */
     console.log(
       ' .......................................................\n\n\n' +

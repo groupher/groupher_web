@@ -24,27 +24,27 @@ const TabIcon: FC<TProps> = ({ slug, active, small }) => {
 
   switch (slug) {
     case THREAD.POST: {
-      return <DiscussIcon $active={active} $small={small} primaryColor={primaryColor} />
+      return <DiscussIcon $active={active} $small={small} $color={primaryColor} />
     }
 
     case THREAD.KANBAN: {
-      return <KanbanIcon $active={active} $small={small} primaryColor={primaryColor} />
+      return <KanbanIcon $active={active} $small={small} $color={primaryColor} />
     }
 
     case THREAD.DOC: {
-      return <GuideIcon $active={active} $small={small} primaryColor={primaryColor} />
+      return <GuideIcon $active={active} $small={small} $color={primaryColor} />
     }
 
     case THREAD.CHANGELOG: {
-      return <TadaIcon $active={active} $small={small} primaryColor={primaryColor} />
+      return <TadaIcon $active={active} $small={small} $color={primaryColor} />
     }
 
     case THREAD.ABOUT: {
-      return <InfoIcon $active={active} $small={small} primaryColor={primaryColor} />
+      return <InfoIcon $active={active} $small={small} $color={primaryColor} />
     }
 
     default: {
-      return <ArrowIcon $active={active} $small={small} primaryColor={primaryColor} />
+      return <ArrowIcon $active={active} $small={small} $color={primaryColor} />
     }
   }
 }

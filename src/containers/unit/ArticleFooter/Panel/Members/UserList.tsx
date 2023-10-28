@@ -20,8 +20,8 @@ const UserList: FC<TProps> = ({ users }) => {
         <Avatar
           key={user.id}
           src={user.avatar}
-          avatarLayout={avatarLayout}
-          fallback={<ImgFallback size={20} user={user} avatarLayout={avatarLayout} />}
+          $avatarLayout={avatarLayout}
+          fallback={<ImgFallback size={20} user={user} />}
         />
       ))}
     </Wrapper>

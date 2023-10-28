@@ -35,7 +35,7 @@ const HeaderLayout: FC = () => {
       id={ANCHOR.GLOBAL_HEADER_ID}
       testid="community-digest"
       metric={metric}
-      headerLayout={headerLayout}
+      $headerLayout={headerLayout}
     >
       <InnerWrapper metric={metric}>
         <BannerContentWrapper>

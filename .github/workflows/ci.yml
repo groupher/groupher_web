@@ -70,7 +70,7 @@ jobs:
       - name: (Frontend) setup node env
         uses: actions/setup-node@v2
         with:
-          node-version: '16.13.0'
+          node-version: '20.3.1'
       - name: (Frontend) Install Packages
         working-directory: ./frontend_server
         run: npm install

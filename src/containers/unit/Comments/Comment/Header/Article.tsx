@@ -46,15 +46,8 @@ const CommentHeader: FC<TProps> = ({ data, showInnerRef, isReply }) => {
       <Avatar
         src={data.author.avatar}
         avatarSize={avatarSize}
-        avatarLayout={avatarLayout}
-        fallback={
-          <ImgFallback
-            user={data.author}
-            size={avatarSize}
-            right={10}
-            avatarLayout={avatarLayout}
-          />
-        }
+        $avatarLayout={avatarLayout}
+        fallback={<ImgFallback user={data.author} size={avatarSize} right={10} />}
       />
       <HeaderBaseInfo>
         <BaseInfo>

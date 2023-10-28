@@ -6,6 +6,7 @@
 
 import { FC, Fragment, useState } from 'react'
 import { observer } from 'mobx-react'
+import dynamic from 'next/dynamic'
 
 import type { TArticleCat } from '@/spec'
 import { PUBLISH_MODE } from '@/constant/publish'
@@ -19,7 +20,6 @@ import { buildLog } from '@/logger'
 
 import { Space, SpaceGrow, DesktopOnly } from '@/widgets/Common'
 import PublishButton from '@/widgets/Buttons/PublishButton'
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 import CatSelector from '@/widgets/CatSelector'
 import StateSelector from '@/widgets/StateSelector'
 import SearchBox from '@/widgets/SearchBox'
@@ -30,6 +30,10 @@ import SortFilter from './SortFilter'
 
 import type { TProps } from '.'
 import { Wrapper } from './styles'
+
+export const LavaLampLoading = dynamic(() => import('@/widgets/Loading/LavaLampLoading'), {
+  ssr: false,
+})
 
 /* eslint-disable-next-line */
 const log = buildLog('w:ArticlesFilter:index')

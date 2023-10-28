@@ -76,8 +76,8 @@ const ClassicLayout: FC<TProps> = ({ showCommunityBadge }) => {
               <JoinerAvatar
                 key={user.id}
                 src={user.avatar}
-                avatarLayout={avatarLayout}
-                fallback={<ImgFallback size={24} user={user} avatarLayout={avatarLayout} />}
+                $avatarLayout={avatarLayout}
+                fallback={<ImgFallback size={24} user={user} />}
               />
             ))}
             <MoreNum>+2</MoreNum>

@@ -47,7 +47,7 @@ const Group: FC<TProps> = ({ group, curTab, touched, community }) => {
                 key={item.slug}
                 $active={item.slug === curTab}
                 href={`/${community.slug}/${DASHBOARD_ROUTE.DASHBOARD}/${subPath}`}
-                primaryColor={primaryColor}
+                $color={primaryColor}
               >
                 {item.title}
                 {touched && (touched[item.slug] || touched[item.alias]) && <TouchedDot />}

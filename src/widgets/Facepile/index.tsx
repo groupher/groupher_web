@@ -95,11 +95,11 @@ const Facepile: FC<TProps> = ({
   const sortedUsers = reverse ? reverseFn(users) : users
 
   return (
-    <Wrapper total={totalCount} {...restProps}>
+    <Wrapper $total={totalCount} {...restProps}>
       {totalCount <= 1 || !showMore ? (
         <TotalOneOffset />
       ) : (
-        <MoreItem size={size} total={totalCount} onTotalSelect={onTotalSelect} />
+        <MoreItem size={size} onTotalSelect={onTotalSelect} />
       )}
       {totalCount === 1 ? (
         <RealAvatarContext.Provider value={{ size, user: sortedUsers[0] }}>

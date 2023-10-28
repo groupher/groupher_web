@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TPrimaryColor } from '@/spec'
+import type { TColor } from '@/spec'
 
 import css, { theme, rainbow } from '@/css'
 
@@ -24,18 +24,18 @@ export const LableWrapper = styled.div`
   ${css.row('align-center')};
 `
 
-type TCommonIcon = { $active: boolean; $small: boolean } & TPrimaryColor
+type TCommonIcon = { $active: boolean; $small: boolean } & TColor
 
 const commonIcon = (comp) => {
   return styled(comp)<TCommonIcon>`
-    fill: ${({ $active, primaryColor }) => ($active ? rainbow(primaryColor) : theme('hint'))};
+    fill: ${({ $active, $color }) => ($active ? rainbow($color) : theme('hint'))};
     width: ${({ $small }: { $small: boolean }) => ($small ? '12px' : '14px')};
     height: ${({ $small }) => ($small ? '12px' : '14px')};
     margin-right: 5px;
     display: block;
 
     ${Label}:hover & {
-      fill: ${({ primaryColor }) => rainbow(primaryColor)};
+      fill: ${({ $color }) => rainbow($color)};
     }
   `
 }

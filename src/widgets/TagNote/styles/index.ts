@@ -23,13 +23,13 @@ export const Header = styled.div`
   margin-bottom: 8px;
   width: 100%;
 `
-type TDotWrapper = { color: TColorName; round: boolean }
+type TDotWrapper = { color: TColorName; $round: boolean }
 export const DotWrapper = styled.div<TDotWrapper>`
-  ${({ round }) => (round ? css.size(16) : css.size(20))};
+  ${({ $round }) => ($round ? css.size(16) : css.size(20))};
   ${css.row('align-both')};
   background: ${({ color }) => rainbowLight(color)};
   margin-right: 10px
-  border-radius: ${({ round }) => (round ? '50%' : '5px')};
+  border-radius: ${({ $round }) => ($round ? '50%' : '5px')};
 `
 export const Title = styled.h3<{ color: TColorName }>`
   color: ${theme('article.title')};

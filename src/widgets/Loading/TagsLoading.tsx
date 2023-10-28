@@ -13,14 +13,7 @@ const LoadingWrapper = styled.div`
 `
 
 const LoadingItem = ({ theme }) => (
-  <ContentLoader
-    height={100}
-    width={200}
-    speed={2}
-    backgroundColor={theme.loading.basic}
-    // primaryColor="#f3f3f3"
-    // secondaryColor="#0b0505"
-  >
+  <ContentLoader height={100} width={200} speed={2} backgroundColor={theme.loading.basic}>
     <circle cx="10.44" cy="15.44" r="9.44" />
     <rect x="27" y="9.28" rx="0" ry="0" width="123" height="12" />
   </ContentLoader>

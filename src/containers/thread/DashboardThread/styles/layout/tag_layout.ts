@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TActive, TColorName } from '@/spec'
+import type { TActive, TColor } from '@/spec'
 import css, { theme, rainbow, rainbowLight } from '@/css'
 
 import HashTagSVG from '@/icons/HashTag'
@@ -18,19 +18,19 @@ export const TagItem = styled.div`
   ${css.row('align-center')};
   gap: 0 8px;
 `
-export const BgWrapper = styled.div<{ color: TColorName }>`
+export const BgWrapper = styled.div<TColor>`
   ${css.size(22)};
   ${css.row('align-both')};
   border-radius: 4px;
-  background: ${({ color }) => rainbowLight(color)};
+  background: ${({ $color }) => rainbowLight($color)};
 `
-export const HashTagIcon = styled(HashTagSVG)<{ color: TColorName }>`
+export const HashTagIcon = styled(HashTagSVG)<TColor>`
   ${css.size(18)};
-  fill: ${({ color }) => rainbow(color)};
+  fill: ${({ $color }) => rainbow($color)};
 `
-export const Dot = styled.div<{ color: TColorName }>`
+export const Dot = styled.div<TColor>`
   ${css.circle(14)};
-  background: ${({ color }) => rainbow(color)};
+  background: ${({ $color }) => rainbow($color)};
 `
 export const Bar = styled.div`
   width: 60px;

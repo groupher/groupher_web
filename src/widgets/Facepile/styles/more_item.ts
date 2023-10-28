@@ -24,15 +24,16 @@ const BaseAvatarItem = styled.li<{ size: string }>`
 export const Wrapper = styled(BaseAvatarItem)`
   ${css.media.mobile`display: none`};
 `
-type TTextMore = { size: TAvatarSize; total: number; avatarLayout: TAvatarLayout }
+type TTextMore = { size: TAvatarSize; $avatarLayout: TAvatarLayout }
 export const TextMore = styled.div<TTextMore>`
   font-size: 17px;
   ${({ size }) => css.size(pixelAdd(getAvatarSize(size) as string, -3))};
   ${css.row('align-both')};
 
   background-color: ${theme('hoverBg')};
-  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '5px' : '100%')};
-  padding-left: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '7px' : '5px')};
+  border-radius: ${({ $avatarLayout }) =>
+    $avatarLayout === AVATAR_LAYOUT.SQUARE ? '5px' : '100%'};
+  padding-left: ${({ $avatarLayout }) => ($avatarLayout === AVATAR_LAYOUT.SQUARE ? '7px' : '5px')};
 `
 export const DotText = styled.div`
   color: ${theme('article.digest')};

@@ -40,15 +40,15 @@ const TagLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
       <SectionLabel title="标签样式" desc={<>列表内容及文章详情的标签的展现形式。</>} />
       <SelectWrapper>
         <Layout onClick={() => edit(TAG_LAYOUT.HASH, 'tagLayout')}>
-          <Block $active={layout === TAG_LAYOUT.HASH} primaryColor={primaryColor}>
+          <Block $active={layout === TAG_LAYOUT.HASH} $color={primaryColor}>
             <TagItem>
-              <HashTagIcon color={primaryColor} />
+              <HashTagIcon $color={primaryColor} />
               <Bar />
             </TagItem>
 
             <TagItem>
-              <BgWrapper color={primaryColor}>
-                <HashTagIcon color={primaryColor} />
+              <BgWrapper $color={primaryColor}>
+                <HashTagIcon $color={primaryColor} />
               </BgWrapper>
               <Bar />
             </TagItem>
@@ -59,15 +59,15 @@ const TagLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(TAG_LAYOUT.DOT, 'tagLayout')}>
-          <Block $active={layout === TAG_LAYOUT.DOT} primaryColor={primaryColor}>
+          <Block $active={layout === TAG_LAYOUT.DOT} $color={primaryColor}>
             <TagItem>
-              <Dot color={primaryColor} />
+              <Dot $color={primaryColor} />
               <Bar />
             </TagItem>
 
             <TagItem>
-              <BgWrapper color={primaryColor}>
-                <Dot color={primaryColor} />
+              <BgWrapper $color={primaryColor}>
+                <Dot $color={primaryColor} />
               </BgWrapper>
               <Bar />
             </TagItem>

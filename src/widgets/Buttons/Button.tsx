@@ -46,14 +46,14 @@ const Button: FC<TProps> = ({
     case 'red': {
       return (
         <RedWrapper
-          ghost={ghost}
+          $ghost={ghost}
           onClick={onClick}
           size={size}
           className={className}
-          noBorder={noBorder}
+          $noBorder={noBorder}
           space={space}
           disabled={disabled}
-          primaryColor={primaryColor}
+          $color={primaryColor}
           {...restProps}
         >
           {children}
@@ -63,17 +63,17 @@ const Button: FC<TProps> = ({
     default: {
       return (
         <Wrapper
-          ghost={ghost}
+          $ghost={ghost}
           onClick={() => !disabled && onClick()}
           size={size}
           className={className}
           space={space}
-          noBorder={noBorder}
+          $noBorder={noBorder}
           disabled={disabled}
-          primaryColor={primaryColor}
+          $color={primaryColor}
           {...restProps}
         >
-          <ChildrenWrapper size={size} ghost={ghost} noBorder={noBorder}>
+          <ChildrenWrapper size={size} $ghost={ghost} $noBorder={noBorder}>
             {children}
           </ChildrenWrapper>
         </Wrapper>

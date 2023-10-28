@@ -32,7 +32,7 @@ const ThreadTab: FC<TProps> = ({ ...restProps }) => {
           href={`/${curCommunity.slug}/${item.slug}`}
           key={item.slug}
           $active={activeThread === item.slug}
-          primaryColor={primaryColor}
+          $color={primaryColor}
         >
           {item.title}
         </Title>

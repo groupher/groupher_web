@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import css, { theme, rainbow } from '@/css'
-import type { TActive, TPrimaryColor } from '@/spec'
+import type { TActive, TColor } from '@/spec'
 
 import { SelectItem as SelectItemBase } from '.'
 
@@ -30,48 +30,40 @@ export const IconWrapper = styled.div`
   margin-right: 9px;
 `
 
-type TIcon = TActive & TPrimaryColor
+type TIcon = TActive & TColor
 export const AllIcon = styled(AllSVG)<TIcon>`
   ${css.size(14)};
-  fill: ${({ $active, primaryColor }) =>
-    $active ? rainbow(primaryColor) : theme('article.digest')};
+  fill: ${({ $active, $color }) => ($active ? rainbow($color) : theme('article.digest'))};
 `
 export const TodoIcon = styled(GtdTodoSVG)<TIcon>`
   ${css.size(14)};
-  fill: ${({ $active, primaryColor }) =>
-    $active ? rainbow(primaryColor) : theme('article.digest')};
+  fill: ${({ $active, $color }) => ($active ? rainbow($color) : theme('article.digest'))};
 `
 export const WipIcon = styled(GtdWipSVG)<TIcon>`
   ${css.size(16)};
-  fill: ${({ $active, primaryColor }) =>
-    $active ? rainbow(primaryColor) : theme('article.digest')};
+  fill: ${({ $active, $color }) => ($active ? rainbow($color) : theme('article.digest'))};
 `
 export const DoneIcon = styled(GtdDoneSVG)<TIcon>`
   ${css.size(14)};
-  fill: ${({ $active, primaryColor }) =>
-    $active ? rainbow(primaryColor) : theme('article.digest')};
+  fill: ${({ $active, $color }) => ($active ? rainbow($color) : theme('article.digest'))};
 `
 export const RejectIcon = styled(GtdRejectSVG)<TIcon>`
   ${css.size(13)};
-  fill: ${({ $active, primaryColor }) =>
-    $active ? rainbow(primaryColor) : theme('article.digest')};
+  fill: ${({ $active, $color }) => ($active ? rainbow($color) : theme('article.digest'))};
 `
 
-type TTitle = TPrimaryColor & TActive
+type TTitle = TColor & TActive
 export const Title = styled.div<TTitle>`
   font-size: 14px;
 
-  color: ${({ $active, primaryColor }) =>
-    $active ? rainbow(primaryColor) : theme('article.digest')};
+  color: ${({ $active, $color }) => ($active ? rainbow($color) : theme('article.digest'))};
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
 
   /* ${SelectItem}:hover & {
-    color: ${({ $active, primaryColor }) =>
-    $active ? rainbow(primaryColor) : theme('article.digest')};
+    color: ${({ $active, $color }) => ($active ? rainbow($color) : theme('article.digest'))};
   } */
 
   &:hover {
-    color: ${({ $active, primaryColor }) =>
-      $active ? rainbow(primaryColor) : theme('article.digest')};
+    color: ${({ $active, $color }) => ($active ? rainbow($color) : theme('article.digest'))};
   }
 `

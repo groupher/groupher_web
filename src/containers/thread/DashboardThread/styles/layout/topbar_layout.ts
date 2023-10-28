@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TActive, TColorName } from '@/spec'
+import type { TActive, TColor, TColorName } from '@/spec'
 import css, { theme, rainbow } from '@/css'
 
 import { Divider } from '@/widgets/Common'
@@ -89,7 +89,7 @@ export const BgLabel = styled.div<{ bg: TColorName }>`
   cursor: pointer;
   margin-left: 15px;
 `
-export const TheColor = styled.div<{ color: TColorName }>`
+export const TheColor = styled.div<TColor>`
   ${css.circle(26)};
-  background-color: ${({ color }) => rainbow(color)};
+  background-color: ${({ $color }) => rainbow($color)};
 `

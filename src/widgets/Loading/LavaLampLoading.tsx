@@ -8,7 +8,7 @@ import SIZE from '@/constant/size'
 
 import { Wrapper, Container, Circle } from './styles/lava_lamp_loading'
 
-type TProps = TSpace & { size?: TSizeTSM }
+type TProps = TSpace & { size?: TSizeTSM; className?: string }
 
 const LavaLampLoading: FC<TProps> = (props) => {
   const primaryColor = usePrimaryColor()
@@ -20,7 +20,7 @@ const LavaLampLoading: FC<TProps> = (props) => {
     <Wrapper {..._props}>
       <Container>
         {range(0, 9).map((num) => (
-          <Circle key={num} index={num} primaryColor={primaryColor} />
+          <Circle key={num} index={num} $color={primaryColor} />
         ))}
       </Container>
     </Wrapper>

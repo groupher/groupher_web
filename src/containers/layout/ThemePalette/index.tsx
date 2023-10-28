@@ -36,7 +36,7 @@ const ThemePalette: FC<TProps> = ({ children }) => {
         />
       </Head>
 
-      <GlobalStyle primaryColor={primaryColor} />
+      <GlobalStyle $color={primaryColor} />
       <Fragment>{children}</Fragment>
       <ThirdPartyOverWrite />
       <CodeSyxHighlight />

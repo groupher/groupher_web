@@ -58,9 +58,10 @@ export const UserList = styled.div`
 export const User = styled.div`
   ${css.row('align-center')};
 `
-export const Avatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
+export const Avatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
   ${css.size(18)};
-  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
+  border-radius: ${({ $avatarLayout }) =>
+    $avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%'};
 `
 export const Nickname = styled.div`
   color: ${theme('article.digest')};

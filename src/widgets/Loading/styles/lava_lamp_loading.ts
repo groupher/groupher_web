@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components'
 
-import type { TSpace, TSizeTSM, TPrimaryColor } from '@/spec'
+import type { TSpace, TSizeTSM, TColor } from '@/spec'
 import { getRandomInt } from '@/helper'
 import css, { rainbow } from '@/css'
 
@@ -48,10 +48,10 @@ const speedMap = {
   9: 0.3,
 }
 
-type TCircle = { index: number } & TPrimaryColor
+type TCircle = { index: number } & TColor
 export const Circle = styled.span<TCircle>`
   ${css.circle(3)};
-  background-color: ${({ primaryColor }) => rainbow(primaryColor)};
+  background-color: ${({ $color }) => rainbow($color)};
   animation: ${move} 1s linear 0ms infinite;
   /* animation-duration: ${() => `${speed[getRandomInt(0, speed.length - 1)]}s`}; */
   width: ${({ index }) => (index === 2 || index === 6 ? '15px' : '4px')};

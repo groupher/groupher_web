@@ -61,7 +61,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
       />
       <SelectWrapper>
         <Layout onClick={() => edit(POST_LAYOUT.QUORA, 'postLayout')}>
-          <Block $active={layout === POST_LAYOUT.QUORA} primaryColor={primaryColor}>
+          <Block $active={layout === POST_LAYOUT.QUORA} $color={primaryColor}>
             <Bar thin long={30} />
             <Br bottom={7} />
             <Row>
@@ -93,7 +93,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(POST_LAYOUT.PH, 'postLayout')}>
-          <Block $active={layout === POST_LAYOUT.PH} primaryColor={primaryColor}>
+          <Block $active={layout === POST_LAYOUT.PH} $color={primaryColor}>
             <Row>
               <Column center>
                 <Circle />
@@ -132,7 +132,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         </Layout>
 
         <Layout onClick={() => edit(POST_LAYOUT.MASONRY, 'postLayout')}>
-          <Block $active={layout === POST_LAYOUT.MASONRY} primaryColor={primaryColor}>
+          <Block $active={layout === POST_LAYOUT.MASONRY} $color={primaryColor}>
             <Row>
               <Column grow>
                 <Box />
@@ -156,7 +156,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         </Layout>
 
         <Layout onClick={() => edit(POST_LAYOUT.MINIMAL, 'postLayout')}>
-          <Block $active={layout === POST_LAYOUT.MINIMAL} primaryColor={primaryColor}>
+          <Block $active={layout === POST_LAYOUT.MINIMAL} $color={primaryColor}>
             <Row>
               <Space right={5} />
               <Column center>
@@ -192,7 +192,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         </Layout>
 
         <Layout onClick={() => edit(POST_LAYOUT.COVER, 'postLayout')}>
-          <Block $active={layout === POST_LAYOUT.COVER} primaryColor={primaryColor}>
+          <Block $active={layout === POST_LAYOUT.COVER} $color={primaryColor}>
             <Row>
               <Cover />
               <Space right={17} />

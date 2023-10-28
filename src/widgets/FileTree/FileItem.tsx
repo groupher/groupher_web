@@ -23,13 +23,13 @@ const FileItem: FC<TProps> = ({ tag, active, onSelect }) => {
 
   return (
     <Wrapper $active={active}>
-      <File $active={active} color={tag.color} onClick={() => onSelect(tag)}>
-        <Title $active={active} primaryColor={primaryColor}>
+      <File $active={active} onClick={() => onSelect(tag)}>
+        <Title $active={active} $color={primaryColor}>
           {cutRest(Trans(tag.title), 10)}
         </Title>
       </File>
       {active && <Outline />}
-      {active && <IndexDot primaryColor={primaryColor} />}
+      {active && <IndexDot $color={primaryColor} />}
     </Wrapper>
   )
 }

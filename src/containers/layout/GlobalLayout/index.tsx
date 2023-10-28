@@ -93,9 +93,9 @@ const GlobalLayoutContainer: FC<TProps> = ({ globalLayout: store, children }) =>
               <SEO />
               <InnerWrapper
                 metric={metric}
-                hasShadow={hasShadow}
-                hasTopbar={metric !== METRIC.HOME && globalLayout.topbar === TOPBAR_LAYOUT.YES}
-                topbarBg={globalLayout.topbarBg}
+                $hasShadow={hasShadow}
+                $hasTopbar={metric !== METRIC.HOME && globalLayout.topbar === TOPBAR_LAYOUT.YES}
+                $topbarBg={globalLayout.topbarBg}
               >
                 <Broadcast />
                 <ContentWrapper>

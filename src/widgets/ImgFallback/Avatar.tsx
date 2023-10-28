@@ -6,9 +6,9 @@
 
 import { FC, memo } from 'react'
 
-import { AVATAR_LAYOUT } from '@/constant/layout'
 import { buildLog } from '@/logger'
 import { getLetterColor } from '@/utils/color'
+import useAvatarLayout from '@/hooks/useAvatarLayout'
 
 import type { TAvatarProps as TProps } from '.'
 import { Wrapper, Name } from './styles/avatar'
@@ -28,8 +28,9 @@ const Avatar: FC<TProps> = ({
   top = 0,
   bottom = 0,
   quote = false,
-  avatarLayout = AVATAR_LAYOUT.SQUARE,
 }) => {
+  const avatarLayout = useAvatarLayout()
+
   const name = user?.nickname
   const sliceCount = size >= 30 ? 2 : 1
 
@@ -45,8 +46,7 @@ const Avatar: FC<TProps> = ({
       right={right}
       top={top}
       bottom={bottom}
-      quote={quote}
-      avatarLayout={avatarLayout}
+      $avatarLayout={avatarLayout}
     >
       <Name size={size} color={color}>
         {name.slice(0, sliceCount)}

@@ -9,7 +9,7 @@ import Img from '@/Img'
 
 export { HeaderBaseInfo, BaseInfo, FloorNum } from '.'
 
-type TAvatar = { avatarSize: number; avatarLayout: TAvatarLayout }
+type TAvatar = { avatarSize: number; $avatarLayout: TAvatarLayout }
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};
@@ -40,7 +40,8 @@ export const Avatar = styled(Img)<TAvatar>`
   ${({ avatarSize }) => css.size(avatarSize)};
   opacity: ${theme('avatar.opacity')};
   margin-right: 13px;
-  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
+  border-radius: ${({ $avatarLayout }) =>
+    $avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%'};
   ${css.media.mobile`
     margin-right: 5px;
   `}

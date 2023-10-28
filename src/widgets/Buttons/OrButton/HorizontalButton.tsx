@@ -35,7 +35,7 @@ const HorizontalButton: FC<TProps> = ({
         size={size}
         active={group[0].key === activeKey}
         onClick={() => onClick(group[0].key)}
-        primaryColor={primaryColor}
+        $color={primaryColor}
       >
         {group[0].title}
       </LeftButton>
@@ -44,7 +44,7 @@ const HorizontalButton: FC<TProps> = ({
         size={size}
         active={group[1].key === activeKey}
         onClick={() => onClick(group[1].key)}
-        primaryColor={primaryColor}
+        $color={primaryColor}
       >
         {group[1].title}
       </RightButton>

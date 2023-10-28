@@ -30,10 +30,10 @@ const AdminAvatar: FC<TProps> = ({ testid = 'admin-avatar', user, ...restProps }
     <Wrapper testid={testid} {...restProps}>
       <Avatar
         src={user.avatar}
-        avatarLayout={avatarLayout}
-        fallback={<ImgFallback size={40} user={user} avatarLayout={avatarLayout} />}
+        $avatarLayout={avatarLayout}
+        fallback={<ImgFallback size={40} user={user} />}
       />
-      <BadgeWrapper avatarLayout={avatarLayout}>
+      <BadgeWrapper $avatarLayout={avatarLayout}>
         <BadgeIcon />
       </BadgeWrapper>
     </Wrapper>

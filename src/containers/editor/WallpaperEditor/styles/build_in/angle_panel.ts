@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TActive, TPrimaryColor } from '@/spec'
+import type { TActive, TColor } from '@/spec'
 import { GRADIENT_DIRECTION } from '@/constant/wallpaper'
 
 import css, { theme, rainbow } from '@/css'
@@ -59,7 +59,7 @@ export const Needle = styled.div<{ direction: string }>`
   transform: ${({ direction }) => `rotate(${metric[direction].rotate}) `};
   transform-origin: right;
 `
-type TPoint = TActive & TPrimaryColor
+type TPoint = TActive & TColor
 const Point = styled.div<TPoint>`
   position: absolute;
   font-size: 8px;
@@ -68,14 +68,13 @@ const Point = styled.div<TPoint>`
   z-index: 2;
 
   font-weight: ${({ $active }) => ($active ? 600 : 'bormal')};
-  background: ${({ $active, primaryColor }) =>
-    $active ? rainbow(primaryColor) : theme('divider')};
+  background: ${({ $active, $color }) => ($active ? rainbow($color) : theme('divider'))};
   color: ${({ $active }) => (!$active ? theme('article.title') : 'white')};
   border: 1px solid transparent;
 
   &:hover {
     border-color: ${theme('article.digest')};
-    border-color: ${({ primaryColor }) => rainbow(primaryColor)};
+    border-color: ${({ $color }) => rainbow($color)};
     font-weight: 600;
     cursor: pointer;
     color: white;

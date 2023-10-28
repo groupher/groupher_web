@@ -31,7 +31,7 @@ const EditorHeader: FC<TProps> = ({ accountInfo, showEditor }) => {
     return (
       <ExpandWrapper>
         <HintText>创建评论:</HintText>
-        <UserAvatar src={accountInfo.avatar} avatarLayout={avatarLayout} />
+        <UserAvatar src={accountInfo.avatar} $avatarLayout={avatarLayout} />
         <LeaveResponseUsername>{accountInfo.nickname}</LeaveResponseUsername>
       </ExpandWrapper>
     )
@@ -39,7 +39,7 @@ const EditorHeader: FC<TProps> = ({ accountInfo, showEditor }) => {
   return (
     <Wrapper onClick={openEditor}>
       {accountInfo.avatar ? (
-        <UserAvatar src={accountInfo.avatar} avatarLayout={avatarLayout} />
+        <UserAvatar src={accountInfo.avatar} $avatarLayout={avatarLayout} />
       ) : (
         <UnloginUser />
       )}

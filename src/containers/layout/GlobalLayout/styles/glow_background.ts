@@ -3,7 +3,10 @@ import styled from 'styled-components'
 import type { TGlowEffect } from '@/spec'
 import GLOW_EFFECTS from '@/constant/glow_effect'
 
-export const Wrapper = styled.div<TGlowEffect>`
+export const Wrapper = styled('div').withConfig({
+  shouldForwardProp: (props) =>
+    props !== 'glowType' && props !== 'glowPosition' && props !== 'glowOpacity',
+})<TGlowEffect>`
   background: ${({ glowType }) => `
     radial-gradient(circle at ${GLOW_EFFECTS[glowType].LEFT.X} ${GLOW_EFFECTS[glowType].LEFT.Y}, ${GLOW_EFFECTS[glowType].LEFT.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].LEFT.RADIUS}),
     radial-gradient(circle at ${GLOW_EFFECTS[glowType].RIGHT1.X} ${GLOW_EFFECTS[glowType].RIGHT1.Y}, ${GLOW_EFFECTS[glowType].RIGHT1.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].RIGHT1.RADIUS}),

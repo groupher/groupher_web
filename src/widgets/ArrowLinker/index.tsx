@@ -41,10 +41,10 @@ const ArrowLinker: FC<TProps> = ({
   return (
     <Link href={href} target={target}>
       <Wrapper testid={testid} {...restProps}>
-        <Title fontSize={fontSize} bold={bold} primaryColor={primaryColor}>
+        <Title fontSize={fontSize} bold={bold} $color={primaryColor}>
           {children}
         </Title>
-        <ArrowIcon fontSize={fontSize} primaryColor={primaryColor} />
+        <ArrowIcon fontSize={fontSize} $color={primaryColor} />
       </Wrapper>
     </Link>
   )

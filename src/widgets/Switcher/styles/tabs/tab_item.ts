@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TSizeSM, TActive, TPrimaryColor } from '@/spec'
+import type { TSizeSM, TActive, TColor } from '@/spec'
 import css, { theme, rainbow } from '@/css'
 
 import { getMarginRight, getPadding, getMarginBottom } from '../metric/tabs'
@@ -64,20 +64,20 @@ export const Nav = styled.nav`
 type TLabel = TActive & {
   size: TSizeSM
   bottomSpace: number
-} & TPrimaryColor
+} & TColor
 
 export const Label = styled.span<TLabel>`
   ${css.row('align-center')};
   white-space: nowrap;
   padding: 1px 6px;
   border-radius: 3px;
-  color: ${({ active, primaryColor }) =>
-    active ? rainbow(primaryColor, 'dashboard.menuCat') : theme('lightText')}; // to-theme
+  color: ${({ active, $color }) =>
+    active ? rainbow($color, 'dashboard.menuCat') : theme('lightText')}; // to-theme
   margin-bottom: ${({ bottomSpace }) => `${bottomSpace}px`};
   font-weight: 500;
 
   &:hover {
-    color: ${({ primaryColor }) => rainbow(primaryColor)};
+    color: ${({ $color }) => rainbow($color)};
     background: ${theme('hoverBg')};
   }
 `

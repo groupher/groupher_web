@@ -47,7 +47,7 @@ const DocThreadContainer: FC<TProps> = ({
   }
 
   return (
-    <Wrapper testid={testid} bannerLayout={bannerLayout}>
+    <Wrapper testid={testid} $bannerLayout={bannerLayout}>
       {layout === DOC_LAYOUT.BLOCKS && <BlocksLayout />}
       {layout === DOC_LAYOUT.LISTS && <ListsLayout />}
       {layout === DOC_LAYOUT.CARDS && <CardsLayout />}

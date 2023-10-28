@@ -47,9 +47,10 @@ export const ExpandIcon = styled(ExpandSVG)`
   opacity: 0.8;
   margin-right: 14px;
 `
-export const Avatar = styled(Img)<{ avatarLayout: TAvatarLayout }>`
+export const Avatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
   ${css.size(16)};
-  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '3px' : '100%')};
+  border-radius: ${({ $avatarLayout }) =>
+    $avatarLayout === AVATAR_LAYOUT.SQUARE ? '3px' : '100%'};
   opacity: ${theme('avatar.opacity')};
   margin-right: 10px;
 `

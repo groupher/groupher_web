@@ -60,16 +60,16 @@ const Members: FC<TProps> = ({ moderators }) => {
             <JoinersAvatar
               key={user.id}
               src={user.avatar}
-              avatarLayout={avatarLayout}
-              fallback={<ImgFallback size={26} user={user} avatarLayout={avatarLayout} />}
+              $avatarLayout={avatarLayout}
+              fallback={<ImgFallback size={26} user={user} />}
             />
           ))}
           {mockUsers(15).map((user) => (
             <JoinersAvatar
               key={user.id}
               src={user.avatar}
-              avatarLayout={avatarLayout}
-              fallback={<ImgFallback size={26} user={user} avatarLayout={avatarLayout} />}
+              $avatarLayout={avatarLayout}
+              fallback={<ImgFallback size={26} user={user} />}
             />
           ))}
         </JoinersRow>

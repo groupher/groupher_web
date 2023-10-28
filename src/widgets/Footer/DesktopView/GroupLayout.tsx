@@ -3,7 +3,6 @@ import { observer } from 'mobx-react'
 import { keys } from 'ramda'
 
 import { DEME_SOCIALS } from '@/constant/social'
-import useTheme from '@/hooks/useTheme'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useFooterLinks from '@/hooks/useFooterLinks'
 
@@ -25,14 +24,8 @@ import {
 } from '../styles/desktop_view/group_layout'
 
 const GroupLayout: FC = () => {
-  const { themeMap } = useTheme()
   const { logo, desc } = useViewingCommunity()
   const { links } = useFooterLinks()
-
-  const linkColors = {
-    color: themeMap.footer.text,
-    hoverColor: themeMap.footer.hover,
-  }
 
   // @ts-ignore
   const groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
@@ -57,7 +50,7 @@ const GroupLayout: FC = () => {
               <Title>{groupTitle}</Title>
               <Body>
                 {curGroupLinks.map((item) => (
-                  <LinkItem key={item.index} href={item.link} {...linkColors}>
+                  <LinkItem key={item.index} href={item.link}>
                     {item.title}
                   </LinkItem>
                 ))}

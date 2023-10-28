@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TTestable, TPrimaryColor } from '@/spec'
+import type { TTestable, TColor } from '@/spec'
 import css, { rainbow } from '@/css'
 
 type TSlipBar = {
@@ -42,11 +42,11 @@ export const SlipBar = styled.span<TSlipBar>`
   transition: ${({ noAnimation }) => (noAnimation ? 'none' : 'transform 0.25s')};
 `
 
-type TRealBar = { width: string } & TPrimaryColor
+type TRealBar = { width: string } & TColor
 export const RealBar = styled.span<TRealBar>`
   width: ${({ width }) => width};
   height: 2px;
-  background: ${({ primaryColor }) => rainbow(primaryColor, 'dashboard.menuTitle')};
+  background: ${({ $color }) => rainbow($color, 'dashboard.menuTitle')};
 `
 // transform: ${({ active }) =>
 //     active ? 'translate3d(0,0,0);' : 'translate3d(0, 150%, 0);'};

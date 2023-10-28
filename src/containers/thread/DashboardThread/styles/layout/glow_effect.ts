@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TActive, TGlowEffect, TPrimaryColor } from '@/spec'
+import type { TActive, TColor, TGlowEffect } from '@/spec'
 import GLOW_EFFECTS from '@/constant/glow_effect'
 
 import css, { theme, rainbow } from '@/css'
@@ -22,7 +22,7 @@ export const Row = styled.div`
     width: 100%;
   `}
 `
-type TBox = TActive & TPrimaryColor
+type TBox = TActive & TColor
 export const Box = styled.div<TBox>`
   position: relative;
   width: 300px;
@@ -31,8 +31,7 @@ export const Box = styled.div<TBox>`
   border: 1px solid;
   z-index: 1;
 
-  border-color: ${({ $active, primaryColor }) =>
-    $active ? rainbow(primaryColor) : theme('divider')};
+  border-color: ${({ $active, $color }) => ($active ? rainbow($color) : theme('divider'))};
 
   box-shadow: ${({ $active }) => ($active ? css.cardShadow : 'none')};
   background: ${theme('alphaBg')};
@@ -69,7 +68,9 @@ export const SettingsRow = styled.div`
   margin-left: 4px;
 `
 
-export const GrowBackground = styled.div<TGlowEffect>`
+export const GrowBackground = styled('div').withConfig({
+  shouldForwardProp: (props) => props !== 'glowType' && props !== 'glowPosition',
+})<TGlowEffect>`
   background: ${({ glowType }) => `
     radial-gradient(circle at ${GLOW_EFFECTS[glowType].LEFT.X} ${GLOW_EFFECTS[glowType].LEFT.Y}, ${GLOW_EFFECTS[glowType].LEFT.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].LEFT.RADIUS}),
     radial-gradient(circle at ${GLOW_EFFECTS[glowType].RIGHT1.X} ${GLOW_EFFECTS[glowType].RIGHT1.Y}, ${GLOW_EFFECTS[glowType].RIGHT1.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].RIGHT1.RADIUS}),

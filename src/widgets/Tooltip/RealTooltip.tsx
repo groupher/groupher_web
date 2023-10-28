@@ -56,7 +56,7 @@ const Tooltip: FC<TProps> = ({
   const PopoverContent = (
     <ContentWrapper
       ref={contentRef}
-      hasMaxWidth={isString(content)}
+      $hasMaxWidth={isString(content)}
       onClick={() => {
         if (hideOnClick) instance?.hide()
       }}
@@ -127,13 +127,13 @@ const Tooltip: FC<TProps> = ({
 
   return !noPadding ? (
     <StyledTippy {...props} wechatEnv={wechatEnv}>
-      <ChildrenWrapper contentHeight={contentHeight} forceZIndex={forceZIndex}>
+      <ChildrenWrapper $contentHeight={contentHeight} $forceZIndex={forceZIndex}>
         {children}
       </ChildrenWrapper>
     </StyledTippy>
   ) : (
     <NoPaddingStyledTippy {...props} wechatEnv={wechatEnv}>
-      <ChildrenWrapper contentHeight={contentHeight} forceZIndex={forceZIndex}>
+      <ChildrenWrapper $contentHeight={contentHeight} $forceZIndex={forceZIndex}>
         {children}
       </ChildrenWrapper>
     </NoPaddingStyledTippy>

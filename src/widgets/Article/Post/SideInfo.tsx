@@ -52,7 +52,7 @@ const SideInfo: FC = () => {
         <UserList>
           {latestUpvotedUsers.map((user) => (
             <User key={user.id}>
-              <Avatar src={user.avatar} avatarLayout={AVATAR_LAYOUT.SQUARE} />
+              <Avatar src={user.avatar} $avatarLayout={AVATAR_LAYOUT.SQUARE} />
               <Nickname>{user.nickname}</Nickname>
             </User>
           ))}

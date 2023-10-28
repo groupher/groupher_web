@@ -39,7 +39,7 @@ const AvatarLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
       <SectionLabel title="头像样式" desc={<>用户/用户列表头像展示样式。</>} />
       <SelectWrapper>
         <Layout onClick={() => edit(AVATAR_LAYOUT.SQUARE, 'avatarLayout')}>
-          <Block $active={layout === AVATAR_LAYOUT.SQUARE} primaryColor={primaryColor}>
+          <Block $active={layout === AVATAR_LAYOUT.SQUARE} $color={primaryColor}>
             <Avatar color={COLOR_NAME.BLUE}>YM</Avatar>
             <Divider />
             <AvatarList>
@@ -66,7 +66,7 @@ const AvatarLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(AVATAR_LAYOUT.CIRCLE, 'avatarLayout')}>
-          <Block $active={layout === AVATAR_LAYOUT.CIRCLE} primaryColor={primaryColor}>
+          <Block $active={layout === AVATAR_LAYOUT.CIRCLE} $color={primaryColor}>
             <Avatar color={COLOR_NAME.BLUE} circle>
               YM
             </Avatar>

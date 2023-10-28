@@ -6,19 +6,19 @@ import css, { theme } from '@/css'
 
 import { MainWrapper } from '..'
 
-export const Wrapper = styled.div<{ bannerLayout?: TBannerLayout }>`
+export const Wrapper = styled.div<{ $bannerLayout?: TBannerLayout }>`
   ${css.column('align-both')};
   width: 100%;
-  ${({ bannerLayout }) =>
-    bannerLayout === BANNER_LAYOUT.TABBER
+  ${({ $bannerLayout }) =>
+    $bannerLayout === BANNER_LAYOUT.TABBER
       ? 'margin-top: 5px;margin-left: 48px;'
       : 'margin-top: 30px;margin-left: -30px;'}
 `
-export const CatsWrapper = styled(MainWrapper)<{ bannerLayout?: TBannerLayout }>`
+export const CatsWrapper = styled(MainWrapper)<{ $bannerLayout?: TBannerLayout }>`
   ${css.rowWrap('justify-between')};
   gap: 20px 10px;
-  width: ${({ bannerLayout }) =>
-    bannerLayout === BANNER_LAYOUT.TABBER ? 'calc(100% + 90px);' : '100%'};
+  width: ${({ $bannerLayout }) =>
+    $bannerLayout === BANNER_LAYOUT.TABBER ? 'calc(100% + 90px);' : '100%'};
   min-height: 600px;
 
   background: transparent;

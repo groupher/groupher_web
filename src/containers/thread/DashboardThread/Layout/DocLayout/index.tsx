@@ -57,7 +57,7 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
       />
       <SelectWrapper>
         <Layout onClick={() => edit(DOC_LAYOUT.BLOCKS, 'docLayout')}>
-          <Block $active={layout === DOC_LAYOUT.BLOCKS} primaryColor={primaryColor}>
+          <Block $active={layout === DOC_LAYOUT.BLOCKS} $color={primaryColor}>
             <Br bottom={14} />
             <Main>
               <MainTemplate layout={DOC_LAYOUT.BLOCKS} />
@@ -74,7 +74,7 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
         </Layout>
 
         <Layout onClick={() => edit(DOC_LAYOUT.LISTS, 'docLayout')}>
-          <Block $active={layout === DOC_LAYOUT.LISTS} primaryColor={primaryColor}>
+          <Block $active={layout === DOC_LAYOUT.LISTS} $color={primaryColor}>
             <Br bottom={14} />
             <Main>
               <MainTemplate layout={DOC_LAYOUT.LISTS} />
@@ -91,7 +91,7 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
         </Layout>
 
         <Layout onClick={() => edit(DOC_LAYOUT.CARDS, 'docLayout')}>
-          <Block $active={layout === DOC_LAYOUT.CARDS} primaryColor={primaryColor}>
+          <Block $active={layout === DOC_LAYOUT.CARDS} $color={primaryColor}>
             <Br bottom={14} />
             <Main>
               <MainTemplate layout={DOC_LAYOUT.CARDS} />
@@ -133,7 +133,7 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
       />
       <SelectWrapper>
         <Layout onClick={() => edit(DOC_FAQ_LAYOUT.COLLAPSE, 'docFaqLayout')}>
-          <Block $active={faqLayout === DOC_FAQ_LAYOUT.COLLAPSE} primaryColor={primaryColor}>
+          <Block $active={faqLayout === DOC_FAQ_LAYOUT.COLLAPSE} $color={primaryColor}>
             <Br bottom={14} />
             <Main>
               <FaqTemplate layout={DOC_FAQ_LAYOUT.COLLAPSE} />
@@ -149,7 +149,7 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(DOC_FAQ_LAYOUT.FLAT, 'docFaqLayout')}>
-          <Block $active={faqLayout === DOC_FAQ_LAYOUT.FLAT} primaryColor={primaryColor}>
+          <Block $active={faqLayout === DOC_FAQ_LAYOUT.FLAT} $color={primaryColor}>
             <Br bottom={14} />
             <Main>
               <FaqTemplate layout={DOC_FAQ_LAYOUT.FLAT} />

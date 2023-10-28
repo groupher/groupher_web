@@ -28,14 +28,14 @@ export const NoPaddingStyledTippy = styled(StyledTippy)`
     padding: 0;
   }
 `
-type TContentWrapper = { contentHeight: string; forceZIndex: boolean }
+type TContentWrapper = { $contentHeight: string; $forceZIndex: boolean }
 export const ChildrenWrapper = styled.div<TContentWrapper>`
   position: relative;
-  height: ${({ contentHeight }) => contentHeight};
-  z-index: ${({ forceZIndex }) => (forceZIndex ? 1 : 0)};
+  height: ${({ $contentHeight }) => $contentHeight};
+  z-index: ${({ $forceZIndex }) => ($forceZIndex ? 1 : 0)};
 `
-export const ContentWrapper = styled.div<{ hasMaxWidth: boolean }>`
-  max-width: ${({ hasMaxWidth }) => (hasMaxWidth ? '180px' : 'auto')};
+export const ContentWrapper = styled.div<{ $hasMaxWidth: boolean }>`
+  max-width: ${({ $hasMaxWidth }) => ($hasMaxWidth ? '180px' : 'auto')};
 `
 const Arrow = styled.div`
   position: absolute;

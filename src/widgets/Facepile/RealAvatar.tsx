@@ -37,16 +37,9 @@ const RealAvatar: FC<TProps> = ({ user, size, noLazyLoad, onUserSelect, popCardP
             src={user.avatar}
             size={size}
             onClick={() => onUserSelect(user)}
-            scrollPosition={null}
             noLazy={noLazyLoad}
-            avatarLayout={avatarLayout}
-            fallback={
-              <AvatarFallback
-                size={getAvatarSize(size, 'number') as number}
-                user={user}
-                avatarLayout={avatarLayout}
-              />
-            }
+            $avatarLayout={avatarLayout}
+            fallback={<AvatarFallback size={getAvatarSize(size, 'number') as number} user={user} />}
           />
         </InnerWrapper>
       </Tooltip>

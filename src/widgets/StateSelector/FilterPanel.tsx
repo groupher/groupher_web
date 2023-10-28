@@ -34,13 +34,10 @@ const FilterPanel: FC<TProps> = ({ activeState, onSelect }) => {
         <IconWrapper>
           <AllIcon
             $active={!activeState || activeState === ARTICLE_STATE.ALL}
-            primaryColor={primaryColor}
+            $color={primaryColor}
           />
         </IconWrapper>
-        <Title
-          $active={!activeState || activeState === ARTICLE_STATE.ALL}
-          primaryColor={primaryColor}
-        >
+        <Title $active={!activeState || activeState === ARTICLE_STATE.ALL} $color={primaryColor}>
           全部
         </Title>
       </SelectItem>
@@ -50,9 +47,9 @@ const FilterPanel: FC<TProps> = ({ activeState, onSelect }) => {
         onClick={() => onSelect(ARTICLE_STATE.TODO)}
       >
         <IconWrapper>
-          <TodoIcon $active={activeState === ARTICLE_STATE.TODO} primaryColor={primaryColor} />
+          <TodoIcon $active={activeState === ARTICLE_STATE.TODO} $color={primaryColor} />
         </IconWrapper>
-        <Title $active={activeState === ARTICLE_STATE.TODO} primaryColor={primaryColor}>
+        <Title $active={activeState === ARTICLE_STATE.TODO} $color={primaryColor}>
           代办项
         </Title>
       </SelectItem>
@@ -61,9 +58,9 @@ const FilterPanel: FC<TProps> = ({ activeState, onSelect }) => {
         onClick={() => onSelect(ARTICLE_STATE.WIP)}
       >
         <IconWrapper>
-          <WipIcon $active={activeState === ARTICLE_STATE.WIP} primaryColor={primaryColor} />
+          <WipIcon $active={activeState === ARTICLE_STATE.WIP} $color={primaryColor} />
         </IconWrapper>
-        <Title $active={activeState === ARTICLE_STATE.WIP} primaryColor={primaryColor}>
+        <Title $active={activeState === ARTICLE_STATE.WIP} $color={primaryColor}>
           进行中
         </Title>
       </SelectItem>
@@ -72,9 +69,9 @@ const FilterPanel: FC<TProps> = ({ activeState, onSelect }) => {
         onClick={() => onSelect(ARTICLE_STATE.DONE)}
       >
         <IconWrapper>
-          <DoneIcon $active={activeState === ARTICLE_STATE.DONE} primaryColor={primaryColor} />
+          <DoneIcon $active={activeState === ARTICLE_STATE.DONE} $color={primaryColor} />
         </IconWrapper>
-        <Title $active={activeState === ARTICLE_STATE.DONE} primaryColor={primaryColor}>
+        <Title $active={activeState === ARTICLE_STATE.DONE} $color={primaryColor}>
           已完成
         </Title>
       </SelectItem>
@@ -84,12 +81,9 @@ const FilterPanel: FC<TProps> = ({ activeState, onSelect }) => {
         onClick={() => onSelect(ARTICLE_STATE.REJECT_DUP)}
       >
         <IconWrapper>
-          <RejectIcon
-            $active={activeState === ARTICLE_STATE.REJECT_DUP}
-            primaryColor={primaryColor}
-          />
+          <RejectIcon $active={activeState === ARTICLE_STATE.REJECT_DUP} $color={primaryColor} />
         </IconWrapper>
-        <Title $active={activeState === ARTICLE_STATE.REJECT_DUP} primaryColor={primaryColor}>
+        <Title $active={activeState === ARTICLE_STATE.REJECT_DUP} $color={primaryColor}>
           回绝
         </Title>
       </SelectItem>

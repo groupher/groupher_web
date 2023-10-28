@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 
-import type { TActive, TPrimaryColor } from '@/spec'
+import type { TActive, TColor } from '@/spec'
 
 import css, { theme, rainbowLight } from '@/css'
 
 import Img from '@/Img'
 import CloseSVG from '@/icons/CloseLight'
 
-type TTag = TActive & { color?: string } & TPrimaryColor
+type TTag = TActive & TColor
 
 export const Wrapper = styled.div<TActive>`
   ${css.row('align-center')};
@@ -31,7 +31,7 @@ export const AllTagIcon = styled(Img)`
   ${css.size(14)};
   transform: rotate(17deg);
 `
-type TDotWrapper = TTag & { round: boolean }
+type TDotWrapper = TTag & { $round: boolean }
 export const DotWrapper = styled.div<TDotWrapper>`
   width: 21px;
   height: 18px;
@@ -39,12 +39,11 @@ export const DotWrapper = styled.div<TDotWrapper>`
   ${css.row('align-both')};
   margin-right: 6px;
   margin-left: ${({ $active }) => ($active ? '-5px' : '-1px')};
-  border-radius: ${({ round }) => (round ? '50%' : '4px')};
-  background: ${({ $active, primaryColor }) =>
-    $active ? rainbowLight(primaryColor) : 'transparent'};
+  border-radius: ${({ $round }) => ($round ? '50%' : '4px')};
+  background: ${({ $active, $color }) => ($active ? rainbowLight($color) : 'transparent')};
 
   ${Wrapper}:hover & {
-    background: ${({ primaryColor }) => rainbowLight(primaryColor)};
+    background: ${({ $color }) => rainbowLight($color)};
   }
 
   transition: background 0.2s;

@@ -27,7 +27,7 @@ export const ScrollWrapper = styled.div<{ $noMobilePadding: boolean }>`
     $noMobilePadding ? 'width: 100% !important; margin-left: 0 !important;' : ''};
 `
 
-type TInner = { metric: TMetric; hasTopbar: boolean; topbarBg: TColorName; hasShadow: boolean }
+type TInner = { metric: TMetric; $hasTopbar: boolean; $topbarBg: TColorName; $hasShadow: boolean }
 export const InnerWrapper = styled.div<TInner>`
   ${css.column()};
   ${({ metric }) => css.fitPageWidth(metric)};
@@ -38,12 +38,12 @@ export const InnerWrapper = styled.div<TInner>`
   background: ${theme('bodyBg')};
   transition: all 0.2s;
   z-index: 1;
-  border-top: ${({ hasTopbar }) => (hasTopbar ? '3px solid;' : '1px solid;')};
-  border-top-color: ${({ hasTopbar, topbarBg }) =>
-    hasTopbar ? rainbow(topbarBg) : theme('divider')};
+  border-top: ${({ $hasTopbar }) => ($hasTopbar ? '3px solid;' : '1px solid;')};
+  border-top-color: ${({ $hasTopbar, $topbarBg }) =>
+    $hasTopbar ? rainbow($topbarBg) : theme('divider')};
 
-  box-shadow: ${({ hasShadow }) =>
-    hasShadow ? 'rgb(100 100 111 / 20%) 0px 7px 29px 0px;' : 'none'};
+  box-shadow: ${({ $hasShadow }) =>
+    $hasShadow ? 'rgb(100 100 111 / 20%) 0px 7px 29px 0px;' : 'none'};
 
   ${css.media.tablet`
     position: relative;

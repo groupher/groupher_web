@@ -41,8 +41,8 @@ const DigestView: FC<TProps> = ({ article }) => {
       <AvatarWrapper>
         <Avatar
           src={author.avatar}
-          avatarLayout={avatarLayout}
-          fallback={<ImgFallback size={26} user={author} avatarLayout={avatarLayout} />}
+          $avatarLayout={avatarLayout}
+          fallback={<ImgFallback size={26} user={author} />}
         />
       </AvatarWrapper>
       <Main onClick={() => previewArticle(article)}>

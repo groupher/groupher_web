@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TPrimaryColor } from '@/spec'
+import type { TColor } from '@/spec'
 
 import css, { rainbow } from '@/css'
 
@@ -9,9 +9,9 @@ import QuestionSVG from '@/icons/Question'
 import BugSVG from '@/icons/ColorBug'
 import OtherSVG from '@/icons/menu/Feedback'
 
-export const Wrapper = styled.div<TPrimaryColor>`
+export const Wrapper = styled.div<TColor>`
   ${css.row('align-center')};
-  color: ${({ primaryColor }) => rainbow(primaryColor)};
+  color: ${({ $color }) => rainbow($color)};
 `
 export const Title = styled.div`
   font-size: 13px;
@@ -22,23 +22,23 @@ const iconBase = `
   margin-right: 5px;
 `
 
-export const LightIcon = styled(LightSVG)<TPrimaryColor>`
+export const LightIcon = styled(LightSVG)<TColor>`
   ${iconBase};
-  fill: ${({ primaryColor }) => rainbow(primaryColor, 'article.digest')};
+  fill: ${({ $color }) => rainbow($color, 'article.digest')};
 `
-export const BugIcon = styled(BugSVG)<TPrimaryColor>`
+export const BugIcon = styled(BugSVG)<TColor>`
   ${iconBase};
-  fill: ${({ primaryColor }) => rainbow(primaryColor, 'article.digest')};
+  fill: ${({ $color }) => rainbow($color, 'article.digest')};
 `
-export const QuestionIcon = styled(QuestionSVG)<TPrimaryColor>`
+export const QuestionIcon = styled(QuestionSVG)<TColor>`
   ${iconBase};
   ${css.size(11)};
   margin-top: -1px;
-  fill: ${({ primaryColor }) => rainbow(primaryColor, 'article.digest')};
+  fill: ${({ $color }) => rainbow($color, 'article.digest')};
 `
-export const OtherIcon = styled(OtherSVG)<TPrimaryColor>`
+export const OtherIcon = styled(OtherSVG)<TColor>`
   ${iconBase};
-  fill: ${({ primaryColor }) => rainbow(primaryColor, 'article.digest')};
+  fill: ${({ $color }) => rainbow($color, 'article.digest')};
 `
 export const ICON = {
   FEATURE: LightIcon,

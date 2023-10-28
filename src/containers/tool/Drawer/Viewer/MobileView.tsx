@@ -85,7 +85,7 @@ const Viewer: FC<TProps> = ({
         swipeUpY={swipeUpY}
         swipeDownY={swipeDownY}
         options={options}
-        mobile
+        $mobile
       >
         <DrawerMobileContent options={options} bgColor={themeMap.drawer.bg}>
           <MobileInnerContent

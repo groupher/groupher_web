@@ -38,7 +38,7 @@ const MediaReports: FC<TProps> = ({ items }) => {
               <SiteName>{siteName}</SiteName>
             </Brand>
 
-            <Title href={url} target="_blank" bannerLayout={bannerLayout}>
+            <Title href={url} target="_blank" $bannerLayout={bannerLayout}>
               {title}
             </Title>
             <ArrowBox>

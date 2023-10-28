@@ -35,8 +35,7 @@ export const InnerWrapper = styled.div`
 type TAvatarsImg = {
   size: string
   onClick: () => void
-  scrollPosition: any
-  avatarLayout: TAvatarLayout
+  $avatarLayout: TAvatarLayout
 }
 export const AvatarsImg = styled(Img)<TAvatarsImg>`
   border: 1px solid;
@@ -44,7 +43,8 @@ export const AvatarsImg = styled(Img)<TAvatarsImg>`
   font-size: 12px;
 
   ${({ size }) => css.size(getAvatarSize(size))};
-  border-radius: ${({ avatarLayout }) => (avatarLayout === AVATAR_LAYOUT.SQUARE ? '5px' : '100%')};
+  border-radius: ${({ $avatarLayout }) =>
+    $avatarLayout === AVATAR_LAYOUT.SQUARE ? '5px' : '100%'};
 
   text-align: center;
 `

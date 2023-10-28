@@ -103,7 +103,7 @@ const TabItem: FC<TProps> = ({
         active={item.slug === activeKey}
         size={size}
         bottomSpace={bottomSpace}
-        primaryColor={primaryColor}
+        $color={primaryColor}
       >
         {!isString(item) && item.icon && (
           <TabIcon item={item} clickableRef={clickableRef} active={item.slug === activeKey} />

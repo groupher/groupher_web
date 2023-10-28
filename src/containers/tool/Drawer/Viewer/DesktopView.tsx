@@ -36,17 +36,17 @@ const DesktopView: FC<TProps> = ({
   return (
     <Fragment>
       <DrawerOverlay
-        visible={visible}
+        $visible={visible}
         onClick={() => closeDrawer()}
         className={ANCHOR.GLOBAL_BLUR_CLASS}
       />
       <DrawerWrapper
         testid={testid}
-        visible={visible}
-        fromContentEdge={fromContentEdge}
-        rightOffset={rightOffset}
+        $visible={visible}
+        $fromContentEdge={fromContentEdge}
+        $rightOffset={rightOffset}
         type={type}
-        mobile={false}
+        $mobile={false}
         options={options}
       >
         <DrawerContent type={type}>

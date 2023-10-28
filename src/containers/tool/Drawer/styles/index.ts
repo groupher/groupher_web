@@ -24,9 +24,9 @@ export const DrawerOverlay = styled.div<TActive>`
   right: 0;
   top: 0;
   z-index: ${zIndex.drawerOverlay};
-  visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
-  background: ${({ visible }) => (visible ? theme('drawer.mask') : 'none')};
-  opacity: ${({ visible }) => (visible ? 0.5 : 0)};
+  visibility: ${({ $visible }) => ($visible ? 'visible' : 'hidden')};
+  background: ${({ $visible }) => ($visible ? theme('drawer.mask') : 'none')};
+  opacity: ${({ $visible }) => ($visible ? 0.5 : 0)};
 
   transition: visibility 0.1s ease-in, opacity 0.1s ease-in, background 0.1s ease-in;
 `
@@ -38,22 +38,23 @@ export const DrawerOverlay = styled.div<TActive>`
 export const DrawerWrapper = styled.div.attrs<TDrawer>(
   ({
     testid,
-    visible,
-    mobile,
+    $visible,
+    $mobile,
     swipeUpY = 0,
     swipeDownY = 0,
-    fromContentEdge,
+    $fromContentEdge,
     options,
   }: TDrawer) => ({
     'data-test-id': testid,
     style: {
-      transform: getTransform(visible, mobile, swipeUpY, swipeDownY, fromContentEdge, options),
+      transform: getTransform($visible, $mobile, swipeUpY, swipeDownY, $fromContentEdge, options),
     },
   }),
 )<TDrawer>`
   ${css.row()};
   position: fixed;
-  right: ${({ rightOffset, type }) => (isWideMode(type) ? rightOffset : pixelAdd(rightOffset, 30))};
+  right: ${({ $rightOffset, type }) =>
+    isWideMode(type) ? $rightOffset : pixelAdd($rightOffset, 30)};
   top: ${({ type }) => (isWideMode(type) ? 0 : '25px')};
 
   color: ${theme('drawer.font')};
@@ -63,15 +64,15 @@ export const DrawerWrapper = styled.div.attrs<TDrawer>(
   height: 100%;
   width: ${({ type }) => getDrawerWidth(type)};
   min-width: ${({ type }) => getDrawerMinWidth(type)};
-  z-index: ${({ visible }) => (visible ? zIndex.drawer : -1)};
+  z-index: ${({ $visible }) => ($visible ? zIndex.drawer : -1)};
 
-  visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
-  opacity: ${({ visible, fromContentEdge }) => (!visible && !fromContentEdge ? 0 : 1)};
+  visibility: ${({ $visible }) => ($visible ? 'visible' : 'hidden')};
+  opacity: ${({ $visible, $fromContentEdge }) => (!$visible && !$fromContentEdge ? 0 : 1)};
 
   max-width: 985px;
 
-  ${({ fromContentEdge }) =>
-    fromContentEdge
+  ${({ $fromContentEdge }) =>
+    $fromContentEdge
       ? 'transition: transform 850ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;'
       : 'transition-property: transform, max-width, opacity;transition-duration: 0.4s, 0.3s, 0.3s;transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1) 0ms, ease-out,ease-in'};
 

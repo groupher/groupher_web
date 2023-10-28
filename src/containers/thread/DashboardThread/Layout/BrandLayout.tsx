@@ -56,7 +56,7 @@ const LogoLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
       />
       <SelectWrapper>
         <Layout onClick={() => edit(BRAND_LAYOUT.BOTH, 'brandLayout')}>
-          <Block $active={layout === BRAND_LAYOUT.BOTH} primaryColor={primaryColor}>
+          <Block $active={layout === BRAND_LAYOUT.BOTH} $color={primaryColor}>
             <Brand>
               <BrandIcon />
               <Space right={7} />
@@ -74,7 +74,7 @@ const LogoLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(BRAND_LAYOUT.LOGO, 'brandLayout')}>
-          <Block $active={layout === BRAND_LAYOUT.LOGO} primaryColor={primaryColor}>
+          <Block $active={layout === BRAND_LAYOUT.LOGO} $color={primaryColor}>
             <Brand>
               <BrandIcon />
             </Brand>
@@ -90,7 +90,7 @@ const LogoLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(BRAND_LAYOUT.TEXT, 'brandLayout')}>
-          <Block $active={layout === BRAND_LAYOUT.TEXT} primaryColor={primaryColor}>
+          <Block $active={layout === BRAND_LAYOUT.TEXT} $color={primaryColor}>
             <Brand>
               <BrandTitle>Groupher</BrandTitle>
             </Brand>

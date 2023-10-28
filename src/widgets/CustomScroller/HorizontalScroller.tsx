@@ -71,8 +71,8 @@ const HorizontalScroller: FC<TProps> = ({
         <LeftShadowBar
           show={showLeftShadow}
           height={height}
-          shadowSize={shadowSize}
-          withBorder={withBorder}
+          $shadowSize={shadowSize}
+          $withBorder={withBorder}
         />
       )}
 
@@ -89,8 +89,8 @@ const HorizontalScroller: FC<TProps> = ({
         <RightShadowBar
           show={showRightShadow}
           height={height}
-          shadowSize={shadowSize}
-          withBorder={withBorder}
+          $shadowSize={shadowSize}
+          $withBorder={withBorder}
         />
       )}
     </Wrapper>

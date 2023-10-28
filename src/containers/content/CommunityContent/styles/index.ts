@@ -57,8 +57,8 @@ export const MobileCardsWrapper = styled.div`
     ${css.column()};
   `};
 `
-export const InnerWrapper = styled(BaseInnerWrapper)<{ bannerLayout?: TBannerLayout }>`
-  ${({ bannerLayout }) => (bannerLayout === BANNER_LAYOUT.SIDEBAR ? 'width: 100%;' : '')};
+export const InnerWrapper = styled(BaseInnerWrapper)<{ $bannerLayout?: TBannerLayout }>`
+  ${({ $bannerLayout }) => ($bannerLayout === BANNER_LAYOUT.SIDEBAR ? 'width: 100%;' : '')};
 
   ${css.media.mobile`
     display: none;
