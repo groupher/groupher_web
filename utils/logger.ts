@@ -1,11 +1,7 @@
 import _debug from 'debug'
 import { isBrowser } from './dom'
 
-if (
-  isBrowser &&
-  process.env.NODE_ENV !== 'production' &&
-  process.env.NODE_ENV !== 'test'
-) {
+if (isBrowser && process.env.CUR_ENV !== 'production' && process.env.CUR_ENV !== 'test') {
   // Heads Up!
   // https://github.com/visionmedia/debug/pull/331
   //
