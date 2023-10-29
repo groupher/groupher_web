@@ -2,7 +2,9 @@
  * PostLayout
  */
 
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react'
+
 import Router from 'next/router'
 
 import useMetric from '@/hooks/useMetric'
@@ -73,4 +75,4 @@ const PostLayout: FC = () => {
   )
 }
 
-export default memo(PostLayout)
+export default observer(PostLayout)

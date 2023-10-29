@@ -1,4 +1,4 @@
-import { FC, Fragment, useEffect } from 'react'
+import { FC, Fragment } from 'react'
 import { observer } from 'mobx-react'
 // eslint-disable-next-line import/no-unresolved
 import { Toaster } from 'sonner'
@@ -11,13 +11,11 @@ import Subscriber from '@/containers/tool/Subscriber'
 import AuthWall from '@/containers/tool/AuthWall'
 import ErrorBox from '@/containers/tool/ErrorBox'
 
-import { logBuddha } from './logic'
 // import { Drawer } from './dynamic'
 
 const Addon: FC = () => {
   // const { isMobile } = useMobileDetect()
 
-  useEffect(() => logBuddha(), [])
   useShortcut('Control+P', () => console.log('# Ctrl P pressed'))
   const metric = useMetric()
 

@@ -25,7 +25,7 @@ let sub$ = null
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
 const sr71$ = new SR71({
   // @ts-ignore
-  receive: [EVENT.UPVOTE_ARTICLE],
+  receive: [EVENT.UPVOTE_ARTICLE, EVENT.UPDATE_VIEWING_ARTICLE],
 })
 
 // custromScroll's scroll direction change
@@ -42,41 +42,6 @@ export const getGlowPosition = (metric: TMetric, glowFixed: boolean): TGlowPosit
 
 export const clearDemoSetting = () => store.clearLocalSettings()
 export const loadDemoSetting = () => store.loadDemoSetting()
-/**
- * log ascii Buddha just for fun
- * 控制台打印佛祖保佑
- */
-export const logBuddha = (): void => {
-  if (process.env.CUR_ENV === 'production') {
-    /* eslint-disable */
-    console.log(
-      ' .......................................................\n\n\n' +
-        '                       _oo0oo_                      \n' +
-        '                      o8888888o                     \n' +
-        '                      88" . "88           if (bug) {                  \n' +
-        '                      (| -_- |)    .oO      bug = false          \n' +
-        '                      0\\  =  /0           }             \n' +
-        '                    ___/‘---’\\___                   \n' +
-        "                  .' \\|       |/ '.                 \n" +
-        '                 / \\\\|||  :  |||// \\                \n' +
-        '                / _|||||-【】-|||||_ \\               \n' +
-        '               |   | \\\\\\  -  /// |   |              \n' +
-        "               | \\_|  ''\\---/''  |_/ |              \n" +
-        "               \\  .-\\__  '-'  ___/-. /              \n" +
-        "             ___'. .'  /--.--\\  '. .'___            \n" +
-        '           ."" ‘<‘.___\\_<|>_/___.’>’ "".          \n' +
-        '        | | :  ‘- \\‘.;‘\\ _ /’;.’/ - ’ : | |        \n' +
-        '         \\  \\ ‘_.   \\_ __\\ /__ _/   .-’ /  /        \n' +
-        '    =====‘-.____‘.___ \\_____/___.-’___.-’=====     \n' +
-        '                       ‘=---=’                      \n' +
-        '                                                    \n\n' +
-        '.........................................................\n\n' +
-        ' ##########   https://github.com/groupher   #########\n\n' +
-        '.........................................................',
-    )
-    /* eslint-enable */
-  }
-}
 
 // cloning children with new props
 // see detail: https://stackoverflow.com/questions/32370994/how-to-pass-props-to-this-props-children
@@ -122,6 +87,13 @@ const handleUovoteRes = ({ upvotesCount, meta }) => {
 
 const DataSolver = [
   ...matchArticleUpvotes(handleUovoteRes),
+  {
+    match: asyncRes(EVENT.UPDATE_VIEWING_ARTICLE),
+    action: (_data) => {
+      const { article } = _data[EVENT.UPDATE_VIEWING_ARTICLE].data
+      store.syncArticle(article)
+    },
+  },
   {
     match: asyncRes(EVENT.UPVOTE_ARTICLE),
     action: (_data) => {

@@ -82,8 +82,12 @@ export const report = (type: TReportType, data?: TAttInfo): void => {
   send(EVENT.REPORT, { type, data })
 }
 
-export const upvoteArticle = (article, viewerHasUpvoted): void => {
+export const upvoteArticle = (article: TArticle, viewerHasUpvoted): void => {
   send(EVENT.UPVOTE_ARTICLE, { type: 'upvote_article', data: { article, viewerHasUpvoted } })
+}
+
+export const updateViewingArticle = (article: TArticle): void => {
+  send(EVENT.UPDATE_VIEWING_ARTICLE, { type: EVENT.UPDATE_VIEWING_ARTICLE, data: { article } })
 }
 
 /**

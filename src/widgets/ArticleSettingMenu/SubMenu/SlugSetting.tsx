@@ -2,9 +2,14 @@ import { FC } from 'react'
 
 import useViewingArticle from '@/hooks/useViewingArticle'
 
+import Footer from './Footer'
 import { Wrapper, Inputer, Note, Preview, Slug } from '../styles/sub_menu/slug_setting'
 
-const SlugSetting: FC = () => {
+type TProps = {
+  onBack: () => void
+}
+
+const SlugSetting: FC<TProps> = ({ onBack }) => {
   const { articleLink } = useViewingArticle()
 
   return (
@@ -15,6 +20,13 @@ const SlugSetting: FC = () => {
         {articleLink}
         <Slug>/whats-new</Slug>
       </Preview>
+
+      <Footer
+        onBack={onBack}
+        onConfirm={() => console.log('## title confirm')}
+        top={20}
+        bottom={5}
+      />
     </Wrapper>
   )
 }
