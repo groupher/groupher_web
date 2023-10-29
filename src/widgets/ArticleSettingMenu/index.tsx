@@ -5,6 +5,8 @@
  */
 
 import { FC, memo, useState, useEffect } from 'react'
+import { Provider } from 'urql'
+import client from '@/utils/async/gq_client'
 
 import { buildLog } from '@/logger'
 
@@ -50,28 +52,30 @@ const ArticleSettingMenu: FC<TProps> = ({ testid = 'article-setting-menu', ...re
   }
 
   return (
-    <Wrapper testid={testid} {...restProps}>
-      <Tooltip
-        visible={visible}
-        content={<Menu onSubMenuToggle={(t) => setSubMenuOpen(t)} onClose={doClose} />}
-        placement="bottom-end"
-        hideOnClick={false}
-        offset={[0, 10]}
-        onShow={() => {
-          setMenuOpen(true)
-          setVisible(true)
-        }}
-        onHide={() => {
-          if (subMenuOpen) return
-          doClose()
-        }}
-        trigger="click"
-        noPadding
-      >
-        <SettingIcon $active={menuOpen} />
-      </Tooltip>
-      {disablePopAnimate && <DisableTippyJump />}
-    </Wrapper>
+    <Provider value={client}>
+      <Wrapper testid={testid} {...restProps}>
+        <Tooltip
+          visible={visible}
+          content={<Menu onSubMenuToggle={(t) => setSubMenuOpen(t)} onClose={doClose} />}
+          placement="bottom-end"
+          hideOnClick={false}
+          offset={[0, 10]}
+          onShow={() => {
+            setMenuOpen(true)
+            setVisible(true)
+          }}
+          onHide={() => {
+            if (subMenuOpen) return
+            doClose()
+          }}
+          trigger="click"
+          noPadding
+        >
+          <SettingIcon $active={menuOpen} />
+        </Tooltip>
+        {disablePopAnimate && <DisableTippyJump />}
+      </Wrapper>
+    </Provider>
   )
 }
 

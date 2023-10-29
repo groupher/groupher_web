@@ -5,7 +5,6 @@
  */
 
 import { FC, ReactNode, useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import { Provider as BalancerTextProvider } from 'react-wrap-balancer'
 
@@ -40,7 +39,7 @@ import {
   BodyWrapper,
   ContentWrapper,
 } from './styles'
-import { useInit, loadDemoSetting } from './logic'
+import { useInit } from './logic'
 
 let DashboardAlert = null
 
@@ -54,24 +53,11 @@ const GlobalLayoutContainer: FC<TProps> = ({ globalLayout: store, children }) =>
   useInit(store)
 
   const metric = useMetric()
-  const router = useRouter()
   const { hasShadow } = useWallpaper()
 
-  const [load, setLoad] = useState(false)
   const [showDashboardAlertUI, setShowDashboardAlertUI] = useState(false)
 
   const { isMobile, globalLayout, showDashboardAlert } = store
-
-  useEffect(() => {
-    const handleRouteComplete = () => loadDemoSetting()
-    router.events.on('routeChangeComplete', handleRouteComplete)
-
-    setLoad(true)
-
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteComplete)
-    }
-  }, [])
 
   useEffect(() => {
     if (showDashboardAlert) {
@@ -85,7 +71,7 @@ const GlobalLayoutContainer: FC<TProps> = ({ globalLayout: store, children }) =>
   return (
     <BalancerTextProvider>
       <ThemePalette>
-        {load && <Addon />}
+        <Addon />
         <Skeleton>
           <Wallpaper />
           <ScrollWrapper $noMobilePadding={metric === METRIC.HOME}>
@@ -104,7 +90,7 @@ const GlobalLayoutContainer: FC<TProps> = ({ globalLayout: store, children }) =>
                 </ContentWrapper>
                 <GlowBackground />
               </InnerWrapper>
-              {isMobile && load && <ModeLine />}
+              {isMobile && <ModeLine />}
             </Wrapper>
           </ScrollWrapper>
         </Skeleton>

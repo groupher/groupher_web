@@ -45,6 +45,14 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
 
       return root.dashboardThread.afterCreate()
     },
+    syncArticle(article: TArticle): void {
+      const root = getParent(self) as TRootStore
+      const viewingArticle = toJS(root.viewingArticle)
+      const updatedArticle = merge(viewingArticle, article)
+
+      root.viewing.updateViewing(updatedArticle)
+      root.articlesThread.updateArticle(updatedArticle)
+    },
     setViewingAlways(article: TArticle): void {
       const root = getParent(self) as TRootStore
       root.viewing.updateViewing(article)

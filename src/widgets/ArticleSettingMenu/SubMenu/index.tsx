@@ -8,7 +8,7 @@ import SlugSetting from './SlugSetting'
 import TagSetting from './TagSetting'
 import TitleSetting from './TitleSetting'
 
-import { Wrapper, Footer, ArrowIcon, Confirm } from '../styles/sub_menu'
+import { Wrapper } from '../styles/sub_menu'
 
 type TProps = {
   closeSubMenu: () => void
@@ -43,11 +43,7 @@ const SubMenu: FC<TProps> = ({ closeSubMenu, subMenuType }) => {
   return (
     <Wrapper>
       <Header type={subMenuType} />
-      <Content />
-      <Footer top={18}>
-        <ArrowIcon onClick={() => closeSubMenu()} />
-        <Confirm size="small">确认</Confirm>
-      </Footer>
+      <Content onBack={closeSubMenu} />
     </Wrapper>
   )
 }
