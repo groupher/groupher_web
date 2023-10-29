@@ -64,20 +64,27 @@ const Menu: FC<TProps> = ({ onSubMenuToggle, onClose }) => {
             <Icon.Arrow />
           </MenuItem>
           <ItemDivider />
-          <MenuItem>
-            <Icon.Light />
-            功能建议
+          <MenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.CATEGORY)}>
+            <Icon.Category />
+            分类
             <SpaceGrow />
             <Icon.Arrow />
           </MenuItem>
-          <MenuItem>
-            <Icon.Todo />
-            设置状态
+          <MenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.STATE)}>
+            <Icon.Wip />
+            状态
             <SpaceGrow />
             <Icon.Arrow />
           </MenuItem>
           <MenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.TAG)}>
-            <TagNode opacity={0.5} dotRight={10} dotLeft={1} hashLeft={-1} hashRight={6} />
+            <TagNode
+              opacity={0.5}
+              dotRight={8}
+              dotLeft={2}
+              dotTop={1}
+              hashLeft={-1}
+              hashRight={6}
+            />
             标签
             <SpaceGrow />
             <Icon.Arrow />

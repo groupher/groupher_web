@@ -7,18 +7,24 @@ import PinSVG from '@/icons/Pin'
 
 //
 import EditSVG from '@/icons/EditPen'
-import LightSVG from '@/icons/ColorLight'
-import TodoSVG from '@/icons/GtdTodo'
+import CategorySVG from '@/icons/Category'
 import SlugSVG from '@/icons/Slug'
 import MergeSVG from '@/icons/Merge'
 import ArchivedSVG from '@/icons/Archived'
 import DeleteSVG from '@/icons/Trash'
 import LockSVG from '@/icons/LockLight'
 import ArrowSVG from '@/icons/ArrowSimple'
-// import QuestionSVG from '@/icons/Question'
-// import BugSVG from '@/icons/ColorBug'
-// import RejectSVG from '@/icons/Reject'
-// import OtherSVG from '@/icons/menu/Feedback'
+
+import LightSVG from '@/icons/ColorLight'
+import QuestionSVG from '@/icons/Question'
+import BugSVG from '@/icons/ColorBug'
+import DiscussSVG from '@/icons/Discuss'
+
+import TodoSVG from '@/icons/GtdTodo'
+import WipSVG from '@/icons/GtdWip'
+import DoneSVG from '@/icons/GtdDone'
+import RejectSVG from '@/icons/Reject'
+import OtherSVG from '@/icons/menu/Feedback'
 
 import { MenuItem } from './menu'
 
@@ -45,8 +51,20 @@ export const Icon = {
     }
   `,
   Edit: commonIcon(EditSVG),
-  Light: commonIcon(LightSVG),
+  Category: styled(commonIcon(CategorySVG))`
+    ${css.size(12)};
+    margin-left: 1px;
+    margin-right: 7px;
+    margin-top: 1px;
+  `,
+  // Light: commonIcon(LightSVG),
   Todo: commonIcon(TodoSVG),
+  Wip: styled(commonIcon(WipSVG))`
+    ${css.size(14)};
+  `,
+  Done: styled(commonIcon(DoneSVG))`
+    margin-left: 1px;
+  `,
   Slug: commonIcon(SlugSVG),
   Archived: commonIcon(ArchivedSVG),
   Merge: commonIcon(MergeSVG),
@@ -60,6 +78,14 @@ export const Icon = {
   `,
   Pin: styled(commonIcon(PinSVG))`
     margin-top: 2px;
+  `,
+
+  Light: commonIcon(LightSVG),
+  Question: commonIcon(QuestionSVG),
+  Bug: commonIcon(BugSVG),
+  Discuss: styled(commonIcon(DiscussSVG))`
+    ${css.size(12)};
+    margin-left: 1px;
   `,
 }
 
