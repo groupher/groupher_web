@@ -39,7 +39,7 @@ import {
   BodyWrapper,
   ContentWrapper,
 } from './styles'
-import { useInit, loadDemoSetting } from './logic'
+import { useInit } from './logic'
 
 let DashboardAlert = null
 

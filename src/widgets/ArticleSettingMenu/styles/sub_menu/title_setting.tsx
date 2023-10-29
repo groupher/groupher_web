@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import Input from '@/widgets/Input'
 
-import css, { theme } from '@/css'
+import { theme } from '@/css'
 
 export const Wrapper = styled.div`
   margin-right: 5px;

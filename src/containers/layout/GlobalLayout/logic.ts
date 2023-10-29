@@ -41,7 +41,7 @@ export const getGlowPosition = (metric: TMetric, glowFixed: boolean): TGlowPosit
 }
 
 export const clearDemoSetting = () => store.clearLocalSettings()
-export const loadDemoSetting = () => store.loadDemoSetting()
+// export const loadDemoSetting = () => store.loadDemoSetting()
 
 // cloning children with new props
 // see detail: https://stackoverflow.com/questions/32370994/how-to-pass-props-to-this-props-children
