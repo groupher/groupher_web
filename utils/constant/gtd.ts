@@ -21,6 +21,8 @@ export const ARTICLE_STATE = {
   TODO: 'TODO',
   WIP: 'WIP',
   DONE: 'DONE',
+  SOLVED: 'SOLVED',
+  FIXED: 'FIXED',
   DEFAULT: 'DEFAULT',
   // reject
   ...ARTICLE_CAT_REJECT,

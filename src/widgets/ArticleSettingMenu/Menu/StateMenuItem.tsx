@@ -5,10 +5,10 @@ import { SpaceGrow } from '@/widgets/Common'
 import useViewingArticle from '@/hooks/useViewingArticle'
 import useKanbanBgColors from '@/hooks/useKanbanBgColors'
 import { Trans } from '@/i18n'
+import { aliasGTDDoneState } from '@/fmt'
 
 import { Icon } from '../styles/icon'
 import { MenuItem } from '../styles/menu'
-
 import { getGTDColor } from '../helper'
 
 type TProps = {
@@ -27,7 +27,7 @@ const StateMenuItem: FC<TProps> = ({ onClick }) => {
       <MenuItem onClick={onClick}>
         {/* @ts-ignore */}
         <TheIcon $active $color={$color} />
-        {Trans(article.state)}
+        {Trans(aliasGTDDoneState(article.cat, article.state))}
         <SpaceGrow />
         <Icon.Arrow />
       </MenuItem>

@@ -1,7 +1,9 @@
 import { endsWith, includes } from 'ramda'
 import { limit, length } from 'stringz'
 
+import type { TArticleCat, TArticleState } from '@/spec'
 import { THREAD } from '@/constant/thread'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 
 import { isString } from './validator'
 
@@ -167,4 +169,25 @@ export const roundUpNumber = (num: number, precision = 0): number => {
  */
 export const prettyURL = (url: string): string => {
   return url.replace(/^https?:\/\//, '')
+}
+
+/**
+ * alias GTD DONE key
+ * 如果是问题，显示已解决，如果是其他，显示已完成
+ */
+export const aliasGTDDoneState = (cat: TArticleCat, state: TArticleState): string => {
+  if (state !== ARTICLE_STATE.DONE) return state
+
+  switch (cat) {
+    case ARTICLE_CAT.BUG: {
+      return ARTICLE_STATE.FIXED
+    }
+    case ARTICLE_CAT.QUESTION: {
+      return ARTICLE_STATE.SOLVED
+    }
+
+    default: {
+      return ARTICLE_STATE.DONE
+    }
+  }
 }

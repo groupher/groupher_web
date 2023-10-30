@@ -2,12 +2,14 @@ import { FC, useState, useEffect } from 'react'
 import { observer } from 'mobx-react'
 import { useMutation } from 'urql'
 
+import { Trans } from '@/i18n'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import useViewingArticle from '@/hooks/useViewingArticle'
 import useKanbanBgColors from '@/hooks/useKanbanBgColors'
 import { POST_STATE_MENU_ITEMS } from '@/constant/menu'
 import { ARTICLE_STATE } from '@/constant/gtd'
 import { toast, updateViewingArticle } from '@/signal'
+import { aliasGTDDoneState } from '@/fmt'
 
 import S from '../schema'
 import Footer from './Footer'
@@ -64,7 +66,7 @@ const StateSetting: FC<TProps> = ({ onBack }) => {
             {index === 3 && <Divider />}
             {/* @ts-ignore */}
             <TheIcon $active={$active} $color={$color} />
-            <Title $active={$active}>{item.title}</Title>
+            <Title $active={$active}>{Trans(aliasGTDDoneState(article.cat, item.key))}</Title>
             {$active && <CheckIcon $color={primaryColor} />}
           </Item>
         )

@@ -36,7 +36,7 @@ const ArticleCatState: FC<TProps> = ({
   return (
     <Wrapper testid={testid} {...restProps}>
       {cat && <Label cat={cat} state={state} smaller={smaller} />}
-      {cat && cat !== ARTICLE_CAT.OTHER && <State state={state} smaller={smaller} />}
+      {cat && cat !== ARTICLE_CAT.OTHER && <State cat={cat} state={state} smaller={smaller} />}
     </Wrapper>
   )
 }
