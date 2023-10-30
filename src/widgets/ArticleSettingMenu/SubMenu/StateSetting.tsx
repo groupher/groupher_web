@@ -2,40 +2,22 @@ import { FC, useState, useEffect } from 'react'
 import { observer } from 'mobx-react'
 import { useMutation } from 'urql'
 
-import type { TColorName, TArticleState } from '@/spec'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import useViewingArticle from '@/hooks/useViewingArticle'
 import useKanbanBgColors from '@/hooks/useKanbanBgColors'
 import { POST_STATE_MENU_ITEMS } from '@/constant/menu'
 import { ARTICLE_STATE } from '@/constant/gtd'
-import { COLOR_NAME } from '@/constant/colors'
 import { toast, updateViewingArticle } from '@/signal'
 
 import S from '../schema'
 import Footer from './Footer'
+import { getGTDColor } from '../helper'
 import { Icon } from '../styles/icon'
-import { Wrapper, Item, Title, CheckIcon } from '../styles/sub_menu/state_setting'
+
+import { Wrapper, Item, Divider, Title, CheckIcon } from '../styles/sub_menu/state_setting'
 
 type TProps = {
   onBack: () => void
-}
-
-export const getColor = (state: TArticleState, bgColors: TColorName[]): TColorName => {
-  switch (state) {
-    case ARTICLE_STATE.TODO: {
-      return bgColors[0]
-    }
-    case ARTICLE_STATE.WIP: {
-      return bgColors[1]
-    }
-
-    case ARTICLE_STATE.DONE: {
-      return bgColors[2]
-    }
-
-    default:
-      return COLOR_NAME.RED
-  }
 }
 
 const StateSetting: FC<TProps> = ({ onBack }) => {
@@ -66,13 +48,20 @@ const StateSetting: FC<TProps> = ({ onBack }) => {
 
   return (
     <Wrapper>
-      {POST_STATE_MENU_ITEMS.map((item) => {
+      {POST_STATE_MENU_ITEMS.map((item, index) => {
         const TheIcon = Icon[item.key] || Icon[ARTICLE_STATE.REJECT]
         const $active = item.key === state
-        const $color = getColor(item.key, bgColors)
+        const $color = getGTDColor(item.key, bgColors)
 
         return (
-          <Item $active={$active} key={item.key} onClick={() => setState(item.key)} $color={$color}>
+          <Item
+            $active={$active}
+            key={item.key}
+            onClick={() => setState(item.key)}
+            $color={$color}
+            hasDivider={index === 3}
+          >
+            {index === 3 && <Divider />}
             {/* @ts-ignore */}
             <TheIcon $active={$active} $color={$color} />
             <Title $active={$active}>{item.title}</Title>

@@ -9,7 +9,7 @@ import { Trans } from '@/i18n'
 import { Icon } from '../styles/icon'
 import { MenuItem } from '../styles/menu'
 
-import { getColor } from '../SubMenu/StateSetting'
+import { getGTDColor } from '../helper'
 
 type TProps = {
   onClick: () => void
@@ -21,7 +21,7 @@ const StateMenuItem: FC<TProps> = ({ onClick }) => {
 
   if (article.state) {
     const TheIcon = Icon[article.state]
-    const $color = getColor(article.state, bgColors)
+    const $color = getGTDColor(article.state, bgColors)
 
     return (
       <MenuItem onClick={onClick}>

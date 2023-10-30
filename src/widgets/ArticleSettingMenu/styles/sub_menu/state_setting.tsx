@@ -7,7 +7,7 @@ import CheckSVG from '@/icons/CheckBold'
 export const Wrapper = styled.div`
   margin-right: 5px;
 `
-type TItem = TColor & TActive
+type TItem = TColor & TActive & { hasDivider?: boolean }
 export const Item = styled.div<TItem>`
   ${css.row('align-center')};
   width: calc(100% + 5px);
@@ -16,6 +16,8 @@ export const Item = styled.div<TItem>`
   border-radius: 5px;
   margin-left: -4px;
   cursor: pointer;
+  position: relative;
+  margin-top: ${({ hasDivider }) => (hasDivider ? '20px;' : 0)};
 
   background: ${({ $active, $color }) => ($active ? rainbowLight($color) : 'transparent')};
 
@@ -28,6 +30,16 @@ export const Item = styled.div<TItem>`
 
   transition: background 0.15s;
 `
+
+export const Divider = styled.div`
+  position: absolute;
+  top: -8px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: ${theme('divider')};
+`
+
 export const Title = styled.div<TActive>`
   font-size: 14px;
   margin-left: 2px;
@@ -43,4 +55,8 @@ export const Title = styled.div<TActive>`
 export const CheckIcon = styled(CheckSVG)<TColor>`
   ${css.size(15)};
   fill: ${({ $color }) => rainbow($color)};
+
+  ${Item}:hover & {
+    fill: ${({ $color }) => rainbow($color)};
+  }
 `
