@@ -1,7 +1,13 @@
-import { FC } from 'react'
+import { FC, useState, useEffect } from 'react'
+import { observer } from 'mobx-react'
+import { useMutation } from 'urql'
 
 import usePrimaryColor from '@/hooks/usePrimaryColor'
+import useViewingArticle from '@/hooks/useViewingArticle'
+import { POST_CAT_MENU_ITEMS } from '@/constant/menu'
+import { toast, updateViewingArticle } from '@/signal'
 
+import S from '../schema'
 import Footer from './Footer'
 import { Icon } from '../styles/icon'
 import { Wrapper, Item, Title, CheckIcon } from '../styles/sub_menu/cat_setting'
@@ -11,34 +17,49 @@ type TProps = {
 }
 
 const CatSetting: FC<TProps> = ({ onBack }) => {
+  const { article } = useViewingArticle()
   const primaryColor = usePrimaryColor()
+  const [cat, setCat] = useState(article.cat)
+
+  const [result, setPostCat] = useMutation(S.setPostCat)
+
+  useEffect(() => {
+    setCat(article.cat)
+  }, [])
+
+  const handleCat = () => {
+    const params = { id: article.id, cat }
+    setPostCat(params).then((result) => {
+      if (result.error) {
+        toast('修改失败', 'error')
+      } else {
+        toast('修改完成')
+        const newCat = result.data.setPostCat.cat
+        setCat(newCat)
+        updateViewingArticle({ id: article.id, cat: newCat })
+      }
+    })
+  }
 
   return (
     <Wrapper>
-      <Item $active>
-        <Icon.Light />
-        <Title $active>功能建议</Title>
-        <CheckIcon $color={primaryColor} />
-      </Item>
+      {POST_CAT_MENU_ITEMS.map((item) => {
+        const TheIcon = Icon[item.key]
+        const $active = item.key === cat
 
-      <Item>
-        <Icon.Bug />
-        <Title>问题上报</Title>
-      </Item>
-
-      <Item>
-        <Icon.Question />
-        <Title>求助/疑问</Title>
-      </Item>
-
-      <Item>
-        <Icon.Discuss />
-        <Title>一般讨论</Title>
-      </Item>
+        return (
+          <Item $active={$active} key={item.key} onClick={() => setCat(item.key)}>
+            <TheIcon />
+            <Title $active={$active}>{item.title}</Title>
+            {$active && <CheckIcon $color={primaryColor} />}
+          </Item>
+        )
+      })}
 
       <Footer
         onBack={onBack}
-        onConfirm={() => console.log('## title confirm')}
+        loading={result.fetching}
+        onConfirm={() => handleCat()}
         top={20}
         bottom={5}
       />
@@ -46,4 +67,4 @@ const CatSetting: FC<TProps> = ({ onBack }) => {
   )
 }
 
-export default CatSetting
+export default observer(CatSetting)

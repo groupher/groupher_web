@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
-import type { TColorName } from '@/spec'
-import css, { theme, rainbowLight } from '@/css'
+import type { TColor, TColorName } from '@/spec'
+import css, { theme, rainbowLight, rainbow } from '@/css'
 
 import GtdWipSVG from '@/icons/GtdWip'
 import GtdDoneSVG from '@/icons/GtdDone'
@@ -39,15 +39,15 @@ export const Label = styled.div`
   font-weight: 600;
   margin-left: 10px;
 `
-export const TODOIcon = styled(GtdTodoSVG)`
+export const TODOIcon = styled(GtdTodoSVG)<TColor>`
   ${css.size(12)};
-  fill: ${theme('article.info')};
+  fill: ${({ $color }) => rainbow($color)};
 `
-export const WipIcon = styled(GtdWipSVG)`
+export const WipIcon = styled(GtdWipSVG)<TColor>`
   ${css.size(15)};
-  fill: ${theme('article.info')};
+  fill: ${({ $color }) => rainbow($color)};
 `
-export const DoneIcon = styled(GtdDoneSVG)`
+export const DoneIcon = styled(GtdDoneSVG)<TColor>`
   ${css.size(12)};
-  fill: ${theme('article.info')};
+  fill: ${({ $color }) => rainbow($color)};
 `

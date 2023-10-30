@@ -1,10 +1,10 @@
 import { FC } from 'react'
 import styled from 'styled-components'
 
-import css, { theme } from '@/css'
-
+import type { TColor, TActive } from '@/spec'
+import { ARTICLE_CAT } from '@/constant/gtd'
+import css, { rainbow, theme } from '@/css'
 import PinSVG from '@/icons/Pin'
-
 //
 import EditSVG from '@/icons/EditPen'
 import CategorySVG from '@/icons/Category'
@@ -23,8 +23,8 @@ import DiscussSVG from '@/icons/Discuss'
 import TodoSVG from '@/icons/GtdTodo'
 import WipSVG from '@/icons/GtdWip'
 import DoneSVG from '@/icons/GtdDone'
-import RejectSVG from '@/icons/Reject'
-import OtherSVG from '@/icons/menu/Feedback'
+// import RejectSVG from '@/icons/Reject'
+// import OtherSVG from '@/icons/menu/Feedback'
 
 import { MenuItem } from './menu'
 
@@ -39,6 +39,8 @@ const commonIcon = (comp): FC => {
     }
   `
 }
+
+type TGTDItem = TActive & TColor
 
 export const Icon = {
   Arrow: styled(commonIcon(ArrowSVG))`
@@ -58,11 +60,15 @@ export const Icon = {
     margin-top: 1px;
   `,
   // Light: commonIcon(LightSVG),
-  Todo: commonIcon(TodoSVG),
-  Wip: styled(commonIcon(WipSVG))`
+  Todo: styled(commonIcon(TodoSVG))<TGTDItem>`
+    fill: ${({ $color, $active }) => ($active ? rainbow($color) : theme('article.digest'))};
+  `,
+  Wip: styled(commonIcon(WipSVG))<TGTDItem>`
+    fill: ${({ $color, $active }) => ($active ? rainbow($color) : theme('article.digest'))};
     ${css.size(14)};
   `,
-  Done: styled(commonIcon(DoneSVG))`
+  Done: styled(commonIcon(DoneSVG))<TGTDItem>`
+    fill: ${({ $color, $active }) => ($active ? rainbow($color) : theme('article.digest'))};
     margin-left: 1px;
   `,
   Slug: commonIcon(SlugSVG),
@@ -80,10 +86,10 @@ export const Icon = {
     margin-top: 2px;
   `,
 
-  Light: commonIcon(LightSVG),
-  Question: commonIcon(QuestionSVG),
-  Bug: commonIcon(BugSVG),
-  Discuss: styled(commonIcon(DiscussSVG))`
+  [ARTICLE_CAT.FEATURE]: commonIcon(LightSVG),
+  [ARTICLE_CAT.QUESTION]: commonIcon(QuestionSVG),
+  [ARTICLE_CAT.BUG]: commonIcon(BugSVG),
+  [ARTICLE_CAT.OTHER]: styled(commonIcon(DiscussSVG))`
     ${css.size(12)};
     margin-left: 1px;
   `,

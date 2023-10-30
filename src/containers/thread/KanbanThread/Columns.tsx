@@ -39,7 +39,7 @@ const Columns: FC<TProps> = ({ layout, bgColors, todoPosts, wipPosts, donePosts 
     <>
       <Column>
         <Header>
-          <TODOIcon />
+          <TODOIcon $color={BG1} />
           <Label>待办</Label>
           <SubTitle>{todoPosts.totalCount}</SubTitle>
           <SpaceGrow />
@@ -56,7 +56,7 @@ const Columns: FC<TProps> = ({ layout, bgColors, todoPosts, wipPosts, donePosts 
       </Column>
       <Column>
         <Header>
-          <WipIcon />
+          <WipIcon $color={BG2} />
           <Label>进行中</Label>
           <SubTitle>{wipPosts.totalCount}</SubTitle>
           <SpaceGrow />
@@ -73,7 +73,7 @@ const Columns: FC<TProps> = ({ layout, bgColors, todoPosts, wipPosts, donePosts 
       </Column>
       <Column>
         <Header>
-          <DoneIcon />
+          <DoneIcon $color={BG3} />
           <Label>已完成</Label>
           <SubTitle>{donePosts.totalCount}</SubTitle>
           <SpaceGrow />

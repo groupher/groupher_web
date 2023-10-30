@@ -16,18 +16,18 @@ const StateSetting: FC<TProps> = ({ onBack }) => {
   return (
     <Wrapper>
       <Item $active $color={todoColor}>
-        <Icon.Todo />
+        <Icon.Todo $color={todoColor} $active />
         <Title $active>待办</Title>
         <CheckIcon $color={todoColor} />
       </Item>
 
       <Item $color={wipColor}>
-        <Icon.Wip />
+        <Icon.Wip $color={todoColor} />
         <Title>进行中</Title>
       </Item>
 
       <Item $color={doneColor}>
-        <Icon.Done />
+        <Icon.Done $color={todoColor} />
         <Title>已完成</Title>
       </Item>
 

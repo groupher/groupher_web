@@ -10,8 +10,18 @@ const updateTitle = gql`
   }
 `
 
+const setPostCat = gql`
+  mutation ($id: ID!, $cat: ArticleCatEnum!) {
+    setPostCat(id: $id, cat: $cat) {
+      id
+      cat
+    }
+  }
+`
+
 const schema = {
   updateTitle,
+  setPostCat,
 }
 
 export default schema

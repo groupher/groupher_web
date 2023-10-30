@@ -13,7 +13,7 @@ export const Item = styled.div<TActive>`
   padding: 6px 5px;
   padding-right: 4px;
   border-radius: 5px;
-  margin-left: -4px;
+  margin-left: -5px;
   cursor: pointer;
 
   background: ${({ $active }) => ($active ? theme('hoverBg') : 'transparent')};
