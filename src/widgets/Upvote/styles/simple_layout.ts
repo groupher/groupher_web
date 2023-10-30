@@ -9,10 +9,6 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   ${css.row('align-center')};
 `
 export const UpvoteBtnWrapper = styled.div`
-  transform: scale(0.8);
-  margin-top: 6px;
-`
-
-export const CountWrapper = styled.div`
-  margin-left: -1px;
+  margin-top: 4px;
+  margin-right: 4px;
 `

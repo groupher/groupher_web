@@ -18,6 +18,7 @@ export const Dot = styled.div<TProps>`
   ${({ size }) => css.circle(size)};
   background: ${({ $color }) => rainbow($color)};
   opacity: ${({ opacity }) => opacity};
+  margin-top: ${({ top }) => `${top}px;`};
   margin-right: ${({ right }) => `${right}px;`};
   margin-left: ${({ left }) => `${left}px;`};
 

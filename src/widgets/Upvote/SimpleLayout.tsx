@@ -12,7 +12,7 @@ import AnimatedCount from '../AnimatedCount'
 import useUpvote from './useUpvote'
 import UpvoteBtn from './UpvoteBtn'
 
-import { Wrapper, UpvoteBtnWrapper, CountWrapper } from './styles/simple_layout'
+import { Wrapper, UpvoteBtnWrapper } from './styles/simple_layout'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:Upvote:index')
@@ -37,9 +37,7 @@ const Upvote: FC<TProps> = ({
       <UpvoteBtnWrapper>
         <UpvoteBtn viewerHasUpvoted={viewerHasUpvoted} count={count} startAnimate={startAnimate} />
       </UpvoteBtnWrapper>
-      <CountWrapper>
-        <AnimatedCount count={count} $active={viewerHasUpvoted} size="small" />
-      </CountWrapper>
+      <AnimatedCount count={count} $active={viewerHasUpvoted} size="small" />
     </Wrapper>
   )
 }

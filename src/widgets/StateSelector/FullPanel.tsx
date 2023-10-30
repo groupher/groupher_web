@@ -58,13 +58,6 @@ const FilterPanel: FC<TProps> = ({ activeState, onSelect }) => {
         </RejectSelectItem>
         <RejectGroup>
           <SelectItem
-            active={activeState === ARTICLE_STATE.REJECT_NO_FIX}
-            onClick={() => onSelect(ARTICLE_STATE.REJECT_NO_FIX)}
-          >
-            <RejectIcon />
-            <Title>{Trans(ARTICLE_STATE.REJECT_NO_FIX)}</Title>
-          </SelectItem>
-          <SelectItem
             active={activeState === ARTICLE_STATE.REJECT_NO_PLAN}
             onClick={() => onSelect(ARTICLE_STATE.REJECT_NO_PLAN)}
           >

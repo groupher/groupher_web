@@ -4,9 +4,12 @@ import type { TSubMenu } from '../spec'
 import { SUB_MENU_TYPE } from '../constant'
 
 import Header from './Header'
+
+import TitleSetting from './TitleSetting'
+import CatSetting from './CatSetting'
+import StateSetting from './StateSetting'
 import SlugSetting from './SlugSetting'
 import TagSetting from './TagSetting'
-import TitleSetting from './TitleSetting'
 
 import { Wrapper } from '../styles/sub_menu'
 
@@ -21,6 +24,16 @@ const SubMenu: FC<TProps> = ({ closeSubMenu, subMenuType }) => {
   switch (subMenuType) {
     case SUB_MENU_TYPE.EDIT: {
       Content = TitleSetting
+      break
+    }
+
+    case SUB_MENU_TYPE.CATEGORY: {
+      Content = CatSetting
+      break
+    }
+
+    case SUB_MENU_TYPE.STATE: {
+      Content = StateSetting
       break
     }
 

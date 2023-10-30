@@ -6,13 +6,16 @@ import { COLOR_NAME } from '@/constant/colors'
 import useKanbanBgColors from '@/hooks/useKanbanBgColors'
 import useNameAlias from '@/hooks/useNameAlias'
 
+import { Trans } from '@/i18n'
+import { aliasGTDDoneState } from '@/fmt'
+
 import type { TProps as TArticleStateBadgeProps } from '.'
 
-import { Wrapper, WipIcon, Text, TODOIcon, DoneIcon, ResolveIcon, RejectIcon } from './styles/state'
+import { Wrapper, WipIcon, Text, TODOIcon, DoneIcon, RejectIcon } from './styles/state'
 
-type TProps = Pick<TArticleStateBadgeProps, 'state' | 'smaller'>
+type TProps = Pick<TArticleStateBadgeProps, 'cat' | 'state' | 'smaller'>
 
-const State: FC<TProps> = ({ state, smaller }) => {
+const State: FC<TProps> = ({ cat, state, smaller }) => {
   const [todoColor, wipColor, doneColor] = useKanbanBgColors()
 
   const kanbanAlias = useNameAlias('kanban')
@@ -25,7 +28,7 @@ const State: FC<TProps> = ({ state, smaller }) => {
             $smaller={smaller}
             color={doneColor === COLOR_NAME.BLACK ? COLOR_NAME.GREEN : doneColor}
           />
-          {!smaller && <Text>{kanbanAlias[ARTICLE_STATE.DONE.toLowerCase()].name}</Text>}
+          {!smaller && <Text>{Trans(aliasGTDDoneState(cat, state))}</Text>}
         </Wrapper>
       )
     }
@@ -48,21 +51,8 @@ const State: FC<TProps> = ({ state, smaller }) => {
       )
     }
 
-    case ARTICLE_STATE.RESOLVED: {
-      return (
-        <Wrapper $smaller={smaller} color={COLOR_NAME.GREEN}>
-          <ResolveIcon
-            $smaller={smaller}
-            color={doneColor === COLOR_NAME.BLACK ? COLOR_NAME.GREEN : doneColor}
-          />
-          {!smaller && <Text>已解决</Text>}
-        </Wrapper>
-      )
-    }
-
     case ARTICLE_STATE.REJECT_STALE:
     case ARTICLE_STATE.REJECT_NO_PLAN:
-    case ARTICLE_STATE.REJECT_NO_FIX:
     case ARTICLE_STATE.REJECT_DUP: {
       return <RejectIcon $smaller={smaller} />
     }

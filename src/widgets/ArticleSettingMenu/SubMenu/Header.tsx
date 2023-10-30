@@ -33,6 +33,38 @@ const Header: FC<TProps> = ({ type }) => {
       break
     }
 
+    case SUB_MENU_TYPE.CATEGORY: {
+      Content = (
+        <>
+          <Icon.Category />
+          设置分类
+          <SpaceGrow />
+          <Hint>
+            <InfoIcon />
+            <Help href="/">帮助</Help>
+          </Hint>
+        </>
+      )
+
+      break
+    }
+
+    case SUB_MENU_TYPE.STATE: {
+      Content = (
+        <>
+          <Icon.State />
+          设置状态
+          <SpaceGrow />
+          <Hint>
+            <InfoIcon />
+            <Help href="/">帮助</Help>
+          </Hint>
+        </>
+      )
+
+      break
+    }
+
     case SUB_MENU_TYPE.SLUG: {
       Content = (
         <>

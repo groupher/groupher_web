@@ -2,8 +2,8 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/css'
 
-import type { TSubMenu } from '../spec'
-import { getSubMenuWidth } from './metric'
+import type { TSubMenu } from '../../spec'
+import { getSubMenuWidth } from '../metric'
 
 type TWrapper = { subMenuType: TSubMenu }
 

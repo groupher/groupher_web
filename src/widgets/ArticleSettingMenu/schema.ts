@@ -1,5 +1,4 @@
 import { gql } from 'urql/core'
-// import { P } from '@/schemas'
 
 const updateTitle = gql`
   mutation ($id: ID!, $title: String, $body: String, $articleTags: [ID]) {
@@ -9,9 +8,27 @@ const updateTitle = gql`
     }
   }
 `
+const setPostCat = gql`
+  mutation ($id: ID!, $cat: ArticleCatEnum!) {
+    setPostCat(id: $id, cat: $cat) {
+      id
+      cat
+    }
+  }
+`
+const setPostState = gql`
+  mutation ($id: ID!, $state: ArticleStateEnum!) {
+    setPostState(id: $id, state: $state) {
+      id
+      state
+    }
+  }
+`
 
 const schema = {
   updateTitle,
+  setPostCat,
+  setPostState,
 }
 
 export default schema

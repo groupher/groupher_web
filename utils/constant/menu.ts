@@ -1,4 +1,4 @@
-import { ARTICLE_CAT } from '@/constant/gtd'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import type { TMenu } from '@/spec'
 
 const MENU = {
@@ -50,6 +50,41 @@ export const POST_CAT_MENU_ITEMS = [
     title: '其他讨论',
     desc: '一般讨论，其他话题',
     icon: MENU.OTHER,
+  },
+]
+
+export const POST_STATE_MENU_ITEMS = [
+  {
+    key: ARTICLE_STATE.TODO,
+    title: '待办',
+  },
+  {
+    key: ARTICLE_STATE.WIP,
+    title: '进行中',
+  },
+  {
+    key: ARTICLE_STATE.DONE,
+    title: '已完成',
+  },
+  {
+    key: ARTICLE_STATE.REJECT,
+    title: '关闭',
+  },
+  {
+    key: ARTICLE_STATE.REJECT_DUP,
+    title: '重复问题',
+  },
+  {
+    key: ARTICLE_STATE.REJECT_NO_PLAN,
+    title: '无计划',
+  },
+  {
+    key: ARTICLE_STATE.REJECT_REPRO,
+    title: '无法重现',
+  },
+  {
+    key: ARTICLE_STATE.REJECT_STALE,
+    title: '过时',
   },
 ]
 

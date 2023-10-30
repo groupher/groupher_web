@@ -1,6 +1,5 @@
 import { FC, useCallback, useState } from 'react'
 import { pluck } from 'ramda'
-
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table'
 
 import type { TID, TPagedCommunities } from '@/spec'

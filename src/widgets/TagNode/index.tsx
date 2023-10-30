@@ -26,6 +26,7 @@ type TProps = {
   dotSize?: number
   dotRight?: number
   dotLeft?: number
+  dotTop?: number
   hashSize?: number
   hashRight?: number
   hashLeft?: number
@@ -37,6 +38,7 @@ const TagNode: FC<TProps> = ({
   color = COLOR_NAME.BLACK,
   dotSize = 10,
   dotRight = 5,
+  dotTop = 0,
   dotLeft = 0,
   hashSize = 15,
   hashRight = 5,
@@ -55,6 +57,7 @@ const TagNode: FC<TProps> = ({
           $color={color as TColorName}
           size={dotSize}
           opacity={opacity}
+          top={dotTop}
           left={dotLeft}
           right={dotRight}
           $dividerBorder={dividerBorder}

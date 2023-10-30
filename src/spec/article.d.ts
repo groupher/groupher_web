@@ -194,9 +194,9 @@ export type TCommentsState = {
 }
 
 export type TArticleCatReject =
+  | 'REJECT'
   | 'REJECT_DUP'
   | 'REJECT_NO_PLAN'
-  | 'REJECT_NO_FIX'
   | 'REJECT_REPRO'
   | 'REJECT_STALE'
 
@@ -205,7 +205,8 @@ export type TArticleState =
   | 'TODO'
   | 'WIP'
   | 'DONE'
-  | 'RESOLVED'
+  | 'SOLVED'
+  | 'FIXED'
   | 'DEFAULT'
   | TArticleCatReject
 

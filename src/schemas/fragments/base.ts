@@ -91,6 +91,8 @@ export const article = `
   commentsCount
   upvotesCount
   commentsParticipantsCount
+  cat
+  state
  
   author {
     ${author}

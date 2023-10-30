@@ -8,6 +8,7 @@ import { FC, ReactNode } from 'react'
 import { observer } from 'mobx-react'
 
 import type { TSizeSM, TSpace } from '@/spec'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 import SIZE from '@/constant/size'
 import { buildLog } from '@/logger'
 
@@ -36,6 +37,7 @@ const Checker: FC<TProps> = ({
   dimWhenIdle = false,
   ...restProps
 }) => {
+  const primaryColor = usePrimaryColor()
   const show = checked || !hiddenMode
 
   return (
@@ -46,8 +48,8 @@ const Checker: FC<TProps> = ({
       onClick={() => show && !disabled && onChange(!checked)}
       {...restProps}
     >
-      <IconWrapper checked={checked} size={size} disabled={disabled}>
-        <CheckIcon checked={checked} size={size} disabled={disabled} />
+      <IconWrapper checked={checked} size={size} disabled={disabled} $color={primaryColor}>
+        <CheckIcon checked={checked} size={size} disabled={disabled} $color={primaryColor} />
       </IconWrapper>
       <ChildWrapper checked={checked} size={size} disabled={disabled}>
         {children}

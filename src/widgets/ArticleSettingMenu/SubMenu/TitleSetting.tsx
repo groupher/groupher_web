@@ -15,9 +15,9 @@ type TProps = {
 
 const TitleSetting: FC<TProps> = ({ onBack }) => {
   const { article } = useViewingArticle()
-  const [result, updateTitle] = useMutation(S.updateTitle)
-
   const [title, setTitle] = useState(article.title)
+
+  const [result, updateTitle] = useMutation(S.updateTitle)
 
   useEffect(() => {
     setTitle(article.title)

@@ -271,7 +271,6 @@ export const siteBirthDay = (birthday: string): string => {
 export const isRejectedState = (state: TArticleState): boolean => {
   return includes(state, [
     ARTICLE_STATE.REJECT_DUP,
-    ARTICLE_STATE.REJECT_NO_FIX,
     ARTICLE_STATE.REJECT_NO_PLAN,
     ARTICLE_STATE.REJECT_REPRO,
     ARTICLE_STATE.REJECT_STALE,
