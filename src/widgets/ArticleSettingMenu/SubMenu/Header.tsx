@@ -52,7 +52,7 @@ const Header: FC<TProps> = ({ type }) => {
     case SUB_MENU_TYPE.STATE: {
       Content = (
         <>
-          <Icon.Wip />
+          <Icon.State />
           设置状态
           <SpaceGrow />
           <Hint>

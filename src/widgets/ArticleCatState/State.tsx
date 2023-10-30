@@ -8,7 +8,7 @@ import useNameAlias from '@/hooks/useNameAlias'
 
 import type { TProps as TArticleStateBadgeProps } from '.'
 
-import { Wrapper, WipIcon, Text, TODOIcon, DoneIcon, ResolveIcon, RejectIcon } from './styles/state'
+import { Wrapper, WipIcon, Text, TODOIcon, DoneIcon, RejectIcon } from './styles/state'
 
 type TProps = Pick<TArticleStateBadgeProps, 'state' | 'smaller'>
 
@@ -48,21 +48,8 @@ const State: FC<TProps> = ({ state, smaller }) => {
       )
     }
 
-    case ARTICLE_STATE.RESOLVED: {
-      return (
-        <Wrapper $smaller={smaller} color={COLOR_NAME.GREEN}>
-          <ResolveIcon
-            $smaller={smaller}
-            color={doneColor === COLOR_NAME.BLACK ? COLOR_NAME.GREEN : doneColor}
-          />
-          {!smaller && <Text>已解决</Text>}
-        </Wrapper>
-      )
-    }
-
     case ARTICLE_STATE.REJECT_STALE:
     case ARTICLE_STATE.REJECT_NO_PLAN:
-    case ARTICLE_STATE.REJECT_NO_FIX:
     case ARTICLE_STATE.REJECT_DUP: {
       return <RejectIcon $smaller={smaller} />
     }

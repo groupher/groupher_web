@@ -2,7 +2,7 @@ import { FC } from 'react'
 import styled from 'styled-components'
 
 import type { TColor, TActive } from '@/spec'
-import { ARTICLE_CAT } from '@/constant/gtd'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import css, { rainbow, theme } from '@/css'
 import PinSVG from '@/icons/Pin'
 //
@@ -23,7 +23,8 @@ import DiscussSVG from '@/icons/Discuss'
 import TodoSVG from '@/icons/GtdTodo'
 import WipSVG from '@/icons/GtdWip'
 import DoneSVG from '@/icons/GtdDone'
-// import RejectSVG from '@/icons/Reject'
+import RejectSVG from '@/icons/Reject'
+
 // import OtherSVG from '@/icons/menu/Feedback'
 
 import { MenuItem } from './menu'
@@ -59,18 +60,39 @@ export const Icon = {
     margin-right: 7px;
     margin-top: 1px;
   `,
-  // Light: commonIcon(LightSVG),
-  Todo: styled(commonIcon(TodoSVG))<TGTDItem>`
+  State: commonIcon(WipSVG),
+  [ARTICLE_STATE.TODO]: styled(commonIcon(TodoSVG))<TGTDItem>`
     fill: ${({ $color, $active }) => ($active ? rainbow($color) : theme('article.digest'))};
+
+    ${MenuItem}:hover & {
+      fill: ${({ $color }) => rainbow($color)};
+    }
   `,
-  Wip: styled(commonIcon(WipSVG))<TGTDItem>`
+  [ARTICLE_STATE.WIP]: styled(commonIcon(WipSVG))<TGTDItem>`
     fill: ${({ $color, $active }) => ($active ? rainbow($color) : theme('article.digest'))};
     ${css.size(14)};
+
+    ${MenuItem}:hover & {
+      fill: ${({ $color }) => rainbow($color)};
+    }
   `,
-  Done: styled(commonIcon(DoneSVG))<TGTDItem>`
+  [ARTICLE_STATE.DONE]: styled(commonIcon(DoneSVG))<TGTDItem>`
     fill: ${({ $color, $active }) => ($active ? rainbow($color) : theme('article.digest'))};
     margin-left: 1px;
+
+    ${MenuItem}:hover & {
+      fill: ${({ $color }) => rainbow($color)};
+    }
   `,
+  [ARTICLE_STATE.REJECT]: styled(commonIcon(RejectSVG))<TGTDItem>`
+    fill: ${({ $color, $active }) => ($active ? rainbow('red') : theme('article.digest'))};
+    margin-left: 1px;
+
+    ${MenuItem}:hover & {
+      fill: ${({ $color }) => rainbow($color)};
+    }
+  `,
+
   Slug: commonIcon(SlugSVG),
   Archived: commonIcon(ArchivedSVG),
   Merge: commonIcon(MergeSVG),

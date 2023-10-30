@@ -1,7 +1,17 @@
-import { FC } from 'react'
+import { FC, useState, useEffect } from 'react'
+import { observer } from 'mobx-react'
+import { useMutation } from 'urql'
 
+import type { TColorName, TArticleState } from '@/spec'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
+import useViewingArticle from '@/hooks/useViewingArticle'
 import useKanbanBgColors from '@/hooks/useKanbanBgColors'
+import { POST_STATE_MENU_ITEMS } from '@/constant/menu'
+import { ARTICLE_STATE } from '@/constant/gtd'
+import { COLOR_NAME } from '@/constant/colors'
+import { toast, updateViewingArticle } from '@/signal'
 
+import S from '../schema'
 import Footer from './Footer'
 import { Icon } from '../styles/icon'
 import { Wrapper, Item, Title, CheckIcon } from '../styles/sub_menu/state_setting'
@@ -10,30 +20,71 @@ type TProps = {
   onBack: () => void
 }
 
+export const getColor = (state: TArticleState, bgColors: TColorName[]): TColorName => {
+  switch (state) {
+    case ARTICLE_STATE.TODO: {
+      return bgColors[0]
+    }
+    case ARTICLE_STATE.WIP: {
+      return bgColors[1]
+    }
+
+    case ARTICLE_STATE.DONE: {
+      return bgColors[2]
+    }
+
+    default:
+      return COLOR_NAME.RED
+  }
+}
+
 const StateSetting: FC<TProps> = ({ onBack }) => {
-  const [todoColor, wipColor, doneColor] = useKanbanBgColors()
+  const primaryColor = usePrimaryColor()
+  const { article } = useViewingArticle()
+  const bgColors = useKanbanBgColors()
+  const [state, setState] = useState(article.state)
+
+  const [result, setPostState] = useMutation(S.setPostState)
+
+  useEffect(() => {
+    setState(article.state)
+  }, [])
+
+  const handleState = () => {
+    const params = { id: article.id, state }
+    setPostState(params).then((result) => {
+      if (result.error) {
+        toast('修改失败', 'error')
+      } else {
+        toast('修改完成')
+        const newState = result.data.setPostState.state
+        setState(newState)
+        updateViewingArticle({ id: article.id, state: newState })
+      }
+    })
+  }
 
   return (
     <Wrapper>
-      <Item $active $color={todoColor}>
-        <Icon.Todo $color={todoColor} $active />
-        <Title $active>待办</Title>
-        <CheckIcon $color={todoColor} />
-      </Item>
+      {POST_STATE_MENU_ITEMS.map((item) => {
+        const TheIcon = Icon[item.key] || Icon[ARTICLE_STATE.REJECT]
+        const $active = item.key === state
+        const $color = getColor(item.key, bgColors)
 
-      <Item $color={wipColor}>
-        <Icon.Wip $color={todoColor} />
-        <Title>进行中</Title>
-      </Item>
-
-      <Item $color={doneColor}>
-        <Icon.Done $color={todoColor} />
-        <Title>已完成</Title>
-      </Item>
+        return (
+          <Item $active={$active} key={item.key} onClick={() => setState(item.key)} $color={$color}>
+            {/* @ts-ignore */}
+            <TheIcon $active={$active} $color={$color} />
+            <Title $active={$active}>{item.title}</Title>
+            {$active && <CheckIcon $color={primaryColor} />}
+          </Item>
+        )
+      })}
 
       <Footer
         onBack={onBack}
-        onConfirm={() => console.log('## title confirm')}
+        loading={result.fetching}
+        onConfirm={() => handleState()}
         top={20}
         bottom={5}
       />
@@ -41,4 +92,4 @@ const StateSetting: FC<TProps> = ({ onBack }) => {
   )
 }
 
-export default StateSetting
+export default observer(StateSetting)

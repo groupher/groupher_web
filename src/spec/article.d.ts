@@ -194,20 +194,13 @@ export type TCommentsState = {
 }
 
 export type TArticleCatReject =
+  | 'REJECT'
   | 'REJECT_DUP'
   | 'REJECT_NO_PLAN'
-  | 'REJECT_NO_FIX'
   | 'REJECT_REPRO'
   | 'REJECT_STALE'
 
-export type TArticleState =
-  | 'ALL'
-  | 'TODO'
-  | 'WIP'
-  | 'DONE'
-  | 'RESOLVED'
-  | 'DEFAULT'
-  | TArticleCatReject
+export type TArticleState = 'ALL' | 'TODO' | 'WIP' | 'DONE' | 'DEFAULT' | TArticleCatReject
 
 export type TArticleCat = 'ALL' | 'BUG' | 'FEATURE' | 'QUESTION' | 'OTHER'
 

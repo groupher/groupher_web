@@ -76,7 +76,7 @@ export const DEMO_POSTS = [
     title: '用户页能否看到发帖历史？',
     digest: '用户主页能否展示在社区内的历史发帖或评论，提高用户参与的热情？',
     category: ARTICLE_CAT.QUESTION,
-    state: ARTICLE_STATE.RESOLVED,
+    state: ARTICLE_STATE.DONE,
     articleTags: [
       {
         color: 'GREEN',

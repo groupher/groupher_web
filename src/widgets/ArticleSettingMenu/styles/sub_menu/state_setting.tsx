@@ -21,6 +21,9 @@ export const Item = styled.div<TItem>`
 
   &:hover {
     background: ${({ $color }) => rainbowLight($color)};
+    svg {
+      fill: ${({ $color }) => rainbow($color)};
+    }
   }
 
   transition: background 0.15s;

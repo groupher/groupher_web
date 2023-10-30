@@ -1,11 +1,11 @@
 import type { TArticleCat, TArticleState, TArticleCatMode, TArticleStateMode } from '@/spec'
 
 export const ARTICLE_CAT_REJECT = {
-  REJECT_DUP: 'REJECT_DUP',
-  REJECT_NO_PLAN: 'REJECT_NO_PLAN',
-  REJECT_NO_FIX: 'REJECT_NO_FIX',
-  REJECT_REPRO: 'REJECT_REPRO',
-  REJECT_STALE: 'REJECT_STALE',
+  REJECT: 'REJECT', // 关闭
+  REJECT_DUP: 'REJECT_DUP', // 重复问题
+  REJECT_NO_PLAN: 'REJECT_NO_PLAN', // 无计划
+  REJECT_REPRO: 'REJECT_REPRO', // 无法重现
+  REJECT_STALE: 'REJECT_STALE', // 已过时
 }
 
 export const ARTICLE_CAT = {
@@ -22,7 +22,6 @@ export const ARTICLE_STATE = {
   WIP: 'WIP',
   DONE: 'DONE',
   DEFAULT: 'DEFAULT',
-  RESOLVED: 'RESOLVED',
   // reject
   ...ARTICLE_CAT_REJECT,
 } as Record<Uppercase<TArticleState>, Uppercase<TArticleState>>

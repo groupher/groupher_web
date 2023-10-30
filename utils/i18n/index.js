@@ -26,17 +26,15 @@ const I18nDict = {
   // ArticleCat
   ALL: '全部',
   FEATURE: '功能建议',
-  BUG: '问题反馈',
+  BUG: '问题上报',
   QUESTION: '求助/疑问',
   OTHER: '其他',
-  RESOLVED: '问题解决',
   // articleState;
   TODO: '待办项',
   WIP: '进行中',
   DONE: '已完成',
   REJECT_DUP: '重复问题',
   REJECT_NO_PLAN: '无计划',
-  REJECT_NO_FIX: '不修复',
   REJECT_REPRO: '无法重现',
   REJECT_STALE: '陈帖归档',
 

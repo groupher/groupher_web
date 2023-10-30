@@ -5,12 +5,15 @@ import useOutsideClick from '@/hooks/useOutsideClick'
 import { SpaceGrow } from '@/widgets/Common'
 import TagNode from '@/widgets/TagNode'
 
-import type { TSubMenu } from './spec'
-import { SUB_MENU_TYPE } from './constant'
-import SubMenu from './SubMenu'
+import type { TSubMenu } from '../spec'
+import { SUB_MENU_TYPE } from '../constant'
+import SubMenu from '../SubMenu'
 
-import { Icon } from './styles/icon'
-import { Wrapper, MenuItem, DangerMenuItem, ItemDivider } from './styles/menu'
+import CatMenuItem from './CatMenuItem'
+import StateMenuItem from './StateMenuItem'
+
+import { Icon } from '../styles/icon'
+import { Wrapper, MenuItem, DangerMenuItem, ItemDivider } from '../styles/menu'
 
 type TProps = {
   onSubMenuToggle: (t: boolean) => void
@@ -64,18 +67,8 @@ const Menu: FC<TProps> = ({ onSubMenuToggle, onClose }) => {
             <Icon.Arrow />
           </MenuItem>
           <ItemDivider />
-          <MenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.CATEGORY)}>
-            <Icon.Category />
-            分类
-            <SpaceGrow />
-            <Icon.Arrow />
-          </MenuItem>
-          <MenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.STATE)}>
-            <Icon.Wip />
-            状态
-            <SpaceGrow />
-            <Icon.Arrow />
-          </MenuItem>
+          <CatMenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.CATEGORY)} />
+          <StateMenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.STATE)} />
           <MenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.TAG)}>
             <TagNode
               opacity={0.5}
