@@ -145,6 +145,7 @@ export type {
   TArticleCatReject,
   TArticleState,
   TFAQSection,
+  TArticleTitle,
 } from './article'
 
 export type {

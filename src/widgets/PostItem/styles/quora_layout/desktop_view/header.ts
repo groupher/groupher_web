@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/css'
+import type { TArticleTitle } from '@/spec'
+import css, { rainbow, rainbowLight, theme } from '@/css'
 import DotDivider from '@/widgets/DotDivider'
 
 import { Wrapper as ItemWrapper } from '.'
@@ -16,14 +17,35 @@ export const Main = styled.div`
   ${css.rowGrow('align-center')};
   color: ${theme('article.title')};
 `
-export const Title = styled.a`
+export const Title = styled.a<TArticleTitle>`
+  ${css.row('align-center')};
   position: relative;
   text-decoration: none;
-  font-size: 15px;
+  font-size: ${({ isPinned }) => (isPinned ? '16px' : '15px;')};
   font-weight: 600;
   letter-spacing: 0.03em;
   opacity: 0.85;
-  color: ${theme('article.title')};
+  color: ${({ isPinned, $color }) => (isPinned ? rainbow($color) : theme('article.title'))};
+
+  &:before {
+    content: '';
+    position: absolute;
+    display: ${({ isPinned }) => (isPinned ? 'block' : 'none')};
+    left: 0;
+    bottom: 4px;
+    background: ${(props) => {
+      const { $color } = props
+      // @ts-ignore
+      const colorVal = rainbowLight($color)(props)
+
+      return `linear-gradient(180deg, transparent 30%, ${colorVal} 0)`
+    }};
+    opacity: 1;
+    width: 30%;
+    height: 10px;
+    border-radius: 3px;
+    z-index: -1;
+  }
 
   @media (max-width: 1450px) {
     ${css.cutRest('500px')};
@@ -37,11 +59,12 @@ export const Title = styled.a`
 
   ${ItemWrapper}:hover & {
     text-decoration: underline;
-    text-decoration-color: ${theme('hint')};
+    text-decoration-color: ${({ isPinned, $color }) =>
+      isPinned ? rainbow($color) : theme('hint')};
   }
 
   &:hover {
-    color: ${theme('article.digest')};
+    color: ${({ isPinned, $color }) => (isPinned ? rainbow($color) : theme('article.digest'))};
     cursor: pointer;
   }
 

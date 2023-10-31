@@ -89,8 +89,8 @@ const day = {
     cyanLight: '#00B5CC',
     cyanLightBg: '#e1fcff94',
 
-    blue: '#0073E3',
-    blueBg: '#d8e3fd54',
+    blue: '#5073C6',
+    blueBg: '#E7EDF7',
 
     purple: '#7d519e',
     purpleBg: '#f7d8fd38',

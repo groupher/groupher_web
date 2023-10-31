@@ -5,6 +5,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react'
 
+import type { TSpace } from '@/spec'
 import { buildLog } from '@/logger'
 import useAccount from '@/hooks/useAccount'
 
@@ -14,24 +15,22 @@ import { ReadedLabel } from './styles'
 const log = buildLog('w:ArticleReadLabel:index')
 
 export type TProps = {
-  top?: number
-  left?: number
   article: {
     viewerHasViewed?: boolean
     isPinned?: boolean
   }
-}
-const ArticleReadLabel: FC<TProps> = ({ article, top = 24, left = -30 }) => {
+  size?: number
+} & TSpace
+
+const ArticleReadLabel: FC<TProps> = ({ article, size = 8, ...restProps }) => {
   const accountInfo = useAccount()
-  const { isPinned, viewerHasViewed } = article
+  const { viewerHasViewed } = article
 
-  if (!accountInfo.isLogin || isPinned) return null
-
-  const { markViewed } = accountInfo.customization
+  if (!accountInfo.isLogin) return null
 
   // return <ReadedLabel top={top} left={left} />
-  if (markViewed && !viewerHasViewed) {
-    return <ReadedLabel top={top} left={left} />
+  if (!viewerHasViewed) {
+    return <ReadedLabel size={size} {...restProps} />
   }
 
   return null

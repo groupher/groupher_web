@@ -4,7 +4,6 @@ import type { TPost } from '@/spec'
 
 import { previewArticle } from '@/signal'
 
-import ArticleReadLabel from '@/widgets/ArticleReadLabel'
 import ArticlePinLabel from '@/widgets/ArticlePinLabel'
 
 import ViewingSign from '../../ViewingSign'
@@ -21,9 +20,9 @@ type TProps = {
 const DesktopView: FC<TProps> = ({ article }) => {
   return (
     <Wrapper>
-      <ArticleReadLabel article={article} />
-      <ArticlePinLabel article={article} />
-      <ViewingSign article={article} top={40} />
+      <ArticlePinLabel article={article} top={42} />
+      <ViewingSign article={article} top={38} left={article.isPinned ? -48 : -24} />
+
       <Main>
         <Header article={article} onClick={() => previewArticle(article)} />
         <Digest onClick={() => previewArticle(article)}>{article.digest}</Digest>

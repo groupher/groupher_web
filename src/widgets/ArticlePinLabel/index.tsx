@@ -7,6 +7,8 @@
 import { FC, memo } from 'react'
 
 import { buildLog } from '@/logger'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
+
 import { PinIcon } from './styles'
 
 /* eslint-disable-next-line */
@@ -20,7 +22,9 @@ export type TProps = {
   }
 }
 const ArticlePinLabel: FC<TProps> = ({ article, top = 24, left = -30 }) => {
-  if (article.isPinned) return <PinIcon top={top} left={left} />
+  const primaryColor = usePrimaryColor()
+
+  if (article.isPinned) return <PinIcon top={top} left={left} $color={primaryColor} />
 
   return null
 }

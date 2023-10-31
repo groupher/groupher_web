@@ -25,10 +25,29 @@ const setPostState = gql`
   }
 `
 
+const pinPost = gql`
+  mutation ($id: ID!, $communityId: ID!) {
+    pinPost(id: $id, communityId: $communityId) {
+      id
+    }
+  }
+`
+
+const undoPinPost = gql`
+  mutation ($id: ID!, $communityId: ID!) {
+    undoPinPost(id: $id, communityId: $communityId) {
+      id
+      isPinned
+    }
+  }
+`
+
 const schema = {
   updateTitle,
   setPostCat,
   setPostState,
+  pinPost,
+  undoPinPost,
 }
 
 export default schema
