@@ -1,7 +1,10 @@
+import type { TColor } from './color'
 import type { TCommunity, TTag } from '.'
 import type { TUser, TAccount, TSimpleUser } from './account'
 import type { TID } from './utils'
 import type { TEmotion } from './emotion'
+
+export type TArticleTitle = { isPinned?: boolean; viewerHasViewed?: boolean } & TColor
 
 export type TCopyright = 'cc' | 'approve' | 'forbid'
 

@@ -9,8 +9,9 @@ import type { TSubMenu } from '../spec'
 import { SUB_MENU_TYPE } from '../constant'
 import SubMenu from '../SubMenu'
 
-import CatMenuItem from './CatMenuItem'
-import StateMenuItem from './StateMenuItem'
+import CatItem from './CatItem'
+import PinItem from './PinItem'
+import StateItem from './StateItem'
 
 import { Icon } from '../styles/icon'
 import { Wrapper, MenuItem, DangerMenuItem, ItemDivider } from '../styles/menu'
@@ -67,8 +68,8 @@ const Menu: FC<TProps> = ({ onSubMenuToggle, onClose }) => {
             <Icon.Arrow />
           </MenuItem>
           <ItemDivider />
-          <CatMenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.CATEGORY)} />
-          <StateMenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.STATE)} />
+          <CatItem onClick={() => openSubMenu(SUB_MENU_TYPE.CATEGORY)} />
+          <StateItem onClick={() => openSubMenu(SUB_MENU_TYPE.STATE)} />
           <MenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.TAG)}>
             <TagNode
               opacity={0.5}
@@ -83,10 +84,7 @@ const Menu: FC<TProps> = ({ onSubMenuToggle, onClose }) => {
             <Icon.Arrow />
           </MenuItem>
           <ItemDivider />
-          <MenuItem>
-            <Icon.Pin />
-            置顶
-          </MenuItem>
+          <PinItem />
           <MenuItem>
             <Icon.Lock />
             关闭评论

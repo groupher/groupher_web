@@ -3,31 +3,24 @@ import { observer } from 'mobx-react'
 
 import { SpaceGrow } from '@/widgets/Common'
 import useViewingArticle from '@/hooks/useViewingArticle'
-import useKanbanBgColors from '@/hooks/useKanbanBgColors'
 import { Trans } from '@/i18n'
-import { aliasGTDDoneState } from '@/fmt'
 
 import { Icon } from '../styles/icon'
 import { MenuItem } from '../styles/menu'
-import { getGTDColor } from '../helper'
 
 type TProps = {
   onClick: () => void
 }
 
-const StateMenuItem: FC<TProps> = ({ onClick }) => {
+const CatItem: FC<TProps> = ({ onClick }) => {
   const { article } = useViewingArticle()
-  const bgColors = useKanbanBgColors()
 
-  if (article.state) {
-    const TheIcon = Icon[article.state]
-    const $color = getGTDColor(article.state, bgColors)
-
+  if (article.cat) {
+    const TheIcon = Icon[article.cat]
     return (
       <MenuItem onClick={onClick}>
-        {/* @ts-ignore */}
-        <TheIcon $active $color={$color} />
-        {Trans(aliasGTDDoneState(article.cat, article.state))}
+        <TheIcon />
+        {Trans(article.cat)}
         <SpaceGrow />
         <Icon.Arrow />
       </MenuItem>
@@ -36,12 +29,12 @@ const StateMenuItem: FC<TProps> = ({ onClick }) => {
 
   return (
     <MenuItem onClick={onClick}>
-      <Icon.State />
-      状态
+      <Icon.Category />
+      分类
       <SpaceGrow />
       <Icon.Arrow />
     </MenuItem>
   )
 }
 
-export default observer(StateMenuItem)
+export default observer(CatItem)

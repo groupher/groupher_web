@@ -237,7 +237,7 @@ const night = {
     primary: primaryColor,
     border: '#414141',
     bg: '#2c2c2c',
-    fg: '#c1c1c1',
+    fg: 'white',
     ghost: '#9A9696',
     disabledFg: descText,
     hoverBg: lighten(primaryColor, 10),

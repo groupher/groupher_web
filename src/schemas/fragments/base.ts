@@ -5,6 +5,7 @@ import EMOTION from '@/constant/emotion'
 import { titleCase } from '@/fmt'
 
 export const community = `
+  id
   title
   slug
   index

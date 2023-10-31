@@ -3,9 +3,11 @@ import styled from 'styled-components'
 
 import type { TColor, TActive } from '@/spec'
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
-import css, { rainbow, theme } from '@/css'
+import css, { animate, rainbow, theme } from '@/css'
 import PinSVG from '@/icons/Pin'
+import UnPinSVG from '@/icons/UnPin'
 //
+import SpinSVG from '@/icons/Spin'
 import EditSVG from '@/icons/EditPen'
 import CategorySVG from '@/icons/Category'
 import SlugSVG from '@/icons/Slug'
@@ -107,7 +109,14 @@ export const Icon = {
   Pin: styled(commonIcon(PinSVG))`
     margin-top: 2px;
   `,
-
+  UnPin: styled(commonIcon(UnPinSVG))`
+    ${css.size(15)};
+    margin-left: -1px;
+  `,
+  Spin: styled(commonIcon(SpinSVG))`
+    ${css.size(11)};
+    animation: ${animate.rotate360} 0.8s linear infinite;
+  `,
   [ARTICLE_CAT.FEATURE]: commonIcon(LightSVG),
   [ARTICLE_CAT.QUESTION]: commonIcon(QuestionSVG),
   [ARTICLE_CAT.BUG]: commonIcon(BugSVG),

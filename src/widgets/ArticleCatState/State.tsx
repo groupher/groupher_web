@@ -10,7 +10,6 @@ import { Trans } from '@/i18n'
 import { aliasGTDDoneState } from '@/fmt'
 
 import type { TProps as TArticleStateBadgeProps } from '.'
-
 import { Wrapper, WipIcon, Text, TODOIcon, DoneIcon, RejectIcon } from './styles/state'
 
 type TProps = Pick<TArticleStateBadgeProps, 'cat' | 'state' | 'smaller'>
