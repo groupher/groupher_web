@@ -21,11 +21,12 @@ export const Title = styled.a<TArticleTitle>`
   ${css.row('align-center')};
   position: relative;
   text-decoration: none;
-  font-size: ${({ isPinned }) => (isPinned ? '16px' : '15px;')};
+  font-size: 15px;
   font-weight: 600;
   letter-spacing: 0.03em;
   opacity: 0.85;
   color: ${({ isPinned, $color }) => (isPinned ? rainbow($color) : theme('article.title'))};
+  filter: ${({ isPinned }) => (isPinned ? 'brightness(1.1)' : '')};
 
   &:before {
     content: '';

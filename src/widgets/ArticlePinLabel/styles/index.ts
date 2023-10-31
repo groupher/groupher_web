@@ -10,7 +10,7 @@ type TPos = { top: number; left: number } & TColor
 export const PinIcon = styled(PinSVG)<TPos>`
   fill: ${({ $color }) => rainbow($color)};
   position: absolute;
-  ${css.size(18)};
+  ${css.size(16)};
   top: ${({ top }) => pixelAdd(`${top}px`, -4)};
   left: ${({ left }) => `${left}px`};
   opacity: 0.8;

@@ -7,6 +7,7 @@ import ArrowSVG from '@/icons/ArrowUpRight'
 import DiscussSVG from '@/icons/Discuss'
 import GithubSVG from '@/icons/Github8'
 import GlobalSVG from '@/icons/social/Global'
+import PlusSVG from '@/icons/PlusCircle'
 
 import Img from '@/Img'
 
@@ -139,6 +140,11 @@ export const Icon = {
     ${css.size(12)};
   `,
   Discuss: commonIcon(DiscussSVG),
+  Plus: styled(commonIcon(PlusSVG))`
+    ${css.size(15)};
+    margin-left: 1px;
+    margin-right: 10px;
+  `,
 }
 
 export const DisableTippyJump = createGlobalStyle<{ enable: boolean }>`

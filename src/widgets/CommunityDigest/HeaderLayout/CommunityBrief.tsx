@@ -6,7 +6,7 @@ import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useHover from '@/hooks/useHover'
 import Tooltip from '@/widgets/Tooltip'
 
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow, SexyDivider } from '@/widgets/Common'
 
 import {
   Wrapper,
@@ -57,6 +57,14 @@ const CommunityBrief: FC = () => {
           <PanelItem href={`/${slug}`} outside>
             <Icon.Github />
             <div>Github</div>
+            <SpaceGrow />
+            <ArrowIcon />
+          </PanelItem>
+
+          <SexyDivider top={5} bottom={5} />
+          <PanelItem href="/apply/community" outside>
+            <Icon.Plus />
+            <div>新社区</div>
             <SpaceGrow />
             <ArrowIcon />
           </PanelItem>
