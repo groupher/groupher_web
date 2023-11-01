@@ -6,6 +6,8 @@ import { Trans } from '@/i18n'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import useViewingArticle from '@/hooks/useViewingArticle'
 import useKanbanBgColors from '@/hooks/useKanbanBgColors'
+import useNameAlias from '@/hooks/useNameAlias'
+
 import { POST_STATE_MENU_ITEMS } from '@/constant/menu'
 import { ARTICLE_STATE } from '@/constant/gtd'
 import { toast, updateViewingArticle } from '@/signal'
@@ -27,6 +29,8 @@ const StateSetting: FC<TProps> = ({ onBack }) => {
   const primaryColor = usePrimaryColor()
   const { article } = useViewingArticle()
   const bgColors = useKanbanBgColors()
+  const kanbanAlias = useNameAlias('kanban')
+
   const [state, setState] = useState(article.state)
   const { touched, setTouched, resetTouched } = useTouched()
 
@@ -73,7 +77,13 @@ const StateSetting: FC<TProps> = ({ onBack }) => {
             {index === 3 && <Divider />}
             {/* @ts-ignore */}
             <TheIcon $active={$active} $color={$color} />
-            <Title $active={$active}>{Trans(aliasGTDDoneState(article.cat, item.key))}</Title>
+            <Title $active={$active}>
+              {article.state === ARTICLE_STATE.DONE ? (
+                <>{Trans(aliasGTDDoneState(article.cat, item.key))}</>
+              ) : (
+                <>{kanbanAlias[ARTICLE_STATE[item.key].toLowerCase()]?.name || Trans(item.key)}</>
+              )}
+            </Title>
             {$active && <CheckIcon $color={primaryColor} />}
           </Item>
         )

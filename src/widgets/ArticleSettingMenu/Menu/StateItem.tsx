@@ -4,7 +4,9 @@ import { observer } from 'mobx-react'
 import { SpaceGrow } from '@/widgets/Common'
 import useViewingArticle from '@/hooks/useViewingArticle'
 import useKanbanBgColors from '@/hooks/useKanbanBgColors'
+import useNameAlias from '@/hooks/useNameAlias'
 import { Trans } from '@/i18n'
+import { ARTICLE_STATE } from '@/constant/gtd'
 import { aliasGTDDoneState } from '@/fmt'
 
 import { Icon } from '../styles/icon'
@@ -18,6 +20,7 @@ type TProps = {
 const StateItem: FC<TProps> = ({ onClick }) => {
   const { article } = useViewingArticle()
   const bgColors = useKanbanBgColors()
+  const kanbanAlias = useNameAlias('kanban')
 
   if (article.state) {
     const TheIcon = Icon[article.state]
@@ -27,7 +30,11 @@ const StateItem: FC<TProps> = ({ onClick }) => {
       <MenuItem onClick={onClick}>
         {/* @ts-ignore */}
         <TheIcon $active $color={$color} />
-        {Trans(aliasGTDDoneState(article.cat, article.state))}
+        {article.state === ARTICLE_STATE.DONE ? (
+          <>{Trans(aliasGTDDoneState(article.cat, article.state))}</>
+        ) : (
+          <>{kanbanAlias[ARTICLE_STATE[article.state].toLowerCase()].name}</>
+        )}
         <SpaceGrow />
         <Icon.Arrow />
       </MenuItem>

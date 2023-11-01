@@ -20,7 +20,7 @@ type TProps = {
 const DesktopView: FC<TProps> = ({ article }) => {
   return (
     <Wrapper>
-      <ArticlePinLabel article={article} top={42} />
+      <ArticlePinLabel isPinned={article.isPinned} top={42} />
       <ViewingSign article={article} top={38} left={article.isPinned ? -48 : -24} />
 
       <Main>

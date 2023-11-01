@@ -9,6 +9,7 @@ import Router from 'next/router'
 
 import useMetric from '@/hooks/useMetric'
 import useViewingArticle from '@/hooks/useViewingArticle'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
 import { buildLog } from '@/logger'
@@ -18,6 +19,7 @@ import { SpaceGrow } from '@/widgets/Common'
 import ArticleBaseStats from '@/widgets/ArticleBaseStats'
 import Share from '@/widgets/Share'
 import ArticleSettingMenu from '@/widgets/ArticleSettingMenu'
+import ArticlePinLabel from '@/widgets/ArticlePinLabel'
 
 // import ArticleBelongCommunity from '@/widgets/ArticleBelongCommunity'
 // import ArticleMenu from '@/widgets/ArticleMenu'
@@ -42,8 +44,9 @@ const log = buildLog('C:ArticleDigest')
 const PostLayout: FC = () => {
   const metric = useMetric()
   const { article } = useViewingArticle()
+  const primaryColor = usePrimaryColor()
 
-  const { innerId, author, title } = article
+  const { innerId, author, title, isPinned } = article
 
   const backUrl = `/${article.originalCommunitySlug}/${ARTICLE_THREAD.POST}`
 
@@ -59,7 +62,9 @@ const PostLayout: FC = () => {
           <Share modalOffset="38%" />
           <ArticleSettingMenu left={16} />
         </Topping>
-        <Title>
+
+        <ArticlePinLabel isPinned={isPinned} top={56} />
+        <Title isPinned={isPinned} $color={primaryColor}>
           {title}
           <SubTitle>{innerId}</SubTitle>
         </Title>

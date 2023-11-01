@@ -27,7 +27,7 @@ const DigestView: FC<TProps> = ({ article }) => {
   return (
     <Wrapper>
       <ArticleReadLabel article={article} top={8} />
-      <ArticlePinLabel article={article} />
+      <ArticlePinLabel isPinned={article.isPinned} />
       <ViewingSign article={article} top={20} />
       <UpvoteWrapper>
         <Upvote

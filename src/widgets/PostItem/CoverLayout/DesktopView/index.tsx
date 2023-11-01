@@ -36,7 +36,7 @@ const DigestView: FC<TProps> = ({ article }) => {
   return (
     <Wrapper onClick={() => previewArticle(article)}>
       <ArticleReadLabel article={article} top={8} />
-      <ArticlePinLabel article={article} />
+      <ArticlePinLabel isPinned={article.isPinned} />
       <ViewingSign article={article} top={8} />
       <CoverWrapper>
         <CoverImg src={coverImg} />

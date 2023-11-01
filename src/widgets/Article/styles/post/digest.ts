@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import styled from 'styled-components'
 
-import type { TMetric } from '@/spec'
+import type { TMetric, TArticleTitle } from '@/spec'
 import METRIC from '@/constant/metric'
-import css, { theme } from '@/css'
+import css, { theme, rainbow } from '@/css'
 
 import Img from '@/Img'
 import ArrowSVG from '@/icons/Arrow'
@@ -55,12 +55,13 @@ export const CommunityInfo = styled.div`
   margin-top: 5px;
   ${css.fitStickerWidth(METRIC.ARTICLE)};
 `
-export const Title = styled.div`
+export const Title = styled.div<TArticleTitle>`
   font-size: 22px;
-  color: ${theme('article.title')};
   margin-bottom: 18px;
   max-width: 600px;
   font-weight: 500;
+  color: ${({ isPinned, $color }) => (isPinned ? rainbow($color) : theme('article.title'))};
+  filter: ${({ isPinned }) => (isPinned ? 'brightness(1.1)' : '')};
 
   ${css.media.mobile`
     font-size: 20px;
