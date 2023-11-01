@@ -3,7 +3,7 @@ export type TSubMenu =
   | 'slug'
   | 'category'
   | 'state'
-  | 'tag'
+  | 'tags'
   | 'pin'
   | 'lock'
   | 'merge'

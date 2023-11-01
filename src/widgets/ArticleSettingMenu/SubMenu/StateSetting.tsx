@@ -12,6 +12,7 @@ import { toast, updateViewingArticle } from '@/signal'
 import { aliasGTDDoneState } from '@/fmt'
 
 import S from '../schema'
+import useTouched from '../useTouched'
 import Footer from './Footer'
 import { getGTDColor } from '../helper'
 import { Icon } from '../styles/icon'
@@ -27,6 +28,7 @@ const StateSetting: FC<TProps> = ({ onBack }) => {
   const { article } = useViewingArticle()
   const bgColors = useKanbanBgColors()
   const [state, setState] = useState(article.state)
+  const { touched, setTouched, resetTouched } = useTouched()
 
   const [result, setPostState] = useMutation(S.setPostState)
 
@@ -44,6 +46,8 @@ const StateSetting: FC<TProps> = ({ onBack }) => {
         const newState = result.data.setPostState.state
         setState(newState)
         updateViewingArticle({ id: article.id, state: newState })
+
+        resetTouched()
       }
     })
   }
@@ -59,7 +63,10 @@ const StateSetting: FC<TProps> = ({ onBack }) => {
           <Item
             $active={$active}
             key={item.key}
-            onClick={() => setState(item.key)}
+            onClick={() => {
+              setState(item.key)
+              setTouched(article.state !== item.key)
+            }}
             $color={$color}
             hasDivider={index === 3}
           >
@@ -75,6 +82,7 @@ const StateSetting: FC<TProps> = ({ onBack }) => {
       <Footer
         onBack={onBack}
         loading={result.fetching}
+        disabled={!touched}
         onConfirm={() => handleState()}
         top={20}
         bottom={5}

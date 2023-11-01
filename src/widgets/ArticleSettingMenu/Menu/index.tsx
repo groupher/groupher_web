@@ -3,13 +3,13 @@ import { FC, memo, useState, useRef } from 'react'
 import useOutsideClick from '@/hooks/useOutsideClick'
 
 import { SpaceGrow } from '@/widgets/Common'
-import TagNode from '@/widgets/TagNode'
 
 import type { TSubMenu } from '../spec'
 import { SUB_MENU_TYPE } from '../constant'
 import SubMenu from '../SubMenu'
 
 import CatItem from './CatItem'
+import TagsItem from './TagsItem'
 import PinItem from './PinItem'
 import StateItem from './StateItem'
 
@@ -70,19 +70,7 @@ const Menu: FC<TProps> = ({ onSubMenuToggle, onClose }) => {
           <ItemDivider />
           <CatItem onClick={() => openSubMenu(SUB_MENU_TYPE.CATEGORY)} />
           <StateItem onClick={() => openSubMenu(SUB_MENU_TYPE.STATE)} />
-          <MenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.TAG)}>
-            <TagNode
-              opacity={0.5}
-              dotRight={8}
-              dotLeft={2}
-              dotTop={1}
-              hashLeft={-1}
-              hashRight={6}
-            />
-            标签
-            <SpaceGrow />
-            <Icon.Arrow />
-          </MenuItem>
+          <TagsItem onClick={() => openSubMenu(SUB_MENU_TYPE.TAGS)} />
           <ItemDivider />
           <PinItem />
           <MenuItem>

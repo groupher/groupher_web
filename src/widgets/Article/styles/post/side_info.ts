@@ -50,6 +50,11 @@ export const Value = styled.div`
   margin-bottom: 5px;
 `
 
+export const TagsSection = styled.div`
+  margin-bottom: 5px;
+  width: 100%;
+`
+
 export const UserList = styled.div`
   ${css.columnWrap()};
   gap: 10px 0;

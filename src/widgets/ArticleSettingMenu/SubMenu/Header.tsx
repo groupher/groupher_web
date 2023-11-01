@@ -80,10 +80,10 @@ const Header: FC<TProps> = ({ type }) => {
 
       break
     }
-    case SUB_MENU_TYPE.TAG: {
+    case SUB_MENU_TYPE.TAGS: {
       Content = (
         <>
-          <TagNode opacity={0.6} dotSize={8} />
+          <TagNode opacity={0.6} dotSize={8} dotLeft={4} hashLeft={4} hashSize={13} />
           设置标签
           <SpaceGrow />
           <Hint>

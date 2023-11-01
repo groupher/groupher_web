@@ -5,7 +5,7 @@ export const SUB_MENU_TYPE = {
   SLUG: 'slug',
   CATEGORY: 'category',
   STATE: 'state',
-  TAG: 'tag',
+  TAGS: 'tags',
   PIN: 'pin',
   LOCK: 'lock',
   MERGE: 'merge',

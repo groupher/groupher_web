@@ -8,13 +8,20 @@ type TProps = {
   onBack: () => void
   onConfirm: () => void
   loading?: boolean
+  disabled?: boolean
 } & TSpace
 
-const Footer: FC<TProps> = ({ onBack, onConfirm, loading = false, ...restProps }) => {
+const Footer: FC<TProps> = ({
+  onBack,
+  onConfirm,
+  loading = false,
+  disabled = false,
+  ...restProps
+}) => {
   return (
     <Wrapper {...restProps}>
       <ArrowIcon onClick={() => onBack()} />
-      <Confirm size="small" onClick={() => onConfirm()} loading={loading}>
+      <Confirm size="small" onClick={() => onConfirm()} loading={loading} disabled={disabled}>
         确认
       </Confirm>
     </Wrapper>

@@ -9,7 +9,8 @@ import { getTitleSize } from './metric'
 
 export const Wrapper = styled.div<TSpace>`
   ${css.row('align-center')};
-  gap: 0 10px;
+  flex-wrap: wrap;
+  gap: 4px 10px;
 
   margin-left: ${({ left }) => `${left || 0}px`};
   margin-right: ${({ right }) => `${right || 0}px`};
