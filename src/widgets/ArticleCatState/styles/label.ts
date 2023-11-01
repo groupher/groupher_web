@@ -16,22 +16,18 @@ type TWrapper = {
 }
 
 export const Wrapper = styled.div<TWrapper>`
-  color: ${theme('article.digest')};
+  color: ${theme('article.title')};
   ${css.row('align-center')};
   padding: 0 5px;
   line-height: ${({ $smaller }) => ($smaller ? '20px' : '32px')};
-  font-weight: 500;
   font-size: 12px;
+  opacity: 0.82;
 `
 export const IconWrapper = styled.div`
   ${css.size(16)};
   margin-right: 3px;
   ${css.row('align-both')};
 `
-export const BugWrapper = styled(Wrapper)<TWrapper>`
-  color: ${theme('article.digest')};
-`
-
 export const LockWrapper = styled.div<{ $smaller: boolean }>`
   color: ${theme('article.info')};
   font-size: ${({ $smaller }) => ($smaller ? '12px' : '14px')};

@@ -8,7 +8,7 @@ import { isRejectedState } from '@/helper'
 
 import type { TProps as TArticleStateBadgeProps } from '.'
 
-import { Wrapper, IconWrapper, ICON, BugWrapper } from './styles/label'
+import { Wrapper, IconWrapper, ICON } from './styles/label'
 
 type TProps = Pick<TArticleStateBadgeProps, 'cat' | 'smaller' | 'state'>
 
@@ -40,12 +40,12 @@ const Label: FC<TProps> = ({ cat, state, smaller }) => {
 
     case ARTICLE_CAT.BUG: {
       return (
-        <BugWrapper state={state} $smaller={smaller}>
+        <Wrapper state={state} $smaller={smaller}>
           <IconWrapper>
             <ICON.BUG />
           </IconWrapper>
           {nameAlias[cat.toLowerCase()].name}
-        </BugWrapper>
+        </Wrapper>
       )
     }
 
