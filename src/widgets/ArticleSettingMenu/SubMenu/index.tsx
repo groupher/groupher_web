@@ -9,7 +9,7 @@ import TitleSetting from './TitleSetting'
 import CatSetting from './CatSetting'
 import StateSetting from './StateSetting'
 import SlugSetting from './SlugSetting'
-import TagSetting from './TagSetting'
+import TagsSetting from './TagsSetting'
 
 import { Wrapper } from '../styles/sub_menu'
 
@@ -42,8 +42,8 @@ const SubMenu: FC<TProps> = ({ closeSubMenu, subMenuType }) => {
       break
     }
 
-    case SUB_MENU_TYPE.TAG: {
-      Content = TagSetting
+    case SUB_MENU_TYPE.TAGS: {
+      Content = TagsSetting
       break
     }
 

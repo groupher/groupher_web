@@ -8,6 +8,7 @@ import { POST_CAT_MENU_ITEMS } from '@/constant/menu'
 import { toast, updateViewingArticle } from '@/signal'
 
 import S from '../schema'
+import useTouched from '../useTouched'
 import Footer from './Footer'
 import { Icon } from '../styles/icon'
 import { Wrapper, Item, Title, CheckIcon } from '../styles/sub_menu/cat_setting'
@@ -21,6 +22,7 @@ const CatSetting: FC<TProps> = ({ onBack }) => {
   const primaryColor = usePrimaryColor()
   const [cat, setCat] = useState(article.cat)
 
+  const { touched, setTouched, resetTouched } = useTouched()
   const [result, setPostCat] = useMutation(S.setPostCat)
 
   useEffect(() => {
@@ -37,6 +39,7 @@ const CatSetting: FC<TProps> = ({ onBack }) => {
         const newCat = result.data.setPostCat.cat
         setCat(newCat)
         updateViewingArticle({ id: article.id, cat: newCat })
+        resetTouched()
       }
     })
   }
@@ -48,7 +51,14 @@ const CatSetting: FC<TProps> = ({ onBack }) => {
         const $active = item.key === cat
 
         return (
-          <Item $active={$active} key={item.key} onClick={() => setCat(item.key)}>
+          <Item
+            $active={$active}
+            key={item.key}
+            onClick={() => {
+              setCat(item.key)
+              setTouched(item.key !== article.cat)
+            }}
+          >
             <TheIcon />
             <Title $active={$active}>{item.title}</Title>
             {$active && <CheckIcon $color={primaryColor} />}
@@ -59,6 +69,7 @@ const CatSetting: FC<TProps> = ({ onBack }) => {
       <Footer
         onBack={onBack}
         loading={result.fetching}
+        disabled={!touched}
         onConfirm={() => handleCat()}
         top={20}
         bottom={5}

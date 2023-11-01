@@ -1,10 +1,15 @@
 import { gql } from 'urql/core'
 
-const updateTitle = gql`
+import { F } from '@/schemas'
+
+const updatePost = gql`
   mutation ($id: ID!, $title: String, $body: String, $articleTags: [ID]) {
     updatePost(id: $id, title: $title, body: $body, articleTags: $articleTags) {
       id
       title
+      articleTags {
+        ${F.tag}
+      }
     }
   }
 `
@@ -42,12 +47,23 @@ const undoPinPost = gql`
   }
 `
 
+const pagedArticleTags = gql`
+  query ($filter: ArticleTagsFilter) {
+    pagedArticleTags(filter: $filter) {
+      entries {
+        ${F.tag}
+      }
+    }
+  }
+`
+
 const schema = {
-  updateTitle,
+  updatePost,
   setPostCat,
   setPostState,
   pinPost,
   undoPinPost,
+  pagedArticleTags,
 }
 
 export default schema
