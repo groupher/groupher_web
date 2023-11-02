@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import css from '@/css'
+import css, { theme } from '@/css'
 import Img from '@/Img'
 
 import { DesktopHoverable, DesktopDigest } from '../..'
@@ -28,4 +28,8 @@ export const Digest = styled(DesktopDigest)`
   ${css.cutRest('340px')};
   margin-top: 6px;
   margin-bottom: 5px;
+
+  ${Wrapper}:hover & {
+    color: ${theme('article.title')};
+  }
 `
