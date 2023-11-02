@@ -15,21 +15,16 @@ import { ReadedLabel } from './styles'
 const log = buildLog('w:ArticleReadLabel:index')
 
 export type TProps = {
-  article: {
-    viewerHasViewed?: boolean
-    isPinned?: boolean
-  }
+  viewed?: boolean
   size?: number
 } & TSpace
 
-const ArticleReadLabel: FC<TProps> = ({ article, size = 8, ...restProps }) => {
-  const accountInfo = useAccount()
-  const { viewerHasViewed } = article
+const ArticleReadLabel: FC<TProps> = ({ viewed, size = 8, ...restProps }) => {
+  const { isLogin } = useAccount()
 
-  if (!accountInfo.isLogin) return null
+  if (!isLogin) return null
 
-  // return <ReadedLabel top={top} left={left} />
-  if (!viewerHasViewed) {
+  if (!viewed) {
     return <ReadedLabel size={size} {...restProps} />
   }
 

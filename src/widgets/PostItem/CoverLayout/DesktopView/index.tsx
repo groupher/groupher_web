@@ -5,7 +5,6 @@ import type { TPost } from '@/spec'
 import { previewArticle } from '@/signal'
 import { mockImage } from '@/mock'
 
-import ArticleReadLabel from '@/widgets/ArticleReadLabel'
 import ArticlePinLabel from '@/widgets/ArticlePinLabel'
 
 import ViewingSign from '../../ViewingSign'
@@ -35,9 +34,8 @@ const DigestView: FC<TProps> = ({ article }) => {
 
   return (
     <Wrapper onClick={() => previewArticle(article)}>
-      <ArticleReadLabel article={article} top={8} />
-      <ArticlePinLabel isPinned={article.isPinned} />
-      <ViewingSign article={article} top={8} />
+      <ArticlePinLabel isPinned={article.isPinned} top={32} />
+      <ViewingSign article={article} top={30} />
       <CoverWrapper>
         <CoverImg src={coverImg} />
       </CoverWrapper>

@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
 export const BackButton = styled.div`
   ${css.row('align-center')};
   padding: 2px 5px;
-  margin-left: -2px;
+  margin-left: -5px;
   border: 1px solid;
   border-color: transparent;
   border-radius: 6px;

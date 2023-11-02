@@ -85,7 +85,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
           </Block>
           <LayoutTitle $active={layout === POST_LAYOUT.QUORA}>
             <CheckLabel
-              title="侧重投票"
+              title="经典（默认）"
               $active={layout === POST_LAYOUT.QUORA}
               top={15}
               left={-15}
@@ -97,27 +97,20 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
             <Row>
               <Column center>
                 <Circle />
-                <Br bottom={8} />
-                <UpvoteIcon size={13} />
-                <Br bottom={3} />
-                <Bar long={50} />
+                <Br bottom={18} />
               </Column>
-
               <Space right={12} />
-
               <Column grow>
                 <Row>
                   <Bar long={50} />
                   <Space right={5} />
                   <Bar thin long={8} />
                   <SpaceGrow />
-                  <Bar long={20} />
+                  <UpvoteIcon size={20} />
                 </Row>
-                <Br bottom={8} />
-                <Bar thin long={20} />
-                <Br bottom={11} />
+                <Br bottom={5} />
                 <Bar thin long={80} />
-                <Br bottom={10} />
+                <Br bottom={11} />
                 <Row>
                   <Bar long={20} />
                   <Space right={12} />
@@ -127,7 +120,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
             </Row>
           </Block>
           <LayoutTitle $active={layout === POST_LAYOUT.PH}>
-            <CheckLabel title="侧重评论" $active={layout === POST_LAYOUT.PH} top={15} left={-15} />
+            <CheckLabel title="三段式" $active={layout === POST_LAYOUT.PH} top={15} left={-15} />
           </LayoutTitle>
         </Layout>
 
@@ -216,6 +209,7 @@ const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
       </SelectWrapper>
 
       <SavingBar
+        width="84%"
         isTouched={isTouched}
         field={SETTING_FIELD.POST_LAYOUT}
         loading={saving}

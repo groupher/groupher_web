@@ -62,6 +62,9 @@ const day = {
   textBadge: '#e2e2e287', // with alpha
   lightText: '#999999',
   hint,
+  articleCardShadow: '0 2px 40px 0 rgb(224 226 228 / 27%)',
+  articleCardHover: '#c1c1c1',
+  dashboardBlockOpacity: 0.3,
 
   rainbow: {
     red: '#ca5f4d',

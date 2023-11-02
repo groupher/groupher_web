@@ -5,7 +5,6 @@ import { UPVOTE_LAYOUT } from '@/constant/layout'
 
 import { previewArticle, upvoteArticle } from '@/signal'
 
-import ArticleReadLabel from '@/widgets/ArticleReadLabel'
 import ArticlePinLabel from '@/widgets/ArticlePinLabel'
 import Upvote from '@/widgets/Upvote'
 
@@ -26,7 +25,6 @@ const DigestView: FC<TProps> = ({ article }) => {
 
   return (
     <Wrapper>
-      <ArticleReadLabel article={article} top={8} />
       <ArticlePinLabel isPinned={article.isPinned} />
       <ViewingSign article={article} top={20} />
       <UpvoteWrapper>
