@@ -11,7 +11,7 @@ import GtdDoneSVG from '@/icons/CheckBold'
 import ResolveSVG from '@/icons/Hook'
 import RejectSVG from '@/icons/Reject'
 
-type TType = { $smaller: boolean; color: TColorName }
+type TType = { $smaller?: boolean; color: TColorName }
 
 export const Wrapper = styled.div<TType>`
   margin-right: 2px;
@@ -22,6 +22,11 @@ export const Wrapper = styled.div<TType>`
   ${css.row('align-both')};
   background: ${({ color }) => rainbowLight(color)};
   border-radius: ${({ $smaller }) => ($smaller ? '3px' : '5px')};
+`
+export const TipNote = styled.div`
+  ${css.row('align-center')};
+  padding: 3px 6px;
+  font-weight: 500;
 `
 export const Text = styled.div`
   font-size: 12px;

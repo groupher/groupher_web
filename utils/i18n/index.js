@@ -39,7 +39,7 @@ const I18nDict = {
   REJECT_DUP: '重复问题',
   REJECT_NO_PLAN: '无计划',
   REJECT_REPRO: '无法重现',
-  REJECT_STALE: '陈帖归档',
+  REJECT_STALE: '过时',
 
   // osocial
   EMAIL: '邮箱地址',

@@ -4,21 +4,18 @@
  *
  */
 
-import { FC, memo, useState, useCallback } from 'react'
+import { FC, memo, useState } from 'react'
 
 import type { TAccount, TArticle } from '@/spec'
-import SVG from '@/constant/svg'
 import { buildLog } from '@/logger'
 
 import Tabs from '@/widgets/Switcher/Tabs'
-import IconButton from '@/widgets/Buttons/IconButton'
-import MenuButton from '@/widgets/Buttons/MenuButton'
 
 import Activities from './Activities'
 import Members from './Members'
 
 import { TAB_ITEMS, TAB_ACTIVITIES, TAB_MEMBERS } from '../constant'
-import { Wrapper, TabsWrapper, ReportWrapper, ContentWrapper } from '../styles/panel'
+import { Wrapper, TabsWrapper, ContentWrapper } from '../styles/panel'
 
 // import { onFollow, undoFollow } from '../logic'
 
@@ -31,18 +28,8 @@ type TProps = {
   article: TArticle
 }
 
-const menuOptions = [
-  {
-    key: 'report',
-    icon: SVG.REPORT,
-    title: '举报内容',
-  },
-]
-
 const Panel: FC<TProps> = ({ testid = 'author-info', author, article }) => {
   const [tab, setTab] = useState(TAB_ACTIVITIES)
-
-  const handleMenu = useCallback((key) => setTab(key), [])
 
   return (
     <Wrapper testid={testid}>
@@ -55,11 +42,6 @@ const Panel: FC<TProps> = ({ testid = 'author-info', author, article }) => {
           onChange={(tab) => setTab(tab)}
         />
       </TabsWrapper>
-      <ReportWrapper>
-        <MenuButton options={menuOptions} onClick={(key) => handleMenu(key)}>
-          <IconButton icon={SVG.MOREL_DOT} size={15} dimWhenIdle />
-        </MenuButton>
-      </ReportWrapper>
       <ContentWrapper>
         {tab === TAB_ACTIVITIES && <Activities />}
         {tab === TAB_MEMBERS && <Members article={article} />}

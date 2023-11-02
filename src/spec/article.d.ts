@@ -200,8 +200,8 @@ export type TArticleCatReject =
   | 'REJECT'
   | 'REJECT_DUP'
   | 'REJECT_NO_PLAN'
-  | 'REJECT_REPRO'
   | 'REJECT_STALE'
+  | 'REJECT_REPRO'
 
 export type TArticleState =
   | 'ALL'

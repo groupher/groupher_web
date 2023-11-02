@@ -23,7 +23,7 @@ const StateItem: FC<TProps> = ({ onClick }) => {
   const kanbanAlias = useNameAlias('kanban')
 
   if (article.state) {
-    const TheIcon = Icon[article.state]
+    const TheIcon = Icon[article.state] || Icon[ARTICLE_STATE.REJECT]
     const $color = getGTDColor(article.state, bgColors)
 
     return (
@@ -33,7 +33,9 @@ const StateItem: FC<TProps> = ({ onClick }) => {
         {article.state === ARTICLE_STATE.DONE ? (
           <>{Trans(aliasGTDDoneState(article.cat, article.state))}</>
         ) : (
-          <>{kanbanAlias[ARTICLE_STATE[article.state].toLowerCase()].name}</>
+          <>
+            {kanbanAlias[ARTICLE_STATE[article.state].toLowerCase()]?.name || Trans(article.state)}
+          </>
         )}
         <SpaceGrow />
         <Icon.Arrow />

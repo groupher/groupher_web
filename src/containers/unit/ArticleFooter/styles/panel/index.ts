@@ -36,12 +36,6 @@ export const TabsWrapper = styled.div`
     transform: scale(0.8);
   `};
 `
-export const ReportWrapper = styled.div`
-  position: absolute;
-  top: -28px;
-  right: 18px;
-  color: ${theme('article.digest')};
-`
 export const ContentWrapper = styled.div`
   ${css.row('justify-between')};
 `
