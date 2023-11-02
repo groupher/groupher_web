@@ -6,7 +6,6 @@ import { UPVOTE_LAYOUT } from '@/constant/layout'
 import useAvatarLayout from '@/hooks/useAvatarLayout'
 
 import { upvoteArticle, previewArticle } from '@/signal'
-import ArticleReadLabel from '@/widgets/ArticleReadLabel'
 import ArticlePinLabel from '@/widgets/ArticlePinLabel'
 import Upvote from '@/widgets/Upvote'
 import ImgFallback from '@/widgets/ImgFallback'
@@ -34,8 +33,7 @@ const DigestView: FC<TProps> = ({ article }) => {
 
   return (
     <Wrapper>
-      <ArticleReadLabel article={article} />
-      <ArticlePinLabel isPinned={article.isPinned} />
+      <ArticlePinLabel isPinned={article.isPinned} top={26} />
       <ViewingSign article={article} top={24} />
 
       <AvatarWrapper>

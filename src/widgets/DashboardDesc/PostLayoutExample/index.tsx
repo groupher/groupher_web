@@ -43,11 +43,11 @@ const switchItems = [
 
 export const TABS_MODE_OPTIONS = [
   {
-    title: '侧重投票',
+    title: '经典（默认）',
     slug: POST_LAYOUT.QUORA,
   },
   {
-    title: '侧重评论',
+    title: '三段式',
     slug: POST_LAYOUT.PH,
   },
   {

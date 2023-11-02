@@ -22,6 +22,7 @@ export const Box = styled.div`
   height: 40px;
   border-radius: 5px;
   background: ${theme('article.digest')};
+  opacity: 0.5;
   margin-bottom: 8px;
 `
 export const Cover = styled.div`
@@ -29,6 +30,7 @@ export const Cover = styled.div`
   height: 62px;
   border-radius: 5px;
   background: ${theme('article.digest')};
+  opacity: 0.5;
 `
 
 type TColumn = { center?: boolean; grow?: boolean }

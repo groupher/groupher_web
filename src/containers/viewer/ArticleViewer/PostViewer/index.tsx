@@ -11,9 +11,9 @@ import { buildLog } from '@/logger'
 import { scrollDrawerToTop } from '@/dom'
 import { BROADCAST_ARTICLE_LAYOUT } from '@/constant/layout'
 
-import ArticleFooter from '@/containers/unit/ArticleFooter'
 import useBroadcast from '@/hooks/useBroadcast'
 
+import ArticleFooter from '@/widgets/ArticleFooter'
 import GotoTop from '@/widgets/GotoTop'
 import ViewportTracker from '@/widgets/ViewportTracker'
 import { ArticleContentLoading } from '@/widgets/Loading'

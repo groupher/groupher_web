@@ -6,9 +6,9 @@
 
 import { FC, memo, useState } from 'react'
 
-import type { TAccount, TArticle } from '@/spec'
 import { buildLog } from '@/logger'
 
+// import useAccount from '@/hooks/useAccount'
 import Tabs from '@/widgets/Switcher/Tabs'
 
 import Activities from './Activities'
@@ -24,11 +24,11 @@ const log = buildLog('w:AuthorInfo:index')
 
 type TProps = {
   testid?: string
-  author: TAccount
-  article: TArticle
 }
 
-const Panel: FC<TProps> = ({ testid = 'author-info', author, article }) => {
+const Panel: FC<TProps> = ({ testid = 'author-info' }) => {
+  // const author = useAccount()
+
   const [tab, setTab] = useState(TAB_ACTIVITIES)
 
   return (
@@ -44,7 +44,7 @@ const Panel: FC<TProps> = ({ testid = 'author-info', author, article }) => {
       </TabsWrapper>
       <ContentWrapper>
         {tab === TAB_ACTIVITIES && <Activities />}
-        {tab === TAB_MEMBERS && <Members article={article} />}
+        {tab === TAB_MEMBERS && <Members />}
       </ContentWrapper>
     </Wrapper>
   )

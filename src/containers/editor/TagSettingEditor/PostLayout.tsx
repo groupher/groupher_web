@@ -53,7 +53,7 @@ const PostListLayout: FC<TProps> = ({ layout, onChange }) => {
           </Row>
         </Block>
         <LayoutTitle $active={layout === POST_LAYOUT.QUORA}>
-          <CheckLabel title="侧重投票" $active={layout === POST_LAYOUT.QUORA} top={15} left={-15} />
+          <CheckLabel title="经典" $active={layout === POST_LAYOUT.QUORA} top={15} left={-15} />
         </LayoutTitle>
       </Layout>
       <Layout onClick={() => onChange(POST_LAYOUT.PH)}>
@@ -91,7 +91,7 @@ const PostListLayout: FC<TProps> = ({ layout, onChange }) => {
           </Row>
         </Block>
         <LayoutTitle $active={layout === POST_LAYOUT.PH}>
-          <CheckLabel title="侧重评论" $active={layout === POST_LAYOUT.PH} top={15} left={-15} />
+          <CheckLabel title="三段式" $active={layout === POST_LAYOUT.PH} top={15} left={-15} />
         </LayoutTitle>
       </Layout>
 

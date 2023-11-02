@@ -6,6 +6,7 @@ import useViewingCommunity from '@/hooks/useViewingCommunity'
 import SIZE from '@/constant/size'
 import { THREAD } from '@/constant/thread'
 
+import ArticleReadLabel from '@/widgets/ArticleReadLabel'
 import { SpaceGrow } from '@/widgets/Common'
 import TagsList from '@/widgets/TagsList'
 import CommentsCount from '@/widgets/CommentsCount'
@@ -23,6 +24,7 @@ const Header: FC<TProps> = ({ article }) => {
   return (
     <Wrapper>
       <Main>
+        <ArticleReadLabel viewed={article.viewerHasViewed} right={8} top={2} />
         <Title onClick={(e) => e.preventDefault()} href={`/${slug}/${THREAD.POST}/${innerId}`}>
           {title}
         </Title>

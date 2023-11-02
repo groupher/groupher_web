@@ -63,6 +63,9 @@ const night = {
   textBadge: '#e2e2e287', // with alpha
   lightText: '#999999',
   hint,
+  articleCardShadow: '0 2px 40px 0 rgb(62 62 62 / 27%))',
+  articleCardHover: '#575757',
+  dashboardBlockOpacity: 0.7,
 
   rainbow: {
     red: '#ca5f4d',

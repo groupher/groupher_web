@@ -19,6 +19,10 @@ export const Extra = styled.li`
 export const Digest = styled(DesktopDigest)`
   ${css.cutRest('450px')};
   margin-top: 4px;
+
+  ${Wrapper}:hover & {
+    color: ${theme('article.title')};
+  }
 `
 export const Footer = styled.div`
   ${css.row('align-center')};

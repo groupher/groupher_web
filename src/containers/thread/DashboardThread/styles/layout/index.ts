@@ -48,19 +48,19 @@ export const TitleBase = styled.div`
 
 type TBlockBase = TActive & TColor
 export const BlockBase = styled.div<TBlockBase>`
-  opacity: ${({ $active }) => ($active ? 0.7 : 0.2)};
+  opacity: ${({ $active }) => ($active ? 0.8 : theme('dashboardBlockOpacity'))};
   box-shadow: ${({ $active }) => ($active ? css.cardShadow : '')};
 
   background-color: ${({ $active }) => ($active ? theme('alphaBg') : 'transparent')};
 
   border: 1px solid;
   border-radius: 7px;
-  /* border-color: ${theme('primary')}; */
   border-color: ${({ $active, $color }) => ($active ? rainbow($color) : theme('primary'))};
   padding: 16px 15px;
 
   &:hover {
-    opacity: ${({ $active }) => ($active ? 0.7 : 0.3)};
+    opacity: 0.6;
+    border-color: ${({ $color }) => rainbow($color)};
     cursor: pointer;
   }
 

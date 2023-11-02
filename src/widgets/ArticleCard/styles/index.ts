@@ -3,10 +3,11 @@ import Link from 'next/link'
 
 import css, { theme } from '@/css'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ viewing: boolean }>`
   ${css.column()};
+  position: relative;
   height: auto;
-  box-shadow: 0 2px 40px 0 rgb(224 226 228 / 27%);
+  box-shadow: ${theme('articleCardShadow')};
   transition: box-shadow 0.3s ease-out, transform 0.3s ease-out, opacity 0.2s ease-out;
   transition-delay: 0.1s;
   border-radius: 8px;
@@ -14,11 +15,11 @@ export const Wrapper = styled.div`
   background-color: ${theme('alphaBg')};
   padding: 8px 18px;
   border: 1px solid;
-  border-color: ${theme('hoverBg')};
+  border-color: ${({ viewing }) => (viewing ? theme('articleCardHover') : theme('hoverBg'))};
   margin-bottom: 15px;
 
   &:hover {
-    border-color: ${theme('hint')};
+    border-color: ${theme('articleCardHover')};
     cursor: pointer;
   }
 
@@ -27,7 +28,20 @@ export const Wrapper = styled.div`
     margin-bottom: 10px;
   `};
 
-  transition: all 0.2s;
+  transition: all 0.12s;
+`
+export const ViewedHintDot = styled.div`
+  position: absolute;
+  right: -2px;
+  top: -2px;
+  z-index: 2;
+`
+export const PinHintDot = styled.div`
+  position: absolute;
+  left: 20px;
+  top: -8px;
+  transform: rotate(-20deg);
+  z-index: 2;
 `
 export const Title = styled(Link)`
   color: ${theme('article.title')};
@@ -38,7 +52,9 @@ export const Title = styled(Link)`
   text-decoration: none;
 
   &:hover {
-    text-decoration: none;
+    color: ${theme('article.title')};
+    text-decoration: underline;
+    text-decoration-color: ${theme('hint')};
   }
 
   ${css.media.mobile`
