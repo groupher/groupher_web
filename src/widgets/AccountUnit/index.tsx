@@ -5,7 +5,7 @@
  */
 
 import { FC } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import { includes } from 'ramda'
 
 import type { TSpace } from '@/spec'

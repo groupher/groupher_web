@@ -5,7 +5,7 @@
  */
 
 import { FC } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import Head from 'next/head'
 
 import METRIC from '@/constant/metric'

@@ -5,7 +5,7 @@
  */
 
 import { FC, Fragment } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import { ANCHOR } from '@/constant/dom'
 import { BROADCAST_LAYOUT } from '@/constant/layout'

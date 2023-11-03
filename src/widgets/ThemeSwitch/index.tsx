@@ -3,7 +3,7 @@
  */
 
 import { FC } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import type { TSpace } from '@/spec'
 import useTheme from '@/hooks/useTheme'

@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import Router from 'next/router'
 
 import { DASHBOARD_BROADCAST_ROUTE } from '@/constant/route'

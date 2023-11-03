@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import type { TArticleCat } from '@/spec'
 import { Trans } from '@/i18n'

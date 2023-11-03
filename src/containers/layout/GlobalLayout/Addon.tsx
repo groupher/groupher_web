@@ -1,5 +1,5 @@
 import { FC, Fragment } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 // eslint-disable-next-line import/no-unresolved
 import { Toaster } from 'sonner'
 

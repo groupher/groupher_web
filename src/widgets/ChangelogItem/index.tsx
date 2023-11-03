@@ -1,5 +1,5 @@
 import { FC, Fragment } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import type { TChangelog } from '@/spec'
 import { CHANGELOG_LAYOUT } from '@/constant/layout'

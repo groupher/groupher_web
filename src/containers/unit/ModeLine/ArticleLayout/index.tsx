@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import Router from 'next/router'
 
 import type { TArticle } from '@/spec'

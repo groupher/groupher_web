@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import { keys } from 'ramda'
 
 import GLOW_EFFECTS, { GLOW_OPACITY } from '@/constant/glow_effect'

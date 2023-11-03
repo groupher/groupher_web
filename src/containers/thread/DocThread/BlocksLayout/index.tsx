@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import useBannerLayout from '@/hooks/useBannerLayout'
 import { mockHelpCats } from '@/mock'

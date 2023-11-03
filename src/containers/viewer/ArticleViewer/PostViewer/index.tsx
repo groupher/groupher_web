@@ -3,7 +3,7 @@
  */
 
 import { FC, Fragment, useCallback, useState, useEffect } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import Balancer from 'react-wrap-balancer'
 
 import type { TPost } from '@/spec'

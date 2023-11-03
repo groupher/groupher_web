@@ -4,7 +4,7 @@
  * otherwhise the render will not be triggled
  */
 import { FC, Fragment, ReactNode } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import Head from 'next/head'
 import { ThemeProvider } from 'styled-components'
 

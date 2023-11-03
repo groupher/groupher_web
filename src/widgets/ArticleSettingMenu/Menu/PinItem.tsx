@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useState } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import { useMutation } from 'urql'
 
 import { toast, updateViewingArticle } from '@/signal'

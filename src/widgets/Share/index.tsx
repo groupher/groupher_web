@@ -6,7 +6,7 @@
 
 import { FC, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import copy from 'copy-to-clipboard'
 import QRCode from 'qrcode.react'
 

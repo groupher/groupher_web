@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import { range, merge } from 'ramda'
 
 import type { TSpace, TSizeTSM } from '@/spec'
