@@ -5,7 +5,7 @@ import type { TColor } from '@/spec'
 import HashSVG from '@/icons/HashTag'
 import HashSVGBold from '@/icons/HashTagBold'
 
-import css, { theme, rainbow } from '@/css'
+import css, { rainbow } from '@/css'
 
 type TProps = {
   size: number
@@ -13,20 +13,17 @@ type TProps = {
   left: number
   right: number
   top?: number
-  $dividerBorder?: boolean
+  $darkTheme?: boolean
 } & TColor
 
 export const Dot = styled.div<TProps>`
   ${({ size }) => css.circle(size)};
-  background: ${({ $color }) => rainbow($color)};
+  background: ${({ $color, $darkTheme }) =>
+    rainbow($color, $darkTheme ? 'hint' : 'article.digest')};
   opacity: ${({ opacity }) => opacity};
   margin-top: ${({ top }) => `${top}px;`};
   margin-right: ${({ right }) => `${right}px;`};
   margin-left: ${({ left }) => `${left}px;`};
-
-  border: ${($dividerBorder) => ($dividerBorder ? '1px dotted' : '1px solid')};
-  border-color: ${({ $dividerBorder, $color }) =>
-    !$dividerBorder ? rainbow($color) : theme('hint')};
 `
 export const HashNormalIcon = styled(HashSVG)<TProps>`
   ${({ size }) => css.size(size)};
@@ -38,7 +35,7 @@ export const HashNormalIcon = styled(HashSVG)<TProps>`
 `
 export const HashBoldIcon = styled(HashSVGBold)<TProps>`
   ${({ size }) => css.size(size)};
-  fill: ${({ $color }) => rainbow($color)};
+  fill: ${({ $color, $darkTheme }) => rainbow($color, $darkTheme ? 'hint' : 'article.digest')};
   opacity: ${({ opacity }) => opacity};
   margin-right: ${({ right }) => `${right}px;`};
   margin-left: ${({ left }) => `${left}px;`};

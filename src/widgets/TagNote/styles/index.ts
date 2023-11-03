@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TColorName, TTestable } from '@/spec'
+import type { TColor, TColorName, TTestable } from '@/spec'
 import InfoSVG from '@/icons/Info'
 
 import { MarkdownStyles } from '@/widgets/Common'
@@ -23,20 +23,17 @@ export const Header = styled.div`
   margin-bottom: 8px;
   width: 100%;
 `
-type TDotWrapper = { color: TColorName; $round: boolean }
-export const DotWrapper = styled.div<TDotWrapper>`
-  ${({ $round }) => ($round ? css.size(16) : css.size(20))};
+export const BgWrapper = styled.div<TColor>`
   ${css.row('align-both')};
-  background: ${({ color }) => rainbowLight(color)};
-  margin-right: 10px
-  border-radius: ${({ $round }) => ($round ? '50%' : '5px')};
+  background: ${({ $color }) => rainbowLight($color)};
+  margin-left: -2px;
+  padding-left: 6px;
+  padding-right: 10px;
+  border-radius: 10px;
 `
 export const Title = styled.h3<{ color: TColorName }>`
   color: ${theme('article.title')};
-  padding: 0 6px;
-  padding-right: 8px;
   font-weight: 450;
-  margin-left: -8px;
   position: relative;
   z-index: 2;
 `

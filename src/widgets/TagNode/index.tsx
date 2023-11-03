@@ -50,7 +50,7 @@ const TagNode: FC<TProps> = ({
 }) => {
   const tagLayout = useTagLayout()
   const { curTheme } = useTheme()
-  const dividerBorder = curTheme === THEME.NIGHT
+  const darkTheme = curTheme === THEME.NIGHT
 
   const HashIcon = boldHash ? HashBoldIcon : HashNormalIcon
 
@@ -64,7 +64,6 @@ const TagNode: FC<TProps> = ({
           top={dotTop}
           left={dotLeft}
           right={dotRight}
-          $dividerBorder={dividerBorder}
         />
       ) : (
         <HashIcon
@@ -74,6 +73,7 @@ const TagNode: FC<TProps> = ({
           top={hashTop}
           left={hashLeft}
           right={hashRight}
+          $darkTheme={darkTheme}
         />
       )}
     </>

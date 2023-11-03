@@ -5,19 +5,9 @@ import type { TColorName, TTag } from '@/spec'
 import { cutRest } from '@/fmt'
 import { Trans } from '@/i18n'
 import { emptyTag } from '@/model'
-import { TAG_LAYOUT } from '@/constant/layout'
-
-import useTagLayout from '@/hooks/useTagLayout'
 import TagNode from '@/widgets/TagNode'
 
-import {
-  Wrapper,
-  DotWrapper,
-  Tag,
-  Title,
-  CloseWrapper,
-  CloseIcon,
-} from '../styles/desktop_view/tag_item'
+import { Wrapper, Tag, Grow, Title, CloseWrapper, CloseIcon } from '../styles/desktop_view/tag_item'
 
 type TProps = {
   tag: TTag
@@ -26,32 +16,25 @@ type TProps = {
 }
 
 const TagItem: FC<TProps> = ({ tag, active, onSelect }) => {
-  const tagLayout = useTagLayout()
-
   return (
     <Wrapper $active={active}>
-      <DotWrapper
-        $color={tag.color as TColorName}
-        $active={active}
-        $round={tagLayout === TAG_LAYOUT.DOT}
-      >
+      <Tag $active={active} $color={tag.color as TColorName} onClick={() => onSelect(tag)}>
         <TagNode
           color={tag.color}
           dotSize={8}
-          hashSize={12}
-          dotLeft={5}
-          hashLeft={3}
-          hashRight={3}
+          dotLeft={1}
+          dotRight={10}
+          dotTop={1}
+          hashSize={11}
+          hashRight={9}
           opacity={0.7}
           boldHash
         />
-      </DotWrapper>
-
-      <Tag $active={active} $color={tag.color as TColorName} onClick={() => onSelect(tag)}>
         <Title $active={active}>{cutRest(Trans(tag.title), 10)}</Title>
       </Tag>
+      <Grow onClick={() => onSelect(tag)} />
       {active && (
-        <CloseWrapper onClick={() => onSelect(emptyTag)}>
+        <CloseWrapper onClick={(e) => onSelect(emptyTag)}>
           <CloseIcon />
         </CloseWrapper>
       )}

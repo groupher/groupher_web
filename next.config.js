@@ -16,6 +16,9 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 // if move pwa config to witPlugins, it will not work
 const nextConfig = {
   transpilePackages: ['ramda'],
+  // only in dev
+  // see https://nextjs.org/docs/pages/building-your-application/rendering
+  //     https://github.com/vercel/next.js/issues/35822
   reactStrictMode: true,
   swcMinify: true,
   productionBrowserSourceMaps: true,
