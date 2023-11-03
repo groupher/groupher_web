@@ -40,12 +40,11 @@ export const ArrowIcon = styled(ArrowSVG)<{ $isOpen: boolean }>`
 `
 export const Title = styled.div`
   ${css.row('align-center')};
-  margin-left: 7px;
+  margin-left: 5px;
 `
 export const FolderTitle = styled.div<{ $isOpen: boolean }>`
   color: ${theme('article.title')};
 
-  margin-left: 4px;
   font-size: 13px;
   margin-right: 8px;
   ${css.cutRest('85px')};

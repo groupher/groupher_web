@@ -13,7 +13,9 @@ export const Wrapper = styled.div<TActive>`
   ${css.row('align-center')};
   margin-left: -2px;
   padding: 4px;
-  padding-left: ${({ $active }) => ($active ? '8px' : '4px')};
+  margin-top: ${({ $active }) => ($active ? '3px' : 0)};
+  margin-bottom: ${({ $active }) => ($active ? '3px' : 0)};
+  padding-left: 4px;
   max-width: 200px;
   border-radius: 8px;
   border: 1px solid;
@@ -31,31 +33,16 @@ export const AllTagIcon = styled(Img)`
   ${css.size(14)};
   transform: rotate(17deg);
 `
-type TDotWrapper = TTag & { $round: boolean }
-export const DotWrapper = styled.div<TDotWrapper>`
-  width: 21px;
-  height: 18px;
-  margin-top: 1px;
-  ${css.row('align-both')};
-  margin-right: 6px;
-  margin-left: ${({ $active }) => ($active ? '-5px' : '-1px')};
-  border-radius: ${({ $round }) => ($round ? '50%' : '4px')};
-  background: ${({ $active, $color }) => ($active ? rainbowLight($color) : 'transparent')};
-
-  ${Wrapper}:hover & {
-    background: ${({ $color }) => rainbowLight($color)};
-  }
-
-  transition: background 0.2s;
-`
 
 export const Tag = styled.div<TTag>`
-  ${css.row('align-end', 'justify-between')};
-  width: 100%;
+  ${css.row('align-center')};
+  width: auto;
   font-size: 14px;
-  padding-left: 4px;
+  border-radius: 5px;
+  padding-left: 3px;
+  padding-right: 8px;
 
-  font-weight: ${({ $active }) => (!$active ? 'bold' : 'normal')};
+  background: ${({ $active, $color }) => ($active ? rainbowLight($color) : 'transparent')};
 
   ${Wrapper}:hover & {
     cursor: pointer;
@@ -63,6 +50,12 @@ export const Tag = styled.div<TTag>`
 
   transition: all 0.1s;
 `
+
+export const Grow = styled.div`
+  flex-grow: 1;
+  height: 20px;
+`
+
 export const Title = styled.div<TActive>`
   letter-spacing: 1px;
   font-weight: 400;

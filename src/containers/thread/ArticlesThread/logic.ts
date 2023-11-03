@@ -148,13 +148,11 @@ export const useInit = (_store: TStore): void => {
       sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
     }
 
-    // if (store.isEmpty) loadArticles()
-
     return () => {
       if (store.resState === TYPE.RES_STATE.LOADING || !sub$) return
-      // log('===== do uninit')
       sr71$.stop()
       sub$.unsubscribe()
+      sub$ = null
     }
   }, [_store])
 }
