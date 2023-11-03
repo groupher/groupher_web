@@ -16,7 +16,7 @@ import { TAG_LAYOUT } from '@/constant/layout'
 import { COLOR_NAME } from '@/constant/colors'
 import THEME from '@/constant/theme'
 
-import { Dot, HashIcon } from './styles'
+import { Dot, HashBoldIcon, HashNormalIcon } from './styles'
 
 /* eslint-disable-next-line */
 const log = buildLog('c:TagNode:index')
@@ -32,6 +32,7 @@ type TProps = {
   hashLeft?: number
   hashTop?: number
   opacity?: number
+  boldHash?: boolean
 }
 
 const TagNode: FC<TProps> = ({
@@ -45,10 +46,13 @@ const TagNode: FC<TProps> = ({
   hashLeft = 0,
   hashTop = 0,
   opacity = 1,
+  boldHash = false,
 }) => {
   const tagLayout = useTagLayout()
   const { curTheme } = useTheme()
   const dividerBorder = curTheme === THEME.NIGHT
+
+  const HashIcon = boldHash ? HashBoldIcon : HashNormalIcon
 
   return (
     <>

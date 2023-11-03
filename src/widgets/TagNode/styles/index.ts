@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import type { TColor } from '@/spec'
 
 import HashSVG from '@/icons/HashTag'
+import HashSVGBold from '@/icons/HashTagBold'
+
 import css, { theme, rainbow } from '@/css'
 
 type TProps = {
@@ -26,11 +28,20 @@ export const Dot = styled.div<TProps>`
   border-color: ${({ $dividerBorder, $color }) =>
     !$dividerBorder ? rainbow($color) : theme('hint')};
 `
-export const HashIcon = styled(HashSVG)<TProps>`
+export const HashNormalIcon = styled(HashSVG)<TProps>`
   ${({ size }) => css.size(size)};
   fill: ${({ $color }) => rainbow($color)};
   opacity: ${({ opacity }) => opacity};
   margin-right: ${({ right }) => `${right}px;`};
   margin-left: ${({ left }) => `${left}px;`};
   margin-top: ${({ top }) => `${top}px;`};
+`
+export const HashBoldIcon = styled(HashSVGBold)<TProps>`
+  ${({ size }) => css.size(size)};
+  fill: ${({ $color }) => rainbow($color)};
+  opacity: ${({ opacity }) => opacity};
+  margin-right: ${({ right }) => `${right}px;`};
+  margin-left: ${({ left }) => `${left}px;`};
+  margin-top: ${({ top }) => `${top}px;`};
+  transform: rotate(18deg);
 `

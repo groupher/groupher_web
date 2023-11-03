@@ -6,7 +6,7 @@ import Share from '@/widgets/Share'
 import { SpaceGrow } from '@/widgets/Common'
 import ArticleSettingMenu from '@/widgets/ArticleSettingMenu'
 
-import { Wrapper, BackButton, ArrowIcon, BackText, FlagIcon } from '../styles/drawer_header'
+import { Wrapper, BackButton, ArrowIcon, BackText, ReportIcon } from '../styles/drawer_header'
 
 const DrawerHeader: FC = () => {
   return (
@@ -17,7 +17,7 @@ const DrawerHeader: FC = () => {
       </BackButton>
       <SpaceGrow />
       <Share modalOffset="53%" />
-      <FlagIcon />
+      <ReportIcon />
       <ArticleSettingMenu left={16} />
     </Wrapper>
   )

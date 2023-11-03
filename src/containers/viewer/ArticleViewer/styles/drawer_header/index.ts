@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import ArrowSVG from '@/icons/Arrow'
-import FlagSVG from '@/icons/Flag'
+import WarningSVG from '@/icons/Warning'
 
 import css, { theme } from '@/css'
 
@@ -54,7 +54,7 @@ export const BackText = styled.div`
 
   transition: all 0.2s;
 `
-export const FlagIcon = styled(FlagSVG)`
+export const ReportIcon = styled(WarningSVG)`
   ${css.size(18)};
   fill: ${theme('hint')};
   margin-left: 16px;

@@ -40,9 +40,10 @@ const TagItem: FC<TProps> = ({ tag, active, onSelect }) => {
           dotSize={8}
           hashSize={12}
           dotLeft={5}
-          hashLeft={2}
+          hashLeft={3}
           hashRight={3}
-          opacity={0.8}
+          opacity={0.7}
+          boldHash
         />
       </DotWrapper>
 
