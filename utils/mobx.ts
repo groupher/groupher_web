@@ -1,17 +1,17 @@
-import { FC } from 'react'
-
+import { FC, useContext } from 'react'
 import { types as mobxTypes } from 'mobx-state-tree'
 
 import { path, has, curry, forEachObjIndexed, keys, isEmpty, contains } from 'ramda'
 
-import { inject, observer } from 'mobx-react'
+import { inject, observer, MobXProviderContext } from 'mobx-react'
 import { toJS as toJSON } from 'mobx'
 
 import type { TEditValue } from '@/spec'
+import type { TRootStore } from '@/stores/RootStore'
 import { isObject } from './validator'
 
-export { getParent } from 'mobx-state-tree'
 export type { Instance } from 'mobx-state-tree'
+export { getParent } from 'mobx-state-tree'
 
 // make the name shorter
 export const T = {
@@ -31,6 +31,9 @@ type TStore = {
   mark: (obj: Record<string, unknown>) => void
   updateEditing?: (obj: Record<string, unknown>) => void
 }
+
+type TMobxContext = { store: TRootStore }
+export const useMobxContext = () => useContext(MobXProviderContext) as TMobxContext
 
 /*
  * select sub store from root store

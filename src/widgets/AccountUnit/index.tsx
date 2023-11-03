@@ -24,11 +24,10 @@ import { NormalWrapper, WithBgWrapper, Avatar, UnloginIcon, NickName, UnLoginTex
 const log = buildLog('c:AccountUnit:index')
 
 type TProps = {
-  testid?: string
   withName?: boolean
 } & TSpace
 
-const AccountUnit: FC<TProps> = ({ testid = 'account-unit', withName = false, ...restProps }) => {
+const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
   const { isLogin, avatar, nickname } = useAccount()
   const avatarLayout = useAvatarLayout()
   const bannerLayout = useBannerLayout()
