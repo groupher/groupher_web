@@ -19,7 +19,7 @@ const nextConfig = {
   // only in dev
   // see https://nextjs.org/docs/pages/building-your-application/rendering
   //     https://github.com/vercel/next.js/issues/35822
-  reactStrictMode: false,
+  reactStrictMode: true,
   swcMinify: true,
   productionBrowserSourceMaps: true,
   compiler: {

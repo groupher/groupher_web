@@ -103,6 +103,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { filter, community, pagedArticleTags } = resp
   const articleThread = ssrParseArticleThread(resp, thread, filter)
 
+  const debugIds = articleThread.articlesThread.pagedPosts?.entries.map((item) => item.innerId)
+  console.log('## articleThread: ', debugIds)
+
   const dashboard = ssrParseDashboard(community)
   const wallpaper = ssrParseWallpaper(community)
 

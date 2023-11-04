@@ -134,7 +134,6 @@ const ErrSolver = [
 export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
-    // const { online, isMobile } = extra
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
 
     initAppVersion()
