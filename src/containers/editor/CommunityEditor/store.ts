@@ -6,7 +6,7 @@
 import { pick, values, isEmpty } from 'ramda'
 
 import type { TRootStore, TRoute, TAccount } from '@/spec'
-import { T, getParent, markStates, Instance } from '@/mobx'
+import { T, getParent, markStates, Instance, useMobxContext } from '@/mobx'
 
 import type {
   TSelectTypeStatus,
@@ -140,4 +140,6 @@ const CommunityEditor = T.model('CommunityEditorStore', {
   }))
 
 export type TStore = Instance<typeof CommunityEditor>
+export const useStore = (): TStore => useMobxContext().store.communityEditor
+
 export default CommunityEditor

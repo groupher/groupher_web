@@ -5,34 +5,28 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 
-import type { TMetric } from '@/spec'
-import METRIC from '@/constant/metric'
+import useMetric from '@/hooks/useMetric'
 
 import Header from './Header'
 import Banner from './Banner'
 import Content from './Content'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 import { Wrapper, InnerWrapper, ContentWrapper } from './styles'
 import { useInit } from './logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:CommunityEditor')
 
-type TProps = {
-  communityEditor?: TStore
-  metric?: TMetric
-}
-
-const CommunityEditorContainer: FC<TProps> = ({
-  communityEditor: store,
-  metric = METRIC.COMMUNITY_EDITOR,
-}) => {
+const CommunityEditor: FC = () => {
+  const store = useStore()
   useInit(store)
+  const metric = useMetric()
+
   const {
     step,
     selectTypeStatus,
@@ -70,4 +64,4 @@ const CommunityEditorContainer: FC<TProps> = ({
   )
 }
 
-export default bond(CommunityEditorContainer, 'communityEditor') as FC<TProps>
+export default observer(CommunityEditor)
