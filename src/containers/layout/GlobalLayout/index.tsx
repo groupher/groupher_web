@@ -5,6 +5,7 @@
  */
 
 import { FC, ReactNode, useEffect, useState } from 'react'
+import { observer } from 'mobx-react-lite'
 import dynamic from 'next/dynamic'
 import { Provider as BalancerTextProvider } from 'react-wrap-balancer'
 
@@ -98,4 +99,4 @@ const GlobalLayout: FC<TProps> = ({ children }) => {
   )
 }
 
-export default GlobalLayout
+export default observer(GlobalLayout)

@@ -3,8 +3,8 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
-import { bond } from '@/mobx'
 import { BANNER_LAYOUT } from '@/constant/layout'
 // import { THREAD } from '@/constant/thread'
 import useMetric from '@/hooks/useMetric'
@@ -15,19 +15,16 @@ import CommunityDigest from '@/widgets/CommunityDigest'
 import { Br } from '@/widgets/Common'
 // import SidebarLayoutHeader from '@/widgets/SidebarLayoutHeader'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 import { useInit } from './logic'
 
 import { Wrapper, SidebarWrapper, InnerWrapper, ContentWrapper, MobileCardsWrapper } from './styles'
 
-type TProps = {
-  communityContent?: TStore
-}
-
 /**
  * only for AboutThread, but link to the common communityContent store
  */
-const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
+const PostContent: FC = () => {
+  const store = useStore()
   useInit(store)
   const metric = useMetric()
   const bannerLayout = useBannerLayout()
@@ -61,4 +58,4 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   )
 }
 
-export default bond(CommunityContentContainer, 'communityContent') as FC<TProps>
+export default observer(PostContent)

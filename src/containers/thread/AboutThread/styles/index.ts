@@ -18,7 +18,7 @@ export const Wrapper = styled.div.attrs<TWrapper>(({ testid }) => ({
     ${css.column('align-start')};
   `};
 `
-export const MainWrapper = styled.div<{ isSidebarLayout: boolean }>`
+export const MainWrapper = styled.div<{ $isSidebarLayout: boolean }>`
   width: auto;
   min-height: 550px;
   flex-grow: 1;
@@ -26,7 +26,7 @@ export const MainWrapper = styled.div<{ isSidebarLayout: boolean }>`
   background: transparent;
   border-radius: 6px;
   margin-top: 25px;
-  padding-left: ${({ isSidebarLayout }) => (isSidebarLayout ? '60px' : '')};
+  padding-left: ${({ $isSidebarLayout }) => ($isSidebarLayout ? '60px' : '')};
 
   ${css.media.mobile`
     width: 100%;

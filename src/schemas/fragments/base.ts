@@ -91,9 +91,7 @@ export const article = `
   views
   commentsCount
   upvotesCount
-  commentsParticipantsCount
-  cat
-  state
+  commentsParticipantsCount 
  
   author {
     ${author}

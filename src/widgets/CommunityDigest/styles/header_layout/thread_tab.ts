@@ -25,6 +25,7 @@ export const FloatWrapper = styled(NormalWrapper)`
   margin-left: -100px;
 `
 type TTitle = TActive & TColor
+// export const Title = styled.a<TTitle>`
 export const Title = styled(Link)<TTitle>`
   color: ${({ $active, $color }) =>
     $active ? rainbow($color, 'article.title') : theme('article.digest')};

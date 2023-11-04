@@ -10,6 +10,7 @@ export const Wrapper = styled.div`
 `
 type TLinkItem = TActive & TColor
 
+// export const LinkItem = styled.a<TLinkItem>`
 export const LinkItem = styled(Link)<TLinkItem>`
   color: ${({ $active, $color }) =>
     $active ? rainbow($color, 'article.title') : theme('article.digest')};

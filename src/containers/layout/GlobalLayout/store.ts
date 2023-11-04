@@ -86,7 +86,6 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
   }))
 
 export type TStore = Instance<typeof GlobalLayout>
-
 export const useStore = (): TStore => useMobxContext().store.globalLayout
 
 export default GlobalLayout

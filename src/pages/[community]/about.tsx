@@ -56,7 +56,6 @@ const loader = async (context, opt = {}) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { res } = context
-
   res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
 
   let resp

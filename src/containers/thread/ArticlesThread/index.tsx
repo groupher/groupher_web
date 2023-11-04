@@ -5,12 +5,12 @@
  */
 
 import { FC, useEffect, useRef } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import type { TResState, TArticleFilterMode } from '@/spec'
 import { BANNER_LAYOUT } from '@/constant/layout'
 
 import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 import usePostLayout from '@/hooks/usePostLayout'
 
 import ThreadSidebar from '@/containers/thread/ThreadSidebar'
@@ -18,18 +18,15 @@ import PagedArticles from '@/widgets/PagedArticles'
 import TagNote from '@/widgets/TagNote'
 import ViewportTracker from '@/widgets/ViewportTracker'
 import ArticlesFilter from '@/widgets/ArticlesFilter'
+import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 
 import { Wrapper, MainWrapper, SidebarWrapper, FilterWrapper } from './styles'
 import { useInit, inAnchor, outAnchor, onFilterSelect } from './logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:ArticlesThread')
-
-type TProps = {
-  articlesThread?: TStore
-}
 
 const isInViewport = (element) => {
   const rect = element.getBoundingClientRect()
@@ -41,7 +38,8 @@ const isInViewport = (element) => {
   )
 }
 
-const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
+const ArticlesThread: FC = () => {
+  const store = useStore()
   useInit(store)
 
   const postLayout = usePostLayout()
@@ -52,6 +50,8 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
       isInViewport(trackerRef.current) ? inAnchor() : outAnchor()
     }
   }, [trackerRef])
+
+  if (store.curThread !== 'post') return <LavaLampLoading top={20} />
 
   const {
     isMobile,
@@ -102,4 +102,4 @@ const ArticlesThreadContainer: FC<TProps> = ({ articlesThread: store }) => {
   )
 }
 
-export default bond(ArticlesThreadContainer, 'articlesThread') as FC<TProps>
+export default observer(ArticlesThread)

@@ -4,7 +4,7 @@
  */
 
 import type { TRootStore, TAccount, TCommunity, TThread, TC11N, TGlobalLayout } from '@/spec'
-import { T, getParent, markStates, toJS, Instance } from '@/mobx'
+import { T, getParent, markStates, toJS, Instance, useMobxContext } from '@/mobx'
 import { sortByIndex } from '@/helper'
 
 const CommunityContent = T.model('CommunityContent', {})
@@ -60,4 +60,6 @@ const CommunityContent = T.model('CommunityContent', {})
   }))
 
 export type TStore = Instance<typeof CommunityContent>
+export const useStore = (): TStore => useMobxContext().store.communityContent
+
 export default CommunityContent
