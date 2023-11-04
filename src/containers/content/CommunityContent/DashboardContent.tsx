@@ -3,17 +3,14 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TMetric } from '@/spec'
-import METRIC from '@/constant/metric'
-
-import { bond } from '@/mobx'
-
+import useMetric from '@/hooks/useMetric'
 import DashboardThread from '@/containers//thread/DashboardThread'
 import CommunityDigest from '@/widgets/CommunityDigest'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 import { useInit } from './logic'
 
 import {
@@ -23,16 +20,13 @@ import {
   MobileCardsWrapper,
 } from './styles/dashboard_content'
 
-type TProps = {
-  communityContent?: TStore
-  metric?: TMetric
-}
-
 /**
  * only for AboutThread, but link to the common communityContent store
  */
-const DashboardContainer: FC<TProps> = ({ communityContent: store, metric = METRIC.DASHBOARD }) => {
+const DashboardContent: FC = () => {
+  const store = useStore()
   useInit(store)
+  const metric = useMetric()
 
   const { isMobile } = useMobileDetect()
 
@@ -56,4 +50,4 @@ const DashboardContainer: FC<TProps> = ({ communityContent: store, metric = METR
   )
 }
 
-export default bond(DashboardContainer, 'communityContent') as FC<TProps>
+export default observer(DashboardContent)
