@@ -1,4 +1,4 @@
-import type { TID } from './utils'
+import type { TPagi, TID } from './utils'
 import type { TSimpleUse } from './account'
 
 type TMeta = {
@@ -56,10 +56,7 @@ export type TCommunity = {
 
 export type TPagedCommunities = {
   entries: TCommunity[]
-  totalCount?: number
-  pageNumber?: number
-  pageSize?: number
-}
+} & TPagi
 
 export type TTag = {
   id?: string

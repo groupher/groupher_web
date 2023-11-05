@@ -6,6 +6,13 @@ export type TID = string
 
 export type TView = 'desktop' | 'mobile' | 'modeline' | 'drawer'
 
+export type TPagi = {
+  pageNumber?: number
+  pageSize?: number
+  totalCount?: number
+  totalPages?: number
+}
+
 export type TTestable = {
   testid?: string
   'data-test-id'?: string
@@ -221,11 +228,4 @@ export type TUploadPreview = {
   height: number
   width: number
   radius: number
-}
-
-export type TPagi = {
-  pageNumber: number
-  pageSize: number
-  totalCount: number
-  totalPages: number
 }

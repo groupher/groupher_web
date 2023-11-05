@@ -7,7 +7,7 @@
 import { FC, ReactNode } from 'react'
 import dynamic from 'next/dynamic'
 
-import type { TSpace } from '@/spec'
+import type { TSpace, TPagi } from '@/spec'
 
 import { buildLog } from '@/logger'
 
@@ -21,15 +21,12 @@ const log = buildLog('w:Pagi:index')
 export type TProps = {
   children?: ReactNode
   type?: 'bottom' | 'center'
-  pageNumber?: number
-  pageSize?: number
-  totalCount?: number
-  totalPages?: number
   emptyMsg?: string
   noMoreMsg?: string
   showBottomMsg?: boolean
   onChange?: (page: number) => void
-} & TSpace
+} & TPagi &
+  TSpace
 
 const hasExtraPage = (totalCount, pageSize) => totalCount > pageSize
 
