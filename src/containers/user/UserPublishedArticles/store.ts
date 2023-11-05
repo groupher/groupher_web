@@ -9,7 +9,7 @@ import TYPE from '@/constant/type'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
 import { buildLog } from '@/logger'
-import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 import { plural } from '@/fmt'
 
 import { PagedPosts, emptyPagi } from '@/model'
@@ -70,4 +70,6 @@ const UserPublishedArticles = T.model('UserPublishedArticles', {
   }))
 
 export type TStore = Instance<typeof UserPublishedArticles>
+export const useStore = (): TStore => useMobxContext().store.userPublishedArticles
+
 export default UserPublishedArticles

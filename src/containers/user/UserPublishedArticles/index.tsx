@@ -5,27 +5,24 @@
  */
 
 import { FC, Fragment } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import type { TResState } from '@/spec'
 
 import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 
 import PagedArticles from '@/widgets/PagedArticles'
 import ThreadSelector from './ThreadSelector'
 
-import { TStore } from './store'
+import { useStore } from './store'
 import { ArticlesWrapper } from './styles'
 import { useInit } from './logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:UserPublished')
 
-type TProps = {
-  userPublishedArticles?: TStore
-}
-
-const UserPublishedArticlesContainer: FC<TProps> = ({ userPublishedArticles: store }) => {
+const UserPublishedArticles: FC = () => {
+  const store = useStore()
   useInit(store)
 
   const { thread, viewingUser, pagedArticlesData, resState, hasContentBg } = store
@@ -40,4 +37,4 @@ const UserPublishedArticlesContainer: FC<TProps> = ({ userPublishedArticles: sto
   )
 }
 
-export default bond(UserPublishedArticlesContainer, 'userPublishedArticles') as FC<TProps>
+export default observer(UserPublishedArticles)
