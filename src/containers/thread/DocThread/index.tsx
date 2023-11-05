@@ -3,10 +3,9 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-// import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 import { DOC_LAYOUT } from '@/constant/layout'
 
 import { Divider } from '@/widgets/Common'
@@ -19,23 +18,18 @@ import ListsLayout from './ListsLayout'
 import CardsLayout from './CardsLayout'
 import ArticleLayout from './ArticleLayout'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 import { Wrapper, FAQWrapper } from './styles'
 import { useInit } from './logic'
 
 // const log = buildLog('C:DocThread')
 
 type TProps = {
-  docThread?: TStore
-  testid?: string
   title?: string
 }
 
-const DocThreadContainer: FC<TProps> = ({
-  docThread: store,
-  testid = 'doc-thread',
-  title = 'title',
-}) => {
+const DocThread: FC<TProps> = ({ title = 'title' }) => {
+  const store = useStore()
   useInit(store)
 
   const { isArticleLayout, layout, faqLayout, isFAQArticleLayout, faqSections } = store
@@ -47,7 +41,7 @@ const DocThreadContainer: FC<TProps> = ({
   }
 
   return (
-    <Wrapper testid={testid} $bannerLayout={bannerLayout}>
+    <Wrapper testid="doc-thread" $bannerLayout={bannerLayout}>
       {layout === DOC_LAYOUT.BLOCKS && <BlocksLayout />}
       {layout === DOC_LAYOUT.LISTS && <ListsLayout />}
       {layout === DOC_LAYOUT.CARDS && <CardsLayout />}
@@ -61,4 +55,4 @@ const DocThreadContainer: FC<TProps> = ({
   )
 }
 
-export default bond(DocThreadContainer, 'docThread') as FC<TProps>
+export default observer(DocThread)
