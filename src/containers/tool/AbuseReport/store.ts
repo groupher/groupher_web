@@ -7,7 +7,7 @@ import { find, propEq } from 'ramda'
 import { REPORT_TYPE } from '@/constant/report'
 
 import type { TCommunity, TArticle, TRootStore } from '@/spec'
-import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 import { buildLog } from '@/logger'
 
 import type { TREPORT_ITEM } from './spec'
@@ -70,5 +70,6 @@ const AbuseReport = T.model('AbuseReport', {
   }))
 
 export type TStore = Instance<typeof AbuseReport>
+export const useStore = (): TStore => useMobxContext().store.abuseReport
 
 export default AbuseReport
