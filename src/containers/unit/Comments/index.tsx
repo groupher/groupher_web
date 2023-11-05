@@ -5,6 +5,7 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { ANCHOR } from '@/constant/dom'
 import { buildLog } from '@/logger'
@@ -16,8 +17,8 @@ import Editor from './Editor'
 import List from './List'
 // import LockedMessage from './LockedMessage'
 
-import type { TStore } from './store'
 import type { TAPIMode } from './spec'
+import { useStore } from './store'
 import { API_MODE } from './constant'
 import { Wrapper } from './styles'
 import { useInit } from './logic'
@@ -28,16 +29,12 @@ import HeadBar from './HeadBar'
 const log = buildLog('C:Comments')
 
 type TProps = {
-  comments?: TStore
   apiMode?: TAPIMode
   locked?: boolean
 }
 
-const CommentsContainer: FC<TProps> = ({
-  comments: store,
-  locked = false,
-  apiMode = API_MODE.ARTICLE,
-}) => {
+const Comments: FC<TProps> = ({ locked = false, apiMode = API_MODE.ARTICLE }) => {
+  const store = useStore()
   useInit(store, locked, apiMode)
 
   const { mode, pagedCommentsData, foldState, editState, repliesState, loading, basicState } = store
@@ -81,4 +78,4 @@ const CommentsContainer: FC<TProps> = ({
   )
 }
 
-export default bond(CommentsContainer, 'comments') as FC<TProps>
+export default observer(Comments)

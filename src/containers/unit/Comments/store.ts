@@ -21,7 +21,7 @@ import type {
   TCommentsState,
 } from '@/spec'
 // import TYPE from '@/constant/type'
-import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 import { Comment, PagedComments, emptyPagi, SimpleUser } from '@/model'
 
 import type { TFoldState, TEditMode, TEditState, TRepliesState } from './spec'
@@ -330,4 +330,6 @@ const CommentsStore = T.model('CommentsStore', {
   }))
 
 export type TStore = Instance<typeof CommentsStore>
+export const useStore = (): TStore => useMobxContext().store.comments
+
 export default CommentsStore
