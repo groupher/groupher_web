@@ -63,7 +63,6 @@ export { default as PassportEditorStore } from '@/containers/editor/PassportEdit
 export { default as LandingPageStore } from '@/containers/content/LandingPage/store'
 export { default as CoverEditorStore } from '@/containers/editor/CoverEditor/store'
 export { default as TagSettingEditorStore } from '@/containers/editor/TagSettingEditor/store'
-export { default as AuthWallStore } from '@/containers/tool/AuthWall/store'
 export { default as SubscriberStore } from '@/containers/tool/Subscriber/store'
 export { default as DashboardThreadStore } from '@/containers/thread/DashboardThread/store'
 export { default as WallpaperEditorStore } from '@/containers/editor/WallpaperEditor/store'

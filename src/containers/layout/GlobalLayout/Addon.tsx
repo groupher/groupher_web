@@ -8,7 +8,6 @@ import useMetric from '@/hooks/useMetric'
 
 import Drawer from '@/containers/tool/Drawer'
 import Subscriber from '@/containers/tool/Subscriber'
-import AuthWall from '@/containers/tool/AuthWall'
 import ErrorBox from '@/containers/tool/ErrorBox'
 
 // import { Drawer } from './dynamic'
@@ -26,7 +25,6 @@ const Addon: FC = () => {
       {/* @ts-ignore */}
       <Drawer metric={metric} />
       <Subscriber />
-      <AuthWall />
       <Toaster position="top-center" closeButton />
       {/* @ts-ignore */}
       <ErrorBox />
