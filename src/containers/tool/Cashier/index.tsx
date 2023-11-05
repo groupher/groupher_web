@@ -5,27 +5,24 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 
 import Modal from '@/widgets/Modal'
 
 import Sidebar from './Sidebar'
 import Content from './Content'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 import { Wrapper } from './styles'
 import { useInit, onClose } from './logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:Cashier')
 
-type TProps = {
-  cashier?: TStore
-}
-
-const CashierContainer: FC<TProps> = ({ cashier: store }) => {
+const Cashier: FC = () => {
+  const store = useStore()
   useInit(store)
 
   const { show, sidebarView, contentView, subContentView, paymentMethod, amount, transferAccount } =
@@ -52,4 +49,4 @@ const CashierContainer: FC<TProps> = ({ cashier: store }) => {
   )
 }
 
-export default bond(CashierContainer, 'cashier') as FC<TProps>
+export default observer(Cashier)

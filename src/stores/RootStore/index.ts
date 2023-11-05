@@ -48,7 +48,7 @@ import {
   AvatarAdderStore,
   TagsBarStore,
   UserListerStore,
-  // CashierStore,
+  CashierStore,
   // user page
   UserSettingsStore,
   UserBillingStore,
@@ -129,7 +129,7 @@ const rootStore = T.model({
 
   tagsBar: T.opt(TagsBarStore, {}),
   userLister: T.opt(UserListerStore, {}),
-  // cashier: T.opt(CashierStore, {}),
+  cashier: T.opt(CashierStore, {}),
 
   // viewers (for drawer usage)
   mailsViewer: T.opt(MailsViewerStore, {}),

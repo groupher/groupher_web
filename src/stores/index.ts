@@ -26,7 +26,7 @@ export { default as MailBoxStore } from '@/containers/tool/MailBox/store'
 export { default as AvatarAdderStore } from '@/containers/tool/AvatarAdder/store'
 
 export { default as UserListerStore } from '@/containers/user/UserLister/store'
-// export { default as CashierStore } from '@/containers/tool/Cashier/store'
+export { default as CashierStore } from '@/containers/tool/Cashier/store'
 
 //
 
