@@ -6,7 +6,7 @@ import { find } from 'ramda'
 
 import type { TCommunity, TRootStore, TUser, TAccount } from '@/spec'
 import { buildLog } from '@/logger'
-import { markStates, toJS, T, getParent, Instance } from '@/mobx'
+import { markStates, toJS, T, getParent, Instance, useMobxContext } from '@/mobx'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:PassportEditor')
@@ -79,5 +79,6 @@ const PassportEditor = T.model('PassportEditor', {
   }))
 
 export type TStore = Instance<typeof PassportEditor>
+export const useStore = (): TStore => useMobxContext().store.passportEditor
 
 export default PassportEditor

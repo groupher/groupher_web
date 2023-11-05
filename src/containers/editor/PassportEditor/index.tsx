@@ -4,14 +4,12 @@
  */
 
 import { FC } from 'react'
-
-// import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
+import { observer } from 'mobx-react-lite'
 
 import { SexyDivider } from '@/widgets/Common'
 import Button from '@/widgets/Buttons/Button'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 import Selects from './Selects'
 
 import { Wrapper, Desc, Footer, RootSign } from './styles'
@@ -19,13 +17,10 @@ import { useInit, updatePassport } from './logic' /* eslint-disable-next-line */
 
 // const log = buildLog('C:PassportEditor')
 
-type TProps = {
-  passportEditor?: TStore
-  testid: string
-}
-
-const PassportEditorContainer: FC<TProps> = ({ passportEditor: store, testid }) => {
+const PassportEditor: FC = () => {
+  const store = useStore()
   useInit(store)
+
   const {
     curCommunity,
     allModeratorRules,
@@ -40,7 +35,7 @@ const PassportEditorContainer: FC<TProps> = ({ passportEditor: store, testid }) 
   const readonly = isActiveModeratorRoot || !isCurUserModeratorRoot
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper testid="passport-editor">
       {!isActiveModeratorRoot ? <h3>权限设置</h3> : <RootSign>ROOT</RootSign>}
       {isActiveModeratorRoot ? (
         <Desc>
@@ -80,4 +75,4 @@ const PassportEditorContainer: FC<TProps> = ({ passportEditor: store, testid }) 
   )
 }
 
-export default bond(PassportEditorContainer, 'passportEditor') as FC<TProps>
+export default observer(PassportEditor)
