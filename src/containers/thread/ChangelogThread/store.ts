@@ -7,7 +7,7 @@ import { values } from 'ramda'
 import type { TCommunity, TRootStore, TGlobalLayout, TTag, TPagedArticles } from '@/spec'
 import { buildLog } from '@/logger'
 
-import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 import { mockTags, mockChangelogTimeTags, mockChangelogVersionTags } from '@/mock'
 
 import { PagedChangelogs, emptyPagi } from '@/model'
@@ -56,5 +56,6 @@ const ChangelogThread = T.model('ChangelogThread', {
   }))
 
 export type TStore = Instance<typeof ChangelogThread>
+export const useStore = (): TStore => useMobxContext().store.changelogThread
 
 export default ChangelogThread
