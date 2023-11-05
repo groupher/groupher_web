@@ -10,7 +10,7 @@ import type { TRootStore, TViewing, TArticle, TArticleFilter, TGroupedTags, TTag
 import TYPE from '@/constant/type'
 import METRIC from '@/constant/metric'
 
-import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 
 const ModeLine = T.model('ModeLine', {
   topBarVisiable: T.opt(T.bool, false),
@@ -112,5 +112,6 @@ const ModeLine = T.model('ModeLine', {
   }))
 
 export type TStore = Instance<typeof ModeLine>
+export const useStore = (): TStore => useMobxContext().store.modeLine
 
 export default ModeLine

@@ -3,15 +3,14 @@
  */
 
 import { Fragment, FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import METRIC from '@/constant/metric'
 import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 
 import useMetric from '@/hooks/useMetric'
 
-import type { TStore } from './store'
-// import TopBar from './TopBar'
+import { useStore } from './store'
 import CommunityLayout from './CommunityLayout'
 import ArticleLayout from './ArticleLayout'
 
@@ -20,11 +19,8 @@ import { useInit } from './logic'
 /* eslint-disable-next-line */
 const log = buildLog('C:ModeLine')
 
-type TProps = {
-  modeLine?: TStore
-}
-
-const ModeLineContainer: FC<TProps> = ({ modeLine: store }) => {
+const ModeLine: FC = () => {
+  const store = useStore()
   useInit(store)
 
   const metric = useMetric()
@@ -64,4 +60,4 @@ const ModeLineContainer: FC<TProps> = ({ modeLine: store }) => {
   )
 }
 
-export default bond(ModeLineContainer, 'modeLine') as FC<TProps>
+export default observer(ModeLine)
