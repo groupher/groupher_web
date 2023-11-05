@@ -4,9 +4,9 @@
 */ 
 
 import { FC } from 'react' 
+import { observer } from 'mobx-react-lite'
 
 // import { buildLog } from '@/logger' 
-import { bond } from '@/mobx'
 
 import type { TStore } from './store' 
 import { Wrapper } from './styles' 
@@ -15,19 +15,18 @@ import { useInit } from './logic' /* eslint-disable-next-line */
 // const log = buildLog('C:{{properCase name}}') 
 
 type TProps = {
-  {{camelCase name}}?: TStore 
   testid: string 
 } 
 
-const {{properCase name}}Container: FC<TProps> = ({{preCurly ''}}{{camelCase name}}: store, testid, {{afterCurly ''}}) => { 
+const {{properCase name}}: FC<TProps> = (testid, {{afterCurly ''}}) => { 
   useInit(store)
 
   return (
     <Wrapper testid={testid}>
-      <h2>{{properCase name}} hooks container!</h2>
+      <h2>{{properCase name}} hooks !</h2>
       <div>impress me!</div>
     </Wrapper>
   ) 
 } 
 
-export default bond({{properCase name}}Container, "{{camelCase name}}") as FC<TProps>
+export default observer({{properCase name}}, "{{camelCase name}}") as FC<TProps>

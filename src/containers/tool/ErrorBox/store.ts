@@ -5,7 +5,7 @@
 
 import type { TGQError } from '@/spec'
 import ERR from '@/constant/err'
-import { T, markStates, Instance, toJS } from '@/mobx'
+import { T, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 
 const Message = T.model('Message', {
   message: T.string,
@@ -45,4 +45,6 @@ const ErrorBox = T.model('ErrorBox', {
   }))
 
 export type TStore = Instance<typeof ErrorBox>
+export const useStore = (): TStore => useMobxContext().store.errorBox
+
 export default ErrorBox

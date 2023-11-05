@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import { DEME_SOCIALS } from '@/constant/social'

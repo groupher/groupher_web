@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import type { TCommunityThread } from '@/spec'

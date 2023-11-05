@@ -7,33 +7,29 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 
 import NumbersPad from './NumbersPad'
 import ContributeMap from './ContributeMap'
 import Activities from './Activities'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 import { Wrapper, ContributesWrapper } from './styles'
 import { useInit } from './logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:UserProfile')
 
-type TProps = {
-  userProfile?: TStore
-  testid?: string
-}
-
-const UserProfileContainer: FC<TProps> = ({ userProfile: store, testid = 'user-profile' }) => {
+const UserProfile: FC = () => {
+  const store = useStore()
   useInit(store)
 
   const { viewingUser, pagedSubscribedCommunitiesData, activities, hasFollowedUser } = store
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper testid="user-profile">
       <NumbersPad
         user={viewingUser}
         subscribedCommunities={pagedSubscribedCommunitiesData}
@@ -48,4 +44,4 @@ const UserProfileContainer: FC<TProps> = ({ userProfile: store, testid = 'user-p
   )
 }
 
-export default bond(UserProfileContainer, 'userProfile') as FC<TProps>
+export default observer(UserProfile)

@@ -5,7 +5,7 @@
 // import {} from 'ramda'
 
 import type { TAccount, TC11N, TCommunity, TThread, TRootStore, TTag } from '@/spec'
-import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 import { buildLog } from '@/logger'
 
 /* eslint-disable-next-line */
@@ -74,5 +74,6 @@ const ThreadSidebar = T.model('ThreadSidebar', {})
   }))
 
 export type TStore = Instance<typeof ThreadSidebar>
+export const useStore = (): TStore => useMobxContext().store.threadSidebar
 
 export default ThreadSidebar

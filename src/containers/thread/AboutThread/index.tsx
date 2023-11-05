@@ -7,7 +7,6 @@ import { FC } from 'react'
 import Markdown from 'markdown-to-jsx'
 
 // import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useBannerLayout from '@/hooks/useBannerLayout'
 import { BANNER_LAYOUT } from '@/constant/layout'
@@ -17,18 +16,15 @@ import { SexyDivider as Divider } from '@/widgets/Common'
 import Members from './Members'
 import BasicStates from './BasicStates'
 
-import type { TStore } from './store'
 import ExtraInfo from './ExtraInfo'
 import Sidebar from './Sidebar'
 
 import { Wrapper, MainWrapper, StateBlock, IntroBlock, MemberBlock, Title, Desc } from './styles'
-import { useInit } from './logic'
 
 /* eslint-disable-next-line */
 // const log = buildLog('C:AboutThread')
 
 type TProps = {
-  aboutThread?: TStore
   testid?: string
   isSidebarLayout?: boolean
 }
@@ -38,19 +34,13 @@ const INTRO = `我注意到里面他说了一句话，是这个老兄说一会�
 只是由一个主持人代为说了出来。这其实很有启发，就是说将来我们的驻美大使是不是也可以采取这样的套路，
 找一个懂媒体懂政治的学者在前面替自己怼人，自己默默坐在后面为学者的话背书。`
 
-const AboutThreadContainer: FC<TProps> = ({
-  aboutThread: store,
-  testid = 'about-thread',
-  isSidebarLayout = false,
-}) => {
-  useInit(store)
-
+const AboutThreadContainer: FC<TProps> = ({ testid = 'about-thread', isSidebarLayout = false }) => {
   const bannerLayout = useBannerLayout()
   const community = useViewingCommunity()
 
   return (
     <Wrapper testid={testid} $bannerLayout={bannerLayout}>
-      <MainWrapper isSidebarLayout={isSidebarLayout}>
+      <MainWrapper $isSidebarLayout={isSidebarLayout}>
         <IntroBlock>
           <Title>社区简介</Title>
           <Desc>
@@ -77,4 +67,4 @@ const AboutThreadContainer: FC<TProps> = ({
   )
 }
 
-export default bond(AboutThreadContainer, 'aboutThread') as FC<TProps>
+export default AboutThreadContainer

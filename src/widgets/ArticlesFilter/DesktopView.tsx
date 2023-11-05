@@ -5,7 +5,7 @@
  */
 
 import { FC, Fragment, useState } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import dynamic from 'next/dynamic'
 
 import type { TArticleCat } from '@/spec'

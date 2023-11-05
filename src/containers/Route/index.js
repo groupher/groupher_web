@@ -4,17 +4,18 @@
  *
  */
 
-import React from 'react'
 import { useRouter } from 'next/router'
+import { observer } from 'mobx-react-lite'
 
-import { bond } from '@/mobx'
+import { useStore } from './store'
 import { useInit } from './logic'
 
-const RouteContainer = ({ route }) => {
+const Route = () => {
+  const store = useStore()
   const router = useRouter()
-  useInit(route, router)
+  useInit(store, router)
 
   return <div />
 }
 
-export default bond(RouteContainer, 'route')
+export default observer(Route)

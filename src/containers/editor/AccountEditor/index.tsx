@@ -5,9 +5,9 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 import { closeDrawer } from '@/signal'
 
 import SubmitButton from '@/widgets/Buttons/SubmitButton'
@@ -18,7 +18,7 @@ import OSSUploader from '@/widgets/OSSUploader'
 import SexInputer from './SexInputer'
 import SocialInputer from './SocialInputer'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 
 import {
   Wrapper,
@@ -41,11 +41,8 @@ import { useInit, inputOnChange, onUpdate } from './logic'
 /* eslint-disable-next-line */
 const log = buildLog('C:AccountEditor')
 
-type TProps = {
-  accountEditor?: TStore
-}
-
-const AccountEditorContainer: FC<TProps> = ({ accountEditor: store }) => {
+const AccountEditor: FC = () => {
+  const store = useStore()
   useInit(store)
 
   const { login, fromGithub, submitState, editData } = store
@@ -119,4 +116,4 @@ const AccountEditorContainer: FC<TProps> = ({ accountEditor: store }) => {
   )
 }
 
-export default bond(AccountEditorContainer, 'accountEditor') as FC<TProps>
+export default observer(AccountEditor)

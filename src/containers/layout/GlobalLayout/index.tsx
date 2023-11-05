@@ -5,6 +5,7 @@
  */
 
 import { FC, ReactNode, useEffect, useState } from 'react'
+import { observer } from 'mobx-react-lite'
 import dynamic from 'next/dynamic'
 import { Provider as BalancerTextProvider } from 'react-wrap-balancer'
 
@@ -13,8 +14,6 @@ import { TOPBAR_LAYOUT } from '@/constant/layout'
 
 import useMetric from '@/hooks/useMetric'
 import useWallpaper from '@/hooks/useWallpaper'
-
-import { bond } from '@/mobx'
 
 import ThemePalette from '@/containers/layout/ThemePalette'
 import ModeLine from '@/containers/unit/ModeLine'
@@ -25,7 +24,7 @@ import Footer from '@/widgets/Footer'
 // import DashboardAlert from './DashboardAlert'
 // import CustomScroller from '@/widgets/CustomScroller'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 import SEO from './SEO'
 import Wallpaper from './Wallpaper'
 
@@ -44,12 +43,11 @@ import { useInit } from './logic'
 let DashboardAlert = null
 
 type TProps = {
-  globalLayout?: TStore
   children: ReactNode
 }
 
-const GlobalLayoutContainer: FC<TProps> = ({ globalLayout: store, children }) => {
-  // load debug graph
+const GlobalLayout: FC<TProps> = ({ children }) => {
+  const store = useStore()
   useInit(store)
 
   const metric = useMetric()
@@ -101,4 +99,4 @@ const GlobalLayoutContainer: FC<TProps> = ({ globalLayout: store, children }) =>
   )
 }
 
-export default bond(GlobalLayoutContainer, 'globalLayout') as FC<TProps>
+export default observer(GlobalLayout)

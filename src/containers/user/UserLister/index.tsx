@@ -5,15 +5,15 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import TYPE from '@/constant/type'
 import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 
 import EmptyLabel from '@/widgets/EmptyLabel'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 import HeaderInfo from './HeaderInfo'
 import List from './List'
 
@@ -45,11 +45,11 @@ const renderContent = (type, curView, pagedUsersData) => {
 }
 
 type TProps = {
-  userLister?: TStore
   type: string
 }
 
-const UserListerContainer: FC<TProps> = ({ userLister: store, type }) => {
+const UserLister: FC<TProps> = ({ type }) => {
+  const store = useStore()
   useInit(store, type)
 
   const { curView, pagedUsersData, curCommunity } = store
@@ -63,4 +63,4 @@ const UserListerContainer: FC<TProps> = ({ userLister: store, type }) => {
   )
 }
 
-export default bond(UserListerContainer, 'userLister') as FC<TProps>
+export default observer(UserLister)

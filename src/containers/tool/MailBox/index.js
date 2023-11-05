@@ -4,21 +4,22 @@
  *
  */
 
-import React from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 import Tooltip from '@/widgets/Tooltip'
 
 import MailsPanel from './MailsPanel'
 
+import { useStore } from './store'
 import { Wrapper, NotifyDot, HeaderMailIcon } from './styles'
 import { useInit, visibleOnChange } from './logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:MailBox')
 
-const MailBoxContainer = ({ mailBox: store }) => {
+const MailBox = () => {
+  const store = useStore()
   useInit(store)
 
   const { activeRaw, mailStatusData, pagedMentionsData } = store
@@ -45,4 +46,4 @@ const MailBoxContainer = ({ mailBox: store }) => {
   )
 }
 
-export default bond(MailBoxContainer, 'mailBox')
+export default observer(MailBox)

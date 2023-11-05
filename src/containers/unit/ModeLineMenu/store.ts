@@ -6,7 +6,7 @@
 import { prop, trim, filter, contains } from 'ramda'
 
 import type { TRootStore, TArticle, TCommunity } from '@/spec'
-import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 import { notEmpty } from '@/validator'
 
 import type { TCurActive } from './spec'
@@ -52,4 +52,6 @@ const ModeLineMenu = T.model('ModeLineMenu', {
   }))
 
 export type TStore = Instance<typeof ModeLineMenu>
+export const useStore = (): TStore => useMobxContext().store.modeLineMenu
+
 export default ModeLineMenu

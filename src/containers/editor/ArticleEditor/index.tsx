@@ -3,13 +3,13 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import type { TEditMode, TMetric } from '@/spec'
 import { ARTICLE_CAT_MODE } from '@/constant/gtd'
 import METRIC from '@/constant/metric'
 
 import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 
 import { Space } from '@/widgets/Common'
 import ArchiveAlert from '@/widgets/ArchiveAlert'
@@ -25,7 +25,7 @@ import ArticleCover from './ArticleCover'
 import TitleInput from './TitleInput'
 import Footer from './Footer'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 // import Settings from './Settings'
 import { Wrapper, InnerWrapper, ContentWrapper, FuncRow } from './styles'
 
@@ -41,16 +41,11 @@ import {
 const log = buildLog('C:ArticleEditor')
 
 type TProps = {
-  testid?: string
-  articleEditor?: TStore
   metric?: TMetric
 }
 
-const ArticleEditorContainer: FC<TProps> = ({
-  testid = 'article-editor',
-  articleEditor: store,
-  metric = METRIC.ARTICLE_EDITOR,
-}) => {
+const ArticleEditor: FC<TProps> = ({ metric = METRIC.ARTICLE_EDITOR }) => {
+  const store = useStore()
   useInit(store)
   const { activeCat, activeTagData } = store
 
@@ -62,7 +57,7 @@ const ArticleEditorContainer: FC<TProps> = ({
   const initEditor = mode === 'publish' || body !== '{}'
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper>
       <InnerWrapper metric={metric}>
         <ContentWrapper>
           {!allowEdit && <NoticeBar type="notice" content="只有作者可以编辑本内容。" left={25} />}
@@ -98,4 +93,4 @@ const ArticleEditorContainer: FC<TProps> = ({
   )
 }
 
-export default bond(ArticleEditorContainer, 'articleEditor') as FC<TProps>
+export default observer(ArticleEditor)

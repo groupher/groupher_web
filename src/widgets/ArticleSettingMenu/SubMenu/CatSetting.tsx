@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import { useMutation } from 'urql'
 
 import usePrimaryColor from '@/hooks/usePrimaryColor'

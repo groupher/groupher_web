@@ -7,7 +7,7 @@ import { findIndex, propEq } from 'ramda'
 
 import type { TRootStore, TCommunity, TPagedUsers, TAccount } from '@/spec'
 import TYPE from '@/constant/type'
-import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 import { PagedUsers, emptyPagi } from '@/model'
 
 const UserLister = T.model('UserLister', {
@@ -67,4 +67,6 @@ const UserLister = T.model('UserLister', {
   }))
 
 export type TStore = Instance<typeof UserLister>
+export const useStore = (): TStore => useMobxContext().store.userLister
+
 export default UserLister

@@ -7,7 +7,7 @@
  */
 
 import { FC, Fragment } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import useAvatarLayout from '@/hooks/useAvatarLayout'
 import EVENT from '@/constant/event'
@@ -23,8 +23,6 @@ import { SpaceGrow, Br } from '@/widgets/Common'
 
 import PublishButton from '@/widgets/Buttons/PublishButton'
 import TagsBar from '@/containers/unit/TagsBar'
-
-// import { CommunityJoinBadge } from './dynamic'
 
 import {
   Wrapper,
@@ -95,7 +93,6 @@ const ClassicLayout: FC<TProps> = ({ showCommunityBadge }) => {
             />
           </PublishWrapper>
 
-          {/* {load && !showCommunityBadge && <CommunityJoinBadge />} */}
           <TagsBarWrapper>
             <TagsBar onSelect={() => send(EVENT.REFRESH_ARTICLES)} />
           </TagsBarWrapper>

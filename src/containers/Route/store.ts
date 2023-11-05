@@ -8,7 +8,7 @@ import { merge, pickBy, omit, isEmpty } from 'ramda'
 import type { TRootStore, TRoute } from '@/spec'
 import { PAGE_SIZE } from '@/config'
 
-import { T, getParent, Instance, markStates } from '@/mobx'
+import { T, getParent, Instance, markStates, useMobxContext } from '@/mobx'
 import { Global } from '@/helper'
 import { isClientSide } from '@/utils/ssr'
 import { serializeQuery } from '@/utils/route'
@@ -103,5 +103,6 @@ const RouteStore = T.model('RouteStore', {
   }))
 
 export type TStore = Instance<typeof RouteStore>
+export const useStore = (): TStore => useMobxContext().store.route
 
 export default RouteStore

@@ -18,7 +18,7 @@ import type {
   TTag,
 } from '@/spec'
 
-import { T, getParent, markStates, toJS, Instance } from '@/mobx'
+import { T, getParent, markStates, toJS, Instance, useMobxContext } from '@/mobx'
 import { Community, Tag, User } from '@/model'
 import { ARTICLE_CAT } from '@/constant/gtd'
 
@@ -200,4 +200,6 @@ const ArticleEditor = T.model('ArticleEditor', {
   }))
 
 export type TStore = Instance<typeof ArticleEditor>
+export const useStore = (): TStore => useMobxContext().store.articleEditor
+
 export default ArticleEditor

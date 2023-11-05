@@ -6,17 +6,17 @@
 
 import { FC } from 'react'
 import { keys, reverse } from 'ramda'
+import { observer } from 'mobx-react-lite'
 
-import { bond } from '@/mobx'
 import { buildLog } from '@/logger'
 
 import type { TProps as TTagProps } from '..'
 
+import { useStore } from '../store'
 import GobackTag from './GobackTag'
 import Folder from './Folder'
 
 import { Wrapper } from '../styles/desktop_view'
-
 import { useInit, onTagSelect } from '../logic'
 
 /* eslint-disable-next-line */
@@ -24,7 +24,8 @@ const log = buildLog('C:TagsBar')
 
 type TProps = Omit<TTagProps, 'view'>
 
-const TagsBarContainer: FC<TProps> = ({ tagsBar: store, onSelect }) => {
+const TagsBar: FC<TProps> = ({ onSelect }) => {
+  const store = useStore()
   useInit(store)
 
   const { groupedTags, tagsData, activeTagData, maxDisplayCount, totalCountThrold } = store
@@ -59,4 +60,4 @@ const TagsBarContainer: FC<TProps> = ({ tagsBar: store, onSelect }) => {
   )
 }
 
-export default bond(TagsBarContainer, 'tagsBar') as FC<TProps>
+export default observer(TagsBar)

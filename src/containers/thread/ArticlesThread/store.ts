@@ -2,7 +2,7 @@
  * ArticlesThread store
  */
 
-import { merge, isEmpty, findIndex, propEq, pickBy, values } from 'ramda'
+import { merge, isEmpty, findIndex, propEq, pickBy, values, includes } from 'ramda'
 
 import type {
   TRootStore,
@@ -18,10 +18,10 @@ import type {
   TGroupedTags,
 } from '@/spec'
 
+import { T, markStates, getParent, Instance, toJS, useMobxContext } from '@/mobx'
 import TYPE from '@/constant/type'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
-import { T, markStates, getParent, Instance, toJS } from '@/mobx'
 import { nilOrEmpty } from '@/validator'
 import { plural } from '@/fmt'
 
@@ -60,6 +60,11 @@ const ArticlesThread = T.model('ArticlesThread', {
     },
     get pagedArticlesData(): TPagedArticles {
       const slf = self as TStore
+
+      if (!includes(slf.curThread, values(ARTICLE_THREAD))) {
+        return emptyPagi
+      }
+
       const pagedThreadKey = `paged${plural(slf.curThread, 'titleCase')}`
 
       return toJS(slf[pagedThreadKey])
@@ -92,6 +97,8 @@ const ArticlesThread = T.model('ArticlesThread', {
     },
     get showFilters(): boolean {
       const slf = self as TStore
+      if (!includes(slf.curThread, values(ARTICLE_THREAD))) return false
+
       const curFilter = toJS(pickBy((v) => !isEmpty(v), self.filters))
       const pagedPosts = toJS(slf.pagedArticlesData)
 
@@ -190,4 +197,5 @@ const ArticlesThread = T.model('ArticlesThread', {
   }))
 
 export type TStore = Instance<typeof ArticlesThread>
+export const useStore = (): TStore => useMobxContext().store.articlesThread
 export default ArticlesThread

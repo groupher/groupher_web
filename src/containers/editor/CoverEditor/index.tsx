@@ -4,33 +4,28 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 
 import Cover from './Cover'
 import Toolbox from './Toolbox'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 import { Wrapper } from './styles'
 import { useInit } from './logic' /* eslint-disable-next-line */
 
 const log = buildLog('C:CoverEditor')
 
 type TProps = {
-  coverEditor?: TStore
   testid?: string
 
   onDelete?: () => void
   onReplace?: () => void
 }
 
-const CoverEditorContainer: FC<TProps> = ({
-  coverEditor: store,
-  testid = 'cover-editor',
-  onDelete = log,
-  onReplace = log,
-}) => {
+const CoverEditor: FC<TProps> = ({ testid = 'cover-editor', onDelete = log, onReplace = log }) => {
+  const store = useStore()
   useInit(store)
   const { toolboxSetting } = store
 
@@ -47,4 +42,4 @@ const CoverEditorContainer: FC<TProps> = ({
   )
 }
 
-export default bond(CoverEditorContainer, 'coverEditor') as FC<TProps>
+export default observer(CoverEditor)

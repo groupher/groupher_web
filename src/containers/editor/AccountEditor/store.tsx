@@ -6,7 +6,7 @@
 import { reduce, keys, merge, pick, startsWith } from 'ramda'
 
 import type { TRootStore, TSubmitState, TUser } from '@/spec'
-import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 
 import type { TEditData } from './spec'
 import { SEX } from './constant'
@@ -113,4 +113,6 @@ const AccountEditorStore = T.model('AccountEditorStore', {
   }))
 
 export type TStore = Instance<typeof AccountEditorStore>
+export const useStore = (): TStore => useMobxContext().store.accountEditor
+
 export default AccountEditorStore

@@ -5,7 +5,7 @@
 
 import type { TRootStore } from '@/spec'
 
-import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 import { MailStatus, PagedMentionMessages, emptyPagi } from '@/model'
 
 const MailBox = T.model('MailBox', {
@@ -37,4 +37,6 @@ const MailBox = T.model('MailBox', {
   }))
 
 export type TStore = Instance<typeof MailBox>
+export const useStore = (): TStore => useMobxContext().store.mailBox
+
 export default MailBox

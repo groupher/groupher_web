@@ -8,7 +8,7 @@ import { values } from 'ramda'
 import type { TRootStore, TAccount } from '@/spec'
 
 import { PAYMENT_USAGE, PAYMENT_METHOD } from '@/constant/payment'
-import { T, markStates, Instance, getParent } from '@/mobx'
+import { T, markStates, Instance, getParent, useMobxContext } from '@/mobx'
 
 import { AMOUNT, SIDEBAR_VIEW, SUBCONTENT_VIEW } from './constant'
 
@@ -49,4 +49,6 @@ const Cashier = T.model('Cashier', {
   }))
 
 export type TStore = Instance<typeof Cashier>
+export const useStore = (): TStore => useMobxContext().store.cashier
+
 export default Cashier

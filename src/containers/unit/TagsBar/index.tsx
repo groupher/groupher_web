@@ -7,13 +7,11 @@
 import { FC } from 'react'
 
 import VIEW from '@/constant/view'
-import type { TStore } from './store'
 
 import DesktopView from './DesktopView/index'
 
 export type TProps = {
   view?: string
-  tagsBar?: TStore
   onSelect: () => void
 }
 

@@ -5,17 +5,16 @@
  */
 
 import { FC } from 'react'
-// import dynamic from 'next/dynamic'
+import { observer } from 'mobx-react-lite'
 
 import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 
 import Comments from '@/containers/unit/Comments'
 
 import DrawerHeader from './DrawerHeader'
 import Viewer from './Viewer'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 import { Wrapper, CommentsWrapper } from './styles'
 import { useInit } from './logic'
 
@@ -29,21 +28,14 @@ const log = buildLog('C:ArticleViewer')
 //   },
 // )
 
-type TProps = {
-  articleViewer?: TStore
-  testid?: string
-}
-
-const ArticleViewerContainer: FC<TProps> = ({
-  articleViewer: store,
-  testid = 'article-viewer',
-}) => {
+const ArticleViewer: FC = () => {
+  const store = useStore()
   useInit(store)
   const { viewingArticle, documentData, loading } = store
   const article = Object.assign(viewingArticle, { document: documentData })
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper testid="article-viewer">
       <DrawerHeader />
       {/* @ts-ignore */}
       {/* <CollectionFolder /> */}
@@ -55,4 +47,4 @@ const ArticleViewerContainer: FC<TProps> = ({
   )
 }
 
-export default bond(ArticleViewerContainer, 'articleViewer') as FC<TProps>
+export default observer(ArticleViewer)

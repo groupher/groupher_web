@@ -4,8 +4,8 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
-import { bond } from '@/mobx'
 import { DRAWER_SCROLLER } from '@/constant/dom'
 import VIEW from '@/constant/view'
 
@@ -13,7 +13,7 @@ import { DesktopOnly, MobileOnly } from '@/widgets/Common'
 import Tabs from '@/widgets/Switcher/Tabs'
 import CustomScroller from '@/widgets/CustomScroller'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 import { TAB, TAB_OPTIONS } from './constant'
 
 import BuildIn from './BuildIn'
@@ -23,20 +23,13 @@ import Footer from './Footer'
 import { Wrapper, Banner, Title, Content } from './styles'
 import { useInit, changeTab } from './logic'
 
-type TProps = {
-  wallpaperEditor?: TStore
-  testid?: string
-}
-
-const WallpaperEditorContainer: FC<TProps> = ({
-  wallpaperEditor: store,
-  testid = 'wallpaper-editor',
-}) => {
+const WallpaperEditor: FC = () => {
+  const store = useStore()
   useInit(store)
   const { tab, wallpaperData, isTouched, loading } = store
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper testid="wallpaper-editor">
       <Banner>
         <Title>壁纸设置</Title>
         <Tabs items={TAB_OPTIONS} activeKey={tab} onChange={changeTab} view={VIEW.DRAWER} />
@@ -68,4 +61,4 @@ const WallpaperEditorContainer: FC<TProps> = ({
   )
 }
 
-export default bond(WallpaperEditorContainer, 'wallpaperEditor') as FC<TProps>
+export default observer(WallpaperEditor)

@@ -14,7 +14,7 @@ import type {
 import { COVER_GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '@/constant/wallpaper'
 
 import { buildLog } from '@/logger'
-import { markStates, toJS, getParent, Instance, T } from '@/mobx'
+import { markStates, toJS, getParent, Instance, T, useMobxContext } from '@/mobx'
 
 import type {
   TToolboxSetting,
@@ -110,5 +110,6 @@ const CoverEditor = T.model('CoverEditor', {
   }))
 
 export type TStore = Instance<typeof CoverEditor>
+export const useStore = (): TStore => useMobxContext().store.coverEditor
 
 export default CoverEditor

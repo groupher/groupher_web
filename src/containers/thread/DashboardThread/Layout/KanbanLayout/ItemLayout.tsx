@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import { KANBAN_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import usePrimaryColor from '@/hooks/usePrimaryColor'

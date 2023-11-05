@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import type { TWallpaperGradientDir } from '@/spec'
 import { GRADIENT_DIRECTION } from '@/constant/wallpaper'

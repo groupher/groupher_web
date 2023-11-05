@@ -4,7 +4,7 @@
 
 import type { TCommunity, TDocFAQLayout, TDocLayout, TFAQSection, TRootStore } from '@/spec'
 import { buildLog } from '@/logger'
-import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:DocThread')
@@ -42,4 +42,6 @@ const DocThread = T.model('DocThread', {
   }))
 
 export type TStore = Instance<typeof DocThread>
+export const useStore = (): TStore => useMobxContext().store.docThread
+
 export default DocThread

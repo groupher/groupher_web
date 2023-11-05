@@ -54,7 +54,7 @@ import { THREAD } from '@/constant/thread'
 
 import BStore from '@/utils/bstore'
 import { buildLog } from '@/logger'
-import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 import { publicThreads, sortByIndex } from '@/helper'
 
 import {
@@ -903,5 +903,6 @@ const DashboardThread = T.model('DashboardThread', {
   }))
 
 export type TStore = Instance<typeof DashboardThread>
+export const useStore = (): TStore => useMobxContext().store.dashboardThread
 
 export default DashboardThread

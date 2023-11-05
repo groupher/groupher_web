@@ -7,7 +7,7 @@ import { merge } from 'ramda'
 
 import type { TUser, TRootStore, TArticle } from '@/spec'
 import { THREAD } from '@/constant/thread'
-import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 import { changeset } from '@/validator'
 
 import { FavoriteCategory, PagedFavoriteCategories, emptyPagi } from '@/model'
@@ -160,4 +160,6 @@ const CollectionFolder = T.model('CollectionFolder', {
   }))
 
 export type TStore = Instance<typeof CollectionFolder>
+export const useStore = (): TStore => useMobxContext().store.collectionFolder
+
 export default CollectionFolder

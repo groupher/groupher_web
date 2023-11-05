@@ -45,21 +45,15 @@ import {
   // RepoEditorStore,
   AccountEditorStore,
   MailBoxStore,
-  AvatarAdderStore,
   TagsBarStore,
   UserListerStore,
-  // CashierStore,
-  // user page
-  UserSettingsStore,
-  UserBillingStore,
-  //
+  CashierStore,
 
   // GEN: IMPORT SUBSTORE
   PassportEditorStore,
   LandingPageStore,
   CoverEditorStore,
   TagSettingEditorStore,
-  AuthWallStore,
   SubscriberStore,
   DashboardThreadStore,
   WallpaperEditorStore,
@@ -73,16 +67,13 @@ import {
   ArticlesThreadStore,
   ThreadSidebarStore,
   AbuseReportStore,
-  CommunityJoinBadgeStore,
   ArticleEditorStore,
   UserProfileStore,
   // MembershipContentStore,
-  ArticleStickerStore,
   ModeLineMenuStore,
   ModeLineStore,
   // SubscribeContentStore,
   // RecipesContentStore,
-  JoinModalStore,
   C11NSettingPanelStore,
 } from '..'
 
@@ -106,7 +97,6 @@ const rootStore = T.model({
   // repoEditor: T.opt(RepoEditorStore, {}),
   accountEditor: T.opt(AccountEditorStore, {}),
   mailBox: T.opt(MailBoxStore, {}),
-  avatarAdder: T.opt(AvatarAdderStore, {}),
   // toolbox end
 
   // layouts > xxx > papers
@@ -132,23 +122,16 @@ const rootStore = T.model({
 
   tagsBar: T.opt(TagsBarStore, {}),
   userLister: T.opt(UserListerStore, {}),
-  // cashier: T.opt(CashierStore, {}),
+  cashier: T.opt(CashierStore, {}),
 
   // viewers (for drawer usage)
   mailsViewer: T.opt(MailsViewerStore, {}),
-
-  // user page
-  userBilling: T.opt(UserBillingStore, {}),
-  userSettings: T.opt(UserSettingsStore, {}),
-
-  // have a drink
 
   // GEN: PLUG SUBSTORE TO ROOTSTORE
   passportEditor: T.opt(PassportEditorStore, {}),
   landingPage: T.opt(LandingPageStore, {}),
   coverEditor: T.opt(CoverEditorStore, {}),
   tagSettingEditor: T.opt(TagSettingEditorStore, {}),
-  authWall: T.opt(AuthWallStore, {}),
   subscriber: T.opt(SubscriberStore, {}),
   dashboardThread: T.opt(DashboardThreadStore, {}),
   wallpaperEditor: T.opt(WallpaperEditorStore, {}),
@@ -162,14 +145,11 @@ const rootStore = T.model({
   articlesThread: T.opt(ArticlesThreadStore, {}),
   threadSidebar: T.opt(ThreadSidebarStore, {}),
   abuseReport: T.opt(AbuseReportStore, {}),
-  communityJoinBadge: T.opt(CommunityJoinBadgeStore, {}),
   articleEditor: T.opt(ArticleEditorStore, {}),
   userProfile: T.opt(UserProfileStore, {}),
-  articleSticker: T.opt(ArticleStickerStore, {}),
   modeLineMenu: T.opt(ModeLineMenuStore, {}),
   modeLine: T.opt(ModeLineStore, {}),
   // recipesContent: T.opt(RecipesContentStore, {}),
-  joinModal: T.opt(JoinModalStore, {}),
   c11NSettingPanel: T.opt(C11NSettingPanelStore, {}),
 })
   .views((self) => ({

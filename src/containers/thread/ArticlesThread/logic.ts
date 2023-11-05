@@ -144,15 +144,11 @@ export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
     store.afterInitLoading()
-    if (!sub$) {
-      sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
-    }
+    sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
 
     return () => {
-      if (store.resState === TYPE.RES_STATE.LOADING || !sub$) return
       sr71$.stop()
       sub$.unsubscribe()
-      sub$ = null
     }
   }, [_store])
 }

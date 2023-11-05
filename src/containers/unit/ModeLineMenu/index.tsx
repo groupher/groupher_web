@@ -5,11 +5,11 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import type { TModelineType } from '@/spec'
 import TYPE from '@/constant/type'
 import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 
 // TODO: 全部动态加载
 import GlobalMenu from './GlobalMenu/index'
@@ -22,7 +22,7 @@ import ShareMenu from './ShareMenu'
 import CollectMenu from './CollectMenu'
 import ReportMenu from './ReportMenu'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 import { Wrapper } from './styles'
 import { useInit } from './logic'
 
@@ -70,20 +70,19 @@ const renderMenus = (type, curActive, subscribedCommunities) => {
 }
 
 type TProps = {
-  modeLineMenu?: TStore
   type?: TModelineType
   testid?: string
 }
 
-const ModeLineMenuContainer: FC<TProps> = ({
-  modeLineMenu: store,
+const ModeLineMenu: FC<TProps> = ({
   testid = 'mode-line-menu',
   type = TYPE.MM_TYPE.GLOBAL_MENU,
 }) => {
+  const store = useStore()
   useInit(store)
   const { curActive, subscribedCommunities } = store
 
   return <Wrapper testid={testid}>{renderMenus(type, curActive, subscribedCommunities)}</Wrapper>
 }
 
-export default bond(ModeLineMenuContainer, 'modeLineMenu') as FC<TProps>
+export default observer(ModeLineMenu)

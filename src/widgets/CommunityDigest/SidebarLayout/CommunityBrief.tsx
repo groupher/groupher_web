@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import Router from 'next/router'
 
 import { BANNER_LAYOUT } from '@/constant/layout'

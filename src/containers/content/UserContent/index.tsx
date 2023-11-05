@@ -6,22 +6,19 @@
 
 import { FC } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
+import { observer } from 'mobx-react-lite'
 
-import type { TMetric } from '@/spec'
 import { USER_THREAD } from '@/constant/thread'
 import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 
 import MobileBanner from './MobileBanner'
 import Comments from '@/containers/unit/Comments'
 import UserProfile from '@/containers/user/UserProfile'
 import UserPublishedArticles from '@/containers/user/UserPublishedArticles'
-// import UserBilling from '@/containers/user/UserBilling'
-import UserSettings from '@/containers/user/UserSettings'
 
 import TabBar from '@/widgets/TabBar'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 import Sidebar from './Sidebar'
 
 import {
@@ -34,6 +31,7 @@ import {
 } from './styles'
 
 import { useInit, tabOnChange } from './logic'
+import useMetric from '@/hooks/useMetric'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:UserContent')
@@ -77,25 +75,16 @@ const TabberContent = ({ active }) => {
         </PublishedCommentsWrapper>
       )
 
-    // case USER_THREAD.BILLING:
-    //   return <UserBilling />
-
-    case USER_THREAD.SETTINGS:
-      return <UserSettings />
-
     default:
       return <UserPublishedArticles />
   }
 }
 
-type TProps = {
-  userContent?: TStore
-  metric?: TMetric
-}
-
-const UserContentContainer: FC<TProps> = ({ userContent: store, metric }) => {
+const UserContent: FC = () => {
+  const store = useStore()
   useInit(store)
 
+  const metric = useMetric()
   const { isMobile } = useMobileDetect()
 
   const { activeThread, viewingUser, pagedEditableCommunitiesData, hasContentBg, isSelfViewing } =
@@ -123,4 +112,4 @@ const UserContentContainer: FC<TProps> = ({ userContent: store, metric }) => {
   )
 }
 
-export default bond(UserContentContainer, 'userContent') as FC<TProps>
+export default observer(UserContent)

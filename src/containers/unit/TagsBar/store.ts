@@ -8,7 +8,7 @@ import { THREAD } from '@/constant/thread'
 
 import type { TRootStore, TCommunity, TTag, TGroupedTags, TThread } from '@/spec'
 
-import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 // import { mockTags } from '@/mock'
 import { groupByKey } from '@/helper'
 
@@ -82,4 +82,6 @@ const TagsBar = T.model('TagsBar', {
   }))
 
 export type TStore = Instance<typeof TagsBar>
+export const useStore = (): TStore => useMobxContext().store.tagsBar
+
 export default TagsBar

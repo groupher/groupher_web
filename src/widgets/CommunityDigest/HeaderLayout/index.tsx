@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import { ANCHOR } from '@/constant/dom'
 import useHeaderLinks from '@/hooks/useHeaderLinks'

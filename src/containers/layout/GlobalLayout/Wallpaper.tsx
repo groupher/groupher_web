@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import useWallpaper from '@/hooks/useWallpaper'
 import useTheme from '@/hooks/useTheme'

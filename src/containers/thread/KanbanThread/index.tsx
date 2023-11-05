@@ -4,37 +4,31 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
-// import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 import CustomScroller from '@/widgets/CustomScroller'
 
 import Actions from './Actions'
 import Columns from './Columns'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 import { Wrapper, ColumnsWrapper, MobileColumnsWrapper, MobileColumnsInner } from './styles'
 import { useInit } from './logic' /* eslint-disable-next-line */
 
 // const log = buildLog('C:KanbanThread')
 
 type TProps = {
-  kanbanThread?: TStore
-  testid?: string
   isSidebarLayout?: boolean
 }
 
-const KanbanThreadContainer: FC<TProps> = ({
-  kanbanThread: store,
-  testid = 'kanban-thread',
-  isSidebarLayout = false,
-}) => {
+const KanbanThread: FC<TProps> = ({ isSidebarLayout = false }) => {
+  const store = useStore()
   useInit(store)
 
   const { layout, kanbanBgColors, todoPosts, wipPosts, donePosts } = store
 
   return (
-    <Wrapper testid={testid} isSidebarLayout={isSidebarLayout}>
+    <Wrapper testid="kanban-thread" isSidebarLayout={isSidebarLayout}>
       <Actions />
       <ColumnsWrapper>
         <Columns
@@ -68,4 +62,4 @@ const KanbanThreadContainer: FC<TProps> = ({
   )
 }
 
-export default bond(KanbanThreadContainer, 'kanbanThread') as FC<TProps>
+export default observer(KanbanThread)

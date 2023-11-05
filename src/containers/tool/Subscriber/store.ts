@@ -6,7 +6,7 @@ import { values } from 'ramda'
 
 import type { TCommunity, TRootStore } from '@/spec'
 import { buildLog } from '@/logger'
-import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 
 import { BY } from './constant'
 
@@ -39,5 +39,6 @@ const Subscriber = T.model('Subscriber', {
   }))
 
 export type TStore = Instance<typeof Subscriber>
+export const useStore = (): TStore => useMobxContext().store.subscriber
 
 export default Subscriber

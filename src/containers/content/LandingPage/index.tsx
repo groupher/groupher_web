@@ -6,12 +6,9 @@
 import { FC, useEffect, useState } from 'react'
 import { ParallaxProvider } from 'react-scroll-parallax'
 import Router from 'next/router'
+import { observer } from 'mobx-react-lite'
 
-// import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 import { BANNER_LAYOUT, DOC_FAQ_LAYOUT } from '@/constant/layout'
-
-// import Link from 'next/link'
 
 import { ROUTE } from '@/constant/route'
 
@@ -28,7 +25,7 @@ import TechStacks from './TechStacks'
 import EnjoyDev from './EnjoyDev'
 import UsersWall from './UsersWall'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 
 import {
   Wrapper,
@@ -51,11 +48,8 @@ import {
 
 import { useInit, changeGlowEffect } from './logic'
 
-type TProps = {
-  landingPage?: TStore
-}
-
-const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
+const LandingPage: FC = () => {
+  const store = useStore()
   useInit(store)
 
   const { wallpaperInfo, gradientWallpapers } = store
@@ -164,4 +158,4 @@ const LandingPageContainer: FC<TProps> = ({ landingPage: store }) => {
   )
 }
 
-export default bond(LandingPageContainer, 'landingPage') as FC<TProps>
+export default observer(LandingPage)

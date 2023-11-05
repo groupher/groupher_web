@@ -1,5 +1,5 @@
 import { FC, Fragment, useState } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import { keys, startsWith, filter } from 'ramda'
 
 import type { TLinkItem } from '@/spec'

@@ -6,7 +6,7 @@
 
 import type { TCommunity, TKanbanLayout, TRootStore, TColorName, TPagedArticles } from '@/spec'
 import { buildLog } from '@/logger'
-import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 
 import { emptyPagi, PagedPosts } from '@/model'
 
@@ -51,5 +51,6 @@ const KanbanThread = T.model('KanbanThread', {
   }))
 
 export type TStore = Instance<typeof KanbanThread>
+export const useStore = (): TStore => useMobxContext().store.kanbanThread
 
 export default KanbanThread

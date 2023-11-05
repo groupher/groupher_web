@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import { upvoteArticle } from '@/signal'
 import useViewingArticle from '@/hooks/useViewingArticle'

@@ -5,16 +5,14 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 
 import useShortcut from '@/hooks/useShortcut'
-
-import type { TStore } from './store'
-
 import { SpaceGrow } from '@/widgets/Common'
 
+import { useStore } from './store'
 import Details from './Details'
 
 import {
@@ -31,11 +29,8 @@ import { useInit, onClose } from './logic'
 /* eslint-disable-next-line */
 const log = buildLog('C:ErrorBox')
 
-type TProps = {
-  errorBox?: TStore
-}
-
-const ErrorBoxContainer: FC<TProps> = ({ errorBox: store }) => {
+const ErrorBox: FC = () => {
+  const store = useStore()
   useInit(store)
   useShortcut(['Control+c', 'Control+g', 'Escape'], onClose)
 
@@ -77,4 +72,4 @@ const ErrorBoxContainer: FC<TProps> = ({ errorBox: store }) => {
   )
 }
 
-export default bond(ErrorBoxContainer, 'errorBox') as FC<TProps>
+export default observer(ErrorBox)

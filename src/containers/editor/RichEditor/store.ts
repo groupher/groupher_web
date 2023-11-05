@@ -3,7 +3,7 @@
  *
  */
 
-import { T, Instance, markStates } from '@/mobx'
+import { T, Instance, markStates, useMobxContext } from '@/mobx'
 
 const RichEditor = T.model('RichEditor', {})
   .views(() => ({}))
@@ -14,4 +14,6 @@ const RichEditor = T.model('RichEditor', {})
   }))
 
 export type TStore = Instance<typeof RichEditor>
+export const useStore = (): TStore => useMobxContext().store.richEditor
+
 export default RichEditor

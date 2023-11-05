@@ -61,7 +61,7 @@ export {
   markRoute,
 } from './route'
 
-export { bond, markStates, toJS, updateEditing } from './mobx'
+export { markStates, toJS, updateEditing } from './mobx'
 
 export {
   isServerSide,

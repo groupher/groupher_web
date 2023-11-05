@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import type { TSpace } from '@/spec'
 import { HEADER_LAYOUT } from '@/constant/layout'
@@ -17,7 +17,7 @@ import { NormalWrapper, FloatWrapper, Title } from '../styles/header_layout/thre
 type TProps = TSpace
 
 const ThreadTab: FC<TProps> = ({ ...restProps }) => {
-  const curCommunity = useViewingCommunity()
+  const community = useViewingCommunity()
   const { layout: headerLayout, customLinks } = useHeaderLinks()
   const threads = usePublicThreads()
   const activeThread = useViewingThread()
@@ -29,8 +29,8 @@ const ThreadTab: FC<TProps> = ({ ...restProps }) => {
     <Wrapper {...restProps}>
       {threads.map((item) => (
         <Title
-          href={`/${curCommunity.slug}/${item.slug}`}
           key={item.slug}
+          href={`/${community.slug}/${item.slug}`}
           $active={activeThread === item.slug}
           $color={primaryColor}
         >

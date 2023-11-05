@@ -1,17 +1,17 @@
-import { FC } from 'react'
-
+import { useContext } from 'react'
 import { types as mobxTypes } from 'mobx-state-tree'
 
-import { path, has, curry, forEachObjIndexed, keys, isEmpty, contains } from 'ramda'
+import { has, forEachObjIndexed, keys, isEmpty, contains } from 'ramda'
 
-import { inject, observer } from 'mobx-react'
+import { MobXProviderContext } from 'mobx-react'
 import { toJS as toJSON } from 'mobx'
 
 import type { TEditValue } from '@/spec'
+import type { TRootStore } from '@/stores/RootStore'
 import { isObject } from './validator'
 
-export { getParent } from 'mobx-state-tree'
 export type { Instance } from 'mobx-state-tree'
+export { getParent } from 'mobx-state-tree'
 
 // make the name shorter
 export const T = {
@@ -32,40 +32,8 @@ type TStore = {
   updateEditing?: (obj: Record<string, unknown>) => void
 }
 
-/*
- * select sub store from root store
- * by design, one container should only access it's own store
- *
- * see: https://github.com/mobxjs/mobx-react Customizing inject
- *
- * 从根状态树中选出子状态树
- * 一个容器组件只能连接到一个和它相关的子状态树
- *
- */
-const storeSelector = curry((selectedStore, props) => ({
-  [selectedStore]: path(['store', selectedStore], props),
-}))
-
-/*
- * inject sub-store to container base on second args
- * 根据第二个参数绑定子状态树
- *
- * NOTE: KNOWN ISSUE:
- * because the type information of the incoming container cannot be obtained,
- * only an empty React.FC can be returned here, which will cause a type error in
- * the place where this container is used, and it needs to be manually exported where it
- * is used, such as:
- *
- * export default bond(ShareContainer, "share")
- * ---
- * 因为无法获取传入的 container 的类型信息，导致这里只能返回一个空的 React.FC,这
- * 会导致使用这个 container 的地方出现类型报错，需要在使用的地方手动导出，比如:
- *
- * export default bond(ShareContainer, "share") as FC<TProps>
- */
-export const bond = (container: FC, subStore: string): FC => {
-  return inject(storeSelector(subStore))(observer(container))
-}
+type TMobxContext = { store: TRootStore }
+export const useMobxContext = () => useContext(MobXProviderContext) as TMobxContext
 
 /*
  * a helper to update mobx state

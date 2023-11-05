@@ -2,17 +2,9 @@
  * ArticleViewer store
  */
 
-import type {
-  TCommunity,
-  TRootStore,
-  TAccount,
-  TArticle,
-  TArticleMeta,
-  TThread,
-  TDocument,
-} from '@/spec'
+import type { TCommunity, TRootStore, TAccount, TArticle, TThread, TDocument } from '@/spec'
 
-import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 import { buildLog } from '@/logger'
 import { Document } from '@/model'
 
@@ -71,5 +63,6 @@ const ArticleViewer = T.model('ArticleViewer', {
   }))
 
 export type TStore = Instance<typeof ArticleViewer>
+export const useStore = (): TStore => useMobxContext().store.articleViewer
 
 export default ArticleViewer

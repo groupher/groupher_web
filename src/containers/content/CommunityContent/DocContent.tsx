@@ -3,29 +3,25 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import { bond } from '@/mobx'
 import { BANNER_LAYOUT } from '@/constant/layout'
-
+import useMetric from '@/hooks/useMetric'
 import useBannerLayout from '@/hooks/useBannerLayout'
 import DocThread from '@/containers//thread/DocThread'
 import CommunityDigest from '@/widgets/CommunityDigest'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 import { useInit } from './logic'
 
 import { Wrapper, InnerWrapper, SidebarWrapper, ContentWrapper, MobileCardsWrapper } from './styles'
-import useMetric from '@/hooks/useMetric'
-
-type TProps = {
-  communityContent?: TStore
-}
 
 /**
  * only for AboutThread, but link to the common communityContent store
  */
-const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
+const DocContent: FC = () => {
+  const store = useStore()
   useInit(store)
   const metric = useMetric()
 
@@ -55,4 +51,4 @@ const CommunityContentContainer: FC<TProps> = ({ communityContent: store }) => {
   )
 }
 
-export default bond(CommunityContentContainer, 'communityContent') as FC<TProps>
+export default observer(DocContent)

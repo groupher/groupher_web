@@ -1,5 +1,5 @@
 import { FC, ReactNode } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import type { TSizeTSM, TSpace } from '@/spec'
 import usePrimaryColor from '@/hooks/usePrimaryColor'

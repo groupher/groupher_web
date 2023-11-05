@@ -3,9 +3,9 @@
  *
  */
 import { merge } from 'ramda'
-import type { TRootStore, TGlobalLayout, TThemeName, TArticle, TArticleMeta } from '@/spec'
 
-import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import type { TRootStore, TGlobalLayout, TThemeName, TArticle, TArticleMeta } from '@/spec'
+import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 
 const Platform = T.model('Platform', {
   isChrome: T.opt(T.bool, true),
@@ -86,5 +86,6 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
   }))
 
 export type TStore = Instance<typeof GlobalLayout>
+export const useStore = (): TStore => useMobxContext().store.globalLayout
 
 export default GlobalLayout

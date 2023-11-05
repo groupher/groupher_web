@@ -1,3 +1,4 @@
+import type { TPagi } from './utils'
 import type { TPagedCommunities } from './community'
 import type { TC11NLayout } from './c11n'
 
@@ -56,10 +57,7 @@ export type TUser = TSimpleUser & {
 
 export type TPagedUsers = {
   entries: TUser[]
-  totalCount?: number
-  pageNumber?: number
-  pageSize?: number
-}
+} & TPagi
 
 export type TC11N = {
   isLogin?: boolean

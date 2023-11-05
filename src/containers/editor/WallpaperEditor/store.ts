@@ -16,7 +16,7 @@ import type {
 import { GRADIENT_WALLPAPER, PATTERN_WALLPAPER, WALLPAPER_TYPE } from '@/constant/wallpaper'
 
 import { buildLog } from '@/logger'
-import { T, markStates, Instance, getParent, toJS } from '@/mobx'
+import { T, markStates, Instance, getParent, toJS, useMobxContext } from '@/mobx'
 
 import type { TWallpaperData } from './spec'
 import { TAB } from './constant'
@@ -168,5 +168,6 @@ const WallpaperEditor = T.model('WallpaperEditor', {
   }))
 
 export type TStore = Instance<typeof WallpaperEditor>
+export const useStore = (): TStore => useMobxContext().store.wallpaperEditor
 
 export default WallpaperEditor

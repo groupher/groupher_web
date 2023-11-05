@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import { assetSrc } from '@/helper'
 import useViewingCommunity from '@/hooks/useViewingCommunity'

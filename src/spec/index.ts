@@ -89,6 +89,7 @@ export type {
   TGroupedLinks,
   TChangeMode,
   TUploadPreview,
+  TPagi,
 } from './utils'
 
 export type { TGQLError } from './graphql'

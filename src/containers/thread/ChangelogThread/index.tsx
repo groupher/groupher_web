@@ -4,23 +4,20 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { BANNER_LAYOUT } from '@/constant/layout'
-import { bond } from '@/mobx'
 
 import ClassicLayout from './ClassicLayout'
 import SimpleLayout from './SimpleLayout'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 import { useInit } from './logic' /* eslint-disable-next-line */
 
 // const log = buildLog('C:ChangelogThread')
 
-type TProps = {
-  changelogThread?: TStore
-}
-
-const ChangelogThreadContainer: FC<TProps> = ({ changelogThread: store }) => {
+const ChangelogThread: FC = () => {
+  const store = useStore()
   useInit(store)
   const { globalLayout, tagsMode, pagedChangelogsData } = store
 
@@ -31,4 +28,4 @@ const ChangelogThreadContainer: FC<TProps> = ({ changelogThread: store }) => {
   )
 }
 
-export default bond(ChangelogThreadContainer, 'changelogThread') as FC<TProps>
+export default observer(ChangelogThread)

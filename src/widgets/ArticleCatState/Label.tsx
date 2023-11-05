@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import { ARTICLE_CAT } from '@/constant/gtd'
 import useNameAlias from '@/hooks/useNameAlias'

@@ -23,10 +23,9 @@ export { default as ErrorBoxStore } from '@/containers/tool/ErrorBox/store'
 export { default as DrawerStore } from '@/containers/tool/Drawer/store'
 // export { default as HeaderStore } from '@/containers/unit/Header/store'
 export { default as MailBoxStore } from '@/containers/tool/MailBox/store'
-export { default as AvatarAdderStore } from '@/containers/tool/AvatarAdder/store'
 
 export { default as UserListerStore } from '@/containers/user/UserLister/store'
-// export { default as CashierStore } from '@/containers/tool/Cashier/store'
+export { default as CashierStore } from '@/containers/tool/Cashier/store'
 
 //
 
@@ -51,8 +50,6 @@ export { default as MailsViewerStore } from '@/containers/viewer/MailsViewer/sto
 
 // user page
 export { default as UserPublishedArticlesStore } from '@/containers/user/UserPublishedArticles/store'
-export { default as UserBillingStore } from '@/containers/user/UserBilling/store'
-export { default as UserSettingsStore } from '@/containers/user/UserSettings/store'
 
 // editor
 export { default as CommunityEditorStore } from '@/containers/editor/CommunityEditor/store'
@@ -63,7 +60,6 @@ export { default as PassportEditorStore } from '@/containers/editor/PassportEdit
 export { default as LandingPageStore } from '@/containers/content/LandingPage/store'
 export { default as CoverEditorStore } from '@/containers/editor/CoverEditor/store'
 export { default as TagSettingEditorStore } from '@/containers/editor/TagSettingEditor/store'
-export { default as AuthWallStore } from '@/containers/tool/AuthWall/store'
 export { default as SubscriberStore } from '@/containers/tool/Subscriber/store'
 export { default as DashboardThreadStore } from '@/containers/thread/DashboardThread/store'
 export { default as WallpaperEditorStore } from '@/containers/editor/WallpaperEditor/store'
@@ -77,11 +73,8 @@ export { default as ArticleViewerStore } from '@/containers/viewer/ArticleViewer
 export { default as ArticlesThreadStore } from '@/containers/thread/ArticlesThread/store'
 export { default as ThreadSidebarStore } from '@/containers/thread/ThreadSidebar/store'
 export { default as AbuseReportStore } from '@/containers/tool/AbuseReport/store'
-export { default as CommunityJoinBadgeStore } from '@/containers/tool/CommunityJoinBadge/store'
 export { default as ArticleEditorStore } from '@/containers/editor/ArticleEditor/store'
 export { default as UserProfileStore } from '@/containers/user/UserProfile/store'
-export { default as ArticleStickerStore } from '@/containers/tool/ArticleSticker/store'
 export { default as ModeLineMenuStore } from '@/containers/unit/ModeLineMenu/store'
 export { default as ModeLineStore } from '@/containers/unit/ModeLine/store'
-export { default as JoinModalStore } from '@/containers/tool/JoinModal/store'
 export { default as C11NSettingPanelStore } from '@/containers/tool/C11NSettingPanel/store'
