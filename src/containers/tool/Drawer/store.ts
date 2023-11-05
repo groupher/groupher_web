@@ -13,7 +13,7 @@ import METRIC from '@/constant/metric'
 
 import TYPE from '@/constant/type'
 
-import { T, getParent, markStates, Instance, toJS } from '@/mobx'
+import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 import { lockPage, unlockPage } from '@/dom'
 import { Global } from '@/helper'
 import { WIDTH, mediaBreakPoints } from '@/css/metric'
@@ -260,5 +260,6 @@ const DrawerStore = T.model('DrawerStore', {
   }))
 
 export type TStore = Instance<typeof DrawerStore>
+export const useStore = (): TStore => useMobxContext().store.drawer
 
 export default DrawerStore

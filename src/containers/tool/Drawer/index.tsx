@@ -5,14 +5,14 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import type { TMetric } from '@/spec'
 import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 import useWindowResize from '@/hooks/useWindowResize'
 import useShortcut from '@/hooks/useShortcut'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 
 import Viewer from './Viewer'
 import Content from './Content'
@@ -23,11 +23,11 @@ import { useInit, closeDrawer } from './logic'
 const log = buildLog('C:Preview')
 
 type TProps = {
-  drawer: TStore
   metric: TMetric
 }
 
-const DrawerContainer: FC<TProps> = ({ drawer: store, metric }) => {
+const Drawer: FC<TProps> = ({ metric }) => {
+  const store = useStore()
   const { width: windowWidth } = useWindowResize()
   useInit(store, windowWidth, metric)
   useShortcut('Escape', closeDrawer)
@@ -75,4 +75,4 @@ const DrawerContainer: FC<TProps> = ({ drawer: store, metric }) => {
   )
 }
 
-export default bond(DrawerContainer, 'drawer')
+export default observer(Drawer)
