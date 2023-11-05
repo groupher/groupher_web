@@ -4,9 +4,9 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 import { includes } from 'ramda'
 
-import { bond } from '@/mobx'
 import { ROUTE, DASHBORD_CMS_ROUTES } from '@/constant/route'
 
 import useMetric from '@/hooks/useMetric'
@@ -33,21 +33,14 @@ import {
   RSS,
 } from './dynamic'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 import { Wrapper, MainWrapper } from './styles'
 import { useInit } from './logic'
 
 // const log = buildLog('C:DashboardThread')
 
-type TProps = {
-  dashboardThread?: TStore
-  testid?: string
-}
-
-const DashboardThreadContainer: FC<TProps> = ({
-  dashboardThread: store,
-  testid = 'dashboard-thread',
-}) => {
+const DashboardThread: FC = () => {
+  const store = useStore()
   useInit(store)
   const metric = useMetric()
 
@@ -75,7 +68,7 @@ const DashboardThreadContainer: FC<TProps> = ({
   const { DASHBOARD } = ROUTE
 
   return (
-    <Wrapper testid={testid} metric={metric}>
+    <Wrapper testid="dashboard-thread" metric={metric}>
       <SideMenu curTab={curTab} touched={touched} community={curCommunity} />
 
       <MainWrapper>
@@ -108,4 +101,4 @@ const DashboardThreadContainer: FC<TProps> = ({
   )
 }
 
-export default bond(DashboardThreadContainer, 'dashboardThread') as FC<TProps>
+export default observer(DashboardThread)
