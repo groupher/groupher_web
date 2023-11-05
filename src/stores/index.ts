@@ -23,7 +23,6 @@ export { default as ErrorBoxStore } from '@/containers/tool/ErrorBox/store'
 export { default as DrawerStore } from '@/containers/tool/Drawer/store'
 // export { default as HeaderStore } from '@/containers/unit/Header/store'
 export { default as MailBoxStore } from '@/containers/tool/MailBox/store'
-export { default as AvatarAdderStore } from '@/containers/tool/AvatarAdder/store'
 
 export { default as UserListerStore } from '@/containers/user/UserLister/store'
 export { default as CashierStore } from '@/containers/tool/Cashier/store'

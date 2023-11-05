@@ -45,7 +45,6 @@ import {
   // RepoEditorStore,
   AccountEditorStore,
   MailBoxStore,
-  AvatarAdderStore,
   TagsBarStore,
   UserListerStore,
   CashierStore,
@@ -102,7 +101,6 @@ const rootStore = T.model({
   // repoEditor: T.opt(RepoEditorStore, {}),
   accountEditor: T.opt(AccountEditorStore, {}),
   mailBox: T.opt(MailBoxStore, {}),
-  avatarAdder: T.opt(AvatarAdderStore, {}),
   // toolbox end
 
   // layouts > xxx > papers

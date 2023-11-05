@@ -59,12 +59,10 @@ const storeSelector = curry((selectedStore, props) => ({
  * the place where this container is used, and it needs to be manually exported where it
  * is used, such as:
  *
- * export default bond(ShareContainer, "share")
  * ---
  * 因为无法获取传入的 container 的类型信息，导致这里只能返回一个空的 React.FC,这
  * 会导致使用这个 container 的地方出现类型报错，需要在使用的地方手动导出，比如:
  *
- * export default bond(ShareContainer, "share") as FC<TProps>
  */
 export const bond = (container: FC, subStore: string): FC => {
   return inject(storeSelector(subStore))(observer(container))
