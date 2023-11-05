@@ -80,7 +80,6 @@ export { default as AbuseReportStore } from '@/containers/tool/AbuseReport/store
 export { default as CommunityJoinBadgeStore } from '@/containers/tool/CommunityJoinBadge/store'
 export { default as ArticleEditorStore } from '@/containers/editor/ArticleEditor/store'
 export { default as UserProfileStore } from '@/containers/user/UserProfile/store'
-export { default as ArticleStickerStore } from '@/containers/tool/ArticleSticker/store'
 export { default as ModeLineMenuStore } from '@/containers/unit/ModeLineMenu/store'
 export { default as ModeLineStore } from '@/containers/unit/ModeLine/store'
 export { default as JoinModalStore } from '@/containers/tool/JoinModal/store'
