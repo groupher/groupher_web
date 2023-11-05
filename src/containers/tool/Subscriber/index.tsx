@@ -4,16 +4,14 @@
  */
 
 import { FC } from 'react'
-
-// import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
+import { observer } from 'mobx-react-lite'
 
 import { Br, Divider } from '@/widgets/Common'
 import Modal from '@/widgets/Modal'
 
-import { BY } from './constant'
-import type { TStore } from './store'
 import type { TBy } from './spec'
+import { BY } from './constant'
+import { useStore } from './store'
 
 import SubscribeInfo from './SubscribeInfo'
 
@@ -23,12 +21,8 @@ import { useInit, onClose, changeBy } from './logic'
 
 // const log = buildLog('C:Subscriber')
 
-type TProps = {
-  subscriber?: TStore
-  testid?: string
-}
-
-const SubscriberContainer: FC<TProps> = ({ subscriber: store, testid = 'subscriber' }) => {
+const Subscriber: FC = () => {
+  const store = useStore()
   useInit(store)
 
   const { visible, by } = store
@@ -42,7 +36,7 @@ const SubscriberContainer: FC<TProps> = ({ subscriber: store, testid = 'subscrib
       offsetTop="25%"
       mode="default"
     >
-      <Wrapper testid={testid}>
+      <Wrapper testid="subscriber">
         <h3>订阅更新</h3>
         <Br top={20} />
         <ByWrapper>
@@ -66,4 +60,4 @@ const SubscriberContainer: FC<TProps> = ({ subscriber: store, testid = 'subscrib
   )
 }
 
-export default bond(SubscriberContainer, 'subscriber') as FC<TProps>
+export default observer(Subscriber)
