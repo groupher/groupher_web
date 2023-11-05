@@ -7,7 +7,7 @@ import { values } from 'ramda'
 
 import type { TRootStore, TAccount, TUser, TPagedCommunities } from '@/spec'
 import { USER_THREAD } from '@/constant/thread'
-import { T, getParent, Instance, markStates, toJS } from '@/mobx'
+import { T, getParent, Instance, markStates, toJS, useMobxContext } from '@/mobx'
 import { PagedCommunities, emptyPagi } from '@/model'
 
 const UserContent = T.model('UserContent', {
@@ -67,4 +67,6 @@ const UserContent = T.model('UserContent', {
   }))
 
 export type TStore = Instance<typeof UserContent>
+export const useStore = (): TStore => useMobxContext().store.userContent
+
 export default UserContent

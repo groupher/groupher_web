@@ -1,11 +1,9 @@
 import styled from 'styled-components'
 
-import type { TTestable, TMetric } from '@/spec'
+import type { TMetric } from '@/spec'
 import css, { theme } from '@/css'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
-}))<TTestable>`
+export const Wrapper = styled.div`
   ${css.row('justify-center')};
   width: 100%;
   margin-top: 40px;

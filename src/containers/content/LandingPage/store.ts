@@ -5,7 +5,7 @@
 import type { TCommunity, TRootStore, TWallpaper, TWallpaperInfo } from '@/spec'
 
 import { buildLog } from '@/logger'
-import { markStates, toJS, T, getParent, Instance } from '@/mobx'
+import { markStates, toJS, T, getParent, Instance, useMobxContext } from '@/mobx'
 
 /* eslint-disable-next-line */
 const log = buildLog('S:LandingPage')
@@ -56,5 +56,6 @@ const LandingPage = T.model('LandingPage', {})
   }))
 
 export type TStore = Instance<typeof LandingPage>
+export const useStore = (): TStore => useMobxContext().store.landingPage
 
 export default LandingPage
