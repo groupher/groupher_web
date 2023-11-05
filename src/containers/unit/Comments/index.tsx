@@ -9,7 +9,6 @@ import { observer } from 'mobx-react-lite'
 
 import { ANCHOR } from '@/constant/dom'
 import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 
 // import NoticeBar from '@/widgets/NoticeBar'
 
