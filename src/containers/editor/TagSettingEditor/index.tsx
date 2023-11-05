@@ -6,8 +6,6 @@
 import { FC } from 'react'
 
 import type { TChangeMode, TColorName, TSelectOption } from '@/spec'
-// import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 import { ROUTE } from '@/constant/route'
 import { DRAWER_SCROLLER } from '@/constant/dom'
 import { COLOR_NAME } from '@/constant/colors'
@@ -23,7 +21,7 @@ import CustomScroller from '@/widgets/CustomScroller'
 import PostLayout from './PostLayout'
 import Footer from './Footer'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 
 import {
   Wrapper,
@@ -39,20 +37,17 @@ import {
 } from './styles'
 
 import { useInit, edit } from './logic'
+import { observer } from 'mobx-react-lite'
 
 // const log = buildLog('C:TagSettingEditor')
 
 type TProps = {
-  tagSettingEditor?: TStore
   testid: string
   mode?: TChangeMode
 }
 
-const TagSettingEditorContainer: FC<TProps> = ({
-  tagSettingEditor: store,
-  testid,
-  mode = CHANGE_MODE.UPDATE,
-}) => {
+const TagSettingEditor: FC<TProps> = ({ testid, mode = CHANGE_MODE.UPDATE }) => {
+  const store = useStore()
   useInit(store, mode)
 
   const { editingTagData: editingTag, curCategory, categoryOptions, processing } = store
@@ -131,4 +126,4 @@ const TagSettingEditorContainer: FC<TProps> = ({
   )
 }
 
-export default bond(TagSettingEditorContainer, 'tagSettingEditor') as FC<TProps>
+export default observer(TagSettingEditor)
