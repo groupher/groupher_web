@@ -77,7 +77,6 @@ export { default as ArticleViewerStore } from '@/containers/viewer/ArticleViewer
 export { default as ArticlesThreadStore } from '@/containers/thread/ArticlesThread/store'
 export { default as ThreadSidebarStore } from '@/containers/thread/ThreadSidebar/store'
 export { default as AbuseReportStore } from '@/containers/tool/AbuseReport/store'
-export { default as CommunityJoinBadgeStore } from '@/containers/tool/CommunityJoinBadge/store'
 export { default as ArticleEditorStore } from '@/containers/editor/ArticleEditor/store'
 export { default as UserProfileStore } from '@/containers/user/UserProfile/store'
 export { default as ModeLineMenuStore } from '@/containers/unit/ModeLineMenu/store'

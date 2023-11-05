@@ -24,8 +24,6 @@ import { SpaceGrow, Br } from '@/widgets/Common'
 import PublishButton from '@/widgets/Buttons/PublishButton'
 import TagsBar from '@/containers/unit/TagsBar'
 
-// import { CommunityJoinBadge } from './dynamic'
-
 import {
   Wrapper,
   TagsBarWrapper,
@@ -95,7 +93,6 @@ const ClassicLayout: FC<TProps> = ({ showCommunityBadge }) => {
             />
           </PublishWrapper>
 
-          {/* {load && !showCommunityBadge && <CommunityJoinBadge />} */}
           <TagsBarWrapper>
             <TagsBar onSelect={() => send(EVENT.REFRESH_ARTICLES)} />
           </TagsBarWrapper>
