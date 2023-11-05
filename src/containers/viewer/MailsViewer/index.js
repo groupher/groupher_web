@@ -4,15 +4,15 @@
  *
  */
 
-import React from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { ICON_CMD } from '@/config'
 import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 
 import TabSelector from '@/widgets/TabSelector'
 import MailLists from './MailLists'
 
+import { useStore } from './store'
 import { useInit, selectChange } from './logic'
 
 /* eslint-disable-next-line */
@@ -39,7 +39,8 @@ const mailTabs = [
   },
 ]
 
-const MailsViewerContainer = ({ mailsViewer: store }) => {
+const MailsViewer = () => {
+  const store = useStore()
   useInit(store)
 
   const { activeRaw, pagedMentionsData, readState } = store
@@ -53,4 +54,4 @@ const MailsViewerContainer = ({ mailsViewer: store }) => {
   )
 }
 
-export default bond(MailsViewerContainer, 'mailsViewer')
+export default observer(MailsViewer)

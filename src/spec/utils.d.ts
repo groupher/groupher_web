@@ -222,3 +222,10 @@ export type TUploadPreview = {
   width: number
   radius: number
 }
+
+export type TPagi = {
+  pageNumber: number
+  pageSize: number
+  totalCount: number
+  totalPages: number
+}
