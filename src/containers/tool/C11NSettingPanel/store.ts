@@ -4,7 +4,7 @@
  */
 
 import type { TRootStore, TThread, TAccount, TThemeName } from '@/spec'
-import { T, markStates, Instance, getParent } from '@/mobx'
+import { T, markStates, Instance, getParent, useMobxContext } from '@/mobx'
 
 const C11NSettingPanel = T.model('C11NSettingPanel', {
   activeTab: T.opt(T.enum('activeTab', ['general', 'theme']), 'general'),
@@ -38,4 +38,6 @@ const C11NSettingPanel = T.model('C11NSettingPanel', {
   }))
 
 export type TStore = Instance<typeof C11NSettingPanel>
+export const useStore = (): TStore => useMobxContext().store.c11NSettingPanel
+
 export default C11NSettingPanel

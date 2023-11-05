@@ -5,14 +5,14 @@
  */
 
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { ICON_CMD } from '@/config'
 import VIEW from '@/constant/view'
 import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 
 import Tabs from '@/widgets/Switcher/Tabs'
-import type { TStore } from './store'
+import { useStore } from './store'
 
 import GeneralSettings from './GeneralSettings'
 import ThemeSettings from './ThemeSettings'
@@ -50,11 +50,8 @@ const Content = ({ activeTab, curTheme, curThread, customization }) => {
   }
 }
 
-type TProps = {
-  c11NSettingPanel?: TStore
-}
-
-const C11NSettingPanelContainer: FC<TProps> = ({ c11NSettingPanel: store }) => {
+const C11NSettingPanel: FC = () => {
+  const store = useStore()
   useInit(store)
 
   const { activeTab, accountInfo, curThread, curTheme } = store
@@ -79,4 +76,4 @@ const C11NSettingPanelContainer: FC<TProps> = ({ c11NSettingPanel: store }) => {
   )
 }
 
-export default bond(C11NSettingPanelContainer, 'c11NSettingPanel') as FC<TProps>
+export default observer(C11NSettingPanel)
