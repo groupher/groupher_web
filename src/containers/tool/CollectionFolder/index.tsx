@@ -7,16 +7,16 @@
  */
 
 import { FC, Fragment } from 'react'
+import { observer } from 'mobx-react-lite'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { buildLog } from '@/logger'
-import { bond } from '@/mobx'
 import { ICON_CMD } from '@/config'
 
 import Modal from '@/widgets/Modal'
 import SectionLabel from '@/widgets/SectionLabel'
 
-import type { TStore } from './store'
+import { useStore } from './store'
 import Creator from './Creator'
 import Updater from './Updater'
 import Setter from './Setter'
@@ -28,16 +28,12 @@ import { useInit, onModalClose, changeViewTo } from './logic'
 const log = buildLog('C:CollectionFolder')
 
 type TProps = {
-  collectionFolder?: TStore
   testid?: string
   onSelect?: () => void
 }
 
-const CollectionFolderContainer: FC<TProps> = ({
-  collectionFolder: store,
-  testid = 'collection-folder',
-  onSelect = log,
-}) => {
+const CollectionFolder: FC<TProps> = ({ testid = 'collection-folder', onSelect = log }) => {
+  const store = useStore()
   const { isMobile } = useMobileDetect()
 
   useInit(store, isMobile)
@@ -105,4 +101,4 @@ const CollectionFolderContainer: FC<TProps> = ({
   )
 }
 
-export default bond(CollectionFolderContainer, 'collectionFolder') as FC<TProps>
+export default observer(CollectionFolder)
