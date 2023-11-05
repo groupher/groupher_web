@@ -79,7 +79,7 @@ const ModeLine = T.model('ModeLine', {
       return self.activeMenu !== ''
     },
     get isArticleDigestInViewport(): boolean {
-      const root = getParent(self) as TRootStore
+      // const root = getParent(self) as TRootStore
       // return root.articleDigest.inViewport
       // TODO:
       return true
