@@ -15,7 +15,6 @@ import MobileBanner from './MobileBanner'
 import Comments from '@/containers/unit/Comments'
 import UserProfile from '@/containers/user/UserProfile'
 import UserPublishedArticles from '@/containers/user/UserPublishedArticles'
-import UserSettings from '@/containers/user/UserSettings'
 
 import TabBar from '@/widgets/TabBar'
 
@@ -75,9 +74,6 @@ const TabberContent = ({ active }) => {
           <Comments apiMode="user_published" />
         </PublishedCommentsWrapper>
       )
-
-    case USER_THREAD.SETTINGS:
-      return <UserSettings />
 
     default:
       return <UserPublishedArticles />

@@ -48,8 +48,6 @@ import {
   TagsBarStore,
   UserListerStore,
   CashierStore,
-  // user page
-  UserSettingsStore,
 
   // GEN: IMPORT SUBSTORE
   PassportEditorStore,
@@ -128,11 +126,6 @@ const rootStore = T.model({
 
   // viewers (for drawer usage)
   mailsViewer: T.opt(MailsViewerStore, {}),
-
-  // user page
-  userSettings: T.opt(UserSettingsStore, {}),
-
-  // have a drink
 
   // GEN: PLUG SUBSTORE TO ROOTSTORE
   passportEditor: T.opt(PassportEditorStore, {}),
