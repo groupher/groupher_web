@@ -80,5 +80,4 @@ export { default as ArticleEditorStore } from '@/containers/editor/ArticleEditor
 export { default as UserProfileStore } from '@/containers/user/UserProfile/store'
 export { default as ModeLineMenuStore } from '@/containers/unit/ModeLineMenu/store'
 export { default as ModeLineStore } from '@/containers/unit/ModeLine/store'
-export { default as JoinModalStore } from '@/containers/tool/JoinModal/store'
 export { default as C11NSettingPanelStore } from '@/containers/tool/C11NSettingPanel/store'

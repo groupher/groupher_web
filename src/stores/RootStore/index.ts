@@ -79,7 +79,6 @@ import {
   ModeLineStore,
   // SubscribeContentStore,
   // RecipesContentStore,
-  JoinModalStore,
   C11NSettingPanelStore,
 } from '..'
 
@@ -163,7 +162,6 @@ const rootStore = T.model({
   modeLineMenu: T.opt(ModeLineMenuStore, {}),
   modeLine: T.opt(ModeLineStore, {}),
   // recipesContent: T.opt(RecipesContentStore, {}),
-  joinModal: T.opt(JoinModalStore, {}),
   c11NSettingPanel: T.opt(C11NSettingPanelStore, {}),
 })
   .views((self) => ({
