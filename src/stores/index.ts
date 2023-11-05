@@ -50,7 +50,6 @@ export { default as MailsViewerStore } from '@/containers/viewer/MailsViewer/sto
 
 // user page
 export { default as UserPublishedArticlesStore } from '@/containers/user/UserPublishedArticles/store'
-export { default as UserBillingStore } from '@/containers/user/UserBilling/store'
 export { default as UserSettingsStore } from '@/containers/user/UserSettings/store'
 
 // editor
