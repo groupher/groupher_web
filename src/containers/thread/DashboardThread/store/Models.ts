@@ -23,12 +23,11 @@ import {
   FOOTER_LAYOUT,
   RSS_TYPE,
 } from '@/constant/layout'
+import { BUILDIN_ALIAS } from '@/constant/name'
 
 import { T } from '@/mobx'
-// import { mockTags } from '@/mock'
 
 import {
-  BUILDIN_ALIAS,
   WIDGET_TYPE,
   TW_CARD,
   DEFAULT_FAQ_ITEMS,

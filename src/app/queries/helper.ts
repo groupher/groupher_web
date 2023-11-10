@@ -1,10 +1,8 @@
 import { reject, includes } from 'ramda'
 
 import type { TCommunity, TNameAlias, TDashboard } from '@/spec'
+import { BUILDIN_ALIAS } from '@/constant/name'
 import { removeEmptyValuesFromObject } from '@/helper'
-
-// TODO: move to global constant
-import { BUILDIN_ALIAS } from '@/containers/thread/DashboardThread/constant'
 
 import type { TGQSSRResult, TParsedWallpaper } from './spec'
 

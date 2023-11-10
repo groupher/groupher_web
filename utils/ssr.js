@@ -1,12 +1,11 @@
 import { merge, pick, isEmpty, findIndex, propEq, includes, values, reject } from 'ramda'
 
 import { DEFAULT_THEME } from '@/config'
-import { HCN } from '@/constant/name'
+import { HCN, BUILDIN_ALIAS } from '@/constant/name'
 import TYPE from '@/constant/type'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
 import { removeEmptyValuesFromObject } from '@/helper'
-import { BUILDIN_ALIAS } from '@/containers/thread/DashboardThread/constant'
 
 import { plural } from './fmt'
 
