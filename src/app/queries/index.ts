@@ -19,7 +19,7 @@ import { GQ_OPTION, TAGS_FILTER, ARTICLES_FILTER } from './constant'
 
 import { commonRes } from './helper'
 
-export { parseWallpaper, parseDashboard } from './helper'
+export { parseThread, parseWallpaper, parseDashboard } from './helper'
 
 export const useCommunity = (slug: string, _opt: TSSRQueryOpt = {}): TCommunityRes => {
   const opt = { ...GQ_OPTION, ..._opt }

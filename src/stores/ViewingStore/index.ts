@@ -71,7 +71,6 @@ const ViewingStore = T.model('ViewingStore', {
       viewingChanged(viewingArticle)
     },
     updateViewingCommunity(args: TCommunity): void {
-      console.log('## update community: ', args)
       self.community = { ...toJS(self.community), ...args }
     },
     changeCommunity(slug): void {

@@ -1,7 +1,8 @@
-import { reject, includes } from 'ramda'
+import { reject, includes, values } from 'ramda'
 
-import type { TCommunity, TNameAlias, TDashboard } from '@/spec'
+import type { TCommunity, TThread, TNameAlias, TDashboard } from '@/spec'
 import { BUILDIN_ALIAS } from '@/constant/name'
+import { THREAD } from '@/constant/thread'
 import { removeEmptyValuesFromObject } from '@/helper'
 
 import type { TGQSSRResult, TParsedWallpaper } from './spec'
@@ -12,6 +13,16 @@ export const commonRes = (result): TGQSSRResult => {
     error: result.error,
     stale: result.stale,
   }
+}
+
+/**
+ * parse active thread from pathname
+ */
+export const parseThread = (pathname: string): TThread => {
+  const _thread = pathname.split('/')[2] as TThread
+  if (!includes(_thread, values(THREAD))) return THREAD.POST
+
+  return _thread
 }
 
 export const parseWallpaper = (community: TCommunity): TParsedWallpaper => {
