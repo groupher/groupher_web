@@ -10,6 +10,8 @@ import { P } from '@/schemas'
 
 import { DEFAULT_OPTION, commonRes } from './helper'
 
+export { parseWallpaper, parseDashboard } from './helper'
+
 export const useQueryCommunity = (slug: string, _opt: TSSRQueryOpt = {}): TCommunityRes => {
   const opt = { ...DEFAULT_OPTION, ..._opt }
 

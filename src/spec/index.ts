@@ -33,7 +33,6 @@ export type { TAccount, TUser, TPagedUsers, TSimpleUser, TMembership, TC11N } fr
 export type { TC11NLayout } from './c11n'
 export type {
   TCommunity,
-  TMediaReport,
   TModerator,
   TPagedCommunities,
   TTag,
@@ -114,8 +113,10 @@ export type {
   TEnableConfig,
   TNameAlias,
   TDashboardThreadConfig,
-  TRSSType,
   TDashboardSEOConfig,
+  TRSSType,
+  TMediaReport,
+  TDashboard,
 } from './dashboard'
 
 export type {

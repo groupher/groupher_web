@@ -6,9 +6,7 @@ import { enableStaticRendering } from 'mobx-react-lite'
 
 import { useStore } from '@/stores/init'
 
-import { ssrParseWallpaper } from '@/utils/ssr'
-
-import { useQueryCommunity } from '../queries'
+import { useQueryCommunity, parseWallpaper, parseDashboard } from '../queries'
 // import { getData } from '@/utils/getData'
 // import { Store } from './Store'
 
@@ -27,7 +25,8 @@ const StoreWrapper = ({ children }) => {
   const { community } = useQueryCommunity('home')
   console.log('## got wallpaper before: ', community)
 
-  const wallpaper = ssrParseWallpaper(community)
+  const wallpaper = parseWallpaper(community)
+  const dashboard = parseDashboard(community)
   // console.log('## bbb: ', result.data)
 
   const store = useStore({
@@ -37,9 +36,9 @@ const StoreWrapper = ({ children }) => {
     wallpaperEditor: {
       ...wallpaper,
     },
-    // dashboardThread: {
-    //   ...dashboard,
-    // },
+    dashboardThread: {
+      ...dashboard,
+    },
   })
 
   return <Provider store={store}>{children}</Provider>
