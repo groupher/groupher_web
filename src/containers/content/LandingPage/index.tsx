@@ -4,7 +4,8 @@
  */
 
 import { FC, useEffect, useState } from 'react'
-import { ParallaxProvider } from 'react-scroll-parallax'
+import dynamic from 'next/dynamic'
+// import { ParallaxProvider } from 'react-scroll-parallax'
 import Router from 'next/router'
 import { observer } from 'mobx-react-lite'
 
@@ -48,6 +49,10 @@ import {
 
 import { useInit, changeGlowEffect } from './logic'
 
+const ParallaxProvider = dynamic(() => import('./Parallax'), {
+  ssr: false,
+})
+
 const LandingPage: FC = () => {
   const store = useStore()
   useInit(store)
@@ -62,99 +67,97 @@ const LandingPage: FC = () => {
   }, [wallpaper])
 
   return (
-    <ParallaxProvider>
-      <Wrapper testid="landing-page">
-        <PatternBg />
-        <DesktopOnly>
-          <BgGlow wallpaper={wallpaper} />
-        </DesktopOnly>
-        <Banner>
-          <HomeHeader />
-          <BetaText wallpaper={wallpaper}>开发 & 内测中</BetaText>
-          <Title>让你的产品聆听用户的声音</Title>
-          <Desc>
-            讨论区，GTD 看板，更新日志，帮助文档多合一，收集沉淀用户反馈，助你打造更好的产品
-          </Desc>
-          <ButtonGroup>
-            <StartButton
-              size="medium"
-              onClick={() => {
-                Router.push(`/${ROUTE.HOME}/${ROUTE.HELP}`)
-              }}
-            >
-              开始使用
-            </StartButton>
+    <Wrapper testid="landing-page">
+      <PatternBg />
+      <DesktopOnly>
+        <BgGlow wallpaper={wallpaper} />
+      </DesktopOnly>
+      <Banner>
+        <HomeHeader />
+        <BetaText wallpaper={wallpaper}>开发 & 内测中</BetaText>
+        <Title>让你的产品聆听用户的声音</Title>
+        <Desc>
+          讨论区，GTD 看板，更新日志，帮助文档多合一，收集沉淀用户反馈，助你打造更好的产品
+        </Desc>
+        <ButtonGroup>
+          <StartButton
+            size="medium"
+            onClick={() => {
+              Router.push(`/${ROUTE.HOME}/${ROUTE.HELP}`)
+            }}
+          >
+            开始使用
+          </StartButton>
 
-            <Tooltip
-              content={
-                <DemoPanel>
-                  <DemoMenuItem href={`/${ROUTE.HOME}`}>
-                    官方社区
-                    <LinkIcon />
-                  </DemoMenuItem>
-                  <DemoMenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`}>
-                    管理后台
-                    <LinkIcon />
-                  </DemoMenuItem>
-                </DemoPanel>
-              }
-              placement="bottom"
-              offset={[1, 5]}
-            >
-              <DemoButton size="medium" ghost>
-                在线体验 <ArrowIcon />
-              </DemoButton>
-            </Tooltip>
-          </ButtonGroup>
-        </Banner>
-        <CoverImage wallpaperInfo={wallpaperInfo} bannerLayout={bannerLayout} />
-        <WallpaperBar
-          wallpaper={wallpaper}
-          gradientWallpapers={gradientWallpapers}
-          bannerLayout={bannerLayout}
-          onLayoutChange={(layout) => setBannerLayout(layout)}
-        />
+          <Tooltip
+            content={
+              <DemoPanel>
+                <DemoMenuItem href={`/${ROUTE.HOME}`}>
+                  官方社区
+                  <LinkIcon />
+                </DemoMenuItem>
+                <DemoMenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`}>
+                  管理后台
+                  <LinkIcon />
+                </DemoMenuItem>
+              </DemoPanel>
+            }
+            placement="bottom"
+            offset={[1, 5]}
+          >
+            <DemoButton size="medium" ghost>
+              在线体验 <ArrowIcon />
+            </DemoButton>
+          </Tooltip>
+        </ButtonGroup>
+      </Banner>
+      <CoverImage wallpaperInfo={wallpaperInfo} bannerLayout={bannerLayout} />
+      <WallpaperBar
+        wallpaper={wallpaper}
+        gradientWallpapers={gradientWallpapers}
+        bannerLayout={bannerLayout}
+        onLayoutChange={(layout) => setBannerLayout(layout)}
+      />
 
-        <DesktopOnly>
-          <Divider top={100} bottom={100} />
-        </DesktopOnly>
-        <MobileOnly>
-          <Divider top={50} bottom={50} />
-        </MobileOnly>
+      <DesktopOnly>
+        <Divider top={100} bottom={100} />
+      </DesktopOnly>
+      <MobileOnly>
+        <Divider top={50} bottom={50} />
+      </MobileOnly>
 
-        <FeatureWall />
-        <DesktopOnly>
-          <Divider top={100} bottom={100} />
-        </DesktopOnly>
-        <MobileOnly>
-          <Divider top={50} bottom={50} />
-        </MobileOnly>
-        <EnjoyDev />
-        <DesktopOnly>
-          <Divider top={80} bottom={80} />
-        </DesktopOnly>
-        <MobileOnly>
-          <Divider top={-120} bottom={0} />
-        </MobileOnly>
-        <TechStacks />
-        <DesktopOnly>
-          <Divider top={80} bottom={80} />
-        </DesktopOnly>
-        <MobileOnly>
-          <Divider top={50} bottom={50} />
-        </MobileOnly>
-        <UsersWall />
-        <DesktopOnly>
-          <Divider top={60} bottom={60} />
-        </DesktopOnly>
-        <MobileOnly>
-          <Divider top={50} bottom={50} />
-        </MobileOnly>
-        <FAQWrapper>
-          <FaqList layout={DOC_FAQ_LAYOUT.FLAT} large />
-        </FAQWrapper>
-      </Wrapper>
-    </ParallaxProvider>
+      <FeatureWall />
+      <DesktopOnly>
+        <Divider top={100} bottom={100} />
+      </DesktopOnly>
+      <MobileOnly>
+        <Divider top={50} bottom={50} />
+      </MobileOnly>
+      <EnjoyDev />
+      <DesktopOnly>
+        <Divider top={80} bottom={80} />
+      </DesktopOnly>
+      <MobileOnly>
+        <Divider top={-120} bottom={0} />
+      </MobileOnly>
+      <TechStacks />
+      <DesktopOnly>
+        <Divider top={80} bottom={80} />
+      </DesktopOnly>
+      <MobileOnly>
+        <Divider top={50} bottom={50} />
+      </MobileOnly>
+      <UsersWall />
+      <DesktopOnly>
+        <Divider top={60} bottom={60} />
+      </DesktopOnly>
+      <MobileOnly>
+        <Divider top={50} bottom={50} />
+      </MobileOnly>
+      <FAQWrapper>
+        <FaqList layout={DOC_FAQ_LAYOUT.FLAT} large />
+      </FAQWrapper>
+    </Wrapper>
   )
 }
 

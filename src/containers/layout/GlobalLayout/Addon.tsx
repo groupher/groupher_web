@@ -23,7 +23,7 @@ const Addon: FC = () => {
       {/* @ts-ignore */}
       {/* {!isMobile && <AbuseReport />} */}
       {/* @ts-ignore */}
-      <Drawer metric={metric} />
+      {/* <Drawer metric={metric} /> */}
       <Subscriber />
       <Toaster position="top-center" closeButton />
       {/* @ts-ignore */}

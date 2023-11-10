@@ -48,6 +48,8 @@
     "@next/bundle-analyzer": "^12.2.5",
     "@soywod/pin-field": "^0.1.9",
     "@tippyjs/react": "^4.2.6",
+    "@urql/core": "^4.1.4",
+    "@urql/next": "^1.1.0",
     "chalk": "^2.4.1",
     "compatible-debug": "^1.0.0",
     "cookies-next": "^2.1.1",
@@ -83,7 +85,7 @@
     "react-masonry-css": "^1.0.14",
     "react-pin-field": "3.0.16",
     "react-portal": "^4.2.2",
-    "react-scroll-parallax": "^3.3.2",
+    "react-scroll-parallax": "^3.4.3",
     "react-select": "^5.5.7",
     "react-svg": "15.1.10",
     "react-swipeable": "^7.0.0",
@@ -106,11 +108,12 @@
     "stringz": "^2.0.0",
     "styled-components": "^6.1.0",
     "stylis": "^4.3.0",
+    "swr": "^2.2.4",
     "timeago-react": "^3.0.5",
     "tinykeys": "^2.1.0",
     "tsparticles-confetti": "^2.12.0",
     "typewriter-effect": "^2.19.0",
-    "urql": "^3.0.3"
+    "urql": "^4.0.5"
   },
   "devDependencies": {
     "@cfaester/enzyme-adapter-react-18": "0.5.1",

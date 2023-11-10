@@ -175,6 +175,7 @@ export type {
   TWallpaperGradientDir,
   TCustomWallpaper,
   TWallpaperInfo,
+  TWallpaperData,
 } from './wallpaper'
 
 export type { TColorName, TPrimaryColor, TColor } from './color'

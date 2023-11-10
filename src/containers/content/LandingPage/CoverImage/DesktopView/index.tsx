@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
 import { FC } from 'react'
-import { Parallax } from 'react-scroll-parallax'
 
 import DesktopDevice from './DesktopDevice'
 import DashboardDevice from './DashboardDevice'
@@ -18,12 +17,10 @@ const CoverImage: FC<TProps> = (props) => {
     <Wrapper>
       <DesktopDevice {...props} />
       <FreeLabel wallpaper={wallpaper}>It's free !</FreeLabel>
-      <Parallax speed={2} translateX={[0, 0]}>
-        <ParallaxWrapper>
-          <DashboardDevice />
-          <MobileDevice {...props} />
-        </ParallaxWrapper>
-      </Parallax>
+      <ParallaxWrapper>
+        <DashboardDevice />
+        <MobileDevice {...props} />
+      </ParallaxWrapper>
     </Wrapper>
   )
 }

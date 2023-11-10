@@ -79,6 +79,7 @@ import {
 
 const rootStore = T.model({
   // domain stores
+  activeDemo: T.opt(T.str, ''),
   account: T.opt(AccountStore, {}),
   route: T.opt(RouteStore, {}),
   viewing: T.opt(ViewingStore, {}),

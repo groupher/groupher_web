@@ -1,5 +1,6 @@
 import type { TPagi, TID } from './utils'
 import type { TSimpleUse } from './account'
+import type { TWallpaperData } from './wallpaper'
 
 type TMeta = {
   postsCount: number
@@ -24,6 +25,7 @@ export type TModerator = {
 }
 
 export type TDashboard = {
+  wallpaper?: TWallpaperData
   baseInfo?: {
     title?: string
     bio?: string

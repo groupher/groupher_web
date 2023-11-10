@@ -1,5 +1,5 @@
 import { merge, toUpper, clone } from 'ramda'
-import { createClient } from 'urql/core'
+import { createClient, cacheExchange, fetchExchange } from '@urql/core'
 
 import BStore from '@/utils/bstore'
 
@@ -16,11 +16,10 @@ export const buildGQClient = (): any => {
 export const makeGQClient = (token: string): any => {
   const client = createClient({
     url: GRAPHQL_ENDPOINT,
-    fetchOptions: () => {
-      return {
-        headers: { authorization: token ? `Bearer ${token}` : '' },
-      }
-    },
+    exchanges: [cacheExchange, fetchExchange],
+    fetchOptions: () => ({
+      headers: { authorization: token ? `Bearer ${token}` : '' },
+    }),
   })
 
   // see https://formidable.com/open-source/urql/docs/basics/core/
@@ -36,6 +35,7 @@ export const makeGQClient = (token: string): any => {
 export const makeGithubExplore = (GRAPHQL_ENDPOINT: string, token: string): any => {
   const client = createClient({
     url: GRAPHQL_ENDPOINT,
+    exchanges: [cacheExchange, fetchExchange],
     fetchOptions: () => {
       return {
         headers: { authorization: token ? `Bearer ${token}` : '' },

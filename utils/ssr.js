@@ -235,6 +235,8 @@ const parseDashboardAlias = (nameAlias) => {
 }
 
 export const ssrParseWallpaper = (community) => {
+  if (!community) return {}
+
   const { dashboard } = community
   const { wallpaper } = dashboard
 

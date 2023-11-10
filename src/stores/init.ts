@@ -12,14 +12,16 @@ import RootStore from './RootStore'
 let clientSideRootStore: TRootStore | undefined
 
 export const initRootStore = (snapshot = null): TRootStore => {
-  const _store = clientSideRootStore ?? RootStore.create(snapshot, {})
+  const _store = clientSideRootStore ?? RootStore.create(snapshot || {}, {})
 
   if (snapshot) {
     applySnapshot(_store, snapshot)
   }
 
   // For SSG and SSR always create a new store
-  if (typeof window === 'undefined') return _store
+  if (typeof window === 'undefined') {
+    return _store
+  }
   // Create the store once in the client
   if (!clientSideRootStore) clientSideRootStore = _store
 
@@ -28,6 +30,7 @@ export const initRootStore = (snapshot = null): TRootStore => {
 
 // this is from next.js offical MST example
 export const useStore = (initialState = {}): TRootStore => {
+  console.log('## initialState : ', initialState)
   const store = useMemo(() => initRootStore(initialState), [initialState])
   return store
 }

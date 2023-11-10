@@ -40,7 +40,7 @@ import {
 } from './styles'
 import { useInit } from './logic'
 
-let DashboardAlert = null
+// let DashboardAlert = null
 
 type TProps = {
   children: ReactNode
@@ -53,18 +53,18 @@ const GlobalLayout: FC<TProps> = ({ children }) => {
   const metric = useMetric()
   const { hasShadow } = useWallpaper()
 
-  const [showDashboardAlertUI, setShowDashboardAlertUI] = useState(false)
+  // const [showDashboardAlertUI, setShowDashboardAlertUI] = useState(false)
 
-  const { isMobile, globalLayout, showDashboardAlert } = store
+  const { isMobile, globalLayout } = store
 
-  useEffect(() => {
-    if (showDashboardAlert) {
-      DashboardAlert = dynamic(() => import('./DashboardAlert'), { ssr: false })
-      setShowDashboardAlertUI(true)
-    } else {
-      setShowDashboardAlertUI(false)
-    }
-  }, [showDashboardAlert])
+  // useEffect(() => {
+  //   if (showDashboardAlert) {
+  //     DashboardAlert = dynamic(() => import('./DashboardAlert'), { ssr: false })
+  //     setShowDashboardAlertUI(true)
+  //   } else {
+  //     setShowDashboardAlertUI(false)
+  //   }
+  // }, [showDashboardAlert])
 
   return (
     <BalancerTextProvider>
@@ -93,7 +93,7 @@ const GlobalLayout: FC<TProps> = ({ children }) => {
           </ScrollWrapper>
         </Skeleton>
 
-        {showDashboardAlertUI && <DashboardAlert />}
+        {/* {showDashboardAlertUI && <DashboardAlert />} */}
       </ThemePalette>
     </BalancerTextProvider>
   )
