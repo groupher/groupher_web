@@ -7,13 +7,13 @@ import PinSVG from '@/icons/Pin'
 import UserBadge from '@/icons/UserBadge'
 
 type TWrapper = {
-  isPinned: boolean
+  $isPinned: boolean
 }
 
 export const Wrapper = styled.div<TWrapper>`
   position: relative;
   ${css.row()};
-  padding-top: ${({ isPinned }) => (isPinned ? '24px' : '20px')};
+  padding-top: ${({ $isPinned }) => ($isPinned ? '24px' : '20px')};
   position: relative;
   background: transparent;
 `

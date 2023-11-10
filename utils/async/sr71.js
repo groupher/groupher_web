@@ -1,12 +1,10 @@
 import { forEach } from 'ramda'
-import PubSub from 'pubsub-js'
 import { Subject, timer } from 'rxjs'
 
 // debounceTime,
 import { switchMap, takeUntil, debounce, merge } from 'rxjs/operators'
 
-// import { TimeoutObservable } from './handler'
-// import { TIMEOUT_THRESHOLD } from './config'
+import PubSub from '@/utils/pubsub'
 
 import { queryPromise, mutatePromise, restGetPromise } from './methods'
 

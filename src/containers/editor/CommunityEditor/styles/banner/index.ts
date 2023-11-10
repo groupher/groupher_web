@@ -14,10 +14,10 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   border-bottom: 1px solid;
   border-bottom: ${theme('banner.spliter')};
 `
-export const SloganTextWrapper = styled.div<{ highlight: boolean }>`
+export const SloganTextWrapper = styled.div<{ $highlight: boolean }>`
   margin-left: 3px;
   margin-right: 3px;
 
-  font-weight: ${({ highlight }) => (highlight ? 'bold' : '')};
-  color: ${({ highlight }) => (highlight ? theme('article.title') : theme('article.digest'))};
+  font-weight: ${({ $highlight }) => ($highlight ? 'bold' : '')};
+  color: ${({ $highlight }) => ($highlight ? theme('article.title') : theme('article.digest'))};
 `

@@ -1,8 +1,6 @@
 // eslint-disable-next-line import/no-unresolved
 import { toast as hotToast } from 'sonner'
 
-import PubSub from 'pubsub-js'
-
 import type {
   TToastType,
   TAttInfo,
@@ -21,6 +19,7 @@ import { THREAD } from '@/constant/thread'
 import TYPE from '@/constant/type'
 import EVENT from '@/constant/event'
 
+import PubSub from './pubsub'
 import BStore from './bstore'
 import { scrollToHeader } from './dom'
 

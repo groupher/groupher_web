@@ -24,7 +24,6 @@ type TProps = {
   children: ReactNode
   size?: TSize
   margin?: string
-  highlight?: boolean
   className?: string
   dimWhenIdle?: boolean
 }
@@ -38,7 +37,6 @@ const IconText: FC<TProps> = ({
   size = SIZE.SMALL,
   dimWhenIdle = false,
   margin,
-  highlight = false,
 }) => {
   const src = iconSrc || `${ICON}/${path}`
 

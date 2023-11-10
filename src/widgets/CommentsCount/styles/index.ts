@@ -20,9 +20,9 @@ export const HighlightWrapper = styled(Wrapper)`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `
-type TCommentsIcon = { highlight?: boolean; size: TSizeSM }
+type TCommentsIcon = { $highlight?: boolean; size: TSizeSM }
 export const CommentsIcon = styled(CommentSVG)<TCommentsIcon>`
-  fill: ${({ highlight }) => (highlight ? theme('heightIcon') : theme('article.info'))};
+  fill: ${({ $highlight }) => ($highlight ? theme('heightIcon') : theme('article.info'))};
   ${({ size }) => (size === SIZE.MEDIUM ? css.size(11) : css.size(10))};
   margin-right: 4px;
   margin-top: 2px;

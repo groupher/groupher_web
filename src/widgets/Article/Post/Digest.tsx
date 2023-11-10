@@ -64,7 +64,7 @@ const PostLayout: FC = () => {
         </Topping>
 
         <ArticlePinLabel isPinned={isPinned} top={56} />
-        <Title isPinned={isPinned} $color={primaryColor}>
+        <Title $isPinned={isPinned} $color={primaryColor}>
           {title}
           <SubTitle>{innerId}</SubTitle>
         </Title>
