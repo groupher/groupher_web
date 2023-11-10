@@ -1,6 +1,7 @@
-import type { TCommunity, TWallpaperData } from '@/spec'
+import type { TCommunity, TWallpaperData, TPagedArticles } from '@/spec'
 
 export type TCommunityRes = TGQSSRResult & { community: TCommunity }
+export type TPagedPostsRes = TGQSSRResult & { pagedPosts: TPagedArticles }
 
 export type TSSRQueryOpt = {
   skip?: boolean

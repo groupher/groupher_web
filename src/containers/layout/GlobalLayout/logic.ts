@@ -133,6 +133,7 @@ const ErrSolver = [
 export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
+    console.log('## global init hanlders')
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
 
     initAppVersion()

@@ -27,8 +27,6 @@ const GroupLayout: FC = () => {
   const { logo, desc } = useViewingCommunity()
   const { links } = useFooterLinks()
 
-  console.log('## viewing community: ', desc)
-
   // @ts-ignore
   const groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
   const groupKeys = keys(groupedLinks)

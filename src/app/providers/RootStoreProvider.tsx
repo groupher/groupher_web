@@ -6,7 +6,7 @@ import { enableStaticRendering } from 'mobx-react-lite'
 
 import { useStore } from '@/stores/init'
 
-import { useQueryCommunity, parseWallpaper, parseDashboard } from '../queries'
+import { useQueryCommunity, usePagedPosts, parseWallpaper, parseDashboard } from '../queries'
 // import { getData } from '@/utils/getData'
 // import { Store } from './Store'
 
@@ -23,13 +23,18 @@ const StoreWrapper = ({ children }) => {
 
   // const [result] = useQueryCommunity('home', { skip: pathname === '/home' })
   const { community } = useQueryCommunity('home')
-  console.log('## got wallpaper before: ', community)
+  // console.log('## got wallpaper before: ', community)
+
+  const { pagedPosts } = usePagedPosts()
 
   const wallpaper = parseWallpaper(community)
   const dashboard = parseDashboard(community)
   // console.log('## bbb: ', result.data)
 
   const store = useStore({
+    articlesThread: {
+      pagedPosts,
+    },
     viewing: {
       community: community || {},
     },

@@ -30,7 +30,6 @@ export const initRootStore = (snapshot = null): TRootStore => {
 
 // this is from next.js offical MST example
 export const useStore = (initialState = {}): TRootStore => {
-  console.log('## initialState : ', initialState)
   const store = useMemo(() => initRootStore(initialState), [initialState])
   return store
 }

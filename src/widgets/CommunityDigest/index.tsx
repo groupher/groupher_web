@@ -21,8 +21,6 @@ const log = buildLog('C:CommunityDigest')
 
 const CommunityDigest: FC = () => {
   const router = useRouter()
-  console.log('## router: ', router)
-
   const bannerLayout = useBannerLayout()
 
   // always use HeaderLayout in dashboard settings

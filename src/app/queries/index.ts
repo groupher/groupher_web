@@ -5,7 +5,7 @@
  */
 import { useQuery } from '@urql/next'
 
-import type { TCommunityRes, TSSRQueryOpt } from './spec'
+import type { TCommunityRes, TPagedPostsRes, TSSRQueryOpt } from './spec'
 import { P } from '@/schemas'
 
 import { DEFAULT_OPTION, commonRes } from './helper'
@@ -30,4 +30,25 @@ export const useQueryCommunity = (slug: string, _opt: TSSRQueryOpt = {}): TCommu
   }
 }
 
-export const holder = 1
+export const usePagedPosts = (filter = {}, _opt: TSSRQueryOpt = {}): TPagedPostsRes => {
+  const opt = { ...DEFAULT_OPTION, ..._opt }
+
+  const [result] = useQuery({
+    query: P.pagedPosts,
+    variables: {
+      filter: {
+        page: 1,
+        size: 10,
+        community: 'home',
+        // tag?
+      },
+      userHasLogin: false,
+    },
+    pause: opt.skip,
+  })
+
+  return {
+    ...commonRes(result),
+    pagedPosts: result.data.pagedPosts,
+  }
+}
