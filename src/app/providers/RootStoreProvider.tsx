@@ -1,12 +1,13 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import { Provider } from 'mobx-react'
 import { enableStaticRendering } from 'mobx-react-lite'
 
 import { useStore } from '@/stores/init'
+import TYPE from '@/constant/type'
 
-import { useQueryCommunity, usePagedPosts, parseWallpaper, parseDashboard } from '../queries'
+import { useCommunity, useTags, usePagedPosts, parseWallpaper, parseDashboard } from '../queries'
 // import { getData } from '@/utils/getData'
 // import { Store } from './Store'
 
@@ -16,34 +17,34 @@ enableStaticRendering(typeof window === 'undefined')
 
 const StoreWrapper = ({ children }) => {
   // console.log('## init in layout, load community info, dashboard info')
-  // const { data, error, isLoading } = useSWR('https://api.sampleapis.com/beers/ale', fetcher)
-  const pathname = usePathname()
+  //  const pathname = usePathname()
+  const params = useParams()
+  const communitySlug = params.community as string
+  // console.log('## communitySlug: ', communitySlug)
 
-  // console.log('## curPath: ', pathname)
+  const skip = !communitySlug
 
   // const [result] = useQueryCommunity('home', { skip: pathname === '/home' })
-  const { community } = useQueryCommunity('home')
-  // console.log('## got wallpaper before: ', community)
+  const { community } = useCommunity(communitySlug, { skip })
+  const { pagedPosts } = usePagedPosts({ community: communitySlug }, { skip })
+  const { tags } = useTags({ community: communitySlug }, { skip })
 
-  const { pagedPosts } = usePagedPosts()
-
-  const wallpaper = parseWallpaper(community)
-  const dashboard = parseDashboard(community)
-  // console.log('## bbb: ', result.data)
+  const wallpaper = !skip ? parseWallpaper(community) : {}
+  const dashboard = !skip ? parseDashboard(community) : {}
 
   const store = useStore({
     articlesThread: {
       pagedPosts,
+      resState: TYPE.RES_STATE.DONE,
+    },
+    tagsBar: {
+      tags,
     },
     viewing: {
       community: community || {},
     },
-    wallpaperEditor: {
-      ...wallpaper,
-    },
-    dashboardThread: {
-      ...dashboard,
-    },
+    wallpaperEditor: wallpaper,
+    dashboardThread: dashboard,
   })
 
   return <Provider store={store}>{children}</Provider>

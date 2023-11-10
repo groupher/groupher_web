@@ -6,11 +6,6 @@ import { removeEmptyValuesFromObject } from '@/helper'
 
 import type { TGQSSRResult, TParsedWallpaper } from './spec'
 
-export const DEFAULT_OPTION = {
-  skip: false,
-  policy: 'cache-first',
-}
-
 export const commonRes = (result): TGQSSRResult => {
   return {
     fetching: result.fetching,

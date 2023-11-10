@@ -1,6 +1,7 @@
-import type { TCommunity, TWallpaperData, TPagedArticles } from '@/spec'
+import type { TCommunity, TWallpaperData, TPagedArticles, TTag } from '@/spec'
 
 export type TCommunityRes = TGQSSRResult & { community: TCommunity }
+export type TTagsRes = TGQSSRResult & { tags: TTag[] }
 export type TPagedPostsRes = TGQSSRResult & { pagedPosts: TPagedArticles }
 
 export type TSSRQueryOpt = {
@@ -17,4 +18,15 @@ export type TGQSSRResult = {
 
 export type TParsedWallpaper = TWallpaperData & {
   initWallpaper: TWallpaperData
+}
+
+export type TTagsFilter = {
+  community?: string
+  thread?: string
+}
+
+export type TArticlesFIlter = {
+  page?: number
+  size?: number
+  community?: string
 }
