@@ -1,20 +1,21 @@
 import { join, isEmpty } from 'ramda'
 
 /* import { Observable } from 'rxjs/Observable' */
-import { of } from 'rxjs'
+// import { of } from 'rxjs'
 
 import ERR from '@/constant/err'
 
-import { TIMEOUT_THRESHOLD } from './config'
+// import { TIMEOUT_THRESHOLD } from './config'
 import { buildLog } from '../logger'
 
 /* eslint-disable-next-line */
 const log = buildLog('Async')
 
-export const TimeoutObservable = of({
-  error: ERR.TIMEOUT,
-  details: `server has no-response in ${Math.round((TIMEOUT_THRESHOLD / 1000) * 100) / 100} secs`,
-})
+// export const TimeoutObservable = of({
+//   error: ERR.TIMEOUT,
+//   details: `server has no-response in ${Math.round((TIMEOUT_THRESHOLD / 1000) * 100)
+// / 100} secs`,
+// })
 
 // refator later
 const formatDetail = (errors) => {

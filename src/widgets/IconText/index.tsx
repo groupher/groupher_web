@@ -44,12 +44,8 @@ const IconText: FC<TProps> = ({
 
   return (
     <Wrapper testid="iconText" className={className} dimWhenIdle={dimWhenIdle}>
-      {!nilOrEmpty(src) && (
-        <Icon src={src} size={size} $round={round} margin={margin} highlight={highlight} />
-      )}
-      <Text size={size} highlight={highlight}>
-        {children}
-      </Text>
+      {!nilOrEmpty(src) && <Icon src={src} size={size} $round={round} margin={margin} />}
+      <Text size={size}>{children}</Text>
     </Wrapper>
   )
 }

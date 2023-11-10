@@ -16,7 +16,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 // if move pwa config to witPlugins, it will not work
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['ramda'],
+  // transpilePackages: ['ramda'],
   compiler: {
     // see https://styled-components.com/docs/tooling#babel-plugin for more info on the options.
     styledComponents: true,
