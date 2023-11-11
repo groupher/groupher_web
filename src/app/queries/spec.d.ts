@@ -3,6 +3,7 @@ import type { TCommunity, TWallpaperData, TPagedArticles, TTag } from '@/spec'
 export type TCommunityRes = TGQSSRResult & { community: TCommunity }
 export type TTagsRes = TGQSSRResult & { tags: TTag[] }
 export type TPagedPostsRes = TGQSSRResult & { pagedPosts: TPagedArticles }
+export type TPagedChangelogsRes = TGQSSRResult & { pagedChangelogs: TPagedArticles }
 
 export type TSSRQueryOpt = {
   skip?: boolean

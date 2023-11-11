@@ -11,6 +11,7 @@ import type {
   TCommunityRes,
   TTagsRes,
   TPagedPostsRes,
+  TPagedChangelogsRes,
   TSSRQueryOpt,
   TTagsFilter,
   TArticlesFIlter,
@@ -81,5 +82,28 @@ export const usePagedPosts = (
   return {
     ...commonRes(result),
     pagedPosts: result.data?.pagedPosts,
+  }
+}
+
+export const usePagedChangelogs = (
+  filter: TArticlesFIlter = ARTICLES_FILTER,
+  _opt: TSSRQueryOpt = {},
+): TPagedChangelogsRes => {
+  const opt = { ...GQ_OPTION, ..._opt }
+
+  const { page, size, community } = { ...ARTICLES_FILTER, ...filter }
+
+  const [result] = useQuery({
+    query: P.pagedChangelogs,
+    variables: {
+      filter: { page, size, community },
+      userHasLogin: false,
+    },
+    pause: opt.skip,
+  })
+
+  return {
+    ...commonRes(result),
+    pagedChangelogs: result.data?.pagedChangelogs,
   }
 }

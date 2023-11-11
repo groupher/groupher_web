@@ -5,12 +5,14 @@ import { Provider } from 'mobx-react'
 import { enableStaticRendering } from 'mobx-react-lite'
 
 import { useStore } from '@/stores/init'
+import { THREAD } from '@/constant/thread'
 import TYPE from '@/constant/type'
 
 import {
   useCommunity,
   useTags,
   usePagedPosts,
+  usePagedChangelogs,
   parseThread,
   parseWallpaper,
   parseDashboard,
@@ -31,7 +33,17 @@ const StoreWrapper = ({ children }) => {
 
   // const [result] = useQueryCommunity('home', { skip: pathname === '/home' })
   const { community } = useCommunity(communitySlug, { skip })
-  const { pagedPosts } = usePagedPosts({ community: communitySlug }, { skip })
+
+  const { pagedPosts } = usePagedPosts(
+    { community: communitySlug },
+    { skip: activeThread !== THREAD.POST },
+  )
+
+  const { pagedChangelogs } = usePagedChangelogs(
+    { community: communitySlug },
+    { skip: activeThread !== THREAD.CHANGELOG },
+  )
+
   const { tags } = useTags({ community: communitySlug }, { skip })
 
   const wallpaper = !skip ? parseWallpaper(community) : {}
@@ -40,6 +52,7 @@ const StoreWrapper = ({ children }) => {
   const store = useStore({
     articlesThread: {
       pagedPosts,
+      pagedChangelogs,
       resState: TYPE.RES_STATE.DONE,
     },
     tagsBar: {

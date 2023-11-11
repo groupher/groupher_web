@@ -4,9 +4,8 @@
  *
  */
 
-import { FC, ReactNode, useEffect, useState } from 'react'
+import { FC, ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
-import dynamic from 'next/dynamic'
 import { Provider as BalancerTextProvider } from 'react-wrap-balancer'
 
 import METRIC from '@/constant/metric'

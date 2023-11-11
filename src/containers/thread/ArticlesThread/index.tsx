@@ -12,6 +12,7 @@ import { BANNER_LAYOUT } from '@/constant/layout'
 
 import { buildLog } from '@/logger'
 import usePostLayout from '@/hooks/usePostLayout'
+import { THREAD } from '@/constant/thread'
 
 import ThreadSidebar from '@/containers/thread/ThreadSidebar'
 import PagedArticles from '@/widgets/PagedArticles'
@@ -51,7 +52,7 @@ const ArticlesThread: FC = () => {
     }
   }, [trackerRef])
 
-  if (store.curThread !== 'post') return <LavaLampLoading top={20} />
+  if (store.curThread !== THREAD.POST) return <LavaLampLoading top={20} />
 
   const {
     isMobile,
