@@ -2,8 +2,8 @@
 
 import ChangeLogContent from '@/containers/content/CommunityContent/ChangeLogContent'
 
-const CommunityChangelogePage = () => {
+const CommunityChangelogPage = () => {
   return <ChangeLogContent />
 }
 
-export default CommunityChangelogePage
+export default CommunityChangelogPage
