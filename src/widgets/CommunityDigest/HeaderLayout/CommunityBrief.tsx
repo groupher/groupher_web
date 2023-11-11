@@ -47,14 +47,14 @@ const CommunityBrief: FC = () => {
             <div>社区主页</div>
           </PanelItem>
 
-          <PanelItem href={dashboard.baseInfo.homepage} outside>
+          <PanelItem href={dashboard.baseInfo.homepage} $outside>
             <Icon.Global />
             <div>返回官网</div>
             <SpaceGrow />
             <ArrowIcon />
           </PanelItem>
 
-          <PanelItem href={`/${slug}`} outside>
+          <PanelItem href={`/${slug}`} $outside>
             <Icon.Github />
             <div>Github</div>
             <SpaceGrow />
@@ -62,7 +62,7 @@ const CommunityBrief: FC = () => {
           </PanelItem>
 
           <SexyDivider top={5} bottom={5} />
-          <PanelItem href="/apply/community" outside>
+          <PanelItem href="/apply/community" $outside>
             <Icon.Plus />
             <div>新社区</div>
             <SpaceGrow />

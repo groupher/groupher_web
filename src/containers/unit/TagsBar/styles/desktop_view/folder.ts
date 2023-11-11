@@ -9,7 +9,7 @@ import MoreSVG from '@/icons/menu/MoreL'
 export const Wrapper = styled.div``
 export const Header = styled.div<TActive>`
   ${css.row('align-center')};
-  display: ${({ show }) => (show ? 'flex' : 'none')};
+  display: ${({ $show }) => ($show ? 'flex' : 'none')};
   margin-bottom: 8px;
   margin-left: 3px;
   &:hover {

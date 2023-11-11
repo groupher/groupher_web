@@ -22,6 +22,7 @@ export type TActive = {
   active?: boolean
   $active?: boolean
   show?: boolean
+  $show?: boolean
   visible?: boolean
   $visible?: boolean
 }

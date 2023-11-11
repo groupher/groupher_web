@@ -90,7 +90,7 @@ export const ToolPanel = styled.div`
   width: 150px;
   min-height: 112px;
 `
-export const PanelItem = styled(Link)<{ outside?: boolean }>`
+export const PanelItem = styled(Link)<{ $outside?: boolean }>`
   ${css.row('align-center')};
   color: ${theme('article.digest')};
   width: calc(100% + 10px);
@@ -106,7 +106,7 @@ export const PanelItem = styled(Link)<{ outside?: boolean }>`
   &:hover {
     color: ${theme('article.title')};
     background: ${theme('hoverBg')};
-    text-decoration: ${({ outside }) => (outside ? 'underline' : 'none')};
+    text-decoration: ${({ $outside }) => ($outside ? 'underline' : 'none')};
   }
 `
 export const ArrowIcon = styled(ArrowSVG)`

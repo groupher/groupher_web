@@ -39,7 +39,7 @@ const Category: FC<TProps> = ({ color, title, desc, articles }) => {
       <Header>
         <Topping>
           <UpdateDate>2022-3-4</UpdateDate>
-          <Facepile users={mockUsers(2)} total={3} showTotalNumber />
+          <Facepile users={mockUsers(2)} total={3} />
         </Topping>
 
         <Title>{title}</Title>
