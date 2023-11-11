@@ -11,6 +11,7 @@ import type {
   TCommunityRes,
   TTagsRes,
   TPagedPostsRes,
+  TGroupedKanbanPostsRes,
   TPagedChangelogsRes,
   TSSRQueryOpt,
   TTagsFilter,
@@ -82,6 +83,26 @@ export const usePagedPosts = (
   return {
     ...commonRes(result),
     pagedPosts: result.data?.pagedPosts,
+  }
+}
+
+export const useGroupedKanbanPosts = (
+  community: string,
+  _opt: TSSRQueryOpt = {},
+): TGroupedKanbanPostsRes => {
+  const opt = { ...GQ_OPTION, ..._opt }
+
+  const [result] = useQuery({
+    query: P.groupedKanbanPosts,
+    variables: {
+      community,
+    },
+    pause: opt.skip,
+  })
+
+  return {
+    ...commonRes(result),
+    groupedKanbanPosts: result.data?.groupedKanbanPosts,
   }
 }
 

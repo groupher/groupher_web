@@ -5,6 +5,14 @@ export type TTagsRes = TGQSSRResult & { tags: TTag[] }
 export type TPagedPostsRes = TGQSSRResult & { pagedPosts: TPagedArticles }
 export type TPagedChangelogsRes = TGQSSRResult & { pagedChangelogs: TPagedArticles }
 
+export type TGroupedKanbanPostsRes = TGQSSRResult & {
+  groupedKanbanPosts: {
+    todo: TPagedArticles
+    wip: TPagedArticles
+    done: TPagedArticles
+  }
+}
+
 export type TSSRQueryOpt = {
   skip?: boolean
   // cache-first is the default

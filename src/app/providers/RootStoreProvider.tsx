@@ -12,6 +12,7 @@ import {
   useCommunity,
   useTags,
   usePagedPosts,
+  useGroupedKanbanPosts,
   usePagedChangelogs,
   parseThread,
   parseWallpaper,
@@ -39,6 +40,10 @@ const StoreWrapper = ({ children }) => {
     { skip: activeThread !== THREAD.POST },
   )
 
+  const { groupedKanbanPosts } = useGroupedKanbanPosts(communitySlug, {
+    skip: activeThread !== THREAD.KANBAN,
+  })
+
   const { pagedChangelogs } = usePagedChangelogs(
     { community: communitySlug },
     { skip: activeThread !== THREAD.CHANGELOG },
@@ -50,6 +55,7 @@ const StoreWrapper = ({ children }) => {
   const dashboard = !skip ? parseDashboard(community) : {}
 
   const store = useStore({
+    kanbanThread: groupedKanbanPosts,
     articlesThread: {
       pagedPosts,
       pagedChangelogs,
