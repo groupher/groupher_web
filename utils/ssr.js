@@ -1,4 +1,4 @@
-import { merge, pick, isEmpty, findIndex, propEq, includes, values, reject } from 'ramda'
+import { mergeRight, pick, isEmpty, findIndex, propEq, includes, values, reject } from 'ramda'
 
 import { DEFAULT_THEME } from '@/config'
 import { HCN, BUILDIN_ALIAS } from '@/constant/name'
@@ -67,7 +67,7 @@ export const ssrFetchPrepare = (context, opt) => {
 }
 
 const ssrFetchToken = (context, opt) => {
-  const { tokenExpired } = merge({ tokenExpired: false }, opt)
+  const { tokenExpired } = mergeRight({ tokenExpired: false }, opt)
   return !tokenExpired ? getJwtToken(context) : null
 }
 

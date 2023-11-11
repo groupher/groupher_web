@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { merge } from 'ramda'
+import { mergeRight } from 'ramda'
 
 import type { TPlatform } from '@/spec'
 import { Global } from '@/helper'
@@ -51,7 +51,7 @@ const usePlatform = (/* { breakpoint } */): TPlatform => {
     const isMobile = Global.innerWidth <= 800
 
     setPlatform(
-      merge(initPlatform, {
+      mergeRight(initPlatform, {
         isFirefox,
         isSafari,
         isIE,

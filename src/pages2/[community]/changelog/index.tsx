@@ -1,5 +1,5 @@
 import { GetServerSideProps } from 'next'
-import { merge } from 'ramda'
+import { mergeRight } from 'ramda'
 import { Provider } from 'mobx-react'
 
 import { HCN } from '@/constant/name'
@@ -65,7 +65,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const dashboard = ssrParseDashboard(community)
   const wallpaper = ssrParseWallpaper(community)
 
-  const initProps = merge(
+  const initProps = mergeRight(
     {
       ...ssrBaseStates(resp),
       route: {

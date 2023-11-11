@@ -3,7 +3,7 @@
  *
  */
 
-import { reduce, keys, merge, pick, startsWith } from 'ramda'
+import { reduce, keys, mergeRight, pick, startsWith } from 'ramda'
 
 import type { TRootStore, TSubmitState, TUser } from '@/spec'
 import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
@@ -13,7 +13,7 @@ import { SEX } from './constant'
 
 const safeMap = (obj) => {
   return reduce(
-    merge,
+    mergeRight,
     {},
     keys(obj).map((key) => {
       if (key === 'fromGithub') {

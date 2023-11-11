@@ -1,6 +1,5 @@
 import {
   compose,
-  contains,
   isEmpty,
   head,
   split,
@@ -11,7 +10,8 @@ import {
   slice,
   clone,
   toUpper,
-  merge,
+  mergeRight,
+  includes,
 } from 'ramda'
 
 import { HCN } from '@/constant/name'
@@ -32,7 +32,7 @@ const parsePathList = compose(
   reject(isEmpty),
   split('/'),
   head,
-  reject(contains('=')),
+  reject(includes('=')),
   reject(isEmpty),
   split('?'),
   prop('url'),
@@ -135,7 +135,7 @@ export const getRoutePathList = compose(
   reject(isEmpty),
   split('/'),
   head,
-  reject(contains('=')),
+  reject(includes('=')),
   reject(isEmpty),
   split('?'),
 )
@@ -219,7 +219,7 @@ const mergePagiQuery = (query = {}, opt = { pagi: 'string' }) => {
     routeQuery.page = parseInt(routeQuery.page, 10)
   }
 
-  return merge(defaultQuery, routeQuery)
+  return mergeRight(defaultQuery, routeQuery)
 }
 
 // convert url query string to json, with optional pagi info
@@ -334,7 +334,7 @@ export const markRoute = (query, opt = { noPagiInfo: true }) => {
     ...opt,
   })
 
-  const newQueryObj = pickBy((v) => !nilOrEmpty(v), merge(exsitQuery, query))
+  const newQueryObj = pickBy((v) => !nilOrEmpty(v), mergeRight(exsitQuery, query))
   const newQueryString = serializeQuery(newQueryObj)
 
   Global.history.pushState({}, null, newQueryString)

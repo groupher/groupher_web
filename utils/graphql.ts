@@ -1,4 +1,4 @@
-import { merge, toUpper, clone } from 'ramda'
+import { mergeRight, toUpper, clone } from 'ramda'
 import { createClient, cacheExchange, fetchExchange } from '@urql/core'
 
 import BStore from '@/utils/bstore'
@@ -47,7 +47,7 @@ export const makeGithubExplore = (GRAPHQL_ENDPOINT: string, token: string): any 
 }
 
 export const pagiFilter = (page, options = {}): Record<string, any> =>
-  merge({ page, size: PAGE_SIZE.D }, options)
+  mergeRight({ page, size: PAGE_SIZE.D }, options)
 
 /*
  * map value(string) to UPPER case for server absinthe-atom format

@@ -1,4 +1,4 @@
-import { merge, clone, keys, findIndex, forEach } from 'ramda'
+import { mergeRight, clone, keys, findIndex, forEach } from 'ramda'
 
 import type { TTabItem } from '@/spec'
 
@@ -29,7 +29,7 @@ export const mapAlias = (_source: TTabItem[], communitySlug: string): TTabItem[]
   forEach((key) => {
     const index = findIndex((item) => item.slug === key, source)
     if (index >= 0) {
-      source[index] = merge(source[index], { alias: communityAlias[key] })
+      source[index] = mergeRight(source[index], { alias: communityAlias[key] })
     }
   }, aliasKeys)
 

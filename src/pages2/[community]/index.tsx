@@ -1,5 +1,5 @@
 import { GetServerSideProps } from 'next'
-import { merge, toLower } from 'ramda'
+import { mergeRight, toLower } from 'ramda'
 import { Provider } from 'mobx-react'
 import { getSelectorsByUserAgent } from 'react-device-detect'
 
@@ -104,7 +104,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const dashboard = ssrParseDashboard(community)
   const wallpaper = ssrParseWallpaper(community)
 
-  const initProps = merge(
+  const initProps = mergeRight(
     {
       ...ssrBaseStates(resp),
       globalLayout: {

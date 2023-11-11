@@ -1,8 +1,5 @@
 import { join, isEmpty } from 'ramda'
 
-/* import { Observable } from 'rxjs/Observable' */
-// import { of } from 'rxjs'
-
 import ERR from '@/constant/err'
 
 // import { TIMEOUT_THRESHOLD } from './config'

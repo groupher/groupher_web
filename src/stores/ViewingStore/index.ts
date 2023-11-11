@@ -3,7 +3,7 @@
  *
  */
 
-import { values, merge, includes } from 'ramda'
+import { values, mergeRight, includes } from 'ramda'
 
 import type {
   TRootStore,
@@ -117,7 +117,7 @@ const ViewingStore = T.model('ViewingStore', {
       }
     },
     updateViewingUser(sobj: TUser): void {
-      const user = merge(self.user, sobj)
+      const user = mergeRight(self.user, sobj)
       const { mark } = self as TStore
 
       return mark({ user })

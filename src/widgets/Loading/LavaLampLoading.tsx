@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
-import { range, merge } from 'ramda'
+import { range, mergeRight } from 'ramda'
 
 import type { TSpace, TSizeTSM } from '@/spec'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
@@ -14,7 +14,7 @@ const LavaLampLoading: FC<TProps> = (props) => {
   const primaryColor = usePrimaryColor()
 
   const { size } = props
-  const _props = merge({ size: size || SIZE.MEDIUM }, props)
+  const _props = mergeRight({ size: size || SIZE.MEDIUM }, props)
 
   return (
     <Wrapper {..._props}>

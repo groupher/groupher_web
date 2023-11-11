@@ -6,7 +6,7 @@
 
 import React from 'react'
 import T from 'prop-types'
-import { contains, pluck, isNil, isEmpty } from 'ramda'
+import { pluck, isNil, isEmpty, includes } from 'ramda'
 import TimeAgo from 'timeago-react'
 
 import { buildLog } from '@/logger'
@@ -21,7 +21,7 @@ const log = buildLog('w:ContentBanner:index')
 
 // TODO: add a Loading effect
 const ContentBanner = ({ data, middleNode }) => {
-  const isRefined = contains('refined', pluck('title', data.tags))
+  const isRefined = includes('refined', pluck('title', data.tags))
 
   return (
     <BannerContainer>

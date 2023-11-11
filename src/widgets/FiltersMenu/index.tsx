@@ -5,7 +5,7 @@
  */
 
 import { FC, useState, useCallback, memo, useEffect } from 'react'
-import { merge, isEmpty } from 'ramda'
+import { mergeRight, isEmpty } from 'ramda'
 
 import type { TTag } from '@/spec'
 import { buildLog } from '@/logger'
@@ -93,7 +93,7 @@ const FiltersMenu: FC<TProps> = ({
               options={item.options}
               revert={revert}
               onSelect={(parentId, item) => {
-                const newActiveMap = merge(activeMap, { [parentId]: item })
+                const newActiveMap = mergeRight(activeMap, { [parentId]: item })
                 onSelect(getSelectedTags(newActiveMap))
                 setActiveMap(newActiveMap)
               }}

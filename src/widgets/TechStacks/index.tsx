@@ -5,7 +5,7 @@
  */
 
 import { FC, memo, Fragment } from 'react'
-import { reduce, merge } from 'ramda'
+import { reduce, mergeRight } from 'ramda'
 
 import type { TTechCommunities, TCommunity } from '@/spec'
 import { buildLog } from '@/logger'
@@ -31,7 +31,7 @@ type TProps = {
 }
 
 const TechStacks: FC<TProps> = ({ onAdd, onRemove, techCommunities = {}, interactive = true }) => {
-  const techs = merge(FULL_TECHS, techCommunities)
+  const techs = mergeRight(FULL_TECHS, techCommunities)
 
   return (
     <Fragment>

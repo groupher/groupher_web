@@ -1,5 +1,5 @@
 import { GetServerSideProps } from 'next'
-import { merge } from 'ramda'
+import { mergeRight } from 'ramda'
 import { Provider } from 'mobx-react'
 
 import { HCN } from '@/constant/name'
@@ -84,7 +84,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const { community, pagedArticleTags } = resp
 
-  const initProps = merge(
+  const initProps = mergeRight(
     {
       ...ssrBaseStates(resp),
       metric: METRIC.DASHBOARD,
