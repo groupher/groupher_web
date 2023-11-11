@@ -87,7 +87,7 @@ const PostViewer: FC<TProps> = ({ article, loading }) => {
         )}
         <ArticleFooter />
         <ViewportTracker onEnter={showFooter} onLeave={hideFooter} />
-        <GoTopWrapper show={fixedHeaderVisible}>
+        <GoTopWrapper $show={fixedHeaderVisible}>
           <GotoTop type="drawer" />
         </GoTopWrapper>
       </Wrapper>

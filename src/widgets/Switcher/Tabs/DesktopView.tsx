@@ -140,12 +140,12 @@ const Tabs: FC<TProps> = ({
 
         {hasActiveItem && (
           <SlipBar
-            translateX={translateX}
-            width={`${tabWidthList[active]}px`}
-            slipHeight={slipHeight}
-            noAnimation={noAnimation}
+            $translateX={translateX}
+            $width={`${tabWidthList[active]}px`}
+            $slipHeight={slipHeight}
+            $noAnimation={noAnimation}
           >
-            <RealBar width={`${slipWidth}px`} $color={primaryColor} />
+            <RealBar $width={`${slipWidth}px`} $color={primaryColor} />
           </SlipBar>
         )}
       </Nav>

@@ -154,12 +154,12 @@ const MobileView: FC<TProps> = ({
         ))}
 
         <SlipBar
-          translateX={translateX}
-          width={`${tabWidthList[active]}px`}
-          slipHeight={slipHeight}
+          $translateX={translateX}
+          $width={`${tabWidthList[active]}px`}
+          $slipHeight={slipHeight}
         >
           {/* mobile tab slipbar looks shorter than the desktop one */}
-          <RealBar width={`${slipWidth - 11}px`} $color={primaryColor} />
+          <RealBar $width={`${slipWidth - 11}px`} $color={primaryColor} />
         </SlipBar>
       </Nav>
     </Wrapper>

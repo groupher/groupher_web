@@ -3,7 +3,7 @@
  * Upvote
  *
  */
-import { FC } from 'react'
+import { FC, Fragment } from 'react'
 
 import type { TUser } from '@/spec'
 import { buildLog } from '@/logger'
@@ -70,10 +70,10 @@ const Upvote: FC<TProps> = ({
           <Facepile users={avatarList} showMore={false} left={-4} bottom={3} top={3} />
           <Note>
             {names.map((name, index) => (
-              <>
-                <Name key={name}>{name}</Name>
+              <Fragment key={name}>
+                <Name>{name}</Name>
                 {index !== names.length - 1 ? <>，</> : <>&nbsp;</>}
-              </>
+              </Fragment>
             ))}
             {alias}
           </Note>

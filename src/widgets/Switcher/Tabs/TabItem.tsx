@@ -89,20 +89,20 @@ const TabItem: FC<TProps> = ({
   return (
     <Wrapper
       ref={ref}
-      mobileView={mobileView}
-      modelineView={modelineView}
-      holyGrailView={holyGrailView}
-      wrapMode={wrapMode}
+      $mobileView={mobileView}
+      $modelineView={modelineView}
+      $holyGrailView={holyGrailView}
+      $wrapMode={wrapMode}
       size={size}
       onClick={handleWrapperClick}
-      active={item.slug === activeKey}
+      $active={item.slug === activeKey}
     >
       <Label
         ref={clickableRef}
         onClick={handleLabelClick}
-        active={item.slug === activeKey}
+        $active={item.slug === activeKey}
         size={size}
-        bottomSpace={bottomSpace}
+        $bottomSpace={bottomSpace}
         $color={primaryColor}
       >
         {!isString(item) && item.icon && (

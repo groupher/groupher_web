@@ -41,7 +41,7 @@ const Upvote: FC<TProps> = ({
         <UpvoteBtn viewerHasUpvoted={viewerHasUpvoted} count={count} startAnimate={startAnimate} />
       </UpvoteBtnWrapper>
       <Space right={2} />
-      <Count noOne={noOne}>{count}</Count>
+      <Count $noOne={noOne}>{count}</Count>
     </Wrapper>
   )
 }

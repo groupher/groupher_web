@@ -121,15 +121,15 @@ const VerticalScroller: FC<TProps> = ({
     <Wrapper
       height={height}
       width={width}
-      shadowSize={shadowSize}
-      barSize={barSize}
-      showOnHover={showOnHover}
+      $shadowSize={shadowSize}
+      $barSize={barSize}
+      $showOnHover={showOnHover}
     >
       {showShadow && (
         <TopShadowBar
           show={showTopShadow}
           height={height}
-          shadowSize={shadowSize}
+          $shadowSize={shadowSize}
           withBorder={withBorder}
         />
       )}
@@ -146,7 +146,7 @@ const VerticalScroller: FC<TProps> = ({
         <BottomShadowBar
           show={showBottomShadow}
           height={height}
-          shadowSize={shadowSize}
+          $shadowSize={shadowSize}
           withBorder={withBorder}
         />
       )}

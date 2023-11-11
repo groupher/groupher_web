@@ -3,11 +3,11 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 import { FadeToggle } from '@/widgets/Common'
 
-export const Wrapper = styled.div<{ visible: boolean }>`
+export const Wrapper = styled.div<{ $visible: boolean }>`
   ${css.row('align-center', 'justify-between')};
   position: fixed;
-  top: ${({ visible }) => (visible ? 0 : '-60px;')};
-  opacity: ${({ visible }) => (visible ? 1 : 0)};
+  top: ${({ $visible }) => ($visible ? 0 : '-60px;')};
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
   width: 100%;
   margin-left: -68px;
   padding: 0 68px;

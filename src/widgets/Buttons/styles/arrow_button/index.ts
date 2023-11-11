@@ -6,17 +6,19 @@ import css, { rainbowLink } from '@/css'
 
 import type { TProps } from '../../ArrowButton'
 
-type TWrapper = Pick<TProps, 'disabled' | 'dimWhenIdle' | 'color' | 'reverseColor' | 'fontSize'> & {
+type TWrapper = Pick<TProps, 'disabled' | 'color' | 'fontSize'> & {
   width: number
+  $reverseColor: boolean
+  $dimWhenIdle: boolean
 } & TSpace
 
 export const Wrapper = styled.button<TWrapper>`
   position: relative;
   ${css.row('align-center')};
   display: inline-flex;
-  opacity: ${({ dimWhenIdle, disabled }) => (dimWhenIdle || disabled ? '0.65' : 1)};
-  color: ${({ color, reverseColor }) => {
-    if (reverseColor) return 'white'
+  opacity: ${({ $dimWhenIdle, disabled }) => ($dimWhenIdle || disabled ? '0.65' : 1)};
+  color: ${({ color, $reverseColor }) => {
+    if ($reverseColor) return 'white'
 
     return rainbowLink(color)
   }};

@@ -11,8 +11,8 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 export const UpvoteBtnWrapper = styled.div`
   ${css.row('align-both')};
 `
-export const Count = styled.div<{ noOne: boolean }>`
+export const Count = styled.div<{ $noOne: boolean }>`
   color: ${theme('article.info')};
-  font-weight: ${({ noOne }) => (noOne ? 400 : 600)};
+  font-weight: ${({ $noOne }) => ($noOne ? 400 : 600)};
   font-size: 16px;
 `

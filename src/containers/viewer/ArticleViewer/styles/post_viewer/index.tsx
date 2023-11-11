@@ -35,7 +35,7 @@ export const SubTitle = styled.span`
   }
 `
 
-export const GoTopWrapper = styled.div<{ show: boolean }>`
+export const GoTopWrapper = styled.div<{ $show: boolean }>`
   ${css.row('align-end', 'justify-center')};
   position: fixed;
   bottom: 40px;
@@ -44,7 +44,7 @@ export const GoTopWrapper = styled.div<{ show: boolean }>`
   height: 40px;
   opacity: 0.8;
 
-  visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
+  visibility: ${({ $show }) => ($show ? 'visible' : 'hidden')};
 
   &:hover {
     opacity: 1;

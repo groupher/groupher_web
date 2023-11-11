@@ -35,7 +35,7 @@ const AddButton: FC<TProps> = ({
   return (
     <Wrapper
       onClick={() => !disabled && onClick()}
-      dimWhenIdle={dimWhenIdle}
+      $dimWhenIdle={dimWhenIdle}
       disabled={disabled}
       {...restProps}
     >

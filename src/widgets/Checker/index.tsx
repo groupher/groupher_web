@@ -43,7 +43,7 @@ const Checker: FC<TProps> = ({
   return (
     <Wrapper
       show={show}
-      dimWhenIdle={dimWhenIdle}
+      $dimWhenIdle={dimWhenIdle}
       disabled={disabled}
       onClick={() => show && !disabled && onChange(!checked)}
       {...restProps}

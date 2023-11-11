@@ -7,10 +7,10 @@ import { getMarginRight, getPadding, getMarginBottom } from '../metric/tabs'
 
 type TTab = {
   size: TSizeSM
-  mobileView: boolean
-  holyGrailView: boolean
-  wrapMode: boolean
-  modelineView: boolean
+  $mobileView: boolean
+  $holyGrailView: boolean
+  $wrapMode: boolean
+  $modelineView: boolean
 } & TActive
 
 export const Wrapper = styled.div<TTab>`
@@ -19,14 +19,14 @@ export const Wrapper = styled.div<TTab>`
   position: relative;
   height: 100%;
   z-index: 1;
-  margin-right: ${({ size, mobileView, holyGrailView }) =>
-    getMarginRight(size, mobileView, holyGrailView)};
-  padding: ${({ size, holyGrailView, mobileView, wrapMode, modelineView }) =>
-    getPadding(size, holyGrailView, mobileView, wrapMode, modelineView)};
+  margin-right: ${({ size, $mobileView, $holyGrailView }) =>
+    getMarginRight(size, $mobileView, $holyGrailView)};
+  padding: ${({ size, $holyGrailView, $mobileView, $wrapMode, $modelineView }) =>
+    getPadding(size, $holyGrailView, $mobileView, $wrapMode, $modelineView)};
   text-align: center;
   min-width: auto;
 
-  margin-bottom: ${({ holyGrailView, wrapMode }) => getMarginBottom(holyGrailView, wrapMode)};
+  margin-bottom: ${({ $holyGrailView, $wrapMode }) => getMarginBottom($holyGrailView, $wrapMode)};
 
   /* background: ${({ active }) => (active ? '#114758' : '')}; */
 
@@ -63,7 +63,7 @@ export const Nav = styled.nav`
 
 type TLabel = TActive & {
   size: TSizeSM
-  bottomSpace: number
+  $bottomSpace: number
 } & TColor
 
 export const Label = styled.span<TLabel>`
@@ -71,9 +71,9 @@ export const Label = styled.span<TLabel>`
   white-space: nowrap;
   padding: 1px 6px;
   border-radius: 3px;
-  color: ${({ active, $color }) =>
-    active ? rainbow($color, 'dashboard.menuCat') : theme('lightText')}; // to-theme
-  margin-bottom: ${({ bottomSpace }) => `${bottomSpace}px`};
+  color: ${({ $active, $color }) =>
+    $active ? rainbow($color, 'dashboard.menuCat') : theme('lightText')}; // to-theme
+  margin-bottom: ${({ $bottomSpace }) => `${$bottomSpace}px`};
   font-weight: 500;
 
   &:hover {

@@ -8,29 +8,29 @@ import { getShadowBackground, getShadowSize, getScrollbarThin } from './metrics'
 type TBar = {
   width?: string
   height: string
-  barSize?: string
-  showOnHover?: boolean
+  $barSize?: string
+  $showOnHover?: boolean
   withBorder?: boolean
-  shadowSize: string
+  $shadowSize: string
 }
 export const Wrapper = styled(WrapperBase)<TBar>`
   position: relative;
 
   .os-host:not(:hover) {
-    visibility: ${({ showOnHover }) => (showOnHover ? 'hidden' : 'inherit')};
+    visibility: ${({ $showOnHover }) => ($showOnHover ? 'hidden' : 'inherit')};
   }
 
   .os-theme-dark > .os-scrollbar-vertical,
   .os-theme-light > .os-scrollbar-vertical {
-    width: ${({ barSize }) => `${getScrollbarThin(barSize, 'vertical')} !important`};
+    width: ${({ $barSize }) => `${getScrollbarThin($barSize, 'vertical')} !important`};
   }
 `
 export const ScrollWrapper = styled(ScrollWrapperBase)``
 const ShadowBar = styled(ShadowBarBase)<TBar>`
   left: 0px;
-  height: ${({ shadowSize }) => getShadowSize(shadowSize)};
+  height: ${({ $shadowSize }) => getShadowSize($shadowSize)};
   width: 100%;
-  background: ${({ shadowSize }) => getShadowBackground(shadowSize, 'vertical')};
+  background: ${({ $shadowSize }) => getShadowBackground($shadowSize, 'vertical')};
   border-top: ${({ withBorder }) => (withBorder ? '1px solid' : 'none')};
   border-color: ${({ withBorder }) => (withBorder ? '#084255' : 'none')};
 `

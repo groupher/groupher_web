@@ -20,7 +20,7 @@ const FixedHeader: FC<TProps> = ({ article, visible, footerVisible }) => {
   const { upvotesCount, viewerHasUpvoted, cat, state } = article
 
   return (
-    <Wrapper visible={visible}>
+    <Wrapper $visible={visible}>
       <LeftPart>
         <Upvote
           count={upvotesCount}
