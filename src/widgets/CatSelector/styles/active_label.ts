@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TColor } from '@/spec'
 
-import css, { rainbow } from '@/css'
+import css, { theme, rainbow } from '@/css'
 
 import LightSVG from '@/icons/ColorLight'
 import QuestionSVG from '@/icons/Question'
@@ -11,19 +11,35 @@ import OtherSVG from '@/icons/menu/Feedback'
 
 export const Wrapper = styled.div<TColor>`
   ${css.row('align-center')};
-  color: ${({ $color }) => rainbow($color)};
+  padding: 12px 0;
+  border-radius: 8px;
+`
+export const Hint = styled.div`
+  font-size: 12px;
+  color: ${theme('hint')};
+  opacity: 0.8;
+  margin-right: 5px;
+`
+export const LabelWrapper = styled.div`
+  ${css.row('align-center')};
+  padding: 5px 6px;
+  border-radius: 8px;
+  background: ${theme('hoverActive')};
+  margin-left: 3px;
+  box-shadow: ${theme('button.boxShadow')};
 `
 export const Title = styled.div`
+  color: ${theme('article.title')};
   font-size: 13px;
-  font-weight: 550;
+  font-weight: 500;
 `
 const iconBase = `
   ${css.size(13)};
   margin-right: 5px;
 `
-
 export const LightIcon = styled(LightSVG)<TColor>`
   ${iconBase};
+  margin-top: -2px;
   fill: ${({ $color }) => rainbow($color, 'article.digest')};
 `
 export const BugIcon = styled(BugSVG)<TColor>`

@@ -5,7 +5,7 @@ import type { TArticleCat } from '@/spec'
 import { Trans } from '@/i18n'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 
-import { Wrapper, ICON, Title } from './styles/active_label'
+import { Wrapper, Hint, LabelWrapper, ICON, Title } from './styles/active_label'
 
 type TProps = {
   cat: TArticleCat
@@ -17,8 +17,11 @@ const ActiveLabel: FC<TProps> = ({ cat }) => {
 
   return (
     <Wrapper $color={primaryColor}>
-      <ActiveIcon $color={primaryColor} />
-      <Title>{Trans(cat)}</Title>
+      <Hint>分类</Hint>
+      <LabelWrapper>
+        <ActiveIcon $color={primaryColor} />
+        <Title>{Trans(cat)}</Title>
+      </LabelWrapper>
     </Wrapper>
   )
 }

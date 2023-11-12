@@ -54,11 +54,7 @@ const ArticlesFilter: FC<TProps> = ({
       {!searchMode && (
         <Fragment>
           <SortFilter onSelect={onSelect} activeFilter={activeFilter} />
-          <CatSelector
-            activeCat={activeCat}
-            onSelect={setActiveCat}
-            selected={activeCat !== ARTICLE_CAT.ALL}
-          />
+          <CatSelector activeCat={ARTICLE_CAT.FEATURE} onSelect={setActiveCat} selected />
           <StateSelector mode={ARTICLE_STATE_MODE.FILTER} />
           <Space right={10} />
           <SpaceGrow />

@@ -45,18 +45,20 @@ const List: FC<TProps> = ({ items, activeKey, onSelect, popWidth, withDesc }) =>
   return (
     <Wrapper $popWidth={popWidth}>
       {items.map((item) => {
-        const $active = activeKey === item.key
+        const active = activeKey === item.key
 
         return (
           <Item
             key={item.key}
             $color={primaryColor}
-            $active={$active}
+            $active={active}
             onClick={() => onSelect(item)}
           >
-            <Icon type={item.icon as TMenu} $active={$active} />
+            <Icon type={item.icon as TMenu} $active={active} />
             <Main>
-              <Title>{item.title}</Title>
+              <Title $active={active} $color={primaryColor}>
+                {item.title}
+              </Title>
             </Main>
           </Item>
         )

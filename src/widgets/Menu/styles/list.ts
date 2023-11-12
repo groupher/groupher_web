@@ -16,10 +16,7 @@ export const Item = styled.div<TItem>`
   border-radius: 5px;
   line-height: 32px;
 
-  font-weight: ${({ $active }) => ($active ? 500 : 400)};
-
   background: ${({ $active, $color }) => ($active ? rainbowLight($color) : 'transparent')};
-
   color: ${({ $active, $color }) => ($active ? rainbow($color) : theme('article.digest'))};
 
   &:hover {
@@ -33,10 +30,14 @@ export const Item = styled.div<TItem>`
 
 export const Main = styled.div``
 
-export const Title = styled.div`
+export const Title = styled.div<TItem>`
   font-size: 14px;
+  font-weight: ${({ $active }) => ($active ? 500 : 400)};
+  filter: ${({ $active }) => ($active ? 'saturate(1.2) brightness(1.2)' : '')};
+
   ${Item}:hover & {
     color: ${theme('article.title')};
+    color: ${({ $active, $color }) => ($active ? rainbow($color) : theme('article.title'))};
   }
   transition: all 0.15s;
 `

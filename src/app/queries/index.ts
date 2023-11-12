@@ -33,7 +33,9 @@ export const useSession = (): TSessionRes => {
     query: P.sessionState,
     variables: {},
     pause: false,
-    requestPolicy: 'network-only',
+    // NOTE: network-only will freeze the page, don't know why ...
+    // requestPolicy: 'network-only',
+    requestPolicy: 'cache-and-network',
   })
 
   return {
@@ -43,8 +45,8 @@ export const useSession = (): TSessionRes => {
         curTheme: DEFAULT_THEME,
       },
       account: {
-        user: result.data.sessionState?.user || {},
-        isValidSession: result.data.sessionState?.isValid,
+        user: result.data?.sessionState?.user || {},
+        isValidSession: result.data?.sessionState?.isValid,
       },
     },
   }

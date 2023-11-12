@@ -9,6 +9,9 @@ export const FilterWrapper = styled(WithMargin)<TWrapper>`
   ${css.row('align-center')};
   color: ${theme('article.digest')};
   font-size: 13px;
+  background: ${theme('hoverBg')};
+  border-radius: 10px;
+  height: 32px;
 `
 export const FullWrapper = styled(FilterWrapper)<TWrapper>`
   border: 1px solid;
@@ -16,7 +19,6 @@ export const FullWrapper = styled(FilterWrapper)<TWrapper>`
     $menuOpen ? theme('article.digest') : theme('button.ghostBorder')};
 
   padding: 0 5px;
-  padding-left: 15px;
   border-radius: 10px;
 
   &:hover {
