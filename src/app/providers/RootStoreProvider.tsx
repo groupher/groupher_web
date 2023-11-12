@@ -1,5 +1,6 @@
 'use client'
 
+import { FC, ReactNode } from 'react'
 import { usePathname, useParams } from 'next/navigation'
 import { Provider } from 'mobx-react'
 import { enableStaticRendering } from 'mobx-react-lite'
@@ -25,10 +26,17 @@ import {
 
 enableStaticRendering(typeof window === 'undefined')
 
-const StoreWrapper = ({ children }) => {
+type TProps = {
+  token: null | string
+  children: ReactNode
+}
+
+const StoreWrapper: FC<TProps> = ({ children, token }) => {
   // console.log('## init in layout, load community info, dashboard info')
   const pathname = usePathname()
   const params = useParams()
+  const userHasLogin = !!token
+
   const communitySlug = parseCommunity(params.community as string)
 
   // console.log('## pathname: ', pathname)
@@ -41,31 +49,34 @@ const StoreWrapper = ({ children }) => {
   const { sesstion } = useSession()
 
   // const [result] = useQueryCommunity('home', { skip: pathname === '/home' })
-  const { community } = useCommunity(communitySlug, { skip })
+  const { community } = useCommunity(communitySlug, { skip, userHasLogin })
 
   const { pagedPosts } = usePagedPosts(
     { community: communitySlug },
-    { skip: !(activeThread === THREAD.POST && !params.id) },
+    { skip: !(activeThread === THREAD.POST && !params.id), userHasLogin },
   )
 
   const { post } = usePost(communitySlug, params.id as string, {
     skip: !(activeThread === THREAD.POST && params.id),
+    userHasLogin,
   })
 
   const { changelog } = useChangelog(communitySlug, params.id as string, {
     skip: !(activeThread === THREAD.CHANGELOG && params.id),
+    userHasLogin,
   })
 
   const { groupedKanbanPosts } = useGroupedKanbanPosts(communitySlug, {
     skip: activeThread !== THREAD.KANBAN,
+    userHasLogin,
   })
 
   const { pagedChangelogs } = usePagedChangelogs(
     { community: communitySlug },
-    { skip: activeThread !== THREAD.CHANGELOG },
+    { skip: activeThread !== THREAD.CHANGELOG, userHasLogin },
   )
 
-  const { tags } = useTags({ community: communitySlug }, { skip })
+  const { tags } = useTags({ community: communitySlug }, { skip, userHasLogin })
 
   const wallpaper = !skip ? parseWallpaper(community) : {}
   const dashboard = !skip ? parseDashboard(community, pathname) : {}

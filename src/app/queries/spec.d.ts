@@ -45,6 +45,7 @@ export type TSSRQueryOpt = {
   skip?: boolean
   // cache-first is the default
   requestPolicy?: TRequestPolicy
+  userHasLogin?: boolean
 }
 
 export type TGQSSRResult = {

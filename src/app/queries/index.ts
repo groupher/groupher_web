@@ -59,7 +59,7 @@ export const useCommunity = (slug: string, _opt: TSSRQueryOpt = {}): TCommunityR
     query: P.community,
     variables: {
       slug,
-      userHasLogin: false,
+      userHasLogin: opt.userHasLogin,
     },
     pause: opt.skip,
     requestPolicy: opt.requestPolicy,
@@ -82,7 +82,7 @@ export const useTags = (filter: TTagsFilter = TAGS_FILTER, _opt: TSSRQueryOpt = 
         community,
         thread: thread.toUpperCase(),
       },
-      userHasLogin: false,
+      userHasLogin: opt.userHasLogin,
     },
     pause: opt.skip,
     requestPolicy: opt.requestPolicy,
@@ -106,7 +106,7 @@ export const usePagedPosts = (
     query: P.pagedPosts,
     variables: {
       filter: { page, size, community },
-      userHasLogin: false,
+      userHasLogin: opt.userHasLogin,
     },
     pause: opt.skip,
     requestPolicy: opt.requestPolicy,
@@ -126,7 +126,7 @@ export const usePost = (community: string, id: TID, _opt: TSSRQueryOpt = {}): TP
     variables: {
       community,
       id,
-      userHasLogin: false,
+      userHasLogin: opt.userHasLogin,
     },
     pause: opt.skip,
     requestPolicy: opt.requestPolicy,
@@ -171,7 +171,7 @@ export const usePagedChangelogs = (
     query: P.pagedChangelogs,
     variables: {
       filter: { page, size, community },
-      userHasLogin: false,
+      userHasLogin: opt.userHasLogin,
     },
     pause: opt.skip,
     requestPolicy: opt.requestPolicy,
@@ -195,7 +195,7 @@ export const useChangelog = (
     variables: {
       community,
       id,
-      userHasLogin: false,
+      userHasLogin: opt.userHasLogin,
     },
     pause: opt.skip,
     requestPolicy: opt.requestPolicy,

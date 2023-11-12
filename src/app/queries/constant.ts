@@ -6,6 +6,7 @@ import type { TRequestPolicy } from './spec'
 export const GQ_OPTION = {
   skip: false,
   requestPolicy: 'cache-first' as TRequestPolicy,
+  userHasLogin: false,
 }
 
 export const TAGS_FILTER = {
