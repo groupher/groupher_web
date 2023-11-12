@@ -1,27 +1,31 @@
 import styled from 'styled-components'
 
-import type { TActive, TColor } from '@/spec'
+import type { TActive } from '@/spec'
 
 // import Img from '@/Img'
-import css, { theme, rainbowLight, rainbow } from '@/css'
+import css, { theme } from '@/css'
 
 type TWrapper = { $popWidth: number }
 export const Wrapper = styled.div<TWrapper>`
   width: ${({ $popWidth }) => `${$popWidth}px`};
 `
-type TItem = TActive & TColor
+type TItem = TActive
 export const Item = styled.div<TItem>`
   ${css.row('align-center')};
   padding: 2px 8px;
   border-radius: 5px;
-  line-height: 32px;
+  line-height: 30px;
+  margin-top: 1px;
+  margin-bottom: 1px;
 
-  background: ${({ $active, $color }) => ($active ? rainbowLight($color) : 'transparent')};
-  color: ${({ $active, $color }) => ($active ? rainbow($color) : theme('article.digest'))};
+  background: ${({ $active }) => ($active ? theme('menuHoverBg') : 'transparent')};
+  box-shadow: ${({ $active }) => ($active ? theme('button.boxShadow') : '')};
+  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
 
   &:hover {
     font-weight: 500;
-    background: ${({ $active, $color }) => ($active ? rainbowLight($color) : theme('hoverBg'))};
+    background: ${theme('menuHoverBg')};
+    box-shadow: ${theme('button.boxShadow')};
     cursor: pointer;
   }
 
@@ -30,14 +34,12 @@ export const Item = styled.div<TItem>`
 
 export const Main = styled.div``
 
-export const Title = styled.div<TItem>`
+export const Title = styled.div`
   font-size: 14px;
-  font-weight: ${({ $active }) => ($active ? 500 : 400)};
-  filter: ${({ $active }) => ($active ? 'saturate(1.2) brightness(1.2)' : '')};
+  font-weight: 400;
 
   ${Item}:hover & {
     color: ${theme('article.title')};
-    color: ${({ $active, $color }) => ($active ? rainbow($color) : theme('article.title'))};
   }
   transition: all 0.15s;
 `

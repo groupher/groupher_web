@@ -17,7 +17,6 @@ export const Wrapper = styled.div<TColor>`
 export const Hint = styled.div`
   font-size: 12px;
   color: ${theme('hint')};
-  opacity: 0.8;
   margin-right: 5px;
 `
 export const LabelWrapper = styled.div`
