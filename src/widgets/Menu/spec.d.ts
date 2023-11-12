@@ -1,5 +1,5 @@
 export type TMenuItem = {
-  title: string
+  title?: string
   icon?: string
   desc?: string
   key: string

@@ -2,6 +2,7 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TMenu } from '@/spec'
+import { Trans } from '@/i18n'
 
 import type { TMenuItem } from './spec'
 import Icon from './Icon'
@@ -25,7 +26,7 @@ const List: FC<TProps> = ({ items, activeKey, onSelect, popWidth, withDesc }) =>
               <Icon type={item.icon as TMenu} $active={activeKey === item.key} />
             </FullIcon>
             <Main>
-              <FullTitle>{item.title}</FullTitle>
+              <FullTitle>{Trans(item.key)}</FullTitle>
               <Desc>{item.desc || '--'}</Desc>
             </Main>
           </FullItem>
@@ -43,7 +44,7 @@ const List: FC<TProps> = ({ items, activeKey, onSelect, popWidth, withDesc }) =>
           <Item key={item.key} $active={active} onClick={() => onSelect(item)}>
             <Icon type={item.icon as TMenu} $active={active} />
             <Main>
-              <Title>{item.title}</Title>
+              <Title>{Trans(item.key)}</Title>
             </Main>
           </Item>
         )
