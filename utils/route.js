@@ -20,9 +20,6 @@ import { ROUTE } from '@/constant/route'
 
 import { nilOrEmpty } from './validator'
 import { Global } from './helper'
-// import { isServerSide } from './ssr'
-
-export const isServerSide = typeof window === 'undefined'
 
 // example: /getme/xxx?aa=bb&cc=dd
 const parseMainPath = compose(head, split('?'), head, reject(isEmpty), split('/'), prop('asPath'))
@@ -73,6 +70,7 @@ const getThirdPath = (args) => {
  */
 const parseSubDomain = (args) => {
   let communityPath = ''
+  const isServerSide = false
   if (isServerSide) {
     // on server side
     const { subdomains } = args.req

@@ -10,7 +10,6 @@ import { PAGE_SIZE } from '@/config'
 
 import { T, getParent, Instance, markStates, useMobxContext } from '@/mobx'
 import { Global } from '@/helper'
-import { isClientSide } from '@/utils/ssr'
 import { serializeQuery } from '@/utils/route'
 
 const Query = T.model('Query', {
@@ -56,7 +55,6 @@ const RouteStore = T.model('RouteStore', {
       const defaultOpt = { onlyDesktop: false }
       const option = mergeRight(defaultOpt, opt)
 
-      if (!isClientSide) return false
       if (option.onlyDesktop && self.isNotDesktop) {
         return false
       }
