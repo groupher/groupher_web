@@ -7,6 +7,7 @@ import { enableStaticRendering } from 'mobx-react-lite'
 import { useStore } from '@/stores/init'
 import { THREAD } from '@/constant/thread'
 import TYPE from '@/constant/type'
+import { HCN } from '@/constant/name'
 
 import {
   useCommunity,
@@ -25,7 +26,8 @@ const StoreWrapper = ({ children }) => {
   // console.log('## init in layout, load community info, dashboard info')
   const pathname = usePathname()
   const params = useParams()
-  const communitySlug = params.community as string
+  const communitySlug = (params.community as string) || HCN
+
   const activeThread = parseThread(pathname)
   // console.log('## activeThread: ', activeThread)
   // console.log('## communitySlug: ', communitySlug)
