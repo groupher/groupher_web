@@ -9,8 +9,11 @@ import { THREAD } from '@/constant/thread'
 import TYPE from '@/constant/type'
 
 import {
+  useSession,
   useCommunity,
   useTags,
+  usePost,
+  useChangelog,
   usePagedPosts,
   useGroupedKanbanPosts,
   usePagedChangelogs,
@@ -35,13 +38,23 @@ const StoreWrapper = ({ children }) => {
 
   const skip = !communitySlug
 
+  const { sesstion } = useSession()
+
   // const [result] = useQueryCommunity('home', { skip: pathname === '/home' })
   const { community } = useCommunity(communitySlug, { skip })
 
   const { pagedPosts } = usePagedPosts(
     { community: communitySlug },
-    { skip: activeThread !== THREAD.POST },
+    { skip: !(activeThread === THREAD.POST && !params.id) },
   )
+
+  const { post } = usePost(communitySlug, params.id as string, {
+    skip: !(activeThread === THREAD.POST && params.id),
+  })
+
+  const { changelog } = useChangelog(communitySlug, params.id as string, {
+    skip: !(activeThread === THREAD.CHANGELOG && params.id),
+  })
 
   const { groupedKanbanPosts } = useGroupedKanbanPosts(communitySlug, {
     skip: activeThread !== THREAD.KANBAN,
@@ -58,6 +71,7 @@ const StoreWrapper = ({ children }) => {
   const dashboard = !skip ? parseDashboard(community, pathname) : {}
 
   const store = useStore({
+    ...sesstion,
     kanbanThread: groupedKanbanPosts,
     articlesThread: {
       pagedPosts,
@@ -69,6 +83,8 @@ const StoreWrapper = ({ children }) => {
     },
     viewing: {
       community: community || {},
+      post,
+      changelog,
       activeThread,
     },
     wallpaperEditor: wallpaper,

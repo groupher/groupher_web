@@ -5,11 +5,16 @@
  */
 import { useQuery } from '@urql/next'
 
+import type { TID } from '@/spec'
 import { P } from '@/schemas'
+import { DEFAULT_THEME } from '@/config'
 
 import type {
+  TSessionRes,
   TCommunityRes,
   TTagsRes,
+  TPostRes,
+  TChangelogRes,
   TPagedPostsRes,
   TGroupedKanbanPostsRes,
   TPagedChangelogsRes,
@@ -23,6 +28,28 @@ import { commonRes } from './helper'
 
 export { parseCommunity, parseThread, parseWallpaper, parseDashboard } from './helper'
 
+export const useSession = (): TSessionRes => {
+  const [result] = useQuery({
+    query: P.sessionState,
+    variables: {},
+    pause: false,
+    requestPolicy: 'network-only',
+  })
+
+  return {
+    ...commonRes(result),
+    sesstion: {
+      theme: {
+        curTheme: DEFAULT_THEME,
+      },
+      account: {
+        user: result.data.sessionState?.user || {},
+        isValidSession: result.data.sessionState?.isValid,
+      },
+    },
+  }
+}
+
 export const useCommunity = (slug: string, _opt: TSSRQueryOpt = {}): TCommunityRes => {
   const opt = { ...GQ_OPTION, ..._opt }
 
@@ -33,6 +60,7 @@ export const useCommunity = (slug: string, _opt: TSSRQueryOpt = {}): TCommunityR
       userHasLogin: false,
     },
     pause: opt.skip,
+    requestPolicy: opt.requestPolicy,
   })
 
   return {
@@ -55,6 +83,7 @@ export const useTags = (filter: TTagsFilter = TAGS_FILTER, _opt: TSSRQueryOpt = 
       userHasLogin: false,
     },
     pause: opt.skip,
+    requestPolicy: opt.requestPolicy,
   })
 
   return {
@@ -78,11 +107,32 @@ export const usePagedPosts = (
       userHasLogin: false,
     },
     pause: opt.skip,
+    requestPolicy: opt.requestPolicy,
   })
 
   return {
     ...commonRes(result),
     pagedPosts: result.data?.pagedPosts,
+  }
+}
+
+export const usePost = (community: string, id: TID, _opt: TSSRQueryOpt = {}): TPostRes => {
+  const opt = { ...GQ_OPTION, ..._opt }
+
+  const [result] = useQuery({
+    query: P.post,
+    variables: {
+      community,
+      id,
+      userHasLogin: false,
+    },
+    pause: opt.skip,
+    requestPolicy: opt.requestPolicy,
+  })
+
+  return {
+    ...commonRes(result),
+    post: result.data?.post,
   }
 }
 
@@ -98,6 +148,7 @@ export const useGroupedKanbanPosts = (
       community,
     },
     pause: opt.skip,
+    requestPolicy: opt.requestPolicy,
   })
 
   return {
@@ -121,10 +172,35 @@ export const usePagedChangelogs = (
       userHasLogin: false,
     },
     pause: opt.skip,
+    requestPolicy: opt.requestPolicy,
   })
 
   return {
     ...commonRes(result),
     pagedChangelogs: result.data?.pagedChangelogs,
+  }
+}
+
+export const useChangelog = (
+  community: string,
+  id: TID,
+  _opt: TSSRQueryOpt = {},
+): TChangelogRes => {
+  const opt = { ...GQ_OPTION, ..._opt }
+
+  const [result] = useQuery({
+    query: P.changelog,
+    variables: {
+      community,
+      id,
+      userHasLogin: false,
+    },
+    pause: opt.skip,
+    requestPolicy: opt.requestPolicy,
+  })
+
+  return {
+    ...commonRes(result),
+    changelog: result.data?.changelog,
   }
 }

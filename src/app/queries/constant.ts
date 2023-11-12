@@ -1,9 +1,11 @@
 import { THREAD } from '@/constant/thread'
 import { HCN } from '@/constant/name'
 
+import type { TRequestPolicy } from './spec'
+
 export const GQ_OPTION = {
   skip: false,
-  policy: 'cache-first',
+  requestPolicy: 'cache-first' as TRequestPolicy,
 }
 
 export const TAGS_FILTER = {

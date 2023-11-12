@@ -10,11 +10,25 @@ import type {
   TDashboardBroadcastRoute,
   TDashboardLayoutRoute,
   TDashboardAliasRoute,
+  TArticle,
 } from '@/spec'
 
+export type TSessionRes = TGQSSRResult & {
+  sesstion: {
+    theme: {
+      curTheme: string
+    }
+    account: {
+      user: TUser
+      isValidSession: boolean
+    }
+  }
+}
 export type TCommunityRes = TGQSSRResult & { community: TCommunity }
 export type TTagsRes = TGQSSRResult & { tags: TTag[] }
 export type TPagedPostsRes = TGQSSRResult & { pagedPosts: TPagedArticles }
+export type TPostRes = TGQSSRResult & { post: TArticle }
+export type TChangelogRes = TGQSSRResult & { changelog: TArticle }
 export type TPagedChangelogsRes = TGQSSRResult & { pagedChangelogs: TPagedArticles }
 
 export type TGroupedKanbanPostsRes = TGQSSRResult & {
@@ -25,10 +39,12 @@ export type TGroupedKanbanPostsRes = TGQSSRResult & {
   }
 }
 
+export type TRequestPolicy = 'cache-first' | 'cache-and-network' | 'network-only' | 'cache-only'
+
 export type TSSRQueryOpt = {
   skip?: boolean
   // cache-first is the default
-  policy?: 'cache-first' | 'cache-and-network' | 'network-only' | 'cache-only'
+  requestPolicy?: TRequestPolicy
 }
 
 export type TGQSSRResult = {

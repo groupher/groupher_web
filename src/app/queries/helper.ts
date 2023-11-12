@@ -82,6 +82,10 @@ const parseDashboardThread = (pathname: string): TDashboardTab => {
   const segments = reject(isEmpty, pathname.split('/'))
   const isOverviewThread = segments.length === 2
 
+  if (segments[1] !== THREAD.DASHBOARD) {
+    return { curTab: DASHBOARD_ROUTE.OVERVIEW }
+  }
+
   if (segments[1] === THREAD.DASHBOARD && isOverviewThread) {
     return {
       curTab: DASHBOARD_ROUTE.OVERVIEW as TDashboardPath,
