@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
@@ -18,7 +18,7 @@ import SocialInfo from './SocialInfo'
 import OtherInfo from './OtherInfo'
 
 import { Wrapper, Banner, TabsWrapper } from '../styles/basic_info'
-import { edit, loadBaseInfo } from '../logic'
+import { edit } from '../logic'
 
 type TProps = {
   settings: TBaseInfoSettings
@@ -30,9 +30,9 @@ const BasicInfo: FC<TProps> = ({ settings, touched }) => {
   const curCommunity = useViewingCommunity()
   const { baseInfoTab } = settings
 
-  useEffect(() => {
-    setTimeout(() => loadBaseInfo())
-  }, [])
+  // useEffect(() => {
+  //   setTimeout(() => loadBaseInfo())
+  // }, [])
 
   return (
     <Wrapper>

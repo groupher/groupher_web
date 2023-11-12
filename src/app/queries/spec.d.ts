@@ -1,4 +1,16 @@
-import type { TCommunity, TWallpaperData, TPagedArticles, TTag } from '@/spec'
+import type {
+  TCommunity,
+  TWallpaperData,
+  TPagedArticles,
+  TTag,
+  TDashboardPath,
+  TDashboardBaseInfoRoute,
+  TDashboardSEORoute,
+  TDashboardDocRoute,
+  TDashboardBroadcastRoute,
+  TDashboardLayoutRoute,
+  TDashboardAliasRoute,
+} from '@/spec'
 
 export type TCommunityRes = TGQSSRResult & { community: TCommunity }
 export type TTagsRes = TGQSSRResult & { tags: TTag[] }
@@ -38,4 +50,14 @@ export type TArticlesFIlter = {
   page?: number
   size?: number
   community?: string
+}
+
+export type TDashboardTab = {
+  curTab: TDashboardPath
+  baseInfoTab?: TDashboardBaseInfoRoute
+  seoTab?: TDashboardSEORoute
+  docTab?: TDashboardDocRoute
+  broadcastTab?: TDashboardBroadcastRoute
+  layoutTab?: TDashboardLayoutRoute
+  aliasTab?: TDashboardAliasRoute
 }

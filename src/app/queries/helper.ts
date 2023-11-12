@@ -6,7 +6,10 @@ import type {
   TNameAlias,
   TDashboard,
   TDashboardPath,
+  TDashboardBaseInfoRoute,
   TDashboardSEORoute,
+  TDashboardDocRoute,
+  TDashboardBroadcastRoute,
   TDashboardLayoutRoute,
   TDashboardAliasRoute,
 } from '@/spec'
@@ -14,13 +17,16 @@ import { BUILDIN_ALIAS, HCN } from '@/constant/name'
 import { THREAD } from '@/constant/thread'
 import {
   DASHBOARD_ROUTE,
+  DASHBOARD_BASEINFO_ROUTE,
   DASHBOARD_SEO_ROUTE,
+  DASHBOARD_DOC_ROUTE,
+  DASHBOARD_BROADCAST_ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
   DASHBOARD_ALIAS_ROUTE,
 } from '@/constant/route'
 import { removeEmptyValuesFromObject } from '@/helper'
 
-import type { TGQSSRResult, TParsedWallpaper } from './spec'
+import type { TGQSSRResult, TParsedWallpaper, TDashboardTab } from './spec'
 
 export const commonRes = (result): TGQSSRResult => {
   return {
@@ -69,13 +75,9 @@ const parseDashboardAlias = (nameAlias: TNameAlias[]): TNameAlias[] => {
   return reject((item: TNameAlias) => item.slug === '', [...nameAlias, ...unChangedAlias])
 }
 
-type TDashboardTab = {
-  curTab: TDashboardPath
-  seoTab?: TDashboardSEORoute
-  layoutTab?: TDashboardLayoutRoute
-  aliasTab?: TDashboardAliasRoute
-}
-
+/**
+ * parse the dashboard's cutTab & sub tab from pathname
+ */
 const parseDashboardThread = (pathname: string): TDashboardTab => {
   const segments = reject(isEmpty, pathname.split('/'))
   const isOverviewThread = segments.length === 2
@@ -89,29 +91,54 @@ const parseDashboardThread = (pathname: string): TDashboardTab => {
   const dashThread = segments[2]
   const dashLeaf = segments[3]
 
-  if (dashThread === DASHBOARD_ROUTE.SEO) {
-    return {
-      curTab: DASHBOARD_ROUTE.SEO as TDashboardPath,
-      seoTab: (dashLeaf || DASHBOARD_SEO_ROUTE.SEARCH_ENGINE) as TDashboardSEORoute,
+  switch (dashThread) {
+    case DASHBOARD_ROUTE.INFO: {
+      return {
+        curTab: DASHBOARD_ROUTE.INFO as TDashboardPath,
+        baseInfoTab: (dashLeaf || DASHBOARD_BASEINFO_ROUTE.BASIC) as TDashboardBaseInfoRoute,
+      }
     }
-  }
 
-  if (dashThread === DASHBOARD_ROUTE.ALIAS) {
-    return {
-      curTab: DASHBOARD_ROUTE.ALIAS,
-      aliasTab: (dashLeaf || DASHBOARD_ALIAS_ROUTE.THREAD) as TDashboardAliasRoute,
+    case DASHBOARD_ROUTE.SEO: {
+      return {
+        curTab: DASHBOARD_ROUTE.SEO as TDashboardPath,
+        seoTab: (dashLeaf || DASHBOARD_SEO_ROUTE.SEARCH_ENGINE) as TDashboardSEORoute,
+      }
     }
-  }
 
-  if (dashThread === DASHBOARD_ROUTE.LAYOUT) {
-    return {
-      curTab: DASHBOARD_ROUTE.LAYOUT,
-      layoutTab: (dashLeaf || DASHBOARD_LAYOUT_ROUTE.GLOBAL) as TDashboardLayoutRoute,
+    case DASHBOARD_ROUTE.DOC: {
+      return {
+        curTab: DASHBOARD_ROUTE.DOC as TDashboardPath,
+        docTab: (dashLeaf || DASHBOARD_DOC_ROUTE.TABLE) as TDashboardDocRoute,
+      }
     }
-  }
 
-  return {
-    curTab: dashThread as TDashboardPath,
+    case DASHBOARD_ROUTE.BROADCAST: {
+      return {
+        curTab: DASHBOARD_ROUTE.BROADCAST as TDashboardPath,
+        broadcastTab: (dashLeaf || DASHBOARD_BROADCAST_ROUTE.GLOBAL) as TDashboardBroadcastRoute,
+      }
+    }
+
+    case DASHBOARD_ROUTE.ALIAS: {
+      return {
+        curTab: DASHBOARD_ROUTE.ALIAS,
+        aliasTab: (dashLeaf || DASHBOARD_ALIAS_ROUTE.THREAD) as TDashboardAliasRoute,
+      }
+    }
+
+    case DASHBOARD_ROUTE.LAYOUT: {
+      return {
+        curTab: DASHBOARD_ROUTE.LAYOUT,
+        layoutTab: (dashLeaf || DASHBOARD_LAYOUT_ROUTE.GLOBAL) as TDashboardLayoutRoute,
+      }
+    }
+
+    default: {
+      return {
+        curTab: dashThread as TDashboardPath,
+      }
+    }
   }
 }
 

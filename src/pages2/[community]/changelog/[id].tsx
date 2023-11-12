@@ -1,6 +1,5 @@
 // import { GetStaticPaths, GetStaticProps } from 'next'
 import { GetServerSideProps } from 'next'
-import { useRouter } from 'next/router'
 import { Provider } from 'mobx-react'
 import { getSelectorsByUserAgent } from 'react-device-detect'
 
@@ -20,7 +19,6 @@ import { useStore } from '@/stores/init'
 
 import GlobalLayout from '@/containers/layout/GlobalLayout'
 import ArticleChangelog from '@/widgets/Article/Changelog'
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
 import { P } from '@/schemas'
 
@@ -97,9 +95,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const ChangelogPage = (props) => {
   const store = useStore(props)
-
-  const { isFallback } = useRouter()
-  if (isFallback) return <LavaLampLoading top={20} left={30} />
 
   return (
     <Provider store={store}>
