@@ -8,6 +8,7 @@ export type TDashboardBroadcastRoute = 'global' | 'article'
 export type TDashboardAliasRoute = 'thread' | 'kanban' | 'others'
 
 export type TDashboardPath =
+  | 'overview'
   | 'dashboard'
   // basic-info
   | 'info'

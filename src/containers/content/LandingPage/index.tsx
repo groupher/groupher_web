@@ -96,7 +96,7 @@ const LandingPage: FC = () => {
                   官方社区
                   <LinkIcon />
                 </DemoMenuItem>
-                <DemoMenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`}>
+                <DemoMenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.OVERVIEW}`}>
                   管理后台
                   <LinkIcon />
                 </DemoMenuItem>

@@ -79,13 +79,13 @@ const HomeHeader: FC = () => {
               <MenuItem href={`/${ROUTE.HOME}`} noDesc>
                 <MenuTitle>团队博客</MenuTitle>
               </MenuItem>
-              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`} noDesc>
+              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.OVERVIEW}`} noDesc>
                 <MenuTitle>帮助文档</MenuTitle>
               </MenuItem>
-              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`} noDesc>
+              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.OVERVIEW}`} noDesc>
                 <MenuTitle>更新日志</MenuTitle>
               </MenuItem>
-              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.DASHBOARD}`} noDesc>
+              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.OVERVIEW}`} noDesc>
                 <MenuTitle>自定义</MenuTitle>
               </MenuItem>
             </Panel>

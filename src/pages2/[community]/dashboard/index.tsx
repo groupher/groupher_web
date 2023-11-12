@@ -99,7 +99,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
       dashboardThread: {
         ...dashboard,
-        curTab: ROUTE.DASHBOARD.DASHBOARD,
+        curTab: ROUTE.DASHBOARD.OVERVIEW,
       },
     },
     {
