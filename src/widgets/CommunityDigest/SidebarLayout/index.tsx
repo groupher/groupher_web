@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
-// import Router from 'next/router'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import EVENT from '@/constant/event'

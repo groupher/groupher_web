@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import Router from 'next/router'
 import { values } from 'ramda'
 
 import type { TEditValue, TCommunity, TTag, TArticleCat } from '@/spec'
@@ -66,7 +65,8 @@ export const onCancel = (): void => {
 
 const gotoArticleDetail = () => {
   const { viewingArticle, thread } = store
-  Router.push(`/${thread}/${viewingArticle.id}`)
+  // Router.push(`/${thread}/${viewingArticle.id}`)
+  console.log('## TODO: gotoArticleDetail')
 }
 
 const gotoBackToCommunity = () => {
@@ -74,7 +74,8 @@ const gotoBackToCommunity = () => {
   const { slug } = communityData
 
   const path = slug === HCN ? '/' : `/${slug}`
-  Router.push(path)
+  // Router.push(path)
+  console.log('## TODO: gotoBackToCommunity')
 }
 
 export const onPublish = (): void => {

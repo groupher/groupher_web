@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
-import Router from 'next/router'
+import { useRouter } from 'next/navigation'
 
 import { DASHBOARD_ALIAS_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
@@ -24,6 +24,7 @@ type TProps = {
 }
 
 const Alias: FC<TProps> = ({ settings }) => {
+  const router = useRouter()
   const curCommunity = useViewingCommunity()
 
   const { nameAlias, editingAlias, aliasTab } = settings
@@ -52,7 +53,7 @@ const Alias: FC<TProps> = ({ settings }) => {
                   ? `/${curCommunity.slug}/dashboard/alias`
                   : `/${curCommunity.slug}/dashboard/alias/${tab}`
 
-              Router.push(targetPath)
+              router.push(targetPath)
             }}
             view={VIEW.DESKTOP}
             noAnimation

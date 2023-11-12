@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
-import Router from 'next/router'
+import { useRouter } from 'next/navigation'
 
 import { DASHBOARD_BROADCAST_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
@@ -23,6 +23,7 @@ type TProps = {
 }
 
 const Broadcast: FC<TProps> = ({ settings, touched }) => {
+  const router = useRouter()
   const curCommunity = useViewingCommunity()
 
   const { broadcastTab } = settings
@@ -43,7 +44,7 @@ const Broadcast: FC<TProps> = ({ settings, touched }) => {
                   ? `/${curCommunity.slug}/dashboard/broadcast`
                   : `/${curCommunity.slug}/dashboard/broadcast/${tab}`
 
-              Router.push(targetPath)
+              router.push(targetPath)
             }}
             view={VIEW.DESKTOP}
             noAnimation

@@ -6,7 +6,7 @@
 import { FC, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 // import { ParallaxProvider } from 'react-scroll-parallax'
-import Router from 'next/router'
+import { useRouter } from 'next/navigation'
 import { observer } from 'mobx-react-lite'
 
 import { BANNER_LAYOUT, DOC_FAQ_LAYOUT } from '@/constant/layout'
@@ -54,6 +54,7 @@ const ParallaxProvider = dynamic(() => import('./Parallax'), {
 })
 
 const LandingPage: FC = () => {
+  const router = useRouter()
   const store = useStore()
   useInit(store)
 
@@ -83,7 +84,7 @@ const LandingPage: FC = () => {
           <StartButton
             size="medium"
             onClick={() => {
-              Router.push(`/${ROUTE.HOME}/${ROUTE.HELP}`)
+              router.push(`/${ROUTE.HOME}/${ROUTE.HELP}`)
             }}
           >
             开始使用

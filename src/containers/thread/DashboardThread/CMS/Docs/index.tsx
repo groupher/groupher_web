@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
-import Router from 'next/router'
+import { useRouter } from 'next/navigation'
 
 import type { TID, TDashboardDocRoute, TPagedArticles, TFAQSection } from '@/spec'
 import { DASHBOARD_DOC_ROUTE } from '@/constant/route'
@@ -41,6 +41,7 @@ const Docs: FC<TProps> = ({
   editingFAQIndex,
   touched,
 }) => {
+  const router = useRouter()
   const curCommunity = useViewingCommunity()
 
   return (
@@ -57,7 +58,7 @@ const Docs: FC<TProps> = ({
                 ? `/${curCommunity.slug}/dashboard/doc`
                 : `/${curCommunity.slug}/dashboard/doc/${tab}`
 
-            Router.push(targetPath)
+            router.push(targetPath)
           }}
           view={VIEW.DESKTOP}
           noAnimation

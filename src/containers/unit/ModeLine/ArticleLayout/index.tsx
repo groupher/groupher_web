@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
 import { observer } from 'mobx-react-lite'
-import Router from 'next/router'
+import { useRouter } from 'next/navigation'
 
 import type { TArticle } from '@/spec'
 
@@ -43,6 +43,7 @@ const ArticleLayout: FC<TProps> = ({
   article = null,
   activeMenu,
 }) => {
+  const router = useRouter()
   const [expand, setExpand] = useState(false)
   // const community = useViewingCommunity()
   const activeThread = useViewingThread()
@@ -55,13 +56,7 @@ const ArticleLayout: FC<TProps> = ({
         <ActionBallWrapper
           right={8}
           onClick={() => {
-            Router.push(
-              {
-                pathname: `/home/${activeThread}`,
-              },
-              undefined,
-              { scroll: false },
-            )
+            router.push(`/home/${activeThread}`)
           }}
         >
           <GoBackIcon />

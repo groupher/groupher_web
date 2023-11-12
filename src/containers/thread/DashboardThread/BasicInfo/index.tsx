@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
-import Router from 'next/router'
+import { useRouter } from 'next/navigation'
 
 import { DASHBOARD_BASEINFO_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
@@ -26,6 +26,7 @@ type TProps = {
 }
 
 const BasicInfo: FC<TProps> = ({ settings, touched }) => {
+  const router = useRouter()
   const curCommunity = useViewingCommunity()
   const { baseInfoTab } = settings
 
@@ -53,7 +54,7 @@ const BasicInfo: FC<TProps> = ({ settings, touched }) => {
                   ? `/${curCommunity.slug}/dashboard/info`
                   : `/${curCommunity.slug}/dashboard/info/${tab}`
 
-              Router.push(targetPath)
+              router.push(targetPath)
             }}
             view={VIEW.DESKTOP}
             noAnimation
