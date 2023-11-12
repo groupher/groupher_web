@@ -1,11 +1,6 @@
 // eslint-disable-next-line import/no-unresolved
 import { toast as hotToast } from 'sonner'
 
-import PubSub from 'pubsub-js'
-import Router from 'next/router'
-
-import { values, includes } from 'ramda'
-
 import type {
   TToastType,
   TAttInfo,
@@ -20,12 +15,11 @@ import type {
   TReportType,
   TArticlePubSelector,
 } from '@/spec'
-import { HCN } from '@/constant/name'
-import { NON_COMMUNITY_ROUTE } from '@/constant/route'
-import { THREAD, ARTICLE_THREAD } from '@/constant/thread'
+import { THREAD } from '@/constant/thread'
 import TYPE from '@/constant/type'
 import EVENT from '@/constant/event'
 
+import PubSub from './pubsub'
 import BStore from './bstore'
 import { scrollToHeader } from './dom'
 
@@ -211,28 +205,7 @@ export const viewingChanged = (article: TArticle | null): void => {
  * - 如果在其他页面，那么需要重新请求页面
  */
 export const changeToCommunity = (slug = ''): void => {
-  const isClient = typeof window === 'object'
-  if (!isClient) return
-
-  const { pathname } = window.location
-  const curPath = pathname.slice(1)
-  const isNonCommunityPage = includes(curPath, values(NON_COMMUNITY_ROUTE))
-  const isArticlePage = includes(curPath.split('/')[0], [
-    values(ARTICLE_THREAD),
-    // works detail page
-    'w',
-  ])
-  const isTargetNonCommunityPage = includes(slug, values(NON_COMMUNITY_ROUTE))
-
-  if (isNonCommunityPage || isArticlePage || isTargetNonCommunityPage) {
-    const target = slug === HCN ? '' : slug
-    Router.push(`/${target}`)
-    send(EVENT.DRAWER.CLOSE)
-    return
-  }
-
-  send(EVENT.COMMUNITY_CHANGE_BEFORE, { path: slug })
-  send(EVENT.DRAWER.CLOSE)
+  console.log('## changeToCommunity')
 }
 
 /**

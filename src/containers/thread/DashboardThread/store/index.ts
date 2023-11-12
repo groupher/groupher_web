@@ -621,13 +621,11 @@ const DashboardThread = T.model('DashboardThread', {
   }))
   .actions((self) => ({
     afterCreate(): void {
-      const slf = self as TStore
-
-      slf._initActiveTagThreadIfneed()
-
-      if (!slf._loadLocalSettings()) {
-        slf.mark({ demoAlertEnable: false })
-      }
+      // const slf = self as TStore
+      // slf._initActiveTagThreadIfneed()
+      // if (!slf._loadLocalSettings()) {
+      //   slf.mark({ demoAlertEnable: false })
+      // }
     },
 
     updateOverview(community: TCommunity): void {

@@ -65,7 +65,7 @@ const DigestSentence: FC<TProps> = ({
       interactive={interactive}
       {...restProps}
     >
-      <Text ref={textRef} lineClamp={lineClamp}>
+      <Text ref={textRef} $lineClamp={lineClamp}>
         {children}
         <Space left={6} />
         {interactive && (

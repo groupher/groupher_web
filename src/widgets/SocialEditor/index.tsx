@@ -46,7 +46,7 @@ const SocialEditor: FC<TProps> = ({
   value = [],
   ...restProps
 }) => {
-  const [parent] = useAutoAnimate({ duration: 100 })
+  const [parent] = useAutoAnimate()
 
   const [selected, setSelected] = useState<TSocialItem[]>([{ type: SOCIAL_LIST.EMAIL, link: '' }])
 

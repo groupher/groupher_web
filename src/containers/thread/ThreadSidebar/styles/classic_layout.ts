@@ -27,9 +27,9 @@ export const DividerTitle = styled.div`
 `
 export const CommunityJoinersWrapper = styled.div<TActive>`
   ${css.row()};
-  visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
-  margin-bottom: ${({ show }) => (show ? '15px' : 0)};
-  height: ${({ show }) => (show ? 'auto' : 0)};
+  visibility: ${({ $show }) => ($show ? 'visible' : 'hidden')};
+  margin-bottom: ${({ $show }) => ($show ? '15px' : 0)};
+  height: ${({ $show }) => ($show ? 'auto' : 0)};
   margin-bottom: 25px;
 `
 export const MoreNum = styled.div`
@@ -60,7 +60,7 @@ export const CommunityNoteWrapper = styled.div`
   line-height: 1.6;
 `
 export const PublishWrapper = styled.div<TActive>`
-  display: ${({ show }) => (show ? 'block' : 'none')};
+  display: ${({ $show }) => ($show ? 'block' : 'none')};
   width: 100%;
   margin-left: 3px;
 `

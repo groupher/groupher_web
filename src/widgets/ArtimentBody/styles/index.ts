@@ -93,11 +93,11 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   }
 `
 
-type TBody = { lineClamp: number; mode: 'article' | 'comment' }
+type TBody = { $lineClamp: number; mode: 'article' | 'comment' }
 export const Body = styled.div<TBody>`
   font-size: ${({ mode }) => (mode === 'article' ? '16px' : '15px')};
   line-height: 1.85;
-  ${({ lineClamp }) => `${css.lineClamp(lineClamp)}`};
+  ${({ $lineClamp }) => `${css.lineClamp($lineClamp)}`};
 `
 export const HTML = styled.div`
   color: ${theme('article.digest')};

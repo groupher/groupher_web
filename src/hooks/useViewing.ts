@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-// import { merge } from 'ramda'
+// import { mergeRight } from 'ramda'
 
 import EVENT from '@/constant/event'
 import type { TViewingInfo } from '@/spec'

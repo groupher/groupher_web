@@ -1,6 +1,5 @@
 import {
   compose,
-  contains,
   isEmpty,
   head,
   split,
@@ -11,7 +10,8 @@ import {
   slice,
   clone,
   toUpper,
-  merge,
+  mergeRight,
+  includes,
 } from 'ramda'
 
 import { HCN } from '@/constant/name'
@@ -20,9 +20,6 @@ import { ROUTE } from '@/constant/route'
 
 import { nilOrEmpty } from './validator'
 import { Global } from './helper'
-// import { isServerSide } from './ssr'
-
-export const isServerSide = typeof window === 'undefined'
 
 // example: /getme/xxx?aa=bb&cc=dd
 const parseMainPath = compose(head, split('?'), head, reject(isEmpty), split('/'), prop('asPath'))
@@ -32,7 +29,7 @@ const parsePathList = compose(
   reject(isEmpty),
   split('/'),
   head,
-  reject(contains('=')),
+  reject(includes('=')),
   reject(isEmpty),
   split('?'),
   prop('url'),
@@ -73,6 +70,7 @@ const getThirdPath = (args) => {
  */
 const parseSubDomain = (args) => {
   let communityPath = ''
+  const isServerSide = false
   if (isServerSide) {
     // on server side
     const { subdomains } = args.req
@@ -135,7 +133,7 @@ export const getRoutePathList = compose(
   reject(isEmpty),
   split('/'),
   head,
-  reject(contains('=')),
+  reject(includes('=')),
   reject(isEmpty),
   split('?'),
 )
@@ -219,7 +217,7 @@ const mergePagiQuery = (query = {}, opt = { pagi: 'string' }) => {
     routeQuery.page = parseInt(routeQuery.page, 10)
   }
 
-  return merge(defaultQuery, routeQuery)
+  return mergeRight(defaultQuery, routeQuery)
 }
 
 // convert url query string to json, with optional pagi info
@@ -334,7 +332,7 @@ export const markRoute = (query, opt = { noPagiInfo: true }) => {
     ...opt,
   })
 
-  const newQueryObj = pickBy((v) => !nilOrEmpty(v), merge(exsitQuery, query))
+  const newQueryObj = pickBy((v) => !nilOrEmpty(v), mergeRight(exsitQuery, query))
   const newQueryString = serializeQuery(newQueryObj)
 
   Global.history.pushState({}, null, newQueryString)

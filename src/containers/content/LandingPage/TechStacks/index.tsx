@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import { Parallax } from 'react-scroll-parallax'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { GITHUB } from '@/config'
@@ -63,9 +62,7 @@ const TeckStacks: FC = () => {
           <TechItem path="design/phosphor.png" name="Phosphor" size={42} />
         </TechsWrapper>
         <BgWrapper>
-          <Parallax speed={-10} translateY={[10, -10]} opacity={[1, 0.8]} disabled={isMobile}>
-            <CADBackground src="/cad-bg.png" />
-          </Parallax>
+          <CADBackground src="/cad-bg.png" />
         </BgWrapper>
       </Wall>
 

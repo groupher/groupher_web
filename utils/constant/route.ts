@@ -14,6 +14,7 @@ export const NON_COMMUNITY_ROUTE = {
 } as Record<Uppercase<TNonCommunityPath>, TNonCommunityPath>
 
 export const DASHBOARD_ROUTE = {
+  OVERVIEW: 'dashboard',
   DASHBOARD: 'dashboard',
   // basic-info
   INFO: 'info',

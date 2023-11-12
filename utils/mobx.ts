@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { types as mobxTypes } from 'mobx-state-tree'
 
-import { has, forEachObjIndexed, keys, isEmpty, contains } from 'ramda'
+import { has, forEachObjIndexed, keys, isEmpty, includes } from 'ramda'
 
 import { MobXProviderContext } from 'mobx-react'
 import { toJS as toJSON } from 'mobx'
@@ -46,7 +46,7 @@ export const markStates = (sobj, self) => {
   const selfKeys = keys(self)
 
   forEachObjIndexed((val, key) => {
-    if (!contains(key, selfKeys)) return false
+    if (!includes(key, selfKeys)) return false
     if (!isEmpty(val) && !Array.isArray(val) && isObject(val) && self[key] !== null) {
       // NOTE: had to use this syntax to update object val
       // because the normal one is NOT WORKING in production build

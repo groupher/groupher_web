@@ -1,5 +1,6 @@
 import type { TPagi, TID } from './utils'
 import type { TSimpleUse } from './account'
+import type { TDashboard } from './dashboard'
 
 type TMeta = {
   postsCount: number
@@ -8,28 +9,10 @@ type TMeta = {
   changelogsCount: number
 }
 
-export type TMediaReport = {
-  index: number
-  favicon: string
-  siteName: string
-  title: string
-  url: string
-  editUrl?: string
-}
-
 export type TModerator = {
   role: string
   passportItemCount: number
   user: TSimpleUse
-}
-
-export type TDashboard = {
-  baseInfo?: {
-    title?: string
-    bio?: string
-    homepage?: string
-  }
-  mediaReports?: TMediaReport[]
 }
 
 export type TCommunity = {

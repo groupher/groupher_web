@@ -3,7 +3,7 @@
  *
  */
 
-import { merge, contains, values, findIndex } from 'ramda'
+import { values, findIndex, mergeRight, includes } from 'ramda'
 
 import type { TRootStore, TCommunity, TThread, TArticle } from '@/spec'
 
@@ -112,7 +112,7 @@ const DrawerStore = T.model('DrawerStore', {
     get articleNavi(): TArticleNavi {
       const slf = self as TStore
 
-      if (!contains(slf.curThread, values(ARTICLE_THREAD)) || !slf.viewingArticle?.id) {
+      if (!includes(slf.curThread, values(ARTICLE_THREAD)) || !slf.viewingArticle?.id) {
         return {
           previous: null,
           next: null,
@@ -172,7 +172,7 @@ const DrawerStore = T.model('DrawerStore', {
         slf.dashboardDescLayout = data
       }
 
-      if (contains(thread, values(ARTICLE_THREAD))) {
+      if (includes(thread, values(ARTICLE_THREAD))) {
         // article
         slf.setViewing({ [thread]: data, viewingThread: thread })
       }
@@ -180,7 +180,7 @@ const DrawerStore = T.model('DrawerStore', {
       slf.visible = true
       slf.type = type
 
-      slf.options = merge(defaultOptions, options)
+      slf.options = mergeRight(defaultOptions, options)
       lockPage()
 
       if (slf.isMobile) {
@@ -231,7 +231,7 @@ const DrawerStore = T.model('DrawerStore', {
     markPreviewURLIfNeed(article: TArticle): void {
       const { innerId, title, meta, originalCommunitySlug } = article
 
-      if (!innerId || !contains(self.type, ARTICLE_VIEWER_TYPES)) return
+      if (!innerId || !includes(self.type, ARTICLE_VIEWER_TYPES)) return
       self.previousURL = Global.location.href
 
       const thread = meta.thread.toLowerCase()
@@ -241,7 +241,7 @@ const DrawerStore = T.model('DrawerStore', {
     },
 
     restorePreviousURLIfNeed(): void {
-      if (!contains(self.type, ARTICLE_VIEWER_TYPES)) return
+      if (!includes(self.type, ARTICLE_VIEWER_TYPES)) return
 
       const targetHref = self.previousHomeURL || self.previousURL
 

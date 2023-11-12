@@ -2,7 +2,7 @@
  * GlobalLayout store
  *
  */
-import { merge } from 'ramda'
+import { mergeRight } from 'ramda'
 
 import type { TRootStore, TGlobalLayout, TThemeName, TArticle, TArticleMeta } from '@/spec'
 import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
@@ -48,7 +48,7 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
     syncArticle(article: TArticle): void {
       const root = getParent(self) as TRootStore
       const viewingArticle = toJS(root.viewingArticle)
-      const updatedArticle = merge(viewingArticle, article)
+      const updatedArticle = mergeRight(viewingArticle, article)
 
       root.viewing.updateViewing(updatedArticle)
       root.articlesThread.updateArticle(updatedArticle)
@@ -67,7 +67,7 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
       // for viewing article
       root.viewing.updateUpvoteCount(upvotesCount, meta)
       const { id, viewerHasUpvoted, meta: viewingArticleMeta } = toJS(root.viewingArticle)
-      const syncMeta = merge(viewingArticleMeta, meta)
+      const syncMeta = mergeRight(viewingArticleMeta, meta)
       // for viewing article end
 
       root.articlesThread.updateArticle({ id, viewerHasUpvoted, upvotesCount, meta: syncMeta })

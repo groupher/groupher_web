@@ -7,7 +7,6 @@
 import { FC, createContext, useContext } from 'react'
 import dynamic from 'next/dynamic'
 import { compose, not, isNil, filter, reverse as reverseFn, slice } from 'ramda'
-import { trackWindowScroll } from 'react-lazy-load-image-component'
 
 import type { TUser, TSize, TSpace } from '@/spec'
 import { AVATARS_LIST_LENGTH } from '@/config'
@@ -62,7 +61,7 @@ export type TProps = {
   users?: TUser[]
   size?: TAvatarSize
   total?: number | null
-  limit: number
+  limit?: number
   showMore?: boolean
   reverse?: boolean
   popCardPlacement?: 'top' | 'bottom'
@@ -93,6 +92,8 @@ const Facepile: FC<TProps> = ({
 
   users = filter(validUser, getUniqueArray(users, 'login'))
   const sortedUsers = reverse ? reverseFn(users) : users
+
+  // delete restProps?.forwardRef
 
   return (
     <Wrapper $total={totalCount} {...restProps}>
@@ -132,4 +133,4 @@ const Facepile: FC<TProps> = ({
   )
 }
 
-export default trackWindowScroll(Facepile)
+export default Facepile

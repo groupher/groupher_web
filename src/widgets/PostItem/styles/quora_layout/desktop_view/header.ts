@@ -25,13 +25,13 @@ export const Title = styled.a<TArticleTitle>`
   font-weight: 600;
   letter-spacing: 0.03em;
   opacity: 0.85;
-  color: ${({ isPinned, $color }) => (isPinned ? rainbow($color) : theme('article.title'))};
-  filter: ${({ isPinned }) => (isPinned ? 'brightness(1.1)' : '')};
+  color: ${({ $isPinned, $color }) => ($isPinned ? rainbow($color) : theme('article.title'))};
+  filter: ${({ $isPinned }) => ($isPinned ? 'brightness(1.1)' : '')};
 
   &:before {
     content: '';
     position: absolute;
-    display: ${({ isPinned }) => (isPinned ? 'block' : 'none')};
+    display: ${({ $isPinned }) => ($isPinned ? 'block' : 'none')};
     left: 0;
     bottom: 4px;
     background: ${(props) => {
@@ -60,12 +60,12 @@ export const Title = styled.a<TArticleTitle>`
 
   ${ItemWrapper}:hover & {
     text-decoration: underline;
-    text-decoration-color: ${({ isPinned, $color }) =>
-      isPinned ? rainbow($color) : theme('hint')};
+    text-decoration-color: ${({ $isPinned, $color }) =>
+      $isPinned ? rainbow($color) : theme('hint')};
   }
 
   &:hover {
-    color: ${({ isPinned, $color }) => (isPinned ? rainbow($color) : theme('article.digest'))};
+    color: ${({ $isPinned, $color }) => ($isPinned ? rainbow($color) : theme('article.digest'))};
     cursor: pointer;
   }
 

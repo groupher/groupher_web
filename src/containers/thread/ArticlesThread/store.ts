@@ -2,7 +2,7 @@
  * ArticlesThread store
  */
 
-import { merge, isEmpty, findIndex, propEq, pickBy, values, includes } from 'ramda'
+import { isEmpty, findIndex, propEq, pickBy, values, includes, mergeRight } from 'ramda'
 
 import type {
   TRootStore,
@@ -166,7 +166,7 @@ const ArticlesThread = T.model('ArticlesThread', {
     selectFilter(option: TArticleFilter): void {
       const curfilter = self.filtersData
       // @ts-ignore
-      self.filters = merge(curfilter, option)
+      self.filters = mergeRight(curfilter, option)
     },
     showTopModeline(fix): void {
       const root = getParent(self) as TRootStore
@@ -183,7 +183,7 @@ const ArticlesThread = T.model('ArticlesThread', {
       if (index === null) return
       const targetArticle = toJS(slf[pagedArticleKey].entries[index])
 
-      slf[pagedArticleKey].entries[index] = merge(targetArticle, fields)
+      slf[pagedArticleKey].entries[index] = mergeRight(targetArticle, fields)
     },
     markRoute(params): void {
       const query = { ...self.tagQuery, ...self.filtersData, ...params }

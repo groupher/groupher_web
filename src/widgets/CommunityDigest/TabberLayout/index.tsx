@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
-import Router from 'next/router'
+import { useRouter } from 'next/navigation'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import useMetric from '@/hooks/useMetric'
@@ -30,6 +30,7 @@ import {
 // const NON_STANDARD_COMMUNITIES = [HCN, 'feedback']
 
 const TabberLayout: FC = () => {
+  const router = useRouter()
   const metric = useMetric()
   const { isMobile } = useMobileDetect()
   const { enterView, leaveView } = useCommunityDigestViewport()
@@ -50,7 +51,7 @@ const TabberLayout: FC = () => {
           <TabBarWrapper>
             <TabBar
               source={publicThreads}
-              onChange={(path) => Router.push(`/${community.slug}/${path}`)}
+              onChange={(path) => router.push(`/${community.slug}/${path}`)}
               active={activeThread}
               withIcon
             />

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { merge } from 'ramda'
+import { mergeRight } from 'ramda'
 
 import { debounce } from '@/helper'
 
@@ -32,7 +32,7 @@ const useScroll = (cb?: () => void): TScrollState => {
       cb?.()
 
       setScroll(
-        merge(initState, {
+        mergeRight(initState, {
           direction,
           scrollPos,
         }),

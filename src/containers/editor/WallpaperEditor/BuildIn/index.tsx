@@ -5,6 +5,7 @@
 
 import { FC, Fragment } from 'react'
 
+import type { TWallpaperData } from '@/spec'
 import { WALLPAPER_TYPE } from '@/constant/wallpaper'
 
 import { Br } from '@/widgets/Common'
@@ -15,7 +16,6 @@ import GradientGroup from './GradientGroup'
 import CustomGradientEditor from './CustomGradientEditor'
 import AnglePanel from './AnglePanel'
 
-import type { TWallpaperData } from '../spec'
 import {
   Wrapper,
   Title,

@@ -18,7 +18,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
         return 'padding-left: 100px'
 
       case BANNER_LAYOUT.HEADER:
-        return 'padding-left: 50px'
+        return 'padding-left: 0'
 
       default:
         return ''

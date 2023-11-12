@@ -18,7 +18,7 @@ const Actions: FC = () => {
       </LeftPart>
       <RightPart>
         <JoinTitle>参与者</JoinTitle>
-        <Facepile size="medium" users={mockUsers(6)} total={20} showTotalNumber />
+        <Facepile size="medium" users={mockUsers(6)} total={20} />
         {/* <Space right={25} /> */}
         {/* <NewButton size="medium">
           <BtnText>新增</BtnText>

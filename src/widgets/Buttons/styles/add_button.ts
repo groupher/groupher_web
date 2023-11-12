@@ -8,13 +8,13 @@ import { WithMargin } from '@/widgets/Common'
 
 type TWrapper = {
   disabled: boolean
-  dimWhenIdle: boolean
+  $dimWhenIdle: boolean
 }
 
 export const Wrapper = styled(WithMargin)<TWrapper>`
   position: relative;
   ${css.row('align-center')};
-  opacity: ${({ dimWhenIdle, disabled }) => (dimWhenIdle || disabled ? '0.65' : 1)};
+  opacity: ${({ $dimWhenIdle, disabled }) => ($dimWhenIdle || disabled ? '0.65' : 1)};
 
   &:hover {
     cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};

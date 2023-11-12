@@ -50,7 +50,7 @@ const ArtimentBody: FC<TProps> = ({
 
   return (
     <Wrapper testid={testid}>
-      <Body ref={bodyRef} lineClamp={lineClamp} mode={mode}>
+      <Body ref={bodyRef} $lineClamp={lineClamp} mode={mode}>
         <HTML
           dangerouslySetInnerHTML={{
             __html: document.bodyHtml,

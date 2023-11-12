@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
-import Router from 'next/router'
+import { useRouter } from 'next/navigation'
 
 import { BANNER_LAYOUT } from '@/constant/layout'
 import { THREAD } from '@/constant/thread'
@@ -28,6 +28,7 @@ import {
 // import { subscribeCommunity, unsubscribeCommunity } from '../logic'
 
 const CommunityBrief: FC = () => {
+  const router = useRouter()
   const { logo, slug, title, desc, dashboard } = useViewingCommunity()
   const activeThread = useViewingThread()
   const bannerLayout = useBannerLayout()
@@ -47,7 +48,7 @@ const CommunityBrief: FC = () => {
           </Digest>
 
           {bannerLayout === BANNER_LAYOUT.SIDEBAR && activeThread === THREAD.DOC && (
-            <ArrowButton top={12} left={-2} leftLayout onClick={() => Router.push(`/${slug}`)}>
+            <ArrowButton top={12} left={-2} leftLayout onClick={() => router.push(`/${slug}`)}>
               返回社区
             </ArrowButton>
           )}

@@ -3,7 +3,7 @@
  *
  */
 
-import { prop, trim, filter, contains } from 'ramda'
+import { prop, trim, filter, includes } from 'ramda'
 
 import type { TRootStore, TArticle, TCommunity } from '@/spec'
 import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
@@ -37,7 +37,7 @@ const ModeLineMenu = T.model('ModeLineMenu', {
       if (notEmpty(trim(searchCommunityValue))) {
         return filter(
           // @ts-ignore
-          (item) => contains(searchCommunityValue, prop('title', item)),
+          (item) => includes(searchCommunityValue, prop('title', item)),
           subscribedCommunities.entries,
         )
       }

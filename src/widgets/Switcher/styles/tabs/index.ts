@@ -4,10 +4,10 @@ import type { TTestable, TColor } from '@/spec'
 import css, { rainbow } from '@/css'
 
 type TSlipBar = {
-  slipHeight: string
-  width: string
-  translateX: string
-  noAnimation?: boolean
+  $slipHeight: string
+  $width: string
+  $translateX: string
+  $noAnimation?: boolean
 }
 
 export const Wrapper = styled.nav.attrs<TTestable>(({ testid }) => ({
@@ -33,18 +33,18 @@ export const Nav = styled.nav`
 export const SlipBar = styled.span<TSlipBar>`
   position: absolute;
   ${css.row('justify-center')};
-  width: ${({ width }) => width};
+  width: ${({ $width }) => $width};
   bottom: 1px;
   left: 0;
-  height: ${({ slipHeight }) => slipHeight};
-  transform: ${({ translateX }) => `translate3d(${translateX}, 0, 0);`};
+  height: ${({ $slipHeight }) => $slipHeight};
+  transform: ${({ $translateX }) => `translate3d(${$translateX}, 0, 0);`};
 
-  transition: ${({ noAnimation }) => (noAnimation ? 'none' : 'transform 0.25s')};
+  transition: ${({ $noAnimation }) => ($noAnimation ? 'none' : 'transform 0.25s')};
 `
 
-type TRealBar = { width: string } & TColor
+type TRealBar = { $width: string } & TColor
 export const RealBar = styled.span<TRealBar>`
-  width: ${({ width }) => width};
+  width: ${({ $width }) => $width};
   height: 2px;
   background: ${({ $color }) => rainbow($color, 'dashboard.menuTitle')};
 `

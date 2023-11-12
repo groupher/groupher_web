@@ -5,7 +5,6 @@
  */
 import { FC, Fragment, ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
-import Head from 'next/head'
 import { ThemeProvider } from 'styled-components'
 
 import usePrimaryColor from '@/hooks/usePrimaryColor'
@@ -28,14 +27,6 @@ const ThemePalette: FC<TProps> = ({ children }) => {
 
   return (
     <ThemeProvider theme={themeData}>
-      <Head>
-        <meta
-          name="theme-color"
-          content={themeData.mobileTab}
-          media="(prefers-color-scheme: light)"
-        />
-      </Head>
-
       <GlobalStyle $color={primaryColor} />
       <Fragment>{children}</Fragment>
       <ThirdPartyOverWrite />

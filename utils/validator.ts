@@ -1,5 +1,5 @@
 import {
-  merge,
+  mergeRight,
   startsWith,
   compose,
   not,
@@ -78,22 +78,17 @@ const trimIfNeed = (v) => {
 
 const validValues = compose(map(trimIfNeed), pickBy(notNil), reject(isObject))
 
-export const cast = (
-  fields: string[],
-  source: Record<string, unknown>,
-): any => {
+export const cast = (fields: string[], source: Record<string, unknown>): any => {
   const casted = pick(fields, source)
 
   // @ts-ignore
-  return merge(validValues(casted), validObjects(casted))
+  return mergeRight(validValues(casted), validObjects(casted))
 }
 
 const keyOf = compose(head, keys)
 const valueOf = compose(head, values)
 
-export const changeset = (
-  source: Record<string, string>,
-): Record<string, unknown> => ({
+export const changeset = (source: Record<string, string>): Record<string, unknown> => ({
   exist: (obj, cb, opt = { skip: false, msg: '' }) => {
     if (source.__dirty__) return changeset(source)
     if (opt.skip) return changeset(source)
@@ -113,7 +108,7 @@ export const changeset = (
       const msg = opt.msg || '不能为空'
 
       cb({ title, msg })
-      return changeset(merge(source, { __dirty__: true, __rat__: field }))
+      return changeset(mergeRight(source, { __dirty__: true, __rat__: field }))
     }
     return changeset(source)
   },
@@ -128,7 +123,7 @@ export const changeset = (
       const msg = `不能小于 ${num} 个字符`
 
       cb({ title, msg })
-      return changeset(merge(source, { __dirty__: true, __rat__: field }))
+      return changeset(mergeRight(source, { __dirty__: true, __rat__: field }))
     }
     return changeset(source)
   },
@@ -142,7 +137,7 @@ export const changeset = (
       const msg = '已经存在了, 请核对。'
 
       cb({ title, msg })
-      return changeset(merge(source, { __dirty__: true, __rat__: field }))
+      return changeset(mergeRight(source, { __dirty__: true, __rat__: field }))
     }
 
     return changeset(source)
@@ -158,7 +153,7 @@ export const changeset = (
       const msg = `请填写 ${prefix} 开头的链接地址`
 
       cb({ title, msg })
-      return changeset(merge(source, { __dirty__: true, __rat__: field }))
+      return changeset(mergeRight(source, { __dirty__: true, __rat__: field }))
     }
     return changeset(source)
   },
@@ -179,7 +174,7 @@ export const changeset = (
     const msg = '格式：mm:ss 或者 hh:mm:ss'
 
     cb({ title, msg })
-    return changeset(merge(source, { __dirty__: true, __rat__: field }))
+    return changeset(mergeRight(source, { __dirty__: true, __rat__: field }))
   },
   dateFmt: (obj, cb, opt = { skip: false }) => {
     if (source.__dirty__) return changeset(source)
@@ -198,7 +193,7 @@ export const changeset = (
     const msg = '请输入格式为：YYYY/MM/DD 的合法日期'
 
     cb({ title, msg })
-    return changeset(merge(source, { __dirty__: true, __rat__: field }))
+    return changeset(mergeRight(source, { __dirty__: true, __rat__: field }))
   },
   done: () => {
     if (source.__dirty__) {

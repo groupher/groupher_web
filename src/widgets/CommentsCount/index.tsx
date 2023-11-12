@@ -17,7 +17,7 @@ const CommentsCount: FC<TProps> = ({ count, size = SIZE.SMALL, ...restProps }) =
     <Fragment>
       {count >= 100 ? (
         <HighlightWrapper size={size} {...restProps}>
-          <CommentsIcon size={size} highlight />
+          <CommentsIcon size={size} $highlight />
           {size === SIZE.MEDIUM && <Space right={2} />}
           <Count>{count}</Count>
         </HighlightWrapper>

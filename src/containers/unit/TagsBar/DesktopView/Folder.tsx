@@ -63,7 +63,7 @@ const Folder: FC<TProps> = ({
   return (
     <Wrapper>
       <Header
-        show={title !== 'null'}
+        $show={title !== 'null'}
         onClick={() => {
           toggleFolder(!isFolderOpen)
 

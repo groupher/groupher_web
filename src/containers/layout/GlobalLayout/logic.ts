@@ -41,7 +41,6 @@ export const getGlowPosition = (metric: TMetric, glowFixed: boolean): TGlowPosit
 }
 
 export const clearDemoSetting = () => store.clearLocalSettings()
-// export const loadDemoSetting = () => store.loadDemoSetting()
 
 // cloning children with new props
 // see detail: https://stackoverflow.com/questions/32370994/how-to-pass-props-to-this-props-children
@@ -134,6 +133,7 @@ const ErrSolver = [
 export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
+    console.log('## global init hanlders')
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
 
     initAppVersion()

@@ -1,5 +1,3 @@
-import Router from 'next/router'
-
 import type { TArticle } from '@/spec'
 import EVENT from '@/constant/event'
 
@@ -33,5 +31,6 @@ export const holder = 1
 const handleEdit = (article: TArticle): void => {
   const thread = article.meta.thread.toLowerCase()
 
-  Router.push(`/update/${thread}/${article.id}`)
+  // Router.push(`/update/${thread}/${article.id}`)
+  console.log('## TODO: handleEdit')
 }

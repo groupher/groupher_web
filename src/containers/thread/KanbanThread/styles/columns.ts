@@ -6,6 +6,7 @@ import css, { theme, rainbowLight, rainbow } from '@/css'
 import GtdWipSVG from '@/icons/GtdWip'
 import GtdDoneSVG from '@/icons/GtdDone'
 import GtdTodoSVG from '@/icons/GtdTodo'
+import AddSVG from '@/icons/Add'
 
 export const Column = styled.div`
   ${css.column('align-start')};
@@ -50,4 +51,9 @@ export const WipIcon = styled(GtdWipSVG)<TColor>`
 export const DoneIcon = styled(GtdDoneSVG)<TColor>`
   ${css.size(12)};
   fill: ${({ $color }) => rainbow($color)};
+`
+
+export const AddIcon = styled(AddSVG)`
+  ${css.size(14)};
+  fill: ${theme('article.digest')};
 `

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { contains, values } from 'ramda'
+import { includes, values } from 'ramda'
 
 import type { TArticle, TDirection, TMetric } from '@/spec'
 import EVENT from '@/constant/event'
@@ -148,7 +148,7 @@ const DataResolver = [
     match: asyncRes(EVENT.DRAWER.OPEN),
     action: (res) => {
       const payload = res[EVENT.DRAWER.OPEN]
-      if (!contains(payload.type, FUNCTION_TYPES) && store.isMobile) {
+      if (!includes(payload.type, FUNCTION_TYPES) && store.isMobile) {
         const { data: article } = payload
         const targetUrl = `/${article.meta.thread.toLowerCase()}/${article.id}`
 

@@ -6,7 +6,7 @@
  *
  */
 
-import { merge, pickBy } from 'ramda'
+import { mergeRight, pickBy } from 'ramda'
 
 import type { TAccount, TRoute, TThread, TArticle } from '@/spec'
 
@@ -79,6 +79,7 @@ import {
 
 const rootStore = T.model({
   // domain stores
+  activeDemo: T.opt(T.str, ''),
   account: T.opt(AccountStore, {}),
   route: T.opt(RouteStore, {}),
   viewing: T.opt(ViewingStore, {}),
@@ -213,7 +214,7 @@ const rootStore = T.model({
         // pass
       } else {
         // @ts-ignore TODO:
-        toast(merge(defaultOpt, options), 'warn')
+        toast(mergeRight(defaultOpt, options), 'warn')
       }
 
       send(EVENT.LOGIN_PANEL)

@@ -64,10 +64,10 @@ const ArrowButton: FC<TProps> = ({
       width={width}
       className={className}
       onClick={() => !disabled && onClick()}
-      dimWhenIdle={dimWhenIdle}
+      $dimWhenIdle={dimWhenIdle}
       disabled={disabled}
       color={color || primaryColor}
-      reverseColor={reverseColor}
+      $reverseColor={reverseColor}
       fontSize={fontSize}
       {...restProps}
     >

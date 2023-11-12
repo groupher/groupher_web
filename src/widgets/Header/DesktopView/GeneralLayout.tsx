@@ -5,7 +5,7 @@
  */
 
 import { FC, memo } from 'react'
-import { contains } from 'ramda'
+import { includes } from 'ramda'
 import dynamic from 'next/dynamic'
 
 import type { TMetric } from '@/spec'
@@ -24,7 +24,7 @@ const log = buildLog('C:Header')
 const AddOns = dynamic(() => import('../AddOns'), { ssr: false })
 
 const hasNoBorder = (metric: TMetric): boolean =>
-  contains(metric, [
+  includes(metric, [
     METRIC.EXPLORE,
     METRIC.SPONSOR,
     METRIC.SUPPORT_US,

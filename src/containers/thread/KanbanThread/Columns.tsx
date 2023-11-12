@@ -5,11 +5,9 @@
 
 import { FC } from 'react'
 
-// import { buildLog } from '@/logger'
 import type { TKanbanLayout, TColorName, TPagedArticles } from '@/spec'
 
 import { SpaceGrow } from '@/widgets/Common'
-import IconButton from '@/widgets/Buttons/IconButton'
 import KanbanItem from '@/widgets/KanbanItem'
 import EmptyItem from '@/widgets/KanbanItem/EmptyItem'
 
@@ -22,6 +20,7 @@ import {
   TODOIcon,
   WipIcon,
   DoneIcon,
+  AddIcon,
 } from './styles/columns'
 
 type TProps = {
@@ -43,11 +42,10 @@ const Columns: FC<TProps> = ({ layout, bgColors, todoPosts, wipPosts, donePosts 
           <Label>待办</Label>
           <SubTitle>{todoPosts.totalCount}</SubTitle>
           <SpaceGrow />
-          <IconButton path="shape/add.svg" right={12} />
+          <AddIcon />
         </Header>
         <Body color={BG1}>
           {todoPosts.totalCount === 0 && <EmptyItem />}
-
           {todoPosts.totalCount !== 0 &&
             todoPosts.entries.map((item) => (
               <KanbanItem key={item.innerId} layout={layout} article={item} />
@@ -60,7 +58,7 @@ const Columns: FC<TProps> = ({ layout, bgColors, todoPosts, wipPosts, donePosts 
           <Label>进行中</Label>
           <SubTitle>{wipPosts.totalCount}</SubTitle>
           <SpaceGrow />
-          <IconButton path="shape/add.svg" right={12} />
+          <AddIcon />
         </Header>
         <Body color={BG2}>
           {wipPosts.totalCount === 0 && <EmptyItem />}
@@ -77,7 +75,7 @@ const Columns: FC<TProps> = ({ layout, bgColors, todoPosts, wipPosts, donePosts 
           <Label>已完成</Label>
           <SubTitle>{donePosts.totalCount}</SubTitle>
           <SpaceGrow />
-          <IconButton path="shape/add.svg" right={12} />
+          <AddIcon />
         </Header>
         <Body color={BG3}>
           {donePosts.totalCount === 0 && <EmptyItem />}

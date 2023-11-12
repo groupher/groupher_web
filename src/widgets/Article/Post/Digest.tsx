@@ -4,8 +4,7 @@
 
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
-
-import Router from 'next/router'
+import { useRouter } from 'next/navigation'
 
 import useMetric from '@/hooks/useMetric'
 import useViewingArticle from '@/hooks/useViewingArticle'
@@ -42,6 +41,7 @@ import {
 const log = buildLog('C:ArticleDigest')
 
 const PostLayout: FC = () => {
+  const router = useRouter()
   const metric = useMetric()
   const { article } = useViewingArticle()
   const primaryColor = usePrimaryColor()
@@ -54,7 +54,7 @@ const PostLayout: FC = () => {
     <Wrapper metric={metric}>
       <LeftPart>
         <Topping>
-          <BackBtnWrapper onClick={() => Router.push(backUrl)}>
+          <BackBtnWrapper onClick={() => router.push(backUrl)}>
             <ArrowIcon />
             讨论区
           </BackBtnWrapper>
@@ -64,7 +64,7 @@ const PostLayout: FC = () => {
         </Topping>
 
         <ArticlePinLabel isPinned={isPinned} top={56} />
-        <Title isPinned={isPinned} $color={primaryColor}>
+        <Title $isPinned={isPinned} $color={primaryColor}>
           {title}
           <SubTitle>{innerId}</SubTitle>
         </Title>

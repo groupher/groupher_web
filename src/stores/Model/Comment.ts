@@ -1,4 +1,4 @@
-import { values, reduce, merge } from 'ramda'
+import { values, reduce, mergeRight } from 'ramda'
 
 import EMOTION from '@/constant/emotion'
 import { titleCase } from '@/fmt'
@@ -10,7 +10,7 @@ import { pagiFields, timestampFields } from './helper/common'
 
 const commentEmotionFields = () => {
   return reduce(
-    merge,
+    mergeRight,
     {},
     values(EMOTION).map((emotion) => {
       return {

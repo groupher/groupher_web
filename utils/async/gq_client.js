@@ -1,4 +1,4 @@
-import { createClient, defaultExchanges } from 'urql/core'
+import { Client, cacheExchange, fetchExchange } from '@urql/core'
 
 /* import { onError } from 'apollo-link-error' */
 
@@ -11,18 +11,16 @@ import BStore from '../bstore'
 const log = buildLog('Async')
 
 // see setup https://formidable.com/open-source/urql/docs/basics/core/
-const client = createClient({
+const client = new Client({
   url: GRAPHQL_ENDPOINT,
-  fetchOptions: () => {
-    return {
-      headers: {
-        special: 'Special header value',
-        authorization: `Bearer ${BStore.get('token') || ''}`,
-      },
-    }
-  },
+  fetchOptions: () => ({
+    headers: {
+      special: 'Special header value',
+      authorization: `Bearer ${BStore.get('token') || ''}`,
+    },
+  }),
   // the default:
-  exchanges: defaultExchanges,
+  exchanges: [cacheExchange, fetchExchange],
   // requestPolicy: 'network-only',
   // see https://formidable.com/open-source/urql/docs/basics/document-caching/#request-policies
   requestPolicy: 'cache-and-network',

@@ -72,7 +72,7 @@ const DashboardThread: FC = () => {
       <SideMenu curTab={curTab} touched={touched} community={curCommunity} />
 
       <MainWrapper>
-        {curTab === DASHBOARD.DASHBOARD && <Overview data={overviewData} />}
+        {curTab === DASHBOARD.OVERVIEW && <Overview data={overviewData} />}
         {curTab === DASHBOARD.INFO && <BasicInfo settings={baseInfoSettings} touched={touched} />}
         {curTab === DASHBOARD.SEO && <SEO settings={seoSettings} touched={touched} />}
         {curTab === DASHBOARD.LAYOUT && <Layout settings={uiSettings} touched={touched} />}

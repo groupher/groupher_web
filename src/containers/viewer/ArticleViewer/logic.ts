@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { merge } from 'ramda'
+import { mergeRight } from 'ramda'
 
 import type { TArticle } from '@/spec'
 
@@ -46,7 +46,7 @@ const handleArticleRes = (article: TArticle): void => {
   const thread = article.meta.thread.toLowerCase()
   const { document, ...restArticle } = article
   store.mark({ document })
-  store.setViewing({ [thread]: merge(store.viewingArticle, restArticle) })
+  store.setViewing({ [thread]: mergeRight(store.viewingArticle, restArticle) })
 
   setTimeout(() => {
     const { id, viewerHasUpvoted, views, upvotesCount } = article

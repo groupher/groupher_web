@@ -3,7 +3,7 @@
  *
  */
 
-import { merge, clone, remove, insert, findIndex, propEq, includes } from 'ramda'
+import { mergeRight, clone, remove, insert, findIndex, propEq, includes } from 'ramda'
 
 import type { TRootStore, TAccount, TCommunity, TPagedCommunities, TC11N, TModerator } from '@/spec'
 import { T, getParent, markStates, Instance, toJS } from '@/mobx'
@@ -66,7 +66,7 @@ const AccountStore = T.model('AccountStore', {
       return achievement[type] || false
     },
     updateAccount(sobj): void {
-      const user = merge(toJS(self.user), { ...sobj })
+      const user = mergeRight(toJS(self.user), { ...sobj })
       const { mark } = self as TStore
 
       mark({ user })
@@ -120,7 +120,7 @@ const AccountStore = T.model('AccountStore', {
     },
     updateC11N(options) {
       const curCustomization = clone(self.accountInfo.customization)
-      self.user.customization = merge(curCustomization, options)
+      self.user.customization = mergeRight(curCustomization, options)
     },
     mark(sobj: Record<string, unknown>): void {
       markStates(sobj, self)

@@ -5,7 +5,7 @@
  */
 
 import { FC, memo, ReactNode } from 'react'
-import Router from 'next/router'
+import { useRouter } from 'next/navigation'
 
 import { buildLog } from '@/logger'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
@@ -28,19 +28,12 @@ const SubTitle: FC<TProps> = ({
   withMore = false,
   moreLink = '/',
 }) => {
+  const router = useRouter()
   return (
     <Wrapper testid={testid}>
       <Title>{children}</Title>
       <OptionWrapper>
-        {withMore && (
-          <ArrowButton
-            onClick={() => {
-              Router.push(moreLink)
-            }}
-          >
-            更多
-          </ArrowButton>
-        )}
+        {withMore && <ArrowButton onClick={() => router.push(moreLink)}>更多</ArrowButton>}
       </OptionWrapper>
     </Wrapper>
   )

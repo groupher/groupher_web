@@ -1,6 +1,6 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
-import Router from 'next/router'
+import { useRouter } from 'next/navigation'
 
 import { DASHBOARD_BASEINFO_ROUTE } from '@/constant/route'
 import VIEW from '@/constant/view'
@@ -18,7 +18,7 @@ import SocialInfo from './SocialInfo'
 import OtherInfo from './OtherInfo'
 
 import { Wrapper, Banner, TabsWrapper } from '../styles/basic_info'
-import { edit, loadBaseInfo } from '../logic'
+import { edit } from '../logic'
 
 type TProps = {
   settings: TBaseInfoSettings
@@ -26,12 +26,13 @@ type TProps = {
 }
 
 const BasicInfo: FC<TProps> = ({ settings, touched }) => {
+  const router = useRouter()
   const curCommunity = useViewingCommunity()
   const { baseInfoTab } = settings
 
-  useEffect(() => {
-    setTimeout(() => loadBaseInfo())
-  }, [])
+  // useEffect(() => {
+  //   setTimeout(() => loadBaseInfo())
+  // }, [])
 
   return (
     <Wrapper>
@@ -53,7 +54,7 @@ const BasicInfo: FC<TProps> = ({ settings, touched }) => {
                   ? `/${curCommunity.slug}/dashboard/info`
                   : `/${curCommunity.slug}/dashboard/info/${tab}`
 
-              Router.push(targetPath)
+              router.push(targetPath)
             }}
             view={VIEW.DESKTOP}
             noAnimation

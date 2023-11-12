@@ -60,8 +60,8 @@ export const Title = styled.div<TArticleTitle>`
   margin-bottom: 18px;
   max-width: 600px;
   font-weight: 500;
-  color: ${({ isPinned, $color }) => (isPinned ? rainbow($color) : theme('article.title'))};
-  filter: ${({ isPinned }) => (isPinned ? 'brightness(1.1)' : '')};
+  color: ${({ $isPinned, $color }) => ($isPinned ? rainbow($color) : theme('article.title'))};
+  filter: ${({ $isPinned }) => ($isPinned ? 'brightness(1.1)' : '')};
 
   ${css.media.mobile`
     font-size: 20px;

@@ -4,10 +4,10 @@
  *
  */
 import { FC, Fragment } from 'react'
-import { useRouter } from 'next/router'
+// import { useRouter } from 'next/navigation'
 
 import { BANNER_LAYOUT } from '@/constant/layout'
-import { ROUTE } from '@/constant/route'
+// import { ROUTE } from '@/constant/route'
 import useBannerLayout from '@/hooks/useBannerLayout'
 
 import { buildLog } from '@/logger'
@@ -20,13 +20,13 @@ import HeaderLayout from './HeaderLayout'
 const log = buildLog('C:CommunityDigest')
 
 const CommunityDigest: FC = () => {
-  const router = useRouter()
+  // const router = useRouter()
   const bannerLayout = useBannerLayout()
 
   // always use HeaderLayout in dashboard settings
-  if (router.pathname.split('/')[2] === ROUTE.DASHBOARD.DASHBOARD) {
-    return <HeaderLayout />
-  }
+  // if (router.pathname.split('/')[2] === ROUTE.DASHBOARD.OVERVIEW) {
+  //   return <HeaderLayout />
+  // }
 
   return (
     <Fragment>

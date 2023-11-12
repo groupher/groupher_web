@@ -44,3 +44,16 @@ export type TWallpaperInfo = {
   wallpapers: Record<string, TWallpaper>
   hasShadow?: boolean
 }
+
+export type TWallpaperData = {
+  wallpaper: string
+  gradientWallpapers: Record<string, TWallpaper>
+  patternWallpapers: Record<string, TWallpaper>
+  wallpaperType: TWallpaperType
+  hasPattern: boolean
+  hasBlur: boolean
+  hasShadow: boolean
+  direction: TWallpaperGradientDir
+
+  customColor: string
+}

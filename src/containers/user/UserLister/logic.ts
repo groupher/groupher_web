@@ -33,35 +33,6 @@ const loadUsers = (type, page = 1): void => {
   // TODO: use simple loading
   store.mark({ curView: TYPE.LOADING })
   switch (type) {
-    // case TYPE.USER_LISTER_FAVORITES:
-    // case TYPE.USER_LISTER_STARS: {
-    //   const args = merge(
-    //     { ...data },
-    //     {
-    //       thread: toUpper(data.thread),
-    //       filter: { page, size: PAGE_SIZE.D },
-    //       userHasLogin: store.isLogin,
-    //     },
-    //   )
-
-    //   return sr71$.query(S.reactionUsers, args)
-    // }
-    // case TYPE.USER_LISTER_FOLLOWINGS: {
-    //   const args = {
-    //     userId: data.id,
-    //     filter: { page, size: PAGE_SIZE.D },
-    //     userHasLogin: store.isLogin,
-    //   }
-    //   return sr71$.query(S.pagedFollowings, args)
-    // }
-    // case TYPE.USER_LISTER_FOLLOWERS: {
-    //   const args = {
-    //     userId: data.id,
-    //     filter: { page, size: PAGE_SIZE.D },
-    //     userHasLogin: store.isLogin,
-    //   }
-    //   return sr71$.query(S.pagedFollowers, args)
-    // }
     case TYPE.USER_LISTER_COMMUNITY_EDITORS: {
       const { id } = store.curCommunity
       const args = {

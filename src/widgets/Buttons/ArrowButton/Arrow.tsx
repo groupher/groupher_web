@@ -15,13 +15,13 @@ type TProps = {
 
 const Arrow: FC<TProps> = ({ color, leftLayout, reverseColor, up, down }) => {
   if (!leftLayout) {
-    if (down) return <DownArrow color={color} reverseColor={reverseColor} down />
-    if (up) return <UpArrow color={color} reverseColor={reverseColor} up />
+    if (down) return <DownArrow color={color} $reverseColor={reverseColor} down />
+    if (up) return <UpArrow color={color} $reverseColor={reverseColor} up />
 
-    return <RightArrow color={color} reverseColor={reverseColor} />
+    return <RightArrow color={color} $reverseColor={reverseColor} />
   }
 
-  return <LeftArrow color={color} reverseColor={reverseColor} up={up} down={down} />
+  return <LeftArrow color={color} $reverseColor={reverseColor} up={up} down={down} />
 }
 
 export default Arrow

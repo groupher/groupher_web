@@ -3,7 +3,7 @@
  */
 
 import { FC, memo } from 'react'
-import Router from 'next/router'
+import { useRouter } from 'next/navigation'
 
 import type { TChangelog } from '@/spec'
 
@@ -43,6 +43,7 @@ type TProps = {
 }
 
 const ChangelogLayout: FC<TProps> = ({ article }) => {
+  const router = useRouter()
   const metric = useMetric()
   const { innerId, author, title } = article
 
@@ -52,7 +53,7 @@ const ChangelogLayout: FC<TProps> = ({ article }) => {
     <Wrapper metric={metric}>
       <LeftPart>
         <Topping>
-          <BackBtnWrapper onClick={() => Router.push(backUrl)}>
+          <BackBtnWrapper onClick={() => router.push(backUrl)}>
             <ArrowIcon />
             讨论区
           </BackBtnWrapper>

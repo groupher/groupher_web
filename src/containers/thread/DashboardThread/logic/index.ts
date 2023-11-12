@@ -7,7 +7,7 @@ import {
   omit,
   update,
   findIndex,
-  merge,
+  mergeRight,
   find,
   startsWith,
 } from 'ramda'
@@ -429,7 +429,7 @@ export const mediaReportOnChange = (index: number, url: string): void => {
 
 export const addMediaReport = (): void => {
   const { baseInfoSettings } = store
-  const newReport = merge(EMPTY_MEDIA_REPORT, { index: new Date().getTime() })
+  const newReport = mergeRight(EMPTY_MEDIA_REPORT, { index: new Date().getTime() })
 
   store.mark({
     mediaReports: [...baseInfoSettings.mediaReports, newReport],
@@ -581,7 +581,7 @@ const DataSolver = [
         (item: TMediaReport) => item.index === queringMediaReportIndex,
         mediaReports,
       )
-      const updatedReport = merge(report, openGraphInfo)
+      const updatedReport = mergeRight(report, openGraphInfo)
 
       store.mark({
         mediaReports: [...restReports, updatedReport],

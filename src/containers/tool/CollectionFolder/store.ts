@@ -3,7 +3,7 @@
  *
  */
 
-import { merge } from 'ramda'
+import { mergeRight } from 'ramda'
 
 import type { TUser, TRootStore, TArticle } from '@/spec'
 import { THREAD } from '@/constant/thread'
@@ -82,11 +82,11 @@ const CollectionFolder = T.model('CollectionFolder', {
     },
     changesetErr(options): void {
       const root = getParent(self) as TRootStore
-      root.changesetErr(merge({ position: 'topCenter' }, options))
+      root.changesetErr(mergeRight({ position: 'topCenter' }, options))
     },
     updateEditing(sobj): void {
       const slf = self as TStore
-      const editCategory = merge(slf.editCategoryData, { ...sobj })
+      const editCategory = mergeRight(slf.editCategoryData, { ...sobj })
       slf.mark({ editCategory })
     },
     validator(type): boolean {
@@ -106,19 +106,7 @@ const CollectionFolder = T.model('CollectionFolder', {
         }
       }
     },
-    /*
-    updateCategory(cat) {
-      const { id } = cat
-      const pagedCategoriesData = R.clone(self.pagedCategoriesData)
-      const { entries } = pagedCategoriesData
-      const index = R.findIndex(R.propEq('id', id), entries)
 
-      if (index >= 0) {
-        entries[index] = R.merge(entries[index], { ...cat })
-        self.pagedCategories = R.merge(pagedCategoriesData, { entries })
-      }
-    },
-    */
     changeViewTo(view = 'creator'): void {
       // if (!self.isLogin) return self.authWarning()
       const slf = self as TStore

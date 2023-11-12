@@ -79,7 +79,7 @@ const Finished: FC<TProps> = ({ status }) => {
           </DashItem>
 
           <SexyDivider />
-          <GoDashLink href={`/${slug}/${ROUTE.DASHBOARD.DASHBOARD}`}>前往控制台</GoDashLink>
+          <GoDashLink href={`/${slug}/${ROUTE.DASHBOARD.OVERVIEW}`}>前往控制台</GoDashLink>
         </RightFrame>
       </Frame>
     </Wrapper>

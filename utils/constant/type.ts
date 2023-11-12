@@ -1,4 +1,4 @@
-import { merge, keys, reduce } from 'ramda'
+import { mergeRight, keys, reduce } from 'ramda'
 
 import type { TArticleThread } from '@/spec'
 
@@ -10,7 +10,7 @@ type TArticleOpt =
   | `${Uppercase<TArticleThread>}_CREATE`
 
 const DRAWER_ARTICLE_CRUD = reduce(
-  merge,
+  mergeRight,
   {},
   keys(ARTICLE_THREAD).map((T) => {
     return {

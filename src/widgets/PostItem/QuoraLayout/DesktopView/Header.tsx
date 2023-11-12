@@ -64,7 +64,7 @@ const Header: FC<TProps> = ({ article, onClick }) => {
         <Title
           onClick={(e) => e.preventDefault()}
           href={`/${slug}/${THREAD.POST}/${innerId}`}
-          isPinned={article.isPinned}
+          $isPinned={article.isPinned}
           $color={primaryColor}
         >
           <ArticleReadLabel viewed={article.viewerHasViewed} right={8} top={1} size={7} />

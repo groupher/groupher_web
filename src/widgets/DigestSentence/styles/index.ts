@@ -27,8 +27,8 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
 
   transition: color 0.1s;
 `
-export const Text = styled.div<{ lineClamp: number }>`
-  ${({ lineClamp }) => `${css.lineClamp(lineClamp)}`};
+export const Text = styled.div<{ $lineClamp: number }>`
+  ${({ $lineClamp }) => `${css.lineClamp($lineClamp)}`};
   line-height: 1.62;
 `
 

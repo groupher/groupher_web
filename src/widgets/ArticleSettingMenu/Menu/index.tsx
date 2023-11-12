@@ -51,7 +51,7 @@ const Menu: FC<TProps> = ({ onSubMenuToggle, onClose }) => {
   }
 
   return (
-    <Wrapper ref={ref} subMenuType={subMenuType}>
+    <Wrapper ref={ref} $subMenuType={subMenuType}>
       {!subMenuActive ? (
         <>
           <MenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.EDIT)}>

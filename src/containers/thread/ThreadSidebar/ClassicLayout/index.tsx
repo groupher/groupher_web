@@ -69,7 +69,7 @@ const ClassicLayout: FC<TProps> = ({ showCommunityBadge }) => {
             </Fragment>
           )}
 
-          <CommunityJoinersWrapper show={showCommunityBadge}>
+          <CommunityJoinersWrapper $show={showCommunityBadge}>
             {mockUsers(5).map((user) => (
               <JoinerAvatar
                 key={user.id}
@@ -83,7 +83,7 @@ const ClassicLayout: FC<TProps> = ({ showCommunityBadge }) => {
         </Fragment>
 
         <StickyWrapper>
-          <PublishWrapper show={showCommunityBadge}>
+          <PublishWrapper $show={showCommunityBadge}>
             <PublishButton
               text="参与讨论"
               onClick={() => onPublish(ARTICLE_CAT.FEATURE)}

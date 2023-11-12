@@ -5,7 +5,6 @@
  */
 
 import { FC, memo } from 'react'
-import { useRouter } from 'next/router'
 
 import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
@@ -48,8 +47,6 @@ const ErrorPage: FC<TProps> = ({
   metric = METRIC.COMMUNITY,
   target = '',
 }) => {
-  const router = useRouter()
-
   return (
     <Wrapper testid={testid}>
       <LogoWrapper href="/" testid="site-logo">
@@ -71,7 +68,7 @@ const ErrorPage: FC<TProps> = ({
         <TextWrapper>
           {/** TODO:   */}
           {errorCode === 404 ? (
-            <NotFoundMessage metric={metric} path={target || router.asPath} />
+            <NotFoundMessage metric={metric} path={target || '/'} />
           ) : (
             <HintTitle testid={testid}>抱歉，服务器发生错误</HintTitle>
           )}

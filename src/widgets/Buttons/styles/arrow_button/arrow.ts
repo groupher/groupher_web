@@ -6,7 +6,7 @@ import css, { rainbowLink } from '@/css'
 
 import { Wrapper as ButtonWrapper } from '.'
 
-type TArrow = { color: TColorName; reverseColor: boolean; down?: boolean; up?: boolean }
+type TArrow = { color: TColorName; down?: boolean; up?: boolean } & { $reverseColor: boolean }
 
 const BaseArrow = styled.div<TArrow>`
   opacity: 0.65;
@@ -44,8 +44,8 @@ const BaseArrow = styled.div<TArrow>`
     box-sizing: border-box;
     position: absolute;
     border: solid;
-    border-color: ${({ color, reverseColor }) => {
-      if (reverseColor) return 'white'
+    border-color: ${({ color, $reverseColor }) => {
+      if ($reverseColor) return 'white'
 
       return rainbowLink(color)
     }};

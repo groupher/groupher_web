@@ -40,7 +40,7 @@ const DefaultLayout: FC<TProps> = ({ data, isReply = false, showInnerRef = false
   const { isLegal, illegalReason, illegalWords } = meta
 
   return (
-    <Wrapper isPinned={isPinned}>
+    <Wrapper $isPinned={isPinned}>
       {isPinned && (
         <PinState>
           <PinIcon />

@@ -5,12 +5,12 @@ import css, { theme } from '@/css'
 import type { TSubMenu } from '../../spec'
 import { getSubMenuWidth } from '../metric'
 
-type TWrapper = { subMenuType: TSubMenu }
+type TWrapper = { $subMenuType: TSubMenu }
 
 export const Wrapper = styled.div<TWrapper>`
   padding: 8px;
   padding-right: 4px;
-  width: ${({ subMenuType }) => getSubMenuWidth(subMenuType)};
+  width: ${({ $subMenuType }) => getSubMenuWidth($subMenuType)};
   transition: all 0.1s;
 `
 export const MenuItem = styled.div`

@@ -1,4 +1,4 @@
-import { concat, keys, reduce, contains } from 'ramda'
+import { concat, keys, reduce, includes } from 'ramda'
 import TYPE from '@/constant/type'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
@@ -40,7 +40,7 @@ const VIEWER_TYPES = reduce(
  */
 export const isWideMode = (type: string): boolean => {
   return (
-    contains(type, VIEWER_TYPES) ||
+    includes(type, VIEWER_TYPES) ||
     type === TYPE.DRAWER.DASHBOARD_DESC ||
     type === TYPE.DRAWER.G_EDITOR
   )

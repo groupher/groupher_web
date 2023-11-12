@@ -1,4 +1,8 @@
 import type { TColorName } from './color'
+import type { TWallpaperData } from './wallpaper'
+import type { TLinkItem, TSocialItem } from './utils'
+import type { TFAQSection } from './article'
+import type { TUser } from './account'
 
 export type TTagLayout = 'hash' | 'dot'
 export type TAvatarLayout = 'circle' | 'square'
@@ -17,6 +21,62 @@ export type TRSSType = 'digest' | 'full'
 
 export type TBroadcastLayout = 'default' | 'center'
 export type TBroadcastArticleLayout = 'default' | 'simple'
+
+export type TMediaReport = {
+  index: number
+  favicon: string
+  siteName: string
+  title: string
+  url: string
+  editUrl?: string
+}
+
+export type TDashboard = {
+  enable?: TEnableConfig
+  nameAlias?: TNameAlias[]
+
+  socialLinks?: TSocialItem[]
+  faqs?: TFAQSection[]
+  seo?: TDashboardSEOConfig
+
+  layout?: {
+    brandLayout: TBrandLayout
+    topbarLayout: TTopbarLayout
+    topbarBg: TColorName
+    tagLayout: TTagLayout
+    avatarLayout: TAvatarLayout
+    bannerLayout: TBannerLayout
+    glowType: string
+    glowFixed: boolean
+    glowOpacity: string
+    docLayout: TDocLayout
+    docFaqLayout: TDocFaqLayout
+    postLayout: TPostLayout
+    kanbanLayout: TKanbanLayout
+    kanbanBgColors: TColorName[]
+    changelogLayout: TChangelogLayout
+    headerLayout: THeaderLayout
+    footerLayout: TFooterLayout
+  }
+
+  moderators?: TUser[]
+
+  rss?: {
+    rssFeedType: TRSSType
+    rssFeedCount: number
+  }
+
+  headerLinks?: TLinkItem[]
+  footerLinks?: TLinkItem[]
+
+  wallpaper?: TWallpaperData
+  baseInfo?: {
+    title?: string
+    bio?: string
+    homepage?: string
+  }
+  mediaReports?: TMediaReport[]
+}
 
 export type TBroadcastConfig = {
   // banner

@@ -1,5 +1,5 @@
 import { FC, memo, useCallback } from 'react'
-import Router from 'next/router'
+import { useRouter } from 'next/navigation'
 
 import type { TPost } from '@/spec'
 import { ARTICLE_THREAD } from '@/constant/thread'
@@ -11,9 +11,11 @@ type TProps = {
 }
 
 const Body: FC<TProps> = ({ article }) => {
+  const router = useRouter()
+
   const gotoArticle = useCallback(() => {
-    Router.push(`/${ARTICLE_THREAD.POST}/${article.id}`)
-  }, [article.id])
+    router.push(`/${ARTICLE_THREAD.POST}/${article.id}`)
+  }, [router, article.id])
 
   return (
     <Wrapper>

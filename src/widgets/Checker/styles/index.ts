@@ -10,11 +10,11 @@ import { getIconSize, getFontSize, getBorderRadius } from './metric'
 
 type TItem = { checked: boolean; size: string; disabled?: boolean } & TColor
 
-type TWrapper = { dimWhenIdle: boolean; disabled?: boolean } & TActive
+type TWrapper = { $dimWhenIdle: boolean; disabled?: boolean } & TActive
 export const Wrapper = styled(WithMargin)<TWrapper>`
   ${css.row('align-center')};
   visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
-  opacity: ${({ dimWhenIdle }) => (dimWhenIdle ? 0.7 : 1)};
+  opacity: ${({ $dimWhenIdle }) => ($dimWhenIdle ? 0.7 : 1)};
 
   &:hover {
     opacity: 1;

@@ -7,9 +7,9 @@ import { POST_LAYOUT } from '@/constant/layout'
 import TYPE from '@/constant/type'
 import type { TArticleEntries } from '@/spec'
 import usePostLayout from '@/hooks/usePostLayout'
+import { trackWindowScroll } from 'react-lazy-load-image-component'
 
 import PostItem from '@/widgets/PostItem'
-
 import MasonryCards from '@/widgets/MasonryCards'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 import { EmptyThread } from './dynamic'
@@ -57,4 +57,4 @@ const ArticleList: FC<TProps> = ({ thread, resState, entries }) => {
   )
 }
 
-export default observer(ArticleList)
+export default trackWindowScroll(observer(ArticleList))
