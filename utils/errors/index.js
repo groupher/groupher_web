@@ -36,7 +36,7 @@ export const errorForHuman = (details) => {
 }
 
 const checkLoginError = (errors) => {
-  return !!(find(propEq('code', LOGIN_ERROR))(errors) || false)
+  return !!(find(propEq(LOGIN_ERROR, 'code'))(errors) || false)
 }
 
 export const ssrRescue = {

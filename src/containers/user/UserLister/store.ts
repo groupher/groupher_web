@@ -55,7 +55,7 @@ const UserLister = T.model('UserLister', {
       const { entries } = self.pagedUsersData
 
       // @ts-ignore
-      const index = findIndex(propEq('login', login), entries)
+      const index = findIndex(propEq(login, 'login'), entries)
       if (index < 0) return
 
       const curIsFollow = self.pagedUsers.entries[index].viewerHasFollowed

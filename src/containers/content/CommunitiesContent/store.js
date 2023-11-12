@@ -104,7 +104,7 @@ const ExploreContentStore = T.model('ExploreContentStore', {
       self.root.authWarning(options)
     },
     toggleSubscribe(community) {
-      const index = findIndex(propEq('id', community.id), self.pagedCommunities.entries)
+      const index = findIndex(propEq(community.id, 'id'), self.pagedCommunities.entries)
       if (index === -1) return false
 
       if (self.pagedCommunities.entries[index].viewerHasSubscribed) {

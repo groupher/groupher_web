@@ -34,11 +34,11 @@ const mailTabs = [
 
 const MailsPannel = ({ activeRaw, mailStatus, pagedMentions }) => {
   if (mailStatus.mentionCount !== 0) {
-    const index = findIndex(propEq('slug', 'mentions'), mailTabs)
+    const index = findIndex(propEq('mentions', 'slug'), mailTabs)
     mailTabs[index].count = mailStatus.mentionCount
   }
   if (mailStatus.notificationCount !== 0) {
-    const index = findIndex(propEq('slug', 'sys_notifications'), mailTabs)
+    const index = findIndex(propEq('sys_notifications', 'slug'), mailTabs)
     mailTabs[index].count = mailStatus.notificationCount
   }
 

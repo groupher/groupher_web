@@ -417,7 +417,7 @@ const DashboardThread = T.model('DashboardThread', {
       )
 
       const mappedThreads = curCommunity.threads.map((pThread) => {
-        const aliasItem = find(propEq('slug', pThread.slug))(nameAlias) as TNameAlias
+        const aliasItem = find(propEq(pThread.slug, 'slug'))(nameAlias) as TNameAlias
 
         return {
           ...pThread,

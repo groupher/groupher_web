@@ -150,7 +150,7 @@ const NaviCatalog: FC<TProps> = ({
   const handleMenuItemSelect = useCallback(
     (item) => {
       // 如果重复点击，则忽略
-      if (find(propEq('id', item.id), viewPath)) return
+      if (find(propEq(item.id, 'id'), viewPath)) return
 
       // 如果没有 childMenu 就表示这个条目被选中
       if (nilOrEmpty(item.childMenu)) {

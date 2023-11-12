@@ -66,7 +66,7 @@ const TagsBar = T.model('TagsBar', {
       if (!title) return false
 
       // @ts-ignore
-      const index = findIndex(propEq('title', title), self.tagsData)
+      const index = findIndex(propEq(title, 'title'), self.tagsData)
       if (index >= 0) {
         return self.tagsData[index].id
       }
