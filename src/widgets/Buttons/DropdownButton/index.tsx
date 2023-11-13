@@ -54,7 +54,7 @@ const DropdownButton: FC<TProps> = ({
       $color={primaryColor}
       {...restProps}
     >
-      <ButtonWrapper>
+      <ButtonWrapper size="small" type="primary" ghost>
         <InnerBtnWrapper $active={$active} $color={primaryColor}>
           <>{children}</>
           {!noArrow && !(closable && selected) && (

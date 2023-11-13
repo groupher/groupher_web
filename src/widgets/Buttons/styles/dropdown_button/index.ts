@@ -4,6 +4,7 @@ import type { TActive, TColor, TSizeTS, TSpace } from '@/spec'
 import SIZE from '@/constant/size'
 import css, { theme, rainbow } from '@/css'
 
+import Button from '@/widgets/Buttons/Button'
 import ArrowSVG from '@/icons/ArrowSimple'
 import CloseSVG from '@/icons/CloseLight'
 
@@ -41,19 +42,13 @@ export const InnerBtnWrapper = styled.div<TInnerBtnWrapper>`
 
   transition: color 0.2s;
 `
-export const ButtonWrapper = styled.button`
+export const ButtonWrapper = styled(Button)`
   ${css.row('align-both')};
-  border: none !important;
+  border: none;
   padding-left: 6px;
   padding-right: 5px;
-  box-shadow: none;
-
-  outline: none;
+  /** make sure tooltip visible */
   overflow: initial;
-  text-align: center;
-  white-space: nowrap;
-
-  position: relative;
 
   &:hover,
   &:active,
