@@ -7,7 +7,7 @@ import { POST_CAT_MENU_ITEMS } from '@/constant/menu'
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
 import Menu from '@/widgets/Menu'
 
-import { FilterWrapper, FullWrapper, Label } from './styles'
+import { FilterWrapper, FullWrapper } from './styles'
 import ActiveLabel from './ActiveLabel'
 
 type TProps = {
@@ -39,27 +39,31 @@ const CatSelector: FC<TProps> = ({
   const popWidth = 120
 
   return (
-    <Wrapper $menuOpen={menuOpen} {...restProps} ref={ref}>
-      {mode === ARTICLE_CAT_MODE.FULL && <Label>分类</Label>}
-
-      <Menu
-        offset={offset as [number, number]}
-        items={POST_CAT_MENU_ITEMS}
-        onSelect={(item) => handleSelect(item.key as TArticleCat)}
-        onShow={() => {
-          if (selected) {
-            setOffset([10, 5])
-          }
-          setMenuOpen(true)
-        }}
-        onHide={() => {
-          setOffset([30, 5])
-          setMenuOpen(false)
-        }}
-        activeKey={activeCat}
-        placement={placement}
-        popWidth={popWidth}
-      >
+    <Wrapper $selected={selected} $menuOpen={menuOpen} {...restProps} ref={ref}>
+      {!selected ? (
+        <Menu
+          offset={offset as [number, number]}
+          items={POST_CAT_MENU_ITEMS}
+          onSelect={(item) => handleSelect(item.key as TArticleCat)}
+          onShow={() => {
+            if (selected) {
+              setOffset([10, 5])
+            }
+            setMenuOpen(true)
+          }}
+          onHide={() => {
+            setOffset([30, 5])
+            setMenuOpen(false)
+          }}
+          activeKey={activeCat}
+          placement={placement}
+          popWidth={popWidth}
+        >
+          <DropdownButton $active={menuOpen} selected={selected}>
+            分类
+          </DropdownButton>
+        </Menu>
+      ) : (
         <DropdownButton
           $active={menuOpen}
           selected={selected}
@@ -70,9 +74,26 @@ const CatSelector: FC<TProps> = ({
             onSelect(ARTICLE_CAT.ALL)
           }}
         >
-          {activeCat === ARTICLE_CAT.ALL ? '分类' : <ActiveLabel cat={activeCat} />}
+          <Menu
+            offset={offset as [number, number]}
+            items={POST_CAT_MENU_ITEMS}
+            onSelect={(item) => handleSelect(item.key as TArticleCat)}
+            onShow={() => {
+              setOffset([10, -10])
+              setMenuOpen(true)
+            }}
+            onHide={() => {
+              setOffset([30, 5])
+              setMenuOpen(false)
+            }}
+            activeKey={activeCat}
+            placement={placement}
+            popWidth={popWidth}
+          >
+            <ActiveLabel cat={activeCat} />
+          </Menu>
         </DropdownButton>
-      </Menu>
+      )}
     </Wrapper>
   )
 }

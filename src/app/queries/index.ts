@@ -35,7 +35,8 @@ export const useSession = (): TSessionRes => {
     pause: false,
     // NOTE: network-only will freeze the page, don't know why ...
     // requestPolicy: 'network-only',
-    requestPolicy: 'cache-and-network',
+    // NOTE: this warning calling warning in console
+    // requestPolicy: 'cache-and-network',
   })
 
   return {

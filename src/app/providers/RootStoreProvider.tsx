@@ -31,7 +31,7 @@ type TProps = {
   children: ReactNode
 }
 
-const StoreWrapper: FC<TProps> = ({ children, token }) => {
+const RootStoreWrapper: FC<TProps> = ({ children, token }) => {
   // console.log('## init in layout, load community info, dashboard info')
   const pathname = usePathname()
   const params = useParams()
@@ -105,4 +105,4 @@ const StoreWrapper: FC<TProps> = ({ children, token }) => {
   return <Provider store={store}>{children}</Provider>
 }
 
-export default StoreWrapper
+export default RootStoreWrapper

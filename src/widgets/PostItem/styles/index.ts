@@ -8,7 +8,8 @@ export const DesktopHoverable = styled.div`
   position: relative;
   padding: 8px 0;
   margin-bottom: 6px;
-  z-index: 1;
+  /** NOTE: important!, do not add z-index here, conflict with author uaercard's tooltop  */
+  /* z-index: 1; */
 
   &:hover {
     cursor: pointer;

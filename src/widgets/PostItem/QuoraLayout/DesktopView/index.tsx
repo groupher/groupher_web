@@ -24,7 +24,7 @@ const DesktopView: FC<TProps> = ({ article }) => {
       <ViewingSign article={article} top={38} left={article.isPinned ? -48 : -24} />
 
       <Main>
-        <Header article={article} onClick={() => previewArticle(article)} />
+        <Header article={article} />
         <Digest onClick={() => previewArticle(article)}>{article.digest}</Digest>
         <Footer article={article} />
       </Main>

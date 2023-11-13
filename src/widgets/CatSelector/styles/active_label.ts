@@ -26,6 +26,7 @@ export const LabelWrapper = styled.div`
   background: ${theme('hoverActive')};
   margin-left: 3px;
   box-shadow: ${theme('button.boxShadow')};
+  height: 26px;
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
@@ -38,7 +39,6 @@ const iconBase = `
 `
 export const LightIcon = styled(LightSVG)<TColor>`
   ${iconBase};
-  margin-top: -2px;
   fill: ${({ $color }) => rainbow($color, 'article.digest')};
 `
 export const BugIcon = styled(BugSVG)<TColor>`

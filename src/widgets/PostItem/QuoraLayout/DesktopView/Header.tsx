@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import TimeAgo from 'timeago-react'
 
 import type { TPost } from '@/spec'
+import { previewArticle } from '@/signal'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useBannerLayout from '@/hooks/useBannerLayout'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
@@ -33,10 +34,9 @@ const UserCard = dynamic(() => import('@/widgets/Cards/UserCard'), {
 
 type TProps = {
   article: TPost
-  onClick: () => void
 }
 
-const Header: FC<TProps> = ({ article, onClick }) => {
+const Header: FC<TProps> = ({ article }) => {
   const { slug } = useViewingCommunity()
   const bannerLayout = useBannerLayout()
   const primaryColor = usePrimaryColor()
@@ -44,12 +44,13 @@ const Header: FC<TProps> = ({ article, onClick }) => {
   const { author, title, commentsCount, innerId, articleTags, insertedAt } = article
 
   return (
-    <Wrapper onClick={onClick}>
+    <Wrapper>
       <Topping>
         <Tooltip
-          //  @ts-ignore
+          key={article.title}
           content={<UserCard user={author} />}
-          placement="right"
+          placement="bottom-start"
+          offset={[-5, 0]}
           delay={500}
         >
           <AuthorName>{author.nickname}</AuthorName>
@@ -62,7 +63,10 @@ const Header: FC<TProps> = ({ article, onClick }) => {
       </Topping>
       <Main>
         <Title
-          onClick={(e) => e.preventDefault()}
+          onClick={(e) => {
+            e.preventDefault()
+            previewArticle(article)
+          }}
           href={`/${slug}/${THREAD.POST}/${innerId}`}
           $isPinned={article.isPinned}
           $color={primaryColor}

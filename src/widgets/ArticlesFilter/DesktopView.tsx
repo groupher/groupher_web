@@ -47,6 +47,7 @@ const ArticlesFilter: FC<TProps> = ({
   const bannerLayout = useBannerLayout()
   const [activeCat, setActiveCat] = useState<TArticleCat>(ARTICLE_CAT.ALL)
 
+  console.log('## activeCat: ', activeCat)
   const searchMode = false
 
   return (
@@ -54,7 +55,11 @@ const ArticlesFilter: FC<TProps> = ({
       {!searchMode && (
         <Fragment>
           <SortFilter onSelect={onSelect} activeFilter={activeFilter} />
-          <CatSelector activeCat={ARTICLE_CAT.FEATURE} onSelect={setActiveCat} selected />
+          <CatSelector
+            activeCat={activeCat}
+            onSelect={setActiveCat}
+            selected={activeCat !== ARTICLE_CAT.ALL}
+          />
           <StateSelector mode={ARTICLE_STATE_MODE.FILTER} />
           <Space right={10} />
           <SpaceGrow />

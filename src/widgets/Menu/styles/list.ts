@@ -29,7 +29,7 @@ export const Item = styled.div<TItem>`
     cursor: pointer;
   }
 
-  transition: all 0.2s;
+  transition: all 0.1s;
 `
 
 export const Main = styled.div``

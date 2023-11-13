@@ -4,7 +4,6 @@ import type { TActive, TColor, TSizeTS, TSpace } from '@/spec'
 import SIZE from '@/constant/size'
 import css, { theme, rainbow } from '@/css'
 
-import Button from '@/widgets/Buttons/Button'
 import ArrowSVG from '@/icons/ArrowSimple'
 import CloseSVG from '@/icons/CloseLight'
 
@@ -29,9 +28,6 @@ export const Wrapper = styled.div<TWrapper>`
 
   transition: all 0.2s;
 `
-export const Label = styled.div`
-  opacity: 0.7;
-`
 type TInnerBtnWrapper = TActive & TColor
 export const InnerBtnWrapper = styled.div<TInnerBtnWrapper>`
   ${css.row('align-center')};
@@ -45,11 +41,19 @@ export const InnerBtnWrapper = styled.div<TInnerBtnWrapper>`
 
   transition: color 0.2s;
 `
-export const ButtonWrapper = styled(Button)`
+export const ButtonWrapper = styled.button`
+  ${css.row('align-both')};
   border: none !important;
   padding-left: 6px;
-  padding-right: 4px;
+  padding-right: 5px;
   box-shadow: none;
+
+  outline: none;
+  overflow: initial;
+  text-align: center;
+  white-space: nowrap;
+
+  position: relative;
 
   &:hover,
   &:active,
