@@ -11,7 +11,7 @@ import dynamic from 'next/dynamic'
 import type { TArticleCat, TArticleState } from '@/spec'
 import { PUBLISH_MODE } from '@/constant/publish'
 
-import { ARTICLE_CAT, ARTICLE_STATE, ARTICLE_STATE_MODE } from '@/constant/gtd'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import TYPE from '@/constant/type'
 import { BANNER_LAYOUT } from '@/constant/layout'
 import useBannerLayout from '@/hooks/useBannerLayout'
