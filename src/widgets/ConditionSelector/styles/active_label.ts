@@ -2,10 +2,6 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/css'
 
-import { RejectIcon as RejectIconBase } from './filter_panel'
-
-export { WipIcon, TodoIcon, DoneIcon } from './filter_panel'
-
 export const Wrapper = styled.div`
   ${css.row('align-center')};
   transform: scale(0.92);
@@ -31,7 +27,7 @@ export const StateTitle = styled.div`
   color: ${theme('article.title')};
   font-weight: 500;
   white-space: nowrap;
-  margin-left: 5px;
+  margin-left: -4px;
 
   ${Wrapper}:hover & {
     opacity: 0.8;
@@ -40,8 +36,4 @@ export const StateTitle = styled.div`
 export const IconWrapper = styled.div`
   transform: scale(0.9);
   margin-right: 4px;
-`
-export const RejectIcon = styled(RejectIconBase)`
-  fill: ${theme('rainbow.red')};
-  opacity: 1;
 `

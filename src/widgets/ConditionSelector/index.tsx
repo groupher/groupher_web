@@ -9,7 +9,7 @@ import Menu from '@/widgets/Menu'
 import ActiveLabel from './ActiveLabel'
 
 import type { TActiveCondition } from './spec'
-import { getMenuItems, getTitle } from './helper'
+import { getMenuItems, getTitle, getActiveMenuItem } from './helper'
 import { FilterWrapper } from './styles'
 
 type TProps = {
@@ -38,6 +38,10 @@ const ConditionSelector: FC<TProps> = ({
   const popWidth = 120
 
   const menuItems = getMenuItems(mode)
+  const activeMenuItem = getActiveMenuItem(menuItems, active)
+
+  // console.log('## activeMenuItem: ', activeMenuItem)
+
   const title = getTitle(mode)
 
   return (
@@ -87,7 +91,7 @@ const ConditionSelector: FC<TProps> = ({
             placement={placement}
             popWidth={popWidth}
           >
-            <ActiveLabel title={title} condition={active} />
+            <ActiveLabel activeItem={activeMenuItem} title={title} condition={active} />
           </Menu>
         </DropdownButton>
       )}

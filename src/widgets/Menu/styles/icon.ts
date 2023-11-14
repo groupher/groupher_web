@@ -38,13 +38,13 @@ type TIcon = TActive & TColor & { $small: boolean }
 const commonIcon = (comp): FC<TIcon> => {
   // @ts-ignore
   return styled(comp)<TIcon>`
-    fill: ${({ $active, $$color }) => ($active ? rainbow($$color) : theme('hint'))};
+    fill: ${({ $active, $color }) => ($active ? rainbow($color) : theme('hint'))};
     width: ${({ $small }) => ($small ? '12px' : '15px')};
     height: ${({ $small }) => ($small ? '12px' : '15px')};
     display: block;
 
     ${Item}:hover & {
-      fill: ${({ $$color, $active }) => ($active ? rainbow($$color) : theme('hint'))};
+      fill: ${({ $color, $active }) => ($active ? rainbow($color) : theme('hint'))};
     }
   `
 }

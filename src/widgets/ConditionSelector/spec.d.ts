@@ -1,9 +1,9 @@
-import type { TArticleState, TArticleCat } from '@/spec'
+import type { TArticleState, TArticleCat, TMenu } from '@/spec'
 
 export type TActiveCondition = TArticleState | TArticleCat | 'ALL'
 
 export type TMenuItem = {
   key: string
   title?: stirng
-  icon?: string
+  icon?: TMenu
 }

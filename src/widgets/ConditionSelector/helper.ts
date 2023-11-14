@@ -1,8 +1,10 @@
+import { find } from 'ramda'
+
 import type { TConditionMode } from '@/spec'
 import { CONDITION_MODE } from '@/constant/mode'
 import { POST_STATE_MENU_ITEMS, POST_CAT_MENU_ITEMS } from '@/constant/menu'
 
-import type { TMenuItem } from './spec'
+import type { TMenuItem, TActiveCondition } from './spec'
 
 export const getMenuItems = (mode: TConditionMode): TMenuItem[] => {
   switch (mode) {
@@ -18,6 +20,10 @@ export const getMenuItems = (mode: TConditionMode): TMenuItem[] => {
       return []
     }
   }
+}
+
+export const getActiveMenuItem = (items: TMenuItem[], active: TActiveCondition): TMenuItem => {
+  return find((item) => item.key === active, items)
 }
 
 export const getTitle = (mode: TConditionMode): string => {

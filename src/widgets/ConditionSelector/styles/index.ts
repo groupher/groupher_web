@@ -22,8 +22,6 @@ export const FilterWrapper = styled(WithMargin)<TWrapper>`
   &:hover {
     background: ${theme('hoverBg')};
   }
-
-  transition: all 0.15s;
 `
 export const FullWrapper = styled(FilterWrapper)<TWrapper>`
   border: 1px solid;

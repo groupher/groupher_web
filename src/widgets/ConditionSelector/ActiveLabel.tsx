@@ -5,27 +5,26 @@ import type { TActive } from '@/spec'
 import { ARTICLE_STATE } from '@/constant/gtd'
 
 import { Trans } from '@/i18n'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import Icon from '@/widgets/Menu/Icon'
 
-import type { TActiveCondition } from './spec'
-import Icon from './Icon'
+import type { TActiveCondition, TMenuItem } from './spec'
 
 import { Wrapper, Hint, LabelWrapper, StateTitle } from './styles/active_label'
 
 type TProps = {
   condition: TActiveCondition
   title: string
+  activeItem: TMenuItem
 } & TActive
 
-const ActiveLabel: FC<TProps> = ({ title, condition }) => {
+const ActiveLabel: FC<TProps> = ({ title, condition, activeItem }) => {
   const $active = condition && condition !== ARTICLE_STATE.ALL
-  const primaryColor = usePrimaryColor()
 
   return (
     <Wrapper>
       <Hint>{title}</Hint>
       <LabelWrapper>
-        <Icon condition={condition} $active={$active} $color={primaryColor} />
+        <Icon type={activeItem.icon} $active={$active} />
         <StateTitle>{Trans(condition)}</StateTitle>
       </LabelWrapper>
     </Wrapper>
