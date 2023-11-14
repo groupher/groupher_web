@@ -1,6 +1,6 @@
 import { FC, memo, useState, useRef } from 'react'
 
-import type { TArticleState, TSpace, TTooltipPlacement } from '@/spec'
+import type { TSpace, TTooltipPlacement } from '@/spec'
 import { ARTICLE_STATE } from '@/constant/gtd'
 
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
@@ -9,29 +9,33 @@ import Menu from '@/widgets/Menu'
 import { POST_STATE_MENU_ITEMS } from '@/constant/menu'
 // import { MENU_ITEMS } from './constant'
 import ActiveLabel from './ActiveLabel'
+import type { TActiveCondition, TMenuItem } from './spec'
 import { FilterWrapper } from './styles'
 
 type TProps = {
-  activeState?: TArticleState
+  mode?: 'state' | 'category' | 'article' | 'tag'
+  active?: TActiveCondition
   placement?: TTooltipPlacement
-  onSelect?: (state: TArticleState) => void
   selected?: boolean
+  menuItems?: TMenuItem[]
+  title?: string
+
+  onSelect?: (condition: TActiveCondition) => void
 } & TSpace
 
-const StateSelector: FC<TProps> = ({
-  activeState = ARTICLE_STATE.ALL,
+const ConditionSelector: FC<TProps> = ({
+  active = ARTICLE_STATE.ALL,
   onSelect = console.log,
   selected = false,
   placement = 'bottom',
+  menuItems = POST_STATE_MENU_ITEMS,
+  title = '状态',
+
   ...restProps
 }) => {
   const [offset, setOffset] = useState([30, 5])
   const [menuOpen, setMenuOpen] = useState(false)
   const ref = useRef(null)
-
-  const handleSelect = (state: TArticleState) => {
-    onSelect(state)
-  }
 
   const Wrapper = FilterWrapper
   const popWidth = 120
@@ -41,19 +45,19 @@ const StateSelector: FC<TProps> = ({
       {!selected ? (
         <Menu
           offset={offset as [number, number]}
-          items={POST_STATE_MENU_ITEMS}
-          onSelect={(item) => handleSelect(item.key as TArticleState)}
+          items={menuItems}
+          onSelect={(item) => onSelect(item.key as TActiveCondition)}
           onShow={() => setMenuOpen(true)}
           onHide={() => {
             setOffset([30, 5])
             setMenuOpen(false)
           }}
-          activeKey={activeState}
+          activeKey={active}
           placement={placement}
           popWidth={popWidth}
         >
           <DropdownButton $active={menuOpen} selected={selected}>
-            状态
+            {title}
           </DropdownButton>
         </Menu>
       ) : (
@@ -69,8 +73,8 @@ const StateSelector: FC<TProps> = ({
         >
           <Menu
             offset={offset as [number, number]}
-            items={POST_STATE_MENU_ITEMS}
-            onSelect={(item) => handleSelect(item.key as TArticleState)}
+            items={menuItems}
+            onSelect={(item) => onSelect(item.key as TActiveCondition)}
             onShow={() => {
               setOffset([8, 8])
               setMenuOpen(true)
@@ -79,11 +83,11 @@ const StateSelector: FC<TProps> = ({
               setOffset([30, 5])
               setMenuOpen(false)
             }}
-            activeKey={activeState}
+            activeKey={active}
             placement={placement}
             popWidth={popWidth}
           >
-            <ActiveLabel state={activeState} />
+            <ActiveLabel title={title} condition={active} />
           </Menu>
         </DropdownButton>
       )}
@@ -91,4 +95,4 @@ const StateSelector: FC<TProps> = ({
   )
 }
 
-export default memo(StateSelector)
+export default memo(ConditionSelector)

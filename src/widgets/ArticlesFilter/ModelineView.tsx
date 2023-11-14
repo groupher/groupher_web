@@ -14,8 +14,6 @@ import TYPE from '@/constant/type'
 import { buildLog } from '@/logger'
 
 import { Space } from '@/widgets/Common'
-import CatSelector from '@/widgets/CatSelector'
-import StateSelector from '@/widgets/StateSelector'
 import TagSelector from '@/widgets/TagSelector'
 
 import SortFilter from './SortFilter'
@@ -44,9 +42,6 @@ const ArticlesFilter: FC<TProps> = ({
       <TagSelector groupedTags={groupedTags} activeTag={activeTag} mode="modeline" />
       <Space right={6} />
       <SortFilter onSelect={onSelect} activeFilter={activeFilter} placement="top-start" />
-      <CatSelector activeCat={activeCat} onSelect={setActiveCat} placement="top-start" />
-
-      {modelineExpand && <StateSelector placement="top-start" />}
 
       {/* <SearchBox searchMode={searchMode} onSearch={onSearch} closeSearch={closeSearch} /> */}
     </ModelineWrapper>

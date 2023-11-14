@@ -9,14 +9,14 @@ import { FC, Fragment, memo, useState } from 'react'
 import type { TArticleCat, TArticleState } from '@/spec'
 
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
+import { POST_STATE_MENU_ITEMS, POST_CAT_MENU_ITEMS } from '@/constant/menu'
 import TYPE from '@/constant/type'
 
 import { buildLog } from '@/logger'
 
 import { SpaceGrow } from '@/widgets/Common'
 
-import CatSelector from '@/widgets/CatSelector'
-import StateSelector from '@/widgets/StateSelector'
+import ConditionSelector from '@/widgets/ConditionSelector'
 import TagSelector from '@/widgets/TagSelector'
 import SearchBox from '@/widgets/SearchBox'
 
@@ -50,8 +50,22 @@ const ArticlesFilter: FC<TProps> = ({
         <Fragment>
           <SortFilter onSelect={onSelect} activeFilter={activeFilter} />
           <TagSelector groupedTags={groupedTags} activeTag={activeTag} mode="mobile" />
-          <CatSelector activeCat={activeCat} onSelect={setActiveCat} />
-          <StateSelector activeState={activeState} onSelect={setActiveState} />
+          <ConditionSelector
+            mode="category"
+            title="分类"
+            selected={false}
+            menuItems={POST_CAT_MENU_ITEMS}
+            active={activeCat}
+            onSelect={(cat: TArticleCat) => setActiveCat(cat)}
+          />
+          <ConditionSelector
+            mode="state"
+            title="状态"
+            selected={false}
+            menuItems={POST_STATE_MENU_ITEMS}
+            active={activeState}
+            onSelect={(state: TArticleState) => setActiveState(state)}
+          />
           <SpaceGrow />
         </Fragment>
       )}

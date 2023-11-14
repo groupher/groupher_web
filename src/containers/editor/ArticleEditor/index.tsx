@@ -6,19 +6,17 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TEditMode, TMetric } from '@/spec'
-import { ARTICLE_CAT_MODE } from '@/constant/gtd'
 import METRIC from '@/constant/metric'
+import { POST_CAT_MENU_ITEMS } from '@/constant/menu'
 
 import { buildLog } from '@/logger'
 
+import RichEditor from '@/containers/editor/RichEditor'
 import { Space } from '@/widgets/Common'
+import ConditionSelector from '@/widgets/ConditionSelector'
 import ArchiveAlert from '@/widgets/ArchiveAlert'
 import NoticeBar from '@/widgets/NoticeBar'
-import CatSelector from '@/widgets/CatSelector'
 import TagSelector from '@/widgets/TagSelector'
-import StateSelector from '@/widgets/StateSelector'
-
-import RichEditor from '@/containers/editor/RichEditor'
 
 import ArticleCover from './ArticleCover'
 
@@ -70,13 +68,15 @@ const ArticleEditor: FC<TProps> = ({ metric = METRIC.ARTICLE_EDITOR }) => {
           <FuncRow>
             <TagSelector groupedTags={groupedTags} activeTag={activeTagData} />
             <Space left={20} />
-            <CatSelector
-              mode={ARTICLE_CAT_MODE.FULL}
-              activeCat={activeCat}
+            <ConditionSelector
+              mode="category"
+              title="分类"
+              selected={false}
+              menuItems={POST_CAT_MENU_ITEMS}
+              active={activeCat}
               onSelect={catOnChange}
+              right={20}
             />
-            <Space left={20} />
-            <StateSelector />
           </FuncRow>
 
           {initEditor && (

@@ -138,7 +138,6 @@ export type {
   TArticleFilter,
   TArticleFilterMode,
   TArticleCatMode,
-  TArticleStateMode,
   TCopyright,
   TUpvoteLayout,
   TCommentsState,

@@ -163,7 +163,6 @@ export type TArticleFilter = {
 export type TArticleFilterMode = 'default' | 'modeline'
 
 export type TArticleCatMode = 'filter' | 'full'
-export type TArticleStateMode = 'filter' | 'full'
 
 export type TUpvoteLayout =
   | 'default'

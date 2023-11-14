@@ -14,14 +14,14 @@ import { PUBLISH_MODE } from '@/constant/publish'
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import TYPE from '@/constant/type'
 import { BANNER_LAYOUT } from '@/constant/layout'
+import { POST_STATE_MENU_ITEMS, POST_CAT_MENU_ITEMS } from '@/constant/menu'
 import useBannerLayout from '@/hooks/useBannerLayout'
 
 import { buildLog } from '@/logger'
 
 import { Space, SpaceGrow, DesktopOnly } from '@/widgets/Common'
 import PublishButton from '@/widgets/Buttons/PublishButton'
-import CatSelector from '@/widgets/CatSelector'
-import StateSelector from '@/widgets/StateSelector'
+import ConditionSelector from '@/widgets/ConditionSelector'
 import SearchBox from '@/widgets/SearchBox'
 
 import SortFilter from './SortFilter'
@@ -55,15 +55,21 @@ const ArticlesFilter: FC<TProps> = ({
       {!searchMode && (
         <Fragment>
           <SortFilter onSelect={onSelect} activeFilter={activeFilter} />
-          <CatSelector
-            activeCat={activeCat}
-            onSelect={setActiveCat}
+          <ConditionSelector
+            mode="category"
+            title="分类"
+            active={activeCat}
+            onSelect={(cat: TArticleCat) => setActiveCat(cat)}
             selected={activeCat !== ARTICLE_CAT.ALL}
+            menuItems={POST_CAT_MENU_ITEMS}
           />
-          <StateSelector
-            activeState={activeState}
-            onSelect={setActiveState}
+          <ConditionSelector
+            mode="state"
+            title="状态"
+            active={activeState}
+            onSelect={(state: TArticleState) => setActiveState(state)}
             selected={activeState !== ARTICLE_STATE.ALL}
+            menuItems={POST_STATE_MENU_ITEMS}
           />
           <Space right={10} />
           <SpaceGrow />

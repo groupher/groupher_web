@@ -2,8 +2,9 @@ import { FC } from 'react'
 
 import { SpaceGrow } from '@/widgets/Common'
 import Button from '@/widgets/Buttons/Button'
-import StateSelector from '@/widgets/StateSelector'
-import CatSelector from '@/widgets/CatSelector'
+import ConditionSelector from '@/widgets/ConditionSelector'
+
+import { POST_STATE_MENU_ITEMS, POST_CAT_MENU_ITEMS } from '@/constant/menu'
 
 import ActionBar from './ActionBar'
 
@@ -51,8 +52,21 @@ const FilterBar: FC<TProps> = ({ checkboxActive, triggerCheckbox, selectedCount 
           <SearchIcon />
           <Inputer placeholder="按标题搜索" />
         </InputerWrapper>
-        <CatSelector activeCat="ALL" right={12} onSelect={(cat) => console.log(cat)} />
-        <StateSelector right={20} />
+        <ConditionSelector
+          mode="category"
+          title="分类"
+          selected={false}
+          menuItems={POST_CAT_MENU_ITEMS}
+          right={20}
+        />
+        <ConditionSelector
+          mode="state"
+          title="状态"
+          selected={false}
+          menuItems={POST_STATE_MENU_ITEMS}
+          right={20}
+        />
+
         <DateRangeWrapper>日期范围(TODO)</DateRangeWrapper>
         <SpaceGrow />
         <Button size="small" ghost noBorder top={-2}>
