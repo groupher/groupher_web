@@ -6,29 +6,28 @@ import { ARTICLE_STATE } from '@/constant/gtd'
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
 import Menu from '@/widgets/Menu'
 
-import { POST_STATE_MENU_ITEMS } from '@/constant/menu'
-// import { MENU_ITEMS } from './constant'
 import ActiveLabel from './ActiveLabel'
-import type { TActiveCondition, TMenuItem } from './spec'
+
+import type { TMode, TActiveCondition } from './spec'
+import { getMenuItems } from './helper'
 import { FilterWrapper } from './styles'
 
 type TProps = {
-  mode?: 'state' | 'category' | 'article' | 'tag'
+  mode?: TMode
   active?: TActiveCondition
   placement?: TTooltipPlacement
   selected?: boolean
-  menuItems?: TMenuItem[]
   title?: string
 
   onSelect?: (condition: TActiveCondition) => void
 } & TSpace
 
 const ConditionSelector: FC<TProps> = ({
+  mode = 'state',
   active = ARTICLE_STATE.ALL,
   onSelect = console.log,
   selected = false,
   placement = 'bottom',
-  menuItems = POST_STATE_MENU_ITEMS,
   title = '状态',
 
   ...restProps
@@ -39,6 +38,7 @@ const ConditionSelector: FC<TProps> = ({
 
   const Wrapper = FilterWrapper
   const popWidth = 120
+  const menuItems = getMenuItems(mode)
 
   return (
     <Wrapper $selected={selected} $menuOpen={menuOpen} {...restProps} ref={ref}>

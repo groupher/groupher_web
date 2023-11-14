@@ -7,8 +7,6 @@ import { observer } from 'mobx-react-lite'
 
 import type { TEditMode, TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
-import { POST_CAT_MENU_ITEMS } from '@/constant/menu'
-
 import { buildLog } from '@/logger'
 
 import RichEditor from '@/containers/editor/RichEditor'
@@ -72,7 +70,6 @@ const ArticleEditor: FC<TProps> = ({ metric = METRIC.ARTICLE_EDITOR }) => {
               mode="category"
               title="分类"
               selected={false}
-              menuItems={POST_CAT_MENU_ITEMS}
               active={activeCat}
               onSelect={catOnChange}
               right={20}

@@ -14,7 +14,6 @@ import { PUBLISH_MODE } from '@/constant/publish'
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import TYPE from '@/constant/type'
 import { BANNER_LAYOUT } from '@/constant/layout'
-import { POST_STATE_MENU_ITEMS, POST_CAT_MENU_ITEMS } from '@/constant/menu'
 import useBannerLayout from '@/hooks/useBannerLayout'
 
 import { buildLog } from '@/logger'
@@ -61,7 +60,6 @@ const ArticlesFilter: FC<TProps> = ({
             active={activeCat}
             onSelect={(cat: TArticleCat) => setActiveCat(cat)}
             selected={activeCat !== ARTICLE_CAT.ALL}
-            menuItems={POST_CAT_MENU_ITEMS}
           />
           <ConditionSelector
             mode="state"
@@ -69,7 +67,6 @@ const ArticlesFilter: FC<TProps> = ({
             active={activeState}
             onSelect={(state: TArticleState) => setActiveState(state)}
             selected={activeState !== ARTICLE_STATE.ALL}
-            menuItems={POST_STATE_MENU_ITEMS}
           />
           <Space right={10} />
           <SpaceGrow />

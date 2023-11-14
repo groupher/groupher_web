@@ -9,7 +9,6 @@ import { FC, Fragment, memo, useState } from 'react'
 import type { TArticleCat, TArticleState } from '@/spec'
 
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
-import { POST_STATE_MENU_ITEMS, POST_CAT_MENU_ITEMS } from '@/constant/menu'
 import TYPE from '@/constant/type'
 
 import { buildLog } from '@/logger'
@@ -54,7 +53,6 @@ const ArticlesFilter: FC<TProps> = ({
             mode="category"
             title="分类"
             selected={false}
-            menuItems={POST_CAT_MENU_ITEMS}
             active={activeCat}
             onSelect={(cat: TArticleCat) => setActiveCat(cat)}
           />
@@ -62,7 +60,6 @@ const ArticlesFilter: FC<TProps> = ({
             mode="state"
             title="状态"
             selected={false}
-            menuItems={POST_STATE_MENU_ITEMS}
             active={activeState}
             onSelect={(state: TArticleState) => setActiveState(state)}
           />
