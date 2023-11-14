@@ -8,7 +8,7 @@ import { nilOrEmpty } from '@/validator'
 export const getCurrentMenuItem = (path: TNaviTag[], items: TNaviTag[]): TNaviTag => {
   if (nilOrEmpty(path) || nilOrEmpty(items)) return
 
-  const item = find(propEq('id', path[0].id), items) as TNaviTag
+  const item = find(propEq(path[0].id, 'id'), items) as TNaviTag
   if (item.id === last(path).id) return item
 
   return getCurrentMenuItem(path.slice(1), item?.childMenu)
@@ -31,7 +31,7 @@ export const findPath = (items: TNaviTag[], pathString = 'aa-bb-cc'): TNaviTag[]
     const pathId = idPaths[index]
 
     const catalog = previousCatalog
-    const item = find(propEq('id', pathId), catalog) as TNaviTag
+    const item = find(propEq(pathId, 'id'), catalog) as TNaviTag
     if (!item) return path
 
     if (item.childMenu) {

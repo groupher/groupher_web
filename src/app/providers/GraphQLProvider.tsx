@@ -16,8 +16,7 @@ type TProps = {
 
 const GraphQLProvider: FC<TProps> = ({ children, token }) => {
   const [client, ssr] = useMemo(() => {
-    console.log('## use token: ', token)
-
+    // console.log('## use token: ', token)
     const ssr = ssrExchange()
     const client = createClient({
       url: GRAPHQL_ENDPOINT,

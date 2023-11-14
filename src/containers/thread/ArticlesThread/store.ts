@@ -150,7 +150,7 @@ const ArticlesThread = T.model('ArticlesThread', {
 
       const { entries } = slf.pagedArticlesData
       // @ts-ignore
-      const index = findIndex(propEq('id', id), entries)
+      const index = findIndex(propEq(id, 'id'), entries)
       if (index < 0) return null
 
       return index

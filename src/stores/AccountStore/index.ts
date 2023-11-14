@@ -113,7 +113,7 @@ const AccountStore = T.model('AccountStore', {
         userSubscribedCommunities: { entries },
       } = self
 
-      const index = findIndex(propEq('id', community.id), entries)
+      const index = findIndex(propEq(community.id, 'id'), entries)
       // @ts-ignore
       self.userSubscribedCommunities.entries = remove(index, 1, entries)
       self.userSubscribedCommunities.totalCount -= 1

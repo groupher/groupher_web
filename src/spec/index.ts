@@ -89,6 +89,7 @@ export type {
   TChangeMode,
   TUploadPreview,
   TPagi,
+  TConditionMode,
 } from './utils'
 
 export type { TGQLError } from './graphql'
@@ -138,7 +139,6 @@ export type {
   TArticleFilter,
   TArticleFilterMode,
   TArticleCatMode,
-  TArticleStateMode,
   TCopyright,
   TUpvoteLayout,
   TCommentsState,
@@ -148,6 +148,7 @@ export type {
   TArticleState,
   TFAQSection,
   TArticleTitle,
+  TArticleSort,
 } from './article'
 
 export type {

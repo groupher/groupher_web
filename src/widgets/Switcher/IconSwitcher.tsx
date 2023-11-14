@@ -29,7 +29,7 @@ type TProps = {
 }
 
 const IconSwitcher: FC<TProps> = ({ items, activeKey, onChange = log }) => {
-  const slideIndex = findIndex(propEq('key', activeKey), items)
+  const slideIndex = findIndex(propEq(activeKey, 'key'), items)
 
   return (
     <Wrapper testid="selectors">

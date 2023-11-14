@@ -48,6 +48,8 @@ const night = {
   alphaBg: hoverBg,
   alphaBg2: '#1c1c1cb8',
   hoverBg,
+  hoverActive: '#3f3f3f',
+  menuHoverBg: hoverBg,
   lineDivider: '#5a5a5ac9',
   savingBarBg: '#f7f7f7',
   hoverBorder: '#393939',

@@ -2,8 +2,8 @@ import { FC } from 'react'
 
 import { SpaceGrow } from '@/widgets/Common'
 import Button from '@/widgets/Buttons/Button'
-import StateSelector from '@/widgets/StateSelector'
-import CatSelector from '@/widgets/CatSelector'
+import { CONDITION_MODE } from '@/constant/mode'
+import ConditionSelector from '@/widgets/ConditionSelector'
 
 import ActionBar from './ActionBar'
 
@@ -51,8 +51,10 @@ const FilterBar: FC<TProps> = ({ checkboxActive, triggerCheckbox, selectedCount 
           <SearchIcon />
           <Inputer placeholder="按标题搜索" />
         </InputerWrapper>
-        <CatSelector activeCat="ALL" right={12} onSelect={(cat) => console.log(cat)} />
-        <StateSelector mode="filter" right={20} />
+
+        <ConditionSelector mode={CONDITION_MODE.CAT} selected={false} right={20} />
+        <ConditionSelector mode={CONDITION_MODE.STATE} selected={false} right={20} />
+
         <DateRangeWrapper>日期范围(TODO)</DateRangeWrapper>
         <SpaceGrow />
         <Button size="small" ghost noBorder top={-2}>

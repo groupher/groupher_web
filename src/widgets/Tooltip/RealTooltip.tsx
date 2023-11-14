@@ -81,7 +81,9 @@ const Tooltip: FC<TProps> = ({
     if (!instance) return false
 
     const isClickInsidePopover = isDescendant(contentRef?.current, e.target)
-    if (hideOnClick || (!hideOnClick && !isClickInsidePopover)) {
+    if (!isClickInsidePopover) {
+      // if ((hideOnClick && !isClickInsidePopover) || !isClickInsidePopover) {
+      // if (hideOnClick || (!hideOnClick && !isClickInsidePopover)) {
       // if (instance) {
       // NOTE:  this is a hack, svg will swallow events like click
       // and the pointer-events solution not work

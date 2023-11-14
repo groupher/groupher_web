@@ -52,7 +52,7 @@ const AbuseReport = T.model('AbuseReport', {
     },
     get activeItem(): TREPORT_ITEM {
       const { itemsData, checkedItemRaw } = self as TStore
-      const findItem = find(propEq('slug', checkedItemRaw), itemsData) as TREPORT_ITEM
+      const findItem = find(propEq(checkedItemRaw, 'slug'), itemsData) as TREPORT_ITEM
 
       return findItem || initItem
     },

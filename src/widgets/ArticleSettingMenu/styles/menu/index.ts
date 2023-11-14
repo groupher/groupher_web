@@ -23,8 +23,9 @@ export const MenuItem = styled.div`
   border-radius: 5px;
 
   &:hover {
-    background: ${theme('hoverBg')};
     color: ${theme('article.title')};
+    background: ${theme('menuHoverBg')};
+    box-shadow: ${theme('button.boxShadow')};
     cursor: pointer;
   }
 

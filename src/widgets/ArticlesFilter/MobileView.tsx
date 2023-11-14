@@ -6,23 +6,18 @@
 
 import { FC, Fragment, memo, useState } from 'react'
 
-import type { TArticleCat } from '@/spec'
+import type { TArticleCat, TArticleState } from '@/spec'
 
-import { ARTICLE_CAT, ARTICLE_STATE_MODE } from '@/constant/gtd'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
+import { CONDITION_MODE } from '@/constant/mode'
 import TYPE from '@/constant/type'
 
 import { buildLog } from '@/logger'
 
 import { SpaceGrow } from '@/widgets/Common'
 
-import CatSelector from '@/widgets/CatSelector'
-import StateSelector from '@/widgets/StateSelector'
-import TagSelector from '@/widgets/TagSelector'
+import ConditionSelector from '@/widgets/ConditionSelector'
 import SearchBox from '@/widgets/SearchBox'
-
-import SortFilter from './SortFilter'
-// import SelectedFilters from './SelectedFilters'
-// import FilterResult from './FilterResult'
 
 import type { TProps } from '.'
 import { Wrapper } from './styles/mobile_view'
@@ -39,6 +34,7 @@ const ArticlesFilter: FC<TProps> = ({
   activeTag,
 }) => {
   const [activeCat, setActiveCat] = useState<TArticleCat>(ARTICLE_CAT.ALL)
+  const [activeState, setActiveState] = useState<TArticleState>(ARTICLE_STATE.ALL)
 
   // const { activeThread } = useViewing()
   const searchMode = false
@@ -47,10 +43,18 @@ const ArticlesFilter: FC<TProps> = ({
     <Wrapper>
       {!searchMode && (
         <Fragment>
-          <SortFilter onSelect={onSelect} activeFilter={activeFilter} />
-          <TagSelector groupedTags={groupedTags} activeTag={activeTag} mode="mobile" />
-          <CatSelector activeCat={activeCat} onSelect={setActiveCat} />
-          <StateSelector mode={ARTICLE_STATE_MODE.FILTER} />
+          <ConditionSelector
+            mode={CONDITION_MODE.CAT}
+            selected={false}
+            active={activeCat}
+            onSelect={(cat: TArticleCat) => setActiveCat(cat)}
+          />
+          <ConditionSelector
+            mode={CONDITION_MODE.STATE}
+            selected={false}
+            active={activeState}
+            onSelect={(state: TArticleState) => setActiveState(state)}
+          />
           <SpaceGrow />
         </Fragment>
       )}

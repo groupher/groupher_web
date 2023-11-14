@@ -163,7 +163,6 @@ export type TArticleFilter = {
 export type TArticleFilterMode = 'default' | 'modeline'
 
 export type TArticleCatMode = 'filter' | 'full'
-export type TArticleStateMode = 'filter' | 'full'
 
 export type TUpvoteLayout =
   | 'default'
@@ -214,6 +213,7 @@ export type TArticleState =
   | TArticleCatReject
 
 export type TArticleCat = 'ALL' | 'BUG' | 'FEATURE' | 'QUESTION' | 'OTHER'
+export type TArticleSort = 'ALL' | 'PUBLISH' | 'UPVOTE' | 'COMMENT' | 'VIEWS'
 
 export type TArticlePubSelector = {
   cat?: TArticleCat | null

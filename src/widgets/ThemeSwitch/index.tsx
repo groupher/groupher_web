@@ -31,7 +31,9 @@ const ThemeSwitch: FC<TProps> = ({ testid = 'theme-switch', ...restProps }) => {
         title="Toggles light & dark"
         aria-label="auto"
         aria-live="polite"
-        onClick={() => (curTheme === THEME.DAY ? changeTheme(THEME.NIGHT) : changeTheme(THEME.DAY))}
+        onClick={() => {
+          curTheme === THEME.DAY ? changeTheme(THEME.NIGHT) : changeTheme(THEME.DAY)
+        }}
       >
         {curTheme === THEME.DAY ? <SunIcon /> : <MoonIcon />}
       </Button>

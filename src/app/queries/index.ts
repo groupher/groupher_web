@@ -33,7 +33,10 @@ export const useSession = (): TSessionRes => {
     query: P.sessionState,
     variables: {},
     pause: false,
-    requestPolicy: 'network-only',
+    // NOTE: network-only will freeze the page, don't know why ...
+    // requestPolicy: 'network-only',
+    // NOTE: this warning calling warning in console
+    // requestPolicy: 'cache-and-network',
   })
 
   return {
@@ -43,8 +46,8 @@ export const useSession = (): TSessionRes => {
         curTheme: DEFAULT_THEME,
       },
       account: {
-        user: result.data.sessionState?.user || {},
-        isValidSession: result.data.sessionState?.isValid,
+        user: result.data?.sessionState?.user || {},
+        isValidSession: result.data?.sessionState?.isValid,
       },
     },
   }
@@ -57,7 +60,7 @@ export const useCommunity = (slug: string, _opt: TSSRQueryOpt = {}): TCommunityR
     query: P.community,
     variables: {
       slug,
-      userHasLogin: false,
+      userHasLogin: opt.userHasLogin,
     },
     pause: opt.skip,
     requestPolicy: opt.requestPolicy,
@@ -80,7 +83,7 @@ export const useTags = (filter: TTagsFilter = TAGS_FILTER, _opt: TSSRQueryOpt = 
         community,
         thread: thread.toUpperCase(),
       },
-      userHasLogin: false,
+      userHasLogin: opt.userHasLogin,
     },
     pause: opt.skip,
     requestPolicy: opt.requestPolicy,
@@ -104,7 +107,7 @@ export const usePagedPosts = (
     query: P.pagedPosts,
     variables: {
       filter: { page, size, community },
-      userHasLogin: false,
+      userHasLogin: opt.userHasLogin,
     },
     pause: opt.skip,
     requestPolicy: opt.requestPolicy,
@@ -124,7 +127,7 @@ export const usePost = (community: string, id: TID, _opt: TSSRQueryOpt = {}): TP
     variables: {
       community,
       id,
-      userHasLogin: false,
+      userHasLogin: opt.userHasLogin,
     },
     pause: opt.skip,
     requestPolicy: opt.requestPolicy,
@@ -169,7 +172,7 @@ export const usePagedChangelogs = (
     query: P.pagedChangelogs,
     variables: {
       filter: { page, size, community },
-      userHasLogin: false,
+      userHasLogin: opt.userHasLogin,
     },
     pause: opt.skip,
     requestPolicy: opt.requestPolicy,
@@ -193,7 +196,7 @@ export const useChangelog = (
     variables: {
       community,
       id,
-      userHasLogin: false,
+      userHasLogin: opt.userHasLogin,
     },
     pause: opt.skip,
     requestPolicy: opt.requestPolicy,

@@ -1,4 +1,4 @@
-import type { TArticleCat, TArticleState, TArticleCatMode, TArticleStateMode } from '@/spec'
+import type { TArticleCat, TArticleState, TArticleCatMode } from '@/spec'
 
 export const ARTICLE_CAT_REJECT = {
   REJECT: 'REJECT', // 关闭
@@ -32,8 +32,3 @@ export const ARTICLE_CAT_MODE = {
   FILTER: 'filter',
   FULL: 'full',
 } as Record<Uppercase<TArticleCatMode>, TArticleCatMode>
-
-export const ARTICLE_STATE_MODE = {
-  FILTER: 'filter',
-  FULL: 'full',
-} as Record<Uppercase<TArticleStateMode>, TArticleStateMode>

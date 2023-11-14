@@ -15,14 +15,6 @@ const I18nDict = {
   user: '用户',
   profile: '主页',
 
-  AD: '广告',
-  FREEMIUM: '会员增值 / 订阅',
-  FULLTIME: '全职项目',
-  SIDE_PROJECT: '副业项目',
-  PRODUCT: '物品交易',
-  FREE: '用爱发电',
-  OTHRES: '其他',
-
   // ArticleCat
   ALL: '全部',
   FEATURE: '功能建议',
@@ -40,6 +32,12 @@ const I18nDict = {
   REJECT_NO_PLAN: '无计划',
   REJECT_REPRO: '无法重现',
   REJECT_STALE: '过时',
+
+  //
+  PUBLISH: '发布时间',
+  UPVOTE: '投票',
+  COMMENT: '评论',
+  VIEWS: '浏览',
 
   // osocial
   EMAIL: '邮箱地址',

@@ -5,6 +5,7 @@ import { useMutation } from 'urql'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import useViewingArticle from '@/hooks/useViewingArticle'
 import { POST_CAT_MENU_ITEMS } from '@/constant/menu'
+import { Trans } from '@/i18n'
 import { toast, updateViewingArticle } from '@/signal'
 
 import S from '../schema'
@@ -60,7 +61,7 @@ const CatSetting: FC<TProps> = ({ onBack }) => {
             }}
           >
             <TheIcon />
-            <Title $active={$active}>{item.title}</Title>
+            <Title $active={$active}>{Trans(item.key)}</Title>
             {$active && <CheckIcon $color={primaryColor} />}
           </Item>
         )

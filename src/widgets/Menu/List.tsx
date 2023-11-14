@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TMenu } from '@/spec'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import { Trans } from '@/i18n'
 
 import type { TMenuItem } from './spec'
 import Icon from './Icon'
@@ -17,23 +17,16 @@ type TProps = {
 }
 
 const List: FC<TProps> = ({ items, activeKey, onSelect, popWidth, withDesc }) => {
-  const primaryColor = usePrimaryColor()
-
   if (withDesc) {
     return (
       <Wrapper $popWidth={popWidth}>
         {items.map((item) => (
-          <FullItem
-            key={item.key}
-            $color={primaryColor}
-            $active={activeKey === item.key}
-            onClick={() => onSelect(item)}
-          >
+          <FullItem key={item.key} $active={activeKey === item.key} onClick={() => onSelect(item)}>
             <FullIcon>
               <Icon type={item.icon as TMenu} $active={activeKey === item.key} />
             </FullIcon>
             <Main>
-              <FullTitle>{item.title}</FullTitle>
+              <FullTitle>{Trans(item.key)}</FullTitle>
               <Desc>{item.desc || '--'}</Desc>
             </Main>
           </FullItem>
@@ -45,18 +38,13 @@ const List: FC<TProps> = ({ items, activeKey, onSelect, popWidth, withDesc }) =>
   return (
     <Wrapper $popWidth={popWidth}>
       {items.map((item) => {
-        const $active = activeKey === item.key
+        const active = activeKey === item.key
 
         return (
-          <Item
-            key={item.key}
-            $color={primaryColor}
-            $active={$active}
-            onClick={() => onSelect(item)}
-          >
-            <Icon type={item.icon as TMenu} $active={$active} />
+          <Item key={item.key} $active={active} onClick={() => onSelect(item)}>
+            <Icon type={item.icon as TMenu} $active={active} />
             <Main>
-              <Title>{item.title}</Title>
+              <Title>{Trans(item.key)}</Title>
             </Main>
           </Item>
         )

@@ -48,6 +48,8 @@ const day = {
   alphaBg: '#ffffff95',
   alphaBg2: '#fffffff2',
   hoverBg,
+  hoverActive: 'white',
+  menuHoverBg: 'white',
   lineDivider: '#acacacc9',
   hoverBorder: hoverBg,
   hoverLinear: 'linear-gradient(315deg, rgba(255, 255, 255, 0) 0%, #fafafa 100%)',

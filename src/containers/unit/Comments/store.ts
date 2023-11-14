@@ -228,10 +228,10 @@ const CommentsStore = T.model('CommentsStore', {
       const { entries } = self.pagedCommentsData
 
       if (self.mode === MODE.REPLIES && replyToId) {
-        const parentIndex = findIndex(propEq('id', replyToId), entries)
+        const parentIndex = findIndex(propEq(replyToId, 'id'), entries)
         if (parentIndex < 0) return
         const parentComment = entries[parentIndex]
-        const replyIndex = findIndex(propEq('id', id), parentComment.replies)
+        const replyIndex = findIndex(propEq(id, 'id'), parentComment.replies)
         if (replyIndex < 0) return
         const replyComment = parentComment.replies[replyIndex]
         // @ts-ignore
@@ -243,7 +243,7 @@ const CommentsStore = T.model('CommentsStore', {
         }
       } else {
         // timeline & replies parent comment
-        const index = findIndex(propEq('id', id), entries)
+        const index = findIndex(propEq(id, 'id'), entries)
 
         if (index < 0) return
         const comment = entries[index]
@@ -261,10 +261,10 @@ const CommentsStore = T.model('CommentsStore', {
       const { entries } = slf.pagedCommentsData
 
       if (self.mode === MODE.REPLIES && replyToId) {
-        const parentIndex = findIndex(propEq('id', replyToId), entries)
+        const parentIndex = findIndex(propEq(replyToId, 'id'), entries)
         if (parentIndex < 0) return
         const parentComment = entries[parentIndex]
-        const replyIndex = findIndex(propEq('id', id), parentComment.replies)
+        const replyIndex = findIndex(propEq(id, 'id'), parentComment.replies)
         if (replyIndex < 0) return
         const replyComment = parentComment.replies[replyIndex]
         self.pagedComments.entries[parentIndex].replies[replyIndex].emotions = {
@@ -272,7 +272,7 @@ const CommentsStore = T.model('CommentsStore', {
           ...emotion,
         }
       } else {
-        const index = findIndex(propEq('id', id), entries)
+        const index = findIndex(propEq(id, 'id'), entries)
         if (index < 0) return
         // @ts-ignore
         self.pagedComments.entries[index].emotions = {
@@ -287,7 +287,7 @@ const CommentsStore = T.model('CommentsStore', {
       const { entries } = slf.pagedCommentsData
 
       if (self.mode === MODE.REPLIES && repliesParentId) {
-        const parentIndex = findIndex(propEq('id', repliesParentId), entries)
+        const parentIndex = findIndex(propEq(repliesParentId, 'id'), entries)
 
         if (parentIndex < 0) return
         const curReplies = entries[parentIndex].replies

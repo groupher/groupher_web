@@ -63,13 +63,12 @@ const DropdownButton: FC<TProps> = ({
 
           {closable && selected && (
             <CloseWrapper
-              $color={primaryColor}
               onClick={(e) => {
                 e.preventDefault()
                 onClear()
               }}
             >
-              <CloseIcon $color={primaryColor} />
+              <CloseIcon />
             </CloseWrapper>
           )}
         </InnerBtnWrapper>

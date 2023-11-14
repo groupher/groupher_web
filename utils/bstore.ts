@@ -1,5 +1,4 @@
 import store from 'store'
-import { setCookies, getCookie, removeCookies } from 'cookies-next'
 
 // js-cookie details: https://github.com/js-cookie/js-cookie
 // store.js details: https://github.com/marcuswestin/store.js
@@ -11,19 +10,8 @@ const BStore = {
   remove: (key: string): void => store.remove(key),
   clearAll: (): void => store.clearAll(),
   cookie: {
-    ssrGet: (context, key) => {
-      return getCookie(key, context) as string | undefined
-    },
-    ssrSet: (context, key, value): void => {
-      return setCookies(key, value, context)
-    },
-    ssrRemove: (context, key) => {
-      const { req, res } = context
-
-      removeCookies(key, { req, res })
-    },
-    set: (key, value) => setCookies(key, value),
-    remove: (key) => removeCookies(key),
+    set: (key, value) => console.log('## cookie set todo'),
+    remove: (key) => console.log('## cookie remove todo'),
   },
 }
 

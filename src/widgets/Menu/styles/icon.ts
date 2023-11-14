@@ -10,9 +10,16 @@ import GtdTodoSVG from '@/icons/GtdTodo'
 import GtdWipSVG from '@/icons/GtdWip'
 import GtdDoneSVG from '@/icons/CheckBold'
 
+// sort
+import UpvoteSVG from '@/icons/Upvote'
+import CommentSVG from '@/icons/Comment'
+import PublishSVG from '@/icons/Publish'
+import ViewSVG from '@/icons/View'
+
 import LightSVG from '@/icons/ColorLight'
 import BugSVG from '@/icons/ColorBug'
 import QuestionSVG from '@/icons/Question'
+import RejectSVG from '@/icons/Reject'
 
 import OtherSVG from '@/icons/menu/MoreL'
 
@@ -37,13 +44,13 @@ type TIcon = TActive & TColor & { $small: boolean }
 const commonIcon = (comp): FC<TIcon> => {
   // @ts-ignore
   return styled(comp)<TIcon>`
-    fill: ${({ $active, $$color }) => ($active ? rainbow($$color) : theme('hint'))};
+    fill: ${({ $active, $color }) => ($active ? rainbow($color, 'article.title') : theme('hint'))};
     width: ${({ $small }) => ($small ? '12px' : '15px')};
     height: ${({ $small }) => ($small ? '12px' : '15px')};
     display: block;
 
     ${Item}:hover & {
-      fill: ${({ $$color, $active }) => ($active ? rainbow($$color) : theme('hint'))};
+      fill: ${({ $color, $active }) => ($active ? rainbow($color) : theme('hint'))};
     }
   `
 }
@@ -53,8 +60,25 @@ export const ICONS = {
   [MENU.WIP]: commonIcon(GtdWipSVG),
   [MENU.DONE]: commonIcon(GtdDoneSVG),
 
+  [MENU.PUBLISH]: styled(commonIcon(PublishSVG))`
+    ${css.size(14)};
+    margin-top: 1px;
+  `,
+  [MENU.UPVOTE]: commonIcon(UpvoteSVG),
+  [MENU.VIEWS]: styled(commonIcon(ViewSVG))`
+    ${css.size(12)};
+    margin-left: 2px;
+    margin-top: 2px;
+  `,
+  [MENU.COMMENT]: styled(commonIcon(CommentSVG))`
+    ${css.size(12)};
+    margin-left: 2px;
+    margin-top: 2px;
+  `,
+
   [MENU.FEATURE]: commonIcon(LightSVG),
   [MENU.BUG]: commonIcon(BugSVG),
+  [MENU.CLOSE]: commonIcon(RejectSVG),
   [MENU.HELP]: styled(commonIcon(QuestionSVG))`
     ${css.size(14)};
     margin-top: 1px;
