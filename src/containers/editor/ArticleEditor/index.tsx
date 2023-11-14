@@ -7,6 +7,8 @@ import { observer } from 'mobx-react-lite'
 
 import type { TEditMode, TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
+import { CONDITION_MODE } from '@/constant/mode'
+
 import { buildLog } from '@/logger'
 
 import RichEditor from '@/containers/editor/RichEditor'
@@ -67,8 +69,7 @@ const ArticleEditor: FC<TProps> = ({ metric = METRIC.ARTICLE_EDITOR }) => {
             <TagSelector groupedTags={groupedTags} activeTag={activeTagData} />
             <Space left={20} />
             <ConditionSelector
-              mode="category"
-              title="分类"
+              mode={CONDITION_MODE.CAT}
               selected={false}
               active={activeCat}
               onSelect={catOnChange}

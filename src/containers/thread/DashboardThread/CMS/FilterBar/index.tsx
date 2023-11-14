@@ -2,6 +2,7 @@ import { FC } from 'react'
 
 import { SpaceGrow } from '@/widgets/Common'
 import Button from '@/widgets/Buttons/Button'
+import { CONDITION_MODE } from '@/constant/mode'
 import ConditionSelector from '@/widgets/ConditionSelector'
 
 import ActionBar from './ActionBar'
@@ -50,8 +51,9 @@ const FilterBar: FC<TProps> = ({ checkboxActive, triggerCheckbox, selectedCount 
           <SearchIcon />
           <Inputer placeholder="按标题搜索" />
         </InputerWrapper>
-        <ConditionSelector mode="category" title="分类" selected={false} right={20} />
-        <ConditionSelector mode="state" title="状态" selected={false} right={20} />
+
+        <ConditionSelector mode={CONDITION_MODE.CAT} selected={false} right={20} />
+        <ConditionSelector mode={CONDITION_MODE.STATE} selected={false} right={20} />
 
         <DateRangeWrapper>日期范围(TODO)</DateRangeWrapper>
         <SpaceGrow />

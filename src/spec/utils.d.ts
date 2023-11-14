@@ -230,3 +230,5 @@ export type TUploadPreview = {
   width: number
   radius: number
 }
+
+export type TConditionMode = 'state' | 'cat' | 'article' | 'tag'

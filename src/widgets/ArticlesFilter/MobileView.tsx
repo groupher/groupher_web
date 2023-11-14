@@ -9,6 +9,7 @@ import { FC, Fragment, memo, useState } from 'react'
 import type { TArticleCat, TArticleState } from '@/spec'
 
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
+import { CONDITION_MODE } from '@/constant/mode'
 import TYPE from '@/constant/type'
 
 import { buildLog } from '@/logger'
@@ -50,15 +51,13 @@ const ArticlesFilter: FC<TProps> = ({
           <SortFilter onSelect={onSelect} activeFilter={activeFilter} />
           <TagSelector groupedTags={groupedTags} activeTag={activeTag} mode="mobile" />
           <ConditionSelector
-            mode="category"
-            title="分类"
+            mode={CONDITION_MODE.CAT}
             selected={false}
             active={activeCat}
             onSelect={(cat: TArticleCat) => setActiveCat(cat)}
           />
           <ConditionSelector
-            mode="state"
-            title="状态"
+            mode={CONDITION_MODE.STATE}
             selected={false}
             active={activeState}
             onSelect={(state: TArticleState) => setActiveState(state)}

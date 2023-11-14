@@ -89,6 +89,7 @@ export type {
   TChangeMode,
   TUploadPreview,
   TPagi,
+  TConditionMode,
 } from './utils'
 
 export type { TGQLError } from './graphql'

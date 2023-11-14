@@ -10,6 +10,7 @@ import dynamic from 'next/dynamic'
 
 import type { TArticleCat, TArticleState } from '@/spec'
 import { PUBLISH_MODE } from '@/constant/publish'
+import { CONDITION_MODE } from '@/constant/mode'
 
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import TYPE from '@/constant/type'
@@ -55,15 +56,13 @@ const ArticlesFilter: FC<TProps> = ({
         <Fragment>
           <SortFilter onSelect={onSelect} activeFilter={activeFilter} />
           <ConditionSelector
-            mode="category"
-            title="分类"
+            mode={CONDITION_MODE.CAT}
             active={activeCat}
             onSelect={(cat: TArticleCat) => setActiveCat(cat)}
             selected={activeCat !== ARTICLE_CAT.ALL}
           />
           <ConditionSelector
-            mode="state"
-            title="状态"
+            mode={CONDITION_MODE.STATE}
             active={activeState}
             onSelect={(state: TArticleState) => setActiveState(state)}
             selected={activeState !== ARTICLE_STATE.ALL}
