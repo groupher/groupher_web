@@ -9,7 +9,8 @@ import Input from '@/widgets/Input'
 export const Wrapper = styled.div`
   ${css.row('align-center')};
   width: 100%;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
+  margin-left: -10px;
 
   ${css.media.mobile`
     display: none;

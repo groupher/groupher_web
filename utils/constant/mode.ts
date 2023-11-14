@@ -13,6 +13,6 @@ export const COMMUNITY_STATUS = {
 export const CONDITION_MODE = {
   STATE: 'state',
   CAT: 'cat',
-  ARTICLE: 'article',
+  SORT: 'sort',
   TAG: 'tag',
 } as Record<Uppercase<TConditionMode>, TConditionMode>

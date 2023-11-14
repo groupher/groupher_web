@@ -14,6 +14,7 @@ export const Hint = styled.div`
 export const LabelWrapper = styled.div`
   ${css.row('align-center')};
   padding: 5px 6px;
+  padding-right: 8px;
   border-radius: 8px;
   background: ${theme('hoverActive')};
   margin-left: 3px;

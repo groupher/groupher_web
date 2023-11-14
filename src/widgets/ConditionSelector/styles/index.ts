@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 import { WithMargin } from '@/widgets/Common'
 
 type TWrapper = { $menuOpen?: boolean; $selected?: boolean }
-export const FilterWrapper = styled(WithMargin)<TWrapper>`
+export const Wrapper = styled(WithMargin)<TWrapper>`
   ${css.row('align-center')};
   color: ${theme('article.digest')};
   font-size: 13px;
@@ -23,23 +23,6 @@ export const FilterWrapper = styled(WithMargin)<TWrapper>`
     background: ${theme('hoverBg')};
   }
 `
-export const FullWrapper = styled(FilterWrapper)<TWrapper>`
-  border: 1px solid;
-  border-color: ${({ $menuOpen }) =>
-    $menuOpen ? theme('article.digest') : theme('button.ghostBorder')};
-
-  padding: 0 5px;
-  padding-left: 15px;
-  border-radius: 10px;
-
-  &:hover {
-    border-color: ${theme('article.digest')};
-    cursor: pointer;
-  }
-
-  transition: all 0.2s;
-`
-
 export const SelectItem = styled.div<TActive>`
   ${css.row('align-start')};
   padding: 4px 8px;

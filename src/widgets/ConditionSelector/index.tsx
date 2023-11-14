@@ -10,7 +10,7 @@ import ActiveLabel from './ActiveLabel'
 
 import type { TActiveCondition } from './spec'
 import { getMenuItems, getTitle, getActiveMenuItem } from './helper'
-import { FilterWrapper } from './styles'
+import { Wrapper } from './styles'
 
 type TProps = {
   mode: TConditionMode
@@ -34,7 +34,6 @@ const ConditionSelector: FC<TProps> = ({
   const [menuOpen, setMenuOpen] = useState(false)
   const ref = useRef(null)
 
-  const Wrapper = FilterWrapper
   const popWidth = 120
 
   const menuItems = getMenuItems(mode)
@@ -45,7 +44,7 @@ const ConditionSelector: FC<TProps> = ({
   const title = getTitle(mode)
 
   return (
-    <Wrapper $selected={selected} $menuOpen={menuOpen} {...restProps} ref={ref}>
+    <Wrapper ref={ref} $selected={selected} $menuOpen={menuOpen} {...restProps}>
       {!selected ? (
         <Menu
           offset={offset as [number, number]}

@@ -2,7 +2,7 @@ import { find } from 'ramda'
 
 import type { TConditionMode } from '@/spec'
 import { CONDITION_MODE } from '@/constant/mode'
-import { POST_STATE_MENU_ITEMS, POST_CAT_MENU_ITEMS } from '@/constant/menu'
+import { POST_STATE_MENU_ITEMS, POST_CAT_MENU_ITEMS, POST_SORT_MENU_ITEMS } from '@/constant/menu'
 
 import type { TMenuItem, TActiveCondition } from './spec'
 
@@ -14,6 +14,10 @@ export const getMenuItems = (mode: TConditionMode): TMenuItem[] => {
 
     case CONDITION_MODE.CAT: {
       return POST_CAT_MENU_ITEMS
+    }
+
+    case CONDITION_MODE.SORT: {
+      return POST_SORT_MENU_ITEMS
     }
 
     default: {
@@ -34,6 +38,10 @@ export const getTitle = (mode: TConditionMode): string => {
 
     case CONDITION_MODE.CAT: {
       return '类别'
+    }
+
+    case CONDITION_MODE.SORT: {
+      return '排序'
     }
 
     default: {

@@ -10,6 +10,12 @@ import GtdTodoSVG from '@/icons/GtdTodo'
 import GtdWipSVG from '@/icons/GtdWip'
 import GtdDoneSVG from '@/icons/CheckBold'
 
+// sort
+import UpvoteSVG from '@/icons/Upvote'
+import CommentSVG from '@/icons/Comment'
+import PublishSVG from '@/icons/Publish'
+import ViewSVG from '@/icons/View'
+
 import LightSVG from '@/icons/ColorLight'
 import BugSVG from '@/icons/ColorBug'
 import QuestionSVG from '@/icons/Question'
@@ -53,6 +59,22 @@ export const ICONS = {
   [MENU.TODO]: commonIcon(GtdTodoSVG),
   [MENU.WIP]: commonIcon(GtdWipSVG),
   [MENU.DONE]: commonIcon(GtdDoneSVG),
+
+  [MENU.PUBLISH]: styled(commonIcon(PublishSVG))`
+    ${css.size(14)};
+    margin-top: 1px;
+  `,
+  [MENU.UPVOTE]: commonIcon(UpvoteSVG),
+  [MENU.VIEWS]: styled(commonIcon(ViewSVG))`
+    ${css.size(12)};
+    margin-left: 2px;
+    margin-top: 2px;
+  `,
+  [MENU.COMMENT]: styled(commonIcon(CommentSVG))`
+    ${css.size(12)};
+    margin-left: 2px;
+    margin-top: 2px;
+  `,
 
   [MENU.FEATURE]: commonIcon(LightSVG),
   [MENU.BUG]: commonIcon(BugSVG),

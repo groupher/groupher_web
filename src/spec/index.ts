@@ -148,6 +148,7 @@ export type {
   TArticleState,
   TFAQSection,
   TArticleTitle,
+  TArticleSort,
 } from './article'
 
 export type {

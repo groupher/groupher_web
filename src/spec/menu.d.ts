@@ -9,6 +9,11 @@ export type TMenu =
   | 'ARROW_TO_BOTTOM'
   | 'SETTING'
   | 'DELETE'
+  // sort
+  | 'PUBLISH'
+  | 'UPVOTE'
+  | 'COMMENT'
+  | 'VIEWS'
   // commont
   | 'TODO'
   | 'WIP'

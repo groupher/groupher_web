@@ -1,6 +1,6 @@
-import type { TArticleState, TArticleCat, TMenu } from '@/spec'
+import type { TArticleState, TArticleCat, TMenu, TArticleSort } from '@/spec'
 
-export type TActiveCondition = TArticleState | TArticleCat | 'ALL'
+export type TActiveCondition = TArticleState | TArticleCat | TArticleSort | 'ALL'
 
 export type TMenuItem = {
   key: string

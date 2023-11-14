@@ -213,6 +213,7 @@ export type TArticleState =
   | TArticleCatReject
 
 export type TArticleCat = 'ALL' | 'BUG' | 'FEATURE' | 'QUESTION' | 'OTHER'
+export type TArticleSort = 'ALL' | 'PUBLISH' | 'UPVOTE' | 'COMMENT' | 'VIEWS'
 
 export type TArticlePubSelector = {
   cat?: TArticleCat | null

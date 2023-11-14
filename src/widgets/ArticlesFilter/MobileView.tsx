@@ -17,12 +17,7 @@ import { buildLog } from '@/logger'
 import { SpaceGrow } from '@/widgets/Common'
 
 import ConditionSelector from '@/widgets/ConditionSelector'
-import TagSelector from '@/widgets/TagSelector'
 import SearchBox from '@/widgets/SearchBox'
-
-import SortFilter from './SortFilter'
-// import SelectedFilters from './SelectedFilters'
-// import FilterResult from './FilterResult'
 
 import type { TProps } from '.'
 import { Wrapper } from './styles/mobile_view'
@@ -48,8 +43,6 @@ const ArticlesFilter: FC<TProps> = ({
     <Wrapper>
       {!searchMode && (
         <Fragment>
-          <SortFilter onSelect={onSelect} activeFilter={activeFilter} />
-          <TagSelector groupedTags={groupedTags} activeTag={activeTag} mode="mobile" />
           <ConditionSelector
             mode={CONDITION_MODE.CAT}
             selected={false}

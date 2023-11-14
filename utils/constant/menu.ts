@@ -1,4 +1,6 @@
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
+import { ARTICLE_SORT } from '@/constant/sort'
+
 import type { TMenu } from '@/spec'
 
 const MENU = {
@@ -15,6 +17,12 @@ const MENU = {
   SETTING: 'SETTING',
   DELETE: 'DELETE',
 
+  // sort
+  PUBLISH: 'PUBLISH',
+  UPVOTE: 'UPVOTE',
+  COMMENT: 'COMMENT',
+  VIEWS: 'VIEWS',
+  // gtd
   TODO: 'TODO',
   WIP: 'WIP',
   DONE: 'DONE',
@@ -53,43 +61,58 @@ export const POST_CAT_MENU_ITEMS = [
 export const POST_STATE_MENU_ITEMS = [
   {
     key: ARTICLE_STATE.TODO,
-    title: '待办',
     icon: MENU.TODO,
   },
   {
     key: ARTICLE_STATE.WIP,
-    title: '进行中',
     icon: MENU.WIP,
   },
   {
     key: ARTICLE_STATE.DONE,
-    title: '已完成',
     icon: MENU.DONE,
   },
   {
     key: ARTICLE_STATE.REJECT,
-    title: '关闭',
     icon: MENU.CLOSE,
   },
   {
     key: ARTICLE_STATE.REJECT_DUP,
-    title: '重复问题',
     icon: MENU.CLOSE,
   },
   {
     key: ARTICLE_STATE.REJECT_NO_PLAN,
-    title: '无计划',
     icon: MENU.CLOSE,
   },
   {
     key: ARTICLE_STATE.REJECT_REPRO,
-    title: '无法重现',
     icon: MENU.CLOSE,
   },
   {
     key: ARTICLE_STATE.REJECT_STALE,
-    title: '过时',
     icon: MENU.CLOSE,
+  },
+]
+
+export const POST_SORT_MENU_ITEMS = [
+  {
+    key: ARTICLE_SORT.PUBLISH,
+    title: '发布时间',
+    icon: MENU.PUBLISH,
+  },
+  {
+    key: ARTICLE_SORT.UPVOTE,
+    title: '投票数',
+    icon: MENU.UPVOTE,
+  },
+  {
+    key: ARTICLE_SORT.COMMENT,
+    title: '评论数',
+    icon: MENU.COMMENT,
+  },
+  {
+    key: ARTICLE_SORT.VIEWS,
+    title: '浏览量',
+    icon: MENU.VIEWS,
   },
 ]
 
