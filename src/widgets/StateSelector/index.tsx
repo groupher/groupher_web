@@ -1,76 +1,92 @@
 import { FC, memo, useState, useRef } from 'react'
 
-import type { TArticleState, TArticleCatMode, TSpace, TTooltipPlacement } from '@/spec'
-import { ARTICLE_STATE, ARTICLE_STATE_MODE } from '@/constant/gtd'
+import type { TArticleState, TSpace, TTooltipPlacement } from '@/spec'
+import { ARTICLE_STATE } from '@/constant/gtd'
 
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
 import Menu from '@/widgets/Menu'
 
-import { MENU_ITEMS } from './constant'
-import ActiveState from './ActiveState'
-import { FilterWrapper, FullWrapper, Label } from './styles'
+import { POST_STATE_MENU_ITEMS } from '@/constant/menu'
+// import { MENU_ITEMS } from './constant'
+import ActiveLabel from './ActiveLabel'
+import { FilterWrapper, FullWrapper } from './styles'
 
 type TProps = {
-  mode?: TArticleCatMode
+  activeState?: TArticleState
   placement?: TTooltipPlacement
+  onSelect?: (state: TArticleState) => void
+  selected?: boolean
 } & TSpace
 
 const StateSelector: FC<TProps> = ({
-  mode = ARTICLE_STATE_MODE.FULL,
+  activeState = ARTICLE_STATE.ALL,
+  onSelect = console.log,
+  selected = false,
   placement = 'bottom',
   ...restProps
 }) => {
   const [offset, setOffset] = useState([30, 5])
   const [menuOpen, setMenuOpen] = useState(false)
-  const [activeState, setActiveState] = useState(null)
   const ref = useRef(null)
 
   const handleSelect = (state: TArticleState) => {
-    setActiveState(state)
+    onSelect(state)
   }
 
-  const Wrapper = mode === ARTICLE_STATE_MODE.FILTER ? FilterWrapper : FullWrapper
+  const Wrapper = FilterWrapper
+  const popWidth = 120
 
   return (
-    <Wrapper $menuOpen={menuOpen} {...restProps} ref={ref}>
-      {mode === ARTICLE_STATE_MODE.FULL && <Label>状态</Label>}
-      <Menu
-        offset={offset as [number, number]}
-        items={MENU_ITEMS}
-        onSelect={(item) => handleSelect(item.key as TArticleState)}
-        activeKey={activeState}
-        popWidth={120}
-        placement={placement}
-        onShow={() => {
-          if (activeState !== ARTICLE_STATE.ALL) {
-            setOffset([10, 5])
-          } else {
+    <Wrapper $selected={selected} $menuOpen={menuOpen} {...restProps} ref={ref}>
+      {!selected ? (
+        <Menu
+          offset={offset as [number, number]}
+          items={POST_STATE_MENU_ITEMS}
+          onSelect={(item) => handleSelect(item.key as TArticleState)}
+          onShow={() => setMenuOpen(true)}
+          onHide={() => {
             setOffset([30, 5])
-          }
-          setMenuOpen(true)
-        }}
-        onHide={() => {
-          setOffset([22, 5])
-          setMenuOpen(false)
-        }}
-      >
+            setMenuOpen(false)
+          }}
+          activeKey={activeState}
+          placement={placement}
+          popWidth={popWidth}
+        >
+          <DropdownButton $active={menuOpen} selected={selected}>
+            状态
+          </DropdownButton>
+        </Menu>
+      ) : (
         <DropdownButton
           $active={menuOpen}
-          selected={activeState && activeState !== ARTICLE_STATE.ALL}
+          selected={selected}
           closable
           onClear={() => {
             // simulate click to avoid menu pop again
             ref.current.click()
-            setActiveState(ARTICLE_STATE.ALL)
+            onSelect(ARTICLE_STATE.ALL)
           }}
         >
-          {!activeState || activeState === ARTICLE_STATE.ALL ? (
-            '状态'
-          ) : (
-            <ActiveState activeState={activeState} mode={mode} />
-          )}
+          <Menu
+            offset={offset as [number, number]}
+            items={POST_STATE_MENU_ITEMS}
+            onSelect={(item) => handleSelect(item.key as TArticleState)}
+            onShow={() => {
+              setOffset([8, 8])
+              setMenuOpen(true)
+            }}
+            onHide={() => {
+              setOffset([30, 5])
+              setMenuOpen(false)
+            }}
+            activeKey={activeState}
+            placement={placement}
+            popWidth={popWidth}
+          >
+            <ActiveLabel state={activeState} />
+          </Menu>
         </DropdownButton>
-      </Menu>
+      )}
     </Wrapper>
   )
 }

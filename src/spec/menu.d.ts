@@ -13,6 +13,7 @@ export type TMenu =
   | 'TODO'
   | 'WIP'
   | 'DONE'
+  | 'CLOSE'
   | 'FEATURE'
   | 'BUG'
   | 'HELP'

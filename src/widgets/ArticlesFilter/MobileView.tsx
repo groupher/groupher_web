@@ -6,9 +6,9 @@
 
 import { FC, Fragment, memo, useState } from 'react'
 
-import type { TArticleCat } from '@/spec'
+import type { TArticleCat, TArticleState } from '@/spec'
 
-import { ARTICLE_CAT, ARTICLE_STATE_MODE } from '@/constant/gtd'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import TYPE from '@/constant/type'
 
 import { buildLog } from '@/logger'
@@ -39,6 +39,7 @@ const ArticlesFilter: FC<TProps> = ({
   activeTag,
 }) => {
   const [activeCat, setActiveCat] = useState<TArticleCat>(ARTICLE_CAT.ALL)
+  const [activeState, setActiveState] = useState<TArticleState>(ARTICLE_STATE.ALL)
 
   // const { activeThread } = useViewing()
   const searchMode = false
@@ -50,7 +51,7 @@ const ArticlesFilter: FC<TProps> = ({
           <SortFilter onSelect={onSelect} activeFilter={activeFilter} />
           <TagSelector groupedTags={groupedTags} activeTag={activeTag} mode="mobile" />
           <CatSelector activeCat={activeCat} onSelect={setActiveCat} />
-          <StateSelector mode={ARTICLE_STATE_MODE.FILTER} />
+          <StateSelector activeState={activeState} onSelect={setActiveState} />
           <SpaceGrow />
         </Fragment>
       )}

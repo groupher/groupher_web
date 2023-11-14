@@ -1,18 +1,15 @@
 import styled from 'styled-components'
 
-import type { TColor } from '@/spec'
-
-import css, { theme, rainbow } from '@/css'
+import css, { theme } from '@/css'
 
 import LightSVG from '@/icons/ColorLight'
 import QuestionSVG from '@/icons/Question'
 import BugSVG from '@/icons/ColorBug'
 import OtherSVG from '@/icons/menu/Feedback'
 
-export const Wrapper = styled.div<TColor>`
+export const Wrapper = styled.div`
   ${css.row('align-center')};
-  padding: 12px 0;
-  border-radius: 8px;
+  transform: scale(0.92);
 `
 export const Hint = styled.div`
   font-size: 12px;
@@ -32,28 +29,30 @@ export const Title = styled.div`
   color: ${theme('article.title')};
   font-size: 13px;
   font-weight: 500;
+
+  ${Wrapper}:hover & {
+    opacity: 0.8;
+  }
 `
 const iconBase = `
   ${css.size(13)};
   margin-right: 5px;
 `
-export const LightIcon = styled(LightSVG)<TColor>`
+export const LightIcon = styled(LightSVG)`
   ${iconBase};
-  fill: ${({ $color }) => rainbow($color, 'article.digest')};
 `
-export const BugIcon = styled(BugSVG)<TColor>`
+export const BugIcon = styled(BugSVG)`
   ${iconBase};
-  fill: ${({ $color }) => rainbow($color, 'article.digest')};
 `
-export const QuestionIcon = styled(QuestionSVG)<TColor>`
+export const QuestionIcon = styled(QuestionSVG)`
   ${iconBase};
   ${css.size(11)};
   margin-top: -1px;
-  fill: ${({ $color }) => rainbow($color, 'article.digest')};
+  fill: ${theme('article.digest')};
 `
-export const OtherIcon = styled(OtherSVG)<TColor>`
+export const OtherIcon = styled(OtherSVG)`
   ${iconBase};
-  fill: ${({ $color }) => rainbow($color, 'article.digest')};
+  fill: ${theme('article.digest')};
 `
 export const ICON = {
   FEATURE: LightIcon,

@@ -8,10 +8,10 @@ import { FC, Fragment, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import dynamic from 'next/dynamic'
 
-import type { TArticleCat } from '@/spec'
+import type { TArticleCat, TArticleState } from '@/spec'
 import { PUBLISH_MODE } from '@/constant/publish'
 
-import { ARTICLE_CAT, ARTICLE_STATE_MODE } from '@/constant/gtd'
+import { ARTICLE_CAT, ARTICLE_STATE, ARTICLE_STATE_MODE } from '@/constant/gtd'
 import TYPE from '@/constant/type'
 import { BANNER_LAYOUT } from '@/constant/layout'
 import useBannerLayout from '@/hooks/useBannerLayout'
@@ -46,8 +46,8 @@ const ArticlesFilter: FC<TProps> = ({
 }) => {
   const bannerLayout = useBannerLayout()
   const [activeCat, setActiveCat] = useState<TArticleCat>(ARTICLE_CAT.ALL)
+  const [activeState, setActiveState] = useState<TArticleState>(ARTICLE_STATE.ALL)
 
-  console.log('## activeCat: ', activeCat)
   const searchMode = false
 
   return (
@@ -60,7 +60,11 @@ const ArticlesFilter: FC<TProps> = ({
             onSelect={setActiveCat}
             selected={activeCat !== ARTICLE_CAT.ALL}
           />
-          <StateSelector mode={ARTICLE_STATE_MODE.FILTER} />
+          <StateSelector
+            activeState={activeState}
+            onSelect={setActiveState}
+            selected={activeState !== ARTICLE_STATE.ALL}
+          />
           <Space right={10} />
           <SpaceGrow />
           <DesktopOnly>

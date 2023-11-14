@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite'
 
 import type { TArticleCat } from '@/spec'
 import { Trans } from '@/i18n'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import { Wrapper, Hint, LabelWrapper, ICON, Title } from './styles/active_label'
 
@@ -13,13 +12,12 @@ type TProps = {
 
 const ActiveLabel: FC<TProps> = ({ cat }) => {
   const ActiveIcon = ICON[cat]
-  const primaryColor = usePrimaryColor()
 
   return (
-    <Wrapper $color={primaryColor}>
+    <Wrapper>
       <Hint>分类</Hint>
       <LabelWrapper>
-        <ActiveIcon $color={primaryColor} />
+        <ActiveIcon />
         <Title>{Trans(cat)}</Title>
       </LabelWrapper>
     </Wrapper>

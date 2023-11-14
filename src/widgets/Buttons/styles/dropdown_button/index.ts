@@ -45,11 +45,15 @@ export const InnerBtnWrapper = styled.div<TInnerBtnWrapper>`
 export const ButtonWrapper = styled(Button)`
   ${css.row('align-both')};
   border: none;
-  padding-left: 6px;
+  padding-left: 3px;
   padding-right: 5px;
   /** make sure tooltip visible */
-  overflow: initial;
+  overflow: visible;
+  box-shadow: none;
 
+  &::after {
+    display: none;
+  }
   &:hover,
   &:active,
   &:focus {
@@ -78,7 +82,6 @@ export const FilterIcon = styled(ArrowSVG)<TFilterIcon>`
 export const CloseWrapper = styled.div`
   ${css.circle(16)};
   ${css.row('align-both')};
-  margin-left: 4px;
 
   &:hover {
     cursor: pointer;

@@ -18,6 +18,7 @@ const MENU = {
   TODO: 'TODO',
   WIP: 'WIP',
   DONE: 'DONE',
+  CLOSE: 'CLOSE',
   FEATURE: 'FEATURE',
   BUG: 'BUG',
   HELP: 'HELP',
@@ -53,34 +54,42 @@ export const POST_STATE_MENU_ITEMS = [
   {
     key: ARTICLE_STATE.TODO,
     title: '待办',
+    icon: MENU.TODO,
   },
   {
     key: ARTICLE_STATE.WIP,
     title: '进行中',
+    icon: MENU.WIP,
   },
   {
     key: ARTICLE_STATE.DONE,
     title: '已完成',
+    icon: MENU.DONE,
   },
   {
     key: ARTICLE_STATE.REJECT,
     title: '关闭',
+    icon: MENU.CLOSE,
   },
   {
     key: ARTICLE_STATE.REJECT_DUP,
     title: '重复问题',
+    icon: MENU.CLOSE,
   },
   {
     key: ARTICLE_STATE.REJECT_NO_PLAN,
     title: '无计划',
+    icon: MENU.CLOSE,
   },
   {
     key: ARTICLE_STATE.REJECT_REPRO,
     title: '无法重现',
+    icon: MENU.CLOSE,
   },
   {
     key: ARTICLE_STATE.REJECT_STALE,
     title: '过时',
+    icon: MENU.CLOSE,
   },
 ]
 

@@ -45,12 +45,7 @@ const CatSelector: FC<TProps> = ({
           offset={offset as [number, number]}
           items={POST_CAT_MENU_ITEMS}
           onSelect={(item) => handleSelect(item.key as TArticleCat)}
-          onShow={() => {
-            if (selected) {
-              setOffset([10, 5])
-            }
-            setMenuOpen(true)
-          }}
+          onShow={() => setMenuOpen(true)}
           onHide={() => {
             setOffset([30, 5])
             setMenuOpen(false)
@@ -79,7 +74,7 @@ const CatSelector: FC<TProps> = ({
             items={POST_CAT_MENU_ITEMS}
             onSelect={(item) => handleSelect(item.key as TArticleCat)}
             onShow={() => {
-              setOffset([10, -10])
+              setOffset([8, 6])
               setMenuOpen(true)
             }}
             onHide={() => {

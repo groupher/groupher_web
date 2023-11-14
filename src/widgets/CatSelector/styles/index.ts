@@ -9,6 +9,7 @@ export const FilterWrapper = styled(WithMargin)<TWrapper>`
   ${css.row('align-center')};
   color: ${theme('article.digest')};
   font-size: 13px;
+  padding-left: ${({ $selected }) => ($selected ? 0 : '6px')};
   background-color: ${({ $menuOpen, $selected }) =>
     $menuOpen || $selected ? theme('hoverBg') : 'transparent'};
   margin-left: ${({ $selected }) => ($selected ? '4px' : 0)};

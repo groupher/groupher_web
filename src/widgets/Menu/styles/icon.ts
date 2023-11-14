@@ -13,6 +13,7 @@ import GtdDoneSVG from '@/icons/CheckBold'
 import LightSVG from '@/icons/ColorLight'
 import BugSVG from '@/icons/ColorBug'
 import QuestionSVG from '@/icons/Question'
+import RejectSVG from '@/icons/Reject'
 
 import OtherSVG from '@/icons/menu/MoreL'
 
@@ -55,6 +56,7 @@ export const ICONS = {
 
   [MENU.FEATURE]: commonIcon(LightSVG),
   [MENU.BUG]: commonIcon(BugSVG),
+  [MENU.CLOSE]: commonIcon(RejectSVG),
   [MENU.HELP]: styled(commonIcon(QuestionSVG))`
     ${css.size(14)};
     margin-top: 1px;

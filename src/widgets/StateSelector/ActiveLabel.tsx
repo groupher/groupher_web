@@ -9,23 +9,22 @@ import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import {
   Wrapper,
-  Item,
+  Hint,
+  LabelWrapper,
   StateTitle,
   TodoIcon,
   WipIcon,
   DoneIcon,
   RejectIcon,
-  IconWrapper,
-} from './styles/active_state'
+} from './styles/active_label'
 
 type TProps = {
-  activeState: TArticleState
-  mode?: TArticleCatMode
+  state: TArticleState
 }
 
 type TTIcon = Omit<TProps, 'mode'> & TActive & TColor
-const Icon: FC<TTIcon> = ({ activeState, $active, $color }) => {
-  switch (activeState) {
+const Icon: FC<TTIcon> = ({ state, $active, $color }) => {
+  switch (state) {
     case ARTICLE_STATE.TODO: {
       return <TodoIcon $active={$active} $color={$color} />
     }
@@ -41,26 +40,19 @@ const Icon: FC<TTIcon> = ({ activeState, $active, $color }) => {
   }
 }
 
-const ActiveState: FC<TProps> = ({ activeState, mode = ARTICLE_STATE_MODE.FILTER }) => {
-  const $active = activeState && activeState !== ARTICLE_STATE.ALL
+const ActiveLabel: FC<TProps> = ({ state }) => {
+  const $active = state && state !== ARTICLE_STATE.ALL
   const primaryColor = usePrimaryColor()
 
   return (
     <Wrapper>
-      {activeState ? (
-        <Item>
-          <IconWrapper>
-            <Icon activeState={activeState} $active={$active} $color={primaryColor} />
-          </IconWrapper>
-          <StateTitle $active={$active} $color={primaryColor}>
-            {Trans(activeState)}
-          </StateTitle>
-        </Item>
-      ) : (
-        <>{mode === ARTICLE_STATE_MODE.FILTER ? '状态' : '未设置'}</>
-      )}
+      <Hint>状态</Hint>
+      <LabelWrapper>
+        <Icon state={state} $active={$active} $color={primaryColor} />
+        <StateTitle>{Trans(state)}</StateTitle>
+      </LabelWrapper>
     </Wrapper>
   )
 }
 
-export default observer(ActiveState)
+export default observer(ActiveLabel)

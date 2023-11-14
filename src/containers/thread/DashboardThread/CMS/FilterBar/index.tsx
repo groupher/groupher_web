@@ -52,7 +52,7 @@ const FilterBar: FC<TProps> = ({ checkboxActive, triggerCheckbox, selectedCount 
           <Inputer placeholder="按标题搜索" />
         </InputerWrapper>
         <CatSelector activeCat="ALL" right={12} onSelect={(cat) => console.log(cat)} />
-        <StateSelector mode="filter" right={20} />
+        <StateSelector right={20} />
         <DateRangeWrapper>日期范围(TODO)</DateRangeWrapper>
         <SpaceGrow />
         <Button size="small" ghost noBorder top={-2}>
