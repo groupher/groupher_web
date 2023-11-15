@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import type { TArticle, TTag, TGroupedTags } from '@/spec'
+import type { TArticle } from '@/spec'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import { scrollToHeader } from '@/dom'
