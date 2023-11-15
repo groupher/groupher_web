@@ -131,7 +131,7 @@ const DrawerStore = T.model('DrawerStore', {
         }
         default: {
           // pagedArticles = toJS(root.articlesThread[`paged${plural(slf.curThread, 'titleCase')}`])
-          pagedArticles = toJS(root.articlesThread.pagedPosts)
+          pagedArticles = toJS(root.postThread.pagedPosts)
           break
         }
       }

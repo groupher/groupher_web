@@ -5,13 +5,15 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import Markdown from 'markdown-to-jsx'
-import type { TColorName, TTag } from '@/spec'
+import type { TColorName } from '@/spec'
 
 import { buildLog } from '@/logger'
 
+import useActiveTag from '@/hooks/useActiveTag'
 import { SpaceGrow } from '@/widgets/Common'
 import TagNode from '@/widgets/TagNode'
 
@@ -20,16 +22,13 @@ import { Wrapper, Header, BgWrapper, Title, Desc, InfoIcon } from './styles'
 /* eslint-disable-next-line */
 const log = buildLog('c:TagNote:index')
 
-type TProps = {
-  testid?: string
-  tag: TTag
-}
+const TagNote: FC = () => {
+  const tag = useActiveTag()
 
-const TagNote: FC<TProps> = ({ testid = 'tag-note', tag }) => {
-  if (!tag.desc) return null
+  if (!tag?.desc) return null
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper testid="tag-note">
       <Header>
         <BgWrapper $color={tag.color as TColorName}>
           <TagNode
@@ -54,4 +53,4 @@ const TagNote: FC<TProps> = ({ testid = 'tag-note', tag }) => {
   )
 }
 
-export default memo(TagNote)
+export default observer(TagNote)

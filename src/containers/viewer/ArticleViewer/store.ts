@@ -52,7 +52,8 @@ const ArticleViewer = T.model('ArticleViewer', {
     syncArticle(item): void {
       const root = getParent(self) as TRootStore
 
-      root.articlesThread.updateArticle(item)
+      // root.articlesThread.updateArticle(item)
+      root.postThread.updateArticle(item)
     },
     reset(): void {
       self.tab = ''

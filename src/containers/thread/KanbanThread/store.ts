@@ -19,11 +19,6 @@ const KanbanThread = T.model('KanbanThread', {
   done: T.opt(PagedPosts, emptyPagi),
 })
   .views((self) => ({
-    get curCommunity(): TCommunity {
-      const root = getParent(self) as TRootStore
-
-      return toJS(root.viewing.community)
-    },
     get layout(): TKanbanLayout {
       const root = getParent(self) as TRootStore
 

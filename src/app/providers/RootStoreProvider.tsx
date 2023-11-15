@@ -84,11 +84,18 @@ const RootStoreWrapper: FC<TProps> = ({ children, token }) => {
   const store = useStore({
     ...sesstion,
     kanbanThread: groupedKanbanPosts,
-    articlesThread: {
+    postThread: {
       pagedPosts,
+      resState: TYPE.RES_STATE.DONE,
+    },
+    changelogThread: {
       pagedChangelogs,
       resState: TYPE.RES_STATE.DONE,
     },
+    // articlesThread: {
+    //   pagedPosts,
+    //   resState: TYPE.RES_STATE.DONE,
+    // },
     tagsBar: {
       tags,
     },

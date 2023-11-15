@@ -26,8 +26,6 @@ type TProps = {
   show: boolean
   activeMenu: string // TModelineType
   article: TArticle | null
-  activeTag: TTag
-  groupedTags: TGroupedTags
 }
 
 const CommunityLayout: FC<TProps> = ({
@@ -36,8 +34,6 @@ const CommunityLayout: FC<TProps> = ({
   show,
   article = null,
   activeMenu,
-  activeTag,
-  groupedTags,
 }) => {
   const community = useViewingCommunity()
   const [expand, setExpand] = useState(false)
@@ -48,13 +44,7 @@ const CommunityLayout: FC<TProps> = ({
         <MainMenusWrapper>
           <CommunityLogo src={assetSrc(community.logo)} />
           <MobileThreadNavi mode="modeline" />
-          <ArticlesFilter
-            isMobile={isMobile}
-            mode="modeline"
-            activeTag={activeTag}
-            groupedTags={groupedTags}
-            modelineExpand={expand}
-          />
+          <ArticlesFilter isMobile={isMobile} mode="modeline" />
 
           {!expand && <MoreIcon onClick={() => setExpand(true)} />}
         </MainMenusWrapper>

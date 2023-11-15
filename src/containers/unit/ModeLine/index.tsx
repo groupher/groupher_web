@@ -25,15 +25,7 @@ const ModeLine: FC = () => {
 
   const metric = useMetric()
 
-  const {
-    isMobile,
-    isArticleBarVisiable,
-    topBarVisiable,
-    viewingArticle,
-    activeMenu,
-    activeTag,
-    groupedTags,
-  } = store
+  const { isMobile, isArticleBarVisiable, topBarVisiable, viewingArticle, activeMenu } = store
 
   if (metric === METRIC.ARTICLE) {
     return (
@@ -51,8 +43,6 @@ const ModeLine: FC = () => {
       <CommunityLayout
         isMobile={isMobile}
         show={topBarVisiable}
-        activeTag={activeTag}
-        groupedTags={groupedTags}
         article={viewingArticle}
         activeMenu={activeMenu}
       />

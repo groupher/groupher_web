@@ -10,7 +10,7 @@ import { BANNER_LAYOUT } from '@/constant/layout'
 import useMetric from '@/hooks/useMetric'
 import useBannerLayout from '@/hooks/useBannerLayout'
 
-import ArticlesThread from '@/containers//thread/ArticlesThread'
+import PostThread from '@/containers//thread/PostThread'
 import CommunityDigest from '@/widgets/CommunityDigest'
 import { Br } from '@/widgets/Common'
 // import SidebarLayoutHeader from '@/widgets/SidebarLayoutHeader'
@@ -41,7 +41,7 @@ const PostContent: FC = () => {
       {isMobile && (
         <MobileCardsWrapper>
           <ContentWrapper>
-            <ArticlesThread />
+            <PostThread />
           </ContentWrapper>
         </MobileCardsWrapper>
       )}
@@ -50,7 +50,7 @@ const PostContent: FC = () => {
         <InnerWrapper metric={metric} $bannerLayout={bannerLayout}>
           <ContentWrapper>
             {isSidebarLayout && <Br top={20} />}
-            <ArticlesThread />
+            <PostThread />
           </ContentWrapper>
         </InnerWrapper>
       )}

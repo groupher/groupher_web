@@ -51,7 +51,8 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
       const updatedArticle = mergeRight(viewingArticle, article)
 
       root.viewing.updateViewing(updatedArticle)
-      root.articlesThread.updateArticle(updatedArticle)
+      // root.articlesThread.updateArticle(updatedArticle)
+      root.postThread.updateArticle(updatedArticle)
     },
     setViewingAlways(article: TArticle): void {
       const root = getParent(self) as TRootStore
@@ -70,7 +71,8 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
       const syncMeta = mergeRight(viewingArticleMeta, meta)
       // for viewing article end
 
-      root.articlesThread.updateArticle({ id, viewerHasUpvoted, upvotesCount, meta: syncMeta })
+      // root.articlesThread.updateArticle({ id, viewerHasUpvoted, upvotesCount, meta: syncMeta })
+      root.postThread.updateArticle({ id, viewerHasUpvoted, upvotesCount, meta: syncMeta })
     },
     clearLocalSettings(): void {
       const root = getParent(self) as TRootStore

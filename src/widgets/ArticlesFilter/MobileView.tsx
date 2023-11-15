@@ -25,14 +25,7 @@ import { Wrapper } from './styles/mobile_view'
 /* eslint-disable-next-line */
 const log = buildLog('w:ArticlesFilter:index')
 
-const ArticlesFilter: FC<TProps> = ({
-  activeFilter = {},
-  onSelect = log,
-  resState = TYPE.RES_STATE.DONE,
-  mode = 'default',
-  groupedTags,
-  activeTag,
-}) => {
+const ArticlesFilter: FC<TProps> = ({ onSelect = log, resState = TYPE.RES_STATE.DONE }) => {
   const [activeCat, setActiveCat] = useState<TArticleCat>(ARTICLE_CAT.ALL)
   const [activeState, setActiveState] = useState<TArticleState>(ARTICLE_STATE.ALL)
 

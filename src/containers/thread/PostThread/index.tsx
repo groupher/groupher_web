@@ -1,6 +1,6 @@
 /*
  *
- * ArticlesThread
+ * PostThread
  *
  */
 
@@ -19,7 +19,7 @@ import PagedArticles from '@/widgets/PagedArticles'
 import TagNote from '@/widgets/TagNote'
 import ViewportTracker from '@/widgets/ViewportTracker'
 import ArticlesFilter from '@/widgets/ArticlesFilter'
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+// import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
 import { useStore } from './store'
 
@@ -27,7 +27,7 @@ import { Wrapper, MainWrapper, SidebarWrapper, FilterWrapper } from './styles'
 import { useInit, inAnchor, outAnchor, onFilterSelect } from './logic'
 
 /* eslint-disable-next-line */
-const log = buildLog('C:ArticlesThread')
+const log = buildLog('C:PostThread')
 
 const isInViewport = (element) => {
   const rect = element.getBoundingClientRect()
@@ -39,7 +39,7 @@ const isInViewport = (element) => {
   )
 }
 
-const ArticlesThread: FC = () => {
+const PostThread: FC = () => {
   const store = useStore()
   useInit(store)
 
@@ -52,20 +52,10 @@ const ArticlesThread: FC = () => {
     }
   }, [trackerRef])
 
-  if (store.curThread !== THREAD.POST) return <LavaLampLoading top={20} />
+  // if (store.curThread !== THREAD.POST) return <LavaLampLoading top={20} />
 
-  const {
-    isMobile,
-    pagedArticlesData,
-    filtersData,
-    curThread,
-    showFilters,
-    resState,
-    mode,
-    globalLayout,
-    activeTagData,
-    groupedTags,
-  } = store
+  const isMobile = false
+  const { pagedPostsData, curThread, showFilters, resState, mode, globalLayout } = store
 
   const isSidebarLayout = globalLayout.banner === BANNER_LAYOUT.SIDEBAR
   const LayoutWrapper = isSidebarLayout ? SidebarWrapper : MainWrapper
@@ -79,23 +69,16 @@ const ArticlesThread: FC = () => {
           <FilterWrapper ref={trackerRef} thread={curThread}>
             <ArticlesFilter
               isMobile={isMobile}
-              activeTag={activeTagData}
-              groupedTags={groupedTags}
               resState={resState as TResState}
               onSelect={onFilterSelect}
-              activeFilter={filtersData}
               mode={mode as TArticleFilterMode}
             />
           </FilterWrapper>
         )}
 
-        <TagNote tag={activeTagData} />
+        <TagNote />
 
-        <PagedArticles
-          data={pagedArticlesData}
-          thread={curThread}
-          resState={resState as TResState}
-        />
+        <PagedArticles data={pagedPostsData} thread={curThread} resState={resState as TResState} />
       </LayoutWrapper>
 
       {!isSidebarLayout && <ThreadSidebar />}
@@ -103,4 +86,4 @@ const ArticlesThread: FC = () => {
   )
 }
 
-export default observer(ArticlesThread)
+export default observer(PostThread)

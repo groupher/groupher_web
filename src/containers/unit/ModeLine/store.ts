@@ -5,7 +5,7 @@
 
 import { values } from 'ramda'
 
-import type { TRootStore, TViewing, TArticle, TArticleFilter, TGroupedTags, TTag } from '@/spec'
+import type { TRootStore, TViewing, TArticle } from '@/spec'
 
 import TYPE from '@/constant/type'
 import METRIC from '@/constant/metric'
@@ -20,20 +20,6 @@ const ModeLine = T.model('ModeLine', {
     get isMobile(): boolean {
       const root = getParent(self) as TRootStore
       return root.isMobile
-    },
-    get activeTag(): TTag {
-      const root = getParent(self) as TRootStore
-      return toJS(root.tagsBar.activeTagData)
-    },
-    get groupedTags(): TGroupedTags {
-      const root = getParent(self) as TRootStore
-      return root.tagsBar.groupedTags
-    },
-
-    get filtersData(): TArticleFilter {
-      const root = getParent(self) as TRootStore
-
-      return root.articlesThread.filtersData
     },
 
     get viewing(): TViewing {

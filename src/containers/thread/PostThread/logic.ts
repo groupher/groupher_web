@@ -1,8 +1,7 @@
 import { useEffect } from 'react'
 
-import type { TArticle, TThread, TArticleFilter } from '@/spec'
+import type { TArticle, TArticleFilter } from '@/spec'
 
-import { THREAD } from '@/constant/thread'
 import EVENT from '@/constant/event'
 import ERR from '@/constant/err'
 import TYPE from '@/constant/type'
@@ -10,9 +9,7 @@ import TYPE from '@/constant/type'
 import { scrollToHeader } from '@/dom'
 import asyncSuit from '@/async'
 import { buildLog } from '@/logger'
-import { plural } from '@/fmt'
 import { errRescue, previewArticle } from '@/signal'
-import { matchPagedArticles } from '@/utils/macros'
 
 import type { TStore } from './store'
 import S from './schema'
@@ -39,7 +36,7 @@ export const inAnchor = (): void => store?.showTopModeline(false)
 export const outAnchor = (): void => store?.showTopModeline(true)
 
 export const onFilterSelect = (option: TArticleFilter): void => {
-  store.selectFilter(option)
+  // store.selectFilter(option)
   // console.log('cur filter: ', store.filtersData)
   loadArticles()
 }
@@ -48,17 +45,18 @@ export const onFilterSelect = (option: TArticleFilter): void => {
  * load paged articles then save them to store
  */
 const loadArticles = (page = 1): void => {
+  console.log('## do loadArticles')
   scrollToHeader()
-  doQuery(page)
+  // doQuery(page)
   // store.markRoute({ tag: tag.slug })
-  store.markRoute({ page })
+  // store.markRoute({ page })
 }
 
 // do query paged articles
 const doQuery = (page: number): void => {
-  const args = store.getLoadArgs(page)
-  log('args: ', args)
-  sr71$.query(S.getPagedArticlesSchema(store.curThread), args)
+  // const args = store.getLoadArgs(page)
+  // log('args: ', args)
+  // sr71$.query(S.getPagedArticlesSchema(store.curThread), args)
 }
 
 /**
@@ -71,31 +69,10 @@ const onPreview = (article: TArticle): void => {
   previewArticle(article)
 }
 
-const handlePagedArticlesRes = (thread: TThread, pagedArticles): void => {
-  const key = `paged${plural(thread, 'titleCase')}`
-  log('>> pagedArticles -> ', pagedArticles)
-  store.markRes({ [key]: pagedArticles })
-}
-
 // ###############################
 // Data & Error handlers
 // ###############################
 const DataSolver = [
-  ...matchPagedArticles([THREAD.POST], handlePagedArticlesRes),
-  {
-    match: asyncRes(EVENT.COMMUNITY_CHANGE),
-    action: () => {
-      log('EVENT.COMMUNITY_CHANGE')
-      loadArticles()
-    },
-  },
-  {
-    match: asyncRes(EVENT.ARTICLE_THREAD_CHANGE),
-    action: () => {
-      // 之前如果请求过，那么 GraphQL 会被缓存，不必重复请求
-      if (store.isEmpty) loadArticles()
-    },
-  },
   {
     match: asyncRes(EVENT.PREVIEW_ARTICLE),
     action: (res) => {
@@ -109,10 +86,6 @@ const DataSolver = [
       const { page = 1 } = res[EVENT.REFRESH_ARTICLES]
       loadArticles(page)
     },
-  },
-  {
-    match: asyncRes(EVENT.C11N_DENSITY_CHANGE),
-    action: () => loadArticles(store.pagedArticlesData.pageNumber),
   },
 ]
 
