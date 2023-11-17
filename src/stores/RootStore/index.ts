@@ -21,7 +21,7 @@ import {
   // domain
   RouteStore,
   AccountStore,
-  GlobalLayoutStore,
+  // GlobalLayoutStore,
   RichEditorStore,
   // HeaderStore,
   ViewingStore,
@@ -76,6 +76,7 @@ import {
 
 const rootStore = T.model({
   // domain stores
+  isMobile: T.opt(T.bool, false),
   activeDemo: T.opt(T.str, ''),
   account: T.opt(AccountStore, {}),
   route: T.opt(RouteStore, {}),
@@ -100,7 +101,7 @@ const rootStore = T.model({
 
   // layouts > xxx > papers
   // layouts
-  globalLayout: T.opt(GlobalLayoutStore, {}),
+  // globalLayout: T.opt(GlobalLayoutStore, {}),
   richEditor: T.opt(RichEditorStore, {}),
   // header: T.opt(HeaderStore, {}),
   // layouts end
@@ -150,10 +151,7 @@ const rootStore = T.model({
 })
   .views((self) => ({
     get isOnline(): boolean {
-      return self.globalLayout.online
-    },
-    get isMobile(): boolean {
-      return self.globalLayout.isMobile
+      return self.mushroom.online
     },
     get viewingArticle(): TArticle {
       return self.viewing.viewingArticle

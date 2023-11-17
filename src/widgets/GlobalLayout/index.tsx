@@ -8,6 +8,7 @@ import { FC, ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Provider as BalancerTextProvider } from 'react-wrap-balancer'
 
+import type { TGlobalLayout } from '@/spec'
 import METRIC from '@/constant/metric'
 import { TOPBAR_LAYOUT } from '@/constant/layout'
 
@@ -15,16 +16,15 @@ import useMetric from '@/hooks/useMetric'
 import useWallpaper from '@/hooks/useWallpaper'
 
 import Mushroom from '@/containers/Mushroom'
-import ThemePalette from '@/containers/layout/ThemePalette'
-import ModeLine from '@/containers/unit/ModeLine'
+// import ModeLine from '@/containers/unit/ModeLine'
 
+import ThemePalette from '@/widgets/ThemePalette'
 import Broadcast from '@/widgets/Broadcast'
 import Footer from '@/widgets/Footer'
 
 // import DashboardAlert from './DashboardAlert'
 // import CustomScroller from '@/widgets/CustomScroller'
 
-import { useStore } from './store'
 import SEO from './SEO'
 import Wallpaper from './Wallpaper'
 
@@ -43,17 +43,16 @@ import {
 
 type TProps = {
   children: ReactNode
+  globalLayout: TGlobalLayout
 }
 
-const GlobalLayout: FC<TProps> = ({ children }) => {
-  const store = useStore()
-
+const GlobalLayout: FC<TProps> = ({ children, globalLayout }) => {
   const metric = useMetric()
   const { hasShadow } = useWallpaper()
 
   // const [showDashboardAlertUI, setShowDashboardAlertUI] = useState(false)
 
-  const { isMobile, globalLayout } = store
+  const isMobile = false
 
   // useEffect(() => {
   //   if (showDashboardAlert) {
@@ -87,7 +86,7 @@ const GlobalLayout: FC<TProps> = ({ children }) => {
                 </ContentWrapper>
                 <GlowBackground />
               </InnerWrapper>
-              {isMobile && <ModeLine />}
+              {/* {isMobile && <ModeLine />} */}
             </Wrapper>
           </ScrollWrapper>
         </Skeleton>

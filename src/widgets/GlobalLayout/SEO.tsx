@@ -1,3 +1,5 @@
+'use client'
+
 /*
  *
  * SEO for different pages

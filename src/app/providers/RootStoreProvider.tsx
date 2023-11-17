@@ -1,13 +1,13 @@
 'use client'
 
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, cloneElement, Children, isValidElement } from 'react'
 import { usePathname, useParams } from 'next/navigation'
 import { Provider } from 'mobx-react'
 import { enableStaticRendering } from 'mobx-react-lite'
 
 import { useStore } from '@/stores/init'
 import { THREAD } from '@/constant/thread'
-import TYPE from '@/constant/type'
+// import TYPE from '@/constant/type'
 
 import {
   useSession,
@@ -106,7 +106,17 @@ const RootStoreWrapper: FC<TProps> = ({ children, token }) => {
     dashboardThread: dashboard,
   })
 
-  return <Provider store={store}>{children}</Provider>
+  const childrenWithProps = Children.map(children, (child) => {
+    if (isValidElement(child)) {
+      return cloneElement(child, {
+        // @ts-ignore
+        globalLayout: store.dashboardThread.globalLayout,
+      })
+    }
+    return child
+  })
+
+  return <Provider store={store}>{childrenWithProps}</Provider>
 }
 
 export default RootStoreWrapper

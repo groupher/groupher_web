@@ -1,9 +1,9 @@
 'use client'
 
-import GlobalLayoutWrapper from '@/containers/layout/GlobalLayout'
+import GlobalLayoutWrapper from '@/widgets/GlobalLayout'
 
-const GlobalLayout = ({ children }) => {
-  return <GlobalLayoutWrapper>{children}</GlobalLayoutWrapper>
+const GlobalLayout = ({ children, globalLayout }) => {
+  return <GlobalLayoutWrapper globalLayout={globalLayout}>{children}</GlobalLayoutWrapper>
 }
 
 export default GlobalLayout
