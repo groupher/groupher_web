@@ -4,11 +4,8 @@
  *
  */
 
-import { FC, memo, useState } from 'react'
+import { FC, memo } from 'react'
 
-import type { TArticleCat } from '@/spec'
-
-import { ARTICLE_CAT } from '@/constant/gtd'
 import TYPE from '@/constant/type'
 
 import { buildLog } from '@/logger'
@@ -25,16 +22,10 @@ import { ModelineWrapper } from './styles'
 const log = buildLog('w:ArticlesFilter:index')
 
 const ArticlesFilter: FC<TProps> = ({
-  activeFilter = {},
   onSelect = log,
   resState = TYPE.RES_STATE.DONE,
   mode = 'default',
-  groupedTags,
-  activeTag,
-  modelineExpand = false,
 }) => {
-  const [activeCat, setActiveCat] = useState<TArticleCat>(ARTICLE_CAT.ALL)
-
   return (
     <ModelineWrapper>
       <Space right={6} />

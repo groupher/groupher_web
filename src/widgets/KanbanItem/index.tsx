@@ -4,9 +4,11 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
-import type { TArticle, TKanbanLayout } from '@/spec'
+import type { TArticle } from '@/spec'
+import useKanbanLayout from '@/hooks/useKanbanLayout'
 import { KANBAN_LAYOUT } from '@/constant/layout'
 import { buildLog } from '@/logger'
 
@@ -19,12 +21,13 @@ import Simple from './Simple'
 const log = buildLog('w:KanbanItem:index')
 
 type TProps = {
-  layout: TKanbanLayout
   article: TArticle
 }
 
-const KanbanItem: FC<TProps> = ({ layout, article }) => {
+const KanbanItem: FC<TProps> = ({ article }) => {
+  const layout = useKanbanLayout()
+
   return layout === KANBAN_LAYOUT.FULL ? <Full article={article} /> : <Simple article={article} />
 }
 
-export default memo(KanbanItem)
+export default observer(KanbanItem)

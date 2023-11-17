@@ -36,7 +36,6 @@ export const LavaLampLoading = dynamic(() => import('@/widgets/Loading/LavaLampL
 const log = buildLog('w:ArticlesFilter:index')
 
 const ArticlesFilter: FC<TProps> = ({
-  activeFilter = {},
   onSelect = log,
   resState = TYPE.RES_STATE.DONE,
   mode = 'default',

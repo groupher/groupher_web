@@ -6,7 +6,7 @@
 
 import { FC, memo } from 'react'
 
-import type { TArticleFilter, TResState, TArticleFilterMode, TGroupedTags, TTag } from '@/spec'
+import type { TArticleFilter, TResState, TArticleFilterMode } from '@/spec'
 import { buildLog } from '@/logger'
 
 import DesktopView from './DesktopView'
@@ -18,13 +18,9 @@ const log = buildLog('w:ArticlesFilter:index')
 
 export type TProps = {
   isMobile: boolean
-  activeFilter?: TArticleFilter
   onSelect?: (filter: TArticleFilter) => void
   resState?: TResState
   mode?: TArticleFilterMode
-  modelineExpand?: boolean
-  groupedTags: TGroupedTags
-  activeTag: TTag
 }
 
 const ArticlesFilter: FC<TProps> = (props) => {

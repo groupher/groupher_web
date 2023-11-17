@@ -124,7 +124,7 @@ const ViewingStore = T.model('ViewingStore', {
     },
     syncArticle(item: TArticle): void {
       const root = getParent(self) as TRootStore
-      root.articlesThread.updateArticle(item)
+      root.articles.updateArticle(item)
     },
     mark(sobj: Record<string, unknown>): void {
       markStates(sobj, self)

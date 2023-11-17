@@ -21,19 +21,20 @@ import {
   // domain
   RouteStore,
   AccountStore,
-  GlobalLayoutStore,
+  // GlobalLayoutStore,
   RichEditorStore,
   // HeaderStore,
   ViewingStore,
+  ArticlesStore,
   ThemeStore,
   ThemeDefaults,
   ErrorBoxStore,
-
+  MushroomStore,
   // content
   CommunityContentStore,
   // ExploreContentStore,
   CommunityEditorStore,
-  UserContentStore,
+  // UserContentStore,
   // viewers
   // RepoViewerStore,
   CommentsStore,
@@ -54,35 +55,33 @@ import {
   LandingPageStore,
   CoverEditorStore,
   TagSettingEditorStore,
-  SubscriberStore,
+  // SubscriberStore,
   DashboardThreadStore,
   WallpaperEditorStore,
   DocThreadStore,
   AboutThreadStore,
-  ChangelogThreadStore,
-  KanbanThreadStore,
-  UserPublishedArticlesStore,
-  CollectionFolderStore,
+  // CollectionFolderStore,
   ArticleViewerStore,
-  ArticlesThreadStore,
   ThreadSidebarStore,
-  AbuseReportStore,
+  // AbuseReportStore,
   ArticleEditorStore,
-  UserProfileStore,
+  // UserProfileStore,
   // MembershipContentStore,
   ModeLineMenuStore,
   ModeLineStore,
   // SubscribeContentStore,
   // RecipesContentStore,
-  C11NSettingPanelStore,
+  // C11NSettingPanelStore,
 } from '..'
 
 const rootStore = T.model({
   // domain stores
+  isMobile: T.opt(T.bool, false),
   activeDemo: T.opt(T.str, ''),
   account: T.opt(AccountStore, {}),
   route: T.opt(RouteStore, {}),
   viewing: T.opt(ViewingStore, {}),
+  articles: T.opt(ArticlesStore, {}),
   comments: T.opt(CommentsStore, {}),
   metric: T.opt(T.string, METRIC.COMMUNITY),
   // @ts-ignore TODO:
@@ -102,19 +101,20 @@ const rootStore = T.model({
 
   // layouts > xxx > papers
   // layouts
-  globalLayout: T.opt(GlobalLayoutStore, {}),
+  // globalLayout: T.opt(GlobalLayoutStore, {}),
   richEditor: T.opt(RichEditorStore, {}),
   // header: T.opt(HeaderStore, {}),
   // layouts end
 
   errorBox: T.opt(ErrorBoxStore, {}),
+  mushroom: T.opt(MushroomStore, {}),
 
   // content
   communityContent: T.opt(CommunityContentStore, {}),
 
   // exploreContent: T.opt(ExploreContentStore, {}),
   communityEditor: T.opt(CommunityEditorStore, {}),
-  userContent: T.opt(UserContentStore, {}),
+  // userContent: T.opt(UserContentStore, {}),
   // content end
 
   // footer
@@ -133,32 +133,25 @@ const rootStore = T.model({
   landingPage: T.opt(LandingPageStore, {}),
   coverEditor: T.opt(CoverEditorStore, {}),
   tagSettingEditor: T.opt(TagSettingEditorStore, {}),
-  subscriber: T.opt(SubscriberStore, {}),
+  // subscriber: T.opt(SubscriberStore, {}),
   dashboardThread: T.opt(DashboardThreadStore, {}),
   wallpaperEditor: T.opt(WallpaperEditorStore, {}),
   docThread: T.opt(DocThreadStore, {}),
   aboutThread: T.opt(AboutThreadStore, {}),
-  changelogThread: T.opt(ChangelogThreadStore, {}),
-  kanbanThread: T.opt(KanbanThreadStore, {}),
-  userPublishedArticles: T.opt(UserPublishedArticlesStore, {}),
-  collectionFolder: T.opt(CollectionFolderStore, {}),
+  // collectionFolder: T.opt(CollectionFolderStore, {}),
   articleViewer: T.opt(ArticleViewerStore, {}),
-  articlesThread: T.opt(ArticlesThreadStore, {}),
   threadSidebar: T.opt(ThreadSidebarStore, {}),
-  abuseReport: T.opt(AbuseReportStore, {}),
+  // abuseReport: T.opt(AbuseReportStore, {}),
   articleEditor: T.opt(ArticleEditorStore, {}),
-  userProfile: T.opt(UserProfileStore, {}),
+  // userProfile: T.opt(UserProfileStore, {}),
   modeLineMenu: T.opt(ModeLineMenuStore, {}),
   modeLine: T.opt(ModeLineStore, {}),
   // recipesContent: T.opt(RecipesContentStore, {}),
-  c11NSettingPanel: T.opt(C11NSettingPanelStore, {}),
+  // c11NSettingPanel: T.opt(C11NSettingPanelStore, {}),
 })
   .views((self) => ({
     get isOnline(): boolean {
-      return self.globalLayout.online
-    },
-    get isMobile(): boolean {
-      return self.globalLayout.isMobile
+      return self.mushroom.online
     },
     get viewingArticle(): TArticle {
       return self.viewing.viewingArticle

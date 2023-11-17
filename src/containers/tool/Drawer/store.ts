@@ -16,6 +16,7 @@ import TYPE from '@/constant/type'
 import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 import { lockPage, unlockPage } from '@/dom'
 import { Global } from '@/helper'
+import { plural } from '@/fmt'
 import { WIDTH, mediaBreakPoints } from '@/css/metric'
 import { User } from '@/model'
 
@@ -125,13 +126,8 @@ const DrawerStore = T.model('DrawerStore', {
       let pagedArticles
 
       switch (slf.curThread) {
-        case ARTICLE_THREAD.CHANGELOG: {
-          pagedArticles = root.changelogThread.pagedChangelogsData
-          break
-        }
         default: {
-          // pagedArticles = toJS(root.articlesThread[`paged${plural(slf.curThread, 'titleCase')}`])
-          pagedArticles = toJS(root.articlesThread.pagedPosts)
+          pagedArticles = toJS(root.articles[`paged${plural(slf.curThread, 'titleCase')}`])
           break
         }
       }

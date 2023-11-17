@@ -5,7 +5,8 @@
 
 import { FC } from 'react'
 
-import type { TKanbanLayout, TColorName, TPagedArticles } from '@/spec'
+import useKanbanPosts from '@/hooks/useKanbanPosts'
+import useKanbanBgColors from '@/hooks/useKanbanBgColors'
 
 import { SpaceGrow } from '@/widgets/Common'
 import KanbanItem from '@/widgets/KanbanItem'
@@ -23,67 +24,54 @@ import {
   AddIcon,
 } from './styles/columns'
 
-type TProps = {
-  layout: TKanbanLayout
-  bgColors: TColorName[]
-  todoPosts: TPagedArticles
-  wipPosts: TPagedArticles
-  donePosts: TPagedArticles
-}
-
-const Columns: FC<TProps> = ({ layout, bgColors, todoPosts, wipPosts, donePosts }) => {
-  const [BG1, BG2, BG3] = bgColors
+const Columns: FC = () => {
+  const { todo: todoPosts, wip: wipPosts, done: donePosts } = useKanbanPosts()
+  const [todoBg, wipBg, doneBg] = useKanbanBgColors()
 
   return (
     <>
       <Column>
         <Header>
-          <TODOIcon $color={BG1} />
+          <TODOIcon $color={todoBg} />
           <Label>待办</Label>
           <SubTitle>{todoPosts.totalCount}</SubTitle>
           <SpaceGrow />
           <AddIcon />
         </Header>
-        <Body color={BG1}>
+        <Body color={todoBg}>
           {todoPosts.totalCount === 0 && <EmptyItem />}
           {todoPosts.totalCount !== 0 &&
-            todoPosts.entries.map((item) => (
-              <KanbanItem key={item.innerId} layout={layout} article={item} />
-            ))}
+            todoPosts.entries.map((item) => <KanbanItem key={item.innerId} article={item} />)}
         </Body>
       </Column>
       <Column>
         <Header>
-          <WipIcon $color={BG2} />
+          <WipIcon $color={wipBg} />
           <Label>进行中</Label>
           <SubTitle>{wipPosts.totalCount}</SubTitle>
           <SpaceGrow />
           <AddIcon />
         </Header>
-        <Body color={BG2}>
+        <Body color={wipBg}>
           {wipPosts.totalCount === 0 && <EmptyItem />}
 
           {wipPosts.totalCount !== 0 &&
-            wipPosts.entries.map((item) => (
-              <KanbanItem key={item.innerId} layout={layout} article={item} />
-            ))}
+            wipPosts.entries.map((item) => <KanbanItem key={item.innerId} article={item} />)}
         </Body>
       </Column>
       <Column>
         <Header>
-          <DoneIcon $color={BG3} />
+          <DoneIcon $color={doneBg} />
           <Label>已完成</Label>
           <SubTitle>{donePosts.totalCount}</SubTitle>
           <SpaceGrow />
           <AddIcon />
         </Header>
-        <Body color={BG3}>
+        <Body color={doneBg}>
           {donePosts.totalCount === 0 && <EmptyItem />}
 
           {donePosts.totalCount !== 0 &&
-            donePosts.entries.map((item) => (
-              <KanbanItem key={item.innerId} layout={layout} article={item} />
-            ))}
+            donePosts.entries.map((item) => <KanbanItem key={item.innerId} article={item} />)}
         </Body>
       </Column>
     </>

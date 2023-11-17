@@ -46,6 +46,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <StyledComponentsRegistry>
           <GraphQLProvider token={token}>
             <RootStoreProvider token={token}>
+              {/* @ts-ignore */}
               <GlobalLayout>{children}</GlobalLayout>
             </RootStoreProvider>
           </GraphQLProvider>

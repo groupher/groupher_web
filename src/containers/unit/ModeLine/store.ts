@@ -5,10 +5,10 @@
 
 import { values } from 'ramda'
 
-import type { TRootStore, TViewing, TArticle, TArticleFilter, TGroupedTags, TTag } from '@/spec'
+import type { TRootStore, TViewing, TArticle } from '@/spec'
 
 import TYPE from '@/constant/type'
-import METRIC from '@/constant/metric'
+// import METRIC from '@/constant/metric'
 
 import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 
@@ -20,20 +20,6 @@ const ModeLine = T.model('ModeLine', {
     get isMobile(): boolean {
       const root = getParent(self) as TRootStore
       return root.isMobile
-    },
-    get activeTag(): TTag {
-      const root = getParent(self) as TRootStore
-      return toJS(root.tagsBar.activeTagData)
-    },
-    get groupedTags(): TGroupedTags {
-      const root = getParent(self) as TRootStore
-      return root.tagsBar.groupedTags
-    },
-
-    get filtersData(): TArticleFilter {
-      const root = getParent(self) as TRootStore
-
-      return root.articlesThread.filtersData
     },
 
     get viewing(): TViewing {
@@ -47,26 +33,26 @@ const ModeLine = T.model('ModeLine', {
       return true
     },
     get isTopBarVisiable(): boolean {
-      const slf = self as TStore
-      const root = getParent(self) as TRootStore
-      const { metric, globalLayout } = root
+      // const slf = self as TStore
+      // const root = getParent(self) as TRootStore
+      // const { metric, globalLayout } = root
 
-      const { isMobile, topBarVisiable, isArticleDigestInViewport } = slf
-      const { bodyScrollDirection } = globalLayout
+      // const { isMobile, topBarVisiable, isArticleDigestInViewport } = slf
+      // const { bodyScrollDirection } = globalLayout
 
-      if (metric === METRIC.COMMUNITY && bodyScrollDirection === 'down') {
-        return topBarVisiable
-      }
-      // do not show article topBar on desktop
-      if (!isMobile && metric === METRIC.ARTICLE) return false
+      // if (metric === METRIC.COMMUNITY && bodyScrollDirection === 'down') {
+      //   return topBarVisiable
+      // }
+      // // do not show article topBar on desktop
+      // if (!isMobile && metric === METRIC.ARTICLE) return false
 
-      if (isArticleDigestInViewport) return false
+      // if (isArticleDigestInViewport) return false
 
-      if (bodyScrollDirection === 'up') {
-        return false
-      }
+      // if (bodyScrollDirection === 'up') {
+      //   return false
+      // }
 
-      return true
+      return false
     },
     get viewingArticle(): TArticle {
       const root = getParent(self) as TRootStore

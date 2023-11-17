@@ -1,7 +1,7 @@
 const Loading = () => {
   return (
     <div>
-      <h2>changelogs loading</h2>
+      <h2>kanban loading</h2>
     </div>
   )
 }

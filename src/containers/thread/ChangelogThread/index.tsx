@@ -7,25 +7,17 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { BANNER_LAYOUT } from '@/constant/layout'
+import useBannerLayout from '@/hooks/useBannerLayout'
 
 import ClassicLayout from './ClassicLayout'
 import SimpleLayout from './SimpleLayout'
 
-import { useStore } from './store'
-import { useInit } from './logic' /* eslint-disable-next-line */
-
 // const log = buildLog('C:ChangelogThread')
 
 const ChangelogThread: FC = () => {
-  const store = useStore()
-  useInit(store)
-  const { globalLayout, tagsMode, pagedChangelogsData } = store
+  const bannerLayout = useBannerLayout()
 
-  return globalLayout.banner === BANNER_LAYOUT.TABBER ? (
-    <ClassicLayout tagsMode={tagsMode} pagedChangelogs={pagedChangelogsData} />
-  ) : (
-    <SimpleLayout pagedChangelogs={pagedChangelogsData} />
-  )
+  return bannerLayout === BANNER_LAYOUT.TABBER ? <ClassicLayout /> : <SimpleLayout />
 }
 
 export default observer(ChangelogThread)

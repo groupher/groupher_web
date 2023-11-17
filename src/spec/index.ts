@@ -149,6 +149,8 @@ export type {
   TFAQSection,
   TArticleTitle,
   TArticleSort,
+  TPagedPosts,
+  TPagedChangelogs,
 } from './article'
 
 export type {

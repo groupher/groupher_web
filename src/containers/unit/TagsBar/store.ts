@@ -31,12 +31,13 @@ const TagsBar = T.model('TagsBar', {
       return root.viewing.activeThread
     },
     get tagsData(): TTag[] {
-      const root = getParent(self) as TRootStore
-      const { curThread } = self as TStore
+      // const root = getParent(self) as TRootStore
+      // const { curThread } = self as TStore
 
-      if (curThread === THREAD.CHANGELOG) {
-        return root.changelogThread.tagsData
-      }
+      // if (curThread === THREAD.CHANGELOG) {
+      //   return root.changelogThread.tagsData
+      // }
+
       // return mockTags(15)
       return toJS(self.tags)
     },

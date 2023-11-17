@@ -109,6 +109,14 @@ type TPagi = {
   totalPages: number
 }
 
+export type TPagedPosts = {
+  entries: TPost[]
+} & TPagi
+
+export type TPagedChangelogs = {
+  entries: TChangelog[]
+} & TPagi
+
 export type TPagedArticles = {
   entries: TArticleEntries
 } & TPagi
