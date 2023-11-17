@@ -4,8 +4,8 @@ import type { TTestable, TMetric } from '@/spec'
 import css from '@/css'
 
 type TWrapper = { metric: TMetric } & TTestable
-export const Wrapper = styled.nav.attrs<TWrapper>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.nav.attrs<TWrapper>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   ${css.column('align-center')};
   position: relative;

@@ -20,7 +20,7 @@ const CommunityBar = ({ visible, viewing, leftOffset, hasNoBottomBorder }) => {
     <Wrapper
       leftOffset={leftOffset}
       noBorder={hasNoBottomBorder}
-      testid="modeline-topbar"
+      $testid="modeline-topbar"
       visible={visible}
     >
       <InnerWrapper>

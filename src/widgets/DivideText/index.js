@@ -16,7 +16,7 @@ const log = buildLog('w:DivideText:index')
 
 const DivideText = ({ testid, children }) => {
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <LeftLine />
       <Content>{children}</Content>
       <RightLine />

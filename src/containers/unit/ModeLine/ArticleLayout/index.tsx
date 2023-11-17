@@ -51,7 +51,7 @@ const ArticleLayout: FC<TProps> = ({
   const users = mockUsers(3)
 
   return (
-    <Wrapper testid={testid} show={show} isMenuActive={!!activeMenu}>
+    <Wrapper $testid={testid} show={show} isMenuActive={!!activeMenu}>
       <InnerWrapper expand={expand}>
         <ActionBallWrapper
           right={8}

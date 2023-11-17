@@ -39,7 +39,7 @@ const Tabs: FC<TProps> = ({ onChange = log, items = temItems, activeKey = '' }) 
   )
 
   return (
-    <Wrapper testid="tabs">
+    <Wrapper $testid="tabs">
       {items.map((item) => (
         <TabItem
           key={isString(item) ? item : item.slug || item.title}

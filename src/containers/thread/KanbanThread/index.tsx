@@ -21,7 +21,7 @@ type TProps = {
 
 const KanbanThread: FC<TProps> = ({ isSidebarLayout = false }) => {
   return (
-    <Wrapper testid="kanban-thread" isSidebarLayout={isSidebarLayout}>
+    <Wrapper $testid="kanban-thread" isSidebarLayout={isSidebarLayout}>
       <Actions />
       <ColumnsWrapper>
         <Columns />

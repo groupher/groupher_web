@@ -32,7 +32,7 @@ const IconSwitcher: FC<TProps> = ({ items, activeKey, onChange = log }) => {
   const slideIndex = findIndex(propEq(activeKey, 'key'), items)
 
   return (
-    <Wrapper testid="selectors">
+    <Wrapper $testid="selectors">
       {/* <AccessZone /> */}
       <Tabs>
         {items.map((item) => {

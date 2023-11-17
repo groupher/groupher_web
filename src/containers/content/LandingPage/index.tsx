@@ -68,7 +68,7 @@ const LandingPage: FC = () => {
   }, [wallpaper])
 
   return (
-    <Wrapper testid="landing-page">
+    <Wrapper $testid="landing-page">
       <PatternBg />
       <DesktopOnly>
         <BgGlow wallpaper={wallpaper} />

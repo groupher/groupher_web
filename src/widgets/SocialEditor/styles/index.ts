@@ -16,8 +16,8 @@ import BiliBiliSVG from '@/icons/social/BiliBili'
 import BossSVG from '@/icons/social/Boss'
 
 type TWrapper = TTestable & { width: string } & TSpace
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   margin-bottom: 20px;
   width: ${({ width }) => width};

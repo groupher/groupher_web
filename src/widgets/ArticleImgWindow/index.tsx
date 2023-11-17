@@ -20,7 +20,7 @@ type TProps = {
 
 const ArticleImgWindow: FC<TProps> = ({ testid = 'article-img-window' }) => {
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <DesktopOnly flex>
         <Block />
         <Block />

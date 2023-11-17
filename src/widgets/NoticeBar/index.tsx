@@ -46,7 +46,7 @@ const NoticeBar: FC<TProps> = ({
   ...restProps
 }) => {
   return (
-    <Wrapper testid={testid} noBg={noBg} {...restProps}>
+    <Wrapper $testid={testid} noBg={noBg} {...restProps}>
       <Icon type={type} />
       <Main>
         {user && <UserName>{user.nickname}</UserName>}

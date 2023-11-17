@@ -39,7 +39,7 @@ const AboutThreadContainer: FC<TProps> = ({ testid = 'about-thread', isSidebarLa
   const community = useViewingCommunity()
 
   return (
-    <Wrapper testid={testid} $bannerLayout={bannerLayout}>
+    <Wrapper $testid={testid} $bannerLayout={bannerLayout}>
       <MainWrapper $isSidebarLayout={isSidebarLayout}>
         <IntroBlock>
           <Title>社区简介</Title>

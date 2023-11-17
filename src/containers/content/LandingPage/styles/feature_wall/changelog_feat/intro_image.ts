@@ -8,8 +8,8 @@ import EmojiSVG from '@/icons/EmojiTada'
 import BroadcastSVG from '@/icons/Broadcast'
 import CommentSVG from '@/icons/Heart'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.columnGrow('align-both')};
   position: relative;

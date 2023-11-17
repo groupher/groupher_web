@@ -8,8 +8,8 @@ const activeColor = '#009C9E'
 
 type TItem = TActive & { withDivider?: boolean; isRootMenu?: boolean }
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable & TItem>`
   padding-bottom: 10px;
 

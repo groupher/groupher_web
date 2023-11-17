@@ -5,8 +5,8 @@ import css, { theme } from '@/css'
 
 import UserSVG from '@/icons/User'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.media.mobile`
     padding: 0;

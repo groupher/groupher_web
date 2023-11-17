@@ -4,8 +4,8 @@ import type { TTestable, TActive } from '@/spec'
 import Img from '@/Img'
 import css, { theme } from '@/css'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable & TActive>`
   position: relative;
   max-height: ${({ active }) => (active ? '220px' : '0')};

@@ -19,8 +19,8 @@ import BossSVG from '@/icons/social/Boss'
 // import LagouSVG from '@/icons/social/Lagou'
 
 type TWrapper = TTestable & TSpace & { size: TSizeTSM }
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   ${css.rowWrap('align-center')};
   gap: 14px;

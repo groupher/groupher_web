@@ -5,8 +5,8 @@ import css from '@/css'
 
 import { getWidth, getHeight } from './metric'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable & { size: string }>`
   position: relative;
   ${css.column()};

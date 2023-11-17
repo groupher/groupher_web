@@ -108,7 +108,7 @@ const Select: FC<TProps> = ({
   }
 
   return (
-    <Wrapper testid={testid} className={className}>
+    <Wrapper $testid={testid} className={className}>
       {!creatable ? (
         <ReactSelect {...baseProps} isMulti={isMulti} />
       ) : (

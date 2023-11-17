@@ -106,8 +106,8 @@ const liquid2Rule = styledCss`
   ${liquid2} ${DURATION} infinite;
 `
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   text-align: center;
   position: relative;

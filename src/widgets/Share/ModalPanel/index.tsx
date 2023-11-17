@@ -46,7 +46,7 @@ const SharePanel: FC<TProps> = ({
   if (isMobile) {
     return (
       <Fragment>
-        <Wrapper testid={testid} type={siteShareType}>
+        <Wrapper $testid={testid} type={siteShareType}>
           <Platforms article={article} changeType={changeType} />
           <InfoPanel type={siteShareType} linksData={linksData} />
         </Wrapper>
@@ -57,7 +57,7 @@ const SharePanel: FC<TProps> = ({
   return (
     <Fragment>
       <Modal width="450px" show={show} offsetLeft={offsetLeft} onClose={onClose} showCloseBtn>
-        <Wrapper testid={testid} type={siteShareType}>
+        <Wrapper $testid={testid} type={siteShareType}>
           <Platforms article={article} changeType={changeType} />
           <InfoPanel type={siteShareType} linksData={linksData} />
         </Wrapper>

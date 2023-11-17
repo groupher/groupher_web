@@ -10,8 +10,8 @@ type TWrapper = {
   noBg: boolean
 } & TTestable
 
-export const Wrapper = styled(WithMargin).attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled(WithMargin).attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   ${css.row('align-start')};
   color: ${({ noBg }) => (noBg ? theme('article.digest') : theme('article.title'))};

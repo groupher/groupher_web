@@ -6,8 +6,8 @@ import SettingSVG from '@/icons/Setting'
 import { WithMargin } from '@/widgets/Common'
 import css, { theme } from '@/css'
 
-export const Wrapper = styled(WithMargin).attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled(WithMargin).attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>``
 
 export const Title = styled.div``

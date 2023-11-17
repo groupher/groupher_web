@@ -33,7 +33,7 @@ const Upvote: FC<TProps> = ({
   const { handleClick, startAnimate } = useUpvote({ viewerHasUpvoted, onAction })
 
   return (
-    <Wrapper testid={testid} onClick={() => handleClick()}>
+    <Wrapper $testid={testid} onClick={() => handleClick()}>
       <UpvoteBtnWrapper>
         <UpvoteBtn viewerHasUpvoted={viewerHasUpvoted} count={count} startAnimate={startAnimate} />
       </UpvoteBtnWrapper>

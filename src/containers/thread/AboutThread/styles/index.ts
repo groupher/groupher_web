@@ -5,8 +5,8 @@ import css, { theme } from '@/css'
 import { BANNER_LAYOUT } from '@/constant'
 
 type TWrapper = TTestable & { $bannerLayout: TBannerLayout }
-export const Wrapper = styled.div.attrs<TWrapper>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TWrapper>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   ${css.row('align-start')};
   width: 100%;

@@ -82,7 +82,7 @@ const ModeLineMenu: FC<TProps> = ({
   useInit(store)
   const { curActive, subscribedCommunities } = store
 
-  return <Wrapper testid={testid}>{renderMenus(type, curActive, subscribedCommunities)}</Wrapper>
+  return <Wrapper $testid={testid}>{renderMenus(type, curActive, subscribedCommunities)}</Wrapper>
 }
 
 export default observer(ModeLineMenu)

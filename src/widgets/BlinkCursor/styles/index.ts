@@ -9,8 +9,8 @@ export type TWrapper = TTestable &
     duration: number
   }
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   background-color: #139c9e;
 

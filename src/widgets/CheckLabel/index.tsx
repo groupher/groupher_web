@@ -27,7 +27,7 @@ const CheckLabel: FC<TProps> = ({
   ...restProps
 }) => {
   return (
-    <Wrapper testid={testid} {...restProps}>
+    <Wrapper $testid={testid} {...restProps}>
       <CheckIcon $active={$active} />
       <Title $active={$active}>{title}</Title>
     </Wrapper>

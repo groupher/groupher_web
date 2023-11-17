@@ -8,8 +8,8 @@ import css, { theme } from '@/css'
 
 type TWrapper = TTestable
 
-export const Wrapper = styled(WithMargin).attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled(WithMargin).attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   ${css.row('align-center')};
 `

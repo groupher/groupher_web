@@ -8,8 +8,8 @@ import Img from '@/Img'
 
 import GithubSVG from '@/icons/social/Github'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.column('align-both')};
   width: 100%;

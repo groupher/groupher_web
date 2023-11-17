@@ -31,7 +31,7 @@ const log = buildLog('C:Header')
 
 const ArticleHeader: FC<TProps> = ({ metric, accountInfo }) => {
   return (
-    <Wrapper id="whereCallShowDoraemon" testid="header" noBorder>
+    <Wrapper id="whereCallShowDoraemon" $testid="header" noBorder>
       <InnerWrapper>
         <RouterWrapper metric={metric}>
           <Navigator metric={metric} />

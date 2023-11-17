@@ -10,8 +10,8 @@ import { getFontSize } from './metric/avatar'
 
 type TWrapper = TTestable & TAvatarProps & { $avatarLayout: TAvatarLayout; color: TColorName }
 
-export const Wrapper = styled.div.attrs<TWrapper>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TWrapper>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   ${css.row('align-both')};
 

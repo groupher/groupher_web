@@ -44,7 +44,7 @@ const FaqPeekList = ({ active }) => {
   }, [active])
 
   return (
-    <Wrapper testid="faqPeekList" active={active}>
+    <Wrapper $testid="faqPeekList" active={active}>
       {active && <ArrowIcon src={`${ICON}/shape/arrow-solid.svg`} />}
       <ContentWrapper active={showContent}>
         <LinksCard title="安装使用" items={items} onSelect={log} bottom={0} left={5} right={24} />

@@ -33,7 +33,7 @@ const AboutContent: FC = () => {
   const LayoutWrapper = bannerLayout === BANNER_LAYOUT.SIDEBAR ? SidebarWrapper : Wrapper
 
   return (
-    <LayoutWrapper testid="about-thread-content" metric={metric}>
+    <LayoutWrapper $testid="about-thread-content" metric={metric}>
       <CommunityDigest />
       {isMobile ? (
         <MobileCardsWrapper>

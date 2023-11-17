@@ -4,8 +4,8 @@ import type { TTestable, TSpace } from '@/spec'
 // import Img from '@/Img'
 import css from '@/css'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable & TSpace>`
   ${css.size(70)};
   ${css.column('align-center', 'justify-between')};

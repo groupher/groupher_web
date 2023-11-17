@@ -8,8 +8,8 @@ type TThemeName = {
   t: string
 }
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.column('align-center', 'justify-between')};
   height: 100vh;

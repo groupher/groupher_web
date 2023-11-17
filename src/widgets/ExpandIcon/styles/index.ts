@@ -25,8 +25,8 @@ type TText = {
   hideTextOnInit: boolean
 }
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable & TText>`
   ${css.row('align-center')};
   /* margin-left: 12px; */

@@ -22,7 +22,7 @@ const Tag: FC<TProps> = ({ children, onClose = null }) => {
   const closeable = onClose !== null
 
   return (
-    <Wrapper testid="tag" closeable={closeable}>
+    <Wrapper $testid="tag" closeable={closeable}>
       {children}
       {closeable && (
         <div onClick={() => onClose()}>

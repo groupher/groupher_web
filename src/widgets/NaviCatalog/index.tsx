@@ -179,7 +179,7 @@ const NaviCatalog: FC<TProps> = ({
   )
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       {headerUtils && (
         <Header
           title={title}

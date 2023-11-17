@@ -7,8 +7,8 @@ import css, { theme } from '@/css'
 
 import { getLocalSVG } from '@/icons'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.row('align-center')};
   position: relative;

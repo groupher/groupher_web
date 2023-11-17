@@ -37,7 +37,7 @@ const FaqList: FC<TProps> = ({
   ...restProps
 }) => {
   return (
-    <Wrapper testid={testid} {...restProps}>
+    <Wrapper $testid={testid} {...restProps}>
       {layout === DOC_FAQ_LAYOUT.FLAT && <Flat sections={sections} large={large} />}
       {layout === DOC_FAQ_LAYOUT.SEARCH_HINT && <SearchHint sections={sections} />}
       {layout === DOC_FAQ_LAYOUT.COLLAPSE && <Collapse sections={sections} />}

@@ -6,8 +6,8 @@ import css, { theme } from '@/css'
 
 import CurlyLineSVG from './D2KSVG'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.column('align-both')};
   width: 100%;

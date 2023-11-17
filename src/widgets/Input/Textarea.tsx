@@ -45,7 +45,7 @@ const Textarea: FC<TProps> = ({
 
   return (
     <Wrapper
-      testid={testid}
+      $testid={testid}
       onChange={handleOnChange}
       onKeyDown={handleKeydown}
       minRows={1}

@@ -10,8 +10,8 @@ type TSlipBar = {
   $noAnimation?: boolean
 }
 
-export const Wrapper = styled.nav.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.nav.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   position: relative;
   overflow: hidden;

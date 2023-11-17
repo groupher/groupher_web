@@ -39,7 +39,7 @@ const CommunityLayout: FC<TProps> = ({
   const [expand, setExpand] = useState(false)
 
   return (
-    <Wrapper testid={testid} show={show} isMenuActive={!!activeMenu}>
+    <Wrapper $testid={testid} show={show} isMenuActive={!!activeMenu}>
       <InnerWrapper expand={expand}>
         <MainMenusWrapper>
           <CommunityLogo src={assetSrc(community.logo)} />

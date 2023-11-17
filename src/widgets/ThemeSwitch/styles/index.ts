@@ -9,8 +9,8 @@ import { WithMargin } from '@/widgets/Common'
 import css, { theme } from '@/css'
 
 type TWrapper = TTestable
-export const Wrapper = styled(WithMargin).attrs<TWrapper>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled(WithMargin).attrs<TWrapper>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>``
 
 export const Button = styled.button`

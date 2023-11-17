@@ -6,8 +6,8 @@ import css, { theme } from '@/css'
 
 import { Nav as NavBase } from '..'
 
-export const Wrapper = styled.nav.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.nav.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   position: relative;
   width: 100%;

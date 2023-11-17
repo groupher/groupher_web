@@ -21,7 +21,7 @@ type TProps = {
 
 const SearchBox: FC<TProps> = ({ testid = 'search-box', ...restProps }) => {
   return (
-    <Wrapper testid={testid} {...restProps} onClick={() => openSearch()}>
+    <Wrapper $testid={testid} {...restProps} onClick={() => openSearch()}>
       <SearchIcon />
       <Text>搜索内容</Text>
     </Wrapper>

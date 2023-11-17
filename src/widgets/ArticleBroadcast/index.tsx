@@ -39,7 +39,7 @@ const ArticleBroadcast: FC<TProps> = ({
   ...restProps
 }) => {
   return (
-    <Wrapper testid={testid} color={color} {...restProps}>
+    <Wrapper $testid={testid} color={color} {...restProps}>
       {!simple && <BgWrapper />}
       {!simple && <BgWrapper2 />}
       {!simple && <NotifyIcon color={color} />}

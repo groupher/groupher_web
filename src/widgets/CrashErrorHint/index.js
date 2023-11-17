@@ -57,7 +57,7 @@ const CrashErrorHint = ({ onReport }) => {
   }, [executeIndex])
 
   return (
-    <Wrapper testid="crashErrorHint" t={themeName}>
+    <Wrapper $testid="crashErrorHint" t={themeName}>
       <div />
       <div>
         <Header index={executeIndex} themeName={themeName} />

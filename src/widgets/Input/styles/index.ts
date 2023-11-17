@@ -10,8 +10,8 @@ type IInput = {
   spellCheck: string
 }
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   position: relative;
   width: 100%;

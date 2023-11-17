@@ -13,8 +13,8 @@ import ArrowSVG from '@/icons/ArrowSimple'
 import { getGlowOpacity, getGlowBackground, getPathGradient } from './metric'
 
 type TWrapper = TTestable
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   ${css.column('align-both')};
   height: 100%;

@@ -20,7 +20,7 @@ import {
 
 const ArticleEditorHeader: FC<TProps> = ({ metric }) => {
   return (
-    <Wrapper id="whereCallShowDoraemon" testid="header" noBorder>
+    <Wrapper id="whereCallShowDoraemon" $testid="header" noBorder>
       <InnerWrapper>
         <RouterWrapper metric={metric}>
           <Navigator metric={metric} />

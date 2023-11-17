@@ -32,7 +32,7 @@ const ArticleBaseStats: FC<TProps> = ({
   ...restProps
 }) => {
   return (
-    <Wrapper testid={testid} {...restProps}>
+    <Wrapper $testid={testid} {...restProps}>
       <ViewsIcon />
       <Count>{article.views}</Count>
       <Divider />

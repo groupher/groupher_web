@@ -42,7 +42,7 @@ const Header: FC<TProps> = ({
   const showLocate = activeCatalogId !== ''
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       {title ? <Title active={showReset}>{title}</Title> : <div />}
 
       <OperatorsWrapper>

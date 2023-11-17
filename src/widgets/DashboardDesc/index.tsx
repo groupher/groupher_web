@@ -31,7 +31,7 @@ const DashboardDesc: FC<TProps> = ({
   activeSettings,
 }) => {
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       {layout === DASHBOARD_DESC_LAYOUT.POST_LIST && (
         <PostLayoutxample activePostLayout={activeSettings.postLayout} />
       )}

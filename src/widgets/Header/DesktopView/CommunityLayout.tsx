@@ -44,7 +44,7 @@ const CommunityView: FC<TProps> = ({ metric, accountInfo }) => {
   const InnerWrapper = ClassicInnerWrapper
 
   return (
-    <Wrapper id="whereCallShowDoraemon" testid="header" noBorder={hasNoBorder(metric)}>
+    <Wrapper id="whereCallShowDoraemon" $testid="header" noBorder={hasNoBorder(metric)}>
       <InnerWrapper metric={metric}>
         <RouterWrapper>
           <Navigator metric={metric} />

@@ -62,11 +62,11 @@ const PostThread: FC = () => {
 
   return (
     <Wrapper>
-      <LayoutWrapper thread={THREAD.POST} $postLayout={postLayout}>
+      <LayoutWrapper $thread={THREAD.POST} $postLayout={postLayout}>
         <ViewportTracker onEnter={inAnchor} onLeave={outAnchor} />
 
         {showFilters && (
-          <FilterWrapper ref={trackerRef} thread={THREAD.POST}>
+          <FilterWrapper ref={trackerRef}>
             <ArticlesFilter
               isMobile={isMobile}
               resState={resState as TResState}

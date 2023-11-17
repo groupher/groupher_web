@@ -31,7 +31,7 @@ const DashboardContent: FC = () => {
   const { isMobile } = useMobileDetect()
 
   return (
-    <Wrapper testid="dashboard-thread-content">
+    <Wrapper $testid="dashboard-thread-content">
       <CommunityDigest />
       {isMobile ? (
         <MobileCardsWrapper>

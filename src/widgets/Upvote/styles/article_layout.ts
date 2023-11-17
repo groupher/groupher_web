@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import type { TActive, TColorName, TTestable } from '@/spec'
 import css, { theme, rainbow, rainbowLink, rainbowLight } from '@/css'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.column('align-both')};
 `

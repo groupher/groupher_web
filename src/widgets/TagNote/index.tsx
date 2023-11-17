@@ -28,7 +28,7 @@ const TagNote: FC = () => {
   if (!tag?.desc) return null
 
   return (
-    <Wrapper testid="tag-note">
+    <Wrapper $testid="tag-note">
       <Header>
         <BgWrapper $color={tag.color as TColorName}>
           <TagNode

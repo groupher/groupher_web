@@ -27,7 +27,7 @@ const Footer: FC = () => {
   const metric = useMetric()
 
   return (
-    <Wrapper testid="footer" metric={metric}>
+    <Wrapper $testid="footer" metric={metric}>
       <InnerWrapper metric={metric}>
         {layout === FOOTER_LAYOUT.GROUP ? <GroupLayout /> : <SimpleLayout />}
         <PowerbyInfo />

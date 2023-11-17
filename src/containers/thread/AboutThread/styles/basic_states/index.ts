@@ -8,8 +8,8 @@ import UserSVG from '@/icons/Users'
 import EmojiSVG from '@/icons/Heart'
 import PulseSVG from '@/icons/Pulse'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.row()};
   width: calc(100% + 38px);

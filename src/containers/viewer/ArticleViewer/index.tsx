@@ -35,7 +35,7 @@ const ArticleViewer: FC = () => {
   const article = Object.assign(viewingArticle, { document: documentData })
 
   return (
-    <Wrapper testid="article-viewer">
+    <Wrapper $testid="article-viewer">
       <DrawerHeader />
       {/* @ts-ignore */}
       {/* <CollectionFolder /> */}

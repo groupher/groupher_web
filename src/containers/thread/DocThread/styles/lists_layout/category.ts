@@ -6,8 +6,8 @@ import css, { theme, rainbowLight } from '@/css'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
 type TWrapper = TTestable & { color?: string }
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   ${css.row('align-center')};
   width: 580px;

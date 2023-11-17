@@ -6,8 +6,8 @@ import css, { theme } from '@/css'
 
 import { L_MENU_HEIGHT } from '../metrics/index'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.row('align-both')};
   height: ${L_MENU_HEIGHT};

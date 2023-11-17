@@ -5,8 +5,8 @@ import type { TTestable } from '@/spec'
 import Img from '@/Img'
 import css from '@/css'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   width: 100%;
   height: 300px;

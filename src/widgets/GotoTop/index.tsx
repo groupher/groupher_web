@@ -19,7 +19,7 @@ const GotoTop: FC<TProps> = ({ testid = 'goto-top', type = 'body' }) => {
   const handler = type === 'body' ? scrollToHeader : scrollDrawerToTop
 
   return (
-    <Wrapper testid={testid} onClick={handler}>
+    <Wrapper $testid={testid} onClick={handler}>
       <AirBalloonIcon />
     </Wrapper>
   )

@@ -48,7 +48,7 @@ const ClassicLayout: FC<TProps> = ({ testid = 'changelog-item', article }) => {
   const { slug } = useViewingCommunity()
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <Main>
         <CoverImage />
         <Title

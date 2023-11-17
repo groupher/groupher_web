@@ -53,7 +53,7 @@ const ArticleSettingMenu: FC<TProps> = ({ testid = 'article-setting-menu', ...re
 
   return (
     <Provider value={client}>
-      <Wrapper testid={testid} {...restProps}>
+      <Wrapper $testid={testid} {...restProps}>
         <Tooltip
           visible={visible}
           content={<Menu onSubMenuToggle={(t) => setSubMenuOpen(t)} onClose={doClose} />}

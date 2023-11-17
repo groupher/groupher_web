@@ -7,8 +7,8 @@ import CommentSVG from '@/icons/Comment'
 import { WithMargin } from '@/widgets/Common'
 import css, { theme } from '@/css'
 
-export const Wrapper = styled(WithMargin).attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled(WithMargin).attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.row('align-center')};
   line-height: 20px;

@@ -27,7 +27,7 @@ const AdminAvatar: FC<TProps> = ({ testid = 'admin-avatar', user, ...restProps }
   const avatarLayout = useAvatarLayout()
 
   return (
-    <Wrapper testid={testid} {...restProps}>
+    <Wrapper $testid={testid} {...restProps}>
       <Avatar
         src={user.avatar}
         $avatarLayout={avatarLayout}

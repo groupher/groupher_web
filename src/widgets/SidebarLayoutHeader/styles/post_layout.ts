@@ -9,8 +9,8 @@ export const Wrapper = styled.div`
   padding-left: 100px;
 `
 
-export const InnerWrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const InnerWrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.row('align-center', 'justify-between')};
 `

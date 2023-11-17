@@ -20,7 +20,7 @@ const AnimatedCount: FC<TProps> = ({ count = 0, size = SIZE.SMALL, $active = fal
   const countColor = getCountColor($active, themeMap, primaryColor, count)
 
   return (
-    <Wrapper $active={$active} count={count} key={countColor}>
+    <Wrapper key={countColor} $active={$active} $count={count}>
       <FlipNumbers
         height={numSize}
         width={numSize - offset}

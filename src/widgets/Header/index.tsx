@@ -24,7 +24,7 @@ const HeaderContainer: FC<TProps> = (props) => {
   const { isMobile } = useMobileDetect()
 
   return (
-    <Wrapper id={ANCHOR.GLOBAL_HEADER_ID} testid="">
+    <Wrapper id={ANCHOR.GLOBAL_HEADER_ID} $testid="">
       {!isMobile ? <DesktopView {...props} /> : <MobileWrapper />}
     </Wrapper>
   )

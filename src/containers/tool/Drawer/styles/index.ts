@@ -37,7 +37,7 @@ export const DrawerOverlay = styled.div<TActive>`
 // - Use inline styles (through .attrs) for styles that change frequently, like for animations.
 export const DrawerWrapper = styled.div.attrs<TDrawer>(
   ({
-    testid,
+    $testid,
     $visible,
     $mobile,
     swipeUpY = 0,
@@ -45,7 +45,7 @@ export const DrawerWrapper = styled.div.attrs<TDrawer>(
     $fromContentEdge,
     options,
   }: TDrawer) => ({
-    'data-test-id': testid,
+    'data-test-id': $testid,
     style: {
       transform: getTransform($visible, $mobile, swipeUpY, swipeDownY, $fromContentEdge, options),
     },

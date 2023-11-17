@@ -8,15 +8,15 @@ import type { TProps as TArticleStateBadgeProps } from '.'
 
 import { Wrapper, IconWrapper, ICON } from './styles/label'
 
-type TProps = Pick<TArticleStateBadgeProps, 'cat' | 'smaller' | 'state'>
+type TProps = Pick<TArticleStateBadgeProps, 'cat' | 'smaller'>
 
-const Label: FC<TProps> = ({ cat, state, smaller }) => {
+const Label: FC<TProps> = ({ cat, smaller }) => {
   const nameAlias = useNameAlias('kanban')
 
   switch (cat) {
     case ARTICLE_CAT.FEATURE: {
       return (
-        <Wrapper state={state} $smaller={smaller}>
+        <Wrapper $smaller={smaller}>
           <IconWrapper>
             <ICON.FEATURE />
           </IconWrapper>
@@ -27,7 +27,7 @@ const Label: FC<TProps> = ({ cat, state, smaller }) => {
 
     case ARTICLE_CAT.BUG: {
       return (
-        <Wrapper state={state} $smaller={smaller}>
+        <Wrapper $smaller={smaller}>
           <IconWrapper>
             <ICON.BUG />
           </IconWrapper>
@@ -38,7 +38,7 @@ const Label: FC<TProps> = ({ cat, state, smaller }) => {
 
     case ARTICLE_CAT.QUESTION: {
       return (
-        <Wrapper state={state} $smaller={smaller}>
+        <Wrapper $smaller={smaller}>
           <IconWrapper>
             <ICON.QUESTION />
           </IconWrapper>
@@ -48,11 +48,7 @@ const Label: FC<TProps> = ({ cat, state, smaller }) => {
     }
 
     default:
-      return (
-        <Wrapper state={state} $smaller={smaller}>
-          {nameAlias[cat.toLowerCase()].name}
-        </Wrapper>
-      )
+      return <Wrapper $smaller={smaller}>{nameAlias[cat.toLowerCase()].name}</Wrapper>
   }
 }
 

@@ -5,8 +5,8 @@ import type { TTestable } from '@/spec'
 import css, { theme } from '@/css'
 import FAQSVG from '@/icons/FAQ'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.column()};
   width: 320px;

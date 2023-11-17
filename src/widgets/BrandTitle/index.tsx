@@ -32,7 +32,7 @@ const BrandTitle: FC<TProps> = ({
   onClick = log,
 }) => {
   return (
-    <Wrapper testid={testid} mBottom={mBottom} onClick={() => onClick?.()}>
+    <Wrapper $testid={testid} mBottom={mBottom} onClick={() => onClick?.()}>
       <Title>
         <BrandText fontSize={fontSize}>{title}</BrandText>
         <SpaceGrow />

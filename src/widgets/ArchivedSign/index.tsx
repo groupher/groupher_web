@@ -16,12 +16,8 @@ type TProps = {
 
 const ArchivedSign: FC<TProps> = ({ testid = 'archived-sign', date }) => {
   return (
-    <Tooltip
-      placement="bottom-start"
-      content={<DetailPanel date={date} />}
-      delay={500}
-    >
-      <Wrapper testid={testid}>
+    <Tooltip placement="bottom-start" content={<DetailPanel date={date} />} delay={500}>
+      <Wrapper $testid={testid}>
         <SignIcon />
         <Text>已存档</Text>
       </Wrapper>

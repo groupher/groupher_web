@@ -14,18 +14,10 @@ type TProps = {
   article: TArticle
 }
 
-const ArticleMenu: FC<TProps> = ({
-  testid = 'artile-menu',
-  verticalIcon = false,
-  article,
-}) => {
+const ArticleMenu: FC<TProps> = ({ testid = 'artile-menu', verticalIcon = false, article }) => {
   return (
     // @ts-ignore
-    <RealArticleMenu
-      testid={testid}
-      verticalIcon={verticalIcon}
-      article={article}
-    />
+    <RealArticleMenu $testid={testid} verticalIcon={verticalIcon} article={article} />
   )
 }
 

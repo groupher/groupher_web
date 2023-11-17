@@ -29,7 +29,7 @@ const KanbanContent: FC = () => {
   const LayoutWrapper = bannerLayout === BANNER_LAYOUT.SIDEBAR ? SidebarWrapper : Wrapper
 
   return (
-    <LayoutWrapper testid="kanban-thread-content" metric={metric}>
+    <LayoutWrapper $testid="kanban-thread-content" metric={metric}>
       <CommunityDigest />
       <MobileCardsWrapper>
         <ContentWrapper>

@@ -12,22 +12,11 @@ import SimpleLayout from './SimpleLayout'
 
 import { Wrapper } from './styles'
 
-const EmailSubscriber = ({
-  testid,
-  title,
-  desc,
-  type,
-  placeholder,
-  activeByDefault,
-}) => {
+const EmailSubscriber = ({ testid, title, desc, type, placeholder, activeByDefault }) => {
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       {type === 'default' ? (
-        <DefaultLayout
-          activeByDefault={activeByDefault}
-          title={title}
-          desc={desc}
-        />
+        <DefaultLayout activeByDefault={activeByDefault} title={title} desc={desc} />
       ) : (
         <SimpleLayout placeholder={placeholder} />
       )}

@@ -134,7 +134,7 @@ type TProps = {
 
 const Work: FC<TProps> = ({ testid = 'image-fallbak-work', ...restProps }) => {
   return (
-    <Wrapper testid={testid} {...restProps}>
+    <Wrapper $testid={testid} {...restProps}>
       {rollTheDice()}
     </Wrapper>
   )

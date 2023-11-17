@@ -40,7 +40,7 @@ const FaIcons: FC<TProps> = ({
   const themeData = useThemeData()
 
   return (
-    <Wrapper testid={testid} {...restProps}>
+    <Wrapper $testid={testid} {...restProps}>
       <FontAwesomeIcon
         icon={FaIcon[icon]}
         fontSize={size}

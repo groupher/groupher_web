@@ -25,7 +25,7 @@ type TProps = {
 
 const SearchPanel: FC<TProps> = ({ testid = 'search-panel' }) => {
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <CloseIcon onClick={() => closeDrawer()} />
 
       <Title>在帖子中搜索</Title>

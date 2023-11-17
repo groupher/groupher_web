@@ -17,7 +17,7 @@ type TProps = {
 const PostLayout: FC<TProps> = ({ testid = 'sidebar-layout-header' }) => {
   return (
     <Wrapper>
-      <InnerWrapper testid={testid}>
+      <InnerWrapper $testid={testid}>
         <MainArea>
           <SearchBox left={-14} top={-5} />
           <SpaceGrow />

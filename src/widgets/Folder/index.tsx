@@ -41,7 +41,7 @@ const Folder: FC<TProps> = ({
   onMenuClick = log,
 }) => {
   return (
-    <Wrapper testid="folder" size={size}>
+    <Wrapper $testid="folder" size={size}>
       <TabShape />
       <Content total={total} lock={lock} updatedAt={updatedAt} inactive={inactive} />
       <Footer title={title} onClick={onSelect} onMenuClick={onMenuClick} inactive={inactive} />

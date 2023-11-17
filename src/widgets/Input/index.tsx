@@ -65,7 +65,7 @@ const Input: FC<TProps> = ({
   const validProps = pickBy((v) => v !== null, restProps)
 
   return behavior === 'default' ? (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <PrefixWrapper show={!nilOrEmpty(prefixIcon)}>
         {prefixIcon && <Icon src={prefixIcon} active={prefixActive} />}
       </PrefixWrapper>

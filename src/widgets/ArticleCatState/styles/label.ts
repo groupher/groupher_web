@@ -1,7 +1,5 @@
 import styled from 'styled-components'
 
-import type { TArticleState } from '@/spec'
-
 import css, { theme } from '@/css'
 
 import LightSVG from '@/icons/ColorLight'
@@ -11,7 +9,6 @@ import RejectSVG from '@/icons/Reject'
 import OtherSVG from '@/icons/menu/Feedback'
 
 type TWrapper = {
-  state: TArticleState
   $smaller: boolean
 }
 

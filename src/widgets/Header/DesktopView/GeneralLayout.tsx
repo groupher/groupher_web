@@ -38,7 +38,7 @@ const hasNoBorder = (metric: TMetric): boolean =>
 
 const GeneralHeader: FC<TProps> = ({ metric, accountInfo }) => {
   return (
-    <Wrapper id="whereCallShowDoraemon" testid="header" noBorder={hasNoBorder(metric)}>
+    <Wrapper id="whereCallShowDoraemon" $testid="header" noBorder={hasNoBorder(metric)}>
       <InnerWrapper metric={metric}>
         <RouterWrapper>
           <Navigator metric={metric} />

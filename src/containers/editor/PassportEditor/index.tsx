@@ -35,7 +35,7 @@ const PassportEditor: FC = () => {
   const readonly = isActiveModeratorRoot || !isCurUserModeratorRoot
 
   return (
-    <Wrapper testid="passport-editor">
+    <Wrapper $testid="passport-editor">
       {!isActiveModeratorRoot ? <h3>权限设置</h3> : <RootSign>ROOT</RootSign>}
       {isActiveModeratorRoot ? (
         <Desc>

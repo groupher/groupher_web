@@ -34,7 +34,7 @@ const OutlineLayout: FC<TProps> = ({ testid = 'changelog-item' }) => {
   const title = '更新日志界面改动，样式调整'
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <Cover />
       <Main>
         <Title>

@@ -39,7 +39,7 @@ const Radio: FC<TProps> = ({
   const primaryColor = usePrimaryColor()
 
   return (
-    <Wrapper testid="radio" {...restProps}>
+    <Wrapper $testid="radio" {...restProps}>
       {items.map((item) => (
         <Label
           key={item.value}

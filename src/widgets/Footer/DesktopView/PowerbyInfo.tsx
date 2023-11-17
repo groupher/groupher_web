@@ -14,7 +14,7 @@ const PowerbyInfo: FC = () => {
   const metric = useMetric()
 
   return (
-    <Wrapper testid="power-by">
+    <Wrapper $testid="power-by">
       {metric !== METRIC.HOME && (
         <Note>
           由<Addr href="/">Groupher</Addr>
