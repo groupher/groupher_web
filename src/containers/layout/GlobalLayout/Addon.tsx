@@ -7,7 +7,6 @@ import useShortcut from '@/hooks/useShortcut'
 import useMetric from '@/hooks/useMetric'
 
 import Drawer from '@/containers/tool/Drawer'
-import Subscriber from '@/containers/tool/Subscriber'
 import ErrorBox from '@/containers/tool/ErrorBox'
 
 // import { Drawer } from './dynamic'
@@ -24,7 +23,6 @@ const Addon: FC = () => {
       {/* {!isMobile && <AbuseReport />} */}
       {/* @ts-ignore */}
       <Drawer metric={metric} />
-      <Subscriber />
       <Toaster position="top-center" closeButton />
       {/* @ts-ignore */}
       <ErrorBox />

@@ -12,10 +12,11 @@ import { BANNER_LAYOUT } from '@/constant/layout'
 
 import { buildLog } from '@/logger'
 import usePostLayout from '@/hooks/usePostLayout'
+import useBannerLayout from '@/hooks/useBannerLayout'
 import { THREAD } from '@/constant/thread'
 
 import ThreadSidebar from '@/containers/thread/ThreadSidebar'
-import PagedArticles from '@/widgets/PagedArticles'
+import PagedPosts from '@/widgets/PagedPosts'
 import TagNote from '@/widgets/TagNote'
 import ViewportTracker from '@/widgets/ViewportTracker'
 import ArticlesFilter from '@/widgets/ArticlesFilter'
@@ -41,6 +42,8 @@ const isInViewport = (element) => {
 
 const PostThread: FC = () => {
   const store = useStore()
+  const bannerLayout = useBannerLayout()
+
   useInit(store)
 
   const postLayout = usePostLayout()
@@ -55,18 +58,18 @@ const PostThread: FC = () => {
   // if (store.curThread !== THREAD.POST) return <LavaLampLoading top={20} />
 
   const isMobile = false
-  const { pagedPostsData, curThread, showFilters, resState, mode, globalLayout } = store
+  const { showFilters, resState, mode } = store
 
-  const isSidebarLayout = globalLayout.banner === BANNER_LAYOUT.SIDEBAR
+  const isSidebarLayout = bannerLayout === BANNER_LAYOUT.SIDEBAR
   const LayoutWrapper = isSidebarLayout ? SidebarWrapper : MainWrapper
 
   return (
     <Wrapper>
-      <LayoutWrapper thread={curThread} $postLayout={postLayout}>
+      <LayoutWrapper thread={THREAD.POST} $postLayout={postLayout}>
         <ViewportTracker onEnter={inAnchor} onLeave={outAnchor} />
 
         {showFilters && (
-          <FilterWrapper ref={trackerRef} thread={curThread}>
+          <FilterWrapper ref={trackerRef} thread={THREAD.POST}>
             <ArticlesFilter
               isMobile={isMobile}
               resState={resState as TResState}
@@ -75,10 +78,8 @@ const PostThread: FC = () => {
             />
           </FilterWrapper>
         )}
-
         <TagNote />
-
-        <PagedArticles data={pagedPostsData} thread={curThread} resState={resState as TResState} />
+        <PagedPosts />
       </LayoutWrapper>
 
       {!isSidebarLayout && <ThreadSidebar />}

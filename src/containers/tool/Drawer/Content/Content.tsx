@@ -13,8 +13,6 @@ import {
   AccountEditor,
   WallpaperEditor,
   // utils
-  C11NSettingPanel,
-  // userlister
   UserLister,
   DashboardDesc,
   ArticleEditor,
@@ -51,10 +49,6 @@ const Content: FC<TProps> = ({ type, attUser, extraInfo }) => {
     case DRAWER.MAILS_VIEW:
       // @ts-ignore
       return <MailsViewer />
-
-    case DRAWER.C11N_SETTINGS:
-      // @ts-ignore
-      return <C11NSettingPanel />
 
     case DRAWER.DASHBOARD_DESC: {
       const { postLayout, dashboardDescLayout } = extraInfo

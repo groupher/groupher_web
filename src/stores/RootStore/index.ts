@@ -25,6 +25,7 @@ import {
   RichEditorStore,
   // HeaderStore,
   ViewingStore,
+  ArticlesStore,
   ThemeStore,
   ThemeDefaults,
   ErrorBoxStore,
@@ -33,7 +34,7 @@ import {
   CommunityContentStore,
   // ExploreContentStore,
   CommunityEditorStore,
-  UserContentStore,
+  // UserContentStore,
   // viewers
   // RepoViewerStore,
   CommentsStore,
@@ -54,7 +55,7 @@ import {
   LandingPageStore,
   CoverEditorStore,
   TagSettingEditorStore,
-  SubscriberStore,
+  // SubscriberStore,
   DashboardThreadStore,
   WallpaperEditorStore,
   PostThreadStore,
@@ -62,19 +63,18 @@ import {
   AboutThreadStore,
   ChangelogThreadStore,
   KanbanThreadStore,
-  UserPublishedArticlesStore,
-  CollectionFolderStore,
+  // CollectionFolderStore,
   ArticleViewerStore,
   ThreadSidebarStore,
-  AbuseReportStore,
+  // AbuseReportStore,
   ArticleEditorStore,
-  UserProfileStore,
+  // UserProfileStore,
   // MembershipContentStore,
   ModeLineMenuStore,
   ModeLineStore,
   // SubscribeContentStore,
   // RecipesContentStore,
-  C11NSettingPanelStore,
+  // C11NSettingPanelStore,
 } from '..'
 
 const rootStore = T.model({
@@ -83,6 +83,7 @@ const rootStore = T.model({
   account: T.opt(AccountStore, {}),
   route: T.opt(RouteStore, {}),
   viewing: T.opt(ViewingStore, {}),
+  articles: T.opt(ArticlesStore, {}),
   comments: T.opt(CommentsStore, {}),
   metric: T.opt(T.string, METRIC.COMMUNITY),
   // @ts-ignore TODO:
@@ -114,7 +115,7 @@ const rootStore = T.model({
 
   // exploreContent: T.opt(ExploreContentStore, {}),
   communityEditor: T.opt(CommunityEditorStore, {}),
-  userContent: T.opt(UserContentStore, {}),
+  // userContent: T.opt(UserContentStore, {}),
   // content end
 
   // footer
@@ -133,25 +134,24 @@ const rootStore = T.model({
   landingPage: T.opt(LandingPageStore, {}),
   coverEditor: T.opt(CoverEditorStore, {}),
   tagSettingEditor: T.opt(TagSettingEditorStore, {}),
-  subscriber: T.opt(SubscriberStore, {}),
+  // subscriber: T.opt(SubscriberStore, {}),
   dashboardThread: T.opt(DashboardThreadStore, {}),
   wallpaperEditor: T.opt(WallpaperEditorStore, {}),
   docThread: T.opt(DocThreadStore, {}),
   aboutThread: T.opt(AboutThreadStore, {}),
   changelogThread: T.opt(ChangelogThreadStore, {}),
   kanbanThread: T.opt(KanbanThreadStore, {}),
-  userPublishedArticles: T.opt(UserPublishedArticlesStore, {}),
-  collectionFolder: T.opt(CollectionFolderStore, {}),
+  // collectionFolder: T.opt(CollectionFolderStore, {}),
   articleViewer: T.opt(ArticleViewerStore, {}),
   postThread: T.opt(PostThreadStore, {}),
   threadSidebar: T.opt(ThreadSidebarStore, {}),
-  abuseReport: T.opt(AbuseReportStore, {}),
+  // abuseReport: T.opt(AbuseReportStore, {}),
   articleEditor: T.opt(ArticleEditorStore, {}),
-  userProfile: T.opt(UserProfileStore, {}),
+  // userProfile: T.opt(UserProfileStore, {}),
   modeLineMenu: T.opt(ModeLineMenuStore, {}),
   modeLine: T.opt(ModeLineStore, {}),
   // recipesContent: T.opt(RecipesContentStore, {}),
-  c11NSettingPanel: T.opt(C11NSettingPanelStore, {}),
+  // c11NSettingPanel: T.opt(C11NSettingPanelStore, {}),
 })
   .views((self) => ({
     get isOnline(): boolean {

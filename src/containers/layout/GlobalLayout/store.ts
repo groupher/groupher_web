@@ -52,11 +52,12 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
 
       root.viewing.updateViewing(updatedArticle)
       // root.articlesThread.updateArticle(updatedArticle)
-      root.postThread.updateArticle(updatedArticle)
+      // root.postThread.updateArticle(updatedArticle)
+      root.articles.updateArticle(updatedArticle)
     },
     setViewingAlways(article: TArticle): void {
       const root = getParent(self) as TRootStore
-      root.viewing.updateViewing(article)
+      root.viewing.updateViewing(toJS(article))
     },
     updateViewerHasUpvoted(viewerHasUpvoted: boolean): void {
       const root = getParent(self) as TRootStore
@@ -72,7 +73,8 @@ const GlobalLayout = T.model('GlobalLayoutStore', {
       // for viewing article end
 
       // root.articlesThread.updateArticle({ id, viewerHasUpvoted, upvotesCount, meta: syncMeta })
-      root.postThread.updateArticle({ id, viewerHasUpvoted, upvotesCount, meta: syncMeta })
+      // root.postThread.updateArticle({ id, viewerHasUpvoted, upvotesCount, meta: syncMeta })
+      root.articles.updateArticle({ id, viewerHasUpvoted, upvotesCount, meta: syncMeta })
     },
     clearLocalSettings(): void {
       const root = getParent(self) as TRootStore

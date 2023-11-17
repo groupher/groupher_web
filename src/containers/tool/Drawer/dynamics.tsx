@@ -40,11 +40,6 @@ export const UserLister = dynamic(() => import('@/containers/user/UserLister'), 
   loading: () => <CommonLoading />,
 })
 
-// utils
-export const C11NSettingPanel = dynamic(() => import('@/containers/tool/C11NSettingPanel'), {
-  loading: () => <CommonLoading />,
-})
-
 export const WallpaperEditor = dynamic(() => import('@/containers/editor/WallpaperEditor'), {
   loading: () => <CommonLoading />,
 })
