@@ -9,7 +9,7 @@ import {
   LearnMoreButton,
   MoreLink,
 } from './styles/dashboard_alert'
-import { clearDemoSetting } from './logic'
+// import { clearDemoSetting } from './logic'
 
 const DashboardAlert: FC = () => {
   return (
@@ -17,7 +17,15 @@ const DashboardAlert: FC = () => {
       <WarningIcon />
       <Title>当前自定义设置只对本地演示有效</Title>
       <SpaceGrow />
-      <ResetButton onClick={() => clearDemoSetting()}>恢复默认</ResetButton>
+      <ResetButton
+        onClick={() => {
+          console.log('## clearDemoSetting')
+
+          // clearDemoSetting()
+        }}
+      >
+        恢复默认
+      </ResetButton>
       <LearnMoreButton>
         <MoreLink href="/">了解更多</MoreLink>
       </LearnMoreButton>

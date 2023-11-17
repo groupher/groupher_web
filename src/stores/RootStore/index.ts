@@ -29,7 +29,7 @@ import {
   ThemeStore,
   ThemeDefaults,
   ErrorBoxStore,
-
+  MushroomStore,
   // content
   CommunityContentStore,
   // ExploreContentStore,
@@ -106,6 +106,7 @@ const rootStore = T.model({
   // layouts end
 
   errorBox: T.opt(ErrorBoxStore, {}),
+  mushroom: T.opt(MushroomStore, {}),
 
   // content
   communityContent: T.opt(CommunityContentStore, {}),

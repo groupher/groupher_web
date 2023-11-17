@@ -67,3 +67,4 @@ export { default as ThreadSidebarStore } from '@/containers/thread/ThreadSidebar
 export { default as ArticleEditorStore } from '@/containers/editor/ArticleEditor/store'
 export { default as ModeLineMenuStore } from '@/containers/unit/ModeLineMenu/store'
 export { default as ModeLineStore } from '@/containers/unit/ModeLine/store'
+export { default as MushroomStore } from '@/containers/Mushroom/store'

@@ -14,6 +14,7 @@ import { TOPBAR_LAYOUT } from '@/constant/layout'
 import useMetric from '@/hooks/useMetric'
 import useWallpaper from '@/hooks/useWallpaper'
 
+import Mushroom from '@/containers/Mushroom'
 import ThemePalette from '@/containers/layout/ThemePalette'
 import ModeLine from '@/containers/unit/ModeLine'
 
@@ -37,7 +38,6 @@ import {
   BodyWrapper,
   ContentWrapper,
 } from './styles'
-import { useInit } from './logic'
 
 // let DashboardAlert = null
 
@@ -47,7 +47,6 @@ type TProps = {
 
 const GlobalLayout: FC<TProps> = ({ children }) => {
   const store = useStore()
-  useInit(store)
 
   const metric = useMetric()
   const { hasShadow } = useWallpaper()
@@ -68,6 +67,7 @@ const GlobalLayout: FC<TProps> = ({ children }) => {
   return (
     <BalancerTextProvider>
       <ThemePalette>
+        <Mushroom />
         <Addon />
         <Skeleton>
           <Wallpaper />
