@@ -7,12 +7,13 @@
 import { FC, useEffect, useRef } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import type { TResState, TArticleFilterMode } from '@/spec'
+import type { TResState } from '@/spec'
 import { BANNER_LAYOUT } from '@/constant/layout'
 
 import { buildLog } from '@/logger'
 import usePostLayout from '@/hooks/usePostLayout'
 import useBannerLayout from '@/hooks/useBannerLayout'
+import usePagedPosts from '@/hooks/usePagedPosts'
 import { THREAD } from '@/constant/thread'
 
 import ThreadSidebar from '@/containers/thread/ThreadSidebar'
@@ -22,10 +23,8 @@ import ViewportTracker from '@/widgets/ViewportTracker'
 import ArticlesFilter from '@/widgets/ArticlesFilter'
 // import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
-import { useStore } from './store'
-
 import { Wrapper, MainWrapper, SidebarWrapper, FilterWrapper } from './styles'
-import { useInit, inAnchor, outAnchor, onFilterSelect } from './logic'
+import { inAnchor, outAnchor, onFilterSelect } from './logic'
 
 /* eslint-disable-next-line */
 const log = buildLog('C:PostThread')
@@ -41,10 +40,8 @@ const isInViewport = (element) => {
 }
 
 const PostThread: FC = () => {
-  const store = useStore()
   const bannerLayout = useBannerLayout()
-
-  useInit(store)
+  const { resState } = usePagedPosts()
 
   const postLayout = usePostLayout()
   const trackerRef = useRef(null)
@@ -58,7 +55,7 @@ const PostThread: FC = () => {
   // if (store.curThread !== THREAD.POST) return <LavaLampLoading top={20} />
 
   const isMobile = false
-  const { showFilters, resState, mode } = store
+  const showFilters = true
 
   const isSidebarLayout = bannerLayout === BANNER_LAYOUT.SIDEBAR
   const LayoutWrapper = isSidebarLayout ? SidebarWrapper : MainWrapper
@@ -74,7 +71,7 @@ const PostThread: FC = () => {
               isMobile={isMobile}
               resState={resState as TResState}
               onSelect={onFilterSelect}
-              mode={mode as TArticleFilterMode}
+              mode="default"
             />
           </FilterWrapper>
         )}

@@ -6,8 +6,8 @@
 import { FC, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import type { TPagedArticles } from '@/spec'
 import useChangelogLayout from '@/hooks/useChangelogLayout'
+import usePagedChangelogs from '@/hooks/usePagedChangelogs'
 import useBannerLayout from '@/hooks/useBannerLayout'
 import { BANNER_LAYOUT, CHANGELOG_LAYOUT } from '@/constant/layout'
 
@@ -21,11 +21,8 @@ import { Wrapper, Banner, TabsWrapper, Title, Desc, MainWrapper } from '../style
 
 // const log = buildLog('C:ChangelogThread')
 
-type TProps = {
-  pagedChangelogs: TPagedArticles
-}
-
-const SimpleLayout: FC<TProps> = ({ pagedChangelogs }) => {
+const SimpleLayout: FC = () => {
+  const { pagedChangelogs } = usePagedChangelogs()
   const changelogLayout = useChangelogLayout()
   const bannerLayout = useBannerLayout()
 
