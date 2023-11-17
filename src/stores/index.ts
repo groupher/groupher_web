@@ -61,7 +61,6 @@ export { default as DashboardThreadStore } from '@/containers/thread/DashboardTh
 export { default as WallpaperEditorStore } from '@/containers/editor/WallpaperEditor/store'
 export { default as DocThreadStore } from '@/containers/thread/DocThread/store'
 export { default as AboutThreadStore } from '@/containers/thread/AboutThread/store'
-export { default as KanbanThreadStore } from '@/containers/thread/KanbanThread/store'
 // export { default as BlogEditorStore } from '@/containers/editor/BlogEditor/store'
 export { default as ArticleViewerStore } from '@/containers/viewer/ArticleViewer/store'
 export { default as ThreadSidebarStore } from '@/containers/thread/ThreadSidebar/store'
