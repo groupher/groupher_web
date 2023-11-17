@@ -11,6 +11,7 @@ import Facepile from '@/widgets/Facepile'
 import type { TArticle, TColorName } from '@/spec'
 import {
   Wrapper,
+  InnerWrapper,
   Header,
   Footer,
   Topping,
@@ -36,39 +37,41 @@ const Category: FC<TProps> = ({ color, title, desc, articles }) => {
 
   return (
     <Wrapper color={color}>
-      <Header>
-        <Topping>
-          <UpdateDate>2022-3-4</UpdateDate>
-          <Facepile users={mockUsers(2)} total={3} />
-        </Topping>
+      <InnerWrapper>
+        <Header>
+          <Topping>
+            <UpdateDate>2022-3-4</UpdateDate>
+            <Facepile users={mockUsers(2)} total={3} />
+          </Topping>
 
-        <Title>{title}</Title>
-        <Desc>We are proud today to introduce the production-ready Next.js 8, featuring:</Desc>
-      </Header>
+          <Title>{title}</Title>
+          <Desc>We are proud today to introduce the production-ready Next.js 8, featuring:</Desc>
+        </Header>
 
-      <ItemsWrapper>
-        {articles.slice(0, sliceCount).map((article) => (
-          <Item key={article.id} color={color} onClick={() => gotoDetailLayout()}>
-            {article.title}
-          </Item>
-        ))}
-      </ItemsWrapper>
+        <ItemsWrapper>
+          {articles.slice(0, sliceCount).map((article) => (
+            <Item key={article.id} color={color} onClick={() => gotoDetailLayout()}>
+              {article.title}
+            </Item>
+          ))}
+        </ItemsWrapper>
 
-      {articles.length >= FOLD_LIMIT && (
-        <Footer>
-          {articles.length >= FOLD_LIMIT && sliceCount <= FOLD_LIMIT && (
-            <ArrowButton down onClick={() => setSliceCount(articles.length)}>
-              查看全部
-            </ArrowButton>
-          )}
+        {articles.length >= FOLD_LIMIT && (
+          <Footer>
+            {articles.length >= FOLD_LIMIT && sliceCount <= FOLD_LIMIT && (
+              <ArrowButton down onClick={() => setSliceCount(articles.length)}>
+                查看全部
+              </ArrowButton>
+            )}
 
-          {articles.length >= FOLD_LIMIT && sliceCount > FOLD_LIMIT && (
-            <ArrowButton up onClick={() => setSliceCount(FOLD_LIMIT)} initWidth={26}>
-              收起
-            </ArrowButton>
-          )}
-        </Footer>
-      )}
+            {articles.length >= FOLD_LIMIT && sliceCount > FOLD_LIMIT && (
+              <ArrowButton up onClick={() => setSliceCount(FOLD_LIMIT)} initWidth={26}>
+                收起
+              </ArrowButton>
+            )}
+          </Footer>
+        )}
+      </InnerWrapper>
     </Wrapper>
   )
 }

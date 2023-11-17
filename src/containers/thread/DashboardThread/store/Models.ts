@@ -143,7 +143,7 @@ export const settingsModalFields = {
   kanbanLayout: T.opt(T.enum(values(KANBAN_LAYOUT)), KANBAN_LAYOUT.SIMPLE),
   kanbanBgColors: T.opt(T.array(T.string), INIT_KANBAN_COLORS),
 
-  docLayout: T.opt(T.enum(values(DOC_LAYOUT)), DOC_LAYOUT.BLOCKS),
+  docLayout: T.opt(T.enum(values(DOC_LAYOUT)), DOC_LAYOUT.CARDS),
   docFaqLayout: T.opt(T.enum(values(DOC_FAQ_LAYOUT)), DOC_FAQ_LAYOUT.COLLAPSE),
   tagLayout: T.opt(T.enum(values(TAG_LAYOUT)), TAG_LAYOUT.HASH),
   avatarLayout: T.opt(T.enum(values(AVATAR_LAYOUT)), AVATAR_LAYOUT.SQUARE),

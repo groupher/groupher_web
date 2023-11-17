@@ -8,26 +8,38 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
 }))<TWrapper>`
   ${css.column('align-start')};
-  width: 32%;
+  width: 280px;
   min-height: 80px;
-  padding: 16px 22px;
 
-  border: 1px solid;
-  border-color: ${theme('divider')};
-  border-radius: 7px;
+  z-index: 2;
   /* box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px; */
 
   transition: all 0.2s;
-  background: transparent;
+  position: relative;
 
-  ${css.media.mobile`
-    width: 50%;
-    padding: 0;
-    margin-bottom: 28px;
-    padding: 0 22px;
-  `};
+  &::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -3px;
+    width: 275px;
+    z-index: 0 !important;
+    height: 50%;
+    border: 1px solid;
+    border-color: ${theme('divider')};
+    background: ${theme('alphaBg2')};
+    border-radius: 6px;
+    transform: rotate(-2deg);
+  }
 `
-
+export const InnerWrapper = styled.div`
+  padding: 16px 22px;
+  background: ${theme('htmlBg')};
+  border: 1px solid;
+  border-color: ${theme('divider')};
+  border-radius: 7px;
+  z-index: 10;
+`
 export const Header = styled.div`
   ${css.column()};
   margin-bottom: 12px;

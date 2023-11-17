@@ -76,8 +76,8 @@ const Input: FC<TProps> = ({
         onBlur={handleOnBlur}
         spellCheck="false"
         // prefix={false}
-        hasPrefix={!nilOrEmpty(prefixIcon)}
-        hasSuffix={!nilOrEmpty(suffixIcon)}
+        $hasPrefix={!nilOrEmpty(prefixIcon)}
+        $hasSuffix={!nilOrEmpty(suffixIcon)}
         autoFocus={autoFocus}
         // @ts-ignore
         {...validProps}

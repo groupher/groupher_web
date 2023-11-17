@@ -54,7 +54,7 @@ type TProps = {
 
 const Menu: FC<TProps> = ({ options, extraOptions, onClick, panelMinWidth }) => {
   return (
-    <Wrapper panelMinWidth={panelMinWidth}>
+    <Wrapper $panelMinWidth={panelMinWidth}>
       {options.map((item) => (
         <Fragment key={item.key}>
           <OptionBlock item={item} onClick={() => onClick(item.key)} />
