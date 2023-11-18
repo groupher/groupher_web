@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite'
 import { keys } from 'ramda'
 
 import type { TDashboardPath } from '@/spec'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
 import { Br } from '@/widgets/Common'
 
 import { MENU } from '../constant'
@@ -19,20 +18,13 @@ type TProps = {
 }
 
 const SideMenu: FC<TProps> = ({ curTab = '', touched = null }) => {
-  const curCommunity = useViewingCommunity()
-
   const groupKeys = keys(MENU)
 
   return (
     <MobileWrapper>
       {groupKeys.map((key) => (
         <Fragment key={key}>
-          <Group
-            group={MENU[key] as TMenuGroup}
-            curTab={curTab}
-            touched={touched}
-            community={curCommunity}
-          />
+          <Group group={MENU[key] as TMenuGroup} curTab={curTab} touched={touched} />
           <Br top={30} />
         </Fragment>
       ))}

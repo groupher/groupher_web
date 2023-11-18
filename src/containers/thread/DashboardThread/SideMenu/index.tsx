@@ -14,23 +14,16 @@ import { Wrapper } from '../styles/side_menu'
 type TProps = {
   curTab?: TDashboardPath
   touched?: TTouched
-  community: TCommunity
 }
 
-const SideMenu: FC<TProps> = ({ curTab = '', touched = null, community }) => {
+const SideMenu: FC<TProps> = ({ curTab = '', touched = null }) => {
   const groupKeys = keys(MENU)
 
   return (
     <Wrapper>
       <Sticky offsetTop={30}>
         {groupKeys.map((key) => (
-          <Group
-            key={key}
-            community={community}
-            group={MENU[key] as TMenuGroup}
-            curTab={curTab}
-            touched={touched}
-          />
+          <Group key={key} group={MENU[key] as TMenuGroup} curTab={curTab} touched={touched} />
         ))}
       </Sticky>
     </Wrapper>

@@ -69,7 +69,7 @@ const DashboardThread: FC = () => {
 
   return (
     <Wrapper $testid="dashboard-thread" metric={metric}>
-      <SideMenu curTab={curTab} touched={touched} community={curCommunity} />
+      <SideMenu curTab={curTab} touched={touched} />
 
       <MainWrapper>
         {curTab === DASHBOARD.OVERVIEW && <Overview data={overviewData} />}

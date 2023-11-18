@@ -1,9 +1,10 @@
 import { FC, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import type { TCommunity, TDashboardPath } from '@/spec'
+import type { TDashboardPath } from '@/spec'
 import { DASHBOARD_ROUTE } from '@/constant/route'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import type { TMenuGroup, TTouched } from '../spec'
 
@@ -22,10 +23,10 @@ type TProps = {
   group: TMenuGroup
   curTab: TDashboardPath | string
   touched: TTouched | null
-  community: TCommunity
 }
 
-const Group: FC<TProps> = ({ group, curTab, touched, community }) => {
+const Group: FC<TProps> = ({ group, curTab, touched }) => {
+  const community = useViewingCommunity()
   const primaryColor = usePrimaryColor()
   const [fold, setFold] = useState(group.initFold)
 

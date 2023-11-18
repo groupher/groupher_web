@@ -24,6 +24,7 @@ const usePublicThreads = (): TCommunityThread[] => {
   const { threads } = community
 
   const enabledThreads = sortByIndex(threads.filter((thread) => enable[thread.slug]))
+
   const mappedThreads = enabledThreads.map((pThread) => {
     const aliasItem = find(propEq(pThread.slug, 'slug'))(nameAlias) as TNameAlias
 

@@ -2,9 +2,15 @@ import styled, { createGlobalStyle } from 'styled-components'
 import Link from 'next/link'
 
 import css, { theme } from '@/css'
+
 import OptionArrowSVG from '@/icons/OptionArrow'
 import ArrowSVG from '@/icons/ArrowUpRight'
 import DiscussSVG from '@/icons/Discuss'
+import KanbanSVG from '@/icons/Kanban'
+import AboutSVG from '@/icons/Info'
+import GuideSVG from '@/icons/Guide'
+import ChangelogSVG from '@/icons/TadaRaw'
+
 import GithubSVG from '@/icons/Github8'
 import GlobalSVG from '@/icons/social/Global'
 import PlusSVG from '@/icons/PlusCircle'
@@ -49,7 +55,7 @@ export const OptionArrowIcon = styled(OptionArrowSVG)`
   fill: ${theme('article.digest')};
   ${css.size(12)};
   margin-right: 6px;
-  opacity: 0;
+  opacity: 0.8;
 
   ${Wrapper}:hover & {
     opacity: 1;
@@ -62,15 +68,21 @@ export const Logo = styled(Img)`
   margin-left: -1px;
 `
 export const Title = styled.div`
+  ${css.row('align-both')};
   color: ${theme('article.digest')};
   ${css.cutRest('120px')};
-  font-size: 16px;
-  margin-left: 8px;
+  margin-left: 6px;
+  font-size: 15px;
   font-weight: 500;
 
   ${Wrapper}:hover & {
     ${css.cutRest('90px')};
   }
+`
+export const Slash = styled.div`
+  font-size: 12px;
+  color: ${theme('hint')};
+  margin-right: 6px;
 `
 export const LogoHolder = styled(Img)`
   fill: ${theme('banner.desc')};
@@ -136,15 +148,21 @@ const commonIcon = (comp) => {
 
 export const Icon = {
   Global: commonIcon(GlobalSVG),
+  Post: commonIcon(DiscussSVG),
+  Kanban: styled(commonIcon(KanbanSVG))`
+    transform: rotate(180deg);
+  `,
+  About: commonIcon(AboutSVG),
+  Doc: commonIcon(GuideSVG),
+  Changelog: commonIcon(ChangelogSVG),
+
   Github: styled(commonIcon(GithubSVG))`
     margin-left: 2px;
     margin-right: 12px;
     ${css.size(12)};
   `,
-  Discuss: commonIcon(DiscussSVG),
   Plus: styled(commonIcon(PlusSVG))`
     ${css.size(15)};
-    margin-left: 1px;
     margin-right: 10px;
   `,
 }

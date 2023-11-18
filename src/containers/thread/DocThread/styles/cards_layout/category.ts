@@ -27,7 +27,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
     height: 50%;
     border: 1px solid;
     border-color: ${theme('divider')};
-    background: ${theme('alphaBg2')};
+    background: ${theme('alphaBg')};
     border-radius: 6px;
     transform: rotate(-2deg);
   }
