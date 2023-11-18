@@ -16,7 +16,7 @@ const log = buildLog('w:NaviIntro:index')
 
 const NaviIntro = ({ title, desc, iconSrc, testid }) => {
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <Logo src={iconSrc} />
       <Digest>
         <Title>{title}</Title>

@@ -49,7 +49,7 @@ const ExpandIcon: FC<TProps> = ({
       onHide={() => setActive(false)}
       onShow={() => setActive(true)}
     >
-      <Wrapper testid="ExpandIcon" active={active} hideTextOnInit={hideTextOnInit}>
+      <Wrapper $testid="ExpandIcon" active={active} hideTextOnInit={hideTextOnInit}>
         {isString(icon) ? (
           <Icon src={icon as string} active={active} type={type} size={size} />
         ) : (

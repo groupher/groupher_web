@@ -5,8 +5,8 @@ import css from '@/css'
 import { BANNER_LAYOUT } from '@/constant'
 
 type TWrapper = TTestable & { $bannerLayout: TBannerLayout }
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   ${css.column('align-center')};
   width: ${({ $bannerLayout }) =>
@@ -26,7 +26,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   }};
 
   margin-top: 10px;
-  margin: ${({ $bannerLayout }) => ($bannerLayout === BANNER_LAYOUT.HEADER ? '0 6%;' : '0')};
+  margin: 0;
 
   ${css.media.mobile`
     margin: 0;

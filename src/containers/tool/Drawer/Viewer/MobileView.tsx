@@ -79,7 +79,7 @@ const Viewer: FC<TProps> = ({
     <>
       <DrawerOverlay ref={overlayRef} visible={visible} onClick={() => closeDrawer()} />
       <DrawerWrapper
-        testid={testid}
+        $testid={testid}
         $visible={visible}
         type={type}
         swipeUpY={swipeUpY}

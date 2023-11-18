@@ -11,8 +11,8 @@ import DemoSVG from '@/icons/DemoTV'
 import ArrowSVG from '@/icons/ArrowSimple'
 import GithubSVT from '@/icons/social/Github'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.row('align-center', 'justify-between')};
   max-width: 1200px;

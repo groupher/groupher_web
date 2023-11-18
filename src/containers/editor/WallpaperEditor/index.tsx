@@ -29,7 +29,7 @@ const WallpaperEditor: FC = () => {
   const { tab, wallpaperData, isTouched, loading } = store
 
   return (
-    <Wrapper testid="wallpaper-editor">
+    <Wrapper $testid="wallpaper-editor">
       <Banner>
         <Title>壁纸设置</Title>
         <Tabs items={TAB_OPTIONS} activeKey={tab} onChange={changeTab} view={VIEW.DRAWER} />

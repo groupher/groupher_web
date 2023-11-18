@@ -18,7 +18,7 @@ export type TProps = {
   space?: number
 }
 const DotDivider: FC<TProps> = ({ radius = 2, space = 3, className = 'dot-divider-class' }) => {
-  return <Wrapper radius={radius} space={space} className={className} />
+  return <Wrapper className={className} $radius={radius} $space={space} />
 }
 
 export default memo(DotDivider)

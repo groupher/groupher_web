@@ -48,7 +48,7 @@ const SidebarLayout: FC = () => {
   const enable = useEnable()
 
   return (
-    <Wrapper testid="community-digest" isMobile={isMobile}>
+    <Wrapper $testid="community-digest" isMobile={isMobile}>
       <Sticky>
         <InnerWrapper minHeight={viewHeight}>
           <CommunityBrief />

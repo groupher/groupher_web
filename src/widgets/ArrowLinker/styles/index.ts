@@ -7,8 +7,8 @@ import ArrowSVG from '@/icons/ArrowUpRight'
 
 type TWrapper = TTestable & TSpace
 
-export const Wrapper = styled.article.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.article.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   ${css.row('align-center')};
 

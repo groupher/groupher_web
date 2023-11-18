@@ -14,7 +14,7 @@ const DefaultLayout = ({ testid, activeByDefault, title, desc }) => {
   const [active, setActive] = useState(activeByDefault)
 
   return (
-    <Wrapper testid={testid} active={active}>
+    <Wrapper $testid={testid} active={active}>
       <InnerWrapper>
         {!active ? (
           <InActiveView onOpen={() => setActive(true)} />

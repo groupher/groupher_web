@@ -19,7 +19,7 @@ const MainEntries: FC = () => {
   return (
     <Wrapper onClick={openMobileNaviMenu}>
       {/* @ts-ignore */}
-      <SiteLink as="span" testid="header-mobile">
+      <SiteLink as="span" $testid="header-mobile">
         <MobileIcon />
       </SiteLink>
     </Wrapper>

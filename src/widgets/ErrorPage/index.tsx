@@ -48,8 +48,8 @@ const ErrorPage: FC<TProps> = ({
   target = '',
 }) => {
   return (
-    <Wrapper testid={testid}>
-      <LogoWrapper href="/" testid="site-logo">
+    <Wrapper $testid={testid}>
+      <LogoWrapper href="/" $testid="site-logo">
         <SiteLogo />
         <SiteTitle>oderPlanets</SiteTitle>
       </LogoWrapper>
@@ -70,7 +70,7 @@ const ErrorPage: FC<TProps> = ({
           {errorCode === 404 ? (
             <NotFoundMessage metric={metric} path={target || '/'} />
           ) : (
-            <HintTitle testid={testid}>抱歉，服务器发生错误</HintTitle>
+            <HintTitle $testid={testid}>抱歉，服务器发生错误</HintTitle>
           )}
           <ErrorDesc code={errorCode} />
         </TextWrapper>

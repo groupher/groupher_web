@@ -8,8 +8,8 @@ import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import { WithMargin } from '@/widgets/Common'
 
 type TWrapper = { color: TColorName } & TTestable
-export const Wrapper = styled(WithMargin).attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled(WithMargin).attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   ${css.row('align-center')};
   position: relative;

@@ -47,7 +47,7 @@ const SimpleLayout: FC<TProps> = ({ testid = 'changelog-item', article }) => {
   const { slug } = useViewingCommunity()
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <DateTime>
         <ReadableDate date={article.insertedAt} withTime={false} />
       </DateTime>

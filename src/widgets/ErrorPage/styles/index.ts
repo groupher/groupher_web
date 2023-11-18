@@ -9,8 +9,8 @@ import SiteLogoSVG from '@/icons/CPLogo'
 
 // import PromptIcon from '@/widgets/PromptIcon'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.column('align-center', 'justify-between')};
   height: 100vh;
@@ -19,8 +19,8 @@ export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
   // background: ${theme('banner.bg')};
   background: rgba(0, 59, 74, 0.5);
 `
-export const LogoWrapper = styled(Link).attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const LogoWrapper = styled(Link).attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.row('align-center')};
   margin-top: 20px;
@@ -75,8 +75,8 @@ export const TextWrapper = styled.div`
 export const HintWrapper = styled.div`
   ${css.column('align-center')};
 `
-export const HintTitle = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const HintTitle = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   color: ${theme('article.title')};
   text-align: center;

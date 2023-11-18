@@ -5,8 +5,8 @@ import type { TTestable } from '@/spec'
 import css, { theme } from '@/css'
 import ShareSVG from '@/icons/Share'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.row('align-start')};
   padding-top: 12px;

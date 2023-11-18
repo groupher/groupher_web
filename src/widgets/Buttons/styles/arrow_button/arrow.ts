@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 
 // import Img from '@/Img'
-import type { TColorName } from '@/spec'
+import type { TColor } from '@/spec'
 import css, { rainbowLink } from '@/css'
 
 import { Wrapper as ButtonWrapper } from '.'
 
-type TArrow = { color: TColorName; down?: boolean; up?: boolean } & { $reverseColor: boolean }
+type TArrow = { $down?: boolean; $up?: boolean } & { $reverseColor: boolean } & TColor
 
 const BaseArrow = styled.div<TArrow>`
   opacity: 0.65;
@@ -20,9 +20,9 @@ const BaseArrow = styled.div<TArrow>`
   border: dotted;
   border-width: 0 0px 1px 0;
 
-  transform: ${({ up, down }) => {
-    if (down) return 'rotate(90deg)'
-    if (up) return 'rotate(-90deg)'
+  transform: ${({ $up, $down }) => {
+    if ($down) return 'rotate(90deg)'
+    if ($up) return 'rotate(-90deg)'
 
     return 'none'
   }};
@@ -44,10 +44,10 @@ const BaseArrow = styled.div<TArrow>`
     box-sizing: border-box;
     position: absolute;
     border: solid;
-    border-color: ${({ color, $reverseColor }) => {
+    border-color: ${({ $color, $reverseColor }) => {
       if ($reverseColor) return 'white'
 
-      return rainbowLink(color)
+      return rainbowLink($color)
     }};
     border-width: 0 1px 1px 0;
     padding: 3px;
@@ -81,6 +81,7 @@ export const LeftArrow = styled(BaseArrow)`
 export const RightArrow = styled(BaseArrow)`
   box-sizing: border-box;
   margin-left: 6px;
+  margin-top: 0 !important;
 
   ${ButtonWrapper}:hover & {
     width: 8px;

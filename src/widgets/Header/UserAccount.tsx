@@ -50,12 +50,12 @@ const UserAccount: FC<TProps> = ({ accountInfo }) => {
             </PopMenu>
           }
         >
-          <Wrapper testid="header-login-user">
+          <Wrapper $testid="header-login-user">
             <AvatarIcon src={accountInfo.avatar} />
           </Wrapper>
         </Tooltip>
       ) : (
-        <Wrapper testid="header-unlogin-user" onClick={() => authWarn()}>
+        <Wrapper $testid="header-unlogin-user" onClick={() => authWarn()}>
           <DefaultUserIcon />
         </Wrapper>
       )}

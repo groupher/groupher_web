@@ -4,8 +4,8 @@ import type { TTestable } from '@/spec'
 import css, { theme } from '@/css'
 
 type TWrapper = TTestable & { isSidebarLayout: boolean }
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   ${css.column('align-center')};
   width: ${({ isSidebarLayout }) => (isSidebarLayout ? 'auto' : '100%')};

@@ -6,8 +6,8 @@ import type { TTestable } from '@/spec'
 import css, { theme } from '@/css'
 
 type TWrapper = TTestable & { mBottom: number }
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   margin-bottom: ${({ mBottom }) => `${mBottom}px`};
 `

@@ -41,7 +41,7 @@ const TabberLayout: FC = () => {
   const { customLinks } = useHeaderLinks()
 
   return (
-    <Wrapper testid="community-digest" isMobile={isMobile}>
+    <Wrapper $testid="community-digest" isMobile={isMobile}>
       <InnerWrapper metric={metric} isMobile={isMobile}>
         <BannerContentWrapper>
           <CommunityBaseInfo>

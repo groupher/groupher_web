@@ -68,8 +68,8 @@ const DashboardThread: FC = () => {
   const { DASHBOARD } = ROUTE
 
   return (
-    <Wrapper testid="dashboard-thread" metric={metric}>
-      <SideMenu curTab={curTab} touched={touched} community={curCommunity} />
+    <Wrapper $testid="dashboard-thread" metric={metric}>
+      <SideMenu curTab={curTab} touched={touched} />
 
       <MainWrapper>
         {curTab === DASHBOARD.OVERVIEW && <Overview data={overviewData} />}

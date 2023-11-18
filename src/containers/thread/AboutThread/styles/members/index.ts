@@ -6,8 +6,8 @@ import { AVATAR_LAYOUT } from '@/constant/layout'
 import Img from '@/Img'
 import css, { theme } from '@/css'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.column()};
   width: 100%;

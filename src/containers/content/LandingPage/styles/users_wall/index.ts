@@ -4,8 +4,8 @@ import type { TColorName, TTestable } from '@/spec'
 
 import css, { theme, rainbowLight } from '@/css'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.column('align-both')};
   width: 100%;

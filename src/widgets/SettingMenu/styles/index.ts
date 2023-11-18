@@ -7,8 +7,8 @@ import css, { theme } from '@/css'
 
 type TWrapper = TTestable & { width: number }
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   ${css.column()};
   width: ${({ width }) => `${width}px`};

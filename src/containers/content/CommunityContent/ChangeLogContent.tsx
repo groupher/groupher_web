@@ -32,7 +32,7 @@ const ChangelogContent: FC = () => {
   const LayoutWrapper = globalLayout.banner === BANNER_LAYOUT.SIDEBAR ? SidebarWrapper : Wrapper
 
   return (
-    <LayoutWrapper testid="changelog-thread-content" metric={metric}>
+    <LayoutWrapper $testid="changelog-thread-content" metric={metric}>
       <CommunityDigest />
       {isMobile ? (
         <MobileCardsWrapper>

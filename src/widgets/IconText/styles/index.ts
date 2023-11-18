@@ -13,8 +13,8 @@ type TIcon = {
 }
 
 type TWrapper = { dimWhenIdle: boolean } & TTestable
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   ${css.row('align-center')};
   opacity: ${({ dimWhenIdle }) => (dimWhenIdle ? 0.7 : 1)};

@@ -5,8 +5,8 @@ import css, { theme } from '@/css'
 
 import CloseSVG from '@/widgets/Icons/CloseCross'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable & { closeable: boolean }>`
   ${css.row('align-both')};
   font-size: 14px;

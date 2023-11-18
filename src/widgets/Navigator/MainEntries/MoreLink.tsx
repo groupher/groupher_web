@@ -18,7 +18,7 @@ const MoreLink: FC = () => {
       noPadding
     >
       {/* @ts-ignore */}
-      <SiteLink as="div" testid="header-more-link">
+      <SiteLink as="div" $testid="header-more-link">
         更多 <ArrowIcon />
       </SiteLink>
     </Tooltip>

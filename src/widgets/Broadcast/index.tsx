@@ -45,7 +45,7 @@ const Broadcast: FC<TProps> = ({ testid = 'banner-notify' }) => {
   if (!enabled) return null
 
   return (
-    <Wrapper testid={testid} bg={bg} id={ANCHOR.GLOBAL_HEADER_ID}>
+    <Wrapper $testid={testid} bg={bg} id={ANCHOR.GLOBAL_HEADER_ID}>
       <InnerWrapper metric={metric} center={layout === BROADCAST_LAYOUT.CENTER}>
         <Row>
           <NotifyIcon />

@@ -30,7 +30,7 @@ const BlinkCursor: FC<TProps> = ({
 }) => {
   return (
     <Wrapper
-      testid={testid}
+      $testid={testid}
       height={height}
       top={top}
       left={left}

@@ -88,7 +88,7 @@ const CollapseMenu = ({
   const groupsKeys = keys(groupedItems)
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       {groupsKeys.map((groupKey) => (
         <Group
           key={groupKey}

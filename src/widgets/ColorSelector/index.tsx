@@ -49,7 +49,7 @@ const ColorSelector: FC<TProps> = ({
       hideOnClick={false}
       offset={offset}
       content={
-        <Wrapper testid={testid}>
+        <Wrapper $testid={testid}>
           {colorKeys.map((name) => {
             // const $active = name === activeColor || COLOR_NAME.BLACK === activeColor
             const $active = name === activeColor

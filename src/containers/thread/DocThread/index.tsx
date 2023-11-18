@@ -41,7 +41,7 @@ const DocThread: FC<TProps> = ({ title = 'title' }) => {
   }
 
   return (
-    <Wrapper testid="doc-thread" $bannerLayout={bannerLayout}>
+    <Wrapper $testid="doc-thread" $bannerLayout={bannerLayout}>
       {layout === DOC_LAYOUT.BLOCKS && <BlocksLayout />}
       {layout === DOC_LAYOUT.LISTS && <ListsLayout />}
       {layout === DOC_LAYOUT.CARDS && <CardsLayout />}

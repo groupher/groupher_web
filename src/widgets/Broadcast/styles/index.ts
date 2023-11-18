@@ -8,8 +8,8 @@ import ArrowSVG from '@/icons/Arrow'
 import NotifySVG from '@/icons/Trumpet'
 
 type TWrapper = TTestable & { bg: TColorName }
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   ${css.row('align-both')};
   width: 100%;

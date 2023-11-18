@@ -4,8 +4,8 @@ import type { TTestable, TActive } from '@/spec'
 import css, { theme } from '@/css'
 import HeaderMailSVG from '@/SvgIcons/HeaderMailSVG'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   position: relative;
 `

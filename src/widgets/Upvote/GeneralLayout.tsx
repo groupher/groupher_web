@@ -42,7 +42,7 @@ const Upvote: FC<TProps> = ({
   const noOne = count === 0
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <Button $active={viewerHasUpvoted} color={primaryColor} onClick={handleClick}>
         <UpvoteBtnWrapper>
           <UpvoteBtn

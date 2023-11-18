@@ -5,8 +5,8 @@ import css, { theme } from '@/css'
 
 export { getSelectStyles } from './metric'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>``
 
 export const OptionRow = styled.div`

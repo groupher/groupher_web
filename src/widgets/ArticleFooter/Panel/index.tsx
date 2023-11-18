@@ -32,7 +32,7 @@ const Panel: FC<TProps> = ({ testid = 'author-info' }) => {
   const [tab, setTab] = useState(TAB_ACTIVITIES)
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <TabsWrapper>
         <Tabs
           items={TAB_ITEMS}

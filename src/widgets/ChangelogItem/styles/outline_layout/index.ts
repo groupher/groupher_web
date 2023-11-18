@@ -6,8 +6,8 @@ import css, { theme, rainbowLight } from '@/css'
 
 import CommentSVG from '@/icons/Comment'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.row('align-start')};
   margin-bottom: 20px;

@@ -33,7 +33,7 @@ const HeaderLayout: FC = () => {
   return (
     <Wrapper
       id={ANCHOR.GLOBAL_HEADER_ID}
-      testid="community-digest"
+      $testid="community-digest"
       metric={metric}
       $headerLayout={headerLayout}
     >

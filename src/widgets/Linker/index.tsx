@@ -40,7 +40,7 @@ const Linker: FC<TProps> = ({
   if (!src) return null
 
   return (
-    <Wrapper testid={testid} inline={inline} {...restProps}>
+    <Wrapper $testid={testid} inline={inline} {...restProps}>
       <LinkIcon />
       {/* {!external ? <LinkOutIcon /> : <LinkIcon />} */}
       <Tooltip

@@ -105,8 +105,10 @@ export const PanelItem = styled(Link)<{ $outside?: boolean }>`
 
   &:hover {
     color: ${theme('article.title')};
-    background: ${theme('hoverBg')};
+    background: ${theme('menuHoverBg')};
+    box-shadow: ${theme('button.boxShadow')};
     text-decoration: ${({ $outside }) => ($outside ? 'underline' : 'none')};
+    text-decoration-color: ${theme('hint')};
   }
 `
 export const ArrowIcon = styled(ArrowSVG)`

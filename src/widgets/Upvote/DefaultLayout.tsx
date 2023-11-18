@@ -52,7 +52,7 @@ const Upvote: FC<TProps> = ({
   const names = !noOne ? avatarList.map((user) => user.nickname).slice(0, 4) : []
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <Button $active={viewerHasUpvoted} color={primaryColor} onClick={handleClick}>
         <UpvoteBtnWrapper>
           <UpvoteBtn

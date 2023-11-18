@@ -33,7 +33,7 @@ const SettingMenu: FC<TProps> = ({
   onChange = log,
 }) => {
   return (
-    <Wrapper testid={testid} width={width}>
+    <Wrapper $testid={testid} width={width}>
       {options.map((option) => (
         <Option
           key={option.key}

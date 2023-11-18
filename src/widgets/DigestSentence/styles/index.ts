@@ -9,8 +9,8 @@ import ThunderSVG from '@/icons/Thunder'
 import { getFontSize } from './metric'
 
 type TWrapper = TTestable & TSpace & { size: TSizeSM; interactive: boolean }
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   color: ${theme('article.digest')};
   font-size: ${({ size }) => getFontSize(size)};

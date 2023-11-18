@@ -15,6 +15,7 @@ export type TPagi = {
 
 export type TTestable = {
   testid?: string
+  $testid?: string
   'data-test-id'?: string
 }
 

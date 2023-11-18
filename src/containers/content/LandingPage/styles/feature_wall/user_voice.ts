@@ -4,8 +4,8 @@ import type { TTestable, TColorName } from '@/spec'
 import css, { theme, rainbow, rainbowLight } from '@/css'
 import TreesSVG from '@/icons/Trees'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.rowWrap('align-both')};
   gap: 40px 25px;

@@ -35,7 +35,7 @@ const CoverEditor: FC<TProps> = ({ testid = 'cover-editor', onDelete = log, onRe
   // const imageUrl = ''
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <Cover setting={toolboxSetting} imageUrl={imageUrl} />
       <Toolbox setting={toolboxSetting} onDelete={onDelete} onReplace={onReplace} />
     </Wrapper>

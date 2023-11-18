@@ -6,8 +6,8 @@ import type { TTestable, TSpace } from '@/spec'
 import css, { theme } from '@/css'
 
 type TWrapper = TTestable & TSpace & { width: string }
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   ${css.column('align-center')};
   width: ${({ width }) => width};

@@ -4,8 +4,8 @@ import type { TTestable } from '@/spec'
 
 import css, { theme } from '@/css'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.column('align-both')};
   width: 100%;

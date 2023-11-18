@@ -19,7 +19,7 @@ const log = buildLog('w:LinksCard:index')
 
 const LinksCard = ({ testid, title, items, onSelect, left, right, bottom }) => {
   return (
-    <Wrapper testid={testid} left={left} right={right} bottom={bottom}>
+    <Wrapper $testid={testid} left={left} right={right} bottom={bottom}>
       <Header>
         <Title>{title}</Title>
       </Header>

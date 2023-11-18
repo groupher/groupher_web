@@ -32,7 +32,7 @@ const DocContent: FC = () => {
   const LayoutWrapper = isSidebarLayout ? SidebarWrapper : Wrapper
 
   return (
-    <LayoutWrapper testid="doc-thread-content" metric={metric}>
+    <LayoutWrapper $testid="doc-thread-content" metric={metric}>
       <CommunityDigest />
       {isMobile ? (
         <MobileCardsWrapper>

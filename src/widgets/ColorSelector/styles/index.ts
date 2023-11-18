@@ -6,8 +6,8 @@ import { COLOR_NAME } from '@/constant/colors'
 import HookSVG from '@/icons/Hook'
 import css, { theme, rainbow, rainbowLight } from '@/css'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.row('align-center')};
   padding: 5px;

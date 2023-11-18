@@ -112,7 +112,7 @@ const ModelineView: FC<TProps> = ({
   }px`
 
   return (
-    <Wrapper testid="tabs">
+    <Wrapper $testid="tabs">
       <Nav ref={navRef}>
         {items.map((item, index) => (
           <TabItem

@@ -43,7 +43,7 @@ const KanbanItem: FC<TProps> = ({ testid = 'gtd-item', article }) => {
   const tags = mockTags(8)
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <Header>
         <TagsList items={[tags[titleIdx]]} left={2} />
         {/* <IconButton path="shape/more.svg" /> */}

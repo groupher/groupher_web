@@ -39,7 +39,7 @@ const FaIcons: FC<TProps> = ({ testid = 'fa-icons', size = 16, ...restProps }) =
   const [selectIcon, setSelectIcon] = useState<TIcon>(iconNames[0])
 
   return (
-    <Wrapper testid={testid} {...restProps}>
+    <Wrapper $testid={testid} {...restProps}>
       <InnerWrapper>
         <Tooltip
           content={

@@ -30,7 +30,7 @@ const SubTitle: FC<TProps> = ({
 }) => {
   const router = useRouter()
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <Title>{children}</Title>
       <OptionWrapper>
         {withMore && <ArrowButton onClick={() => router.push(moreLink)}>更多</ArrowButton>}

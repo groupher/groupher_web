@@ -20,7 +20,7 @@ type TProps = {
 
 const ArticleFooter: FC<TProps> = ({ testid = 'article-footer' }) => {
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <Panel />
     </Wrapper>
   )

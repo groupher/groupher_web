@@ -72,7 +72,7 @@ const ArticleMenu: FC<TProps> = ({ testid = 'archived-sign', verticalIcon, artic
       placement="bottom-end"
       onClick={(key) => hendleMenu(key, article)}
     >
-      <Wrapper testid={testid}>
+      <Wrapper $testid={testid}>
         <MoreIcon src={icon} />
       </Wrapper>
     </MenuButton>

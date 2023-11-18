@@ -24,7 +24,7 @@ const ThemeSwitch: FC<TProps> = ({ testid = 'theme-switch', ...restProps }) => {
   const { curTheme, changeTheme } = useTheme()
 
   return (
-    <Wrapper testid={testid} {...restProps}>
+    <Wrapper $testid={testid} {...restProps}>
       <Button
         className="theme-toggle"
         id="theme-toggle"

@@ -18,7 +18,7 @@ const DocLayout: FC<TProps> = ({ testid = 'sidebar-layout-header' }) => {
   const community = 'home'
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <MainArea>
         <MenuLink href={`/${community}/${ROUTE.POST}`}>
           <Icon.Home />

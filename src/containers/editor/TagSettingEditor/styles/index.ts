@@ -6,8 +6,8 @@ import css, { theme, rainbow } from '@/css'
 
 import Input from '@/widgets/Input'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   margin-top: 40px;
   padding-bottom: 100px;

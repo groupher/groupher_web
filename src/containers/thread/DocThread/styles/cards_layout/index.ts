@@ -12,14 +12,16 @@ export const Wrapper = styled.div<{ $bannerLayout?: TBannerLayout }>`
   ${({ $bannerLayout }) =>
     $bannerLayout === BANNER_LAYOUT.TABBER
       ? 'margin-top: 5px;margin-left: 48px;'
-      : 'margin-top: 30px;margin-left: -30px;'}
+      : 'margin-top: 30px;margin-left: 0;'}
 `
 export const CatsWrapper = styled(MainWrapper)<{ $bannerLayout?: TBannerLayout }>`
-  ${css.rowWrap('justify-between')};
-  gap: 20px 10px;
+  ${css.rowWrap()};
+  gap: 30px 32px;
   width: ${({ $bannerLayout }) =>
     $bannerLayout === BANNER_LAYOUT.TABBER ? 'calc(100% + 90px);' : '100%'};
   min-height: 600px;
+  padding-right: 0;
+  padding-left: 16px;
 
   background: transparent;
   border-right: none;

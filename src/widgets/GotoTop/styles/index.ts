@@ -5,8 +5,8 @@ import css, { theme } from '@/css'
 
 import AirBalloonSVG from '@/widgets/Icons/AirBalloon'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.size(30)};
   ${css.row('align-both')};

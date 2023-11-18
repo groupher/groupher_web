@@ -5,8 +5,8 @@ import css, { theme } from '@/css'
 import SiteLogo from '@/icons/CPLogo'
 import ArrowSVG from '@/icons/ArrowSimple'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.row('align-both')};
   width: 100%;

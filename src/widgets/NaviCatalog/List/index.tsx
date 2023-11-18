@@ -55,7 +55,7 @@ const List: FC<TProps> = ({
   const activePathIdList = [...map(prop('id'), activePath), activeCatalogId]
 
   return (
-    <Wrapper isRootMenu={menuMode === ROOT_MENU} testid={testid}>
+    <Wrapper isRootMenu={menuMode === ROOT_MENU} $testid={testid}>
       {catalogItems.map((item) => {
         const active = includes(item.id, activePathIdList)
 

@@ -7,8 +7,8 @@ import GotoTopSVG from '@/icons/Arrow2Top'
 import GotoBackSVG from '@/icons/Arrow'
 
 type TWrapper = TTestable & { isMenuActive: boolean; show: boolean }
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   ${css.row('align-both')};
   display: ${({ show }) => (show ? 'flex' : 'none')};

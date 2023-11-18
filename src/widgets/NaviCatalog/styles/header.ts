@@ -6,8 +6,8 @@ import css, { theme } from '@/css'
 
 const activeColor = '#009C9E'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.row('align-center', 'justify-between')}
   width: 100%;

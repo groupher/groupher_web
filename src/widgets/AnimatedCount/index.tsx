@@ -39,7 +39,7 @@ export type TProps = {
 
 const Count: FC<TProps> = ({ count = 0, size = SIZE.SMALL, $active = false, ...restProps }) => {
   return (
-    <Wrapper $active={$active} count={count} {...restProps}>
+    <Wrapper $active={$active} $count={count} {...restProps}>
       <AnimatedCount count={count} size={size} $active={$active} />
     </Wrapper>
     // <LoadingValueContext.Provider value={{ count, size, active }}>

@@ -59,7 +59,7 @@ const DigestSentence: FC<TProps> = ({
 
   return (
     <Wrapper
-      testid={testid}
+      $testid={testid}
       onClick={() => interactive && onPreview()}
       size={size}
       interactive={interactive}

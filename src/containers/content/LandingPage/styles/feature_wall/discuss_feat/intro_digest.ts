@@ -7,8 +7,8 @@ import { FEAT } from '../../../constant'
 
 export { FeatList } from '..'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.column('align-start')};
   width: 48%;

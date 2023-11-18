@@ -8,8 +8,8 @@ import { baseInput } from '.'
 
 type TWrapper = TTestable | { spellCheck: string }
 
-export const Wrapper = styled(TextareaAutosize).attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled(TextareaAutosize).attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   ${baseInput};
   color: ${theme('article.title')};

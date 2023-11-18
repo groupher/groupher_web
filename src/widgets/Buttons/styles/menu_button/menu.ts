@@ -6,10 +6,10 @@ import css, { theme } from '@/css'
 
 import { getLocalSVG } from '@/icons'
 
-export const Wrapper = styled.div<{ panelMinWidth: string }>`
+export const Wrapper = styled.div<{ $panelMinWidth: string }>`
   ${css.column('align-center')};
   width: 100%;
-  min-width: ${({ panelMinWidth }) => panelMinWidth};
+  min-width: ${({ $panelMinWidth }) => $panelMinWidth};
   max-height: 300px;
   overflow: hidden;
   padding: 4px 3px;

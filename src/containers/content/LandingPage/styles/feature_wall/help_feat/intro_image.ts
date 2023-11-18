@@ -8,8 +8,8 @@ import BadSVG from './BadSVG'
 import SoSoSVG from './SoSoSVG'
 import GoodSVG from './GoodSVG'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.columnGrow('align-both')};
   position: relative;

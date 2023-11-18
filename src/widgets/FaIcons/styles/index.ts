@@ -5,8 +5,8 @@ import { WithMargin } from '@/widgets/Common'
 
 type TWrapper = { opacity?: number } & TTestable
 
-export const Wrapper = styled(WithMargin).attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled(WithMargin).attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   opacity: ${({ opacity }) => opacity || 1};
 `

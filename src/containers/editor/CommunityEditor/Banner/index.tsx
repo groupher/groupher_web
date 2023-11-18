@@ -73,7 +73,7 @@ const Banner: FC<TProps> = ({
     }
   }
 
-  return <Wrapper testid="create-community-digest">{stepComp}</Wrapper>
+  return <Wrapper $testid="create-community-digest">{stepComp}</Wrapper>
 }
 
 export default memo(Banner)

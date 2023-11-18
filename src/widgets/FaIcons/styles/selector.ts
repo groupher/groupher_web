@@ -8,8 +8,8 @@ import { WithMargin } from '@/widgets/Common'
 
 type TWrapper = TTestable
 
-export const Wrapper = styled(WithMargin).attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled(WithMargin).attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   width: auto;
   cursor: pointer;

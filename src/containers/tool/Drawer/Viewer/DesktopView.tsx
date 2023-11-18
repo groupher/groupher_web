@@ -41,7 +41,7 @@ const DesktopView: FC<TProps> = ({
         className={ANCHOR.GLOBAL_BLUR_CLASS}
       />
       <DrawerWrapper
-        testid={testid}
+        $testid={testid}
         $visible={visible}
         $fromContentEdge={fromContentEdge}
         $rightOffset={rightOffset}

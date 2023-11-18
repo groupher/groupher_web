@@ -77,7 +77,7 @@ const SocialEditor: FC<TProps> = ({
   )
 
   return (
-    <Wrapper testid={testid} width={width} {...restProps}>
+    <Wrapper $testid={testid} width={width} {...restProps}>
       {withTitle && <Label>社交平台账号</Label>}
       <Br top={18} />
       <Hint>点击选择社交平台，相关信息会展示在页脚以及社区关于页面。</Hint>

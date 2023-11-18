@@ -50,7 +50,7 @@ const Copyright: FC<TProps> = ({
   onChange = log,
 }) => {
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <Tooltip
         content={
           mode === 'readonly' ? (

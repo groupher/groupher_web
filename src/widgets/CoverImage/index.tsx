@@ -19,7 +19,7 @@ type TProps = {
 
 const CoverImage: FC<TProps> = ({ testid = 'cover-image' }) => {
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <ImageWrapper>
         <Image src="/help-cover-demo.png" noLazy />
       </ImageWrapper>

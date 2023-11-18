@@ -38,8 +38,8 @@ const AddOns: FC<TProps> = ({ accountInfo }) => {
       </div>
       <Divider>&nbsp;</Divider>
       <Operations>
-        <Search onClick={() => send(EVENT.QUERY_DORAMON)} testid="header-search">
-          <HeaderSearchIcon testid="header-search-icon" />
+        <Search onClick={() => send(EVENT.QUERY_DORAMON)} $testid="header-search">
+          <HeaderSearchIcon $testid="header-search-icon" />
         </Search>
 
         {/* {MailBox && <MailBox />} */}

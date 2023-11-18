@@ -41,7 +41,7 @@ const TheAvatar: FC<TProps> = ({
     }
     default: {
       return (
-        <Wrapper testid={testid}>
+        <Wrapper $testid={testid}>
           <div>?</div>
         </Wrapper>
       )

@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
 `
 
 type TMainWrapper = {
-  thread?: TThread
+  $thread?: TThread
   $postLayout?: TPostLayout
 }
 
@@ -26,16 +26,12 @@ export const MainWrapper = styled.div<TMainWrapper>`
   width: 100%;
 
   background: transparent;
-  /* background: ${({ thread }) =>
-    includes(thread, values(CARD_THREAD)) ? 'transparent' : theme('content.bg')}; */
-
   border-radius: 6px;
 
   margin-top: 12px;
-  /* padding-top: ${({ thread }) => (includes(thread, values(CARD_THREAD)) ? '13px' : '16px')}; */
-  padding-left: ${({ thread }) => (includes(thread, values(CARD_THREAD)) ? '15px' : 0)};
-  padding-right: ${({ thread }) => (includes(thread, values(CARD_THREAD)) ? 0 : '80px')};
-  margin-right: ${({ thread }) => (includes(thread, values(CARD_THREAD)) ? '35px' : '50px')};
+  padding-left: ${({ $thread }) => (includes($thread, values(CARD_THREAD)) ? '15px' : 0)};
+  padding-right: ${({ $thread }) => (includes($thread, values(CARD_THREAD)) ? 0 : '80px')};
+  margin-right: ${({ $thread }) => (includes($thread, values(CARD_THREAD)) ? '35px' : '50px')};
 
   border-right: 1px solid;
   border-right-color: ${theme('divider')};
@@ -49,7 +45,7 @@ export const MobileCardsMainWrapper = styled(MainWrapper)`
   padding: 0;
   padding-right: 10px;
 `
-export const FilterWrapper = styled.div<{ thread: TThread }>`
+export const FilterWrapper = styled.div`
   ${css.row('align-center')};
   margin-bottom: 5px;
 

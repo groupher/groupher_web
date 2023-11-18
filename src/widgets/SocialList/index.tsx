@@ -18,7 +18,7 @@ const SocialList: FC<TProps> = ({
   ...restProps
 }) => {
   return (
-    <Wrapper testid={testid} size={size} {...restProps}>
+    <Wrapper $testid={testid} size={size} {...restProps}>
       {selected.map((social) => {
         const SocialIcon = Icon[social.type]
         return (

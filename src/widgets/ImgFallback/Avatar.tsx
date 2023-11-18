@@ -40,7 +40,7 @@ const Avatar: FC<TProps> = ({
     <Wrapper
       className={className}
       color={color}
-      testid={testid}
+      $testid={testid}
       size={size}
       left={left}
       right={right}

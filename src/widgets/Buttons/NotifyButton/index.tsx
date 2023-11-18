@@ -30,7 +30,7 @@ type TProps = {
 }
 const NotifyButton: FC<TProps> = ({ testid = 'notify-button', subscribed = false }) => {
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       {subscribed ? (
         <Main>
           <NotifyOnIcon src={`${ICON}/article/notify-on.svg`} />

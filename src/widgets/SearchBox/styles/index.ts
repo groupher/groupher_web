@@ -8,8 +8,8 @@ import { WithMargin } from '@/widgets/Common'
 
 type TWrapper = TTestable
 
-export const Wrapper = styled(WithMargin).attrs<TWrapper>(({ testid }: TTestable) => ({
-  'data-test-id': testid,
+export const Wrapper = styled(WithMargin).attrs<TWrapper>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TWrapper>`
   ${css.row('align-center')};
   border: 1px solid transparent;

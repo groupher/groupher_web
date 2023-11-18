@@ -5,8 +5,8 @@ import { BANNER_LAYOUT } from '@/constant/layout'
 
 import css, { theme } from '@/css'
 
-export const BaseWrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const BaseWrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   min-height: 70vh;
   width: 100%;

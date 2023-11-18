@@ -20,7 +20,7 @@ type TProps = {
 
 const MobileMockup: FC<TProps> = ({ testid = 'mobile-mockup', children }) => {
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <Content>{children}</Content>
     </Wrapper>
   )

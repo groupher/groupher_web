@@ -36,7 +36,7 @@ const RangeSlider: FC<TProps> = ({
   ...restProps
 }) => {
   return (
-    <Wrapper testid={testid} width={width} {...restProps}>
+    <Wrapper $testid={testid} width={width} {...restProps}>
       <Value>
         {value}
         <Unit>{unit}</Unit>

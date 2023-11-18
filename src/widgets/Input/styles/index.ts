@@ -5,13 +5,13 @@ import Img from '@/Img'
 import css, { theme } from '@/css'
 
 type IInput = {
-  hasPrefix: boolean
-  hasSuffix: boolean
+  $hasPrefix: boolean
+  $hasSuffix: boolean
   spellCheck: string
 }
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   position: relative;
   width: 100%;
@@ -64,8 +64,8 @@ export const InputWrapper = styled.input<IInput>`
   line-height: 1.5;
   text-align: left;
   color: ${theme('article.title')};
-  padding-left: ${({ hasPrefix }) => (hasPrefix ? '26px' : '8px')};
-  padding-right: ${({ hasSuffix }) => (hasSuffix ? '26px' : '8px')};
+  padding-left: ${({ $hasPrefix }) => ($hasPrefix ? '26px' : '8px')};
+  padding-right: ${({ $hasSuffix }) => ($hasSuffix ? '26px' : '8px')};
   border: 1px solid;
   border-color: ${theme('editor.border')};
   border-radius: 4px;

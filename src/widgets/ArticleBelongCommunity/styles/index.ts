@@ -6,8 +6,8 @@ import Img from '@/Img'
 import css, { theme } from '@/css'
 import SiteLogo from '@/icons/CPLogo'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.column('align-both')};
   position: relative;

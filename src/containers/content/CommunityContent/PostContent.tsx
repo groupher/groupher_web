@@ -35,7 +35,7 @@ const PostContent: FC = () => {
   const LayoutWrapper = isSidebarLayout ? SidebarWrapper : Wrapper
 
   return (
-    <LayoutWrapper testid="post-thread-content" metric={metric}>
+    <LayoutWrapper $testid="post-thread-content" metric={metric}>
       <CommunityDigest />
 
       {isMobile && (

@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import type { TTestable } from '@/spec'
 import css from '@/css'
 
-export const BaseBanner = styled.nav.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const BaseBanner = styled.nav.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   ${css.column('justify-center', 'align-center')};
   position: relative;

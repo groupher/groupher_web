@@ -65,7 +65,7 @@ const Input: FC<TProps> = ({
   const validProps = pickBy((v) => v !== null, restProps)
 
   return behavior === 'default' ? (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <PrefixWrapper show={!nilOrEmpty(prefixIcon)}>
         {prefixIcon && <Icon src={prefixIcon} active={prefixActive} />}
       </PrefixWrapper>
@@ -76,8 +76,8 @@ const Input: FC<TProps> = ({
         onBlur={handleOnBlur}
         spellCheck="false"
         // prefix={false}
-        hasPrefix={!nilOrEmpty(prefixIcon)}
-        hasSuffix={!nilOrEmpty(suffixIcon)}
+        $hasPrefix={!nilOrEmpty(prefixIcon)}
+        $hasSuffix={!nilOrEmpty(suffixIcon)}
         autoFocus={autoFocus}
         // @ts-ignore
         {...validProps}

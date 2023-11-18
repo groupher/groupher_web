@@ -48,7 +48,7 @@ const ClassicLayout: FC<TProps> = ({ showCommunityBadge }) => {
   const avatarLayout = useAvatarLayout()
 
   return (
-    <Wrapper testid="thread-sidebar">
+    <Wrapper $testid="thread-sidebar">
       <Sticky offsetTop={50}>
         <Fragment>
           {showCommunityBadge && (

@@ -6,8 +6,8 @@ import { AVATAR_LAYOUT } from '@/constant/layout'
 import css, { theme } from '@/css'
 import Img from '@/Img'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ testid }) => ({
-  'data-test-id': testid,
+export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+  'data-test-id': $testid,
 }))<TTestable>`
   min-width: 200px;
   max-width: 200px;

@@ -53,7 +53,7 @@ const TagSettingEditor: FC<TProps> = ({ testid, mode = CHANGE_MODE.UPDATE }) => 
   const { editingTagData: editingTag, curCategory, categoryOptions, processing } = store
 
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <CustomScroller
         instanceKey={DRAWER_SCROLLER}
         direction="vertical"

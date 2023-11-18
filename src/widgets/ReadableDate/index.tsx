@@ -28,7 +28,7 @@ const ReadableDate: FC<TProps> = ({
   date,
 }) => {
   return (
-    <Wrapper testid={testid} className={className}>
+    <Wrapper $testid={testid} className={className}>
       <AbsoluteFmt datetime={date} className={className} withTime={withTime} />
     </Wrapper>
   )

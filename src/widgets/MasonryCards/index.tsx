@@ -22,7 +22,7 @@ type TProps = {
 
 const MasonryCards: FC<TProps> = ({ testid = 'masonry-cards', column = 2, children }) => {
   return (
-    <Wrapper testid={testid}>
+    <Wrapper $testid={testid}>
       <Masonry
         breakpointCols={column}
         className="masonry-cards-grid"

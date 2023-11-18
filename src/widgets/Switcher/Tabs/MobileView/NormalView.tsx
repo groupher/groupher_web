@@ -133,7 +133,7 @@ const MobileView: FC<TProps> = ({
   }px`
 
   return (
-    <Wrapper testid="tabs">
+    <Wrapper $testid="tabs">
       {showMore && (
         <MoreWrapper onClick={toggleExpand}>
           <ArrowIcon src={`${ICON}/shape/arrow-simple.svg`} />
