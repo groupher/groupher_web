@@ -28,7 +28,9 @@ type TProps = {
 
 const Drawer: FC<TProps> = ({ metric }) => {
   const store = useStore()
+
   const { width: windowWidth } = useWindowResize()
+
   useInit(store, windowWidth, metric)
   useShortcut('Escape', closeDrawer)
 
