@@ -9,10 +9,10 @@ import { buildLog } from '@/logger'
 const log = buildLog('L:ArticlesThread')
 
 export const inAnchor = (): void => {
-  console.log('## inAnchor')
+  // console.log('## inAnchor')
 }
 export const outAnchor = (): void => {
-  console.log('## outAnchor')
+  // console.log('## outAnchor')
 }
 
 export const onFilterSelect = (option: TArticleFilter): void => {

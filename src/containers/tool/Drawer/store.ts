@@ -233,7 +233,10 @@ const DrawerStore = T.model('DrawerStore', {
       const thread = meta.thread.toLowerCase()
       const nextURL = `${Global.location.origin}/${originalCommunitySlug}/${thread}/${innerId}`
 
-      Global.history.replaceState(null, title, nextURL)
+      // Global.history.replaceState(null, title, nextURL)
+      // Global.history.pushState(null, title, nextURL)
+      console.log('## pushing window.location.href: ', nextURL)
+      Global.history.pushState({ prevUrl: nextURL }, title, nextURL)
     },
 
     restorePreviousURLIfNeed(): void {
@@ -241,7 +244,9 @@ const DrawerStore = T.model('DrawerStore', {
 
       const targetHref = self.previousHomeURL || self.previousURL
 
-      Global.history.replaceState(null, 'new-title', targetHref)
+      // Global.history.replaceState(null, 'new-title', targetHref)
+      // Global.history.pushState(null, 'new-title', targetHref)
+      Global.history.pushState({ prevUrl: targetHref }, 'new-title', targetHref)
 
       self.previousHomeURL = null
     },

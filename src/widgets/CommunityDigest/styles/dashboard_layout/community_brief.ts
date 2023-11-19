@@ -17,17 +17,18 @@ import PlusSVG from '@/icons/PlusCircle'
 
 import Img from '@/Img'
 
+export const Wrapper = styled.div`
+  ${css.row('align-center')};
+`
 const BaseWrapper = styled.div`
   ${css.row('align-center')};
   transition: all 0.2s;
-  width: 150px;
-  max-width: 150px;
+  width: auto;
+  max-width: 140px;
   height: 32px;
   border-radius: 10px;
-  padding-left: 10px;
-  margin-left: -10px;
 `
-export const Wrapper = styled(BaseWrapper)`
+export const MenuWrapper = styled(BaseWrapper)`
   border: 1px solid;
   border-color: transparent;
 
@@ -41,15 +42,6 @@ export const Wrapper = styled(BaseWrapper)`
     width: auto;
     max-width: 150px;
   `};
-`
-export const PanelWrapper = styled(BaseWrapper)`
-  border: none;
-  cursor: auto;
-  margin-bottom: 8px;
-
-  &:hover {
-    border-color: transparent;
-  }
 `
 export const OptionArrowIcon = styled(OptionArrowSVG)`
   fill: ${theme('article.digest')};
@@ -83,6 +75,7 @@ export const Slash = styled.div`
   font-size: 12px;
   color: ${theme('hint')};
   margin-right: 6px;
+  margin-left: 8px;
 `
 export const LogoHolder = styled(Img)`
   fill: ${theme('banner.desc')};

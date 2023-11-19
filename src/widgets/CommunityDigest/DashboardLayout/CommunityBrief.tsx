@@ -8,11 +8,11 @@ import useHover from '@/hooks/useHover'
 import Tooltip from '@/widgets/Tooltip'
 import { titleCase } from '@/fmt'
 
-import { SpaceGrow, SexyDivider } from '@/widgets/Common'
+import { Space, SpaceGrow, SexyDivider } from '@/widgets/Common'
 
 import {
   Wrapper,
-  PanelWrapper,
+  MenuWrapper,
   Logo,
   Title,
   Slash,
@@ -26,7 +26,7 @@ import {
 
 const CommunityBrief: FC = () => {
   const threads = usePublicThreads()
-  const { logo, slug, dashboard } = useViewingCommunity()
+  const { title, logo, slug, dashboard } = useViewingCommunity()
 
   const [disableTippyJump, setDisableTippyJump] = useState(false)
   const [ref, isHovering] = useHover<HTMLDivElement>()
@@ -38,72 +38,69 @@ const CommunityBrief: FC = () => {
   }, [isHovering, disableTippyJump])
 
   return (
-    <Tooltip
-      content={
-        <ToolPanel>
-          <PanelWrapper>
-            <Logo src={assetSrc(logo)} noLazy />
-            <Title>管理后台</Title>
-          </PanelWrapper>
+    <Wrapper ref={ref}>
+      <Logo src={assetSrc(logo)} noLazy />
+      <Title>{title}</Title>
+      <Slash>/</Slash>
 
-          {threads.map((item) => {
-            const ThreadIcon = Icon[titleCase(item.slug)]
-            return (
-              <PanelItem key={item.slug} href={`/${slug}/${item.slug}`}>
-                <ThreadIcon />
-                <div>{item.title}</div>
-              </PanelItem>
-            )
-          })}
+      <Tooltip
+        content={
+          <ToolPanel>
+            {threads.map((item) => {
+              const ThreadIcon = Icon[titleCase(item.slug)]
+              return (
+                <PanelItem key={item.slug} href={`/${slug}/${item.slug}`}>
+                  <ThreadIcon />
+                  <div>{item.title}</div>
+                </PanelItem>
+              )
+            })}
 
-          <PanelItem href={`/${slug}/about`}>
-            <Icon.About />
-            <div>关于</div>
-          </PanelItem>
+            <PanelItem href={`/${slug}/about`}>
+              <Icon.About />
+              <div>关于</div>
+            </PanelItem>
 
-          <SexyDivider top={5} bottom={5} />
+            <SexyDivider top={5} bottom={5} />
 
-          <PanelItem href={dashboard.baseInfo.homepage} $outside>
-            <Icon.Global />
-            <div>返回官网</div>
-            <SpaceGrow />
-            <ArrowIcon />
-          </PanelItem>
+            <PanelItem href={dashboard.baseInfo.homepage} $outside>
+              <Icon.Global />
+              <div>返回官网</div>
+              <SpaceGrow />
+              <ArrowIcon />
+            </PanelItem>
 
-          <PanelItem href={`/${slug}`} $outside>
-            <Icon.Github />
-            <div>Github</div>
-            <SpaceGrow />
-            <ArrowIcon />
-          </PanelItem>
+            <PanelItem href={`/${slug}`} $outside>
+              <Icon.Github />
+              <div>Github</div>
+              <SpaceGrow />
+              <ArrowIcon />
+            </PanelItem>
 
-          <SexyDivider top={5} bottom={5} />
-          <PanelItem href="/apply/community" $outside>
-            <Icon.Plus />
-            <div>新社区</div>
-            <SpaceGrow />
-            <ArrowIcon />
-          </PanelItem>
-        </ToolPanel>
-      }
-      placement="bottom"
-      hideOnClick={false}
-      offset={[-7, -39]}
-      trigger="click"
-      onHide={() => setDisableTippyJump(false)}
-      noPadding
-    >
-      <Wrapper ref={ref}>
-        <Logo src={assetSrc(logo)} noLazy />
-        <Title>
-          {' '}
-          <Slash>/</Slash> 管理后台
-        </Title>
-        <SpaceGrow />
-        <OptionArrowIcon />
-        <DisableTippyJump enable={disableTippyJump} />
-      </Wrapper>
-    </Tooltip>
+            <SexyDivider top={5} bottom={5} />
+            <PanelItem href="/apply/community" $outside>
+              <Icon.Plus />
+              <div>新社区</div>
+              <SpaceGrow />
+              <ArrowIcon />
+            </PanelItem>
+          </ToolPanel>
+        }
+        placement="bottom"
+        hideOnClick={false}
+        offset={[-7, -39]}
+        trigger="click"
+        onHide={() => setDisableTippyJump(false)}
+        noPadding
+      >
+        <MenuWrapper>
+          <Title>管理后台</Title>
+          <Space right={12} />
+          <OptionArrowIcon />
+        </MenuWrapper>
+      </Tooltip>
+      <DisableTippyJump enable={disableTippyJump} />
+    </Wrapper>
   )
 }
 
