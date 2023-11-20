@@ -234,9 +234,14 @@ export type TFAQSection = {
   index: number
 }
 
-export type TPagedArticlesFilter = {
+export type TPagedArticlesParams = {
   page?: number
   size?: number
   community?: string
   articleTag?: string
+}
+
+export type TArticleParams = {
+  community: string
+  id: string
 }

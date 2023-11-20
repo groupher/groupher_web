@@ -42,41 +42,38 @@ const RootStoreWrapper: FC<TProps> = ({ children, token }) => {
   // console.log('## pathname: ', pathname)
   const activeThread = parseThread(pathname)
   // console.log('## activeThread: ', activeThread)
-  // console.log('## communitySlug: ', communitySlug)
 
   const skip = !communitySlug
 
   const { sesstion } = useSession()
-
-  // const [result] = useQueryCommunity('home', { skip: pathname === '/home' })
-  const { community } = useCommunity(communitySlug, { skip, userHasLogin })
+  const { community } = useCommunity({ skip, userHasLogin })
 
   const { pagedPosts } = usePagedPosts({
     skip: !(activeThread === THREAD.POST && !params.id),
     userHasLogin,
   })
 
-  const { post } = usePost(communitySlug, params.id as string, {
+  const { pagedChangelogs } = usePagedChangelogs({
+    skip: activeThread !== THREAD.CHANGELOG,
+    userHasLogin,
+  })
+
+  const { post } = usePost({
     skip: !(activeThread === THREAD.POST && params.id),
     userHasLogin,
   })
 
-  const { changelog } = useChangelog(communitySlug, params.id as string, {
+  const { changelog } = useChangelog({
     skip: !(activeThread === THREAD.CHANGELOG && params.id),
     userHasLogin,
   })
 
-  const { groupedKanbanPosts } = useGroupedKanbanPosts(communitySlug, {
+  const { groupedKanbanPosts } = useGroupedKanbanPosts({
     skip: activeThread !== THREAD.KANBAN,
     userHasLogin,
   })
 
-  const { pagedChangelogs } = usePagedChangelogs(
-    { community: communitySlug },
-    { skip: activeThread !== THREAD.CHANGELOG, userHasLogin },
-  )
-
-  const { tags } = useTags({ community: communitySlug }, { skip, userHasLogin })
+  const { tags } = useTags({ skip, userHasLogin })
 
   const wallpaper = !skip ? parseWallpaper(community) : {}
   const dashboard = !skip ? parseDashboard(community, pathname) : {}
@@ -89,10 +86,6 @@ const RootStoreWrapper: FC<TProps> = ({ children, token }) => {
       ...groupedKanbanPosts,
     },
     kanbanThread: groupedKanbanPosts,
-    // articlesThread: {
-    //   pagedPosts,
-    //   resState: TYPE.RES_STATE.DONE,
-    // },
     tagsBar: {
       tags,
     },

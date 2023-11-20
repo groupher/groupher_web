@@ -3,12 +3,8 @@
  * https://formidable.com/open-source/urql/docs/api/urql/#usequery
  * https://formidable.com/open-source/urql/docs/api/core/#operationresult
  */
-import { useMemo } from 'react'
 import { useQuery } from '@urql/next'
-import { useParams, useSearchParams } from 'next/navigation'
-import { mergeRight } from 'ramda'
 
-import type { TID, TPagedArticlesFilter } from '@/spec'
 import { P } from '@/schemas'
 import { DEFAULT_THEME } from '@/config'
 
@@ -24,9 +20,9 @@ import type {
   TSSRQueryOpt,
   TTagsFilter,
 } from './spec'
-import { GQ_OPTION, TAGS_FILTER, ARTICLES_FILTER } from './constant'
+import { GQ_OPTION, TAGS_FILTER } from './constant'
 
-import { commonRes, parseCommunity } from './helper'
+import { commonRes, usePagedArticlesParams, useArticleParams, useCommunityParam } from './helper'
 
 export { parseCommunity, parseThread, parseWallpaper, parseDashboard } from './helper'
 
@@ -55,8 +51,9 @@ export const useSession = (): TSessionRes => {
   }
 }
 
-export const useCommunity = (slug: string, _opt: TSSRQueryOpt = {}): TCommunityRes => {
+export const useCommunity = (_opt: TSSRQueryOpt = {}): TCommunityRes => {
   const opt = { ...GQ_OPTION, ..._opt }
+  const slug = useCommunityParam()
 
   const [result] = useQuery({
     query: P.community,
@@ -74,9 +71,10 @@ export const useCommunity = (slug: string, _opt: TSSRQueryOpt = {}): TCommunityR
   }
 }
 
-export const useTags = (filter: TTagsFilter = TAGS_FILTER, _opt: TSSRQueryOpt = {}): TTagsRes => {
+export const useTags = (_opt: TSSRQueryOpt = {}): TTagsRes => {
   const opt = { ...GQ_OPTION, ..._opt }
-  const { community, thread } = { ...TAGS_FILTER, ...filter }
+  const community = useCommunityParam()
+  const { thread } = TAGS_FILTER
 
   const [result] = useQuery({
     query: P.pagedArticleTags,
@@ -97,27 +95,9 @@ export const useTags = (filter: TTagsFilter = TAGS_FILTER, _opt: TSSRQueryOpt = 
   }
 }
 
-// TODO: extact articleQueryParams
-// TODO: common func to jadge skip for page/community change
 export const usePagedPosts = (_opt: TSSRQueryOpt = {}): TPagedPostsRes => {
   const opt = { ...GQ_OPTION, ..._opt }
-
-  const params = useParams()
-  const searchParams = useSearchParams()
-  const _community = useMemo(() => parseCommunity(params.community as string), [params])
-
-  const tagParams = searchParams.get('tag')
-
-  const _filter = {
-    community: _community,
-    page: Number(searchParams.get('page')) || 1,
-  } as TPagedArticlesFilter
-
-  if (tagParams) {
-    _filter.articleTag = tagParams
-  }
-
-  const filter = mergeRight(ARTICLES_FILTER, _filter)
+  const filter = usePagedArticlesParams()
 
   const [result] = useQuery({
     query: P.pagedPosts,
@@ -135,8 +115,30 @@ export const usePagedPosts = (_opt: TSSRQueryOpt = {}): TPagedPostsRes => {
   }
 }
 
-export const usePost = (community: string, id: TID, _opt: TSSRQueryOpt = {}): TPostRes => {
+export const usePagedChangelogs = (_opt: TSSRQueryOpt = {}): TPagedChangelogsRes => {
   const opt = { ...GQ_OPTION, ..._opt }
+  const filter = usePagedArticlesParams()
+
+  const [result] = useQuery({
+    query: P.pagedChangelogs,
+    variables: {
+      filter,
+      userHasLogin: opt.userHasLogin,
+    },
+    pause: opt.skip,
+    requestPolicy: opt.requestPolicy,
+  })
+
+  return {
+    ...commonRes(result),
+    pagedChangelogs: result.data?.pagedChangelogs,
+  }
+}
+
+export const usePost = (_opt: TSSRQueryOpt = {}): TPostRes => {
+  const opt = { ...GQ_OPTION, ..._opt }
+
+  const { community, id } = useArticleParams()
 
   const [result] = useQuery({
     query: P.post,
@@ -155,57 +157,9 @@ export const usePost = (community: string, id: TID, _opt: TSSRQueryOpt = {}): TP
   }
 }
 
-export const useGroupedKanbanPosts = (
-  community: string,
-  _opt: TSSRQueryOpt = {},
-): TGroupedKanbanPostsRes => {
+export const useChangelog = (_opt: TSSRQueryOpt = {}): TChangelogRes => {
   const opt = { ...GQ_OPTION, ..._opt }
-
-  const [result] = useQuery({
-    query: P.groupedKanbanPosts,
-    variables: {
-      community,
-    },
-    pause: opt.skip,
-    requestPolicy: opt.requestPolicy,
-  })
-
-  return {
-    ...commonRes(result),
-    groupedKanbanPosts: result.data?.groupedKanbanPosts,
-  }
-}
-
-export const usePagedChangelogs = (
-  filter: TPagedArticlesFilter = ARTICLES_FILTER,
-  _opt: TSSRQueryOpt = {},
-): TPagedChangelogsRes => {
-  const opt = { ...GQ_OPTION, ..._opt }
-
-  const { page, size, community } = { ...ARTICLES_FILTER, ...filter }
-
-  const [result] = useQuery({
-    query: P.pagedChangelogs,
-    variables: {
-      filter: { page, size, community },
-      userHasLogin: opt.userHasLogin,
-    },
-    pause: opt.skip,
-    requestPolicy: opt.requestPolicy,
-  })
-
-  return {
-    ...commonRes(result),
-    pagedChangelogs: result.data?.pagedChangelogs,
-  }
-}
-
-export const useChangelog = (
-  community: string,
-  id: TID,
-  _opt: TSSRQueryOpt = {},
-): TChangelogRes => {
-  const opt = { ...GQ_OPTION, ..._opt }
+  const { community, id } = useArticleParams()
 
   const [result] = useQuery({
     query: P.changelog,
@@ -221,5 +175,24 @@ export const useChangelog = (
   return {
     ...commonRes(result),
     changelog: result.data?.changelog,
+  }
+}
+
+export const useGroupedKanbanPosts = (_opt: TSSRQueryOpt = {}): TGroupedKanbanPostsRes => {
+  const community = useCommunityParam()
+  const opt = { ...GQ_OPTION, ..._opt }
+
+  const [result] = useQuery({
+    query: P.groupedKanbanPosts,
+    variables: {
+      community,
+    },
+    pause: opt.skip,
+    requestPolicy: opt.requestPolicy,
+  })
+
+  return {
+    ...commonRes(result),
+    groupedKanbanPosts: result.data?.groupedKanbanPosts,
   }
 }
