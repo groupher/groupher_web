@@ -26,8 +26,8 @@ const GlobalStyle = createGlobalStyle<TColor>`
   }
 
   *::selection {
-    background-color: ${({ $color }) => rainbowLight($color)} !important;
-    color: ${({ $color }) => rainbow($color)} !important;
+    background-color: ${({ $color }) => rainbow($color)} !important;
+    color: ${theme('button.fg')} !important;
   }
 
   a:hover {
