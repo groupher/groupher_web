@@ -20,7 +20,7 @@ const log = buildLog('L:TagsBar')
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
 const sr71$ = new SR71({
   // @ts-ignore
-  receive: [EVENT.COMMUNITY_CHANGE, EVENT.ARTICLE_THREAD_CHANGE],
+  receive: [EVENT.COMMUNITY_CHANGE],
 })
 
 let sub$ = null
@@ -63,20 +63,6 @@ const DataSolver = [
     action: ({ pagedArticleTags: tags }): void => {
       setActiveTagFromURL(tags.entries)
       store.mark({ tags: tags.entries, loading: false })
-    },
-  },
-  {
-    match: asyncRes(EVENT.COMMUNITY_CHANGE),
-    action: () => {
-      loadTags()
-      store.mark({ activeTag: null })
-    },
-  },
-  {
-    match: asyncRes(EVENT.ARTICLE_THREAD_CHANGE),
-    action: () => {
-      loadTags()
-      store.mark({ activeTag: null })
     },
   },
 ]

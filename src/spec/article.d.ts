@@ -233,3 +233,10 @@ export type TFAQSection = {
   body: string
   index: number
 }
+
+export type TArticlesFilter = {
+  page?: number
+  size?: number
+  community?: string
+  articleTag?: string
+}

@@ -8,7 +8,7 @@ import { useQuery } from '@urql/next'
 import { useParams, useSearchParams } from 'next/navigation'
 import { mergeRight } from 'ramda'
 
-import type { TID } from '@/spec'
+import type { TID, TArticlesFilter } from '@/spec'
 import { P } from '@/schemas'
 import { DEFAULT_THEME } from '@/config'
 
@@ -23,7 +23,6 @@ import type {
   TPagedChangelogsRes,
   TSSRQueryOpt,
   TTagsFilter,
-  TArticlesFIlter,
 } from './spec'
 import { GQ_OPTION, TAGS_FILTER, ARTICLES_FILTER } from './constant'
 
@@ -107,17 +106,23 @@ export const usePagedPosts = (_opt: TSSRQueryOpt = {}): TPagedPostsRes => {
   const searchParams = useSearchParams()
   const _community = useMemo(() => parseCommunity(params.community as string), [params])
 
-  const filter = {
+  const tagParams = searchParams.get('tag')
+
+  const _filter = {
     community: _community,
     page: Number(searchParams.get('page')) || 1,
+  } as TArticlesFilter
+
+  if (tagParams) {
+    _filter.articleTag = tagParams
   }
 
-  const { page, size, community } = mergeRight(ARTICLES_FILTER, filter)
+  const filter = mergeRight(ARTICLES_FILTER, _filter)
 
   const [result] = useQuery({
     query: P.pagedPosts,
     variables: {
-      filter: { page, size, community },
+      filter,
       userHasLogin: opt.userHasLogin,
     },
     pause: opt.skip,
@@ -172,7 +177,7 @@ export const useGroupedKanbanPosts = (
 }
 
 export const usePagedChangelogs = (
-  filter: TArticlesFIlter = ARTICLES_FILTER,
+  filter: TArticlesFilter = ARTICLES_FILTER,
   _opt: TSSRQueryOpt = {},
 ): TPagedChangelogsRes => {
   const opt = { ...GQ_OPTION, ..._opt }

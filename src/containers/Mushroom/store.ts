@@ -12,6 +12,7 @@ import type {
   TArticleMeta,
   TPagedArticles,
   TResState,
+  TTag,
 } from '@/spec'
 import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 
@@ -33,6 +34,11 @@ const MushroomStore = T.model('MushroomStore', {
     get curThread(): TThread {
       const root = getParent(self) as TRootStore
       return root.viewing.activeThread
+    },
+    get activeTag(): TTag {
+      const root = getParent(self) as TRootStore
+
+      return toJS(root.tagsBar.activeTag)
     },
   }))
   .actions((self) => ({

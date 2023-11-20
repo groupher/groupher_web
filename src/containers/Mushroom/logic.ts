@@ -1,7 +1,14 @@
 import { ReactNode, useEffect, Children, isValidElement, cloneElement } from 'react'
 
 import { APP_VERSION } from '@/config'
-import type { TMetric, TScrollDirection, TGlowPosition, TArticle, TResState } from '@/spec'
+import type {
+  TMetric,
+  TScrollDirection,
+  TGlowPosition,
+  TArticle,
+  TResState,
+  TArticlesFilter,
+} from '@/spec'
 import METRIC from '@/constant/metric'
 import EVENT from '@/constant/event'
 import TYPE from '@/constant/type'
@@ -68,31 +75,31 @@ const initAppVersion = (): void => {
 }
 
 const loadArticles = (page = 1): void => {
-  const { curCommunity, userHasLogin } = store
+  const { curCommunity, userHasLogin, activeTag } = store
   store.updateResState(TYPE.RES_STATE.LOADING as TResState)
   scrollToTop()
 
-  sr71$.query(S.pagedPosts, {
-    filter: { page, size: 20, community: curCommunity.slug },
-    userHasLogin,
-  })
-}
+  const filter = { page, size: 20, community: curCommunity.slug } as TArticlesFilter
 
-// TODO: use sanitor to filter whitelist queries if nend
-// TODO: aync active tag
-const syncPagiRoute = (page: number): void => {
-  const curSearchParams = getCurSearchParams()
-
-  let queryString = ''
-
-  if (page === 1) {
-    delete curSearchParams.page
-    queryString = searchParams2String(curSearchParams)
-  } else {
-    queryString = searchParams2String({ page, ...curSearchParams })
+  if (activeTag?.slug) {
+    filter.articleTag = activeTag?.slug
   }
 
-  doSyncRoute(queryString)
+  sr71$.query(S.pagedPosts, { filter, userHasLogin })
+}
+
+// TODO: use sanitor to filter whitelist oueries if nend
+const syncURL = (page: number): void => {
+  const { activeTag } = store
+  const curSearchParams = getCurSearchParams()
+
+  // handle tag spec logic
+  activeTag?.slug ? (curSearchParams.tag = activeTag?.slug) : delete curSearchParams.tag
+
+  // handle page number spec logic
+  page !== 1 ? (curSearchParams.page = page) : delete curSearchParams.page
+
+  doSyncRoute(searchParams2String(curSearchParams))
 }
 
 const searchParams2String = (obj): string => new URLSearchParams(obj).toString()
@@ -103,6 +110,11 @@ const getCurSearchParams = (): Record<any, any> =>
 const doSyncRoute = (queryString: string): void => {
   const { curCommunity, curThread } = store
   const mainPath = `/${curCommunity.slug}/${curThread}`
+
+  if (!queryString) {
+    Global.history.pushState(null, '', `${mainPath}`)
+    return
+  }
 
   Global.history.pushState(null, '', `${mainPath}?${queryString}`)
 }
@@ -141,7 +153,7 @@ const DataSolver = [
       store.updateResState(TYPE.RES_STATE.DONE as TResState)
       store.updatePagedArticles(res.pagedPosts)
 
-      syncPagiRoute(res.pagedPosts.pageNumber)
+      syncURL(res.pagedPosts.pageNumber)
     },
   },
   {
