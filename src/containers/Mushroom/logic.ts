@@ -1,9 +1,10 @@
 import { ReactNode, useEffect, Children, isValidElement, cloneElement } from 'react'
 
 import { APP_VERSION } from '@/config'
-import type { TMetric, TScrollDirection, TGlowPosition, TArticle } from '@/spec'
+import type { TMetric, TScrollDirection, TGlowPosition, TArticle, TResState } from '@/spec'
 import METRIC from '@/constant/metric'
 import EVENT from '@/constant/event'
+import TYPE from '@/constant/type'
 import ERR from '@/constant/err'
 
 import { buildLog } from '@/logger'
@@ -11,6 +12,7 @@ import { errRescue } from '@/signal'
 import { Global } from '@/helper'
 
 import { matchArticleUpvotes } from '@/utils/macros'
+import { scrollToTop } from '@/dom'
 import asyncSuit from '@/async'
 
 import S from './schema'
@@ -25,7 +27,7 @@ let sub$ = null
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
 const sr71$ = new SR71({
   // @ts-ignore
-  receive: [EVENT.UPVOTE_ARTICLE, EVENT.UPDATE_VIEWING_ARTICLE],
+  receive: [EVENT.UPVOTE_ARTICLE, EVENT.UPDATE_VIEWING_ARTICLE, EVENT.REFRESH_ARTICLES],
 })
 
 // custromScroll's scroll direction change
@@ -65,6 +67,17 @@ const initAppVersion = (): void => {
   Global.appVersion = APP_VERSION || 'unknow'
 }
 
+const loadArticles = (page = 1): void => {
+  const { curCommunity, userHasLogin } = store
+  store.updateResState(TYPE.RES_STATE.LOADING as TResState)
+  scrollToTop()
+
+  sr71$.query(S.pagedPosts, {
+    filter: { page, size: 20, community: curCommunity.slug },
+    userHasLogin,
+  })
+}
+
 // ###############################
 // init & uninit
 // ###############################
@@ -86,6 +99,22 @@ const handleUovoteRes = ({ upvotesCount, meta }) => {
 
 const DataSolver = [
   ...matchArticleUpvotes(handleUovoteRes),
+  {
+    match: asyncRes(EVENT.REFRESH_ARTICLES),
+    action: (data) => {
+      const { page } = data[EVENT.REFRESH_ARTICLES]
+      console.log('## refresh this page: ', page)
+      loadArticles(page)
+    },
+  },
+  {
+    match: asyncRes('pagedPosts'),
+    action: (res) => {
+      console.log('## load back : ', res)
+      store.updateResState(TYPE.RES_STATE.DONE as TResState)
+      store.updatePagedArticles(res.pagedPosts)
+    },
+  },
   {
     match: asyncRes(EVENT.UPDATE_VIEWING_ARTICLE),
     action: (_data) => {

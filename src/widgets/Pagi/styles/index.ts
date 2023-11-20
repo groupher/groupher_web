@@ -29,60 +29,27 @@ export const ArrowLeftIcon = styled(ArrowSVG)<{ disabled: boolean }>`
     cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   }
 `
+export const ArrowBlock = styled.div`
+  ${css.row('align-both')};
+  width: 60px;
+  height: 28px;
+  border-radius: 8px;
+  cursor: pointer;
 
-export const LeftArrow = styled.div`
-  position: relative;
-`
-
-export const RightArrow = styled.div`
-  position: relative;
-`
-export const LeftBar = styled.div`
-  width: 5px;
-  height: 3px;
-  position: absolute;
-  left: 22px;
-  top: 9px;
-  background: ${theme('article.digest')};
-  opacity: 0;
-  border-radius: 3px;
-
-  ${LeftArrow}:hover & {
-    opacity: 0.6;
-    animation: ${animate.zoomIn} 0.1s linear;
-    left: 16px;
+  &:hover {
+    background: ${theme('hoverBg')};
   }
 
-  transition: left 0.2s;
+  transition: all 0.1s;
 `
-
-export const RightBar = styled.div`
-  width: 5px;
-  height: 3px;
-  position: absolute;
-  left: -3px;
-  top: 9px;
-  background: ${theme('article.digest')};
-  opacity: 0;
-  border-radius: 3px;
-
-  ${RightArrow}:hover & {
-    opacity: 0.6;
-    animation: ${animate.zoomIn} 0.1s linear;
-    left: 1px;
-  }
-
-  transition: left 0.2s;
-`
-
 export const ArrowRightIcon = styled(ArrowLeftIcon)`
   transform: rotate(180deg);
 `
 
 export const Main = styled.div`
   ${css.row('align-center')};
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 40px;
+  margin-right: 30px;
 `
 // see https://www.w3schools.com/howto/howto_css_hide_arrow_number.asp
 export const NumInputer = styled.input<{ value: number }>`
@@ -92,8 +59,9 @@ export const NumInputer = styled.input<{ value: number }>`
   padding: 0 3px;
   outline: none;
   border: 1px solid;
-  border-color: #d5d5d5; // TODO
-  color: ${theme('article.digest')};
+  border-color: ${theme('editor.border')};
+  color: ${theme('article.title')};
+  background: ${theme('form.inputBg')};
   text-align: center;
   border-radius: 7px;
   &::-webkit-outer-spin-button,

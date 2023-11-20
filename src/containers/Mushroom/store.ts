@@ -4,7 +4,15 @@
  */
 import { mergeRight } from 'ramda'
 
-import type { TRootStore, TArticle, TArticleMeta } from '@/spec'
+import type {
+  TRootStore,
+  TCommunity,
+  TThread,
+  TArticle,
+  TArticleMeta,
+  TPagedArticles,
+  TResState,
+} from '@/spec'
 import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 
 const MushroomStore = T.model('MushroomStore', {
@@ -13,13 +21,35 @@ const MushroomStore = T.model('MushroomStore', {
   // follow the mac convention
   bodyScrollDirection: T.opt(T.enum(['up', 'down']), 'up'),
 })
-  .views((self) => ({}))
+  .views((self) => ({
+    get userHasLogin(): boolean {
+      const root = getParent(self) as TRootStore
+      return root.accountInfo.isLogin
+    },
+    get curCommunity(): TCommunity {
+      const root = getParent(self) as TRootStore
+      return toJS(root.viewing.community)
+    },
+    get curThread(): TThread {
+      const root = getParent(self) as TRootStore
+      return root.viewing.activeThread
+    },
+  }))
   .actions((self) => ({
     loadDemoSetting(): void {
       const root = getParent(self) as TRootStore
 
       return root.dashboardThread.afterCreate()
     },
+    updateResState(state: TResState): void {
+      const root = getParent(self) as TRootStore
+      root.articles.updateResState(state)
+    },
+    updatePagedArticles(pagedArticles: TPagedArticles): void {
+      const root = getParent(self) as TRootStore
+      root.articles.updatePagedArticles(pagedArticles)
+    },
+
     syncArticle(article: TArticle): void {
       const root = getParent(self) as TRootStore
       const viewingArticle = toJS(root.viewingArticle)

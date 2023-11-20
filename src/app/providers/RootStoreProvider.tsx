@@ -51,10 +51,10 @@ const RootStoreWrapper: FC<TProps> = ({ children, token }) => {
   // const [result] = useQueryCommunity('home', { skip: pathname === '/home' })
   const { community } = useCommunity(communitySlug, { skip, userHasLogin })
 
-  const { pagedPosts } = usePagedPosts(
-    { community: communitySlug },
-    { skip: !(activeThread === THREAD.POST && !params.id), userHasLogin },
-  )
+  const { pagedPosts } = usePagedPosts({
+    skip: !(activeThread === THREAD.POST && !params.id),
+    userHasLogin,
+  })
 
   const { post } = usePost(communitySlug, params.id as string, {
     skip: !(activeThread === THREAD.POST && params.id),

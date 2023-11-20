@@ -5,6 +5,7 @@
  */
 
 import { FC, ReactNode } from 'react'
+import { observer } from 'mobx-react-lite'
 import dynamic from 'next/dynamic'
 
 import type { TSpace, TPagi } from '@/spec'
@@ -67,6 +68,7 @@ const Pagi: FC<TProps> = ({
           pageNumber={pageNumber}
           totalCount={totalCount}
           totalPages={totalPages}
+          pageSize={pageSize}
           onChange={handlePageChange}
           {...restProps}
         />
@@ -79,4 +81,4 @@ const Pagi: FC<TProps> = ({
   )
 }
 
-export default Pagi as FC<TProps>
+export default observer(Pagi)

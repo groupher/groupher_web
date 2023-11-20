@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import { roundUpNumber } from '@/fmt'
-import type { TSpace } from '@/spec'
+import type { TSpace, TPagi } from '@/spec'
 
 import {
   Wrapper,
@@ -10,21 +10,14 @@ import {
   Main,
   Slash,
   Total,
-  LeftArrow,
-  LeftBar,
-  RightArrow,
-  RightBar,
+  ArrowBlock,
   ArrowRightIcon,
   NumInputer,
 } from './styles'
 
 import type { TProps as TPagiProps } from '.'
 
-type TProps = Pick<
-  TPagiProps,
-  'pageNumber' | 'totalCount' | 'pageSize' | 'onChange' | 'totalPages'
-> &
-  TSpace
+type TProps = Pick<TPagiProps, 'onChange'> & TPagi & TSpace
 
 const RealPagi: FC<TProps> = ({
   pageNumber,
@@ -40,10 +33,10 @@ const RealPagi: FC<TProps> = ({
   return (
     <Wrapper {...restProps}>
       <InnerWrapper>
-        <LeftArrow onClick={() => !leftDisabled && onChange(pageNumber - 1)}>
-          {!leftDisabled && <LeftBar />}
+        <ArrowBlock onClick={() => !leftDisabled && onChange(pageNumber - 1)}>
           <ArrowLeftIcon disabled={pageNumber === 1} />
-        </LeftArrow>
+        </ArrowBlock>
+
         <Main>
           <NumInputer
             type="number"
@@ -61,10 +54,9 @@ const RealPagi: FC<TProps> = ({
           <Slash>/</Slash>
           <Total>{totalPages}</Total>
         </Main>
-        <RightArrow onClick={() => !rightDisabled && onChange(pageNumber + 1)}>
-          {!rightDisabled && <RightBar />}
+        <ArrowBlock onClick={() => !rightDisabled && onChange(pageNumber + 1)}>
           <ArrowRightIcon disabled={rightDisabled} />
-        </RightArrow>
+        </ArrowBlock>
       </InnerWrapper>
     </Wrapper>
   )

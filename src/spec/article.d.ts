@@ -100,7 +100,6 @@ export type TTechCommunities = {
 }
 
 export type TArticle = TPost
-export type TArticleEntries = TPost[] | TChangelog[]
 
 type TPagi = {
   totalCount: number
@@ -117,6 +116,7 @@ export type TPagedChangelogs = {
   entries: TChangelog[]
 } & TPagi
 
+export type TArticleEntries = TPost[] | TChangelog[]
 export type TPagedArticles = {
   entries: TArticleEntries
 } & TPagi
