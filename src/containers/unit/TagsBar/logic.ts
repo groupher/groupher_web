@@ -43,14 +43,15 @@ export const loadTags = (): void => {
   sr71$.query(S.pagedArticleTags, args)
 }
 
-// if url has tag=xxx query, then set the activeTag ifneed
-const setActiveTagFromURL = (tags: TTag[]): void => {
+const syncActiveTagFromURL = (): void => {
   const tagOnURL = getParameterByName('tag')
   if (!tagOnURL) return
-  const idx = findIndex((t) => t.slug === tagOnURL, tags)
-  if (idx >= 0) {
-    onTagSelect(tags[idx])
-  }
+
+  const { tagsData } = store
+  const idx = findIndex((t) => t.slug === tagOnURL, tagsData)
+  if (idx < 0) return
+
+  store.selectTag(tagsData[idx])
 }
 
 // ###############################
@@ -61,8 +62,8 @@ const DataSolver = [
   {
     match: asyncRes('pagedArticleTags'),
     action: ({ pagedArticleTags: tags }): void => {
-      setActiveTagFromURL(tags.entries)
       store.mark({ tags: tags.entries, loading: false })
+      syncActiveTagFromURL()
     },
   },
 ]
@@ -98,6 +99,7 @@ export const useInit = (_store: TStore): void => {
     store = _store
     log('effect init')
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
+    syncActiveTagFromURL()
 
     // let activeTag = pick(['id', 'title', 'color'], active || emptyTag) as TTag
     // if (isEmpty(activeTag.title)) activeTag = null
