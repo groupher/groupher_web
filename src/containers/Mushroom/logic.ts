@@ -7,7 +7,7 @@ import type {
   TGlowPosition,
   TArticle,
   TResState,
-  TArticlesFilter,
+  TPagedArticlesFilter,
 } from '@/spec'
 import METRIC from '@/constant/metric'
 import EVENT from '@/constant/event'
@@ -79,7 +79,7 @@ const loadArticles = (page = 1): void => {
   store.updateResState(TYPE.RES_STATE.LOADING as TResState)
   scrollToTop()
 
-  const filter = { page, size: 20, community: curCommunity.slug } as TArticlesFilter
+  const filter = { page, size: 20, community: curCommunity.slug } as TPagedArticlesFilter
 
   if (activeTag?.slug) {
     filter.articleTag = activeTag?.slug

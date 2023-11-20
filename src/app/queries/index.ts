@@ -8,7 +8,7 @@ import { useQuery } from '@urql/next'
 import { useParams, useSearchParams } from 'next/navigation'
 import { mergeRight } from 'ramda'
 
-import type { TID, TArticlesFilter } from '@/spec'
+import type { TID, TPagedArticlesFilter } from '@/spec'
 import { P } from '@/schemas'
 import { DEFAULT_THEME } from '@/config'
 
@@ -111,7 +111,7 @@ export const usePagedPosts = (_opt: TSSRQueryOpt = {}): TPagedPostsRes => {
   const _filter = {
     community: _community,
     page: Number(searchParams.get('page')) || 1,
-  } as TArticlesFilter
+  } as TPagedArticlesFilter
 
   if (tagParams) {
     _filter.articleTag = tagParams
@@ -177,7 +177,7 @@ export const useGroupedKanbanPosts = (
 }
 
 export const usePagedChangelogs = (
-  filter: TArticlesFilter = ARTICLES_FILTER,
+  filter: TPagedArticlesFilter = ARTICLES_FILTER,
   _opt: TSSRQueryOpt = {},
 ): TPagedChangelogsRes => {
   const opt = { ...GQ_OPTION, ..._opt }
