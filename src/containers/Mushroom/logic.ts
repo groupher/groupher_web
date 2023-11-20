@@ -78,6 +78,35 @@ const loadArticles = (page = 1): void => {
   })
 }
 
+// TODO: use sanitor to filter whitelist queries if nend
+// TODO: aync active tag
+const syncPagiRoute = (page: number): void => {
+  const curSearchParams = getCurSearchParams()
+
+  let queryString = ''
+
+  if (page === 1) {
+    delete curSearchParams.page
+    queryString = searchParams2String(curSearchParams)
+  } else {
+    queryString = searchParams2String({ page, ...curSearchParams })
+  }
+
+  doSyncRoute(queryString)
+}
+
+const searchParams2String = (obj): string => new URLSearchParams(obj).toString()
+
+const getCurSearchParams = (): Record<any, any> =>
+  Object.fromEntries(new URLSearchParams(window.location.search))
+
+const doSyncRoute = (queryString: string): void => {
+  const { curCommunity, curThread } = store
+  const mainPath = `/${curCommunity.slug}/${curThread}`
+
+  Global.history.pushState(null, '', `${mainPath}?${queryString}`)
+}
+
 // ###############################
 // init & uninit
 // ###############################
@@ -103,16 +132,16 @@ const DataSolver = [
     match: asyncRes(EVENT.REFRESH_ARTICLES),
     action: (data) => {
       const { page } = data[EVENT.REFRESH_ARTICLES]
-      console.log('## refresh this page: ', page)
       loadArticles(page)
     },
   },
   {
     match: asyncRes('pagedPosts'),
     action: (res) => {
-      console.log('## load back : ', res)
       store.updateResState(TYPE.RES_STATE.DONE as TResState)
       store.updatePagedArticles(res.pagedPosts)
+
+      syncPagiRoute(res.pagedPosts.pageNumber)
     },
   },
   {
