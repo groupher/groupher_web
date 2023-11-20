@@ -1,4 +1,7 @@
-import { reject, includes, values, isEmpty } from 'ramda'
+import { useMemo } from 'react'
+
+import { reject, includes, values, isEmpty, mergeRight } from 'ramda'
+import { useParams, useSearchParams } from 'next/navigation'
 
 import type {
   TCommunity,
@@ -12,6 +15,8 @@ import type {
   TDashboardBroadcastRoute,
   TDashboardLayoutRoute,
   TDashboardAliasRoute,
+  TPagedArticlesParams,
+  TArticleParams,
 } from '@/spec'
 import { BUILDIN_ALIAS, HCN } from '@/constant/name'
 import { THREAD } from '@/constant/thread'
@@ -27,12 +32,53 @@ import {
 import { removeEmptyValuesFromObject } from '@/helper'
 
 import type { TGQSSRResult, TParsedWallpaper, TDashboardTab } from './spec'
+import { ARTICLES_FILTER } from './constant'
 
 export const commonRes = (result): TGQSSRResult => {
   return {
     fetching: result.fetching,
     error: result.error,
     stale: result.stale,
+  }
+}
+
+export const useCommunityParam = (): string => {
+  const params = useParams()
+
+  return useMemo(() => parseCommunity(params.community as string), [params])
+}
+
+/**
+ * common url filter logic for all paged articles queries
+ */
+export const usePagedArticlesParams = (): TPagedArticlesParams => {
+  const searchParams = useSearchParams()
+  const community = useCommunityParam()
+
+  const filter = {
+    community,
+    page: Number(searchParams.get('page')) || 1,
+    size: 20,
+  } as TPagedArticlesParams
+
+  const tagParams = searchParams.get('tag')
+
+  if (tagParams) {
+    filter.articleTag = tagParams
+  }
+
+  return mergeRight(ARTICLES_FILTER, filter)
+}
+
+/**
+ * common url filter logic for all paged articles queries
+ */
+export const useArticleParams = (): TArticleParams => {
+  const params = useParams()
+
+  return {
+    community: useMemo(() => parseCommunity(params.community as string), [params]),
+    id: params.id as string,
   }
 }
 
