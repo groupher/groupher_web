@@ -12,6 +12,7 @@ import type {
   TCommunity,
   TThread,
   TGlobalLayout,
+  TResState,
 } from '@/spec'
 
 import { T, markStates, getParent, Instance, toJS } from '@/mobx'
@@ -128,6 +129,16 @@ const ArticlesStore = T.model('Articles', {
       const targetArticle = toJS(slf[pagedArticleKey].entries[index])
 
       slf[pagedArticleKey].entries[index] = mergeRight(targetArticle, fields)
+    },
+    updatePagedArticles(pagedArticles: TPagedArticles): void {
+      const slf = self as TStore
+      const { pagedArticleKey } = slf
+
+      slf[pagedArticleKey] = pagedArticles
+    },
+    updateResState(state: TResState): void {
+      const slf = self as TStore
+      slf.resState = state
     },
     mark(sobj: Record<string, unknown>): void {
       markStates(sobj, self)

@@ -151,6 +151,7 @@ export type {
   TArticleSort,
   TPagedPosts,
   TPagedChangelogs,
+  TPagedArticlesFilter,
 } from './article'
 
 export type {

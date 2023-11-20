@@ -1,9 +1,17 @@
 import { ReactNode, useEffect, Children, isValidElement, cloneElement } from 'react'
 
 import { APP_VERSION } from '@/config'
-import type { TMetric, TScrollDirection, TGlowPosition, TArticle } from '@/spec'
+import type {
+  TMetric,
+  TScrollDirection,
+  TGlowPosition,
+  TArticle,
+  TResState,
+  TPagedArticlesFilter,
+} from '@/spec'
 import METRIC from '@/constant/metric'
 import EVENT from '@/constant/event'
+import TYPE from '@/constant/type'
 import ERR from '@/constant/err'
 
 import { buildLog } from '@/logger'
@@ -11,6 +19,7 @@ import { errRescue } from '@/signal'
 import { Global } from '@/helper'
 
 import { matchArticleUpvotes } from '@/utils/macros'
+import { scrollToTop } from '@/dom'
 import asyncSuit from '@/async'
 
 import S from './schema'
@@ -25,7 +34,7 @@ let sub$ = null
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
 const sr71$ = new SR71({
   // @ts-ignore
-  receive: [EVENT.UPVOTE_ARTICLE, EVENT.UPDATE_VIEWING_ARTICLE],
+  receive: [EVENT.UPVOTE_ARTICLE, EVENT.UPDATE_VIEWING_ARTICLE, EVENT.REFRESH_ARTICLES],
 })
 
 // custromScroll's scroll direction change
@@ -65,6 +74,51 @@ const initAppVersion = (): void => {
   Global.appVersion = APP_VERSION || 'unknow'
 }
 
+const loadArticles = (page = 1): void => {
+  const { curCommunity, userHasLogin, activeTag } = store
+  store.updateResState(TYPE.RES_STATE.LOADING as TResState)
+  scrollToTop()
+
+  const filter = { page, size: 20, community: curCommunity.slug } as TPagedArticlesFilter
+
+  if (activeTag?.slug) {
+    filter.articleTag = activeTag?.slug
+  }
+
+  sr71$.query(S.pagedPosts, { filter, userHasLogin })
+}
+
+// TODO: use sanitor to filter whitelist oueries if nend
+const syncURL = (page: number): void => {
+  const { activeTag } = store
+  const curSearchParams = getCurSearchParams()
+
+  // handle tag spec logic
+  activeTag?.slug ? (curSearchParams.tag = activeTag?.slug) : delete curSearchParams.tag
+
+  // handle page number spec logic
+  page !== 1 ? (curSearchParams.page = page) : delete curSearchParams.page
+
+  doSyncRoute(searchParams2String(curSearchParams))
+}
+
+const searchParams2String = (obj): string => new URLSearchParams(obj).toString()
+
+const getCurSearchParams = (): Record<any, any> =>
+  Object.fromEntries(new URLSearchParams(window.location.search))
+
+const doSyncRoute = (queryString: string): void => {
+  const { curCommunity, curThread } = store
+  const mainPath = `/${curCommunity.slug}/${curThread}`
+
+  if (!queryString) {
+    Global.history.pushState(null, '', `${mainPath}`)
+    return
+  }
+
+  Global.history.pushState(null, '', `${mainPath}?${queryString}`)
+}
+
 // ###############################
 // init & uninit
 // ###############################
@@ -86,6 +140,22 @@ const handleUovoteRes = ({ upvotesCount, meta }) => {
 
 const DataSolver = [
   ...matchArticleUpvotes(handleUovoteRes),
+  {
+    match: asyncRes(EVENT.REFRESH_ARTICLES),
+    action: (data) => {
+      const { page } = data[EVENT.REFRESH_ARTICLES]
+      loadArticles(page)
+    },
+  },
+  {
+    match: asyncRes('pagedPosts'),
+    action: (res) => {
+      store.updateResState(TYPE.RES_STATE.DONE as TResState)
+      store.updatePagedArticles(res.pagedPosts)
+
+      syncURL(res.pagedPosts.pageNumber)
+    },
+  },
   {
     match: asyncRes(EVENT.UPDATE_VIEWING_ARTICLE),
     action: (_data) => {

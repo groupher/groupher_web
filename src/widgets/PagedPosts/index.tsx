@@ -5,6 +5,7 @@
  */
 
 import { FC, memo } from 'react'
+import { observer } from 'mobx-react-lite'
 import Pagi from '@/widgets/Pagi'
 
 import EVENT from '@/constant/event'
@@ -37,5 +38,4 @@ const PagedPosts: FC = () => {
   )
 }
 
-/* <CommunityRecommends /> */
-export default memo(PagedPosts)
+export default observer(PagedPosts)

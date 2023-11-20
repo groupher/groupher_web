@@ -16,7 +16,7 @@ const Header: FC<TProps> = ({ article }) => {
     <Wrapper>
       <div>{article?.author.nickname}</div>
       <DotDivider radius={2} space={8} />
-      <TimeAgo datetime={article.insertedAt} locale="zh_CN" />
+      <TimeAgo datetime={article.insertedAt} locale="zh_CN" suppressHydrationWarning />
     </Wrapper>
   )
 }

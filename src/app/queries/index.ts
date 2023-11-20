@@ -3,9 +3,12 @@
  * https://formidable.com/open-source/urql/docs/api/urql/#usequery
  * https://formidable.com/open-source/urql/docs/api/core/#operationresult
  */
+import { useMemo } from 'react'
 import { useQuery } from '@urql/next'
+import { useParams, useSearchParams } from 'next/navigation'
+import { mergeRight } from 'ramda'
 
-import type { TID } from '@/spec'
+import type { TID, TPagedArticlesFilter } from '@/spec'
 import { P } from '@/schemas'
 import { DEFAULT_THEME } from '@/config'
 
@@ -20,11 +23,10 @@ import type {
   TPagedChangelogsRes,
   TSSRQueryOpt,
   TTagsFilter,
-  TArticlesFIlter,
 } from './spec'
 import { GQ_OPTION, TAGS_FILTER, ARTICLES_FILTER } from './constant'
 
-import { commonRes } from './helper'
+import { commonRes, parseCommunity } from './helper'
 
 export { parseCommunity, parseThread, parseWallpaper, parseDashboard } from './helper'
 
@@ -95,18 +97,32 @@ export const useTags = (filter: TTagsFilter = TAGS_FILTER, _opt: TSSRQueryOpt = 
   }
 }
 
-export const usePagedPosts = (
-  filter: TArticlesFIlter = ARTICLES_FILTER,
-  _opt: TSSRQueryOpt = {},
-): TPagedPostsRes => {
+// TODO: extact articleQueryParams
+// TODO: common func to jadge skip for page/community change
+export const usePagedPosts = (_opt: TSSRQueryOpt = {}): TPagedPostsRes => {
   const opt = { ...GQ_OPTION, ..._opt }
 
-  const { page, size, community } = { ...ARTICLES_FILTER, ...filter }
+  const params = useParams()
+  const searchParams = useSearchParams()
+  const _community = useMemo(() => parseCommunity(params.community as string), [params])
+
+  const tagParams = searchParams.get('tag')
+
+  const _filter = {
+    community: _community,
+    page: Number(searchParams.get('page')) || 1,
+  } as TPagedArticlesFilter
+
+  if (tagParams) {
+    _filter.articleTag = tagParams
+  }
+
+  const filter = mergeRight(ARTICLES_FILTER, _filter)
 
   const [result] = useQuery({
     query: P.pagedPosts,
     variables: {
-      filter: { page, size, community },
+      filter,
       userHasLogin: opt.userHasLogin,
     },
     pause: opt.skip,
@@ -161,7 +177,7 @@ export const useGroupedKanbanPosts = (
 }
 
 export const usePagedChangelogs = (
-  filter: TArticlesFIlter = ARTICLES_FILTER,
+  filter: TPagedArticlesFilter = ARTICLES_FILTER,
   _opt: TSSRQueryOpt = {},
 ): TPagedChangelogsRes => {
   const opt = { ...GQ_OPTION, ..._opt }

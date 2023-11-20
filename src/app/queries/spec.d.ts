@@ -63,12 +63,6 @@ export type TTagsFilter = {
   thread?: string
 }
 
-export type TArticlesFIlter = {
-  page?: number
-  size?: number
-  community?: string
-}
-
 export type TDashboardTab = {
   curTab: TDashboardPath
   baseInfoTab?: TDashboardBaseInfoRoute

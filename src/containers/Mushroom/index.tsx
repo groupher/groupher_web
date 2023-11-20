@@ -16,7 +16,7 @@ const Mushroom: FC = () => {
   const handleBrowserPopChange = useCallback(
     (data) => {
       if (curThread === THREAD.POST) {
-        window.location = data.target.location.pathname
+        // window.location = data.target.location.pathname
       }
     },
     [curThread],

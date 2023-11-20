@@ -58,7 +58,7 @@ const Header: FC<TProps> = ({ article }) => {
         <Dot radius={2.5} space={10} />
         <Space right={2} />
         <PublishTime>
-          <TimeAgo datetime={insertedAt} locale="zh_CN" />
+          <TimeAgo datetime={insertedAt} locale="zh_CN" suppressHydrationWarning />
         </PublishTime>
       </Topping>
       <Main>
