@@ -1,13 +1,12 @@
 import { useMemo } from 'react'
 
 import { reject, includes, values, isEmpty, mergeRight } from 'ramda'
-import { useParams, useSearchParams } from 'next/navigation'
+import { useParams, useSearchParams, usePathname } from 'next/navigation'
 
 import type {
   TCommunity,
   TThread,
   TNameAlias,
-  TDashboard,
   TDashboardPath,
   TDashboardBaseInfoRoute,
   TDashboardSEORoute,
@@ -31,7 +30,7 @@ import {
 } from '@/constant/route'
 import { removeEmptyValuesFromObject } from '@/helper'
 
-import type { TGQSSRResult, TParsedWallpaper, TDashboardTab } from './spec'
+import type { TGQSSRResult, TParsedWallpaper, TParseDashboard, TDashboardTab } from './spec'
 import { ARTICLES_FILTER } from './constant'
 
 export const commonRes = (result): TGQSSRResult => {
@@ -46,6 +45,18 @@ export const useCommunityParam = (): string => {
   const params = useParams()
 
   return useMemo(() => parseCommunity(params.community as string), [params])
+}
+
+export const useThreadParam = (): string => {
+  const pathname = usePathname()
+
+  return useMemo(() => parseThread(pathname), [pathname])
+}
+
+export const useIdParam = (): string => {
+  const params = useParams()
+
+  return useMemo(() => params.id as string, [params])
 }
 
 /**
@@ -190,10 +201,6 @@ const parseDashboardThread = (pathname: string): TDashboardTab => {
       }
     }
   }
-}
-
-type TParseDashboard = TDashboard & {
-  initSettings: TDashboard
 }
 
 export const parseDashboard = (community: TCommunity, pathname: string): TParseDashboard => {

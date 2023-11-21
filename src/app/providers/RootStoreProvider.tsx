@@ -1,13 +1,10 @@
 'use client'
 
 import { FC, ReactNode, cloneElement, Children, isValidElement } from 'react'
-import { usePathname, useParams } from 'next/navigation'
 import { Provider } from 'mobx-react'
 import { enableStaticRendering } from 'mobx-react-lite'
 
 import { useStore } from '@/stores/init'
-import { THREAD } from '@/constant/thread'
-// import TYPE from '@/constant/type'
 
 import {
   useSession,
@@ -18,10 +15,10 @@ import {
   usePagedPosts,
   useGroupedKanbanPosts,
   usePagedChangelogs,
-  parseThread,
-  parseWallpaper,
-  parseDashboard,
-  parseCommunity,
+  useWallpaper,
+  useDashboard,
+  //
+  useThreadParam,
 } from '../queries'
 
 enableStaticRendering(typeof window === 'undefined')
@@ -32,51 +29,23 @@ type TProps = {
 }
 
 const RootStoreWrapper: FC<TProps> = ({ children, token }) => {
-  // console.log('## init in layout, load community info, dashboard info')
-  const pathname = usePathname()
-  const params = useParams()
   const userHasLogin = !!token
 
-  const communitySlug = parseCommunity(params.community as string)
-
-  // console.log('## pathname: ', pathname)
-  const activeThread = parseThread(pathname)
+  const activeThread = useThreadParam()
   // console.log('## activeThread: ', activeThread)
 
-  const skip = !communitySlug
-
   const { sesstion } = useSession()
-  const { community } = useCommunity({ skip, userHasLogin })
+  const { community } = useCommunity(userHasLogin)
 
-  const { pagedPosts } = usePagedPosts({
-    skip: !(activeThread === THREAD.POST && !params.id),
-    userHasLogin,
-  })
+  const { pagedPosts } = usePagedPosts(userHasLogin)
+  const { pagedChangelogs } = usePagedChangelogs(userHasLogin)
+  const { post } = usePost(userHasLogin)
+  const { changelog } = useChangelog(userHasLogin)
+  const { groupedKanbanPosts } = useGroupedKanbanPosts(userHasLogin)
+  const { tags } = useTags()
 
-  const { pagedChangelogs } = usePagedChangelogs({
-    skip: activeThread !== THREAD.CHANGELOG,
-    userHasLogin,
-  })
-
-  const { post } = usePost({
-    skip: !(activeThread === THREAD.POST && params.id),
-    userHasLogin,
-  })
-
-  const { changelog } = useChangelog({
-    skip: !(activeThread === THREAD.CHANGELOG && params.id),
-    userHasLogin,
-  })
-
-  const { groupedKanbanPosts } = useGroupedKanbanPosts({
-    skip: activeThread !== THREAD.KANBAN,
-    userHasLogin,
-  })
-
-  const { tags } = useTags({ skip, userHasLogin })
-
-  const wallpaper = !skip ? parseWallpaper(community) : {}
-  const dashboard = !skip ? parseDashboard(community, pathname) : {}
+  const wallpaper = useWallpaper(community)
+  const dashboard = useDashboard(community)
 
   const store = useStore({
     ...sesstion,
