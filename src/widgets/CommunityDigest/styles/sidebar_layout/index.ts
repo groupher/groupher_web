@@ -38,6 +38,7 @@ export const TabBarWrapper = styled.div`
   ${css.row('align-center', 'justify-start')};
   margin-left: 10px;
   transform: scale(1.05);
+  width: 80%;
 `
 export const Divider = styled(SexyDivider)`
   width: 200px;

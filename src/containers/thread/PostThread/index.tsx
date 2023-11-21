@@ -16,12 +16,13 @@ import useBannerLayout from '@/hooks/useBannerLayout'
 import usePagedPosts from '@/hooks/usePagedPosts'
 import { THREAD } from '@/constant/thread'
 
-import ThreadSidebar from '@/containers/thread/ThreadSidebar'
 import PagedPosts from '@/widgets/PagedPosts'
 import TagNote from '@/widgets/TagNote'
 import ViewportTracker from '@/widgets/ViewportTracker'
 import ArticlesFilter from '@/widgets/ArticlesFilter'
 // import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+
+import ThreadSidebar from './ThreadSidebar'
 
 import { Wrapper, MainWrapper, SidebarWrapper, FilterWrapper } from './styles'
 import { inAnchor, outAnchor, onFilterSelect } from './logic'

@@ -150,6 +150,11 @@ const DashboardThread = T.model('DashboardThread', {
   allRootRules: T.opt(T.str, '{}'),
 })
   .views((self) => ({
+    get curCommunity(): TCommunity {
+      const root = getParent(self) as TRootStore
+
+      return toJS(root.viewing.community)
+    },
     get overviewData(): TOverview {
       return toJS(self.overview)
     },
@@ -185,12 +190,6 @@ const DashboardThread = T.model('DashboardThread', {
         enable: init.enable,
       }
     },
-    get curCommunity(): TCommunity {
-      const root = getParent(self) as TRootStore
-
-      return toJS(root.viewing.community)
-    },
-
     get cmsContents(): TCMSContents {
       const slf = self as TStore
       const { batchSelectedIDs, docTab, editingFAQIndex } = slf

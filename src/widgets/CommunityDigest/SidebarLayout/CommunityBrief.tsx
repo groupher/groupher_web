@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 
 import { BANNER_LAYOUT } from '@/constant/layout'
 import { THREAD } from '@/constant/thread'
+import { assetSrc } from '@/helper'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useViewingThread from '@/hooks/useViewingThread'
@@ -39,7 +40,7 @@ const CommunityBrief: FC = () => {
     <Wrapper>
       <MainWrapper>
         <LogoWrapper>
-          <Logo src={logo} />
+          <Logo src={assetSrc(logo)} />
         </LogoWrapper>
         <CommunityInfo>
           <Title>{title}</Title>

@@ -10,11 +10,12 @@ import { FC, Fragment } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import useAvatarLayout from '@/hooks/useAvatarLayout'
+import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
 import EVENT from '@/constant/event'
 import { ARTICLE_CAT } from '@/constant/gtd'
 
 import { buildLog } from '@/logger'
-import { send } from '@/signal'
+import { send, callGEditor, callSyncSelector } from '@/signal'
 import { mockUsers } from '@/mock'
 
 import ImgFallback from '@/widgets/ImgFallback'
@@ -34,17 +35,13 @@ import {
   MoreNum,
   CommunityNoteWrapper,
   PublishWrapper,
-} from '../styles/classic_layout'
-import { onPublish } from '../logic'
+} from './styles/thread_sidebar'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:ClassicSidebar')
 
-export type TProps = {
-  showCommunityBadge: boolean
-}
-
-const ClassicLayout: FC<TProps> = ({ showCommunityBadge }) => {
+const ThreadSidebar: FC = () => {
+  const { inView: showCommunityBadge } = useCommunityDigestViewport()
   const avatarLayout = useAvatarLayout()
 
   return (
@@ -86,8 +83,14 @@ const ClassicLayout: FC<TProps> = ({ showCommunityBadge }) => {
           <PublishWrapper $show={showCommunityBadge}>
             <PublishButton
               text="参与讨论"
-              onClick={() => onPublish(ARTICLE_CAT.FEATURE)}
-              onMenuSelect={onPublish}
+              onClick={() => {
+                // callGEditor()
+                // setTimeout(() => callSyncSelector({ cat, tag: store.activeTag }), 500)
+                // onPublish(ARTICLE_CAT.FEATURE)
+              }}
+              onMenuSelect={() => {
+                console.log('## TODO')
+              }}
               left={-2}
               offset={[0, 5]}
             />
@@ -104,4 +107,4 @@ const ClassicLayout: FC<TProps> = ({ showCommunityBadge }) => {
   )
 }
 
-export default observer(ClassicLayout)
+export default observer(ThreadSidebar)

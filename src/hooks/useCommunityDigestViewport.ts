@@ -6,6 +6,7 @@ import { MobXProviderContext } from 'mobx-react'
 type TRet = {
   enterView: () => void
   leaveView: () => void
+  inView: boolean
 }
 
 /**
@@ -21,6 +22,7 @@ const useCommunityDigestViewport = (): TRet => {
   return {
     enterView: (): void => store.mark({ communityDigestInView: true }),
     leaveView: (): void => store.mark({ communityDigestInView: false }),
+    inView: store.communityDigestInView,
   }
 }
 
