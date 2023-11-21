@@ -27,7 +27,6 @@ const log = buildLog('w:PublishButton:index')
 type TProps = {
   text?: string
   mode?: TPublishMode
-  onClick?: () => void
   onMenuSelect?: (cat: TArticleCat) => void
   menuLeft?: boolean
   offset?: [number, number]
@@ -38,7 +37,6 @@ const PublishButton: FC<TProps> = ({
   text = '',
   mode = PUBLISH_MODE.DEFAULT,
   placement = 'bottom',
-  onClick = log,
   onMenuSelect = log,
   menuLeft = false,
   offset = [-5, 5],
@@ -59,11 +57,11 @@ const PublishButton: FC<TProps> = ({
         offset={offset as [number, number]}
         placement={placement}
         items={POST_CAT_MENU_ITEMS}
-        // onSelect={(item) => handleSelect(item.key as TArticleState)}
+        onSelect={(item) => onMenuSelect(item.key as TArticleCat)}
         // onShow={() => setMenuOpen(true)}
         // onHide={() => setMenuOpen(false)}
         // activeKey={activeCat}
-        popWidth={192}
+        popWidth={195}
         withDesc
       >
         <PubButton $color={primaryColor} $smaller={mode === PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER}>

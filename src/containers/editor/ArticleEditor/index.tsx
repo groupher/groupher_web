@@ -70,7 +70,7 @@ const ArticleEditor: FC<TProps> = ({ metric = METRIC.ARTICLE_EDITOR }) => {
             <Space left={20} />
             <ConditionSelector
               mode={CONDITION_MODE.CAT}
-              selected={false}
+              selected
               active={activeCat}
               onSelect={catOnChange}
               right={20}

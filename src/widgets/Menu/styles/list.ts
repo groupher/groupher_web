@@ -8,6 +8,7 @@ import css, { theme } from '@/css'
 type TWrapper = { $popWidth: number }
 export const Wrapper = styled.div<TWrapper>`
   width: ${({ $popWidth }) => `${$popWidth}px`};
+  padding: 5px 6px;
 `
 type TItem = TActive
 export const Item = styled.div<TItem>`
@@ -20,7 +21,7 @@ export const Item = styled.div<TItem>`
 
   background: ${({ $active }) => ($active ? theme('menuHoverBg') : 'transparent')};
   box-shadow: ${({ $active }) => ($active ? theme('button.boxShadow') : '')};
-  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
+  color: ${theme('article.title')};
 
   &:hover {
     font-weight: 500;
@@ -32,7 +33,10 @@ export const Item = styled.div<TItem>`
   transition: all 0.1s;
 `
 
-export const Main = styled.div``
+export const Main = styled.div`
+  margin-top: 2px;
+  margin-bottom: 4px;
+`
 
 export const Title = styled.div`
   font-size: 14px;
@@ -53,12 +57,15 @@ export const FullIcon = styled.div`
   margin-right: 5px;
 `
 export const FullTitle = styled(Title)`
-  font-weight: bold;
+  ${Main}:hover & {
+    // font-weight: bold;
+  }
 `
 export const Desc = styled.div`
   font-size: 12px;
-  opacity: 0.8;
-  margin-top: -8px;
+  color: ${theme('article.digest')};
+  margin-top: -1px;
+  line-height: 20px;
 
   ${Item}:hover & {
     color: ${theme('article.digest')};

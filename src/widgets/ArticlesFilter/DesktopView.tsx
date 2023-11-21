@@ -9,6 +9,7 @@ import { observer } from 'mobx-react-lite'
 import dynamic from 'next/dynamic'
 
 import type { TArticleCat, TArticleSort, TArticleState } from '@/spec'
+import { callGEditor, callSyncSelector } from '@/signal'
 import { PUBLISH_MODE } from '@/constant/publish'
 import { CONDITION_MODE } from '@/constant/mode'
 
@@ -75,8 +76,10 @@ const ArticlesFilter: FC<TProps> = ({
         <PublishButton
           text="参与讨论"
           mode={PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER}
-          onClick={() => console.log('## publish')}
-          onMenuSelect={() => console.log('## on publish')}
+          onMenuSelect={(cat) => {
+            callGEditor()
+            setTimeout(() => callSyncSelector({ cat }), 500)
+          }}
           offset={[5, 5]}
           placement="bottom"
           top={-1}
