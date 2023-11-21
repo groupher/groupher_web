@@ -1,14 +1,12 @@
 import styled from 'styled-components'
 
-import type { TActive } from '@/spec'
-
-import css, { theme, rainbow } from '@/css'
+import css, { theme } from '@/css'
 
 import { SelectItem as SelectItemBase } from '.'
 
 export const Wrapper = styled.div`
   ${css.column()};
-  width: 240px;
+  width: 200px;
   cursor: auto;
 `
 export const GroupWrapper = styled.div`
@@ -18,40 +16,19 @@ export const GroupWrapper = styled.div`
 `
 export const SelectItem = styled(SelectItemBase)`
   ${css.row('align-center')};
-  margin-bottom: 2px;
+  margin-bottom: 4px;
   margin-right: 3px;
-`
-export const DotBox = styled.div`
-  ${css.circle(12)};
-  ${css.row('align-both')};
-`
-type THashSign = TActive & { color?: string }
-export const DotSign = styled.div<THashSign>`
-  ${css.circle(7)};
-  background: ${({ color }) => (color ? rainbow(color) : 'none')};
-
-  margin-right: 8px;
-  margin-top: -1px;
-  opacity: ${theme('tags.dotOpacity')};
-
-  transition: filter 0.1s;
-
-  ${SelectItem}:hover & {
-    ${css.circle(11)};
-    border: 2px solid;
-    border-color: white;
-  }
 `
 export const GroupTitle = styled.div`
   font-size: 12px;
   color: ${theme('article.digest')};
-  opacity: 0.6;
-  margin-left: 5px;
+  opacity: 0.8;
+  margin-left: 7px;
   margin-bottom: 5px;
   margin-top: 3px;
 `
 export const Title = styled.div`
-  font-size: 13px;
+  font-size: 14px;
   color: ${theme('article.digest')};
 
   ${SelectItem}:hover & {

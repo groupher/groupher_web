@@ -66,7 +66,7 @@ export const FilterIcon = styled(ArrowSVG)<TFilterIcon>`
     $active || selected ? rainbow($color, 'article.digest') : theme('article.digest')};
   ${css.size(14)};
   transform: rotate(-90deg);
-  margin-left: 4px;
+  opacity: 0.8;
 
   ${InnerBtnWrapper}:hover & {
     fill: ${({ $active, $color }) =>
