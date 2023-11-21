@@ -4,9 +4,12 @@
  * https://formidable.com/open-source/urql/docs/api/core/#operationresult
  */
 import { useQuery } from '@urql/next'
+import { usePathname } from 'next/navigation'
 
+import type { TCommunity } from '@/spec'
 import { P } from '@/schemas'
 import { DEFAULT_THEME } from '@/config'
+import { THREAD } from '@/constant/thread'
 
 import type {
   TSessionRes,
@@ -17,14 +20,23 @@ import type {
   TPagedPostsRes,
   TGroupedKanbanPostsRes,
   TPagedChangelogsRes,
-  TSSRQueryOpt,
-  TTagsFilter,
+  TParsedWallpaper,
+  TParseDashboard,
 } from './spec'
-import { GQ_OPTION, TAGS_FILTER } from './constant'
 
-import { commonRes, usePagedArticlesParams, useArticleParams, useCommunityParam } from './helper'
+import {
+  commonRes,
+  usePagedArticlesParams,
+  useArticleParams,
+  useCommunityParam,
+  useThreadParam,
+  useIdParam,
+  //
+  parseWallpaper,
+  parseDashboard,
+} from './helper'
 
-export { parseCommunity, parseThread, parseWallpaper, parseDashboard } from './helper'
+export { parseCommunity, useThreadParam } from './helper'
 
 export const useSession = (): TSessionRes => {
   const [result] = useQuery({
@@ -51,18 +63,16 @@ export const useSession = (): TSessionRes => {
   }
 }
 
-export const useCommunity = (_opt: TSSRQueryOpt = {}): TCommunityRes => {
-  const opt = { ...GQ_OPTION, ..._opt }
+export const useCommunity = (userHasLogin: boolean): TCommunityRes => {
   const slug = useCommunityParam()
 
   const [result] = useQuery({
     query: P.community,
     variables: {
       slug,
-      userHasLogin: opt.userHasLogin,
+      userHasLogin,
     },
-    pause: opt.skip,
-    requestPolicy: opt.requestPolicy,
+    // pause: opt.skip,
   })
 
   return {
@@ -71,22 +81,17 @@ export const useCommunity = (_opt: TSSRQueryOpt = {}): TCommunityRes => {
   }
 }
 
-export const useTags = (_opt: TSSRQueryOpt = {}): TTagsRes => {
-  const opt = { ...GQ_OPTION, ..._opt }
+export const useTags = (): TTagsRes => {
   const community = useCommunityParam()
-  const { thread } = TAGS_FILTER
+  const _thread = useThreadParam()
+  const thread = _thread.toUpperCase()
 
   const [result] = useQuery({
     query: P.pagedArticleTags,
     variables: {
-      filter: {
-        community,
-        thread: thread.toUpperCase(),
-      },
-      userHasLogin: opt.userHasLogin,
+      filter: { community, thread },
     },
-    pause: opt.skip,
-    requestPolicy: opt.requestPolicy,
+    // pause: opt.skip,
   })
 
   return {
@@ -95,18 +100,15 @@ export const useTags = (_opt: TSSRQueryOpt = {}): TTagsRes => {
   }
 }
 
-export const usePagedPosts = (_opt: TSSRQueryOpt = {}): TPagedPostsRes => {
-  const opt = { ...GQ_OPTION, ..._opt }
+export const usePagedPosts = (userHasLogin: boolean): TPagedPostsRes => {
   const filter = usePagedArticlesParams()
+  const thread = useThreadParam()
+  const id = useIdParam()
 
   const [result] = useQuery({
     query: P.pagedPosts,
-    variables: {
-      filter,
-      userHasLogin: opt.userHasLogin,
-    },
-    pause: opt.skip,
-    requestPolicy: opt.requestPolicy,
+    variables: { filter, userHasLogin },
+    pause: !(thread === THREAD.POST && !id),
   })
 
   return {
@@ -115,18 +117,14 @@ export const usePagedPosts = (_opt: TSSRQueryOpt = {}): TPagedPostsRes => {
   }
 }
 
-export const usePagedChangelogs = (_opt: TSSRQueryOpt = {}): TPagedChangelogsRes => {
-  const opt = { ...GQ_OPTION, ..._opt }
+export const usePagedChangelogs = (userHasLogin: boolean): TPagedChangelogsRes => {
   const filter = usePagedArticlesParams()
+  const thread = useThreadParam()
 
   const [result] = useQuery({
     query: P.pagedChangelogs,
-    variables: {
-      filter,
-      userHasLogin: opt.userHasLogin,
-    },
-    pause: opt.skip,
-    requestPolicy: opt.requestPolicy,
+    variables: { filter, userHasLogin },
+    pause: thread !== THREAD.CHANGELOG,
   })
 
   return {
@@ -135,20 +133,14 @@ export const usePagedChangelogs = (_opt: TSSRQueryOpt = {}): TPagedChangelogsRes
   }
 }
 
-export const usePost = (_opt: TSSRQueryOpt = {}): TPostRes => {
-  const opt = { ...GQ_OPTION, ..._opt }
-
+export const usePost = (userHasLogin: boolean): TPostRes => {
   const { community, id } = useArticleParams()
+  const thread = useThreadParam()
 
   const [result] = useQuery({
     query: P.post,
-    variables: {
-      community,
-      id,
-      userHasLogin: opt.userHasLogin,
-    },
-    pause: opt.skip,
-    requestPolicy: opt.requestPolicy,
+    variables: { community, id, userHasLogin },
+    pause: !(thread === THREAD.POST && id),
   })
 
   return {
@@ -157,19 +149,14 @@ export const usePost = (_opt: TSSRQueryOpt = {}): TPostRes => {
   }
 }
 
-export const useChangelog = (_opt: TSSRQueryOpt = {}): TChangelogRes => {
-  const opt = { ...GQ_OPTION, ..._opt }
+export const useChangelog = (userHasLogin: boolean): TChangelogRes => {
   const { community, id } = useArticleParams()
+  const thread = useThreadParam()
 
   const [result] = useQuery({
     query: P.changelog,
-    variables: {
-      community,
-      id,
-      userHasLogin: opt.userHasLogin,
-    },
-    pause: opt.skip,
-    requestPolicy: opt.requestPolicy,
+    variables: { community, id, userHasLogin },
+    pause: !(thread === THREAD.CHANGELOG && id),
   })
 
   return {
@@ -178,21 +165,28 @@ export const useChangelog = (_opt: TSSRQueryOpt = {}): TChangelogRes => {
   }
 }
 
-export const useGroupedKanbanPosts = (_opt: TSSRQueryOpt = {}): TGroupedKanbanPostsRes => {
+export const useGroupedKanbanPosts = (userHasLogin: boolean): TGroupedKanbanPostsRes => {
   const community = useCommunityParam()
-  const opt = { ...GQ_OPTION, ..._opt }
+  const thread = useThreadParam()
 
   const [result] = useQuery({
     query: P.groupedKanbanPosts,
-    variables: {
-      community,
-    },
-    pause: opt.skip,
-    requestPolicy: opt.requestPolicy,
+    variables: { community, userHasLogin },
+    pause: thread !== THREAD.KANBAN,
   })
 
   return {
     ...commonRes(result),
     groupedKanbanPosts: result.data?.groupedKanbanPosts,
   }
+}
+
+export const useWallpaper = (community: TCommunity): TParsedWallpaper => {
+  return parseWallpaper(community)
+}
+
+export const useDashboard = (community: TCommunity): TParseDashboard => {
+  const pathname = usePathname()
+
+  return parseDashboard(community, pathname)
 }

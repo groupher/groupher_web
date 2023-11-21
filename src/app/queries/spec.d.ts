@@ -11,6 +11,7 @@ import type {
   TDashboardLayoutRoute,
   TDashboardAliasRoute,
   TArticle,
+  TDashboard,
 } from '@/spec'
 
 export type TSessionRes = TGQSSRResult & {
@@ -71,4 +72,8 @@ export type TDashboardTab = {
   broadcastTab?: TDashboardBroadcastRoute
   layoutTab?: TDashboardLayoutRoute
   aliasTab?: TDashboardAliasRoute
+}
+
+export type TParseDashboard = TDashboard & {
+  initSettings: TDashboard
 }
