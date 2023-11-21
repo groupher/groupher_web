@@ -11,8 +11,8 @@ import { observer } from 'mobx-react-lite'
 
 import useAvatarLayout from '@/hooks/useAvatarLayout'
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 import EVENT from '@/constant/event'
-import { ARTICLE_CAT } from '@/constant/gtd'
 
 import { buildLog } from '@/logger'
 import { send, callGEditor, callSyncSelector } from '@/signal'
@@ -41,6 +41,7 @@ import {
 const log = buildLog('w:ClassicSidebar')
 
 const ThreadSidebar: FC = () => {
+  const curCommunity = useViewingCommunity()
   const { inView: showCommunityBadge } = useCommunityDigestViewport()
   const avatarLayout = useAvatarLayout()
 
@@ -52,10 +53,7 @@ const ThreadSidebar: FC = () => {
             <Fragment>
               <DividerTitle>简介</DividerTitle>
               <Br top={10} />
-              <CommunityNoteWrapper>
-                让你的产品聆听用户的声音。互动讨论，GTD
-                看板，更新日志，帮助文档多合一，收集整理用户用户反馈，助你打造更好的产品
-              </CommunityNoteWrapper>
+              <CommunityNoteWrapper>{curCommunity.desc}</CommunityNoteWrapper>
             </Fragment>
           )}
 
@@ -83,13 +81,9 @@ const ThreadSidebar: FC = () => {
           <PublishWrapper $show={showCommunityBadge}>
             <PublishButton
               text="参与讨论"
-              onClick={() => {
-                // callGEditor()
-                // setTimeout(() => callSyncSelector({ cat, tag: store.activeTag }), 500)
-                // onPublish(ARTICLE_CAT.FEATURE)
-              }}
-              onMenuSelect={() => {
-                console.log('## TODO')
+              onMenuSelect={(cat) => {
+                callGEditor()
+                setTimeout(() => callSyncSelector({ cat }), 500)
               }}
               left={-2}
               offset={[0, 5]}

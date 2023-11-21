@@ -9,7 +9,6 @@ import { ReactNode, FC, memo } from 'react'
 import type { TTooltipPlacement } from '@/spec'
 import { buildLog } from '@/logger'
 import Tooltip from '@/widgets/Tooltip'
-import MENU from '@/constant/menu'
 
 import type { TMenuItem } from './spec'
 import List from './List'
@@ -32,34 +31,10 @@ type TProps = {
   withDesc?: boolean
 }
 
-// todo constant for MENU_ICON
-const DEMO_ITEMS = [
-  {
-    key: 'all',
-    title: '全部',
-    icon: MENU.ALL,
-  },
-  {
-    key: 'todo',
-    title: '计划中',
-    icon: MENU.TODO,
-  },
-  {
-    key: 'wip',
-    title: '进行中',
-    icon: MENU.WIP,
-  },
-  {
-    key: 'done',
-    title: '已完成',
-    icon: MENU.DONE,
-  },
-]
-
 const Menu: FC<TProps> = ({
   activeKey = '',
   onSelect = log,
-  items = DEMO_ITEMS,
+  items = [],
   children = 'menu',
   onShow = log,
   onHide = log,
@@ -75,6 +50,7 @@ const Menu: FC<TProps> = ({
       onShow={() => onShow && onShow()}
       onHide={() => onHide && onHide()}
       offset={offset as [number, number]}
+      noPadding
       content={
         <List
           items={items}

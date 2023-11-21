@@ -43,7 +43,7 @@ export const POST_CAT_MENU_ITEMS = [
   },
   {
     key: ARTICLE_CAT.BUG,
-    desc: '使用中遇到的错误，问题等',
+    desc: '使用中遇到的错误，逻辑 Bug 等等',
     icon: MENU.BUG,
   },
   {

@@ -39,8 +39,6 @@ const ConditionSelector: FC<TProps> = ({
   const menuItems = getMenuItems(mode)
   const activeMenuItem = getActiveMenuItem(menuItems, active)
 
-  // console.log('## activeMenuItem: ', activeMenuItem)
-
   const title = getTitle(mode)
 
   return (
