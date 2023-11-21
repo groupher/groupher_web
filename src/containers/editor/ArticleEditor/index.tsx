@@ -31,7 +31,7 @@ import {
   useInit,
   editOnChange,
   // changeCommunity,
-  // onTagSelect,
+  onTagSelect,
   catOnChange,
 } from './logic'
 
@@ -66,14 +66,19 @@ const ArticleEditor: FC<TProps> = ({ metric = METRIC.ARTICLE_EDITOR }) => {
           <TitleInput title={title} placeholder={texts.holder.title} />
 
           <FuncRow>
-            <TagSelector groupedTags={groupedTags} activeTag={activeTagData} />
-            <Space left={20} />
             <ConditionSelector
               mode={CONDITION_MODE.CAT}
+              closable={false}
               selected
               active={activeCat}
               onSelect={catOnChange}
               right={20}
+            />
+            <Space left={14} />
+            <TagSelector
+              groupedTags={groupedTags}
+              activeTag={activeTagData}
+              onSelect={onTagSelect}
             />
           </FuncRow>
 

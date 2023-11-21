@@ -2,16 +2,9 @@ import { FC, memo } from 'react'
 import { keys } from 'ramda'
 
 import type { TTag, TGroupedTags } from '@/spec'
+import TagNode from '@/widgets/TagNode'
 
-import {
-  Wrapper,
-  GroupWrapper,
-  GroupTitle,
-  SelectItem,
-  DotBox,
-  DotSign,
-  Title,
-} from './styles/filter_panel'
+import { Wrapper, GroupWrapper, GroupTitle, SelectItem, Title } from './styles/filter_panel'
 
 type TProps = {
   activeTag: TTag
@@ -32,9 +25,16 @@ const GroupTags: FC<TGroupTags> = ({ tags, activeTag, onSelect }) => {
 
         return (
           <SelectItem key={tag.id} $active={$active} onClick={() => onSelect(tag)}>
-            <DotBox>
-              <DotSign color={tag.color} $active={$active} />
-            </DotBox>
+            <TagNode
+              color={tag.color}
+              dotSize={8}
+              dotRight={8}
+              hashSize={10}
+              hashRight={5}
+              hashTop={-1}
+              opacity={0.8}
+              boldHash
+            />
             <Title>{tag.title}</Title>
           </SelectItem>
         )

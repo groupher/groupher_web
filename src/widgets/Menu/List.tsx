@@ -43,9 +43,7 @@ const List: FC<TProps> = ({ items, activeKey, onSelect, popWidth, withDesc }) =>
         return (
           <Item key={item.key} $active={active} onClick={() => onSelect(item)}>
             <Icon type={item.icon as TMenu} $active={active} />
-            <Main>
-              <Title>{Trans(item.key)}</Title>
-            </Main>
+            <Title>{Trans(item.key)}</Title>
           </Item>
         )
       })}
