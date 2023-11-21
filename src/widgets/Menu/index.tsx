@@ -9,7 +9,6 @@ import { ReactNode, FC, memo } from 'react'
 import type { TTooltipPlacement } from '@/spec'
 import { buildLog } from '@/logger'
 import Tooltip from '@/widgets/Tooltip'
-import MENU from '@/constant/menu'
 
 import type { TMenuItem } from './spec'
 import List from './List'
