@@ -6,7 +6,6 @@ import { sortByColor } from '@/helper'
 
 import TagItem from './TagItem'
 
-import { TagsWrapper } from '../styles/desktop_view'
 import {
   Wrapper,
   Header,
@@ -86,16 +85,14 @@ const Folder: FC<TProps> = ({
       </Header>
 
       <Content $isOpen={isFolderOpen}>
-        <TagsWrapper>
-          {sortedTags.slice(0, curDisplayCount).map((tag) => (
-            <TagItem
-              key={tag.slug}
-              tag={tag}
-              active={activeTag.title === tag.title}
-              onSelect={onSelect}
-            />
-          ))}
-        </TagsWrapper>
+        {sortedTags.slice(0, curDisplayCount).map((tag) => (
+          <TagItem
+            key={tag.slug}
+            tag={tag}
+            active={activeTag.title === tag.title}
+            onSelect={onSelect}
+          />
+        ))}
         {needSubToggle && (
           <SubToggle
             ref={subToggleRef}

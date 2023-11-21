@@ -47,7 +47,6 @@ const DashboardThread: FC = () => {
   const {
     curTab,
     overviewData,
-    curCommunity,
     baseInfoSettings,
     seoSettings,
     enableSettings,

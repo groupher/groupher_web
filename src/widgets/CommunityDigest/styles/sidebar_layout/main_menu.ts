@@ -25,6 +25,7 @@ export const MenuItem = styled(Link)<TActive>`
   width: 160px;
   border: 1px solid;
   border-color: ${({ $active }) => ($active ? theme('hoverBorder') : 'transparent')};
+  filter: ${({ $active }) => ($active ? 'saturate(1.1) brightness(1.1)' : '')};
   text-decoration: none;
   height: 32px;
   padding-left: 8px;
