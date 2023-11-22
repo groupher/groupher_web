@@ -1,6 +1,5 @@
 import type { TPagi } from './utils'
 import type { TPagedCommunities } from './community'
-import type { TC11NLayout } from './c11n'
 
 type TSocial = {
   github?: string
@@ -59,17 +58,7 @@ export type TPagedUsers = {
   entries: TUser[]
 } & TPagi
 
-export type TC11N = {
-  isLogin?: boolean
-  theme?: string
-  bannerLayout?: TC11NLayout
-  markViewed?: boolean
-  contentDivider?: boolean
-  displayDensity?: string // oneOf(['20', '25', '30'])
-}
-
 export type TAccount = TUser & {
-  customization?: TC11N
   isLogin?: boolean
   isValidSession?: boolean
   subscribedCommunitiesCount?: number

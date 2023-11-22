@@ -5,7 +5,7 @@
 
 import { mergeRight, clone, remove, insert, findIndex, propEq, includes } from 'ramda'
 
-import type { TRootStore, TAccount, TCommunity, TPagedCommunities, TC11N, TModerator } from '@/spec'
+import type { TRootStore, TAccount, TCommunity, TPagedCommunities, TModerator } from '@/spec'
 import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 import BStore from '@/utils/bstore'
 
@@ -32,12 +32,6 @@ const AccountStore = T.model('AccountStore', {
         isLogin: self.isValidSession,
         isValidSession: self.isValidSession,
         isModerator: includes(slf.user.login, moderatorLogins),
-      }
-    },
-    get c11n(): TC11N {
-      return {
-        isLogin: self.isValidSession,
-        ...toJS(self.user.customization),
       }
     },
     get subscribedCommunities(): TPagedCommunities {
@@ -117,10 +111,6 @@ const AccountStore = T.model('AccountStore', {
       // @ts-ignore
       self.userSubscribedCommunities.entries = remove(index, 1, entries)
       self.userSubscribedCommunities.totalCount -= 1
-    },
-    updateC11N(options) {
-      const curCustomization = clone(self.accountInfo.customization)
-      self.user.customization = mergeRight(curCustomization, options)
     },
     mark(sobj: Record<string, unknown>): void {
       markStates(sobj, self)

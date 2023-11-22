@@ -14,7 +14,7 @@ import GtdDoneSVG from '@/icons/CheckBold'
 import UpvoteSVG from '@/icons/Upvote'
 import CommentSVG from '@/icons/Comment'
 import PublishSVG from '@/icons/Publish'
-import ViewSVG from '@/icons/View'
+import ViewSVG from '@/icons/article/Viewed'
 
 import LightSVG from '@/icons/ColorLight'
 import BugSVG from '@/icons/ColorBug'

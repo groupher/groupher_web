@@ -1,8 +1,7 @@
 import SIZE from '@/constant/size'
 
-export const getSlipMargin = (size: string, mobileView: boolean, holyGrailView = false): number => {
+export const getSlipMargin = (size: string, mobileView: boolean): number => {
   if (mobileView) return 5
-  if (holyGrailView) return 15
 
   switch (size) {
     case SIZE.SMALL: {
@@ -14,13 +13,8 @@ export const getSlipMargin = (size: string, mobileView: boolean, holyGrailView =
   }
 }
 
-export const getMarginRight = (
-  size: string,
-  mobileView: boolean,
-  holyGrailView: boolean,
-): string => {
+export const getMarginRight = (size: string, mobileView: boolean): string => {
   if (mobileView) return '5px'
-  if (holyGrailView) return '15px'
 
   switch (size) {
     case SIZE.SMALL: {
@@ -34,13 +28,10 @@ export const getMarginRight = (
 
 export const getPadding = (
   size: string,
-  holyGrailView: boolean,
   mobileView: boolean,
   wrapMode: boolean,
   modelineView: boolean,
 ): string => {
-  if (holyGrailView) return '12px 10px'
-
   if (modelineView) {
     return '6px 10px'
   }
@@ -62,8 +53,7 @@ export const getPadding = (
   }
 }
 
-export const getMarginBottom = (holyGrailView: boolean, wrapMode: boolean): string => {
-  if (holyGrailView) return '0'
+export const getMarginBottom = (wrapMode: boolean): string => {
   if (wrapMode) return '4px'
 
   return '0'

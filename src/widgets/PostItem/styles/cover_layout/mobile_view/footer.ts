@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/css'
 
-import ViewSVG from '@/icons/View'
+import ViewSVG from '@/icons/article/Viewed'
 import CommentSVG from '@/icons/Comment'
 
 export const Wrapper = styled.div``

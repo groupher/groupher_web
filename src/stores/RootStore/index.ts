@@ -214,9 +214,6 @@ const rootStore = T.model({
       // @ts-ignore TODO:
       // toast('error', options)
     },
-    updateC11N(options): void {
-      self.account.updateC11N(options)
-    },
     isMemberOf(type): boolean {
       return self.account.isMemberOf(type)
     },

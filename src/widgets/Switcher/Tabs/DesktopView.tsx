@@ -9,7 +9,7 @@ import { observer } from 'mobx-react-lite'
 import { isEmpty, findIndex, pluck, includes } from 'ramda'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TSizeSM, TTabItem, TC11NLayout } from '@/spec'
+import type { TSizeSM, TTabItem } from '@/spec'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import SIZE from '@/constant/size'
 import C11N from '@/constant/c11n'
@@ -51,7 +51,6 @@ const getDefaultActiveTabIndex = (items: TTabItem[], activeKey: string): number 
 
 type TProps = {
   items?: TTabItem[]
-  layout?: TC11NLayout
   onChange: () => void
   activeKey?: string
   size: TSizeSM
@@ -64,7 +63,6 @@ const Tabs: FC<TProps> = ({
   size = SIZE.MEDIUM,
   onChange = log,
   items = temItems,
-  layout = C11N.CLASSIC,
   activeKey = '',
   slipHeight = '1px',
   bottomSpace = 0,
@@ -127,7 +125,6 @@ const Tabs: FC<TProps> = ({
           <TabItem
             key={isString(item) ? item : item.slug || item.title}
             mobileView={isMobile}
-            holyGrailView={layout === C11N.SIMPLE}
             activeKey={activeKey}
             index={index}
             item={item}

@@ -8,7 +8,6 @@ import { getMarginRight, getPadding, getMarginBottom } from '../metric/tabs'
 type TTab = {
   size: TSizeSM
   $mobileView: boolean
-  $holyGrailView: boolean
   $wrapMode: boolean
   $modelineView: boolean
 } & TActive
@@ -19,19 +18,18 @@ export const Wrapper = styled.div<TTab>`
   position: relative;
   height: 100%;
   z-index: 1;
-  margin-right: ${({ size, $mobileView, $holyGrailView }) =>
-    getMarginRight(size, $mobileView, $holyGrailView)};
-  padding: ${({ size, $holyGrailView, $mobileView, $wrapMode, $modelineView }) =>
-    getPadding(size, $holyGrailView, $mobileView, $wrapMode, $modelineView)};
+  margin-right: ${({ size, $mobileView }) => getMarginRight(size, $mobileView)};
+  padding: ${({ size, $mobileView, $wrapMode, $modelineView }) =>
+    getPadding(size, $mobileView, $wrapMode, $modelineView)};
   text-align: center;
   min-width: auto;
 
-  margin-bottom: ${({ $holyGrailView, $wrapMode }) => getMarginBottom($holyGrailView, $wrapMode)};
+  margin-bottom: ${({ $wrapMode }) => getMarginBottom($wrapMode)};
 
   /* background: ${({ active }) => (active ? '#114758' : '')}; */
 
   ${css.media.mobile`
-    margin-right: ${() => getMarginRight('', true, false)};
+    margin-right: ${() => getMarginRight('', true)};
   `};
 
   &:hover {
