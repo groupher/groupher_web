@@ -16,12 +16,12 @@ export const HighlightWrapper = styled(Wrapper)`
   -webkit-text-fill-color: transparent;
 `
 export const Count = styled.div`
-  font-size: 13px;
+  font-size: 14px;
   margin-top: -1px;
 `
 export const ViewsIcon = styled(ViewedSVG)<{ $highlight?: boolean }>`
   fill: ${({ $highlight }) => ($highlight ? theme('heightIcon') : theme('article.digest'))};
   ${css.size(12)};
-  margin-right: ${({ $highlight }) => ($highlight ? '4px' : '5px')};
+  margin-right: ${({ $highlight }) => ($highlight ? '4px' : '6px')};
   opacity: 0.85;
 `
