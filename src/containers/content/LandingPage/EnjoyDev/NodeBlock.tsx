@@ -28,7 +28,7 @@ type TProps = {
 }
 
 const METRIC = {
-  [ARTICLE_CAT.ALL]: {
+  [ARTICLE_CAT.FEATURE]: {
     title: '开发',
     upvoteText: '--',
     upvoteNum: 0,
@@ -64,63 +64,63 @@ const METRIC = {
   },
 }
 
-const NodeBlock: FC<TProps> = ({ cat = ARTICLE_CAT.ALL, index = -1 }) => {
+const NodeBlock: FC<TProps> = ({ cat = ARTICLE_CAT.FEATURE, index = -1 }) => {
   const metric = METRIC[cat]
   const HeadIcon = Icon[cat]
 
   const colors = getNodeBlockColors(cat)
 
   return (
-    <Wrapper color={colors.border} longer={cat === ARTICLE_CAT.ALL}>
-      {cat === ARTICLE_CAT.ALL && index === 0 && (
+    <Wrapper color={colors.border} longer={cat === ARTICLE_CAT.FEATURE}>
+      {cat === ARTICLE_CAT.FEATURE && index === 0 && (
         <LeftInfo bottom="51px">
           <LeftDot bg="#888888" />
         </LeftInfo>
       )}
 
-      {cat === ARTICLE_CAT.ALL && index === 1 && (
+      {cat === ARTICLE_CAT.FEATURE && index === 1 && (
         <LeftInfo bottom="63px">
           <LeftDot bg="#B36BAA" />
           <LeftText>进行中</LeftText>
         </LeftInfo>
       )}
 
-      {cat === ARTICLE_CAT.ALL && index === 1 && (
+      {cat === ARTICLE_CAT.FEATURE && index === 1 && (
         <LeftInfo bottom="45px">
           <LeftDot bg="#828282" />
           <LeftText>sprint x</LeftText>
         </LeftInfo>
       )}
 
-      {cat === ARTICLE_CAT.ALL && index === 1 && (
+      {cat === ARTICLE_CAT.FEATURE && index === 1 && (
         <LeftInfo bottom="25px">
           <LeftDot bg="#4A6DB0" />
           <LeftText>已排期</LeftText>
         </LeftInfo>
       )}
 
-      {cat === ARTICLE_CAT.ALL && index === 2 && (
+      {cat === ARTICLE_CAT.FEATURE && index === 2 && (
         <LeftInfo bottom="63px">
           <LeftDot bg="#C98B25" />
           <LeftText>已解决</LeftText>
         </LeftInfo>
       )}
 
-      {cat === ARTICLE_CAT.ALL && index === 2 && (
+      {cat === ARTICLE_CAT.FEATURE && index === 2 && (
         <LeftInfo bottom="45px">
           <LeftDot bg="#828282" />
           <LeftText>sprint y</LeftText>
         </LeftInfo>
       )}
 
-      {cat === ARTICLE_CAT.ALL && index === 2 && (
+      {cat === ARTICLE_CAT.FEATURE && index === 2 && (
         <LeftInfo bottom="25px">
           <LeftDot bg="#DF796B" />
           <LeftText>重复问题</LeftText>
         </LeftInfo>
       )}
 
-      <RightDot bg={colors.main} middle={cat === ARTICLE_CAT.ALL} />
+      <RightDot bg={colors.main} middle={cat === ARTICLE_CAT.FEATURE} />
 
       <Header bg={colors.headerBg}>
         <HeadIcon color={colors.main} />
@@ -139,7 +139,7 @@ const NodeBlock: FC<TProps> = ({ cat = ARTICLE_CAT.ALL, index = -1 }) => {
           </>
         )}
         <SpaceGrow />
-        {cat !== ARTICLE_CAT.ALL && (
+        {cat !== ARTICLE_CAT.FEATURE && (
           <Footer>
             <UpdateBtn
               text={metric.upvoteText}

@@ -18,13 +18,14 @@ type TProps = {
 } & TActive
 
 const ActiveLabel: FC<TProps> = ({ title, condition, activeItem }) => {
-  const $active = condition && condition !== ARTICLE_STATE.ALL
+  // const $active = condition && condition !== ARTICLE_STATE.ALL
+  const $active = !!condition
 
   return (
     <Wrapper>
       <Hint>{title}</Hint>
       <LabelWrapper>
-        <Icon type={activeItem.icon} $active={$active} />
+        {activeItem && <Icon type={activeItem.icon} $active={$active} />}
         <StateTitle>{Trans(condition)}</StateTitle>
       </LabelWrapper>
     </Wrapper>

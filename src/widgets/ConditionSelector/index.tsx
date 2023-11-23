@@ -1,7 +1,6 @@
 import { FC, memo, useState, useRef } from 'react'
 
 import type { TSpace, TTooltipPlacement, TConditionMode } from '@/spec'
-import { ARTICLE_STATE } from '@/constant/gtd'
 
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
 import Menu from '@/widgets/Menu'
@@ -25,7 +24,7 @@ type TProps = {
 
 const ConditionSelector: FC<TProps> = ({
   mode,
-  active = ARTICLE_STATE.ALL,
+  active = null,
   onSelect = console.log,
   selected = false,
   placement = 'bottom',
@@ -73,7 +72,7 @@ const ConditionSelector: FC<TProps> = ({
           onClear={() => {
             // simulate click to avoid menu pop again
             ref.current.click()
-            onSelect(ARTICLE_STATE.ALL)
+            onSelect(null)
           }}
         >
           <Menu

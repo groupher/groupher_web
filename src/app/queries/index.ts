@@ -3,13 +3,15 @@
  * https://formidable.com/open-source/urql/docs/api/urql/#usequery
  * https://formidable.com/open-source/urql/docs/api/core/#operationresult
  */
+import { values, includes } from 'ramda'
 import { useQuery } from '@urql/next'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 import type { TCommunity } from '@/spec'
 import { P } from '@/schemas'
 import { DEFAULT_THEME } from '@/config'
 import { THREAD } from '@/constant/thread'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 
 import type {
   TSessionRes,
@@ -22,6 +24,7 @@ import type {
   TPagedChangelogsRes,
   TParsedWallpaper,
   TParseDashboard,
+  TFilterSearchParams,
 } from './spec'
 
 import {
@@ -181,12 +184,38 @@ export const useGroupedKanbanPosts = (userHasLogin: boolean): TGroupedKanbanPost
   }
 }
 
+/**
+ * wallpaper related settings for all page
+ */
 export const useWallpaper = (community: TCommunity): TParsedWallpaper => {
   return parseWallpaper(community)
 }
 
+/**
+ * general dashboard settings for all page
+ */
 export const useDashboard = (community: TCommunity): TParseDashboard => {
   const pathname = usePathname()
 
   return parseDashboard(community, pathname)
+}
+
+/**
+ * parse cat & state from url search params
+ * used for sync state in articles filter bar
+ */
+export const useFilterSearchParams = (): TFilterSearchParams => {
+  const searchParams = useSearchParams()
+  const filter = {
+    activeCat: null,
+    activeState: null,
+  }
+
+  const cat = searchParams.get('cat')?.toUpperCase()
+  const state = searchParams.get('state')?.toUpperCase()
+
+  if (includes(cat, values(ARTICLE_CAT))) filter.activeCat = cat
+  if (includes(state, values(ARTICLE_STATE))) filter.activeState = state
+
+  return filter
 }

@@ -21,11 +21,7 @@ import { ModelineWrapper } from './styles'
 /* eslint-disable-next-line */
 const log = buildLog('w:ArticlesFilter:index')
 
-const ArticlesFilter: FC<TProps> = ({
-  onSelect = log,
-  resState = TYPE.RES_STATE.DONE,
-  mode = 'default',
-}) => {
+const ArticlesFilter: FC<TProps> = ({ resState = TYPE.RES_STATE.DONE, mode = 'default' }) => {
   return (
     <ModelineWrapper>
       <Space right={6} />

@@ -13,10 +13,9 @@ import useAvatarLayout from '@/hooks/useAvatarLayout'
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useActiveTag from '@/hooks/useActiveTag'
-import EVENT from '@/constant/event'
 
 import { buildLog } from '@/logger'
-import { send, callGEditor, callSyncSelector } from '@/signal'
+import { refreshArticles, callGEditor, callSyncSelector } from '@/signal'
 import { toJS } from '@/mobx'
 import { mockUsers } from '@/mock'
 
@@ -94,7 +93,7 @@ const ThreadSidebar: FC = () => {
           </PublishWrapper>
 
           <TagsBarWrapper>
-            <TagsBar onSelect={() => send(EVENT.REFRESH_ARTICLES)} />
+            <TagsBar onSelect={() => refreshArticles()} />
           </TagsBarWrapper>
 
           <SpaceGrow />

@@ -6,7 +6,7 @@
 
 import { FC, memo } from 'react'
 
-import type { TArticleFilter, TResState, TArticleFilterMode } from '@/spec'
+import type { TResState, TArticleFilterMode } from '@/spec'
 import { buildLog } from '@/logger'
 
 import DesktopView from './DesktopView'
@@ -18,7 +18,6 @@ const log = buildLog('w:ArticlesFilter:index')
 
 export type TProps = {
   isMobile: boolean
-  onSelect?: (filter: TArticleFilter) => void
   resState?: TResState
   mode?: TArticleFilterMode
 }

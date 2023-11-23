@@ -2,7 +2,7 @@
  * ArticlesThread store
  */
 
-import { isEmpty, findIndex, propEq, pickBy, values, includes, mergeRight } from 'ramda'
+import { isEmpty, findIndex, propEq, pickBy, values, includes, mergeRight, has } from 'ramda'
 
 import type {
   TRootStore,
@@ -13,10 +13,12 @@ import type {
   TThread,
   TGlobalLayout,
   TResState,
+  TArticleFilter,
 } from '@/spec'
 
 import { T, markStates, getParent, Instance, toJS } from '@/mobx'
 import TYPE from '@/constant/type'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
 import { plural } from '@/fmt'
@@ -31,6 +33,9 @@ const ArticlesStore = T.model('Articles', {
   todo: T.opt(PagedPosts, emptyPagi),
   wip: T.opt(PagedPosts, emptyPagi),
   done: T.opt(PagedPosts, emptyPagi),
+
+  activeCat: T.maybeNull(T.enum(values(ARTICLE_CAT))),
+  activeState: T.maybeNull(T.enum(values(ARTICLE_STATE))),
 
   filters: T.opt(ArticlesFilter, {}),
   resState: T.opt(T.enum('resState', values(TYPE.RES_STATE)), TYPE.RES_STATE.EMPTY),
@@ -92,6 +97,10 @@ const ArticlesStore = T.model('Articles', {
       } else {
         self.resState = TYPE.RES_STATE.DONE
       }
+    },
+    updateActiveFilter(filter: TArticleFilter): void {
+      if (has('cat', filter)) self.activeCat = filter.cat
+      if (has('state', filter)) self.activeState = filter.state
     },
     targetArticleIndex(id: TID): number | null {
       const slf = self as TStore

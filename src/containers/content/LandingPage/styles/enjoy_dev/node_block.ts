@@ -63,7 +63,6 @@ const ToolIcon = styled(ToolSVG)<{ color: string }>`
 `
 
 export const Icon = {
-  [ARTICLE_CAT.ALL]: ToolIcon,
   [ARTICLE_CAT.FEATURE]: LightIcon,
   [ARTICLE_CAT.BUG]: BugIcon,
   [ARTICLE_CAT.QUESTION]: QuestionIcon,

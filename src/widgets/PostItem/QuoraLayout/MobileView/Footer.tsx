@@ -1,7 +1,6 @@
 import { FC } from 'react'
 
 import type { TPost } from '@/spec'
-import { ARTICLE_CAT } from '@/constant/gtd'
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
 import ArticleCatState from '@/widgets/ArticleCatState'
@@ -38,7 +37,7 @@ const Footer: FC<TProps> = ({ article }) => {
           />
         </UpvotesWrapper>
 
-        {article.cat !== ARTICLE_CAT.ALL && (
+        {article.cat && (
           <ArticleCatState cat={article.cat} state={article.state} top={1} left={4} right={14} />
         )}
         <BasicState>

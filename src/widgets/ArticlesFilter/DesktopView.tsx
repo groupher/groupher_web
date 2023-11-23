@@ -9,15 +9,15 @@ import { observer } from 'mobx-react-lite'
 import dynamic from 'next/dynamic'
 
 import type { TArticleCat, TArticleSort, TArticleState } from '@/spec'
-import { callGEditor, callSyncSelector } from '@/signal'
+import { refreshArticles, callGEditor, callSyncSelector } from '@/signal'
 import { PUBLISH_MODE } from '@/constant/publish'
 import { CONDITION_MODE } from '@/constant/mode'
-
-import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
 import { ARTICLE_SORT } from '@/constant/sort'
 import TYPE from '@/constant/type'
 import { BANNER_LAYOUT } from '@/constant/layout'
+
 import useBannerLayout from '@/hooks/useBannerLayout'
+import useArticlesFilter from '@/hooks/useArticlesFilter'
 
 import { buildLog } from '@/logger'
 
@@ -36,35 +36,38 @@ export const LavaLampLoading = dynamic(() => import('@/widgets/Loading/LavaLampL
 /* eslint-disable-next-line */
 const log = buildLog('w:ArticlesFilter:index')
 
-const ArticlesFilter: FC<TProps> = ({
-  onSelect = log,
-  resState = TYPE.RES_STATE.DONE,
-  mode = 'default',
-}) => {
+const ArticlesFilter: FC<TProps> = ({ resState = TYPE.RES_STATE.DONE, mode = 'default' }) => {
   const bannerLayout = useBannerLayout()
-  const [activeCat, setActiveCat] = useState<TArticleCat>(ARTICLE_CAT.ALL)
+  const { cat: activeCat, state: activeState, updateActiveFilter } = useArticlesFilter()
   const [activeSort, setActiveSort] = useState<TArticleSort>(ARTICLE_SORT.ALL)
-  const [activeState, setActiveState] = useState<TArticleState>(ARTICLE_STATE.ALL)
 
   return (
     <Wrapper>
       <ConditionSelector
         mode={CONDITION_MODE.SORT}
         active={activeSort}
-        onSelect={(sort: TArticleSort) => setActiveSort(sort)}
-        selected={activeSort !== ARTICLE_SORT.ALL}
+        onSelect={(sort: TArticleSort) => {
+          setActiveSort(sort)
+        }}
+        selected={!!activeSort}
       />
       <ConditionSelector
         mode={CONDITION_MODE.CAT}
         active={activeCat}
-        onSelect={(cat: TArticleCat) => setActiveCat(cat)}
-        selected={activeCat !== ARTICLE_CAT.ALL}
+        onSelect={(cat: TArticleCat) => {
+          updateActiveFilter({ cat })
+          refreshArticles()
+        }}
+        selected={!!activeCat}
       />
       <ConditionSelector
         mode={CONDITION_MODE.STATE}
         active={activeState}
-        onSelect={(state: TArticleState) => setActiveState(state)}
-        selected={activeState !== ARTICLE_STATE.ALL}
+        onSelect={(state: TArticleState) => {
+          updateActiveFilter({ state })
+          refreshArticles()
+        }}
+        selected={!!activeState}
       />
       <Space right={10} />
       <SpaceGrow />
