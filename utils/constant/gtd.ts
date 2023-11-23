@@ -1,4 +1,4 @@
-import type { TArticleCat, TArticleState, TArticleCatMode } from '@/spec'
+import type { TArticleCat, TArticleState, TArticleOrder, TArticleCatMode } from '@/spec'
 
 export const ARTICLE_CAT_REJECT = {
   REJECT: 'REJECT', // 关闭
@@ -7,6 +7,13 @@ export const ARTICLE_CAT_REJECT = {
   REJECT_REPRO: 'REJECT_REPRO', // 无法重现
   REJECT_STALE: 'REJECT_STALE', // 已过时
 }
+
+export const ARTICLE_ORDER = {
+  UPVOTES: 'UPVOTES',
+  COMMENTS: 'COMMENTS',
+  PUBLISH: 'PUBLISH',
+  VIEWS: 'VIEWS',
+} as Record<Uppercase<TArticleOrder>, Uppercase<TArticleOrder>>
 
 export const ARTICLE_CAT = {
   FEATURE: 'FEATURE',

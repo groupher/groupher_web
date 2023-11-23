@@ -18,7 +18,8 @@ import type {
 
 import { T, markStates, getParent, Instance, toJS } from '@/mobx'
 import TYPE from '@/constant/type'
-import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
+import { ARTICLE_CAT, ARTICLE_STATE, ARTICLE_ORDER } from '@/constant/gtd'
+import URL_PARAM from '@/constant/url_param'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
 import { plural } from '@/fmt'
@@ -34,6 +35,7 @@ const ArticlesStore = T.model('Articles', {
   wip: T.opt(PagedPosts, emptyPagi),
   done: T.opt(PagedPosts, emptyPagi),
 
+  activeOrder: T.maybeNull(T.enum(values(ARTICLE_ORDER))),
   activeCat: T.maybeNull(T.enum(values(ARTICLE_CAT))),
   activeState: T.maybeNull(T.enum(values(ARTICLE_STATE))),
 
@@ -90,8 +92,6 @@ const ArticlesStore = T.model('Articles', {
       const slf = self as TStore
       const { totalCount } = slf.pagedPosts
 
-      console.log('## instore resState: ', self.resState)
-
       if (totalCount === 0) {
         self.resState = TYPE.RES_STATE.EMPTY
       } else {
@@ -99,8 +99,9 @@ const ArticlesStore = T.model('Articles', {
       }
     },
     updateActiveFilter(filter: TArticleFilter): void {
-      if (has('cat', filter)) self.activeCat = filter.cat
-      if (has('state', filter)) self.activeState = filter.state
+      if (has(URL_PARAM.CAT, filter)) self.activeCat = filter.cat
+      if (has(URL_PARAM.STATE, filter)) self.activeState = filter.state
+      if (has(URL_PARAM.ORDER, filter)) self.activeOrder = filter.order
     },
     targetArticleIndex(id: TID): number | null {
       const slf = self as TStore

@@ -11,7 +11,8 @@ import type { TCommunity } from '@/spec'
 import { P } from '@/schemas'
 import { DEFAULT_THEME } from '@/config'
 import { THREAD } from '@/constant/thread'
-import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
+import URL_PARAM from '@/constant/url_param'
+import { ARTICLE_CAT, ARTICLE_STATE, ARTICLE_ORDER } from '@/constant/gtd'
 
 import type {
   TSessionRes,
@@ -209,13 +210,16 @@ export const useFilterSearchParams = (): TFilterSearchParams => {
   const filter = {
     activeCat: null,
     activeState: null,
+    activeOrder: null,
   }
 
-  const cat = searchParams.get('cat')?.toUpperCase()
-  const state = searchParams.get('state')?.toUpperCase()
+  const cat = searchParams.get(URL_PARAM.CAT)?.toUpperCase()
+  const state = searchParams.get(URL_PARAM.STATE)?.toUpperCase()
+  const order = searchParams.get(URL_PARAM.ORDER)?.toUpperCase()
 
   if (includes(cat, values(ARTICLE_CAT))) filter.activeCat = cat
   if (includes(state, values(ARTICLE_STATE))) filter.activeState = state
+  if (includes(order, values(ARTICLE_ORDER))) filter.activeOrder = order
 
   return filter
 }

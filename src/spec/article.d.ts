@@ -162,7 +162,7 @@ export type TPagedComments = {
 } & TPagi
 
 export type TArticleFilter = {
-  sort?: string
+  order?: TArticleOrder
   cat?: TArticleCat
   state?: TArticleState
 }
@@ -218,8 +218,9 @@ export type TArticleState =
   | 'DEFAULT'
   | TArticleCatReject
 
+export type TArticleOrder = 'PUBLISH' | 'UPVOTES' | 'COMMENTS' | 'VIEWS'
+
 export type TArticleCat = 'BUG' | 'FEATURE' | 'QUESTION' | 'OTHER'
-export type TArticleSort = 'ALL' | 'PUBLISH' | 'UPVOTE' | 'COMMENT' | 'VIEWS'
 
 export type TArticlePubSelector = {
   cat?: TArticleCat | null
@@ -239,6 +240,7 @@ export type TPagedArticlesParams = {
   articleTag?: string
   cat?: string
   state?: string
+  order?: string
 }
 
 export type TArticleParams = {

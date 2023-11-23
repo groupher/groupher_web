@@ -218,26 +218,6 @@ const rootStore = T.model({
       return self.account.isMemberOf(type)
     },
     // get general args when query paged articles from server
-    getPagedArticleArgs(
-      page: number,
-      // 每个 thread 的 ArticlesFilter 选项
-      articlesfilter = {},
-    ): Record<string, unknown> {
-      const { isLogin: userHasLogin, pageDensity: size } = self.account
-      const tag = self.tagsBar.activeTagData
-      const { community } = self.viewing
-
-      const filter = pickBy(notEmpty, {
-        page,
-        size,
-        articleTag: tag.slug,
-        community: community.slug,
-        ...articlesfilter,
-      })
-
-      return { filter, userHasLogin }
-    },
-
     onAdsClose(): void {
       // const { isMemberOf } = self.account
       // if (isMemberOf('seniorMember') || isMemberOf('sponsorMember')) {

@@ -36,8 +36,10 @@ const I18nDict = {
   //
   PUBLISH: '发布时间',
   UPVOTE: '投票',
+  UPVOTES: '投票数',
   COMMENT: '评论',
-  VIEWS: '浏览',
+  COMMENTS: '评论数',
+  VIEWS: '浏览量',
 
   // osocial
   EMAIL: '邮箱地址',

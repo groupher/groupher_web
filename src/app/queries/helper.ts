@@ -19,6 +19,7 @@ import type {
 } from '@/spec'
 import { BUILDIN_ALIAS, HCN } from '@/constant/name'
 import { THREAD } from '@/constant/thread'
+import URL_PARAM from '@/constant/url_param'
 import { nilOrEmpty } from '@/validator'
 import {
   DASHBOARD_ROUTE,
@@ -69,11 +70,12 @@ export const usePagedArticlesParams = (): TPagedArticlesParams => {
 
   const filter = reject(nilOrEmpty)({
     community,
-    page: Number(searchParams.get('page')) || 1,
+    page: Number(searchParams.get(URL_PARAM.PAGE)) || 1,
     size: 20,
-    articleTag: searchParams.get('tag'),
-    cat: searchParams.get('cat'),
-    state: searchParams.get('state'),
+    articleTag: searchParams.get(URL_PARAM.TAG),
+    cat: searchParams.get(URL_PARAM.CAT),
+    state: searchParams.get(URL_PARAM.STATE),
+    order: searchParams.get(URL_PARAM.ORDER),
   }) as TPagedArticlesParams
 
   return mergeRight(ARTICLES_FILTER, filter)

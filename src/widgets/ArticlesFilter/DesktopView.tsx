@@ -4,15 +4,14 @@
  *
  */
 
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 import dynamic from 'next/dynamic'
 
-import type { TArticleCat, TArticleSort, TArticleState } from '@/spec'
+import type { TArticleCat, TArticleOrder, TArticleState } from '@/spec'
 import { refreshArticles, callGEditor, callSyncSelector } from '@/signal'
 import { PUBLISH_MODE } from '@/constant/publish'
 import { CONDITION_MODE } from '@/constant/mode'
-import { ARTICLE_SORT } from '@/constant/sort'
 import TYPE from '@/constant/type'
 import { BANNER_LAYOUT } from '@/constant/layout'
 
@@ -38,18 +37,23 @@ const log = buildLog('w:ArticlesFilter:index')
 
 const ArticlesFilter: FC<TProps> = ({ resState = TYPE.RES_STATE.DONE, mode = 'default' }) => {
   const bannerLayout = useBannerLayout()
-  const { cat: activeCat, state: activeState, updateActiveFilter } = useArticlesFilter()
-  const [activeSort, setActiveSort] = useState<TArticleSort>(ARTICLE_SORT.ALL)
+  const {
+    cat: activeCat,
+    state: activeState,
+    order: activeOrder,
+    updateActiveFilter,
+  } = useArticlesFilter()
 
   return (
     <Wrapper>
       <ConditionSelector
-        mode={CONDITION_MODE.SORT}
-        active={activeSort}
-        onSelect={(sort: TArticleSort) => {
-          setActiveSort(sort)
+        mode={CONDITION_MODE.ORDER}
+        active={activeOrder}
+        onSelect={(order: TArticleOrder) => {
+          updateActiveFilter({ order })
+          refreshArticles()
         }}
-        selected={!!activeSort}
+        selected={!!activeOrder}
       />
       <ConditionSelector
         mode={CONDITION_MODE.CAT}

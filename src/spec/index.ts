@@ -147,11 +147,11 @@ export type {
   TArticleState,
   TFAQSection,
   TArticleTitle,
-  TArticleSort,
   TPagedPosts,
   TPagedChangelogs,
   TPagedArticlesParams,
   TArticleParams,
+  TArticleOrder,
 } from './article'
 
 export type {
