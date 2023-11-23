@@ -178,17 +178,6 @@ const GlobalStyle = createGlobalStyle<TColor>`
     line-height: 0.8;
   }
 
-  // ngpress
-  #nprogress .bar {
-    background: ${theme('lightText')} !important;
-  }
-  #nprogress .peg {
-    box-shadow: 0 0 5px ${theme('hoverBg')}, 0 0 3px ${theme('hoverBg')} !important;
-  }
-  #nprogress .spinner {
-    display: none !important;
-  }
-
   // toast
   [data-sonner-toast][data-styled=true] {
     padding: 7px 13px !important;

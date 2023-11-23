@@ -9,7 +9,6 @@ import {
 
 /**
 import { getAnalyticsTag, handleRouteChange } from '@/utils/analytics/baidu'
-import NextNProgress from 'nextjs-progressbar'
 <Head>
 <meta charSet="utf-8" />
 <meta name="renderer" content="webkit" />
@@ -34,7 +33,6 @@ id="track-script"
 strategy="afterInteractive"
 dangerouslySetInnerHTML={getAnalyticsTag()}
 />
-<NextNProgress startPosition={0.6} height={2} />
 */
 
 export default function Layout({ children }: { children: React.ReactNode }) {
