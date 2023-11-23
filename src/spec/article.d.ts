@@ -239,6 +239,8 @@ export type TPagedArticlesParams = {
   size?: number
   community?: string
   articleTag?: string
+  cat?: string
+  state?: string
 }
 
 export type TArticleParams = {
