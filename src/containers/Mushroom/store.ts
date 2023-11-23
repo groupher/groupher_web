@@ -15,6 +15,7 @@ import type {
   TTag,
   TArticleCat,
   TArticleState,
+  TArticleOrder,
 } from '@/spec'
 import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 
@@ -30,6 +31,11 @@ const MushroomStore = T.model('MushroomStore', {
     get userHasLogin(): boolean {
       const root = getParent(self) as TRootStore
       return root.accountInfo.isLogin
+    },
+    get activeOrder(): TArticleOrder | null {
+      const root = getParent(self) as TRootStore
+
+      return root.articles.activeOrder
     },
     get activeCat(): TArticleCat | null {
       const root = getParent(self) as TRootStore

@@ -75,28 +75,31 @@ const initAppVersion = (): void => {
 }
 
 const loadArticles = (page = 1): void => {
-  const { curCommunity, userHasLogin, activeTag, activeCat, activeState } = store
+  const { curCommunity, userHasLogin, activeTag, activeCat, activeState, activeOrder } = store
   store.updateResState(TYPE.RES_STATE.LOADING as TResState)
   scrollToTop()
 
   const filter = { page, size: 20, community: curCommunity.slug } as TPagedArticlesParams
 
   if (activeTag?.slug) filter.articleTag = activeTag?.slug
+
   if (activeCat) filter.cat = activeCat
   if (activeState) filter.state = activeState
+  if (activeOrder) filter.order = activeOrder
 
   sr71$.query(S.pagedPosts, { filter, userHasLogin })
 }
 
 // TODO: use sanitor to filter whitelist oueries if nend
 const syncURL = (page: number): void => {
-  const { activeTag, activeCat, activeState } = store
+  const { activeTag, activeCat, activeState, activeOrder } = store
   const curSearchParams = getCurSearchParams()
 
   // handle tag spec logic
   activeTag?.slug ? (curSearchParams.tag = activeTag?.slug) : delete curSearchParams.tag
   activeCat ? (curSearchParams.cat = activeCat.toLowerCase()) : delete curSearchParams.cat
   activeState ? (curSearchParams.state = activeState.toLowerCase()) : delete curSearchParams.state
+  activeOrder ? (curSearchParams.order = activeOrder.toLowerCase()) : delete curSearchParams.order
 
   // handle page number spec logic
   page !== 1 ? (curSearchParams.page = page) : delete curSearchParams.page

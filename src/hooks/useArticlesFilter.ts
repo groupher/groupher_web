@@ -1,11 +1,12 @@
 import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 
-import type { TArticleFilter, TArticleCat, TArticleState } from '@/spec'
+import type { TArticleFilter, TArticleCat, TArticleState, TArticleOrder } from '@/spec'
 
 type TRes = {
   cat: TArticleCat
   state: TArticleState
+  order: TArticleOrder
   updateActiveFilter: (filter: TArticleFilter) => void
 }
 
@@ -20,6 +21,7 @@ const useArticlesFilter = (): TRes => {
   }
 
   return {
+    order: store.articles.activeOrder,
     cat: store.articles.activeCat,
     state: store.articles.activeState,
     updateActiveFilter: store.articles.updateActiveFilter,

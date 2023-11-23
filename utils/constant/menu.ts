@@ -1,5 +1,4 @@
-import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
-import { ARTICLE_SORT } from '@/constant/sort'
+import { ARTICLE_CAT, ARTICLE_STATE, ARTICLE_ORDER } from '@/constant/gtd'
 
 import type { TMenu } from '@/spec'
 
@@ -93,24 +92,24 @@ export const POST_STATE_MENU_ITEMS = [
   },
 ]
 
-export const POST_SORT_MENU_ITEMS = [
+export const POST_ORDER_MENU_ITEMS = [
   {
-    key: ARTICLE_SORT.PUBLISH,
+    key: ARTICLE_ORDER.PUBLISH,
     title: '发布时间',
     icon: MENU.PUBLISH,
   },
   {
-    key: ARTICLE_SORT.UPVOTE,
+    key: ARTICLE_ORDER.UPVOTES,
     title: '投票数',
     icon: MENU.UPVOTE,
   },
   {
-    key: ARTICLE_SORT.COMMENT,
+    key: ARTICLE_ORDER.COMMENTS,
     title: '评论数',
     icon: MENU.COMMENT,
   },
   {
-    key: ARTICLE_SORT.VIEWS,
+    key: ARTICLE_ORDER.VIEWS,
     title: '浏览量',
     icon: MENU.VIEWS,
   },

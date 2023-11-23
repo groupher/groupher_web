@@ -232,4 +232,4 @@ export type TUploadPreview = {
   radius: number
 }
 
-export type TConditionMode = 'state' | 'cat' | 'sort' | 'tag'
+export type TConditionMode = 'state' | 'cat' | 'order' | 'tag'

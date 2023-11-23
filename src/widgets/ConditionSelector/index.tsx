@@ -32,7 +32,7 @@ const ConditionSelector: FC<TProps> = ({
 
   ...restProps
 }) => {
-  const [offset, setOffset] = useState([30, 5])
+  const [offset, setOffset] = useState([38, 5])
   const [menuOpen, setMenuOpen] = useState(false)
   const ref = useRef(null)
 
