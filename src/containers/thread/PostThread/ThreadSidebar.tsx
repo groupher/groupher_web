@@ -12,10 +12,11 @@ import { observer } from 'mobx-react-lite'
 import useAvatarLayout from '@/hooks/useAvatarLayout'
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
-import EVENT from '@/constant/event'
+import useActiveTag from '@/hooks/useActiveTag'
 
 import { buildLog } from '@/logger'
-import { send, callGEditor, callSyncSelector } from '@/signal'
+import { refreshArticles, callGEditor, callSyncSelector } from '@/signal'
+import { toJS } from '@/mobx'
 import { mockUsers } from '@/mock'
 
 import ImgFallback from '@/widgets/ImgFallback'
@@ -44,6 +45,7 @@ const ThreadSidebar: FC = () => {
   const curCommunity = useViewingCommunity()
   const { inView: showCommunityBadge } = useCommunityDigestViewport()
   const avatarLayout = useAvatarLayout()
+  const activeTag = useActiveTag()
 
   return (
     <Wrapper $testid="thread-sidebar">
@@ -83,7 +85,7 @@ const ThreadSidebar: FC = () => {
               text="参与讨论"
               onMenuSelect={(cat) => {
                 callGEditor()
-                setTimeout(() => callSyncSelector({ cat }), 500)
+                setTimeout(() => callSyncSelector({ cat, tag: toJS(activeTag) }), 500)
               }}
               left={-2}
               offset={[0, 5]}
@@ -91,7 +93,7 @@ const ThreadSidebar: FC = () => {
           </PublishWrapper>
 
           <TagsBarWrapper>
-            <TagsBar onSelect={() => send(EVENT.REFRESH_ARTICLES)} />
+            <TagsBar onSelect={() => refreshArticles()} />
           </TagsBarWrapper>
 
           <SpaceGrow />

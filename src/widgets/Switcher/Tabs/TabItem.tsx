@@ -23,7 +23,6 @@ const log = buildLog('w:Tabs:index')
 type TProps = {
   mobileView?: boolean
   modelineView?: boolean
-  holyGrailView?: boolean
   wrapMode?: boolean
   item: TTabItem
   index: number
@@ -37,7 +36,6 @@ type TProps = {
 const TabItem: FC<TProps> = ({
   mobileView = false,
   modelineView = false,
-  holyGrailView = false,
   wrapMode = false,
   bottomSpace = 0,
   activeKey,
@@ -91,7 +89,6 @@ const TabItem: FC<TProps> = ({
       ref={ref}
       $mobileView={mobileView}
       $modelineView={modelineView}
-      $holyGrailView={holyGrailView}
       $wrapMode={wrapMode}
       size={size}
       onClick={handleWrapperClick}

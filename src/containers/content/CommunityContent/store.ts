@@ -3,7 +3,7 @@
  *
  */
 
-import type { TRootStore, TAccount, TCommunity, TThread, TC11N, TGlobalLayout } from '@/spec'
+import type { TRootStore, TAccount, TCommunity, TThread, TGlobalLayout } from '@/spec'
 import { T, getParent, markStates, toJS, Instance, useMobxContext } from '@/mobx'
 import { sortByIndex } from '@/helper'
 
@@ -25,10 +25,6 @@ const CommunityContent = T.model('CommunityContent', {})
     get accountInfo(): TAccount {
       const root = getParent(self) as TRootStore
       return root.accountInfo
-    },
-    get c11n(): TC11N {
-      const root = getParent(self) as TRootStore
-      return root.account.c11n
     },
     get subscribedCommunitiesData(): TCommunity[] {
       const root = getParent(self) as TRootStore

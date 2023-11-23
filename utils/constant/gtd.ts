@@ -9,7 +9,6 @@ export const ARTICLE_CAT_REJECT = {
 }
 
 export const ARTICLE_CAT = {
-  ALL: 'ALL',
   FEATURE: 'FEATURE',
   BUG: 'BUG',
   QUESTION: 'QUESTION',
@@ -17,7 +16,6 @@ export const ARTICLE_CAT = {
 } as Record<Uppercase<TArticleCat>, Uppercase<TArticleCat>>
 
 export const ARTICLE_STATE = {
-  ALL: 'ALL',
   TODO: 'TODO',
   WIP: 'WIP',
   DONE: 'DONE',

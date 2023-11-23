@@ -1,10 +1,10 @@
 import { FC, memo, useState, useRef } from 'react'
 
 import type { TSpace, TTooltipPlacement, TConditionMode } from '@/spec'
-import { ARTICLE_STATE } from '@/constant/gtd'
 
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
 import Menu from '@/widgets/Menu'
+import { Space } from '@/widgets/Common'
 
 import ActiveLabel from './ActiveLabel'
 
@@ -17,16 +17,18 @@ type TProps = {
   active?: TActiveCondition
   placement?: TTooltipPlacement
   selected?: boolean
+  closable?: boolean
 
   onSelect?: (condition: TActiveCondition) => void
 } & TSpace
 
 const ConditionSelector: FC<TProps> = ({
   mode,
-  active = ARTICLE_STATE.ALL,
+  active = null,
   onSelect = console.log,
   selected = false,
   placement = 'bottom',
+  closable = true,
 
   ...restProps
 }) => {
@@ -34,7 +36,7 @@ const ConditionSelector: FC<TProps> = ({
   const [menuOpen, setMenuOpen] = useState(false)
   const ref = useRef(null)
 
-  const popWidth = 120
+  const popWidth = 142
 
   const menuItems = getMenuItems(mode)
   const activeMenuItem = getActiveMenuItem(menuItems, active)
@@ -59,17 +61,18 @@ const ConditionSelector: FC<TProps> = ({
         >
           <DropdownButton $active={menuOpen} selected={selected}>
             {title}
+            <Space right={3} />
           </DropdownButton>
         </Menu>
       ) : (
         <DropdownButton
           $active={menuOpen}
           selected={selected}
-          closable
+          closable={closable}
           onClear={() => {
             // simulate click to avoid menu pop again
             ref.current.click()
-            onSelect(ARTICLE_STATE.ALL)
+            onSelect(null)
           }}
         >
           <Menu

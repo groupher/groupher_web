@@ -85,6 +85,7 @@ export const updateViewingArticle = (article: TArticle): void => {
   send(EVENT.UPDATE_VIEWING_ARTICLE, { type: EVENT.UPDATE_VIEWING_ARTICLE, data: { article } })
 }
 
+export const refreshArticles = (): void => send(EVENT.REFRESH_ARTICLES)
 /**
  * hepler for call the JoinModal Container to show wechatQRCode or mail scriscribe list etc ..
  *

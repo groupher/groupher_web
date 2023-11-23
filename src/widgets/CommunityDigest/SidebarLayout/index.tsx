@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import EVENT from '@/constant/event'
 import { THREAD } from '@/constant/thread'
 import { DEME_SOCIALS } from '@/constant/social'
 
@@ -10,7 +9,7 @@ import useViewingThread from '@/hooks/useViewingThread'
 import useWindowResize from '@/hooks/useWindowResize'
 import useEnable from '@/hooks/useEnable'
 
-import { send } from '@/signal'
+import { refreshArticles } from '@/signal'
 
 import PinedTree from '@/containers/thread/DocThread/ArticleLayout/PinedTree'
 import TagsBar from '@/containers/unit/TagsBar'
@@ -63,7 +62,7 @@ const SidebarLayout: FC = () => {
           {activeThread === THREAD.POST && enable.post && (
             <>
               <TabBarWrapper>
-                <TagsBar onSelect={() => send(EVENT.REFRESH_ARTICLES)} />
+                <TagsBar onSelect={() => refreshArticles()} />
               </TabBarWrapper>
               <Divider top={15} bottom={30} />
             </>

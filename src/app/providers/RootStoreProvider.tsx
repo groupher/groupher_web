@@ -18,6 +18,7 @@ import {
   useWallpaper,
   useDashboard,
   //
+  useFilterSearchParams,
   useThreadParam,
 } from '../queries'
 
@@ -46,6 +47,7 @@ const RootStoreWrapper: FC<TProps> = ({ children, token }) => {
 
   const wallpaper = useWallpaper(community)
   const dashboard = useDashboard(community)
+  const filterSearchParams = useFilterSearchParams()
 
   const store = useStore({
     ...sesstion,
@@ -53,6 +55,7 @@ const RootStoreWrapper: FC<TProps> = ({ children, token }) => {
       pagedPosts,
       pagedChangelogs,
       ...groupedKanbanPosts,
+      ...filterSearchParams,
     },
     kanbanThread: groupedKanbanPosts,
     tagsBar: {

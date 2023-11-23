@@ -68,12 +68,7 @@ const PostThread: FC = () => {
 
         {showFilters && (
           <FilterWrapper ref={trackerRef}>
-            <ArticlesFilter
-              isMobile={isMobile}
-              resState={resState as TResState}
-              onSelect={onFilterSelect}
-              mode="default"
-            />
+            <ArticlesFilter isMobile={isMobile} resState={resState as TResState} mode="default" />
           </FilterWrapper>
         )}
         <TagNote />

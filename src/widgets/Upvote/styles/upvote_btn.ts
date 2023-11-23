@@ -130,8 +130,6 @@ export const UpIcon = styled(UpvoteIcon)<TUpIcon>`
   width: ${({ type }) => getIconSize(type)};
   height: ${({ type }) => getIconSize(type)};
 
-  opacity: ${({ count }) => (count === 0 ? 0.8 : 1)};
   filter: brightness(1.1);
-
   transition: all 0.2s;
 `

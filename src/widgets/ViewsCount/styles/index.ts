@@ -6,9 +6,10 @@ import ViewedSVG from '@/icons/article/Viewed'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};
-  color: ${theme('article.info')};
-  font-size: 13px;
-  line-height: 19px;
+  color: ${theme('article.digest')};
+  opacity: 0.85;
+  line-height: 22px;
+  margin-top: -1px;
 `
 export const HighlightWrapper = styled(Wrapper)`
   font-weight: 500;
@@ -16,9 +17,13 @@ export const HighlightWrapper = styled(Wrapper)`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `
+export const Count = styled.div`
+  font-size: 13px;
+`
 export const ViewsIcon = styled(ViewedSVG)<{ $highlight?: boolean }>`
-  fill: ${({ $highlight }) => ($highlight ? theme('heightIcon') : theme('article.info'))};
-  ${css.size(11)};
-  margin-right: 5px;
-  opacity: 0.7;
+  fill: ${({ $highlight }) => ($highlight ? theme('heightIcon') : theme('article.digest'))};
+  ${css.size(12)};
+  margin-top: 1px;
+  margin-right: ${({ $highlight }) => ($highlight ? '4px' : '6px')};
+  opacity: 0.85;
 `

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import { Bar as BarBase } from '@/widgets/Common'
 
-import ViewSVG from '@/icons/View'
+import ViewSVG from '@/icons/article/Viewed'
 import UpvoteSVG from '@/icons/Upvote'
 import CommentSVG from '@/icons/Comment'
 

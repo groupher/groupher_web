@@ -4,18 +4,19 @@
  *
  */
 
-import { FC, Fragment, memo, useState } from 'react'
+import { FC, Fragment, memo } from 'react'
 
 import type { TArticleCat, TArticleState } from '@/spec'
 
-import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
+import { refreshArticles } from '@/signal'
 import { CONDITION_MODE } from '@/constant/mode'
 import TYPE from '@/constant/type'
+
+import useArticlesFilter from '@/hooks/useArticlesFilter'
 
 import { buildLog } from '@/logger'
 
 import { SpaceGrow } from '@/widgets/Common'
-
 import ConditionSelector from '@/widgets/ConditionSelector'
 import SearchBox from '@/widgets/SearchBox'
 
@@ -25,9 +26,8 @@ import { Wrapper } from './styles/mobile_view'
 /* eslint-disable-next-line */
 const log = buildLog('w:ArticlesFilter:index')
 
-const ArticlesFilter: FC<TProps> = ({ onSelect = log, resState = TYPE.RES_STATE.DONE }) => {
-  const [activeCat, setActiveCat] = useState<TArticleCat>(ARTICLE_CAT.ALL)
-  const [activeState, setActiveState] = useState<TArticleState>(ARTICLE_STATE.ALL)
+const ArticlesFilter: FC<TProps> = ({ resState = TYPE.RES_STATE.DONE }) => {
+  const { cat: activeCat, state: activeState, updateActiveFilter } = useArticlesFilter()
 
   // const { activeThread } = useViewing()
   const searchMode = false
@@ -40,13 +40,19 @@ const ArticlesFilter: FC<TProps> = ({ onSelect = log, resState = TYPE.RES_STATE.
             mode={CONDITION_MODE.CAT}
             selected={false}
             active={activeCat}
-            onSelect={(cat: TArticleCat) => setActiveCat(cat)}
+            onSelect={(cat: TArticleCat) => {
+              updateActiveFilter({ cat })
+              refreshArticles()
+            }}
           />
           <ConditionSelector
             mode={CONDITION_MODE.STATE}
             selected={false}
             active={activeState}
-            onSelect={(state: TArticleState) => setActiveState(state)}
+            onSelect={(state: TArticleState) => {
+              updateActiveFilter({ state })
+              refreshArticles()
+            }}
           />
           <SpaceGrow />
         </Fragment>

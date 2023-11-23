@@ -33,8 +33,8 @@ export const changeCommunity = (community: TCommunity): void => {
   store.mark({ community })
 }
 
-export const onTagSelect = (tags: TTag[]): void => {
-  store.mark({ articleTags: tags })
+export const onTagSelect = (tag: TTag): void => {
+  store.mark({ activeTag: tag })
 }
 
 export const loadCommunity = (): void => {

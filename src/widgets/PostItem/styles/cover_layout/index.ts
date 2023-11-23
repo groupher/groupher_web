@@ -1,19 +1,14 @@
 import styled from 'styled-components'
 
-import type { TC11N } from '@/spec'
 import css, { theme } from '@/css'
 
-type TWrapper = {
-  c11n: TC11N
-}
-
-export const Wrapper = styled.article<TWrapper>`
+export const Wrapper = styled.article`
   ${css.row()};
   position: relative;
 
-  padding-top: ${({ c11n }) => (c11n.contentDivider ? '10px' : '8px')};
-  padding-bottom: ${({ c11n }) => (c11n.contentDivider ? '14px' : '8px')};
-  border-bottom: ${({ c11n }) => (c11n.contentDivider ? '1px solid' : '0')};
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-bottom: 0;
   border-bottom-color: ${theme('divider')};
   margin-bottom: 5px;
 

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import css, { animate, theme } from '@/css'
-import ViewSVG from '@/icons/View'
+import ViewSVG from '@/icons/article/Viewed'
 
 type TWrapper = { top: number; left: number }
 export const Wrapper = styled.div<TWrapper>`
@@ -12,6 +12,6 @@ export const Wrapper = styled.div<TWrapper>`
   animation: ${animate.fadeInRight} 0.3s linear;
 `
 export const ViewIcon = styled(ViewSVG)`
-  ${css.size(10)};
+  ${css.size(12)};
   fill: ${theme('hint')};
 `

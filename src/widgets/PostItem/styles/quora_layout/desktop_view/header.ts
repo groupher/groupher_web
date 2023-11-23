@@ -65,7 +65,8 @@ export const Title = styled.a<TArticleTitle>`
   }
 
   &:hover {
-    color: ${({ $isPinned, $color }) => ($isPinned ? rainbow($color) : theme('article.digest'))};
+    color: ${({ $isPinned, $color }) => ($isPinned ? rainbow($color) : theme('article.title'))};
+    opacity: 0.8;
     cursor: pointer;
   }
 

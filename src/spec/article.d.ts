@@ -162,10 +162,9 @@ export type TPagedComments = {
 } & TPagi
 
 export type TArticleFilter = {
-  when?: string
   sort?: string
-  length?: string
-  read?: string
+  cat?: TArticleCat
+  state?: TArticleState
 }
 
 export type TArticleFilterMode = 'default' | 'modeline'
@@ -211,7 +210,6 @@ export type TArticleCatReject =
   | 'REJECT_REPRO'
 
 export type TArticleState =
-  | 'ALL'
   | 'TODO'
   | 'WIP'
   | 'DONE'
@@ -220,7 +218,7 @@ export type TArticleState =
   | 'DEFAULT'
   | TArticleCatReject
 
-export type TArticleCat = 'ALL' | 'BUG' | 'FEATURE' | 'QUESTION' | 'OTHER'
+export type TArticleCat = 'BUG' | 'FEATURE' | 'QUESTION' | 'OTHER'
 export type TArticleSort = 'ALL' | 'PUBLISH' | 'UPVOTE' | 'COMMENT' | 'VIEWS'
 
 export type TArticlePubSelector = {
@@ -239,6 +237,8 @@ export type TPagedArticlesParams = {
   size?: number
   community?: string
   articleTag?: string
+  cat?: string
+  state?: string
 }
 
 export type TArticleParams = {

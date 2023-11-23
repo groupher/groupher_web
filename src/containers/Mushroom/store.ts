@@ -2,7 +2,7 @@
  * GlobalLayout store
  *
  */
-import { mergeRight } from 'ramda'
+import { mergeRight, values } from 'ramda'
 
 import type {
   TRootStore,
@@ -13,6 +13,8 @@ import type {
   TPagedArticles,
   TResState,
   TTag,
+  TArticleCat,
+  TArticleState,
 } from '@/spec'
 import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 
@@ -21,11 +23,23 @@ const MushroomStore = T.model('MushroomStore', {
   isMobile: T.opt(T.bool, false),
   // follow the mac convention
   bodyScrollDirection: T.opt(T.enum(['up', 'down']), 'up'),
+  // activeState;
+  // activeSort
 })
   .views((self) => ({
     get userHasLogin(): boolean {
       const root = getParent(self) as TRootStore
       return root.accountInfo.isLogin
+    },
+    get activeCat(): TArticleCat | null {
+      const root = getParent(self) as TRootStore
+
+      return root.articles.activeCat
+    },
+    get activeState(): TArticleState | null {
+      const root = getParent(self) as TRootStore
+
+      return root.articles.activeState
     },
     get curCommunity(): TCommunity {
       const root = getParent(self) as TRootStore
@@ -55,7 +69,6 @@ const MushroomStore = T.model('MushroomStore', {
       const root = getParent(self) as TRootStore
       root.articles.updatePagedArticles(pagedArticles)
     },
-
     syncArticle(article: TArticle): void {
       const root = getParent(self) as TRootStore
       const viewingArticle = toJS(root.viewingArticle)

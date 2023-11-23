@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
 
-import ViewSVG from '@/icons/View'
+import ViewSVG from '@/icons/article/Viewed'
 import CommentSVG from '@/icons/Comment'
 import { WithMargin } from '@/widgets/Common'
 import css, { theme } from '@/css'
@@ -19,8 +19,8 @@ export const Wrapper = styled(WithMargin).attrs<TTestable>(({ $testid }) => ({
 `
 export const ViewsIcon = styled(ViewSVG)`
   fill: ${theme('article.info')};
-  ${css.size(12)};
-  margin-top: 1px;
+  ${css.size(13)};
+  margin-right: 4px;
   transition: fill 0.25s;
 `
 export const CommentWrapper = styled.div`
@@ -29,7 +29,7 @@ export const CommentWrapper = styled.div`
 export const CommentIcon = styled(CommentSVG)`
   fill: ${theme('article.info')};
   ${css.size(12)};
-  margin-top: 1px;
+  opacity: 0.85;
 
   ${CommentWrapper}:hover & {
     cursor: pointer;
@@ -40,12 +40,12 @@ export const CommentIcon = styled(CommentSVG)`
 `
 export const Count = styled.div`
   color: ${theme('article.info')};
-  font-size: 15px;
-  margin-left: 6px;
-  margin-top: 1px;
+  font-size: 16px;
+  margin-left: 3px;
 `
 export const CommentCount = styled(Count)`
-  margin-left: 6px;
+  margin-left: 8px;
+
   ${CommentWrapper}:hover & {
     cursor: pointer;
     color: ${theme('article.title')};

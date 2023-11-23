@@ -77,3 +77,8 @@ export type TDashboardTab = {
 export type TParseDashboard = TDashboard & {
   initSettings: TDashboard
 }
+
+export type TFilterSearchParams = {
+  activeCat?: string | null
+  activeState?: string | null
+}
