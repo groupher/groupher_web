@@ -21,10 +21,12 @@ import { mockUsers } from '@/mock'
 
 import ImgFallback from '@/widgets/ImgFallback'
 import Sticky from '@/widgets/Sticky'
-import { SpaceGrow, Br } from '@/widgets/Common'
+import { SpaceGrow, Br, SexyDivider } from '@/widgets/Common'
 
 import PublishButton from '@/widgets/Buttons/PublishButton'
 import TagsBar from '@/containers/unit/TagsBar'
+
+import CommunityBrief from './CommunityBrief'
 
 import {
   Wrapper,
@@ -36,7 +38,7 @@ import {
   MoreNum,
   CommunityNoteWrapper,
   PublishWrapper,
-} from './styles/thread_sidebar'
+} from '../styles/thread_sidebar'
 
 /* eslint-disable-next-line */
 const log = buildLog('w:ClassicSidebar')
@@ -92,10 +94,12 @@ const ThreadSidebar: FC = () => {
             />
           </PublishWrapper>
 
+          <CommunityBrief show={!showCommunityBadge} />
+          {!showCommunityBadge && <SexyDivider bottom={5} />}
+
           <TagsBarWrapper>
             <TagsBar onSelect={() => refreshArticles()} />
           </TagsBarWrapper>
-
           <SpaceGrow />
         </StickyWrapper>
       </Sticky>
