@@ -71,7 +71,6 @@ export const NoteWrapper = styled.div`
   border-bottom: 1px solid;
   border-bottom-color: #003b49;
 `
-
 export const TagsBarWrapper = styled.div`
   margin-top: 25px;
   max-width: 186px;
