@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 import { keys } from 'ramda'
 
-import type { TCommunity, TDashboardPath } from '@/spec'
+import type { TDashboardPath } from '@/spec'
 import Sticky from '@/widgets/Sticky'
 
 import { MENU } from '../constant'
