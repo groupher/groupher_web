@@ -58,3 +58,7 @@ export const TagSettingEditor = dynamic(() => import('@/containers/editor/TagSet
 export const SearchPanel = dynamic(() => import('@/widgets/SearchPanel'), {
   loading: () => <CommonLoading />,
 })
+
+export const UserList = dynamic(() => import('@/widgets/UserList'), {
+  loading: () => <CommonLoading />,
+})

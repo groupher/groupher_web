@@ -18,6 +18,7 @@ import {
   PassportEditor,
   TagSettingEditor,
   SearchPanel,
+  UserList,
 } from '../dynamics'
 
 type TProps = {
@@ -70,7 +71,7 @@ const Content: FC<TProps> = ({ type, attUser, extraInfo }) => {
 
     case DRAWER.LIST_USERS: {
       // @ts-ignore
-      return <h2>UserLister</h2>
+      return <UserList />
     }
 
     case DRAWER.CREATE_TAG: {
