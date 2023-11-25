@@ -7,6 +7,4 @@ export const Comments = dynamic(() => import('../unit/Comments'), {
   ssr: false,
 })
 
-export const Cashier = dynamic(() => import('../tool/Cashier'), {
-  ssr: false,
-})
+export const holder = 1

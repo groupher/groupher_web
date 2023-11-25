@@ -13,7 +13,6 @@ import {
   AccountEditor,
   WallpaperEditor,
   // utils
-  UserLister,
   DashboardDesc,
   ArticleEditor,
   PassportEditor,
@@ -69,9 +68,9 @@ const Content: FC<TProps> = ({ type, attUser, extraInfo }) => {
     // @ts-ignore
     // return <ModeLineMenu type={extraInfo.mmType} />
 
-    case DRAWER.USER_LISTER: {
+    case DRAWER.LIST_USERS: {
       // @ts-ignore
-      return <UserLister type={extraInfo.userListerType} />
+      return <h2>UserLister</h2>
     }
 
     case DRAWER.CREATE_TAG: {

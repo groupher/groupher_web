@@ -15,7 +15,7 @@ import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useActiveTag from '@/hooks/useActiveTag'
 
 import { buildLog } from '@/logger'
-import { refreshArticles, callGEditor, callSyncSelector } from '@/signal'
+import { refreshArticles, callGEditor, callSyncSelector, listUsers } from '@/signal'
 import { toJS } from '@/mobx'
 import { mockUsers } from '@/mock'
 
@@ -77,7 +77,7 @@ const ThreadSidebar: FC = () => {
                 fallback={<ImgFallback size={24} user={user} />}
               />
             ))}
-            <MoreNum>+2</MoreNum>
+            <MoreNum onClick={() => listUsers()}>+2</MoreNum>
           </CommunityJoinersWrapper>
         </Fragment>
 

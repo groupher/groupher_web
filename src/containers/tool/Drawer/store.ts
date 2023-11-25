@@ -161,7 +161,7 @@ const DrawerStore = T.model('DrawerStore', {
       if (type === DRAWER.MODELINE_MENU) {
         slf.mmType = data
       }
-      if (type === DRAWER.USER_LISTER) {
+      if (type === DRAWER.LIST_USERS) {
         slf.userListerType = data
       }
       if (type === DRAWER.DASHBOARD_DESC) {
@@ -192,7 +192,8 @@ const DrawerStore = T.model('DrawerStore', {
         type !== DRAWER.CREATE_TAG &&
         type !== DRAWER.PASSPORT_EDITOR &&
         type !== DRAWER.EDIT_TAG &&
-        type !== DRAWER.SEARCH_PANEL
+        type !== DRAWER.SEARCH_PANEL &&
+        type !== DRAWER.LIST_USERS
       ) {
         slf.markPreviewURLIfNeed(data)
       }

@@ -17,8 +17,6 @@ export { emptyPagi } from './helper/common'
 export { SimpleUser } from './Common'
 export { EmptyUser, EmptyAchievement, User, PagedUsers } from './User'
 
-export { ArticlesFilter } from './ArticlesFilter'
-
 export { MailStatus, MentionMsg, PagedMentionMessages } from './Mail'
 
 export const Mention = T.model('Mention', {

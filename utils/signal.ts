@@ -106,9 +106,13 @@ export const setTag = (): void => {
   send(EVENT.SET_TAG, {})
 }
 
-export const listUsers = (data): void => {
-  const type = TYPE.DRAWER.USER_LISTER
-  send(EVENT.DRAWER.OPEN, { type, data })
+/**
+ * list users
+ * type: modal or drawer
+ */
+export const listUsers = (): void => {
+  const type = TYPE.DRAWER.LIST_USERS
+  send(EVENT.DRAWER.OPEN, { type })
 }
 
 export const callPassportEditor = (): void => {

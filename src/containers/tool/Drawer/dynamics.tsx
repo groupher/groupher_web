@@ -35,11 +35,6 @@ export const AccountEditor = dynamic(() => import('@/containers/editor/AccountEd
   loading: () => <CommonLoading />,
 })
 
-// user lister
-export const UserLister = dynamic(() => import('@/containers/user/UserLister'), {
-  loading: () => <CommonLoading />,
-})
-
 export const WallpaperEditor = dynamic(() => import('@/containers/editor/WallpaperEditor'), {
   loading: () => <CommonLoading />,
 })

@@ -24,7 +24,7 @@ import { ARTICLE_THREAD } from '@/constant/thread'
 
 import { plural } from '@/fmt'
 
-import { PagedPosts, PagedChangelogs, ArticlesFilter, emptyPagi } from '@/model'
+import { PagedPosts, PagedChangelogs, emptyPagi } from '@/model'
 
 const ArticlesStore = T.model('Articles', {
   pagedPosts: T.opt(PagedPosts, emptyPagi),
@@ -39,7 +39,6 @@ const ArticlesStore = T.model('Articles', {
   activeCat: T.maybeNull(T.enum(values(ARTICLE_CAT))),
   activeState: T.maybeNull(T.enum(values(ARTICLE_STATE))),
 
-  filters: T.opt(ArticlesFilter, {}),
   resState: T.opt(T.enum('resState', values(TYPE.RES_STATE)), TYPE.RES_STATE.EMPTY),
 })
   .views((self) => ({
@@ -73,10 +72,9 @@ const ArticlesStore = T.model('Articles', {
       const slf = self as TStore
       if (!includes(slf.curThread, values(ARTICLE_THREAD))) return false
 
-      const curFilter = toJS(pickBy((v) => !isEmpty(v), self.filters))
       const pagedPosts = toJS(slf.pagedPosts)
 
-      return !isEmpty(curFilter) || !isEmpty(pagedPosts.entries)
+      return !isEmpty(pagedPosts.entries)
     },
     get pagedArticleKey(): string {
       const slf = self as TStore

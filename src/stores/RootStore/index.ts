@@ -47,8 +47,6 @@ import {
   AccountEditorStore,
   MailBoxStore,
   TagsBarStore,
-  UserListerStore,
-  CashierStore,
 
   // GEN: IMPORT SUBSTORE
   PassportEditorStore,
@@ -121,8 +119,6 @@ const rootStore = T.model({
   // threads
 
   tagsBar: T.opt(TagsBarStore, {}),
-  userLister: T.opt(UserListerStore, {}),
-  cashier: T.opt(CashierStore, {}),
 
   // viewers (for drawer usage)
   mailsViewer: T.opt(MailsViewerStore, {}),
