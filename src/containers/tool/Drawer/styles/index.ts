@@ -5,6 +5,7 @@ import css, { theme, zIndex } from '@/css'
 import { pixelAdd } from '@/dom'
 
 import type { TDrawer, TSwipe } from '../spec'
+import { NARROW_HEIGHT_OFFSET } from '../constant'
 import {
   getTransform,
   getMobileContentHeight,
@@ -93,7 +94,8 @@ export const DrawerContent = styled.div<{ type: string }>`
   position: relative;
   width: 100%;
   background-color: ${theme('drawer.bg')};
-  height: ${({ type }) => (isWideMode(type) ? '100vh' : 'calc(100vh - 50px)')};
+  height: ${({ type }) =>
+    isWideMode(type) ? '100vh' : `calc(100vh - ${NARROW_HEIGHT_OFFSET * 2}px)`};
   border-radius: ${({ type }) => (isWideMode(type) ? 0 : '10px')};
   box-shadow: ${({ type }) =>
     isWideMode(type) ? theme('drawer.shadow') : theme('drawer.shadowLite')};

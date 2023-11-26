@@ -6,7 +6,7 @@ import UserItem from './UserItem'
 import { Wrapper } from './styles'
 
 const UserList: FC = () => {
-  const users = mockUsers(10)
+  const users = mockUsers(18)
 
   return (
     <Wrapper>

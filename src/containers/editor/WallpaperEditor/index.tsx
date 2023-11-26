@@ -6,7 +6,6 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { DRAWER_SCROLLER } from '@/constant/dom'
 import VIEW from '@/constant/view'
 
 import { DesktopOnly, MobileOnly } from '@/widgets/Common'
@@ -42,14 +41,7 @@ const WallpaperEditor: FC = () => {
         </Content>
       </MobileOnly>
       <DesktopOnly>
-        <CustomScroller
-          instanceKey={DRAWER_SCROLLER}
-          direction="vertical"
-          height="calc(100vh - 226px)"
-          barSize="small"
-          showShadow={false}
-          autoHide={false}
-        >
+        <CustomScroller barSize="small" showShadow={false} autoHide={false}>
           <Content>
             {tab === TAB.BUILDIN && <BuildIn wallpaperData={wallpaperData} />}
             {tab === TAB.UPLOAD && <UploadPic />}

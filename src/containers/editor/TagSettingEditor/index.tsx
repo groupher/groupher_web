@@ -42,18 +42,17 @@ import { observer } from 'mobx-react-lite'
 // const log = buildLog('C:TagSettingEditor')
 
 type TProps = {
-  testid: string
   mode?: TChangeMode
 }
 
-const TagSettingEditor: FC<TProps> = ({ testid, mode = CHANGE_MODE.UPDATE }) => {
+const TagSettingEditor: FC<TProps> = ({ mode = CHANGE_MODE.UPDATE }) => {
   const store = useStore()
   useInit(store, mode)
 
   const { editingTagData: editingTag, curCategory, categoryOptions, processing } = store
 
   return (
-    <Wrapper $testid={testid}>
+    <Wrapper $testid="tag-setting-editor">
       <CustomScroller
         instanceKey={DRAWER_SCROLLER}
         direction="vertical"

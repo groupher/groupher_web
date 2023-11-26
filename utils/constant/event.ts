@@ -77,6 +77,9 @@ const EVENT = {
   // subscribe
   SUBSCRIBE: 'SUBSCRIBE',
   AUTH: 'AUTH',
+
+  //
+  LIST_USER_MODAL: 'LIST_USER_MODAL',
 }
 
 export default EVENT

@@ -36,12 +36,13 @@ export const MoreNum = styled.div`
   color: ${theme('article.digest')};
   font-size: 15px;
   margin-top: 1px;
-  margin-left: 2px;
+  margin-left: 4px;
   letter-spacing: 1px;
   opacity: 0.8;
 
   &:hover {
     color: ${theme('article.title')};
+    background: ${theme('hoverBg')};
     opacity: 1;
     cursor: pointer;
   }

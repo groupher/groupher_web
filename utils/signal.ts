@@ -110,9 +110,15 @@ export const setTag = (): void => {
  * list users
  * type: modal or drawer
  */
-export const listUsers = (): void => {
-  const type = TYPE.DRAWER.LIST_USERS
-  send(EVENT.DRAWER.OPEN, { type })
+export const listUsers = (type: 'modal' | 'drawer'): void => {
+  if (type === 'drawer') {
+    const type = TYPE.DRAWER.LIST_USERS
+    send(EVENT.DRAWER.OPEN, { type })
+
+    return
+  }
+
+  send(EVENT.LIST_USER_MODAL, { type })
 }
 
 export const callPassportEditor = (): void => {

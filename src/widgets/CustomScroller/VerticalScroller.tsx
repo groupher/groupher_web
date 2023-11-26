@@ -4,14 +4,14 @@
  *
  */
 
-import { FC, useState, useRef, useCallback, memo } from 'react'
+import { FC, useState, Fragment, useCallback, memo } from 'react'
+import 'overlayscrollbars/styles/overlayscrollbars.css'
 
 // NOTE: do not use ViewportTracker here, it cause crash
 import { Waypoint } from 'react-waypoint'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-react'
 
 import SIZE from '@/constant/size'
-import { debounce } from '@/helper'
-import useCustomScroll from '@/hooks/useCustomScroll'
 import useTheme from '@/hooks/useTheme'
 
 // import ViewportTracker from '@/widgets/ViewportTracker'
@@ -20,8 +20,8 @@ import type { TProps as TScrollProps } from '.'
 
 import {
   Wrapper,
+  ViewHolder,
   //
-  ScrollWrapper,
   TopShadowBar,
   BottomShadowBar,
 } from './styles/vertical_scroller'
@@ -46,7 +46,7 @@ const VerticalScroller: FC<TProps> = ({
   onScrollDirectionChange,
   instanceKey = null,
 }) => {
-  const [showTopShadow, setShowTopShadow] = useState(false)
+  const [showTopShadow, setShowTopShadow] = useState(true)
   const [showBottomShadow, setShowBottomShadow] = useState(true)
 
   // record last y position after scroll
@@ -78,53 +78,15 @@ const VerticalScroller: FC<TProps> = ({
   const { _meta: themeMeta } = themeMap
   const { category: themeCategory } = themeMeta
 
-  const ref = useRef(null)
-  const scrollInstance = useCustomScroll(ref, {
-    instanceKey,
-    scrollbars: { autoHide: autoHide ? 'scroll' : 'never' },
-    themeCategory,
-    callbacks: {
-      onScroll: debounce(() => {
-        const position = scrollInstance?.scroll().position
-        if (position) {
-          const currentY = position.y
-
-          currentY > lastYPosition
-            ? onScrollDirectionChange?.('up')
-            : onScrollDirectionChange?.('down')
-        }
-      }, 100),
-      onScrollStart: () => {
-        const position = scrollInstance?.scroll().position
-        if (position) {
-          const currentY = position.y
-          setLastYPosition(currentY)
-
-          currentY > lastYPosition
-            ? onScrollDirectionChange?.('up')
-            : onScrollDirectionChange?.('down')
-        }
-      },
-      onScrollStop: () => {
-        const position = scrollInstance?.scroll().position
-        if (position) {
-          const currentY = position.y
-          currentY > lastYPosition
-            ? onScrollDirectionChange?.('up')
-            : onScrollDirectionChange?.('down')
-        }
-      },
-    },
-  })
-
+  //   <Wrapper
+  //   height={height}
+  //   width={width}
+  //   $shadowSize={shadowSize}
+  //   $barSize={barSize}
+  //   $showOnHover={showOnHover}
+  // >
   return (
-    <Wrapper
-      height={height}
-      width={width}
-      $shadowSize={shadowSize}
-      $barSize={barSize}
-      $showOnHover={showOnHover}
-    >
+    <Fragment>
       {showShadow && (
         <TopShadowBar
           show={showTopShadow}
@@ -134,13 +96,17 @@ const VerticalScroller: FC<TProps> = ({
         />
       )}
 
-      <ScrollWrapper ref={ref}>
-        {/*  @ts-ignore */}
+      <OverlayScrollbarsComponent
+        options={{
+          scrollbars: { autoHide: 'leave', autoHideDelay: 300, autoHideSuspend: true },
+        }}
+      >
+        <ViewHolder />
         <Waypoint onEnter={handleHideTopShadow} onLeave={handleShowTopShadow} />
-        <div>{children}</div>
-        {/*  @ts-ignore */}
+        {children}
+        <ViewHolder />
         <Waypoint onEnter={handleHideBottomShadow} onLeave={handleShowBottomShadow} />
-      </ScrollWrapper>
+      </OverlayScrollbarsComponent>
 
       {showShadow && (
         <BottomShadowBar
@@ -150,7 +116,7 @@ const VerticalScroller: FC<TProps> = ({
           withBorder={withBorder}
         />
       )}
-    </Wrapper>
+    </Fragment>
   )
 }
 

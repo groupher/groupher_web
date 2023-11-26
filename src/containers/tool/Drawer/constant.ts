@@ -3,6 +3,8 @@ import { concat, keys, reduce } from 'ramda'
 import TYPE from '@/constant/type'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
+export const NARROW_HEIGHT_OFFSET = 25
+
 export const ARTICLE_VIEWER_TYPES = reduce(
   concat,
   // @ts-ignore

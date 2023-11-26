@@ -77,7 +77,7 @@ const ThreadSidebar: FC = () => {
                 fallback={<ImgFallback size={24} user={user} />}
               />
             ))}
-            <MoreNum onClick={() => listUsers()}>+2</MoreNum>
+            <MoreNum onClick={() => listUsers('drawer')}>+2</MoreNum>
           </CommunityJoinersWrapper>
         </Fragment>
 

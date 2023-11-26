@@ -7,7 +7,7 @@ import HorizontalScroller from './HorizontalScroller'
 import VerticalScroller from './VerticalScroller'
 
 export type TProps = {
-  direction: TDirection
+  direction?: TDirection
   children: ReactNode
   height?: string
   innerHeight?: string
@@ -29,11 +29,7 @@ export type TProps = {
   onScrollDirectionChange?: (dir: TScrollDirection) => void
 }
 
-const CustomScroller: FC<TProps> = ({
-  children,
-  direction = 'vertical',
-  ...restProps
-}) => {
+const CustomScroller: FC<TProps> = ({ children, direction = 'vertical', ...restProps }) => {
   return direction === 'vertical' ? (
     <VerticalScroller {...restProps}>{children}</VerticalScroller>
   ) : (

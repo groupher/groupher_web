@@ -7,7 +7,11 @@ import Img from '@/Img'
 
 export const Wrapper = styled.div`
   ${css.row('align-start')};
-  width: 350px;
+  width: 100%;
+
+  &:last-child {
+    margin-bottom: 50px;
+  }
 `
 export const Avatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
   ${css.size(32)};
@@ -34,6 +38,7 @@ export const Login = styled.div`
   &:before {
     content: '@';
     font-size: 11px;
+    margin-right: 1px;
   }
 `
 export const Bio = styled.div`
