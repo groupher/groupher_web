@@ -54,7 +54,6 @@ const night = {
   savingBarBg: '#f7f7f7',
   hoverBorder: '#393939',
   hoverLinear: 'linear-gradient(315deg, rgb(104 104 104 / 0%) 0%, #2c2c2c 100%);',
-  activeLinear: 'linear-gradient(315deg,rgba(255,255,255,0) 0%,#343434 70%)',
   menuActive: '#e9e9e991',
   linkHover: lighten(link, 5),
   heightIcon: '#e48a3d',

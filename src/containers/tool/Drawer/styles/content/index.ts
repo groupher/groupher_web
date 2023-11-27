@@ -1,16 +1,14 @@
 import styled from 'styled-components'
 
-import css from '@/css'
+import { NARROW_HEIGHT_OFFSET } from '../../constant'
+import { isWideMode } from '../metrics'
+// import css from '@/css'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ type: string }>`
   width: 100%;
-  /* NOTE:  those property must exist otherwise custom scroller will not work*/
-  height: 100%;
-
-  /* 30px is the modeLine height */
-  ${css.media.mobile`
-    height: auto;
-  `};
+  height: ${({ type }) =>
+    isWideMode(type) ? '100vh' : `calc(100vh - ${NARROW_HEIGHT_OFFSET * 2}px)`};
+  overflow-y: scroll;
 `
 
-export const holder = 1
+export const InnerWrapper = styled.div``

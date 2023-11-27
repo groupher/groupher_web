@@ -13,20 +13,20 @@ export const Wrapper = styled.div<TActive>`
 `
 export const Brief = styled.div`
   margin-bottom: 10px;
-  margin-left: 14px;
+  margin-left: 12px;
 `
 export const Logo = styled(Img)`
-  ${css.size(40)};
-  margin-top: -5px;
+  ${css.size(32)};
+  margin-top: -6px;
 `
 export const Title = styled.div`
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   color: ${theme('article.title')};
 `
 export const InfoBar = styled.div`
   ${css.row('align-center')};
-  margin-top: 2px;
+  margin-top: 1px;
 `
 export const Label = styled.div`
   font-size: 13px;

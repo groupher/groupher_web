@@ -5,8 +5,8 @@ import type { TActive } from '@/spec'
 
 type TBox = { width: string; height: string }
 export const WrapperBase = styled.div<TBox>`
-  width: ${({ width }) => width};
-  height: ${({ height }) => height};
+  /* width: ${({ width }) => width};
+  height: ${({ height }) => height}; */
 `
 export const ScrollWrapperBase = styled.div`
   width: 100%;

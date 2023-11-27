@@ -35,10 +35,8 @@ export const Wrapper = styled.div<TWrapper>`
   min-height: 320px;
   max-height: 65vh;
   box-shadow: ${theme('modal.shadow')};
-  padding-top: 25px;
-  /* border: 1px solid; */
-  /* border-top: 2px solid; */
-  border-color: ${({ mode }) => theme('modal.border')};
+  border: 1px solid;
+  border-color: ${theme('popover.borderColor')};
   animation: ${animate.jump} 0.3s linear;
   margin-left: ${({ offsetLeft }) => offsetLeft};
 

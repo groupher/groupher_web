@@ -22,6 +22,8 @@ import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx
 const MushroomStore = T.model('MushroomStore', {
   online: T.opt(T.bool, true),
   isMobile: T.opt(T.bool, false),
+
+  showUserListModal: T.opt(T.bool, false),
   // follow the mac convention
   bodyScrollDirection: T.opt(T.enum(['up', 'down']), 'up'),
   // activeState;
@@ -109,6 +111,9 @@ const MushroomStore = T.model('MushroomStore', {
     clearLocalSettings(): void {
       const root = getParent(self) as TRootStore
       return root.dashboardThread.clearLocalSettings()
+    },
+    closeUserListModal(): void {
+      self.showUserListModal = false
     },
     authWarning(options): void {
       const root = getParent(self) as TRootStore

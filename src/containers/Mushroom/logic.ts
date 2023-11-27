@@ -34,7 +34,12 @@ let sub$ = null
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
 const sr71$ = new SR71({
   // @ts-ignore
-  receive: [EVENT.UPVOTE_ARTICLE, EVENT.UPDATE_VIEWING_ARTICLE, EVENT.REFRESH_ARTICLES],
+  receive: [
+    EVENT.UPVOTE_ARTICLE,
+    EVENT.UPDATE_VIEWING_ARTICLE,
+    EVENT.REFRESH_ARTICLES,
+    EVENT.LIST_USER_MODAL,
+  ],
 })
 
 // custromScroll's scroll direction change
@@ -168,6 +173,13 @@ const DataSolver = [
       store.syncArticle(article)
     },
   },
+  {
+    match: asyncRes(EVENT.LIST_USER_MODAL),
+    action: () => {
+      store.mark({ showUserListModal: true })
+    },
+  },
+
   {
     match: asyncRes(EVENT.UPVOTE_ARTICLE),
     action: (_data) => {

@@ -5,6 +5,11 @@ import styled from 'styled-components'
 import { WrapperBase, ScrollWrapperBase, ShadowBarBase } from '.'
 import { getShadowBackground, getShadowSize, getScrollbarThin } from './metrics'
 
+export const ViewHolder = styled.div`
+  width: 100%;
+  height: 1px;
+`
+
 type TBar = {
   width?: string
   height: string
@@ -13,8 +18,10 @@ type TBar = {
   withBorder?: boolean
   $shadowSize: string
 }
-export const Wrapper = styled(WrapperBase)<TBar>`
+// export const Wrapper = styled(WrapperBase)<TBar>`
+export const Wrapper = styled.div<TBar>`
   position: relative;
+  border: 1px solid blue;
 
   .os-host:not(:hover) {
     visibility: ${({ $showOnHover }) => ($showOnHover ? 'hidden' : 'inherit')};

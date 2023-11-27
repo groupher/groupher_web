@@ -66,7 +66,7 @@ export const Item = styled(Link)<TItem>`
   display: block;
   color: ${({ $active, $color }) =>
     $active ? rainbow($color, 'dashboard.menuTitle') : theme('dashboard.menuTitle')};
-  background: ${({ $active }) => ($active ? theme('activeLinear') : 'transparent')};
+  background: ${({ $active }) => ($active ? theme('hoverBg') : 'transparent')};
   font-weight: ${({ $active }) => ($active ? 500 : 400)};
 
   width: 160px;
@@ -81,7 +81,7 @@ export const Item = styled(Link)<TItem>`
   &:hover {
     cursor: pointer;
     color: ${({ $color }) => rainbow($color, 'dashboard.menuTitle')};
-    background: ${theme('activeLinear')};
+    background: ${theme('hoverBg')};
   }
 
   &:before {

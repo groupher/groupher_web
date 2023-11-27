@@ -3,11 +3,11 @@ import { FC, ReactNode, memo } from 'react'
 import type { TSizeSML } from '@/spec'
 import type { TDirection, TScrollDirection } from './spec'
 
-import HorizontalScroller from './HorizontalScroller'
+// import HorizontalScroller from './HorizontalScroller'
 import VerticalScroller from './VerticalScroller'
 
 export type TProps = {
-  direction: TDirection
+  direction?: TDirection
   children: ReactNode
   height?: string
   innerHeight?: string
@@ -29,16 +29,8 @@ export type TProps = {
   onScrollDirectionChange?: (dir: TScrollDirection) => void
 }
 
-const CustomScroller: FC<TProps> = ({
-  children,
-  direction = 'vertical',
-  ...restProps
-}) => {
-  return direction === 'vertical' ? (
-    <VerticalScroller {...restProps}>{children}</VerticalScroller>
-  ) : (
-    <HorizontalScroller {...restProps}>{children}</HorizontalScroller>
-  )
+const CustomScroller: FC<TProps> = ({ children, direction = 'vertical', ...restProps }) => {
+  return <VerticalScroller {...restProps}>{children}</VerticalScroller>
 }
 
 export default memo(CustomScroller)

@@ -15,6 +15,7 @@ import useAvatarLayout from '@/hooks/useAvatarLayout'
 import useBannerLayout from '@/hooks/useBannerLayout'
 import { BANNER_LAYOUT } from '@/constant/layout'
 
+import ImgFallback from '@/widgets/ImgFallback'
 import { SpaceGrow } from '@/widgets/Common'
 import ThemeSwitch from '@/widgets/ThemeSwitch'
 
@@ -28,7 +29,8 @@ type TProps = {
 } & TSpace
 
 const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
-  const { isLogin, avatar, nickname } = useAccount()
+  const user = useAccount()
+  const { isLogin, avatar, nickname } = user
   const avatarLayout = useAvatarLayout()
   const bannerLayout = useBannerLayout()
 
@@ -42,7 +44,15 @@ const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
         <ThemeSwitch right={10} />
       )}
 
-      {isLogin ? <Avatar src={avatar} $avatarLayout={avatarLayout} /> : <UnloginIcon />}
+      {isLogin ? (
+        <Avatar
+          src={avatar}
+          $avatarLayout={avatarLayout}
+          fallback={<ImgFallback size={18} user={user} />}
+        />
+      ) : (
+        <UnloginIcon />
+      )}
       {!isLogin && withName && <UnLoginText>未登入</UnLoginText>}
       {isLogin && withName && <NickName>{nickname}</NickName>}
 

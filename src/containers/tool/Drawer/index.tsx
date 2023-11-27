@@ -7,10 +7,11 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import type { TMetric } from '@/spec'
 import { buildLog } from '@/logger'
+
 import useWindowResize from '@/hooks/useWindowResize'
 import useShortcut from '@/hooks/useShortcut'
+import useMetric from '@/hooks/useMetric'
 
 import { useStore } from './store'
 
@@ -22,12 +23,9 @@ import { useInit, closeDrawer } from './logic'
 /* eslint-disable-next-line */
 const log = buildLog('C:Preview')
 
-type TProps = {
-  metric: TMetric
-}
-
-const Drawer: FC<TProps> = ({ metric }) => {
+const Drawer: FC = () => {
   const store = useStore()
+  const metric = useMetric()
 
   const { width: windowWidth } = useWindowResize()
 

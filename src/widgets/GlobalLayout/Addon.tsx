@@ -6,10 +6,10 @@ import { observer } from 'mobx-react-lite'
 import { Toaster } from 'sonner'
 
 import useShortcut from '@/hooks/useShortcut'
-import useMetric from '@/hooks/useMetric'
 
 import Drawer from '@/containers/tool/Drawer'
 import ErrorBox from '@/containers/tool/ErrorBox'
+import UserListModal from '@/widgets/UserListModal'
 
 // import { Drawer } from './dynamic'
 
@@ -17,14 +17,14 @@ const Addon: FC = () => {
   // const { isMobile } = useMobileDetect()
 
   useShortcut('Control+P', () => console.log('# Ctrl P pressed'))
-  const metric = useMetric()
 
   return (
     <Fragment>
       {/* @ts-ignore */}
       {/* {!isMobile && <AbuseReport />} */}
       {/* @ts-ignore */}
-      <Drawer metric={metric} />
+      <Drawer />
+      <UserListModal />
       <Toaster position="top-center" closeButton />
       {/* @ts-ignore */}
       <ErrorBox />

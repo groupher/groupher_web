@@ -53,7 +53,6 @@ const day = {
   lineDivider: '#acacacc9',
   hoverBorder: hoverBg,
   hoverLinear: 'linear-gradient(315deg, rgba(255, 255, 255, 0) 0%, #fafafa 100%)',
-  activeLinear: 'linear-gradient(315deg,rgba(255,255,255,0) 0%,#f1f1f1 70%)',
   menuActive: '#e9e9e991',
   linkHover: lighten(link, 5),
   heightIcon: '#e48a3d',
