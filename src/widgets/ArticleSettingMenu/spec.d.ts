@@ -8,5 +8,6 @@ export type TSubMenu =
   | 'lock'
   | 'merge'
   | 'archeve'
+  | 'mirror'
   | 'delete'
   | null

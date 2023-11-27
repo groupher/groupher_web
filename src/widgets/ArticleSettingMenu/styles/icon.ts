@@ -16,6 +16,7 @@ import ArchivedSVG from '@/icons/Archived'
 import DeleteSVG from '@/icons/Trash'
 import LockSVG from '@/icons/LockLight'
 import ArrowSVG from '@/icons/ArrowSimple'
+import ArticleMirror from '@/icons/MirrorShoe'
 
 import LightSVG from '@/icons/ColorLight'
 import QuestionSVG from '@/icons/Question'
@@ -117,6 +118,7 @@ export const Icon = {
     ${css.size(11)};
     animation: ${animate.rotate360} 0.8s linear infinite;
   `,
+  Mirror: commonIcon(ArticleMirror),
   [ARTICLE_CAT.FEATURE]: commonIcon(LightSVG),
   [ARTICLE_CAT.QUESTION]: commonIcon(QuestionSVG),
   [ARTICLE_CAT.BUG]: commonIcon(BugSVG),

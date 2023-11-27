@@ -10,6 +10,7 @@ import CatSetting from './CatSetting'
 import StateSetting from './StateSetting'
 import SlugSetting from './SlugSetting'
 import TagsSetting from './TagsSetting'
+import Mirror2Home from './Mirror2Home'
 
 import { Wrapper } from '../styles/sub_menu'
 
@@ -39,6 +40,11 @@ const SubMenu: FC<TProps> = ({ closeSubMenu, subMenuType }) => {
 
     case SUB_MENU_TYPE.SLUG: {
       Content = SlugSetting
+      break
+    }
+
+    case SUB_MENU_TYPE.MIRROR: {
+      Content = Mirror2Home
       break
     }
 
