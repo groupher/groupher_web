@@ -1,6 +1,5 @@
 import { FC, useEffect, useRef, memo } from 'react'
 
-import 'overlayscrollbars/styles/overlayscrollbars.css'
 import { useOverlayScrollbars } from 'overlayscrollbars-react'
 
 import { DRAWER_SCROLLER } from '@/constant/dom'

@@ -5,7 +5,6 @@
  */
 
 import { FC, useState, Fragment, useCallback, memo } from 'react'
-import 'overlayscrollbars/styles/overlayscrollbars.css'
 
 // NOTE: do not use ViewportTracker here, it cause crash
 import { Waypoint } from 'react-waypoint'
