@@ -16,8 +16,11 @@ export const getSubMenuWidth = (subType: TSubMenu): string => {
     case SUB_MENU_TYPE.TAGS: {
       return '180px'
     }
+    case SUB_MENU_TYPE.MIRROR: {
+      return '240px'
+    }
     default: {
-      return '140px'
+      return '146px'
     }
   }
 }

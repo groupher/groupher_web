@@ -80,6 +80,23 @@ const Header: FC<TProps> = ({ type }) => {
 
       break
     }
+
+    case SUB_MENU_TYPE.MIRROR: {
+      Content = (
+        <>
+          <Icon.Slug />
+          镜像到 Groupher
+          <SpaceGrow />
+          <Hint>
+            <InfoIcon />
+            <Help href="/">帮助</Help>
+          </Hint>
+        </>
+      )
+
+      break
+    }
+
     case SUB_MENU_TYPE.TAGS: {
       Content = (
         <>

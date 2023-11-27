@@ -27,7 +27,7 @@ export const Dot = styled.div<TProps>`
 `
 export const HashNormalIcon = styled(HashSVG)<TProps>`
   ${({ size }) => css.size(size)};
-  fill: ${({ $color }) => rainbow($color)};
+  fill: ${({ $color }) => rainbow($color, 'article.digest')};
   opacity: ${({ opacity }) => opacity};
   margin-right: ${({ right }) => `${right}px;`};
   margin-left: ${({ left }) => `${left}px;`};

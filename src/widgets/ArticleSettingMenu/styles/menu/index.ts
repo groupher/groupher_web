@@ -27,9 +27,16 @@ export const MenuItem = styled.div`
     background: ${theme('menuHoverBg')};
     box-shadow: ${theme('button.boxShadow')};
     cursor: pointer;
+
+    svg {
+      fill: ${theme('article.title')};
+    }
   }
 
   transition: all 0.05s;
+`
+export const MenuTitle = styled.div`
+  ${css.cutRest('85px')};
 `
 export const DangerMenuItem = styled(MenuItem)`
   &:hover {
@@ -38,7 +45,6 @@ export const DangerMenuItem = styled(MenuItem)`
     cursor: pointer;
   }
 `
-
 export const ItemDivider = styled.div`
   height: 1px;
   width: 100%;

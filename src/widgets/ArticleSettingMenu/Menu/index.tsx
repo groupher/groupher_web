@@ -14,7 +14,7 @@ import PinItem from './PinItem'
 import StateItem from './StateItem'
 
 import { Icon } from '../styles/icon'
-import { Wrapper, MenuItem, DangerMenuItem, ItemDivider } from '../styles/menu'
+import { Wrapper, MenuItem, MenuTitle, DangerMenuItem, ItemDivider } from '../styles/menu'
 
 type TProps = {
   onSubMenuToggle: (t: boolean) => void
@@ -56,14 +56,14 @@ const Menu: FC<TProps> = ({ onSubMenuToggle, onClose }) => {
         <>
           <MenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.EDIT)}>
             <Icon.Edit />
-            修改标题
+            <MenuTitle>修改标题</MenuTitle>
             <SpaceGrow />
             <Icon.Arrow />
           </MenuItem>
 
           <MenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.SLUG)}>
             <Icon.Slug />
-            设置路径
+            <MenuTitle>设置路径</MenuTitle>
             <SpaceGrow />
             <Icon.Arrow />
           </MenuItem>
@@ -75,17 +75,23 @@ const Menu: FC<TProps> = ({ onSubMenuToggle, onClose }) => {
           <PinItem />
           <MenuItem>
             <Icon.Lock />
-            关闭评论
+            <MenuTitle>关闭评论</MenuTitle>
           </MenuItem>
           <MenuItem>
             <Icon.Merge />
-            合并
+            <MenuTitle>合并</MenuTitle>
             <SpaceGrow />
             <Icon.Arrow />
           </MenuItem>
           <MenuItem>
             <Icon.Archived />
-            归档
+            <MenuTitle>归档</MenuTitle>
+          </MenuItem>
+          <MenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.MIRROR)}>
+            <Icon.Mirror />
+            <MenuTitle>镜像:Groupher</MenuTitle>
+            <SpaceGrow />
+            <Icon.Arrow />
           </MenuItem>
           <DangerMenuItem>
             <Icon.Delete />
