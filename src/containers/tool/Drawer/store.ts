@@ -3,9 +3,9 @@
  *
  */
 
-import { values, findIndex, mergeRight, includes } from 'ramda'
+import { values, mergeRight, includes } from 'ramda'
 
-import type { TRootStore, TCommunity, TThread, TArticle } from '@/spec'
+import type { TRootStore, TThread, TArticle } from '@/spec'
 
 import { DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { ARTICLE_THREAD } from '@/constant/thread'
@@ -16,11 +16,10 @@ import TYPE from '@/constant/type'
 import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 import { lockPage, unlockPage } from '@/dom'
 import { Global } from '@/helper'
-import { plural } from '@/fmt'
 import { mediaBreakPoints } from '@/css/metric'
 import { User } from '@/model'
 
-import type { TSwipeOption, TArticleNavi, TExtraInfo } from './spec'
+import type { TSwipeOption, TExtraInfo } from './spec'
 import { ARTICLE_VIEWER_TYPES, ARTICLE_THREAD_CURD_TYPES } from './constant'
 import { SWIPE_THRESHOLD } from './styles/metrics'
 
@@ -93,36 +92,6 @@ const DrawerStore = T.model('DrawerStore', {
       const root = getParent(self) as TRootStore
       return root.viewing.viewingArticle
     },
-    get articleNavi(): TArticleNavi {
-      const slf = self as TStore
-
-      if (!includes(slf.curThread, values(ARTICLE_THREAD)) || !slf.viewingArticle?.id) {
-        return {
-          previous: null,
-          next: null,
-        }
-      }
-
-      const root = getParent(self) as TRootStore
-      const viewingArticleId = slf.viewingArticle.id
-
-      let pagedArticles
-
-      switch (slf.curThread) {
-        default: {
-          pagedArticles = toJS(root.articles[`paged${plural(slf.curThread, 'titleCase')}`])
-          break
-        }
-      }
-
-      const curIndex = findIndex((a: TArticle) => a.id === viewingArticleId, pagedArticles.entries)
-
-      return {
-        previous: pagedArticles.entries[curIndex - 1] || null,
-        next: pagedArticles.entries[curIndex + 1] || null,
-      }
-    },
-
     get extraInfo(): TExtraInfo {
       const root = getParent(self) as TRootStore
       const slf = self as TStore
@@ -219,7 +188,7 @@ const DrawerStore = T.model('DrawerStore', {
 
       // Global.history.replaceState(null, title, nextURL)
       // Global.history.pushState(null, title, nextURL)
-      console.log('## pushing window.location.href: ', nextURL)
+      // console.log('## pushing window.location.href: ', nextURL)
       Global.history.pushState({ prevUrl: nextURL }, title, nextURL)
     },
 

@@ -44,7 +44,6 @@ const Drawer: FC = () => {
     headerText,
     showHeaderText,
     disableContentDrag,
-    articleNavi,
   } = store
 
   return (
@@ -56,7 +55,6 @@ const Drawer: FC = () => {
       canBeClose={canBeClose}
       showHeaderText={showHeaderText}
       disableContentDrag={disableContentDrag}
-      articleNavi={articleNavi}
     >
       <Content
         type={type}

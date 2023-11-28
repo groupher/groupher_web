@@ -5,7 +5,7 @@ import { includes } from 'ramda'
 import { ANCHOR } from '@/constant/dom'
 import useDrawerOffset from '@/hooks/useDrawerOffset'
 
-import type { TArticleNavi, TSwipeOption } from '../spec'
+import type { TSwipeOption } from '../spec'
 import { ARTICLE_VIEWER_TYPES } from '../constant'
 
 import ArticleNavi from './ArticleNavi'
@@ -18,7 +18,6 @@ type TProps = {
   visible: boolean
   type: string
   children: ReactNode
-  articleNavi: TArticleNavi
 }
 
 const DesktopView: FC<TProps> = ({
@@ -26,7 +25,6 @@ const DesktopView: FC<TProps> = ({
   options,
   visible,
   type,
-  articleNavi,
   children,
 }) => {
   const { rightOffset, fromContentEdge } = useDrawerOffset()
@@ -52,7 +50,7 @@ const DesktopView: FC<TProps> = ({
         <DrawerContent type={type}>
           {isArticleViewer && (
             <NaviArea>
-              <ArticleNavi articleNavi={articleNavi} />
+              <ArticleNavi />
             </NaviArea>
           )}
           {children}
