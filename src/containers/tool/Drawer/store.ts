@@ -17,7 +17,7 @@ import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx
 import { lockPage, unlockPage } from '@/dom'
 import { Global } from '@/helper'
 import { plural } from '@/fmt'
-import { WIDTH, mediaBreakPoints } from '@/css/metric'
+import { mediaBreakPoints } from '@/css/metric'
 import { User } from '@/model'
 
 import type { TSwipeOption, TArticleNavi, TExtraInfo } from './spec'
@@ -75,10 +75,6 @@ const DrawerStore = T.model('DrawerStore', {
     get swipeThreshold() {
       const { direction, position } = self.options
       return SWIPE_THRESHOLD[direction][position]
-    },
-    get curCommunity(): TCommunity {
-      const root = getParent(self) as TRootStore
-      return toJS(root.viewing.community)
     },
     get curThread(): TThread {
       const root = getParent(self) as TRootStore
