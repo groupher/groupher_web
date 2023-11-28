@@ -36,11 +36,11 @@ export const Intro = styled.div`
 `
 export const Header = styled.div`
   ${css.row('align-center')};
-  font-weight: 600;
 `
 export const Name = styled.div`
   color: ${theme('article.title')};
   font-size: 15px;
+  font-weight: 500;
 `
 export const Login = styled.div`
   color: ${theme('hint')};

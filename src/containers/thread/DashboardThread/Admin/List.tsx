@@ -2,7 +2,6 @@ import { FC, memo } from 'react'
 
 import type { TModerator, TUser } from '@/spec'
 
-import { sortByIndex } from '@/helper'
 import { callPassportEditor } from '@/signal'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 
@@ -31,12 +30,10 @@ type TProps = {
 
 const List: FC<TProps> = ({ moderators, activeModerator }) => {
   const primaryColor = usePrimaryColor()
-  // @ts-ignore
-  const sortedModerators = sortByIndex(moderators, 'passportItemCount').reverse() as TModerator[]
 
   return (
     <Wrapper>
-      {sortedModerators.map((item) => {
+      {moderators.map((item) => {
         const { user, passportItemCount, role } = item
         const active = user.login === activeModerator?.login
 
