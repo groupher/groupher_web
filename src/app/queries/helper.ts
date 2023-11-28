@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { reject, includes, values, isEmpty, mergeRight } from 'ramda'
+import { reject, includes, values, isEmpty, mergeRight, startsWith } from 'ramda'
 import { useParams, useSearchParams, usePathname } from 'next/navigation'
 
 import type {
@@ -41,6 +41,12 @@ export const commonRes = (result): TGQSSRResult => {
     error: result.error,
     stale: result.stale,
   }
+}
+
+export const useIsStaticQuery = (): boolean => {
+  const pathname = usePathname()
+
+  return startsWith('/_next/static', pathname)
 }
 
 export const useCommunityParam = (): string => {
@@ -103,9 +109,10 @@ export const parseCommunity = (communityPath: string): string => {
 /**
  * parse active thread from pathname
  */
-export const parseThread = (pathname: string): TThread => {
+export const parseThread = (pathname: string): TThread | '' => {
   const _thread = pathname.split('/')[2] as TThread
-  if (!includes(_thread, values(THREAD))) return THREAD.POST
+
+  if (!includes(_thread, values(THREAD))) return THREAD.DASHBOARD
 
   return _thread
 }
@@ -218,8 +225,6 @@ export const parseDashboard = (community: TCommunity, pathname: string): TParseD
     footerLinks,
     mediaReports,
   } = dashboard
-
-  // console.log('## parseDashboardThread: ', parseDashboardThread(pathname))
 
   const fieldsObj = removeEmptyValuesFromObject({
     enable,

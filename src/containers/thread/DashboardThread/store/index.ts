@@ -532,17 +532,10 @@ const DashboardThread = T.model('DashboardThread', {
 
     get adminSettings(): TAdminSettings {
       const slf = self as TStore
-      const moderators = toJS(slf.moderators).map((item) => {
-        return {
-          ...item,
-          // TODO: move this logic to backnend
-          passportItemCount: item.role === 'root' ? 1000000 : item.passportItemCount,
-        }
-      })
 
       // @ts-ignore
       const sortedModerators = sortByIndex(
-        moderators,
+        toJS(slf.moderators),
         'passportItemCount',
       ).reverse() as TModerator[]
 

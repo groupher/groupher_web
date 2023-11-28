@@ -2,6 +2,7 @@ import { FC } from 'react'
 
 import { keys, includes } from 'ramda'
 
+import { Trans } from '@/i18n/dashboard'
 import Checker from '@/widgets/Checker'
 
 import { Wrapper, Item, ReadonlyItem, CheckIcon, RootCheckIcon, ItemTitle } from './styles/selects'
@@ -30,7 +31,7 @@ const Selects: FC<TProps> = ({ rules, moderatorRules, selectedRules, readonly = 
             <ReadonlyItem key={ruleKey}>
               {isRootRule ? <RootCheckIcon /> : <CheckIcon />}
 
-              <ItemTitle>{ruleKey}</ItemTitle>
+              <ItemTitle>{Trans(ruleKey)}</ItemTitle>
             </ReadonlyItem>
           )
         })}
@@ -48,7 +49,7 @@ const Selects: FC<TProps> = ({ rules, moderatorRules, selectedRules, readonly = 
               size="small"
               onChange={(checked) => toggleCheck(ruleKey, checked)}
             >
-              <ItemTitle>{ruleKey}</ItemTitle>
+              <ItemTitle>{Trans(ruleKey)}</ItemTitle>
             </Checker>
           </Item>
         )
