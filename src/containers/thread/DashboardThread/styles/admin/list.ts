@@ -48,24 +48,23 @@ export const Login = styled.div`
   margin-left: 8px;
   margin-top: -1px;
 `
-export const RootSign = styled.div<TColor>`
+const RootStyle = styled.div<TColor>`
   color: ${({ $color }) => ($color === COLOR_NAME.BLACK ? theme('link') : rainbow($color))};
-
   border: 1px solid;
   border-color: ${({ $color }) => ($color === COLOR_NAME.BLACK ? theme('link') : rainbow($color))};
+  filter: ${({ $color }) => ($color === COLOR_NAME.BLACK ? '' : 'brightness(1.2) saturate(1.1)')};
+`
 
+export const RootSign = styled(RootStyle)`
   font-size: 10px;
   padding: 0 5px;
   margin-left: 8px;
   border-radius: 5px;
   margin-top: -1px;
-  filter: ${({ $color }) => ($color === COLOR_NAME.BLACK ? '' : 'brightness(1.2) saturate(1.1)')};
 `
-export const AllPassportText = styled.div<TColor>`
+export const AllPassportText = styled(RootStyle)`
   font-weight: 400;
-  color: ${({ $color }) => ($color === COLOR_NAME.BLACK ? theme('link') : rainbow($color))};
-
-  filter: ${({ $color }) => ($color === COLOR_NAME.BLACK ? '' : 'brightness(1.2) saturate(1.1)')};
+  border: none;
 `
 export const Bio = styled.div`
   color: ${theme('lightText')};
