@@ -6,7 +6,7 @@ import { callPassportEditor } from '@/signal'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import { SpaceGrow } from '@/widgets/Common'
-import DropdownButton from '@/widgets/Buttons/DropdownButton'
+import Button from '@/widgets/Buttons/Button'
 import AdminAvatar from '@/widgets/AdminAvatar'
 
 import {
@@ -20,6 +20,7 @@ import {
   Bio,
   RootSign,
   AllPassportText,
+  ArrowIcon,
 } from '../styles/admin/list'
 import { setActiveSettingAdmin } from '../logic'
 
@@ -48,19 +49,23 @@ const List: FC<TProps> = ({ moderators, activeModerator }) => {
                 <Login>@{user.login}</Login>
                 {role === 'root' && <RootSign $color={primaryColor}>ROOT</RootSign>}
                 <SpaceGrow />
-                <DropdownButton
+                <Button
                   top={1}
                   onClick={() => {
                     setActiveSettingAdmin(user)
                     callPassportEditor()
                   }}
+                  ghost
+                  noBorder
+                  size="small"
                 >
                   {role === 'root' ? (
                     <AllPassportText $color={primaryColor}>全部权限</AllPassportText>
                   ) : (
                     <>{passportItemCount} 项权限</>
                   )}
-                </DropdownButton>
+                  <ArrowIcon $color={primaryColor} $isRoot={role === 'root'} />
+                </Button>
               </Header>
               <Bio>{user.bio}</Bio>
             </Intro>

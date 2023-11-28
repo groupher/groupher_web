@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import type { TActive, TColor } from '@/spec'
 
 import SettingSVG from '@/icons/Setting'
+import ArrowSVG from '@/icons/ArrowSimple'
 import css, { theme, rainbow } from '@/css'
 import { COLOR_NAME } from '@/constant/colors'
 
@@ -54,7 +55,6 @@ const RootStyle = styled.div<TColor>`
   border-color: ${({ $color }) => ($color === COLOR_NAME.BLACK ? theme('link') : rainbow($color))};
   filter: ${({ $color }) => ($color === COLOR_NAME.BLACK ? '' : 'brightness(1.2) saturate(1.1)')};
 `
-
 export const RootSign = styled(RootStyle)`
   font-size: 10px;
   padding: 0 5px;
@@ -72,4 +72,15 @@ export const Bio = styled.div`
   font-size: 13px;
   width: 70%;
   ${css.lineClamp(2)};
+`
+type TArrowIcon = TColor & { $isRoot: boolean }
+export const ArrowIcon = styled(ArrowSVG)<TArrowIcon>`
+  ${css.size(14)};
+  fill: ${theme('article.digest')};
+  transform: rotate(180deg);
+
+  fill: ${({ $color, $isRoot }) =>
+    $color === COLOR_NAME.BLACK && $isRoot ? theme('link') : theme('article.digest')};
+  filter: ${({ $color, $isRoot }) =>
+    $color === COLOR_NAME.BLACK && $isRoot ? '' : 'brightness(1.2) saturate(1.1)'};
 `

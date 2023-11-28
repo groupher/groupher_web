@@ -21,23 +21,23 @@ export const Avatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
     $avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%'};
   margin-bottom: 20px;
   border: 1px solid;
-  border-color: ${theme('article.title')};
+  border-color: ${theme('hint')};
   padding: 2px;
 `
 export const BadgeWrapper = styled.div<{ $avatarLayout: TAvatarLayout }>`
   ${css.circle(14)};
   ${css.row('align-both')};
-  background: ${theme('article.title')};
+  background: ${theme('rainbow.blackRow')};
   padding: 1px;
-  border: 2px solid white;
+  border: 1px solid;
+  border-color: ${theme('hint')};
   position: absolute;
 
   right: ${({ $avatarLayout }) => ($avatarLayout === AVATAR_LAYOUT.SQUARE ? '-2px' : 0)};
   bottom: ${({ $avatarLayout }) => ($avatarLayout === AVATAR_LAYOUT.SQUARE ? '16px' : '18px')};
   z-index: 2;
 `
-
 export const BadgeIcon = styled(AdminStarSVG)`
   ${css.size(10)};
-  fill: white;
+  fill: ${theme('article.title')};
 `
