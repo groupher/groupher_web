@@ -181,6 +181,7 @@ export const useInit = (_store: TStore, windowWidth: number, metric: TMetric): v
     if (!sub$) {
       sub$ = sr71$.data().subscribe($solver(DataResolver, []))
     }
+    console.log('## marking windowWidth: ', windowWidth)
     store.mark({ windowWidth, metric })
 
     return () => {

@@ -85,8 +85,6 @@ const DataSolver = [
   {
     match: asyncRes('allPassportRules'),
     action: ({ allPassportRules }) => {
-      console.log('## allPassportRules: ', allPassportRules)
-
       const { moderator, root } = allPassportRules
       store.setAllPassportRules(root, moderator)
       sr71$.query(S.userPassport, { login: store.activeModerator.login })

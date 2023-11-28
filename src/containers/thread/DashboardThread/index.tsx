@@ -3,13 +3,15 @@
  *
  */
 
-import { FC } from 'react'
+import { FC, Suspense } from 'react'
 import { observer } from 'mobx-react-lite'
 import { includes } from 'ramda'
 
 import { ROUTE, DASHBORD_CMS_ROUTES } from '@/constant/route'
 
 import useMetric from '@/hooks/useMetric'
+
+import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
 import SideMenu from './SideMenu'
 import CMS from './CMS'
@@ -75,8 +77,18 @@ const DashboardThread: FC = () => {
         {curTab === DASHBOARD.INFO && <BasicInfo settings={baseInfoSettings} touched={touched} />}
         {curTab === DASHBOARD.SEO && <SEO settings={seoSettings} touched={touched} />}
         {curTab === DASHBOARD.LAYOUT && <Layout settings={uiSettings} touched={touched} />}
-        {curTab === DASHBOARD.ALIAS && <Alias settings={aliasSettings} />}
-        {curTab === DASHBOARD.ADMINS && <Admin settings={adminSettings} />}
+
+        {curTab === DASHBOARD.ALIAS && (
+          <Suspense fallback={<LavaLampLoading />}>
+            <Alias settings={aliasSettings} />
+          </Suspense>
+        )}
+        {curTab === DASHBOARD.ADMINS && (
+          <Suspense fallback={<LavaLampLoading />}>
+            <Admin settings={adminSettings} />
+          </Suspense>
+        )}
+
         {curTab === DASHBOARD.THREADS && <Threads settings={enableSettings} />}
         {curTab === DASHBOARD.TAGS && <Tags settings={tagSettings} touched={touched} />}
 

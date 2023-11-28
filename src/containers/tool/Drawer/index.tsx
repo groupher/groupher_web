@@ -39,8 +39,6 @@ const Drawer: FC = () => {
     userListerType,
     mmType,
     extraInfo,
-    rightOffset,
-    fromContentEdge,
     optionsData,
     canBeClose,
     headerText,
@@ -54,8 +52,6 @@ const Drawer: FC = () => {
       headerText={headerText}
       options={optionsData}
       visible={slideVisible}
-      rightOffset={rightOffset}
-      fromContentEdge={fromContentEdge}
       type={type}
       canBeClose={canBeClose}
       showHeaderText={showHeaderText}

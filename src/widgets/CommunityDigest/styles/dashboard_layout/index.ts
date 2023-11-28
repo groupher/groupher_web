@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import Link from 'next/link'
 
 import type { THeaderLayout, TMetric } from '@/spec'
 import css, { theme } from '@/css'

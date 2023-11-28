@@ -1,7 +1,9 @@
-import { Fragment, FC, ReactNode, memo } from 'react'
+import { Fragment, FC, ReactNode } from 'react'
+import { observer } from 'mobx-react-lite'
 import { includes } from 'ramda'
 
 import { ANCHOR } from '@/constant/dom'
+import useDrawerOffset from '@/hooks/useDrawerOffset'
 
 import type { TArticleNavi, TSwipeOption } from '../spec'
 import { ARTICLE_VIEWER_TYPES } from '../constant'
@@ -14,8 +16,6 @@ type TProps = {
   testid?: string
   options: TSwipeOption
   visible: boolean
-  rightOffset: string
-  fromContentEdge: boolean
   type: string
   children: ReactNode
   articleNavi: TArticleNavi
@@ -25,12 +25,12 @@ const DesktopView: FC<TProps> = ({
   testid = 'drawer-sidebar-panel',
   options,
   visible,
-  rightOffset,
-  fromContentEdge,
   type,
   articleNavi,
   children,
 }) => {
+  const { rightOffset, fromContentEdge } = useDrawerOffset()
+
   const isArticleViewer = includes(type, ARTICLE_VIEWER_TYPES)
 
   return (
@@ -62,4 +62,4 @@ const DesktopView: FC<TProps> = ({
   )
 }
 
-export default memo(DesktopView)
+export default observer(DesktopView)

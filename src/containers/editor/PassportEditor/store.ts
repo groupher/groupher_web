@@ -27,7 +27,7 @@ const PassportEditor = T.model('PassportEditor', {
     get activeModerator(): TUser {
       const root = getParent(self) as TRootStore
 
-      return toJS(root.dashboardThread.activeModerator)
+      return toJS(root.dashboardThread?.activeModerator)
     },
     get isCurUserModeratorRoot(): boolean {
       const slf = self as TStore
@@ -45,7 +45,7 @@ const PassportEditor = T.model('PassportEditor', {
       const curModerators = curCommunity.moderators
       const curRoot = find((moderator) => moderator.role === 'root', curModerators)
 
-      return curRoot.user.login === activeModerator.login
+      return curRoot.user.login === activeModerator?.login
     },
     get allRootRules(): string {
       const root = getParent(self) as TRootStore
