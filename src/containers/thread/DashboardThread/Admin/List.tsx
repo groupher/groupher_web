@@ -4,6 +4,7 @@ import type { TModerator, TUser } from '@/spec'
 
 import { sortByIndex } from '@/helper'
 import { callPassportEditor } from '@/signal'
+import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import { SpaceGrow } from '@/widgets/Common'
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
@@ -14,11 +15,12 @@ import {
   User,
   SettingIcon,
   Intro,
-  Title,
+  Header,
   Name,
   Login,
   Bio,
   RootSign,
+  AllPassportText,
 } from '../styles/admin/list'
 import { setActiveSettingAdmin } from '../logic'
 
@@ -28,6 +30,7 @@ type TProps = {
 }
 
 const List: FC<TProps> = ({ moderators, activeModerator }) => {
+  const primaryColor = usePrimaryColor()
   // @ts-ignore
   const sortedModerators = sortByIndex(moderators, 'passportItemCount').reverse() as TModerator[]
 
@@ -41,23 +44,27 @@ const List: FC<TProps> = ({ moderators, activeModerator }) => {
           <User key={user.login} $active={active} $noActive={activeModerator === null}>
             {active && <SettingIcon />}
 
-            <AdminAvatar user={user} right={14} top={5} />
+            <AdminAvatar user={user} right={16} top={5} />
             <Intro>
-              <Title>
+              <Header>
                 <Name>{user.nickname}</Name>
                 <Login>@{user.login}</Login>
-                {role === 'root' && <RootSign>ROOT</RootSign>}
+                {role === 'root' && <RootSign $color={primaryColor}>ROOT</RootSign>}
                 <SpaceGrow />
                 <DropdownButton
-                  top={2}
+                  top={1}
                   onClick={() => {
                     setActiveSettingAdmin(user)
                     callPassportEditor()
                   }}
                 >
-                  {role === 'root' ? <>全部权限</> : <>{passportItemCount} 项权限</>}
+                  {role === 'root' ? (
+                    <AllPassportText $color={primaryColor}>全部权限</AllPassportText>
+                  ) : (
+                    <>{passportItemCount} 项权限</>
+                  )}
                 </DropdownButton>
-              </Title>
+              </Header>
               <Bio>{user.bio}</Bio>
             </Intro>
           </User>
