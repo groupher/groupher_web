@@ -1,13 +1,14 @@
 'use client'
 
-import DashboardContent from '@/containers/content/CommunityContent/DashboardContent'
+import { observer } from 'mobx-react-lite'
+
+import useDashboardSettings from '@/hooks/useDashboardSettings'
+import Tags from '@/containers//thread/DashboardThread/Tags'
 
 const DashboardTagsPage = () => {
-  return (
-    <>
-      <DashboardContent />
-    </>
-  )
+  const { tagSettings, touched } = useDashboardSettings()
+
+  return <Tags settings={tagSettings} touched={touched} />
 }
 
-export default DashboardTagsPage
+export default observer(DashboardTagsPage)

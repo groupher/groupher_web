@@ -12,10 +12,12 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   ${css.row()};
   width: 100%;
   ${({ metric }) => css.fitPageWidth(metric)};
+  border: 1px solid tomato;
 `
 export const MainWrapper = styled.div`
   flex-grow: 1;
   min-height: 500px;
+  border: 1px solid green;
 
   background: transparent;
   margin-top: 30px;

@@ -1,13 +1,14 @@
 'use client'
 
-import DashboardContent from '@/containers/content/CommunityContent/DashboardContent'
+import { observer } from 'mobx-react-lite'
+
+import useDashboardSettings from '@/hooks/useDashboardSettings'
+import Threads from '@/containers//thread/DashboardThread/Threads'
 
 const DashboardThreadsPage = () => {
-  return (
-    <>
-      <DashboardContent />
-    </>
-  )
+  const { enableSettings } = useDashboardSettings()
+
+  return <Threads settings={enableSettings} />
 }
 
-export default DashboardThreadsPage
+export default observer(DashboardThreadsPage)

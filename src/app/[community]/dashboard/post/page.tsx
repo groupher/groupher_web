@@ -1,13 +1,14 @@
 'use client'
 
-import DashboardContent from '@/containers/content/CommunityContent/DashboardContent'
+import { observer } from 'mobx-react-lite'
+
+import useDashboardSettings from '@/hooks/useDashboardSettings'
+import CMS from '@/containers//thread/DashboardThread/CMS'
 
 const DashboardPostPage = () => {
-  return (
-    <>
-      <DashboardContent />
-    </>
-  )
+  const { cmsContents, curTab, touched } = useDashboardSettings()
+
+  return <CMS cmsContents={cmsContents} route={curTab} touched={touched} />
 }
 
-export default DashboardPostPage
+export default observer(DashboardPostPage)

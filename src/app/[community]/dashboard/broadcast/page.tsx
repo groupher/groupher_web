@@ -1,13 +1,14 @@
 'use client'
 
-import DashboardContent from '@/containers/content/CommunityContent/DashboardContent'
+import { observer } from 'mobx-react-lite'
+
+import useDashboardSettings from '@/hooks/useDashboardSettings'
+import Broadcast from '@/containers//thread/DashboardThread/Broadcast'
 
 const DashboardBroadcastPage = () => {
-  return (
-    <>
-      <DashboardContent />
-    </>
-  )
+  const { broadcastSettings, touched } = useDashboardSettings()
+
+  return <Broadcast settings={broadcastSettings} touched={touched} />
 }
 
-export default DashboardBroadcastPage
+export default observer(DashboardBroadcastPage)

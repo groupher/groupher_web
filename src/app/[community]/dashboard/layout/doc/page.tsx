@@ -1,13 +1,14 @@
 'use client'
 
-import DashboardContent from '@/containers/content/CommunityContent/DashboardContent'
+import { observer } from 'mobx-react-lite'
+
+import useDashboardSettings from '@/hooks/useDashboardSettings'
+import Layout from '@/containers//thread/DashboardThread/Layout'
 
 const DashboardLayoutPage = () => {
-  return (
-    <>
-      <DashboardContent />
-    </>
-  )
+  const { uiSettings, touched } = useDashboardSettings()
+
+  return <Layout settings={uiSettings} touched={touched} />
 }
 
-export default DashboardLayoutPage
+export default observer(DashboardLayoutPage)
