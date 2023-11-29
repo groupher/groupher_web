@@ -1,13 +1,14 @@
 'use client'
 
-import DashboardContent from '@/containers/content/CommunityContent/DashboardContent'
+import { observer } from 'mobx-react-lite'
+
+import useDashboardSettings from '@/hooks/useDashboardSettings'
+import BasicInfo from '@/containers//thread/DashboardThread/BasicInfo'
 
 const DashboardInfoPage = () => {
-  return (
-    <>
-      <DashboardContent />
-    </>
-  )
+  const { baseInfoSettings, touched } = useDashboardSettings()
+
+  return <BasicInfo settings={baseInfoSettings} touched={touched} />
 }
 
-export default DashboardInfoPage
+export default observer(DashboardInfoPage)

@@ -1,13 +1,12 @@
 'use client'
 
-import DashboardContent from '@/containers/content/CommunityContent/DashboardContent'
+import { observer } from 'mobx-react-lite'
+
+// import useDashboardSettings from '@/hooks/useDashboardSettings'
+import Domain from '@/containers//thread/DashboardThread/Domain'
 
 const DashboardDomainPage = () => {
-  return (
-    <>
-      <DashboardContent />
-    </>
-  )
+  return <Domain />
 }
 
-export default DashboardDomainPage
+export default observer(DashboardDomainPage)

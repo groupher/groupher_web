@@ -1,13 +1,14 @@
 'use client'
 
-import DashboardContent from '@/containers/content/CommunityContent/DashboardContent'
+import { observer } from 'mobx-react-lite'
+
+import useDashboardSettings from '@/hooks/useDashboardSettings'
+import Header from '@/containers//thread/DashboardThread/Header'
 
 const DashboardHeaderPage = () => {
-  return (
-    <>
-      <DashboardContent />
-    </>
-  )
+  const { headerSettings, touched } = useDashboardSettings()
+
+  return <Header settings={headerSettings} touched={touched} />
 }
 
-export default DashboardHeaderPage
+export default observer(DashboardHeaderPage)

@@ -1,13 +1,14 @@
 'use client'
 
-import DashboardContent from '@/containers/content/CommunityContent/DashboardContent'
+import { observer } from 'mobx-react-lite'
+
+import useDashboardSettings from '@/hooks/useDashboardSettings'
+import Footer from '@/containers//thread/DashboardThread/Footer'
 
 const DashboardFooterPage = () => {
-  return (
-    <>
-      <DashboardContent />
-    </>
-  )
+  const { footerSettings, touched } = useDashboardSettings()
+
+  return <Footer settings={footerSettings} touched={touched} />
 }
 
-export default DashboardFooterPage
+export default observer(DashboardFooterPage)

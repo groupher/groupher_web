@@ -1,13 +1,14 @@
 'use client'
 
-import DashboardContent from '@/containers/content/CommunityContent/DashboardContent'
+import { observer } from 'mobx-react-lite'
+
+import useDashboardSettings from '@/hooks/useDashboardSettings'
+import SEO from '@/containers//thread/DashboardThread/SEO'
 
 const DashboardSeoPage = () => {
-  return (
-    <>
-      <DashboardContent />
-    </>
-  )
+  const { seoSettings, touched } = useDashboardSettings()
+
+  return <SEO settings={seoSettings} touched={touched} />
 }
 
-export default DashboardSeoPage
+export default observer(DashboardSeoPage)
