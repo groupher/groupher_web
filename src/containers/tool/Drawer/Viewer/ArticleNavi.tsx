@@ -1,8 +1,9 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { buildLog } from '@/logger'
 
-import type { TArticleNavi } from '../spec'
+import useNaviArticle from '@/hooks/useNaviArticle'
 
 import {
   Wrapper,
@@ -20,12 +21,9 @@ import { naviToArticle } from '../logic'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const log = buildLog('C:ArticleNavi')
 
-type TProps = {
-  articleNavi?: TArticleNavi
-  // show?: boolean
-}
+const ArticleNavi: FC = () => {
+  const articleNavi = useNaviArticle()
 
-const ArticleNavi: FC<TProps> = ({ articleNavi }) => {
   return (
     <Wrapper>
       {articleNavi?.previous && (
@@ -48,4 +46,4 @@ const ArticleNavi: FC<TProps> = ({ articleNavi }) => {
   )
 }
 
-export default memo(ArticleNavi)
+export default observer(ArticleNavi)

@@ -1,9 +1,11 @@
 import styled from 'styled-components'
 
-import type { TActive } from '@/spec'
+import type { TActive, TColor } from '@/spec'
 
 import SettingSVG from '@/icons/Setting'
-import css, { theme } from '@/css'
+import ArrowSVG from '@/icons/ArrowSimple'
+import css, { theme, rainbow } from '@/css'
+import { COLOR_NAME } from '@/constant/colors'
 
 export const Wrapper = styled.div`
   ${css.column()};
@@ -23,7 +25,6 @@ export const User = styled.div<TUser>`
 
   transition: opacity 0.25s;
 `
-
 export const SettingIcon = styled(SettingSVG)`
   ${css.size(12)};
   fill: ${theme('lightText')};
@@ -31,38 +32,55 @@ export const SettingIcon = styled(SettingSVG)`
   left: -30px;
   top: 10px;
 `
-
 export const Intro = styled.div`
   width: 100%;
 `
-export const Title = styled.div`
+export const Header = styled.div`
   ${css.row('align-center')};
-  font-weight: 600;
 `
 export const Name = styled.div`
   color: ${theme('article.title')};
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 500;
 `
 export const Login = styled.div`
-  color: ${theme('lightText')};
-  font-size: 14px;
+  color: ${theme('hint')};
+  font-size: 12px;
   margin-left: 8px;
   margin-top: -1px;
 `
-export const RootSign = styled.div`
-  background: ${theme('rainbow.blueBg')};
-  color: ${theme('rainbow.blue')};
+const RootStyle = styled.div<TColor>`
+  color: ${({ $color }) => ($color === COLOR_NAME.BLACK ? theme('link') : rainbow($color))};
   border: 1px solid;
-  border-color: ${theme('rainbow.blue')};
+  border-color: ${({ $color }) => ($color === COLOR_NAME.BLACK ? theme('link') : rainbow($color))};
+  filter: ${({ $color }) => ($color === COLOR_NAME.BLACK ? '' : 'brightness(1.2) saturate(1.1)')};
+`
+export const RootSign = styled(RootStyle)`
   font-size: 10px;
   padding: 0 5px;
   margin-left: 8px;
   border-radius: 5px;
   margin-top: -1px;
 `
+export const AllPassportText = styled(RootStyle)`
+  font-weight: 400;
+  border: none;
+`
 export const Bio = styled.div`
   color: ${theme('lightText')};
+  margin-top: 3px;
   font-size: 13px;
-  width: 75%;
+  width: 70%;
   ${css.lineClamp(2)};
+`
+type TArrowIcon = TColor & { $isRoot: boolean }
+export const ArrowIcon = styled(ArrowSVG)<TArrowIcon>`
+  ${css.size(14)};
+  fill: ${theme('article.digest')};
+  transform: rotate(180deg);
+
+  fill: ${({ $color, $isRoot }) =>
+    $color === COLOR_NAME.BLACK && $isRoot ? theme('link') : theme('article.digest')};
+  filter: ${({ $color, $isRoot }) =>
+    $color === COLOR_NAME.BLACK && $isRoot ? '' : 'brightness(1.2) saturate(1.1)'};
 `

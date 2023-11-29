@@ -39,14 +39,11 @@ const Drawer: FC = () => {
     userListerType,
     mmType,
     extraInfo,
-    rightOffset,
-    fromContentEdge,
     optionsData,
     canBeClose,
     headerText,
     showHeaderText,
     disableContentDrag,
-    articleNavi,
   } = store
 
   return (
@@ -54,13 +51,10 @@ const Drawer: FC = () => {
       headerText={headerText}
       options={optionsData}
       visible={slideVisible}
-      rightOffset={rightOffset}
-      fromContentEdge={fromContentEdge}
       type={type}
       canBeClose={canBeClose}
       showHeaderText={showHeaderText}
       disableContentDrag={disableContentDrag}
-      articleNavi={articleNavi}
     >
       <Content
         type={type}

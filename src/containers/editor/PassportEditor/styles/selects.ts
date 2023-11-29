@@ -28,7 +28,7 @@ export const RootCheckIcon = styled(RootCheckSVG)`
   fill: ${theme('rainbow.green')};
   margin-right: 5px;
 `
-
 export const ItemTitle = styled.div`
+  color: ${theme('article.title')};
   ${css.lineClamp(1)};
 `

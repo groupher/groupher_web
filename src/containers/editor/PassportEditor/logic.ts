@@ -82,7 +82,6 @@ const DataSolver = [
       }
     },
   },
-
   {
     match: asyncRes('allPassportRules'),
     action: ({ allPassportRules }) => {

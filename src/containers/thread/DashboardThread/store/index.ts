@@ -38,6 +38,7 @@ import type {
   TArticleEntries,
   TSocialItem,
   TMediaReport,
+  TModerator,
 } from '@/spec'
 
 import {
@@ -532,8 +533,14 @@ const DashboardThread = T.model('DashboardThread', {
     get adminSettings(): TAdminSettings {
       const slf = self as TStore
 
+      // @ts-ignore
+      const sortedModerators = sortByIndex(
+        toJS(slf.moderators),
+        'passportItemCount',
+      ).reverse() as TModerator[]
+
       return {
-        moderators: toJS(slf.moderators),
+        moderators: sortedModerators,
         activeModerator: toJS(slf.activeModerator),
       }
     },
