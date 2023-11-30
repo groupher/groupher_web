@@ -7,6 +7,7 @@ import { enableStaticRendering } from 'mobx-react-lite'
 import { useStore } from '@/stores/init'
 
 import {
+  useMetric,
   useSession,
   useCommunity,
   useTags,
@@ -32,6 +33,7 @@ type TProps = {
 const RootStoreWrapper: FC<TProps> = ({ children, token }) => {
   const userHasLogin = !!token
 
+  const metric = useMetric()
   const activeThread = useThreadParam()
   // console.log('## activeThread: ', activeThread)
 
@@ -50,6 +52,7 @@ const RootStoreWrapper: FC<TProps> = ({ children, token }) => {
   const filterSearchParams = useFilterSearchParams()
 
   const store = useStore({
+    metric,
     ...sesstion,
     articles: {
       pagedPosts,

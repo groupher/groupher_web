@@ -5,7 +5,7 @@ import { BANNER_LAYOUT } from '@/constant/layout'
 
 import css, { theme } from '@/css'
 
-export const BaseWrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+const BaseWrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
 }))<TTestable>`
   min-height: 70vh;
@@ -31,10 +31,6 @@ export const BaseInnerWrapper = styled.div<{ metric?: TMetric }>`
     margin: 0;
     padding: 0;
   `};
-`
-export const BaseContentWrapper = styled.div`
-  ${css.column()};
-  width: 100%;
 `
 export const Wrapper = styled(BaseWrapper)<{ metric?: TMetric }>`
   ${css.column('justify-start', 'align-center')};
@@ -67,4 +63,7 @@ export const InnerWrapper = styled(BaseInnerWrapper)<{ $bannerLayout?: TBannerLa
     margin-left: 0;
   `};
 `
-export const ContentWrapper = styled(BaseContentWrapper)``
+export const ContentWrapper = styled.div`
+  ${css.column()};
+  width: 100%;
+`

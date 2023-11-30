@@ -6,7 +6,7 @@
  *
  */
 
-import { mergeRight, pickBy } from 'ramda'
+import { mergeRight } from 'ramda'
 
 import type { TAccount, TRoute, TThread, TArticle } from '@/spec'
 
@@ -14,7 +14,6 @@ import EVENT from '@/constant/event'
 import METRIC from '@/constant/metric'
 
 import { T, markStates, Instance } from '@/mobx'
-import { notEmpty } from '@/validator'
 import { toast, send } from '@/signal'
 
 import {
@@ -31,7 +30,6 @@ import {
   ErrorBoxStore,
   MushroomStore,
   // content
-  CommunityContentStore,
   // ExploreContentStore,
   CommunityEditorStore,
   // UserContentStore,
@@ -107,7 +105,7 @@ const rootStore = T.model({
   mushroom: T.opt(MushroomStore, {}),
 
   // content
-  communityContent: T.opt(CommunityContentStore, {}),
+  // communityContent: T.opt(CommunityContentStore, {}),
 
   // exploreContent: T.opt(ExploreContentStore, {}),
   communityEditor: T.opt(CommunityEditorStore, {}),

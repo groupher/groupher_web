@@ -6,6 +6,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
+import useIsSidebarLayout from '@/hooks/useIsSidebarLayout'
 import CustomScroller from '@/widgets/CustomScroller'
 
 import Actions from './Actions'
@@ -15,11 +16,9 @@ import { Wrapper, ColumnsWrapper, MobileColumnsWrapper, MobileColumnsInner } fro
 
 // const log = buildLog('C:KanbanThread')
 
-type TProps = {
-  isSidebarLayout?: boolean
-}
+const KanbanThread: FC = () => {
+  const isSidebarLayout = useIsSidebarLayout()
 
-const KanbanThread: FC<TProps> = ({ isSidebarLayout = false }) => {
   return (
     <Wrapper $testid="kanban-thread" isSidebarLayout={isSidebarLayout}>
       <Actions />
