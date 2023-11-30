@@ -24,7 +24,7 @@ export const Track = styled.span<TTrack>`
   width: 100%;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 0 10px 0 rgb(185 185 185 / 25%) inset;
+  box-shadow: ${theme('toggle.shadow')};
   transition: 0.5s;
 `
 export const Indicator = styled.span<TTrack>`
@@ -32,10 +32,9 @@ export const Indicator = styled.span<TTrack>`
   height: 26px;
   border-radius: 20px;
   ${css.row('align-center', 'justify-start')};
-  background: white;
+  background: ${theme('toggle.ball')};
   transform: ${({ checked }) => (checked ? 'translateX(30px)' : 'translateX(-30px)')};
   transition: 0.5s;
-  box-shadow: 0 0 10px 3px rgb(0, 0, 0, 0.1);
 `
 export const CheckIcon = styled(HookSVG)<TTrack>`
   fill: ${({ $color }) => rainbow($color)};

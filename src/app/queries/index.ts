@@ -52,6 +52,10 @@ export const useMetric = (): TMetric => {
     return METRIC.ARTICLE
   }
 
+  if (thread === THREAD.DASHBOARD) {
+    return METRIC.DASHBOARD
+  }
+
   return METRIC.COMMUNITY
 }
 

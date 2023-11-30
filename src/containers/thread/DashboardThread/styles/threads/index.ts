@@ -6,6 +6,7 @@ import { ALIGN_HEADER_OFFSET } from '../../constant'
 export const Wrapper = styled.div`
   padding: 0;
   padding: ${() => `0 ${ALIGN_HEADER_OFFSET}`};
+  max-width: 700px;
 
   ${css.media.mobile`
     padding: 0 20px;

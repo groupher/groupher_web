@@ -327,10 +327,13 @@ const night = {
     shadow: '0px 0px 4px 0px rgb(0 0 0 / 50%) inset',
     quoteShadow: '0px 0px 3px 0px rgb(0 0 0 / 30%) inset',
   },
-
   dashboard: {
     menuCat: '#c1c1c1',
     menuTitle: '#949494',
+  },
+  toggle: {
+    shadow: '0 0 20px 0px rgb(0 0 0 / 46%) inset',
+    ball: '#ffffffb5',
   },
 }
 
