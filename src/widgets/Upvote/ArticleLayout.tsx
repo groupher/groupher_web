@@ -34,14 +34,16 @@ const Upvote: FC<TProps> = ({
   const primaryColor = usePrimaryColor()
   const { handleClick, startAnimate } = useUpvote({ viewerHasUpvoted, onAction })
 
+  console.log('## viewerHasUpvoted: ', viewerHasUpvoted)
+
   return (
     <Wrapper $testid={testid}>
-      <Button color={primaryColor} $active={viewerHasUpvoted} onClick={handleClick}>
+      <Button $color={primaryColor} $active={viewerHasUpvoted} onClick={handleClick}>
         <UpvoteBtn viewerHasUpvoted={viewerHasUpvoted} count={count} startAnimate={startAnimate} />
         <CountWrapper>
           <AnimatedCount count={count} $active={viewerHasUpvoted} size="medium" />
         </CountWrapper>
-        <Alias color={primaryColor} $active={viewerHasUpvoted}>
+        <Alias $color={primaryColor} $active={viewerHasUpvoted}>
           票
         </Alias>
       </Button>

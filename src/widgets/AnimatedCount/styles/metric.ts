@@ -43,5 +43,5 @@ export const getCountColor = (
     return themeMap.article.digest
   }
 
-  return active ? themeMap.rainbow[primaryColor.toLowerCase()] : themeMap.article.digest
+  return active ? themeMap.rainbow[primaryColor.toLowerCase()] : themeMap.article.title
 }

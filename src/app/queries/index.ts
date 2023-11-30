@@ -7,10 +7,11 @@ import { values, includes } from 'ramda'
 import { useQuery } from '@urql/next'
 import { usePathname, useSearchParams } from 'next/navigation'
 
-import type { TCommunity } from '@/spec'
+import type { TCommunity, TMetric } from '@/spec'
 import { P } from '@/schemas'
 import { DEFAULT_THEME } from '@/config'
 import { THREAD, ARTICLE_THREAD } from '@/constant/thread'
+import METRIC from '@/constant/metric'
 import URL_PARAM from '@/constant/url_param'
 import { ARTICLE_CAT, ARTICLE_STATE, ARTICLE_ORDER } from '@/constant/gtd'
 
@@ -42,6 +43,17 @@ import {
 } from './helper'
 
 export { parseCommunity, useThreadParam } from './helper'
+
+export const useMetric = (): TMetric => {
+  const thread = useThreadParam()
+  const articleParams = useArticleParams()
+
+  if (includes(thread, values(ARTICLE_THREAD)) && articleParams.id) {
+    return METRIC.ARTICLE
+  }
+
+  return METRIC.COMMUNITY
+}
 
 export const useSession = (): TSessionRes => {
   const isStaticQuery = useIsStaticQuery()

@@ -27,9 +27,6 @@ export { default as MailBoxStore } from '@/containers/tool/MailBox/store'
 
 //
 
-// contents store
-export { default as CommunityContentStore } from '@/containers/content/CommunityContent/store'
-
 // threads store
 // export { default as ReposThreadStore } from '@/containers/thread/ReposThread/store'
 

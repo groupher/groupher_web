@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { TActive, TColorName, TTestable } from '@/spec'
+import type { TActive, TColor, TTestable } from '@/spec'
 import css, { theme, rainbow, rainbowLink, rainbowLight } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
@@ -8,13 +8,13 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
 }))<TTestable>`
   ${css.column('align-both')};
 `
-type TUpvoteIcon = { color: TColorName } & TActive
+type TUpvoteIcon = TColor & TActive
 export const Button = styled.div<TUpvoteIcon>`
   ${css.row('align-both')};
 
   border: 1px solid;
-  border-color: ${({ $active, color }) =>
-    $active ? rainbowLink(color, 'blackActive') : theme('button.upvoteBorder')};
+  border-color: ${({ $active, $color }) =>
+    $active ? rainbow($color, 'article.digest') : theme('button.upvoteBorder')};
   background: ${({ $active }) => ($active ? theme('hoverBg') : 'transparent')};
 
   border-radius: 14px;
@@ -22,14 +22,14 @@ export const Button = styled.div<TUpvoteIcon>`
   padding: 10px 0;
 
   &:hover {
-    border-color: ${({ color }) => rainbowLink(color, 'blackActive')};
-    background-color: ${({ color }) => rainbowLight(color)};
+    border-color: ${({ $color }) => rainbowLink($color, 'article.title')};
+    background-color: ${({ $color }) => rainbowLight($color)};
 
     cursor: pointer;
   }
 
   &:hover svg {
-    fill: ${({ color }) => rainbow(color)};
+    fill: ${({ $color }) => rainbow($color)};
     transform: scale(1.1);
   }
 
@@ -42,7 +42,7 @@ export const CountWrapper = styled.div`
 
 export const Alias = styled.div<TUpvoteIcon>`
   font-size: 15px;
-  color: ${({ color, $active }) => ($active ? rainbow(color) : theme('article.digest'))};
+  color: ${({ $color, $active }) => ($active ? rainbow($color, 'hint') : theme('article.digest'))};
   margin-left: 5px;
   font-weight: 400;
   margin-top: 1px;
