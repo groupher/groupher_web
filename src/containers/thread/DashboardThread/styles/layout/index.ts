@@ -5,7 +5,6 @@ import css, { theme, rainbow } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.column()};
-  padding-left: 75px;
 
   ${css.media.mobile`
     padding: 20px;

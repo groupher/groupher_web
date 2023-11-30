@@ -7,28 +7,33 @@ import useMetric from '@/hooks/useMetric'
 
 import CommunityDigest from '@/widgets/CommunityDigest'
 
-import { Wrapper as WrapperRoot, InnerWrapper, ContentWrapper } from './styles'
+import { Wrapper, InnerWrapper, ContentWrapper, FrameWrapper, MainWrapper } from './styles'
 
-import { Wrapper, MainWrapper } from '@/containers/thread/DashboardThread/styles'
+import { useStore } from '@/containers//thread/DashboardThread/store'
+import { useInit } from '@/containers//thread/DashboardThread/logic'
+
 import SideMenu from '@/containers/thread/DashboardThread/SideMenu'
 
 const Layout = ({ children }) => {
   const { curTab, touched } = useDashboardSettings()
   const metric = useMetric()
 
+  const store = useStore()
+  useInit(store)
+
   return (
-    <WrapperRoot $testid="dashboard-thread-content">
+    <Wrapper>
       <CommunityDigest />
 
       <InnerWrapper metric={metric}>
         <ContentWrapper>
-          <Wrapper $testid="dashboard-thread" metric="COMMUNITY">
+          <FrameWrapper metric={metric}>
             <SideMenu curTab={curTab} touched={touched} />
             <MainWrapper>{children}</MainWrapper>
-          </Wrapper>
+          </FrameWrapper>
         </ContentWrapper>
       </InnerWrapper>
-    </WrapperRoot>
+    </Wrapper>
   )
 }
 

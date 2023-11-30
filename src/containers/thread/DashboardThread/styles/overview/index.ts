@@ -8,6 +8,7 @@ import { ALIGN_HEADER_OFFSET } from '../../constant'
 export const Wrapper = styled.div`
   ${css.column()};
   padding: ${() => `0 ${ALIGN_HEADER_OFFSET}`};
+  padding-left: 60px;
 `
 export const Section = styled.div`
   padding-bottom: 30px;
