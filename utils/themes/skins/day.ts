@@ -330,6 +330,10 @@ const day = {
     menuCat: threadTitle,
     menuTitle: descText,
   },
+  toggle: {
+    shadow: '0 0 10px 0 rgb(185 185 185 / 25%) inset',
+    ball: 'white',
+  },
 }
 
 export default day
