@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/extensions */
-
 import type { TRootStore as RootStoreType } from '@/stores/RootStore'
 
+import type { TThemeName } from './theme'
 import type { TArticle } from './article'
 import type { TCommunity } from './community'
 
@@ -216,6 +216,7 @@ export type TGlowEffect = {
   glowPosition?: TGlowPosition
   glowFixed?: boolean
   glowOpacity?: string
+  $curTheme?: TThemeName
 }
 
 interface IWindow extends Window {

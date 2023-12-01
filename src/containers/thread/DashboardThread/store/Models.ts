@@ -169,7 +169,6 @@ export const settingsModalFields = {
   docCategories: T.opt(T.array(GroupCategory), []),
 
   // glow effect
-  // glowType: T.opt(T.string, keys(GLOW_EFFECTS)[0]),
   glowType: T.opt(T.string, ''),
   glowFixed: T.opt(T.bool, true),
   glowOpacity: T.opt(T.enum(values(GLOW_OPACITY)), GLOW_OPACITY.NORMAL),

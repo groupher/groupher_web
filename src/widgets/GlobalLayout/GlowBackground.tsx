@@ -4,6 +4,7 @@ import type { TMetric, TGlowPosition } from '@/spec'
 
 import useGlow from '@/hooks/useGlow'
 import useMetric from '@/hooks/useMetric'
+import useTheme from '@/hooks/useTheme'
 
 import METRIC from '@/constant/metric'
 
@@ -19,6 +20,7 @@ const getGlowPosition = (metric: TMetric, glowFixed: boolean): TGlowPosition => 
 
 const GlowBackground: FC = () => {
   const metric = useMetric()
+  const { curTheme } = useTheme()
   const { glowType, glowFixed, glowOpacity } = useGlow()
 
   if (!glowType) return null
@@ -28,6 +30,7 @@ const GlowBackground: FC = () => {
       glowType={glowType}
       glowPosition={getGlowPosition(metric, glowFixed)}
       glowOpacity={glowOpacity}
+      $curTheme={curTheme}
     />
   )
 }
