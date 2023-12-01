@@ -82,7 +82,8 @@ const TagLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         isTouched={isTouched}
         field={SETTING_FIELD.TAG_LAYOUT}
         loading={saving}
-        width="80%"
+        left={-5}
+        width="580px"
         top={25}
       />
     </Wrapper>

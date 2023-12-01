@@ -11,7 +11,6 @@ export const Wrapper = styled.div`
     padding: 20px;
   `};
 `
-
 export const Banner = styled.div`
   height: 70px;
   width: 100%;
@@ -35,10 +34,7 @@ export const TabsWrapper = styled.div`
   `};
 `
 export const BaseSection = styled.section`
-  /* margin: 0 50px; */
   padding-bottom: 30px;
-  /* border-bottom: 1px solid;
-  border-bottom-color: ${theme('divider')}; */
 `
 export const TitleBase = styled.div`
   color: ${theme('article.title')};
@@ -55,7 +51,7 @@ export const BlockBase = styled.div<TBlockBase>`
 
   border: 1px solid;
   border-radius: 7px;
-  border-color: ${({ $active, $color }) => ($active ? rainbow($color) : theme('primary'))};
+  border-color: ${({ $active, $color }) => ($active ? rainbow($color, 'hint') : theme('primary'))};
   padding: 16px 15px;
 
   &:hover {

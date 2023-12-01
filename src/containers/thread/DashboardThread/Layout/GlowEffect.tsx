@@ -1,9 +1,9 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
-import { keys } from 'ramda'
 
-import GLOW_EFFECTS, { GLOW_OPACITY } from '@/constant/glow_effect'
+import { GLOW_OPACITY, GLOW_EFFECTS_KEYS } from '@/constant/glow_effect'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
+import useTheme from '@/hooks/useTheme'
 
 import { Br, Row as RowBase } from '@/widgets/Common'
 import ArrowLinker from '@/widgets/ArrowLinker'
@@ -47,7 +47,7 @@ const GlowEffect: FC<TProps> = ({
   saving,
 }) => {
   const primaryColor = usePrimaryColor()
-  const EFFECTS_KEYS = keys(GLOW_EFFECTS)
+  const { curTheme } = useTheme()
 
   return (
     <Wrapper>
@@ -69,14 +69,14 @@ const GlowEffect: FC<TProps> = ({
           <CloseIcon />
         </NoBox>
 
-        {EFFECTS_KEYS.map((effect) => (
+        {GLOW_EFFECTS_KEYS.map((effect) => (
           <Box
             key={effect}
             $active={effect === glowType}
             $color={primaryColor}
             onClick={() => edit(effect, 'glowType')}
           >
-            <GrowBackground glowPosition="absolute" glowType={effect} />
+            <GrowBackground glowPosition="absolute" glowType={effect} $curTheme={curTheme} />
           </Box>
         ))}
       </Row>
@@ -85,8 +85,9 @@ const GlowEffect: FC<TProps> = ({
         isTouched={isTouched}
         field={SETTING_FIELD.GLOW_TYPE}
         loading={saving}
+        left={-5}
         top={35}
-        width="87%"
+        width="628px"
       />
 
       <Br bottom={40} />

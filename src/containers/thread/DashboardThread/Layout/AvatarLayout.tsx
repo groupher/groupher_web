@@ -101,7 +101,8 @@ const AvatarLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         isTouched={isTouched}
         field={SETTING_FIELD.AVATAR_LAYOUT}
         loading={saving}
-        width="80%"
+        width="580px"
+        left={-5}
         top={25}
       />
     </Wrapper>
