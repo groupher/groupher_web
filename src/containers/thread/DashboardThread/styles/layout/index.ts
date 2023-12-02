@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive, TColor, TColorName } from '@/spec'
-import css, { theme, rainbow } from '@/css'
+import css, { theme, rainbow, rainbowLink } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.column()};
@@ -44,19 +44,18 @@ export const TitleBase = styled.div`
 
 type TBlockBase = TActive & TColor
 export const BlockBase = styled.div<TBlockBase>`
-  opacity: ${({ $active }) => ($active ? 0.8 : theme('dashboardBlockOpacity'))};
+  opacity: ${({ $active }) => ($active ? 0.85 : theme('dashboardBlockOpacity'))};
   box-shadow: ${({ $active }) => ($active ? css.cardShadow : '')};
-
   background-color: ${({ $active }) => ($active ? theme('alphaBg') : 'transparent')};
 
   border: 1px solid;
   border-radius: 7px;
-  border-color: ${({ $active, $color }) => ($active ? rainbow($color, 'hint') : theme('primary'))};
+  border-color: ${({ $active, $color }) => ($active ? rainbowLink($color) : theme('primary'))};
   padding: 16px 15px;
 
   &:hover {
-    opacity: 0.6;
-    border-color: ${({ $color }) => rainbow($color)};
+    opacity: ${({ $active }) => ($active ? 0.85 : 0.65)};
+    border-color: ${({ $color }) => rainbowLink($color)};
     cursor: pointer;
   }
 
