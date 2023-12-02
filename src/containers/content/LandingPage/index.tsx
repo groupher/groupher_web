@@ -4,7 +4,7 @@
  */
 
 import { FC, useEffect, useState } from 'react'
-import dynamic from 'next/dynamic'
+// import dynamic from 'next/dynamic'
 // import { ParallaxProvider } from 'react-scroll-parallax'
 import { useRouter } from 'next/navigation'
 import { observer } from 'mobx-react-lite'
@@ -21,6 +21,7 @@ import HomeHeader from '@/widgets/HomeHeader'
 import CoverImage from './CoverImage'
 import WallpaperBar from './WallpaperBar'
 
+import ArticlesIntroTabs from './ArticlesIntroTabs'
 import FeatureWall from './FeatureWall'
 import TechStacks from './TechStacks'
 import EnjoyDev from './EnjoyDev'
@@ -48,10 +49,6 @@ import {
 } from './styles'
 
 import { useInit, changeGlowEffect } from './logic'
-
-const ParallaxProvider = dynamic(() => import('./Parallax'), {
-  ssr: false,
-})
 
 const LandingPage: FC = () => {
   const router = useRouter()
@@ -120,12 +117,9 @@ const LandingPage: FC = () => {
         onLayoutChange={(layout) => setBannerLayout(layout)}
       />
 
-      <DesktopOnly>
-        <Divider top={100} bottom={100} />
-      </DesktopOnly>
-      <MobileOnly>
-        <Divider top={50} bottom={50} />
-      </MobileOnly>
+      <ArticlesIntroTabs />
+
+      <Divider top={100} bottom={100} />
 
       <FeatureWall />
       <DesktopOnly>
