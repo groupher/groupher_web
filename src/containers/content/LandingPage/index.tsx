@@ -118,14 +118,7 @@ const LandingPage: FC = () => {
 
       <ArticlesIntroTabs />
 
-      <Divider top={100} bottom={100} />
       {/* <FeatureWall /> */}
-      <DesktopOnly>
-        <Divider top={100} bottom={100} />
-      </DesktopOnly>
-      <MobileOnly>
-        <Divider top={50} bottom={50} />
-      </MobileOnly>
       <EnjoyDev />
       <DesktopOnly>
         <Divider top={80} bottom={80} />

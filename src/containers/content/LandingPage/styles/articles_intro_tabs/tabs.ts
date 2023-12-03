@@ -30,6 +30,7 @@ export const TabItem = styled.div<TActive>`
 
   &:hover {
     opacity: 1;
+    border-bottom-color: ${({ $active }) => ($active ? theme('article.title') : theme('hoverBg'))};
   }
 `
 type TIconBox = TColor & TActive
@@ -43,21 +44,6 @@ export const IconBox = styled.div<TIconBox>`
   transform: scale(0.9);
 `
 
-type TBar = {
-  width?: number
-  top?: number
-} & TColor
-
-export const Bar = styled.div<TBar>`
-  position: absolute;
-  top: ${({ top }) => `${top || 5}px`};
-  left: 5px;
-  width: ${({ width }) => `${width || 50}%`};
-  height: 4px;
-  border-radius: 5px;
-  background: ${({ $color }) => rainbow($color)};
-  opacity: 0.2;
-`
 type TIcon = TColor
 const commonIcon = (comp) => {
   return styled(comp)<TIcon>`

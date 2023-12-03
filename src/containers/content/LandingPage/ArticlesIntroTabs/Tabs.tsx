@@ -4,15 +4,9 @@ import type { TThread } from '@/spec'
 import { THREAD } from '@/constant/thread'
 import { COLOR_NAME } from '@/constant/colors'
 
-import {
-  Wrapper,
-  TabItem,
-  IconBox,
-  Bar,
-  ICON,
-  Title,
-  Desc,
-} from '../styles/articles_intro_tabs/tabs'
+import PreviewBars from './PreviewBars'
+
+import { Wrapper, TabItem, IconBox, ICON, Title, Desc } from '../styles/articles_intro_tabs/tabs'
 
 const TAB_ITEMS = [
   {
@@ -56,10 +50,7 @@ const Tabs: FC<TProps> = ({ tab, onChange }) => {
         return (
           <TabItem key={item.key} $active={$active} onClick={() => onChange(item.key as TThread)}>
             <IconBox $color={$color} $active={$active}>
-              <Bar $color={$color} />
-              <Bar top={13} width={75} $color={$color} />
-              <Bar top={21} $color={$color} />
-              <Bar top={29} width={30} $color={$color} />
+              <PreviewBars $color={$color} tab={item.key} />
               <Icon $color={$color} />
             </IconBox>
             <Title $active={$active}>{item.title}</Title>
