@@ -19,10 +19,9 @@ import FaqList from '@/widgets/FaqList'
 import HomeHeader from '@/widgets/HomeHeader'
 
 import CoverImage from './CoverImage'
-import WallpaperBar from './WallpaperBar'
+// import WallpaperBar from './WallpaperBar'
 
 import ArticlesIntroTabs from './ArticlesIntroTabs'
-import FeatureWall from './FeatureWall'
 import TechStacks from './TechStacks'
 import EnjoyDev from './EnjoyDev'
 import UsersWall from './UsersWall'
@@ -110,18 +109,17 @@ const LandingPage: FC = () => {
         </ButtonGroup>
       </Banner>
       <CoverImage wallpaperInfo={wallpaperInfo} bannerLayout={bannerLayout} />
-      <WallpaperBar
+      {/* <WallpaperBar
         wallpaper={wallpaper}
         gradientWallpapers={gradientWallpapers}
         bannerLayout={bannerLayout}
         onLayoutChange={(layout) => setBannerLayout(layout)}
-      />
+      /> */}
 
       <ArticlesIntroTabs />
 
       <Divider top={100} bottom={100} />
-
-      <FeatureWall />
+      {/* <FeatureWall /> */}
       <DesktopOnly>
         <Divider top={100} bottom={100} />
       </DesktopOnly>

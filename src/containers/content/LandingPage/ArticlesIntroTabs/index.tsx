@@ -4,8 +4,9 @@ import type { TThread } from '@/spec'
 import { THREAD } from '@/constant/thread'
 
 import Tabs from './Tabs'
+import Content from './Content'
 
-import { Wrapper, ContentWrapper } from '../styles/articles_intro_tabs'
+import { Wrapper } from '../styles/articles_intro_tabs'
 
 const ArticlesIntroTabs: FC = () => {
   const [tab, setTab] = useState<TThread>(THREAD.POST)
@@ -13,7 +14,7 @@ const ArticlesIntroTabs: FC = () => {
   return (
     <Wrapper>
       <Tabs tab={tab} onChange={(tab) => setTab(tab)} />
-      <ContentWrapper>contents</ContentWrapper>
+      <Content tab={tab} />
     </Wrapper>
   )
 }

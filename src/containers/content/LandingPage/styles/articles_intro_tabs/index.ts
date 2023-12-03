@@ -7,9 +7,20 @@ export const Wrapper = styled.div`
   width: 100%;
   margin-top: 140px;
 `
-export const ContentWrapper = styled.div`
-  ${css.column('align-both')};
-  width: 100%;
-  height: 500px;
-  background: #fbfbfb;
+
+export const FeatList = styled.div`
+  ${css.column()};
+  gap: 18px 0;
+  margin-top: 28px;
+
+  ${css.media.mobile`
+    ${css.row()};
+  `};
+`
+
+export const MobileIntroLists = styled.div`
+  ${css.rowWrap()};
+  gap: 16px 0;
+  padding-left: 10px;
+  margin-top: -25px;
 `
