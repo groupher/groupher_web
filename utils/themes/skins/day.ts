@@ -71,7 +71,7 @@ const day = {
     red: '#ca5f4d',
     redBg: '#ffbfba3d',
 
-    orange: '#ce9f6f',
+    orange: 'orange',
     orangeBg: '#FEF7E8',
 
     brown: '#8d691e',

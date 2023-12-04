@@ -23,6 +23,7 @@ import CoverImage from './CoverImage'
 
 import ArticlesIntroTabs from './ArticlesIntroTabs'
 import TechStacks from './TechStacks'
+import DashboardIntros from './DashboardIntros'
 import EnjoyDev from './EnjoyDev'
 import UsersWall from './UsersWall'
 
@@ -120,6 +121,7 @@ const LandingPage: FC = () => {
 
       {/* <FeatureWall /> */}
       <EnjoyDev />
+      <DashboardIntros />
       <DesktopOnly>
         <Divider top={80} bottom={80} />
       </DesktopOnly>
