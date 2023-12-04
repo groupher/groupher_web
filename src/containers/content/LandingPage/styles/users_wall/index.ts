@@ -9,6 +9,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
 }))<TTestable>`
   ${css.column('align-both')};
   width: 100%;
+  position: relative;
 `
 export const Slogan = styled.div`
   ${css.column('align-both')};
@@ -67,10 +68,11 @@ export const WallInner = styled.div`
 `
 export const BgGradient = styled.div`
   position: absolute;
-  top: -10vh;
-  left: -50vw;
+  top: 12vh;
+  left: -14vw;
   width: 100vw;
   height: 100vh;
+  opacity: 0.7;
 
   background: radial-gradient(circle at 50% 50%, #e8c3afc4 0, transparent 35%);
 `
