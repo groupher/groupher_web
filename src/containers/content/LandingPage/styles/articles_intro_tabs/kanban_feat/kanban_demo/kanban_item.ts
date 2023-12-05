@@ -32,10 +32,10 @@ export const TargetWrapper = styled.div`
   border: 1px dashed;
   border-color: ${theme('rainbow.green')};
   color: ${theme('rainbow.green')};
-  background: ${theme('alphaBg')};
+  background: ${theme('alphaBg2')};
   font-style: italic;
   font-size: 13px;
-  opacity: 0.6;
+  opacity: 0.65;
 `
 
 export const Title = styled.div`
