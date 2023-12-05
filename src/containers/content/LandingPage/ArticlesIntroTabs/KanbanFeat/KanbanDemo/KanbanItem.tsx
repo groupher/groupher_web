@@ -6,6 +6,7 @@ import ArticleCatState from '@/widgets/ArticleCatState'
 
 import {
   Wrapper,
+  TargetWrapper,
   Title,
   Footer,
   UpvoteIcon,
@@ -18,6 +19,7 @@ type TProps = {
   title?: string
   cat?: TArticleCat
   draging?: boolean
+  dragTarget?: boolean
 }
 
 const KanbanItem: FC<TProps> = ({
@@ -26,7 +28,16 @@ const KanbanItem: FC<TProps> = ({
   title = '支持暗黑模式',
   cat = 'FEATURE',
   draging = false,
+  dragTarget = false,
 }) => {
+  if (dragTarget) {
+    return (
+      <TargetWrapper>
+        <div>已解决</div>
+      </TargetWrapper>
+    )
+  }
+
   return (
     <Wrapper opacity={opacity} $draging={draging}>
       <Title>{title}</Title>

@@ -22,6 +22,22 @@ export const Wrapper = styled.div<TWrapper>`
       : ''}
   border-color: ${({ $draging }) => ($draging ? theme('rainbow.blue') : '')};
 `
+export const TargetWrapper = styled.div`
+  ${css.row('align-both')};
+  width: 94%;
+  margin-left: 3%;
+  border-radius: 6px;
+  min-height: 48px;
+  padding: 8px 6px;
+  border: 1px dashed;
+  border-color: ${theme('rainbow.green')};
+  color: ${theme('rainbow.green')};
+  background: ${theme('alphaBg')};
+  font-style: italic;
+  font-size: 13px;
+  opacity: 0.6;
+`
+
 export const Title = styled.div`
   font-size: 13px;
   color: ${theme('article.digest')};

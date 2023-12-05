@@ -35,6 +35,7 @@ const KanbanDemo: FC = () => {
         </Board>
         <Board>
           <KanbanItem count={72} title="帖子支持多种布局" cat={ARTICLE_CAT.FEATURE} />
+          <KanbanItem opacity={0.95} count={12} dragTarget />
           <KanbanItem opacity={0.95} count={12} title="管理员权限细化" cat={ARTICLE_CAT.FEATURE} />
           <KanbanItem opacity={0.65} count={41} title="SEO 信息显示重复" cat={ARTICLE_CAT.BUG} />
           <KanbanItem opacity={0.55} count={87} title="评论支持 @" cat={ARTICLE_CAT.FEATURE} />
