@@ -133,3 +133,11 @@ export const MarkdownStyles = styled.div`
 export const WithMargin = styled.div<TSpace>`
   ${(props) => css.spaceMargins(props)};
 `
+
+export const WithPosition = styled.div<TSpace>`
+  position: absolute;
+  ${({ top }) => (top ? `${top}px;` : '')}
+  ${({ left }) => (left ? `${left}px;` : '')}
+  ${({ bottom }) => (bottom ? `${bottom}px;` : '')}
+  ${({ right }) => (right ? `${right}px;` : '')}
+`

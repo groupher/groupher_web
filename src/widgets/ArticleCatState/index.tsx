@@ -23,6 +23,7 @@ export type TProps = {
   cat?: TArticleCat
   state?: TArticleState
   smaller?: boolean
+  noBorder?: boolean
   // size?
 } & TSpace
 
@@ -31,10 +32,11 @@ const ArticleCatState: FC<TProps> = ({
   cat = ARTICLE_CAT.FEATURE,
   state = ARTICLE_STATE.DEFAULT,
   smaller = true,
+  noBorder = false,
   ...restProps
 }) => {
   return (
-    <Wrapper $testid={testid} {...restProps}>
+    <Wrapper $testid={testid} $noBorder={noBorder} {...restProps}>
       {cat && <Label cat={cat} smaller={smaller} />}
       {cat && cat !== ARTICLE_CAT.OTHER && <State cat={cat} state={state} smaller={smaller} />}
     </Wrapper>

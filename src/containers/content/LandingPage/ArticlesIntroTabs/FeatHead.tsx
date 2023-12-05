@@ -3,9 +3,8 @@ import { FC } from 'react'
 import type { TActive } from '@/spec'
 
 import type { TFeatType } from '../spec'
-import { FEAT } from '../constant'
 
-import { Wrapper, Title, Hint, Desc } from '../styles/articles_intro_tabs/feat_head'
+import { Wrapper, Desc } from '../styles/articles_intro_tabs/feat_head'
 
 type TProps = {
   featType: TFeatType
@@ -17,9 +16,6 @@ type TProps = {
 const FeatHead: FC<TProps> = ({ title, desc, featType, $active, alignRight = false }) => {
   return (
     <Wrapper alignRight={alignRight}>
-      <Title featType={featType}>
-        {title} <Hint $active={$active}>{FEAT[featType].HINT}</Hint>
-      </Title>
       <Desc alignRight={alignRight}>{desc}</Desc>
     </Wrapper>
   )

@@ -43,10 +43,9 @@ export const Hint = styled.div<TActive>`
 
 export const Desc = styled.div<{ alignRight: boolean }>`
   font-size: 16px;
-  color: ${theme('article.digest')};
+  color: ${theme('hint')};
   margin-top: 12px;
-  width: 340px;
-  opacity: 0.65;
+  width: 300px;
 
   text-align: ${({ alignRight }) => (alignRight ? 'right' : 'left')};
 

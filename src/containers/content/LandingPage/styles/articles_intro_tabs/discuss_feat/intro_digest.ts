@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css from '@/css'
+import css, { theme } from '@/css'
 
 import { FEAT } from '../../../constant'
 
@@ -11,18 +11,24 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
 }))<TTestable>`
   ${css.column('align-start')};
-  width: 48%;
-  height: 430px;
-  padding-left: 1%;
+  margin-right: 10px;
 
   *::selection {
     background-color: ${FEAT.DISCUSS.COLOR} !important;
     color: white;
   }
+`
+export const Digest = styled.div`
+  color: ${theme('hint')};
+  opacity: 0.9;
+  line-height: 28px;
+  width: 300px;
+  margin-top: -40px;
+  margin-bottom: 30px;
+  font-size: 16px;
+`
 
-  ${css.media.mobile`
-    width: 100%;
-    padding: 0;
-    height: auto;
-  `};
+export const Hightlight = styled.span`
+  color: ${theme('rainbow.purple')};
+  font-weight: 500;
 `

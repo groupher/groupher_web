@@ -1,22 +1,34 @@
 import { FC } from 'react'
 
+import ArticleCatState from '@/widgets/ArticleCatState'
+
+import type { TArticleCat } from '@/spec'
+
 import {
   Wrapper,
   UpvotesWrapper,
   RightPart,
-  Bar,
+  Title,
   Footer,
   UpvoteIcon,
   Count,
 } from '../../../styles/articles_intro_tabs/discuss_feat/discuss_demo/post_item'
 
 type TProps = {
+  title?: string
   opacity?: number
   count?: number
   width?: number
+  cat?: TArticleCat
 }
 
-const PostItem: FC<TProps> = ({ opacity = 1, count = 9, width = 80 }) => {
+const PostItem: FC<TProps> = ({
+  title = '',
+  cat = 'FEATURE',
+  opacity = 1,
+  count = 9,
+  width = 80,
+}) => {
   return (
     <Wrapper opacity={opacity}>
       <UpvotesWrapper>
@@ -25,11 +37,9 @@ const PostItem: FC<TProps> = ({ opacity = 1, count = 9, width = 80 }) => {
       </UpvotesWrapper>
 
       <RightPart>
-        <Bar top={5} height={6} width={width} bottom={1} />
-        <Bar top={5} height={4} width={width + 20} bottom={10} opacity={0.3} />
-
+        <Title>{title}</Title>
         <Footer>
-          <Bar height={3} width={16} top={3} opacity={0.4} />
+          <ArticleCatState cat={cat} noBorder />
         </Footer>
       </RightPart>
     </Wrapper>

@@ -1,56 +1,23 @@
-import { FC, useState, useEffect } from 'react'
-
-import { DesktopOnly } from '@/widgets/Common'
-import ViewportTracker from '@/widgets/ViewportTracker'
-import useScrollDir from '@/hooks/useScrollDir'
-
-import { FEAT_TYPE } from '../../constant'
-
-import FeatHead from '../FeatHead'
+import { FC } from 'react'
 
 import IntroItems from './IntroItems'
-import { Wrapper } from '../../styles/articles_intro_tabs/discuss_feat/intro_digest'
-import { checkBlockInView } from '../helper'
 
-type TProps = {
-  inViewChange: (inView: boolean) => void
-}
+import {
+  Wrapper,
+  Digest,
+  Hightlight,
+} from '../../styles/articles_intro_tabs/discuss_feat/intro_digest'
 
-const IntroDigest: FC<TProps> = ({ inViewChange }) => {
-  const [inView, setInView] = useState(false)
-  const [headInView, setHeadInview] = useState(false)
-  const [footInView, setFootInview] = useState(false)
-
-  const scrollDir = useScrollDir()
-
-  useEffect(() => {
-    if (checkBlockInView(headInView, footInView, scrollDir)) {
-      setInView(true)
-      inViewChange(true)
-    } else {
-      setInView(false)
-      inViewChange(false)
-    }
-  }, [headInView, footInView, scrollDir, inViewChange])
-
+const IntroDigest: FC = () => {
   return (
     <Wrapper>
-      <DesktopOnly>
-        <ViewportTracker onEnter={() => setHeadInview(true)} onLeave={() => setHeadInview(false)} />
-      </DesktopOnly>
+      <Digest>
+        完善简洁的论坛功能，满足<Hightlight>用户与团队</Hightlight>，
+        <Hightlight>用户与用户</Hightlight>间的互动交流。
+      </Digest>
 
-      <FeatHead
-        $active={inView}
-        title="讨论区"
-        desc="完善易用的论坛功能，满足用户与团队，用户与用户间的互动交流。"
-        featType={FEAT_TYPE.DISCUSS}
-      />
-
-      <DesktopOnly>
-        <IntroItems />
-
-        <ViewportTracker onEnter={() => setFootInview(true)} onLeave={() => setFootInview(false)} />
-      </DesktopOnly>
+      <IntroItems />
+      {/* <UserCards /> */}
     </Wrapper>
   )
 }
