@@ -22,7 +22,13 @@ const KanbanDemo: FC = () => {
         </Board>
         <Board>
           <KanbanItem count={21} title="支持暗黑模式" cat={ARTICLE_CAT.FEATURE} />
-          <KanbanItem opacity={0.85} count={11} title="手机标题点击失效" cat={ARTICLE_CAT.BUG} />
+          <KanbanItem
+            draging
+            opacity={0.85}
+            count={11}
+            title="手机标题点击失效"
+            cat={ARTICLE_CAT.BUG}
+          />
           <KanbanItem opacity={0.65} count={16} title="微信登录失效" cat={ARTICLE_CAT.BUG} />
           <KanbanItem opacity={0.5} count={21} title="Markdown 导入" cat={ARTICLE_CAT.FEATURE} />
           <KanbanItem opacity={0.25} count={9} title="CVS 导出备份" cat={ARTICLE_CAT.FEATURE} />

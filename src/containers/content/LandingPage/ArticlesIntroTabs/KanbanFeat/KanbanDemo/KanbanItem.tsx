@@ -17,6 +17,7 @@ type TProps = {
   count?: number
   title?: string
   cat?: TArticleCat
+  draging?: boolean
 }
 
 const KanbanItem: FC<TProps> = ({
@@ -24,9 +25,10 @@ const KanbanItem: FC<TProps> = ({
   count = 9,
   title = '支持暗黑模式',
   cat = 'FEATURE',
+  draging = false,
 }) => {
   return (
-    <Wrapper opacity={opacity}>
+    <Wrapper opacity={opacity} $draging={draging}>
       <Title>{title}</Title>
 
       <Footer>
