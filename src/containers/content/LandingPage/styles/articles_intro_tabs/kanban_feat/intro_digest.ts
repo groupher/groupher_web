@@ -1,28 +1,45 @@
 import styled from 'styled-components'
 
-import type { TTestable } from '@/spec'
-import css from '@/css'
+import css, { theme } from '@/css'
 
 import { FEAT } from '../../../constant'
 
 export { FeatList } from '..'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
-  'data-test-id': $testid,
-}))<TTestable>`
-  ${css.column('align-start')};
-  width: 48%;
-  height: 430px;
-  padding-left: 12%;
+export const Wrapper = styled.div`
+  ${css.column('align-both')};
+  width: 100%;
+  height: 200px;
 
   *::selection {
     background-color: ${FEAT.KANBAN.COLOR} !important;
     color: white;
   }
-
-  ${css.media.mobile`
-    width: 100%;
-    padding: 0;
-    height: auto;
-  `};
+`
+export const Digest = styled.div`
+  font-size: 16px;
+  color: ${theme('hint')};
+  margin-bottom: 20px;
+  opacity: 0.9;
+  margin-top: 10px;
+  margin-left: 76px;
+`
+export const Highlight = styled.span`
+  color: ${theme('rainbow.blue')};
+  font-weight: 500;
+  margin-left: 1px;
+  margin-right: 1px;
+`
+export const InnerWrapper = styled.div`
+  ${css.column('align-start')};
+  width: 800px;
+`
+export const FeatureWrapper = styled.div`
+  ${css.row()};
+  margin-left: 76px;
+  flex-wrap: wrap;
+`
+export const FeatureItem = styled.div`
+  width: 33%;
+  margin-bottom: 10px;
 `

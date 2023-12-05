@@ -1,42 +1,58 @@
 import { FC } from 'react'
 
+import { mockUsers } from '@/mock'
+
 import { SpaceGrow } from '@/widgets/Common'
+import Facepile from '@/widgets/Facepile'
+
 import {
   Wrapper,
+  InnerWrapper,
   Header,
+  Title,
+  UsersWrapper,
   KanbenIcon,
+  LabelBar,
   Bar,
   Item,
-  Title,
+  Label,
   Icon1,
   Icon2,
   Icon3,
 } from '../../../styles/articles_intro_tabs/kanban_feat/banner'
 
 const Banner: FC = () => {
+  const users = mockUsers(5)
+
   return (
     <Wrapper>
-      <Header>
-        <KanbenIcon />
-        <Bar top={0} height={8} width={40} left={6} />
-        <Bar top={0} height={6} width={15} left={6} opacity={0.4} />
-        <SpaceGrow />
-        <Bar top={0} height={8} width={40} opacity={0.5} />
-      </Header>
-      <Item left={34}>
-        <Icon1 />
-        <Title>已排期</Title>
-      </Item>
+      <InnerWrapper>
+        <Header>
+          <KanbenIcon />
+          <Title>看板墙</Title>
+          <Bar top={0} height={6} width={15} left={6} opacity={0.2} />
+          <SpaceGrow />
+          <UsersWrapper>
+            <Facepile users={users} total={23} />
+          </UsersWrapper>
+        </Header>
+        <LabelBar>
+          <Item left={1} bottom={0}>
+            <Icon1 />
+            <Label>已计划</Label>
+          </Item>
 
-      <Item left={220}>
-        <Icon2 />
-        <Title>进行中</Title>
-      </Item>
+          <Item left={228} bottom={0}>
+            <Icon2 />
+            <Label>进行中</Label>
+          </Item>
 
-      <Item left={410}>
-        <Icon3 />
-        <Title>已完成</Title>
-      </Item>
+          <Item left={460} bottom={0}>
+            <Icon3 />
+            <Label>已完成</Label>
+          </Item>
+        </LabelBar>
+      </InnerWrapper>
     </Wrapper>
   )
 }

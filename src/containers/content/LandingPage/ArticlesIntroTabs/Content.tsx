@@ -44,7 +44,7 @@ const Content: FC<TProps> = ({ tab }) => {
   }
 
   return (
-    <Wrapper>
+    <Wrapper tab={tab}>
       <TabContent />
     </Wrapper>
   )

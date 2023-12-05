@@ -1,57 +1,54 @@
-import { FC, useState, useEffect } from 'react'
-
-import { DesktopOnly } from '@/widgets/Common'
-import ViewportTracker from '@/widgets/ViewportTracker'
-import useScrollDir from '@/hooks/useScrollDir'
+import { FC } from 'react'
 
 import { FEAT_TYPE } from '../../constant'
 
-import FeatHead from '../FeatHead'
+import FeatItem from '../FeatItem'
 
-import IntroItems from './IntroItems'
-import { Wrapper } from '../../styles/articles_intro_tabs/kanban_feat/intro_digest'
-import { checkBlockInView } from '../helper'
+import {
+  Wrapper,
+  Digest,
+  Highlight,
+  InnerWrapper,
+  FeatureWrapper,
+  FeatureItem,
+} from '../../styles/articles_intro_tabs/kanban_feat/intro_digest'
 
-type TProps = {
-  inViewChange: (inView: boolean) => void
-  alignRight?: boolean
-}
+const featType = FEAT_TYPE.KANBAN
 
-const IntroDigest: FC<TProps> = ({ inViewChange, alignRight = false }) => {
-  const [inView, setInView] = useState(false)
-  const [headInView, setHeadInview] = useState(false)
-  const [footInView, setFootInview] = useState(false)
-
-  const scrollDir = useScrollDir()
-
-  useEffect(() => {
-    if (checkBlockInView(headInView, footInView, scrollDir)) {
-      setInView(true)
-      inViewChange(true)
-    } else {
-      setInView(false)
-      inViewChange(false)
-    }
-  }, [headInView, footInView, scrollDir, inViewChange])
-
+const IntroDigest: FC = () => {
   return (
     <Wrapper>
-      <DesktopOnly>
-        <ViewportTracker onEnter={() => setHeadInview(true)} onLeave={() => setHeadInview(false)} />
-      </DesktopOnly>
-      <FeatHead
-        $active={inView}
-        title="看板"
-        desc="通过直观的看板展示进度，让你的用户了解团队正在进行中的工作。"
-        featType={FEAT_TYPE.KANBAN}
-        alignRight={alignRight}
-      />
+      <InnerWrapper>
+        <Digest>
+          通过经典的看板视图，让<Highlight>用户</Highlight>直观的了解团队相关工作的
+          <Highlight>计划和进度</Highlight>。
+        </Digest>
 
-      <DesktopOnly>
-        <IntroItems />
+        <FeatureWrapper>
+          <FeatureItem>
+            <FeatItem text="经典简洁的 UI" featType={featType} />
+          </FeatureItem>
+          <FeatureItem>
+            <FeatItem text="富文本内容" featType={featType} />
+          </FeatureItem>
 
-        <ViewportTracker onEnter={() => setFootInview(true)} onLeave={() => setFootInview(false)} />
-      </DesktopOnly>
+          <FeatureItem>
+            <FeatItem text="状态自然同步" featType={featType} />
+          </FeatureItem>
+
+          <FeatureItem>
+            <FeatItem text="评论，表情反馈" featType={featType} />
+          </FeatureItem>
+
+          <FeatureItem>
+            <FeatItem text="一键切换状态" featType={featType} />
+          </FeatureItem>
+
+          <FeatureItem>
+            <FeatItem text="高度自定义" featType={featType} />
+          </FeatureItem>
+        </FeatureWrapper>
+      </InnerWrapper>
     </Wrapper>
   )
 }

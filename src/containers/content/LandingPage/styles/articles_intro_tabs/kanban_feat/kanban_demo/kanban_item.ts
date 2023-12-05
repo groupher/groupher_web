@@ -1,39 +1,39 @@
 import styled from 'styled-components'
 
-import { Bar as BarBase } from '@/widgets/Common'
 import UpvoteSVG from '@/icons/Upvote'
 
-import css from '@/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div<{ opacity: number }>`
-  ${css.column()};
-  background: white;
+  ${css.column('justify-between')};
+  background: ${theme('htmlBg')};
   border-radius: 6px;
-  height: 50px;
-  padding: 3px 6px;
+  min-height: 62px;
+  padding: 8px 6px;
   opacity: ${({ opacity }) => opacity};
 `
-
-export const Bar = styled(BarBase)`
-  background: #a4c4f4;
+export const Title = styled.div`
+  font-size: 13px;
+  color: ${theme('article.digest')};
+  font-weight: 500;
 `
-
 export const Footer = styled.div`
   ${css.row('align-center')};
-`
-
-export const UpvoteIcon = styled(UpvoteSVG)`
-  ${css.size(10)};
-  transform: scaleY(0.8);
-  fill: #5d9dfb;
+  width: calc(100% + 20px);
+  margin-left: -9px;
+  transform: scale(0.9);
   opacity: 0.8;
+  margin-top: 8px;
+`
+export const UpvoteIcon = styled(UpvoteSVG)`
+  ${css.size(11)};
+  fill: ${theme('article.digest')};
   margin-top: 1px;
 `
 
 export const Count = styled.div`
   font-size: 13px;
-  color: #5d9dfb;
+  color: ${theme('article.title')};
   margin-left: 4px;
   flex-grow: 1;
-  /* opacity: 0.8; */
 `

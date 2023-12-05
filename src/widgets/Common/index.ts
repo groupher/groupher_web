@@ -136,8 +136,8 @@ export const WithMargin = styled.div<TSpace>`
 
 export const WithPosition = styled.div<TSpace>`
   position: absolute;
-  ${({ top }) => (top ? `${top}px;` : '')}
-  ${({ left }) => (left ? `${left}px;` : '')}
-  ${({ bottom }) => (bottom ? `${bottom}px;` : '')}
-  ${({ right }) => (right ? `${right}px;` : '')}
+  ${({ top }) => (top !== undefined ? `top: ${top}px;` : '')}
+  ${({ left }) => (left !== undefined ? `left: ${left}px;` : '')}
+  ${({ bottom }) => (bottom !== undefined ? `bottom: ${bottom}px;` : '')}
+  ${({ right }) => (right !== undefined ? `right: ${right}px;` : '')}
 `
