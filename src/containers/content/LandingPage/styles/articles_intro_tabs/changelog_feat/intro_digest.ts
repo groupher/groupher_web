@@ -11,7 +11,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
 }))<TTestable>`
   ${css.column('align-start')};
-  margin-right: 10px;
+  margin-right: 50px;
 
   *::selection {
     background-color: ${FEAT.CHANGELOG.COLOR} !important;
@@ -23,7 +23,7 @@ export const Digest = styled.div`
   opacity: 0.9;
   line-height: 28px;
   width: 300px;
-  margin-top: -40px;
+  margin-top: -100px;
   margin-bottom: 30px;
   font-size: 16px;
 `

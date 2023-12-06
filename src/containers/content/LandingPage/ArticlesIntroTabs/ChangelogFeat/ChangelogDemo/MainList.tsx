@@ -5,7 +5,6 @@ import { COLOR_NAME } from '@/constant/colors'
 
 import {
   Wrapper,
-  ListWrapper,
   Header,
   Title,
   Version,
@@ -22,43 +21,71 @@ import {
   StarIcon3,
 } from '../../../styles/articles_intro_tabs/changelog_feat/changelog_demo/main_list'
 
-const ChangeLogDemo: FC = () => {
+const MainList: FC = () => {
   return (
     <Wrapper>
-      <ListWrapper>
-        <StarIcon />
-        <StarIcon2 />
-        <StarIcon3 />
+      <StarIcon />
+      <StarIcon2 />
+      <StarIcon3 />
+      <Header>
+        <Title>
+          AI 加持的用户侧搜索 <Version>v2.0</Version>
+        </Title>
+
+        <TagsWrapper>
+          <TagItem>
+            <TagNode color={COLOR_NAME.GREEN} hashSize={10} hashRight={4} opacity={0.6} boldHash />
+            Web
+          </TagItem>
+
+          <TagItem>
+            <TagNode color={COLOR_NAME.ORANGE} hashSize={10} hashRight={4} opacity={0.6} boldHash />
+            Mobile
+          </TagItem>
+        </TagsWrapper>
+      </Header>
+      <Cover />
+      <Content>
+        <Bar height={6} width={159} right={7} opacity={0.3} />
+        <Bar height={6} width={100} opacity={0.2} />
+      </Content>
+      <Footer>
+        <Bar height={6} width={30} opacity={0.3} />
+        <Bar height={6} width={50} opacity={0.2} />
+      </Footer>
+      <Divider />
+      <Previous>
         <Header>
           <Title>
-            AI 加持的用户侧搜索 <Version>v2.0</Version>
+            文章支持视频发布 <Version>v1.9</Version>
           </Title>
 
           <TagsWrapper>
-            <TagItem>
-              <TagNode
-                color={COLOR_NAME.GREEN}
-                hashSize={10}
-                hashRight={4}
-                opacity={0.6}
-                boldHash
-              />
-              Web
-            </TagItem>
+            <TagsWrapper>
+              <TagItem>
+                <TagNode
+                  color={COLOR_NAME.GREEN}
+                  hashSize={10}
+                  hashRight={4}
+                  opacity={0.6}
+                  boldHash
+                />
+                Web
+              </TagItem>
 
-            <TagItem>
-              <TagNode
-                color={COLOR_NAME.ORANGE}
-                hashSize={10}
-                hashRight={4}
-                opacity={0.6}
-                boldHash
-              />
-              Mobile
-            </TagItem>
+              <TagItem>
+                <TagNode
+                  color={COLOR_NAME.PINK}
+                  hashSize={10}
+                  hashRight={4}
+                  opacity={0.6}
+                  boldHash
+                />
+                编辑器
+              </TagItem>
+            </TagsWrapper>
           </TagsWrapper>
         </Header>
-        <Cover />
         <Content>
           <Bar height={6} width={159} right={7} opacity={0.3} />
           <Bar height={6} width={100} opacity={0.2} />
@@ -67,51 +94,9 @@ const ChangeLogDemo: FC = () => {
           <Bar height={6} width={30} opacity={0.3} />
           <Bar height={6} width={50} opacity={0.2} />
         </Footer>
-        <Divider />
-        <Previous>
-          <Header>
-            <Title>
-              文章支持视频发布 <Version>v1.9</Version>
-            </Title>
-
-            <TagsWrapper>
-              <TagsWrapper>
-                <TagItem>
-                  <TagNode
-                    color={COLOR_NAME.GREEN}
-                    hashSize={10}
-                    hashRight={4}
-                    opacity={0.6}
-                    boldHash
-                  />
-                  Web
-                </TagItem>
-
-                <TagItem>
-                  <TagNode
-                    color={COLOR_NAME.PINK}
-                    hashSize={10}
-                    hashRight={4}
-                    opacity={0.6}
-                    boldHash
-                  />
-                  编辑器
-                </TagItem>
-              </TagsWrapper>
-            </TagsWrapper>
-          </Header>
-          <Content>
-            <Bar height={6} width={159} right={7} opacity={0.3} />
-            <Bar height={6} width={100} opacity={0.2} />
-          </Content>
-          <Footer>
-            <Bar height={6} width={30} opacity={0.3} />
-            <Bar height={6} width={50} opacity={0.2} />
-          </Footer>
-        </Previous>
-      </ListWrapper>
+      </Previous>
     </Wrapper>
   )
 }
 
-export default ChangeLogDemo
+export default MainList

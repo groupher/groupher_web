@@ -2,14 +2,12 @@ import styled from 'styled-components'
 
 import { Bar as BarBase } from '@/widgets/Common'
 
-import css, { theme, animate } from '@/css'
-
-import StarSVG from '../Star'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  ${css.column('align-start')};
-  width: 420px;
-  height: 460px;
+  ${css.column('align-center')};
+  width: 300px;
+  height: 300px;
   z-index: 2;
   background: ${theme('htmlBg')};
   border-radius: 10px;
@@ -18,8 +16,8 @@ export const Wrapper = styled.div`
   box-shadow: rgba(100, 100, 111, 0.1) 1px 2px 29px 0px;
 
   position: relative;
-  padding-left: 40px;
-  margin-top: 18px;
+  margin-left: -120px;
+  margin-top: -20px;
 `
 export const Header = styled.div`
   ${css.column()};
@@ -68,62 +66,6 @@ export const Footer = styled.div`
   margin-top: 20px;
   width: 220px;
 `
-export const Divider = styled.div`
-  width: 300px;
-  height: 1px;
-  background: ${theme('divider')};
-  margin-top: 30px;
-`
 export const Bar = styled(BarBase)`
   background: ${theme('hint')};
-`
-export const Previous = styled.div`
-  opacity: 0.8;
-`
-export const StarIcon = styled(StarSVG)`
-  ${css.size(13)};
-  fill: ${theme('rainbow.orange')};
-
-  position: absolute;
-  top: 140px;
-  left: 30px;
-
-  filter: drop-shadow(2px 4px 6px #f1cac9);
-  z-index: 3;
-  animation: ${animate.breath} 2s linear infinite alternate;
-`
-
-export const StarIcon2 = styled(StarSVG)`
-  ${css.size(20)};
-  fill: #ffd67e;
-
-  position: absolute;
-  top: 70px;
-  right: 180px;
-
-  filter: drop-shadow(2px 4px 6px #f1cac9);
-  z-index: 3;
-  animation: ${animate.breath} 2s linear infinite alternate;
-
-  ${css.media.mobile`
-    animation: none;
-  `};
-`
-
-export const StarIcon3 = styled(StarSVG)`
-  ${css.size(15)};
-  fill: #f9b7b6;
-
-  position: absolute;
-  top: 160px;
-  left: 100px;
-
-  filter: drop-shadow(2px 4px 6px #f1cac9);
-  z-index: 3;
-
-  animation: ${animate.breath} 2s linear infinite alternate;
-
-  ${css.media.mobile`
-    animation: none;
-  `};
 `
