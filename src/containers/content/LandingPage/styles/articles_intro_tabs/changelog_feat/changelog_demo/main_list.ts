@@ -72,6 +72,16 @@ export const Footer = styled.div`
   margin-top: 20px;
   width: 200px;
 `
+export const UpvoteWrapper = styled.div`
+  transform: scale(0.9);
+  margin-left: -10px;
+  filter: saturate(0.8);
+`
+export const PublishDate = styled.div`
+  color: ${theme('hint')};
+  font-size: 10px;
+  opacity: 0.8;
+`
 export const Divider = styled.div`
   width: 300px;
   height: 1px;

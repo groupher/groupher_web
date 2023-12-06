@@ -2,7 +2,9 @@ import { FC } from 'react'
 
 import TagNode from '@/widgets/TagNode'
 import { COLOR_NAME } from '@/constant/colors'
+import { mockUsers } from '@/mock'
 
+import Upvote from '@/widgets/Upvote'
 import CoverPreview from './CoverPreview'
 
 import {
@@ -17,6 +19,8 @@ import {
   Content,
   Divider,
   Footer,
+  UpvoteWrapper,
+  PublishDate,
   Previous,
   StarIcon,
   StarIcon2,
@@ -24,6 +28,8 @@ import {
 } from '../../../styles/articles_intro_tabs/changelog_feat/changelog_demo/main_list'
 
 const MainList: FC = () => {
+  const users = mockUsers(3)
+
   return (
     <Wrapper>
       <StarIcon />
@@ -54,8 +60,10 @@ const MainList: FC = () => {
         <Bar height={6} width={100} opacity={0.2} />
       </Content>
       <Footer>
-        <Bar height={6} width={30} opacity={0.3} />
-        <Bar height={6} width={50} opacity={0.2} />
+        <UpvoteWrapper>
+          <Upvote avatarList={users} type="general" viewerHasUpvoted count={34} />
+        </UpvoteWrapper>
+        <PublishDate>2013-12-01</PublishDate>
       </Footer>
       <Divider />
       <Previous>
@@ -95,8 +103,10 @@ const MainList: FC = () => {
           <Bar height={6} width={100} opacity={0.2} />
         </Content>
         <Footer>
-          <Bar height={6} width={30} opacity={0.3} />
-          <Bar height={6} width={50} opacity={0.2} />
+          <UpvoteWrapper>
+            <Upvote avatarList={users} type="general" count={122} />
+          </UpvoteWrapper>
+          <PublishDate>2013-11-25</PublishDate>
         </Footer>
       </Previous>
     </Wrapper>
