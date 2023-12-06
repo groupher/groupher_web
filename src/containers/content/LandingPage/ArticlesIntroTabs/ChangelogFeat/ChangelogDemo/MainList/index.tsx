@@ -1,13 +1,11 @@
 import { FC } from 'react'
 
 import { COLOR_NAME } from '@/constant/colors'
-import { mockUsers } from '@/mock'
 
-import { SpaceGrow } from '@/widgets/Common'
 import TagNode from '@/widgets/TagNode'
-import Facepile from '@/widgets/Facepile'
 
-import CoverPreview from './CoverPreview'
+import CoverPreview from '../CoverPreview'
+import Footer from './Footer'
 
 import {
   Wrapper,
@@ -20,21 +18,13 @@ import {
   TagItem,
   Content,
   Divider,
-  Footer,
-  UpvoteWrapper,
-  UpvoteIcon,
-  UpvoteCount,
-  UsersWrapper,
-  PublishDate,
   Previous,
   StarIcon,
   StarIcon2,
   StarIcon3,
-} from '../../../styles/articles_intro_tabs/changelog_feat/changelog_demo/main_list'
+} from '../../../../styles/articles_intro_tabs/changelog_feat/changelog_demo/main_list'
 
 const MainList: FC = () => {
-  const users = mockUsers(3)
-
   return (
     <Wrapper>
       <StarIcon />
@@ -64,18 +54,7 @@ const MainList: FC = () => {
         <Bar height={6} width={159} right={7} opacity={0.3} />
         <Bar height={6} width={100} opacity={0.2} />
       </Content>
-      <Footer>
-        <UpvoteWrapper>
-          <UpvoteIcon />
-          <UpvoteCount>24</UpvoteCount>
-        </UpvoteWrapper>
-        <UsersWrapper>
-          <Facepile users={users} />
-        </UsersWrapper>
-        <SpaceGrow />
-
-        <PublishDate>2013-12-01</PublishDate>
-      </Footer>
+      <Footer upvotesCount={24} date="2013-12-01" />
       <Divider />
       <Previous>
         <Header>
@@ -113,17 +92,7 @@ const MainList: FC = () => {
           <Bar height={6} width={159} right={7} opacity={0.3} />
           <Bar height={6} width={100} opacity={0.2} />
         </Content>
-        <Footer>
-          <UpvoteWrapper>
-            <UpvoteIcon />
-            <UpvoteCount>98</UpvoteCount>
-          </UpvoteWrapper>
-          <UsersWrapper>
-            <Facepile users={users} />
-          </UsersWrapper>
-          <SpaceGrow />
-          <PublishDate>2013-11-25</PublishDate>
-        </Footer>
+        <Footer upvotesCount={98} date="2013-11-26" />
       </Previous>
     </Wrapper>
   )

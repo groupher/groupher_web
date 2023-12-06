@@ -1,12 +1,10 @@
 import styled from 'styled-components'
 
-import UpvoteSVG from '@/icons/Upvote'
-
 import { Bar as BarBase } from '@/widgets/Common'
 
-import css, { theme, animate } from '@/css'
+import css, { theme } from '@/css'
 
-import StarSVG from '../Star'
+import StarSVG from '../../Star'
 
 export const Wrapper = styled.div`
   ${css.column('align-start')};
@@ -69,41 +67,6 @@ export const Content = styled.div`
   width: 200px;
   gap: 10px;
 `
-export const Footer = styled.div`
-  ${css.row('align-center', 'justify-between')};
-  margin-top: 14px;
-  width: 200px;
-`
-export const UpvoteWrapper = styled.div`
-  ${css.row('align-both')};
-  margin-left: -4px;
-  height: 18px;
-  width: 38px;
-  opacity: 0.8;
-  border: 1px solid;
-  border-color: ${theme('divider')};
-  border-radius: 4px;
-`
-export const UpvoteIcon = styled(UpvoteSVG)`
-  ${css.size(11)};
-  fill: ${theme('article.digest')};
-`
-export const UpvoteCount = styled.div`
-  color: ${theme('article.digest')};
-  font-weight: 500;
-  font-size: 10px;
-  margin-left: 2px;
-`
-export const UsersWrapper = styled.div`
-  transform: scale(0.85);
-  margin-left: 3px;
-  opacity: 0.8;
-`
-export const PublishDate = styled.div`
-  color: ${theme('hint')};
-  font-size: 10px;
-  opacity: 0.8;
-`
 export const Divider = styled.div`
   width: 300px;
   height: 1px;
@@ -126,7 +89,6 @@ export const StarIcon = styled(StarSVG)`
 
   filter: drop-shadow(2px 4px 6px #f1cac9);
   z-index: 3;
-  animation: ${animate.breath} 2s linear infinite alternate;
 `
 
 export const StarIcon2 = styled(StarSVG)`
@@ -139,7 +101,6 @@ export const StarIcon2 = styled(StarSVG)`
 
   filter: drop-shadow(2px 4px 6px #f1cac9);
   z-index: 3;
-  animation: ${animate.breath} 2s linear infinite alternate;
 
   ${css.media.mobile`
     animation: none;
@@ -156,8 +117,6 @@ export const StarIcon3 = styled(StarSVG)`
 
   filter: drop-shadow(2px 4px 6px #f1cac9);
   z-index: 3;
-
-  animation: ${animate.breath} 2s linear infinite alternate;
 
   ${css.media.mobile`
     animation: none;
