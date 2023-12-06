@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   ${css.row('align-center')};
   gap: 0 15px;
   width: 254px;
-  height: 54px;
+  height: 42px;
   z-index: 2;
   padding: 0 15px;
   background: ${theme('htmlBg')};
@@ -17,7 +17,7 @@ export const Wrapper = styled.div`
   box-shadow: rgba(100, 100, 111, 0.1) 1px 2px 29px 0px;
 
   position: absolute;
-  bottom: 132px;
+  bottom: 142px;
   right: 68px;
 `
 export const EmojiImg = styled(Img)`

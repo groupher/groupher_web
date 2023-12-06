@@ -13,7 +13,7 @@ export const Wrapper = styled.div<{ tab: TThread }>`
     return '640px'
   }};
   background: #fbfbfb;
-  transition: all 0.2s;
+  transition: all 0.15s;
 `
 
 export const holder = 1

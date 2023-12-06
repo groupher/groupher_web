@@ -1,10 +1,12 @@
 import { FC } from 'react'
 
-import TagNode from '@/widgets/TagNode'
 import { COLOR_NAME } from '@/constant/colors'
 import { mockUsers } from '@/mock'
 
-import Upvote from '@/widgets/Upvote'
+import { SpaceGrow } from '@/widgets/Common'
+import TagNode from '@/widgets/TagNode'
+import Facepile from '@/widgets/Facepile'
+
 import CoverPreview from './CoverPreview'
 
 import {
@@ -20,6 +22,9 @@ import {
   Divider,
   Footer,
   UpvoteWrapper,
+  UpvoteIcon,
+  UpvoteCount,
+  UsersWrapper,
   PublishDate,
   Previous,
   StarIcon,
@@ -61,8 +66,14 @@ const MainList: FC = () => {
       </Content>
       <Footer>
         <UpvoteWrapper>
-          <Upvote avatarList={users} type="general" viewerHasUpvoted count={34} />
+          <UpvoteIcon />
+          <UpvoteCount>24</UpvoteCount>
         </UpvoteWrapper>
+        <UsersWrapper>
+          <Facepile users={users} />
+        </UsersWrapper>
+        <SpaceGrow />
+
         <PublishDate>2013-12-01</PublishDate>
       </Footer>
       <Divider />
@@ -104,8 +115,13 @@ const MainList: FC = () => {
         </Content>
         <Footer>
           <UpvoteWrapper>
-            <Upvote avatarList={users} type="general" count={122} />
+            <UpvoteIcon />
+            <UpvoteCount>98</UpvoteCount>
           </UpvoteWrapper>
+          <UsersWrapper>
+            <Facepile users={users} />
+          </UsersWrapper>
+          <SpaceGrow />
           <PublishDate>2013-11-25</PublishDate>
         </Footer>
       </Previous>
