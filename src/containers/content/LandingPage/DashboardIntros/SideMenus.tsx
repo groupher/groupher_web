@@ -26,7 +26,7 @@ const SideMenus: FC<TProps> = ({ tab, onChange }) => {
       <InnerWrapper>
         <Header>
           <Title>
-            全面的<Highlight>后台管理</Highlight>
+            完善的<Highlight>后台管理</Highlight>
           </Title>
           <Desc>强大的自定义设置，所见即所得，满足你的品牌个性化及内容管理需要。</Desc>
         </Header>
