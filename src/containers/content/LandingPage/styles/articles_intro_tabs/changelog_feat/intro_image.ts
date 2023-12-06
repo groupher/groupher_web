@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive, TTestable } from '@/spec'
 
-import css from '@/css'
+import css, { theme } from '@/css'
 
 import EmojiSVG from '@/icons/EmojiTada'
 import BroadcastSVG from '@/icons/Broadcast'
@@ -11,24 +11,19 @@ import CommentSVG from '@/icons/Heart'
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
 }))<TTestable>`
-  ${css.columnGrow('align-both')};
+  ${css.column('align-both')};
   position: relative;
-
-  ${css.media.mobile`
-    transform: scale(0.52);
-    margin-top: -50px;
-  `};
 `
 export const ImageWrapper = styled.div`
-  width: 600px;
+  width: 580px;
   height: 400px;
   z-index: 2;
-  background: white;
+  background: ${theme('htmlBg')};
   padding: 5px;
   border-radius: 10px;
   border: 1px dotted;
-  border-color: #f9b7b5;
-  overflow: hidden;
+  border-color: ${theme('divider')};
+  box-shadow: rgba(100, 100, 111, 0.1) 1px 2px 29px 0px;
 `
 
 export const ColorBlock = styled.div<TActive>`
@@ -54,28 +49,4 @@ export const ColorBlockHolder = styled(ColorBlock)`
   left: 0px;
   top: 0;
   opacity: 0.3;
-`
-export const IconsWrapper = styled.div`
-  position: absolute;
-  ${css.row('align-center')};
-  gap: 0 18px;
-  bottom: -40px;
-  right: -250px;
-  z-index: -3;
-`
-export const Icon1 = styled(BroadcastSVG)`
-  ${css.size(19)};
-  fill: #f46b68;
-  opacity: 0.85;
-  margin-top: -1px;
-`
-export const Icon2 = styled(CommentSVG)`
-  ${css.size(18)};
-  fill: #f48d68;
-  opacity: 0.8;
-`
-export const Icon3 = styled(EmojiSVG)`
-  ${css.size(19)};
-  opacity: 0.5;
-  margin-top: -2px;
 `

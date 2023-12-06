@@ -1,57 +1,23 @@
-import { FC, useState, useEffect } from 'react'
-
-import ViewportTracker from '@/widgets/ViewportTracker'
+import { FC } from 'react'
 
 import { DesktopOnly } from '@/widgets/Common'
-import useScrollDir from '@/hooks/useScrollDir'
-
-import { FEAT_TYPE } from '../../constant'
-
-import FeatHead from '../FeatHead'
 
 import IntroItems from './IntroItems'
+import {
+  Wrapper,
+  Digest,
+  Hightlight,
+} from '../../styles/articles_intro_tabs/changelog_feat/intro_digest'
 
-import { Wrapper } from '../../styles/articles_intro_tabs/changelog_feat/intro_digest'
-import { checkBlockInView } from '../helper'
-
-type TProps = {
-  inViewChange: (inView: boolean) => void
-}
-
-const IntroDigest: FC<TProps> = ({ inViewChange }) => {
-  const [inView, setInView] = useState(false)
-  const [headInView, setHeadInview] = useState(false)
-  const [footInView, setFootInview] = useState(false)
-
-  const scrollDir = useScrollDir()
-
-  useEffect(() => {
-    if (checkBlockInView(headInView, footInView, scrollDir)) {
-      setInView(true)
-      inViewChange(true)
-    } else {
-      setInView(false)
-      inViewChange(false)
-    }
-  }, [headInView, footInView, scrollDir, inViewChange])
-
+const IntroDigest: FC = () => {
   return (
     <Wrapper>
-      <DesktopOnly>
-        <ViewportTracker onEnter={() => setHeadInview(true)} onLeave={() => setHeadInview(false)} />
-      </DesktopOnly>
-
-      <FeatHead
-        $active={inView}
-        title="更新日志"
-        desc="官方发布更新日志，方便用户快速获取产品最新功能。"
-        featType={FEAT_TYPE.CHANGELOG}
-      />
-
+      <Digest>
+        官方团队发布更新日志，方便<Hightlight>用户</Hightlight>快速获取产品
+        <Hightlight>新功能</Hightlight>以及<Hightlight>Bug 修复</Hightlight>等。
+      </Digest>
       <DesktopOnly>
         <IntroItems />
-
-        <ViewportTracker onEnter={() => setFootInview(true)} onLeave={() => setFootInview(false)} />
       </DesktopOnly>
     </Wrapper>
   )
