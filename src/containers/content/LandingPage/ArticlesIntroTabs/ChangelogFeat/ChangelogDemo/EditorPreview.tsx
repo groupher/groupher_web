@@ -3,6 +3,8 @@ import { FC } from 'react'
 import TagNode from '@/widgets/TagNode'
 import { COLOR_NAME } from '@/constant/colors'
 
+import CoverPreview from './CoverPreview'
+
 import {
   Wrapper,
   Header,
@@ -36,7 +38,9 @@ const EditorPreview: FC = () => {
           </TagItem>
         </TagsWrapper>
       </Header>
-      <Cover />
+      <Cover>
+        <CoverPreview />
+      </Cover>
       <Content>
         <Bar height={6} width={159} right={7} opacity={0.3} />
         <Bar height={6} width={100} opacity={0.2} />

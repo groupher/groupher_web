@@ -16,22 +16,26 @@ export const Wrapper = styled.div`
   box-shadow: rgba(100, 100, 111, 0.1) 1px 2px 29px 0px;
 
   position: relative;
-  margin-left: -120px;
+  margin-left: -80px;
   margin-top: -20px;
 `
 export const Header = styled.div`
   ${css.column()};
-  width: 220px;
+  width: 200px;
   margin-top: 25px;
   margin-bottom: 10px;
 `
 export const Cover = styled.div`
-  width: 220px;
+  position: relative;
+  overflow: hidden;
+  width: 200px;
   height: 100px;
   border-radius: 5px;
   margin-bottom: 5px;
 
   background: ${theme('rainbow.redBg')};
+  border: 1px dotted;
+  border-color: ${theme('rainbow.redBg')};
 `
 export const Title = styled.div`
   ${css.row('align-center')};
@@ -58,13 +62,13 @@ export const TagItem = styled.div`
 export const Content = styled.div`
   ${css.column()};
   margin-top: 15px;
-  width: 220px;
+  width: 200px;
   gap: 10px;
 `
 export const Footer = styled.div`
   ${css.row('align-center', 'justify-between')};
   margin-top: 20px;
-  width: 220px;
+  width: 200px;
 `
 export const Bar = styled(BarBase)`
   background: ${theme('hint')};
