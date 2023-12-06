@@ -1,9 +1,74 @@
 import styled from 'styled-components'
 
-import { Bar as BarBase } from '@/widgets/Common'
+import ArchSVG from '@/icons/Arch'
+import RotateSVG from '@/icons/Rotate'
+import ShadowSVG from '@/icons/Shadow'
+import BlocksSVG from '@/icons/Blocks'
+import LightSVG from '@/icons/FlashLight'
+import RatioSVG from '@/icons/Ratio'
+import SizeSVG from '@/icons/ImageSize'
 
+import { Bar as BarBase } from '@/widgets/Common'
 import css, { theme } from '@/css'
 
+export const Toolbox = styled.div`
+  ${css.row('align-both')};
+  gap: 0 3px;
+  width: 276px;
+  height: 38px;
+  border-radius: 5px;
+  background: ${theme('alphaBg')};
+  margin-top: -14px;
+  z-index: 10;
+  box-shadow: rgb(108 108 108 / 16%) 0px 3px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+`
+export const ArchIcon = styled(ArchSVG)`
+  ${css.size(12)};
+  fill: ${theme('article.digest')};
+`
+export const RotateIcon = styled(RotateSVG)`
+  ${css.size(12)};
+  fill: ${theme('article.digest')};
+`
+export const RatioIcon = styled(RatioSVG)`
+  ${css.size(12)};
+  fill: ${theme('article.digest')};
+`
+export const ShadowIcon = styled(ShadowSVG)`
+  ${css.size(12)};
+  fill: ${theme('article.digest')};
+`
+export const SizeIcon = styled(SizeSVG)`
+  ${css.size(12)};
+  fill: ${theme('article.digest')};
+`
+export const BlocksIcon = styled(BlocksSVG)`
+  ${css.size(12)};
+  fill: ${theme('article.digest')};
+`
+export const LightIcon = styled(LightSVG)`
+  ${css.size(12)};
+  fill: ${theme('article.digest')};
+`
+export const ColorBall = styled.div`
+  ${css.circle(12)};
+  background: ${theme('rainbow.redBg')};
+  filter: saturate(1.2);
+`
+export const ToolItem = styled.div`
+  background: ${theme('htmlBg')};
+  ${css.size(30)};
+  ${css.column('align-both')};
+  box-shadow: ${theme('button.boxShadow')};
+  padding: 2px;
+  border-radius: 4px;
+`
+export const ToolName = styled.div`
+  font-size: 9px;
+  color: ${theme('hint')};
+  margin-top: 3px;
+`
+//
 export const Wrapper = styled.div`
   ${css.column('align-center')};
   width: 300px;

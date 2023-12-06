@@ -35,9 +35,9 @@ export const Cover = styled.div`
   border-radius: 5px;
   margin-bottom: 5px;
 
-  background: ${theme('rainbow.redBg')};
+  background: ${theme('hoverBg')};
   border: 1px dotted;
-  border-color: ${theme('rainbow.redBg')};
+  border-color: ${theme('hoverBg')};
 `
 export const Title = styled.div`
   ${css.row('align-center')};

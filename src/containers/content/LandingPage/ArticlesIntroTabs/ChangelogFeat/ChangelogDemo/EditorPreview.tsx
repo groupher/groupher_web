@@ -16,6 +16,17 @@ import {
   TagItem,
   Content,
   Footer,
+  Toolbox,
+  ToolItem,
+  ToolName,
+  ArchIcon,
+  RatioIcon,
+  BlocksIcon,
+  ShadowIcon,
+  RotateIcon,
+  LightIcon,
+  SizeIcon,
+  ColorBall,
 } from '../../../styles/articles_intro_tabs/changelog_feat/changelog_demo/editor_preview'
 
 const EditorPreview: FC = () => {
@@ -23,7 +34,7 @@ const EditorPreview: FC = () => {
     <Wrapper>
       <Header>
         <Title>
-          AI 加持的用户侧搜索 <Version>v2.0</Version>
+          文章封面图编辑器 <Version>v2.0</Version>
         </Title>
 
         <TagsWrapper>
@@ -41,8 +52,42 @@ const EditorPreview: FC = () => {
       <Cover>
         <CoverPreview />
       </Cover>
+      <Toolbox>
+        <ToolItem>
+          <RotateIcon />
+          <ToolName>旋转</ToolName>
+        </ToolItem>
+        <ToolItem>
+          <ArchIcon />
+          <ToolName>弧度</ToolName>
+        </ToolItem>
+        <ToolItem>
+          <ShadowIcon />
+          <ToolName>阴影</ToolName>
+        </ToolItem>
+        <ToolItem>
+          <BlocksIcon />
+          <ToolName>位置</ToolName>
+        </ToolItem>
+        <ToolItem>
+          <SizeIcon />
+          <ToolName>大小</ToolName>
+        </ToolItem>
+        <ToolItem>
+          <LightIcon />
+          <ToolName>灯光</ToolName>
+        </ToolItem>
+        <ToolItem>
+          <RatioIcon />
+          <ToolName>比例</ToolName>
+        </ToolItem>
+        <ToolItem>
+          <ColorBall />
+          <ToolName>背景</ToolName>
+        </ToolItem>
+      </Toolbox>
       <Content>
-        <Bar height={6} width={159} right={7} opacity={0.3} />
+        <Bar height={6} width={159} right={7} opacity={0.1} />
         <Bar height={6} width={100} opacity={0.2} />
       </Content>
       <Footer>

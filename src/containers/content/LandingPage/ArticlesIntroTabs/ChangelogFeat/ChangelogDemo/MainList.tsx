@@ -31,7 +31,7 @@ const MainList: FC = () => {
       <StarIcon3 />
       <Header>
         <Title>
-          AI 加持的用户侧搜索 <Version>v2.0</Version>
+          文章封面图编辑器 <Version>v2.0</Version>
         </Title>
 
         <TagsWrapper>
@@ -61,7 +61,7 @@ const MainList: FC = () => {
       <Previous>
         <Header>
           <Title>
-            文章支持视频发布 <Version>v1.9</Version>
+            AI 加持的文章搜索 <Version>v1.9</Version>
           </Title>
 
           <TagsWrapper>
