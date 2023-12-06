@@ -25,13 +25,13 @@ const TAB_ITEMS = [
     key: THREAD.CHANGELOG,
     title: '更新日志',
     desc: '新功能 / 修复 / 版本日志',
-    color: COLOR_NAME.ORANGE,
+    color: COLOR_NAME.RED,
   },
   {
     key: THREAD.DOC,
     title: '帮助台',
     desc: '帮助文档 / 产品手册',
-    color: COLOR_NAME.RED,
+    color: COLOR_NAME.CYAN,
   },
 ]
 
