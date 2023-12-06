@@ -92,7 +92,7 @@ export const Bar = styled(BarBase)`
   background: ${theme('hint')};
 `
 export const Previous = styled.div`
-  opacity: 0.8;
+  opacity: 0.75;
 `
 export const StarIcon = styled(StarSVG)`
   ${css.size(13)};

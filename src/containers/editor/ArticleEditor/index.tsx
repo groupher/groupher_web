@@ -62,9 +62,7 @@ const ArticleEditor: FC<TProps> = ({ metric = METRIC.ARTICLE_EDITOR }) => {
           {isArchived && <ArchiveAlert date={archivedAt} top={12} bottom={20} left={25} />}
 
           <ArticleCover />
-
           <TitleInput title={title} placeholder={texts.holder.title} />
-
           <FuncRow>
             <ConditionSelector
               mode={CONDITION_MODE.CAT}
