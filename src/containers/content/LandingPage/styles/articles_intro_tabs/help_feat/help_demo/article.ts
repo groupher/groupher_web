@@ -10,26 +10,12 @@ import { Bar as BarBase } from '@/widgets/Common'
 import ArrowSimple from '@/icons/ArrowSimple'
 
 export const Wrapper = styled.div`
-  ${css.row()};
-`
-export const Sidebar = styled.div`
-  background: ${theme('htmlBg')};
-  margin-top: 30px;
-  width: 170px;
-  height: 380px;
-  border: 1px solid;
-  border-color: ${theme('divider')};
-  border-radius: 6px;
-  box-shadow: rgba(100, 100, 111, 0.1) 1px 2px 29px 0px;
-  padding: 15px 14px;
-`
-export const Content = styled.div`
   background: ${theme('htmlBg')};
   ${css.column('align-center')};
   margin-left: -40px;
   z-index: 10;
-  width: 400px;
-  height: 500px;
+  width: 368px;
+  height: 420px;
   gap: 10px;
   padding: 30px 15px;
   border: 1px solid;
@@ -63,20 +49,6 @@ const ArrowIcon = styled(ArrowSimple)`
 export const LeftArrowIcon = styled(ArrowIcon)``
 export const RightArrowIcon = styled(ArrowIcon)`
   transform: rotate(180deg);
-`
-export const BookIcon = styled(BookSVG)`
-  ${css.size(15)};
-  fill: ${theme('rainbow.cyan')};
-  z-index: 1;
-`
-export const QuestionIcon = styled(QuestionSVG)`
-  ${css.size(12)};
-  fill: ${theme('rainbow.cyan')};
-  z-index: 1;
-`
-export const PinnedItem = styled.div`
-  ${css.row('align-center')};
-  margin-bottom: 10px;
 `
 export const Header = styled.div`
   ${css.column()};
