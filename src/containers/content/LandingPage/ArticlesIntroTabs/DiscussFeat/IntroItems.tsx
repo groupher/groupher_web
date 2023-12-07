@@ -1,26 +1,25 @@
 import { FC } from 'react'
 
+import { COLOR_NAME } from '@/constant/colors'
 import { SpaceGrow, DesktopOnly, MobileOnly } from '@/widgets/Common'
-
-import { FEAT_TYPE } from '../../constant'
 
 import FeatItem from '../FeatItem'
 import MoreLink from '../MoreLink'
 
 import { FeatList, MobileIntroLists } from '../../styles/articles_intro_tabs/intro_items'
 
-const featType = FEAT_TYPE.DISCUSS
-
 const Contents = () => {
+  const color = COLOR_NAME.PURPLE
+
   return (
     <>
-      <FeatItem text="投票，发帖，评论" featType={featType} />
-      <FeatItem text="标签，状态分类" featType={featType} />
-      <FeatItem text="富文本内容" featType={featType} />
-      <FeatItem text="移动端友好" featType={featType} />
-      <FeatItem text="强大的后台管理" featType={featType} />
-      <FeatItem text="内置搜索，SEO 优化" featType={featType} />
-      <FeatItem text="高度自定义" featType={featType} />
+      <FeatItem text="投票，发帖，评论" color={color} />
+      <FeatItem text="标签，状态分类" color={color} />
+      <FeatItem text="富文本内容" color={color} />
+      <FeatItem text="移动端友好" color={color} />
+      <FeatItem text="强大的后台管理" color={color} />
+      <FeatItem text="内置搜索，SEO 优化" color={color} />
+      <FeatItem text="高度自定义" color={color} />
     </>
   )
 }
@@ -31,7 +30,7 @@ const IntroItems: FC = () => {
       <MobileOnly>
         <MobileIntroLists>
           <Contents />
-          <MoreLink href="/" featType={featType} />
+          <MoreLink href="/" color={COLOR_NAME.PURPLE} />
         </MobileIntroLists>
       </MobileOnly>
 
@@ -41,7 +40,7 @@ const IntroItems: FC = () => {
         </FeatList>
 
         <SpaceGrow />
-        <MoreLink href="/" featType={featType} />
+        <MoreLink href="/" color={COLOR_NAME.PURPLE} />
       </DesktopOnly>
     </>
   )

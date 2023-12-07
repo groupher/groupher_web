@@ -1,28 +1,20 @@
 import { FC } from 'react'
 
+import type { TColor } from '@/spec'
 import { COLOR_NAME } from '@/constant/colors'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
-import type { TFeatType } from '../spec'
 import { Wrapper } from '../styles/articles_intro_tabs/more_link'
 
 type TProps = {
   title?: string
   href: string
-  featType: TFeatType
-}
+} & TColor
 
-const LINK_COLOR = {
-  DISCUSS: COLOR_NAME.PURPLE,
-  CHANGELOG: COLOR_NAME.RED,
-  HELP: COLOR_NAME.ORANGE,
-  KANBAN: COLOR_NAME.BLUE,
-}
-
-const MoreLink: FC<TProps> = ({ title = '了解更多', href, featType }) => {
+const MoreLink: FC<TProps> = ({ title = '了解更多', href, color }) => {
   return (
     <Wrapper href={href}>
-      <ArrowButton color={LINK_COLOR[featType]}>{title}</ArrowButton>
+      <ArrowButton color={color}>{title}</ArrowButton>
     </Wrapper>
   )
 }

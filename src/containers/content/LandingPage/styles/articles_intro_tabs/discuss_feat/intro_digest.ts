@@ -3,8 +3,6 @@ import styled from 'styled-components'
 import type { TTestable } from '@/spec'
 import css, { theme } from '@/css'
 
-import { FEAT } from '../../../constant'
-
 export { FeatList } from '..'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
@@ -14,7 +12,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   margin-right: 10px;
 
   *::selection {
-    background-color: ${FEAT.DISCUSS.COLOR} !important;
+    background-color: ${theme('rainbow.purple')} !important;
     color: white;
   }
 `

@@ -1,9 +1,7 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-import css from '@/css'
-
-import { FEAT } from '../../../constant'
+import css, { theme } from '@/css'
 
 export { FeatList } from '..'
 
@@ -16,13 +14,22 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   padding-left: 12%;
 
   *::selection {
-    background-color: ${FEAT.HELP.COLOR} !important;
+    background-color: ${theme('rainbow.cyan')} !important;
     color: white;
   }
+`
 
-  ${css.media.mobile`
-    width: 100%;
-    padding: 0;
-    height: auto;
-  `};
+export const Digest = styled.div`
+  color: ${theme('hint')};
+  opacity: 0.9;
+  line-height: 28px;
+  width: 300px;
+  margin-top: -40px;
+  margin-bottom: 30px;
+  font-size: 16px;
+`
+
+export const Hightlight = styled.span`
+  color: ${theme('rainbow.cyan')};
+  font-weight: 500;
 `

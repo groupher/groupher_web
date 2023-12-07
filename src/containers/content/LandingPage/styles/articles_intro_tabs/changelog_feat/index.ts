@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 
-import { FEAT } from '../../../constant'
-
-import css from '@/css'
+import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.row('align-both')};
@@ -10,7 +8,7 @@ export const Wrapper = styled.div`
   position: relative;
 
   *::selection {
-    background-color: ${FEAT.CHANGELOG.COLOR} !important;
+    background-color: ${theme('rainbow.orange')} !important;
     color: white;
   }
 `

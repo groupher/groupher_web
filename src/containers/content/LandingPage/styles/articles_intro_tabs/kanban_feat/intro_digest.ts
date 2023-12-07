@@ -2,8 +2,6 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/css'
 
-import { FEAT } from '../../../constant'
-
 export { FeatList } from '..'
 
 export const Wrapper = styled.div`
@@ -12,7 +10,7 @@ export const Wrapper = styled.div`
   height: 200px;
 
   *::selection {
-    background-color: ${FEAT.KANBAN.COLOR} !important;
+    background-color: ${theme('rainbow.blue')} !important;
     color: white;
   }
 `

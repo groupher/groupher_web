@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { FEAT_TYPE } from '../../constant'
+import { COLOR_NAME } from '@/constant/colors'
 
 import FeatItem from '../FeatItem'
 
@@ -13,9 +13,9 @@ import {
   FeatureItem,
 } from '../../styles/articles_intro_tabs/kanban_feat/intro_digest'
 
-const featType = FEAT_TYPE.KANBAN
-
 const IntroDigest: FC = () => {
+  const color = COLOR_NAME.CYAN
+
   return (
     <Wrapper>
       <InnerWrapper>
@@ -26,26 +26,26 @@ const IntroDigest: FC = () => {
 
         <FeatureWrapper>
           <FeatureItem>
-            <FeatItem text="经典简洁的 UI" featType={featType} />
+            <FeatItem text="经典简洁的 UI" color={color} />
           </FeatureItem>
           <FeatureItem>
-            <FeatItem text="富文本内容" featType={featType} />
-          </FeatureItem>
-
-          <FeatureItem>
-            <FeatItem text="状态自然同步" featType={featType} />
+            <FeatItem text="富文本内容" color={color} />
           </FeatureItem>
 
           <FeatureItem>
-            <FeatItem text="评论，表情反馈" featType={featType} />
+            <FeatItem text="状态自然同步" color={color} />
           </FeatureItem>
 
           <FeatureItem>
-            <FeatItem text="一键切换状态" featType={featType} />
+            <FeatItem text="评论，表情反馈" color={color} />
           </FeatureItem>
 
           <FeatureItem>
-            <FeatItem text="高度自定义" featType={featType} />
+            <FeatItem text="一键切换状态" color={color} />
+          </FeatureItem>
+
+          <FeatureItem>
+            <FeatItem text="高度自定义" color={color} />
           </FeatureItem>
         </FeatureWrapper>
       </InnerWrapper>

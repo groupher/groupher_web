@@ -1,17 +1,17 @@
 import { FC } from 'react'
 
-import type { TFeatType } from '../spec'
+import type { TColor } from '@/spec'
+
 import { Wrapper, Text, CheckIcon } from '../styles/articles_intro_tabs/feat_item'
 
 type TProps = {
-  featType: TFeatType
   text?: string
-}
+} & TColor
 
-const FeatItem: FC<TProps> = ({ text = '--', featType }) => {
+const FeatItem: FC<TProps> = ({ text = '--', color }) => {
   return (
     <Wrapper>
-      <CheckIcon featType={featType} />
+      <CheckIcon $color={color} />
       <Text>{text}</Text>
     </Wrapper>
   )
