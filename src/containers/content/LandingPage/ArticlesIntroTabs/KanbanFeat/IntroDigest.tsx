@@ -14,7 +14,7 @@ import {
 } from '../../styles/articles_intro_tabs/kanban_feat/intro_digest'
 
 const IntroDigest: FC = () => {
-  const color = COLOR_NAME.CYAN
+  const color = COLOR_NAME.BLUE
 
   return (
     <Wrapper>

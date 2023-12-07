@@ -9,7 +9,7 @@ import MoreLink from '../MoreLink'
 import { FeatList, MobileIntroLists } from '../../styles/articles_intro_tabs/intro_items'
 
 const Contents = () => {
-  const color = COLOR_NAME.ORANGE
+  const color = COLOR_NAME.RED
 
   return (
     <>
