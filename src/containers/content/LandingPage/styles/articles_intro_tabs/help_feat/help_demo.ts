@@ -11,21 +11,31 @@ import ArrowSimple from '@/icons/ArrowSimple'
 
 export const Wrapper = styled.div`
   ${css.row()};
-  width: 100%;
-  padding: 30px 40px;
 `
 export const Sidebar = styled.div`
-  width: 115px;
-  height: 340px;
-  border-right: 1px solid;
-  border-right-color: ${theme('divider')};
+  background: ${theme('htmlBg')};
+  margin-top: 30px;
+  width: 170px;
+  height: 380px;
+  border: 1px solid;
+  border-color: ${theme('divider')};
+  border-radius: 6px;
+  box-shadow: rgba(100, 100, 111, 0.1) 1px 2px 29px 0px;
+  padding: 15px 14px;
 `
 export const Content = styled.div`
+  background: ${theme('htmlBg')};
   ${css.column('align-center')};
-  flex-grow: 1;
-  width: 260px;
+  margin-left: -40px;
+  z-index: 10;
+  width: 400px;
+  height: 500px;
   gap: 10px;
-  padding-left: 15px;
+  padding: 30px 15px;
+  border: 1px solid;
+  border-radius: 8px;
+  border-color: ${theme('divider')};
+  box-shadow: rgba(100, 100, 111, 0.1) 0px 3px 29px 0px;
 `
 export const InnerContent = styled.div`
   ${css.column()};
@@ -34,7 +44,7 @@ export const InnerContent = styled.div`
 `
 export const ShareIcon = styled(ShareSVG)`
   ${css.size(12)};
-  fill: #e9c79a;
+  fill: ${theme('rainbow.cyan')};
   position: absolute;
   top: 11px;
   right: -1px;
@@ -48,7 +58,7 @@ export const Footer = styled.div`
 `
 const ArrowIcon = styled(ArrowSimple)`
   ${css.size(18)};
-  fill: #aac387;
+  fill: ${theme('rainbow.cyan')};
 `
 export const LeftArrowIcon = styled(ArrowIcon)``
 export const RightArrowIcon = styled(ArrowIcon)`
@@ -56,12 +66,12 @@ export const RightArrowIcon = styled(ArrowIcon)`
 `
 export const BookIcon = styled(BookSVG)`
   ${css.size(15)};
-  fill: #e9c79a;
+  fill: ${theme('rainbow.cyan')};
   z-index: 1;
 `
 export const QuestionIcon = styled(QuestionSVG)`
   ${css.size(12)};
-  fill: #e9c79a;
+  fill: ${theme('rainbow.cyan')};
   z-index: 1;
 `
 export const PinnedItem = styled.div`
@@ -81,14 +91,14 @@ export const Cover = styled.div`
   margin-top: 10px;
   margin-bottom: 10px;
 
-  background: linear-gradient(137deg, #ecc297 52%, #fcebd9 100%);
+  background: ${theme('rainbow.cyanBg')};
   backdrop-filter: blur(5px);
 
   opacity: 0.3;
 `
 export const Title = styled.div`
   ${css.row('align-center')};
-  color: #f9b7b6;
+  color: ${theme('rainbow.cyan')};
   font-weight: 600;
   font-size: 12px;
 `
@@ -115,8 +125,7 @@ export const Divider = styled.div`
 `
 
 export const Bar = styled(BarBase)`
-  background: #dcb370;
-  background: #ecc297;
+  background: ${theme('rainbow.cyan')};
 `
 
 export const GreyBar = styled(BarBase)`

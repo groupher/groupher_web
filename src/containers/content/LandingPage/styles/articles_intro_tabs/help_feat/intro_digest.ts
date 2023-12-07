@@ -9,9 +9,8 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
 }))<TTestable>`
   ${css.column('align-start')};
-  width: 48%;
+  width: 380px;
   height: 430px;
-  padding-left: 12%;
 
   *::selection {
     background-color: ${theme('rainbow.cyan')} !important;
