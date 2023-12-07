@@ -3,10 +3,10 @@ import { FC } from 'react'
 import type { TThread } from '@/spec'
 import { THREAD } from '@/constant/thread'
 
-import DiscussFeat from './DiscussFeat'
-import ChangelogFeat from './ChangelogFeat'
-import KanbanFeat from './KanbanFeat'
-import HelpFeat from './HelpFeat'
+import DiscussTab from './DiscussTab'
+import ChangelogTab from './ChangelogTab'
+import KanbanTab from './KanbanTab'
+import HelpTab from './HelpTab'
 
 import { Wrapper } from '../styles/articles_intro_tabs/content'
 
@@ -19,27 +19,27 @@ const Content: FC<TProps> = ({ tab }) => {
 
   switch (tab) {
     case THREAD.POST: {
-      TabContent = DiscussFeat
+      TabContent = DiscussTab
       break
     }
 
     case THREAD.KANBAN: {
-      TabContent = KanbanFeat
+      TabContent = KanbanTab
       break
     }
 
     case THREAD.CHANGELOG: {
-      TabContent = ChangelogFeat
+      TabContent = ChangelogTab
       break
     }
 
     case THREAD.DOC: {
-      TabContent = HelpFeat
+      TabContent = HelpTab
       break
     }
 
     default: {
-      TabContent = DiscussFeat
+      TabContent = DiscussTab
     }
   }
 
