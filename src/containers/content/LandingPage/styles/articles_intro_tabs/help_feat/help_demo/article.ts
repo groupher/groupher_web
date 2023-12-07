@@ -3,23 +3,51 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 import ShareSVG from '@/icons/Share'
+import GoodSVG from '@/icons/EmojiGood'
+import SosoSVG from '@/icons/EmojiSoSo'
+import BadSVG from '@/icons/EmojiBad'
+
 import { Bar as BarBase } from '@/widgets/Common'
 
 import ArrowSimple from '@/icons/ArrowSimple'
 
 export const Wrapper = styled.div`
-  background: ${theme('htmlBg')};
   ${css.column('align-center')};
   margin-left: -40px;
   z-index: 10;
   width: 368px;
-  height: 420px;
+  height: 480px;
   gap: 10px;
-  padding: 30px 15px;
+  border-radius: 8px;
+  background: ${theme('htmlBg')};
+  box-shadow: rgba(100, 100, 111, 0.1) 0px 3px 29px 0px;
+  position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    right: 2px;
+    width: 370px;
+    z-index: -1;
+    height: 50%;
+    border: 1px solid;
+    border-color: ${theme('divider')};
+    background: ${theme('htmlBg')};
+    border-radius: 6px;
+    transform: rotate(-2deg);
+    box-shadow: rgba(100, 100, 111, 0.1) 0px 3px 29px 0px;
+  }
+`
+export const InnerWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background: ${theme('htmlBg')};
+  padding: 15px 30px;
   border: 1px solid;
   border-radius: 8px;
   border-color: ${theme('divider')};
-  box-shadow: rgba(100, 100, 111, 0.1) 0px 3px 29px 0px;
 `
 export const InnerContent = styled.div`
   ${css.column()};
@@ -28,21 +56,16 @@ export const InnerContent = styled.div`
 `
 export const ShareIcon = styled(ShareSVG)`
   ${css.size(12)};
-  fill: ${theme('rainbow.cyan')};
+  fill: ${theme('hint')};
+  opacity: 0.6;
   position: absolute;
-  top: 11px;
+  top: 6px;
   right: -1px;
 `
 
-export const Footer = styled.div`
-  ${css.row('align-center')};
-  margin-top: 20px;
-  width: 100%;
-  width: 270px;
-`
 const ArrowIcon = styled(ArrowSimple)`
   ${css.size(18)};
-  fill: ${theme('rainbow.cyan')};
+  fill: ${theme('hint')};
 `
 export const LeftArrowIcon = styled(ArrowIcon)``
 export const RightArrowIcon = styled(ArrowIcon)`
@@ -54,12 +77,17 @@ export const Header = styled.div`
   margin-top: 25px;
   margin-bottom: 10px;
 `
-export const Cover = styled.div`
+export const CoverWrappers = styled.div`
+  ${css.row('align-center', 'justify-between')};
+  margin-top: 18px;
   width: 260px;
-  height: 140px;
-  border-radius: 5px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  height: 110px;
+  margin-bottom: 12px;
+`
+export const Cover = styled.div`
+  width: 48%;
+  height: 100%;
+  border-radius: 8px;
 
   background: ${theme('rainbow.cyanBg')};
   backdrop-filter: blur(5px);
@@ -68,39 +96,59 @@ export const Cover = styled.div`
 `
 export const Title = styled.div`
   ${css.row('align-center')};
-  color: ${theme('rainbow.cyan')};
-  font-weight: 600;
-  font-size: 12px;
+  color: ${theme('article.title')};
+  font-weight: 500;
+  font-size: 16px;
 `
-export const GreyTitle = styled(Title)`
-  color: ${theme('article.digest')};
-`
-export const TagsWrapper = styled.div`
-  ${css.row('align-center')};
-  margin-top: 10px;
-`
-
-export const Divider = styled.div`
-  width: 300px;
-  height: 1px;
-
-  border-bottom: 1px solid transparent;
-  border-image: linear-gradient(0.35turn, transparent, #b6cc97, #b6cc97, #b6cc97, transparent);
-
-  border-image-slice: 1;
-
-  margin-top: 30px;
-
-  opacity: 0.5;
-`
-
 export const Bar = styled(BarBase)`
-  background: ${theme('rainbow.cyan')};
-`
-
-export const GreyBar = styled(BarBase)`
-  background: ${theme('article.digest')};
+  background: ${theme('hint')};
 `
 export const Previous = styled.div`
   opacity: 0.2;
+`
+export const Footer = styled.div`
+  ${css.row('align-center')};
+  margin-top: 40px;
+  width: 100%;
+`
+export const ArrowText = styled.div`
+  font-size: 12px;
+  color: ${theme('hint')};
+`
+export const Feedback = styled.div`
+  ${css.row('align-center')};
+  gap: 0 18px;
+  border: 1px solid;
+  margin-left: 24%;
+  border-color: ${theme('divider')};
+  border-radius: 10px;
+  padding: 6px 14px;
+  box-shadow: rgba(100, 100, 111, 0.1) 0px 3px 29px 0px;
+  filter: saturate(0.7);
+  margin-top: 20px;
+  width: 135px;
+`
+export const GoodIcon = styled(GoodSVG)`
+  ${css.size(20)};
+`
+export const SodoIcon = styled(SosoSVG)`
+  ${css.size(20)};
+`
+export const BadIcon = styled(BadSVG)`
+  ${css.size(20)};
+`
+
+export const CommentDot = styled.div`
+  position: absolute;
+  right: 126px;
+  bottom: 236px;
+  ${css.circle(14)};
+  ${css.row('align-both')};
+  background: ${theme('rainbow.cyanBg')};
+  z-index: 100;
+`
+export const CommentDotSolid = styled.div`
+  ${css.circle(8)};
+  background: ${theme('rainbow.cyan')};
+  box-shadow: ${theme('button.boxShadow')};
 `

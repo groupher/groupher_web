@@ -1,11 +1,14 @@
 import { FC } from 'react'
 
+import { Br } from '@/widgets/Common'
+
 import {
   Wrapper,
   PinnedItem,
   BookIcon,
-  QuestionIcon,
-  Bar,
+  GithubIcon,
+  DirName,
+  File,
 } from '../../../styles/articles_intro_tabs/help_feat/help_demo/dir_tree'
 
 const DirTree: FC = () => {
@@ -13,32 +16,33 @@ const DirTree: FC = () => {
     <Wrapper>
       <PinnedItem>
         <BookIcon />
-        <Bar width={48} height={8} opacity={0.3} left={6} />
+        <File>全部文档</File>
       </PinnedItem>
       <PinnedItem>
-        <QuestionIcon />
-        <Bar width={52} height={8} opacity={0.4} left={8} />
+        <GithubIcon />
+        <File>Github</File>
       </PinnedItem>
+      <Br top={12} />
 
-      <Bar width={45} height={5} opacity={0.5} left={5} top={28} />
-      <Bar width={40} height={4} opacity={0.2} left={5} top={10} />
-      <Bar width={55} height={4} opacity={0.2} left={5} top={10} />
-      <Bar width={62} height={4} opacity={0.2} left={5} top={10} />
+      <DirName>社区</DirName>
+      <File>基本信息</File>
+      <File>整体布局</File>
+      <File>管理员</File>
 
-      <Bar width={27} height={5} opacity={0.5} left={5} top={20} />
-      <Bar width={45} height={4} opacity={0.2} left={5} top={10} />
-      <Bar width={50} height={4} opacity={0.2} left={5} top={10} />
-      <Bar width={40} height={4} opacity={0.2} left={5} top={10} />
+      <Br top={15} />
+      <DirName>讨论区</DirName>
+      <File>帖子布局</File>
+      <File>标签设置</File>
 
-      <Bar width={32} height={5} opacity={0.5} left={5} top={20} />
-      <Bar width={60} height={4} opacity={0.2} left={5} top={10} />
-      <Bar width={40} height={4} opacity={0.2} left={5} top={10} />
+      <Br top={15} />
+      <DirName opacity={0.75}>看板</DirName>
+      <File opacity={0.7}>看板颜色</File>
+      <File opacity={0.6}>状态转换</File>
+      <Br top={15} />
 
-      <Bar width={40} height={5} opacity={0.5} left={5} top={20} />
-      <Bar width={50} height={4} opacity={0.2} left={5} top={10} />
-      <Bar width={70} height={4} opacity={0.2} left={5} top={10} />
-      <Bar width={30} height={4} opacity={0.2} left={5} top={10} />
-      <Bar width={20} height={4} opacity={0.2} left={5} top={10} />
+      <DirName opacity={0.5}>更新日志</DirName>
+      <File opacity={0.45}>封面编辑器</File>
+      <File opacity={0.4}>基本信息设置</File>
     </Wrapper>
   )
 }
