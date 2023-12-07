@@ -3,13 +3,13 @@ import styled from 'styled-components'
 import type { TSpace, TTestable } from '@/spec'
 import css, { theme } from '@/css'
 
-type TWrapper = TTestable & TSpace
+type TWrapper = TTestable & TSpace & { $noBorder: boolean }
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
 }))<TWrapper>`
   ${css.row('align-center')};
   color: ${theme('article.digest')};
-  border: 1px solid;
+  border: ${({ $noBorder }) => ($noBorder ? 'none' : '1px solid')};
   border-color: ${theme('divider')};
   border-radius: 6px;
 

@@ -4,7 +4,7 @@
  */
 
 import { FC, useEffect, useState } from 'react'
-import dynamic from 'next/dynamic'
+// import dynamic from 'next/dynamic'
 // import { ParallaxProvider } from 'react-scroll-parallax'
 import { useRouter } from 'next/navigation'
 import { observer } from 'mobx-react-lite'
@@ -19,10 +19,11 @@ import FaqList from '@/widgets/FaqList'
 import HomeHeader from '@/widgets/HomeHeader'
 
 import CoverImage from './CoverImage'
-import WallpaperBar from './WallpaperBar'
+// import WallpaperBar from './WallpaperBar'
 
-import FeatureWall from './FeatureWall'
+import ArticlesIntroTabs from './ArticlesIntroTabs'
 import TechStacks from './TechStacks'
+import DashboardIntros from './DashboardIntros'
 import EnjoyDev from './EnjoyDev'
 import UsersWall from './UsersWall'
 
@@ -49,10 +50,6 @@ import {
 
 import { useInit, changeGlowEffect } from './logic'
 
-const ParallaxProvider = dynamic(() => import('./Parallax'), {
-  ssr: false,
-})
-
 const LandingPage: FC = () => {
   const router = useRouter()
   const store = useStore()
@@ -69,7 +66,7 @@ const LandingPage: FC = () => {
 
   return (
     <Wrapper $testid="landing-page">
-      <PatternBg />
+      {/* <PatternBg /> */}
       <DesktopOnly>
         <BgGlow wallpaper={wallpaper} />
       </DesktopOnly>
@@ -113,28 +110,18 @@ const LandingPage: FC = () => {
         </ButtonGroup>
       </Banner>
       <CoverImage wallpaperInfo={wallpaperInfo} bannerLayout={bannerLayout} />
-      <WallpaperBar
+      {/* <WallpaperBar
         wallpaper={wallpaper}
         gradientWallpapers={gradientWallpapers}
         bannerLayout={bannerLayout}
         onLayoutChange={(layout) => setBannerLayout(layout)}
-      />
+      /> */}
 
-      <DesktopOnly>
-        <Divider top={100} bottom={100} />
-      </DesktopOnly>
-      <MobileOnly>
-        <Divider top={50} bottom={50} />
-      </MobileOnly>
+      <ArticlesIntroTabs />
 
-      <FeatureWall />
-      <DesktopOnly>
-        <Divider top={100} bottom={100} />
-      </DesktopOnly>
-      <MobileOnly>
-        <Divider top={50} bottom={50} />
-      </MobileOnly>
+      {/* <FeatureWall /> */}
       <EnjoyDev />
+      <DashboardIntros />
       <DesktopOnly>
         <Divider top={80} bottom={80} />
       </DesktopOnly>

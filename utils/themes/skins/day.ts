@@ -10,7 +10,7 @@ const contentBoxBg = '#fff'
 const fontColor = primaryColor
 const markdownFont = '#9eb8bd'
 const border = '#EAE9E9'
-const link = '#005196' // '#6494cd'
+const link = '#256eab' // '#005196' // '#6494cd'
 
 const actionText = '#647392'
 const descText = '#666'
@@ -71,7 +71,7 @@ const day = {
     red: '#ca5f4d',
     redBg: '#ffbfba3d',
 
-    orange: '#ce9f6f',
+    orange: 'orange',
     orangeBg: '#FEF7E8',
 
     brown: '#8d691e',

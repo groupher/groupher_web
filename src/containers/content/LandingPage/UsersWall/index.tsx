@@ -1,5 +1,4 @@
-import { FC, ReactNode, useState, useEffect } from 'react'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
+import { FC, ReactNode } from 'react'
 
 import { COLOR_NAME } from '@/constant/colors'
 import { mockUsers } from '@/mock'
@@ -74,20 +73,13 @@ const CardsList = () => {
 }
 
 const UsersWall: FC = () => {
-  const [loaded, setLoaded] = useState(false)
-  const { isMobile } = useMobileDetect()
-
-  useEffect(() => {
-    setLoaded(true)
-  }, [])
-
   return (
     <Wrapper>
       <Slogan>
         <Title>被众多优秀开发者和团队青睐</Title>
         <Desc>从独立开发者到中小型创业团队，我们用产品力回报信任</Desc>
       </Slogan>
-      {loaded && <BgGradient />}
+      <BgGradient />
 
       <Wall>
         <WallInner>

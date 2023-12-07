@@ -66,7 +66,7 @@ const night = {
   hint,
   articleCardShadow: '0 2px 40px 0 rgb(62 62 62 / 27%))',
   articleCardHover: '#575757',
-  dashboardBlockOpacity: 0.7,
+  dashboardBlockOpacity: 0.95,
 
   rainbow: {
     red: '#ca5f4d',

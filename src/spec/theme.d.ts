@@ -20,6 +20,7 @@ export type TThemeMap = {
     yellow: string
     green: string
     cyan: string
+    cyanBg: string
     blue: string
     purple: string
 

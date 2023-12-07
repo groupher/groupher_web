@@ -12,7 +12,7 @@ const CoverEditor = dynamic(() => import('@/containers/editor/CoverEditor'), {
 })
 
 const ArticleCover: FC = () => {
-  const [hasCover, setHasCover] = useState(false)
+  const [hasCover, setHasCover] = useState(true)
 
   return (
     <Wrapper>
