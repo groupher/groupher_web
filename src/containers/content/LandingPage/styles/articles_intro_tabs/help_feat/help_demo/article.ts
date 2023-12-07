@@ -18,7 +18,7 @@ export const Wrapper = styled.div`
   width: 368px;
   height: 480px;
   gap: 10px;
-  border-radius: 8px;
+  border-radius: 5px;
   background: ${theme('htmlBg')};
   box-shadow: rgba(100, 100, 111, 0.1) 0px 3px 29px 0px;
   position: relative;
@@ -40,13 +40,15 @@ export const Wrapper = styled.div`
   }
 `
 export const InnerWrapper = styled.div`
+  ${css.column('align-center')};
   width: 100%;
   height: 100%;
   z-index: 10;
   background: ${theme('htmlBg')};
   padding: 15px 30px;
+  padding-top: 25px;
   border: 1px solid;
-  border-radius: 8px;
+  border-radius: 5px;
   border-color: ${theme('divider')};
 `
 export const InnerContent = styled.div`
@@ -84,16 +86,30 @@ export const CoverWrappers = styled.div`
   height: 110px;
   margin-bottom: 12px;
 `
-export const Cover = styled.div`
-  width: 48%;
+type TCover = { $fromBg: string; $toBg: string }
+export const Cover = styled.div<TCover>`
+  ${css.row('align-both')};
+  width: 49%;
   height: 100%;
   border-radius: 8px;
 
-  background: ${theme('rainbow.cyanBg')};
-  backdrop-filter: blur(5px);
+  background: ${theme('rainbow.cyan')};
 
+  background: ${({ $fromBg, $toBg }) => {
+    return `linear-gradient(180deg, ${$fromBg} 0%,  ${$toBg} 100%)`
+    // return `radial-gradient(circle, ${$toBg} 0%, ${$fromBg} 90%)`
+  }};
+
+  backdrop-filter: blur(5px);
   opacity: 0.3;
 `
+export const CoverTitle = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+  color: ${theme('button.fg')};
+  margin-bottom: 50px;
+`
+
 export const Title = styled.div`
   ${css.row('align-center')};
   color: ${theme('article.title')};
@@ -116,17 +132,16 @@ export const ArrowText = styled.div`
   color: ${theme('hint')};
 `
 export const Feedback = styled.div`
-  ${css.row('align-center')};
+  ${css.row('align-both')};
   gap: 0 18px;
   border: 1px solid;
-  margin-left: 24%;
   border-color: ${theme('divider')};
   border-radius: 10px;
-  padding: 6px 14px;
+  padding: 8px 14px;
   box-shadow: rgba(100, 100, 111, 0.1) 0px 3px 29px 0px;
   filter: saturate(0.7);
-  margin-top: 20px;
-  width: 135px;
+  margin-top: 25px;
+  width: 132px;
 `
 export const GoodIcon = styled(GoodSVG)`
   ${css.size(20)};
@@ -140,8 +155,8 @@ export const BadIcon = styled(BadSVG)`
 
 export const CommentDot = styled.div`
   position: absolute;
-  right: 126px;
-  bottom: 236px;
+  right: 120px;
+  bottom: 228px;
   ${css.circle(14)};
   ${css.row('align-both')};
   background: ${theme('rainbow.cyanBg')};

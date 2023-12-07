@@ -1,12 +1,12 @@
 import { FC } from 'react'
 
 import { COLOR_NAME } from '@/constant/colors'
-import { SpaceGrow, DesktopOnly, MobileOnly } from '@/widgets/Common'
+import { SpaceGrow, DesktopOnly } from '@/widgets/Common'
 
 import FeatItem from '../FeatItem'
 import MoreLink from '../MoreLink'
 
-import { FeatList, MobileIntroLists } from '../../styles/articles_intro_tabs/intro_items'
+import { FeatList } from '../../styles/articles_intro_tabs/intro_items'
 
 const Contents = () => {
   const color = COLOR_NAME.RED
@@ -26,20 +26,13 @@ const Contents = () => {
 const IntroItems: FC = () => {
   return (
     <>
-      <MobileOnly>
-        <MobileIntroLists>
-          <Contents />
-          <MoreLink href="/" color={COLOR_NAME.ORANGE} />
-        </MobileIntroLists>
-      </MobileOnly>
-
       <DesktopOnly>
         <FeatList>
           <Contents />
         </FeatList>
 
         <SpaceGrow />
-        <MoreLink href="/" color={COLOR_NAME.ORANGE} />
+        <MoreLink href="/" color={COLOR_NAME.RED} />
       </DesktopOnly>
     </>
   )

@@ -5,8 +5,8 @@ import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   position: absolute;
-  bottom: 150px;
-  right: -68px;
+  bottom: 146px;
+  right: -78px;
   background: ${theme('htmlBg')};
   ${css.column('align-start')};
   z-index: 10;

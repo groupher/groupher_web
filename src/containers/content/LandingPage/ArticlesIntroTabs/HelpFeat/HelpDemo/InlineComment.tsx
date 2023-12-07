@@ -19,7 +19,7 @@ const InlineComment: FC = () => {
         <Avatar src={user[0].avatar} />
         <Nickname>{user[0].nickname}</Nickname>
       </User>
-      <Comment>希望能在标题支持 Emoji 或者自定义图片</Comment>
+      <Comment>可以在行内评论里支持富文本内容吗？</Comment>
     </Wrapper>
   )
 }

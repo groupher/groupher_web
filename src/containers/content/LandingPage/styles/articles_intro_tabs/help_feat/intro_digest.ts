@@ -24,7 +24,7 @@ export const Digest = styled.div`
   line-height: 28px;
   width: 300px;
   margin-top: -40px;
-  margin-bottom: 30px;
+  margin-bottom: 16px;
   font-size: 16px;
 `
 

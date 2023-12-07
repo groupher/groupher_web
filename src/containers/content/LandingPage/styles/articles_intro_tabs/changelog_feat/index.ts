@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   position: relative;
 
   *::selection {
-    background-color: ${theme('rainbow.orange')} !important;
+    background-color: ${theme('rainbow.red')} !important;
     color: white;
   }
 `
