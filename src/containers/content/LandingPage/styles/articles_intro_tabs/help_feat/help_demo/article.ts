@@ -3,8 +3,6 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 import ShareSVG from '@/icons/Share'
-import QuestionSVG from '@/icons/Question'
-import BookSVG from '@/icons/Book'
 import { Bar as BarBase } from '@/widgets/Common'
 
 import ArrowSimple from '@/icons/ArrowSimple'
