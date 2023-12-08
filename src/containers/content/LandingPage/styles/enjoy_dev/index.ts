@@ -24,7 +24,7 @@ export const Slogan = styled.div`
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
-  font-size: 38px;
+  font-size: 32px;
   font-weight: 500;
 
   text-shadow: rgb(0 0 0 / 8%) 0px 10px 20px;

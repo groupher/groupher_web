@@ -43,8 +43,8 @@ const EnjoyDev: FC = () => {
   return (
     <Wrapper>
       <Slogan>
-        <Title>将用户反馈融入开发流程</Title>
-        <Desc>让你心爱的产品尽早收集真实用户的反馈，优先满足用户真正关心的需求</Desc>
+        <Title>发布、获取反馈、迭代</Title>
+        <Desc>将用户反馈融入开发流程，优先满足用户真正关心的需求</Desc>
       </Slogan>
       <Wall ref={ref}>
         <BadWrapper>

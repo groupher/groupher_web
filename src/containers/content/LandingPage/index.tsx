@@ -22,6 +22,7 @@ import CoverImage from './CoverImage'
 // import WallpaperBar from './WallpaperBar'
 
 import ArticlesIntroTabs from './ArticlesIntroTabs'
+import FeatureWall from './FeatureWall'
 import TechStacks from './TechStacks'
 import DashboardIntros from './DashboardIntros'
 import EnjoyDev from './EnjoyDev'
@@ -121,6 +122,7 @@ const LandingPage: FC = () => {
 
       <ArticlesIntroTabs />
 
+      <FeatureWall />
       {/* <FeatureWall /> */}
       <EnjoyDev />
       <DashboardIntros />
