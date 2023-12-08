@@ -68,7 +68,7 @@ export const Size = styled.div<TSize>`
 
   ${ParentWrapper}:hover & {
     color: ${({ $suck }) => ($suck ? theme('rainbow.red') : '')};
-    font-weight: ${({ $suck, $good }) => ($suck || $good ? 500 : 400)};
+    font-weight: ${({ $suck, $good }) => ($suck || $good ? 500 : 450)};
   }
 
   transition: all 0.1s;
