@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import Panel from './Panel'
-import { Wrapper, Footer, Title, Desc } from '../../styles/feature_wall/open_source'
+import { Wrapper, Footer, Title, Desc } from '../../styles/feature_wall/mobile_first'
 
 const OpenSource: FC = () => {
   return (

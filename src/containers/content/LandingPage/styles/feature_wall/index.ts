@@ -33,12 +33,6 @@ export const Desc = styled.div`
   color: ${theme('article.digest')};
   margin-top: 12px;
   opacity: 0.8;
-
-  ${css.media.mobile`
-    font-size: 15px;
-    text-align: center;
-    padding: 0 20px;
-  `};
 `
 export const CardsWrapper = styled.div`
   ${css.row('align-both')};

@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { Wrapper } from '../../styles/feature_wall/open_source/panel'
+import { Wrapper } from '../../styles/feature_wall/mobile_first/panel'
 
 const Panel: FC = () => {
   return (

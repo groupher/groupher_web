@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import BundleSizeCard from './BundleSizeCard'
-import OpenSource from './OpenSource'
+import MobileFirst from './MobileFirst'
 
 import {
   Wrapper,
@@ -22,10 +22,10 @@ const FeatureWall: FC = () => {
       </Slogan>
       <CardsWrapper>
         <LeftCards>
-          <OpenSource />
-          <OpenSource />
-          <OpenSource />
-          <OpenSource />
+          <MobileFirst />
+          <MobileFirst />
+          <MobileFirst />
+          <MobileFirst />
         </LeftCards>
         <RightCards>
           <BundleSizeCard />
