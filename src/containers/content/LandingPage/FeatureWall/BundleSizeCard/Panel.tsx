@@ -9,6 +9,7 @@ import {
   Wrapper,
   Item,
   Header,
+  Icon,
   Title,
   Size,
   BarTrack,
@@ -25,6 +26,7 @@ const Panel: FC = () => {
         return (
           <Item key={item.title} $opacity={item.opacity}>
             <Header>
+              <Icon src={item.icon} $size={item.iconSize || 11} />
               <Title $good={$good}>{item.title}</Title>
               <SpaceGrow />
               <Size $good={$good} $suck={$suck}>

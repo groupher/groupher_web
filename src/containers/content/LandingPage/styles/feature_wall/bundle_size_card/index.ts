@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div`
   ${css.column('align-center', 'justify-end')};
   width: 290px;
-  height: 486px;
+  height: 520px;
   border: 1px solid;
   border-color: ${theme('divider')};
   border-radius: 10px;
@@ -49,7 +49,7 @@ export const WarningMask = styled.div`
   opacity: 0.6;
 
   ${Wrapper}:hover & {
-    height: 230px;
+    height: 250px;
     opacity: 0.8;
   }
 
