@@ -130,21 +130,23 @@ export const ButtonGroup = styled.div`
 `
 export const DemoPanel = styled.div`
   ${css.column()};
-  gap: 5px 0;
-  padding: 6px 2px;
-  width: 100px;
+  gap: 3px 0;
+  padding: 0 2px;
+  width: 110px;
 `
-
 export const DemoMenuItem = styled(Link)`
   ${css.row('justify-between', 'align-center')};
   color: ${theme('article.title')};
   font-size: 14px;
-  padding: 2px 4px;
+  padding: 4px 6px;
   text-decoration: none;
+  border-radius: 5px;
 
   &:hover {
+    color: ${theme('article.title')};
+    background: ${theme('menuHoverBg')};
+    box-shadow: ${theme('button.boxShadow')};
     cursor: pointer;
-    background: ${theme('hoverBg')};
     text-decoration: none;
   }
 `
@@ -157,7 +159,15 @@ export const LinkIcon = styled(LinkSVG)`
     opacity: 1;
   }
 `
-export const ArrowIcon = styled(ArrowSVG)`
+export const ArrowLeftIcon = styled(ArrowSVG)`
+  ${css.size(16)};
+  margin-left: 4px;
+  fill: ${theme('button.fg')};
+  transform: rotate(180deg);
+  margin-right: -5px;
+`
+
+export const ArrowDownIcon = styled(ArrowSVG)`
   ${css.size(16)};
   margin-left: 4px;
   fill: ${theme('article.digest')};

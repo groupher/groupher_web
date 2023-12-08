@@ -43,7 +43,8 @@ import {
   LinkIcon,
   StartButton,
   DemoButton,
-  ArrowIcon,
+  ArrowLeftIcon,
+  ArrowDownIcon,
   Divider,
   FAQWrapper,
 } from './styles'
@@ -72,7 +73,7 @@ const LandingPage: FC = () => {
       </DesktopOnly>
       <Banner>
         <HomeHeader />
-        <BetaText wallpaper={wallpaper}>开发 & 内测中</BetaText>
+        <BetaText wallpaper={wallpaper}>内测中</BetaText>
         <Title>让你的产品聆听用户的声音</Title>
         <Desc>
           讨论区，GTD 看板，更新日志，帮助文档多合一，收集沉淀用户反馈，助你打造更好的产品
@@ -84,7 +85,7 @@ const LandingPage: FC = () => {
               router.push(`/${ROUTE.HOME}/${ROUTE.HELP}`)
             }}
           >
-            开始使用
+            开始使用 <ArrowLeftIcon />
           </StartButton>
 
           <Tooltip
@@ -104,7 +105,7 @@ const LandingPage: FC = () => {
             offset={[1, 5]}
           >
             <DemoButton size="medium" ghost>
-              在线体验 <ArrowIcon />
+              在线体验 <ArrowDownIcon />
             </DemoButton>
           </Tooltip>
         </ButtonGroup>
