@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   ${css.row('align-both')};
   width: 100%;
   height: 728px;
-  background: #fbfbfb;
+  background: ${theme('landing.greyBg')};
   position: relative;
 
   &:after {

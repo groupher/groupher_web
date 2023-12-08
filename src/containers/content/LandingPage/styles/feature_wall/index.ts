@@ -9,7 +9,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
 }))<TTestable>`
   ${css.column('align-both')};
   width: 100%;
-  min-height: 700px;
+  min-height: 800px;
 `
 export const Slogan = styled.div`
   ${css.column('align-both')};
@@ -40,10 +40,20 @@ export const Desc = styled.div`
     padding: 0 20px;
   `};
 `
-
 export const CardsWrapper = styled.div`
   ${css.row('align-both')};
   width: 100%;
   height: 500px;
-  margin-top: 30px;
+  gap: 0 25px;
+  margin-top: 60px;
+`
+export const LeftCards = styled.div`
+  ${css.row('align-start')};
+  flex-wrap: wrap;
+  gap: 25px;
+  width: 45%;
+`
+export const RightCards = styled.div`
+  ${css.row('align-both')};
+  flex-wrap: wrap;
 `

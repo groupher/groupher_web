@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   box-shadow: ${theme('button.boxShadow')};
   padding: 15px;
   width: 250px;
-  height: 384px;
+  height: 415px;
   background: ${theme('htmlBg')};
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
@@ -17,7 +17,7 @@ export const Wrapper = styled.div`
   border-bottom: none;
 `
 export const Item = styled.div`
-  margin-bottom: 14px;
+  margin-bottom: 18px;
 `
 export const Header = styled.div`
   ${css.row('align-center')};
@@ -29,7 +29,6 @@ export const BarTrack = styled.div`
   background: #eae9e987; // ${theme('divider')};
   border-radius: 5px;
 `
-
 type TBar = { width: string; $good?: boolean; $suck?: boolean }
 export const Bar = styled.div<TBar>`
   background: ${({ $good }) => ($good ? theme('rainbow.green') : theme('hint'))};
@@ -42,8 +41,8 @@ export const Bar = styled.div<TBar>`
     background: ${({ $suck }) => ($suck ? theme('rainbow.red') : '')};
   }
 
-  transition: all 0.2s;
-  transition-delay: 0.2s;
+  transition: all 0.1s;
+  transition-delay: 0.1s;
 `
 export const Title = styled.div<{ $good?: boolean }>`
   color: ${({ $good }) => ($good ? theme('rainbow.green') : theme('article.title'))};
@@ -59,9 +58,9 @@ export const Size = styled.div<TSize>`
 
   ${ParentWrapper}:hover & {
     color: ${({ $suck }) => ($suck ? theme('rainbow.red') : '')};
-    font-weight: ${({ $suck }) => ($suck ? 500 : 400)};
+    font-weight: ${({ $suck, $good }) => ($suck || $good ? 500 : 400)};
   }
 
-  transition: all 0.2s;
-  transition-delay: 0.2s;
+  transition: all 0.1s;
+  transition-delay: 0.1s;
 `

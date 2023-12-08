@@ -12,10 +12,6 @@ export const FeatList = styled.div`
   ${css.column()};
   gap: 18px 0;
   margin-top: 28px;
-
-  ${css.media.mobile`
-    ${css.row()};
-  `};
 `
 export const MobileIntroLists = styled.div`
   ${css.rowWrap()};

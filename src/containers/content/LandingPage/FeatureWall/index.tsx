@@ -1,8 +1,17 @@
 import { FC } from 'react'
 
 import BundleSizeCard from './BundleSizeCard'
+import OpenSource from './OpenSource'
 
-import { Wrapper, Slogan, Title, Desc, CardsWrapper } from '../styles/feature_wall'
+import {
+  Wrapper,
+  Slogan,
+  Title,
+  Desc,
+  CardsWrapper,
+  LeftCards,
+  RightCards,
+} from '../styles/feature_wall'
 
 const FeatureWall: FC = () => {
   return (
@@ -12,7 +21,15 @@ const FeatureWall: FC = () => {
         <Desc>无需繁琐配置，即刻拥有功能完善的反馈社区，与用户双赢</Desc>
       </Slogan>
       <CardsWrapper>
-        <BundleSizeCard />
+        <LeftCards>
+          <OpenSource />
+          <OpenSource />
+          <OpenSource />
+          <OpenSource />
+        </LeftCards>
+        <RightCards>
+          <BundleSizeCard />
+        </RightCards>
       </CardsWrapper>
     </Wrapper>
   )

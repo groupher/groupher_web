@@ -12,8 +12,6 @@ import css, { rainbow, rainbowLight, theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.row('align-both')};
-  border-bottom: 1px solid;
-  border-bottom-color: ${theme('divider')};
   gap: 0 64px;
   width: 100%;
 `
