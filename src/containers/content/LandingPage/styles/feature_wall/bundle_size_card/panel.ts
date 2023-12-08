@@ -8,7 +8,7 @@ import { Wrapper as ParentWrapper } from '.'
 export const Wrapper = styled.div`
   box-shadow: ${theme('button.boxShadow')};
   padding: 15px;
-  width: 250px;
+  width: 256px;
   height: 450px;
   background: ${theme('htmlBg')};
   border-top-left-radius: 6px;
