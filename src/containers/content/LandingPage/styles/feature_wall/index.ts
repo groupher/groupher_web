@@ -46,6 +46,7 @@ export const CardsWrapper = styled.div`
   height: 500px;
   gap: 0 25px;
   margin-top: 60px;
+  margin-bottom: 150px;
 `
 export const LeftCards = styled.div`
   ${css.row('align-start')};

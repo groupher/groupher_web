@@ -23,7 +23,7 @@ const Panel: FC = () => {
         const $suck = index > 3
 
         return (
-          <Item key={item.title}>
+          <Item key={item.title} $opacity={item.opacity}>
             <Header>
               <Title $good={$good}>{item.title}</Title>
               <SpaceGrow />

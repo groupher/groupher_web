@@ -16,8 +16,13 @@ export const Wrapper = styled.div`
   border-color: ${theme('divider')};
   border-bottom: none;
 `
-export const Item = styled.div`
+export const Item = styled.div<{ $opacity?: number }>`
   margin-bottom: 18px;
+  opacity: ${({ $opacity }) => $opacity || 1};
+
+  ${ParentWrapper}:hover & {
+    opacity: 1;
+  }
 `
 export const Header = styled.div`
   ${css.row('align-center')};
@@ -35,7 +40,7 @@ export const Bar = styled.div<TBar>`
   border-radius: 6px;
   width: ${({ width }) => width};
   height: 100%;
-  opacity: 0.6;
+  opacity: 0.7;
 
   ${ParentWrapper}:hover & {
     background: ${({ $suck }) => ($suck ? theme('rainbow.red') : '')};
