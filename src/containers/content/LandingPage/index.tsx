@@ -102,6 +102,7 @@ const LandingPage: FC = () => {
               </DemoPanel>
             }
             placement="bottom"
+            delay={200}
             offset={[1, 5]}
           >
             <DemoButton size="medium" ghost>

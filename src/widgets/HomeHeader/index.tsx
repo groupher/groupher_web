@@ -64,6 +64,7 @@ const HomeHeader: FC = () => {
           offset={[-5, 5]}
           onShow={() => setProductActive(true)}
           onHide={() => setProductActive(false)}
+          delay={200}
           noPadding
         >
           <MoreLink $active={productActive}>
@@ -95,6 +96,7 @@ const HomeHeader: FC = () => {
           offset={[-5, 5]}
           onShow={() => setMoreActive(true)}
           onHide={() => setMoreActive(false)}
+          delay={200}
           noPadding
         >
           <MoreLink $active={moreActive}>
