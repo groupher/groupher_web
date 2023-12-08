@@ -2,6 +2,9 @@ import { FC } from 'react'
 
 import BundleSizeCard from './BundleSizeCard'
 import MobileFirst from './MobileFirst'
+import RichContent from './RichContent'
+import DarkMode from './DarkMode'
+import Security from './Security'
 
 import {
   Wrapper,
@@ -23,9 +26,9 @@ const FeatureWall: FC = () => {
       <CardsWrapper>
         <LeftCards>
           <MobileFirst />
-          <MobileFirst />
-          <MobileFirst />
-          <MobileFirst />
+          <RichContent />
+          <DarkMode />
+          <Security />
         </LeftCards>
         <RightCards>
           <BundleSizeCard />
