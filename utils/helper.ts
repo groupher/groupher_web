@@ -136,6 +136,13 @@ export const getRandomInt = (min: number, max: number): number => {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
+export const num2Percent = (decimal: number): string => {
+  if (!decimal) return '0%'
+
+  const percentage = (decimal * 100).toFixed(1)
+  return `${percentage}%`
+}
+
 /**
  * get radom backgrounds from COLOR_NAMEs
  */

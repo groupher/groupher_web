@@ -83,7 +83,7 @@ const day = {
     green: '#699411',
     greenBg: '#eefdd89c',
 
-    greenLight: '#37B784',
+    greenLight: '#79d08f',
     greenLightBg: '#e3f3cc4a',
 
     cyan: '#24878C',

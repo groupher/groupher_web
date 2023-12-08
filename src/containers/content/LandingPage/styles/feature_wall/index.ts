@@ -45,4 +45,5 @@ export const CardsWrapper = styled.div`
   ${css.row('align-both')};
   width: 100%;
   height: 500px;
+  margin-top: 30px;
 `
