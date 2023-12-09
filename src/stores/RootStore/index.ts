@@ -166,9 +166,6 @@ const rootStore = T.model({
     closeDrawer(): void {
       self.drawer.close()
     },
-    changeTheme(name): void {
-      self.theme.changeTheme(name)
-    },
     setViewing(sobj): void {
       self.viewing.setViewing(sobj)
     },

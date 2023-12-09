@@ -1,5 +1,11 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
+import THEME from '@/constant/theme'
+import useTheme from '@/hooks/useTheme'
+
+import type { TCardMetric } from './spec'
+import { CARDS_METRICS } from './constant'
 import DayCard from './DayCard'
 import NightCard from './NightCard'
 
@@ -10,12 +16,26 @@ type TProps = {
 }
 
 const Panel: FC<TProps> = ({ hovering }) => {
+  const { curTheme } = useTheme()
+
+  if (curTheme === THEME.DAY) {
+    return (
+      <Wrapper>
+        <DayCard hovering={hovering} metric={CARDS_METRICS[curTheme][THEME.DAY] as TCardMetric} />
+        <NightCard
+          hovering={hovering}
+          metric={CARDS_METRICS[curTheme][THEME.NIGHT] as TCardMetric}
+        />
+      </Wrapper>
+    )
+  }
+
   return (
     <Wrapper>
-      <DayCard hovering={hovering} />
-      <NightCard hovering={hovering} />
+      <NightCard hovering={hovering} metric={CARDS_METRICS[curTheme][THEME.NIGHT] as TCardMetric} />
+      <DayCard hovering={hovering} metric={CARDS_METRICS[curTheme][THEME.DAY] as TCardMetric} />
     </Wrapper>
   )
 }
 
-export default Panel
+export default observer(Panel)

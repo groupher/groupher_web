@@ -1,8 +1,10 @@
 import { FC } from 'react'
 
 import { COLOR_NAME } from '@/constant/colors'
-
 import { SpaceGrow } from '@/widgets/Common'
+
+import type { TCardMetric } from './spec'
+
 import {
   Wrapper,
   Footer,
@@ -16,17 +18,18 @@ import {
 
 type TProps = {
   hovering: boolean
+  metric: TCardMetric
 }
 
-const NightCard: FC<TProps> = ({ hovering }) => {
+const NightCard: FC<TProps> = ({ hovering, metric }) => {
   return (
     <Wrapper
-      $left={hovering ? 20 : 90}
-      $zIndex={hovering ? 3 : 1}
-      $opacity={hovering ? 1 : 0.9}
-      $width={hovering ? 120 : 120}
-      $height={hovering ? 132 : 160}
-      $top={hovering ? 30 : 18}
+      $top={hovering ? metric.top[0] : metric.top[1]}
+      $left={hovering ? metric.left[0] : metric.left[1]}
+      $width={hovering ? metric.width[0] : metric.width[1]}
+      $height={hovering ? metric.height[0] : metric.height[1]}
+      $zIndex={hovering ? metric.zIndex[0] : metric.zIndex[1]}
+      $opacity={hovering ? metric.opacity[0] : metric.opacity[1]}
     >
       <NightTitle>集成 AI 辅助总结</NightTitle>
       <NightCodeBox>

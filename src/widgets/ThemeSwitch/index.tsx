@@ -21,7 +21,7 @@ type TProps = {
 } & TSpace
 
 const ThemeSwitch: FC<TProps> = ({ testid = 'theme-switch', ...restProps }) => {
-  const { curTheme, changeTheme } = useTheme()
+  const { curTheme, switchTheme } = useTheme()
 
   return (
     <Wrapper $testid={testid} {...restProps}>
@@ -31,9 +31,7 @@ const ThemeSwitch: FC<TProps> = ({ testid = 'theme-switch', ...restProps }) => {
         title="Toggles light & dark"
         aria-label="auto"
         aria-live="polite"
-        onClick={() => {
-          curTheme === THEME.DAY ? changeTheme(THEME.NIGHT) : changeTheme(THEME.DAY)
-        }}
+        onClick={() => switchTheme()}
       >
         {curTheme === THEME.DAY ? <SunIcon /> : <MoonIcon />}
       </Button>

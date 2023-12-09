@@ -2,6 +2,8 @@ import { FC } from 'react'
 
 import { COLOR_NAME } from '@/constant/colors'
 
+import type { TCardMetric } from './spec'
+
 import {
   Wrapper,
   Footer,
@@ -15,16 +17,18 @@ import {
 
 type TProps = {
   hovering: boolean
+  metric: TCardMetric
 }
 
-const DayCard: FC<TProps> = ({ hovering }) => {
+const DayCard: FC<TProps> = ({ hovering, metric }) => {
   return (
     <Wrapper
-      $left={hovering ? 100 : 15}
-      $zIndex={hovering ? 1 : 3}
-      $width={hovering ? 130 : 120}
-      $height={hovering ? 160 : 132}
-      $top={hovering ? 15 : 30}
+      $top={hovering ? metric.top[0] : metric.top[1]}
+      $left={hovering ? metric.left[0] : metric.left[1]}
+      $width={hovering ? metric.width[0] : metric.width[1]}
+      $height={hovering ? metric.height[0] : metric.height[1]}
+      $zIndex={hovering ? metric.zIndex[0] : metric.zIndex[1]}
+      $opacity={hovering ? metric.opacity[0] : metric.opacity[1]}
     >
       <DayTitle>集成 AI 辅助总结</DayTitle>
       <DayCodeBox>

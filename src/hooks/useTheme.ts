@@ -3,10 +3,12 @@ import { MobXProviderContext } from 'mobx-react'
 import { useTheme as useStyledTheme } from 'styled-components'
 
 import type { TThemeName, TThemeMap } from '@/spec'
+import THEME from '@/constant/theme'
 
 type TRet = {
   curTheme: TThemeName
-  changeTheme: (name: TThemeName) => void
+  // changeTheme: (name: TThemeName) => void
+  switchTheme: () => void
   themeMap: TThemeMap
 }
 /**
@@ -20,9 +22,14 @@ const useTheme = (): TRet => {
     throw new Error('Store cannot be null, please add a context provider')
   }
 
+  const { curTheme } = store.theme
+
   return {
-    curTheme: store.theme.curTheme,
-    changeTheme: (name: TThemeName) => store.theme.changeTheme(name),
+    curTheme,
+    // changeTheme: (name: TThemeName) => store.theme.changeTheme(name),
+    switchTheme: () => {
+      store.theme.changeTheme(curTheme === THEME.DAY ? THEME.NIGHT : THEME.DAY)
+    },
     themeMap: styledTheme,
   }
 }
