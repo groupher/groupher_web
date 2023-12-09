@@ -1,5 +1,6 @@
 import { FC } from 'react'
 
+import { COLOR_NAME } from '@/constant/colors'
 import useHover from '@/hooks/useHover'
 
 import Panel from './Panel'
@@ -9,7 +10,7 @@ const Security: FC = () => {
   const [cardRef, isCardHovered] = useHover<HTMLDivElement>()
 
   return (
-    <Wrapper ref={cardRef}>
+    <Wrapper ref={cardRef} $color={COLOR_NAME.GREEN}>
       <Panel hovering={isCardHovered} />
       <Footer>
         <Title>掌控数据</Title>

@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   ${css.row('align-center')};
   padding: 0 18px;
   width: 100%;
-  height: 300px;
+  height: 100%;
   overflow: hidden;
 `
 export const Phone = styled.div`
@@ -21,7 +21,7 @@ export const Phone = styled.div`
   padding-right: 0;
   width: 100px;
   min-width: 100px;
-  height: 150px;
+  height: 177px;
   border: 3px solid;
   border-color: ${theme('article.digest')};
   border-top-left-radius: 10px;

@@ -17,16 +17,16 @@ type TProps = {
 const Panel: FC<TProps> = ({ hovering }) => {
   return (
     <Wrapper>
-      <Line top={30} left={10} />
-      <Line top={72} right={30} width="100px" />
-      <Line top={85} right={10} />
-      <Line top={120} right={30} width="220px" />
+      <Line top={30} left={10} $hovering={hovering} />
+      <Line top={72} right={30} width="100px" $hovering={hovering} />
+      <Line top={85} right={10} $hovering={hovering} />
+      <Line top={120} right={30} width="220px" $hovering={hovering} />
 
-      <Column top={12} left={30} height="168px" />
-      <Column top={12} left={60} height="108px" />
-      <Column top={30} left={100} height="108px" />
-      <Column top={30} right={80} height="148px" />
-      <Column top={30} right={30} height="108px" />
+      <Column top={12} left={30} height="168px" $hovering={hovering} />
+      <Column top={12} left={60} height="108px" $hovering={hovering} />
+      <Column top={30} left={100} height="108px" $hovering={hovering} />
+      <Column top={30} right={80} height="148px" $hovering={hovering} />
+      <Column top={30} right={30} height="108px" $hovering={hovering} />
 
       <BlocksWrapper>
         <Block left={hovering ? 6 : 15}>

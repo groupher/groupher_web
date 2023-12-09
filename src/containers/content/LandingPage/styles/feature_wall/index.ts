@@ -1,19 +1,21 @@
 import styled from 'styled-components'
 
-import type { TTestable } from '@/spec'
+import type { TColor, TTestable } from '@/spec'
 
-import css, { theme } from '@/css'
+import css, { theme, rainbow } from '@/css'
+import { COLORS } from '../../FeatureWall/constant'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
 }))<TTestable>`
   ${css.column('align-both')};
   width: 100%;
-  padding: 80px 0;
-  padding-bottom: 100px;
+  padding: 120px 0;
+  padding-bottom: 150px;
 `
 export const Slogan = styled.div`
   ${css.column('align-both')};
+  margin-bottom: 20px;
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
@@ -31,36 +33,21 @@ export const Desc = styled.div`
   margin-bottom: 80px;
   opacity: 0.8;
 `
-export const BaseCard = styled.div`
+export const BaseCard = styled.div<TColor>`
   ${css.column('align-center', 'justify-end')};
   width: 300px;
-  height: 246px;
-
-  border: 1px solid;
+  height: 278px;
+  background: ${({ $color }) => COLORS[`${$color.toLowerCase()}Bg`]};
+  border: 1px dotted;
   border-color: transparent;
 
-  border-top: 1px solid transparent;
-  border-image: linear-gradient(
-    0.25turn,
-    transparent,
-    ${theme('divider')},
-    ${theme('divider')},
-    ${theme('divider')},
-    transparent
-  );
-  border-image-slice: 1;
-  border-bottom: 1px solid;
-  border-bottom-color: ${theme('divider')};
-
   border-radius: 10px;
-  background: ${theme('landing.greyBg')};
   position: relative;
   cursor: pointer;
   padding: 0 12px;
 
   &:hover {
-    border: 1px solid;
-    border-color: ${theme('hint')};
+    border-color: ${({ $color }) => rainbow($color)};
     box-shadow: ${theme('button.boxShadow')};
   }
   transition: all 0.2s;

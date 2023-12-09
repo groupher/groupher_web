@@ -30,7 +30,7 @@ const Panel: FC<TProps> = ({ hovering }) => {
           <SpaceGrow />
         </Header>
         <Text>
-          这{hovering ? <Highlight>推进器</Highlight> : <>推进器</>}
+          {hovering ? <Highlight $color="CYAN">推进器</Highlight> : <>推进器</>}
           设计有点问题：
         </Text>
         <DemoPic src="landing/starship.png" />

@@ -5,12 +5,12 @@ import css, { theme } from '@/css'
 import { BaseCard } from '..'
 
 export const Wrapper = styled(BaseCard)`
-  height: 520px;
+  height: 582px;
 `
 export const Banner = styled.div`
   ${css.column()};
   padding-left: 20px;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
   width: 100%;
 `
 export const Title = styled.div`
@@ -20,8 +20,9 @@ export const Title = styled.div`
   margin-bottom: 2px;
 `
 export const Desc = styled.div`
-  color: ${theme('hint')};
+  color: ${theme('article.digest')};
   font-size: 13px;
+  opacity: 0.8;
 `
 export const WarningMask = styled.div`
   width: 100%;
@@ -37,7 +38,7 @@ export const WarningMask = styled.div`
   opacity: 0.6;
 
   ${Wrapper}:hover & {
-    height: 250px;
+    height: 300px;
     opacity: 0.8;
   }
 

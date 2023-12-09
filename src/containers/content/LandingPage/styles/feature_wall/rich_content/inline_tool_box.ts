@@ -30,9 +30,7 @@ export const Wrapper = styled.div<{ $hovering: boolean }>`
 type TItem = TActive & { $opacity?: number }
 export const Item = styled.div<TItem>`
   ${css.row('align-center')};
-  background: ${({ $active }) => ($active ? theme('rainbow.orangeBg') : 'transparent')};
-  border: ${({ $active }) => ($active ? '1px solid' : 'none')};
-  border-color: ${({ $active }) => ($active ? theme('divider') : '')};
+  background: ${({ $active }) => ($active ? theme('rainbow.cyanBg') : 'transparent')};
   opacity: ${({ $opacity }) => $opacity || 1};
   padding: 2px;
   border-radius: 3px;
@@ -54,6 +52,6 @@ export const ICON = {
   Strike: commonIcon(StrikeSVG),
   Link: commonIcon(LinkSVG),
   Highlight: styled(commonIcon(HighlightSVG))`
-    fill: ${theme('rainbow.orange')};
+    fill: ${theme('rainbow.cyan')};
   `,
 }

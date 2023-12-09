@@ -10,7 +10,10 @@ export const Wrapper = styled.div<{ tab: TThread }>`
   width: 100%;
   height: ${({ tab }) => {
     if (tab === THREAD.KANBAN) return '700px'
-    return '640px'
+    if (tab === THREAD.CHANGELOG) return '640px'
+    if (tab === THREAD.DOC) return '650px'
+
+    return '620px'
   }};
   background: ${theme('landing.greyBg')};
   transition: all 0.15s;

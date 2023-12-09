@@ -6,19 +6,19 @@ import Img from '@/Img'
 import { Wrapper as ParentWrapper } from '.'
 
 export const Wrapper = styled.div`
-  box-shadow: ${theme('button.boxShadow')};
   padding: 15px;
   width: 256px;
-  height: 450px;
+  height: 500px;
   background: ${theme('htmlBg')};
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   border: 1px solid;
-  border-color: ${theme('divider')};
+  border-color: ${theme('rainbow.orangeBg')};
+  box-shadow: ${theme('button.boxShadow')};
   border-bottom: none;
 `
 export const Item = styled.div<{ $opacity?: number }>`
-  margin-bottom: 20px;
+  margin-bottom: 19px;
   opacity: ${({ $opacity }) => $opacity || 1};
 
   ${ParentWrapper}:hover & {
@@ -27,7 +27,7 @@ export const Item = styled.div<{ $opacity?: number }>`
 `
 export const Header = styled.div`
   ${css.row('align-center')};
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 `
 export const IconWrapper = styled.div`
   ${css.size(13)};

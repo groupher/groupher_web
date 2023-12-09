@@ -10,6 +10,7 @@ export const Header = styled.div`
   ${css.column()};
   width: 100%;
   padding: 15px 18px;
+  margin-top: 6px;
 `
 export const Title = styled.div`
   color: ${theme('article.digest')};
@@ -20,4 +21,5 @@ export const Title = styled.div`
 export const Desc = styled.div`
   color: ${theme('article.digest')};
   font-size: 13px;
+  opacity: 0.8;
 `

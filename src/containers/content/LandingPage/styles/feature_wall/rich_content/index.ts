@@ -18,6 +18,7 @@ export const Title = styled.div`
   margin-bottom: 2px;
 `
 export const Desc = styled.div`
-  color: ${theme('hint')};
+  color: ${theme('article.digest')};
   font-size: 13px;
+  opacity: 0.8;
 `

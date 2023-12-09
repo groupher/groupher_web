@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
-import type { TActive } from '@/spec'
-import css, { theme } from '@/css'
+import type { TActive, TColor } from '@/spec'
+import css, { theme, rainbow } from '@/css'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
@@ -36,12 +36,29 @@ export const Text = styled.div`
   margin-left: 8px;
   margin-top: 2px;
 `
-export const Highlight = styled.span<TActive>`
-  color: ${theme('rainbow.orange')};
-  background: ${theme('rainbow.orangeBg')};
-  font-weight: 450;
+export const Highlight = styled.span<TActive & TColor>`
+  color: ${theme('rainbow.cyan')};
   margin-left: 1px;
   margin-right: 1px;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 1px;
+    background: ${(props) => {
+      const { $color } = props
+      // @ts-ignore
+      const colorVal = rainbow($color)(props)
+
+      return `linear-gradient(180deg, transparent 30%, ${colorVal} 0)`
+    }};
+    width: 100%;
+    height: 8px;
+    opacity: 0.1;
+    border-radius: 3px;
+  }
 `
 export const DemoPic = styled(Img)`
   opacity: 0.8;

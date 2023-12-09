@@ -14,24 +14,28 @@ import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   padding: 15px;
+  padding-top: 30px;
   width: 100%;
-  height: 310px;
+  height: 100%;
   overflow: hidden;
   position: relative;
 `
-
-export const Column = styled(WithPosition)<{ height: string }>`
+type TLine = { height?: string; width?: string; $hovering: boolean }
+export const Column = styled(WithPosition)<TLine>`
   height: ${({ height }) => height || '100px'};
   width: 1px;
-  background: ${theme('divider')};
+  background: ${({ $hovering }) => ($hovering ? theme('rainbow.green') : theme('divider'))};
+  opacity: ${({ $hovering }) => ($hovering ? 0.3 : 1)};
   z-index: 2;
+  transition: all 0.2s;
 `
-
-export const Line = styled(WithPosition)<{ width: string }>`
+export const Line = styled(WithPosition)<TLine>`
   width: ${({ width }) => width || '200px'};
   height: 1px;
-  background: ${theme('divider')};
+  background: ${({ $hovering }) => ($hovering ? theme('rainbow.green') : theme('divider'))};
+  opacity: ${({ $hovering }) => ($hovering ? 0.3 : 1)};
   z-index: 2;
+  transition: all 0.2s;
 `
 
 export const BlocksWrapper = styled.div`

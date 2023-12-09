@@ -1,5 +1,7 @@
 import { FC } from 'react'
 
+import { COLOR_NAME } from '@/constant/colors'
+
 import Panel from './Panel'
 import {
   Wrapper,
@@ -11,7 +13,7 @@ import {
 
 const BundleSizeCard: FC = () => {
   return (
-    <Wrapper>
+    <Wrapper $color={COLOR_NAME.PURPLE}>
       <Banner>
         <Title>精简 & 轻量</Title>
         <Desc>对比国内外同类服务，体积更小</Desc>

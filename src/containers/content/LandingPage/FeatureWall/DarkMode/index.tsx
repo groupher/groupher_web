@@ -1,5 +1,6 @@
 import { FC } from 'react'
 
+import { COLOR_NAME } from '@/constant/colors'
 import useHover from '@/hooks/useHover'
 import useTheme from '@/hooks/useTheme'
 
@@ -12,7 +13,7 @@ const DarkMode: FC = () => {
   const [ref, isHovered] = useHover<HTMLDivElement>()
 
   return (
-    <Wrapper ref={ref} onClick={() => switchTheme()}>
+    <Wrapper ref={ref} onClick={() => switchTheme()} $color={COLOR_NAME.PINK}>
       <Panel hovering={isHovered} />
       <Footer>
         <Title>暗黑模式</Title>

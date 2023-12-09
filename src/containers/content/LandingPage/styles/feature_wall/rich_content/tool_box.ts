@@ -14,10 +14,10 @@ export const Wrapper = styled.div<{ $hovering: boolean }>`
   position: absolute;
 
   right: ${({ $hovering }) => ($hovering ? '-15px' : '-5px')};
-  top: ${({ $hovering }) => ($hovering ? '28px' : '30px')};
+  top: ${({ $hovering }) => ($hovering ? '28px' : '45px')};
 
   width: 100px;
-  height: 135px;
+  height: 142px;
   padding: 0 5px;
   padding-top: 3px;
   background: ${theme('landing.greyBg')};
@@ -39,6 +39,7 @@ export const Item = styled.div<TItem>`
   opacity: ${({ $opacity }) => $opacity || 1};
   padding: 2px 8px;
   border-radius: 3px;
+  margin-top: 1px;
 `
 export const IconWrapper = styled.div`
   ${css.size(11)};
