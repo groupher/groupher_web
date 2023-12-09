@@ -28,6 +28,8 @@ export const Phone = styled.div`
   border-top-right-radius: 10px;
   border-bottom: none;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  // hide the shadow
+  margin-bottom: -1px;
 `
 export const BlocksWrapper = styled.div`
   ${css.row()};

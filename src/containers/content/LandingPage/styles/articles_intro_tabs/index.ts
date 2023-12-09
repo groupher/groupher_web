@@ -6,7 +6,6 @@ export const Wrapper = styled.div`
   ${css.column('align-both')};
   width: 100%;
   margin-top: 140px;
-  margin-bottom: 130px;
 `
 export const FeatList = styled.div`
   ${css.column()};

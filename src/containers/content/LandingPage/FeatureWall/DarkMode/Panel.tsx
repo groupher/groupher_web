@@ -1,11 +1,19 @@
 import { FC } from 'react'
 
+import DayCard from './DayCard'
+import NightCard from './NightCard'
+
 import { Wrapper } from '../../styles/feature_wall/dark_mode/panel'
 
-const Panel: FC = () => {
+type TProps = {
+  hovering: boolean
+}
+
+const Panel: FC<TProps> = ({ hovering }) => {
   return (
     <Wrapper>
-      <div>hello</div>
+      <DayCard hovering={hovering} />
+      <NightCard hovering={hovering} />
     </Wrapper>
   )
 }

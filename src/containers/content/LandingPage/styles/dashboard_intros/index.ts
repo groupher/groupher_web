@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 export const Wrapper = styled.div`
-  margin-top: 100px;
   ${css.row('align-both')};
   width: 100%;
   height: 728px;
