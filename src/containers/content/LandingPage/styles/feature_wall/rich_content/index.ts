@@ -7,12 +7,9 @@ import { BaseCard } from '..'
 export const Wrapper = styled(BaseCard)``
 export const Footer = styled.div`
   ${css.column()};
-  padding-left: 18px;
-  margin-top: 10px;
   width: 100%;
   padding: 15px 10px;
-  border-top: 1px solid;
-  border-top-color: ${theme('divider')};
+  padding-top: 0;
 `
 export const Title = styled.div`
   color: ${theme('article.digest')};
