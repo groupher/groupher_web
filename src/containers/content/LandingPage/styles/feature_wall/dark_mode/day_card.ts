@@ -9,27 +9,8 @@ import { BaseCard } from './panel'
 
 export { Footer } from './panel'
 
-type TWrapper = {
-  $left: number
-  $zIndex: number
-  $opacity?: number
-  $width?: number
-  $height?: number
-  $top?: number
-}
-export const Wrapper = styled(BaseCard)<TWrapper>`
-  width: ${({ $width }) => `${$width}px`};
-  height: ${({ $height }) => `${$height}px`};
-
-  position: absolute;
-  left: ${({ $left }) => `${$left}px`};
-  top: ${({ $top }) => `${$top}px`};
-  opacity: ${({ $opacity }) => `${$opacity || 1}`};
-
-  z-index: ${({ $zIndex }) => `${$zIndex || 1}`};
+export const Wrapper = styled(BaseCard)`
   background: ${DAY_THEMES.htmlBg};
-
-  transition: all 0.2s;
 `
 export const Item = styled.div`
   ${css.row('align-center')};
