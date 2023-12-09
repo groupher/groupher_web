@@ -8,12 +8,12 @@ import type { TCardMetric } from './spec'
 import {
   Wrapper,
   Footer,
-  NightUpvoteIcon,
-  Item,
-  NightBar,
-  NightTitle,
-  NightCodeBox,
-  NightCount,
+  UpvoteIcon,
+  CodeItem,
+  Bar,
+  Title,
+  CodeBox,
+  Count,
 } from '../../styles/feature_wall/dark_mode/night_card'
 
 type TProps = {
@@ -31,31 +31,31 @@ const NightCard: FC<TProps> = ({ hovering, metric }) => {
       $zIndex={hovering ? metric.zIndex[0] : metric.zIndex[1]}
       $opacity={hovering ? metric.opacity[0] : metric.opacity[1]}
     >
-      <NightTitle>集成 AI 辅助总结</NightTitle>
-      <NightCodeBox>
-        <Item>
-          <NightBar $color={COLOR_NAME.CYAN} width={20} />
-          <NightBar $color={COLOR_NAME.PURPLE} width={40} />
-        </Item>
-        <Item>
-          <NightBar $color={COLOR_NAME.ORANGE} width={30} />
-          <NightBar $color={COLOR_NAME.BLUE} width={20} />
-          <NightBar $color={COLOR_NAME.RED} width={15} />
-        </Item>
-        <Item>
-          <NightBar $color={COLOR_NAME.CYAN} width={20} />
-          <NightBar $color={COLOR_NAME.PURPLE} width={40} />
-        </Item>
-        <Item>
-          <NightBar $color={COLOR_NAME.BLUE} width={30} />
-          <NightBar $color={COLOR_NAME.PINK} width={20} />
-          <NightBar $color={COLOR_NAME.RED} width={10} />
-        </Item>
-      </NightCodeBox>
+      <Title>集成 AI 辅助总结</Title>
+      <CodeBox>
+        <CodeItem>
+          <Bar $color={COLOR_NAME.CYAN} width={20} />
+          <Bar $color={COLOR_NAME.PURPLE} width={40} />
+        </CodeItem>
+        <CodeItem>
+          <Bar $color={COLOR_NAME.ORANGE} width={30} />
+          <Bar $color={COLOR_NAME.BLUE} width={20} />
+          <Bar $color={COLOR_NAME.RED} width={15} />
+        </CodeItem>
+        <CodeItem>
+          <Bar $color={COLOR_NAME.CYAN} width={20} />
+          <Bar $color={COLOR_NAME.PURPLE} width={40} />
+        </CodeItem>
+        <CodeItem>
+          <Bar $color={COLOR_NAME.BLUE} width={30} />
+          <Bar $color={COLOR_NAME.PINK} width={20} />
+          <Bar $color={COLOR_NAME.RED} width={10} />
+        </CodeItem>
+      </CodeBox>
       <SpaceGrow />
-      <Footer>
-        <NightUpvoteIcon />
-        <NightCount>666</NightCount>
+      <Footer top={16}>
+        <UpvoteIcon />
+        <Count>666</Count>
       </Footer>
     </Wrapper>
   )

@@ -39,7 +39,7 @@ export const BlocksWrapper = styled.div`
   flex-wrap: wrap;
   gap: 12px;
 `
-export const Block = styled(WithMargin)`
+export const Block = styled(WithMargin)<{ $opacity?: number }>`
   ${css.row('align-both')};
   color: ${theme('article.digest')};
   min-height: 34px;
@@ -51,6 +51,7 @@ export const Block = styled(WithMargin)`
   background: ${theme('htmlBg')};
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   z-index: 2;
+  opacity: ${({ $opacity }) => $opacity || 1};
 
   transition: all 0.2s;
 `

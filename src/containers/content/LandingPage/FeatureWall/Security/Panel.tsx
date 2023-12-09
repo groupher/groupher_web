@@ -49,11 +49,11 @@ const Panel: FC<TProps> = ({ hovering }) => {
           <ICON.Search />
           <Title>SEO</Title>
         </Block>
-        <Block left={hovering ? 35 : 25}>
+        <Block left={hovering ? 35 : 25} $opacity={0.8}>
           <ICON.Auth />
           <Title>灵活权限</Title>
         </Block>
-        <Block>
+        <Block $opacity={0.8}>
           <ICON.Cloud />
           <Title>私有部署</Title>
         </Block>

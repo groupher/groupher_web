@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 
+import type { TColor } from '@/spec'
 import css, { theme } from '@/css'
 
 import { WithMargin } from '@/widgets/Common'
@@ -46,4 +47,28 @@ export const BaseCard = styled.div<TBaseCard>`
   z-index: ${({ $zIndex }) => `${$zIndex || 1}`};
 
   transition: all 0.35s;
+`
+type TBar = { width: number } & { opacity?: number } & TColor
+export const BaseBar = styled.div<TBar>`
+  height: 4px;
+  width: ${({ width }) => `${width || 30}px`};
+  border-radius: 5px;
+  opacity: ${({ opacity }) => opacity || 0.4};
+`
+export const BaseCodeBox = styled.div`
+  width: 100%;
+  min-height: 54px;
+  padding: 8px 3px;
+  padding-bottom: 0;
+  border-radius: 5px;
+`
+export const BaseCount = styled.div`
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: 2px;
+`
+export const CodeItem = styled.div`
+  ${css.row('align-center')};
+  gap: 6px;
+  margin-bottom: 7px;
 `
