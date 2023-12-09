@@ -2,6 +2,7 @@ import { FC } from 'react'
 
 import { COLOR_NAME } from '@/constant/colors'
 
+import { SpaceGrow } from '@/widgets/Common'
 import {
   Wrapper,
   Footer,
@@ -19,7 +20,14 @@ type TProps = {
 
 const NightCard: FC<TProps> = ({ hovering }) => {
   return (
-    <Wrapper $left={hovering ? 40 : 90} $zIndex={hovering ? 3 : 1} $opacity={hovering ? 1 : 0.9}>
+    <Wrapper
+      $left={hovering ? 20 : 90}
+      $zIndex={hovering ? 3 : 1}
+      $opacity={hovering ? 1 : 0.9}
+      $width={hovering ? 120 : 120}
+      $height={hovering ? 132 : 160}
+      $top={hovering ? 30 : 18}
+    >
       <NightTitle>集成 AI 辅助总结</NightTitle>
       <NightCodeBox>
         <Item>
@@ -41,7 +49,8 @@ const NightCard: FC<TProps> = ({ hovering }) => {
           <NightBar $color={COLOR_NAME.RED} width={10} />
         </Item>
       </NightCodeBox>
-      <Footer top={28}>
+      <SpaceGrow />
+      <Footer>
         <NightUpvoteIcon />
         <NightCount>666</NightCount>
       </Footer>

@@ -19,7 +19,13 @@ type TProps = {
 
 const DayCard: FC<TProps> = ({ hovering }) => {
   return (
-    <Wrapper $left={hovering ? 120 : 15} $zIndex={hovering ? 1 : 3}>
+    <Wrapper
+      $left={hovering ? 100 : 15}
+      $zIndex={hovering ? 1 : 3}
+      $width={hovering ? 130 : 120}
+      $height={hovering ? 160 : 132}
+      $top={hovering ? 15 : 30}
+    >
       <DayTitle>集成 AI 辅助总结</DayTitle>
       <DayCodeBox>
         <Item>

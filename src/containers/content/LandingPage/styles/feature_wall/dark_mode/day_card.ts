@@ -9,14 +9,21 @@ import { BaseCard } from './panel'
 
 export { Footer } from './panel'
 
-type TWrapper = { $left: number; $zIndex: number; $opacity?: number }
+type TWrapper = {
+  $left: number
+  $zIndex: number
+  $opacity?: number
+  $width?: number
+  $height?: number
+  $top?: number
+}
 export const Wrapper = styled(BaseCard)<TWrapper>`
-  width: 120px;
-  height: 125px;
+  width: ${({ $width }) => `${$width}px`};
+  height: ${({ $height }) => `${$height}px`};
 
   position: absolute;
   left: ${({ $left }) => `${$left}px`};
-  top: 30px;
+  top: ${({ $top }) => `${$top}px`};
   opacity: ${({ $opacity }) => `${$opacity || 1}`};
 
   z-index: ${({ $zIndex }) => `${$zIndex || 1}`};
