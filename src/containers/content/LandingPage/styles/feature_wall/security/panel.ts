@@ -8,7 +8,7 @@ import HashSVG from '@/icons/HashTagBold'
 import UploadSVG from '@/icons/Upload'
 import CloudSVG from '@/icons/CloudCheck'
 
-import { WithMargin } from '@/widgets/Common'
+import { WithMargin, WithPosition } from '@/widgets/Common'
 
 import css, { theme } from '@/css'
 
@@ -17,16 +17,32 @@ export const Wrapper = styled.div`
   width: 100%;
   height: 310px;
   overflow: hidden;
+  position: relative;
 `
+
+export const Column = styled(WithPosition)<{ height: string }>`
+  height: ${({ height }) => height || '100px'};
+  width: 1px;
+  background: ${theme('divider')};
+  z-index: 2;
+`
+
+export const Line = styled(WithPosition)<{ width: string }>`
+  width: ${({ width }) => width || '200px'};
+  height: 1px;
+  background: ${theme('divider')};
+  z-index: 2;
+`
+
 export const BlocksWrapper = styled.div`
   ${css.row('align-center')};
   flex-wrap: wrap;
-  gap: 15px 12px;
+  gap: 12px;
 `
 export const Block = styled(WithMargin)`
   ${css.row('align-both')};
   color: ${theme('article.digest')};
-  min-height: 32px;
+  min-height: 34px;
   width: auto;
   padding: 0 8px;
   border: 1px solid;
@@ -34,6 +50,9 @@ export const Block = styled(WithMargin)`
   border-color: ${theme('divider')};
   background: ${theme('htmlBg')};
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  z-index: 2;
+
+  transition: all 0.2s;
 `
 export const Title = styled.div`
   font-size: 12px;
