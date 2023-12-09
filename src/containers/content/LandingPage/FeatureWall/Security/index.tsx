@@ -8,8 +8,8 @@ const Security: FC = () => {
     <Wrapper>
       <Panel />
       <Footer>
-        <Title>数据安全</Title>
-        <Desc>Groupher 所有代码均开源，私有部署无限制。</Desc>
+        <Title>掌控数据</Title>
+        <Desc>在安全的前提下，管理社区内容以及无缝部署迁移，来去自由。</Desc>
       </Footer>
     </Wrapper>
   )
