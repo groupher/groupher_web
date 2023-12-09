@@ -5,11 +5,11 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div`
   ${css.column('align-center', 'justify-end')};
   width: 290px;
-  height: 245px;
+  height: 246px;
   border: 1px solid;
   border-color: ${theme('divider')};
   border-radius: 10px;
-  background: ${theme('htmlBg')};
+  background: ${theme('landing.greyBg')};
   position: relative;
   cursor: pointer;
 
@@ -18,14 +18,10 @@ export const Wrapper = styled.div`
   }
   transition: all 0.2s;
 `
-export const Footer = styled.div`
+export const Header = styled.div`
   ${css.column()};
-  padding-left: 18px;
-  margin-top: 10px;
   width: 100%;
-  padding: 15px 10px;
-  border-top: 1px solid;
-  border-top-color: ${theme('divider')};
+  padding: 15px 18px;
 `
 export const Title = styled.div`
   color: ${theme('article.digest')};
@@ -34,6 +30,6 @@ export const Title = styled.div`
   margin-bottom: 2px;
 `
 export const Desc = styled.div`
-  color: ${theme('hint')};
+  color: ${theme('article.digest')};
   font-size: 13px;
 `

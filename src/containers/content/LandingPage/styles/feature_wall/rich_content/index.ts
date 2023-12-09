@@ -5,7 +5,7 @@ import css, { theme } from '@/css'
 export const Wrapper = styled.div`
   ${css.column('align-center', 'justify-end')};
   width: 290px;
-  height: 245px;
+  height: 246px;
   border: 1px solid;
   border-color: ${theme('divider')};
   border-radius: 10px;

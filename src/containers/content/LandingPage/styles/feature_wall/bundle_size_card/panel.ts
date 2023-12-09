@@ -29,9 +29,13 @@ export const Header = styled.div`
   ${css.row('align-center')};
   margin-bottom: 3px;
 `
+export const IconWrapper = styled.div`
+  ${css.size(13)};
+  ${css.row('align-both')};
+  margin-right: 6px;
+`
 export const Icon = styled(Img)<{ $size: number }>`
   ${({ $size }) => css.size($size)};
-  margin-right: 5px;
 `
 export const BarTrack = styled.div`
   height: 5px;
