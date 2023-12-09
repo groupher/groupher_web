@@ -2,32 +2,20 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/css'
 
-export const Wrapper = styled.div`
-  ${css.column('align-center', 'justify-end')};
-  width: 290px;
-  height: 520px;
-  border: 1px solid;
-  border-color: ${theme('divider')};
-  border-radius: 10px;
-  background: ${theme('landing.greyBg')};
-  position: relative;
-  box-shadow: ${theme('button.boxShadow')};
-  cursor: pointer;
+import { BaseCard } from '..'
 
-  &:hover {
-    border-color: ${theme('hint')};
-  }
-  transition: all 0.2s;
+export const Wrapper = styled(BaseCard)`
+  height: 520px;
 `
 export const Banner = styled.div`
   ${css.column()};
-  padding-left: 25px;
+  padding-left: 20px;
   margin-bottom: 10px;
   width: 100%;
 `
 export const Title = styled.div`
-  color: ${theme('article.title')};
-  font-size: 16px;
+  color: ${theme('article.digest')};
+  font-size: 15px;
   font-weight: 500;
   margin-bottom: 2px;
 `

@@ -2,27 +2,15 @@ import styled from 'styled-components'
 
 import css, { theme } from '@/css'
 
-export const Wrapper = styled.div`
-  ${css.column('align-center', 'justify-end')};
-  width: 290px;
-  height: 246px;
-  background: ${theme('landing.greyBg')};
-  border: 1px solid;
-  border-color: ${theme('divider')};
-  border-radius: 10px;
-  position: relative;
-  cursor: pointer;
+import { BaseCard } from '..'
 
-  &:hover {
-    border-color: ${theme('hint')};
-  }
-  transition: all 0.2s;
+export const Wrapper = styled(BaseCard)`
+  padding: 0;
 `
 export const Footer = styled.div`
   ${css.column()};
-  padding-left: 18px;
   width: 100%;
-  padding: 15px 10px;
+  padding: 15px 20px;
 `
 export const Title = styled.div`
   color: ${theme('article.digest')};

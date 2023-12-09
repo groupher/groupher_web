@@ -14,7 +14,7 @@ const BundleSizeCard: FC = () => {
     <Wrapper>
       <Banner>
         <Title>精简 & 轻量</Title>
-        <Desc>对比国内外类似服务，体积更小</Desc>
+        <Desc>对比国内外同类服务，体积更小</Desc>
       </Banner>
       <Panel />
       <WarningMask />
