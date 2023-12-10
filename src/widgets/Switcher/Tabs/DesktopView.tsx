@@ -12,7 +12,6 @@ import useMobileDetect from '@groupher/use-mobile-detect-hook'
 import type { TSizeSM, TTabItem } from '@/spec'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import SIZE from '@/constant/size'
-import C11N from '@/constant/c11n'
 
 import { isString } from '@/validator'
 import { buildLog } from '@/logger'

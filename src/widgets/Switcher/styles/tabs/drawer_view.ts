@@ -10,12 +10,10 @@ export const Wrapper = styled.nav.attrs<TTestable>(({ $testid }) => ({
   position: relative;
   overflow: hidden;
   width: 100%;
-  height: 36px;
-  border: 2px solid;
-  border-color: ${theme('divider')};
-  border-radius: 8px;
-  background: ${theme('divider')};
-  padding: 0 1px;
+  height: 38px;
+  border-radius: 10px;
+  background: ${theme('hoverBg')};
+  padding: 1px 3px;
 `
 export const TabItem = styled.div<TActive>`
   ${css.row('align-both')};
@@ -26,11 +24,13 @@ export const TabItem = styled.div<TActive>`
   font-weight: ${({ $active }) => ($active ? 600 : 'normal')};
   font-size: 12px;
   flex-grow: 1;
-  border-radius: 8px;
+  border-radius: 10px;
   margin-left: 1px;
   margin-right: 1px;
 
-  box-shadow: ${({ $active }) => ($active ? 'rgb(0 0 0 / 15%) 0px 5px 15px 0px;' : 'none')};
+  border: 1px solid transparent;
+  border-color: ${({ $active }) => ($active ? theme('divider') : 'transparent')};
+  box-shadow: ${({ $active }) => ($active ? 'rgb(0 0 0 / 12%) 0px 2px 12px 0px;' : 'none')};
 
   &:hover {
     font-weight: 600;

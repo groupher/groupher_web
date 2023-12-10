@@ -2,28 +2,13 @@ import styled from 'styled-components'
 
 import type { TTestable, TActive } from '@/spec'
 import css, { theme } from '@/css'
-import { LineDivider } from '@/widgets/Common'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
 }))<TTestable>`
   position: relative;
-  height: 100%;
-`
-export const MainDivider = styled.div`
-  margin-top: 35px;
-  margin-bottom: 35px;
-  border-bottom: 1px solid transparent;
-  border-image: linear-gradient(
-    0.35turn,
-    transparent,
-    ${theme('divider')},
-    ${theme('divider')},
-    ${theme('divider')},
-    transparent
-  );
-
-  border-image-slice: 1;
+  border: 1px solid transparent;
+  margin-left: 30px;
 `
 export const Title = styled.div`
   font-size: 14px;
@@ -48,15 +33,29 @@ export const ToggleTitle = styled.div`
   margin-left: 1px;
   margin-top: 2px;
 `
-export const Divider = styled(LineDivider)`
-  height: 80px;
-  margin-left: 30px;
-  margin-right: 45px;
-  margin-top: 45px;
+export const Divider = styled.div`
+  height: 100px;
+  width: 1px;
+  margin-left: 28px;
+  margin-top: 30px;
+
+  margin-right: 35px;
+  border-right: 1px solid transparent;
+  border-image: linear-gradient(
+    0.76turn,
+    transparent,
+    ${theme('divider')},
+    ${theme('divider')},
+    ${theme('divider')},
+    transparent
+  );
+
+  border-image-slice: 1;
 `
 export const GeneralSettings = styled.div`
   width: 45%;
 `
 export const AngleSettings = styled.div`
   margin-top: -1px;
+  margin-left: 10px;
 `

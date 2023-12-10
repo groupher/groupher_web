@@ -49,10 +49,11 @@ const PictureGroup: FC<TProps> = ({ wallpaper, patternWallpapers }) => {
           </Block>
         )
       })}
+
       <ShowMoreMask showMore={showMore}>
         <Button ghost noBorder size="small" top={60} onClick={() => setShowMore(!showMore)}>
           <CircleArrow showMore={showMore} />
-          {!showMore && <>查看全部</>}
+          {!showMore ? <>查看全部</> : <>收起</>}
         </Button>
       </ShowMoreMask>
     </Wrapper>

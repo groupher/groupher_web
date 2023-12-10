@@ -10,7 +10,6 @@ import VIEW from '@/constant/view'
 
 import { DesktopOnly, MobileOnly } from '@/widgets/Common'
 import Tabs from '@/widgets/Switcher/Tabs'
-import CustomScroller from '@/widgets/CustomScroller'
 
 import { useStore } from './store'
 import { TAB, TAB_OPTIONS } from './constant'
@@ -41,13 +40,12 @@ const WallpaperEditor: FC = () => {
         </Content>
       </MobileOnly>
       <DesktopOnly>
-        <CustomScroller barSize="small" showShadow={false} autoHide={false}>
-          <Content>
-            {tab === TAB.BUILDIN && <BuildIn wallpaperData={wallpaperData} />}
-            {tab === TAB.UPLOAD && <UploadPic />}
-          </Content>
-        </CustomScroller>
+        <Content>
+          {tab === TAB.BUILDIN && <BuildIn wallpaperData={wallpaperData} />}
+          {tab === TAB.UPLOAD && <UploadPic />}
+        </Content>
       </DesktopOnly>
+
       <Footer wallpaperType={wallpaperData.wallpaperType} isTouched={isTouched} loading={loading} />
     </Wrapper>
   )

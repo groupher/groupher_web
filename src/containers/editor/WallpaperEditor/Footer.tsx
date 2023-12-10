@@ -3,7 +3,7 @@ import { FC, memo } from 'react'
 import type { TWallpaperType } from '@/spec'
 import { WALLPAPER_TYPE } from '@/constant/wallpaper'
 
-import { SpaceGrow, SexyDivider } from '@/widgets/Common'
+import { SpaceGrow } from '@/widgets/Common'
 import YesOrNoButtons from '@/widgets/Buttons/YesOrNoButtons'
 import Button from '@/widgets/Buttons/Button'
 
@@ -18,7 +18,6 @@ type TProps = {
 const Footer: FC<TProps> = ({ wallpaperType, isTouched, loading }) => {
   return (
     <Wrapper>
-      <SexyDivider bottom={40} />
       <InnrWrapper>
         {wallpaperType !== WALLPAPER_TYPE.NONE ? (
           <Button size="small" ghost onClick={() => removeWallpaper()}>

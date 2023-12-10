@@ -45,6 +45,8 @@ export const BgGlow = styled.div<{ wallpaper: string }>`
      display: none;
   `};
 `
+
+// https://superdesigner.co/tools/css-backgrounds
 export const PatternBg = styled.div`
   position: absolute;
   top: 0;
@@ -53,15 +55,58 @@ export const PatternBg = styled.div`
   height: 500px;
   mix-blend-mode: overlay;
 
-  background: conic-gradient(at 62.5% 12.5%, #010101 25%, #0000 0) calc(44px / -8) calc(44px / 2),
-    conic-gradient(at 62.5% 12.5%, #010101 25%, #0000 0) calc(-3 * 44px / 8) calc(44px / 4),
-    conic-gradient(at 87.5% 62.5%, #010101 25%, #0000 0) calc(3 * 44px / 8) calc(44px / 4),
-    conic-gradient(at 87.5% 62.5%, #010101 25%, #0000 0) calc(44px / -8) 0,
-    conic-gradient(at 25% 12.5%, #010101 25%, #0000 0) 0 calc(44px / -4),
-    conic-gradient(at 25% 12.5%, #010101 25%, #0000 0) calc(44px / -4) 0,
-    conic-gradient(at 87.5% 87.5%, #010101 25%, #0000 0) calc(44px / 8) 0 rgba(255, 255, 255, 0);
-  background-size: 44px 44px;
-  opacity: 0.2;
+  background: radial-gradient(
+      circle at 50% 100%,
+      #49494980 5%,
+      #494949 5% 10%,
+      #49494980 10% 15%,
+      #494949 15% 20%,
+      #49494980 20% 25%,
+      #494949 25% 30%,
+      #49494980 30% 35%,
+      #494949 35% 40%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 100% 50%,
+      #49494980 5%,
+      #494949 5% 10%,
+      #49494980 10% 15%,
+      #494949 15% 20%,
+      #49494980 20% 25%,
+      #494949 25% 30%,
+      #49494980 30% 35%,
+      #494949 35% 40%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 50% 0%,
+      #49494980 5%,
+      #494949 5% 10%,
+      #49494980 10% 15%,
+      #494949 15% 20%,
+      #49494980 20% 25%,
+      #494949 25% 30%,
+      #49494980 30% 35%,
+      #494949 35% 40%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 0 50%,
+      #49494980 5%,
+      #494949 5% 10%,
+      #49494980 10% 15%,
+      #494949 15% 20%,
+      #49494980 20% 25%,
+      #494949 25% 30%,
+      #49494980 30% 35%,
+      #494949 35% 40%,
+      transparent 40%
+    );
+  background-size: 4em 4em;
+  background-color: #ffffff;
+
+  opacity: 0.6;
 
   ${css.media.mobile`
     display: none;

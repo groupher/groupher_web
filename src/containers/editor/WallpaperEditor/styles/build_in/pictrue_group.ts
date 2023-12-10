@@ -9,6 +9,7 @@ import CircleArrowSVG from '@/icons/CircleArrow'
 export const Wrapper = styled.div<{ showMore: boolean }>`
   ${css.rowWrap()};
   width: calc(100% + 30px);
+  height: 100%;
   gap: 15px 16px;
   margin-top: 10px;
   position: relative;
@@ -67,10 +68,11 @@ export const CheckIcon = styled(CheckedSVG)`
 
 export const ShowMoreMask = styled.div<{ showMore: boolean }>`
   ${css.row('align-both')};
-  position: absolute;
+  position: ${({ showMore }) => (!showMore ? 'absolute' : '')};
   bottom: ${({ showMore }) => (!showMore ? 0 : '-25px')};
+  bottom: 0;
   width: 350px;
-  height: 60px;
+  height: ${({ showMore }) => (!showMore ? '60px' : '20px')};
   background: ${({ showMore }) =>
     !showMore ? 'linear-gradient(0deg, white 30%, transparent 100%)' : ''};
   opacity: ${({ showMore }) => (!showMore ? 1 : 0.4)};

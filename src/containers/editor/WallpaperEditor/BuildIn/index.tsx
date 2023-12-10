@@ -8,7 +8,7 @@ import { FC, Fragment } from 'react'
 import type { TWallpaperData } from '@/spec'
 import { WALLPAPER_TYPE } from '@/constant/wallpaper'
 
-import { Br } from '@/widgets/Common'
+import { Br, SexyDivider } from '@/widgets/Common'
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
 
 import PictureGroup from './PictureGroup'
@@ -24,7 +24,6 @@ import {
   ToggleTitle,
   GeneralSettings,
   Divider,
-  MainDivider,
   AngleSettings,
 } from '../styles/build_in'
 import { togglePattern, toggleBlur, toggleShadow } from '../logic'
@@ -56,7 +55,7 @@ const BuildIn: FC<TProps> = ({ wallpaperData }) => {
       <Br top={25} />
       <Title>图片:</Title>
       <PictureGroup wallpaper={wallpaper} patternWallpapers={patternWallpapers} />
-      <MainDivider />
+      <SexyDivider top={50} bottom={50} />
       <SettingWrapper show={wallpaperType !== WALLPAPER_TYPE.NONE}>
         <GeneralSettings>
           <Title>附加效果:</Title>
