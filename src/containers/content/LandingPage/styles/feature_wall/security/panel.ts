@@ -78,7 +78,9 @@ export const ICON = {
   `,
   Global: commonIcon(GlobalSVG),
   Search: commonIcon(SearchSVG),
-  Auth: commonIcon(AuthSVG),
+  Auth: styled(commonIcon(AuthSVG))`
+    fill: ${theme('rainbow.green')};
+  `,
   Hash: styled(commonIcon(HashSVG))`
     transform: rotate(15deg);
   `,

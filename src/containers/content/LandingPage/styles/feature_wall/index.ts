@@ -33,6 +33,7 @@ export const Desc = styled.div`
   margin-bottom: 80px;
   opacity: 0.8;
 `
+// background: ${({ $color }) => rainbowLight($color)};
 export const BaseCard = styled.div<TColor>`
   ${css.column('align-center', 'justify-end')};
   width: 300px;
