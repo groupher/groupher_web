@@ -48,7 +48,6 @@ export { default as CommunityEditorStore } from '@/containers/editor/CommunityEd
 
 // GEN: EXPORT CONTAINERS STORE HERE
 export { default as PassportEditorStore } from '@/containers/editor/PassportEditor/store'
-export { default as LandingPageStore } from '@/containers/content/LandingPage/store'
 export { default as CoverEditorStore } from '@/containers/editor/CoverEditor/store'
 export { default as TagSettingEditorStore } from '@/containers/editor/TagSettingEditor/store'
 export { default as DashboardThreadStore } from '@/containers/thread/DashboardThread/store'

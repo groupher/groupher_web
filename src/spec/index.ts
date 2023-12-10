@@ -217,6 +217,8 @@ export type TGlowEffect = {
   glowFixed?: boolean
   glowOpacity?: string
   $curTheme?: TThemeName
+
+  changeGlowEffect?: (effect: string) => void
 }
 
 interface IWindow extends Window {

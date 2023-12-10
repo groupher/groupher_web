@@ -14,7 +14,7 @@ const useGlow = (): TGlowEffect => {
   }
 
   const { wallpaper } = store.wallpaperEditor
-  const { uiSettings } = store.dashboardThread
+  const { uiSettings, changeGlowEffect } = store.dashboardThread
 
   const { glowType, glowFixed, glowOpacity } = uiSettings
 
@@ -22,6 +22,7 @@ const useGlow = (): TGlowEffect => {
     glowType: wallpaper && glowType,
     glowFixed,
     glowOpacity,
+    changeGlowEffect,
   }
 }
 
