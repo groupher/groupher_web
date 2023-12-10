@@ -7,6 +7,6 @@ export const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
-  margin-left: 25px;
+  margin-left: 46px;
 `
 export const Title = styled.div``

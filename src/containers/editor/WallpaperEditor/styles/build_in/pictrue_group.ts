@@ -71,11 +71,12 @@ export const ShowMoreMask = styled.div<{ showMore: boolean }>`
   position: ${({ showMore }) => (!showMore ? 'absolute' : '')};
   bottom: ${({ showMore }) => (!showMore ? 0 : '-25px')};
   bottom: 0;
-  width: 350px;
+  width: 352px;
   height: ${({ showMore }) => (!showMore ? '60px' : '20px')};
   background: ${({ showMore }) =>
     !showMore ? 'linear-gradient(0deg, white 30%, transparent 100%)' : ''};
   opacity: ${({ showMore }) => (!showMore ? 1 : 0.4)};
+  z-index: 10;
 
   &:hover {
     opacity: 1;
