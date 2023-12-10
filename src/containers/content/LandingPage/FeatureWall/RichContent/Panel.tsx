@@ -13,6 +13,7 @@ import {
   Text,
   DemoPic,
   Highlight,
+  MarkdownIcon,
 } from '../../styles/feature_wall/rich_content/panel'
 
 type TProps = {
@@ -34,6 +35,7 @@ const Panel: FC<TProps> = ({ hovering }) => {
           设计有点问题：
         </Text>
         <DemoPic src="landing/starship.png" />
+        <MarkdownIcon />
       </Content>
     </Wrapper>
   )

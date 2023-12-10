@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 import type { TActive, TColor } from '@/spec'
 import css, { theme, rainbow } from '@/css'
+import MarkdownSVG from '@/icons/Markdown'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
@@ -69,4 +70,13 @@ export const DemoPic = styled(Img)`
   margin-left: 8px;
   margin-top: 8px;
   filter: saturate(0.7);
+`
+
+export const MarkdownIcon = styled(MarkdownSVG)`
+  ${css.size(16)};
+  fill: ${theme('hint')};
+  opacity: 0.8;
+  position: absolute;
+  bottom: 10px;
+  left: 18px;
 `
