@@ -39,10 +39,13 @@ export type TCustomWallpaper = TWallpaper | null
 export type TWallpaperType = 'pattern' | 'gradient' | 'custom_gradient' | 'upload' | 'none'
 
 export type TWallpaperInfo = {
-  customWallpaper: TCustomWallpaper
+  customWallpaper?: TCustomWallpaper
   wallpaper: string
   wallpapers: Record<string, TWallpaper>
   hasShadow?: boolean
+  gradientWallpapers?: Record<string, TWallpaper>
+
+  changeWallpaper?: (wallpaper: string) => void
 }
 
 export type TWallpaperData = {

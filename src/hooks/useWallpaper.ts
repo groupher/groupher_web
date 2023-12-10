@@ -14,13 +14,16 @@ const useWallpaper = (): TWallpaperInfo => {
   }
 
   const { wallpaperEditor } = store
-  const { customWallpaper, wallpaper, wallpapers, hasShadow } = wallpaperEditor
+  const { customWallpaper, wallpaper, wallpapers, hasShadow, gradientWallpapers, changeWallpaper } =
+    wallpaperEditor
 
   return {
     customWallpaper,
     wallpaper,
     wallpapers,
     hasShadow,
+    gradientWallpapers,
+    changeWallpaper,
   }
 }
 

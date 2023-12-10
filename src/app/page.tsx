@@ -1,11 +1,7 @@
 'use client'
 
-import LandingPage from '@/containers/content/LandingPage'
+import Landing from './Landing'
 
 export default function Page() {
-  return (
-    <div>
-      <LandingPage />
-    </div>
-  )
+  return <Landing />
 }
