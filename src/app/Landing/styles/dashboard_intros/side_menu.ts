@@ -39,15 +39,10 @@ export const Tabs = styled.div`
   gap: 20px 0;
   border-left: 2px solid;
   border-left-color: #e9e9e9;
-  padding: 0 20px;
+  padding-left: 24px;
 `
 export const TabItem = styled.div<TActive>`
   position: relative;
-  font-size: 16px;
-  font-weight: 500;
-  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
-  opacity: ${({ $active }) => ($active ? 1 : 0.8)};
-  cursor: pointer;
 
   &:hover {
     color: ${theme('article.title')};
@@ -56,14 +51,29 @@ export const TabItem = styled.div<TActive>`
   &:before {
     content: '';
     position: absolute;
-    opacity: ${({ $active }) => ($active ? 1 : 0)};
-    top: 2px;
-    left: -23px;
-    height: 20px;
-    width: 4px;
+    opacity: ${({ $active }) => ($active ? 0.5 : 0)};
+    top: 0;
+    left: -26px;
+    height: 72px;
+    width: 2px;
     border-radius: 5px;
-    background: ${theme('rainbow.orange')};
+    background: ${theme('rainbow.purple')};
+    filter: saturate(1.2);
   }
 
   transition: all 0.2s;
+`
+export const ItemTitle = styled.div<TActive>`
+  font-size: 16px;
+  font-weight: 500;
+
+  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
+  opacity: ${({ $active }) => ($active ? 1 : 0.8)};
+`
+export const ItemDesc = styled.div`
+  font-size: 15px;
+  margin-top: 3px;
+  width: 200px;
+  font-weight: 400;
+  color: ${theme('hint')};
 `

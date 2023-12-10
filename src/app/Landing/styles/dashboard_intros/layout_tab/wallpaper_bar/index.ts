@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { animate, theme } from '@/css'
+import css, { theme } from '@/css'
 
 import ThemeSVG from '@/icons/Theme'
 
@@ -32,6 +32,7 @@ export const BallWrapper = styled.div<TActive>`
 
   &:hover {
     border-color: ${theme('article.digest')};
+    ${css.circle(38)};
     box-shadow: ${css.cardShadow};
     cursor: pointer;
   }
@@ -45,14 +46,15 @@ export const ColorBall = styled.div<TColorBall>`
   background: ${({ background }) => background || 'transparent'};
   background-size: 200px;
 
-  &:active {
-    animation: ${animate.breath} 2s linear;
+  ${BallWrapper}:hover & {
+    ${css.circle(30)};
   }
 
   transition: all 0.1s linear;
 `
 export const CustomBall = styled(BallWrapper)`
   background: ${theme('alphaBg2')};
+  border: 1px solid;
   border-color: ${theme('divider')};
   box-shadow: rgba(149, 157, 165, 0.1) 0px 8px 24px;
   font-size: 15px;

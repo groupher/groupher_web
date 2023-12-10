@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   border: 1px solid;
-  border-color: ${theme('rainbow.orangeBg')};
+  border-color: ${theme('rainbow.purpleBg')};
   box-shadow: ${theme('button.boxShadow')};
   border-bottom: none;
 `
