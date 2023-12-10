@@ -29,3 +29,7 @@ export const Background = styled.div<{ effect: string }>`
   will-change: transform;
   transition: all 0.3s;
 `
+export const EditToolbox = styled.div`
+  position: relative;
+  bottom: -145px;
+`
