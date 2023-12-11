@@ -1,5 +1,6 @@
 import { FC } from 'react'
 
+import useHover from '@/hooks/useHover'
 import { COLOR_NAME } from '@/constant/colors'
 
 import Panel from './Panel'
@@ -12,13 +13,15 @@ import {
 } from '../../styles/feature_wall/bundle_size_card'
 
 const BundleSizeCard: FC = () => {
+  const [ref, isHovered] = useHover<HTMLDivElement>()
+
   return (
-    <Wrapper $color={COLOR_NAME.PURPLE}>
+    <Wrapper $color={COLOR_NAME.PURPLE} ref={ref}>
       <Banner>
         <Title>精简 & 轻量</Title>
         <Desc>对比国内外同类服务，体积更小</Desc>
       </Banner>
-      <Panel />
+      <Panel hovering={isHovered} />
       <WarningMask />
     </Wrapper>
   )

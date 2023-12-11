@@ -1,8 +1,10 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/css'
+import css, { animate, theme } from '@/css'
 
 import Img from '@/Img'
+import LoadingGapSVG from '@/icons/LoadingGap'
+
 import { Wrapper as ParentWrapper } from '.'
 
 export const Wrapper = styled.div`
@@ -63,7 +65,12 @@ export const Title = styled.div<{ $good?: boolean }>`
   font-weight: ${({ $good }) => ($good ? 500 : 400)};
   font-size: 13px;
 `
-
+export const LoadingIcon = styled(LoadingGapSVG)`
+  ${css.size(14)};
+  margin-left: 4px;
+  fill: ${theme('article.title')};
+  animation: ${animate.rotate360} 1s linear infinite;
+`
 type TSize = { $good?: boolean; $suck?: boolean }
 export const Size = styled.div<TSize>`
   color: ${({ $good }) => ($good ? theme('rainbow.green') : theme('hint'))};
