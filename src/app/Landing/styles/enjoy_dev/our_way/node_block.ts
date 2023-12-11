@@ -10,7 +10,7 @@ import QuestionSVG from '@/icons/Question'
 import DiscussSVG from '@/icons/Discuss'
 import ToolSVG from '@/icons/Tool'
 
-type TWrapper = { color: string; longer: boolean }
+type TWrapper = { color: string; longer?: boolean }
 export const Wrapper = styled.div<TWrapper>`
   position: relative;
   ${css.column()};
@@ -36,13 +36,11 @@ export const Text = styled.div<{ color: string }>`
 `
 const LightIcon = styled(LightSVG)<{ color: string }>`
   fill: ${({ color }) => color || theme('article.title')};
-  ${css.size(12)};
-  margin-top: 1px;
+  ${css.size(13)};
 `
 const DiscussIcon = styled(DiscussSVG)<{ color: string }>`
   fill: ${({ color }) => color || theme('article.title')};
-  ${css.size(10)};
-  margin-top: 1px;
+  ${css.size(12)};
   margin-left: 1px;
 `
 const BugIcon = styled(BugSVG)<{ color: string }>`
@@ -51,7 +49,7 @@ const BugIcon = styled(BugSVG)<{ color: string }>`
   margin-right: 2px;
 `
 const QuestionIcon = styled(QuestionSVG)<{ color: string }>`
-  ${css.size(9)};
+  ${css.size(12)};
   fill: ${({ color }) => color || theme('article.title')};
   margin-right: 2px;
 `
@@ -67,6 +65,7 @@ export const Icon = {
   [ARTICLE_CAT.BUG]: BugIcon,
   [ARTICLE_CAT.QUESTION]: QuestionIcon,
   [ARTICLE_CAT.OTHER]: DiscussIcon,
+  DEFAULT: ToolIcon,
 }
 
 export const Content = styled.div<{ bg: string }>`
@@ -103,19 +102,11 @@ export const LeftInfo = styled.div<TLeftInfo>`
   ${css.row('align-center')};
   line-height: 18px;
 `
-
-export const LeftText = styled.div`
-  font-size: 12px;
-  color: ${theme('article.digest')};
-  margin-left: 8px;
-  opacity: 0.6;
-`
-
 type TRightDot = { middle: boolean; bg: string }
 export const RightDot = styled.div<TRightDot>`
   ${css.circle(6)};
   position: absolute;
-  bottom: ${({ middle }) => (middle ? '50px' : '14px')};
+  bottom: ${({ middle }) => (middle ? '38px' : '14px')};
   right: -3px;
   background: ${({ bg }) => bg || theme('article.title')};
   opacity: 0.7;

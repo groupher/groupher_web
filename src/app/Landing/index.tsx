@@ -107,12 +107,6 @@ const LandingPage: FC = () => {
       {/* <FeatureWall /> */}
       <DashboardIntros />
       <EnjoyDev />
-      <DesktopOnly>
-        <Divider top={80} bottom={80} />
-      </DesktopOnly>
-      <MobileOnly>
-        <Divider top={-120} bottom={0} />
-      </MobileOnly>
       <TechStacks />
       <DesktopOnly>
         <Divider top={80} bottom={80} />

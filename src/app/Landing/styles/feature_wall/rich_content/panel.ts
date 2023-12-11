@@ -74,9 +74,9 @@ export const DemoPic = styled(Img)`
 
 export const MarkdownIcon = styled(MarkdownSVG)`
   ${css.size(16)};
-  fill: ${theme('hint')};
-  opacity: 0.8;
+  fill: ${theme('rainbow.blue')};
   position: absolute;
   bottom: 10px;
   left: 18px;
+  opacity: 0.3;
 `

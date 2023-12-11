@@ -13,17 +13,13 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
 }))<TTestable>`
   ${css.column('align-both')};
   width: 100%;
-
-  ${css.media.mobile`
-    margin-top: -60px;
-  `};
 `
 export const Slogan = styled.div`
   ${css.column('align-both')};
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
-  font-size: 38px;
+  font-size: 32px;
   font-weight: 500;
 
   text-shadow: rgb(0 0 0 / 8%) 0px 10px 20px;

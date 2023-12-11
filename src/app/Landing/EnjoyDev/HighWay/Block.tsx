@@ -1,7 +1,14 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import { FC } from 'react'
 
-import { Wrapper, Building, SadIcon, InternetIcon, Text, Dot } from '../styles/enjoy_dev/block'
+import {
+  Wrapper,
+  Building,
+  SadIcon,
+  InternetIcon,
+  Text,
+  Dot,
+} from '../../styles/enjoy_dev/high_way/block'
 
 type TProps = {
   text: string
@@ -11,7 +18,7 @@ type TProps = {
 
 const Block: FC<TProps> = ({ text, noDot = false, type = '' }) => {
   return (
-    <Wrapper grey={type === 'giveup'}>
+    <Wrapper $giveup={type === 'giveup'}>
       {type === 'online' && <InternetIcon />}
       {type === 'giveup' && <SadIcon />}
       {type === '' && (
@@ -19,7 +26,7 @@ const Block: FC<TProps> = ({ text, noDot = false, type = '' }) => {
           🚧
         </Building>
       )}
-      <Text>{text}</Text>
+      <Text $giveup={type === 'giveup'}>{text}</Text>
       {!noDot && <Dot />}
     </Wrapper>
   )

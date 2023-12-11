@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import {
   Wrapper,
@@ -15,11 +14,9 @@ import {
   ShapeSquare2Icon,
   ShapeCircleHalfIcon,
   TwoLineIcon,
-} from '../styles/enjoy_dev/bg_shapes'
+} from '../../styles/enjoy_dev/bg_shapes'
 
 const BgShapes: FC = () => {
-  const { isMobile } = useMobileDetect()
-
   return (
     <Wrapper>
       <CurveLine1 />

@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { GITHUB } from '@/config'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
@@ -21,12 +20,10 @@ import {
 } from '../styles/tech_stacks'
 
 const TeckStacks: FC = () => {
-  const { isMobile } = useMobileDetect()
-
   return (
     <Wrapper>
       <Slogan>
-        <Title>小而美，由开源技术栈驱动</Title>
+        <Title>由开源技术栈驱动，欢迎共建</Title>
         <Desc>
           现代化的产品体验得益于现代化的技术栈及工具，
           <ArrowButton>了解更多</ArrowButton>
