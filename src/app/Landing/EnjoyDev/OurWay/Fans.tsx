@@ -48,7 +48,7 @@ const Fans: FC = () => {
         <Facepile users={users.slice(0, 3)} showMore={false} size="medium" left={6} />
       </CommentUsers>
 
-      <CommentUsers right={120} top={100} $rotate={-3} $width={128}>
+      <CommentUsers right={140} top={110} $rotate={-3} $width={128}>
         <Emoji src="icons/emotion/beer.png" />
         <Facepile users={users} showMore={false} size="medium" left={6} />
       </CommentUsers>

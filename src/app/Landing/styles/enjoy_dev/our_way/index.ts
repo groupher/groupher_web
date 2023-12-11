@@ -5,9 +5,6 @@ import css, { theme } from '@/css'
 import SeedSVG from '@/icons/Seed'
 import TadaSVG from '@/icons/Tada'
 
-import NoSVG from '@/icons/CloseCross'
-import YesSVG from '@/icons/CheckBold'
-
 type TPos = { top: string; left: string }
 
 export const Wrapper = styled.div`
@@ -37,7 +34,7 @@ export const MainConnectLine = styled.div<TPos>`
 `
 
 export const SeedIcon = styled(SeedSVG)<TPos>`
-  ${css.size(18)};
+  ${css.size(16)};
   fill: ${theme('rainbow.green')};
   opacity: 0.6;
   z-index: 1;
