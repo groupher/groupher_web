@@ -42,12 +42,12 @@ const Fans: FC = () => {
         <Facepile users={users.slice(0, 2)} showMore={false} size="medium" left={6} />
       </CommentUsers>
 
-      <CommentUsers left={40} bottom={100} $rotate={-5}>
+      <CommentUsers left={40} bottom={100} $rotate={-5} $width={108}>
         <Emoji src="icons/emotion/biceps.png" />
         <Facepile users={users.slice(0, 3)} showMore={false} size="medium" left={6} />
       </CommentUsers>
 
-      <CommentUsers left={420} bottom={80} $rotate={3}>
+      <CommentUsers left={420} bottom={80} $rotate={3} $width={108}>
         <Emoji src="icons/emotion/heart.png" />
         <Facepile users={users.slice(0, 3)} showMore={false} size="medium" left={6} />
       </CommentUsers>
