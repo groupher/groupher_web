@@ -6,6 +6,7 @@ import { ARTICLE_CAT } from '@/constant/gtd'
 import { SpaceGrow } from '@/widgets/Common'
 
 import UpdateBtn from '../UpdateBtn'
+import SprintCounter from './SprintCounter'
 
 import { getNodeBlockColors } from '../../styles/enjoy_dev/metric'
 import {
@@ -28,7 +29,7 @@ type TProps = {
 
 const METRIC = {
   DEFAULT: {
-    title: '开发',
+    title: '日常开发',
     upvoteText: 'Sprint',
     upvoteNum: 1,
     delay: 3000,
@@ -89,13 +90,22 @@ const NodeBlock: FC<TProps> = ({ cat = 'DEFAULT', index = -1 }) => {
         {index === 0 && <Bar bg={colors.barBg} short />}
         <SpaceGrow />
         <Footer>
-          <UpdateBtn
-            text={metric.upvoteText}
-            num={cat === 'DEFAULT' ? metric.upvoteNum + index : metric.upvoteNum}
-            delay={metric.delay}
-            dividerColor={colors.barBg}
-            mainColor={colors.main}
-          />
+          {cat === 'DEFAULT' ? (
+            <SprintCounter
+              num={metric.upvoteNum + index}
+              delay={metric.delay}
+              dividerColor={colors.barBg}
+              mainColor={colors.main}
+            />
+          ) : (
+            <UpdateBtn
+              text={metric.upvoteText}
+              num={metric.upvoteNum}
+              delay={metric.delay}
+              dividerColor={colors.barBg}
+              mainColor={colors.main}
+            />
+          )}
           <SpaceGrow />
         </Footer>
       </Content>

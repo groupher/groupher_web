@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   height: 140px;
   width: 100%;
   padding: 40px 80px;
-  margin-top: -20px;
+  margin-top: 10px;
 
   ${css.media.mobile`
     transform: scale(1.2);

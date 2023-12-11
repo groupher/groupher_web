@@ -18,15 +18,16 @@ export const Wrapper = styled.div<TWrapper>`
   height: ${({ longer }) => (longer ? '165px' : '140px')};
   border: 1px solid;
   border-color: ${({ color }) => color || theme('divider')};
-  border-radius: 6px;
-  background-color: white;
+  border-radius: 10px;
+  background-color: ${theme('htmlBg')};
   box-shadow: 0 5px 25px rgb(35 35 35 / 10%);
 `
 export const Header = styled.div<{ bg: string }>`
   ${css.row('align-center')};
   background: ${({ bg }) => bg || theme('hoverBg')};
   padding: 2px 10px;
-  height: 30px;
+  height: 35px;
+  border-radius: 10px;
 `
 export const Text = styled.div<{ color: string }>`
   color: ${({ color }) => color || theme('article.title')};
@@ -72,6 +73,7 @@ export const Content = styled.div<{ bg: string }>`
   ${css.column()};
   width: 100%;
   height: 100%;
+  border-radius: 10px;
   padding: 10px;
   padding-top: 20px;
   padding-bottom: 8px;

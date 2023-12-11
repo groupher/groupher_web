@@ -2,6 +2,7 @@ import { FC } from 'react'
 
 import NodeBlock from './NodeBlock'
 import BgShapes from './BgShapes'
+import Fans from './Fans'
 
 import {
   Wrapper,
@@ -17,6 +18,7 @@ const OurWay: FC = () => {
   return (
     <Wrapper>
       <BgShapes />
+      <Fans />
       <SeedIcon left="-38px" top="298px" />
       <HeadConnectLine left="-10px" top="306px" />
       <NodeBlock index={0} cat="DEFAULT" />
