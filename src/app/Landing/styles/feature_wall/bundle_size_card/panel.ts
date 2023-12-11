@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 
+import type { TActive } from '@/spec'
 import css, { animate, theme } from '@/css'
 
 import Img from '@/Img'
@@ -65,10 +66,12 @@ export const Title = styled.div<{ $good?: boolean }>`
   font-weight: ${({ $good }) => ($good ? 500 : 400)};
   font-size: 13px;
 `
-export const LoadingIcon = styled(LoadingGapSVG)`
+export const LoadingIcon = styled(LoadingGapSVG)<TActive>`
   ${css.size(14)};
   margin-left: 4px;
   fill: ${theme('article.title')};
+  opacity: ${({ $active }) => ($active ? 1 : 0)};
+  transition: opacity 0.3s;
   animation: ${animate.rotate360} 1s linear infinite;
 `
 type TSize = { $good?: boolean; $suck?: boolean }

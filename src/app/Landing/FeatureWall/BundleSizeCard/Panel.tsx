@@ -36,7 +36,7 @@ const Panel: FC<TProps> = ({ hovering }) => {
                 <Icon src={item.icon} $size={item.iconSize || 11} />
               </IconWrapper>
               <Title $good={$good}>{item.title}</Title>
-              {hovering && index > 3 && <LoadingIcon />}
+              <LoadingIcon $active={hovering && index > 3} />
               <SpaceGrow />
               <Size $good={$good} $suck={$suck}>
                 {item.size}
