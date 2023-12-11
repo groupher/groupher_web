@@ -1,5 +1,7 @@
 import { FC } from 'react'
 
+import { useParallax } from 'react-scroll-parallax'
+
 import Facepile from '@/widgets/Facepile'
 import { mockUsers } from '@/mock'
 
@@ -15,8 +17,10 @@ import {
 const Fans: FC = () => {
   const users = mockUsers(8)
 
+  const { ref } = useParallax<HTMLDivElement>({ speed: 5 })
+
   return (
-    <Wrapper>
+    <Wrapper ref={ref}>
       <SingleWrapper $color="PURPLE" left={40} top={50} $width={36}>
         <SingleUser src={users[4].avatar} $width={30} />
       </SingleWrapper>

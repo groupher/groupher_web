@@ -1,5 +1,7 @@
 import { FC } from 'react'
 
+import { useParallax } from 'react-scroll-parallax'
+
 import { GITHUB } from '@/config'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
@@ -20,6 +22,8 @@ import {
 } from '../styles/tech_stacks'
 
 const TeckStacks: FC = () => {
+  const { ref } = useParallax<HTMLDivElement>({ speed: 5 })
+
   return (
     <Wrapper>
       <Slogan>
@@ -58,7 +62,7 @@ const TeckStacks: FC = () => {
           <TechItem path="design/gimp.png" name="GIMP" size={55} />
           <TechItem path="design/phosphor.png" name="Phosphor" size={42} />
         </TechsWrapper>
-        <BgWrapper>
+        <BgWrapper ref={ref}>
           <CADBackground src="/cad-bg.png" />
         </BgWrapper>
       </Wall>
