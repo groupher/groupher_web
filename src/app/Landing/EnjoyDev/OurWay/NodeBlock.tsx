@@ -91,7 +91,7 @@ const NodeBlock: FC<TProps> = ({ cat = 'DEFAULT', index = -1 }) => {
         <Footer>
           <UpdateBtn
             text={metric.upvoteText}
-            num={metric.upvoteNum}
+            num={cat === 'DEFAULT' ? metric.upvoteNum + index : metric.upvoteNum}
             delay={metric.delay}
             dividerColor={colors.barBg}
             mainColor={colors.main}
