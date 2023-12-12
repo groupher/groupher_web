@@ -86,10 +86,10 @@ export const CurveLine4 = styled(CurveLine4SVG)`
 `
 
 export const ShapeCross1Icon = styled(ShapeCross2SVG)`
-  ${css.size(30)};
+  ${css.size(20)};
   position: absolute;
-  top: 520px;
-  left: 860px;
+  bottom: 70px;
+  right: 120px;
   fill: #ffe4a0;
   opacity: 0.6;
 
@@ -101,10 +101,10 @@ export const ShapeCross1Icon = styled(ShapeCross2SVG)`
   `};
 `
 export const ShapeCross2Icon = styled(ShapeCross2SVG)`
-  ${css.size(20)};
+  ${css.size(16)};
   position: absolute;
-  top: 540px;
-  left: 900px;
+  bottom: 40px;
+  right: 140px;
   fill: #ff6754;
   opacity: 0.3;
 `
@@ -127,18 +127,18 @@ export const ShapeCircle2Icon = styled.div`
 `
 
 export const ShapeSquareIcon = styled.div`
-  ${css.size(22)};
+  ${css.size(16)};
   border-radius: 4px;
   background: #5a7ab7;
   position: absolute;
-  top: 480px;
+  bottom: 50px;
   left: 65px;
   transform: rotate(45deg);
-  opacity: 0.4;
+  opacity: 0.3;
 `
 
 export const ShapeSquare2Icon = styled.div`
-  ${css.size(22)};
+  ${css.size(16)};
   border-radius: 3px;
   background: #5a7ab7;
   position: absolute;
@@ -152,15 +152,15 @@ export const ShapeCircleHalfIcon = styled(ShapeCircleHalfSVG)`
   ${css.size(50)};
   fill: orange;
   position: absolute;
-  top: 20px;
+  top: 38px;
   left: 858px;
   transform: rotate(-140deg);
-  opacity: 0.5;
+  opacity: 0.4;
 `
 
 export const TwoLineIcon = styled(TwoLineSVG)`
   ${css.size(32)};
-  fill: ${theme('article.digest')};
+  fill: ${theme('hint')};
   position: absolute;
   top: 75px;
   left: 855px;

@@ -10,7 +10,6 @@ export const Wrapper = styled.div`
   height: 140px;
   width: 100%;
   padding: 40px 80px;
-  margin-top: 10px;
   position: relative;
   margin-left: -10px;
 

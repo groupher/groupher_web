@@ -5,7 +5,7 @@ import { ARTICLE_CAT } from '@/constant/gtd'
 
 import { SpaceGrow } from '@/widgets/Common'
 
-import UpdateBtn from '../UpdateBtn'
+import UpdateCounter from './UpdateCounter'
 import SprintCounter from './SprintCounter'
 
 import { getNodeBlockColors } from '../../styles/enjoy_dev/metric'
@@ -98,7 +98,7 @@ const NodeBlock: FC<TProps> = ({ cat = 'DEFAULT', index = -1 }) => {
               mainColor={colors.main}
             />
           ) : (
-            <UpdateBtn
+            <UpdateCounter
               text={metric.upvoteText}
               num={metric.upvoteNum}
               delay={metric.delay}

@@ -1,11 +1,9 @@
 import styled from 'styled-components'
 
 import type { TTestable } from '@/spec'
-
 import css, { theme } from '@/css'
 
-import NoSVG from '@/icons/CloseCross'
-import YesSVG from '@/icons/CheckBold'
+import UPvoteSVG from '@/icons/Upvote'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
@@ -13,11 +11,12 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   ${css.column('align-both')};
   width: 100%;
   height: auto;
-  margin-top: 100px;
+  margin-top: 120px;
   margin-bottom: 100px;
 `
 export const Slogan = styled.div`
   ${css.column('align-both')};
+  margin-bottom: 20px;
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
@@ -66,7 +65,7 @@ export const Wall = styled.div`
   `};
 `
 export const GridBgWrapper = styled.div`
-  opacity: 0.2;
+  opacity: 0.3;
   position: absolute;
   top: 0;
   left: 0;
@@ -122,9 +121,7 @@ export const VS = styled.div`
 
 export const CompareWraper = styled.div`
   ${css.row('align-both')};
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: -20px;
+  margin-top: 10px;
 `
 export const NoNote = styled(BottonNote)`
   color: ${theme('rainbow.red')};
@@ -142,13 +139,16 @@ export const YesNote = styled(BottonNote)`
     background: #d8ffca40;
   }
 `
-export const YesIcon = styled(YesSVG)`
+export const YesIcon = styled(UPvoteSVG)`
   fill: ${theme('rainbow.green')};
   ${css.size(18)};
   margin-right: 5px;
+  opacity: 0.8;
 `
-export const NoIcon = styled(NoSVG)`
+export const NoIcon = styled(UPvoteSVG)`
   fill: ${theme('rainbow.red')};
   ${css.size(18)};
   margin-right: 5px;
+  transform: rotate(180deg);
+  opacity: 0.8;
 `

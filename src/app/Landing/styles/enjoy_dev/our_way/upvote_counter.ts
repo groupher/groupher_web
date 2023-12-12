@@ -25,8 +25,3 @@ export const Text = styled.div<{ color: string }>`
   font-size: 13px;
   margin-left: 6px;
 `
-
-export const Num = styled.div`
-  margin-left: 5px;
-  margin-top: -1px;
-`

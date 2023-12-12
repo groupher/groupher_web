@@ -6,14 +6,14 @@ import {
   CurveLine2,
   CurveLine3,
   CurveLine4,
-  // ShapeCross1Icon,
-  // ShapeCross2Icon,
-  // ShapeCircleIcon,
-  // ShapeCircle2Icon,
-  // ShapeSquareIcon,
-  // ShapeSquare2Icon,
-  // ShapeCircleHalfIcon,
-  // TwoLineIcon,
+  ShapeCross1Icon,
+  ShapeCross2Icon,
+  ShapeCircleIcon,
+  ShapeCircle2Icon,
+  ShapeSquareIcon,
+  ShapeSquare2Icon,
+  ShapeCircleHalfIcon,
+  TwoLineIcon,
 } from '../../styles/enjoy_dev/bg_shapes'
 
 const BgShapes: FC = () => {
@@ -23,14 +23,14 @@ const BgShapes: FC = () => {
       <CurveLine2 />
       <CurveLine3 />
       <CurveLine4 />
-      {/* <ShapeCross1Icon />
+      <ShapeCross1Icon />
       <ShapeCross2Icon />
       <ShapeCircleIcon />
       <ShapeCircle2Icon />
       <ShapeSquareIcon />
       <ShapeSquare2Icon />
       <ShapeCircleHalfIcon />
-      <TwoLineIcon /> */}
+      <TwoLineIcon />
     </Wrapper>
   )
 }

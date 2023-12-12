@@ -3,7 +3,7 @@ import { FC, useState } from 'react'
 import useInterval from '@/hooks/useInterval'
 import AnimatedCount from '@/widgets/AnimatedCount'
 
-import { Wrapper, SprintIcon, Text, Num } from '../../styles/enjoy_dev/our_way/sprint_counter'
+import { Wrapper, SprintIcon, Text } from '../../styles/enjoy_dev/our_way/sprint_counter'
 
 type TProps = {
   num?: number
@@ -27,9 +27,7 @@ const SprintCounter: FC<TProps> = ({ num = 13, delay, dividerColor, mainColor })
     <Wrapper color={dividerColor}>
       <SprintIcon />
       <Text color={mainColor}>第</Text>
-      <Num>
-        <AnimatedCount count={count} forceColor="#323232" />
-      </Num>
+      <AnimatedCount count={count} forceColor="#323232" left={5} top={-1} />
       <Text color={mainColor}>周</Text>
     </Wrapper>
   )

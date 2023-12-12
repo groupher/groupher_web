@@ -33,22 +33,22 @@ const EnjoyDev: FC = () => {
     <Wrapper>
       <Slogan>
         <Title>上线、获取反馈、迭代</Title>
-        <Desc>将用户反馈融入开发流程，优先满足用户真正关心的需求</Desc>
+        <Desc>将用户反馈融入开发流程，避免平行世界闭门造车</Desc>
       </Slogan>
       <Wall ref={ref}>
-        <HighWay />
+        <OurWay />
         <CompareWraper>
-          <NoNote>
-            <NoIcon />
-            团队两行泪
-          </NoNote>
-          <VS>VS</VS>
           <YesNote>
             <YesIcon />
             与用户共赢
           </YesNote>
+          <VS>VS</VS>
+          <NoNote>
+            <NoIcon />
+            团队两行泪
+          </NoNote>
         </CompareWraper>
-        <OurWay />
+        <HighWay />
         <GridBgWrapper />
       </Wall>
     </Wrapper>
