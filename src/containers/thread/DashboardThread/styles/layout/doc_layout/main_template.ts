@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 import type { TColorName } from '@/spec'
 
-import css, { theme, rainbow, rainbowLight } from '@/css'
+import styled, { css, theme, rainbow, rainbowLight } from '@/css'
 
 import ToolSVG from '@/icons/Heart'
 

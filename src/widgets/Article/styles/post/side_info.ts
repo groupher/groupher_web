@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TAvatarLayout } from '@/spec'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import { AVATAR_LAYOUT } from '@/constant/layout'
 

@@ -1,8 +1,7 @@
-import styled from 'styled-components'
 import Link from 'next/link'
 
 import type { TColorName, TTestable } from '@/spec'
-import css, { theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 
 import Input from '@/widgets/Input'
 

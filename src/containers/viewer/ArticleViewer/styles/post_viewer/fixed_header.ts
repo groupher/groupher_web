@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 import { FadeToggle } from '@/widgets/Common'
 
 export const Wrapper = styled.div<{ $visible: boolean }>`

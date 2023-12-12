@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 import AdderSVG from '@/icons/Plus'
 
 import Button from '@/widgets/Buttons/Button'

@@ -1,10 +1,8 @@
-import styled from 'styled-components'
-
 import type { TActive, TColor } from '@/spec'
 
 import SettingSVG from '@/icons/Setting'
 import ArrowSVG from '@/icons/ArrowSimple'
-import css, { theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 import { COLOR_NAME } from '@/constant/colors'
 
 export const Wrapper = styled.div`

@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TArticleTitle } from '@/spec'
-import css, { rainbow, rainbowLight, theme } from '@/css'
+import styled, { css, rainbow, rainbowLight, theme } from '@/css'
 import DotDivider from '@/widgets/DotDivider'
 
 import { Wrapper as ItemWrapper } from '.'

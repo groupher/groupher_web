@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TSpace, TTestable } from '@/spec'
-import css, { animate, theme, zIndex } from '@/css'
+import styled, { css, animate, theme, zIndex } from '@/css'
 
 import GotoTopSVG from '@/icons/Arrow2Top'
 import GotoBackSVG from '@/icons/Arrow'

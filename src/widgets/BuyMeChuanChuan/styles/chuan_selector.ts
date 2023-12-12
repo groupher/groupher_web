@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TActive } from '@/spec'
-import css, { theme, animate } from '@/css'
+import styled, { css, theme, animate } from '@/css'
 import Img from '@/Img'
 
 export const SelectBox = styled.div`

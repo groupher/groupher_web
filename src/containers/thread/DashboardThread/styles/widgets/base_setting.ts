@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TColorName } from '@/spec'
-import css, { theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.column()};

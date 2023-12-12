@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import DeleteSVG from '@/icons/DeleteSolid'
 import Input from '@/widgets/Input'

@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 import type { TColor, TTestable } from '@/spec'
 
-import css, { theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 import { COLORS } from '../../FeatureWall/constant'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({

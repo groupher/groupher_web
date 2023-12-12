@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import { animate } from '@/css'
+import styled, { animate } from '@/css'
 // import Img from '@/Img'
 // import PromptIcon from '@/widgets/PromptIcon'
 

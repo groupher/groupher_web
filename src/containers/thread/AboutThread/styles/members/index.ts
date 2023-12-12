@@ -1,10 +1,8 @@
-import styled from 'styled-components'
-
 import type { TAvatarLayout, TTestable } from '@/spec'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
 import Img from '@/Img'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

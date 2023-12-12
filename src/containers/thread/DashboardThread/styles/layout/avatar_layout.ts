@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TActive } from '@/spec'
-import css, { theme, rainbow, rainbowLight } from '@/css'
+import styled, { css, theme, rainbow, rainbowLight } from '@/css'
 
 import { LineDivider } from '@/widgets/Common'
 

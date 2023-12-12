@@ -1,9 +1,7 @@
-import styled from 'styled-components'
-
 import type { TActive } from '@/spec'
 
 // import Img from '@/Img'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 type TWrapper = { $popWidth: number }
 export const Wrapper = styled.div<TWrapper>`

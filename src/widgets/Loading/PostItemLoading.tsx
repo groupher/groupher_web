@@ -1,9 +1,9 @@
+import styled, { css } from '@/css'
+
 import { Fragment, FC, memo } from 'react'
 import { range } from 'ramda'
-import styled, { useTheme } from 'styled-components'
+import { useTheme } from 'styled-components'
 import ContentLoader from 'react-content-loader'
-
-import css from '@/css'
 
 // Config-page: http://danilowoz.com/create-react-content-loader/
 const LoadingWrapper = styled.div`

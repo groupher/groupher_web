@@ -1,5 +1,4 @@
-import styled from 'styled-components'
-
+import styled from '@/css'
 import type { TActive } from '@/spec'
 // import { getShadowWidth } from './helpers'
 

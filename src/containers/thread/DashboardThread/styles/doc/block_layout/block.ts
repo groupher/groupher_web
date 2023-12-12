@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TColorName, TTestable } from '@/spec'
-import css, { theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 
 import Button from '@/widgets/Buttons/Button'
 import LaptopSVG from '@/icons/Works'

@@ -1,5 +1,3 @@
-import styled from 'styled-components'
-
 import { Bar as BarBase, WithPosition } from '@/widgets/Common'
 
 import KanbenSVG from '@/icons/Kanban'
@@ -7,7 +5,7 @@ import GtdWipSVG from '@/icons/GtdWip'
 import GtdDoneSVG from '@/icons/GtdDone'
 import GtdTodoSVG from '@/icons/GtdTodo'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.column('align-both')};

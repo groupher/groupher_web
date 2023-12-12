@@ -1,9 +1,7 @@
-import styled from 'styled-components'
+import styled, { css, rainbow, rainbowLight } from '@/css'
 
 import type { TAvatarLayout, TColorName, TTestable } from '@/spec'
 import { AVATAR_LAYOUT } from '@/constant/layout'
-
-import css, { rainbow, rainbowLight } from '@/css'
 
 import type { TAvatarProps } from '..'
 import { getFontSize } from './metric/avatar'

@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TBannerLayout, TTestable } from '@/spec'
-import css from '@/css'
+import styled, { css } from '@/css'
 import { BANNER_LAYOUT } from '@/constant'
 
 type TWrapper = TTestable & { $bannerLayout: TBannerLayout }

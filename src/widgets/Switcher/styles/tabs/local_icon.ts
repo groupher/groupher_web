@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 import type { TColor } from '@/spec'
 
-import css, { theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 
 // user page
 import DiscussSVG from '@/icons/Discuss'

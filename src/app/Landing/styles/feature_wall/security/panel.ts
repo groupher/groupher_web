@@ -1,5 +1,3 @@
-import styled from 'styled-components'
-
 import LockSVG from '@/icons/Lock'
 import GlobalSVG from '@/icons/social/Global'
 import SearchSVG from '@/icons/HeaderSearch'
@@ -10,7 +8,7 @@ import CloudSVG from '@/icons/CloudCheck'
 
 import { WithMargin, WithPosition } from '@/widgets/Common'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 export const Wrapper = styled.div`
   padding: 15px;

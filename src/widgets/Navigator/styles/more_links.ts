@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 import ArrowSVG from '@/icons/ArrowSolid'
 
 export { SiteLink } from './main_entries'

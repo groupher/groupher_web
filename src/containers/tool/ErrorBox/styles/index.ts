@@ -1,7 +1,6 @@
-import styled from 'styled-components'
 import Link from 'next/link'
 
-import css, { theme, animate } from '@/css'
+import styled, { css, theme, animate } from '@/css'
 import WarningSVG from '@/icons/Warning'
 
 export const Wrapper = styled.div`

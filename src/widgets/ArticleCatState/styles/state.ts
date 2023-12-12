@@ -1,8 +1,6 @@
-import styled from 'styled-components'
+import styled, { css, rainbowLight, rainbow, theme } from '@/css'
 
 import type { TColorName } from '@/spec'
-
-import css, { rainbowLight, rainbow, theme } from '@/css'
 
 import GtdTodoSVG from '@/icons/GtdTodo'
 import GtdWipSVG from '@/icons/GtdWip'

@@ -1,5 +1,4 @@
-import styled from 'styled-components'
-
+import styled from '@/css'
 import Img from '@/Img'
 
 import { IntroBase, IntroHeadBase, TitleBase, FooterBase, FlagIconBase } from '.'

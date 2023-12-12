@@ -1,9 +1,7 @@
-import styled from 'styled-components'
-
 import UpvoteSVG from '@/icons/Upvote'
 import DAY_THEMES from '@/utils/themes/skins/day'
 
-import css from '@/css'
+import styled, { css } from '@/css'
 import { BaseCard, BaseBar, BaseCount, BaseCodeBox } from './panel'
 
 export { Footer, CodeItem } from './panel'

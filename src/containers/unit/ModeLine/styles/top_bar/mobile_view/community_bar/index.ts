@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TActive } from '@/spec'
-import css, { theme, zIndex } from '@/css'
+import styled, { css, theme, zIndex } from '@/css'
 
 export const Wrapper = styled.div<TActive>`
   ${css.row('justify-start')};

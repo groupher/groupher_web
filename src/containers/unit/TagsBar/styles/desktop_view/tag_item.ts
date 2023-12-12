@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 import type { TActive, TColor } from '@/spec'
 
-import css, { theme, rainbowLight } from '@/css'
+import styled, { css, theme, rainbowLight } from '@/css'
 
 import Img from '@/Img'
 import CloseSVG from '@/icons/CloseLight'

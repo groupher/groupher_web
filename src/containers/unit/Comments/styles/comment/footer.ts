@@ -1,10 +1,8 @@
-import styled from 'styled-components'
-
 // import Img from '@/Img'
 import UserBadge from '@/icons/UserBadge'
 import CheckSVG from '@/icons/CheckBold'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.column()};

@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import ShareSVG from '@/icons/Share'
 import ReportSVG from '@/icons/WarningLight'

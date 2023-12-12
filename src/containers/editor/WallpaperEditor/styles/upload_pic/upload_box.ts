@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 import UploadSVG from '@/icons/Upload'
 import MoreSVG from '@/icons/menu/More'
 

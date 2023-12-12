@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
+import styled, { animate } from '@/css'
 import type { TTestable, TSpace } from '@/spec'
-import { animate } from '@/css'
 
 export type TWrapper = TTestable &
   TSpace & {

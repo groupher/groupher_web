@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TSpace, TTestable } from '@/spec'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 type TWrapper = TTestable & TSpace & { $noBorder: boolean }
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({

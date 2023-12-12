@@ -1,9 +1,8 @@
 import { FC } from 'react'
-import styled from 'styled-components'
 
+import styled, { css, animate, rainbow, theme } from '@/css'
 import type { TColor, TActive } from '@/spec'
 import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
-import css, { animate, rainbow, theme } from '@/css'
 import PinSVG from '@/icons/Pin'
 import UnPinSVG from '@/icons/UnPin'
 //
@@ -88,7 +87,7 @@ export const Icon = {
     }
   `,
   [ARTICLE_STATE.REJECT]: styled(commonIcon(RejectSVG))<TGTDItem>`
-    fill: ${({ $color, $active }) => ($active ? rainbow('red') : theme('article.digest'))};
+    fill: ${({ $active }) => ($active ? rainbow('red') : theme('article.digest'))};
     margin-left: 1px;
 
     ${MenuItem}:hover & {

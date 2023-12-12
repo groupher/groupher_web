@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 import { ALIGN_HEADER_OFFSET } from '../../constant'
 
 export const Wrapper = styled.div`

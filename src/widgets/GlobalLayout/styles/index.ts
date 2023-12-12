@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TColorName, TMetric } from '@/spec'
-import css, { rainbow, theme } from '@/css'
+import styled, { css, rainbow, theme } from '@/css'
 
 /**
  * see layout details:

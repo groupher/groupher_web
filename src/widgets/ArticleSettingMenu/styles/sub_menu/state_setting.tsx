@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TActive, TColor } from '@/spec'
-import css, { theme, rainbow, rainbowLight } from '@/css'
+import styled, { css, theme, rainbow, rainbowLight } from '@/css'
 import CheckSVG from '@/icons/CheckBold'
 
 export const Wrapper = styled.div`

@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TSpace } from '@/spec'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import InfoSVG from '@/icons/Save'
 import { WithMargin } from '@/widgets/Common'

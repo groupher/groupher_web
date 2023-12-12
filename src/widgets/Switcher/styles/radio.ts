@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TTestable, TColor } from '@/spec'
-import css, { theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 import { WithMargin } from '@/widgets/Common'
 
 import {

@@ -4,6 +4,7 @@
  *
  */
 
+import styled from 'styled-components'
 import type { TSpace } from '@/spec'
 
 import { mediaBreakPoints } from './metric'
@@ -11,6 +12,8 @@ import { media, fitContentWidth, fitStickerWidth, fitPageWidth } from './media'
 import { flex, flexGrow, flexWrap, flexColumn, flexColumnGrow, flexColumnWrap } from './flex'
 
 import { circle, size } from './shape'
+
+export { keyframes } from 'styled-components'
 
 const smokey = (initOpacity = 0.6): string => `
   opacity: ${initOpacity};
@@ -53,7 +56,7 @@ const spaceMargins = (props: TSpace) => {
 
 const cardShadow = 'rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;'
 
-const css = {
+export const css = {
   cutRest,
   lineClamp,
   circle,
@@ -80,4 +83,4 @@ export { default as zIndex } from './zindex'
 
 export { default as animate } from './animations'
 
-export default css
+export default styled

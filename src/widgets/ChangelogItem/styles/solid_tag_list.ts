@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 import type { TColorName } from '@/spec'
 
-import css, { theme, rainbowLight } from '@/css'
+import styled, { css, theme, rainbowLight } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};

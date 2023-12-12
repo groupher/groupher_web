@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TActive, TColorName } from '@/spec'
-import css, { theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 
 import CrossSVG from '@/icons/CloseCross'
 import ArrowSVG from '@/icons/Arrow'

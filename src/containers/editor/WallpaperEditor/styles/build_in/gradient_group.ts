@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TActive } from '@/spec'
-import css, { animate, theme } from '@/css'
+import styled, { css, animate, theme } from '@/css'
 
 import PenSVG from '@/icons/EditPen'
 

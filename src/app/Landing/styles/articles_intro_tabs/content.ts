@@ -1,9 +1,7 @@
-import styled from 'styled-components'
-
 import type { TThread } from '@/spec'
 import { THREAD } from '@/constant/thread'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 export const Wrapper = styled.div<{ tab: TThread }>`
   ${css.column('align-both')};

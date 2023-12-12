@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TColorName } from '@/spec'
-import css, { theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 import Input from '@/widgets/Input'
 
 type TWrapper = { isEditMode: boolean; isSetting: boolean; hasSettingTag: boolean }

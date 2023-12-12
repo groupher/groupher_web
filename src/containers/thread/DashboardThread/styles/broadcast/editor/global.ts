@@ -1,9 +1,7 @@
-import styled from 'styled-components'
-
 import type { TColorName } from '@/spec'
 
 import Input from '@/widgets/Input'
-import css, { rainbow } from '@/css'
+import styled, { css, rainbow } from '@/css'
 
 export const Wrapper = styled.div`
   width: 100%;

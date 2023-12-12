@@ -1,8 +1,7 @@
 import Link from 'next/link'
-import styled from 'styled-components'
 
 import type { TActive, TColor } from '@/spec'
-import css, { theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 import { WithMargin } from '@/widgets/Common'
 
 export const NormalWrapper = styled(WithMargin)`

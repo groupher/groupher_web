@@ -1,5 +1,3 @@
-import styled from 'styled-components'
-
 import {
   Wrapper as WrapperDesktop,
   Main as MainDesktop,
@@ -7,7 +5,7 @@ import {
   AvatarWrapper as AvatarWrapperDesktop,
 } from '../desktop_view'
 
-import css from '@/css'
+import styled, { css } from '@/css'
 
 export const Wrapper = styled(WrapperDesktop)``
 export const Main = styled(MainDesktop)`

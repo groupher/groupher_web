@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { theme, animate } from '@/css'
+import styled, { css, theme, animate } from '@/css'
 import Button from '@/widgets/Buttons/Button'
 import Img from '@/Img'
 

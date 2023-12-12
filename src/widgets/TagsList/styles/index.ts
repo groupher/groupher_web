@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 import type { TSizeTSM, TSpace } from '@/spec'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 // import HashSVG from '@/icons/HashTagLight'
 
 import { getTitleSize } from './metric'

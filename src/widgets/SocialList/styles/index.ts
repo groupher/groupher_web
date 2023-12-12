@@ -1,11 +1,10 @@
-import styled from 'styled-components'
 import Link from 'next/link'
 
 import type { TActive, TTestable, TSpace, TSizeTSM } from '@/spec'
 import { SOCIAL_LIST } from '@/constant/social'
 import SIZE from '@/constant/size'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import TikTokSVG from '@/widgets/Icons/social/TikTok'
 import EmailSVG from '@/icons/social/Email'

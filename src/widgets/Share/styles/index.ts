@@ -1,5 +1,3 @@
-import styled from 'styled-components'
-
 import LinkSVG from '@/icons/Link'
 import QRCodeSVG from '@/icons/QRCodeSolid'
 import MoreSVG from '@/icons/ShareArrow'
@@ -8,7 +6,7 @@ import WeChatRawSVG from '@/icons/social/WeChatRaw'
 
 import { WithMargin } from '@/widgets/Common'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 export const Wrapper = styled(WithMargin)`
   ${css.row('align-center')};

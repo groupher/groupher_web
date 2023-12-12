@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 import ArticleMirrorSVG from '@/icons/ArticleMirror'
 
 export const MirrorIcon = styled(ArticleMirrorSVG)`

@@ -1,7 +1,6 @@
 import Link from 'next/link'
-import styled from 'styled-components'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import FeedbackSVG from '@/icons/menu/Feedback'
 import GithubSVG from '@/icons/Github8'

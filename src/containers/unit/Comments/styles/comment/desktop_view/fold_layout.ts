@@ -1,10 +1,8 @@
-import styled from 'styled-components'
-
 import type { TAvatarLayout } from '@/spec'
 import { AVATAR_LAYOUT } from '@/constant/layout'
 
 import Img from '@/Img'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import ExpandSVG from '@/icons/Expand'
 import PinSVG from '@/icons/Pin'

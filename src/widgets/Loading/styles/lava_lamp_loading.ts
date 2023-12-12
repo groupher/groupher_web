@@ -1,8 +1,7 @@
-import styled, { keyframes } from 'styled-components'
+import styled, { css, rainbow, keyframes } from '@/css'
 
 import type { TSpace, TSizeTSM, TColor } from '@/spec'
 import { getRandomInt } from '@/helper'
-import css, { rainbow } from '@/css'
 
 import { getLavaLampScale } from './metric'
 

@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { animate, theme } from '@/css'
+import styled, { css, animate, theme } from '@/css'
 import ViewSVG from '@/icons/article/Viewed'
 
 type TWrapper = { top: number; left: number }

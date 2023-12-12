@@ -1,7 +1,6 @@
-import styled from 'styled-components'
 import Link from 'next/link'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import MailSVG from '@/icons/Mail'
 import TwitterSVG from '@/icons/Twitter'

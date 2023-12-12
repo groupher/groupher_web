@@ -1,9 +1,7 @@
-import styled from 'styled-components'
-
 import type { TActive, TColor } from '@/spec'
 import { GRADIENT_DIRECTION } from '@/constant/wallpaper'
 
-import css, { theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 import ArrowSVG from '@/icons/ArrowSolid'
 
 const metric = {

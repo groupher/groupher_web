@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import TagSVG from '@/icons/Tag'
 import GtdWipSVG from '@/icons/GtdWip'

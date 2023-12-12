@@ -1,8 +1,6 @@
-import styled from 'styled-components'
+import styled from '@/css'
 
-// import css from '@/css'
-
-import { WrapperBase, ScrollWrapperBase, ShadowBarBase } from '.'
+import { ScrollWrapperBase, ShadowBarBase } from '.'
 import { getShadowBackground, getShadowSize, getScrollbarThin } from './metrics'
 
 export const ViewHolder = styled.div`

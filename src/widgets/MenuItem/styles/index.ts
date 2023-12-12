@@ -1,10 +1,8 @@
-import styled from 'styled-components'
-
 import MENU from '@/constant/menu'
 
 // import type { TTestable } from '@/spec'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import ArrowSVG from '@/icons/Arrow'
 import Arrow2TopSVG from '@/icons/Arrow2Top'

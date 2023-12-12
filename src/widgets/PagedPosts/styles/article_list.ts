@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-// import css from '@/css'
+import styled from '@/css'
 
 export const MasonryCardsWrapper = styled.div`
   width: calc(100% + 30px);

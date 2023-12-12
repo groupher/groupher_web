@@ -1,5 +1,4 @@
-import styled from 'styled-components'
-// bbst
+import styled from '@/css'
 
 export const PreviewerContainer = styled.div``
 

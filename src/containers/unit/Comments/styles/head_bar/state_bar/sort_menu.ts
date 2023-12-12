@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 import type { TActive } from '@/spec'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 import ArrowSVG from '@/icons/ArrowSolid'
 
 import ReplyModeSVG from '@/icons/CommentReplyMode'

@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 // import Img from '@/Img'
-import css from '@/css'
+import styled, { css } from '@/css'
 import EditPenSVG from '@/icons/EditPen'
 
 export const Wrapper = styled.div`

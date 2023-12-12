@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 import SiteLogo from '@/icons/CPLogo'
 import ArrowSVG from '@/icons/ArrowSimple'
 

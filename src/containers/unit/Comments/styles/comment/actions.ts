@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 import { Wrapper as CommentWrapper } from './desktop_view'
 
 export const Wrapper = styled.div`
