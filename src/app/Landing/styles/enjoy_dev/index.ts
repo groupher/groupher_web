@@ -127,6 +127,8 @@ export const NoNote = styled(BottonNote)`
   color: ${theme('rainbow.red')};
 
   &:before {
+    top: 4px;
+    left: 13px;
     background: #ffe7e79e;
   }
 `
@@ -134,8 +136,6 @@ export const YesNote = styled(BottonNote)`
   color: ${theme('rainbow.green')};
 
   &:before {
-    top: 4px;
-    left: 13px;
     background: #d8ffca40;
   }
 `
