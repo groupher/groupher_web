@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TSizeSM, TActive, TColor } from '@/spec'
-import css, { theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 
 import { getMarginRight, getPadding, getMarginBottom } from '../metric/tabs'
 

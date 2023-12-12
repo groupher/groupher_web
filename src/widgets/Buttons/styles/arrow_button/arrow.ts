@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 // import Img from '@/Img'
 import type { TColor } from '@/spec'
-import css, { rainbowLink } from '@/css'
+import styled, { css, rainbowLink } from '@/css'
 
 import { Wrapper as ButtonWrapper } from '.'
 

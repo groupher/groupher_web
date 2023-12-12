@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from '@/css'
 
 import type { TGlowEffect } from '@/spec'
 import { GLOW_EFFECTS_DAY, GLOW_EFFECTS_NIGHT } from '@/constant/glow_effect'

@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
+import styled, { css, rainbow, theme } from '@/css'
 import type { TTestable, TActive, TColorName } from '@/spec'
-import css, { rainbow, rainbowLink, theme } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
@@ -15,10 +13,6 @@ export const Button = styled.div<TButton>`
   margin-left: ${({ $active }) => ($active ? 0 : '-8px')};
 
   border: 1px solid transparent;
-  /* border: ${({ $active }) => ($active ? '1px dotted' : '1px solid')};
-  border-color: ${({ $active, color }) =>
-    $active ? rainbowLink(color, 'blackActive') : 'transparent'}; */
-
   background-color: ${({ $active }) => ($active ? theme('hoverBg') : 'transparent')};
 
   border-radius: 6px;

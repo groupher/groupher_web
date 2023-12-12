@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TActive, TColor, TColorName } from '@/spec'
-import css, { theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 
 import { Divider } from '@/widgets/Common'
 

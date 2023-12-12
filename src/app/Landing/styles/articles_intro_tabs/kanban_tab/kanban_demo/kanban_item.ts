@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import UpvoteSVG from '@/icons/Upvote'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 type TWrapper = { opacity: number; $draging: boolean }
 

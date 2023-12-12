@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import { Bar as BarBase } from '@/widgets/Common'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.column('align-center')};

@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 import CopySVG from '@/icons/Copy'
 
 export const Wrapper = styled.div`

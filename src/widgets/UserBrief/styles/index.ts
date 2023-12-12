@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 import WomanSVG from '@/icons/Woman'
 import { Divider as DividerBase } from '@/widgets/Common'
 

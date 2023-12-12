@@ -1,9 +1,7 @@
-import styled from 'styled-components'
-
 import type { TColor } from '@/spec'
 
 import { WithMargin } from '@/widgets/Common'
-import css, { rainbow } from '@/css'
+import styled, { css, rainbow } from '@/css'
 
 export const Row = styled.div`
   ${css.row('align-both')};

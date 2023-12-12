@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 import type { TTestable } from '@/spec'
 import Img from '@/Img'
-import css, { theme, animate } from '@/css'
+import styled, { css, theme, animate } from '@/css'
 
 import { Wrapper as ParentWrapper } from '.'
 

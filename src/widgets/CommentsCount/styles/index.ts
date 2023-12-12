@@ -1,9 +1,7 @@
-import styled from 'styled-components'
-
 import type { TSizeSM } from '@/spec'
 import SIZE from '@/constant/size'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 import CommentSVG from '@/icons/Comment'
 import { WithMargin } from '@/widgets/Common'
 

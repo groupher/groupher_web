@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import styled from 'styled-components'
 
 import type { TActive, TColor } from '@/spec'
 
@@ -24,7 +23,7 @@ import RejectSVG from '@/icons/Reject'
 import OtherSVG from '@/icons/menu/MoreL'
 
 // import Img from '@/Img'
-import css, { theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 import { Item } from './list'
 
 type TWrapper = { $noSaturate: boolean } & TActive

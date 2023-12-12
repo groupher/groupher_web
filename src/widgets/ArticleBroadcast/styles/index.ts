@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 import type { TTestable, TColorName } from '@/spec'
 
-import css, { theme, rainbow, rainbowLight } from '@/css'
+import styled, { css, theme, rainbow, rainbowLight } from '@/css'
 import BroadcastSVG from '@/icons/Broadcast'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import { WithMargin } from '@/widgets/Common'

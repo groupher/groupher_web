@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TTestable } from '@/spec'
-import css from '@/css'
+import styled, { css } from '@/css'
 
 import Img from '@/Img'
 import Input from '@/widgets/Input'

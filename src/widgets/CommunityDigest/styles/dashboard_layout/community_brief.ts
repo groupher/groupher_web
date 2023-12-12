@@ -1,7 +1,7 @@
-import styled, { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from 'styled-components'
 import Link from 'next/link'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import OptionArrowSVG from '@/icons/OptionArrow'
 import ArrowSVG from '@/icons/ArrowUpRight'

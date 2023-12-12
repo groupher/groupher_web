@@ -1,8 +1,7 @@
 import { FC } from 'react'
-import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import { WithMargin } from '@/widgets/Common'
 import USSVG from '@/icons/nation/US'

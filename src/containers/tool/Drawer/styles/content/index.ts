@@ -1,8 +1,8 @@
-import styled from 'styled-components'
+import styled from '@/css'
 
 import { NARROW_HEIGHT_OFFSET } from '../../constant'
 import { isWideMode } from '../metrics'
-// import css from '@/css'
+// import styled, { css } from '@/css'
 
 export const Wrapper = styled.div<{ type: string }>`
   width: 100%;

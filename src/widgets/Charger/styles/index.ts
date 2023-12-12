@@ -1,8 +1,8 @@
-import styled, { css as styledCss, keyframes } from 'styled-components'
+import { css as styledCss, keyframes } from 'styled-components'
+import styled, { css, theme } from '@/css'
 
 import type { TTestable } from '@/spec'
 import Img from '@/Img'
-import css, { theme } from '@/css'
 
 const DURATION = '2.5s'
 const load = keyframes`

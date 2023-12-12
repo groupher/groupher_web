@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import Img from '@/Img'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 type TSize = { size: string }
 export const Wrapper = styled.div<TSize>`

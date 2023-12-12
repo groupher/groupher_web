@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import { theme } from '@/css'
+import styled, { theme } from '@/css'
 
 import { Wrapper as WrapperBase } from './emotion_bar'
 

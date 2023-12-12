@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import { animate } from '@/css'
+import styled, { animate } from '@/css'
 
 export const Wrapper = styled.div`
   animation: ${animate.fadeInRight} 0.1s linear;

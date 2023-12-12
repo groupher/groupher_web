@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TTestable, TActive } from '@/spec'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 import HeaderMailSVG from '@/SvgIcons/HeaderMailSVG'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({

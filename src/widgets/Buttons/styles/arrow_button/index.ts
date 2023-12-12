@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 import type { TSpace } from '@/spec'
 
-import css, { rainbowLink } from '@/css'
+import styled, { css, rainbowLink } from '@/css'
 
 import type { TProps } from '../../ArrowButton'
 

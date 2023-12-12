@@ -1,12 +1,10 @@
-import styled from 'styled-components'
-
 import type { TTestable } from '@/spec'
 
 import SunSVG from '@/icons/Sun'
 import MoonSVG from '@/icons/Moon'
 import { WithMargin } from '@/widgets/Common'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 type TWrapper = TTestable
 export const Wrapper = styled(WithMargin).attrs<TWrapper>(({ $testid }) => ({

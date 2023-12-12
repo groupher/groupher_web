@@ -1,10 +1,8 @@
-import styled from 'styled-components'
-
 import Img from '@/Img'
 import Button from '@/widgets/Buttons/Button'
 import Input from '@/widgets/Input'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.column()};

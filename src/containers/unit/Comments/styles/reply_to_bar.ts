@@ -1,6 +1,5 @@
-import styled from 'styled-components'
+import styled from '@/css'
 
-// import Img from '@/Img'
 import { ReplyBarBase, ReplyToBodyBase, ReplyToFloorBase } from '.'
 
 export const ReplyBar = styled(ReplyBarBase)`

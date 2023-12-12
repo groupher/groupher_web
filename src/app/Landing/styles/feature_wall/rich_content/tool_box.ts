@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TActive } from '@/spec'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import QuoteSVG from '@/icons/editor/Quote'
 import ImageSVG from '@/icons/editor/Image'

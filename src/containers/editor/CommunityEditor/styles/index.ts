@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TMetric } from '@/spec'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 export const Wrapper = styled.div<{ metric: TMetric }>`
   ${css.column('align-both')};

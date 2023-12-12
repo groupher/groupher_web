@@ -1,9 +1,8 @@
 import Link from 'next/link'
-import styled from 'styled-components'
 
 import type { TMetric, TArticleTitle } from '@/spec'
 import METRIC from '@/constant/metric'
-import css, { theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 
 import Img from '@/Img'
 import ArrowSVG from '@/icons/Arrow'

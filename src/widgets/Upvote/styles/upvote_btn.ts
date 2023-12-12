@@ -1,10 +1,10 @@
-import styled, { keyframes } from 'styled-components'
+import { keyframes } from 'styled-components'
+import styled, { css, theme, rainbow } from '@/css'
 
 import type { TUpvoteLayout, TActive, TColorName } from '@/spec'
 
 import UpvoteIcon from '@/icons/Upvote'
 import { pixelAdd } from '@/dom'
-import css, { theme, rainbow } from '@/css'
 
 import { getIconSize } from './metric'
 

@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import CCSVG from '@/icons/article/CC'
 import CCForbidSVG from '@/icons/article/CCForbid'

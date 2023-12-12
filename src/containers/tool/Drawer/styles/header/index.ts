@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 // see example: https://codepen.io/mattbraun/pen/EywBJR
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import CloseButtonSVG from '@/icons/CloseLight'
 

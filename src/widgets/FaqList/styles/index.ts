@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 import type { TTestable } from '@/spec'
 
-import css from '@/css'
+import styled, { css } from '@/css'
 import { WithMargin } from '@/widgets/Common'
 
 type TWrapper = TTestable

@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 import type { TActive, TColor, TSizeTS, TSpace } from '@/spec'
 import SIZE from '@/constant/size'
-import css, { theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 
 import Button from '@/widgets/Buttons/Button'
 import ArrowSVG from '@/icons/ArrowSimple'

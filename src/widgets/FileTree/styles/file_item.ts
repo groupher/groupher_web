@@ -1,9 +1,7 @@
-import styled from 'styled-components'
-
 import type { TActive, TColor } from '@/spec'
 import Img from '@/Img'
 // import HashTagSVG from '@/icons/HashTag'
-import css, { theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 
 import { TagsWrapper } from '.'
 

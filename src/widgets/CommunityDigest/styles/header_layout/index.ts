@@ -1,8 +1,7 @@
-import styled from 'styled-components'
 import Link from 'next/link'
 
 import type { THeaderLayout, TMetric } from '@/spec'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import { BaseBanner } from '..'
 import { HEADER_LAYOUT } from '@/constant/layout'

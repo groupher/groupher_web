@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 import type { TMetric, TTestable, TColorName } from '@/spec'
 
-import css, { rainbow } from '@/css'
+import styled, { css, rainbow } from '@/css'
 import CrossSVG from '@/icons/CloseCross'
 import ArrowSVG from '@/icons/Arrow'
 import NotifySVG from '@/icons/Trumpet'

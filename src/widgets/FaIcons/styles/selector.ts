@@ -1,9 +1,7 @@
-import styled from 'styled-components'
-
 import type { TTestable, TColorName, TActive } from '@/spec'
 
 import ArrowSVG from '@/icons/ArrowSolid'
-import css, { theme, rainbow, rainbowLight } from '@/css'
+import styled, { css, theme, rainbow, rainbowLight } from '@/css'
 import { WithMargin } from '@/widgets/Common'
 
 type TWrapper = TTestable

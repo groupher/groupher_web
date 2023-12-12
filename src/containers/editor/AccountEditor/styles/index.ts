@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import Img from '@/Img'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import GithubSVG from '@/icons/Github8'
 import FormInput from '@/widgets/Input'

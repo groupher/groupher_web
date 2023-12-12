@@ -1,4 +1,3 @@
-import styled from 'styled-components'
 import Link from 'next/link'
 
 import type { TSpace, TTestable } from '@/spec'
@@ -6,7 +5,7 @@ import type { TSpace, TTestable } from '@/spec'
 import Button from '@/widgets/Buttons/Button'
 import LinkSVG from '@/icons/LinkOutside'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 import InfoSVG from '@/icons/Info'
 import ArrowSVG from '@/icons/ArrowSimple'
 

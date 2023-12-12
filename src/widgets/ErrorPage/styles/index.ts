@@ -1,7 +1,6 @@
 import Link from 'next/link'
-import styled from 'styled-components'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import type { TTestable } from '@/spec'
 

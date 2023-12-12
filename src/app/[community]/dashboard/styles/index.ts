@@ -1,7 +1,6 @@
-import styled from 'styled-components'
+import styled, { css } from '@/css'
 
 import type { TMetric } from '@/spec'
-import css from '@/css'
 
 export const Wrapper = styled.div<{ metric?: TMetric }>`
   ${css.column('justify-start', 'align-center')};

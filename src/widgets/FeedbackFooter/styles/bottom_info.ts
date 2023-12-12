@@ -1,9 +1,7 @@
-import styled from 'styled-components'
-
 import type { TTestable, TActive } from '@/spec'
 
 // import Img from '@/Img'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import GoodSVG from './GoodSVG'
 import SoSoSVG from './SoSoSVG'

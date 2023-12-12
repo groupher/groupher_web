@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 import type { TColor, TSpace } from '@/spec'
 // import Img from '@/Img'
-import css, { theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 import { WithMargin } from '@/widgets/Common'
 
 import Button from '../../Button'

@@ -1,9 +1,8 @@
-import styled from 'styled-components'
 import { includes } from 'ramda'
 
 import type { TActive } from '@/spec'
 import Img from '@/Img'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.row('align-center', 'justify-center')};

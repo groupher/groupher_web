@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TColor } from '@/spec'
-import css, { rainbow, theme } from '@/css'
+import styled, { css, rainbow, theme } from '@/css'
 
 import Img from '@/Img'
 

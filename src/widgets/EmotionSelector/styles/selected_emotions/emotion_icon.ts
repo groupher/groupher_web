@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import Img from '@/Img'
-import css from '@/css'
+import styled, { css } from '@/css'
 
 export const EIcon = styled(Img)<{ name: string }>`
   margin-top: ${({ name }) => (name === 'downvote' ? '2px' : 0)};

@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 import type { TTestable } from '@/spec'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 import ArchivedSVG from '@/icons/Archived'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({

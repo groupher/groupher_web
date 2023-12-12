@@ -1,10 +1,10 @@
-import styled, { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from 'styled-components'
+import styled, { css, theme } from '@/css'
 
 import type { TActive, TTestable } from '@/spec'
 
 import SettingSVG from '@/icons/Setting'
 import { WithMargin } from '@/widgets/Common'
-import css, { theme } from '@/css'
 
 export const Wrapper = styled(WithMargin).attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

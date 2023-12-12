@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 import type { TBannerLayout } from '@/spec'
 import { BANNER_LAYOUT } from '@/constant/layout'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import ArrowSVG from '@/icons/ArrowSimple'
 import ListSVG from '@/icons/List'

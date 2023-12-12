@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TColorName, TTestable } from '@/spec'
-import css, { theme, rainbowLight } from '@/css'
+import styled, { css, theme, rainbowLight } from '@/css'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 

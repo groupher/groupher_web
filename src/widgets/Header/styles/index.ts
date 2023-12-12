@@ -1,5 +1,4 @@
-import styled from 'styled-components'
-
+import styled from '@/css'
 import type { TTestable } from '@/spec'
 
 type TWrapper = TTestable & { id: string }

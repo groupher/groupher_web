@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TActive, TSpace } from '@/spec'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import { WithMargin } from '@/widgets/Common'
 

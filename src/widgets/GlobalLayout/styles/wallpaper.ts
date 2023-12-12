@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 import type { TThemeName } from '@/spec'
 import THEME from '@/constant/theme'
-import { animate } from '@/css'
+import styled, { animate } from '@/css'
 
 type TWrapper = { $effect: string; $themeName: TThemeName }
 export const Wrapper = styled.div<TWrapper>`

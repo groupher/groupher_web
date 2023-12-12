@@ -1,10 +1,8 @@
-import styled from 'styled-components'
-
 import type { TColor, TSizeSM } from '@/spec'
 import SIZE from '@/constant/size'
 
 import HookSVG from '@/icons/CheckBold'
-import css, { theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 
 export const Wrapper = styled.div<{ size: TSizeSM }>`
   ${css.row('align-center')};

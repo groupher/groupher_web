@@ -1,8 +1,7 @@
-import styled from 'styled-components'
 import * as NextLink from 'next/link'
 
 import type { TActive, TSpace } from '@/spec'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 // @ts-ignore
 export const Link = styled(NextLink)`

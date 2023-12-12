@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { theme, animate } from '@/css'
+import styled, { css, theme, animate } from '@/css'
 import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
 import LinkSVG from '@/icons/Link'
 import GithubSVG from '@/icons/GithubCat'

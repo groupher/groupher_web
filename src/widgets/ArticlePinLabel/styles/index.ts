@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TColor } from '@/spec'
-import css, { rainbow } from '@/css'
+import styled, { css, rainbow } from '@/css'
 import PinSVG from '@/icons/Pin'
 import { pixelAdd } from '@/dom'
 

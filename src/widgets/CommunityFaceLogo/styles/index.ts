@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import { theme } from '@/css'
+import styled, { theme } from '@/css'
 import Img from '@/Img'
 import SiteLogo from '@/icons/CPLogo'
 

@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TActive, TColor } from '@/spec'
-import css, { rainbow, theme } from '@/css'
+import styled, { css, rainbow, theme } from '@/css'
 
 import ArrowUpRight from '@/icons/ArrowUpRight'
 

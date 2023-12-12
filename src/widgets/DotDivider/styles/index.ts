@@ -1,5 +1,4 @@
-import styled from 'styled-components'
-import { theme } from '@/css'
+import styled, { theme } from '@/css'
 
 export type TProps = {
   $radius: number

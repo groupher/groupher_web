@@ -1,8 +1,7 @@
-import styled from 'styled-components'
 import TextareaAutosize from 'react-textarea-autosize'
 
 import type { TTestable } from '@/spec'
-import { theme } from '@/css'
+import styled, { theme } from '@/css'
 
 import { baseInput } from '.'
 

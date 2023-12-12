@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import ToolSVG from '@/icons/Tool'
 import SadSVG from '@/icons/CloseCross'

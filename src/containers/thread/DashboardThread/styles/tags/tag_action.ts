@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import MoreSVG from '@/icons/menu/MoreL'
 import EditSVG from '@/icons/EditPen'

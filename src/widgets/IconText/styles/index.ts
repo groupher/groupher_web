@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 import type { TTestable, TSize } from '@/spec'
 import Img from '@/Img'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import { getIconSize, getTextSize, getMargin } from './metric'
 

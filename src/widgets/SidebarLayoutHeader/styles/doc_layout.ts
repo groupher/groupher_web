@@ -1,8 +1,7 @@
-import styled from 'styled-components'
 import Link from 'next/link'
 
 import type { TTestable } from '@/spec'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 export { MenuItem, Icon } from '.'
 

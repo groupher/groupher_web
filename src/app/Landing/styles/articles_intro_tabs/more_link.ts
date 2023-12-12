@@ -1,9 +1,8 @@
-import styled from 'styled-components'
 import Link from 'next/link'
 
 import type { TColor } from '@/spec'
 
-import css, { rainbow } from '@/css'
+import styled, { css, rainbow } from '@/css'
 import ArrowSVG from '@/icons/Arrow'
 
 export const Wrapper = styled(Link)`

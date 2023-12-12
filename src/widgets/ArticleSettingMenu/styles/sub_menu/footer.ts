@@ -1,10 +1,8 @@
-import styled from 'styled-components'
-
 import Button from '@/widgets/Buttons/Button'
 import { WithMargin } from '@/widgets/Common'
 import ArrowSVG from '@/icons/Arrow'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 export const Wrapper = styled(WithMargin)`
   ${css.row('align-center', 'justify-between')};

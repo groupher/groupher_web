@@ -1,10 +1,9 @@
 import { FC } from 'react'
-import styled from 'styled-components'
 
 import type { TActive, TSpace } from '@/spec'
 
 import Img from '@/Img'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import { getLocalSVG } from '@/icons'
 

@@ -1,10 +1,8 @@
-import styled from 'styled-components'
-
 import type { TTestable, TActive } from '@/spec'
 import HookSVG from '@/icons/Hook'
 import { WithMargin } from '@/widgets/Common'
 // import Img from '@/Img'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 type TWrapper = TTestable
 

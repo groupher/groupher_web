@@ -1,5 +1,4 @@
-import styled from 'styled-components'
-
+import styled from '@/css'
 import type { TTestable } from '@/spec'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({

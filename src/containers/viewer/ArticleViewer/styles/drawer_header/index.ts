@@ -1,9 +1,7 @@
-import styled from 'styled-components'
-
 import ArrowSVG from '@/icons/Arrow'
 import WarningSVG from '@/icons/Warning'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};

@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import { theme } from '@/css'
+import styled, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   margin-bottom: 10px;

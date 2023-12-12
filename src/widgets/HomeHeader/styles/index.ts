@@ -1,9 +1,8 @@
-import styled from 'styled-components'
 import Link from 'next/link'
 
 import type { TTestable, TActive } from '@/spec'
 
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import Img from '@/Img'
 import { LineDivider } from '@/widgets/Common'

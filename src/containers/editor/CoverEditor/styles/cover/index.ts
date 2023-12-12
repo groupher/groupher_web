@@ -1,9 +1,7 @@
-import styled from 'styled-components'
-
 import Img from '@/Img'
 
 import type { TActive } from '@/spec'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 import { pixelAdd } from '@/dom'
 
 import type { TCoverImage, TImagePos } from '../../spec'

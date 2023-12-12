@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 import type { TActive } from '@/spec'
 import Img from '@/Img'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 import CheckedSVG from '@/icons/CheckBold'
 import CircleArrowSVG from '@/icons/CircleArrow'
 

@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 import { lighten } from '@/utils/color'
 import type { TSize, TButtonStyle, TSpace, TColor } from '@/spec'
 

@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TButton, TSize } from '@/spec'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import { Wrapper as BaseBtnWrapper } from '../button'
 import { OrSignBase } from '.'

@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-
 import type { TTestable, TSpace, TColor } from '@/spec'
 
-import css, { rainbowLink } from '@/css'
+import styled, { css, rainbowLink } from '@/css'
 import ArrowSVG from '@/icons/ArrowUpRight'
 
 type TWrapper = TTestable & TSpace

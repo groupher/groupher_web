@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import Img from '@/Img'
-import css, { theme, animate } from '@/css'
+import styled, { css, theme, animate } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.row()};

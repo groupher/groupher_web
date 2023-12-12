@@ -1,5 +1,4 @@
-import styled from 'styled-components'
-
+import styled from '@/css'
 import type { TTestable } from '@/spec'
 import { WithMargin } from '@/widgets/Common'
 

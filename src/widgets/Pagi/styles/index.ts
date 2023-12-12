@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { theme, animate } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import Img from '@/Img'
 import ArrowSVG from '@/icons/ArrowSimple'

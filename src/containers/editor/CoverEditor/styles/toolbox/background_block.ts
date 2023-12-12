@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-
 import type { TActive, TWallpaperGradientDir } from '@/spec'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import ArchSVG from '@/icons/Arch'
 import ArrowSVG from '@/icons/Arrow'

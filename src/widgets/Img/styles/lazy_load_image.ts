@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { zIndex } from '@/css'
+import styled, { css, zIndex } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.row()};

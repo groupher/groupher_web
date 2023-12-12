@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-import css, { theme, animate } from '@/css'
+import styled, { css, theme, animate } from '@/css'
 import CheckedSVG from '@/icons/Checked'
 
 export const Wrapper = styled.div``

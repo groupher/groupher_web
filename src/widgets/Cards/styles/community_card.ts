@@ -1,10 +1,9 @@
-import styled from 'styled-components'
 import Link from 'next/link'
 
 // import type { TTestable } from '@/spec'
 
 // import Img from '@/Img'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 import UserSVG from '@/icons/User'
 import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'

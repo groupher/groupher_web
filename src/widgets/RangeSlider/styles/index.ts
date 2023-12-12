@@ -1,9 +1,7 @@
-import styled from 'styled-components'
-
 import type { TTestable, TSpace } from '@/spec'
 
 // import Img from '@/Img'
-import css, { theme } from '@/css'
+import styled, { css, theme } from '@/css'
 
 type TWrapper = TTestable & TSpace & { width: string }
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
