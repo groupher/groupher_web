@@ -13,8 +13,6 @@ import { flex, flexGrow, flexWrap, flexColumn, flexColumnGrow, flexColumnWrap } 
 
 import { circle, size } from './shape'
 
-export { keyframes } from 'styled-components'
-
 const smokey = (initOpacity = 0.6): string => `
   opacity: ${initOpacity};
 

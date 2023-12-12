@@ -1,4 +1,5 @@
-import styled, { css, theme, rainbow, keyframes } from '@/css'
+import { keyframes } from 'styled-components'
+import styled, { css, theme, rainbow } from '@/css'
 
 import type { TUpvoteLayout, TActive, TColorName } from '@/spec'
 
