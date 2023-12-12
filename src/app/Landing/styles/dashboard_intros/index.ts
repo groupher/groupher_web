@@ -8,19 +8,6 @@ export const Wrapper = styled.div`
   height: 728px;
   background: ${theme('landing.greyBg')};
   position: relative;
-
-  &:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 35px;
-    width: 100%;
-    background: ${theme('htmlBg')};
-    border-top: 1px solid;
-    border-top-color: ${theme('hoverBg')};
-    z-index: 2;
-  }
 `
 export const Right = styled.div`
   ${css.row('align-both')};

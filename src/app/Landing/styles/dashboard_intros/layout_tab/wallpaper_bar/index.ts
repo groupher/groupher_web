@@ -1,9 +1,7 @@
 import styled from 'styled-components'
 
 import type { TActive } from '@/spec'
-import css, { animate, theme } from '@/css'
-
-import { LineDivider } from '@/widgets/Common'
+import css, { theme } from '@/css'
 
 import ThemeSVG from '@/icons/Theme'
 
@@ -25,19 +23,16 @@ export const MainWrapper = styled.div`
   `};
 `
 export const BallWrapper = styled.div<TActive>`
-  ${css.size(30)};
+  ${({ $active }) => ($active ? css.circle(38) : css.circle(30))};
   ${css.row('align-both')};
   border-radius: 100%;
-  border: 1px solid;
-  border-color: ${({ $active }) => ($active ? theme('article.digest') : 'transparent')};
+  background: ${({ $active }) => ($active ? theme('htmlBg') : theme('alphaBg2'))};
   padding: 4px;
-  box-shadow: ${({ $active }) =>
-    $active
-      ? 'rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px'
-      : 'transparent'};
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
   &:hover {
     border-color: ${theme('article.digest')};
+    ${css.circle(38)};
     box-shadow: ${css.cardShadow};
     cursor: pointer;
   }
@@ -46,21 +41,22 @@ export const BallWrapper = styled.div<TActive>`
 `
 type TColorBall = { background: string } & TActive
 export const ColorBall = styled.div<TColorBall>`
-  ${({ $active }) => ($active ? css.circle(22) : css.circle(30))};
+  ${({ $active }) => ($active ? css.circle(32) : css.circle(24))};
 
   background: ${({ background }) => background || 'transparent'};
   background-size: 200px;
 
-  &:active {
-    animation: ${animate.breath} 2s linear;
+  ${BallWrapper}:hover & {
+    ${css.circle(30)};
   }
 
   transition: all 0.1s linear;
 `
 export const CustomBall = styled(BallWrapper)`
-  background: ${theme('hoverBg')};
+  background: ${theme('alphaBg2')};
+  border: 1px solid;
   border-color: ${theme('divider')};
-  font-weight: 600;
+  box-shadow: rgba(149, 157, 165, 0.1) 0px 8px 24px;
   font-size: 15px;
   cursor: pointer;
 `

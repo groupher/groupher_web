@@ -1,7 +1,7 @@
-// import type { TArticleCat } from '@/spec'
+import type { TArticleCat } from '@/spec'
 import { ARTICLE_CAT } from '@/constant/gtd'
 
-export const getNodeBlockColors = (cat = ARTICLE_CAT.FEATURE) => {
+export const getNodeBlockColors = (cat: TArticleCat | 'DEFAULT' = ARTICLE_CAT.FEATURE) => {
   switch (cat) {
     case ARTICLE_CAT.FEATURE: {
       return {

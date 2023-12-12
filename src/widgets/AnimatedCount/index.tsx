@@ -34,13 +34,20 @@ import { Wrapper } from './styles'
 export type TProps = {
   count?: number
   size?: TSize
+  forceColor?: string
 } & TActive &
   TSpace
 
-const Count: FC<TProps> = ({ count = 0, size = SIZE.SMALL, $active = false, ...restProps }) => {
+const Count: FC<TProps> = ({
+  count = 0,
+  size = SIZE.SMALL,
+  $active = false,
+  forceColor = '',
+  ...restProps
+}) => {
   return (
     <Wrapper $active={$active} $count={count} {...restProps}>
-      <AnimatedCount count={count} size={size} $active={$active} />
+      <AnimatedCount count={count} size={size} $active={$active} forceColor={forceColor} />
     </Wrapper>
     // <LoadingValueContext.Provider value={{ count, size, active }}>
     //   <AnimatedCount count={count} size={size} active={active} />

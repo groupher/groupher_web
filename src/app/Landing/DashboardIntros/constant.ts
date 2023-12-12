@@ -2,12 +2,9 @@ import { DASHBOARD_ROUTE } from '@/constant/route'
 
 export const TABS_ITEMS = [
   {
-    key: DASHBOARD_ROUTE.INFO,
-    title: '基本信息',
-  },
-  {
     key: DASHBOARD_ROUTE.LAYOUT,
     title: '布局与样式',
+    desc: '这里是布局与样式的说明，看看效果',
   },
   {
     key: DASHBOARD_ROUTE.SEO,

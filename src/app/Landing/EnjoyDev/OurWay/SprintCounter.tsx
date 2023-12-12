@@ -3,17 +3,16 @@ import { FC, useState } from 'react'
 import useInterval from '@/hooks/useInterval'
 import AnimatedCount from '@/widgets/AnimatedCount'
 
-import { Wrapper, UpvoteIcon, Text, Num } from '../styles/enjoy_dev/upvote_btn'
+import { Wrapper, SprintIcon, Text } from '../../styles/enjoy_dev/our_way/sprint_counter'
 
 type TProps = {
-  text?: string
   num?: number
   delay: number
   dividerColor: string
   mainColor: string
 }
 
-const UpdateBtn: FC<TProps> = ({ text = '投票', num = 13, delay, dividerColor, mainColor }) => {
+const SprintCounter: FC<TProps> = ({ num = 13, delay, dividerColor, mainColor }) => {
   const [count, setCount] = useState(num)
 
   useInterval(() => {
@@ -26,13 +25,12 @@ const UpdateBtn: FC<TProps> = ({ text = '投票', num = 13, delay, dividerColor,
 
   return (
     <Wrapper color={dividerColor}>
-      <UpvoteIcon color={mainColor} />
-      <Text color={mainColor}>{text}</Text>
-      <Num>
-        <AnimatedCount count={count} />
-      </Num>
+      <SprintIcon />
+      <Text color={mainColor}>第</Text>
+      <AnimatedCount count={count} forceColor="#323232" left={5} top={-1} />
+      <Text color={mainColor}>周</Text>
     </Wrapper>
   )
 }
 
-export default UpdateBtn
+export default SprintCounter

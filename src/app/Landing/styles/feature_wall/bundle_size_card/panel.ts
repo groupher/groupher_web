@@ -1,8 +1,11 @@
 import styled from 'styled-components'
 
-import css, { theme } from '@/css'
+import type { TActive } from '@/spec'
+import css, { animate, theme } from '@/css'
 
 import Img from '@/Img'
+import LoadingGapSVG from '@/icons/LoadingGap'
+
 import { Wrapper as ParentWrapper } from '.'
 
 export const Wrapper = styled.div`
@@ -13,7 +16,7 @@ export const Wrapper = styled.div`
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   border: 1px solid;
-  border-color: ${theme('rainbow.orangeBg')};
+  border-color: ${theme('rainbow.purpleBg')};
   box-shadow: ${theme('button.boxShadow')};
   border-bottom: none;
 `
@@ -63,7 +66,14 @@ export const Title = styled.div<{ $good?: boolean }>`
   font-weight: ${({ $good }) => ($good ? 500 : 400)};
   font-size: 13px;
 `
-
+export const LoadingIcon = styled(LoadingGapSVG)<TActive>`
+  ${css.size(14)};
+  margin-left: 4px;
+  fill: ${theme('article.title')};
+  opacity: ${({ $active }) => ($active ? 1 : 0)};
+  transition: opacity 0.3s;
+  animation: ${animate.rotate360} 1s linear infinite;
+`
 type TSize = { $good?: boolean; $suck?: boolean }
 export const Size = styled.div<TSize>`
   color: ${({ $good }) => ($good ? theme('rainbow.green') : theme('hint'))};

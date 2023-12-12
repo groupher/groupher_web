@@ -11,7 +11,7 @@ import LayoutTab from './LayoutTab'
 import { Wrapper, Right } from '../styles/dashboard_intros'
 
 const DashboardIntros: FC = () => {
-  const [tab, setTab] = useState<TDashboardPath>(DASHBOARD_ROUTE.INFO)
+  const [tab, setTab] = useState<TDashboardPath>(DASHBOARD_ROUTE.LAYOUT)
 
   return (
     <Wrapper>

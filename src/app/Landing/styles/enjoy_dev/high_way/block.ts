@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import css, { theme } from '@/css'
 
 import ToolSVG from '@/icons/Tool'
-import SadSVG from '@/icons/SadFace'
+import SadSVG from '@/icons/CloseCross'
 import PlaneSVG from '@/icons/Plane'
 
-export const Wrapper = styled.div<{ grey: boolean }>`
+export const Wrapper = styled.div<{ $giveup: boolean }>`
   ${css.row('align-center')};
   position: relative;
   border: 1px solid;
@@ -15,7 +15,7 @@ export const Wrapper = styled.div<{ grey: boolean }>`
   border-radius: 12px;
   width: auto;
   padding: 5px 10px;
-  background-color: ${({ grey }) => (grey ? theme('hoverBg') : theme('alphaBg'))};
+  background-color: ${({ $giveup }) => ($giveup ? theme('rainbow.redBg') : theme('alphaBg'))};
   box-shadow: 0 5px 25px rgb(35 35 35 / 10%);
 `
 export const Building = styled.span`
@@ -31,11 +31,11 @@ export const ToolIcon = styled(ToolSVG)`
 `
 export const SadIcon = styled(SadSVG)`
   ${css.size(14)};
-  fill: ${theme('article.digest')};
+  fill: ${theme('rainbow.red')};
   margin-left: 1px;
 `
 export const InternetIcon = styled(PlaneSVG)`
-  ${css.size(11)};
+  ${css.size(13)};
   fill: ${theme('article.digest')};
   margin-left: 1px;
   margin-right: 1px;
@@ -49,8 +49,8 @@ export const Dot = styled.div`
   background: ${theme('article.digest')};
   opacity: 0.6;
 `
-export const Text = styled.div`
-  color: ${theme('article.title')};
+export const Text = styled.div<{ $giveup: boolean }>`
+  color: ${({ $giveup }) => ($giveup ? theme('rainbow.red') : theme('article.title'))};
   font-size: 15px;
   margin-left: 6px;
 `

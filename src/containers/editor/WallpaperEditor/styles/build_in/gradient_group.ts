@@ -6,7 +6,7 @@ import css, { animate, theme } from '@/css'
 import PenSVG from '@/icons/EditPen'
 
 export const Wrapper = styled.div`
-  ${css.rowWrap()};
+  ${css.rowWrap('align-center')};
   width: calc(100% + 30px);
   gap: 0 12px;
   margin-top: 10px;
@@ -17,11 +17,11 @@ export const Wrapper = styled.div`
   `};
 `
 export const BallWrapper = styled.div<TActive>`
-  ${css.size(36)};
+  ${({ $active }) => ($active ? css.size(40) : css.size(36))};
   ${css.row('align-both')};
   border-radius: 100%;
-  border: 1.5px solid;
-  border-color: ${({ $active }) => ($active ? theme('article.title') : 'transparent')};
+  border: 1px dotted;
+  border-color: ${({ $active }) => ($active ? theme('hint') : 'transparent')};
   padding: 3px;
   box-shadow: ${({ $active }) =>
     $active

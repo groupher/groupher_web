@@ -19,7 +19,7 @@ export const TabItem = styled.div<TActive>`
   ${css.column('align-both')};
   width: 162px;
   border-bottom: 2px solid;
-  border-bottom-color: ${({ $active }) => ($active ? theme('article.title') : 'transparent')};
+  border-bottom-color: ${({ $active }) => ($active ? theme('hint') : 'transparent')};
   padding-bottom: 22px;
   cursor: pointer;
 

@@ -10,7 +10,7 @@ import QuestionSVG from '@/icons/Question'
 import DiscussSVG from '@/icons/Discuss'
 import ToolSVG from '@/icons/Tool'
 
-type TWrapper = { color: string; longer: boolean }
+type TWrapper = { color: string; longer?: boolean }
 export const Wrapper = styled.div<TWrapper>`
   position: relative;
   ${css.column()};
@@ -18,15 +18,16 @@ export const Wrapper = styled.div<TWrapper>`
   height: ${({ longer }) => (longer ? '165px' : '140px')};
   border: 1px solid;
   border-color: ${({ color }) => color || theme('divider')};
-  border-radius: 6px;
-  background-color: white;
+  border-radius: 10px;
+  background-color: ${theme('htmlBg')};
   box-shadow: 0 5px 25px rgb(35 35 35 / 10%);
 `
 export const Header = styled.div<{ bg: string }>`
   ${css.row('align-center')};
   background: ${({ bg }) => bg || theme('hoverBg')};
   padding: 2px 10px;
-  height: 30px;
+  height: 35px;
+  border-radius: 10px;
 `
 export const Text = styled.div<{ color: string }>`
   color: ${({ color }) => color || theme('article.title')};
@@ -36,13 +37,11 @@ export const Text = styled.div<{ color: string }>`
 `
 const LightIcon = styled(LightSVG)<{ color: string }>`
   fill: ${({ color }) => color || theme('article.title')};
-  ${css.size(12)};
-  margin-top: 1px;
+  ${css.size(13)};
 `
 const DiscussIcon = styled(DiscussSVG)<{ color: string }>`
   fill: ${({ color }) => color || theme('article.title')};
-  ${css.size(10)};
-  margin-top: 1px;
+  ${css.size(12)};
   margin-left: 1px;
 `
 const BugIcon = styled(BugSVG)<{ color: string }>`
@@ -51,7 +50,7 @@ const BugIcon = styled(BugSVG)<{ color: string }>`
   margin-right: 2px;
 `
 const QuestionIcon = styled(QuestionSVG)<{ color: string }>`
-  ${css.size(9)};
+  ${css.size(12)};
   fill: ${({ color }) => color || theme('article.title')};
   margin-right: 2px;
 `
@@ -67,12 +66,14 @@ export const Icon = {
   [ARTICLE_CAT.BUG]: BugIcon,
   [ARTICLE_CAT.QUESTION]: QuestionIcon,
   [ARTICLE_CAT.OTHER]: DiscussIcon,
+  DEFAULT: ToolIcon,
 }
 
 export const Content = styled.div<{ bg: string }>`
   ${css.column()};
   width: 100%;
   height: 100%;
+  border-radius: 10px;
   padding: 10px;
   padding-top: 20px;
   padding-bottom: 8px;
@@ -103,19 +104,11 @@ export const LeftInfo = styled.div<TLeftInfo>`
   ${css.row('align-center')};
   line-height: 18px;
 `
-
-export const LeftText = styled.div`
-  font-size: 12px;
-  color: ${theme('article.digest')};
-  margin-left: 8px;
-  opacity: 0.6;
-`
-
 type TRightDot = { middle: boolean; bg: string }
 export const RightDot = styled.div<TRightDot>`
   ${css.circle(6)};
   position: absolute;
-  bottom: ${({ middle }) => (middle ? '50px' : '14px')};
+  bottom: ${({ middle }) => (middle ? '38px' : '14px')};
   right: -3px;
   background: ${({ bg }) => bg || theme('article.title')};
   opacity: 0.7;

@@ -1,11 +1,8 @@
 import { FC, useRef, useEffect } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import { Br } from '@/widgets/Common'
-import Block from './Block'
-import NodeBlock from './NodeBlock'
-
-import BgShapes from './BgShapes'
+import HighWay from './HighWay'
+import OurWay from './OurWay'
 
 import {
   Wrapper,
@@ -13,16 +10,8 @@ import {
   Title,
   Desc,
   Wall,
-  ConnectLine,
-  SeedIcon,
-  TadaIcon,
-  HeadConnectLine,
-  TailConnectLine,
-  MainConnectLine,
-  BgWrapper,
-  BadWrapper,
-  GoodWrapper,
-  PositionWrapper,
+  GridBgWrapper,
+  CompareWraper,
   VS,
   YesNote,
   NoNote,
@@ -43,63 +32,25 @@ const EnjoyDev: FC = () => {
   return (
     <Wrapper>
       <Slogan>
-        <Title>发布、获取反馈、迭代</Title>
-        <Desc>将用户反馈融入开发流程，优先满足用户真正关心的需求</Desc>
+        <Title>上线、获取反馈、迭代</Title>
+        <Desc>将用户反馈融入开发流程，避免平行世界闭门造车</Desc>
       </Slogan>
       <Wall ref={ref}>
-        <BadWrapper>
-          <Block text="开发" noDot />
-          <ConnectLine />
-          <Block text="开发" />
-          <ConnectLine />
-          <Block text="开发" />
-          <ConnectLine />
-          <Block text="开发" />
-          <ConnectLine />
-          <Block text="开发" />
-          <ConnectLine />
-          <Block text="没人用" type="online" />
-          <ConnectLine />
-          <Block text="放弃" type="giveup" />
-        </BadWrapper>
-        <NoNote>
-          <NoIcon />
-          团队两行泪
-        </NoNote>
-        <VS>VS</VS>
-        <GoodWrapper>
-          <BgShapes />
-          <SeedIcon left="-38px" top="298px" />
-          <HeadConnectLine left="-10px" top="306px" />
-          <NodeBlock index={0} />
-          <MainConnectLine left="120px" top="306px" />
-          <PositionWrapper left="200px" top="20px">
-            <NodeBlock cat="FEATURE" />
-          </PositionWrapper>
-          <PositionWrapper left="210px" top="390px">
-            <NodeBlock cat="OTHER" />
-          </PositionWrapper>
-          <NodeBlock index={1} />
-          <MainConnectLine left="500px" top="306px" />
-          <PositionWrapper left="590px" top="40px">
-            <NodeBlock cat="QUESTION" />
-          </PositionWrapper>
-          <PositionWrapper left="600px" top="375px">
-            <NodeBlock cat="BUG" />
-          </PositionWrapper>
-          <NodeBlock index={2} />
-          <TailConnectLine left="965px" top="307px" />
-          <TadaIcon left="1028px" top="300px" />
-        </GoodWrapper>
-
-        <YesNote>
-          <YesIcon />
-          与用户共赢
-        </YesNote>
-        <BgWrapper />
+        <OurWay />
+        <CompareWraper>
+          <YesNote>
+            <YesIcon />
+            与用户共赢
+          </YesNote>
+          <VS>VS</VS>
+          <NoNote>
+            <NoIcon />
+            团队两行泪
+          </NoNote>
+        </CompareWraper>
+        <HighWay />
+        <GridBgWrapper />
       </Wall>
-
-      <Br top={40} />
     </Wrapper>
   )
 }
