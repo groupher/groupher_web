@@ -265,3 +265,11 @@ export const FAQWrapper = styled.div`
   max-width: 1080px;
   margin-bottom: 20px;
 `
+
+export const GradientText = styled.div<{ wallpaper: string }>`
+  color: ${theme('article.digest')};
+  background: ${({ wallpaper }) => `linear-gradient(to left, ${getPathGradient(wallpaper)})`};
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+`

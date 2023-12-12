@@ -1,6 +1,8 @@
 import { FC, useRef, useEffect } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
+import useWallpaper from '@/hooks/useWallpaper'
+
 import HighWay from './HighWay'
 import OurWay from './OurWay'
 
@@ -17,11 +19,13 @@ import {
   NoNote,
   YesIcon,
   NoIcon,
+  GradientText,
 } from '../styles/enjoy_dev'
 
 const EnjoyDev: FC = () => {
   const ref = useRef(null)
   const { isMobile } = useMobileDetect()
+  const { wallpaper } = useWallpaper()
 
   useEffect(() => {
     if (isMobile && ref) {
@@ -32,7 +36,9 @@ const EnjoyDev: FC = () => {
   return (
     <Wrapper>
       <Slogan>
-        <Title>上线、获取反馈、迭代</Title>
+        <Title>
+          上线、<GradientText wallpaper={wallpaper}>获取反馈</GradientText>、迭代
+        </Title>
         <Desc>将用户反馈融入开发流程，避免平行世界闭门造车</Desc>
       </Slogan>
       <Wall ref={ref}>
