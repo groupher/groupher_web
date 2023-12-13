@@ -29,17 +29,17 @@ type TProps = {
 
 const METRIC = {
   DEFAULT: {
-    title: '日常开发',
+    title: '日常迭代',
     upvoteText: 'Sprint',
-    upvoteNum: 1,
-    delay: 3000,
+    upvoteNum: 2,
+    delay: 5000,
   },
 
   [ARTICLE_CAT.FEATURE]: {
     title: '功能需求',
     upvoteText: '支持',
     upvoteNum: 13,
-    delay: 3000,
+    delay: 4000,
   },
 
   [ARTICLE_CAT.OTHER]: {
@@ -53,7 +53,7 @@ const METRIC = {
     title: 'Bug',
     upvoteText: '同样遇到',
     upvoteNum: 9,
-    delay: 4000,
+    delay: 6000,
   },
 
   [ARTICLE_CAT.QUESTION]: {

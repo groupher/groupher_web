@@ -1,7 +1,7 @@
 import type { TColor, TTestable } from '@/spec'
 
 import styled, { css, theme, rainbow } from '@/css'
-import { COLORS } from '../../FeatureWall/constant'
+import { GRADIENT_BG } from '../../FeatureWall/constant'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
@@ -9,7 +9,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   ${css.column('align-both')};
   width: 100%;
   padding: 120px 0;
-  padding-bottom: 150px;
+  padding-bottom: 200px;
 `
 export const Slogan = styled.div`
   ${css.column('align-both')};
@@ -31,12 +31,12 @@ export const Desc = styled.div`
   margin-bottom: 80px;
   opacity: 0.8;
 `
-// background: ${({ $color }) => rainbowLight($color)};
+/* background: ${({ $color }) => COLORS[`${$color.toLowerCase()}Bg`]}; */
 export const BaseCard = styled.div<TColor>`
   ${css.column('align-center', 'justify-end')};
   width: 300px;
   height: 278px;
-  background: ${({ $color }) => COLORS[`${$color.toLowerCase()}Bg`]};
+  background: ${({ $color }) => GRADIENT_BG[$color]};
   border: 1px dotted;
   border-color: transparent;
 
