@@ -9,7 +9,7 @@ import { CARDS_METRICS } from './constant'
 import DayCard from './DayCard'
 import NightCard from './NightCard'
 
-import { Wrapper } from '../../styles/feature_wall/dark_mode/panel'
+import { Wrapper, DivideColumn } from '../../styles/feature_wall/dark_mode/panel'
 
 type TProps = {
   hovering: boolean
@@ -22,6 +22,7 @@ const Panel: FC<TProps> = ({ hovering }) => {
     return (
       <Wrapper>
         <DayCard hovering={hovering} metric={CARDS_METRICS[curTheme][THEME.DAY] as TCardMetric} />
+        <DivideColumn $hovering={hovering} />
         <NightCard
           hovering={hovering}
           metric={CARDS_METRICS[curTheme][THEME.NIGHT] as TCardMetric}
