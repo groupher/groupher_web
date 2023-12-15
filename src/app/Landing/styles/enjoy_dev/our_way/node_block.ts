@@ -20,9 +20,9 @@ export const Wrapper = styled.div<TWrapper>`
   background-color: ${theme('htmlBg')};
   box-shadow: 0 5px 25px rgb(35 35 35 / 10%);
 `
-export const Header = styled.div<{ bg: string }>`
+export const Header = styled.div<{ $bg: string }>`
   ${css.row('align-center')};
-  background: ${({ bg }) => bg || theme('hoverBg')};
+  background: ${({ $bg }) => $bg || theme('hoverBg')};
   padding: 2px 10px;
   height: 35px;
   border-radius: 10px;
@@ -67,7 +67,7 @@ export const Icon = {
   DEFAULT: ToolIcon,
 }
 
-export const Content = styled.div<{ bg: string }>`
+export const Content = styled.div<{ $bg: string }>`
   ${css.column()};
   width: 100%;
   height: 100%;
@@ -75,7 +75,7 @@ export const Content = styled.div<{ bg: string }>`
   padding: 10px;
   padding-top: 20px;
   padding-bottom: 8px;
-  background: ${({ bg }) => bg || 'white'};
+  background: ${({ $bg }) => $bg || 'white'};
 `
 type TBar = { $short?: boolean; $bg: string }
 export const Bar = styled.div<TBar>`
