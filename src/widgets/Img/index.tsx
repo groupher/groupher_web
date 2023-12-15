@@ -10,7 +10,6 @@ import { buildLog } from '@/logger'
 
 // import SvgLoader from './SvgLoader'
 import NormalImg from './NormalImg'
-// import NextImg from './NextImg'
 import LazyLoadImg from './LazyLoadImg'
 
 /* eslint-disable-next-line */

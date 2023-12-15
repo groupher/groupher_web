@@ -18,10 +18,7 @@ const PublishEditor: FC<TProps> = ({ submitState, body }) => {
   return (
     <Wrapper>
       {/* <Header accountInfo={accountInfo} showEditor={showEditor} /> */}
-      <BodyEditor
-        body={body}
-        onChange={(v) => commentOnChange(v, 'commentBody')}
-      />
+      <BodyEditor body={body} onChange={(v) => commentOnChange(v, 'commentBody')} />
 
       {/* <Footer
         submitState={submitState}

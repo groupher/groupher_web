@@ -15,8 +15,7 @@ export const Wrapper = styled.div<TWrapper>`
 
   width: 100%;
   padding-top: 50px;
-  padding-right: ${({ offsetRight, withLastUpdated }) =>
-    withLastUpdated ? 0 : `${offsetRight}px`};
+  padding-right: ${({ offsetRight, withLastUpdated }) => (withLastUpdated ? 0 : `${offsetRight}px`)};
 
   border-top: 1px solid;
   border-top-color: ${theme('divider')};

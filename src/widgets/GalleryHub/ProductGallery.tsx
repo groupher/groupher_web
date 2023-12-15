@@ -72,4 +72,4 @@ const ProductGallery: FC<TProps> = ({ items = mockProducts() }) => {
   )
 }
 
-export default memo(ProductGallery) as FC<TProps>
+export default (memo(ProductGallery) as FC<TProps>)

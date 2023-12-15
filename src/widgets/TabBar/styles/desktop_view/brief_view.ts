@@ -15,8 +15,7 @@ export const TabItem = styled.div<TActive>`
   border-bottom: 1px dashed;
 
   color: ${({ active }) => (active ? theme('tabs.headerActive') : theme('tabs.header'))};
-  border-bottom-color: ${({ active }) =>
-    active ? theme('tabs.headerActive') : theme('banner.bg')};
+  border-bottom-color: ${({ active }) => (active ? theme('tabs.headerActive') : theme('banner.bg'))};
 
   &:hover {
     color: ${theme('tabs.headerActive')};

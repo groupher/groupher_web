@@ -15,8 +15,7 @@ export const Wrapper = styled(WithMargin).attrs<TTestable>(({ $testid }) => ({
 `
 export const Avatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
   ${css.size(40)};
-  border-radius: ${({ $avatarLayout }) =>
-    $avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%'};
+  border-radius: ${({ $avatarLayout }) => ($avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
   margin-bottom: 20px;
   border: 1px solid;
   border-color: ${theme('hint')};

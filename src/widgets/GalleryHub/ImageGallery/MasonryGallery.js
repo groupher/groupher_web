@@ -74,14 +74,10 @@ const MasonryGallery = () => {
             <Intro>
               <IntroHead>
                 <Title>{item.title}</Title>
-                <FlagIcon
-                  src={`${ASSETS_ENDPOINT}/navi/nation/${item.nation}.png`}
-                />
+                <FlagIcon src={`${ASSETS_ENDPOINT}/navi/nation/${item.nation}.png`} />
               </IntroHead>
               <Footer>
-                <IconText iconSrc={`${ICON_CMD}/history_clock.svg`}>
-                  1233 - 1430
-                </IconText>
+                <IconText iconSrc={`${ICON_CMD}/history_clock.svg`}>1233 - 1430</IconText>
                 <IconText iconSrc={`${ICON_CMD}/view-o.svg`}>4567</IconText>
               </Footer>
             </Intro>

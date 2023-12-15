@@ -14,8 +14,7 @@ export const AccountWrapper = styled.div`
 `
 export const Avatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
   ${css.size(22)};
-  border-radius: ${({ $avatarLayout }) =>
-    $avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%'};
+  border-radius: ${({ $avatarLayout }) => ($avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
 `
 export const UserName = styled.div`
   color: ${theme('article.digest')};
