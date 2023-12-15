@@ -83,10 +83,10 @@ jobs:
       - name: Run Biome
         run: biome ci ./src; ls -llh; pwd
       - name: (Frontend) Setup Config CMD Tools
-        working-directory: ../frontend_server
+        working-directory: ./
         run: ls -llh; chmod +x ./utils/bin/jq-linux; ./utils/bin/jq-linux -s '.[0] * .[1]' config/config.json config/config.ci.json > /tmp/config.json; cp /tmp/config.json ./config/config.json
       - name: (Frontend) Build Project
-        working-directory: ./frontend_server
+        working-directory: ./
         run: npm run build.ci
       - name: cache the build
         uses: actions/cache@v2
