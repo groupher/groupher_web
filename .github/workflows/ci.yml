@@ -73,15 +73,15 @@ jobs:
           node-version: "20.3.1"
       - name: (Frontend) Install Packages
         working-directory: ./
-        run: pwd; ls -llh; npm install;pwd; ls -llh;
-      # - name: Checkout
-      #   uses: actions/checkout@v4
-      # - name: Setup Biome
-      #   uses: biomejs/setup-biome@v1
-      #   with:
-      #     version: 1.4.1
-      # - name: Run Biome
-      #   run: biome ci ./src; ls -llh; pwd
+        run: npm install
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Biome
+        uses: biomejs/setup-biome@v1
+        with:
+          version: 1.4.1
+      - name: Run Biome
+        run: biome ci ./src; ls -llh; pwd
       - name: (Frontend) Setup Config CMD Tools
         working-directory: ./
         run: ls -llh; chmod +x ./utils/bin/jq-linux; ./utils/bin/jq-linux -s '.[0] * .[1]' config/config.json config/config.ci.json > /tmp/config.json; cp /tmp/config.json ./config/config.json
