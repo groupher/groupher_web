@@ -62,18 +62,26 @@ jobs:
       #   run: MIX_ENV=ci mix phx.server &
 
       - name: (Frontend) checkout codebase
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          repository: 'groupher/groupher_web'
-          path: 'frontend_server'
+          repository: "groupher/groupher_web"
+          path: "frontend_server"
       - name: (Frontend) setup node env
         uses: actions/setup-node@v2
         with:
-          node-version: '20.3.1'
+          node-version: "20.3.1"
       - name: (Frontend) Install Packages
         working-directory: ./frontend_server
         run: npm install
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Biome
+        uses: biomejs/setup-biome@v1
+        with:
+          version: 1.2.2
+      - name: Run Biome
+        run: biome ci .
       - name: (Frontend) Setup Config CMD Tools
         working-directory: ./frontend_server
         run: chmod +x ./utils/bin/jq-linux; ./utils/bin/jq-linux -s '.[0] * .[1]' config/config.json config/config.ci.json > /tmp/config.json; cp /tmp/config.json ./config/config.json
