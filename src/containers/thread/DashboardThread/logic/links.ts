@@ -1,4 +1,4 @@
-import { keys, find, findIndex, clone, remove, filter, reject } from 'ramda'
+import { keys, find, findIndex, clone, remove, filter, reject, forEach } from 'ramda'
 
 import type { TLinkItem, TGroupedLinks } from '@/spec'
 import { CHANGE_MODE } from '@/constant/mode'
@@ -444,7 +444,7 @@ const _moveGroup = (group: string, opt: 'left' | 'right' | 'edge-left' | 'edge-r
   }))
 
   const newLinks = []
-  groupKeys.forEach((key) => newLinks.push(...groupedLinks[key]))
+  forEach((key) => newLinks.push(...groupedLinks[key]), groupKeys)
 
   store.mark({ [curPageLinksKey.links]: newLinks })
 }

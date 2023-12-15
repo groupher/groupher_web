@@ -15,7 +15,7 @@ const log = buildLog('w:Tag:index')
 
 type TProps = {
   children: ReactNode
-  onClose?: () => void | null
+  onClose?: () => void
 }
 
 const Tag: FC<TProps> = ({ children, onClose = null }) => {
@@ -25,7 +25,7 @@ const Tag: FC<TProps> = ({ children, onClose = null }) => {
     <Wrapper $testid="tag" closeable={closeable}>
       {children}
       {closeable && (
-        <div onClick={() => onClose()}>
+        <div onKeyDown={() => onClose()}>
           <CloseIcon />
         </div>
       )}

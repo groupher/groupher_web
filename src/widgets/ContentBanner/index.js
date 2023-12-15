@@ -29,7 +29,7 @@ const ContentBanner = ({ data, middleNode }) => {
         <BannerContentWrapper>
           <PostBrief>
             <Title>{data.title}</Title>
-            <>{!isEmpty(middleNode) && <div>{middleNode}</div>}</>
+            {!isEmpty(middleNode) && <div>{middleNode}</div>}
             <Desc>
               {isRefined ? <MarkTag>精华</MarkTag> : <div />}
               <TimeAgo datetime={data.insertedAt} locale="zh_CN" />

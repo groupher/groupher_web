@@ -34,7 +34,7 @@ const loadArticle = (): void => {
 
   const variables = { community: originalCommunitySlug, id: innerId, userHasLogin }
 
-  return sr71$.query(S.getArticleSchema(meta.thread), variables)
+  sr71$.query(S.getArticleSchema(meta.thread), variables)
 }
 
 const markLoading = (maybe = true) => store.mark({ loading: maybe })

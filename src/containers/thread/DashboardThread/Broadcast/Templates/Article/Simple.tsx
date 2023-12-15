@@ -10,7 +10,7 @@ import { edit } from '../../../logic'
 
 type TProps = {
   settings: TBroadcastSettings
-  onSelect?: () => void | null
+  onSelect?: () => void
 }
 
 const Center: FC<TProps> = ({ settings, onSelect = null }) => {

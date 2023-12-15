@@ -9,7 +9,7 @@ import {
   Wrapper,
   BoxWrapper,
   Label,
-  Number,
+  Num,
   BuilderWrapper,
   Avatar,
   Linker,
@@ -46,30 +46,30 @@ const StatesContainers = ({ repo }) => (
     <Linker href={`${repo.repoUrl}/issues`} rel="noopener noreferrer" target="_blank">
       <BoxWrapper>
         <Label>Issue</Label>
-        <Number>{repo.issuesCount}</Number>
+        <Num>{repo.issuesCount}</Num>
       </BoxWrapper>
     </Linker>
     <Linker href={`${repo.repoUrl}/pulls`} rel="noopener noreferrer" target="_blank">
       <BoxWrapper>
         <Label>PRs</Label>
-        <Number>{repo.prsCount}</Number>
+        <Num>{repo.prsCount}</Num>
       </BoxWrapper>
     </Linker>
     <Linker href={`${repo.repoUrl}/releases`} rel="noopener noreferrer" target="_blank">
       <BoxWrapper>
         <Label>Release</Label>
-        <Number small={nilOrEmpty(repo.releaseTag) ? true : repo.releaseTag.length > 10}>
+        <Num small={nilOrEmpty(repo.releaseTag) ? true : repo.releaseTag.length > 10}>
           {repo.releaseTag || '--'}
-        </Number>
+        </Num>
       </BoxWrapper>
     </Linker>
     <Linker href={`${repo.repoUrl}/blob/master/LICENSE`} rel="noopener noreferrer" target="_blank">
       <BoxWrapper>
         <Label>License</Label>
         {repo.license ? (
-          <Number small={repo.license.length > 5}>{toUpper(repo.license) || '--'}</Number>
+          <Num small={repo.license.length > 5}>{toUpper(repo.license) || '--'}</Num>
         ) : (
-          <Number>--</Number>
+          <Num>--</Num>
         )}
       </BoxWrapper>
     </Linker>

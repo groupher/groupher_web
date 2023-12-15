@@ -32,7 +32,7 @@ const LazyLoadImg: FC<TProps> = ({
 
   return (
     <Wrapper onClick={onClick}>
-      <FallbackWrapper>{!imgLoaded && <Fragment>{fallback}</Fragment>}</FallbackWrapper>
+      <FallbackWrapper>{!imgLoaded && fallback}</FallbackWrapper>
       <LazyImageWrapper>
         <LazyLoadImage
           className={className}

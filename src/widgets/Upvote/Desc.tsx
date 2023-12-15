@@ -23,12 +23,8 @@ const Desc: FC<TProps> = ({ noOne, count = 4, avatarsRowLimit = 3, alias = '觉�
 
   return (
     <DescWrapper>
-      {!noOne && !onlyOne && count > avatarsRowLimit && (
-        <DescWrapper>
-          <>等</>
-        </DescWrapper>
-      )}
-      <>{alias}</>
+      {!noOne && !onlyOne && count > avatarsRowLimit && <DescWrapper>等</DescWrapper>}
+      {alias}
     </DescWrapper>
   )
 }
