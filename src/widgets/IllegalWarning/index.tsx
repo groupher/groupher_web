@@ -15,7 +15,7 @@ const IllegalWarning: FC<TProps> = ({ illegalReason, illegalWords }) => {
       <Title>
         包含 [
         {illegalReason.map((reason, index) => (
-          <Fragment key={index}>
+          <Fragment key={reason}>
             <Reason>{reason}</Reason>
             {index !== illegalReason.length - 1 && <>，</>}
           </Fragment>
@@ -25,7 +25,7 @@ const IllegalWarning: FC<TProps> = ({ illegalReason, illegalWords }) => {
 
       <Content>
         {illegalWords.map((word, index) => (
-          <IllegalItem key={index}>{word}</IllegalItem>
+          <IllegalItem key={word}>{word}</IllegalItem>
         ))}
       </Content>
     </Wrapper>

@@ -17,7 +17,8 @@
 				"noDangerouslySetInnerHtml": "warn"
 			},
 			"suspicious": {
-				"noExplicitAny": "warn"
+				"noExplicitAny": "warn",
+				"noAssignInExpressions": "warn"
 			},
 			"performance": {
 				"noDelete":"off"

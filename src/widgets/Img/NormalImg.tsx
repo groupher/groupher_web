@@ -54,7 +54,7 @@ const NormalImg: FC<TProps> = ({
         onLoad={handleOnLoad}
         onError={handleOnError}
       />
-      {fallback && !loaded && <>{fallback}</>}
+      {fallback && !loaded && fallback}
     </>
   )
 }

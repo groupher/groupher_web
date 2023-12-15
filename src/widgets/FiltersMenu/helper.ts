@@ -40,11 +40,11 @@ export const getSelectedTags = (activeMap: Record<string, TTag>): TTag[] => {
 
   const selectedIdx = filter((key) => !isEmpty(activeMap[key].id), keys(activeMap))
 
-  selectedIdx.forEach((idx) => {
+  forEach((idx) => {
     if (activeMap[idx]) {
       tagList.push(activeMap[idx])
     }
-  })
+  }, selectedIdx)
 
   return tagList
 }

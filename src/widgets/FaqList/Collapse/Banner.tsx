@@ -14,7 +14,7 @@ type TProps = {
 }
 
 const Banner: FC<TProps> = ({ menuOptions, setOpenedIndexes, sections }) => {
-  const foldAll = useCallback(() => setOpenedIndexes([]), [])
+  const foldAll = setOpenedIndexes([])
   const unFoldAll = useCallback(
     () => setOpenedIndexes(pluck('index', sections)),
     [sections, setOpenedIndexes],

@@ -114,6 +114,7 @@ const syncURL = (page: number): void => {
 
 const searchParams2String = (obj): string => new URLSearchParams(obj).toString()
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const getCurSearchParams = (): Record<any, any> =>
   Object.fromEntries(new URLSearchParams(window.location.search))
 

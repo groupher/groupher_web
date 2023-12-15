@@ -39,7 +39,7 @@ const CommunityList: FC<TProps> = ({
   onMoreClick = log,
 }) => {
   if (isEmpty(items)) {
-    return !isEmpty(emptyHint) && <>{emptyHint}</>
+    return !isEmpty(emptyHint) && emptyHint
   }
 
   return (

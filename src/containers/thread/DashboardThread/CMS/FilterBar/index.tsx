@@ -43,7 +43,7 @@ const FilterBar: FC<TProps> = ({ checkboxActive, triggerCheckbox, selectedCount 
           noBorder
         >
           <DubbleCheckIcon />
-          {checkboxActive && <>取消</>}
+          {checkboxActive && '取消'}
           选择
         </Button>
 
