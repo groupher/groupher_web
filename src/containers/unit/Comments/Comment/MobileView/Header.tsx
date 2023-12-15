@@ -24,9 +24,7 @@ const CommentHeader: FC<TProps> = ({ data, apiMode }) => {
     <Wrapper>
       <Avatar
         src={data.author.avatar}
-        fallback={
-          <ImgFallback user={data.author} size={24} right={10} top={10} />
-        }
+        fallback={<ImgFallback user={data.author} size={24} right={10} top={10} />}
       />
       <HeaderBaseInfo>
         <CommentHeaderFirst>
