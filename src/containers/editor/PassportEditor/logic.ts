@@ -37,11 +37,11 @@ export const updatePassport = (): void => {
 
   const innerRules = {}
   forEach((key) => {
-    innerRules[key] = false
+    innerRules[key as string] = false
   }, toJS(keys(JSON.parse(allModeratorRules))))
 
   forEach((key) => {
-    innerRules[key] = true
+    innerRules[key as string] = true
   }, toJS(selectedRules))
 
   const rules = JSON.stringify({

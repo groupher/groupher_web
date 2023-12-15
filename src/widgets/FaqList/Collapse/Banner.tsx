@@ -14,29 +14,29 @@ type TProps = {
 }
 
 const Banner: FC<TProps> = ({ menuOptions, setOpenedIndexes, sections }) => {
-  const foldAll = setOpenedIndexes([])
+  const foldAll = () => setOpenedIndexes([])
   const unFoldAll = useCallback(
     () => setOpenedIndexes(pluck('index', sections)),
     [sections, setOpenedIndexes],
   )
 
-  const handleMenu = useCallback(
-    (key) => {
-      switch (key) {
-        case 'fold': {
-          return foldAll()
-        }
-        case 'unfold': {
-          return unFoldAll()
-        }
-
-        default: {
-          console.log('todo')
-        }
+  const handleMenu = (key) => {
+    switch (key) {
+      case 'fold': {
+        foldAll()
+        return
       }
-    },
-    [foldAll, unFoldAll],
-  )
+      case 'unfold': {
+        unFoldAll()
+        return
+      }
+
+      default: {
+        console.log('todo')
+        return
+      }
+    }
+  }
 
   return (
     <Wrapper>

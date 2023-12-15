@@ -10,8 +10,10 @@ export const tags2Options = (tags: TTag[]): TMenu => {
   const groupedTags = groupByKey(tags, 'group')
   const formated = []
 
+  // @ts-ignore
   forEach((group, index) => {
     const icon = group === '城市' ? `${ICON_CMD}/navi/location.svg` : `${ICON_CMD}/navi/topic.svg`
+
     formated.push({
       id: index,
       title: group,
