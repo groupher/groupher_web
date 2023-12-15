@@ -1,14 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TItem } from './spec'
-import {
-  Wrapper,
-  Header,
-  Title,
-  JoinWrapper,
-  JoinNumber,
-  Desc,
-} from './styles/spotlight'
+import { Wrapper, Header, Title, JoinWrapper, JoinNumber, Desc } from './styles/spotlight'
 
 type TProps = {
   item: TItem

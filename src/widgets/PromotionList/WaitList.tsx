@@ -13,11 +13,7 @@ const WaitList: FC<TProps> = ({ items, activeId, setActiveId }) => {
   return (
     <Wrapper>
       {items.map((item) => (
-        <Item
-          key={item.id}
-          active={item.id === activeId}
-          onClick={() => setActiveId(item.id)}
-        >
+        <Item key={item.id} active={item.id === activeId} onClick={() => setActiveId(item.id)}>
           {item.title}
         </Item>
       ))}

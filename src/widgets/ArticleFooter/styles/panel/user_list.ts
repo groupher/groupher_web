@@ -16,6 +16,5 @@ export const TabsWrapper = styled.div`
 
 export const Avatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
   ${css.size(20)};
-  border-radius: ${({ $avatarLayout }) =>
-    $avatarLayout === AVATAR_LAYOUT.SQUARE ? '5px' : '100%'};
+  border-radius: ${({ $avatarLayout }) => ($avatarLayout === AVATAR_LAYOUT.SQUARE ? '5px' : '100%')};
 `

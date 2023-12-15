@@ -28,20 +28,24 @@ const AbsoluteFmt: FC<TProps> = ({ datetime, className, withTime }) => {
   return (
     <Wrapper className={className}>
       {year}
-      <Space right={3} />年
+      <Space right={3} />
+      年
       <Space right={3} />
       {month}
-      <Space right={3} />月
+      <Space right={3} />
+      月
       <Space right={3} />
       {day}
-      <Space right={3} />日
+      <Space right={3} />
+      日
       {withTime && (
         <Fragment>
           <Space right={2} />
           {range}
           <Space right={2} />
           {hour}
-          <Space right={3} />点
+          <Space right={3} />
+          点
         </Fragment>
       )}
     </Wrapper>

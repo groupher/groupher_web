@@ -14,8 +14,7 @@ export const Wrapper = styled.div`
 export const Avatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
   ${css.size(32)};
   margin-top: 8px;
-  border-radius: ${({ $avatarLayout }) =>
-    $avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%'};
+  border-radius: ${({ $avatarLayout }) => ($avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
 `
 export const Main = styled.div`
   ${css.column()};

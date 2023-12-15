@@ -16,19 +16,12 @@ type TProps = {
  * the fallback is for the image offen block in china, like github avatars
  * fallback 常被用于图片间歇性被墙的情况，比如 github 头像等
  */
-const NextImg: FC<TProps> = ({
-  className = 'img-class',
-  src,
-  alt = 'image',
-  fallback = null,
-}) => {
+const NextImg: FC<TProps> = ({ className = 'img-class', src, alt = 'image', fallback = null }) => {
   const [imgLoaded, setImgLoaded] = useState(false)
 
   return (
     <Wrapper>
-      <FallbackWrapper>
-        {!imgLoaded && <Fragment>{fallback}</Fragment>}
-      </FallbackWrapper>
+      <FallbackWrapper>{!imgLoaded && <Fragment>{fallback}</Fragment>}</FallbackWrapper>
       <Image
         className={className}
         src={src}
