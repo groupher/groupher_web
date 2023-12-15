@@ -49,8 +49,7 @@ export const prettyNum = (num: number, digits = 1): string => {
   if (num < 1000) {
     return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol
   }
-  return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol + '+'
-  /* eslint-enable  */
+  return `${(num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol}+`
 }
 
 /**
@@ -158,8 +157,8 @@ export const plural = (value: string, opt = null): string => {
  */
 export const roundUpNumber = (num: number, precision = 0): number => {
   // eslint-disable-next-line no-restricted-properties
-  precision = Math.pow(10, precision)
-  return Math.ceil(num * precision) / precision
+  const precisionPow = 10 ** precision
+  return Math.ceil(num * precisionPow) / precisionPow
 }
 
 /**

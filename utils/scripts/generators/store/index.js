@@ -4,8 +4,6 @@
 
 /* eslint strict: ["off"] */
 
-'use strict'
-
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const widgetExists = require('../helper/widget_exists')
 
@@ -19,9 +17,7 @@ module.exports = {
       default: 'OvenStore',
       validate: (value) => {
         if (/.+/.test(value)) {
-          return widgetExists(value)
-            ? 'A Store with this name already exists'
-            : true
+          return widgetExists(value) ? 'A Store with this name already exists' : true
         }
 
         return 'The name is required'

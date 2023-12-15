@@ -74,7 +74,7 @@ export const toJS = (obj: any): any => {
 export const updateEditing = (store: TStore, part: string, v: TEditValue): void => {
   if (!store) return
   if (!store.updateEditing) {
-    // eslint-disable-next-line no-console
+    // biome-ignore lint/correctness/noVoidTypeReturn: <explanation>
     return console.warn('Error: updateEditing not found in store: ', store)
   }
 

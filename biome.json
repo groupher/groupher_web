@@ -16,6 +16,9 @@
 			"suspicious": {
 				"noExplicitAny": "warn"
 			},
+			"style": {
+				"noParameterAssign": "warn"
+			},
 			"correctness": {
 				"useExhaustiveDependencies": "warn"
 			},

@@ -5,8 +5,6 @@
 
 /* eslint strict: ["off"] */
 
-'use strict'
-
 const widgetExists = require('../helper/widget_exists')
 
 const TARGET_DIR = '../../../src/widgets'
@@ -28,9 +26,7 @@ module.exports = {
       default: 'Button',
       validate: (value) => {
         if (/.+/.test(value)) {
-          return widgetExists(value)
-            ? `${value} is already exists in 'src/widgets/${value}'`
-            : true
+          return widgetExists(value) ? `${value} is already exists in 'src/widgets/${value}'` : true
         }
 
         return 'The name is required'

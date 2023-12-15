@@ -21,9 +21,7 @@ const matchResolver = (resolveArray, data) => {
 }
 
 const $solver = curry((dataResolver, errResolver, data) => {
-  data.error
-    ? matchResolver(errResolver, data)
-    : matchResolver(dataResolver, data)
+  data.error ? matchResolver(errResolver, data) : matchResolver(dataResolver, data)
 })
 
 export default {
