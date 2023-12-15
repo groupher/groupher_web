@@ -13,6 +13,9 @@
 			"security": {
 				"noDangerouslySetInnerHtml": "warn"
 			},
+			"suspicious": {
+				"noExplicitAny": "warn"
+			},
 			"correctness": {
 				"useExhaustiveDependencies": "warn"
 			},
