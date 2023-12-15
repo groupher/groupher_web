@@ -14,11 +14,9 @@ const Topbar = (props) => {
     // else {
     //   CurTopBar = dynamic(() => import('./DesktopView'), { ssr: false })
     // }
-  }, [])
+  })
 
-  return (
-    <React.Fragment>{CurTopBar && <CurTopBar {...props} />}</React.Fragment>
-  )
+  return <>{CurTopBar && <CurTopBar {...props} />}</>
 }
 
 export default React.memo(Topbar)

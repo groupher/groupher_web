@@ -16,21 +16,9 @@ type TProps = {
   onCancel: () => void
 }
 
-const EditorFooter: FC<TProps> = ({
-  body,
-  label = '发 布',
-  submitState,
-  onPublish,
-  onCancel,
-}) => (
+const EditorFooter: FC<TProps> = ({ body, label = '发 布', submitState, onPublish, onCancel }) => (
   <Wrapper>
-    <WordsCounter
-      body={body}
-      bottom={3}
-      min={10}
-      max={1000}
-      onChange={setWordsCountState}
-    />
+    <WordsCounter body={body} bottom={3} min={10} max={1000} onChange={setWordsCountState} />
     <SubmitButton
       okText={label}
       submitState={submitState}

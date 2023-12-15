@@ -13,7 +13,8 @@
     "formatter": {
       "quoteStyle": "single",
 			"indentStyle": "space",
-			"lineWidth": 120
+			"lineWidth": 100,
+			"semicolons": "asNeeded"
     }
   }
 }

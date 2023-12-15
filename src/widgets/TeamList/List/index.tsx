@@ -19,33 +19,15 @@ type TProps = {
 const Layout: FC<TProps> = ({ layout, users, withSetter, onSetting }) => {
   switch (layout) {
     case LAYOUT.WORKS: {
-      return (
-        <WorksLayout
-          users={users}
-          withSetter={withSetter}
-          onSetting={onSetting}
-        />
-      )
+      return <WorksLayout users={users} withSetter={withSetter} onSetting={onSetting} />
     }
 
     case LAYOUT.GUIDE_CONTRIBUTE: {
-      return (
-        <GuideLayout
-          users={users}
-          withSetter={withSetter}
-          onSetting={onSetting}
-        />
-      )
+      return <GuideLayout users={users} withSetter={withSetter} onSetting={onSetting} />
     }
 
     default: {
-      return (
-        <EditWorksLayout
-          users={users}
-          withSetter={withSetter}
-          onSetting={onSetting}
-        />
-      )
+      return <EditWorksLayout users={users} withSetter={withSetter} onSetting={onSetting} />
     }
   }
 }

@@ -28,10 +28,7 @@ const CommentHeader: FC<TProps> = ({ data }) => {
       <HeaderBaseInfo>
         <BaseInfo>
           <ArticleBase>
-            <AuthorTitle
-              href={`/${article.thread}/${article.id}`}
-              prefetch={false}
-            >
+            <AuthorTitle href={`/${article.thread}/${article.id}`} prefetch={false}>
               {article.title}
             </AuthorTitle>
           </ArticleBase>

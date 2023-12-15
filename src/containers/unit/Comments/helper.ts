@@ -41,35 +41,23 @@ export const passedDate = (
   const { insertedAt: curInsertedAt } = curComment
   const { insertedAt: nextInsertedAt } = nextComment
 
-  const diffInDays = DateDiff.inDays(
-    new Date(curInsertedAt),
-    new Date(nextInsertedAt),
-  )
+  const diffInDays = DateDiff.inDays(new Date(curInsertedAt), new Date(nextInsertedAt))
 
   if (diffInDays >= 5 && diffInDays < 14) {
     return `${diffInDays} 天后`
   }
 
   if (diffInDays >= 14 && diffInDays < 30) {
-    const diffInWeeks = DateDiff.inWeeks(
-      new Date(curInsertedAt),
-      new Date(nextInsertedAt),
-    )
+    const diffInWeeks = DateDiff.inWeeks(new Date(curInsertedAt), new Date(nextInsertedAt))
     return `${diffInWeeks} 周后`
   }
 
   if (diffInDays >= 30 && diffInDays < 365) {
-    const diffInMonths = DateDiff.inMonths(
-      new Date(curInsertedAt),
-      new Date(nextInsertedAt),
-    )
+    const diffInMonths = DateDiff.inMonths(new Date(curInsertedAt), new Date(nextInsertedAt))
     return `${diffInMonths} 月后`
   }
 
-  const diffInYears = DateDiff.inYears(
-    new Date(curInsertedAt),
-    new Date(nextInsertedAt),
-  )
+  const diffInYears = DateDiff.inYears(new Date(curInsertedAt), new Date(nextInsertedAt))
   return diffInYears !== 0 ? `${diffInYears} 年后` : null
 }
 
