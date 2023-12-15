@@ -7,6 +7,7 @@
     "dev2": "next dev --turbo",
     "ci": "cross-env CUR_ENV=ci next dev",
     "update.version": "node -p \"'export const APP_VERSION = ' + JSON.stringify(require('./package.json').version)\" > config/version.ts",
+    "type-check": "tsc --noEmit",
     "build": "next build",
     "build:clean": "run-s dist clean",
     "build.prod": "cross-env CUR_ENV=production next build",
@@ -137,6 +138,6 @@
     "shelljs": "0.8.4",
     "start-server-and-test": "1.12.1",
     "type-fest": "^2.19.0",
-    "typescript": "^4.8.2"
+    "typescript": "^5.3.3"
   }
 }
