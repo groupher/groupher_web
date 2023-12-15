@@ -16,8 +16,7 @@ type TProps = {
 
 export const Dot = styled.div<TProps>`
   ${({ size }) => css.circle(size)};
-  background: ${({ $color, $darkTheme }) =>
-    rainbow($color, $darkTheme ? 'hint' : 'article.digest')};
+  background: ${({ $color, $darkTheme }) => rainbow($color, $darkTheme ? 'hint' : 'article.digest')};
   opacity: ${({ opacity }) => opacity};
   margin-top: ${({ top }) => `${top}px;`};
   margin-right: ${({ right }) => `${right}px;`};

@@ -17,10 +17,7 @@ const ArticleBar = ({ visible, viewingArticle }) => {
     <Wrapper visible={visible}>
       <InnerWrapper>
         <BaseInfo>
-          <Avatar
-            src={`${author.avatar}`}
-            fallback={<ImgFallback user={author} width={16} />}
-          />
+          <Avatar src={`${author.avatar}`} fallback={<ImgFallback user={author} width={16} />} />
           <Title>{title}</Title>
         </BaseInfo>
       </InnerWrapper>

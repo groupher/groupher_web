@@ -1,9 +1,9 @@
-'use client';
+'use client'
 
-import React from 'react';
-import { Plate, PlateContent } from '@udecode/plate-common';
+import React from 'react'
+import { Plate, PlateContent } from '@udecode/plate-common'
 
-import { Wrapper } from './styles';
+import { Wrapper } from './styles'
 
 const BasicEditorDefaultDemo = () => {
   return (
@@ -12,7 +12,7 @@ const BasicEditorDefaultDemo = () => {
         <PlateContent placeholder="Type..." />
       </Plate>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default BasicEditorDefaultDemo;
+export default BasicEditorDefaultDemo

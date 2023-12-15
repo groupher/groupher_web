@@ -21,12 +21,7 @@ const Footer: FC<TProps> = ({ mode, editData, submitState }) => {
   return (
     <Wrapper>
       <PublishFooter>
-        <WordsCounter
-          body={body}
-          bottom={3}
-          onChange={setWordsCountState}
-          min={40}
-        />
+        <WordsCounter body={body} bottom={3} onChange={setWordsCountState} min={40} />
         <SpaceGrow />
         <SubmitButton
           submitState={submitState}

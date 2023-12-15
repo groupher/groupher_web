@@ -1,11 +1,6 @@
 import React from 'react'
 
-import {
-  Wrapper,
-  MainBar,
-  SubBarWrapper,
-  SubBar,
-} from '../styles/pagi_option_selector/main_column'
+import { Wrapper, MainBar, SubBarWrapper, SubBar } from '../styles/pagi_option_selector/main_column'
 
 const MainColumn = ({ active }) => {
   return (

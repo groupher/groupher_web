@@ -1,11 +1,6 @@
 import React from 'react'
 
-import {
-  Wrapper,
-  BarRow,
-  Bar,
-  Dot,
-} from '../styles/pagi_option_selector/masonry_column'
+import { Wrapper, BarRow, Bar, Dot } from '../styles/pagi_option_selector/masonry_column'
 
 const MasonryColumn = ({ active }) => {
   return (

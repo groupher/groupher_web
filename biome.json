@@ -6,6 +6,12 @@
 	"linter": {
 		"enabled": true,
 		"rules": {
+			"complexity": {
+				"noForEach": "warn"	
+			},
+			"correctness": {
+				"useExhaustiveDependencies": "warn"
+			},
 			"recommended": true,
 			"a11y": {
 				"noSvgWithoutTitle": "off"

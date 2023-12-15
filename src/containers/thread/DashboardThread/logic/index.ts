@@ -515,9 +515,7 @@ const DataSolver = [
     match: asyncRes('updateDashboardSeo'),
     action: ({ updateDashboardSeo }) => {
       const {
-        dashboard: {
-          seo: { seoEnable },
-        },
+        dashboard: { seo: { seoEnable } },
       } = updateDashboardSeo
       const { initSettings } = store
       store.mark({ seoEnable, initSettings: { ...toJS(initSettings), seoEnable } })
