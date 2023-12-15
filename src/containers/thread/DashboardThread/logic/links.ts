@@ -345,13 +345,17 @@ const _moveLink2Edge = (link: TLinkItem, opt: 'top' | 'bottom'): void => {
 export const moveLink = (link: TLinkItem, dir: TMoveLinkDir): void => {
   switch (dir) {
     case 'up':
-      return _moveLink(link, 'up')
+      _moveLink(link, 'up')
+      return
     case 'down':
-      return _moveLink(link, 'down')
+      _moveLink(link, 'down')
+      return
     case 'top':
-      return _moveLink2Edge(link, 'top')
+      _moveLink2Edge(link, 'top')
+      return
     case 'bottom':
-      return _moveLink2Edge(link, 'bottom')
+      _moveLink2Edge(link, 'bottom')
+      return
 
     default:
   }

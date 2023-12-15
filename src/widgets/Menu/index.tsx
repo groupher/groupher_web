@@ -47,8 +47,8 @@ const Menu: FC<TProps> = ({
     <Tooltip
       placement={placement}
       trigger="click"
-      onShow={() => onShow && onShow()}
-      onHide={() => onHide && onHide()}
+      onShow={() => onShow?.()}
+      onHide={() => onHide?.()}
       offset={offset as [number, number]}
       noPadding
       content={

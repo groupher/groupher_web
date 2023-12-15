@@ -19,6 +19,9 @@
 			"suspicious": {
 				"noExplicitAny": "warn"
 			},
+			"performance": {
+				"noDelete":"off"
+			},
 			"style": {
 				"noParameterAssign": "warn"
 			},

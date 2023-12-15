@@ -36,7 +36,7 @@ const AvatarLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
 
   return (
     <Wrapper>
-      <SectionLabel title="头像样式" desc={<>用户/用户列表头像展示样式。</>} />
+      <SectionLabel title="头像样式" desc="用户/用户列表头像展示样式。" />
       <SelectWrapper>
         <Layout onClick={() => edit(AVATAR_LAYOUT.SQUARE, 'avatarLayout')}>
           <Block $active={layout === AVATAR_LAYOUT.SQUARE} $color={primaryColor}>

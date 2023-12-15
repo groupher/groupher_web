@@ -7,7 +7,7 @@ import MobileView from './MobileView'
 const MoreContent = () => {
   const { isMobile } = useMobileDetect()
 
-  return <Fragment>{!isMobile ? <DesktopView /> : <MobileView />}</Fragment>
+  return !isMobile ? <DesktopView /> : <MobileView />
 }
 
 export default memo(MoreContent)

@@ -19,11 +19,7 @@ import {
   LastUpdate,
 } from '../../styles/panel/activities'
 
-type TProps = {
-  //
-}
-
-const Activities: FC<TProps> = () => {
+const Activities: FC = () => {
   const avatarLayout = useAvatarLayout()
 
   const user = mockUsers(1)[0]

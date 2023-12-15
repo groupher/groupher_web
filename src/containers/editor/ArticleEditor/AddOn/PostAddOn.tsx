@@ -15,12 +15,6 @@ const PostAddOn: FC<TProps> = ({ editData }) => {
   const [reprint, setReprint] = useState(false)
   const [invalid, setInvalid] = useState(false)
 
-  useEffect(() => {
-    if (!!editData.linkAddr) {
-      setReprint(true)
-    }
-  }, [])
-
   return (
     <Wrapper>
       <Checker

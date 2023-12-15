@@ -37,7 +37,7 @@ const TagLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
 
   return (
     <Wrapper>
-      <SectionLabel title="标签样式" desc={<>列表内容及文章详情的标签的展现形式。</>} />
+      <SectionLabel title="标签样式" desc="列表内容及文章详情的标签的展现形式。" />
       <SelectWrapper>
         <Layout onClick={() => edit(TAG_LAYOUT.HASH, 'tagLayout')}>
           <Block $active={layout === TAG_LAYOUT.HASH} $color={primaryColor}>

@@ -9,7 +9,7 @@ import { edit } from '../../../logic'
 
 type TProps = {
   settings: TBroadcastSettings
-  onSelect?: () => void | null
+  onSelect?: () => void
 }
 
 const Default: FC<TProps> = ({ settings, onSelect = null }) => {
