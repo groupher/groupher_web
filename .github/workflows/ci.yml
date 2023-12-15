@@ -74,12 +74,12 @@ jobs:
       - name: (Frontend) Install Packages
         working-directory: ./
         run: npm install
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Biome
-        uses: biomejs/setup-biome@v1
-        with:
-          version: 1.4.1
+      # - name: Checkout
+      #   uses: actions/checkout@v4
+      # - name: Setup Biome
+      #   uses: biomejs/setup-biome@v1
+      #   with:
+      #     version: 1.4.1
       - name: Run Biome
         run: biome ci ./src; ls -llh; pwd
       - name: (Frontend) Setup Config CMD Tools
