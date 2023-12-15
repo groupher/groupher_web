@@ -3,12 +3,7 @@ import { ICON } from '@/config'
 
 // import Button from '@/widgets/Buttons/Button'
 
-import {
-  Wrapper,
-  InnerWrapper,
-  SubscribeInput,
-  MailBoxIcon,
-} from './styles/simple_layout'
+import { Wrapper, InnerWrapper, SubscribeInput, MailBoxIcon } from './styles/simple_layout'
 
 const SimpleLayout = ({ onOpen, placeholder }) => {
   return (
