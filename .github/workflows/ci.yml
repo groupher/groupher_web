@@ -81,9 +81,9 @@ jobs:
         with:
           version: 1.4.1
       - name: Run Biome
-        run: biome ci ./src; ls -llh
+        run: biome ci ./src; ls -llh; pwd
       - name: (Frontend) Setup Config CMD Tools
-        working-directory: ./frontend_server
+        working-directory: ../frontend_server
         run: ls -llh; chmod +x ./utils/bin/jq-linux; ./utils/bin/jq-linux -s '.[0] * .[1]' config/config.json config/config.ci.json > /tmp/config.json; cp /tmp/config.json ./config/config.json
       - name: (Frontend) Build Project
         working-directory: ./frontend_server
