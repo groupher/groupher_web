@@ -32,34 +32,40 @@ export const toPlatform = (article: TArticle, type: string, url: string): void =
     case SHARE_TYPE.TWITTER: {
       const param = { url, text: title }
 
-      return openShareWindow('https://twitter.com/intent/tweet', param)
+      openShareWindow('https://twitter.com/intent/tweet', param)
+      return
       // return openShareWindow('https://twitter.com/share', param)
     }
 
     case SHARE_TYPE.TELEGRAM: {
       const param = { url, text: title }
 
-      return openShareWindow('https://telegram.me/share/url', param)
+      openShareWindow('https://telegram.me/share/url', param)
+      return
     }
 
     case SHARE_TYPE.EMAIL: {
       const param = { subject: title, body: `${url}\n\n${digest}` }
-      return openShareWindow('mailto:', param)
+      openShareWindow('mailto:', param)
+      return
     }
 
     case SHARE_TYPE.FACEBOOK: {
       const param = { u: url }
-      return openShareWindow('https://facebook.com/share.php', param)
+      openShareWindow('https://facebook.com/share.php', param)
+      return
     }
 
     case SHARE_TYPE.DOUBAN: {
       const param = { href: url, name: title }
-      return openShareWindow('https://shuo.douban.com/!service/share', param)
+      openShareWindow('https://shuo.douban.com/!service/share', param)
+      return
     }
 
     case SHARE_TYPE.WEIBO: {
       const param = { url, title }
-      return openShareWindow('https://service.weibo.com/share/share.php', param)
+      openShareWindow('https://service.weibo.com/share/share.php', param)
+      return
     }
 
     default: {

@@ -11,7 +11,6 @@ schema.graphql
 cypress//integration/examples
 .vscode/
 .DS_Store
-.eslintcache
 
 cypress/videos/*
 tsconfig.tsbuildinfopublic/sw.js

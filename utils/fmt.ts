@@ -45,7 +45,6 @@ export const prettyNum = (num: number, digits = 1): string => {
       break
     }
   }
-  /* eslint-disable */
   if (num < 1000) {
     return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol
   }

@@ -5,7 +5,8 @@ import { Global } from '../helper'
 // see: https://github.com/vercel/next.js/discussions/14980
 const gtag = (): void => {
   // @ts-ignore
-  Global.dataLayer && Global.dataLayer.push(arguments)
+  // biome-ignore lint/style/noArguments: <explanation>
+  Global.dataLayer?.push(arguments)
 }
 
 // https://analytics.google.com/analytics/web/?hl=zh-CN&pli=1#/embed/report-home/a39874160w174341184p173551323

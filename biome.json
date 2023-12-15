@@ -1,7 +1,10 @@
 {
 	"$schema": "https://biomejs.dev/schemas/1.4.1/schema.json",
 	"organizeImports": {
-		"enabled": true
+		"enabled": false
+	},
+	"files": {
+		"ignore": ["./utils/pubsub.js"]
 	},
 	"linter": {
 		"enabled": true,

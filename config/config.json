@@ -16,7 +16,17 @@
     "POSTS": 4,
     "COMMENTS": 5
   },
-  "TAG_COLORS": ["RED", "ORANGE", "YELLOW", "GREEN", "CYAN", "BLUE", "PURPLE", "PINK", "GREY"],
+  "TAG_COLORS": [
+    "RED",
+    "ORANGE",
+    "YELLOW",
+    "GREEN",
+    "CYAN",
+    "BLUE",
+    "PURPLE",
+    "PINK",
+    "GREY"
+  ],
   "TAG_COLOR_ORDER": {
     "red": 0,
     "orange": 1,

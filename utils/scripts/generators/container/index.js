@@ -1,11 +1,6 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 /**
  * Container Generator
  */
-
-/* eslint strict: ["off"] */
-
-'use strict'
 
 const containerExists = require('../helper/container_exists')
 const containerScopes = require('../helper/container_scopes')

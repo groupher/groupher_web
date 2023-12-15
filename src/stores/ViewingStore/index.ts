@@ -120,7 +120,7 @@ const ViewingStore = T.model('ViewingStore', {
       const user = mergeRight(self.user, sobj)
       const { mark } = self as TStore
 
-      return mark({ user })
+      mark({ user })
     },
     syncArticle(item: TArticle): void {
       const root = getParent(self) as TRootStore

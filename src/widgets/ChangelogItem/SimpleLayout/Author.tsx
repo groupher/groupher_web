@@ -6,11 +6,7 @@ import { mockUsers } from '@/mock'
 
 import { Wrapper, Avatar, Name } from '../styles/simple_layout/author'
 
-type TProps = {
-  //
-}
-
-const Author: FC<TProps> = () => {
+const Author: FC = () => {
   const avatarLayout = useAvatarLayout()
   const user = mockUsers(1)[0]
 

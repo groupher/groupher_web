@@ -10,6 +10,7 @@ function useHover<T>(): [MutableRefObject<T>, boolean] {
   const handleMouseOut = (): void => setValue(false)
   useEffect(
     () => {
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       const node: any = ref.current
       if (node) {
         node.addEventListener('mouseover', handleMouseOver)

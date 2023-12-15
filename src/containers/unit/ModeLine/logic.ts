@@ -43,31 +43,38 @@ export const openMenu = (activeMenu: string): void => {
 
   switch (activeMenu) {
     case TYPE.MM_TYPE.GLOBAL_MENU: {
-      return openGlobalMenu()
+      openGlobalMenu()
+      return
     }
 
     case TYPE.MM_TYPE.SEARCH: {
-      return openSearchMenu()
+      openSearchMenu()
+      return
     }
 
     case TYPE.MM_TYPE.FILTER: {
-      return openFilterMenu()
+      openFilterMenu()
+      return
     }
 
     case TYPE.MM_TYPE.COMMUNITY: {
-      return openCommunityMenu()
+      openCommunityMenu()
+      return
     }
 
     case TYPE.MM_TYPE.EXPLORE: {
-      return openExploreMenu()
+      openExploreMenu()
+      return
     }
 
     case TYPE.MM_TYPE.SHARE: {
-      return openShareMenu()
+      openShareMenu()
+      return
     }
 
     default: {
-      return openMoreMenu()
+      openMoreMenu()
+      return
     }
   }
 }

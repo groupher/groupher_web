@@ -9,7 +9,6 @@ import { buildLog, asyncSuit, updateEditing, errRescue } from '@/utils'
 import type { TStore } from './store'
 import S from './schema'
 
-/* eslint-disable-next-line */
 const log = buildLog('L:AccountEditor')
 
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit

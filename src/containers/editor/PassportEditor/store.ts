@@ -8,7 +8,6 @@ import type { TCommunity, TRootStore, TUser, TAccount } from '@/spec'
 import { buildLog } from '@/logger'
 import { markStates, toJS, T, getParent, Instance, useMobxContext } from '@/mobx'
 
-/* eslint-disable-next-line */
 const log = buildLog('S:PassportEditor')
 
 const PassportEditor = T.model('PassportEditor', {

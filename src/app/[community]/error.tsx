@@ -2,7 +2,7 @@
 
 import ErrorPage from '@/widgets/ErrorPage'
 
-const Error = () => {
+const ErrorCommunity = () => {
   return (
     <div>
       <h2>Community Page Error</h2>
@@ -11,4 +11,4 @@ const Error = () => {
   )
 }
 
-export default Error
+export default ErrorCommunity
