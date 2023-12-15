@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import type { TArticleCat } from '@/spec'
 import { ARTICLE_CAT } from '@/constant/gtd'
@@ -71,23 +72,23 @@ const NodeBlock: FC<TProps> = ({ cat = 'DEFAULT', index = -1 }) => {
   const colors = getNodeBlockColors(cat)
 
   return (
-    <Wrapper color={colors.border}>
+    <Wrapper $color={colors.border}>
       {cat === 'DEFAULT' && index === 0 && (
-        <LeftInfo bottom="39px">
-          <LeftDot bg="#888888" />
+        <LeftInfo $bottom="39px">
+          <LeftDot $bg="#888888" />
         </LeftInfo>
       )}
 
-      <RightDot bg={colors.main} middle={cat === 'DEFAULT'} />
+      <RightDot $bg={colors.main} $middle={cat === 'DEFAULT'} />
 
-      <Header bg={colors.headerBg}>
-        <HeadIcon color={colors.main} />
-        <Text color={colors.main}>{metric.title}</Text>
+      <Header $bg={colors.headerBg}>
+        <HeadIcon $color={colors.main} />
+        <Text $color={colors.main}>{metric.title}</Text>
       </Header>
-      <Content bg={colors.contentBg}>
-        <Bar bg={colors.barBg} />
-        <Bar bg={colors.barBg} short />
-        {index === 0 && <Bar bg={colors.barBg} short />}
+      <Content $bg={colors.contentBg}>
+        <Bar $bg={colors.barBg} />
+        <Bar $bg={colors.barBg} $short />
+        {index === 0 && <Bar $bg={colors.barBg} $short />}
         <SpaceGrow />
         <Footer>
           {cat === 'DEFAULT' ? (
@@ -113,4 +114,4 @@ const NodeBlock: FC<TProps> = ({ cat = 'DEFAULT', index = -1 }) => {
   )
 }
 
-export default NodeBlock
+export default observer(NodeBlock)
