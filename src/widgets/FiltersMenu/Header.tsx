@@ -4,13 +4,7 @@ import { ICON } from '@/config'
 import Tooltip from '@/widgets/Tooltip'
 import { SpaceGrow } from '@/widgets/Common'
 
-import {
-  Wrapper,
-  OperatorsWrapper,
-  Operator,
-  ResetIcon,
-  HelpHint,
-} from './styles/header'
+import { Wrapper, OperatorsWrapper, Operator, ResetIcon, HelpHint } from './styles/header'
 
 type TProps = {
   showReset: boolean
@@ -22,11 +16,7 @@ const Header: FC<TProps> = ({ showReset, onReset }) => {
     <Wrapper>
       <SpaceGrow />
       <OperatorsWrapper>
-        <Tooltip
-          content={<HelpHint>重置筛选条件</HelpHint>}
-          placement="bottom"
-          delay={1000}
-        >
+        <Tooltip content={<HelpHint>重置筛选条件</HelpHint>} placement="bottom" delay={1000}>
           <Operator show={showReset} onClick={onReset}>
             <ResetIcon src={`${ICON}/shape/reset.svg`} />
             重置

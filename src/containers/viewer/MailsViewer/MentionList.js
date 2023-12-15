@@ -64,10 +64,7 @@ const AtMessage = ({ item }) => {
   return <span>中@了你</span>
 }
 
-const MentionList = ({
-  data: { entries, pageNumber, pageSize, totalCount },
-  readState,
-}) => {
+const MentionList = ({ data: { entries, pageNumber, pageSize, totalCount }, readState }) => {
   if (isEmpty(entries)) {
     return (
       <Wrapper>
