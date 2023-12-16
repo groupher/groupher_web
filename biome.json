@@ -18,7 +18,10 @@
 			},
 			"suspicious": {
 				"noExplicitAny": "warn",
-				"noAssignInExpressions": "warn"
+				"noAssignInExpressions": "warn",
+				"noDuplicateJsxProps": "error",
+				"noDuplicateObjectKeys": "error",
+				"noDuplicateParameters": "error"
 			},
 			"performance": {
 				"noDelete":"off"
@@ -27,7 +30,8 @@
 				"noParameterAssign": "warn"
 			},
 			"correctness": {
-				"useExhaustiveDependencies": "warn"
+				"useExhaustiveDependencies": "warn",
+				"noUnusedVariables": "warn"
 			},
 			"recommended": true,
 			"a11y": {
