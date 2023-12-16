@@ -1,5 +1,5 @@
 import type { TActive, TColor } from '@/spec'
-import styled, { css, theme, rainbow, animate } from '@/css'
+import styled, { css, theme, rainbow, animate, gradientBg } from '@/css'
 
 import CheckSVG from '@/icons/CheckBold'
 
@@ -23,7 +23,6 @@ export const Box = styled.div<TBox>`
 
   border-radius: 8px;
   border: 1px solid transparent;
-  /* border-color: ${($active) => ($active ? theme('divider') : 'transparent')} ; */
   background: ${theme('alphaBg')};
 
   box-shadow: ${({ $active }) =>
@@ -33,7 +32,6 @@ export const Box = styled.div<TBox>`
 
   opacity: ${({ touched, $active }) => (touched && !$active ? 0.8 : 1)};
   transform: ${({ touched, $active }) => (touched && !$active ? 'scale(0.92)' : '')};
-  /* transform: scale(1); */
 
   &:hover {
     cursor: pointer;
@@ -44,44 +42,33 @@ export const Box = styled.div<TBox>`
   transition: all 0.2s;
 `
 
-export const GRADIENT_BG = {
-  PURPLE: 'linear-gradient(-149deg,#faf5ffd4 0%,rgb(222 198 243) 100%)',
-  BLUE: 'linear-gradient(310deg,#fafdff 1.1989710908323433e-13%,rgb(209 237 255 / 83%) 100%)',
-  GREEN: 'linear-gradient(-50deg,#fcfffc 0%,rgb(216 240 221 / 80%) 100%)',
-  ORANGE: 'linear-gradient(244deg,#fffcf7 0%,rgb(255 234 217 / 72%) 100%)',
-  PINK: 'linear-gradient(140deg,#fff5fb99 0%,rgb(255 231 230 / 84%) 100%)',
-}
-
 type TInnerBox = TActive & TColor
 export const InnerBox = styled.div<TInnerBox>`
   width: 100%;
   height: 100%;
   padding: 11px;
-  border-radius: 8px;
-  background: ${({ $active, $color }) => ($active ? GRADIENT_BG[$color] : 'transparent')};
-  opacity: ${({ $active }) => ($active ? 1 : 0.8)};
+  opacity: ${({ $active }) => ($active ? 1 : 0.85)};
   z-index: 1;
   position: relative;
   overflow: hidden;
+`
+export const ColorMask = styled.div<TInnerBox>`
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: ${({ $active }) => ($active ? 1 : 0)};
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  background: ${({ $active, $color }) => ($active ? gradientBg($color) : 'transparent')};
+  z-index: -1;
+  margin-top: ${({ $active }) => ($active ? 0 : '20px')};
+  transition: all 0.2s;
 
-  ${Box}:hover &:after {
+  ${InnerBox}:hover & {
     opacity: 1;
-    margin-top: 0px;
-  }
-
-  &:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 8px;
-    background: ${({ $color }) => GRADIENT_BG[$color]};
-    z-index: -1;
-    margin-top: 20px;
-    transition: all 0.2s;
+    margin-top: 0;
+    background: ${({ $color }) => gradientBg($color)};
   }
 `
 export const Header = styled.div`
@@ -99,23 +86,25 @@ export const MainText = styled.div`
 export const CheckIcon = styled(CheckSVG)<TColor>`
   ${css.size(12)};
   fill: ${({ $color }) => rainbow($color)};
+  margin-top: -3px;
+  margin-right: -2px;
 `
-
 const commonIcon = (comp) => {
-  return styled(comp)`
+  return styled(comp)<TInnerBox>`
     ${css.size(20)};
-    fill: ${theme('hint')};
+    fill: ${({ $active, $color }) => ($active ? rainbow($color) : theme('hint'))};
 
-    ${Box}:hover & {
+    ${InnerBox}:hover & {
       animation: ${animate.jump} 0.3s linear;
-      fill: ${theme('article.digest')};
+      fill: ${({ $color }) => rainbow($color)};
     }
   `
 }
-
 export const Icon = {
   Browser: commonIcon(BrowserSVG),
-  Game: commonIcon(GameSVG),
+  Game: styled(commonIcon(GameSVG))`
+    ${css.size(19)};
+  `,
   Hammer: commonIcon(HammerSVG),
   Robot: commonIcon(RobotSVG),
 }

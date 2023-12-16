@@ -13,7 +13,7 @@
 
 import { map, path, split } from 'ramda'
 
-import type { TColorName, TTheme } from '@/spec'
+import type { TColor, TColorName, TTheme } from '@/spec'
 import { COLOR_NAME } from '@/constant/colors'
 
 import { camelize } from '@/fmt'
@@ -40,6 +40,10 @@ export const rainbowLink = (primaryColor: TColorName, rollbackForBlack = 'link')
   }
 
   return theme(`rainbow.${camelize(primaryColor)}` as TFlatThemeKey)
+}
+
+export const gradientBg = (color: TColorName | string): string => {
+  return theme(`gradientBg.${camelize(color)}` as TFlatThemeKey)
 }
 
 /**

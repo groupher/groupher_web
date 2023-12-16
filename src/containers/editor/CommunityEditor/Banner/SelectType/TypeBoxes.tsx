@@ -7,6 +7,7 @@ import {
   Wrapper,
   Box,
   InnerBox,
+  ColorMask,
   Header,
   MainText,
   CheckIcon,
@@ -17,71 +18,69 @@ import type { TCommunityType } from '../../spec'
 import { COMMUNITY_TYPE } from '../../constant'
 import { communityTypeOnChange } from '../../logic'
 
+const BOX_TYPES = [
+  {
+    //
+    type: COMMUNITY_TYPE.WEB,
+    title: 'Web 应用',
+    color: COLOR_NAME.PURPLE,
+    icon: 'Browser',
+  },
+  {
+    //
+    type: COMMUNITY_TYPE.CLIENT,
+    title: '客户端软件',
+    color: COLOR_NAME.BLUE,
+    icon: 'Hammer',
+  },
+  {
+    //
+    type: COMMUNITY_TYPE.HARDWARE,
+    title: '硬件产品',
+    color: COLOR_NAME.GREEN,
+    icon: 'Robot',
+  },
+  {
+    //
+    type: COMMUNITY_TYPE.GAME,
+    title: '独立游戏',
+    color: COLOR_NAME.ORANGE,
+    icon: 'Game',
+  },
+]
+
 type TProps = {
   communityType: TCommunityType
 }
 
 const TypeBoxes: FC<TProps> = ({ communityType }) => {
-  const { WEB, CLIENT, HARDWARE, GAME } = COMMUNITY_TYPE
-
+  //
   return (
     <Wrapper>
-      <Box
-        touched={!!communityType}
-        $active={communityType === WEB}
-        onClick={() => communityTypeOnChange(WEB)}
-      >
-        <InnerBox $active={communityType === WEB} $color={COLOR_NAME.PURPLE}>
-          <Header>
-            <Icon.Browser />
-            {communityType === WEB && <CheckIcon $color={COLOR_NAME.PURPLE} />}
-          </Header>
-          <MainText>Web 应用</MainText>
-          <SpaceGrow />
-        </InnerBox>
-      </Box>
-      <Box
-        touched={!!communityType}
-        $active={communityType === CLIENT}
-        onClick={() => communityTypeOnChange(CLIENT)}
-      >
-        <InnerBox $active={communityType === CLIENT} $color={COLOR_NAME.BLUE}>
-          <Header>
-            <Icon.Hammer />
-            {communityType === CLIENT && <CheckIcon $color={COLOR_NAME.BLUE} />}
-          </Header>
-          <MainText>客户端软件</MainText>
-          <SpaceGrow />
-        </InnerBox>
-      </Box>
-      <Box
-        touched={!!communityType}
-        $active={communityType === HARDWARE}
-        onClick={() => communityTypeOnChange(HARDWARE)}
-      >
-        <InnerBox $active={communityType === HARDWARE} $color={COLOR_NAME.GREEN}>
-          <Header>
-            <Icon.Robot />
-            {communityType === HARDWARE && <CheckIcon $color={COLOR_NAME.GREEN} />}
-          </Header>
-          <MainText>硬件产品</MainText>
-          <SpaceGrow />
-        </InnerBox>
-      </Box>
-      <Box
-        touched={!!communityType}
-        $active={communityType === GAME}
-        onClick={() => communityTypeOnChange(GAME)}
-      >
-        <InnerBox $active={communityType === GAME} $color={COLOR_NAME.ORANGE}>
-          <Header>
-            <Icon.Game />
-            {communityType === GAME && <CheckIcon $color={COLOR_NAME.ORANGE} />}
-          </Header>
-          <MainText>独立游戏</MainText>
-          <SpaceGrow />
-        </InnerBox>
-      </Box>
+      {BOX_TYPES.map((item) => {
+        const $active = item.type === communityType
+        const $color = item.color
+        const IconComp = Icon[item.icon]
+
+        return (
+          <Box
+            key={item.type}
+            touched={!!communityType}
+            $active={$active}
+            onClick={() => communityTypeOnChange(item.type)}
+          >
+            <InnerBox $active={$active} $color={$color}>
+              <Header>
+                <IconComp $active={$active} $color={$color} />
+                {$active && <CheckIcon $color={$color} />}
+              </Header>
+              <MainText>{item.title}</MainText>
+              <SpaceGrow />
+              <ColorMask $active={$active} $color={$color} />
+            </InnerBox>
+          </Box>
+        )
+      })}
     </Wrapper>
   )
 }

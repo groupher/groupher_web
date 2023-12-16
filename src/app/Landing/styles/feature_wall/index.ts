@@ -1,7 +1,6 @@
 import type { TColor, TTestable } from '@/spec'
 
-import styled, { css, theme, rainbow } from '@/css'
-import { GRADIENT_BG } from '../../FeatureWall/constant'
+import styled, { css, theme, rainbow, gradientBg } from '@/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
@@ -31,12 +30,11 @@ export const Desc = styled.div`
   margin-bottom: 80px;
   opacity: 0.8;
 `
-/* background: ${({ $color }) => COLORS[`${$color.toLowerCase()}Bg`]}; */
 export const BaseCard = styled.div<TColor>`
   ${css.column('align-center', 'justify-end')};
   width: 300px;
   height: 278px;
-  background: ${({ $color }) => GRADIENT_BG[$color]};
+  background: ${({ $color }) => gradientBg($color)};
   border: 1px dotted;
   border-color: transparent;
 

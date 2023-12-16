@@ -1,8 +1,8 @@
 import styled, { css, theme } from '@/css'
 import Button from '@/widgets/Buttons/Button'
 
-export const Wrapper = styled(Button)<{ noPaddingRight: boolean }>`
-  padding-right: ${({ noPaddingRight }) => (noPaddingRight ? '0px' : '6px')};
+export const Wrapper = styled(Button)<{ $noPaddingRight: boolean }>`
+  padding-right: ${({ $noPaddingRight }) => ($noPaddingRight ? '0px' : '6px')};
   padding-left: 24px;
 `
 
@@ -15,7 +15,7 @@ export const IntroTitle = styled.div`
   margin-left: -10px;
 `
 
-export const Text = styled.div<{ disabled: boolean }>`
-  color: ${({ disabled }) => (disabled ? theme('article.title') : 'white')};
+export const Text = styled.div<{ $disabled: boolean }>`
+  color: ${({ $disabled }) => ($disabled ? theme('article.title') : 'white')};
   transition: all 0.2s;
 `
