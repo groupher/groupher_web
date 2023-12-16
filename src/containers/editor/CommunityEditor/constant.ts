@@ -1,3 +1,5 @@
+import { COLOR_NAME } from '@/constant/colors'
+
 import type { TCommunityType, TStep } from './spec'
 
 export const STEP = {
@@ -14,6 +16,37 @@ export const COMMUNITY_TYPE = {
   HARDWARE: 'HARDWARE',
   GAME: 'GAME',
 } as Record<Uppercase<TCommunityType>, Uppercase<TCommunityType>>
+
+export const COMMUNITY_CATS = [
+  {
+    //
+    type: COMMUNITY_TYPE.WEB,
+    title: 'Web 应用',
+    color: COLOR_NAME.PURPLE,
+    icon: 'Browser',
+  },
+  {
+    //
+    type: COMMUNITY_TYPE.CLIENT,
+    title: '客户端软件',
+    color: COLOR_NAME.BLUE,
+    icon: 'Hammer',
+  },
+  {
+    //
+    type: COMMUNITY_TYPE.HARDWARE,
+    title: '硬件产品',
+    color: COLOR_NAME.GREEN,
+    icon: 'Robot',
+  },
+  {
+    //
+    type: COMMUNITY_TYPE.GAME,
+    title: '独立游戏',
+    color: COLOR_NAME.ORANGE,
+    icon: 'Game',
+  },
+]
 
 export const CITY_OPTIONS = [
   {

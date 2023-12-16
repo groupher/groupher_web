@@ -20,6 +20,8 @@ export const Box = styled.div<TBox>`
   padding: 5px;
   width: 152px;
   height: 100px;
+  width: ${({ $active }) => (!$active ? '152px' : '158px')};
+  height: ${({ $active }) => (!$active ? '100px' : '110px')};
 
   border-radius: 8px;
   border: 1px solid transparent;
@@ -28,18 +30,21 @@ export const Box = styled.div<TBox>`
   box-shadow: ${({ $active }) =>
     $active
       ? 'rgba(149, 157, 165, 0.2) 0px 8px 24px;'
-      : 'rgba(0, 0, 0, 0.03) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;'};
+      : 'rgba(0, 0, 0, 0.03) 0px 6px 24px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;'};
 
   opacity: ${({ touched, $active }) => (touched && !$active ? 0.8 : 1)};
-  transform: ${({ touched, $active }) => (touched && !$active ? 'scale(0.92)' : '')};
+  /* transform: ${({ touched, $active }) => (touched && !$active ? 'scale(0.9)' : '')}; */
+
+  &:active {
+    margin-top: 8px;
+  }
 
   &:hover {
     cursor: pointer;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-    transform: scale(1);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   }
 
-  transition: all 0.2s;
+  transition: all 0.3s;
 `
 
 type TInnerBox = TActive & TColor

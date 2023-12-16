@@ -1,14 +1,14 @@
 import { FC } from 'react'
 
 import { ASSETS_ENDPOINT } from '@/config'
-import useAccount from '@/hooks/useAccount'
-import { callAuth } from '@/signal'
-import { SpaceGrow } from '@/widgets/Common'
 
-import type { TStep } from '../spec'
+import { SpaceGrow } from '@/widgets/Common'
+import AccountUnit from '@/widgets/AccountUnit'
 
 import StepMap from './StepMap'
-import { Wrapper, Logo, Title, Divider, SubTitle, Avatar, AccountIcon } from '../styles/header'
+
+import type { TStep } from '../spec'
+import { Wrapper, Logo, Title, Divider, SubTitle } from '../styles/header'
 
 type TProps = {
   step: TStep
@@ -16,8 +16,6 @@ type TProps = {
 }
 
 const Header: FC<TProps> = ({ step, showStep }) => {
-  const accountInfo = useAccount()
-
   return (
     <Wrapper>
       <Logo src={`${ASSETS_ENDPOINT}/communities/groupher-alpha.png`} />
@@ -29,11 +27,7 @@ const Header: FC<TProps> = ({ step, showStep }) => {
       {showStep && <StepMap step={step} />}
       <SpaceGrow />
 
-      {accountInfo?.login ? (
-        <Avatar src={accountInfo.avatar} />
-      ) : (
-        <AccountIcon onClick={callAuth} />
-      )}
+      <AccountUnit top={-3} />
     </Wrapper>
   )
 }
