@@ -40,5 +40,5 @@ export const WarningMask = styled.div`
     opacity: 0.8;
   }
 
-  transition: all 0.15s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2);
 `

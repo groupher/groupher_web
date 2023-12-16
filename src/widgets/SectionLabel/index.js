@@ -28,9 +28,7 @@ const SectionLabel = ({ title, iconSrc, desc, node, addonNode }) => (
     <Maybe test={desc}>
       <Desc>{desc}</Desc>
     </Maybe>
-    <Maybe test={node}>
-      <>{node}</>
-    </Maybe>
+    <Maybe test={node}>{node}</Maybe>
   </Wrapper>
 )
 

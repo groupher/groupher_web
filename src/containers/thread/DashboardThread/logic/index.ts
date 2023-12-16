@@ -10,6 +10,7 @@ import {
   mergeRight,
   find,
   startsWith,
+  forEach,
 } from 'ramda'
 
 import type { TEditValue, TFAQSection, TID, TSocialItem, TUser, TMediaReport } from '@/spec'
@@ -53,7 +54,6 @@ const sr71$ = new SR71({
 let store: TStore | undefined
 let sub$ = null
 
-/* eslint-disable-next-line */
 const log = buildLog('L:DashboardThread')
 
 export const enableThread = (key: string, toggle: boolean): void => {
@@ -195,15 +195,15 @@ const _doMutation = (field: string, e: TEditValue): void => {
 
     const params = {}
     if (baseInfoTab === DASHBOARD_BASEINFO_ROUTE.BASIC) {
-      BASEINFO_BASIC_KEYS.forEach((key) => {
+      forEach((key) => {
         params[key] = store[key]
-      })
+      }, BASEINFO_BASIC_KEYS)
     }
 
     if (baseInfoTab === DASHBOARD_BASEINFO_ROUTE.OTHER) {
-      BASEINFO_OTHER_KEYS.forEach((key) => {
+      forEach((key) => {
         params[key] = store[key]
-      })
+      }, BASEINFO_OTHER_KEYS)
     }
 
     sr71$.mutate(S.updateDashboardBaseInfo, { community, ...params })
@@ -221,15 +221,15 @@ const _doMutation = (field: string, e: TEditValue): void => {
     const { seoTab } = store
 
     if (seoTab === DASHBOARD_SEO_ROUTE.SEARCH_ENGINE) {
-      SEO_OG_KEYS.forEach((key) => {
+      forEach((key) => {
         params[key] = store[key]
-      })
+      }, SEO_OG_KEYS)
     }
 
     if (seoTab === DASHBOARD_SEO_ROUTE.TWITTER) {
-      SEO_TW_KEYS.forEach((key) => {
+      forEach((key) => {
         params[key] = store[key]
-      })
+      }, SEO_TW_KEYS)
     }
 
     sr71$.mutate(S.updateDashboardSeo, { community, ...params })
@@ -463,17 +463,17 @@ const _handleDone = () => {
   } else if (field === SETTING_FIELD.BASE_INFO) {
     const current = {}
 
-    BASEINFO_KEYS.forEach((key) => {
+    forEach((key) => {
       current[key] = store[key]
-    })
+    }, BASEINFO_KEYS)
 
     initSettings = { ...store.initSettings, ...current }
   } else if (field === SETTING_FIELD.SEO) {
     const current = {}
 
-    SEO_KEYS.forEach((key) => {
+    forEach((key) => {
       current[key] = store[key]
-    })
+    }, SEO_KEYS)
 
     initSettings = { ...store.initSettings, ...current }
   } else {
@@ -515,9 +515,7 @@ const DataSolver = [
     match: asyncRes('updateDashboardSeo'),
     action: ({ updateDashboardSeo }) => {
       const {
-        dashboard: {
-          seo: { seoEnable },
-        },
+        dashboard: { seo: { seoEnable } },
       } = updateDashboardSeo
       const { initSettings } = store
       store.mark({ seoEnable, initSettings: { ...toJS(initSettings), seoEnable } })

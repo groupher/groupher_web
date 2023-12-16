@@ -18,11 +18,13 @@ const log = buildLog('L:ModeLineMenu')
 export const openMenu = (activeMenu: string): void => {
   switch (activeMenu) {
     case TYPE.MM_TYPE.COLLECT: {
-      return openCollectionMenu()
+      openCollectionMenu()
+      return
     }
 
     case TYPE.MM_TYPE.REPORT: {
-      return openReportMenu()
+      openReportMenu()
+      return
     }
 
     default: {

@@ -3,6 +3,8 @@ import styled, { css, theme } from '@/css'
 
 import UPvoteSVG from '@/icons/Upvote'
 
+export { GradientText } from '..'
+
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
 }))<TTestable>`
@@ -17,6 +19,7 @@ export const Slogan = styled.div`
   margin-bottom: 20px;
 `
 export const Title = styled.div`
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   font-size: 32px;
   font-weight: 500;

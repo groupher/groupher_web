@@ -1,13 +1,7 @@
 import { FC } from 'react'
 
 const SvgComponent: FC = (props) => (
-  <svg
-    className="prefix__icon"
-    viewBox="0 0 1024 1024"
-    width={200}
-    height={200}
-    {...props}
-  >
+  <svg className="prefix__icon" viewBox="0 0 1024 1024" width={200} height={200} {...props}>
     <defs>
       <style />
     </defs>

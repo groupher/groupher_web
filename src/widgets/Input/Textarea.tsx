@@ -20,7 +20,7 @@ type TProps = {
   value?: string | null
   autoFocus: boolean
   disableEnter: boolean
-  onChange?: (e) => void | null
+  onChange?: (e) => void
 }
 
 const Textarea: FC<TProps> = ({

@@ -29,10 +29,10 @@ type TProps = {
   autoFocus?: boolean
   disableEnter?: boolean
 
-  onFocus?: (e) => void | null
-  onBlur?: (e) => void | null
-  onChange?: (e) => void | null
-  onEnter?: () => void | null
+  onFocus?: (e) => void
+  onBlur?: (e) => void
+  onChange?: (e) => void
+  onEnter?: () => void
 }
 
 const Input: FC<TProps> = ({
@@ -50,7 +50,7 @@ const Input: FC<TProps> = ({
   disableEnter = false,
   ...restProps
 }) => {
-  const handleOnChange = useCallback((e) => onChange && onChange(e), [onChange])
+  const handleOnChange = useCallback((e) => onChange?.(e), [onChange])
   const handleOnKeydown = useCallback(
     (e) => {
       if (e.key === 'Enter' && onEnter) {
@@ -60,8 +60,8 @@ const Input: FC<TProps> = ({
     [onEnter],
   )
 
-  const handleOnFocus = useCallback((e) => onFocus && onFocus(e), [onFocus])
-  const handleOnBlur = useCallback((e) => onBlur && onBlur(e), [onBlur])
+  const handleOnFocus = useCallback((e) => onFocus?.(e), [onFocus])
+  const handleOnBlur = useCallback((e) => onBlur?.(e), [onBlur])
   const validProps = pickBy((v) => v !== null, restProps)
 
   return behavior === 'default' ? (

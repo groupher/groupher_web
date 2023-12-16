@@ -15,11 +15,7 @@ const Options: FC = () => {
     <Wrapper>
       <Title>
         <span>全部</span>
-        {active ? (
-          <SelectIcon src={`${ICON}/radio-checked.svg`} />
-        ) : (
-          <UnSelectDot />
-        )}
+        {active ? <SelectIcon src={`${ICON}/radio-checked.svg`} /> : <UnSelectDot />}
       </Title>
       <Title>
         <span>最多浏览</span>

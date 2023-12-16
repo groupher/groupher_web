@@ -2,7 +2,6 @@ import type { TContainer } from '@/spec'
 import { ANCHOR, BODY_SCROLLER, DRAWER_SCROLLER } from '@/constant/dom'
 
 // side effects, need refactor
-/* eslint-disable no-undef */
 const hasDocument = typeof document === 'object' && document !== null
 const hasWindow = typeof window === 'object' && window !== null && window.self === window
 
@@ -106,7 +105,6 @@ export const focusDoraemonBar = (): void => {
       try {
         safeDocument.getElementById('doraemonInputbar').focus()
       } catch (e) {
-        // eslint-disable-next-line no-console
         console.error(e)
       }
     })
@@ -140,6 +138,7 @@ export const toggleGlobalBlur = (visible: boolean): void => {
       const el = blurableEls[index] as HTMLElement
 
       // !visible ? (el.style.filter = '') : (el.style.filter = 'blur(2px)')
+      // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
       !visible ? (el.style.filter = '') : (el.style.filter = 'brightness(0.6)')
     }
   }

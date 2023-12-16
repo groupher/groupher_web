@@ -1,10 +1,6 @@
 import React from 'react'
 
-import {
-  Wrapper,
-  BarRow,
-  Bar,
-} from '../styles/pagi_option_selector/three_column'
+import { Wrapper, BarRow, Bar } from '../styles/pagi_option_selector/three_column'
 
 const ThreeColumn = ({ active }) => {
   return (

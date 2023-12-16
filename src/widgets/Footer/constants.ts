@@ -1,8 +1,4 @@
-export type TFooterView =
-  | 'home_view'
-  | 'community'
-  | 'hosting_community'
-  | 'article'
+export type TFooterView = 'home_view' | 'community' | 'hosting_community' | 'article'
 
 export const VIEW = {
   HOME: 'home_view' as TFooterView, // 只有在 home community 的

@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 

@@ -2,15 +2,7 @@ import { FC, memo } from 'react'
 
 import Footer from './Footer'
 
-import {
-  Wrapper,
-  BodyWrapper,
-  Entry,
-  Icon,
-  Main,
-  Title,
-  Desc,
-} from '../styles/more_panel'
+import { Wrapper, BodyWrapper, Entry, Icon, Main, Title, Desc } from '../styles/more_panel'
 
 const MoreContent: FC = () => {
   return (

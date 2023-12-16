@@ -1,12 +1,7 @@
 import { FC, memo } from 'react'
 import { toUpper } from 'ramda'
 
-import {
-  BannerWrapper,
-  BannerText,
-  CommunitiesText,
-  SidebarText,
-} from './styles/community_holder'
+import { BannerWrapper, BannerText, CommunitiesText, SidebarText } from './styles/community_holder'
 
 type TProps = {
   text: string

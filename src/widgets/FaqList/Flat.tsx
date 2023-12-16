@@ -22,19 +22,19 @@ type TProps = Pick<TIndex, 'sections' | 'large'>
 const Flat: FC<TProps> = ({ sections, large }) => {
   return (
     <Wrapper>
-      <Header large={large}>
-        <BrandText large={large}>常见问题</BrandText>
+      <Header $large={large}>
+        <BrandText $large={large}>常见问题</BrandText>
       </Header>
-      <Content large={large}>
+      <Content $large={large}>
         {sections.map((item) => (
-          <Section key={item.title} large={large}>
+          <Section key={item.title} $large={large}>
             <SectionHead>
-              <CheckIconWrapper large={large}>
-                <CheckIcon large={large} />
+              <CheckIconWrapper $large={large}>
+                <CheckIcon $large={large} />
               </CheckIconWrapper>
-              <Title large={large}>{item.title}</Title>
+              <Title $large={large}>{item.title}</Title>
             </SectionHead>
-            <Body large={large}>
+            <Body $large={large}>
               <Markdown>{item.body}</Markdown>
             </Body>
           </Section>

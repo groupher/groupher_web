@@ -33,7 +33,7 @@ const AddOns: FC<TProps> = ({ accountInfo }) => {
 
   return (
     <Wrapper>
-      <div onClick={() => c11nSettings()}>
+      <div onKeyDown={() => c11nSettings()}>
         <SettingIcon />
       </div>
       <Divider>&nbsp;</Divider>

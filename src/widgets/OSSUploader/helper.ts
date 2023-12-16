@@ -95,7 +95,10 @@ export const doUploadFile = (ossClient, file, filePrefix, callbacks): void => {
 
   const fileSize = file.size / 1024 / 1024
   // eslint-disable-next-line no-alert
-  if (fileSize > 2) return alert('不支持大于 2MB 的文件')
+  if (fileSize > 2) {
+    alert('不支持大于 2MB 的文件')
+    return
+  }
 
   callbacks.onStart()
 

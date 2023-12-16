@@ -17,8 +17,7 @@ export const Wrapper = styled.div.attrs<TWrapper>(({ $testid }) => ({
 
   width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};
-  border-radius: ${({ $avatarLayout }) =>
-    $avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%'};
+  border-radius: ${({ $avatarLayout }) => ($avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
 
   margin-top: ${({ top }) => `${top}px`};
   margin-bottom: ${({ bottom }) => `${bottom}px`};

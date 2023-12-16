@@ -41,8 +41,7 @@ export const AvatarsImg = styled(Img)<TAvatarsImg>`
   font-size: 12px;
 
   ${({ size }) => css.size(getAvatarSize(size))};
-  border-radius: ${({ $avatarLayout }) =>
-    $avatarLayout === AVATAR_LAYOUT.SQUARE ? '5px' : '100%'};
+  border-radius: ${({ $avatarLayout }) => ($avatarLayout === AVATAR_LAYOUT.SQUARE ? '5px' : '100%')};
 
   text-align: center;
 `

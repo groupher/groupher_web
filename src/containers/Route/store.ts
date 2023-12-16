@@ -60,12 +60,12 @@ const RouteStore = T.model('RouteStore', {
       }
 
       const { mainPath, subPath, page } = query
-      query = pickBy((v) => !isEmpty(v), query)
+      let cleanQuery = pickBy((v) => !isEmpty(v), query)
 
       if (mainPath || mainPath === '') self.mainPath = mainPath
       if (subPath || subPath === '') self.subPath = subPath
 
-      if (page && String(page) === '1') query = omit(['page'], query)
+      if (page && String(page) === '1') cleanQuery = omit(['page'], query)
 
       // const allQueryString = serializeQuery(query)
       const queryString = serializeQuery(omit(['mainPath', 'subPath'], query))

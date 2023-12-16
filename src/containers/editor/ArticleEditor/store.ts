@@ -137,10 +137,7 @@ const ArticleEditor = T.model('ArticleEditor', {
       const root = getParent(self) as TRootStore
       const thread = article.meta.thread.toLowerCase()
 
-      return root.viewing.setViewing({
-        viewingThread: thread,
-        [thread]: article,
-      })
+      root.viewing.setViewing({ viewingThread: thread, [thread]: article })
     },
     updateEditing(sobj): void {
       const slf = self as TStore

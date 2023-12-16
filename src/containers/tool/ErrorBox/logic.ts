@@ -8,7 +8,6 @@ import { asyncSuit, buildLog, isObject } from '@/utils'
 
 import type { TStore } from './store'
 
-/* eslint-disable-next-line */
 const log = buildLog('L:ErrorBox')
 
 const { SR71, $solver, asyncRes } = asyncSuit
@@ -24,20 +23,25 @@ export const onClose = (): void => store.mark({ show: false })
 
 const classifyGQErrors = (errors: TGQError[]): void => {
   if (!Array.isArray(errors)) {
-    return log('invalid errors: ', errors)
+    log('invalid errors: ', errors)
+    return
   }
 
   if (has('path', errors[0])) {
     if (isObject(errors[0].message)) {
-      return store.mark({
+      store.mark({
         graphqlType: 'changeset',
         changesetError: errors,
       })
+      return
     }
-    return store.mark({
+
+    store.mark({
       graphqlType: 'custom',
       customError: errors,
     })
+
+    return
   }
 
   store.mark({ graphqlType: 'parse', parseError: errors })

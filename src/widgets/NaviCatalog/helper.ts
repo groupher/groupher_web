@@ -1,4 +1,4 @@
-import { map, find, propEq, last, filter, findIndex, equals, clone } from 'ramda'
+import { map, find, propEq, last, filter, findIndex, equals, clone, forEach } from 'ramda'
 
 import type { TNaviTag } from '@/spec'
 import URL_QUERY from '@/constant/url_query'
@@ -84,24 +84,24 @@ export const tags2Menu = (tags: TNaviTag[]): TNaviTag[] => {
 
   // level-2
   const menu2 = clone(filter((item) => item.extra.length === 2, tags))
-  menu2.forEach((item) => {
+  forEach((item) => {
     const pathIndex = findUpdatePath(menu, item.extra)
     if (!menu[pathIndex[0]].childMenu) {
       menu[pathIndex[0]].childMenu = []
     }
     menu[pathIndex[0]].childMenu.push(item)
-  })
+  }, menu2)
 
   // level-3
   const menu3 = clone(filter((item) => item.extra.length === 3, tags))
-  menu3.forEach((item) => {
+  forEach((item) => {
     const pathIndex = findUpdatePath(menu, item.extra)
 
     if (!menu[pathIndex[0]].childMenu[pathIndex[1]].childMenu) {
       menu[pathIndex[0]].childMenu[pathIndex[1]].childMenu = []
     }
     menu[pathIndex[0]].childMenu[pathIndex[1]].childMenu.push(item)
-  })
+  }, menu3)
 
   return menu
 }

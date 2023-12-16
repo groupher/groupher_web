@@ -53,6 +53,5 @@ export const JoinersRow = styled.div`
 `
 export const JoinersAvatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
   ${css.size(20)};
-  border-radius: ${({ $avatarLayout }) =>
-    $avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%'};
+  border-radius: ${({ $avatarLayout }) => ($avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
 `

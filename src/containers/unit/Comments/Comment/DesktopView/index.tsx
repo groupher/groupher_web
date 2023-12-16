@@ -21,7 +21,7 @@ const Comment: FC<TProps> = (props) => {
   const { foldedIds, data } = props
   const isFolded = includes(data.id, foldedIds)
 
-  return <Fragment>{isFolded ? <FoldLayout {...props} /> : <DefaultLayout {...props} />}</Fragment>
+  return isFolded ? <FoldLayout {...props} /> : <DefaultLayout {...props} />
 }
 
 export default memo(Comment)

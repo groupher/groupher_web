@@ -86,7 +86,7 @@ export const cast = (fields: string[], source: Record<string, unknown>): any => 
 }
 
 const keyOf = compose(head, keys)
-const valueOf = compose(head, values)
+const valOf = compose(head, values)
 
 export const changeset = (source: Record<string, string>): Record<string, unknown> => ({
   exist: (obj, cb, opt = { skip: false, msg: '' }) => {
@@ -94,7 +94,7 @@ export const changeset = (source: Record<string, string>): Record<string, unknow
     if (opt.skip) return changeset(source)
 
     const field: string = keyOf(obj) as string
-    const trans = valueOf(obj)
+    const trans = valOf(obj)
     let isInValid = false
 
     if (emptyArray(source[field])) {
@@ -116,7 +116,7 @@ export const changeset = (source: Record<string, string>): Record<string, unknow
     if (source.__dirty__) return changeset(source)
 
     const field: string = keyOf(obj) as string
-    const trans = valueOf(obj)
+    const trans = valOf(obj)
 
     if (trim(source[field]).length < num) {
       const title = trans
@@ -130,7 +130,7 @@ export const changeset = (source: Record<string, string>): Record<string, unknow
   alreadyExists: (obj, target, pools, cb) => {
     if (source.__dirty__) return changeset(source)
     const field = keyOf(obj)
-    const trans = valueOf(obj)
+    const trans = valOf(obj)
 
     if (length(filter(equals(target), pools)) > 0) {
       const title = trans
@@ -146,7 +146,7 @@ export const changeset = (source: Record<string, string>): Record<string, unknow
     if (source.__dirty__ || !condition) return changeset(source)
 
     const field = keyOf(obj) as string
-    const trans = valueOf(obj)
+    const trans = valOf(obj)
 
     if (!hasValue(source[field]) || !startsWith(prefix, trim(source[field]))) {
       const title = trans
@@ -160,7 +160,7 @@ export const changeset = (source: Record<string, string>): Record<string, unknow
   durationFmt: (obj, cb) => {
     if (source.__dirty__) return changeset(source)
     const field = keyOf(obj) as string
-    const trans = valueOf(obj)
+    const trans = valOf(obj)
 
     const shortFmt = /^([01]?[0-9]|[0-5][0-9]):[0-5][0-9]$/
     const longFmt = /^(?:0[0-2]|0[0-9]):[0-5][0-9]:[0-5][0-9]$/
@@ -181,7 +181,7 @@ export const changeset = (source: Record<string, string>): Record<string, unknow
     if (opt.skip) return changeset(source)
 
     const field: string = keyOf(obj) as string
-    const trans = valueOf(obj)
+    const trans = valOf(obj)
 
     const regex = /[0-9]{4}[/][0-9][0-9][/][0-3][0-9]$/
     const isValidDate = !Number.isNaN(Date.parse(source[field]))

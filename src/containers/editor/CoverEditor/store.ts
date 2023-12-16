@@ -26,7 +26,6 @@ import type {
 } from './spec'
 import { IMAGE_POS, SETTING_LEVEL, LINEAR_BORDER, IMAGE_SIZE, IMAGE_RATIO } from './constant'
 
-/* eslint-disable-next-line */
 const log = buildLog('S:CoverEditor')
 
 const CoverEditor = T.model('CoverEditor', {

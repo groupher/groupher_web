@@ -34,7 +34,7 @@ export const Label = styled.div`
   }
   transition: color 0.2s;
 `
-export const Number = styled.div<{ small: string }>`
+export const Num = styled.div<{ small: string }>`
   font-size: ${({ small }) => (small ? '0.8rem' : '1.3rem')};
   color: ${theme('banner.title')};
 `

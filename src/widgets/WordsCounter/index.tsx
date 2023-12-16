@@ -11,13 +11,7 @@ type TProps = TSpace & {
   onChange?: (isValid: boolean) => void
 }
 
-const WordsCounter: FC<TProps> = ({
-  body,
-  max = 2000,
-  min = 10,
-  onChange,
-  ...restProps
-}) => {
+const WordsCounter: FC<TProps> = ({ body, max = 2000, min = 10, onChange, ...restProps }) => {
   const currentCount = countWords(body)
   const invalid = currentCount < min || currentCount > max
 

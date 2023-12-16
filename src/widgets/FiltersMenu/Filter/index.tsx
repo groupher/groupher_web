@@ -22,14 +22,7 @@ export type TProps = {
   onSelect: (expandMenuId: TID, tag: TTag) => void
 }
 
-const Filter: FC<TProps> = ({
-  id,
-  expandMenuId = null,
-  activeMap,
-  options,
-  onSelect,
-  revert,
-}) => {
+const Filter: FC<TProps> = ({ id, expandMenuId = null, activeMap, options, onSelect, revert }) => {
   return (
     <Wrapper revert={revert}>
       <Item revert={revert}>

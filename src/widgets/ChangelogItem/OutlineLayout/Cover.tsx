@@ -1,12 +1,6 @@
 import { FC, memo } from 'react'
 
-import {
-  Wrapper,
-  CoverImg,
-  DescBar,
-  DescBar2,
-  DescBar3,
-} from '../styles/outline_layout/cover'
+import { Wrapper, CoverImg, DescBar, DescBar2, DescBar3 } from '../styles/outline_layout/cover'
 
 const Cover: FC = () => {
   return (

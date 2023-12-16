@@ -6,13 +6,16 @@ import { moveToCommunity, mirrorToCommunity, setTag } from '@/signal'
 export const hendleMenu = (key: string, article: TArticle): void => {
   switch (key) {
     case EVENT.MOVE_TO_COMMUNITY: {
-      return moveToCommunity()
+      moveToCommunity()
+      return
     }
     case EVENT.MIRROR_TO_COMMUNITY: {
-      return mirrorToCommunity()
+      mirrorToCommunity()
+      return
     }
     case EVENT.SET_TAG: {
-      return setTag()
+      setTag()
+      return
     }
     case 'edit': {
       handleEdit(article)

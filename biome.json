@@ -1,0 +1,50 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.4.1/schema.json",
+	"organizeImports": {
+		"enabled": false
+	},
+	"files": {
+		"ignore": ["./utils/pubsub.js"]
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"complexity": {
+				"noForEach": "warn"	,
+				"noUselessFragments": "warn"
+			},
+			"security": {
+				"noDangerouslySetInnerHtml": "warn"
+			},
+			"suspicious": {
+				"noExplicitAny": "warn",
+				"noAssignInExpressions": "warn",
+				"noDuplicateJsxProps": "error",
+				"noDuplicateObjectKeys": "error",
+				"noDuplicateParameters": "error"
+			},
+			"performance": {
+				"noDelete":"off"
+			},
+			"style": {
+				"noParameterAssign": "warn"
+			},
+			"correctness": {
+				"useExhaustiveDependencies": "warn",
+				"noUnusedVariables": "warn"
+			},
+			"recommended": true,
+			"a11y": {
+				"noSvgWithoutTitle": "off"
+			}
+		}
+	},
+	"javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+			"indentStyle": "space",
+			"lineWidth": 100,
+			"semicolons": "asNeeded"
+    }
+  }
+}

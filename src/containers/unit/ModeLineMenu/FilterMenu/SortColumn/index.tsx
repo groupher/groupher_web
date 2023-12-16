@@ -6,12 +6,7 @@ import { SpaceGrow } from '@/widgets/Common'
 import ToggleIcon from './ToggleIcon'
 import Options from './Options'
 
-import {
-  Wrapper,
-  ItemBar,
-  Title,
-  Desc,
-} from '../../styles/filter_menu/sort_column'
+import { Wrapper, ItemBar, Title, Desc } from '../../styles/filter_menu/sort_column'
 
 const SortColumn: FC = () => {
   const [activeBar, setActiveBar] = useState(null)
@@ -55,9 +50,7 @@ const SortColumn: FC = () => {
           <ItemBar
             active={activeBar === 'length'}
             onClick={() => {
-              activeBar !== 'length'
-                ? setActiveBar('length')
-                : setActiveBar(null)
+              activeBar !== 'length' ? setActiveBar('length') : setActiveBar(null)
             }}
           >
             <Title>

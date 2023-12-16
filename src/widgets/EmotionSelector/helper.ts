@@ -1,4 +1,4 @@
-import { includes, reject, keys, values } from 'ramda'
+import { includes, reject, keys, values, forEach } from 'ramda'
 
 import EMOTION from '@/constant/emotion'
 import type { TEmotion, TEmotionType } from '@/spec'
@@ -11,12 +11,14 @@ export const getEmotionName = (item: TEmotion): TEmotionType => {
 
 export const emotionsCoverter = (selectedEmotions: TEmotion): TEmotion[] => {
   const converted = []
-  values(EMOTION).forEach((emotion) =>
-    converted.push({
-      [`${emotion}Count`]: selectedEmotions[`${emotion}Count`],
-      [`latest${titleCase(emotion)}Users`]: selectedEmotions[`latest${titleCase(emotion)}Users`],
-      [`viewerHas${titleCase(emotion)}ed`]: selectedEmotions[`viewerHas${titleCase(emotion)}ed`],
-    }),
+  forEach(
+    (emotion) =>
+      converted.push({
+        [`${emotion}Count`]: selectedEmotions[`${emotion}Count`],
+        [`latest${titleCase(emotion)}Users`]: selectedEmotions[`latest${titleCase(emotion)}Users`],
+        [`viewerHas${titleCase(emotion)}ed`]: selectedEmotions[`viewerHas${titleCase(emotion)}ed`],
+      }),
+    values(EMOTION),
   )
 
   // @ts-ignore

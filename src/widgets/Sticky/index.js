@@ -19,6 +19,7 @@ const log = buildLog('w:Sticky')
 const getScrollParent = (node) => {
   let parent = node
   // eslint-disable-next-line no-cond-assign
+  // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
   while ((parent = parent.parentElement)) {
     const overflowYVal = getComputedStyle(parent, null).getPropertyValue('overflow-y')
     if (parent === document.body) return Global

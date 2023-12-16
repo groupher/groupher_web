@@ -3,14 +3,7 @@ import { FC, memo } from 'react'
 import { ICON_CMD } from '@/config'
 import Button from '../Buttons/Button'
 
-import {
-  Wrapper,
-  PayDesc,
-  AliPay,
-  Weixin,
-  MoneyNum,
-  PaymentIcon,
-} from './styles/payment_footer'
+import { Wrapper, PayDesc, AliPay, Weixin, MoneyNum, PaymentIcon } from './styles/payment_footer'
 
 type TProps = {
   num: number

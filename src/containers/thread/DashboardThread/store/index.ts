@@ -22,6 +22,7 @@ import {
   includes,
   toUpper,
   any,
+  forEach,
 } from 'ramda'
 
 import type {
@@ -648,10 +649,10 @@ const DashboardThread = T.model('DashboardThread', {
       const { dashboard } = community
       const { baseInfo, mediaReports } = dashboard
 
-      BASEINFO_KEYS.forEach((key) => {
+      forEach((key) => {
         self[key] = baseInfo[key]
         self.initSettings[key] = baseInfo[key]
-      })
+      }, BASEINFO_KEYS)
 
       if (!isEmpty(mediaReports)) {
         const initMediaReports = mediaReports.map((item: TMediaReport, index) => ({
@@ -791,11 +792,13 @@ const DashboardThread = T.model('DashboardThread', {
       const slf = self as TStore
 
       if (field === SETTING_FIELD.BASE_INFO) {
-        return slf._rollbackByKeys(BASEINFO_KEYS)
+        slf._rollbackByKeys(BASEINFO_KEYS)
+        return
       }
 
       if (field === SETTING_FIELD.SEO) {
-        return slf._rollbackByKeys(SEO_KEYS)
+        slf._rollbackByKeys(SEO_KEYS)
+        return
       }
 
       if (field === SETTING_FIELD.TAG) {

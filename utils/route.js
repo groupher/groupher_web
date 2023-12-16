@@ -244,8 +244,8 @@ export const getParameterByName = (name) => {
   /* if (!url) url = window.location.href;*/
   const url = Global.location.href
   name = name.replace(/[\[\]]/g, '\\$&')
-  let regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-    results = regex.exec(url)
+  const regex = new RegExp(`[?&]${name}(=([^&#]*)|&|#|$)`)
+  const results = regex.exec(url)
   if (!results) return null
   if (!results[2]) return ''
   return decodeURIComponent(results[2].replace(/\+/g, ' '))
@@ -253,9 +253,9 @@ export const getParameterByName = (name) => {
 
 export const getQueryFromUrl = (name, url) => {
   if (!url) url = window.location.href
-  name = name.replace(/[\[\]]/g, '\\$&')
-  let regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-    results = regex.exec(url)
+  const nameVal = name.replace(/[\[\]]/g, '\\$&')
+  const regex = new RegExp(`[?&]${nameVal}(=([^&#]*)|&|#|$)`)
+  const results = regex.exec(url)
   if (!results) return null
   if (!results[2]) return ''
   return decodeURIComponent(results[2].replace(/\+/g, ' '))
@@ -266,7 +266,7 @@ export const serializeQuery = (obj) => {
   /* eslint-disable */
   const qstring = Object.keys(obj)
     .reduce((a, k) => {
-      a.push(k + '=' + encodeURIComponent(obj[k]))
+      a.push(`${k}=${encodeURIComponent(obj[k])}`)
       return a
     }, [])
     .join('&')
@@ -310,11 +310,11 @@ export const parseDomain = (url) => {
       case 4:
         parsedUrl.subdomain = domainParts[0]
         parsedUrl.host = domainParts[1]
-        parsedUrl.tld = domainParts[2] + '.' + domainParts[3]
+        parsedUrl.tld = `${domainParts[2]}.${domainParts[3]}`
         break
     }
 
-    parsedUrl.parent_domain = parsedUrl.host + '.' + parsedUrl.tld
+    parsedUrl.parent_domain = `${parsedUrl.host}.${parsedUrl.tld}`
 
     return parsedUrl.host
   } catch (e) {

@@ -119,7 +119,10 @@ export const updateComment = (): void => {
 }
 
 export const openEditor = (): void => {
-  if (!store.isLogin) return authWarn({ hideToast: true })
+  if (!store.isLogin) {
+    authWarn({ hideToast: true })
+    return
+  }
 
   initDraftTimmer()
 
@@ -132,7 +135,7 @@ export const closeEditor = (): void => {
 
 export const openUpdateEditor = (comment: TComment): void => {
   store.mark({ showUpdateEditor: true })
-  return sr71$.query(S.oneComment, { id: comment.id })
+  sr71$.query(S.oneComment, { id: comment.id })
 }
 
 export const closeUpdateEditor = (): void => {
@@ -147,7 +150,7 @@ export const replyComment = (): void => {
   const { replyToComment, replyBody } = store
   const variables = { id: replyToComment.id, body: replyBody }
   store.mark({ publishing: true })
-  return sr71$.mutate(S.replyComment, variables)
+  sr71$.mutate(S.replyComment, variables)
 }
 
 export const commentOnChange = (e: TEditValue, key: string): void => {
@@ -159,7 +162,10 @@ export const setWordsCountState = (wordsCountReady: boolean): void => {
 }
 
 export const openReplyEditor = (comment: TComment): void => {
-  if (!store.isLogin) return authWarn({ hideToast: true })
+  if (!store.isLogin) {
+    authWarn({ hideToast: true })
+    return
+  }
 
   initDraftTimmer()
   store.mark({
@@ -197,7 +203,10 @@ export const handleEmotion = (
   name: TEmotionType,
   viewerHasEmotioned: boolean,
 ): void => {
-  if (!store.isLogin) return authWarn({ hideToast: true })
+  if (!store.isLogin) {
+    authWarn({ hideToast: true })
+    return
+  }
 
   const { id } = comment
   const emotion = name.toUpperCase()
@@ -228,7 +237,10 @@ export const handleEmotion = (
  * toggle upvote action
  */
 export const handleUpvote = (comment: TComment, viewerHasUpvoted: boolean): void => {
-  if (!store.isLogin) return authWarn({ hideToast: true })
+  if (!store.isLogin) {
+    authWarn({ hideToast: true })
+    return
+  }
   const { id, upvotesCount } = comment
 
   if (viewerHasUpvoted) {

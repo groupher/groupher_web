@@ -17,7 +17,7 @@ const I18nDict = {
 
   // ArticleCat
   ALL: '全部',
-  FEATURE: '功能建议',
+  FEATURE: '请求功能',
   BUG: '问题上报',
   QUESTION: '求助/疑问',
   OTHER: '其他',

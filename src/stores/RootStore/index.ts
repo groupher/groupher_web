@@ -37,7 +37,6 @@ import {
   // RepoViewerStore,
   CommentsStore,
   MailsViewerStore,
-
   // toolbox
   DrawerStore,
   // SidebarStore,
@@ -45,7 +44,6 @@ import {
   AccountEditorStore,
   MailBoxStore,
   TagsBarStore,
-
   // GEN: IMPORT SUBSTORE
   PassportEditorStore,
   CoverEditorStore,

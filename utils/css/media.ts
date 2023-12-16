@@ -80,12 +80,15 @@ export const fitPageWidth = (metric: TMetric): string => {
 // }, {})
 
 // see @link https://github.com/styled-components/styled-components/issues/430#issuecomment-439016641
-export const media = Object.keys(mediaBreakPoints).reduce((acc, label) => {
-  acc[label] = (literals: TemplateStringsArray, ...placeholders: any[]) =>
-    styledCss`
+export const media = Object.keys(mediaBreakPoints).reduce(
+  (acc, label) => {
+    acc[label] = (literals: TemplateStringsArray, ...placeholders: any[]) =>
+      styledCss`
         @media (max-width: ${mediaBreakPoints[label]}px) {
           ${styledCss(literals, ...placeholders)};
         }
       `.join('')
-  return acc
-}, {} as Record<keyof typeof mediaBreakPoints, (l: TemplateStringsArray, ...p: any[]) => string>)
+    return acc
+  },
+  {} as Record<keyof typeof mediaBreakPoints, (l: TemplateStringsArray, ...p: any[]) => string>,
+)

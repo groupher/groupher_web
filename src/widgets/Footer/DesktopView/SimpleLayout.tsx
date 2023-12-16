@@ -19,11 +19,7 @@ import {
   SocialInfo,
 } from '../styles/desktop_view/simple_layout'
 
-type TProps = {
-  //
-}
-
-const SimpleLayout: FC<TProps> = () => {
+const SimpleLayout: FC = () => {
   const { links } = useFooterLinks()
 
   // @ts-ignore

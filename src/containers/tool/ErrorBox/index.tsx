@@ -26,7 +26,6 @@ import {
 } from './styles'
 import { useInit, onClose } from './logic'
 
-/* eslint-disable-next-line */
 const log = buildLog('C:ErrorBox')
 
 const ErrorBox: FC = () => {

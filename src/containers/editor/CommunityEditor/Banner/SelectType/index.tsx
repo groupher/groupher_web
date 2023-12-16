@@ -22,7 +22,6 @@ import WarnBox from './WarnBox'
 import { Wrapper, InnerWrapper, IntroTitle, Note, NextBtn } from '../../styles/banner/select_type'
 import { nextStep, isOfficalOnChange } from '../../logic'
 
-/* eslint-disable-next-line */
 const log = buildLog('C:CommunitiesBanner')
 
 type TProps = {

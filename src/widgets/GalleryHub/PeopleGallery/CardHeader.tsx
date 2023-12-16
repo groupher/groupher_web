@@ -22,17 +22,11 @@ const CardHeader: FC<TProps> = ({ item }) => {
   return (
     <Wrapper>
       <NationsWrapper>
-        <NationFlag
-          src={`${ASSETS_ENDPOINT}/navi/nation/${item.birthPlace}.png`}
-        />
-        {item.birthPlace === item.nation && (
-          <NationName>{item.nationName}</NationName>
-        )}
+        <NationFlag src={`${ASSETS_ENDPOINT}/navi/nation/${item.birthPlace}.png`} />
+        {item.birthPlace === item.nation && <NationName>{item.nationName}</NationName>}
 
         {item.birthPlace !== item.nation && (
-          <NationFlag
-            src={`${ASSETS_ENDPOINT}/navi/nation/${item.nation}.png`}
-          />
+          <NationFlag src={`${ASSETS_ENDPOINT}/navi/nation/${item.nation}.png`} />
         )}
       </NationsWrapper>
       <Tooltip

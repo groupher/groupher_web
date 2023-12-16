@@ -1,13 +1,7 @@
 import { FC, memo } from 'react'
 
 import { ICON_CMD } from '@/config'
-import {
-  SelectBox,
-  ChuanChuanIcon,
-  Selectors,
-  By,
-  Circle,
-} from './styles/chuan_selector'
+import { SelectBox, ChuanChuanIcon, Selectors, By, Circle } from './styles/chuan_selector'
 
 type TProps = {
   active: number
@@ -24,11 +18,7 @@ const ChuanSelector: FC<TProps> = ({ active, onSelect }) => {
       <Selectors>
         <By>x</By>
         {options.map((item) => (
-          <Circle
-            key={item}
-            active={item === active}
-            onClick={() => onSelect(item)}
-          >
+          <Circle key={item} active={item === active} onClick={() => onSelect(item)}>
             {item}
           </Circle>
         ))}

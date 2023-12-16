@@ -30,7 +30,7 @@ const ThemePalette: FC<TProps> = ({ children }) => {
   return (
     <ThemeProvider theme={themeData}>
       <GlobalStyle $color={primaryColor} />
-      <Fragment>{children}</Fragment>
+      {children}
       <ThirdPartyOverWrite />
       <CodeSyxHighlight />
       <ScrollBarStyle />

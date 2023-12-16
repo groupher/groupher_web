@@ -38,7 +38,6 @@ import {
 
 import { useInit, inputOnChange, onUpdate } from './logic'
 
-/* eslint-disable-next-line */
 const log = buildLog('C:AccountEditor')
 
 const AccountEditor: FC = () => {

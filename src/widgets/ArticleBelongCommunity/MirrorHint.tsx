@@ -5,12 +5,7 @@ import type { TCommunity } from '@/spec'
 import Tooltip from '@/widgets/Tooltip'
 import CommunityCard from '@/widgets/Cards/CommunityCard'
 
-import {
-  MirrorIcon,
-  PopHint,
-  SlashSign,
-  MirrorCard,
-} from './styles/mirror_hint'
+import { MirrorIcon, PopHint, SlashSign, MirrorCard } from './styles/mirror_hint'
 
 type TProps = {
   communities: TCommunity[]

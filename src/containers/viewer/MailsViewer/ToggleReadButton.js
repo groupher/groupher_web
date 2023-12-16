@@ -12,11 +12,7 @@ const ToggleReadButton = ({ readState }) => (
       <ToggleIcon src={`${ICON_CMD}/turn_off.svg`} />
     )}
 
-    {!readState ? (
-      <ToggleTitle>已读</ToggleTitle>
-    ) : (
-      <ToggleTitle>未读</ToggleTitle>
-    )}
+    {!readState ? <ToggleTitle>已读</ToggleTitle> : <ToggleTitle>未读</ToggleTitle>}
   </Wrapper>
 )
 

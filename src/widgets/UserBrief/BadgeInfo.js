@@ -2,12 +2,7 @@ import React from 'react'
 
 import { ICON_CMD } from '@/config'
 
-import {
-  Wrapper,
-  BadgeWrapper,
-  BadgeIcon,
-  BadgeTitle,
-} from './styles/badge_info'
+import { Wrapper, BadgeWrapper, BadgeIcon, BadgeTitle } from './styles/badge_info'
 
 const BadgeInfo = ({ user: { achievement } }) => {
   const { seniorMember, donateMember, sponsorMember } = achievement

@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
 export const Info = styled.div`
   color: ${theme('article.digest')};
 `
-export const Number = styled.span`
+export const Num = styled.span`
   color: ${theme('banner.title')};
   margin-left: 4px;
   margin-right: 4px;

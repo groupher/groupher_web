@@ -3,7 +3,7 @@ import styled, { css, theme } from '@/css'
 import Img from '@/Img'
 import LockSVG from '@/icons/Lock'
 
-import { getPathGradient } from '../metric'
+export { GradientText } from '..'
 
 export const Wrapper = styled.div`
   position: relative;
@@ -67,18 +67,6 @@ export const AddText = styled.div`
 
   ${css.media.mobile`
     font-size: 10px;
-  `};
-`
-export const CoolText = styled.div<{ wallpaper: string }>`
-  color: ${theme('article.digest')};
-  background: ${({ wallpaper }) => `linear-gradient(to left, ${getPathGradient(wallpaper)})`};
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 600;
-
-  ${css.media.mobile`
-    font-size: 10px;
-    margin-left: 1px;
   `};
 `
 export const Highlight = styled.div`

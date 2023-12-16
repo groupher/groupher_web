@@ -13,7 +13,7 @@ import {
   AddrBar,
   LockIcon,
   AddText,
-  CoolText,
+  GradientText,
   Highlight,
   Content,
   Background,
@@ -39,7 +39,7 @@ const DesktopDevice: FC = () => {
           <Space right={2} />
           <Highlight>your-product</Highlight>
           <AddText>.groupher.com/</AddText>
-          <CoolText wallpaper={wallpaper}>
+          <GradientText wallpaper={wallpaper}>
             <Typewriter
               options={{
                 strings: ['posts', 'kanban', 'changelog', 'help', 'roadmap', 'docs'],
@@ -47,7 +47,7 @@ const DesktopDevice: FC = () => {
                 loop: true,
               }}
             />
-          </CoolText>
+          </GradientText>
         </AddrBar>
         <SpaceGrow />
       </BrowerHead>

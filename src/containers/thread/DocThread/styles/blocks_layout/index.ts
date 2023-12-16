@@ -13,7 +13,7 @@ export const Wrapper = styled.div<{ $bannerLayout: TBannerLayout }>`
         return 'width: 100%; margin-left: 58px; margin-top: 30px;'
 
       case BANNER_LAYOUT.SIDEBAR:
-        return 'width: auto'
+        return 'width: 100%; margin-left: 58px; margin-top: 30px;'
 
       case BANNER_LAYOUT.TABBER:
         return 'width: 100%; margin-left: 15px;'
@@ -21,10 +21,6 @@ export const Wrapper = styled.div<{ $bannerLayout: TBannerLayout }>`
       default:
         return 'width: auto;'
     }
-
-    return $bannerLayout !== BANNER_LAYOUT.SIDEBAR
-      ? 'width: 100%; margin-left: 58px; margin-top: 30px;'
-      : 'width: auto;'
   }}
 `
 export const CatsWrapper = styled(MainWrapper)<{ $bannerLayout?: TBannerLayout }>`

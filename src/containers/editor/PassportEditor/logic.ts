@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { uniq, reject, keys } from 'ramda'
+import { uniq, reject, keys, forEach } from 'ramda'
 
 import EVENT from '@/constant/event'
 
@@ -36,13 +36,13 @@ export const updatePassport = (): void => {
   const community = curCommunity.slug
 
   const innerRules = {}
-  toJS(keys(JSON.parse(allModeratorRules))).forEach((key) => {
-    innerRules[key] = false
-  })
+  forEach((key) => {
+    innerRules[key as string] = false
+  }, toJS(keys(JSON.parse(allModeratorRules))))
 
-  toJS(selectedRules).forEach((key) => {
-    innerRules[key] = true
-  })
+  forEach((key) => {
+    innerRules[key as string] = true
+  }, toJS(selectedRules))
 
   const rules = JSON.stringify({
     [community]: innerRules,

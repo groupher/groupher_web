@@ -38,12 +38,7 @@ const ReplyEditor: FC<TProps> = ({ body, submitState, replyTo }) => {
           }}
         />
       </Header>
-      <CustomScroller
-        direction="vertical"
-        height="320px"
-        showShadow={false}
-        autoHide={false}
-      >
+      <CustomScroller direction="vertical" height="320px" showShadow={false} autoHide={false}>
         <EditorWrapper>
           {replyTo.id ? (
             <BodyEditor

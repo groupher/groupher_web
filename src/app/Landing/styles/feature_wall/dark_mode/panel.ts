@@ -6,9 +6,18 @@ import { WithMargin } from '@/widgets/Common'
 export const Wrapper = styled.div`
   ${css.row('align-both')};
   width: 100%;
-  height: 320px;
+  height: 300px;
   padding-right: 20px;
   position: relative;
+`
+export const DivideColumn = styled.div<{ $hovering: boolean }>`
+  background: ${theme('rainbow.red')};
+  width: 3px;
+  height: ${({ $hovering }) => ($hovering ? '180px' : '150px')};
+  position: absolute;
+  border-radius: 5px;
+  z-index: 10;
+  transition: all 0.2s;
 `
 export const Item = styled.div`
   ${css.row('align-center')};
@@ -21,12 +30,8 @@ export const Footer = styled(WithMargin)`
 `
 
 type TBaseCard = {
-  $left: number
-  $zIndex: number
-  $opacity?: number
   $width?: number
   $height?: number
-  $top?: number
 }
 export const BaseCard = styled.div<TBaseCard>`
   padding: 10px;
@@ -35,16 +40,12 @@ export const BaseCard = styled.div<TBaseCard>`
   border-color: ${theme('divider')};
   border-radius: 8px;
 
-  position: absolute;
   width: ${({ $width }) => `${$width}px`};
   height: ${({ $height }) => `${$height}px`};
 
-  left: ${({ $left }) => `${$left}px`};
-  top: ${({ $top }) => `${$top}px`};
-  opacity: ${({ $opacity }) => `${$opacity || 1}`};
-  z-index: ${({ $zIndex }) => `${$zIndex || 1}`};
+  opacity: 0.8;
 
-  transition: all 0.35s;
+  transition: all 0.3s;
 `
 type TBar = { width: number } & { opacity?: number } & TColor
 export const BaseBar = styled.div<TBar>`

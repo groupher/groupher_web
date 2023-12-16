@@ -12,6 +12,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
 }))<TTestable>`
   ${css.column('align-both')};
   width: 100%;
+  margin-top: 50px;
 `
 export const Slogan = styled.div`
   ${css.column('align-both')};

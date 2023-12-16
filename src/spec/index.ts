@@ -226,6 +226,7 @@ interface IWindow extends Window {
   /**
    * used for check platform hook
    */
+
   chrome?: any
   safari?: any
   StyleMedia?: any

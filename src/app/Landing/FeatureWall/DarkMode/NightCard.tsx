@@ -24,15 +24,12 @@ type TProps = {
 const NightCard: FC<TProps> = ({ hovering, metric }) => {
   return (
     <Wrapper
-      $top={hovering ? metric.top[0] : metric.top[1]}
-      $left={hovering ? metric.left[0] : metric.left[1]}
+      $hovering={hovering}
       $width={hovering ? metric.width[0] : metric.width[1]}
       $height={hovering ? metric.height[0] : metric.height[1]}
-      $zIndex={hovering ? metric.zIndex[0] : metric.zIndex[1]}
-      $opacity={hovering ? metric.opacity[0] : metric.opacity[1]}
     >
-      <Title>集成 AI 辅助总结</Title>
-      <CodeBox>
+      <Title $hovering={hovering}>集成 AI 辅助总结</Title>
+      <CodeBox $hovering={hovering}>
         <CodeItem>
           <Bar $color={COLOR_NAME.CYAN} width={20} />
           <Bar $color={COLOR_NAME.PURPLE} width={40} />
@@ -54,8 +51,8 @@ const NightCard: FC<TProps> = ({ hovering, metric }) => {
       </CodeBox>
       <SpaceGrow />
       <Footer top={16}>
-        <UpvoteIcon />
-        <Count>666</Count>
+        <UpvoteIcon $hovering={hovering} />
+        <Count $hovering={hovering}>666</Count>
       </Footer>
     </Wrapper>
   )

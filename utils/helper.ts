@@ -102,7 +102,7 @@ export const extractAttachments = (str: string): string[] => {
   const regex = /!\[(.*?)\]\((.*?)\)/g
 
   const urls = []
-  /* eslint-disable */
+  // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
   while ((m = regex.exec(str)) !== null) {
     if (m.index === regex.lastIndex) {
       regex.lastIndex += 1
@@ -131,9 +131,9 @@ export const isCypressRunning = (): boolean => {
  * see: https://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
  */
 export const getRandomInt = (min: number, max: number): number => {
-  min = Math.ceil(min)
-  max = Math.floor(max)
-  return Math.floor(Math.random() * (max - min + 1)) + min
+  const minNum = Math.ceil(min)
+  const maxNum = Math.floor(max)
+  return Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum
 }
 
 export const num2Percent = (decimal: number): string => {
@@ -180,7 +180,7 @@ export const randomBgNames = (
  */
 export const findDeepMatch = (data, key, value) => {
   let result = null
-  if (data instanceof Array) {
+  if (Array.isArray(data)) {
     for (let i = 0; i < data.length; i += 1) {
       // console.log('> the data[i]', data[i])
       result = findDeepMatch(data[i], key, value)
@@ -194,7 +194,7 @@ export const findDeepMatch = (data, key, value) => {
       if (prop === key && data[prop] === value) {
         return data
       }
-      if (data[prop] instanceof Object || data[prop] instanceof Array) {
+      if (data[prop] instanceof Object || Array.isArray(data[prop])) {
         result = findDeepMatch(data[prop], key, value)
       }
     }

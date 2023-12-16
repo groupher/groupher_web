@@ -62,32 +62,42 @@ jobs:
       #   run: MIX_ENV=ci mix phx.server &
 
       - name: (Frontend) checkout codebase
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          repository: 'groupher/groupher_web'
-          path: 'frontend_server'
+          repository: "groupher/groupher_web"
+          path: "./"
       - name: (Frontend) setup node env
         uses: actions/setup-node@v2
         with:
-          node-version: '20.3.1'
+          node-version: "20.3.1"
       - name: (Frontend) Install Packages
-        working-directory: ./frontend_server
+        working-directory: ./
         run: npm install
+      # - name: Checkout
+      #   uses: actions/checkout@v4
+      # - name: Setup Biome
+      #   uses: biomejs/setup-biome@v1
+      #   with:
+      #     version: 1.4.1
+      - name: Run Biome
+        run: node_modules/.bin/biome ci ./src; ls -llh; pwd
       - name: (Frontend) Setup Config CMD Tools
-        working-directory: ./frontend_server
-        run: chmod +x ./utils/bin/jq-linux; ./utils/bin/jq-linux -s '.[0] * .[1]' config/config.json config/config.ci.json > /tmp/config.json; cp /tmp/config.json ./config/config.json
+        working-directory: ./
+        run: ls -llh; chmod +x ./utils/bin/jq-linux; ./utils/bin/jq-linux -s '.[0] * .[1]' config/config.json config/config.ci.json > /tmp/config.json; cp /tmp/config.json ./config/config.json
       - name: (Frontend) Build Project
-        working-directory: ./frontend_server
+        working-directory: ./
         run: npm run build.ci
-      - name: cache the build
-        uses: actions/cache@v2
+
+      - name: cache next.js build
+        uses: actions/cache@v3
         with:
+          # See here for caching with `yarn` https://github.com/actions/cache/blob/main/examples.md#node---yarn or you can leverage caching with actions/setup-node https://github.com/actions/setup-node
           path: |
             ~/.npm
             ${{ github.workspace }}/.next/cache
           # Generate a new cache whenever packages or source files change.
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
           # If source files changed but packages didn't, rebuild from a prior cache.
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-

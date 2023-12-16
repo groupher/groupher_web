@@ -28,21 +28,10 @@ type TProps = {
   onAdd?: (u: TUser) => void
 }
 
-const List: FC<TProps> = ({
-  users,
-  withDelete = false,
-  withSelect = false,
-  onRemove,
-  onAdd,
-}) => {
+const List: FC<TProps> = ({ users, withDelete = false, withSelect = false, onRemove, onAdd }) => {
   return (
     <Wrapper>
-      <CustomScroller
-        direction="vertical"
-        height="200px"
-        showShadow={false}
-        autoHide
-      >
+      <CustomScroller direction="vertical" height="200px" showShadow={false} autoHide>
         {users.map((user) => (
           <UserWrapper key={user.login}>
             <Avatar src={user.avatar} />
@@ -52,10 +41,7 @@ const List: FC<TProps> = ({
                 <SpaceGrow />
                 {withSelect && (
                   <CheckWrapper>
-                    <Checker
-                      size="small"
-                      onChange={(checked) => checked && onAdd(user)}
-                    />
+                    <Checker size="small" onChange={(checked) => checked && onAdd(user)} />
                   </CheckWrapper>
                 )}
 

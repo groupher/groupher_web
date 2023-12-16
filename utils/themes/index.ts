@@ -47,7 +47,7 @@ export const rainbowLink = (primaryColor: TColorName, rollbackForBlack = 'link')
  */
 export const rainbow = (color: TColorName | string, darkThemeOverWriteKey = ''): string => {
   if (color === COLOR_NAME.BLACK) {
-    return !!darkThemeOverWriteKey
+    return darkThemeOverWriteKey
       ? theme(`${darkThemeOverWriteKey as TFlatThemeKey}`)
       : theme(`rainbow.${camelize(color)}` as TFlatThemeKey)
   }

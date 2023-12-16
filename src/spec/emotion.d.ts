@@ -4,16 +4,10 @@ import type { TSimpleUser } from './account'
 type TTitleCase<T extends string, D extends string = ' '> = string extends T
   ? never
   : T extends `${infer F}${D}${infer R}`
-  ? `${Capitalize<F>}${D}${TTitleCase<R, D>}`
-  : Capitalize<T>
+    ? `${Capitalize<F>}${D}${TTitleCase<R, D>}`
+    : Capitalize<T>
 
-export type TEmotionType =
-  | 'downvote'
-  | 'beer'
-  | 'heart'
-  | 'confused'
-  | 'popcorn'
-  | 'pill'
+export type TEmotionType = 'downvote' | 'beer' | 'heart' | 'confused' | 'popcorn' | 'pill'
 
 export type TEmotionCountKey = `${TEmotionType}Count`
 export type TEmotionViewerHasKey = `viewerHas${TTitleCase<TEmotionType>}ed`
