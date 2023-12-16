@@ -1,12 +1,15 @@
 import { FC, memo } from 'react'
 
+import { COLOR_NAME } from '@/constant/colors'
+import { SpaceGrow } from '@/widgets/Common'
+
 import {
   Wrapper,
   Box,
+  InnerBox,
   Header,
   MainText,
-  FooterText,
-  TheChecker,
+  CheckIcon,
   Icon,
 } from '../../styles/banner/select_type/type_boxes'
 
@@ -25,51 +28,59 @@ const TypeBoxes: FC<TProps> = ({ communityType }) => {
     <Wrapper>
       <Box
         touched={!!communityType}
-        active={communityType === WEB}
+        $active={communityType === WEB}
         onClick={() => communityTypeOnChange(WEB)}
       >
-        <Header>
-          <Icon.Browser />
-          <TheChecker checked={communityType === WEB} hiddenMode />
-        </Header>
-        <MainText>Web 应用</MainText>
-        <FooterText>已有 114 +</FooterText>
+        <InnerBox $active={communityType === WEB} $color={COLOR_NAME.PURPLE}>
+          <Header>
+            <Icon.Browser />
+            {communityType === WEB && <CheckIcon $color={COLOR_NAME.PURPLE} />}
+          </Header>
+          <MainText>Web 应用</MainText>
+          <SpaceGrow />
+        </InnerBox>
       </Box>
       <Box
         touched={!!communityType}
-        active={communityType === CLIENT}
+        $active={communityType === CLIENT}
         onClick={() => communityTypeOnChange(CLIENT)}
       >
-        <Header>
-          <Icon.Hammer />
-          <TheChecker checked={communityType === CLIENT} hiddenMode />
-        </Header>
-        <MainText>客户端软件</MainText>
-        <FooterText>已有 12 +</FooterText>
+        <InnerBox $active={communityType === CLIENT} $color={COLOR_NAME.BLUE}>
+          <Header>
+            <Icon.Hammer />
+            {communityType === CLIENT && <CheckIcon $color={COLOR_NAME.BLUE} />}
+          </Header>
+          <MainText>客户端软件</MainText>
+          <SpaceGrow />
+        </InnerBox>
       </Box>
       <Box
         touched={!!communityType}
-        active={communityType === HARDWARE}
+        $active={communityType === HARDWARE}
         onClick={() => communityTypeOnChange(HARDWARE)}
       >
-        <Header>
-          <Icon.Robot />
-          <TheChecker checked={communityType === HARDWARE} hiddenMode />
-        </Header>
-        <MainText>硬件产品</MainText>
-        <FooterText>已有 14 +</FooterText>
+        <InnerBox $active={communityType === HARDWARE} $color={COLOR_NAME.GREEN}>
+          <Header>
+            <Icon.Robot />
+            {communityType === HARDWARE && <CheckIcon $color={COLOR_NAME.GREEN} />}
+          </Header>
+          <MainText>硬件产品</MainText>
+          <SpaceGrow />
+        </InnerBox>
       </Box>
       <Box
         touched={!!communityType}
-        active={communityType === GAME}
+        $active={communityType === GAME}
         onClick={() => communityTypeOnChange(GAME)}
       >
-        <Header>
-          <Icon.Game />
-          <TheChecker checked={communityType === GAME} hiddenMode />
-        </Header>
-        <MainText>独立游戏</MainText>
-        <FooterText>已有 114 +</FooterText>
+        <InnerBox $active={communityType === GAME} $color={COLOR_NAME.ORANGE}>
+          <Header>
+            <Icon.Game />
+            {communityType === GAME && <CheckIcon $color={COLOR_NAME.ORANGE} />}
+          </Header>
+          <MainText>独立游戏</MainText>
+          <SpaceGrow />
+        </InnerBox>
       </Box>
     </Wrapper>
   )

@@ -16,8 +16,7 @@ import { STEP } from './constant'
 
 import S from './schema'
 
-/* eslint-disable-next-line */
-const log = buildLog('L:ExploreContent')
+const _log = buildLog('L:ExploreContent')
 
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
 const sr71$ = new SR71({
@@ -219,7 +218,7 @@ export const useInit = (_store: TStore): void => {
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
 
     if (store.isLogin) {
-      checkPendingApply()
+      // checkPendingApply()
     }
 
     return () => {
