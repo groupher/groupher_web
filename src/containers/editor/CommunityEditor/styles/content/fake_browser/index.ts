@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   border-radius: 12px;
   background: ${theme('alphaBg')};
   border: 1px solid;
-  border-color: #e5e5e5;
+  border-color: ${theme('divider')};
   /* border-color: ${theme('hoverBg')}; */
   border-bottom: none;
 

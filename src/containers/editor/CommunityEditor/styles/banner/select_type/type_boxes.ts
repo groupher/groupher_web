@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
   height: 105px;
   width: 720px;
 `
-type TBox = { touched: boolean; $angle: number } & TActive
+type TBox = { touched: boolean; $angle: number; $withBorder: boolean } & TActive
 export const Box = styled.div<TBox>`
   ${css.column('align-start', 'justify-between')};
   padding: 5px;
@@ -25,12 +25,10 @@ export const Box = styled.div<TBox>`
 
   border-radius: 8px;
   border: 1px solid transparent;
+  border-color: ${({ $withBorder }) => ($withBorder ? theme('divider') : 'transparent')};
   background: ${theme('alphaBg')};
 
-  box-shadow: ${({ $active }) =>
-    $active
-      ? 'rgba(149, 157, 165, 0.2) 0px 8px 24px;'
-      : 'rgba(0, 0, 0, 0.03) 0px 6px 24px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;'};
+  box-shadow: ${({ $active }) => ($active ? theme('shadow.xxl') : theme('shadow.md'))};
 
   opacity: ${({ touched, $active }) => (touched && !$active ? 0.8 : 1)};
   transform: ${({ $active, $angle }) => ($active ? `rotate(${$angle}deg)` : '')};
@@ -41,7 +39,7 @@ export const Box = styled.div<TBox>`
 
   &:hover {
     cursor: pointer;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    box-shadow: ${theme('shadow.xxl')};
     transform: ${({ $angle }) => `rotate(${$angle}deg)`};
   }
 
@@ -77,6 +75,7 @@ export const ColorMask = styled.div<TInnerBox>`
     background: ${({ $color }) => gradientBg($color)};
   }
 `
+
 export const Header = styled.div`
   ${css.row('align-center', 'justify-between')};
   width: 100%;

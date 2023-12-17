@@ -1,5 +1,7 @@
 import { FC, memo } from 'react'
 
+import useTheme from '@/hooks/useTheme'
+import THEME from '@/constant/theme'
 import { SpaceGrow } from '@/widgets/Common'
 
 import {
@@ -22,9 +24,10 @@ type TProps = {
 }
 
 const TypeBoxes: FC<TProps> = ({ communityType }) => {
-  //
+  const { curTheme } = useTheme()
+
   return (
-    <Wrapper>
+    <Wrapper key={curTheme}>
       {COMMUNITY_CATS.map((item, index) => {
         const $active = item.type === communityType
         const $color = item.color
@@ -36,6 +39,7 @@ const TypeBoxes: FC<TProps> = ({ communityType }) => {
             touched={!!communityType}
             $active={$active}
             $angle={index % 2 === 0 ? -2 : 2}
+            $withBorder={curTheme === THEME.NIGHT}
             onClick={() => communityTypeOnChange(item.type)}
           >
             <InnerBox $active={$active} $color={$color}>

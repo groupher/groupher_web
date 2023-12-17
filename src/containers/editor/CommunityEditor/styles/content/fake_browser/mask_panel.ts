@@ -8,8 +8,7 @@ export const Wrapper = styled.div`
   position: absolute;
   left: -3px;
   bottom: -50px;
-  background: rgb(255, 255, 255);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 40%);
+  background: ${theme('hiddenPanel')};
   border-radius: 10px;
   padding: 0 82px;
   padding-top: 120px;

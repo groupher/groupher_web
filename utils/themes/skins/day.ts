@@ -114,6 +114,12 @@ const day = {
     blackRow: '#333333',
     blackBg: '#f4f4f4',
   },
+  shadow: {
+    md: 'rgba(0, 0, 0, 0.03) 0px 6px 24px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;',
+    lg: '',
+    xl: '',
+    xxl: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+  },
   // inspired by https://endless.design/
   gradientBg: {
     purple: 'linear-gradient(-149deg,#faf5ffd4 0%,rgb(222 198 243) 100%)',
@@ -345,6 +351,7 @@ const day = {
     shadow: '0 0 10px 0 rgb(185 185 185 / 25%) inset',
     ball: 'white',
   },
+  hiddenPanel: 'linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 40%)',
 }
 
 export default day
