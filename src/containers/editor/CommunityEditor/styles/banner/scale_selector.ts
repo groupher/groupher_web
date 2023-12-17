@@ -26,8 +26,6 @@ export const Bar = styled.div<{ width: string }>`
   border-radius: 15px;
   height: 28px;
   width: ${({ width }) => width};
-  /* background: ${theme('article.title')}; */
-  /* background: linear-gradient(to right, #333333, #828282); */
   background: linear-gradient(to right, #e29aaa, #c479de);
   transition: width 0.25s;
 `

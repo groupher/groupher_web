@@ -17,6 +17,20 @@ export const COMMUNITY_TYPE = {
   GAME: 'GAME',
 } as Record<Uppercase<TCommunityType>, Uppercase<TCommunityType>>
 
+export const COMMUNITY_CATS_COLOR = {
+  [COMMUNITY_TYPE.WEB]: COLOR_NAME.PURPLE,
+  [COMMUNITY_TYPE.CLIENT]: COLOR_NAME.BLUE,
+  [COMMUNITY_TYPE.HARDWARE]: COLOR_NAME.GREEN,
+  [COMMUNITY_TYPE.GAME]: COLOR_NAME.ORANGE,
+}
+
+export const COMMUNITY_CATS_TEXT_COLORS = {
+  [COMMUNITY_TYPE.WEB]: ['#c479de', '#f8be6d'], // pink
+  [COMMUNITY_TYPE.CLIENT]: ['#5c96f1', '#94d3e7'],
+  [COMMUNITY_TYPE.HARDWARE]: ['#72B58C', '#C6D183'],
+  [COMMUNITY_TYPE.GAME]: ['#ff862c', '#ffd599'],
+}
+
 export const COMMUNITY_CATS = [
   {
     //

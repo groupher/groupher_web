@@ -4,8 +4,8 @@ import { isEmpty } from 'ramda'
 import { Row, SpaceGrow } from '@/widgets/Common'
 
 import Favicon from './Favicon'
-
 import type { TCommunityType } from '../../spec'
+import { COMMUNITY_CATS_COLOR, COMMUNITY_CATS_TEXT_COLORS } from '../../constant'
 
 import {
   Header,
@@ -33,7 +33,7 @@ type TProps = {
   desc?: string
   activePath: string
   logo?: string | null
-  communityType?: TCommunityType
+  communityType: TCommunityType
 }
 
 const BrowserHead: FC<TProps> = ({
@@ -42,9 +42,10 @@ const BrowserHead: FC<TProps> = ({
   desc = '',
   activePath = '',
   logo = null,
-  communityType = null,
+  communityType,
 }) => {
   const tabTitle = title || domain || 'groupher'
+  const domainColors = COMMUNITY_CATS_TEXT_COLORS[communityType]
 
   return (
     <>
@@ -68,7 +69,7 @@ const BrowserHead: FC<TProps> = ({
             ) : (
               <Row>
                 groupher.com<Slash>/</Slash>
-                <SubDomain>{domain.toLowerCase()}</SubDomain>
+                <SubDomain $colors={domainColors}>{domain.toLowerCase()}</SubDomain>
                 <ThreadPath $active={!!activePath}>
                   <Slash>/</Slash>
                   <ThreadText>{activePath}</ThreadText>
@@ -76,7 +77,7 @@ const BrowserHead: FC<TProps> = ({
               </Row>
             )}
             <SpaceGrow />
-            <StarIcon />
+            <StarIcon $color={COMMUNITY_CATS_COLOR[communityType]} />
           </Input>
         </Form>
         <MoreIcon />

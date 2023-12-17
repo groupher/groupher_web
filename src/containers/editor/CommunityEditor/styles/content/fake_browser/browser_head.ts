@@ -1,6 +1,6 @@
-import type { TActive } from '@/spec'
+import type { TActive, TColor } from '@/spec'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, rainbow, theme } from '@/css'
 
 import LockSVG from '@/icons/Lock'
 import ArrowSVG from '@/icons/Arrow'
@@ -120,10 +120,11 @@ export const MoreIcon = styled(MoreSVG)`
   fill: ${theme('hint')};
   margin-top: 1px;
 `
-export const StarIcon = styled(StarSVG)`
+export const StarIcon = styled(StarSVG)<TColor>`
   ${css.size(13)};
-  fill: ${theme('hint')};
+  fill: ${({ $color }) => rainbow($color)};
   margin-top: 2px;
+  opacity: 0.8;
 `
 export const Form = styled.form`
   ${css.row('align-center')};
@@ -142,8 +143,9 @@ export const Input = styled.div`
   padding: 0 8px;
   font-size: 14px;
 `
-export const SubDomain = styled.div`
-  background: linear-gradient(to right, rgb(196, 121, 222), rgb(248, 190, 109));
+type TSubDomain = { $colors: string[] }
+export const SubDomain = styled.div<TSubDomain>`
+  background: ${({ $colors }) => `linear-gradient(to right, ${$colors[0]}, ${$colors[1]})`} ;
   font-weight: 550;
   background-clip: text;
   -webkit-background-clip: text;
@@ -162,6 +164,7 @@ export const ThreadPath = styled.div<TActive>`
   opacity: ${({ $active }) => ($active ? 1 : 0)};
 `
 export const ThreadText = styled.div`
-  color: ${theme('article.digest')};
-  opacity: 0.6;
+  color: ${theme('article.title')};
+  opacity: 1;
+  margin-top: -1px;
 `
