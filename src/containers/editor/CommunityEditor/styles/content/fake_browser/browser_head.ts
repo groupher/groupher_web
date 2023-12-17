@@ -8,8 +8,6 @@ import RefreshSVG from '@/icons/Refresh'
 import MoreSVG from '@/icons/menu/MoreL'
 import StarSVG from '@/icons/Star5'
 
-const taberBg = '#F1F3F4'
-
 export const Header = styled.div`
   ${css.row()};
   width: 100%;
@@ -24,25 +22,28 @@ export const Header = styled.div`
 export const Tab = styled.div`
   ${css.row('align-center')};
   flex-basis: 218px;
-  background: ${taberBg};
+  background: ${theme('grey.middle')};
   border-bottom: 1px solid;
-  border-bottom-color: ${taberBg};
+  border-bottom-color: ${theme('grey.middle')};
   height: 29px;
   min-width: 0;
   position: relative;
   margin: 0 5px;
   font-size: 0;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
 
   &:before {
     content: "";
+    border-top-left-radius: 8px;
     position: absolute;
     z-index: 10;
     align-self: flex-start;
     height: 28px;
     width: 16px;
-    background: ${taberBg};
+    background: ${theme('grey.middle')};
     border-bottom: 1px solid;
-    border-bottom-color: ${taberBg};
+    border-bottom-color: ${theme('grey.middle')};
     left: 0;
     transform: skewx(-25deg);
     transform-origin: left top;
@@ -50,22 +51,24 @@ export const Tab = styled.div`
 
   &:after {
     content: "";
+    border-top-right-radius: 8px;
     position: absolute;
     width: 16px;
     z-index: 10;
     align-self: flex-start;
     height: 28px;
-    background: ${taberBg};
+    background: ${theme('grey.middle')};
     border-bottom: 1px solid;
-    border-bottom-color: ${taberBg};
+    border-bottom-color: ${theme('grey.middle')};
 
     right: 0;
     transform: skewx(25deg);
     transform-origin: right top;
   }
 `
-
 export const TabContent = styled.div`
+  color: ${theme('article.title')};
+  opacity: 0.8;
   z-index: 100;
   flex-grow: 1;
   padding-left: 8px;
@@ -81,9 +84,9 @@ export const TabContent = styled.div`
 export const AddressBar = styled.div`
   width: 100%;
   ${css.row('align-center')};
-  background: ${taberBg};
+  background: ${theme('grey.middle')};
   border-bottom: 1px solid;
-  border-bottom-color: ${taberBg};
+  border-bottom-color: ${theme('grey.middle')};
   padding-left: 4px;
   padding-right: 4px;
   height: 38px;
@@ -110,7 +113,7 @@ export const RefreshIcon = styled(RefreshSVG)`
   fill: ${theme('hint')};
 `
 export const LockIcon = styled(LockSVG)`
-  fill: ${theme('hint')};
+  fill: ${theme('article.digest')};
   ${css.size(15)};
   margin-top: 1px;
   margin-left: 4px;
@@ -129,7 +132,7 @@ export const StarIcon = styled(StarSVG)<TColor>`
 export const Form = styled.form`
   ${css.row('align-center')};
   flex-grow: 1;
-  background: ${theme('alphaBg2')};
+  background: ${theme('htmlBg')};
   height: 28px;
   border-radius: 15px;
   margin-left: 4px;
@@ -138,6 +141,7 @@ export const Form = styled.form`
 `
 export const Input = styled.div`
   ${css.row('align-center')};
+  color: ${theme('article.title')};
   border: none;
   width: 100%;
   padding: 0 8px;
@@ -145,7 +149,7 @@ export const Input = styled.div`
 `
 type TSubDomain = { $colors: string[] }
 export const SubDomain = styled.div<TSubDomain>`
-  background: ${({ $colors }) => `linear-gradient(to right, ${$colors[0]}, ${$colors[1]})`} ;
+  background: ${({ $colors }) => `linear-gradient(to right, ${$colors[0]}, ${$colors[1]})`};
   font-weight: 550;
   background-clip: text;
   -webkit-background-clip: text;
