@@ -1,4 +1,4 @@
-import { gql } from 'urql/core'
+import { gql } from 'urql'
 
 const deleteArticleTag = gql`
   mutation ($id: ID!, $community: String!, $thread: Thread) {

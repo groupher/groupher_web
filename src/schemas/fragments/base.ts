@@ -1,4 +1,4 @@
-import { gql } from 'urql/core'
+import { gql } from 'urql'
 import { values, flatten } from 'ramda'
 
 import EMOTION from '@/constant/emotion'

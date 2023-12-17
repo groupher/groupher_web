@@ -1,4 +1,4 @@
-import { gql } from 'urql/core'
+import { gql } from 'urql'
 
 const user = gql`
   query ($login: String!) {
