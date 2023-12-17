@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
   height: 105px;
   width: 720px;
 `
-type TBox = { touched: boolean } & TActive
+type TBox = { touched: boolean; $angle: number } & TActive
 export const Box = styled.div<TBox>`
   ${css.column('align-start', 'justify-between')};
   padding: 5px;

@@ -20,10 +20,8 @@ export const IntroTitle = styled.div`
   color: ${theme('article.title')};
   font-size: 18px;
   margin-bottom: 20px;
-  margin-left: -10px;
 `
 export const SloganTextWrapper = styled.div<{ $highlight: boolean }>`
-  margin-left: 3px;
   margin-right: 3px;
 
   font-weight: ${({ $highlight }) => ($highlight ? 'bold' : '')};
@@ -44,10 +42,10 @@ export const NextBtn = styled.div`
   ${css.row('justify-center')};
   width: 280px;
   margin-top: 24px;
+  margin-left: -18px;
 `
 export const Note = styled.div`
   ${css.row('align-center')};
   margin-top: 50px;
   font-size: 13px;
-  margin-left: 5px;
 `

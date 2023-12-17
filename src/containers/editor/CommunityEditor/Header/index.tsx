@@ -22,7 +22,6 @@ const Header: FC<TProps> = ({ step, showStep }) => {
       <Title>Groupher</Title>
       <Divider />
       <SubTitle>创建社区</SubTitle>
-
       <SpaceGrow />
       {showStep && <StepMap step={step} />}
       <SpaceGrow />

@@ -4,7 +4,7 @@ import TadaSVG from '@/icons/Tada'
 
 export const Wrapper = styled.div`
   ${css.row('align-center', 'justify-between')};
-  margin-left: -160px;
+  margin-left: -140px;
 `
 export const Line = styled.div`
   width: 30px;

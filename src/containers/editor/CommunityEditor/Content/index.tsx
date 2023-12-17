@@ -23,8 +23,7 @@ import { STEP } from '../constant'
 
 import { Wrapper } from '../styles/content'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:NewExploreContent')
+const _log = buildLog('C:NewExploreContent')
 
 type TProps = {
   step: TStep

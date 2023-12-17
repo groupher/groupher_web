@@ -36,7 +36,7 @@ const Content: FC<TProps> = ({ title = '', desc = '', logo, communityType, onHov
       <BannerWrapper>
         <Intro>
           {logo ? <RealLogo src={logo} /> : <IconBlock />}
-          {title ? <Title>{title}</Title> : <TitleHolder>社区名称</TitleHolder>}
+          {title ? <Title>{title}</Title> : <TitleHolder>你的社区</TitleHolder>}
         </Intro>
         {communityType && (
           <ThreadWrapper>
