@@ -19,3 +19,4 @@ public/sw.js.map
 public/workbox-*
 tsconfig.tsbuildinfo
 bun.lockb
+*.tsbuildinfo
