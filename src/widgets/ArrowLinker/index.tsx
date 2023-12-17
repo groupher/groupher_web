@@ -15,8 +15,7 @@ import { Link } from '@/widgets/Common'
 
 import { Wrapper, Title, ArrowIcon } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('c:ArrowLinker:index')
+const _log = buildLog('c:ArrowLinker:index')
 
 type TProps = {
   testid?: string

@@ -25,7 +25,7 @@ const TypeBoxes: FC<TProps> = ({ communityType }) => {
   //
   return (
     <Wrapper>
-      {COMMUNITY_CATS.map((item) => {
+      {COMMUNITY_CATS.map((item, index) => {
         const $active = item.type === communityType
         const $color = item.color
         const IconComp = Icon[item.icon]
@@ -35,6 +35,7 @@ const TypeBoxes: FC<TProps> = ({ communityType }) => {
             key={item.type}
             touched={!!communityType}
             $active={$active}
+            $angle={index % 2 === 0 ? -2 : 2}
             onClick={() => communityTypeOnChange(item.type)}
           >
             <InnerBox $active={$active} $color={$color}>

@@ -33,7 +33,7 @@ export const Box = styled.div<TBox>`
       : 'rgba(0, 0, 0, 0.03) 0px 6px 24px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;'};
 
   opacity: ${({ touched, $active }) => (touched && !$active ? 0.8 : 1)};
-  /* transform: ${({ touched, $active }) => (touched && !$active ? 'scale(0.9)' : '')}; */
+  transform: ${({ $active, $angle }) => ($active ? `rotate(${$angle}deg)` : '')};
 
   &:active {
     margin-top: 8px;
@@ -42,9 +42,10 @@ export const Box = styled.div<TBox>`
   &:hover {
     cursor: pointer;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    transform: ${({ $angle }) => `rotate(${$angle}deg)`};
   }
 
-  transition: all 0.3s;
+  transition: all 0.2s;
 `
 
 type TInnerBox = TActive & TColor
