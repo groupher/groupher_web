@@ -13,10 +13,8 @@ import { buildLog } from '@/logger'
 import type { TLayout } from './spec'
 import type { TProps as TSetter } from './Setter'
 import List from './List'
-// import Setter from './Setter'
-// import { Wrapper, Avatar, SettingWrapper, SettingIcon } from './styles'
 
-const _log = buildLog('w:TeamList:index')
+const log = buildLog('w:TeamList:index')
 
 type TProps = {
   users: TUser[]

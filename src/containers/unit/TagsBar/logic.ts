@@ -14,7 +14,7 @@ import { getParameterByName } from '@/utils/route'
 import type { TStore } from './store'
 import S from './schema'
 
-const _log = buildLog('L:TagsBar')
+const log = buildLog('L:TagsBar')
 
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
 const sr71$ = new SR71({

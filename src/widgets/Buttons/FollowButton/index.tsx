@@ -14,7 +14,7 @@ import { authWarn } from '@/signal'
 import FollowingBtn from './FollowingBtn'
 import FollowedBtn from './FollowedBtn'
 
-const _log = buildLog('w:FollowButton:index')
+const log = buildLog('w:FollowButton:index')
 
 type TProps = {
   hasFollowed?: boolean

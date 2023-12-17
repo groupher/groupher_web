@@ -14,7 +14,7 @@ import { buildLog } from '@/logger'
 import type { TProps } from '..'
 import NormalView from './NormalView'
 
-const _log = buildLog('w:TabBar:index')
+const log = buildLog('w:TabBar:index')
 
 const TabBar: FC<TProps> = ({
   source,

@@ -11,7 +11,7 @@ import { buildLog } from '@/logger'
 
 import { Wrapper, PlusIcon, EditIcon, Text } from './styles/add_button'
 
-const _log = buildLog('w:Buttons:AddButton')
+const log = buildLog('w:Buttons:AddButton')
 
 type TProps = {
   children?: ReactNode

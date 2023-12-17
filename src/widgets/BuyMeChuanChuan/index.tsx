@@ -31,7 +31,7 @@ import {
   SelectHolder,
 } from './styles'
 
-const _log = buildLog('w:Footer:index')
+const log = buildLog('w:Footer:index')
 
 type TProps = {
   show?: boolean

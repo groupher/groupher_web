@@ -12,7 +12,7 @@ import { buildLog } from '@/logger'
 
 import { Wrapper, TabItem } from '../styles/tabs/drawer_view'
 
-const _log = buildLog('w:Tabs:index')
+const log = buildLog('w:Tabs:index')
 
 const temItems = [
   {

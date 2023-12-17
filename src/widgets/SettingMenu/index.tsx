@@ -10,7 +10,7 @@ import { buildLog } from '@/logger'
 
 import { Wrapper, Option, ActiveDot, Title, Desc } from './styles'
 
-const _log = buildLog('w:SettingMenu:index')
+const log = buildLog('w:SettingMenu:index')
 
 type TProps = {
   testid?: string

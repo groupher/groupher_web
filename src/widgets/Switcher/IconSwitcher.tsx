@@ -13,7 +13,7 @@ import Tooltip from '@/widgets/Tooltip'
 
 import { Wrapper, Tabs, DescText, Label, Slider, getLocalIcon } from './styles/icon_selector'
 
-const _log = buildLog('w:IconSwitcher:index')
+const log = buildLog('w:IconSwitcher:index')
 
 type TItem = {
   icon?: string

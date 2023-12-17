@@ -21,7 +21,7 @@ import SidebarHeaderLayout from './SidebarHeaderLayout'
 import { Wrapper, PubButton } from '../styles/publish_button'
 import { getText } from './helper'
 
-const _log = buildLog('w:PublishButton:index')
+const log = buildLog('w:PublishButton:index')
 
 type TProps = {
   text?: string

@@ -13,7 +13,7 @@ import { buildLog } from '@/logger'
 
 import { Wrapper, Box, MoreBtn, Flag, InputLabel, Inputer } from './styles'
 
-const _log = buildLog('c:CitySelector:index')
+const log = buildLog('c:CitySelector:index')
 
 type TProps = {
   radius?: number

@@ -14,7 +14,7 @@ import { buildLog } from '@/logger'
 
 import { Wrapper, IconWrapper, CheckIcon, ChildWrapper } from './styles'
 
-const _log = buildLog('w:Checker:index')
+const log = buildLog('w:Checker:index')
 
 type TProps = {
   children?: ReactNode | null

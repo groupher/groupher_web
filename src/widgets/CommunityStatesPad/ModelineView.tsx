@@ -22,7 +22,7 @@ import {
   NumberTitle,
 } from './styles/modeline_view'
 
-const _log = buildLog('w:CommunityStatesPad:index')
+const log = buildLog('w:CommunityStatesPad:index')
 
 type TProps = {
   community: TCommunity

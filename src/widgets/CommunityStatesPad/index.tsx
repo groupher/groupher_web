@@ -26,7 +26,7 @@ import {
   NumberTitle,
 } from './styles'
 
-const _log = buildLog('w:CommunityStatesPad:index')
+const log = buildLog('w:CommunityStatesPad:index')
 
 type TProps = {
   community: TCommunity

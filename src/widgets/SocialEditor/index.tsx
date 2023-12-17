@@ -27,7 +27,7 @@ import {
   Icon,
 } from './styles'
 
-const _log = buildLog('w:SocialEditor:index')
+const log = buildLog('w:SocialEditor:index')
 
 type TProps = {
   testid?: string

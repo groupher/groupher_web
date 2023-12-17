@@ -15,7 +15,7 @@ import List from './List'
 
 import { Wrapper } from './styles'
 
-const _log = buildLog('c:Menu:index')
+const log = buildLog('c:Menu:index')
 
 type TProps = {
   activeKey?: string

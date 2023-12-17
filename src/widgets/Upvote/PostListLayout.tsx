@@ -14,7 +14,7 @@ import useUpvote from './useUpvote'
 import UpvoteBtn from './UpvoteBtn'
 import { Wrapper, UpWrapper, CountWrapper } from './styles/post_list_layout'
 
-const _log = buildLog('w:Upvote:index')
+const log = buildLog('w:Upvote:index')
 
 type TProps = {
   testid?: string

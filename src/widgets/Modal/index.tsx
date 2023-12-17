@@ -10,7 +10,7 @@ import dynamic from 'next/dynamic'
 import { buildLog } from '@/logger'
 import useShortcut from '@/hooks/useShortcut'
 
-const _log = buildLog('w:Modal:index')
+const log = buildLog('w:Modal:index')
 
 export const RealModal = dynamic(() => import('./RealModal'))
 

@@ -16,7 +16,7 @@ import Footer from './Footer'
 
 import { Wrapper, TabShape } from './styles'
 
-const _log = buildLog('w:Folder:index')
+const log = buildLog('w:Folder:index')
 
 type TProps = {
   title?: string

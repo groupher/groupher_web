@@ -23,7 +23,7 @@ import {
   ThunderIcon,
 } from './styles'
 
-const _log = buildLog('w:DigestSentence:index')
+const log = buildLog('w:DigestSentence:index')
 
 type TProps = {
   testid?: string

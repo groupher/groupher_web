@@ -15,7 +15,7 @@ import { buildLog } from '@/logger'
 import Arrow from './Arrow'
 import { Wrapper, Text } from '../styles/arrow_button'
 
-const _log = buildLog('w:Buttons:ArrowButton')
+const log = buildLog('w:Buttons:ArrowButton')
 
 export type TProps = {
   children?: ReactNode

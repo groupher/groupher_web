@@ -20,7 +20,7 @@ import WaitList from './WaitList'
 import { Wrapper, Header, Title, MoreHint } from './styles'
 import fakeItems from './fakeItems'
 
-const _log = buildLog('w:PromotionList:index')
+const log = buildLog('w:PromotionList:index')
 
 type TProps = {
   show?: boolean

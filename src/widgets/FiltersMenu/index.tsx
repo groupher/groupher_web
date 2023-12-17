@@ -18,7 +18,7 @@ import { Wrapper, ItemWrapper, Item, Icon } from './styles'
 
 import { tags2Options, initActiveMap, getSelectedTags } from './helper'
 
-const _log = buildLog('w:FiltersMenu:index')
+const log = buildLog('w:FiltersMenu:index')
 
 type TProps = {
   tags?: TTag[]

@@ -14,7 +14,7 @@ import SelectedEmotions from './SelectedEmotions/index'
 import Panel from './Panel'
 import { SelectEmotionWrapper } from './styles'
 
-const _log = buildLog('w:EmotionSelector:index')
+const log = buildLog('w:EmotionSelector:index')
 
 type TProps = {
   isLegal?: boolean

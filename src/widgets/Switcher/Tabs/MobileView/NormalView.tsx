@@ -26,7 +26,7 @@ import {
 } from '../../styles/tabs/mobile_view/normal_view'
 import { getSlipMargin } from '../../styles/metric/tabs'
 
-const _log = buildLog('w:Tabs:index')
+const log = buildLog('w:Tabs:index')
 
 const temItems = [
   {

@@ -17,7 +17,7 @@ import useUpvote from './useUpvote'
 import UpvoteBtn from './UpvoteBtn'
 import { Wrapper, Button, FacesWrapper, UpWrapper, CountWrapper } from './styles/sticker_layout'
 
-const _log = buildLog('w:Upvote:index')
+const log = buildLog('w:Upvote:index')
 
 type TProps = {
   testid?: string

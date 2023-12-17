@@ -5,7 +5,7 @@ import { buildLog } from '@/logger'
 
 import { Wrapper, BackIcon } from './styles/cancel_button'
 
-const _log = buildLog('w:Buttons:CancelButton')
+const log = buildLog('w:Buttons:CancelButton')
 
 type TProps = {
   text?: string

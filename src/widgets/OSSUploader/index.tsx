@@ -23,7 +23,7 @@ import {
 import PreviewBlock from './PreviewBlock'
 import { initOSSClient, handleUploadFile, applyUploadTokensIfNeed } from './helper'
 
-const _log = buildLog('w:OSSUploader:index')
+const log = buildLog('w:OSSUploader:index')
 
 type TProps = {
   children: ReactNode

@@ -10,7 +10,7 @@ import FollowButton from '@/widgets/Buttons/FollowButton'
 
 import { Wrapper } from './styles'
 
-const _log = buildLog('w:CommunityJoinSign:index')
+const log = buildLog('w:CommunityJoinSign:index')
 
 type TProps = {
   hasFollowed?: boolean

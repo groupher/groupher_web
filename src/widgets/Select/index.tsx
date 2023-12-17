@@ -18,7 +18,7 @@ import { IndicatorsContainer } from './components'
 
 import { Wrapper, getSelectStyles } from './styles'
 
-const _log = buildLog('w:Select:index')
+const log = buildLog('w:Select:index')
 
 type TProps = {
   testid?: string

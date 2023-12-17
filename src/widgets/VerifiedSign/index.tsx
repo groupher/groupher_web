@@ -21,7 +21,7 @@ import {
   RulesWrapper,
 } from './styles'
 
-const _log = buildLog('w:VerifiedSign:index')
+const log = buildLog('w:VerifiedSign:index')
 
 const PopContent = ({ communityTitle }) => {
   return (

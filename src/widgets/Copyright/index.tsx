@@ -15,7 +15,7 @@ import SettingMenu from '@/widgets/SettingMenu'
 import ReadOnlyPanel from './ReadOnlyPanel'
 import { Wrapper } from './styles'
 
-const _log = buildLog('w:Copyright:index')
+const log = buildLog('w:Copyright:index')
 
 const options = [
   {
