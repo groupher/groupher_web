@@ -13,8 +13,7 @@ import { buildLog } from '@/logger'
 import Textarea from './Textarea'
 import { Wrapper, PrefixWrapper, SuffixWrapper, Icon, InputWrapper } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:Input:index')
+const _log = buildLog('w:Input:index')
 
 type TProps = {
   testid?: string

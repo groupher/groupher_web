@@ -23,8 +23,7 @@ import {
   NotifyIcon,
 } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('c:ArticleBroadcast:index')
+const _log = buildLog('c:ArticleBroadcast:index')
 
 type TProps = {
   testid?: string

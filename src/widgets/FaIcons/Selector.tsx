@@ -23,8 +23,7 @@ import Panel from './Panel'
 
 import { Wrapper, InnerWrapper, IconWrapper, ArrowIcon } from './styles/selector'
 
-/* eslint-disable-next-line */
-const log = buildLog('c:FaIcons:index')
+const _log = buildLog('c:FaIcons:index')
 
 type TProps = {
   testid?: string

@@ -24,8 +24,7 @@ import {
   Footer,
 } from '../styles/image_gallery/three_column_gallery'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ImageGallery:index')
+const _log = buildLog('w:ImageGallery:index')
 
 const ThreeColumnGallery = ({ items }) => {
   return (

@@ -11,8 +11,7 @@ import { buildLog } from '@/logger'
 // import Button from './Button'
 import { Wrapper, Title, EditIcon } from '../styles/publish_button/sidebar_header_layout'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:PublishButton:index')
+const _log = buildLog('w:PublishButton:index')
 
 type TProps = {
   text: string

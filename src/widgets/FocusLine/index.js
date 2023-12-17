@@ -11,8 +11,7 @@ import T from 'prop-types'
 import { buildLog } from '@/logger'
 import { Wrapper, Icon, TextWrapper, Text, Focus } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:FocusLine:index')
+const _log = buildLog('w:FocusLine:index')
 
 const FocusLine = ({ iconSrc, before, focus, after }) => (
   <Wrapper>

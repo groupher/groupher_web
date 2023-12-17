@@ -40,8 +40,7 @@ import {
 } from '../../logic/links'
 import { CHANGE_MODE } from '@/constant/mode'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:Dashboard:LinkEditor')
+const _log = buildLog('C:Dashboard:LinkEditor')
 
 type TProps = {
   notifyText?: string

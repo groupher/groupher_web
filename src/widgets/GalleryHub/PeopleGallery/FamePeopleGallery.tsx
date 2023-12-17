@@ -32,8 +32,7 @@ import {
   CommentWrapper,
 } from '../styles/people_gallery/fame_people_gallery'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ProductGallery:index')
+const _log = buildLog('w:ProductGallery:index')
 
 type TProps = {
   items?: TGallery[]

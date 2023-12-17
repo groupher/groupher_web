@@ -16,8 +16,7 @@ import { EmptyWrapper, BottomMsg } from './styles'
 
 const RealPagi = dynamic(() => import('./RealPagi'))
 
-/* eslint-disable-next-line */
-const log = buildLog('w:Pagi:index')
+const _log = buildLog('w:Pagi:index')
 
 export type TProps = {
   children?: ReactNode

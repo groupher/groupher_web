@@ -14,8 +14,7 @@ import type { TTabItem } from './spec'
 import DesktopView from './DesktopView'
 import MobileView from './MobileView'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:TabBar:index')
+const _log = buildLog('w:TabBar:index')
 
 export type TProps = {
   source: TTabItem[]

@@ -11,8 +11,7 @@ import { buildLog } from '@/logger'
 import Panel from './Panel'
 import { Wrapper } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('c:ArticleFooter:index')
+const _log = buildLog('c:ArticleFooter:index')
 
 type TProps = {
   testid?: string

@@ -20,8 +20,7 @@ import {
   SubTogglePrefixIcon,
 } from './styles/group'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:CollapseMenu:Group')
+const _log = buildLog('w:CollapseMenu:Group')
 
 const Group = ({
   title,

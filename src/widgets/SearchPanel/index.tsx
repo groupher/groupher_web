@@ -16,8 +16,7 @@ import { Wrapper, Title, SearchInput, CloseIcon } from './styles'
 
 const FaqList = dynamic(() => import('@/widgets/FaqList'))
 
-/* eslint-disable-next-line */
-const log = buildLog('c:SearchPanel:index')
+const _log = buildLog('c:SearchPanel:index')
 
 type TProps = {
   testid?: string

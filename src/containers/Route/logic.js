@@ -4,8 +4,7 @@ import { parseURL } from '@/utils/route'
 import { Global } from '@/helper'
 import { buildLog } from '@/logger'
 
-/* eslint-disable-next-line */
-const log = buildLog('L:Route')
+const _log = buildLog('L:Route')
 
 let store = null
 

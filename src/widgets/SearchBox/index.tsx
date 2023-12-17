@@ -12,8 +12,7 @@ import { openSearch } from '@/signal'
 
 import { Wrapper, SearchIcon, Text } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('c:SearchBox:index')
+const _log = buildLog('c:SearchBox:index')
 
 type TProps = {
   testid?: string

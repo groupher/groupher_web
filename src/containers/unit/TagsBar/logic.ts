@@ -14,8 +14,7 @@ import { getParameterByName } from '@/utils/route'
 import type { TStore } from './store'
 import S from './schema'
 
-/* eslint-disable-next-line */
-const log = buildLog('L:TagsBar')
+const _log = buildLog('L:TagsBar')
 
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
 const sr71$ = new SR71({

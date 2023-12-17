@@ -17,8 +17,7 @@ import Navigator from '@/widgets/Navigator'
 import type { TProps } from '..'
 import { Wrapper, InnerWrapper, RouterWrapper } from '../styles/desktop_view/general_layout'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:Header')
+const _log = buildLog('C:Header')
 
 // let MailBox
 const AddOns = dynamic(() => import('../AddOns'), { ssr: false })

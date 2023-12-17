@@ -26,8 +26,7 @@ import { useStore } from './store'
 import { Wrapper } from './styles'
 import { useInit } from './logic'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:ModeLineMenu')
+const _log = buildLog('C:ModeLineMenu')
 
 const renderMenus = (type, curActive, subscribedCommunities) => {
   switch (type) {

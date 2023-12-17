@@ -12,8 +12,7 @@ import type { TEditData } from './spec'
 import { Input, Section, ICON } from './styles/social_inputer'
 import { inputOnChange } from './logic'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:AccountEditor')
+const _log = buildLog('C:AccountEditor')
 
 type TProps = {
   editData?: TEditData

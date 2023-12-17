@@ -20,7 +20,6 @@ const sr71$ = new SR71()
 let sub$ = null
 let store: TStore | undefined
 
-/* eslint-disable-next-line */
 const log = buildLog('L:TagSettingEditor')
 
 export const edit = (e: TEditValue, key): void => {

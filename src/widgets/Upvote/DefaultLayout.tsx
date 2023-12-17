@@ -25,8 +25,7 @@ import {
   Name,
 } from './styles/default_layout'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:Upvote:index')
+const _log = buildLog('w:Upvote:index')
 
 type TProps = {
   testid?: string

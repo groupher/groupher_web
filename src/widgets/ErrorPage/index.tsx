@@ -31,8 +31,7 @@ import {
   FooterWrapper,
 } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ErrorPage:index')
+const _log = buildLog('w:ErrorPage:index')
 
 export type TProps = {
   errorCode?: number // 400 | 500 | 404

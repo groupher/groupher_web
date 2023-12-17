@@ -33,8 +33,7 @@ import {
   GoTopWrapper,
 } from '../styles/post_viewer'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:ArticleViewer')
+const _log = buildLog('C:ArticleViewer')
 
 type TProps = {
   article: TPost

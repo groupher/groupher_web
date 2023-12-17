@@ -15,8 +15,7 @@ import { Trans } from '@/i18n'
 
 import { Icon404, Wrapper, Icon, Text, Title, DescWrapper, Desc, IssueLink } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:EmptyThread:index')
+const _log = buildLog('w:EmptyThread:index')
 
 type TProps = {
   thread: TThread

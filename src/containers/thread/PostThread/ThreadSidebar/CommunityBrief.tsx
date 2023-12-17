@@ -24,8 +24,7 @@ import {
 } from '../styles/thread_sidebar/community_brief'
 import { assetSrc } from '@/utils/helper'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ClassicSidebar')
+const _log = buildLog('w:ClassicSidebar')
 
 type TProps = {
   show: boolean

@@ -13,8 +13,7 @@ import SIZE from '@/constant/size'
 
 import { Wrapper, Label } from './styles/radio'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:Radio:index')
+const _log = buildLog('w:Radio:index')
 
 type TItem = {
   value: string

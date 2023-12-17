@@ -38,8 +38,7 @@ export const RealAvatar = dynamic(() => import('./RealAvatar'), {
   ssr: false,
 })
 
-/* eslint-disable-next-line */
-const log = buildLog('w:Facepile:index')
+const _log = buildLog('w:Facepile:index')
 
 const validUser = compose(not, isNil)
 

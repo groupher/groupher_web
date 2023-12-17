@@ -9,8 +9,7 @@ import { FC, memo } from 'react'
 import { buildLog } from '@/logger'
 import PlanetDriver from './PlanetDriver'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:PromptIcon:index')
+const _log = buildLog('w:PromptIcon:index')
 
 type TProps = {
   type?: 'planet-driver' | 'others'

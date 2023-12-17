@@ -21,8 +21,7 @@ import {
   RouterWrapper,
 } from '../styles/desktop_view/community_layout'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:Header')
+const _log = buildLog('C:Header')
 
 // let MailBox
 const AddOns = dynamic(() => import('../AddOns'), { ssr: false })

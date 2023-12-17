@@ -15,8 +15,7 @@ import Button from '@/widgets/Buttons/Button'
 
 import { Wrapper, Content, Thanks, Title, Bold, P } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('c:BookDemo:index')
+const _log = buildLog('c:BookDemo:index')
 
 type TProps = {
   testid?: string

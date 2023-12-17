@@ -8,8 +8,7 @@ import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx
 import { buildLog } from '@/logger'
 import { Document } from '@/model'
 
-/* eslint-disable-next-line */
-const log = buildLog('S:ArticleViewer')
+const _log = buildLog('S:ArticleViewer')
 
 const ArticleViewer = T.model('ArticleViewer', {
   loading: T.opt(T.bool, false),

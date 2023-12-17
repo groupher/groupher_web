@@ -15,8 +15,7 @@ import { ROOT_MENU } from '../constant'
 
 import { Wrapper, Item, MoreItem, FixedIcon, Icon, ActiveDot, TotalNumber } from '../styles/list'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:NaviCatalog:List')
+const _log = buildLog('w:NaviCatalog:List')
 
 const renderRightIcon = (item, active, showItemTotal) => {
   if (showItemTotal && item.total) {

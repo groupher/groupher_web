@@ -26,8 +26,7 @@ import { Wrapper } from './styles'
 
 import { getCurrentMenuItem, findPath, covertPathToURLQuery, tags2Menu } from './helper'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:NaviCatalog:index')
+const _log = buildLog('w:NaviCatalog:index')
 
 type TProps = {
   title?: string

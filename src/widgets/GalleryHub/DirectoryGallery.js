@@ -25,8 +25,7 @@ import {
   UpdatedAt,
 } from './styles/directory_gallery'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:DirectoryGallery:index')
+const _log = buildLog('w:DirectoryGallery:index')
 
 const DirectoryGallery = ({ items, onSelect }) => {
   return (

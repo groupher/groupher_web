@@ -10,8 +10,7 @@ import { buildLog } from '@/logger'
 
 import { Wrapper, Content } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:MobileMockup:index')
+const _log = buildLog('w:MobileMockup:index')
 
 type TProps = {
   testid?: string

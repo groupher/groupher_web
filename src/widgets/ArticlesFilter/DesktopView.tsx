@@ -32,8 +32,7 @@ export const LavaLampLoading = dynamic(() => import('@/widgets/Loading/LavaLampL
   ssr: false,
 })
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ArticlesFilter:index')
+const _log = buildLog('w:ArticlesFilter:index')
 
 const ArticlesFilter: FC<TProps> = ({ resState = TYPE.RES_STATE.DONE, mode = 'default' }) => {
   const bannerLayout = useBannerLayout()

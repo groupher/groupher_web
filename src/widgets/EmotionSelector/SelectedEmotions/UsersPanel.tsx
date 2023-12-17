@@ -12,8 +12,7 @@ import EmotionIcon from './EmotionIcon'
 
 import { Wrapper, UsersWrapper, Units, Username } from '../styles/selected_emotions/users_panel'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:UsersPanel:index')
+const _log = buildLog('w:UsersPanel:index')
 
 type TProps = {
   name: TEmotionType

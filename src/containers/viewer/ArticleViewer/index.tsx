@@ -18,8 +18,7 @@ import { useStore } from './store'
 import { Wrapper, CommentsWrapper } from './styles'
 import { useInit } from './logic'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:ArticleViewer')
+const _log = buildLog('C:ArticleViewer')
 
 // const CollectionFolder = dynamic(
 //   () => import('@/containers/tool/CollectionFolder'),

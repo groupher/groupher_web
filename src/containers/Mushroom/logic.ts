@@ -25,8 +25,7 @@ import asyncSuit from '@/async'
 import S from './schema'
 import type { TStore } from './store'
 
-/* eslint-disable-next-line */
-const log = buildLog('L:GlobalLayout')
+const _log = buildLog('L:GlobalLayout')
 
 let store: TStore | undefined
 let sub$ = null

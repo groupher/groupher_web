@@ -13,8 +13,7 @@ import asyncSuit from '@/async'
 
 import type { TStore } from './store'
 
-/* eslint-disable-next-line */
-const log = buildLog('L:Preview')
+const _log = buildLog('L:Preview')
 
 const { SR71, $solver, asyncRes } = asyncSuit
 const sr71$ = new SR71({

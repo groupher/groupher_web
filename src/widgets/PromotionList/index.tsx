@@ -20,8 +20,7 @@ import WaitList from './WaitList'
 import { Wrapper, Header, Title, MoreHint } from './styles'
 import fakeItems from './fakeItems'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:PromotionList:index')
+const _log = buildLog('w:PromotionList:index')
 
 type TProps = {
   show?: boolean

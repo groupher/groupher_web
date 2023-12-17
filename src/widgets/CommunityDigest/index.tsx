@@ -18,8 +18,7 @@ import SidebarLayout from './SidebarLayout'
 import TabberLayout from './TabberLayout'
 import HeaderLayout from './HeaderLayout'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:CommunityDigest')
+const _log = buildLog('C:CommunityDigest')
 
 const CommunityDigest: FC = () => {
   // const router = useRouter()

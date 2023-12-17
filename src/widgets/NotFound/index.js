@@ -13,8 +13,7 @@ import { ICON_BASE, ISSUE_ADDR } from '@/config'
 import { buildLog } from '@/logger'
 import { Icon404, Wrapper, Icon, Text, Title, DescWrapper, IssueLink, Desc } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:NotFound:index')
+const _log = buildLog('w:NotFound:index')
 
 const DefaultDesc = () => (
   <>

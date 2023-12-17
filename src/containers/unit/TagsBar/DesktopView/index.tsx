@@ -19,8 +19,7 @@ import Folder from './Folder'
 import { Wrapper } from '../styles/desktop_view'
 import { useInit, onTagSelect } from '../logic'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:TagsBar')
+const _log = buildLog('C:TagsBar')
 
 type TProps = Omit<TTagProps, 'view'>
 

@@ -14,7 +14,6 @@ import { Space } from '@/widgets/Common'
 
 import { Wrapper, RespectText, PublishButtons, Divider } from './styles'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:ArticleEditFooter:index')
 
 const DoingText = ({ isEdit }) => {

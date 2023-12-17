@@ -23,8 +23,7 @@ import {
   TagDot,
 } from '../styles/outline_layout'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ChangelogItem:index')
+const _log = buildLog('w:ChangelogItem:index')
 
 type TProps = {
   testid?: string

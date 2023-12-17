@@ -11,7 +11,6 @@ import { SpaceGrow } from '@/widgets/Common'
 
 import { Wrapper, Title, Desc, BrandText } from './styles'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:BrandTitle:index')
 
 type TProps = {

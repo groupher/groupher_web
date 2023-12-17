@@ -14,8 +14,7 @@ import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import Item from './Item'
 import { Wrapper, Header, Title, ListWrapper, MoreWrapper } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:LinksCard:index')
+const _log = buildLog('w:LinksCard:index')
 
 const LinksCard = ({ testid, title, items, onSelect, left, right, bottom }) => {
   return (

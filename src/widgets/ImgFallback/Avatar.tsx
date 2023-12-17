@@ -13,8 +13,7 @@ import useAvatarLayout from '@/hooks/useAvatarLayout'
 import type { TAvatarProps as TProps } from '.'
 import { Wrapper, Name } from './styles/avatar'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ImgFallback:Avatar')
+const _log = buildLog('w:ImgFallback:Avatar')
 
 const Avatar: FC<TProps> = ({
   testid = 'avatar-fallback',

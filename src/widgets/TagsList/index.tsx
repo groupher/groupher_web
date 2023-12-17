@@ -19,8 +19,7 @@ import FullList from './FullList'
 import { getDotSize, getIconSize, getDotMargin, getHashMargin } from './styles/metric'
 import { Wrapper, Tag, Title, More } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:TagsList:index')
+const _log = buildLog('w:TagsList:index')
 
 export type TProps = {
   items: TTag[]

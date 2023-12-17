@@ -14,8 +14,7 @@ import Maybe from '@/widgets/Maybe'
 
 import { Wrapper, Label, Title, Desc, Divider, LabelIcon, AddonWrapper } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:SectionLabel:index')
+const _log = buildLog('w:SectionLabel:index')
 
 const SectionLabel = ({ title, iconSrc, desc, node, addonNode }) => (
   <Wrapper>

@@ -24,8 +24,7 @@ import {
   LabelText,
 } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:GithubUserCard:index')
+const _log = buildLog('w:GithubUserCard:index')
 
 const GithubUserCard = ({ user }) => (
   <Wrapper>

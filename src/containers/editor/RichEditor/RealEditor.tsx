@@ -16,7 +16,6 @@ import OverwriteStyle from './styles/overwrite'
 import { Wrapper, InnerWrapper, EditorWrapper } from './styles'
 import { observer } from 'mobx-react-lite'
 
-/* eslint-disable-next-line */
 const log = buildLog('C:RichEditor')
 
 type TProps = {

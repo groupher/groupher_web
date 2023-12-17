@@ -12,7 +12,6 @@ import type { TStore } from './store'
 
 let store: TStore | undefined
 
-/* eslint-disable-next-line */
 const log = buildLog('L:ModeLineMenu')
 
 export const openMenu = (activeMenu: string): void => {

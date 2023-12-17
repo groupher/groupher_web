@@ -15,8 +15,7 @@ import Tooltip from '@/widgets/Tooltip'
 
 import { Wrapper, LinkIcon, Source, PopHint } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:Linker:index')
+const _log = buildLog('w:Linker:index')
 
 type TProps = TSpace & {
   testid?: string

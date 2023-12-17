@@ -12,8 +12,7 @@ import { buildLog } from '@/logger'
 
 import { Wrapper, Battery, Liquid, MoneySign } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:Charger:index')
+const _log = buildLog('w:Charger:index')
 
 // battery effect: https://www.codeseek.co/hudsonkm/battery-charging-animation-with-liquid-azMJmY
 // bubbles effect: https://codepen.io/Johnm__/pen/qZqgGJ

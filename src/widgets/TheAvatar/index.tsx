@@ -16,8 +16,7 @@ import type { TMetric } from './spec'
 
 import { Wrapper } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:TheAvatar:index')
+const _log = buildLog('w:TheAvatar:index')
 
 type TProps = {
   testid?: string

@@ -17,8 +17,7 @@ import Tooltip from '@/widgets/Tooltip'
 import Menu from './Menu'
 import { Wrapper, SettingIcon, DisableTippyJump } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('c:ArticleSettingMenu:index')
+const _log = buildLog('c:ArticleSettingMenu:index')
 
 type TProps = {
   testid?: string

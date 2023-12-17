@@ -95,8 +95,7 @@ import { SETTING_FIELD, UI_KEYS, BASEINFO_KEYS, SEO_KEYS, BROADCAST_KEYS } from 
 
 import { NameAlias, LinkItem, InitSettings, settingsModalFields, Overview } from './Models'
 
-/* eslint-disable-next-line */
-const log = buildLog('S:DashboardThread')
+const _log = buildLog('S:DashboardThread')
 
 // for local store, demo setting usage
 const DASHBOARD_DEMO_KEY = 'dashboard_demo'

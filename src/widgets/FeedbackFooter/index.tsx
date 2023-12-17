@@ -14,8 +14,7 @@ import BottomInfo from './BottomInfo'
 
 import { Wrapper } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('c:FeedbackFooter:index')
+const _log = buildLog('c:FeedbackFooter:index')
 
 type TProps = {
   offsetRight?: number

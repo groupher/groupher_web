@@ -20,8 +20,7 @@ import Content from './Content'
 
 import { useInit, closeDrawer } from './logic'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:Preview')
+const _log = buildLog('C:Preview')
 
 const Drawer: FC = () => {
   const store = useStore()

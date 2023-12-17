@@ -19,8 +19,7 @@ import PowerbyInfo from './PowerbyInfo'
 
 import { Wrapper, InnerWrapper } from '../styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:Footer')
+const _log = buildLog('C:Footer')
 
 const Footer: FC = () => {
   const { layout } = useFooterLinks()

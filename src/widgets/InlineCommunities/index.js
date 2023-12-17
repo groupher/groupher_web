@@ -14,8 +14,7 @@ import Maybe from '@/widgets/Maybe'
 
 import { Wrapper, PopoverInfo, CommunityWrapper, CommunityLogo, MoreText, Linker } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:InlineCommunities:index')
+const _log = buildLog('w:InlineCommunities:index')
 
 const FullList = ({ data }) => (
   <Wrapper>

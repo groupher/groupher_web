@@ -16,8 +16,7 @@ import { buildLog } from '@/logger'
 import TabItem from '../TabItem'
 import { Wrapper, Nav, MoreWrapper, ArrowIcon } from '../../styles/tabs/mobile_view/expand_view'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:Tabs:index')
+const _log = buildLog('w:Tabs:index')
 
 type TProps = {
   items: TTabItem[]

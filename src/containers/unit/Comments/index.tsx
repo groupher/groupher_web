@@ -24,8 +24,7 @@ import { useInit } from './logic'
 
 import HeadBar from './HeadBar'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:Comments')
+const _log = buildLog('C:Comments')
 
 type TProps = {
   apiMode?: TAPIMode

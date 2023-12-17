@@ -18,8 +18,7 @@ import { IndicatorsContainer } from './components'
 
 import { Wrapper, getSelectStyles } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:Select:index')
+const _log = buildLog('w:Select:index')
 
 type TProps = {
   testid?: string

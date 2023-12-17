@@ -12,8 +12,7 @@ import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
 import { Wrapper, Title, OptionWrapper } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:SubTitle:index')
+const _log = buildLog('w:SubTitle:index')
 
 type TProps = {
   testid?: string

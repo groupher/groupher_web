@@ -13,8 +13,7 @@ import { buildLog } from '@/logger'
 
 import { Wrapper, IconWrapper, UpIcon } from './styles/upvote_btn'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:Upvote:index')
+const _log = buildLog('w:Upvote:index')
 
 type TProps = {
   type?: TUpvoteLayout

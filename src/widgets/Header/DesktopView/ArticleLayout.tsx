@@ -26,8 +26,7 @@ import {
   MoreIcon,
 } from '../styles/desktop_view/article_layout'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:Header')
+const _log = buildLog('C:Header')
 
 const ArticleHeader: FC<TProps> = ({ metric, accountInfo }) => {
   return (

@@ -15,8 +15,7 @@ import { useStore } from './store'
 import { Wrapper, NotifyDot, HeaderMailIcon } from './styles'
 import { useInit, visibleOnChange } from './logic'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:MailBox')
+const _log = buildLog('C:MailBox')
 
 const MailBox = () => {
   const store = useStore()

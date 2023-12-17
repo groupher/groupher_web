@@ -18,8 +18,7 @@ import type { TType } from './spec'
 import { TYPE } from './constant'
 import { Wrapper, Main, UserName, AuthorTag, Timestamp, Why } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:NoticeBar:index')
+const _log = buildLog('w:NoticeBar:index')
 
 type TProps = {
   testid?: string

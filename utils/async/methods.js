@@ -5,8 +5,7 @@ import gqClient from './gq_client'
 
 import { getThenHandler, getCatchHandler, formatGraphErrors } from './handler'
 
-/* eslint-disable-next-line */
-const log = buildLog('Async')
+const _log = buildLog('Async')
 
 const doQuery = (query, variables) => {
   return gqClient

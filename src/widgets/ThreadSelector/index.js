@@ -17,8 +17,7 @@ import Panel from './Panel'
 
 import { Wrapper, Label, BoxedLabel, LabelIcon, LabelText, LabelCount } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ThreadSelector:index')
+const _log = buildLog('w:ThreadSelector:index')
 
 const ThreadSelector = ({ options, active, onSelect, totalCount, lookLike }) => (
   <Wrapper>

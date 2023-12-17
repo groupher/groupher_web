@@ -6,8 +6,7 @@ import type { TCommunity, TRootStore } from '@/spec'
 import { buildLog } from '@/logger'
 import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 
-/* eslint-disable-next-line */
-const log = buildLog('S:AboutThread')
+const _log = buildLog('S:AboutThread')
 
 const AboutThread = T.model('AboutThread', {})
   .views((self) => ({

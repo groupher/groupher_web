@@ -14,8 +14,7 @@ import { buildLog } from '@/logger'
 
 import { Wrapper, Icon, Title } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:EmptyLabel:index')
+const _log = buildLog('w:EmptyLabel:index')
 
 type TProps = {
   iconSrc?: string

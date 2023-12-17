@@ -23,8 +23,7 @@ import {
   ThunderIcon,
 } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:DigestSentence:index')
+const _log = buildLog('w:DigestSentence:index')
 
 type TProps = {
   testid?: string

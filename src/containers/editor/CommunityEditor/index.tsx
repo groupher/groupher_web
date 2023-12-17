@@ -19,8 +19,7 @@ import { useStore } from './store'
 import { Wrapper, InnerWrapper, ContentWrapper } from './styles'
 import { useInit } from './logic'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:CommunityEditor')
+const _log = buildLog('C:CommunityEditor')
 
 const CommunityEditor: FC = () => {
   const store = useStore()

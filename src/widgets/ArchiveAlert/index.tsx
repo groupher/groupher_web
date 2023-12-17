@@ -11,8 +11,7 @@ import type { TSpace } from '@/spec'
 import NoticeBar from '@/widgets/NoticeBar'
 import { buildLog } from '@/logger'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ArchiveAlert:index')
+const _log = buildLog('w:ArchiveAlert:index')
 
 type TProps = {
   date?: string

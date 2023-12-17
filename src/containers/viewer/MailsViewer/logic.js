@@ -9,8 +9,7 @@ import { errRescue } from '@/signal'
 
 import S from './schema'
 
-/* eslint-disable-next-line */
-const log = buildLog('L:MailsViewer')
+const _log = buildLog('L:MailsViewer')
 
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
 const sr71$ = new SR71()

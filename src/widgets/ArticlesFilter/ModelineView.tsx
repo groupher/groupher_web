@@ -18,8 +18,7 @@ import { Space } from '@/widgets/Common'
 import type { TProps } from '.'
 import { ModelineWrapper } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ArticlesFilter:index')
+const _log = buildLog('w:ArticlesFilter:index')
 
 const ArticlesFilter: FC<TProps> = ({ resState = TYPE.RES_STATE.DONE, mode = 'default' }) => {
   return (

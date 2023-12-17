@@ -35,8 +35,7 @@ import {
   BottomInfo,
 } from '../styles/changelog/digest'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:ArticleDigest')
+const _log = buildLog('C:ArticleDigest')
 
 type TProps = {
   article: TChangelog

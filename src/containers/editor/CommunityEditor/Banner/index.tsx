@@ -26,8 +26,7 @@ import type {
 } from '../spec'
 import { STEP } from '../constant'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:CreateCommunityBanner')
+const _log = buildLog('C:CreateCommunityBanner')
 
 type TProps = {
   step: TStep

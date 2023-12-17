@@ -26,8 +26,7 @@ import {
   ReadonlyHolder,
 } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:GithubRepoPage:index')
+const _log = buildLog('w:GithubRepoPage:index')
 
 const GithubRepoPage = ({
   repo,

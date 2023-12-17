@@ -18,8 +18,7 @@ import MinimalLayout from './MinimalLayout'
 import CoverLayout from './CoverLayout'
 import MasonryLayout from './MasonryLayout'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:PostItem:index')
+const _log = buildLog('w:PostItem:index')
 
 type TProps = {
   article: TPost

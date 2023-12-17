@@ -10,8 +10,7 @@ import { buildLog } from '@/logger'
 
 import { Wrapper, Option, ActiveDot, Title, Desc } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:SettingMenu:index')
+const _log = buildLog('w:SettingMenu:index')
 
 type TProps = {
   testid?: string

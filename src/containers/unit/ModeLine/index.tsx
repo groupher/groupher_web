@@ -16,8 +16,7 @@ import ArticleLayout from './ArticleLayout'
 
 import { useInit } from './logic'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:ModeLine')
+const _log = buildLog('C:ModeLine')
 
 const ModeLine: FC = () => {
   const store = useStore()

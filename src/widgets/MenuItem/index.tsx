@@ -12,8 +12,7 @@ import { buildLog } from '@/logger'
 import type { TMenu } from '@/spec'
 import { Wrapper, Title, MenuIcon, DeleteTitle } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('c:MenuItem:index')
+const _log = buildLog('c:MenuItem:index')
 
 type TProps = {
   icon: TMenu

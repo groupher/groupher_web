@@ -8,8 +8,7 @@ import { buildLog } from '@/logger'
 
 import { DescWrapper } from './styles/default_layout'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:Upvote:Desc')
+const _log = buildLog('w:Upvote:Desc')
 
 type TProps = {
   count?: number

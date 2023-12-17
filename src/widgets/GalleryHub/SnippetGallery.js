@@ -22,8 +22,7 @@ import {
   Footer,
 } from './styles/snippet_gallery'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:SnippetGallery:index')
+const _log = buildLog('w:SnippetGallery:index')
 
 const tmpItems = [
   {

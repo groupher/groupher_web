@@ -22,8 +22,7 @@ import {
   TextAreaInput,
 } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:FormItem:index')
+const _log = buildLog('w:FormItem:index')
 
 const FormContent = ({
   type,

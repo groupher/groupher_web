@@ -19,8 +19,7 @@ import TagNode from '@/widgets/TagNode'
 
 import { Wrapper, Header, BgWrapper, Title, Desc, InfoIcon } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('c:TagNote:index')
+const _log = buildLog('c:TagNote:index')
 
 const TagNote: FC = () => {
   const tag = useActiveTag()

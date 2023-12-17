@@ -18,8 +18,7 @@ import { Wrapper } from './styles'
 const MAX_DISPLAY_COUNT = 5
 const TOTAL_TOGGLE_THROLD = 8 // 15
 
-/* eslint-disable-next-line */
-const log = buildLog('w:CollapseMenu:index')
+const _log = buildLog('w:CollapseMenu:index')
 
 const defaultActiveItem = { id: 2 }
 const defaultItems = [

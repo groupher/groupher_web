@@ -13,8 +13,7 @@ import Tooltip from '@/widgets/Tooltip'
 
 import { Wrapper, InfoIcon, Note } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('c:NoteTip:index')
+const _log = buildLog('c:NoteTip:index')
 
 type TProps = {
   fontSize?: number

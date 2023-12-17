@@ -11,8 +11,7 @@ import { buildLog } from '@/logger'
 
 import { Wrapper } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:MasonryCards:index')
+const _log = buildLog('w:MasonryCards:index')
 
 type TProps = {
   testid?: string

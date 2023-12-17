@@ -22,8 +22,7 @@ const sr71$ = new SR71({
 let store: TStore | undefined
 let sub$ = null
 
-/* eslint-disable-next-line */
-const log = buildLog('L:WallpaperEditor')
+const _log = buildLog('L:WallpaperEditor')
 
 export const changeTab = (tab: TTab): void => {
   store.mark({ tab })

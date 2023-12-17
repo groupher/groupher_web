@@ -15,8 +15,7 @@ import MailLists from './MailLists'
 import { useStore } from './store'
 import { useInit, selectChange } from './logic'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:MailsViewer')
+const _log = buildLog('C:MailsViewer')
 
 const mailTabs = [
   {

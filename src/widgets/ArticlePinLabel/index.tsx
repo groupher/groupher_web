@@ -11,8 +11,7 @@ import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import { PinIcon } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ArticlePinLabel:index')
+const _log = buildLog('w:ArticlePinLabel:index')
 
 export type TProps = {
   top?: number
