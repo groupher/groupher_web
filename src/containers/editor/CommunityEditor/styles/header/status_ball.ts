@@ -2,7 +2,7 @@ import styled, { css, theme, animate } from '@/css'
 
 import CheckSVG from '@/icons/CheckBold'
 
-type TWrapper = { $colors: string[]; $noBorder?: false }
+type TWrapper = { $colors: string[]; $noBorder?: boolean }
 
 const Wrapper = styled.div<TWrapper>`
   ${css.circle(20)};
