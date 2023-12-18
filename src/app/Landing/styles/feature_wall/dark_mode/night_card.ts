@@ -11,7 +11,7 @@ export const Wrapper = styled(BaseCard)<{ $hovering: boolean }>`
   background: ${({ $hovering }) => (!$hovering ? NIGHT_THEMES.htmlBg : DAY_THEMES.htmlBg)};
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-  margin-top: ${({ $hovering }) => ($hovering ? '16px' : '0')};
+  margin-top: ${({ $hovering }) => ($hovering ? '5px' : '0')};
 `
 export const Title = styled.div<{ $hovering: boolean }>`
   color: ${({ $hovering }) => (!$hovering ? NIGHT_THEMES.article.title : DAY_THEMES.article.title)};

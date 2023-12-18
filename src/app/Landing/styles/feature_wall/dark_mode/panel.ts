@@ -1,5 +1,10 @@
-import type { TColor } from '@/spec'
+import type { TActive, TColor } from '@/spec'
 import styled, { css, theme } from '@/css'
+
+import SunSVG from '@/icons/Sun'
+import SunSolidSVG from '@/icons/SunSolid'
+import MoonSVG from '@/icons/Moon'
+import MoonSolidSVG from '@/icons/MoonSolid'
 
 import { WithMargin } from '@/widgets/Common'
 
@@ -13,11 +18,55 @@ export const Wrapper = styled.div`
 export const DivideColumn = styled.div<{ $hovering: boolean }>`
   background: ${theme('rainbow.red')};
   width: 3px;
-  height: ${({ $hovering }) => ($hovering ? '180px' : '150px')};
+  // height: ${({ $hovering }) => ($hovering ? '180px' : '150px')};
+  height: 150px;
   position: absolute;
   border-radius: 5px;
   z-index: 10;
   transition: all 0.2s;
+`
+export const SwitchBox = styled.div<{ $hovering: boolean }>`
+  ${css.row('align-center', 'justify-between')};
+  background: ${theme('alphaBg')};
+  padding: 0 3px;
+  width: 65px;
+  height: 30px;
+  position: absolute;
+  left: 95px;
+  top: 100px;
+  z-index: 11;
+  border: 1px solid;
+  border-radius: 10px;
+  border-color: ${theme('divider')};
+
+  transform: ${({ $hovering }) => ($hovering ? 'rotate(180deg)' : '')};
+  transition: all .3s;
+`
+export const ThemeBox = styled.div<TActive>`
+  ${css.size(24)};
+  ${css.row('align-both')};
+  background: ${({ $active }) => ($active ? theme('alphaBg2') : 'transparent')};
+  border: 1px solid;
+  border-radius: 8px;
+  border-color: ${({ $active }) => ($active ? theme('divider') : 'transparent')};
+  transition: all .2s;
+`
+export const SunIcon = styled(SunSVG)`
+  ${css.size(16)};
+  fill: ${theme('article.title')};
+`
+export const SunSolidIcon = styled(SunSolidSVG)`
+  ${css.size(15)};
+  fill: ${theme('article.title')};
+`
+export const MoonIcon = styled(MoonSVG)`
+  ${css.size(14)};
+  fill: ${theme('article.title')};
+`
+export const MoonSolidIcon = styled(MoonSolidSVG)`
+  ${css.size(12)};
+  fill: ${theme('article.title')};
+  transform: rotate(180deg);
 `
 export const Item = styled.div`
   ${css.row('align-center')};
