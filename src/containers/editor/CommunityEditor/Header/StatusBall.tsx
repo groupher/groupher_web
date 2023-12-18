@@ -30,13 +30,13 @@ const StatusBall: FC<TProps> = ({ done = false, doing = false, communityType }) 
 
   if (doing) {
     return (
-      <DoingWrapper $colors={colors} $noBorder={done}>
+      <DoingWrapper $colors={colors}>
         <Dot $colors={colors} />
       </DoingWrapper>
     )
   }
 
-  return <TodoWrapper $colors={colors} $noBorder={done} />
+  return <TodoWrapper $colors={colors} />
 }
 
 export default StatusBall
