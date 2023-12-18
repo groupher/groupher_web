@@ -35,7 +35,7 @@ const Sections: FC = () => {
         <Header $color={todoBg}>
           <TODOIcon $color={todoBg} />
           <Label>待办</Label>
-          <SubTitle>{todoPosts.totalCount}</SubTitle>
+          <SubTitle $color={todoBg}>{todoPosts.totalCount} 项</SubTitle>
           <SpaceGrow />
           <AddIcon />
         </Header>
@@ -49,7 +49,7 @@ const Sections: FC = () => {
         <Header $color={wipBg}>
           <WipIcon $color={wipBg} />
           <Label>进行中</Label>
-          <SubTitle>{wipPosts.totalCount}</SubTitle>
+          <SubTitle $color={wipBg}>{wipPosts.totalCount} 项</SubTitle>
           <SpaceGrow />
           <AddIcon />
         </Header>
@@ -64,13 +64,12 @@ const Sections: FC = () => {
         <Header $color={doneBg}>
           <DoneIcon $color={doneBg} />
           <Label>已完成</Label>
-          <SubTitle>{donePosts.totalCount}</SubTitle>
+          <SubTitle $color={doneBg}>{donePosts.totalCount} 项</SubTitle>
           <SpaceGrow />
           <AddIcon />
         </Header>
         <Body>
           {donePosts.totalCount === 0 && <EmptyItem />}
-
           {donePosts.totalCount !== 0 &&
             donePosts.entries.map((item) => <KanbanItem key={item.innerId} article={item} />)}
         </Body>

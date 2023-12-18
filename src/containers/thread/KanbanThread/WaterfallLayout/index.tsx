@@ -9,7 +9,7 @@ import { observer } from 'mobx-react-lite'
 import useIsSidebarLayout from '@/hooks/useIsSidebarLayout'
 
 import Sections from './Sections'
-import Sidebar from './Sidebar'
+// import Sidebar from './Sidebar'
 
 import { Wrapper } from '../styles/waterfall_layout'
 
@@ -19,7 +19,7 @@ const WaterLayout: FC = () => {
   return (
     <Wrapper $testid="kanban-thread" isSidebarLayout={isSidebarLayout}>
       <Sections />
-      <Sidebar />
+      {/* <Sidebar /> */}
     </Wrapper>
   )
 }

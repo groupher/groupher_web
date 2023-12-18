@@ -32,10 +32,12 @@ export const Body = styled.div`
   border-radius: 12px;
   width: 100%;
 `
-export const SubTitle = styled.div`
-  color: ${theme('hint')};
-  font-size: 13px;
-  margin-left: 6px;
+export const SubTitle = styled.div<TColor>`
+  color: ${({ $color }) => rainbow($color)};
+  font-size: 12px;
+  margin-top: 3px;
+  margin-left: 10px;
+  filter: saturate(0.2);
 `
 export const Label = styled.div`
   color: ${theme('article.title')};

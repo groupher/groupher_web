@@ -8,16 +8,18 @@ import { FC, memo } from 'react'
 
 import type { TArticle } from '@/spec'
 
-import { ARTICLE_CAT } from '@/constant/gtd'
+import ArticleCatState from '@/widgets/ArticleCatState'
+
 import { UPVOTE_LAYOUT } from '@/constant/layout'
 
 import { buildLog } from '@/logger'
 import { mockUsers } from '@/mock'
 import { previewArticle } from '@/signal'
 
+import { SpaceGrow } from '@/widgets/Common'
 import Upvote from '@/widgets/Upvote'
 
-import { Wrapper, Title, CatSign, LightIcon, BugIcon } from '../styles/waterfall_layout/simple'
+import { Wrapper, Title, UpvotesWrapper } from '../styles/waterfall_layout/simple'
 
 const _log = buildLog('w:KanbanItem:index')
 
@@ -29,13 +31,16 @@ type TProps = {
 const KanbanItem: FC<TProps> = ({ testid = 'gtd-item', article }) => {
   return (
     <Wrapper>
-      <CatSign>
-        {article.cat === ARTICLE_CAT.FEATURE && <LightIcon />}
-        {article.cat === ARTICLE_CAT.BUG && <BugIcon />}
-      </CatSign>
-
       <Title onClick={() => previewArticle(article)}>{article.title}</Title>
-      <Upvote count={article.upvotesCount} avatarList={mockUsers(3)} type={UPVOTE_LAYOUT.SIMPLE} />
+      <SpaceGrow />
+      <ArticleCatState cat={article.cat} right={10} top={-1} />
+      <UpvotesWrapper>
+        <Upvote
+          count={article.upvotesCount + 2}
+          avatarList={mockUsers(3)}
+          type={UPVOTE_LAYOUT.GENERAL}
+        />
+      </UpvotesWrapper>
     </Wrapper>
   )
 }
