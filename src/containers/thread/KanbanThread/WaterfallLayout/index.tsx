@@ -13,8 +13,6 @@ import Sidebar from './Sidebar'
 
 import { Wrapper } from '../styles/waterfall_layout'
 
-// const log = buildLog('C:KanbanThread')
-
 const WaterLayout: FC = () => {
   const isSidebarLayout = useIsSidebarLayout()
 

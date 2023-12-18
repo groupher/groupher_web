@@ -42,7 +42,7 @@ const Sections: FC = () => {
         <Body>
           {todoPosts.totalCount === 0 && <EmptyItem />}
           {todoPosts.totalCount !== 0 &&
-            todoPosts.entries.map((item) => <KanbanItem key={item.innerId} article={item} noBg />)}
+            todoPosts.entries.map((item) => <KanbanItem key={item.innerId} article={item} />)}
         </Body>
       </Column>
       <Column>
@@ -57,7 +57,7 @@ const Sections: FC = () => {
           {wipPosts.totalCount === 0 && <EmptyItem />}
 
           {wipPosts.totalCount !== 0 &&
-            wipPosts.entries.map((item) => <KanbanItem key={item.innerId} article={item} noBg />)}
+            wipPosts.entries.map((item) => <KanbanItem key={item.innerId} article={item} />)}
         </Body>
       </Column>
       <Column>
@@ -72,7 +72,7 @@ const Sections: FC = () => {
           {donePosts.totalCount === 0 && <EmptyItem />}
 
           {donePosts.totalCount !== 0 &&
-            donePosts.entries.map((item) => <KanbanItem key={item.innerId} article={item} noBg />)}
+            donePosts.entries.map((item) => <KanbanItem key={item.innerId} article={item} />)}
         </Body>
       </Column>
     </Wrapper>

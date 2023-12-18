@@ -8,32 +8,26 @@ import { FC, memo, useState, useEffect } from 'react'
 
 import type { TArticle } from '@/spec'
 
-import { UPVOTE_LAYOUT } from '@/constant/layout'
-
 import { buildLog } from '@/logger'
 import { mockTags, mockUsers } from '@/mock'
-import { previewArticle } from '@/signal'
 import { getRandomInt } from '@/helper'
-
-import CommentsCount from '@/widgets/CommentsCount'
-import { Row, Space } from '@/widgets/Common'
+import { UPVOTE_LAYOUT } from '@/constant/layout'
 
 // import IconButton from '@/widgets/Buttons/IconButton'
 import ArticleCatState from '@/widgets/ArticleCatState'
 import Upvote from '@/widgets/Upvote'
 import TagsList from '@/widgets/TagsList'
 
-import { Wrapper, Header, Footer, Title } from './styles/simple'
+import { Wrapper, Header, Footer, UpvotesWrapper, Title, Desc } from '../styles/classic_layout/full'
 
 const _log = buildLog('w:KanbanItem:index')
 
 type TProps = {
   testid?: string
   article: TArticle
-  noBg: boolean
 }
 
-const KanbanItem: FC<TProps> = ({ testid = 'gtd-item', article, noBg }) => {
+const KanbanItem: FC<TProps> = ({ testid = 'gtd-item', article }) => {
   const [titleIdx, setTitleIdx] = useState(0)
 
   useEffect(() => {
@@ -43,25 +37,22 @@ const KanbanItem: FC<TProps> = ({ testid = 'gtd-item', article, noBg }) => {
   const tags = mockTags(8)
 
   return (
-    <Wrapper $testid={testid} $noBg={noBg}>
+    <Wrapper $testid={testid}>
       <Header>
         <TagsList items={[tags[titleIdx]]} left={2} />
         {/* <IconButton path="shape/more.svg" /> */}
       </Header>
-      <Title onClick={() => previewArticle(article)}>{article.title}</Title>
+      <Title>{article.title}</Title>
+      <Desc>{article.digest}</Desc>
       <Footer>
-        <Row>
+        <UpvotesWrapper>
           <Upvote
             count={article.upvotesCount}
             avatarList={mockUsers(3)}
-            type={UPVOTE_LAYOUT.SIMPLE}
+            type={UPVOTE_LAYOUT.GENERAL}
           />
-          <Space right={15} />
-          {article.commentsCount !== 0 && (
-            <CommentsCount count={article.commentsCount} size="medium" />
-          )}
-        </Row>
-        <ArticleCatState cat={article.cat} />
+        </UpvotesWrapper>
+        <ArticleCatState cat={article.cat} top={1} />
       </Footer>
     </Wrapper>
   )

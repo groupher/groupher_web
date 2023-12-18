@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
 export const Column = styled.div`
   ${css.column('align-start')};
   width: 100%;
-  min-height: 20vh;
+  min-height: 10vh;
 `
 export const Header = styled.div<TColor>`
   ${css.row('align-center')};
@@ -24,6 +24,7 @@ export const Header = styled.div<TColor>`
   padding: 0 20px;
   border-radius: 10px;
   width: 100%;
+  filter: saturate(0.85);
 `
 export const Body = styled.div`
   padding: 8px;
@@ -37,9 +38,9 @@ export const SubTitle = styled.div`
   margin-left: 6px;
 `
 export const Label = styled.div`
-  color: ${theme('article.digest')};
-  font-size: 15px;
-  font-weight: 600;
+  color: ${theme('article.title')};
+  font-size: 14px;
+  font-weight: 500;
   margin-left: 10px;
 `
 export const TODOIcon = styled(GtdTodoSVG)<TColor>`
