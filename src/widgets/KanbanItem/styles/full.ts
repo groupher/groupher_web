@@ -2,13 +2,14 @@ import type { TTestable } from '@/spec'
 import Img from '@/Img'
 import styled, { css, theme } from '@/css'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+type TWrapper = { $noBg?: boolean } & TTestable
+export const Wrapper = styled.div.attrs<TWrapper>(({ $testid }) => ({
   'data-test-id': $testid,
-}))<TTestable>`
+}))<TWrapper>`
   /* ${css.row('align-start', 'justify-between')}; */
   width: 100%;
   position: relative;
-  background: ${theme('alphaBg')};
+  background: ${({ $noBg }) => ($noBg ? 'transpatrent' : theme('alphaBg2'))};
   padding-top: 10px;
   padding-bottom: 12px;
   margin-top: 3px;

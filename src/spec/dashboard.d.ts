@@ -11,6 +11,7 @@ export type TBannerLayout = 'header' | 'tabber' | 'sidebar'
 
 export type TTopbarLayout = 'yes' | 'no'
 export type TPostLayout = 'quora' | 'ph' | 'masonry' | 'minimal' | 'cover'
+export type TKanbanLayout = 'classic' | 'waterfall'
 export type TKanbanCardLayout = 'simple' | 'full'
 export type TChangelogLayout = 'classic' | 'simple'
 export type TDocLayout = 'blocks' | 'lists' | 'cards' | 'article'

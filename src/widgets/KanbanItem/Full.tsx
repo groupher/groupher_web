@@ -25,9 +25,10 @@ const _log = buildLog('w:KanbanItem:index')
 type TProps = {
   testid?: string
   article: TArticle
+  noBg: boolean
 }
 
-const KanbanItem: FC<TProps> = ({ testid = 'gtd-item', article }) => {
+const KanbanItem: FC<TProps> = ({ testid = 'gtd-item', article, noBg }) => {
   const [titleIdx, setTitleIdx] = useState(0)
 
   useEffect(() => {
@@ -37,7 +38,7 @@ const KanbanItem: FC<TProps> = ({ testid = 'gtd-item', article }) => {
   const tags = mockTags(8)
 
   return (
-    <Wrapper $testid={testid}>
+    <Wrapper $testid={testid} $noBg={noBg}>
       <Header>
         <TagsList items={[tags[titleIdx]]} left={2} />
         {/* <IconButton path="shape/more.svg" /> */}

@@ -21,15 +21,16 @@ const _log = buildLog('w:KanbanItem:index')
 
 type TProps = {
   article: TArticle
+  noBg?: boolean
 }
 
-const KanbanItem: FC<TProps> = ({ article }) => {
+const KanbanItem: FC<TProps> = ({ article, noBg = false }) => {
   const layout = useKanbanCardLayout()
 
   return layout === KANBAN_CARD_LAYOUT.FULL ? (
-    <Full article={article} />
+    <Full article={article} noBg={noBg} />
   ) : (
-    <Simple article={article} />
+    <Simple article={article} noBg={noBg} />
   )
 }
 

@@ -100,6 +100,7 @@ export type {
   TBrandLayout,
   TBannerLayout,
   TPostLayout,
+  TKanbanLayout,
   TKanbanCardLayout,
   TChangelogLayout,
   TDocLayout,
