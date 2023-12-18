@@ -158,7 +158,7 @@ const updateDashboardLayout = gql`
     $community: String!
     $primaryColor: String
     $postLayout: String
-    $kanbanLayout: String
+    $kanbanCardLayout: String
     $footerLayout: String
     $headerLayout: String
     $topbarLayout: String
@@ -175,7 +175,7 @@ const updateDashboardLayout = gql`
       community: $community
       primaryColor: $primaryColor
       postLayout: $postLayout
-      kanbanLayout: $kanbanLayout
+      kanbanCardLayout: $kanbanCardLayout
       footerLayout: $footerLayout
       headerLayout: $headerLayout
       topbarLayout: $topbarLayout

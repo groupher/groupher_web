@@ -9,7 +9,7 @@ import type {
   TBroadcastLayout,
   TBroadcastArticleLayout,
   TPostLayout,
-  TKanbanLayout,
+  TKanbanCardLayout,
   TChangelogLayout,
   TSnakeUpperCase,
   TDocLayout,
@@ -76,10 +76,10 @@ export const POST_LAYOUT = {
   COVER: 'cover',
 } as Record<TSnakeUpperCase<TPostLayout>, TPostLayout>
 
-export const KANBAN_LAYOUT = {
+export const KANBAN_CARD_LAYOUT = {
   SIMPLE: 'simple',
   FULL: 'full',
-} as Record<TSnakeUpperCase<TKanbanLayout>, TKanbanLayout>
+} as Record<TSnakeUpperCase<TKanbanCardLayout>, TKanbanCardLayout>
 
 export const CHANGELOG_LAYOUT = {
   CLASSIC: 'classic',

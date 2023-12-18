@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import type { TColorName, TKanbanLayout } from '@/spec'
+import type { TColorName, TKanbanCardLayout } from '@/spec'
 
 import { SexyDivider } from '@/widgets/Common'
 
@@ -10,7 +10,7 @@ import BoardLayout from './BoardLayout'
 import { Wrapper } from '../../styles/layout/kanban_layout'
 
 export type TProps = {
-  layout: TKanbanLayout
+  layout: TKanbanCardLayout
   isTouched: boolean
   isBgColorsTouched: boolean
   saving: boolean

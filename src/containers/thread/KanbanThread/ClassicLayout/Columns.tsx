@@ -22,7 +22,7 @@ import {
   WipIcon,
   DoneIcon,
   AddIcon,
-} from './styles/columns'
+} from '../styles/classic_layout/columns'
 
 const Columns: FC = () => {
   const { todo: todoPosts, wip: wipPosts, done: donePosts } = useKanbanPosts()

@@ -23,7 +23,7 @@ export const ALIGN_HEADER_OFFSET = '100px'
 export const SETTING_LAYOUT_FIELD = {
   PRIMARY_COLOR: 'primaryColor',
   POST_LAYOUT: 'postLayout',
-  KANBAN_LAYOUT: 'kanbanLayout',
+  KANBAN_CARD_LAYOUT: 'kanbanCardLayout',
   KANBAN_BG_COLORS: 'kanbanBgColors',
   DOC_LAYOUT: 'docLayout',
   DOC_FAQ_LAYOUT: 'docFaqLayout',
@@ -531,7 +531,7 @@ export const UI_KEYS = [
   'topbarLayout',
   'topbarBg',
   'postLayout',
-  'kanbanLayout',
+  'kanbanCardLayout',
   'docLayout',
   'docFaqLayout',
   'changelogLayout',

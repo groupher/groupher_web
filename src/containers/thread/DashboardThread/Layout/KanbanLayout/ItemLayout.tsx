@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { KANBAN_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
+import { KANBAN_CARD_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { callDashboardDesc } from '@/signal'
 
@@ -49,8 +49,8 @@ const KanbanItemLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         }
       />
       <SelectWrapper>
-        <Layout onClick={() => edit(KANBAN_LAYOUT.SIMPLE, 'kanbanLayout')}>
-          <Block $active={layout === KANBAN_LAYOUT.SIMPLE} $color={primaryColor}>
+        <Layout onClick={() => edit(KANBAN_CARD_LAYOUT.SIMPLE, 'kanbanCardLayout')}>
+          <Block $active={layout === KANBAN_CARD_LAYOUT.SIMPLE} $color={primaryColor}>
             <Bar thin long={15} />
             <Br bottom={15} />
             <Row>
@@ -66,17 +66,17 @@ const KanbanItemLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
               <Bar long={12} thin />
             </Row>
           </Block>
-          <LayoutTitle $active={layout === KANBAN_LAYOUT.SIMPLE}>
+          <LayoutTitle $active={layout === KANBAN_CARD_LAYOUT.SIMPLE}>
             <CheckLabel
               title="简洁"
-              $active={layout === KANBAN_LAYOUT.SIMPLE}
+              $active={layout === KANBAN_CARD_LAYOUT.SIMPLE}
               top={15}
               left={-15}
             />
           </LayoutTitle>
         </Layout>
-        <Layout onClick={() => edit(KANBAN_LAYOUT.FULL, 'kanbanLayout')}>
-          <Block $active={layout === KANBAN_LAYOUT.FULL} $color={primaryColor}>
+        <Layout onClick={() => edit(KANBAN_CARD_LAYOUT.FULL, 'kanbanCardLayout')}>
+          <Block $active={layout === KANBAN_CARD_LAYOUT.FULL} $color={primaryColor}>
             <Bar thin long={15} />
             <Br bottom={10} />
             <Row>
@@ -102,15 +102,20 @@ const KanbanItemLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
               <Bar long={12} thin />
             </Row>
           </Block>
-          <LayoutTitle $active={layout === KANBAN_LAYOUT.FULL}>
-            <CheckLabel title="摘要" $active={layout === KANBAN_LAYOUT.FULL} top={15} left={-15} />
+          <LayoutTitle $active={layout === KANBAN_CARD_LAYOUT.FULL}>
+            <CheckLabel
+              title="摘要"
+              $active={layout === KANBAN_CARD_LAYOUT.FULL}
+              top={15}
+              left={-15}
+            />
           </LayoutTitle>
         </Layout>
       </SelectWrapper>
 
       <SavingBar
         isTouched={isTouched}
-        field={SETTING_FIELD.KANBAN_LAYOUT}
+        field={SETTING_FIELD.KANBAN_CARD_LAYOUT}
         loading={saving}
         top={20}
       />

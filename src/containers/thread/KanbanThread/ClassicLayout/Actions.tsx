@@ -4,7 +4,15 @@ import { mockUsers } from '@/mock'
 
 import Facepile from '@/widgets/Facepile'
 
-import { Wrapper, Title, Count, LeftPart, RightPart, KanbanIcon, JoinTitle } from './styles/actions'
+import {
+  Wrapper,
+  Title,
+  Count,
+  LeftPart,
+  RightPart,
+  KanbanIcon,
+  JoinTitle,
+} from '../styles/classic_layout/actions'
 
 const Actions: FC = () => {
   return (
