@@ -22,8 +22,7 @@ import SimpleLayout from './SimpleLayout'
 
 import { Wrapper } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:Upvote:index')
+const _log = buildLog('w:Upvote:index')
 
 type TProps = {
   testid?: string

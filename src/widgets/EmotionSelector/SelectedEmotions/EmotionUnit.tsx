@@ -17,8 +17,7 @@ import { getEmotionName } from '../helper'
 
 import { Wrapper, Count } from '../styles/selected_emotions/emotion_unit'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:EmotionUnit:index')
+const _log = buildLog('w:EmotionUnit:index')
 
 type TProps = {
   item: TEmotion

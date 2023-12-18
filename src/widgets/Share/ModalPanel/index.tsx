@@ -17,8 +17,7 @@ import InfoPanel from './InfoPanel'
 import { Wrapper } from '../styles/modal_panel'
 // import { close } from '../logic'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:Share')
+const _log = buildLog('C:Share')
 
 type TProps = {
   show: boolean

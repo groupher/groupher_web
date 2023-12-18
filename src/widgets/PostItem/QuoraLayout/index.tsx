@@ -15,8 +15,7 @@ import MobileView from './MobileView'
 
 import { Wrapper } from '../styles/quora_layout'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:PostItem:index')
+const _log = buildLog('w:PostItem:index')
 
 type TProps = {
   article: TPost

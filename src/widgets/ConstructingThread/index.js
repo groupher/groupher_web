@@ -12,8 +12,7 @@ import { buildLog } from '@/logger'
 import { Trans } from '@/i18n'
 import { Wrapper, ConstructIcon, Icon, Text, Title, DescWrapper, IssueLink } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ConstructingThread:index')
+const _log = buildLog('w:ConstructingThread:index')
 
 const ISSUE_NUM = {
   group: '330',

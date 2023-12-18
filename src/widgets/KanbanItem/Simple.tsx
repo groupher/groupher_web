@@ -25,8 +25,7 @@ import TagsList from '@/widgets/TagsList'
 
 import { Wrapper, Header, Footer, Title } from './styles/simple'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:KanbanItem:index')
+const _log = buildLog('w:KanbanItem:index')
 
 type TProps = {
   testid?: string

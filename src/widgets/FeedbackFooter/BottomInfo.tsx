@@ -23,8 +23,7 @@ import {
   BadIcon,
 } from './styles/bottom_info'
 
-/* eslint-disable-next-line */
-const log = buildLog('c:FeedbackFooter:index')
+const _log = buildLog('c:FeedbackFooter:index')
 
 type TProps = {
   offsetRight?: number

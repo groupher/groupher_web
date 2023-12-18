@@ -13,7 +13,6 @@ import Tooltip from '@/widgets/Tooltip'
 
 import { Wrapper, Tabs, DescText, Label, Slider, getLocalIcon } from './styles/icon_selector'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:IconSwitcher:index')
 
 type TItem = {

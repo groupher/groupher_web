@@ -24,8 +24,7 @@ import { SITE_SHARE_TYPE, SHARE_TYPE } from './constant'
 import { parseLinksData, toPlatform } from './helper'
 import { Wrapper, Panel, LinkTip, QRTip, Icon } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('c:Share:index')
+const _log = buildLog('c:Share:index')
 
 let ModalPanel = null
 

@@ -13,8 +13,7 @@ import THEME from '@/constant/theme'
 
 import { Wrapper, Button, SunIcon, MoonIcon } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('c:ThemeSwitch:index')
+const _log = buildLog('c:ThemeSwitch:index')
 
 type TProps = {
   testid?: string

@@ -14,7 +14,6 @@ import UpvoteBtn from './UpvoteBtn'
 
 import { Wrapper, UpvoteBtnWrapper } from './styles/simple_layout'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:Upvote:index')
 
 type TProps = {

@@ -18,9 +18,9 @@ const NextStepButton: FC<TProps> = ({ loading = false, onClick, disabled, text =
       {loading ? (
         <LavaLampLoading />
       ) : (
-        <Wrapper onClick={onClick} disabled={disabled} noPaddingRight={disabled}>
+        <Wrapper onClick={onClick} disabled={disabled} $noPaddingRight={disabled}>
           <ArrowButton disabled={disabled} reverseColor>
-            <Text disabled={disabled}>{text}</Text>
+            <Text $disabled={disabled}>{text}</Text>
           </ArrowButton>
         </Wrapper>
       )}

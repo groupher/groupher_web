@@ -15,8 +15,7 @@ import ImgFallback from '@/widgets/ImgFallback'
 
 import { Wrapper, Avatar, BadgeWrapper, BadgeIcon } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:AdminAvatar:index')
+const _log = buildLog('w:AdminAvatar:index')
 
 type TProps = {
   testid?: string

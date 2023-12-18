@@ -6,8 +6,7 @@ import type { TCommunity, TDocFAQLayout, TDocLayout, TFAQSection, TRootStore } f
 import { buildLog } from '@/logger'
 import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 
-/* eslint-disable-next-line */
-const log = buildLog('S:DocThread')
+const _log = buildLog('S:DocThread')
 
 const DocThread = T.model('DocThread', {
   isArticleLayout: T.opt(T.bool, false),

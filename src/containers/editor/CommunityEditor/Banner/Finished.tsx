@@ -14,6 +14,7 @@ import {
   Frame,
   LeftFrame,
   RightFrame,
+  ArrowIcon,
   CommunityLogo,
   CommunityTitle,
   CommunityDesc,
@@ -45,35 +46,45 @@ const Finished: FC<TProps> = ({ status }) => {
         <RightFrame>
           <DashItem href={`/${slug}/${ROUTE.DASHBOARD.LAYOUT}`}>
             <DashIntro>
-              <DashTitle>布局样式</DashTitle>
+              <DashTitle>
+                布局样式 <ArrowIcon />
+              </DashTitle>
               <DashDesc>社区外观，展现样式，关于信息等</DashDesc>
             </DashIntro>
           </DashItem>
 
           <DashItem href={`/${slug}/${ROUTE.DASHBOARD.THREADS}`}>
             <DashIntro>
-              <DashTitle>社区板块</DashTitle>
+              <DashTitle>
+                社区板块 <ArrowIcon />
+              </DashTitle>
               <DashDesc>是否开通看板，更新日志，文档等</DashDesc>
             </DashIntro>
           </DashItem>
 
           <DashItem href={`/${slug}/${ROUTE.DASHBOARD.ADMINS}`}>
             <DashIntro>
-              <DashTitle>管理员</DashTitle>
+              <DashTitle>
+                管理员 <ArrowIcon />
+              </DashTitle>
               <DashDesc>添加社区管理员，权限设置等。</DashDesc>
             </DashIntro>
           </DashItem>
 
           <DashItem href={`/${slug}/${ROUTE.DASHBOARD.TAGS}`}>
             <DashIntro>
-              <DashTitle>标签编辑</DashTitle>
+              <DashTitle>
+                标签编辑 <ArrowIcon />
+              </DashTitle>
               <DashDesc>编辑讨论区，更新日志等板块的标签。</DashDesc>
             </DashIntro>
           </DashItem>
 
           <DashItem href={`/${slug}/${ROUTE.DASHBOARD.ADMINS}`}>
             <DashIntro>
-              <DashTitle>数据导入</DashTitle>
+              <DashTitle>
+                数据导入 <ArrowIcon />
+              </DashTitle>
               <DashDesc>从兔小巢，Github Discusstion 等平台导入历史数据</DashDesc>
             </DashIntro>
           </DashItem>

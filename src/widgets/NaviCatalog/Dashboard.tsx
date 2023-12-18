@@ -23,8 +23,7 @@ import {
   BackIcon,
 } from './styles/dashboard'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:NaviCatalog:Dashboard')
+const _log = buildLog('w:NaviCatalog:Dashboard')
 
 /**
  * 解析成层叠结构的数据形式

@@ -16,8 +16,7 @@ import Folder from './Folder'
 
 import { Wrapper } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('c:FileTree:index')
+const _log = buildLog('c:FileTree:index')
 
 type TProps = {
   onSelect?: () => void

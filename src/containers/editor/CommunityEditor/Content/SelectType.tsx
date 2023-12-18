@@ -6,7 +6,6 @@
 
 import { FC, memo } from 'react'
 
-import { ICON_CMD } from '@/config'
 import { buildLog } from '@/logger'
 
 import ArrowLinker from '@/widgets/ArrowLinker'
@@ -27,8 +26,7 @@ import {
   CommunityDemoWrapper,
 } from '../styles/content/select_type'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:NewExploreContent')
+const _log = buildLog('C:NewExploreContent')
 
 type TProps = {
   status: TSelectTypeStatus
@@ -42,7 +40,7 @@ const SelectType: FC<TProps> = ({ status: { communityType } }) => {
     <Wrapper>
       <LeftBlock>
         <Header>
-          <FaqIcon src={`${ICON_CMD}/community_new_question.svg`} />
+          <FaqIcon />
           <Title>{intro.title}</Title>
         </Header>
         <Desc>{intro.desc}</Desc>
@@ -51,7 +49,7 @@ const SelectType: FC<TProps> = ({ status: { communityType } }) => {
       </LeftBlock>
       <RightBlock>
         <Header>
-          <DemoIcon src={`${ICON_CMD}/community_new_demo.svg`} />
+          <DemoIcon />
           <Title>示例社区</Title>
         </Header>
         <CommunityDemoWrapper>

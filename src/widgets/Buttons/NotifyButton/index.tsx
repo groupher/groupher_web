@@ -21,8 +21,7 @@ import {
   Focus,
 } from '../styles/notify_button'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:NotifyButton:index')
+const _log = buildLog('w:NotifyButton:index')
 
 type TProps = {
   testid?: string

@@ -19,8 +19,7 @@ import { Wrapper, TabsWrapper, ContentWrapper } from '../styles/panel'
 
 // import { onFollow, undoFollow } from '../logic'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:AuthorInfo:index')
+const _log = buildLog('w:AuthorInfo:index')
 
 type TProps = {
   testid?: string

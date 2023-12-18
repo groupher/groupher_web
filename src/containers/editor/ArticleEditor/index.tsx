@@ -35,8 +35,7 @@ import {
   catOnChange,
 } from './logic'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:ArticleEditor')
+const _log = buildLog('C:ArticleEditor')
 
 type TProps = {
   metric?: TMetric

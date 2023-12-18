@@ -23,7 +23,6 @@ import {
 import PreviewBlock from './PreviewBlock'
 import { initOSSClient, handleUploadFile, applyUploadTokensIfNeed } from './helper'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:OSSUploader:index')
 
 type TProps = {

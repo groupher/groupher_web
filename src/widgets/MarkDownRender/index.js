@@ -18,8 +18,7 @@ import { buildLog } from '@/logger'
 import MarkDownStyle from '@/widgets/ThemePalette/MarkDownStyle'
 import { PreviewerContainer } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:MarkDownRender:index')
+const _log = buildLog('w:MarkDownRender:index')
 
 // const md = new Remarkable()
 const md = new Remarkable('full', {

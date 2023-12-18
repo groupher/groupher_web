@@ -23,8 +23,7 @@ import {
   IssueLink,
 } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:DiscussLinker:index')
+const _log = buildLog('w:DiscussLinker:index')
 
 const DiscussLinker = ({ title, desc, addr }) => (
   <Wrapper>

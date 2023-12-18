@@ -7,8 +7,7 @@ import { GRAPHQL_ENDPOINT } from '@/config'
 import { buildLog } from '../logger'
 import BStore from '../bstore'
 
-/* eslint-disable-next-line */
-const log = buildLog('Async')
+const _log = buildLog('Async')
 
 // see setup https://formidable.com/open-source/urql/docs/basics/core/
 const client = new Client({

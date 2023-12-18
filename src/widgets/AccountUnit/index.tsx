@@ -21,8 +21,7 @@ import ThemeSwitch from '@/widgets/ThemeSwitch'
 
 import { NormalWrapper, WithBgWrapper, Avatar, UnloginIcon, NickName, UnLoginText } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('c:AccountUnit:index')
+const _log = buildLog('c:AccountUnit:index')
 
 type TProps = {
   withName?: boolean

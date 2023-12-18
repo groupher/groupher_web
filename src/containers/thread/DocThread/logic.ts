@@ -8,7 +8,6 @@ import type { TStore } from './store'
 
 let store: TStore | undefined
 
-/* eslint-disable-next-line */
 const log = buildLog('L:DocThread')
 
 export const gotoDetailLayout = (): void => {

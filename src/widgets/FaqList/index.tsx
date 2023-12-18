@@ -18,8 +18,7 @@ import Collapse from './Collapse'
 
 import { Wrapper } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:FaqList:index')
+const _log = buildLog('w:FaqList:index')
 
 export type TProps = {
   testid?: string

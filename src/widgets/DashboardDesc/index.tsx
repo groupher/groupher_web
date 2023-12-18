@@ -14,8 +14,7 @@ import PostLayoutxample from './PostLayoutExample'
 
 import { Wrapper } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:DashboardDesc:index')
+const _log = buildLog('w:DashboardDesc:index')
 
 type TProps = {
   testid?: string

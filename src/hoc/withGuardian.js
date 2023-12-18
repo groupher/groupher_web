@@ -13,8 +13,7 @@ import BStore from '@/utils/bstore'
 import { nilOrEmpty } from '@/validator'
 import { buildLog } from '@/logger'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:Guardian:index')
+const _log = buildLog('w:Guardian:index')
 
 const getDisplayName = (WrappedComp) => WrappedComp.displayName || WrappedComp.name || 'Component'
 

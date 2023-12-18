@@ -17,8 +17,7 @@ import { isElementInViewport } from '@/dom'
 import TabIcon from './TabIcon'
 import { Wrapper, Label, ActiveLineWrapper, ActiveLine } from '../styles/tabs/tab_item'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:Tabs:index')
+const _log = buildLog('w:Tabs:index')
 
 type TProps = {
   mobileView?: boolean

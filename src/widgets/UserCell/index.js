@@ -10,8 +10,7 @@ import T from 'prop-types'
 import { buildLog } from '@/logger'
 import { UserCellWrapper, Avatar, UserInfo, NickName, Bio } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:UserCell:index')
+const _log = buildLog('w:UserCell:index')
 
 const UserCell = ({ user }) => {
   return (

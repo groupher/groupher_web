@@ -19,8 +19,7 @@ let store: TStore | undefined
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
 const sr71$ = new SR71()
 
-/* eslint-disable-next-line */
-const log = buildLog('L:PassportEditor')
+const _log = buildLog('L:PassportEditor')
 
 export const toggleCheck = (rule: string, checked: boolean): void => {
   const { selectedRulesData } = store

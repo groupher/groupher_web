@@ -21,7 +21,6 @@ import SidebarHeaderLayout from './SidebarHeaderLayout'
 import { Wrapper, PubButton } from '../styles/publish_button'
 import { getText } from './helper'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:PublishButton:index')
 
 type TProps = {

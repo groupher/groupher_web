@@ -1,5 +1,7 @@
 import styled, { css, theme } from '@/css'
 
+import QuestionSVG from '@/icons/Question'
+import DemoSVG from '@/icons/DemoTV'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
@@ -22,22 +24,21 @@ export const RightBlock = styled(Block)`
 export const Header = styled.div`
   ${css.row('align-center')};
   margin-bottom: 18px;
+  margin-left: -2px;
 `
-const Icon = styled(Img)`
-  fill: ${theme('article.title')};
+export const FaqIcon = styled(QuestionSVG)`
+  fill: ${theme('hint')};
   ${css.size(16)};
-  margin-right: 10px;
+  margin-right: 5px;
 `
-export const FaqIcon = styled(Icon)`
-  margin-top: -1px;
-`
-export const DemoIcon = styled(Icon)`
+export const DemoIcon = styled(DemoSVG)`
+  fill: ${theme('hint')};
   ${css.size(18)};
-  margin-top: -1px;
+  margin-right: 8px;
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
-  font-size: 17px;
+  font-size: 16px;
 `
 export const Desc = styled.div`
   color: ${theme('article.digest')};

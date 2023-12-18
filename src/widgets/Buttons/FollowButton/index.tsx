@@ -14,7 +14,6 @@ import { authWarn } from '@/signal'
 import FollowingBtn from './FollowingBtn'
 import FollowedBtn from './FollowedBtn'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:FollowButton:index')
 
 type TProps = {

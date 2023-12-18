@@ -13,8 +13,7 @@ import DesktopView from './DesktopView'
 import MobileView from './MobileView'
 import ModelineView from './ModelineView'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ArticlesFilter:index')
+const _log = buildLog('w:ArticlesFilter:index')
 
 export type TProps = {
   isMobile: boolean

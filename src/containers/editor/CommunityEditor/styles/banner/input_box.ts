@@ -50,7 +50,7 @@ export const InputBar = styled.input.attrs(() => ({
   color: ${theme('article.title')};
   font-size: 18px;
   max-height: none;
-  background-color: transparent;
+  background-color: ${theme('alphaBg2')};
   padding: 10px 18px;
   border-radius: 15px;
   transition: all 400ms ease;

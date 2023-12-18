@@ -1,5 +1,8 @@
 import { FC } from 'react'
 
+import { TCommunityType } from '../spec'
+import { COMMUNITY_CATS_TEXT_COLORS } from '../constant'
+
 import {
   DoingWrapper,
   DoneWrapper,
@@ -11,12 +14,15 @@ import {
 type TProps = {
   done?: boolean
   doing?: boolean
+  communityType: TCommunityType
 }
 
-const StatusBall: FC<TProps> = ({ done = false, doing = false }) => {
+const StatusBall: FC<TProps> = ({ done = false, doing = false, communityType }) => {
+  const colors = COMMUNITY_CATS_TEXT_COLORS[communityType]
+
   if (done) {
     return (
-      <DoneWrapper>
+      <DoneWrapper $colors={colors} $noBorder>
         <CheckIcon />
       </DoneWrapper>
     )
@@ -24,13 +30,13 @@ const StatusBall: FC<TProps> = ({ done = false, doing = false }) => {
 
   if (doing) {
     return (
-      <DoingWrapper>
-        <Dot />
+      <DoingWrapper $colors={colors}>
+        <Dot $colors={colors} />
       </DoingWrapper>
     )
   }
 
-  return <TodoWrapper />
+  return <TodoWrapper $colors={colors} />
 }
 
 export default StatusBall

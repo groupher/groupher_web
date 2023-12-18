@@ -16,8 +16,7 @@ import Tooltip from '@/widgets/Tooltip'
 
 import { Wrapper, Icon, Text } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ExpandIcon:index')
+const _log = buildLog('w:ExpandIcon:index')
 
 type TProps = {
   content: ReactNode

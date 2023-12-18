@@ -13,8 +13,7 @@ import { Wrapper, Community, Logo, Title } from '../styles/content/demo_communit
 
 // import { searchOnChange } from './logic'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:NewExploreContent')
+const _log = buildLog('C:NewExploreContent')
 
 type TProps = {
   item: TCommunity

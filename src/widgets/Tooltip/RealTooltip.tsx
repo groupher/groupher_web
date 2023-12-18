@@ -20,8 +20,7 @@ import ConfirmFooter from './ConfirmFooter'
 
 import { StyledTippy, NoPaddingStyledTippy, ChildrenWrapper, ContentWrapper } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:Tooltip:index')
+const _log = buildLog('w:Tooltip:index')
 
 const Tooltip: FC<TProps> = ({
   children,

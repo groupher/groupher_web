@@ -31,7 +31,6 @@ import {
   SelectHolder,
 } from './styles'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:Footer:index')
 
 type TProps = {

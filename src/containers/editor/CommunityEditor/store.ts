@@ -9,6 +9,7 @@ import type { TRootStore, TRoute, TAccount } from '@/spec'
 import { T, getParent, markStates, Instance, useMobxContext } from '@/mobx'
 
 import type {
+  THeaderStatus,
   TSelectTypeStatus,
   TSetupDomainStatus,
   TSetupInfoStatus,
@@ -59,21 +60,28 @@ const CommunityEditor = T.model('CommunityEditorStore', {
 
       return `${homepage}\n${extraInfo}`
     },
+    get headerStatus(): THeaderStatus {
+      const { step, communityType } = self
+
+      return {
+        step,
+        communityType,
+        showStep: communityType !== null,
+      }
+    },
     get selectTypeStatus(): TSelectTypeStatus {
       const { communityType } = self
 
       return { communityType }
     },
     get setupDomainStatus(): TSetupDomainStatus {
-      const { slug } = self
-
-      return { slug }
+      return pick(['slug', 'communityType'], self)
     },
     get setupInfoStatus(): TSetupInfoStatus {
-      return pick(['slug', 'title', 'desc', 'logo'], self)
+      return pick(['slug', 'title', 'desc', 'logo', 'communityType'], self)
     },
     get setupExtraStatus(): TSetupExtraStatus {
-      return pick(['homepage', 'extraInfo', 'city', 'source'], self)
+      return pick(['homepage', 'extraInfo', 'city', 'source', 'communityType'], self)
     },
     get finishedStatus(): TFinishedStatus {
       return pick(['slug', 'title', 'desc', 'logo'], self)

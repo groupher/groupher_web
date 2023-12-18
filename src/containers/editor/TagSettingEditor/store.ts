@@ -11,8 +11,7 @@ import { CHANGE_MODE } from '@/constant/mode'
 
 import { Tag } from '@/model'
 
-/* eslint-disable-next-line */
-const log = buildLog('S:TagSettingEditor')
+const _log = buildLog('S:TagSettingEditor')
 
 const TagSettingEditor = T.model('TagSettingEditor', {
   mode: T.opt(T.enum('mode', values(CHANGE_MODE)), CHANGE_MODE.UPDATE),

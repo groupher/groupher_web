@@ -15,7 +15,6 @@ import SettingMenu from '@/widgets/SettingMenu'
 import ReadOnlyPanel from './ReadOnlyPanel'
 import { Wrapper } from './styles'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:Copyright:index')
 
 const options = [

@@ -19,7 +19,6 @@ import TabItem from './TabItem'
 import { Wrapper, Nav, SlipBar, RealBar } from '../styles/tabs/mobile_view/normal_view'
 import { getSlipMargin } from '../styles/metric/tabs'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:Tabs:index')
 
 const temItems = [

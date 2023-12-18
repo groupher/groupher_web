@@ -1,17 +1,22 @@
 import { FC, memo } from 'react'
 
+import useTheme from '@/hooks/useTheme'
+import THEME from '@/constant/theme'
+import { SpaceGrow } from '@/widgets/Common'
+
 import {
   Wrapper,
   Box,
+  InnerBox,
+  ColorMask,
   Header,
   MainText,
-  FooterText,
-  TheChecker,
+  CheckIcon,
   Icon,
 } from '../../styles/banner/select_type/type_boxes'
 
 import type { TCommunityType } from '../../spec'
-import { COMMUNITY_TYPE } from '../../constant'
+import { COMMUNITY_CATS } from '../../constant'
 import { communityTypeOnChange } from '../../logic'
 
 type TProps = {
@@ -19,58 +24,36 @@ type TProps = {
 }
 
 const TypeBoxes: FC<TProps> = ({ communityType }) => {
-  const { WEB, CLIENT, HARDWARE, GAME } = COMMUNITY_TYPE
+  const { curTheme } = useTheme()
 
   return (
-    <Wrapper>
-      <Box
-        touched={!!communityType}
-        active={communityType === WEB}
-        onClick={() => communityTypeOnChange(WEB)}
-      >
-        <Header>
-          <Icon.Browser />
-          <TheChecker checked={communityType === WEB} hiddenMode />
-        </Header>
-        <MainText>Web 应用</MainText>
-        <FooterText>已有 114 +</FooterText>
-      </Box>
-      <Box
-        touched={!!communityType}
-        active={communityType === CLIENT}
-        onClick={() => communityTypeOnChange(CLIENT)}
-      >
-        <Header>
-          <Icon.Hammer />
-          <TheChecker checked={communityType === CLIENT} hiddenMode />
-        </Header>
-        <MainText>客户端软件</MainText>
-        <FooterText>已有 12 +</FooterText>
-      </Box>
-      <Box
-        touched={!!communityType}
-        active={communityType === HARDWARE}
-        onClick={() => communityTypeOnChange(HARDWARE)}
-      >
-        <Header>
-          <Icon.Robot />
-          <TheChecker checked={communityType === HARDWARE} hiddenMode />
-        </Header>
-        <MainText>硬件产品</MainText>
-        <FooterText>已有 14 +</FooterText>
-      </Box>
-      <Box
-        touched={!!communityType}
-        active={communityType === GAME}
-        onClick={() => communityTypeOnChange(GAME)}
-      >
-        <Header>
-          <Icon.Game />
-          <TheChecker checked={communityType === GAME} hiddenMode />
-        </Header>
-        <MainText>独立游戏</MainText>
-        <FooterText>已有 114 +</FooterText>
-      </Box>
+    <Wrapper key={curTheme}>
+      {COMMUNITY_CATS.map((item, index) => {
+        const $active = item.type === communityType
+        const $color = item.color
+        const IconComp = Icon[item.icon]
+
+        return (
+          <Box
+            key={item.type}
+            touched={!!communityType}
+            $active={$active}
+            $angle={index % 2 === 0 ? -2 : 2}
+            $withBorder={curTheme === THEME.NIGHT}
+            onClick={() => communityTypeOnChange(item.type)}
+          >
+            <InnerBox $active={$active} $color={$color}>
+              <Header>
+                <IconComp $active={$active} $color={$color} />
+                {$active && <CheckIcon $color={$color} />}
+              </Header>
+              <MainText>{item.title}</MainText>
+              <SpaceGrow />
+              <ColorMask $active={$active} $color={$color} />
+            </InnerBox>
+          </Box>
+        )
+      })}
     </Wrapper>
   )
 }

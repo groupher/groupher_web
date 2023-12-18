@@ -15,8 +15,7 @@ import Label from './Label'
 
 import { Wrapper } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ArticleCatState:index')
+const _log = buildLog('w:ArticleCatState:index')
 
 export type TProps = {
   testid?: string

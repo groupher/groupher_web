@@ -12,7 +12,6 @@ import { buildLog } from '@/logger'
 import Tooltip from '@/widgets/Tooltip'
 import { Wrapper, Label, LabelIcon, ActionLink, Icon } from './styles/fancy_publish_button'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:PublishButton:index')
 
 type TProps = {

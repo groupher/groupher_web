@@ -11,8 +11,7 @@ import useAccount from '@/hooks/useAccount'
 
 import { ReadedLabel } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ArticleReadLabel:index')
+const _log = buildLog('w:ArticleReadLabel:index')
 
 export type TProps = {
   viewed?: boolean

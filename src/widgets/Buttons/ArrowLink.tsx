@@ -12,8 +12,7 @@ import { buildLog } from '@/logger'
 
 import { Wrapper, Text, RightIcon } from './styles/arrow_link'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:Buttons:ArrowLink')
+const _log = buildLog('w:Buttons:ArrowLink')
 
 type TProps = {
   className?: string

@@ -115,6 +115,24 @@ const night = {
     blackRow: '#282828',
     blackBg: '#313131',
   },
+  grey: {
+    rare: '#272727',
+    middle: '#333333',
+    hard: '#414141',
+  },
+  shadow: {
+    md: 'rgba(0, 0, 0, 0.03) 0px 6px 24px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;',
+    lg: '',
+    xl: '',
+    xxl: 'rgb(21 21 21 / 48%) 0px 11px 24px;',
+  },
+  gradientBg: {
+    purple: 'linear-gradient(-149deg,#373439d4 0%,rgb(86 70 99) 100%)',
+    blue: 'linear-gradient(310deg,#303435 13%,rgb(49 84 121 / 83%) 100%)',
+    green: 'linear-gradient(133deg,#343434 0%,rgb(58 83 63 / 80%) 100%)',
+    orange: 'linear-gradient(244deg,#3d3d3d 0%,rgb(106 82 62 / 72%) 100%)',
+    pink: 'linear-gradient(140deg,#fff5fb99 0%,rgb(255 231 230 / 84%) 100%)',
+  },
   header: {
     fg: '#8c8c8c',
     bg: bannerBg,
@@ -332,12 +350,13 @@ const night = {
   },
   dashboard: {
     menuCat: '#c1c1c1',
-    menuTitle: '#949494',
+    menuTitle: '#b7b7b7',
   },
   toggle: {
     shadow: '0 0 20px 0px rgb(0 0 0 / 46%) inset',
     ball: '#ffffffb5',
   },
+  hiddenPanel: 'linear-gradient(180deg, rgb(0 0 0 / 0%) 0%, rgb(35 35 35) 40%)',
 }
 
 export default night

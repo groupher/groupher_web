@@ -40,8 +40,7 @@ import {
   PublishWrapper,
 } from '../styles/thread_sidebar'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ClassicSidebar')
+const _log = buildLog('w:ClassicSidebar')
 
 const ThreadSidebar: FC = () => {
   const curCommunity = useViewingCommunity()

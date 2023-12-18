@@ -23,8 +23,7 @@ import SearchBox from '@/widgets/SearchBox'
 import type { TProps } from '.'
 import { Wrapper } from './styles/mobile_view'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ArticlesFilter:index')
+const _log = buildLog('w:ArticlesFilter:index')
 
 const ArticlesFilter: FC<TProps> = ({ resState = TYPE.RES_STATE.DONE }) => {
   const { cat: activeCat, state: activeState, updateActiveFilter } = useArticlesFilter()

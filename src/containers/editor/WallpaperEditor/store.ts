@@ -21,8 +21,7 @@ import { T, markStates, Instance, getParent, toJS, useMobxContext } from '@/mobx
 
 import { TAB } from './constant'
 
-/* eslint-disable-next-line */
-const log = buildLog('S:WallpaperEditor')
+const _log = buildLog('S:WallpaperEditor')
 
 const initWallpaperModalFields = {
   wallpaperType: T.opt(T.enum(values(WALLPAPER_TYPE)), WALLPAPER_TYPE.GRADIENT),

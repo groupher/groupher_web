@@ -1,31 +1,11 @@
 import { FC, memo, useState } from 'react'
-import { isEmpty } from 'ramda'
 
-import { ICON_CMD } from '@/config'
-
-import { Row } from '@/widgets/Common'
-import Favicon from './Favicon'
+import BrowserHead from './BrowerHead'
 import Content from './Content'
 import MaskPanel from './MaskPanel'
 
 import type { TStep, TCommunityType } from '../../spec'
-
-import {
-  Wrapper,
-  Header,
-  Tab,
-  TabContent,
-  AddressBar,
-  ToolbarWrapper,
-  ToolIcon,
-  LockIcon,
-  Form,
-  Input,
-  Slash,
-  SubDomain,
-  ThreadPath,
-  ThreadText,
-} from '../../styles/content/fake_browser'
+import { Wrapper } from '../../styles/content/fake_browser'
 
 type TProps = {
   step: TStep
@@ -44,53 +24,17 @@ const FakeBrowser: FC<TProps> = ({
   logo = null,
   communityType = null,
 }) => {
-  const tabTitle = title || domain || 'groupher'
   const [activePath, setActivePath] = useState('')
 
   return (
     <Wrapper>
-      <Header>
-        <Tab>
-          <Favicon title={title} logo={logo} />
-          <TabContent>{tabTitle}</TabContent>
-        </Tab>
-      </Header>
-      <AddressBar>
-        <ToolbarWrapper>
-          <ToolIcon src={`${ICON_CMD}/new_community/back.svg`} />
-        </ToolbarWrapper>
-        <ToolbarWrapper>
-          <ToolIcon src={`${ICON_CMD}/new_community/back.svg`} reverse />
-        </ToolbarWrapper>
-        <ToolbarWrapper>
-          <ToolIcon src={`${ICON_CMD}/new_community/refresh.svg`} />
-        </ToolbarWrapper>
-        <Form>
-          <ToolbarWrapper>
-            <LockIcon src={`${ICON_CMD}/new_community/lock.svg`} />
-          </ToolbarWrapper>
-          <Input>
-            {isEmpty(domain) ? (
-              <div>groupher.com</div>
-            ) : (
-              <Row>
-                groupher.com<Slash>/</Slash>
-                <SubDomain>{domain.toLowerCase()}</SubDomain>
-                <ThreadPath $active={!!activePath}>
-                  <Slash>/</Slash>
-                  <ThreadText>{activePath}</ThreadText>
-                </ThreadPath>
-              </Row>
-            )}
-          </Input>
-          <ToolbarWrapper>
-            <ToolIcon src={`${ICON_CMD}/new_community/star.svg`} />
-          </ToolbarWrapper>
-        </Form>
-        <ToolbarWrapper>
-          <ToolIcon src={`${ICON_CMD}/new_community/more.svg`} />
-        </ToolbarWrapper>
-      </AddressBar>
+      <BrowserHead
+        domain={domain}
+        title={title}
+        desc={desc}
+        communityType={communityType}
+        activePath={activePath}
+      />
       <Content
         title={title}
         desc={desc}

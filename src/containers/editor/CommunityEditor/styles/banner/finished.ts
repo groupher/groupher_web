@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import styled, { css, theme } from '@/css'
+import ArrowSVG from '@/icons/ArrowUpRight'
 
 import Img from '@/Img'
 
@@ -35,7 +36,7 @@ export const Frame = styled.div`
 
 export const LeftFrame = styled.div`
   ${css.column('align-both')};
-  background: #fafafa;
+  background: ${theme('grey.rare')};
   width: 50%;
   height: 100%;
   border-top-left-radius: 30px;
@@ -44,7 +45,7 @@ export const LeftFrame = styled.div`
 `
 export const RightFrame = styled.div`
   ${css.column('align-both')};
-  background: #eae9e96e;
+  background: ${theme('grey.middle')};
   width: 50%;
   height: 100%;
   padding: 20px 40px;
@@ -74,24 +75,23 @@ export const GotoLink = styled(Link)`
   font-size: 13px;
   min-width: 90px;
   height: 34px;
+  border: 1px solid transparent;
   border-radius: 8px;
-  background: #eae9e96e;
+  background: ${theme('grey.middle')};
   margin-top: 30px;
 
   &:hover {
-    background: ${theme('hoverBg')};
+    color: ${theme('article.title')};
     text-decoration: underline;
+    text-decoration-color: ${theme('hint')};
     cursor: pointer;
   }
+
+  transition: all 0.2s;
 `
-
 export const GoDashLink = styled(GotoLink)`
-  background: #fafafa;
+  background: ${theme('grey.rare')};
   margin-top: 10px;
-
-  &:hover {
-    background: #fafafa;
-  }
 `
 export const DashItem = styled(Link)`
   ${css.row()};
@@ -101,17 +101,18 @@ export const DashItem = styled(Link)`
   text-decoration: none;
 
   &:hover {
-    background: #fafafa;
+    background: ${theme('grey.rare')};
     cursor: pointer;
     text-decoration: none;
   }
 
-  transition: all 0.2s;
+  transition: all 0.1s;
 `
 export const DashIntro = styled.div`
   ${css.column('align-start')};
 `
 export const DashTitle = styled.div`
+  ${css.row('align-center')};
   font-size: 13px;
   color: ${theme('dashboard.menuTitle')};
   font-weight: 500;
@@ -120,6 +121,17 @@ export const DashTitle = styled.div`
   ${DashItem}:hover & {
     color: ${theme('article.title')};
     font-weight: 500;
+    text-decoration: underline;
+  }
+`
+export const ArrowIcon = styled(ArrowSVG)`
+  ${css.size(14)};
+  fill: ${theme('article.digest')};
+  margin-left: 8px;
+  opacity: 0;
+
+  ${DashItem}:hover & {
+    opacity: 1;
   }
 `
 export const DashDesc = styled.div`

@@ -16,8 +16,7 @@ import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
 import { Wrapper, InnerWrapper, ArticleWrapper, CommentsWrapper } from '../styles/post/content'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:PostContent')
+const _log = buildLog('C:PostContent')
 
 const Comments = dynamic(() => import('@/containers/unit/Comments'), {
   /* eslint-disable react/display-name */

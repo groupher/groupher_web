@@ -30,8 +30,7 @@ import {
   Footer,
 } from '../styles/people_gallery/developer_gallery'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ProductGallery:index')
+const _log = buildLog('w:ProductGallery:index')
 
 type TProps = {
   items?: TGallery[]

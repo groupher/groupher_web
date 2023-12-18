@@ -10,7 +10,6 @@ import dynamic from 'next/dynamic'
 import { buildLog } from '@/logger'
 import useShortcut from '@/hooks/useShortcut'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:Modal:index')
 
 export const RealModal = dynamic(() => import('./RealModal'))

@@ -19,8 +19,7 @@ import TwoColumn from './TwoColumn'
 
 import { Wrapper, Title } from '../styles/pagi_option_selector'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:PagiOptionSwitcher:index')
+const _log = buildLog('w:PagiOptionSwitcher:index')
 
 const getLocalIcon = (item, activeKey) => {
   if (!item.localIcon) return ''

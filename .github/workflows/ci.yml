@@ -73,7 +73,7 @@ jobs:
           node-version: "20.3.1"
       - name: (Frontend) Install Packages
         working-directory: ./
-        run: npm install
+        run: npm install --legacy-peer-deps
       # - name: Checkout
       #   uses: actions/checkout@v4
       # - name: Setup Biome

@@ -18,8 +18,7 @@ import THEME from '@/constant/theme'
 
 import { Dot, HashBoldIcon, HashNormalIcon } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('c:TagNode:index')
+const _log = buildLog('c:TagNode:index')
 
 type TProps = {
   color?: string

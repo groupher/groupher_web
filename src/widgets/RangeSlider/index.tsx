@@ -11,8 +11,7 @@ import { buildLog } from '@/logger'
 import type { TSpace } from '@/spec'
 import { Wrapper, Value, Unit, RangeInput } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('c:RangeSlider:index')
+const _log = buildLog('c:RangeSlider:index')
 
 type TProps = {
   testid?: string

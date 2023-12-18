@@ -11,8 +11,7 @@ import { buildLog } from '@/logger'
 
 import { Wrapper, Content, LeftLine, RightLine } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:DivideText:index')
+const _log = buildLog('w:DivideText:index')
 
 const DivideText = ({ testid, children }) => {
   return (

@@ -21,6 +21,8 @@ import MoreItem from './MoreItem'
 import { getAvatarSize } from './styles/metric'
 import { Wrapper, AvatarsWrapper, TotalOneOffset, AvatarFallback } from './styles'
 
+const log = buildLog('w:Facepile:index')
+
 // @ts-ignore
 const RealAvatarContext = createContext()
 
@@ -37,9 +39,6 @@ export const RealAvatar = dynamic(() => import('./RealAvatar'), {
   },
   ssr: false,
 })
-
-/* eslint-disable-next-line */
-const log = buildLog('w:Facepile:index')
 
 const validUser = compose(not, isNil)
 

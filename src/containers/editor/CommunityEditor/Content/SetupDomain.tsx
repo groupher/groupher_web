@@ -11,11 +11,11 @@ type TProps = {
 }
 
 const SetupDomain: FC<TProps> = ({ status }) => {
-  const { slug } = status
+  const { slug, communityType } = status
 
   return (
     <Wrapper>
-      <FakeBrowser domain={slug} step={STEP.SETUP_DOMAIN} />
+      <FakeBrowser domain={slug} step={STEP.SETUP_DOMAIN} communityType={communityType} />
     </Wrapper>
   )
 }

@@ -13,8 +13,7 @@ import { buildLog } from '@/logger'
 // import Setter from './Setter'
 import { Wrapper, Avatar, SettingWrapper, SettingIcon } from '../styles/list/edit_works_layout'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:TeamList:index')
+const _log = buildLog('w:TeamList:index')
 
 type TProps = {
   users: TUser[]

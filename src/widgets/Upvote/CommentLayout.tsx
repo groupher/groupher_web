@@ -17,7 +17,6 @@ import UpvoteBtn from './UpvoteBtn'
 
 import { Wrapper, Button, Alias, UpWrapper, CountWrapper } from './styles/comment_layout'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:Upvote:index')
 
 type TProps = {

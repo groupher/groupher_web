@@ -15,7 +15,6 @@ import List from './List'
 
 import { Wrapper } from './styles'
 
-/* eslint-disable-next-line */
 const log = buildLog('c:Menu:index')
 
 type TProps = {

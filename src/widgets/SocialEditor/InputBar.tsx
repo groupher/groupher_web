@@ -13,8 +13,7 @@ import { Trans } from '@/i18n'
 
 import { Wrapper, IconWrapper, DeleteWrapper, DeleteIcon, Inputer, Icon } from './styles/input_bar'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:SocialEditor:index')
+const _log = buildLog('w:SocialEditor:index')
 
 type TProps = {
   social: TSocialItem

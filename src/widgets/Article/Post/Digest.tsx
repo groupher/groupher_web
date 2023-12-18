@@ -37,8 +37,7 @@ import {
   BottomInfo,
 } from '../styles/post/digest'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:ArticleDigest')
+const _log = buildLog('C:ArticleDigest')
 
 const PostLayout: FC = () => {
   const router = useRouter()

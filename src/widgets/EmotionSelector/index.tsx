@@ -14,7 +14,6 @@ import SelectedEmotions from './SelectedEmotions/index'
 import Panel from './Panel'
 import { SelectEmotionWrapper } from './styles'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:EmotionSelector:index')
 
 type TProps = {

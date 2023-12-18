@@ -10,8 +10,7 @@ import {
   // SubNum,
 } from './styles/volunteer_status'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:CommunityStatesPad:VolunteerStatus')
+const _log = buildLog('w:CommunityStatesPad:VolunteerStatus')
 
 type TProps = {
   count?: number

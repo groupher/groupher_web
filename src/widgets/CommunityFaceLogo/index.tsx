@@ -10,8 +10,7 @@ import { buildLog } from '@/logger'
 
 import { Logo } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:CommunityFaceLogo:index')
+const _log = buildLog('w:CommunityFaceLogo:index')
 
 type TProps = {
   noFill?: boolean

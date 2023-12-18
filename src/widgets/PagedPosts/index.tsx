@@ -17,8 +17,7 @@ import { buildLog } from '@/logger'
 import PostList from './PostList'
 // import CommunityRecommends from './CommunityRecommends'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:PagedArticles:index')
+const _log = buildLog('w:PagedArticles:index')
 
 const PagedPosts: FC = () => {
   const { pagedPosts } = usePagedPosts()

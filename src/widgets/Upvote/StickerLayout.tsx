@@ -17,7 +17,6 @@ import useUpvote from './useUpvote'
 import UpvoteBtn from './UpvoteBtn'
 import { Wrapper, Button, FacesWrapper, UpWrapper, CountWrapper } from './styles/sticker_layout'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:Upvote:index')
 
 type TProps = {

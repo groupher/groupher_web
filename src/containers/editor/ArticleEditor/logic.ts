@@ -26,7 +26,6 @@ const sr71$ = new SR71({
 let sub$ = null
 let store: TStore | undefined
 
-/* eslint-disable-next-line */
 const log = buildLog('L:ArticleEditor')
 
 export const changeCommunity = (community: TCommunity): void => {

@@ -10,8 +10,7 @@ import Trend from 'react-trend'
 import { buildLog } from '@/logger'
 import useTheme from '@/hooks/useTheme'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:TrendLine:index')
+const _log = buildLog('w:TrendLine:index')
 
 type TProps = {
   data: number[]

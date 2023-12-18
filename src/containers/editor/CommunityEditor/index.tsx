@@ -19,8 +19,7 @@ import { useStore } from './store'
 import { Wrapper, InnerWrapper, ContentWrapper } from './styles'
 import { useInit } from './logic'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:CommunityEditor')
+const _log = buildLog('C:CommunityEditor')
 
 const CommunityEditor: FC = () => {
   const store = useStore()
@@ -29,6 +28,7 @@ const CommunityEditor: FC = () => {
 
   const {
     step,
+    headerStatus,
     selectTypeStatus,
     setupDomainStatus,
     setupInfoStatus,
@@ -39,7 +39,7 @@ const CommunityEditor: FC = () => {
 
   return (
     <Wrapper metric={metric}>
-      <Header step={step} showStep={!!selectTypeStatus.communityType} />
+      <Header status={headerStatus} />
       <Banner
         step={step}
         selectTypeStatus={selectTypeStatus}

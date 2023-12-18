@@ -14,8 +14,7 @@ import { buildLog } from '@/logger'
 import MasonryCards from '@/widgets/MasonryCards'
 import PostItem from '@/widgets/PostItem'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:DashboardDesc:index')
+const _log = buildLog('w:DashboardDesc:index')
 
 type TProps = {
   articles: TPost[]

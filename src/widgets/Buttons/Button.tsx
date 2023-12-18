@@ -9,7 +9,6 @@ import { buildLog } from '@/logger'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 import { Wrapper, RedWrapper, ChildrenWrapper } from './styles/button'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:Buttons:Button')
 
 type TProps = {

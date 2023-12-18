@@ -10,8 +10,7 @@ import { buildLog } from '@/logger'
 
 import { Wrapper, CloseIcon } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:Tag:index')
+const _log = buildLog('w:Tag:index')
 
 type TProps = {
   children: ReactNode

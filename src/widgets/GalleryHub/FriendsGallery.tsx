@@ -23,8 +23,7 @@ import {
   ExchangeButton,
 } from './styles/friends_gallery'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:FriendsGallery:index')
+const _log = buildLog('w:FriendsGallery:index')
 
 type TProps = {
   items: {

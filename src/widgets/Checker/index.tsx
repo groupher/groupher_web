@@ -14,7 +14,6 @@ import { buildLog } from '@/logger'
 
 import { Wrapper, IconWrapper, CheckIcon, ChildWrapper } from './styles'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:Checker:index')
 
 type TProps = {

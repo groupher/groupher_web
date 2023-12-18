@@ -26,7 +26,6 @@ import {
   NumberTitle,
 } from './styles'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:CommunityStatesPad:index')
 
 type TProps = {

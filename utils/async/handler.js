@@ -5,8 +5,7 @@ import ERR from '@/constant/err'
 // import { TIMEOUT_THRESHOLD } from './config'
 import { buildLog } from '../logger'
 
-/* eslint-disable-next-line */
-const log = buildLog('Async')
+const _log = buildLog('Async')
 
 // export const TimeoutObservable = of({
 //   error: ERR.TIMEOUT,

@@ -21,7 +21,6 @@ import {
   RulesWrapper,
 } from './styles'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:VerifiedSign:index')
 
 const PopContent = ({ communityTitle }) => {

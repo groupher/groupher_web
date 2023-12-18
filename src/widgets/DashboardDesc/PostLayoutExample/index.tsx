@@ -25,8 +25,7 @@ import Desktop from './Desktop'
 
 import { Wrapper, TabsWrapper, MediaWrapper } from '../styles/post_layout_example'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:DashboardDesc:index')
+const _log = buildLog('w:DashboardDesc:index')
 
 const switchItems = [
   {

@@ -35,8 +35,7 @@ import {
   ShareIcon,
 } from '../styles/simple_layout/article_layout'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ChangelogItem:index')
+const _log = buildLog('w:ChangelogItem:index')
 
 type TProps = {
   testid?: string

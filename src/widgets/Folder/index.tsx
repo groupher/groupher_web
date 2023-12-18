@@ -16,7 +16,6 @@ import Footer from './Footer'
 
 import { Wrapper, TabShape } from './styles'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:Folder:index')
 
 type TProps = {

@@ -22,7 +22,6 @@ import {
   NumberTitle,
 } from './styles/modeline_view'
 
-/* eslint-disable-next-line */
 const log = buildLog('w:CommunityStatesPad:index')
 
 type TProps = {

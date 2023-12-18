@@ -17,8 +17,7 @@ import { buildLog } from '@/logger'
 import Full from './Full'
 import Simple from './Simple'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:KanbanItem:index')
+const _log = buildLog('w:KanbanItem:index')
 
 type TProps = {
   article: TArticle

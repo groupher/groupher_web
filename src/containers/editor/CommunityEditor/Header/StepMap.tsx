@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react'
 
 import StatusBall from './StatusBall'
 
-import type { TStep } from '../spec'
+import type { TCommunityType, TStep } from '../spec'
 import { STEP } from '../constant'
 
 import { Wrapper, Line, TadaIcon } from '../styles/header/step_map'
@@ -10,9 +10,10 @@ import { tada } from '../logic'
 
 type TProps = {
   step: TStep
+  communityType: TCommunityType
 }
 
-const StepMap: FC<TProps> = ({ step }) => {
+const StepMap: FC<TProps> = ({ step, communityType }) => {
   useEffect(() => {
     if (step === STEP.FINISHED) {
       tada()
@@ -23,13 +24,13 @@ const StepMap: FC<TProps> = ({ step }) => {
     case STEP.SELECT_TYPE: {
       return (
         <Wrapper>
-          <StatusBall doing />
+          <StatusBall communityType={communityType} doing />
           <Line />
-          <StatusBall />
+          <StatusBall communityType={communityType} />
           <Line />
-          <StatusBall />
+          <StatusBall communityType={communityType} />
           <Line />
-          <StatusBall />
+          <StatusBall communityType={communityType} />
         </Wrapper>
       )
     }
@@ -37,13 +38,13 @@ const StepMap: FC<TProps> = ({ step }) => {
     case STEP.SETUP_DOMAIN: {
       return (
         <Wrapper>
-          <StatusBall done />
+          <StatusBall communityType={communityType} done />
           <Line />
-          <StatusBall doing />
+          <StatusBall communityType={communityType} doing />
           <Line />
-          <StatusBall />
+          <StatusBall communityType={communityType} />
           <Line />
-          <StatusBall />
+          <StatusBall communityType={communityType} />
         </Wrapper>
       )
     }
@@ -51,13 +52,13 @@ const StepMap: FC<TProps> = ({ step }) => {
     case STEP.SETUP_INFO: {
       return (
         <Wrapper>
-          <StatusBall done />
+          <StatusBall communityType={communityType} done />
           <Line />
-          <StatusBall done />
+          <StatusBall communityType={communityType} done />
           <Line />
-          <StatusBall doing />
+          <StatusBall communityType={communityType} doing />
           <Line />
-          <StatusBall />
+          <StatusBall communityType={communityType} />
         </Wrapper>
       )
     }
@@ -65,13 +66,13 @@ const StepMap: FC<TProps> = ({ step }) => {
     case STEP.SETUP_EXTRA: {
       return (
         <Wrapper>
-          <StatusBall done />
+          <StatusBall communityType={communityType} done />
           <Line />
-          <StatusBall done />
+          <StatusBall communityType={communityType} done />
           <Line />
-          <StatusBall done />
+          <StatusBall communityType={communityType} done />
           <Line />
-          <StatusBall doing />
+          <StatusBall communityType={communityType} doing />
         </Wrapper>
       )
     }
@@ -79,13 +80,13 @@ const StepMap: FC<TProps> = ({ step }) => {
     case STEP.FINISHED: {
       return (
         <Wrapper>
-          <StatusBall done />
+          <StatusBall communityType={communityType} done />
           <Line />
-          <StatusBall done />
+          <StatusBall communityType={communityType} done />
           <Line />
-          <StatusBall done />
+          <StatusBall communityType={communityType} done />
           <Line />
-          <StatusBall done />
+          <StatusBall communityType={communityType} done />
           <Line />
           <TadaIcon onClick={() => tada()} />
         </Wrapper>

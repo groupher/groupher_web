@@ -22,8 +22,7 @@ import {
   FooterWrapper,
 } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:OauthHinter:index')
+const _log = buildLog('w:OauthHinter:index')
 
 const OauthHinter: FC = () => {
   return (

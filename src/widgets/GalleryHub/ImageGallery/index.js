@@ -20,8 +20,7 @@ import MasonryGallery from './MasonryGallery'
 
 import { Wrapper } from '../styles/image_gallery'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:ImageGallery:index')
+const _log = buildLog('w:ImageGallery:index')
 
 const tmpItems = [
   {

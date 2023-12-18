@@ -19,8 +19,7 @@ import type { TIcon } from './spec'
 import { Wrapper } from './styles'
 import useThemeData from '@/hooks/useThemeData'
 
-/* eslint-disable-next-line */
-const log = buildLog('c:FaIcons:index')
+const _log = buildLog('c:FaIcons:index')
 
 export type TProps = {
   testid?: string

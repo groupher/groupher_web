@@ -32,7 +32,6 @@ export const NextBtn = styled.div`
   ${css.row('align-center', 'justify-around')};
   width: 200px;
   bottom: 25px;
-  margin-left: 10px;
   filter: grayscale(1);
 `
 export const ErrorMsg = styled.div`

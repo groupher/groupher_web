@@ -13,8 +13,7 @@ import RealTooltip from './RealTooltip'
 // @ts-ignore
 const TooltipContext = createContext()
 
-/* eslint-disable-next-line */
-const log = buildLog('w:Tooltip:index')
+const _log = buildLog('w:Tooltip:index')
 
 export type TProps = {
   children: ReactNode

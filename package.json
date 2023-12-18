@@ -22,7 +22,8 @@
     "gen": "plop --plopfile ./utils/scripts/generators/index.js",
     "analyze": "cross-env ANALYZE=true next build",
     "lint": "./node_modules/.bin/biome lint src/ utils/",
-    "lint:staged": "./node_modules/.bin/biome format ./src",
+    "format:staged": "./node_modules/.bin/biome format ./src",
+    "clean:up": "rm -rf *.tsbuildinfo",
     "test": "cross-env NOD_ENV=test jest --config .jest.config.js",
     "test:dev": "cross-env NODE_ENV=test jest --config .jest.config.js",
     "test:watch": "npm run test -- --watch",
@@ -38,6 +39,9 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
+  "lint-staged": {
+    "**/*.ts?(x)": "tsc-files --noEmit"
+  },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.0",
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
@@ -49,19 +53,20 @@
     "@next/bundle-analyzer": "^12.2.5",
     "@tippyjs/react": "^4.2.6",
     "@udecode/plate": "^26.0.5",
-    "@urql/core": "^4.1.4",
+    "@urql/core": "^4.2.2",
     "@urql/next": "^1.1.0",
     "chalk": "^2.4.1",
-    "compatible-debug": "^1.0.0",
     "cross-env": "^7.0.2",
+    "debug": "^4.3.4",
     "graphql": "^16.6.0",
     "markdown-to-jsx": "^7.2.1",
     "mastani-codehighlight": "0.0.7",
+    "mobx": "^6.12.0",
     "mobx-react": "^9.1.0",
     "mobx-react-lite": "^4.0.5",
     "mobx-state-tree": "^5.4.0",
     "nanoid": "^3.1.12",
-    "next": "^14.0.4",
+    "next": "^14.0.5-canary.16",
     "next-compose-plugins": "^2.2.0",
     "next-i18next": "4.4.1",
     "overlayscrollbars": "^2.4.5",
@@ -112,7 +117,8 @@
     "timeago-react": "^3.0.5",
     "tinykeys": "^2.1.0",
     "tsparticles-confetti": "^2.12.0",
-    "typewriter-effect": "^2.19.0"
+    "typewriter-effect": "^2.19.0",
+    "urql": "^4.0.6"
   },
   "devDependencies": {
     "@biomejs/biome": "1.4.1",
@@ -132,11 +138,13 @@
     "enzyme-to-json": "^3.3.4",
     "husky": "^3.1.0",
     "jest": "26.2.2",
+    "lint-staged": "^15.2.0",
     "npm-run-all": "^4.1.1",
     "plop": "2.7.4",
     "react-test-renderer": "18.2.0",
     "shelljs": "0.8.4",
     "start-server-and-test": "1.12.1",
+    "tsc-files": "^1.1.4",
     "type-fest": "^2.19.0",
     "typescript": "^5.3.3"
   }

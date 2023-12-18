@@ -25,8 +25,7 @@ import ThreadSidebar from './ThreadSidebar'
 
 import { Wrapper, MainWrapper, SidebarWrapper, FilterWrapper } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('C:PostThread')
+const _log = buildLog('C:PostThread')
 
 const PostThread: FC = () => {
   const bannerLayout = useBannerLayout()

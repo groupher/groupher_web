@@ -10,8 +10,7 @@ import { buildLog } from '@/logger'
 
 import { Wrapper, ImageWrapper, Image } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:CoverImage:index')
+const _log = buildLog('w:CoverImage:index')
 
 type TProps = {
   testid?: string

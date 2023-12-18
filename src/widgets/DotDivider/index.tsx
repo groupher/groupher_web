@@ -9,8 +9,7 @@ import { FC, memo } from 'react'
 import { buildLog } from '@/logger'
 import { Wrapper } from './styles'
 
-/* eslint-disable-next-line */
-const log = buildLog('w:DotDivider:index')
+const _log = buildLog('w:DotDivider:index')
 
 export type TProps = {
   className?: string
