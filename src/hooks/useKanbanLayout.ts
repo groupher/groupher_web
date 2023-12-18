@@ -13,8 +13,7 @@ const useKanbanLayout = (): TKanbanLayout => {
     throw new Error('Store cannot be null, please add a context provider')
   }
 
-  // return store.dashboardThread.kanbanLayout
-  return 'waterfall'
+  return store.dashboardThread.kanbanLayout
 }
 
 export default useKanbanLayout

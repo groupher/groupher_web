@@ -26,10 +26,10 @@ type TProps = {
 const KanbanItem: FC<TProps> = ({ article }) => {
   const layout = useKanbanLayout()
 
-  return layout === KANBAN_LAYOUT.CLASSIC ? (
-    <ClassicLayout article={article} />
-  ) : (
+  return layout === KANBAN_LAYOUT.WATERFALL ? (
     <WaterfallLayout article={article} />
+  ) : (
+    <ClassicLayout article={article} />
   )
 }
 

@@ -21,7 +21,7 @@ const KanbanThread: FC = () => {
 
   return (
     <Wrapper>
-      {kanbanLayout === KANBAN_LAYOUT.CLASSIC ? <ClassicLayout /> : <WaterfallLayout />}
+      {kanbanLayout === KANBAN_LAYOUT.WATERFALL ? <WaterfallLayout /> : <ClassicLayout />}
     </Wrapper>
   )
 }
