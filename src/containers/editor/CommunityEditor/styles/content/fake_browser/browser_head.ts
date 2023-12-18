@@ -113,9 +113,10 @@ export const RefreshIcon = styled(RefreshSVG)`
   fill: ${theme('hint')};
 `
 export const LockIcon = styled(LockSVG)`
-  fill: ${theme('article.digest')};
-  ${css.size(15)};
-  margin-top: 1px;
+  fill: ${theme('hint')};
+  opacity: 0.6;
+  ${css.size(14)};
+  margin-top: 2px;
   margin-left: 4px;
 `
 export const MoreIcon = styled(MoreSVG)`
