@@ -22,9 +22,9 @@ export const Header = styled.div`
 export const Tab = styled.div`
   ${css.row('align-center')};
   flex-basis: 218px;
-  background: ${theme('grey.middle')};
+  background: ${theme('grey.hard')};
   border-bottom: 1px solid;
-  border-bottom-color: ${theme('grey.middle')};
+  border-bottom-color: ${theme('grey.hard')};
   height: 29px;
   min-width: 0;
   position: relative;
@@ -41,9 +41,9 @@ export const Tab = styled.div`
     align-self: flex-start;
     height: 28px;
     width: 16px;
-    background: ${theme('grey.middle')};
+    background: ${theme('grey.hard')};
     border-bottom: 1px solid;
-    border-bottom-color: ${theme('grey.middle')};
+    border-bottom-color: ${theme('grey.hard')};
     left: 0;
     transform: skewx(-25deg);
     transform-origin: left top;
@@ -57,9 +57,9 @@ export const Tab = styled.div`
     z-index: 10;
     align-self: flex-start;
     height: 28px;
-    background: ${theme('grey.middle')};
+    background: ${theme('grey.hard')};
     border-bottom: 1px solid;
-    border-bottom-color: ${theme('grey.middle')};
+    border-bottom-color: ${theme('grey.hard')};
 
     right: 0;
     transform: skewx(25deg);
@@ -84,9 +84,9 @@ export const TabContent = styled.div`
 export const AddressBar = styled.div`
   width: 100%;
   ${css.row('align-center')};
-  background: ${theme('grey.middle')};
+  background: ${theme('grey.hard')};
   border-bottom: 1px solid;
-  border-bottom-color: ${theme('grey.middle')};
+  border-bottom-color: ${theme('grey.hard')};
   padding-left: 4px;
   padding-right: 4px;
   height: 38px;

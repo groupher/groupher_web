@@ -10,7 +10,7 @@ import T from 'prop-types'
 import { buildLog } from '@/logger'
 import { Wrapper, OptionsWrapper, Option, Icon, Title, HeaderDivider } from './styles'
 
-const _log = buildLog('w:TabSelector:index')
+const log = buildLog('w:TabSelector:index')
 
 const TabSelector = ({ source, activeRaw, onChange }) => (
   <Wrapper>

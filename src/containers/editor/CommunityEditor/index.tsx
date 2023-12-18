@@ -28,6 +28,7 @@ const CommunityEditor: FC = () => {
 
   const {
     step,
+    headerStatus,
     selectTypeStatus,
     setupDomainStatus,
     setupInfoStatus,
@@ -38,7 +39,7 @@ const CommunityEditor: FC = () => {
 
   return (
     <Wrapper metric={metric}>
-      <Header step={step} showStep={!!selectTypeStatus.communityType} />
+      <Header status={headerStatus} />
       <Banner
         step={step}
         selectTypeStatus={selectTypeStatus}

@@ -14,26 +14,28 @@ export const SlideBox = styled.div`
   position: relative;
   ${css.row('align-center', 'justify-around')};
   width: 100%;
-  height: 28px;
+  height: 24px;
   border: 1px solid;
   border-color: ${theme('editor.border')};
   border-radius: 20px;
 `
-export const Bar = styled.div<{ width: string }>`
+type TBar = { $width: string; $colors: string[]; $darker: boolean }
+export const Bar = styled.div<TBar>`
   position: absolute;
   left: 0;
   top: -1px;
   border-radius: 15px;
-  height: 28px;
-  width: ${({ width }) => width};
-  background: linear-gradient(to right, #e29aaa, #c479de);
+  height: 24px;
+  width: ${({ $width }) => $width};
+  background: ${({ $colors }) => `linear-gradient(to right, ${$colors[1]}, ${$colors[0]})`};
+  filter: ${({ $darker }) => ($darker ? 'brightness(0.85)' : 'brightness(1.02)')};
   transition: width 0.25s;
 `
 export const BarDot = styled.div`
-  ${css.circle(20)};
+  ${css.circle(16)};
   background: white;
   position: absolute;
-  right: 3px;
+  right: 4px;
   top: 4px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 `
@@ -52,7 +54,7 @@ export const IndexDot = styled.div`
 export const Footer = styled.div`
   ${css.row('align-center', 'justify-around')};
   width: 100%;
-  margin-top: 7px;
+  margin-top: 8px;
 `
 
 type TNote = TActive & TSpace
@@ -69,9 +71,9 @@ export const Note = styled(WithMargin)<TNote>`
 
   transition: color 0.2s;
 `
-export const ShineNote = styled.div`
+export const ShineNote = styled.div<{ $colors: string[] }>`
   font-size: 12px;
-  background: linear-gradient(to right, #e29aaa, #c479de);
+  background: ${({ $colors }) => `linear-gradient(to right, ${$colors[0]}, ${$colors[1]})`};
   font-weight: 550;
   background-clip: text;
   -webkit-background-clip: text;

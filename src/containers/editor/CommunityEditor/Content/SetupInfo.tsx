@@ -2,17 +2,16 @@ import { FC, memo } from 'react'
 
 import FakeBrowser from './FakeBrowser'
 
-import type { TSetupInfoStatus, TCommunityType } from '../spec'
+import type { TSetupInfoStatus } from '../spec'
 import { STEP } from '../constant'
 import { Wrapper } from '../styles/content/setup_domain'
 
 type TProps = {
   status: TSetupInfoStatus
-  communityType: TCommunityType
 }
 
-const SetupInfo: FC<TProps> = ({ status, communityType }) => {
-  const { slug, title, desc, logo } = status
+const SetupInfo: FC<TProps> = ({ status }) => {
+  const { slug, title, desc, logo, communityType } = status
 
   return (
     <Wrapper>

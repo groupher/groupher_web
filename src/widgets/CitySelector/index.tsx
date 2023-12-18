@@ -5,7 +5,7 @@
  */
 
 import { FC, memo, useCallback, useEffect, useState } from 'react'
-import { find, includes, without, reject, isEmpty } from 'ramda'
+import { find, includes, without, reject, isEmpty, forEach } from 'ramda'
 
 import type { TCityOption, TSpace } from '@/spec'
 import { CITY_OPTIONS, HOME_CITY_OPTIONS, CITY_OPTION_VALUES } from '@/constant/city'
@@ -31,17 +31,17 @@ const CitySelector: FC<TProps> = ({ radius = 5, value = '', onChange = log, ...r
     const extraCities = []
     const selectedCities = []
 
-    splitedValue.forEach((item) => {
+    forEach((item) => {
       if (!includes(item, CITY_OPTION_VALUES)) {
         extraCities.push(item)
       } else {
         selectedCities.push(item)
       }
-    })
+    }, splitedValue)
 
     setSelected(selectedCities)
 
-    if (!isEmpty(extraCities)) {
+    if (!(isEmpty(extraCities) || reject(isEmpty, extraCities).length === 0)) {
       setExtraCities(extraCities.join(','))
       setShowMore(true)
     }

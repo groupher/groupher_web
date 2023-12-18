@@ -58,9 +58,7 @@ const Content: FC<TProps> = ({
       break
     }
     case STEP.SETUP_DOMAIN: {
-      stepComp = (
-        <SetupDomain status={setupDomainStatus} communityType={selectTypeStatus.communityType} />
-      )
+      stepComp = <SetupDomain status={setupDomainStatus} />
       break
     }
     case STEP.SETUP_EXTRA: {
@@ -68,9 +66,7 @@ const Content: FC<TProps> = ({
       break
     }
     default: {
-      stepComp = (
-        <SetupInfo status={setupInfoStatus} communityType={selectTypeStatus.communityType} />
-      )
+      stepComp = <SetupInfo status={setupInfoStatus} />
       break
     }
   }

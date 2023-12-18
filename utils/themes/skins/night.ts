@@ -116,7 +116,9 @@ const night = {
     blackBg: '#313131',
   },
   grey: {
-    middle: '#424242',
+    rare: '#272727',
+    middle: '#333333',
+    hard: '#414141',
   },
   shadow: {
     md: 'rgba(0, 0, 0, 0.03) 0px 6px 24px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;',
@@ -348,7 +350,7 @@ const night = {
   },
   dashboard: {
     menuCat: '#c1c1c1',
-    menuTitle: '#949494',
+    menuTitle: '#b7b7b7',
   },
   toggle: {
     shadow: '0 0 20px 0px rgb(0 0 0 / 46%) inset',

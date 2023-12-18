@@ -1,5 +1,11 @@
 import { FC, useState } from 'react'
+import { observer } from 'mobx-react-lite'
 
+import useTheme from '@/hooks/useTheme'
+import THEME from '@/constant/theme'
+
+import type { TCommunityType } from '../spec'
+import { COMMUNITY_CATS_TEXT_COLORS } from '../constant'
 import {
   Wrapper,
   SlideBox,
@@ -18,13 +24,20 @@ const STEP = {
   L: '91%',
 }
 
-const ScaleSelector: FC = () => {
+type TProps = {
+  communityType: TCommunityType
+}
+
+const ScaleSelector: FC<TProps> = ({ communityType }) => {
+  const { curTheme } = useTheme()
   const [step, setStep] = useState(STEP.X)
+  const colors = COMMUNITY_CATS_TEXT_COLORS[communityType]
+  const darker = curTheme === THEME.NIGHT
 
   return (
     <Wrapper>
       <SlideBox>
-        <Bar width={step}>
+        <Bar $width={step} $colors={colors} $darker={darker}>
           <BarDot />
         </Bar>
         <IndexDot onClick={() => setStep(STEP.S)} />
@@ -38,7 +51,9 @@ const ScaleSelector: FC = () => {
             独立开发者
           </Note>
         ) : (
-          <ShineNote onClick={() => setStep(STEP.S)}>独立开发者</ShineNote>
+          <ShineNote $colors={colors} onClick={() => setStep(STEP.S)}>
+            独立开发者
+          </ShineNote>
         )}
         <Note left={-12} onClick={() => setStep(STEP.X)} $active={step === STEP.X}>
           2-20
@@ -54,4 +69,4 @@ const ScaleSelector: FC = () => {
   )
 }
 
-export default ScaleSelector
+export default observer(ScaleSelector)

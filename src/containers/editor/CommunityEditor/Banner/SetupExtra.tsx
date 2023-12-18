@@ -31,7 +31,7 @@ type TProps = {
 }
 
 const SetupExtra: FC<TProps> = ({ status, validState }) => {
-  const { homepage, city, source } = status
+  const { homepage, city, source, communityType } = status
 
   const { isTitleValid, isDescValid, isLogoValid, submitting } = validState
   const isValid = isTitleValid && isDescValid && isLogoValid
@@ -42,9 +42,7 @@ const SetupExtra: FC<TProps> = ({ status, validState }) => {
         <ApplyIcon />
         更多信息
       </IntroTitle>
-      <IntroDesc>
-        此处填写的相关信息会在创建成功后，自动同步到该社区的 &quot;关于&quot; 页面
-      </IntroDesc>
+      <IntroDesc>此处相关信息会在社区创建后，同步到该社区的 &quot;关于&quot; 页面</IntroDesc>
       <InfoWrapper>
         <InputsWrapper>
           <Label>官方主页</Label>
@@ -57,7 +55,7 @@ const SetupExtra: FC<TProps> = ({ status, validState }) => {
           <Br bottom={35} />
 
           <Label>团队规模</Label>
-          <ScaleSelector />
+          <ScaleSelector communityType={communityType} />
           <Br bottom={40} />
 
           <Label>您（的团队）所在城市是？</Label>

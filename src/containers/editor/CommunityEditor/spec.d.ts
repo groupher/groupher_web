@@ -2,12 +2,19 @@ export type TCommunityType = 'WEB' | 'CLIENT' | 'HARDWARE' | 'GAME' | null
 
 export type TStep = 'SELECT_TYPE' | 'SETUP_DOMAIN' | 'SETUP_INFO' | 'SETUP_EXTRA' | 'FINISHED'
 
+export type THeaderStatus = {
+  step: TStep
+  showStep: boolean
+  communityType: TCommunityType
+}
+
 export type TSelectTypeStatus = {
   communityType: TCommunityType
 }
 
 export type TSetupDomainStatus = {
   slug: string
+  communityType: TCommunityType
 }
 
 export type TSetupInfoStatus = {
@@ -15,6 +22,7 @@ export type TSetupInfoStatus = {
   title: string
   desc: string
   logo: string
+  communityType: TCommunityType
 }
 
 export type TSetupExtraStatus = {
@@ -22,6 +30,7 @@ export type TSetupExtraStatus = {
   extraInfo: string
   city: string
   source: string
+  communityType: TCommunityType
 }
 
 export type TFinishedStatus = {

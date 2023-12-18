@@ -7,15 +7,16 @@ import AccountUnit from '@/widgets/AccountUnit'
 
 import StepMap from './StepMap'
 
-import type { TStep } from '../spec'
+import type { THeaderStatus } from '../spec'
 import { Wrapper, Logo, Title, Divider, SubTitle } from '../styles/header'
 
 type TProps = {
-  step: TStep
-  showStep: boolean
+  status: THeaderStatus
 }
 
-const Header: FC<TProps> = ({ step, showStep }) => {
+const Header: FC<TProps> = ({ status }) => {
+  const { step, showStep, communityType } = status
+
   return (
     <Wrapper>
       <Logo src={`${ASSETS_ENDPOINT}/communities/groupher-alpha.png`} />
@@ -23,7 +24,7 @@ const Header: FC<TProps> = ({ step, showStep }) => {
       <Divider />
       <SubTitle>创建社区</SubTitle>
       <SpaceGrow />
-      {showStep && <StepMap step={step} />}
+      {showStep && <StepMap step={step} communityType={communityType} />}
       <SpaceGrow />
 
       <AccountUnit top={-3} />
