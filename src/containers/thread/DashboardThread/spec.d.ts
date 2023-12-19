@@ -17,6 +17,7 @@ import type {
   TSizeSML,
   TDocLayout,
   TDashboardPath,
+  TKanbanLayout,
   TKanbanCardLayout,
   TWallpaperInfo,
   TAvatarLayout,
@@ -174,6 +175,7 @@ export type TUiSettings = {
   docLayout: TDocLayout
   docFaqLayout: TDocFaqLayout
   postLayout: TPostLayout
+  kanbanLayout: TKanbanLayout
   kanbanCardLayout: TKanbanCardLayout
   kanbanBgColors: TColorName[]
   changelogLayout: TChangelogLayout
@@ -212,6 +214,7 @@ export type TTouched = {
   topbarLayout: boolean
   topbarBg: boolean
   postLayout: boolean
+  kanbanLayout: boolean
   kanbanCardLayout: boolean
   kanbanBgColors: boolean
   changelogLayout: boolean
@@ -256,6 +259,7 @@ export type TSettingField =
   | 'city'
   | 'primaryColor'
   | 'postLayout'
+  | 'kanbanLayout'
   | 'kanbanCardLayout'
   | 'kanbanBgColors'
   | 'brandLayout'

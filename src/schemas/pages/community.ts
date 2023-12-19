@@ -88,6 +88,7 @@ export const community = `
           topbarLayout
           topbarBg
           broadcastLayout
+          kanbanLayout
           kanbanCardLayout
           kanbanBgColors
           docFaqLayout

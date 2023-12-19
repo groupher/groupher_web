@@ -31,9 +31,9 @@ import {
 } from '../../styles/layout/kanban_layout/board_layout'
 import { edit } from '../../logic'
 
-type TProps = Omit<TPropsBase, 'isTouched'>
+type TProps = Pick<TPropsBase, 'layout' | 'kanbanBgColors' | 'isBgColorsTouched' | 'saving'>
 
-const BoardLayout: FC<TProps> = ({ kanbanBgColors, isBgColorsTouched, saving }) => {
+const BoardLayout: FC<TProps> = ({ layout, kanbanBgColors, isBgColorsTouched, saving }) => {
   const [diceRotate, setDiceRotate] = useState(0)
 
   const ref = useRef(null)
@@ -56,7 +56,7 @@ const BoardLayout: FC<TProps> = ({ kanbanBgColors, isBgColorsTouched, saving }) 
 
   return (
     <>
-      <SectionLabel title="看板背景色" desc={<>看板页面每列的背景版颜色，默认为浅灰色。</>} />
+      <SectionLabel title="看板背景色" desc="看板页面每列的背景版颜色，默认为浅灰色。" />
 
       <ColorsWrapper>
         <Preset setable>

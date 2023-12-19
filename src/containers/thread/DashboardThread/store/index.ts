@@ -282,6 +282,7 @@ const DashboardThread = T.model('DashboardThread', {
 
       const bannerLayoutTouched = _isChanged('bannerLayout')
       const postLayoutTouched = _isChanged('postLayout')
+      const kanbanLayoutTouched = _isChanged('kanbanLayout')
       const kanbanCardLayoutTouched = _isChanged('kanbanCardLayout')
       const kanbanBgColorsTouched = _isChanged('kanbanBgColors')
       const docLayoutTouched = _isChanged('docLayout')
@@ -333,6 +334,7 @@ const DashboardThread = T.model('DashboardThread', {
         postLayout: postLayoutTouched,
         footerLayout: footerLayoutTouched,
         headerLayout: headerLayoutTouched,
+        kanbanLayout: kanbanLayoutTouched,
         kanbanCardLayout: kanbanCardLayoutTouched,
         kanbanBgColors: kanbanBgColorsTouched,
         docLayout: docLayoutTouched,
@@ -370,6 +372,7 @@ const DashboardThread = T.model('DashboardThread', {
           topbarLayoutTouched ||
           topbarBgTouched ||
           postLayoutTouched ||
+          kanbanLayoutTouched ||
           kanbanCardLayoutTouched ||
           changelogLayoutTouched ||
           glowFixedTouched ||

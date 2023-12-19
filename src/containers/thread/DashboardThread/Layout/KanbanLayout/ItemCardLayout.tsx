@@ -1,12 +1,10 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { KANBAN_CARD_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
+import { KANBAN_CARD_LAYOUT } from '@/constant/layout'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
-import { callDashboardDesc } from '@/signal'
 
-import { Row, Br, Space, SpaceGrow, Inline } from '@/widgets/Common'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
+import { Space, SpaceGrow, Brick } from '@/widgets/Common'
 import CheckLabel from '@/widgets/CheckLabel'
 
 import { SETTING_FIELD } from '../../constant'
@@ -15,97 +13,70 @@ import SavingBar from '../../SavingBar'
 
 import type { TProps as TPropsBase } from '.'
 import {
+  Wrapper,
   SelectWrapper,
   Layout,
   LayoutTitle,
   Block,
-  Bar,
+  Footer,
   UpvoteIcon,
   CommentIcon,
 } from '../../styles/layout/kanban_layout/item_card_layout'
 import { edit } from '../../logic'
 
-type TProps = Omit<TPropsBase, 'kanbanBgColors' | 'isBgColorsTouched'>
+type TProps = Pick<TPropsBase, 'cardLayout' | 'isTouched' | 'saving'>
 
-const KanbanItemLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
+const KanbanItemLayout: FC<TProps> = ({ cardLayout, isTouched, saving }) => {
   const primaryColor = usePrimaryColor()
 
   return (
-    <>
+    <Wrapper>
       <SectionLabel
-        title="看板布局"
-        desc={
-          <>
-            「看板」列表的默认布局，同时可对不同标签设置不同的布局，切换布局不影响已发布内容。
-            <Inline>
-              <ArrowButton
-                onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
-                fontSize={12}
-              >
-                查看示例
-              </ArrowButton>
-            </Inline>
-          </>
-        }
+        title="看板卡片布局"
+        desc="「看板」卡片的显示样式，只在整体布局为「经典」时有效。"
       />
       <SelectWrapper>
         <Layout onClick={() => edit(KANBAN_CARD_LAYOUT.SIMPLE, 'kanbanCardLayout')}>
-          <Block $active={layout === KANBAN_CARD_LAYOUT.SIMPLE} $color={primaryColor}>
-            <Bar thin long={15} />
-            <Br bottom={15} />
-            <Row>
-              <Bar long={60} />
-              <SpaceGrow />
-            </Row>
-            <Br bottom={20} />
-            <Row>
+          <Block $active={cardLayout === KANBAN_CARD_LAYOUT.SIMPLE} $color={primaryColor}>
+            <Brick $width={30} $height={5} $opacity={0.3} top={18} left={15} />
+            <Brick $width={128} $height={10} $opacity={0.4} top={32} />
+            <Brick $width={38} $height={5} $opacity={0.2} bottom={14} right={10} />
+            <Footer bottom={10}>
               <UpvoteIcon size={15} />
               <Space right={12} />
               <CommentIcon />
               <SpaceGrow />
-              <Bar long={12} thin />
-            </Row>
+            </Footer>
           </Block>
-          <LayoutTitle $active={layout === KANBAN_CARD_LAYOUT.SIMPLE}>
+          <LayoutTitle $active={cardLayout === KANBAN_CARD_LAYOUT.SIMPLE}>
             <CheckLabel
               title="简洁"
-              $active={layout === KANBAN_CARD_LAYOUT.SIMPLE}
+              $active={cardLayout === KANBAN_CARD_LAYOUT.SIMPLE}
               top={15}
               left={-15}
             />
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(KANBAN_CARD_LAYOUT.FULL, 'kanbanCardLayout')}>
-          <Block $active={layout === KANBAN_CARD_LAYOUT.FULL} $color={primaryColor}>
-            <Bar thin long={15} />
-            <Br bottom={10} />
-            <Row>
-              <Bar long={60} />
-              <SpaceGrow />
-            </Row>
-            <Row>
-              <Br bottom={20} />
-              <Bar long={80} thin />
-              <SpaceGrow />
-            </Row>
-            <Br bottom={8} />
-            <Row>
+          <Block $active={cardLayout === KANBAN_CARD_LAYOUT.FULL} $color={primaryColor}>
+            <Brick $width={30} $height={5} $opacity={0.3} top={15} left={15} />
+            <Brick $width={128} $height={8} $opacity={0.4} top={28} />
+            <Brick $width={80} $height={5} $opacity={0.2} top={44} />
+
+            <Brick $width={10} $height={10} $opacity={0.4} bottom={12} left={34} $radius={100} />
+            <Brick $width={10} $height={10} $opacity={0.4} bottom={12} left={48} $radius={100} />
+            <Brick $width={10} $height={10} $opacity={0.4} bottom={12} left={62} $radius={100} />
+
+            <Footer bottom={10}>
               <UpvoteIcon size={15} />
-              <Space right={2} />
-              <Bar long={4} />
-              <Space right={2} />
-              <Bar long={4} />
-              <Space right={2} />
-              <Bar long={4} />
-              <Space right={12} />
-              <SpaceGrow />
-              <Bar long={12} thin />
-            </Row>
+              <Space right={200} />
+              <CommentIcon />
+            </Footer>
           </Block>
-          <LayoutTitle $active={layout === KANBAN_CARD_LAYOUT.FULL}>
+          <LayoutTitle $active={cardLayout === KANBAN_CARD_LAYOUT.FULL}>
             <CheckLabel
               title="摘要"
-              $active={layout === KANBAN_CARD_LAYOUT.FULL}
+              $active={cardLayout === KANBAN_CARD_LAYOUT.FULL}
               top={15}
               left={-15}
             />
@@ -114,12 +85,13 @@ const KanbanItemLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
       </SelectWrapper>
 
       <SavingBar
+        width="540px"
         isTouched={isTouched}
         field={SETTING_FIELD.KANBAN_CARD_LAYOUT}
         loading={saving}
         top={20}
       />
-    </>
+    </Wrapper>
   )
 }
 
