@@ -7,7 +7,7 @@ import { Br } from '@/widgets/Common'
 
 import GlobalLayout from './GlobalLayout'
 import ItemCardLayout from './ItemCardLayout'
-import BoardLayout from './BoardLayout'
+import BgColorsSetter from './BgColorsSetter'
 
 import { Wrapper } from '../../styles/layout/kanban_layout'
 
@@ -39,7 +39,7 @@ const KanbanListLayout: FC<TProps> = ({
       )}
 
       <Br top={50} />
-      <BoardLayout
+      <BgColorsSetter
         layout={layout}
         kanbanBgColors={kanbanBgColors}
         isBgColorsTouched={isBgColorsTouched}

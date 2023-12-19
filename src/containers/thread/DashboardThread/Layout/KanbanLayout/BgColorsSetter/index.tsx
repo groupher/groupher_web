@@ -9,13 +9,13 @@ import useHover from '@/hooks/useHover'
 import { SpaceGrow, Space } from '@/widgets/Common'
 import ColorSelector from '@/widgets/ColorSelector'
 
-import { SETTING_FIELD, INIT_KANBAN_COLORS } from '../../constant'
-import SectionLabel from '../../SectionLabel'
-import SavingBar from '../../SavingBar'
+import { SETTING_FIELD, INIT_KANBAN_COLORS } from '../../../constant'
+import SectionLabel from '../../../SectionLabel'
+import SavingBar from '../../../SavingBar'
 
 import KanbanList from './KanbanList'
 
-import type { TProps as TPropsBase } from '.'
+import type { TProps as TPropsBase } from '..'
 
 import {
   BoardsWrapper,
@@ -28,8 +28,8 @@ import {
   Action,
   DiceIcon,
   ResetIcon,
-} from '../../styles/layout/kanban_layout/board_layout'
-import { edit } from '../../logic'
+} from '../../../styles/layout/kanban_layout/bg_colors_setter'
+import { edit } from '../../../logic'
 
 type TProps = Pick<TPropsBase, 'layout' | 'kanbanBgColors' | 'isBgColorsTouched' | 'saving'>
 
