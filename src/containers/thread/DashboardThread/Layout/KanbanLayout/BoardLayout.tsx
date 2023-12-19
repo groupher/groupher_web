@@ -136,6 +136,7 @@ const BoardLayout: FC<TProps> = ({ layout, kanbanBgColors, isBgColorsTouched, sa
       </MobileBoardsWrapper>
 
       <SavingBar
+        width="698px"
         isTouched={isBgColorsTouched}
         field={SETTING_FIELD.KANBAN_BG_COLORS}
         loading={saving}

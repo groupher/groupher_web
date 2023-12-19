@@ -8,10 +8,9 @@ import ResetSVG from '@/icons/Reset'
 export { Bar, Circle } from '..'
 
 export const BoardsWrapper = styled.div`
-  ${css.row('justify-center', 'align-end')};
+  ${css.row('align-center')};
   gap: 0 16px;
-  width: calc(100% + 16px);
-  margin-left: -7px;
+  width: 100%;
   margin-top: 26px;
 
   ${css.media.mobile`
@@ -40,7 +39,7 @@ export const Board = styled.div<TBoard>`
   gap: 6px;
   overflow: hidden;
 
-  width: 33.3%;
+  width: 220px;
   height: 280px;
   background-color: ${({ color }) => rainbowLight(color)};
 
@@ -59,6 +58,7 @@ export const Board = styled.div<TBoard>`
 export const ColorsWrapper = styled.div`
   ${css.row('align-center')};
   gap: 0 10px;
+  width: 94%;
 `
 export const Action = styled.div<TActive>`
   ${css.row('align-center')};
