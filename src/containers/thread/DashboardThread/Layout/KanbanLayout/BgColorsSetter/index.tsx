@@ -1,4 +1,4 @@
-import { FC, memo, useEffect, useState, useRef } from 'react'
+import { FC, memo, useState } from 'react'
 
 import { isEmpty } from 'ramda'
 
@@ -13,15 +13,11 @@ import { SETTING_FIELD, INIT_KANBAN_COLORS } from '../../../constant'
 import SectionLabel from '../../../SectionLabel'
 import SavingBar from '../../../SavingBar'
 
-import KanbanList from './KanbanList'
+import ClassicLayout from './ClassicLayout'
 
 import type { TProps as TPropsBase } from '..'
 
 import {
-  BoardsWrapper,
-  MobileBoardsWrapper,
-  MobileBoardsInnerWrapper,
-  Board,
   ColorsWrapper,
   Preset,
   ColorBall,
@@ -35,18 +31,6 @@ type TProps = Pick<TPropsBase, 'layout' | 'kanbanBgColors' | 'isBgColorsTouched'
 
 const BoardLayout: FC<TProps> = ({ layout, kanbanBgColors, isBgColorsTouched, saving }) => {
   const [diceRotate, setDiceRotate] = useState(0)
-
-  const ref = useRef(null)
-
-  /*
-   * reset when content visible
-   * scroll to top always
-   */
-  useEffect(() => {
-    if (ref?.current) {
-      ref.current.scrollLeft += 80
-    }
-  }, [ref])
 
   const [board1Ref, isBoard1Hovered] = useHover<HTMLDivElement>()
   const [board2Ref, isBoard2Hovered] = useHover<HTMLDivElement>()
@@ -110,30 +94,12 @@ const BoardLayout: FC<TProps> = ({ layout, kanbanBgColors, isBgColorsTouched, sa
         <Space right={0} />
       </ColorsWrapper>
 
-      <BoardsWrapper>
-        <Board color={BG1} $active={isBoard1Hovered}>
-          <KanbanList num={1} />
-        </Board>
-        <Board color={BG2} $active={isBoard2Hovered}>
-          <KanbanList num={2} />
-        </Board>
-        <Board color={BG3} $active={isBoard3Hovered}>
-          <KanbanList num={3} />
-        </Board>
-      </BoardsWrapper>
-      <MobileBoardsWrapper ref={ref}>
-        <MobileBoardsInnerWrapper>
-          <Board color={BG1}>
-            <KanbanList num={1} />
-          </Board>
-          <Board color={BG2}>
-            <KanbanList num={2} />
-          </Board>
-          <Board color={BG3}>
-            <KanbanList num={3} />
-          </Board>
-        </MobileBoardsInnerWrapper>
-      </MobileBoardsWrapper>
+      <ClassicLayout
+        kanbanBgColors={kanbanBgColors}
+        isBoard1Hovered={isBoard1Hovered}
+        isBoard2Hovered={isBoard2Hovered}
+        isBoard3Hovered={isBoard3Hovered}
+      />
 
       <SavingBar
         width="698px"
