@@ -2,23 +2,23 @@ import type { TTestable } from '@/spec'
 import Img from '@/Img'
 import styled, { css, theme } from '@/css'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
+type TWrapper = TTestable
+export const Wrapper = styled.div.attrs<TWrapper>(({ $testid }) => ({
   'data-test-id': $testid,
-}))<TTestable>`
+}))<TWrapper>`
   /* ${css.row('align-start', 'justify-between')}; */
   width: 100%;
   position: relative;
-  background: ${theme('alphaBg')};
-  padding-top: 10px;
-  padding-bottom: 12px;
-  margin-top: 3px;
-  margin-bottom: 12px;
+  background: ${theme('alphaBg2')};
+  margin-bottom: 10px;
   padding: 10px;
+  padding-top: 8px;
+  padding-bottom: 5px;
   border-radius: 6px;
   border: 1px solid transparent;
 
   &:hover {
-    border-color: ${theme('article.digest')};
+    /* border-color: ${theme('article.digest')}; */
     cursor: pointer;
     opacity: 0.9;
   }
@@ -27,7 +27,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
 `
 export const Header = styled.div`
   ${css.row('align-center', 'justify-between')};
-  margin-bottom: 10px;
+  margin-bottom: 4px;
 `
 export const TimeStamp = styled.div`
   font-size: 12px;
@@ -35,33 +35,22 @@ export const TimeStamp = styled.div`
 `
 export const Title = styled.div`
   ${css.lineClamp(2)}
-  font-size: 15px;
+  font-size: 14px;
   color: ${theme('article.title')};
   width: 100%;
   font-weight: 500;
-  line-height: 1.62;
   opacity: 0.9;
   letter-spacing: 0.02em;
-`
-export const Desc = styled.div`
-  ${css.lineClamp(1)}
-  font-size: 13px;
-  color: ${theme('article.digest')};
-  width: calc(100% - 10px);
-  margin-top: 6px;
-  margin-bottom: 5px;
+  line-height: 1.62;
 `
 export const Footer = styled.div`
   ${css.row('align-center', 'justify-between')};
-  font-size: 12px;
+  line-height: 20px;
   color: ${theme('article.info')};
-  margin-top: 18px;
-  margin-left: -10px;
-  width: calc(100% + 20px);
+  margin-top: 10px;
+  margin-left: -16px;
+  width: calc(100% + 30px);
   transform: scale(0.9);
-`
-export const UpvotesWrapper = styled.div`
-  margin-left: -6px;
 `
 export const Author = styled.div`
   ${css.row('align-center')};

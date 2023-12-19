@@ -3,8 +3,6 @@ import styled, { css, rainbow, theme } from '@/css'
 import type { TColor } from '@/spec'
 import UpvoteSVG from '@/icons/Upvote'
 
-export { Block } from '.'
-
 export const Wrapper = styled.div`
   margin-top: 15px;
   ${css.column('align-both')};

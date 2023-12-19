@@ -101,6 +101,7 @@ export type {
   TBannerLayout,
   TPostLayout,
   TKanbanLayout,
+  TKanbanCardLayout,
   TChangelogLayout,
   TDocLayout,
   TDocFAQLayout,

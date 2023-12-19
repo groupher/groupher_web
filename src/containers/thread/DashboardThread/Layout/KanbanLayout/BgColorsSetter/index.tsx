@@ -1,52 +1,38 @@
-import { FC, memo, useEffect, useState, useRef } from 'react'
+import { FC, memo, useState } from 'react'
 
 import { isEmpty } from 'ramda'
 
 import { COLOR_NAME } from '@/constant/colors'
+import { KANBAN_LAYOUT } from '@/constant/layout'
 import { randomBgNames } from '@/helper'
 import useHover from '@/hooks/useHover'
 
 import { SpaceGrow, Space } from '@/widgets/Common'
 import ColorSelector from '@/widgets/ColorSelector'
 
-import { SETTING_FIELD, INIT_KANBAN_COLORS } from '../../constant'
-import SectionLabel from '../../SectionLabel'
-import SavingBar from '../../SavingBar'
+import { SETTING_FIELD, INIT_KANBAN_COLORS } from '../../../constant'
+import SectionLabel from '../../../SectionLabel'
+import SavingBar from '../../../SavingBar'
 
-import KanbanList from './KanbanList'
+import ClassicLayout from './ClassicLayout'
+import WaterfallLayout from './WaterfallLayout'
 
-import type { TProps as TPropsBase } from '.'
+import type { TProps as TPropsBase } from '..'
 
 import {
-  BoardsWrapper,
-  MobileBoardsWrapper,
-  MobileBoardsInnerWrapper,
-  Board,
   ColorsWrapper,
   Preset,
   ColorBall,
   Action,
   DiceIcon,
   ResetIcon,
-} from '../../styles/layout/kanban_layout/board_layout'
-import { edit } from '../../logic'
+} from '../../../styles/layout/kanban_layout/bg_colors_setter'
+import { edit } from '../../../logic'
 
-type TProps = Omit<TPropsBase, 'isTouched'>
+type TProps = Pick<TPropsBase, 'layout' | 'kanbanBgColors' | 'isBgColorsTouched' | 'saving'>
 
-const BoardLayout: FC<TProps> = ({ kanbanBgColors, isBgColorsTouched, saving }) => {
+const BoardLayout: FC<TProps> = ({ layout, kanbanBgColors, isBgColorsTouched, saving }) => {
   const [diceRotate, setDiceRotate] = useState(0)
-
-  const ref = useRef(null)
-
-  /*
-   * reset when content visible
-   * scroll to top always
-   */
-  useEffect(() => {
-    if (ref?.current) {
-      ref.current.scrollLeft += 80
-    }
-  }, [ref])
 
   const [board1Ref, isBoard1Hovered] = useHover<HTMLDivElement>()
   const [board2Ref, isBoard2Hovered] = useHover<HTMLDivElement>()
@@ -56,7 +42,7 @@ const BoardLayout: FC<TProps> = ({ kanbanBgColors, isBgColorsTouched, saving }) 
 
   return (
     <>
-      <SectionLabel title="看板背景色" desc={<>看板页面每列的背景版颜色，默认为浅灰色。</>} />
+      <SectionLabel title="看板背景色" desc="看板页面每列的背景版颜色，默认为浅灰色。" />
 
       <ColorsWrapper>
         <Preset setable>
@@ -110,32 +96,24 @@ const BoardLayout: FC<TProps> = ({ kanbanBgColors, isBgColorsTouched, saving }) 
         <Space right={0} />
       </ColorsWrapper>
 
-      <BoardsWrapper>
-        <Board color={BG1} $active={isBoard1Hovered}>
-          <KanbanList num={1} />
-        </Board>
-        <Board color={BG2} $active={isBoard2Hovered}>
-          <KanbanList num={2} />
-        </Board>
-        <Board color={BG3} $active={isBoard3Hovered}>
-          <KanbanList num={3} />
-        </Board>
-      </BoardsWrapper>
-      <MobileBoardsWrapper ref={ref}>
-        <MobileBoardsInnerWrapper>
-          <Board color={BG1}>
-            <KanbanList num={1} />
-          </Board>
-          <Board color={BG2}>
-            <KanbanList num={2} />
-          </Board>
-          <Board color={BG3}>
-            <KanbanList num={3} />
-          </Board>
-        </MobileBoardsInnerWrapper>
-      </MobileBoardsWrapper>
+      {layout === KANBAN_LAYOUT.CLASSIC ? (
+        <ClassicLayout
+          kanbanBgColors={kanbanBgColors}
+          isBoard1Hovered={isBoard1Hovered}
+          isBoard2Hovered={isBoard2Hovered}
+          isBoard3Hovered={isBoard3Hovered}
+        />
+      ) : (
+        <WaterfallLayout
+          kanbanBgColors={kanbanBgColors}
+          isBoard1Hovered={isBoard1Hovered}
+          isBoard2Hovered={isBoard2Hovered}
+          isBoard3Hovered={isBoard3Hovered}
+        />
+      )}
 
       <SavingBar
+        width="698px"
         isTouched={isBgColorsTouched}
         field={SETTING_FIELD.KANBAN_BG_COLORS}
         loading={saving}

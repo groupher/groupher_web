@@ -93,6 +93,7 @@ export {
   themeCoverIndexMap,
   rainbow,
   rainbowLight,
+  rainbowSoft,
 } from './themes'
 
 // helpers

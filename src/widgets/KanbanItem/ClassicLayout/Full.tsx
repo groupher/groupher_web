@@ -18,7 +18,7 @@ import ArticleCatState from '@/widgets/ArticleCatState'
 import Upvote from '@/widgets/Upvote'
 import TagsList from '@/widgets/TagsList'
 
-import { Wrapper, Header, Footer, UpvotesWrapper, Title, Desc } from './styles/full'
+import { Wrapper, Header, Footer, UpvotesWrapper, Title, Desc } from '../styles/classic_layout/full'
 
 const _log = buildLog('w:KanbanItem:index')
 

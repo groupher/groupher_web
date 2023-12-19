@@ -11,7 +11,8 @@ export type TBannerLayout = 'header' | 'tabber' | 'sidebar'
 
 export type TTopbarLayout = 'yes' | 'no'
 export type TPostLayout = 'quora' | 'ph' | 'masonry' | 'minimal' | 'cover'
-export type TKanbanLayout = 'simple' | 'full'
+export type TKanbanLayout = 'classic' | 'waterfall'
+export type TKanbanCardLayout = 'simple' | 'full'
 export type TChangelogLayout = 'classic' | 'simple'
 export type TDocLayout = 'blocks' | 'lists' | 'cards' | 'article'
 export type TDocFAQLayout = 'flat' | 'collapse' | 'search_hint'
@@ -52,7 +53,7 @@ export type TDashboard = {
     docLayout: TDocLayout
     docFaqLayout: TDocFaqLayout
     postLayout: TPostLayout
-    kanbanLayout: TKanbanLayout
+    kanbanCardLayout: TKanbanCardLayout
     kanbanBgColors: TColorName[]
     changelogLayout: TChangelogLayout
     headerLayout: THeaderLayout
@@ -141,7 +142,7 @@ export type TGlobalLayout = {
   primaryColor: TColorName
   brand: TBrandLayout
   post: TPostLayout
-  kanban: TKanbanLayout
+  kanban: TKanbanCardLayout
   kanbanBgColors: TColorName[]
   doc: TDocLayout
   docFaq: TDocFAQLayout

@@ -19,6 +19,7 @@ import {
   DOC_FAQ_LAYOUT,
   POST_LAYOUT,
   KANBAN_LAYOUT,
+  KANBAN_CARD_LAYOUT,
   HEADER_LAYOUT,
   FOOTER_LAYOUT,
   RSS_TYPE,
@@ -140,7 +141,8 @@ export const settingsModalFields = {
   // layout
   primaryColor: T.opt(T.enum(values(COLOR_NAME)), COLOR_NAME.BLACK),
   postLayout: T.opt(T.enum(values(POST_LAYOUT)), POST_LAYOUT.QUORA),
-  kanbanLayout: T.opt(T.enum(values(KANBAN_LAYOUT)), KANBAN_LAYOUT.SIMPLE),
+  kanbanLayout: T.opt(T.enum(values(KANBAN_LAYOUT)), KANBAN_LAYOUT.CLASSIC),
+  kanbanCardLayout: T.opt(T.enum(values(KANBAN_CARD_LAYOUT)), KANBAN_CARD_LAYOUT.SIMPLE),
   kanbanBgColors: T.opt(T.array(T.string), INIT_KANBAN_COLORS),
 
   docLayout: T.opt(T.enum(values(DOC_LAYOUT)), DOC_LAYOUT.CARDS),

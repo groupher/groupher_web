@@ -43,13 +43,15 @@ export const TitleBase = styled.div`
 
 type TBlockBase = TActive & TColor
 export const BlockBase = styled.div<TBlockBase>`
-  opacity: ${({ $active }) => ($active ? 0.85 : theme('dashboardBlockOpacity'))};
+  position: relative;
+  opacity: ${({ $active }) => ($active ? 1 : theme('dashboardBlockOpacity'))};
   box-shadow: ${({ $active }) => ($active ? css.cardShadow : '')};
-  background-color: ${({ $active }) => ($active ? theme('alphaBg') : 'transparent')};
+  background-color: ${({ $active }) => ($active ? theme('dashboard.blockActiveBg') : 'transparent')};
 
   border: 1px solid;
   border-radius: 7px;
-  border-color: ${({ $active, $color }) => ($active ? rainbowLink($color) : theme('primary'))};
+  border-color: ${({ $active, $color }) =>
+    $active ? rainbowLink($color) : theme('button.upvoteBorder')};
   padding: 16px 15px;
 
   &:hover {
@@ -67,18 +69,19 @@ export const Bar = styled.div<TBar>`
   width: ${({ long }) => `${long || 10}%`};
   height: ${({ thin }) => (thin ? '4px' : '10px;')};
   background: ${({ thin, bold, $color }) => {
-    if ($color) return rainbow($color)
+    if ($color) return rainbow($color, 'article.title')
 
-    if (bold) return theme('article.title')
+    // if (bold) return theme('article.title')
+    // return thin ? theme('article.digest') : theme('primary')
 
-    return thin ? theme('article.digest') : theme('primary')
+    return theme('article.digest')
   }};
   z-index: 3;
   border-radius: 5px;
   opacity: ${({ thin, bold }) => {
-    if (bold) return 0.8
+    if (bold) return 0.6
 
-    return thin ? 0.6 : 1
+    return 0.5
   }};
 `
 

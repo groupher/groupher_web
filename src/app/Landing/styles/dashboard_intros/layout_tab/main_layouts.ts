@@ -1,7 +1,5 @@
 import styled, { css, theme } from '@/css'
 
-export { Block } from '.'
-
 export const Wrapper = styled.div`
   ${css.column('align-both')};
   margin-top: 30px;

@@ -159,6 +159,7 @@ const updateDashboardLayout = gql`
     $primaryColor: String
     $postLayout: String
     $kanbanLayout: String
+    $kanbanCardLayout: String
     $footerLayout: String
     $headerLayout: String
     $topbarLayout: String
@@ -176,6 +177,7 @@ const updateDashboardLayout = gql`
       primaryColor: $primaryColor
       postLayout: $postLayout
       kanbanLayout: $kanbanLayout
+      kanbanCardLayout: $kanbanCardLayout
       footerLayout: $footerLayout
       headerLayout: $headerLayout
       topbarLayout: $topbarLayout

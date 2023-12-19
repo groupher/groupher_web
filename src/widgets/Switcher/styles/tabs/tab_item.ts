@@ -73,7 +73,9 @@ export const Label = styled.span<TLabel>`
   font-weight: 500;
 
   &:hover {
-    color: ${({ $color }) => rainbow($color)};
+    color: ${({ $color }) => rainbow($color, 'article.title')};
     background: ${theme('hoverBg')};
   }
+
+  transition: all .2s;
 `

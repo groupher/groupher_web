@@ -6,38 +6,22 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import useIsSidebarLayout from '@/hooks/useIsSidebarLayout'
-import CustomScroller from '@/widgets/CustomScroller'
+import useKanbanLayout from '@/hooks/useKanbanLayout'
+import { KANBAN_LAYOUT } from '@/constant/layout'
 
-import Actions from './Actions'
-import Columns from './Columns'
+import WaterfallLayout from './WaterfallLayout'
+import ClassicLayout from './ClassicLayout'
 
-import { Wrapper, ColumnsWrapper, MobileColumnsWrapper, MobileColumnsInner } from './styles'
+import { Wrapper } from './styles'
 
 // const log = buildLog('C:KanbanThread')
 
 const KanbanThread: FC = () => {
-  const isSidebarLayout = useIsSidebarLayout()
+  const kanbanLayout = useKanbanLayout()
 
   return (
-    <Wrapper $testid="kanban-thread" isSidebarLayout={isSidebarLayout}>
-      <Actions />
-      <ColumnsWrapper>
-        <Columns />
-      </ColumnsWrapper>
-      <MobileColumnsWrapper>
-        <CustomScroller
-          direction="horizontal"
-          width="750px"
-          autoHide={false}
-          barSize="medium"
-          showShadow={false}
-        >
-          <MobileColumnsInner>
-            <Columns />
-          </MobileColumnsInner>
-        </CustomScroller>
-      </MobileColumnsWrapper>
+    <Wrapper>
+      {kanbanLayout === KANBAN_LAYOUT.WATERFALL ? <WaterfallLayout /> : <ClassicLayout />}
     </Wrapper>
   )
 }

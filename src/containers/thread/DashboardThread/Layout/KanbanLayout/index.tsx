@@ -1,17 +1,21 @@
 import { FC, memo } from 'react'
 
-import type { TColorName, TKanbanLayout } from '@/spec'
+import type { TColorName, TKanbanLayout, TKanbanCardLayout } from '@/spec'
 
-import { SexyDivider } from '@/widgets/Common'
+import { KANBAN_LAYOUT } from '@/constant/layout'
+import { Br } from '@/widgets/Common'
 
-import ItemLayout from './ItemLayout'
-import BoardLayout from './BoardLayout'
+import GlobalLayout from './GlobalLayout'
+import ItemCardLayout from './ItemCardLayout'
+import BgColorsSetter from './BgColorsSetter'
 
 import { Wrapper } from '../../styles/layout/kanban_layout'
 
 export type TProps = {
   layout: TKanbanLayout
+  cardLayout: TKanbanCardLayout
   isTouched: boolean
+  isCardTouched: boolean
   isBgColorsTouched: boolean
   saving: boolean
   kanbanBgColors: TColorName[]
@@ -19,16 +23,23 @@ export type TProps = {
 
 const KanbanListLayout: FC<TProps> = ({
   layout,
+  cardLayout,
   isTouched,
+  isCardTouched,
   isBgColorsTouched,
   kanbanBgColors,
   saving,
 }) => {
   return (
     <Wrapper>
-      <ItemLayout layout={layout} isTouched={isTouched} saving={saving} />
-      <SexyDivider top={50} bottom={50} />
-      <BoardLayout
+      <GlobalLayout layout={layout} isTouched={isTouched} saving={saving} />
+
+      {layout === KANBAN_LAYOUT.CLASSIC && (
+        <ItemCardLayout cardLayout={cardLayout} isTouched={isCardTouched} saving={saving} />
+      )}
+
+      <Br top={50} />
+      <BgColorsSetter
         layout={layout}
         kanbanBgColors={kanbanBgColors}
         isBgColorsTouched={isBgColorsTouched}
