@@ -43,25 +43,25 @@ const ClassicLayout: FC<TProps> = ({
   return (
     <>
       <BoardsWrapper>
-        <Board color={BG1} $active={isBoard1Hovered}>
+        <Board $color={BG1} $active={isBoard1Hovered}>
           <KanbanList num={1} />
         </Board>
-        <Board color={BG2} $active={isBoard2Hovered}>
+        <Board $color={BG2} $active={isBoard2Hovered}>
           <KanbanList num={2} />
         </Board>
-        <Board color={BG3} $active={isBoard3Hovered}>
+        <Board $color={BG3} $active={isBoard3Hovered}>
           <KanbanList num={3} />
         </Board>
       </BoardsWrapper>
       <MobileBoardsWrapper ref={ref}>
         <MobileBoardsInnerWrapper>
-          <Board color={BG1}>
+          <Board $color={BG1}>
             <KanbanList num={1} />
           </Board>
-          <Board color={BG2}>
+          <Board $color={BG2}>
             <KanbanList num={2} />
           </Board>
-          <Board color={BG3}>
+          <Board $color={BG3}>
             <KanbanList num={3} />
           </Board>
         </MobileBoardsInnerWrapper>

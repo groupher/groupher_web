@@ -1,4 +1,4 @@
-import type { TActive, TColorName } from '@/spec'
+import type { TActive, TColor } from '@/spec'
 
 import styled, { css, theme, rainbowLight } from '@/css'
 
@@ -29,7 +29,7 @@ export const MobileBoardsInnerWrapper = styled.div`
   width: 150%;
   gap: 0 18px;
 `
-type TBoard = { color?: TColorName } & TActive
+type TBoard = TColor & TActive
 export const Board = styled.div<TBoard>`
   ${css.column()};
   padding: 8px;
@@ -38,7 +38,7 @@ export const Board = styled.div<TBoard>`
 
   width: 220px;
   height: 280px;
-  background-color: ${({ color }) => rainbowLight(color)};
+  background-color: ${({ $color }) => rainbowLight($color)};
 
   border-radius: 8px;
   border-bottom-left-radius: 0;

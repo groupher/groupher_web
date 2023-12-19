@@ -12,7 +12,7 @@ export const Wrapper = styled.div<{ opacity: number }>`
   background: ${theme('alphaBg2')};
 `
 export const Bar = styled(BarBase)`
-  background: ${theme('article.digest')};
+  background: ${theme('hint')};
 `
 export const Footer = styled.div`
   ${css.row('align-center')};

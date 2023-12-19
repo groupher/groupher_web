@@ -3,6 +3,7 @@ import { FC, memo, useState } from 'react'
 import { isEmpty } from 'ramda'
 
 import { COLOR_NAME } from '@/constant/colors'
+import { KANBAN_LAYOUT } from '@/constant/layout'
 import { randomBgNames } from '@/helper'
 import useHover from '@/hooks/useHover'
 
@@ -14,6 +15,7 @@ import SectionLabel from '../../../SectionLabel'
 import SavingBar from '../../../SavingBar'
 
 import ClassicLayout from './ClassicLayout'
+import WaterfallLayout from './WaterfallLayout'
 
 import type { TProps as TPropsBase } from '..'
 
@@ -94,12 +96,21 @@ const BoardLayout: FC<TProps> = ({ layout, kanbanBgColors, isBgColorsTouched, sa
         <Space right={0} />
       </ColorsWrapper>
 
-      <ClassicLayout
-        kanbanBgColors={kanbanBgColors}
-        isBoard1Hovered={isBoard1Hovered}
-        isBoard2Hovered={isBoard2Hovered}
-        isBoard3Hovered={isBoard3Hovered}
-      />
+      {layout === KANBAN_LAYOUT.CLASSIC ? (
+        <ClassicLayout
+          kanbanBgColors={kanbanBgColors}
+          isBoard1Hovered={isBoard1Hovered}
+          isBoard2Hovered={isBoard2Hovered}
+          isBoard3Hovered={isBoard3Hovered}
+        />
+      ) : (
+        <WaterfallLayout
+          kanbanBgColors={kanbanBgColors}
+          isBoard1Hovered={isBoard1Hovered}
+          isBoard2Hovered={isBoard2Hovered}
+          isBoard3Hovered={isBoard3Hovered}
+        />
+      )}
 
       <SavingBar
         width="698px"

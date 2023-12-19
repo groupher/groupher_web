@@ -35,22 +35,22 @@ const KanbanGlobalLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
             <Brick top={15} right={20} $height={6} $width={25} $opacity={0.1} />
 
             <Brick bottom={0} left={13} $height={140} $width={78} $opacity={0.06} />
-            <Brick bottom={105} left={20} $height={25} $width={63} $opacity={0.2} />
-            <Brick bottom={72} left={20} $height={25} $width={63} $opacity={0.16} />
-            <Brick bottom={40} left={20} $height={25} $width={63} $opacity={0.13} />
-            <Brick bottom={8} left={20} $height={25} $width={63} $opacity={0.1} />
+            <Brick bottom={105} left={20} $height={25} $width={63} $opacity={0.1} />
+            <Brick bottom={72} left={20} $height={25} $width={63} $opacity={0.1} />
+            <Brick bottom={40} left={20} $height={25} $width={63} $opacity={0.08} />
+            <Brick bottom={8} left={20} $height={25} $width={63} $opacity={0.05} />
 
             <Brick bottom={0} left={100} $height={140} $width={78} $opacity={0.06} />
-            <Brick bottom={105} left={108} $height={25} $width={63} $opacity={0.2} />
-            <Brick bottom={72} left={108} $height={25} $width={63} $opacity={0.16} />
-            <Brick bottom={40} left={108} $height={25} $width={63} $opacity={0.13} />
-            <Brick bottom={8} left={108} $height={25} $width={63} $opacity={0.1} />
+            <Brick bottom={105} left={108} $height={25} $width={63} $opacity={0.1} />
+            <Brick bottom={72} left={108} $height={25} $width={63} $opacity={0.1} />
+            <Brick bottom={40} left={108} $height={25} $width={63} $opacity={0.08} />
+            <Brick bottom={8} left={108} $height={25} $width={63} $opacity={0.05} />
 
             <Brick bottom={0} left={188} $height={140} $width={78} $opacity={0.06} />
-            <Brick bottom={105} left={195} $height={25} $width={63} $opacity={0.2} />
-            <Brick bottom={72} left={195} $height={25} $width={63} $opacity={0.16} />
-            <Brick bottom={40} left={195} $height={25} $width={63} $opacity={0.13} />
-            <Brick bottom={8} left={195} $height={25} $width={63} $opacity={0.1} />
+            <Brick bottom={105} left={195} $height={25} $width={63} $opacity={0.1} />
+            <Brick bottom={72} left={195} $height={25} $width={63} $opacity={0.1} />
+            <Brick bottom={40} left={195} $height={25} $width={63} $opacity={0.08} />
+            <Brick bottom={8} left={195} $height={25} $width={63} $opacity={0.05} />
           </Block>
           <LayoutTitle $active={layout === KANBAN_LAYOUT.CLASSIC}>
             <CheckLabel
