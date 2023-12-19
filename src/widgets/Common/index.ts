@@ -1,7 +1,8 @@
 import * as NextLink from 'next/link'
 
-import type { TActive, TSpace } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TActive, TSpace, TColor } from '@/spec'
+import { COLOR_NAME } from '@/constant/colors'
+import styled, { css, theme, rainbow } from '@/css'
 
 // @ts-ignore
 export const Link = styled(NextLink)`
@@ -139,4 +140,13 @@ export const WithPosition = styled.div<TSpace>`
   ${({ left }) => (left !== undefined ? `left: ${left}px;` : '')}
   ${({ bottom }) => (bottom !== undefined ? `bottom: ${bottom}px;` : '')}
   ${({ right }) => (right !== undefined ? `right: ${right}px;` : '')}
+`
+
+type TBrick = { $width?: number; $height?: number; $radius?: number; $opacity?: number } & TColor
+export const Brick = styled(WithPosition)<TBrick>`
+  width: ${({ $width }) => `${$width || 20}px`};
+  height: ${({ $height }) => `${$height || 6}px`};
+  border-radius: ${({ $radius }) => `${$radius || 5}px`};
+  opacity: ${({ $opacity }) => `${$opacity || 1}`};
+  background: ${({ $color }) => rainbow($color || COLOR_NAME.BLACK, 'article.title')};
 `

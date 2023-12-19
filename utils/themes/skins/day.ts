@@ -67,7 +67,7 @@ const day = {
   hint,
   articleCardShadow: '0 2px 40px 0 rgb(224 226 228 / 27%)',
   articleCardHover: '#c1c1c1',
-  dashboardBlockOpacity: 0.3,
+  dashboardBlockOpacity: 0.65,
 
   rainbow: {
     red: '#ca5f4d',

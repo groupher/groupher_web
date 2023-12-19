@@ -1,8 +1,6 @@
 import styled, { css, theme, rainbow } from '@/css'
 import type { TColor } from '@/spec'
 
-export { Block } from '.'
-
 export const Wrapper = styled.div`
   ${css.row('align-both')};
   padding: 0 16px;

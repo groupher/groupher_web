@@ -76,4 +76,6 @@ export const Label = styled.span<TLabel>`
     color: ${({ $color }) => rainbow($color)};
     background: ${theme('hoverBg')};
   }
+
+  transition: all .2s;
 `

@@ -22,7 +22,7 @@ import {
   Bar,
   UpvoteIcon,
   CommentIcon,
-} from '../../styles/layout/kanban_layout/item_layout'
+} from '../../styles/layout/kanban_layout/item_card_layout'
 import { edit } from '../../logic'
 
 type TProps = Omit<TPropsBase, 'kanbanBgColors' | 'isBgColorsTouched'>

@@ -1,12 +1,11 @@
 import { FC } from 'react'
 
 import type { TColorName } from '@/spec'
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow, Brick } from '@/widgets/Common'
 import ColorSelector from '@/widgets/ColorSelector'
 
 import {
   Wrapper,
-  Block,
   ColorBox,
   ColorBall,
   Title,
@@ -33,7 +32,7 @@ const Header: FC<TProps> = ({ primaryColor, onPrimaryChange }) => {
 
       <Title>你的社区</Title>
       <SpaceGrow />
-      <Block right={10} $opacity={0.15} $width={30} top={12} $color={primaryColor} />
+      <Brick right={10} $opacity={0.15} $width={30} top={12} $color={primaryColor} />
     </Wrapper>
   )
 }
