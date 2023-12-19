@@ -5,11 +5,10 @@ type TWrapper = TTestable & { isSidebarLayout: boolean }
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
 }))<TWrapper>`
-  ${css.row('align-start')};
+  ${css.column('align-start')};
   width: 100%;
-  min-height: 100vh;
   height: 100%;
   margin-top: 40px;
-  gap: 0 50px;
+  gap: 30px 0;
 `
 export const holder = 1

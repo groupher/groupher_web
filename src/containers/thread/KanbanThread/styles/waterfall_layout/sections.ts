@@ -1,4 +1,4 @@
-import styled, { css, theme, rainbowLight, rainbow } from '@/css'
+import styled, { css, theme, rainbow, rainbowSoft } from '@/css'
 import type { TColor } from '@/spec'
 
 import GtdWipSVG from '@/icons/GtdWip'
@@ -8,7 +8,7 @@ import AddSVG from '@/icons/Add'
 
 export const Wrapper = styled.div`
   ${css.column('align-start')};
-  flex-grow: 1;
+  width: 100%;
   gap: 40px 0;
   min-height: 500px;
 `
@@ -19,10 +19,10 @@ export const Column = styled.div`
 `
 export const Header = styled.div<TColor>`
   ${css.row('align-center')};
-  background-color: ${({ $color }) => rainbowLight($color)};
+  background: ${({ $color }) => rainbowSoft($color)};
   height: 42px;
   padding: 0 20px;
-  border-radius: 10px;
+  border-radius: 20px;
   width: 100%;
   filter: saturate(0.85);
 `

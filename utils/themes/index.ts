@@ -67,4 +67,12 @@ export const rainbowLight = (color: TColorName | string): string => {
   return theme(`rainbow.${camelize(color)}Bg` as TFlatThemeKey)
 }
 
+export const rainbowSoft = (color: TColorName | string): string => {
+  if (color === COLOR_NAME.BLACK) {
+    return theme('hoverBg')
+  }
+
+  return theme(`rainbow.${camelize(color)}Soft` as TFlatThemeKey)
+}
+
 export { default as themeMeta } from './theme_meta'

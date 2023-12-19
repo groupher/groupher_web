@@ -17,7 +17,6 @@ const descText = '#666'
 const threadTitle = '#333333'
 const hoverBg = '#efefef78' // '#efefef9c' // with alpha
 const hint = '#9d9999'
-// const primaryMate = 'orange'
 
 const day = {
   _meta: {
@@ -73,39 +72,50 @@ const day = {
   rainbow: {
     red: '#ca5f4d',
     redBg: '#ffbfba3d',
+    redSoft: 'linear-gradient(90deg, #fec0bb33 0%, #f8e4e226 100%)',
 
     orange: 'orange',
     orangeBg: '#FEF7E8',
+    orangeSoft: 'linear-gradient(90deg, #fcb32d26 0%, #f5dfb726 100%)',
 
     brown: '#8d691e',
     brownBg: '#fff3df',
+    brownSoft: 'linear-gradient(90deg, #cf806921 0%, #dbd0d01c 100%)',
 
     yellow: '#c7b96d',
     yellowBg: '#FEFBE8',
+    yellowSoft: 'linear-gradient(90deg, #fffde5 0%, rgb(255 252 241 / 37%) 100%)',
 
     green: '#699411',
     greenBg: '#eefdd89c',
+    greenSoft: 'linear-gradient(90deg, #e3f3cc4a 0%, #f2ffe05c 100%)',
 
     greenLight: '#79d08f',
     greenLightBg: '#e3f3cc4a',
+    greenLightSoft: 'linear-gradient(90deg, #e3f3cc4a 0%, #f2ffe05c 100%)',
 
     cyan: '#24878C',
     cyanBg: '#e1fcff',
+    cyanSoft: 'linear-gradient(90deg, #e1fcff94 0%, #e1fcff5e 100%)',
 
     // naming, fix later
     cyanLight: '#00B5CC',
     cyanLightBg: '#e1fcff94',
+    cyanLightSoft: '#e1fcff94',
 
     blue: '#5073C6',
     blueBg: '#E7EDF7',
+    blueSoft: 'linear-gradient(90deg, #f3f7ff 0%, #f5f8ffb5 100%);',
 
     purple: '#7d519e',
     purpleBg: '#f7d8fd38',
+    purpleSoft: 'linear-gradient(90deg, #f7d8fd38 0%, #f5e5f838 100%)',
 
     grey: '#106d8a',
 
     pink: '#b36976',
     pinkBg: '#ffd8ea59',
+    pinkSoft: '#ffd8ea59',
 
     pinkLite: '#82606b',
     pinkBtnText: '#ded0d0',
@@ -113,6 +123,7 @@ const day = {
     black: '#333333',
     blackRow: '#333333',
     blackBg: '#f4f4f4',
+    blackSoft: '#f4f4f4',
   },
   grey: {
     rare: '#fafafa',

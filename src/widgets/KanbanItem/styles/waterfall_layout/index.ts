@@ -1,4 +1,3 @@
-import Img from '@/Img'
 import styled, { css, theme } from '@/css'
 
 export const Wrapper = styled.div`

@@ -2,9 +2,9 @@ import styled, { css, theme } from '@/css'
 import KanbanSVG from '@/icons/Kanban'
 
 export const Wrapper = styled.div`
-  ${css.column('justify-between', 'align-start')};
-  width: 260px;
-  padding-left: 20px;
+  ${css.row('justify-between', 'align-center')};
+  padding: 0 2px;
+  width: 100%;
 `
 export const Title = styled.div`
   ${css.row('align-center')};
@@ -21,7 +21,7 @@ export const Count = styled.div`
   margin-top: 2px;
   font-weight: 400;
 `
-export const TopPart = styled.div`
+export const LeftPart = styled.div`
   ${css.row('align-center')};
 `
 export const KanbanIcon = styled(KanbanSVG)`
@@ -35,7 +35,7 @@ export const ModeWrapper = styled.div`
   margin-top: 2px;
   transform: scale(0.85);
 `
-export const BottomPart = styled.div`
+export const RightPart = styled.div`
   ${css.row('align-center')};
 `
 export const JoinTitle = styled.div`
