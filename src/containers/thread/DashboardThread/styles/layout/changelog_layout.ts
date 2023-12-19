@@ -2,7 +2,7 @@ import type { TActive } from '@/spec'
 
 import styled, { css, theme } from '@/css'
 
-import UpvoteSVG from '@/icons/Heart'
+import UpvoteSVG from '@/icons/Upvote'
 import CommentSVG from '@/icons/Comment'
 
 import { Bar, BaseSection, BlockBase } from '.'
@@ -46,7 +46,6 @@ export const Block = styled(BlockBase)`
   height: 380px;
   padding: 30px 50px;
 `
-
 export const Picture = styled.div`
   width: 100%;
   height: 60px;
@@ -79,9 +78,9 @@ export const Circle = styled.div<{ radius?: number }>`
 `
 export const UpvoteIcon = styled(UpvoteSVG)<{ size: number }>`
   ${({ size }) => css.size(size)};
-  fill: ${theme('article.title')};
+  fill: ${theme('article.digest')};
 `
 export const CommentIcon = styled(CommentSVG)`
   ${css.size(12)};
-  fill: ${theme('article.title')};
+  fill: ${theme('article.digest')};
 `

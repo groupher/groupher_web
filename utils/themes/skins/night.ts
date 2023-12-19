@@ -363,6 +363,7 @@ const night = {
   dashboard: {
     menuCat: '#c1c1c1',
     menuTitle: '#b7b7b7',
+    blockActiveBg: '#2b2a2a7a',
   },
   toggle: {
     shadow: '0 0 20px 0px rgb(0 0 0 / 46%) inset',

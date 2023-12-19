@@ -44,9 +44,9 @@ export const TitleBase = styled.div`
 type TBlockBase = TActive & TColor
 export const BlockBase = styled.div<TBlockBase>`
   position: relative;
-  opacity: ${({ $active }) => ($active ? 0.85 : theme('dashboardBlockOpacity'))};
+  opacity: ${({ $active }) => ($active ? 1 : theme('dashboardBlockOpacity'))};
   box-shadow: ${({ $active }) => ($active ? css.cardShadow : '')};
-  background-color: ${({ $active }) => ($active ? theme('alphaBg') : 'transparent')};
+  background-color: ${({ $active }) => ($active ? theme('dashboard.blockActiveBg') : 'transparent')};
 
   border: 1px solid;
   border-radius: 7px;

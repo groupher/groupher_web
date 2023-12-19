@@ -362,6 +362,7 @@ const day = {
   dashboard: {
     menuCat: threadTitle,
     menuTitle: descText,
+    blockActiveBg: '#ffffff95',
   },
   toggle: {
     shadow: '0 0 10px 0 rgb(185 185 185 / 25%) inset',
