@@ -128,6 +128,7 @@ export const CursorIcon = styled(CursorSVG)<TCursor>`
   position: absolute;
   top: ${({ top }) => `${top}px`};
   right: ${({ right }) => `${right}px`};
+  opacity: 0.8;
   transition: all 0.2s;
 `
 export const CursorText = styled.div<TCursor>`
