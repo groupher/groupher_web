@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
   }
 `
 export const Digest = styled.div`
-  font-size: 16px;
+  font-size: 18px;
   color: ${theme('hint')};
   margin-bottom: 20px;
   opacity: 0.9;

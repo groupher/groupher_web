@@ -32,14 +32,14 @@ export const SwitchBox = styled.div<{ $hovering: boolean }>`
   width: 65px;
   height: 30px;
   position: absolute;
-  left: 95px;
+  left: 93px;
   top: 100px;
   z-index: 11;
   border: 1px solid;
   border-radius: 10px;
   border-color: ${theme('divider')};
 
-  transform: ${({ $hovering }) => ($hovering ? 'rotate(180deg)' : '')};
+  transform: ${({ $hovering }) => ($hovering ? 'rotate(180deg) scale(1);' : 'scale(0.8)')};
   transition: all .3s;
 `
 export const ThemeBox = styled.div<TActive>`

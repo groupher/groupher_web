@@ -138,11 +138,14 @@ const day = {
   },
   // inspired by https://endless.design/
   gradientBg: {
-    purple: 'linear-gradient(-149deg,#faf5ffd4 0%,rgb(222 198 243) 100%)',
-    blue: 'linear-gradient(310deg,#fafdff 13%,rgb(209 237 255 / 83%) 100%)',
-    green: 'linear-gradient(133deg,#fcfffc 0%,rgb(216 240 221 / 80%) 100%)',
+    purple: 'linear-gradient(152deg,#faf5ff9c 0%,rgb(222 198 243) 100%)',
+    blue: 'linear-gradient(310deg,#f6f3ff54 13%,rgb(209 237 255 / 83%) 100%)',
+    green: 'linear-gradient(133deg,#fffbf6 0%,rgb(216 240 221 / 80%) 100%)',
     orange: 'linear-gradient(244deg,#fffcf7 0%,rgb(255 234 217 / 72%) 100%)',
-    pink: 'linear-gradient(140deg,#fff5fb99 0%,rgb(255 231 230 / 84%) 100%)',
+    pink: 'linear-gradient(224deg,#d8faff2b 0%,rgb(255 223 234 / 79%) 100%)',
+    black: 'linear-gradient(220deg,#fafafaba 0%,#ededede3 100%)',
+    cyan: 'linear-gradient(213deg,#fffff35c 13%,#d5faffd9 100%)',
+    yellow: 'linear-gradient(53deg,#f6fff233 20%,rgb(255 251 216 / 58%) 100%)',
   },
   header: {
     fg: '#8c8c8c',

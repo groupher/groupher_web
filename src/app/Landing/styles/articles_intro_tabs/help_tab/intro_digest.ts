@@ -23,7 +23,7 @@ export const Digest = styled.div`
   width: 300px;
   margin-top: -40px;
   margin-bottom: 16px;
-  font-size: 16px;
+  font-size: 18px;
 `
 
 export const Hightlight = styled.span`

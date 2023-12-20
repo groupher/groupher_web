@@ -13,7 +13,7 @@ const IntroDigest: FC = () => {
   return (
     <Wrapper>
       <Digest>
-        官方团队发布更新日志，方便<Hightlight>用户</Hightlight>快速获取产品
+        官方团队发布，方便<Hightlight>用户</Hightlight>快速获取产品
         <Hightlight>新功能</Hightlight>以及<Hightlight>Bug 修复</Hightlight>等。
       </Digest>
       <DesktopOnly>

@@ -21,9 +21,8 @@ export const Digest = styled.div`
   width: 300px;
   margin-top: -40px;
   margin-bottom: 30px;
-  font-size: 16px;
+  font-size: 18px;
 `
-
 export const Hightlight = styled.span`
   color: ${theme('rainbow.purple')};
   font-weight: 500;

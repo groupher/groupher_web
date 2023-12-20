@@ -5,6 +5,9 @@ import MobileFirst from './MobileFirst'
 import RichContent from './RichContent'
 import DarkMode from './DarkMode'
 import Security from './Security'
+import Design from './Design'
+import Integration from './Integration'
+import Statistics from './Statistics'
 
 import {
   Wrapper,
@@ -12,6 +15,7 @@ import {
   Title,
   Desc,
   CardsWrapper,
+  FooterCards,
   LeftCards,
   RightCards,
 } from '../styles/feature_wall'
@@ -34,6 +38,11 @@ const FeatureWall: FC = () => {
           <BundleSizeCard />
         </RightCards>
       </CardsWrapper>
+      <FooterCards>
+        <Integration />
+        <Statistics />
+        <Design />
+      </FooterCards>
     </Wrapper>
   )
 }

@@ -10,7 +10,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   margin-right: 50px;
 
   *::selection {
-    background-color: ${theme('rainbow.orange')} !important;
+    background-color: ${theme('rainbow.red')} !important;
     color: white;
   }
 `
@@ -21,7 +21,7 @@ export const Digest = styled.div`
   width: 300px;
   margin-top: -100px;
   margin-bottom: 30px;
-  font-size: 16px;
+  font-size: 18px;
 `
 export const Hightlight = styled.span`
   color: ${theme('rainbow.red')};
