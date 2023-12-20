@@ -32,14 +32,14 @@ const FeatureWall: FC = () => {
           <MobileFirst />
           <RichContent />
           <DarkMode />
-          <Security />
+          <Integration />
         </LeftCards>
         <RightCards>
           <BundleSizeCard />
         </RightCards>
       </CardsWrapper>
       <FooterCards>
-        <Integration />
+        <Security />
         <Statistics />
         <Design />
       </FooterCards>

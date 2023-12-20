@@ -1,6 +1,8 @@
 import type { TTestable } from '@/spec'
 import styled, { css, theme } from '@/css'
 
+import { HighlightWord } from '..'
+
 export { FeatList } from '..'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
@@ -26,7 +28,7 @@ export const Digest = styled.div`
   font-size: 18px;
 `
 
-export const Hightlight = styled.span`
+export const Highlight = styled(HighlightWord)`
   color: ${theme('rainbow.cyan')};
-  font-weight: 500;
+  opacity: 0.7;
 `

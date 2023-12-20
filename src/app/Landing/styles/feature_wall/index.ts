@@ -37,18 +37,12 @@ export const BaseCard = styled.div<TColor>`
   background: ${({ $color }) => gradientBg($color)};
   border: 1px dotted;
   border-color: transparent;
-  /** this maybe a chrome bug, the purple panel show's top border if not use it */
-  border-top: none;
-  border-right: none;
-
   border-radius: 10px;
   position: relative;
   cursor: pointer;
   padding: 0 12px;
 
   &:hover {
-    border-top: 1px dotted;
-    border-right: 1px dotted;
     border-color: ${({ $color }) => rainbow($color)};
     box-shadow: ${theme('button.boxShadow')};
   }

@@ -16,3 +16,10 @@ export const MobileIntroLists = styled.div`
   padding-left: 10px;
   margin-top: -25px;
 `
+
+export const HighlightWord = styled.span`
+  font-weight: 450;
+  opacity: 0.8;
+  margin-left: 1px;
+  margin-right: 1px;
+`

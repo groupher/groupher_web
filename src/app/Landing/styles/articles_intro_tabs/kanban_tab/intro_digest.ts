@@ -1,5 +1,7 @@
 import styled, { css, theme } from '@/css'
 
+import { HighlightWord } from '..'
+
 export { FeatList } from '..'
 
 export const Wrapper = styled.div`
@@ -20,11 +22,9 @@ export const Digest = styled.div`
   margin-top: 10px;
   margin-left: 76px;
 `
-export const Highlight = styled.span`
+export const Highlight = styled(HighlightWord)`
   color: ${theme('rainbow.blue')};
-  font-weight: 500;
-  margin-left: 1px;
-  margin-right: 1px;
+  opacity: 0.9;
 `
 export const InnerWrapper = styled.div`
   ${css.column('align-start')};

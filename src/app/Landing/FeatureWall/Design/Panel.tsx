@@ -1,13 +1,22 @@
 import { FC } from 'react'
 
+import useWallpaper from '@/hooks/useWallpaper'
+
 import {
   Wrapper,
-  BlocksWrapper,
-  Block,
+  GridMask,
+  CavansBlock,
+  CursorIcon,
+  CursorText,
+  MainTextGradient,
+  MainText,
   Line,
+  IndexBar,
+  LeftIndexText,
+  IndexRowBar,
+  IndexText,
+  BottomIndexBar,
   Column,
-  ICON,
-  Title,
 } from '../../styles/feature_wall/design/panel'
 
 type TProps = {
@@ -15,49 +24,49 @@ type TProps = {
 }
 
 const Panel: FC<TProps> = ({ hovering }) => {
+  const { wallpaper } = useWallpaper()
+
+  const stickOpacity = hovering ? 1 : 0.4
+  const textOpacity = hovering ? 1 : 0.8
+
   return (
     <Wrapper>
-      <Line top={30} left={10} $hovering={hovering} />
-      <Line top={72} right={30} width="100px" $hovering={hovering} />
-      <Line top={85} right={10} $hovering={hovering} />
-      <Line top={120} right={30} width="220px" $hovering={hovering} />
+      <Line top={10} left={0} $hovering={hovering} $rotate={hovering ? -1 : -4} />
+      <Line top={160} left={0} $hovering={hovering} $rotate={hovering ? -1 : -4} />
+      <Column top={0} left={10} $hovering={hovering} $rotate={hovering ? -1 : -4} />
 
-      <Column top={12} left={30} height="168px" $hovering={hovering} />
-      <Column top={12} left={60} height="108px" $hovering={hovering} />
-      <Column top={30} left={100} height="108px" $hovering={hovering} />
-      <Column top={30} right={80} height="148px" $hovering={hovering} />
-      <Column top={30} right={30} height="108px" $hovering={hovering} />
+      <CavansBlock right={-10} top={20} $rotate={hovering ? -1 : -4}>
+        <CursorIcon top={hovering ? 30 : 20} right={hovering ? 40 : 60} />
+        <CursorText top={hovering ? 45 : 35} right={hovering ? 20 : 35}>
+          Tony
+        </CursorText>
 
-      <BlocksWrapper>
-        <Block left={hovering ? 6 : 15}>
-          <ICON.Lock />
-          <Title>https加密</Title>
-        </Block>
-        <Block>
-          <ICON.Global />
-          <Title>自定义域名</Title>
-        </Block>
-        <Block left={hovering ? 10 : 0}>
-          <ICON.Upload />
-          <Title>导入导出</Title>
-        </Block>
-        <Block>
-          <ICON.Hash />
-          <Title>用户标签</Title>
-        </Block>
-        <Block>
-          <ICON.Search />
-          <Title>SEO</Title>
-        </Block>
-        <Block left={hovering ? 35 : 25} $opacity={0.8}>
-          <ICON.Auth />
-          <Title>灵活权限</Title>
-        </Block>
-        <Block $opacity={0.8}>
-          <ICON.Cloud />
-          <Title>私有部署</Title>
-        </Block>
-      </BlocksWrapper>
+        <LeftIndexText top={72} left={5} $opacity={textOpacity}>
+          styled
+        </LeftIndexText>
+        <IndexRowBar top={80} left={38} width={18} $opacity={stickOpacity} />
+
+        <IndexBar top={34} left={70} height={25} $opacity={stickOpacity} />
+        <IndexText top={16} left={50} $opacity={textOpacity}>
+          padding
+        </IndexText>
+
+        <IndexBar top={48} left={127} height={14} $opacity={stickOpacity} />
+        <IndexText top={28} left={107} $opacity={textOpacity}>
+          margin
+        </IndexText>
+
+        {hovering && <MainTextGradient wallpaper={wallpaper}>design</MainTextGradient>}
+        {!hovering && <MainText>design</MainText>}
+
+        <BottomIndexBar bottom={36} $opacity={hovering ? 0.8 : 0.4} />
+
+        <IndexText bottom={31} left={121} $opacity={textOpacity}>
+          98 px
+        </IndexText>
+
+        <GridMask />
+      </CavansBlock>
     </Wrapper>
   )
 }

@@ -3,7 +3,12 @@ import styled, { css, theme } from '@/css'
 import { BaseCard } from '..'
 
 export const Wrapper = styled(BaseCard)`
+  /** this maybe a chrome bug, the purple panel show's top border if not use it */
+  border-top: none;
   height: 582px;
+  &:hover {
+    border-top: 0.5px dotted;
+  }
 `
 export const Banner = styled.div`
   ${css.column()};
