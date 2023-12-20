@@ -140,7 +140,7 @@ const day = {
   gradientBg: {
     purple: 'linear-gradient(152deg,#faf5ff9c 0%,rgb(222 198 243) 100%)',
     blue: 'linear-gradient(310deg,#f6f3ff54 13%,rgb(209 237 255 / 83%) 100%)',
-    green: 'linear-gradient(232deg,#fffbf6 0%,rgb(216 240 221 / 80%) 100%)',
+    green: 'linear-gradient(28deg,#fffbf6 0%,rgb(216 240 221 / 80%) 100%)',
     orange: 'linear-gradient(244deg,#fffcf75e 0%,rgb(255 234 217 / 72%) 100%)',
     pink: 'linear-gradient(224deg,#fde4ff24 0%,rgb(255 223 234 / 79%) 100%)',
     black: 'linear-gradient(318deg,#fafafaba 0%,#ededede3 100%)',

@@ -46,8 +46,8 @@ const Panel: FC<TProps> = ({ hovering }) => {
         </LeftIndexText>
         <IndexRowBar top={80} left={38} width={18} $opacity={stickOpacity} />
 
-        <IndexBar top={34} left={70} height={25} $opacity={stickOpacity} />
-        <IndexText top={16} left={50} $opacity={textOpacity}>
+        <IndexBar top={34} left={70} height={26} $opacity={stickOpacity} />
+        <IndexText top={16} left={47} $opacity={textOpacity}>
           padding
         </IndexText>
 
