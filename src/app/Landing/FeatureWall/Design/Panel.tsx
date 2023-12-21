@@ -17,6 +17,7 @@ import {
   IndexText,
   BottomIndexBar,
   Column,
+  LocateDot,
 } from '../../styles/feature_wall/design/panel'
 
 type TProps = {
@@ -34,6 +35,8 @@ const Panel: FC<TProps> = ({ hovering }) => {
       <Line top={10} left={0} $hovering={hovering} $rotate={hovering ? -1 : -4} />
       <Line top={160} left={0} $hovering={hovering} $rotate={hovering ? -1 : -4} />
       <Column top={0} left={10} $hovering={hovering} $rotate={hovering ? -1 : -4} />
+      <LocateDot top={hovering ? 160 : 18} left={hovering ? 18 : 11} $rotate={hovering ? -1 : -4} />
+      <LocateDot top={hovering ? 10 : 167} left={hovering ? 15 : 21} $rotate={hovering ? -1 : -4} />
 
       <CavansBlock right={-10} top={20} $rotate={hovering ? -1 : -4}>
         <CursorIcon top={hovering ? 30 : 15} right={hovering ? 40 : 50} />

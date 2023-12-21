@@ -13,6 +13,17 @@ export const Wrapper = styled.div`
   overflow: hidden;
   position: relative;
 `
+export const LocateDot = styled(WithPosition)<{ $rotate: number }>`
+  ${css.size(6)};
+  background: ${theme('htmlBg')};
+  border-radius: 2px;
+  border: 1px solid;
+  border-color: ${theme('hint')};
+  opacity: 0.8;
+  transform: ${({ $rotate }) => `rotate(${$rotate || 0}deg)`};
+  z-index: 20;
+  transition: all .3s;
+`
 type TLine = {
   height?: number
   width?: number
