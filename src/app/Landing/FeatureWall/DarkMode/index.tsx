@@ -5,7 +5,16 @@ import useHover from '@/hooks/useHover'
 import useTheme from '@/hooks/useTheme'
 
 import Panel from './Panel'
-import { Wrapper, Footer, Title, Desc } from '../../styles/feature_wall/dark_mode'
+
+import {
+  Wrapper,
+  InnerWrapper,
+  StarIcon,
+  StarIcon2,
+  Footer,
+  Title,
+  Desc,
+} from '../../styles/feature_wall/dark_mode'
 
 const DarkMode: FC = () => {
   const { switchTheme } = useTheme()
@@ -13,7 +22,11 @@ const DarkMode: FC = () => {
   const [ref, isHovered] = useHover<HTMLDivElement>()
 
   return (
-    <Wrapper ref={ref} onClick={() => switchTheme()} $color={COLOR_NAME.CYAN} $hovering={isHovered}>
+    <Wrapper ref={ref} onClick={() => switchTheme()} $color={COLOR_NAME.CYAN}>
+      <InnerWrapper $color={COLOR_NAME.CYAN} $hovering={isHovered} />
+      {isHovered && <StarIcon />}
+      {isHovered && <StarIcon2 />}
+
       <Panel hovering={isHovered} />
       <Footer>
         <Title>暗黑模式</Title>
