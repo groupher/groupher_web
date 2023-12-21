@@ -33,7 +33,7 @@ const ChartCard: FC<TProps> = ({ hovering }) => {
         </TrendText>
 
         <TrendNum top={30} left={13}>
-          <AnimatedCount count={hovering ? 99 : 27} forceColor="#323232" size="large" />
+          <AnimatedCount count={hovering ? 99 : 26} forceColor="#323232" size="large" />
         </TrendNum>
         <ChartBottomGradient />
       </Wrapper>
