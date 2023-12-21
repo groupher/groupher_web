@@ -14,7 +14,7 @@ const statistics: FC = () => {
       <Panel hovering={isCardHovered} />
       <Footer>
         <Title>统计分析</Title>
-        <Desc>社区访问趋势，地域分布，站点来源等，了解你的受众。</Desc>
+        <Desc>社区访问趋势，地域分布，站点来源等，进一步了解你的产品用户。</Desc>
       </Footer>
     </Wrapper>
   )

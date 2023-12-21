@@ -8,7 +8,7 @@ export const Wrapper = styled(BaseCard)`
 export const Footer = styled.div`
   ${css.column()};
   width: 100%;
-  padding: 15px 20px;
+  padding: 15px 28px;
 `
 export const Title = styled.div`
   color: ${theme('article.digest')};
