@@ -38,7 +38,7 @@ const SummaryCard: FC<TProps> = ({ hovering }) => {
       </Block>
       <Block>
         <Title>访问时长</Title>
-        <Num>05:33</Num>
+        <Num $opacity={0.8}>05:33</Num>
         {hovering && (
           <ArrowWrapper right={7} bottom={5}>
             <ArrowUpIcon />
@@ -47,7 +47,7 @@ const SummaryCard: FC<TProps> = ({ hovering }) => {
       </Block>
       <Block>
         <Title>跳出率</Title>
-        <Num>5.3%</Num>
+        <Num $opacity={0.8}>5.3%</Num>
         {hovering && (
           <ArrowWrapper right={9} bottom={5}>
             <ArrowDownIcon />

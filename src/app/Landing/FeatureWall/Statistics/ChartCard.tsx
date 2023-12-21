@@ -25,7 +25,7 @@ const ChartCard: FC<TProps> = ({ hovering }) => {
       {hovering && <Column top={45} right={100} height="120px" />}
 
       <HighlightColumn top={45} right={hovering ? 75 : 100} height="122px" />
-      <HighlightDot top={hovering ? 67 : 104} right={hovering ? 69 : 95} />
+      <HighlightDot top={hovering ? 67 : 103} right={hovering ? 69 : 95} />
 
       <Wrapper top={20} right={30}>
         <TrendText top={11} left={12}>

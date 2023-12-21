@@ -31,10 +31,11 @@ export const Title = styled.div`
   color: ${theme('hint')};
   margin-left: -1px;
 `
-export const Num = styled.div`
+export const Num = styled.div<{ $opacity?: number }>`
   font-size: 14px;
   color: ${theme('article.title')};
   font-weight: 500;
+  opacity: ${({ $opacity }) => $opacity || 1};
 `
 export const ArrowWrapper = styled(WithPosition)`
   ${css.size(12)};

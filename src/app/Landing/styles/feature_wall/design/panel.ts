@@ -24,6 +24,7 @@ export const LocateDot = styled(WithPosition)<{ $rotate: number }>`
   transform: ${({ $rotate }) => `rotate(${$rotate || 0}deg)`};
   z-index: 20;
   transition: all .3s;
+  box-shadow: ${theme('button.boxShadow')};
 `
 type TLine = {
   height?: number

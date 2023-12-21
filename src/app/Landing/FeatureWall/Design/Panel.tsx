@@ -29,16 +29,17 @@ const Panel: FC<TProps> = ({ hovering }) => {
 
   const stickOpacity = hovering ? 1 : 0.4
   const textOpacity = hovering ? 1 : 0.8
+  const rotate = hovering ? -1 : -4
 
   return (
     <Wrapper>
-      <Line top={10} left={0} $hovering={hovering} $rotate={hovering ? -1 : -4} />
-      <Line top={160} left={0} $hovering={hovering} $rotate={hovering ? -1 : -4} />
-      <Column top={0} left={10} $hovering={hovering} $rotate={hovering ? -1 : -4} />
-      <LocateDot top={hovering ? 160 : 18} left={hovering ? 18 : 11} $rotate={hovering ? -1 : -4} />
-      <LocateDot top={hovering ? 10 : 167} left={hovering ? 15 : 21} $rotate={hovering ? -1 : -4} />
+      <Line top={10} left={0} $hovering={hovering} $rotate={rotate} />
+      <Line top={160} left={0} $hovering={hovering} $rotate={rotate} />
+      <Column top={0} left={10} $hovering={hovering} $rotate={rotate} />
+      <LocateDot top={hovering ? 160 : 18} left={hovering ? 18 : 11} $rotate={rotate} />
+      <LocateDot top={hovering ? 10 : 168} left={hovering ? 15 : 21} $rotate={rotate} />
 
-      <CavansBlock right={-10} top={20} $rotate={hovering ? -1 : -4}>
+      <CavansBlock right={-10} top={20} $rotate={rotate}>
         <CursorIcon top={hovering ? 30 : 15} right={hovering ? 40 : 50} wallpaper={wallpaper} />
         <CursorText top={hovering ? 48 : 34} right={hovering ? 20 : 30} wallpaper={wallpaper}>
           Mr. Tony
