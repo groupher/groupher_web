@@ -39,8 +39,8 @@ const Panel: FC<TProps> = ({ hovering }) => {
       <LocateDot top={hovering ? 10 : 167} left={hovering ? 15 : 21} $rotate={hovering ? -1 : -4} />
 
       <CavansBlock right={-10} top={20} $rotate={hovering ? -1 : -4}>
-        <CursorIcon top={hovering ? 30 : 15} right={hovering ? 40 : 50} />
-        <CursorText top={hovering ? 48 : 34} right={hovering ? 20 : 30}>
+        <CursorIcon top={hovering ? 30 : 15} right={hovering ? 40 : 50} wallpaper={wallpaper} />
+        <CursorText top={hovering ? 48 : 34} right={hovering ? 20 : 30} wallpaper={wallpaper}>
           Mr. Tony
         </CursorText>
 

@@ -3,7 +3,8 @@ import styled, { css, theme, animate } from '@/css'
 import CursorSVG from '@/icons/Cursor'
 import { WithPosition } from '@/widgets/Common'
 
-import { GradientText } from '../../index'
+import { getCursorGradient } from '../../metric'
+import { GradientText } from '../..'
 
 export const Wrapper = styled.div`
   padding: 15px;
@@ -132,20 +133,21 @@ export const LeftIndexText = styled(IndexText)`
   transform: rotate(-90deg);
 `
 
-type TCursor = { top: number; right: number }
+type TCursor = { top: number; right: number; wallpaper: string }
 export const CursorIcon = styled(CursorSVG)<TCursor>`
   ${css.size(16)};
-  fill: ${theme('rainbow.blue')};
+  fill: ${({ wallpaper }) => `${getCursorGradient(wallpaper)}`};
   position: absolute;
   top: ${({ top }) => `${top}px`};
   right: ${({ right }) => `${right}px`};
   opacity: 0.8;
   transition: all 0.2s;
+  filter: saturate(0.8);
 `
 export const CursorText = styled.div<TCursor>`
   font-size: 9px;
   font-weight: bold;
-  background: ${theme('rainbow.blue')};
+  background: ${({ wallpaper }) => `${getCursorGradient(wallpaper)}`};
   color: ${theme('htmlBg')};
   position: absolute;
   border-radius: 4px;
@@ -154,8 +156,8 @@ export const CursorText = styled.div<TCursor>`
   right: ${({ right }) => `${right}px`};
   opacity: 0.85;
   transition: all 0.2s;
+  filter: saturate(0.8);
 `
-
 export const CavansBlock = styled(WithPosition)<{ $rotate: number }>`
   transform: ${({ $rotate }) => `rotate(${$rotate || 0}deg)`};
   width: 274px;

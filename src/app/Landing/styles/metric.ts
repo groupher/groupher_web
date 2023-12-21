@@ -54,7 +54,7 @@ export const getPathGradient = (wallpaper: string): string => {
   }
 
   if (wallpaper === GRADIENT_WALLPAPER_NAME.GREY) {
-    return '#E1D5CC, #955D29'
+    return '#E1D5CC,#955D29'
   }
 
   // @ts-ignore
@@ -66,4 +66,8 @@ export const getPathGradient = (wallpaper: string): string => {
   const color2 = colors[colors.length - 1]
 
   return `${color1}, ${color2}`
+}
+
+export const getCursorGradient = (wallpaper: string): string => {
+  return getPathGradient(wallpaper).split(',')[1]
 }
