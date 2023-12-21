@@ -67,9 +67,7 @@ export const SettingsRow = styled.div`
   margin-left: 4px;
 `
 
-export const GrowBackground = styled('div').withConfig({
-  shouldForwardProp: (props) => props !== 'glowType' && props !== 'glowPosition',
-})<TGlowEffect>`
+export const GrowBackground = styled('div')<TGlowEffect>`
   background: ${({ glowType, $curTheme }) => {
     const GLOW_EFFECTS = $curTheme === THEME.DAY ? GLOW_EFFECTS_DAY : GLOW_EFFECTS_NIGHT
 
