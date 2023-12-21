@@ -13,7 +13,7 @@ const DarkMode: FC = () => {
   const [ref, isHovered] = useHover<HTMLDivElement>()
 
   return (
-    <Wrapper ref={ref} onClick={() => switchTheme()} $color={COLOR_NAME.CYAN}>
+    <Wrapper ref={ref} onClick={() => switchTheme()} $color={COLOR_NAME.CYAN} $hovering={isHovered}>
       <Panel hovering={isHovered} />
       <Footer>
         <Title>暗黑模式</Title>
