@@ -93,7 +93,7 @@ export const IndexRowBar = styled(WithPosition)<TLine>`
   }
 `
 export const BottomIndexBar = styled(WithPosition)<TLine>`
-  width: ${({ width }) => width || '136px'};
+  width: ${({ width }) => width || '132px'};
   height: 1px;
   background: ${theme('rainbow.red')};
   z-index: 20;
@@ -127,6 +127,7 @@ export const IndexText = styled(WithPosition)<{ $opacity?: number }>`
   background: ${theme('htmlBg')};
   opacity: ${({ $opacity }) => $opacity || 0.8};
   padding: 0 5px;
+  border-radius: 3px;
   z-index: 30;
 `
 export const LeftIndexText = styled(IndexText)`
@@ -202,6 +203,7 @@ export const MainText = styled.div`
   color: ${theme('article.digest')};
   font-size: 42px;
   letter-spacing: 2px;
-  font-weight: 700;
+  font-weight: 750;
   z-index: 12;
+  opacity: 0.8;
 `
