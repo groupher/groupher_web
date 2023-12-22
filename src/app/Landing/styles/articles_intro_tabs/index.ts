@@ -1,9 +1,16 @@
 import styled, { css } from '@/css'
+import { TActive } from '@/spec'
 
 export const Wrapper = styled.div`
   ${css.column('align-both')};
   width: 100%;
   margin-top: 140px;
+`
+export const MainContent = styled.div<TActive>`
+  width: 100%;
+  position: relative;
+  height: ${({ $active }) => ($active ? '100%' : 0)};
+  overflow: hidden;
 `
 export const FeatList = styled.div`
   ${css.column()};
@@ -15,4 +22,10 @@ export const MobileIntroLists = styled.div`
   gap: 16px 0;
   padding-left: 10px;
   margin-top: -25px;
+`
+export const HighlightWord = styled.span`
+  font-weight: 450;
+  opacity: 0.8;
+  margin-left: 1px;
+  margin-right: 1px;
 `

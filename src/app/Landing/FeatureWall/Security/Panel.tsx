@@ -1,5 +1,6 @@
 import { FC } from 'react'
 
+import Header from './Header'
 import {
   Wrapper,
   BlocksWrapper,
@@ -17,7 +18,7 @@ type TProps = {
 const Panel: FC<TProps> = ({ hovering }) => {
   return (
     <Wrapper>
-      <Line top={30} left={10} $hovering={hovering} />
+      <Line top={40} left={10} $hovering={hovering} />
       <Line top={72} right={30} width="100px" $hovering={hovering} />
       <Line top={85} right={10} $hovering={hovering} />
       <Line top={120} right={30} width="220px" $hovering={hovering} />
@@ -28,14 +29,16 @@ const Panel: FC<TProps> = ({ hovering }) => {
       <Column top={30} right={80} height="148px" $hovering={hovering} />
       <Column top={30} right={30} height="108px" $hovering={hovering} />
 
-      <BlocksWrapper>
+      <Header hovering={hovering} />
+
+      <BlocksWrapper top={hovering ? 20 : 5}>
         <Block left={hovering ? 6 : 15}>
           <ICON.Lock />
           <Title>https加密</Title>
         </Block>
         <Block>
-          <ICON.Global />
-          <Title>自定义域名</Title>
+          <ICON.Setting />
+          <Title>外观自定义</Title>
         </Block>
         <Block left={hovering ? 10 : 0}>
           <ICON.Upload />

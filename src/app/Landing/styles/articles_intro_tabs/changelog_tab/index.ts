@@ -1,9 +1,9 @@
 import styled, { css, theme } from '@/css'
 
-export const Wrapper = styled.div`
+import { MainContent } from '..'
+
+export const Wrapper = styled(MainContent)`
   ${css.row('align-both')};
-  width: 100%;
-  position: relative;
 
   *::selection {
     background-color: ${theme('rainbow.red')} !important;

@@ -1,5 +1,7 @@
+import styled, { css, theme } from '@/css'
+
 import LockSVG from '@/icons/Lock'
-import GlobalSVG from '@/icons/social/Global'
+import SettingSVG from '@/icons/Setting'
 import SearchSVG from '@/icons/HeaderSearch'
 import AuthSVG from '@/icons/Auth'
 import HashSVG from '@/icons/HashTagBold'
@@ -7,8 +9,6 @@ import UploadSVG from '@/icons/Upload'
 import CloudSVG from '@/icons/CloudCheck'
 
 import { WithMargin, WithPosition } from '@/widgets/Common'
-
-import styled, { css, theme } from '@/css'
 
 export const Wrapper = styled.div`
   padding: 15px;
@@ -22,24 +22,27 @@ type TLine = { height?: string; width?: string; $hovering: boolean }
 export const Column = styled(WithPosition)<TLine>`
   height: ${({ height }) => height || '100px'};
   width: 1px;
-  background: ${({ $hovering }) => ($hovering ? theme('rainbow.green') : theme('divider'))};
-  opacity: ${({ $hovering }) => ($hovering ? 0.3 : 1)};
+  border-right: 1px dotted;
+  border-right-color: ${theme('rainbow.green')};
+  opacity: 0.3;
   z-index: 2;
   transition: all 0.2s;
 `
 export const Line = styled(WithPosition)<TLine>`
   width: ${({ width }) => width || '200px'};
   height: 1px;
-  background: ${({ $hovering }) => ($hovering ? theme('rainbow.green') : theme('divider'))};
-  opacity: ${({ $hovering }) => ($hovering ? 0.3 : 1)};
+  border-top: 1px dotted;
+  border-top-color: ${theme('rainbow.green')};
+  opacity: 0.3;
   z-index: 2;
   transition: all 0.2s;
 `
-
-export const BlocksWrapper = styled.div`
+export const BlocksWrapper = styled.div<{ top: number }>`
   ${css.row('align-center')};
   flex-wrap: wrap;
   gap: 12px;
+  margin-top: ${({ top }) => `${top}px`};
+  transition: all .2s;
 `
 export const Block = styled(WithMargin)<{ $opacity?: number }>`
   ${css.row('align-both')};
@@ -74,7 +77,7 @@ export const ICON = {
     fill: ${theme('rainbow.green')};
     margin-top: -1px;
   `,
-  Global: commonIcon(GlobalSVG),
+  Setting: commonIcon(SettingSVG),
   Search: commonIcon(SearchSVG),
   Auth: styled(commonIcon(AuthSVG))`
     fill: ${theme('rainbow.green')};

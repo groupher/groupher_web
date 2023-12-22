@@ -144,6 +144,9 @@ const night = {
     green: 'linear-gradient(133deg,#343434 0%,rgb(58 83 63 / 80%) 100%)',
     orange: 'linear-gradient(244deg,#3d3d3d 0%,rgb(106 82 62 / 72%) 100%)',
     pink: 'linear-gradient(140deg,#fff5fb99 0%,rgb(255 231 230 / 84%) 100%)',
+    black: 'linear-gradient(220deg,#fafafaba 0%,#ededede3 100%)',
+    cyan: 'linear-gradient(310deg,#eafffe7a 13%,rgb(183 242 246 / 46%) 100%)',
+    yellow: 'linear-gradient(53deg,#fffff37a 13%,rgb(255 244 140 / 25%) 100%)',
   },
   header: {
     fg: '#8c8c8c',

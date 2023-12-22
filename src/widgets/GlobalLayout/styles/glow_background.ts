@@ -4,10 +4,7 @@ import type { TGlowEffect } from '@/spec'
 import { GLOW_EFFECTS_DAY, GLOW_EFFECTS_NIGHT } from '@/constant/glow_effect'
 import THEME from '@/constant/theme'
 
-export const Wrapper = styled('div').withConfig({
-  shouldForwardProp: (props) =>
-    props !== 'glowType' && props !== 'glowPosition' && props !== 'glowOpacity',
-})<TGlowEffect>`
+export const Wrapper = styled('div')<TGlowEffect>`
   background: ${({ glowType, $curTheme }) => {
     const GLOW_EFFECTS = $curTheme === THEME.DAY ? GLOW_EFFECTS_DAY : GLOW_EFFECTS_NIGHT
     return `

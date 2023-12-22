@@ -87,7 +87,7 @@ export const DempP = styled.div`
     margin-top: 6px;
   `};
 `
-export const Hightlight = styled.span<{ color: TColorName }>`
+export const Highlight = styled.span<{ color: TColorName }>`
   color: ${theme('article.title')};
   font-weight: 500;
   padding: 0 2px;

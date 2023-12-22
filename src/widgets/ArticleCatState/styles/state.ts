@@ -47,7 +47,7 @@ export const ResolveIcon = styled(ResolveSVG)<{ $smaller: boolean }>`
   ${({ $smaller }) => ($smaller ? css.size(11) : css.size(17))};
   fill: ${theme('rainbow.green')};
 `
-export const RejectIcon = styled(RejectSVG)<{ $smaller: boolean }>`
+export const RejectIcon = styled(RejectSVG)<{ $smaller?: boolean }>`
   ${({ $smaller }) => ($smaller ? css.size(12) : css.size(14))};
   fill: ${theme('rainbow.red')};
 `

@@ -8,7 +8,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   ${css.column('align-both')};
   width: 100%;
   padding: 120px 0;
-  padding-bottom: 200px;
+  padding-bottom: 60px;
 `
 export const Slogan = styled.div`
   ${css.column('align-both')};
@@ -37,7 +37,6 @@ export const BaseCard = styled.div<TColor>`
   background: ${({ $color }) => gradientBg($color)};
   border: 1px dotted;
   border-color: transparent;
-
   border-radius: 10px;
   position: relative;
   cursor: pointer;
@@ -55,6 +54,9 @@ export const CardsWrapper = styled.div`
   width: 100%;
   height: 500px;
   gap: 0 30px;
+`
+export const FooterCards = styled(CardsWrapper)`
+  height: 425px;
 `
 export const LeftCards = styled.div`
   ${css.row('align-start', 'justify-between')};

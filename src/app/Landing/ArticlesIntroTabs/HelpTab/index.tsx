@@ -1,17 +1,19 @@
 import { FC } from 'react'
 
+import type { TActive } from '@/spec'
+
 import IntroDigest from './IntroDigest'
 import HelpDemo from './HelpDemo'
 
 import { Wrapper } from '../../styles/articles_intro_tabs/help_tab'
 
-const KanbanFeat: FC = () => {
+const HelpFeat: FC<TActive> = ({ $active }) => {
   return (
-    <Wrapper>
+    <Wrapper $active={$active}>
       <IntroDigest />
       <HelpDemo />
     </Wrapper>
   )
 }
 
-export default KanbanFeat
+export default HelpFeat

@@ -1,14 +1,15 @@
 import { FC } from 'react'
 
-import DiscussDemo from './DiscussDemo'
+import { TActive } from '@/spec'
 
+import DiscussDemo from './DiscussDemo'
 import IntroDigest from './IntroDigest'
 
 import { Wrapper } from '../../styles/articles_intro_tabs/discuss_tab'
 
-const DiscussFeat: FC = () => {
+const DiscussFeat: FC<TActive> = ({ $active }) => {
   return (
-    <Wrapper>
+    <Wrapper $active={$active}>
       <IntroDigest />
       <DiscussDemo />
     </Wrapper>
