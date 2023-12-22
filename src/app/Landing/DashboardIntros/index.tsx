@@ -7,6 +7,11 @@ import SideMenus from './SideMenus'
 import LayoutTab from './LayoutTab'
 import SeoTab from './SeoTab'
 import CMSTab from './CMSTab'
+import TagsTab from './TagsTab'
+import AdminsTab from './AdminsTab'
+import LinksTab from './LinksTab'
+import IntegrateTab from './IntegrateTab'
+import TrendTab from './TrendTab'
 
 import { Wrapper, Right } from '../styles/dashboard_intros'
 
@@ -20,9 +25,11 @@ const DashboardIntros: FC = () => {
         {tab === DASHBOARD_ROUTE.LAYOUT && <LayoutTab />}
         {tab === DASHBOARD_ROUTE.SEO && <SeoTab />}
         {tab === DASHBOARD_ROUTE.POST && <CMSTab />}
-
-        {/* <ContentPreview tab={tab} /> */}
-        {/* <DashboardPreview tab={tab} /> */}
+        {tab === DASHBOARD_ROUTE.TAGS && <TagsTab />}
+        {tab === DASHBOARD_ROUTE.ADMINS && <AdminsTab />}
+        {tab === DASHBOARD_ROUTE.HEADER && <LinksTab />}
+        {tab === DASHBOARD_ROUTE.WIDGETS && <IntegrateTab />}
+        {tab === DASHBOARD_ROUTE.TREND && <TrendTab />}
       </Right>
     </Wrapper>
   )

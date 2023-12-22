@@ -19,22 +19,27 @@ export const TABS_ITEMS = [
   {
     key: DASHBOARD_ROUTE.TAGS,
     title: '标签设置与管理',
+    desc: '各板块相关标签（组）的创建与属性变更。',
   },
   {
     key: DASHBOARD_ROUTE.ADMINS,
     title: '管理员 / 权限',
+    desc: '指派社区管理员，设定相关人员权限。',
   },
   {
     key: DASHBOARD_ROUTE.HEADER,
     title: '页头 / 页脚自定义',
+    desc: '自定义社区页头以及页脚的自定链接（组）。',
   },
   {
     key: DASHBOARD_ROUTE.WIDGETS,
     title: '绑定与集成',
+    desc: '设置集成到目标网站的各种组件的相关属性。',
   },
   {
     key: DASHBOARD_ROUTE.TREND,
     title: '统计分析',
+    desc: '社区主要统计指标，服务提供商等设定。',
   },
 ]
 
