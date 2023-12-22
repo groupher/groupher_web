@@ -8,11 +8,6 @@ export const Wrapper = styled.div`
   ${css.column('align-both')};
   width: 100%;
   height: 200px;
-
-  *::selection {
-    background-color: ${theme('rainbow.blue')} !important;
-    color: white;
-  }
 `
 export const Digest = styled.div`
   font-size: 18px;

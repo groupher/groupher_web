@@ -14,38 +14,14 @@ type TProps = {
   tab: TThread
 }
 
+/** NOTE: do not use switch case here, otherwise the page will blink when switch between, image will re-request */
 const Content: FC<TProps> = ({ tab }) => {
-  let TabContent = null
-
-  switch (tab) {
-    case THREAD.POST: {
-      TabContent = DiscussTab
-      break
-    }
-
-    case THREAD.KANBAN: {
-      TabContent = KanbanTab
-      break
-    }
-
-    case THREAD.CHANGELOG: {
-      TabContent = ChangelogTab
-      break
-    }
-
-    case THREAD.DOC: {
-      TabContent = HelpTab
-      break
-    }
-
-    default: {
-      TabContent = DiscussTab
-    }
-  }
-
   return (
     <Wrapper tab={tab}>
-      <TabContent />
+      <DiscussTab $active={tab === THREAD.POST} />
+      <KanbanTab $active={tab === THREAD.KANBAN} />
+      <ChangelogTab $active={tab === THREAD.CHANGELOG} />
+      <HelpTab $active={tab === THREAD.DOC} />
     </Wrapper>
   )
 }

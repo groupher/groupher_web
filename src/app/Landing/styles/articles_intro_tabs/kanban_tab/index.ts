@@ -1,4 +1,15 @@
-import styled, { css } from '@/css'
+import styled, { css, theme } from '@/css'
+
+import { MainContent } from '..'
+
+export const Wrapper = styled(MainContent)`
+  ${css.column('align-both')};
+
+  *::selection {
+    background-color: ${theme('rainbow.blue')} !important;
+    color: white;
+  }
+`
 
 export const DesktopOnly = styled.div`
   ${css.row('align-center', 'justify-between')};
@@ -7,11 +18,6 @@ export const DesktopOnly = styled.div`
   `};
 `
 
-export const Wrapper = styled.div`
-  ${css.column('align-both')};
-  width: 100%;
-  position: relative;
-`
 export const Slogan = styled.div`
   ${css.column('align-both')};
 `

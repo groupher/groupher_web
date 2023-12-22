@@ -1,9 +1,14 @@
-import styled, { css } from '@/css'
+import styled, { css, theme } from '@/css'
 
-export const Wrapper = styled.div`
+import { MainContent } from '..'
+
+export const Wrapper = styled(MainContent)`
   ${css.row('align-both')};
-  position: relative;
-  margin-left: 10px;
+
+  *::selection {
+    background-color: ${theme('rainbow.purple')} !important;
+    color: white;
+  }
 `
 export const Slogan = styled.div`
   ${css.column('align-both')};

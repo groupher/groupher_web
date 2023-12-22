@@ -1,12 +1,8 @@
-import type { TActive, TTestable } from '@/spec'
-
 import styled, { css, theme } from '@/css'
 
-type TWrapper = TActive
+import { MainContent } from '..'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
-  'data-test-id': $testid,
-}))<TWrapper>`
+export const Wrapper = styled(MainContent)`
   ${css.row('align-both')};
   width: 100%;
   position: relative;

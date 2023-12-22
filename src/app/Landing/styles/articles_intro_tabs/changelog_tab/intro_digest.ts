@@ -9,12 +9,8 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
 }))<TTestable>`
   ${css.column('align-start')};
+  margin-top: 30px;
   margin-right: 50px;
-
-  *::selection {
-    background-color: ${theme('rainbow.red')} !important;
-    color: white;
-  }
 `
 export const Digest = styled.div`
   color: ${theme('hint')};
