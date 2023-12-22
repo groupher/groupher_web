@@ -32,7 +32,6 @@ const temItems = [
   {
     title: '帖子',
     slug: 'posts',
-    // icon: `${ICON_CMD}/navi/fire.svg`,
     localIcon: 'settings',
   },
 ]

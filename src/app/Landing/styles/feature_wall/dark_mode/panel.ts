@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
   ${css.row('align-both')};
   width: 100%;
   height: 300px;
-  padding-right: 20px;
+  padding-top: 10px;
   position: relative;
 `
 export const DivideColumn = styled.div<{ $hovering: boolean }>`
