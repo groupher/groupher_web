@@ -5,6 +5,7 @@ import { DASHBOARD_ROUTE } from '@/constant/route'
 
 import SideMenus from './SideMenus'
 import LayoutTab from './LayoutTab'
+import SeoTab from './SeoTab'
 // import ContentPreview from './ContentPreview'
 // import DashboardPreview from './DashboardPreview'
 
@@ -17,7 +18,9 @@ const DashboardIntros: FC = () => {
     <Wrapper>
       <SideMenus tab={tab} onChange={(tab) => setTab(tab)} />
       <Right>
-        <LayoutTab />
+        {tab === DASHBOARD_ROUTE.LAYOUT && <LayoutTab />}
+        {tab === DASHBOARD_ROUTE.SEO && <SeoTab />}
+
         {/* <ContentPreview tab={tab} /> */}
         {/* <DashboardPreview tab={tab} /> */}
       </Right>

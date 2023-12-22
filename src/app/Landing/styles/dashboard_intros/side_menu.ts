@@ -42,7 +42,7 @@ export const TabItem = styled.div<TActive>`
   position: relative;
   cursor: pointer;
 
-  padding: ${({ $active }) => ($active ? '6px 10px' : '0 10px')};
+  padding: ${({ $active }) => ($active ? '14px 10px' : '0 10px')};
   padding-left: 24px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
@@ -56,9 +56,8 @@ export const TabItem = styled.div<TActive>`
     position: absolute;
     opacity: ${({ $active }) => ($active ? 0.5 : 0)};
     top: 0;
-    // left: -26px;
     left: -2px;
-    height: 85px;
+    height: 101px;
     width: 2px;
     border-radius: 5px;
     background: ${theme('rainbow.purple')};

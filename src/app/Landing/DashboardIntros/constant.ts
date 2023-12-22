@@ -9,6 +9,7 @@ export const TABS_ITEMS = [
   {
     key: DASHBOARD_ROUTE.SEO,
     title: 'SEO 优化',
+    desc: '自定义主流搜索引擎以及 Twitter 断的关键字等',
   },
   {
     key: DASHBOARD_ROUTE.POST,
