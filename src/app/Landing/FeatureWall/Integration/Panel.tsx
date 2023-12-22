@@ -1,14 +1,13 @@
 import { FC } from 'react'
 
-import {
-  Wrapper,
-  BlocksWrapper,
-  Block,
-  Line,
-  Column,
-  ICON,
-  Title,
-} from '../../styles/feature_wall/integration/panel'
+import { COLOR_NAME } from '@/constant/colors'
+import { Brick } from '@/widgets/Common'
+
+import Header from './Header'
+import Sidebar from './Sidebar'
+import EmbedScript from './EmbedScript'
+
+import { Wrapper, BlocksWrapper } from '../../styles/feature_wall/integration/panel'
 
 type TProps = {
   hovering: boolean
@@ -17,46 +16,28 @@ type TProps = {
 const Panel: FC<TProps> = ({ hovering }) => {
   return (
     <Wrapper>
-      <Line top={30} left={10} $hovering={hovering} />
-      <Line top={72} right={30} width="100px" $hovering={hovering} />
-      <Line top={85} right={10} $hovering={hovering} />
-      <Line top={120} right={30} width="220px" $hovering={hovering} />
+      <BlocksWrapper bottom={0} left={20} $hovering={hovering}>
+        <Header />
 
-      <Column top={12} left={30} height="168px" $hovering={hovering} />
-      <Column top={12} left={60} height="108px" $hovering={hovering} />
-      <Column top={30} left={100} height="108px" $hovering={hovering} />
-      <Column top={30} right={80} height="148px" $hovering={hovering} />
-      <Column top={30} right={30} height="108px" $hovering={hovering} />
+        <Brick $width={60} $height={15} $radius={8} $opacity={0.5} top={40} left={20} />
+        <Brick $width={96} $height={5} $radius={8} $opacity={0.12} top={66} left={20} />
+        <Brick $width={68} $height={5} $radius={8} $opacity={0.1} top={80} left={20} />
+        <Brick
+          $width={35}
+          $height={13}
+          $radius={8}
+          $opacity={0.5}
+          top={96}
+          left={20}
+          $color={COLOR_NAME.RED}
+        />
 
-      <BlocksWrapper>
-        <Block left={hovering ? 6 : 15}>
-          <ICON.Lock />
-          <Title>https加密</Title>
-        </Block>
-        <Block>
-          <ICON.Global />
-          <Title>自定义域名</Title>
-        </Block>
-        <Block left={hovering ? 10 : 0}>
-          <ICON.Upload />
-          <Title>导入导出</Title>
-        </Block>
-        <Block>
-          <ICON.Hash />
-          <Title>用户标签</Title>
-        </Block>
-        <Block>
-          <ICON.Search />
-          <Title>SEO</Title>
-        </Block>
-        <Block left={hovering ? 35 : 25} $opacity={0.8}>
-          <ICON.Auth />
-          <Title>灵活权限</Title>
-        </Block>
-        <Block $opacity={0.8}>
-          <ICON.Cloud />
-          <Title>私有部署</Title>
-        </Block>
+        <Brick $width={45} $height={54} $radius={4} $opacity={0.03} top={38} right={70} />
+        <Brick $width={42} $height={70} $radius={4} $opacity={0.04} top={38} right={20} />
+
+        <EmbedScript />
+
+        <Sidebar hovering={hovering} />
       </BlocksWrapper>
     </Wrapper>
   )
