@@ -6,8 +6,7 @@ import { DASHBOARD_ROUTE } from '@/constant/route'
 import SideMenus from './SideMenus'
 import LayoutTab from './LayoutTab'
 import SeoTab from './SeoTab'
-// import ContentPreview from './ContentPreview'
-// import DashboardPreview from './DashboardPreview'
+import CMSTab from './CMSTab'
 
 import { Wrapper, Right } from '../styles/dashboard_intros'
 
@@ -20,6 +19,7 @@ const DashboardIntros: FC = () => {
       <Right>
         {tab === DASHBOARD_ROUTE.LAYOUT && <LayoutTab />}
         {tab === DASHBOARD_ROUTE.SEO && <SeoTab />}
+        {tab === DASHBOARD_ROUTE.POST && <CMSTab />}
 
         {/* <ContentPreview tab={tab} /> */}
         {/* <DashboardPreview tab={tab} /> */}

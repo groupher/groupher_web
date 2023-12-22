@@ -14,6 +14,7 @@ export const TABS_ITEMS = [
   {
     key: DASHBOARD_ROUTE.POST,
     title: '社区内容管理',
+    desc: '管理已发布内容，设置帖子各种属性等。',
   },
   {
     key: DASHBOARD_ROUTE.TAGS,
