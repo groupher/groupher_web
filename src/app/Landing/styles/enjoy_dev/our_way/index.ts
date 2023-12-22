@@ -10,12 +10,11 @@ export const Wrapper = styled.div`
   position: relative;
   height: 560px;
   width: 1000px;
-  margin-top: 25px;
+  margin-top: 10px;
   padding-left: 40px;
   padding-right: 40px;
   transform: scale(0.9);
 `
-
 export const MainConnectLine = styled.div<TPos>`
   position: absolute;
   left: ${({ left }) => left};

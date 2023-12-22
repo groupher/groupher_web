@@ -9,6 +9,7 @@ import OurWay from './OurWay'
 import {
   Wrapper,
   Slogan,
+  Tips,
   Title,
   Desc,
   Wall,
@@ -36,6 +37,7 @@ const EnjoyDev: FC = () => {
   return (
     <Wrapper>
       <Slogan>
+        <Tips>Tips !</Tips>
         <Title>
           上线、<GradientText wallpaper={wallpaper}>获取反馈</GradientText>、迭代
         </Title>

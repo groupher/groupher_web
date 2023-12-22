@@ -114,7 +114,7 @@ const LandingPage: FC = () => {
         <MobileOnly>
           <Divider top={50} bottom={50} />
         </MobileOnly>
-        <UsersWall />
+        <UsersWall wallpaper={wallpaper} />
         <DesktopOnly>
           <Divider top={60} bottom={60} />
         </DesktopOnly>
