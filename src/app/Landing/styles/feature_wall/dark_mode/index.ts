@@ -39,7 +39,7 @@ export const Footer = styled.div`
   ${css.column()};
   width: 100%;
   padding: 15px 10px;
-  padding-left: 15px;
+  padding-left: 20px;
   padding-top: 0;
   z-index: 2;
 `

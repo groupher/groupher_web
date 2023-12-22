@@ -40,7 +40,7 @@ export const Action = styled(WithPosition)`
   ${css.circle(18)};
   ${css.row('align-both')};
   background: ${theme('htmlBg')};
-  border: 1px dotted;
+  border: 1px solid;
   border-color: ${theme('hint')};
   box-shadow: rgba(149, 157, 165, 0.3) 0px 8px 24px;
   opacity: 1;

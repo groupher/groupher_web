@@ -1,7 +1,6 @@
 import { FC, memo } from 'react'
 
 import type { TGQError } from '@/spec'
-// import { ICON_CMD } from '@/config'
 // import { Wrapper } from './styles'
 import uid from '@/utils/uid'
 import { nilOrEmpty } from '@/validator'
