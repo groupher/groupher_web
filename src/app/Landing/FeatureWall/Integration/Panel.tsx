@@ -32,7 +32,7 @@ const Panel: FC<TProps> = ({ hovering }) => {
           $color={COLOR_NAME.RED}
         />
 
-        <Brick $width={45} $height={54} $radius={4} $opacity={0.03} top={38} right={70} />
+        <Brick $width={45} $height={54} $radius={4} $opacity={0.07} top={38} right={70} />
         <Brick $width={42} $height={70} $radius={4} $opacity={0.04} top={38} right={20} />
 
         <EmbedScript />
