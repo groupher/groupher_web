@@ -6,6 +6,12 @@ export const Wrapper = styled.div`
   width: 50px;
   height: 60px;
 `
+export const A4Paper = styled(Img)`
+  width: 26px;
+  height: 32px;
+  margin-top: 4px;
+  filter: drop-shadow(2px 4px 6px #f5f5f5);
+`
 export const IconWrapper = styled.div`
   ${css.size(45)};
   ${css.row('align-both')};

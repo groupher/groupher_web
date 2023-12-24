@@ -1,7 +1,5 @@
 import { FC } from 'react'
 
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
-
 import StackCard from './StackCard'
 import GithubCard from './GithubCard'
 
@@ -11,11 +9,8 @@ const TeckStacks: FC = () => {
   return (
     <Wrapper>
       <Slogan>
-        <Title>源码开放，欢迎共建</Title>
-        <Desc>
-          现代化的产品体验得益于现代化的技术栈及工具，
-          <ArrowButton>了解更多</ArrowButton>
-        </Desc>
+        <Title>源码开放，诚邀共建</Title>
+        <Desc>由开源技术栈驱动，不含黑魔法，期待您的共同参与</Desc>
       </Slogan>
       <Wall>
         <StackCard />

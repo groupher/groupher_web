@@ -113,7 +113,6 @@
     "stringz": "^2.0.0",
     "styled-components": "^6.1.2",
     "stylis": "^4.3.0",
-    "swr": "^2.2.4",
     "timeago-react": "^3.0.5",
     "tinykeys": "^2.1.0",
     "tsparticles-confetti": "^2.12.0",

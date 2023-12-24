@@ -31,27 +31,27 @@ const StackCard: FC = () => {
         </Topping>
 
         <Title>我们的主要技术栈</Title>
-        <Desc>现代化的产品体验得益于现代化的技术栈及工具，列出部分主要工具，特此鸣谢。</Desc>
+        <Desc>现代化的产品体验得益于现代化的技术栈及工具，这里列出部分主要工具，深表感激。</Desc>
       </Banner>
       <TechsWrapper>
-        <TechItem path="pl/elixir.png" name="Elixir" size={34} />
-        <TechItem path="framework/phoenix.svg" name="Phoenix" />
-        <TechItem path="database/postgresql.png" name="PG" size={30} />
-        <TechItem path="framework/absinthe.png" name="Absinthe" size={33} />
-        <TechItem path="framework/ecto.png" name="Ecto" size={38} />
-        <TechItem path="framework/graphql.png" name="GraphQL" size={33} />
-        <TechItem path="framework/nextjs.png" name="Next.js" size={55} />
-        <TechItem path="framework/react.svg" name="React" />
-        <TechItem path="pl/typescript.png" name="TS" size={30} />
-        <TechItem path="framework/mobx.png" name="Mobx" size={32} />
-        <TechItem path="framework/mst.png" name="MST" size={32} />
-        <TechItem path="framework/ramda.webp" name="Ramda" size={30} />
-        <TechItem path="framework/rxjs2.png" name="Rx.js" size={35} />
-        <TechItem path="framework/styled-components.png" name="Styled" size={33} />
-        <TechItem path="framework/editor.js.png" name="Editor.js" size={48} />
-
-        <TechItem path="devops/kubernetes.png" name="K8S" size={32} />
-        <TechItem path="design/phosphor.png" name="Phosphor" size={32} />
+        <TechItem path="elixir.png" name="Elixir" size={34} />
+        <TechItem path="phoenix.png" name="Phoenix" size={32} />
+        <TechItem path="pg.png" name="PG" size={30} />
+        <TechItem path="absinthe.png" name="Absinthe" size={33} />
+        <TechItem path="ecto.png" name="Ecto" size={38} />
+        <TechItem path="graphql.png" name="GraphQL" size={33} />
+        <TechItem path="nextjs.png" name="Next.js" size={55} />
+        <TechItem path="react.png" name="React" size={45} />
+        <TechItem path="typescript.png" name="TypeScript" size={30} />
+        <TechItem path="mobx.png" name="Mobx" size={30} />
+        <TechItem path="mst.png" name="MST" size={32} />
+        <TechItem path="ramda.png" name="Ramda" size={28} />
+        <TechItem path="rxjs.png" name="Rx.js" size={32} />
+        <TechItem path="styled.png" name="Styled" size={33} />
+        <TechItem path="slate.png" name="Slate" size={30} />
+        <TechItem path="biome.png" name="Biome" size={35} />
+        <TechItem path="phosphor.png" name="Phosphor" size={32} />
+        <TechItem path="a4.png" name="Paper" size={32} />
       </TechsWrapper>
       <BgWrapper ref={ref}>
         <CADBackground src="/cad-bg.png" />

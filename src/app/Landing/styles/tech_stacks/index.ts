@@ -7,7 +7,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
 }))<TTestable>`
   ${css.column('align-both')};
   width: 100%;
-  margin-top: 50px;
+  margin-top: 20px;
 `
 export const Slogan = styled.div`
   ${css.column('align-both')};
@@ -30,6 +30,7 @@ export const Desc = styled.div`
   font-size: 17px;
   color: ${theme('article.digest')};
   margin-top: 12px;
+  margin-bottom: 20px;
   opacity: 0.8;
 
   ${css.media.mobile`
