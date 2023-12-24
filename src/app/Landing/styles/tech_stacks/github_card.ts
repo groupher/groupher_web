@@ -3,9 +3,9 @@ import styled, { css } from '@/css'
 import GithubSVG from '@/icons/social/Github'
 
 import { GradientText } from '..'
-import { getCursorGradient } from '../metric'
+import { getCursorGradient, getGithubGradient } from '../metric'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ wallpaper: string }>`
   ${css.column()};
   width: 44%;
   height: 528px;
@@ -13,8 +13,7 @@ export const Wrapper = styled.div`
   border-radius: 10px;
   position: relative;
   padding: 35px 50px;
-  /* background: #2f2f2f; */
-  background: linear-gradient(64deg, #2f2f2f 20%, #211227e0 100%);
+  background: ${({ wallpaper }) => getGithubGradient(wallpaper)};
 `
 export const Banner = styled.div``
 export const Title = styled.div`

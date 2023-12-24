@@ -14,6 +14,14 @@ export const Wrapper = styled.div`
   color: #ababab;
   border-radius: 8px;
   position: relative;
+  border: 1px solid transparent;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #615F62;
+  }
+
+  transition: all .2s;
 `
 export const Repo = styled.div`
   font-size: 18px;

@@ -17,8 +17,9 @@ import {
 
 const GithubCard: FC = () => {
   const { wallpaper } = useWallpaper()
+
   return (
-    <Wrapper>
+    <Wrapper wallpaper={wallpaper}>
       <Banner>
         <Topping>
           <GithubIcon wallpaper={wallpaper} />
