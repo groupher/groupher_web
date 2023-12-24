@@ -1,11 +1,6 @@
-import Link from 'next/link'
-
 import type { TTestable } from '@/spec'
 
 import styled, { css, theme } from '@/css'
-import Img from '@/Img'
-
-import GithubSVG from '@/icons/social/Github'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
@@ -45,76 +40,7 @@ export const Desc = styled.div`
   `};
 `
 export const Wall = styled.div`
-  ${css.column('align-both')};
-  width: 80%;
-  height: 440px;
-  margin-top: 35px;
-  position: relative;
-`
-export const BgWrapper = styled.div`
-  opacity: 0.8;
-  position: absolute;
-  top: 0;
-`
-export const CADBackground = styled(Img)`
-  width: 100%;
-  height: 400px;
-  border-radius: 50px;
-  object-fit: cover;
-
-  ${css.media.mobile`
-    height: 360px;
-  `};
-`
-export const TechsWrapper = styled.div`
-  ${css.rowWrap('align-both')};
-  gap: 15px 50px;
-  height: 440px;
-  width: 100%;
-  padding: 40px 80px;
-  margin-top: -20px;
-
-  ${css.media.mobile`
-    width: 110%;
-    padding: 0;
-    gap: 10px 15px;
-    height: 360px;
-    margin-top: -60px;
-  `};
-`
-export const GithubLink = styled(Link)`
-  ${css.row('align-center')};
-  font-size: 18px;
-  font-weight: 500;
-  text-decoration: none;
-  color: ${theme('article.title')};
-
-  &:hover {
-    color: ${theme('article.digest')};
-    text-decoration: none;
-  }
-
-  ${css.media.mobile`
-    font-size: 15px;
-  `};
-`
-export const GithubIcon = styled(GithubSVG)`
-  ${css.size(18)};
-  fill: ${theme('article.title')};
-  margin-right: 8px;
-
-  ${css.media.mobile`
-    ${css.size(15)};
-  `};
-`
-
-export const BottonNote = styled.div`
-  margin-top: 8px;
-  color: ${theme('article.digest')};
-  font-size: 14px;
-  opacity: 0.8;
-
-  ${css.media.mobile`
-    font-size: 12px;
-  `};
+  ${css.row('align-start', 'justify-between')};
+  margin-bottom: 50px;
+  width: 1024px;
 `

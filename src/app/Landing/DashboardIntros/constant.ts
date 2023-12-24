@@ -4,12 +4,12 @@ export const TABS_ITEMS = [
   {
     key: DASHBOARD_ROUTE.LAYOUT,
     title: '布局与样式',
-    desc: '这里是布局与样式的说明，看看效果',
+    desc: '整体布局，主题色，壁纸，以及各板块内容展示样式等。',
   },
   {
     key: DASHBOARD_ROUTE.SEO,
     title: 'SEO 优化',
-    desc: '自定义主流搜索引擎以及 Twitter 断的关键字等',
+    desc: '自定义主流搜索引擎以及 Twitter 断的关键字等.',
   },
   {
     key: DASHBOARD_ROUTE.POST,

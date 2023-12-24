@@ -9,7 +9,7 @@ type TProps = {
   name: string
 }
 
-const TechItem: FC<TProps> = ({ path, size = 50, name }) => {
+const TechItem: FC<TProps> = ({ path, size = 40, name }) => {
   return (
     <Wrapper>
       <IconWrapper>

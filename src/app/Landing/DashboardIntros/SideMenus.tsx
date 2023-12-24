@@ -1,6 +1,7 @@
 import { FC } from 'react'
 
 import type { TDashboardPath } from '@/spec'
+import ArrowLinker from '@/widgets/ArrowLinker'
 
 import { TABS_ITEMS } from './constant'
 
@@ -37,6 +38,11 @@ const SideMenus: FC<TProps> = ({ tab, onChange }) => {
               <TabItem key={item.key} $active={$active} onClick={() => onChange(item.key)}>
                 <ItemTitle $active={$active}>{item.title}</ItemTitle>
                 {$active && <ItemDesc>{item.desc}</ItemDesc>}
+                {$active && (
+                  <ArrowLinker href="/" top={12}>
+                    了解更多
+                  </ArrowLinker>
+                )}
               </TabItem>
             )
           })}

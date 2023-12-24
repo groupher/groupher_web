@@ -22,20 +22,19 @@ import { TColorName } from '@/spec'
 
 const P1 = (markColor: TColorName): ReactNode => (
   <DempP>
-    当然如果从产量上来说，黑龙江，河南和山东位居
-    <Highlight $color={markColor}>全国前三位</Highlight>
-    ，是2021年我国仅有的三个粮食产量超过5000万吨的大省，不过河南和山东人口也很多，虽然自给自足有余，但是外调就不如黑吉蒙了。
+    从 Github Discussions 迁移到 Groupher 以后，
+    <Highlight $color={markColor}>国内访问体验拉满</Highlight>
+    ，收集到的用户反馈也更加有针对性，很好的解决了
+    <Highlight $color={markColor}>我们和用户</Highlight>之间的交流需求。
   </DempP>
 )
 
 const P2 = (markColor: TColorName): ReactNode => (
   <DempP>
-    四川作为人口大省粮食可以自给，而且现代社会需要的
-    <Highlight $color={markColor}>水力，天然气，铁矿石</Highlight>
-    产量均在全国前三位。抗战时期把四川省（当时包括重庆）作为抗战大后方，一方面是易守难攻，
-    另一方面是四川的资源禀赋还可以，粮食可以自给自足，建国前四川就有5000万人口，占中国10%，在20世纪几乎一直是中国人口第一大省，一直到1997年重庆
-    <Highlight $color={markColor}>三千万人</Highlight>
-    被分出去才失去这一地位，可以说四川作为中国人口大省的地位几乎贯穿了整个20世纪。
+    作为一个小团队，实在没有精力每天维护多个微信群，Groupher 完全是一个
+    <Highlight $color={markColor}>定制化的交流社区</Highlight>， 沉淀了功能请求和问题反馈等
+    ，让各种讨论可以<Highlight $color={markColor}>随时检索回溯</Highlight>，
+    <p>更新日志的板块设计巧妙</p>
   </DempP>
 )
 

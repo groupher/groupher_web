@@ -76,7 +76,6 @@ export const BgGradient = styled.div<{ wallpaper: string }>`
 
   background: ${({ wallpaper }) =>
     `radial-gradient(circle at 50% 50%, ${getUserwallGradient(wallpaper)[0]} 0, transparent 35%)`};;
-      /* background: radial-gradient(circle at 50% 50%, #e8c3afc4 0, transparent 35%); */
 `
 
 export const DempP = styled.div`
@@ -92,8 +91,8 @@ export const DempP = styled.div`
   `};
 `
 export const Highlight = styled.span<TColor>`
-  color: ${theme('article.title')};
-  font-weight: 500;
+  color: ${theme('article.digest')};
+  font-weight: 450;
   padding: 0 2px;
   background-color: ${({ $color }) => rainbowLight($color)};
 `
