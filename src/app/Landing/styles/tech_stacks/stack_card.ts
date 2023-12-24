@@ -71,6 +71,7 @@ export const BottonNote = styled.div`
 `
 export const Topping = styled.div`
   ${css.row('align-center')};
+  margin-top: -5px;
   margin-bottom: 5px;
   margin-left: -2px;
 `

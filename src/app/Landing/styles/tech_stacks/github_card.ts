@@ -17,9 +17,6 @@ export const Wrapper = styled.div`
   background: linear-gradient(64deg, #2f2f2f 20%, #211227e0 100%);
 `
 export const Banner = styled.div``
-export const Bottom = styled.div`
-  width: 84%;
-`
 export const Title = styled.div`
   font-size: 20px;
   color: #e0e0e0;
