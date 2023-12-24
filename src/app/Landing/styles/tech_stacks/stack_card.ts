@@ -48,6 +48,7 @@ export const BgWrapper = styled.div`
   opacity: 0.5;
   position: absolute;
   top: 0;
+  z-index: -1;
 `
 export const CADBackground = styled(Img)`
   width: 100%;
