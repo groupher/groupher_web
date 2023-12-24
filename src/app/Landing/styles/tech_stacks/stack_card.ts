@@ -7,7 +7,7 @@ import { getCursorGradient } from '../metric'
 
 export const Wrapper = styled.div`
   ${css.column()};
-  width: 52%;
+  width: 50%;
   height: 520px;
   margin-top: 35px;
   position: relative;

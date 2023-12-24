@@ -7,6 +7,11 @@ import RepoPreview from './RepoPreview'
 
 import {
   Wrapper,
+  PuzzleTopIcon,
+  PuzzleRightIcon,
+  PuzzleIcon,
+  Puzzle2Icon,
+  Puzzle3Icon,
   Banner,
   Title,
   Desc,
@@ -20,6 +25,11 @@ const GithubCard: FC = () => {
 
   return (
     <Wrapper wallpaper={wallpaper}>
+      <PuzzleTopIcon />
+      <PuzzleRightIcon />
+      <PuzzleIcon />
+      <Puzzle2Icon />
+      <Puzzle3Icon />
       <Banner>
         <Topping>
           <GithubIcon wallpaper={wallpaper} />
