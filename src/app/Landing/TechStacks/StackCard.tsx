@@ -27,7 +27,7 @@ const StackCard: FC = () => {
       <Banner>
         <Topping>
           <ThunderIcon wallpaper={wallpaper} />
-          <HighlightText wallpaper={wallpaper}>Powered by</HighlightText>
+          <HighlightText wallpaper={wallpaper}>Techstack</HighlightText>
         </Topping>
 
         <Title>我们的主要技术栈</Title>

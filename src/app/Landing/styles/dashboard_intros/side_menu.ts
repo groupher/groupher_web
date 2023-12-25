@@ -1,5 +1,5 @@
-import type { TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TActive, TColor } from '@/spec'
+import styled, { css, rainbow, theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.column('align-both')};
@@ -35,7 +35,8 @@ export const Desc = styled.div`
 export const Tabs = styled.div`
   ${css.column('align-start')};
 `
-export const TabItem = styled.div<TActive>`
+type TTabItem = TActive & TColor
+export const TabItem = styled.div<TTabItem>`
   position: relative;
   cursor: pointer;
 
@@ -53,7 +54,7 @@ export const TabItem = styled.div<TActive>`
   margin-bottom: ${({ $active }) => ($active ? '2px' : 0)};
 
   &:hover {
-    border-left-color: ${theme('hint')};
+    border-left-color: ${({ $color }) => rainbow($color)};
     background: ${theme('htmlBg')};
     box-shadow: ${theme('button.boxShadow')};
   }
@@ -67,7 +68,7 @@ export const TabItem = styled.div<TActive>`
     height: 134px;
     width: 2px;
     border-radius: 5px;
-    background: ${theme('rainbow.purple')};
+    background: ${({ $color }) => rainbow($color)};
     filter: saturate(1.2);
   }
 
