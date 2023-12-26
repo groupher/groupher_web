@@ -63,8 +63,9 @@ export const Puzzle3Icon = styled(PuzzleFrame)`
   z-index: 2;
   opacity: 0.15;
 `
-
-export const Banner = styled.div``
+export const Banner = styled.div`
+  margin-left: 4px;
+`
 export const Title = styled.div`
   font-size: 20px;
   color: #e0e0e0;
@@ -73,11 +74,13 @@ export const Title = styled.div`
 export const Desc = styled.div`
   color: #ababab;
   font-size: 15px;
+  line-height: 25px;
   margin-top: 3px;
 `
 export const Topping = styled.div`
   ${css.row('align-center')};
   margin-bottom: 5px;
+  margin-left: 1px;
 `
 export const GithubIcon = styled(GithubSVG)<{ wallpaper: string }>`
   ${css.size(15)};

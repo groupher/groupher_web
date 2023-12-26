@@ -13,9 +13,9 @@ export const Wrapper = styled.div`
   position: relative;
 `
 export const Banner = styled.div`
-  margin-left: 42px;
+  margin-left: 44px;
   margin-top: 38px;
-  width: 86%;
+  width: 84%;
 `
 export const Title = styled.div`
   font-size: 22px;
@@ -26,6 +26,7 @@ export const Title = styled.div`
 export const Desc = styled.div`
   color: ${theme('article.digest')};
   font-size: 16px;
+  line-height: 26px;
   margin-top: 5px;
 `
 export const TechsWrapper = styled.div`

@@ -27,6 +27,7 @@ import TechStacks from './TechStacks'
 import DashboardIntros from './DashboardIntros'
 import EnjoyDev from './EnjoyDev'
 import UsersWall from './UsersWall'
+import Footer from './Footer'
 
 import {
   Wrapper,
@@ -149,14 +150,14 @@ const LandingPage: FC = () => {
         </MobileOnly>
         <UsersWall wallpaper={wallpaper} />
         <DesktopOnly>
-          <Divider top={60} bottom={60} />
+          <Divider top={60} bottom={80} />
         </DesktopOnly>
-        <MobileOnly>
-          <Divider top={50} bottom={50} />
-        </MobileOnly>
         <FAQWrapper>
           <FaqList layout={DOC_FAQ_LAYOUT.FLAT} large sections={faqs} />
         </FAQWrapper>
+        <Divider top={60} bottom={80} />
+
+        <Footer />
       </Wrapper>
     </ParallaxProvider>
   )

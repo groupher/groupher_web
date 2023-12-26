@@ -13,7 +13,6 @@ export const Digest = styled.div`
   font-size: 18px;
   color: ${theme('hint')};
   margin-bottom: 20px;
-  opacity: 0.9;
   margin-top: 10px;
   margin-left: 76px;
 `

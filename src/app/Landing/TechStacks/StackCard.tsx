@@ -31,7 +31,7 @@ const StackCard: FC = () => {
         </Topping>
 
         <Title>我们的主要技术栈</Title>
-        <Desc>现代化的产品体验得益于现代化的技术栈及工具，这里列出部分主要工具，略表敬意。</Desc>
+        <Desc>现代化的产品体验得益于现代化的技术栈及工具，这里列出主要部分，特表敬意。</Desc>
       </Banner>
       <TechsWrapper>
         <TechItem path="elixir.png" name="Elixir" size={34} />
