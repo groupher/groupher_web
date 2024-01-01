@@ -18,7 +18,8 @@ export const InnerWrapper = styled.div`
 export const IntroTitle = styled.div`
   ${css.row('align-center')};
   color: ${theme('article.title')};
-  font-size: 18px;
+  font-weight: 500;
+  font-size: 22px;
   margin-bottom: 20px;
 `
 export const SloganTextWrapper = styled.div<{ $highlight: boolean }>`

@@ -1,5 +1,3 @@
-export type TNonCommunityPath = 'apply_community'
-
 export type TDashboardBaseInfoRoute = 'basic' | 'social' | 'other'
 export type TDashboardSEORoute = 'search_engine' | 'twitter'
 export type TDashboardDocRoute = 'table' | 'tree' | 'cover' | 'faq'

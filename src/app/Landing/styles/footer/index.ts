@@ -1,13 +1,17 @@
 import styled, { css, theme } from '@/css'
 import Img from '@/Img'
+import Button from '@/widgets/Buttons/Button'
+
+import { getPathGradient } from '../metric'
 
 export const Wrapper = styled.div`
   ${css.column('align-both')};
   width: 100%;
+  height: 300px;
 `
 export const Logo = styled(Img)`
-  ${css.size(58)};
-  margin-bottom: 18px;
+  ${css.size(52)};
+  margin-bottom: 20px;
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
@@ -34,4 +38,26 @@ export const Buttons = styled.div`
   ${css.row('align-center')};
   gap: 0 18px;
   margin-bottom: 25px;
+`
+export const CreateButton = styled(Button)<{ wallpaper: string }>`
+  background: ${({ wallpaper }) =>
+    `linear-gradient(#323132, #323132) padding-box, linear-gradient(to left, ${getPathGradient(
+      wallpaper,
+    )}) border-box;`};
+
+  border-radius: 10px;
+  border: 4px solid transparent;
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 40px;
+
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  }
+
+  &:active {
+    box-shadow: none;
+  }
+
+  transition: all 0.2s;
 `

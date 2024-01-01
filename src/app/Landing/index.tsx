@@ -4,7 +4,7 @@
  */
 
 import { FC } from 'react'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { observer } from 'mobx-react-lite'
 import { ParallaxProvider } from 'react-scroll-parallax'
 
@@ -83,7 +83,6 @@ const faqs = [
 ]
 
 const LandingPage: FC = () => {
-  const router = useRouter()
   const { wallpaper } = useWallpaper()
 
   return (
@@ -101,14 +100,11 @@ const LandingPage: FC = () => {
             讨论区，GTD 看板，更新日志，帮助文档多合一，收集沉淀用户反馈，助你打造更好的产品
           </Desc>
           <ButtonGroup>
-            <StartButton
-              size="medium"
-              onClick={() => {
-                router.push(`/${ROUTE.HOME}/${ROUTE.HELP}`)
-              }}
-            >
-              开始使用 <ArrowLeftIcon />
-            </StartButton>
+            <Link href={ROUTE.APPLY_COMMUNITY}>
+              <StartButton wallpaper={wallpaper} size="medium">
+                开始使用 <ArrowLeftIcon />
+              </StartButton>
+            </Link>
 
             <Tooltip
               content={

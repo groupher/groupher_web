@@ -1,6 +1,5 @@
 import type {
   TDashboardPath,
-  TNonCommunityPath,
   TDashboardLayoutRoute,
   TDashboardBroadcastRoute,
   TDashboardAliasRoute,
@@ -10,8 +9,8 @@ import type {
 } from '@/spec'
 
 export const NON_COMMUNITY_ROUTE = {
-  APPLY_COMMUNITY: 'apply_community',
-} as Record<Uppercase<TNonCommunityPath>, TNonCommunityPath>
+  APPLY_COMMUNITY: '/apply/community',
+}
 
 export const DASHBOARD_ROUTE = {
   OVERVIEW: 'dashboard',
