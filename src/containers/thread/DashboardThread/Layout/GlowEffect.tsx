@@ -61,6 +61,8 @@ const GlowEffect: FC<TProps> = ({
             </ArrowLinker>
           </RowBase>
         }
+        withThemeSelect
+        width="84%"
       />
 
       <Row>

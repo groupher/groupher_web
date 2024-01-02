@@ -8,10 +8,12 @@ export const Header = styled.div`
   ${css.row('align-center')};
 `
 export const Title = styled.div<{ noDesc: boolean }>`
+  ${css.row('align-center')};
   color: ${theme('dashboard.menuCat')};
   font-size: 16px;
   font-weight: 400;
   margin-bottom: ${({ noDesc }) => (noDesc ? '25px' : '0')};
+  width: 100%;
 `
 export const Desc = styled.div`
   color: ${theme('article.digest')};

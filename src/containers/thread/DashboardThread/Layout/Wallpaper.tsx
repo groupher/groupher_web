@@ -12,7 +12,6 @@ import useTheme from '@/hooks/useTheme'
 import THEME from '@/constant/theme'
 
 import { Brick } from '@/widgets/Common'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import CheckLabel from '@/widgets/CheckLabel'
 
 import SectionLabel from '../SectionLabel'
@@ -49,13 +48,14 @@ const Wallpaper: FC<TProps> = ({ wallpaperInfo, gossBlur }) => {
       <Section>
         <SectionLabel
           title="壁纸设置"
+          withThemeSelect
           desc={
             <>
               「壁纸」为宽屏（屏幕尺寸大于 {WIDTH.COMMUNITY.PAGE}
               ）下，超出内容部分显示的背景图片，除内置壁纸外，你还可以上传和社区话题相关的自定义图片。
-              <ArrowButton onClick={handleCallEditor}>更换壁纸</ArrowButton>
             </>
           }
+          width="84%"
         />
 
         <PreviewWrapper>

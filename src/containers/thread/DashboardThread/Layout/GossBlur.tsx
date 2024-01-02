@@ -48,7 +48,12 @@ const GossBlur: FC<TProps> = ({ wallpaperInfo, gossBlur, saving, isTouched }) =>
   return (
     <Wrapper key={wallpaper}>
       <Section>
-        <SectionLabel title="毛玻璃效果" desc="主要页面的高斯模糊值，类似主流音乐播放器效果" />
+        <SectionLabel
+          title="毛玻璃效果"
+          desc="主要页面的高斯模糊值，类似主流音乐播放器效果"
+          withThemeSelect
+          width="84%"
+        />
 
         <ContentWrapper>
           <PreviewerWrapper>
