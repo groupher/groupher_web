@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 
 import type { TSpace, TColorName } from '@/spec'
+import useThemeData from '@/hooks/useThemeData'
 import { buildLog } from '@/logger'
 import { camelize } from '@/fmt'
 
@@ -17,7 +18,6 @@ import FaIcon from './icons'
 import type { TIcon } from './spec'
 
 import { Wrapper } from './styles'
-import useThemeData from '@/hooks/useThemeData'
 
 const _log = buildLog('c:FaIcons:index')
 

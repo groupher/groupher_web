@@ -23,6 +23,7 @@ import TopbarLayout from './TopbarLayout'
 
 import PrimaryColor from './PrimaryColor'
 import GlowEffect from './GlowEffect'
+import BlurEffect from './BlurEffect'
 import Wallpaper from './Wallpaper'
 
 import type { TUiSettings, TTouched } from '../spec'
@@ -112,6 +113,8 @@ const UI: FC<TProps> = ({ settings, touched }) => {
             isGrowOpacityTouched={touched.glowOpacity}
             saving={saving}
           />
+          <Divider top={20} bottom={60} />
+          <BlurEffect wallpaperInfo={wallpaperInfo} />
           <Divider top={20} bottom={60} />
 
           {/* <BrandLayout layout={brandLayout} isTouched={touched.brandLayout} saving={saving} />

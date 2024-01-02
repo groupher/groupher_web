@@ -15,7 +15,6 @@ const GlobalStyle = createGlobalStyle<TColor>`
     ${css.media.mobile`
       position: relative;
    `};
-    background-color: ${theme('htmlBg')};
     margin: 0;
     overflow-x: hidden;
   }

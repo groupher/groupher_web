@@ -34,6 +34,9 @@ export const InnerWrapper = styled.div<TInner>`
   height: 100%;
   min-height: 100vh;
   background: ${theme('bodyBg')};
+  // background: rgb(255 255 255 / 80%);
+  // backdrop-filter: blur(50px);
+
   transition: all 0.2s;
   z-index: 1;
   border-top: ${({ $hasTopbar }) => ($hasTopbar ? '3px solid;' : '1px solid;')};

@@ -10,11 +10,13 @@ export const Header = styled.div`
 export const Title = styled.div<{ noDesc: boolean }>`
   color: ${theme('dashboard.menuCat')};
   font-size: 16px;
+  font-weight: 400;
   margin-bottom: ${({ noDesc }) => (noDesc ? '25px' : '0')};
 `
 export const Desc = styled.div`
-  color: ${theme('hint')};
-  font-size: 13px;
+  color: ${theme('article.digest')};
+  opacity: 0.9;
+  font-size: 14px;
   margin-top: 10px;
   margin-bottom: 25px;
   line-height: 22px;

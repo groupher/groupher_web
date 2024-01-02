@@ -52,13 +52,13 @@ const Panel: FC<TProps> = ({ hovering }) => {
         <IndexRowBar top={80} left={38} width={18} $opacity={stickOpacity} />
 
         <IndexBar top={34} left={70} height={26} $opacity={stickOpacity} />
-        <IndexText top={15} left={58} $opacity={textOpacity}>
-          Xie
+        <IndexText top={15} left={50} $opacity={textOpacity}>
+          mydear
         </IndexText>
 
         <IndexBar top={48} left={126} height={14} $opacity={stickOpacity} />
-        <IndexText top={28} left={107} $opacity={textOpacity}>
-          Yimian
+        <IndexText top={28} left={112} $opacity={textOpacity}>
+          xym
         </IndexText>
 
         {hovering && <MainTextGradient wallpaper={wallpaper}>design</MainTextGradient>}
