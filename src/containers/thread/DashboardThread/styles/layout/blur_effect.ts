@@ -12,7 +12,7 @@ export const ContentWrapper = styled.div`
   margin-bottom: 30px;
 `
 
-type TPreviewImage = { effect: string; noHover?: boolean }
+type TPreviewImage = { effect: string; $darker: boolean }
 export const PreviewImage = styled.div<TPreviewImage>`
   ${css.column('align-both')};
   border: 1px solid;
@@ -23,6 +23,7 @@ export const PreviewImage = styled.div<TPreviewImage>`
   height: 240px;
   border-radius: 10px;
   ${({ effect }) => effect || ''};
+  filter: ${({ $darker }) => `brightness(${$darker ? 0.85 : 1})`};
 
   transition: all 0.2s;
 `
@@ -37,7 +38,6 @@ export const ContentBlock = styled.div<{ $bgColor: string }>`
   left: 20px;
   width: 264px;
   height: 245px;
-  // background: white;
   background: ${({ $bgColor }) => $bgColor};
   backdrop-filter: blur(50px);
 
@@ -51,17 +51,20 @@ export const ContentBlock = styled.div<{ $bgColor: string }>`
 
   transition: all 0.2s;
 `
-export const ContentBar = styled.div<{ long: number }>`
-  width: ${({ long }) => `${long}%`};
-  height: 8px;
-  background: ${theme('hoverBg')};
-  margin-bottom: 15px;
-  z-index: 3;
-  border-radius: 5px;
-`
 export const Actions = styled.div`
   width: 50%;
   height: 100%;
   flex-grow: 1;
-  margin-left: 40px;
+  margin-left: 50px;
+`
+export const Title = styled.div`
+  color: ${theme('article.title')};
+  font-weight: 450;
+  font-size: 16px;
+  margin-bottom: 10px;
+`
+export const Desc = styled.div`
+  color: ${theme('article.digest')};
+  font-size: 14px;
+  margin-bottom: 3px;
 `
