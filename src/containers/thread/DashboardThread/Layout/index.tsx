@@ -101,6 +101,13 @@ const UI: FC<TProps> = ({ settings, touched }) => {
           <Divider top={20} bottom={60} />
           <Wallpaper wallpaperInfo={wallpaperInfo} gossBlur={gossBlur} />
           <Divider top={20} bottom={60} />
+          <GossBlur
+            wallpaperInfo={wallpaperInfo}
+            gossBlur={gossBlur}
+            saving={saving}
+            isTouched={touched.gossBlur}
+          />
+          <Divider top={20} bottom={60} />
           <GlowEffect
             glowType={glowType}
             glowFixed={glowFixed}
@@ -109,13 +116,6 @@ const UI: FC<TProps> = ({ settings, touched }) => {
             isGrowFixedTouched={touched.glowFixed}
             isGrowOpacityTouched={touched.glowOpacity}
             saving={saving}
-          />
-          <Divider top={20} bottom={60} />
-          <GossBlur
-            wallpaperInfo={wallpaperInfo}
-            gossBlur={gossBlur}
-            saving={saving}
-            isTouched={touched.gossBlur}
           />
         </>
       )}

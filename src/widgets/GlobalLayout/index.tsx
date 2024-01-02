@@ -9,11 +9,14 @@ import { observer } from 'mobx-react-lite'
 import { Provider as BalancerTextProvider } from 'react-wrap-balancer'
 
 import type { TGlobalLayout } from '@/spec'
+import { blurRGB } from '@/fmt'
 import METRIC from '@/constant/metric'
 import { TOPBAR_LAYOUT } from '@/constant/layout'
 
 import useMetric from '@/hooks/useMetric'
+import useThemeData from '@/hooks/useThemeData'
 import useWallpaper from '@/hooks/useWallpaper'
+import useGossBlur from '@/hooks/useGossBlur'
 
 import Mushroom from '@/containers/Mushroom'
 // import ModeLine from '@/containers/unit/ModeLine'
@@ -49,10 +52,14 @@ type TProps = {
 const GlobalLayout: FC<TProps> = ({ children, globalLayout }) => {
   const metric = useMetric()
   const { hasShadow } = useWallpaper()
+  const gossBlur = useGossBlur()
 
+  const themeData = useThemeData()
   // const [showDashboardAlertUI, setShowDashboardAlertUI] = useState(false)
 
-  const isMobile = false
+  const bgColor = `${blurRGB(themeData.htmlBg, gossBlur)}`
+
+  // const isMobile = false
 
   // useEffect(() => {
   //   if (showDashboardAlert) {
@@ -75,6 +82,7 @@ const GlobalLayout: FC<TProps> = ({ children, globalLayout }) => {
               <SEO />
               <InnerWrapper
                 metric={metric}
+                $bgColor={bgColor}
                 $hasShadow={hasShadow}
                 $hasTopbar={metric !== METRIC.HOME && globalLayout.topbar === TOPBAR_LAYOUT.YES}
                 $topbarBg={globalLayout.topbarBg}
