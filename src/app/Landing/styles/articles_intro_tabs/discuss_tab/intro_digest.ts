@@ -14,8 +14,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
 `
 export const Digest = styled.div`
   color: ${theme('hint')};
-  opacity: 0.9;
-  line-height: 28px;
+  line-height: 1.68em;
   width: 300px;
   margin-top: -40px;
   margin-bottom: 30px;

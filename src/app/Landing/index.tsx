@@ -4,7 +4,7 @@
  */
 
 import { FC } from 'react'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { observer } from 'mobx-react-lite'
 import { ParallaxProvider } from 'react-scroll-parallax'
 
@@ -27,6 +27,7 @@ import TechStacks from './TechStacks'
 import DashboardIntros from './DashboardIntros'
 import EnjoyDev from './EnjoyDev'
 import UsersWall from './UsersWall'
+import Footer from './Footer'
 
 import {
   Wrapper,
@@ -48,8 +49,40 @@ import {
   FAQWrapper,
 } from './styles'
 
+const faqs = [
+  {
+    title: 'Groupher 是免费的吗',
+    body: '是的，在一定额度内免费使用，部分高级功能需要收费。',
+    index: 0,
+  },
+  {
+    title: '可以只使用某些模块吗',
+    body: '是的，你可以根据需要单独使用讨论区、看板、更新日志等。',
+    index: 1,
+  },
+  {
+    title: '可以私有部署吗',
+    body: '是的，本项目完全开源，你可以用于私有部署，但需要遵守特定协议。',
+    index: 2,
+  },
+  {
+    title: '支持手机端使用吗',
+    body: '是的，本项目对于手机屏幕做了适配。但目前没有原生的 App',
+    index: 3,
+  },
+  {
+    title: '支持内容审核吗',
+    body: '是的，你可以在后台打开先审后发，同时平台 AI 自动会过滤违法信息。',
+    index: 4,
+  },
+  {
+    title: '支持海外访问吗',
+    body: '是的，但是目前服务器在国内，国际化相关工作还在开发中，敬请期待。',
+    index: 5,
+  },
+]
+
 const LandingPage: FC = () => {
-  const router = useRouter()
   const { wallpaper } = useWallpaper()
 
   return (
@@ -63,18 +96,13 @@ const LandingPage: FC = () => {
           <HomeHeader />
           <BetaText wallpaper={wallpaper}>内测中</BetaText>
           <Title>让你的产品聆听用户的声音</Title>
-          <Desc>
-            讨论区，GTD 看板，更新日志，帮助文档多合一，收集沉淀用户反馈，助你打造更好的产品
-          </Desc>
+          <Desc>讨论区、看板、更新日志、帮助文档多合一，收集沉淀用户反馈，助你打造更好的产品</Desc>
           <ButtonGroup>
-            <StartButton
-              size="medium"
-              onClick={() => {
-                router.push(`/${ROUTE.HOME}/${ROUTE.HELP}`)
-              }}
-            >
-              开始使用 <ArrowLeftIcon />
-            </StartButton>
+            <Link href={ROUTE.APPLY_COMMUNITY}>
+              <StartButton wallpaper={wallpaper} size="medium">
+                开始使用 <ArrowLeftIcon />
+              </StartButton>
+            </Link>
 
             <Tooltip
               content={
@@ -114,16 +142,16 @@ const LandingPage: FC = () => {
         <MobileOnly>
           <Divider top={50} bottom={50} />
         </MobileOnly>
-        <UsersWall />
+        <UsersWall wallpaper={wallpaper} />
         <DesktopOnly>
-          <Divider top={60} bottom={60} />
+          <Divider top={60} bottom={80} />
         </DesktopOnly>
-        <MobileOnly>
-          <Divider top={50} bottom={50} />
-        </MobileOnly>
         <FAQWrapper>
-          <FaqList layout={DOC_FAQ_LAYOUT.FLAT} large />
+          <FaqList layout={DOC_FAQ_LAYOUT.FLAT} large sections={faqs} />
         </FAQWrapper>
+        <Divider top={60} bottom={80} />
+
+        <Footer />
       </Wrapper>
     </ParallaxProvider>
   )

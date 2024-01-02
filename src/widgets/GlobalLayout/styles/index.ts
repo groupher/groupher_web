@@ -25,7 +25,13 @@ export const ScrollWrapper = styled.div<{ $noMobilePadding: boolean }>`
     $noMobilePadding ? 'width: 100% !important; margin-left: 0 !important;' : ''};
 `
 
-type TInner = { metric: TMetric; $hasTopbar: boolean; $topbarBg: TColorName; $hasShadow: boolean }
+type TInner = {
+  metric: TMetric
+  $hasTopbar: boolean
+  $topbarBg: TColorName
+  $hasShadow: boolean
+  $bgColor: string
+}
 export const InnerWrapper = styled.div<TInner>`
   ${css.column()};
   ${({ metric }) => css.fitPageWidth(metric)};
@@ -33,7 +39,10 @@ export const InnerWrapper = styled.div<TInner>`
   position: relative;
   height: 100%;
   min-height: 100vh;
-  background: ${theme('bodyBg')};
+  // background: ${theme('bodyBg')};
+  background: ${({ $bgColor }) => $bgColor};
+  backdrop-filter: blur(50px);
+
   transition: all 0.2s;
   z-index: 1;
   border-top: ${({ $hasTopbar }) => ($hasTopbar ? '3px solid;' : '1px solid;')};

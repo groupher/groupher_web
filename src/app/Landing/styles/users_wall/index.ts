@@ -1,6 +1,8 @@
-import type { TColorName, TTestable } from '@/spec'
+import type { TColor, TTestable } from '@/spec'
 
 import styled, { css, theme, rainbowLight } from '@/css'
+
+import { getUserwallGradient, getUserwallGradientOpacity } from '../metric'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
@@ -64,15 +66,16 @@ export const WallInner = styled.div`
     display: block;
   `};
 `
-export const BgGradient = styled.div`
+export const BgGradient = styled.div<{ wallpaper: string }>`
   position: absolute;
-  top: 12vh;
-  left: -14vw;
-  width: 100vw;
-  height: 100vh;
-  opacity: 0.7;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: ${({ wallpaper }) => `${getUserwallGradientOpacity(wallpaper)}`};
 
-  background: radial-gradient(circle at 50% 50%, #e8c3afc4 0, transparent 35%);
+  background: ${({ wallpaper }) =>
+    `radial-gradient(circle at 50% 50%, ${getUserwallGradient(wallpaper)[0]} 0, transparent 35%)`};;
 `
 
 export const DempP = styled.div`
@@ -87,9 +90,9 @@ export const DempP = styled.div`
     margin-top: 6px;
   `};
 `
-export const Highlight = styled.span<{ color: TColorName }>`
-  color: ${theme('article.title')};
-  font-weight: 500;
+export const Highlight = styled.span<TColor>`
+  color: ${theme('article.digest')};
+  font-weight: 450;
   padding: 0 2px;
-  background-color: ${({ color }) => rainbowLight(color)};
+  background-color: ${({ $color }) => rainbowLight($color)};
 `

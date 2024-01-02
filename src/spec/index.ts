@@ -189,7 +189,6 @@ export type { TColorName, TPrimaryColor, TColor } from './color'
 export type {
   TPath,
   TDashboardPath,
-  TNonCommunityPath,
   TDashboardLayoutRoute,
   TDashboardBaseInfoRoute,
   TDashboardSEORoute,

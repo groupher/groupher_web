@@ -19,7 +19,7 @@ const HighWay: FC = () => {
       <ConnectLine />
       <Block text="上线没人用" type="online" />
       <ConnectLine />
-      <Block text="放弃" type="giveup" />
+      <Block text="扑街" type="giveup" />
     </Wrapper>
   )
 }

@@ -172,6 +172,7 @@ export type TUiSettings = {
   glowType: string
   glowFixed: boolean
   glowOpacity: string
+  gossBlur: number
   docLayout: TDocLayout
   docFaqLayout: TDocFaqLayout
   postLayout: TPostLayout
@@ -209,6 +210,7 @@ export type TTouched = {
   glowType: boolean
   glowFixed: boolean
   glowOpacity: boolean
+  gossBlur: boolean
   docLayout: boolean
   docFaqLayout: boolean
   topbarLayout: boolean
@@ -271,6 +273,7 @@ export type TSettingField =
   | 'glowType'
   | 'glowFixed'
   | 'glowOpacity'
+  | 'gossBlur'
   | 'headerLinks'
   | 'footerLinks'
   | 'docLayout'

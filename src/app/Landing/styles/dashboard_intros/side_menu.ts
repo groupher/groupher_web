@@ -1,5 +1,5 @@
-import type { TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TActive, TColor } from '@/spec'
+import styled, { css, rainbow, theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.column('align-both')};
@@ -34,15 +34,13 @@ export const Desc = styled.div`
 `
 export const Tabs = styled.div`
   ${css.column('align-start')};
-  gap: 20px 0;
-  border-left: 2px solid;
-  border-left-color: #e9e9e9;
 `
-export const TabItem = styled.div<TActive>`
+type TTabItem = TActive & TColor
+export const TabItem = styled.div<TTabItem>`
   position: relative;
   cursor: pointer;
 
-  padding: ${({ $active }) => ($active ? '6px 10px' : '0 10px')};
+  padding: ${({ $active }) => ($active ? '14px 10px' : '11px 10px')};
   padding-left: 24px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
@@ -50,18 +48,27 @@ export const TabItem = styled.div<TActive>`
 
   background: ${({ $active }) => ($active ? theme('htmlBg') : 'transparent')};
   box-shadow: ${({ $active }) => ($active ? theme('button.boxShadow') : '')};
+  border-left: 2px solid;
+  border-left-color: ${theme('divider')};
+  margin-top: ${({ $active }) => ($active ? '2px' : 0)};
+  margin-bottom: ${({ $active }) => ($active ? '2px' : 0)};
+
+  &:hover {
+    border-left-color: ${({ $color }) => rainbow($color)};
+    background: ${theme('htmlBg')};
+    box-shadow: ${theme('button.boxShadow')};
+  }
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     opacity: ${({ $active }) => ($active ? 0.5 : 0)};
     top: 0;
-    // left: -26px;
     left: -2px;
-    height: 85px;
+    height: 134px;
     width: 2px;
     border-radius: 5px;
-    background: ${theme('rainbow.purple')};
+    background: ${({ $color }) => rainbow($color)};
     filter: saturate(1.2);
   }
 
@@ -69,10 +76,9 @@ export const TabItem = styled.div<TActive>`
 `
 export const ItemTitle = styled.div<TActive>`
   font-size: 16px;
-  font-weight: 500;
+  font-weight: ${({ $active }) => ($active ? 500 : 400)};
 
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
-  opacity: ${({ $active }) => ($active ? 1 : 0.8)};
 
   ${TabItem}:hover & {
     color: ${theme('article.title')};
@@ -81,7 +87,7 @@ export const ItemTitle = styled.div<TActive>`
 export const ItemDesc = styled.div`
   font-size: 15px;
   margin-top: 3px;
-  width: 200px;
+  width: 230px;
   font-weight: 400;
   color: ${theme('hint')};
 `

@@ -175,6 +175,9 @@ export const settingsModalFields = {
   glowFixed: T.opt(T.bool, true),
   glowOpacity: T.opt(T.enum(values(GLOW_OPACITY)), GLOW_OPACITY.NORMAL),
 
+  // goss blur
+  gossBlur: T.opt(T.int, 100),
+
   // contents
   // tags
   // tags: T.opt(T.array(Tag), mockTags(12)),

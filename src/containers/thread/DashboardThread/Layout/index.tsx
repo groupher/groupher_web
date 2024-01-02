@@ -23,6 +23,7 @@ import TopbarLayout from './TopbarLayout'
 
 import PrimaryColor from './PrimaryColor'
 import GlowEffect from './GlowEffect'
+import GossBlur from './GossBlur'
 import Wallpaper from './Wallpaper'
 
 import type { TUiSettings, TTouched } from '../spec'
@@ -58,6 +59,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
     // ui part
     primaryColor,
     wallpaperInfo,
+    gossBlur,
     glowType,
     glowFixed,
     glowOpacity,
@@ -97,11 +99,14 @@ const UI: FC<TProps> = ({ settings, touched }) => {
           <Divider top={20} bottom={60} />
           <BannerLayout layout={bannerLayout} isTouched={touched.bannerLayout} saving={saving} />
           <Divider top={20} bottom={60} />
-          <AvatarLayout layout={avatarLayout} isTouched={touched.avatarLayout} saving={saving} />
+          <Wallpaper wallpaperInfo={wallpaperInfo} gossBlur={gossBlur} />
           <Divider top={20} bottom={60} />
-          <TagLayout layout={tagLayout} isTouched={touched.tagLayout} saving={saving} />
-          <Divider top={20} bottom={60} />
-          <Wallpaper wallpaperInfo={wallpaperInfo} />
+          <GossBlur
+            wallpaperInfo={wallpaperInfo}
+            gossBlur={gossBlur}
+            saving={saving}
+            isTouched={touched.gossBlur}
+          />
           <Divider top={20} bottom={60} />
           <GlowEffect
             glowType={glowType}
@@ -110,17 +115,6 @@ const UI: FC<TProps> = ({ settings, touched }) => {
             isTouched={touched.glowType}
             isGrowFixedTouched={touched.glowFixed}
             isGrowOpacityTouched={touched.glowOpacity}
-            saving={saving}
-          />
-          <Divider top={20} bottom={60} />
-
-          {/* <BrandLayout layout={brandLayout} isTouched={touched.brandLayout} saving={saving} />
-          <Divider top={20} bottom={60} /> */}
-          <TopbarLayout
-            layout={topbarLayout}
-            bg={topbarBg}
-            isLayoutTouched={touched.topbarLayout}
-            isBgTouched={touched.topbarBg}
             saving={saving}
           />
         </>
@@ -158,6 +152,22 @@ const UI: FC<TProps> = ({ settings, touched }) => {
           isFaqTouched={touched.docFaqLayout}
           saving={saving}
         />
+      )}
+
+      {layoutTab === DASHBOARD_LAYOUT_ROUTE.OTHER && (
+        <>
+          <AvatarLayout layout={avatarLayout} isTouched={touched.avatarLayout} saving={saving} />
+          <Divider top={20} bottom={60} />
+          <TagLayout layout={tagLayout} isTouched={touched.tagLayout} saving={saving} />
+          <Divider top={20} bottom={60} />
+          <TopbarLayout
+            layout={topbarLayout}
+            bg={topbarBg}
+            isLayoutTouched={touched.topbarLayout}
+            isBgTouched={touched.topbarBg}
+            saving={saving}
+          />
+        </>
       )}
     </Wrapper>
   )

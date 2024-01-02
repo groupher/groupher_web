@@ -76,9 +76,11 @@ const RootStoreWrapper: FC<TProps> = ({ children, token }) => {
 
   const childrenWithProps = Children.map(children, (child) => {
     if (isValidElement(child)) {
+      const { globalLayout } = store.dashboardThread
+
       return cloneElement(child, {
         // @ts-ignore
-        globalLayout: store.dashboardThread.globalLayout,
+        globalLayout,
       })
     }
     return child

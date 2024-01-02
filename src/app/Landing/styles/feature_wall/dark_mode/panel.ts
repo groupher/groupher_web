@@ -32,7 +32,7 @@ export const SwitchBox = styled.div<{ $hovering: boolean }>`
   width: 65px;
   height: 30px;
   position: absolute;
-  left: 93px;
+  left: 102px;
   top: 100px;
   z-index: 11;
   border: 1px solid;

@@ -166,7 +166,6 @@ export const ButtonGroup = styled.div`
   ${css.row('align-center')};
   gap: 0 22px;
   margin-top: 40px;
-  margin-left: 10px;
 
   ${css.media.mobile`
     gap: 0px;
@@ -203,13 +202,6 @@ export const LinkIcon = styled(LinkSVG)`
     opacity: 1;
   }
 `
-export const ArrowLeftIcon = styled(ArrowSVG)`
-  ${css.size(16)};
-  margin-left: 4px;
-  fill: ${theme('button.fg')};
-  transform: rotate(180deg);
-  margin-right: -5px;
-`
 
 export const ArrowDownIcon = styled(ArrowSVG)`
   ${css.size(16)};
@@ -218,16 +210,49 @@ export const ArrowDownIcon = styled(ArrowSVG)`
   transform: rotate(-90deg);
   margin-right: -5px;
 `
-export const StartButton = styled(Button)`
+export const StartButton = styled(Button)<{ wallpaper: string }>`
   text-decoration: none;
 
-  ${css.media.mobile`
-    transform: scale(0.8);
-    text-decoration: none;
-  `};
+  background: ${({ wallpaper }) =>
+    `linear-gradient(#323132, #323132) padding-box, linear-gradient(to left, ${getPathGradient(
+      wallpaper,
+    )}) border-box;`};
+
+  border-radius: 10px;
+  border: 4px solid transparent;
+  padding-left: 20px;
+  padding-right: 24px;
+  height: 40px;
+
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    padding-right: 20px;
+  }
+
+  &:active {
+    box-shadow: none;
+  }
+
+  transition: all 0.2s;
+`
+
+export const ArrowLeftIcon = styled(ArrowSVG)`
+  ${css.size(16)};
+  margin-left: 4px;
+  fill: ${theme('button.fg')};
+  transform: rotate(180deg);
+  margin-right: -8px;
+  max-width: 0;
+
+  ${StartButton}:hover & {
+    max-width: 16px;
+  }
+
+  transition: all 0.2s;
 `
 export const DemoButton = styled(Button)`
   border-color: ${theme('article.digest')};
+  padding-right: 14px;
 
   &:hover {
     border-color: ${theme('article.title')};
@@ -262,7 +287,7 @@ export const Divider = styled.div<TSpace>`
 `
 export const FAQWrapper = styled.div`
   width: 100%;
-  max-width: 1080px;
+  max-width: 1048px;
   margin-bottom: 20px;
 `
 

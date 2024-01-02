@@ -7,7 +7,7 @@
 import { FC, ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import type { TSpace } from '@/spec'
+import type { TColorName, TSpace } from '@/spec'
 import { buildLog } from '@/logger'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 
@@ -24,6 +24,7 @@ type TProps = {
   children: ReactNode
   target?: string
   bold?: boolean
+  color?: TColorName | null
 } & TSpace
 
 const ArrowLinker: FC<TProps> = ({
@@ -32,14 +33,15 @@ const ArrowLinker: FC<TProps> = ({
   href = '/',
   target = '_blank',
   bold = false,
+  color = null,
   children,
   ...restProps
 }) => {
-  const primaryColor = usePrimaryColor()
+  const primaryColor = color || usePrimaryColor()
 
   return (
     <Link href={href} target={target}>
-      <Wrapper $testid={testid} {...restProps}>
+      <Wrapper $testid={testid} $color={primaryColor} {...restProps}>
         <Title fontSize={fontSize} bold={bold} $color={primaryColor}>
           {children}
         </Title>

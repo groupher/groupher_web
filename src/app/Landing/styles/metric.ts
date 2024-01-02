@@ -68,6 +68,60 @@ export const getPathGradient = (wallpaper: string): string => {
   return `${color1}, ${color2}`
 }
 
+export const getUserwallGradientOpacity = (wallpaper: string): number => {
+  switch (wallpaper) {
+    case GRADIENT_WALLPAPER_NAME.PINK: {
+      return 0.2
+    }
+    case GRADIENT_WALLPAPER_NAME.ORANGE: {
+      return 0.15
+    }
+    case GRADIENT_WALLPAPER_NAME.PURPLE: {
+      return 0.16
+    }
+
+    default: {
+      return 0.35
+    }
+  }
+}
+
+export const getUserwallGradient = (wallpaper: string): string[] => {
+  if (includes(wallpaper, [GRADIENT_WALLPAPER_NAME.PURPLE, GRADIENT_WALLPAPER_NAME.ORANGE])) {
+    return getPathGradient(wallpaper).split(',').reverse()
+  }
+  return getPathGradient(wallpaper).split(',')
+}
+
 export const getCursorGradient = (wallpaper: string): string => {
   return getPathGradient(wallpaper).split(',')[1]
+}
+
+export const getGithubGradient = (wallpaper: string): string => {
+  switch (wallpaper) {
+    case GRADIENT_WALLPAPER_NAME.PINK: {
+      return 'linear-gradient(64deg, #2f2f2f 60%, #211227e0 100%)'
+    }
+
+    case GRADIENT_WALLPAPER_NAME.GREEN: {
+      return 'linear-gradient(64deg, #2b2b29 60%, #0e230fe0 100%)'
+    }
+
+    case GRADIENT_WALLPAPER_NAME.ORANGE: {
+      return 'linear-gradient(64deg, #2f2f2f 60%, #271512e0 100%)'
+    }
+
+    case GRADIENT_WALLPAPER_NAME.BLUE:
+    case GRADIENT_WALLPAPER_NAME.PURPLE: {
+      return 'linear-gradient(64deg, #2f2f2f 20%, #0c1d2ee0 100%)'
+    }
+
+    case GRADIENT_WALLPAPER_NAME.GREY: {
+      return 'linear-gradient(64deg, #2f2f2f 60%, #272524e0 100%)'
+    }
+
+    default: {
+      return 'linear-gradient(64deg, #2f2f2f 60%, #271512e0 100%)'
+    }
+  }
 }

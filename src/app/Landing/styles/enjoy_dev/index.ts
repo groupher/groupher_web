@@ -11,12 +11,22 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   ${css.column('align-both')};
   width: 100%;
   height: auto;
-  margin-top: 120px;
+  margin-top: 100px;
   margin-bottom: 100px;
 `
 export const Slogan = styled.div`
   ${css.column('align-both')};
   margin-bottom: 20px;
+`
+export const Tips = styled.div`
+  color: ${theme('article.title')};
+  font-style: italic;
+  font-size: 12px;
+  padding: 2px 14px;
+  margin-bottom: 10px;
+  border: 1px solid;
+  border-radius: 10px;
+  border-color: ${theme('divider')};
 `
 export const Title = styled.div`
   ${css.row('align-center')};
@@ -50,7 +60,7 @@ export const Wall = styled.div`
   ${css.column('align-both')};
   width: 80%;
   height: auto;
-  margin-top: 35px;
+  margin-top: 25px;
   position: relative;
 
   ${css.media.mobile`

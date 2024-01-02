@@ -44,6 +44,7 @@ export const SETTING_LAYOUT_FIELD = {
   GLOW_TYPE: 'glowType',
   GLOW_FIXED: 'glowFixed',
   GLOW_OPACITY: 'glowOpacity',
+  GOSS_BLUR: 'gossBlur',
 }
 
 export const SETTING_FIELD = {
@@ -69,6 +70,7 @@ export const SETTING_FIELD = {
   GLOW_TYPE: 'glowType',
   GLOW_FIXED: 'glowFixed',
   GLOW_OPACITY: 'glowOpacity',
+  GOSS_BLUR: 'gossBlur',
 } as Record<TSnakeUpperCase<TSettingField>, TSettingField>
 
 export const MENU = {
@@ -312,6 +314,10 @@ export const LAYOUT_TABS = [
     title: '帮助台',
     slug: DASHBOARD_LAYOUT_ROUTE.DOC,
   },
+  {
+    title: '其他',
+    slug: DASHBOARD_LAYOUT_ROUTE.OTHER,
+  },
 ]
 
 export const BROADCAST_TABS = [
@@ -540,6 +546,7 @@ export const UI_KEYS = [
   'glowFixed',
   'glowType',
   'glowOpacity',
+  'gossBlur',
 ]
 
 export const BROADCAST_KEYS = [

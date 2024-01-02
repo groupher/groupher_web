@@ -8,7 +8,6 @@
 import { FC, ReactNode, memo } from 'react'
 import { buildLog } from '@/logger'
 
-// import SvgLoader from './SvgLoader'
 import NormalImg from './NormalImg'
 import LazyLoadImg from './LazyLoadImg'
 
@@ -38,15 +37,6 @@ const Img: FC<IProps> = ({
     // see solution in:
     // https://github.com/tanem/react-svg/issues/676#issuecomment-589639104
     return <>SVG TODO</>
-    // return (
-    //   <SvgLoader
-    //     src={src}
-    //     beforeInjection={(svg) =>
-    //       className.split(' ').map((singleClassName) => svg.classList.add(singleClassName))
-    //     }
-    //     onClick={onClick}
-    //   />
-    // )
   }
   return (
     <>

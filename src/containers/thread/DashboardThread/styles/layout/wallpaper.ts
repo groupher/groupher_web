@@ -36,7 +36,7 @@ export const UploadIcon = styled(SettingSVG)`
   transition: all 0.2s;
 `
 
-type TPreviewImage = { effect: string; noHover?: boolean }
+type TPreviewImage = { effect: string; noHover?: boolean; $darker: boolean }
 export const PreviewImage = styled.div<TPreviewImage>`
   ${css.column('align-both')};
   border: 1px solid;
@@ -47,6 +47,7 @@ export const PreviewImage = styled.div<TPreviewImage>`
   height: 180px;
   border-radius: 4px;
   ${({ effect }) => effect || ''};
+  filter: ${({ $darker }) => `brightness(${$darker ? 0.85 : 1})`};
 
   ${({ noHover }) =>
     !noHover
@@ -66,13 +67,15 @@ export const RealPreview = styled.div`
   position: relative;
   overflow: hidden;
 `
-export const ContentBlock = styled.div<{ hasShadow?: boolean }>`
+type TContentBlock = { hasShadow?: boolean; $bgColor: string }
+export const ContentBlock = styled.div<TContentBlock>`
   position: absolute;
   top: 0px;
   left: 30px;
   width: 240px;
   height: 180px;
-  background: white;
+  background: ${({ $bgColor }) => $bgColor};
+  backdrop-filter: blur(50px);
   z-index: 2;
   padding: 15px;
 
@@ -80,12 +83,4 @@ export const ContentBlock = styled.div<{ hasShadow?: boolean }>`
     hasShadow ? 'rgb(100 100 111 / 20%) 0px 7px 29px 0px;' : 'none'};
 
   transition: all 0.2s;
-`
-export const ContentBar = styled.div<{ long: number }>`
-  width: ${({ long }) => `${long}%`};
-  height: 8px;
-  background: ${theme('hoverBg')};
-  margin-bottom: 15px;
-  z-index: 3;
-  border-radius: 5px;
 `

@@ -1,9 +1,9 @@
 import type { TTestable, TSpace, TColor } from '@/spec'
 
-import styled, { css, rainbowLink } from '@/css'
+import styled, { css, rainbow, rainbowLink } from '@/css'
 import ArrowSVG from '@/icons/ArrowUpRight'
 
-type TWrapper = TTestable & TSpace
+type TWrapper = TTestable & TSpace & TColor
 
 export const Wrapper = styled.article.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
@@ -14,6 +14,7 @@ export const Wrapper = styled.article.attrs<TTestable>(({ $testid }) => ({
 
   &:hover {
     text-decoration: underline;
+    text-decoration-color: ${({ $color }) => rainbow($color)};
   }
 `
 
