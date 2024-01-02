@@ -305,6 +305,7 @@ const DashboardThread = T.model('DashboardThread', {
 
       const glowFixedTouched = _isChanged('glowFixed')
       const glowTypeTouched = _isChanged('glowType')
+      const gossBlurTouched = _isChanged('gossBlur')
       const glowOpacityTouched = _isChanged('glowOpacity')
 
       const nameAliasTouched = !isNil(slf.editingAlias)
@@ -354,6 +355,7 @@ const DashboardThread = T.model('DashboardThread', {
         glowType: glowTypeTouched,
         glowOpacity: glowOpacityTouched,
 
+        gossBlur: gossBlurTouched,
         rssFeed: rssFeedTypeTouched || rssFeedCountTouched,
 
         widgetsPrimaryColor: widgetsPrimaryColorTouched,
@@ -377,6 +379,7 @@ const DashboardThread = T.model('DashboardThread', {
           changelogLayoutTouched ||
           glowFixedTouched ||
           glowTypeTouched ||
+          gossBlurTouched ||
           glowOpacityTouched ||
           headerLayoutTouched ||
           footerLayoutTouched,

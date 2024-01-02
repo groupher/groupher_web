@@ -1,10 +1,13 @@
-import { FC, memo, useCallback } from 'react'
+import { FC, useCallback } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import type { TWallpaperInfo } from '@/spec'
 import { WIDTH } from '@/css'
 import { callWallpaperEditor } from '@/signal'
 import { parseWallpaper } from '@/wallpaper'
+import { blurRGB } from '@/fmt'
 
+import useThemeData from '@/hooks/useThemeData'
 import useTheme from '@/hooks/useTheme'
 import THEME from '@/constant/theme'
 
@@ -28,15 +31,18 @@ import {
 
 type TProps = {
   wallpaperInfo: TWallpaperInfo
+  gossBlur: number
 }
 
-const Wallpaper: FC<TProps> = ({ wallpaperInfo }) => {
+const Wallpaper: FC<TProps> = ({ wallpaperInfo, gossBlur }) => {
   const { wallpapers, wallpaper, customWallpaper, hasShadow } = wallpaperInfo
   const { background, effect } = parseWallpaper(wallpapers, wallpaper, customWallpaper)
 
   const { curTheme } = useTheme()
+  const themeData = useThemeData()
 
   const handleCallEditor = useCallback(() => callWallpaperEditor(), [])
+  const bgColor = `${blurRGB(themeData.htmlBg, gossBlur)}`
 
   return (
     <Wrapper>
@@ -70,7 +76,7 @@ const Wallpaper: FC<TProps> = ({ wallpaperInfo }) => {
                 noHover
                 $darker={curTheme === THEME.NIGHT}
               />
-              <ContentBlock hasShadow={hasShadow}>
+              <ContentBlock hasShadow={hasShadow} $bgColor={bgColor}>
                 <Brick $width={100} $height={7} $opacity={0.25} top={14} left={20} />
                 <Brick $width={180} $height={7} $opacity={0.15} top={32} left={20} />
 
@@ -92,4 +98,4 @@ const Wallpaper: FC<TProps> = ({ wallpaperInfo }) => {
   )
 }
 
-export default memo(Wallpaper)
+export default observer(Wallpaper)

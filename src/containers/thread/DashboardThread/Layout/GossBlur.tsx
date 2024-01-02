@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TWallpaperInfo } from '@/spec'
@@ -12,7 +12,9 @@ import { parseWallpaper } from '@/wallpaper'
 import { Brick } from '@/widgets/Common'
 import RangeSlider from '@/widgets/RangeSlider'
 
+import { SETTING_FIELD } from '../constant'
 import SectionLabel from '../SectionLabel'
+import SavingBar from '../SavingBar'
 
 import {
   Wrapper,
@@ -25,20 +27,23 @@ import {
   Desc,
   ContentBlock,
 } from '../styles/layout/goss_blur'
+import { edit } from '../logic'
 
 type TProps = {
   wallpaperInfo: TWallpaperInfo
+  gossBlur: number
+  saving: boolean
+  isTouched: boolean
 }
 
-const BlurEffect: FC<TProps> = ({ wallpaperInfo }) => {
+const GossBlur: FC<TProps> = ({ wallpaperInfo, gossBlur, saving, isTouched }) => {
   const { wallpapers, wallpaper, customWallpaper } = wallpaperInfo
   const { background, effect } = parseWallpaper(wallpapers, wallpaper, customWallpaper)
-  const [blur, setBlur] = useState(100)
 
   const { curTheme } = useTheme()
   const themeData = useThemeData()
 
-  const bgColor = `${blurRGB(themeData.htmlBg, blur)}`
+  const bgColor = `${blurRGB(themeData.htmlBg, gossBlur)}`
 
   return (
     <Wrapper key={wallpaper}>
@@ -78,8 +83,8 @@ const BlurEffect: FC<TProps> = ({ wallpaperInfo }) => {
 
             <br />
             <RangeSlider
-              value={blur}
-              onChange={(v) => setBlur(v)}
+              value={gossBlur}
+              onChange={(v) => edit(v, 'gossBlur')}
               top={10}
               min={50}
               max={100}
@@ -88,9 +93,17 @@ const BlurEffect: FC<TProps> = ({ wallpaperInfo }) => {
             />
           </Actions>
         </ContentWrapper>
+
+        <SavingBar
+          width="84%"
+          isTouched={isTouched}
+          field={SETTING_FIELD.GOSS_BLUR}
+          loading={saving}
+          top={20}
+        />
       </Section>
     </Wrapper>
   )
 }
 
-export default observer(BlurEffect)
+export default observer(GossBlur)

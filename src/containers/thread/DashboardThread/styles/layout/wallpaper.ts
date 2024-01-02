@@ -67,13 +67,15 @@ export const RealPreview = styled.div`
   position: relative;
   overflow: hidden;
 `
-export const ContentBlock = styled.div<{ hasShadow?: boolean }>`
+type TContentBlock = { hasShadow?: boolean; $bgColor: string }
+export const ContentBlock = styled.div<TContentBlock>`
   position: absolute;
   top: 0px;
   left: 30px;
   width: 240px;
   height: 180px;
-  background: white;
+  background: ${({ $bgColor }) => $bgColor};
+  backdrop-filter: blur(50px);
   z-index: 2;
   padding: 15px;
 
