@@ -24,7 +24,7 @@ import {
   Title,
   Desc,
   ContentBlock,
-} from '../styles/layout/blur_effect'
+} from '../styles/layout/goss_blur'
 
 type TProps = {
   wallpaperInfo: TWallpaperInfo

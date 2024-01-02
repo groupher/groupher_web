@@ -5,6 +5,10 @@ import { WIDTH } from '@/css'
 import { callWallpaperEditor } from '@/signal'
 import { parseWallpaper } from '@/wallpaper'
 
+import useTheme from '@/hooks/useTheme'
+import THEME from '@/constant/theme'
+
+import { Brick } from '@/widgets/Common'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import CheckLabel from '@/widgets/CheckLabel'
 
@@ -20,7 +24,6 @@ import {
   PreviewerWrapper,
   PreviewImage,
   ContentBlock,
-  ContentBar,
 } from '../styles/layout/wallpaper'
 
 type TProps = {
@@ -30,6 +33,8 @@ type TProps = {
 const Wallpaper: FC<TProps> = ({ wallpaperInfo }) => {
   const { wallpapers, wallpaper, customWallpaper, hasShadow } = wallpaperInfo
   const { background, effect } = parseWallpaper(wallpapers, wallpaper, customWallpaper)
+
+  const { curTheme } = useTheme()
 
   const handleCallEditor = useCallback(() => callWallpaperEditor(), [])
 
@@ -50,19 +55,33 @@ const Wallpaper: FC<TProps> = ({ wallpaperInfo }) => {
         <PreviewWrapper>
           <HoverMask onClick={handleCallEditor}>
             <UploadIcon />
-            <PreviewImage style={{ background }} effect={effect} />
+            <PreviewImage
+              style={{ background }}
+              effect={effect}
+              $darker={curTheme === THEME.NIGHT}
+            />
             <CheckLabel title="原图" top={15} left={-15} $active={false} />
           </HoverMask>
           <PreviewerWrapper>
             <RealPreview>
-              <PreviewImage style={{ background }} effect={effect} noHover />
+              <PreviewImage
+                style={{ background }}
+                effect={effect}
+                noHover
+                $darker={curTheme === THEME.NIGHT}
+              />
               <ContentBlock hasShadow={hasShadow}>
-                <ContentBar long={30} />
-                <ContentBar long={80} />
-                <ContentBar long={60} />
-                <ContentBar long={20} />
-                <ContentBar long={70} />
-                <ContentBar long={30} />
+                <Brick $width={100} $height={7} $opacity={0.25} top={14} left={20} />
+                <Brick $width={180} $height={7} $opacity={0.15} top={32} left={20} />
+
+                <Brick $width={100} $height={7} $opacity={0.22} top={54} left={20} />
+                <Brick $width={180} $height={7} $opacity={0.12} top={70} left={20} />
+
+                <Brick $width={100} $height={7} $opacity={0.2} top={94} left={20} />
+                <Brick $width={180} $height={7} $opacity={0.1} top={108} left={20} />
+
+                <Brick $width={100} $height={7} $opacity={0.18} top={134} left={20} />
+                <Brick $width={180} $height={7} $opacity={0.08} top={148} left={20} />
               </ContentBlock>
             </RealPreview>
             <CheckLabel title="预览效果" top={15} left={-15} $active={false} />
