@@ -314,6 +314,10 @@ export const LAYOUT_TABS = [
     title: '帮助台',
     slug: DASHBOARD_LAYOUT_ROUTE.DOC,
   },
+  {
+    title: '其他',
+    slug: DASHBOARD_LAYOUT_ROUTE.OTHER,
+  },
 ]
 
 export const BROADCAST_TABS = [

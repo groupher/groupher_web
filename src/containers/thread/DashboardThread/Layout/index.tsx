@@ -99,10 +99,6 @@ const UI: FC<TProps> = ({ settings, touched }) => {
           <Divider top={20} bottom={60} />
           <BannerLayout layout={bannerLayout} isTouched={touched.bannerLayout} saving={saving} />
           <Divider top={20} bottom={60} />
-          <AvatarLayout layout={avatarLayout} isTouched={touched.avatarLayout} saving={saving} />
-          <Divider top={20} bottom={60} />
-          <TagLayout layout={tagLayout} isTouched={touched.tagLayout} saving={saving} />
-          <Divider top={20} bottom={60} />
           <Wallpaper wallpaperInfo={wallpaperInfo} gossBlur={gossBlur} />
           <Divider top={20} bottom={60} />
           <GlowEffect
@@ -120,17 +116,6 @@ const UI: FC<TProps> = ({ settings, touched }) => {
             gossBlur={gossBlur}
             saving={saving}
             isTouched={touched.gossBlur}
-          />
-          <Divider top={20} bottom={60} />
-
-          {/* <BrandLayout layout={brandLayout} isTouched={touched.brandLayout} saving={saving} />
-          <Divider top={20} bottom={60} /> */}
-          <TopbarLayout
-            layout={topbarLayout}
-            bg={topbarBg}
-            isLayoutTouched={touched.topbarLayout}
-            isBgTouched={touched.topbarBg}
-            saving={saving}
           />
         </>
       )}
@@ -167,6 +152,22 @@ const UI: FC<TProps> = ({ settings, touched }) => {
           isFaqTouched={touched.docFaqLayout}
           saving={saving}
         />
+      )}
+
+      {layoutTab === DASHBOARD_LAYOUT_ROUTE.OTHER && (
+        <>
+          <AvatarLayout layout={avatarLayout} isTouched={touched.avatarLayout} saving={saving} />
+          <Divider top={20} bottom={60} />
+          <TagLayout layout={tagLayout} isTouched={touched.tagLayout} saving={saving} />
+          <Divider top={20} bottom={60} />
+          <TopbarLayout
+            layout={topbarLayout}
+            bg={topbarBg}
+            isLayoutTouched={touched.topbarLayout}
+            isBgTouched={touched.topbarBg}
+            saving={saving}
+          />
+        </>
       )}
     </Wrapper>
   )

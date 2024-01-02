@@ -75,6 +75,7 @@ export const DASHBOARD_LAYOUT_ROUTE = {
   KANBAN: 'kanban',
   CHANGELOG: 'changelog',
   DOC: 'doc',
+  OTHER: 'other',
 } as Record<Uppercase<TDashboardLayoutRoute>, TDashboardLayoutRoute>
 
 export const DASHBOARD_BROADCAST_ROUTE = {
