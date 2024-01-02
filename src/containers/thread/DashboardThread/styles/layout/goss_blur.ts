@@ -19,7 +19,7 @@ export const PreviewImage = styled.div<TPreviewImage>`
   border-color: ${theme('divider')};
   background-color: ${theme('hoverBg')};
 
-  width: 300px;
+  width: 292px;
   height: 240px;
   border-radius: 10px;
   ${({ effect }) => effect || ''};
@@ -35,7 +35,7 @@ export const PreviewerWrapper = styled.div`
 export const ContentBlock = styled.div<{ $bgColor: string }>`
   position: absolute;
   top: -28px;
-  left: 20px;
+  left: 15px;
   width: 264px;
   height: 245px;
   background: ${({ $bgColor }) => $bgColor};
@@ -55,7 +55,7 @@ export const Actions = styled.div`
   width: 50%;
   height: 100%;
   flex-grow: 1;
-  margin-left: 50px;
+  margin-left: 42px;
 `
 export const Title = styled.div`
   color: ${theme('article.title')};

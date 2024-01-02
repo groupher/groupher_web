@@ -4,7 +4,7 @@ import type { TActive, TColor, TColorName } from '@/spec'
 
 export const Wrapper = styled.div`
   ${css.column()};
-  padding-left: 30px;
+  padding-left: 56px;
 
   ${css.media.mobile`
     padding: 20px;

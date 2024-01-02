@@ -82,9 +82,9 @@ const GossBlur: FC<TProps> = ({ wallpaperInfo, gossBlur, saving, isTouched }) =>
           <Actions>
             <Title>透明度</Title>
             <Desc>默认为无模糊白（黑）色背景。</Desc>
-            <Desc>设置透明度以后，会根据壁纸颜色产生对应的毛玻璃效果。</Desc>
             <Desc>透明度过低会导致内容无法辨认。</Desc>
-            <Desc>个别浏览器不支持该效果，不影响布局或内容呈现。</Desc>
+            <Desc>个别浏览器不支持相应特性，会导致效果失效。</Desc>
+            <Desc>可根据浅色和暗色主题设置不同的透明度。</Desc>
 
             <br />
             <RangeSlider
