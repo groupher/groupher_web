@@ -51,12 +51,12 @@ export const BlockBase = styled.div<TBlockBase>`
   border: 1px solid;
   border-radius: 7px;
   border-color: ${({ $active, $color }) =>
-    $active ? rainbowLink($color) : theme('button.upvoteBorder')};
+    $active ? rainbow($color, 'article.digest') : theme('button.upvoteBorder')};
   padding: 16px 15px;
 
   &:hover {
     opacity: ${({ $active }) => ($active ? 0.85 : 0.65)};
-    border-color: ${({ $color }) => rainbowLink($color)};
+    border-color: ${({ $color }) => rainbow($color, 'article.digest')};
     cursor: pointer;
   }
 
