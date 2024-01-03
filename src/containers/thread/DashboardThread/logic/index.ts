@@ -381,9 +381,7 @@ export const loadSocialLinks = (): void => {
  * batch select any TID list
  */
 export const batchSelect = (id: TID, selected = true): void => {
-  const {
-    cmsContents: { batchSelectedIDs },
-  } = store
+  const { batchSelectedIDs } = store
 
   const _batchSelectedIds = selected
     ? [...batchSelectedIDs, id]

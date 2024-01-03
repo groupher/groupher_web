@@ -17,7 +17,6 @@ import {
   filter,
   reject,
   mapObjIndexed,
-  includes,
   any,
   forEach,
 } from 'ramda'
@@ -29,7 +28,6 @@ import type {
   TEnableConfig,
   TNameAlias,
   TChangeMode,
-  TArticleEntries,
   TSocialItem,
   TMediaReport,
 } from '@/spec'
@@ -74,7 +72,6 @@ import type {
   TSettingField,
   TBroadcastSettings,
   TCurPageLinksKey,
-  TCMSContents,
 } from '../spec'
 
 import { SETTING_FIELD, BASEINFO_KEYS, SEO_KEYS, BROADCAST_KEYS } from '../constant'
@@ -144,44 +141,6 @@ const DashboardThread = T.model('DashboardThread', {
     },
     get overviewData(): TOverview {
       return toJS(self.overview)
-    },
-    get cmsContents(): TCMSContents {
-      const slf = self as TStore
-      const { batchSelectedIDs, docTab, editingFAQIndex } = slf
-      const _batchSelectedIds = toJS(batchSelectedIDs)
-      const _pagedCommunities = toJS(slf.pagedCommunities)
-      const _pagedPosts = toJS(slf.pagedPosts)
-      const _pagedDocs = toJS(slf.pagedDocs)
-      const _pagedChangelogs = toJS(slf.pagedChangelogs)
-
-      const faqSections = toJS(slf.faqSections)
-      const editingFAQ = toJS(slf.editingFAQ)
-
-      return {
-        loading: slf.loading,
-        docTab,
-        editingFAQIndex,
-        batchSelectedIDs: _batchSelectedIds,
-        pagedCommunities: {
-          ..._pagedCommunities,
-          entries: slf._assignChecked(_pagedCommunities.entries),
-        },
-        pagedPosts: {
-          ..._pagedPosts,
-          entries: slf._assignChecked(_pagedPosts.entries),
-        },
-        pagedDocs: {
-          ..._pagedDocs,
-          entries: slf._assignChecked(_pagedDocs.entries),
-        },
-        pagedChangelogs: {
-          ..._pagedChangelogs,
-          entries: slf._assignChecked(_pagedChangelogs.entries),
-        },
-
-        faqSections,
-        editingFAQ,
-      }
     },
 
     get _tagsIndexTouched(): boolean {
@@ -714,17 +673,6 @@ const DashboardThread = T.model('DashboardThread', {
       )
 
       return targetIdx
-    },
-
-    _assignChecked(entries: TArticleEntries): TArticleEntries {
-      const slf = self as TStore
-      const { batchSelectedIDs } = slf
-      const _batchSelectedIds = toJS(batchSelectedIDs)
-
-      return entries.map((article) => ({
-        ...article,
-        _checked: includes(article.id, _batchSelectedIds),
-      }))
     },
 
     updateEditingTag() {

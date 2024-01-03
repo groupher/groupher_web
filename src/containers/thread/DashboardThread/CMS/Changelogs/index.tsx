@@ -1,14 +1,15 @@
 import { FC, useCallback, useState } from 'react'
+import { observer } from 'mobx-react-lite'
 import { pluck } from 'ramda'
 
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table'
 
-import type { TID, TPagedArticles } from '@/spec'
 import Checker from '@/widgets/Checker'
 
 import { CheckCell, ArticleCell, StateCell, AuthorDateCell, DateCell } from '../Cell'
 import FilterBar from '../FilterBar'
 
+import useCMSInfo from '../../hooks/useCMSInfo'
 import { Title, SortIcon } from '../../styles/cms/changelogs'
 import { loadChangelogs, batchSelectAll } from '../../logic'
 
@@ -17,13 +18,8 @@ import { loadChangelogs, batchSelectAll } from '../../logic'
  * API: https://github.com/rsuite/rsuite-table#api
  */
 
-type TProps = {
-  pagedChangelogs: TPagedArticles
-  loading: boolean
-  batchSelectedIDs: TID[]
-}
-
-const Changelogs: FC<TProps> = ({ pagedChangelogs, loading, batchSelectedIDs }) => {
+const Changelogs: FC = () => {
+  const { pagedChangelogs, loading, batchSelectedIDs } = useCMSInfo()
   const [showCheckColumn, setShowCheckColumn] = useState(false)
   const [sortColumn, setSortColumn] = useState('id')
 
@@ -161,4 +157,4 @@ const Changelogs: FC<TProps> = ({ pagedChangelogs, loading, batchSelectedIDs }) 
   )
 }
 
-export default Changelogs
+export default observer(Changelogs)
