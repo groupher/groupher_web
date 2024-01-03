@@ -11,7 +11,7 @@ import { SETTING_FIELD } from '../../constant'
 import SectionLabel from '../../SectionLabel'
 import SavingBar from '../../SavingBar'
 
-import type { TProps as TPropsBase } from '.'
+import useKanbanInfo from '../../hooks/useKanbanInfo'
 import {
   Wrapper,
   SelectWrapper,
@@ -24,9 +24,8 @@ import {
 } from '../../styles/layout/kanban_layout/item_card_layout'
 import { edit } from '../../logic'
 
-type TProps = Pick<TPropsBase, 'cardLayout' | 'isTouched' | 'saving'>
-
-const KanbanItemLayout: FC<TProps> = ({ cardLayout, isTouched, saving }) => {
+const KanbanItemLayout: FC = () => {
+  const { cardLayout, isCardTouched: isTouched, saving } = useKanbanInfo()
   const primaryColor = usePrimaryColor()
 
   return (

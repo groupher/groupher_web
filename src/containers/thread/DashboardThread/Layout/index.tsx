@@ -51,9 +51,6 @@ const UI: FC<TProps> = ({ settings, touched }) => {
     topbarLayout,
     topbarBg,
     postLayout,
-    kanbanLayout,
-    kanbanCardLayout,
-    kanbanBgColors,
     changelogLayout,
 
     // ui part
@@ -106,17 +103,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
         <PostLayout layout={postLayout} isTouched={touched.postLayout} saving={saving} />
       )}
 
-      {layoutTab === DASHBOARD_LAYOUT_ROUTE.KANBAN && (
-        <KanbanLayout
-          layout={kanbanLayout}
-          cardLayout={kanbanCardLayout}
-          isTouched={touched.kanbanLayout}
-          isCardTouched={touched.kanbanCardLayout}
-          isBgColorsTouched={touched.kanbanBgColors}
-          kanbanBgColors={kanbanBgColors}
-          saving={saving}
-        />
-      )}
+      {layoutTab === DASHBOARD_LAYOUT_ROUTE.KANBAN && <KanbanLayout />}
 
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.CHANGELOG && (
         <ChangelogLayout

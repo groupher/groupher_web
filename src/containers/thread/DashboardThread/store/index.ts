@@ -595,8 +595,6 @@ const DashboardThread = T.model('DashboardThread', {
 
       // @ts-ignore
       return {
-        // @ts-ignore
-        kanbanBgColors: toJS(slf.kanbanBgColors) as TColorName[],
         ...pick(UI_KEYS, slf),
         saving: slf.saving,
       }

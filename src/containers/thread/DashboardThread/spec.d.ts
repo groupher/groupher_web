@@ -174,9 +174,6 @@ export type TUiSettings = {
   docLayout: TDocLayout
   docFaqLayout: TDocFaqLayout
   postLayout: TPostLayout
-  kanbanLayout: TKanbanLayout
-  kanbanCardLayout: TKanbanCardLayout
-  kanbanBgColors: TColorName[]
   changelogLayout: TChangelogLayout
   headerLayout: THeaderLayout
   footerLayout: TFooterLayout

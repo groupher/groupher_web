@@ -1,6 +1,5 @@
-import { FC, memo } from 'react'
-
-import type { TColorName, TKanbanLayout, TKanbanCardLayout } from '@/spec'
+import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { KANBAN_LAYOUT } from '@/constant/layout'
 import { Br } from '@/widgets/Common'
@@ -9,44 +8,22 @@ import GlobalLayout from './GlobalLayout'
 import ItemCardLayout from './ItemCardLayout'
 import BgColorsSetter from './BgColorsSetter'
 
+import useKanbanInfo from '../../hooks/useKanbanInfo'
 import { Wrapper } from '../../styles/layout/kanban_layout'
 
-export type TProps = {
-  layout: TKanbanLayout
-  cardLayout: TKanbanCardLayout
-  isTouched: boolean
-  isCardTouched: boolean
-  isBgColorsTouched: boolean
-  saving: boolean
-  kanbanBgColors: TColorName[]
-}
+const KanbanListLayout: FC = () => {
+  const { layout } = useKanbanInfo()
 
-const KanbanListLayout: FC<TProps> = ({
-  layout,
-  cardLayout,
-  isTouched,
-  isCardTouched,
-  isBgColorsTouched,
-  kanbanBgColors,
-  saving,
-}) => {
   return (
     <Wrapper>
-      <GlobalLayout layout={layout} isTouched={isTouched} saving={saving} />
+      <GlobalLayout />
 
-      {layout === KANBAN_LAYOUT.CLASSIC && (
-        <ItemCardLayout cardLayout={cardLayout} isTouched={isCardTouched} saving={saving} />
-      )}
+      {layout === KANBAN_LAYOUT.CLASSIC && <ItemCardLayout />}
 
       <Br top={50} />
-      <BgColorsSetter
-        layout={layout}
-        kanbanBgColors={kanbanBgColors}
-        isBgColorsTouched={isBgColorsTouched}
-        saving={saving}
-      />
+      <BgColorsSetter />
     </Wrapper>
   )
 }
 
-export default memo(KanbanListLayout)
+export default observer(KanbanListLayout)
