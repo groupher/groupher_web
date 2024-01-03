@@ -7,7 +7,7 @@ import THEME from '@/constant/theme'
 
 type TRet = {
   curTheme: TThemeName
-  // changeTheme: (name: TThemeName) => void
+  changeTheme: (name: TThemeName) => void
   switchTheme: () => void
   themeMap: TThemeMap
 }
@@ -26,7 +26,7 @@ const useTheme = (): TRet => {
 
   return {
     curTheme,
-    // changeTheme: (name: TThemeName) => store.theme.changeTheme(name),
+    changeTheme: (name: TThemeName) => store.theme.changeTheme(name),
     switchTheme: () => {
       store.theme.changeTheme(curTheme === THEME.DAY ? THEME.NIGHT : THEME.DAY)
     },

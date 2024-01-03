@@ -1,7 +1,6 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import type { TWallpaperInfo } from '@/spec'
 import { blurRGB } from '@/fmt'
 import useThemeData from '@/hooks/useThemeData'
 import useTheme from '@/hooks/useTheme'
@@ -12,10 +11,11 @@ import { parseWallpaper } from '@/wallpaper'
 import { Brick } from '@/widgets/Common'
 import RangeSlider from '@/widgets/RangeSlider'
 
-import { SETTING_FIELD } from '../constant'
-import SectionLabel from '../SectionLabel'
-import SavingBar from '../SavingBar'
+import { SETTING_FIELD } from '../../constant'
+import SectionLabel from '../../SectionLabel'
+import SavingBar from '../../SavingBar'
 
+import useGossBlur from '../../hooks/useGossBlur'
 import {
   Wrapper,
   Section,
@@ -25,18 +25,14 @@ import {
   Actions,
   Title,
   Desc,
+  Highlight,
   ContentBlock,
-} from '../styles/layout/goss_blur'
-import { edit } from '../logic'
+} from '../../styles/layout/goss_blur'
+import { edit } from '../../logic'
 
-type TProps = {
-  wallpaperInfo: TWallpaperInfo
-  gossBlur: number
-  saving: boolean
-  isTouched: boolean
-}
+const GossBlur: FC = () => {
+  const { wallpaperInfo, gossBlur, saving, isTouched } = useGossBlur()
 
-const GossBlur: FC<TProps> = ({ wallpaperInfo, gossBlur, saving, isTouched }) => {
   const { wallpapers, wallpaper, customWallpaper } = wallpaperInfo
   const { background, effect } = parseWallpaper(wallpapers, wallpaper, customWallpaper)
 
@@ -84,7 +80,10 @@ const GossBlur: FC<TProps> = ({ wallpaperInfo, gossBlur, saving, isTouched }) =>
             <Desc>默认为无模糊白（黑）色背景。</Desc>
             <Desc>透明度过低会导致内容无法辨认。</Desc>
             <Desc>个别浏览器不支持相应特性，会导致效果失效。</Desc>
-            <Desc>可根据浅色和暗色主题设置不同的透明度。</Desc>
+            <Desc>
+              可根据<Highlight>浅色</Highlight>/<Highlight>暗色</Highlight>主题
+              <Highlight>分别设置</Highlight>。
+            </Desc>
 
             <br />
             <RangeSlider

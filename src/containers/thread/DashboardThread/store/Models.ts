@@ -177,6 +177,7 @@ export const settingsModalFields = {
 
   // goss blur
   gossBlur: T.opt(T.int, 100),
+  gossBlurDark: T.opt(T.int, 100),
 
   // contents
   // tags

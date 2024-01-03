@@ -45,6 +45,7 @@ export const SETTING_LAYOUT_FIELD = {
   GLOW_FIXED: 'glowFixed',
   GLOW_OPACITY: 'glowOpacity',
   GOSS_BLUR: 'gossBlur',
+  GOSS_BLUR_DARK: 'gossBlurDark',
 }
 
 export const SETTING_FIELD = {
@@ -547,6 +548,7 @@ export const UI_KEYS = [
   'glowType',
   'glowOpacity',
   'gossBlur',
+  'gossBlurDark',
 ]
 
 export const BROADCAST_KEYS = [

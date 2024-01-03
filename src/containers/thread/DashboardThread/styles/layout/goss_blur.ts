@@ -59,12 +59,18 @@ export const Actions = styled.div`
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
-  font-weight: 450;
-  font-size: 16px;
+  font-size: 15px;
   margin-bottom: 10px;
 `
 export const Desc = styled.div`
   color: ${theme('article.digest')};
+  opacity: 0.8;
   font-size: 14px;
   margin-bottom: 3px;
+`
+export const Highlight = styled.span`
+  color: ${theme('article.title')};
+  font-weight: 500;
+  margin-left: 1px;
+  margin-right: 1px;
 `
