@@ -219,14 +219,6 @@ export type TTouched = {
   widgetsPrimaryColor: boolean
   widgetsThreads: boolean
   widgetsSize: boolean
-
-  // sidebar
-  baseInfo: boolean
-  seo: boolean
-  ui: boolean
-  widgets: boolean
-  broadcast: boolean
-  broadcastArticle: boolean
 }
 
 export type TSettingField =
