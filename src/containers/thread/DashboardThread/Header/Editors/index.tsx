@@ -9,14 +9,13 @@ import { sortByIndex, groupByKey } from '@/helper'
 
 import Button from '@/widgets/Buttons/Button'
 
-import type { THeaderSettings } from '../../spec'
-
 import LinkEditor from '../../Footer/Editors/LinkEditor'
 import GroupInputer from '../../Footer/Editors/GroupInputer'
 
 import FixedLinks from './FixedLinks'
 import GroupHead from './GroupHead'
 
+import useHeaderSettingsInfo from '../../hooks/useHeaderSettingsInfo'
 import {
   Wrapper,
   TopWrapper,
@@ -48,11 +47,7 @@ import {
   cancelGroupChange,
 } from '../../logic/links'
 
-type TProps = {
-  settings: THeaderSettings
-}
-
-const Editor: FC<TProps> = ({ settings }) => {
+const Editor: FC = () => {
   const [animateRef] = useAutoAnimate()
   const [groupAnimateRef] = useAutoAnimate()
 
@@ -62,7 +57,7 @@ const Editor: FC<TProps> = ({ settings }) => {
     editingLinkMode,
     editingGroup,
     editingGroupIndex,
-  } = settings
+  } = useHeaderSettingsInfo()
 
   const isAboutLinkFold =
     length(filter((item) => item.title !== '' && item.group !== MORE_GROUP, links)) >= 1

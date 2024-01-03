@@ -100,7 +100,7 @@ export type TRSSSettings = {
   saving: boolean
 }
 
-type TLinkState = {
+export type TLinkState = {
   editingLink: TLinkItem
   saving: boolean
   editingLinkMode: TChangeMode
