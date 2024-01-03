@@ -10,24 +10,20 @@ import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import Tabs from '@/widgets/Switcher/Tabs'
 
-import type { TAliasSettings } from '../spec'
 import { ALIAS_TABS, ALIAS_GROUP } from '../constant'
 
 import Portal from '../Portal'
 import Item from './Item'
 
+import useAliasInfo from '../hooks/useAliasInfo'
 import { Wrapper, Banner, TabsWrapper } from '../styles/alias'
 import { edit } from '../logic'
 
-type TProps = {
-  settings: TAliasSettings
-}
-
-const Alias: FC<TProps> = ({ settings }) => {
+const Alias: FC = () => {
   const router = useRouter()
   const curCommunity = useViewingCommunity()
 
-  const { nameAlias, editingAlias, aliasTab } = settings
+  const { nameAlias, editingAlias, aliasTab } = useAliasInfo()
   const groupedAlias = groupByKey(nameAlias, 'group')
 
   const generalAlias = groupedAlias[ALIAS_GROUP.THREAD] || []

@@ -77,7 +77,6 @@ import type {
   THeaderSettings,
   TFooterSettings,
   TDocSettings,
-  TAliasSettings,
   TTouched,
   TSettingField,
   TBroadcastSettings,
@@ -440,7 +439,7 @@ const DashboardThread = T.model('DashboardThread', {
         editingGroupIndex,
         enableSettings,
         curCommunity,
-        aliasSettings,
+        nameAlias,
       } = slf
 
       return {
@@ -453,7 +452,7 @@ const DashboardThread = T.model('DashboardThread', {
         editingGroupIndex,
         threads: publicThreads(curCommunity.threads, {
           enable: enableSettings,
-          nameAlias: aliasSettings.nameAlias,
+          nameAlias,
         }),
       }
     },
@@ -469,7 +468,7 @@ const DashboardThread = T.model('DashboardThread', {
         editingGroupIndex,
         enableSettings,
         curCommunity,
-        aliasSettings,
+        nameAlias,
       } = slf
 
       return {
@@ -483,7 +482,7 @@ const DashboardThread = T.model('DashboardThread', {
         editingGroupIndex,
         threads: publicThreads(curCommunity.threads, {
           enable: enableSettings,
-          nameAlias: aliasSettings.nameAlias,
+          nameAlias,
         }),
       }
     },
@@ -493,17 +492,6 @@ const DashboardThread = T.model('DashboardThread', {
 
       return {
         categories: toJS(slf.docCategories),
-      }
-    },
-
-    get aliasSettings(): TAliasSettings {
-      const slf = self as TStore
-
-      return {
-        aliasTab: slf.aliasTab,
-        editingAlias: toJS(slf.editingAlias),
-        nameAlias: toJS(slf.nameAlias),
-        saving: slf.saving,
       }
     },
 

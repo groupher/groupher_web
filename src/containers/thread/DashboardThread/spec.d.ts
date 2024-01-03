@@ -120,13 +120,6 @@ export type TFooterSettings = {
   threads: TCommunityThread[]
 } & TLinkState
 
-export type TAliasSettings = {
-  saving: boolean
-  nameAlias: TNameAlias[]
-  editingAlias: TNameAlias
-  aliasTab: TDashboardAliasRoute
-}
-
 export type TBaseInfoSettings = {
   loading: boolean
   queringMediaReportIndex: number | null
