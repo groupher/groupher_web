@@ -6,7 +6,7 @@ import type { TGlowEffect } from '@/spec'
 /**
  * NOTE: should use observer to wrap the component who use this hook
  */
-const useGlow = (): TGlowEffect => {
+const useGlowLight = (): TGlowEffect => {
   const { store } = useContext(MobXProviderContext)
 
   if (store === null) {
@@ -14,9 +14,7 @@ const useGlow = (): TGlowEffect => {
   }
 
   const { wallpaper } = store.wallpaperEditor
-  const { uiSettings, changeGlowEffect } = store.dashboardThread
-
-  const { glowType, glowFixed, glowOpacity } = uiSettings
+  const { glowType, glowFixed, glowOpacity, changeGlowEffect } = store.dashboardThread
 
   return {
     glowType: wallpaper && glowType,
@@ -26,4 +24,4 @@ const useGlow = (): TGlowEffect => {
   }
 }
 
-export default useGlow
+export default useGlowLight

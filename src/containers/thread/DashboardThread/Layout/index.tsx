@@ -26,27 +26,15 @@ import GlowLight from './GlowLight'
 import GossBlur from './GossBlur'
 import Wallpaper from './Wallpaper'
 
-import type { TUiSettings, TTouched } from '../spec'
+import useTabInfo from '../hooks/useTabInfo'
 import { Wrapper, Banner, TabsWrapper } from '../styles/layout'
-
 import { edit } from '../logic'
 
-type TProps = {
-  settings: TUiSettings
-  touched: TTouched
-}
-
-const UI: FC<TProps> = ({ settings, touched }) => {
+const UI: FC = () => {
   const curCommunity = useViewingCommunity()
   const router = useRouter()
 
-  const {
-    layoutTab,
-    // brandLayout,
-    changelogLayout,
-
-    saving,
-  } = settings
+  const { layoutTab } = useTabInfo()
 
   return (
     <Wrapper>
@@ -89,13 +77,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
 
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.KANBAN && <KanbanLayout />}
 
-      {layoutTab === DASHBOARD_LAYOUT_ROUTE.CHANGELOG && (
-        <ChangelogLayout
-          layout={changelogLayout}
-          isTouched={touched.changelogLayout}
-          saving={saving}
-        />
-      )}
+      {layoutTab === DASHBOARD_LAYOUT_ROUTE.CHANGELOG && <ChangelogLayout />}
 
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.DOC && <DocLayout />}
 

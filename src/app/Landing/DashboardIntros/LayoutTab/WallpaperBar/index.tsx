@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { keys, includes } from 'ramda'
 
 import useWallpaper from '@/hooks/useWallpaper'
-import useGlow from '@/hooks/useGlow'
+import useGlowLight from '@/hooks/useGlowLight'
 
 import { parseWallpaper } from '@/wallpaper'
 import { callWallpaperEditor } from '@/signal'
@@ -21,7 +21,7 @@ import {
 
 const WallpaperBar: FC = () => {
   const { wallpaper, gradientWallpapers, changeWallpaper } = useWallpaper()
-  const { changeGlowEffect } = useGlow()
+  const { changeGlowEffect } = useGlowLight()
 
   const gradientKeys = keys(gradientWallpapers)
 

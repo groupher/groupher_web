@@ -157,29 +157,29 @@ export type TSEOSettings = TDashboardSEOConfig & {
   seoTab: TDashboardSEORoute
 }
 
-export type TUiSettings = {
-  saving: boolean
-  primaryColor: TColorName
-  brandLayout: TBrandLayout
-  topbarLayout: TTopbarLayout
-  topbarBg: TColorName
-  tagLayout: TTagLayout
-  avatarLayout: TAvatarLayout
-  bannerLayout: TBannerLayout
-  glowType: string
-  glowFixed: boolean
-  glowOpacity: string
-  gossBlur: number
-  gossBlurDark: number
-  docLayout: TDocLayout
-  docFaqLayout: TDocFaqLayout
-  postLayout: TPostLayout
-  changelogLayout: TChangelogLayout
-  headerLayout: THeaderLayout
-  footerLayout: TFooterLayout
+// export type TUiSettings = {
+//   saving: boolean
+//   primaryColor: TColorName
+//   brandLayout: TBrandLayout
+//   topbarLayout: TTopbarLayout
+//   topbarBg: TColorName
+//   tagLayout: TTagLayout
+//   avatarLayout: TAvatarLayout
+//   bannerLayout: TBannerLayout
+//   glowType: string
+//   glowFixed: boolean
+//   glowOpacity: string
+//   gossBlur: number
+//   gossBlurDark: number
+//   docLayout: TDocLayout
+//   docFaqLayout: TDocFaqLayout
+//   postLayout: TPostLayout
+//   changelogLayout: TChangelogLayout
+//   headerLayout: THeaderLayout
+//   footerLayout: TFooterLayout
 
-  layoutTab: TDashboardLayoutRoute
-}
+//   layoutTab: TDashboardLayoutRoute
+// }
 
 export type TBroadcastSettings = TBroadcastConfig & {
   saving: boolean

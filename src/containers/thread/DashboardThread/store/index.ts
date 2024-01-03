@@ -74,7 +74,6 @@ import type {
   TOverview,
   TBaseInfoSettings,
   TSEOSettings,
-  TUiSettings,
   TTagSettings,
   TRSSSettings,
   THeaderSettings,
@@ -587,16 +586,6 @@ const DashboardThread = T.model('DashboardThread', {
         baseInfoTab: slf.baseInfoTab,
         socialLinks,
         mediaReports: toJS(slf.mediaReports),
-      }
-    },
-
-    get uiSettings(): TUiSettings {
-      const slf = self as TStore
-
-      // @ts-ignore
-      return {
-        ...pick(UI_KEYS, slf),
-        saving: slf.saving,
       }
     },
 

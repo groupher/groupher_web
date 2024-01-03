@@ -26,12 +26,12 @@ const DocThread = T.model('DocThread', {
     get layout(): TDocLayout {
       const root = getParent(self) as TRootStore
 
-      return toJS(root.dashboardThread.uiSettings.docLayout)
+      return toJS(root.dashboardThread.docLayout)
     },
     get faqLayout(): TDocFAQLayout {
       const root = getParent(self) as TRootStore
 
-      return toJS(root.dashboardThread.uiSettings.docFaqLayout)
+      return toJS(root.dashboardThread.docFaqLayout)
     },
   }))
   .actions((self) => ({
