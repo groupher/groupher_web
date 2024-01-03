@@ -58,8 +58,6 @@ const UI: FC<TProps> = ({ settings, touched }) => {
 
     // ui part
     primaryColor,
-    wallpaperInfo,
-    gossBlur,
     saving,
   } = settings
 
@@ -96,11 +94,9 @@ const UI: FC<TProps> = ({ settings, touched }) => {
           <Divider top={20} bottom={60} />
           <BannerLayout layout={bannerLayout} isTouched={touched.bannerLayout} saving={saving} />
           <Divider top={20} bottom={60} />
-          <Wallpaper wallpaperInfo={wallpaperInfo} gossBlur={gossBlur} />
+          <Wallpaper />
           <Divider top={20} bottom={60} />
-
           <GossBlur />
-
           <Divider top={20} bottom={60} />
           <GlowLight />
         </>
