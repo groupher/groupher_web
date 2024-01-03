@@ -78,7 +78,6 @@ import type {
   TFooterSettings,
   TDocSettings,
   TAliasSettings,
-  // TAdminSettings,
   TTouched,
   TSettingField,
   TBroadcastSettings,
