@@ -1,4 +1,5 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { Br } from '@/widgets/Common'
 
@@ -6,13 +7,13 @@ import Button from '@/widgets/Buttons/Button'
 import Tabs from '@/widgets/Switcher/Tabs'
 import Radio from '@/widgets/Switcher/Radio'
 
-import type { TWidgetsSettings, TTouched } from '../spec'
 import { WIDGET_TYPES } from '../constant'
 
 import Portal from '../Portal'
 import BaseSetting from './BaseSetting'
 import CodeArea from './CodeArea'
 
+import useWidgetsInfo from '../hooks/useWidgetsInfo'
 import {
   Wrapper,
   TypeSelect,
@@ -27,13 +28,8 @@ import {
 } from '../styles/widgets'
 import { edit, onSave } from '../logic'
 
-type TProps = {
-  settings: TWidgetsSettings
-  touched: TTouched
-}
-
-const Widgets: FC<TProps> = ({ settings, touched }) => {
-  const { widgetsType } = settings
+const Widgets: FC = () => {
+  const { widgetsType } = useWidgetsInfo()
 
   return (
     <Wrapper>
@@ -42,7 +38,7 @@ const Widgets: FC<TProps> = ({ settings, touched }) => {
         desc="为您的主页添加社区，更新日志，看板等插件，让产品用户及时方便的了解最新动态。"
       />
 
-      <BaseSetting settings={settings} touched={touched} />
+      <BaseSetting />
       <TypeSelect>
         <TabWrapper>
           <Tabs
@@ -100,4 +96,4 @@ const Widgets: FC<TProps> = ({ settings, touched }) => {
   )
 }
 
-export default memo(Widgets)
+export default observer(Widgets)

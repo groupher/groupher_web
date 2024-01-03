@@ -1,4 +1,5 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 import { includes, reject, clone } from 'ramda'
 
 import { THREAD } from '@/constant/thread'
@@ -6,12 +7,12 @@ import ColorSelector from '@/widgets/ColorSelector'
 import { SpaceGrow, Br } from '@/widgets/Common'
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
 
-import type { TWidgetsSettings, TTouched } from '../spec'
 import { SETTING_FIELD } from '../constant'
 
 import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
+import useWidgetsInfo from '../hooks/useWidgetsInfo'
 import {
   Wrapper,
   Label,
@@ -26,13 +27,14 @@ import {
 import { edit } from '../logic'
 import { TThread } from '@/spec'
 
-type TProps = {
-  touched: TTouched
-  settings: TWidgetsSettings
-}
-
-const BaseSetting: FC<TProps> = ({ settings, touched }) => {
-  const { widgetsPrimaryColor: primaryColor, widgetsThreads, saving } = settings
+const BaseSetting: FC = () => {
+  const {
+    widgetsPrimaryColor: primaryColor,
+    widgetsThreads,
+    saving,
+    isThreadTouched,
+    isPrimaryColorTouched,
+  } = useWidgetsInfo()
 
   const threadOnChange = (checked: boolean, thread: TThread): void => {
     const newThreads = checked
@@ -46,7 +48,7 @@ const BaseSetting: FC<TProps> = ({ settings, touched }) => {
     <Wrapper>
       <SectionLabel title="组件主题色" desc="默认与当前社区设置的主题色相一致。" />
       <SavingBar
-        isTouched={touched.widgetsPrimaryColor}
+        isTouched={isPrimaryColorTouched}
         field={SETTING_FIELD.WIDGETS_PRIMARY_COLOR}
         loading={saving}
       >
@@ -115,10 +117,10 @@ const BaseSetting: FC<TProps> = ({ settings, touched }) => {
         </Section>
       </ThreadsWrapper>
 
-      <Br top={touched.widgetsThreads ? 20 : 70} />
+      <Br top={isThreadTouched ? 20 : 70} />
 
       <SavingBar
-        isTouched={touched.widgetsThreads}
+        isTouched={isThreadTouched}
         field={SETTING_FIELD.WIDGETS_THREADS}
         loading={saving}
         bottom={40}
@@ -127,4 +129,4 @@ const BaseSetting: FC<TProps> = ({ settings, touched }) => {
   )
 }
 
-export default memo(BaseSetting)
+export default observer(BaseSetting)

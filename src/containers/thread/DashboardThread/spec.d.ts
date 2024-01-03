@@ -186,14 +186,6 @@ export type TBroadcastSettings = TBroadcastConfig & {
   broadcastTab: TDashboardBroadcastRoute
 }
 
-export type TWidgetsSettings = {
-  saving: boolean
-  widgetsPrimaryColor: TColorName
-  widgetsThreads: TThread[]
-  widgetsSize: TSizeSML
-  widgetsType: TWidgetType
-}
-
 export type TTouched = {
   primaryColor: boolean
   brandLayout: boolean
@@ -298,8 +290,6 @@ export type TSettingField =
   | 'widgetsThreads'
   | 'widgetsSize'
   | 'widgetsType'
-
-export type TWidgetType = 'sidebar' | 'modal' | 'popup' | 'iframe' | 'link'
 
 type TDocFile = {
   index: number

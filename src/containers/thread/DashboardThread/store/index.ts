@@ -30,8 +30,6 @@ import type {
   TRootStore,
   TTag,
   TGlobalLayout,
-  TThread,
-  TSizeSML,
   TColorName,
   TEnableConfig,
   TNameAlias,
@@ -83,9 +81,7 @@ import type {
   TAdminSettings,
   TTouched,
   TSettingField,
-  TWidgetsSettings,
   TBroadcastSettings,
-  TWidgetType,
   TCurPageLinksKey,
   TCMSContents,
 } from '../spec'
@@ -595,18 +591,6 @@ const DashboardThread = T.model('DashboardThread', {
       return {
         ...pick(BROADCAST_KEYS, slf),
         saving: slf.saving,
-      }
-    },
-
-    get widgetsSettings(): TWidgetsSettings {
-      const slf = self as TStore
-
-      return {
-        saving: slf.saving,
-        widgetsPrimaryColor: slf.widgetsPrimaryColor,
-        widgetsThreads: toJS(slf.widgetsThreads) as TThread[],
-        widgetsSize: slf.widgetsSize as TSizeSML,
-        widgetsType: slf.widgetsType as TWidgetType,
       }
     },
   }))

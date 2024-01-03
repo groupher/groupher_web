@@ -1,4 +1,4 @@
-import type { TSnakeUpperCase } from '@/spec'
+import type { TSnakeUpperCase, TWidgetType } from '@/spec'
 
 import {
   DASHBOARD_ROUTE,
@@ -11,7 +11,7 @@ import {
 } from '@/constant/route'
 import { COLOR_NAME } from '@/constant/colors'
 
-import type { TSettingField, TWidgetType, THeaderEditType, TFooterEditType } from './spec'
+import type { TSettingField, THeaderEditType, TFooterEditType } from './spec'
 
 import { Icon } from './styles/side_menu'
 
