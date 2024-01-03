@@ -120,10 +120,10 @@ export type TFooterSettings = {
   threads: TCommunityThread[]
 } & TLinkState
 
-export type TAdminSettings = {
-  moderators: TModerator[]
-  activeModerator: TUser | null
-}
+// export type TAdminSettings = {
+//   moderators: TModerator[]
+//   activeModerator: TUser | null
+// }
 
 export type TAliasSettings = {
   saving: boolean
