@@ -14,6 +14,7 @@ import SavingBar from '../SavingBar'
 
 import { SETTING_FIELD } from '../constant'
 
+import useGlowLight from '../hooks/useGlowLight'
 import {
   Wrapper,
   Row,
@@ -24,28 +25,19 @@ import {
   GrowBackground,
   SettingsRow,
   SettingTitle,
-} from '../styles/layout/glow_effect'
+} from '../styles/layout/glow_light'
 import { edit } from '../logic'
 
-type TProps = {
-  glowType: string
-  glowFixed: boolean
-  glowOpacity: string
-  isTouched: boolean
-  isGrowFixedTouched: boolean
-  isGrowOpacityTouched: boolean
-  saving: boolean
-}
-
-const GlowEffect: FC<TProps> = ({
-  glowType,
-  glowFixed,
-  glowOpacity,
-  isTouched,
-  isGrowFixedTouched,
-  isGrowOpacityTouched,
-  saving,
-}) => {
+const GlowLight: FC = () => {
+  const {
+    glowType,
+    glowFixed,
+    glowOpacity,
+    isTouched,
+    isGrowFixedTouched,
+    isGrowOpacityTouched,
+    saving,
+  } = useGlowLight()
   const primaryColor = usePrimaryColor()
   const { curTheme } = useTheme()
 
@@ -157,4 +149,4 @@ const GlowEffect: FC<TProps> = ({
   )
 }
 
-export default observer(GlowEffect)
+export default observer(GlowLight)

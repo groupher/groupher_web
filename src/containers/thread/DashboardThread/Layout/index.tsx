@@ -22,7 +22,7 @@ import KanbanLayout from './KanbanLayout'
 import TopbarLayout from './TopbarLayout'
 
 import PrimaryColor from './PrimaryColor'
-import GlowEffect from './GlowEffect'
+import GlowLight from './GlowLight'
 import GossBlur from './GossBlur'
 import Wallpaper from './Wallpaper'
 
@@ -60,10 +60,6 @@ const UI: FC<TProps> = ({ settings, touched }) => {
     primaryColor,
     wallpaperInfo,
     gossBlur,
-    gossBlurDark,
-    glowType,
-    glowFixed,
-    glowOpacity,
     saving,
   } = settings
 
@@ -106,15 +102,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
           <GossBlur />
 
           <Divider top={20} bottom={60} />
-          <GlowEffect
-            glowType={glowType}
-            glowFixed={glowFixed}
-            glowOpacity={glowOpacity}
-            isTouched={touched.glowType}
-            isGrowFixedTouched={touched.glowFixed}
-            isGrowOpacityTouched={touched.glowOpacity}
-            saving={saving}
-          />
+          <GlowLight />
         </>
       )}
 
