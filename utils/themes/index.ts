@@ -13,7 +13,7 @@
 
 import { map, path, split } from 'ramda'
 
-import type { TColor, TColorName, TTheme } from '@/spec'
+import type { TColorName, TTheme } from '@/spec'
 import { COLOR_NAME } from '@/constant/colors'
 
 import { camelize } from '@/fmt'

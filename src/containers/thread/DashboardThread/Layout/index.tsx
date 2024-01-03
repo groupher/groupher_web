@@ -43,14 +43,11 @@ const UI: FC<TProps> = ({ settings, touched }) => {
   const {
     layoutTab,
     // brandLayout,
-    avatarLayout,
     tagLayout,
     bannerLayout,
     postLayout,
     changelogLayout,
 
-    // ui part
-    primaryColor,
     saving,
   } = settings
 
@@ -79,11 +76,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
 
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.GLOBAL && (
         <>
-          <PrimaryColor
-            primaryColor={primaryColor}
-            isTouched={touched.primaryColor}
-            saving={saving}
-          />
+          <PrimaryColor />
           <Divider top={20} bottom={60} />
           <BannerLayout layout={bannerLayout} isTouched={touched.bannerLayout} saving={saving} />
           <Divider top={20} bottom={60} />
@@ -113,7 +106,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
 
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.OTHER && (
         <>
-          <AvatarLayout layout={avatarLayout} isTouched={touched.avatarLayout} saving={saving} />
+          <AvatarLayout />
           <Divider top={20} bottom={60} />
           <TagLayout layout={tagLayout} isTouched={touched.tagLayout} saving={saving} />
           <Divider top={20} bottom={60} />
