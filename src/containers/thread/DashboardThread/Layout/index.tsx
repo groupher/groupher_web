@@ -46,8 +46,6 @@ const UI: FC<TProps> = ({ settings, touched }) => {
     avatarLayout,
     tagLayout,
     bannerLayout,
-    docLayout,
-    docFaqLayout,
     postLayout,
     changelogLayout,
 
@@ -111,15 +109,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
         />
       )}
 
-      {layoutTab === DASHBOARD_LAYOUT_ROUTE.DOC && (
-        <DocLayout
-          layout={docLayout}
-          faqLayout={docFaqLayout}
-          isTouched={touched.docLayout}
-          isFaqTouched={touched.docFaqLayout}
-          saving={saving}
-        />
-      )}
+      {layoutTab === DASHBOARD_LAYOUT_ROUTE.DOC && <DocLayout />}
 
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.OTHER && (
         <>
