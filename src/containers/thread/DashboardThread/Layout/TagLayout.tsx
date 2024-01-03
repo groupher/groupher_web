@@ -12,6 +12,7 @@ import { SETTING_FIELD } from '../constant'
 import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
+import useTagInfo from '../hooks/useTagInfo'
 import {
   Wrapper,
   SelectWrapper,
@@ -26,13 +27,8 @@ import {
 } from '../styles/layout/tag_layout'
 import { edit } from '../logic'
 
-type TProps = {
-  layout: TTagLayout
-  isTouched: boolean
-  saving: boolean
-}
-
-const TagLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
+const TagLayout: FC = () => {
+  const { layout, isTouched, saving } = useTagInfo()
   const primaryColor = usePrimaryColor()
 
   return (

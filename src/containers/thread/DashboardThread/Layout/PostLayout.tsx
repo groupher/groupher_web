@@ -15,6 +15,7 @@ import { SETTING_FIELD } from '../constant'
 import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
+import usePostInfo from '../hooks/usePostInfo'
 import {
   Wrapper,
   SelectWrapper,
@@ -32,13 +33,8 @@ import {
 } from '../styles/layout/post_layout'
 import { edit } from '../logic'
 
-type TProps = {
-  layout: TPostLayout
-  isTouched: boolean
-  saving: boolean
-}
-
-const PostListLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
+const PostListLayout: FC = () => {
+  const { layout, isTouched, saving } = usePostInfo()
   const primaryColor = usePrimaryColor()
 
   return (

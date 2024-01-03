@@ -43,9 +43,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
   const {
     layoutTab,
     // brandLayout,
-    tagLayout,
     bannerLayout,
-    postLayout,
     changelogLayout,
 
     saving,
@@ -88,9 +86,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
         </>
       )}
 
-      {layoutTab === DASHBOARD_LAYOUT_ROUTE.POST && (
-        <PostLayout layout={postLayout} isTouched={touched.postLayout} saving={saving} />
-      )}
+      {layoutTab === DASHBOARD_LAYOUT_ROUTE.POST && <PostLayout />}
 
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.KANBAN && <KanbanLayout />}
 
@@ -108,7 +104,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
         <>
           <AvatarLayout />
           <Divider top={20} bottom={60} />
-          <TagLayout layout={tagLayout} isTouched={touched.tagLayout} saving={saving} />
+          <TagLayout />
           <Divider top={20} bottom={60} />
           <TopbarLayout />
         </>
