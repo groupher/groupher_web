@@ -83,17 +83,6 @@ export type TMenu = {
   [k: TMenuGroupName]: TMenuGroup
 }
 
-export type TTagSettings = {
-  saving: boolean
-  threads: TCommunityThread[]
-  tags: TTag[]
-  editingTag: TTag
-  settingTag: TTag
-  groups: string[]
-  activeTagGroup: string
-  activeTagThread: string
-}
-
 export type TRSSSettings = {
   feedType: string
   feedCount: number

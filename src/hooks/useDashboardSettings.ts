@@ -8,7 +8,6 @@ import type {
   TOverview,
   TBaseInfoSettings,
   TSEOSettings,
-  TTagSettings,
   TRSSSettings,
   THeaderSettings,
   TFooterSettings,
@@ -23,7 +22,6 @@ type TRes = {
   baseInfoSettings: TBaseInfoSettings
   seoSettings: TSEOSettings
   enableSettings: TEnableConfig
-  tagSettings: TTagSettings
   rssSettings: TRSSSettings
 
   headerSettings: THeaderSettings
@@ -50,7 +48,6 @@ const useDashboardSettings = (): TRes => {
       'baseInfoSettings',
       'seoSettings',
       'enableSettings',
-      'tagSettings',
       'rssSettings',
       'headerSettings',
       'footerSettings',

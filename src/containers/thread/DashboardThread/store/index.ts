@@ -13,14 +13,11 @@ import {
   omit,
   pluck,
   update,
-  find,
-  propEq,
   uniq,
   filter,
   reject,
   mapObjIndexed,
   includes,
-  toUpper,
   any,
   forEach,
 } from 'ramda'
@@ -69,7 +66,6 @@ import type {
   TOverview,
   TBaseInfoSettings,
   TSEOSettings,
-  TTagSettings,
   TRSSSettings,
   THeaderSettings,
   TFooterSettings,
@@ -347,47 +343,6 @@ const DashboardThread = T.model('DashboardThread', {
 
       // @ts-ignore
       return uniq(pluck('group', tags))
-    },
-
-    get tagSettings(): TTagSettings {
-      const slf = self as TStore
-      const tags = toJS(slf.tags)
-
-      const { activeTagGroup, activeTagThread, curCommunity, nameAlias } = slf
-
-      const filterdTagsByGroup =
-        activeTagGroup === null ? tags : filter((t: TTag) => t.group === activeTagGroup, tags)
-
-      const filterdTags = filter(
-        (t: TTag) => t.thread === toUpper(activeTagThread || ''),
-        filterdTagsByGroup,
-      )
-
-      const mappedThreads = curCommunity.threads.map((pThread) => {
-        const aliasItem = find(propEq(pThread.slug, 'slug'))(nameAlias) as TNameAlias
-
-        return {
-          ...pThread,
-          title: aliasItem?.name || pThread.title,
-        }
-      })
-
-      const curThreads = reject(
-        // @ts-ignore
-        (thread) => includes(thread.slug, [THREAD.ABOUT, THREAD.DOC]),
-        mappedThreads,
-      )
-
-      return {
-        editingTag: toJS(slf.editingTag),
-        settingTag: toJS(slf.settingTag),
-        tags: filterdTags,
-        saving: slf.saving,
-        groups: toJS(slf.tagGroups),
-        activeTagThread,
-        activeTagGroup,
-        threads: curThreads,
-      }
     },
 
     get rssSettings(): TRSSSettings {
