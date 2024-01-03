@@ -3,6 +3,8 @@ import { MobXProviderContext } from 'mobx-react'
 
 import type { TColorName } from '@/spec'
 
+import useHelper from './useHelper'
+
 type TRet = {
   primaryColor: TColorName
   isTouched: boolean
@@ -14,17 +16,18 @@ type TRet = {
  */
 const usePrimaryInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
+  const { isChanged } = useHelper()
 
   if (store === null) {
     throw new Error('Store cannot be null, please add a context provider')
   }
 
-  const { primaryColor, saving, touched } = store.dashboardThread
+  const { primaryColor, saving } = store.dashboardThread
 
   return {
     primaryColor,
     saving,
-    isTouched: touched.primaryColor,
+    isTouched: isChanged('primaryColor'),
   }
 }
 
