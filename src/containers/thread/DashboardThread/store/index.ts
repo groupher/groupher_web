@@ -90,7 +90,7 @@ import type {
   TCMSContents,
 } from '../spec'
 
-import { SETTING_FIELD, UI_KEYS, BASEINFO_KEYS, SEO_KEYS, BROADCAST_KEYS } from '../constant'
+import { SETTING_FIELD, BASEINFO_KEYS, SEO_KEYS, BROADCAST_KEYS } from '../constant'
 
 import { NameAlias, LinkItem, InitSettings, settingsModalFields, Overview } from './Models'
 

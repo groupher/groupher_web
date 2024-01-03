@@ -529,27 +529,27 @@ export const BASEINFO_OTHER_KEYS = ['city', 'techstack']
 
 export const BASEINFO_KEYS = [...BASEINFO_BASIC_KEYS, ...BASEINFO_OTHER_KEYS]
 
-export const UI_KEYS = [
-  'layoutTab',
-  'primaryColor',
-  'brandLayout',
-  'tagLayout',
-  'avatarLayout',
-  'bannerLayout',
-  'topbarLayout',
-  'topbarBg',
-  'postLayout',
-  'kanbanLayout',
-  'kanbanCardLayout',
-  'docLayout',
-  'docFaqLayout',
-  'changelogLayout',
-  'glowFixed',
-  'glowType',
-  'glowOpacity',
-  'gossBlur',
-  'gossBlurDark',
-]
+// export const UI_KEYS = [
+//   'layoutTab',
+//   'primaryColor',
+//   'brandLayout',
+//   'tagLayout',
+//   'avatarLayout',
+//   'bannerLayout',
+//   'topbarLayout',
+//   'topbarBg',
+//   'postLayout',
+//   'kanbanLayout',
+//   'kanbanCardLayout',
+//   'docLayout',
+//   'docFaqLayout',
+//   'changelogLayout',
+//   'glowFixed',
+//   'glowType',
+//   'glowOpacity',
+//   'gossBlur',
+//   'gossBlurDark',
+// ]
 
 export const BROADCAST_KEYS = [
   'broadcastTab',
