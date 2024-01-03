@@ -159,9 +159,6 @@ export type TSEOSettings = TDashboardSEOConfig & {
 
 export type TUiSettings = {
   saving: boolean
-  wallpaperInfo: TWallpaperInfo
-  wallpaper: TWallpaper
-  customWallpaper: TCustomWallpaper
   primaryColor: TColorName
   brandLayout: TBrandLayout
   topbarLayout: TTopbarLayout

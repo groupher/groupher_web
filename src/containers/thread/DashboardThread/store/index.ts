@@ -592,19 +592,9 @@ const DashboardThread = T.model('DashboardThread', {
 
     get uiSettings(): TUiSettings {
       const slf = self as TStore
-      const root = getParent(self) as TRootStore
-
-      const { wallpaperEditor } = root
-      const { wallpapers, wallpaper, customWallpaper, hasShadow } = wallpaperEditor
 
       // @ts-ignore
       return {
-        wallpaperInfo: {
-          customWallpaper: toJS(customWallpaper),
-          wallpaper,
-          wallpapers,
-          hasShadow,
-        },
         // @ts-ignore
         kanbanBgColors: toJS(slf.kanbanBgColors) as TColorName[],
         ...pick(UI_KEYS, slf),

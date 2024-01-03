@@ -17,6 +17,8 @@ import SectionLabel from '../../SectionLabel'
 import SavingBar from '../../SavingBar'
 
 import useGossBlur from '../../hooks/useGossBlur'
+import useWallpaperInfo from '../../hooks/useWallpaperInfo'
+
 import {
   Wrapper,
   Section,
@@ -32,9 +34,9 @@ import {
 import { edit } from '../../logic'
 
 const GossBlurNight: FC = () => {
-  const { wallpaperInfo, gossBlurDark: gossBlur, saving, isDarkTouched: isTouched } = useGossBlur()
+  const { wallpapers, wallpaper, customWallpaper } = useWallpaperInfo()
+  const { gossBlurDark: gossBlur, saving, isDarkTouched: isTouched } = useGossBlur()
 
-  const { wallpapers, wallpaper, customWallpaper } = wallpaperInfo
   const { background, effect } = parseWallpaper(wallpapers, wallpaper, customWallpaper)
 
   const { curTheme } = useTheme()

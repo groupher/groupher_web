@@ -1,15 +1,12 @@
 import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 
-import type { TWallpaperInfo } from '@/spec'
-
 type TRet = {
   gossBlur: number
   gossBlurDark: number
   saving: boolean
   isTouched: boolean
   isDarkTouched: boolean
-  wallpaperInfo: TWallpaperInfo
 }
 
 /**
@@ -22,13 +19,12 @@ const useGossBlur = (): TRet => {
     throw new Error('Store cannot be null, please add a context provider')
   }
 
-  const { gossBlur, gossBlurDark, saving, touched, uiSettings } = store.dashboardThread
+  const { gossBlur, gossBlurDark, saving, touched } = store.dashboardThread
 
   return {
     gossBlur,
     gossBlurDark,
     saving,
-    wallpaperInfo: uiSettings.wallpaperInfo,
     isTouched: touched.gossBlur,
     isDarkTouched: touched.gossBlurDark,
   }
