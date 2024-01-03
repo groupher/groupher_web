@@ -1,8 +1,6 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import type { TBannerLayout } from '@/spec'
-
 import { BANNER_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import { callDashboardDesc } from '@/signal'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
@@ -16,6 +14,7 @@ import { SETTING_FIELD } from '../constant'
 import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
+import useBannerInfo from '../hooks/useBannerInfo'
 import {
   Wrapper,
   CommunityTitle,
@@ -33,13 +32,8 @@ import {
 } from '../styles/layout/banner_layout'
 import { edit } from '../logic'
 
-type TProps = {
-  layout: TBannerLayout
-  isTouched: boolean
-  saving: boolean
-}
-
-const BannerLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
+const BannerLayout: FC = () => {
+  const { layout, isTouched, saving } = useBannerInfo()
   const primaryColor = usePrimaryColor()
   const { title } = useViewingCommunity()
 

@@ -43,7 +43,6 @@ const UI: FC<TProps> = ({ settings, touched }) => {
   const {
     layoutTab,
     // brandLayout,
-    bannerLayout,
     changelogLayout,
 
     saving,
@@ -76,7 +75,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
         <>
           <PrimaryColor />
           <Divider top={20} bottom={60} />
-          <BannerLayout layout={bannerLayout} isTouched={touched.bannerLayout} saving={saving} />
+          <BannerLayout />
           <Divider top={20} bottom={60} />
           <Wallpaper />
           <Divider top={20} bottom={60} />
