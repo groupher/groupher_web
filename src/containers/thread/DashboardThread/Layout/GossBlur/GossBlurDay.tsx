@@ -15,7 +15,7 @@ import { SETTING_FIELD } from '../../constant'
 import SectionLabel from '../../SectionLabel'
 import SavingBar from '../../SavingBar'
 
-import useGossBlur from '../../hooks/useGossBlur'
+import useGossBlur from '../../hooks/useGossBlurInfo'
 import useWallpaperInfo from '../../hooks/useWallpaperInfo'
 
 import {

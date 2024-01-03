@@ -14,7 +14,7 @@ type TRet = {
 /**
  * NOTE: should use observer to wrap the component who use this hook
  */
-const useGlowLight = (): TRet => {
+const useGlowLightInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
 
   if (store === null) {
@@ -34,4 +34,4 @@ const useGlowLight = (): TRet => {
   }
 }
 
-export default useGlowLight
+export default useGlowLightInfo

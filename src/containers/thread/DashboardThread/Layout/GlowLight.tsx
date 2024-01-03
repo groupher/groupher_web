@@ -14,7 +14,7 @@ import SavingBar from '../SavingBar'
 
 import { SETTING_FIELD } from '../constant'
 
-import useGlowLight from '../hooks/useGlowLight'
+import useGlowLightInfo from '../hooks/useGlowLightInfo'
 import {
   Wrapper,
   Row,
@@ -37,7 +37,7 @@ const GlowLight: FC = () => {
     isGrowFixedTouched,
     isGrowOpacityTouched,
     saving,
-  } = useGlowLight()
+  } = useGlowLightInfo()
   const primaryColor = usePrimaryColor()
   const { curTheme } = useTheme()
 

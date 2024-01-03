@@ -12,7 +12,7 @@ type TRet = {
 /**
  * NOTE: should use observer to wrap the component who use this hook
  */
-const useGossBlur = (): TRet => {
+const useGossBlurInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
 
   if (store === null) {
@@ -30,4 +30,4 @@ const useGossBlur = (): TRet => {
   }
 }
 
-export default useGossBlur
+export default useGossBlurInfo
