@@ -143,7 +143,7 @@ const day = {
     green: 'linear-gradient(28deg,#fffbf6 0%,rgb(216 240 221 / 80%) 100%)',
     orange: 'linear-gradient(244deg,#fffcf75e 0%,rgb(255 234 217 / 72%) 100%)',
     pink: 'linear-gradient(224deg,#fde4ff24 0%,rgb(255 223 234 / 79%) 100%)',
-    black: 'linear-gradient(318deg,#fafafaba 0%,#ededede3 100%)',
+    black: 'linear-gradient(25deg,#fafafaba 20%,#bdccce63 100%)',
     cyan: 'linear-gradient(213deg,#fffff3ba 13%,#aff5ffc2 100%)',
     yellow: 'linear-gradient(150deg,#ffe5e529 20%,rgb(255 251 216 / 58%) 100%)',
   },
