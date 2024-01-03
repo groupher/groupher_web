@@ -48,8 +48,6 @@ const UI: FC<TProps> = ({ settings, touched }) => {
     bannerLayout,
     docLayout,
     docFaqLayout,
-    topbarLayout,
-    topbarBg,
     postLayout,
     changelogLayout,
 
@@ -129,13 +127,7 @@ const UI: FC<TProps> = ({ settings, touched }) => {
           <Divider top={20} bottom={60} />
           <TagLayout layout={tagLayout} isTouched={touched.tagLayout} saving={saving} />
           <Divider top={20} bottom={60} />
-          <TopbarLayout
-            layout={topbarLayout}
-            bg={topbarBg}
-            isLayoutTouched={touched.topbarLayout}
-            isBgTouched={touched.topbarBg}
-            saving={saving}
-          />
+          <TopbarLayout />
         </>
       )}
     </Wrapper>
