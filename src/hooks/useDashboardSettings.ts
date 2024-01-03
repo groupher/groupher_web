@@ -12,10 +12,7 @@ import type {
   TRSSSettings,
   THeaderSettings,
   TFooterSettings,
-  TAliasSettings,
-  TAdminSettings,
   TTouched,
-  TWidgetsSettings,
   TBroadcastSettings,
   TCMSContents,
 } from '@/containers/thread/DashboardThread/spec'
@@ -31,9 +28,6 @@ type TRes = {
 
   headerSettings: THeaderSettings
   footerSettings: TFooterSettings
-  aliasSettings: TAliasSettings
-  adminSettings: TAdminSettings
-  widgetsSettings: TWidgetsSettings
   broadcastSettings: TBroadcastSettings
   touched: TTouched
   cmsContents: TCMSContents
@@ -60,9 +54,6 @@ const useDashboardSettings = (): TRes => {
       'rssSettings',
       'headerSettings',
       'footerSettings',
-      'aliasSettings',
-      'adminSettings',
-      'widgetsSettings',
       // docSettings,
       'broadcastSettings',
       'touched',
