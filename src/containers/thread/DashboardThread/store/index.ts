@@ -284,6 +284,12 @@ const DashboardThread = T.model('DashboardThread', {
       const headerLinksChanged = _isChanged('headerLinks') && editingLink === null
       const footerLinksChanged = _isChanged('footerLinks') && editingLink === null
 
+      const broadcastLayoutTouched = _isChanged('broadcastLayout')
+      const broadcastBgTouched = _isChanged('broadcastBg')
+
+      const broadcastArticleLayoutTouched = _isChanged('broadcastArticleLayout')
+      const broadcastArticleBgTouched = _isChanged('broadcastArticleBg')
+
       const topbarLayoutTouched = _isChanged('topbarLayout')
       const topbarBgTouched = _isChanged('topbarBg')
       const changelogLayoutTouched = _isChanged('changelogLayout')
@@ -350,6 +356,17 @@ const DashboardThread = T.model('DashboardThread', {
         widgetsPrimaryColor: widgetsPrimaryColorTouched,
         widgetsThreads: widgetsThreadsTouched,
         widgetsSize: widgetsSizeTouched,
+
+        //
+        baseInfo: _anyChanged(BASEINFO_KEYS as TSettingField[]),
+        seo: _anyChanged(SEO_KEYS as TSettingField[]),
+        widgets: widgetsPrimaryColorTouched || widgetsThreadsTouched || widgetsSizeTouched,
+        broadcast:
+          broadcastLayoutTouched ||
+          broadcastBgTouched ||
+          broadcastArticleLayoutTouched ||
+          broadcastArticleBgTouched,
+        broadcastArticle: broadcastArticleLayoutTouched || broadcastArticleBgTouched,
       }
     },
 
