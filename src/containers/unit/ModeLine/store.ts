@@ -35,7 +35,6 @@ const ModeLine = T.model('ModeLine', {
     get isTopBarVisiable(): boolean {
       // const slf = self as TStore
       // const root = getParent(self) as TRootStore
-      // const { metric, globalLayout } = root
 
       // const { isMobile, topBarVisiable, isArticleDigestInViewport } = slf
       // const { bodyScrollDirection } = globalLayout

@@ -2,7 +2,7 @@
  * ArticlesThread store
  */
 
-import { isEmpty, findIndex, propEq, pickBy, values, includes, mergeRight, has } from 'ramda'
+import { isEmpty, findIndex, propEq, values, includes, mergeRight, has } from 'ramda'
 
 import type {
   TRootStore,
@@ -11,7 +11,6 @@ import type {
   TPagedArticles,
   TCommunity,
   TThread,
-  TGlobalLayout,
   TResState,
   TArticleFilter,
 } from '@/spec'
@@ -79,10 +78,6 @@ const ArticlesStore = T.model('Articles', {
     get pagedArticleKey(): string {
       const slf = self as TStore
       return `paged${plural(slf.curThread, 'titleCase')}`
-    },
-    get globalLayout(): TGlobalLayout {
-      const root = getParent(self) as TRootStore
-      return root.dashboardThread.globalLayout
     },
   }))
   .actions((self) => ({

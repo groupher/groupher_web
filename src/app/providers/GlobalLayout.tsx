@@ -2,8 +2,8 @@
 
 import GlobalLayoutWrapper from '@/widgets/GlobalLayout'
 
-const GlobalLayout = ({ children, globalLayout }) => {
-  return <GlobalLayoutWrapper globalLayout={globalLayout}>{children}</GlobalLayoutWrapper>
+const GlobalLayout = ({ children }) => {
+  return <GlobalLayoutWrapper>{children}</GlobalLayoutWrapper>
 }
 
 export default GlobalLayout
