@@ -1,9 +1,8 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import { Inline } from '@/widgets/Common'
-
-import type { TAdminSettings } from '../spec'
 
 import Portal from '../Portal'
 import Adder from './Adder'
@@ -11,13 +10,7 @@ import List from './List'
 
 import { Wrapper } from '../styles/admin'
 
-type TProps = {
-  settings: TAdminSettings
-}
-
-const Admin: FC<TProps> = ({ settings }) => {
-  const { moderators, activeModerator } = settings
-
+const Admin: FC = () => {
   return (
     <Wrapper>
       <Portal
@@ -32,9 +25,9 @@ const Admin: FC<TProps> = ({ settings }) => {
         }
       />
       <Adder />
-      <List moderators={moderators} activeModerator={activeModerator} />
+      <List />
     </Wrapper>
   )
 }
 
-export default memo(Admin)
+export default observer(Admin)

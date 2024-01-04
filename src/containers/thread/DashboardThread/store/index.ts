@@ -8,20 +8,13 @@ import {
   isEmpty,
   findIndex,
   clone,
-  isNil,
   equals,
   omit,
   pluck,
   update,
-  find,
-  propEq,
   uniq,
-  filter,
   reject,
   mapObjIndexed,
-  includes,
-  toUpper,
-  any,
   forEach,
 } from 'ramda'
 
@@ -29,17 +22,11 @@ import type {
   TCommunity,
   TRootStore,
   TTag,
-  TGlobalLayout,
-  TThread,
-  TSizeSML,
-  TColorName,
   TEnableConfig,
   TNameAlias,
   TChangeMode,
-  TArticleEntries,
   TSocialItem,
   TMediaReport,
-  TModerator,
 } from '@/spec'
 
 import {
@@ -57,7 +44,7 @@ import { THREAD } from '@/constant/thread'
 import BStore from '@/utils/bstore'
 import { buildLog } from '@/logger'
 import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
-import { publicThreads, sortByIndex } from '@/helper'
+import { publicThreads } from '@/helper'
 
 import {
   PagedCommunities,
@@ -73,25 +60,14 @@ import {
 import type {
   TOverview,
   TBaseInfoSettings,
-  TSEOSettings,
-  TUiSettings,
-  TTagSettings,
-  TRSSSettings,
   THeaderSettings,
   TFooterSettings,
   TDocSettings,
-  TAliasSettings,
-  TAdminSettings,
-  TTouched,
   TSettingField,
-  TWidgetsSettings,
-  TBroadcastSettings,
-  TWidgetType,
   TCurPageLinksKey,
-  TCMSContents,
 } from '../spec'
 
-import { SETTING_FIELD, UI_KEYS, BASEINFO_KEYS, SEO_KEYS, BROADCAST_KEYS } from '../constant'
+import { SETTING_FIELD, BASEINFO_KEYS, SEO_KEYS } from '../constant'
 
 import { NameAlias, LinkItem, InitSettings, settingsModalFields, Overview } from './Models'
 
@@ -159,241 +135,6 @@ const DashboardThread = T.model('DashboardThread', {
     get overviewData(): TOverview {
       return toJS(self.overview)
     },
-    get globalLayout(): TGlobalLayout {
-      const slf = self as TStore
-      const { initSettings: init } = slf
-
-      return {
-        primaryColor: init.primaryColor,
-        brand: init.brandLayout,
-        tag: init.tagLayout,
-        avatar: init.avatarLayout,
-        post: init.postLayout,
-        kanban: init.kanbanCardLayout,
-        kanbanBgColors: init.kanbanBgColors as TColorName[],
-        doc: init.docLayout,
-        docFaq: init.docFaqLayout,
-        header: init.headerLayout,
-        footer: init.footerLayout,
-        changelog: init.changelogLayout,
-        banner: init.bannerLayout,
-        topbar: init.topbarLayout,
-        topbarBg: init.topbarBg,
-
-        broadcast: init.broadcastLayout,
-        broadcastBg: init.broadcastBg,
-        broadcastEnable: init.broadcastEnable,
-
-        broadcastArticle: init.broadcastArticleLayout,
-        broadcastArticleBg: init.broadcastArticleBg,
-        broadcastArticleEnable: init.broadcastArticleEnable,
-
-        enable: init.enable,
-      }
-    },
-    get cmsContents(): TCMSContents {
-      const slf = self as TStore
-      const { batchSelectedIDs, docTab, editingFAQIndex } = slf
-      const _batchSelectedIds = toJS(batchSelectedIDs)
-      const _pagedCommunities = toJS(slf.pagedCommunities)
-      const _pagedPosts = toJS(slf.pagedPosts)
-      const _pagedDocs = toJS(slf.pagedDocs)
-      const _pagedChangelogs = toJS(slf.pagedChangelogs)
-
-      const faqSections = toJS(slf.faqSections)
-      const editingFAQ = toJS(slf.editingFAQ)
-
-      return {
-        loading: slf.loading,
-        docTab,
-        editingFAQIndex,
-        batchSelectedIDs: _batchSelectedIds,
-        pagedCommunities: {
-          ..._pagedCommunities,
-          entries: slf._assignChecked(_pagedCommunities.entries),
-        },
-        pagedPosts: {
-          ..._pagedPosts,
-          entries: slf._assignChecked(_pagedPosts.entries),
-        },
-        pagedDocs: {
-          ..._pagedDocs,
-          entries: slf._assignChecked(_pagedDocs.entries),
-        },
-        pagedChangelogs: {
-          ..._pagedChangelogs,
-          entries: slf._assignChecked(_pagedChangelogs.entries),
-        },
-
-        faqSections,
-        editingFAQ,
-      }
-    },
-
-    get _tagsIndexTouched(): boolean {
-      const { tags, initSettings } = self
-
-      return (
-        JSON.stringify(sortByIndex(toJS(tags), 'id')) !==
-        JSON.stringify(sortByIndex(toJS(initSettings.tags), 'id'))
-      )
-    },
-    get _socialLinksTouched(): boolean {
-      const { socialLinks, initSettings } = self
-
-      return JSON.stringify(toJS(socialLinks)) !== JSON.stringify(toJS(initSettings.socialLinks))
-    },
-    get _mediaReportsTouched(): boolean {
-      const { mediaReports, initSettings } = self
-      const curValues = reject((item: TMediaReport) => !item.editUrl, toJS(mediaReports))
-      const initValues = reject(
-        (item: TMediaReport) => !item.editUrl,
-        toJS(initSettings.mediaReports),
-      )
-
-      const curValueTitles = filter((item: TMediaReport) => !isEmpty(item?.title), curValues)
-      const isCurAllvalid =
-        curValueTitles.length !== 0 && curValueTitles.length === curValues.length
-
-      return isCurAllvalid && JSON.stringify(curValues) !== JSON.stringify(initValues)
-    },
-    get touched(): TTouched {
-      const slf = self as TStore
-
-      const {
-        initSettings: init,
-        _tagsIndexTouched,
-        _socialLinksTouched,
-        _mediaReportsTouched,
-        editingLink,
-      } = slf
-
-      const _isChanged = (field: TSettingField): boolean =>
-        !equals(toJS(slf[field]), toJS(init[field]))
-      const _anyChanged = (fields: TSettingField[]): boolean => any(_isChanged)(fields)
-      const _mapArrayChanged = (key: string): boolean => {
-        return JSON.stringify(toJS(self[key])) !== JSON.stringify(toJS(self.initSettings[key]))
-      }
-
-      const primaryColorTouched = _isChanged('primaryColor')
-      const brandLayoutTouched = _isChanged('brandLayout')
-      const avatarTouched = _isChanged('avatarLayout')
-      const tagTouched = _isChanged('tagLayout')
-
-      const bannerLayoutTouched = _isChanged('bannerLayout')
-      const postLayoutTouched = _isChanged('postLayout')
-      const kanbanLayoutTouched = _isChanged('kanbanLayout')
-      const kanbanCardLayoutTouched = _isChanged('kanbanCardLayout')
-      const kanbanBgColorsTouched = _isChanged('kanbanBgColors')
-      const docLayoutTouched = _isChanged('docLayout')
-      const docFaqLayoutTouched = _isChanged('docFaqLayout')
-
-      const headerLinksChanged = _isChanged('headerLinks') && editingLink === null
-      const footerLinksChanged = _isChanged('footerLinks') && editingLink === null
-
-      const broadcastLayoutTouched = _isChanged('broadcastLayout')
-      const broadcastBgTouched = _isChanged('broadcastBg')
-
-      const broadcastArticleLayoutTouched = _isChanged('broadcastArticleLayout')
-      const broadcastArticleBgTouched = _isChanged('broadcastArticleBg')
-
-      const topbarLayoutTouched = _isChanged('topbarLayout')
-      const topbarBgTouched = _isChanged('topbarBg')
-      const changelogLayoutTouched = _isChanged('changelogLayout')
-      const footerLayoutTouched = _isChanged('footerLayout')
-      const headerLayoutTouched = _isChanged('headerLayout')
-
-      const glowFixedTouched = _isChanged('glowFixed')
-      const glowTypeTouched = _isChanged('glowType')
-      const gossBlurTouched = _isChanged('gossBlur')
-      const glowOpacityTouched = _isChanged('glowOpacity')
-
-      const nameAliasTouched = !isNil(slf.editingAlias)
-      const tagsTouched = !isNil(slf.editingTag)
-      const faqSectionsTouched = _mapArrayChanged('faqSections')
-
-      const rssFeedTypeTouched = _isChanged('rssFeedType')
-      const rssFeedCountTouched = _isChanged('rssFeedCount')
-
-      const widgetsPrimaryColorTouched = _isChanged('widgetsPrimaryColor')
-      const widgetsSizeTouched = _isChanged('widgetsSize')
-
-      const widgetsThreadsTouched = !equals(
-        toJS(slf.widgetsThreads).sort(),
-        toJS(init.widgetsThreads).sort(),
-      )
-
-      return {
-        primaryColor: primaryColorTouched,
-        brandLayout: brandLayoutTouched,
-        tagLayout: tagTouched,
-        avatarLayout: avatarTouched,
-        bannerLayout: bannerLayoutTouched,
-        topbarLayout: topbarLayoutTouched,
-        topbarBg: topbarBgTouched,
-
-        postLayout: postLayoutTouched,
-        footerLayout: footerLayoutTouched,
-        headerLayout: headerLayoutTouched,
-        kanbanLayout: kanbanLayoutTouched,
-        kanbanCardLayout: kanbanCardLayoutTouched,
-        kanbanBgColors: kanbanBgColorsTouched,
-        docLayout: docLayoutTouched,
-        docFaqLayout: docFaqLayoutTouched,
-        changelogLayout: changelogLayoutTouched,
-        nameAlias: nameAliasTouched,
-        tags: tagsTouched,
-        tagsIndex: _tagsIndexTouched,
-        socialLinks: _socialLinksTouched,
-        mediaReports: _mediaReportsTouched,
-
-        headerLinks: headerLinksChanged,
-        footerLinks: footerLinksChanged,
-        faqSections: faqSectionsTouched,
-
-        glowFixed: glowFixedTouched,
-        glowType: glowTypeTouched,
-        glowOpacity: glowOpacityTouched,
-
-        gossBlur: gossBlurTouched,
-        rssFeed: rssFeedTypeTouched || rssFeedCountTouched,
-
-        widgetsPrimaryColor: widgetsPrimaryColorTouched,
-        widgetsThreads: widgetsThreadsTouched,
-        widgetsSize: widgetsSizeTouched,
-
-        //
-        baseInfo: _anyChanged(BASEINFO_KEYS as TSettingField[]),
-        seo: _anyChanged(SEO_KEYS as TSettingField[]),
-
-        // sidebar-item
-        ui:
-          primaryColorTouched ||
-          brandLayoutTouched ||
-          bannerLayoutTouched ||
-          topbarLayoutTouched ||
-          topbarBgTouched ||
-          postLayoutTouched ||
-          kanbanLayoutTouched ||
-          kanbanCardLayoutTouched ||
-          changelogLayoutTouched ||
-          glowFixedTouched ||
-          glowTypeTouched ||
-          gossBlurTouched ||
-          glowOpacityTouched ||
-          headerLayoutTouched ||
-          footerLayoutTouched,
-
-        widgets: widgetsPrimaryColorTouched || widgetsThreadsTouched || widgetsSizeTouched,
-        broadcast:
-          broadcastLayoutTouched ||
-          broadcastBgTouched ||
-          broadcastArticleLayoutTouched ||
-          broadcastArticleBgTouched,
-        broadcastArticle: broadcastArticleLayoutTouched || broadcastArticleBgTouched,
-      }
-    },
-
     get enableSettings(): TEnableConfig {
       const slf = self as TStore
 
@@ -406,56 +147,6 @@ const DashboardThread = T.model('DashboardThread', {
 
       // @ts-ignore
       return uniq(pluck('group', tags))
-    },
-
-    get tagSettings(): TTagSettings {
-      const slf = self as TStore
-      const tags = toJS(slf.tags)
-
-      const { activeTagGroup, activeTagThread, curCommunity, nameAlias } = slf
-
-      const filterdTagsByGroup =
-        activeTagGroup === null ? tags : filter((t: TTag) => t.group === activeTagGroup, tags)
-
-      const filterdTags = filter(
-        (t: TTag) => t.thread === toUpper(activeTagThread || ''),
-        filterdTagsByGroup,
-      )
-
-      const mappedThreads = curCommunity.threads.map((pThread) => {
-        const aliasItem = find(propEq(pThread.slug, 'slug'))(nameAlias) as TNameAlias
-
-        return {
-          ...pThread,
-          title: aliasItem?.name || pThread.title,
-        }
-      })
-
-      const curThreads = reject(
-        // @ts-ignore
-        (thread) => includes(thread.slug, [THREAD.ABOUT, THREAD.DOC]),
-        mappedThreads,
-      )
-
-      return {
-        editingTag: toJS(slf.editingTag),
-        settingTag: toJS(slf.settingTag),
-        tags: filterdTags,
-        saving: slf.saving,
-        groups: toJS(slf.tagGroups),
-        activeTagThread,
-        activeTagGroup,
-        threads: curThreads,
-      }
-    },
-
-    get rssSettings(): TRSSSettings {
-      const slf = self as TStore
-      return {
-        feedType: slf.rssFeedType,
-        feedCount: slf.rssFeedCount,
-        saving: slf.saving,
-      }
     },
 
     get curPageLinksKey(): TCurPageLinksKey {
@@ -480,7 +171,7 @@ const DashboardThread = T.model('DashboardThread', {
         editingGroupIndex,
         enableSettings,
         curCommunity,
-        aliasSettings,
+        nameAlias,
       } = slf
 
       return {
@@ -493,7 +184,7 @@ const DashboardThread = T.model('DashboardThread', {
         editingGroupIndex,
         threads: publicThreads(curCommunity.threads, {
           enable: enableSettings,
-          nameAlias: aliasSettings.nameAlias,
+          nameAlias,
         }),
       }
     },
@@ -509,7 +200,7 @@ const DashboardThread = T.model('DashboardThread', {
         editingGroupIndex,
         enableSettings,
         curCommunity,
-        aliasSettings,
+        nameAlias,
       } = slf
 
       return {
@@ -523,7 +214,7 @@ const DashboardThread = T.model('DashboardThread', {
         editingGroupIndex,
         threads: publicThreads(curCommunity.threads, {
           enable: enableSettings,
-          nameAlias: aliasSettings.nameAlias,
+          nameAlias,
         }),
       }
     },
@@ -533,41 +224,6 @@ const DashboardThread = T.model('DashboardThread', {
 
       return {
         categories: toJS(slf.docCategories),
-      }
-    },
-
-    get adminSettings(): TAdminSettings {
-      const slf = self as TStore
-
-      // @ts-ignore
-      const sortedModerators = sortByIndex(
-        toJS(slf.moderators),
-        'passportItemCount',
-      ).reverse() as TModerator[]
-
-      return {
-        moderators: sortedModerators,
-        activeModerator: toJS(slf.activeModerator),
-      }
-    },
-    get aliasSettings(): TAliasSettings {
-      const slf = self as TStore
-
-      return {
-        aliasTab: slf.aliasTab,
-        editingAlias: toJS(slf.editingAlias),
-        nameAlias: toJS(slf.nameAlias),
-        saving: slf.saving,
-      }
-    },
-
-    get seoSettings(): TSEOSettings {
-      const slf = self as TStore
-
-      return {
-        ...pick(SEO_KEYS, slf),
-        saving: slf.saving,
-        seoTab: slf.seoTab,
       }
     },
 
@@ -585,49 +241,6 @@ const DashboardThread = T.model('DashboardThread', {
         baseInfoTab: slf.baseInfoTab,
         socialLinks,
         mediaReports: toJS(slf.mediaReports),
-      }
-    },
-
-    get uiSettings(): TUiSettings {
-      const slf = self as TStore
-      const root = getParent(self) as TRootStore
-
-      const { wallpaperEditor } = root
-      const { wallpapers, wallpaper, customWallpaper, hasShadow } = wallpaperEditor
-
-      // @ts-ignore
-      return {
-        wallpaperInfo: {
-          customWallpaper: toJS(customWallpaper),
-          wallpaper,
-          wallpapers,
-          hasShadow,
-        },
-        // @ts-ignore
-        kanbanBgColors: toJS(slf.kanbanBgColors) as TColorName[],
-        ...pick(UI_KEYS, slf),
-        saving: slf.saving,
-      }
-    },
-
-    get broadcastSettings(): TBroadcastSettings {
-      const slf = self as TStore
-
-      return {
-        ...pick(BROADCAST_KEYS, slf),
-        saving: slf.saving,
-      }
-    },
-
-    get widgetsSettings(): TWidgetsSettings {
-      const slf = self as TStore
-
-      return {
-        saving: slf.saving,
-        widgetsPrimaryColor: slf.widgetsPrimaryColor,
-        widgetsThreads: toJS(slf.widgetsThreads) as TThread[],
-        widgetsSize: slf.widgetsSize as TSizeSML,
-        widgetsType: slf.widgetsType as TWidgetType,
       }
     },
   }))
@@ -877,17 +490,6 @@ const DashboardThread = T.model('DashboardThread', {
       )
 
       return targetIdx
-    },
-
-    _assignChecked(entries: TArticleEntries): TArticleEntries {
-      const slf = self as TStore
-      const { batchSelectedIDs } = slf
-      const _batchSelectedIds = toJS(batchSelectedIDs)
-
-      return entries.map((article) => ({
-        ...article,
-        _checked: includes(article.id, _batchSelectedIds),
-      }))
     },
 
     updateEditingTag() {

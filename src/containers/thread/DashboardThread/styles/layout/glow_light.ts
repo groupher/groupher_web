@@ -1,4 +1,4 @@
-import styled, { css, theme, rainbowLink } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 
 import type { TActive, TColor, TGlowEffect } from '@/spec'
 import { GLOW_EFFECTS_DAY, GLOW_EFFECTS_NIGHT } from '@/constant/glow_effect'
@@ -30,7 +30,8 @@ export const Box = styled.div<TBox>`
   border: 1px solid;
   z-index: 1;
 
-  border-color: ${({ $active, $color }) => ($active ? rainbowLink($color) : theme('divider'))};
+  border-color: ${({ $active, $color }) =>
+    $active ? rainbow($color, 'article.digest') : theme('divider')};
 
   box-shadow: ${({ $active }) => ($active ? css.cardShadow : 'none')};
   background: ${theme('alphaBg')};

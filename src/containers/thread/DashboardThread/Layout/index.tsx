@@ -13,7 +13,7 @@ import { LAYOUT_TABS } from '../constant'
 import Portal from '../Portal'
 import AvatarLayout from './AvatarLayout'
 import TagLayout from './TagLayout'
-// import BrandLayout from './BrandLayout'
+import BrandLayout from './BrandLayout'
 import BannerLayout from './BannerLayout'
 import DocLayout from './DocLayout'
 import ChangelogLayout from './ChangelogLayout'
@@ -22,49 +22,19 @@ import KanbanLayout from './KanbanLayout'
 import TopbarLayout from './TopbarLayout'
 
 import PrimaryColor from './PrimaryColor'
-import GlowEffect from './GlowEffect'
+import GlowLight from './GlowLight'
 import GossBlur from './GossBlur'
 import Wallpaper from './Wallpaper'
 
-import type { TUiSettings, TTouched } from '../spec'
+import useTabInfo from '../hooks/useTabInfo'
 import { Wrapper, Banner, TabsWrapper } from '../styles/layout'
-
 import { edit } from '../logic'
 
-type TProps = {
-  settings: TUiSettings
-  touched: TTouched
-}
-
-const UI: FC<TProps> = ({ settings, touched }) => {
+const UI: FC = () => {
   const curCommunity = useViewingCommunity()
   const router = useRouter()
 
-  const {
-    layoutTab,
-    // brandLayout,
-    avatarLayout,
-    tagLayout,
-    bannerLayout,
-    docLayout,
-    docFaqLayout,
-    topbarLayout,
-    topbarBg,
-    postLayout,
-    kanbanLayout,
-    kanbanCardLayout,
-    kanbanBgColors,
-    changelogLayout,
-
-    // ui part
-    primaryColor,
-    wallpaperInfo,
-    gossBlur,
-    glowType,
-    glowFixed,
-    glowOpacity,
-    saving,
-  } = settings
+  const { layoutTab } = useTabInfo()
 
   return (
     <Wrapper>
@@ -91,82 +61,35 @@ const UI: FC<TProps> = ({ settings, touched }) => {
 
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.GLOBAL && (
         <>
-          <PrimaryColor
-            primaryColor={primaryColor}
-            isTouched={touched.primaryColor}
-            saving={saving}
-          />
+          <PrimaryColor />
           <Divider top={20} bottom={60} />
-          <BannerLayout layout={bannerLayout} isTouched={touched.bannerLayout} saving={saving} />
+          <BrandLayout />
           <Divider top={20} bottom={60} />
-          <Wallpaper wallpaperInfo={wallpaperInfo} gossBlur={gossBlur} />
+          <BannerLayout />
           <Divider top={20} bottom={60} />
-          <GossBlur
-            wallpaperInfo={wallpaperInfo}
-            gossBlur={gossBlur}
-            saving={saving}
-            isTouched={touched.gossBlur}
-          />
+          <Wallpaper />
           <Divider top={20} bottom={60} />
-          <GlowEffect
-            glowType={glowType}
-            glowFixed={glowFixed}
-            glowOpacity={glowOpacity}
-            isTouched={touched.glowType}
-            isGrowFixedTouched={touched.glowFixed}
-            isGrowOpacityTouched={touched.glowOpacity}
-            saving={saving}
-          />
+          <GossBlur />
+          <Divider top={20} bottom={60} />
+          <GlowLight />
         </>
       )}
 
-      {layoutTab === DASHBOARD_LAYOUT_ROUTE.POST && (
-        <PostLayout layout={postLayout} isTouched={touched.postLayout} saving={saving} />
-      )}
+      {layoutTab === DASHBOARD_LAYOUT_ROUTE.POST && <PostLayout />}
 
-      {layoutTab === DASHBOARD_LAYOUT_ROUTE.KANBAN && (
-        <KanbanLayout
-          layout={kanbanLayout}
-          cardLayout={kanbanCardLayout}
-          isTouched={touched.kanbanLayout}
-          isCardTouched={touched.kanbanCardLayout}
-          isBgColorsTouched={touched.kanbanBgColors}
-          kanbanBgColors={kanbanBgColors}
-          saving={saving}
-        />
-      )}
+      {layoutTab === DASHBOARD_LAYOUT_ROUTE.KANBAN && <KanbanLayout />}
 
-      {layoutTab === DASHBOARD_LAYOUT_ROUTE.CHANGELOG && (
-        <ChangelogLayout
-          layout={changelogLayout}
-          isTouched={touched.changelogLayout}
-          saving={saving}
-        />
-      )}
+      {layoutTab === DASHBOARD_LAYOUT_ROUTE.CHANGELOG && <ChangelogLayout />}
 
-      {layoutTab === DASHBOARD_LAYOUT_ROUTE.DOC && (
-        <DocLayout
-          layout={docLayout}
-          faqLayout={docFaqLayout}
-          isTouched={touched.docLayout}
-          isFaqTouched={touched.docFaqLayout}
-          saving={saving}
-        />
-      )}
+      {layoutTab === DASHBOARD_LAYOUT_ROUTE.DOC && <DocLayout />}
 
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.OTHER && (
         <>
-          <AvatarLayout layout={avatarLayout} isTouched={touched.avatarLayout} saving={saving} />
+          <AvatarLayout />
           <Divider top={20} bottom={60} />
-          <TagLayout layout={tagLayout} isTouched={touched.tagLayout} saving={saving} />
+          <TagLayout />
           <Divider top={20} bottom={60} />
-          <TopbarLayout
-            layout={topbarLayout}
-            bg={topbarBg}
-            isLayoutTouched={touched.topbarLayout}
-            isBgTouched={touched.topbarBg}
-            saving={saving}
-          />
+          <TopbarLayout />
         </>
       )}
     </Wrapper>

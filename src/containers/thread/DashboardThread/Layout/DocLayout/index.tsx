@@ -1,8 +1,6 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import type { TDocFAQLayout, TDocLayout } from '@/spec'
-
 import { DOC_LAYOUT, DOC_FAQ_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { callDashboardDesc } from '@/signal'
@@ -18,6 +16,7 @@ import SavingBar from '../../SavingBar'
 import MainTemplate from './MainTemplate'
 import FaqTemplate from './FaqTemplate'
 
+import useDocInfo from '../../hooks/useDocInfo'
 import {
   Wrapper,
   SelectWrapper,
@@ -28,15 +27,8 @@ import {
 } from '../../styles/layout/doc_layout'
 import { edit } from '../../logic'
 
-type TProps = {
-  layout: TDocLayout
-  faqLayout: TDocFAQLayout
-  isTouched: boolean
-  isFaqTouched: boolean
-  saving: boolean
-}
-
-const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, saving }) => {
+const DocLayout: FC = () => {
+  const { layout, faqLayout, isTouched, isFaqTouched, saving } = useDocInfo()
   const primaryColor = usePrimaryColor()
 
   return (
@@ -111,6 +103,7 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
         isTouched={isTouched}
         field={SETTING_FIELD.DOC_LAYOUT}
         loading={saving}
+        width="600px"
         top={20}
         bottom={30}
       />
@@ -169,6 +162,7 @@ const DocLayout: FC<TProps> = ({ layout, faqLayout, isTouched, isFaqTouched, sav
         isTouched={isFaqTouched}
         field={SETTING_FIELD.DOC_FAQ_LAYOUT}
         loading={saving}
+        width="600px"
         top={20}
         bottom={30}
       />

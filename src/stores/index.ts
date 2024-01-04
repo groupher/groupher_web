@@ -17,7 +17,6 @@ export { default as ArticlesStore } from './ArticlesStore'
 export { ThemeStore, ThemeDefaults } from './ThemeStore'
 
 // utils store
-// export { default as GlobalLayoutStore } from '@/containers/layout/GlobalLayout/store'
 export { default as RichEditorStore } from '@/containers/editor/RichEditor/store'
 export { default as ErrorBoxStore } from '@/containers/tool/ErrorBox/store'
 // export { default as SidebarStore } from '@/containers/unit/Sidebar/store'

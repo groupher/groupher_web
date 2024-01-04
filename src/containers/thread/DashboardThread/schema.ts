@@ -172,6 +172,7 @@ const updateDashboardLayout = gql`
     $glowFixed: Boolean
     $glowOpacity: String
     $gossBlur: Int
+    $gossBlurDark: Int
   ) {
     updateDashboardLayout(
       community: $community
@@ -191,6 +192,7 @@ const updateDashboardLayout = gql`
       glowFixed: $glowFixed
       glowOpacity: $glowOpacity
       gossBlur: $gossBlur
+      gossBlurDark: $gossBlurDark
     ) {
       slug
     }

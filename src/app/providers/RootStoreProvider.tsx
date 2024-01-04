@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, ReactNode, cloneElement, Children, isValidElement } from 'react'
+import { FC, ReactNode } from 'react'
 import { Provider } from 'mobx-react'
 import { enableStaticRendering } from 'mobx-react-lite'
 
@@ -74,19 +74,7 @@ const RootStoreWrapper: FC<TProps> = ({ children, token }) => {
     dashboardThread: dashboard,
   })
 
-  const childrenWithProps = Children.map(children, (child) => {
-    if (isValidElement(child)) {
-      const { globalLayout } = store.dashboardThread
-
-      return cloneElement(child, {
-        // @ts-ignore
-        globalLayout,
-      })
-    }
-    return child
-  })
-
-  return <Provider store={store}>{childrenWithProps}</Provider>
+  return <Provider store={store}>{children}</Provider>
 }
 
 export default RootStoreWrapper

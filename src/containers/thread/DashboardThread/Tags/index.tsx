@@ -1,4 +1,5 @@
-import { FC, memo, useEffect } from 'react'
+import { FC, useEffect } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
@@ -13,25 +14,25 @@ import ThreadSelector from './ThreadSelector'
 import GroupSelector from './GroupSelector'
 import TagBar from './TagBar'
 
-import type { TTagSettings, TTouched } from '../spec'
+import useTagListInfo from '../hooks/useTagListInfo'
 import { Wrapper, InnerWrapper, ContentWrapper, AddButton, AddIcon } from '../styles/tags'
 
-type TProps = {
-  settings: TTagSettings
-  touched: TTouched
-}
-
-const Tags: FC<TProps> = ({ settings, touched }) => {
-  const { tags, editingTag, settingTag, groups, activeTagGroup, activeTagThread, threads } =
-    settings
+const Tags: FC = () => {
+  const {
+    tags,
+    groups,
+    activeTagGroup,
+    activeTagThread,
+    threads,
+    isTagsIndexTouched,
+    isTagsTouched,
+  } = useTagListInfo()
 
   const [animateRef, enable] = useAutoAnimate()
 
   useEffect(() => {
     enable(false)
   }, [])
-
-  // console.log('## touched.tagsIndex: ', touched.tagsIndex)
 
   return (
     <Wrapper>
@@ -44,12 +45,9 @@ const Tags: FC<TProps> = ({ settings, touched }) => {
             <TagBar
               key={tag.id}
               tag={tag}
-              editingTag={editingTag}
-              settingTag={settingTag}
               isFirst={index === 0}
               isLast={index === tags.length - 1}
               total={tags.length}
-              activeTagGroup={activeTagGroup}
             />
           ))}
         </ContentWrapper>
@@ -60,7 +58,7 @@ const Tags: FC<TProps> = ({ settings, touched }) => {
         </AddButton>
 
         <SavingBar
-          isTouched={touched.tagsIndex}
+          isTouched={isTagsIndexTouched}
           field={SETTING_FIELD.TAG_INDEX}
           prefix="是否保存标签排序"
           top={24}
@@ -71,4 +69,4 @@ const Tags: FC<TProps> = ({ settings, touched }) => {
   )
 }
 
-export default memo(Tags)
+export default observer(Tags)

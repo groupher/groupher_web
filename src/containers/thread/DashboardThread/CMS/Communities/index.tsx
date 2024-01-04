@@ -1,14 +1,14 @@
 import { FC, useCallback, useState } from 'react'
+import { observer } from 'mobx-react-lite'
 import { pluck } from 'ramda'
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table'
-
-import type { TID, TPagedCommunities } from '@/spec'
 
 import Checker from '@/widgets/Checker'
 
 import { CheckCell, CommunityCell, PendingCell, TimestampCell } from '../Cell'
 import FilterBar from '../FilterBar'
 
+import useCMSInfo from '../../hooks/useCMSInfo'
 import { Title, SortIcon } from '../../styles/cms/communities'
 import { batchSelectAll } from '../../logic'
 
@@ -17,13 +17,8 @@ import { batchSelectAll } from '../../logic'
  * API: https://github.com/rsuite/rsuite-table#api
  */
 
-type TProps = {
-  pagedCommunities: TPagedCommunities
-  loading: boolean
-  batchSelectedIDs: TID[]
-}
-
-const Communities: FC<TProps> = ({ pagedCommunities, loading, batchSelectedIDs }) => {
+const Communities: FC = () => {
+  const { pagedCommunities, loading, batchSelectedIDs } = useCMSInfo()
   const [showCheckColumn, setShowCheckColumn] = useState(false)
   const [sortColumn, setSortColumn] = useState('id')
 
@@ -159,4 +154,4 @@ const Communities: FC<TProps> = ({ pagedCommunities, loading, batchSelectedIDs }
   )
 }
 
-export default Communities
+export default observer(Communities)

@@ -3,7 +3,7 @@ import 'rsuite-table/dist/css/rsuite-table.css'
 
 import { DASHBOARD_ROUTE } from '@/constant/route'
 
-import type { TCMSContents, TTouched } from '../spec'
+import useTabInfo from '../hooks/useTabInfo'
 import GlobalTableStyle from '../styles/cms/global'
 import { Wrapper } from '../styles/cms'
 
@@ -12,68 +12,25 @@ import Communities from './Communities'
 import Changelogs from './Changelogs'
 import Docs from './Docs'
 
-type TProps = {
-  cmsContents: TCMSContents
-  route: string
-  touched: TTouched
-}
-
-const CMS: FC<TProps> = ({ route, cmsContents, touched }) => {
-  const {
-    pagedCommunities,
-    pagedPosts,
-    pagedDocs,
-    docTab,
-    pagedChangelogs,
-    loading,
-    batchSelectedIDs,
-    faqSections,
-    editingFAQ,
-    editingFAQIndex,
-  } = cmsContents
-
+const CMS: FC = () => {
   let contents = null
+  const { curTab: route } = useTabInfo()
 
   switch (route) {
     case DASHBOARD_ROUTE.COMMUNITIES: {
-      contents = (
-        <Communities
-          pagedCommunities={pagedCommunities}
-          batchSelectedIDs={batchSelectedIDs}
-          loading={loading}
-        />
-      )
+      contents = <Communities />
       break
     }
     case DASHBOARD_ROUTE.POST: {
-      contents = (
-        <Posts pagedPosts={pagedPosts} batchSelectedIDs={batchSelectedIDs} loading={loading} />
-      )
+      contents = <Posts />
       break
     }
     case DASHBOARD_ROUTE.CHANGELOG: {
-      contents = (
-        <Changelogs
-          pagedChangelogs={pagedChangelogs}
-          batchSelectedIDs={batchSelectedIDs}
-          loading={loading}
-        />
-      )
+      contents = <Changelogs />
       break
     }
     case DASHBOARD_ROUTE.DOC: {
-      contents = (
-        <Docs
-          loading={loading}
-          pagedDocs={pagedDocs}
-          docTab={docTab}
-          batchSelectedIDs={batchSelectedIDs}
-          faqSections={faqSections}
-          editingFAQ={editingFAQ}
-          editingFAQIndex={editingFAQIndex}
-          touched={touched}
-        />
-      )
+      contents = <Docs />
       break
     }
     default:

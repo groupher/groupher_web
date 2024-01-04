@@ -1,7 +1,9 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import type { TColorName, TTag } from '@/spec'
 
+import TagNode from '@/widgets/TagNode'
 import { SpaceGrow } from '@/widgets/Common'
 import ColorSelector from '@/widgets/ColorSelector'
 
@@ -10,6 +12,7 @@ import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'
 import TagAction from './TagAction'
 
+import useTagListInfo from '../hooks/useTagListInfo'
 import {
   Wrapper,
   Dot,
@@ -23,23 +26,14 @@ import { editTag } from '../logic/tags'
 
 export type TProps = {
   tag: TTag
-  activeTagGroup: null | string
-  editingTag: TTag
-  settingTag: TTag
   isFirst: boolean
   isLast: boolean
   total: number
 }
 
-const TagBar: FC<TProps> = ({
-  tag,
-  activeTagGroup,
-  editingTag,
-  settingTag,
-  isFirst,
-  isLast,
-  total,
-}) => {
+const TagBar: FC<TProps> = ({ tag, isFirst, isLast, total }) => {
+  const { editingTag, settingTag, activeTagGroup } = useTagListInfo()
+
   const isEditMode = editingTag?.id === tag.id
 
   return (
@@ -62,7 +56,7 @@ const TagBar: FC<TProps> = ({
             </DotSelector>
           </ColorSelector>
         ) : (
-          <Dot color={tag.color as TColorName} />
+          <TagNode color={tag.color} hashSize={12} hashRight={0} boldHash dotTop={1} />
         )}
         {isEditMode ? (
           <InputWrapper>
@@ -79,19 +73,10 @@ const TagBar: FC<TProps> = ({
           </Title>
         )}
         <SpaceGrow />
-        {!isEditMode && (
-          <TagAction
-            tag={tag}
-            activeTagGroup={activeTagGroup}
-            editingTag={editingTag}
-            isFirst={isFirst}
-            isLast={isLast}
-            total={total}
-          />
-        )}
+        {!isEditMode && <TagAction tag={tag} isFirst={isFirst} isLast={isLast} total={total} />}
       </SavingBar>
     </Wrapper>
   )
 }
 
-export default memo(TagBar)
+export default observer(TagBar)

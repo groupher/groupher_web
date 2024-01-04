@@ -1,9 +1,9 @@
 import styled, { css, theme } from '@/css'
-import { ALIGN_HEADER_OFFSET } from '../../constant'
 
 export const Wrapper = styled.div`
-  ${css.column()};
-  padding: ${() => `0 ${ALIGN_HEADER_OFFSET}`};
+  ${css.column('')};
+  padding-left: 160px;
+  width: 520px;
 
   ${css.media.mobile`
     padding: 0 20px;

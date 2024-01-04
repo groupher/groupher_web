@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import type { TSEOSettings } from '../../spec'
+import useSEOInfo from '../../hooks/useSEOInfo'
 import {
   Wrapper,
   Hint,
@@ -12,13 +12,11 @@ import {
   Desc,
 } from '../../styles/seo/twitter_preview/summary_layout'
 
-type TProps = {
-  settings: TSEOSettings
-}
+// example: https://elixirweekly.net/issues/339
+// twitter:card = summary
 
-const SummaryPreview: FC<TProps> = ({ settings }) => {
-  // example: https://elixirweekly.net/issues/339
-  // twitter:card = summary
+const SummaryPreview: FC = () => {
+  const { twUrl, twTitle, twDescription } = useSEOInfo()
 
   return (
     <Wrapper>
@@ -27,9 +25,9 @@ const SummaryPreview: FC<TProps> = ({ settings }) => {
         <ImageIcon />
       </CoverWrapper>
       <Content>
-        <URL>{settings.twUrl || '--'}</URL>
-        <Title>{settings.twTitle || '--'}</Title>
-        <Desc>{settings.twDescription || '--'}</Desc>
+        <URL>{twUrl || '--'}</URL>
+        <Title>{twTitle || '--'}</Title>
+        <Desc>{twDescription || '--'}</Desc>
       </Content>
     </Wrapper>
   )

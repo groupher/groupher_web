@@ -1,4 +1,5 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import CitySelector from '@/widgets/CitySelector'
 import { Br, SexyDivider } from '@/widgets/Common'
@@ -8,17 +9,19 @@ import { SETTING_FIELD } from '../../constant'
 import SavingBar from '../../SavingBar'
 import MediaEditor from './MediaEditor'
 
-import type { TBaseInfoSettings, TTouched } from '../../spec'
+import useBaseInfo from '../../hooks/useBaseInfo'
 import { Wrapper, Label, Inputer, Desc } from '../../styles/basic_info/other_info'
 import { edit } from '../../logic'
 
-type TProps = {
-  settings: TBaseInfoSettings
-  touched: TTouched
-}
-
-const OtherInfo: FC<TProps> = ({ settings, touched }) => {
-  const { city, techstack } = settings
+const OtherInfo: FC = () => {
+  const {
+    city,
+    techstack,
+    mediaReports,
+    queringMediaReportIndex,
+    isTouched,
+    isMediaReportsTouched,
+  } = useBaseInfo()
 
   return (
     <Wrapper>
@@ -35,7 +38,7 @@ const OtherInfo: FC<TProps> = ({ settings, touched }) => {
 
       <SavingBar
         field={SETTING_FIELD.BASE_INFO}
-        isTouched={touched.baseInfo}
+        isTouched={isTouched}
         loading={false}
         top={30}
         left={-1}
@@ -43,14 +46,11 @@ const OtherInfo: FC<TProps> = ({ settings, touched }) => {
 
       <SexyDivider top={30} bottom={30} />
 
-      <MediaEditor
-        reports={settings.mediaReports}
-        queringMediaReportIndex={settings.queringMediaReportIndex}
-      />
+      <MediaEditor reports={mediaReports} queringMediaReportIndex={queringMediaReportIndex} />
 
       <SavingBar
         field={SETTING_FIELD.MEDIA_REPORTS}
-        isTouched={touched.mediaReports}
+        isTouched={isMediaReportsTouched}
         loading={false}
         top={30}
         left={-1}
@@ -59,4 +59,4 @@ const OtherInfo: FC<TProps> = ({ settings, touched }) => {
   )
 }
 
-export default memo(OtherInfo)
+export default observer(OtherInfo)

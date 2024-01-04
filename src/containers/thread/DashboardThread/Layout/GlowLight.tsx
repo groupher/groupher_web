@@ -5,8 +5,7 @@ import { GLOW_OPACITY, GLOW_EFFECTS_KEYS } from '@/constant/glow_effect'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import useTheme from '@/hooks/useTheme'
 
-import { Br, Row as RowBase } from '@/widgets/Common'
-import ArrowLinker from '@/widgets/ArrowLinker'
+import { Br } from '@/widgets/Common'
 import Radio from '@/widgets/Switcher/Radio'
 
 import SectionLabel from '../SectionLabel'
@@ -14,6 +13,7 @@ import SavingBar from '../SavingBar'
 
 import { SETTING_FIELD } from '../constant'
 
+import useGlowLightInfo from '../hooks/useGlowLightInfo'
 import {
   Wrapper,
   Row,
@@ -24,28 +24,19 @@ import {
   GrowBackground,
   SettingsRow,
   SettingTitle,
-} from '../styles/layout/glow_effect'
+} from '../styles/layout/glow_light'
 import { edit } from '../logic'
 
-type TProps = {
-  glowType: string
-  glowFixed: boolean
-  glowOpacity: string
-  isTouched: boolean
-  isGrowFixedTouched: boolean
-  isGrowOpacityTouched: boolean
-  saving: boolean
-}
-
-const GlowEffect: FC<TProps> = ({
-  glowType,
-  glowFixed,
-  glowOpacity,
-  isTouched,
-  isGrowFixedTouched,
-  isGrowOpacityTouched,
-  saving,
-}) => {
+const GlowLight: FC = () => {
+  const {
+    glowType,
+    glowFixed,
+    glowOpacity,
+    isTouched,
+    isGrowFixedTouched,
+    isGrowOpacityTouched,
+    saving,
+  } = useGlowLightInfo()
   const primaryColor = usePrimaryColor()
   const { curTheme } = useTheme()
 
@@ -53,14 +44,8 @@ const GlowEffect: FC<TProps> = ({
     <Wrapper>
       <SectionLabel
         title="页面辉光"
-        desc={
-          <RowBase>
-            设置后每个页面的展示光晕（阅览页面除外），可配合壁纸风格搭配。
-            <ArrowLinker href="/" fontSize={13}>
-              了解更多
-            </ArrowLinker>
-          </RowBase>
-        }
+        desc="设置后每个页面的展示光晕（阅览页面除外），可配合壁纸风格搭配。"
+        width="96%"
       />
 
       <Row>
@@ -155,4 +140,4 @@ const GlowEffect: FC<TProps> = ({
   )
 }
 
-export default observer(GlowEffect)
+export default observer(GlowLight)

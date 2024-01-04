@@ -1,6 +1,5 @@
-import { FC, memo } from 'react'
-
-import type { TModerator, TUser } from '@/spec'
+import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { callPassportEditor } from '@/signal'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
@@ -9,6 +8,7 @@ import { SpaceGrow } from '@/widgets/Common'
 import Button from '@/widgets/Buttons/Button'
 import AdminAvatar from '@/widgets/AdminAvatar'
 
+import useAdminsInfo from '../hooks/useAdminsInfo'
 import {
   Wrapper,
   User,
@@ -24,12 +24,8 @@ import {
 } from '../styles/admin/list'
 import { setActiveSettingAdmin } from '../logic'
 
-type TProps = {
-  moderators: TModerator[]
-  activeModerator: TUser | null
-}
-
-const List: FC<TProps> = ({ moderators, activeModerator }) => {
+const List: FC = () => {
+  const { moderators, activeModerator } = useAdminsInfo()
   const primaryColor = usePrimaryColor()
 
   return (
@@ -76,4 +72,4 @@ const List: FC<TProps> = ({ moderators, activeModerator }) => {
   )
 }
 
-export default memo(List)
+export default observer(List)

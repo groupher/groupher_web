@@ -11,7 +11,7 @@ import { SETTING_FIELD } from '../../constant'
 import SectionLabel from '../../SectionLabel'
 import SavingBar from '../../SavingBar'
 
-import type { TProps as TPropsBase } from '.'
+import useKanbanInfo from '../../hooks/useKanbanInfo'
 import {
   SelectWrapper,
   Layout,
@@ -20,9 +20,8 @@ import {
 } from '../../styles/layout/kanban_layout/global_layout'
 import { edit } from '../../logic'
 
-type TProps = Pick<TPropsBase, 'layout' | 'isTouched' | 'saving'>
-
-const KanbanGlobalLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
+const KanbanGlobalLayout: FC = () => {
+  const { layout, isTouched, saving } = useKanbanInfo()
   const primaryColor = usePrimaryColor()
 
   return (

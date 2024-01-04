@@ -32,7 +32,12 @@ const Simple: FC<TProps> = ({ links, $active }) => {
   const groupKeys = keys(groupedLinks)
 
   return (
-    <Wrapper $active={$active} onClick={() => edit(FOOTER_LAYOUT.SIMPLE, 'footerLayout')}>
+    <Wrapper
+      $active={$active}
+      onClick={() => {
+        edit(FOOTER_LAYOUT.SIMPLE, 'footerLayout')
+      }}
+    >
       <LeftWrapper>
         <BrandLogo />
         <BrandText>Groupher</BrandText>

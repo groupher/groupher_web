@@ -1,8 +1,7 @@
 import { FC, useState } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { FOOTER_LAYOUT } from '@/constant/layout'
-
-import type { TFooterSettings } from '../../spec'
 
 import { SETTING_FIELD } from '../../constant'
 import SavingBar from '../../SavingBar'
@@ -10,18 +9,13 @@ import SavingBar from '../../SavingBar'
 import Simple from './Simple'
 import Group from './Group'
 
+import useFooterSettingsInfo from '../../hooks/useFooterSettingsInfo'
 import { Wrapper, ArrowIcon, ToggleButton, ToggleText } from '../../styles/footer/templates'
 import { resetEditingLink } from '../../logic/links'
 
-type TProps = {
-  settings: TFooterSettings
-  isTouched: boolean
-}
-
-const Templates: FC<TProps> = ({ settings, isTouched }) => {
+const Templates: FC = () => {
+  const { footerLayout, saving, footerLinks, isLayoutTouched } = useFooterSettingsInfo()
   const [showAll, setShowAll] = useState<boolean>(false)
-
-  const { footerLayout, saving, footerLinks } = settings
 
   return (
     <Wrapper>
@@ -38,7 +32,7 @@ const Templates: FC<TProps> = ({ settings, isTouched }) => {
       )}
 
       <SavingBar
-        isTouched={isTouched}
+        isTouched={isLayoutTouched}
         field={SETTING_FIELD.FOOTER_LAYOUT}
         onConfirm={() => setShowAll(false)}
         loading={saving}
@@ -46,7 +40,7 @@ const Templates: FC<TProps> = ({ settings, isTouched }) => {
         bottom={30}
       />
 
-      {!isTouched && !saving && (
+      {!isLayoutTouched && !saving && (
         <ToggleButton
           size="small"
           ghost
@@ -67,4 +61,4 @@ const Templates: FC<TProps> = ({ settings, isTouched }) => {
   )
 }
 
-export default Templates
+export default observer(Templates)

@@ -15,7 +15,7 @@ import { useInit } from '@/containers//thread/DashboardThread/logic'
 import SideMenu from '@/containers/thread/DashboardThread/SideMenu'
 
 const Layout = ({ children }) => {
-  const { curTab, touched } = useDashboardSettings()
+  const { curTab } = useDashboardSettings()
   const metric = useMetric()
 
   const store = useStore()
@@ -28,7 +28,7 @@ const Layout = ({ children }) => {
       <InnerWrapper metric={metric}>
         <ContentWrapper>
           <FrameWrapper metric={metric}>
-            <SideMenu curTab={curTab} touched={touched} />
+            <SideMenu curTab={curTab} />
             <MainWrapper>{children}</MainWrapper>
           </FrameWrapper>
         </ContentWrapper>

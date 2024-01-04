@@ -31,8 +31,9 @@ export const FoldArrowIcon = styled(ArrowSVG)<{ fold: boolean }>`
 `
 export const Title = styled.div`
   color: ${theme('dashboard.menuCat')};
-  font-size: 13px;
+  font-size: 14px;
   margin-left: 10px;
+  margin-top: -1px;
   font-weight: 500;
   flex-grow: 1;
 
@@ -96,12 +97,4 @@ export const Item = styled(Link)<TItem>`
   }
 
   transition: all 0.2s;
-`
-export const TouchedDot = styled.div`
-  ${css.circle(5)};
-  background-color: ${theme('article.digest')};
-  opacity: 0.5;
-  position: absolute;
-  top: 10px;
-  right: 12px;
 `

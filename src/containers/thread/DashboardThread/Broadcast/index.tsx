@@ -8,25 +8,19 @@ import VIEW from '@/constant/view'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import Tabs from '@/widgets/Switcher/Tabs'
 
-import type { TBroadcastSettings, TTouched } from '../spec'
 import { BROADCAST_TABS } from '../constant'
 
 import Portal from '../Portal'
 import Editor from './Editor'
 
+import useBroadcastInfo from '../hooks/useBroadcastInfo'
 import { Wrapper, Banner, TabsWrapper, InnerWrapper } from '../styles/broadcast'
 import { edit } from '../logic'
 
-type TProps = {
-  settings: TBroadcastSettings
-  touched: TTouched
-}
-
-const Broadcast: FC<TProps> = ({ settings, touched }) => {
+const Broadcast: FC = () => {
   const router = useRouter()
   const curCommunity = useViewingCommunity()
-
-  const { broadcastTab } = settings
+  const { broadcastTab } = useBroadcastInfo()
 
   return (
     <Wrapper>
@@ -53,7 +47,7 @@ const Broadcast: FC<TProps> = ({ settings, touched }) => {
       </Banner>
 
       <InnerWrapper>
-        <Editor settings={settings} touched={touched} />
+        <Editor />
       </InnerWrapper>
     </Wrapper>
   )

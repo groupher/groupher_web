@@ -1,13 +1,11 @@
-import { FC, memo } from 'react'
-
+import { FC } from 'react'
 import { isEmpty } from 'ramda'
+import { observer } from 'mobx-react-lite'
 
 import { Brick } from '@/widgets/Common'
 import { INIT_KANBAN_COLORS } from '../../../constant'
-// import KanbanList from './KanbanList'
 
-import type { TProps as TPropsBase } from '..'
-
+import useKanbanInfo from '../../../hooks/useKanbanInfo'
 import {
   Wrapper,
   Header,
@@ -18,14 +16,10 @@ type TProps = {
   isBoard1Hovered: boolean
   isBoard2Hovered: boolean
   isBoard3Hovered: boolean
-} & Pick<TPropsBase, 'kanbanBgColors'>
+}
 
-const WaterfallLayout: FC<TProps> = ({
-  kanbanBgColors,
-  isBoard1Hovered,
-  isBoard2Hovered,
-  isBoard3Hovered,
-}) => {
+const WaterfallLayout: FC<TProps> = ({ isBoard1Hovered, isBoard2Hovered, isBoard3Hovered }) => {
+  const { kanbanBgColors } = useKanbanInfo()
   const [BG1, BG2, BG3] = isEmpty(kanbanBgColors) ? INIT_KANBAN_COLORS : kanbanBgColors
 
   return (
@@ -68,4 +62,4 @@ const WaterfallLayout: FC<TProps> = ({
   )
 }
 
-export default memo(WaterfallLayout)
+export default observer(WaterfallLayout)

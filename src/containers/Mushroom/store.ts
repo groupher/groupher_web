@@ -2,7 +2,7 @@
  * GlobalLayout store
  *
  */
-import { mergeRight, values } from 'ramda'
+import { mergeRight } from 'ramda'
 
 import type {
   TRootStore,

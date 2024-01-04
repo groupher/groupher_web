@@ -139,6 +139,7 @@ export const Inputer = styled(Input)`
 
   ::placeholder {
     color: ${theme('article.digest')};
+    font-size: 12px;
     opacity: 0.8;
   }
 `

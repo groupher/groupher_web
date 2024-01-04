@@ -6,7 +6,7 @@ import { DASHBOARD_ROUTE } from '@/constant/route'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 
-import type { TMenuGroup, TTouched } from '../spec'
+import type { TMenuGroup } from '../spec'
 
 import {
   Wrapper,
@@ -15,17 +15,15 @@ import {
   FoldArrowIcon,
   Title,
   MenuWrapper,
-  TouchedDot,
   IconWrapper,
 } from '../styles/side_menu/group'
 
 type TProps = {
   group: TMenuGroup
   curTab: TDashboardPath | string
-  touched: TTouched | null
 }
 
-const Group: FC<TProps> = ({ group, curTab, touched }) => {
+const Group: FC<TProps> = ({ group, curTab }) => {
   const community = useViewingCommunity()
   const primaryColor = usePrimaryColor()
   const [fold, setFold] = useState(group.initFold)
@@ -51,7 +49,6 @@ const Group: FC<TProps> = ({ group, curTab, touched }) => {
                 $color={primaryColor}
               >
                 {item.title}
-                {touched && (touched[item.slug] || touched[item.alias]) && <TouchedDot />}
               </Item>
             )
           })}

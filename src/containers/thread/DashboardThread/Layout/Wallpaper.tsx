@@ -1,22 +1,22 @@
 import { FC, useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import type { TWallpaperInfo } from '@/spec'
 import { WIDTH } from '@/css'
 import { callWallpaperEditor } from '@/signal'
 import { parseWallpaper } from '@/wallpaper'
 import { blurRGB } from '@/fmt'
 
-import useThemeData from '@/hooks/useThemeData'
-import useTheme from '@/hooks/useTheme'
 import THEME from '@/constant/theme'
+import useThemeData from '@/hooks/useThemeData'
+import useGossBlur from '@/hooks/useGossBlur'
+import useTheme from '@/hooks/useTheme'
 
 import { Brick } from '@/widgets/Common'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import CheckLabel from '@/widgets/CheckLabel'
 
 import SectionLabel from '../SectionLabel'
 
+import useWallpaperInfo from '../hooks/useWallpaperInfo'
 import {
   Wrapper,
   Section,
@@ -29,13 +29,10 @@ import {
   ContentBlock,
 } from '../styles/layout/wallpaper'
 
-type TProps = {
-  wallpaperInfo: TWallpaperInfo
-  gossBlur: number
-}
+const Wallpaper: FC = () => {
+  const gossBlur = useGossBlur()
+  const { wallpapers, wallpaper, customWallpaper, hasShadow } = useWallpaperInfo()
 
-const Wallpaper: FC<TProps> = ({ wallpaperInfo, gossBlur }) => {
-  const { wallpapers, wallpaper, customWallpaper, hasShadow } = wallpaperInfo
   const { background, effect } = parseWallpaper(wallpapers, wallpaper, customWallpaper)
 
   const { curTheme } = useTheme()
@@ -53,9 +50,9 @@ const Wallpaper: FC<TProps> = ({ wallpaperInfo, gossBlur }) => {
             <>
               「壁纸」为宽屏（屏幕尺寸大于 {WIDTH.COMMUNITY.PAGE}
               ）下，超出内容部分显示的背景图片，除内置壁纸外，你还可以上传和社区话题相关的自定义图片。
-              <ArrowButton onClick={handleCallEditor}>更换壁纸</ArrowButton>
             </>
           }
+          width="96%"
         />
 
         <PreviewWrapper>

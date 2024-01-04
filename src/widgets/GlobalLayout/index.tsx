@@ -14,6 +14,7 @@ import METRIC from '@/constant/metric'
 import { TOPBAR_LAYOUT } from '@/constant/layout'
 
 import useMetric from '@/hooks/useMetric'
+import useGlobalLayout from '@/hooks/useGlobalLayout'
 import useThemeData from '@/hooks/useThemeData'
 import useWallpaper from '@/hooks/useWallpaper'
 import useGossBlur from '@/hooks/useGossBlur'
@@ -46,10 +47,10 @@ import {
 
 type TProps = {
   children: ReactNode
-  globalLayout: TGlobalLayout
 }
 
-const GlobalLayout: FC<TProps> = ({ children, globalLayout }) => {
+const GlobalLayout: FC<TProps> = ({ children }) => {
+  const globalLayout = useGlobalLayout()
   const metric = useMetric()
   const { hasShadow } = useWallpaper()
   const gossBlur = useGossBlur()

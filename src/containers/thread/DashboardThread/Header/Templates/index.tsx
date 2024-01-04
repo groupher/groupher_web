@@ -1,8 +1,7 @@
 import { FC, useState } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { HEADER_LAYOUT } from '@/constant/layout'
-
-import type { THeaderSettings } from '../../spec'
 
 import { SETTING_FIELD } from '../../constant'
 import SavingBar from '../../SavingBar'
@@ -11,17 +10,18 @@ import Center from './Center'
 import Float from './Float'
 import Right from './Right'
 
+import useHeaderSettingsInfo from '../../hooks/useHeaderSettingsInfo'
 import { Wrapper, ArrowIcon, ToggleButton, ToggleText } from '../../styles/header/templates'
 
-type TProps = {
-  settings: THeaderSettings
-  isTouched: boolean
-}
-
-const Templates: FC<TProps> = ({ settings, isTouched }) => {
+const Templates: FC = () => {
+  const {
+    isLayoutTouched: isTouched,
+    headerLayout,
+    saving,
+    headerLinks: links,
+    threads,
+  } = useHeaderSettingsInfo()
   const [showAll, setShowAll] = useState<boolean>(false)
-
-  const { headerLayout, saving, headerLinks: links, threads } = settings
 
   const linksProps = { threads, links }
   return (
@@ -62,4 +62,4 @@ const Templates: FC<TProps> = ({ settings, isTouched }) => {
   )
 }
 
-export default Templates
+export default observer(Templates)

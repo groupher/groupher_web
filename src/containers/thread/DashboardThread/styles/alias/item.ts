@@ -15,13 +15,16 @@ export const Title = styled.div`
   color: ${theme('article.title')};
   width: 130px;
 `
+export const AliasTitle = styled(Title)`
+  width: auto;
+`
 export const Header = styled.div`
   ${css.row('align-center')};
 `
 export const ArrowWrapper = styled.div`
   ${css.row('align-center')};
   flex-grow: 1;
-  padding-right: 50px;
+  padding-right: 60px;
 `
 export const ArrowLine = styled.div`
   border-top: 1px dashed;

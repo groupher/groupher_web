@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
@@ -9,7 +9,6 @@ import useViewingCommunity from '@/hooks/useViewingCommunity'
 import Tabs from '@/widgets/Switcher/Tabs'
 
 import { BASEINFO_TABS } from '../constant'
-import type { TBaseInfoSettings, TTouched } from '../spec'
 
 import Portal from '../Portal'
 
@@ -17,22 +16,18 @@ import BaseInfo from './BaseInfo'
 import SocialInfo from './SocialInfo'
 import OtherInfo from './OtherInfo'
 
+import useBaseInfo from '../hooks/useBaseInfo'
 import { Wrapper, Banner, TabsWrapper } from '../styles/basic_info'
-import { edit } from '../logic'
+import { edit, loadBaseInfo } from '../logic'
 
-type TProps = {
-  settings: TBaseInfoSettings
-  touched: TTouched
-}
-
-const BasicInfo: FC<TProps> = ({ settings, touched }) => {
+const BasicInfo: FC = () => {
   const router = useRouter()
   const curCommunity = useViewingCommunity()
-  const { baseInfoTab } = settings
+  const { baseInfoTab } = useBaseInfo()
 
-  // useEffect(() => {
-  //   setTimeout(() => loadBaseInfo())
-  // }, [])
+  useEffect(() => {
+    setTimeout(() => loadBaseInfo())
+  }, [])
 
   return (
     <Wrapper>
@@ -62,15 +57,9 @@ const BasicInfo: FC<TProps> = ({ settings, touched }) => {
         </TabsWrapper>
       </Banner>
 
-      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.BASIC && (
-        <BaseInfo settings={settings} touched={touched} />
-      )}
-      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.SOCIAL && (
-        <SocialInfo settings={settings} touched={touched} />
-      )}
-      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.OTHER && (
-        <OtherInfo settings={settings} touched={touched} />
-      )}
+      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.BASIC && <BaseInfo />}
+      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.SOCIAL && <SocialInfo />}
+      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.OTHER && <OtherInfo />}
     </Wrapper>
   )
 }

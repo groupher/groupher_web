@@ -20,7 +20,6 @@ import {
   // domain
   RouteStore,
   AccountStore,
-  // GlobalLayoutStore,
   RichEditorStore,
   // HeaderStore,
   ViewingStore,
@@ -92,8 +91,6 @@ const rootStore = T.model({
   // toolbox end
 
   // layouts > xxx > papers
-  // layouts
-  // globalLayout: T.opt(GlobalLayoutStore, {}),
   richEditor: T.opt(RichEditorStore, {}),
   // header: T.opt(HeaderStore, {}),
   // layouts end

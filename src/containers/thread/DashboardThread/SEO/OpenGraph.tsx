@@ -2,22 +2,20 @@ import { FC, memo } from 'react'
 
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
 
-import type { TSEOSettings } from '../spec'
 import SectionLabel from '../SectionLabel'
 import SearchEnginePreview from './SearchEnginePreview'
 
+import useSEOInfo from '../hooks/useSEOInfo'
 import { Wrapper, Label, EnableDesc, DetailLink, Inputer } from '../styles/seo/open_graph'
 import { edit, toggleSEO } from '../logic'
-
-type TProps = {
-  settings: TSEOSettings
-}
 
 /*
  see: https://mintlify.com/docs/settings/seo for details
 */
 
-const OpenGraph: FC<TProps> = ({ settings }) => {
+const OpenGraph: FC = () => {
+  const { seoEnable, ogSiteName, ogTitle, ogDescription, ogImage, ogUrl } = useSEOInfo()
+
   return (
     <Wrapper>
       <SectionLabel
@@ -31,21 +29,21 @@ const OpenGraph: FC<TProps> = ({ settings }) => {
             </DetailLink>
           </EnableDesc>
         }
-        addon={<ToggleSwitch checked={settings.seoEnable} onChange={(v) => toggleSEO(v)} />}
+        addon={<ToggleSwitch checked={seoEnable} onChange={(v) => toggleSEO(v)} />}
       />
-      {settings.seoEnable && (
+      {seoEnable && (
         <>
-          <SearchEnginePreview settings={settings} />
+          <SearchEnginePreview />
           <Label>og:site_name</Label>
-          <Inputer value={settings.ogSiteName} onChange={(e) => edit(e, 'ogSiteName')} />
+          <Inputer value={ogSiteName} onChange={(e) => edit(e, 'ogSiteName')} />
           <Label>og:title</Label>
-          <Inputer value={settings.ogTitle} onChange={(e) => edit(e, 'ogTitle')} />
+          <Inputer value={ogTitle} onChange={(e) => edit(e, 'ogTitle')} />
           <Label>og:description</Label>
-          <Inputer value={settings.ogDescription} onChange={(e) => edit(e, 'ogDescription')} />
+          <Inputer value={ogDescription} onChange={(e) => edit(e, 'ogDescription')} />
           <Label>og:url</Label>
-          <Inputer value={settings.ogUrl} onChange={(e) => edit(e, 'ogUrl')} />
+          <Inputer value={ogUrl} onChange={(e) => edit(e, 'ogUrl')} />
           <Label>og:image</Label>
-          <Inputer value={settings.ogImage} onChange={(e) => edit(e, 'ogImage')} />
+          <Inputer value={ogImage} onChange={(e) => edit(e, 'ogImage')} />
         </>
       )}
     </Wrapper>

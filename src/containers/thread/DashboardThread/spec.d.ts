@@ -83,24 +83,7 @@ export type TMenu = {
   [k: TMenuGroupName]: TMenuGroup
 }
 
-export type TTagSettings = {
-  saving: boolean
-  threads: TCommunityThread[]
-  tags: TTag[]
-  editingTag: TTag
-  settingTag: TTag
-  groups: string[]
-  activeTagGroup: string
-  activeTagThread: string
-}
-
-export type TRSSSettings = {
-  feedType: string
-  feedCount: number
-  saving: boolean
-}
-
-type TLinkState = {
+export type TLinkState = {
   editingLink: TLinkItem
   saving: boolean
   editingLinkMode: TChangeMode
@@ -120,18 +103,6 @@ export type TFooterSettings = {
   threads: TCommunityThread[]
 } & TLinkState
 
-export type TAdminSettings = {
-  moderators: TModerator[]
-  activeModerator: TUser | null
-}
-
-export type TAliasSettings = {
-  saving: boolean
-  nameAlias: TNameAlias[]
-  editingAlias: TNameAlias
-  aliasTab: TDashboardAliasRoute
-}
-
 export type TBaseInfoSettings = {
   loading: boolean
   queringMediaReportIndex: number | null
@@ -150,100 +121,6 @@ export type TBaseInfoSettings = {
   socialLinks: TSocialItem[]
   baseInfoTab: TDashboardBaseInfoRoute
   mediaReports: TMediaReport[]
-}
-
-export type TSEOSettings = TDashboardSEOConfig & {
-  saving: boolean
-  seoTab: TDashboardSEORoute
-}
-
-export type TUiSettings = {
-  saving: boolean
-  wallpaperInfo: TWallpaperInfo
-  wallpaper: TWallpaper
-  customWallpaper: TCustomWallpaper
-  primaryColor: TColorName
-  brandLayout: TBrandLayout
-  topbarLayout: TTopbarLayout
-  topbarBg: TColorName
-  tagLayout: TTagLayout
-  avatarLayout: TAvatarLayout
-  bannerLayout: TBannerLayout
-  glowType: string
-  glowFixed: boolean
-  glowOpacity: string
-  gossBlur: number
-  docLayout: TDocLayout
-  docFaqLayout: TDocFaqLayout
-  postLayout: TPostLayout
-  kanbanLayout: TKanbanLayout
-  kanbanCardLayout: TKanbanCardLayout
-  kanbanBgColors: TColorName[]
-  changelogLayout: TChangelogLayout
-  headerLayout: THeaderLayout
-  footerLayout: TFooterLayout
-
-  layoutTab: TDashboardLayoutRoute
-}
-
-export type TBroadcastSettings = TBroadcastConfig & {
-  saving: boolean
-  broadcastTab: TDashboardBroadcastRoute
-}
-
-export type TWidgetsSettings = {
-  saving: boolean
-  widgetsPrimaryColor: TColorName
-  widgetsThreads: TThread[]
-  widgetsSize: TSizeSML
-  widgetsType: TWidgetType
-}
-
-export type TTouched = {
-  primaryColor: boolean
-  brandLayout: boolean
-  tagLayout: boolean
-  avatarLayout: boolean
-  bannerLayout: boolean
-  headerLayout: boolean
-  footerLayout: boolean
-  glowType: boolean
-  glowFixed: boolean
-  glowOpacity: boolean
-  gossBlur: boolean
-  docLayout: boolean
-  docFaqLayout: boolean
-  topbarLayout: boolean
-  topbarBg: boolean
-  postLayout: boolean
-  kanbanLayout: boolean
-  kanbanCardLayout: boolean
-  kanbanBgColors: boolean
-  changelogLayout: boolean
-  nameAlias: boolean
-  tags: boolean
-  tagsIndex: boolean
-
-  headerLinks: boolean
-  footerLinks: boolean
-
-  faqSections: boolean
-
-  socialLinks: boolean
-  mediaReports: boolean
-  rssFeed: boolean
-
-  widgetsPrimaryColor: boolean
-  widgetsThreads: boolean
-  widgetsSize: boolean
-
-  // sidebar
-  baseInfo: boolean
-  seo: boolean
-  ui: boolean
-  widgets: boolean
-  broadcast: boolean
-  broadcastArticle: boolean
 }
 
 export type TSettingField =
@@ -274,6 +151,7 @@ export type TSettingField =
   | 'glowFixed'
   | 'glowOpacity'
   | 'gossBlur'
+  | 'gossBlurDark'
   | 'headerLinks'
   | 'footerLinks'
   | 'docLayout'
@@ -301,8 +179,6 @@ export type TSettingField =
   | 'widgetsThreads'
   | 'widgetsSize'
   | 'widgetsType'
-
-export type TWidgetType = 'sidebar' | 'modal' | 'popup' | 'iframe' | 'link'
 
 type TDocFile = {
   index: number

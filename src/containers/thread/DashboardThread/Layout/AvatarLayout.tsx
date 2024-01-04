@@ -13,6 +13,7 @@ import { SETTING_FIELD } from '../constant'
 import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
+import useAvatarInfo from '../hooks/useAvatarInfo'
 import {
   Wrapper,
   SelectWrapper,
@@ -25,13 +26,8 @@ import {
 } from '../styles/layout/avatar_layout'
 import { edit } from '../logic'
 
-type TProps = {
-  layout: TAvatarLayout
-  isTouched: boolean
-  saving: boolean
-}
-
-const AvatarLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
+const AvatarLayout: FC = () => {
+  const { layout, isTouched, saving } = useAvatarInfo()
   const primaryColor = usePrimaryColor()
 
   return (

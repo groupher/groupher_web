@@ -1,4 +1,4 @@
-import type { TSnakeUpperCase } from '@/spec'
+import type { TSnakeUpperCase, TWidgetType } from '@/spec'
 
 import {
   DASHBOARD_ROUTE,
@@ -11,7 +11,7 @@ import {
 } from '@/constant/route'
 import { COLOR_NAME } from '@/constant/colors'
 
-import type { TSettingField, TWidgetType, THeaderEditType, TFooterEditType } from './spec'
+import type { TSettingField, THeaderEditType, TFooterEditType } from './spec'
 
 import { Icon } from './styles/side_menu'
 
@@ -45,6 +45,7 @@ export const SETTING_LAYOUT_FIELD = {
   GLOW_FIXED: 'glowFixed',
   GLOW_OPACITY: 'glowOpacity',
   GOSS_BLUR: 'gossBlur',
+  GOSS_BLUR_DARK: 'gossBlurDark',
 }
 
 export const SETTING_FIELD = {
@@ -528,36 +529,37 @@ export const BASEINFO_OTHER_KEYS = ['city', 'techstack']
 
 export const BASEINFO_KEYS = [...BASEINFO_BASIC_KEYS, ...BASEINFO_OTHER_KEYS]
 
-export const UI_KEYS = [
-  'layoutTab',
-  'primaryColor',
-  'brandLayout',
-  'tagLayout',
-  'avatarLayout',
-  'bannerLayout',
-  'topbarLayout',
-  'topbarBg',
-  'postLayout',
-  'kanbanLayout',
-  'kanbanCardLayout',
-  'docLayout',
-  'docFaqLayout',
-  'changelogLayout',
-  'glowFixed',
-  'glowType',
-  'glowOpacity',
-  'gossBlur',
-]
+// export const UI_KEYS = [
+//   'layoutTab',
+//   'primaryColor',
+//   'brandLayout',
+//   'tagLayout',
+//   'avatarLayout',
+//   'bannerLayout',
+//   'topbarLayout',
+//   'topbarBg',
+//   'postLayout',
+//   'kanbanLayout',
+//   'kanbanCardLayout',
+//   'docLayout',
+//   'docFaqLayout',
+//   'changelogLayout',
+//   'glowFixed',
+//   'glowType',
+//   'glowOpacity',
+//   'gossBlur',
+//   'gossBlurDark',
+// ]
 
-export const BROADCAST_KEYS = [
-  'broadcastTab',
-  'broadcastLayout',
-  'broadcastBg',
-  'broadcastEnable',
-  'broadcastArticleLayout',
-  'broadcastArticleBg',
-  'broadcastArticleEnable',
-]
+// export const BROADCAST_KEYS = [
+//   'broadcastTab',
+//   'broadcastLayout',
+//   'broadcastBg',
+//   'broadcastEnable',
+//   'broadcastArticleLayout',
+//   'broadcastArticleBg',
+//   'broadcastArticleEnable',
+// ]
 
 export const DEFAULT_NEW_FAQ = {
   title: '',

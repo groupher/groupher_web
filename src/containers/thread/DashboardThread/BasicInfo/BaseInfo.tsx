@@ -1,12 +1,13 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { Br } from '@/widgets/Common'
 import OSSUploader from '@/widgets/OSSUploader'
 
-import type { TBaseInfoSettings, TTouched } from '../spec'
 import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'
 
+import useBaseInfo from '../hooks/useBaseInfo'
 import {
   Wrapper,
   Label,
@@ -21,13 +22,8 @@ import {
 } from '../styles/basic_info/base_info'
 import { edit } from '../logic'
 
-type TProps = {
-  settings: TBaseInfoSettings
-  touched: TTouched
-}
-
-const BasicInfo: FC<TProps> = ({ settings, touched }) => {
-  const { saving, desc, title, introduction, logo } = settings
+const BasicInfo: FC = () => {
+  const { saving, desc, title, slug, homepage, introduction, logo, isTouched } = useBaseInfo()
 
   return (
     <Wrapper>
@@ -54,7 +50,7 @@ const BasicInfo: FC<TProps> = ({ settings, touched }) => {
       <Desc>上传社区 Logo, 支持常见图片格式，200 KB以内。可选。</Desc>
       <Br bottom={30} />
       <Label>子域名 (slug)</Label>
-      <Inputer value={settings.slug} onChange={(v) => edit(v, 'slug')} />
+      <Inputer value={slug} onChange={(v) => edit(v, 'slug')} />
       <Hint>
         社区的 URL 地址段，填写后可通过 https://groupher.com/[slug] 或 https://[slug].groupher.com
         访问。
@@ -67,7 +63,7 @@ const BasicInfo: FC<TProps> = ({ settings, touched }) => {
       <Br bottom={10} />
 
       <Label>官方主页</Label>
-      <Inputer value={settings.homepage} onChange={(v) => edit(v, 'homepage')} />
+      <Inputer value={homepage} onChange={(v) => edit(v, 'homepage')} />
       <Hint>您产品或服务的官方地址。</Hint>
 
       <Label>社区简介</Label>
@@ -82,14 +78,9 @@ const BasicInfo: FC<TProps> = ({ settings, touched }) => {
         onChange={(v) => edit(v, 'introduction')}
       />
 
-      <SavingBar
-        field={SETTING_FIELD.BASE_INFO}
-        isTouched={touched.baseInfo}
-        loading={saving}
-        top={30}
-      />
+      <SavingBar field={SETTING_FIELD.BASE_INFO} isTouched={isTouched} loading={saving} top={30} />
     </Wrapper>
   )
 }
 
-export default memo(BasicInfo)
+export default observer(BasicInfo)

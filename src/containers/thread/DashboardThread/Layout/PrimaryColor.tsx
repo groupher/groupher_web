@@ -1,6 +1,5 @@
-import { FC, memo } from 'react'
-
-import type { TColorName } from '@/spec'
+import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { Row } from '@/widgets/Common'
 import ColorSelector from '@/widgets/ColorSelector'
@@ -10,16 +9,14 @@ import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
 import { SETTING_FIELD } from '../constant'
+
+import usePrimaryInfo from '../hooks//usePrimaryInfo'
 import { Wrapper, Label, ColorBall } from '../styles/layout/primary_color'
 import { edit } from '../logic'
 
-type TProps = {
-  primaryColor: TColorName
-  isTouched: boolean
-  saving: boolean
-}
+const PrimaryColor: FC = () => {
+  const { primaryColor, isTouched, saving } = usePrimaryInfo()
 
-const PrimaryColor: FC<TProps> = ({ primaryColor, isTouched, saving }) => {
   return (
     <Wrapper>
       <SectionLabel
@@ -53,4 +50,4 @@ const PrimaryColor: FC<TProps> = ({ primaryColor, isTouched, saving }) => {
   )
 }
 
-export default memo(PrimaryColor)
+export default observer(PrimaryColor)

@@ -89,6 +89,7 @@ export type {
   TUploadPreview,
   TPagi,
   TConditionMode,
+  TWidgetType,
 } from './utils'
 
 export type { TGQLError } from './graphql'

@@ -1,8 +1,6 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import type { TChangelogLayout } from '@/spec'
-
 import { CHANGELOG_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { callDashboardDesc } from '@/signal'
@@ -15,6 +13,7 @@ import { SETTING_FIELD } from '../constant'
 import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
+import useChangelogInfo from '../hooks/useChangelogInfo'
 import {
   Wrapper,
   SelectWrapper,
@@ -29,16 +28,10 @@ import {
   UpvoteIcon,
   Picture,
 } from '../styles/layout/changelog_layout'
-
 import { edit } from '../logic'
 
-type TProps = {
-  layout: TChangelogLayout
-  isTouched: boolean
-  saving: boolean
-}
-
-const ChangelogLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
+const ChangelogLayout: FC = () => {
+  const { layout, isTouched, saving } = useChangelogInfo()
   const primaryColor = usePrimaryColor()
 
   return (

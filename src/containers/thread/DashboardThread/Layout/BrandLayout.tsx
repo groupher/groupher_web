@@ -1,20 +1,18 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import type { TBrandLayout } from '@/spec'
-
-import { BRAND_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
+import { BRAND_LAYOUT } from '@/constant/layout'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
-import { callDashboardDesc } from '@/signal'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 
-import { Space, Divider, Inline } from '@/widgets/Common'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
+import { Space, Divider } from '@/widgets/Common'
 import CheckLabel from '@/widgets/CheckLabel'
 
 import { SETTING_FIELD } from '../constant'
 import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
+import useBrandInfo from '../hooks/useBrandInfo'
 import {
   Wrapper,
   SelectWrapper,
@@ -27,40 +25,21 @@ import {
 } from '../styles/layout/brand_layout'
 import { edit } from '../logic'
 
-type TProps = {
-  layout: TBrandLayout
-  isTouched: boolean
-  saving: boolean
-}
-
-const LogoLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
+const BrandLayout: FC = () => {
   const primaryColor = usePrimaryColor()
+  const curCommunity = useViewingCommunity()
+  const { layout, isTouched, saving } = useBrandInfo()
 
   return (
     <Wrapper>
-      <SectionLabel
-        title="Logo 样式"
-        desc={
-          <>
-            页首 Logo 的展示形式。
-            <Inline>
-              <ArrowButton
-                onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
-                fontSize={12}
-              >
-                查看示例
-              </ArrowButton>
-            </Inline>
-          </>
-        }
-      />
+      <SectionLabel title="品牌样式" desc="页首 Logo 的展示形式，注意文字字体为通用社区字体。" />
       <SelectWrapper>
         <Layout onClick={() => edit(BRAND_LAYOUT.BOTH, 'brandLayout')}>
           <Block $active={layout === BRAND_LAYOUT.BOTH} $color={primaryColor}>
             <Brand>
               <BrandIcon />
               <Space right={7} />
-              <BrandTitle>Groupher</BrandTitle>
+              <BrandTitle>{curCommunity.title}</BrandTitle>
             </Brand>
             <Divider top={15} />
           </Block>
@@ -92,7 +71,7 @@ const LogoLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         <Layout onClick={() => edit(BRAND_LAYOUT.TEXT, 'brandLayout')}>
           <Block $active={layout === BRAND_LAYOUT.TEXT} $color={primaryColor}>
             <Brand>
-              <BrandTitle>Groupher</BrandTitle>
+              <BrandTitle>{curCommunity.title}</BrandTitle>
             </Brand>
             <Divider top={15} />
           </Block>
@@ -105,10 +84,10 @@ const LogoLayout: FC<TProps> = ({ layout, isTouched, saving }) => {
         isTouched={isTouched}
         field={SETTING_FIELD.BRAND_LAYOUT}
         loading={saving}
-        top={20}
+        top={36}
       />
     </Wrapper>
   )
 }
 
-export default observer(LogoLayout)
+export default observer(BrandLayout)

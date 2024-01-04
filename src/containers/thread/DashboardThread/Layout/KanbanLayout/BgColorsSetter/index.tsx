@@ -1,4 +1,5 @@
-import { FC, memo, useState } from 'react'
+import { FC, useState } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { isEmpty } from 'ramda'
 
@@ -17,7 +18,7 @@ import SavingBar from '../../../SavingBar'
 import ClassicLayout from './ClassicLayout'
 import WaterfallLayout from './WaterfallLayout'
 
-import type { TProps as TPropsBase } from '..'
+import useKanbanInfo from '../../../hooks/useKanbanInfo'
 
 import {
   ColorsWrapper,
@@ -29,9 +30,8 @@ import {
 } from '../../../styles/layout/kanban_layout/bg_colors_setter'
 import { edit } from '../../../logic'
 
-type TProps = Pick<TPropsBase, 'layout' | 'kanbanBgColors' | 'isBgColorsTouched' | 'saving'>
-
-const BoardLayout: FC<TProps> = ({ layout, kanbanBgColors, isBgColorsTouched, saving }) => {
+const BoardLayout: FC = () => {
+  const { layout, kanbanBgColors, isBgColorsTouched, saving } = useKanbanInfo()
   const [diceRotate, setDiceRotate] = useState(0)
 
   const [board1Ref, isBoard1Hovered] = useHover<HTMLDivElement>()
@@ -98,14 +98,12 @@ const BoardLayout: FC<TProps> = ({ layout, kanbanBgColors, isBgColorsTouched, sa
 
       {layout === KANBAN_LAYOUT.CLASSIC ? (
         <ClassicLayout
-          kanbanBgColors={kanbanBgColors}
           isBoard1Hovered={isBoard1Hovered}
           isBoard2Hovered={isBoard2Hovered}
           isBoard3Hovered={isBoard3Hovered}
         />
       ) : (
         <WaterfallLayout
-          kanbanBgColors={kanbanBgColors}
           isBoard1Hovered={isBoard1Hovered}
           isBoard2Hovered={isBoard2Hovered}
           isBoard3Hovered={isBoard3Hovered}
@@ -123,4 +121,4 @@ const BoardLayout: FC<TProps> = ({ layout, kanbanBgColors, isBgColorsTouched, sa
   )
 }
 
-export default memo(BoardLayout)
+export default observer(BoardLayout)

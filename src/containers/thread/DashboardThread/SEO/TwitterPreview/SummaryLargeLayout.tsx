@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import type { TSEOSettings } from '../../spec'
+import useSEOInfo from '../../hooks/useSEOInfo'
 import {
   Wrapper,
   CoverWrapper,
@@ -12,13 +12,11 @@ import {
   Desc,
 } from '../../styles/seo/twitter_preview/summary_large_layout'
 
-type TProps = {
-  settings: TSEOSettings
-}
+// example: https://www.sketch.com/blog/design-portfolio-mindsets/?utm_source=stephaniewalter.design&utm_medium=weeklylinks
+// twitter:card = summary_large_image
+const SummaryLargePreview: FC = () => {
+  const { twUrl, twTitle, twDescription } = useSEOInfo()
 
-const SummaryLargePreview: FC<TProps> = ({ settings }) => {
-  // example: https://www.sketch.com/blog/design-portfolio-mindsets/?utm_source=stephaniewalter.design&utm_medium=weeklylinks
-  // twitter:card = summary_large_image
   return (
     <Wrapper>
       <Hint>预览</Hint>
@@ -26,9 +24,9 @@ const SummaryLargePreview: FC<TProps> = ({ settings }) => {
         <ImageIcon />
       </CoverWrapper>
       <Content>
-        <URL>{settings.twUrl || '--'}</URL>
-        <Title>{settings.twTitle || '--'}</Title>
-        <Desc>{settings.twDescription || '--'}</Desc>
+        <URL>{twUrl || '--'}</URL>
+        <Title>{twTitle || '--'}</Title>
+        <Desc>{twDescription || '--'}</Desc>
       </Content>
     </Wrapper>
   )
