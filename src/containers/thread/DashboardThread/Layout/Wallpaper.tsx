@@ -46,7 +46,6 @@ const Wallpaper: FC = () => {
       <Section>
         <SectionLabel
           title="壁纸设置"
-          withThemeSelect
           desc={
             <>
               「壁纸」为宽屏（屏幕尺寸大于 {WIDTH.COMMUNITY.PAGE}

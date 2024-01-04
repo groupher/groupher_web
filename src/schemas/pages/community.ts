@@ -98,6 +98,7 @@ export const community = `
           glowFixed
           glowOpacity
           gossBlur
+          gossBlurDark
         } 
 
         rss {

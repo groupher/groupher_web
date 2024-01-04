@@ -45,7 +45,6 @@ const GlowLight: FC = () => {
       <SectionLabel
         title="页面辉光"
         desc="设置后每个页面的展示光晕（阅览页面除外），可配合壁纸风格搭配。"
-        withThemeSelect
         width="96%"
       />
 
