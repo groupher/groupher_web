@@ -6,27 +6,19 @@ import type { TEnableConfig, TDashboardPath } from '@/spec'
 
 import type {
   TOverview,
-  TBaseInfoSettings,
-  TSEOSettings,
-  TRSSSettings,
   THeaderSettings,
   TFooterSettings,
   TTouched,
-  TBroadcastSettings,
   TCMSContents,
 } from '@/containers/thread/DashboardThread/spec'
 
 type TRes = {
   curTab: TDashboardPath
   overviewData: TOverview
-  baseInfoSettings: TBaseInfoSettings
-  seoSettings: TSEOSettings
   enableSettings: TEnableConfig
-  rssSettings: TRSSSettings
 
   headerSettings: THeaderSettings
   footerSettings: TFooterSettings
-  broadcastSettings: TBroadcastSettings
   touched: TTouched
   cmsContents: TCMSContents
 }
@@ -45,14 +37,10 @@ const useDashboardSettings = (): TRes => {
     [
       'curTab',
       'overviewData',
-      'baseInfoSettings',
-      'seoSettings',
       'enableSettings',
-      'rssSettings',
       'headerSettings',
       'footerSettings',
       // docSettings,
-      'broadcastSettings',
       'touched',
       'cmsContents',
     ],

@@ -1,25 +1,17 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { DASHBOARD_BROADCAST_ROUTE } from '@/constant/route'
 
 import GlobalEditor from './Global'
 import ArticleEditor from './Article'
 
-import type { TBroadcastSettings, TTouched } from '../../spec'
+import useBroadcastInfo from '../../hooks/useBroadcastInfo'
 
-type TProps = {
-  settings: TBroadcastSettings
-  touched: TTouched
+const Editor: FC = () => {
+  const { broadcastTab } = useBroadcastInfo()
+
+  return broadcastTab === DASHBOARD_BROADCAST_ROUTE.GLOBAL ? <GlobalEditor /> : <ArticleEditor />
 }
 
-const Editor: FC<TProps> = ({ settings, touched }) => {
-  const { broadcastTab } = settings
-
-  return broadcastTab === DASHBOARD_BROADCAST_ROUTE.GLOBAL ? (
-    <GlobalEditor settings={settings} touched={touched} />
-  ) : (
-    <ArticleEditor settings={settings} touched={touched} />
-  )
-}
-
-export default Editor
+export default observer(Editor)

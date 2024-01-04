@@ -1,19 +1,17 @@
 import { FC } from 'react'
 
-import type { TSEOSettings } from '../spec'
+import useSEOInfo from '../hooks/useSEOInfo'
 import { Wrapper, URL, Title, Desc, Hint } from '../styles/seo/search_engine_preview'
 
-type TProps = {
-  settings: TSEOSettings
-}
+const SearchEnginePreview: FC = () => {
+  const { ogSiteName, ogDescription, ogUrl } = useSEOInfo()
 
-const SearchEnginePreview: FC<TProps> = ({ settings }) => {
   return (
     <Wrapper>
       <Hint>预览</Hint>
-      <URL>{settings.ogUrl || '--'}</URL>
-      <Title>{settings.ogSiteName || '--'} </Title>
-      <Desc>{settings.ogDescription || '--'} </Desc>
+      <URL>{ogUrl || '--'}</URL>
+      <Title>{ogSiteName || '--'} </Title>
+      <Desc>{ogDescription || '--'} </Desc>
     </Wrapper>
   )
 }

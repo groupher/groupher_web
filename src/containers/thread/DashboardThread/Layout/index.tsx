@@ -13,7 +13,7 @@ import { LAYOUT_TABS } from '../constant'
 import Portal from '../Portal'
 import AvatarLayout from './AvatarLayout'
 import TagLayout from './TagLayout'
-// import BrandLayout from './BrandLayout'
+import BrandLayout from './BrandLayout'
 import BannerLayout from './BannerLayout'
 import DocLayout from './DocLayout'
 import ChangelogLayout from './ChangelogLayout'
@@ -62,6 +62,8 @@ const UI: FC = () => {
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.GLOBAL && (
         <>
           <PrimaryColor />
+          <Divider top={20} bottom={60} />
+          <BrandLayout />
           <Divider top={20} bottom={60} />
           <BannerLayout />
           <Divider top={20} bottom={60} />

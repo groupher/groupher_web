@@ -6,17 +6,12 @@ import RangeSlider from '@/widgets/RangeSlider'
 import Portal from '../Portal'
 import SavingBar from '../SavingBar'
 
-import type { TRSSSettings, TTouched } from '../spec'
+import useRSSInfo from '../hooks/useRSSInfo'
 import { Wrapper, InnerWrapper, SettingsRow, NumRow, SettingTitle } from '../styles/rss'
 import { edit, rssOnSave, rssOnCancel } from '../logic'
 
-type TProps = {
-  settings: TRSSSettings
-  touched: TTouched
-}
-
-const RSS: FC<TProps> = ({ settings, touched }) => {
-  const { feedType, feedCount, saving } = settings
+const RSS: FC = () => {
+  const { rssFeedType, rssFeedCount, saving, isTouched } = useRSSInfo()
 
   return (
     <Wrapper>
@@ -36,7 +31,7 @@ const RSS: FC<TProps> = ({ settings, touched }) => {
                 key: 'digest',
               },
             ]}
-            activeKey={feedType}
+            activeKey={rssFeedType}
             onChange={(item) => edit(item.key, 'rssFeedType')}
           />
         </SettingsRow>
@@ -46,7 +41,7 @@ const RSS: FC<TProps> = ({ settings, touched }) => {
           <RangeSlider
             width="160px"
             bottom={5}
-            value={feedCount}
+            value={rssFeedCount}
             min={5}
             max={50}
             onChange={(v) => edit(v, 'rssFeedCount')}
@@ -55,7 +50,7 @@ const RSS: FC<TProps> = ({ settings, touched }) => {
         </NumRow>
 
         <SavingBar
-          isTouched={touched.rssFeed}
+          isTouched={isTouched}
           onCancel={() => rssOnCancel()}
           onConfirm={() => rssOnSave()}
           loading={saving}

@@ -3,6 +3,8 @@ import { MobXProviderContext } from 'mobx-react'
 
 import type { TChangelogLayout } from '@/spec'
 
+import useHelper from './useHelper'
+
 type TRet = {
   layout: TChangelogLayout
   isTouched: boolean
@@ -14,17 +16,18 @@ type TRet = {
  */
 const useChangelogInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
+  const { isChanged } = useHelper()
 
   if (store === null) {
     throw new Error('Store cannot be null, please add a context provider')
   }
 
-  const { changelogLayout, saving, touched } = store.dashboardThread
+  const { changelogLayout, saving } = store.dashboardThread
 
   return {
     layout: changelogLayout,
     saving,
-    isTouched: touched.changelogLayout,
+    isTouched: isChanged('changelogLayout'),
   }
 }
 

@@ -3,6 +3,8 @@ import { MobXProviderContext } from 'mobx-react'
 
 import type { TBannerLayout } from '@/spec'
 
+import useHelper from './useHelper'
+
 type TRet = {
   layout: TBannerLayout
   isTouched: boolean
@@ -14,17 +16,18 @@ type TRet = {
  */
 const useBannerInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
+  const { isChanged } = useHelper()
 
   if (store === null) {
     throw new Error('Store cannot be null, please add a context provider')
   }
 
-  const { bannerLayout, saving, touched } = store.dashboardThread
+  const { bannerLayout, saving } = store.dashboardThread
 
   return {
     layout: bannerLayout,
     saving,
-    isTouched: touched.bannerLayout,
+    isTouched: isChanged('bannerLayout'),
   }
 }
 

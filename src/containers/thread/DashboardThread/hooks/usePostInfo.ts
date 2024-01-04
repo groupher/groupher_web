@@ -3,6 +3,8 @@ import { MobXProviderContext } from 'mobx-react'
 
 import type { TPostLayout } from '@/spec'
 
+import useHelper from './useHelper'
+
 type TRet = {
   layout: TPostLayout
   isTouched: boolean
@@ -14,17 +16,18 @@ type TRet = {
  */
 const usePostInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
+  const { isChanged } = useHelper()
 
   if (store === null) {
     throw new Error('Store cannot be null, please add a context provider')
   }
 
-  const { postLayout, saving, touched } = store.dashboardThread
+  const { postLayout, saving } = store.dashboardThread
 
   return {
     layout: postLayout,
     saving,
-    isTouched: touched.postLayout,
+    isTouched: isChanged('postLayout'),
   }
 }
 

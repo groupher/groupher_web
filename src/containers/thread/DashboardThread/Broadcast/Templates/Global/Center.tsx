@@ -1,10 +1,10 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { BROADCAST_LAYOUT } from '@/constant/layout'
 import { Space, SpaceGrow } from '@/widgets/Common'
 
-import type { TBroadcastSettings } from '../../../spec'
-
+import useBroadcastInfo from '../../../hooks/useBroadcastInfo'
 import {
   Wrapper,
   Row,
@@ -18,12 +18,11 @@ import {
 import { edit } from '../../../logic'
 
 type TProps = {
-  settings: TBroadcastSettings
   onSelect?: () => void
 }
 
-const Center: FC<TProps> = ({ settings, onSelect = null }) => {
-  const { broadcastLayout, broadcastBg } = settings
+const Center: FC<TProps> = ({ onSelect = null }) => {
+  const { broadcastLayout, broadcastBg } = useBroadcastInfo()
   const $active = broadcastLayout === BROADCAST_LAYOUT.CENTER
 
   return (
@@ -53,4 +52,4 @@ const Center: FC<TProps> = ({ settings, onSelect = null }) => {
   )
 }
 
-export default Center
+export default observer(Center)

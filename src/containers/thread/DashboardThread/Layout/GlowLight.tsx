@@ -5,8 +5,7 @@ import { GLOW_OPACITY, GLOW_EFFECTS_KEYS } from '@/constant/glow_effect'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import useTheme from '@/hooks/useTheme'
 
-import { Br, Row as RowBase } from '@/widgets/Common'
-import ArrowLinker from '@/widgets/ArrowLinker'
+import { Br } from '@/widgets/Common'
 import Radio from '@/widgets/Switcher/Radio'
 
 import SectionLabel from '../SectionLabel'
@@ -45,16 +44,9 @@ const GlowLight: FC = () => {
     <Wrapper>
       <SectionLabel
         title="页面辉光"
-        desc={
-          <RowBase>
-            设置后每个页面的展示光晕（阅览页面除外），可配合壁纸风格搭配。
-            <ArrowLinker href="/" fontSize={13}>
-              了解更多
-            </ArrowLinker>
-          </RowBase>
-        }
+        desc="设置后每个页面的展示光晕（阅览页面除外），可配合壁纸风格搭配。"
         withThemeSelect
-        width="84%"
+        width="96%"
       />
 
       <Row>

@@ -551,15 +551,15 @@ export const BASEINFO_KEYS = [...BASEINFO_BASIC_KEYS, ...BASEINFO_OTHER_KEYS]
 //   'gossBlurDark',
 // ]
 
-export const BROADCAST_KEYS = [
-  'broadcastTab',
-  'broadcastLayout',
-  'broadcastBg',
-  'broadcastEnable',
-  'broadcastArticleLayout',
-  'broadcastArticleBg',
-  'broadcastArticleEnable',
-]
+// export const BROADCAST_KEYS = [
+//   'broadcastTab',
+//   'broadcastLayout',
+//   'broadcastBg',
+//   'broadcastEnable',
+//   'broadcastArticleLayout',
+//   'broadcastArticleBg',
+//   'broadcastArticleEnable',
+// ]
 
 export const DEFAULT_NEW_FAQ = {
   title: '',

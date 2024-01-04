@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { Br } from '@/widgets/Common'
 import ColorSelector from '@/widgets/ColorSelector'
@@ -8,7 +9,7 @@ import SectionLabel from '../../SectionLabel'
 import ArticleTemplate from '../Templates/Article'
 import SavingBar from '../../SavingBar'
 
-import type { TBroadcastSettings, TTouched } from '../../spec'
+import useBroadcastInfo from '../../hooks/useBroadcastInfo'
 import {
   Wrapper,
   Item,
@@ -18,16 +19,11 @@ import {
   Inputer,
   EnableDesc,
 } from '../../styles/broadcast/editor/article'
-
 import { edit, broadcastOnSave, broadcastOnCancel } from '../../logic'
 
-type TProps = {
-  settings: TBroadcastSettings
-  touched: TTouched
-}
-
-const ArticleEditor: FC<TProps> = ({ settings, touched }) => {
-  const { saving, broadcastArticleBg, broadcastArticleEnable } = settings
+const ArticleEditor: FC = () => {
+  const { saving, broadcastArticleBg, broadcastArticleEnable, isArticleTouched } =
+    useBroadcastInfo()
 
   return (
     <Wrapper>
@@ -42,7 +38,7 @@ const ArticleEditor: FC<TProps> = ({ settings, touched }) => {
         }
       />
       <Br bottom={10} />
-      <ArticleTemplate settings={settings} />
+      <ArticleTemplate />
       <Br bottom={50} />
       <Item>
         <Label>背景色：</Label>
@@ -69,7 +65,7 @@ const ArticleEditor: FC<TProps> = ({ settings, touched }) => {
       </Item>
 
       <SavingBar
-        isTouched={touched.broadcastArticle}
+        isTouched={isArticleTouched}
         onCancel={() => broadcastOnCancel(true)}
         onConfirm={() => broadcastOnSave(true)}
         loading={saving}
@@ -79,4 +75,4 @@ const ArticleEditor: FC<TProps> = ({ settings, touched }) => {
   )
 }
 
-export default ArticleEditor
+export default observer(ArticleEditor)

@@ -1,10 +1,11 @@
-import styled, { css, theme, rainbow, rainbowLink } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 
 import type { TActive, TColor, TColorName } from '@/spec'
 
 export const Wrapper = styled.div`
   ${css.column()};
   padding-left: 56px;
+  width: 700px;
 
   ${css.media.mobile`
     padding: 20px;

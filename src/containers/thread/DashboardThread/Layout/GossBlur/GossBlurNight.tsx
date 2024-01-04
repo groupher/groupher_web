@@ -51,7 +51,7 @@ const GossBlurNight: FC = () => {
           title="毛玻璃效果 (dark)"
           desc="主要页面的高斯模糊值，类似主流音乐播放器效果"
           withThemeSelect
-          width="84%"
+          width="96%"
         />
 
         <ContentWrapper>

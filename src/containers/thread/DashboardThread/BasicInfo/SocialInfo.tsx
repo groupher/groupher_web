@@ -1,22 +1,17 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import SocialEditor from '@/widgets/SocialEditor'
 
 import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'
 
-import type { TBaseInfoSettings, TTouched } from '../spec'
-
+import useBaseInfo from '../hooks/useBaseInfo'
 import { Wrapper } from '../styles/basic_info/base_info'
 import { updateSocialLinks } from '../logic'
 
-type TProps = {
-  settings: TBaseInfoSettings
-  touched: TTouched
-}
-
-const SocialInfo: FC<TProps> = ({ settings, touched }) => {
-  const { socialLinks, saving } = settings
+const SocialInfo: FC = () => {
+  const { socialLinks, saving, isSocialLinksTouched } = useBaseInfo()
 
   return (
     <Wrapper>
@@ -27,7 +22,7 @@ const SocialInfo: FC<TProps> = ({ settings, touched }) => {
       />
 
       <SavingBar
-        isTouched={touched.socialLinks}
+        isTouched={isSocialLinksTouched}
         field={SETTING_FIELD.SOCIAL_LINKS}
         loading={saving}
         top={50}
@@ -36,4 +31,4 @@ const SocialInfo: FC<TProps> = ({ settings, touched }) => {
   )
 }
 
-export default memo(SocialInfo)
+export default observer(SocialInfo)

@@ -53,7 +53,7 @@ const Wallpaper: FC = () => {
               ）下，超出内容部分显示的背景图片，除内置壁纸外，你还可以上传和社区话题相关的自定义图片。
             </>
           }
-          width="84%"
+          width="96%"
         />
 
         <PreviewWrapper>

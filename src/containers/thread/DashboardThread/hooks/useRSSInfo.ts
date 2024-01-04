@@ -1,22 +1,19 @@
 import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 
-import type { TTopbarLayout, TColorName } from '@/spec'
-
 import useHelper from './useHelper'
 
 type TRet = {
-  layout: TTopbarLayout
-  isLayoutTouched: boolean
-  isBgTouched: boolean
+  rssFeedType: string
+  rssFeedCount: number
   saving: boolean
-  bg: TColorName
+  isTouched: boolean
 }
 
 /**
  * NOTE: should use observer to wrap the component who use this hook
  */
-const useTopbarInfo = (): TRet => {
+const useRSSInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
   const { isChanged } = useHelper()
 
@@ -24,15 +21,14 @@ const useTopbarInfo = (): TRet => {
     throw new Error('Store cannot be null, please add a context provider')
   }
 
-  const { topbarLayout, topbarBg, saving } = store.dashboardThread
+  const { rssFeedType, rssFeedCount, saving } = store.dashboardThread
 
   return {
-    layout: topbarLayout,
-    isLayoutTouched: isChanged('topbarLayout'),
-    isBgTouched: isChanged('topbarBg'),
-    bg: topbarBg,
+    rssFeedType,
+    rssFeedCount,
     saving,
+    isTouched: isChanged('rssFeedType') || isChanged('rssFeedCount'),
   }
 }
 
-export default useTopbarInfo
+export default useRSSInfo

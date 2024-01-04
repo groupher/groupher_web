@@ -1,6 +1,8 @@
 import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 
+import useHelper from './useHelper'
+
 type TRet = {
   glowType: string
   glowFixed: boolean
@@ -16,21 +18,22 @@ type TRet = {
  */
 const useGlowLightInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
+  const { isChanged } = useHelper()
 
   if (store === null) {
     throw new Error('Store cannot be null, please add a context provider')
   }
 
-  const { glowType, glowFixed, glowOpacity, saving, touched } = store.dashboardThread
+  const { glowType, glowFixed, glowOpacity, saving } = store.dashboardThread
 
   return {
     glowType,
     glowFixed,
     glowOpacity,
     saving,
-    isTouched: touched.glowType,
-    isGrowFixedTouched: touched.glowFixed,
-    isGrowOpacityTouched: touched.glowOpacity,
+    isTouched: isChanged('glowType'),
+    isGrowFixedTouched: isChanged('glowFixed'),
+    isGrowOpacityTouched: isChanged('glowOpacity'),
   }
 }
 

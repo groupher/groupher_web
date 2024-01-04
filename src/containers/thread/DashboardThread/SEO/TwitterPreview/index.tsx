@@ -1,21 +1,16 @@
 import { FC } from 'react'
 
-import type { TSEOSettings } from '../../spec'
 import { TW_CARD } from '../../constant'
+
+import useSEOInfo from '../../hooks/useSEOInfo'
 
 import SummaryLargeLayout from './SummaryLargeLayout'
 import SummaryLayout from './SummaryLayout'
 
-type TProps = {
-  settings: TSEOSettings
-}
+const TwitterPreview: FC = () => {
+  const { twCard } = useSEOInfo()
 
-const TwitterPreview: FC<TProps> = ({ settings }) => {
-  return settings.twCard === TW_CARD.SUMMARY_LARGE_IMAGE ? (
-    <SummaryLargeLayout settings={settings} />
-  ) : (
-    <SummaryLayout settings={settings} />
-  )
+  return twCard === TW_CARD.SUMMARY_LARGE_IMAGE ? <SummaryLargeLayout /> : <SummaryLayout />
 }
 
 export default TwitterPreview

@@ -7,6 +7,8 @@ import { publicThreads } from '@/helper'
 
 import type { TLinkState } from '../spec'
 
+import useHelper from './useHelper'
+
 type TRet = {
   headerLayout: THeaderLayout
   headerLinks: TLinkItem[]
@@ -20,6 +22,7 @@ type TRet = {
  */
 const useHeaderSettingsInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
+  const { isChanged } = useHelper()
 
   if (store === null) {
     throw new Error('Store cannot be null, please add a context provider')
@@ -35,7 +38,6 @@ const useHeaderSettingsInfo = (): TRet => {
     enable,
     aliasSettings,
     saving,
-    touched,
   } = store.dashboardThread
 
   return {
@@ -52,8 +54,8 @@ const useHeaderSettingsInfo = (): TRet => {
     }),
 
     saving,
-    isTouched: touched.headerLinks,
-    isLayoutTouched: touched.headerLayout,
+    isTouched: isChanged('headerLinks') && editingLink === null,
+    isLayoutTouched: isChanged('headerLayout'),
   }
 }
 

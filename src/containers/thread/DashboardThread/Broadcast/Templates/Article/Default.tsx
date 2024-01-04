@@ -1,19 +1,19 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { BROADCAST_ARTICLE_LAYOUT } from '@/constant/layout'
 import ArticleBroadcast from '@/widgets/ArticleBroadcast'
 
-import type { TBroadcastSettings } from '../../../spec'
+import useBroadcastInfo from '../../../hooks/useBroadcastInfo'
 import { Wrapper, Shrink } from '../../../styles/broadcast/templates/article/default'
 import { edit } from '../../../logic'
 
 type TProps = {
-  settings: TBroadcastSettings
   onSelect?: () => void
 }
 
-const Default: FC<TProps> = ({ settings, onSelect = null }) => {
-  const { broadcastArticleLayout, broadcastArticleBg } = settings
+const Default: FC<TProps> = ({ onSelect = null }) => {
+  const { broadcastArticleLayout, broadcastArticleBg } = useBroadcastInfo()
   const $active = broadcastArticleLayout === BROADCAST_ARTICLE_LAYOUT.DEFAULT
 
   return (
@@ -31,4 +31,4 @@ const Default: FC<TProps> = ({ settings, onSelect = null }) => {
   )
 }
 
-export default Default
+export default observer(Default)

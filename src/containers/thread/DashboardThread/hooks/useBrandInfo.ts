@@ -1,22 +1,20 @@
 import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 
-import type { TTopbarLayout, TColorName } from '@/spec'
+import type { TBrandLayout } from '@/spec'
 
 import useHelper from './useHelper'
 
 type TRet = {
-  layout: TTopbarLayout
-  isLayoutTouched: boolean
-  isBgTouched: boolean
+  layout: TBrandLayout
+  isTouched: boolean
   saving: boolean
-  bg: TColorName
 }
 
 /**
  * NOTE: should use observer to wrap the component who use this hook
  */
-const useTopbarInfo = (): TRet => {
+const useBrandInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
   const { isChanged } = useHelper()
 
@@ -24,15 +22,13 @@ const useTopbarInfo = (): TRet => {
     throw new Error('Store cannot be null, please add a context provider')
   }
 
-  const { topbarLayout, topbarBg, saving } = store.dashboardThread
+  const { brandLayout, saving } = store.dashboardThread
 
   return {
-    layout: topbarLayout,
-    isLayoutTouched: isChanged('topbarLayout'),
-    isBgTouched: isChanged('topbarBg'),
-    bg: topbarBg,
+    layout: brandLayout,
+    isTouched: isChanged('brandLayout'),
     saving,
   }
 }
 
-export default useTopbarInfo
+export default useBrandInfo

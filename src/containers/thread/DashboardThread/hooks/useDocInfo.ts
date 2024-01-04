@@ -3,6 +3,8 @@ import { MobXProviderContext } from 'mobx-react'
 
 import type { TDocLayout, TDocFAQLayout } from '@/spec'
 
+import useHelper from './useHelper'
+
 type TRet = {
   layout: TDocLayout
   faqLayout: TDocFAQLayout
@@ -16,19 +18,20 @@ type TRet = {
  */
 const useDocInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
+  const { isChanged } = useHelper()
 
   if (store === null) {
     throw new Error('Store cannot be null, please add a context provider')
   }
 
-  const { docLayout, docFaqLayout, saving, touched } = store.dashboardThread
+  const { docLayout, docFaqLayout, saving } = store.dashboardThread
 
   return {
     layout: docLayout,
     faqLayout: docFaqLayout,
     saving,
-    isTouched: touched.docLayout,
-    isFaqTouched: touched.docFaqLayout,
+    isTouched: isChanged('docLayout'),
+    isFaqTouched: isChanged('docFaqLayout'),
   }
 }
 

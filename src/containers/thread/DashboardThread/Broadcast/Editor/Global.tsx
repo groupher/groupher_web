@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import ColorSelector from '@/widgets/ColorSelector'
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
@@ -7,7 +8,7 @@ import SectionLabel from '../../SectionLabel'
 import GlobalTemplate from '../Templates/Global'
 import SavingBar from '../../SavingBar'
 
-import type { TBroadcastSettings, TTouched } from '../../spec'
+import useBroadcastInfo from '../../hooks/useBroadcastInfo'
 import {
   Wrapper,
   Item,
@@ -19,13 +20,8 @@ import {
 } from '../../styles/broadcast/editor/global'
 import { edit, broadcastOnSave, broadcastOnCancel } from '../../logic'
 
-type TProps = {
-  settings: TBroadcastSettings
-  touched: TTouched
-}
-
-const GlobalEditor: FC<TProps> = ({ settings, touched }) => {
-  const { saving, broadcastBg, broadcastEnable } = settings
+const GlobalEditor: FC = () => {
+  const { saving, broadcastBg, broadcastEnable, isTouched } = useBroadcastInfo()
 
   return (
     <Wrapper>
@@ -38,7 +34,7 @@ const GlobalEditor: FC<TProps> = ({ settings, touched }) => {
       />
       <br />
 
-      <GlobalTemplate settings={settings} />
+      <GlobalTemplate />
       <br />
 
       <Item>
@@ -66,7 +62,7 @@ const GlobalEditor: FC<TProps> = ({ settings, touched }) => {
       </Item>
 
       <SavingBar
-        isTouched={touched.broadcast}
+        isTouched={isTouched}
         onCancel={broadcastOnCancel}
         onConfirm={broadcastOnSave}
         loading={saving}
@@ -76,4 +72,4 @@ const GlobalEditor: FC<TProps> = ({ settings, touched }) => {
   )
 }
 
-export default GlobalEditor
+export default observer(GlobalEditor)

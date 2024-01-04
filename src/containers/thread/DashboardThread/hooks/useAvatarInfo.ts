@@ -3,6 +3,8 @@ import { MobXProviderContext } from 'mobx-react'
 
 import type { TAvatarLayout } from '@/spec'
 
+import useHelper from './useHelper'
+
 type TRet = {
   layout: TAvatarLayout
   isTouched: boolean
@@ -14,17 +16,18 @@ type TRet = {
  */
 const useAvatarInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
+  const { isChanged } = useHelper()
 
   if (store === null) {
     throw new Error('Store cannot be null, please add a context provider')
   }
 
-  const { avatarLayout, saving, touched } = store.dashboardThread
+  const { avatarLayout, saving } = store.dashboardThread
 
   return {
     layout: avatarLayout,
     saving,
-    isTouched: touched.avatarLayout,
+    isTouched: isChanged('avatarLayout'),
   }
 }
 

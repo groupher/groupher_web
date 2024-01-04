@@ -4,6 +4,8 @@ import { MobXProviderContext } from 'mobx-react'
 import type { TKanbanLayout, TKanbanCardLayout, TColorName } from '@/spec'
 import { toJS } from '@/mobx'
 
+import useHelper from './useHelper'
+
 type TRet = {
   layout: TKanbanLayout
   cardLayout: TKanbanCardLayout
@@ -19,19 +21,20 @@ type TRet = {
  */
 const useKanbanInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
+  const { isChanged } = useHelper()
 
   if (store === null) {
     throw new Error('Store cannot be null, please add a context provider')
   }
 
-  const { kanbanLayout, kanbanCardLayout, kanbanBgColors, saving, touched } = store.dashboardThread
+  const { kanbanLayout, kanbanCardLayout, kanbanBgColors, saving } = store.dashboardThread
 
   return {
     layout: kanbanLayout,
     cardLayout: kanbanCardLayout,
-    isTouched: touched.kanbanLayout,
-    isCardTouched: touched.kanbanCardLayout,
-    isBgColorsTouched: touched.kanbanBgColors,
+    isTouched: isChanged('kanbanLayout'),
+    isCardTouched: isChanged('kanbanCardLayout'),
+    isBgColorsTouched: isChanged('kanbanBgColors'),
     kanbanBgColors: toJS(kanbanBgColors),
     saving,
   }

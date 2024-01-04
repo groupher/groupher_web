@@ -3,6 +3,8 @@ import { MobXProviderContext } from 'mobx-react'
 
 import type { TTagLayout } from '@/spec'
 
+import useHelper from './useHelper'
+
 type TRet = {
   layout: TTagLayout
   isTouched: boolean
@@ -14,17 +16,18 @@ type TRet = {
  */
 const useTagInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
+  const { isChanged } = useHelper()
 
   if (store === null) {
     throw new Error('Store cannot be null, please add a context provider')
   }
 
-  const { tagLayout, saving, touched } = store.dashboardThread
+  const { tagLayout, saving } = store.dashboardThread
 
   return {
     layout: tagLayout,
     saving,
-    isTouched: touched.tagLayout,
+    isTouched: isChanged('tagLayout'),
   }
 }
 

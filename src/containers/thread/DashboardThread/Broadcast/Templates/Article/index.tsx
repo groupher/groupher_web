@@ -1,12 +1,12 @@
 import { FC, useState } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { BROADCAST_ARTICLE_LAYOUT } from '@/constant/layout'
-
-import type { TBroadcastSettings } from '../../../spec'
 
 import Simple from './Simple'
 import Default from './Default'
 
+import useBroadcastInfo from '../../../hooks/useBroadcastInfo'
 import {
   Wrapper,
   ArrowIcon,
@@ -14,29 +14,21 @@ import {
   ToggleText,
 } from '../../../styles/broadcast/templates/article'
 
-type TProps = {
-  settings: TBroadcastSettings
-}
-
-const Templates: FC<TProps> = ({ settings }) => {
+const Templates: FC = () => {
   const [showAll, setShowAll] = useState<boolean>(false)
-  const { broadcastArticleLayout } = settings
+  const { broadcastArticleLayout } = useBroadcastInfo()
 
   return (
     <Wrapper>
       {showAll ? (
         <>
-          <Default settings={settings} onSelect={() => setShowAll(false)} />
-          <Simple settings={settings} onSelect={() => setShowAll(false)} />
+          <Default onSelect={() => setShowAll(false)} />
+          <Simple onSelect={() => setShowAll(false)} />
         </>
       ) : (
         <>
-          {broadcastArticleLayout === BROADCAST_ARTICLE_LAYOUT.DEFAULT && (
-            <Default settings={settings} />
-          )}
-          {broadcastArticleLayout === BROADCAST_ARTICLE_LAYOUT.SIMPLE && (
-            <Simple settings={settings} />
-          )}
+          {broadcastArticleLayout === BROADCAST_ARTICLE_LAYOUT.DEFAULT && <Default />}
+          {broadcastArticleLayout === BROADCAST_ARTICLE_LAYOUT.SIMPLE && <Simple />}
         </>
       )}
       <ToggleButton size="small" ghost noBorder onClick={() => setShowAll(!showAll)}>
@@ -50,4 +42,4 @@ const Templates: FC<TProps> = ({ settings }) => {
   )
 }
 
-export default Templates
+export default observer(Templates)

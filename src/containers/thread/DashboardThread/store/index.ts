@@ -14,10 +14,8 @@ import {
   pluck,
   update,
   uniq,
-  filter,
   reject,
   mapObjIndexed,
-  any,
   forEach,
 } from 'ramda'
 
@@ -63,18 +61,15 @@ import {
 import type {
   TOverview,
   TBaseInfoSettings,
-  TSEOSettings,
-  TRSSSettings,
   THeaderSettings,
   TFooterSettings,
   TDocSettings,
   TTouched,
   TSettingField,
-  TBroadcastSettings,
   TCurPageLinksKey,
 } from '../spec'
 
-import { SETTING_FIELD, BASEINFO_KEYS, SEO_KEYS, BROADCAST_KEYS } from '../constant'
+import { SETTING_FIELD, BASEINFO_KEYS, SEO_KEYS } from '../constant'
 
 import { NameAlias, LinkItem, InitSettings, settingsModalFields, Overview } from './Models'
 
@@ -151,142 +146,33 @@ const DashboardThread = T.model('DashboardThread', {
         JSON.stringify(sortByIndex(toJS(initSettings.tags), 'id'))
       )
     },
-    get _socialLinksTouched(): boolean {
-      const { socialLinks, initSettings } = self
-
-      return JSON.stringify(toJS(socialLinks)) !== JSON.stringify(toJS(initSettings.socialLinks))
-    },
-    get _mediaReportsTouched(): boolean {
-      const { mediaReports, initSettings } = self
-      const curValues = reject((item: TMediaReport) => !item.editUrl, toJS(mediaReports))
-      const initValues = reject(
-        (item: TMediaReport) => !item.editUrl,
-        toJS(initSettings.mediaReports),
-      )
-
-      const curValueTitles = filter((item: TMediaReport) => !isEmpty(item?.title), curValues)
-      const isCurAllvalid =
-        curValueTitles.length !== 0 && curValueTitles.length === curValues.length
-
-      return isCurAllvalid && JSON.stringify(curValues) !== JSON.stringify(initValues)
-    },
     get touched(): TTouched {
       const slf = self as TStore
 
-      const {
-        initSettings: init,
-        _tagsIndexTouched,
-        _socialLinksTouched,
-        _mediaReportsTouched,
-        editingLink,
-      } = slf
+      const { initSettings: init, _tagsIndexTouched, editingLink } = slf
 
       const _isChanged = (field: TSettingField): boolean =>
         !equals(toJS(slf[field]), toJS(init[field]))
-      const _anyChanged = (fields: TSettingField[]): boolean => any(_isChanged)(fields)
       const _mapArrayChanged = (key: string): boolean => {
         return JSON.stringify(toJS(self[key])) !== JSON.stringify(toJS(self.initSettings[key]))
       }
 
-      const primaryColorTouched = _isChanged('primaryColor')
-      const brandLayoutTouched = _isChanged('brandLayout')
-      const avatarTouched = _isChanged('avatarLayout')
-      const tagTouched = _isChanged('tagLayout')
-
-      const bannerLayoutTouched = _isChanged('bannerLayout')
-      const postLayoutTouched = _isChanged('postLayout')
-      const kanbanLayoutTouched = _isChanged('kanbanLayout')
-      const kanbanCardLayoutTouched = _isChanged('kanbanCardLayout')
-      const kanbanBgColorsTouched = _isChanged('kanbanBgColors')
-      const docLayoutTouched = _isChanged('docLayout')
-      const docFaqLayoutTouched = _isChanged('docFaqLayout')
-
-      const headerLinksChanged = _isChanged('headerLinks') && editingLink === null
       const footerLinksChanged = _isChanged('footerLinks') && editingLink === null
-
-      const broadcastLayoutTouched = _isChanged('broadcastLayout')
-      const broadcastBgTouched = _isChanged('broadcastBg')
-
-      const broadcastArticleLayoutTouched = _isChanged('broadcastArticleLayout')
-      const broadcastArticleBgTouched = _isChanged('broadcastArticleBg')
-
-      const topbarLayoutTouched = _isChanged('topbarLayout')
-      const topbarBgTouched = _isChanged('topbarBg')
-      const changelogLayoutTouched = _isChanged('changelogLayout')
       const footerLayoutTouched = _isChanged('footerLayout')
-      const headerLayoutTouched = _isChanged('headerLayout')
-
-      const glowFixedTouched = _isChanged('glowFixed')
-      const glowTypeTouched = _isChanged('glowType')
-      const gossBlurTouched = _isChanged('gossBlur')
-      const gossBlurDarkTouched = _isChanged('gossBlurDark')
-      const glowOpacityTouched = _isChanged('glowOpacity')
 
       const nameAliasTouched = !isNil(slf.editingAlias)
       const tagsTouched = !isNil(slf.editingTag)
       const faqSectionsTouched = _mapArrayChanged('faqSections')
 
-      const rssFeedTypeTouched = _isChanged('rssFeedType')
-      const rssFeedCountTouched = _isChanged('rssFeedCount')
-
-      const widgetsPrimaryColorTouched = _isChanged('widgetsPrimaryColor')
-      const widgetsSizeTouched = _isChanged('widgetsSize')
-
-      const widgetsThreadsTouched = !equals(
-        toJS(slf.widgetsThreads).sort(),
-        toJS(init.widgetsThreads).sort(),
-      )
-
       return {
-        primaryColor: primaryColorTouched,
-        brandLayout: brandLayoutTouched,
-        tagLayout: tagTouched,
-        avatarLayout: avatarTouched,
-        bannerLayout: bannerLayoutTouched,
-        topbarLayout: topbarLayoutTouched,
-        topbarBg: topbarBgTouched,
-
-        postLayout: postLayoutTouched,
         footerLayout: footerLayoutTouched,
-        headerLayout: headerLayoutTouched,
-        kanbanLayout: kanbanLayoutTouched,
-        kanbanCardLayout: kanbanCardLayoutTouched,
-        kanbanBgColors: kanbanBgColorsTouched,
-        docLayout: docLayoutTouched,
-        docFaqLayout: docFaqLayoutTouched,
-        changelogLayout: changelogLayoutTouched,
+
         nameAlias: nameAliasTouched,
         tags: tagsTouched,
         tagsIndex: _tagsIndexTouched,
-        socialLinks: _socialLinksTouched,
-        mediaReports: _mediaReportsTouched,
 
-        headerLinks: headerLinksChanged,
         footerLinks: footerLinksChanged,
         faqSections: faqSectionsTouched,
-
-        glowFixed: glowFixedTouched,
-        glowType: glowTypeTouched,
-        glowOpacity: glowOpacityTouched,
-
-        gossBlur: gossBlurTouched,
-        gossBlurDark: gossBlurDarkTouched,
-        rssFeed: rssFeedTypeTouched || rssFeedCountTouched,
-
-        widgetsPrimaryColor: widgetsPrimaryColorTouched,
-        widgetsThreads: widgetsThreadsTouched,
-        widgetsSize: widgetsSizeTouched,
-
-        //
-        baseInfo: _anyChanged(BASEINFO_KEYS as TSettingField[]),
-        seo: _anyChanged(SEO_KEYS as TSettingField[]),
-        widgets: widgetsPrimaryColorTouched || widgetsThreadsTouched || widgetsSizeTouched,
-        broadcast:
-          broadcastLayoutTouched ||
-          broadcastBgTouched ||
-          broadcastArticleLayoutTouched ||
-          broadcastArticleBgTouched,
-        broadcastArticle: broadcastArticleLayoutTouched || broadcastArticleBgTouched,
       }
     },
 
@@ -302,15 +188,6 @@ const DashboardThread = T.model('DashboardThread', {
 
       // @ts-ignore
       return uniq(pluck('group', tags))
-    },
-
-    get rssSettings(): TRSSSettings {
-      const slf = self as TStore
-      return {
-        feedType: slf.rssFeedType,
-        feedCount: slf.rssFeedCount,
-        saving: slf.saving,
-      }
     },
 
     get curPageLinksKey(): TCurPageLinksKey {
@@ -391,16 +268,6 @@ const DashboardThread = T.model('DashboardThread', {
       }
     },
 
-    get seoSettings(): TSEOSettings {
-      const slf = self as TStore
-
-      return {
-        ...pick(SEO_KEYS, slf),
-        saving: slf.saving,
-        seoTab: slf.seoTab,
-      }
-    },
-
     get baseInfoSettings(): TBaseInfoSettings {
       const slf = self as TStore
 
@@ -415,15 +282,6 @@ const DashboardThread = T.model('DashboardThread', {
         baseInfoTab: slf.baseInfoTab,
         socialLinks,
         mediaReports: toJS(slf.mediaReports),
-      }
-    },
-
-    get broadcastSettings(): TBroadcastSettings {
-      const slf = self as TStore
-
-      return {
-        ...pick(BROADCAST_KEYS, slf),
-        saving: slf.saving,
       }
     },
   }))

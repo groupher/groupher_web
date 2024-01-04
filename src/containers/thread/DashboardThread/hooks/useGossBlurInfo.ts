@@ -1,6 +1,8 @@
 import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 
+import useHelper from './useHelper'
+
 type TRet = {
   gossBlur: number
   gossBlurDark: number
@@ -14,19 +16,20 @@ type TRet = {
  */
 const useGossBlurInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
+  const { isChanged } = useHelper()
 
   if (store === null) {
     throw new Error('Store cannot be null, please add a context provider')
   }
 
-  const { gossBlur, gossBlurDark, saving, touched } = store.dashboardThread
+  const { gossBlur, gossBlurDark, saving } = store.dashboardThread
 
   return {
     gossBlur,
     gossBlurDark,
     saving,
-    isTouched: touched.gossBlur,
-    isDarkTouched: touched.gossBlurDark,
+    isTouched: isChanged('gossBlur'),
+    isDarkTouched: isChanged('gossBlurDark'),
   }
 }
 
