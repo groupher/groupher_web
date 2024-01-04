@@ -2,8 +2,8 @@ import styled, { css, theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.column()};
-  width: 500px;
-  margin-left: 108px;
+  width: 460px;
+  margin-left: 120px;
 
   ${css.media.mobile`
     padding: 0;

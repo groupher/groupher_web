@@ -13,6 +13,7 @@ import {
   Wrapper,
   Header,
   Title,
+  AliasTitle,
   InputWrapper,
   Inputer,
   Footer,
@@ -55,7 +56,7 @@ const Item: FC<TProps> = ({ alias, editingAlias }) => {
               <ArrowLine />
               <ArrowIcon />
             </ArrowWrapper>
-            <Title>{alias.name}</Title>
+            <AliasTitle>{alias.name}</AliasTitle>
           </Fragment>
         )}
       </Header>
