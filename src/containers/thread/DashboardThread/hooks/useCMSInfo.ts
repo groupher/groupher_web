@@ -12,6 +12,8 @@ import type {
 } from '@/spec'
 import { toJS } from '@/mobx'
 
+import useHelper from './useHelper'
+
 type TRet = {
   loading: boolean
   batchSelectedIDs: TID[]
@@ -41,6 +43,7 @@ const assignChecked = (entries: TArticleEntries, batchSelectedIDs: TID[]): TArti
  */
 const useCMSInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
+  const { mapArrayChanged } = useHelper()
 
   if (store === null) {
     throw new Error('Store cannot be null, please add a context provider')
@@ -51,7 +54,6 @@ const useCMSInfo = (): TRet => {
     batchSelectedIDs,
     docTab,
     editingFAQIndex,
-    touched,
     pagedCommunities,
     pagedPosts,
     pagedDocs,
@@ -89,7 +91,7 @@ const useCMSInfo = (): TRet => {
 
     faqSections: toJS(faqSections),
     editingFAQ: toJS(editingFAQ),
-    isFaqSectionsTouched: touched.faqSections,
+    isFaqSectionsTouched: mapArrayChanged('faqSections'),
   }
 }
 

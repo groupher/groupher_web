@@ -8,7 +8,6 @@ import {
   isEmpty,
   findIndex,
   clone,
-  isNil,
   equals,
   omit,
   pluck,
@@ -45,7 +44,7 @@ import { THREAD } from '@/constant/thread'
 import BStore from '@/utils/bstore'
 import { buildLog } from '@/logger'
 import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
-import { publicThreads, sortByIndex } from '@/helper'
+import { publicThreads } from '@/helper'
 
 import {
   PagedCommunities,
@@ -144,23 +143,13 @@ const DashboardThread = T.model('DashboardThread', {
 
       const _isChanged = (field: TSettingField): boolean =>
         !equals(toJS(slf[field]), toJS(init[field]))
-      const _mapArrayChanged = (key: string): boolean => {
-        return JSON.stringify(toJS(self[key])) !== JSON.stringify(toJS(self.initSettings[key]))
-      }
 
       const footerLinksChanged = _isChanged('footerLinks') && editingLink === null
       const footerLayoutTouched = _isChanged('footerLayout')
 
-      const nameAliasTouched = !isNil(slf.editingAlias)
-      const faqSectionsTouched = _mapArrayChanged('faqSections')
-
       return {
         footerLayout: footerLayoutTouched,
         footerLinks: footerLinksChanged,
-
-        nameAlias: nameAliasTouched,
-
-        faqSections: faqSectionsTouched,
       }
     },
 

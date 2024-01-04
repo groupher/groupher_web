@@ -9,6 +9,7 @@ import type { TSettingField } from '../spec'
 type TRet = {
   isChanged: (field: TSettingField) => boolean
   anyChanged: (fields: TSettingField[]) => boolean
+  mapArrayChanged: (key: string) => boolean
 }
 
 /**
@@ -29,9 +30,13 @@ const useHelper = (): TRet => {
 
   const anyChanged = (fields: TSettingField[]): boolean => any(isChanged)(fields)
 
+  const mapArrayChanged = (key: string): boolean =>
+    JSON.stringify(toJS(_store[key])) !== JSON.stringify(toJS(initSettings[key]))
+
   return {
     isChanged,
     anyChanged,
+    mapArrayChanged,
   }
 }
 
