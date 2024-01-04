@@ -2,13 +2,10 @@
 
 import { observer } from 'mobx-react-lite'
 
-import useDashboardSettings from '@/hooks/useDashboardSettings'
 import Footer from '@/containers//thread/DashboardThread/Footer'
 
 const DashboardFooterPage = () => {
-  const { footerSettings, touched } = useDashboardSettings()
-
-  return <Footer settings={footerSettings} touched={touched} />
+  return <Footer />
 }
 
 export default observer(DashboardFooterPage)

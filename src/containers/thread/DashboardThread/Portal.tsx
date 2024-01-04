@@ -32,7 +32,6 @@ const Portal: FC<TProps> = ({ title, desc = null, withDivider = true }) => {
         </MobileTitle>
       </Tooltip>
 
-      {/* <SideMenu curTab={curTab} touched={touched} /> */}
       {desc && <Desc>{desc}</Desc>}
       {withDivider && <Divider bottom={30} top={20} />}
     </Wrapper>

@@ -4,22 +4,13 @@ import { pick } from 'ramda'
 
 import type { TEnableConfig, TDashboardPath } from '@/spec'
 
-import type {
-  TOverview,
-  THeaderSettings,
-  TFooterSettings,
-  TTouched,
-  TCMSContents,
-} from '@/containers/thread/DashboardThread/spec'
+import type { TOverview, TCMSContents } from '@/containers/thread/DashboardThread/spec'
 
 type TRes = {
   curTab: TDashboardPath
   overviewData: TOverview
   enableSettings: TEnableConfig
 
-  headerSettings: THeaderSettings
-  footerSettings: TFooterSettings
-  touched: TTouched
   cmsContents: TCMSContents
 }
 
@@ -34,15 +25,7 @@ const useDashboardSettings = (): TRes => {
   }
 
   return pick(
-    [
-      'curTab',
-      'overviewData',
-      'enableSettings',
-      'headerSettings',
-      'footerSettings',
-      'touched',
-      'cmsContents',
-    ],
+    ['curTab', 'overviewData', 'enableSettings', 'cmsContents'],
     store.dashboardThread,
   ) as TRes
 }

@@ -98,11 +98,3 @@ export const Item = styled(Link)<TItem>`
 
   transition: all 0.2s;
 `
-export const TouchedDot = styled.div`
-  ${css.circle(5)};
-  background-color: ${theme('article.digest')};
-  opacity: 0.5;
-  position: absolute;
-  top: 10px;
-  right: 12px;
-`
