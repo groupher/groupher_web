@@ -1,9 +1,10 @@
 import { useContext } from 'react'
-import { reject, find, propEq, filter, includes, toUpper } from 'ramda'
+import { reject, find, propEq, filter, includes, toUpper, isNil } from 'ramda'
 import { MobXProviderContext } from 'mobx-react'
 
 import type { TCommunityThread, TTag, TNameAlias } from '@/spec'
 import { THREAD } from '@/constant/thread'
+import { sortByIndex } from '@/helper'
 import { toJS } from '@/mobx'
 
 type TRet = {
@@ -16,6 +17,7 @@ type TRet = {
   activeTagGroup: string
   activeTagThread: string
   isTagsIndexTouched: boolean
+  isTagsTouched: boolean
 }
 
 /**
@@ -36,8 +38,8 @@ const useTagListInfo = (): TRet => {
     editingTag,
     settingTag,
     saving,
-    touched,
     tagGroups,
+    initSettings,
   } = store.dashboardThread
 
   const filterdTagsByGroup =
@@ -63,16 +65,24 @@ const useTagListInfo = (): TRet => {
     mappedThreads,
   )
 
+  const tagsIndexTouched = () => {
+    return (
+      JSON.stringify(sortByIndex(toJS(tags), 'id')) !==
+      JSON.stringify(sortByIndex(toJS(initSettings.tags), 'id'))
+    )
+  }
+
   return {
-    editingTag: toJS(editingTag),
-    settingTag: toJS(settingTag),
+    editingTag,
+    settingTag,
     tags: toJS(filterdTags),
     saving,
     groups: tagGroups,
     activeTagThread,
     activeTagGroup,
     threads: curThreads,
-    isTagsIndexTouched: touched.tagsIndex,
+    isTagsTouched: !isNil(toJS(editingTag)),
+    isTagsIndexTouched: tagsIndexTouched(),
   }
 }
 

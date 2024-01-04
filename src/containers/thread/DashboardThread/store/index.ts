@@ -137,19 +137,10 @@ const DashboardThread = T.model('DashboardThread', {
     get overviewData(): TOverview {
       return toJS(self.overview)
     },
-
-    get _tagsIndexTouched(): boolean {
-      const { tags, initSettings } = self
-
-      return (
-        JSON.stringify(sortByIndex(toJS(tags), 'id')) !==
-        JSON.stringify(sortByIndex(toJS(initSettings.tags), 'id'))
-      )
-    },
     get touched(): TTouched {
       const slf = self as TStore
 
-      const { initSettings: init, _tagsIndexTouched, editingLink } = slf
+      const { initSettings: init, editingLink } = slf
 
       const _isChanged = (field: TSettingField): boolean =>
         !equals(toJS(slf[field]), toJS(init[field]))
@@ -161,17 +152,14 @@ const DashboardThread = T.model('DashboardThread', {
       const footerLayoutTouched = _isChanged('footerLayout')
 
       const nameAliasTouched = !isNil(slf.editingAlias)
-      const tagsTouched = !isNil(slf.editingTag)
       const faqSectionsTouched = _mapArrayChanged('faqSections')
 
       return {
         footerLayout: footerLayoutTouched,
+        footerLinks: footerLinksChanged,
 
         nameAlias: nameAliasTouched,
-        tags: tagsTouched,
-        tagsIndex: _tagsIndexTouched,
 
-        footerLinks: footerLinksChanged,
         faqSections: faqSectionsTouched,
       }
     },

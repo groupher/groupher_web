@@ -10,7 +10,7 @@ const contentBoxBg = '#fff'
 const fontColor = primaryColor
 const markdownFont = '#9eb8bd'
 const border = '#EAE9E9'
-const link = '#0075d9' // '#256eab' // '#005196' // '#6494cd'
+const link = '#5073C6'
 
 const actionText = '#647392'
 const descText = '#666'

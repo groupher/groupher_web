@@ -101,7 +101,7 @@ const GossBlur: FC = () => {
         </ContentWrapper>
 
         <SavingBar
-          width="84%"
+          width="96%"
           isTouched={isTouched}
           field={SETTING_FIELD.GOSS_BLUR}
           loading={saving}

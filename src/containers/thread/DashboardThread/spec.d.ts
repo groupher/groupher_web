@@ -126,8 +126,6 @@ export type TBaseInfoSettings = {
 export type TTouched = {
   footerLayout: boolean
   nameAlias: boolean
-  tags: boolean
-  tagsIndex: boolean
 
   footerLinks: boolean
   faqSections: boolean

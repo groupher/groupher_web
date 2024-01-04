@@ -40,7 +40,6 @@ const useDashboardSettings = (): TRes => {
       'enableSettings',
       'headerSettings',
       'footerSettings',
-      // docSettings,
       'touched',
       'cmsContents',
     ],

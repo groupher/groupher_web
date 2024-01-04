@@ -20,13 +20,12 @@ import { Wrapper, InnerWrapper, ContentWrapper, AddButton, AddIcon } from '../st
 const Tags: FC = () => {
   const {
     tags,
-    editingTag,
-    settingTag,
     groups,
     activeTagGroup,
     activeTagThread,
     threads,
     isTagsIndexTouched,
+    isTagsTouched,
   } = useTagListInfo()
 
   const [animateRef, enable] = useAutoAnimate()
@@ -46,12 +45,9 @@ const Tags: FC = () => {
             <TagBar
               key={tag.id}
               tag={tag}
-              editingTag={editingTag}
-              settingTag={settingTag}
               isFirst={index === 0}
               isLast={index === tags.length - 1}
               total={tags.length}
-              activeTagGroup={activeTagGroup}
             />
           ))}
         </ContentWrapper>

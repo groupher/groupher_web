@@ -84,7 +84,7 @@ const BrandLayout: FC = () => {
         isTouched={isTouched}
         field={SETTING_FIELD.BRAND_LAYOUT}
         loading={saving}
-        top={20}
+        top={36}
       />
     </Wrapper>
   )
