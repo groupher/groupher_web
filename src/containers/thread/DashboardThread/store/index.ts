@@ -63,7 +63,6 @@ import type {
   THeaderSettings,
   TFooterSettings,
   TDocSettings,
-  TTouched,
   TSettingField,
   TCurPageLinksKey,
 } from '../spec'
@@ -136,23 +135,6 @@ const DashboardThread = T.model('DashboardThread', {
     get overviewData(): TOverview {
       return toJS(self.overview)
     },
-    get touched(): TTouched {
-      const slf = self as TStore
-
-      const { initSettings: init, editingLink } = slf
-
-      const _isChanged = (field: TSettingField): boolean =>
-        !equals(toJS(slf[field]), toJS(init[field]))
-
-      const footerLinksChanged = _isChanged('footerLinks') && editingLink === null
-      const footerLayoutTouched = _isChanged('footerLayout')
-
-      return {
-        footerLayout: footerLayoutTouched,
-        footerLinks: footerLinksChanged,
-      }
-    },
-
     get enableSettings(): TEnableConfig {
       const slf = self as TStore
 

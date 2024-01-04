@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { keys } from 'ramda'
+import { observer } from 'mobx-react-lite'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import type { TLinkItem } from '@/spec'
@@ -9,8 +10,7 @@ import Button from '@/widgets/Buttons/Button'
 
 import LinkEditor from '../LinkEditor'
 
-import type { TFooterSettings } from '../../../spec'
-
+import useFooterSettingsInfo from '../../../hooks/useFooterSettingsInfo'
 import {
   Wrapper,
   LeftPart,
@@ -22,14 +22,10 @@ import {
 } from '../../../styles/footer/editors/simple'
 import { add2Group } from '../../../logic/links'
 
-type TProps = {
-  settings: TFooterSettings
-}
+const Simple: FC = () => {
+  const [animateRef] = useAutoAnimate()
 
-const Simple: FC<TProps> = ({ settings }) => {
-  const [parent] = useAutoAnimate({ duration: 220 })
-
-  const { footerLinks: links, editingLink, editingLinkMode } = settings
+  const { footerLinks: links, editingLink, editingLinkMode } = useFooterSettingsInfo()
 
   // @ts-ignore
   const groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
@@ -37,7 +33,7 @@ const Simple: FC<TProps> = ({ settings }) => {
 
   return (
     <Wrapper>
-      <LeftPart ref={parent}>
+      <LeftPart ref={animateRef}>
         {groupedLinks[groupKeys[0]].map((item: TLinkItem) => (
           <LinkEditor
             key={item.title}
@@ -70,4 +66,4 @@ const Simple: FC<TProps> = ({ settings }) => {
   )
 }
 
-export default Simple
+export default observer(Simple)

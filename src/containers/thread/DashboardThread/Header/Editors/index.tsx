@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 import { keys, startsWith, filter, length } from 'ramda'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
@@ -175,4 +176,4 @@ const Editor: FC = () => {
   )
 }
 
-export default Editor
+export default observer(Editor)

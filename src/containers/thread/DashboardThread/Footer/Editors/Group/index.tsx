@@ -1,4 +1,5 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 import { keys } from 'ramda'
 
 import { useAutoAnimate } from '@formkit/auto-animate/react'
@@ -14,8 +15,7 @@ import GroupInputer from '../GroupInputer'
 
 import GroupHead from './GroupHead'
 
-import type { TFooterSettings } from '../../../spec'
-
+import useFooterSettingsInfo from '../../../hooks/useFooterSettingsInfo'
 import {
   Wrapper,
   LinkGroup,
@@ -39,18 +39,14 @@ import {
   confirmGroupAdd,
 } from '../../../logic/links'
 
-type TProps = {
-  settings: TFooterSettings
-}
-
-const Group: FC<TProps> = ({ settings }) => {
+const Group: FC = () => {
   const {
     footerLinks: links,
     editingLink,
     editingLinkMode,
     editingGroup,
     editingGroupIndex,
-  } = settings
+  } = useFooterSettingsInfo()
 
   const [animateRef] = useAutoAnimate()
   const [groupAnimateRef] = useAutoAnimate()
@@ -130,4 +126,4 @@ const Group: FC<TProps> = ({ settings }) => {
   )
 }
 
-export default memo(Group)
+export default observer(Group)

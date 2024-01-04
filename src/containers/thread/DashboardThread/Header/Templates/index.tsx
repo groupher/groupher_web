@@ -1,4 +1,5 @@
 import { FC, useState } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { HEADER_LAYOUT } from '@/constant/layout'
 
@@ -61,4 +62,4 @@ const Templates: FC = () => {
   )
 }
 
-export default Templates
+export default observer(Templates)

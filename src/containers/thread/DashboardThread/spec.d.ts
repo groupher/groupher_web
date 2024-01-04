@@ -123,11 +123,6 @@ export type TBaseInfoSettings = {
   mediaReports: TMediaReport[]
 }
 
-export type TTouched = {
-  footerLayout: boolean
-  footerLinks: boolean
-}
-
 export type TSettingField =
   | 'baseInfo'
   | 'mediaReports'

@@ -1,24 +1,21 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { FOOTER_LAYOUT } from '@/constant/layout'
 
-import type { TFooterSettings } from '../../spec'
+import useFooterSettingsInfo from '../../hooks/useFooterSettingsInfo'
 import SimpleEditor from './Simple'
 import GroupEditor from './Group'
 
-type TProps = {
-  settings: TFooterSettings
-}
-
-const Editor: FC<TProps> = ({ settings }) => {
-  const { footerLayout } = settings
+const Editor: FC = () => {
+  const { footerLayout } = useFooterSettingsInfo()
 
   return (
     <>
-      {footerLayout === FOOTER_LAYOUT.SIMPLE && <SimpleEditor settings={settings} />}
-      {footerLayout === FOOTER_LAYOUT.GROUP && <GroupEditor settings={settings} />}
+      {footerLayout === FOOTER_LAYOUT.SIMPLE && <SimpleEditor />}
+      {footerLayout === FOOTER_LAYOUT.GROUP && <GroupEditor />}
     </>
   )
 }
 
-export default Editor
+export default observer(Editor)
