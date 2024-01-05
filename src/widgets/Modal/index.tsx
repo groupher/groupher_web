@@ -5,14 +5,13 @@
  */
 
 import { FC, ReactNode, useCallback, memo } from 'react'
-import dynamic from 'next/dynamic'
 
 import { buildLog } from '@/logger'
 import useShortcut from '@/hooks/useShortcut'
 
-const log = buildLog('w:Modal:index')
+import RealModal from './RealModal'
 
-export const RealModal = dynamic(() => import('./RealModal'))
+const log = buildLog('w:Modal:index')
 
 export type TProps = {
   children: ReactNode

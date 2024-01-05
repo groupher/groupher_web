@@ -1,5 +1,7 @@
 import styled, { css, theme, animate, zIndex } from '@/css'
-import type { TActive } from '@/spec'
+import type { TActive, TThemeName } from '@/spec'
+import { GLOW_EFFECTS_DAY, GLOW_EFFECTS_NIGHT } from '@/constant/glow_effect'
+import THEME from '@/constant/theme'
 import CloseCrossSVG from '@/icons/CloseLight'
 
 // display: ${props => (props.show ? 'block' : 'none')};
@@ -70,4 +72,24 @@ export const EscHint = styled.div<{ mode: string }>`
   top: 35px;
   right: -44px;
   font-size: 13px;
+`
+
+type TGlowLight = { $curTheme?: TThemeName; glowType: string }
+export const GlowLight = styled.div<TGlowLight>`
+    background: ${({ glowType, $curTheme }) => {
+      const GLOW_EFFECTS = $curTheme === THEME.DAY ? GLOW_EFFECTS_DAY : GLOW_EFFECTS_NIGHT
+      return `
+    radial-gradient(circle at ${GLOW_EFFECTS[glowType].LEFT.X} ${GLOW_EFFECTS[glowType].LEFT.Y}, ${GLOW_EFFECTS[glowType].LEFT.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].LEFT.RADIUS}),
+    radial-gradient(circle at ${GLOW_EFFECTS[glowType].RIGHT1.X} ${GLOW_EFFECTS[glowType].RIGHT1.Y}, ${GLOW_EFFECTS[glowType].RIGHT1.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].RIGHT1.RADIUS}),
+    radial-gradient(circle at ${GLOW_EFFECTS[glowType].MAIN.X} ${GLOW_EFFECTS[glowType].MAIN.Y}, ${GLOW_EFFECTS[glowType].MAIN.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].MAIN.RADIUS}),
+    radial-gradient(circle at ${GLOW_EFFECTS[glowType].RIGHT2.X} ${GLOW_EFFECTS[glowType].RIGHT2.Y}, ${GLOW_EFFECTS[glowType].RIGHT2.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].RIGHT1.RADIUS});
+  `
+    }};
+  position: absolute;
+  width: 100%;
+  height: 60%;
+  opacity: 0.68;
+  transform: rotateY(180deg) ;
+  top: 0;
+  left: 0;
 `

@@ -8,9 +8,11 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
 }))<TWrapper>`
   ${css.column('justify-between')};
   height: auto;
+  position: relative;
 
   ${css.media.mobile`
     width: 100%;
   `};
 `
+
 export const Title = styled.div``

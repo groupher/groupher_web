@@ -8,7 +8,6 @@ import { FC, ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Provider as BalancerTextProvider } from 'react-wrap-balancer'
 
-import type { TGlobalLayout } from '@/spec'
 import { blurRGB } from '@/fmt'
 import METRIC from '@/constant/metric'
 import { TOPBAR_LAYOUT } from '@/constant/layout'
