@@ -1,5 +1,8 @@
 import styled, { css, theme } from '@/css'
 
+import { WithPosition } from '@/widgets/Common'
+import CheckSVG from '@/icons/CheckBold'
+
 export const Wrapper = styled.div`
   ${css.column()};
   padding: 20px;
@@ -7,13 +10,87 @@ export const Wrapper = styled.div`
   color: ${theme('article.digest')};
   border: 1px solid;
   border-color: ${theme('divider')};
-  width: 420px;
+  width: 460px;
   height: 460px;
-  border-radius: 15px;
+  border-radius: 10px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  z-index: 2;
+  z-index: 10;
   position: absolute;
-  bottom: 160px;
-  left: 140px;
+  bottom: 120px;
+  left: 110px;
 `
-export const holder = 1
+export const Tip = styled(WithPosition)`
+  ${css.row('align-both')};
+  z-index: 11;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  height: 36px;
+  width: auto;
+  padding: 0 10px;
+  background: ${theme('htmlBg')};
+  font-size: 13px;
+  color: ${theme('article.title')};
+  border-radius: 10px;
+  border: 1px solid;
+  border-color: ${theme('divider')};
+`
+export const CheckIcon = styled(CheckSVG)`
+  ${css.size(16)};
+  fill: #5abeff;
+  margin-right: 10px;
+`
+export const ConnectLine = styled(WithPosition)`
+  z-index: 11;
+  width: 180px;
+  height: 132px;
+  border: 3px dashed;
+  border-top-left-radius: 150px;
+  border-right: none;
+  border-bottom: none;
+  border-color: #8bc0f8;
+  opacity: 0.7;
+  background: transparent;
+
+  &:before {
+    content: '';
+    ${css.circle(9)};
+    background: #5abeff;
+    position: absolute;
+    bottom: -2px;
+    left: -6px;
+  }
+
+  &:after {
+    content: '';
+    ${css.circle(9)};
+    background: #5abeff;
+    position: absolute;
+    top: -5px;
+    right: -6px;
+  }
+`
+type TItem = { $strip?: boolean; $noDivider?: boolean; $highlight?: boolean }
+export const Item = styled.div<TItem>`
+  ${css.row('align-center')};
+  background: ${({ $strip, $highlight }) => {
+    if ($highlight) return theme('gradientBg.blue')
+    return $strip ? '#f9f9f9ab' : ''
+  }};
+  opacity: ${({ $highlight }) => ($highlight ? 0.8 : 1)};
+  height: 50px;
+  width: 100%;
+  position: relative;
+  border-bottom: 1px dotted;
+  border-bottom-color: ${theme('divider')};
+  padding: 0 5px;
+`
+export const Title = styled.div`
+  font-size: 14px;
+  color: ${theme('article.title')};
+`
+export const FalseChecker = styled.div`
+  ${css.size(14)};
+  border: 1px solid;
+  border-color: ${theme('hint')};
+  border-radius: 5px;
+  opacity: 0.5;
+`

@@ -67,7 +67,7 @@ const Panel: FC<TProps> = ({ hovering }) => {
         <BottomIndexBar bottom={36} $opacity={hovering ? 0.8 : 0.4} />
 
         <IndexText bottom={31} left={110} $opacity={textOpacity}>
-          1988 px
+          2022 px
         </IndexText>
 
         <GridMask />
