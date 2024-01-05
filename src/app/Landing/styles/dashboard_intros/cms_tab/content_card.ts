@@ -25,7 +25,7 @@ export const Tip = styled(WithPosition)`
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   height: 36px;
   width: auto;
-  padding: 0 10px;
+  padding: 0 12px;
   background: ${theme('htmlBg')};
   font-size: 13px;
   color: ${theme('article.title')};
@@ -34,9 +34,9 @@ export const Tip = styled(WithPosition)`
   border-color: ${theme('divider')};
 `
 export const CheckIcon = styled(CheckSVG)`
-  ${css.size(16)};
+  ${css.size(12)};
   fill: #5abeff;
-  margin-right: 10px;
+  margin-right: 6px;
 `
 export const ConnectLine = styled(WithPosition)`
   z-index: 11;
