@@ -3,9 +3,12 @@ import { observer } from 'mobx-react-lite'
 
 import { assetSrc } from '@/helper'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useBrandLayout from '@/hooks/useBrandLayout'
 import useHover from '@/hooks/useHover'
-import Tooltip from '@/widgets/Tooltip'
 
+import { BRAND_LAYOUT } from '@/constant/layout'
+
+import Tooltip from '@/widgets/Tooltip'
 import { SpaceGrow, SexyDivider } from '@/widgets/Common'
 
 import {
@@ -24,6 +27,7 @@ import {
 const CommunityBrief: FC = () => {
   const [disableTippyJump, setDisableTippyJump] = useState(false)
   const { logo, title, slug, dashboard } = useViewingCommunity()
+  const brandLayout = useBrandLayout()
 
   const [ref, isHovering] = useHover<HTMLDivElement>()
 
@@ -38,8 +42,10 @@ const CommunityBrief: FC = () => {
       content={
         <ToolPanel>
           <PanelWrapper>
-            <Logo src={assetSrc(logo)} noLazy />
-            <Title>{title}</Title>
+            {brandLayout !== BRAND_LAYOUT.TEXT && <Logo src={assetSrc(logo)} noLazy />}
+            {brandLayout !== BRAND_LAYOUT.LOGO && (
+              <Title $noMargin={brandLayout === BRAND_LAYOUT.TEXT}>{title}</Title>
+            )}
           </PanelWrapper>
 
           <PanelItem href={`/${slug}`}>
@@ -78,8 +84,10 @@ const CommunityBrief: FC = () => {
       noPadding
     >
       <Wrapper ref={ref}>
-        <Logo src={assetSrc(logo)} noLazy />
-        <Title>{title}</Title>
+        {brandLayout !== BRAND_LAYOUT.TEXT && <Logo src={assetSrc(logo)} noLazy />}
+        {brandLayout !== BRAND_LAYOUT.LOGO && (
+          <Title $noMargin={brandLayout === BRAND_LAYOUT.TEXT}>{title}</Title>
+        )}
         <SpaceGrow />
         <OptionArrowIcon />
         <DisableTippyJump enable={disableTippyJump} />

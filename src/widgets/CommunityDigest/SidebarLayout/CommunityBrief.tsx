@@ -2,14 +2,15 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
-import { BANNER_LAYOUT } from '@/constant/layout'
+import { BANNER_LAYOUT, BRAND_LAYOUT } from '@/constant/layout'
 import { THREAD } from '@/constant/thread'
 import { assetSrc } from '@/helper'
+import { prettyURL } from '@/fmt'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useViewingThread from '@/hooks/useViewingThread'
 import useBannerLayout from '@/hooks/useBannerLayout'
-import { prettyURL } from '@/fmt'
+import useBrandLayout from '@/hooks/useBrandLayout'
 
 import ArrowLinker from '@/widgets/ArrowLinker'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
@@ -33,17 +34,21 @@ const CommunityBrief: FC = () => {
   const { logo, slug, title, desc, dashboard } = useViewingCommunity()
   const activeThread = useViewingThread()
   const bannerLayout = useBannerLayout()
+  const brandLayout = useBrandLayout()
 
   const { baseInfo } = dashboard
 
   return (
     <Wrapper>
       <MainWrapper>
-        <LogoWrapper>
-          <Logo src={assetSrc(logo)} />
-        </LogoWrapper>
+        {brandLayout !== BRAND_LAYOUT.TEXT && (
+          <LogoWrapper>
+            <Logo src={assetSrc(logo)} />
+          </LogoWrapper>
+        )}
+
         <CommunityInfo>
-          <Title>{title}</Title>
+          {brandLayout !== BRAND_LAYOUT.LOGO && <Title>{title}</Title>}
           <Digest>
             <Desc>{desc}</Desc>
           </Digest>

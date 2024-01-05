@@ -1,4 +1,4 @@
-import { FC, Fragment, ReactNode, memo, useState } from 'react'
+import { FC, ReactNode, memo, useState } from 'react'
 
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 

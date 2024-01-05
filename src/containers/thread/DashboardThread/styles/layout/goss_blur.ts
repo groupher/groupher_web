@@ -55,7 +55,7 @@ export const Actions = styled.div`
   width: 50%;
   height: 100%;
   flex-grow: 1;
-  margin-left: 42px;
+  margin-left: 50px;
 `
 export const Title = styled.div`
   color: ${theme('article.title')};

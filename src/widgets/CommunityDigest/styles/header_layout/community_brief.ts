@@ -61,11 +61,11 @@ export const Logo = styled(Img)`
   ${css.size(20)};
   margin-left: -1px;
 `
-export const Title = styled.div`
+export const Title = styled.div<{ $noMargin: boolean }>`
   color: ${theme('article.digest')};
   ${css.cutRest('120px')};
   font-size: 16px;
-  margin-left: 8px;
+  margin-left: ${({ $noMargin }) => ($noMargin ? 0 : '8px')};
   font-weight: 500;
 
   ${Wrapper}:hover & {

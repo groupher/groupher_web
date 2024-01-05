@@ -3,12 +3,15 @@ import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
+import { BRAND_LAYOUT } from '@/constant/layout'
+
 import useMetric from '@/hooks/useMetric'
 import usePublicThreads from '@/hooks/usePublicThreads'
 import useViewingThread from '@/hooks/useViewingThread'
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useHeaderLinks from '@/hooks/useHeaderLinks'
+import useBrandLayout from '@/hooks/useBrandLayout'
 
 import { SpaceGrow } from '@/widgets/Common'
 import TabBar from '@/widgets/TabBar'
@@ -37,12 +40,21 @@ const TabberLayout: FC = () => {
   const publicThreads = usePublicThreads()
   const activeThread = useViewingThread()
   const community = useViewingCommunity()
+  const brandLayout = useBrandLayout()
 
   const { customLinks } = useHeaderLinks()
 
   return (
-    <Wrapper $testid="community-digest" isMobile={isMobile}>
-      <InnerWrapper metric={metric} isMobile={isMobile}>
+    <Wrapper
+      $testid="community-digest"
+      isMobile={isMobile}
+      $minHeight={brandLayout !== BRAND_LAYOUT.BOTH}
+    >
+      <InnerWrapper
+        metric={metric}
+        isMobile={isMobile}
+        $minHeight={brandLayout !== BRAND_LAYOUT.BOTH}
+      >
         <BannerContentWrapper>
           <CommunityBaseInfo>
             <CommunityBrief />
