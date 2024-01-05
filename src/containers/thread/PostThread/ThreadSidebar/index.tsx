@@ -13,11 +13,13 @@ import useAvatarLayout from '@/hooks/useAvatarLayout'
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useActiveTag from '@/hooks/useActiveTag'
+import useBannerLayout from '@/hooks/useBannerLayout'
 
 import { buildLog } from '@/logger'
 import { refreshArticles, callGEditor, callSyncSelector, listUsers } from '@/signal'
 import { toJS } from '@/mobx'
 import { mockUsers } from '@/mock'
+import { BANNER_LAYOUT } from '@/constant/layout'
 
 import ImgFallback from '@/widgets/ImgFallback'
 import Sticky from '@/widgets/Sticky'
@@ -47,12 +49,13 @@ const ThreadSidebar: FC = () => {
   const { inView: showCommunityBadge } = useCommunityDigestViewport()
   const avatarLayout = useAvatarLayout()
   const activeTag = useActiveTag()
+  const bannerLayout = useBannerLayout()
 
   return (
     <Wrapper $testid="thread-sidebar">
       <Sticky offsetTop={50}>
         <Fragment>
-          {showCommunityBadge && (
+          {showCommunityBadge && bannerLayout !== BANNER_LAYOUT.TABBER && (
             <Fragment>
               <DividerTitle>简介</DividerTitle>
               <Br top={10} />

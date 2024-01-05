@@ -1,8 +1,12 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import { assetSrc } from '@/helper'
 import { DEME_SOCIALS } from '@/constant/social'
+import { BRAND_LAYOUT } from '@/constant/layout'
+
+import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useBrandLayout from '@/hooks/useBrandLayout'
 import useMetric from '@/hooks/useMetric'
 
 import SocialList from '@/widgets/SocialList'
@@ -25,6 +29,7 @@ import {
 
 const CommunityBrief: FC = () => {
   const { logo, title, desc } = useViewingCommunity()
+  const brandLayout = useBrandLayout()
   const metric = useMetric()
 
   const COVER_IMAGE = '' // '/banner-cover.webp'
@@ -37,11 +42,14 @@ const CommunityBrief: FC = () => {
       {COVER_IMAGE ? <CoverImage src={COVER_IMAGE} noLazy /> : <CoverHolder />}
       <MainWrapper metric={metric}>
         <InnerWrapper>
-          <LogoWrapper>
-            <Logo src={logo} />
-          </LogoWrapper>
+          {brandLayout !== BRAND_LAYOUT.TEXT && (
+            <LogoWrapper>
+              <Logo src={assetSrc(logo)} />
+            </LogoWrapper>
+          )}
+
           <CommunityInfo>
-            <Title>{title}</Title>
+            {brandLayout !== BRAND_LAYOUT.LOGO && <Title>{title}</Title>}
             <Digest>{desc}</Digest>
           </CommunityInfo>
           <SocialWrapper>

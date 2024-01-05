@@ -1,13 +1,17 @@
 import { FC, useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { assetSrc } from '@/helper'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import usePublicThreads from '@/hooks/usePublicThreads'
+import useBrandLayout from '@/hooks/useBrandLayout'
 import useHover from '@/hooks/useHover'
-import Tooltip from '@/widgets/Tooltip'
+
+import { BRAND_LAYOUT } from '@/constant/layout'
+
+import { assetSrc } from '@/helper'
 import { titleCase } from '@/fmt'
 
+import Tooltip from '@/widgets/Tooltip'
 import { Space, SpaceGrow, SexyDivider } from '@/widgets/Common'
 
 import {
@@ -27,6 +31,7 @@ import {
 const CommunityBrief: FC = () => {
   const threads = usePublicThreads()
   const { title, logo, slug, dashboard } = useViewingCommunity()
+  const brandLayout = useBrandLayout()
 
   const [disableTippyJump, setDisableTippyJump] = useState(false)
   const [ref, isHovering] = useHover<HTMLDivElement>()
@@ -39,8 +44,8 @@ const CommunityBrief: FC = () => {
 
   return (
     <Wrapper ref={ref}>
-      <Logo src={assetSrc(logo)} noLazy />
-      <Title>{title}</Title>
+      {brandLayout !== BRAND_LAYOUT.TEXT && <Logo src={assetSrc(logo)} noLazy />}
+      {brandLayout !== BRAND_LAYOUT.LOGO && <Title>{title}</Title>}
       <Slash>/</Slash>
 
       <Tooltip

@@ -52,6 +52,7 @@ export const GlobalIcon = styled(HomeSVG)`
 
 export const Desc = styled.div`
   color: ${theme('article.digest')};
+  opacity: 0.9;
   font-size: 13px;
   margin-top: 3px;
   ${css.lineClamp(2)};

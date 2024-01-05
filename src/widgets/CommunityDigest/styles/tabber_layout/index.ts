@@ -3,25 +3,30 @@ import styled, { css, WIDTH, theme } from '@/css'
 
 import { BaseBanner } from '..'
 
-const getMinHeight = (isMobile) => {
+const getMinHeight = (isMobile, $minHeight) => {
   if (isMobile) {
     return '140px'
   }
 
-  return '412px'
+  if ($minHeight) {
+    return '376px;'
+  }
+
+  return '420px'
 }
 
 type TWrapper = {
   isMobile: boolean
   metric?: TMetric
+  $minHeight?: boolean
 }
 export const Wrapper = styled(BaseBanner)<TWrapper>`
   width: 100%;
-  min-height: ${({ isMobile }) => getMinHeight(isMobile)};
+  min-height: ${({ isMobile, $minHeight }) => getMinHeight(isMobile, $minHeight)};
 `
 export const InnerWrapper = styled.div<TWrapper>`
   ${css.row('justify-center')};
-  min-height: ${({ isMobile }) => getMinHeight(isMobile)};
+  min-height: ${({ isMobile, $minHeight }) => getMinHeight(isMobile, $minHeight)};
   width: 100%;
   // if use margin-left will cause horizontal scrollbar
   // 70 是经典布局为缩小帖子列表"视觉宽度"手动缩小的值
