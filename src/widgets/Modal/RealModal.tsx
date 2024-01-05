@@ -1,13 +1,15 @@
 import { FC, useEffect, useState, useCallback } from 'react'
 import { Portal } from 'react-portal'
 
-import { toggleGlobalBlur, lockPage, unlockPage } from '@/dom'
 import useShortcut from '@/hooks/useShortcut'
+import useTheme from '@/hooks/useTheme'
+import useGlowLight from '@/hooks/useGlowLight'
 
+import { toggleGlobalBlur, lockPage, unlockPage } from '@/dom'
 import ViewportTracker from '@/widgets/ViewportTracker'
 
 import type { TProps as BaseTProps } from '.'
-import { Mask, Wrapper, CloseBtn, ChildrenWrapper } from './styles'
+import { Mask, Wrapper, CloseBtn, ChildrenWrapper, GlowLight } from './styles'
 
 type TProps = Pick<
   BaseTProps,
@@ -34,6 +36,9 @@ const RealModal: FC<TProps> = ({
   offsetLeft,
   handleCloseModal,
 }) => {
+  const { glowType } = useGlowLight()
+  const { curTheme } = useTheme()
+
   // damn, i forgot why i set this state, fix LATER
   const [visibleOnPage, setVisibleOnPage] = useState(false)
 
@@ -67,6 +72,7 @@ const RealModal: FC<TProps> = ({
           offsetTop={offsetTop}
           offsetLeft={offsetLeft}
         >
+          <GlowLight glowType={glowType} $curTheme={curTheme} />
           <ViewportTracker onEnter={() => setVisibleOnPage(true)} />
           {showCloseBtn && <CloseBtn mode={mode} onClick={handleClose} />}
           {/* {showCloseBtn && <EscHint mode={mode}>Esc</EscHint>} */}

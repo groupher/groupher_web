@@ -2,7 +2,8 @@
  * Share
  */
 
-import { FC, Fragment, memo } from 'react'
+import { FC, Fragment } from 'react'
+import { observer } from 'mobx-react-lite'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TArticle } from '@/spec'
@@ -15,7 +16,6 @@ import Platforms from './Platforms'
 import InfoPanel from './InfoPanel'
 
 import { Wrapper } from '../styles/modal_panel'
-// import { close } from '../logic'
 
 const _log = buildLog('C:Share')
 
@@ -65,4 +65,4 @@ const SharePanel: FC<TProps> = ({
   )
 }
 
-export default memo(SharePanel)
+export default observer(SharePanel)

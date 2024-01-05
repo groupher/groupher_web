@@ -5,7 +5,7 @@ import { BRAND_LAYOUT } from '@/constant/layout'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 
-import { Space, Divider } from '@/widgets/Common'
+import { Space, SexyDivider as Divider } from '@/widgets/Common'
 import CheckLabel from '@/widgets/CheckLabel'
 
 import { SETTING_FIELD } from '../constant'
