@@ -9,7 +9,7 @@ const TeckStacks: FC = () => {
   return (
     <Wrapper>
       <Slogan>
-        <Title>开源项目，诚邀共建</Title>
+        <Title>项目开源，诚邀共建</Title>
         <Desc>由开源技术栈驱动，开放透明，期待您的共同参与</Desc>
       </Slogan>
       <Wall>

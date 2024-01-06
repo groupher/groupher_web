@@ -1,7 +1,9 @@
 import styled, { css, theme } from '@/css'
 
 import { WithPosition } from '@/widgets/Common'
-import CheckSVG from '@/icons/CheckBold'
+import CheckSVG from '@/icons/Post'
+import WebhookSVG from '@/icons/Webhook'
+import AuthSVG from '@/icons/Acount'
 
 export const Wrapper = styled.div`
   ${css.column()};
@@ -37,6 +39,17 @@ export const CheckIcon = styled(CheckSVG)`
   ${css.size(12)};
   fill: #5abeff;
   margin-right: 6px;
+`
+export const WebhookIcon = styled(WebhookSVG)`
+  ${css.size(14)};
+  fill: #20a6fd;
+  margin-right: 6px;
+`
+export const AuthIcon = styled(AuthSVG)`
+  ${css.size(12)};
+  fill: #20a6fd;
+  margin-right: 6px;
+  margin-top: -1px;
 `
 export const ConnectLine = styled(WithPosition)`
   z-index: 11;

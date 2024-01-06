@@ -16,6 +16,8 @@ import {
   ConnectLine,
   Tip,
   CheckIcon,
+  WebhookIcon,
+  AuthIcon,
 } from '../../styles/dashboard_intros/cms_tab/content_card'
 
 const ContentCard: FC = () => {
@@ -23,11 +25,11 @@ const ContentCard: FC = () => {
   return (
     <Wrapper>
       <Tip left={80} top={90}>
-        <CheckIcon />
+        <AuthIcon />
         支持先审核后发布
       </Tip>
       <Tip left={58} top={138}>
-        <CheckIcon />
+        <WebhookIcon />
         Webhook 回调
       </Tip>
       <Tip left={52} top={188}>

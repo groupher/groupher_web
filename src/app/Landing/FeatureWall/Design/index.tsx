@@ -14,7 +14,7 @@ const Design: FC = () => {
       <Panel hovering={isCardHovered} />
       <Footer>
         <Title>默认好看</Title>
-        <Desc>走心设计团队，丰富自定义细节，为您的产品生态添砖加瓦。</Desc>
+        <Desc>走心设计团队，丰富自定义细节，为您的产品生态增香添彩。</Desc>
       </Footer>
     </Wrapper>
   )

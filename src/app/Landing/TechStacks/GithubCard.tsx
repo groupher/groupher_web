@@ -36,7 +36,7 @@ const GithubCard: FC = () => {
           <GithubLink wallpaper={wallpaper}>Github</GithubLink>
         </Topping>
         <Title>源代码开放</Title>
-        <Desc>Groupher 建立于开源技术之上，自身也完全开源，欢迎任何形式的参与。</Desc>
+        <Desc>Groupher 建立在开源技术栈之上，自身也完全开源，欢迎任何形式的参与。</Desc>
       </Banner>
       <RepoPreview
         type="frontend"
