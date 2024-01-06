@@ -15,7 +15,7 @@ import {
   FalseChecker,
   ConnectLine,
   Tip,
-  CheckIcon,
+  LogIcon,
   WebhookIcon,
   AuthIcon,
 } from '../../styles/dashboard_intros/cms_tab/content_card'
@@ -33,7 +33,7 @@ const ContentCard: FC = () => {
         Webhook 回调
       </Tip>
       <Tip left={52} top={188}>
-        <CheckIcon />
+        <LogIcon />
         日志追溯
       </Tip>
 

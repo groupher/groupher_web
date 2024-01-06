@@ -29,7 +29,7 @@ const MenuCard: FC = () => {
       <SexyDivider top={10} bottom={10} />
       <MenuItem>
         <Icon.FEATURE />
-        <MenuTitle>功能建议</MenuTitle>
+        <MenuTitle>功能请求</MenuTitle>
         <SpaceGrow />
         <Icon.Arrow />
       </MenuItem>

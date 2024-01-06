@@ -5,7 +5,7 @@ const POST_MENU_OPTIONS = [
   {
     key: 'feedback',
     icon: SVG.FEATURE,
-    title: '功能建议',
+    title: '功能请求',
   },
   {
     key: 'question',

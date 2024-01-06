@@ -1,7 +1,7 @@
 import styled, { css, theme } from '@/css'
 
 import { WithPosition } from '@/widgets/Common'
-import CheckSVG from '@/icons/Post'
+import PostSVG from '@/icons/Post'
 import WebhookSVG from '@/icons/Webhook'
 import AuthSVG from '@/icons/Acount'
 
@@ -13,12 +13,12 @@ export const Wrapper = styled.div`
   border: 1px solid;
   border-color: ${theme('divider')};
   width: 460px;
-  height: 460px;
+  height: 452px;
   border-radius: 10px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   z-index: 10;
   position: absolute;
-  bottom: 120px;
+  bottom: 128px;
   left: 110px;
 `
 export const Tip = styled(WithPosition)`
@@ -35,7 +35,7 @@ export const Tip = styled(WithPosition)`
   border: 1px solid;
   border-color: ${theme('divider')};
 `
-export const CheckIcon = styled(CheckSVG)`
+export const LogIcon = styled(PostSVG)`
   ${css.size(12)};
   fill: #5abeff;
   margin-right: 6px;
