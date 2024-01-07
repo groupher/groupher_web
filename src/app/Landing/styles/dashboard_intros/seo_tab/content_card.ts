@@ -2,7 +2,6 @@ import styled, { css, theme } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.column()};
-  padding: 20px;
   background: #f1f1f19c;
   width: 460px;
   height: 540px;
@@ -12,5 +11,10 @@ export const Wrapper = styled.div`
   bottom: 80px;
   left: 140px;
 `
-export const holder = styled.div`
+export const Content = styled.div`
+  margin-top: 180px;
+  width: 100%;
+  height: 180px;
+  border: 1px solid;
+  border-color: tomato;
 `
