@@ -9,15 +9,15 @@ export const TABS_ITEMS = [
     color: COLOR_NAME.PURPLE,
   },
   {
-    key: DASHBOARD_ROUTE.SEO,
-    title: 'SEO 优化',
-    desc: '自定义主流搜索引擎以及 Twitter 断的关键字等.',
-    color: COLOR_NAME.BLUE,
-  },
-  {
     key: DASHBOARD_ROUTE.POST,
     title: '社区内容管理',
     desc: '管理已发布内容，设置帖子各种属性等。',
+    color: COLOR_NAME.BLUE,
+  },
+  {
+    key: DASHBOARD_ROUTE.SEO,
+    title: 'SEO 优化',
+    desc: '自定义主流搜索引擎以及 Twitter 断的关键字等.',
     color: COLOR_NAME.CYAN,
   },
   {

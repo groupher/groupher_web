@@ -37,7 +37,7 @@ const EnjoyDev: FC = () => {
   return (
     <Wrapper>
       <Slogan>
-        <Tips>Secret Tip !</Tips>
+        <Tips>It's Simple !</Tips>
         <Title>
           上线、<GradientText wallpaper={wallpaper}>获取反馈</GradientText>、迭代
         </Title>
