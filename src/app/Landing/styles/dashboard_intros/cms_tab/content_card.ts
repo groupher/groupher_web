@@ -1,9 +1,11 @@
 import styled, { css, theme } from '@/css'
 
+import Img from '@/Img'
 import { WithPosition } from '@/widgets/Common'
 import PostSVG from '@/icons/Post'
 import WebhookSVG from '@/icons/Webhook'
 import AuthSVG from '@/icons/Acount'
+import UpvoteSVG from '@/icons/Upvote'
 
 export const Wrapper = styled.div`
   ${css.column()};
@@ -44,6 +46,23 @@ export const WebhookIcon = styled(WebhookSVG)`
   ${css.size(14)};
   fill: #20a6fd;
   margin-right: 6px;
+`
+export const UpvoteIcon = styled(UpvoteSVG)`
+  ${css.size(13)};
+  fill: ${theme('article.title')};
+`
+export const UpvoteCount = styled.div`
+  font-size: 13px;
+  fill: ${theme('article.title')};
+  font-weight: 500;
+  margin-left: 5px;
+`
+export const Avatar = styled(Img)`
+  ${css.size(18)};
+  border-radius: 3px;
+  margin-right: 2px;
+  border: 1px solid;
+  border-color: ${theme('htmlBg')};
 `
 export const AuthIcon = styled(AuthSVG)`
   ${css.size(12)};
