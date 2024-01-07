@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import Tabs from './Tabs'
-import ContentCard from './ContentCard'
+import ContentCard from './MainCard'
 import MenuCard from './MenuCard'
 
 import { Wrapper } from '../../styles/dashboard_intros/cms_tab'

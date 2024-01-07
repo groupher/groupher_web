@@ -53,8 +53,8 @@ export const BUILDIN_ALIAS = [
   },
   {
     slug: 'feature',
-    name: '功能建议',
-    original: '功能建议',
+    name: '功能请求',
+    original: '功能请求',
     group: ALIAS_GROUP.KANBAN,
   },
   {

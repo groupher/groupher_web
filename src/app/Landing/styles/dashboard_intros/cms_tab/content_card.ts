@@ -1,9 +1,11 @@
 import styled, { css, theme } from '@/css'
 
+import Img from '@/Img'
 import { WithPosition } from '@/widgets/Common'
-import CheckSVG from '@/icons/Post'
+import PostSVG from '@/icons/Post'
 import WebhookSVG from '@/icons/Webhook'
 import AuthSVG from '@/icons/Acount'
+import UpvoteSVG from '@/icons/Upvote'
 
 export const Wrapper = styled.div`
   ${css.column()};
@@ -13,12 +15,12 @@ export const Wrapper = styled.div`
   border: 1px solid;
   border-color: ${theme('divider')};
   width: 460px;
-  height: 460px;
+  height: 452px;
   border-radius: 10px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   z-index: 10;
   position: absolute;
-  bottom: 120px;
+  bottom: 128px;
   left: 110px;
 `
 export const Tip = styled(WithPosition)`
@@ -35,7 +37,7 @@ export const Tip = styled(WithPosition)`
   border: 1px solid;
   border-color: ${theme('divider')};
 `
-export const CheckIcon = styled(CheckSVG)`
+export const LogIcon = styled(PostSVG)`
   ${css.size(12)};
   fill: #5abeff;
   margin-right: 6px;
@@ -44,6 +46,23 @@ export const WebhookIcon = styled(WebhookSVG)`
   ${css.size(14)};
   fill: #20a6fd;
   margin-right: 6px;
+`
+export const UpvoteIcon = styled(UpvoteSVG)`
+  ${css.size(13)};
+  fill: ${theme('article.title')};
+`
+export const UpvoteCount = styled.div`
+  font-size: 13px;
+  fill: ${theme('article.title')};
+  font-weight: 500;
+  margin-left: 5px;
+`
+export const Avatar = styled(Img)`
+  ${css.size(18)};
+  border-radius: 3px;
+  margin-right: 2px;
+  border: 1px solid;
+  border-color: ${theme('htmlBg')};
 `
 export const AuthIcon = styled(AuthSVG)`
   ${css.size(12)};

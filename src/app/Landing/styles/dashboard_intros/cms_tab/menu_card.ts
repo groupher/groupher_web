@@ -26,7 +26,7 @@ export const Wrapper = styled.div`
 
 export const TagIcon = styled(HashTagBoldSVG)`
   ${css.size(14)};
-  fill: ${theme('rainbow.green')};
+  fill: ${theme('rainbow.blue')};
   margin-right: 6px;
   margin-top: 1px;
 `

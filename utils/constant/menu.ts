@@ -37,7 +37,7 @@ const MENU = {
 export const POST_CAT_MENU_ITEMS = [
   {
     key: ARTICLE_CAT.FEATURE,
-    desc: '提需求，功能建议等',
+    desc: '功能请求，提建议等',
     icon: MENU.FEATURE,
   },
   {
