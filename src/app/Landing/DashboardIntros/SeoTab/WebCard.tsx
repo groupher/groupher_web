@@ -34,7 +34,7 @@ const WebCard: FC = () => {
         </LogoWrapper>
         <XHSLogo src="/landing/seo/xhs.png" $size={21} />
         <SpaceGrow />
-        <Hint>标准 OpenGraph 协议</Hint>
+        <Hint>OpenGraph 协议</Hint>
       </Footer>
     </Wrapper>
   )

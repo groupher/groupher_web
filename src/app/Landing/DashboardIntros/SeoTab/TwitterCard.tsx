@@ -8,6 +8,7 @@ import {
   Url,
   Title,
   Cover,
+  XIcon,
   Content,
   Footer,
   CommentIcon,
@@ -22,7 +23,9 @@ const TwitterCard: FC = () => {
   return (
     <Wrapper>
       <Card>
-        <Cover />
+        <Cover>
+          <XIcon />
+        </Cover>
         <Content>
           <Url>https://motuojie.com</Url>
           <Title>Motojie - (摩界)</Title>

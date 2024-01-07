@@ -25,12 +25,13 @@ export const Url = styled.div`
   margin-bottom: 2px;
 `
 export const Title = styled.div`
-  color: #1a0dab;
+  // color: #1a0dab;
+  color: ${theme('article.title')};
   font-size: 18px;
 `
 export const Desc = styled.div`
   font-size: 12px;
-  color: #4d5156;
+  color: ${theme('article.digest')};
   margin-top: 4px;
 `
 export const Hint = styled.div`

@@ -5,17 +5,19 @@ import HeartSVG from '@/icons/Heart'
 import RetweetSVG from '@/icons/Retweet'
 import ViewSVG from '@/icons/TwView'
 import TwMarkSVG from '@/icons/BookMark'
+import XSVG from '@/icons/X'
 
 export const Wrapper = styled.div`
   ${css.column()};
   padding: 16px;
-  padding-bottom: 5px;
+  padding-top: 12px;
+  padding-bottom: 0;
   background: ${theme('htmlBg')};
   color: ${theme('article.digest')};
   border: 1px solid;
   border-color: ${theme('divider')};
   width: 445px;
-  height: 160px;
+  height: 150px;
   border-radius: 10px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px -1px 24px;
   z-index: 2;
@@ -32,8 +34,13 @@ export const Card = styled.div`
   border-color: ${theme('divider')};
   overflow: hidden;
 `
+export const XIcon = styled(XSVG)`
+  ${css.size(40)};
+  fill: ${theme('hint')};
+`
 export const Cover = styled.div`
   ${css.size(100)};
+  ${css.row('align-both')};
   min-widtH: 100px;
   background: ${theme('hoverBg')};
   border-right: 1px solid;
@@ -51,10 +58,9 @@ export const Title = styled.div`
   font-size: 14px;
   margin-bottom: 2px;
 `
-
 export const Footer = styled.div`
   ${css.row('align-center')};
-  margin-top: 10px;
+  margin-top: 8px;
   padding: 0 10px;
 `
 export const CommentIcon = styled(CommentSVG)`
