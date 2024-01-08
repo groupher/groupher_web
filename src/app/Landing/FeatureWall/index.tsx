@@ -25,7 +25,7 @@ const FeatureWall: FC = () => {
     <Wrapper>
       <Slogan>
         <Title>自带电池、开箱即用</Title>
-        <Desc>无需繁琐配置，即刻拥有功能完善的反馈社区。</Desc>
+        <Desc>无需繁琐配置，即刻拥有功能完善的反馈社区</Desc>
       </Slogan>
       <CardsWrapper>
         <LeftCards>

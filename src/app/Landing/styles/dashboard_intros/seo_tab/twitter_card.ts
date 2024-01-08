@@ -64,7 +64,7 @@ export const Footer = styled.div`
   padding: 0 10px;
 `
 export const CommentIcon = styled(CommentSVG)`
-  ${css.size(11)};
+  ${css.size(12)};
   fill: ${theme('hint')};
 `
 export const HeartIcon = styled(HeartSVG)`

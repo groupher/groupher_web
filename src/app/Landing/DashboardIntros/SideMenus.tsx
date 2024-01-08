@@ -8,9 +8,6 @@ import { TABS_ITEMS } from './constant'
 import {
   Wrapper,
   InnerWrapper,
-  Header,
-  Title,
-  Desc,
   Tabs,
   TabItem,
   ItemTitle,
@@ -26,11 +23,6 @@ const SideMenus: FC<TProps> = ({ tab, onChange }) => {
   return (
     <Wrapper>
       <InnerWrapper>
-        <Header>
-          <Title>完善的后台管理</Title>
-          <Desc>强大的自定义设置，所见即所得，满足你的品牌个性化及内容管理需要。</Desc>
-        </Header>
-
         <Tabs>
           {TABS_ITEMS.map((item) => {
             const $active = tab === item.key

@@ -33,10 +33,22 @@ export const TABS_ITEMS = [
     color: COLOR_NAME.PINK,
   },
   {
+    key: DASHBOARD_ROUTE.TREND,
+    title: '富文本编辑',
+    desc: '社区主要统计指标，服务提供商等设定。',
+    color: COLOR_NAME.RED,
+  },
+  {
     key: DASHBOARD_ROUTE.HEADER,
     title: '页头 / 页脚自定义',
     desc: '自定义社区页头以及页脚的自定链接（组）。',
     color: COLOR_NAME.ORANGE,
+  },
+  {
+    key: DASHBOARD_ROUTE.INOUT,
+    title: '导入数据',
+    desc: '设置集成到目标网站的各种组件的相关属性。',
+    color: COLOR_NAME.GREEN,
   },
   {
     key: DASHBOARD_ROUTE.WIDGETS,
