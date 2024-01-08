@@ -1,8 +1,8 @@
-import styled, { css, theme } from '@/css'
+import styled, { css } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.column()};
-  background: #f1f1f19c;
+  background: #f1f1f163;
   width: 460px;
   height: 540px;
   border-radius: 15px;
@@ -11,10 +11,4 @@ export const Wrapper = styled.div`
   bottom: 80px;
   left: 140px;
 `
-export const Content = styled.div`
-  margin-top: 180px;
-  width: 100%;
-  height: 180px;
-  border: 1px solid;
-  border-color: tomato;
-`
+export const holder = 1

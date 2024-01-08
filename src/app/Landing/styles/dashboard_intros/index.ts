@@ -1,11 +1,14 @@
 import styled, { css, theme } from '@/css'
 
+import type { TIntroTab } from '../../DashboardIntros/spec'
+import { gradientColor } from './metric'
+
 export const Wrapper = styled.div`
   width: 100%;
 `
-export const InnerWrapper = styled.div`
+export const InnerWrapper = styled.div<{ $tab: TIntroTab }>`
   ${css.row('align-both')};
-  background: linear-gradient(rgb(236 229 255 / 30%) 0%, rgb(253 253 253 / 96%) 100%);
+  background: ${({ $tab }) => gradientColor($tab)};
   width: 100%;
   height: 720px;
   position: relative;

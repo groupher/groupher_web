@@ -1,8 +1,8 @@
 import { FC, useState } from 'react'
 
-import type { TDashboardPath } from '@/spec'
 import { DASHBOARD_ROUTE } from '@/constant/route'
 
+import type { TIntroTab } from './spec'
 import SideMenus from './SideMenus'
 import LayoutTab from './LayoutTab'
 import SeoTab from './SeoTab'
@@ -16,7 +16,7 @@ import TrendTab from './TrendTab'
 import { Wrapper, InnerWrapper, Slogan, Title, Desc, Right } from '../styles/dashboard_intros'
 
 const DashboardIntros: FC = () => {
-  const [tab, setTab] = useState<TDashboardPath>(DASHBOARD_ROUTE.LAYOUT)
+  const [tab, setTab] = useState<TIntroTab>(DASHBOARD_ROUTE.LAYOUT)
 
   return (
     <Wrapper>
@@ -25,7 +25,7 @@ const DashboardIntros: FC = () => {
         <Desc>强大的自定义设置，满足你的品牌个性化及内容管理需要</Desc>
       </Slogan>
 
-      <InnerWrapper>
+      <InnerWrapper $tab={tab}>
         <SideMenus tab={tab} onChange={(tab) => setTab(tab)} />
         <Right>
           {tab === DASHBOARD_ROUTE.LAYOUT && <LayoutTab />}

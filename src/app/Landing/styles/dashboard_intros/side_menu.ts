@@ -5,6 +5,7 @@ export const Wrapper = styled.div`
   ${css.column('align-both')};
   width: 300px;
   height: 100%;
+  margin-top: 20px;
   padding-left: 60px;
 `
 export const InnerWrapper = styled.div`
@@ -69,8 +70,8 @@ export const ItemTitle = styled.div<TActive>`
 `
 export const ItemDesc = styled.div`
   font-size: 15px;
-  margin-top: 3px;
+  margin-top: 4px;
   width: 230px;
   font-weight: 400;
-  color: ${theme('hint')};
+  color: ${theme('article.digest')};
 `

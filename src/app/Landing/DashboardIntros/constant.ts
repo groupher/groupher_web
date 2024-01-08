@@ -33,7 +33,7 @@ export const TABS_ITEMS = [
     color: COLOR_NAME.PINK,
   },
   {
-    key: DASHBOARD_ROUTE.TREND,
+    key: 'richeditor',
     title: '富文本编辑',
     desc: '社区主要统计指标，服务提供商等设定。',
     color: COLOR_NAME.RED,

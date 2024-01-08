@@ -1,8 +1,8 @@
 import { FC } from 'react'
 
-import type { TDashboardPath } from '@/spec'
 import ArrowLinker from '@/widgets/ArrowLinker'
 
+import type { TIntroTab } from './spec'
 import { TABS_ITEMS } from './constant'
 
 import {
@@ -15,8 +15,8 @@ import {
 } from '../styles/dashboard_intros/side_menu'
 
 type TProps = {
-  tab: TDashboardPath
-  onChange: (tab: TDashboardPath) => void
+  tab: TIntroTab
+  onChange: (tab: TIntroTab) => void
 }
 
 const SideMenus: FC<TProps> = ({ tab, onChange }) => {
@@ -30,7 +30,7 @@ const SideMenus: FC<TProps> = ({ tab, onChange }) => {
               <TabItem
                 key={item.key}
                 $active={$active}
-                onClick={() => onChange(item.key)}
+                onClick={() => onChange(item.key as TIntroTab)}
                 $color={item.color}
               >
                 <ItemTitle $active={$active}>{item.title}</ItemTitle>
