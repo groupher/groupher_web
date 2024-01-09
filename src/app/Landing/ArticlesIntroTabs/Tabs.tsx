@@ -12,13 +12,13 @@ const TAB_ITEMS = [
   {
     key: THREAD.POST,
     title: '讨论区',
-    desc: '功能建议 / Bug / 疑问 / 交流',
+    desc: '功能请求 / Bug / 问题 / 交流',
     color: COLOR_NAME.PURPLE,
   },
   {
     key: THREAD.KANBAN,
     title: '看板',
-    desc: '规划中 / 正在进行 / 已完成',
+    desc: '已规划 / 进行中 / 已完成',
     color: COLOR_NAME.BLUE,
   },
   {
@@ -30,7 +30,7 @@ const TAB_ITEMS = [
   {
     key: THREAD.DOC,
     title: '帮助台',
-    desc: '帮助文档 / 产品手册',
+    desc: '文档中心 / 产品手册',
     color: COLOR_NAME.CYAN,
   },
 ]
