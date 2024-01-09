@@ -86,6 +86,7 @@ export const GithubIcon = styled(GithubSVG)<{ wallpaper: string }>`
   ${css.size(15)};
   fill: ${({ wallpaper }) => getCursorGradient(wallpaper)};
   margin-right: 5px;
+  margin-top: 1px;
 
   ${css.media.mobile`
     ${css.size(15)};

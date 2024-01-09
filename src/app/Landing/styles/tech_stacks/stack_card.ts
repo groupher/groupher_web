@@ -1,7 +1,7 @@
 import styled, { css, theme } from '@/css'
 import Img from '@/Img'
 
-import GithubSVG from '@/icons/Thunder'
+import HammerSVG from '@/icons/HammerSolid'
 import { GradientText } from '..'
 import { getCursorGradient } from '../metric'
 
@@ -77,9 +77,12 @@ export const Topping = styled.div`
   margin-bottom: 5px;
   margin-left: -2px;
 `
-export const ThunderIcon = styled(GithubSVG)<{ wallpaper: string }>`
-  ${css.size(24)};
+export const HammerIcon = styled(HammerSVG)<{ wallpaper: string }>`
+  ${css.size(15)};
   fill: ${({ wallpaper }) => getCursorGradient(wallpaper)};
+  margin-right: 4px;
+  margin-top: 1px;
+  margin-left: 5px;
 
   ${css.media.mobile`
     ${css.size(15)};

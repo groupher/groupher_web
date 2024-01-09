@@ -15,7 +15,7 @@ import {
   CADBackground,
   Topping,
   HighlightText,
-  ThunderIcon,
+  HammerIcon,
 } from '../styles/tech_stacks/stack_card'
 
 const StackCard: FC = () => {
@@ -26,7 +26,7 @@ const StackCard: FC = () => {
     <Wrapper>
       <Banner>
         <Topping>
-          <ThunderIcon wallpaper={wallpaper} />
+          <HammerIcon wallpaper={wallpaper} />
           <HighlightText wallpaper={wallpaper}>Techstack</HighlightText>
         </Topping>
 
