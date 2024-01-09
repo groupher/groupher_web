@@ -1,19 +1,17 @@
-import styled, { css, theme, animate } from '@/css'
-import type { TSpace } from '@/spec'
+import styled, { css, theme } from '@/css'
+import type { TActive, TSpace } from '@/spec'
 
-import PlugSVG from '@/icons/Plug'
 import EmojiSVG from '@/icons/HeartDuo'
 import UserSVG from '@/icons/UserDuo'
 import LaptopSVG from '@/icons/LaptopDuo'
 import CloudSVG from '@/icons/CloudDuo'
 import FingerPrintSVG from '@/icons/FingerPrintDuo'
 import SearchSVG from '@/icons/SearchDuo'
-import PointSVG from '@/icons/PointDuo'
 //
 import TriangleSVG from '@/icons/TriangleDuo'
 import SquareSVG from '@/icons/SquareDuo'
 import CircleSVG from '@/icons/CircleDuo'
-import HexagonSVG from '@/icons/HexagonDuo'
+import StarSVG from '@/icons/StarDuo'
 import DiamandSVG from '@/icons/DiamandDuo'
 import SqaureSrewSVG from '@/icons/SqaureSrewDuo'
 
@@ -31,15 +29,19 @@ export const InnerWrapper = styled.div`
   height: auto;
   position: relative;
 `
+type TIcon = TSpace & TActive
 const commonIcon = (comp) => {
-  return styled(comp)<TSpace>`
+  return styled(comp)<TIcon>`
     ${css.size(15)};
-    fill: #d2d2d2;
+    fill: ${({ $active }) => ($active ? theme('article.digest') : '#d2d2d2')};
     position: absolute;
     ${({ top }) => (top !== undefined ? `top: ${top}px;` : '')};
     ${({ left }) => (left !== undefined ? `left: ${left}px;` : '')};
     ${({ bottom }) => (bottom !== undefined ? `bottom: ${bottom}px;` : '')};
     ${({ right }) => (right !== undefined ? `right: ${right}px;` : '')};
+
+    transform: ${({ $active }) => ($active ? 'rotate(360deg)' : '')};
+    transition: all .8s;
   `
 }
 
@@ -47,7 +49,7 @@ export const Icon = {
   Triangle: commonIcon(TriangleSVG),
   Square: commonIcon(SquareSVG),
   Circle: commonIcon(CircleSVG),
-  Hexagon: commonIcon(HexagonSVG),
+  Star: commonIcon(StarSVG),
   Diamand: commonIcon(DiamandSVG),
   SqaureSrew: commonIcon(SqaureSrewSVG),
 }
@@ -55,8 +57,8 @@ export const Block = styled.div`
   ${css.column()};
   width: 33.3%;
   height: 130px;
-  padding: 10px 40px;
-  padding-bottom: 8px;
+  padding: 0 40px;
+  padding-top: 5px;
 `
 export const UserIcon = styled(UserSVG)`
   fill: purple;
@@ -90,13 +92,14 @@ export const FingerPrintIcon = styled(FingerPrintSVG)`
 `
 export const Title = styled.div`
   font-size: 15px;
-  color: ${theme('article.title')};
+  color: ${theme('article.digest')};
+  font-weight: 500;
   margin-top: 20px;
   margin-bottom: 7px;
 `
 export const Desc = styled.div`
-  font-size: 13px;
-  line-height: 20px;
+  font-size: 14px;
+  line-height: 21px;
   color: ${theme('article.digest')};
   opacity: 0.9;
 `

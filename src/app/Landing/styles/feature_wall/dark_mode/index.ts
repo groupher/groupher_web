@@ -51,6 +51,6 @@ export const Title = styled.div`
 `
 export const Desc = styled.div`
   color: ${theme('article.digest')};
-  font-size: 13px;
+  font-size: 14px;
   opacity: 0.8;
 `
