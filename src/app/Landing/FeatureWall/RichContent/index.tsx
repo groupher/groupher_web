@@ -14,7 +14,7 @@ const RichContent: FC = () => {
       <Panel hovering={isCardHovered} />
       <Footer>
         <Title>富文本内容</Title>
-        <Desc>支持主流富文本内容，兼容 Markdown。</Desc>
+        <Desc>支持主流富文本内容及多媒体，兼容 Markdown。</Desc>
       </Footer>
     </Wrapper>
   )

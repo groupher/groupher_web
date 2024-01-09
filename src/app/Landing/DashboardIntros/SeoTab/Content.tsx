@@ -18,7 +18,7 @@ const Content: FC = () => {
         <Title>ogUrl</Title>
         <Desc>https://motuojie.com</Desc>
         <Title>ogTitle</Title>
-        <Desc>Motuojie - (摩面)</Desc>
+        <Desc>Motuojie - (摩界)</Desc>
         <Title>ogDescription</Title>
         <Desc>发现复古摩托车的魅力...</Desc>
         <Brick $width={100} top={150} left={10} $opacity={0.12} />
@@ -31,7 +31,7 @@ const Content: FC = () => {
         <Title>twUrl</Title>
         <Desc>https://motuojie.com</Desc>
         <Title>twTitle</Title>
-        <Desc>Motuojie - (摩面)</Desc>
+        <Desc>Motuojie - (摩界)</Desc>
         <Title>twDescription</Title>
         <Desc>发现复古摩托车的魅力...</Desc>
         <Brick $width={100} top={150} left={68} $opacity={0.12} />
