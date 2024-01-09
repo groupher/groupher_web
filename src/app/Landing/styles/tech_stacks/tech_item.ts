@@ -25,6 +25,11 @@ export const TeckIcon = styled(Img)<{ size?: number }>`
     ${css.size(30)};
   `};
 `
+export const NotesIcon = styled(TeckIcon)`
+  filter: none;
+  filter: drop-shadow(2px 4px 6px rgb(220 222 225 / 54%));
+`
+
 export const Name = styled.div`
   color: ${theme('article.title')};
   font-size: 13px;
