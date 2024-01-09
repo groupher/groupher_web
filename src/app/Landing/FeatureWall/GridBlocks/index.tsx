@@ -37,8 +37,8 @@ const GridBlocks: FC = () => {
         <Icon.Circle right={325} top={-7} $active={includes('2', SHINE_DOTS[shineIdx])} />
         <Icon.SqaureSrew left={325} top={164} $active={includes('3', SHINE_DOTS[shineIdx])} />
         <Icon.Diamand right={325} top={164} $active={includes('4', SHINE_DOTS[shineIdx])} />
-        <Icon.Star right={325} bottom={-7} $active={includes('5', SHINE_DOTS[shineIdx])} />
-        <Icon.Triangle left={325} bottom={-7} $active={includes('6', SHINE_DOTS[shineIdx])} />
+        <Icon.Star right={325} bottom={-6} $active={includes('5', SHINE_DOTS[shineIdx])} />
+        <Icon.Triangle left={325} bottom={-6} $active={includes('6', SHINE_DOTS[shineIdx])} />
 
         {BLOCKS.map((block) => (
           <>

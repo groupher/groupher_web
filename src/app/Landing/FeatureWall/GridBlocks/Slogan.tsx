@@ -7,10 +7,10 @@ const Slogan: FC = () => {
     <>
       <Topping>
         <PlugIcon />
-        Biz~ biz~
+        Bizz~
       </Topping>
       <Main>
-        除此之外，我们明白这些特性也至关重要，所以还内置了 <PoinstIcon />
+        除此之外，我们深知这些细节也至关重要，所以还内置了 <PoinstIcon />
       </Main>
     </>
   )
