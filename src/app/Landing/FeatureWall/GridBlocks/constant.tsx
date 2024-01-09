@@ -16,7 +16,7 @@ export const BLOCKS = [
   },
   {
     key: 2,
-    title: '表情反馈',
+    title: 'Emoji 反馈',
     desc: '自带垃圾信息过滤机制，也对可自定义拉黑恶意账户，远离阴阳人',
     icon: <EmojiIcon />,
   },
