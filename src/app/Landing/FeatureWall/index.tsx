@@ -9,6 +9,8 @@ import Design from './Design'
 import Integration from './Integration'
 import Statistics from './Statistics'
 
+import GridBlocks from './GridBlocks'
+
 import {
   Wrapper,
   Slogan,
@@ -43,6 +45,8 @@ const FeatureWall: FC = () => {
         <Statistics />
         <Design />
       </FooterCards>
+
+      <GridBlocks />
     </Wrapper>
   )
 }
