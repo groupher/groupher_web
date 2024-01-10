@@ -37,7 +37,7 @@ const METRIC = {
   },
 
   [ARTICLE_CAT.FEATURE]: {
-    title: '功能需求',
+    title: '功能请求',
     upvoteText: '支持',
     upvoteNum: 13,
     delay: 4000,
@@ -72,7 +72,7 @@ const NodeBlock: FC<TProps> = ({ cat = 'DEFAULT', index = -1 }) => {
   const colors = getNodeBlockColors(cat)
 
   return (
-    <Wrapper $color={colors.border}>
+    <Wrapper $color={colors.bg}>
       {cat === 'DEFAULT' && index === 0 && (
         <LeftInfo $bottom="39px">
           <LeftDot $bg="#888888" />
@@ -81,9 +81,9 @@ const NodeBlock: FC<TProps> = ({ cat = 'DEFAULT', index = -1 }) => {
 
       <RightDot $bg={colors.main} $middle={cat === 'DEFAULT'} />
 
-      <Header $bg={colors.headerBg}>
-        <HeadIcon $color={colors.main} />
-        <Text $color={colors.main}>{metric.title}</Text>
+      <Header>
+        <HeadIcon $color={colors.bg} />
+        <Text $color={colors.bg}>{metric.title}</Text>
       </Header>
       <Content $bg={colors.contentBg}>
         <Bar $bg={colors.barBg} />
@@ -104,7 +104,7 @@ const NodeBlock: FC<TProps> = ({ cat = 'DEFAULT', index = -1 }) => {
               num={metric.upvoteNum}
               delay={metric.delay}
               dividerColor={colors.barBg}
-              mainColor={colors.main}
+              mainColor={colors.bg}
             />
           )}
           <SpaceGrow />

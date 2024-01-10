@@ -9,17 +9,20 @@ export const Wrapper = styled.div<{ color: string }>`
   border-color: ${({ color }) => color || theme('divider')};
   border-radius: 5px;
   margin-left: -1px;
+  filter: saturate(0.6);
 `
 export const UpvoteIcon = styled(UpvoteSVG)<{ color: string }>`
-  ${css.size(12)};
+  ${css.size(14)};
   fill: ${({ color }) => color || theme('article.digest')};
-  transform: scaleY(0.85);
-  opacity: 0.8;
+  opacity: 0.4;
   margin-top: -1px;
 `
-
 export const Text = styled.div<{ color: string }>`
   color: ${({ color }) => color || theme('article.title')};
   font-size: 13px;
   margin-left: 6px;
+  opacity: 0.6;
+`
+export const Counter = styled.div`
+  opacity: 0.6;
 `
