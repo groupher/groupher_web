@@ -27,7 +27,6 @@ export const Avatar = styled(Img)`
   ${css.size(25)};
   border-radius: 5px;
   opacity: 0.8;
-  filter: saturate(0.7);
   box-shadow: ${theme('button.boxShadow')};
 `
 export const Say = styled.div`
