@@ -10,6 +10,11 @@ import QuestionSVG from '@/icons/Question'
 import DiscussSVG from '@/icons/Discuss'
 import ToolSVG from '@/icons/Tool'
 
+import PinSVG from '@/icons/Pin'
+import TagSVG from '@/icons/HashTag'
+import TargetSVG from '@/icons/TargetBold'
+import ClipSVG from '@/icons/Clip'
+
 type TWrapper = { $longer?: boolean } & TColor
 export const Wrapper = styled.div<TWrapper>`
   position: relative;
@@ -28,7 +33,7 @@ export const Wrapper = styled.div<TWrapper>`
   z-index: 1;
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     top: 0;
@@ -41,7 +46,7 @@ export const Wrapper = styled.div<TWrapper>`
   }
 
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     top: 0;
@@ -52,56 +57,74 @@ export const Wrapper = styled.div<TWrapper>`
     border-radius: 16px;
     opacity: ${({ $color }) => ($color === COLOR_NAME.BLACK ? 0.06 : 0.12)};
   }
-
 `
 export const Header = styled.div`
   ${css.row('align-center')};
-  padding: 2px 10px;
+  padding: 0 10px;
+  padding-bottom: 3px;
   height: 35px;
   border-radius: 10px;
   opacity: 0.68;
   filter: saturate(0.8);
   z-index: 2;
 `
-export const Text = styled.div<{ $color: string }>`
-  color: ${({ $color }) => $color || theme('article.title')};
+export const Text = styled.div<TColor>`
+  color: ${({ $color }) => $color || theme('article.digest')};
   font-size: 13px;
   margin-left: 4px;
 `
-const LightIcon = styled(LightSVG)<{ $color: string }>`
-  fill: ${({ $color }) => $color || theme('article.title')};
-  ${css.size(13)};
-`
-const DiscussIcon = styled(DiscussSVG)<{ $color: string }>`
-  fill: ${({ $color }) => $color || theme('article.title')};
-  ${css.size(12)};
-  margin-left: 1px;
-  margin-top: 1px;
-  opacity: 0.8;
-`
-const BugIcon = styled(BugSVG)<{ $color: string }>`
-  ${css.size(12)};
-  fill: ${({ $color }) => $color || theme('article.title')};
-  margin-right: 2px;
-`
-const QuestionIcon = styled(QuestionSVG)<{ $color: string }>`
-  ${css.size(12)};
-  fill: ${({ $color }) => $color || theme('article.title')};
-  margin-right: 2px;
-`
-
-const ToolIcon = styled(ToolSVG)<{ $color: string }>`
-  ${css.size(9)};
-  fill: ${({ $color }) => $color || theme('article.title')};
-  margin-right: 2px;
-`
-
+const catCommonIcon = (comp) => {
+  return styled(comp)<TColor>`
+    ${css.size(12)};
+    fill: ${({ $color }) => $color};
+    margin-right: 2px;
+  `
+}
 export const Icon = {
-  [ARTICLE_CAT.FEATURE]: LightIcon,
-  [ARTICLE_CAT.BUG]: BugIcon,
-  [ARTICLE_CAT.QUESTION]: QuestionIcon,
-  [ARTICLE_CAT.OTHER]: DiscussIcon,
-  DEFAULT: ToolIcon,
+  [ARTICLE_CAT.FEATURE]: catCommonIcon(LightSVG),
+  [ARTICLE_CAT.BUG]: styled(catCommonIcon(BugSVG))`
+    margin-top: -2px;
+  `,
+  [ARTICLE_CAT.QUESTION]: catCommonIcon(QuestionSVG),
+  [ARTICLE_CAT.OTHER]: styled(catCommonIcon(DiscussSVG))`
+    margin-left: 1px;
+    margin-top: 1px;
+    opacity: 0.8;
+  `,
+  DEFAULT: styled(catCommonIcon(ToolSVG))`
+    ${css.size(9)};
+    fill: ${theme('article.digest')};
+  `,
+}
+
+const attachCommonIcon = (comp) => {
+  return styled(comp)<TColor>`
+    ${css.size(15)};
+    position: absolute;
+    right: 15px;
+    top: -6px;
+    fill: ${({ $color }) => $color};
+    opacity: 0.3;
+  `
+}
+
+export const AttachIcon = {
+  Pin: styled(attachCommonIcon(PinSVG))`
+    ${css.size(18)};
+    right: 10px;
+    transform: rotate(20deg);
+  `,
+  Tag: styled(attachCommonIcon(TagSVG))`
+    transform: rotate(20deg);
+  `,
+  Target: styled(attachCommonIcon(TargetSVG))`
+    opacity: 0.4;
+  `,
+  Clip: styled(attachCommonIcon(ClipSVG))`
+    ${css.size(17)};
+    top: -7px;
+    transform: rotate(-30deg);
+  `,
 }
 
 export const Content = styled.div<{ $bg: string }>`

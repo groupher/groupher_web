@@ -30,7 +30,7 @@ const Avatar: FC<TProps> = ({
 }) => {
   const avatarLayout = useAvatarLayout()
 
-  const name = user?.nickname
+  const name = user?.login
   const sliceCount = size >= 30 ? 2 : 1
 
   const color = getLetterColor(name)

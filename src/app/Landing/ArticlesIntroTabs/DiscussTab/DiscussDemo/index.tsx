@@ -106,10 +106,10 @@ const DiscussDemo: FC = () => {
           <SpaceGrow />
           <Bar top={5} height={3} width={26} opacity={0.2} right={-3} />
         </CommentsHeader>
-        <CommentItem index={0} user={users[0]} nickname="托雷斯" opacity={0.9} />
-        <CommentItem index={1} user={users[1]} nickname="伊涅斯塔" opacity={0.68} />
-        <CommentItem index={2} user={users[2]} nickname="张志磊" opacity={0.42} />
-        <CommentItem index={3} user={users[4]} nickname="丁主任" opacity={0.25} />
+        <CommentItem index={0} user={users[0]} opacity={0.9} />
+        <CommentItem index={1} user={users[1]} opacity={0.68} />
+        <CommentItem index={2} user={users[2]} opacity={0.42} />
+        <CommentItem index={3} user={users[4]} opacity={0.25} />
       </DetailWrapper>
     </Wrapper>
   )
