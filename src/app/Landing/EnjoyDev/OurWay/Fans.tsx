@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 import { useParallax } from 'react-scroll-parallax'
 
-import Facepile from '@/widgets/Facepile'
+import Facepile from '@/widgets/Facepile/LandingPage'
 import { mockUsers } from '@/mock'
 
 import {
@@ -39,22 +39,22 @@ const Fans: FC = () => {
 
       <CommentUsers left={200} top={180} $rotate={1} $width={88}>
         <DiscussIcon />
-        <Facepile users={users.slice(0, 2)} showMore={false} size="medium" left={6} />
+        <Facepile users={users.slice(0, 2)} left={6} />
       </CommentUsers>
 
-      <CommentUsers left={40} bottom={100} $rotate={-5} $width={108}>
+      <CommentUsers left={40} bottom={100} $rotate={-5} $width={116}>
         <Emoji src="icons/emotion/biceps.png" />
-        <Facepile users={users.slice(0, 3)} showMore={false} size="medium" left={6} />
+        <Facepile users={users.slice(0, 3)} left={6} />
       </CommentUsers>
 
-      <CommentUsers left={420} bottom={80} $rotate={3} $width={108}>
+      <CommentUsers left={420} bottom={80} $rotate={3} $width={116}>
         <Emoji src="icons/emotion/heart.png" />
-        <Facepile users={users.slice(0, 3)} showMore={false} size="medium" left={6} />
+        <Facepile users={users.slice(2, 5)} left={6} />
       </CommentUsers>
 
-      <CommentUsers right={140} top={110} $rotate={-3} $width={128}>
+      <CommentUsers right={140} top={110} $rotate={-3} $width={136}>
         <Emoji src="icons/emotion/beer.png" />
-        <Facepile users={users} showMore={false} size="medium" left={6} />
+        <Facepile users={users.slice(3, 7)} left={6} />
       </CommentUsers>
     </Wrapper>
   )

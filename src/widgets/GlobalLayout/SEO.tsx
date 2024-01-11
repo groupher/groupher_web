@@ -37,7 +37,7 @@ const SEO: FC = () => {
 
   switch (metric) {
     case METRIC.HOME: {
-      const title = 'Groupher | 让你的产品聆听用户的声音'
+      const title = 'Groupher | 让你的产品听见用户的声音'
       const description = SITE_SLOGAN
 
       return (

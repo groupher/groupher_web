@@ -44,5 +44,4 @@ export const DiscussIcon = styled(DiscussSVG)`
 
 export const Emoji = styled(Img)`
   ${css.size(18)};
-  margin-left: 4px;
 `

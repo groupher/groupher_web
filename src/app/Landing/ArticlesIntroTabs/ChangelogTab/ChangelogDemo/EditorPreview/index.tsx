@@ -23,7 +23,7 @@ const EditorPreview: FC = () => {
     <Wrapper>
       <Header>
         <Title>
-          文章封面图编辑器 <Version>v2.0</Version>
+          船新封面图编辑器 <Version>v2.0</Version>
         </Title>
 
         <TagsWrapper>

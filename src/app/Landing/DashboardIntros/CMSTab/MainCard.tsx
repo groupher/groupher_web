@@ -40,7 +40,7 @@ const ContentCard: FC = () => {
         日志追溯
       </Tip>
 
-      <ConnectLine left={180} top={124} />
+      <ConnectLine left={185} top={122} />
       <Item>
         <FalseChecker />
         <Brick $width={390} left={28} $opacity={0.06} />
