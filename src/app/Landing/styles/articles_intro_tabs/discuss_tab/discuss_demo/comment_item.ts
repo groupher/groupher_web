@@ -9,7 +9,7 @@ export const Wrapper = styled.div<{ opacity: number }>`
   margin-bottom: 12px;
 `
 export const Avatar = styled(Img)`
-  ${css.size(20)};
+  ${css.size(24)};
   border-radius: 4px;
 `
 export const Nicname = styled.div`

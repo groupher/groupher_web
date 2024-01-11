@@ -14,18 +14,17 @@ import {
 
 type TProps = {
   user?: TUser
-  nickname?: string
   opacity?: number
   width?: number
   index?: number
 }
 
-const CommentItem: FC<TProps> = ({ user, nickname = '', opacity = 1, index = 0, width = 30 }) => {
+const CommentItem: FC<TProps> = ({ user, opacity = 1, index = 0, width = 30 }) => {
   return (
     <Wrapper opacity={opacity}>
       <Avatar src={user.avatar} fallback={<ImgFallback size={24} user={user} />} />
       <RightPart>
-        <Nicname>{nickname}</Nicname>
+        <Nicname>{user.nickname}</Nicname>
         {index === 1 ? (
           <Bar top={5} height={4} width={width + 150} bottom={1} />
         ) : (

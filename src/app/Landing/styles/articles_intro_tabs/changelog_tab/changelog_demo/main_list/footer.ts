@@ -9,9 +9,9 @@ export const Wrapper = styled.div`
 `
 export const UpvoteWrapper = styled.div`
   ${css.row('align-both')};
-  margin-left: -4px;
-  height: 18px;
-  width: 38px;
+  margin-left: -2px;
+  height: 22px;
+  width: 42px;
   opacity: 0.8;
   border: 1px solid;
   border-color: ${theme('divider')};
@@ -24,8 +24,8 @@ export const UpvoteIcon = styled(UpvoteSVG)`
 export const UpvoteCount = styled.div`
   color: ${theme('article.digest')};
   font-weight: 500;
-  font-size: 10px;
-  margin-left: 2px;
+  font-size: 12px;
+  margin-left: 4px;
 `
 export const UsersWrapper = styled.div`
   transform: scale(0.85);

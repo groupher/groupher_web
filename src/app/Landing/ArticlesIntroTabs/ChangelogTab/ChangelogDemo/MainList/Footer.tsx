@@ -3,7 +3,7 @@ import { FC } from 'react'
 import { mockUsers } from '@/mock'
 
 import { SpaceGrow } from '@/widgets/Common'
-import Facepile from '@/widgets/Facepile'
+import Facepile from '@/widgets/Facepile/LandingPage'
 
 import {
   Wrapper,

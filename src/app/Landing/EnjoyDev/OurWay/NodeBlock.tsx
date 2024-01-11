@@ -6,6 +6,7 @@ import { ARTICLE_CAT } from '@/constant/gtd'
 
 import { SpaceGrow } from '@/widgets/Common'
 
+import { METRIC } from '../constant'
 import UpdateCounter from './UpdateCounter'
 import SprintCounter from './SprintCounter'
 
@@ -14,6 +15,7 @@ import {
   Wrapper,
   Header,
   Content,
+  AttachIcon,
   Bar,
   Icon,
   Text,
@@ -28,43 +30,6 @@ type TProps = {
   index?: number
 }
 
-const METRIC = {
-  DEFAULT: {
-    title: '日常迭代',
-    upvoteText: 'Sprint',
-    upvoteNum: 2,
-    delay: 5000,
-  },
-
-  [ARTICLE_CAT.FEATURE]: {
-    title: '功能请求',
-    upvoteText: '支持',
-    upvoteNum: 13,
-    delay: 4000,
-  },
-
-  [ARTICLE_CAT.OTHER]: {
-    title: '讨论',
-    upvoteText: '赞同',
-    upvoteNum: 18,
-    delay: 2000,
-  },
-
-  [ARTICLE_CAT.BUG]: {
-    title: 'Bug',
-    upvoteText: '同样遇到',
-    upvoteNum: 9,
-    delay: 6000,
-  },
-
-  [ARTICLE_CAT.QUESTION]: {
-    title: '求助',
-    upvoteText: '帮顶',
-    upvoteNum: 6,
-    delay: 5000,
-  },
-}
-
 const NodeBlock: FC<TProps> = ({ cat = 'DEFAULT', index = -1 }) => {
   const metric = METRIC[cat]
   const HeadIcon = Icon[cat]
@@ -73,6 +38,11 @@ const NodeBlock: FC<TProps> = ({ cat = 'DEFAULT', index = -1 }) => {
 
   return (
     <Wrapper $color={colors.bg}>
+      {cat === ARTICLE_CAT.FEATURE && <AttachIcon.Clip $color={colors.bg} />}
+      {cat === ARTICLE_CAT.QUESTION && <AttachIcon.Pin $color={colors.bg} />}
+      {cat === ARTICLE_CAT.OTHER && <AttachIcon.Tag $color={colors.bg} />}
+      {cat === ARTICLE_CAT.BUG && <AttachIcon.Target $color={colors.bg} />}
+
       {cat === 'DEFAULT' && index === 0 && (
         <LeftInfo $bottom="39px">
           <LeftDot $bg="#888888" />

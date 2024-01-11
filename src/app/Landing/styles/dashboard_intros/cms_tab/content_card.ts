@@ -74,7 +74,7 @@ export const ConnectLine = styled(WithPosition)`
   z-index: 11;
   width: 180px;
   height: 132px;
-  border: 3px dashed;
+  border: 2px dashed;
   border-top-left-radius: 150px;
   border-right: none;
   border-bottom: none;
@@ -84,19 +84,19 @@ export const ConnectLine = styled(WithPosition)`
 
   &:before {
     content: '';
-    ${css.circle(9)};
+    ${css.circle(7)};
     background: #5abeff;
     position: absolute;
     bottom: -2px;
-    left: -6px;
+    left: -5px;
   }
 
   &:after {
     content: '';
-    ${css.circle(9)};
+    ${css.circle(7)};
     background: #5abeff;
     position: absolute;
-    top: -5px;
+    top: -4px;
     right: -6px;
   }
 `
