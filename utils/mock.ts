@@ -4,6 +4,7 @@ import { COLOR_NAME } from '@/constant/colors'
 
 import { getRandomInt } from './helper'
 
+// https://playgroundai.com/search?q=Crunch+Pixar+avatar
 const users = [
   {
     id: '1',
