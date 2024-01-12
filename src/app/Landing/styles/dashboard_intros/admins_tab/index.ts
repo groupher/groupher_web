@@ -1,4 +1,4 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme, animate } from '@/css'
 
 import { WithPosition } from '@/widgets/Common'
 
@@ -8,16 +8,17 @@ export const Wrapper = styled.div`
   height: 100%;
   position: relative;
   margin-left: 46px;
+  animation: ${animate.jump} 0.5s linear;
 `
 export const Notes = styled(WithPosition)`
   color: ${theme('hint')};
   font-size: 15px;
   bottom: 80px;
-  left: 156px;
+  left: 180px;
 `
 export const Highlight = styled.span`
   color: ${theme('rainbow.pink')};
-  margin-left: 1px;
+  margin-left: 3px;
   margin-right: 3px;
   font-weight: 500;
   opacity: 0.8;

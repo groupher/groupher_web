@@ -4,23 +4,34 @@ import type { TActive } from '@/spec'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
-  ${css.row('justify-between')};
-  padding: 0 10px;
+  ${css.column('align-both')};
   width: 440px;
-  height: 60px;
+  height: auto;
   position: absolute;
   top: 100px;
   left: 140px;
 `
+export const InnerWrapper = styled.div`
+  ${css.row('justify-between')};
+  width: 100%;
+  padding: 0 10px;
+`
+export const Header = styled.div`
+  font-size: 20px;
+  color: ${theme('rainbow.pink')};
+  opacity: 0.8;
+  font-weight: 500;
+  margin-bottom: 20px;
+`
 export const Item = styled.div<TActive>`
   ${css.row('align-both')};
   background: ${({ $active }) => ($active ? theme('alphaBg') : '')};
-  padding: 0 12px;
+  padding: 8px 10px;
   border: 1px solid;
   border-color: ${({ $active }) => ($active ? theme('divider') : 'transparent')}; 
   border-radius: 8px;
   box-shadow: ${({ $active }) => ($active ? 'rgba(149, 157, 165, 0.18) 0px 8px 24px' : '')};
-  opacity: ${({ $active }) => ($active ? 1 : 0.7)}; 
+  opacity: ${({ $active }) => ($active ? 1 : 0.6)}; 
   transform: ${({ $active }) => ($active ? 'scale(1)' : 'scale(0.9)')}; 
   cursor: pointer;
 
@@ -36,10 +47,10 @@ export const Item = styled.div<TActive>`
 `
 export const Avatar = styled(Img)`
   ${css.size(42)};
-  border-radius: 6px;
+  border-radius: 10px;
 `
 export const Intro = styled.div`
-margin-left: 12px;
+  margin-left: 12px;
 `
 export const Nickname = styled.div`
   font-size: 15px;
@@ -57,7 +68,13 @@ export const Highlight = styled.span`
   font-weight: 600;
   opacity: 0.8;
 `
+export const Num = styled.span`
+  font-size: 14;
+  color: ${theme('rainbow.pink')};
+  font-weight: 500;
+  display: inline-block;
+`
 export const Desc = styled.div`
-  font-size: 13px;
+  font-size: 12px;
   color: ${theme('article.digest')};
 `
