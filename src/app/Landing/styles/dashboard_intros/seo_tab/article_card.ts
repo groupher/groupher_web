@@ -4,65 +4,56 @@ import Img from '@/Img'
 
 export const Wrapper = styled.div`
   ${css.column()};
-  padding: 15px 24px;
+  padding: 15px 20px;
   padding-bottom: 0;
-  background: ${theme('alphaBg2')};
+  background: ${theme('alphaBg')};
   color: ${theme('article.digest')};
   border: 1px solid;
   border-color: ${theme('divider')};
-  width: 480px;
+  width: 260px;
   height: 160px;
   border-radius: 10px;
-  box-shadow: rgba(149, 157, 165, 0.2) 1px 2px 24px;
-  z-index: 3;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  z-index: 1;
   position: absolute;
-  top: 160px;
-  left: -20px;
-`
-export const Url = styled.div`
-  font-size: 12px;
-  color: ${theme('hint')};
-  margin-bottom: 2px;
+  top: 25px;
+  left: 16px;
+  transform: rotate(2deg);
 `
 export const Title = styled.div`
-  // color: #1a0dab;
   color: ${theme('article.title')};
-  font-size: 18px;
+  opacity: 0.85;
+  font-size: 16px;
 `
 export const Desc = styled.div`
   font-size: 12px;
   color: ${theme('article.digest')};
-  margin-top: 4px;
+  opacity: 0.9;
+  margin-top: 6px;
 `
-export const Hint = styled.div`
+export const Url = styled.div`
   font-size: 12px;
   color: ${theme('hint')};
-  margin-top: 4px;
+  margin-top: 6px;
 `
-export const Footer = styled.div`
+export const Header = styled.div`
   ${css.row('align-center')};
-  margin-top: 18px;
-  margin-left: -2px;
+  margin-bottom: 8px;
 `
 export const LogoWrapper = styled.div`
   ${css.size(22)};
+  background: ${theme('htmlBg')};
+  border: 1px solid;
+  border-color: ${theme('divider')};
   ${css.row('align-both')};
-  margin-right: 10px;
+  box-shadow: rgb(99 99 99 / 18%) 0px 0px 12px 0px;
+  margin-right: 6px;
   border-radius: 5px;
 `
 type TLogo = { $size?: number; $opacity?: number; top?: number }
 export const Logo = styled(Img)<TLogo>`
   ${({ $size }) => `${css.size($size || 20)}`};
-  opacity: ${({ $opacity }) => $opacity || 0.8};
+  opacity: ${({ $opacity }) => $opacity || 0.6};
   margin-top: ${({ top }) => `${top || 0}px`};
-`
-export const GLogo = styled(Logo)`
-margin-left: 1px;
-`
-export const BaiduLogo = styled(Logo)`
-  box-shadow: rgb(99 99 99 / 15%) 0px 0px 12px 0px;
   margin-right: 7px;
-`
-export const XHSLogo = styled(Logo)`
-  box-shadow: rgb(99 99 99 / 15%) 0px 0px 12px 0px;
 `

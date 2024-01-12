@@ -4,11 +4,14 @@ import EditSVG from '@/icons/EditPen'
 
 export const Wrapper = styled.div`
   ${css.row()};
-  margin-top: 180px;
+  margin-top: 300px;
   width: 100%;
-  height: 180px;
+  height: 235px;
+  border-radius: 15px;
   padding: 10px 18px;
+  padding-top: 40px;
   position: relative;
+  background: #f1f1f163;
 `
 export const EditBox = styled.div`
   ${css.circle(35)};
@@ -16,8 +19,8 @@ export const EditBox = styled.div`
   border: 1px solid;
   border-color: ${theme('divider')};
   position: absolute;
-  top: 73px;
-  left: 206px;
+  top: 100px;
+  left: 196px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px -1px 24px;
   background: ${theme('gradientBg.cyan')};
 `
@@ -33,7 +36,7 @@ export const OgPanel = styled.div`
 `
 export const TwPanel = styled.div`
   width: 50%;
-  padding-left: 68px;
+  padding-left: 60px;
   position: relative;
 `
 export const Title = styled.div`

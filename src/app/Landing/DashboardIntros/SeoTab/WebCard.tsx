@@ -30,11 +30,11 @@ const WebCard: FC = () => {
         </LogoWrapper>
         <BaiduLogo src="/landing/seo/baidu.png" $opacity={0.68} $size={20} top={-1} />
         <LogoWrapper>
-          <Logo src="/landing/seo/moment.png" $size={16} />
+          <Logo src="/landing/seo/ms.png" $size={16} />
         </LogoWrapper>
-        <XHSLogo src="/landing/seo/xhs.png" $size={21} />
+        <XHSLogo src="/landing/seo/duck.png" $size={18} />
         <SpaceGrow />
-        <Hint>by OpenGraph</Hint>
+        <Hint>OpenGraph</Hint>
       </Footer>
     </Wrapper>
   )

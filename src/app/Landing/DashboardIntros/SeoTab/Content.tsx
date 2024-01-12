@@ -34,8 +34,8 @@ const Content: FC = () => {
         <Desc>Motuojie - (摩界)</Desc>
         <Title>twDescription</Title>
         <Desc>发现复古摩托车的魅力...</Desc>
-        <Brick $width={100} top={150} left={68} $opacity={0.12} />
-        <Brick $width={50} top={166} left={68} $opacity={0.06} />
+        <Brick $width={100} top={150} left={60} $opacity={0.12} />
+        <Brick $width={50} top={166} left={60} $opacity={0.06} />
       </TwPanel>
     </Wrapper>
   )
