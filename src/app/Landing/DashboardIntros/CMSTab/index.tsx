@@ -4,14 +4,16 @@ import Tabs from './Tabs'
 import ContentCard from './MainCard'
 import MenuCard from './MenuCard'
 
-import { Wrapper } from '../../styles/dashboard_intros/cms_tab'
+import { Wrapper, InnerWrapper } from '../../styles/dashboard_intros/cms_tab'
 
 const CMSTab: FC = () => {
   return (
     <Wrapper>
-      <Tabs />
-      <ContentCard />
-      <MenuCard />
+      <InnerWrapper>
+        <Tabs />
+        <ContentCard />
+        <MenuCard />
+      </InnerWrapper>
     </Wrapper>
   )
 }
