@@ -1,5 +1,4 @@
 import { FC, ReactNode } from 'react'
-import { useParallax } from 'react-scroll-parallax'
 
 import { COLOR_NAME } from '@/constant/colors'
 import { mockUsers } from '@/mock'
@@ -77,15 +76,13 @@ type TProps = {
 }
 
 const UsersWall: FC<TProps> = ({ wallpaper }) => {
-  const { ref } = useParallax<HTMLDivElement>({ speed: 5 })
-
   return (
     <Wrapper>
       <Slogan>
         <Title>被众多优秀开发者和团队青睐</Title>
         <Desc>从独立开发者到中小型创业团队，我们用产品力回报信任</Desc>
       </Slogan>
-      <BgGradient ref={ref} wallpaper={wallpaper} />
+      <BgGradient wallpaper={wallpaper} />
 
       <Wall>
         <WallInner>

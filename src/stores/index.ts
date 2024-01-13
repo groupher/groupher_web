@@ -22,9 +22,6 @@ export { default as ErrorBoxStore } from '@/containers/tool/ErrorBox/store'
 // export { default as SidebarStore } from '@/containers/unit/Sidebar/store'
 export { default as DrawerStore } from '@/containers/tool/Drawer/store'
 // export { default as HeaderStore } from '@/containers/unit/Header/store'
-export { default as MailBoxStore } from '@/containers/tool/MailBox/store'
-
-//
 
 // threads store
 // export { default as ReposThreadStore } from '@/containers/thread/ReposThread/store'
@@ -35,9 +32,6 @@ export { default as TagsBarStore } from '@/containers/unit/TagsBar/store'
 // export { default as RepoEditorStore } from '@/containers/editor/RepoEditor/store'
 export { default as CommentsStore } from '@/containers/unit/Comments/store'
 export { default as AccountEditorStore } from '@/containers/editor/AccountEditor/store'
-
-// viewers store
-export { default as MailsViewerStore } from '@/containers/viewer/MailsViewer/store'
 
 // user page
 

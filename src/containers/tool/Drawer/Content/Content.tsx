@@ -1,17 +1,18 @@
-import { FC, Suspense } from 'react'
+import { FC } from 'react'
 
 import TYPE from '@/constant/type'
 // import ModeLineMenu from '@/containers/unit/ModeLineMenu'
-
-import ArticleViewer from '@/containers/viewer/ArticleViewer'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
-import TagSettingEditor from '@/containers/editor/TagSettingEditor'
-import PassportEditor from '@/containers/editor/PassportEditor'
-import ArticleEditor from '@/containers/editor/ArticleEditor'
-import WallpaperEditor from '@/containers/editor/WallpaperEditor'
-import AccountEditor from '@/containers/editor/AccountEditor'
-import MailsViewer from '@/containers/viewer/MailsViewer'
+import {
+  ArticleViewer,
+  TagSettingEditor,
+  PassportEditor,
+  ArticleEditor,
+  WallpaperEditor,
+  AccountEditor,
+  // MailsViewer,
+} from './dynamic'
 
 import UserList from '@/widgets/UserList'
 import SearchPanel from '@/widgets/SearchPanel'
@@ -27,45 +28,21 @@ const Content: FC<TProps> = ({ type }) => {
 
   switch (type) {
     case DRAWER.SEARCH_PANEL:
-      return (
-        <Suspense fallback={<LavaLampLoading />}>
-          <SearchPanel />
-        </Suspense>
-      )
+      return <SearchPanel />
 
     case DRAWER.ACCOUNT_EDIT:
-      return (
-        <Suspense fallback={<LavaLampLoading />}>
-          <AccountEditor />
-        </Suspense>
-      )
+      return <AccountEditor />
 
     case DRAWER.PASSPORT_EDITOR:
-      return (
-        <Suspense fallback={<LavaLampLoading />}>
-          <PassportEditor />
-        </Suspense>
-      )
+      return <PassportEditor />
     case DRAWER.G_EDITOR:
-      return (
-        <Suspense fallback={<LavaLampLoading />}>
-          <ArticleEditor />
-        </Suspense>
-      )
+      return <ArticleEditor />
 
-    case DRAWER.MAILS_VIEW:
-      return (
-        <Suspense fallback={<LavaLampLoading />}>
-          <MailsViewer />
-        </Suspense>
-      )
+    // case DRAWER.MAILS_VIEW:
+    //   return <MailsViewer />
 
     case DRAWER.CUSTOM_BG_EDITOR:
-      return (
-        <Suspense fallback={<LavaLampLoading />}>
-          <WallpaperEditor />
-        </Suspense>
-      )
+      return <WallpaperEditor />
 
     case DRAWER.MODELINE_MENU:
       return null
@@ -73,36 +50,19 @@ const Content: FC<TProps> = ({ type }) => {
     // return <ModeLineMenu type={extraInfo.mmType} />
 
     case DRAWER.LIST_USERS: {
-      return (
-        <Suspense fallback={<LavaLampLoading />}>
-          <UserList />
-          <UserList />
-        </Suspense>
-      )
+      return <UserList />
     }
 
     case DRAWER.CREATE_TAG: {
-      return (
-        <Suspense fallback={<LavaLampLoading />}>
-          <TagSettingEditor mode="create" />
-        </Suspense>
-      )
+      return <TagSettingEditor mode="create" />
     }
 
     case DRAWER.EDIT_TAG: {
-      return (
-        <Suspense fallback={<LavaLampLoading />}>
-          <TagSettingEditor />
-        </Suspense>
-      )
+      return <TagSettingEditor />
     }
 
     default: {
-      return (
-        <Suspense fallback={<LavaLampLoading />}>
-          <ArticleViewer />
-        </Suspense>
-      )
+      return <ArticleViewer />
     }
   }
 }

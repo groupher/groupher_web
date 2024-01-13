@@ -1,5 +1,4 @@
 import { FC } from 'react'
-// import { Parallax } from 'react-scroll-parallax'
 
 import KanbanDemo from './KanbanDemo'
 

@@ -22,7 +22,7 @@ import Mushroom from '@/containers/Mushroom'
 // import ModeLine from '@/containers/unit/ModeLine'
 
 import ThemePalette from '@/widgets/ThemePalette'
-import Broadcast from '@/widgets/Broadcast'
+// import Broadcast from '@/widgets/Broadcast'
 import Footer from '@/widgets/Footer'
 
 // import DashboardAlert from './DashboardAlert'
@@ -87,7 +87,7 @@ const GlobalLayout: FC<TProps> = ({ children }) => {
                 $hasTopbar={metric !== METRIC.HOME && globalLayout.topbar === TOPBAR_LAYOUT.YES}
                 $topbarBg={globalLayout.topbarBg}
               >
-                <Broadcast />
+                {/* <Broadcast /> */}
                 <ContentWrapper>
                   <BodyWrapper>{children}</BodyWrapper>
                   <Footer />

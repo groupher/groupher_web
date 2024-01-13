@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import { useParallax } from 'react-scroll-parallax'
 
 import useWallpaper from '@/hooks/useWallpaper'
 
@@ -19,7 +18,6 @@ import {
 } from '../styles/tech_stacks/stack_card'
 
 const StackCard: FC = () => {
-  const { ref } = useParallax<HTMLDivElement>({ speed: 5 })
   const { wallpaper } = useWallpaper()
 
   return (
@@ -53,7 +51,7 @@ const StackCard: FC = () => {
         <TechItem path="emacs.png" name="Emacs" size={33} />
         <TechItem path="notes.png" name="Notes" size={32} />
       </TechsWrapper>
-      <BgWrapper ref={ref}>
+      <BgWrapper>
         <CADBackground src="/cad-bg.png" />
       </BgWrapper>
     </Wrapper>
