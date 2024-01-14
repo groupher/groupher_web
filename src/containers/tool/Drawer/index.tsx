@@ -33,9 +33,8 @@ const Drawer: FC = () => {
 
   const {
     slideVisible,
+    visible,
     type,
-    attUserData,
-    userListerType,
     mmType,
     extraInfo,
     optionsData,
@@ -59,8 +58,6 @@ const Drawer: FC = () => {
         type={type}
         visible={slideVisible}
         options={optionsData}
-        attUser={attUserData}
-        userListerType={userListerType}
         mmType={mmType}
         extraInfo={extraInfo}
       />

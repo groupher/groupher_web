@@ -1,5 +1,5 @@
 import { Fragment, memo } from 'react'
-import dynamic from 'next/dynamic'
+// import dynamic from 'next/dynamic'
 
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 

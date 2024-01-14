@@ -152,8 +152,10 @@ const DataResolver = [
         const targetUrl = `/${article.meta.thread.toLowerCase()}/${article.id}`
 
         Global.location.href = targetUrl
-        return false
+        return
       }
+
+      console.log('## drawer open -> : ', res)
 
       store.open(payload)
     },
@@ -177,9 +179,11 @@ const DataResolver = [
 export const useInit = (_store: TStore, windowWidth: number, metric: TMetric): void => {
   useEffect((): (() => void) => {
     store = _store
+    console.log('## initing ')
     if (!sub$) {
       sub$ = sr71$.data().subscribe($solver(DataResolver, []))
     }
+
     store.mark({ windowWidth, metric })
 
     return () => {

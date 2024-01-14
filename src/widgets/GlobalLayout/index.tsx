@@ -30,8 +30,10 @@ import Footer from '@/widgets/Footer'
 
 import SEO from './SEO'
 import Wallpaper from './Wallpaper'
+import GlowBackground from './GlowBackground'
 
-import { Addon, GlowBackground } from './dynamic'
+// import { Addon } from './dynamic'
+import Addon from './Addon'
 
 import {
   Skeleton,

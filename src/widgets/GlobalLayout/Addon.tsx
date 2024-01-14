@@ -3,7 +3,7 @@
 import { FC, Fragment } from 'react'
 import { observer } from 'mobx-react-lite'
 // eslint-disable-next-line import/no-unresolved
-import { Toaster } from 'sonner'
+// import { Toaster } from 'sonner'
 
 import useShortcut from '@/hooks/useShortcut'
 
@@ -25,7 +25,7 @@ const Addon: FC = () => {
       {/* @ts-ignore */}
       <Drawer />
       <UserListModal />
-      <Toaster position="top-center" closeButton />
+      {/* <Toaster position="top-center" closeButton /> */}
       {/* @ts-ignore */}
       <ErrorBox />
     </Fragment>

@@ -113,12 +113,6 @@ const DrawerStore = T.model('DrawerStore', {
       if (type === DRAWER.MODELINE_MENU) {
         slf.mmType = data
       }
-      if (type === DRAWER.LIST_USERS) {
-        slf.userListerType = data
-      }
-      if (type === DRAWER.DASHBOARD_DESC) {
-        slf.dashboardDescLayout = data
-      }
 
       if (includes(thread, values(ARTICLE_THREAD))) {
         // article
@@ -147,7 +141,7 @@ const DrawerStore = T.model('DrawerStore', {
         type !== DRAWER.SEARCH_PANEL &&
         type !== DRAWER.LIST_USERS
       ) {
-        slf.markPreviewURLIfNeed(data)
+        // slf.markPreviewURLIfNeed(data)
       }
     },
     setViewing(sobj: Record<string, unknown>): void {
@@ -187,9 +181,9 @@ const DrawerStore = T.model('DrawerStore', {
       const nextURL = `${Global.location.origin}/${originalCommunitySlug}/${thread}/${innerId}`
 
       // Global.history.replaceState(null, title, nextURL)
-      // Global.history.pushState(null, title, nextURL)
+      Global.history.pushState(null, title, nextURL)
       // console.log('## pushing window.location.href: ', nextURL)
-      Global.history.pushState({ prevUrl: nextURL }, title, nextURL)
+      // Global.history.pushState({ prevUrl: nextURL }, title, nextURL)
     },
 
     restorePreviousURLIfNeed(): void {

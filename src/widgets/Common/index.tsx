@@ -1,3 +1,4 @@
+import { FC, useEffect } from 'react'
 import * as NextLink from 'next/link'
 
 import type { TActive, TSpace, TColor } from '@/spec'
@@ -150,3 +151,16 @@ export const Brick = styled(WithPosition)<TBrick>`
   opacity: ${({ $opacity }) => `${$opacity || 1}`};
   background: ${({ $color }) => rainbow($color || COLOR_NAME.BLACK, 'article.title')};
 `
+
+type TLoadWatcher = {
+  onLoad: () => void
+}
+export const LoadWatcher: FC<TLoadWatcher> = ({ onLoad }) => {
+  useEffect(() => {
+    if (onLoad) {
+      setTimeout(onLoad)
+    }
+  }, [])
+
+  return <></>
+}
