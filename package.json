@@ -100,7 +100,6 @@
     "rsuite-table": "^5.10.6",
     "rxjs": "^6.6.7",
     "sanitize-html": "^2.5.2",
-    "scroll-into-view-if-needed": "1.5.0",
     "sentry-testkit": "^2.1.0",
     "slate": "^0.101.1",
     "slate-history": "^0.100.0",
