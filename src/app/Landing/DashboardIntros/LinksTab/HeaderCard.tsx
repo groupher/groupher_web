@@ -14,7 +14,7 @@ const HeaderCard: FC = () => {
     <Wrapper>
       <Title>
         <CommunityLogo />
-        梦三
+        Tiki-taka
       </Title>
       <Links>
         <LinkName>讨论</LinkName>

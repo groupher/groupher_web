@@ -30,7 +30,7 @@ export const Title = styled.div`
 `
 export const Links = styled.div`
   ${css.row('align-both')};
-  margin-left: -3px;
+  margin-left: -8px;
   gap: 0 10px;
 `
 export const LinkName = styled.div`

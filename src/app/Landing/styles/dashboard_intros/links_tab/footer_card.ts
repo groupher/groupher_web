@@ -1,55 +1,55 @@
 import styled, { css, theme } from '@/css'
 
-import XSVG from '@/icons/X'
-
 export const Wrapper = styled.div`
-  ${css.column()};
-  padding: 16px;
-  padding-top: 12px;
-  padding-bottom: 0;
+  ${css.row('justify-between')};
+  padding: 0 18px;
+  padding-top: 20px;;
+  padding-right: 30px;
   background: ${theme('htmlBg')};
   color: ${theme('article.digest')};
   border: 1px solid;
   border-color: ${theme('divider')};
   width: 445px;
-  height: 150px;
+  height: 162px;
   border-radius: 10px;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px -1px 24px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   z-index: 2;
   position: absolute;
   bottom: 8px;
   left: 8px;
 `
-export const Card = styled.div`
-  ${css.row('align-center')};
-  width: 100%;
-  border-radius: 14px;
-  height: 100px;
-  border: 1px solid;
-  border-color: ${theme('divider')};
-  overflow: hidden;
+export const Brand = styled.div`
+  width: 33%;
 `
-export const XIcon = styled(XSVG)`
-  ${css.size(40)};
-  fill: ${theme('hint')};
-`
-export const Cover = styled.div`
-  ${css.size(100)};
-  ${css.row('align-both')};
-  min-widtH: 100px;
-  background: ${theme('hoverBg')};
-  border-right: 1px solid;
-  border-right-color: ${theme('divider')};
-`
-export const Content = styled.div`
-  margin-left: 10px;
-`
-export const Url = styled.div`
-  color: rgb(83, 100, 113);
-  font-size: 13px;
+export const CommunityLogo = styled.div`
+  ${css.size(26)};
+  background: ${theme('gradientBg.orange')};
+  border-radius: 4px;
+  margin-top: 2px;
+  margin-right: 5px;
+  margin-bottom: 8px;
 `
 export const Title = styled.div`
-  color: rgb(15, 20, 25);
-  font-size: 14px;
+  ${css.row('align-center')};
+  color: ${theme('article.title')};
+  font-size: 13px;
+`
+export const Desc = styled.div`
+  color: ${theme('article.digest')};
+  font-size: 11px;
+`
+export const Links = styled.div`
+  ${css.column()};
+  gap: 0 10px;
+`
+export const LinkTitle = styled.div`
+  color: ${theme('article.title')};
+  font-size: 12px;
+  margin-bottom: 6px;
+`
+export const LinkName = styled.div`
+  font-size: 12px;
+  color: ${theme('article.digest')};
+  opacity: 0.8;
   margin-bottom: 2px;
 `
