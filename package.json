@@ -15,7 +15,7 @@
     "build.ci": "cross-env CUR_ENV=ci next build",
     "serve": "cross-env CUR_ENV=production next start -p ${SERVE_PORT}",
     "serve.dev": "cross-env CUR_ENV=dev next start -p ${SERVE_PORT}",
-    "serve.prod": "cross-env CUR_ENV=production next start -p ${SERVE_PORT}",
+    "serve.prod": "cross-env CUR_ENV=production next start -p 3000",
     "dist": "next build && next export -o \"build\"",
     "info": "next info",
     "clean": "shjs ./utils/scripts/clean.js",

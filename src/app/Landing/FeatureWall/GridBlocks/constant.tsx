@@ -1,8 +1,9 @@
+import StatusBars from './StatusBars'
+
 import {
   UserIcon,
   EmojiIcon,
   LaptopIcon,
-  CloudIcon,
   FingerPrintIcon,
   SearchIcon,
 } from '../../styles/feature_wall/grid_blocks'
@@ -30,7 +31,7 @@ export const BLOCKS = [
     key: 4,
     title: '稳定可靠',
     desc: '托管于国内顶级云服务供应商，多重安全服务保驾护航。',
-    icon: <CloudIcon />,
+    icon: <StatusBars />,
   },
   {
     key: 5,
