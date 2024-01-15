@@ -2,7 +2,7 @@ import styled, { css, theme } from '@/css'
 
 import ZhihuSVG from '@/icons/social/Zhihu'
 import WechatSVG from '@/icons/social/WeChat'
-import TwitterSVG from '@/icons/social/Twitter'
+import TwitterSVG from '@/icons/TwitterX'
 
 export const Wrapper = styled.div`
   ${css.row('justify-between')};
@@ -70,6 +70,8 @@ const commonIcon = (comp) => {
 
 export const ICON = {
   Wechat: commonIcon(WechatSVG),
-  Twitter: commonIcon(TwitterSVG),
+  Twitter: styled(commonIcon(TwitterSVG))`
+    fill: ${theme('article.digest')};
+  `,
   Zhihu: commonIcon(ZhihuSVG),
 }
