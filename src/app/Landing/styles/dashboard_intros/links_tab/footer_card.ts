@@ -1,5 +1,9 @@
 import styled, { css, theme } from '@/css'
 
+import ZhihuSVG from '@/icons/social/Zhihu'
+import WechatSVG from '@/icons/social/WeChat'
+import TwitterSVG from '@/icons/social/Twitter'
+
 export const Wrapper = styled.div`
   ${css.row('justify-between')};
   padding: 0 18px;
@@ -53,3 +57,19 @@ export const LinkName = styled.div`
   opacity: 0.8;
   margin-bottom: 2px;
 `
+export const Contract = styled.div`
+  ${css.row('align-center')};
+  gap: 0 6px;
+  margin-top: 16px;
+`
+const commonIcon = (comp) => {
+  return styled(comp)`
+    ${css.size(14)};
+  `
+}
+
+export const ICON = {
+  Wechat: commonIcon(WechatSVG),
+  Twitter: commonIcon(TwitterSVG),
+  Zhihu: commonIcon(ZhihuSVG),
+}
