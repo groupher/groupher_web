@@ -5,7 +5,7 @@
  * because mobx's observer mechanism, we should manually watch the theme
  * otherwhise the render will not be triggled
  */
-import { FC, Fragment, ReactNode } from 'react'
+import { FC, ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 import { ThemeProvider } from 'styled-components'
 
@@ -15,7 +15,7 @@ import useThemeData from '@/hooks/useThemeData'
 import ThirdPartyOverWrite from './ThirdPartyOverWrite'
 import ScrollBarStyle from './ScrollBarStyle'
 import GlobalStyle from './GlobalStyle'
-import { CodeSyxHighlight } from './dynamic'
+// import { CodeSyxHighlight } from './dynamic'
 
 type TProps = {
   children: ReactNode
@@ -32,7 +32,7 @@ const ThemePalette: FC<TProps> = ({ children }) => {
       <GlobalStyle $color={primaryColor} />
       {children}
       <ThirdPartyOverWrite />
-      <CodeSyxHighlight />
+      {/* <CodeSyxHighlight /> */}
       <ScrollBarStyle />
     </ThemeProvider>
   )

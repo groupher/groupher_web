@@ -1,17 +1,20 @@
-import { FC, memo } from 'react'
-import dynamic from 'next/dynamic'
+import { FC, memo, lazy, Suspense } from 'react'
 
 import Tooltip from '@/widgets/Tooltip'
 
 import { SiteLink, ArrowIcon } from '../styles/more_links'
 
-const MorePanel = dynamic(() => import('../MorePanel'), { ssr: false })
+const MorePanel = lazy(() => import('../MorePanel'))
 
 const MoreLink: FC = () => {
   return (
     <Tooltip
       // @ts-ignore
-      content={<MorePanel />}
+      content={
+        <Suspense fallback={null}>
+          <MorePanel />
+        </Suspense>
+      }
       placement="bottom"
       hideOnClick={false}
       trigger="click"

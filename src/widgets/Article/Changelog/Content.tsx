@@ -4,8 +4,7 @@
  *
  */
 
-import { FC, useRef } from 'react'
-import dynamic from 'next/dynamic'
+import { FC, lazy, useRef, Suspense } from 'react'
 
 import type { TChangelog } from '@/spec'
 import { buildLog } from '@/logger'
@@ -18,11 +17,7 @@ import { Wrapper, InnerWrapper, ArticleWrapper, CommentsWrapper } from '../style
 
 const _log = buildLog('C:ChangelogContent')
 
-const Comments = dynamic(() => import('@/containers/unit/Comments'), {
-  /* eslint-disable react/display-name */
-  loading: () => <LavaLampLoading />,
-  ssr: false,
-})
+const Comments = lazy(() => import('@/containers/unit/Comments'))
 
 type TProps = {
   article: TChangelog
@@ -48,7 +43,9 @@ const Content: FC<TProps> = ({ article }) => {
             onLeave={() => checkAnchor(ref?.current)}
           /> */}
         <CommentsWrapper>
-          <Comments />
+          <Suspense fallback={<LavaLampLoading />}>
+            <Comments />
+          </Suspense>
         </CommentsWrapper>
       </InnerWrapper>
     </Wrapper>

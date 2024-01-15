@@ -7,7 +7,6 @@
  */
 
 import { FC } from 'react'
-// import dynamic from 'next/dynamic'
 
 import DesktopView from './DesktopView'
 // import MobileView from './MobileView'

@@ -4,9 +4,8 @@
  *
  */
 
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, lazy, Suspense } from 'react'
 import { observer } from 'mobx-react-lite'
-import dynamic from 'next/dynamic'
 
 import type { TSpace, TPagi } from '@/spec'
 
@@ -14,7 +13,7 @@ import { buildLog } from '@/logger'
 
 import { EmptyWrapper, BottomMsg } from './styles'
 
-const RealPagi = dynamic(() => import('./RealPagi'))
+const RealPagi = lazy(() => import('./RealPagi'))
 
 const log = buildLog('w:Pagi:index')
 
@@ -63,14 +62,16 @@ const Pagi: FC<TProps> = ({
   return (
     <>
       {hasExtraPage(totalCount, pageSize) ? (
-        <RealPagi
-          pageNumber={pageNumber}
-          totalCount={totalCount}
-          totalPages={totalPages}
-          pageSize={pageSize}
-          onChange={handlePageChange}
-          {...restProps}
-        />
+        <Suspense fallback={null}>
+          <RealPagi
+            pageNumber={pageNumber}
+            totalCount={totalCount}
+            totalPages={totalPages}
+            pageSize={pageSize}
+            onChange={handlePageChange}
+            {...restProps}
+          />
+        </Suspense>
       ) : (
         <EmptyWrapper {...restProps}>
           <BottomFooter show={showBottomMsg} msg={noMoreMsg} />

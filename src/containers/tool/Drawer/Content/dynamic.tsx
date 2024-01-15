@@ -1,6 +1,5 @@
 import { lazy } from 'react'
 
-// import dynamic from 'next/dynamic'
 // import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
 export const ArticleEditor = lazy(() => import('@/containers/editor/ArticleEditor'))

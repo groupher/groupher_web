@@ -1,6 +1,5 @@
-import { FC } from 'react'
+import { FC, lazy, Suspense } from 'react'
 import { observer } from 'mobx-react-lite'
-import dynamic from 'next/dynamic'
 import TimeAgo from 'timeago-react'
 
 import type { TPost } from '@/spec'
@@ -12,6 +11,7 @@ import { THREAD } from '@/constant/thread'
 import { BANNER_LAYOUT } from '@/constant/layout'
 import SIZE from '@/constant/size'
 
+import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 import ArticleReadLabel from '@/widgets/ArticleReadLabel'
 import Tooltip from '@/widgets/Tooltip'
 import { SpaceGrow, Space } from '@/widgets/Common'
@@ -28,9 +28,7 @@ import {
   AuthorName,
 } from '../../styles/quora_layout/desktop_view/header'
 
-const UserCard = dynamic(() => import('@/widgets/Cards/UserCard'), {
-  ssr: false,
-})
+const UserCard = lazy(() => import('@/widgets/Cards/UserCard'))
 
 type TProps = {
   article: TPost
@@ -48,7 +46,11 @@ const Header: FC<TProps> = ({ article }) => {
       <Topping>
         <Tooltip
           key={article.title}
-          content={<UserCard user={author} />}
+          content={
+            <Suspense fallback={<LavaLampLoading />}>
+              <UserCard user={author} />
+            </Suspense>
+          }
           placement="bottom-start"
           offset={[-5, 0]}
           delay={500}

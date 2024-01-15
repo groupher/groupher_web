@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, lazy, Suspense } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Provider as BalancerTextProvider } from 'react-wrap-balancer'
 
@@ -32,9 +32,6 @@ import SEO from './SEO'
 import Wallpaper from './Wallpaper'
 import GlowBackground from './GlowBackground'
 
-// import { Addon } from './dynamic'
-import Addon from './Addon'
-
 import {
   Skeleton,
   Wrapper,
@@ -43,6 +40,8 @@ import {
   BodyWrapper,
   ContentWrapper,
 } from './styles'
+
+const Addon = lazy(() => import('./Addon'))
 
 // let DashboardAlert = null
 
@@ -76,7 +75,9 @@ const GlobalLayout: FC<TProps> = ({ children }) => {
     <BalancerTextProvider>
       <ThemePalette>
         <Mushroom />
-        <Addon />
+        <Suspense fallback={null}>
+          <Addon />
+        </Suspense>
         <Skeleton>
           <Wallpaper />
           <ScrollWrapper $noMobilePadding={metric === METRIC.HOME}>
