@@ -6,7 +6,6 @@
 
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
-import dynamic from 'next/dynamic'
 
 import type { TArticleCat, TArticleOrder, TArticleState } from '@/spec'
 import { refreshArticles, callGEditor, callSyncSelector } from '@/signal'
@@ -24,13 +23,10 @@ import { Space, SpaceGrow, DesktopOnly } from '@/widgets/Common'
 import PublishButton from '@/widgets/Buttons/PublishButton'
 import ConditionSelector from '@/widgets/ConditionSelector'
 import SearchBox from '@/widgets/SearchBox'
+import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
 import type { TProps } from '.'
 import { Wrapper } from './styles'
-
-export const LavaLampLoading = dynamic(() => import('@/widgets/Loading/LavaLampLoading'), {
-  ssr: false,
-})
 
 const _log = buildLog('w:ArticlesFilter:index')
 

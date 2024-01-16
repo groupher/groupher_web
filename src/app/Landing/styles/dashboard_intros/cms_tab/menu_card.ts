@@ -19,7 +19,7 @@ export const Wrapper = styled.div`
   z-index: 11;
   position: absolute;
   bottom: 200px;
-  right: 0;
+  right: 5px;
   background: rgb(247 247 247 / 57%);
   backdrop-filter: blur(50px);
 `

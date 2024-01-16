@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import dynamic from 'next/dynamic'
 
 import type { TPost } from '@/spec'
 import EVENT from '@/constant/event'
@@ -7,12 +6,9 @@ import { send } from '@/signal'
 
 import ArticleCatState from '@/widgets/ArticleCatState'
 import ViewsCount from '@/widgets/ViewsCount'
+import TagsList from '@/widgets/TagsList'
 
 import { Wrapper, Digest, Footer } from '../../styles/ph_layout/mobile_view/body'
-
-const TagsList = dynamic(() => import('@/widgets/TagsList'), {
-  ssr: false,
-})
 
 type TProps = {
   article: TPost

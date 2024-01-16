@@ -1,5 +1,5 @@
 import type { TColor } from '@/spec'
-import styled, { css, rainbow, theme } from '@/css'
+import styled, { css, rainbow, theme, animate } from '@/css'
 
 import Img from '@/Img'
 
@@ -24,7 +24,10 @@ export const SingleUser = styled(Img)<{ $width: number }>`
   ${({ $width }) => css.circle($width)};
 `
 type TComemntUsers = { $rotate?: number; $width?: number }
-export const CommentUsers = styled(WithPosition)<TComemntUsers>`
+export const CommentAnimate = styled(WithPosition)`
+  animation: ${animate.jump} 4s linear infinite;
+`
+export const CommentUsers = styled.div<TComemntUsers>`
   ${css.row('align-both')};
   border: 1px solid;
   background: ${theme('htmlBg')};

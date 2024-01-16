@@ -1,15 +1,10 @@
-import { FC, useState } from 'react'
-import dynamic from 'next/dynamic'
+import { FC, useState, lazy, Suspense } from 'react'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
 import { Wrapper, Adder, AddIcon, AddTitle, ImageIcon } from './styles/article_cover'
 
-const CoverEditor = dynamic(() => import('@/containers/editor/CoverEditor'), {
-  /* eslint-disable react/display-name */
-  loading: () => <LavaLampLoading />,
-  ssr: false,
-})
+const CoverEditor = lazy(() => import('@/containers/editor/CoverEditor'))
 
 const ArticleCover: FC = () => {
   const [hasCover, setHasCover] = useState(true)
@@ -23,7 +18,11 @@ const ArticleCover: FC = () => {
           <ImageIcon />
         </Adder>
       )}
-      {hasCover && <CoverEditor onDelete={() => setHasCover(false)} />}
+      {hasCover && (
+        <Suspense fallback={<LavaLampLoading />}>
+          <CoverEditor onDelete={() => setHasCover(false)} />
+        </Suspense>
+      )}
     </Wrapper>
   )
 }

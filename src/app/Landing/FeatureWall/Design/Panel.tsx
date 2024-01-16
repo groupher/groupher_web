@@ -67,7 +67,7 @@ const Panel: FC<TProps> = ({ hovering }) => {
         <BottomIndexBar bottom={36} $opacity={hovering ? 0.8 : 0.4} />
 
         <IndexText bottom={31} left={107} $opacity={textOpacity}>
-          2022 baby
+          2022 born
         </IndexText>
 
         <GridMask />

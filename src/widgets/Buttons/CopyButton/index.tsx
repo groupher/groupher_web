@@ -1,16 +1,11 @@
-import { FC, memo } from 'react'
-import dynamic from 'next/dynamic'
+import { FC, memo, lazy, Suspense } from 'react'
 
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import IconButton from '../IconButton'
 import { Wrapper } from '../styles/copy_button'
 
-const AnimatedCopyButton = dynamic(() => import('./Animate'), {
-  /* eslint-disable react/display-name */
-  loading: () => <IconButton path="article/clipboard.svg" right={5} />,
-  ssr: false,
-})
+const AnimatedCopyButton = lazy(() => import('./Animate'))
 
 type TProps = {
   value: string
@@ -20,8 +15,10 @@ const CopyButton: FC<TProps> = ({ value }) => {
   return (
     <Wrapper>
       <CopyToClipboard text={value}>
-        {/*  @ts-ignore */}
-        <AnimatedCopyButton />
+        <Suspense fallback={<IconButton path="article/clipboard.svg" right={5} />}>
+          {/*  @ts-ignore */}
+          <AnimatedCopyButton />
+        </Suspense>
       </CopyToClipboard>
     </Wrapper>
   )

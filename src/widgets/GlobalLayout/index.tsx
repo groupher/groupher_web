@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, lazy, Suspense } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Provider as BalancerTextProvider } from 'react-wrap-balancer'
 
@@ -22,7 +22,7 @@ import Mushroom from '@/containers/Mushroom'
 // import ModeLine from '@/containers/unit/ModeLine'
 
 import ThemePalette from '@/widgets/ThemePalette'
-import Broadcast from '@/widgets/Broadcast'
+// import Broadcast from '@/widgets/Broadcast'
 import Footer from '@/widgets/Footer'
 
 // import DashboardAlert from './DashboardAlert'
@@ -30,8 +30,7 @@ import Footer from '@/widgets/Footer'
 
 import SEO from './SEO'
 import Wallpaper from './Wallpaper'
-
-import { Addon, GlowBackground } from './dynamic'
+import GlowBackground from './GlowBackground'
 
 import {
   Skeleton,
@@ -41,6 +40,8 @@ import {
   BodyWrapper,
   ContentWrapper,
 } from './styles'
+
+const Addon = lazy(() => import('./Addon'))
 
 // let DashboardAlert = null
 
@@ -74,7 +75,9 @@ const GlobalLayout: FC<TProps> = ({ children }) => {
     <BalancerTextProvider>
       <ThemePalette>
         <Mushroom />
-        <Addon />
+        <Suspense fallback={null}>
+          <Addon />
+        </Suspense>
         <Skeleton>
           <Wallpaper />
           <ScrollWrapper $noMobilePadding={metric === METRIC.HOME}>
@@ -87,7 +90,7 @@ const GlobalLayout: FC<TProps> = ({ children }) => {
                 $hasTopbar={metric !== METRIC.HOME && globalLayout.topbar === TOPBAR_LAYOUT.YES}
                 $topbarBg={globalLayout.topbarBg}
               >
-                <Broadcast />
+                {/* <Broadcast /> */}
                 <ContentWrapper>
                   <BodyWrapper>{children}</BodyWrapper>
                   <Footer />

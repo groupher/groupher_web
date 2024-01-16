@@ -4,11 +4,9 @@
  *
  */
 
-import { FC, useRef } from 'react'
-import dynamic from 'next/dynamic'
+import { FC, useRef, lazy, Suspense } from 'react'
 
 import { buildLog } from '@/logger'
-
 import useViewingArticle from '@/hooks/useViewingArticle'
 import ArtimentBody from '@/widgets/ArtimentBody'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
@@ -18,11 +16,7 @@ import { Wrapper, InnerWrapper, ArticleWrapper, CommentsWrapper } from '../style
 
 const _log = buildLog('C:PostContent')
 
-const Comments = dynamic(() => import('@/containers/unit/Comments'), {
-  /* eslint-disable react/display-name */
-  loading: () => <LavaLampLoading />,
-  ssr: false,
-})
+const Comments = lazy(() => import('@/containers/unit/Comments'))
 
 const Content: FC = () => {
   const ref = useRef()
@@ -45,7 +39,9 @@ const Content: FC = () => {
             onLeave={() => checkAnchor(ref?.current)}
           /> */}
         <CommentsWrapper>
-          <Comments />
+          <Suspense fallback={<LavaLampLoading />}>
+            <Comments />
+          </Suspense>
         </CommentsWrapper>
       </InnerWrapper>
     </Wrapper>

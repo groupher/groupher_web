@@ -4,9 +4,8 @@
  *
  */
 
-import { FC } from 'react'
+import { FC, lazy, Suspense } from 'react'
 import { includes } from 'ramda'
-import dynamic from 'next/dynamic'
 
 import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
@@ -24,7 +23,7 @@ import {
 const _log = buildLog('C:Header')
 
 // let MailBox
-const AddOns = dynamic(() => import('../AddOns'), { ssr: false })
+const AddOns = lazy(() => import('../AddOns'))
 
 const hasNoBorder = (metric: TMetric): boolean =>
   includes(metric, [
@@ -48,8 +47,10 @@ const CommunityView: FC<TProps> = ({ metric, accountInfo }) => {
         <RouterWrapper>
           <Navigator metric={metric} />
         </RouterWrapper>
-        {/* @ts-ignore */}
-        <AddOns accountInfo={accountInfo} />
+        <Suspense fallback={null}>
+          {/* @ts-ignore */}
+          <AddOns accountInfo={accountInfo} />
+        </Suspense>
       </InnerWrapper>
     </Wrapper>
   )

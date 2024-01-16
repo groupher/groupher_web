@@ -4,20 +4,20 @@ import Img from '@/Img'
 
 export const Wrapper = styled.div`
   ${css.column()};
-  padding: 15px 20px;
+  padding: 15px 24px;
   padding-bottom: 0;
-  background: ${theme('htmlBg')};
+  background: ${theme('alphaBg2')};
   color: ${theme('article.digest')};
   border: 1px solid;
   border-color: ${theme('divider')};
-  width: 445px;
+  width: 480px;
   height: 160px;
   border-radius: 10px;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  z-index: 2;
+  box-shadow: rgba(149, 157, 165, 0.2) 1px 2px 24px;
+  z-index: 3;
   position: absolute;
-  top: 8px;
-  left: 8px;
+  top: 160px;
+  left: -20px;
 `
 export const Url = styled.div`
   font-size: 12px;
@@ -46,12 +46,8 @@ export const Footer = styled.div`
 `
 export const LogoWrapper = styled.div`
   ${css.size(22)};
-  background: ${theme('htmlBg')};
-  border: 1px solid;
-  border-color: ${theme('divider')};
   ${css.row('align-both')};
-  box-shadow: rgb(99 99 99 / 18%) 0px 0px 12px 0px;
-  margin-right: 6px;
+  margin-right: 10px;
   border-radius: 5px;
 `
 type TLogo = { $size?: number; $opacity?: number; top?: number }

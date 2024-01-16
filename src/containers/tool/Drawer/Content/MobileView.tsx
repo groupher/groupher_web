@@ -89,7 +89,7 @@ const MobileView: FC<TProps> = ({ visible, options, type }) => {
       autoHide
     >
       <Wrapper ref={ref} type={type}>
-        <Content type={type} />
+        <Content type={type} onLoad={() => {}} />
       </Wrapper>
     </CustomScroller>
   )

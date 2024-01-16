@@ -1,4 +1,4 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme, animate } from '@/css'
 
 export const Wrapper = styled.div`
   ${css.column()};
@@ -15,5 +15,6 @@ export const Wrapper = styled.div`
   position: absolute;
   bottom: 160px;
   left: 140px;
+  animation: ${animate.jump} 5s linear infinite alternate;
 `
 export const holder = 1

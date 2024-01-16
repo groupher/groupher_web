@@ -6,12 +6,12 @@ export const gradientColor = (tab: TIntroTab) => {
   switch (tab) {
     case DASHBOARD_ROUTE.LAYOUT: {
       // purple
-      return 'linear-gradient(rgb(236 229 255 / 30%) 0%, rgb(253 253 253 / 96%) 100%)'
+      return 'linear-gradient(rgb(236 229 255 / 30%) 0%, rgb(255 255 255 / 96%) 100%)'
     }
 
     case DASHBOARD_ROUTE.POST: {
       // blue
-      return 'linear-gradient(rgb(240 246 255 / 82%) 0%, rgb(253 253 253 / 96%) 100%)'
+      return 'linear-gradient(rgb(240 246 255 / 82%) 0%, rgb(255 255 255 / 96%) 100%)'
     }
 
     case DASHBOARD_ROUTE.SEO: {
@@ -35,7 +35,7 @@ export const gradientColor = (tab: TIntroTab) => {
     }
     case DASHBOARD_ROUTE.WIDGETS: {
       // yellow-grey
-      return 'linear-gradient(rgb(233 226 212 / 24%) 0%, rgb(253 253 253 / 96%) 100%)'
+      return 'linear-gradient(rgb(233 226 212 / 24%) 0%, rgb(255 255 255 / 96%) 100%)'
     }
 
     case 'richeditor': {
@@ -56,7 +56,7 @@ export const gradientColor = (tab: TIntroTab) => {
     // ?
 
     default: {
-      return 'linear-gradient(rgb(236 229 255 / 30%) 0%, rgb(253 253 253 / 96%) 100%)'
+      return 'linear-gradient(rgb(236 229 255 / 30%) 0%, rgb(255 255 255 / 96%) 100%)'
     }
   }
 }

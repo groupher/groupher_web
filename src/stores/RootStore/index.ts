@@ -35,13 +35,13 @@ import {
   // viewers
   // RepoViewerStore,
   CommentsStore,
-  MailsViewerStore,
+  // MailsViewerStore,
   // toolbox
   DrawerStore,
   // SidebarStore,
   // RepoEditorStore,
   AccountEditorStore,
-  MailBoxStore,
+  // MailBoxStore,
   TagsBarStore,
   // GEN: IMPORT SUBSTORE
   PassportEditorStore,
@@ -87,7 +87,7 @@ const rootStore = T.model({
   drawer: T.opt(DrawerStore, { visible: false }),
   // repoEditor: T.opt(RepoEditorStore, {}),
   accountEditor: T.opt(AccountEditorStore, {}),
-  mailBox: T.opt(MailBoxStore, {}),
+  // mailBox: T.opt(MailBoxStore, {}),
   // toolbox end
 
   // layouts > xxx > papers
@@ -113,7 +113,7 @@ const rootStore = T.model({
   tagsBar: T.opt(TagsBarStore, {}),
 
   // viewers (for drawer usage)
-  mailsViewer: T.opt(MailsViewerStore, {}),
+  // mailsViewer: T.opt(MailsViewerStore, {}),
 
   // GEN: PLUG SUBSTORE TO ROOTSTORE
   passportEditor: T.opt(PassportEditorStore, {}),

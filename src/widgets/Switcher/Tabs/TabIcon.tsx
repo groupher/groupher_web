@@ -1,5 +1,4 @@
-import { FC, useCallback } from 'react'
-import dynamic from 'next/dynamic'
+import { FC, useCallback, lazy, Suspense } from 'react'
 
 import type { TTabItem } from '@/spec'
 import { Wrapper } from '../styles/tabs/tab_icon'
@@ -12,16 +11,16 @@ type TProps = {
   active: boolean
 }
 
-export const LocalIcon = dynamic(() => import('./LocalIcon'), {
-  ssr: false,
-})
+export const LocalIcon = lazy(() => import('./LocalIcon'))
 
 const TabIcon: FC<TProps> = ({ item, clickableRef, active }) => {
   const { icon } = item
 
   const IconCmp = icon && (
-    // @ts-ignore
-    <LocalIcon slug={icon} active={active} small={false} />
+    <Suspense fallback={null}>
+      // @ts-ignore
+      <LocalIcon slug={icon as string} active={active} small={false} />
+    </Suspense>
   )
 
   const handleClick = useCallback(

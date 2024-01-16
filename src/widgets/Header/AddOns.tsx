@@ -42,7 +42,6 @@ const AddOns: FC<TProps> = ({ accountInfo }) => {
           <HeaderSearchIcon $testid="header-search-icon" />
         </Search>
 
-        {/* {MailBox && <MailBox />} */}
         <UserAccount accountInfo={accountInfo} />
       </Operations>
     </Wrapper>

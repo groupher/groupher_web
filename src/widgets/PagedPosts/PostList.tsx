@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 
-import { FC } from 'react'
+import { FC, lazy, Suspense } from 'react'
 import { observer } from 'mobx-react-lite'
 import { trackWindowScroll } from 'react-lazy-load-image-component'
 
@@ -13,9 +13,10 @@ import usePostLayout from '@/hooks/usePostLayout'
 import PostItem from '@/widgets/PostItem'
 import MasonryCards from '@/widgets/MasonryCards'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
-import { EmptyThread } from './dynamic'
 
 import { MasonryCardsWrapper } from './styles/article_list'
+
+const EmptyThread = lazy(() => import('@/widgets/EmptyThread'))
 
 const PostList: FC = () => {
   const postLayout = usePostLayout()
@@ -32,8 +33,11 @@ const PostList: FC = () => {
     (resState === TYPE.RES_STATE.EMPTY && entries.length === 0) ||
     (resState === TYPE.RES_STATE.DONE && entries.length === 0)
   ) {
-    // @ts-ignore
-    return <EmptyThread thread={THREAD.POST} />
+    return (
+      <Suspense fallback={null}>
+        <EmptyThread thread={THREAD.POST} />
+      </Suspense>
+    )
   }
 
   if (postLayout === POST_LAYOUT.MASONRY) {

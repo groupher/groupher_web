@@ -4,11 +4,10 @@
  *
  */
 
-import { FC, createContext, useContext } from 'react'
-import dynamic from 'next/dynamic'
+import { FC, Suspense, lazy } from 'react'
 import { compose, not, isNil, filter, reverse as reverseFn, slice } from 'ramda'
 
-import type { TUser, TSize, TSpace } from '@/spec'
+import type { TUser, TSpace } from '@/spec'
 import { AVATARS_LIST_LENGTH } from '@/config'
 
 import SIZE from '@/constant/size'
@@ -23,22 +22,21 @@ import { Wrapper, AvatarsWrapper, TotalOneOffset, AvatarFallback } from './style
 
 const log = buildLog('w:Facepile:index')
 
-// @ts-ignore
-const RealAvatarContext = createContext()
+const RealAvatar = lazy(() => import('./RealAvatar'))
 
-export const RealAvatar = dynamic(() => import('./RealAvatar'), {
-  /* eslint-disable react/display-name */
-  loading: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { size, user } = useContext(RealAvatarContext) as {
-      user: TUser
-      size: TSize
-    }
+// export const RealAvatar = dynamic(() => import('./RealAvatar'), {
+//   /* eslint-disable react/display-name */
+//   loading: () => {
+//     // eslint-disable-next-line react-hooks/rules-of-hooks
+//     const { size, user } = useContext(RealAvatarContext) as {
+//       user: TUser
+//       size: TSize
+//     }
 
-    return <AvatarFallback size={getAvatarSize(size, 'number') as number} user={user} />
-  },
-  ssr: false,
-})
+//     return <AvatarFallback size={getAvatarSize(size, 'number') as number} user={user} />
+//   },
+//   ssr: false,
+// })
 
 const validUser = compose(not, isNil)
 
@@ -102,8 +100,11 @@ const Facepile: FC<TProps> = ({
         <MoreItem size={size} onTotalSelect={onTotalSelect} />
       )}
       {totalCount === 1 ? (
-        <RealAvatarContext.Provider value={{ size, user: sortedUsers[0] }}>
-          {/*  @ts-ignore */}
+        <Suspense
+          fallback={
+            <AvatarFallback size={getAvatarSize(size, 'number') as number} user={sortedUsers[0]} />
+          }
+        >
           <RealAvatar
             user={sortedUsers[0]}
             size={size}
@@ -111,12 +112,15 @@ const Facepile: FC<TProps> = ({
             onUserSelect={onUserSelect}
             popCardPlacement={popCardPlacement}
           />
-        </RealAvatarContext.Provider>
+        </Suspense>
       ) : (
         <AvatarsWrapper>
           {slice(0, limit, sortedUsers).map((user) => (
-            <RealAvatarContext.Provider key={user.login} value={{ size, user }}>
-              {/*  @ts-ignore */}
+            <Suspense
+              fallback={
+                <AvatarFallback size={getAvatarSize(size, 'number') as number} user={user} />
+              }
+            >
               <RealAvatar
                 user={user}
                 size={size}
@@ -124,7 +128,7 @@ const Facepile: FC<TProps> = ({
                 onUserSelect={onUserSelect}
                 popCardPlacement={popCardPlacement}
               />
-            </RealAvatarContext.Provider>
+            </Suspense>
           ))}
         </AvatarsWrapper>
       )}
