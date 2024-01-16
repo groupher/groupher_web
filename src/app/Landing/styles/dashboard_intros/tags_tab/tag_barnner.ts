@@ -10,13 +10,13 @@ export const Header = styled.div`
   ${css.row()};
 `
 export const HashTagIcon = styled(HashTagSVG)`
-  ${css.circle(13)};
+  ${css.circle(12)};
   fill: ${theme('rainbow.green')};
   transform: rotate(18deg);
   opacity: 0.6;
   margin-left: -1px;
-  margin-top: 1px;
-  margin-right: 6px;
+  margin-top: 4px;
+  margin-right: 4px;
 `
 export const Title = styled.div`
   color: ${theme('article.title')};
@@ -26,6 +26,6 @@ export const Desc = styled.div`
   color: ${theme('article.digest')};
   opacity: 0.8;
   font-size: 12px;
-  width: 230px;
+  width: 225px;
   margin-top: 5px;
 `

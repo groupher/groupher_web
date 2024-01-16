@@ -6,16 +6,16 @@ export const Wrapper = styled.div`
   ${css.row()};
   height: 158px;
   width: 460px;
-  padding: 18px 30px;
+  padding: 18px 26px;
   border: 5px solid;
   border-color: ${theme('htmlBg')};
   background: ${theme('gradientBg.green')};
   border-radius: 12px;
   position: absolute;
-  bottom: 110px;
+  bottom: 100px;
   left: 120px;
   z-index: 5;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px -4px 24px;
 `
 export const Left = styled.div`
   width: 45%;

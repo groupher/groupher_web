@@ -5,7 +5,7 @@ import HashTagSVG from '@/icons/HashTagBold'
 
 export const Wrapper = styled.div`
   position: absolute;
-  right: 25px;
+  right: 38px;
   top: 56px;
   width: 80px;
   height: 250px;

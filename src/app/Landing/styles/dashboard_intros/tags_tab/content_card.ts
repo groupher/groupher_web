@@ -34,7 +34,7 @@ export const InnerContent = styled.div`
   border-color: ${theme('divider')};
   border-radius: 8px;
   background: ${theme('htmlBg')};
-  padding: 20px;
+  padding: 20px 26px;
   width: 100%;
   height: 100%;
 `
