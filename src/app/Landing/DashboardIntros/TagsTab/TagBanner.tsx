@@ -15,7 +15,7 @@ const TagBanner: FC = () => {
         <HashTagIcon />
         <Title>使用分享</Title>
       </Header>
-      <Desc>这里搜集各位亲们的日常使用分享、实用技巧以及攻略等，Have fun 🫰!</Desc>
+      <Desc>这里搜集各位亲们的日常使用分享、实用技巧以及攻略等，Have fun !</Desc>
     </Wrapper>
   )
 }

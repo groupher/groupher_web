@@ -25,7 +25,6 @@ export const Wrapper = styled.div`
     background: ${theme('htmlBg')};
     border-radius: 6px;
     transform: rotate(-2deg);
-    box-shadow: rgba(100, 100, 111, 0.1) 0px 3px 29px 0px;
   }
 `
 export const InnerContent = styled.div`
