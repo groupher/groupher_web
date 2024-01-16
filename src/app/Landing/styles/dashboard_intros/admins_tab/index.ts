@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
-  margin-left: 46px;
+  margin-left: 26px;
   animation: ${animate.jump} 0.5s linear;
 `
 export const Notes = styled(WithPosition)`

@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   border: 1px solid;
   border-color: ${theme('divider')};
   width: 420px;
-  height: 460px;
+  height: 450px;
   border-radius: 15px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   z-index: 2;
