@@ -18,8 +18,8 @@ import {
 const Footer: FC = () => {
   return (
     <Wrapper>
-      <CURDLabel top={-14} right={60}>
-        CURD
+      <CURDLabel top={-14} right={65}>
+        CRUD
       </CURDLabel>
       <Left>
         <Item>
