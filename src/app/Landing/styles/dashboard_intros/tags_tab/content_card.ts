@@ -1,4 +1,4 @@
-import styled, { css, theme } from '@/css'
+import styled, { theme } from '@/css'
 
 export const Wrapper = styled.div`
   background: ${theme('htmlBg')};
@@ -29,6 +29,7 @@ export const Wrapper = styled.div`
   }
 `
 export const InnerContent = styled.div`
+  position: relative;
   border: 1px solid;
   border-color: ${theme('divider')};
   border-radius: 8px;

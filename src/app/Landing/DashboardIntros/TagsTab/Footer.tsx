@@ -44,7 +44,7 @@ const Footer: FC = () => {
         </Item>
         <Item>
           <Label>标签简介</Label>
-          <Value>这里搜集各位亲们的日常使用分享、实用技巧以及攻略等，have fun 🫰!</Value>
+          <Value>这里搜集各位亲们的日常使用分享、实用技巧以及攻略等，Have fun 🫰!</Value>
         </Item>
       </Right>
     </Wrapper>
