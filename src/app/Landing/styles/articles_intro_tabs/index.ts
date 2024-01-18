@@ -25,7 +25,6 @@ export const MobileIntroLists = styled.div`
 `
 export const HighlightWord = styled.span`
   font-weight: 450;
-  opacity: 0.8;
-  margin-left: 1px;
-  margin-right: 1px;
+  margin-left: 2px;
+  margin-right: 2px;
 `

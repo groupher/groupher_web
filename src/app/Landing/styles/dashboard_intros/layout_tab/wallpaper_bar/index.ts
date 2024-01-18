@@ -29,8 +29,9 @@ export const BallWrapper = styled.div<TActive>`
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
   &:hover {
-    border-color: ${theme('article.digest')};
+    border-color: ${theme('hint')};
     ${css.circle(38)};
+    ${css.row('align-both')};
     box-shadow: ${css.cardShadow};
     cursor: pointer;
   }

@@ -13,12 +13,12 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   margin-right: 50px;
 `
 export const Digest = styled.div`
-  color: ${theme('hint')};
-  line-height: 1.68em;
+  color: ${theme('article.title')};
+  line-height: 1.78em;
   width: 300px;
   margin-top: -100px;
   margin-bottom: 30px;
-  font-size: 18px;
+  font-size: 19px;
 `
 export const Highlight = styled(HighlightWord)`
   color: ${theme('rainbow.red')};

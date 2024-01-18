@@ -24,14 +24,14 @@ export const Title = styled.div`
 `
 export const InfoBar = styled.div`
   ${css.row('align-center')};
-  margin-top: 1px;
+  margin-top: 2px;
 `
 export const Label = styled.div`
   font-size: 13px;
   color: ${theme('hint')};
 `
 export const Count = styled.div`
-  font-size: 14px;
+  font-size: 13px;
   color: ${theme('article.digest')};
   font-weight: 500;
   margin-left: 5px;

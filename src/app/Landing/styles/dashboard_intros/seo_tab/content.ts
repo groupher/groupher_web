@@ -1,4 +1,4 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme, animate } from '@/css'
 
 import EditSVG from '@/icons/Spider'
 
@@ -23,11 +23,12 @@ export const IconBox = styled.div`
   left: 196px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px -1px 24px;
   background: ${theme('gradientBg.cyan')};
+  animation: ${animate.jump} 3s linear infinite alternate;
 
   &:after {
     content: '';
     position: absolute;
-    left: 17px;
+    left: 16px;
     top: -100px;
     height: 100px;
     width: 1px;

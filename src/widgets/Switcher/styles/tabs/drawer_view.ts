@@ -9,26 +9,25 @@ export const Wrapper = styled.nav.attrs<TTestable>(({ $testid }) => ({
   overflow: hidden;
   width: 100%;
   height: 38px;
-  border-radius: 10px;
-  background: ${theme('hoverBg')};
+  border-radius: 15px;
   padding: 1px 3px;
+  background: ${theme('hoverBg')};
 `
 export const TabItem = styled.div<TActive>`
   ${css.row('align-both')};
-  height: 28px;
+  height: 30px;
 
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   background: ${({ $active }) => ($active ? 'white' : 'transparent')};
   font-weight: ${({ $active }) => ($active ? 600 : 'normal')};
   font-size: 12px;
   flex-grow: 1;
-  border-radius: 10px;
+  border-radius: 12px;
   margin-left: 1px;
   margin-right: 1px;
 
   border: 1px solid transparent;
   border-color: ${({ $active }) => ($active ? theme('divider') : 'transparent')};
-  box-shadow: ${({ $active }) => ($active ? 'rgb(0 0 0 / 12%) 0px 2px 12px 0px;' : 'none')};
 
   &:hover {
     font-weight: 600;

@@ -17,17 +17,15 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
     color: white;
   }
 `
-
 export const Digest = styled.div`
-  color: ${theme('hint')};
-  line-height: 1.68em;
+  color: ${theme('article.title')};
+  line-height: 1.78em;
   width: 300px;
   margin-top: -40px;
   margin-bottom: 16px;
-  font-size: 18px;
+  font-size: 19px;
 `
-
 export const Highlight = styled(HighlightWord)`
   color: ${theme('rainbow.cyan')};
-  opacity: 0.7;
+  opacity: 0.9;
 `

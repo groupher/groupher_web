@@ -11,14 +11,13 @@ export const Wrapper = styled.div`
 `
 export const Digest = styled.div`
   font-size: 18px;
-  color: ${theme('hint')};
+  color: ${theme('article.title')};
   margin-bottom: 20px;
   margin-top: 10px;
   margin-left: 76px;
 `
 export const Highlight = styled(HighlightWord)`
   color: ${theme('rainbow.blue')};
-  opacity: 0.9;
 `
 export const InnerWrapper = styled.div`
   ${css.column('align-start')};

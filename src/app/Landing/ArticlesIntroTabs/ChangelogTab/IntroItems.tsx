@@ -18,7 +18,7 @@ const Contents = () => {
       <FeatItem text="标签，版本，时间归档" color={color} />
       <FeatItem text="评论，表情反馈" color={color} />
       <FeatItem text="一键多渠道分享" color={color} />
-      <FeatItem text="高度自定义" color={color} />
+      <FeatItem text="自定义模板" color={color} />
     </>
   )
 }
