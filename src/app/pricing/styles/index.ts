@@ -2,6 +2,7 @@ import styled, { css, gradientBg, theme, rainbow } from '@/css'
 import type { TColor } from '@/spec'
 
 import Button from '@/widgets/Buttons/Button'
+import Img from '@/Img'
 
 export const Wrapper = styled.div`
   max-width: 1200px;
@@ -22,6 +23,8 @@ export const Column = styled.div<TColumn>`
   height: 680px;
   padding: 15px 28px;
   border-bottom: 1px solid transparent;
+  border: 1px dotted transparent;
+
   /* border-bottom-color: ${({ $color }) => ($color === 'BLACK' ? theme('divider') : 'transparent')}; */
   /* box-shadow: ${theme('shadow.md')}; */
   border-radius: 28px;
@@ -30,6 +33,10 @@ export const Column = styled.div<TColumn>`
   position: relative;
   overflow: hidden;
   z-index: 1;
+
+  &:hover {
+    border-color: ${({ $color }) => rainbow($color)};
+  }
 
   &:after {
     content: "";
@@ -40,8 +47,11 @@ export const Column = styled.div<TColumn>`
     height: 100%;
     background: ${({ $color }) => gradientBg($color)};
     opacity: ${({ $opacity }) => $opacity || 1};
+    transform: ${({ $color }) => ($color === 'ORANGE' ? 'rotate(180deg)' : '')};
     z-index: 0;
   }
+
+  transition: all 0.3s;
 `
 export const Board = styled.div`
   width: 300px;
@@ -54,7 +64,17 @@ export const Board = styled.div`
   border-radius: 35px;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
+  box-shadow: rgb(235 235 235 / 20%) 0px -5px 8px 0px;
   z-index: 2;
+`
+export const CatPaw = styled(Img)<{ top: number }>`
+  width: 72px;
+  z-index: 100000;
+  position: absolute;
+  left: 8px;
+  top: ${({ top }) => `${top}px`};
+  filter: drop-shadow(2px 4px 6px lightgrey);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2);
 `
 export const TopTitle = styled.div<TColor>`
   color: ${({ $color }) => rainbow($color)};
@@ -71,13 +91,14 @@ export const Desc = styled.div`
   z-index: 3;
 `
 export const Price = styled.div`
+  ${css.row('align-center')};
   color: ${theme('article.title')};
   font-size: 26px;
   font-weight: 600;
   margin-top: 10px;
   margin-bottom: 5px;
   opacity: 0.8;
-  z-index: 3;
+  z-index: 1;
 
   &:before {
     content: "¥";
@@ -95,20 +116,23 @@ export const Price = styled.div`
     color: ${theme('article.digest')};
   }
 `
-export const CancelNote = styled.div`
+type TCancelNote = TColor & { $hide?: boolean }
+export const CancelNote = styled.div<TCancelNote>`
   font-size: 13px;
-  color: ${theme('article.digest')};
+  color: ${({ $color }) => ($color ? rainbow($color) : theme('article.digest'))};
+  z-index: 1;
   opacity: 0.8;
-  z-index: 3;
+  margin-top: ${({ $hide }) => ($hide ? '50px' : 0)};
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
 `
 export const UpgradeButton = styled(Button)`
   width: 100%;
 `
 export const ButtonWrapper = styled.div`
   position: absolute;
-  width: 280px;
+  width: 260px;
   bottom: 22px;
-  left: 18px;
+  left: 30px;
   z-index: 3;
   opacity: 0.9;
   &:hover {

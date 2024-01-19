@@ -1,4 +1,4 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme, rainbow } from '@/css'
 import type { TColor } from '@/spec'
 
 import CheckSVG from '@/icons/Check'
@@ -16,8 +16,8 @@ export const IconWrapper = styled.div`
   ${css.row('align-both')};
   margin-right: 10px;
 `
-export const CheckIcon = styled(CheckSVG)`
+export const CheckIcon = styled(CheckSVG)<TColor>`
   ${css.size(15)};
   margin-top: 4px;
-  fill: ${theme('rainbow.orange')};
+  fill: ${({ $color }) => rainbow($color)}};
 `

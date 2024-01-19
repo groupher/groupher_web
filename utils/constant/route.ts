@@ -100,6 +100,7 @@ export const ROUTE = {
   KANBAN: 'kanban',
   ABOUT: 'about',
   USER: 'user',
+  PRICE: 'pricing',
 
   ...NON_COMMUNITY_ROUTE,
 

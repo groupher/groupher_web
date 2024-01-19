@@ -6,7 +6,7 @@ import { WithMargin } from '@/widgets/Common'
 type TWrapper = { $count: number } & TActive
 
 export const Wrapper = styled(WithMargin)<TWrapper>`
-  font-weight: ${({ $count }) => ($count > 0 ? 450 : 400)};
+  font-weight: ${({ $count }) => ($count > 0 ? 500 : 400)};
   filter: brightness(1.1);
 `
 export const holder = 1

@@ -14,6 +14,9 @@ export const getFontSize = (size: TSize): number => {
     case SIZE.LARGE: {
       return 17
     }
+    case SIZE.HUGE: {
+      return 26
+    }
     default: {
       return 14
     }
