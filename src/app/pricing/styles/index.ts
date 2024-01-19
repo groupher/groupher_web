@@ -10,6 +10,7 @@ export const Wrapper = styled.div`
   max-width: 1200px;
   height: 100%;
   width: 100%;
+  margin-bottom: 80px;
   position: relative;
   overflow: hidden;
 `
@@ -86,11 +87,12 @@ export const Board = styled.div`
   box-shadow: rgb(235 235 235 / 20%) 0px -5px 8px 0px;
   z-index: 2;
 `
-export const CatPaw = styled(Img)<{ top: number }>`
+type TCatPaw = { top: number; left: number }
+export const CatPaw = styled(Img)<TCatPaw>`
   width: 72px;
   z-index: 100000;
   position: absolute;
-  left: 8px;
+  left: ${({ left }) => `${left}px`};
   top: ${({ top }) => `${top}px`};
   filter: drop-shadow(2px 4px 6px lightgrey);
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2);

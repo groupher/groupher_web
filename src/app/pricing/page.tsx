@@ -1,6 +1,9 @@
 'use client'
+
+import { EMAIL_SUPPORT } from '@/config'
 // import Landing from './Landing'
 import AnimatedCount from '@/widgets/AnimatedCount'
+import { Link } from '@/widgets/Common'
 
 import useHover from '@/hooks/useHover'
 import useThemeData from '@/hooks/useThemeData'
@@ -53,7 +56,11 @@ export default function Page() {
           </ButtonWrapper>
         </Column>
         <Column ref={paidHoveredRef} $color={COLOR_NAME.ORANGE} $opacity={0.6}>
-          <CatPaw src="landing/catpaw.png" top={paidHovered ? 158 : 75} />
+          <CatPaw
+            src="landing/catpaw.png"
+            top={paidHovered ? 158 : 75}
+            left={paidHovered ? 0 : 12}
+          />
           <TopTitle $color={COLOR_NAME.BROWN}>交个朋友</TopTitle>
           <Desc>您的产品已有一定规模，希望解锁社区更多功能获得进一步增长。</Desc>
           <Price>
@@ -92,7 +99,9 @@ export default function Page() {
             ))}
           </Board>
           <ButtonWrapper>
-            <UpgradeButton ghost>联系我们</UpgradeButton>
+            <Link href={`mailto:${EMAIL_SUPPORT}`}>
+              <UpgradeButton ghost>联系我们</UpgradeButton>
+            </Link>
           </ButtonWrapper>
         </Column>
       </InnerWrapper>
