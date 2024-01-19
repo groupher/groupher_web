@@ -1,10 +1,12 @@
 import styled, { css, gradientBg, theme, rainbow } from '@/css'
 import type { TColor } from '@/spec'
 
+import CoffeeSVG from '@/icons/CoffeeDuo'
 import Button from '@/widgets/Buttons/Button'
 import Img from '@/Img'
 
 export const Wrapper = styled.div`
+  ${css.column('align-both')};
   max-width: 1200px;
   height: 100%;
   width: 100%;
@@ -15,6 +17,17 @@ export const InnerWrapper = styled.div`
   ${css.row('justify-center')};
   width: 100%;
   gap: 0 35px;
+`
+export const BannerTitle = styled.div`
+  font-size: 30px;
+  color: ${theme('article.title')};
+  margin-top: -20px;
+`
+export const BannerDesc = styled.div`
+  font-size: 18px;
+  color: ${theme('article.digest')};
+  margin-top: 10px;
+  margin-bottom: 60px;
 `
 type TColumn = TColor & { $opacity?: number }
 export const Column = styled.div<TColumn>`
@@ -56,6 +69,7 @@ export const Column = styled.div<TColumn>`
 export const Board = styled.div`
   width: 300px;
   padding: 20px;
+  padding-top: 30px;
   position: absolute;
   left: 10px;
   bottom: 75px;
@@ -85,7 +99,6 @@ export const TopTitle = styled.div<TColor>`
 `
 export const Desc = styled.div`
   color: ${theme('article.digest')};
-  opacity: 0.8;
   font-size: 15px;
   margin-left: 2px;
   z-index: 3;
@@ -113,8 +126,24 @@ export const Price = styled.div`
     font-size: 16px;
     opacity: 0.8;
     margin-left: 6px;
+    margin-top: 4px;
     color: ${theme('article.digest')};
   }
+`
+export const CoffeeIcon = styled(CoffeeSVG)`
+  ${css.size(22)};
+  fill: ${theme('rainbow.blue')};
+  margin-right: 5px;
+  margin-left: 1px;
+  opacity: 0.8;
+`
+export const LetsTalk = styled.div`
+  ${css.row('align-center')};
+  font-size: 20px;
+  z-index: 2;
+  color: ${theme('article.title')};
+  margin-top: 14px;
+  margin-bottom: 10px;
 `
 type TCancelNote = TColor & { $hide?: boolean }
 export const CancelNote = styled.div<TCancelNote>`

@@ -13,11 +13,15 @@ import Feature from './Feature'
 import {
   Wrapper,
   InnerWrapper,
+  BannerTitle,
+  BannerDesc,
   Column,
   Board,
   TopTitle,
   Desc,
   Price,
+  CoffeeIcon,
+  LetsTalk,
   CancelNote,
   ButtonWrapper,
   UpgradeButton,
@@ -31,6 +35,8 @@ export default function Page() {
   return (
     <Wrapper>
       <HomeHeader />
+      <BannerTitle>与用户社区一起，走的更远</BannerTitle>
+      <BannerDesc>无套路，无广告，持续迭代，开放透明</BannerDesc>
       <InnerWrapper>
         <Column $color={COLOR_NAME.GREEN} $opacity={0.3}>
           <TopTitle $color={COLOR_NAME.GREEN}>免费</TopTitle>
@@ -75,7 +81,11 @@ export default function Page() {
         <Column $color={COLOR_NAME.BLUE} $opacity={0.4}>
           <TopTitle $color={COLOR_NAME.BLUE}>定制开发</TopTitle>
           <Desc>您的产品需要更加个性化的功能，我们可提供量身定做服务。</Desc>
-          <Price>--</Price>
+          <LetsTalk>
+            <CoffeeIcon />
+            一起聊聊吧
+          </LetsTalk>
+          <CancelNote>对社区产品有想法？让我们知道！</CancelNote>
           <Board>
             {CUSTOM_PAN_ITEMS.map((item) => (
               <Feature key={item.key} title={item.title} color={COLOR_NAME.BLUE} />
