@@ -51,6 +51,11 @@ export const Column = styled.div<TColumn>`
     border-color: ${({ $color }) => rainbow($color)};
   }
 
+  *::selection {
+    background-color: ${({ $color }) => rainbow($color)} !important;
+    color: white;
+  }
+
   &:after {
     content: "";
     position: absolute;
