@@ -48,12 +48,11 @@ export const BaseCard = styled.div<TColor>`
   }
   transition: all 0.2s;
 `
-
 export const CardsWrapper = styled.div`
   ${css.row('align-both')};
   width: 100%;
   height: 500px;
-  gap: 0 30px;
+  gap: 0 36px;
 `
 export const FooterCards = styled(CardsWrapper)`
   height: 425px;

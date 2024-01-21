@@ -7,7 +7,7 @@ export { EmojiImg, Item, Count } from './emotion_bar'
 export const Wrapper = styled(WrapperBase)`
   width: 200px;
   position: absolute;
-  bottom: 60px;
+  bottom: 68px;
   right: 50px;
   transform: rotate(3deg);
   background: ${theme('alphaBg2')};

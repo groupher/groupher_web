@@ -9,8 +9,8 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
 }))<TTestable>`
   ${css.column('align-start')};
+  margin-left: 12px;
   margin-top: 40px;
-  margin-right: 10px;
 `
 export const Digest = styled.div`
   color: ${theme('article.digest')};

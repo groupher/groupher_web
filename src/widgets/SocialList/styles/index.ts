@@ -48,7 +48,7 @@ export const SocialWrapper = styled(Link)`
   }
 `
 
-const getIcon = (SVG, size = 17) => {
+const commonIcon = (SVG, size = 17) => {
   return styled(SVG)<TActive>`
     ${css.size(size)};
     fill: ${theme('article.digest')};
@@ -67,15 +67,15 @@ const getIcon = (SVG, size = 17) => {
 }
 
 export const Icon = {
-  [SOCIAL_LIST.TIKTOK]: getIcon(TikTokSVG),
-  [SOCIAL_LIST.EMAIL]: getIcon(EmailSVG),
-  [SOCIAL_LIST.TWITTER]: getIcon(TwitterSVG),
-  [SOCIAL_LIST.ZHIHU]: getIcon(ZhihuSVG),
-  [SOCIAL_LIST.GITHUB]: getIcon(GithubSVG),
-  [SOCIAL_LIST.BILIBILI]: getIcon(BiliBiliSVG),
-  [SOCIAL_LIST.WECHAT]: getIcon(WeChatSVG),
-  [SOCIAL_LIST.BOSS]: getIcon(BossSVG, 14),
-  [SOCIAL_LIST.WEIBO]: getIcon(WeiboSVG, 17),
+  [SOCIAL_LIST.TIKTOK]: commonIcon(TikTokSVG),
+  [SOCIAL_LIST.EMAIL]: commonIcon(EmailSVG),
+  [SOCIAL_LIST.TWITTER]: commonIcon(TwitterSVG),
+  [SOCIAL_LIST.ZHIHU]: commonIcon(ZhihuSVG),
+  [SOCIAL_LIST.GITHUB]: commonIcon(GithubSVG),
+  [SOCIAL_LIST.BILIBILI]: commonIcon(BiliBiliSVG),
+  [SOCIAL_LIST.WECHAT]: commonIcon(WeChatSVG),
+  [SOCIAL_LIST.BOSS]: commonIcon(BossSVG, 14),
+  [SOCIAL_LIST.WEIBO]: commonIcon(WeiboSVG, 17),
 }
 
 export const Title = styled.div<{ size: string }>`

@@ -1,5 +1,18 @@
 import styled, { css, theme } from '@/css'
 
+import type { TActive } from '@/spec'
+
+import MarkdownSVG from '@/icons/Markdown'
+import TikTokSVG from '@/icons/social/TikTok'
+import EmailSVG from '@/icons/social/Email'
+import WeChatSVG from '@/icons/social/WeChat'
+import TwitterSVG from '@/icons/social/Twitter'
+import WeiboSVG from '@/icons/social/Weibo'
+import ZhihuSVG from '@/icons/social/Zhihu'
+import GithubSVG from '@/icons/social/Github'
+import BiliBiliSVG from '@/icons/social/BiliBili'
+import BossSVG from '@/icons/social/Boss'
+
 export const Wrapper = styled.div`
   ${css.row('align-center', 'justify-between')};
   padding: 0 15px;
@@ -8,20 +21,14 @@ export const Wrapper = styled.div`
   color: ${theme('article.digest')};
   border: 1px solid;
   border-color: ${theme('divider')};
-  width: 445px;
+  width: 100%;
   height: 56px;
   border-radius: 10px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   z-index: 2;
   position: absolute;
-  top: 8px;
-  left: 8px;
-`
-export const CommunityLogo = styled.div`
-  ${css.size(20)};
-  background: ${theme('gradientBg.orange')};
-  border-radius: 4px;
-  margin-right: 5px;
+  top: 0;
+  left: 0;
 `
 export const Title = styled.div`
   ${css.row('align-center')};
@@ -36,10 +43,27 @@ export const Links = styled.div`
 export const LinkName = styled.div`
   font-size: 12px;
 `
+const commonIcon = (SVG, size = 25) => {
+  return styled(SVG)<TActive>`
+    ${css.size(size)};
 
-export const FakeAvatar = styled.div`
-  width: 16px;
-  height: 5px;
-  background: ${theme('divider')};
-  border-radius: 5px;
-`
+    &:hover {
+      cursor: pointer;
+    }
+
+    transition: all 0.2s;
+  `
+}
+
+export const Icon = {
+  Markdown: commonIcon(MarkdownSVG),
+  TikTok: commonIcon(TikTokSVG),
+  EMAIL: commonIcon(EmailSVG),
+  Twitter: commonIcon(TwitterSVG),
+  ZHIHU: commonIcon(ZhihuSVG),
+  GITHUB: commonIcon(GithubSVG),
+  BILIBILI: commonIcon(BiliBiliSVG),
+  WECHAT: commonIcon(WeChatSVG),
+  BOSS: commonIcon(BossSVG, 14),
+  WEIBO: commonIcon(WeiboSVG, 17),
+}

@@ -19,7 +19,6 @@ type TBar = {
 // export const Wrapper = styled(WrapperBase)<TBar>`
 export const Wrapper = styled.div<TBar>`
   position: relative;
-  border: 1px solid blue;
 
   .os-host:not(:hover) {
     visibility: ${({ $showOnHover }) => ($showOnHover ? 'hidden' : 'inherit')};

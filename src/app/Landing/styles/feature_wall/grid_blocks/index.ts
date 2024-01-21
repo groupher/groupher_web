@@ -19,7 +19,7 @@ import { WithPosition } from '@/widgets/Common'
 
 export const Wrapper = styled.div`
   ${css.column('align-both')};
-  width: 1000px;
+  width: 1020px;
   height: auto;
   margin-bottom: 60px;
 `

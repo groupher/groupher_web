@@ -1,12 +1,18 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme, WIDTH } from '@/css'
+import type { TMetric } from '@/spec'
 
 import type { TIntroTab } from '../../DashboardIntros/spec'
 import { gradientColor } from './metric'
 
 export const Wrapper = styled.div`
   width: 100%;
+  ${css.column('align-both')};
 `
-export const InnerWrapper = styled.div<{ $tab: TIntroTab }>`
+export const ContentWrapper = styled.div<{ metric: TMetric }>`
+  width: ${({ metric }) => WIDTH[metric].PAGE};
+`
+type TInnerWrapper = { $tab: TIntroTab; metric: TMetric }
+export const InnerWrapper = styled.div<TInnerWrapper>`
   ${css.row('align-both')};
   background: ${({ $tab }) => gradientColor($tab)};
   width: 100%;

@@ -14,8 +14,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
 }))<TTestable>`
   ${css.row('align-center', 'justify-between')};
-  max-width: 1200px;
-  padding: 0 30px;
+  padding: 0;
   height: 68px;
   width: 100%;
   margin-bottom: 8%;
