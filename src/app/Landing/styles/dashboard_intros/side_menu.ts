@@ -25,6 +25,7 @@ export const TabItem = styled.div<TTabItem>`
   cursor: pointer;
 
   padding: ${({ $active }) => ($active ? '14px 10px' : '12px 10px')};
+  padding-bottom: 10px;
   padding-left: 24px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
@@ -70,7 +71,7 @@ export const ItemTitle = styled.div<TActive>`
 `
 export const ItemDesc = styled.div`
   font-size: 15px;
-  margin-top: 4px;
+  margin-top: 8px;
   width: 230px;
   font-weight: 400;
   color: ${theme('article.digest')};

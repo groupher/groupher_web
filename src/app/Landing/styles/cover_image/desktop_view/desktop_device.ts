@@ -19,7 +19,7 @@ export const Wrapper = styled.div`
   // for brower header
   padding-top: 38px;
   background: #ffffff6e;
-  z-index: 0;
+  z-index: 3;
 `
 export const BrowerHead = styled.div`
   ${css.row('align-center', 'justify-center')};

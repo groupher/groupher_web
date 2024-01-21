@@ -2,9 +2,9 @@ import { FC } from 'react'
 
 import ContentCard from './ContentCard'
 
-import { Wrapper } from '../../styles/dashboard_intros/links_tab'
+import { Wrapper } from '../../styles/dashboard_intros/import_tab'
 
-const LinksTab: FC = () => {
+const ImportTab: FC = () => {
   return (
     <Wrapper>
       <ContentCard />
@@ -12,4 +12,4 @@ const LinksTab: FC = () => {
   )
 }
 
-export default LinksTab
+export default ImportTab

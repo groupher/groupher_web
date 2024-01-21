@@ -11,6 +11,7 @@ import TagsTab from './TagsTab'
 import AdminsTab from './AdminsTab'
 import LinksTab from './LinksTab'
 import IntegrateTab from './IntegrateTab'
+import ImportTab from './ImportTab'
 import TrendTab from './TrendTab'
 
 import { Wrapper, InnerWrapper, Slogan, Title, Desc, Right } from '../styles/dashboard_intros'
@@ -35,6 +36,7 @@ const DashboardIntros: FC = () => {
           {tab === DASHBOARD_ROUTE.ADMINS && <AdminsTab />}
           {tab === DASHBOARD_ROUTE.HEADER && <LinksTab />}
           {tab === DASHBOARD_ROUTE.WIDGETS && <IntegrateTab />}
+          {tab === DASHBOARD_ROUTE.INOUT && <ImportTab />}
           {tab === DASHBOARD_ROUTE.TREND && <TrendTab />}
         </Right>
       </InnerWrapper>

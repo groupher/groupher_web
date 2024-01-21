@@ -46,8 +46,8 @@ export const TABS_ITEMS = [
   },
   {
     key: DASHBOARD_ROUTE.INOUT,
-    title: '导入数据',
-    desc: '设置集成到目标网站的各种组件的相关属性。',
+    title: '导入 / 导出',
+    desc: '从外部服务导入内容到 Groupher。',
     color: COLOR_NAME.GREEN,
   },
   {

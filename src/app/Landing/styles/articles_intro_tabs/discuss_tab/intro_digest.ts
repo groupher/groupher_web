@@ -13,7 +13,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   margin-right: 10px;
 `
 export const Digest = styled.div`
-  color: ${theme('article.title')};
+  color: ${theme('article.digest')};
   line-height: 1.78em;
   width: 320px;
   margin-top: -32px;
