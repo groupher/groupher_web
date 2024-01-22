@@ -1,6 +1,7 @@
 import styled, { css } from '@/css'
 
 import CurveLineSVG from './CurveLine'
+import LineSVG from './Line'
 
 export const Wrapper = styled.div`
   ${css.column('align-both')};
@@ -10,6 +11,20 @@ export const Wrapper = styled.div`
   position: absolute;
   bottom: 100px;
   left: 140px;
+`
+export const LineIcon = styled(LineSVG)`
+  height: 80px;
+  position: absolute;
+  top: 118px;
+  left: 141px;
+  transform: rotate(90deg);
+`
+export const LineIcon2 = styled(LineSVG)`
+  height: 80px;
+  position: absolute;
+  bottom: 136px;
+  left: 159px;
+  transform: rotate(-90deg);
 `
 export const CurveLineIcon1 = styled(CurveLineSVG)`
   position: absolute;

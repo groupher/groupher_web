@@ -6,6 +6,8 @@ import FooterCard from './FooterCard'
 
 import {
   Wrapper,
+  LineIcon,
+  LineIcon2,
   CurveLineIcon1,
   CurveLineIcon2,
   CurveLineIcon3,
@@ -15,6 +17,8 @@ import {
 const ContentCard: FC = () => {
   return (
     <Wrapper>
+      <LineIcon />
+      <LineIcon2 />
       <CurveLineIcon1 />
       <CurveLineIcon2 />
       <CurveLineIcon3 />
