@@ -16,7 +16,7 @@ export const InnerWrapper = styled.div<TWrapper>`
   height: ${({ tab }) => {
     if (tab === THREAD.KANBAN) return '700px'
     if (tab === THREAD.CHANGELOG) return '650px'
-    if (tab === THREAD.DOC) return '636px'
+    if (tab === THREAD.DOC) return '662px'
 
     return '600px'
   }};

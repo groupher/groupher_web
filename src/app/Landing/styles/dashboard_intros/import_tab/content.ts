@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 `
 export const Logo = styled(Img)`
-  ${css.size(36)};
+  ${css.size(32)};
   box-shadow: rgba(149, 157, 165, 0.2) 0px -1px 24px;
 `
 export const Title = styled.div`

@@ -8,4 +8,5 @@ export const Wrapper = styled.div`
   margin-left: 20px;
   animation: ${animate.jump} 0.5s linear;
 `
+
 export const holder = 1
