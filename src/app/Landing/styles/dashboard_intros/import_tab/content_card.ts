@@ -16,12 +16,12 @@ export const Wrapper = styled.div`
 export const Bot = styled(WithPosition)`
   width: auto;
   color: ${theme('article.digest')};
-  padding: 6px 10px;
+  padding: 4px 10px;
   background: ${theme('alphaBg')};
   font-weight: bold;
   border: 1px solid;
   border-color: ${theme('divider')};
-  border-radius: 18px;
+  border-radius: 8px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   z-index: 2;
 `
@@ -39,15 +39,15 @@ export const LeftBgBubble = styled(BgBubble)`
   width: 46px;
   height: 46px;
   border-radius: 18px;
-  top: 215px;
+  top: 225px;
   left: 50px;
   background: ${theme('gradientBg.green')};
 `
 export const RightBgBubble = styled(BgBubble)`
-  width: 42px;
+  width: 48px;
   height: 40px;
   border-radius: 18px;
-  top: 215px;
+  top: 225px;
   left: 360px;
   background: ${theme('gradientBg.orange')};
 `

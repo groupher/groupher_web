@@ -12,11 +12,11 @@ const Content: FC = () => {
         <Title>Groupher</Title>
       </Header>
 
-      <Brick $width={100} $height={10} $opacity={0.18} top={60} left={30} />
-      <Brick $width={120} $height={10} $opacity={0.16} top={78} left={30} />
-      <Brick $width={90} $height={10} $opacity={0.13} top={96} left={30} />
-      <Brick $width={80} $height={10} $opacity={0.1} top={114} left={30} />
-      <Brick $width={100} $height={10} $opacity={0.06} top={132} left={30} />
+      <Brick $width={100} $height={6} $opacity={0.18} top={60} left={30} />
+      <Brick $width={120} $height={6} $opacity={0.16} top={78} left={30} />
+      <Brick $width={90} $height={6} $opacity={0.13} top={96} left={30} />
+      <Brick $width={80} $height={6} $opacity={0.1} top={114} left={30} />
+      <Brick $width={100} $height={6} $opacity={0.06} top={132} left={30} />
     </Wrapper>
   )
 }

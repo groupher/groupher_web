@@ -21,10 +21,10 @@ import {
 const ContentCard: FC = () => {
   return (
     <Wrapper>
-      <Bot top={220} left={50}>
+      <Bot top={230} left={50}>
         Bot
       </Bot>
-      <Bot top={220} right={60}>
+      <Bot top={230} right={60}>
         AI
       </Bot>
       <LeftBgBubble />
