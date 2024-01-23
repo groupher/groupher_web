@@ -13,26 +13,37 @@ export const Wrapper = styled.div`
   bottom: 25px;
   left: 0;
 `
-export const Card = styled.div`
-  ${css.size(88)};
+export const ImCard = styled.div`
+  width: 230px;
+  height: 88px;
   ${css.column('align-both')};
   background: ${theme('htmlBg')};
-  gap: 5px 0px;
+  gap: 8px 0px;
   border: 1px solid;
   border-color: ${theme('divider')};
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   border-radius: 10px;
   padding-top: 5px;
 `
-export const ImgIcon = styled(Img)`
-  ${css.size(30)}};
-  border-radius: 5px;
+export const OhterCard = styled(ImCard)`
+  width: 170px;
+  height: 88px;
 `
-export const EmailIcon = styled.img`
-  width: 40px;
+export const ImIcons = styled.div`
+  width: 100%;
+  ${css.row('align-both')};
+  opacity: 0.9;
+  gap: 0 12px;
 `
-export const Title = styled.div`
-  ${css.row('align-center')};
-  color: ${theme('article.title')};
-  font-size: 14px;
+export const ToolIcons = styled(ImIcons)`
+  gap: 0 15px;
+`
+export const FooterNote = styled.div`
+  color: ${theme('article.digest')};
+  font-size: 13px;
+  margin-bottom: -5px;
+`
+
+export const ImgIcon = styled(Img)<{ $size?: number }>`
+  ${({ $size }) => css.size($size || 28)}};
 `
