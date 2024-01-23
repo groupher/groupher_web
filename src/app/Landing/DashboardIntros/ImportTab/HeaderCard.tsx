@@ -2,31 +2,37 @@ import { FC } from 'react'
 
 import {
   Wrapper,
-  Card,
-  Title,
+  ImCard,
+  ImIcons,
+  OhterCard,
   Icon,
   ImgIcon,
+  MDIcon,
+  CVSIcon,
+  ToolIcons,
+  FooterNote,
 } from '../../styles/dashboard_intros/import_tab/header_card'
 
 const HeaderCard: FC = () => {
   return (
     <Wrapper>
-      <Card>
-        <Icon.GITHUB />
-        <Title>Github</Title>
-      </Card>
-      <Card>
-        <ImgIcon src="landing/products/linear.png" />
-        <Title>Linear</Title>
-      </Card>
-      <Card>
-        <Icon.Markdown />
-        <Title>MD 文件</Title>
-      </Card>
-      <Card>
-        <Icon.GITHUB />
-        <Title>CVS 文件</Title>
-      </Card>
+      <ImCard>
+        <ImIcons>
+          <Icon.GITHUB />
+          <ImgIcon src="landing/products/gitlab.png" $size={28} />
+          <ImgIcon src="landing/products/notion.png" $size={26} />
+          <ImgIcon src="landing/products/linear.png" $size={22} />
+          <ImgIcon src="landing/products/jira.png" $size={20} />
+        </ImIcons>
+        <FooterNote>主流 issue 管理服务</FooterNote>
+      </ImCard>
+      <OhterCard>
+        <ToolIcons>
+          <MDIcon src="landing/products/markdown.png" />
+          <CVSIcon src="landing/products/cvs.png" />
+        </ToolIcons>
+        <FooterNote>Markdown / CVS 导入</FooterNote>
+      </OhterCard>
     </Wrapper>
   )
 }
