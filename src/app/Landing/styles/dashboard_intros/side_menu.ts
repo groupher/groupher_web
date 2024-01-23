@@ -70,7 +70,7 @@ export const ItemTitle = styled.div<TActive>`
   }
 `
 export const ItemDesc = styled.div`
-  font-size: 15px;
+  font-size: 14px;
   margin-top: 8px;
   width: 230px;
   font-weight: 400;

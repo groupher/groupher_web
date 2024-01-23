@@ -2,29 +2,31 @@ import { FC } from 'react'
 
 import {
   Wrapper,
-  Links,
-  LinkName,
+  Card,
+  ImgIcon,
+  EmailIcon,
   Title,
-  CommunityLogo,
-  FakeAvatar,
 } from '../../styles/dashboard_intros/import_tab/footer_card'
 
 const FooterCard: FC = () => {
   return (
     <Wrapper>
-      <Title>
-        <CommunityLogo />
-        Tiki-taka
-      </Title>
-      <Links>
-        <LinkName>讨论</LinkName>
-        <LinkName>看板</LinkName>
-        <LinkName>更新日志</LinkName>
-        <LinkName>游乐场</LinkName>
-        <LinkName>价格</LinkName>
-        <LinkName>更多</LinkName>
-      </Links>
-      <FakeAvatar />
+      <Card>
+        <ImgIcon src="landing/seo/dingding.png" />
+        <Title>钉钉</Title>
+      </Card>
+      <Card>
+        <EmailIcon src="landing/seo/email.png" />
+        <Title>邮件</Title>
+      </Card>
+      <Card>
+        <ImgIcon src="landing/seo/rss.png" />
+        <Title>RSS</Title>
+      </Card>
+      <Card>
+        <ImgIcon src="landing/seo/wechat2.png" />
+        <Title>微信</Title>
+      </Card>
     </Wrapper>
   )
 }
