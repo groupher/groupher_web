@@ -17,12 +17,12 @@ export const Wrapper = styled.div`
   height: 56px;
   z-index: 2;
   position: absolute;
-  top: 20px;
+  top: 0px;
   left: 0;
 `
 export const ImCard = styled.div`
   width: 240px;
-  height: 100px;
+  height: 60px;
   ${css.column('align-both')};
   background: ${theme('htmlBg')};
   gap: 12px 0px;
@@ -33,9 +33,8 @@ export const ImCard = styled.div`
   padding-top: 5px;
 `
 export const OhterCard = styled(ImCard)`
-  width: 170px;
-  gap: 5px 0px;
-  height: 88px;
+  width: 134px;
+  height: 55px;
   margin-left: 30px;
 `
 export const ImIcons = styled.div`
@@ -45,7 +44,7 @@ export const ImIcons = styled.div`
   gap: 0 15px;
 `
 export const ToolIcons = styled(ImIcons)`
-  gap: 0 15px;
+  gap: 0 22px;
 `
 export const FooterNote = styled.div`
   color: ${theme('article.digest')};

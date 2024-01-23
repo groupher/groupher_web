@@ -26,26 +26,26 @@ export const Bot = styled(WithPosition)`
   z-index: 2;
 `
 export const BgBubble = styled.div`
-  width: 100px;
-  height: 100px;
+  width: 180px;
+  height: 180px;
   position: absolute;
-  top: 190px;
-  left: 180px;
-  border-radius: 38px;
+  top: 155px;
+  left: 140px;
+  border-radius: 78px;
   background: ${theme('gradientBg.green')};
   animation: ${animate.rotate360} 6s linear infinite;
 `
 export const LeftBgBubble = styled(BgBubble)`
-  width: 50px;
-  height: 50px;
+  width: 46px;
+  height: 46px;
   border-radius: 18px;
   top: 215px;
   left: 50px;
   background: ${theme('gradientBg.green')};
 `
 export const RightBgBubble = styled(BgBubble)`
-  width: 48px;
-  height: 45px;
+  width: 42px;
+  height: 40px;
   border-radius: 18px;
   top: 215px;
   left: 360px;
@@ -54,20 +54,20 @@ export const RightBgBubble = styled(BgBubble)`
 export const LineIcon = styled(LineSVG)`
   height: 80px;
   position: absolute;
-  top: 118px;
+  top: 90px;
   left: 141px;
   transform: rotate(90deg);
 `
 export const LineIcon2 = styled(LineSVG)`
   height: 80px;
   position: absolute;
-  bottom: 136px;
+  bottom: 96px;
   left: 159px;
   transform: rotate(-90deg);
 `
 export const CurveLineIcon1 = styled(CurveLineSVG)`
   position: absolute;
-  top: -50px;
+  top: -80px;
   left: 20px;
   width: 200px;
   height: 350px;
@@ -75,7 +75,7 @@ export const CurveLineIcon1 = styled(CurveLineSVG)`
 `
 export const CurveLineIcon2 = styled(CurveLineSVG)`
   position: absolute;
-  top: -50px;
+  top: -80px;
   right: 20px;
   width: 200px;
   height: 350px;
@@ -83,7 +83,7 @@ export const CurveLineIcon2 = styled(CurveLineSVG)`
 `
 export const CurveLineIcon3 = styled(CurveLineSVG)`
   position: absolute;
-  bottom: -30px;
+  bottom: -70px;
   left: 20px;
   width: 200px;
   height: 350px;
@@ -91,7 +91,7 @@ export const CurveLineIcon3 = styled(CurveLineSVG)`
 `
 export const CurveLineIcon4 = styled(CurveLineSVG)`
   position: absolute;
-  bottom: -30px;
+  bottom: -70px;
   right: 20px;
   width: 200px;
   height: 350px;

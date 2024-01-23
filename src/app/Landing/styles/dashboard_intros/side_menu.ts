@@ -24,7 +24,7 @@ export const TabItem = styled.div<TTabItem>`
   position: relative;
   cursor: pointer;
 
-  padding: ${({ $active }) => ($active ? '14px 10px' : '12px 10px')};
+  padding: ${({ $active }) => ($active ? '15px 10px' : '14px 10px')};
   padding-bottom: 10px;
   padding-left: 24px;
   border-top-right-radius: 10px;

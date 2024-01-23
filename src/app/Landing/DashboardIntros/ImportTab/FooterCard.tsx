@@ -5,7 +5,7 @@ import {
   ImCard,
   ImIcons,
   ToolIcons,
-  FooterNote,
+  // FooterNote,
   ImgIcon,
   OhterCard,
 } from '../../styles/dashboard_intros/import_tab/footer_card'
@@ -21,7 +21,7 @@ const FooterCard: FC = () => {
           <ImgIcon src="landing/products/slack.png" $size={22} />
           <ImgIcon src="landing/products/discord.png" $size={24} />
         </ImIcons>
-        <FooterNote>主流 IM 平台</FooterNote>
+        {/* <FooterNote>主流 IM 平台</FooterNote> */}
       </ImCard>
       <OhterCard>
         <ToolIcons>
@@ -29,7 +29,7 @@ const FooterCard: FC = () => {
           <ImgIcon src="landing/seo/rss.png" $size={25} />
           <ImgIcon src="landing/products/webhook.png" $size={20} />
         </ToolIcons>
-        <FooterNote>Mail / RSS / Webhook</FooterNote>
+        {/* <FooterNote>Mail / RSS / Webhook</FooterNote> */}
       </OhterCard>
     </Wrapper>
   )

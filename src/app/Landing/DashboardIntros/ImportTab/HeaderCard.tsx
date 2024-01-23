@@ -10,7 +10,7 @@ import {
   MDIcon,
   CVSIcon,
   ToolIcons,
-  FooterNote,
+  // FooterNote,
 } from '../../styles/dashboard_intros/import_tab/header_card'
 
 const HeaderCard: FC = () => {
@@ -24,14 +24,14 @@ const HeaderCard: FC = () => {
           <ImgIcon src="landing/products/linear.png" $size={24} />
           <ImgIcon src="landing/products/jira.png" $size={22} />
         </ImIcons>
-        <FooterNote>常见 issue 管理工具</FooterNote>
+        {/* <FooterNote>常见 issue 管理工具</FooterNote> */}
       </ImCard>
       <OhterCard>
         <ToolIcons>
           <MDIcon src="landing/products/markdown.png" />
           <CVSIcon src="landing/products/cvs.png" />
         </ToolIcons>
-        <FooterNote>Markdown / CVS 导入</FooterNote>
+        {/* <FooterNote>Markdown / CVS 导入</FooterNote> */}
       </OhterCard>
     </Wrapper>
   )

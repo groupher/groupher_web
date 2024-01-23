@@ -10,12 +10,12 @@ export const Wrapper = styled.div`
   height: 56px;
   z-index: 2;
   position: absolute;
-  bottom: 25px;
+  bottom: 5px;
   left: 0;
 `
 export const ImCard = styled.div`
-  width: 230px;
-  height: 88px;
+  width: 240px;
+  height: 60px;
   ${css.column('align-both')};
   background: ${theme('htmlBg')};
   gap: 8px 0px;
@@ -26,17 +26,17 @@ export const ImCard = styled.div`
   padding-top: 5px;
 `
 export const OhterCard = styled(ImCard)`
-  width: 170px;
-  height: 88px;
+  width: 150px;
+  height: 60px;
 `
 export const ImIcons = styled.div`
   width: 100%;
   ${css.row('align-both')};
   opacity: 0.9;
-  gap: 0 12px;
+  gap: 0 15px;
 `
 export const ToolIcons = styled(ImIcons)`
-  gap: 0 15px;
+  gap: 0 16px;
 `
 export const FooterNote = styled.div`
   color: ${theme('article.digest')};
