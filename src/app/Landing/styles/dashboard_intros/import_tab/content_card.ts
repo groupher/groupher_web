@@ -1,4 +1,5 @@
-import styled, { css } from '@/css'
+import styled, { css, theme, animate } from '@/css'
+import { WithPosition } from '@/widgets/Common'
 
 import CurveLineSVG from './CurveLine'
 import LineSVG from './Line'
@@ -11,6 +12,44 @@ export const Wrapper = styled.div`
   position: absolute;
   bottom: 100px;
   left: 140px;
+`
+export const Bot = styled(WithPosition)`
+  width: auto;
+  color: ${theme('article.digest')};
+  padding: 6px 10px;
+  background: ${theme('alphaBg')};
+  font-weight: bold;
+  border: 1px solid;
+  border-color: ${theme('divider')};
+  border-radius: 18px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  z-index: 2;
+`
+export const BgBubble = styled.div`
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 190px;
+  left: 180px;
+  border-radius: 38px;
+  background: ${theme('gradientBg.green')};
+  animation: ${animate.rotate360} 6s linear infinite;
+`
+export const LeftBgBubble = styled(BgBubble)`
+  width: 50px;
+  height: 50px;
+  border-radius: 18px;
+  top: 215px;
+  left: 50px;
+  background: ${theme('gradientBg.green')};
+`
+export const RightBgBubble = styled(BgBubble)`
+  width: 48px;
+  height: 45px;
+  border-radius: 18px;
+  top: 215px;
+  left: 360px;
+  background: ${theme('gradientBg.orange')};
 `
 export const LineIcon = styled(LineSVG)`
   height: 80px;

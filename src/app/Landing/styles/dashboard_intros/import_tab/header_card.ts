@@ -21,11 +21,11 @@ export const Wrapper = styled.div`
   left: 0;
 `
 export const ImCard = styled.div`
-  width: 230px;
-  height: 88px;
+  width: 240px;
+  height: 100px;
   ${css.column('align-both')};
   background: ${theme('htmlBg')};
-  gap: 8px 0px;
+  gap: 12px 0px;
   border: 1px solid;
   border-color: ${theme('divider')};
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
@@ -34,13 +34,15 @@ export const ImCard = styled.div`
 `
 export const OhterCard = styled(ImCard)`
   width: 170px;
+  gap: 5px 0px;
   height: 88px;
+  margin-left: 30px;
 `
 export const ImIcons = styled.div`
   width: 100%;
   ${css.row('align-both')};
   opacity: 0.9;
-  gap: 0 12px;
+  gap: 0 15px;
 `
 export const ToolIcons = styled(ImIcons)`
   gap: 0 15px;

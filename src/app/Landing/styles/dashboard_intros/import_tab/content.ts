@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   margin-top: -20px;
   border-radius: 10px;
   position: relative;
-  background: ${theme('htmlBg')};
+  background: ${theme('alphaBg2')};
   color: ${theme('article.digest')};
   border: 1px solid;
   border-color: ${theme('divider')};

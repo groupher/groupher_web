@@ -19,12 +19,12 @@ const HeaderCard: FC = () => {
       <ImCard>
         <ImIcons>
           <Icon.GITHUB />
-          <ImgIcon src="landing/products/gitlab.png" $size={28} />
-          <ImgIcon src="landing/products/notion.png" $size={26} />
-          <ImgIcon src="landing/products/linear.png" $size={22} />
-          <ImgIcon src="landing/products/jira.png" $size={20} />
+          <ImgIcon src="landing/products/gitlab.png" $size={32} />
+          <ImgIcon src="landing/products/notion.png" $size={30} />
+          <ImgIcon src="landing/products/linear.png" $size={24} />
+          <ImgIcon src="landing/products/jira.png" $size={22} />
         </ImIcons>
-        <FooterNote>主流 issue 管理服务</FooterNote>
+        <FooterNote>常见 issue 管理工具</FooterNote>
       </ImCard>
       <OhterCard>
         <ToolIcons>
