@@ -15,6 +15,7 @@ export const Wrapper = styled.div`
   border: 1px solid;
   border-color: ${theme('divider')};
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  z-index: 2;
 `
 export const Header = styled.div`
   ${css.row('align-center')};

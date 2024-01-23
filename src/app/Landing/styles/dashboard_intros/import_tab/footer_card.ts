@@ -22,7 +22,7 @@ export const ImCard = styled.div`
   border: 1px solid;
   border-color: ${theme('divider')};
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  border-radius: 10px;
+  border-radius: 30px;
   padding-top: 5px;
 `
 export const OhterCard = styled(ImCard)`

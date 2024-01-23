@@ -17,7 +17,19 @@ export const Bot = styled(WithPosition)`
   width: auto;
   color: ${theme('article.digest')};
   padding: 4px 10px;
-  background: ${theme('alphaBg')};
+  background: ${theme('gradientBg.green')};
+  font-weight: bold;
+  border: 1px solid;
+  border-color: ${theme('divider')};
+  border-radius: 8px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  z-index: 2;
+`
+export const AI = styled(WithPosition)`
+  width: auto;
+  color: ${theme('article.digest')};
+  padding: 4px 10px;
+  background: ${theme('gradientBg.orange')};
   font-weight: bold;
   border: 1px solid;
   border-color: ${theme('divider')};
@@ -34,6 +46,7 @@ export const BgBubble = styled.div`
   border-radius: 78px;
   background: ${theme('gradientBg.green')};
   animation: ${animate.rotate360} 6s linear infinite;
+  z-index: 1;
 `
 export const LeftBgBubble = styled(BgBubble)`
   width: 46px;
@@ -41,7 +54,7 @@ export const LeftBgBubble = styled(BgBubble)`
   border-radius: 18px;
   top: 225px;
   left: 50px;
-  background: ${theme('gradientBg.green')};
+  background: ${theme('gradientBg.orange')};
 `
 export const RightBgBubble = styled(BgBubble)`
   width: 48px;
@@ -49,7 +62,21 @@ export const RightBgBubble = styled(BgBubble)`
   border-radius: 18px;
   top: 225px;
   left: 360px;
-  background: ${theme('gradientBg.orange')};
+  background: ${theme('gradientBg.green')};
+`
+export const HLineIcon = styled(LineSVG)`
+  height: 80px;
+  position: absolute;
+  top: 215px;
+  left: 28px;
+`
+export const HLineIcon2 = styled(LineSVG)`
+  height: 80px;
+  position: absolute;
+  top: 198px;
+  right: 30px;
+  z-index: 100;
+  transform: rotate(180deg);
 `
 export const LineIcon = styled(LineSVG)`
   height: 80px;

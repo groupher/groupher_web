@@ -7,9 +7,13 @@ import FooterCard from './FooterCard'
 import {
   Wrapper,
   BgBubble,
-  LeftBgBubble,
-  RightBgBubble,
+  // LeftBgBubble,
+  // RightBgBubble,
   Bot,
+  AI,
+  HLineIcon,
+  HLineIcon2,
+  //
   LineIcon,
   LineIcon2,
   CurveLineIcon1,
@@ -21,15 +25,18 @@ import {
 const ContentCard: FC = () => {
   return (
     <Wrapper>
-      <Bot top={230} left={50}>
+      <Bot top={230} left={40}>
         Bot
       </Bot>
-      <Bot top={230} right={60}>
+      <AI top={230} right={50}>
         AI
-      </Bot>
-      <LeftBgBubble />
-      <RightBgBubble />
+      </AI>
+      {/* <LeftBgBubble />
+      <RightBgBubble /> */}
       <BgBubble />
+      <HLineIcon />
+      <HLineIcon2 />
+
       <LineIcon />
       <LineIcon2 />
       <CurveLineIcon1 />

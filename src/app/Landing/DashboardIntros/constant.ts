@@ -47,7 +47,7 @@ export const TABS_ITEMS = [
   {
     key: DASHBOARD_ROUTE.INOUT,
     title: '数据导入 / 通知',
-    desc: '从外部服务导入内容到 Groupher。',
+    desc: '支持外部主流 issue 管理工具导入内容，及通知主流 IM 工具。',
     color: COLOR_NAME.GREEN,
   },
   {
