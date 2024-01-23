@@ -31,18 +31,6 @@ const FooterCard: FC = () => {
         </ToolIcons>
         <FooterNote>Mail / RSS / Webhook</FooterNote>
       </OhterCard>
-      {/* <Card>
-        <EmailIcon src="landing/seo/email.png" />
-        <Title>邮件</Title>
-      </Card>
-      <Card>
-        <ImgIcon src="landing/seo/rss.png" />
-        <Title>RSS</Title>
-      </Card>
-      <Card>
-        <ImgIcon src="landing/seo/wechat2.png" />
-        <Title>微信</Title>
-      </Card> */}
     </Wrapper>
   )
 }
