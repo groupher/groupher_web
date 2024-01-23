@@ -1,17 +1,17 @@
 import Link from 'next/link'
 
-import type { TSpace, TTestable } from '@/spec'
+import styled, { css, theme } from '@/css'
+import type { TMetric, TSpace, TTestable } from '@/spec'
 
 import Button from '@/widgets/Buttons/Button'
 import LinkSVG from '@/icons/LinkOutside'
 
-import styled, { css, theme } from '@/css'
 import InfoSVG from '@/icons/Info'
 import ArrowSVG from '@/icons/ArrowSimple'
 
 import { getGlowOpacity, getGlowBackground, getPathGradient } from './metric'
 
-type TWrapper = TTestable
+type TWrapper = TTestable & { metric: TMetric }
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
 }))<TWrapper>`
@@ -20,6 +20,14 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   width: 100%;
   position: relative;
   overflow: hidden;
+  ${({ metric }) => css.fitPageWidth(metric)};
+`
+export const InnerWrapper = styled.div<{ metric: TMetric }>`
+  ${css.column('align-both')};
+  height: 100%;
+  width: 100%;
+  position: relative;
+  ${({ metric }) => css.fitContentWidth(metric)};
 `
 export const Banner = styled.div`
   ${css.column('align-center')};

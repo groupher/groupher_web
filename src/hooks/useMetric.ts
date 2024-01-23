@@ -1,6 +1,8 @@
 import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 
+import { usePathname } from 'next/navigation'
+
 import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
 import { BANNER_LAYOUT } from '@/constant/layout'
@@ -10,9 +12,14 @@ import { BANNER_LAYOUT } from '@/constant/layout'
  */
 const useMetric = (): TMetric => {
   const { store } = useContext(MobXProviderContext)
+  const pathname = usePathname()
 
   if (store === null) {
     throw new Error('Store cannot be null, please add a context provider')
+  }
+
+  if (pathname === '/') {
+    return METRIC.HOME
   }
 
   const { bannerLayout } = store.dashboardThread

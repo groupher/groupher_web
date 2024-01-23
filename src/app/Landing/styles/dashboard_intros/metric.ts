@@ -20,9 +20,7 @@ export const gradientColor = (tab: TIntroTab) => {
     }
 
     case DASHBOARD_ROUTE.TAGS: {
-      return 'linear-gradient(rgb(235 247 235 / 52%) 0%, rgb(255 255 255) 100%)'
-      // green-grey
-      // return 'linear-gradient(rgb(234 246 241 / 69%) 0%, rgb(255 255 255) 100%)'
+      return 'linear-gradient(#f6f7f3d9 0%, rgb(255 255 255) 100%)'
     }
 
     case DASHBOARD_ROUTE.ADMINS: {
@@ -30,8 +28,7 @@ export const gradientColor = (tab: TIntroTab) => {
       return 'linear-gradient(rgb(255 204 204 / 19%) 0%, rgb(255 255 255) 100%)'
     }
     case DASHBOARD_ROUTE.INOUT: {
-      // pink
-      return 'linear-gradient(rgb(255 240 247 / 76%) 0%, rgb(255 255 255) 100%)'
+      return 'linear-gradient(rgb(235 247 235 / 52%) 0%, rgb(255 255 255) 100%)'
     }
     case DASHBOARD_ROUTE.WIDGETS: {
       // yellow-grey

@@ -58,7 +58,7 @@ export const Desc = styled.div`
 
 export const Wall = styled.div`
   ${css.column('align-both')};
-  width: 80%;
+  width: 100%;
   height: auto;
   margin-top: 25px;
   position: relative;
@@ -67,8 +67,6 @@ export const Wall = styled.div`
     width: 2000%;
     overflow: scroll;
     transform: scale(0.7);
-    padding-left: 600px;
-
     padding-left: 600px;
     height: 980px;
     overflow-y: hidden;

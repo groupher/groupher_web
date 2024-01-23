@@ -26,6 +26,7 @@ export type {
   TSizeTSM,
   TSizeSML,
   TSizeSM,
+  TSizeH,
 } from './size'
 export type { TButton, TButtonStyle, TFiltersMenuItems } from './comp'
 export type { TTheme, TThemeMap, TThemeName } from './theme'

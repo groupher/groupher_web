@@ -36,7 +36,7 @@ const SideMenus: FC<TProps> = ({ tab, onChange }) => {
                 <ItemTitle $active={$active}>{item.title}</ItemTitle>
                 {$active && <ItemDesc>{item.desc}</ItemDesc>}
                 {$active && (
-                  <ArrowLinker href="/" top={12} color={item.color}>
+                  <ArrowLinker href="/" top={14} color={item.color}>
                     了解更多
                   </ArrowLinker>
                 )}

@@ -9,6 +9,7 @@ import { observer } from 'mobx-react-lite'
 
 import { DOC_FAQ_LAYOUT } from '@/constant/layout'
 import useWallpaper from '@/hooks/useWallpaper'
+import useMetric from '@/hooks/useMetric'
 
 import { ROUTE } from '@/constant/route'
 
@@ -30,6 +31,7 @@ import Footer from './Footer'
 
 import {
   Wrapper,
+  InnerWrapper,
   BgGlow,
   PatternBg,
   Banner,
@@ -83,73 +85,76 @@ const faqs = [
 
 const LandingPage: FC = () => {
   const { wallpaper } = useWallpaper()
+  const metric = useMetric()
 
   return (
-    <Wrapper $testid="landing-page">
+    <Wrapper $testid="landing-page" metric={metric}>
       <PatternBg />
-      <DesktopOnly>
-        <BgGlow wallpaper={wallpaper} />
-      </DesktopOnly>
-      <Banner>
-        <HomeHeader />
-        <BetaText wallpaper={wallpaper}>内测中</BetaText>
-        <Title>让你的产品听见用户的声音</Title>
-        <Desc>讨论区、看板、更新日志、帮助文档多合一，收集沉淀用户反馈，助你打造更好的产品</Desc>
-        <ButtonGroup>
-          <Link href={ROUTE.APPLY_COMMUNITY}>
-            <StartButton wallpaper={wallpaper} size="medium">
-              开始使用 <ArrowLeftIcon />
-            </StartButton>
-          </Link>
+      <InnerWrapper metric={metric}>
+        <DesktopOnly>
+          <BgGlow wallpaper={wallpaper} />
+        </DesktopOnly>
+        <Banner>
+          <HomeHeader />
+          <BetaText wallpaper={wallpaper}>内测中</BetaText>
+          <Title>让你的产品听见用户的声音</Title>
+          <Desc>讨论区、看板、更新日志、帮助文档多合一，收集沉淀用户反馈，助你打造更好的产品</Desc>
+          <ButtonGroup>
+            <Link href={ROUTE.APPLY_COMMUNITY}>
+              <StartButton wallpaper={wallpaper} size="medium">
+                开始使用 <ArrowLeftIcon />
+              </StartButton>
+            </Link>
 
-          <Tooltip
-            content={
-              <DemoPanel>
-                <DemoMenuItem href={`/${ROUTE.HOME}`}>
-                  官方社区
-                  <LinkIcon />
-                </DemoMenuItem>
-                <DemoMenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.OVERVIEW}`}>
-                  管理后台
-                  <LinkIcon />
-                </DemoMenuItem>
-              </DemoPanel>
-            }
-            placement="bottom"
-            delay={200}
-            offset={[1, 5]}
-          >
-            <DemoButton size="medium" ghost>
-              在线体验 <ArrowDownIcon />
-            </DemoButton>
-          </Tooltip>
-        </ButtonGroup>
-      </Banner>
-      <CoverImage />
+            <Tooltip
+              content={
+                <DemoPanel>
+                  <DemoMenuItem href={`/${ROUTE.HOME}`}>
+                    官方社区
+                    <LinkIcon />
+                  </DemoMenuItem>
+                  <DemoMenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.OVERVIEW}`}>
+                    管理后台
+                    <LinkIcon />
+                  </DemoMenuItem>
+                </DemoPanel>
+              }
+              placement="bottom"
+              delay={200}
+              offset={[1, 5]}
+            >
+              <DemoButton size="medium" ghost>
+                在线体验 <ArrowDownIcon />
+              </DemoButton>
+            </Tooltip>
+          </ButtonGroup>
+        </Banner>
+        <CoverImage />
 
-      <ArticlesIntroTabs />
+        <ArticlesIntroTabs />
 
-      <FeatureWall />
-      {/* <FeatureWall /> */}
-      <DashboardIntros />
-      <EnjoyDev />
-      <TechStacks />
-      <DesktopOnly>
-        <Divider top={80} bottom={80} />
-      </DesktopOnly>
-      <MobileOnly>
-        <Divider top={50} bottom={50} />
-      </MobileOnly>
-      <UsersWall wallpaper={wallpaper} />
-      <DesktopOnly>
+        <FeatureWall />
+        {/* <FeatureWall /> */}
+        <DashboardIntros />
+        <EnjoyDev />
+        <TechStacks />
+        <DesktopOnly>
+          <Divider top={80} bottom={80} />
+        </DesktopOnly>
+        <MobileOnly>
+          <Divider top={50} bottom={50} />
+        </MobileOnly>
+        <UsersWall wallpaper={wallpaper} />
+        <DesktopOnly>
+          <Divider top={60} bottom={80} />
+        </DesktopOnly>
+        <FAQWrapper>
+          <FaqList layout={DOC_FAQ_LAYOUT.FLAT} large sections={faqs} />
+        </FAQWrapper>
         <Divider top={60} bottom={80} />
-      </DesktopOnly>
-      <FAQWrapper>
-        <FaqList layout={DOC_FAQ_LAYOUT.FLAT} large sections={faqs} />
-      </FAQWrapper>
-      <Divider top={60} bottom={80} />
 
-      <Footer />
+        <Footer />
+      </InnerWrapper>
     </Wrapper>
   )
 }

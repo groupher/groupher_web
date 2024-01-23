@@ -4,7 +4,7 @@ import ContentCard from './ContentCard'
 
 import { Wrapper } from '../../styles/dashboard_intros/links_tab'
 
-const SeoTab: FC = () => {
+const LinksTab: FC = () => {
   return (
     <Wrapper>
       <ContentCard />
@@ -12,4 +12,4 @@ const SeoTab: FC = () => {
   )
 }
 
-export default SeoTab
+export default LinksTab

@@ -1,20 +1,25 @@
-import type { TThread } from '@/spec'
+import type { TThread, TMetric } from '@/spec'
 import { THREAD } from '@/constant/thread'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme, WIDTH } from '@/css'
 
-export const Wrapper = styled.div<{ tab: TThread }>`
+type TWrapper = { tab?: TThread } & { metric: TMetric }
+export const Wrapper = styled.div<TWrapper>`
   ${css.column('align-both')};
+  width: ${({ metric }) => WIDTH[metric].PAGE};
+  background: ${theme('landing.greyBg')};
+`
+export const InnerWrapper = styled.div<TWrapper>`
+  ${css.column('align-both')};
+  padding: 0 20px;
   width: 100%;
   height: ${({ tab }) => {
     if (tab === THREAD.KANBAN) return '700px'
     if (tab === THREAD.CHANGELOG) return '650px'
-    if (tab === THREAD.DOC) return '636px'
+    if (tab === THREAD.DOC) return '662px'
 
     return '600px'
   }};
-  background: ${theme('landing.greyBg')};
+  ${({ metric }) => css.fitContentWidth(metric)};
   transition: all 0.15s;
 `
-
-export const holder = 1

@@ -18,10 +18,10 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   }
 `
 export const Digest = styled.div`
-  color: ${theme('article.title')};
+  color: ${theme('article.digest')};
   line-height: 1.78em;
   width: 300px;
-  margin-top: -40px;
+  margin-top: -56px;
   margin-bottom: 16px;
   font-size: 19px;
 `
