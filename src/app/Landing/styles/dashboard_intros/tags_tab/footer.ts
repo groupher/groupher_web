@@ -2,6 +2,7 @@ import styled, { css, theme } from '@/css'
 
 import OptionArrowSVG from '@/icons/OptionArrow'
 import HashTagSVG from '@/icons/HashTagBold'
+import ClipSVG from '@/icons/Clip'
 import { WithPosition } from '@/widgets/Common'
 
 export const Wrapper = styled.div`
@@ -20,20 +21,40 @@ export const Wrapper = styled.div`
   z-index: 5;
   box-shadow: rgba(149, 157, 165, 0.2) 0px -4px 24px;
 `
-export const CURDLabel = styled(WithPosition)`
+export const EditLabel = styled(WithPosition)`
   ${css.row('align-both')};
   width: auto;
-  padding: 0 4px;
+  padding: 0 6px;
   height: 20px;
-  border-radius: 4px;
-  font-size: 10px;
-  font-weight: 800;
-  color: #b3a373;
-  background: #feeca7c2;
-  transform: rotate(-3deg);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: ${theme('article.digest')};
+  background: #ffea9c;
   box-shadow: rgb(215 214 210 / 20%) 4px -7px 19px;
   border: 1px solid;
   border-color: ${theme('divider')};
+
+  &:before {
+    content: '';
+    height: 28px;
+    width: 2px;
+    background: #ffea9c;
+    position: absolute;
+    box-shadow: rgb(215 214 210 / 20%) 4px -7px 19px;
+    top: 2px;
+    left: 0;
+  }
+`
+export const ClipIcon = styled(ClipSVG)`
+  ${css.size(18)};
+  fill: ${theme('rainbow.green')};
+  position: absolute;
+  right: 70px;
+  top: -12px;
+  z-index: 3;
+  transform: rotate(-15deg);
+  opacity: 0.6;
 `
 export const Left = styled.div`
   width: 50%;

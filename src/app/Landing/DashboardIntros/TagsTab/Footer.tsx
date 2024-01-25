@@ -2,7 +2,8 @@ import { FC } from 'react'
 
 import {
   Wrapper,
-  CURDLabel,
+  EditLabel,
+  ClipIcon,
   Left,
   Right,
   Item,
@@ -18,9 +19,10 @@ import {
 const Footer: FC = () => {
   return (
     <Wrapper>
-      <CURDLabel top={-14} right={65}>
-        CRUD
-      </CURDLabel>
+      <EditLabel top={70} left={160}>
+        edit
+      </EditLabel>
+      <ClipIcon />
       <Left>
         <Item>
           <Label>标签颜色</Label>
