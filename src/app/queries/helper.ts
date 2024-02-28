@@ -118,8 +118,19 @@ export const parseThread = (pathname: string): TThread | '' => {
 }
 
 export const parseWallpaper = (community: TCommunity): TParsedWallpaper => {
+  // NOTE: if the backend is not ready, return default config
+  // @ts-ignore
+  if (!community) return {}
+
   const { dashboard } = community
   const { wallpaper } = dashboard
+
+  console.log('## the fuck: ', {
+    ...wallpaper,
+    initWallpaper: {
+      ...wallpaper,
+    },
+  })
 
   return {
     ...wallpaper,
@@ -211,6 +222,10 @@ const parseDashboardThread = (pathname: string): TDashboardTab => {
 }
 
 export const parseDashboard = (community: TCommunity, pathname: string): TParseDashboard => {
+  // NOTE: if the backend is not ready, return default config
+  // @ts-ignore
+  if (!community) return {}
+
   const { dashboard, moderators } = community
   const {
     enable,
