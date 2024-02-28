@@ -1,4 +1,6 @@
 import { cookies } from 'next/headers'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 import {
   StyledComponentsRegistry,
@@ -49,6 +51,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </RootStoreProvider>
           </GraphQLProvider>
         </StyledComponentsRegistry>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
