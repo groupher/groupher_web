@@ -1,33 +1,6 @@
 {
   "headers": [
     {
-      "source": "/",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
-      "source": "/pricing",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=120, must-revalidate"
-        }
-      ]
-    },
-    {
-      "source": "/book-demo",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, s-maxage=86400, stale-while-revalidate"
-        }
-      ]
-    },
-    {
       "source": "/(.+\\.png)",
       "headers": [
         {

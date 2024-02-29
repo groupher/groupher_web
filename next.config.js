@@ -31,6 +31,20 @@ const nextConfig = {
     appDir: true,
     scrollRestoration: true,
   },
+
+  async headers() {
+    return [
+      {
+        source: '/',
+        headers: [
+          {
+            key: 'cache-control',
+            value: 's-maxage=600, stale-while-revalidate=30',
+          },
+        ],
+      },
+    ]
+  },
 }
 
 // module.exports = withBundleAnalyzer(withPWA(nextConfig))
