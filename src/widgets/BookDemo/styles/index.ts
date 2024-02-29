@@ -4,6 +4,7 @@ export const Wrapper = styled.div`
   ${css.column('align-both')};
   height: 100%;
   width: 100%;
+  max-width: 1200px;
   position: relative;
   overflow: hidden;
 `

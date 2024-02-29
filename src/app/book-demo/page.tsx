@@ -3,11 +3,7 @@
 import BookDemo from '@/widgets/BookDemo'
 
 const BookDemoPage = () => {
-  return (
-    <div>
-      <BookDemo />
-    </div>
-  )
+  return <BookDemo />
 }
 
 export default BookDemoPage
