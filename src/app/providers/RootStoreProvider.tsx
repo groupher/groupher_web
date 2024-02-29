@@ -34,42 +34,18 @@ const RootStoreWrapper: FC<TProps> = ({ children, token }) => {
   const userHasLogin = !!token
 
   const metric = useMetric()
-  const activeThread = useThreadParam()
-  // console.log('## activeThread: ', activeThread)
 
-  const { sesstion } = useSession()
-  const { community } = useCommunity(userHasLogin)
+  // const { sesstion } = useSession()
+  // const { community } = useCommunity(userHasLogin)
 
-  const { pagedPosts } = usePagedPosts(userHasLogin)
-  const { pagedChangelogs } = usePagedChangelogs(userHasLogin)
-  const { post } = usePost(userHasLogin)
-  const { changelog } = useChangelog(userHasLogin)
-  const { groupedKanbanPosts } = useGroupedKanbanPosts(userHasLogin)
-  const { tags } = useTags()
-
-  const wallpaper = useWallpaper(community)
-  const dashboard = useDashboard(community)
-  const filterSearchParams = useFilterSearchParams()
+  // @ts-ignore
+  const wallpaper = useWallpaper()
+  // @ts-ignore
+  const dashboard = useDashboard()
 
   const store = useStore({
     metric,
-    ...sesstion,
-    articles: {
-      pagedPosts,
-      pagedChangelogs,
-      ...groupedKanbanPosts,
-      ...filterSearchParams,
-    },
-    kanbanThread: groupedKanbanPosts,
-    tagsBar: {
-      tags,
-    },
-    viewing: {
-      community: community || {},
-      post,
-      changelog,
-      activeThread,
-    },
+    // ...sesstion,
     wallpaperEditor: wallpaper,
     dashboardThread: dashboard,
   })

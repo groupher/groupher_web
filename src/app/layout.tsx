@@ -44,12 +44,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <body>
         <StyledComponentsRegistry>
-          <GraphQLProvider token={token}>
-            <RootStoreProvider token={token}>
-              {/* @ts-ignore */}
-              <GlobalLayout>{children}</GlobalLayout>
-            </RootStoreProvider>
-          </GraphQLProvider>
+          {/* <GraphQLProvider token={token}> */}
+          <RootStoreProvider token={token}>
+            {/* @ts-ignore */}
+            <GlobalLayout>{children}</GlobalLayout>
+          </RootStoreProvider>
+          {/* </GraphQLProvider> */}
         </StyledComponentsRegistry>
         <Analytics />
         <SpeedInsights />
