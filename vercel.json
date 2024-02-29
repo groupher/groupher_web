@@ -1,31 +1,31 @@
 {
-  "headers": [
-    {
-      "source": "/",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "s-maxage=600, stale-while-revalidate=30"
-        }
-      ]
-    },
-    {
-      "source": "/pricing",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "s-maxage=600, stale-while-revalidate=30"
-        }
-      ]
-    },
-    {
-      "source": "/(.+\\.png)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    }
-  ]
+	"headers": [
+		{
+			"source": "/(.*)",
+			"headers": [
+				{
+					"key": "Cache-Control",
+					"value": "public, max-age=31536000, immutable"
+				}
+			]
+		},
+		{
+			"source": "/pricing",
+			"headers": [
+				{
+					"key": "Cache-Control",
+					"value": "s-maxage=600, stale-while-revalidate=30"
+				}
+			]
+		},
+		{
+			"source": "/(.+\\.png)",
+			"headers": [
+				{
+					"key": "Cache-Control",
+					"value": "public, max-age=31536000, immutable"
+				}
+			]
+		}
+	]
 }
