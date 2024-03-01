@@ -12,7 +12,7 @@ import useMetric from '@/hooks/useMetric'
 
 import { ROUTE } from '@/constant/route'
 
-import { DesktopOnly, MobileOnly } from '@/widgets/Common'
+import { DesktopOnly, MobileOnly, LinkAble } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'
 import FaqList from '@/widgets/FaqList'
 import HomeHeader from '@/widgets/HomeHeader'
@@ -41,7 +41,6 @@ import {
   DemoPanel,
   DemoMenuItem,
   LinkIcon,
-  StartLink,
   StartButton,
   DemoButton,
   ArrowLeftIcon,
@@ -100,11 +99,11 @@ const LandingPage: FC = () => {
           <Title>让你的产品听见用户的声音</Title>
           <Desc>讨论区、看板、更新日志、帮助文档多合一，收集沉淀用户反馈，助你打造更好的产品</Desc>
           <ButtonGroup>
-            <StartLink href={ROUTE.APPLY_COMMUNITY}>
+            <LinkAble href={ROUTE.APPLY_COMMUNITY}>
               <StartButton wallpaper={wallpaper} size="medium">
                 开始使用 <ArrowLeftIcon />
               </StartButton>
-            </StartLink>
+            </LinkAble>
 
             <Tooltip
               content={

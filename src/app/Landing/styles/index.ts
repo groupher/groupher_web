@@ -218,14 +218,6 @@ export const ArrowDownIcon = styled(ArrowSVG)`
   transform: rotate(-90deg);
   margin-right: -5px;
 `
-export const StartLink = styled(Link)`
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-`
 export const StartButton = styled(Button)<{ wallpaper: string }>`
   text-decoration: none;
 

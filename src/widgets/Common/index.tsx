@@ -6,6 +6,16 @@ import { COLOR_NAME } from '@/constant/colors'
 import styled, { css, theme, rainbow } from '@/css'
 
 // @ts-ignore
+export const LinkAble = styled(NextLink)`
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+`
+
+// @ts-ignore
 export const Link = styled(NextLink)`
   color: ${theme('link')};
   text-decoration: none;

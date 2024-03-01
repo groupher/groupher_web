@@ -1,8 +1,9 @@
 import { FC } from 'react'
-import Link from 'next/link'
 
 import useWallpaper from '@/hooks/useWallpaper'
 import { ROUTE } from '@/constant/route'
+
+import { LinkAble } from '@/widgets/Common'
 import Button from '@/widgets/Buttons/Button'
 
 import { Wrapper, Logo, Title, Desc, Highlight, Buttons, CreateButton } from '../styles/footer'
@@ -20,11 +21,11 @@ const Footer: FC = () => {
         」交给 Groupher
       </Desc>
       <Buttons>
-        <Link href={ROUTE.APPLY_COMMUNITY}>
+        <LinkAble href={ROUTE.APPLY_COMMUNITY}>
           <CreateButton size="medium" wallpaper={wallpaper}>
             创建我的社区
           </CreateButton>
-        </Link>
+        </LinkAble>
 
         <Button size="medium" ghost>
           预约演示
