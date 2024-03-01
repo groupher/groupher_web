@@ -10,6 +10,9 @@ export function middleware(request: NextRequest) {
 
   if (url.pathname === '/book-demo') {
     const response = NextResponse.next()
+
+    console.log('## --> url pathname: ', url.pathname)
+
     response.headers.set(
       'Cache-Control',
       `public, max-age=${CACHE_DURATION}, s-maxage=${CACHE_DURATION}, stale-while-revalidate=${CACHE_DURATION}`,
