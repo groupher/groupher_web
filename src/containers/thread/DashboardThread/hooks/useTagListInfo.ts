@@ -63,7 +63,7 @@ const useTagListInfo = (): TRet => {
     // @ts-ignore
     (thread) => includes(thread.slug, [THREAD.ABOUT, THREAD.DOC]),
     mappedThreads,
-  )
+  ) as TCommunityThread[]
 
   const tagsIndexTouched = () => {
     return (
