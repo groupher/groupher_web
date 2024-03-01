@@ -12,8 +12,8 @@ const IntroDigest: FC = () => {
   return (
     <Wrapper>
       <Digest>
-        完善的论坛功能，满足<Highlight>用户与团队</Highlight>，
-        <Highlight>用户与用户</Highlight>间的互动交流。
+        完善的论坛功能，满足<Highlight>用户与团队</Highlight>，<Highlight>用户与用户</Highlight>
+        间的互动交流。
       </Digest>
 
       <IntroItems />

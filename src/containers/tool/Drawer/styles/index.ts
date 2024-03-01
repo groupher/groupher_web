@@ -116,13 +116,11 @@ export const DrawerMobileContent = styled.div<TDrawerMobile>`
   background: ${({ options, bgColor }) => getContentLinearGradient(options, bgColor)};
 `
 
-export const MobileInnerContent = styled.div.attrs<TSwipe>(
-  ({ swipeUpY, swipeDownY, options }) => ({
-    style: {
-      filter: getDim(swipeUpY, swipeDownY, options),
-    },
-  }),
-)<TSwipe>`
+export const MobileInnerContent = styled.div.attrs<TSwipe>(({ swipeUpY, swipeDownY, options }) => ({
+  style: {
+    filter: getDim(swipeUpY, swipeDownY, options),
+  },
+}))<TSwipe>`
   width: 100%;
   max-height: calc(100% - 30px);
   margin-top: ${({ options }) => (options.direction === 'bottom' ? '15px' : '0')};

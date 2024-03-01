@@ -28,8 +28,8 @@ const nextConfig = {
   swcMinify: true,
   productionBrowserSourceMaps: true,
   experimental: {
-    appDir: true,
     scrollRestoration: true,
+    optimizePackageImports: ['ramda'],
   },
 
   async headers() {

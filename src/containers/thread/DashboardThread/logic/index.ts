@@ -449,6 +449,7 @@ const _handleDone = () => {
   const field = store.savingField
   toast('设置已保存')
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
   let initSettings
 
   if (field === SETTING_FIELD.TAG_INDEX) {
@@ -513,7 +514,9 @@ const DataSolver = [
     match: asyncRes('updateDashboardSeo'),
     action: ({ updateDashboardSeo }) => {
       const {
-        dashboard: { seo: { seoEnable } },
+        dashboard: {
+          seo: { seoEnable },
+        },
       } = updateDashboardSeo
       const { initSettings } = store
       store.mark({ seoEnable, initSettings: { ...toJS(initSettings), seoEnable } })

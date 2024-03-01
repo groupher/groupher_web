@@ -29,16 +29,13 @@ const RepoPreview: FC<TProps> = ({ name, desc, type }) => {
 
         <Footer>
           <Info>
-            <ICON.Star />
-            3
+            <ICON.Star />3
           </Info>
           <Info>
-            <ICON.Fork />
-            1
+            <ICON.Fork />1
           </Info>
           <Info>
-            <ICON.Contribute />
-            3
+            <ICON.Contribute />3
           </Info>
         </Footer>
       </Repo>

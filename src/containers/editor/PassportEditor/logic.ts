@@ -35,9 +35,12 @@ export const updatePassport = (): void => {
   const community = curCommunity.slug
 
   const innerRules = {}
-  forEach((key) => {
-    innerRules[key as string] = false
-  }, toJS(keys(JSON.parse(allModeratorRules))))
+  forEach(
+    (key) => {
+      innerRules[key as string] = false
+    },
+    toJS(keys(JSON.parse(allModeratorRules))),
+  )
 
   forEach((key) => {
     innerRules[key as string] = true

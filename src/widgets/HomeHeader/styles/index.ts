@@ -126,10 +126,9 @@ export const MobileRightSide = styled.div`
     display: flex;
   `};
 `
-
 export const GithubIcon = styled(GithubSVT)`
-  ${css.size(16)};
   fill: ${theme('article.digest')};
+  ${css.size(16)};
 `
 export const Divider = styled(LineDivider)`
   background: ${theme('article.digest')};

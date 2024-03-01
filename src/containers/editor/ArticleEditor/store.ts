@@ -104,6 +104,7 @@ const ArticleEditor = T.model('ArticleEditor', {
       const tagsIds = toJS(slf.articleTags).map((t) => t.id)
       const baseFields = ['title', 'body', 'copyRight', 'isQuestion', 'linkAddr']
 
+      // @ts-ignore
       return { ...pick(baseFields, slf), articleTags: tagsIds }
     },
     get isReady(): boolean {

@@ -36,16 +36,14 @@ const AbsoluteFmt: FC<TProps> = ({ datetime, className, withTime }) => {
       月
       <Space right={3} />
       {day}
-      <Space right={3} />
-      日
+      <Space right={3} />日
       {withTime && (
         <Fragment>
           <Space right={2} />
           {range}
           <Space right={2} />
           {hour}
-          <Space right={3} />
-          点
+          <Space right={3} />点
         </Fragment>
       )}
     </Wrapper>
