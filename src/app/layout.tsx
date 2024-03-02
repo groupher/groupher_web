@@ -22,14 +22,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <StyledComponentsRegistry>
-          <GraphQLProvider token={token}>
-            <h2>groupher 4</h2>
-            <RootStoreProvider token={token}>
+        <GraphQLProvider token={token}>
+          <h2>groupher 9</h2>
+          <RootStoreProvider token={token}>
+            <StyledComponentsRegistry>
               <GlobalLayout>{children}</GlobalLayout>
-            </RootStoreProvider>
-          </GraphQLProvider>
-        </StyledComponentsRegistry>
+            </StyledComponentsRegistry>
+          </RootStoreProvider>
+        </GraphQLProvider>
         <Analytics />
         <SpeedInsights />
       </body>

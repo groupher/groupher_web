@@ -125,13 +125,6 @@ export const parseWallpaper = (community: TCommunity): TParsedWallpaper => {
   const { dashboard } = community
   const { wallpaper } = dashboard
 
-  console.log('## the fuck: ', {
-    ...wallpaper,
-    initWallpaper: {
-      ...wallpaper,
-    },
-  })
-
   return {
     ...wallpaper,
     initWallpaper: {
