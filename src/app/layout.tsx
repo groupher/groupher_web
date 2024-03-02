@@ -23,7 +23,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <body>
         <GraphQLProvider token={token}>
-          <h2>groupher 9</h2>
           <RootStoreProvider token={token}>
             <StyledComponentsRegistry>
               <GlobalLayout>{children}</GlobalLayout>
