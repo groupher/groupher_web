@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { cookies } from 'next/headers'
+// import { cookies } from 'next/headers'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
@@ -16,19 +16,19 @@ export const metadata: Metadata = {
 }
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const token = cookies().get('jwtToken')?.value || null
+  // const token = cookies().get('jwtToken')?.value || null
 
   return (
     <html lang="en">
       <body>
-        <StyledComponentsRegistry>
+        <h2>groupher</h2>
+        {/* <StyledComponentsRegistry>
           <GraphQLProvider token={token}>
             <RootStoreProvider token={token}>
-              <h2>groupher</h2>
               <GlobalLayout>{children}</GlobalLayout>
             </RootStoreProvider>
           </GraphQLProvider>
-        </StyledComponentsRegistry>
+        </StyledComponentsRegistry> */}
         <Analytics />
         <SpeedInsights />
       </body>
