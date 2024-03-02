@@ -1,8 +1,8 @@
-import { FC, useState, useEffect } from 'react'
+import { FC } from 'react'
 import { useMutation } from 'urql'
 
 import useViewingArticle from '@/hooks/useViewingArticle'
-// import { toast, updateViewingArticle } from '@/signal'
+import { toast, updateViewingArticle } from '@/signal'
 
 import S from '../schema'
 import useTouched from '../useTouched'
@@ -22,17 +22,17 @@ const Mirrow2Home: FC<TProps> = ({ onBack }) => {
   const handleUpdate = () => {
     const params = { id: article.id }
     console.log('## handle action')
-    // updatePost(params).then((result) => {
-    //   if (result.error) {
-    //     toast('修改失败', 'error')
-    //   } else {
-    //     toast('修改完成')
-    //     const newTitle = result.data.updatePost.title
-    //     setTitle(newTitle)
-    //     updateViewingArticle({ id: article.id, title: newTitle })
-    //     resetTouched()
-    //   }
-    // })
+    updatePost(params).then((result) => {
+      if (result.error) {
+        toast('修改失败', 'error')
+      } else {
+        toast('修改完成')
+        const newTitle = result.data.updatePost.title
+        // setTitle(newTitle)
+        updateViewingArticle({ id: article.id, title: newTitle })
+        resetTouched()
+      }
+    })
   }
   return (
     <Wrapper>

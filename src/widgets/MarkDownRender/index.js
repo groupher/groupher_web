@@ -65,16 +65,7 @@ class MarkDownRender extends React.Component {
     return (
       <PreviewerContainer>
         <MarkDownStyle>
-          <div className="markdown-body">
-            {/* eslint-disable react/no-danger */}
-            <div
-              id={contentDomId}
-              dangerouslySetInnerHTML={{
-                __html: html,
-              }}
-            />
-            {/* eslint-enable react/no-danger */}
-          </div>
+          <div className="markdown-body">TODO</div>
         </MarkDownStyle>
       </PreviewerContainer>
     )
