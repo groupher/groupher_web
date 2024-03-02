@@ -21,7 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <h2>groupher</h2>
+        <h2>groupher 1</h2>
         {/* <StyledComponentsRegistry>
           <GraphQLProvider token={token}>
             <RootStoreProvider token={token}>
