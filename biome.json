@@ -18,6 +18,7 @@
 			},
 			"suspicious": {
 				"noExplicitAny": "warn",
+				"noImplicitAnyLet": "warn",
 				"noAssignInExpressions": "warn",
 				"noDuplicateJsxProps": "error",
 				"noDuplicateObjectKeys": "error",

@@ -17,14 +17,14 @@ const IllegalWarning: FC<TProps> = ({ illegalReason, illegalWords }) => {
         {illegalReason.map((reason, index) => (
           <Fragment key={reason}>
             <Reason>{reason}</Reason>
-            {index !== illegalReason.length - 1 && <>，</>}
+            {index !== illegalReason.length - 1 && <>|</>}
           </Fragment>
         ))}
         ] 内容:
       </Title>
 
       <Content>
-        {illegalWords.map((word, index) => (
+        {illegalWords.map((word) => (
           <IllegalItem key={word}>{word}</IllegalItem>
         ))}
       </Content>

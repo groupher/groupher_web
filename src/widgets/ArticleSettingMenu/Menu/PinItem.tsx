@@ -13,7 +13,7 @@ import { MenuItem } from '../styles/menu'
 const PinItem: FC = () => {
   const { article } = useViewingArticle()
   const [result, pinPost] = useMutation(S.pinPost)
-  const [result2, undoPinPost] = useMutation(S.undoPinPost)
+  const [_result2, undoPinPost] = useMutation(S.undoPinPost)
 
   const [pin, setPin] = useState(article.isPinned)
 

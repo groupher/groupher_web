@@ -114,7 +114,7 @@ export const doUploadFile = (ossClient, file, filePrefix, callbacks): void => {
       const url = `${ASSETS_ENDPOINT}/${result.name}`
       callbacks.onDone(url)
     })
-    .catch((err) => {
+    .catch((_err) => {
       callbacks.onError('上传失败')
       toast('文件上传失败')
       // BStore.remove(STS.AK)
