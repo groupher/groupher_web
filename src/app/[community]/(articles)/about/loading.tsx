@@ -1,11 +1,9 @@
-import { FC } from 'react'
+'use client'
 
-const Loading: FC = () => {
-  return (
-    <div>
-      <h2>about loading</h2>
-    </div>
-  )
+import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+
+const Loading = () => {
+  return <LavaLampLoading top={80} />
 }
 
 export default Loading

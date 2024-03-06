@@ -149,19 +149,14 @@ const LandingPage: FC = () => {
           <TechStacks />
         </Suspense>
 
-        <DesktopOnly>
-          <Divider top={80} bottom={80} />
-        </DesktopOnly>
-        <MobileOnly>
-          <Divider top={50} bottom={50} />
-        </MobileOnly>
+        <Divider top={80} bottom={80} />
         <UsersWall wallpaper={wallpaper} />
-        <DesktopOnly>
-          <Divider top={60} bottom={80} />
-        </DesktopOnly>
+        <Divider top={60} bottom={80} />
+
         <FAQWrapper>
           <FaqList layout={DOC_FAQ_LAYOUT.FLAT} large sections={faqs} />
         </FAQWrapper>
+
         <Divider top={60} bottom={80} />
 
         <Footer />

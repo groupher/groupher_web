@@ -33,7 +33,7 @@ const HomeHeader: FC = () => {
 
   return (
     <Wrapper>
-      <Brand href="/" prefetch>
+      <Brand href="/">
         <BrandLogo src="/groupher-alpha.png" />
         <BrandTitle>Groupher</BrandTitle>
       </Brand>
@@ -74,9 +74,7 @@ const HomeHeader: FC = () => {
 
         <LinkItem href={`/${ROUTE.HOME}`}>社区</LinkItem>
         <LinkItem href={`/${ROUTE.HOME}/${ROUTE.KANBAN}`}>开发计划</LinkItem>
-        <LinkItem href={`/${ROUTE.PRICE}`} prefetch>
-          价格
-        </LinkItem>
+        <LinkItem href={`/${ROUTE.PRICE}`}>价格</LinkItem>
         <Tooltip
           content={
             <Panel width="120px">
@@ -111,7 +109,7 @@ const HomeHeader: FC = () => {
       <RightSideInfo>
         <GithubIcon />
         <Divider left={14} right={12} />
-        <RequestDemo href={`/${ROUTE.BOOK_DEMO}`} prefetch>
+        <RequestDemo href={`/${ROUTE.BOOK_DEMO}`}>
           <DemoIcon />
           <div>预约演示</div>
         </RequestDemo>

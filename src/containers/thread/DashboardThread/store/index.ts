@@ -27,6 +27,7 @@ import type {
   TChangeMode,
   TSocialItem,
   TMediaReport,
+  TLinkItem,
 } from '@/spec'
 
 import {
@@ -132,6 +133,19 @@ const DashboardThread = T.model('DashboardThread', {
 
       return toJS(root.viewing.community)
     },
+
+    get nameAliasData(): TNameAlias[] {
+      return toJS(self.nameAlias)
+    },
+
+    get headerLinksData(): TLinkItem[] {
+      return toJS(self.headerLinks)
+    },
+
+    get footerLinksData(): TLinkItem[] {
+      return toJS(self.footerLinks)
+    },
+
     get overviewData(): TOverview {
       return toJS(self.overview)
     },

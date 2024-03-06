@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useMemo } from 'react'
 import { find } from 'ramda'
 import { MobXProviderContext } from 'mobx-react'
 
@@ -48,10 +48,11 @@ const useHeaderLinks = (): THeaderLinks => {
   }
 
   const customLinks = isModerator ? [...headerLinksRow, aboutLink, dashboardLink] : headerLinksRow
+  const headerlinks = useMemo(() => store.dashboardThread.headerLinksData, [])
 
   return {
     layout: store.dashboardThread.headerLayout,
-    links: store.dashboardThread.headerLinks,
+    links: headerlinks,
     customLinks,
   }
 }
