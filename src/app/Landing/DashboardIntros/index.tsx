@@ -1,19 +1,24 @@
-import { FC, useState } from 'react'
+import { FC, useState, lazy, Suspense } from 'react'
 
 import { DASHBOARD_ROUTE } from '@/constant/route'
 import useMetric from '@/hooks/useMetric'
 
+import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+
 import type { TIntroTab } from './spec'
-import SideMenus from './SideMenus'
-import LayoutTab from './LayoutTab'
-import SeoTab from './SeoTab'
-import CMSTab from './CMSTab'
-import TagsTab from './TagsTab'
-import AdminsTab from './AdminsTab'
-import LinksTab from './LinksTab'
-import IntegrateTab from './IntegrateTab'
-import ImportTab from './ImportTab'
-import TrendTab from './TrendTab'
+
+export const SideMenus = lazy(() => import('./SideMenus'))
+export const LayoutTab = lazy(() => import('./LayoutTab'))
+export const SeoTab = lazy(() => import('./SeoTab'))
+
+export const CMSTab = lazy(() => import('./CMSTab'))
+export const TagsTab = lazy(() => import('./TagsTab'))
+export const AdminsTab = lazy(() => import('./AdminsTab'))
+export const LinksTab = lazy(() => import('./LinksTab'))
+
+export const IntegrateTab = lazy(() => import('./IntegrateTab'))
+export const ImportTab = lazy(() => import('./ImportTab'))
+export const TrendTab = lazy(() => import('./TrendTab'))
 
 import {
   Wrapper,
@@ -24,6 +29,10 @@ import {
   Desc,
   Right,
 } from '../styles/dashboard_intros'
+
+const Loading = () => {
+  return <LavaLampLoading top={0} left={30} />
+}
 
 const DashboardIntros: FC = () => {
   const metric = useMetric()
@@ -39,16 +48,61 @@ const DashboardIntros: FC = () => {
       <ContentWrapper metric={metric}>
         <InnerWrapper $tab={tab} metric={metric}>
           <SideMenus tab={tab} onChange={(tab) => setTab(tab)} />
+
           <Right>
-            {tab === DASHBOARD_ROUTE.LAYOUT && <LayoutTab />}
-            {tab === DASHBOARD_ROUTE.SEO && <SeoTab />}
-            {tab === DASHBOARD_ROUTE.POST && <CMSTab />}
-            {tab === DASHBOARD_ROUTE.TAGS && <TagsTab />}
-            {tab === DASHBOARD_ROUTE.ADMINS && <AdminsTab />}
-            {tab === DASHBOARD_ROUTE.HEADER && <LinksTab />}
-            {tab === DASHBOARD_ROUTE.WIDGETS && <IntegrateTab />}
-            {tab === DASHBOARD_ROUTE.INOUT && <ImportTab />}
-            {tab === DASHBOARD_ROUTE.TREND && <TrendTab />}
+            {tab === DASHBOARD_ROUTE.LAYOUT && (
+              <Suspense fallback={<Loading />}>
+                <LayoutTab />
+              </Suspense>
+            )}
+
+            {tab === DASHBOARD_ROUTE.SEO && (
+              <Suspense fallback={<Loading />}>
+                <SeoTab />
+              </Suspense>
+            )}
+
+            {tab === DASHBOARD_ROUTE.POST && (
+              <Suspense fallback={<Loading />}>
+                <CMSTab />
+              </Suspense>
+            )}
+
+            {tab === DASHBOARD_ROUTE.TAGS && (
+              <Suspense fallback={<Loading />}>
+                <TagsTab />
+              </Suspense>
+            )}
+
+            {tab === DASHBOARD_ROUTE.ADMINS && (
+              <Suspense fallback={<Loading />}>
+                <AdminsTab />
+              </Suspense>
+            )}
+
+            {tab === DASHBOARD_ROUTE.HEADER && (
+              <Suspense fallback={<Loading />}>
+                <LinksTab />
+              </Suspense>
+            )}
+
+            {tab === DASHBOARD_ROUTE.WIDGETS && (
+              <Suspense fallback={<Loading />}>
+                <IntegrateTab />
+              </Suspense>
+            )}
+
+            {tab === DASHBOARD_ROUTE.INOUT && (
+              <Suspense fallback={<Loading />}>
+                <ImportTab />
+              </Suspense>
+            )}
+
+            {tab === DASHBOARD_ROUTE.TREND && (
+              <Suspense fallback={<Loading />}>
+                <TrendTab />
+              </Suspense>
+            )}
           </Right>
         </InnerWrapper>
       </ContentWrapper>

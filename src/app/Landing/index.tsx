@@ -3,7 +3,7 @@
  *
  */
 
-import { FC } from 'react'
+import { FC, Suspense } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { DOC_FAQ_LAYOUT } from '@/constant/layout'
@@ -12,6 +12,7 @@ import useMetric from '@/hooks/useMetric'
 
 import { ROUTE } from '@/constant/route'
 
+import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 import { DesktopOnly, MobileOnly, LinkAble } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'
 import FaqList from '@/widgets/FaqList'
@@ -132,11 +133,22 @@ const LandingPage: FC = () => {
 
         <ArticlesIntroTabs />
 
-        <FeatureWall />
-        {/* <FeatureWall /> */}
-        <DashboardIntros />
-        <EnjoyDev />
-        <TechStacks />
+        <Suspense fallback={<LavaLampLoading />}>
+          <FeatureWall />
+        </Suspense>
+
+        <Suspense fallback={<LavaLampLoading />}>
+          <DashboardIntros />
+        </Suspense>
+
+        <Suspense fallback={<LavaLampLoading />}>
+          <EnjoyDev />
+        </Suspense>
+
+        <Suspense fallback={<LavaLampLoading />}>
+          <TechStacks />
+        </Suspense>
+
         <DesktopOnly>
           <Divider top={80} bottom={80} />
         </DesktopOnly>

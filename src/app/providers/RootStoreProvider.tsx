@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, memo } from 'react'
 import { Provider } from 'mobx-react'
 import { enableStaticRendering } from 'mobx-react-lite'
 
@@ -80,7 +80,8 @@ const RootStoreWrapper: FC<TProps> = ({ children, token, theme }) => {
     },
   })
 
+  console.log('## root store provider')
   return <Provider store={store}>{children}</Provider>
 }
 
-export default RootStoreWrapper
+export default memo(RootStoreWrapper)
