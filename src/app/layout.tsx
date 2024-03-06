@@ -18,7 +18,8 @@ export const metadata: Metadata = {
 export default function Layout({ children }: { children: React.ReactNode }) {
   // const token = cookies().get('jwtToken')?.value || null
   const token = null
-  const theme = cookies().get('theme')?.value === 'night' ? 'night' : 'day'
+  // const theme = cookies().get('theme')?.value === 'night' ? 'night' : 'day'
+  const theme = 'day'
 
   return (
     <html lang="en">
