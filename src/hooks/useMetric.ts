@@ -12,11 +12,12 @@ import { BANNER_LAYOUT } from '@/constant/layout'
  */
 const useMetric = (): TMetric => {
   const { store } = useContext(MobXProviderContext)
-  const pathname = usePathname()
 
   if (store === null) {
     throw new Error('Store cannot be null, please add a context provider')
   }
+
+  const pathname = usePathname()
 
   if (pathname === '/') {
     return METRIC.HOME

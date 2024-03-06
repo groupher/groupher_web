@@ -1,7 +1,11 @@
 'use client'
 
+import { memo } from 'react'
+
 import Landing from './Landing'
 
-export default function Page() {
+const Page = () => {
   return <Landing />
 }
+
+export default memo(Page)

@@ -228,7 +228,9 @@ export const useDashboard = (community: TCommunity): TParseDashboard => {
   const pathname = usePathname()
 
   // @ts-ignore
-  return !isStaticQuery ? parseDashboard(community, pathname) : {}
+  if (isStaticQuery) return {}
+
+  return parseDashboard(community, pathname)
 }
 
 /**

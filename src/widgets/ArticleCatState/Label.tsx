@@ -20,7 +20,7 @@ const Label: FC<TProps> = ({ cat, smaller }) => {
           <IconWrapper>
             <ICON.FEATURE />
           </IconWrapper>
-          {nameAlias[cat.toLowerCase()].name}
+          {nameAlias[cat.toLowerCase()]?.name}
         </Wrapper>
       )
     }
@@ -31,7 +31,7 @@ const Label: FC<TProps> = ({ cat, smaller }) => {
           <IconWrapper>
             <ICON.BUG />
           </IconWrapper>
-          {nameAlias[cat.toLowerCase()].name}
+          {nameAlias[cat.toLowerCase()]?.name}
         </Wrapper>
       )
     }
@@ -42,13 +42,13 @@ const Label: FC<TProps> = ({ cat, smaller }) => {
           <IconWrapper>
             <ICON.QUESTION />
           </IconWrapper>
-          {nameAlias[cat.toLowerCase()].name}
+          {nameAlias[cat.toLowerCase()]?.name}
         </Wrapper>
       )
     }
 
     default:
-      return <Wrapper $smaller={smaller}>{nameAlias[cat.toLowerCase()].name}</Wrapper>
+      return <Wrapper $smaller={smaller}>{nameAlias[cat.toLowerCase()]?.name}</Wrapper>
   }
 }
 

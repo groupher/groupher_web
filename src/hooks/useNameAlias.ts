@@ -1,8 +1,7 @@
-import { useContext } from 'react'
+import { useContext, useMemo } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 import { filter } from 'ramda'
 
-import { toJS } from '@/mobx'
 import type { TNameAlias } from '@/spec'
 
 /**
@@ -17,14 +16,13 @@ const useNameAlias = (group = 'kanban'): Record<string, TNameAlias> => {
 
   const alias = {}
   let aliasList = []
+  // NOTE: 如果这里不用 useMemo，会导致首页切换页面时一直 re-render, 相当变态
+  const curAlias = useMemo(() => store.dashboardThread.nameAliasData, [])
 
   if (!group) {
-    aliasList = toJS(store.dashboardThread.nameAlias)
+    aliasList = curAlias
   } else {
-    aliasList = filter(
-      (item: TNameAlias) => item.group === group,
-      toJS(store.dashboardThread.nameAlias),
-    )
+    aliasList = filter((item: TNameAlias) => item.group === group, curAlias)
   }
 
   aliasList.forEach((item) => {

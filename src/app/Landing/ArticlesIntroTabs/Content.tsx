@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, memo } from 'react'
 
 import type { TThread } from '@/spec'
 import { THREAD } from '@/constant/thread'
@@ -31,4 +31,4 @@ const Content: FC<TProps> = ({ tab }) => {
   )
 }
 
-export default Content
+export default memo(Content)

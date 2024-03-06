@@ -1,9 +1,9 @@
+'use client'
+
+import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+
 const Loading = () => {
-  return (
-    <div>
-      <h2>doc loading</h2>
-    </div>
-  )
+  return <LavaLampLoading top={80} />
 }
 
 export default Loading

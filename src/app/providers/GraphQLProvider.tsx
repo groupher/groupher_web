@@ -10,13 +10,11 @@ import { UrqlProvider, ssrExchange, cacheExchange, fetchExchange, createClient }
 import { GRAPHQL_ENDPOINT } from '@/config'
 
 type TProps = {
-  token: null | string
   children: ReactNode
 }
 
-const GraphQLProvider: FC<TProps> = ({ children, token }) => {
+const GraphQLProvider: FC<TProps> = ({ children }) => {
   const [client, ssr] = useMemo(() => {
-    // console.log('## use token: ', token)
     const ssr = ssrExchange()
     const client = createClient({
       url: GRAPHQL_ENDPOINT,
@@ -26,13 +24,13 @@ const GraphQLProvider: FC<TProps> = ({ children, token }) => {
       fetchOptions: () => ({
         headers: {
           special: 'Special header value',
-          authorization: `Bearer ${token || ''}`,
+          authorization: '',
         },
       }),
     })
 
     return [client, ssr]
-  }, [token])
+  }, [])
 
   return (
     <UrqlProvider client={client} ssr={ssr}>
