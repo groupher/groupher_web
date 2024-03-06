@@ -18,12 +18,13 @@ export const metadata: Metadata = {
 export default function Layout({ children }: { children: React.ReactNode }) {
   // const token = cookies().get('jwtToken')?.value || null
   const token = null
+  const theme = cookies().get('theme')?.value === 'night' ? 'night' : 'day'
 
   return (
     <html lang="en">
       <body>
         <GraphQLProvider token={token}>
-          <RootStoreProvider token={token}>
+          <RootStoreProvider token={token} theme={theme}>
             <StyledComponentsRegistry>
               <GlobalLayout>{children}</GlobalLayout>
             </StyledComponentsRegistry>

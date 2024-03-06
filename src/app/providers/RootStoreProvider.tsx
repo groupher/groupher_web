@@ -4,6 +4,7 @@ import { FC, ReactNode } from 'react'
 import { Provider } from 'mobx-react'
 import { enableStaticRendering } from 'mobx-react-lite'
 
+import type { TThemeName } from '@/spec'
 import { useStore } from '@/stores/init'
 
 import {
@@ -27,10 +28,11 @@ enableStaticRendering(typeof window === 'undefined')
 
 type TProps = {
   token: null | string
+  theme: TThemeName
   children: ReactNode
 }
 
-const RootStoreWrapper: FC<TProps> = ({ children, token }) => {
+const RootStoreWrapper: FC<TProps> = ({ children, token, theme }) => {
   const userHasLogin = !!token
 
   const metric = useMetric()
@@ -72,6 +74,10 @@ const RootStoreWrapper: FC<TProps> = ({ children, token }) => {
     },
     wallpaperEditor: wallpaper,
     dashboardThread: dashboard,
+
+    theme: {
+      curTheme: theme,
+    },
   })
 
   return <Provider store={store}>{children}</Provider>
