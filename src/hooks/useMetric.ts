@@ -7,7 +7,7 @@ import { includes } from 'ramda'
 import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
 import { BANNER_LAYOUT } from '@/constant/layout'
-import { ROUTE } from '@/constant/route'
+import { LANDIN_ROUTES } from '@/constant/route'
 
 /**
  * NOTE: should use observer to wrap the component who use this hook
@@ -21,7 +21,7 @@ const useMetric = (): TMetric => {
 
   const pathname = usePathname()
 
-  if (includes(pathname, ['/', `/${ROUTE.PRICE}`, `/${ROUTE.BOOK_DEMO}`])) {
+  if (includes(pathname, LANDIN_ROUTES)) {
     return METRIC.HOME
   }
 

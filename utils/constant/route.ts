@@ -108,3 +108,5 @@ export const ROUTE = {
     ...DASHBOARD_ROUTE,
   },
 }
+
+export const LANDIN_ROUTES = ['/', '/pricing', '/book-demo']

@@ -36,7 +36,6 @@ const RootStoreWrapper: FC<TProps> = ({ children }) => {
   const activeThread = useThreadParam()
 
   const { community } = useCommunity(userHasLogin)
-
   const { pagedPosts } = usePagedPosts(userHasLogin)
   const { pagedChangelogs } = usePagedChangelogs(userHasLogin)
   const { post } = usePost(userHasLogin)

@@ -9,7 +9,6 @@ import { usePathname, useSearchParams } from 'next/navigation'
 
 import type { TCommunity, TMetric, TThemeName } from '@/spec'
 import { P } from '@/schemas'
-import { DEFAULT_THEME } from '@/config'
 import { THREAD, ARTICLE_THREAD } from '@/constant/thread'
 import THEME from '@/constant/theme'
 import METRIC from '@/constant/metric'
@@ -17,7 +16,6 @@ import URL_PARAM from '@/constant/url_param'
 import { ARTICLE_CAT, ARTICLE_STATE, ARTICLE_ORDER } from '@/constant/gtd'
 
 import type {
-  TSessionRes,
   TCommunityRes,
   TTagsRes,
   TPostRes,
@@ -37,12 +35,12 @@ import {
   useCommunityParam,
   useThreadParam,
   useIsStaticQuery,
+  useSkipLandingQuery,
   useIdParam,
   //
   parseWallpaper,
   parseDashboard,
 } from './helper'
-import { useMemo } from 'react'
 
 export { parseCommunity, useThreadParam } from './helper'
 
@@ -72,36 +70,36 @@ export const useMetric = (): TMetric => {
   return METRIC.COMMUNITY
 }
 
-export const useSession = (): TSessionRes => {
-  const isStaticQuery = useIsStaticQuery()
+// export const useSession = (): TSessionRes => {
+//   const isStaticQuery = useIsStaticQuery()
 
-  const [result] = useQuery({
-    query: P.sessionState,
-    variables: {},
-    pause: isStaticQuery,
-    // NOTE: network-only will freeze the page, don't know why ...
-    // requestPolicy: 'network-only',
-    // NOTE: this warning calling warning in console
-    // requestPolicy: 'cache-and-network',
-  })
+//   const [result] = useQuery({
+//     query: P.sessionState,
+//     variables: {},
+//     pause: isStaticQuery,
+//     // NOTE: network-only will freeze the page, don't know why ...
+//     // requestPolicy: 'network-only',
+//     // NOTE: this warning calling warning in console
+//     // requestPolicy: 'cache-and-network',
+//   })
 
-  return {
-    ...commonRes(result),
-    sesstion: {
-      theme: {
-        curTheme: DEFAULT_THEME,
-      },
-      account: {
-        user: result.data?.sessionState?.user || {},
-        isValidSession: result.data?.sessionState?.isValid,
-      },
-    },
-  }
-}
+//   return {
+//     ...commonRes(result),
+//     sesstion: {
+//       theme: {
+//         curTheme: DEFAULT_THEME,
+//       },
+//       account: {
+//         user: result.data?.sessionState?.user || {},
+//         isValidSession: result.data?.sessionState?.isValid,
+//       },
+//     },
+//   }
+// }
 
 export const useCommunity = (userHasLogin: boolean): TCommunityRes => {
   const slug = useCommunityParam()
-  const isStaticQuery = useIsStaticQuery()
+  const skipLandingQuery = useSkipLandingQuery()
 
   const [result] = useQuery({
     query: P.community,
@@ -109,7 +107,7 @@ export const useCommunity = (userHasLogin: boolean): TCommunityRes => {
       slug,
       userHasLogin,
     },
-    pause: isStaticQuery,
+    pause: skipLandingQuery,
   })
 
   return {
@@ -120,7 +118,7 @@ export const useCommunity = (userHasLogin: boolean): TCommunityRes => {
 
 export const useTags = (): TTagsRes => {
   const community = useCommunityParam()
-  const isStaticQuery = useIsStaticQuery()
+  const skipLandingQuery = useSkipLandingQuery()
   const thread = useThreadParam()
 
   const [result] = useQuery({
@@ -128,7 +126,7 @@ export const useTags = (): TTagsRes => {
     variables: {
       filter: { community, thread: thread.toUpperCase() },
     },
-    pause: !(!isStaticQuery && includes(thread, values(ARTICLE_THREAD))),
+    pause: !(!skipLandingQuery && includes(thread, values(ARTICLE_THREAD))),
   })
 
   return {
@@ -140,13 +138,13 @@ export const useTags = (): TTagsRes => {
 export const usePagedPosts = (userHasLogin: boolean): TPagedPostsRes => {
   const filter = usePagedArticlesParams()
   const thread = useThreadParam()
-  const isStaticQuery = useIsStaticQuery()
+  const skipLandingQuery = useSkipLandingQuery()
   const id = useIdParam()
 
   const [result] = useQuery({
     query: P.pagedPosts,
     variables: { filter, userHasLogin },
-    pause: !(!isStaticQuery && thread === THREAD.POST && !id),
+    pause: !(!skipLandingQuery && thread === THREAD.POST && !id),
   })
 
   return {
@@ -157,13 +155,13 @@ export const usePagedPosts = (userHasLogin: boolean): TPagedPostsRes => {
 
 export const usePagedChangelogs = (userHasLogin: boolean): TPagedChangelogsRes => {
   const filter = usePagedArticlesParams()
-  const isStaticQuery = useIsStaticQuery()
+  const skipLandingQuery = useSkipLandingQuery()
   const thread = useThreadParam()
 
   const [result] = useQuery({
     query: P.pagedChangelogs,
     variables: { filter, userHasLogin },
-    pause: !(!isStaticQuery && thread === THREAD.CHANGELOG),
+    pause: !(!skipLandingQuery && thread === THREAD.CHANGELOG),
   })
 
   return {
@@ -174,13 +172,13 @@ export const usePagedChangelogs = (userHasLogin: boolean): TPagedChangelogsRes =
 
 export const usePost = (userHasLogin: boolean): TPostRes => {
   const { community, id } = useArticleParams()
-  const isStaticQuery = useIsStaticQuery()
+  const skipLandingQuery = useSkipLandingQuery()
   const thread = useThreadParam()
 
   const [result] = useQuery({
     query: P.post,
     variables: { community, id, userHasLogin },
-    pause: !(!isStaticQuery && thread === THREAD.POST && id),
+    pause: !(!skipLandingQuery && thread === THREAD.POST && id),
   })
 
   return {
@@ -191,13 +189,13 @@ export const usePost = (userHasLogin: boolean): TPostRes => {
 
 export const useChangelog = (userHasLogin: boolean): TChangelogRes => {
   const { community, id } = useArticleParams()
-  const isStaticQuery = useIsStaticQuery()
+  const skipLandingQuery = useSkipLandingQuery()
   const thread = useThreadParam()
 
   const [result] = useQuery({
     query: P.changelog,
     variables: { community, id, userHasLogin },
-    pause: !(!isStaticQuery && thread === THREAD.CHANGELOG && id),
+    pause: !(!skipLandingQuery && thread === THREAD.CHANGELOG && id),
   })
 
   return {
@@ -208,13 +206,13 @@ export const useChangelog = (userHasLogin: boolean): TChangelogRes => {
 
 export const useGroupedKanbanPosts = (userHasLogin: boolean): TGroupedKanbanPostsRes => {
   const community = useCommunityParam()
-  const isStaticQuery = useIsStaticQuery()
+  const skipLandingQuery = useSkipLandingQuery()
   const thread = useThreadParam()
 
   const [result] = useQuery({
     query: P.groupedKanbanPosts,
     variables: { community, userHasLogin },
-    pause: !(!isStaticQuery && thread === THREAD.KANBAN),
+    pause: !(!skipLandingQuery && thread === THREAD.KANBAN),
   })
 
   return {
@@ -243,11 +241,7 @@ export const useDashboard = (community: TCommunity): TParseDashboard => {
   // @ts-ignore
   if (isStaticQuery || !community) return {}
 
-  return useMemo(() => {
-    return parseDashboard(community, pathname)
-  }, [community.slug])
-
-  // return parseDashboard(community, pathname)
+  return parseDashboard(community, pathname)
 }
 
 /**
