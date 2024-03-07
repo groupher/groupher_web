@@ -57,10 +57,10 @@ const RootStoreWrapper: FC<TProps> = ({ children }) => {
     articles: {
       pagedPosts,
       pagedChangelogs,
-      // ...groupedKanbanPosts,
+      ...groupedKanbanPosts,
       ...filterSearchParams,
     },
-    // kanbanThread: groupedKanbanPosts,
+    kanbanThread: groupedKanbanPosts,
     tagsBar: {
       tags,
     },
