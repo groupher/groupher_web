@@ -3,7 +3,7 @@
  *
  */
 
-import { mergeRight, clone, remove, insert, findIndex, propEq, includes } from 'ramda'
+import { mergeRight, remove, insert, findIndex, propEq, includes } from 'ramda'
 
 import type { TRootStore, TAccount, TCommunity, TPagedCommunities, TModerator } from '@/spec'
 import { T, getParent, markStates, Instance, toJS } from '@/mobx'
@@ -21,17 +21,24 @@ const AccountStore = T.model('AccountStore', {
       const root = getParent(self) as TRootStore
       return toJS(root.viewing.community)
     },
+    get isModerator(): boolean {
+      const slf = self as TStore
+      const { user, curCommunity, isLogin } = slf
+
+      if (!isLogin) return false
+
+      const moderatorLogins = curCommunity.moderators.map((item: TModerator) => item.user.login)
+      return includes(user.login, moderatorLogins)
+    },
     get accountInfo(): TAccount {
       const slf = self as TStore
-
-      const { user, curCommunity } = slf
-      const moderatorLogins = curCommunity.moderators.map((item: TModerator) => item.user.login)
+      const { user, isModerator } = slf
 
       return {
         ...toJS(user),
         isLogin: self.isValidSession,
         isValidSession: self.isValidSession,
-        isModerator: includes(slf.user.login, moderatorLogins),
+        isModerator,
       }
     },
     get subscribedCommunities(): TPagedCommunities {

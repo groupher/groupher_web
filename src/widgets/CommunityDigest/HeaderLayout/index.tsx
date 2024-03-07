@@ -30,6 +30,12 @@ const HeaderLayout: FC = () => {
   const { layout: headerLayout } = useHeaderLinks()
   const { enterView, leaveView } = useCommunityDigestViewport()
 
+  // return (
+  //   <>
+  //     <h3>this is h3</h3>
+  //   </>
+  // )
+
   return (
     <Wrapper
       id={ANCHOR.GLOBAL_HEADER_ID}
@@ -41,6 +47,7 @@ const HeaderLayout: FC = () => {
         <BannerContentWrapper>
           <CommunityBaseInfo>
             <CommunityBrief />
+
             <MobileNaviWrapper>
               <MobileThreadNavi />
             </MobileNaviWrapper>

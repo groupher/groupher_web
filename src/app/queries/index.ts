@@ -42,6 +42,7 @@ import {
   parseWallpaper,
   parseDashboard,
 } from './helper'
+import { useMemo } from 'react'
 
 export { parseCommunity, useThreadParam } from './helper'
 
@@ -240,9 +241,13 @@ export const useDashboard = (community: TCommunity): TParseDashboard => {
   const pathname = usePathname()
 
   // @ts-ignore
-  if (isStaticQuery) return {}
+  if (isStaticQuery || !community) return {}
 
-  return parseDashboard(community, pathname)
+  return useMemo(() => {
+    return parseDashboard(community, pathname)
+  }, [community.slug])
+
+  // return parseDashboard(community, pathname)
 }
 
 /**

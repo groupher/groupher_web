@@ -4,6 +4,7 @@
  *
  */
 import { FC, Fragment } from 'react'
+import Link from 'next/link'
 // import { useRouter } from 'next/navigation'
 import { usePathname } from 'next/navigation'
 
@@ -24,6 +25,16 @@ const CommunityDigest: FC = () => {
   // const router = useRouter()
   const bannerLayout = useBannerLayout()
   const pathname = usePathname()
+
+  // return <HeaderLayout />
+
+  // return (
+  //   <>
+  //     <Link href="/home/post">讨论区</Link>
+  //     <Link href="/home/kanban">看板</Link>
+  //     <HeaderLayout />
+  //   </>
+  // )
 
   if (pathname.split('/')[2] === 'dashboard') {
     return <DashboardLayout />
