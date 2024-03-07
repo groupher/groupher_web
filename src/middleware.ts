@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 
 // import { themeMiddleware } from './middlewares/theme'
 import { queryWhitelistMiddleware } from './middlewares/query-whitelist'
