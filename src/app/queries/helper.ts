@@ -22,6 +22,7 @@ import { THREAD } from '@/constant/thread'
 import URL_PARAM from '@/constant/url_param'
 import { nilOrEmpty } from '@/validator'
 import {
+  LANDIN_ROUTES,
   DASHBOARD_ROUTE,
   DASHBOARD_BASEINFO_ROUTE,
   DASHBOARD_SEO_ROUTE,
@@ -47,6 +48,19 @@ export const useIsStaticQuery = (): boolean => {
   const pathname = usePathname()
 
   return startsWith('/_next', pathname) || startsWith('/_vercel', pathname)
+}
+
+export const useLandingPages = (): boolean => {
+  const pathname = usePathname()
+
+  return includes(pathname, LANDIN_ROUTES)
+}
+
+export const useSkipLandingQuery = (): boolean => {
+  const isStaticQuery = useIsStaticQuery()
+  const isLandingPages = useLandingPages()
+
+  return isStaticQuery || isLandingPages
 }
 
 export const useCommunityParam = (): string => {
