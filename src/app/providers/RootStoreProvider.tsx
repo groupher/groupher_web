@@ -49,7 +49,7 @@ const RootStoreWrapper: FC<TProps> = ({ children }) => {
   const filterSearchParams = useFilterSearchParams()
 
   // NOTE: 目前在没有启动后端的情况下，如果这行代码出现在 useCommunity 之前，会导致 build 后的代码疯狂
-  // post 到 /GraphiQL, 奇怪的行为。。
+  // post 到 /GraphiQL, 奇怪的行为。。，很怀疑是 URQL 客户端的 Bug ..
   const theme = useThemeFromURL()
 
   const store = useStore({
