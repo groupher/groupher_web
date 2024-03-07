@@ -45,7 +45,7 @@ import {
 
 export { parseCommunity, useThreadParam } from './helper'
 
-export const useTheme = (): TThemeName => {
+export const useThemeFromURL = (): TThemeName => {
   const searchParams = useSearchParams()
   const theme = searchParams.get('theme')
 

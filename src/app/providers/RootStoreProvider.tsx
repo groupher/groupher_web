@@ -7,7 +7,7 @@ import { enableStaticRendering } from 'mobx-react-lite'
 import { useStore } from '@/stores/init'
 
 import {
-  useTheme,
+  useThemeFromURL,
   useMetric,
   useCommunity,
   useTags,
@@ -32,7 +32,6 @@ type TProps = {
 const RootStoreWrapper: FC<TProps> = ({ children }) => {
   const userHasLogin = false
 
-  const theme = useTheme()
   const metric = useMetric()
   const activeThread = useThreadParam()
 
@@ -48,6 +47,10 @@ const RootStoreWrapper: FC<TProps> = ({ children }) => {
   const wallpaper = useWallpaper(community)
   const dashboard = useDashboard(community)
   const filterSearchParams = useFilterSearchParams()
+
+  // NOTE: 目前在没有启动后端的情况下，如果这行代码出现在 useCommunity 之前，会导致 build 后的代码疯狂
+  // post 到 /GraphiQL, 奇怪的行为。。
+  const theme = useThemeFromURL()
 
   const store = useStore({
     metric,

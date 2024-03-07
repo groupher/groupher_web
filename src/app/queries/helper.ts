@@ -46,7 +46,7 @@ export const commonRes = (result): TGQSSRResult => {
 export const useIsStaticQuery = (): boolean => {
   const pathname = usePathname()
 
-  return startsWith('/_next/static', pathname)
+  return startsWith('/_next', pathname) || startsWith('/_vercel', pathname)
 }
 
 export const useCommunityParam = (): string => {
