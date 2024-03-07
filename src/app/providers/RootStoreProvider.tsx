@@ -32,7 +32,7 @@ type TProps = {
 const RootStoreWrapper: FC<TProps> = ({ children }) => {
   const userHasLogin = false
 
-  const theme = useTheme()
+  // const theme = useTheme()
   const metric = useMetric()
   const activeThread = useThreadParam()
 
@@ -70,7 +70,7 @@ const RootStoreWrapper: FC<TProps> = ({ children }) => {
     dashboardThread: dashboard,
     wallpaperEditor: wallpaper,
     theme: {
-      curTheme: theme,
+      curTheme: 'day',
     },
   })
 
