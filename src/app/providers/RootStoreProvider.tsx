@@ -7,6 +7,7 @@ import { enableStaticRendering } from 'mobx-react-lite'
 import { useStore } from '@/stores/init'
 
 import {
+  useTheme,
   useMetric,
   useCommunity,
   useTags,
@@ -31,6 +32,7 @@ type TProps = {
 const RootStoreWrapper: FC<TProps> = ({ children }) => {
   const userHasLogin = false
 
+  const theme = useTheme()
   const metric = useMetric()
   const activeThread = useThreadParam()
 
@@ -67,6 +69,9 @@ const RootStoreWrapper: FC<TProps> = ({ children }) => {
     },
     dashboardThread: dashboard,
     wallpaperEditor: wallpaper,
+    theme: {
+      curTheme: theme,
+    },
   })
 
   console.log('## root store provider')

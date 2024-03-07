@@ -14,7 +14,8 @@ type TFooterLinks = {
 const useFooterLinks = (): TFooterLinks => {
   const { store } = useContext(MobXProviderContext)
 
-  const footerlinks = useMemo(() => store.dashboardThread.footerLinksData, [])
+  const viewingCommunity = store.viewing.community.slug
+  const footerlinks = useMemo(() => store.dashboardThread.footerLinksData, [viewingCommunity])
 
   return {
     layout: store.dashboardThread.footerLayout,

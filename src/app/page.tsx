@@ -1,5 +1,3 @@
-'use client'
-
 import { memo } from 'react'
 
 import Landing from './Landing'

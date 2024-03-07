@@ -1,24 +1,17 @@
-// middleware.ts
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+
+// import { themeMiddleware } from './middlewares/theme'
+import { queryWhitelistMiddleware } from './middlewares/query-whitelist'
 
 export function middleware(request: NextRequest) {
-  const url = request.nextUrl.clone()
+  // const response = themeMiddleware(request)
+  // if (response instanceof NextResponse) return response
 
-  // 根据需求定制缓存时间。这里的604800秒相当于一周。
-  const CACHE_DURATION = 60 * 60 * 24 * 7 // seconds
+  // whitelist the query parameters to improve CDN caching
+  const response = queryWhitelistMiddleware(request)
+  if (response instanceof NextResponse) return response
 
-  if (url.pathname === '/book-demo') {
-    const response = NextResponse.next()
+  // return response instanceof NextResponse ? response : NextResponse.next()
 
-    response.headers.set(
-      'Cache-Control',
-      `public, max-age=${CACHE_DURATION}, s-maxage=${CACHE_DURATION}, stale-while-revalidate=${CACHE_DURATION}`,
-    )
-    return response
-  }
-}
-
-export const config = {
-  matcher: '/book-demo',
+  return NextResponse.next()
 }

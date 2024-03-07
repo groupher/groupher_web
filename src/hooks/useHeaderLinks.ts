@@ -47,8 +47,9 @@ const useHeaderLinks = (): THeaderLinks => {
     link: `/${community.slug}/dashboard`,
   }
 
+  const viewingCommunity = store.viewing.community.slug
   const customLinks = isModerator ? [...headerLinksRow, aboutLink, dashboardLink] : headerLinksRow
-  const headerlinks = useMemo(() => store.dashboardThread.headerLinksData, [])
+  const headerlinks = useMemo(() => store.dashboardThread.headerLinksData, [viewingCommunity])
 
   return {
     layout: store.dashboardThread.headerLayout,
