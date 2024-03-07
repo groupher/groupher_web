@@ -56,7 +56,7 @@ const RootStoreWrapper: FC<TProps> = ({ children }) => {
     metric,
     articles: {
       pagedPosts,
-      // pagedChangelogs,
+      pagedChangelogs,
       // ...groupedKanbanPosts,
       ...filterSearchParams,
     },
