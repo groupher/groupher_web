@@ -2,10 +2,12 @@ import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 
 import { usePathname } from 'next/navigation'
+import { includes } from 'ramda'
 
 import type { TMetric } from '@/spec'
 import METRIC from '@/constant/metric'
 import { BANNER_LAYOUT } from '@/constant/layout'
+import { ROUTE } from '@/constant/route'
 
 /**
  * NOTE: should use observer to wrap the component who use this hook
@@ -19,7 +21,7 @@ const useMetric = (): TMetric => {
 
   const pathname = usePathname()
 
-  if (pathname === '/') {
+  if (includes(pathname, ['/', `/${ROUTE.PRICE}`, `/${ROUTE.BOOK_DEMO}`])) {
     return METRIC.HOME
   }
 

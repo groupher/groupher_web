@@ -7,7 +7,7 @@ import {
   Count,
 } from '../../../styles/articles_intro_tabs/changelog_tab/changelog_demo/emotion_bar'
 
-const EMOTION_STATIC = '/icons/static/emotion'
+const EMOTION_STATIC = 'icons/emotion'
 
 const EditorPreview: FC = () => {
   return (

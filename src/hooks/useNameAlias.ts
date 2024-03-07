@@ -16,8 +16,10 @@ const useNameAlias = (group = 'kanban'): Record<string, TNameAlias> => {
 
   const alias = {}
   let aliasList = []
+  const viewingCommunity = store.viewing.community.slug
+
   // NOTE: 如果这里不用 useMemo，会导致首页切换页面时一直 re-render, 相当变态
-  const curAlias = useMemo(() => store.dashboardThread.nameAliasData, [])
+  const curAlias = useMemo(() => store.dashboardThread.nameAliasData, [viewingCommunity])
 
   if (!group) {
     aliasList = curAlias
@@ -25,9 +27,9 @@ const useNameAlias = (group = 'kanban'): Record<string, TNameAlias> => {
     aliasList = filter((item: TNameAlias) => item.group === group, curAlias)
   }
 
-  aliasList.forEach((item) => {
+  for (const item of aliasList) {
     alias[item.slug] = item
-  })
+  }
 
   return alias
 }

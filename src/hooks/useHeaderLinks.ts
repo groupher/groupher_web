@@ -24,10 +24,8 @@ const useHeaderLinks = (): THeaderLinks => {
   }
 
   const { isModerator } = store.accountInfo
-  const { community } = store.viewing
-
-  const { headerLinks } = store.dashboardThread
-  const headerLinksRow = toJS(headerLinks)
+  const viewingCommunity = store.viewing.community.slug
+  const headerLinksRow = useMemo(() => store.dashboardThread.headerLinksData, [viewingCommunity])
 
   const hasExtraAbout = find((link: TLinkItem) => link.title === '关于', headerLinksRow)
 
@@ -36,7 +34,7 @@ const useHeaderLinks = (): THeaderLinks => {
         index: 999,
         title: '关于',
         group: MORE_GROUP,
-        link: `/${community.slug}/about`,
+        link: `/${viewingCommunity}/about`,
       }
     : { title: '', index: 0 }
 
@@ -44,11 +42,14 @@ const useHeaderLinks = (): THeaderLinks => {
     index: 1000,
     title: '控制台',
     group: MORE_GROUP,
-    link: `/${community.slug}/dashboard`,
+    link: `/${viewingCommunity}/dashboard`,
   }
 
-  const customLinks = isModerator ? [...headerLinksRow, aboutLink, dashboardLink] : headerLinksRow
-  const headerlinks = useMemo(() => store.dashboardThread.headerLinksData, [])
+  const customLinks = useMemo(() => {
+    return isModerator ? [...headerLinksRow, aboutLink, dashboardLink] : headerLinksRow
+  }, [viewingCommunity])
+
+  const headerlinks = useMemo(() => store.dashboardThread.headerLinksData, [viewingCommunity])
 
   return {
     layout: store.dashboardThread.headerLayout,

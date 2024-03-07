@@ -7,10 +7,11 @@ import { values, includes } from 'ramda'
 import { useQuery } from '@urql/next'
 import { usePathname, useSearchParams } from 'next/navigation'
 
-import type { TCommunity, TMetric } from '@/spec'
+import type { TCommunity, TMetric, TThemeName } from '@/spec'
 import { P } from '@/schemas'
 import { DEFAULT_THEME } from '@/config'
 import { THREAD, ARTICLE_THREAD } from '@/constant/thread'
+import THEME from '@/constant/theme'
 import METRIC from '@/constant/metric'
 import URL_PARAM from '@/constant/url_param'
 import { ARTICLE_CAT, ARTICLE_STATE, ARTICLE_ORDER } from '@/constant/gtd'
@@ -41,8 +42,20 @@ import {
   parseWallpaper,
   parseDashboard,
 } from './helper'
+import { useMemo } from 'react'
 
 export { parseCommunity, useThreadParam } from './helper'
+
+export const useThemeFromURL = (): TThemeName => {
+  const searchParams = useSearchParams()
+  const theme = searchParams.get('theme')
+
+  if (theme === THEME.NIGHT) {
+    return THEME.NIGHT
+  }
+
+  return THEME.DAY
+}
 
 export const useMetric = (): TMetric => {
   const thread = useThreadParam()
@@ -228,9 +241,13 @@ export const useDashboard = (community: TCommunity): TParseDashboard => {
   const pathname = usePathname()
 
   // @ts-ignore
-  if (isStaticQuery) return {}
+  if (isStaticQuery || !community) return {}
 
-  return parseDashboard(community, pathname)
+  return useMemo(() => {
+    return parseDashboard(community, pathname)
+  }, [community.slug])
+
+  // return parseDashboard(community, pathname)
 }
 
 /**

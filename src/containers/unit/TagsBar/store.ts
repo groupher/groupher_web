@@ -4,7 +4,6 @@
  */
 
 import { findIndex, propEq } from 'ramda'
-import { THREAD } from '@/constant/thread'
 
 import type { TRootStore, TCommunity, TTag, TGroupedTags, TThread } from '@/spec'
 

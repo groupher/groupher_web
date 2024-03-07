@@ -7,6 +7,7 @@ import { enableStaticRendering } from 'mobx-react-lite'
 import { useStore } from '@/stores/init'
 
 import {
+  useThemeFromURL,
   useMetric,
   useCommunity,
   useTags,
@@ -43,9 +44,13 @@ const RootStoreWrapper: FC<TProps> = ({ children }) => {
   const { groupedKanbanPosts } = useGroupedKanbanPosts(userHasLogin)
   const { tags } = useTags()
 
-  const wallpaper = useWallpaper(community)
   const dashboard = useDashboard(community)
+  const wallpaper = useWallpaper(community)
   const filterSearchParams = useFilterSearchParams()
+
+  // NOTE: 目前在没有启动后端的情况下，如果这行代码出现在 useCommunity 之前，会导致 build 后的代码疯狂
+  // post 到 /GraphiQL, 奇怪的行为。。，很怀疑是 URQL 客户端的 Bug ..
+  const theme = useThemeFromURL()
 
   const store = useStore({
     metric,
@@ -65,8 +70,11 @@ const RootStoreWrapper: FC<TProps> = ({ children }) => {
       changelog,
       activeThread,
     },
-    dashboardThread: dashboard,
     wallpaperEditor: wallpaper,
+    dashboardThread: dashboard,
+    theme: {
+      curTheme: theme,
+    },
   })
 
   console.log('## root store provider')

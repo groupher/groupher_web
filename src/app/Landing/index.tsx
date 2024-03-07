@@ -1,3 +1,5 @@
+'use client'
+
 /* *
  * LandingPage
  *
@@ -13,7 +15,7 @@ import useMetric from '@/hooks/useMetric'
 import { ROUTE } from '@/constant/route'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
-import { DesktopOnly, MobileOnly, LinkAble } from '@/widgets/Common'
+import { DesktopOnly, LinkAble } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'
 import FaqList from '@/widgets/FaqList'
 import HomeHeader from '@/widgets/HomeHeader'

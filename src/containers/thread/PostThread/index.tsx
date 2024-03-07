@@ -34,8 +34,6 @@ const PostThread: FC = () => {
   const postLayout = usePostLayout()
   const trackerRef = useRef(null)
 
-  // if (store.curThread !== THREAD.POST) return <LavaLampLoading top={20} />
-
   const isMobile = false
   const showFilters = true
 
