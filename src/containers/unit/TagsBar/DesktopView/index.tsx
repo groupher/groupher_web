@@ -4,12 +4,13 @@
  *
  */
 
-import { FC } from 'react'
+import { FC, useMemo } from 'react'
 import { keys, reverse } from 'ramda'
 import { observer } from 'mobx-react-lite'
 
 import { buildLog } from '@/logger'
 
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 import type { TProps as TTagProps } from '..'
 
 import { useStore } from '../store'
@@ -26,8 +27,14 @@ type TProps = Omit<TTagProps, 'view'>
 const TagsBar: FC<TProps> = ({ onSelect }) => {
   const store = useStore()
   useInit(store)
+  const community = useViewingCommunity()
 
-  const { groupedTags, tagsData, activeTagData, maxDisplayCount, totalCountThrold } = store
+  const { activeTagData, maxDisplayCount, totalCountThrold } = store
+
+  // TODO: thread is also need for deps
+  const tagsData = useMemo(() => store.tagsData, [community.slug])
+  const groupedTags = useMemo(() => store.groupedTags, [community.slug])
+
   const groupsKeys = reverse(keys(groupedTags)) as string[]
 
   return (
