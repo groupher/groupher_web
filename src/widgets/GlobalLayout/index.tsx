@@ -60,6 +60,7 @@ const GlobalLayout: FC<TProps> = ({ children }) => {
 
   const bgColor = `${blurRGB(themeData.htmlBg, gossBlur)}`
 
+  console.log('## globalLayout rendering ')
   // const isMobile = false
 
   // useEffect(() => {

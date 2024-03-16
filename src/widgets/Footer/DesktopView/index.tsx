@@ -10,6 +10,7 @@ import { observer } from 'mobx-react-lite'
 import { FOOTER_LAYOUT } from '@/constant/layout'
 import useFooterLinks from '@/hooks/useFooterLinks'
 import useMetric from '@/hooks/useMetric'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import { buildLog } from '@/logger'
 
@@ -22,8 +23,11 @@ import { Wrapper, InnerWrapper } from '../styles'
 const _log = buildLog('C:Footer')
 
 const Footer: FC = () => {
+  const { slug } = useViewingCommunity()
   const { layout } = useFooterLinks()
   const metric = useMetric()
+
+  if (!slug) return null // TODO: link to groupher home
 
   return (
     <Wrapper $testid="footer" metric={metric}>

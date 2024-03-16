@@ -102,6 +102,8 @@ export const ROUTE = {
   USER: 'user',
   PRICE: 'pricing',
 
+  OOPS: 'oops',
+
   ...NON_COMMUNITY_ROUTE,
 
   DASHBOARD: {

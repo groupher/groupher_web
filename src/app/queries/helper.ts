@@ -114,7 +114,7 @@ export const useArticleParams = (): TArticleParams => {
 }
 
 export const parseCommunity = (communityPath: string): string => {
-  if (!communityPath) return HCN
+  if (!communityPath) return null // HCN
   if (communityPath === '_next') return null
 
   return communityPath

@@ -44,7 +44,7 @@ const CommunityBrief: FC<TProps> = ({ show }) => {
 
           <Space right={15} />
           <Label>帖子</Label>
-          <Count>{meta.postsCount}</Count>
+          <Count>{meta?.postsCount}</Count>
         </InfoBar>
       </Brief>
     </Wrapper>

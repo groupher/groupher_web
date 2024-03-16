@@ -1,8 +1,10 @@
 'use client'
 
-import { FC, ReactNode, memo } from 'react'
+import { FC, ReactNode, memo, useEffect } from 'react'
 import { Provider } from 'mobx-react'
 import { enableStaticRendering } from 'mobx-react-lite'
+
+import { useRouter } from 'next/navigation'
 
 import { useStore } from '@/stores/init'
 
@@ -31,11 +33,25 @@ type TProps = {
 
 const RootStoreWrapper: FC<TProps> = ({ children }) => {
   const userHasLogin = false
+  // const router = useRouter()
+
+  // useEffect(() => {
+  //   const handleRedirect = async () => {
+  //     if (!community) {
+  //       await router.push('/oops')
+  //     }
+  //   }
+
+  //   handleRedirect()
+  // }, [])
+
+  const theme = useThemeFromURL()
 
   const metric = useMetric()
   const activeThread = useThreadParam()
 
   const { community } = useCommunity(userHasLogin)
+  console.log('## community -----> ', community)
   const { pagedPosts } = usePagedPosts(userHasLogin)
   const { pagedChangelogs } = usePagedChangelogs(userHasLogin)
   const { post } = usePost(userHasLogin)
@@ -46,10 +62,6 @@ const RootStoreWrapper: FC<TProps> = ({ children }) => {
   const dashboard = useDashboard(community)
   const wallpaper = useWallpaper(community)
   const filterSearchParams = useFilterSearchParams()
-
-  // NOTE: 目前在没有启动后端的情况下，如果这行代码出现在 useCommunity 之前，会导致 build 后的代码疯狂
-  // post 到 /GraphiQL, 奇怪的行为。。，很怀疑是 URQL 客户端的 Bug ..
-  const theme = useThemeFromURL()
 
   const store = useStore({
     metric,
