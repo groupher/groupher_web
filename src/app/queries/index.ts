@@ -34,8 +34,8 @@ import {
   useArticleParams,
   useCommunityParam,
   useThreadParam,
-  useIsStaticQuery,
-  useSkipLandingQuery,
+  useIsNextQuery,
+  useSkipStaticQuery,
   useIdParam,
   //
   parseWallpaper,
@@ -71,7 +71,7 @@ export const useMetric = (): TMetric => {
 }
 
 // export const useSession = (): TSessionRes => {
-//   const isStaticQuery = useIsStaticQuery()
+//   const isStaticQuery = useIsNextQuery()
 
 //   const [result] = useQuery({
 //     query: P.sessionState,
@@ -99,7 +99,7 @@ export const useMetric = (): TMetric => {
 
 export const useCommunity = (userHasLogin: boolean): TCommunityRes => {
   const slug = useCommunityParam()
-  const skipLandingQuery = useSkipLandingQuery()
+  const skipLandingQuery = useSkipStaticQuery()
 
   const [result] = useQuery({
     query: P.community,
@@ -118,7 +118,7 @@ export const useCommunity = (userHasLogin: boolean): TCommunityRes => {
 
 export const useTags = (): TTagsRes => {
   const community = useCommunityParam()
-  const skipLandingQuery = useSkipLandingQuery()
+  const skipLandingQuery = useSkipStaticQuery()
   const thread = useThreadParam()
 
   const [result] = useQuery({
@@ -138,7 +138,7 @@ export const useTags = (): TTagsRes => {
 export const usePagedPosts = (userHasLogin: boolean): TPagedPostsRes => {
   const filter = usePagedArticlesParams()
   const thread = useThreadParam()
-  const skipLandingQuery = useSkipLandingQuery()
+  const skipLandingQuery = useSkipStaticQuery()
   const id = useIdParam()
 
   const [result] = useQuery({
@@ -155,7 +155,7 @@ export const usePagedPosts = (userHasLogin: boolean): TPagedPostsRes => {
 
 export const usePagedChangelogs = (userHasLogin: boolean): TPagedChangelogsRes => {
   const filter = usePagedArticlesParams()
-  const skipLandingQuery = useSkipLandingQuery()
+  const skipLandingQuery = useSkipStaticQuery()
   const thread = useThreadParam()
 
   const [result] = useQuery({
@@ -172,7 +172,7 @@ export const usePagedChangelogs = (userHasLogin: boolean): TPagedChangelogsRes =
 
 export const usePost = (userHasLogin: boolean): TPostRes => {
   const { community, id } = useArticleParams()
-  const skipLandingQuery = useSkipLandingQuery()
+  const skipLandingQuery = useSkipStaticQuery()
   const thread = useThreadParam()
 
   const [result] = useQuery({
@@ -189,7 +189,7 @@ export const usePost = (userHasLogin: boolean): TPostRes => {
 
 export const useChangelog = (userHasLogin: boolean): TChangelogRes => {
   const { community, id } = useArticleParams()
-  const skipLandingQuery = useSkipLandingQuery()
+  const skipLandingQuery = useSkipStaticQuery()
   const thread = useThreadParam()
 
   const [result] = useQuery({
@@ -206,7 +206,7 @@ export const useChangelog = (userHasLogin: boolean): TChangelogRes => {
 
 export const useGroupedKanbanPosts = (userHasLogin: boolean): TGroupedKanbanPostsRes => {
   const community = useCommunityParam()
-  const skipLandingQuery = useSkipLandingQuery()
+  const skipLandingQuery = useSkipStaticQuery()
   const thread = useThreadParam()
 
   const [result] = useQuery({
@@ -225,7 +225,7 @@ export const useGroupedKanbanPosts = (userHasLogin: boolean): TGroupedKanbanPost
  * wallpaper related settings for all page
  */
 export const useWallpaper = (community: TCommunity): TParsedWallpaper => {
-  const isStaticQuery = useIsStaticQuery()
+  const isStaticQuery = useIsNextQuery()
 
   // @ts-ignore
   return !isStaticQuery ? parseWallpaper(community) : {}
@@ -235,7 +235,7 @@ export const useWallpaper = (community: TCommunity): TParsedWallpaper => {
  * general dashboard settings for all page
  */
 export const useDashboard = (community: TCommunity): TParseDashboard => {
-  const isStaticQuery = useIsStaticQuery()
+  const isStaticQuery = useIsNextQuery()
   const pathname = usePathname()
 
   // @ts-ignore
