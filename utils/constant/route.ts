@@ -111,4 +111,4 @@ export const ROUTE = {
   },
 }
 
-export const LANDIN_ROUTES = ['/', '/pricing', '/book-demo']
+export const LANDIN_ROUTES = ['/', '/pricing', '/book-demo', '/oops']
