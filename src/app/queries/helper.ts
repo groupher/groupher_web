@@ -22,7 +22,7 @@ import { THREAD } from '@/constant/thread'
 import URL_PARAM from '@/constant/url_param'
 import { nilOrEmpty } from '@/validator'
 import {
-  LANDIN_ROUTES,
+  STATIC_ROUTES,
   DASHBOARD_ROUTE,
   DASHBOARD_BASEINFO_ROUTE,
   DASHBOARD_SEO_ROUTE,
@@ -44,23 +44,23 @@ export const commonRes = (result): TGQSSRResult => {
   }
 }
 
-export const useIsStaticQuery = (): boolean => {
+export const useIsFrameworkQuery = (): boolean => {
   const pathname = usePathname()
 
   return startsWith('/_next', pathname) || startsWith('/_vercel', pathname)
 }
 
-export const useLandingPages = (): boolean => {
+export const useIsStaticPages = (): boolean => {
   const pathname = usePathname()
 
-  return includes(pathname, LANDIN_ROUTES)
+  return includes(pathname, STATIC_ROUTES)
 }
 
-export const useSkipLandingQuery = (): boolean => {
-  const isStaticQuery = useIsStaticQuery()
-  const isLandingPages = useLandingPages()
+export const useSkipStaticQuery = (): boolean => {
+  const isFrameworkQuery = useIsFrameworkQuery()
+  const isStaticPages = useIsStaticPages()
 
-  return isStaticQuery || isLandingPages
+  return isFrameworkQuery || isStaticPages
 }
 
 export const useCommunityParam = (): string => {
@@ -114,7 +114,7 @@ export const useArticleParams = (): TArticleParams => {
 }
 
 export const parseCommunity = (communityPath: string): string => {
-  if (!communityPath) return HCN
+  if (!communityPath) return null // HCN
   if (communityPath === '_next') return null
 
   return communityPath

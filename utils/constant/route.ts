@@ -102,6 +102,8 @@ export const ROUTE = {
   USER: 'user',
   PRICE: 'pricing',
 
+  OOPS: 'oops',
+
   ...NON_COMMUNITY_ROUTE,
 
   DASHBOARD: {
@@ -109,4 +111,4 @@ export const ROUTE = {
   },
 }
 
-export const LANDIN_ROUTES = ['/', '/pricing', '/book-demo']
+export const STATIC_ROUTES = ['/', '/pricing', '/book-demo', '/oops']

@@ -64,6 +64,15 @@ const nextConfig = {
           },
         ],
       },
+      {
+        source: '/oops',
+        headers: [
+          {
+            key: 'cache-control',
+            value: 's-maxage=6000, stale-while-revalidate=30',
+          },
+        ],
+      },
     ]
   },
 }
