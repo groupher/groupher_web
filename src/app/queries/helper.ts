@@ -44,7 +44,7 @@ export const commonRes = (result): TGQSSRResult => {
   }
 }
 
-export const useIsNextQuery = (): boolean => {
+export const useIsFrameworkQuery = (): boolean => {
   const pathname = usePathname()
 
   return startsWith('/_next', pathname) || startsWith('/_vercel', pathname)
@@ -57,10 +57,10 @@ export const useIsStaticPages = (): boolean => {
 }
 
 export const useSkipStaticQuery = (): boolean => {
-  const isNextQuery = useIsNextQuery()
+  const isFrameworkQuery = useIsFrameworkQuery()
   const isStaticPages = useIsStaticPages()
 
-  return isNextQuery || isStaticPages
+  return isFrameworkQuery || isStaticPages
 }
 
 export const useCommunityParam = (): string => {

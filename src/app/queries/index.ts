@@ -34,7 +34,7 @@ import {
   useArticleParams,
   useCommunityParam,
   useThreadParam,
-  useIsNextQuery,
+  useIsFrameworkQuery,
   useSkipStaticQuery,
   useIdParam,
   //
@@ -71,7 +71,7 @@ export const useMetric = (): TMetric => {
 }
 
 // export const useSession = (): TSessionRes => {
-//   const isStaticQuery = useIsNextQuery()
+//   const isStaticQuery = useIsFrameworkQuery()
 
 //   const [result] = useQuery({
 //     query: P.sessionState,
@@ -225,7 +225,7 @@ export const useGroupedKanbanPosts = (userHasLogin: boolean): TGroupedKanbanPost
  * wallpaper related settings for all page
  */
 export const useWallpaper = (community: TCommunity): TParsedWallpaper => {
-  const isStaticQuery = useIsNextQuery()
+  const isStaticQuery = useIsFrameworkQuery()
 
   // @ts-ignore
   return !isStaticQuery ? parseWallpaper(community) : {}
@@ -235,7 +235,7 @@ export const useWallpaper = (community: TCommunity): TParsedWallpaper => {
  * general dashboard settings for all page
  */
 export const useDashboard = (community: TCommunity): TParseDashboard => {
-  const isStaticQuery = useIsNextQuery()
+  const isStaticQuery = useIsFrameworkQuery()
   const pathname = usePathname()
 
   // @ts-ignore
