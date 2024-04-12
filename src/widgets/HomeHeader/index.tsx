@@ -1,8 +1,10 @@
-import { FC, useState, memo } from 'react'
+import { FC, useState, memo, useEffect } from 'react'
 import { signIn, signOut } from 'next-auth/react'
 
 import { ROUTE } from '@/constant/route'
+import useSession from '@/hooks/useSession'
 
+import BStore from '@/utils/bstore'
 import Tooltip from '@/widgets/Tooltip'
 
 import MobileMenu from './MobileMenu'
@@ -31,6 +33,8 @@ import {
 const HomeHeader: FC = () => {
   const [productActive, setProductActive] = useState(false)
   const [moreActive, setMoreActive] = useState(false)
+
+  useSession()
 
   return (
     <Wrapper>

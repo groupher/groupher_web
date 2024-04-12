@@ -14,13 +14,24 @@ export default {
       const cookiesRes = cookies()
       const headersRes = headers()
 
+      cookies().set({
+        name: 'groupher.token',
+        value: 'bla bla',
+        httpOnly: true,
+        path: '/',
+      })
+
+      // 这里删除没有用，在前端删除？
+      // cookies().delete('authjs.session-token')
+      cookies().set('authjs.session-token', 'bbb')
+
       console.log('## ### ### ## ## ## ##')
       console.log('## signIn callback user: ', user)
       console.log('## signIn account: ', account)
       console.log('## signIn profile: ', profile)
 
-      console.log('## cookiesRes: ', cookiesRes)
-      console.log('## headersRes: ', headersRes)
+      // console.log('## cookiesRes: ', cookiesRes)
+      // console.log('## headersRes: ', headersRes)
       console.log('## ### ### ## ## ## ##')
       // 当用户使用任何提供者登录时都会触发此回调
       // 可以根据 account.provider 来确认使用的哪个第三方提供者

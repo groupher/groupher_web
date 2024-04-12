@@ -70,33 +70,6 @@ export const useMetric = (): TMetric => {
   return METRIC.COMMUNITY
 }
 
-// export const useSession = (): TSessionRes => {
-//   const isStaticQuery = useIsFrameworkQuery()
-
-//   const [result] = useQuery({
-//     query: P.sessionState,
-//     variables: {},
-//     pause: isStaticQuery,
-//     // NOTE: network-only will freeze the page, don't know why ...
-//     // requestPolicy: 'network-only',
-//     // NOTE: this warning calling warning in console
-//     // requestPolicy: 'cache-and-network',
-//   })
-
-//   return {
-//     ...commonRes(result),
-//     sesstion: {
-//       theme: {
-//         curTheme: DEFAULT_THEME,
-//       },
-//       account: {
-//         user: result.data?.sessionState?.user || {},
-//         isValidSession: result.data?.sessionState?.isValid,
-//       },
-//     },
-//   }
-// }
-
 export const useCommunity = (): TCommunityRes => {
   const slug = useCommunityParam()
   const skipLandingQuery = useSkipStaticQuery()

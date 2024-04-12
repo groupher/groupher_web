@@ -2,7 +2,6 @@
 
 import { FC, ReactNode, memo } from 'react'
 import { Provider } from 'mobx-react'
-import { enableStaticRendering } from 'mobx-react-lite'
 
 import { useStore } from '@/stores/init'
 
@@ -22,8 +21,6 @@ import {
   useFilterSearchParams,
   useThreadParam,
 } from '../queries'
-
-enableStaticRendering(typeof window === 'undefined')
 
 type TProps = {
   children: ReactNode

@@ -49,9 +49,8 @@ export const useIsFrameworkQuery = (): boolean => {
 
   // return startsWith('/_next', pathname) || startsWith('/_vercel', pathname)
   return (
-    startsWith('/_next', pathname) ||
-    startsWith('/_vercel', pathname) ||
-    startsWith('/api', pathname)
+    startsWith('/_next', pathname) || startsWith('/_vercel', pathname)
+    // startsWith('/api', pathname)
   )
 }
 

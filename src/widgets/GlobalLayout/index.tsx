@@ -5,42 +5,27 @@
  */
 
 import { FC, ReactNode, lazy, Suspense } from 'react'
-import { observer } from 'mobx-react-lite'
 import { Provider as BalancerTextProvider } from 'react-wrap-balancer'
-import useSession from '@/hooks/useSession'
 
-import { blurRGB } from '@/fmt'
 import METRIC from '@/constant/metric'
-import { TOPBAR_LAYOUT } from '@/constant/layout'
 
 import useMetric from '@/hooks/useMetric'
-import useGlobalLayout from '@/hooks/useGlobalLayout'
-import useThemeData from '@/hooks/useThemeData'
-import useWallpaper from '@/hooks/useWallpaper'
-import useGossBlur from '@/hooks/useGossBlur'
 
 import Mushroom from '@/containers/Mushroom'
-// import ModeLine from '@/containers/unit/ModeLine'
 
 import ThemePalette from '@/widgets/ThemePalette'
+
 // import Broadcast from '@/widgets/Broadcast'
-import Footer from '@/widgets/Footer'
+// import ModeLine from '@/containers/unit/ModeLine'
 
 // import DashboardAlert from './DashboardAlert'
 // import CustomScroller from '@/widgets/CustomScroller'
 
 import SEO from './SEO'
 import Wallpaper from './Wallpaper'
-import GlowBackground from './GlowBackground'
+import Main from './Main'
 
-import {
-  Skeleton,
-  Wrapper,
-  ScrollWrapper,
-  InnerWrapper,
-  BodyWrapper,
-  ContentWrapper,
-} from './styles'
+import { Skeleton, Wrapper, ScrollWrapper } from './styles'
 
 const Addon = lazy(() => import('./Addon'))
 
@@ -51,17 +36,8 @@ type TProps = {
 }
 
 const GlobalLayout: FC<TProps> = ({ children }) => {
-  const globalLayout = useGlobalLayout()
   const metric = useMetric()
-  const { hasShadow } = useWallpaper()
-  const gossBlur = useGossBlur()
-
-  const themeData = useThemeData()
-  const user = useSession()
-  console.log('## see session: ', user)
   // const [showDashboardAlertUI, setShowDashboardAlertUI] = useState(false)
-
-  const bgColor = `${blurRGB(themeData.htmlBg, gossBlur)}`
 
   console.log('## globalLayout rendering ')
   // const isMobile = false
@@ -87,20 +63,7 @@ const GlobalLayout: FC<TProps> = ({ children }) => {
           <ScrollWrapper $noMobilePadding={metric === METRIC.HOME}>
             <Wrapper>
               <SEO />
-              <InnerWrapper
-                metric={metric}
-                $bgColor={bgColor}
-                $hasShadow={hasShadow}
-                $hasTopbar={metric !== METRIC.HOME && globalLayout.topbar === TOPBAR_LAYOUT.YES}
-                $topbarBg={globalLayout.topbarBg}
-              >
-                {/* <Broadcast /> */}
-                <ContentWrapper>
-                  <BodyWrapper>{children}</BodyWrapper>
-                  <Footer />
-                </ContentWrapper>
-                <GlowBackground />
-              </InnerWrapper>
+              <Main>{children}</Main>
               {/* {isMobile && <ModeLine />} */}
             </Wrapper>
           </ScrollWrapper>
@@ -112,4 +75,4 @@ const GlobalLayout: FC<TProps> = ({ children }) => {
   )
 }
 
-export default observer(GlobalLayout)
+export default GlobalLayout
