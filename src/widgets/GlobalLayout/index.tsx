@@ -7,6 +7,7 @@
 import { FC, ReactNode, lazy, Suspense } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Provider as BalancerTextProvider } from 'react-wrap-balancer'
+import useSession from '@/hooks/useSession'
 
 import { blurRGB } from '@/fmt'
 import METRIC from '@/constant/metric'
@@ -56,6 +57,8 @@ const GlobalLayout: FC<TProps> = ({ children }) => {
   const gossBlur = useGossBlur()
 
   const themeData = useThemeData()
+  const user = useSession()
+  console.log('## see session: ', user)
   // const [showDashboardAlertUI, setShowDashboardAlertUI] = useState(false)
 
   const bgColor = `${blurRGB(themeData.htmlBg, gossBlur)}`

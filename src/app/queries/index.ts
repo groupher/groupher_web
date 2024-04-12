@@ -97,7 +97,7 @@ export const useMetric = (): TMetric => {
 //   }
 // }
 
-export const useCommunity = (userHasLogin: boolean): TCommunityRes => {
+export const useCommunity = (): TCommunityRes => {
   const slug = useCommunityParam()
   const skipLandingQuery = useSkipStaticQuery()
 
@@ -105,7 +105,7 @@ export const useCommunity = (userHasLogin: boolean): TCommunityRes => {
     query: P.community,
     variables: {
       slug,
-      userHasLogin,
+      userHasLogin: false,
     },
     pause: skipLandingQuery,
   })
@@ -135,7 +135,7 @@ export const useTags = (): TTagsRes => {
   }
 }
 
-export const usePagedPosts = (userHasLogin: boolean): TPagedPostsRes => {
+export const usePagedPosts = (): TPagedPostsRes => {
   const filter = usePagedArticlesParams()
   const thread = useThreadParam()
   const skipLandingQuery = useSkipStaticQuery()
@@ -143,7 +143,7 @@ export const usePagedPosts = (userHasLogin: boolean): TPagedPostsRes => {
 
   const [result] = useQuery({
     query: P.pagedPosts,
-    variables: { filter, userHasLogin },
+    variables: { filter, userHasLogin: false },
     pause: !(!skipLandingQuery && thread === THREAD.POST && !id),
   })
 
@@ -153,14 +153,14 @@ export const usePagedPosts = (userHasLogin: boolean): TPagedPostsRes => {
   }
 }
 
-export const usePagedChangelogs = (userHasLogin: boolean): TPagedChangelogsRes => {
+export const usePagedChangelogs = (): TPagedChangelogsRes => {
   const filter = usePagedArticlesParams()
   const skipLandingQuery = useSkipStaticQuery()
   const thread = useThreadParam()
 
   const [result] = useQuery({
     query: P.pagedChangelogs,
-    variables: { filter, userHasLogin },
+    variables: { filter, userHasLogin: false },
     pause: !(!skipLandingQuery && thread === THREAD.CHANGELOG),
   })
 
@@ -170,14 +170,14 @@ export const usePagedChangelogs = (userHasLogin: boolean): TPagedChangelogsRes =
   }
 }
 
-export const usePost = (userHasLogin: boolean): TPostRes => {
+export const usePost = (): TPostRes => {
   const { community, id } = useArticleParams()
   const skipLandingQuery = useSkipStaticQuery()
   const thread = useThreadParam()
 
   const [result] = useQuery({
     query: P.post,
-    variables: { community, id, userHasLogin },
+    variables: { community, id, userHasLogin: false },
     pause: !(!skipLandingQuery && thread === THREAD.POST && id),
   })
 
@@ -187,14 +187,14 @@ export const usePost = (userHasLogin: boolean): TPostRes => {
   }
 }
 
-export const useChangelog = (userHasLogin: boolean): TChangelogRes => {
+export const useChangelog = (): TChangelogRes => {
   const { community, id } = useArticleParams()
   const skipLandingQuery = useSkipStaticQuery()
   const thread = useThreadParam()
 
   const [result] = useQuery({
     query: P.changelog,
-    variables: { community, id, userHasLogin },
+    variables: { community, id, userHasLogin: false },
     pause: !(!skipLandingQuery && thread === THREAD.CHANGELOG && id),
   })
 
@@ -204,14 +204,14 @@ export const useChangelog = (userHasLogin: boolean): TChangelogRes => {
   }
 }
 
-export const useGroupedKanbanPosts = (userHasLogin: boolean): TGroupedKanbanPostsRes => {
+export const useGroupedKanbanPosts = (): TGroupedKanbanPostsRes => {
   const community = useCommunityParam()
   const skipLandingQuery = useSkipStaticQuery()
   const thread = useThreadParam()
 
   const [result] = useQuery({
     query: P.groupedKanbanPosts,
-    variables: { community, userHasLogin },
+    variables: { community, userHasLogin: false },
     pause: !(!skipLandingQuery && thread === THREAD.KANBAN),
   })
 

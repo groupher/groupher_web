@@ -1,4 +1,5 @@
-import { FC, useState } from 'react'
+import { FC, useState, memo } from 'react'
+import { signIn, signOut } from 'next-auth/react'
 
 import { ROUTE } from '@/constant/route'
 
@@ -107,7 +108,19 @@ const HomeHeader: FC = () => {
       </LinksWrapper>
 
       <RightSideInfo>
-        <GithubIcon />
+        <GithubIcon
+          onClick={() => {
+            console.log('## login with github')
+            signIn('github', { callbackUrl: '/pricing', state: '## 王德发' })
+          }}
+        />
+        <Divider left={14} right={12} />
+        <GithubIcon
+          onClick={() => {
+            console.log('## signOut')
+            signOut()
+          }}
+        />
         <Divider left={14} right={12} />
         <RequestDemo href={`/${ROUTE.BOOK_DEMO}`}>
           <DemoIcon />
@@ -124,4 +137,4 @@ const HomeHeader: FC = () => {
   )
 }
 
-export default HomeHeader
+export default memo(HomeHeader)

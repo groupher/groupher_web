@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 // import { cookies } from 'next/headers'
+import { SessionProvider } from 'next-auth/react'
+
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
@@ -24,13 +26,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <StyledComponentsRegistry>
-          <GraphQLProvider>
-            <RootStoreProvider>
-              <GlobalLayout>{children}</GlobalLayout>
-            </RootStoreProvider>
-          </GraphQLProvider>
-        </StyledComponentsRegistry>
+        <SessionProvider refetchOnWindowFocus={false}>
+          <StyledComponentsRegistry>
+            <GraphQLProvider>
+              <RootStoreProvider>
+                <GlobalLayout>{children}</GlobalLayout>
+              </RootStoreProvider>
+            </GraphQLProvider>
+          </StyledComponentsRegistry>
+        </SessionProvider>
         <Analytics />
         <SpeedInsights />
       </body>
