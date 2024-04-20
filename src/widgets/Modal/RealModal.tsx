@@ -72,7 +72,13 @@ const RealModal: FC<TProps> = ({
           offsetTop={offsetTop}
           offsetLeft={offsetLeft}
         >
-          <GlowLight glowType={glowType} $curTheme={curTheme} />
+          <GlowLight
+            glowType={glowType}
+            $curTheme={curTheme}
+            onClick={(e) => {
+              e.stopPropagation()
+            }}
+          />
           <ViewportTracker onEnter={() => setVisibleOnPage(true)} />
           {showCloseBtn && <CloseBtn mode={mode} onClick={handleClose} />}
           {/* {showCloseBtn && <EscHint mode={mode}>Esc</EscHint>} */}

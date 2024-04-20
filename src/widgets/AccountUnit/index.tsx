@@ -4,9 +4,9 @@
  *
  */
 
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { observer } from 'mobx-react-lite'
-import { includes } from 'ramda'
+import { includes, set } from 'ramda'
 
 import type { TSpace } from '@/spec'
 import { buildLog } from '@/logger'
@@ -18,6 +18,8 @@ import { BANNER_LAYOUT } from '@/constant/layout'
 import ImgFallback from '@/widgets/ImgFallback'
 import { SpaceGrow } from '@/widgets/Common'
 import ThemeSwitch from '@/widgets/ThemeSwitch'
+
+import Panel from './Panel'
 
 import { NormalWrapper, WithBgWrapper, Avatar, UnloginIcon, NickName, UnLoginText } from './styles'
 
@@ -33,6 +35,8 @@ const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
   const avatarLayout = useAvatarLayout()
   const bannerLayout = useBannerLayout()
 
+  const [showPanel, setShowPanel] = useState(false)
+
   const Wrapper = includes(bannerLayout, [BANNER_LAYOUT.TABBER, BANNER_LAYOUT.SIDEBAR])
     ? WithBgWrapper
     : NormalWrapper
@@ -42,7 +46,6 @@ const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
       {includes(bannerLayout, [BANNER_LAYOUT.HEADER, BANNER_LAYOUT.TABBER]) && (
         <ThemeSwitch right={10} />
       )}
-
       {isLogin ? (
         <Avatar
           src={avatar}
@@ -50,17 +53,26 @@ const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
           fallback={<ImgFallback size={18} user={user} />}
         />
       ) : (
-        <UnloginIcon />
+        <UnloginIcon
+          onClick={() => {
+            setShowPanel(true)
+          }}
+        />
       )}
       {!isLogin && withName && <UnLoginText>未登入</UnLoginText>}
       {isLogin && withName && <NickName>{nickname}</NickName>}
-
       {bannerLayout === BANNER_LAYOUT.SIDEBAR && (
         <>
           <SpaceGrow />
           <ThemeSwitch />
         </>
       )}
+      <Panel
+        show={showPanel}
+        onClose={() => {
+          setShowPanel(false)
+        }}
+      />
     </Wrapper>
   )
 }

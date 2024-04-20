@@ -32,7 +32,7 @@ export const Wrapper = styled.div<TWrapper>`
   width: ${({ width }) => width};
   height: auto;
   border-radius: 8px;
-  min-height: 320px;
+  min-height: 280px;
   max-height: 65vh;
   box-shadow: ${theme('modal.shadow')};
   border: 1px solid;
@@ -44,7 +44,7 @@ export const Wrapper = styled.div<TWrapper>`
   ${css.media.mobile`width: 320px`};
 `
 export const ChildrenWrapper = styled.div`
-  min-height: 320px;
+  min-height: 280px;
   /* height: 100%; */
   height: auto;
   overflow-y: scroll;
