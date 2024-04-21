@@ -1,10 +1,8 @@
-import { FC, useState, memo, useEffect } from 'react'
-import { signIn, signOut } from 'next-auth/react'
+import { FC, useState, memo } from 'react'
 
 import { ROUTE } from '@/constant/route'
 import useSession from '@/hooks/useSession'
 
-import BStore from '@/utils/bstore'
 import Tooltip from '@/widgets/Tooltip'
 
 import MobileMenu from './MobileMenu'
@@ -112,19 +110,7 @@ const HomeHeader: FC = () => {
       </LinksWrapper>
 
       <RightSideInfo>
-        <GithubIcon
-          onClick={() => {
-            console.log('## login with github')
-            signIn('github', { callbackUrl: '/pricing', state: '## 王德发' })
-          }}
-        />
-        <Divider left={14} right={12} />
-        <GithubIcon
-          onClick={() => {
-            console.log('## signOut')
-            signOut()
-          }}
-        />
+        <GithubIcon />
         <Divider left={14} right={12} />
         <RequestDemo href={`/${ROUTE.BOOK_DEMO}`}>
           <DemoIcon />

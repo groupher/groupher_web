@@ -30,7 +30,7 @@ export const Body = styled.div`
   margin-bottom: 20px;
   z-index: 1;
 `
-export const SocialItem = styled.div`
+export const SocialItem = styled.div<{ $inactive: boolean }>`
   ${css.row('align-center')};
   color: ${theme('article.digest')};
   font-weight: 500;
@@ -39,11 +39,12 @@ export const SocialItem = styled.div`
   border-radius: 8px;
   border: 1px solid;
   border-color: ${theme('divider')};
+  background: ${({ $inactive }) => ($inactive ? theme('hoverBg') : 0)};
 
   &:hover {
     background: ${theme('hoverBg')};
     color: ${theme('article.title')};
-    cursor: pointer;
+    cursor: ${({ $inactive }) => ($inactive ? 'not-allowed' : 'pointer')};
   }
 `
 export const IconBox = styled.div`

@@ -1,4 +1,8 @@
-import { FC, memo } from 'react'
+import { FC, memo, useState } from 'react'
+
+import { signIn, signOut } from 'next-auth/react'
+
+import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
 import { titleCase } from '@/utils/fmt'
 import Modal from '@/widgets/Modal'
@@ -13,6 +17,8 @@ type TProps = {
 }
 
 const Panel: FC<TProps> = ({ show, onClose }) => {
+  const [loadingProviders, setLoadingProviders] = useState('')
+
   return (
     <Modal show={show} width="400px" onClose={() => onClose()} showCloseBtn>
       <Wrapper>
@@ -23,11 +29,22 @@ const Panel: FC<TProps> = ({ show, onClose }) => {
             const Icon = SocialIcon[providerKey] || null
 
             return (
-              <SocialItem key={provider}>
+              <SocialItem
+                key={provider}
+                $inactive={loadingProviders !== '' && loadingProviders !== providerKey}
+                onClick={() => {
+                  signIn('github', { callbackUrl: '/pricing' })
+                  setLoadingProviders(providerKey)
+                }}
+              >
                 <IconBox>
                   <Icon />
                 </IconBox>
-                {providerKey}
+                {loadingProviders === providerKey ? (
+                  <LavaLampLoading size="small" left={-4} />
+                ) : (
+                  <>{providerKey}</>
+                )}
               </SocialItem>
             )
           })}
