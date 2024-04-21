@@ -31,6 +31,10 @@ export const Avatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
 export const UnloginIcon = styled(AccountSVG)`
   fill: ${theme('article.digest')};
   ${css.size(13)};
+  cursor: pointer;
+  &:hover {
+    fill: ${theme('article.title')};
+  }
 `
 export const NickName = styled.div`
   color: ${theme('article.digest')};

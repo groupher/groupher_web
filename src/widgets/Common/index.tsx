@@ -16,6 +16,18 @@ export const LinkAble = styled(NextLink)`
 `
 
 // @ts-ignore
+export const SlientLink = styled(NextLink)`
+  text-decoration: none;
+  color: ${theme('article.digest')};
+
+  &:hover {
+    text-decoration: underline;
+    color: ${theme('article.title')};
+    cursor: pointer;
+  }
+`
+
+// @ts-ignore
 export const Link = styled(NextLink)`
   color: ${theme('link')};
   text-decoration: none;
