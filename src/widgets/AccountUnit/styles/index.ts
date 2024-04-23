@@ -27,6 +27,7 @@ export const WithBgWrapper = styled(NormalWrapper)`
 export const Avatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
   ${css.size(17)};
   border-radius: ${({ $avatarLayout }) => ($avatarLayout === AVATAR_LAYOUT.SQUARE ? '5px' : '100%')};
+  cursor: pointer;
 `
 export const UnloginIcon = styled(AccountSVG)`
   fill: ${theme('article.digest')};

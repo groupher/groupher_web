@@ -1,6 +1,6 @@
 import { FC, memo, useState } from 'react'
 
-import { signIn, signOut } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
@@ -33,7 +33,8 @@ const Panel: FC<TProps> = ({ show, onClose }) => {
                 key={provider}
                 $inactive={loadingProviders !== '' && loadingProviders !== providerKey}
                 onClick={() => {
-                  signIn('github', { callbackUrl: '/pricing' })
+                  // signIn('github', { callbackUrl: '/home/post' })
+                  signIn('github')
                   setLoadingProviders(providerKey)
                 }}
               >

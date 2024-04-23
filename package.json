@@ -63,6 +63,7 @@
     "cross-env": "^7.0.2",
     "debug": "^4.3.4",
     "graphql": "^16.6.0",
+    "js-cookie": "^3.0.5",
     "markdown-to-jsx": "^7.2.1",
     "mastani-codehighlight": "0.0.7",
     "mobx": "^6.12.0",
