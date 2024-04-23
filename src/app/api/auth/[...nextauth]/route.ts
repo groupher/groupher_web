@@ -1,12 +1,4 @@
-import NextAuth from 'next-auth'
+// https://github.com/nextauthjs/next-auth-example/blob/main/app/api/auth/%5B...nextauth%5D/route.ts
 
-import authConfig from '../../../auth.config'
-
-/**
- * see the anwser here:
- * https://github.com/nextauthjs/next-auth/discussions/9251#discussioncomment-8399500
- */
-export const {
-  auth,
-  handlers: { GET, POST },
-} = NextAuth(authConfig)
+import { handlers } from '../../../auth.config'
+export const { GET, POST } = handlers

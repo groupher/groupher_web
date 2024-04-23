@@ -1,5 +1,6 @@
 import type { NextAuthConfig } from 'next-auth'
-import { cookies, headers } from 'next/headers'
+import { cookies /* headers */ } from 'next/headers'
+import NextAuth from 'next-auth'
 
 import OAUTH from '@/constant/oauth'
 
@@ -37,7 +38,7 @@ const oauthSignin = (params) => {
   return getClient().mutation(signinOauthQuery, params)
 }
 
-export default {
+export const config = {
   providers: [Github],
   // 配置回调函数
   callbacks: {
@@ -102,3 +103,5 @@ export default {
     // ...其他回调
   },
 } satisfies NextAuthConfig
+
+export const { handlers, auth, signIn, signOut } = NextAuth(config)

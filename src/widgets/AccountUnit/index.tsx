@@ -7,9 +7,9 @@
 import { FC, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { includes } from 'ramda'
-import { signOut } from 'next-auth/react'
 
 import type { TSpace } from '@/spec'
+import { signOut } from '@/oauth'
 import { buildLog } from '@/logger'
 import useAccount from '@/hooks/useAccount'
 import useAvatarLayout from '@/hooks/useAvatarLayout'
@@ -32,7 +32,6 @@ type TProps = {
 
 const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
   const user = useAccount()
-  console.log('## useAccount: ', user)
   const { isLogin, avatar, nickname } = user
   const avatarLayout = useAvatarLayout()
   const bannerLayout = useBannerLayout()
@@ -55,7 +54,7 @@ const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
           fallback={<ImgFallback size={18} user={user} />}
           onClick={() => {
             console.log('## sign out')
-            // signOut()
+            signOut()
           }}
         />
       ) : (

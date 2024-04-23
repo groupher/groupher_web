@@ -15,6 +15,8 @@ import type {
   TModerator,
   TSimpleUser,
 } from '@/spec'
+import OAUTH from '@/constant/oauth'
+
 import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 import BStore from '@/utils/bstore'
 
@@ -92,8 +94,9 @@ const AccountStore = T.model('AccountStore', {
       return sessionCleanup()
     },
     setSession(user: TSimpleUser, token: string): void {
-      BStore.set('user', JSON.stringify(user))
-      BStore.set('token', token)
+      BStore.set(OAUTH.USER_KEY, JSON.stringify(user))
+      console.log('## set token: ', token)
+      BStore.set(OAUTH.TOKEN_KEY, token)
 
       try {
         // @ts-ignore

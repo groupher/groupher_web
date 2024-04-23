@@ -1,10 +1,10 @@
 import { FC, memo, useState } from 'react'
 
-import { signIn } from 'next-auth/react'
+import { signIn } from '@/oauth'
+import { titleCase } from '@/fmt'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
-import { titleCase } from '@/utils/fmt'
 import Modal from '@/widgets/Modal'
 import { SlientLink } from '@/widgets/Common'
 
@@ -33,7 +33,6 @@ const Panel: FC<TProps> = ({ show, onClose }) => {
                 key={provider}
                 $inactive={loadingProviders !== '' && loadingProviders !== providerKey}
                 onClick={() => {
-                  // signIn('github', { callbackUrl: '/home/post' })
                   signIn('github')
                   setLoadingProviders(providerKey)
                 }}

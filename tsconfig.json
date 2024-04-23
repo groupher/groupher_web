@@ -41,6 +41,8 @@
       "@/logger/*": ["utils/logger/*"],
       "@/fmt": ["utils/fmt"],
       "@/fmt/*": ["utils/fmt/*"],
+      "@/oauth": ["utils/oauth"],
+      "@/oauth/*": ["utils/oauth/*"],
       "@/helper": ["utils/helper"],
       "@/helper/*": ["utils/helper/*"],
       "@/async": ["utils/async"],

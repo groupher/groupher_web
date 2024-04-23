@@ -15,11 +15,13 @@ const useAccount = (): TAccount => {
   useEffect(() => {
     const user = BStore.cookie.get(OAUTH.USER_KEY)
     const token = BStore.cookie.get(OAUTH.TOKEN_KEY)
-    const parsedUser = JSON.parse(user) as TSimpleUser
+    if (user) {
+      const parsedUser = JSON.parse(user) as TSimpleUser
 
-    if (!store.account.accountInfo.isLogin && parsedUser.login) {
-      console.log('## real setting')
-      store.account.setSession(parsedUser, token)
+      if (!store.account.accountInfo.isLogin && parsedUser.login) {
+        console.log('## real setting')
+        store.account.setSession(parsedUser, token)
+      }
     }
   }, [])
 
