@@ -23,11 +23,13 @@ export const DividerTitle = styled.div`
   font-size: 14px;
   font-weight: 500;
 `
+
+export const ShowBox = styled.div<{ $show: boolean }>`
+  opacity: ${({ $show }) => ($show ? 1 : 0)};
+  transition: ${({ $show }) => ($show ? 'opacity 0.25s ease-in' : 'opacity 0.1s ease-out')};
+`
 export const CommunityJoinersWrapper = styled.div<TActive>`
   ${css.row()};
-  visibility: ${({ $show }) => ($show ? 'visible' : 'hidden')};
-  margin-bottom: ${({ $show }) => ($show ? '15px' : 0)};
-  height: ${({ $show }) => ($show ? 'auto' : 0)};
   margin-bottom: 25px;
 `
 export const MoreNum = styled.div`
@@ -69,7 +71,9 @@ export const NoteWrapper = styled.div`
   border-bottom: 1px solid;
   border-bottom-color: #003b49;
 `
-export const TagsBarWrapper = styled.div`
+export const TagsBarWrapper = styled.div<{ $extend: boolean }>`
   margin-top: 25px;
   max-width: 186px;
+  min-height: ${({ $extend }) => ($extend ? '72vh' : '58vh')};
+  transition: all .25s;
 `

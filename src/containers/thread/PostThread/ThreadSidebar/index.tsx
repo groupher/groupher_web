@@ -26,6 +26,7 @@ import Sticky from '@/widgets/Sticky'
 import { SpaceGrow, Br, SexyDivider } from '@/widgets/Common'
 
 import PublishButton from '@/widgets/Buttons/PublishButton'
+import AccountBar from '@/widgets/AccountBar'
 import TagsBar from '@/containers/unit/TagsBar'
 
 import CommunityBrief from './CommunityBrief'
@@ -36,6 +37,7 @@ import {
   StickyWrapper,
   DividerTitle,
   CommunityJoinersWrapper,
+  ShowBox,
   JoinerAvatar,
   MoreNum,
   CommunityNoteWrapper,
@@ -63,24 +65,26 @@ const ThreadSidebar: FC = () => {
             </Fragment>
           )}
 
-          {showCommunityBadge && (
-            <Fragment>
-              <DividerTitle>团队成员</DividerTitle>
-              <Br top={14} />
-            </Fragment>
-          )}
+          <ShowBox $show={showCommunityBadge}>
+            {showCommunityBadge && (
+              <Fragment>
+                <DividerTitle>团队成员</DividerTitle>
+                <Br top={14} />
+              </Fragment>
+            )}
 
-          <CommunityJoinersWrapper $show={showCommunityBadge}>
-            {mockUsers(5).map((user) => (
-              <JoinerAvatar
-                key={user.id}
-                src={user.avatar}
-                $avatarLayout={avatarLayout}
-                fallback={<ImgFallback size={24} user={user} />}
-              />
-            ))}
-            <MoreNum onClick={() => listUsers('drawer')}>+2</MoreNum>
-          </CommunityJoinersWrapper>
+            <CommunityJoinersWrapper $show>
+              {mockUsers(5).map((user) => (
+                <JoinerAvatar
+                  key={user.id}
+                  src={user.avatar}
+                  $avatarLayout={avatarLayout}
+                  fallback={<ImgFallback size={24} user={user} />}
+                />
+              ))}
+              <MoreNum onClick={() => listUsers('drawer')}>+2</MoreNum>
+            </CommunityJoinersWrapper>
+          </ShowBox>
         </Fragment>
 
         <StickyWrapper>
@@ -99,10 +103,11 @@ const ThreadSidebar: FC = () => {
           <CommunityBrief show={!showCommunityBadge} />
           {!showCommunityBadge && <SexyDivider bottom={5} />}
 
-          <TagsBarWrapper>
+          <TagsBarWrapper $extend={!showCommunityBadge}>
             <TagsBar onSelect={() => refreshArticles()} />
           </TagsBarWrapper>
           <SpaceGrow />
+          <AccountBar />
         </StickyWrapper>
       </Sticky>
     </Wrapper>

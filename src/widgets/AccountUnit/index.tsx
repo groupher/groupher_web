@@ -18,7 +18,6 @@ import { BANNER_LAYOUT } from '@/constant/layout'
 
 import ImgFallback from '@/widgets/ImgFallback'
 import { SpaceGrow } from '@/widgets/Common'
-import ThemeSwitch from '@/widgets/ThemeSwitch'
 
 import Panel from './Panel'
 
@@ -44,9 +43,9 @@ const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
 
   return (
     <Wrapper {...restProps}>
-      {includes(bannerLayout, [BANNER_LAYOUT.HEADER, BANNER_LAYOUT.TABBER]) && (
+      {/* {includes(bannerLayout, [BANNER_LAYOUT.HEADER, BANNER_LAYOUT.TABBER]) && (
         <ThemeSwitch right={10} />
-      )}
+      )} */}
       {isLogin ? (
         <Avatar
           src={avatar}
@@ -66,12 +65,7 @@ const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
       )}
       {!isLogin && withName && <UnLoginText>未登入</UnLoginText>}
       {isLogin && withName && <NickName>{nickname}</NickName>}
-      {bannerLayout === BANNER_LAYOUT.SIDEBAR && (
-        <>
-          <SpaceGrow />
-          <ThemeSwitch />
-        </>
-      )}
+      {bannerLayout === BANNER_LAYOUT.SIDEBAR && <SpaceGrow />}
       <Panel
         show={showPanel}
         onClose={() => {

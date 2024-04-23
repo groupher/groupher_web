@@ -33,7 +33,7 @@ export const Button = styled.button`
 `
 
 export const SunIcon = styled(SunSVG)`
-  ${css.size(18)};
+  ${css.size(20)};
   fill: ${theme('article.digest')};
 
   ${Button}:hover & {
@@ -48,7 +48,7 @@ export const SunIcon = styled(SunSVG)`
 `
 
 export const MoonIcon = styled(MoonSVG)`
-  ${css.size(18)};
+  ${css.size(19)};
   fill: ${theme('article.digest')};
 
   ${Button}:hover & {
