@@ -6,7 +6,7 @@
  *
  */
 
-import { FC, Fragment } from 'react'
+import { FC, Fragment, lazy, Suspense } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import useAvatarLayout from '@/hooks/useAvatarLayout'
@@ -26,7 +26,6 @@ import Sticky from '@/widgets/Sticky'
 import { SpaceGrow, Br, SexyDivider } from '@/widgets/Common'
 
 import PublishButton from '@/widgets/Buttons/PublishButton'
-import AccountBar from '@/widgets/AccountBar'
 import TagsBar from '@/containers/unit/TagsBar'
 
 import CommunityBrief from './CommunityBrief'
@@ -46,6 +45,8 @@ import {
 
 const _log = buildLog('w:ClassicSidebar')
 
+const AccountBar = lazy(() => import('@/widgets/AccountBar'))
+
 const ThreadSidebar: FC = () => {
   const curCommunity = useViewingCommunity()
   const { inView: showCommunityBadge } = useCommunityDigestViewport()
@@ -55,7 +56,7 @@ const ThreadSidebar: FC = () => {
 
   return (
     <Wrapper $testid="thread-sidebar">
-      <Sticky offsetTop={50}>
+      <Sticky offsetTop={20}>
         <Fragment>
           {showCommunityBadge && bannerLayout !== BANNER_LAYOUT.TABBER && (
             <Fragment>
@@ -87,7 +88,7 @@ const ThreadSidebar: FC = () => {
           </ShowBox>
         </Fragment>
 
-        <StickyWrapper>
+        <StickyWrapper $extend={!showCommunityBadge}>
           <PublishWrapper $show={showCommunityBadge}>
             <PublishButton
               text="参与讨论"
@@ -103,11 +104,14 @@ const ThreadSidebar: FC = () => {
           <CommunityBrief show={!showCommunityBadge} />
           {!showCommunityBadge && <SexyDivider bottom={5} />}
 
-          <TagsBarWrapper $extend={!showCommunityBadge}>
+          <TagsBarWrapper>
             <TagsBar onSelect={() => refreshArticles()} />
           </TagsBarWrapper>
+
           <SpaceGrow />
-          <AccountBar />
+          <Suspense fallback={null}>
+            <AccountBar />
+          </Suspense>
         </StickyWrapper>
       </Sticky>
     </Wrapper>

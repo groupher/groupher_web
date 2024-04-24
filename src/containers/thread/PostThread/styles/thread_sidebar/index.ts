@@ -10,12 +10,14 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   min-width: 200px;
   max-width: 200px;
   padding-top: 15px;
+  
 
   ${css.media.tablet`display: none;`};
   ${css.media.mobile`display: none;`};
 `
-export const StickyWrapper = styled.div`
+export const StickyWrapper = styled.div<{ $extend: boolean }>`
   ${css.column()};
+  min-height: ${({ $extend }) => ($extend ? '88vh' : '65vh')};
 `
 export const DividerTitle = styled.div`
   ${css.row('align-center')};
@@ -71,9 +73,7 @@ export const NoteWrapper = styled.div`
   border-bottom: 1px solid;
   border-bottom-color: #003b49;
 `
-export const TagsBarWrapper = styled.div<{ $extend: boolean }>`
+export const TagsBarWrapper = styled.div`
   margin-top: 25px;
   max-width: 186px;
-  min-height: ${({ $extend }) => ($extend ? '72vh' : '58vh')};
-  transition: all .25s;
 `

@@ -13,7 +13,7 @@ import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
 import { scrollToHeader } from '@/dom'
 import ThemeSwitch from '@/widgets/ThemeSwitch'
 
-import { Wrapper, ICON, IconBox, TopBox } from './styles'
+import { Wrapper, ICON, IconBox, PeopleBox, TopBox } from './styles'
 
 const _log = buildLog('c:AccountBar:index')
 
@@ -35,9 +35,9 @@ const AccountBar: FC<TProps> = ({ testid = 'account-bar' }) => {
       <IconBox>
         <ICON.Notify />
       </IconBox>
-      <IconBox>
+      <PeopleBox>
         <ICON.People />
-      </IconBox>
+      </PeopleBox>
       <IconBox>
         <ICON.Share />
       </IconBox>

@@ -21,7 +21,15 @@ import { SpaceGrow } from '@/widgets/Common'
 
 import Panel from './Panel'
 
-import { NormalWrapper, WithBgWrapper, Avatar, UnloginIcon, NickName, UnLoginText } from './styles'
+import {
+  NormalWrapper,
+  WithBgWrapper,
+  HoverBox,
+  Avatar,
+  UnloginIcon,
+  NickName,
+  UnLoginText,
+} from './styles'
 
 const _log = buildLog('c:AccountUnit:index')
 
@@ -47,21 +55,26 @@ const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
         <ThemeSwitch right={10} />
       )} */}
       {isLogin ? (
-        <Avatar
-          src={avatar}
-          $avatarLayout={avatarLayout}
-          fallback={<ImgFallback size={18} user={user} />}
+        <HoverBox
           onClick={() => {
             console.log('## sign out')
             signOut()
           }}
-        />
+        >
+          <Avatar
+            src={avatar}
+            $avatarLayout={avatarLayout}
+            fallback={<ImgFallback size={18} user={user} />}
+          />
+        </HoverBox>
       ) : (
-        <UnloginIcon
+        <HoverBox
           onClick={() => {
             setShowPanel(true)
           }}
-        />
+        >
+          <UnloginIcon />
+        </HoverBox>
       )}
       {!isLogin && withName && <UnLoginText>未登入</UnLoginText>}
       {isLogin && withName && <NickName>{nickname}</NickName>}

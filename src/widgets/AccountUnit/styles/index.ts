@@ -23,11 +23,21 @@ export const WithBgWrapper = styled(NormalWrapper)`
     cursor: pointer;
   }
 `
+export const HoverBox = styled.div`
+  ${css.size(24)};
+  ${css.row('align-both')};
+  border-radius: 5px;
 
+  &:hover {
+    background: ${theme('hoverBg')};
+    border: 1px solid;
+    border-color: ${theme('divider')};
+    cursor: pointer;
+  }
+`
 export const Avatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
   ${css.size(17)};
   border-radius: ${({ $avatarLayout }) => ($avatarLayout === AVATAR_LAYOUT.SQUARE ? '5px' : '100%')};
-  cursor: pointer;
 `
 export const UnloginIcon = styled(AccountSVG)`
   fill: ${theme('article.digest')};
