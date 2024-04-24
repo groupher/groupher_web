@@ -24,16 +24,16 @@ const AccountBar: FC = () => {
   const ref = useRef(null)
   const { inView: badgeInView } = useCommunityDigestViewport()
   const [expand, setExpand] = useState(false)
-  const [menu, setMenu] = useState(MENU.DEFAULT)
+  const [menu, setMenu] = useState(MENU.DEFAULT.key)
 
   useOutsideClick(ref, () => {
     setExpand(false)
-    setMenu(MENU.DEFAULT)
+    setMenu(MENU.DEFAULT.key)
   })
 
   return (
-    <Wrapper ref={ref} $expand={expand} $withTop={!badgeInView}>
-      {menu === MENU.MORE && <MorePanel />}
+    <Wrapper ref={ref} $expand={expand} $withTop={!badgeInView} $menuHeight={MENU[menu].height}>
+      {menu === MENU.MORE.key && <MorePanel />}
 
       <ButtonBar>
         <TopBox $show={!badgeInView} onClick={() => scrollToHeader()}>
@@ -45,13 +45,13 @@ const AccountBar: FC = () => {
         </IconBox>
 
         <PeopleBox
-          $active={menu === MENU.PEOPLE}
+          $active={menu === MENU.PEOPLE.key}
           onClick={() => {
-            setMenu(MENU.PEOPLE)
+            setMenu(MENU.PEOPLE.key)
             setExpand(true)
           }}
         >
-          <ICON.People $active={menu === MENU.PEOPLE} />
+          <ICON.People $active={menu === MENU.PEOPLE.key} />
         </PeopleBox>
         <IconBox>
           <ICON.Share />
@@ -60,9 +60,9 @@ const AccountBar: FC = () => {
           <ThemeSwitch />
         </IconBox>
         <IconBox
-          $active={menu === MENU.MORE}
+          $active={menu === MENU.MORE.key}
           onClick={() => {
-            setMenu(MENU.MORE)
+            setMenu(MENU.MORE.key)
             setExpand(true)
           }}
         >

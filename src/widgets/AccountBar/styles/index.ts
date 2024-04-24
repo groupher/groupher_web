@@ -11,11 +11,12 @@ import ShareSVG from '@/icons/ShareArrow'
 type TWrapper = {
   $expand: boolean
   $withTop: boolean
+  $menuHeight: string
 }
 
 export const Wrapper = styled.div<TWrapper>`
   position: relative;
-  height: ${({ $expand }) => ($expand ? '240px' : '40px')};
+  height: ${({ $expand, $menuHeight }) => ($expand ? $menuHeight : '40px')};
   width: ${({ $expand, $withTop }) => {
     if ($withTop && $expand) return '208px'
 
@@ -28,7 +29,6 @@ export const Wrapper = styled.div<TWrapper>`
 
     return 0
   }};
-
   box-shadow: ${({ $expand }) => ($expand ? theme('shadow.md') : 'none')};
   border: 1px solid;
   border-color: ${theme('divider')};
@@ -40,7 +40,7 @@ export const Wrapper = styled.div<TWrapper>`
     box-shadow: ${theme('shadow.md')};
   }
 
-  transition: all .2s;
+  transition: all .2s cubic-bezier(0.4, 0.01, 0.3, 1.2);
 `
 export const ButtonBar = styled.div`
   ${css.row('align-both')};
