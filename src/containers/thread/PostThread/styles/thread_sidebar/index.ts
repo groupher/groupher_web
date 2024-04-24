@@ -17,7 +17,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
 `
 export const StickyWrapper = styled.div<{ $extend: boolean }>`
   ${css.column()};
-  min-height: ${({ $extend }) => ($extend ? '88vh' : '65vh')};
+  min-height: ${({ $extend }) => ($extend ? '90vh' : '65vh')};
 `
 export const DividerTitle = styled.div`
   ${css.row('align-center')};

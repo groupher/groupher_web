@@ -56,7 +56,7 @@ const ThreadSidebar: FC = () => {
 
   return (
     <Wrapper $testid="thread-sidebar">
-      <Sticky offsetTop={20}>
+      <Sticky offsetTop={0}>
         <Fragment>
           {showCommunityBadge && bannerLayout !== BANNER_LAYOUT.TABBER && (
             <Fragment>

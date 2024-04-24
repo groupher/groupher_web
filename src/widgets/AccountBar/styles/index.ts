@@ -12,7 +12,6 @@ export const Wrapper = styled.div`
   width: 200px;
   gap: 0 5px;
   border: 1px solid;
-  border-left: 2px solid;
   border-color: ${theme('divider')};
   border-radius: 15px;
 
