@@ -9,7 +9,7 @@ export const MENU = {
   },
   NOTIFY: {
     key: 'NOTIFY',
-    height: '80px',
+    height: '120px',
   },
   SHARE: {
     key: 'SHARE',

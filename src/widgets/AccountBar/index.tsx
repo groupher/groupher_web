@@ -15,6 +15,8 @@ import { scrollToHeader } from '@/dom'
 import ThemeSwitch from '@/widgets/ThemeSwitch'
 
 import MorePanel from './MorePanel'
+import NotifyPanel from './NotifyPanel'
+
 import { MENU } from './constant'
 import { Wrapper, ButtonBar, ICON, IconBox, PeopleBox, TopBox } from './styles'
 
@@ -34,13 +36,20 @@ const AccountBar: FC = () => {
   return (
     <Wrapper ref={ref} $expand={expand} $withTop={!badgeInView} $menuHeight={MENU[menu].height}>
       {menu === MENU.MORE.key && <MorePanel />}
+      {menu === MENU.NOTIFY.key && <NotifyPanel />}
 
       <ButtonBar>
         <TopBox $show={!badgeInView} onClick={() => scrollToHeader()}>
           <ICON.ArrowTop />
         </TopBox>
 
-        <IconBox>
+        <IconBox
+          $active={menu === MENU.NOTIFY.key}
+          onClick={() => {
+            setMenu(MENU.NOTIFY.key)
+            setExpand(true)
+          }}
+        >
           <ICON.Notify />
         </IconBox>
 

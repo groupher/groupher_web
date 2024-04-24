@@ -18,14 +18,14 @@ export const Wrapper = styled.div<TWrapper>`
   position: relative;
   height: ${({ $expand, $menuHeight }) => ($expand ? $menuHeight : '40px')};
   width: ${({ $expand, $withTop }) => {
-    if ($withTop && $expand) return '208px'
+    if ($withTop && $expand) return '200px'
 
     if ($withTop) return '200px'
 
     return '185px'
   }};
   margin-left: ${({ $expand, $withTop }) => {
-    if ($expand && $withTop) return '-15px'
+    if ($expand && $withTop) return '-10px'
 
     return 0
   }};
