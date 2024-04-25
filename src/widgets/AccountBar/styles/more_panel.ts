@@ -1,4 +1,4 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme, animate } from '@/css'
 
 import type { TActive } from '@/spec'
 
@@ -7,6 +7,7 @@ import SettingSVG from '@/icons/Setting'
 
 export const Wrapper = styled.div`
   padding: 10px 8px;
+  animation: ${animate.fadeInBounce} 0.4s linear;
 `
 export const MenuBar = styled.div<{ $withTop: boolean }>`
   ${css.row('align-center')};
@@ -16,7 +17,7 @@ export const MenuBar = styled.div<{ $withTop: boolean }>`
   height: 38px;
   width: 100%;
   padding: 2px 15px;
-  padding: ${({ $withTop }) => ($withTop ? '2px 8px' : '2px 18px')};
+  padding: ${({ $withTop }) => ($withTop ? '2px 5px' : '2px 15px')};
   border: 1px solid;
   border-color: transparent;
   border-radius: 6px;

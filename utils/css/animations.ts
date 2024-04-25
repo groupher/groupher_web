@@ -87,6 +87,17 @@ const fadeInUp = keyframes`
   }
 `
 
+const fadeInBounce = keyframes`
+  from {
+  opacity: 0;
+    transform: translate3d(0, -10%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+`
 const fadeInDown = keyframes`
   from {
   opacity: 0;
@@ -169,6 +180,7 @@ const animate = {
   pulse,
   fadeInUp,
   fadeInDown,
+  fadeInBounce,
   shake,
   zoomIn,
   rotate360,

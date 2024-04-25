@@ -34,7 +34,7 @@ export const Wrapper = styled.div<TWrapper>`
   border-color: ${theme('divider')};
   border-radius: 15px;
   background: ${theme('popover.bg')};
-  overflow: hidden;
+  /* overflow: hidden; */
 
   &:hover {
     box-shadow: ${theme('shadow.md')};
@@ -44,15 +44,19 @@ export const Wrapper = styled.div<TWrapper>`
 `
 export const ButtonBar = styled.div`
   ${css.row('align-both')};
-  height: 40px;
-  width: calc(100% + 4px);
+  height: 36px;
+  width: calc(100% - 2px);
   position: absolute;
-  bottom: -2px;
-  left: 0;
+  bottom: 1px;
+  left: 1px;
   gap: 0 5px;
   background: ${theme('htmlBg')};
+  border-radius: 10px;
 `
-
+export const TipText = styled.div`
+  color: ${theme('article.digest')};
+  padding: 1px 4px;
+`
 export const IconBox = styled.div<TActive>`
   ${css.size(26)};
   ${css.row('align-both')};

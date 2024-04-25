@@ -1,3 +1,5 @@
+import type { TTooltipPlacement } from '@/spec'
+
 export const MENU = {
   DEFAULT: {
     key: 'DEFAULT',
@@ -21,4 +23,8 @@ export const MENU = {
   },
 }
 
-export const holder = 1
+export const TIP_OPTIONS = {
+  placement: 'top' as TTooltipPlacement,
+  delay: 500,
+  offset: [1, 8] as [number, number],
+}
