@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite'
 
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
 import HomeLogo from '@/widgets/HomeLogo'
+import { SpaceGrow } from '@/widgets/Common'
 
 import { Wrapper, MenuBar, ICON } from './styles/more_panel'
 
@@ -18,6 +19,8 @@ const MorePanel: FC = () => {
       <MenuBar $withTop={!badgeInView}>
         <ICON.Dashboard />
         控制台
+        <SpaceGrow />
+        <ICON.Link />
       </MenuBar>
       <MenuBar $withTop={!badgeInView}>
         <HomeLogo size={18} left={-2} />

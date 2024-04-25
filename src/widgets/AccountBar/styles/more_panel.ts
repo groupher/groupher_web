@@ -4,6 +4,7 @@ import type { TActive } from '@/spec'
 
 import ReportSVG from '@/icons/Report'
 import SettingSVG from '@/icons/Setting'
+import LinkSVG from '@/icons/ArrowUpRight'
 
 export const Wrapper = styled.div`
   padding: 10px 8px;
@@ -16,8 +17,8 @@ export const MenuBar = styled.div<{ $withTop: boolean }>`
   font-size: 14px;
   height: 38px;
   width: 100%;
-  padding: 2px 15px;
   padding: ${({ $withTop }) => ($withTop ? '2px 5px' : '2px 15px')};
+  padding-right: 8px;
   border: 1px solid;
   border-color: transparent;
   border-radius: 6px;
@@ -67,5 +68,14 @@ const commonIcon = (comp) => {
 
 export const ICON = {
   Report: commonIcon(ReportSVG),
-  Dashboard: commonIcon(SettingSVG),
+  Dashboard: styled(commonIcon(SettingSVG))`
+    ${css.size(18)};
+    margin-left: -2px;
+  `,
+  Link: styled(commonIcon(LinkSVG))`
+    opacity: 0.5;
+    ${MenuBar}:hover & {
+      opacity: 0.8;
+    }
+  `,
 }
