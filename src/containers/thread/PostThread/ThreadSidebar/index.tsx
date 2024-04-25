@@ -15,6 +15,7 @@ import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useActiveTag from '@/hooks/useActiveTag'
 import useBannerLayout from '@/hooks/useBannerLayout'
 
+import { Link } from '@/widgets/Common'
 import { buildLog } from '@/logger'
 import { refreshArticles, callGEditor, callSyncSelector, listUsers } from '@/signal'
 import { toJS } from '@/mobx'
@@ -40,6 +41,8 @@ import {
   JoinerAvatar,
   MoreNum,
   CommunityNoteWrapper,
+  HomeLinkWrapper,
+  LinkIcon,
   PublishWrapper,
 } from '../styles/thread_sidebar'
 
@@ -63,6 +66,10 @@ const ThreadSidebar: FC = () => {
               <DividerTitle>简介</DividerTitle>
               <Br top={10} />
               <CommunityNoteWrapper>{curCommunity.desc}</CommunityNoteWrapper>
+              <HomeLinkWrapper>
+                <LinkIcon />
+                <Link href="https://groupher.com">groupher.com</Link>
+              </HomeLinkWrapper>
             </Fragment>
           )}
 

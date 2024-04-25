@@ -3,6 +3,7 @@ import { AVATAR_LAYOUT } from '@/constant/layout'
 
 import styled, { css, theme } from '@/css'
 import Img from '@/Img'
+import LinkSVG from '@/icons/Link'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
@@ -17,7 +18,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
 `
 export const StickyWrapper = styled.div<{ $extend: boolean }>`
   ${css.column()};
-  min-height: ${({ $extend }) => ($extend ? '90vh' : '65vh')};
+  min-height: ${({ $extend }) => ($extend ? '90vh' : '63vh')};
 `
 export const DividerTitle = styled.div`
   ${css.row('align-center')};
@@ -58,8 +59,21 @@ export const CommunityNoteWrapper = styled.div`
   ${css.lineClamp(2)}
   font-size: 13px;
   color: ${theme('article.digest')};
-  margin-bottom: 18px;
+  margin-bottom: 10px;
   line-height: 1.6;
+`
+export const HomeLinkWrapper = styled.div`
+  ${css.row('align-center')};
+  ${css.cutRest('200px')};
+  font-size: 13px;
+  margin-bottom: 22px;
+  font-weight: 600;
+`
+export const LinkIcon = styled(LinkSVG)`
+  ${css.size(20)};
+  margin-left: -2px;
+  margin-right: 4px;
+  fill: ${theme('article.digest')};
 `
 export const PublishWrapper = styled.div<TActive>`
   display: ${({ $show }) => ($show ? 'block' : 'none')};

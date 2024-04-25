@@ -3,7 +3,7 @@
 /*
  */
 
-import { FC, useState, useRef } from 'react'
+import { FC, useState, useRef, useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { buildLog } from '@/logger'
@@ -27,16 +27,43 @@ const _log = buildLog('c:AccountBar:index')
 const AccountBar: FC = () => {
   const ref = useRef(null)
   const { inView: badgeInView } = useCommunityDigestViewport()
+
   const [expand, setExpand] = useState(false)
   const [menu, setMenu] = useState(MENU.DEFAULT.key)
+  /**
+   * this forceHidden is for avoid tooltip been cut from the Wrapper settings
+   * also make sure the pop animateion as not shadows from the bottom
+   */
+  const [forceHidden, setForceHidden] = useState(false)
 
   useOutsideClick(ref, () => {
     setExpand(false)
     setMenu(MENU.DEFAULT.key)
   })
 
+  const handleOpenMenu = useCallback((menuKey: string) => {
+    setForceHidden(true)
+    setMenu(menuKey)
+
+    setTimeout(() => {
+      setExpand(true)
+    }, 100)
+
+    setTimeout(() => {
+      setForceHidden(false)
+    }, 200)
+  }, [])
+
+  console.log('## forceHidden: ', forceHidden)
+
   return (
-    <Wrapper ref={ref} $expand={expand} $withTop={!badgeInView} $menuHeight={MENU[menu].height}>
+    <Wrapper
+      ref={ref}
+      $expand={expand}
+      $withTop={!badgeInView}
+      $menuHeight={MENU[menu].height}
+      $forceHidden={forceHidden}
+    >
       {menu === MENU.MORE.key && <MorePanel />}
       {menu === MENU.NOTIFY.key && <NotifyPanel />}
 
@@ -62,10 +89,7 @@ const AccountBar: FC = () => {
         <Tooltip content={<TipText>活跃用户</TipText>} {...TIP_OPTIONS}>
           <PeopleBox
             $active={menu === MENU.PEOPLE.key}
-            onClick={() => {
-              setMenu(MENU.PEOPLE.key)
-              setExpand(true)
-            }}
+            onClick={() => handleOpenMenu(MENU.PEOPLE.key)}
           >
             <ICON.People $active={menu === MENU.PEOPLE.key} />
           </PeopleBox>
@@ -81,13 +105,7 @@ const AccountBar: FC = () => {
           </IconBox>
         </Tooltip>
         <Tooltip content={<TipText>更多</TipText>} {...TIP_OPTIONS}>
-          <IconBox
-            $active={menu === MENU.MORE.key}
-            onClick={() => {
-              setMenu(MENU.MORE.key)
-              setExpand(true)
-            }}
-          >
+          <IconBox $active={menu === MENU.MORE.key} onClick={() => handleOpenMenu(MENU.MORE.key)}>
             <ICON.More />
           </IconBox>
         </Tooltip>

@@ -12,6 +12,7 @@ type TWrapper = {
   $expand: boolean
   $withTop: boolean
   $menuHeight: string
+  $forceHidden: boolean
 }
 
 export const Wrapper = styled.div<TWrapper>`
@@ -34,7 +35,7 @@ export const Wrapper = styled.div<TWrapper>`
   border-color: ${theme('divider')};
   border-radius: 15px;
   background: ${theme('popover.bg')};
-  /* overflow: hidden; */
+  overflow: ${({ $forceHidden }) => ($forceHidden ? 'hidden' : 'visible')};
 
   &:hover {
     box-shadow: ${theme('shadow.md')};

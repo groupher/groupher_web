@@ -89,7 +89,7 @@ const fadeInUp = keyframes`
 
 const fadeInBounce = keyframes`
   from {
-  opacity: 0;
+    opacity: 0;
     transform: translate3d(0, -10%, 0);
   }
 
@@ -100,7 +100,7 @@ const fadeInBounce = keyframes`
 `
 const fadeInDown = keyframes`
   from {
-  opacity: 0;
+    opacity: 0;
     transform: translate3d(0, -40%, 0);
   }
 
