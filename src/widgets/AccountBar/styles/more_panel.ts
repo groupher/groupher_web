@@ -17,7 +17,7 @@ export const MenuBar = styled.div<{ $withTop: boolean }>`
   font-size: 14px;
   height: 38px;
   width: 100%;
-  padding: ${({ $withTop }) => ($withTop ? '2px 5px' : '2px 15px')};
+  padding: ${({ $withTop }) => ($withTop ? '2px 5px' : '2px 16px')};
   padding-right: 8px;
   border: 1px solid;
   border-color: transparent;

@@ -70,7 +70,7 @@ const AccountBar: FC = () => {
             <ICON.People $active={menu === MENU.PEOPLE.key} />
           </PeopleBox>
         </Tooltip>
-        <Tooltip content={<TipText>社交媒体</TipText>} {...TIP_OPTIONS}>
+        <Tooltip content={<TipText>关注我们</TipText>} {...TIP_OPTIONS}>
           <IconBox>
             <ICON.Share />
           </IconBox>

@@ -6,7 +6,7 @@ import ArrowTopSVG from '@/icons/Arrow2Top'
 import NotifySVG from '@/icons/Notify'
 import PeopleSVG from '@/icons/HeartPulse'
 import MoreSVG from '@/icons/menu/MoreL'
-import ShareSVG from '@/icons/ShareArrow'
+import ShareSVG from '@/icons/RSS'
 
 type TWrapper = {
   $expand: boolean

@@ -3,6 +3,8 @@ import Link from 'next/link'
 import type { THeaderLayout, TMetric } from '@/spec'
 import styled, { css, theme } from '@/css'
 
+import WatchSVG from '@/icons/Watch'
+
 import { BaseBanner } from '..'
 import { HEADER_LAYOUT } from '@/constant/layout'
 
@@ -96,4 +98,15 @@ export const GithubItem = styled(Link)`
   }
 
   transition: all 0.2s;
+`
+
+export const WatchIcon = styled(WatchSVG)`
+  ${css.size(18)};
+  fill: ${theme('article.digest')};
+  margin-right: 8px;
+  cursor: pointer;
+
+  &:hover {
+    fill: ${theme('article.title')};
+  }
 `
