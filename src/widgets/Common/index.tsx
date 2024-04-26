@@ -28,9 +28,10 @@ export const SlientLink = styled(NextLink)`
 `
 
 // @ts-ignore
-export const Link = styled(NextLink)`
+export const Link = styled(NextLink)<{ maxLength?: string }>`
   color: ${theme('link')};
   text-decoration: none;
+  ${({ maxLength }) => css.cutRest(maxLength || '200px')};
 
   &:hover {
     color: ${theme('link')};

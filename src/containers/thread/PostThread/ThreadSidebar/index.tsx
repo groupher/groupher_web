@@ -15,7 +15,7 @@ import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useActiveTag from '@/hooks/useActiveTag'
 import useBannerLayout from '@/hooks/useBannerLayout'
 
-import { Link } from '@/widgets/Common'
+import { Link, SpaceGrow, Br, SexyDivider } from '@/widgets/Common'
 import { buildLog } from '@/logger'
 import { refreshArticles, callGEditor, callSyncSelector, listUsers } from '@/signal'
 import { toJS } from '@/mobx'
@@ -24,7 +24,6 @@ import { BANNER_LAYOUT } from '@/constant/layout'
 
 import ImgFallback from '@/widgets/ImgFallback'
 import Sticky from '@/widgets/Sticky'
-import { SpaceGrow, Br, SexyDivider } from '@/widgets/Common'
 
 import PublishButton from '@/widgets/Buttons/PublishButton'
 import TagsBar from '@/containers/unit/TagsBar'
@@ -43,12 +42,14 @@ import {
   CommunityNoteWrapper,
   HomeLinkWrapper,
   LinkIcon,
+  DownloadBox,
+  DownloadIcon,
   PublishWrapper,
 } from '../styles/thread_sidebar'
 
 const _log = buildLog('w:ClassicSidebar')
 
-const AccountBar = lazy(() => import('@/widgets/AccountBar'))
+const UniBar = lazy(() => import('@/widgets/UniBar'))
 
 const ThreadSidebar: FC = () => {
   const curCommunity = useViewingCommunity()
@@ -68,7 +69,14 @@ const ThreadSidebar: FC = () => {
               <CommunityNoteWrapper>{curCommunity.desc}</CommunityNoteWrapper>
               <HomeLinkWrapper>
                 <LinkIcon />
-                <Link href="https://groupher.com">groupher.com</Link>
+                <Link href="https://groupher.com" maxLength="150px">
+                  groupher.com
+                </Link>
+                <SpaceGrow />
+
+                <DownloadBox>
+                  <DownloadIcon />
+                </DownloadBox>
               </HomeLinkWrapper>
             </Fragment>
           )}
@@ -117,7 +125,7 @@ const ThreadSidebar: FC = () => {
 
           <SpaceGrow />
           <Suspense fallback={null}>
-            <AccountBar />
+            <UniBar />
           </Suspense>
         </StickyWrapper>
       </Sticky>
