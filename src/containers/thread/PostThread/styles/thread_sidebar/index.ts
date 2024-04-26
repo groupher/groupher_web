@@ -4,7 +4,6 @@ import { AVATAR_LAYOUT } from '@/constant/layout'
 import styled, { css, theme } from '@/css'
 import Img from '@/Img'
 import LinkSVG from '@/icons/Link'
-import DownloadSVG from '@/icons/DownloadCircle'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
@@ -75,28 +74,6 @@ export const LinkIcon = styled(LinkSVG)`
   margin-right: 3px;
   fill: ${theme('article.digest')};
 `
-export const DownloadBox = styled.div`
-  ${css.size(22)};
-  ${css.row('align-both')};
-  border-radius: 3px;
-
-  &:hover {
-    background: ${theme('hoverBg')};
-    cursor: pointer;
-  }
-`
-export const DownloadIcon = styled(DownloadSVG)`
-  ${css.size(15)};
-  fill: ${theme('article.digest')};
-  margin-right: 1px;
-
-  ${DownloadBox}:hover & {
-    fill: ${theme('article.title')};
-    opacity: 1;
-    cursor: pointer;
-  }
-`
-
 export const PublishWrapper = styled.div<TActive>`
   display: ${({ $show }) => ($show ? 'block' : 'none')};
   width: 100%;

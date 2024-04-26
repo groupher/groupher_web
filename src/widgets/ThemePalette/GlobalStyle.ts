@@ -19,6 +19,11 @@ const GlobalStyle = createGlobalStyle<TColor>`
     overflow-x: hidden;
   }
 
+  svg {
+   /* to aoid pointer status like hover conflict */
+    pointer-events: none;
+  }
+
   *::-moz-selection {
     background-color: ${({ $color }) => rainbowLight($color)} !important;
     color: ${({ $color }) => rainbow($color)} !important;

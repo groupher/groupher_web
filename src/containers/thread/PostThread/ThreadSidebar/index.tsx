@@ -24,6 +24,7 @@ import { BANNER_LAYOUT } from '@/constant/layout'
 
 import ImgFallback from '@/widgets/ImgFallback'
 import Sticky from '@/widgets/Sticky'
+import GetMe from '@/widgets/GetMe'
 
 import PublishButton from '@/widgets/Buttons/PublishButton'
 import TagsBar from '@/containers/unit/TagsBar'
@@ -42,8 +43,6 @@ import {
   CommunityNoteWrapper,
   HomeLinkWrapper,
   LinkIcon,
-  DownloadBox,
-  DownloadIcon,
   PublishWrapper,
 } from '../styles/thread_sidebar'
 
@@ -74,9 +73,7 @@ const ThreadSidebar: FC = () => {
                 </Link>
                 <SpaceGrow />
 
-                <DownloadBox>
-                  <DownloadIcon />
-                </DownloadBox>
+                <GetMe />
               </HomeLinkWrapper>
             </Fragment>
           )}
