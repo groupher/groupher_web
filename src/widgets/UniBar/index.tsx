@@ -46,13 +46,8 @@ const AccountBar: FC = () => {
     setForceHidden(true)
     setMenu(menuKey)
 
-    setTimeout(() => {
-      setExpand(true)
-    }, 100)
-
-    setTimeout(() => {
-      setForceHidden(false)
-    }, 200)
+    setTimeout(() => setExpand(true))
+    setTimeout(() => setForceHidden(false), 180)
   }, [])
 
   return (
