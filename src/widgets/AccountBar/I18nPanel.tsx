@@ -29,7 +29,7 @@ const I18nPanel: FC = () => {
       </MenuBar>
 
       <MenuBar $withTop={!badgeInView}>
-        <ICON.Taowa />
+        <ICON.Russia />
         Русский
       </MenuBar>
 

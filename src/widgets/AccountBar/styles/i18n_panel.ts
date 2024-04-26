@@ -7,8 +7,8 @@ import CheckSVG from '@/icons/Check'
 import PandaSVG from '@/icons/Panda'
 import HuaSVG from '@/icons/Huaren'
 import GuardSVG from '@/icons/EnGuard'
-import TaowaSVG from '@/icons/Taowa'
-import SpainSVG from '@/icons/SpainCow'
+import RussiaSVG from '@/icons/Russia'
+import SpainSVG from '@/icons/Spain'
 
 export const Wrapper = styled.div`
   padding: 10px 8px;
@@ -76,7 +76,7 @@ export const ICON = {
   Guard: styled(commonIcon(GuardSVG))`
     ${css.size(19)};
   `,
-  Taowa: styled(commonIcon(TaowaSVG))`
+  Russia: styled(commonIcon(RussiaSVG))`
     ${css.size(19)};
   `,
   Hua: styled(commonIcon(HuaSVG))`
@@ -87,7 +87,9 @@ export const ICON = {
     margin-top: 4px;
   `,
   Spain: styled(commonIcon(SpainSVG))`
-    ${css.size(20)};
-    margin-top: -1px;
+    ${css.size(16)};
+    margin-top: 1px;
+    margin-left: 1px;
+    margin-right: 2px;
   `,
 }
