@@ -16,6 +16,7 @@ import { scrollToHeader } from '@/dom'
 import ThemeSwitch from '@/widgets/ThemeSwitch'
 import Tooltip from '@/widgets/Tooltip'
 
+import I18nPanel from './I18nPanel'
 import MorePanel from './MorePanel'
 import NotifyPanel from './NotifyPanel'
 
@@ -54,8 +55,6 @@ const AccountBar: FC = () => {
     }, 200)
   }, [])
 
-  console.log('## forceHidden: ', forceHidden)
-
   return (
     <Wrapper
       ref={ref}
@@ -64,6 +63,7 @@ const AccountBar: FC = () => {
       $menuHeight={MENU[menu].height}
       $forceHidden={forceHidden}
     >
+      {menu === MENU.I18N.key && <I18nPanel />}
       {menu === MENU.MORE.key && <MorePanel />}
       {menu === MENU.NOTIFY.key && <NotifyPanel />}
 
@@ -94,9 +94,9 @@ const AccountBar: FC = () => {
             <ICON.People $active={menu === MENU.PEOPLE.key} />
           </PeopleBox>
         </Tooltip>
-        <Tooltip content={<TipText>关注我们</TipText>} {...TIP_OPTIONS}>
-          <IconBox>
-            <ICON.Share />
+        <Tooltip content={<TipText>界面语言</TipText>} {...TIP_OPTIONS}>
+          <IconBox onClick={() => handleOpenMenu(MENU.I18N.key)}>
+            <ICON.I18n />
           </IconBox>
         </Tooltip>
         <Tooltip content={<TipText>主题</TipText>} {...TIP_OPTIONS}>

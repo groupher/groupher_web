@@ -9,6 +9,10 @@ export const MENU = {
     key: 'PEOPLE',
     height: '240px',
   },
+  I18N: {
+    key: 'I18N',
+    height: '260px',
+  },
   NOTIFY: {
     key: 'NOTIFY',
     height: '120px',
@@ -19,7 +23,7 @@ export const MENU = {
   },
   MORE: {
     key: 'MORE',
-    height: '220px',
+    height: '192px',
   },
 }
 

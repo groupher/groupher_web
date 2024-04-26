@@ -5,8 +5,8 @@ import type { TActive } from '@/spec'
 import ArrowTopSVG from '@/icons/Arrow2Top'
 import NotifySVG from '@/icons/Notify'
 import PeopleSVG from '@/icons/HeartPulse'
+import I18nSVG from '@/icons/I18n'
 import MoreSVG from '@/icons/menu/MoreL'
-import ShareSVG from '@/icons/RSS'
 
 type TWrapper = {
   $expand: boolean
@@ -103,6 +103,8 @@ export const ICON = {
       fill: ${theme('rainbow.red')};
     }
   `,
-  Share: commonIcon(ShareSVG),
+  I18n: styled(commonIcon(I18nSVG))`
+    ${css.size(18)};
+  `,
   More: commonIcon(MoreSVG),
 }

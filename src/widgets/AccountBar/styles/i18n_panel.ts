@@ -2,25 +2,32 @@ import styled, { css, theme, animate } from '@/css'
 
 import type { TActive } from '@/spec'
 
-import ReportSVG from '@/icons/Report'
-import SettingSVG from '@/icons/Setting'
-import LinkSVG from '@/icons/ArrowUpRight'
+import CheckSVG from '@/icons/Check'
+
+import PandaSVG from '@/icons/Panda'
+import HuaSVG from '@/icons/Huaren'
+import GuardSVG from '@/icons/EnGuard'
+import TaowaSVG from '@/icons/Taowa'
+import SpainSVG from '@/icons/SpainCow'
 
 export const Wrapper = styled.div`
   padding: 10px 8px;
   animation: ${animate.fadeInBounce} 0.4s linear;
 `
-export const MenuBar = styled.div<{ $withTop: boolean }>`
+type TMenuBar = { $withTop: boolean } & TActive
+export const MenuBar = styled.div<TMenuBar>`
   ${css.row('align-center')};
-  gap: 0 8px;
+  gap: 0 10px;
   color: ${theme('article.digest')};
   font-size: 14px;
   height: 38px;
   width: 100%;
-  padding: ${({ $withTop }) => ($withTop ? '2px 5px' : '2px 16px')};
+  padding: ${({ $withTop }) => ($withTop ? '2px 5px' : '2px 14px')};
   padding-right: 8px;
+  background: ${({ $active }) => ($active ? theme('menuHoverBg') : '')};
+  box-shadow: ${({ $active }) => ($active ? theme('shadow.xl') : '')};
   border: 1px solid;
-  border-color: transparent;
+  border-color: ${({ $active }) => ($active ? theme('divider') : 'transparent')};
   border-radius: 6px;
 
   &:hover {
@@ -52,30 +59,35 @@ export const PeopleBox = styled(IconBox)<TActive>`
 `
 export const TopBox = styled(IconBox)<{ $show: boolean }>`
   max-width: ${({ $show }) => ($show ? '26px' : '0')};
-  transition: all .2s;
+  transition: all 0.2s;
 `
 const commonIcon = (comp) => {
   return styled(comp)`
-    ${css.size(15)};
-    fill: ${theme('article.digest')};
+    ${css.size(18)};
     cursor: pointer;
-
-    &:hover {
-      fill: ${theme('article.title')};
-    }
   `
 }
 
 export const ICON = {
-  Report: commonIcon(ReportSVG),
-  Dashboard: styled(commonIcon(SettingSVG))`
-    ${css.size(18)};
-    margin-left: -2px;
+  Check: styled(commonIcon(CheckSVG))`
+    ${css.size(16)};
+    fill: ${theme('article.digest')};
   `,
-  Link: styled(commonIcon(LinkSVG))`
-    opacity: 0;
-    ${MenuBar}:hover & {
-      opacity: 0.8;
-    }
+  Guard: styled(commonIcon(GuardSVG))`
+    ${css.size(19)};
+  `,
+  Taowa: styled(commonIcon(TaowaSVG))`
+    ${css.size(19)};
+  `,
+  Hua: styled(commonIcon(HuaSVG))`
+    fill: ${theme('article.digest')};
+    margin-top: 1px;
+  `,
+  Panda: styled(commonIcon(PandaSVG))`
+    margin-top: 4px;
+  `,
+  Spain: styled(commonIcon(SpainSVG))`
+    ${css.size(20)};
+    margin-top: -1px;
   `,
 }
