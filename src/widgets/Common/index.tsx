@@ -9,7 +9,7 @@ import styled, { css, theme, rainbow } from '@/css'
 export const LinkAble = styled(NextLink)`
   text-decoration: none;
 
-  &:hover {
+  &:hover 
     text-decoration: underline;
     cursor: pointer;
   }

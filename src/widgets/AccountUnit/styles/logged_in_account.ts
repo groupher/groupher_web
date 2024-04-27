@@ -21,7 +21,7 @@ export const BaseInfo = styled.div`
   margin-bottom: 15px;
 `
 export const UserName = styled.div`
-  font-size: 16px;
+  font-size: 15px;
   color: ${theme('article.title')};
   font-weight: 500;
 `

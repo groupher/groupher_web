@@ -10,6 +10,7 @@ import { Provider as BalancerTextProvider } from 'react-wrap-balancer'
 import METRIC from '@/constant/metric'
 
 import useMetric from '@/hooks/useMetric'
+import useSyncAccount from '@/hooks/useSyncAccount'
 
 import Mushroom from '@/containers/Mushroom'
 
@@ -37,6 +38,7 @@ type TProps = {
 
 const GlobalLayout: FC<TProps> = ({ children }) => {
   const metric = useMetric()
+  useSyncAccount()
   // const [showDashboardAlertUI, setShowDashboardAlertUI] = useState(false)
 
   console.log('## globalLayout rendering ')

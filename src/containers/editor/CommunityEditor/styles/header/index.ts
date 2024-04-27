@@ -1,4 +1,3 @@
-import Img from '@/Img'
 import styled, { css, theme } from '@/css'
 
 import { LineDivider } from '@/widgets/Common'
@@ -8,10 +7,6 @@ export const Wrapper = styled.div`
   padding: 0 10%;
   width: 100%;
   height: 78px;
-`
-export const Logo = styled(Img)`
-  ${css.size(20)};
-  margin-right: 8px;
 `
 export const Title = styled.div`
   color: ${theme('article.title')};

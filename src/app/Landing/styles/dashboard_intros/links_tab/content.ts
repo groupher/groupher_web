@@ -3,7 +3,7 @@ import styled, { css, theme } from '@/css'
 import EditSVG from '@/icons/EditPen'
 import { WithPosition } from '@/widgets/Common'
 
-export { ICON } from './footer_card'
+export { Icon } from './footer_card'
 
 export const Wrapper = styled.div`
   ${css.row()};

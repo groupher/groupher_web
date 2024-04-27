@@ -1,14 +1,13 @@
 import { FC } from 'react'
 
-import { ASSETS_ENDPOINT } from '@/config'
-
 import { SpaceGrow } from '@/widgets/Common'
 import AccountUnit from '@/widgets/AccountUnit'
+import HomeLogo from '@/widgets/HomeLogo'
 
 import StepMap from './StepMap'
 
 import type { THeaderStatus } from '../spec'
-import { Wrapper, Logo, Title, Divider, SubTitle } from '../styles/header'
+import { Wrapper, Title, Divider, SubTitle } from '../styles/header'
 
 type TProps = {
   status: THeaderStatus
@@ -19,7 +18,7 @@ const Header: FC<TProps> = ({ status }) => {
 
   return (
     <Wrapper>
-      <Logo src={`${ASSETS_ENDPOINT}/communities/groupher-alpha.png`} />
+      <HomeLogo size={22} right={8} />
       <Title>Groupher</Title>
       <Divider />
       <SubTitle>创建社区</SubTitle>

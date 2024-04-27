@@ -95,7 +95,7 @@ const AccountStore = T.model('AccountStore', {
     },
     setSession(user: TSimpleUser, token: string): void {
       BStore.set(OAUTH.USER_KEY, JSON.stringify(user))
-      console.log('## set token: ', token)
+      // console.log('## set token: ', token)
       BStore.set(OAUTH.TOKEN_KEY, token)
 
       try {

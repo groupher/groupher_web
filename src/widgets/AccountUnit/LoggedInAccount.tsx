@@ -12,8 +12,9 @@ import { buildLog } from '@/logger'
 import useAccount from '@/hooks/useAccount'
 import useAvatarLayout from '@/hooks/useAvatarLayout'
 
+import { ROUTE } from '@/constant/route'
 import { signOut } from '@/oauth'
-import { SexyDivider, SpaceGrow } from '@/widgets/Common'
+import { SexyDivider, SpaceGrow, LinkAble } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'
 import ImgFallback from '@/widgets/ImgFallback'
 
@@ -53,23 +54,25 @@ const LoggedInAccount: FC<TProps> = () => {
           </MenuBar>
           <MenuBar>个人主页</MenuBar>
           <SexyDivider top={8} bottom={8} />
-          <MenuBar>
-            创建社区
-            <SpaceGrow />
-            <Icon.Add />
-          </MenuBar>
+          <LinkAble href={ROUTE.APPLY_COMMUNITY} prefetch={false}>
+            <MenuBar as="a">
+              创建社区
+              <SpaceGrow />
+              <Icon.Add />
+            </MenuBar>
+          </LinkAble>
           <SexyDivider top={8} bottom={8} />
-          <MenuBar>登出</MenuBar>
+          <MenuBar onClick={() => signOut()}>登出</MenuBar>
         </Panel>
       }
       placement="bottom-end"
+      trigger="click"
       noPadding
     >
       <Avatar
         src={avatar}
         $avatarLayout={avatarLayout}
         fallback={<ImgFallback size={18} user={user} />}
-        onClick={() => signOut()}
       />
     </Tooltip>
   )
