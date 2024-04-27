@@ -9,7 +9,6 @@ import { observer } from 'mobx-react-lite'
 import { includes } from 'ramda'
 
 import type { TSpace } from '@/spec'
-import { signOut } from '@/oauth'
 import { buildLog } from '@/logger'
 import useAccount from '@/hooks/useAccount'
 import useBannerLayout from '@/hooks/useBannerLayout'
@@ -52,7 +51,7 @@ const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
         <ThemeSwitch right={10} />
       )} */}
       {isLogin ? (
-        <HoverBox onClick={() => signOut()}>
+        <HoverBox>
           <LoggedInAccount />
         </HoverBox>
       ) : (
