@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
 
 import { SpaceGrow } from '@/widgets/Common'
-import { Wrapper, MenuBar, ICON } from './styles/i18n_panel'
+import { Wrapper, MenuBar, Icon } from './styles/i18n_panel'
 
 const I18nPanel: FC = () => {
   const { inView: badgeInView } = useCommunityDigestViewport()
@@ -12,29 +12,29 @@ const I18nPanel: FC = () => {
   return (
     <Wrapper>
       <MenuBar $withTop={!badgeInView}>
-        <ICON.Guard />
+        <Icon.Guard />
         English
       </MenuBar>
 
       <MenuBar $withTop={!badgeInView} $active>
-        <ICON.Panda />
+        <Icon.Panda />
         简体中文
         <SpaceGrow />
-        <ICON.Check />
+        <Icon.Check />
       </MenuBar>
 
       <MenuBar $withTop={!badgeInView}>
-        <ICON.Hua />
+        <Icon.Hua />
         繁体中文
       </MenuBar>
 
       <MenuBar $withTop={!badgeInView}>
-        <ICON.Russia />
+        <Icon.Russia />
         Русский
       </MenuBar>
 
       <MenuBar $withTop={!badgeInView}>
-        <ICON.Spain />
+        <Icon.Spain />
         Español
       </MenuBar>
     </Wrapper>

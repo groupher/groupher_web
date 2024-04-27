@@ -5,7 +5,7 @@ import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
 import HomeLogo from '@/widgets/HomeLogo'
 import { SpaceGrow, SexyDivider } from '@/widgets/Common'
 
-import { Wrapper, MenuBar, ICON } from './styles/more_panel'
+import { Wrapper, MenuBar, Icon } from './styles/more_panel'
 
 const MorePanel: FC = () => {
   const { inView: badgeInView } = useCommunityDigestViewport()
@@ -13,14 +13,14 @@ const MorePanel: FC = () => {
   return (
     <Wrapper>
       <MenuBar $withTop={!badgeInView}>
-        <ICON.Dashboard />
+        <Icon.Dashboard />
         控制台
         <SpaceGrow />
-        <ICON.Link />
+        <Icon.Link />
       </MenuBar>
       <SexyDivider top={6} bottom={6} />
       <MenuBar $withTop={!badgeInView}>
-        <ICON.Report />
+        <Icon.Report />
         举报违规
       </MenuBar>
       <MenuBar $withTop={!badgeInView}>

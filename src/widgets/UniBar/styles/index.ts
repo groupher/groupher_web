@@ -92,7 +92,7 @@ const commonIcon = (comp) => {
   `
 }
 
-export const ICON = {
+export const Icon = {
   ArrowTop: commonIcon(ArrowTopSVG),
   Notify: commonIcon(NotifySVG),
   People: styled(commonIcon(PeopleSVG))<TActive>`

@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 import {
   Wrapper,
-  ICON,
+  Icon,
   Item,
   Title,
   ColorBall,
@@ -12,31 +12,31 @@ const EditorToolbox: FC = () => {
   return (
     <Wrapper>
       <Item>
-        <ICON.Rotate />
+        <Icon.Rotate />
         <Title>旋转</Title>
       </Item>
       <Item>
-        <ICON.Arch />
+        <Icon.Arch />
         <Title>弧度</Title>
       </Item>
       <Item>
-        <ICON.Shadow />
+        <Icon.Shadow />
         <Title>阴影</Title>
       </Item>
       <Item>
-        <ICON.Position />
+        <Icon.Position />
         <Title>位置</Title>
       </Item>
       <Item>
-        <ICON.Size />
+        <Icon.Size />
         <Title>大小</Title>
       </Item>
       <Item>
-        <ICON.Light />
+        <Icon.Light />
         <Title>灯光</Title>
       </Item>
       <Item>
-        <ICON.Ratio />
+        <Icon.Ratio />
         <Title>比例</Title>
       </Item>
       <Item>

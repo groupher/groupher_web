@@ -68,7 +68,7 @@ const commonIcon = (comp) => {
   `
 }
 
-export const ICON = {
+export const Icon = {
   Wechat: commonIcon(WechatSVG),
   Twitter: styled(commonIcon(TwitterSVG))`
     fill: ${theme('article.digest')};

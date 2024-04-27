@@ -2,49 +2,49 @@ import { FC } from 'react'
 
 import { SpaceGrow, SexyDivider } from '@/widgets/Common'
 
-import { Wrapper, AppStoreBar, MenuBar, ICON, Info, Platform, Title } from './styles/panel'
+import { Wrapper, AppStoreBar, MenuBar, Icon, Info, Platform, Title } from './styles/panel'
 
 const Panel: FC = () => {
   return (
     <Wrapper>
       <AppStoreBar>
-        <ICON.GooglePlay />
+        <Icon.GooglePlay />
       </AppStoreBar>
 
       <AppStoreBar>
-        <ICON.AppStore />
+        <Icon.AppStore />
       </AppStoreBar>
 
       <SexyDivider top={8} bottom={6} />
 
       <MenuBar>
-        <ICON.ChromeWebStore />
+        <Icon.ChromeWebStore />
         <Info>
           <Platform>Chrome 应用商店</Platform>
           <Title>Groupher</Title>
         </Info>
         <SpaceGrow />
-        <ICON.Link />
+        <Icon.Link />
       </MenuBar>
 
       <MenuBar>
-        <ICON.Firefox />
+        <Icon.Firefox />
         <Info>
           <Platform>火狐插件市场</Platform>
           <Title>Groupher</Title>
         </Info>
         <SpaceGrow />
-        <ICON.Link />
+        <Icon.Link />
       </MenuBar>
 
       <MenuBar>
-        <ICON.Github />
+        <Icon.Github />
         <Info>
           <Platform>Github</Platform>
           <Title>Groupher</Title>
         </Info>
         <SpaceGrow />
-        <ICON.Link />
+        <Icon.Link />
       </MenuBar>
     </Wrapper>
   )

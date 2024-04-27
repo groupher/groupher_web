@@ -36,7 +36,7 @@ const commonIcon = (comp) => {
   `
 }
 
-export const ICON = {
+export const Icon = {
   REJECT: commonIcon(RejectSVG),
   FEATURE: commonIcon(LightSVG),
   BUG: styled(commonIcon(BugSVG))`

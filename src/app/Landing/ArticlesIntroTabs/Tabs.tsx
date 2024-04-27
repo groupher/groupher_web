@@ -6,7 +6,7 @@ import { COLOR_NAME } from '@/constant/colors'
 
 import PreviewBars from './PreviewBars'
 
-import { Wrapper, TabItem, IconBox, ICON, Title, Desc } from '../styles/articles_intro_tabs/tabs'
+import { Wrapper, TabItem, IconBox, Icon, Title, Desc } from '../styles/articles_intro_tabs/tabs'
 
 const TAB_ITEMS = [
   {
@@ -45,13 +45,13 @@ const Tabs: FC<TProps> = ({ tab, onChange }) => {
       {TAB_ITEMS.map((item) => {
         const $color = item.color
         const $active = item.key === tab
-        const Icon = ICON[item.key]
+        const CurIcon = Icon[item.key]
 
         return (
           <TabItem key={item.key} $active={$active} onClick={() => onChange(item.key as TThread)}>
             <IconBox $color={$color} $active={$active}>
               <PreviewBars $color={$color} tab={item.key} />
-              <Icon $color={$color} />
+              <CurIcon $color={$color} />
             </IconBox>
             <Title $active={$active}>{item.title}</Title>
             <Desc>{item.desc}</Desc>

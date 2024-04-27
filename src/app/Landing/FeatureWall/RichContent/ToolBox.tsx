@@ -5,7 +5,7 @@ import {
   Item,
   IconWrapper,
   Title,
-  ICON,
+  Icon,
 } from '../../styles/feature_wall/rich_content/tool_box'
 
 type TProps = {
@@ -17,37 +17,37 @@ const ToolBox: FC<TProps> = ({ hovering }) => {
     <Wrapper $hovering={hovering}>
       <Item>
         <IconWrapper>
-          <ICON.Title />
+          <Icon.Title />
         </IconWrapper>
         <Title>标题</Title>
       </Item>
       <Item $active>
         <IconWrapper>
-          <ICON.Image />
+          <Icon.Image />
         </IconWrapper>
         <Title $active>图片</Title>
       </Item>
       <Item>
         <IconWrapper>
-          <ICON.Code />
+          <Icon.Code />
         </IconWrapper>
         <Title>代码块</Title>
       </Item>
       <Item>
         <IconWrapper>
-          <ICON.Table />
+          <Icon.Table />
         </IconWrapper>
         <Title>表格</Title>
       </Item>
       <Item>
         <IconWrapper>
-          <ICON.Quote />
+          <Icon.Quote />
         </IconWrapper>
         <Title>引用</Title>
       </Item>
       <Item>
         <IconWrapper>
-          <ICON.Video />
+          <Icon.Video />
         </IconWrapper>
         <Title>嵌入视频</Title>
       </Item>

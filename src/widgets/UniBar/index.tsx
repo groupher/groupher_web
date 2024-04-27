@@ -21,7 +21,7 @@ import MorePanel from './MorePanel'
 import NotifyPanel from './NotifyPanel'
 
 import { MENU, TIP_OPTIONS } from './constant'
-import { Wrapper, ButtonBar, ICON, IconBox, TipText, PeopleBox, TopBox } from './styles'
+import { Wrapper, ButtonBar, Icon, IconBox, TipText, PeopleBox, TopBox } from './styles'
 
 const _log = buildLog('c:AccountBar:index')
 
@@ -65,7 +65,7 @@ const AccountBar: FC = () => {
       <ButtonBar>
         <Tooltip content={<TipText>回到顶部</TipText>} {...TIP_OPTIONS}>
           <TopBox $show={!badgeInView} onClick={() => scrollToHeader()}>
-            <ICON.ArrowTop />
+            <Icon.ArrowTop />
           </TopBox>
         </Tooltip>
 
@@ -77,7 +77,7 @@ const AccountBar: FC = () => {
               setExpand(true)
             }}
           >
-            <ICON.Notify />
+            <Icon.Notify />
           </IconBox>
         </Tooltip>
 
@@ -86,12 +86,12 @@ const AccountBar: FC = () => {
             $active={menu === MENU.PEOPLE.key}
             onClick={() => handleOpenMenu(MENU.PEOPLE.key)}
           >
-            <ICON.People $active={menu === MENU.PEOPLE.key} />
+            <Icon.People $active={menu === MENU.PEOPLE.key} />
           </PeopleBox>
         </Tooltip>
         <Tooltip content={<TipText>界面语言</TipText>} {...TIP_OPTIONS}>
           <IconBox onClick={() => handleOpenMenu(MENU.I18N.key)}>
-            <ICON.I18n />
+            <Icon.I18n />
           </IconBox>
         </Tooltip>
         <Tooltip content={<TipText>主题</TipText>} {...TIP_OPTIONS}>
@@ -101,7 +101,7 @@ const AccountBar: FC = () => {
         </Tooltip>
         <Tooltip content={<TipText>更多</TipText>} {...TIP_OPTIONS}>
           <IconBox $active={menu === MENU.MORE.key} onClick={() => handleOpenMenu(MENU.MORE.key)}>
-            <ICON.More />
+            <Icon.More />
           </IconBox>
         </Tooltip>
       </ButtonBar>

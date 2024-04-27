@@ -68,7 +68,7 @@ const commonIcon = (comp) => {
   `
 }
 
-export const ICON = {
+export const Icon = {
   Check: styled(commonIcon(CheckSVG))`
     ${css.size(16)};
     fill: ${theme('article.digest')};

@@ -6,7 +6,7 @@ import useNameAlias from '@/hooks/useNameAlias'
 
 import type { TProps as TArticleStateBadgeProps } from '.'
 
-import { Wrapper, IconWrapper, ICON } from './styles/label'
+import { Wrapper, IconWrapper, Icon } from './styles/label'
 
 type TProps = Pick<TArticleStateBadgeProps, 'cat' | 'smaller'>
 
@@ -18,7 +18,7 @@ const Label: FC<TProps> = ({ cat, smaller }) => {
       return (
         <Wrapper $smaller={smaller}>
           <IconWrapper>
-            <ICON.FEATURE />
+            <Icon.FEATURE />
           </IconWrapper>
           {nameAlias[cat.toLowerCase()]?.name}
         </Wrapper>
@@ -29,7 +29,7 @@ const Label: FC<TProps> = ({ cat, smaller }) => {
       return (
         <Wrapper $smaller={smaller}>
           <IconWrapper>
-            <ICON.BUG />
+            <Icon.BUG />
           </IconWrapper>
           {nameAlias[cat.toLowerCase()]?.name}
         </Wrapper>
@@ -40,7 +40,7 @@ const Label: FC<TProps> = ({ cat, smaller }) => {
       return (
         <Wrapper $smaller={smaller}>
           <IconWrapper>
-            <ICON.QUESTION />
+            <Icon.QUESTION />
           </IconWrapper>
           {nameAlias[cat.toLowerCase()]?.name}
         </Wrapper>

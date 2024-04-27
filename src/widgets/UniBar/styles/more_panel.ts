@@ -8,7 +8,7 @@ import LinkSVG from '@/icons/ArrowUpRight'
 
 export const Wrapper = styled.div`
   padding: 10px 8px;
-  animation: ${animate.fadeInBounce} 0.4s linear;
+  animation: ${animate.fadeInBounce} 0.3s linear;
 `
 export const MenuBar = styled.div<{ $withTop: boolean }>`
   ${css.row('align-center')};
@@ -31,7 +31,6 @@ export const MenuBar = styled.div<{ $withTop: boolean }>`
     cursor: pointer;
   }
 `
-
 export const IconBox = styled.div<TActive>`
   ${css.size(26)};
   ${css.row('align-both')};
@@ -65,8 +64,7 @@ const commonIcon = (comp) => {
     }
   `
 }
-
-export const ICON = {
+export const Icon = {
   Report: commonIcon(ReportSVG),
   Dashboard: styled(commonIcon(SettingSVG))`
     ${css.size(18)};

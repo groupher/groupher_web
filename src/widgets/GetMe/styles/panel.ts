@@ -69,7 +69,7 @@ const commonIcon = (comp) => {
   `
 }
 
-export const ICON = {
+export const Icon = {
   Firefox: commonIcon(FirefoxSVG),
   ChromeWebStore: styled(commonIcon(ChromeWebStoreSVG))`
     ${css.size(30)};

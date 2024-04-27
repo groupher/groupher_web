@@ -52,7 +52,7 @@ const commonIcon = (comp) => {
   `
 }
 
-export const ICON = {
+export const Icon = {
   Code: commonIcon(CodeSVG),
   Title: commonIcon(TitleSVG),
   Table: commonIcon(TableSVG),

@@ -10,7 +10,7 @@ import {
   Desc,
   CommunityLogo,
   Contract,
-  ICON,
+  Icon,
 } from '../../styles/dashboard_intros/links_tab/footer_card'
 
 const FooterCard: FC = () => {
@@ -21,9 +21,9 @@ const FooterCard: FC = () => {
         <Title>Tiki-taka</Title>
         <Desc>Visca Barca Visca Catalunya!</Desc>
         <Contract>
-          <ICON.Wechat />
-          <ICON.Twitter />
-          <ICON.Zhihu />
+          <Icon.Wechat />
+          <Icon.Twitter />
+          <Icon.Zhihu />
         </Contract>
       </Brand>
       <Links>
