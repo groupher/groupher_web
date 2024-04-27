@@ -12,20 +12,18 @@ import type { TSpace } from '@/spec'
 import { signOut } from '@/oauth'
 import { buildLog } from '@/logger'
 import useAccount from '@/hooks/useAccount'
-import useAvatarLayout from '@/hooks/useAvatarLayout'
 import useBannerLayout from '@/hooks/useBannerLayout'
 import { BANNER_LAYOUT } from '@/constant/layout'
 
-import ImgFallback from '@/widgets/ImgFallback'
 import { SpaceGrow } from '@/widgets/Common'
 
+import LoggedInAccount from './LoggedInAccount'
 import Panel from './Panel'
 
 import {
   NormalWrapper,
   WithBgWrapper,
   HoverBox,
-  Avatar,
   UnloginIcon,
   NickName,
   UnLoginText,
@@ -39,8 +37,7 @@ type TProps = {
 
 const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
   const user = useAccount()
-  const { isLogin, avatar, nickname } = user
-  const avatarLayout = useAvatarLayout()
+  const { isLogin, nickname } = user
   const bannerLayout = useBannerLayout()
 
   const [showPanel, setShowPanel] = useState(false)
@@ -55,24 +52,11 @@ const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
         <ThemeSwitch right={10} />
       )} */}
       {isLogin ? (
-        <HoverBox
-          onClick={() => {
-            console.log('## sign out')
-            signOut()
-          }}
-        >
-          <Avatar
-            src={avatar}
-            $avatarLayout={avatarLayout}
-            fallback={<ImgFallback size={18} user={user} />}
-          />
+        <HoverBox onClick={() => signOut()}>
+          <LoggedInAccount />
         </HoverBox>
       ) : (
-        <HoverBox
-          onClick={() => {
-            setShowPanel(true)
-          }}
-        >
+        <HoverBox onClick={() => setShowPanel(true)}>
           <UnloginIcon />
         </HoverBox>
       )}
