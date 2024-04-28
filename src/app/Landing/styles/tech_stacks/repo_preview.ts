@@ -54,7 +54,7 @@ const commonIcon = (comp) => {
     margin-right: 5px;
   `
 }
-export const ICON = {
+export const Icon = {
   Star: commonIcon(StarSVG),
   Fork: commonIcon(ForkSVG),
   Contribute: commonIcon(ContributeSVG),

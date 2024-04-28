@@ -72,7 +72,7 @@ const commonIcon = (comp) => {
   `
 }
 
-export const ICON = {
+export const Icon = {
   Lock: styled(commonIcon(LockSVG))`
     fill: ${theme('rainbow.green')};
     margin-top: -1px;

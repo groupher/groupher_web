@@ -7,7 +7,7 @@ import {
   Block,
   Line,
   Column,
-  ICON,
+  Icon,
   Title,
 } from '../../styles/feature_wall/security/panel'
 
@@ -33,31 +33,31 @@ const Panel: FC<TProps> = ({ hovering }) => {
 
       <BlocksWrapper top={hovering ? 20 : 5}>
         <Block left={hovering ? 6 : 15}>
-          <ICON.Lock />
+          <Icon.Lock />
           <Title>https加密</Title>
         </Block>
         <Block>
-          <ICON.Setting />
+          <Icon.Setting />
           <Title>外观自定义</Title>
         </Block>
         <Block left={hovering ? 10 : 0}>
-          <ICON.Upload />
+          <Icon.Upload />
           <Title>导入导出</Title>
         </Block>
         <Block>
-          <ICON.Hash />
+          <Icon.Hash />
           <Title>用户标签</Title>
         </Block>
         <Block>
-          <ICON.Search />
+          <Icon.Search />
           <Title>SEO</Title>
         </Block>
         <Block left={hovering ? 35 : 25} $opacity={0.8}>
-          <ICON.Auth />
+          <Icon.Auth />
           <Title>灵活权限</Title>
         </Block>
         <Block $opacity={0.8}>
-          <ICON.Cloud />
+          <Icon.Cloud />
           <Title>私有部署</Title>
         </Block>
       </BlocksWrapper>

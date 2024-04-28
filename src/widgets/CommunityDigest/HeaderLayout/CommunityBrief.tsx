@@ -53,7 +53,7 @@ const CommunityBrief: FC = () => {
             <div>社区主页</div>
           </PanelItem>
 
-          <PanelItem href={dashboard.baseInfo.homepage} $outside>
+          <PanelItem href={dashboard?.baseInfo.homepage} $outside>
             <Icon.Global />
             <div>返回官网</div>
             <SpaceGrow />

@@ -45,7 +45,7 @@ const commonIcon = (comp) => {
     fill: ${theme('article.digest')};
   `
 }
-export const ICON = {
+export const Icon = {
   Arch: commonIcon(ArchSVG),
   Rotate: commonIcon(RotateSVG),
   Ratio: commonIcon(RatioSVG),

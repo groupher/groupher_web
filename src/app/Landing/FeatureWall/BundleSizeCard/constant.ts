@@ -22,6 +22,12 @@ export const PRODUCTS = [
     sizeNum: 515,
     icon: `${ICON_ASSET}/uservoice.png`,
   },
+  {
+    title: 'Canny',
+    size: '825 KB',
+    sizeNum: 825,
+    icon: `${ICON_ASSET}/canny.png`,
+  },
   // {
   //   title: 'Github Discussions',
   //   size: '826 KB',
@@ -35,12 +41,6 @@ export const PRODUCTS = [
     sizeNum: 1.05 * 1024,
     iconSize: 13,
     icon: `${ICON_ASSET}/featureos.png`,
-  },
-  {
-    title: 'Canny',
-    size: '1.1+ MB',
-    sizeNum: 1.12 * 1024,
-    icon: `${ICON_ASSET}/canny.png`,
   },
   {
     title: 'Outverse',

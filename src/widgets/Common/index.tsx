@@ -9,16 +9,29 @@ import styled, { css, theme, rainbow } from '@/css'
 export const LinkAble = styled(NextLink)`
   text-decoration: none;
 
-  &:hover {
+  &:hover 
     text-decoration: underline;
     cursor: pointer;
   }
 `
 
 // @ts-ignore
-export const Link = styled(NextLink)`
+export const SlientLink = styled(NextLink)`
+  text-decoration: none;
+  color: ${theme('article.digest')};
+
+  &:hover {
+    text-decoration: underline;
+    color: ${theme('article.title')};
+    cursor: pointer;
+  }
+`
+
+// @ts-ignore
+export const Link = styled(NextLink)<{ maxLength?: string }>`
   color: ${theme('link')};
   text-decoration: none;
+  ${({ maxLength }) => css.cutRest(maxLength || '200px')};
 
   &:hover {
     color: ${theme('link')};

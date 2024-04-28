@@ -9,7 +9,7 @@ import { FC, memo, Fragment } from 'react'
 import { buildLog } from '@/logger'
 
 import type { TEditData } from './spec'
-import { Input, Section, ICON } from './styles/social_inputer'
+import { Input, Section, Icon } from './styles/social_inputer'
 import { inputOnChange } from './logic'
 
 const _log = buildLog('C:AccountEditor')
@@ -23,7 +23,7 @@ const SocialInputer: FC<TProps> = ({ editData }) => {
   return (
     <Fragment>
       <Section>
-        <ICON.CityIcon />
+        <Icon.CityIcon />
         <Input
           value={profile.location}
           placeholder="// 城市"
@@ -31,7 +31,7 @@ const SocialInputer: FC<TProps> = ({ editData }) => {
         />
       </Section>
       <Section>
-        <ICON.CompanyIcon />
+        <Icon.CompanyIcon />
         <Input
           value={social.company}
           placeholder="// 公司 / 团队名称"
@@ -39,7 +39,7 @@ const SocialInputer: FC<TProps> = ({ editData }) => {
         />
       </Section>
       <Section>
-        <ICON.BlogIcon />
+        <Icon.BlogIcon />
         <Input
           value={social.blog}
           placeholder="// 博客 / 主页地址"
@@ -48,7 +48,7 @@ const SocialInputer: FC<TProps> = ({ editData }) => {
       </Section>
 
       <Section>
-        <ICON.GithubIcon />
+        <Icon.GithubIcon />
         <Input
           value={social.github}
           placeholder="// Github 用户名"
@@ -56,7 +56,7 @@ const SocialInputer: FC<TProps> = ({ editData }) => {
         />
       </Section>
       <Section>
-        <ICON.TwitterIcon />
+        <Icon.TwitterIcon />
         <Input
           value={social.twitter}
           placeholder="// Twitter 用户名"
@@ -64,7 +64,7 @@ const SocialInputer: FC<TProps> = ({ editData }) => {
         />
       </Section>
       <Section>
-        <ICON.MailIcon />
+        <Icon.MailIcon />
         <Input
           value={profile.email}
           placeholder="// 邮箱地址"

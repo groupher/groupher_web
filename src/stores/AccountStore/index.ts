@@ -1,3 +1,5 @@
+'use client'
+
 /*
  * AccountStore store
  *
@@ -5,7 +7,16 @@
 
 import { mergeRight, remove, insert, findIndex, propEq, includes } from 'ramda'
 
-import type { TRootStore, TAccount, TCommunity, TPagedCommunities, TModerator } from '@/spec'
+import type {
+  TRootStore,
+  TAccount,
+  TCommunity,
+  TPagedCommunities,
+  TModerator,
+  TSimpleUser,
+} from '@/spec'
+import OAUTH from '@/constant/oauth'
+
 import { T, getParent, markStates, Instance, toJS } from '@/mobx'
 import BStore from '@/utils/bstore'
 
@@ -75,18 +86,28 @@ const AccountStore = T.model('AccountStore', {
     updateSession({ isValid, user }) {
       self.isValidSession = isValid
 
-      const { setSession, updateAccount, sessionCleanup } = self as TStore
+      const { updateAccount, sessionCleanup } = self as TStore
 
       if (isValid) {
-        setSession(user, BStore.get('token'))
         return updateAccount(user || {})
       }
       return sessionCleanup()
     },
-    setSession(user: string, token: string): void {
-      BStore.set('user', user)
-      BStore.set('token', token)
-      BStore.cookie.set('jwtToken', token)
+    setSession(user: TSimpleUser, token: string): void {
+      BStore.set(OAUTH.USER_KEY, JSON.stringify(user))
+      // console.log('## set token: ', token)
+      BStore.set(OAUTH.TOKEN_KEY, token)
+
+      try {
+        // @ts-ignore
+        self.user = user
+        self.isValidSession = true
+      } catch (e) {
+        // @ts-ignore
+        self.user = EmptyUser
+        self.isValidSession = false
+      }
+      // BStore.cookie.set('jwtToken', token)
     },
     sessionCleanup(): void {
       // @ts-ignore
@@ -94,7 +115,7 @@ const AccountStore = T.model('AccountStore', {
       self.isValidSession = false
       BStore.remove('user')
       BStore.remove('token')
-      BStore.cookie.remove('jwtToken')
+      // BStore.cookie.remove('jwtToken')
     },
     loadSubscribedCommunities(data): void {
       // self.user.subscribedCommunities = data

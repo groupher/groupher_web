@@ -51,7 +51,7 @@ const commonIcon = (comp) => {
   `
 }
 
-export const ICON = {
+export const Icon = {
   [THREAD.POST]: commonIcon(DiscussSVG),
   [THREAD.KANBAN]: styled(commonIcon(KanbanSVG))`
     transform: rotate(180deg) rotateY(180deg);

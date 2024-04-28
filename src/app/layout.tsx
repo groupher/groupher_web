@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-// import { cookies } from 'next/headers'
+
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
@@ -20,6 +20,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   // const token = null
   // const theme = cookies().get('theme')?.value === 'night' ? 'night' : 'day'
   // const theme = 'day'
+
+  // NOTE: SessionProvider is not nessary, just can not use useSession in component, which
+  // has wired behavior for query /sesssion mutiple times.
+  // import { SessionProvider } from 'next-auth/react'
+  // <SessionProvider refetchOnWindowFocus={false}></SessionProvider>
 
   return (
     <html lang="en">

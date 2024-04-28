@@ -12,7 +12,7 @@ import {
   Desc,
   LinkDesc,
   IconBox,
-  ICON,
+  Icon,
 } from '../../styles/dashboard_intros/links_tab/content'
 
 const Content: FC = () => {
@@ -28,12 +28,12 @@ const Content: FC = () => {
         <Title>社交媒体</Title>
 
         <IconBox top={202} left={6}>
-          <ICON.Wechat />
+          <Icon.Wechat />
         </IconBox>
         <Brick $width={76} top={210} left={40} $opacity={0.08} />
 
         <IconBox top={225} left={6}>
-          <ICON.Twitter />
+          <Icon.Twitter />
         </IconBox>
         <Brick $width={50} top={234} left={40} $opacity={0.08} />
 

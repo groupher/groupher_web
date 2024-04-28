@@ -45,7 +45,7 @@ const commonIcon = (comp) => {
   `
 }
 
-export const ICON = {
+export const Icon = {
   Bold: commonIcon(BoldSVG),
   Strike: commonIcon(StrikeSVG),
   Link: commonIcon(LinkSVG),

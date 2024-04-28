@@ -64,7 +64,7 @@ export const BlogIcon = styled(BlogSVG)`
   margin-right: 9px;
   margin-top: -1px;
 `
-export const ICON = {
+export const Icon = {
   CityIcon,
   CompanyIcon,
   MailIcon,

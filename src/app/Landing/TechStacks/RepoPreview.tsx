@@ -8,7 +8,7 @@ import {
   RepoDesc,
   Footer,
   Info,
-  ICON,
+  Icon,
   LangBar,
 } from '../styles/tech_stacks/repo_preview'
 
@@ -29,13 +29,13 @@ const RepoPreview: FC<TProps> = ({ name, desc, type }) => {
 
         <Footer>
           <Info>
-            <ICON.Star />3
+            <Icon.Star />3
           </Info>
           <Info>
-            <ICON.Fork />1
+            <Icon.Fork />1
           </Info>
           <Info>
-            <ICON.Contribute />3
+            <Icon.Contribute />3
           </Info>
         </Footer>
       </Repo>

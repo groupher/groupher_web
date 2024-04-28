@@ -12,7 +12,7 @@ import {
   Media,
   LogoWrapper,
   Title,
-  ICON,
+  Icon,
 } from '../styles/modal_panel/platform'
 
 type TProps = {
@@ -30,12 +30,12 @@ const Platforms: FC<TProps> = ({ article, changeType }) => {
       </Header>
       <InnerWrapper>
         {PLATFORMS.map((item) => {
-          const Icon = ICON[item.type]
+          const CurIcon = Icon[item.type]
 
           return (
             <Media key={item.title} onClick={() => changeType(item.type)}>
               <LogoWrapper>
-                <Icon />
+                <CurIcon />
               </LogoWrapper>
               <Title>{item.title}</Title>
             </Media>

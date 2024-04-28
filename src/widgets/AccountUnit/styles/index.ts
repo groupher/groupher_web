@@ -1,8 +1,5 @@
-import type { TAvatarLayout } from '@/spec'
-import { AVATAR_LAYOUT } from '@/constant/layout'
 import styled, { css, theme } from '@/css'
 
-import Img from '@/Img'
 import AccountSVG from '@/icons/Acount'
 import { WithMargin } from '@/widgets/Common'
 
@@ -23,14 +20,25 @@ export const WithBgWrapper = styled(NormalWrapper)`
     cursor: pointer;
   }
 `
+export const HoverBox = styled.div`
+  ${css.size(24)};
+  ${css.row('align-both')};
+  border-radius: 5px;
 
-export const Avatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
-  ${css.size(17)};
-  border-radius: ${({ $avatarLayout }) => ($avatarLayout === AVATAR_LAYOUT.SQUARE ? '5px' : '100%')};
+  &:hover {
+    background: ${theme('hoverBg')};
+    border: 1px solid;
+    border-color: ${theme('divider')};
+    cursor: pointer;
+  }
 `
 export const UnloginIcon = styled(AccountSVG)`
   fill: ${theme('article.digest')};
   ${css.size(13)};
+  cursor: pointer;
+  &:hover {
+    fill: ${theme('article.title')};
+  }
 `
 export const NickName = styled.div`
   color: ${theme('article.digest')};

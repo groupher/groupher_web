@@ -12,12 +12,16 @@ const _log = buildLog('Async')
 // see setup https://formidable.com/open-source/urql/docs/basics/core/
 const client = new Client({
   url: GRAPHQL_ENDPOINT,
-  fetchOptions: () => ({
-    headers: {
-      special: 'Special header value',
-      authorization: `Bearer ${BStore.get('token') || ''}`,
-    },
-  }),
+  fetchOptions: () => {
+    // console.log('## gq client init: ', BStore.get('token'))
+
+    return {
+      headers: {
+        special: 'Special header value',
+        authorization: `Bearer ${BStore.get('token') || ''}`,
+      },
+    }
+  },
   // the default:
   exchanges: [cacheExchange, fetchExchange],
   // requestPolicy: 'network-only',

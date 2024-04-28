@@ -1,4 +1,5 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import useAccount from '@/hooks/useAccount'
 
@@ -93,4 +94,4 @@ const Footer: FC<TProps> = ({ data, apiMode }) => {
   )
 }
 
-export default memo(Footer)
+export default observer(Footer)

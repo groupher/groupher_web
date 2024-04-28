@@ -22,6 +22,7 @@ export const Wrapper = styled.div<TActive>`
 
   &:hover {
     border-color: ${theme('divider')};
+    background: ${theme('hoverBg')};
     cursor: pointer;
   }
 `

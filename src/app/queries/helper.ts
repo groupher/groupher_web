@@ -47,7 +47,11 @@ export const commonRes = (result): TGQSSRResult => {
 export const useIsFrameworkQuery = (): boolean => {
   const pathname = usePathname()
 
-  return startsWith('/_next', pathname) || startsWith('/_vercel', pathname)
+  // return startsWith('/_next', pathname) || startsWith('/_vercel', pathname)
+  return (
+    startsWith('/_next', pathname) || startsWith('/_vercel', pathname)
+    // startsWith('/api', pathname)
+  )
 }
 
 export const useIsStaticPages = (): boolean => {

@@ -1,10 +1,7 @@
 'use client'
 
-import { FC, ReactNode, memo, useEffect } from 'react'
+import { FC, ReactNode, memo } from 'react'
 import { Provider } from 'mobx-react'
-import { enableStaticRendering } from 'mobx-react-lite'
-
-import { useRouter } from 'next/navigation'
 
 import { useStore } from '@/stores/init'
 
@@ -25,37 +22,22 @@ import {
   useThreadParam,
 } from '../queries'
 
-enableStaticRendering(typeof window === 'undefined')
-
 type TProps = {
   children: ReactNode
 }
 
 const RootStoreWrapper: FC<TProps> = ({ children }) => {
-  const userHasLogin = false
-  // const router = useRouter()
-
-  // useEffect(() => {
-  //   const handleRedirect = async () => {
-  //     if (!community) {
-  //       await router.push('/oops')
-  //     }
-  //   }
-
-  //   handleRedirect()
-  // }, [])
-
   const theme = useThemeFromURL()
 
   const metric = useMetric()
   const activeThread = useThreadParam()
 
-  const { community } = useCommunity(userHasLogin)
-  const { pagedPosts } = usePagedPosts(userHasLogin)
-  const { pagedChangelogs } = usePagedChangelogs(userHasLogin)
-  const { post } = usePost(userHasLogin)
-  const { changelog } = useChangelog(userHasLogin)
-  const { groupedKanbanPosts } = useGroupedKanbanPosts(userHasLogin)
+  const { community } = useCommunity()
+  const { pagedPosts } = usePagedPosts()
+  const { pagedChangelogs } = usePagedChangelogs()
+  const { post } = usePost()
+  const { changelog } = useChangelog()
+  const { groupedKanbanPosts } = useGroupedKanbanPosts()
   const { tags } = useTags()
 
   const dashboard = useDashboard(community)

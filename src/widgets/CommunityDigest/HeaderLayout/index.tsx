@@ -22,7 +22,8 @@ import {
   BannerContentWrapper,
   CommunityBaseInfo,
   MobileNaviWrapper,
-  GithubItem,
+  WatchIcon,
+  // GithubItem,
 } from '../styles/header_layout'
 
 const HeaderLayout: FC = () => {
@@ -54,12 +55,13 @@ const HeaderLayout: FC = () => {
             {headerLayout === HEADER_LAYOUT.RIGHT && <SpaceGrow />}
             <ThreadTab right={headerLayout === HEADER_LAYOUT.RIGHT ? 20 : 0} />
             <Row>
-              <GithubItem href="/">
+              {/* <GithubItem href="/">
                 <img
                   alt="GitHub Repo stars"
                   src="https://img.shields.io/github/stars/vercel/next.js?style=social&logo=github&label=%20%20&labelColor=black&color=white"
                 />
-              </GithubItem>
+              </GithubItem> */}
+              <WatchIcon />
               <AccountUnit />
             </Row>
           </CommunityBaseInfo>

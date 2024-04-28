@@ -3,8 +3,7 @@
   "version": "1.2.50",
   "license": "Apache License 2.0",
   "scripts": {
-    "dev": "next dev",
-    "dev2": "next dev --turbo",
+    "dev": "next dev --turbo",
     "ci": "cross-env CUR_ENV=ci next dev",
     "update.version": "node -p \"'export const APP_VERSION = ' + JSON.stringify(require('./package.json').version)\" > config/version.ts",
     "type-check": "tsc --noEmit",
@@ -34,6 +33,9 @@
     "test:ci": "start-server-and-test ci http://localhost:3000 cy:run:free",
     "coveralls": "cat ./coverage/lcov.info | coveralls"
   },
+  "engines": {
+    "node": "20.x"
+  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
@@ -61,14 +63,16 @@
     "cross-env": "^7.0.2",
     "debug": "^4.3.4",
     "graphql": "^16.6.0",
+    "js-cookie": "^3.0.5",
     "markdown-to-jsx": "^7.2.1",
     "mastani-codehighlight": "0.0.7",
     "mobx": "^6.12.0",
-    "mobx-react": "^9.1.0",
-    "mobx-react-lite": "^4.0.5",
+    "mobx-react": "^9.1.1",
+    "mobx-react-lite": "^4.0.7",
     "mobx-state-tree": "^5.4.1",
     "nanoid": "^3.1.12",
-    "next": "^14.1.2",
+    "next": "^14.2.0",
+    "next-auth": "^5.0.0-beta.16",
     "next-compose-plugins": "^2.2.0",
     "next-i18next": "4.4.1",
     "overlayscrollbars": "^2.4.5",

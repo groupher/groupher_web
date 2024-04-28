@@ -319,7 +319,7 @@ const night = {
   },
   modal: {
     bg: contentBoxBg,
-    mask: 'rgba(31, 34, 37, 0.1)',
+    mask: 'rgba(31, 34, 37, 0.55)',
     border: primaryColor,
     shadow: '-4px 5px 20px 5px rgb(21 21 21 / 47%)',
     innerSelectBg: '#e4eeed45',

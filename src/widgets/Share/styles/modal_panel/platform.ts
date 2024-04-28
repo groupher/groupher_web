@@ -94,7 +94,7 @@ const commonIcon = (comp) => {
   `
 }
 
-export const ICON = {
+export const Icon = {
   [SHARE_TYPE.LINKS]: commonIcon(LinkSVG),
   [SHARE_TYPE.EMBED]: commonIcon(CodeSVG),
   [SHARE_TYPE.WECHAT]: styled(commonIcon(WeChatSVG))`

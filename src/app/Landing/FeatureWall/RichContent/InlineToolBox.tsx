@@ -4,7 +4,7 @@ import {
   Wrapper,
   Item,
   IconWrapper,
-  ICON,
+  Icon,
 } from '../../styles/feature_wall/rich_content/inline_tool_box'
 
 type TProps = {
@@ -16,22 +16,22 @@ const InlineToolBox: FC<TProps> = ({ hovering }) => {
     <Wrapper $hovering={hovering}>
       <Item>
         <IconWrapper>
-          <ICON.Bold />
+          <Icon.Bold />
         </IconWrapper>
       </Item>
       <Item>
         <IconWrapper>
-          <ICON.Strike />
+          <Icon.Strike />
         </IconWrapper>
       </Item>
       <Item>
         <IconWrapper>
-          <ICON.Link />
+          <Icon.Link />
         </IconWrapper>
       </Item>
       <Item $active>
         <IconWrapper>
-          <ICON.Highlight />
+          <Icon.Highlight />
         </IconWrapper>
       </Item>
     </Wrapper>

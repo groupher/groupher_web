@@ -9,10 +9,6 @@ import type { TAccount } from '@/spec'
 const useAccount = (): TAccount => {
   const { store } = useContext(MobXProviderContext)
 
-  if (store === null) {
-    throw new Error('Store cannot be null, please add a context provider')
-  }
-
   return store.account.accountInfo
 }
 

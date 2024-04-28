@@ -4,13 +4,14 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { buildLog } from '@/logger'
 
+import useAccount from '@/hooks/useAccount'
 import { Br } from '@/widgets/Common'
 import ArrowLinker from '@/widgets/ArrowLinker'
-
 import Checker from '@/widgets/Checker'
 
 import type { TCommunityType, TValidState } from '../../spec'
@@ -32,7 +33,9 @@ type TProps = {
 }
 
 const SelectType: FC<TProps> = ({ status: { communityType }, validState }) => {
-  if (!validState.hasPendingApply && !validState.isLogin) {
+  const { isLogin } = useAccount()
+
+  if (!validState.hasPendingApply && !isLogin) {
     return <WarnBox title="未登录" desc="创建社区需要先登录，谢谢~" />
   }
 
@@ -78,4 +81,4 @@ const SelectType: FC<TProps> = ({ status: { communityType }, validState }) => {
   )
 }
 
-export default memo(SelectType)
+export default observer(SelectType)

@@ -1,6 +1,7 @@
-import { FC, useState } from 'react'
+import { FC, useState, memo } from 'react'
 
 import { ROUTE } from '@/constant/route'
+import useSession from '@/hooks/useSession'
 
 import Tooltip from '@/widgets/Tooltip'
 
@@ -30,6 +31,8 @@ import {
 const HomeHeader: FC = () => {
   const [productActive, setProductActive] = useState(false)
   const [moreActive, setMoreActive] = useState(false)
+
+  useSession()
 
   return (
     <Wrapper>
@@ -124,4 +127,4 @@ const HomeHeader: FC = () => {
   )
 }
 
-export default HomeHeader
+export default memo(HomeHeader)
