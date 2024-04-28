@@ -239,3 +239,5 @@ interface IWindow extends Window {
 }
 
 export type TWindow = IWindow | null
+
+export type TLocale = 'en' | 'zh'

@@ -2,21 +2,29 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
+import useLoadI18n from '@/hooks/useLoadI18n'
+import useTrans from '@/hooks/useTrans'
 
 import { SpaceGrow } from '@/widgets/Common'
+
 import { Wrapper, MenuBar, Icon } from './styles/i18n_panel'
 
 const I18nPanel: FC = () => {
   const { inView: badgeInView } = useCommunityDigestViewport()
 
+  const { loadLocale } = useLoadI18n()
+  const { t } = useTrans()
+
   return (
     <Wrapper>
-      <MenuBar $withTop={!badgeInView}>
+      <h2>{t('post')}</h2>
+
+      <MenuBar $withTop={!badgeInView} onClick={() => loadLocale('en')}>
         <Icon.Guard />
         English
       </MenuBar>
 
-      <MenuBar $withTop={!badgeInView} $active>
+      <MenuBar $withTop={!badgeInView} $active onClick={() => loadLocale('zh')}>
         <Icon.Panda />
         简体中文
         <SpaceGrow />

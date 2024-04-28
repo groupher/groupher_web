@@ -6,12 +6,13 @@
  *
  */
 
-import { mergeRight } from 'ramda'
+import { mergeRight, values } from 'ramda'
 
-import type { TAccount, TRoute, TThread, TArticle } from '@/spec'
+import type { TAccount, TRoute, TThread, TArticle, TLocale } from '@/spec'
 
 import EVENT from '@/constant/event'
 import METRIC from '@/constant/metric'
+import { LOCALE } from '@/constant/i18n'
 
 import { T, markStates, Instance } from '@/mobx'
 import { toast, send } from '@/signal'
@@ -77,7 +78,8 @@ const rootStore = T.model({
   metric: T.opt(T.string, METRIC.COMMUNITY),
   // @ts-ignore TODO:
   theme: T.opt(ThemeStore, ThemeDefaults),
-  locale: T.opt(T.enum('locale', ['zh', 'en']), 'zh'),
+  locale: T.opt(T.enum('locale', values(LOCALE)), LOCALE.ZH),
+  localeJson: T.opt(T.string, '{}'),
   errorCode: T.maybeNull(T.number),
 
   communityDigestInView: T.opt(T.bool, true),
@@ -155,7 +157,6 @@ const rootStore = T.model({
     showTopModeline(bool: boolean): void {
       self.modeLine.showTopBar(bool)
     },
-
     closeDrawer(): void {
       self.drawer.close()
     },
@@ -208,7 +209,12 @@ const rootStore = T.model({
       //   return void
       // }
     },
-
+    setLocale(locale: TLocale): void {
+      self.locale = locale
+    },
+    setLocaleJson(json: string): void {
+      self.localeJson = json
+    },
     mark(sobj): void {
       markStates(sobj, self)
     },

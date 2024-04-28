@@ -3,6 +3,7 @@
  * https://formidable.com/open-source/urql/docs/api/urql/#usequery
  * https://formidable.com/open-source/urql/docs/api/core/#operationresult
  */
+import { useMemo } from 'react'
 import { values, includes } from 'ramda'
 import { useQuery } from '@urql/next'
 import { usePathname, useSearchParams } from 'next/navigation'
@@ -48,12 +49,25 @@ export const useThemeFromURL = (): TThemeName => {
   const searchParams = useSearchParams()
   const theme = searchParams.get('theme')
 
-  if (theme === THEME.NIGHT) {
-    return THEME.NIGHT
-  }
-
-  return THEME.DAY
+  return useMemo(() => {
+    if (theme === THEME.NIGHT) {
+      return THEME.NIGHT
+    }
+    return THEME.DAY
+  }, [theme]) // 依赖项是 theme，只有 theme 变化时才重新计算
 }
+
+// export const useThemeFromURL = (): TThemeName => {
+//   const searchParams = useSearchParams()
+//   const theme = searchParams.get('theme')
+//   console.log('## geting theme from url')
+
+//   if (theme === THEME.NIGHT) {
+//     return THEME.NIGHT
+//   }
+
+//   return THEME.DAY
+// }
 
 export const useMetric = (): TMetric => {
   const thread = useThreadParam()
@@ -207,35 +221,70 @@ export const useWallpaper = (community: TCommunity): TParsedWallpaper => {
 /**
  * general dashboard settings for all page
  */
+// export const useDashboard = (community: TCommunity): TParseDashboard => {
+//   const isStaticQuery = useIsFrameworkQuery()
+//   const pathname = usePathname()
+
+//   // @ts-ignore
+//   if (isStaticQuery || !community) return {}
+
+//   return parseDashboard(community, pathname)
+// }
+
 export const useDashboard = (community: TCommunity): TParseDashboard => {
   const isStaticQuery = useIsFrameworkQuery()
   const pathname = usePathname()
 
-  // @ts-ignore
-  if (isStaticQuery || !community) return {}
+  return useMemo(() => {
+    // 如果是静态查询或者 community 不存在，直接返回空对象
+    if (isStaticQuery || !community) return {}
 
-  return parseDashboard(community, pathname)
+    return parseDashboard(community, pathname)
+  }, [community, isStaticQuery, pathname]) as TParseDashboard // 当这些值变化时，才重新计算结果
 }
 
 /**
  * parse cat & state from url search params
  * used for sync state in articles filter bar
  */
+
 export const useFilterSearchParams = (): TFilterSearchParams => {
   const searchParams = useSearchParams()
-  const filter = {
-    activeCat: null,
-    activeState: null,
-    activeOrder: null,
-  }
 
-  const cat = searchParams.get(URL_PARAM.CAT)?.toUpperCase()
-  const state = searchParams.get(URL_PARAM.STATE)?.toUpperCase()
-  const order = searchParams.get(URL_PARAM.ORDER)?.toUpperCase()
+  return useMemo(() => {
+    const filter = {
+      activeCat: null,
+      activeState: null,
+      activeOrder: null,
+    }
 
-  if (includes(cat, values(ARTICLE_CAT))) filter.activeCat = cat
-  if (includes(state, values(ARTICLE_STATE))) filter.activeState = state
-  if (includes(order, values(ARTICLE_ORDER))) filter.activeOrder = order
+    const cat = searchParams.get(URL_PARAM.CAT)?.toUpperCase()
+    const state = searchParams.get(URL_PARAM.STATE)?.toUpperCase()
+    const order = searchParams.get(URL_PARAM.ORDER)?.toUpperCase()
 
-  return filter
+    if (includes(cat, values(ARTICLE_CAT))) filter.activeCat = cat
+    if (includes(state, values(ARTICLE_STATE))) filter.activeState = state
+    if (includes(order, values(ARTICLE_ORDER))) filter.activeOrder = order
+
+    return filter
+  }, [searchParams]) // useMemo依赖于searchParams对象
 }
+
+// export const useFilterSearchParams = (): TFilterSearchParams => {
+//   const searchParams = useSearchParams()
+//   const filter = {
+//     activeCat: null,
+//     activeState: null,
+//     activeOrder: null,
+//   }
+
+//   const cat = searchParams.get(URL_PARAM.CAT)?.toUpperCase()
+//   const state = searchParams.get(URL_PARAM.STATE)?.toUpperCase()
+//   const order = searchParams.get(URL_PARAM.ORDER)?.toUpperCase()
+
+//   if (includes(cat, values(ARTICLE_CAT))) filter.activeCat = cat
+//   if (includes(state, values(ARTICLE_STATE))) filter.activeState = state
+//   if (includes(order, values(ARTICLE_ORDER))) filter.activeOrder = order
+
+//   return filter
+// }
