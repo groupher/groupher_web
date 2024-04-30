@@ -78,7 +78,7 @@ const rootStore = T.model({
   metric: T.opt(T.string, METRIC.COMMUNITY),
   // @ts-ignore TODO:
   theme: T.opt(ThemeStore, ThemeDefaults),
-  locale: T.opt(T.enum('locale', values(LOCALE)), LOCALE.ZH),
+  locale: T.opt(T.enum('locale', values(LOCALE)), LOCALE.EN),
   localeJson: T.opt(T.string, '{}'),
   errorCode: T.maybeNull(T.number),
 

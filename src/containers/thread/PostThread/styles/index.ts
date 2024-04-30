@@ -47,6 +47,7 @@ export const MobileCardsMainWrapper = styled(MainWrapper)`
 export const FilterWrapper = styled.div`
   ${css.row('align-center')};
   margin-bottom: 5px;
+  height: 40px;
 
   ${css.media.mobile`
     margin-bottom: 0;

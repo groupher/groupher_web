@@ -4,16 +4,16 @@
  *
  */
 
-import { FC, ReactNode, lazy, Suspense } from 'react'
+import { FC, ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TSpace, TPagi } from '@/spec'
 
 import { buildLog } from '@/logger'
+import usePagedPosts from '@/hooks/usePagedPosts'
 
 import { EmptyWrapper, BottomMsg } from './styles'
-
-const RealPagi = lazy(() => import('./RealPagi'))
+import RealPagi from './RealPagi'
 
 const log = buildLog('w:Pagi:index')
 
@@ -35,18 +35,15 @@ const BottomFooter = ({ show, msg }) => {
 }
 
 const Pagi: FC<TProps> = ({
-  pageNumber = 0,
-  pageSize = 0,
-  totalCount = 0,
-  totalPages = 0,
   onChange = log,
-
   showBottomMsg = false,
   emptyMsg = '还没有讨论',
   noMoreMsg = '没有更多讨论了',
-
   ...restProps
 }) => {
+  const { pagedPosts } = usePagedPosts()
+  const { pageNumber, pageSize, totalCount, totalPages } = pagedPosts
+
   const handlePageChange = (page: number) => {
     onChange(page)
   }
@@ -62,16 +59,14 @@ const Pagi: FC<TProps> = ({
   return (
     <>
       {hasExtraPage(totalCount, pageSize) ? (
-        <Suspense fallback={null}>
-          <RealPagi
-            pageNumber={pageNumber}
-            totalCount={totalCount}
-            totalPages={totalPages}
-            pageSize={pageSize}
-            onChange={handlePageChange}
-            {...restProps}
-          />
-        </Suspense>
+        <RealPagi
+          pageNumber={pageNumber}
+          totalCount={totalCount}
+          totalPages={totalPages}
+          pageSize={pageSize}
+          onChange={handlePageChange}
+          {...restProps}
+        />
       ) : (
         <EmptyWrapper {...restProps}>
           <BottomFooter show={showBottomMsg} msg={noMoreMsg} />

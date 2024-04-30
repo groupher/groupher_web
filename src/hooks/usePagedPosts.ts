@@ -20,8 +20,10 @@ const usePagedPosts = (): TRes => {
     throw new Error('Store cannot be null, please add a context provider')
   }
 
-  const viewingCommunity = store.viewing.community.slug
-  const curPageNumber = store.articles.pagedPosts.pageNumber
+  const viewingCommunity = 'home' // store.viewing.community.slug
+  const curPageNumber = 1 // store.articles.pagedPosts.pageNumber
+  // console.log('## viewingCommunityd: ', viewingCommunity)
+  // console.log('## curPageNumber: ', curPageNumber)
 
   const resState = useMemo(() => toJS(store.articles.resState), [viewingCommunity, curPageNumber])
   const pagedPosts = useMemo(

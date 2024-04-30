@@ -28,18 +28,20 @@ const useLoadI18n = () => {
   // const [localeJson, setLocaleJson] = useState({})
   const [error, setError] = useState(null)
 
-  const loadLocale = async (locale: TLocale = LOCALE.EN) => {
+  const loadLocale = async (locale: TLocale | null = null) => {
     setError(null)
 
     try {
-      const localeData = await loadLocaleData(locale)
+      const theLocale = locale || store.locale
+
+      const localeData = await loadLocaleData(theLocale)
 
       // @ts-ignore
-      BStore.set(`locale.${locale}`, localeData.default as string)
-      console.log('## seting localeJson: ', localeData.default)
+      BStore.set(`locale.${theLocale}`, localeData.default as string)
+      // console.log('## seting localeJson: ', localeData.default)
       // localeJson = localeData.default
       // setLocaleJson(localeData.default)
-      store.setLocale(locale)
+      store.setLocale(theLocale)
       store.setLocaleJson(JSON.stringify(localeData.default))
     } catch (err) {
       setError(err)
@@ -47,7 +49,7 @@ const useLoadI18n = () => {
     }
   }
 
-  return { error, loadLocale }
+  return { error, loadLocale, locale: store.locale }
 }
 
 export default useLoadI18n

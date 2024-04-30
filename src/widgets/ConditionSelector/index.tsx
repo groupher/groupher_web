@@ -1,6 +1,10 @@
-import { FC, memo, useState, useRef } from 'react'
+import { FC, useState, useRef } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import type { TSpace, TTooltipPlacement, TConditionMode } from '@/spec'
+
+// import useTrans from '@/hooks/useTrans'
+import { useLang } from '@/i18n'
 
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
 import Menu from '@/widgets/Menu'
@@ -35,6 +39,9 @@ const ConditionSelector: FC<TProps> = ({
   const [offset, setOffset] = useState([38, 5])
   const [menuOpen, setMenuOpen] = useState(false)
   const ref = useRef(null)
+
+  // const hello = useLang()
+  // console.log('## the hello: ', hello)
 
   const popWidth = 142
 
@@ -99,4 +106,4 @@ const ConditionSelector: FC<TProps> = ({
   )
 }
 
-export default memo(ConditionSelector)
+export default observer(ConditionSelector)

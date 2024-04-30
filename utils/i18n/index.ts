@@ -1,5 +1,11 @@
 // this is tmp, use react-i18n .. later
 
+import { createContext, useContext } from 'react'
+
+export const I18nContext = createContext(null)
+
+export const useLang = () => useContext(I18nContext)
+
 const I18nDict = {
   community: '社区',
   posts: '帖子',

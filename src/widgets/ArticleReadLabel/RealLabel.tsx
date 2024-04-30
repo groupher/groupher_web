@@ -3,7 +3,6 @@
  */
 
 import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TSpace } from '@/spec'
 import { buildLog } from '@/logger'
@@ -28,4 +27,4 @@ const ReadLabel: FC<TProps> = ({ isLogin, viewed, size = 8, ...restProps }) => {
   return null
 }
 
-export default observer(ReadLabel)
+export default ReadLabel

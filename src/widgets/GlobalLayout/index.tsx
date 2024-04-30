@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, ReactNode, lazy, Suspense } from 'react'
+import { FC, ReactNode, lazy, Suspense, useEffect } from 'react'
 import { Provider as BalancerTextProvider } from 'react-wrap-balancer'
 
 import METRIC from '@/constant/metric'
@@ -36,6 +36,7 @@ type TProps = {
 
 const GlobalLayout: FC<TProps> = ({ children }) => {
   const metric = useMetric()
+
   // useSyncAccount()
   // const [showDashboardAlertUI, setShowDashboardAlertUI] = useState(false)
   // const isMobile = false

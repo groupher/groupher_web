@@ -2,14 +2,19 @@
  * ArticleReadLabel
  */
 
-import { FC, lazy, Suspense } from 'react'
-import { observer } from 'mobx-react-lite'
+import { FC } from 'react'
+// import { observer } from 'mobx-react-lite'
+import dynamic from 'next/dynamic'
 
 import type { TSpace } from '@/spec'
 import { buildLog } from '@/logger'
 import useAccount from '@/hooks/useAccount'
 
-const ReadedLabel = lazy(() => import('./RealLabel'))
+export const RealLabel = dynamic(() => import('./RealLabel'), {
+  ssr: false,
+})
+
+// const ReadedLabel = lazy(() => import('./RealLabel'))
 
 const _log = buildLog('w:ArticleReadLabel:index')
 
@@ -21,11 +26,8 @@ export type TProps = {
 const ArticleReadLabel: FC<TProps> = (props) => {
   const { isLogin } = useAccount()
 
-  return (
-    <Suspense fallback={null}>
-      <ReadedLabel isLogin={isLogin} {...props} />
-    </Suspense>
-  )
+  return <RealLabel isLogin={isLogin} {...props} />
 }
 
-export default observer(ArticleReadLabel)
+// export default observer(ArticleReadLabel)
+export default ArticleReadLabel

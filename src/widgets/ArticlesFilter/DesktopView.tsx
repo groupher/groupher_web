@@ -14,6 +14,7 @@ import { CONDITION_MODE } from '@/constant/mode'
 import TYPE from '@/constant/type'
 import { BANNER_LAYOUT } from '@/constant/layout'
 
+import usePagedPosts from '@/hooks/usePagedPosts'
 import useBannerLayout from '@/hooks/useBannerLayout'
 import useArticlesFilter from '@/hooks/useArticlesFilter'
 
@@ -30,8 +31,10 @@ import { Wrapper } from './styles'
 
 const _log = buildLog('w:ArticlesFilter:index')
 
-const ArticlesFilter: FC<TProps> = ({ resState = TYPE.RES_STATE.DONE, mode = 'default' }) => {
+const ArticlesFilter: FC<TProps> = ({ mode = 'default' }) => {
+  const { resState } = usePagedPosts()
   const bannerLayout = useBannerLayout()
+
   const {
     cat: activeCat,
     state: activeState,
@@ -93,4 +96,5 @@ const ArticlesFilter: FC<TProps> = ({ resState = TYPE.RES_STATE.DONE, mode = 'de
   )
 }
 
+// export default ArticlesFilter
 export default observer(ArticlesFilter)
