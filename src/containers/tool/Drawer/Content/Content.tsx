@@ -107,8 +107,8 @@ const Content: FC<TProps> = ({ type, onLoad }) => {
       return (
         <Suspense fallback={<Loading />}>
           <ArticleViewer />
-          /** * to notify useOverlayScrollbars the dynamic loaded component is ready *
-          OverlayScrollbars 插件在第一次初始化 dynamic Comp 时会出错，相当恶心 */
+          {/* to notify useOverlayScrollbars the dynamic loaded component is ready *
+          OverlayScrollbars 插件在第一次初始化 dynamic Comp 时会出错，相当恶心  */}
           <LoadWatcher onLoad={onLoad} />
         </Suspense>
       )
