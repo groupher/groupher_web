@@ -3,8 +3,10 @@
  * https://formidable.com/open-source/urql/docs/api/urql/#usequery
  * https://formidable.com/open-source/urql/docs/api/core/#operationresult
  */
+
 import { useMemo } from 'react'
 import { values, includes } from 'ramda'
+
 import { useQuery } from '@urql/next'
 import { usePathname, useSearchParams } from 'next/navigation'
 
@@ -55,6 +57,34 @@ export const useThemeFromURL = (): TThemeName => {
     }
     return THEME.DAY
   }, [theme]) // 依赖项是 theme，只有 theme 变化时才重新计算
+}
+
+export const useI18n = () => {
+  // console.log('## data: ', data)
+
+  const I18nQuery = `
+    query($locale: String!) {
+      clientI18n(locale: $locale) {
+        locale
+      }
+    }
+  `
+
+  const [result] = useQuery({
+    query: I18nQuery,
+    variables: { locale: 'en' },
+    pause: false,
+  })
+
+  console.log('## the i18n reqult: ', result.data)
+
+  return result.data
+  // return {
+  //   post: '帖子',
+  //   'article.sort': '排序?',
+  //   'article.cat': '分类',
+  //   'article.state': '状态',
+  // }
 }
 
 // export const useThemeFromURL = (): TThemeName => {

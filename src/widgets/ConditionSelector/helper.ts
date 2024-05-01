@@ -33,15 +33,18 @@ export const getActiveMenuItem = (items: TMenuItem[], active: TActiveCondition):
 export const getTitle = (mode: TConditionMode): string => {
   switch (mode) {
     case CONDITION_MODE.STATE: {
-      return '状态'
+      // return '状态'
+      return 'article.state'
     }
 
     case CONDITION_MODE.CAT: {
-      return '类别'
+      // return '类别'
+      return 'article.cat'
     }
 
     case CONDITION_MODE.ORDER: {
-      return '排序'
+      // return '排序'
+      return 'article.sort'
     }
 
     default: {

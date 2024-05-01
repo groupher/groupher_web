@@ -2,9 +2,43 @@
 
 import { createContext, useContext } from 'react'
 
+import type { TLocale } from '@/spec'
+import { LOCALE } from '@/constant/i18n'
+
 export const I18nContext = createContext(null)
 
 export const useLang = () => useContext(I18nContext)
+
+export const loadLocaleData2 = (locale = 'en') => {
+  return new Promise((resolve, reject) => {
+    switch (locale) {
+      case LOCALE.ZH:
+        import('@/i18n/zh.json')
+          .then((module) => resolve(module.default))
+          .catch((error) => reject(error))
+        break
+      case LOCALE.EN:
+        import('@/i18n/en.json')
+          .then((module) => resolve(module.default))
+          .catch((error) => reject(error))
+        break
+      default:
+        reject(new Error(`Unsupported locale: ${locale}`))
+    }
+  })
+}
+
+export const loadLocaleData = async (locale: TLocale = 'en') => {
+  switch (locale) {
+    case LOCALE.ZH:
+      return await import('@/i18n/zh.json')
+    case LOCALE.EN:
+      return await import('@/i18n/en.json')
+
+    default:
+      throw new Error(`Unsupported locale: ${locale}`)
+  }
+}
 
 const I18nDict = {
   community: '社区',

@@ -3,11 +3,12 @@
 import { FC, ReactNode, memo } from 'react'
 import { Provider } from 'mobx-react'
 
-import LangParser from 'accept-language-parser'
+// import LangParser from 'accept-language-parser'
 
 import { useStore } from '@/stores/init'
 
 import {
+  useI18n,
   useThemeFromURL,
   useMetric,
   useCommunity,
@@ -30,6 +31,7 @@ type TProps = {
 
 const RootStoreWrapper: FC<TProps> = ({ children }) => {
   const theme = useThemeFromURL()
+  const localeData = useI18n()
 
   // const hello = LangParser.parse('zh-CN,zh;q=0.9,en;q=0.8,ja;q=0.7,it;q=0.6,fr;q=0.5,zh-TW;q=0.4')
   // console.log('## hello: ', hello)
@@ -72,9 +74,9 @@ const RootStoreWrapper: FC<TProps> = ({ children }) => {
     theme: {
       curTheme: theme,
     },
+    localeData,
   })
 
-  console.log('## root store provider')
   return <Provider store={store}>{children}</Provider>
 }
 

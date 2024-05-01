@@ -79,7 +79,7 @@ const rootStore = T.model({
   // @ts-ignore TODO:
   theme: T.opt(ThemeStore, ThemeDefaults),
   locale: T.opt(T.enum('locale', values(LOCALE)), LOCALE.EN),
-  localeJson: T.opt(T.string, '{}'),
+  localeData: T.frozen(),
   errorCode: T.maybeNull(T.number),
 
   communityDigestInView: T.opt(T.bool, true),
@@ -211,9 +211,6 @@ const rootStore = T.model({
     },
     setLocale(locale: TLocale): void {
       self.locale = locale
-    },
-    setLocaleJson(json: string): void {
-      self.localeJson = json
     },
     mark(sobj): void {
       markStates(sobj, self)

@@ -3,8 +3,7 @@ import { observer } from 'mobx-react-lite'
 
 import type { TSpace, TTooltipPlacement, TConditionMode } from '@/spec'
 
-// import useTrans from '@/hooks/useTrans'
-import { useLang } from '@/i18n'
+import useTrans from '@/hooks/useTrans'
 
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
 import Menu from '@/widgets/Menu'
@@ -40,8 +39,10 @@ const ConditionSelector: FC<TProps> = ({
   const [menuOpen, setMenuOpen] = useState(false)
   const ref = useRef(null)
 
-  // const hello = useLang()
-  // console.log('## the hello: ', hello)
+  const { t } = useTrans()
+
+  // const langData = useLang()
+  // console.log('## the langData: ', langData)
 
   const popWidth = 142
 
@@ -67,7 +68,7 @@ const ConditionSelector: FC<TProps> = ({
           popWidth={popWidth}
         >
           <DropdownButton $active={menuOpen} selected={selected}>
-            {title}
+            {t(title)}
             <Space right={3} />
           </DropdownButton>
         </Menu>
@@ -98,7 +99,7 @@ const ConditionSelector: FC<TProps> = ({
             placement={placement}
             popWidth={popWidth}
           >
-            <ActiveLabel activeItem={activeMenuItem} title={title} condition={active} />
+            <ActiveLabel activeItem={activeMenuItem} title={t(title)} condition={active} />
           </Menu>
         </DropdownButton>
       )}
@@ -106,4 +107,4 @@ const ConditionSelector: FC<TProps> = ({
   )
 }
 
-export default observer(ConditionSelector)
+export default ConditionSelector
