@@ -10,6 +10,8 @@ import { values, includes } from 'ramda'
 import { useQuery } from '@urql/next'
 import { usePathname, useSearchParams } from 'next/navigation'
 
+// import LangParser from 'accept-language-parser'
+
 import type { TCommunity, TMetric, TThemeName } from '@/spec'
 import { P } from '@/schemas'
 import { THREAD, ARTICLE_THREAD } from '@/constant/thread'
@@ -17,6 +19,7 @@ import THEME from '@/constant/theme'
 import METRIC from '@/constant/metric'
 import URL_PARAM from '@/constant/url_param'
 import { ARTICLE_CAT, ARTICLE_STATE, ARTICLE_ORDER } from '@/constant/gtd'
+import { i18nQuery, useParseLang } from '@/i18n'
 
 import type {
   TCommunityRes,
@@ -59,32 +62,29 @@ export const useThemeFromURL = (): TThemeName => {
   }, [theme]) // 依赖项是 theme，只有 theme 变化时才重新计算
 }
 
+/**
+ * i18n 的 workflow 比较 tricky, 为了在 SSR 阶段获取到 locale 语言包，在这里向
+ * 其他 GQ API 一样发起请求，但是这里的请求是被 GraphqlClient 拦截的，不会真的去后端
+ * 而是返回本地文件，这里的 locale 参数来自 query string
+ */
 export const useI18n = () => {
+  const locale = useParseLang()
+  // const searchParams = useSearchParams()
+  console.log('## my lang: ', locale)
   // console.log('## data: ', data)
 
-  const I18nQuery = `
-    query($locale: String!) {
-      clientI18n(locale: $locale) {
-        locale
-      }
-    }
-  `
+  // NOTE: put this parser into frontend maybe ?
+  // const hello = LangParser.parse('zh-CN,zh;q=0.9,en;q=0.8,ja;q=0.7,it;q=0.6,fr;q=0.5,zh-TW;q=0.4')
+  // console.log('## hello: ', hello)
 
   const [result] = useQuery({
-    query: I18nQuery,
+    query: i18nQuery,
     variables: { locale: 'en' },
     pause: false,
   })
 
-  console.log('## the i18n reqult: ', result.data)
-
+  // console.log('## the i18n reqult: ', result.data)
   return result.data
-  // return {
-  //   post: '帖子',
-  //   'article.sort': '排序?',
-  //   'article.cat': '分类',
-  //   'article.state': '状态',
-  // }
 }
 
 // export const useThemeFromURL = (): TThemeName => {

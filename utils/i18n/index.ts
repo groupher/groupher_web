@@ -1,6 +1,7 @@
 // this is tmp, use react-i18n .. later
 
 import { createContext, useContext } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 import type { TLocale } from '@/spec'
 import { LOCALE } from '@/constant/i18n'
@@ -9,7 +10,25 @@ export const I18nContext = createContext(null)
 
 export const useLang = () => useContext(I18nContext)
 
-export const loadLocaleData2 = (locale = 'en') => {
+/**
+ * this query is used for GraphQL, which will be intercepted by frontend
+ * in short: fake
+ */
+export const i18nQuery = `
+  query($locale: String!) {
+    clientI18n(locale: $locale) {
+      locale
+    }
+  }
+`
+
+export const useParseLang = (): TLocale => {
+  const searchParams = useSearchParams()
+
+  return (searchParams.get('lang') || LOCALE.EN) as TLocale
+}
+
+export const loadLocaleData = (locale: TLocale = LOCALE.EN) => {
   return new Promise((resolve, reject) => {
     switch (locale) {
       case LOCALE.ZH:
@@ -26,18 +45,6 @@ export const loadLocaleData2 = (locale = 'en') => {
         reject(new Error(`Unsupported locale: ${locale}`))
     }
   })
-}
-
-export const loadLocaleData = async (locale: TLocale = 'en') => {
-  switch (locale) {
-    case LOCALE.ZH:
-      return await import('@/i18n/zh.json')
-    case LOCALE.EN:
-      return await import('@/i18n/en.json')
-
-    default:
-      throw new Error(`Unsupported locale: ${locale}`)
-  }
 }
 
 const I18nDict = {
