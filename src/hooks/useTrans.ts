@@ -1,13 +1,17 @@
-import { useContext } from 'react'
+import { useContext, useCallback } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 
-import { useCallback } from 'react'
+import type { TLocale } from '@/spec'
 // import { MobXProviderContext } from 'mobx-react'
 
+type TRet = {
+  t: (key: string) => string
+  locale: TLocale
+}
 /**
  * NOTE: should use observer to wrap the component who use this hook
  */
-const useTrans = () => {
+const useTrans = (): TRet => {
   const { store } = useContext(MobXProviderContext)
 
   // const { store } = useContext(MobXProviderContext)
@@ -22,7 +26,7 @@ const useTrans = () => {
   //   setLocale(BStore.get(`locale.${store.locale}`))
   // }, [store.locale])
 
-  return { t }
+  return { t, locale: store.locale }
 }
 
 export default useTrans

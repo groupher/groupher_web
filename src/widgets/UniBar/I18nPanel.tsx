@@ -11,16 +11,10 @@ import { Wrapper, MenuBar, Icon } from './styles/i18n_panel'
 
 const I18nPanel: FC = () => {
   const { inView: badgeInView } = useCommunityDigestViewport()
-
-  const locale = 'en' // TODO
-  const { t } = useTrans()
-
-  console.log('## the fuck locale: ', locale)
+  const { locale } = useTrans()
 
   return (
     <Wrapper>
-      <h5>{t('post')}</h5>
-
       <MenuBar $withTop={!badgeInView}>
         <Icon.Guard />
         English
