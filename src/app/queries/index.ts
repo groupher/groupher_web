@@ -32,6 +32,7 @@ import type {
   TParsedWallpaper,
   TParseDashboard,
   TFilterSearchParams,
+  TUseI18n,
 } from './spec'
 
 import {
@@ -67,7 +68,7 @@ export const useThemeFromURL = (): TThemeName => {
  * 其他 GQ API 一样发起请求，但是这里的请求是被 GraphqlClient 拦截的，不会真的去后端
  * 而是返回本地文件，这里的 locale 参数来自 query string
  */
-export const useI18n = () => {
+export const useI18n = (): TUseI18n => {
   const locale = useParseLang()
   // const searchParams = useSearchParams()
   console.log('## my lang: ', locale)
@@ -79,11 +80,15 @@ export const useI18n = () => {
 
   const [result] = useQuery({
     query: i18nQuery,
+    // TODO: use community.locale or search lang query
     variables: { locale },
     pause: false,
   })
 
-  return JSON.stringify(result.data)
+  return {
+    locale,
+    localeData: JSON.stringify(result.data),
+  }
 }
 
 // export const useThemeFromURL = (): TThemeName => {

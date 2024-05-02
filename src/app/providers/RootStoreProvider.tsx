@@ -29,7 +29,7 @@ type TProps = {
 
 const RootStoreWrapper: FC<TProps> = ({ children }) => {
   const theme = useThemeFromURL()
-  const localeData = useI18n()
+  const { locale, localeData } = useI18n()
 
   const metric = useMetric()
   const activeThread = useThreadParam()
@@ -69,6 +69,7 @@ const RootStoreWrapper: FC<TProps> = ({ children }) => {
     theme: {
       curTheme: theme,
     },
+    locale,
     localeData,
   })
 
