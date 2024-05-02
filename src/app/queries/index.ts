@@ -79,12 +79,11 @@ export const useI18n = () => {
 
   const [result] = useQuery({
     query: i18nQuery,
-    variables: { locale: 'en' },
+    variables: { locale },
     pause: false,
   })
 
-  // console.log('## the i18n reqult: ', result.data)
-  return result.data
+  return JSON.stringify(result.data)
 }
 
 // export const useThemeFromURL = (): TThemeName => {

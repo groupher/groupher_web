@@ -75,11 +75,11 @@ const rootStore = T.model({
   viewing: T.opt(ViewingStore, {}),
   articles: T.opt(ArticlesStore, {}),
   comments: T.opt(CommentsStore, {}),
-  metric: T.opt(T.string, METRIC.COMMUNITY),
+  metric: T.opt(T.str, METRIC.COMMUNITY),
   // @ts-ignore TODO:
   theme: T.opt(ThemeStore, ThemeDefaults),
   locale: T.opt(T.enum('locale', values(LOCALE)), LOCALE.EN),
-  localeData: T.frozen(),
+  localeData: T.opt(T.str, '{}'),
   errorCode: T.maybeNull(T.number),
 
   communityDigestInView: T.opt(T.bool, true),
