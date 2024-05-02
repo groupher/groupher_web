@@ -1,11 +1,11 @@
 import { useContext, useCallback, useMemo } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 
-import type { TLocale } from '@/spec'
+import type { TLocale, TTransKey } from '@/spec'
 // import { MobXProviderContext } from 'mobx-react'
 
 type TRet = {
-  t: (key: string) => string
+  t: (key: TTransKey) => string
   locale: TLocale
 }
 /**
@@ -17,7 +17,7 @@ const useTrans = (): TRet => {
   const localeJson = useMemo(() => JSON.parse(store.localeData), [store.localeData])
 
   const t = useCallback(
-    (key: string): string => {
+    (key: TTransKey): string => {
       return localeJson?.[key] || '--'
     },
     [store.localeData],

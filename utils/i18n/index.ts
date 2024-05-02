@@ -1,14 +1,9 @@
 // this is tmp, use react-i18n .. later
 
-import { createContext, useContext } from 'react'
 import { useSearchParams } from 'next/navigation'
 
 import type { TLocale } from '@/spec'
 import { LOCALE } from '@/constant/i18n'
-
-export const I18nContext = createContext(null)
-
-export const useLang = () => useContext(I18nContext)
 
 /**
  * this query is used for GraphQL, which will be intercepted by frontend
@@ -32,12 +27,12 @@ export const loadLocaleFile = (locale: TLocale = LOCALE.EN) => {
   return new Promise((resolve, reject) => {
     switch (locale) {
       case LOCALE.ZH:
-        import('@/i18n/zh.json')
+        import('@/utils/i18n/zh')
           .then((module) => resolve(module.default))
           .catch((error) => reject(error))
         break
       case LOCALE.EN:
-        import('@/i18n/en.json')
+        import('@/utils/i18n/en')
           .then((module) => resolve(module.default))
           .catch((error) => reject(error))
         break

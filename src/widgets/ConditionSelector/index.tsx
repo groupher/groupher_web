@@ -41,9 +41,6 @@ const ConditionSelector: FC<TProps> = ({
 
   const { t } = useTrans()
 
-  // const langData = useLang()
-  // console.log('## the langData: ', langData)
-
   const popWidth = 142
 
   const menuItems = getMenuItems(mode)
