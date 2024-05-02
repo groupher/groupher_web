@@ -10,7 +10,7 @@ import { UrqlProvider, ssrExchange, cacheExchange, fetchExchange, createClient }
 import { makeResult } from '@urql/core'
 import { filter, pipe, merge, mergeMap, share, fromPromise } from 'wonka'
 
-import { loadLocaleData } from '@/i18n'
+import { loadLocaleFile } from '@/i18n'
 import { GRAPHQL_ENDPOINT } from '@/config'
 
 type TProps = {
@@ -33,7 +33,7 @@ const localServeExchange = ({ forward }) => {
       mergeMap((operation) =>
         fromPromise(
           // @ts-ignore
-          loadLocaleData(operation.variables?.locale).then((result) =>
+          loadLocaleFile(operation.variables?.locale).then((result) =>
             // @ts-ignore
             makeResult(operation, { data: result }),
           ),

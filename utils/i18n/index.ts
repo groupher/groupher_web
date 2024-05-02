@@ -28,7 +28,7 @@ export const useParseLang = (): TLocale => {
   return (searchParams.get('lang') || LOCALE.EN) as TLocale
 }
 
-export const loadLocaleData = (locale: TLocale = LOCALE.EN) => {
+export const loadLocaleFile = (locale: TLocale = LOCALE.EN) => {
   return new Promise((resolve, reject) => {
     switch (locale) {
       case LOCALE.ZH:

@@ -212,6 +212,9 @@ const rootStore = T.model({
     setLocale(locale: TLocale): void {
       self.locale = locale
     },
+    setLocaleData(localeStr: string): void {
+      self.localeData = localeStr
+    },
     mark(sobj): void {
       markStates(sobj, self)
     },

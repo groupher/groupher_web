@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
-import useTrans from '@/hooks/useTrans'
+import useChangeI18n from '@/hooks/useChangeI18n'
 
 import { LOCALE } from '@/constant/i18n'
 import { SpaceGrow } from '@/widgets/Common'
@@ -11,18 +11,26 @@ import { Wrapper, MenuBar, Icon } from './styles/i18n_panel'
 
 const I18nPanel: FC = () => {
   const { inView: badgeInView } = useCommunityDigestViewport()
-  const { locale } = useTrans()
+  const { locale, changeLocale } = useChangeI18n()
 
   return (
     <Wrapper>
-      <MenuBar $withTop={!badgeInView}>
+      <MenuBar
+        $withTop={!badgeInView}
+        $active={locale === LOCALE.EN}
+        onClick={() => changeLocale(LOCALE.EN)}
+      >
         <Icon.Guard />
         English
         <SpaceGrow />
         {LOCALE.EN === locale && <Icon.Check />}
       </MenuBar>
 
-      <MenuBar $withTop={!badgeInView} $active>
+      <MenuBar
+        $withTop={!badgeInView}
+        $active={locale === LOCALE.ZH}
+        onClick={() => changeLocale(LOCALE.ZH)}
+      >
         <Icon.Panda />
         简体中文
         <SpaceGrow />

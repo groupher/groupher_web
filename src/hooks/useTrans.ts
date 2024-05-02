@@ -14,14 +14,13 @@ type TRet = {
 const useTrans = (): TRet => {
   const { store } = useContext(MobXProviderContext)
 
-  const localeJason = useMemo(() => JSON.parse(store.localeData), [store.localeData])
+  const localeJson = useMemo(() => JSON.parse(store.localeData), [store.localeData])
 
-  console.log('## got localeJason: ', localeJason)
   const t = useCallback(
     (key: string): string => {
-      return localeJason?.[key] || '--'
+      return localeJson?.[key] || '--'
     },
-    [store.locale],
+    [store.localeData],
   )
 
   return { t, locale: store.locale }
