@@ -3,6 +3,10 @@ export default {
   'article.sort': 'sort',
   'article.cat': 'category',
   'article.state': 'status',
+  intro: 'intro',
+  search: 'search',
+  about: 'about',
+  'team.member': 'team members',
   // unibar
   theme: 'theme',
   'active.users': 'active users',

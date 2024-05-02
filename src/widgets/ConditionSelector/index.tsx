@@ -65,7 +65,7 @@ const ConditionSelector: FC<TProps> = ({
           popWidth={popWidth}
         >
           <DropdownButton $active={menuOpen} selected={selected}>
-            {t(title)}
+            {t(title, 'titleCase')}
             <Space right={3} />
           </DropdownButton>
         </Menu>

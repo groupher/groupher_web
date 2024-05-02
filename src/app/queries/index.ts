@@ -85,10 +85,12 @@ export const useI18n = (): TUseI18n => {
     pause: false,
   })
 
-  return {
-    locale,
-    localeData: JSON.stringify(result.data),
-  }
+  return useMemo(() => {
+    return {
+      locale,
+      localeData: JSON.stringify(result.data),
+    }
+  }, [locale, result.data])
 }
 
 // export const useThemeFromURL = (): TThemeName => {
