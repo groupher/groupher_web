@@ -3,8 +3,17 @@ export default {
   'article.sort': 'sort',
   'article.cat': 'category',
   'article.state': 'status',
+  // unibar
+  theme: 'theme',
+  'active.users': 'active users',
+  'to.top': 'back top top',
+  'mention.msg': '@ messages',
+  locale: 'locale',
+  'default.locale': 'default locale',
   report: 'report',
   'groupher.feedback': 'feedback',
-  dashboard: 'dashboard',
+  dashboard: 'Dashboard',
+  //
+  more: 'more',
   '??': '??',
 }

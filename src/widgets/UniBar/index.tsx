@@ -9,6 +9,7 @@ import { observer } from 'mobx-react-lite'
 import { buildLog } from '@/logger'
 
 import useOutsideClick from '@/hooks/useOutsideClick'
+import useTrans from '@/hooks/useTrans'
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
 
 import { scrollToHeader } from '@/dom'
@@ -28,6 +29,7 @@ const _log = buildLog('c:AccountBar:index')
 const AccountBar: FC = () => {
   const ref = useRef(null)
   const { inView: badgeInView } = useCommunityDigestViewport()
+  const { t } = useTrans()
 
   const [expand, setExpand] = useState(false)
   const [menu, setMenu] = useState(MENU.DEFAULT.key)
@@ -63,13 +65,13 @@ const AccountBar: FC = () => {
       {menu === MENU.NOTIFY.key && <NotifyPanel />}
 
       <ButtonBar>
-        <Tooltip content={<TipText>回到顶部</TipText>} {...TIP_OPTIONS}>
+        <Tooltip content={<TipText>{t('to.top')}</TipText>} {...TIP_OPTIONS}>
           <TopBox $show={!badgeInView} onClick={() => scrollToHeader()}>
             <Icon.ArrowTop />
           </TopBox>
         </Tooltip>
 
-        <Tooltip content={<TipText>@ 消息</TipText>} {...TIP_OPTIONS}>
+        <Tooltip content={<TipText>{t('mention.msg')}</TipText>} {...TIP_OPTIONS}>
           <IconBox
             $active={menu === MENU.NOTIFY.key}
             onClick={() => {
@@ -81,7 +83,7 @@ const AccountBar: FC = () => {
           </IconBox>
         </Tooltip>
 
-        <Tooltip content={<TipText>活跃用户</TipText>} {...TIP_OPTIONS}>
+        <Tooltip content={<TipText>{t('active.users')}</TipText>} {...TIP_OPTIONS}>
           <PeopleBox
             $active={menu === MENU.PEOPLE.key}
             onClick={() => handleOpenMenu(MENU.PEOPLE.key)}
@@ -89,17 +91,17 @@ const AccountBar: FC = () => {
             <Icon.People $active={menu === MENU.PEOPLE.key} />
           </PeopleBox>
         </Tooltip>
-        <Tooltip content={<TipText>界面语言</TipText>} {...TIP_OPTIONS}>
+        <Tooltip content={<TipText>{t('locale')}</TipText>} {...TIP_OPTIONS}>
           <IconBox onClick={() => handleOpenMenu(MENU.I18N.key)}>
             <Icon.I18n />
           </IconBox>
         </Tooltip>
-        <Tooltip content={<TipText>主题</TipText>} {...TIP_OPTIONS}>
+        <Tooltip content={<TipText>{t('theme')}</TipText>} {...TIP_OPTIONS}>
           <IconBox>
             <ThemeSwitch />
           </IconBox>
         </Tooltip>
-        <Tooltip content={<TipText>更多</TipText>} {...TIP_OPTIONS}>
+        <Tooltip content={<TipText>{t('more')}</TipText>} {...TIP_OPTIONS}>
           <IconBox $active={menu === MENU.MORE.key} onClick={() => handleOpenMenu(MENU.MORE.key)}>
             <Icon.More />
           </IconBox>
