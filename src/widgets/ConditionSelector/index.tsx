@@ -1,5 +1,4 @@
 import { FC, useState, useRef } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TSpace, TTooltipPlacement, TConditionMode } from '@/spec'
 
