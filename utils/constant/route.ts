@@ -55,6 +55,7 @@ export const DASHBOARD_BASEINFO_ROUTE = {
   BASIC: 'basic',
   SOCIAL: 'social',
   OTHER: 'other',
+  LOGOS: 'logos',
 } as Record<Uppercase<TDashboardBaseInfoRoute>, TDashboardBaseInfoRoute>
 
 export const DASHBOARD_SEO_ROUTE = {

@@ -274,6 +274,10 @@ export const BASEINFO_TABS = [
     slug: DASHBOARD_BASEINFO_ROUTE.BASIC,
   },
   {
+    title: 'Logo',
+    slug: DASHBOARD_BASEINFO_ROUTE.LOGOS,
+  },
+  {
     title: '社交媒体',
     slug: DASHBOARD_BASEINFO_ROUTE.SOCIAL,
   },
