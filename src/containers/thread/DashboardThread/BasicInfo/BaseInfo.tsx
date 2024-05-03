@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
+import { find } from 'ramda'
 
 import type { TSelectOption } from '@/spec'
 import { Br } from '@/widgets/Common'
@@ -13,14 +14,9 @@ import { Wrapper, Label, Inputer, Hint } from '../styles/basic_info/base_info'
 import { edit } from '../logic'
 
 const BasicInfo: FC = () => {
-  const { saving, desc, title, slug, homepage, introduction, isTouched } = useBaseInfo()
+  const { saving, locale, desc, title, slug, homepage, introduction, isTouched } = useBaseInfo()
 
-  const curLangOption = {
-    label: '简体中文',
-    value: 'zh',
-  }
-
-  const langsOptions = [
+  const LANGS_OPTIONS = [
     {
       label: '简体中文',
       value: 'zh',
@@ -31,14 +27,19 @@ const BasicInfo: FC = () => {
     },
   ]
 
+  const curLangOption = find((o) => o.value === locale, LANGS_OPTIONS)
+
   return (
     <Wrapper>
-      <Label>默认语言</Label>
+      <Label>默认语言 ({locale})</Label>
       <Select
         value={curLangOption}
-        options={langsOptions}
+        options={LANGS_OPTIONS}
         placeholder="请选择标签所在分组"
-        onChange={(option: TSelectOption) => edit(option.value, 'locale')}
+        onChange={(option: TSelectOption) => {
+          console.log('## change locale: ', option.value)
+          edit(option.value, 'locale')
+        }}
         top={10}
         bottom={10}
         right={8}

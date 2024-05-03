@@ -25,6 +25,7 @@ import {
   RSS_TYPE,
 } from '@/constant/layout'
 import { BUILDIN_ALIAS } from '@/constant/name'
+import { LOCALE } from '@/constant/i18n'
 
 import { T } from '@/mobx'
 
@@ -107,6 +108,7 @@ export const settingsModalFields = {
   // baseInfo
   favicon: T.opt(T.string, ''),
   logo: T.opt(T.string, ''),
+  locale: T.opt(T.string, LOCALE.EN),
   title: T.opt(T.string, ''),
   slug: T.opt(T.string, ''),
   desc: T.opt(T.string, ''),

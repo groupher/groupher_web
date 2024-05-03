@@ -521,6 +521,7 @@ export const DEFAULT_LINK_ITEMS = [
 
 export const BASEINFO_BASIC_KEYS = [
   'favicon',
+  'locale',
   'logo',
   'title',
   'desc',
