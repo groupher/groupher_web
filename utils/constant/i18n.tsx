@@ -11,6 +11,9 @@ import SpainSVG from '@/icons/Spain'
 export const LOCALE = {
   EN: 'en',
   ZH: 'zh',
+  'ZH-HANT': 'zh-hant',
+  RU: 'ru',
+  ES: 'es',
 } as Record<Uppercase<TLocale>, TLocale>
 
 const commonIcon = (comp) => {
@@ -45,13 +48,28 @@ const Icon = {
 
 export const LANGS_OPTIONS = [
   {
+    label: 'English',
+    value: LOCALE.EN,
+    icon: Icon.Guard,
+  },
+  {
     label: '简体中文',
     value: LOCALE.ZH,
     icon: Icon.Panda,
   },
   {
-    label: 'English',
-    value: LOCALE.EN,
-    icon: Icon.Guard,
+    label: '繁体中文',
+    value: LOCALE['ZH-HANT'],
+    icon: Icon.Hua,
+  },
+  {
+    label: 'Русский',
+    value: LOCALE.RU,
+    icon: Icon.Russia,
+  },
+  {
+    label: 'Español',
+    value: LOCALE.ES,
+    icon: Icon.Spain,
   },
 ] as TSelectOption[]
