@@ -1,22 +1,48 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
+import type { TSelectOption } from '@/spec'
 import { Br } from '@/widgets/Common'
+import Select from '@/widgets/Select'
 
 import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'
-
 import useBaseInfo from '../hooks/useBaseInfo'
+
 import { Wrapper, Label, Inputer, Hint } from '../styles/basic_info/base_info'
 import { edit } from '../logic'
 
 const BasicInfo: FC = () => {
   const { saving, desc, title, slug, homepage, introduction, isTouched } = useBaseInfo()
 
+  const curLangOption = {
+    label: '简体中文',
+    value: 'zh',
+  }
+
+  const langsOptions = [
+    {
+      label: '简体中文',
+      value: 'zh',
+    },
+    {
+      label: 'English',
+      value: 'en',
+    },
+  ]
+
   return (
     <Wrapper>
       <Label>默认语言</Label>
-      <Inputer value={homepage} onChange={(v) => edit(v, 'homepage')} />
+      <Select
+        value={curLangOption}
+        options={langsOptions}
+        placeholder="请选择标签所在分组"
+        onChange={(option: TSelectOption) => edit(option.value, 'locale')}
+        top={10}
+        bottom={10}
+        right={8}
+      />
       <Hint>社区界面的默认语言</Hint>
 
       <Label>社区域名</Label>

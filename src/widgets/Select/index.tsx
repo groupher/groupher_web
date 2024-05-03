@@ -10,7 +10,7 @@ import { FC, memo } from 'react'
 import ReactSelect from 'react-select'
 import CreatableReactSelect from 'react-select/creatable'
 
-import type { TSelectOption } from '@/spec'
+import type { TSelectOption, TSpace } from '@/spec'
 import { buildLog } from '@/logger'
 import useTheme from '@/hooks/useTheme'
 
@@ -34,7 +34,7 @@ type TProps = {
 
   onChange?: (option: TSelectOption | TSelectOption[]) => void
   onCreateOption?: (newopt: string) => void
-}
+} & TSpace
 
 const Select: FC<TProps> = ({
   testid = 'widget-select',
@@ -48,6 +48,7 @@ const Select: FC<TProps> = ({
   creatable = false,
   className = '',
   onCreateOption = log,
+  ...restProps
 }) => {
   // @ts-ignore
   const { themeMap } = useTheme()
@@ -107,7 +108,7 @@ const Select: FC<TProps> = ({
   }
 
   return (
-    <Wrapper $testid={testid} className={className}>
+    <Wrapper $testid={testid} className={className} {...restProps}>
       {!creatable ? (
         <ReactSelect {...baseProps} isMulti={isMulti} />
       ) : (

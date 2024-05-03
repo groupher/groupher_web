@@ -1,11 +1,14 @@
-import type { TTestable, TActive } from '@/spec'
+import type { TTestable, TActive, TSpace } from '@/spec'
 import styled, { css, theme } from '@/css'
 
 export { getSelectStyles } from './metric'
 
+type TWrapper = TTestable & TSpace
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
-}))<TTestable>``
+}))<TWrapper>`
+  ${(props) => css.spaceMargins(props)};
+`
 
 export const OptionRow = styled.div`
   ${css.row('align-end')};
