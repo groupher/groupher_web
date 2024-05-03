@@ -1,13 +1,16 @@
 import styled, { css, theme } from '@/css'
 
-import type { TActive } from '@/spec'
-
 import DownloadSVG from '@/icons/DownloadCircle'
 
 export const Wrapper = styled.div`
   ${css.size(22)};
   ${css.row('align-both')};
   border-radius: 3px;
+
+  svg {
+   /* to aoid pointer status like hover conflict */
+    pointer-events: none;
+  }
 
   &:hover {
     background: ${theme('hoverBg')};

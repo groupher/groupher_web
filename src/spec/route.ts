@@ -1,4 +1,4 @@
-export type TDashboardBaseInfoRoute = 'basic' | 'social' | 'other'
+export type TDashboardBaseInfoRoute = 'basic' | 'social' | 'logos' | 'other'
 export type TDashboardSEORoute = 'search_engine' | 'twitter'
 export type TDashboardDocRoute = 'table' | 'tree' | 'cover' | 'faq'
 export type TDashboardLayoutRoute = 'global' | 'post' | 'kanban' | 'changelog' | 'doc' | 'other'

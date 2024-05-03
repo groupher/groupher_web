@@ -97,6 +97,4 @@ class SR71 {
   }
 }
 
-/* const sr71$ = new SR71() */
 export default SR71
-// export default new SR71()

@@ -6,6 +6,7 @@ import { Provider } from 'mobx-react'
 import { useStore } from '@/stores/init'
 
 import {
+  useI18n,
   useThemeFromURL,
   useMetric,
   useCommunity,
@@ -28,6 +29,7 @@ type TProps = {
 
 const RootStoreWrapper: FC<TProps> = ({ children }) => {
   const theme = useThemeFromURL()
+  const { locale, localeData } = useI18n()
 
   const metric = useMetric()
   const activeThread = useThreadParam()
@@ -67,9 +69,10 @@ const RootStoreWrapper: FC<TProps> = ({ children }) => {
     theme: {
       curTheme: theme,
     },
+    locale,
+    localeData,
   })
 
-  console.log('## root store provider')
   return <Provider store={store}>{children}</Provider>
 }
 

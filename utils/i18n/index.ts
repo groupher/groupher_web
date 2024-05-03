@@ -1,5 +1,47 @@
 // this is tmp, use react-i18n .. later
 
+import { useSearchParams } from 'next/navigation'
+
+import type { TLocale } from '@/spec'
+import { LOCALE } from '@/constant/i18n'
+
+/**
+ * this query is used for GraphQL, which will be intercepted by frontend
+ * in short: fake
+ */
+export const i18nQuery = `
+  query($locale: String!) {
+    clientI18n(locale: $locale) {
+      locale
+    }
+  }
+`
+
+export const useParseLang = (): TLocale => {
+  const searchParams = useSearchParams()
+
+  return (searchParams.get('lang') || LOCALE.EN) as TLocale
+}
+
+export const loadLocaleFile = (locale: TLocale = LOCALE.EN) => {
+  return new Promise((resolve, reject) => {
+    switch (locale) {
+      case LOCALE.ZH:
+        import('@/utils/i18n/zh')
+          .then((module) => resolve(module.default))
+          .catch((error) => reject(error))
+        break
+      case LOCALE.EN:
+        import('@/utils/i18n/en')
+          .then((module) => resolve(module.default))
+          .catch((error) => reject(error))
+        break
+      default:
+        reject(new Error(`Unsupported locale: ${locale}`))
+    }
+  })
+}
+
 const I18nDict = {
   community: '社区',
   posts: '帖子',

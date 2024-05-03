@@ -1,6 +1,6 @@
 import { find } from 'ramda'
 
-import type { TConditionMode } from '@/spec'
+import type { TConditionMode, TTransKey } from '@/spec'
 import { CONDITION_MODE } from '@/constant/mode'
 import { POST_STATE_MENU_ITEMS, POST_CAT_MENU_ITEMS, POST_ORDER_MENU_ITEMS } from '@/constant/menu'
 
@@ -30,18 +30,18 @@ export const getActiveMenuItem = (items: TMenuItem[], active: TActiveCondition):
   return find((item) => item.key === active, items)
 }
 
-export const getTitle = (mode: TConditionMode): string => {
+export const getTitle = (mode: TConditionMode): TTransKey => {
   switch (mode) {
     case CONDITION_MODE.STATE: {
-      return '状态'
+      return 'article.state'
     }
 
     case CONDITION_MODE.CAT: {
-      return '类别'
+      return 'article.cat'
     }
 
     case CONDITION_MODE.ORDER: {
-      return '排序'
+      return 'article.sort'
     }
 
     default: {

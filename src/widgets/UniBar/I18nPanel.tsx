@@ -1,42 +1,40 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
+import type { TLocale } from '@/spec'
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
+import useChangeI18n from '@/hooks/useChangeI18n'
 
+import { LANGS_OPTIONS } from '@/constant/i18n'
 import { SpaceGrow } from '@/widgets/Common'
-import { Wrapper, MenuBar, Icon } from './styles/i18n_panel'
+
+import { Wrapper, MenuBar, LangIconBox, CheckIcon } from './styles/i18n_panel'
 
 const I18nPanel: FC = () => {
   const { inView: badgeInView } = useCommunityDigestViewport()
+  const { locale, changeLocale } = useChangeI18n()
 
   return (
     <Wrapper>
-      <MenuBar $withTop={!badgeInView}>
-        <Icon.Guard />
-        English
-      </MenuBar>
+      {LANGS_OPTIONS.map((LANG) => {
+        const Icon = LANG.icon
 
-      <MenuBar $withTop={!badgeInView} $active>
-        <Icon.Panda />
-        简体中文
-        <SpaceGrow />
-        <Icon.Check />
-      </MenuBar>
-
-      <MenuBar $withTop={!badgeInView}>
-        <Icon.Hua />
-        繁体中文
-      </MenuBar>
-
-      <MenuBar $withTop={!badgeInView}>
-        <Icon.Russia />
-        Русский
-      </MenuBar>
-
-      <MenuBar $withTop={!badgeInView}>
-        <Icon.Spain />
-        Español
-      </MenuBar>
+        return (
+          <MenuBar
+            $withTop={!badgeInView}
+            $active={locale === LANG.value}
+            onClick={() => changeLocale(LANG.value as TLocale)}
+          >
+            <LangIconBox>
+              {/* @ts-ignore */}
+              <Icon />
+            </LangIconBox>
+            {LANG.label}
+            <SpaceGrow />
+            {LANG.value === locale && <CheckIcon />}
+          </MenuBar>
+        )
+      })}
     </Wrapper>
   )
 }

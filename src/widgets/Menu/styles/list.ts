@@ -18,13 +18,19 @@ export const Item = styled.div<TItem>`
   margin-bottom: 1px;
 
   background: ${({ $active }) => ($active ? theme('menuHoverBg') : 'transparent')};
-  box-shadow: ${({ $active }) => ($active ? theme('button.boxShadow') : '')};
+  box-shadow: ${({ $active }) => ($active ? theme('shadow.xl') : '')};
+  border: 1px solid;
+  border-color: ${({ $active }) => ($active ? theme('divider') : 'transparent')};
+
   color: ${theme('article.title')};
 
   &:hover {
     font-weight: 500;
     background: ${theme('menuHoverBg')};
-    box-shadow: ${theme('button.boxShadow')};
+    color: ${theme('article.title')};
+    background: ${theme('menuHoverBg')};
+    box-shadow: ${theme('shadow.xl')};
+    border-color: ${theme('divider')};
     cursor: pointer;
   }
 

@@ -10,6 +10,7 @@ import { useInit } from './logic'
 
 const Mushroom: FC = () => {
   const store = useStore()
+
   useInit(store)
   const curThread = useViewingThread()
 
@@ -23,6 +24,8 @@ const Mushroom: FC = () => {
   )
 
   useEffect(() => {
+    // loadLocale()
+
     /**
      * this event is only hanle brower back/forward, current behavior is like producthunt
      */

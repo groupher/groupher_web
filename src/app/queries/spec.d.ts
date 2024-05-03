@@ -12,6 +12,7 @@ import type {
   TDashboardAliasRoute,
   TArticle,
   TDashboard,
+  TLocale,
 } from '@/spec'
 
 export type TSessionRes = TGQSSRResult & {
@@ -81,4 +82,9 @@ export type TParseDashboard = TDashboard & {
 export type TFilterSearchParams = {
   activeCat?: string | null
   activeState?: string | null
+}
+
+export type TUseI18n = {
+  locale: TLocale
+  localeData: string
 }

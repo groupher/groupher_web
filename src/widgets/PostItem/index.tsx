@@ -4,12 +4,10 @@
  *
  */
 
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import { FC, memo } from 'react'
 
-import type { TPost } from '@/spec'
+import type { TPost, TPostLayout } from '@/spec'
 import { POST_LAYOUT } from '@/constant/layout'
-import usePostLayout from '@/hooks/usePostLayout'
 import { buildLog } from '@/logger'
 
 import PHLayout from './PHLayout'
@@ -23,12 +21,11 @@ const _log = buildLog('w:PostItem:index')
 type TProps = {
   article: TPost
   isMobilePreview?: boolean
+  layout?: TPostLayout
 }
 
-const PostItem: FC<TProps> = ({ article, isMobilePreview = false }) => {
-  const postLayout = usePostLayout()
-
-  switch (postLayout) {
+const PostItem: FC<TProps> = ({ article, layout = POST_LAYOUT.QUORA, isMobilePreview = false }) => {
+  switch (layout) {
     case POST_LAYOUT.MINIMAL: {
       return <MinimalLayout article={article} isMobilePreview={isMobilePreview} />
     }
@@ -51,4 +48,4 @@ const PostItem: FC<TProps> = ({ article, isMobilePreview = false }) => {
   }
 }
 
-export default observer(PostItem)
+export default memo(PostItem)

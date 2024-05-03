@@ -137,6 +137,7 @@ export type TSubmitState = {
 export type TSelectOption = {
   value: string
   label: string
+  icon?: ReactNode
   desc?: string
 }
 

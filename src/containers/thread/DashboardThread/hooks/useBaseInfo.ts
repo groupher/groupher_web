@@ -16,6 +16,7 @@ type TRet = {
 
   favicon: string
   logo: string
+  locale: string
   title: string
   desc: string
   introduction: string

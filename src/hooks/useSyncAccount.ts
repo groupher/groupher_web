@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 
+import useAccount from '@/hooks/useAccount'
 import OAUTH from '@/constant/oauth'
 import type { TAccount, TSimpleUser } from '@/spec'
 import { debounce } from '@/helper'
@@ -9,6 +10,8 @@ import BStore from '@/utils/bstore'
 
 const useSyncAccount = (): TAccount => {
   const { store } = useContext(MobXProviderContext)
+  const { isLogin } = useAccount()
+
   const [isLinkClickListenerAdded, setIsLinkClickListenerAdded] = useState(false)
 
   const syncAccountInfo = debounce(() => {
@@ -18,11 +21,11 @@ const useSyncAccount = (): TAccount => {
     if (user) {
       const parsedUser = JSON.parse(user) as TSimpleUser
 
-      if (!store.account.accountInfo.isLogin && parsedUser.login) {
+      if (!isLogin && parsedUser.login) {
         store.account.setSession(parsedUser, token)
       }
     }
-  }, 500)
+  }, 200)
 
   /**
    * this is ugly workaround for syncing account info when user click on Link
@@ -31,12 +34,18 @@ const useSyncAccount = (): TAccount => {
   const handleLinkClick = (event) => {
     // 检查事件的目标是否为<a>标签
     if (event.target.tagName === 'A') {
-      syncAccountInfo()
+      // 切换 theme 以后，可能会导致一个时间差使得切换无效，母鸡为何 ..
+      setTimeout(() => {
+        syncAccountInfo()
+      }, 20)
     }
   }
 
   useEffect(() => {
     syncAccountInfo()
+  }, [isLogin])
+
+  useEffect(() => {
     if (!isLinkClickListenerAdded) {
       document.addEventListener('click', handleLinkClick)
       setIsLinkClickListenerAdded(true)

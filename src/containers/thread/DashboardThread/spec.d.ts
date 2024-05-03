@@ -130,6 +130,7 @@ export type TSettingField =
   | 'seo'
   | 'favicon'
   | 'logo'
+  | 'locale'
   | 'title'
   | 'slug'
   | 'desc'

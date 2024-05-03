@@ -52,6 +52,7 @@ const updateDashboardBaseInfo = gql`
     $title: String
     $slug: String
     $desc: String
+    $locale: String
     $introduction: String
     $logo: String
     $favicon: String
@@ -64,6 +65,7 @@ const updateDashboardBaseInfo = gql`
       title: $title
       slug: $slug
       desc: $desc
+      locale: $locale
       introduction: $introduction
       logo: $logo
       favicon: $favicon
@@ -73,6 +75,7 @@ const updateDashboardBaseInfo = gql`
       title
       logo
       favicon
+      locale
     }
   }
 `

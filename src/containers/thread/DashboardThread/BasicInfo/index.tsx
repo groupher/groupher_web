@@ -13,6 +13,7 @@ import { BASEINFO_TABS } from '../constant'
 import Portal from '../Portal'
 
 import BaseInfo from './BaseInfo'
+import Logos from './Logos'
 import SocialInfo from './SocialInfo'
 import OtherInfo from './OtherInfo'
 
@@ -58,6 +59,7 @@ const BasicInfo: FC = () => {
       </Banner>
 
       {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.BASIC && <BaseInfo />}
+      {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.LOGOS && <Logos />}
       {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.SOCIAL && <SocialInfo />}
       {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.OTHER && <OtherInfo />}
     </Wrapper>

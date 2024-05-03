@@ -3,6 +3,7 @@ import { Client, cacheExchange, fetchExchange } from '@urql/core'
 /* import { onError } from 'apollo-link-error' */
 
 import { GRAPHQL_ENDPOINT } from '@/config'
+import OAUTH from '@/constant/oauth'
 
 import { buildLog } from '../logger'
 import BStore from '../bstore'
@@ -14,11 +15,12 @@ const client = new Client({
   url: GRAPHQL_ENDPOINT,
   fetchOptions: () => {
     // console.log('## gq client init: ', BStore.get('token'))
+    const authorization = `Bearer ${BStore.get(OAUTH.TOKEN_KEY) || ''}`
 
     return {
       headers: {
         special: 'Special header value',
-        authorization: `Bearer ${BStore.get('token') || ''}`,
+        authorization,
       },
     }
   },

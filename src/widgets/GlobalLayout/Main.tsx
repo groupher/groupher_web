@@ -12,6 +12,7 @@ import METRIC from '@/constant/metric'
 import { TOPBAR_LAYOUT } from '@/constant/layout'
 
 import useMetric from '@/hooks/useMetric'
+import useTrans from '@/hooks/useTrans'
 import useGlobalLayout from '@/hooks/useGlobalLayout'
 import useThemeData from '@/hooks/useThemeData'
 import useWallpaper from '@/hooks/useWallpaper'
@@ -38,6 +39,11 @@ const Main: FC<TProps> = ({ children }) => {
   const metric = useMetric()
   const { hasShadow } = useWallpaper()
   const gossBlur = useGossBlur()
+  /**
+   * this is tricy, when clientside changed locale, we force render hte entire app here
+   * the action will make sure each component who use useTrans will not need to wrap with observer
+   */
+  const { locale } = useTrans()
 
   const themeData = useThemeData()
   // const [showDashboardAlertUI, setShowDashboardAlertUI] = useState(false)
@@ -46,6 +52,7 @@ const Main: FC<TProps> = ({ children }) => {
 
   return (
     <Wrapper
+      key={locale}
       metric={metric}
       $bgColor={bgColor}
       $hasShadow={hasShadow}

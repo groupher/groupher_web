@@ -21,6 +21,8 @@ export type TCommunity = {
   title?: string
   logo?: string
   slug: string
+  locale?: string
+  homepage?: string
   subscribersCount?: number
   articlesCount?: number
   viewerHasSubscribed?: boolean

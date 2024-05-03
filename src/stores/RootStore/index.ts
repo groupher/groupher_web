@@ -6,12 +6,13 @@
  *
  */
 
-import { mergeRight } from 'ramda'
+import { mergeRight, values } from 'ramda'
 
-import type { TAccount, TRoute, TThread, TArticle } from '@/spec'
+import type { TAccount, TRoute, TThread, TArticle, TLocale } from '@/spec'
 
 import EVENT from '@/constant/event'
 import METRIC from '@/constant/metric'
+import { LOCALE } from '@/constant/i18n'
 
 import { T, markStates, Instance } from '@/mobx'
 import { toast, send } from '@/signal'
@@ -74,10 +75,11 @@ const rootStore = T.model({
   viewing: T.opt(ViewingStore, {}),
   articles: T.opt(ArticlesStore, {}),
   comments: T.opt(CommentsStore, {}),
-  metric: T.opt(T.string, METRIC.COMMUNITY),
+  metric: T.opt(T.str, METRIC.COMMUNITY),
   // @ts-ignore TODO:
   theme: T.opt(ThemeStore, ThemeDefaults),
-  locale: T.opt(T.enum('locale', ['zh', 'en']), 'zh'),
+  locale: T.opt(T.enum('locale', values(LOCALE)), LOCALE.EN),
+  localeData: T.opt(T.str, '{}'),
   errorCode: T.maybeNull(T.number),
 
   communityDigestInView: T.opt(T.bool, true),
@@ -155,7 +157,6 @@ const rootStore = T.model({
     showTopModeline(bool: boolean): void {
       self.modeLine.showTopBar(bool)
     },
-
     closeDrawer(): void {
       self.drawer.close()
     },
@@ -208,7 +209,12 @@ const rootStore = T.model({
       //   return void
       // }
     },
-
+    setLocale(locale: TLocale): void {
+      self.locale = locale
+    },
+    setLocaleData(localeStr: string): void {
+      self.localeData = localeStr
+    },
     mark(sobj): void {
       markStates(sobj, self)
     },

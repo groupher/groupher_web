@@ -9,6 +9,7 @@
 import { FC, Fragment, lazy, Suspense } from 'react'
 import { observer } from 'mobx-react-lite'
 
+import useTrans from '@/hooks/useTrans'
 import useAvatarLayout from '@/hooks/useAvatarLayout'
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
@@ -51,7 +52,9 @@ const _log = buildLog('w:ClassicSidebar')
 const UniBar = lazy(() => import('@/widgets/UniBar'))
 
 const ThreadSidebar: FC = () => {
+  const { t } = useTrans()
   const curCommunity = useViewingCommunity()
+
   const { inView: showCommunityBadge } = useCommunityDigestViewport()
   const avatarLayout = useAvatarLayout()
   const activeTag = useActiveTag()
@@ -63,13 +66,13 @@ const ThreadSidebar: FC = () => {
         <Fragment>
           {showCommunityBadge && bannerLayout !== BANNER_LAYOUT.TABBER && (
             <Fragment>
-              <DividerTitle>简介</DividerTitle>
+              <DividerTitle>{t('intro', 'titleCase')}</DividerTitle>
               <Br top={10} />
               <CommunityNoteWrapper>{curCommunity.desc}</CommunityNoteWrapper>
               <HomeLinkWrapper>
                 <LinkIcon />
                 <Link href="https://groupher.com" maxLength="150px">
-                  groupher.com
+                  {curCommunity.homepage}
                 </Link>
                 <SpaceGrow />
 
@@ -81,7 +84,7 @@ const ThreadSidebar: FC = () => {
           <ShowBox $show={showCommunityBadge}>
             {showCommunityBadge && (
               <Fragment>
-                <DividerTitle>团队成员</DividerTitle>
+                <DividerTitle>{t('team.member', 'titleCase')}</DividerTitle>
                 <Br top={14} />
               </Fragment>
             )}

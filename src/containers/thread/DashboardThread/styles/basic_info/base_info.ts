@@ -7,27 +7,6 @@ export const Wrapper = styled.div`
   padding-bottom: 30px;
   margin-bottom: 20px;
 `
-export const FaviconWrapper = styled.div`
-  ${css.size(30)};
-`
-export const Favicon = styled.div`
-  ${css.size(30)};
-  background: ${theme('hoverBg')};
-  border-radius: 4px;
-`
-export const LogoWrapper = styled.div`
-  ${css.size(70)};
-`
-export const Logo = styled.div`
-  ${css.size(70)};
-  background: ${theme('hoverBg')};
-  border-radius: 4px;
-`
-export const Title = styled.div`
-  color: ${theme('article.title')};
-  font-size: 15px;
-  margin-bottom: 12px;
-`
 export const Desc = styled.div`
   color: ${theme('hint')};
   font-size: 12px;
@@ -44,13 +23,12 @@ export const Label = styled.div`
 `
 export const Inputer = styled(Input)`
   margin-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   width: 300px;
 `
 export const Hint = styled.div`
   font-size: 11px;
   color: ${theme('hint')};
-  margin-top: -10px;
   margin-bottom: 20px;
   line-break: anywhere;
 `

@@ -7,6 +7,8 @@ import type { TThemeName } from './theme'
 import type { TArticle } from './article'
 import type { TCommunity } from './community'
 
+export type { TTransKey, TLocale } from './i18n'
+
 export type {
   TSnakeUpperCase,
   TNegativeInteger,

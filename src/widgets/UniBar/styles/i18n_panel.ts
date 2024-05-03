@@ -4,12 +4,6 @@ import type { TActive } from '@/spec'
 
 import CheckSVG from '@/icons/Check'
 
-import PandaSVG from '@/icons/Panda'
-import HuaSVG from '@/icons/Huaren'
-import GuardSVG from '@/icons/EnGuard'
-import RussiaSVG from '@/icons/Russia'
-import SpainSVG from '@/icons/Spain'
-
 export const Wrapper = styled.div`
   padding: 10px 8px;
   animation: ${animate.fadeInBounce} 0.4s linear;
@@ -61,35 +55,11 @@ export const TopBox = styled(IconBox)<{ $show: boolean }>`
   max-width: ${({ $show }) => ($show ? '26px' : '0')};
   transition: all 0.2s;
 `
-const commonIcon = (comp) => {
-  return styled(comp)`
-    ${css.size(18)};
-    cursor: pointer;
-  `
-}
-
-export const Icon = {
-  Check: styled(commonIcon(CheckSVG))`
-    ${css.size(16)};
-    fill: ${theme('article.digest')};
-  `,
-  Guard: styled(commonIcon(GuardSVG))`
-    ${css.size(19)};
-  `,
-  Russia: styled(commonIcon(RussiaSVG))`
-    ${css.size(19)};
-  `,
-  Hua: styled(commonIcon(HuaSVG))`
-    fill: ${theme('article.digest')};
-    margin-top: 1px;
-  `,
-  Panda: styled(commonIcon(PandaSVG))`
-    margin-top: 4px;
-  `,
-  Spain: styled(commonIcon(SpainSVG))`
-    ${css.size(16)};
-    margin-top: 1px;
-    margin-left: 1px;
-    margin-right: 2px;
-  `,
-}
+export const LangIconBox = styled.div`
+  ${css.size(22)};
+  ${css.row('align-both')};
+`
+export const CheckIcon = styled(CheckSVG)`
+  ${css.size(16)};
+  fill: ${theme('article.digest')};
+`

@@ -1,6 +1,8 @@
-import { FC, memo, useState, useRef } from 'react'
+import { FC, useState, useRef } from 'react'
 
 import type { TSpace, TTooltipPlacement, TConditionMode } from '@/spec'
+
+import useTrans from '@/hooks/useTrans'
 
 import DropdownButton from '@/widgets/Buttons/DropdownButton'
 import Menu from '@/widgets/Menu'
@@ -36,6 +38,8 @@ const ConditionSelector: FC<TProps> = ({
   const [menuOpen, setMenuOpen] = useState(false)
   const ref = useRef(null)
 
+  const { t } = useTrans()
+
   const popWidth = 142
 
   const menuItems = getMenuItems(mode)
@@ -60,7 +64,7 @@ const ConditionSelector: FC<TProps> = ({
           popWidth={popWidth}
         >
           <DropdownButton $active={menuOpen} selected={selected}>
-            {title}
+            {t(title, 'titleCase')}
             <Space right={3} />
           </DropdownButton>
         </Menu>
@@ -91,7 +95,7 @@ const ConditionSelector: FC<TProps> = ({
             placement={placement}
             popWidth={popWidth}
           >
-            <ActiveLabel activeItem={activeMenuItem} title={title} condition={active} />
+            <ActiveLabel activeItem={activeMenuItem} title={t(title)} condition={active} />
           </Menu>
         </DropdownButton>
       )}
@@ -99,4 +103,4 @@ const ConditionSelector: FC<TProps> = ({
   )
 }
 
-export default memo(ConditionSelector)
+export default ConditionSelector

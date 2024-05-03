@@ -12,6 +12,7 @@ export const community = `
   desc
   logo
   subscribersCount
+  homepage
   articlesCount
   views
   pending

@@ -10,24 +10,25 @@ import type { TResState, TArticleFilterMode } from '@/spec'
 import { buildLog } from '@/logger'
 
 import DesktopView from './DesktopView'
-import MobileView from './MobileView'
-import ModelineView from './ModelineView'
+// import MobileView from './MobileView'
+// import ModelineView from './ModelineView'
 
 const _log = buildLog('w:ArticlesFilter:index')
 
 export type TProps = {
-  isMobile: boolean
+  isMobile?: boolean
   resState?: TResState
   mode?: TArticleFilterMode
 }
 
 const ArticlesFilter: FC<TProps> = (props) => {
-  const { isMobile, mode } = props
-  if (mode === 'modeline') {
-    return <ModelineView {...props} />
-  }
+  // const { isMobile, mode } = props
+  // if (mode === 'modeline') {
+  //   return <ModelineView {...props} />
+  // }
 
-  return <>{isMobile ? <MobileView {...props} /> : <DesktopView {...props} />}</>
+  return <DesktopView {...props} />
+  // return <>{isMobile ? <MobileView {...props} /> : <DesktopView {...props} />}</>
 }
 
 export default memo(ArticlesFilter)

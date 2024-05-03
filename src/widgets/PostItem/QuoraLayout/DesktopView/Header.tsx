@@ -92,4 +92,5 @@ const Header: FC<TProps> = ({ article }) => {
   )
 }
 
-export default observer(Header)
+// export default observer(Header)
+export default Header
