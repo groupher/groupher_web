@@ -44,6 +44,7 @@ const Dashboard = T.model('Dashboard', {
 export const Community = T.model('Community', {
   id: T.maybeNull(T.string),
   title: T.maybeNull(T.string),
+  homepage: T.maybeNull(T.string),
   desc: T.opt(T.string, ''),
   slug: T.maybeNull(T.string),
   index: T.opt(T.number, 1000000),

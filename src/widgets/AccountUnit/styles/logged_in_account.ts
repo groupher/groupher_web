@@ -4,6 +4,8 @@ import styled, { css, theme } from '@/css'
 
 import SettingSVG from '@/icons/Setting'
 import AddSVG from '@/icons/Add'
+import LogoutSVG from '@/icons/Logout'
+import CmdSVG from '@/icons/Cmd'
 
 import Img from '@/Img'
 
@@ -64,5 +66,10 @@ const commonIcon = (comp) => {
 
 export const Icon = {
   Add: commonIcon(AddSVG),
+  Cmd: commonIcon(CmdSVG),
+  Logout: styled(commonIcon(LogoutSVG))`
+      ${css.size(13)};
+    margin-right: -1px;
+  `,
   Setting: commonIcon(SettingSVG),
 }

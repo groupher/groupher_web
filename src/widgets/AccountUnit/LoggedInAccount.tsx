@@ -54,6 +54,13 @@ const LoggedInAccount: FC<TProps> = () => {
           </MenuBar>
           <MenuBar>个人主页</MenuBar>
           <SexyDivider top={8} bottom={8} />
+          <MenuBar>使用指南</MenuBar>
+          <MenuBar>
+            快捷键
+            <SpaceGrow />
+            <Icon.Cmd />
+          </MenuBar>
+          {/* <MenuBar>主题?</MenuBar> */}
           <LinkAble href={ROUTE.APPLY_COMMUNITY} prefetch={false}>
             <MenuBar as="a">
               创建社区
@@ -62,7 +69,11 @@ const LoggedInAccount: FC<TProps> = () => {
             </MenuBar>
           </LinkAble>
           <SexyDivider top={8} bottom={8} />
-          <MenuBar onClick={() => signOut()}>登出</MenuBar>
+          <MenuBar onClick={() => signOut()}>
+            登出
+            <SpaceGrow />
+            <Icon.Logout />
+          </MenuBar>
         </Panel>
       }
       placement="bottom-end"

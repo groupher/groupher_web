@@ -7,12 +7,14 @@
  */
 
 import { FC, memo } from 'react'
-import ReactSelect from 'react-select'
+import ReactSelect, { components } from 'react-select'
 import CreatableReactSelect from 'react-select/creatable'
 
 import type { TSelectOption, TSpace } from '@/spec'
 import { buildLog } from '@/logger'
 import useTheme from '@/hooks/useTheme'
+
+import { Row, Space } from '@/widgets/Common'
 
 import { IndicatorsContainer } from './components'
 
@@ -35,6 +37,34 @@ type TProps = {
   onChange?: (option: TSelectOption | TSelectOption[]) => void
   onCreateOption?: (newopt: string) => void
 } & TSpace
+
+const CustomOption = (props) => {
+  const { label, icon } = props.data
+  const Icon = icon || null
+
+  return (
+    <components.Option {...props}>
+      <Row>
+        {icon && <Icon />}
+        <span>{label}</span>
+      </Row>
+    </components.Option>
+  )
+}
+
+const CustomSingleValue = (props) => {
+  const { label, icon } = props.data
+  const Icon = icon || null
+
+  return (
+    <components.SingleValue {...props}>
+      <Row>
+        <Space left={-5}>{icon && <Icon />}</Space>
+        <span>{label}</span>
+      </Row>
+    </components.SingleValue>
+  )
+}
 
 const Select: FC<TProps> = ({
   testid = 'widget-select',
@@ -110,7 +140,11 @@ const Select: FC<TProps> = ({
   return (
     <Wrapper $testid={testid} className={className} {...restProps}>
       {!creatable ? (
-        <ReactSelect {...baseProps} isMulti={isMulti} />
+        <ReactSelect
+          {...baseProps}
+          isMulti={isMulti}
+          components={{ Option: CustomOption, SingleValue: CustomSingleValue }}
+        />
       ) : (
         <CreatableReactSelect {...baseProps} onCreateOption={onCreateOption} />
       )}

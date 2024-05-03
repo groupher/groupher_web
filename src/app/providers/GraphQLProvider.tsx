@@ -64,6 +64,9 @@ const GraphQLProvider: FC<TProps> = ({ children }) => {
       fetchOptions: () => ({
         headers: {
           special: 'Special header value',
+          /*
+           * NOTE: this SSR query better to keep it serverless
+           */
           authorization: '',
         },
       }),

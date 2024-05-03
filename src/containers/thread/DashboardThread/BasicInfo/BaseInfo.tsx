@@ -3,6 +3,8 @@ import { observer } from 'mobx-react-lite'
 import { find } from 'ramda'
 
 import type { TSelectOption } from '@/spec'
+import { LANGS_OPTIONS } from '@/constant/i18n'
+
 import { Br } from '@/widgets/Common'
 import Select from '@/widgets/Select'
 
@@ -16,22 +18,11 @@ import { edit } from '../logic'
 const BasicInfo: FC = () => {
   const { saving, locale, desc, title, slug, homepage, introduction, isTouched } = useBaseInfo()
 
-  const LANGS_OPTIONS = [
-    {
-      label: '简体中文',
-      value: 'zh',
-    },
-    {
-      label: 'English',
-      value: 'en',
-    },
-  ]
-
   const curLangOption = find((o) => o.value === locale, LANGS_OPTIONS)
 
   return (
     <Wrapper>
-      <Label>默认语言 ({locale})</Label>
+      <Label>默认语言</Label>
       <Select
         value={curLangOption}
         options={LANGS_OPTIONS}

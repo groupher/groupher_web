@@ -54,6 +54,7 @@ const UniBar = lazy(() => import('@/widgets/UniBar'))
 const ThreadSidebar: FC = () => {
   const { t } = useTrans()
   const curCommunity = useViewingCommunity()
+
   const { inView: showCommunityBadge } = useCommunityDigestViewport()
   const avatarLayout = useAvatarLayout()
   const activeTag = useActiveTag()
@@ -71,7 +72,7 @@ const ThreadSidebar: FC = () => {
               <HomeLinkWrapper>
                 <LinkIcon />
                 <Link href="https://groupher.com" maxLength="150px">
-                  groupher.com
+                  {curCommunity.homepage}
                 </Link>
                 <SpaceGrow />
 
