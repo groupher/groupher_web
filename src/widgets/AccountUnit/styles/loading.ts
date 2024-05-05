@@ -14,11 +14,22 @@ export const Wrapper = styled.div`
 `
 export const IconWrapper = styled.div`
   ${css.column('align-both')};
-  transform: scale(2);
   margin-bottom: 20px;
   margin-top: -26px;
+  position: relative;
+`
+export const ProviderLogo = styled.div`
+  transform: scale(2);
   animation: ${animate.blinker} 1s linear infinite alternate;
 `
+export const SideLogo = styled.div`
+  position: absolute;
+  bottom: -12px;
+  right: -16px;
+  z-index: 2;
+  box-shadow: ${theme('shadow.xl')};
+`
+
 export const Title = styled.div`
   font-size: 22px;
   color: ${theme('article.digest')};

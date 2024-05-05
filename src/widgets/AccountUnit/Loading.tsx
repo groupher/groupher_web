@@ -1,13 +1,16 @@
 import { FC, memo } from 'react'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+import HomeLogo from '@/widgets/HomeLogo'
 
 import {
   Wrapper,
   SocialIcon,
   IconWrapper,
+  ProviderLogo,
   Title,
   ProviderName,
+  SideLogo,
   Desc,
   Footer,
   MaskCenter,
@@ -35,7 +38,12 @@ const Loading: FC<TProps> = ({ provider }) => {
   return (
     <Wrapper>
       <IconWrapper>
-        <Icon />
+        <ProviderLogo>
+          <Icon />
+        </ProviderLogo>
+        <SideLogo>
+          <HomeLogo size={20} />
+        </SideLogo>
       </IconWrapper>
       <Title>
         Login with <ProviderName>{provider}</ProviderName>
