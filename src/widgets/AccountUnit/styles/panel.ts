@@ -14,6 +14,8 @@ export const Wrapper = styled.div`
   ${css.column()};
   padding: 10px 20px;
   font-size: 13px;
+  min-height: 281px;
+  position: relative;
 `
 export const Header = styled.div`
   color: ${theme('article.title')};
@@ -30,7 +32,7 @@ export const Body = styled.div`
   margin-bottom: 20px;
   z-index: 1;
 `
-export const SocialItem = styled.div<{ $inactive: boolean }>`
+export const SocialItem = styled.div`
   ${css.row('align-center')};
   color: ${theme('article.digest')};
   font-weight: 500;
@@ -39,12 +41,11 @@ export const SocialItem = styled.div<{ $inactive: boolean }>`
   border-radius: 8px;
   border: 1px solid;
   border-color: ${theme('divider')};
-  background: ${({ $inactive }) => ($inactive ? theme('hoverBg') : 0)};
 
   &:hover {
     background: ${theme('hoverBg')};
     color: ${theme('article.title')};
-    cursor: ${({ $inactive }) => ($inactive ? 'not-allowed' : 'pointer')};
+    cursor: pointer;
   }
 `
 export const IconBox = styled.div`

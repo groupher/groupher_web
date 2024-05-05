@@ -1,6 +1,7 @@
 const zIndex = {
   popover: 3000,
   modalCloseBtn: 2999,
+  modalLoading: 3000,
   doraemonOverlay: 2998,
   modalOverlay: 2997,
   doraemon: 2996,
