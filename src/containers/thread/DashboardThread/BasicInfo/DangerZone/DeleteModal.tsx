@@ -7,6 +7,7 @@ import HeadsUp from '@/widgets/HeadsUp'
 
 // import from '@/widgets/Alert'
 import List from './List'
+import ConfirmFooter from './ConfirmFooter'
 
 import { Wrapper, DangerTitle, Body } from '../../styles/basic_info/danger_zone/modal'
 
@@ -29,10 +30,11 @@ const DeleteModal: FC<TProps> = ({ show, onClose }) => {
               '帖子，看板以及更新日志等内容',
               '所有评论以及点赞，表情等信息',
             ]}
-            left={20}
-            top={15}
+            left={31}
+            top={28}
           />
         </Body>
+        <ConfirmFooter />
       </Wrapper>
     </Modal>
   )

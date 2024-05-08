@@ -60,10 +60,16 @@ export const CloseBtn = styled(CloseCrossSVG)<TCloseBtn>`
   opacity: 0.8;
 
   &:hover {
-    animation: ${animate.pulse} 0.3s linear;
     cursor: pointer;
+    transform: scale(1.1);
     opacity: 1;
   }
+
+  &:active {
+    transform: scale(0.8);
+  }
+
+  transition: all 0.2s;
 `
 export const EscHint = styled.div<{ mode: string }>`
   color: ${({ mode }) => (mode === 'default' ? theme('font') : theme('rainbow.red'))};
