@@ -7,6 +7,10 @@ export default {
   search: '搜索内容',
   about: '关于',
   'team.member': '团队成员',
+  //
+  'login.with.social': '使用你的社交账号登入',
+  'login.bind.hint': '登入后可绑定其他账号',
+  'need.help': '遇到问题?',
   // unibar
   theme: '主题',
   'active.users': '活跃用户',

@@ -3,6 +3,7 @@ import { FC, memo, useState } from 'react'
 import { signIn } from '@/oauth'
 import { titleCase } from '@/fmt'
 
+import useTrans from '@/hooks/useTrans'
 import Modal from '@/widgets/Modal'
 import { SlientLink } from '@/widgets/Common'
 
@@ -18,6 +19,7 @@ type TProps = {
 
 const Panel: FC<TProps> = ({ show, onClose }) => {
   const [loadingProvider, setLoadingProvider] = useState(null)
+  const { t } = useTrans()
 
   return (
     <Modal show={show} width="400px" onClose={() => onClose()} showCloseBtn>
@@ -28,7 +30,7 @@ const Panel: FC<TProps> = ({ show, onClose }) => {
             <Loading provider={loadingProvider} />
           </>
         )}
-        <Header>使用你喜爱的第三方账号登入</Header>
+        <Header>{t('login.with.social')}</Header>
         <Body>
           {OAUTH_PROVIDERS.map((provider) => {
             const providerKey = titleCase(provider)
@@ -51,8 +53,8 @@ const Panel: FC<TProps> = ({ show, onClose }) => {
           })}
         </Body>
         <Footer>
-          <SlientLink href="/">登入后可绑定其他账号</SlientLink>
-          <SlientLink href="/">遇到问题？</SlientLink>
+          <SlientLink href="/">{t('login.bind.hint')}</SlientLink>
+          <SlientLink href="/">{t('need.help')}</SlientLink>
         </Footer>
       </Wrapper>
     </Modal>
