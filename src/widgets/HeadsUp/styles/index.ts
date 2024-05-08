@@ -35,11 +35,10 @@ export const IconBox = styled.div`
 export const InfoIcon = styled(InfoSVG)`
   ${css.size(15)};
   fill: ${theme('rainbow.brown')};
-  margin-top: 2px;
 `
 export const DangerIcon = styled(DangerSVG)`
   ${css.size(15)};
   fill: ${theme('rainbow.red')};
-  margin-top: 2px;
+  margin-top: 1px;
   animation: ${animate.breath} 2s linear infinite alternate;
 `
