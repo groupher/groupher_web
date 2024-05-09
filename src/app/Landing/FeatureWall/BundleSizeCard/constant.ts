@@ -8,7 +8,7 @@ export const PRODUCTS = [
     size: '462 KB',
     sizeNum: 462,
     icon: `${ICON_ASSET}/groupher.png`,
-    iconSize: 13,
+    iconSize: 14,
   },
   // {
   //   title: 'Flarum',
@@ -16,16 +16,16 @@ export const PRODUCTS = [
   //   sizeNum: 401,
   //   icon: `${ICON_ASSET}/flarum.png`,
   // },
-  {
-    title: 'UserVoice',
-    size: '515 KB',
-    sizeNum: 515,
-    icon: `${ICON_ASSET}/uservoice.png`,
-  },
+  // {
+  //   title: 'UserVoice',
+  //   size: '515 KB',
+  //   sizeNum: 515,
+  //   icon: `${ICON_ASSET}/uservoice.png`,
+  // },
   {
     title: 'Canny',
-    size: '825 KB',
-    sizeNum: 825,
+    size: '828 KB',
+    sizeNum: 828,
     icon: `${ICON_ASSET}/canny.png`,
   },
   // {
@@ -34,18 +34,25 @@ export const PRODUCTS = [
   //   sizeNum: 826,
   //   icon: `${ICON_ASSET}/github.png`,
   // },
-  // https://feedback.featureos.app/
   {
     title: 'FeatureOS',
     size: '1+ MB',
     sizeNum: 1.05 * 1024,
-    iconSize: 13,
+    iconSize: 14,
     icon: `${ICON_ASSET}/featureos.png`,
+  },
+  {
+    title: 'Gainsight',
+    size: '1.15 MB',
+    sizeNum: 1.15 * 1024,
+    iconSize: 12,
+    icon: `${ICON_ASSET}/gainsight.png`,
   },
   {
     title: 'Outverse',
     size: '1.2+ MB',
     sizeNum: 1.2 * 1024,
+    iconSize: 13,
     icon: `${ICON_ASSET}/outverse.png`,
   },
   // https://feedback.frill.co/b/4q0qxv2r/frillco-customer-ideas

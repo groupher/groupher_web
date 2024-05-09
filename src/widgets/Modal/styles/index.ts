@@ -49,27 +49,32 @@ export const ChildrenWrapper = styled.div`
   height: auto;
   overflow-y: scroll;
 `
-type TCloseBtn = { mode: string }
-export const CloseBtn = styled(CloseCrossSVG)<TCloseBtn>`
+export const CloseBox = styled.div`
+  ${css.size(28)};
+  ${css.row('align-both')};
+  border-radius: 5px;
   position: absolute;
   top: 16px;
   right: 18px;
+  &:hover {
+    background: ${theme('hoverBg')};
+    cursor: pointer;
+  }
+  transition: all 0.2s;
+`
+type TCloseBtn = { mode: string }
+export const CloseBtn = styled(CloseCrossSVG)<TCloseBtn>`
   fill: ${theme('article.info')};
   ${css.size(20)};
   z-index: ${zIndex.modalCloseBtn};
   opacity: 0.8;
 
-  &:hover {
-    cursor: pointer;
-    transform: scale(1.1);
+  ${CloseBox}:hover & {
+    transform: rotate(90deg);
     opacity: 1;
   }
 
-  &:active {
-    transform: scale(0.8);
-  }
-
-  transition: all 0.2s;
+  transition: all 0.3s;
 `
 export const EscHint = styled.div<{ mode: string }>`
   color: ${({ mode }) => (mode === 'default' ? theme('font') : theme('rainbow.red'))};
