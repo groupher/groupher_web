@@ -1,6 +1,7 @@
 import styled, { css, theme } from '@/css'
 
 // import InfoSVG from '@/icons/Info'
+import Input from '@/widgets/Input'
 
 export const Wrapper = styled.div`
   ${css.column()};
@@ -15,13 +16,14 @@ export const Body = styled.div`
   flex-grow: 1;
 `
 export const Footer = styled.div`
-  ${css.row('align-end')};
+  ${css.column()};
   margin-bottom: 18px;
   width: 100%;
 `
 export const Desc = styled.div`
-  color: ${theme('article.title')};
-  font-size: 14px;
+  color: ${theme('article.digest')};
+  font-size: 13px;
+  margin-left: 4px;
 `
 export const DangerTitle = styled.div`
   color: ${theme('rainbow.red')};
@@ -32,4 +34,12 @@ export const WarningTitle = styled.div`
   color: ${theme('rainbow.brown')};
   font-size: 16px;
   font-weight: 500;
+`
+
+export const TextareaInput = styled(Input)`
+  padding: 10px;
+  padding-left: 12px;
+  border-radius: 5px;
+  font-size: 14px;
+  line-height: 1.5;
 `

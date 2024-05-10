@@ -3,15 +3,23 @@ import { FC, useState } from 'react'
 import VIEW from '@/constant/view'
 
 import Modal from '@/widgets/Modal'
-import { SpaceGrow } from '@/widgets/Common'
+import { Br } from '@/widgets/Common'
 import Tabs from '@/widgets/Switcher/Tabs'
+import Button from '@/widgets/Buttons/Button'
 // import NoteTip from '@/widgets/NoteTip'
 import HeadsUp from '@/widgets/HeadsUp'
 
 // import from '@/widgets/Alert'
 import List from './List'
 
-import { Wrapper, WarningTitle, Body, Footer } from '../../styles/basic_info/danger_zone/modal'
+import {
+  Wrapper,
+  WarningTitle,
+  Body,
+  Desc,
+  Footer,
+  TextareaInput,
+} from '../../styles/basic_info/danger_zone/modal'
 
 type TProps = {
   show: boolean
@@ -29,8 +37,11 @@ export const VISIBLE_OPTIONS = [
   },
 ]
 
+const defaultPrivateNote = '当前社区为私有状态，只对管理员开放。'
+
 const PublicModal: FC<TProps> = ({ show, onClose }) => {
   const [visible, setVisible] = useState('public')
+  const [privateNote, setPrivateNote] = useState(defaultPrivateNote)
 
   return (
     <Modal show={show} width="390px" offsetLeft="40%" onClose={() => onClose()} showCloseBtn>
@@ -49,15 +60,25 @@ const PublicModal: FC<TProps> = ({ show, onClose }) => {
             top={28}
           />
         </Body>
+        <Br bottom={15} />
         <Footer>
-          <SpaceGrow />
           <Tabs
             items={VISIBLE_OPTIONS}
             activeKey={visible}
             onChange={(value) => setVisible(value)}
             view={VIEW.DRAWER}
           />
-          <SpaceGrow />
+          <Br bottom={20} />
+          <Desc>对外提示信息（支持 Markdown）</Desc>
+          <Br bottom={8} />
+          <TextareaInput
+            value={privateNote}
+            placeholder={defaultPrivateNote}
+            behavior="textarea"
+            onChange={(e) => setPrivateNote(e.target.value)}
+          />
+          <Br bottom={15} />
+          <Button type="primary">确定变更</Button>
         </Footer>
       </Wrapper>
     </Modal>

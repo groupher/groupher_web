@@ -89,6 +89,7 @@ const keyOf = compose(head, keys)
 const valOf = compose(head, values)
 
 export const changeset = (source: Record<string, string>): Record<string, unknown> => ({
+  // @ts-ignore
   exist: (obj, cb, opt = { skip: false, msg: '' }) => {
     if (source.__dirty__) return changeset(source)
     if (opt.skip) return changeset(source)
