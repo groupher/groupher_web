@@ -7,6 +7,10 @@ export default {
   search: 'search',
   about: 'about',
   'team.member': 'team members',
+  //
+  'login.with.social': 'Login with your social account',
+  'login.bind.hint': 'can bind other account later',
+  'need.help': 'Need help?',
   // unibar
   theme: 'theme',
   'active.users': 'active users',

@@ -94,25 +94,65 @@ export const ChildrenWrapper = styled.div<TChildrenWrapper>`
   z-index: 2;
 `
 export const RedWrapper = styled(Wrapper)`
-  font-weight: 600;
-  color: ${({ $ghost }) => ($ghost ? theme('rainbow.red') : 'white')};
-  background-color: ${({ $ghost }) => (!$ghost ? theme('rainbow.red') : 'transparent')};
-  border-color: ${({ $noBorder }) => ($noBorder ? 'transparent' : theme('rainbow.red'))};
+  font-weight: 400;
+  color: ${({ $ghost, disabled }) => {
+    if (disabled) return theme('rainbow.red')
 
-  &:hover {
-    background-color: ${({ $ghost }) => (!$ghost ? lighten('#FF634F', 10) : 'transparent')};
-    color: tomato;
-    border-color: tomato;
+    return $ghost ? theme('rainbow.red') : theme('button.fg')
+  }};
+  background-color: ${({ $ghost, disabled }) => {
+    if (disabled) return theme('hoverBg')
+
+    return !$ghost ? theme('rainbow.red') : 'transparent'
+  }};
+  border-color: ${({ $noBorder, disabled }) => {
+    if (disabled) return theme('divider')
+
+    return $noBorder ? 'transparent' : theme('rainbow.red')
+  }};
+
+  &:hover  {
+    color: ${({ $ghost, disabled }) => {
+      if (disabled) return theme('rainbow.red')
+
+      return $ghost ? theme('rainbow.red') : theme('button.fg')
+    }};
+
+    background-color: ${({ $ghost, disabled }) => {
+      // not work, seems styled bug
+      if (disabled) theme('hoverBg')
+
+      return !$ghost ? theme('rainbow.redSoft') : 'transparent'
+    }};
+
+    border-color: ${({ disabled }) => {
+      // not work, seems styled bug
+      if (disabled) return theme('hoverBg')
+
+      return theme('rainbow.red')
+    }};
   }
-  &:focus {
-    background-color: ${({ $ghost }) => (!$ghost ? lighten('#FF634F', 10) : 'transparent')};
-    color: tomato;
-    border-color: tomato;
-  }
+
   &:active {
-    background-color: ${({ $ghost }) => (!$ghost ? lighten('#FF634F', 10) : 'transparent')};
-    color: tomato;
-    border-color: tomato;
+    transform: ${({ disabled }) => (disabled ? '' : 'scale(0.98)')};
+    border-color: ${({ disabled }) => (disabled ? 'transparent' : theme('rainbow.red'))};
+
+    background-color: ${({ $ghost, disabled }) => {
+      if (disabled) return theme('hoverBg')
+
+      return !$ghost ? theme('rainbow.redSoft') : 'transparent'
+    }};
   }
-  transition: all 0.1s;
+
+  &:focus {
+    color: ${({ $ghost }) => {
+      return $ghost ? theme('rainbow.red') : theme('button.fg')
+    }};
+
+    background-color: ${({ $ghost }) => {
+      return !$ghost ? theme('rainbow.redSoft') : 'transparent'
+    }};
+  }
+
+  transition: all 0.2s;
 `

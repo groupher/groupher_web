@@ -33,7 +33,7 @@ const PowerbyInfo: FC = () => {
               </Addr>
             </Note>
           )}
-          <LineDivider height={10} left={5} right={6} />
+          {/* <LineDivider height={10} left={5} right={6} /> */}
           <Note>违法信息举报</Note>
         </BottomWrapper>
       </DesktopOnly>

@@ -9,7 +9,7 @@ import { toggleGlobalBlur, lockPage, unlockPage } from '@/dom'
 import ViewportTracker from '@/widgets/ViewportTracker'
 
 import type { TProps as BaseTProps } from '.'
-import { Mask, Wrapper, CloseBtn, ChildrenWrapper, GlowLight } from './styles'
+import { Mask, Wrapper, CloseBtn, CloseBox, ChildrenWrapper, GlowLight } from './styles'
 
 type TProps = Pick<
   BaseTProps,
@@ -80,7 +80,11 @@ const RealModal: FC<TProps> = ({
             }}
           />
           <ViewportTracker onEnter={() => setVisibleOnPage(true)} />
-          {showCloseBtn && <CloseBtn mode={mode} onClick={handleClose} />}
+          {showCloseBtn && (
+            <CloseBox onKeyUp={handleClose}>
+              <CloseBtn mode={mode} />
+            </CloseBox>
+          )}
           {/* {showCloseBtn && <EscHint mode={mode}>Esc</EscHint>} */}
           <ChildrenWrapper onClick={(e) => e.stopPropagation()}>{children}</ChildrenWrapper>
         </Wrapper>

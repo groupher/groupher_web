@@ -30,7 +30,7 @@ export const TabItem = styled.div<TActive>`
   border-color: ${({ $active }) => ($active ? theme('divider') : 'transparent')};
 
   &:hover {
-    font-weight: 600;
+    color: ${theme('article.title')};
     cursor: pointer;
   }
 

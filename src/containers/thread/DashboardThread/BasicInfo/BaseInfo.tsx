@@ -12,6 +12,8 @@ import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'
 import useBaseInfo from '../hooks/useBaseInfo'
 
+import DangerZone from './DangerZone'
+
 import { Wrapper, Label, Inputer, Hint } from '../styles/basic_info/base_info'
 import { edit } from '../logic'
 
@@ -67,6 +69,9 @@ const BasicInfo: FC = () => {
       />
 
       <SavingBar field={SETTING_FIELD.BASE_INFO} isTouched={isTouched} loading={saving} top={30} />
+
+      <Br bottom={45} />
+      <DangerZone />
     </Wrapper>
   )
 }
