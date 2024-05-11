@@ -45,6 +45,7 @@
     "**/*.ts?(x)": "tsc-files --noEmit"
   },
   "dependencies": {
+    "@dhmk/zustand-lens": "^4.0.0",
     "@formkit/auto-animate": "^0.8.0",
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
     "@fortawesome/free-regular-svg-icons": "^6.2.1",
@@ -64,6 +65,7 @@
     "cross-env": "^7.0.2",
     "debug": "^4.3.4",
     "graphql": "^16.6.0",
+    "immer": "^10.1.1",
     "js-cookie": "^3.0.5",
     "markdown-to-jsx": "^7.2.1",
     "mastani-codehighlight": "0.0.7",
@@ -119,7 +121,8 @@
     "tinykeys": "^2.1.0",
     "tsparticles-confetti": "^2.12.0",
     "typewriter-effect": "^2.19.0",
-    "urql": "^4.0.7"
+    "urql": "^4.0.7",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.5.3",

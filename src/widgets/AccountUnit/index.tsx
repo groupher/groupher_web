@@ -18,6 +18,9 @@ import { BANNER_LAYOUT } from '@/constant/layout'
 
 import { SpaceGrow } from '@/widgets/Common'
 
+import { useStore } from '../../zustand/store'
+import { useShallow } from 'zustand/react/shallow'
+
 import LoggedInAccount from './LoggedInAccount'
 import Panel from './Panel'
 
@@ -36,8 +39,28 @@ type TProps = {
   withName?: boolean
 } & TSpace
 
+const useTheme = () => {
+  return useStore(
+    useShallow(({ theme }) => ({
+      theme: theme.theme,
+      toggleTheme: theme.toggleTheme,
+      themeDesc: theme.themeDesc,
+    })),
+  )
+}
+
+const useClock = () => {
+  return useStore(
+    useShallow((store) => ({
+      lastUpdate: store.lastUpdate,
+    })),
+  )
+}
+
 const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
   useSyncAccount()
+  // const { lastUpdate } = useClock()
+  const { theme, toggleTheme, themeDesc } = useTheme()
 
   const user = useAccount()
   const { isLogin, nickname } = user
@@ -54,6 +77,12 @@ const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
       {/* {includes(bannerLayout, [BANNER_LAYOUT.HEADER, BANNER_LAYOUT.TABBER]) && (
         <ThemeSwitch right={10} />
       )} */}
+      {/* <h5>{lastUpdate}</h5> */}
+
+      <h5 onClick={() => toggleTheme()}>
+        {theme}, {themeDesc()}
+      </h5>
+
       {isLogin ? (
         <HoverBox>
           <LoggedInAccount />

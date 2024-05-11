@@ -3,6 +3,8 @@ import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
+import ZustandStoreProvider from '../zustand/StoreProvider'
+
 import {
   StyledComponentsRegistry,
   GraphQLProvider,
@@ -31,9 +33,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <StyledComponentsRegistry>
           <GraphQLProvider>
-            <RootStoreProvider>
-              <GlobalLayout>{children}</GlobalLayout>
-            </RootStoreProvider>
+            <ZustandStoreProvider lastUpdate={new Date().getTime()}>
+              <RootStoreProvider>
+                <GlobalLayout>{children}</GlobalLayout>
+              </RootStoreProvider>
+            </ZustandStoreProvider>
           </GraphQLProvider>
         </StyledComponentsRegistry>
         <Analytics />
