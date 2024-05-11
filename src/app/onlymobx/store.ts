@@ -1,5 +1,4 @@
-// userStore.js
-import { makeAutoObservable } from 'mobx'
+import { battery } from '@/mobx'
 
 import THEME from '@/constant/theme'
 import type { TThemeName } from '@/spec'
@@ -34,7 +33,7 @@ export const createThemeStore = (init: TThemeName = THEME.DAY): TThemeStore => {
     },
   }
 
-  return makeAutoObservable(store)
+  return battery(store)
 }
 
 // rootStore
