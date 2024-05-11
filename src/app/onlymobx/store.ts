@@ -34,8 +34,7 @@ export const createThemeStore = (init: TThemeName = THEME.DAY): TThemeStore => {
     },
   }
 
-  makeAutoObservable(store)
-  return store
+  return makeAutoObservable(store)
 }
 
 // rootStore
