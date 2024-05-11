@@ -20,9 +20,9 @@ const initialRootState = {
 }
 
 // theme store
-export const createThemeStore = (init: TThemeName = THEME.DAY): TThemeStore => {
+export const createThemeStore = (theme: TThemeName = THEME.DAY): TThemeStore => {
   const store = {
-    theme: init,
+    theme,
 
     get themeDesc(): string {
       return store.theme === 'day' ? 'now is Day' : 'now is Night'
