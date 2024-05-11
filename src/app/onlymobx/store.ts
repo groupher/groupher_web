@@ -21,7 +21,7 @@ const initialRootState = {
 }
 
 // theme store
-export const createThemeStore = (init: TThemeName = 'day'): TThemeStore => {
+export const createThemeStore = (init: TThemeName = THEME.DAY): TThemeStore => {
   const store = {
     theme: init,
 
