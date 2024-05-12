@@ -50,9 +50,9 @@ const NormalImg: FC<TProps> = ({
         src={src}
         alt={alt}
         onClick={onClick}
-        loading="eager"
-        onLoad={handleOnLoad}
-        onError={handleOnError}
+        // loading="eager"
+        onLoad={() => handleOnLoad()}
+        onError={() => handleOnError()}
       />
       {fallback && !loaded && fallback}
     </>

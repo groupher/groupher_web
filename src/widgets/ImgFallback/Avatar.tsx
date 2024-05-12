@@ -19,9 +19,8 @@ const Avatar: FC<TProps> = ({
   testid = 'avatar-fallback',
   className = '',
   size = 15,
-  user = {
-    nickname: '?',
-  },
+  title = '',
+  user = {},
   left = 0,
   right = 0,
   top = 0,
@@ -30,7 +29,7 @@ const Avatar: FC<TProps> = ({
 }) => {
   const avatarLayout = useAvatarLayout()
 
-  const name = user?.login
+  const name = user?.login || title || '?'
   const sliceCount = size >= 30 ? 2 : 1
 
   const color = getLetterColor(name)

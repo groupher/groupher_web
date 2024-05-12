@@ -10,6 +10,7 @@ import { BRAND_LAYOUT } from '@/constant/layout'
 
 import Tooltip from '@/widgets/Tooltip'
 import { SpaceGrow, SexyDivider } from '@/widgets/Common'
+import ImgFallback from '@/widgets/ImgFallback'
 
 import {
   Wrapper,
@@ -84,7 +85,14 @@ const CommunityBrief: FC = () => {
       noPadding
     >
       <Wrapper ref={ref}>
-        {brandLayout !== BRAND_LAYOUT.TEXT && <Logo src={assetSrc(logo)} noLazy />}
+        {brandLayout !== BRAND_LAYOUT.TEXT && (
+          <Logo
+            src={assetSrc(logo)}
+            fallback={<ImgFallback size={25} left={-2} title={title} />}
+            noLazy
+          />
+        )}
+
         {brandLayout !== BRAND_LAYOUT.LOGO && (
           <Title $noMargin={brandLayout === BRAND_LAYOUT.TEXT}>{title}</Title>
         )}

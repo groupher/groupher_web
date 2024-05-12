@@ -10,6 +10,7 @@ import { assetSrc, sortByIndex, groupByKey } from '@/helper'
 
 import { SpaceGrow } from '@/widgets/Common'
 import SocialList from '@/widgets/SocialList'
+import ImgFallback from '@/widgets/ImgFallback'
 
 import {
   Wrapper,
@@ -24,7 +25,7 @@ import {
 } from '../styles/desktop_view/group_layout'
 
 const GroupLayout: FC = () => {
-  const { logo, desc } = useViewingCommunity()
+  const { logo, desc, title } = useViewingCommunity()
   const { links } = useFooterLinks()
 
   // @ts-ignore
@@ -35,7 +36,11 @@ const GroupLayout: FC = () => {
     <Wrapper>
       <InnerWrapper>
         <BrandWrapper>
-          <BrandLogo src={assetSrc(logo)} />
+          <BrandLogo
+            src={assetSrc(logo)}
+            fallback={<ImgFallback size={25} left={-2} title={title} />}
+            noLazy
+          />
           <BrandDesc>{desc}</BrandDesc>
           <SpaceGrow />
 

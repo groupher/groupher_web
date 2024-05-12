@@ -41,7 +41,7 @@ type TProps = {
 const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
   useSyncAccount()
 
-  const { theme, toggle } = useTheme()
+  const { theme, toggle, themeDesc2 } = useTheme()
 
   const user = useAccount()
   const { isLogin, nickname } = user
@@ -56,6 +56,7 @@ const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
   return (
     <Wrapper {...restProps}>
       <h5 onClick={() => toggle()}>{theme}</h5>
+      <p>{themeDesc2}</p>
       {/* {includes(bannerLayout, [BANNER_LAYOUT.HEADER, BANNER_LAYOUT.TABBER]) && (
         <ThemeSwitch right={10} />
       )} */}

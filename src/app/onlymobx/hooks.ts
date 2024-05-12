@@ -12,7 +12,8 @@ export const useStore = (initialState) => {
 
 type TTheme = {
   theme: TThemeName
-  themeDesc: string
+  readonly themeDesc: string
+  readonly themeDesc2: string
   toggle: () => void
 }
 

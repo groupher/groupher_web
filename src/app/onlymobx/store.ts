@@ -8,6 +8,7 @@ let clientSideRootStore
 type TThemeStore = {
   theme: TThemeName
   readonly themeDesc: string
+  readonly themeDesc2: string
   toggle: () => void
 }
 
@@ -26,6 +27,10 @@ export const createThemeStore = (theme: TThemeName = THEME.DAY): TThemeStore => 
 
     get themeDesc(): string {
       return store.theme === 'day' ? 'now is Day' : 'now is Night'
+    },
+
+    get themeDesc2(): string {
+      return `this is ${store.themeDesc}`
     },
 
     toggle() {
