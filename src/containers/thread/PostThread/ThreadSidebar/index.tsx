@@ -92,10 +92,10 @@ const ThreadSidebar: FC = () => {
             <CommunityJoinersWrapper $show>
               {mockUsers(5).map((user) => (
                 <JoinerAvatar
-                  key={user.id}
+                  key={user.login}
                   src={user.avatar}
                   $avatarLayout={avatarLayout}
-                  fallback={<ImgFallback size={24} user={user} />}
+                  fallback={<ImgFallback size={24} right={8} user={user} />}
                 />
               ))}
               <MoreNum onClick={() => listUsers('drawer')}>+2</MoreNum>

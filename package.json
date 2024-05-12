@@ -89,7 +89,7 @@
     "react-dom": "^18.2.0",
     "react-flip-numbers": "^3.0.7",
     "react-highlight-words": "^0.18.0",
-    "react-lazy-load-image-component": "file:../react-lazy-load-image-component",
+    "react-lazy-load-image-component": "1.6.0",
     "react-masonry-css": "^1.0.16",
     "react-portal": "^4.2.2",
     "react-select": "^5.5.7",

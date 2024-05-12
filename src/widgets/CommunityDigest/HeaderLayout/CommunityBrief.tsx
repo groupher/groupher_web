@@ -86,13 +86,8 @@ const CommunityBrief: FC = () => {
     >
       <Wrapper ref={ref}>
         {brandLayout !== BRAND_LAYOUT.TEXT && (
-          <Logo
-            src={assetSrc(logo)}
-            fallback={<ImgFallback size={25} left={-2} title={title} />}
-            noLazy
-          />
+          <Logo src={assetSrc(logo)} fallback={<ImgFallback size={25} left={-2} title={title} />} />
         )}
-
         {brandLayout !== BRAND_LAYOUT.LOGO && (
           <Title $noMargin={brandLayout === BRAND_LAYOUT.TEXT}>{title}</Title>
         )}

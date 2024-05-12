@@ -25,7 +25,7 @@ const GuideLayout: FC<TProps> = ({ users, withSetter = false, onSetting }) => {
   return (
     <Wrapper>
       {users.map((user) => (
-        <Avatar key={user.id} src={user.avatar} />
+        <Avatar key={user.login} src={user.avatar} />
       ))}
       {withSetter && (
         <SettingWrapper onClick={onSetting}>

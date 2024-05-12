@@ -10,7 +10,7 @@ type TProps = {
 
 const List: FC<TProps> = ({ user }) => {
   return (
-    <Wrapper key={user.id}>
+    <Wrapper key={user.login}>
       <Avatar src={user.avatar} />
       <Intro>
         <Name>{user.nickname}</Name>

@@ -1,8 +1,15 @@
 import { FC, ReactNode, memo, useState } from 'react'
+import { pick } from 'ramda'
 
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 
-import { Wrapper, LazyImageWrapper, FallbackWrapper } from './styles/lazy_load_image'
+import {
+  NormalWrapper,
+  FallbackOffsetWrapper,
+  LazyImageWrapper,
+  FallbackWrapper,
+  CheckPixel,
+} from './styles/lazy_load_image'
 
 type TProps = {
   className?: string
@@ -29,22 +36,58 @@ const LazyLoadImg: FC<TProps> = ({
   threshold = 200,
 }) => {
   const [imgLoaded, setImgLoaded] = useState(false)
+  const [checkError, setCheckError] = useState(false)
+  const [loadError, setLoadError] = useState(false)
 
+  // @ts-ignore
+  const fallbackOpt = pick(['size', 'left', 'right', 'top', 'bottom'], fallback?.props || {})
+  const Wrapper = !imgLoaded ? FallbackOffsetWrapper : NormalWrapper
+
+  /**
+   * CheckPixel is a workaround for lazy loading has no onError callback,
+   * for most OSS providers the cache control is lager than 5 mins
+   * so on before load callback, we aetup a real img to track is onError mannually triggered
+   */
   return (
-    <Wrapper onClick={onClick}>
-      <FallbackWrapper>{!imgLoaded && fallback}</FallbackWrapper>
+    <Wrapper onClick={onClick} {...fallbackOpt}>
+      {!imgLoaded && <FallbackWrapper>{fallback}</FallbackWrapper>}
+
       <LazyImageWrapper>
-        <LazyLoadImage
-          className={className}
-          src={src}
-          alt={alt}
-          // placeholder={fallback}
-          effect="blur"
-          visibleByDefault={visibleByDefault}
-          onLoad={() => setImgLoaded(true)}
-          // beforeLoad={() => setImgLoaded(true)}
-          threshold={threshold}
-        />
+        {checkError && (
+          <CheckPixel
+            src={src}
+            alt=""
+            onLoad={() => {
+              setCheckError(false)
+              setLoadError(false)
+              // setImgLoaded(true)
+            }}
+            onError={() => {
+              console.error('## lazy image load: ', src)
+              setLoadError(true)
+              setImgLoaded(false)
+            }}
+          />
+        )}
+
+        {!loadError && (
+          <LazyLoadImage
+            className={className}
+            src={src}
+            alt={alt}
+            effect="blur"
+            visibleByDefault={visibleByDefault}
+            onLoad={() => {
+              setImgLoaded(true)
+              setLoadError(false)
+              setCheckError(false)
+            }}
+            beforeLoad={() => {
+              setCheckError(true)
+            }}
+            threshold={threshold}
+          />
+        )}
       </LazyImageWrapper>
     </Wrapper>
   )
