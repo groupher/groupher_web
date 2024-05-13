@@ -14,7 +14,6 @@ export { default as RouteStore } from '@/containers/Route/store'
 export { default as AccountStore } from './AccountStore'
 export { default as ViewingStore } from './ViewingStore'
 export { default as ArticlesStore } from './ArticlesStore'
-export { ThemeStore, ThemeDefaults } from './ThemeStore'
 
 // utils store
 export { default as RichEditorStore } from '@/containers/editor/RichEditor/store'

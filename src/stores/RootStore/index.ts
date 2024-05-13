@@ -25,8 +25,6 @@ import {
   // HeaderStore,
   ViewingStore,
   ArticlesStore,
-  ThemeStore,
-  ThemeDefaults,
   ErrorBoxStore,
   MushroomStore,
   // content
@@ -77,7 +75,6 @@ const rootStore = T.model({
   comments: T.opt(CommentsStore, {}),
   metric: T.opt(T.str, METRIC.COMMUNITY),
   // @ts-ignore TODO:
-  theme: T.opt(ThemeStore, ThemeDefaults),
   locale: T.opt(T.enum('locale', values(LOCALE)), LOCALE.EN),
   localeData: T.opt(T.str, '{}'),
   errorCode: T.maybeNull(T.number),

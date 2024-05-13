@@ -11,8 +11,6 @@ import { includes } from 'ramda'
 import type { TSpace } from '@/spec'
 import { buildLog } from '@/logger'
 
-import { useTheme } from '../../app/onlymobx/hooks'
-
 import useSyncAccount from '@/hooks/useSyncAccount'
 import useAccount from '@/hooks/useAccount'
 import useBannerLayout from '@/hooks/useBannerLayout'
@@ -41,8 +39,6 @@ type TProps = {
 const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
   useSyncAccount()
 
-  const { theme, toggle, themeDesc2 } = useTheme()
-
   const user = useAccount()
   const { isLogin, nickname } = user
   const bannerLayout = useBannerLayout()
@@ -55,8 +51,6 @@ const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
 
   return (
     <Wrapper {...restProps}>
-      <h5 onClick={() => toggle()}>{theme}</h5>
-      <p>{themeDesc2}</p>
       {/* {includes(bannerLayout, [BANNER_LAYOUT.HEADER, BANNER_LAYOUT.TABBER]) && (
         <ThemeSwitch right={10} />
       )} */}

@@ -3,13 +3,11 @@ import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
-// import TestComp from './onlymobx/TestComp'
-import { OnlyMobxStoreWrapper } from './onlymobx'
-
 import {
   StyledComponentsRegistry,
   GraphQLProvider,
   RootStoreProvider,
+  MobxStoreProvider,
   GlobalLayout,
 } from './providers'
 
@@ -34,12 +32,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <StyledComponentsRegistry>
           <GraphQLProvider>
-            <OnlyMobxStoreWrapper>
+            <MobxStoreProvider>
               <RootStoreProvider>
                 <GlobalLayout>{children}</GlobalLayout>
               </RootStoreProvider>
-              <h1>外层吃瓜</h1>
-            </OnlyMobxStoreWrapper>
+            </MobxStoreProvider>
           </GraphQLProvider>
         </StyledComponentsRegistry>
         <Analytics />

@@ -7,7 +7,6 @@ import { useStore } from '@/stores/init'
 
 import {
   useI18n,
-  useThemeFromURL,
   useMetric,
   useCommunity,
   useTags,
@@ -28,7 +27,6 @@ type TProps = {
 }
 
 const RootStoreWrapper: FC<TProps> = ({ children }) => {
-  const theme = useThemeFromURL()
   const { locale, localeData } = useI18n()
 
   const metric = useMetric()
@@ -66,9 +64,6 @@ const RootStoreWrapper: FC<TProps> = ({ children }) => {
     },
     wallpaperEditor: wallpaper,
     dashboardThread: dashboard,
-    theme: {
-      curTheme: theme,
-    },
     locale,
     localeData,
   })

@@ -8,9 +8,9 @@ import GossBlurDay from './GossBlurDay'
 import GossBlurNight from './GossBlurNight'
 
 const GossBlur: FC = () => {
-  const { curTheme } = useTheme()
+  const { theme } = useTheme()
 
-  return curTheme === THEME.DAY ? <GossBlurDay /> : <GossBlurNight />
+  return theme === THEME.DAY ? <GossBlurDay /> : <GossBlurNight />
 }
 
 export default observer(GossBlur)

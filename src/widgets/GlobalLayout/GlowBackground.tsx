@@ -20,7 +20,7 @@ const getGlowPosition = (metric: TMetric, glowFixed: boolean): TGlowPosition => 
 
 const GlowBackground: FC = () => {
   const metric = useMetric()
-  const { curTheme } = useTheme()
+  const { theme } = useTheme()
   const { glowType, glowFixed, glowOpacity } = useGlowLight()
 
   if (!glowType) return null
@@ -30,7 +30,7 @@ const GlowBackground: FC = () => {
       glowType={glowType}
       glowPosition={getGlowPosition(metric, glowFixed)}
       glowOpacity={glowOpacity}
-      $curTheme={curTheme}
+      $theme={theme}
     />
   )
 }

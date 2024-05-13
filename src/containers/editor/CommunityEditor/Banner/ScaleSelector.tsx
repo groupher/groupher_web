@@ -29,10 +29,10 @@ type TProps = {
 }
 
 const ScaleSelector: FC<TProps> = ({ communityType }) => {
-  const { curTheme } = useTheme()
+  const { theme } = useTheme()
   const [step, setStep] = useState(STEP.X)
   const colors = COMMUNITY_CATS_TEXT_COLORS[communityType]
-  const darker = curTheme === THEME.NIGHT
+  const darker = theme === THEME.NIGHT
 
   return (
     <Wrapper>

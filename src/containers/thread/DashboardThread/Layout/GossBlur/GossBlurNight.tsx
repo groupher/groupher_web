@@ -39,7 +39,7 @@ const GossBlurNight: FC = () => {
 
   const { background, effect } = parseWallpaper(wallpapers, wallpaper, customWallpaper)
 
-  const { curTheme } = useTheme()
+  const { theme } = useTheme()
   const themeData = useThemeData()
 
   const bgColor = `${blurRGB(themeData.htmlBg, gossBlur)}`
@@ -56,11 +56,7 @@ const GossBlurNight: FC = () => {
 
         <ContentWrapper>
           <PreviewerWrapper>
-            <PreviewImage
-              style={{ background }}
-              effect={effect}
-              $darker={curTheme === THEME.NIGHT}
-            />
+            <PreviewImage style={{ background }} effect={effect} $darker={theme === THEME.NIGHT} />
             <ContentBlock $bgColor={bgColor}>
               <Brick $width={100} $height={7} $opacity={0.25} top={24} left={20} />
               <Brick $width={180} $height={7} $opacity={0.15} top={42} left={20} />
