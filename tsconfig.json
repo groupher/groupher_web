@@ -27,6 +27,8 @@
       "@/hoc": ["src/hoc"],
       "@/config": ["config"],
       "@/stores/*": ["src/stores/*"],
+      "@/stores2": ["src/stores2"],
+      "@/stores2/*": ["src/stores2/*"],
       "@/model": ["src/stores/Model"],
       "@/model/*": ["src/stores/Model/*"],
       "@/utils": ["utils"],

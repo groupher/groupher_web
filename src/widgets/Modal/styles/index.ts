@@ -85,10 +85,10 @@ export const EscHint = styled.div<{ mode: string }>`
   font-size: 13px;
 `
 
-type TGlowLight = { $curTheme?: TThemeName; glowType: string }
+type TGlowLight = { $theme?: TThemeName; glowType: string }
 export const GlowLight = styled.div<TGlowLight>`
-    background: ${({ glowType, $curTheme }) => {
-      const GLOW_EFFECTS = $curTheme === THEME.DAY ? GLOW_EFFECTS_DAY : GLOW_EFFECTS_NIGHT
+    background: ${({ glowType, $theme }) => {
+      const GLOW_EFFECTS = $theme === THEME.DAY ? GLOW_EFFECTS_DAY : GLOW_EFFECTS_NIGHT
       return `
     radial-gradient(circle at ${GLOW_EFFECTS[glowType].LEFT.X} ${GLOW_EFFECTS[glowType].LEFT.Y}, ${GLOW_EFFECTS[glowType].LEFT.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].LEFT.RADIUS}),
     radial-gradient(circle at ${GLOW_EFFECTS[glowType].RIGHT1.X} ${GLOW_EFFECTS[glowType].RIGHT1.Y}, ${GLOW_EFFECTS[glowType].RIGHT1.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].RIGHT1.RADIUS}),

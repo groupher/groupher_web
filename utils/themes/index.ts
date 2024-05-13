@@ -31,8 +31,9 @@ export const themeCoverMap = map(path(['cover']), themeSkins)
 export const themeCoverIndexMap = map(path(['coverIndex']), themeSkins)
 
 // curried shorthand for style-components
-export const theme = (themeKey: TFlatThemeKey): TTheme =>
-  path(['theme', ...split('.', themeKey)]) || 'wheat'
+export const theme = (themeKey: TFlatThemeKey): TTheme => {
+  return (path(['theme', ...split('.', themeKey)]) || 'wheat') as TTheme
+}
 
 export const rainbowLink = (primaryColor: TColorName, rollbackForBlack = 'link'): string => {
   if (primaryColor === COLOR_NAME.BLACK) {

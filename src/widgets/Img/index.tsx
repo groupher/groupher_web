@@ -8,7 +8,7 @@
 import { FC, ReactNode, memo } from 'react'
 import { buildLog } from '@/logger'
 
-import NormalImg from './NormalImg'
+import NativeImg from './NativeImg'
 import LazyLoadImg from './LazyLoadImg'
 
 const log = buildLog('w:Img')
@@ -41,7 +41,7 @@ const Img: FC<IProps> = ({
   return (
     <>
       {noLazy ? (
-        <NormalImg
+        <NativeImg
           className={className}
           src={src}
           alt={alt}

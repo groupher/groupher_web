@@ -12,14 +12,14 @@ import { Wrapper } from './styles/wallpaper'
 
 const Wallpaper: FC = () => {
   const { wallpapers, wallpaper, customWallpaper } = useWallpaper()
-  const { curTheme } = useTheme()
+  const { theme } = useTheme()
 
   const { background, effect } = parseWallpaper(wallpapers, wallpaper, customWallpaper)
 
   // for custom image/svg
   // for use style object not passing props
   // @link see https://github.com/styled-components/styled-components/issues/3315#issuecomment-885977691
-  return <Wrapper style={{ background }} $effect={effect} $themeName={curTheme} />
+  return <Wrapper style={{ background }} $effect={effect} $theme={theme} />
 }
 
 export default observer(Wallpaper)

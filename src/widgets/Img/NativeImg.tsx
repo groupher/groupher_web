@@ -15,7 +15,7 @@ type TProps = {
  * the fallback is for the image offen block in china, like github avatars
  * fallback 常被用于图片间歇性被墙的情况，比如 github 头像等
  */
-const NormalImg: FC<TProps> = ({
+const NativeImg: FC<TProps> = ({
   className = 'img-class',
   src,
   alt = 'image',
@@ -51,12 +51,12 @@ const NormalImg: FC<TProps> = ({
         alt={alt}
         onClick={onClick}
         loading="eager"
-        onLoad={handleOnLoad}
-        onError={handleOnError}
+        onLoad={() => handleOnLoad()}
+        onError={() => handleOnError()}
       />
       {fallback && !loaded && fallback}
     </>
   )
 }
 
-export default memo(NormalImg)
+export default memo(NativeImg)

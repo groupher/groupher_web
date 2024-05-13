@@ -24,10 +24,10 @@ type TProps = {
 }
 
 const TypeBoxes: FC<TProps> = ({ communityType }) => {
-  const { curTheme } = useTheme()
+  const { theme } = useTheme()
 
   return (
-    <Wrapper key={curTheme}>
+    <Wrapper key={theme}>
       {COMMUNITY_CATS.map((item, index) => {
         const $active = item.type === communityType
         const $color = item.color
@@ -39,7 +39,7 @@ const TypeBoxes: FC<TProps> = ({ communityType }) => {
             touched={!!communityType}
             $active={$active}
             $angle={index % 2 === 0 ? -2 : 2}
-            $withBorder={curTheme === THEME.NIGHT}
+            $withBorder={theme === THEME.NIGHT}
             onClick={() => communityTypeOnChange(item.type)}
           >
             <InnerBox $active={$active} $color={$color}>

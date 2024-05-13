@@ -10,6 +10,7 @@ export const NormalWrapper = styled(WithMargin)<TWrapper>`
   width: ${({ direction, width }) => (direction === 'right' ? `calc(${width} + 10px)` : width)};
   background: ${(props) => {
     const { direction } = props
+    // @ts-ignore
     const themeVal = theme('hoverBg')(props)
 
     return `linear-gradient(to ${direction}, ${themeVal} 60%, transparent)`

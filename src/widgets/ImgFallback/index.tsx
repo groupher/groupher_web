@@ -18,6 +18,7 @@ export type TAvatarProps = {
   testid?: string
   className?: string
   user?: TUser
+  title?: string
   size?: number
   quote?: boolean
 } & TSpace

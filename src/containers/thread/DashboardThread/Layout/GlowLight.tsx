@@ -38,7 +38,7 @@ const GlowLight: FC = () => {
     saving,
   } = useGlowLightInfo()
   const primaryColor = usePrimaryColor()
-  const { curTheme } = useTheme()
+  const { theme } = useTheme()
 
   return (
     <Wrapper>
@@ -61,7 +61,7 @@ const GlowLight: FC = () => {
             $color={primaryColor}
             onClick={() => edit(effect, 'glowType')}
           >
-            <GrowBackground glowPosition="absolute" glowType={effect} $curTheme={curTheme} />
+            <GrowBackground glowPosition="absolute" glowType={effect} $theme={theme} />
           </Box>
         ))}
       </Row>

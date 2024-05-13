@@ -37,7 +37,7 @@ const RealModal: FC<TProps> = ({
   handleCloseModal,
 }) => {
   const { glowType } = useGlowLight()
-  const { curTheme } = useTheme()
+  const { theme } = useTheme()
 
   // damn, i forgot why i set this state, fix LATER
   const [visibleOnPage, setVisibleOnPage] = useState(false)
@@ -74,7 +74,7 @@ const RealModal: FC<TProps> = ({
         >
           <GlowLight
             glowType={glowType}
-            $curTheme={curTheme}
+            $theme={theme}
             onClick={(e) => {
               e.stopPropagation()
             }}

@@ -18,7 +18,7 @@ import type {
 export type TSessionRes = TGQSSRResult & {
   sesstion: {
     theme: {
-      curTheme: string
+      theme: string
     }
     account: {
       user: TUser

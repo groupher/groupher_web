@@ -36,7 +36,9 @@
 			},
 			"recommended": true,
 			"a11y": {
-				"noSvgWithoutTitle": "off"
+				"noSvgWithoutTitle": "off",
+				"useButtonType": "off",
+				"useKeyWithClickEvents": "off"
 			}
 		}
 	},

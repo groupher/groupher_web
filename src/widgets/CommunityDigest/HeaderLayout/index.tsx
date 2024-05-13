@@ -1,6 +1,9 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
+import dynamic from 'next/dynamic'
+import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+
 import { ANCHOR } from '@/constant/dom'
 import useHeaderLinks from '@/hooks/useHeaderLinks'
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
@@ -25,6 +28,11 @@ import {
   WatchIcon,
   // GithubItem,
 } from '../styles/header_layout'
+
+// export const CommunityBrief = dynamic(() => import('./CommunityBrief'), {
+//   loading: () => <LavaLampLoading left={20} />,
+//   ssr: false,
+// })
 
 const HeaderLayout: FC = () => {
   const metric = useMetric()

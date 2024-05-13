@@ -220,7 +220,7 @@ export type TGlowEffect = {
   glowPosition?: TGlowPosition
   glowFixed?: boolean
   glowOpacity?: string
-  $curTheme?: TThemeName
+  $theme?: TThemeName
 
   changeGlowEffect?: (effect: string) => void
 }

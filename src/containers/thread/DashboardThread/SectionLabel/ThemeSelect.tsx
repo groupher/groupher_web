@@ -6,17 +6,17 @@ import THEME from '@/constant/theme'
 import { Wrapper, Section, Title, SunIcon, MoonIcon } from '../styles/section_label/theme_select'
 
 const ThemeSelect = () => {
-  const { curTheme, changeTheme } = useTheme()
+  const { theme, change } = useTheme()
 
   return (
     <Wrapper>
-      <Section onClick={() => changeTheme(THEME.DAY)} $active={curTheme === THEME.DAY}>
+      <Section onClick={() => change(THEME.DAY)} $active={theme === THEME.DAY}>
         <SunIcon />
         <Title>浅色主题</Title>
       </Section>
 
       <LineDivider left={10} right={10} height={10} />
-      <Section onClick={() => changeTheme(THEME.NIGHT)} $active={curTheme === THEME.NIGHT}>
+      <Section onClick={() => change(THEME.NIGHT)} $active={theme === THEME.NIGHT}>
         <MoonIcon />
         <Title>暗色主题</Title>
       </Section>

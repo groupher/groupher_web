@@ -1,7 +1,9 @@
 import { useContext } from 'react'
-import { MobXProviderContext } from 'mobx-react'
+// import { MobXProviderContext } from 'mobx-react'
 
 import type { TThemeMap } from '@/spec'
+
+import { StoreContext } from '@/stores2'
 
 /**
  * NOTE: should use observer to wrap the component who use this hook
@@ -9,13 +11,10 @@ import type { TThemeMap } from '@/spec'
  * styled-component can only be used before it init
  */
 const useThemeData = (): TThemeMap => {
-  const { store } = useContext(MobXProviderContext)
+  // const { store } = useContext(MobXProviderContext)
+  const { theme } = useContext(StoreContext)
 
-  if (store === null) {
-    throw new Error('Store cannot be null, please add a context provider')
-  }
-
-  return store.theme.themeData as TThemeMap
+  return theme.themeData
 }
 
 export default useThemeData

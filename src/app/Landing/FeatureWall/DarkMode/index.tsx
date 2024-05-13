@@ -17,12 +17,12 @@ import {
 } from '../../styles/feature_wall/dark_mode'
 
 const DarkMode: FC = () => {
-  const { switchTheme } = useTheme()
+  const { toggle } = useTheme()
 
   const [ref, isHovered] = useHover<HTMLDivElement>()
 
   return (
-    <Wrapper ref={ref} onClick={() => switchTheme()} $color={COLOR_NAME.CYAN}>
+    <Wrapper ref={ref} onClick={() => toggle()} $color={COLOR_NAME.CYAN}>
       <InnerWrapper $color={COLOR_NAME.CYAN} $hovering={isHovered} />
       {isHovered && <StarIcon />}
       {isHovered && <StarIcon2 />}

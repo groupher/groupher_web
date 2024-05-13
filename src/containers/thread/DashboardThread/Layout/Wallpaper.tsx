@@ -35,7 +35,7 @@ const Wallpaper: FC = () => {
 
   const { background, effect } = parseWallpaper(wallpapers, wallpaper, customWallpaper)
 
-  const { curTheme } = useTheme()
+  const { theme } = useTheme()
   const themeData = useThemeData()
 
   const handleCallEditor = useCallback(() => callWallpaperEditor(), [])
@@ -58,11 +58,7 @@ const Wallpaper: FC = () => {
         <PreviewWrapper>
           <HoverMask onClick={handleCallEditor}>
             <UploadIcon />
-            <PreviewImage
-              style={{ background }}
-              effect={effect}
-              $darker={curTheme === THEME.NIGHT}
-            />
+            <PreviewImage style={{ background }} effect={effect} $darker={theme === THEME.NIGHT} />
             <CheckLabel title="原图" top={15} left={-15} $active={false} />
           </HoverMask>
           <PreviewerWrapper>
@@ -71,7 +67,7 @@ const Wallpaper: FC = () => {
                 style={{ background }}
                 effect={effect}
                 noHover
-                $darker={curTheme === THEME.NIGHT}
+                $darker={theme === THEME.NIGHT}
               />
               <ContentBlock hasShadow={hasShadow} $bgColor={bgColor}>
                 <Brick $width={100} $height={7} $opacity={0.25} top={14} left={20} />

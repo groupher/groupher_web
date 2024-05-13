@@ -18,7 +18,7 @@ const UserList: FC<TProps> = ({ users }) => {
     <Wrapper>
       {users.map((user) => (
         <Avatar
-          key={user.id}
+          key={user.login}
           src={user.avatar}
           $avatarLayout={avatarLayout}
           fallback={<ImgFallback size={20} user={user} />}

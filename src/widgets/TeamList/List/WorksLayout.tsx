@@ -27,7 +27,7 @@ const WorksLayout: FC<TProps> = ({ users, withSetter = false, onSetting }) => {
   return (
     <Wrapper>
       {users.map((user) => (
-        <UserItem key={user.id} user={user} />
+        <UserItem key={user.login} user={user} />
       ))}
       {withSetter && (
         <SettingWrapper onClick={onSetting}>

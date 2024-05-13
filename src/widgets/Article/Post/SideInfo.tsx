@@ -48,7 +48,7 @@ const SideInfo: FC = () => {
         </Label>
         <UserList>
           {latestUpvotedUsers.map((user) => (
-            <User key={user.id}>
+            <User key={user.login}>
               <Avatar src={user.avatar} $avatarLayout={AVATAR_LAYOUT.SQUARE} />
               <Nickname>{user.nickname}</Nickname>
             </User>

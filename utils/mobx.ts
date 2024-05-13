@@ -13,6 +13,8 @@ import { isObject } from './validator'
 export type { Instance } from 'mobx-state-tree'
 export { getParent } from 'mobx-state-tree'
 
+export { makeAutoObservable as battery } from 'mobx'
+
 // make the name shorter
 export const T = {
   model: mobxTypes.model,

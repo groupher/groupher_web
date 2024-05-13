@@ -13,6 +13,7 @@
       "@/hoc": ["src/hoc"],
       "@/config": ["config"],
       "@/stores/*": ["src/stores/*"],
+      "@/stores2/*": ["src/stores/*"],
       "@/model": ["src/stores/Model"],
       "@/model*": ["src/stores/Model/*"],
       "@/utils": ["utils"],
