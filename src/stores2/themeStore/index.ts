@@ -14,7 +14,6 @@ const createThemeStore = (theme: TThemeName = THEME.DAY): TThemeStore => {
 
     // views
     get themeData(): TThemeMap {
-      // @ts-ignore
       return themeSkins[store.theme] as TThemeMap
     },
 
