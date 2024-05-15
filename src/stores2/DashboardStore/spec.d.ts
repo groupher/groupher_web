@@ -1,6 +1,4 @@
-import type { ValueOf as TValueOf } from 'type-fest'
-
-import type { TThemeMap, TThemeName } from '@/spec'
+import type { TThemeMap, TThemeName, TValueOf } from '@/spec'
 
 import {
   DASHBOARD_ROUTE,
