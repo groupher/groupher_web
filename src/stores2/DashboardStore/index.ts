@@ -3,12 +3,12 @@ import { battery } from '@/mobx'
 import type { TDashbaordStore } from './spec'
 import {
   DASHBOARD_ROUTE,
-  // DASHBOARD_LAYOUT_ROUTE,
+  DASHBOARD_LAYOUT_ROUTE,
   DASHBOARD_BASEINFO_ROUTE,
-  // DASHBOARD_ALIAS_ROUTE,
-  // DASHBOARD_BROADCAST_ROUTE,
-  // DASHBOARD_SEO_ROUTE,
-  // DASHBOARD_DOC_ROUTE,
+  DASHBOARD_ALIAS_ROUTE,
+  DASHBOARD_BROADCAST_ROUTE,
+  DASHBOARD_SEO_ROUTE,
+  DASHBOARD_DOC_ROUTE,
 } from '@/constant/route'
 
 // theme store
@@ -19,6 +19,12 @@ const createDashboardStore = (): TDashbaordStore => {
     loading: false,
     curTab: DASHBOARD_ROUTE.INFO,
     baseInfoTab: DASHBOARD_BASEINFO_ROUTE.BASIC,
+
+    aliasTab: DASHBOARD_ALIAS_ROUTE.THREAD,
+    seoTab: DASHBOARD_SEO_ROUTE.SEARCH_ENGINE,
+    docTab: DASHBOARD_DOC_ROUTE.TABLE,
+    layoutTab: DASHBOARD_LAYOUT_ROUTE.GLOBAL,
+    broadcastTab: DASHBOARD_BROADCAST_ROUTE.GLOBAL,
 
     // curTab: DASHBOARD_ROUTE.INFO,
 
