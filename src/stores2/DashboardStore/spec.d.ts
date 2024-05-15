@@ -1,4 +1,4 @@
-import type { TThemeMap, TThemeName, TValueOf } from '@/spec'
+import type { TThemeMap, TThemeName, TValueOf, TTag } from '@/spec'
 
 import {
   DASHBOARD_ROUTE,
@@ -24,8 +24,8 @@ export type TDashbaordStore = {
   broadcastTab: TValueOf<typeof DASHBOARD_BROADCAST_ROUTE>
 
   // overview: T.opt(Overview, {}),
-  // editingTag: T.maybeNull(Tag),
-  // settingTag: T.maybeNull(Tag),
+  editingTag: TTag | null
+  settingTag: TTag | null
   // editingAlias: T.maybeNull(NameAlias),
   // editingLink: T.maybeNull(LinkItem),
   // editingLinkMode: T.opt(T.enum(values(CHANGE_MODE)), CHANGE_MODE.CREATE),

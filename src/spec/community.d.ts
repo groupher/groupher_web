@@ -46,14 +46,16 @@ export type TPagedCommunities = {
 export type TTag = {
   id?: string
   index?: number
-  slug: string
   title?: string
+  slug: string
   layout?: string
   desc?: string
   thread?: string
   color?: string
   group?: string
   community?: TCommunity
+  insertedAt?: string
+  updatedAt?: string
 }
 
 export type TFilterTag = {

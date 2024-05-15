@@ -30,8 +30,8 @@ const createDashboardStore = (): TDashbaordStore => {
     // overview: T.opt(Overview, {}),
 
     // editing
-    // editingTag: T.maybeNull(Tag),
-    // settingTag: T.maybeNull(Tag),
+    editingTag: null,
+    settingTag: null,
     // editingAlias: T.maybeNull(NameAlias),
     // editingLink: T.maybeNull(LinkItem),
     // editingLinkMode: T.opt(T.enum(values(CHANGE_MODE)), CHANGE_MODE.CREATE),
