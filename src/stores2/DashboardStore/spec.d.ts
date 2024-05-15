@@ -1,9 +1,11 @@
+import type { ValueOf as TValueOf } from 'type-fest'
+
 import type { TThemeMap, TThemeName } from '@/spec'
 
 import {
   DASHBOARD_ROUTE,
   // DASHBOARD_LAYOUT_ROUTE,
-  // DASHBOARD_BASEINFO_ROUTE,
+  DASHBOARD_BASEINFO_ROUTE,
   // DASHBOARD_ALIAS_ROUTE,
   // DASHBOARD_BROADCAST_ROUTE,
   // DASHBOARD_SEO_ROUTE,
@@ -11,6 +13,7 @@ import {
 } from '@/constant/route'
 
 type ValuesOf<T> = T[keyof T]
+
 // type MyObjectValueUnion = ValuesOf<typeof DASHBOARD_ROUTE>
 
 export type TDashbaordStore = {
@@ -19,6 +22,8 @@ export type TDashbaordStore = {
   loading: boolean
 
   curTab: ValuesOf<typeof DASHBOARD_ROUTE>
+  // baseInfoTab: ValuesOf<typeof DASHBOARD_BASEINFO_ROUTE>
+  baseInfoTab: TValueOf<typeof DASHBOARD_BASEINFO_ROUTE>
 
   // actions
   // change: (theme: TThemeName) => void

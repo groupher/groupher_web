@@ -4,7 +4,7 @@ import type { TDashbaordStore } from './spec'
 import {
   DASHBOARD_ROUTE,
   // DASHBOARD_LAYOUT_ROUTE,
-  // DASHBOARD_BASEINFO_ROUTE,
+  DASHBOARD_BASEINFO_ROUTE,
   // DASHBOARD_ALIAS_ROUTE,
   // DASHBOARD_BROADCAST_ROUTE,
   // DASHBOARD_SEO_ROUTE,
@@ -18,6 +18,7 @@ const createDashboardStore = (): TDashbaordStore => {
     saving: false,
     loading: false,
     curTab: DASHBOARD_ROUTE.INFO,
+    baseInfoTab: DASHBOARD_BASEINFO_ROUTE.BASIC,
 
     // curTab: DASHBOARD_ROUTE.INFO,
 
