@@ -12,8 +12,6 @@ import {
   // DASHBOARD_DOC_ROUTE,
 } from '@/constant/route'
 
-type ValuesOf<T> = T[keyof T]
-
 // type MyObjectValueUnion = ValuesOf<typeof DASHBOARD_ROUTE>
 
 export type TDashbaordStore = {
@@ -21,8 +19,7 @@ export type TDashbaordStore = {
   saving: boolean
   loading: boolean
 
-  curTab: ValuesOf<typeof DASHBOARD_ROUTE>
-  // baseInfoTab: ValuesOf<typeof DASHBOARD_BASEINFO_ROUTE>
+  curTab: TValueOf<typeof DASHBOARD_ROUTE>
   baseInfoTab: TValueOf<typeof DASHBOARD_BASEINFO_ROUTE>
 
   // actions
