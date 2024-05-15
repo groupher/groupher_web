@@ -26,8 +26,39 @@ const createDashboardStore = (): TDashbaordStore => {
     layoutTab: DASHBOARD_LAYOUT_ROUTE.GLOBAL,
     broadcastTab: DASHBOARD_BROADCAST_ROUTE.GLOBAL,
 
-    // curTab: DASHBOARD_ROUTE.INFO,
+    // overview
+    // overview: T.opt(Overview, {}),
 
+    // editing
+    // editingTag: T.maybeNull(Tag),
+    // settingTag: T.maybeNull(Tag),
+    // editingAlias: T.maybeNull(NameAlias),
+    // editingLink: T.maybeNull(LinkItem),
+    // editingLinkMode: T.opt(T.enum(values(CHANGE_MODE)), CHANGE_MODE.CREATE),
+
+    editingGroup: null,
+    editingGroupIndex: null,
+    editingFAQIndex: null,
+    // editingFAQ: T.maybeNull(FAQSection),
+
+    queringMediaReportIndex: null,
+    // ...settingsModalFields,
+    // initSettings: T.opt(InitSettings, {}),
+    // defaultSettings: T.opt(InitSettings, {}),
+
+    // cms
+    batchSelectedIDs: [],
+    // pagedCommunities: T.opt(PagedCommunities, emptyPagi),
+    // pagedPosts: T.opt(PagedPosts, emptyPagi),
+    // pagedDocs: T.opt(PagedDocs, emptyPagi),
+    // pagedChangelogs: T.opt(PagedChangelogs, emptyPagi),
+
+    // for global alert
+    demoAlertEnable: false,
+
+    // activeModerator: T.maybeNull(User),
+    allModeratorRules: '{}',
+    allRootRules: '{}',
     // views
     // get themeData() {
     //   return ''

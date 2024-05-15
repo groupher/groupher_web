@@ -23,6 +23,38 @@ export type TDashbaordStore = {
   layoutTab: TValueOf<typeof DASHBOARD_LAYOUT_ROUTE>
   broadcastTab: TValueOf<typeof DASHBOARD_BROADCAST_ROUTE>
 
+  // overview: T.opt(Overview, {}),
+  // editingTag: T.maybeNull(Tag),
+  // settingTag: T.maybeNull(Tag),
+  // editingAlias: T.maybeNull(NameAlias),
+  // editingLink: T.maybeNull(LinkItem),
+  // editingLinkMode: T.opt(T.enum(values(CHANGE_MODE)), CHANGE_MODE.CREATE),
+
+  editingGroup: string | null
+  editingGroupIndex: number | null
+  editingFAQIndex: number | null
+  // editingFAQ: T.maybeNull(FAQSection),
+
+  queringMediaReportIndex: number
+  // ...settingsModalFields,
+  // initSettings: T.opt(InitSettings, {}),
+  // defaultSettings: T.opt(InitSettings, {}),
+
+  // cms
+  batchSelectedIDs: string[]
+  // pagedCommunities: T.opt(PagedCommunities, emptyPagi),
+  // pagedPosts: T.opt(PagedPosts, emptyPagi),
+  // pagedDocs: T.opt(PagedDocs, emptyPagi),
+  // pagedChangelogs: T.opt(PagedChangelogs, emptyPagi),
+
+  // for global alert
+  demoAlertEnable: boolean
+
+  // for admins
+  // activeModerator: T.maybeNull(User),
+  allModeratorRules: string // T.opt(T.str, '{}'),
+  allRootRules: stringg // T.opt(T.str, '{}'),
+
   // views
 
   // actions
