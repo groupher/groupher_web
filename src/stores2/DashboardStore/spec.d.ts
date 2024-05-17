@@ -46,7 +46,7 @@ type TModerator = {
   user: TUser
 }
 
-export type TSettingsModalFields = {
+export type TSettingsFields = {
   // baseInfo
   favicon: string
   logo: string
@@ -148,9 +148,9 @@ export type TSettingsModalFields = {
   widgetsType: TWidgetType
 }
 
-export type TDashbaordStore = TSettingsModalFields & {
-  initSettings: TSettingsModalFields
-  defaultSettings: TSettingsModalFields
+export type TDashbaordStore = TSettingsFields & {
+  initSettings: TSettingsFields
+  defaultSettings: TSettingsFields
 
   savingField: string | null
   saving: boolean

@@ -27,7 +27,7 @@ import {
   RSS_TYPE,
 } from '@/constant/layout'
 
-import type { TDashbaordStore, TSettingsModalFields } from './spec'
+import type { TDashbaordStore, TSettingsFields } from './spec'
 
 import {
   DASHBOARD_ROUTE,
@@ -39,7 +39,7 @@ import {
   DASHBOARD_DOC_ROUTE,
 } from '@/constant/route'
 
-export const settingsModalFields: TSettingsModalFields = {
+export const settingsFields: TSettingsFields = {
   // baseInfo
   favicon: '',
   logo: '',
@@ -148,9 +148,9 @@ export const settingsModalFields: TSettingsModalFields = {
 // theme store
 const createDashboardStore = (): TDashbaordStore => {
   const store = {
-    ...settingsModalFields,
-    initSettings: settingsModalFields,
-    defaultSettings: settingsModalFields,
+    ...settingsFields,
+    initSettings: settingsFields,
+    defaultSettings: settingsFields,
 
     savingField: null,
     saving: false,
