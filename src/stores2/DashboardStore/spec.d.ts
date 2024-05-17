@@ -164,7 +164,7 @@ export type TDashbaordStore = TSettingsModalFields & {
   editingTag: TTag | null
   settingTag: TTag | null
   editingAlias: TNameAlias | null
-  // editingLink: T.maybeNull(LinkItem),
+  editingLink: TLinkItem
   // editingLinkMode: T.opt(T.enum(values(CHANGE_MODE)), CHANGE_MODE.CREATE),
 
   editingGroup: string | null

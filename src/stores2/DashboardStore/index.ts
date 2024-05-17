@@ -174,7 +174,7 @@ const createDashboardStore = (): TDashbaordStore => {
     editingTag: null,
     settingTag: null,
     editingAlias: null,
-    // editingLink: T.maybeNull(LinkItem),
+    editingLink: null,
     // editingLinkMode: T.opt(T.enum(values(CHANGE_MODE)), CHANGE_MODE.CREATE),
 
     editingGroup: null,
