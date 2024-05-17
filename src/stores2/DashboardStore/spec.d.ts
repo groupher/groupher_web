@@ -10,6 +10,7 @@ import type {
   TTagLayout,
   TBrandLayout,
   TBannerLayout,
+  TChangeMode,
   TTopbarLayout,
   TAvatarLayout,
   THeaderLayout,
@@ -165,7 +166,7 @@ export type TDashbaordStore = TSettingsModalFields & {
   settingTag: TTag | null
   editingAlias: TNameAlias | null
   editingLink: TLinkItem
-  // editingLinkMode: T.opt(T.enum(values(CHANGE_MODE)), CHANGE_MODE.CREATE),
+  editingLinkMode: TChangeMode
 
   editingGroup: string | null
   editingGroupIndex: number | null

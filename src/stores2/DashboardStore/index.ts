@@ -6,13 +6,8 @@ import SIZE from '@/constant/size'
 import { COLOR_NAME } from '@/constant/colors'
 import { BUILDIN_ALIAS } from '@/constant/name'
 import { GLOW_OPACITY } from '@/constant/glow_effect'
-import {
-  TW_CARD,
-  WIDGET_TYPE,
-  DEFAULT_FAQ_ITEMS,
-  INIT_KANBAN_COLORS,
-  DEFAULT_ENABLE,
-} from '@/constant/dashboard'
+import { CHANGE_MODE } from '@/constant/mode'
+import { TW_CARD, WIDGET_TYPE, INIT_KANBAN_COLORS, DEFAULT_ENABLE } from '@/constant/dashboard'
 import {
   HEADER_LAYOUT,
   FOOTER_LAYOUT,
@@ -175,7 +170,7 @@ const createDashboardStore = (): TDashbaordStore => {
     settingTag: null,
     editingAlias: null,
     editingLink: null,
-    // editingLinkMode: T.opt(T.enum(values(CHANGE_MODE)), CHANGE_MODE.CREATE),
+    editingLinkMode: CHANGE_MODE.CREATE,
 
     editingGroup: null,
     editingGroupIndex: null,
