@@ -149,6 +149,9 @@ export type TSettingsModalFields = {
 }
 
 export type TDashbaordStore = TSettingsModalFields & {
+  initSettings: TSettingsModalFields
+  defaultSettings: TSettingsModalFields
+
   savingField: string | null
   saving: boolean
   loading: boolean

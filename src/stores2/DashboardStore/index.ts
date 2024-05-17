@@ -149,6 +149,8 @@ export const settingsModalFields: TSettingsModalFields = {
 const createDashboardStore = (): TDashbaordStore => {
   const store = {
     ...settingsModalFields,
+    initSettings: settingsModalFields,
+    defaultSettings: settingsModalFields,
 
     savingField: null,
     saving: false,
@@ -178,8 +180,6 @@ const createDashboardStore = (): TDashbaordStore => {
     // editingFAQ: T.maybeNull(FAQSection),
 
     queringMediaReportIndex: null,
-    // initSettings: T.opt(InitSettings, {}),
-    // defaultSettings: T.opt(InitSettings, {}),
 
     // cms
     batchSelectedIDs: [],
