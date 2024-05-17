@@ -17,7 +17,7 @@ import type {
   TPagedArticlesParams,
   TArticleParams,
 } from '@/spec'
-import { BUILDIN_ALIAS, HCN } from '@/constant/name'
+import { BUILDIN_ALIAS } from '@/constant/name'
 import { THREAD } from '@/constant/thread'
 import URL_PARAM from '@/constant/url_param'
 import { nilOrEmpty } from '@/validator'

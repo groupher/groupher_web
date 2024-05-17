@@ -66,12 +66,7 @@ const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
       {!isLogin && withName && <UnLoginText>未登入</UnLoginText>}
       {isLogin && withName && <NickName>{nickname}</NickName>}
       {bannerLayout === BANNER_LAYOUT.SIDEBAR && <SpaceGrow />}
-      <Panel
-        show={showPanel}
-        onClose={() => {
-          setShowPanel(false)
-        }}
-      />
+      <Panel show={showPanel} onClose={() => setShowPanel(false)} />
     </Wrapper>
   )
 }

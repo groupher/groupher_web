@@ -35,7 +35,7 @@ const LazyLoadImg: FC<TProps> = ({
   onClick,
   threshold = 200,
 }) => {
-  const [imgLoaded, setImgLoaded] = useState(false)
+  const [imgLoaded, setImgLoaded] = useState(true)
   const [checkError, setCheckError] = useState(false)
   const [loadError, setLoadError] = useState(false)
 
@@ -43,6 +43,13 @@ const LazyLoadImg: FC<TProps> = ({
   const fallbackOpt = pick(['size', 'left', 'right', 'top', 'bottom'], fallback?.props || {})
   const Wrapper = !imgLoaded ? FallbackOffsetWrapper : NormalWrapper
 
+  if (!src) {
+    return (
+      <Wrapper key={src} onClick={onClick} {...fallbackOpt}>
+        <FallbackWrapper>{fallback}</FallbackWrapper>
+      </Wrapper>
+    )
+  }
   /**
    * CheckPixel is a workaround for lazy loading has no onError callback,
    * for most OSS providers the cache control is lager than 5 mins
@@ -83,6 +90,7 @@ const LazyLoadImg: FC<TProps> = ({
               setCheckError(false)
             }}
             beforeLoad={() => {
+              setImgLoaded(false)
               setCheckError(true)
             }}
             threshold={threshold}

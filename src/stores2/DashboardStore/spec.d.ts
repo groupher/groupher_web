@@ -1,4 +1,33 @@
-import type { TThemeMap, TThemeName, TValueOf, TTag } from '@/spec'
+import type {
+  TLocale,
+  TThemeMap,
+  TColorName,
+  TPostLayout,
+  TKanbanLayout,
+  TKanbanCardLayout,
+  TDocLayout,
+  TDocFAQLayout,
+  TTagLayout,
+  TBrandLayout,
+  TBannerLayout,
+  TTopbarLayout,
+  TAvatarLayout,
+  THeaderLayout,
+  TFooterLayout,
+  TThemeName,
+  TEnableConfig,
+  TNameAlias,
+  TLinkItem,
+  TValueOf,
+  TTag,
+  TUser,
+  TThread,
+  TSizeSML,
+  TWidgetType,
+  TBroadcastLayout,
+  TBroadcastArticleLayout,
+  TChangelogLayout,
+} from '@/spec'
 
 import {
   DASHBOARD_ROUTE,
@@ -10,7 +39,115 @@ import {
   DASHBOARD_DOC_ROUTE,
 } from '@/constant/route'
 
-export type TDashbaordStore = {
+type TModerator = {
+  passportItemCount: number
+  role: string
+  user: TUser
+}
+
+export type TSettingsModalFields = {
+  // baseInfo
+  favicon: string
+  logo: string
+  locale: TLocale
+  title: string
+  slug: string
+  desc: string
+  introduction: string
+  homepage: string
+  city: string
+  techstack: string
+
+  // social
+  // socialLinks: T.opt(T.array(SocialLink), []),
+  // mediaReports: T.opt(T.array(MediaReport), [EMPTY_MEDIA_REPORT]),
+
+  // seo
+  seoEnable: boolean
+  ogSiteName: string
+  ogTitle: string
+  ogDescription: string
+  ogUrl: string
+  ogImage: string
+  ogLocale: string
+  ogPublisher: string
+
+  twTitle: string
+  twDescription: string
+  twUrl: string
+  twCard: string
+  twSite: string
+  twImage: string
+  twImageWidth: string
+  twImageHeight: string
+
+  // layout
+  primaryColor: TColorName
+  postLayout: TPostLayout
+  kanbanLayout: TKanbanLayout
+  kanbanCardLayout: TKanbanCardLayout
+  kanbanBgColors: string[]
+
+  docLayout: TDocLayout
+  docFaqLayout: TDocFAQLayout
+  tagLayout: TTagLayout
+  avatarLayout: TAvatarLayout
+  brandLayout: TBrandLayout
+  bannerLayout: TBannerLayout
+  topbarLayout: TTopbarLayout
+  topbarBg: TColorName
+
+  broadcastLayout: TBroadcastLayout
+  broadcastBg: TColorName
+  broadcastEnable: boolean
+  broadcastArticleLayout: TBroadcastArticleLayout
+
+  broadcastArticleBg: TColorName
+  broadcastArticleEnable: boolean
+
+  changelogLayout: TChangelogLayout
+
+  // doc
+  // docCategories: T.opt(T.array(GroupCategory), []),
+
+  // glow effect
+  glowType: string
+  glowFixed: boolean
+  glowOpacity: string
+
+  // goss blur
+  gossBlur: int
+  gossBlurDark: int
+
+  // contents
+  // tags
+  tags: TTag[]
+  activeTagGroup: string | null
+  activeTagThread: string | null
+  nameAlias: TNameAlias[]
+  enable: TEnableConfig
+
+  // faqSections: T.opt(T.array(FAQSection), DEFAULT_FAQ_ITEMS),
+  // rssFeedType: T.opt(T.enum(values(RSS_TYPE)), RSS_TYPE.DIGEST),
+
+  rssFeedCount: number
+
+  headerLayout: THeaderLayout
+  footerLayout: TFooterLayout
+
+  footerLinks: TLinkItem[]
+  headerLinks: TLinkItem[]
+
+  moderators: TModerator[]
+
+  // widgets
+  widgetsPrimaryColor: TColorName
+  widgetsThreads: TThread
+  widgetsSize: TSizeSML
+  widgetsType: TWidgetType
+}
+
+export type TDashbaordStore = TSettingsModalFields & {
   savingField: string | null
   saving: boolean
   loading: boolean
@@ -26,7 +163,7 @@ export type TDashbaordStore = {
   // overview: T.opt(Overview, {}),
   editingTag: TTag | null
   settingTag: TTag | null
-  // editingAlias: T.maybeNull(NameAlias),
+  editingAlias: TNameAlias | null
   // editingLink: T.maybeNull(LinkItem),
   // editingLinkMode: T.opt(T.enum(values(CHANGE_MODE)), CHANGE_MODE.CREATE),
 
@@ -36,7 +173,6 @@ export type TDashbaordStore = {
   // editingFAQ: T.maybeNull(FAQSection),
 
   queringMediaReportIndex: number
-  // ...settingsModalFields,
   // initSettings: T.opt(InitSettings, {}),
   // defaultSettings: T.opt(InitSettings, {}),
 
@@ -52,8 +188,8 @@ export type TDashbaordStore = {
 
   // for admins
   // activeModerator: T.maybeNull(User),
-  allModeratorRules: string // T.opt(T.str, '{}'),
-  allRootRules: stringg // T.opt(T.str, '{}'),
+  allModeratorRules: string
+  allRootRules: string
 
   // views
 
