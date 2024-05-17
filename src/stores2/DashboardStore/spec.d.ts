@@ -1,5 +1,4 @@
 import type {
-  T,
   TLocale,
   TThemeMap,
   TColorName,
@@ -131,7 +130,7 @@ export type TSettingsFields = {
   enable: TEnableConfig
 
   // faqSections: T.opt(T.array(FAQSection), DEFAULT_FAQ_ITEMS),
-  rssFeedType: T.RSSType
+  rssFeedType: TRSSType
   rssFeedCount: number
 
   headerLayout: THeaderLayout

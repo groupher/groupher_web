@@ -6,7 +6,6 @@ import type { TRootStore as RootStoreType } from '@/stores/RootStore'
 import type { TThemeName } from './theme'
 import type { TArticle } from './article'
 import type { TCommunity } from './community'
-import type { TRSSType } from './dashboard'
 
 export type { TTransKey, TLocale } from './i18n'
 
@@ -242,7 +241,3 @@ interface IWindow extends Window {
 }
 
 export type TWindow = IWindow | null
-
-export type T = {
-  RSSType: TRSSType
-}
