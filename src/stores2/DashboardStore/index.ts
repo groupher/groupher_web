@@ -123,8 +123,7 @@ export const settingsFields: TSettingsFields = {
   enable: DEFAULT_ENABLE,
 
   // faqSections: DEFAULT_FAQ_ITEMS,
-  // rssFeedType: RSS_TYPE.DIGEST,
-
+  rssFeedType: RSS_TYPE.DIGEST,
   rssFeedCount: 5,
 
   headerLayout: HEADER_LAYOUT.CENTER,

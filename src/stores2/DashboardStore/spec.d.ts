@@ -28,6 +28,7 @@ import type {
   TBroadcastLayout,
   TBroadcastArticleLayout,
   TChangelogLayout,
+  TRSSType,
 } from '@/spec'
 
 import {
@@ -129,8 +130,7 @@ export type TSettingsFields = {
   enable: TEnableConfig
 
   // faqSections: T.opt(T.array(FAQSection), DEFAULT_FAQ_ITEMS),
-  // rssFeedType: T.opt(T.enum(values(RSS_TYPE)), RSS_TYPE.DIGEST),
-
+  rssFeedType: TRSSType
   rssFeedCount: number
 
   headerLayout: THeaderLayout
