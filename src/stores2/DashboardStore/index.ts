@@ -115,7 +115,6 @@ export const settingsFields: TSettingsFields = {
 
   // contents
   // tags
-  // tags: T.opt(T.array(Tag), mockTags(12)),
   tags: [],
   activeTagGroup: null,
   activeTagThread: null,
@@ -129,12 +128,10 @@ export const settingsFields: TSettingsFields = {
   headerLayout: HEADER_LAYOUT.CENTER,
   footerLayout: FOOTER_LAYOUT.GROUP,
 
-  // footerLinks: T.opt(T.array(LinkItem), DEFAULT_LINK_ITEMS),
   footerLinks: [],
   headerLinks: [],
 
   // moderators
-
   moderators: [],
 
   // widgets
