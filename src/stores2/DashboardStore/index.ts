@@ -102,7 +102,7 @@ export const settingsFields: TSettingsFields = {
   changelogLayout: CHANGELOG_LAYOUT.CLASSIC,
 
   // doc
-  // docCategories: [],
+  docCategories: [],
 
   // glow effect
   glowType: '',

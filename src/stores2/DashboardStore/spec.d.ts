@@ -47,6 +47,20 @@ type TModerator = {
   user: TUser
 }
 
+type TFile = {
+  index: number
+  name: string
+  articleId: string
+  linkAddr: string
+}
+
+type TGroupCategory = {
+  name: string
+  index: number
+  color: TColorName
+  files: TFile[]
+}
+
 export type TSettingsFields = {
   // baseInfo
   favicon: string
@@ -110,7 +124,7 @@ export type TSettingsFields = {
   changelogLayout: TChangelogLayout
 
   // doc
-  // docCategories: T.opt(T.array(GroupCategory), []),
+  docCategories: TGroupCategory[]
 
   // glow effect
   glowType: string
