@@ -54,25 +54,17 @@ const ArticleEditor = T.model('ArticleEditor', {
   activeTag: T.maybeNull(Tag),
 })
   .views((self) => ({
-    get isLogin(): boolean {
-      const root = getParent(self) as TRootStore
-      return root.account.isLogin
-    },
-    get accountInfo(): TAccount {
-      const root = getParent(self) as TRootStore
-      return root.account.accountInfo
-    },
     get viewingArticle(): TArticle {
       const root = getParent(self) as TRootStore
       return toJS(root.viewing.viewingArticle)
     },
     get allowEdit(): boolean {
       const slf = self as TStore
-      const { mode, accountInfo } = slf
+      const { mode } = slf
 
       if (mode === 'publish') return true
 
-      return accountInfo.login === slf.author?.login
+      return false
     },
     get thread(): TArticleThread {
       const root = getParent(self) as TRootStore

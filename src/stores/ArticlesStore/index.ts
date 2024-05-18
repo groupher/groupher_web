@@ -46,10 +46,6 @@ const ArticlesStore = T.model('Articles', {
 
       return root.isMobile
     },
-    get isLogin(): boolean {
-      const root = getParent(self) as TRootStore
-      return root.account.isLogin
-    },
     get curCommunity(): TCommunity {
       const root = getParent(self) as TRootStore
       return toJS(root.viewing.community)

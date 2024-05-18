@@ -217,9 +217,7 @@ export const useInit = (_store: TStore): void => {
     // log('effect init')
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
 
-    if (store.isLogin) {
-      // checkPendingApply()
-    }
+    // checkPendingApply()
 
     return () => {
       // log('effect uninit')

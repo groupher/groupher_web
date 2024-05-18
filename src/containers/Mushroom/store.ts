@@ -31,8 +31,10 @@ const MushroomStore = T.model('MushroomStore', {
 })
   .views((self) => ({
     get userHasLogin(): boolean {
-      const root = getParent(self) as TRootStore
-      return root.accountInfo.isLogin
+      // const root = getParent(self) as TRootStore
+      // return root.accountInfo.isLogin
+
+      return false
     },
     get activeOrder(): TArticleOrder | null {
       const root = getParent(self) as TRootStore

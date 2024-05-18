@@ -8,7 +8,6 @@ import { values, map, findIndex, propEq, toUpper, pick, uniqBy, prop } from 'ram
 import type {
   TRootStore,
   TCommunity,
-  TAccount,
   TUser,
   TArticle,
   TThread,
@@ -114,10 +113,6 @@ const CommentsStore = T.model('CommentsStore', {
         isAllFolded: slf.isAllFolded,
       }
     },
-    get isLogin(): boolean {
-      const root = getParent(self) as TRootStore
-      return root.account.isLogin
-    },
     get editState(): TEditState {
       const slf = self as TStore
       const baseFields = pick(
@@ -125,7 +120,6 @@ const CommentsStore = T.model('CommentsStore', {
           'commentBody',
           'updateBody',
           'replyBody',
-          'accountInfo',
           'showEditor',
           'showReplyEditor',
           'showUpdateEditor',
@@ -167,10 +161,6 @@ const CommentsStore = T.model('CommentsStore', {
         return toJS(self.pagedPublishedComments)
       }
       return toJS(self.pagedComments)
-    },
-    get accountInfo(): TAccount {
-      const root = getParent(self) as TRootStore
-      return root.account.accountInfo
     },
     get viewingUser(): TUser {
       const root = getParent(self) as TRootStore

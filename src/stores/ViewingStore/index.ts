@@ -5,15 +5,7 @@
 
 import { values, mergeRight, includes } from 'ramda'
 
-import type {
-  TRootStore,
-  TUser,
-  TArticle,
-  TArticleMeta,
-  TThread,
-  TAccount,
-  TCommunity,
-} from '@/spec'
+import type { TRootStore, TUser, TArticle, TArticleMeta, TThread, TCommunity } from '@/spec'
 
 import { ARTICLE_THREAD, THREAD } from '@/constant/thread'
 
@@ -32,18 +24,15 @@ const ViewingStore = T.model('ViewingStore', {
   viewingThread: T.maybeNull(T.enum('viewingThread', values(ARTICLE_THREAD))),
 })
   .views((self) => ({
-    get accountInfo(): TAccount {
-      const root = getParent(self) as TRootStore
-      return root.accountInfo
-    },
     get isSelfViewing(): boolean {
-      const root = getParent(self) as TRootStore
-      const { isLogin } = root.accountInfo
-      if (!isLogin) return false
+      // const root = getParent(self) as TRootStore
+      // const { isLogin } = root.accountInfo
+      // if (!isLogin) return false
 
-      const { id: accountId } = root.accountInfo
-      const { id: userId } = self.user
-      return accountId === userId
+      return true
+      // const { id: accountId } = root.accountInfo
+      // const { id: userId } = self.user
+      // return accountId === userId
     },
     get currentThread(): TThread {
       return self.viewingThread || self.activeThread
@@ -104,12 +93,12 @@ const ViewingStore = T.model('ViewingStore', {
       self[currentThread].upvotesCount = count
     },
     updateViewingIfNeed(type, sobj): void {
-      const { updateViewingUser } = self as TStore
+      // const { updateViewingUser } = self as TStore
 
       switch (type) {
         case 'user': {
-          if (self.user.id !== self.accountInfo.id) return
-          updateViewingUser(sobj)
+          // if (self.user.id !== self.accountInfo.id) return
+          // updateViewingUser(sobj)
           break
         }
         default:

@@ -93,7 +93,6 @@ const AccountEditorStore = T.model('AccountEditorStore', {
         social: slf.editData.social,
       }
 
-      root.account.updateAccount(user)
       root.updateViewingIfNeed('user', user)
     },
 

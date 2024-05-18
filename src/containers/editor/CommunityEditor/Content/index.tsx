@@ -7,6 +7,7 @@
 import { FC, memo } from 'react'
 
 import { buildLog } from '@/logger'
+import useAccount from '@/hooks/useAccount'
 
 import SelectType from './SelectType'
 import SetupDomain from './SetupDomain'
@@ -40,13 +41,14 @@ const Content: FC<TProps> = ({
   setupDomainStatus,
   setupInfoStatus,
 }) => {
+  const { isLogin } = useAccount()
   if (step === STEP.FINISHED) return null
 
-  if (!validState.hasPendingApply && !validState.isLogin) {
+  if (!validState.hasPendingApply && !isLogin) {
     return null
   }
 
-  if (validState.isLogin && validState.hasPendingApply) {
+  if (isLogin && validState.hasPendingApply) {
     return null
   }
 

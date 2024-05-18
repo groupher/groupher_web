@@ -5,7 +5,7 @@
 
 import { pick, values, isEmpty } from 'ramda'
 
-import type { TRootStore, TRoute, TAccount } from '@/spec'
+import type { TRootStore, TRoute } from '@/spec'
 import { T, getParent, markStates, Instance, useMobxContext } from '@/mobx'
 
 import type {
@@ -43,14 +43,6 @@ const CommunityEditor = T.model('CommunityEditorStore', {
   desc: T.opt(T.string, ''),
 })
   .views((self) => ({
-    get isLogin(): boolean {
-      const root = getParent(self) as TRootStore
-      return root.account.isLogin
-    },
-    get accountInfo(): TAccount {
-      const root = getParent(self) as TRootStore
-      return root.accountInfo
-    },
     get curRoute(): TRoute {
       const root = getParent(self) as TRootStore
       return root.curRoute
@@ -87,10 +79,7 @@ const CommunityEditor = T.model('CommunityEditorStore', {
       return pick(['slug', 'title', 'desc', 'logo'], self)
     },
     get isCommunityTypeValid(): boolean {
-      const slf = self as TStore
-      if (!slf.isLogin) return false
-
-      return !slf.hasPendingApply
+      return true
     },
     get isRawValid(): boolean {
       if (self.communityExist) return false
@@ -122,7 +111,6 @@ const CommunityEditor = T.model('CommunityEditorStore', {
           'checking',
           'communityExist',
           'hasPendingApply',
-          'isLogin',
           'submitting',
         ],
         slf,

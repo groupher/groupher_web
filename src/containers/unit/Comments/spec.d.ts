@@ -13,7 +13,6 @@ export type TEditState = {
   commentBody: string
   updateBody: string
   replyBody: string
-  accountInfo: TAccount
   showEditor: boolean
   showReplyEditor: boolean
   showUpdateEditor: boolean

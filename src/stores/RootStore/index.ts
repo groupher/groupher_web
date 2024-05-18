@@ -20,7 +20,7 @@ import { toast, send } from '@/signal'
 import {
   // domain
   RouteStore,
-  AccountStore,
+  // AccountStore,
   RichEditorStore,
   // HeaderStore,
   ViewingStore,
@@ -68,7 +68,7 @@ const rootStore = T.model({
   // domain stores
   isMobile: T.opt(T.bool, false),
   activeDemo: T.opt(T.str, ''),
-  account: T.opt(AccountStore, {}),
+  // account: T.opt(AccountStore, {}),
   route: T.opt(RouteStore, {}),
   viewing: T.opt(ViewingStore, {}),
   articles: T.opt(ArticlesStore, {}),
@@ -143,9 +143,6 @@ const rootStore = T.model({
     get curRoute(): TRoute {
       return self.route.curRoute
     },
-    get accountInfo(): TAccount {
-      return self.account.accountInfo
-    },
   }))
   .actions((self) => ({
     markRoute(query, opt = {}): void {
@@ -197,7 +194,8 @@ const rootStore = T.model({
       // toast('error', options)
     },
     isMemberOf(type): boolean {
-      return self.account.isMemberOf(type)
+      // return self.account.isMemberOf(type)
+      return false
     },
     // get general args when query paged articles from server
     onAdsClose(): void {

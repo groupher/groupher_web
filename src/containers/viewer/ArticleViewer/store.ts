@@ -2,7 +2,7 @@
  * ArticleViewer store
  */
 
-import type { TCommunity, TRootStore, TAccount, TArticle, TThread, TDocument } from '@/spec'
+import type { TCommunity, TRootStore, TArticle, TThread, TDocument } from '@/spec'
 
 import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 import { buildLog } from '@/logger'
@@ -17,16 +17,8 @@ const ArticleViewer = T.model('ArticleViewer', {
   document: T.opt(Document, {}),
 })
   .views((self) => ({
-    get isLogin(): boolean {
-      const root = getParent(self) as TRootStore
-      return root.account.isLogin
-    },
     get documentData(): TDocument {
       return toJS(self.document)
-    },
-    get accountInfo(): TAccount {
-      const root = getParent(self) as TRootStore
-      return root.account.accountInfo
     },
     get curCommunity(): TCommunity {
       const root = getParent(self) as TRootStore
