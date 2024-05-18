@@ -11,7 +11,6 @@
 // domain store
 /* export { default as RouteStore } from './RouteStore' */
 export { default as RouteStore } from '@/containers/Route/store'
-export { default as AccountStore } from './AccountStore'
 export { default as ViewingStore } from './ViewingStore'
 export { default as ArticlesStore } from './ArticlesStore'
 
