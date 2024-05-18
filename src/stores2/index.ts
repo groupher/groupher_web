@@ -41,7 +41,7 @@ export const initRootStore = (initialState = initialRootState) => {
 }
 
 // 创建 `rootStore` 的实例
-export const rootStore = createRootStore(initialRootState)
+const rootStore = createRootStore(initialRootState)
 
 export const StoreContext = createContext(rootStore)
 
