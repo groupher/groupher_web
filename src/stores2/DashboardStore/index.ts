@@ -1,5 +1,7 @@
 import { battery } from '@/mobx'
 
+import { uniq, pluck } from 'ramda'
+
 import { LOCALE } from '@/constant/i18n'
 import { THREAD } from '@/constant/thread'
 import SIZE from '@/constant/size'
@@ -190,10 +192,14 @@ const createDashboardStore = (): TDashbaordStore => {
     // activeModerator: T.maybeNull(User),
     allModeratorRules: '{}',
     allRootRules: '{}',
-    // views
-    // get themeData() {
-    //   return ''
-    // },
+
+    // -- views
+    get tagGroups(): string[] {
+      // const tags = toJS(store.tags)
+      const { tags } = store // toJS(store.tags)
+
+      return uniq(pluck('group', tags))
+    },
 
     // actions
     // change: (theme: TThemeName) => {
