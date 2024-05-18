@@ -80,12 +80,11 @@ const LoggedInAccount: FC<TProps> = () => {
       trigger="click"
       noPadding
     >
-      ii
-      {/* <Avatar
+      <Avatar
         src={avatar}
         $avatarLayout={avatarLayout}
         fallback={<ImgFallback size={18} user={user} />}
-      /> */}
+      />
     </Tooltip>
   )
 }

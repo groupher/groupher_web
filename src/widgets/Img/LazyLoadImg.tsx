@@ -1,4 +1,4 @@
-import { FC, ReactNode, memo, useState } from 'react'
+import { FC, ReactNode, memo, useState, useCallback } from 'react'
 import { pick } from 'ramda'
 
 import { LazyLoadImage } from 'react-lazy-load-image-component'
@@ -38,10 +38,37 @@ const LazyLoadImg: FC<TProps> = ({
   const [imgLoaded, setImgLoaded] = useState(true)
   const [checkError, setCheckError] = useState(false)
   const [loadError, setLoadError] = useState(false)
+  const [over, setOver] = useState(false)
 
   // @ts-ignore
   const fallbackOpt = pick(['size', 'left', 'right', 'top', 'bottom'], fallback?.props || {})
   const Wrapper = !imgLoaded ? FallbackOffsetWrapper : NormalWrapper
+
+  const handleBeforeLoad = useCallback(() => {
+    if (!over) {
+      console.log('## handleBeforeLoad')
+
+      setImgLoaded(false)
+      setCheckError(true)
+    }
+  }, [over])
+
+  const handleLoad = useCallback(() => {
+    console.log('## handle on Load')
+    if (!over) {
+      setImgLoaded(true)
+      setLoadError(false)
+      setCheckError(false)
+      setOver(true)
+    }
+  }, [])
+
+  const handleError = useCallback(() => {
+    console.error('## lazy image load.: ', src)
+    setLoadError(true)
+    setImgLoaded(false)
+    setOver(true)
+  }, [])
 
   if (!src) {
     return (
@@ -60,22 +87,7 @@ const LazyLoadImg: FC<TProps> = ({
       {!imgLoaded && <FallbackWrapper>{fallback}</FallbackWrapper>}
 
       <LazyImageWrapper>
-        {checkError && (
-          <CheckPixel
-            src={src}
-            alt=""
-            onLoad={() => {
-              setCheckError(false)
-              setLoadError(false)
-              // setImgLoaded(true)
-            }}
-            onError={() => {
-              console.error('## lazy image load: ', src)
-              setLoadError(true)
-              setImgLoaded(false)
-            }}
-          />
-        )}
+        {checkError && <CheckPixel src={src} alt="" onLoad={handleLoad} onError={handleError} />}
 
         {!loadError && (
           <LazyLoadImage
@@ -84,15 +96,8 @@ const LazyLoadImg: FC<TProps> = ({
             alt={alt}
             effect="blur"
             visibleByDefault={visibleByDefault}
-            onLoad={() => {
-              setImgLoaded(true)
-              setLoadError(false)
-              setCheckError(false)
-            }}
-            beforeLoad={() => {
-              setImgLoaded(false)
-              setCheckError(true)
-            }}
+            onLoad={handleLoad}
+            beforeLoad={handleBeforeLoad}
             threshold={threshold}
           />
         )}

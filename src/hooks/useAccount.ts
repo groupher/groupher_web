@@ -1,15 +1,14 @@
 import { useContext } from 'react'
-import { MobXProviderContext } from 'mobx-react'
 
 import type { TAccount } from '@/spec'
-
+import { StoreContext } from '@/stores2'
 /**
  * NOTE: should use observer to wrap the component who use this hook
  */
 const useAccount = (): TAccount => {
-  const { store } = useContext(MobXProviderContext)
+  const { account } = useContext(StoreContext)
 
-  return store.account.accountInfo
+  return account.accountInfo
 }
 
 export default useAccount

@@ -5,6 +5,7 @@ import type { TRootStore } from './spec'
 
 import THEME from '@/constant/theme'
 
+import createAccountStore from './accountStore'
 import createThemeStore from './themeStore'
 
 let clientSideRootStore: TRootStore | null
@@ -16,7 +17,8 @@ const initialRootState = {
 // rootStore
 const createRootStore = (initialState = initialRootState): TRootStore => {
   const rootStore = {
-    theme: createThemeStore(initialState?.theme || 'day'),
+    account: createAccountStore(),
+    theme: createThemeStore(),
   }
 
   return rootStore

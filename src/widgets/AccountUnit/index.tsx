@@ -38,8 +38,8 @@ type TProps = {
 
 const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
   useSyncAccount()
-
   const user = useAccount()
+
   const { isLogin, nickname } = user
   const bannerLayout = useBannerLayout()
 

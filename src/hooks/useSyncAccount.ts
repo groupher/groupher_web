@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
-import { MobXProviderContext } from 'mobx-react'
 
+import { StoreContext } from '@/stores2'
 import useAccount from '@/hooks/useAccount'
 import OAUTH from '@/constant/oauth'
 import type { TAccount, TSimpleUser } from '@/spec'
@@ -9,7 +9,7 @@ import { debounce } from '@/helper'
 import BStore from '@/utils/bstore'
 
 const useSyncAccount = (): TAccount => {
-  const { store } = useContext(MobXProviderContext)
+  const { account } = useContext(StoreContext)
   const { isLogin } = useAccount()
 
   const [isLinkClickListenerAdded, setIsLinkClickListenerAdded] = useState(false)
@@ -22,7 +22,7 @@ const useSyncAccount = (): TAccount => {
       const parsedUser = JSON.parse(user) as TSimpleUser
 
       if (!isLogin && parsedUser.login) {
-        store.account.setSession(parsedUser, token)
+        account.setSession(parsedUser, token)
       }
     }
   }, 200)
@@ -56,7 +56,7 @@ const useSyncAccount = (): TAccount => {
     }
   }, [])
 
-  return store.account.accountInfo
+  return account.accountInfo
 }
 
 export default useSyncAccount

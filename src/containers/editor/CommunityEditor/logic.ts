@@ -21,7 +21,7 @@ const _log = buildLog('L:ExploreContent')
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
 const sr71$ = new SR71({
   // @ts-ignore
-  receive: [EVENT.LOGOUT, EVENT.LOGIN],
+  receive: [EVENT.LOGIN],
 })
 
 let store: TStore | undefined
