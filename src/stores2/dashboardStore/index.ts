@@ -223,6 +223,7 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
       }
     },
 
+    // TODO: use ramda
     get headerSettings(): THeaderSettings {
       const {
         saving,
@@ -237,6 +238,12 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
         nameAlias,
       } = store
 
+      // TODO: move to views
+      const threads = publicThreads(curCommunity.threads, {
+        enable,
+        nameAlias,
+      })
+
       return {
         saving,
         headerLayout,
@@ -245,13 +252,11 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
         editingLinkMode: editingLinkMode as TChangeMode,
         editingGroup,
         editingGroupIndex,
-        threads: publicThreads(curCommunity.threads, {
-          enable,
-          nameAlias,
-        }),
+        threads,
       }
     },
 
+    // TODO: use ramda
     get footerSettings(): TFooterSettings {
       const {
         saving,
@@ -266,6 +271,11 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
         nameAlias,
       } = store
 
+      const threads = publicThreads(curCommunity.threads, {
+        enable,
+        nameAlias,
+      })
+
       return {
         saving,
         footerLayout,
@@ -274,10 +284,7 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
         editingLinkMode: editingLinkMode as TChangeMode,
         editingGroup,
         editingGroupIndex,
-        threads: publicThreads(curCommunity.threads, {
-          enable,
-          nameAlias,
-        }),
+        threads,
       }
     },
 
