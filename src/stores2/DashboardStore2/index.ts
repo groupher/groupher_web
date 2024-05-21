@@ -2,6 +2,7 @@ import { battery } from '@/mobx'
 
 import { uniq, pluck } from 'ramda'
 
+import type { TCommunity, TChangeMode } from '@/spec'
 import { LOCALE } from '@/constant/i18n'
 import { THREAD } from '@/constant/thread'
 import SIZE from '@/constant/size'
@@ -28,8 +29,16 @@ import {
   BROADCAST_ARTICLE_LAYOUT,
   RSS_TYPE,
 } from '@/constant/layout'
+import { publicThreads } from '@/helper'
 
-import type { TDashbaordStore, TSettingsFields } from './spec'
+import type {
+  TDashbaordStore,
+  TSettingsFields,
+  TCurPageLinksKey,
+  THeaderSettings,
+  TFooterSettings,
+  TRootStore,
+} from './spec'
 
 import {
   DASHBOARD_ROUTE,
@@ -144,7 +153,7 @@ export const settingsFields: TSettingsFields = {
 }
 
 // theme store
-const createDashboardStore = (): TDashbaordStore => {
+const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
   const store = {
     ...settingsFields,
     initSettings: settingsFields,
@@ -194,11 +203,86 @@ const createDashboardStore = (): TDashbaordStore => {
     allRootRules: '{}',
 
     // -- views
+    get curCommunity(): TCommunity {
+      // return toJS(root.viewing.community)
+      // return rootStore.
+      return {
+        slug: 'home',
+      }
+    },
+
     get tagGroups(): string[] {
       // const tags = toJS(store.tags)
       const { tags } = store // toJS(store.tags)
 
       return uniq(pluck('group', tags))
+    },
+
+    get curPageLinksKey(): TCurPageLinksKey {
+      const isFooter = store.curTab === DASHBOARD_ROUTE.FOOTER
+
+      return {
+        links: isFooter ? 'footerLinks' : 'headerLinks',
+        settings: isFooter ? 'footerSettings' : 'headerSettings',
+      }
+    },
+
+    get headerSettings(): THeaderSettings {
+      const {
+        saving,
+        headerLayout,
+        headerLinks,
+        editingLink,
+        editingLinkMode,
+        editingGroup,
+        editingGroupIndex,
+        enable,
+        curCommunity,
+        nameAlias,
+      } = store
+
+      return {
+        saving,
+        headerLayout,
+        headerLinks,
+        editingLink,
+        editingLinkMode: editingLinkMode as TChangeMode,
+        editingGroup,
+        editingGroupIndex,
+        threads: publicThreads(curCommunity.threads, {
+          enable,
+          nameAlias,
+        }),
+      }
+    },
+
+    get footerSettings(): TFooterSettings {
+      const {
+        saving,
+        footerLayout,
+        footerLinks,
+        editingLink,
+        editingLinkMode,
+        editingGroup,
+        editingGroupIndex,
+        enable,
+        curCommunity,
+        nameAlias,
+      } = store
+
+      return {
+        saving,
+        footerLayout,
+        footerLinks,
+        editingLink,
+        editingLinkMode: editingLinkMode as TChangeMode,
+        editingGroup,
+        editingGroupIndex,
+        threads: publicThreads(curCommunity.threads, {
+          enable,
+          nameAlias,
+        }),
+      }
     },
 
     // actions

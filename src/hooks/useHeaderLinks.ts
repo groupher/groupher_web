@@ -23,7 +23,8 @@ const useHeaderLinks = (): THeaderLinks => {
     throw new Error('Store cannot be null, please add a context provider')
   }
 
-  const { isModerator } = store.accountInfo
+  // const { isModerator } = store.accountInfo
+  const isModerator = true
   const viewingCommunity = store.viewing.community.slug
   const headerLinksRow = useMemo(() => store.dashboardThread.headerLinksData, [viewingCommunity])
 

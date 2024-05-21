@@ -29,6 +29,7 @@ import type {
   TBroadcastArticleLayout,
   TChangelogLayout,
   TRSSType,
+  TCommunityThread,
 } from '@/spec'
 
 import {
@@ -40,6 +41,8 @@ import {
   DASHBOARD_SEO_ROUTE,
   DASHBOARD_DOC_ROUTE,
 } from '@/constant/route'
+
+export type { TRootStore } from '../spec'
 
 type TModerator = {
   passportItemCount: number
@@ -210,7 +213,36 @@ export type TDashbaordStore = TSettingsFields & {
   allRootRules: string
 
   // views
+  tagGroups: string[]
+  curPageLinksKey: TCurPageLinksKey
+  headerSettings: THeaderSettings
+  footerSettings: TFooterSettings
 
   // actions
   // change: (theme: TThemeName) => void
 }
+
+export type TCurPageLinksKey = {
+  links: 'footerLinks' | 'headerLinks'
+  settings: 'footerSettings' | 'headerSettings'
+}
+
+export type TLinkState = {
+  editingLink: TLinkItem
+  saving: boolean
+  editingLinkMode: TChangeMode
+  editingGroup: string | null
+  editingGroupIndex: number | null
+}
+
+export type THeaderSettings = {
+  headerLayout: THeaderLayout
+  headerLinks: TLinkItem[]
+  threads: TCommunityThread[]
+} & TLinkState
+
+export type TFooterSettings = {
+  footerLayout: TFooterLayout
+  footerLinks: TLinkItem[]
+  threads: TCommunityThread[]
+} & TLinkState

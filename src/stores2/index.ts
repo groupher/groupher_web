@@ -7,6 +7,7 @@ import THEME from '@/constant/theme'
 
 import createAccountStore from './accountStore'
 import createThemeStore from './themeStore'
+import createDashboardStore from './DashboardStore2'
 
 let clientSideRootStore: TRootStore | null
 
@@ -19,7 +20,10 @@ const createRootStore = (initialState = initialRootState): TRootStore => {
   const rootStore = {
     account: createAccountStore(),
     theme: createThemeStore(),
+    dashboard: null,
   }
+
+  rootStore.dashboard = createDashboardStore(rootStore)
 
   return rootStore
 }
