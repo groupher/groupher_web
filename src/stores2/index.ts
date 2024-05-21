@@ -7,7 +7,7 @@ import THEME from '@/constant/theme'
 
 import createAccountStore from './accountStore'
 import createThemeStore from './themeStore'
-import createDashboardStore from './DashboardStore2'
+import createDashboardStore from './dashboardStore'
 
 let clientSideRootStore: TRootStore | null
 
