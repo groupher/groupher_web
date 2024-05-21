@@ -8,16 +8,19 @@ import THEME from '@/constant/theme'
 import createAccountStore from './accountStore'
 import createThemeStore from './themeStore'
 import createDashboardStore from './dashboardStore'
+import createViewingStore from './viewingStore'
 
 let clientSideRootStore: TRootStore | null
 
 const initialRootState = {
   theme: THEME.DAY,
+  viewing: {},
 }
 
 // rootStore
 const createRootStore = (initialState = initialRootState): TRootStore => {
   const rootStore = {
+    viewing: createViewingStore(initialState.viewing),
     account: createAccountStore(),
     theme: createThemeStore(),
     dashboard: null,

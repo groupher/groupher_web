@@ -204,11 +204,7 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
 
     // -- views
     get curCommunity(): TCommunity {
-      // return toJS(root.viewing.community)
-      // return rootStore.
-      return {
-        slug: 'home',
-      }
+      return rootStore.viewing.community
     },
 
     get tagGroups(): string[] {
