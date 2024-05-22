@@ -1,8 +1,8 @@
 import { battery } from '@/mobx'
 
-import { uniq, pluck } from 'ramda'
+import { uniq, pluck, pick, reject, isEmpty } from 'ramda'
 
-import type { TCommunity, TChangeMode } from '@/spec'
+import type { TCommunity, TChangeMode, TSocialItem } from '@/spec'
 import { LOCALE } from '@/constant/i18n'
 import { THREAD } from '@/constant/thread'
 import SIZE from '@/constant/size'
@@ -29,17 +29,6 @@ import {
   BROADCAST_ARTICLE_LAYOUT,
   RSS_TYPE,
 } from '@/constant/layout'
-import { publicThreads } from '@/helper'
-
-import type {
-  TDashbaordStore,
-  TSettingsFields,
-  TCurPageLinksKey,
-  THeaderSettings,
-  TFooterSettings,
-  TRootStore,
-} from './spec'
-
 import {
   DASHBOARD_ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
@@ -49,6 +38,19 @@ import {
   DASHBOARD_SEO_ROUTE,
   DASHBOARD_DOC_ROUTE,
 } from '@/constant/route'
+import { publicThreads } from '@/helper'
+
+import type {
+  TDashbaordStore,
+  TSettingsFields,
+  TCurPageLinksKey,
+  THeaderSettings,
+  TFooterSettings,
+  TDocSettings,
+  TBaseInfoSettings,
+  TRootStore,
+} from './spec'
+import { BASEINFO_KEYS, EMPTY_MEDIA_REPORT } from './constant'
 
 export const settingsFields: TSettingsFields = {
   // baseInfo
@@ -64,8 +66,8 @@ export const settingsFields: TSettingsFields = {
   techstack: '',
 
   // social
-  // socialLinks: T.opt(T.array(SocialLink), []),
-  // mediaReports: T.opt(T.array(MediaReport), [EMPTY_MEDIA_REPORT]),
+  socialLinks: [],
+  mediaReports: [EMPTY_MEDIA_REPORT],
 
   // seo
   seoEnable: true,
@@ -208,8 +210,7 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
     },
 
     get tagGroups(): string[] {
-      // const tags = toJS(store.tags)
-      const { tags } = store // toJS(store.tags)
+      const { tags } = store
 
       return uniq(pluck('group', tags))
     },
@@ -285,6 +286,28 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
         editingGroup,
         editingGroupIndex,
         threads,
+      }
+    },
+
+    get docSettings(): TDocSettings {
+      return {
+        categories: store.docCategories,
+      }
+    },
+
+    get baseInfoSettings(): TBaseInfoSettings {
+      const baseInfo = pick(BASEINFO_KEYS, store)
+      const socialLinks = reject((item: TSocialItem) => isEmpty(item.type), store.socialLinks)
+
+      // TODO: refactor
+      return {
+        ...baseInfo,
+        loading: store.loading,
+        queringMediaReportIndex: store.queringMediaReportIndex,
+        saving: store.saving,
+        baseInfoTab: store.baseInfoTab,
+        socialLinks,
+        mediaReports: store.mediaReports,
       }
     },
 

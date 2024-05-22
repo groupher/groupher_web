@@ -29,6 +29,9 @@ import type {
   TBroadcastArticleLayout,
   TChangelogLayout,
   TRSSType,
+  TSocialItem,
+  TMediaReport,
+  TDashboardBaseInfoRoute,
   TCommunityThread,
 } from '@/spec'
 
@@ -78,8 +81,8 @@ export type TSettingsFields = {
   techstack: string
 
   // social
-  // socialLinks: T.opt(T.array(SocialLink), []),
-  // mediaReports: T.opt(T.array(MediaReport), [EMPTY_MEDIA_REPORT]),
+  socialLinks: TSocialItem[]
+  mediaReports: TMediaReport[]
 
   // seo
   seoEnable: boolean
@@ -246,3 +249,102 @@ export type TFooterSettings = {
   footerLinks: TLinkItem[]
   threads: TCommunityThread[]
 } & TLinkState
+
+type TDocFile = {
+  index: number
+  name: string
+  articleId: string
+  linkAddr: string
+}
+
+type TDocCategory = {
+  name: string
+  index: number
+  color: TColorName
+  files: TDocFile[]
+}
+
+export type TDocSettings = {
+  categories: TDocCategory[]
+}
+
+export type TBaseInfoSettings = {
+  loading: boolean
+  queringMediaReportIndex: number | null
+  saving: boolean
+
+  favicon: string
+  logo: string
+  title: string
+  desc: string
+  introduction: string
+  homepage: string
+  slug: string
+  city: string
+  techstack: string
+
+  socialLinks: TSocialItem[]
+  baseInfoTab: TDashboardBaseInfoRoute
+  mediaReports: TMediaReport[]
+}
+
+export type TSettingField =
+  | 'baseInfo'
+  | 'mediaReports'
+  | 'socialLinks'
+  | 'seo'
+  | 'favicon'
+  | 'logo'
+  | 'locale'
+  | 'title'
+  | 'slug'
+  | 'desc'
+  | 'homepage'
+  | 'techstack'
+  | 'city'
+  | 'primaryColor'
+  | 'postLayout'
+  | 'kanbanLayout'
+  | 'kanbanCardLayout'
+  | 'kanbanBgColors'
+  | 'brandLayout'
+  | 'tagLayout'
+  | 'avatarLayout'
+  | 'bannerLayout'
+  | 'headerLayout'
+  | 'footerLayout'
+  | 'glowType'
+  | 'glowFixed'
+  | 'glowOpacity'
+  | 'gossBlur'
+  | 'gossBlurDark'
+  | 'headerLinks'
+  | 'footerLinks'
+  | 'docLayout'
+  | 'docFaqLayout'
+  | 'topbarLayout'
+  | 'topbarBg'
+  | 'broadcastLayout'
+  | 'broadcastBg'
+  | 'broadcastEnable'
+  | 'broadcastArticleLayout'
+  | 'broadcastArticleBg'
+  | 'broadcastArticleEnable'
+  | 'changelogLayout'
+  | 'tag'
+  | 'tagIndex'
+  | 'faqSections'
+  | 'faqSectionItem'
+  | 'faqSectionAdd'
+  | 'faqSectionDelete'
+  | 'nameAlias'
+  | 'rssFeedType'
+  | 'rssFeedCount'
+  | 'enable'
+  | 'widgetsPrimaryColor'
+  | 'widgetsThreads'
+  | 'widgetsSize'
+  | 'widgetsType'
+
+export type THeaderEditType = 'logo' | 'title'
+export type TFooterEditType = THeaderEditType | 'social'
