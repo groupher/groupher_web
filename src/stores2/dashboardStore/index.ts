@@ -1,8 +1,26 @@
 import { battery, markStore } from '@/mobx'
 
-import { uniq, pluck, pick, reject, equals, isEmpty, mapObjIndexed, forEach } from 'ramda'
+import {
+  uniq,
+  pluck,
+  pick,
+  reject,
+  equals,
+  isEmpty,
+  mapObjIndexed,
+  forEach,
+  clone,
+  findIndex,
+} from 'ramda'
 
-import type { TCommunity, TSocialItem, TCommunityThread, TMediaReport } from '@/spec'
+import type {
+  TCommunity,
+  TSocialItem,
+  TCommunityThread,
+  TMediaReport,
+  TTag,
+  TNameAlias,
+} from '@/spec'
 import { LOCALE } from '@/constant/i18n'
 import { THREAD } from '@/constant/thread'
 import SIZE from '@/constant/size'
@@ -42,6 +60,7 @@ import BStore from '@/utils/bstore'
 import { publicThreads } from '@/helper'
 
 import type {
+  TSettingField,
   TDashbaordStore,
   TSettingsFields,
   TCurPageLinksKey,
@@ -57,6 +76,7 @@ import {
   HEADER_SETTING_KEYS,
   FOOTER_SETTING_KEYS,
   DASHBOARD_DEMO_KEY,
+  SETTING_FIELD,
 } from './constant'
 
 export const settingsFields: TSettingsFields = {
@@ -370,6 +390,47 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
       }
 
       return false
+    },
+
+    /** it also maybe called by landing page */
+    changeGlowEffect(glowType: string): void {
+      store.glowType = glowType
+    },
+
+    /**
+     * this is for mutation params after on save
+     * TODO: re-move it to useEdit hooks
+     */
+    onSave(field: TSettingField): void {
+      if (field === SETTING_FIELD.TAG) {
+        const { editingTag } = store
+        const targetIdx = store._findTagIdx()
+        if (targetIdx < 0) return
+
+        store.tags[targetIdx] = clone(editingTag)
+      }
+
+      if (field === SETTING_FIELD.NAME_ALIAS) {
+        const { editingAlias } = store
+
+        const targetIdx = store._findAliasIdx()
+        if (targetIdx < 0) return
+
+        store.nameAlias[targetIdx] = clone(editingAlias)
+      }
+    },
+
+    _findTagIdx(): number {
+      const { tags, editingTag } = store
+      const targetIdx = findIndex((item: TTag) => item.id === editingTag.id, tags)
+      return targetIdx
+    },
+
+    _findAliasIdx(): number {
+      const { nameAlias, editingAlias } = store
+      const targetIdx = findIndex((item: TNameAlias) => item.slug === editingAlias.slug, nameAlias)
+
+      return targetIdx
     },
 
     mark(sobj: Record<string, any>): void {
