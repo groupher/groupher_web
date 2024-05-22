@@ -168,6 +168,14 @@ export type TSettingsFields = {
   widgetsType: TWidgetType
 }
 
+export type TOverview = {
+  views: number
+  subscribersCount: number
+  postsCount: number
+  changelogsCount: number
+  docsCount: number
+}
+
 export type TDashbaordStore = TSettingsFields & {
   initSettings: TSettingsFields
   defaultSettings: TSettingsFields
@@ -184,7 +192,8 @@ export type TDashbaordStore = TSettingsFields & {
   layoutTab: TValueOf<typeof DASHBOARD_LAYOUT_ROUTE>
   broadcastTab: TValueOf<typeof DASHBOARD_BROADCAST_ROUTE>
 
-  // overview: T.opt(Overview, {}),
+  overview: TOverview | null
+
   editingTag: TTag | null
   settingTag: TTag | null
   editingAlias: TNameAlias | null

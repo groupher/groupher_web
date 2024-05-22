@@ -179,7 +179,7 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
     broadcastTab: DASHBOARD_BROADCAST_ROUTE.GLOBAL,
 
     // overview
-    // overview: T.opt(Overview, {}),
+    overview: null,
 
     // editing
     editingTag: null,
