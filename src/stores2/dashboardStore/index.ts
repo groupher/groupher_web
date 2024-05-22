@@ -2,7 +2,7 @@ import { battery } from '@/mobx'
 
 import { uniq, pluck, pick, reject, isEmpty } from 'ramda'
 
-import type { TCommunity, TChangeMode, TSocialItem } from '@/spec'
+import type { TCommunity, TChangeMode, TSocialItem, TCommunityThread } from '@/spec'
 import { LOCALE } from '@/constant/i18n'
 import { THREAD } from '@/constant/thread'
 import SIZE from '@/constant/size'
@@ -224,6 +224,14 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
       }
     },
 
+    get validThreads(): TCommunityThread[] {
+      const { curCommunity, enable, nameAlias } = store
+
+      return publicThreads(curCommunity.threads, {
+        enable,
+        nameAlias,
+      })
+    },
     // TODO: use ramda
     get headerSettings(): THeaderSettings {
       const {
@@ -234,16 +242,9 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
         editingLinkMode,
         editingGroup,
         editingGroupIndex,
-        enable,
-        curCommunity,
-        nameAlias,
       } = store
 
-      // TODO: move to views
-      const threads = publicThreads(curCommunity.threads, {
-        enable,
-        nameAlias,
-      })
+      const threads = store.validThreads
 
       return {
         saving,
@@ -267,15 +268,9 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
         editingLinkMode,
         editingGroup,
         editingGroupIndex,
-        enable,
-        curCommunity,
-        nameAlias,
       } = store
 
-      const threads = publicThreads(curCommunity.threads, {
-        enable,
-        nameAlias,
-      })
+      const threads = store.validThreads
 
       return {
         saving,
