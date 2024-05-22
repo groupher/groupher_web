@@ -534,6 +534,26 @@ export const BASEINFO_OTHER_KEYS = ['city', 'techstack']
 
 export const BASEINFO_KEYS = [...BASEINFO_BASIC_KEYS, ...BASEINFO_OTHER_KEYS]
 
+export const HEADER_SETTING_KEYS = [
+  'saving',
+  'headerLayout',
+  'headerlinks',
+  'editingLink',
+  'editingLinkMode',
+  'editingGroup',
+  'editingGroupIndex',
+]
+
+export const FOOTER_SETTING_KEYS = [
+  'saving',
+  'footerLayout',
+  'footerlinks',
+  'editingLink',
+  'editingLinkMode',
+  'editingGroup',
+  'editingGroupIndex',
+]
+
 // export const UI_KEYS = [
 //   'layoutTab',
 //   'primaryColor',

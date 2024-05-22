@@ -2,7 +2,7 @@ import { battery } from '@/mobx'
 
 import { uniq, pluck, pick, reject, isEmpty } from 'ramda'
 
-import type { TCommunity, TChangeMode, TSocialItem, TCommunityThread } from '@/spec'
+import type { TCommunity, TSocialItem, TCommunityThread } from '@/spec'
 import { LOCALE } from '@/constant/i18n'
 import { THREAD } from '@/constant/thread'
 import SIZE from '@/constant/size'
@@ -50,7 +50,12 @@ import type {
   TBaseInfoSettings,
   TRootStore,
 } from './spec'
-import { BASEINFO_KEYS, EMPTY_MEDIA_REPORT } from './constant'
+import {
+  BASEINFO_KEYS,
+  EMPTY_MEDIA_REPORT,
+  HEADER_SETTING_KEYS,
+  FOOTER_SETTING_KEYS,
+} from './constant'
 
 export const settingsFields: TSettingsFields = {
   // baseInfo
@@ -234,52 +239,19 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
     },
     // TODO: use ramda
     get headerSettings(): THeaderSettings {
-      const {
-        saving,
-        headerLayout,
-        headerLinks,
-        editingLink,
-        editingLinkMode,
-        editingGroup,
-        editingGroupIndex,
-      } = store
-
       const threads = store.validThreads
 
       return {
-        saving,
-        headerLayout,
-        headerLinks,
-        editingLink,
-        editingLinkMode: editingLinkMode as TChangeMode,
-        editingGroup,
-        editingGroupIndex,
+        ...pick(HEADER_SETTING_KEYS, store),
         threads,
       }
     },
 
-    // TODO: use ramda
     get footerSettings(): TFooterSettings {
-      const {
-        saving,
-        footerLayout,
-        footerLinks,
-        editingLink,
-        editingLinkMode,
-        editingGroup,
-        editingGroupIndex,
-      } = store
-
       const threads = store.validThreads
 
       return {
-        saving,
-        footerLayout,
-        footerLinks,
-        editingLink,
-        editingLinkMode: editingLinkMode as TChangeMode,
-        editingGroup,
-        editingGroupIndex,
+        ...pick(FOOTER_SETTING_KEYS, store),
         threads,
       }
     },
