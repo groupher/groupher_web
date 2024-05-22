@@ -1,4 +1,4 @@
-import { battery } from '@/mobx'
+import { battery, markStore } from '@/mobx'
 
 import { uniq, pluck, pick, reject, isEmpty, forEach } from 'ramda'
 
@@ -307,6 +307,15 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
         store.mediaReports = initMediaReports
         store.initSettings.mediaReports = initMediaReports
       }
+    },
+
+    setAllPassportRules(rootRules: string, moderatorRules: string): void {
+      store.allRootRules = rootRules
+      store.allModeratorRules = moderatorRules
+    },
+
+    mark(sobj: Record<string, any>): void {
+      markStore(sobj, store)
     },
   }
 

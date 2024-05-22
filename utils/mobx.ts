@@ -63,6 +63,27 @@ export const markStates = (sobj, self) => {
   return false
 }
 
+export const markStore = (target: Record<string, any>, store: any) => {
+  if (!isObject(target)) {
+    throw new Error('mark: invalid target, exepect a object')
+  }
+  const storeKeys = keys(store)
+
+  forEachObjIndexed((val, key) => {
+    if (!includes(key, storeKeys)) return false
+    if (!isEmpty(val) && !Array.isArray(val) && isObject(val) && store[key] !== null) {
+      // NOTE: had to use this syntax to update object val
+      // because the normal one is NOT WORKING in production build
+      // what a mother-fucking bug is this ??? TODO: check later
+      store[key] = Object.assign(store[key], val)
+    } else {
+      store = Object.assign(store, { [key]: val })
+    }
+  }, target)
+
+  return false
+}
+
 export const toJS = (obj: any): any => {
   if (!obj) return obj
   return toJSON(obj)

@@ -234,6 +234,8 @@ export type TDashbaordStore = TSettingsFields & {
   // actions
   updateOverview: (community: TCommunity) => void
   updateBaseInfo: (community: TCommunity) => void
+
+  mark: (sobj: Record<string, any>) => void
 }
 
 export type TCurPageLinksKey = {
