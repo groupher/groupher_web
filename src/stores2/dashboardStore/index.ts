@@ -1,6 +1,6 @@
 import { battery, markStore } from '@/mobx'
 
-import { uniq, pluck, pick, reject, isEmpty, forEach } from 'ramda'
+import { uniq, pluck, pick, reject, equals, isEmpty, mapObjIndexed, forEach } from 'ramda'
 
 import type { TCommunity, TSocialItem, TCommunityThread, TMediaReport } from '@/spec'
 import { LOCALE } from '@/constant/i18n'
@@ -38,6 +38,7 @@ import {
   DASHBOARD_SEO_ROUTE,
   DASHBOARD_DOC_ROUTE,
 } from '@/constant/route'
+import BStore from '@/utils/bstore'
 import { publicThreads } from '@/helper'
 
 import type {
@@ -55,6 +56,7 @@ import {
   EMPTY_MEDIA_REPORT,
   HEADER_SETTING_KEYS,
   FOOTER_SETTING_KEYS,
+  DASHBOARD_DEMO_KEY,
 } from './constant'
 
 export const settingsFields: TSettingsFields = {
@@ -312,6 +314,62 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
     setAllPassportRules(rootRules: string, moderatorRules: string): void {
       store.allRootRules = rootRules
       store.allModeratorRules = moderatorRules
+    },
+
+    /**
+     * init activeTagThread for dashboard tags settings
+     * based on enableSettings
+     */
+    _initActiveTagThreadIfneed(): void {
+      const { curTab, enable } = store
+
+      if (curTab !== DASHBOARD_ROUTE.TAGS) return
+
+      if (enable.post) {
+        setTimeout(() => store.mark({ activeTagThread: THREAD.POST }))
+      } else if (enable.kanban) {
+        setTimeout(() => store.mark({ activeTagThread: THREAD.KANBAN }))
+      } else if (enable.changelog) {
+        setTimeout(() => store.mark({ activeTagThread: THREAD.CHANGELOG }))
+      } else {
+        setTimeout(() => store.mark({ activeTagThread: null }))
+      }
+    },
+
+    clearLocalSettings(): void {
+      BStore.remove(DASHBOARD_DEMO_KEY)
+
+      mapObjIndexed((value, key) => {
+        if (!equals(store[key], store.defaultSettings[key])) {
+          // @ts-ignore
+          if (key !== 'defaultSettings' && key !== 'initSettings') {
+            store.mark({ [key]: value })
+          }
+        }
+      }, store.defaultSettings)
+
+      store.mark({ demoAlertEnable: false, saving: false, initSettings: store.defaultSettings })
+    },
+
+    _loadLocalSettings(): boolean {
+      const dashboardDemoSettings = BStore.get(DASHBOARD_DEMO_KEY)
+
+      if (dashboardDemoSettings) {
+        const settingsObj = JSON.parse(dashboardDemoSettings)
+
+        setTimeout(() => {
+          mapObjIndexed((value, key) => {
+            if (!equals(store[key], settingsObj[key])) {
+              store.mark({ [key]: value })
+            }
+          }, settingsObj)
+
+          store.mark({ saving: false, initSettings: settingsObj, demoAlertEnable: true })
+        })
+        return true
+      }
+
+      return false
     },
 
     mark(sobj: Record<string, any>): void {

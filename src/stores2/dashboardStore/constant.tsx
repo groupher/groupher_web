@@ -19,6 +19,9 @@ export { SEO_KEYS, SEO_OG_KEYS, SEO_TW_KEYS } from '@/constant/seo'
 
 export const ALIGN_HEADER_OFFSET = '100px'
 
+// for local store, demo setting usage
+export const DASHBOARD_DEMO_KEY = 'dashboard_demo'
+
 // do not change, it's map to GQ endpoint updateDashboardLayout
 export const SETTING_LAYOUT_FIELD = {
   PRIMARY_COLOR: 'primaryColor',
