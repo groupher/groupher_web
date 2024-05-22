@@ -267,15 +267,13 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
       const baseInfo = pick(BASEINFO_KEYS, store)
       const socialLinks = reject((item: TSocialItem) => isEmpty(item.type), store.socialLinks)
 
-      // TODO: refactor
       return {
         ...baseInfo,
-        loading: store.loading,
-        queringMediaReportIndex: store.queringMediaReportIndex,
-        saving: store.saving,
-        baseInfoTab: store.baseInfoTab,
+        ...pick(
+          ['loading', 'saving', 'queringMediaReportIndex', 'baseInfoTab', 'mediaReports'],
+          store,
+        ),
         socialLinks,
-        mediaReports: store.mediaReports,
       }
     },
 
