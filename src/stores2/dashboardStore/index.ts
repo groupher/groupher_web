@@ -1,8 +1,8 @@
 import { battery } from '@/mobx'
 
-import { uniq, pluck, pick, reject, isEmpty } from 'ramda'
+import { uniq, pluck, pick, reject, isEmpty, forEach } from 'ramda'
 
-import type { TCommunity, TSocialItem, TCommunityThread } from '@/spec'
+import type { TCommunity, TSocialItem, TCommunityThread, TMediaReport } from '@/spec'
 import { LOCALE } from '@/constant/i18n'
 import { THREAD } from '@/constant/thread'
 import SIZE from '@/constant/size'
@@ -278,12 +278,36 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
     },
 
     // actions
-    // change: (theme: TThemeName) => {
-    //   store.theme = theme
-    // },
-    // toggle() {
-    //   store.theme = store.theme === THEME.DAY ? THEME.NIGHT : THEME.DAY
-    // },
+    updateOverview(community: TCommunity): void {
+      const { meta, views, subscribersCount } = community
+
+      store.overview = {
+        views,
+        subscribersCount,
+        ...meta,
+      }
+    },
+
+    updateBaseInfo(community: TCommunity): void {
+      const { dashboard } = community
+      const { baseInfo, mediaReports } = dashboard
+
+      forEach((key) => {
+        store[key] = baseInfo[key]
+        store.initSettings[key] = baseInfo[key]
+      }, BASEINFO_KEYS)
+
+      if (!isEmpty(mediaReports)) {
+        const initMediaReports = mediaReports.map((item: TMediaReport, index) => ({
+          ...item,
+          editUrl: item.url,
+          index: item.index || index,
+        }))
+
+        store.mediaReports = initMediaReports
+        store.initSettings.mediaReports = initMediaReports
+      }
+    },
   }
 
   return battery(store)
