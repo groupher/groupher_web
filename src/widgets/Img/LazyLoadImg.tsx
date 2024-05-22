@@ -46,15 +46,13 @@ const LazyLoadImg: FC<TProps> = ({
 
   const handleBeforeLoad = useCallback(() => {
     if (!over) {
-      console.log('## handleBeforeLoad')
-
+      // console.log('## handleBeforeLoad')
       setImgLoaded(false)
       setCheckError(true)
     }
   }, [over])
 
   const handleLoad = useCallback(() => {
-    console.log('## handle on Load')
     if (!over) {
       setImgLoaded(true)
       setLoadError(false)

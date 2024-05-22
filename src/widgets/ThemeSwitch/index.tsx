@@ -30,7 +30,7 @@ const ThemeSwitch: FC<TProps> = ({ testid = 'theme-switch', ...restProps }) => {
         title="Toggles light & dark"
         aria-label="auto"
         aria-live="polite"
-        onClick={() => toggle()}
+        onClick={toggle}
       >
         {theme === THEME.DAY ? <SunIcon /> : <MoonIcon />}
       </Button>
