@@ -229,7 +229,8 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
       }
     },
 
-    get validThreads(): TCommunityThread[] {
+    // this is private, no need to export to store spec
+    get _validThreads(): TCommunityThread[] {
       const { curCommunity, enable, nameAlias } = store
 
       return publicThreads(curCommunity.threads, {
@@ -237,9 +238,9 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
         nameAlias,
       })
     },
-    // TODO: use ramda
+
     get headerSettings(): THeaderSettings {
-      const threads = store.validThreads
+      const threads = store._validThreads
 
       return {
         ...pick(HEADER_SETTING_KEYS, store),
@@ -248,7 +249,7 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
     },
 
     get footerSettings(): TFooterSettings {
-      const threads = store.validThreads
+      const threads = store._validThreads
 
       return {
         ...pick(FOOTER_SETTING_KEYS, store),
