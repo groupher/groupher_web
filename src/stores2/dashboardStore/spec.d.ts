@@ -33,6 +33,7 @@ import type {
   TMediaReport,
   TDashboardBaseInfoRoute,
   TCommunityThread,
+  TCommunity,
 } from '@/spec'
 
 import {
@@ -231,7 +232,8 @@ export type TDashbaordStore = TSettingsFields & {
   footerSettings: TFooterSettings
 
   // actions
-  // change: (theme: TThemeName) => void
+  updateOverview: (community: TCommunity) => void
+  updateBaseInfo: (community: TCommunity) => void
 }
 
 export type TCurPageLinksKey = {
