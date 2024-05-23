@@ -166,3 +166,11 @@ export type TGlobalLayout = {
 
   enable: TEnableConfig
 }
+
+export type TOverview = {
+  views: number
+  subscribersCount: number
+  postsCount: number
+  changelogsCount: number
+  docsCount: number
+}

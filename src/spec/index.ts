@@ -122,6 +122,7 @@ export type {
   TRSSType,
   TMediaReport,
   TDashboard,
+  TOverview,
 } from './dashboard'
 
 export type {

@@ -28,6 +28,7 @@ import type {
   TSocialItem,
   TMediaReport,
   TLinkItem,
+  TOverview,
 } from '@/spec'
 
 import {
@@ -59,7 +60,6 @@ import {
 } from '@/model'
 
 import type {
-  TOverview,
   TBaseInfoSettings,
   THeaderSettings,
   TFooterSettings,

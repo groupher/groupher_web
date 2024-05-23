@@ -2,9 +2,9 @@ import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 import { pick } from 'ramda'
 
-import type { TEnableConfig, TDashboardPath } from '@/spec'
+import type { TEnableConfig, TDashboardPath, TOverview } from '@/spec'
 
-import type { TOverview, TCMSContents } from '@/containers/thread/DashboardThread/spec'
+import type { TCMSContents } from '@/containers/thread/DashboardThread/spec'
 
 type TRes = {
   curTab: TDashboardPath

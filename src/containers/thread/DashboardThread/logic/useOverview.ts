@@ -1,9 +1,8 @@
-import { useContext, useEffect } from 'react'
+import { useEffect } from 'react'
 
+import type { TOverview } from '@/spec'
+import useDashboard from '@/hooks/useDashboard'
 import useQuery from '@/hooks/useQuery'
-import type { TOverview } from '@/containers/thread/DashboardThread/spec'
-
-import { StoreContext } from '@/stores2'
 
 import S from '../schema'
 
@@ -11,8 +10,8 @@ import S from '../schema'
  * NOTE: should use observer to wrap the component who use this hook
  */
 const useOverview = (): TOverview => {
-  const { dashboard } = useContext(StoreContext)
-  const { curCommunity, updateOverview } = dashboard
+  const { dashboard } = useDashboard()
+  const { curCommunity, updateOverview, overview } = dashboard
 
   const { data, error } = useQuery(S.communityOverview, {
     slug: curCommunity.slug,
@@ -23,7 +22,7 @@ const useOverview = (): TOverview => {
     if (data?.community) updateOverview(data.community)
   }, [data, updateOverview])
 
-  return dashboard.overview
+  return overview
 }
 
 export default useOverview

@@ -47,14 +47,6 @@ export { TNameAlias } from '@/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'CMS' | 'INTEGRATE'
 
-export type TOverview = {
-  views: number
-  subscribersCount: number
-  postsCount: number
-  changelogsCount: number
-  docsCount: number
-}
-
 export type TCMSContents = {
   loading: boolean
   batchSelectedIDs: TID[]

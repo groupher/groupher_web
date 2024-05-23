@@ -35,6 +35,7 @@ import type {
   TCommunityThread,
   TCommunity,
   TFAQSection,
+  TOverview,
 } from '@/spec'
 
 import {
@@ -176,14 +177,6 @@ export type TSettingsFields = {
 
 export type TInitSettings = Partial<TSettingsFields>
 
-export type TOverview = {
-  views: number
-  subscribersCount: number
-  postsCount: number
-  changelogsCount: number
-  docsCount: number
-}
-
 export type TStore = TSettingsFields & {
   initSettings: TSettingsFields
   defaultSettings: TSettingsFields
@@ -200,7 +193,7 @@ export type TStore = TSettingsFields & {
   layoutTab: TValueOf<typeof DASHBOARD_LAYOUT_ROUTE>
   broadcastTab: TValueOf<typeof DASHBOARD_BROADCAST_ROUTE>
 
-  overview: TOverview | null
+  overview: TOverview
 
   editingTag: TTag | null
   settingTag: TTag | null

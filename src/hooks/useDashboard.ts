@@ -1,13 +1,13 @@
 import { useContext } from 'react'
-import { pick, values } from 'ramda'
 
 // import type { TEnableConfig, TDashboardPath } from '@/spec'
 
 import { StoreContext } from '@/stores2'
-import { SETTING_FIELD } from '@/stores2/dashboardStore/constant'
-import { TSettingsFields } from '@/stores2/dashboardStore/spec'
+import { TStore } from '@/stores2/dashboardStore/spec'
 
-type TRes = TSettingsFields
+type TRes = {
+  dashboard: TStore
+}
 
 /**
  * NOTE: should use observer to wrap the component who use this hook
@@ -15,7 +15,11 @@ type TRes = TSettingsFields
 const useDashboard = (): TRes => {
   const { dashboard } = useContext(StoreContext)
 
-  return pick(values(SETTING_FIELD), dashboard) as TRes
+  return {
+    dashboard,
+    // onSave
+    // onRollback
+  }
 }
 
 export default useDashboard
