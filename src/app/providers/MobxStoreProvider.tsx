@@ -4,12 +4,22 @@ import { memo, ReactNode } from 'react'
 
 import { StoreContext, useStore } from '@/stores2'
 
-import { useThemeFromURL } from '../queries'
+import { useThemeFromURL, useCommunity, useDashboard } from '../queries'
 
 const MobxStoreWrapper = ({ children }: { children: ReactNode }) => {
   const theme = useThemeFromURL()
+  const { community } = useCommunity()
+  const dashboard = useDashboard(community)
 
-  const rootStore = useStore({ theme })
+  console.log('## mobx store dashboard: ', dashboard)
+
+  const rootStore = useStore({
+    theme,
+    viewing: {
+      community,
+    },
+    dashboard,
+  })
 
   return <StoreContext.Provider value={rootStore}>{children}</StoreContext.Provider>
 }

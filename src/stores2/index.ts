@@ -15,6 +15,7 @@ let clientSideRootStore: TRootStore | null
 const initialRootState = {
   theme: THEME.DAY,
   viewing: {},
+  dashboard: {},
 }
 
 // rootStore
@@ -26,7 +27,7 @@ const createRootStore = (initialState = initialRootState): TRootStore => {
     dashboard: null,
   }
 
-  rootStore.dashboard = createDashboardStore(rootStore)
+  rootStore.dashboard = createDashboardStore(rootStore, initialState.dashboard)
 
   return rootStore
 }

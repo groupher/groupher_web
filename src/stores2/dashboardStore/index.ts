@@ -242,13 +242,14 @@ const createDashboardStore = (
     },
 
     get tagGroups(): string[] {
-      const { tags } = store
+      const self = this as TDashbaordStore
+      const { tags } = self
 
       return uniq(pluck('group', tags))
     },
 
     get curPageLinksKey(): TCurPageLinksKey {
-      const isFooter = store.curTab === DASHBOARD_ROUTE.FOOTER
+      const isFooter = this.curTab === DASHBOARD_ROUTE.FOOTER
 
       return {
         links: isFooter ? 'footerLinks' : 'headerLinks',
@@ -258,7 +259,10 @@ const createDashboardStore = (
 
     // this is private, no need to export to store spec
     get _validThreads(): TCommunityThread[] {
-      const { curCommunity, enable, nameAlias } = store
+      const self = this as TDashbaordStore
+      const { curCommunity, enable, nameAlias } = self
+
+      if (!curCommunity?.threads) return []
 
       return publicThreads(curCommunity.threads, {
         enable,
@@ -267,38 +271,41 @@ const createDashboardStore = (
     },
 
     get headerSettings(): THeaderSettings {
-      const threads = store._validThreads
+      const self = this as TDashbaordStore
+      const threads = self._validThreads
 
       return {
-        ...pick(HEADER_SETTING_KEYS, store),
+        ...pick(HEADER_SETTING_KEYS, self),
         threads,
       }
     },
 
     get footerSettings(): TFooterSettings {
-      const threads = store._validThreads
+      const self = this as TDashbaordStore
+      const threads = self._validThreads
 
       return {
-        ...pick(FOOTER_SETTING_KEYS, store),
+        ...pick(FOOTER_SETTING_KEYS, self),
         threads,
       }
     },
 
     get docSettings(): TDocSettings {
       return {
-        categories: store.docCategories,
+        categories: this.docCategories,
       }
     },
 
     get baseInfoSettings(): TBaseInfoSettings {
-      const baseInfo = pick(BASEINFO_KEYS, store)
-      const socialLinks = reject((item: TSocialItem) => isEmpty(item.type), store.socialLinks)
+      const self = this as TDashbaordStore
+      const baseInfo = pick(BASEINFO_KEYS, self)
+      const socialLinks = reject((item: TSocialItem) => isEmpty(item.type), self.socialLinks)
 
       return {
         ...baseInfo,
         ...pick(
           ['loading', 'saving', 'queringMediaReportIndex', 'baseInfoTab', 'mediaReports'],
-          store,
+          self,
         ),
         socialLinks,
       }

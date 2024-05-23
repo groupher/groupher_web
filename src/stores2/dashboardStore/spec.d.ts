@@ -167,6 +167,10 @@ export type TSettingsFields = {
   widgetsThreads: TThread
   widgetsSize: TSizeSML
   widgetsType: TWidgetType
+
+  // REMOVE to hooks later
+  curCommunity?: TCommunity
+  _validThreads?: TCommunityThread[]
 }
 
 export type TInitSettings = Partial<TSettingsFields>
