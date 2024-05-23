@@ -232,7 +232,6 @@ export type TStore = TSettingsFields & {
   footerSettings: TFooterSettings
 
   // actions
-  updateOverview: (community: TCommunity) => void
   updateBaseInfo: (community: TCommunity) => void
 
   onSave: (field: TSettingField) => void

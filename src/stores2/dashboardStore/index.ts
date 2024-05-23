@@ -298,32 +298,7 @@ const createDashboardStore = (rootStore: TRootStore, initState: TInitSettings = 
       }
     },
 
-    get baseInfoSettings(): TBaseInfoSettings {
-      const self = this as TStore
-      const baseInfo = pick(BASEINFO_KEYS, self)
-      const socialLinks = reject((item: TSocialItem) => isEmpty(item.type), self.socialLinks)
-
-      return {
-        ...baseInfo,
-        ...pick(
-          ['loading', 'saving', 'queringMediaReportIndex', 'baseInfoTab', 'mediaReports'],
-          self,
-        ),
-        socialLinks,
-      }
-    },
-
     // actions
-    updateOverview(community: TCommunity): void {
-      const { meta, views, subscribersCount } = community
-
-      store.overview = {
-        views,
-        subscribersCount,
-        ...meta,
-      }
-    },
-
     updateBaseInfo(community: TCommunity): void {
       const { dashboard } = community
       const { baseInfo, mediaReports } = dashboard

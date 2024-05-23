@@ -11,8 +11,6 @@ const MobxStoreWrapper = ({ children }: { children: ReactNode }) => {
   const { community } = useCommunity()
   const dashboard = useDashboard(community)
 
-  console.log('## mobx store dashboard: ', dashboard)
-
   const rootStore = useStore({
     theme,
     viewing: {

@@ -8,11 +8,12 @@ import { LANGS_OPTIONS } from '@/constant/i18n'
 import { Br } from '@/widgets/Common'
 import Select from '@/widgets/Select'
 
+import DangerZone from './DangerZone'
+
 import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'
-import useBaseInfo from '../hooks/useBaseInfo'
-
-import DangerZone from './DangerZone'
+// import useBaseInfo from '../hooks/useBaseInfo'
+import useBaseInfo from '../logic/useBaseInfo'
 
 import { Wrapper, Label, Inputer, Hint } from '../styles/basic_info/base_info'
 import { edit } from '../logic'

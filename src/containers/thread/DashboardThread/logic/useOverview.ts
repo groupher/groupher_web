@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import type { TOverview } from '@/spec'
+import type { TOverview, TCommunity } from '@/spec'
 import useDashboard from '@/hooks/useDashboard'
 import useQuery from '@/hooks/useQuery'
 
@@ -11,12 +11,22 @@ import S from '../schema'
  */
 const useOverview = (): TOverview => {
   const { dashboard } = useDashboard()
-  const { curCommunity, updateOverview, overview } = dashboard
+  const { curCommunity, overview } = dashboard
 
-  const { data, error } = useQuery(S.communityOverview, {
+  const { data } = useQuery(S.communityOverview, {
     slug: curCommunity.slug,
     incViews: false,
   })
+
+  const updateOverview = (community: TCommunity): void => {
+    const { meta, views, subscribersCount } = community
+
+    dashboard.overview = {
+      views,
+      subscribersCount,
+      ...meta,
+    }
+  }
 
   useEffect(() => {
     if (data?.community) updateOverview(data.community)
