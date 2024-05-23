@@ -10,8 +10,8 @@ import S from '../schema'
  * NOTE: should use observer to wrap the component who use this hook
  */
 const useOverview = (): TOverview => {
-  const { dashboard } = useDashboard()
-  const { curCommunity, overview } = dashboard
+  const { dashboard: store } = useDashboard()
+  const { curCommunity, overview } = store
 
   const { data } = useQuery(S.communityOverview, {
     slug: curCommunity.slug,
@@ -21,7 +21,7 @@ const useOverview = (): TOverview => {
   const updateOverview = (community: TCommunity): void => {
     const { meta, views, subscribersCount } = community
 
-    dashboard.overview = {
+    store.overview = {
       views,
       subscribersCount,
       ...meta,

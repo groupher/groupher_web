@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
-import { pick, isEmpty, reject, filter, equals } from 'ramda'
+import { pick, isEmpty, reject, filter, equals, forEach } from 'ramda'
 
-import type { TSocialItem, TDashboardBaseInfoRoute, TMediaReport } from '@/spec'
+import type { TCommunity, TSocialItem, TDashboardBaseInfoRoute, TMediaReport } from '@/spec'
 import { toJS } from '@/mobx'
 import useDashboard from '@/hooks/useDashboard'
 import useQuery from '@/hooks/useQuery'
@@ -41,15 +41,36 @@ type TRet = {
  * NOTE: should use observer to wrap the component who use this hook
  */
 const useBaseInfo = (): TRet => {
-  const { dashboard } = useDashboard()
+  const { dashboard: store } = useDashboard()
   const { anyChanged } = useHelper()
 
-  const { curCommunity, socialLinks, mediaReports, initSettings, updateBaseInfo } = dashboard
+  const { curCommunity, socialLinks, mediaReports, initSettings } = store
 
   const { data } = useQuery(S.communityBaseInfo, {
     slug: curCommunity.slug,
     incViews: false,
   })
+
+  const updateBaseInfo = (community: TCommunity): void => {
+    const { dashboard } = community
+    const { baseInfo, mediaReports } = dashboard
+
+    forEach((key) => {
+      store[key] = baseInfo[key]
+      store.initSettings[key] = baseInfo[key]
+    }, BASEINFO_KEYS)
+
+    if (!isEmpty(mediaReports)) {
+      const initMediaReports = mediaReports.map((item: TMediaReport, index) => ({
+        ...item,
+        editUrl: item.url,
+        index: item.index || index,
+      }))
+
+      store.mediaReports = initMediaReports
+      store.initSettings.mediaReports = initMediaReports
+    }
+  }
 
   useEffect(() => {
     if (data?.community) updateBaseInfo(data.community)
@@ -73,8 +94,8 @@ const useBaseInfo = (): TRet => {
   }
 
   return {
-    ...pick(BASEINFO_KEYS, dashboard),
-    ...pick(['baseInfoTab', 'queringMediaReportIndex', 'loading', 'saving'], dashboard),
+    ...pick(BASEINFO_KEYS, store),
+    ...pick(['baseInfoTab', 'queringMediaReportIndex', 'loading', 'saving'], store),
     socialLinks: reject((item: TSocialItem) => isEmpty(item.type), toJS(socialLinks)),
     mediaReports: toJS(mediaReports),
     isTouched: anyChanged(BASEINFO_KEYS as TSettingField[]),

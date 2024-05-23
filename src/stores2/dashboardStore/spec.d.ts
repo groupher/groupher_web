@@ -232,8 +232,6 @@ export type TStore = TSettingsFields & {
   footerSettings: TFooterSettings
 
   // actions
-  updateBaseInfo: (community: TCommunity) => void
-
   onSave: (field: TSettingField) => void
   rollbackEdit: (field: TSettingField) => void
   changeGlowEffect: (glowType: string) => void

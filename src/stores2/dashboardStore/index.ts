@@ -4,11 +4,8 @@ import {
   uniq,
   pluck,
   pick,
-  reject,
   equals,
-  isEmpty,
   mapObjIndexed,
-  forEach,
   clone,
   findIndex,
   update,
@@ -16,14 +13,7 @@ import {
   omit,
 } from 'ramda'
 
-import type {
-  TCommunity,
-  TSocialItem,
-  TCommunityThread,
-  TMediaReport,
-  TTag,
-  TNameAlias,
-} from '@/spec'
+import type { TCommunity, TCommunityThread, TTag, TNameAlias } from '@/spec'
 import { LOCALE } from '@/constant/i18n'
 import { THREAD } from '@/constant/thread'
 import SIZE from '@/constant/size'
@@ -71,7 +61,6 @@ import type {
   THeaderSettings,
   TFooterSettings,
   TDocSettings,
-  TBaseInfoSettings,
   TRootStore,
 } from './spec'
 import {
@@ -299,27 +288,6 @@ const createDashboardStore = (rootStore: TRootStore, initState: TInitSettings = 
     },
 
     // actions
-    updateBaseInfo(community: TCommunity): void {
-      const { dashboard } = community
-      const { baseInfo, mediaReports } = dashboard
-
-      forEach((key) => {
-        store[key] = baseInfo[key]
-        store.initSettings[key] = baseInfo[key]
-      }, BASEINFO_KEYS)
-
-      if (!isEmpty(mediaReports)) {
-        const initMediaReports = mediaReports.map((item: TMediaReport, index) => ({
-          ...item,
-          editUrl: item.url,
-          index: item.index || index,
-        }))
-
-        store.mediaReports = initMediaReports
-        store.initSettings.mediaReports = initMediaReports
-      }
-    },
-
     setAllPassportRules(rootRules: string, moderatorRules: string): void {
       store.allRootRules = rootRules
       store.allModeratorRules = moderatorRules
