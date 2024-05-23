@@ -1,4 +1,4 @@
-import { battery, markStore } from '@/mobx'
+import { battery, markStore, toJS } from '@/mobx'
 
 import {
   uniq,
@@ -11,7 +11,9 @@ import {
   forEach,
   clone,
   findIndex,
+  update,
   mergeLeft,
+  omit,
 } from 'ramda'
 
 import type {
@@ -79,6 +81,8 @@ import {
   FOOTER_SETTING_KEYS,
   DASHBOARD_DEMO_KEY,
   SETTING_FIELD,
+  DEFAULT_FAQ_ITEMS,
+  SEO_KEYS,
 } from './constant'
 
 export const settingsFields: TSettingsFields = {
@@ -163,7 +167,7 @@ export const settingsFields: TSettingsFields = {
   nameAlias: BUILDIN_ALIAS,
   enable: DEFAULT_ENABLE,
 
-  // faqSections: DEFAULT_FAQ_ITEMS,
+  faqSections: DEFAULT_FAQ_ITEMS,
   rssFeedType: RSS_TYPE.DIGEST,
   rssFeedCount: 5,
 
@@ -414,9 +418,11 @@ const createDashboardStore = (
      * TODO: re-move it to useEdit hooks
      */
     onSave(field: TSettingField): void {
+      const self = this as TDashbaordStore
+
       if (field === SETTING_FIELD.TAG) {
         const { editingTag } = store
-        const targetIdx = store._findTagIdx()
+        const targetIdx = self._findTagIdx()
         if (targetIdx < 0) return
 
         store.tags[targetIdx] = clone(editingTag)
@@ -432,17 +438,135 @@ const createDashboardStore = (
       }
     },
 
+    // save to local settings should omit subTabs,
+    // otherwise it will be choas when save one one tab then switch to other tab
+    _saveToLocal(): void {
+      const self = this as TDashbaordStore
+
+      const saveSlf = omit(
+        ['curTab', 'baseInfoTab', 'aliasTab', 'layoutTab', 'layoutTab', 'broadcastTab'],
+        toJS(self),
+      )
+
+      BStore.set(DASHBOARD_DEMO_KEY, JSON.stringify(saveSlf))
+    },
+
+    _rollbackByKeys(keys: string[]): void {
+      const self = this as TDashbaordStore
+
+      for (let i = 0; i < keys.length; i += 1) {
+        const key = keys[i]
+        const initValue = self.initSettings[key]
+        if (self[key] !== initValue) {
+          // @ts-ignore
+          self[key] = initValue
+        }
+      }
+    },
+
+    rollbackEdit(field: TSettingField): void {
+      const self = this as TDashbaordStore
+
+      if (field === SETTING_FIELD.BASE_INFO) {
+        self._rollbackByKeys(BASEINFO_KEYS)
+        return
+      }
+
+      if (field === SETTING_FIELD.SEO) {
+        self._rollbackByKeys(SEO_KEYS)
+        return
+      }
+
+      if (field === SETTING_FIELD.TAG) {
+        const targetIdx = self._findTagIdx()
+        if (targetIdx < 0) return
+
+        self.tags[targetIdx] = toJS(self.tags[targetIdx])
+        self.editingTag = null
+        return
+      }
+
+      if (field === SETTING_FIELD.TAG_INDEX) {
+        self.tags = toJS(self.initSettings.tags)
+        return
+      }
+
+      if (field === SETTING_FIELD.FAQ_SECTIONS) {
+        self.faqSections = toJS(self.initSettings.faqSections)
+        return
+      }
+
+      if (field === SETTING_FIELD.NAME_ALIAS) {
+        const targetIdx = self._findAliasIdx()
+        if (targetIdx < 0) return
+
+        self.nameAlias[targetIdx] = toJS(self.nameAlias[targetIdx])
+        self.editingAlias = null
+        return
+      }
+
+      const initValue = toJS(self.initSettings[field])
+      // @ts-ignore
+      self[field] = initValue
+    },
+
+    resetEdit(field: TSettingField): void {
+      const self = this as TDashbaordStore
+
+      if (field === SETTING_FIELD.NAME_ALIAS) {
+        const targetIdx = self._findAliasIdx()
+        if (targetIdx < 0) return
+
+        self.nameAlias[targetIdx].name = self.nameAlias[targetIdx].original
+        self.editingAlias = null
+      }
+
+      self._saveToLocal()
+      // slf.mark({ demoAlertEnable: true })
+    },
+
+    updateViewingCommunity(args: TCommunity): void {
+      rootStore.viewing.updateViewingCommunity(args)
+    },
+
     _findTagIdx(): number {
-      const { tags, editingTag } = store
-      const targetIdx = findIndex((item: TTag) => item.id === editingTag.id, tags)
+      const self = this as TDashbaordStore
+
+      const { tags, editingTag } = self
+      const targetIdx = findIndex((item: TTag) => item.id === editingTag.id, toJS(tags))
       return targetIdx
     },
 
     _findAliasIdx(): number {
-      const { nameAlias, editingAlias } = store
-      const targetIdx = findIndex((item: TNameAlias) => item.slug === editingAlias.slug, nameAlias)
+      const self = this as TDashbaordStore
+
+      const { nameAlias, editingAlias } = self
+      const targetIdx = findIndex(
+        (item: TNameAlias) => item.slug === editingAlias.slug,
+        toJS(nameAlias),
+      )
 
       return targetIdx
+    },
+
+    updateEditingTag() {
+      const self = this as TDashbaordStore
+      const { editingTag, tags } = self
+
+      const _editingTag = toJS(editingTag)
+      const _tags = toJS(tags)
+      const _initSettings = toJS(self.initSettings)
+
+      const targetIndex = findIndex((item: TTag) => item.id === editingTag.id, _tags)
+      const updatedTags = update(targetIndex, _editingTag, _tags)
+
+      const initSettings = { ..._initSettings, tags: updatedTags }
+      self.mark({ initSettings })
+    },
+
+    updateEditing(sobj): void {
+      const self = this as TDashbaordStore
+      self.mark(sobj)
     },
 
     mark(sobj: Record<string, any>): void {

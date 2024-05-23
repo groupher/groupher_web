@@ -1,7 +1,7 @@
-import { battery } from '@/mobx'
+import { battery, toJS } from '@/mobx'
 import { includes, values } from 'ramda'
 
-import type { TArticle } from '@/spec'
+import type { TCommunity, TArticle } from '@/spec'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
 import type { TViewingStore, TInit } from './spec'
@@ -23,6 +23,11 @@ const createViewingStore = (init: TInit = {}): TViewingStore => {
         return store[curThread]
       }
       return {}
+    },
+    // actions
+    updateViewingCommunity(args: TCommunity): void {
+      const self = this as TViewingStore
+      self.community = { ...toJS(self.community), ...args }
     },
   }
 

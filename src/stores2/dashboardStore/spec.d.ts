@@ -34,6 +34,7 @@ import type {
   TDashboardBaseInfoRoute,
   TCommunityThread,
   TCommunity,
+  TFAQSection,
 } from '@/spec'
 
 import {
@@ -150,7 +151,7 @@ export type TSettingsFields = {
   nameAlias: TNameAlias[]
   enable: TEnableConfig
 
-  // faqSections: T.opt(T.array(FAQSection), DEFAULT_FAQ_ITEMS),
+  faqSections: TFAQSection[]
   rssFeedType: TRSSType
   rssFeedCount: number
 
@@ -240,6 +241,15 @@ export type TDashbaordStore = TSettingsFields & {
   // actions
   updateOverview: (community: TCommunity) => void
   updateBaseInfo: (community: TCommunity) => void
+
+  onSave: (field: TSettingField) => void
+  rollbackEdit: (field: TSettingField) => void
+  changeGlowEffect: (glowType: string) => void
+
+  _findTagIdx: () => number
+  _findAliasIdx: () => number
+  _rollbackByKeys: (keys: string[]) => void
+  _saveToLocal: () => void
 
   mark: (sobj: Record<string, any>) => void
 }
