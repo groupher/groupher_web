@@ -12,7 +12,6 @@ import type { TSpace } from '@/spec'
 import { buildLog } from '@/logger'
 
 import useSyncAccount from '@/hooks/useSyncAccount'
-import useDashboard from '@/hooks/useDashboard'
 import useAccount from '@/hooks/useAccount'
 import useBannerLayout from '@/hooks/useBannerLayout'
 import { BANNER_LAYOUT } from '@/constant/layout'
@@ -40,10 +39,6 @@ type TProps = {
 const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
   useSyncAccount()
   const user = useAccount()
-
-  const dashboard = useDashboard()
-
-  console.log('## got dashboard: ', dashboard)
 
   const { isLogin, nickname } = user
   const bannerLayout = useBannerLayout()

@@ -83,6 +83,7 @@ import {
   SETTING_FIELD,
   DEFAULT_FAQ_ITEMS,
   SEO_KEYS,
+  DEFAULT_OVERVIEW,
 } from './constant'
 
 export const settingsFields: TSettingsFields = {
@@ -207,7 +208,7 @@ const createDashboardStore = (rootStore: TRootStore, initState: TInitSettings = 
     broadcastTab: DASHBOARD_BROADCAST_ROUTE.GLOBAL,
 
     // overview
-    overview: null,
+    overview: DEFAULT_OVERVIEW,
 
     // editing
     editingTag: null,

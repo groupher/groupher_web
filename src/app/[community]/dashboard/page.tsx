@@ -1,14 +1,11 @@
 'use client'
 
-import { observer } from 'mobx-react-lite'
+// import { observer } from 'mobx-react-lite'
 
-import useDashboardSettings from '@/hooks/useDashboardSettings'
 import Overview from '@/containers//thread/DashboardThread/Overview'
 
 const DashboardOverviewPage = () => {
-  const { overviewData } = useDashboardSettings()
-
-  return <Overview data={overviewData} />
+  return <Overview />
 }
 
-export default observer(DashboardOverviewPage)
+export default DashboardOverviewPage

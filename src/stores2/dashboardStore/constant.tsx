@@ -237,6 +237,14 @@ export const WIDGET_TYPE = {
   LINK: 'link',
 } as Record<Uppercase<TWidgetType>, TWidgetType>
 
+export const DEFAULT_OVERVIEW = {
+  views: 0,
+  subscribersCount: 0,
+  postsCount: 0,
+  changelogsCount: 0,
+  docsCount: 0,
+}
+
 export const WIDGET_TYPES = [
   {
     title: '侧边栏',

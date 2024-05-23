@@ -1,17 +1,15 @@
 import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { prettyNum } from '@/fmt'
 
 import NoteTip from '@/widgets/NoteTip'
 
-import type { TProps as TIndexProps } from '.'
-
+import useOverview from '../logic/useOverview'
 import { Wrapper, Left, Right, Section, Hint, Num } from '../styles/overview/basic_numbers'
 
-type TProps = Pick<TIndexProps, 'data'>
-
-const BasicNumbers: FC<TProps> = ({ data }) => {
-  const { views, subscribersCount, postsCount, changelogsCount, docsCount } = data
+const BasicNumbers: FC = () => {
+  const { views, subscribersCount, postsCount, changelogsCount, docsCount } = useOverview()
 
   return (
     <Wrapper>
@@ -51,4 +49,4 @@ const BasicNumbers: FC<TProps> = ({ data }) => {
   )
 }
 
-export default BasicNumbers
+export default observer(BasicNumbers)

@@ -23,11 +23,12 @@ const useDashboardSettings = (): TRes => {
   if (store === null) {
     throw new Error('Store cannot be null, please add a context provider')
   }
-
-  return pick(
+  const ret = pick(
     ['curTab', 'overviewData', 'enableSettings', 'cmsContents'],
     store.dashboardThread,
-  ) as TRes
+  )
+
+  return ret as TRes
 }
 
 export default useDashboardSettings
