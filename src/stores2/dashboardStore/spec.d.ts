@@ -184,7 +184,7 @@ export type TOverview = {
   docsCount: number
 }
 
-export type TDashbaordStore = TSettingsFields & {
+export type TStore = TSettingsFields & {
   initSettings: TSettingsFields
   defaultSettings: TSettingsFields
 

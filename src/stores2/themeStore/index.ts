@@ -5,10 +5,10 @@ import type { TThemeMap, TThemeName } from '@/spec'
 import THEME from '@/constant/theme'
 import { themeSkins } from '@/utils/themes'
 
-import type { TThemeStore } from './spec'
+import type { TStore } from './spec'
 
 // theme store
-const createThemeStore = (theme: TThemeName = THEME.DAY): TThemeStore => {
+const createThemeStore = (theme: TThemeName = THEME.DAY): TStore => {
   const store = {
     theme,
 

@@ -10,7 +10,7 @@ export type TInit = {
   activeThread?: TThread
 }
 
-export type TViewingStore = TInit & {
+export type TStore = TInit & {
   // views
   readonly viewingArticle: TArticle
 

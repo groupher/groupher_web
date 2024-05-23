@@ -4,10 +4,10 @@ import { includes, values } from 'ramda'
 import type { TCommunity, TArticle } from '@/spec'
 import { ARTICLE_THREAD } from '@/constant/thread'
 
-import type { TViewingStore, TInit } from './spec'
+import type { TStore, TInit } from './spec'
 
 // theme store
-const createViewingStore = (init: TInit = {}): TViewingStore => {
+const createViewingStore = (init: TInit = {}): TStore => {
   const store = {
     user: init.user || null,
     community: init.community || null,
@@ -26,7 +26,7 @@ const createViewingStore = (init: TInit = {}): TViewingStore => {
     },
     // actions
     updateViewingCommunity(args: TCommunity): void {
-      const self = this as TViewingStore
+      const self = this as TStore
       self.community = { ...toJS(self.community), ...args }
     },
   }

@@ -1,6 +1,6 @@
 import type { TThemeMap, TThemeName } from '@/spec'
 
-export type TThemeStore = {
+export type TStore = {
   theme: TThemeName
   readonly themeData: TThemeMap
   // actions

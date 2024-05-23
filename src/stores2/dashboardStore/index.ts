@@ -63,8 +63,8 @@ import BStore from '@/utils/bstore'
 import { publicThreads } from '@/helper'
 
 import type {
+  TStore,
   TSettingField,
-  TDashbaordStore,
   TInitSettings,
   TSettingsFields,
   TCurPageLinksKey,
@@ -188,10 +188,7 @@ export const settingsFields: TSettingsFields = {
 }
 
 // theme store
-const createDashboardStore = (
-  rootStore: TRootStore,
-  initState: TInitSettings = {},
-): TDashbaordStore => {
+const createDashboardStore = (rootStore: TRootStore, initState: TInitSettings = {}): TStore => {
   const store = mergeLeft(initState, {
     ...settingsFields,
     initSettings: settingsFields,
@@ -246,7 +243,7 @@ const createDashboardStore = (
     },
 
     get tagGroups(): string[] {
-      const self = this as TDashbaordStore
+      const self = this as TStore
       const { tags } = self
 
       return uniq(pluck('group', tags))
@@ -263,7 +260,7 @@ const createDashboardStore = (
 
     // this is private, no need to export to store spec
     get _validThreads(): TCommunityThread[] {
-      const self = this as TDashbaordStore
+      const self = this as TStore
       const { curCommunity, enable, nameAlias } = self
 
       if (!curCommunity?.threads) return []
@@ -275,7 +272,7 @@ const createDashboardStore = (
     },
 
     get headerSettings(): THeaderSettings {
-      const self = this as TDashbaordStore
+      const self = this as TStore
       const threads = self._validThreads
 
       return {
@@ -285,7 +282,7 @@ const createDashboardStore = (
     },
 
     get footerSettings(): TFooterSettings {
-      const self = this as TDashbaordStore
+      const self = this as TStore
       const threads = self._validThreads
 
       return {
@@ -301,7 +298,7 @@ const createDashboardStore = (
     },
 
     get baseInfoSettings(): TBaseInfoSettings {
-      const self = this as TDashbaordStore
+      const self = this as TStore
       const baseInfo = pick(BASEINFO_KEYS, self)
       const socialLinks = reject((item: TSocialItem) => isEmpty(item.type), self.socialLinks)
 
@@ -418,7 +415,7 @@ const createDashboardStore = (
      * TODO: re-move it to useEdit hooks
      */
     onSave(field: TSettingField): void {
-      const self = this as TDashbaordStore
+      const self = this as TStore
 
       if (field === SETTING_FIELD.TAG) {
         const { editingTag } = store
@@ -441,7 +438,7 @@ const createDashboardStore = (
     // save to local settings should omit subTabs,
     // otherwise it will be choas when save one one tab then switch to other tab
     _saveToLocal(): void {
-      const self = this as TDashbaordStore
+      const self = this as TStore
 
       const saveSlf = omit(
         ['curTab', 'baseInfoTab', 'aliasTab', 'layoutTab', 'layoutTab', 'broadcastTab'],
@@ -452,7 +449,7 @@ const createDashboardStore = (
     },
 
     _rollbackByKeys(keys: string[]): void {
-      const self = this as TDashbaordStore
+      const self = this as TStore
 
       for (let i = 0; i < keys.length; i += 1) {
         const key = keys[i]
@@ -465,7 +462,7 @@ const createDashboardStore = (
     },
 
     rollbackEdit(field: TSettingField): void {
-      const self = this as TDashbaordStore
+      const self = this as TStore
 
       if (field === SETTING_FIELD.BASE_INFO) {
         self._rollbackByKeys(BASEINFO_KEYS)
@@ -511,7 +508,7 @@ const createDashboardStore = (
     },
 
     resetEdit(field: TSettingField): void {
-      const self = this as TDashbaordStore
+      const self = this as TStore
 
       if (field === SETTING_FIELD.NAME_ALIAS) {
         const targetIdx = self._findAliasIdx()
@@ -530,7 +527,7 @@ const createDashboardStore = (
     },
 
     _findTagIdx(): number {
-      const self = this as TDashbaordStore
+      const self = this as TStore
 
       const { tags, editingTag } = self
       const targetIdx = findIndex((item: TTag) => item.id === editingTag.id, toJS(tags))
@@ -538,7 +535,7 @@ const createDashboardStore = (
     },
 
     _findAliasIdx(): number {
-      const self = this as TDashbaordStore
+      const self = this as TStore
 
       const { nameAlias, editingAlias } = self
       const targetIdx = findIndex(
@@ -550,7 +547,7 @@ const createDashboardStore = (
     },
 
     updateEditingTag() {
-      const self = this as TDashbaordStore
+      const self = this as TStore
       const { editingTag, tags } = self
 
       const _editingTag = toJS(editingTag)
@@ -565,7 +562,7 @@ const createDashboardStore = (
     },
 
     updateEditing(sobj): void {
-      const self = this as TDashbaordStore
+      const self = this as TStore
       self.mark(sobj)
     },
 

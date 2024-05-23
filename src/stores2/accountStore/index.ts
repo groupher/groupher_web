@@ -4,10 +4,10 @@ import type { TUser, TAccount } from '@/spec'
 import BStore from '@/utils/bstore'
 import OAUTH from '@/constant/oauth'
 
-import type { TAccountStore } from './spec'
+import type { TStore } from './spec'
 
 // theme store
-const createAccountStore = (): TAccountStore => {
+const createAccountStore = (): TStore => {
   const store = {
     user: null,
     userSubscribedCommunities: null,

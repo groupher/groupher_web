@@ -1,6 +1,6 @@
 import type { TAccount, TCommunity, TUser } from '@/spec'
 
-export type TAccountStore = {
+export type TStore = {
   user: TUser | null
   isLogin: boolean
   userSubscribedCommunities: TCommunity[] | null
