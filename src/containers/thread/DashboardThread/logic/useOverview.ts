@@ -7,12 +7,10 @@ import { StoreContext } from '@/stores2'
 
 import S from '../schema'
 
-type TRes = TOverview
-
 /**
  * NOTE: should use observer to wrap the component who use this hook
  */
-const useOverview = (): TRes => {
+const useOverview = (): TOverview => {
   const { dashboard } = useContext(StoreContext)
   const { curCommunity, updateOverview } = dashboard
 
