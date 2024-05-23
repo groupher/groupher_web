@@ -11,6 +11,7 @@ import {
   forEach,
   clone,
   findIndex,
+  mergeLeft,
 } from 'ramda'
 
 import type {
@@ -62,6 +63,7 @@ import { publicThreads } from '@/helper'
 import type {
   TSettingField,
   TDashbaordStore,
+  TInitSettings,
   TSettingsFields,
   TCurPageLinksKey,
   THeaderSettings,
@@ -182,8 +184,11 @@ export const settingsFields: TSettingsFields = {
 }
 
 // theme store
-const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
-  const store = {
+const createDashboardStore = (
+  rootStore: TRootStore,
+  initState: TInitSettings = {},
+): TDashbaordStore => {
+  const store = mergeLeft(initState, {
     ...settingsFields,
     initSettings: settingsFields,
     defaultSettings: settingsFields,
@@ -436,7 +441,7 @@ const createDashboardStore = (rootStore: TRootStore): TDashbaordStore => {
     mark(sobj: Record<string, any>): void {
       markStore(sobj, store)
     },
-  }
+  })
 
   return battery(store)
 }

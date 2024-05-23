@@ -169,6 +169,8 @@ export type TSettingsFields = {
   widgetsType: TWidgetType
 }
 
+export type TInitSettings = Partial<TSettingsFields>
+
 export type TOverview = {
   views: number
   subscribersCount: number
