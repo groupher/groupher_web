@@ -237,7 +237,6 @@ export type TStore = TSettingsFields & {
 
   _findTagIdx: () => number
   _findAliasIdx: () => number
-  _saveToLocal: () => void
 
   mark: (sobj: Record<string, any>) => void
 }

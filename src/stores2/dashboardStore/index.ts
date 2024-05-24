@@ -10,7 +10,6 @@ import {
   findIndex,
   update,
   mergeLeft,
-  omit,
 } from 'ramda'
 
 import type { TCommunity, TCommunityThread, TTag, TNameAlias } from '@/spec'
@@ -64,14 +63,12 @@ import type {
   TRootStore,
 } from './spec'
 import {
-  BASEINFO_KEYS,
   EMPTY_MEDIA_REPORT,
   HEADER_SETTING_KEYS,
   FOOTER_SETTING_KEYS,
   DASHBOARD_DEMO_KEY,
   SETTING_FIELD,
   DEFAULT_FAQ_ITEMS,
-  SEO_KEYS,
   DEFAULT_OVERVIEW,
 } from './constant'
 
@@ -377,34 +374,6 @@ const createDashboardStore = (rootStore: TRootStore, initState: TInitSettings = 
 
         store.nameAlias[targetIdx] = clone(editingAlias)
       }
-    },
-
-    // save to local settings should omit subTabs,
-    // otherwise it will be choas when save one one tab then switch to other tab
-    _saveToLocal(): void {
-      const self = this as TStore
-
-      const saveSlf = omit(
-        ['curTab', 'baseInfoTab', 'aliasTab', 'layoutTab', 'layoutTab', 'broadcastTab'],
-        toJS(self),
-      )
-
-      BStore.set(DASHBOARD_DEMO_KEY, JSON.stringify(saveSlf))
-    },
-
-    resetEdit(field: TSettingField): void {
-      const self = this as TStore
-
-      if (field === SETTING_FIELD.NAME_ALIAS) {
-        const targetIdx = self._findAliasIdx()
-        if (targetIdx < 0) return
-
-        self.nameAlias[targetIdx].name = self.nameAlias[targetIdx].original
-        self.editingAlias = null
-      }
-
-      self._saveToLocal()
-      // slf.mark({ demoAlertEnable: true })
     },
 
     updateViewingCommunity(args: TCommunity): void {
