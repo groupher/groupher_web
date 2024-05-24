@@ -22,19 +22,14 @@ const BasicInfo: FC = () => {
 
   const curLangOption = find((o) => o.value === locale, LANGS_OPTIONS)
 
-  console.log('## isTouched:', isTouched)
-
   return (
     <Wrapper>
       <Label>默认语言</Label>
       <Select
         value={curLangOption}
         options={LANGS_OPTIONS}
-        placeholder="请选择标签所在分组"
-        onChange={(option: TSelectOption) => {
-          console.log('## change locale: ', option.value)
-          edit(option.value, 'locale')
-        }}
+        placeholder="社区默认语言"
+        onChange={(option: TSelectOption) => edit(option.value, 'locale')}
         top={10}
         bottom={10}
         right={8}

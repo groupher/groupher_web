@@ -1,12 +1,18 @@
 import { useContext } from 'react'
-import { equals, any, has } from 'ramda'
+import { equals, any, has, omit, findIndex } from 'ramda'
 
-import type { TEditValue } from '@/spec'
+import type { TEditValue, TTag, TNameAlias } from '@/spec'
 import { toJS, runInAction } from '@/mobx'
 import { isObject } from '@/validator'
 import { StoreContext } from '@/stores2'
+import BStore from '@/utils/bstore'
 
-import { SETTING_FIELD, BASEINFO_KEYS, SEO_KEYS } from '@/stores2/dashboardStore/constant'
+import {
+  DASHBOARD_DEMO_KEY,
+  SETTING_FIELD,
+  BASEINFO_KEYS,
+  SEO_KEYS,
+} from '@/stores2/dashboardStore/constant'
 
 import type { TSettingField } from '../spec'
 
@@ -18,6 +24,7 @@ type TRet = {
   //
   edit: (value: TEditValue, field: TSettingField) => void
   rollbackEdit: (field: TSettingField) => void
+  resetEdit: (field: TSettingField) => void
 }
 
 /**
@@ -61,6 +68,26 @@ const useHelper = (): TRet => {
     })
   }
 
+  const _findTagIdx = (): number => {
+    const self = store
+
+    const { tags, editingTag } = self
+    const targetIdx = findIndex((item: TTag) => item.id === editingTag.id, toJS(tags))
+    return targetIdx
+  }
+
+  const _findAliasIdx = (): number => {
+    const self = store
+
+    const { nameAlias, editingAlias } = self
+    const targetIdx = findIndex(
+      (item: TNameAlias) => item.slug === editingAlias.slug,
+      toJS(nameAlias),
+    )
+
+    return targetIdx
+  }
+
   const rollbackEdit = (field: TSettingField): void => {
     const self = store
 
@@ -75,7 +102,7 @@ const useHelper = (): TRet => {
     }
 
     if (field === SETTING_FIELD.TAG) {
-      const targetIdx = self._findTagIdx()
+      const targetIdx = _findTagIdx()
       if (targetIdx < 0) return
 
       self.tags[targetIdx] = toJS(self.tags[targetIdx])
@@ -94,7 +121,7 @@ const useHelper = (): TRet => {
     }
 
     if (field === SETTING_FIELD.NAME_ALIAS) {
-      const targetIdx = self._findAliasIdx()
+      const targetIdx = _findAliasIdx()
       if (targetIdx < 0) return
 
       self.nameAlias[targetIdx] = toJS(self.nameAlias[targetIdx])
@@ -107,8 +134,35 @@ const useHelper = (): TRet => {
     self[field] = initValue
   }
 
+  // save to local settings should omit subTabs,
+  // otherwise it will be choas when save one one tab then switch to other tab
+  const _saveToLocal = (): void => {
+    const self = store
+
+    const saveSlf = omit(
+      ['curTab', 'baseInfoTab', 'aliasTab', 'layoutTab', 'layoutTab', 'broadcastTab'],
+      toJS(self),
+    )
+
+    BStore.set(DASHBOARD_DEMO_KEY, JSON.stringify(saveSlf))
+  }
+
+  const resetEdit = (field: TSettingField): void => {
+    const self = store
+
+    if (field === SETTING_FIELD.NAME_ALIAS) {
+      const targetIdx = _findAliasIdx()
+      if (targetIdx < 0) return
+
+      self.nameAlias[targetIdx].name = self.nameAlias[targetIdx].original
+      self.editingAlias = null
+    }
+
+    _saveToLocal()
+    // slf.mark({ demoAlertEnable: true })
+  }
+
   // TODO: onSave
-  // TODO: onReset
 
   return {
     isChanged,
@@ -116,6 +170,7 @@ const useHelper = (): TRet => {
     mapArrayChanged,
     edit,
     rollbackEdit,
+    resetEdit,
   }
 }
 
