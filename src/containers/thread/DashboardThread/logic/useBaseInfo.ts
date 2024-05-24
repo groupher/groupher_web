@@ -68,7 +68,6 @@ const useBaseInfo = (): TRet => {
       value = v.target.value
     }
 
-    // @ts-ignore
     store.mark({ [field]: value })
   }
 
