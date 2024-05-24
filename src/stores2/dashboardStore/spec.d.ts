@@ -233,12 +233,10 @@ export type TStore = TSettingsFields & {
 
   // actions
   onSave: (field: TSettingField) => void
-  rollbackEdit: (field: TSettingField) => void
   changeGlowEffect: (glowType: string) => void
 
   _findTagIdx: () => number
   _findAliasIdx: () => number
-  _rollbackByKeys: (keys: string[]) => void
   _saveToLocal: () => void
 
   mark: (sobj: Record<string, any>) => void
@@ -318,6 +316,7 @@ export type TSettingField =
   | 'title'
   | 'slug'
   | 'desc'
+  | 'introduction'
   | 'homepage'
   | 'techstack'
   | 'city'

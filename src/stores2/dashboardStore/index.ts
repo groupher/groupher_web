@@ -392,65 +392,6 @@ const createDashboardStore = (rootStore: TRootStore, initState: TInitSettings = 
       BStore.set(DASHBOARD_DEMO_KEY, JSON.stringify(saveSlf))
     },
 
-    _rollbackByKeys(keys: string[]): void {
-      const self = this as TStore
-
-      for (let i = 0; i < keys.length; i += 1) {
-        const key = keys[i]
-        const initValue = self.initSettings[key]
-        if (self[key] !== initValue) {
-          // @ts-ignore
-          self[key] = initValue
-        }
-      }
-    },
-
-    rollbackEdit(field: TSettingField): void {
-      const self = this as TStore
-
-      if (field === SETTING_FIELD.BASE_INFO) {
-        self._rollbackByKeys(BASEINFO_KEYS)
-        return
-      }
-
-      if (field === SETTING_FIELD.SEO) {
-        self._rollbackByKeys(SEO_KEYS)
-        return
-      }
-
-      if (field === SETTING_FIELD.TAG) {
-        const targetIdx = self._findTagIdx()
-        if (targetIdx < 0) return
-
-        self.tags[targetIdx] = toJS(self.tags[targetIdx])
-        self.editingTag = null
-        return
-      }
-
-      if (field === SETTING_FIELD.TAG_INDEX) {
-        self.tags = toJS(self.initSettings.tags)
-        return
-      }
-
-      if (field === SETTING_FIELD.FAQ_SECTIONS) {
-        self.faqSections = toJS(self.initSettings.faqSections)
-        return
-      }
-
-      if (field === SETTING_FIELD.NAME_ALIAS) {
-        const targetIdx = self._findAliasIdx()
-        if (targetIdx < 0) return
-
-        self.nameAlias[targetIdx] = toJS(self.nameAlias[targetIdx])
-        self.editingAlias = null
-        return
-      }
-
-      const initValue = toJS(self.initSettings[field])
-      // @ts-ignore
-      self[field] = initValue
-    },
-
     resetEdit(field: TSettingField): void {
       const self = this as TStore
 

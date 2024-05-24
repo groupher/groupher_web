@@ -12,16 +12,17 @@ import DangerZone from './DangerZone'
 
 import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'
-// import useBaseInfo from '../hooks/useBaseInfo'
 import useBaseInfo from '../logic/useBaseInfo'
 
 import { Wrapper, Label, Inputer, Hint } from '../styles/basic_info/base_info'
-import { edit } from '../logic'
 
 const BasicInfo: FC = () => {
-  const { saving, locale, desc, title, slug, homepage, introduction, isTouched } = useBaseInfo()
+  const { saving, locale, desc, title, slug, homepage, introduction, isTouched, edit } =
+    useBaseInfo()
 
   const curLangOption = find((o) => o.value === locale, LANGS_OPTIONS)
+
+  console.log('## isTouched:', isTouched)
 
   return (
     <Wrapper>

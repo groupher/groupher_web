@@ -126,6 +126,7 @@ export type TSettingField =
   | 'title'
   | 'slug'
   | 'desc'
+  | 'introduction'
   | 'homepage'
   | 'techstack'
   | 'city'

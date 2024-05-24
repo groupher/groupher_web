@@ -1,4 +1,4 @@
-import { FC, memo, Fragment, ReactNode } from 'react'
+import { FC, memo, ReactNode } from 'react'
 
 import type { TSpace } from '@/spec'
 import { buildLog } from '@/logger'
@@ -17,7 +17,8 @@ import {
   ActionWrapper,
 } from './styles/saving_bar'
 
-import { rollbackEdit, onSave } from './logic'
+import { onSave } from './logic'
+import useHelper from './logic/useHelper'
 
 const log = buildLog('C:Dashboard/SavingBar')
 
@@ -49,6 +50,8 @@ const SavingBar: FC<TProps> = ({
   width = '100%',
   ...restProps
 }) => {
+  const { rollbackEdit } = useHelper()
+
   // cannot pass minimal to Wrapper, cuz the wired issue on styled-components@6
   const Wrapper = !minimal ? NormalWrapper : MinimalWrapper
 
@@ -56,7 +59,7 @@ const SavingBar: FC<TProps> = ({
     if (isTouched) {
       return (
         <Wrapper direction="left" width={width} {...restProps}>
-          <Fragment>{children}</Fragment>
+          {children}
           <SpaceGrow />
           <ActionWrapper $minimal={minimal}>
             <YesOrNoButtons
@@ -82,7 +85,7 @@ const SavingBar: FC<TProps> = ({
         </Wrapper>
       )
     }
-    return <Fragment>{children}</Fragment>
+    return <>{children}</>
   }
 
   if (!isTouched) return null

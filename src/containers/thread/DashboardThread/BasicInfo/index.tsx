@@ -17,7 +17,7 @@ import Logos from './Logos'
 import SocialInfo from './SocialInfo'
 import OtherInfo from './OtherInfo'
 
-import useBaseInfo from '../hooks/useBaseInfo'
+import useBaseInfo from '../logic/useBaseInfo'
 import { Wrapper, Banner, TabsWrapper } from '../styles/basic_info'
 import { edit } from '../logic'
 

@@ -1,10 +1,18 @@
 import { useEffect } from 'react'
-import { pick, isEmpty, reject, filter, equals } from 'ramda'
+import { has, pick, isEmpty, reject, filter, equals } from 'ramda'
 
-import type { TCommunity, TSocialItem, TDashboardBaseInfoRoute, TMediaReport } from '@/spec'
+import type {
+  TCommunity,
+  TSocialItem,
+  TDashboardBaseInfoRoute,
+  TMediaReport,
+  TEditValue,
+} from '@/spec'
 import { toJS, runInAction } from '@/mobx'
 import useDashboard from '@/hooks/useDashboard'
 import useQuery from '@/hooks/useQuery'
+
+import { isObject } from '@/validator'
 
 import type { TSettingField } from '../spec'
 import useHelper from './useHelper'
@@ -35,6 +43,8 @@ type TRet = {
   isTouched: boolean
   isSocialLinksTouched: boolean
   isMediaReportsTouched: boolean
+
+  edit: (value: TEditValue, key: TSettingField) => void
 }
 
 /**
@@ -50,6 +60,17 @@ const useBaseInfo = (): TRet => {
     slug: curCommunity.slug,
     incViews: false,
   })
+
+  const edit = (v: TEditValue, field: string): void => {
+    let value = v
+    if (isObject(v) && has('target', v)) {
+      // @ts-ignore
+      value = v.target.value
+    }
+
+    // @ts-ignore
+    store.mark({ [field]: value })
+  }
 
   const updateBaseInfo = (community: TCommunity): void => {
     const { dashboard } = community
@@ -108,6 +129,7 @@ const useBaseInfo = (): TRet => {
     isTouched: anyChanged(BASEINFO_KEYS as TSettingField[]),
     isSocialLinksTouched: socialLinksTouched(),
     isMediaReportsTouched: mediaReportsTouched(),
+    edit,
   } as TRet
 }
 
