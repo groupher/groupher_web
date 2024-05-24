@@ -1,7 +1,9 @@
 import { useContext } from 'react'
-import { equals, any } from 'ramda'
+import { equals, any, has } from 'ramda'
 
+import type { TEditValue } from '@/spec'
 import { toJS, runInAction } from '@/mobx'
+import { isObject } from '@/validator'
 import { StoreContext } from '@/stores2'
 
 import { SETTING_FIELD, BASEINFO_KEYS, SEO_KEYS } from '@/stores2/dashboardStore/constant'
@@ -14,6 +16,7 @@ type TRet = {
   mapArrayChanged: (key: string) => boolean
 
   //
+  edit: (value: TEditValue, field: TSettingField) => void
   rollbackEdit: (field: TSettingField) => void
 }
 
@@ -32,6 +35,16 @@ const useHelper = (): TRet => {
 
   const mapArrayChanged = (key: string): boolean => {
     return JSON.stringify(toJS(store[key])) !== JSON.stringify(toJS(initSettings[key]))
+  }
+
+  const edit = (v: TEditValue, field: TSettingField): void => {
+    let value = v
+    if (isObject(v) && has('target', v)) {
+      // @ts-ignore
+      value = v.target.value
+    }
+
+    store.mark({ [field]: value })
   }
 
   const _rollbackByKeys = (keys: string[]): void => {
@@ -101,6 +114,7 @@ const useHelper = (): TRet => {
     isChanged,
     anyChanged,
     mapArrayChanged,
+    edit,
     rollbackEdit,
   }
 }

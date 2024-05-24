@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { has, pick, isEmpty, reject, filter, equals } from 'ramda'
+import { pick, isEmpty, reject, filter, equals } from 'ramda'
 
 import type {
   TCommunity,
@@ -11,8 +11,6 @@ import type {
 import { toJS, runInAction } from '@/mobx'
 import useDashboard from '@/hooks/useDashboard'
 import useQuery from '@/hooks/useQuery'
-
-import { isObject } from '@/validator'
 
 import type { TSettingField } from '../spec'
 import useHelper from './useHelper'
@@ -52,7 +50,7 @@ type TRet = {
  */
 const useBaseInfo = (): TRet => {
   const { dashboard: store } = useDashboard()
-  const { anyChanged } = useHelper()
+  const { anyChanged, edit } = useHelper()
 
   const { curCommunity, socialLinks, mediaReports, initSettings } = store
 
@@ -60,16 +58,6 @@ const useBaseInfo = (): TRet => {
     slug: curCommunity.slug,
     incViews: false,
   })
-
-  const edit = (v: TEditValue, field: TSettingField): void => {
-    let value = v
-    if (isObject(v) && has('target', v)) {
-      // @ts-ignore
-      value = v.target.value
-    }
-
-    store.mark({ [field]: value })
-  }
 
   const updateBaseInfo = (community: TCommunity): void => {
     const { dashboard } = community
