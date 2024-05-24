@@ -4,7 +4,7 @@ import { types as mobxTypes } from 'mobx-state-tree'
 import { has, forEachObjIndexed, keys, isEmpty, includes } from 'ramda'
 
 import { MobXProviderContext } from 'mobx-react'
-import { toJS as toJSON } from 'mobx'
+import { toJS as toJSON, runInAction } from 'mobx'
 
 import type { TEditValue } from '@/spec'
 import type { TRootStore } from '@/stores/RootStore'
@@ -13,7 +13,7 @@ import { isObject } from './validator'
 export type { Instance } from 'mobx-state-tree'
 export { getParent } from 'mobx-state-tree'
 
-export { makeAutoObservable as battery } from 'mobx'
+export { makeAutoObservable as battery, runInAction } from 'mobx'
 
 // make the name shorter
 export const T = {
@@ -69,17 +69,19 @@ export const markStore = (target: Record<string, any>, store: any) => {
   }
   const storeKeys = keys(store)
 
-  forEachObjIndexed((val, key) => {
-    if (!includes(key, storeKeys)) return false
-    if (!isEmpty(val) && !Array.isArray(val) && isObject(val) && store[key] !== null) {
-      // NOTE: had to use this syntax to update object val
-      // because the normal one is NOT WORKING in production build
-      // what a mother-fucking bug is this ??? TODO: check later
-      store[key] = Object.assign(store[key], val)
-    } else {
-      store = Object.assign(store, { [key]: val })
-    }
-  }, target)
+  runInAction(() => {
+    forEachObjIndexed((val, key) => {
+      if (!includes(key, storeKeys)) return false
+      if (!isEmpty(val) && !Array.isArray(val) && isObject(val) && store[key] !== null) {
+        // NOTE: had to use this syntax to update object val
+        // because the normal one is NOT WORKING in production build
+        // what a mother-fucking bug is this ??? TODO: check later
+        store[key] = Object.assign(store[key], val)
+      } else {
+        store = Object.assign(store, { [key]: val })
+      }
+    }, target)
+  })
 
   return false
 }

@@ -30,7 +30,7 @@ const useOverview = (): TOverview => {
 
   useEffect(() => {
     if (data?.community) updateOverview(data.community)
-  }, [data, updateOverview])
+  }, [data])
 
   return overview
 }

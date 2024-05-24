@@ -9,6 +9,7 @@ const communityBaseInfo = gql`
       dashboard {
         baseInfo {
           title
+          locale
           favicon
           logo
           slug

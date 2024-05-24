@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
-import { pick, isEmpty, reject, filter, equals, forEach } from 'ramda'
+import { pick, isEmpty, reject, filter, equals } from 'ramda'
 
 import type { TCommunity, TSocialItem, TDashboardBaseInfoRoute, TMediaReport } from '@/spec'
-import { toJS } from '@/mobx'
+import { toJS, runInAction } from '@/mobx'
 import useDashboard from '@/hooks/useDashboard'
 import useQuery from '@/hooks/useQuery'
 
@@ -55,26 +55,33 @@ const useBaseInfo = (): TRet => {
     const { dashboard } = community
     const { baseInfo, mediaReports } = dashboard
 
-    forEach((key) => {
-      store[key] = baseInfo[key]
-      store.initSettings[key] = baseInfo[key]
-    }, BASEINFO_KEYS)
+    const updates = BASEINFO_KEYS.reduce((acc, key) => {
+      acc[key] = baseInfo[key]
+      return acc
+    }, {})
+
+    let initMediaReports = []
 
     if (!isEmpty(mediaReports)) {
-      const initMediaReports = mediaReports.map((item: TMediaReport, index) => ({
+      initMediaReports = mediaReports.map((item, index) => ({
         ...item,
         editUrl: item.url,
         index: item.index || index,
       }))
+    }
+
+    runInAction(() => {
+      Object.assign(store, updates)
+      Object.assign(store.initSettings, updates)
 
       store.mediaReports = initMediaReports
       store.initSettings.mediaReports = initMediaReports
-    }
+    })
   }
 
   useEffect(() => {
     if (data?.community) updateBaseInfo(data.community)
-  }, [data, updateBaseInfo])
+  }, [data])
 
   const mediaReportsTouched = () => {
     const curValues = reject((item: TMediaReport) => !item.editUrl, toJS(mediaReports))

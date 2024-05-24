@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import React, { createContext } from 'react'
+import { configure } from 'mobx'
 
 import type { TRootStore } from './spec'
 
@@ -9,6 +10,10 @@ import createAccountStore from './accountStore'
 import createThemeStore from './themeStore'
 import createDashboardStore from './dashboardStore'
 import createViewingStore from './viewingStore'
+
+configure({
+  enforceActions: 'never',
+})
 
 let clientSideRootStore: TRootStore | null
 

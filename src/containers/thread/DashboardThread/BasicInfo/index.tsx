@@ -19,16 +19,12 @@ import OtherInfo from './OtherInfo'
 
 import useBaseInfo from '../hooks/useBaseInfo'
 import { Wrapper, Banner, TabsWrapper } from '../styles/basic_info'
-import { edit, loadBaseInfo } from '../logic'
+import { edit } from '../logic'
 
 const BasicInfo: FC = () => {
   const router = useRouter()
   const curCommunity = useViewingCommunity()
   const { baseInfoTab } = useBaseInfo()
-
-  useEffect(() => {
-    setTimeout(() => loadBaseInfo())
-  }, [])
 
   return (
     <Wrapper>

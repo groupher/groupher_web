@@ -350,24 +350,6 @@ export const loadChangelogs = (): void => {
   })
 }
 
-// export const loadCommunityOverview = (): void => {
-//   const { curCommunity } = store
-
-//   sr71$.query(S.communityOverview, {
-//     slug: curCommunity.slug,
-//     incViews: false,
-//   })
-// }
-
-export const loadBaseInfo = (): void => {
-  const { curCommunity } = store
-
-  sr71$.query(S.communityBaseInfo, {
-    slug: curCommunity.slug,
-    incViews: false,
-  })
-}
-
 export const loadSocialLinks = (): void => {
   const { curCommunity } = store
 
