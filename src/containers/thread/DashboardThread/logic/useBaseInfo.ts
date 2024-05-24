@@ -12,7 +12,7 @@ import { toJS, runInAction } from '@/mobx'
 import useDashboard from '@/hooks/useDashboard'
 import useQuery from '@/hooks/useQuery'
 
-import type { TSettingField } from '../spec'
+import type { TSettingField } from '@/stores2/dashboardStore/spec'
 import useHelper from './useHelper'
 import { BASEINFO_KEYS } from '../constant'
 

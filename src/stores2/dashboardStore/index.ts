@@ -415,11 +415,6 @@ const createDashboardStore = (rootStore: TRootStore, initState: TInitSettings = 
       self.mark({ initSettings })
     },
 
-    updateEditing(sobj): void {
-      const self = this as TStore
-      self.mark(sobj)
-    },
-
     mark(sobj: Record<string, any>): void {
       markStore(sobj, store)
     },

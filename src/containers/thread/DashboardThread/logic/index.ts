@@ -76,8 +76,6 @@ export const toggleSEO = (seoEnable: boolean): void => {
   sr71$.mutate(S.updateDashboardSeo, { community: curCommunity.slug, seoEnable })
 }
 
-export const updateEditingAlias = (alias: TNameAlias): void => store.mark({ editingAlias: alias })
-
 export const addDocCategory = (): void => {
   const docCategories = store.docSettings.categories.concat({
     name: '新分类',

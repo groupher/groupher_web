@@ -71,7 +71,6 @@ export const useThemeFromURL = (): TThemeName => {
 export const useI18n = (): TUseI18n => {
   const locale = useParseLang()
   // const searchParams = useSearchParams()
-  console.log('## my lang: ', locale)
   // console.log('## data: ', data)
 
   // NOTE: put this parser into frontend maybe ?

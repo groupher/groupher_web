@@ -15,15 +15,14 @@ import { ALIAS_TABS, ALIAS_GROUP } from '../constant'
 import Portal from '../Portal'
 import Item from './Item'
 
-import useAliasInfo from '../hooks/useAliasInfo'
+import useAliasInfo from '../logic/useAliasInfo'
 import { Wrapper, Banner, TabsWrapper } from '../styles/alias'
-import { edit } from '../logic'
 
 const Alias: FC = () => {
   const router = useRouter()
   const curCommunity = useViewingCommunity()
+  const { nameAlias, aliasTab, changeTab } = useAliasInfo()
 
-  const { nameAlias, editingAlias, aliasTab } = useAliasInfo()
   const groupedAlias = groupByKey(nameAlias, 'group')
 
   const generalAlias = groupedAlias[ALIAS_GROUP.THREAD] || []
@@ -43,7 +42,7 @@ const Alias: FC = () => {
             items={ALIAS_TABS}
             activeKey={aliasTab}
             onChange={(tab) => {
-              edit(tab, 'aliasTab')
+              changeTab(tab)
               const targetPath =
                 tab === DASHBOARD_ALIAS_ROUTE.THREAD
                   ? `/${curCommunity.slug}/dashboard/alias`
@@ -57,17 +56,11 @@ const Alias: FC = () => {
         </TabsWrapper>
       </Banner>
       {aliasTab === ALIAS_GROUP.THREAD &&
-        generalAlias.map((item) => (
-          <Item key={item.slug} alias={item} editingAlias={editingAlias} />
-        ))}
+        generalAlias.map((item) => <Item key={item.slug} alias={item} />)}
       {aliasTab === ALIAS_GROUP.KANBAN &&
-        kanbanAlias.map((item) => (
-          <Item key={item.slug} alias={item} editingAlias={editingAlias} />
-        ))}
+        kanbanAlias.map((item) => <Item key={item.slug} alias={item} />)}
       {aliasTab === ALIAS_GROUP.OTHERS &&
-        othersAlias.map((item) => (
-          <Item key={item.slug} alias={item} editingAlias={editingAlias} />
-        ))}
+        othersAlias.map((item) => <Item key={item.slug} alias={item} />)}
     </Wrapper>
   )
 }
