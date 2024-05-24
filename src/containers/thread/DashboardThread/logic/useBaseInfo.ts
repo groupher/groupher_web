@@ -44,7 +44,7 @@ type TRet = {
   isSocialLinksTouched: boolean
   isMediaReportsTouched: boolean
 
-  edit: (value: TEditValue, key: TSettingField) => void
+  edit: (value: TEditValue, field: TSettingField) => void
 }
 
 /**
@@ -61,7 +61,7 @@ const useBaseInfo = (): TRet => {
     incViews: false,
   })
 
-  const edit = (v: TEditValue, field: string): void => {
+  const edit = (v: TEditValue, field: TSettingField): void => {
     let value = v
     if (isObject(v) && has('target', v)) {
       // @ts-ignore
