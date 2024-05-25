@@ -1,5 +1,5 @@
-import { FC } from 'react'
-import { components, IndicatorSeparatorProps } from 'react-select'
+import type { FC } from 'react'
+import { components, type IndicatorSeparatorProps } from 'react-select'
 
 import type { TSelectOption } from '@/spec'
 

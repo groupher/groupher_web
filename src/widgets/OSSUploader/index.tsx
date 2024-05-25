@@ -4,7 +4,7 @@
  */
 import Script from 'next/script'
 
-import { FC, memo, ReactNode, useState, useEffect, useRef, useCallback } from 'react'
+import { type FC, memo, type ReactNode, useState, useEffect, useRef, useCallback } from 'react'
 
 import { buildLog } from '@/logger'
 import uid from '@/utils/uid'

@@ -4,7 +4,7 @@
  * use custom animation Globally at GlobalStyle.ts
  */
 
-import { FC, ReactNode, memo, createContext } from 'react'
+import { type FC, type ReactNode, memo, createContext } from 'react'
 
 import type { TTooltipPlacement } from '@/spec'
 import { buildLog } from '@/logger'

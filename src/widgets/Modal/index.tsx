@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, ReactNode, useCallback, memo } from 'react'
+import { type FC, type ReactNode, useCallback, memo } from 'react'
 
 import { buildLog } from '@/logger'
 import useShortcut from '@/hooks/useShortcut'

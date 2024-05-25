@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, Suspense, lazy } from 'react'
+import { type FC, Suspense, lazy } from 'react'
 import { compose, not, isNil, filter, reverse as reverseFn, slice } from 'ramda'
 
 import type { TUser, TSpace } from '@/spec'
@@ -117,6 +117,7 @@ const Facepile: FC<TProps> = ({
         <AvatarsWrapper>
           {slice(0, limit, sortedUsers).map((user) => (
             <Suspense
+              key={user.login}
               fallback={
                 <AvatarFallback size={getAvatarSize(size, 'number') as number} user={user} />
               }

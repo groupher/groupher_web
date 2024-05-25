@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, ReactNode, memo } from 'react'
+import { type FC, type ReactNode, memo } from 'react'
 
 import type { TSize } from '@/spec'
 import SIZE from '@/const/size'

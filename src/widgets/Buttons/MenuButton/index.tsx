@@ -1,4 +1,4 @@
-import { FC, ReactNode, memo } from 'react'
+import { type FC, type ReactNode, memo } from 'react'
 
 import type { TTooltipPlacement, TMenuOption } from '@/spec'
 

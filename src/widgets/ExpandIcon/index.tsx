@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, memo, useState, ReactNode } from 'react'
+import { type FC, memo, useState, type ReactNode } from 'react'
 
 import type { TSizeSM } from '@/spec'
 

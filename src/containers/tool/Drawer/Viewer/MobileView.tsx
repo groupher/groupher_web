@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useState, memo, useRef } from 'react'
+import { type FC, type ReactNode, useEffect, useState, memo, useRef } from 'react'
 
 import useSwipe from '@/hooks/useSwipe'
 import useTheme from '@/hooks/useTheme'

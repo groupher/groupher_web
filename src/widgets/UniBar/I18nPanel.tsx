@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TLocale } from '@/spec'
@@ -21,6 +21,7 @@ const I18nPanel: FC = () => {
 
         return (
           <MenuBar
+            key={LANG.value}
             $withTop={!badgeInView}
             $active={locale === LANG.value}
             onClick={() => changeLocale(LANG.value as TLocale)}

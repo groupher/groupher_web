@@ -5,8 +5,9 @@
  *
  */
 
-import { FC, memo } from 'react'
-import { TSizeSM } from '@/spec'
+import { type FC, memo } from 'react'
+
+import type { TSizeSM } from '@/spec'
 
 import SIZE from '@/const/size'
 import { buildLog } from '@/logger'

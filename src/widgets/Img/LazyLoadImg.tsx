@@ -1,4 +1,4 @@
-import { FC, ReactNode, memo, useState, useCallback } from 'react'
+import { type FC, type ReactNode, memo, useState, useCallback } from 'react'
 import { pick } from 'ramda'
 
 import { LazyLoadImage } from 'react-lazy-load-image-component'

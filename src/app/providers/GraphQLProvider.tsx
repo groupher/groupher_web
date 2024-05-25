@@ -4,7 +4,7 @@
  * this is for Graphql feching data on page load
  */
 
-import { FC, ReactNode, useMemo } from 'react'
+import { type FC, type ReactNode, useMemo } from 'react'
 import { UrqlProvider, ssrExchange, cacheExchange, fetchExchange, createClient } from '@urql/next'
 
 import { makeResult } from '@urql/core'

@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, ReactNode, lazy, Suspense, useEffect } from 'react'
+import { type FC, type ReactNode, lazy, Suspense, useEffect } from 'react'
 import { Provider as BalancerTextProvider } from 'react-wrap-balancer'
 
 import METRIC from '@/const/metric'

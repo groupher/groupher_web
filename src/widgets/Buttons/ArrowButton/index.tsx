@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, ReactNode, useRef, useEffect, useState } from 'react'
+import { type FC, type ReactNode, useRef, useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TColorName, TSpace } from '@/spec'

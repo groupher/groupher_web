@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, memo, ReactNode } from 'react'
+import { type FC, memo, type ReactNode } from 'react'
 
 import type { TSpace, TTooltipPlacement } from '@/spec'
 import { buildLog } from '@/logger'

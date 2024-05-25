@@ -1,7 +1,7 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { TActive, TThread } from '@/spec'
+import type { TActive, TThread } from '@/spec'
 import { THREAD } from '@/const/thread'
 
 import usePrimaryColor from '@/hooks/usePrimaryColor'

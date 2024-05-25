@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, memo, ReactNode } from 'react'
+import { type FC, memo, type ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { buildLog } from '@/logger'

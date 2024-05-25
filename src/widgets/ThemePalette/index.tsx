@@ -5,7 +5,7 @@
  * because mobx's observer mechanism, we should manually watch the theme
  * otherwhise the render will not be triggled
  */
-import { FC, ReactNode } from 'react'
+import type { FC, ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 import { ThemeProvider } from 'styled-components'
 

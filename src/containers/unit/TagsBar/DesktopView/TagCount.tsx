@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import { getRandomInt } from '@/helper'
 import { Wrapper, Count, ChartBar } from '../styles/desktop_view/tag_count'
 

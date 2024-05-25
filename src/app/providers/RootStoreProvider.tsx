@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, ReactNode, memo } from 'react'
+import { type FC, type ReactNode, memo } from 'react'
 import { Provider } from 'mobx-react'
 
 import { useStore } from '@/stores/init'

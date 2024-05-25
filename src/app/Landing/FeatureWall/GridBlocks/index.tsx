@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { type FC, useState } from 'react'
 import { keys, includes } from 'ramda'
 
 import useInterval from '@/hooks/useInterval'
@@ -41,14 +41,14 @@ const GridBlocks: FC = () => {
         <Icon.Triangle left={325} bottom={-6} $active={includes('6', SHINE_DOTS[shineIdx])} />
 
         {BLOCKS.map((block) => (
-          <>
+          <div key={block.key}>
             {block.key === 4 && <SexyDivider />}
             <Block>
               {block.icon}
               <Title>{block.title}</Title>
               <Desc>{block.desc}</Desc>
             </Block>
-          </>
+          </div>
         ))}
 
         <SexyDivider bottom={0} />

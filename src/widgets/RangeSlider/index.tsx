@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { buildLog } from '@/logger'
 
@@ -45,7 +45,7 @@ const RangeSlider: FC<TProps> = ({
         type="range"
         min={min}
         max={max}
-        onChange={(v) => onChange(parseInt(v.target.value, 10))}
+        onChange={(v) => onChange(Number.parseInt(v.target.value, 10))}
       />
     </Wrapper>
   )

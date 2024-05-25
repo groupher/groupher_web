@@ -1,4 +1,6 @@
-import { FC, ReactNode } from 'react'
+import type { FC, ReactNode } from 'react'
+
+import type { TColorName } from '@/spec'
 
 import { COLOR_NAME } from '@/const/colors'
 import { mockUsers } from '@/mock'
@@ -18,7 +20,6 @@ import {
   DempP,
   Highlight,
 } from '../styles/users_wall'
-import { TColorName } from '@/spec'
 
 const P1 = (markColor: TColorName): ReactNode => (
   <DempP>

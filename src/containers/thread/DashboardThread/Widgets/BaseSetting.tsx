@@ -1,8 +1,10 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 import { includes, reject, clone } from 'ramda'
 
+import type { TThread } from '@/spec'
 import { THREAD } from '@/const/thread'
+
 import ColorSelector from '@/widgets/ColorSelector'
 import { SpaceGrow, Br } from '@/widgets/Common'
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
@@ -25,7 +27,6 @@ import {
 } from '../styles/widgets/base_setting'
 
 import { edit } from '../logic'
-import { TThread } from '@/spec'
 
 const BaseSetting: FC = () => {
   const {

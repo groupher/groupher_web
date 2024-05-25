@@ -1,9 +1,9 @@
-import { FC, useEffect, useRef } from 'react'
-import { CursorProps, NodeApi, NodeRendererProps, Tree } from 'react-arborist'
+import { type FC, useEffect, useRef } from 'react'
+import { type CursorProps, type NodeApi, type NodeRendererProps, Tree } from 'react-arborist'
 
 import type { TPagedArticles } from '@/spec'
 
-import { treeData, TTreeItem } from '../treeData'
+import { treeData, type TTreeItem } from '../treeData'
 
 import Actions from './Actions'
 import Note from './Note'

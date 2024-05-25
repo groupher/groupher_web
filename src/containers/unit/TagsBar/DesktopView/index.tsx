@@ -3,8 +3,7 @@
  * TagsBar
  *
  */
-
-import { FC, useMemo } from 'react'
+import { type FC, useMemo } from 'react'
 import { keys, reverse } from 'ramda'
 import { observer } from 'mobx-react-lite'
 

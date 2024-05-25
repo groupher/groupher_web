@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, ReactNode, memo } from 'react'
+import { type FC, type ReactNode, memo } from 'react'
 import Masonry from 'react-masonry-css'
 
 import { buildLog } from '@/logger'
