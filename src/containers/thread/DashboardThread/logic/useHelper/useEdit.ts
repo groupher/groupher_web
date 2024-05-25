@@ -15,14 +15,9 @@ import {
   SEO_KEYS,
 } from '@/stores2/dashboardStore/constant'
 
-import type { TSettingField } from '../spec'
+import type { TSettingField } from '@/stores2/dashboardStore/spec'
 
-type TRet = {
-  isChanged: (field: TSettingField) => boolean
-  anyChanged: (fields: TSettingField[]) => boolean
-  mapArrayChanged: (key: string) => boolean
-
-  //
+export type TRet = {
   edit: (value: TEditValue, field: TSettingField) => void
   rollbackEdit: (field: TSettingField) => void
   resetEdit: (field: TSettingField) => void
@@ -32,19 +27,8 @@ type TRet = {
 /**
  * NOTE: should use observer to wrap the component who use this hook
  */
-const useHelper = (): TRet => {
+const useUtils = (): TRet => {
   const { dashboard: store } = useContext(StoreContext)
-  const { initSettings } = store
-
-  const isChanged = (field: TSettingField): boolean => {
-    return !equals(store[field], initSettings[field])
-  }
-
-  const anyChanged = (fields: TSettingField[]): boolean => any(isChanged)(fields)
-
-  const mapArrayChanged = (key: string): boolean => {
-    return JSON.stringify(toJS(store[key])) !== JSON.stringify(toJS(initSettings[key]))
-  }
 
   const edit = (v: TEditValue, field: TSettingField): void => {
     let value = v
@@ -259,12 +243,7 @@ const useHelper = (): TRet => {
     _handleDone()
   }
 
-  // TODO: onSave
-
   return {
-    isChanged,
-    anyChanged,
-    mapArrayChanged,
     edit,
     rollbackEdit,
     resetEdit,
@@ -272,4 +251,4 @@ const useHelper = (): TRet => {
   }
 }
 
-export default useHelper
+export default useUtils

@@ -43,7 +43,6 @@ import { publicThreads } from '@/helper'
 
 import type {
   TStore,
-  TSettingField,
   TInitSettings,
   TSettingsFields,
   TCurPageLinksKey,
@@ -57,7 +56,6 @@ import {
   HEADER_SETTING_KEYS,
   FOOTER_SETTING_KEYS,
   DASHBOARD_DEMO_KEY,
-  SETTING_FIELD,
   DEFAULT_FAQ_ITEMS,
   DEFAULT_OVERVIEW,
 } from './constant'
