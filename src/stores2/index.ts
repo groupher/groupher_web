@@ -4,7 +4,7 @@ import { configure } from 'mobx'
 
 import type { TRootStore } from './spec'
 
-import THEME from '@/constant/theme'
+import THEME from '@/const/theme'
 
 import createAccountStore from './accountStore'
 import createThemeStore from './themeStore'

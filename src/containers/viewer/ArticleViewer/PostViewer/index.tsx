@@ -9,7 +9,7 @@ import Balancer from 'react-wrap-balancer'
 import type { TPost } from '@/spec'
 import { buildLog } from '@/logger'
 import { scrollDrawerToTop } from '@/dom'
-import { BROADCAST_ARTICLE_LAYOUT } from '@/constant/layout'
+import { BROADCAST_ARTICLE_LAYOUT } from '@/const/layout'
 
 import useBroadcast from '@/hooks/useBroadcast'
 

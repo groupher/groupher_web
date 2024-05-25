@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 import styled, { css, animate, rainbow, theme } from '@/css'
 import type { TColor, TActive } from '@/spec'
-import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/const/gtd'
 import PinSVG from '@/icons/Pin'
 import UnPinSVG from '@/icons/UnPin'
 //

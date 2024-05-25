@@ -1,5 +1,5 @@
 import type { TActive, TColor } from '@/spec'
-import { GRADIENT_DIRECTION } from '@/constant/wallpaper'
+import { GRADIENT_DIRECTION } from '@/const/wallpaper'
 
 import styled, { css, theme, rainbow } from '@/css'
 import ArrowSVG from '@/icons/ArrowSolid'

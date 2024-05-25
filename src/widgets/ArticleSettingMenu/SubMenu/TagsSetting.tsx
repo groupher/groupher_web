@@ -5,7 +5,7 @@ import { useQuery, useMutation } from 'urql'
 import type { TID, TTag } from '@/spec'
 import { toast, updateViewingArticle } from '@/signal'
 // import { mockTags } from '@/mock'
-import { THREAD } from '@/constant/thread'
+import { THREAD } from '@/const/thread'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useViewingArticle from '@/hooks/useViewingArticle'
 

@@ -5,7 +5,7 @@ import { keys, startsWith, filter, length } from 'ramda'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import type { TLinkItem } from '@/spec'
-import { MORE_GROUP, ONE_LINK_GROUP } from '@/constant/dashboard'
+import { MORE_GROUP, ONE_LINK_GROUP } from '@/const/dashboard'
 import { sortByIndex, groupByKey } from '@/helper'
 
 import Button from '@/widgets/Buttons/Button'

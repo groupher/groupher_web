@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { KANBAN_CARD_LAYOUT } from '@/constant/layout'
+import { KANBAN_CARD_LAYOUT } from '@/const/layout'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import { Space, SpaceGrow, Brick } from '@/widgets/Common'

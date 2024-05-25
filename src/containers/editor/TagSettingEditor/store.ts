@@ -7,7 +7,7 @@ import type { TCommunity, TRootStore, TTag, TSelectOption, TThread } from '@/spe
 import { buildLog } from '@/logger'
 import { nilOrEmpty } from '@/validator'
 import { markStates, toJS, T, getParent, Instance, useMobxContext } from '@/mobx'
-import { CHANGE_MODE } from '@/constant/mode'
+import { CHANGE_MODE } from '@/const/mode'
 
 import { Tag } from '@/model'
 

@@ -4,9 +4,9 @@
 
 import { FC, memo } from 'react'
 
-import SIZE from '@/constant/size'
-import { THREAD } from '@/constant/thread'
-import { ANCHOR } from '@/constant/dom'
+import SIZE from '@/const/size'
+import { THREAD } from '@/const/thread'
+import { ANCHOR } from '@/const/dom'
 
 import { sortByIndex } from '@/helper'
 import { buildLog } from '@/logger'

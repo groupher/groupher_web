@@ -1,5 +1,5 @@
 import type { TColor, TSizeSM } from '@/spec'
-import SIZE from '@/constant/size'
+import SIZE from '@/const/size'
 
 import HookSVG from '@/icons/CheckBold'
 import styled, { css, theme, rainbow } from '@/css'

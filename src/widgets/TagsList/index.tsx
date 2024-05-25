@@ -5,7 +5,7 @@
 import { FC, memo } from 'react'
 
 import type { TTag, TSizeTSM, TSpace } from '@/spec'
-import SIZE from '@/constant/size'
+import SIZE from '@/const/size'
 
 import { sortByColor } from '@/helper'
 import { Trans } from '@/i18n'

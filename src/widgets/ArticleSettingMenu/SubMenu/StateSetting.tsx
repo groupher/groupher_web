@@ -8,8 +8,8 @@ import useViewingArticle from '@/hooks/useViewingArticle'
 import useKanbanBgColors from '@/hooks/useKanbanBgColors'
 import useNameAlias from '@/hooks/useNameAlias'
 
-import { POST_STATE_MENU_ITEMS } from '@/constant/menu'
-import { ARTICLE_STATE } from '@/constant/gtd'
+import { POST_STATE_MENU_ITEMS } from '@/const/menu'
+import { ARTICLE_STATE } from '@/const/gtd'
 import { toast, updateViewingArticle } from '@/signal'
 import { aliasGTDDoneState } from '@/fmt'
 

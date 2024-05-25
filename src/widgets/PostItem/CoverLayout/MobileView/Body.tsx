@@ -2,7 +2,7 @@ import { FC, memo, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 
 import type { TPost } from '@/spec'
-import { ARTICLE_THREAD } from '@/constant/thread'
+import { ARTICLE_THREAD } from '@/const/thread'
 
 import { Wrapper, Title } from '../../styles/cover_layout/mobile_view/body'
 

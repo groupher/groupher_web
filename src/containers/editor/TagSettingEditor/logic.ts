@@ -2,13 +2,13 @@ import { useEffect } from 'react'
 
 import type { TChangeMode, TEditValue, TTag } from '@/spec'
 
-import EVENT from '@/constant/event'
-import ERR from '@/constant/err'
+import EVENT from '@/const/event'
+import ERR from '@/const/err'
 
 import { buildLog } from '@/logger'
 import asyncSuit from '@/async'
 import { send, errRescue, closeDrawer } from '@/signal'
-import { CHANGE_MODE } from '@/constant/mode'
+import { CHANGE_MODE } from '@/const/mode'
 
 import { DEFAULT_CREATE_TAG } from './constant'
 import S from './schema'

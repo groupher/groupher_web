@@ -1,7 +1,7 @@
 import styled, { css, theme, animate, zIndex } from '@/css'
 import type { TActive, TThemeName } from '@/spec'
-import { GLOW_EFFECTS_DAY, GLOW_EFFECTS_NIGHT } from '@/constant/glow_effect'
-import THEME from '@/constant/theme'
+import { GLOW_EFFECTS_DAY, GLOW_EFFECTS_NIGHT } from '@/const/glow_effect'
+import THEME from '@/const/theme'
 import CloseCrossSVG from '@/icons/CloseLight'
 
 // display: ${props => (props.show ? 'block' : 'none')};

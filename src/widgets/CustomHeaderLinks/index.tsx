@@ -4,8 +4,8 @@ import { observer } from 'mobx-react-lite'
 import useBannerLayout from '@/hooks/useBannerLayout'
 import useViewingThread from '@/hooks/useViewingThread'
 
-import { BANNER_LAYOUT } from '@/constant/layout'
-import { THREAD } from '@/constant/thread'
+import { BANNER_LAYOUT } from '@/const/layout'
+import { THREAD } from '@/const/thread'
 
 import type { TProps } from './spec'
 

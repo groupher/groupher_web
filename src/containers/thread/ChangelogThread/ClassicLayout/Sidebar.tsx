@@ -1,6 +1,6 @@
 import { FC, memo, useEffect } from 'react'
 
-import VIEW from '@/constant/view'
+import VIEW from '@/const/view'
 
 import TagsBar from '@/containers/unit/TagsBar'
 import Tabs from '@/widgets/Switcher/Tabs'

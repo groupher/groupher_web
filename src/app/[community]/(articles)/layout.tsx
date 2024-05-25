@@ -2,7 +2,7 @@
 
 import { observer } from 'mobx-react-lite'
 
-import { BANNER_LAYOUT } from '@/constant/layout'
+import { BANNER_LAYOUT } from '@/const/layout'
 
 import useMetric from '@/hooks/useMetric'
 import useBannerLayout from '@/hooks/useBannerLayout'

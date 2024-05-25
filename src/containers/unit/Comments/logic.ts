@@ -2,9 +2,9 @@ import { useEffect } from 'react'
 import { isEmpty, reject, equals } from 'ramda'
 
 import type { TComment, TID, TEmotionType, TEditValue } from '@/spec'
-import { ANCHOR } from '@/constant/dom'
-import EVENT from '@/constant/event'
-import ERR from '@/constant/err'
+import { ANCHOR } from '@/const/dom'
+import EVENT from '@/const/event'
+import ERR from '@/const/err'
 
 import asyncSuit from '@/async'
 import BStore from '@/utils/bstore'
@@ -118,11 +118,6 @@ export const updateComment = (): void => {
 }
 
 export const openEditor = (): void => {
-  if (!store.isLogin) {
-    authWarn({ hideToast: true })
-    return
-  }
-
   initDraftTimmer()
 
   store.mark({ showEditor: true })
@@ -161,11 +156,6 @@ export const setWordsCountState = (wordsCountReady: boolean): void => {
 }
 
 export const openReplyEditor = (comment: TComment): void => {
-  if (!store.isLogin) {
-    authWarn({ hideToast: true })
-    return
-  }
-
   initDraftTimmer()
   store.mark({
     showReplyEditor: true,
@@ -202,11 +192,6 @@ export const handleEmotion = (
   name: TEmotionType,
   viewerHasEmotioned: boolean,
 ): void => {
-  if (!store.isLogin) {
-    authWarn({ hideToast: true })
-    return
-  }
-
   const { id } = comment
   const emotion = name.toUpperCase()
 
@@ -236,10 +221,6 @@ export const handleEmotion = (
  * toggle upvote action
  */
 export const handleUpvote = (comment: TComment, viewerHasUpvoted: boolean): void => {
-  if (!store.isLogin) {
-    authWarn({ hideToast: true })
-    return
-  }
   const { id, upvotesCount } = comment
 
   if (viewerHasUpvoted) {

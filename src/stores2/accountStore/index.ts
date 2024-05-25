@@ -2,7 +2,7 @@ import { battery } from '@/mobx'
 import type { TUser, TAccount } from '@/spec'
 
 import BStore from '@/utils/bstore'
-import OAUTH from '@/constant/oauth'
+import OAUTH from '@/const/oauth'
 
 import type { TStore } from './spec'
 

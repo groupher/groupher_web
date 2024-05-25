@@ -8,7 +8,7 @@ import { FC, memo, lazy, Suspense } from 'react'
 
 import { buildLog } from '@/logger'
 
-import { DOC_FAQ_LAYOUT } from '@/constant/layout'
+import { DOC_FAQ_LAYOUT } from '@/const/layout'
 import { closeDrawer } from '@/signal'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'

@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 import { keys } from 'ramda'
 
-import { DEME_SOCIALS } from '@/constant/social'
+import { DEME_SOCIALS } from '@/const/social'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useFooterLinks from '@/hooks/useFooterLinks'
 

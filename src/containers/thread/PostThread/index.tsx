@@ -6,12 +6,12 @@
 
 import { FC } from 'react'
 
-import { BANNER_LAYOUT } from '@/constant/layout'
+import { BANNER_LAYOUT } from '@/const/layout'
 
 import { buildLog } from '@/logger'
 import usePostLayout from '@/hooks/usePostLayout'
 import useBannerLayout from '@/hooks/useBannerLayout'
-import { THREAD } from '@/constant/thread'
+import { THREAD } from '@/const/thread'
 
 // import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 import PagedPosts from '@/widgets/PagedPosts'

@@ -6,9 +6,9 @@ import { observer } from 'mobx-react-lite'
 // import { trackWindowScroll } from 'react-lazy-load-image-component'
 
 import usePagedPosts from '@/hooks/usePagedPosts'
-import { POST_LAYOUT } from '@/constant/layout'
-import TYPE from '@/constant/type'
-import { THREAD } from '@/constant/thread'
+import { POST_LAYOUT } from '@/const/layout'
+import TYPE from '@/const/type'
+import { THREAD } from '@/const/thread'
 import usePostLayout from '@/hooks/usePostLayout'
 
 import PostItem from '@/widgets/PostItem'

@@ -21,7 +21,7 @@ import { buildLog } from '@/logger'
 import { refreshArticles, callGEditor, callSyncSelector, listUsers } from '@/signal'
 import { toJS } from '@/mobx'
 import { mockUsers } from '@/mock'
-import { BANNER_LAYOUT } from '@/constant/layout'
+import { BANNER_LAYOUT } from '@/const/layout'
 
 import ImgFallback from '@/widgets/ImgFallback'
 import Sticky from '@/widgets/Sticky'

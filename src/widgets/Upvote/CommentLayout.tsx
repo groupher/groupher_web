@@ -9,7 +9,7 @@ import { FC, memo } from 'react'
 import { buildLog } from '@/logger'
 
 import usePrimaryColor from '@/hooks/usePrimaryColor'
-import { UPVOTE_LAYOUT } from '@/constant/layout'
+import { UPVOTE_LAYOUT } from '@/const/layout'
 import AnimatedCount from '@/widgets/AnimatedCount'
 
 import useUpvote from './useUpvote'

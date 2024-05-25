@@ -9,10 +9,10 @@ import type {
   TResState,
   TPagedArticlesParams,
 } from '@/spec'
-import METRIC from '@/constant/metric'
-import EVENT from '@/constant/event'
-import TYPE from '@/constant/type'
-import ERR from '@/constant/err'
+import METRIC from '@/const/metric'
+import EVENT from '@/const/event'
+import TYPE from '@/const/type'
+import ERR from '@/const/err'
 
 import { buildLog } from '@/logger'
 import { errRescue } from '@/signal'

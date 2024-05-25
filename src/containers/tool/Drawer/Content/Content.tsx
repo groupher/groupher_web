@@ -1,6 +1,6 @@
 import { FC, Suspense } from 'react'
 
-import TYPE from '@/constant/type'
+import TYPE from '@/const/type'
 import { LoadWatcher } from '@/widgets/Common'
 // import ModeLineMenu from '@/containers/unit/ModeLineMenu'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'

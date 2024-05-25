@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 import type { TActive, TColor } from '@/spec'
 
-import MENU from '@/constant/menu'
+import MENU from '@/const/menu'
 
 // import AllSVG from '@/icons/menu/Dots'
 import GtdTodoSVG from '@/icons/GtdTodo'

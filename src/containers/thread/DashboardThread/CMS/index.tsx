@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import 'rsuite-table/dist/css/rsuite-table.css'
 
-import { DASHBOARD_ROUTE } from '@/constant/route'
+import { DASHBOARD_ROUTE } from '@/const/route'
 
 import useTabInfo from '../hooks/useTabInfo'
 import GlobalTableStyle from '../styles/cms/global'

@@ -11,7 +11,7 @@ import type { TArticle } from '@/spec'
 import { buildLog } from '@/logger'
 import { mockTags, mockUsers } from '@/mock'
 import { getRandomInt } from '@/helper'
-import { UPVOTE_LAYOUT } from '@/constant/layout'
+import { UPVOTE_LAYOUT } from '@/const/layout'
 
 // import IconButton from '@/widgets/Buttons/IconButton'
 import ArticleCatState from '@/widgets/ArticleCatState'

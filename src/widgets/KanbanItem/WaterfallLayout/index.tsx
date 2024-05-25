@@ -10,7 +10,7 @@ import { observer } from 'mobx-react-lite'
 import type { TArticle } from '@/spec'
 import { buildLog } from '@/logger'
 
-import { UPVOTE_LAYOUT } from '@/constant/layout'
+import { UPVOTE_LAYOUT } from '@/const/layout'
 import ArticleCatState from '@/widgets/ArticleCatState'
 import TagsList from '@/widgets/TagsList'
 

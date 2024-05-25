@@ -7,7 +7,7 @@ import { Link } from '@/widgets/Common'
 
 import useHover from '@/hooks/useHover'
 import useThemeData from '@/hooks/useThemeData'
-import { COLOR_NAME } from '@/constant/colors'
+import { COLOR_NAME } from '@/const/colors'
 import HomeHeader from '@/widgets/HomeHeader'
 
 import { FREE_PAN_ITEMS, PAID_PAN_ITEMS, CUSTOM_PAN_ITEMS } from './constant'

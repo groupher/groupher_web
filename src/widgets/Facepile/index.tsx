@@ -10,7 +10,7 @@ import { compose, not, isNil, filter, reverse as reverseFn, slice } from 'ramda'
 import type { TUser, TSpace } from '@/spec'
 import { AVATARS_LIST_LENGTH } from '@/config'
 
-import SIZE from '@/constant/size'
+import SIZE from '@/const/size'
 
 import { buildLog } from '@/logger'
 

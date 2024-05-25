@@ -2,8 +2,8 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { assetSrc } from '@/helper'
-import { DEME_SOCIALS } from '@/constant/social'
-import { BRAND_LAYOUT } from '@/constant/layout'
+import { DEME_SOCIALS } from '@/const/social'
+import { BRAND_LAYOUT } from '@/const/layout'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useBrandLayout from '@/hooks/useBrandLayout'

@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import type { TColorName, TSpace } from '@/spec'
-import { COLOR_NAME } from '@/constant'
+import { COLOR_NAME } from '@/const'
 
 import { buildLog } from '@/logger'
 import { SpaceGrow } from '@/widgets/Common'

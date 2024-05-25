@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import type { TChangeMode, TTag } from '@/spec'
-import { CHANGE_MODE } from '@/constant/mode'
+import { CHANGE_MODE } from '@/const/mode'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
 import { Wrapper, UpdateWrapper, ActionButton } from './styles/footer'

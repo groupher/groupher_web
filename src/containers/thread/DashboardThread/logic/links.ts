@@ -1,9 +1,9 @@
 import { keys, find, findIndex, clone, remove, filter, reject, forEach } from 'ramda'
 
 import type { TLinkItem, TGroupedLinks } from '@/spec'
-import { CHANGE_MODE } from '@/constant/mode'
-import { ROUTE } from '@/constant/route'
-import { ONE_LINK_GROUP, MORE_GROUP } from '@/constant/dashboard'
+import { CHANGE_MODE } from '@/const/mode'
+import { ROUTE } from '@/const/route'
+import { ONE_LINK_GROUP, MORE_GROUP } from '@/const/dashboard'
 import { sortByIndex, groupByKey } from '@/helper'
 import { toJS } from '@/mobx'
 

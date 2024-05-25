@@ -14,7 +14,7 @@ import { buildLog } from '@/logger'
 import useSyncAccount from '@/hooks/useSyncAccount'
 import useAccount from '@/hooks/useAccount'
 import useBannerLayout from '@/hooks/useBannerLayout'
-import { BANNER_LAYOUT } from '@/constant/layout'
+import { BANNER_LAYOUT } from '@/const/layout'
 
 import { SpaceGrow } from '@/widgets/Common'
 

@@ -3,8 +3,8 @@ import { toUpper, findIndex } from 'ramda'
 
 import type { TTag } from '@/spec'
 
-import EVENT from '@/constant/event'
-import ERR from '@/constant/err'
+import EVENT from '@/const/event'
+import ERR from '@/const/err'
 
 import asyncSuit from '@/async'
 import { errRescue } from '@/signal'

@@ -3,8 +3,8 @@ import { observer } from 'mobx-react-lite'
 
 import type { TAvatarLayout } from '@/spec'
 
-import { AVATAR_LAYOUT } from '@/constant/layout'
-import { COLOR_NAME } from '@/constant/colors'
+import { AVATAR_LAYOUT } from '@/const/layout'
+import { COLOR_NAME } from '@/const/colors'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import CheckLabel from '@/widgets/CheckLabel'

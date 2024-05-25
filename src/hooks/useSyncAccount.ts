@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 
 import { StoreContext } from '@/stores2'
 import useAccount from '@/hooks/useAccount'
-import OAUTH from '@/constant/oauth'
+import OAUTH from '@/const/oauth'
 import type { TAccount, TSimpleUser } from '@/spec'
 import { debounce } from '@/helper'
 

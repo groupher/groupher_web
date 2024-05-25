@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import type { TPost } from '@/spec'
-import EVENT from '@/constant/event'
+import EVENT from '@/const/event'
 import { send } from '@/signal'
 
 import ArticleCatState from '@/widgets/ArticleCatState'

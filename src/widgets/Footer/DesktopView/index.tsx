@@ -7,7 +7,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { FOOTER_LAYOUT } from '@/constant/layout'
+import { FOOTER_LAYOUT } from '@/const/layout'
 import useFooterLinks from '@/hooks/useFooterLinks'
 import useMetric from '@/hooks/useMetric'
 import useViewingCommunity from '@/hooks/useViewingCommunity'

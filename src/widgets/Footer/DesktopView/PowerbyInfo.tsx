@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 import { isEmpty } from 'ramda'
 
-import METRIC from '@/constant/metric'
+import METRIC from '@/const/metric'
 import useMetric from '@/hooks/useMetric'
 import { LineDivider, DesktopOnly, MobileOnly, Row, Br } from '@/widgets/Common'
 

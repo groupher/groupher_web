@@ -4,7 +4,7 @@
 
 import { FC, memo } from 'react'
 
-import { ROUTE } from '@/constant/route'
+import { ROUTE } from '@/const/route'
 
 import { Space } from '@/widgets/Common'
 import { Wrapper, MainArea, MenuLink, MenuItem, Icon, AccountWrapper } from './styles/doc_layout'

@@ -4,8 +4,8 @@ import Linker from '@/widgets/Linker'
 
 import type { TMetric } from '@/spec'
 
-import { ROUTE } from '@/constant/route'
-import METRIC from '@/constant/metric'
+import { ROUTE } from '@/const/route'
+import METRIC from '@/const/metric'
 
 import { HintTitle } from './styles'
 

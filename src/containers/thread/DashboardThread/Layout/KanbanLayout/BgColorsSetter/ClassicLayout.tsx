@@ -1,8 +1,10 @@
-import { FC, useEffect, useRef } from 'react'
+import { type FC, useEffect, useRef } from 'react'
+
 import { observer } from 'mobx-react-lite'
 import { isEmpty } from 'ramda'
 
-import { INIT_KANBAN_COLORS } from '../../../constant'
+import { INIT_KANBAN_COLORS } from '@/const/dashboard'
+
 import KanbanList from './KanbanList'
 
 import useKanbanInfo from '../../../hooks/useKanbanInfo'

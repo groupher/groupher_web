@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TGQError } from '@/spec'
-import ERR from '@/constant/err'
+import ERR from '@/const/err'
 import GraphqlDetail from './GraphqlDetail'
 
 import { Wrapper, TitleWrapper, Title, Desc } from './styles/details'

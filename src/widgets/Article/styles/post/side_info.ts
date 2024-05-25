@@ -1,7 +1,7 @@
 import type { TAvatarLayout } from '@/spec'
 import styled, { css, theme } from '@/css'
 
-import { AVATAR_LAYOUT } from '@/constant/layout'
+import { AVATAR_LAYOUT } from '@/const/layout'
 
 import Img from '@/Img'
 

@@ -2,8 +2,8 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TTooltipPlacement } from '@/spec'
-import { ARTICLE_STATE } from '@/constant/gtd'
-import { COLOR_NAME } from '@/constant/colors'
+import { ARTICLE_STATE } from '@/const/gtd'
+import { COLOR_NAME } from '@/const/colors'
 import useKanbanBgColors from '@/hooks/useKanbanBgColors'
 import useNameAlias from '@/hooks/useNameAlias'
 

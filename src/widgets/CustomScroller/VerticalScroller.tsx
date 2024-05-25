@@ -10,7 +10,7 @@ import { FC, useState, Fragment, useCallback, memo } from 'react'
 import { Waypoint } from 'react-waypoint'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react'
 
-import SIZE from '@/constant/size'
+import SIZE from '@/const/size'
 import useTheme from '@/hooks/useTheme'
 
 // import ViewportTracker from '@/widgets/ViewportTracker'

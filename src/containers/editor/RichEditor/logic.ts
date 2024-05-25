@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-// import ERR from '@/constant/err'
+// import ERR from '@/const/err'
 import { buildLog } from '@/logger'
 import type { TStore } from './store'
 

@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import TagNode from '@/widgets/TagNode'
-import { COLOR_NAME } from '@/constant/colors'
+import { COLOR_NAME } from '@/const/colors'
 
 import Toolbox from './Toolbox'
 import CoverPreview from '../CoverPreview'

@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TWallpaperGradientDir } from '@/spec'
-import { GRADIENT_DIRECTION } from '@/constant/wallpaper'
+import { GRADIENT_DIRECTION } from '@/const/wallpaper'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import {

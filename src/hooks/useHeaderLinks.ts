@@ -3,7 +3,7 @@ import { find } from 'ramda'
 import { MobXProviderContext } from 'mobx-react'
 
 import type { TLinkItem, THeaderLayout } from '@/spec'
-import { MORE_GROUP } from '@/constant/dashboard'
+import { MORE_GROUP } from '@/const/dashboard'
 
 import { toJS } from '@/mobx'
 

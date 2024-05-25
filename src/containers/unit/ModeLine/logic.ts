@@ -3,8 +3,8 @@ import { useEffect } from 'react'
 
 import type { TThread } from '@/spec'
 
-import EVENT from '@/constant/event'
-import TYPE from '@/constant/type'
+import EVENT from '@/const/event'
+import TYPE from '@/const/type'
 
 import asyncSuit from '@/async'
 import { plural } from '@/fmt'

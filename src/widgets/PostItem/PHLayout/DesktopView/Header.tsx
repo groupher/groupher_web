@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 
 import type { TPost } from '@/spec'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
-import { THREAD } from '@/constant/thread'
+import { THREAD } from '@/const/thread'
 
 import ArticleReadLabel from '@/widgets/ArticleReadLabel'
 import TagsList from '@/widgets/TagsList'

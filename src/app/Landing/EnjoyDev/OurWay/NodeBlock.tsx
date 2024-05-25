@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TArticleCat } from '@/spec'
-import { ARTICLE_CAT } from '@/constant/gtd'
+import { ARTICLE_CAT } from '@/const/gtd'
 
 import { SpaceGrow } from '@/widgets/Common'
 

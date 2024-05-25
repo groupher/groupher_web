@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import type { TThread } from '@/spec'
-import { THREAD } from '@/constant/thread'
+import { THREAD } from '@/const/thread'
 
 import PostLayout from './PostLayout'
 import DocLayout from './DocLayout'

@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { reject, find, propEq, filter, includes, toUpper, isNil, equals } from 'ramda'
 
 import type { TCommunityThread, TTag, TNameAlias } from '@/spec'
-import { THREAD } from '@/constant/thread'
+import { THREAD } from '@/const/thread'
 import { sortByIndex } from '@/helper'
 import { runInAction, toJS } from '@/mobx'
 import useQuery from '@/hooks/useQuery'

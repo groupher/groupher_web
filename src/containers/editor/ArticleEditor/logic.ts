@@ -2,9 +2,9 @@ import { useEffect } from 'react'
 import { values } from 'ramda'
 
 import type { TEditValue, TCommunity, TTag, TArticleCat } from '@/spec'
-import { HCN } from '@/constant/name'
-import EVENT from '@/constant/event'
-import ERR from '@/constant/err'
+import { HCN } from '@/const/name'
+import EVENT from '@/const/event'
+import ERR from '@/const/err'
 
 import { buildLog } from '@/logger'
 import asyncSuit from '@/async'

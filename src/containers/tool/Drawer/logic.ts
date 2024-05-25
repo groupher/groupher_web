@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 import { includes, values } from 'ramda'
 
 import type { TArticle, TDirection, TMetric } from '@/spec'
-import EVENT from '@/constant/event'
-import TYPE from '@/constant/type'
+import EVENT from '@/const/event'
+import TYPE from '@/const/type'
 
 import { toggleGlobalBlur, clearGlobalBlur } from '@/dom'
 import { Global, debounce } from '@/helper'

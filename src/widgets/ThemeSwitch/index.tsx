@@ -9,7 +9,7 @@ import type { TSpace } from '@/spec'
 import useTheme from '@/hooks/useTheme'
 
 import { buildLog } from '@/logger'
-import THEME from '@/constant/theme'
+import THEME from '@/const/theme'
 
 import { Wrapper, Button, SunIcon, MoonIcon } from './styles'
 

@@ -1,4 +1,4 @@
-import SIZE from '@/constant/size'
+import SIZE from '@/const/size'
 
 const ShadowBgColor = '#ededed' // to-theme
 

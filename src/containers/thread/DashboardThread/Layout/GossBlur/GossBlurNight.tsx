@@ -5,7 +5,7 @@ import type { TWallpaperInfo } from '@/spec'
 import { blurRGB } from '@/fmt'
 import useThemeData from '@/hooks/useThemeData'
 import useTheme from '@/hooks/useTheme'
-import THEME from '@/constant/theme'
+import THEME from '@/const/theme'
 
 import { parseWallpaper } from '@/wallpaper'
 

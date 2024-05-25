@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { ROUTE } from '@/constant/route'
+import { ROUTE } from '@/const/route'
 
 import Tooltip from '@/widgets/Tooltip'
 

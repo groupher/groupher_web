@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { upvoteArticle } from '@/signal'
 import useViewingArticle from '@/hooks/useViewingArticle'
 import { toJS } from '@/mobx'
-import { AVATAR_LAYOUT, UPVOTE_LAYOUT } from '@/constant/layout'
+import { AVATAR_LAYOUT, UPVOTE_LAYOUT } from '@/const/layout'
 
 import { Br } from '@/widgets/Common'
 import Upvote from '@/widgets/Upvote'

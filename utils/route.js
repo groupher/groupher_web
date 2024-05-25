@@ -14,9 +14,9 @@ import {
   includes,
 } from 'ramda'
 
-import { HCN } from '@/constant/name'
-import { THREAD } from '@/constant/thread'
-import { ROUTE } from '@/constant/route'
+import { HCN } from '@/const/name'
+import { THREAD } from '@/const/thread'
+import { ROUTE } from '@/const/route'
 
 import { nilOrEmpty } from './validator'
 import { Global } from './helper'

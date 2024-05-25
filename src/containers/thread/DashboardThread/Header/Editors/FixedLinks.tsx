@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { reject } from 'ramda'
 
 import type { TCommunityThread } from '@/spec'
-import { ROUTE } from '@/constant/route'
+import { ROUTE } from '@/const/route'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 

@@ -8,7 +8,7 @@ import { FC, memo } from 'react'
 import { includes } from 'ramda'
 
 import type { TThread } from '@/spec'
-import { THREAD } from '@/constant/thread'
+import { THREAD } from '@/const/thread'
 
 import { buildLog } from '@/logger'
 import { Trans } from '@/i18n'

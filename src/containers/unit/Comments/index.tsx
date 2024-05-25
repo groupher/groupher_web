@@ -7,7 +7,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { ANCHOR } from '@/constant/dom'
+import { ANCHOR } from '@/const/dom'
 import { buildLog } from '@/logger'
 
 // import NoticeBar from '@/widgets/NoticeBar'

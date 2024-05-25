@@ -7,8 +7,8 @@ import { FC, Fragment } from 'react'
 // import { useRouter } from 'next/navigation'
 import { usePathname } from 'next/navigation'
 
-import { BANNER_LAYOUT } from '@/constant/layout'
-// import { ROUTE } from '@/constant/route'
+import { BANNER_LAYOUT } from '@/const/layout'
+// import { ROUTE } from '@/const/route'
 import useBannerLayout from '@/hooks/useBannerLayout'
 
 import { buildLog } from '@/logger'

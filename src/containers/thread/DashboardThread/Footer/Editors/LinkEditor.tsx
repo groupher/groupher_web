@@ -38,7 +38,7 @@ import {
   updateInGroup,
   moveLink,
 } from '../../logic/links'
-import { CHANGE_MODE } from '@/constant/mode'
+import { CHANGE_MODE } from '@/const/mode'
 
 const _log = buildLog('C:Dashboard:LinkEditor')
 

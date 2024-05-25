@@ -15,9 +15,9 @@ import type {
   TReportType,
   TArticlePubSelector,
 } from '@/spec'
-import { THREAD } from '@/constant/thread'
-import TYPE from '@/constant/type'
-import EVENT from '@/constant/event'
+import { THREAD } from '@/const/thread'
+import TYPE from '@/const/type'
+import EVENT from '@/const/event'
 
 import { toJS } from './mobx'
 import PubSub from './pubsub'

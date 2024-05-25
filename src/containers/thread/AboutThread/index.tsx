@@ -9,7 +9,7 @@ import Markdown from 'markdown-to-jsx'
 // import { buildLog } from '@/logger'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useBannerLayout from '@/hooks/useBannerLayout'
-import { BANNER_LAYOUT } from '@/constant/layout'
+import { BANNER_LAYOUT } from '@/const/layout'
 
 import { SexyDivider as Divider } from '@/widgets/Common'
 

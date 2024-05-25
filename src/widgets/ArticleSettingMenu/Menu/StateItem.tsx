@@ -6,7 +6,7 @@ import useViewingArticle from '@/hooks/useViewingArticle'
 import useKanbanBgColors from '@/hooks/useKanbanBgColors'
 import useNameAlias from '@/hooks/useNameAlias'
 import { Trans } from '@/i18n'
-import { ARTICLE_STATE } from '@/constant/gtd'
+import { ARTICLE_STATE } from '@/const/gtd'
 import { aliasGTDDoneState } from '@/fmt'
 
 import { Icon } from '../styles/icon'

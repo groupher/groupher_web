@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { COLOR_NAME } from '@/constant/colors'
+import { COLOR_NAME } from '@/const/colors'
 import { SpaceGrow } from '@/widgets/Common'
 
 import type { TCardMetric } from './spec'

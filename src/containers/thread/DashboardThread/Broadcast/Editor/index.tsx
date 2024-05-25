@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { DASHBOARD_BROADCAST_ROUTE } from '@/constant/route'
+import { DASHBOARD_BROADCAST_ROUTE } from '@/const/route'
 
 import GlobalEditor from './Global'
 import ArticleEditor from './Article'

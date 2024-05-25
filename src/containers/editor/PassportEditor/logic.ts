@@ -2,13 +2,13 @@ import { useEffect } from 'react'
 
 import { uniq, reject, keys, forEach } from 'ramda'
 
-import EVENT from '@/constant/event'
+import EVENT from '@/const/event'
 
 import { buildLog } from '@/logger'
 import asyncSuit from '@/async'
 import { send, errRescue, closeDrawer } from '@/signal'
 import { toJS } from '@/mobx'
-import ERR from '@/constant/err'
+import ERR from '@/const/err'
 
 import S from './schema'
 import type { TStore } from './store'

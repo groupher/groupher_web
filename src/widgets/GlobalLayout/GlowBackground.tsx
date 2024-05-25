@@ -6,7 +6,7 @@ import useGlowLight from '@/hooks/useGlowLight'
 import useMetric from '@/hooks/useMetric'
 import useTheme from '@/hooks/useTheme'
 
-import METRIC from '@/constant/metric'
+import METRIC from '@/const/metric'
 
 import { Wrapper } from './styles/glow_background'
 

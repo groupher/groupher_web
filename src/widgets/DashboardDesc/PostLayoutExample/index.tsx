@@ -8,9 +8,9 @@ import { FC, memo, useState } from 'react'
 
 import type { TPostLayout } from '@/spec'
 
-import { POST_LAYOUT } from '@/constant/layout'
-import SVG from '@/constant/svg'
-import VIEW from '@/constant/view'
+import { POST_LAYOUT } from '@/const/layout'
+import SVG from '@/const/svg'
+import VIEW from '@/const/view'
 
 import { buildLog } from '@/logger'
 

@@ -1,17 +1,19 @@
-import { FC, useState } from 'react'
+import { type FC, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { isEmpty } from 'ramda'
 
-import { COLOR_NAME } from '@/constant/colors'
-import { KANBAN_LAYOUT } from '@/constant/layout'
+import { COLOR_NAME } from '@/const/colors'
+import { KANBAN_LAYOUT } from '@/const/layout'
 import { randomBgNames } from '@/helper'
 import useHover from '@/hooks/useHover'
+
+import { INIT_KANBAN_COLORS } from '@/const/dashboard'
 
 import { SpaceGrow, Space } from '@/widgets/Common'
 import ColorSelector from '@/widgets/ColorSelector'
 
-import { SETTING_FIELD, INIT_KANBAN_COLORS } from '../../../constant'
+import { SETTING_FIELD } from '../../../constant'
 import SectionLabel from '../../../SectionLabel'
 import SavingBar from '../../../SavingBar'
 

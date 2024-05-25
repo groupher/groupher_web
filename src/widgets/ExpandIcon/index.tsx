@@ -10,7 +10,7 @@ import type { TSizeSM } from '@/spec'
 
 import { isString } from '@/validator'
 import { buildLog } from '@/logger'
-import SIZE from '@/constant/size'
+import SIZE from '@/const/size'
 
 import Tooltip from '@/widgets/Tooltip'
 

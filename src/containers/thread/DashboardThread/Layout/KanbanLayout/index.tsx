@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { KANBAN_LAYOUT } from '@/constant/layout'
+import { KANBAN_LAYOUT } from '@/const/layout'
 import { Br } from '@/widgets/Common'
 
 import GlobalLayout from './GlobalLayout'

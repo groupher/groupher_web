@@ -6,7 +6,7 @@
 
 import { FC, memo } from 'react'
 
-import MENU from '@/constant/menu'
+import MENU from '@/const/menu'
 import { buildLog } from '@/logger'
 
 import type { TMenu } from '@/spec'

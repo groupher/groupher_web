@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 import type { TMetric } from '@/spec'
-import METRIC from '@/constant/metric'
+import METRIC from '@/const/metric'
 import styled, { css, theme } from '@/css'
 
 import Img from '@/Img'

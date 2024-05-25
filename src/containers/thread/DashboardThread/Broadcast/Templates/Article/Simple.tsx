@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { BROADCAST_ARTICLE_LAYOUT } from '@/constant/layout'
+import { BROADCAST_ARTICLE_LAYOUT } from '@/const/layout'
 import ArticleBroadcast from '@/widgets/ArticleBroadcast'
 
 import useBroadcastInfo from '../../../hooks/useBroadcastInfo'

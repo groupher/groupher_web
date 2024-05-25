@@ -6,7 +6,7 @@
 
 import { FC, memo } from 'react'
 
-import TYPE from '@/constant/type'
+import TYPE from '@/const/type'
 
 import { buildLog } from '@/logger'
 

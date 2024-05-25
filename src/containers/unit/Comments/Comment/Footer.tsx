@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import useAccount from '@/hooks/useAccount'
 
 import type { TComment } from '@/spec'
-import { UPVOTE_LAYOUT } from '@/constant/layout'
+import { UPVOTE_LAYOUT } from '@/const/layout'
 
 import { authWarn } from '@/signal'
 

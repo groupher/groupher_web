@@ -3,8 +3,8 @@ import { mergeRight } from 'ramda'
 
 import type { TArticle } from '@/spec'
 
-import EVENT from '@/constant/event'
-import ERR from '@/constant/err'
+import EVENT from '@/const/event'
+import ERR from '@/const/err'
 import { buildLog } from '@/logger'
 import { errRescue } from '@/signal'
 import asyncSuit from '@/async'
@@ -28,7 +28,7 @@ const log = buildLog('L:ArticleViewer')
 const loadArticle = (): void => {
   markLoading()
 
-  const userHasLogin = store.isLogin
+  const userHasLogin = false
   const { originalCommunitySlug, innerId, meta } = store.viewingArticle
 
   const variables = { community: originalCommunitySlug, id: innerId, userHasLogin }

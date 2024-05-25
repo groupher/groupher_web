@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { ANCHOR } from '@/constant/dom'
+import { ANCHOR } from '@/const/dom'
 import useHeaderLinks from '@/hooks/useHeaderLinks'
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
 import useMetric from '@/hooks/useMetric'

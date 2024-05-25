@@ -7,7 +7,7 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import useKanbanLayout from '@/hooks/useKanbanLayout'
-import { KANBAN_LAYOUT } from '@/constant/layout'
+import { KANBAN_LAYOUT } from '@/const/layout'
 
 import WaterfallLayout from './WaterfallLayout'
 import ClassicLayout from './ClassicLayout'

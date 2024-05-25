@@ -2,8 +2,8 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
-import { DASHBOARD_SEO_ROUTE } from '@/constant/route'
-import VIEW from '@/constant/view'
+import { DASHBOARD_SEO_ROUTE } from '@/const/route'
+import VIEW from '@/const/view'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import Tabs from '@/widgets/Switcher/Tabs'

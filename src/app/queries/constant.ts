@@ -1,5 +1,5 @@
-import { THREAD } from '@/constant/thread'
-import { HCN } from '@/constant/name'
+import { THREAD } from '@/const/thread'
+import { HCN } from '@/const/name'
 
 import type { TRequestPolicy } from './spec'
 

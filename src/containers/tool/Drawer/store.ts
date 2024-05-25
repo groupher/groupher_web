@@ -7,11 +7,11 @@ import { values, mergeRight, includes } from 'ramda'
 
 import type { TRootStore, TThread, TArticle } from '@/spec'
 
-import { DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
-import { ARTICLE_THREAD } from '@/constant/thread'
-import METRIC from '@/constant/metric'
+import { DASHBOARD_DESC_LAYOUT } from '@/const/layout'
+import { ARTICLE_THREAD } from '@/const/thread'
+import METRIC from '@/const/metric'
 
-import TYPE from '@/constant/type'
+import TYPE from '@/const/type'
 
 import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 import { lockPage, unlockPage } from '@/dom'

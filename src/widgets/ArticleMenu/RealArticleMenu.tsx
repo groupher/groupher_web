@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import { ICON } from '@/config'
-import EVENT from '@/constant/event'
+import EVENT from '@/const/event'
 
 import type { TArticle } from '@/spec'
 import MenuButton from '@/widgets/Buttons/MenuButton'

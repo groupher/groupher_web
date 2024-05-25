@@ -1,8 +1,8 @@
-import { ARTICLE_CAT } from '@/constant/gtd'
+import { ARTICLE_CAT } from '@/const/gtd'
 
 import type { TColor } from '@/spec'
 import styled, { css, theme, rainbow, rainbowLight } from '@/css'
-import { COLOR_NAME } from '@/constant/colors'
+import { COLOR_NAME } from '@/const/colors'
 
 import LightSVG from '@/icons/Light'
 import BugSVG from '@/icons/Bug'

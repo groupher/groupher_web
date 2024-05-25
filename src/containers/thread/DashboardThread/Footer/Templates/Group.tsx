@@ -3,8 +3,8 @@ import { keys } from 'ramda'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import type { TActive, TLinkItem } from '@/spec'
-import { FOOTER_LAYOUT } from '@/constant/layout'
-import { DEME_SOCIALS } from '@/constant/social'
+import { FOOTER_LAYOUT } from '@/const/layout'
+import { DEME_SOCIALS } from '@/const/social'
 
 import { sortByIndex, groupByKey } from '@/helper'
 import SocialList from '@/widgets/SocialList'

@@ -10,7 +10,7 @@ import type { TSize } from '@/spec'
 import { ICON } from '@/config'
 import { nilOrEmpty } from '@/validator'
 import { buildLog } from '@/logger'
-import SIZE from '@/constant/size'
+import SIZE from '@/const/size'
 
 import { Wrapper, Icon, Text } from './styles'
 

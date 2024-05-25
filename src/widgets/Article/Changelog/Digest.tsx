@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 import type { TChangelog } from '@/spec'
 
 import useMetric from '@/hooks/useMetric'
-import { ARTICLE_THREAD } from '@/constant/thread'
+import { ARTICLE_THREAD } from '@/const/thread'
 
 import { buildLog } from '@/logger'
 

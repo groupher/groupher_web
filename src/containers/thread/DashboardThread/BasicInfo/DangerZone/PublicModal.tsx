@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
 
-import VIEW from '@/constant/view'
+import VIEW from '@/const/view'
 
 import Modal from '@/widgets/Modal'
 import { Br } from '@/widgets/Common'

@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 
 import type { TTagLayout } from '@/spec'
 
-import { TAG_LAYOUT } from '@/constant/layout'
+import { TAG_LAYOUT } from '@/const/layout'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import CheckLabel from '@/widgets/CheckLabel'

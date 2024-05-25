@@ -10,8 +10,8 @@ import type {
 } from '@/spec'
 
 import { ASSETS_ENDPOINT, TAG_COLOR_ORDER } from '@/config'
-import { ARTICLE_STATE } from '@/constant/gtd'
-import { COLOR_NAME } from '@/constant/colors'
+import { ARTICLE_STATE } from '@/const/gtd'
+import { COLOR_NAME } from '@/const/colors'
 
 type TSORTABLE_ITEMS = {
   color?: string
@@ -80,7 +80,7 @@ export const debounce = (fn, ms = 0) => {
  * extract mention format from markdown str into list
  */
 export const extractMentions = (str: string): string[] => {
-  const mentionsRegex = new RegExp('@([a-zA-Z0-9_.-]+)', 'gim')
+  const mentionsRegex = /@([a-zA-Z0-9_.-]+)/gim
 
   let matches = str.match(mentionsRegex)
   if (matches?.length) {

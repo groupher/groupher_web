@@ -2,7 +2,7 @@ import { FC, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TDashboardPath } from '@/spec'
-import { DASHBOARD_ROUTE } from '@/constant/route'
+import { DASHBOARD_ROUTE } from '@/const/route'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 

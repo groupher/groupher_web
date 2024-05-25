@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TAccount } from '@/spec'
-import EVENT from '@/constant/event'
+import EVENT from '@/const/event'
 
 import { send, c11nSettings } from '@/signal'
 

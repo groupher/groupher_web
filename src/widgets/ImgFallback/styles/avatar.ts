@@ -1,7 +1,7 @@
 import styled, { css, rainbow, rainbowLight } from '@/css'
 
 import type { TAvatarLayout, TColorName, TTestable } from '@/spec'
-import { AVATAR_LAYOUT } from '@/constant/layout'
+import { AVATAR_LAYOUT } from '@/const/layout'
 
 import type { TAvatarProps } from '..'
 import { getFontSize } from './metric/avatar'

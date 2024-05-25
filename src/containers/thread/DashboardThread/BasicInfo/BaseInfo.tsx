@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { find } from 'ramda'
 
 import type { TSelectOption } from '@/spec'
-import { LANGS_OPTIONS } from '@/constant/i18n'
+import { LANGS_OPTIONS } from '@/const/i18n'
 
 import { Br } from '@/widgets/Common'
 import Select from '@/widgets/Select'

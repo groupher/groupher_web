@@ -9,7 +9,7 @@ import dynamic from 'next/dynamic'
 
 // import Pagi from '@/widgets/Pagi'
 
-import EVENT from '@/constant/event'
+import EVENT from '@/const/event'
 
 import { send } from '@/signal'
 import { buildLog } from '@/logger'

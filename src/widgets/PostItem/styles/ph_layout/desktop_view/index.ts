@@ -1,5 +1,5 @@
 import type { TAvatarLayout } from '@/spec'
-import { AVATAR_LAYOUT } from '@/constant/layout'
+import { AVATAR_LAYOUT } from '@/const/layout'
 
 import styled, { css } from '@/css'
 import Img from '@/Img'

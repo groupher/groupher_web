@@ -3,7 +3,7 @@ import { keys } from 'ramda'
 
 import type { TWallpaperGradient } from '@/spec'
 import { parseWallpaper } from '@/wallpaper'
-import { WALLPAPER_TYPE } from '@/constant/wallpaper'
+import { WALLPAPER_TYPE } from '@/const/wallpaper'
 
 import {
   Wrapper,

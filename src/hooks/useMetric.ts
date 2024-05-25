@@ -5,9 +5,9 @@ import { usePathname } from 'next/navigation'
 import { includes } from 'ramda'
 
 import type { TMetric } from '@/spec'
-import METRIC from '@/constant/metric'
-import { BANNER_LAYOUT } from '@/constant/layout'
-import { STATIC_ROUTES } from '@/constant/route'
+import METRIC from '@/const/metric'
+import { BANNER_LAYOUT } from '@/const/layout'
+import { STATIC_ROUTES } from '@/const/route'
 
 /**
  * NOTE: should use observer to wrap the component who use this hook

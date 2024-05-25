@@ -1,7 +1,7 @@
 import { gql } from 'urql'
 import { values, flatten } from 'ramda'
 
-import EMOTION from '@/constant/emotion'
+import EMOTION from '@/const/emotion'
 import { titleCase } from '@/fmt'
 
 export const community = `

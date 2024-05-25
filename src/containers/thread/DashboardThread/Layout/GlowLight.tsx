@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { GLOW_OPACITY, GLOW_EFFECTS_KEYS } from '@/constant/glow_effect'
+import { GLOW_OPACITY, GLOW_EFFECTS_KEYS } from '@/const/glow_effect'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import useTheme from '@/hooks/useTheme'
 

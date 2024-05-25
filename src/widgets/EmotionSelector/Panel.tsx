@@ -3,7 +3,7 @@ import { values } from 'ramda'
 
 import type { TEmotion, TEmotionType } from '@/spec'
 
-import EMOTION from '@/constant/emotion'
+import EMOTION from '@/const/emotion'
 import { ICON } from '@/config'
 
 import { isViewerEmotioned } from './helper'

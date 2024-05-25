@@ -3,8 +3,8 @@ import { observer } from 'mobx-react-lite'
 
 import type { TPost } from '@/spec'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
-import SIZE from '@/constant/size'
-import { THREAD } from '@/constant/thread'
+import SIZE from '@/const/size'
+import { THREAD } from '@/const/thread'
 
 import ArticleReadLabel from '@/widgets/ArticleReadLabel'
 import { SpaceGrow } from '@/widgets/Common'

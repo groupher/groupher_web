@@ -1,5 +1,5 @@
 import type { TActive, TColor, TSizeTS, TSpace } from '@/spec'
-import SIZE from '@/constant/size'
+import SIZE from '@/const/size'
 import styled, { css, theme, rainbow } from '@/css'
 
 import Button from '@/widgets/Buttons/Button'

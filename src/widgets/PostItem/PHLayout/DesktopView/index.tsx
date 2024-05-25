@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TPost } from '@/spec'
-import { UPVOTE_LAYOUT } from '@/constant/layout'
+import { UPVOTE_LAYOUT } from '@/const/layout'
 import useAvatarLayout from '@/hooks/useAvatarLayout'
 
 import { upvoteArticle, previewArticle } from '@/signal'

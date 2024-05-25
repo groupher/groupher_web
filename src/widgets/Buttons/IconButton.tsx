@@ -2,7 +2,7 @@ import { FC, memo, ReactNode } from 'react'
 
 import type { TSpace } from '@/spec'
 import { ICON } from '@/config'
-import SVG from '@/constant/svg'
+import SVG from '@/const/svg'
 import { buildLog } from '@/logger'
 
 import Tooltip from '@/widgets/Tooltip'

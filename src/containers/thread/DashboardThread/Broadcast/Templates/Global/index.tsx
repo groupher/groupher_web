@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { BROADCAST_LAYOUT } from '@/constant/layout'
+import { BROADCAST_LAYOUT } from '@/const/layout'
 
 import Center from './Center'
 import Default from './Default'

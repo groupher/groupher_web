@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 
 import type { TPost } from '@/spec'
 import useAvatarLayout from '@/hooks/useAvatarLayout'
-import { UPVOTE_LAYOUT } from '@/constant/layout'
+import { UPVOTE_LAYOUT } from '@/const/layout'
 
 import { upvoteArticle } from '@/signal'
 import Upvote from '@/widgets/Upvote'

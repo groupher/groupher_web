@@ -8,7 +8,7 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TModelineType } from '@/spec'
-import TYPE from '@/constant/type'
+import TYPE from '@/const/type'
 import { buildLog } from '@/logger'
 
 // TODO: 全部动态加载

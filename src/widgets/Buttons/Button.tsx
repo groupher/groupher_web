@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 
 import type { TSizeTSM, TSpace } from '@/spec'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
-import SIZE from '@/constant/size'
+import SIZE from '@/const/size'
 import { buildLog } from '@/logger'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'

@@ -2,8 +2,8 @@ import { has } from 'ramda'
 import { useEffect } from 'react'
 
 import type { TGQError } from '@/spec'
-import EVENT from '@/constant/event'
-import ERR from '@/constant/err'
+import EVENT from '@/const/event'
+import ERR from '@/const/err'
 import { asyncSuit, buildLog, isObject } from '@/utils'
 
 import type { TStore } from './store'

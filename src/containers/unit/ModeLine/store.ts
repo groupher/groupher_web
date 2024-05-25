@@ -7,8 +7,8 @@ import { values } from 'ramda'
 
 import type { TRootStore, TViewing, TArticle } from '@/spec'
 
-import TYPE from '@/constant/type'
-// import METRIC from '@/constant/metric'
+import TYPE from '@/const/type'
+// import METRIC from '@/const/metric'
 
 import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
 

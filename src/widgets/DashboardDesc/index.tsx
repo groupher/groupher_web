@@ -7,7 +7,7 @@
 import { FC, memo } from 'react'
 
 import type { TDashboardLayout, TPostLayout } from '@/spec'
-import { DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
+import { DASHBOARD_DESC_LAYOUT } from '@/const/layout'
 
 import { buildLog } from '@/logger'
 import PostLayoutxample from './PostLayoutExample'

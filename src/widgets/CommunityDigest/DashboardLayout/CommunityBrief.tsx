@@ -6,7 +6,7 @@ import usePublicThreads from '@/hooks/usePublicThreads'
 import useBrandLayout from '@/hooks/useBrandLayout'
 import useHover from '@/hooks/useHover'
 
-import { BRAND_LAYOUT } from '@/constant/layout'
+import { BRAND_LAYOUT } from '@/const/layout'
 
 import { assetSrc } from '@/helper'
 import { titleCase } from '@/fmt'

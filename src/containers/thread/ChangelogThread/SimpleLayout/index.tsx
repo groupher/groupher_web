@@ -9,7 +9,7 @@ import { observer } from 'mobx-react-lite'
 import useChangelogLayout from '@/hooks/useChangelogLayout'
 import usePagedChangelogs from '@/hooks/usePagedChangelogs'
 import useBannerLayout from '@/hooks/useBannerLayout'
-import { BANNER_LAYOUT, CHANGELOG_LAYOUT } from '@/constant/layout'
+import { BANNER_LAYOUT, CHANGELOG_LAYOUT } from '@/const/layout'
 
 import ChangelogItem from '@/widgets/ChangelogItem'
 import Tabs from '@/widgets/Switcher/Tabs'

@@ -5,7 +5,7 @@ import type { TArticle } from '@/spec'
 import { upvoteArticle } from '@/signal'
 // import { mockUsers } from '@/mock'
 // import { addCollection } from '@/helper'
-import { UPVOTE_LAYOUT } from '@/constant/layout'
+import { UPVOTE_LAYOUT } from '@/const/layout'
 
 import { SpaceGrow } from '@/widgets/Common'
 import Upvote from '@/widgets/Upvote'

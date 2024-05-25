@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 
-import { BANNER_LAYOUT } from '@/constant/layout'
+import { BANNER_LAYOUT } from '@/const/layout'
 import useBannerLayout from '@/hooks/useBannerLayout'
 
 /**

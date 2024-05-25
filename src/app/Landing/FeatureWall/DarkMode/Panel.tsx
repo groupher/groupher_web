@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import THEME from '@/constant/theme'
+import THEME from '@/const/theme'
 import useTheme from '@/hooks/useTheme'
 
 import type { TCardMetric } from './spec'

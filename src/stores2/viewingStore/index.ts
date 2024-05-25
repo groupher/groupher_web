@@ -2,7 +2,7 @@ import { battery, toJS } from '@/mobx'
 import { includes, values } from 'ramda'
 
 import type { TCommunity, TArticle } from '@/spec'
-import { ARTICLE_THREAD } from '@/constant/thread'
+import { ARTICLE_THREAD } from '@/const/thread'
 
 import type { TStore, TInit } from './spec'
 

@@ -1,4 +1,4 @@
-import SIZE from '@/constant/size'
+import SIZE from '@/const/size'
 
 export const getIconSize = (size: string): string => {
   switch (size) {

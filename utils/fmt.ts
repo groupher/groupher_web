@@ -2,8 +2,8 @@ import { endsWith, includes } from 'ramda'
 import { limit, length } from 'stringz'
 
 import type { TArticleCat, TArticleState } from '@/spec'
-import { THREAD } from '@/constant/thread'
-import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
+import { THREAD } from '@/const/thread'
+import { ARTICLE_CAT, ARTICLE_STATE } from '@/const/gtd'
 
 import { isString } from './validator'
 

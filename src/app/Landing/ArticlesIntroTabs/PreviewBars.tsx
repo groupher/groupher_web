@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import type { TColor, TThread } from '@/spec'
-import { THREAD } from '@/constant/thread'
+import { THREAD } from '@/const/thread'
 
 import { Row, Column, TreeColumn, DocColumn, Bar } from '../styles/articles_intro_tabs/preview_bars'
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 // import { mergeRight } from 'ramda'
 
-import EVENT from '@/constant/event'
+import EVENT from '@/const/event'
 import type { TViewingInfo } from '@/spec'
 
 import BStore from '@/utils/bstore'

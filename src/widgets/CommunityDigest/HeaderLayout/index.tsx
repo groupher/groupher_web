@@ -4,12 +4,12 @@ import { observer } from 'mobx-react-lite'
 import dynamic from 'next/dynamic'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
-import { ANCHOR } from '@/constant/dom'
+import { ANCHOR } from '@/const/dom'
 import useHeaderLinks from '@/hooks/useHeaderLinks'
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
 import useMetric from '@/hooks/useMetric'
 
-import { HEADER_LAYOUT } from '@/constant/layout'
+import { HEADER_LAYOUT } from '@/const/layout'
 
 import ViewportTracker from '@/widgets/ViewportTracker'
 import MobileThreadNavi from '@/widgets/MobileThreadNavi'

@@ -5,7 +5,7 @@
 import { Fragment, FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import METRIC from '@/constant/metric'
+import METRIC from '@/const/metric'
 import { buildLog } from '@/logger'
 
 import useMetric from '@/hooks/useMetric'

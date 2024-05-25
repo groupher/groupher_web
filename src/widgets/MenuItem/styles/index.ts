@@ -1,4 +1,4 @@
-import MENU from '@/constant/menu'
+import MENU from '@/const/menu'
 
 // import type { TTestable } from '@/spec'
 

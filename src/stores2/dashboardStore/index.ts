@@ -3,14 +3,14 @@ import { battery, markStore } from '@/mobx'
 import { uniq, pluck, pick, equals, mapObjIndexed, mergeLeft } from 'ramda'
 
 import type { TCommunity, TCommunityThread } from '@/spec'
-import { LOCALE } from '@/constant/i18n'
-import { THREAD } from '@/constant/thread'
-import SIZE from '@/constant/size'
-import { COLOR_NAME } from '@/constant/colors'
-import { BUILDIN_ALIAS } from '@/constant/name'
-import { GLOW_OPACITY } from '@/constant/glow_effect'
-import { CHANGE_MODE } from '@/constant/mode'
-import { TW_CARD, WIDGET_TYPE, INIT_KANBAN_COLORS, DEFAULT_ENABLE } from '@/constant/dashboard'
+import { LOCALE } from '@/const/i18n'
+import { THREAD } from '@/const/thread'
+import SIZE from '@/const/size'
+import { COLOR_NAME } from '@/const/colors'
+import { BUILDIN_ALIAS } from '@/const/name'
+import { GLOW_OPACITY } from '@/const/glow_effect'
+import { CHANGE_MODE } from '@/const/mode'
+import { TW_CARD, WIDGET_TYPE, INIT_KANBAN_COLORS, DEFAULT_ENABLE } from '@/const/dashboard'
 import {
   HEADER_LAYOUT,
   FOOTER_LAYOUT,
@@ -28,7 +28,7 @@ import {
   BROADCAST_LAYOUT,
   BROADCAST_ARTICLE_LAYOUT,
   RSS_TYPE,
-} from '@/constant/layout'
+} from '@/const/layout'
 import {
   DASHBOARD_ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
@@ -37,7 +37,7 @@ import {
   DASHBOARD_BROADCAST_ROUTE,
   DASHBOARD_SEO_ROUTE,
   DASHBOARD_DOC_ROUTE,
-} from '@/constant/route'
+} from '@/const/route'
 import BStore from '@/utils/bstore'
 import { publicThreads } from '@/helper'
 

@@ -17,9 +17,9 @@ import type {
   TPagedArticlesParams,
   TArticleParams,
 } from '@/spec'
-import { BUILDIN_ALIAS } from '@/constant/name'
-import { THREAD } from '@/constant/thread'
-import URL_PARAM from '@/constant/url_param'
+import { BUILDIN_ALIAS } from '@/const/name'
+import { THREAD } from '@/const/thread'
+import URL_PARAM from '@/const/url_param'
 import { nilOrEmpty } from '@/validator'
 import {
   STATIC_ROUTES,
@@ -30,7 +30,7 @@ import {
   DASHBOARD_BROADCAST_ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
   DASHBOARD_ALIAS_ROUTE,
-} from '@/constant/route'
+} from '@/const/route'
 import { removeEmptyValuesFromObject } from '@/helper'
 
 import type { TGQSSRResult, TParsedWallpaper, TParseDashboard, TDashboardTab } from './spec'

@@ -5,7 +5,7 @@ import QRCode from 'qrcode.react'
 import type { TMenuOption } from '@/spec'
 
 import { ICON } from '@/config'
-import SVG from '@/constant/svg'
+import SVG from '@/const/svg'
 import { cutRest } from '@/fmt'
 
 import {

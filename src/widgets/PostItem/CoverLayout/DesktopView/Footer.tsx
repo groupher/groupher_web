@@ -2,7 +2,7 @@ import { memo, FC } from 'react'
 import TimeAgo from 'timeago-react'
 
 import type { TPost } from '@/spec'
-import { UPVOTE_LAYOUT } from '@/constant/layout'
+import { UPVOTE_LAYOUT } from '@/const/layout'
 
 import { SpaceGrow } from '@/widgets/Common'
 import Upvote from '@/widgets/Upvote'

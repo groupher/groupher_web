@@ -1,6 +1,6 @@
 import { FC, useState, lazy, Suspense } from 'react'
 
-import { DASHBOARD_ROUTE } from '@/constant/route'
+import { DASHBOARD_ROUTE } from '@/const/route'
 import useMetric from '@/hooks/useMetric'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'

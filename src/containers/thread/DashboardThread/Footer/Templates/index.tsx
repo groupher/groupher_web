@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { FOOTER_LAYOUT } from '@/constant/layout'
+import { FOOTER_LAYOUT } from '@/const/layout'
 
 import { SETTING_FIELD } from '../../constant'
 import SavingBar from '../../SavingBar'

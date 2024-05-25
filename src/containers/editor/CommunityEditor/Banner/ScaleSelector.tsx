@@ -2,7 +2,7 @@ import { FC, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import useTheme from '@/hooks/useTheme'
-import THEME from '@/constant/theme'
+import THEME from '@/const/theme'
 
 import type { TCommunityType } from '../spec'
 import { COMMUNITY_CATS_TEXT_COLORS } from '../constant'

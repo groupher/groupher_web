@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 import TimeAgo from 'timeago-react'
 
 import type { TArticle } from '@/spec'
-import SVG from '@/constant/svg'
+import SVG from '@/const/svg'
 import IconButton from '@/widgets/Buttons/IconButton'
 import ReadableDate from '@/widgets/ReadableDate'
 

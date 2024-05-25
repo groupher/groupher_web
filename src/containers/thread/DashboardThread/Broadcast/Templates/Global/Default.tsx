@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { BROADCAST_LAYOUT } from '@/constant/layout'
+import { BROADCAST_LAYOUT } from '@/const/layout'
 import { Space, SpaceGrow } from '@/widgets/Common'
 
 import useBroadcastInfo from '../../../hooks/useBroadcastInfo'

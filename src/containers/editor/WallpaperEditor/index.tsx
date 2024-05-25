@@ -6,7 +6,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import VIEW from '@/constant/view'
+import VIEW from '@/const/view'
 
 import { DesktopOnly, MobileOnly } from '@/widgets/Common'
 import Tabs from '@/widgets/Switcher/Tabs'

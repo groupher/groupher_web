@@ -9,7 +9,7 @@ import { FC, memo } from 'react'
 import type { TUser } from '@/spec'
 import { buildLog } from '@/logger'
 
-import { UPVOTE_LAYOUT } from '@/constant/layout'
+import { UPVOTE_LAYOUT } from '@/const/layout'
 import AnimatedCount from '@/widgets/AnimatedCount'
 import Facepile from '@/widgets/Facepile'
 

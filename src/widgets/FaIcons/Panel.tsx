@@ -2,7 +2,7 @@ import { FC, useState, useEffect } from 'react'
 import { includes, keys, filter } from 'ramda'
 
 import type { TColorName } from '@/spec'
-import { COLOR_NAME } from '@/constant/colors'
+import { COLOR_NAME } from '@/const/colors'
 import CustomScroller from '@/widgets/CustomScroller'
 
 import type { TIcon } from './spec'

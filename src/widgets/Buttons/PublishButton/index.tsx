@@ -4,13 +4,13 @@
 import { memo, FC, useState } from 'react'
 
 import type { TPublishMode, TArticleCat, TSpace, TTooltipPlacement } from '@/spec'
-import { PUBLISH_MODE } from '@/constant/publish'
+import { PUBLISH_MODE } from '@/const/publish'
 
 import { buildLog } from '@/logger'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import useViewingThread from '@/hooks/useViewingThread'
 
-import { POST_CAT_MENU_ITEMS } from '@/constant/menu'
+import { POST_CAT_MENU_ITEMS } from '@/const/menu'
 
 import Menu from '@/widgets/Menu'
 

@@ -1,5 +1,5 @@
 import type { TActive, TAvatarLayout, TTestable } from '@/spec'
-import { AVATAR_LAYOUT } from '@/constant/layout'
+import { AVATAR_LAYOUT } from '@/const/layout'
 
 import styled, { css, theme } from '@/css'
 import Img from '@/Img'

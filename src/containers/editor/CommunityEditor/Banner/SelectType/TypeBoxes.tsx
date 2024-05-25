@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import useTheme from '@/hooks/useTheme'
-import THEME from '@/constant/theme'
+import THEME from '@/const/theme'
 import { SpaceGrow } from '@/widgets/Common'
 
 import {

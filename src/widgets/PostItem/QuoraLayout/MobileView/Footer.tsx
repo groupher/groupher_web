@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import type { TPost } from '@/spec'
-import { UPVOTE_LAYOUT } from '@/constant/layout'
+import { UPVOTE_LAYOUT } from '@/const/layout'
 
 import ArticleCatState from '@/widgets/ArticleCatState'
 import Upvote from '@/widgets/Upvote'

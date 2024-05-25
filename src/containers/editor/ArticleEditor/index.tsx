@@ -6,8 +6,8 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TEditMode, TMetric } from '@/spec'
-import METRIC from '@/constant/metric'
-import { CONDITION_MODE } from '@/constant/mode'
+import METRIC from '@/const/metric'
+import { CONDITION_MODE } from '@/const/mode'
 
 import { buildLog } from '@/logger'
 

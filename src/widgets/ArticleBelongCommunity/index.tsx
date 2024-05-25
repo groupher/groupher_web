@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 import { filter } from 'ramda'
 
 import type { TArticle, TCommunity } from '@/spec'
-import { HCN } from '@/constant/name'
+import { HCN } from '@/const/name'
 
 import FollowButton from '@/widgets/Buttons/FollowButton'
 import MirrorHint from './MirrorHint'

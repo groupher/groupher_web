@@ -1,5 +1,5 @@
 import type { TTestable, TActive, TColorName } from '@/spec'
-import { COLOR_NAME } from '@/constant/colors'
+import { COLOR_NAME } from '@/const/colors'
 
 import HookSVG from '@/icons/Hook'
 import styled, { css, theme, rainbow, rainbowLight } from '@/css'

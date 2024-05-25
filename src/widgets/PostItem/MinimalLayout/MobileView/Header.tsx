@@ -1,8 +1,8 @@
 import { FC } from 'react'
 
 import type { TPost } from '@/spec'
-import EVENT from '@/constant/event'
-import SIZE from '@/constant/size'
+import EVENT from '@/const/event'
+import SIZE from '@/const/size'
 import { send } from '@/signal'
 
 import { SpaceGrow } from '@/widgets/Common'

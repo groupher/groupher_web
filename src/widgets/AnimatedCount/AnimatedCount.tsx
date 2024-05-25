@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import SIZE from '@/constant/size'
+import SIZE from '@/const/size'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import useTheme from '@/hooks/useTheme'
 

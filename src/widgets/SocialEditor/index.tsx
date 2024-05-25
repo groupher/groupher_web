@@ -10,7 +10,7 @@ import { keys, includes, reject, findIndex, update } from 'ramda'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import type { TSocialType, TSocialItem, TSpace } from '@/spec'
-import { SOCIAL_LIST } from '@/constant/social'
+import { SOCIAL_LIST } from '@/const/social'
 import { buildLog } from '@/logger'
 
 import { Br } from '@/widgets/Common'

@@ -14,11 +14,11 @@ import {
 } from 'ramda'
 
 import type { TEditValue, TFAQSection, TID, TSocialItem, TUser, TMediaReport } from '@/spec'
-import { COLOR_NAME } from '@/constant/colors'
-import EVENT from '@/constant/event'
-import ERR from '@/constant/err'
+import { COLOR_NAME } from '@/const/colors'
+import EVENT from '@/const/event'
+import ERR from '@/const/err'
 
-import { DASHBOARD_ROUTE, DASHBOARD_BASEINFO_ROUTE, DASHBOARD_SEO_ROUTE } from '@/constant/route'
+import { DASHBOARD_ROUTE, DASHBOARD_BASEINFO_ROUTE, DASHBOARD_SEO_ROUTE } from '@/const/route'
 
 import { buildLog } from '@/logger'
 import { updateEditing, toJS } from '@/mobx'

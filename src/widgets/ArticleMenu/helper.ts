@@ -1,5 +1,5 @@
 import type { TArticle } from '@/spec'
-import EVENT from '@/constant/event'
+import EVENT from '@/const/event'
 
 import { moveToCommunity, mirrorToCommunity, setTag } from '@/signal'
 

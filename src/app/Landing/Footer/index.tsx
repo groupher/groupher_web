@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import useWallpaper from '@/hooks/useWallpaper'
-import { ROUTE } from '@/constant/route'
+import { ROUTE } from '@/const/route'
 
 import { LinkAble } from '@/widgets/Common'
 import Button from '@/widgets/Buttons/Button'

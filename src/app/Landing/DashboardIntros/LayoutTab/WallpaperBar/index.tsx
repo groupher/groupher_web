@@ -7,8 +7,8 @@ import useGlowLight from '@/hooks/useGlowLight'
 
 import { parseWallpaper } from '@/wallpaper'
 import { callWallpaperEditor } from '@/signal'
-import { GRADIENT_WALLPAPER_NAME } from '@/constant/wallpaper'
-import { GLOW_EFFECT_NAME } from '@/constant/glow_effect'
+import { GRADIENT_WALLPAPER_NAME } from '@/const/wallpaper'
+import { GLOW_EFFECT_NAME } from '@/const/glow_effect'
 
 import {
   Wrapper,

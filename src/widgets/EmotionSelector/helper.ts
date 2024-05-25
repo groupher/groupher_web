@@ -1,6 +1,6 @@
 import { includes, reject, keys, values, forEach } from 'ramda'
 
-import EMOTION from '@/constant/emotion'
+import EMOTION from '@/const/emotion'
 import type { TEmotion, TEmotionType } from '@/spec'
 import { titleCase } from '@/fmt'
 

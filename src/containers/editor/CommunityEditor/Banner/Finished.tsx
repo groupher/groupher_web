@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import { FC, memo } from 'react'
 
-import { ROUTE } from '@/constant/route'
+import { ROUTE } from '@/const/route'
 
 import { SexyDivider } from '@/widgets/Common'
 

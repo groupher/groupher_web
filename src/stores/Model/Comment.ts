@@ -1,6 +1,6 @@
 import { values, reduce, mergeRight } from 'ramda'
 
-import EMOTION from '@/constant/emotion'
+import EMOTION from '@/const/emotion'
 import { titleCase } from '@/fmt'
 import { T } from '@/mobx'
 

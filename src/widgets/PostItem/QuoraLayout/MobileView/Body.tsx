@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TPost } from '@/spec'
-import { ARTICLE_THREAD } from '@/constant/thread'
+import { ARTICLE_THREAD } from '@/const/thread'
 
 import { Wrapper, Title } from '../../styles/quora_layout/mobile_view/body'
 

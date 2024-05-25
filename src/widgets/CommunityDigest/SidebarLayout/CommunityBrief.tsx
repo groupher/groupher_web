@@ -2,8 +2,8 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
-import { BANNER_LAYOUT, BRAND_LAYOUT } from '@/constant/layout'
-import { THREAD } from '@/constant/thread'
+import { BANNER_LAYOUT, BRAND_LAYOUT } from '@/const/layout'
+import { THREAD } from '@/const/thread'
 import { assetSrc } from '@/helper'
 import { prettyURL } from '@/fmt'
 

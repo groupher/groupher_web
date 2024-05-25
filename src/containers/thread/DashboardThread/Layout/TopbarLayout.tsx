@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { TOPBAR_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
+import { TOPBAR_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/const/layout'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { callDashboardDesc } from '@/signal'
 

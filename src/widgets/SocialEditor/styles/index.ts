@@ -1,5 +1,5 @@
 import type { TTestable, TActive, TSpace } from '@/spec'
-import { SOCIAL_LIST } from '@/constant/social'
+import { SOCIAL_LIST } from '@/const/social'
 
 import styled, { css, theme } from '@/css'
 

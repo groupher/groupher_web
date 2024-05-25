@@ -1,5 +1,5 @@
 import type { TSizeSM } from '@/spec'
-import SIZE from '@/constant/size'
+import SIZE from '@/const/size'
 
 import styled, { css, theme } from '@/css'
 import CommentSVG from '@/icons/Comment'

@@ -1,7 +1,7 @@
 import { signOut as authSignOut, signIn as authSignIn } from 'next-auth/react'
 
 import BStore from '@/utils/bstore'
-import OAUTH from '@/constant/oauth'
+import OAUTH from '@/const/oauth'
 
 export const signOut = () => {
   authSignOut()

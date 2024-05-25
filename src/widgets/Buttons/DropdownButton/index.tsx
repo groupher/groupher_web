@@ -2,7 +2,7 @@ import { FC, ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TActive, TSizeTS, TSpace } from '@/spec'
-import SIZE from '@/constant/size'
+import SIZE from '@/const/size'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import { buildLog } from '@/logger'

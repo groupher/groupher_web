@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TSizeTSM, TSocialItem, TSpace } from '@/spec'
-import SIZE from '@/constant/size'
+import SIZE from '@/const/size'
 
 import { Wrapper, SocialWrapper, Icon } from './styles'
 

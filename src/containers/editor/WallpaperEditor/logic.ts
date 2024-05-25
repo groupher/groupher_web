@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 import { pick } from 'ramda'
 
 import type { TWallpaperGradientDir } from '@/spec'
-import EVENT from '@/constant/event'
-import { WALLPAPER_TYPE } from '@/constant/wallpaper'
+import EVENT from '@/const/event'
+import { WALLPAPER_TYPE } from '@/const/wallpaper'
 
 import { buildLog } from '@/logger'
 import asyncSuit from '@/async'

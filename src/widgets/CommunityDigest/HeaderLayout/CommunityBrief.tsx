@@ -6,7 +6,7 @@ import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useBrandLayout from '@/hooks/useBrandLayout'
 import useHover from '@/hooks/useHover'
 
-import { BRAND_LAYOUT } from '@/constant/layout'
+import { BRAND_LAYOUT } from '@/const/layout'
 
 import Tooltip from '@/widgets/Tooltip'
 import { SpaceGrow, SexyDivider } from '@/widgets/Common'

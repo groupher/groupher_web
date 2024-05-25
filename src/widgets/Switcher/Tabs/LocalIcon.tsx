@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { THREAD } from '@/constant/thread'
+import { THREAD } from '@/const/thread'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import {

@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { mockHelpCats } from '@/mock'
-import { THREAD } from '@/constant/thread'
+import { THREAD } from '@/const/thread'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import ArrowLinker from '@/widgets/ArrowLinker'

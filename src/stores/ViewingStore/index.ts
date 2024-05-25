@@ -7,7 +7,7 @@ import { values, mergeRight, includes } from 'ramda'
 
 import type { TRootStore, TUser, TArticle, TArticleMeta, TThread, TCommunity } from '@/spec'
 
-import { ARTICLE_THREAD, THREAD } from '@/constant/thread'
+import { ARTICLE_THREAD, THREAD } from '@/const/thread'
 
 import { T, getParent, Instance, markStates, toJS } from '@/mobx'
 import { viewingChanged } from '@/signal'

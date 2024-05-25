@@ -46,7 +46,7 @@ import {
   DASHBOARD_BROADCAST_ROUTE,
   DASHBOARD_SEO_ROUTE,
   DASHBOARD_DOC_ROUTE,
-} from '@/constant/route'
+} from '@/const/route'
 
 export type { TRootStore } from '../spec'
 

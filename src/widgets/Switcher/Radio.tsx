@@ -9,7 +9,7 @@ import { FC, memo } from 'react'
 import type { TSizeSM, TSpace } from '@/spec'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { buildLog } from '@/logger'
-import SIZE from '@/constant/size'
+import SIZE from '@/const/size'
 
 import { Wrapper, Label } from './styles/radio'
 

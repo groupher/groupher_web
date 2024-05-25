@@ -1,4 +1,4 @@
-import THEME from '@/constant/theme'
+import THEME from '@/const/theme'
 
 // top: [15, 30]
 // means top: hovering is 15, idle is 30

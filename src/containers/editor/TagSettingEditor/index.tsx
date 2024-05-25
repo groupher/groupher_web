@@ -6,11 +6,11 @@
 import { FC } from 'react'
 
 import type { TChangeMode, TColorName, TSelectOption } from '@/spec'
-import { ROUTE } from '@/constant/route'
-import { DRAWER_SCROLLER } from '@/constant/dom'
-import { COLOR_NAME } from '@/constant/colors'
-import { CHANGE_MODE } from '@/constant/mode'
-import { POST_LAYOUT } from '@/constant/layout'
+import { ROUTE } from '@/const/route'
+import { DRAWER_SCROLLER } from '@/const/dom'
+import { COLOR_NAME } from '@/const/colors'
+import { CHANGE_MODE } from '@/const/mode'
+import { POST_LAYOUT } from '@/const/layout'
 
 import ColorSelector from '@/widgets/ColorSelector'
 

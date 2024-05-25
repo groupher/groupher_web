@@ -1,8 +1,8 @@
 import styled from '@/css'
 
 import type { TGlowEffect } from '@/spec'
-import { GLOW_EFFECTS_DAY, GLOW_EFFECTS_NIGHT } from '@/constant/glow_effect'
-import THEME from '@/constant/theme'
+import { GLOW_EFFECTS_DAY, GLOW_EFFECTS_NIGHT } from '@/const/glow_effect'
+import THEME from '@/const/theme'
 
 export const Wrapper = styled('div')<TGlowEffect>`
   background: ${({ glowType, $theme }) => {

@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import SIZE from '@/constant/size'
+import SIZE from '@/const/size'
 import { buildLog } from '@/logger'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 

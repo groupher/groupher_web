@@ -11,7 +11,7 @@ import type {
   TWallpaperGradient,
   TWallpaperGradientDir,
 } from '@/spec'
-import { COVER_GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '@/constant/wallpaper'
+import { COVER_GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '@/const/wallpaper'
 
 import { buildLog } from '@/logger'
 import { markStates, toJS, getParent, Instance, T, useMobxContext } from '@/mobx'

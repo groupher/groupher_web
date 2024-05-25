@@ -1,4 +1,4 @@
-import SIZE from '@/constant/size'
+import SIZE from '@/const/size'
 import { theme, rainbow } from '@/css'
 
 import type { TColorName, TTheme } from '@/spec'

@@ -4,7 +4,7 @@ import { includes, values, findIndex } from 'ramda'
 
 import type { TArticle } from '@/spec'
 import { plural } from '@/fmt'
-import { ARTICLE_THREAD } from '@/constant/thread'
+import { ARTICLE_THREAD } from '@/const/thread'
 import useViewingThread from '@/hooks/useViewingThread'
 import useViewingArticle from '@/hooks/useViewingArticle'
 

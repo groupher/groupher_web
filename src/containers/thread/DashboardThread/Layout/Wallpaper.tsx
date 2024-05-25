@@ -6,7 +6,7 @@ import { callWallpaperEditor } from '@/signal'
 import { parseWallpaper } from '@/wallpaper'
 import { blurRGB } from '@/fmt'
 
-import THEME from '@/constant/theme'
+import THEME from '@/const/theme'
 import useThemeData from '@/hooks/useThemeData'
 import useGossBlur from '@/hooks/useGossBlur'
 import useTheme from '@/hooks/useTheme'

@@ -8,11 +8,11 @@
 import { FC, Suspense } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { DOC_FAQ_LAYOUT } from '@/constant/layout'
+import { DOC_FAQ_LAYOUT } from '@/const/layout'
 import useWallpaper from '@/hooks/useWallpaper'
 import useMetric from '@/hooks/useMetric'
 
-import { ROUTE } from '@/constant/route'
+import { ROUTE } from '@/const/route'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 import { DesktopOnly, LinkAble } from '@/widgets/Common'

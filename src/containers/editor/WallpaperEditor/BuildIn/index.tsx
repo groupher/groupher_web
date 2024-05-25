@@ -6,7 +6,7 @@
 import { FC, Fragment } from 'react'
 
 import type { TWallpaperData } from '@/spec'
-import { WALLPAPER_TYPE } from '@/constant/wallpaper'
+import { WALLPAPER_TYPE } from '@/const/wallpaper'
 
 import { Br, SexyDivider } from '@/widgets/Common'
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'

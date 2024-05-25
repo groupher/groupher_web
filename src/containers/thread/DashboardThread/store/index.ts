@@ -39,9 +39,9 @@ import {
   DASHBOARD_BROADCAST_ROUTE,
   DASHBOARD_SEO_ROUTE,
   DASHBOARD_DOC_ROUTE,
-} from '@/constant/route'
-import { CHANGE_MODE } from '@/constant/mode'
-import { THREAD } from '@/constant/thread'
+} from '@/const/route'
+import { CHANGE_MODE } from '@/const/mode'
+import { THREAD } from '@/const/thread'
 
 import BStore from '@/utils/bstore'
 import { buildLog } from '@/logger'

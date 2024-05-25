@@ -1,5 +1,5 @@
 import type { TThemeName } from '@/spec'
-import THEME from '@/constant/theme'
+import THEME from '@/const/theme'
 import styled, { animate } from '@/css'
 
 type TWrapper = { $effect: string; $theme: TThemeName }

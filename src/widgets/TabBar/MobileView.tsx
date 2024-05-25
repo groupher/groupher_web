@@ -1,6 +1,6 @@
 import { FC, memo } from 'react'
 
-import VIEW from '@/constant/view'
+import VIEW from '@/const/view'
 import { sortByIndex } from '@/helper'
 import Tabs from '@/widgets/Switcher/Tabs'
 

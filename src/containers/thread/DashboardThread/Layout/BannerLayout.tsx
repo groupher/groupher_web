@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { BANNER_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
+import { BANNER_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/const/layout'
 import { callDashboardDesc } from '@/signal'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import useViewingCommunity from '@/hooks/useViewingCommunity'

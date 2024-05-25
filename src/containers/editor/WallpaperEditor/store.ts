@@ -14,7 +14,7 @@ import type {
   TRootStore,
   TWallpaperData,
 } from '@/spec'
-import { GRADIENT_WALLPAPER, PATTERN_WALLPAPER, WALLPAPER_TYPE } from '@/constant/wallpaper'
+import { GRADIENT_WALLPAPER, PATTERN_WALLPAPER, WALLPAPER_TYPE } from '@/const/wallpaper'
 
 import { buildLog } from '@/logger'
 import { T, markStates, Instance, getParent, toJS, useMobxContext } from '@/mobx'

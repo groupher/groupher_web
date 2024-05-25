@@ -1,5 +1,5 @@
 import type { TActive, TColor } from '@/spec'
-import { THREAD } from '@/constant/thread'
+import { THREAD } from '@/const/thread'
 
 import DiscussSVG from '@/icons/DiscussSolid'
 import TadaSVG from '@/icons/Tada'

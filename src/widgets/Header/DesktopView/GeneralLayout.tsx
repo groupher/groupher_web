@@ -8,7 +8,7 @@ import { FC, memo } from 'react'
 import { includes } from 'ramda'
 
 import type { TMetric } from '@/spec'
-import METRIC from '@/constant/metric'
+import METRIC from '@/const/metric'
 import { buildLog } from '@/logger'
 
 import Navigator from '@/widgets/Navigator'

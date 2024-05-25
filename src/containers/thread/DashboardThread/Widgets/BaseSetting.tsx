@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 import { includes, reject, clone } from 'ramda'
 
-import { THREAD } from '@/constant/thread'
+import { THREAD } from '@/const/thread'
 import ColorSelector from '@/widgets/ColorSelector'
 import { SpaceGrow, Br } from '@/widgets/Common'
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'

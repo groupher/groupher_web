@@ -6,7 +6,7 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import { DOC_LAYOUT } from '@/constant/layout'
+import { DOC_LAYOUT } from '@/const/layout'
 
 import { Divider } from '@/widgets/Common'
 import FaqList from '@/widgets/FaqList'

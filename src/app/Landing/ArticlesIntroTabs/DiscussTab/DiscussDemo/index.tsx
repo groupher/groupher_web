@@ -1,8 +1,8 @@
 import { FC } from 'react'
 
 import { mockUsers } from '@/mock'
-import { ARTICLE_CAT } from '@/constant/gtd'
-import { COLOR_NAME } from '@/constant/colors'
+import { ARTICLE_CAT } from '@/const/gtd'
+import { COLOR_NAME } from '@/const/colors'
 
 import { SpaceGrow } from '@/widgets/Common'
 import ArticleCatState from '@/widgets/ArticleCatState'

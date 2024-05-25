@@ -1,7 +1,7 @@
 import { FC, memo, useState } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import { BANNER_LAYOUT } from '@/constant/layout'
+import { BANNER_LAYOUT } from '@/const/layout'
 
 import FileTree from '@/widgets/FileTree'
 import { Space } from '@/widgets/Common'

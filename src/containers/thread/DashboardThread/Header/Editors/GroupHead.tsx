@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 import { startsWith } from 'ramda'
 
-import { ONE_LINK_GROUP, MORE_GROUP } from '@/constant/dashboard'
+import { ONE_LINK_GROUP, MORE_GROUP } from '@/const/dashboard'
 
 import Tooltip from '@/widgets/Tooltip'
 import { SpaceGrow } from '@/widgets/Common'

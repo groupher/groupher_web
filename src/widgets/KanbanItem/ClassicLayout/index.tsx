@@ -9,7 +9,7 @@ import { observer } from 'mobx-react-lite'
 
 import type { TArticle } from '@/spec'
 import useKanbanCardLayout from '@/hooks/useKanbanCardLayout'
-import { KANBAN_CARD_LAYOUT } from '@/constant/layout'
+import { KANBAN_CARD_LAYOUT } from '@/const/layout'
 import { buildLog } from '@/logger'
 
 // import IconButton from '@/widgets/Buttons/IconButton'

@@ -4,7 +4,7 @@ import { range, mergeRight } from 'ramda'
 
 import type { TSpace, TSizeTSM } from '@/spec'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
-import SIZE from '@/constant/size'
+import SIZE from '@/const/size'
 
 import { Wrapper, Container, Circle } from './styles/lava_lamp_loading'
 

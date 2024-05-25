@@ -1,7 +1,7 @@
 import { memo, FC } from 'react'
 
 import type { TPost } from '@/spec'
-import { UPVOTE_LAYOUT } from '@/constant/layout'
+import { UPVOTE_LAYOUT } from '@/const/layout'
 
 import { upvoteArticle } from '@/signal'
 // import { mockUsers } from '@/mock'

@@ -10,7 +10,7 @@ import { keys } from 'ramda'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 
-import { COLOR_NAME } from '@/constant/colors'
+import { COLOR_NAME } from '@/const/colors'
 import type { TSpace, TColorName } from '@/spec'
 import { buildLog } from '@/logger'
 

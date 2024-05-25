@@ -3,7 +3,7 @@ import { MobXProviderContext } from 'mobx-react'
 import { pick } from 'ramda'
 
 import type { TDashboardSEOConfig } from '@/spec'
-import { SEO_KEYS } from '@/constant/seo'
+import { SEO_KEYS } from '@/const/seo'
 
 /**
  * NOTE: should use observer to wrap the component who use this hook

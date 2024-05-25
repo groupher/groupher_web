@@ -1,7 +1,7 @@
 import React from 'react'
 
-import SIZE from '@/constant/size'
-import VIEW from '@/constant/view'
+import SIZE from '@/const/size'
+import VIEW from '@/const/view'
 
 import TabBar from '@/widgets/TabBar'
 

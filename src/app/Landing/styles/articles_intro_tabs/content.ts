@@ -1,5 +1,5 @@
 import type { TThread, TMetric } from '@/spec'
-import { THREAD } from '@/constant/thread'
+import { THREAD } from '@/const/thread'
 
 import styled, { css, theme, WIDTH } from '@/css'
 

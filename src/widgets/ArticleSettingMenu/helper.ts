@@ -1,6 +1,6 @@
 import type { TColorName, TArticleState } from '@/spec'
-import { COLOR_NAME } from '@/constant/colors'
-import { ARTICLE_STATE } from '@/constant/gtd'
+import { COLOR_NAME } from '@/const/colors'
+import { ARTICLE_STATE } from '@/const/gtd'
 
 export const getGTDColor = (state: TArticleState, bgColors: TColorName[]): TColorName => {
   switch (state) {

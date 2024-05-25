@@ -3,7 +3,7 @@ import { reject, find, propEq, filter, includes, toUpper, isNil } from 'ramda'
 import { MobXProviderContext } from 'mobx-react'
 
 import type { TCommunityThread, TTag, TNameAlias } from '@/spec'
-import { THREAD } from '@/constant/thread'
+import { THREAD } from '@/const/thread'
 import { sortByIndex } from '@/helper'
 import { toJS } from '@/mobx'
 

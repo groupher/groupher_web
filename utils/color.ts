@@ -1,5 +1,5 @@
 import type { TColorName } from '@/spec'
-import { COLOR_NAME } from '@/constant/colors'
+import { COLOR_NAME } from '@/const/colors'
 
 /* eslint-disable radix */
 /**

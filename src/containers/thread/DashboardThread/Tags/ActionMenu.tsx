@@ -3,7 +3,7 @@ import { FC } from 'react'
 import { buildLog } from '@/logger'
 
 import MenuItem from '@/widgets/MenuItem'
-import MENU from '@/constant/menu'
+import MENU from '@/const/menu'
 
 import { Wrapper } from '../styles/tags/action_menu'
 

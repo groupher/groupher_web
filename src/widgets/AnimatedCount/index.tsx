@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import type { TActive, TSize, TSpace } from '@/spec'
 
-import SIZE from '@/constant/size'
+import SIZE from '@/const/size'
 
 import AnimatedCount from './AnimatedCount'
 

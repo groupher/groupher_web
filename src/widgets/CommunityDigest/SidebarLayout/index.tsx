@@ -2,8 +2,8 @@ import { FC, useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import { THREAD } from '@/constant/thread'
-import { DEME_SOCIALS } from '@/constant/social'
+import { THREAD } from '@/const/thread'
+import { DEME_SOCIALS } from '@/const/social'
 
 import useViewingThread from '@/hooks/useViewingThread'
 import useWindowResize from '@/hooks/useWindowResize'

@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TPost } from '@/spec'
-import { THREAD } from '@/constant/thread'
+import { THREAD } from '@/const/thread'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import ArticleReadLabel from '@/widgets/ArticleReadLabel'

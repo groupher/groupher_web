@@ -12,7 +12,7 @@ import { buildLog } from '@/logger'
 import useAccount from '@/hooks/useAccount'
 import useAvatarLayout from '@/hooks/useAvatarLayout'
 
-import { ROUTE } from '@/constant/route'
+import { ROUTE } from '@/const/route'
 import { signOut } from '@/oauth'
 import { SexyDivider, SpaceGrow, LinkAble } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'

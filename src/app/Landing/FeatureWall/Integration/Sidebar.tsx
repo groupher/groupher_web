@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { COLOR_NAME } from '@/constant/colors'
+import { COLOR_NAME } from '@/const/colors'
 import { mockUsers } from '@/mock'
 import { Brick } from '@/widgets/Common'
 

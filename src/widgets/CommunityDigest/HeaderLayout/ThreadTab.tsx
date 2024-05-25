@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TSpace } from '@/spec'
-import { HEADER_LAYOUT } from '@/constant/layout'
+import { HEADER_LAYOUT } from '@/const/layout'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import usePublicThreads from '@/hooks/usePublicThreads'

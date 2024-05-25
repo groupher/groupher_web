@@ -3,7 +3,7 @@ import { Client, cacheExchange, fetchExchange } from '@urql/core'
 /* import { onError } from 'apollo-link-error' */
 
 import { GRAPHQL_ENDPOINT } from '@/config'
-import OAUTH from '@/constant/oauth'
+import OAUTH from '@/const/oauth'
 
 import { buildLog } from '../logger'
 import BStore from '../bstore'

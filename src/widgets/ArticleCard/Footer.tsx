@@ -1,8 +1,8 @@
 import { FC, memo } from 'react'
 import TimeAgo from 'timeago-react'
 
-import { UPVOTE_LAYOUT } from '@/constant/layout'
-import SIZE from '@/constant/size'
+import { UPVOTE_LAYOUT } from '@/const/layout'
+import SIZE from '@/const/size'
 
 import type { TArticle } from '@/spec'
 import { upvoteArticle } from '@/signal'

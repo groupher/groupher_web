@@ -7,7 +7,7 @@
 import React, { useMemo } from 'react'
 import T from 'prop-types'
 
-import GALLERY from '@/constant/gallery'
+import GALLERY from '@/const/gallery'
 import { buildLog } from '@/logger'
 
 import IconSwitcher from '../IconSwitcher'

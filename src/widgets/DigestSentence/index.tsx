@@ -8,7 +8,7 @@ import { FC, ReactNode, memo, useRef, useEffect, useState } from 'react'
 
 import type { TSizeSM, TSpace } from '@/spec'
 import { buildLog } from '@/logger'
-import SIZE from '@/constant/size'
+import SIZE from '@/const/size'
 
 // import { ICON } from '@/config'
 import { Space } from '@/widgets/Common'

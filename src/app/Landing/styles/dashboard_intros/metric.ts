@@ -1,4 +1,4 @@
-import { DASHBOARD_ROUTE } from '@/constant/route'
+import { DASHBOARD_ROUTE } from '@/const/route'
 
 import type { TIntroTab } from '../../DashboardIntros/spec'
 

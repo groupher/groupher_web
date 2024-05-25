@@ -1,5 +1,5 @@
-import { COLOR_NAME } from '@/constant/colors'
-import { DASHBOARD_ROUTE } from '@/constant/route'
+import { COLOR_NAME } from '@/const/colors'
+import { DASHBOARD_ROUTE } from '@/const/route'
 
 export const TABS_ITEMS = [
   {

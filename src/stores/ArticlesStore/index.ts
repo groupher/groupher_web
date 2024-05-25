@@ -16,10 +16,10 @@ import type {
 } from '@/spec'
 
 import { T, markStates, getParent, Instance, toJS } from '@/mobx'
-import TYPE from '@/constant/type'
-import { ARTICLE_CAT, ARTICLE_STATE, ARTICLE_ORDER } from '@/constant/gtd'
-import URL_PARAM from '@/constant/url_param'
-import { ARTICLE_THREAD } from '@/constant/thread'
+import TYPE from '@/const/type'
+import { ARTICLE_CAT, ARTICLE_STATE, ARTICLE_ORDER } from '@/const/gtd'
+import URL_PARAM from '@/const/url_param'
+import { ARTICLE_THREAD } from '@/const/thread'
 
 import { plural } from '@/fmt'
 

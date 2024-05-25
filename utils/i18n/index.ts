@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation'
 
 import type { TLocale } from '@/spec'
-import { LOCALE } from '@/constant/i18n'
+import { LOCALE } from '@/const/i18n'
 
 /**
  * this query is used for GraphQL, which will be intercepted by frontend

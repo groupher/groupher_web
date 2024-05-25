@@ -2,10 +2,10 @@ import { values } from 'ramda'
 
 import { FAQSection, Tag, Moderator } from '@/model'
 
-import SIZE from '@/constant/size'
-import { COLOR_NAME } from '@/constant/colors'
-import { THREAD } from '@/constant/thread'
-import { GLOW_OPACITY } from '@/constant/glow_effect'
+import SIZE from '@/const/size'
+import { COLOR_NAME } from '@/const/colors'
+import { THREAD } from '@/const/thread'
+import { GLOW_OPACITY } from '@/const/glow_effect'
 import {
   TAG_LAYOUT,
   AVATAR_LAYOUT,
@@ -23,9 +23,9 @@ import {
   HEADER_LAYOUT,
   FOOTER_LAYOUT,
   RSS_TYPE,
-} from '@/constant/layout'
-import { BUILDIN_ALIAS } from '@/constant/name'
-import { LOCALE } from '@/constant/i18n'
+} from '@/const/layout'
+import { BUILDIN_ALIAS } from '@/const/name'
+import { LOCALE } from '@/const/i18n'
 
 import { T } from '@/mobx'
 

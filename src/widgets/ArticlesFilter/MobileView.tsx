@@ -9,8 +9,8 @@ import { FC, Fragment, memo } from 'react'
 import type { TArticleCat, TArticleState } from '@/spec'
 
 import { refreshArticles } from '@/signal'
-import { CONDITION_MODE } from '@/constant/mode'
-import TYPE from '@/constant/type'
+import { CONDITION_MODE } from '@/const/mode'
+import TYPE from '@/const/type'
 
 import useArticlesFilter from '@/hooks/useArticlesFilter'
 

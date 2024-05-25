@@ -14,7 +14,7 @@
 import { map, path, split } from 'ramda'
 
 import type { TColorName, TTheme } from '@/spec'
-import { COLOR_NAME } from '@/constant/colors'
+import { COLOR_NAME } from '@/const/colors'
 
 import { camelize } from '@/fmt'
 

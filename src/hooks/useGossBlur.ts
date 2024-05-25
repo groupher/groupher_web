@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 
 import useTheme from '@/hooks/useTheme'
-import THEME from '@/constant/theme'
+import THEME from '@/const/theme'
 
 /**
  * NOTE: should use observer to wrap the component who use this hook

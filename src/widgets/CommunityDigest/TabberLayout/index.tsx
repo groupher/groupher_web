@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import { BRAND_LAYOUT } from '@/constant/layout'
+import { BRAND_LAYOUT } from '@/const/layout'
 
 import useMetric from '@/hooks/useMetric'
 import usePublicThreads from '@/hooks/usePublicThreads'

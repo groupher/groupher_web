@@ -9,7 +9,7 @@ import { keys, includes, isEmpty } from 'ramda'
 
 import type { TColorName, TTooltipPlacement } from '@/spec'
 import { buildLog } from '@/logger'
-import { COLOR_NAME } from '@/constant/colors'
+import { COLOR_NAME } from '@/const/colors'
 
 import Tooltip from '@/widgets/Tooltip'
 import { Wrapper, DotWrapper, Dot, HookIcon } from './styles'

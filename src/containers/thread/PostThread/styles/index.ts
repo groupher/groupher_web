@@ -1,8 +1,8 @@
 import { values, includes } from 'ramda'
 
 import type { TPostLayout, TThread } from '@/spec'
-import { CARD_THREAD } from '@/constant/thread'
-import { POST_LAYOUT } from '@/constant/layout'
+import { CARD_THREAD } from '@/const/thread'
+import { POST_LAYOUT } from '@/const/layout'
 import styled, { css, theme } from '@/css'
 
 export const Wrapper = styled.div`

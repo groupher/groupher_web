@@ -11,7 +11,7 @@ import { includes, keys } from 'ramda'
 import dynamic from 'next/dynamic'
 
 import { DEFAULT_THEME } from '@/config'
-import TYPE from '@/constant/type'
+import TYPE from '@/const/type'
 
 import { themeSkins } from '@/utils/themes'
 import BStore from '@/utils/bstore'

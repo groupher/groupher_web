@@ -9,7 +9,7 @@ import { FC, memo } from 'react'
 import type { TChangelog } from '@/spec'
 import { buildLog } from '@/logger'
 import { previewArticle } from '@/signal'
-import { THREAD } from '@/constant/thread'
+import { THREAD } from '@/const/thread'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import { SpaceGrow } from '@/widgets/Common'

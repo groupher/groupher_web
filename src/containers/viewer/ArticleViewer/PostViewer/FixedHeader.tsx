@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 
 import type { TArticle } from '@/spec'
 
-import { UPVOTE_LAYOUT } from '@/constant/layout'
+import { UPVOTE_LAYOUT } from '@/const/layout'
 
 import Upvote from '@/widgets/Upvote'
 import ArticleCatState from '@/widgets/ArticleCatState'

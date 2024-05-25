@@ -1,8 +1,8 @@
 import Link from 'next/link'
 
 import type { TActive, TTestable, TSpace, TSizeTSM } from '@/spec'
-import { SOCIAL_LIST } from '@/constant/social'
-import SIZE from '@/constant/size'
+import { SOCIAL_LIST } from '@/const/social'
+import SIZE from '@/const/size'
 
 import styled, { css, theme } from '@/css'
 

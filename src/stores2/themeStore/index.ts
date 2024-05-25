@@ -2,7 +2,7 @@ import { battery } from '@/mobx'
 
 import type { TThemeMap, TThemeName } from '@/spec'
 
-import THEME from '@/constant/theme'
+import THEME from '@/const/theme'
 import { themeSkins } from '@/utils/themes'
 
 import type { TStore } from './spec'

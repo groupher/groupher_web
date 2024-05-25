@@ -7,7 +7,7 @@
 import { FC, useState, useCallback, useEffect, memo } from 'react'
 import { find, findIndex, propEq, last } from 'ramda'
 
-import URL_QUERY from '@/constant/url_query'
+import URL_QUERY from '@/const/url_query'
 import type { TNaviTag } from '@/spec'
 
 import { findDeepMatch } from '@/helper'

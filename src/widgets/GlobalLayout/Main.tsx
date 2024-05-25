@@ -8,8 +8,8 @@ import { FC, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 import { blurRGB } from '@/fmt'
-import METRIC from '@/constant/metric'
-import { TOPBAR_LAYOUT } from '@/constant/layout'
+import METRIC from '@/const/metric'
+import { TOPBAR_LAYOUT } from '@/const/layout'
 
 import useMetric from '@/hooks/useMetric'
 import useTrans from '@/hooks/useTrans'

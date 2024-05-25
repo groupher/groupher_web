@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import type { TCommunityThread } from '@/spec'
-import { ROUTE } from '@/constant/route'
+import { ROUTE } from '@/const/route'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import usePublicThreads from '@/hooks/usePublicThreads'
 import useViewingThread from '@/hooks/useViewingThread'

@@ -1,6 +1,6 @@
 import { FC, useState, memo } from 'react'
 
-import { ROUTE } from '@/constant/route'
+import { ROUTE } from '@/const/route'
 import useSession from '@/hooks/useSession'
 
 import Tooltip from '@/widgets/Tooltip'

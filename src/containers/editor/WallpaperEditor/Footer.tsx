@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import type { TWallpaperType } from '@/spec'
-import { WALLPAPER_TYPE } from '@/constant/wallpaper'
+import { WALLPAPER_TYPE } from '@/const/wallpaper'
 
 import { SpaceGrow } from '@/widgets/Common'
 import YesOrNoButtons from '@/widgets/Buttons/YesOrNoButtons'

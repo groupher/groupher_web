@@ -1,5 +1,5 @@
 import type { TBannerLayout, TMetric, TTestable } from '@/spec'
-import { BANNER_LAYOUT } from '@/constant/layout'
+import { BANNER_LAYOUT } from '@/const/layout'
 
 import styled, { css, theme } from '@/css'
 

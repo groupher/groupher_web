@@ -6,7 +6,7 @@ import styled, { css, theme } from '@/css'
 import WatchSVG from '@/icons/Watch'
 
 import { BaseBanner } from '..'
-import { HEADER_LAYOUT } from '@/constant/layout'
+import { HEADER_LAYOUT } from '@/const/layout'
 
 type TWrapper = {
   metric?: TMetric
