@@ -232,11 +232,7 @@ export type TStore = TSettingsFields & {
   footerSettings: TFooterSettings
 
   // actions
-  onSave: (field: TSettingField) => void
   changeGlowEffect: (glowType: string) => void
-
-  _findTagIdx: () => number
-  _findAliasIdx: () => number
 
   mark: (sobj: Record<string, any>) => void
 }

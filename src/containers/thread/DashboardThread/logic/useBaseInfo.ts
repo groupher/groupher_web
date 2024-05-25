@@ -59,6 +59,10 @@ const useBaseInfo = (): TRet => {
     incViews: false,
   })
 
+  useEffect(() => {
+    if (data?.community) updateBaseInfo(data.community)
+  }, [data])
+
   const updateBaseInfo = (community: TCommunity): void => {
     const { dashboard } = community
     const { baseInfo, mediaReports } = dashboard
@@ -86,10 +90,6 @@ const useBaseInfo = (): TRet => {
       store.initSettings.mediaReports = initMediaReports
     })
   }
-
-  useEffect(() => {
-    if (data?.community) updateBaseInfo(data.community)
-  }, [data])
 
   const mediaReportsTouched = () => {
     const curValues = reject((item: TMediaReport) => !item.editUrl, toJS(mediaReports))

@@ -1,18 +1,8 @@
-import { battery, markStore, toJS } from '@/mobx'
+import { battery, markStore } from '@/mobx'
 
-import {
-  uniq,
-  pluck,
-  pick,
-  equals,
-  mapObjIndexed,
-  clone,
-  findIndex,
-  update,
-  mergeLeft,
-} from 'ramda'
+import { uniq, pluck, pick, equals, mapObjIndexed, mergeLeft } from 'ramda'
 
-import type { TCommunity, TCommunityThread, TTag, TNameAlias } from '@/spec'
+import type { TCommunity, TCommunityThread } from '@/spec'
 import { LOCALE } from '@/constant/i18n'
 import { THREAD } from '@/constant/thread'
 import SIZE from '@/constant/size'
@@ -351,68 +341,8 @@ const createDashboardStore = (rootStore: TRootStore, initState: TInitSettings = 
       store.glowType = glowType
     },
 
-    /**
-     * this is for mutation params after on save
-     * TODO: re-move it to useEdit hooks
-     */
-    onSave(field: TSettingField): void {
-      const self = this as TStore
-
-      if (field === SETTING_FIELD.TAG) {
-        const { editingTag } = store
-        const targetIdx = self._findTagIdx()
-        if (targetIdx < 0) return
-
-        store.tags[targetIdx] = clone(editingTag)
-      }
-
-      if (field === SETTING_FIELD.NAME_ALIAS) {
-        const { editingAlias } = store
-
-        const targetIdx = store._findAliasIdx()
-        if (targetIdx < 0) return
-
-        store.nameAlias[targetIdx] = clone(editingAlias)
-      }
-    },
-
     updateViewingCommunity(args: TCommunity): void {
       rootStore.viewing.updateViewingCommunity(args)
-    },
-
-    _findTagIdx(): number {
-      const self = this as TStore
-
-      const { tags, editingTag } = self
-      const targetIdx = findIndex((item: TTag) => item.id === editingTag.id, toJS(tags))
-      return targetIdx
-    },
-
-    _findAliasIdx(): number {
-      const self = this as TStore
-
-      const { nameAlias, editingAlias } = self
-      const targetIdx = findIndex(
-        (item: TNameAlias) => item.slug === editingAlias.slug,
-        toJS(nameAlias),
-      )
-
-      return targetIdx
-    },
-
-    updateEditingTag() {
-      const self = this as TStore
-      const { editingTag, tags } = self
-
-      const _editingTag = toJS(editingTag)
-      const _tags = toJS(tags)
-      const _initSettings = toJS(self.initSettings)
-
-      const targetIndex = findIndex((item: TTag) => item.id === editingTag.id, _tags)
-      const updatedTags = update(targetIndex, _editingTag, _tags)
-
-      const initSettings = { ..._initSettings, tags: updatedTags }
-      self.mark({ initSettings })
     },
 
     mark(sobj: Record<string, any>): void {

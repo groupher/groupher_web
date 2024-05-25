@@ -4,8 +4,8 @@ import type { TCommunityThread } from '@/spec'
 
 import Button from '@/widgets/Buttons/Button'
 
+import useTagListInfo from '../logic/useTagListInfo'
 import { Wrapper, Hint, CatsWrapper } from '../styles/tags/thread_selector'
-import { edit, reloadArticleTags } from '../logic'
 
 type TProps = {
   threads: TCommunityThread[]
@@ -13,6 +13,8 @@ type TProps = {
 }
 
 const ThreadSelector: FC<TProps> = ({ threads, active }) => {
+  const { changeThread } = useTagListInfo()
+
   return (
     <Wrapper>
       <Hint>社区板块:</Hint>
@@ -24,8 +26,8 @@ const ThreadSelector: FC<TProps> = ({ threads, active }) => {
             size="small"
             noBorder={thread.slug !== active}
             onClick={() => {
-              edit(thread.slug, 'activeTagThread')
-              reloadArticleTags()
+              changeThread(thread.slug)
+              // reloadArticleTags()
             }}
             space={10}
           >

@@ -17,7 +17,7 @@ import {
   ActionWrapper,
 } from './styles/saving_bar'
 
-import { onSave } from './logic'
+// import { onSave } from './logic'
 import useHelper from './logic/useHelper'
 
 const log = buildLog('C:Dashboard/SavingBar')
@@ -50,7 +50,7 @@ const SavingBar: FC<TProps> = ({
   width = '100%',
   ...restProps
 }) => {
-  const { rollbackEdit } = useHelper()
+  const { rollbackEdit, onSave } = useHelper()
 
   // cannot pass minimal to Wrapper, cuz the wired issue on styled-components@6
   const Wrapper = !minimal ? NormalWrapper : MinimalWrapper

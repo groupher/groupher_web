@@ -14,7 +14,7 @@ import ThreadSelector from './ThreadSelector'
 import GroupSelector from './GroupSelector'
 import TagBar from './TagBar'
 
-import useTagListInfo from '../hooks/useTagListInfo'
+import useTagListInfo from '../logic/useTagListInfo'
 import { Wrapper, InnerWrapper, ContentWrapper, AddButton, AddIcon } from '../styles/tags'
 
 const Tags: FC = () => {

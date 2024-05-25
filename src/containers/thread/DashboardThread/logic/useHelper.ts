@@ -1,11 +1,12 @@
 import { useContext } from 'react'
-import { equals, any, has, omit, findIndex } from 'ramda'
+import { equals, any, has, omit, findIndex, update, includes, forEach, clone } from 'ramda'
 
 import type { TEditValue, TTag, TNameAlias } from '@/spec'
 import { toJS, runInAction } from '@/mobx'
 import { isObject } from '@/validator'
 import { StoreContext } from '@/stores2'
 import BStore from '@/utils/bstore'
+import { toast } from '@/signal'
 
 import {
   DASHBOARD_DEMO_KEY,
@@ -25,6 +26,7 @@ type TRet = {
   edit: (value: TEditValue, field: TSettingField) => void
   rollbackEdit: (field: TSettingField) => void
   resetEdit: (field: TSettingField) => void
+  onSave: (field: TSettingField) => void
 }
 
 /**
@@ -162,6 +164,101 @@ const useHelper = (): TRet => {
     // slf.mark({ demoAlertEnable: true })
   }
 
+  const _updateEditingTag = () => {
+    const { editingTag, tags } = store
+
+    const _editingTag = toJS(editingTag)
+    const _tags = toJS(tags)
+    const _initSettings = toJS(store.initSettings)
+
+    const targetIndex = findIndex((item: TTag) => item.id === editingTag.id, _tags)
+    const updatedTags = update(targetIndex, _editingTag, _tags)
+
+    const initSettings = { ..._initSettings, tags: updatedTags }
+    store.initSettings = initSettings
+  }
+
+  const _doSave = (field: TSettingField): void => {
+    if (field === SETTING_FIELD.TAG) {
+      const { editingTag } = store
+      const targetIdx = _findTagIdx()
+      if (targetIdx < 0) return
+
+      store.tags[targetIdx] = toJS(editingTag)
+      _updateEditingTag()
+    }
+
+    if (field === SETTING_FIELD.NAME_ALIAS) {
+      const { editingAlias } = store
+
+      const targetIdx = _findAliasIdx()
+      if (targetIdx < 0) return
+
+      store.nameAlias[targetIdx] = clone(editingAlias)
+    }
+  }
+
+  const _handleDone = () => {
+    const field = store.savingField
+    toast('设置已保存')
+
+    // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
+    let initSettings
+
+    if (field === SETTING_FIELD.TAG_INDEX) {
+      initSettings = { ...store.initSettings, tags: toJS(store.tags) }
+    } else if (includes(field, [SETTING_FIELD.FAQ_SECTION_ADD, SETTING_FIELD.FAQ_SECTION_DELETE])) {
+      initSettings = { ...store.initSettings, faqSections: toJS(store.faqSections) }
+    } else if (field === SETTING_FIELD.TAG) {
+      _updateEditingTag()
+      initSettings = { ...store.initSettings }
+    } else if (field === SETTING_FIELD.BASE_INFO) {
+      const current = {}
+
+      forEach((key) => {
+        current[key] = store[key]
+      }, BASEINFO_KEYS)
+
+      initSettings = { ...store.initSettings, ...current }
+    } else if (field === SETTING_FIELD.SEO) {
+      const current = {}
+
+      forEach((key) => {
+        current[key] = store[key]
+      }, SEO_KEYS)
+
+      initSettings = { ...store.initSettings, ...current }
+    } else {
+      initSettings = { ...store.initSettings, [field]: toJS(store[field]) }
+    }
+
+    store.initSettings = initSettings
+
+    // manually update in here not in store is because if this action fails,
+    // store will rollback to previous value
+    if (field === SETTING_FIELD.TAG) store.editingTag = null
+    if (field === SETTING_FIELD.NAME_ALIAS) store.editingAlias = null
+
+    // avoid page component jump caused by saving state
+    setTimeout(() => {
+      store.saving = false
+      store.savingField = null
+    }, 800)
+  }
+
+  const onSave = (field: TSettingField): void => {
+    runInAction(() => {
+      store.saving = true
+      store.savingField = field
+      _doSave(field)
+    })
+
+    console.log('## on save: ', field)
+    console.log('## TODO: real mutation')
+    // _doMutation(field, store[field])
+    _handleDone()
+  }
+
   // TODO: onSave
 
   return {
@@ -171,6 +268,7 @@ const useHelper = (): TRet => {
     edit,
     rollbackEdit,
     resetEdit,
+    onSave,
   }
 }
 

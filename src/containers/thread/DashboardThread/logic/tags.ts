@@ -63,12 +63,12 @@ export const moveTagDown = (tag: TTag): void => _moveTag(tag, 'down')
 export const moveTag2Top = (tag: TTag): void => _moveTag2Edge(tag, 'top')
 export const moveTag2Bottom = (tag: TTag): void => _moveTag2Edge(tag, 'bottom')
 
-export const editTag = (key: 'settingTag' | 'editingTag', tag: TTag): void => {
-  console.log('## key: ', key)
-  console.log('## editingTag: ', tag)
+// export const editTag = (key: 'settingTag' | 'editingTag', tag: TTag): void => {
+//   console.log('## key: ', key)
+//   console.log('## editingTag: ', tag)
 
-  store.mark({ [key]: toJS(tag) })
-}
+//   store.mark({ [key]: toJS(tag) })
+// }
 
 export const init = (_store: TStore): void => {
   store = _store

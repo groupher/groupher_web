@@ -246,6 +246,7 @@ const _doMutation = (field: string, e: TEditValue): void => {
   }
 
   if (field === SETTING_FIELD.TAG) {
+    console.log("## if it's here: ", field)
     store.updateEditingTag()
     sr71$.mutate(S.updateArticleTag, { ...toJS(store.editingTag), community })
     return
@@ -308,13 +309,6 @@ export const reloadModerators = (): void => {
   const { curCommunity } = store
 
   sr71$.query(S.updateModerators, { slug: curCommunity.slug, incViews: false })
-}
-// reload after create/delete tag and swtich between tag threads
-export const reloadArticleTags = (): void => {
-  const { curCommunity, activeTagThread } = store
-  const filter = { community: curCommunity.slug, thread: activeTagThread.toUpperCase() }
-  //
-  sr71$.query(S.pagedArticleTags, { filter })
 }
 
 /**
@@ -600,7 +594,7 @@ const DataSolver = [
   {
     match: asyncRes(EVENT.REFRESH_TAGS),
     action: () => {
-      reloadArticleTags()
+      // reloadArticleTags()
       store.mark({ settingTag: null })
     },
   },

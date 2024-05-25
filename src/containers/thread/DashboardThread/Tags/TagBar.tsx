@@ -12,7 +12,7 @@ import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'
 import TagAction from './TagAction'
 
-import useTagListInfo from '../hooks/useTagListInfo'
+import useTagListInfo from '../logic/useTagListInfo'
 import {
   Wrapper,
   Dot,
@@ -22,7 +22,6 @@ import {
   InputWrapper,
   Inputer,
 } from '../styles/tags/tag_bar'
-import { editTag } from '../logic/tags'
 
 export type TProps = {
   tag: TTag
@@ -32,7 +31,7 @@ export type TProps = {
 }
 
 const TagBar: FC<TProps> = ({ tag, isFirst, isLast, total }) => {
-  const { editingTag, settingTag, activeTagGroup } = useTagListInfo()
+  const { editingTag, settingTag, activeTagGroup, editTag } = useTagListInfo()
 
   const isEditMode = editingTag?.id === tag.id
 

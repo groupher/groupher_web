@@ -7,7 +7,7 @@ import Tooltip from '@/widgets/Tooltip'
 
 import ActionMenu from './ActionMenu'
 
-import useTagListInfo from '../hooks/useTagListInfo'
+import useTagListInfo from '../logic/useTagListInfo'
 import {
   Wrapper,
   EditIcon,
@@ -16,13 +16,13 @@ import {
   ArrowDownIcon,
   SettingIcon,
 } from '../styles/tags/tag_action'
-import { editTag, moveTagUp, moveTagDown, moveTag2Top, moveTag2Bottom } from '../logic/tags'
+import { moveTagUp, moveTagDown, moveTag2Top, moveTag2Bottom } from '../logic/tags'
 import type { TProps as TTagBarProps } from './TagBar'
 
 type TProps = Omit<TTagBarProps, 'settingTag'>
 
 const TagAction: FC<TProps> = ({ tag, isFirst, isLast, total }) => {
-  const { editingTag, activeTagGroup } = useTagListInfo()
+  const { editingTag, activeTagGroup, editTag } = useTagListInfo()
   const isEditMode = editingTag?.id === tag.id
 
   if (isEditMode) return null
