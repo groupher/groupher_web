@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { assetSrc } from '@/helper'
@@ -9,6 +9,7 @@ import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useBrandLayout from '@/hooks/useBrandLayout'
 import useMetric from '@/hooks/useMetric'
 
+import ImgFallback from '@/widgets/ImgFallback'
 import SocialList from '@/widgets/SocialList'
 import AccountUnit from '@/widgets/AccountUnit'
 
@@ -44,7 +45,7 @@ const CommunityBrief: FC = () => {
         <InnerWrapper>
           {brandLayout !== BRAND_LAYOUT.TEXT && (
             <LogoWrapper>
-              <Logo src={assetSrc(logo)} />
+              <Logo src={assetSrc(logo)} fallback={<ImgFallback size={60} title={title} />} />
             </LogoWrapper>
           )}
 

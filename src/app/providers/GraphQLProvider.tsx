@@ -29,7 +29,7 @@ const localServeExchange = ({ forward }) => {
     const interceptedOps$ = pipe(
       sharedOps$,
       // @ts-ignore
-      filter((operation) => operation.variables?.locale),
+      filter(({ variables }) => Object.keys(variables).length === 1 && variables?.locale),
       mergeMap((operation) =>
         fromPromise(
           // @ts-ignore

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
@@ -12,6 +12,7 @@ import useViewingThread from '@/hooks/useViewingThread'
 import useBannerLayout from '@/hooks/useBannerLayout'
 import useBrandLayout from '@/hooks/useBrandLayout'
 
+import ImgFallback from '@/widgets/ImgFallback'
 import ArrowLinker from '@/widgets/ArrowLinker'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import { Row } from '@/widgets/Common'
@@ -43,7 +44,7 @@ const CommunityBrief: FC = () => {
       <MainWrapper>
         {brandLayout !== BRAND_LAYOUT.TEXT && (
           <LogoWrapper>
-            <Logo src={assetSrc(logo)} />
+            <Logo src={assetSrc(logo)} fallback={<ImgFallback size={30} title={title} />} />
           </LogoWrapper>
         )}
 

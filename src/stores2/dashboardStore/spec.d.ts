@@ -38,7 +38,7 @@ import type {
   TOverview,
 } from '@/spec'
 
-import {
+import type {
   DASHBOARD_ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
   DASHBOARD_BASEINFO_ROUTE,
@@ -234,6 +234,7 @@ export type TStore = TSettingsFields & {
   // actions
   changeGlowEffect: (glowType: string) => void
 
+  updateViewingCommunity: (args: TCommunity) => void
   mark: (sobj: Record<string, any>) => void
 }
 

@@ -3,7 +3,7 @@
  * CommunityDigest
  *
  */
-import { FC, Fragment } from 'react'
+import { type FC, Fragment } from 'react'
 // import { useRouter } from 'next/navigation'
 import { usePathname } from 'next/navigation'
 

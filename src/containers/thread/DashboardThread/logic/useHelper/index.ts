@@ -1,5 +1,5 @@
-import useTouch, { TRet as TTouch } from './useTouch'
-import useEdit, { TRet as TEdit } from './useEdit'
+import useTouch, { type TRet as TTouch } from './useTouch'
+import useEdit, { type TRet as TEdit } from './useEdit'
 
 type TRet = TTouch & TEdit
 

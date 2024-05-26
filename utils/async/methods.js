@@ -20,7 +20,7 @@ const doQuery = (query, variables) => {
     })
 }
 
-const doMutate = (mutation, variables) => {
+export const doMutate = (mutation, variables) => {
   return gqClient
     .mutation(mutation, variables)
     .toPromise()

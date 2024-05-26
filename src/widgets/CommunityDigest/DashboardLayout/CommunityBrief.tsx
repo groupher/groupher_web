@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { type FC, useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
@@ -11,8 +11,9 @@ import { BRAND_LAYOUT } from '@/const/layout'
 import { assetSrc } from '@/helper'
 import { titleCase } from '@/fmt'
 
-import Tooltip from '@/widgets/Tooltip'
 import { Space, SpaceGrow, SexyDivider } from '@/widgets/Common'
+import Tooltip from '@/widgets/Tooltip'
+import ImgFallback from '@/widgets/ImgFallback'
 
 import {
   Wrapper,
@@ -44,7 +45,9 @@ const CommunityBrief: FC = () => {
 
   return (
     <Wrapper ref={ref}>
-      {brandLayout !== BRAND_LAYOUT.TEXT && <Logo src={assetSrc(logo)} noLazy />}
+      {brandLayout !== BRAND_LAYOUT.TEXT && (
+        <Logo src={assetSrc(logo)} fallback={<ImgFallback size={25} title={title} />} />
+      )}
       {brandLayout !== BRAND_LAYOUT.LOGO && <Title>{title}</Title>}
       <Slash>/</Slash>
 
