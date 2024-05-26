@@ -22,7 +22,7 @@ export type TRet = {
   edit: (value: TEditValue, field: TSettingField) => void
   rollbackEdit: (field: TSettingField) => void
   resetEdit: (field: TSettingField) => void
-  onSave: (field: TSettingField) => Promise<void>
+  onSave: (field: TSettingField) => void
 }
 
 /**
@@ -184,7 +184,7 @@ const useUtils = (): TRet => {
     }
   }
 
-  const onSave = async (field: TSettingField): Promise<void> => {
+  const onSave = (field: TSettingField): void => {
     runInAction(() => {
       store.saving = true
       store.savingField = field

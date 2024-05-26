@@ -8,7 +8,7 @@ import { runInAction, toJS } from '@/mobx'
 import useDashboard from '@/hooks/useDashboard'
 import useQuery from '@/hooks/useQuery'
 
-import { doMutate } from '@/utils/async/methods'
+import { mutate } from '@/utils/api'
 import { toast } from '@/signal'
 
 import {
@@ -80,7 +80,7 @@ const useMutationAPI = (): TRet => {
     }, 800)
   }
 
-  const mutation = async (field: string, e: TEditValue): Promise<void> => {
+  const mutation = (field: string, e: TEditValue): Promise<void> => {
     // const community = curCommunity.slug
 
     // if (field === SETTING_FIELD.MEDIA_REPORTS) {
@@ -126,7 +126,7 @@ const useMutationAPI = (): TRet => {
         }
       }
 
-      doMutate(S.updateDashboardBaseInfo, { community, ...params }).then((data) => {
+      mutate(S.updateDashboardBaseInfo, { community, ...params }).then((data) => {
         store.updateViewingCommunity(data.updateDashboardBaseInfo)
         _handleDone()
       })

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 import { find } from 'ramda'
 
@@ -65,7 +65,15 @@ const BasicInfo: FC = () => {
         onChange={(v) => edit(v, 'introduction')}
       />
 
-      <SavingBar field={SETTING_FIELD.BASE_INFO} isTouched={isTouched} loading={saving} top={30} />
+      {/* avoid show savingbar when loading community info */}
+      {title && (
+        <SavingBar
+          field={SETTING_FIELD.BASE_INFO}
+          isTouched={isTouched}
+          loading={saving}
+          top={30}
+        />
+      )}
 
       <Br bottom={45} />
       <DangerZone />
