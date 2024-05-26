@@ -16,7 +16,7 @@ import {
 } from '@/stores2/dashboardStore/constant'
 
 import type { TSettingField } from '@/stores2/dashboardStore/spec'
-import useMutationAPI from '../useMutationAPI'
+import useMutation from '../useMutation'
 
 export type TRet = {
   edit: (value: TEditValue, field: TSettingField) => void
@@ -30,7 +30,7 @@ export type TRet = {
  */
 const useUtils = (): TRet => {
   const { dashboard: store } = useContext(StoreContext)
-  const { mutation } = useMutationAPI()
+  const { mutation } = useMutation()
 
   const edit = (v: TEditValue, field: TSettingField): void => {
     let value = v

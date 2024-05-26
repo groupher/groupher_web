@@ -27,7 +27,7 @@ type TRet = {
 /**
  * NOTE: should use observer to wrap the component who use this hook
  */
-const useMutationAPI = (): TRet => {
+const useMutation = (): TRet => {
   const { dashboard: store } = useDashboard()
   const { curCommunity } = store
   const community = curCommunity.slug
@@ -227,4 +227,4 @@ const useMutationAPI = (): TRet => {
   return { mutation }
 }
 
-export default useMutationAPI
+export default useMutation
