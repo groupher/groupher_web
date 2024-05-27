@@ -1,5 +1,5 @@
 import { battery, toJS } from '@/mobx'
-import { includes, values } from 'ramda'
+import { includes, values, mergeRight } from 'ramda'
 
 import type { TCommunity, TArticle } from '@/spec'
 import { ARTICLE_THREAD } from '@/const/thread'
@@ -26,8 +26,8 @@ const createViewingStore = (init: TInit = {}): TStore => {
     },
     // actions
     updateViewingCommunity(args: TCommunity): void {
-      const self = this as TStore
-      self.community = { ...toJS(self.community), ...args }
+      // const self = this as TStore
+      store.community = mergeRight(store.community, args)
     },
   }
 

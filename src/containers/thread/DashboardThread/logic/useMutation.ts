@@ -6,6 +6,7 @@ import { DASHBOARD_BASEINFO_ROUTE } from '@/const/route'
 import { runInAction, toJS } from '@/mobx'
 
 import useDashboard from '@/hooks/useDashboard'
+import useViewing from '@/hooks/useViewing'
 import useQuery from '@/hooks/useQuery'
 
 import { mutate } from '@/utils/api'
@@ -29,6 +30,7 @@ type TRet = {
  */
 const useMutation = (): TRet => {
   const { dashboard: store } = useDashboard()
+  const { updateViewingCommunity } = useViewing()
   const { curCommunity } = store
   const community = curCommunity.slug
 
@@ -127,7 +129,7 @@ const useMutation = (): TRet => {
       }
 
       mutate(S.updateDashboardBaseInfo, { community, ...params }).then((data) => {
-        store.updateViewingCommunity(data.updateDashboardBaseInfo)
+        updateViewingCommunity(data.updateDashboardBaseInfo)
         _handleDone()
       })
 

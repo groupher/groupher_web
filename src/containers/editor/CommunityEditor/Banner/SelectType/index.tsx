@@ -4,7 +4,7 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { buildLog } from '@/logger'
@@ -39,7 +39,7 @@ const SelectType: FC<TProps> = ({ status: { communityType }, validState }) => {
     return <WarnBox title="未登录" desc="创建社区需要先登录，谢谢~" />
   }
 
-  if (validState.isLogin && validState.hasPendingApply) {
+  if (isLogin && validState.hasPendingApply) {
     return (
       <WarnBox
         title="申请处理中"

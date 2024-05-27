@@ -3,7 +3,7 @@ import { useContext } from 'react'
 // import type { TEnableConfig, TDashboardPath } from '@/spec'
 
 import { StoreContext } from '@/stores2'
-import { TStore } from '@/stores2/dashboardStore/spec'
+import type { TStore } from '@/stores2/dashboardStore/spec'
 
 type TRes = {
   dashboard: TStore

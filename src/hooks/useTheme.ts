@@ -15,10 +15,10 @@ type TRet = {
  * NOTE: should use observer to wrap the component who use this hook
  */
 const useTheme = (): TRet => {
-  const { theme: themeStore } = useContext(StoreContext)
+  const { theme: store } = useContext(StoreContext)
   const styledTheme = useStyledTheme() as TThemeMap
 
-  const { theme, change, toggle } = themeStore
+  const { theme, change, toggle } = store
 
   return {
     theme,

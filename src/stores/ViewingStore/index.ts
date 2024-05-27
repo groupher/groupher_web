@@ -9,7 +9,7 @@ import type { TRootStore, TUser, TArticle, TArticleMeta, TThread, TCommunity } f
 
 import { ARTICLE_THREAD, THREAD } from '@/const/thread'
 
-import { T, getParent, Instance, markStates, toJS } from '@/mobx'
+import { T, getParent, type Instance, markStates, toJS } from '@/mobx'
 import { viewingChanged } from '@/signal'
 import { User, Community, Post, Changelog } from '@/model'
 
