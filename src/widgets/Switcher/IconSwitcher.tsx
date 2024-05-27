@@ -4,16 +4,13 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import { findIndex, propEq } from 'ramda'
 
 import SVG from '@/const/svg'
-import { buildLog } from '@/logger'
 import Tooltip from '@/widgets/Tooltip'
 
 import { Wrapper, Tabs, DescText, Label, Slider, getLocalIcon } from './styles/icon_selector'
-
-const log = buildLog('w:IconSwitcher:index')
 
 type TItem = {
   icon?: string
@@ -27,7 +24,7 @@ type TProps = {
   onChange?: (item: TItem) => void
 }
 
-const IconSwitcher: FC<TProps> = ({ items, activeKey, onChange = log }) => {
+const IconSwitcher: FC<TProps> = ({ items, activeKey, onChange = console.log }) => {
   const slideIndex = findIndex(propEq(activeKey, 'key'), items)
 
   return (

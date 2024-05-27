@@ -3,7 +3,7 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import useIsSidebarLayout from '@/hooks/useIsSidebarLayout'
@@ -18,8 +18,6 @@ import {
   MobileColumnsWrapper,
   MobileColumnsInner,
 } from '../styles/classic_layout'
-
-// const log = buildLog('C:KanbanThread')
 
 const ClassicLayout: FC = () => {
   const isSidebarLayout = useIsSidebarLayout()

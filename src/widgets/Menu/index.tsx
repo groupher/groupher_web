@@ -4,18 +4,15 @@
  *
  */
 
-import { ReactNode, FC, memo } from 'react'
+import { type ReactNode, type FC, memo } from 'react'
 
 import type { TTooltipPlacement } from '@/spec'
-import { buildLog } from '@/logger'
 import Tooltip from '@/widgets/Tooltip'
 
 import type { TMenuItem } from './spec'
 import List from './List'
 
 import { Wrapper } from './styles'
-
-const log = buildLog('c:Menu:index')
 
 type TProps = {
   activeKey?: string
@@ -32,11 +29,11 @@ type TProps = {
 
 const Menu: FC<TProps> = ({
   activeKey = '',
-  onSelect = log,
+  onSelect = console.log,
   items = [],
   children = 'menu',
-  onShow = log,
-  onHide = log,
+  onShow = console.log,
+  onHide = console.log,
   placement = 'bottom',
   offset = [-5, 5],
   popWidth = 120,

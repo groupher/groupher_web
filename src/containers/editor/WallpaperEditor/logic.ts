@@ -5,7 +5,6 @@ import type { TWallpaperGradientDir } from '@/spec'
 import EVENT from '@/const/event'
 import { WALLPAPER_TYPE } from '@/const/wallpaper'
 
-import { buildLog } from '@/logger'
 import asyncSuit from '@/async'
 import { toast, closeDrawer } from '@/signal'
 
@@ -21,8 +20,6 @@ const sr71$ = new SR71({
 
 let store: TStore | undefined
 let sub$ = null
-
-const _log = buildLog('L:WallpaperEditor')
 
 export const changeTab = (tab: TTab): void => {
   store.mark({ tab })

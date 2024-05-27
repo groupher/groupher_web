@@ -4,11 +4,10 @@
  * use custom animation Globally at GlobalStyle.ts
  */
 
-import { FC, useState, useRef, useEffect } from 'react'
+import { type FC, useState, useRef, useEffect } from 'react'
 import { hideAll } from 'tippy.js'
 
 import { zIndex } from '@/css'
-import { buildLog } from '@/logger'
 import { isString } from '@/validator'
 import { isDescendant, isWechatBrower } from '@/dom'
 
@@ -19,8 +18,6 @@ import { FOOTER_BEHAVIOR } from './constant'
 import ConfirmFooter from './ConfirmFooter'
 
 import { StyledTippy, NoPaddingStyledTippy, ChildrenWrapper, ContentWrapper } from './styles'
-
-const _log = buildLog('w:Tooltip:index')
 
 const Tooltip: FC<TProps> = ({
   children,

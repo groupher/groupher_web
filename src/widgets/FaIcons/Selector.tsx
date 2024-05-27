@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, memo, useState } from 'react'
+import { type FC, memo, useState } from 'react'
 import { keys } from 'ramda'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -12,7 +12,6 @@ import '@fortawesome/fontawesome-svg-core/styles.css'
 
 import { COLOR_NAME } from '@/const/colors'
 import type { TSpace, TColorName } from '@/spec'
-import { buildLog } from '@/logger'
 
 import { Row } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'
@@ -22,8 +21,6 @@ import FaIcon from './icons'
 import Panel from './Panel'
 
 import { Wrapper, InnerWrapper, IconWrapper, ArrowIcon } from './styles/selector'
-
-const _log = buildLog('c:FaIcons:index')
 
 type TProps = {
   testid?: string

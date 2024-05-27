@@ -4,18 +4,15 @@
  *
  */
 
-import { FC, lazy, useRef, Suspense } from 'react'
+import { type FC, lazy, useRef, Suspense } from 'react'
 
 import type { TChangelog } from '@/spec'
-import { buildLog } from '@/logger'
 
 import ArtimentBody from '@/widgets/ArtimentBody'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 // import ViewportTracker from '@/widgets/ViewportTracker'
 
 import { Wrapper, InnerWrapper, ArticleWrapper, CommentsWrapper } from '../styles/changelog/content'
-
-const _log = buildLog('C:ChangelogContent')
 
 const Comments = lazy(() => import('@/containers/unit/Comments'))
 

@@ -2,11 +2,10 @@
  * ModeLine
  */
 
-import { Fragment, FC } from 'react'
+import { Fragment, type FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import METRIC from '@/const/metric'
-import { buildLog } from '@/logger'
 
 import useMetric from '@/hooks/useMetric'
 
@@ -15,8 +14,6 @@ import CommunityLayout from './CommunityLayout'
 import ArticleLayout from './ArticleLayout'
 
 import { useInit } from './logic'
-
-const _log = buildLog('C:ModeLine')
 
 const ModeLine: FC = () => {
   const store = useStore()

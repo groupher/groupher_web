@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { useMutation } from 'urql'
 
 import useViewingArticle from '@/hooks/useViewingArticle'
@@ -21,7 +21,7 @@ const Mirrow2Home: FC<TProps> = ({ onBack }) => {
 
   const handleUpdate = () => {
     const params = { id: article.id }
-    console.log('## handle action')
+    console.log('## ## handle action')
     updatePost(params).then((result) => {
       if (result.error) {
         toast('修改失败', 'error')

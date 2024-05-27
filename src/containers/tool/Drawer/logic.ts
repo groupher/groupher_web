@@ -8,12 +8,9 @@ import TYPE from '@/const/type'
 import { toggleGlobalBlur, clearGlobalBlur } from '@/dom'
 import { Global, debounce } from '@/helper'
 import { send, previewArticle } from '@/signal'
-import { buildLog } from '@/logger'
 import asyncSuit from '@/async'
 
 import type { TStore } from './store'
-
-const _log = buildLog('L:Preview')
 
 const { SR71, $solver, asyncRes } = asyncSuit
 const sr71$ = new SR71({
@@ -65,7 +62,7 @@ export const onSwipedYHandler = (
   const { optionsData: options, swipeThreshold, swipeUpAviliable, swipeDownAviliable } = store
 
   if (options.direction === 'bottom') {
-    const swipeDonwY = parseInt(ev.absY, 10)
+    const swipeDonwY = Number.parseInt(ev.absY, 10)
 
     if (swipeDonwY < swipeThreshold) {
       setSwipeDownY(0)
@@ -76,7 +73,7 @@ export const onSwipedYHandler = (
     }
   } else {
     // handle top direction situation
-    const swipeUpY = parseInt(ev.absY, 10)
+    const swipeUpY = Number.parseInt(ev.absY, 10)
 
     if (swipeUpY < swipeThreshold) {
       setSwipeUpY(0)
@@ -110,7 +107,7 @@ export const onSwipingYHandler = (
   const { swipeThreshold, optionsData: options, swipeUpAviliable, swipeDownAviliable } = store
 
   if ((ignoreSwipeAviliable || swipeUpAviliable) && ev.dir === 'Up') {
-    const swipeUpY = parseInt(ev.absY, 10)
+    const swipeUpY = Number.parseInt(ev.absY, 10)
     setSwipeUpY(swipeUpY)
 
     if (ignoreSwipeAviliable || (swipeUpAviliable && options.direction !== 'bottom')) {
@@ -119,7 +116,7 @@ export const onSwipingYHandler = (
   }
 
   if ((ignoreSwipeAviliable || swipeDownAviliable) && ev.dir === 'Down') {
-    const swipeDonwY = parseInt(ev.absY, 10)
+    const swipeDonwY = Number.parseInt(ev.absY, 10)
     setSwipeDownY(swipeDonwY)
 
     if (ignoreSwipeAviliable || (swipeDownAviliable && options.direction !== 'top')) {
@@ -155,7 +152,7 @@ const DataResolver = [
         return
       }
 
-      console.log('## drawer open -> : ', res)
+      console.log('## ## drawer open -> : ', res)
 
       store.open(payload)
     },
@@ -179,7 +176,7 @@ const DataResolver = [
 export const useInit = (_store: TStore, windowWidth: number, metric: TMetric): void => {
   useEffect((): (() => void) => {
     store = _store
-    console.log('## initing ')
+    console.log('## ## initing ')
     if (!sub$) {
       sub$ = sr71$.data().subscribe($solver(DataResolver, []))
     }

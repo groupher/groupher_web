@@ -2,12 +2,11 @@
  * Share
  */
 
-import { FC, Fragment } from 'react'
+import { type FC, Fragment } from 'react'
 import { observer } from 'mobx-react-lite'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TArticle } from '@/spec'
-import { buildLog } from '@/logger'
 
 import Modal from '@/widgets/Modal'
 
@@ -16,8 +15,6 @@ import Platforms from './Platforms'
 import InfoPanel from './InfoPanel'
 
 import { Wrapper } from '../styles/modal_panel'
-
-const _log = buildLog('C:Share')
 
 type TProps = {
   show: boolean

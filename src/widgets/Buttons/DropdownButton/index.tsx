@@ -5,8 +5,6 @@ import type { TActive, TSizeTS, TSpace } from '@/spec'
 import SIZE from '@/const/size'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 
-import { buildLog } from '@/logger'
-
 import {
   Wrapper,
   ButtonWrapper,
@@ -15,8 +13,6 @@ import {
   CloseWrapper,
   CloseIcon,
 } from '../styles/dropdown_button'
-
-const log = buildLog('C:DropdownButton')
 
 type TProps = {
   children: ReactNode
@@ -34,8 +30,8 @@ const DropdownButton: FC<TProps> = ({
   children,
   size = SIZE.SMALL,
   withBorder = false,
-  onClick = log,
-  onClear = log,
+  onClick = console.log,
+  onClear = console.log,
   noArrow = false,
   $active = false,
   selected = false,

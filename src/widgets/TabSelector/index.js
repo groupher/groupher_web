@@ -7,10 +7,7 @@
 import React from 'react'
 import T from 'prop-types'
 
-import { buildLog } from '@/logger'
 import { Wrapper, OptionsWrapper, Option, Icon, Title, HeaderDivider } from './styles'
-
-const log = buildLog('w:TabSelector:index')
 
 const TabSelector = ({ source, activeRaw, onChange }) => (
   <Wrapper>

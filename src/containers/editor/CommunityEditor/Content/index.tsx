@@ -4,9 +4,8 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { buildLog } from '@/logger'
 import useAccount from '@/hooks/useAccount'
 
 import SelectType from './SelectType'
@@ -23,8 +22,6 @@ import type {
 import { STEP } from '../constant'
 
 import { Wrapper } from '../styles/content'
-
-const _log = buildLog('C:NewExploreContent')
 
 type TProps = {
   step: TStep

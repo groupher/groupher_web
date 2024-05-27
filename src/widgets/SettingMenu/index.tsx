@@ -4,13 +4,9 @@
  *
  */
 
-import { FC, memo } from 'react'
-
-import { buildLog } from '@/logger'
+import { type FC, memo } from 'react'
 
 import { Wrapper, Option, ActiveDot, Title, Desc } from './styles'
-
-const log = buildLog('w:SettingMenu:index')
 
 type TProps = {
   testid?: string
@@ -29,7 +25,7 @@ const SettingMenu: FC<TProps> = ({
   options,
   width = 220,
   activeKey = null,
-  onChange = log,
+  onChange = console.log,
 }) => {
   return (
     <Wrapper $testid={testid} width={width}>

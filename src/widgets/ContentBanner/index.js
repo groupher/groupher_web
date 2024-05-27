@@ -9,14 +9,11 @@ import T from 'prop-types'
 import { pluck, isNil, isEmpty, includes } from 'ramda'
 import TimeAgo from 'timeago-react'
 
-import { buildLog } from '@/logger'
 import DotDivider from '@/widgets/DotDivider'
 
 import { BannerContainer, BannerContentWrapper, PostBrief, Title, Desc, MarkTag } from './styles'
 
 import ReactionNumbers from './ReactionNumbers'
-
-const _log = buildLog('w:ContentBanner:index')
 
 // TODO: add a Loading effect
 const ContentBanner = ({ data, middleNode }) => {

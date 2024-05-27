@@ -1,13 +1,9 @@
-import { FC } from 'react'
-
-import { buildLog } from '@/logger'
+import type { FC } from 'react'
 
 import MenuItem from '@/widgets/MenuItem'
 import MENU from '@/const/menu'
 
 import { Wrapper } from '../../styles/footer/editors/link_menu'
-
-const log = buildLog('C:Dashboard:LinkEditor')
 
 type TProps = {
   moveLeft?: () => void
@@ -22,11 +18,11 @@ type TProps = {
 }
 
 const GroupMenu: FC<TProps> = ({
-  moveLeft = log,
-  moveRight = log,
-  moveEdgeLeft = log,
-  moveEdgeRight = log,
-  onDelete = log,
+  moveLeft = console.log,
+  moveRight = console.log,
+  moveEdgeLeft = console.log,
+  moveEdgeRight = console.log,
+  onDelete = console.log,
 
   isEdgeLeft,
   isEdgeRight,

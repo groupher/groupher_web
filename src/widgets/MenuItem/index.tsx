@@ -4,15 +4,12 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import MENU from '@/const/menu'
-import { buildLog } from '@/logger'
 
 import type { TMenu } from '@/spec'
 import { Wrapper, Title, MenuIcon, DeleteTitle } from './styles'
-
-const log = buildLog('c:MenuItem:index')
 
 type TProps = {
   icon: TMenu
@@ -20,7 +17,7 @@ type TProps = {
   onClick?: () => void
 }
 
-const MenuItem: FC<TProps> = ({ title, icon, onClick = log }) => {
+const MenuItem: FC<TProps> = ({ title, icon, onClick = console.log }) => {
   const Icon = MenuIcon[icon]
 
   return (

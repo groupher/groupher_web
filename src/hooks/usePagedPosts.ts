@@ -22,8 +22,8 @@ const usePagedPosts = (): TRes => {
 
   const viewingCommunity = 'home' // store.viewing.community.slug
   const curPageNumber = 1 // store.articles.pagedPosts.pageNumber
-  // console.log('## viewingCommunityd: ', viewingCommunity)
-  // console.log('## curPageNumber: ', curPageNumber)
+  // console.log('## ## viewingCommunityd: ', viewingCommunity)
+  // console.log('## ## curPageNumber: ', curPageNumber)
 
   const resState = useMemo(() => toJS(store.articles.resState), [viewingCommunity, curPageNumber])
   const pagedPosts = useMemo(

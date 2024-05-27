@@ -11,14 +11,10 @@ import { BANNER_LAYOUT } from '@/const/layout'
 // import { ROUTE } from '@/const/route'
 import useBannerLayout from '@/hooks/useBannerLayout'
 
-import { buildLog } from '@/logger'
-
 import DashboardLayout from './DashboardLayout'
 import SidebarLayout from './SidebarLayout'
 import TabberLayout from './TabberLayout'
 import HeaderLayout from './HeaderLayout'
-
-const _log = buildLog('C:CommunityDigest')
 
 const CommunityDigest: FC = () => {
   // const router = useRouter()

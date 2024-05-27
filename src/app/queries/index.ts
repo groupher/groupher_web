@@ -71,11 +71,11 @@ export const useThemeFromURL = (): TThemeName => {
 export const useI18n = (): TUseI18n => {
   const locale = useParseLang()
   // const searchParams = useSearchParams()
-  // console.log('## data: ', data)
+  // console.log('## ## data: ', data)
 
   // NOTE: put this parser into frontend maybe ?
   // const hello = LangParser.parse('zh-CN,zh;q=0.9,en;q=0.8,ja;q=0.7,it;q=0.6,fr;q=0.5,zh-TW;q=0.4')
-  // console.log('## hello: ', hello)
+  // console.log('## ## hello: ', hello)
 
   const [result] = useQuery({
     query: i18nQuery,
@@ -95,7 +95,7 @@ export const useI18n = (): TUseI18n => {
 // export const useThemeFromURL = (): TThemeName => {
 //   const searchParams = useSearchParams()
 //   const theme = searchParams.get('theme')
-//   console.log('## geting theme from url')
+//   console.log('## ## geting theme from url')
 
 //   if (theme === THEME.NIGHT) {
 //     return THEME.NIGHT

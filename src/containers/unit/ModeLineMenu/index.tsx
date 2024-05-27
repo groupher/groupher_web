@@ -4,12 +4,11 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TModelineType } from '@/spec'
 import TYPE from '@/const/type'
-import { buildLog } from '@/logger'
 
 // TODO: 全部动态加载
 import GlobalMenu from './GlobalMenu/index'
@@ -25,8 +24,6 @@ import ReportMenu from './ReportMenu'
 import { useStore } from './store'
 import { Wrapper } from './styles'
 import { useInit } from './logic'
-
-const _log = buildLog('C:ModeLineMenu')
 
 const renderMenus = (type, curActive, subscribedCommunities) => {
   switch (type) {

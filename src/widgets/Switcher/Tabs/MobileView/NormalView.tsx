@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, useEffect, useRef, useState, useCallback } from 'react'
+import { type FC, useEffect, useRef, useState, useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
 import { isEmpty, findIndex } from 'ramda'
 
@@ -13,7 +13,6 @@ import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { ICON } from '@/config'
 import SIZE from '@/const/size'
 import { isString } from '@/validator'
-import { buildLog } from '@/logger'
 
 import TabItem from '../TabItem'
 import {
@@ -25,8 +24,6 @@ import {
   ArrowIcon,
 } from '../../styles/tabs/mobile_view/normal_view'
 import { getSlipMargin } from '../../styles/metric/tabs'
-
-const log = buildLog('w:Tabs:index')
 
 const temItems = [
   {
@@ -65,7 +62,7 @@ type TProps = {
 
 const MobileView: FC<TProps> = ({
   size = SIZE.MEDIUM,
-  onChange = log,
+  onChange = console.log,
   items = temItems,
   activeKey = '',
   slipHeight = '2px',

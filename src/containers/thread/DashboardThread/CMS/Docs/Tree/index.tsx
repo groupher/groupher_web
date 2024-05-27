@@ -41,8 +41,8 @@ const TreeView: FC<TProps> = ({ pagedDocs }) => {
       onClick={() => {
         // treeRef.current.createLeaf()
         // treeRef.current.createInternal()
-        // console.log('## tree: ', treeRef.current)
-        // console.log('## get Data: ', treeRef.current)
+        // console.log('## ## tree: ', treeRef.current)
+        // console.log('## ## get Data: ', treeRef.current)
         // treeRef.current.unselectAll()
       }}
     >

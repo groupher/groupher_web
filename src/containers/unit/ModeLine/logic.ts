@@ -9,7 +9,6 @@ import TYPE from '@/const/type'
 import asyncSuit from '@/async'
 import { plural } from '@/fmt'
 import { send } from '@/signal'
-import { buildLog } from '@/logger'
 
 import type { TStore } from './store'
 // import S from './service'
@@ -24,12 +23,10 @@ const sr71$ = new SR71({
 let sub$ = null
 let store: TStore | undefined
 
-const log = buildLog('L:ModeLine')
-
 export const tabOnChange = (activeThread: TThread): void => {
   const subPath = plural(activeThread)
-  // log('EVENT.activeThread -----> ', activeThread)
-  // log('EVENT.subPath -----> ', subPath)
+  // console.log('## EVENT.activeThread -----> ', activeThread)
+  // console.log('## EVENT.subPath -----> ', subPath)
 
   store.markRoute({ subPath })
   store.setViewing({ activeThread })
@@ -190,7 +187,7 @@ const DataSolver = [
 export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
-    log('useInit: ', store)
+    console.log('## useInit: ', store)
     sub$ = sr71$.data().subscribe($solver(DataSolver, []))
 
     return () => {

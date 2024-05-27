@@ -4,12 +4,11 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TGallery } from '@/spec'
 import { ICON } from '@/config'
 import { getRandomInt } from '@/helper'
-import { buildLog } from '@/logger'
 
 import Upvote from '@/widgets/Upvote'
 import IconText from '@/widgets/IconText'
@@ -31,8 +30,6 @@ import {
   Footer,
   CommentWrapper,
 } from '../styles/people_gallery/fame_people_gallery'
-
-const _log = buildLog('w:ProductGallery:index')
 
 type TProps = {
   items?: TGallery[]

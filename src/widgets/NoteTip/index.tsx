@@ -7,13 +7,10 @@
 import { type FC, memo, type ReactNode } from 'react'
 
 import type { TSpace, TTooltipPlacement } from '@/spec'
-import { buildLog } from '@/logger'
 
 import Tooltip from '@/widgets/Tooltip'
 
 import { Wrapper, InfoIcon, Note } from './styles'
-
-const _log = buildLog('c:NoteTip:index')
 
 type TProps = {
   fontSize?: number

@@ -4,11 +4,8 @@
 
 import type { TCommunity, TRootStore, TArticle, TThread, TDocument } from '@/spec'
 
-import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
-import { buildLog } from '@/logger'
+import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '@/mobx'
 import { Document } from '@/model'
-
-const _log = buildLog('S:ArticleViewer')
 
 const ArticleViewer = T.model('ArticleViewer', {
   loading: T.opt(T.bool, false),

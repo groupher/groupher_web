@@ -8,8 +8,6 @@ import React from 'react'
 import T from 'prop-types'
 import { isEmpty } from 'ramda'
 
-import { buildLog } from '@/logger'
-
 import {
   Wrapper,
   Msg,
@@ -19,8 +17,6 @@ import {
   ErrorArrayWrapper,
   ErrorDetail,
 } from './styles'
-
-const _log = buildLog('w:StatusBox:index')
 
 const getDefaultMsg = (success, error) => {
   if (success) {

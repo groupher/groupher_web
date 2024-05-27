@@ -5,7 +5,6 @@ import type { TChangeMode, TEditValue, TTag } from '@/spec'
 import EVENT from '@/const/event'
 import ERR from '@/const/err'
 
-import { buildLog } from '@/logger'
 import asyncSuit from '@/async'
 import { send, errRescue, closeDrawer } from '@/signal'
 import { CHANGE_MODE } from '@/const/mode'
@@ -19,8 +18,6 @@ const sr71$ = new SR71()
 
 let sub$ = null
 let store: TStore | undefined
-
-const log = buildLog('L:TagSettingEditor')
 
 export const edit = (e: TEditValue, key): void => {
   const { editingTagData } = store
@@ -126,7 +123,7 @@ const ErrSolver = [
 export const useInit = (_store: TStore, mode: TChangeMode): void => {
   useEffect(() => {
     store = _store
-    log('useInit: ', store)
+    console.log('## useInit: ', store)
     _initEditingTag(mode)
 
     if (!sub$) {

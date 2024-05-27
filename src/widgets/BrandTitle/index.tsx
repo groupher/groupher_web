@@ -4,14 +4,11 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { buildLog } from '@/logger'
 import { SpaceGrow } from '@/widgets/Common'
 
 import { Wrapper, Title, Desc, BrandText } from './styles'
-
-const log = buildLog('w:BrandTitle:index')
 
 type TProps = {
   testid?: string
@@ -28,7 +25,7 @@ const BrandTitle: FC<TProps> = ({
   desc = 'what for?',
   mBottom = 10,
   fontSize = 18,
-  onClick = log,
+  onClick = console.log,
 }) => {
   return (
     <Wrapper $testid={testid} mBottom={mBottom} onClick={() => onClick?.()}>

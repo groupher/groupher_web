@@ -4,11 +4,10 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TUser, TUpvoteLayout, TSpace } from '@/spec'
 import { UPVOTE_LAYOUT } from '@/const/layout'
-import { buildLog } from '@/logger'
 
 import DefaultLayout from './DefaultLayout'
 import GeneralLayout from './GeneralLayout'
@@ -21,8 +20,6 @@ import StickerLayout from './StickerLayout'
 import SimpleLayout from './SimpleLayout'
 
 import { Wrapper } from './styles'
-
-const _log = buildLog('w:Upvote:index')
 
 type TProps = {
   testid?: string

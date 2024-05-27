@@ -4,11 +4,9 @@
  *
  */
 
-import { FC, memo, useState, useEffect } from 'react'
+import { type FC, memo, useState, useEffect } from 'react'
 import { Provider } from 'urql'
 import client from '@/utils/async/gq_client'
-
-import { buildLog } from '@/logger'
 
 import type { TSpace } from '@/spec'
 
@@ -16,8 +14,6 @@ import Tooltip from '@/widgets/Tooltip'
 
 import Menu from './Menu'
 import { Wrapper, SettingIcon, DisableTippyJump } from './styles'
-
-const _log = buildLog('c:ArticleSettingMenu:index')
 
 type TProps = {
   testid?: string

@@ -4,11 +4,10 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TColorName } from '@/spec'
-import { buildLog } from '@/logger'
 import useTagLayout from '@/hooks/useTagLayout'
 import useTheme from '@/hooks/useTheme'
 
@@ -17,8 +16,6 @@ import { COLOR_NAME } from '@/const/colors'
 import THEME from '@/const/theme'
 
 import { Dot, HashBoldIcon, HashNormalIcon } from './styles'
-
-const _log = buildLog('c:TagNode:index')
 
 type TProps = {
   color?: string

@@ -1,7 +1,6 @@
 import { type FC, memo, type ReactNode } from 'react'
 
 import type { TSpace } from '@/spec'
-import { buildLog } from '@/logger'
 
 import { SpaceGrow } from '@/widgets/Common'
 import YesOrNoButtons from '@/widgets/Buttons/YesOrNoButtons'
@@ -19,8 +18,6 @@ import {
 
 // import { onSave } from './logic'
 import useHelper from './logic/useHelper'
-
-const log = buildLog('C:Dashboard/SavingBar')
 
 type TProps = {
   field?: TSettingField | null
@@ -45,8 +42,8 @@ const SavingBar: FC<TProps> = ({
   loading = false,
   minimal = false,
   disabled = false,
-  onCancel = log,
-  onConfirm = log,
+  onCancel = console.log,
+  onConfirm = console.log,
   width = '100%',
   ...restProps
 }) => {

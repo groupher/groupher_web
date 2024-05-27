@@ -2,18 +2,15 @@
  * ThemeSwitch
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TSpace } from '@/spec'
 import useTheme from '@/hooks/useTheme'
 
-import { buildLog } from '@/logger'
 import THEME from '@/const/theme'
 
 import { Wrapper, Button, SunIcon, MoonIcon } from './styles'
-
-const _log = buildLog('c:ThemeSwitch:index')
 
 type TProps = {
   testid?: string

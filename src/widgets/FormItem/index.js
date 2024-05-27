@@ -8,7 +8,6 @@ import React from 'react'
 import T from 'prop-types'
 import { isEmpty } from 'ramda'
 
-import { buildLog } from '@/logger'
 import { hasValue } from '@/validator'
 import SIZE from '@/const/size'
 import Maybe from '@/widgets/Maybe'
@@ -21,8 +20,6 @@ import {
   Inputer,
   TextAreaInput,
 } from './styles'
-
-const _log = buildLog('w:FormItem:index')
 
 const FormContent = ({
   type,

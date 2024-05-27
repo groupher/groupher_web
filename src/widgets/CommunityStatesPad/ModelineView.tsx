@@ -4,10 +4,9 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TCommunity } from '@/spec'
-import { buildLog } from '@/logger'
 
 import SubscribeStatus from './SubscribeStatus'
 import ContentStatus from './ContentStatus'
@@ -22,8 +21,6 @@ import {
   NumberTitle,
 } from './styles/modeline_view'
 
-const log = buildLog('w:CommunityStatesPad:index')
-
 type TProps = {
   community: TCommunity
   realtimeVisitors?: number
@@ -34,8 +31,8 @@ type TProps = {
 const CommunityStatesPad: FC<TProps> = ({
   community,
   realtimeVisitors = 1,
-  onShowEditorList = log,
-  onShowSubscriberList = log,
+  onShowEditorList = console.log,
+  onShowSubscriberList = console.log,
 }) => {
   const { moderatorsCount, subscribersCount, contributesDigest, articlesCount } = community
 

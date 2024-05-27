@@ -4,10 +4,9 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TUser } from '@/spec'
-import { buildLog } from '@/logger'
 
 import { UPVOTE_LAYOUT } from '@/const/layout'
 import AnimatedCount from '@/widgets/AnimatedCount'
@@ -16,8 +15,6 @@ import Facepile from '@/widgets/Facepile'
 import useUpvote from './useUpvote'
 import UpvoteBtn from './UpvoteBtn'
 import { Wrapper, Button, FacesWrapper, UpWrapper, CountWrapper } from './styles/sticker_layout'
-
-const log = buildLog('w:Upvote:index')
 
 type TProps = {
   testid?: string
@@ -31,7 +28,7 @@ const Upvote: FC<TProps> = ({
   testid = 'upvote',
   count = 0,
   viewerHasUpvoted = false,
-  onAction = log,
+  onAction = console.log,
   avatarList = [],
 }) => {
   const { handleClick, startAnimate } = useUpvote({ viewerHasUpvoted, onAction })

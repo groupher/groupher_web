@@ -4,10 +4,9 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TID } from '@/spec'
-import { buildLog } from '@/logger'
 import Linker from '@/widgets/Linker'
 
 import {
@@ -22,8 +21,6 @@ import {
   LinkWrapper,
   ExchangeButton,
 } from './styles/friends_gallery'
-
-const _log = buildLog('w:FriendsGallery:index')
 
 type TProps = {
   items: {

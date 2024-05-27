@@ -4,11 +4,10 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TArticle } from '@/spec'
-import { buildLog } from '@/logger'
 
 import { UPVOTE_LAYOUT } from '@/const/layout'
 import ArticleCatState from '@/widgets/ArticleCatState'
@@ -21,8 +20,6 @@ import { SpaceGrow } from '@/widgets/Common'
 import Upvote from '@/widgets/Upvote'
 
 import { Wrapper, Title, UpvotesWrapper } from '../styles/waterfall_layout'
-
-const _log = buildLog('w:KanbanItem:index')
 
 type TProps = {
   article: TArticle

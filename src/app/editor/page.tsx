@@ -14,7 +14,7 @@ const BasicEditorDefaultDemo = () => {
 }
 
 {
-  /* <Plate onChange={(data) => console.log('## onChange: ', data)}>
+  /* <Plate onChange={(data) => console.log('## ## onChange: ', data)}>
         <PlateContent placeholder="Type..." />
       </Plate> */
 }

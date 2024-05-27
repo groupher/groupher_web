@@ -9,7 +9,6 @@ import T from 'prop-types'
 import { keys } from 'ramda'
 
 import { groupByKey } from '@/helper'
-import { buildLog } from '@/logger'
 
 import Group from './Group'
 
@@ -17,8 +16,6 @@ import { Wrapper } from './styles'
 
 const MAX_DISPLAY_COUNT = 5
 const TOTAL_TOGGLE_THROLD = 8 // 15
-
-const _log = buildLog('w:CollapseMenu:index')
 
 const defaultActiveItem = { id: 2 }
 const defaultItems = [

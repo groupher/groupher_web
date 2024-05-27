@@ -4,14 +4,13 @@
  *
  */
 
-import { FC, useState, useCallback, useEffect, memo } from 'react'
+import { type FC, useState, useCallback, useEffect, memo } from 'react'
 import { find, findIndex, propEq, last } from 'ramda'
 
 import URL_QUERY from '@/const/url_query'
 import type { TNaviTag } from '@/spec'
 
 import { findDeepMatch } from '@/helper'
-import { buildLog } from '@/logger'
 import { nilOrEmpty } from '@/validator'
 import { getQueryFromUrl, markRoute } from '@/utils/route'
 
@@ -25,8 +24,6 @@ import List from './List'
 import { Wrapper } from './styles'
 
 import { getCurrentMenuItem, findPath, covertPathToURLQuery, tags2Menu } from './helper'
-
-const log = buildLog('w:NaviCatalog:index')
 
 type TProps = {
   title?: string
@@ -47,7 +44,7 @@ const NaviCatalog: FC<TProps> = ({
   testid = 'navi-menu',
   title = '',
   tags,
-  onSelect = log,
+  onSelect = console.log,
   withDivider = false,
   // initActiveMenuId = '',
   showMoreItem = false,
@@ -73,10 +70,10 @@ const NaviCatalog: FC<TProps> = ({
     const pathQuery = getQueryFromUrl(URL_QUERY.NAVI_CATALOG_PATH)
     if (pathQuery) {
       const pathFromURL = findPath(items, pathQuery)
-      // log('pathFromURL: ', pathFromURL)
+      // console.log('## pathFromURL: ', pathFromURL)
       const activeItem = findDeepMatch(items, 'id', last(pathFromURL).id)
       const isLastLevel = nilOrEmpty(activeItem?.childMenu)
-      // log('isLastLevel: ', isLastLevel)
+      // console.log('## isLastLevel: ', isLastLevel)
 
       if (!nilOrEmpty(pathFromURL)) {
         const curCatalogPath = [...pathFromURL]

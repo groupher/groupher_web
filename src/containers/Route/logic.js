@@ -2,9 +2,6 @@ import { useEffect } from 'react'
 
 import { parseURL } from '@/utils/route'
 import { Global } from '@/helper'
-import { buildLog } from '@/logger'
-
-const _log = buildLog('L:Route')
 
 let store = null
 

@@ -8,11 +8,8 @@ import { type FC, type ReactNode, memo } from 'react'
 
 import type { TSize } from '@/spec'
 import SIZE from '@/const/size'
-import { buildLog } from '@/logger'
 
 import { Wrapper, Text, RightIcon } from './styles/arrow_link'
-
-const _log = buildLog('w:Buttons:ArrowLink')
 
 type TProps = {
   className?: string

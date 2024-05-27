@@ -5,7 +5,6 @@ import type { TArticle } from '@/spec'
 
 import EVENT from '@/const/event'
 import ERR from '@/const/err'
-import { buildLog } from '@/logger'
 import { errRescue } from '@/signal'
 import asyncSuit from '@/async'
 import { scrollDrawerToTop } from '@/dom'
@@ -23,8 +22,6 @@ const sr71$ = new SR71({
 let store: TStore | undefined
 let sub$ = null
 
-const log = buildLog('L:ArticleViewer')
-
 const loadArticle = (): void => {
   markLoading()
 
@@ -39,7 +36,7 @@ const loadArticle = (): void => {
 const markLoading = (maybe = true) => store.mark({ loading: maybe })
 
 const handleArticleRes = (article: TArticle): void => {
-  log('# handleArticleRes: ', article)
+  console.log('## # handleArticleRes: ', article)
   markLoading(false)
 
   const thread = article.meta.thread.toLowerCase()

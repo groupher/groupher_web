@@ -4,11 +4,10 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { ANCHOR } from '@/const/dom'
-import { buildLog } from '@/logger'
 
 // import NoticeBar from '@/widgets/NoticeBar'
 
@@ -23,8 +22,6 @@ import { Wrapper } from './styles'
 import { useInit } from './logic'
 
 import HeadBar from './HeadBar'
-
-const _log = buildLog('C:Comments')
 
 type TProps = {
   apiMode?: TAPIMode

@@ -3,7 +3,7 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import type { TChangeMode, TColorName, TSelectOption } from '@/spec'
 import { ROUTE } from '@/const/route'
@@ -38,8 +38,6 @@ import {
 
 import { useInit, edit } from './logic'
 import { observer } from 'mobx-react-lite'
-
-// const log = buildLog('C:TagSettingEditor')
 
 type TProps = {
   mode?: TChangeMode

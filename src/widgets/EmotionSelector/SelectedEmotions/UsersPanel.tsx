@@ -2,17 +2,14 @@
  * EmojiSelector
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TSimpleUser, TEmotionType } from '@/spec'
-import { buildLog } from '@/logger'
 import { cutRest } from '@/fmt'
 
 import EmotionIcon from './EmotionIcon'
 
 import { Wrapper, UsersWrapper, Units, Username } from '../styles/selected_emotions/users_panel'
-
-const _log = buildLog('w:UsersPanel:index')
 
 type TProps = {
   name: TEmotionType

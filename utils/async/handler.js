@@ -3,9 +3,6 @@ import { join, isEmpty } from 'ramda'
 import ERR from '@/const/err'
 
 // import { TIMEOUT_THRESHOLD } from './config'
-import { buildLog } from '../logger'
-
-const _log = buildLog('Async')
 
 // export const TimeoutObservable = of({
 //   error: ERR.TIMEOUT,
@@ -55,7 +52,7 @@ export const getThenHandler = (res) => {
         details: `${res.url}`,
       })
     default:
-      log('unhandle error: ', res)
+      console.log('## unhandle error: ', res)
       return Promise.reject({
         error: 10000,
         details: `${res.statusText}: unhandle`,

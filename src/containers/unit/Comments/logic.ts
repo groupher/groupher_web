@@ -10,7 +10,6 @@ import asyncSuit from '@/async'
 import BStore from '@/utils/bstore'
 import { titleCase } from '@/fmt'
 import { errRescue, authWarn } from '@/signal'
-import { buildLog } from '@/logger'
 import { scrollIntoEle } from '@/dom'
 import { updateEditing } from '@/mobx'
 
@@ -21,8 +20,6 @@ import { API_MODE, EDIT_MODE, MODE } from './constant'
 import type { TMode, TAPIMode } from './spec'
 import type { TStore } from './store'
 import S from './schema'
-
-const log = buildLog('L:Comments')
 
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
 const sr71$ = new SR71({
@@ -52,7 +49,7 @@ export const loadCommentsState = (): void => {
     freshkey: uid.gen(),
   }
 
-  log('loadCommentsState args: ', args)
+  console.log('## loadCommentsState args: ', args)
   sr71$.query(S.commentsState, args)
 }
 
@@ -63,7 +60,7 @@ export const loadPublishedComemnts = (page = 1): void => {
     login: store.viewingUser.login,
     filter: { page, size: PAGI_SIZE },
   }
-  log('pagedPublishedComments args: ', args)
+  console.log('## pagedPublishedComments args: ', args)
   sr71$.query(S.pagedPublishedComments, args)
 }
 
@@ -77,7 +74,7 @@ export const loadComments = (page = 1): void => {
     mode,
     filter: { page, size: PAGI_SIZE },
   }
-  log('loadComments args: ', args)
+  console.log('## loadComments args: ', args)
   sr71$.query(S.pagedComments, args)
 }
 
@@ -86,7 +83,7 @@ export const loadCommentReplies = (id: TID): void => {
   const args = { id, filter }
 
   store.mark({ repliesParentId: id, repliesLoading: true })
-  log('loadCommentReplies args: ', args)
+  console.log('## loadCommentReplies args: ', args)
   sr71$.query(S.pagedCommentReplies, args)
 }
 
@@ -99,7 +96,7 @@ export const createComment = (): void => {
     thread: store.activeThread,
   }
 
-  log('createComment args: ', args)
+  console.log('## createComment args: ', args)
   store.mark({ publishing: true })
   sr71$.mutate(S.createComment, args)
 }
@@ -112,7 +109,7 @@ export const updateComment = (): void => {
     body: store.updateBody,
   }
 
-  log('updateComment args: ', args)
+  console.log('## updateComment args: ', args)
   store.mark({ publishing: true })
   sr71$.mutate(S.updateComment, args)
 }
@@ -323,7 +320,7 @@ const DataSolver = [
     match: asyncRes('pagedComments'),
     action: ({ pagedComments }) => {
       cancelLoading()
-      log('# pagedComments --> ', pagedComments)
+      console.log('## # pagedComments --> ', pagedComments)
       repliesPagiNo = {}
       store.mark({ pagedComments, loading: false })
 
@@ -336,7 +333,7 @@ const DataSolver = [
     match: asyncRes('pagedCommentReplies'),
     action: ({ pagedCommentReplies }) => {
       // cancelLoading()
-      log('# pagedCommentReplies --> ', pagedCommentReplies)
+      console.log('## # pagedCommentReplies --> ', pagedCommentReplies)
       store.addToReplies(pagedCommentReplies.entries)
 
       repliesPagiNo[store.repliesParentId] = pagedCommentReplies.pageNumber
@@ -348,7 +345,7 @@ const DataSolver = [
     match: asyncRes('pagedPublishedComments'),
     action: ({ pagedPublishedComments }) => {
       cancelLoading()
-      log('# pagedPublishedComments --> ', pagedPublishedComments)
+      console.log('## # pagedPublishedComments --> ', pagedPublishedComments)
       // repliesPagiNo = {}
       store.mark({ pagedPublishedComments, loading: false })
     },
@@ -424,7 +421,7 @@ const DataSolver = [
   {
     match: asyncRes('deleteComment'),
     action: ({ deleteComment }) => {
-      log('deleteComment', deleteComment)
+      console.log('## deleteComment', deleteComment)
       scrollIntoEle(ANCHOR.COMMENTS_ID)
     },
   },
@@ -480,7 +477,7 @@ const initDraftTimmer = (): void => {
 // ###############################
 export const useInit = (_store: TStore, locked: boolean, apiMode: TAPIMode): void => {
   useEffect(() => {
-    // log('effect init')
+    // console.log('## effect init')
     store = _store
     store.mark({ apiMode })
 
@@ -494,7 +491,7 @@ export const useInit = (_store: TStore, locked: boolean, apiMode: TAPIMode): voi
     }
 
     return () => {
-      // log('effect uninit')
+      // console.log('## effect uninit')
       if (store.loading || !sub$) return
 
       stopDraftTimmer()

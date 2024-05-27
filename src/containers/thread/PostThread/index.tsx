@@ -4,11 +4,10 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { BANNER_LAYOUT } from '@/const/layout'
 
-import { buildLog } from '@/logger'
 import usePostLayout from '@/hooks/usePostLayout'
 import useBannerLayout from '@/hooks/useBannerLayout'
 import { THREAD } from '@/const/thread'
@@ -21,8 +20,6 @@ import ArticlesFilter from '@/widgets/ArticlesFilter'
 import ThreadSidebar from './ThreadSidebar'
 
 import { Wrapper, MainWrapper, SidebarWrapper, FilterWrapper } from './styles'
-
-const _log = buildLog('C:PostThread')
 
 const PostThread: FC = () => {
   const bannerLayout = useBannerLayout()

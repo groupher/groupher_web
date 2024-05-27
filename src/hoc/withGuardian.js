@@ -11,9 +11,6 @@ import { startsWith, isEmpty, path, split } from 'ramda'
 
 import BStore from '@/utils/bstore'
 import { nilOrEmpty } from '@/validator'
-import { buildLog } from '@/logger'
-
-const _log = buildLog('w:Guardian:index')
 
 const getDisplayName = (WrappedComp) => WrappedComp.displayName || WrappedComp.name || 'Component'
 
@@ -40,8 +37,8 @@ const withGuardian = (WrappedComponent) => {
       const accountPassports = loginUser.cmsPassport || {}
       let isValid = false
 
-      // log('accountPassports: ', accountPassports)
-      // log('passport: ', passport)
+      // console.log('## accountPassports: ', accountPassports)
+      // console.log('## passport: ', passport)
       // valid by default if no passport pass in
       // or root
       if (nilOrEmpty(passport) || accountPassports.root) {

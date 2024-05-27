@@ -182,7 +182,7 @@ export const findDeepMatch = (data, key, value) => {
   let result = null
   if (Array.isArray(data)) {
     for (let i = 0; i < data.length; i += 1) {
-      // console.log('> the data[i]', data[i])
+      // console.log('## > the data[i]', data[i])
       result = findDeepMatch(data[i], key, value)
       // end the recursive function
       if (result) return result

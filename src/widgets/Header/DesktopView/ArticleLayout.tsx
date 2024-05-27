@@ -4,12 +4,11 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { ICON } from '@/config'
 
 import type { TUser } from '@/spec'
-import { buildLog } from '@/logger'
 import { authWarn } from '@/signal'
 
 import Tooltip from '@/widgets/Tooltip'
@@ -25,8 +24,6 @@ import {
   LoginHint,
   MoreIcon,
 } from '../styles/desktop_view/article_layout'
-
-const _log = buildLog('C:Header')
 
 const ArticleHeader: FC<TProps> = ({ metric, accountInfo }) => {
   return (

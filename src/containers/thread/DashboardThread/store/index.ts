@@ -44,8 +44,7 @@ import { CHANGE_MODE } from '@/const/mode'
 import { THREAD } from '@/const/thread'
 
 import BStore from '@/utils/bstore'
-import { buildLog } from '@/logger'
-import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
+import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '@/mobx'
 import { publicThreads } from '@/helper'
 
 import {
@@ -71,8 +70,6 @@ import type {
 import { SETTING_FIELD, BASEINFO_KEYS, SEO_KEYS } from '../constant'
 
 import { NameAlias, LinkItem, InitSettings, settingsModalFields, Overview } from './Models'
-
-const _log = buildLog('S:DashboardThread')
 
 // for local store, demo setting usage
 const DASHBOARD_DEMO_KEY = 'dashboard_demo'

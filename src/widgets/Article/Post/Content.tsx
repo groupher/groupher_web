@@ -4,17 +4,14 @@
  *
  */
 
-import { FC, useRef, lazy, Suspense } from 'react'
+import { type FC, useRef, lazy, Suspense } from 'react'
 
-import { buildLog } from '@/logger'
 import useViewingArticle from '@/hooks/useViewingArticle'
 import ArtimentBody from '@/widgets/ArtimentBody'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 // import ViewportTracker from '@/widgets/ViewportTracker'
 
 import { Wrapper, InnerWrapper, ArticleWrapper, CommentsWrapper } from '../styles/post/content'
-
-const _log = buildLog('C:PostContent')
 
 const Comments = lazy(() => import('@/containers/unit/Comments'))
 

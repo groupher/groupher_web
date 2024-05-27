@@ -3,10 +3,8 @@
 /*
  */
 
-import { FC, useState, useRef, useCallback } from 'react'
+import { type FC, useState, useRef, useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
-
-import { buildLog } from '@/logger'
 
 import useOutsideClick from '@/hooks/useOutsideClick'
 import useTrans from '@/hooks/useTrans'
@@ -23,8 +21,6 @@ import NotifyPanel from './NotifyPanel'
 
 import { MENU, TIP_OPTIONS } from './constant'
 import { Wrapper, ButtonBar, Icon, IconBox, TipText, PeopleBox, TopBox } from './styles'
-
-const _log = buildLog('c:AccountBar:index')
 
 const AccountBar: FC = () => {
   const ref = useRef(null)

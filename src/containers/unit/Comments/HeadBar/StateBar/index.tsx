@@ -1,6 +1,5 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { buildLog } from '@/logger'
 import Button from '@/widgets/Buttons/Button'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
@@ -16,8 +15,6 @@ import {
   EditIcon,
 } from '../../styles/head_bar/state_bar'
 
-const log = buildLog('C:HeaderBar')
-
 type TProps = Pick<TBase, 'mode' | 'apiMode' | 'isAllFolded' | 'loading' | 'basicState'> & {
   callEditor?: () => void
 }
@@ -28,7 +25,7 @@ const StateBar: FC<TProps> = ({
   isAllFolded,
   loading,
   apiMode,
-  callEditor = log,
+  callEditor = console.log,
 }) => {
   return (
     <Wrapper>

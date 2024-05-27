@@ -5,21 +5,17 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import Markdown from 'markdown-to-jsx'
 import type { TColorName } from '@/spec'
-
-import { buildLog } from '@/logger'
 
 import useActiveTag from '@/hooks/useActiveTag'
 import { SpaceGrow } from '@/widgets/Common'
 import TagNode from '@/widgets/TagNode'
 
 import { Wrapper, Header, BgWrapper, Title, Desc, InfoIcon } from './styles'
-
-const _log = buildLog('c:TagNote:index')
 
 const TagNote: FC = () => {
   const tag = useActiveTag()

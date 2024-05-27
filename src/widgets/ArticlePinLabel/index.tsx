@@ -4,14 +4,11 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { buildLog } from '@/logger'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import { PinIcon } from './styles'
-
-const _log = buildLog('w:ArticlePinLabel:index')
 
 export type TProps = {
   top?: number

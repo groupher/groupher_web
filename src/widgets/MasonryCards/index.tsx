@@ -7,11 +7,7 @@
 import { type FC, type ReactNode, memo } from 'react'
 import Masonry from 'react-masonry-css'
 
-import { buildLog } from '@/logger'
-
 import { Wrapper } from './styles'
-
-const _log = buildLog('w:MasonryCards:index')
 
 type TProps = {
   testid?: string

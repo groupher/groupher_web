@@ -3,10 +3,7 @@
  */
 
 import type { TCommunity, TDocFAQLayout, TDocLayout, TFAQSection, TRootStore } from '@/spec'
-import { buildLog } from '@/logger'
-import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
-
-const _log = buildLog('S:DocThread')
+import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '@/mobx'
 
 const DocThread = T.model('DocThread', {
   isArticleLayout: T.opt(T.bool, false),

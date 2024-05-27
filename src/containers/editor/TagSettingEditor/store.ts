@@ -4,14 +4,11 @@
 import { uniq, reject, values } from 'ramda'
 
 import type { TCommunity, TRootStore, TTag, TSelectOption, TThread } from '@/spec'
-import { buildLog } from '@/logger'
 import { nilOrEmpty } from '@/validator'
-import { markStates, toJS, T, getParent, Instance, useMobxContext } from '@/mobx'
+import { markStates, toJS, T, getParent, type Instance, useMobxContext } from '@/mobx'
 import { CHANGE_MODE } from '@/const/mode'
 
 import { Tag } from '@/model'
-
-const _log = buildLog('S:TagSettingEditor')
 
 const TagSettingEditor = T.model('TagSettingEditor', {
   mode: T.opt(T.enum('mode', values(CHANGE_MODE)), CHANGE_MODE.UPDATE),

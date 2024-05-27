@@ -11,10 +11,7 @@ import React from 'react'
 import T from 'prop-types'
 import ResizeObserver from 'resize-observer-polyfill'
 
-import { buildLog } from '@/logger'
 import { Global } from '@/helper'
-
-const log = buildLog('w:Sticky')
 
 const getScrollParent = (node) => {
   let parent = node
@@ -212,8 +209,14 @@ class StickyBox extends React.Component {
   handleParentNodeResize = () => {
     const { parentNode } = this.node
     const computedParentStyle = getComputedStyle(parentNode, null)
-    const parentPaddingTop = parseInt(computedParentStyle.getPropertyValue('padding-top'), 10)
-    const parentPaddingBottom = parseInt(computedParentStyle.getPropertyValue('padding-bottom'), 10)
+    const parentPaddingTop = Number.parseInt(
+      computedParentStyle.getPropertyValue('padding-top'),
+      10,
+    )
+    const parentPaddingBottom = Number.parseInt(
+      computedParentStyle.getPropertyValue('padding-bottom'),
+      10,
+    )
     const verticalParentPadding = parentPaddingTop + parentPaddingBottom
     this.naturalTop =
       offsetTill(parentNode, this.scrollPane) + parentPaddingTop + this.scrollPaneOffset

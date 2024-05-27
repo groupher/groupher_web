@@ -4,16 +4,13 @@
  *
  */
 
-import { FC, memo, useCallback, useEffect, useState } from 'react'
+import { type FC, memo, useCallback, useEffect, useState } from 'react'
 import { find, includes, without, reject, isEmpty, forEach } from 'ramda'
 
 import type { TCityOption, TSpace } from '@/spec'
 import { CITY_OPTIONS, HOME_CITY_OPTIONS, CITY_OPTION_VALUES } from '@/const/city'
-import { buildLog } from '@/logger'
 
 import { Wrapper, Box, MoreBtn, Flag, InputLabel, Inputer } from './styles'
-
-const log = buildLog('c:CitySelector:index')
 
 type TProps = {
   radius?: number
@@ -21,7 +18,12 @@ type TProps = {
   onChange?: (value: string) => void
 } & TSpace
 
-const CitySelector: FC<TProps> = ({ radius = 5, value = '', onChange = log, ...restProps }) => {
+const CitySelector: FC<TProps> = ({
+  radius = 5,
+  value = '',
+  onChange = console.log,
+  ...restProps
+}) => {
   const [selected, setSelected] = useState(value.split(','))
   const [showMore, setShowMore] = useState(false)
   const [extraCities, setExtraCities] = useState('')

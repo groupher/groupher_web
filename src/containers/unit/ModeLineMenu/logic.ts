@@ -5,14 +5,11 @@ import EVENT from '@/const/event'
 import TYPE from '@/const/type'
 
 import { send, report } from '@/signal'
-import { buildLog } from '@/logger'
 // import S from './service'
 
 import type { TStore } from './store'
 
 let store: TStore | undefined
-
-const log = buildLog('L:ModeLineMenu')
 
 export const openMenu = (activeMenu: string): void => {
   switch (activeMenu) {
@@ -87,7 +84,7 @@ export const restoreDrawerContentDrag = (): void => {
 export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
-    log('useInit: ', store)
+    console.log('## useInit: ', store)
     // return () => store.reset()
   }, [_store])
 }

@@ -4,10 +4,9 @@
  *
  */
 
-import { FC, memo, useEffect, useState } from 'react'
+import { type FC, memo, useEffect, useState } from 'react'
 
 import type { TUser } from '@/spec'
-import { buildLog } from '@/logger'
 import Modal from '@/widgets/Modal'
 
 import Header from './Header'
@@ -16,8 +15,6 @@ import List from './List'
 
 import type { TView } from '../spec'
 import { Wrapper, EmptyHint } from '../styles/setter'
-
-const _log = buildLog('w:TeamList:index')
 
 export type TProps = {
   show: boolean

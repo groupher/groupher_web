@@ -4,7 +4,7 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TArticleCat, TArticleOrder, TArticleState } from '@/spec'
@@ -18,8 +18,6 @@ import usePagedPosts from '@/hooks/usePagedPosts'
 import useBannerLayout from '@/hooks/useBannerLayout'
 import useArticlesFilter from '@/hooks/useArticlesFilter'
 
-import { buildLog } from '@/logger'
-
 import { Space, SpaceGrow, DesktopOnly } from '@/widgets/Common'
 import PublishButton from '@/widgets/Buttons/PublishButton'
 import ConditionSelector from '@/widgets/ConditionSelector'
@@ -28,8 +26,6 @@ import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
 import type { TProps } from '.'
 import { Wrapper } from './styles'
-
-const _log = buildLog('w:ArticlesFilter:index')
 
 const ArticlesFilter: FC<TProps> = ({ mode = 'default' }) => {
   const { resState } = usePagedPosts()

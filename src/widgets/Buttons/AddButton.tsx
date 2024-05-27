@@ -7,11 +7,8 @@
 import { type FC, memo, type ReactNode } from 'react'
 
 import type { TSpace } from '@/spec'
-import { buildLog } from '@/logger'
 
 import { Wrapper, PlusIcon, EditIcon, Text } from './styles/add_button'
-
-const log = buildLog('w:Buttons:AddButton')
 
 type TProps = {
   children?: ReactNode
@@ -24,7 +21,7 @@ type TProps = {
 
 const AddButton: FC<TProps> = ({
   children = '添加',
-  onClick = log,
+  onClick = console.log,
   dimWhenIdle = false,
   disabled = false,
   withIcon = true,

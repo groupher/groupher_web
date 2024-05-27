@@ -4,10 +4,9 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { buildLog } from '@/logger'
 import { closeDrawer } from '@/signal'
 
 import SubmitButton from '@/widgets/Buttons/SubmitButton'
@@ -37,8 +36,6 @@ import {
 } from './styles'
 
 import { useInit, inputOnChange, onUpdate } from './logic'
-
-const log = buildLog('C:AccountEditor')
 
 const AccountEditor: FC = () => {
   const store = useStore()

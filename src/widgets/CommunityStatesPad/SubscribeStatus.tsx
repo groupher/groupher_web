@@ -1,7 +1,6 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { prettyNum } from '@/fmt'
-import { buildLog } from '@/logger'
 
 import AnimatedCount from '@/widgets/AnimatedCount'
 import Tooltip from '@/widgets/Tooltip'
@@ -14,8 +13,6 @@ import {
   GreenDot,
   PopHint,
 } from './styles/subscribe_status'
-
-const _log = buildLog('w:CommunityStatesPad:SubscribeStatus')
 
 type TProps = {
   count?: number

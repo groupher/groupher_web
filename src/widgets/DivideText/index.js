@@ -7,11 +7,7 @@
 import React from 'react'
 import T from 'prop-types'
 
-import { buildLog } from '@/logger'
-
 import { Wrapper, Content, LeftLine, RightLine } from './styles'
-
-const _log = buildLog('w:DivideText:index')
 
 const DivideText = ({ testid, children }) => {
   return (

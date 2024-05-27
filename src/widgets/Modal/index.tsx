@@ -6,12 +6,9 @@
 
 import { type FC, type ReactNode, useCallback, memo } from 'react'
 
-import { buildLog } from '@/logger'
 import useShortcut from '@/hooks/useShortcut'
 
 import RealModal from './RealModal'
-
-const log = buildLog('w:Modal:index')
 
 export type TProps = {
   children: ReactNode
@@ -25,7 +22,7 @@ export type TProps = {
   onClose?: () => void
 }
 
-const Modal: FC<TProps> = ({ show = false, onClose = log, ...restProps }) => {
+const Modal: FC<TProps> = ({ show = false, onClose = console.log, ...restProps }) => {
   const handleClose = useCallback(() => {
     onClose()
   }, [onClose])

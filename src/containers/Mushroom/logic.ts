@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, Children, isValidElement, cloneElement } from 'react'
+import { type ReactNode, useEffect, Children, isValidElement, cloneElement } from 'react'
 
 import { APP_VERSION } from '@/config'
 import type {
@@ -14,7 +14,6 @@ import EVENT from '@/const/event'
 import TYPE from '@/const/type'
 import ERR from '@/const/err'
 
-import { buildLog } from '@/logger'
 import { errRescue } from '@/signal'
 import { Global } from '@/helper'
 
@@ -24,8 +23,6 @@ import asyncSuit from '@/async'
 
 import S from './schema'
 import type { TStore } from './store'
-
-const _log = buildLog('L:GlobalLayout')
 
 let store: TStore | undefined
 let sub$ = null

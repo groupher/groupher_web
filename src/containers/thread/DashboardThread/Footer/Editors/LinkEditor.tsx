@@ -1,8 +1,6 @@
-import { FC, useEffect, useState } from 'react'
+import { type FC, useEffect, useState } from 'react'
 
 import type { TChangeMode, TLinkItem } from '@/spec'
-
-import { buildLog } from '@/logger'
 
 import { Space, SpaceGrow } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'
@@ -39,8 +37,6 @@ import {
   moveLink,
 } from '../../logic/links'
 import { CHANGE_MODE } from '@/const/mode'
-
-const _log = buildLog('C:Dashboard:LinkEditor')
 
 type TProps = {
   notifyText?: string

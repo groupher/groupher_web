@@ -1,12 +1,9 @@
 import { useEffect } from 'react'
 
 // import ERR from '@/const/err'
-import { buildLog } from '@/logger'
 import type { TStore } from './store'
 
 let store: TStore | undefined
-
-const log = buildLog('L:RichEditor')
 
 export const someMethod = (): void => {
   /* todo */
@@ -25,10 +22,10 @@ export const someMethod = (): void => {
 export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
-    log('effect init: ', store)
+    console.log('## effect init: ', store)
 
     return () => {
-      // log('effect uninit')
+      // console.log('## effect uninit')
     }
   }, [_store])
 }

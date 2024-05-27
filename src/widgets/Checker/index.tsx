@@ -10,11 +10,8 @@ import { observer } from 'mobx-react-lite'
 import type { TSizeSM, TSpace } from '@/spec'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import SIZE from '@/const/size'
-import { buildLog } from '@/logger'
 
 import { Wrapper, IconWrapper, CheckIcon, ChildWrapper } from './styles'
-
-const log = buildLog('w:Checker:index')
 
 type TProps = {
   children?: ReactNode | null
@@ -28,7 +25,7 @@ type TProps = {
 
 const Checker: FC<TProps> = ({
   checked = false,
-  onChange = log,
+  onChange = console.log,
   hiddenMode = false,
   size = SIZE.MEDIUM,
   children = null,

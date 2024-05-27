@@ -6,13 +6,10 @@
 import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { buildLog } from '@/logger'
 import Tooltip from '@/widgets/Tooltip'
 
 import Panel from './Panel'
 import { Wrapper, DownloadIcon } from './styles'
-
-const _log = buildLog('c:GetMe:index')
 
 const GetMe: FC = () => {
   return (

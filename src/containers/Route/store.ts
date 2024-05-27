@@ -8,7 +8,7 @@ import { mergeRight, pickBy, omit, isEmpty } from 'ramda'
 import type { TRootStore, TRoute } from '@/spec'
 import { PAGE_SIZE } from '@/config'
 
-import { T, getParent, Instance, markStates, useMobxContext } from '@/mobx'
+import { T, getParent, type Instance, markStates, useMobxContext } from '@/mobx'
 import { Global } from '@/helper'
 import { serializeQuery } from '@/utils/route'
 
@@ -88,7 +88,7 @@ const RouteStore = T.model('RouteStore', {
 
       // NOTE: shallow option only works for same page url
       // if page is diffrent, it will cause page reload
-      /* console.log('push url: ', url) */
+      /* console.log('## push url: ', url) */
       // Router.push(url, asPath, { shallow: true })
       // see: https://stackoverflow.com/questions/824349/modify-the-url-without-reloading-the-page
       /* return Global.history.pushState({}, null, url) */

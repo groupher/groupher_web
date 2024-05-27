@@ -4,11 +4,10 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TCommunity } from '@/spec'
-import { buildLog } from '@/logger'
 
 // import Charger from '@/widgets/Charger'
 
@@ -26,8 +25,6 @@ import {
   NumberTitle,
 } from './styles'
 
-const log = buildLog('w:CommunityStatesPad:index')
-
 type TProps = {
   community: TCommunity
   realtimeVisitors?: number
@@ -38,8 +35,8 @@ type TProps = {
 const CommunityStatesPad: FC<TProps> = ({
   community,
   realtimeVisitors = 1,
-  onShowEditorList = log,
-  onShowSubscriberList = log,
+  onShowEditorList = console.log,
+  onShowSubscriberList = console.log,
 }) => {
   const { isMobile } = useMobileDetect()
 

@@ -4,16 +4,13 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { buildLog } from '@/logger'
 import { getLetterColor } from '@/utils/color'
 import useAvatarLayout from '@/hooks/useAvatarLayout'
 
 import type { TAvatarProps as TProps } from '.'
 import { Wrapper, Name } from './styles/avatar'
-
-const _log = buildLog('w:ImgFallback:Avatar')
 
 const Avatar: FC<TProps> = ({
   testid = 'avatar-fallback',

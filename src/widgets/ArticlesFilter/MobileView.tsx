@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, Fragment, memo } from 'react'
+import { type FC, Fragment, memo } from 'react'
 
 import type { TArticleCat, TArticleState } from '@/spec'
 
@@ -14,16 +14,12 @@ import TYPE from '@/const/type'
 
 import useArticlesFilter from '@/hooks/useArticlesFilter'
 
-import { buildLog } from '@/logger'
-
 import { SpaceGrow } from '@/widgets/Common'
 import ConditionSelector from '@/widgets/ConditionSelector'
 import SearchBox from '@/widgets/SearchBox'
 
 import type { TProps } from '.'
 import { Wrapper } from './styles/mobile_view'
-
-const _log = buildLog('w:ArticlesFilter:index')
 
 const ArticlesFilter: FC<TProps> = ({ resState = TYPE.RES_STATE.DONE }) => {
   const { cat: activeCat, state: activeState, updateActiveFilter } = useArticlesFilter()

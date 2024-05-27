@@ -3,7 +3,7 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { SexyDivider } from '@/widgets/Common'
@@ -14,8 +14,6 @@ import Selects from './Selects'
 
 import { Wrapper, Desc, Footer, RootSign } from './styles'
 import { useInit, updatePassport } from './logic' /* eslint-disable-next-line */
-
-// const log = buildLog('C:PassportEditor')
 
 const PassportEditor: FC = () => {
   const store = useStore()

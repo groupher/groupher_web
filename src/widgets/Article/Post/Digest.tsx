@@ -2,7 +2,7 @@
  * PostLayout
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
@@ -10,8 +10,6 @@ import useMetric from '@/hooks/useMetric'
 import useViewingArticle from '@/hooks/useViewingArticle'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { ARTICLE_THREAD } from '@/const/thread'
-
-import { buildLog } from '@/logger'
 
 // import ArchivedSign from '@/widgets/ArchivedSign'
 import { SpaceGrow } from '@/widgets/Common'
@@ -36,8 +34,6 @@ import {
   AuthorName,
   BottomInfo,
 } from '../styles/post/digest'
-
-const _log = buildLog('C:ArticleDigest')
 
 const PostLayout: FC = () => {
   const router = useRouter()

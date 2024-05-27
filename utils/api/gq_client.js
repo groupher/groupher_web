@@ -5,16 +5,13 @@ import { Client, cacheExchange, fetchExchange } from '@urql/core'
 import { GRAPHQL_ENDPOINT } from '@/config'
 import OAUTH from '@/const/oauth'
 
-import { buildLog } from '../logger'
 import BStore from '../bstore'
-
-const _log = buildLog('Async')
 
 // see setup https://formidable.com/open-source/urql/docs/basics/core/
 const client = new Client({
   url: GRAPHQL_ENDPOINT,
   fetchOptions: () => {
-    // console.log('## gq client init: ', BStore.get('token'))
+    // console.log('## ## gq client init: ', BStore.get('token'))
     const authorization = `Bearer ${BStore.get(OAUTH.TOKEN_KEY) || ''}`
 
     return {

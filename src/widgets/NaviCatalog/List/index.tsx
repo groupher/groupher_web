@@ -4,18 +4,15 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import { map, prop, includes } from 'ramda'
 
 import type { TNaviTag } from '@/spec'
-import { buildLog } from '@/logger'
 import { SpaceGrow, Space } from '@/widgets/Common'
 
 import { ROOT_MENU } from '../constant'
 
 import { Wrapper, Item, MoreItem, FixedIcon, Icon, ActiveDot, TotalNumber } from '../styles/list'
-
-const _log = buildLog('w:NaviCatalog:List')
 
 const renderRightIcon = (item, active, showItemTotal) => {
   if (showItemTotal && item.total) {

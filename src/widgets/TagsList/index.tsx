@@ -2,14 +2,13 @@
  * TagsList
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TTag, TSizeTSM, TSpace } from '@/spec'
 import SIZE from '@/const/size'
 
 import { sortByColor } from '@/helper'
 import { Trans } from '@/i18n'
-import { buildLog } from '@/logger'
 
 import Tooltip from '@/widgets/Tooltip'
 import TagNode from '@/widgets/TagNode'
@@ -18,8 +17,6 @@ import FullList from './FullList'
 
 import { getDotSize, getIconSize, getDotMargin, getHashMargin } from './styles/metric'
 import { Wrapper, Tag, Title, More } from './styles'
-
-const _log = buildLog('w:TagsList:index')
 
 export type TProps = {
   items: TTag[]

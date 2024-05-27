@@ -16,12 +16,9 @@ import type {
 } from '@/spec'
 import { GRADIENT_WALLPAPER, PATTERN_WALLPAPER, WALLPAPER_TYPE } from '@/const/wallpaper'
 
-import { buildLog } from '@/logger'
-import { T, markStates, Instance, getParent, toJS, useMobxContext } from '@/mobx'
+import { T, markStates, type Instance, getParent, toJS, useMobxContext } from '@/mobx'
 
 import { TAB } from './constant'
-
-const _log = buildLog('S:WallpaperEditor')
 
 const initWallpaperModalFields = {
   wallpaperType: T.opt(T.enum(values(WALLPAPER_TYPE)), WALLPAPER_TYPE.GRADIENT),

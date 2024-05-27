@@ -4,12 +4,11 @@
  *
  */
 
-import { FC, lazy, Suspense } from 'react'
+import { type FC, lazy, Suspense } from 'react'
 import { includes } from 'ramda'
 
 import type { TMetric } from '@/spec'
 import METRIC from '@/const/metric'
-import { buildLog } from '@/logger'
 
 import Navigator from '@/widgets/Navigator'
 
@@ -19,8 +18,6 @@ import {
   ClassicInnerWrapper,
   RouterWrapper,
 } from '../styles/desktop_view/community_layout'
-
-const _log = buildLog('C:Header')
 
 // let MailBox
 const AddOns = lazy(() => import('../AddOns'))

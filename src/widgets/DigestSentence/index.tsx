@@ -7,7 +7,6 @@
 import { type FC, type ReactNode, memo, useRef, useEffect, useState } from 'react'
 
 import type { TSizeSM, TSpace } from '@/spec'
-import { buildLog } from '@/logger'
 import SIZE from '@/const/size'
 
 // import { ICON } from '@/config'
@@ -23,8 +22,6 @@ import {
   ThunderIcon,
 } from './styles'
 
-const log = buildLog('w:DigestSentence:index')
-
 type TProps = {
   testid?: string
   children: ReactNode
@@ -38,7 +35,7 @@ const DigestSentence: FC<TProps> = ({
   testid = 'digest-sentence',
   children = '可能是来为你心爱的产品建立一个反馈社区吧。，来为你心爱的作品建立...',
   lineClamp = 2,
-  onPreview = log,
+  onPreview = console.log,
   size = SIZE.SMALL,
   interactive = true,
   ...restProps

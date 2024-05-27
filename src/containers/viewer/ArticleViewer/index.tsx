@@ -7,8 +7,6 @@
 import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { buildLog } from '@/logger'
-
 import Comments from '@/containers/unit/Comments'
 
 import DrawerHeader from './DrawerHeader'
@@ -17,8 +15,6 @@ import Viewer from './Viewer'
 import { useStore } from './store'
 import { Wrapper, CommentsWrapper } from './styles'
 import { useInit } from './logic'
-
-const _log = buildLog('C:ArticleViewer')
 
 // const CollectionFolder = dynamic(
 //   () => import('@/containers/tool/CollectionFolder'),

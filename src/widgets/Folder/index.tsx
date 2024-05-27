@@ -10,14 +10,11 @@ import { type FC, memo } from 'react'
 import type { TSizeSM } from '@/spec'
 
 import SIZE from '@/const/size'
-import { buildLog } from '@/logger'
 
 import Content from './Content'
 import Footer from './Footer'
 
 import { Wrapper, TabShape } from './styles'
-
-const log = buildLog('w:Folder:index')
 
 type TProps = {
   title?: string
@@ -37,8 +34,8 @@ const Folder: FC<TProps> = ({
   updatedAt = '',
   lock = false,
   inactive = false,
-  onSelect = log,
-  onMenuClick = log,
+  onSelect = console.log,
+  onMenuClick = console.log,
 }) => {
   return (
     <Wrapper $testid="folder" size={size}>

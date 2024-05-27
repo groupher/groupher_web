@@ -4,20 +4,17 @@
  *
  */
 
-import { FC, useEffect, useCallback, useRef } from 'react'
+import { type FC, useEffect, useCallback, useRef } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TSizeSM, TTabItem } from '@/spec'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { Trans } from '@/i18n'
 import { isString } from '@/validator'
-import { buildLog } from '@/logger'
 import { isElementInViewport } from '@/dom'
 
 import TabIcon from './TabIcon'
 import { Wrapper, Label, ActiveLineWrapper, ActiveLine } from '../styles/tabs/tab_item'
-
-const _log = buildLog('w:Tabs:index')
 
 type TProps = {
   mobileView?: boolean

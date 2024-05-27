@@ -8,8 +8,6 @@
 
 export { default as asyncSuit } from './async/index'
 
-export { buildLog, log } from './logger'
-
 export { default as uid } from './uid'
 
 export { send, joinUS, closeDrawer, report, errRescue } from './signal'

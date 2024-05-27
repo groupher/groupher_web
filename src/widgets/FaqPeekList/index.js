@@ -8,13 +8,9 @@ import React, { useState, useEffect } from 'react'
 import T from 'prop-types'
 
 import { ICON } from '@/config'
-import { buildLog } from '@/logger'
-
 import LinksCard from '@/widgets/LinksCard'
 
 import { Wrapper, ArrowIcon, ContentWrapper } from './styles'
-
-const log = buildLog('w:FaqPeekList:index')
 
 const items = [
   {

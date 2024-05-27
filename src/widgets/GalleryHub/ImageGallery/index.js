@@ -8,7 +8,6 @@ import React, { useState } from 'react'
 import T from 'prop-types'
 
 import GALLERY from '@/const/gallery'
-import { buildLog } from '@/logger'
 
 // import Pagi from '@/widgets/Pagi'
 // import PagiOptionSwitcher from '@/widgets/Switcher/PagiOptionSwitcher'
@@ -19,8 +18,6 @@ import ThreeColumnGallery from './ThreeColumnGallery'
 import MasonryGallery from './MasonryGallery'
 
 import { Wrapper } from '../styles/image_gallery'
-
-const _log = buildLog('w:ImageGallery:index')
 
 const tmpItems = [
   {

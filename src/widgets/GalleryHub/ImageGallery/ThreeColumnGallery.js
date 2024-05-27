@@ -8,7 +8,6 @@ import React from 'react'
 import T from 'prop-types'
 
 import { ICON_CMD, ASSETS_ENDPOINT } from '@/config'
-import { buildLog } from '@/logger'
 
 import IconText from '@/widgets/IconText'
 
@@ -23,8 +22,6 @@ import {
   FlagIcon,
   Footer,
 } from '../styles/image_gallery/three_column_gallery'
-
-const _log = buildLog('w:ImageGallery:index')
 
 const ThreeColumnGallery = ({ items }) => {
   return (

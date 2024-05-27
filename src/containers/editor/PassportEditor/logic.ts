@@ -4,7 +4,6 @@ import { uniq, reject, keys, forEach } from 'ramda'
 
 import EVENT from '@/const/event'
 
-import { buildLog } from '@/logger'
 import asyncSuit from '@/async'
 import { send, errRescue, closeDrawer } from '@/signal'
 import { toJS } from '@/mobx'
@@ -18,8 +17,6 @@ let store: TStore | undefined
 
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
 const sr71$ = new SR71()
-
-const _log = buildLog('L:PassportEditor')
 
 export const toggleCheck = (rule: string, checked: boolean): void => {
   const { selectedRulesData } = store

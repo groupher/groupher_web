@@ -4,10 +4,8 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
-
-import { buildLog } from '@/logger'
 
 import useShortcut from '@/hooks/useShortcut'
 import { SpaceGrow } from '@/widgets/Common'
@@ -25,8 +23,6 @@ import {
   ButtonGroup,
 } from './styles'
 import { useInit, onClose } from './logic'
-
-const log = buildLog('C:ErrorBox')
 
 const ErrorBox: FC = () => {
   const store = useStore()

@@ -13,8 +13,7 @@ import type {
 } from '@/spec'
 import { COVER_GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '@/const/wallpaper'
 
-import { buildLog } from '@/logger'
-import { markStates, toJS, getParent, Instance, T, useMobxContext } from '@/mobx'
+import { markStates, toJS, getParent, type Instance, T, useMobxContext } from '@/mobx'
 
 import type {
   TToolboxSetting,
@@ -25,8 +24,6 @@ import type {
   TImageRadio,
 } from './spec'
 import { IMAGE_POS, SETTING_LEVEL, LINEAR_BORDER, IMAGE_SIZE, IMAGE_RATIO } from './constant'
-
-const log = buildLog('S:CoverEditor')
 
 const CoverEditor = T.model('CoverEditor', {
   imagePos: T.opt(T.enum(values(IMAGE_POS)), IMAGE_POS.CENTER),

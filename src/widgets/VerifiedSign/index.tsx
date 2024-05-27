@@ -4,10 +4,9 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { ICON_CMD } from '@/config'
-import { buildLog } from '@/logger'
 
 import ExpandIcon from '@/widgets/ExpandIcon'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
@@ -20,8 +19,6 @@ import {
   PopHighlight,
   RulesWrapper,
 } from './styles'
-
-const log = buildLog('w:VerifiedSign:index')
 
 const PopContent = ({ communityTitle }) => {
   return (
@@ -51,7 +48,7 @@ const VerifiedSign: FC<TProps> = ({
   type = 'community',
   communityTitle = 'groupher',
 }) => {
-  log('type: ', type)
+  console.log('## type: ', type)
 
   return (
     <ExpandIcon

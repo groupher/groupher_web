@@ -2,14 +2,11 @@
  * ArticleReadLabel
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import type { TSpace } from '@/spec'
-import { buildLog } from '@/logger'
 
 import { ReadedLabel } from './styles'
-
-const _log = buildLog('w:ArticleReadLabel:index')
 
 export type TProps = {
   viewed?: boolean

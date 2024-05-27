@@ -4,14 +4,10 @@
  *
  */
 
-import { FC, useCallback, memo } from 'react'
+import { type FC, useCallback, memo } from 'react'
 import { pickBy } from 'ramda'
 
-import { buildLog } from '@/logger'
-
 import { Wrapper } from './styles/textarea'
-
-const _log = buildLog('w:Input:index')
 
 type TProps = {
   testid?: string

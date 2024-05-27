@@ -4,11 +4,9 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import TYPE from '@/const/type'
-
-import { buildLog } from '@/logger'
 
 import { Space } from '@/widgets/Common'
 
@@ -17,8 +15,6 @@ import { Space } from '@/widgets/Common'
 
 import type { TProps } from '.'
 import { ModelineWrapper } from './styles'
-
-const _log = buildLog('w:ArticlesFilter:index')
 
 const ArticlesFilter: FC<TProps> = ({ resState = TYPE.RES_STATE.DONE, mode = 'default' }) => {
   return (

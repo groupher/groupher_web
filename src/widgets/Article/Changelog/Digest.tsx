@@ -2,15 +2,13 @@
  * ChankgelogLayout
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import { useRouter } from 'next/navigation'
 
 import type { TChangelog } from '@/spec'
 
 import useMetric from '@/hooks/useMetric'
 import { ARTICLE_THREAD } from '@/const/thread'
-
-import { buildLog } from '@/logger'
 
 // import ArchivedSign from '@/widgets/ArchivedSign'
 import { SpaceGrow } from '@/widgets/Common'
@@ -34,8 +32,6 @@ import {
   AuthorName,
   BottomInfo,
 } from '../styles/changelog/digest'
-
-const _log = buildLog('C:ArticleDigest')
 
 type TProps = {
   article: TChangelog

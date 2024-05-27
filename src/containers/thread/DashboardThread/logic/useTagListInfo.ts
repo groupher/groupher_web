@@ -90,8 +90,8 @@ const useTagListInfo = (): TRet => {
   }
 
   const editTag = (key: 'settingTag' | 'editingTag', tag: TTag): void => {
-    console.log('## editingTag key: ', key)
-    console.log('## editingTag tag: ', tag)
+    console.log('## ## editingTag key: ', key)
+    console.log('## ## editingTag tag: ', tag)
 
     store.editingTag = tag
     // store.mark({ [key]: tag })

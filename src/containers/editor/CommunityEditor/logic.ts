@@ -7,7 +7,6 @@ import EVENT from '@/const/event'
 import ERR from '@/const/err'
 import { errRescue } from '@/signal'
 import asyncSuit from '@/async'
-import { buildLog } from '@/logger'
 import { updateEditing } from '@/mobx'
 
 import type { TStore } from './store'
@@ -15,8 +14,6 @@ import type { TCommunityType } from './spec'
 import { STEP } from './constant'
 
 import S from './schema'
-
-const _log = buildLog('L:ExploreContent')
 
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
 const sr71$ = new SR71({
@@ -214,15 +211,15 @@ const ErrSolver = [
 export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
-    // log('effect init')
+    // console.log('## effect init')
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
 
     // checkPendingApply()
 
     return () => {
-      // log('effect uninit')
+      // console.log('## effect uninit')
       if (!sub$) return
-      // log('===== do uninit')
+      // console.log('## ===== do uninit')
       sub$.unsubscribe()
     }
   }, [_store])

@@ -7,8 +7,6 @@ import { type FC, useMemo } from 'react'
 import { keys, reverse } from 'ramda'
 import { observer } from 'mobx-react-lite'
 
-import { buildLog } from '@/logger'
-
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import type { TProps as TTagProps } from '..'
 
@@ -18,8 +16,6 @@ import Folder from './Folder'
 
 import { Wrapper } from '../styles/desktop_view'
 import { useInit, onTagSelect } from '../logic'
-
-const _log = buildLog('C:TagsBar')
 
 type TProps = Omit<TTagProps, 'view'>
 

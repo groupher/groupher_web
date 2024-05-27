@@ -4,10 +4,8 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
-
-import { buildLog } from '@/logger'
 
 import useWindowResize from '@/hooks/useWindowResize'
 import useShortcut from '@/hooks/useShortcut'
@@ -19,8 +17,6 @@ import Viewer from './Viewer'
 import Content from './Content'
 
 import { useInit, closeDrawer } from './logic'
-
-const _log = buildLog('C:Preview')
 
 const Drawer: FC = () => {
   const store = useStore()

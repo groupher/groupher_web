@@ -7,8 +7,6 @@
 import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { buildLog } from '@/logger'
-
 import useAccount from '@/hooks/useAccount'
 import { Br } from '@/widgets/Common'
 import ArrowLinker from '@/widgets/ArrowLinker'
@@ -22,8 +20,6 @@ import WarnBox from './WarnBox'
 
 import { Wrapper, InnerWrapper, IntroTitle, Note, NextBtn } from '../../styles/banner/select_type'
 import { nextStep, isOfficalOnChange } from '../../logic'
-
-const _log = buildLog('C:CommunitiesBanner')
 
 type TProps = {
   status: {

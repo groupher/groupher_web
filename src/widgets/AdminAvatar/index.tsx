@@ -4,18 +4,15 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TUser, TSpace } from '@/spec'
 import useAvatarLayout from '@/hooks/useAvatarLayout'
-import { buildLog } from '@/logger'
 
 import ImgFallback from '@/widgets/ImgFallback'
 
 import { Wrapper, Avatar, BadgeWrapper, BadgeIcon } from './styles'
-
-const _log = buildLog('w:AdminAvatar:index')
 
 type TProps = {
   testid?: string

@@ -8,7 +8,6 @@ import React from 'react'
 import T from 'prop-types'
 
 import { ICON } from '@/config'
-import { buildLog } from '@/logger'
 
 import IconText from '@/widgets/IconText'
 
@@ -21,8 +20,6 @@ import {
   Title,
   Footer,
 } from './styles/snippet_gallery'
-
-const _log = buildLog('w:SnippetGallery:index')
 
 const tmpItems = [
   {

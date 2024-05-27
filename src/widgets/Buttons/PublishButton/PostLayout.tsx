@@ -4,15 +4,12 @@
  *
  */
 
-import { memo, FC } from 'react'
+import { memo, type FC } from 'react'
 
-import { buildLog } from '@/logger'
 import { SpaceGrow } from '@/widgets/Common'
 
 // import Button from './Button'
 import { Wrapper, Title, EditIcon } from '../styles/publish_button/post_layout'
-
-const _log = buildLog('w:PublishButton:index')
 
 type TProps = {
   text: string

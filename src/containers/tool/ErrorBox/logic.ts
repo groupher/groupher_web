@@ -4,11 +4,9 @@ import { useEffect } from 'react'
 import type { TGQError } from '@/spec'
 import EVENT from '@/const/event'
 import ERR from '@/const/err'
-import { asyncSuit, buildLog, isObject } from '@/utils'
+import { asyncSuit, isObject } from '@/utils'
 
 import type { TStore } from './store'
-
-const log = buildLog('L:ErrorBox')
 
 const { SR71, $solver, asyncRes } = asyncSuit
 const sr71$ = new SR71({
@@ -23,7 +21,7 @@ export const onClose = (): void => store.mark({ show: false })
 
 const classifyGQErrors = (errors: TGQError[]): void => {
   if (!Array.isArray(errors)) {
-    log('invalid errors: ', errors)
+    console.log('## invalid errors: ', errors)
     return
   }
 
@@ -70,7 +68,7 @@ const DataSolver = [
           break
 
         default:
-          log('default')
+          console.log('## default')
       }
 
       store.mark({
@@ -91,7 +89,7 @@ const ErrSolver = []
 export const useInit = (_store: TStore): void =>
   useEffect(() => {
     store = _store
-    // log('effect init')
+    // console.log('## effect init')
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
 
     return () => {

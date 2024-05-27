@@ -1,4 +1,4 @@
-import { FC, memo, useCallback } from 'react'
+import { type FC, memo, useCallback } from 'react'
 import { pluck } from 'ramda'
 
 import type { TMenuOption, TFAQSection } from '@/spec'
@@ -32,7 +32,7 @@ const Banner: FC<TProps> = ({ menuOptions, setOpenedIndexes, sections }) => {
       }
 
       default: {
-        console.log('todo')
+        console.log('## todo')
         return
       }
     }

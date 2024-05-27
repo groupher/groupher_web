@@ -6,16 +6,12 @@
  *
  */
 
-import { FC, memo, useState } from 'react'
-
-import { buildLog } from '@/logger'
+import { type FC, memo, useState } from 'react'
 
 import HomeHeader from '@/widgets/HomeHeader'
 import Button from '@/widgets/Buttons/Button'
 
 import { Wrapper, Content, Thanks, Title, Bold, P } from './styles'
-
-const _log = buildLog('c:BookDemo:index')
 
 type TProps = {
   testid?: string

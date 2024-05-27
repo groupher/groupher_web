@@ -4,15 +4,11 @@
  *
  */
 
-import { FC, memo, Fragment } from 'react'
-
-import { buildLog } from '@/logger'
+import { type FC, memo, Fragment } from 'react'
 
 import type { TEditData } from './spec'
 import { Input, Section, Icon } from './styles/social_inputer'
 import { inputOnChange } from './logic'
-
-const _log = buildLog('C:AccountEditor')
 
 type TProps = {
   editData?: TEditData

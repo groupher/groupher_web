@@ -6,14 +6,13 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import { Space } from '@/widgets/Common'
 import ImgFallback from '@/widgets/ImgFallback'
 
-import { buildLog } from '@/logger'
 import {
   Wrapper,
   Brief,
@@ -24,8 +23,6 @@ import {
   Count,
 } from '../styles/thread_sidebar/community_brief'
 import { assetSrc } from '@/utils/helper'
-
-const _log = buildLog('w:ClassicSidebar')
 
 type TProps = {
   show: boolean

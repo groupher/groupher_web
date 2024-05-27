@@ -4,10 +4,9 @@
  *
  */
 
-import { FC, useState, memo } from 'react'
+import { type FC, useState, memo } from 'react'
 
 import { ICON_CMD, GITHUB } from '@/config'
-import { buildLog } from '@/logger'
 import useAccount from '@/hooks/useAccount'
 
 import Modal from '@/widgets/Modal'
@@ -31,8 +30,6 @@ import {
   SelectHolder,
 } from './styles'
 
-const log = buildLog('w:Footer:index')
-
 type TProps = {
   show?: boolean
   onClose?: () => void
@@ -42,9 +39,9 @@ type TProps = {
 
 const BuyMeChuanChuan: FC<TProps> = ({
   show = false,
-  onClose = log,
-  onLogin = log,
-  onPay = log,
+  onClose = console.log,
+  onLogin = console.log,
+  onPay = console.log,
 }) => {
   const accountInfo = useAccount()
   const [activeChuan, setActiveChuan] = useState(1)

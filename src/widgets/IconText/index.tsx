@@ -9,12 +9,9 @@ import { type FC, type ReactNode, memo } from 'react'
 import type { TSize } from '@/spec'
 import { ICON } from '@/config'
 import { nilOrEmpty } from '@/validator'
-import { buildLog } from '@/logger'
 import SIZE from '@/const/size'
 
 import { Wrapper, Icon, Text } from './styles'
-
-const _log = buildLog('w:IconText:index')
 
 type TProps = {
   iconSrc?: string | null

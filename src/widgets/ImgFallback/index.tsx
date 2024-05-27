@@ -4,15 +4,12 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TUser, TSpace } from '@/spec'
-import { buildLog } from '@/logger'
 
 // import Work from './Work'
 import Avatar from './Avatar'
-
-const _log = buildLog('w:ImgFallback:index')
 
 export type TAvatarProps = {
   testid?: string

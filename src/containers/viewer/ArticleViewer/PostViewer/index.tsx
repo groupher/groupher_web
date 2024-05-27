@@ -2,12 +2,11 @@
  * ArticleViewer
  */
 
-import { FC, Fragment, useCallback, useState, useEffect } from 'react'
+import { type FC, Fragment, useCallback, useState, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import Balancer from 'react-wrap-balancer'
 
 import type { TPost } from '@/spec'
-import { buildLog } from '@/logger'
 import { scrollDrawerToTop } from '@/dom'
 import { BROADCAST_ARTICLE_LAYOUT } from '@/const/layout'
 
@@ -32,8 +31,6 @@ import {
   SubTitle,
   GoTopWrapper,
 } from '../styles/post_viewer'
-
-const _log = buildLog('C:ArticleViewer')
 
 type TProps = {
   article: TPost

@@ -8,13 +8,10 @@ import ERR from '@/const/err'
 
 import asyncSuit from '@/async'
 import { errRescue } from '@/signal'
-import { buildLog } from '@/logger'
 import { getParameterByName } from '@/utils/route'
 
 import type { TStore } from './store'
 import S from './schema'
-
-const log = buildLog('L:TagsBar')
 
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
 const sr71$ = new SR71({
@@ -96,7 +93,7 @@ const ErrSolver = [
 export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
-    log('effect init')
+    console.log('## effect init')
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
     syncActiveTagFromURL()
 
@@ -105,7 +102,7 @@ export const useInit = (_store: TStore): void => {
     // store.mark({ thread, activeTag })
 
     return () => {
-      log('effect uninit')
+      console.log('## effect uninit')
       sub$.unsubscribe()
       sr71$.stop()
     }

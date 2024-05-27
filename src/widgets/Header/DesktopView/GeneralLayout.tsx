@@ -4,19 +4,16 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import { includes } from 'ramda'
 
 import type { TMetric } from '@/spec'
 import METRIC from '@/const/metric'
-import { buildLog } from '@/logger'
 
 import Navigator from '@/widgets/Navigator'
 
 import type { TProps } from '..'
 import { Wrapper, InnerWrapper, RouterWrapper } from '../styles/desktop_view/general_layout'
-
-const _log = buildLog('C:Header')
 
 // let MailBox
 // const AddOns = dynamic(() => import('../AddOns'), { ssr: false })

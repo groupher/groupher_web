@@ -4,14 +4,11 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TSpace } from '@/spec'
 
 import NoticeBar from '@/widgets/NoticeBar'
-import { buildLog } from '@/logger'
-
-const _log = buildLog('w:ArchiveAlert:index')
 
 type TProps = {
   date?: string

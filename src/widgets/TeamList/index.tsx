@@ -4,17 +4,14 @@
  *
  */
 
-import { FC, Fragment, memo, useEffect, useState } from 'react'
+import { type FC, Fragment, memo, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 
 import type { TUser } from '@/spec'
-import { buildLog } from '@/logger'
 
 import type { TLayout } from './spec'
 import type { TProps as TSetter } from './Setter'
 import List from './List'
-
-const log = buildLog('w:TeamList:index')
 
 type TProps = {
   users: TUser[]
@@ -33,10 +30,10 @@ const TeamList: FC<TProps> = ({
   users,
   withSetter = false,
   layout,
-  onRemove = log,
-  onAdd = log,
-  onSearch = log,
-  onClose = log,
+  onRemove = console.log,
+  onAdd = console.log,
+  onSearch = console.log,
+  onClose = console.log,
   searchedUsers = [],
 }) => {
   const [showSetter, setShowSetter] = useState(false)

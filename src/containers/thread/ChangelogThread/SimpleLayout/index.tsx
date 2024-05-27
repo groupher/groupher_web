@@ -3,7 +3,7 @@
  *
  */
 
-import { FC, useState } from 'react'
+import { type FC, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import useChangelogLayout from '@/hooks/useChangelogLayout'
@@ -18,8 +18,6 @@ import { TABS_MODE_OPTIONS } from '../constant'
 import FilterBar from './FilterBar'
 
 import { Wrapper, Banner, TabsWrapper, Title, Desc, MainWrapper } from '../styles/simple_layout'
-
-// const log = buildLog('C:ChangelogThread')
 
 const SimpleLayout: FC = () => {
   const { pagedChangelogs } = usePagedChangelogs()

@@ -4,10 +4,8 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
-
-import { buildLog } from '@/logger'
 
 import useMetric from '@/hooks/useMetric'
 
@@ -18,8 +16,6 @@ import Content from './Content'
 import { useStore } from './store'
 import { Wrapper, InnerWrapper, ContentWrapper } from './styles'
 import { useInit } from './logic'
-
-const _log = buildLog('C:CommunityEditor')
 
 const CommunityEditor: FC = () => {
   const store = useStore()

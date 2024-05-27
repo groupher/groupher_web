@@ -1,7 +1,5 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
-
-import { buildLog } from '@/logger'
 
 import useNaviArticle from '@/hooks/useNaviArticle'
 
@@ -17,9 +15,6 @@ import {
 } from '../styles/article_navi'
 
 import { naviToArticle } from '../logic'
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const log = buildLog('C:ArticleNavi')
 
 const ArticleNavi: FC = () => {
   const articleNavi = useNaviArticle()

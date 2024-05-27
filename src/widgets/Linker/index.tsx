@@ -4,18 +4,14 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TSpace } from '@/spec'
-
-import { buildLog } from '@/logger'
 
 import { prettyURL } from '@/fmt'
 import Tooltip from '@/widgets/Tooltip'
 
 import { Wrapper, LinkIcon, Source, PopHint } from './styles'
-
-const _log = buildLog('w:Linker:index')
 
 type TProps = TSpace & {
   testid?: string

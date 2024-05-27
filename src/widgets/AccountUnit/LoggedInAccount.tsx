@@ -4,11 +4,10 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TSpace } from '@/spec'
-import { buildLog } from '@/logger'
 import useAccount from '@/hooks/useAccount'
 import useAvatarLayout from '@/hooks/useAvatarLayout'
 
@@ -27,8 +26,6 @@ import {
   MenuBar,
   Icon,
 } from './styles/logged_in_account'
-
-const _log = buildLog('c:AccountUnit:index')
 
 type TProps = {
   withName?: boolean

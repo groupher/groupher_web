@@ -1,13 +1,10 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { prettyNum } from '@/fmt'
 import { nilOrEmpty } from '@/validator'
-import { buildLog } from '@/logger'
 import TrendLine from '@/widgets/TrendLine'
 
 import { Wrapper, NumberItem, ActivitySpark } from './styles/content_status'
-
-const _log = buildLog('w:CommunityStatesPad:ContentStatus')
 
 type TProps = {
   count: number

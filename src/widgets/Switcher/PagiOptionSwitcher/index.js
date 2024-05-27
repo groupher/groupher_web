@@ -8,7 +8,6 @@ import React, { useMemo } from 'react'
 import T from 'prop-types'
 
 import GALLERY from '@/const/gallery'
-import { buildLog } from '@/logger'
 
 import IconSwitcher from '../IconSwitcher'
 
@@ -18,8 +17,6 @@ import ThreeColumn from './ThreeColumn'
 import TwoColumn from './TwoColumn'
 
 import { Wrapper, Title } from '../styles/pagi_option_selector'
-
-const _log = buildLog('w:PagiOptionSwitcher:index')
 
 const getLocalIcon = (item, activeKey) => {
   if (!item.localIcon) return ''

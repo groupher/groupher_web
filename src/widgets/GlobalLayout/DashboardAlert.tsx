@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { SpaceGrow } from '@/widgets/Common'
 import {
@@ -19,7 +19,7 @@ const DashboardAlert: FC = () => {
       <SpaceGrow />
       <ResetButton
         onClick={() => {
-          console.log('## clearDemoSetting')
+          console.log('## ## clearDemoSetting')
 
           // clearDemoSetting()
         }}

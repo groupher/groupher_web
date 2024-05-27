@@ -4,9 +4,7 @@
  *
  */
 
-import { FC, memo } from 'react'
-
-import { buildLog } from '@/logger'
+import { type FC, memo } from 'react'
 
 import ArrowLinker from '@/widgets/ArrowLinker'
 
@@ -25,8 +23,6 @@ import {
   Desc,
   CommunityDemoWrapper,
 } from '../styles/content/select_type'
-
-const _log = buildLog('C:NewExploreContent')
 
 type TProps = {
   status: TSelectTypeStatus

@@ -6,12 +6,9 @@
  */
 
 import { type FC, type ReactNode, memo } from 'react'
-import { buildLog } from '@/logger'
 
 import NativeImg from './NativeImg'
 import LazyLoadImg from './LazyLoadImg'
-
-const log = buildLog('w:Img')
 
 type IProps = {
   src: string
@@ -31,7 +28,7 @@ const Img: FC<IProps> = ({
   fallback = null,
   noLazy = false,
   visibleByDefault = true,
-  onClick = log,
+  onClick = console.log,
 }) => {
   if (/\.(svg)$/i.test(src)) {
     // see solution in:

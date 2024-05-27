@@ -4,12 +4,11 @@
  *
  */
 
-import { FC, useState } from 'react'
+import { type FC, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { includes } from 'ramda'
 
 import type { TSpace } from '@/spec'
-import { buildLog } from '@/logger'
 
 import useSyncAccount from '@/hooks/useSyncAccount'
 import useAccount from '@/hooks/useAccount'
@@ -29,8 +28,6 @@ import {
   NickName,
   UnLoginText,
 } from './styles'
-
-const _log = buildLog('c:AccountUnit:index')
 
 type TProps = {
   withName?: boolean

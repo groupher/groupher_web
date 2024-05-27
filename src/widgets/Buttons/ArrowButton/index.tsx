@@ -10,12 +10,9 @@ import { observer } from 'mobx-react-lite'
 import type { TColorName, TSpace } from '@/spec'
 
 import usePrimaryColor from '@/hooks/usePrimaryColor'
-import { buildLog } from '@/logger'
 
 import Arrow from './Arrow'
 import { Wrapper, Text } from '../styles/arrow_button'
-
-const log = buildLog('w:Buttons:ArrowButton')
 
 export type TProps = {
   children?: ReactNode
@@ -34,7 +31,7 @@ export type TProps = {
 
 const ArrowButton: FC<TProps> = ({
   children = '下一步',
-  onClick = log,
+  onClick = console.log,
   dimWhenIdle = false,
   disabled = false,
   color = null,

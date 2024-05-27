@@ -3,10 +3,8 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
-
-import { buildLog } from '@/logger'
 
 import Cover from './Cover'
 import Toolbox from './Toolbox'
@@ -15,8 +13,6 @@ import { useStore } from './store'
 import { Wrapper } from './styles'
 import { useInit } from './logic' /* eslint-disable-next-line */
 
-const log = buildLog('C:CoverEditor')
-
 type TProps = {
   testid?: string
 
@@ -24,7 +20,11 @@ type TProps = {
   onReplace?: () => void
 }
 
-const CoverEditor: FC<TProps> = ({ testid = 'cover-editor', onDelete = log, onReplace = log }) => {
+const CoverEditor: FC<TProps> = ({
+  testid = 'cover-editor',
+  onDelete = console.log,
+  onReplace = console.log,
+}) => {
   const store = useStore()
   useInit(store)
   const { toolboxSetting } = store

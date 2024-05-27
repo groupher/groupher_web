@@ -1,12 +1,11 @@
 /*
  * PublishButton
  */
-import { memo, FC, useState } from 'react'
+import { memo, type FC, useState } from 'react'
 
 import type { TPublishMode, TArticleCat, TSpace, TTooltipPlacement } from '@/spec'
 import { PUBLISH_MODE } from '@/const/publish'
 
-import { buildLog } from '@/logger'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import useViewingThread from '@/hooks/useViewingThread'
 
@@ -21,8 +20,6 @@ import SidebarHeaderLayout from './SidebarHeaderLayout'
 import { Wrapper, PubButton } from '../styles/publish_button'
 import { getText } from './helper'
 
-const log = buildLog('w:PublishButton:index')
-
 type TProps = {
   text?: string
   mode?: TPublishMode
@@ -36,7 +33,7 @@ const PublishButton: FC<TProps> = ({
   text = '',
   mode = PUBLISH_MODE.DEFAULT,
   placement = 'bottom',
-  onMenuSelect = log,
+  onMenuSelect = console.log,
   menuLeft = false,
   offset = [-5, 5],
   ...restProps

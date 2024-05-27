@@ -4,14 +4,13 @@
  *
  */
 
-import { FC, useEffect, useState } from 'react'
+import { type FC, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { observer } from 'mobx-react-lite'
 import copy from 'copy-to-clipboard'
 import QRCode from 'qrcode.react'
 
 import type { TSpace } from '@/spec'
-import { buildLog } from '@/logger'
 // import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useViewingArticle from '@/hooks/useViewingArticle'
 
@@ -23,8 +22,6 @@ import { toast } from '@/signal'
 import { SITE_SHARE_TYPE, SHARE_TYPE } from './constant'
 import { parseLinksData, toPlatform } from './helper'
 import { Wrapper, Panel, LinkTip, QRTip, Icon } from './styles'
-
-const _log = buildLog('c:Share:index')
 
 let ModalPanel = null
 

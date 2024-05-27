@@ -4,12 +4,9 @@ import { observer } from 'mobx-react-lite'
 import type { TSizeTSM, TSpace } from '@/spec'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import SIZE from '@/const/size'
-import { buildLog } from '@/logger'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 import { Wrapper, RedWrapper, ChildrenWrapper } from './styles/button'
-
-const log = buildLog('w:Buttons:Button')
 
 type TProps = {
   children?: ReactNode
@@ -28,7 +25,7 @@ const Button: FC<TProps> = ({
   children = 'button',
   ghost = false,
   type = 'primary',
-  onClick = log,
+  onClick = console.log,
   space = null,
   size = SIZE.MEDIUM,
   className = '',

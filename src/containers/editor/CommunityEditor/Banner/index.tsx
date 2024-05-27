@@ -4,9 +4,7 @@
  *
  */
 
-import { FC, memo } from 'react'
-
-import { buildLog } from '@/logger'
+import { type FC, memo } from 'react'
 
 import SelectType from './SelectType'
 import SetupDomain from './SetupDomain'
@@ -25,8 +23,6 @@ import type {
   TFinishedStatus,
 } from '../spec'
 import { STEP } from '../constant'
-
-const _log = buildLog('C:CreateCommunityBanner')
 
 type TProps = {
   step: TStep

@@ -7,14 +7,10 @@
 import React from 'react'
 import T from 'prop-types'
 
-import { buildLog } from '@/logger'
-
 import Button from '@/widgets/Buttons/Button'
 import { Space } from '@/widgets/Common'
 
 import { Wrapper, RespectText, PublishButtons, Divider } from './styles'
-
-const log = buildLog('w:ArticleEditFooter:index')
 
 const DoingText = ({ isEdit }) => {
   return isEdit ? <>更新</> : <>发布</>

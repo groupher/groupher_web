@@ -4,21 +4,17 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TArticle, TSpace, TDocFAQLayout, TFAQSection } from '@/spec'
 import { DOC_FAQ_LAYOUT } from '@/const/layout'
 // import { FAQ as DefaultFAQ } from '@/const/landingPage'
-
-import { buildLog } from '@/logger'
 
 import Flat from './Flat'
 import SearchHint from './SearchHint'
 import Collapse from './Collapse'
 
 import { Wrapper } from './styles'
-
-const _log = buildLog('w:FaqList:index')
 
 export type TProps = {
   testid?: string

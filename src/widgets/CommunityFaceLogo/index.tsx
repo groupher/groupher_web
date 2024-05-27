@@ -6,11 +6,7 @@
 
 import { type FC, memo, type ReactNode } from 'react'
 
-import { buildLog } from '@/logger'
-
 import { Logo } from './styles'
-
-const _log = buildLog('w:CommunityFaceLogo:index')
 
 type TProps = {
   noFill?: boolean

@@ -2,17 +2,14 @@
 /*
  * ArtimentBody
  */
-import { FC, memo, useRef, useState, useEffect } from 'react'
+import { type FC, memo, useRef, useState, useEffect } from 'react'
 
 import type { TDocument } from '@/spec'
-import { buildLog } from '@/logger'
 
 import FoldBox from './FoldBox'
 import { Br } from '@/widgets/Common'
 
 import { Wrapper, Body, HTML } from './styles'
-
-const _log = buildLog('w:ArtimentBody:index')
 
 type TProps = {
   testid?: string

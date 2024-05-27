@@ -11,11 +11,9 @@
 // import ERR from '@/const/err'
 
 // import { errRescue } from '../helper'
-// import { buildLog } from '../logger'
 // import BStore from '../bstore'
 
 // /* eslint-disable-next-line */
-// const log = buildLog('Async')
 
 // const graphLink = new HttpLink({ uri: GRAPHQL_ENDPOINT, fetch })
 

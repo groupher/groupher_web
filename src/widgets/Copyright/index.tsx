@@ -4,18 +4,15 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TCopyright } from '@/spec'
 import Tooltip from '@/widgets/Tooltip'
-import { buildLog } from '@/logger'
 
 import Label from './Label'
 import SettingMenu from '@/widgets/SettingMenu'
 import ReadOnlyPanel from './ReadOnlyPanel'
 import { Wrapper } from './styles'
-
-const log = buildLog('w:Copyright:index')
 
 const options = [
   {
@@ -46,7 +43,7 @@ const Copyright: FC<TProps> = ({
   testid = 'copyright',
   type = 'cc',
   mode = 'readonly',
-  onChange = log,
+  onChange = console.log,
 }) => {
   return (
     <Wrapper $testid={testid}>

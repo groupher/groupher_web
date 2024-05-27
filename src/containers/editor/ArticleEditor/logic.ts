@@ -6,7 +6,6 @@ import { HCN } from '@/const/name'
 import EVENT from '@/const/event'
 import ERR from '@/const/err'
 
-import { buildLog } from '@/logger'
 import asyncSuit from '@/async'
 import { getParameterByName } from '@/utils/route'
 import { titleCase } from '@/fmt'
@@ -25,8 +24,6 @@ const sr71$ = new SR71({
 
 let sub$ = null
 let store: TStore | undefined
-
-const log = buildLog('L:ArticleEditor')
 
 export const changeCommunity = (community: TCommunity): void => {
   store.mark({ community })
@@ -65,7 +62,7 @@ export const onCancel = (): void => {
 const gotoArticleDetail = () => {
   const { viewingArticle, thread } = store
   // Router.push(`/${thread}/${viewingArticle.id}`)
-  console.log('## TODO: gotoArticleDetail')
+  console.log('## ## TODO: gotoArticleDetail')
 }
 
 const gotoBackToCommunity = () => {
@@ -74,7 +71,7 @@ const gotoBackToCommunity = () => {
 
   const path = slug === HCN ? '/' : `/${slug}`
   // Router.push(path)
-  console.log('## TODO: gotoBackToCommunity')
+  console.log('## ## TODO: gotoBackToCommunity')
 }
 
 export const onPublish = (): void => {
@@ -87,7 +84,6 @@ export const onPublish = (): void => {
 const doCreate = () => {
   const { thread, editData, communityId } = store
   const variables = { communityId, ...editData }
-  log('onPublish --> ', variables)
 
   const schema = S[`create${titleCase(thread)}`]
   sr71$.mutate(schema, variables)
@@ -97,7 +93,6 @@ const doUpdate = () => {
   const { thread, editData, viewingArticle } = store
   const { id } = viewingArticle
   const variables = { id, ...editData }
-  log('onUpdate --> ', variables)
 
   const schema = S[`update${titleCase(thread)}`]
   sr71$.mutate(schema, variables)
@@ -174,7 +169,6 @@ export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
-    log('useInit: ', store)
 
     loadCommunity()
     if (store.mode === 'update') loadArticle()

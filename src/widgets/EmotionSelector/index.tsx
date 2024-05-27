@@ -2,10 +2,9 @@
  * EmojiSelector
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TEmotion, TEmotionType } from '@/spec'
-import { buildLog } from '@/logger'
 import IconButton from '@/widgets/Buttons/IconButton'
 import Tooltip from '@/widgets/Tooltip'
 
@@ -14,15 +13,13 @@ import SelectedEmotions from './SelectedEmotions/index'
 import Panel from './Panel'
 import { SelectEmotionWrapper } from './styles'
 
-const log = buildLog('w:EmotionSelector:index')
-
 type TProps = {
   isLegal?: boolean
   emotions: TEmotion
   onAction?: (name: TEmotionType, hasEmotioned: boolean) => void
 }
 
-const EmotionSelector: FC<TProps> = ({ onAction = log, isLegal = true, emotions }) => {
+const EmotionSelector: FC<TProps> = ({ onAction = console.log, isLegal = true, emotions }) => {
   const validEmotions = emotionsCoverter(emotions)
   return (
     <>

@@ -2,15 +2,11 @@
  * CommunityJoinSign
  */
 
-import { FC, memo } from 'react'
-
-import { buildLog } from '@/logger'
+import { type FC, memo } from 'react'
 
 import FollowButton from '@/widgets/Buttons/FollowButton'
 
 import { Wrapper } from './styles'
-
-const log = buildLog('w:CommunityJoinSign:index')
 
 type TProps = {
   hasFollowed?: boolean
@@ -20,8 +16,8 @@ type TProps = {
 
 const CommunityJoinSign: FC<TProps> = ({
   hasFollowed = false,
-  onFollow = log,
-  onUndoFollow = log,
+  onFollow = console.log,
+  onUndoFollow = console.log,
 }) => {
   return (
     <Wrapper hasFollowed={hasFollowed}>

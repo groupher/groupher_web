@@ -4,18 +4,15 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TPost } from '@/spec'
-import { buildLog } from '@/logger'
 
 import DesktopView from './DesktopView'
 import MobileView from './MobileView'
 // import ListView from './ListView'
 
 import { Wrapper } from '../styles/quora_layout'
-
-const _log = buildLog('w:PostItem:index')
 
 type TProps = {
   article: TPost

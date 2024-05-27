@@ -4,12 +4,9 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { buildLog } from '@/logger'
 import { Wrapper } from './styles'
-
-const _log = buildLog('w:DotDivider:index')
 
 export type TProps = {
   className?: string

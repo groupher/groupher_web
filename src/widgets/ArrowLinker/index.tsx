@@ -8,14 +8,11 @@ import type { FC, ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TColorName, TSpace } from '@/spec'
-import { buildLog } from '@/logger'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 
 import { Link } from '@/widgets/Common'
 
 import { Wrapper, Title, ArrowIcon } from './styles'
-
-const _log = buildLog('c:ArrowLinker:index')
 
 type TProps = {
   testid?: string

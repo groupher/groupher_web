@@ -20,7 +20,6 @@ import ERR from '@/const/err'
 
 import { DASHBOARD_ROUTE, DASHBOARD_BASEINFO_ROUTE, DASHBOARD_SEO_ROUTE } from '@/const/route'
 
-import { buildLog } from '@/logger'
 import { updateEditing, toJS } from '@/mobx'
 import asyncSuit from '@/async'
 import { toast, errRescue } from '@/signal'
@@ -53,8 +52,6 @@ const sr71$ = new SR71({
 
 let store: TStore | undefined
 let sub$ = null
-
-const log = buildLog('L:DashboardThread')
 
 export const enableThread = (key: string, toggle: boolean): void => {
   const { enableSettings, curCommunity } = store
@@ -318,7 +315,7 @@ export const onSave = (field: TSettingField): void => {
   store.mark({ saving: true, savingField: field })
   store.onSave(field)
 
-  console.log('## on save: ', field)
+  console.log('## ## on save: ', field)
 
   _doMutation(field, store[field])
 }
@@ -637,7 +634,7 @@ export const useInit = (_store: TStore): void => {
     tagsLogicInit(store)
     faqInit(store)
 
-    log('useInit: ', store)
+    console.log('## useInit: ', store)
 
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
 

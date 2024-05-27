@@ -4,14 +4,11 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TActive, TSpace } from '@/spec'
-import { buildLog } from '@/logger'
 
 import { Wrapper, CheckIcon, Title } from './styles'
-
-const _log = buildLog('w:CheckLabel:index')
 
 type TProps = {
   testid?: string

@@ -2,14 +2,12 @@
  * ArticleEditor
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TEditMode, TMetric } from '@/spec'
 import METRIC from '@/const/metric'
 import { CONDITION_MODE } from '@/const/mode'
-
-import { buildLog } from '@/logger'
 
 import RichEditor from '@/containers/editor/RichEditor'
 import { Space } from '@/widgets/Common'
@@ -34,8 +32,6 @@ import {
   onTagSelect,
   catOnChange,
 } from './logic'
-
-const _log = buildLog('C:ArticleEditor')
 
 type TProps = {
   metric?: TMetric

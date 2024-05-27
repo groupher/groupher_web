@@ -6,11 +6,7 @@
 
 import { type FC, memo, type ReactNode } from 'react'
 
-import { buildLog } from '@/logger'
-
 import { Wrapper, CloseIcon } from './styles'
-
-const _log = buildLog('w:Tag:index')
 
 type TProps = {
   children: ReactNode

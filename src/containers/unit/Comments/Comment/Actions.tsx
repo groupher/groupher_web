@@ -1,9 +1,8 @@
-import { FC, memo, useCallback } from 'react'
+import { type FC, memo, useCallback } from 'react'
 
 import type { TComment } from '@/spec'
 import { ICON } from '@/config'
 import useAccount from '@/hooks/useAccount'
-import { buildLog } from '@/logger'
 
 import { authWarn } from '@/signal'
 
@@ -13,8 +12,6 @@ import { SpaceGrow } from '@/widgets/Common'
 
 import { Wrapper, ReplyAction, MoreWrapper } from '../styles/comment/actions'
 import { openUpdateEditor, openReplyEditor } from '../logic'
-
-const log = buildLog('C:CommentAction')
 
 const menuOptions = [
   // {
@@ -64,19 +61,19 @@ const Actions: FC<TProps> = ({ data }) => {
 
       switch (key) {
         case 'share': {
-          return log('todo: share')
+          return console.log('## todo: share')
         }
         case 'quote': {
-          return log('todo: quote')
+          return console.log('## todo: quote')
         }
         case 'report': {
-          return log('todo: report')
+          return console.log('## todo: report')
         }
         case 'edit': {
           return openUpdateEditor(data)
         }
         case 'delete': {
-          return log('todo: delete')
+          return console.log('## todo: delete')
         }
         default: {
           // eslint-disable-next-line no-useless-return

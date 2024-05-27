@@ -8,14 +8,11 @@ import { memo } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import VIEW from '@/const/view'
-import { buildLog } from '@/logger'
 
 import DesktopView from './DesktopView'
 import MobileView from './MobileView/index'
 import ModelineView from './ModelineView'
 import DrawerView from './DrawerView'
-
-const _log = buildLog('w:Tabs:index')
 
 const Tabs = (props) => {
   const { isMobile } = useMobileDetect()

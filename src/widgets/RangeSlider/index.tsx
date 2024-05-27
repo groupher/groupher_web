@@ -6,12 +6,8 @@
 
 import { type FC, memo } from 'react'
 
-import { buildLog } from '@/logger'
-
 import type { TSpace } from '@/spec'
 import { Wrapper, Value, Unit, RangeInput } from './styles'
-
-const _log = buildLog('c:RangeSlider:index')
 
 type TProps = {
   testid?: string

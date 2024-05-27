@@ -12,15 +12,11 @@ import { AVATARS_LIST_LENGTH } from '@/config'
 
 import SIZE from '@/const/size'
 
-import { buildLog } from '@/logger'
-
 import type { TAvatarSize } from './spec'
 import MoreItem from './MoreItem'
 
 import { getAvatarSize } from './styles/metric'
 import { Wrapper, AvatarsWrapper, TotalOneOffset, AvatarFallback } from './styles'
-
-const log = buildLog('w:Facepile:index')
 
 const RealAvatar = lazy(() => import('./RealAvatar'))
 
@@ -74,8 +70,8 @@ const Facepile: FC<TProps> = ({
   users = [],
   limit = AVATARS_LIST_LENGTH.POSTS,
   noLazyLoad = false,
-  onUserSelect = log,
-  onTotalSelect = log,
+  onUserSelect = console.log,
+  onTotalSelect = console.log,
   showMore = true,
   reverse = false,
   popCardPlacement = 'bottom',

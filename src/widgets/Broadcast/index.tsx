@@ -6,12 +6,11 @@
  *
  */
 
-import { FC, Fragment } from 'react'
+import { type FC, Fragment } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { ANCHOR } from '@/const/dom'
 import { BROADCAST_LAYOUT } from '@/const/layout'
-import { buildLog } from '@/logger'
 import useMetric from '@/hooks/useMetric'
 import useBroadcast from '@/hooks/useBroadcast'
 
@@ -26,8 +25,6 @@ import {
   CrossIcon,
   ArrowIcon,
 } from './styles'
-
-const _log = buildLog('w:Broadcast:index')
 
 type TProps = {
   testid?: string

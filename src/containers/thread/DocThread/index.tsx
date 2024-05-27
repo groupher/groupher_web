@@ -2,7 +2,7 @@
  * DocThread
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
@@ -21,8 +21,6 @@ import ArticleLayout from './ArticleLayout'
 import { useStore } from './store'
 import { Wrapper, FAQWrapper } from './styles'
 import { useInit } from './logic'
-
-// const log = buildLog('C:DocThread')
 
 type TProps = {
   title?: string

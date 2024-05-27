@@ -3,10 +3,7 @@
  */
 
 import type { TCommunity, TRootStore } from '@/spec'
-import { buildLog } from '@/logger'
-import { T, getParent, markStates, Instance, toJS } from '@/mobx'
-
-const _log = buildLog('S:AboutThread')
+import { T, getParent, markStates, type Instance, toJS } from '@/mobx'
 
 const AboutThread = T.model('AboutThread', {})
   .views((self) => ({

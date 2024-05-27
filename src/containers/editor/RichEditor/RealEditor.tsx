@@ -4,10 +4,9 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import TheRichEditor from '@groupher/react-editor'
-import { buildLog } from '@/logger'
 
 import { useStore } from './store'
 import { useInit } from './logic'
@@ -15,8 +14,6 @@ import { useInit } from './logic'
 import OverwriteStyle from './styles/overwrite'
 import { Wrapper, InnerWrapper, EditorWrapper } from './styles'
 import { observer } from 'mobx-react-lite'
-
-const log = buildLog('C:RichEditor')
 
 type TProps = {
   placeholder?: string
@@ -31,7 +28,7 @@ const RichEditor: FC<TProps> = ({
   placeholder = "// 正文内容（'Tab' 键插入富文本）",
   type = 'article',
   reinitKey = '',
-  onChange = log,
+  onChange = console.log,
 }) => {
   const store = useStore()
   useInit(store)

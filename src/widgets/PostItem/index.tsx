@@ -4,19 +4,16 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TPost, TPostLayout } from '@/spec'
 import { POST_LAYOUT } from '@/const/layout'
-import { buildLog } from '@/logger'
 
 import PHLayout from './PHLayout'
 import QuoraLayout from './QuoraLayout'
 import MinimalLayout from './MinimalLayout'
 import CoverLayout from './CoverLayout'
 import MasonryLayout from './MasonryLayout'
-
-const _log = buildLog('w:PostItem:index')
 
 type TProps = {
   article: TPost

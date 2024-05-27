@@ -4,13 +4,12 @@
  *
  */
 
-import { FC, memo, useState, useEffect } from 'react'
+import { type FC, memo, useState, useEffect } from 'react'
 
 import type { TArticle } from '@/spec'
 
 import { UPVOTE_LAYOUT } from '@/const/layout'
 
-import { buildLog } from '@/logger'
 import { mockTags, mockUsers } from '@/mock'
 import { previewArticle } from '@/signal'
 import { getRandomInt } from '@/helper'
@@ -24,8 +23,6 @@ import Upvote from '@/widgets/Upvote'
 import TagsList from '@/widgets/TagsList'
 
 import { Wrapper, Header, Footer, Title } from '../styles/classic_layout/simple'
-
-const _log = buildLog('w:KanbanItem:index')
 
 type TProps = {
   testid?: string

@@ -4,11 +4,10 @@
  *
  */
 
-import { FC, memo, Fragment } from 'react'
+import { type FC, memo, Fragment } from 'react'
 import { reduce, mergeRight } from 'ramda'
 
 import type { TTechCommunities, TCommunity } from '@/spec'
-import { buildLog } from '@/logger'
 
 import { TECHSTACK_CATEGORYS, CATEGORYS_RAWS } from './constant'
 import Category from './Category'
@@ -16,8 +15,6 @@ import InteractiveRow from './InteractiveRow'
 import ReadOnlyRow from './ReadOnlyRow'
 
 import { Wrapper } from './styles'
-
-const _log = buildLog('w:TechStack:index')
 
 const FULL_TECHS = reduce((acc, key) => ({ ...acc, [key]: [] }), {}, CATEGORYS_RAWS)
 

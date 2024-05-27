@@ -4,9 +4,7 @@
  *
  */
 
-import { FC, memo, useState } from 'react'
-
-import { buildLog } from '@/logger'
+import { type FC, memo, useState } from 'react'
 
 // import useAccount from '@/hooks/useAccount'
 import Tabs from '@/widgets/Switcher/Tabs'
@@ -18,8 +16,6 @@ import { TAB_ITEMS, TAB_ACTIVITIES, TAB_MEMBERS } from '../constant'
 import { Wrapper, TabsWrapper, ContentWrapper } from '../styles/panel'
 
 // import { onFollow, undoFollow } from '../logic'
-
-const _log = buildLog('w:AuthorInfo:index')
 
 type TProps = {
   testid?: string

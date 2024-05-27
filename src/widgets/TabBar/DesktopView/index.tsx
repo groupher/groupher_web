@@ -2,24 +2,21 @@
  * TabBar
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import SIZE from '@/const/size'
 import { THREAD } from '@/const/thread'
 import { ANCHOR } from '@/const/dom'
 
 import { sortByIndex } from '@/helper'
-import { buildLog } from '@/logger'
 
 import type { TProps } from '..'
 import NormalView from './NormalView'
 
-const log = buildLog('w:TabBar:index')
-
 const TabBar: FC<TProps> = ({
   source,
   active = THREAD.POST,
-  onChange = log,
+  onChange = console.log,
   size = SIZE.MEDIUM,
   withIcon = false,
 }) => {

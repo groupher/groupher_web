@@ -13,7 +13,7 @@ import METRIC from '@/const/metric'
 
 import TYPE from '@/const/type'
 
-import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
+import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '@/mobx'
 import { lockPage, unlockPage } from '@/dom'
 import { Global } from '@/helper'
 import { mediaBreakPoints } from '@/css/metric'
@@ -182,7 +182,7 @@ const DrawerStore = T.model('DrawerStore', {
 
       // Global.history.replaceState(null, title, nextURL)
       Global.history.pushState(null, title, nextURL)
-      // console.log('## pushing window.location.href: ', nextURL)
+      // console.log('## ## pushing window.location.href: ', nextURL)
       // Global.history.pushState({ prevUrl: nextURL }, title, nextURL)
     },
 

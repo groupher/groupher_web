@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, useEffect, useRef, useState, useCallback } from 'react'
+import { type FC, useEffect, useRef, useState, useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
 import { isEmpty, findIndex, pluck, includes } from 'ramda'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
@@ -14,13 +14,10 @@ import usePrimaryColor from '@/hooks/usePrimaryColor'
 import SIZE from '@/const/size'
 
 import { isString } from '@/validator'
-import { buildLog } from '@/logger'
 
 import TabItem from './TabItem'
 import { Wrapper, Nav, SlipBar, RealBar } from '../styles/tabs'
 import { getSlipMargin } from '../styles/metric/tabs'
-
-const log = buildLog('w:Tabs:index')
 
 const temItems = [
   {
@@ -59,7 +56,7 @@ type TProps = {
 
 const Tabs: FC<TProps> = ({
   size = SIZE.MEDIUM,
-  onChange = log,
+  onChange = console.log,
   items = temItems,
   activeKey = '',
   slipHeight = '1px',

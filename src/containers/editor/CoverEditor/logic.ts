@@ -2,15 +2,12 @@ import { useEffect } from 'react'
 // import { } from 'ramda'
 
 import type { TWallpaperGradientDir } from '@/spec'
-import { buildLog } from '@/logger'
 
 import type { TImagePos, TImageRadio, TImageSize, TLinearBorderPos, TSettingLevel } from './spec'
 import { IMAGE_POS } from './constant'
 import type { TStore } from './store'
 
 let store: TStore | undefined
-
-const log = buildLog('L:CoverEditor')
 
 export const posOnChange = (imagePos: TImagePos): void => store.mark({ imagePos })
 
@@ -45,7 +42,7 @@ export const glassBorderOnChange = (hasGlassBorder: boolean) => store.mark({ has
 export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
-    log('useInit: ', store)
+    console.log('## useInit: ', store)
     // return () => store.reset()
   }, [_store])
 }

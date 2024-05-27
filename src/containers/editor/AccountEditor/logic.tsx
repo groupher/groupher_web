@@ -4,12 +4,10 @@ import type { TEditValue } from '@/spec'
 import ERR from '@/const/err'
 import { closeDrawer } from '@/signal'
 
-import { buildLog, asyncSuit, updateEditing, errRescue } from '@/utils'
+import { asyncSuit, updateEditing, errRescue } from '@/utils'
 
 import type { TStore } from './store'
 import S from './schema'
-
-const log = buildLog('L:AccountEditor')
 
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
 const sr71$ = new SR71()
@@ -81,12 +79,12 @@ const ErrSolver = [
 export const useInit = (_store: TStore): void =>
   useEffect(() => {
     store = _store
-    // log('effect init')
+    // console.log('## effect init')
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
     loadUser()
 
     return () => {
-      // log('effect uninit')
+      // console.log('## effect uninit')
       store.reset()
       sr71$.stop()
       sub$.unsubscribe()

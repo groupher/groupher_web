@@ -217,7 +217,7 @@ export const viewingChanged = (article: TArticle | null): void => {
  * - 如果在其他页面，那么需要重新请求页面
  */
 export const changeToCommunity = (slug = ''): void => {
-  console.log('## changeToCommunity')
+  console.log('## ## changeToCommunity')
 }
 
 /**

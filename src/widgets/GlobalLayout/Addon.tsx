@@ -16,7 +16,7 @@ import UserListModal from '@/widgets/UserListModal'
 const Addon: FC = () => {
   // const { isMobile } = useMobileDetect()
 
-  useShortcut('Control+P', () => console.log('# Ctrl P pressed'))
+  useShortcut('Control+P', () => console.log('## # Ctrl P pressed'))
 
   return (
     <Fragment>

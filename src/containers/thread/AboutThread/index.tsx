@@ -3,10 +3,9 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import Markdown from 'markdown-to-jsx'
 
-// import { buildLog } from '@/logger'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useBannerLayout from '@/hooks/useBannerLayout'
 import { BANNER_LAYOUT } from '@/const/layout'
@@ -20,9 +19,6 @@ import ExtraInfo from './ExtraInfo'
 import Sidebar from './Sidebar'
 
 import { Wrapper, MainWrapper, StateBlock, IntroBlock, MemberBlock, Title, Desc } from './styles'
-
-/* eslint-disable-next-line */
-// const log = buildLog('C:AboutThread')
 
 type TProps = {
   testid?: string

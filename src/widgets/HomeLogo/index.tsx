@@ -1,11 +1,8 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TSpace } from '@/spec'
-import { buildLog } from '@/logger'
 
 import { GroupherLogo } from './styles'
-
-const _log = buildLog('c:HomeLogo:index')
 
 type TProps = {
   size: number

@@ -6,7 +6,7 @@
  *
  */
 
-import { FC, Fragment, lazy, Suspense } from 'react'
+import { type FC, Fragment, lazy, Suspense } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import useTrans from '@/hooks/useTrans'
@@ -17,7 +17,6 @@ import useActiveTag from '@/hooks/useActiveTag'
 import useBannerLayout from '@/hooks/useBannerLayout'
 
 import { Link, SpaceGrow, Br, SexyDivider } from '@/widgets/Common'
-import { buildLog } from '@/logger'
 import { refreshArticles, callGEditor, callSyncSelector, listUsers } from '@/signal'
 import { toJS } from '@/mobx'
 import { mockUsers } from '@/mock'
@@ -46,8 +45,6 @@ import {
   LinkIcon,
   PublishWrapper,
 } from '../styles/thread_sidebar'
-
-const _log = buildLog('w:ClassicSidebar')
 
 const UniBar = lazy(() => import('@/widgets/UniBar'))
 

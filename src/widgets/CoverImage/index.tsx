@@ -4,13 +4,9 @@
  *
  */
 
-import { FC, memo } from 'react'
-
-import { buildLog } from '@/logger'
+import { type FC, memo } from 'react'
 
 import { Wrapper, ImageWrapper, Image } from './styles'
-
-const _log = buildLog('w:CoverImage:index')
 
 type TProps = {
   testid?: string
