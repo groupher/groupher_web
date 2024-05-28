@@ -206,7 +206,7 @@ const updateDashboardLayout = gql`
 `
 
 const updateDashboardSocialLinks = gql`
-  mutation ($community: String!, $socialLinks: [dashboardSocialLinkMap]) {
+  mutation($community: String!, $socialLinks: [DashboardSocialLinkMap]) {
     updateDashboardSocialLinks(community: $community, socialLinks: $socialLinks) {
       slug
     }

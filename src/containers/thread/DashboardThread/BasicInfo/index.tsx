@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { type FC, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
@@ -19,12 +19,11 @@ import OtherInfo from './OtherInfo'
 
 import useBaseInfo from '../logic/useBaseInfo'
 import { Wrapper, Banner, TabsWrapper } from '../styles/basic_info'
-import { edit } from '../logic'
 
 const BasicInfo: FC = () => {
   const router = useRouter()
   const curCommunity = useViewingCommunity()
-  const { baseInfoTab } = useBaseInfo()
+  const { baseInfoTab, edit } = useBaseInfo()
 
   return (
     <Wrapper>
@@ -40,6 +39,7 @@ const BasicInfo: FC = () => {
             items={BASEINFO_TABS}
             activeKey={baseInfoTab}
             onChange={(tab) => {
+              // @ts-ignore
               edit(tab, 'baseInfoTab')
               const targetPath =
                 tab === DASHBOARD_BASEINFO_ROUTE.BASIC

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import CitySelector from '@/widgets/CitySelector'
@@ -9,7 +9,7 @@ import { SETTING_FIELD } from '../../constant'
 import SavingBar from '../../SavingBar'
 import MediaEditor from './MediaEditor'
 
-import useBaseInfo from '../../hooks/useBaseInfo'
+import useBaseInfo from '../../logic/useBaseInfo'
 import { Wrapper, Label, Inputer, Desc } from '../../styles/basic_info/other_info'
 import { edit } from '../../logic'
 

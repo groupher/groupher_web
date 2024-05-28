@@ -6,8 +6,10 @@ export const mutate = (mutation, variables) => {
     .mutation(mutation, variables)
     .toPromise()
     .then((res) => {
-      if (res.error) return res.error
+      if (res.error) throw res.error
       return res.data
     })
-    .catch((e) => e)
+    .catch((e) => {
+      throw e
+    })
 }

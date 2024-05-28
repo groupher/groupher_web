@@ -87,9 +87,34 @@ export const markStore = (target: Record<string, any>, store: any) => {
 }
 
 export const toJS = (obj: any): any => {
-  if (!obj) return obj
-  return toJSON(obj)
+  let result = obj
+
+  // 如果对象有 toJSON 方法，则调用它
+  if (result && typeof result === 'object') {
+    result = toJSON(result)
+  }
+
+  if (Array.isArray(result)) {
+    return result.map(toJS)
+  }
+
+  if (result && typeof result === 'object') {
+    const newObj = { ...result }
+    for (const key of Object.keys(newObj)) {
+      newObj[key] = toJS(newObj[key]) //
+    }
+    // delete Graphql typename if need, otherwise it will cause gq type error
+    delete newObj.__typename
+    return newObj
+  }
+
+  return result
 }
+
+// export const toJS = (obj: any): any => {
+//   if (!obj) return obj
+//   return toJSON(obj)
+// }
 
 /*
  *

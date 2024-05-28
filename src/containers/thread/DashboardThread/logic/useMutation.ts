@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { includes } from 'ramda'
+import { includes, omit } from 'ramda'
 
 import type { TCommunity, TEditValue } from '@/spec'
 import { DASHBOARD_BASEINFO_ROUTE } from '@/const/route'
@@ -115,7 +115,7 @@ const useMutation = (): TRet => {
     if (field === SETTING_FIELD.BASE_INFO) {
       const { baseInfoTab } = store
 
-      const params = {}
+      const params = { community }
       if (baseInfoTab === DASHBOARD_BASEINFO_ROUTE.BASIC) {
         for (const key of BASEINFO_BASIC_KEYS) {
           params[key] = store[key]
@@ -128,7 +128,7 @@ const useMutation = (): TRet => {
         }
       }
 
-      mutate(S.updateDashboardBaseInfo, { community, ...params }).then((data) => {
+      mutate(S.updateDashboardBaseInfo, params).then((data) => {
         updateViewingCommunity(data.updateDashboardBaseInfo)
         _handleDone()
       })
@@ -136,11 +136,19 @@ const useMutation = (): TRet => {
       return
     }
 
-    // if (field === SETTING_FIELD.SOCIAL_LINKS) {
-    //   const { socialLinks } = store.baseInfoSettings
-    //   sr71$.mutate(S.updateDashboardSocialLinks, { community, socialLinks })
-    //   return
-    // }
+    if (field === SETTING_FIELD.SOCIAL_LINKS) {
+      const { socialLinks } = store
+
+      const params = toJS({ community, socialLinks })
+
+      mutate(S.updateDashboardSocialLinks, params)
+        .then(() => _handleDone())
+        .catch((err) => {
+          console.error('## handle social links error: ', err)
+        })
+
+      return
+    }
 
     // if (field === SETTING_FIELD.SEO) {
     //   const params = {}

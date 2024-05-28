@@ -291,10 +291,6 @@ const _doMutation = (field: string, e: TEditValue): void => {
   }
 }
 
-export const updateSocialLinks = (socialLinks: TSocialItem[]): void => {
-  store.mark({ socialLinks })
-}
-
 /**
  * rollback editing value to init value
  */
