@@ -63,7 +63,7 @@ try {
     Global.removeEventListener('testPassive', null, opts)
   }
 } catch (e) {
-  log(e)
+  console.log(e)
 }
 
 class StickyBox extends React.Component {
@@ -192,7 +192,7 @@ class StickyBox extends React.Component {
   handleScrollPaneResize = () => {
     this.viewPortHeight = this.scrollPane.offsetHeight
     if (process.env.CUR_ENV !== 'production' && this.viewPortHeight === 0) {
-      log(
+      console.log(
         'react-sticky-box scroll pane has a height of 0. This seems odd. Please check this node:',
         this.scrollPane,
       )

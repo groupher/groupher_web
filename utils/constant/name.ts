@@ -2,6 +2,12 @@ import { DASHBOARD_ALIAS_ROUTE } from './route'
 
 export const HCN = 'home'
 
+export const HOME_COMMUNITY = {
+  home: 'groupher',
+  slug: HCN,
+  logo: '/groupher.png',
+}
+
 export const ALIAS_GROUP = {
   THREAD: DASHBOARD_ALIAS_ROUTE.THREAD,
   KANBAN: DASHBOARD_ALIAS_ROUTE.KANBAN,

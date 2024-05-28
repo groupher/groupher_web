@@ -1,8 +1,9 @@
 'use client'
 
-import { memo, ReactNode } from 'react'
+import { memo, type ReactNode } from 'react'
 
 import { StoreContext, useStore } from '@/stores2'
+import { HOME_COMMUNITY } from '@/const/name'
 
 import { useThemeFromURL, useCommunity, useDashboard } from '../queries'
 
@@ -14,7 +15,7 @@ const MobxStoreWrapper = ({ children }: { children: ReactNode }) => {
   const rootStore = useStore({
     theme,
     viewing: {
-      community,
+      community: community || HOME_COMMUNITY,
     },
     dashboard,
   })

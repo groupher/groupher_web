@@ -20,8 +20,6 @@ export const Pagi = dynamic(() => import('@/widgets/Pagi'), {
 })
 
 const PagedPosts: FC = () => {
-  console.log('## ## PagedPosts render')
-
   return (
     <>
       <PostList />
