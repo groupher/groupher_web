@@ -138,7 +138,6 @@ const useMutation = (): TRet => {
 
     if (field === SETTING_FIELD.SOCIAL_LINKS) {
       const { socialLinks } = store
-
       const params = toJS({ community, socialLinks })
 
       mutate(S.updateDashboardSocialLinks, params)
