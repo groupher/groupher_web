@@ -178,6 +178,7 @@ export type TSettingsFields = {
 export type TInitSettings = Partial<TSettingsFields>
 
 export type TStore = TSettingsFields & {
+  initFilled: boolean
   initSettings: TSettingsFields
   defaultSettings: TSettingsFields
 

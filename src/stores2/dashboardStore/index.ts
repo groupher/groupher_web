@@ -166,6 +166,7 @@ export const settingsFields: TSettingsFields = {
 const createDashboardStore = (rootStore: TRootStore, initState: TInitSettings = {}): TStore => {
   const store = mergeLeft(initState, {
     ...settingsFields,
+    initFilled: false,
     initSettings: settingsFields,
     defaultSettings: settingsFields,
 

@@ -291,6 +291,10 @@ const _doMutation = (field: string, e: TEditValue): void => {
   }
 }
 
+export const updateSocialLinks = (socialLinks: TSocialItem[]): void => {
+  store.mark({ socialLinks })
+}
+
 /**
  * rollback editing value to init value
  */
@@ -378,35 +382,6 @@ export const queryOpenGraphInfo = (item: TMediaReport): void => {
     store.mark({ queringMediaReportIndex: item.index, loading: true })
     sr71$.query(S.openGraphInfo, { url: editUrl })
   }
-}
-
-export const mediaReportOnChange = (index: number, url: string): void => {
-  const { baseInfoSettings } = store
-  const { mediaReports } = baseInfoSettings
-
-  const restReports = reject((item: TMediaReport) => item.index === index, mediaReports)
-  const report = find((item: TMediaReport) => item.index === index, mediaReports)
-
-  report.editUrl = url
-
-  store.mark({ mediaReports: [...restReports, report] })
-}
-
-export const addMediaReport = (): void => {
-  const { baseInfoSettings } = store
-  const newReport = mergeRight(EMPTY_MEDIA_REPORT, { index: new Date().getTime() })
-
-  store.mark({
-    mediaReports: [...baseInfoSettings.mediaReports, newReport],
-  })
-}
-
-export const removeMediaReport = (index: number): void => {
-  const { baseInfoSettings } = store
-  const { mediaReports } = baseInfoSettings
-  const newReports = reject((item: TMediaReport) => item.index === index, mediaReports)
-
-  store.mark({ mediaReports: newReports })
 }
 
 // ###############################
@@ -573,10 +548,6 @@ const DataSolver = [
       if (curTab === DASHBOARD_ROUTE.ADMINS) store.mark({ moderators: community.moderators })
       if (curTab === DASHBOARD_ROUTE.DASHBOARD && baseInfoTab === DASHBOARD_BASEINFO_ROUTE.BASIC) {
         store.updateOverview(community)
-      }
-
-      if (curTab === DASHBOARD_ROUTE.INFO) {
-        store.updateBaseInfo(community)
       }
     },
   },

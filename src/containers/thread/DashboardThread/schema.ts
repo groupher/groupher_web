@@ -81,7 +81,7 @@ const updateDashboardBaseInfo = gql`
   }
 `
 const updateDashboardMediaReports = gql`
-  mutation ($community: String!, $mediaReports: [dashboardMediaReportMap]) {
+  mutation ($community: String!, $mediaReports: [DashboardMediaReportMap]) {
     updateDashboardMediaReports(community: $community, mediaReports: $mediaReports) {
       title
       dashboard {

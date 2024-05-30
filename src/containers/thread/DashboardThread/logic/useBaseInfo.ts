@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { pick, isEmpty, reject, filter, equals } from 'ramda'
+import { pick, isEmpty, find, reject, filter, equals, mergeRight } from 'ramda'
 
 import type {
   TCommunity,
@@ -14,7 +14,7 @@ import useQuery from '@/hooks/useQuery'
 
 import type { TSettingField } from '@/stores2/dashboardStore/spec'
 import useHelper from './useHelper'
-import { BASEINFO_KEYS } from '../constant'
+import { BASEINFO_KEYS, EMPTY_MEDIA_REPORT } from '../constant'
 
 import S from '../schema'
 
@@ -43,6 +43,10 @@ type TRet = {
   isMediaReportsTouched: boolean
 
   edit: (value: TEditValue, field: TSettingField) => void
+  addMediaReport: () => void
+  mediaReportOnChange: (index: number, url: string) => void
+  removeMediaReport: (index: number) => void
+  queryOpenGraphInfo: (item: TMediaReport) => void
 }
 
 /**
@@ -60,7 +64,12 @@ const useBaseInfo = (): TRet => {
   })
 
   useEffect(() => {
-    if (data?.community) updateBaseInfo(data.community)
+    if (data?.community && !store.initFilled) {
+      store.initFilled = true
+      // to avoid hooks rerender which update baseinfo
+
+      updateBaseInfo(data.community)
+    }
   }, [data])
 
   const updateBaseInfo = (community: TCommunity): void => {
@@ -108,15 +117,58 @@ const useBaseInfo = (): TRet => {
     return !equals(toJS(socialLinks), toJS(initSettings.socialLinks))
   }
 
+  const addMediaReport = (): void => {
+    const { mediaReports } = store
+    const newReport = mergeRight(EMPTY_MEDIA_REPORT, { index: new Date().getTime() })
+
+    store.mediaReports = [...toJS(mediaReports), newReport]
+  }
+
+  const mediaReportOnChange = (index: number, url: string): void => {
+    const { mediaReports } = store
+
+    const restReports = reject((item: TMediaReport) => item.index === index, mediaReports)
+    const report = find((item: TMediaReport) => item.index === index, mediaReports)
+
+    report.editUrl = url
+
+    store.mediaReports = [...restReports, report]
+  }
+
+  const removeMediaReport = (index: number): void => {
+    const { mediaReports } = store
+    const newReports = reject((item: TMediaReport) => item.index === index, mediaReports)
+
+    store.mark({ mediaReports: newReports })
+    store.mediaReports = newReports
+  }
+
+  const queryOpenGraphInfo = (item: TMediaReport): void => {
+    const { url, editUrl } = item
+
+    console.log('## queryOpenGraphInfo TODO')
+    // TODO
+    return
+    // if ((startsWith('https://', editUrl) || startsWith('http://', editUrl)) && url !== editUrl) {
+    //   store.mark({ queringMediaReportIndex: item.index, loading: true })
+    //   sr71$.query(S.openGraphInfo, { url: editUrl })
+    // }
+  }
+
   return {
     ...pick(BASEINFO_KEYS, store),
     ...pick(['baseInfoTab', 'queringMediaReportIndex', 'loading', 'saving'], store),
-    socialLinks: reject((item: TSocialItem) => isEmpty(item.type), toJS(socialLinks)),
+    socialLinks: reject((item: TSocialItem) => isEmpty(item.type), socialLinks),
     mediaReports: toJS(mediaReports),
     isTouched: anyChanged(BASEINFO_KEYS as TSettingField[]),
     isSocialLinksTouched: socialLinksTouched(),
     isMediaReportsTouched: mediaReportsTouched(),
     edit,
+    // TOOD: move to useBaseInfo/useMediaReports
+    addMediaReport,
+    mediaReportOnChange,
+    removeMediaReport,
+    queryOpenGraphInfo,
   } as TRet
 }
 

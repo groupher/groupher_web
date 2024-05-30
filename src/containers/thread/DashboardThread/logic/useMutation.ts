@@ -85,16 +85,17 @@ const useMutation = (): TRet => {
   const mutation = (field: string, e: TEditValue): Promise<void> => {
     // const community = curCommunity.slug
 
-    // if (field === SETTING_FIELD.MEDIA_REPORTS) {
-    //   const { baseInfoSettings } = store
-    //   const { mediaReports } = baseInfoSettings
+    if (field === SETTING_FIELD.MEDIA_REPORTS) {
+      const { mediaReports } = store
 
-    //   sr71$.mutate(S.updateDashboardMediaReports, {
-    //     community,
-    //     mediaReports: mediaReports.map((item) => omit(['editUrl'], item)),
-    //   })
-    //   return
-    // }
+      const params = toJS({
+        community,
+        mediaReports: mediaReports.map((item) => omit(['editUrl'], item)),
+      })
+
+      mutate(S.updateDashboardMediaReports, params).then(() => _handleDone())
+      return
+    }
 
     // if (field === SETTING_FIELD.HEADER_LINKS) {
     //   const { headerSettings } = store

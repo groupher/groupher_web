@@ -274,28 +274,28 @@ const DashboardThread = T.model('DashboardThread', {
       }
     },
 
-    updateBaseInfo(community: TCommunity): void {
-      const { dashboard } = community
-      const { baseInfo, mediaReports } = dashboard
+    // updateBaseInfo(community: TCommunity): void {
+    //   const { dashboard } = community
+    //   const { baseInfo, mediaReports } = dashboard
 
-      forEach((key) => {
-        self[key] = baseInfo[key]
-        self.initSettings[key] = baseInfo[key]
-      }, BASEINFO_KEYS)
+    //   forEach((key) => {
+    //     self[key] = baseInfo[key]
+    //     self.initSettings[key] = baseInfo[key]
+    //   }, BASEINFO_KEYS)
 
-      if (!isEmpty(mediaReports)) {
-        const initMediaReports = mediaReports.map((item: TMediaReport, index) => ({
-          ...item,
-          editUrl: item.url,
-          index: item.index || index,
-        }))
+    //   if (!isEmpty(mediaReports)) {
+    //     const initMediaReports = mediaReports.map((item: TMediaReport, index) => ({
+    //       ...item,
+    //       editUrl: item.url,
+    //       index: item.index || index,
+    //     }))
 
-        // @ts-ignore
-        self.mediaReports = initMediaReports
-        // @ts-ignore
-        self.initSettings.mediaReports = initMediaReports
-      }
-    },
+    //     // @ts-ignore
+    //     self.mediaReports = initMediaReports
+    //     // @ts-ignore
+    //     self.initSettings.mediaReports = initMediaReports
+    //   }
+    // },
 
     setAllPassportRules(rootRules: string, moderatorRules): void {
       self.allRootRules = rootRules

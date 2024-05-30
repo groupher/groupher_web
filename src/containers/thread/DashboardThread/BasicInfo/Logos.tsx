@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { Br } from '@/widgets/Common'
@@ -7,7 +7,7 @@ import OSSUploader from '@/widgets/OSSUploader'
 import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'
 
-import useBaseInfo from '../hooks/useBaseInfo'
+import useBaseInfo from '../logic/useBaseInfo'
 import {
   Wrapper,
   FaviconWrapper,

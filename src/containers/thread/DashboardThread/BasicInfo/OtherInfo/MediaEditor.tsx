@@ -1,4 +1,5 @@
-import { FC } from 'react'
+import type { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { sortByIndex } from '@/helper'
 
@@ -9,14 +10,11 @@ import { SpaceGrow } from '@/widgets/Common'
 import InputBox from './InputBox'
 
 import { Wrapper, Label } from '../../styles/basic_info/other_info/media_editor'
-import { addMediaReport } from '../../logic'
+import useBaseInfo from '../../logic/useBaseInfo'
 
-type TProps = {
-  reports: TMediaReport[]
-  queringMediaReportIndex: number | null
-}
+const MediaEditor: FC = () => {
+  const { addMediaReport, mediaReports, queringMediaReportIndex } = useBaseInfo()
 
-const MediaEditor: FC<TProps> = ({ reports, queringMediaReportIndex }) => {
   return (
     <Wrapper>
       <Label>
@@ -26,12 +24,12 @@ const MediaEditor: FC<TProps> = ({ reports, queringMediaReportIndex }) => {
           添加
         </AddButton>
       </Label>
-      {/*  @ts-ignore */}
-      {sortByIndex(reports).map((item: TMediaReport) => (
+      {/* @ts-ignore */}
+      {sortByIndex(mediaReports).map((item: TMediaReport) => (
         <InputBox key={item.index} item={item} queringMediaReportIndex={queringMediaReportIndex} />
       ))}
     </Wrapper>
   )
 }
 
-export default MediaEditor
+export default observer(MediaEditor)

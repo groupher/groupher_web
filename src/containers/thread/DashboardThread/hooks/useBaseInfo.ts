@@ -1,13 +1,13 @@
 import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
-import { pick, isEmpty, reject, filter } from 'ramda'
+import { pick, isEmpty, reject, filter, mergeRight } from 'ramda'
 
 import type { TSocialItem, TDashboardBaseInfoRoute, TMediaReport } from '@/spec'
 import { toJS } from '@/mobx'
 
 import type { TSettingField } from '../spec'
 import useHelper from './useHelper'
-import { BASEINFO_KEYS } from '../constant'
+import { BASEINFO_KEYS, EMPTY_MEDIA_REPORT } from '../constant'
 
 type TRet = {
   loading: boolean
@@ -32,6 +32,11 @@ type TRet = {
   isTouched: boolean
   isSocialLinksTouched: boolean
   isMediaReportsTouched: boolean
+
+  addMediaReport: () => void
+  mediaReportOnChange: (index: number, url: string) => void
+  removeMediaReport: (index: number) => void
+  queryOpenGraphInfo: (item: TMediaReport) => void
 }
 
 /**
@@ -47,6 +52,7 @@ const useBaseInfo = (): TRet => {
 
   const { socialLinks, mediaReports, initSettings } = store.dashboardThread
 
+  // TODO: move to touched ?
   const mediaReportsTouched = () => {
     const curValues = reject((item: TMediaReport) => !item.editUrl, toJS(mediaReports))
     const initValues = reject(

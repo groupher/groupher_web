@@ -11,23 +11,14 @@ import MediaEditor from './MediaEditor'
 
 import useBaseInfo from '../../logic/useBaseInfo'
 import { Wrapper, Label, Inputer, Desc } from '../../styles/basic_info/other_info'
-import { edit } from '../../logic'
 
 const OtherInfo: FC = () => {
-  const {
-    city,
-    techstack,
-    mediaReports,
-    queringMediaReportIndex,
-    isTouched,
-    isMediaReportsTouched,
-  } = useBaseInfo()
+  const { city, techstack, isTouched, isMediaReportsTouched, edit } = useBaseInfo()
 
   return (
     <Wrapper>
       <Label left={-6}>（团队）所在城市</Label>
       <CitySelector value={city} onChange={(v) => edit(v, 'city')} top={15} />
-      {/* <CitySelector value={city} top={15} /> */}
 
       <Br top={20} />
       <Label>技术栈</Label>
@@ -46,7 +37,7 @@ const OtherInfo: FC = () => {
 
       <SexyDivider top={30} bottom={30} />
 
-      <MediaEditor reports={mediaReports} queringMediaReportIndex={queringMediaReportIndex} />
+      <MediaEditor />
 
       <SavingBar
         field={SETTING_FIELD.MEDIA_REPORTS}
