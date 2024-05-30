@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { pick, isEmpty, find, reject, filter, equals, mergeRight } from 'ramda'
+import { pick, isEmpty, find, reject, filter, equals, mergeRight, startsWith } from 'ramda'
 
 import type {
   TCommunity,
@@ -9,6 +9,8 @@ import type {
   TEditValue,
 } from '@/spec'
 import { toJS, runInAction } from '@/mobx'
+import { query } from '@/utils/api'
+
 import useDashboard from '@/hooks/useDashboard'
 import useQuery from '@/hooks/useQuery'
 
@@ -78,16 +80,43 @@ const useMediaReports = (): TRet => {
     store.mediaReports = newReports
   }
 
+  const handleOgQueryInfo = (data) => {
+    const { queringMediaReportIndex, mediaReports } = store
+
+    const restReports = reject(
+      (item: TMediaReport) => item.index === queringMediaReportIndex,
+      mediaReports,
+    )
+    const report = find(
+      (item: TMediaReport) => item.index === queringMediaReportIndex,
+      mediaReports,
+    )
+    const updatedReport = mergeRight(report, data)
+
+    runInAction(() => {
+      store.queringMediaReportIndex = null
+      store.loading = false
+      store.mediaReports = [...restReports, updatedReport]
+    })
+  }
+
   const queryOpenGraphInfo = (item: TMediaReport): void => {
     const { url, editUrl } = item
 
-    console.log('## queryOpenGraphInfo TODO')
-    // TODO
-    return
-    // if ((startsWith('https://', editUrl) || startsWith('http://', editUrl)) && url !== editUrl) {
-    //   store.mark({ queringMediaReportIndex: item.index, loading: true })
-    //   sr71$.query(S.openGraphInfo, { url: editUrl })
-    // }
+    if ((startsWith('https://', editUrl) || startsWith('http://', editUrl)) && url !== editUrl) {
+      store.queringMediaReportIndex = item.index
+      store.loading = true
+
+      const params = { url: editUrl.trim() }
+      query(S.openGraphInfo, params)
+        .then(({ openGraphInfo }) => handleOgQueryInfo(openGraphInfo))
+        .catch((e) => {
+          store.loading = false
+          store.queringMediaReportIndex = null
+          console.error('## og info: ', e)
+          alert('## queryOpenGraphInfo error')
+        })
+    }
   }
 
   return {

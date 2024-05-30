@@ -375,15 +375,6 @@ export const setActiveSettingAdmin = (user: TUser): void => {
   store.mark({ activeModerator: user })
 }
 
-export const queryOpenGraphInfo = (item: TMediaReport): void => {
-  const { url, editUrl } = item
-
-  if ((startsWith('https://', editUrl) || startsWith('http://', editUrl)) && url !== editUrl) {
-    store.mark({ queringMediaReportIndex: item.index, loading: true })
-    sr71$.query(S.openGraphInfo, { url: editUrl })
-  }
-}
-
 // ###############################
 // init & uninit handlers
 // ###############################
@@ -506,29 +497,6 @@ const DataSolver = [
     match: asyncRes('pagedPosts'),
     action: ({ pagedPosts }) => {
       store.mark({ pagedPosts, loading: false })
-    },
-  },
-  {
-    match: asyncRes('openGraphInfo'),
-    action: ({ openGraphInfo }) => {
-      const { queringMediaReportIndex, baseInfoSettings } = store
-      const { mediaReports } = baseInfoSettings
-
-      const restReports = reject(
-        (item: TMediaReport) => item.index === queringMediaReportIndex,
-        mediaReports,
-      )
-      const report = find(
-        (item: TMediaReport) => item.index === queringMediaReportIndex,
-        mediaReports,
-      )
-      const updatedReport = mergeRight(report, openGraphInfo)
-
-      store.mark({
-        mediaReports: [...restReports, updatedReport],
-        queringMediaReportIndex: null,
-        loading: false,
-      })
     },
   },
   {
