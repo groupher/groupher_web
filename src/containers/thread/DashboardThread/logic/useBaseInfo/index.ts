@@ -7,11 +7,12 @@ import useDashboard from '@/hooks/useDashboard'
 import useQuery from '@/hooks/useQuery'
 
 import type { TSettingField } from '@/stores2/dashboardStore/spec'
-import useHelper from '../useHelper'
-import { BASEINFO_KEYS, EMPTY_MEDIA_REPORT } from '../../constant'
 
+import useHelper from '../useHelper'
+import { BASEINFO_KEYS } from '../../constant'
 import S from '../../schema'
 
+import useInfo, { type TRet as TUseInfo } from './useInfo'
 import useSocialLinks, { type TRet as TUseSocialLinks } from './useSocialLinks'
 import useMediaReports, { type TRet as TUseMediaReports } from './useMediaReports'
 
@@ -19,22 +20,10 @@ type TRet = {
   loading: boolean
   saving: boolean
 
-  favicon: string
-  logo: string
-  locale: string
-  title: string
-  desc: string
-  introduction: string
-  homepage: string
-  slug: string
-  city: string
-  techstack: string
-
   baseInfoTab: TDashboardBaseInfoRoute
-
-  isTouched: boolean
   edit: (value: TEditValue, field: TSettingField) => void
-} & TUseMediaReports &
+} & TUseInfo &
+  TUseMediaReports &
   TUseSocialLinks
 
 /**
@@ -42,9 +31,10 @@ type TRet = {
  */
 const useBaseInfo = (): TRet => {
   const { dashboard: store } = useDashboard()
-  const { anyChanged, edit } = useHelper()
+  const { edit } = useHelper()
 
-  const { curCommunity, initSettings } = store
+  const { curCommunity } = store
+  const useInfoData = useInfo()
   const mediaReportsData = useMediaReports()
   const socialLinksData = useSocialLinks()
 
@@ -90,10 +80,9 @@ const useBaseInfo = (): TRet => {
   }
 
   return {
-    ...pick(BASEINFO_KEYS, store),
-    ...pick(['baseInfoTab', 'loading', 'saving'], store),
-    isTouched: anyChanged(BASEINFO_KEYS as TSettingField[]),
     edit,
+    ...pick(['baseInfoTab', 'loading', 'saving'], store),
+    ...useInfoData,
     ...socialLinksData,
     ...mediaReportsData,
   } as TRet
