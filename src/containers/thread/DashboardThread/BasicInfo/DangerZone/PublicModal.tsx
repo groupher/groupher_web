@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { type FC, useState } from 'react'
 
 import VIEW from '@/const/view'
 
@@ -11,6 +11,8 @@ import HeadsUp from '@/widgets/HeadsUp'
 
 // import from '@/widgets/Alert'
 import List from './List'
+
+import useBaseInfo from '../../logic/useBaseInfo'
 
 import {
   Wrapper,
@@ -40,6 +42,8 @@ export const VISIBLE_OPTIONS = [
 const defaultPrivateNote = '当前社区为私有状态，只对管理员开放。'
 
 const PublicModal: FC<TProps> = ({ show, onClose }) => {
+  const { toggleVisiable } = useBaseInfo()
+
   const [visible, setVisible] = useState('public')
   const [privateNote, setPrivateNote] = useState(defaultPrivateNote)
 
@@ -78,7 +82,9 @@ const PublicModal: FC<TProps> = ({ show, onClose }) => {
             onChange={(e) => setPrivateNote(e.target.value)}
           />
           <Br bottom={15} />
-          <Button type="primary">确定变更</Button>
+          <Button type="primary" onClick={() => toggleVisiable()}>
+            确定变更
+          </Button>
         </Footer>
       </Wrapper>
     </Modal>

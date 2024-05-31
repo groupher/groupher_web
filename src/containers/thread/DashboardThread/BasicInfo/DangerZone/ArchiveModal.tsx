@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import Modal from '@/widgets/Modal'
 
@@ -10,6 +10,7 @@ import Button from '@/widgets/Buttons/Button'
 // import from '@/widgets/Alert'
 import List from './List'
 
+import useBaseInfo from '../../logic/useBaseInfo'
 import { Wrapper, WarningTitle, Body, Footer } from '../../styles/basic_info/danger_zone/modal'
 
 type TProps = {
@@ -18,6 +19,8 @@ type TProps = {
 }
 
 const ArchiveModal: FC<TProps> = ({ show, onClose }) => {
+  const { archiveCommunity } = useBaseInfo()
+
   return (
     <Modal show={show} width="390px" offsetLeft="40%" onClose={() => onClose()} showCloseBtn>
       <Wrapper>
@@ -37,7 +40,7 @@ const ArchiveModal: FC<TProps> = ({ show, onClose }) => {
         </Body>
         <Footer>
           <SpaceGrow />
-          <Button space={15} right={10} bottom={8}>
+          <Button space={15} right={10} bottom={8} onClick={() => archiveCommunity()}>
             已了解，确定归档
           </Button>
           <SpaceGrow />
