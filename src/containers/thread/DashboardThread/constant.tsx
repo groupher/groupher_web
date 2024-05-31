@@ -519,20 +519,15 @@ export const DEFAULT_LINK_ITEMS = [
   },
 ]
 
-export const BASEINFO_BASIC_KEYS = [
-  'favicon',
-  'locale',
-  'logo',
-  'title',
-  'desc',
-  'introduction',
-  'homepage',
-  'slug',
-]
-
+export const BASEINFO_BASIC_KEYS = ['locale', 'title', 'desc', 'introduction', 'homepage', 'slug']
+export const BASEINFO_LOGOS_KEYS = ['logo', 'favicon']
 export const BASEINFO_OTHER_KEYS = ['city', 'techstack']
 
-export const BASEINFO_KEYS = [...BASEINFO_BASIC_KEYS, ...BASEINFO_OTHER_KEYS]
+export const BASEINFO_KEYS = [
+  ...BASEINFO_BASIC_KEYS,
+  ...BASEINFO_LOGOS_KEYS,
+  ...BASEINFO_OTHER_KEYS,
+]
 
 // export const UI_KEYS = [
 //   'layoutTab',

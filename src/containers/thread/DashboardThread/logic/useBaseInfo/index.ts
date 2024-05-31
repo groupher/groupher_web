@@ -13,18 +13,20 @@ import { BASEINFO_KEYS } from '../../constant'
 import S from '../../schema'
 
 import useInfo, { type TRet as TUseInfo } from './useInfo'
+import useLogos, { type TRet as TUseLogos } from './useLogos'
 import useSocialLinks, { type TRet as TUseSocialLinks } from './useSocialLinks'
 import useMediaReports, { type TRet as TUseMediaReports } from './useMediaReports'
 
-type TRet = {
-  loading: boolean
-  saving: boolean
-
-  baseInfoTab: TDashboardBaseInfoRoute
-  edit: (value: TEditValue, field: TSettingField) => void
-} & TUseInfo &
+type TRet = TUseInfo &
+  TUseLogos &
   TUseMediaReports &
-  TUseSocialLinks
+  TUseSocialLinks & {
+    loading: boolean
+    saving: boolean
+
+    baseInfoTab: TDashboardBaseInfoRoute
+    edit: (value: TEditValue, field: TSettingField) => void
+  }
 
 /**
  * NOTE: should use observer to wrap the component who use this hook
@@ -35,8 +37,9 @@ const useBaseInfo = (): TRet => {
 
   const { curCommunity } = store
   const useInfoData = useInfo()
-  const mediaReportsData = useMediaReports()
-  const socialLinksData = useSocialLinks()
+  const useLogosData = useLogos()
+  const useMediaReportsData = useMediaReports()
+  const useSocialLinksData = useSocialLinks()
 
   const { data } = useQuery(S.communityBaseInfo, {
     slug: curCommunity.slug,
@@ -83,8 +86,9 @@ const useBaseInfo = (): TRet => {
     edit,
     ...pick(['baseInfoTab', 'loading', 'saving'], store),
     ...useInfoData,
-    ...socialLinksData,
-    ...mediaReportsData,
+    ...useLogosData,
+    ...useSocialLinksData,
+    ...useMediaReportsData,
   } as TRet
 }
 

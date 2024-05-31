@@ -17,10 +17,9 @@ import {
   Title,
   Desc,
 } from '../styles/basic_info/logos'
-import { edit } from '../logic'
 
 const Logos: FC = () => {
-  const { saving, logo, isTouched } = useBaseInfo()
+  const { edit, saving, logo, isLogosTouched } = useBaseInfo()
 
   return (
     <Wrapper>
@@ -47,7 +46,12 @@ const Logos: FC = () => {
       <Desc>上传社区 Logo, 支持常见图片格式，200 KB以内。可选。</Desc>
       <Br bottom={30} />
 
-      <SavingBar field={SETTING_FIELD.BASE_INFO} isTouched={isTouched} loading={saving} top={30} />
+      <SavingBar
+        field={SETTING_FIELD.BASE_INFO}
+        isTouched={isLogosTouched}
+        loading={saving}
+        top={30}
+      />
     </Wrapper>
   )
 }
