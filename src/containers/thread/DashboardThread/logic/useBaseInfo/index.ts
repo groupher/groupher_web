@@ -93,7 +93,7 @@ const useBaseInfo = (): TRet => {
     ...useSocialLinksData,
     ...useMediaReportsData,
     ...useDangerZoneData,
-  } // as TRet
+  }
 }
 
 export default useBaseInfo

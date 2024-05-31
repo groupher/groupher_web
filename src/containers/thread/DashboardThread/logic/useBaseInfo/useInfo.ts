@@ -30,7 +30,7 @@ const useInfo = (): TRet => {
   return {
     ...pick(BASEINFO_BASIC_KEYS, store),
     isTouched: anyChanged(BASEINFO_BASIC_KEYS as TSettingField[]),
-  } as TRet
+  }
 }
 
 export default useInfo

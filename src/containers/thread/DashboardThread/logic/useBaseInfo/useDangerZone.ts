@@ -33,7 +33,7 @@ const useDangerZone = (): TRet => {
     deleteCommunity,
     archiveCommunity,
     toggleVisiable,
-  } as TRet
+  }
 }
 
 export default useDangerZone
