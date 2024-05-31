@@ -1,13 +1,7 @@
 import { useEffect } from 'react'
 import { pick, isEmpty, find, reject, filter, equals, mergeRight, startsWith } from 'ramda'
 
-import type {
-  TCommunity,
-  TSocialItem,
-  TDashboardBaseInfoRoute,
-  TMediaReport,
-  TEditValue,
-} from '@/spec'
+import type { TCommunity, TSocialItem, TDashboardBaseInfoRoute, TMediaReport } from '@/spec'
 import { toJS, runInAction } from '@/mobx'
 import { query } from '@/utils/api'
 
@@ -26,7 +20,6 @@ export type TRet = {
   mediaReports: TMediaReport[]
   isMediaReportsTouched: boolean
 
-  edit: (value: TEditValue, field: TSettingField) => void
   addMediaReport: () => void
   mediaReportOnChange: (index: number, url: string) => void
   removeMediaReport: (index: number) => void
@@ -127,7 +120,7 @@ const useMediaReports = (): TRet => {
     mediaReportOnChange,
     removeMediaReport,
     queryOpenGraphInfo,
-  } as TRet
+  }
 }
 
 export default useMediaReports

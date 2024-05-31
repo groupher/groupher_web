@@ -24,7 +24,7 @@ const useLogos = (): TRet => {
   return {
     ...pick(BASEINFO_LOGOS_KEYS, store),
     isLogosTouched: anyChanged(BASEINFO_LOGOS_KEYS as TSettingField[]),
-  } as TRet
+  }
 }
 
 export default useLogos

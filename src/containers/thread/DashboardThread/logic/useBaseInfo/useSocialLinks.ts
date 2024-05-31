@@ -26,7 +26,7 @@ const useSocialLinks = (): TRet => {
   return {
     socialLinks: reject((item: TSocialItem) => isEmpty(item.type), socialLinks),
     isSocialLinksTouched: socialLinksTouched(),
-  } as TRet
+  }
 }
 
 export default useSocialLinks
