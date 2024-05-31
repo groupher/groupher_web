@@ -16,11 +16,13 @@ import useInfo, { type TRet as TUseInfo } from './useInfo'
 import useLogos, { type TRet as TUseLogos } from './useLogos'
 import useSocialLinks, { type TRet as TUseSocialLinks } from './useSocialLinks'
 import useMediaReports, { type TRet as TUseMediaReports } from './useMediaReports'
+import useDangerZone, { type TRet as TUseDangerZone } from './useDangerZone'
 
 type TRet = TUseInfo &
   TUseLogos &
   TUseMediaReports &
-  TUseSocialLinks & {
+  TUseSocialLinks &
+  TUseDangerZone & {
     loading: boolean
     saving: boolean
 
@@ -40,6 +42,7 @@ const useBaseInfo = (): TRet => {
   const useLogosData = useLogos()
   const useMediaReportsData = useMediaReports()
   const useSocialLinksData = useSocialLinks()
+  const useDangerZoneData = useDangerZone()
 
   const { data } = useQuery(S.communityBaseInfo, {
     slug: curCommunity.slug,
@@ -89,7 +92,8 @@ const useBaseInfo = (): TRet => {
     ...useLogosData,
     ...useSocialLinksData,
     ...useMediaReportsData,
-  } as TRet
+    ...useDangerZoneData,
+  } // as TRet
 }
 
 export default useBaseInfo
