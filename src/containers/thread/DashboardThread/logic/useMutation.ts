@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { includes, omit } from 'ramda'
+import { includes, omit, values } from 'ramda'
 
 import type { TCommunity, TEditValue } from '@/spec'
 import { DASHBOARD_BASEINFO_ROUTE } from '@/const/route'
@@ -17,6 +17,7 @@ import {
   BASEINFO_BASIC_KEYS,
   BASEINFO_OTHER_KEYS,
   BASEINFO_KEYS,
+  SETTING_LAYOUT_FIELD,
   SEO_KEYS,
 } from '../constant'
 import S from '../schema'
@@ -84,7 +85,6 @@ const useMutation = (): TRet => {
 
   const mutation = (field: string, e: TEditValue): Promise<void> => {
     // const community = curCommunity.slug
-
     if (field === SETTING_FIELD.MEDIA_REPORTS) {
       const { mediaReports } = store
 
@@ -170,11 +170,6 @@ const useMutation = (): TRet => {
     //   return
     // }
 
-    // if (includes(field, values(SETTING_LAYOUT_FIELD))) {
-    //   sr71$.mutate(S.updateDashboardLayout, { community, [field]: e })
-    //   return
-    // }
-
     // if (field === SETTING_FIELD.NAME_ALIAS) {
     //   const nameAlias = toJS(store.nameAlias)
     //   sr71$.mutate(S.updateDashboardNameAlias, { community, nameAlias })
@@ -228,6 +223,14 @@ const useMutation = (): TRet => {
 
     //   sr71$.mutate(S.reindexTagsInGroup, { community, thread, group, tags: tagIndex })
     // }
+
+    if (includes(field, values(SETTING_LAYOUT_FIELD))) {
+      mutate(S.updateDashboardLayout, { community, [field]: e })
+        .then(() => _handleDone())
+        .catch((err) => {
+          console.error('## handle upadate layout error: ', err)
+        })
+    }
   }
 
   // useEffect(() => {

@@ -18,8 +18,6 @@ const Templates: FC = () => {
   const [showAll, setShowAll] = useState<boolean>(false)
   const linksProps = { threads, links }
 
-  console.log('## template isTouched: ', isLayoutTouched)
-
   return (
     <Wrapper>
       {showAll ? (
