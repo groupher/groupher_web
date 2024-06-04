@@ -1,6 +1,6 @@
 // logics for header & footer links
 import { useMemo } from 'react'
-import { keys, pick, find, findIndex, clone, remove, filter, reject, forEach } from 'ramda'
+import { pick, find, findIndex, filter, reject } from 'ramda'
 
 import { runInAction, toJS } from '@/mobx'
 
@@ -50,7 +50,6 @@ export type TRet = {
 
 const useLinks = (): TRet => {
   const { dashboard: store } = useDashboard()
-  const curCommunity = useViewingCommunity()
   const {
     getLinks,
     moveGroup,
@@ -64,27 +63,7 @@ const useLinks = (): TRet => {
     keepMoreGroup2EndIfNeed,
   } = useCommon()
 
-  const { curTab, headerLinks, footerLinks } = store
-
-  const validThreads = useMemo(() => {
-    const { enable, nameAlias } = store
-
-    if (!curCommunity?.threads) return []
-
-    return publicThreads(curCommunity.threads, {
-      enable,
-      nameAlias,
-    })
-  }, [curCommunity, store])
-
-  // THeaderSettings
-  const headerSettings = useMemo(() => {
-    return {
-      ...pick(HEADER_SETTING_KEYS, store),
-      threads: validThreads,
-    }
-  }, [validThreads, store])
-
+  const { curTab } = store
   const linksKey = curTab !== DASHBOARD_ROUTE.FOOTER ? 'headerLinks' : 'footerLinks'
 
   const updateInGroup = (link: TLinkItem): void => {
@@ -201,10 +180,10 @@ const useLinks = (): TRet => {
     store[linksKey] = toJS(linksAfter)
     store.editingLink = null
 
-    // keepMoreGroup2EndIfNeed()
+    keepMoreGroup2EndIfNeed()
 
     if (newAddLink.group === MORE_GROUP) {
-      // moveAboutLink2Bottom()
+      moveAboutLink2Bottom()
     }
   }
 
@@ -279,8 +258,8 @@ const useLinks = (): TRet => {
     if (linksKey !== 'headerLinks') return
 
     const aboutLink = find(
-      (item) => item.group === MORE_GROUP && item.title === '关于',
-      headerLinks,
+      (item: TLinkItem) => item.group === MORE_GROUP && item.title === '关于',
+      store.headerLinks,
     )
 
     moveLink(aboutLink, 'bottom')
