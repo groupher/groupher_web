@@ -38,7 +38,6 @@ import {
   BASEINFO_BASIC_KEYS,
   BASEINFO_OTHER_KEYS,
 } from '../constant'
-import { init as linksLogicInit } from './links'
 import { init as tagsLogicInit } from './tags'
 import { init as faqInit } from './faq'
 
@@ -166,22 +165,6 @@ const _doMutation = (field: string, e: TEditValue): void => {
       community,
       mediaReports: mediaReports.map((item) => omit(['editUrl'], item)),
     })
-    return
-  }
-
-  if (field === SETTING_FIELD.HEADER_LINKS) {
-    const { headerSettings } = store
-    const { headerLinks } = headerSettings
-
-    sr71$.mutate(S.updateDashboardHeaderLinks, { community, headerLinks })
-    return
-  }
-
-  if (field === SETTING_FIELD.FOOTER_LINKS) {
-    const { footerSettings } = store
-    const { footerLinks } = footerSettings
-
-    sr71$.mutate(S.updateDashboardFooterLinks, { community, footerLinks })
     return
   }
 
@@ -486,14 +469,6 @@ const DataSolver = [
     action: () => _handleDone(),
   },
   {
-    match: asyncRes('updateDashboardHeaderLinks'),
-    action: () => _handleDone(),
-  },
-  {
-    match: asyncRes('updateDashboardFooterLinks'),
-    action: () => _handleDone(),
-  },
-  {
     match: asyncRes('pagedPosts'),
     action: ({ pagedPosts }) => {
       store.mark({ pagedPosts, loading: false })
@@ -565,7 +540,6 @@ const ErrSolver = [
 export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
-    linksLogicInit(store)
     tagsLogicInit(store)
     faqInit(store)
 
