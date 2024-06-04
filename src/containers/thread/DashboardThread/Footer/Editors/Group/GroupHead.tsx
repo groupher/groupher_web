@@ -1,4 +1,5 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import Tooltip from '@/widgets/Tooltip'
 import { SpaceGrow } from '@/widgets/Common'
@@ -6,18 +7,13 @@ import { SpaceGrow } from '@/widgets/Common'
 import GroupMenu from '../GroupMenu'
 import GroupInputer from '../GroupInputer'
 
+import useFooter from '../../../logic/useFooter'
 import {
   Wrapper,
   Title,
   EditIcon,
   SettingIcon,
 } from '../../../styles/footer/editors/group/group_head'
-import {
-  triggerGroupUpdate,
-  cancelGroupChange,
-  updateEditingGroup,
-  confirmGroupUpdate,
-} from '../../../logic/links'
 
 type TProps = {
   title: string
@@ -47,6 +43,9 @@ const GroupHead: FC<TProps> = ({
   isEdgeLeft,
   isEdgeRight,
 }) => {
+  const { triggerGroupUpdate, cancelGroupChange, updateEditingGroup, confirmGroupUpdate } =
+    useFooter()
+
   // null is void empty checked when input value is ""
   if (editingGroup !== null && editingGroupIndex === curGroupIndex) {
     return (
@@ -89,4 +88,4 @@ const GroupHead: FC<TProps> = ({
   )
 }
 
-export default memo(GroupHead)
+export default observer(GroupHead)

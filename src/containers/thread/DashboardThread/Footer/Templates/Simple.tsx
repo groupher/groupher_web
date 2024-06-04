@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { keys } from 'ramda'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
@@ -9,6 +9,7 @@ import { DEME_SOCIALS } from '@/const/social'
 import { sortByIndex, groupByKey } from '@/helper'
 import SocialList from '@/widgets/SocialList'
 
+import useFooter from '../../logic/useFooter'
 import {
   Wrapper,
   LeftWrapper,
@@ -18,13 +19,14 @@ import {
   LinkItem,
   RightWrapper,
 } from '../../styles/footer/templates/simple'
-import { edit } from '../../logic'
 
 type TProps = {
   links: TLinkItem[]
 } & TActive
 
 const Simple: FC<TProps> = ({ links, $active }) => {
+  const { edit } = useFooter()
+
   const [animateRef] = useAutoAnimate()
 
   // @ts-ignore
