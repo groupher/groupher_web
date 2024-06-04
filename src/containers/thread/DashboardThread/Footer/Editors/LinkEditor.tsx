@@ -11,6 +11,7 @@ import SavingBar from '../../SavingBar'
 import { EMPTY_LINK_ITEM } from '../../constant'
 import LinkMenu from './LinkMenu'
 
+import useFooter from '../../logic/useFooter'
 import {
   Wrapper,
   ReadonlyWrapper,
@@ -28,14 +29,7 @@ import {
   Label,
   NotifyLabel,
 } from '../../styles/footer/editors/link_editor'
-import {
-  cancelLinkEditing,
-  deleteLink,
-  updateEditingLink,
-  confirmLinkEditing,
-  updateInGroup,
-  moveLink,
-} from '../../logic/links'
+
 import { CHANGE_MODE } from '@/const/mode'
 
 type TProps = {
@@ -59,8 +53,16 @@ const LinkEditor: FC<TProps> = ({
   disableSetting = false,
   disableEdit = false,
 }) => {
-  const [snapshot, setSnapshot] = useState<TLinkItem | null>(null)
+  const {
+    cancelLinkEditing,
+    deleteLink,
+    updateEditingLink,
+    confirmLinkEditing,
+    updateInGroup,
+    moveLink,
+  } = useFooter()
 
+  const [snapshot, setSnapshot] = useState<TLinkItem | null>(null)
   const editing = linkItem.group === editingLink?.group && linkItem.index === editingLink?.index
 
   useEffect(() => {

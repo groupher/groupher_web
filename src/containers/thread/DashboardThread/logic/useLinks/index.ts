@@ -1,13 +1,19 @@
 // logics for header & footer links
-import { keys, find, findIndex, clone, remove, filter, reject, forEach } from 'ramda'
+import { useMemo } from 'react'
+import { keys, pick, find, findIndex, clone, remove, filter, reject, forEach } from 'ramda'
 
 import { runInAction, toJS } from '@/mobx'
 
 import { ONE_LINK_GROUP, MORE_GROUP } from '@/const/dashboard'
+import { DASHBOARD_ROUTE } from '@/const/route'
 import { CHANGE_MODE } from '@/const/mode'
+import { publicThreads } from '@/helper'
 
 import type { TLinkItem, TGroupedLinks } from '@/spec'
 import useDashboard from '@/hooks/useDashboard'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
+
+import { HEADER_SETTING_KEYS } from '@/stores2/dashboardStore/constant'
 
 import type { TMoveLinkDir } from '../../spec'
 import { EMPTY_LINK_ITEM } from '../../constant'
@@ -44,6 +50,7 @@ export type TRet = {
 
 const useLinks = (): TRet => {
   const { dashboard: store } = useDashboard()
+  const curCommunity = useViewingCommunity()
   const {
     moveGroup,
     reindex,
@@ -56,15 +63,36 @@ const useLinks = (): TRet => {
     keepMoreGroup2EndIfNeed,
   } = useCommon()
 
+  const { curTab, headerLinks, footerLinks } = store
+
+  const validThreads = useMemo(() => {
+    const { enable, nameAlias } = store
+
+    if (!curCommunity?.threads) return []
+
+    return publicThreads(curCommunity.threads, {
+      enable,
+      nameAlias,
+    })
+  }, [curCommunity, store])
+
+  // THeaderSettings
+  const headerSettings = useMemo(() => {
+    return {
+      ...pick(HEADER_SETTING_KEYS, store),
+      threads: validThreads,
+    }
+  }, [validThreads, store])
+
+  const links = curTab !== DASHBOARD_ROUTE.FOOTER ? headerLinks : footerLinks
+  const linksKey = curTab !== DASHBOARD_ROUTE.FOOTER ? 'headerLinks' : 'footerLinks'
+
   const updateInGroup = (link: TLinkItem): void => {
     store.editingLink = link
     store.editingLinkMode = CHANGE_MODE.UPDATE
   }
 
   const add2Group = (group: string, index: number): void => {
-    const { curPageLinksKey } = store
-    const links = store[curPageLinksKey.settings][curPageLinksKey.links]
-
     const grouplinks = filter((link: TLinkItem) => link.group === group, links)
 
     if (grouplinks.length <= 0) return
@@ -78,16 +106,13 @@ const useLinks = (): TRet => {
     }
 
     runInAction(() => {
-      store[curPageLinksKey.links] = [...links, newItem]
+      store[linksKey] = [...links, newItem]
       store.editingLink = newItem
       store.editingLinkMode = CHANGE_MODE.CREATE
     })
   }
 
   const deleteLink = (linkItem: TLinkItem): void => {
-    const { curPageLinksKey } = store
-    const links = store[curPageLinksKey.settings][curPageLinksKey.links]
-
     let linksAfter = reject(
       (link: TLinkItem) => link.group === linkItem.group && link.index === linkItem.index,
       links,
@@ -95,24 +120,19 @@ const useLinks = (): TRet => {
 
     linksAfter = emptyLinksIfNedd(linksAfter)
 
-    store[curPageLinksKey.links] = reindex(linksAfter)
-    // store.mark({ [curPageLinksKey.links]: _reindex(linksAfter) })
+    store[linksKey] = reindex(linksAfter)
   }
 
   const deleteGroup = (groupIndex: number): void => {
-    const { curPageLinksKey } = store
-    const links = store[curPageLinksKey.settings][curPageLinksKey.links]
-
     let linksAfter = reject((link: TLinkItem) => link.groupIndex === groupIndex, links)
 
     linksAfter = emptyLinksIfNedd(linksAfter)
 
-    store[curPageLinksKey.links] = reindexGroup(linksAfter)
+    store[linksKey] = reindexGroup(linksAfter)
   }
 
   const cancelLinkEditing = (): void => {
-    const { curPageLinksKey, editingLink, editingLinkMode, initSettings } = store
-    const links = store[curPageLinksKey.settings][curPageLinksKey.links]
+    const { editingLink, editingLinkMode, initSettings } = store
 
     if (editingLinkMode === CHANGE_MODE.UPDATE) {
       store.editingLink = null
@@ -127,15 +147,14 @@ const useLinks = (): TRet => {
     linksAfter = emptyLinksIfNedd(linksAfter)
 
     runInAction(() => {
-      store[curPageLinksKey.links] = linksAfter
+      store[linksKey] = linksAfter
       store.editingLink = null
-      store.initSettings = { ...toJS(initSettings), [curPageLinksKey.links]: linksAfter }
+      store.initSettings = { ...toJS(initSettings), [linksKey]: linksAfter }
     })
   }
 
   const confirmLinkEditing = (): void => {
-    const { curPageLinksKey, editingLink, editingLinkMode } = store
-    const links = store[curPageLinksKey.settings][curPageLinksKey.links]
+    const { editingLink, editingLinkMode } = store
 
     if (editingLinkMode === CHANGE_MODE.UPDATE) {
       const editingIndex = findIndex(
@@ -146,17 +165,24 @@ const useLinks = (): TRet => {
       links[editingIndex].title = editingLink.title
       links[editingIndex].link = editingLink.link
 
-      store.mark({ [curPageLinksKey.links]: links, editingLink: null })
+      store[linksKey] = links
+      store.editingLink = null
       return
     }
 
+    console.log('## editingLinkMode: ', editingLinkMode)
+
     const curGroupLinks = filter((link: TLinkItem) => editingLink.group === link.group, links)
+
+    console.log('## curGroupLinks: ', curGroupLinks)
 
     const newAddLink = find(
       (link: TLinkItem) =>
         editingLink.group === link.group && link.index === curGroupLinks.length - 1,
       links,
     )
+
+    console.log('## newAddLink: ', newAddLink)
 
     const editingLinkAfter = {
       ...editingLink,
@@ -165,18 +191,22 @@ const useLinks = (): TRet => {
       groupIndex: newAddLink.groupIndex,
     }
 
+    console.log('## editingLinkAfter: ', editingLinkAfter)
+
     const linksAfter = reject(
       (link: TLinkItem) => link.group === newAddLink.group && link.index === newAddLink.index,
       links,
     ).concat(editingLinkAfter)
 
-    store[curPageLinksKey.links] = linksAfter
+    console.log('## linksAfter: ', toJS(linksAfter))
+
+    store[linksKey] = toJS(linksAfter)
     store.editingLink = null
 
-    keepMoreGroup2EndIfNeed()
+    // keepMoreGroup2EndIfNeed()
 
     if (newAddLink.group === MORE_GROUP) {
-      moveAboutLink2Bottom()
+      // moveAboutLink2Bottom()
     }
   }
 
@@ -248,12 +278,11 @@ const useLinks = (): TRet => {
   }
 
   const moveAboutLink2Bottom = (): void => {
-    const { curPageLinksKey, headerSettings } = store
-    if (curPageLinksKey.links !== 'headerLinks') return
+    if (linksKey !== 'headerLinks') return
 
     const aboutLink = find(
       (item) => item.group === MORE_GROUP && item.title === '关于',
-      headerSettings.headerLinks,
+      headerLinks,
     )
 
     moveLink(aboutLink, 'bottom')

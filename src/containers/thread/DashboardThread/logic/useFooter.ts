@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 
-import type { THeaderLayout, TCommunityThread, TChangeMode, TLinkItem, TEditValue } from '@/spec'
+import type { TFooterLayout, TCommunityThread, TChangeMode, TLinkItem, TEditValue } from '@/spec'
 import { toJS } from '@/mobx'
 import { publicThreads } from '@/helper'
 
@@ -15,8 +15,8 @@ import useLinks, { type TRet as TUserLinks } from './useLinks'
 import useHelper from './useHelper'
 
 type TRet = {
-  headerLayout: THeaderLayout
-  headerLinks: TLinkItem[]
+  footerLayout: TFooterLayout
+  footerLinks: TLinkItem[]
   threads: TCommunityThread[]
   isTouched: boolean
   isLayoutTouched: boolean
@@ -27,15 +27,15 @@ type TRet = {
 /**
  * NOTE: should use observer to wrap the component who use this hook
  */
-const useHeader = (): TRet => {
+const useFooter = (): TRet => {
   const { dashboard: store } = useDashboard()
   const useLinksData = useLinks()
   const { edit, isChanged } = useHelper()
   const community = useViewingCommunity()
 
   const {
-    headerLayout,
-    headerLinks,
+    footerLayout,
+    footerLinks,
     editingLink,
     editingLinkMode,
     editingGroup,
@@ -47,8 +47,8 @@ const useHeader = (): TRet => {
 
   return {
     edit,
-    headerLayout,
-    headerLinks: toJS(headerLinks),
+    footerLayout,
+    footerLinks: toJS(footerLinks),
     editingLink: toJS(editingLink),
     editingLinkMode: editingLinkMode as TChangeMode,
     editingGroup,
@@ -60,10 +60,10 @@ const useHeader = (): TRet => {
     }),
 
     saving,
-    isTouched: isChanged('headerLinks') && editingLink === null,
-    isLayoutTouched: isChanged('headerLayout'),
+    isTouched: isChanged('footerLinks') && editingLink === null,
+    isLayoutTouched: isChanged('footerLayout'),
     ...useLinksData,
   }
 }
 
-export default useHeader
+export default useFooter

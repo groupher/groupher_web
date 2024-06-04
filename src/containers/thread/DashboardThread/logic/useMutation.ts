@@ -108,21 +108,18 @@ const useMutation = (): TRet => {
       return
     }
 
-    // if (field === SETTING_FIELD.HEADER_LINKS) {
-    //   const { headerSettings } = store
-    //   const { headerLinks } = headerSettings
+    if (field === SETTING_FIELD.HEADER_LINKS) {
+      const { headerLinks } = store
 
-    //   sr71$.mutate(S.updateDashboardHeaderLinks, { community, headerLinks })
-    //   return
-    // }
+      handleMutation(S.updateDashboardHeaderLinks, { community, headerLinks })
+      return
+    }
 
-    // if (field === SETTING_FIELD.FOOTER_LINKS) {
-    //   const { footerSettings } = store
-    //   const { footerLinks } = footerSettings
-
-    //   sr71$.mutate(S.updateDashboardFooterLinks, { community, footerLinks })
-    //   return
-    // }
+    if (field === SETTING_FIELD.FOOTER_LINKS) {
+      const { footerLinks } = store
+      handleMutation(S.updateDashboardFooterLinks, { community, footerLinks })
+      return
+    }
 
     if (field === SETTING_FIELD.BASE_INFO) {
       const { baseInfoTab } = store
@@ -234,10 +231,6 @@ const useMutation = (): TRet => {
       return
     }
   }
-
-  // useEffect(() => {
-  //   if (data?.community) updateOverview(data.community)
-  // }, [data])
 
   return { mutation }
 }

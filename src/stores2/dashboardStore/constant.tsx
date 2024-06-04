@@ -548,7 +548,7 @@ export const BASEINFO_KEYS = [...BASEINFO_BASIC_KEYS, ...BASEINFO_OTHER_KEYS]
 export const HEADER_SETTING_KEYS = [
   'saving',
   'headerLayout',
-  'headerlinks',
+  'headerLinks',
   'editingLink',
   'editingLinkMode',
   'editingGroup',
@@ -558,7 +558,7 @@ export const HEADER_SETTING_KEYS = [
 export const FOOTER_SETTING_KEYS = [
   'saving',
   'footerLayout',
-  'footerlinks',
+  'footerLinks',
   'editingLink',
   'editingLinkMode',
   'editingGroup',
