@@ -31,8 +31,7 @@ type TRet = {
  */
 const useMutation = (): TRet => {
   const { dashboard: store } = useDashboard()
-  const { updateViewingCommunity } = useViewing()
-  const { curCommunity } = store
+  const { updateViewingCommunity, community: curCommunity } = useViewing()
   const community = curCommunity.slug
 
   const _handleDone = () => {

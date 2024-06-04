@@ -169,10 +169,6 @@ export type TSettingsFields = {
   widgetsThreads: TThread
   widgetsSize: TSizeSML
   widgetsType: TWidgetType
-
-  // REMOVE to hooks later
-  curCommunity?: TCommunity
-  _validThreads?: TCommunityThread[]
 }
 
 export type TInitSettings = Partial<TSettingsFields>
@@ -229,8 +225,6 @@ export type TStore = TSettingsFields & {
   // views
   tagGroups: string[]
   curPageLinksKey: TCurPageLinksKey
-  // headerSettings: THeaderSettings
-  // footerSettings: TFooterSettings
 
   // actions
   changeGlowEffect: (glowType: string) => void
@@ -251,18 +245,6 @@ export type TLinkState = {
   editingGroup: string | null
   editingGroupIndex: number | null
 }
-
-export type THeaderSettings = {
-  headerLayout: THeaderLayout
-  headerLinks: TLinkItem[]
-  threads: TCommunityThread[]
-} & TLinkState
-
-export type TFooterSettings = {
-  footerLayout: TFooterLayout
-  footerLinks: TLinkItem[]
-  threads: TCommunityThread[]
-} & TLinkState
 
 type TDocFile = {
   index: number

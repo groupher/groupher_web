@@ -46,8 +46,6 @@ import type {
   TInitSettings,
   TSettingsFields,
   TCurPageLinksKey,
-  THeaderSettings,
-  TFooterSettings,
   TDocSettings,
   TRootStore,
 } from './spec'
@@ -214,10 +212,6 @@ const createDashboardStore = (rootStore: TRootStore, initState: TInitSettings = 
     allRootRules: '{}',
 
     // -- views
-    get curCommunity(): TCommunity {
-      return rootStore.viewing.community
-    },
-
     get tagGroups(): string[] {
       const self = this as TStore
       const { tags } = self
@@ -233,39 +227,6 @@ const createDashboardStore = (rootStore: TRootStore, initState: TInitSettings = 
         settings: isFooter ? 'footerSettings' : 'headerSettings',
       }
     },
-
-    // this is private, no need to export to store spec
-    // get _validThreads(): TCommunityThread[] {
-    //   const self = this as TStore
-    //   const { curCommunity, enable, nameAlias } = self
-
-    //   if (!curCommunity?.threads) return []
-
-    //   return publicThreads(curCommunity.threads, {
-    //     enable,
-    //     nameAlias,
-    //   })
-    // },
-
-    // get headerSettings(): THeaderSettings {
-    //   const self = this as TStore
-    //   const threads = self._validThreads
-
-    //   return {
-    //     ...pick(HEADER_SETTING_KEYS, self),
-    //     threads,
-    //   }
-    // },
-
-    // get footerSettings(): TFooterSettings {
-    //   const self = this as TStore
-    //   const threads = self._validThreads
-
-    //   return {
-    //     ...pick(FOOTER_SETTING_KEYS, self),
-    //     threads,
-    //   }
-    // },
 
     get docSettings(): TDocSettings {
       return {
