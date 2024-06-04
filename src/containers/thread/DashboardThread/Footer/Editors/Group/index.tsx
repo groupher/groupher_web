@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 import { keys } from 'ramda'
 
@@ -15,7 +15,7 @@ import GroupInputer from '../GroupInputer'
 
 import GroupHead from './GroupHead'
 
-import useFooterSettingsInfo from '../../../hooks/useFooterSettingsInfo'
+import useFooter from '../../../logic/useFooter'
 import {
   Wrapper,
   LinkGroup,
@@ -26,19 +26,6 @@ import {
   Adder,
 } from '../../../styles/footer/editors/group'
 
-import {
-  add2Group,
-  deleteGroup,
-  moveGroup2Left,
-  moveGroup2Right,
-  moveGroup2EdgeLeft,
-  moveGroup2EdgeRight,
-  updateEditingGroup,
-  triggerGroupAdd,
-  cancelGroupChange,
-  confirmGroupAdd,
-} from '../../../logic/links'
-
 const Group: FC = () => {
   const {
     footerLinks: links,
@@ -46,7 +33,17 @@ const Group: FC = () => {
     editingLinkMode,
     editingGroup,
     editingGroupIndex,
-  } = useFooterSettingsInfo()
+    add2Group,
+    deleteGroup,
+    moveGroup2Left,
+    moveGroup2Right,
+    moveGroup2EdgeLeft,
+    moveGroup2EdgeRight,
+    updateEditingGroup,
+    triggerGroupAdd,
+    cancelGroupChange,
+    confirmGroupAdd,
+  } = useFooter()
 
   const [animateRef] = useAutoAnimate()
   const [groupAnimateRef] = useAutoAnimate()

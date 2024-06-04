@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { keys } from 'ramda'
 import { observer } from 'mobx-react-lite'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
@@ -10,7 +10,7 @@ import Button from '@/widgets/Buttons/Button'
 
 import LinkEditor from '../LinkEditor'
 
-import useFooterSettingsInfo from '../../../hooks/useFooterSettingsInfo'
+import useFooter from '../../../logic/useFooter'
 import {
   Wrapper,
   LeftPart,
@@ -20,12 +20,11 @@ import {
   Adder,
   PlusIcon,
 } from '../../../styles/footer/editors/simple'
-import { add2Group } from '../../../logic/links'
 
 const Simple: FC = () => {
   const [animateRef] = useAutoAnimate()
 
-  const { footerLinks: links, editingLink, editingLinkMode } = useFooterSettingsInfo()
+  const { footerLinks: links, editingLink, editingLinkMode, add2Group } = useFooter()
 
   // @ts-ignore
   const groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
