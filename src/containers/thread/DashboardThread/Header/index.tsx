@@ -8,11 +8,11 @@ import SavingBar from '../SavingBar'
 import Templates from './Templates'
 import Editor from './Editors'
 
-import useHeaderSettingsInfo from '../logic/useHeaderSettingsInfo'
+import useHeader from '../logic/useHeader'
 import { Wrapper } from '../styles/header'
 
 const Header: FC = () => {
-  const { isTouched, saving } = useHeaderSettingsInfo()
+  const { isTouched, saving } = useHeader()
 
   return (
     <Wrapper>

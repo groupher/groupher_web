@@ -10,7 +10,7 @@ import { SpaceGrow } from '@/widgets/Common'
 import GroupMenu from './GroupMenu'
 import GroupInputer from './GroupInputer'
 
-import useHeaderSettingsInfo from '../../logic/useHeaderSettingsInfo'
+import useHeader from '../../logic/useHeader'
 import {
   Wrapper,
   Title,
@@ -75,7 +75,7 @@ const GroupHead: FC<TProps> = ({
     cancelGroupChange,
     updateEditingGroup,
     confirmGroupUpdate,
-  } = useHeaderSettingsInfo()
+  } = useHeader()
 
   // null is void empty checked when input value is ""
   if (editingGroup !== null && editingGroupIndex === curGroupIndex) {

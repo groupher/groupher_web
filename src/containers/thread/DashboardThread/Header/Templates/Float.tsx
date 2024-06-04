@@ -8,7 +8,7 @@ import { HEADER_LAYOUT } from '@/const/layout'
 
 import CustomHeaderLinks from '@/widgets/CustomHeaderLinks/HeaderTemplate'
 
-import useHeaderSettingsInfo from '../../logic/useHeaderSettingsInfo'
+import useHeader from '../../logic/useHeader'
 import {
   Wrapper,
   LeftWrapper,
@@ -26,7 +26,7 @@ type TProps = {
 } & TActive
 
 const Float: FC<TProps> = ({ $active, threads, links }) => {
-  const { edit } = useHeaderSettingsInfo()
+  const { edit } = useHeader()
   const isAboutFold = links.length >= 2 && links[0].title !== ''
   const _threads = isAboutFold
     ? reject((t: TCommunityThread) => t.slug === THREAD.ABOUT, threads)

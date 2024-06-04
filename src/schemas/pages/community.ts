@@ -93,6 +93,7 @@ export const community = `
           kanbanBgColors
           docFaqLayout
           changelogLayout
+          headerLayout
           footerLayout
           glowType
           glowFixed

@@ -10,20 +10,16 @@ import Center from './Center'
 import Float from './Float'
 import Right from './Right'
 
-import useHeaderSettingsInfo from '../../logic/useHeaderSettingsInfo'
+import useHeader from '../../logic/useHeader'
 import { Wrapper, ArrowIcon, ToggleButton, ToggleText } from '../../styles/header/templates'
 
 const Templates: FC = () => {
-  const {
-    isLayoutTouched: isTouched,
-    headerLayout,
-    saving,
-    headerLinks: links,
-    threads,
-  } = useHeaderSettingsInfo()
+  const { isLayoutTouched, headerLayout, saving, headerLinks: links, threads } = useHeader()
   const [showAll, setShowAll] = useState<boolean>(false)
-
   const linksProps = { threads, links }
+
+  console.log('## template isTouched: ', isLayoutTouched)
+
   return (
     <Wrapper>
       {showAll ? (
@@ -41,7 +37,7 @@ const Templates: FC = () => {
       )}
 
       <SavingBar
-        isTouched={isTouched}
+        isTouched={isLayoutTouched}
         field={SETTING_FIELD.HEADER_LAYOUT}
         onConfirm={() => setShowAll(false)}
         loading={saving}
@@ -49,7 +45,7 @@ const Templates: FC = () => {
         bottom={30}
       />
 
-      {!isTouched && !saving && (
+      {!isLayoutTouched && !saving && (
         <ToggleButton size="small" ghost noBorder onClick={() => setShowAll(!showAll)}>
           <ToggleText>
             {showAll ? '收起' : '更换模板'}

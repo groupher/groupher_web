@@ -16,7 +16,7 @@ import GroupInputer from '../../Footer/Editors/GroupInputer'
 import FixedLinks from './FixedLinks'
 import GroupHead from './GroupHead'
 
-import useHeaderSettingsInfo from '../../logic/useHeaderSettingsInfo'
+import useHeader from '../../logic/useHeader'
 
 import {
   Wrapper,
@@ -56,7 +56,7 @@ const Editor: FC = () => {
     updateEditingGroup,
     confirmGroupAdd,
     cancelGroupChange,
-  } = useHeaderSettingsInfo()
+  } = useHeader()
 
   const isAboutLinkFold =
     length(filter((item) => item.title !== '' && item.group !== MORE_GROUP, links)) >= 1

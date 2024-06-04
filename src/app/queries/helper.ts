@@ -238,6 +238,7 @@ export const parseDashboard = (community: TCommunity, pathname: string): TParseD
   if (!community) return {}
 
   const { dashboard, moderators } = community
+
   const {
     enable,
     nameAlias,
