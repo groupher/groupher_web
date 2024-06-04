@@ -16,7 +16,6 @@ import {
   ActionWrapper,
 } from './styles/saving_bar'
 
-// import { onSave } from './logic'
 import useHelper from './logic/useHelper'
 
 type TProps = {

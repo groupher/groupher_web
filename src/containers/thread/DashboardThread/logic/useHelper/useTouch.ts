@@ -20,13 +20,14 @@ const useTouch = (): TRet => {
   const { initSettings } = store
 
   const isChanged = (field: TSettingField): boolean => {
-    return !equals(store[field], initSettings[field])
+    return !equals(toJS(store[field]), toJS(initSettings[field]))
   }
 
   const anyChanged = (fields: TSettingField[]): boolean => any(isChanged)(fields)
 
   const mapArrayChanged = (key: string): boolean => {
-    return JSON.stringify(toJS(store[key])) !== JSON.stringify(toJS(initSettings[key]))
+    // return JSON.stringify(toJS(store[key])) !== JSON.stringify(toJS(initSettings[key]))
+    return !equals(toJS(store[key]), toJS(initSettings[key]))
   }
 
   return {
