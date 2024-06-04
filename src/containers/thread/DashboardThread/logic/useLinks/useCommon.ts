@@ -1,5 +1,6 @@
 // logics for header & footer links
 
+import { useMemo, memo } from 'react'
 import { keys, findIndex, clone, remove, filter, reject, forEach, find } from 'ramda'
 
 import { runInAction, toJS } from '@/mobx'
@@ -10,10 +11,12 @@ import { ROUTE, DASHBOARD_ROUTE } from '@/const/route'
 import { ONE_LINK_GROUP, MORE_GROUP } from '@/const/dashboard'
 
 import useDashboard from '@/hooks/useDashboard'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import { EMPTY_LINK_ITEM } from '../../constant'
 
 export type TRet = {
+  getLinks: () => TLinkItem[]
   moveGroup: (group: string, opt: 'left' | 'right' | 'edge-left' | 'edge-right') => void
   reindex: (links: TLinkItem[]) => TLinkItem[]
   keepMoreGroup2EndIfNeed: () => void
@@ -30,9 +33,14 @@ export type TRet = {
  */
 const useCommon = (): TRet => {
   const { dashboard: store } = useDashboard()
-  const { curTab, headerLinks, footerLinks } = store
+  const community = useViewingCommunity()
+  const { curTab } = store
 
-  const links = curTab !== DASHBOARD_ROUTE.FOOTER ? headerLinks : footerLinks
+  const getLinks = (): TLinkItem[] => {
+    const { curTab, headerLinks, footerLinks } = store
+    return toJS(curTab !== DASHBOARD_ROUTE.FOOTER ? headerLinks : footerLinks)
+  }
+
   const linksKey = curTab !== DASHBOARD_ROUTE.FOOTER ? 'headerLinks' : 'footerLinks'
 
   const emptyLinksIfNedd = (links: TLinkItem[]): TLinkItem[] => {
@@ -54,6 +62,7 @@ const useCommon = (): TRet => {
    * move links actions
    */
   const doMoveLink = (link: TLinkItem, opt: 'up' | 'down'): void => {
+    const links = getLinks()
     const { group } = link
 
     const groupLinks = filter((item: TLinkItem) => item.group === group, links)
@@ -75,6 +84,7 @@ const useCommon = (): TRet => {
   }
 
   const doMoveLink2Edge = (link: TLinkItem, opt: 'top' | 'bottom'): void => {
+    const links = getLinks()
     const { group } = link
 
     const groupLinks = filter((item: TLinkItem) => item.group === group, links)
@@ -114,31 +124,27 @@ const useCommon = (): TRet => {
     return targetLinks as TLinkItem[]
   }
 
-  const keepMoreGroup2EndIfNeed = (): void => {
-    const { curCommunity } = store
+  const keepMoreGroup2EndIfNeed = () => {
     if (linksKey !== 'headerLinks') return
+    const links = getLinks()
 
     const _groupedLinks = groupByKey(links, 'group')
     const groupKeys = keys(_groupedLinks) as string[]
 
     const moreGroup = find((item: string) => item === MORE_GROUP, groupKeys)
 
-    console.log('## moreGroup: ', moreGroup)
-
     // create if no custom link exists
     if (links.length > 0 && !moreGroup) {
-      console.log('## 111: ', links)
       const newLinkItem = {
         ...EMPTY_LINK_ITEM,
         title: '关于',
-        link: `/${curCommunity.slug}/${ROUTE.ABOUT}`,
+        link: `/${community.slug}/${ROUTE.ABOUT}`,
         group: MORE_GROUP,
         // make sure the "more" gorup is always in the end
         groupIndex: groupKeys.length + 2,
       }
 
-      const linksAfter = [...links, newLinkItem]
-
+      const linksAfter = toJS([...links, newLinkItem])
       store.headerLinks = reindexGroup(linksAfter)
     } else {
       // console.log('## 222: ', links)
@@ -149,16 +155,13 @@ const useCommon = (): TRet => {
         groupIndex: item.group === MORE_GROUP ? links.length + 2 : item.groupIndex,
       }))
 
-      console.log('## 222: ', linksAfter)
-      console.log('## 222 swort: ', toJS(reindexGroup(linksAfter)))
-
       store.headerLinks = reindexGroup(linksAfter)
     }
   }
 
   const confirmGroupAdd = (): void => {
     const { editingGroup } = store
-    console.log('## confirmGroupAdd editingGroup: ', editingGroup)
+    const links = getLinks()
 
     const _groupedLinks = groupByKey(links, 'group')
     const groupKeys = keys(_groupedLinks) as string[]
@@ -169,7 +172,7 @@ const useCommon = (): TRet => {
       groupIndex: groupKeys.length,
     }
 
-    const linksAfter = [...links, newLinkItem]
+    const linksAfter = toJS([...links, newLinkItem])
 
     runInAction(() => {
       store.editingGroup = null
@@ -177,13 +180,13 @@ const useCommon = (): TRet => {
       store[linksKey] = linksAfter
     })
 
-    // keepMoreGroup2EndIfNeed()
+    keepMoreGroup2EndIfNeed()
   }
 
   const confirmGroupUpdate = (): void => {
     const { editingGroup, editingGroupIndex } = store
+    const links = getLinks()
 
-    // const linksAfter = clone(_reindexGroup(links))
     const linksAfter = clone(links)
 
     for (let i = 0; i < links.length; i += 1) {
@@ -215,6 +218,8 @@ const useCommon = (): TRet => {
   }
 
   const moveGroup = (group: string, opt: 'left' | 'right' | 'edge-left' | 'edge-right'): void => {
+    const links = getLinks()
+
     // @ts-ignore
     const _groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
     const groupKeys = keys(_groupedLinks) as string[]
@@ -263,6 +268,7 @@ const useCommon = (): TRet => {
   }
 
   return {
+    getLinks,
     moveGroup,
     reindex,
     keepMoreGroup2EndIfNeed,

@@ -52,6 +52,7 @@ const useLinks = (): TRet => {
   const { dashboard: store } = useDashboard()
   const curCommunity = useViewingCommunity()
   const {
+    getLinks,
     moveGroup,
     reindex,
     doMoveLink,
@@ -84,7 +85,6 @@ const useLinks = (): TRet => {
     }
   }, [validThreads, store])
 
-  const links = curTab !== DASHBOARD_ROUTE.FOOTER ? headerLinks : footerLinks
   const linksKey = curTab !== DASHBOARD_ROUTE.FOOTER ? 'headerLinks' : 'footerLinks'
 
   const updateInGroup = (link: TLinkItem): void => {
@@ -93,6 +93,7 @@ const useLinks = (): TRet => {
   }
 
   const add2Group = (group: string, index: number): void => {
+    const links = getLinks()
     const grouplinks = filter((link: TLinkItem) => link.group === group, links)
 
     if (grouplinks.length <= 0) return
@@ -113,6 +114,8 @@ const useLinks = (): TRet => {
   }
 
   const deleteLink = (linkItem: TLinkItem): void => {
+    const links = getLinks()
+
     let linksAfter = reject(
       (link: TLinkItem) => link.group === linkItem.group && link.index === linkItem.index,
       links,
@@ -124,6 +127,7 @@ const useLinks = (): TRet => {
   }
 
   const deleteGroup = (groupIndex: number): void => {
+    const links = getLinks()
     let linksAfter = reject((link: TLinkItem) => link.groupIndex === groupIndex, links)
 
     linksAfter = emptyLinksIfNedd(linksAfter)
@@ -133,6 +137,7 @@ const useLinks = (): TRet => {
 
   const cancelLinkEditing = (): void => {
     const { editingLink, editingLinkMode, initSettings } = store
+    const links = getLinks()
 
     if (editingLinkMode === CHANGE_MODE.UPDATE) {
       store.editingLink = null
@@ -155,6 +160,7 @@ const useLinks = (): TRet => {
 
   const confirmLinkEditing = (): void => {
     const { editingLink, editingLinkMode } = store
+    const links = getLinks()
 
     if (editingLinkMode === CHANGE_MODE.UPDATE) {
       const editingIndex = findIndex(
@@ -170,19 +176,13 @@ const useLinks = (): TRet => {
       return
     }
 
-    console.log('## editingLinkMode: ', editingLinkMode)
-
     const curGroupLinks = filter((link: TLinkItem) => editingLink.group === link.group, links)
-
-    console.log('## curGroupLinks: ', curGroupLinks)
 
     const newAddLink = find(
       (link: TLinkItem) =>
         editingLink.group === link.group && link.index === curGroupLinks.length - 1,
       links,
     )
-
-    console.log('## newAddLink: ', newAddLink)
 
     const editingLinkAfter = {
       ...editingLink,
@@ -197,8 +197,6 @@ const useLinks = (): TRet => {
       (link: TLinkItem) => link.group === newAddLink.group && link.index === newAddLink.index,
       links,
     ).concat(editingLinkAfter)
-
-    console.log('## linksAfter: ', toJS(linksAfter))
 
     store[linksKey] = toJS(linksAfter)
     store.editingLink = null

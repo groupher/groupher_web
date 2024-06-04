@@ -235,37 +235,37 @@ const createDashboardStore = (rootStore: TRootStore, initState: TInitSettings = 
     },
 
     // this is private, no need to export to store spec
-    get _validThreads(): TCommunityThread[] {
-      const self = this as TStore
-      const { curCommunity, enable, nameAlias } = self
+    // get _validThreads(): TCommunityThread[] {
+    //   const self = this as TStore
+    //   const { curCommunity, enable, nameAlias } = self
 
-      if (!curCommunity?.threads) return []
+    //   if (!curCommunity?.threads) return []
 
-      return publicThreads(curCommunity.threads, {
-        enable,
-        nameAlias,
-      })
-    },
+    //   return publicThreads(curCommunity.threads, {
+    //     enable,
+    //     nameAlias,
+    //   })
+    // },
 
-    get headerSettings(): THeaderSettings {
-      const self = this as TStore
-      const threads = self._validThreads
+    // get headerSettings(): THeaderSettings {
+    //   const self = this as TStore
+    //   const threads = self._validThreads
 
-      return {
-        ...pick(HEADER_SETTING_KEYS, self),
-        threads,
-      }
-    },
+    //   return {
+    //     ...pick(HEADER_SETTING_KEYS, self),
+    //     threads,
+    //   }
+    // },
 
-    get footerSettings(): TFooterSettings {
-      const self = this as TStore
-      const threads = self._validThreads
+    // get footerSettings(): TFooterSettings {
+    //   const self = this as TStore
+    //   const threads = self._validThreads
 
-      return {
-        ...pick(FOOTER_SETTING_KEYS, self),
-        threads,
-      }
-    },
+    //   return {
+    //     ...pick(FOOTER_SETTING_KEYS, self),
+    //     threads,
+    //   }
+    // },
 
     get docSettings(): TDocSettings {
       return {

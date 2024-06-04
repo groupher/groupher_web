@@ -229,8 +229,8 @@ export type TStore = TSettingsFields & {
   // views
   tagGroups: string[]
   curPageLinksKey: TCurPageLinksKey
-  headerSettings: THeaderSettings
-  footerSettings: TFooterSettings
+  // headerSettings: THeaderSettings
+  // footerSettings: TFooterSettings
 
   // actions
   changeGlowEffect: (glowType: string) => void
