@@ -41,14 +41,7 @@ import {
 import BStore from '@/utils/bstore'
 import { publicThreads } from '@/helper'
 
-import type {
-  TStore,
-  TInitSettings,
-  TSettingsFields,
-  TCurPageLinksKey,
-  TDocSettings,
-  TRootStore,
-} from './spec'
+import type { TStore, TInitSettings, TSettingsFields, TDocSettings, TRootStore } from './spec'
 import {
   EMPTY_MEDIA_REPORT,
   HEADER_SETTING_KEYS,
@@ -217,15 +210,6 @@ const createDashboardStore = (rootStore: TRootStore, initState: TInitSettings = 
       const { tags } = self
 
       return uniq(pluck('group', tags))
-    },
-
-    get curPageLinksKey(): TCurPageLinksKey {
-      const isFooter = this.curTab === DASHBOARD_ROUTE.FOOTER
-
-      return {
-        links: isFooter ? 'footerLinks' : 'headerLinks',
-        settings: isFooter ? 'footerSettings' : 'headerSettings',
-      }
     },
 
     get docSettings(): TDocSettings {

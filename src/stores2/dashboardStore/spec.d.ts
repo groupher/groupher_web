@@ -224,18 +224,12 @@ export type TStore = TSettingsFields & {
 
   // views
   tagGroups: string[]
-  curPageLinksKey: TCurPageLinksKey
 
   // actions
   changeGlowEffect: (glowType: string) => void
 
   updateViewingCommunity: (args: TCommunity) => void
   mark: (sobj: Record<string, any>) => void
-}
-
-export type TCurPageLinksKey = {
-  links: 'footerLinks' | 'headerLinks'
-  settings: 'footerSettings' | 'headerSettings'
 }
 
 export type TLinkState = {

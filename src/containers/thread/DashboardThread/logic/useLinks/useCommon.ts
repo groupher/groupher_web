@@ -204,7 +204,7 @@ const useCommon = (): TRet => {
     })
   }
 
-  const _reindexByGroup = (groupKeys: string[], groupedLinks: TGroupedLinks): TGroupedLinks => {
+  const reindexByGroup = (groupKeys: string[], groupedLinks: TGroupedLinks): TGroupedLinks => {
     for (let index = 0; index < groupKeys.length; index += 1) {
       const gkey = groupKeys[index]
 
@@ -224,7 +224,7 @@ const useCommon = (): TRet => {
     const _groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group')
     const groupKeys = keys(_groupedLinks) as string[]
 
-    const groupedLinks = _reindexByGroup(groupKeys, _groupedLinks)
+    const groupedLinks = reindexByGroup(groupKeys, _groupedLinks)
     const curIndex = groupedLinks[group][0].groupIndex
 
     let nextIndex = -1
