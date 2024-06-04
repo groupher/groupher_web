@@ -14,7 +14,7 @@ import { EMPTY_LINK_ITEM } from '../../constant'
 
 import useCommon from './useCommon'
 
-type TRet = {
+export type TRet = {
   resetEditingLink: () => void
   updateEditingGroup: (title: string) => void
   updateInGroup: (link: TLinkItem) => void
@@ -25,7 +25,9 @@ type TRet = {
   confirmLinkEditing: () => void
   updateEditingLink: (key: string, value: string) => void
   //
-
+  confirmGroupAdd: () => void
+  confirmGroupUpdate: () => void
+  //
   triggerGroupUpdate: (title: string, index: number) => void
   cancelGroupChange: () => void
   triggerGroupAdd: () => void
@@ -50,6 +52,7 @@ const useLinks = (): TRet => {
     reindexGroup,
     emptyLinksIfNedd,
     confirmGroupAdd,
+    confirmGroupUpdate,
     keepMoreGroup2EndIfNeed,
   } = useCommon()
 
@@ -275,6 +278,9 @@ const useLinks = (): TRet => {
     triggerGroupUpdate,
     triggerGroupAdd,
     cancelGroupChange,
+    //
+    confirmGroupAdd,
+    confirmGroupUpdate,
     //
     addHeaderLinkGroup,
     moveLink,

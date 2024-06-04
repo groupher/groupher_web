@@ -1,4 +1,5 @@
-import { FC } from 'react'
+import type { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { SETTING_FIELD } from '../constant'
 
@@ -7,7 +8,7 @@ import SavingBar from '../SavingBar'
 import Templates from './Templates'
 import Editor from './Editors'
 
-import useHeaderSettingsInfo from '../hooks/useHeaderSettingsInfo'
+import useHeaderSettingsInfo from '../logic/useHeaderSettingsInfo'
 import { Wrapper } from '../styles/header'
 
 const Header: FC = () => {
@@ -31,4 +32,4 @@ const Header: FC = () => {
   )
 }
 
-export default Header
+export default observer(Header)

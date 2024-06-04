@@ -1,5 +1,6 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import { startsWith } from 'ramda'
+import { observer } from 'mobx-react-lite'
 
 import { ONE_LINK_GROUP, MORE_GROUP } from '@/const/dashboard'
 
@@ -9,6 +10,7 @@ import { SpaceGrow } from '@/widgets/Common'
 import GroupMenu from './GroupMenu'
 import GroupInputer from './GroupInputer'
 
+import useHeaderSettingsInfo from '../../logic/useHeaderSettingsInfo'
 import {
   Wrapper,
   Title,
@@ -17,12 +19,6 @@ import {
   EditIcon,
   SettingIcon,
 } from '../../styles/header/editors/group_head'
-import {
-  triggerGroupUpdate,
-  cancelGroupChange,
-  updateEditingGroup,
-  confirmGroupUpdate,
-} from '../../logic/links'
 
 type TGroupTitle = {
   title: string
@@ -50,8 +46,6 @@ const GroupTitle: FC<TGroupTitle> = ({ title }) => {
 
 type TProps = {
   title: string
-  editingGroup: string | null
-  editingGroupIndex: number | null
   curGroupIndex: number
   isEdgeLeft: boolean
   isEdgeRight: boolean
@@ -65,9 +59,7 @@ type TProps = {
 
 const GroupHead: FC<TProps> = ({
   title,
-  editingGroup,
   curGroupIndex,
-  editingGroupIndex,
   moveLeft,
   moveRight,
   moveEdgeLeft,
@@ -76,6 +68,15 @@ const GroupHead: FC<TProps> = ({
   isEdgeLeft,
   isEdgeRight,
 }) => {
+  const {
+    editingGroup,
+    editingGroupIndex,
+    triggerGroupUpdate,
+    cancelGroupChange,
+    updateEditingGroup,
+    confirmGroupUpdate,
+  } = useHeaderSettingsInfo()
+
   // null is void empty checked when input value is ""
   if (editingGroup !== null && editingGroupIndex === curGroupIndex) {
     return (
@@ -126,4 +127,4 @@ const GroupHead: FC<TProps> = ({
   )
 }
 
-export default memo(GroupHead)
+export default observer(GroupHead)

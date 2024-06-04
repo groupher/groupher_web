@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 import { keys, startsWith, filter, length } from 'ramda'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
@@ -16,7 +16,8 @@ import GroupInputer from '../../Footer/Editors/GroupInputer'
 import FixedLinks from './FixedLinks'
 import GroupHead from './GroupHead'
 
-import useHeaderSettingsInfo from '../../hooks/useHeaderSettingsInfo'
+import useHeaderSettingsInfo from '../../logic/useHeaderSettingsInfo'
+
 import {
   Wrapper,
   TopWrapper,
@@ -34,20 +35,6 @@ import {
   ItemsWrapper,
 } from '../../styles/header/editors'
 
-import {
-  deleteGroup,
-  moveGroup2Left,
-  moveGroup2Right,
-  moveGroup2EdgeLeft,
-  moveGroup2EdgeRight,
-  add2Group,
-  addHeaderLinkGroup,
-  triggerGroupAdd,
-  updateEditingGroup,
-  confirmGroupAdd,
-  cancelGroupChange,
-} from '../../logic/links'
-
 const Editor: FC = () => {
   const [animateRef] = useAutoAnimate()
   const [groupAnimateRef] = useAutoAnimate()
@@ -58,6 +45,17 @@ const Editor: FC = () => {
     editingLinkMode,
     editingGroup,
     editingGroupIndex,
+    deleteGroup,
+    moveGroup2Left,
+    moveGroup2Right,
+    moveGroup2EdgeLeft,
+    moveGroup2EdgeRight,
+    add2Group,
+    addHeaderLinkGroup,
+    triggerGroupAdd,
+    updateEditingGroup,
+    confirmGroupAdd,
+    cancelGroupChange,
   } = useHeaderSettingsInfo()
 
   const isAboutLinkFold =
@@ -123,8 +121,6 @@ const Editor: FC = () => {
                 <ItemsWrapper ref={animateRef}>
                   <GroupHead
                     title={groupKey as string}
-                    editingGroup={editingGroup}
-                    editingGroupIndex={editingGroupIndex}
                     curGroupIndex={index}
                     moveLeft={() => moveGroup2Left(groupKey)}
                     moveRight={() => moveGroup2Right(groupKey)}

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { type FC, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { HEADER_LAYOUT } from '@/const/layout'
@@ -10,7 +10,7 @@ import Center from './Center'
 import Float from './Float'
 import Right from './Right'
 
-import useHeaderSettingsInfo from '../../hooks/useHeaderSettingsInfo'
+import useHeaderSettingsInfo from '../../logic/useHeaderSettingsInfo'
 import { Wrapper, ArrowIcon, ToggleButton, ToggleText } from '../../styles/header/templates'
 
 const Templates: FC = () => {
