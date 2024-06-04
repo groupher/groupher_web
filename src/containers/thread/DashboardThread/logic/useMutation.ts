@@ -83,6 +83,17 @@ const useMutation = (): TRet => {
     }, 800)
   }
 
+  const handleMutation = (schema, params, okCb = null) => {
+    mutate(schema, params)
+      .then((data) => {
+        if (okCb) okCb(data)
+        _handleDone()
+      })
+      .catch((err) => {
+        console.error('## handle request error: ', err)
+      })
+  }
+
   const mutation = (field: string, e: TEditValue): Promise<void> => {
     // const community = curCommunity.slug
     if (field === SETTING_FIELD.MEDIA_REPORTS) {
@@ -93,7 +104,7 @@ const useMutation = (): TRet => {
         mediaReports: mediaReports.map((item) => omit(['editUrl'], item)),
       })
 
-      mutate(S.updateDashboardMediaReports, params).then(() => _handleDone())
+      handleMutation(S.updateDashboardMediaReports, params)
       return
     }
 
@@ -129,10 +140,9 @@ const useMutation = (): TRet => {
         }
       }
 
-      mutate(S.updateDashboardBaseInfo, params).then((data) => {
-        updateViewingCommunity(data.updateDashboardBaseInfo)
-        _handleDone()
-      })
+      handleMutation(S.updateDashboardBaseInfo, params, (data) =>
+        updateViewingCommunity(data.updateDashboardBaseInfo),
+      )
 
       return
     }
@@ -141,12 +151,7 @@ const useMutation = (): TRet => {
       const { socialLinks } = store
       const params = toJS({ community, socialLinks })
 
-      mutate(S.updateDashboardSocialLinks, params)
-        .then(() => _handleDone())
-        .catch((err) => {
-          console.error('## handle social links error: ', err)
-        })
-
+      handleMutation(S.updateDashboardSocialLinks, params)
       return
     }
 
@@ -225,11 +230,8 @@ const useMutation = (): TRet => {
     // }
 
     if (includes(field, values(SETTING_LAYOUT_FIELD))) {
-      mutate(S.updateDashboardLayout, { community, [field]: e })
-        .then(() => _handleDone())
-        .catch((err) => {
-          console.error('## handle upadate layout error: ', err)
-        })
+      handleMutation(S.updateDashboardLayout, { community, [field]: e })
+      return
     }
   }
 
