@@ -8,13 +8,13 @@
 
 import { mergeRight, values } from 'ramda'
 
-import type { TAccount, TRoute, TThread, TArticle, TLocale } from '@/spec'
+import type { TRoute, TThread, TArticle, TLocale } from '@/spec'
 
 import EVENT from '@/const/event'
 import METRIC from '@/const/metric'
 import { LOCALE } from '@/const/i18n'
 
-import { T, markStates, Instance } from '@/mobx'
+import { T, markStates, type Instance } from '@/mobx'
 import { toast, send } from '@/signal'
 
 import {

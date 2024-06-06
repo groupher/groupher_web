@@ -1,4 +1,4 @@
-import { battery, toJS } from '@/mobx'
+import { battery } from '@/mobx'
 import { includes, values, mergeRight } from 'ramda'
 
 import type { TCommunity, TArticle } from '@/spec'

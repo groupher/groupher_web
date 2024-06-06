@@ -15,7 +15,6 @@ import {
   uniq,
   reject,
   mapObjIndexed,
-  forEach,
 } from 'ramda'
 
 import type {
@@ -26,7 +25,6 @@ import type {
   TNameAlias,
   TChangeMode,
   TSocialItem,
-  TMediaReport,
   TLinkItem,
   TOverview,
 } from '@/spec'

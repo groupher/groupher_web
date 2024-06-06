@@ -1,13 +1,11 @@
-import { useEffect } from 'react'
 import { includes, omit, values } from 'ramda'
 
-import type { TCommunity, TEditValue } from '@/spec'
+import type { TEditValue } from '@/spec'
 import { DASHBOARD_BASEINFO_ROUTE } from '@/const/route'
 import { runInAction, toJS } from '@/mobx'
 
 import useDashboard from '@/hooks/useDashboard'
 import useViewing from '@/hooks/useViewing'
-import useQuery from '@/hooks/useQuery'
 
 import { mutate } from '@/utils/api'
 import { toast } from '@/signal'

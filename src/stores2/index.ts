@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import React, { createContext } from 'react'
+import { createContext } from 'react'
 import { configure } from 'mobx'
 
 import type { TRootStore } from './spec'

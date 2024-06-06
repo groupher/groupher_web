@@ -1,7 +1,4 @@
-import { useContext } from 'react'
-import { MobXProviderContext } from 'mobx-react'
-
-import type { THeaderLayout, TCommunityThread, TChangeMode, TLinkItem, TEditValue } from '@/spec'
+import type { THeaderLayout, TCommunityThread, TLinkItem, TEditValue } from '@/spec'
 import { toJS } from '@/mobx'
 import { publicThreads } from '@/helper'
 
@@ -48,9 +45,9 @@ const useHeader = (): TRet => {
   return {
     edit,
     headerLayout,
-    headerLinks: toJS(headerLinks),
-    editingLink: toJS(editingLink),
-    editingLinkMode: editingLinkMode as TChangeMode,
+    headerLinks,
+    editingLink,
+    editingLinkMode,
     editingGroup,
     editingGroupIndex,
 

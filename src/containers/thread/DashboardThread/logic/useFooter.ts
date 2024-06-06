@@ -1,7 +1,4 @@
-import { useContext } from 'react'
-import { MobXProviderContext } from 'mobx-react'
-
-import type { TFooterLayout, TCommunityThread, TChangeMode, TLinkItem, TEditValue } from '@/spec'
+import type { TFooterLayout, TCommunityThread, TLinkItem, TEditValue } from '@/spec'
 import { toJS } from '@/mobx'
 import { publicThreads } from '@/helper'
 
@@ -48,9 +45,9 @@ const useFooter = (): TRet => {
   return {
     edit,
     footerLayout,
-    footerLinks: toJS(footerLinks),
-    editingLink: toJS(editingLink),
-    editingLinkMode: editingLinkMode as TChangeMode,
+    footerLinks,
+    editingLink,
+    editingLinkMode,
     editingGroup,
     editingGroupIndex,
 

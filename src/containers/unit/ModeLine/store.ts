@@ -10,7 +10,7 @@ import type { TRootStore, TViewing, TArticle } from '@/spec'
 import TYPE from '@/const/type'
 // import METRIC from '@/const/metric'
 
-import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
+import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '@/mobx'
 
 const ModeLine = T.model('ModeLine', {
   topBarVisiable: T.opt(T.bool, false),
@@ -27,7 +27,7 @@ const ModeLine = T.model('ModeLine', {
       return toJS(root.viewing)
     },
     get isArticleBarVisiable(): boolean {
-      const root = getParent(self) as TRootStore
+      // const root = getParent(self) as TRootStore
 
       // TODO:
       return true

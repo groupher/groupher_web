@@ -1,6 +1,5 @@
 // logics for header & footer links
 
-import { useMemo, memo } from 'react'
 import { keys, findIndex, clone, remove, filter, reject, forEach, find } from 'ramda'
 
 import { runInAction, toJS } from '@/mobx'
@@ -8,7 +7,7 @@ import { sortByIndex, groupByKey } from '@/helper'
 
 import type { TLinkItem, TGroupedLinks } from '@/spec'
 import { ROUTE, DASHBOARD_ROUTE } from '@/const/route'
-import { ONE_LINK_GROUP, MORE_GROUP } from '@/const/dashboard'
+import { MORE_GROUP } from '@/const/dashboard'
 
 import useDashboard from '@/hooks/useDashboard'
 import useViewingCommunity from '@/hooks/useViewingCommunity'

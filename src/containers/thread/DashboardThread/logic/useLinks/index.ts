@@ -1,19 +1,14 @@
 // logics for header & footer links
-import { useMemo } from 'react'
-import { pick, find, findIndex, filter, reject } from 'ramda'
+import { find, findIndex, filter, reject } from 'ramda'
 
 import { runInAction, toJS } from '@/mobx'
 
 import { ONE_LINK_GROUP, MORE_GROUP } from '@/const/dashboard'
 import { DASHBOARD_ROUTE } from '@/const/route'
 import { CHANGE_MODE } from '@/const/mode'
-import { publicThreads } from '@/helper'
 
-import type { TLinkItem, TGroupedLinks } from '@/spec'
+import type { TLinkItem } from '@/spec'
 import useDashboard from '@/hooks/useDashboard'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-
-import { HEADER_SETTING_KEYS } from '@/stores2/dashboardStore/constant'
 
 import type { TMoveLinkDir } from '../../spec'
 import { EMPTY_LINK_ITEM } from '../../constant'

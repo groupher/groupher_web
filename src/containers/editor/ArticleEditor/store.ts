@@ -12,13 +12,12 @@ import type {
   TArticle,
   TArticleThread,
   TSubmitState,
-  TAccount,
   TEditMode,
   TGroupedTags,
   TTag,
 } from '@/spec'
 
-import { T, getParent, markStates, toJS, Instance, useMobxContext } from '@/mobx'
+import { T, getParent, markStates, toJS, type Instance, useMobxContext } from '@/mobx'
 import { Community, Tag, User } from '@/model'
 import { ARTICLE_CAT } from '@/const/gtd'
 

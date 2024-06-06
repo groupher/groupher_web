@@ -1,8 +1,8 @@
 import { battery, markStore } from '@/mobx'
 
-import { uniq, pluck, pick, equals, mapObjIndexed, mergeLeft } from 'ramda'
+import { uniq, pluck, equals, mapObjIndexed, mergeLeft } from 'ramda'
 
-import type { TCommunity, TCommunityThread } from '@/spec'
+import type { TCommunity } from '@/spec'
 import { LOCALE } from '@/const/i18n'
 import { THREAD } from '@/const/thread'
 import SIZE from '@/const/size'
@@ -39,13 +39,10 @@ import {
   DASHBOARD_DOC_ROUTE,
 } from '@/const/route'
 import BStore from '@/utils/bstore'
-import { publicThreads } from '@/helper'
 
 import type { TStore, TInitSettings, TSettingsFields, TDocSettings, TRootStore } from './spec'
 import {
   EMPTY_MEDIA_REPORT,
-  HEADER_SETTING_KEYS,
-  FOOTER_SETTING_KEYS,
   DASHBOARD_DEMO_KEY,
   DEFAULT_FAQ_ITEMS,
   DEFAULT_OVERVIEW,

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "noUnusedLocals": true,
     "paths": {
       "@/containers/*": ["src/containers/*"],
       "@/widgets/*": ["src/widgets/*"],
