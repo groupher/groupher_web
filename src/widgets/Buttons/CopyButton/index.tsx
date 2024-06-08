@@ -1,4 +1,4 @@
-import { FC, memo, lazy, Suspense } from 'react'
+import { type FC, memo, lazy, Suspense } from 'react'
 
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 

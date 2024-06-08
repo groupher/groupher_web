@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import dynamic from 'next/dynamic'
 import { observer } from 'mobx-react-lite'
 // import { trackWindowScroll } from 'react-lazy-load-image-component'

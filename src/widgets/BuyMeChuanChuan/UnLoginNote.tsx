@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 // import { ICON_CMD } from '@/config'
 import { Wrapper, LoginLabel } from './styles/unlogin_note'

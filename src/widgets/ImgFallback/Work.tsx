@@ -1,4 +1,4 @@
-import { FC, Fragment, memo } from 'react'
+import { type FC, Fragment, memo } from 'react'
 
 import type { TSpace } from '@/spec'
 import { getRandomInt } from '@/helper'

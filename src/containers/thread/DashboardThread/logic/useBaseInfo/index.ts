@@ -2,8 +2,9 @@ import { useEffect } from 'react'
 import { pick, isEmpty } from 'ramda'
 
 import type { TCommunity, TDashboardBaseInfoRoute, TEditValue } from '@/spec'
-import { toJS, runInAction } from '@/mobx'
+import { runInAction } from '@/mobx'
 import useDashboard from '@/hooks/useDashboard'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useQuery from '@/hooks/useQuery'
 
 import type { TSettingField } from '@/stores2/dashboardStore/spec'
@@ -35,9 +36,9 @@ type TRet = TUseInfo &
  */
 const useBaseInfo = (): TRet => {
   const { dashboard: store } = useDashboard()
+  const curCommunity = useViewingCommunity()
   const { edit } = useHelper()
 
-  const { curCommunity } = store
   const useInfoData = useInfo()
   const useLogosData = useLogos()
   const useMediaReportsData = useMediaReports()

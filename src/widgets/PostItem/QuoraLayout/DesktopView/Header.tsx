@@ -1,5 +1,4 @@
-import { FC, lazy, Suspense } from 'react'
-import { observer } from 'mobx-react-lite'
+import { type FC, lazy, Suspense } from 'react'
 import TimeAgo from 'timeago-react'
 
 import type { TPost } from '@/spec'

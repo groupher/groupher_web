@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TPost } from '@/spec'
 import { ARTICLE_THREAD } from '@/const/thread'

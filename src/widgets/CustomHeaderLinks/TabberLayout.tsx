@@ -1,4 +1,4 @@
-import { FC, Fragment, useState } from 'react'
+import { type FC, Fragment, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { keys, startsWith, filter } from 'ramda'
 

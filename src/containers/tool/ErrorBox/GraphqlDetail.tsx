@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TGQError } from '@/spec'
 // import { Wrapper } from './styles'

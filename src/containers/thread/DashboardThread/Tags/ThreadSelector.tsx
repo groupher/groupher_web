@@ -1,10 +1,10 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TCommunityThread } from '@/spec'
 
 import Button from '@/widgets/Buttons/Button'
 
-import useTagListInfo from '../logic/useTagListInfo'
+import useTags from '../logic/useTags'
 import { Wrapper, Hint, CatsWrapper } from '../styles/tags/thread_selector'
 
 type TProps = {
@@ -13,7 +13,7 @@ type TProps = {
 }
 
 const ThreadSelector: FC<TProps> = ({ threads, active }) => {
-  const { changeThread } = useTagListInfo()
+  const { changeThread } = useTags()
 
   return (
     <Wrapper>

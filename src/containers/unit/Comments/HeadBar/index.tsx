@@ -1,4 +1,4 @@
-import { FC, memo, useState, Fragment } from 'react'
+import { type FC, memo, useState, Fragment } from 'react'
 
 import type { TCommentsState } from '@/spec'
 

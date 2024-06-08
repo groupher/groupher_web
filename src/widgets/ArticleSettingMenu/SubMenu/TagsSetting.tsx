@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react'
+import { type FC, useState, useEffect } from 'react'
 import { includes, reject, uniq, equals } from 'ramda'
 import { useQuery, useMutation } from 'urql'
 

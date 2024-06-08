@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import type { TChangeMode, TTag } from '@/spec'
 import { CHANGE_MODE } from '@/const/mode'

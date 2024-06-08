@@ -4,7 +4,7 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TMetric, TCommunity, TAccount } from '@/spec'

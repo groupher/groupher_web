@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import Radio from '@/widgets/Switcher/Radio'
 import RangeSlider from '@/widgets/RangeSlider'

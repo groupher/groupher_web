@@ -5,8 +5,6 @@ import { MobXProviderContext } from 'mobx-react'
 import type { TLinkItem, THeaderLayout } from '@/spec'
 import { MORE_GROUP } from '@/const/dashboard'
 
-import { toJS } from '@/mobx'
-
 type THeaderLinks = {
   layout: THeaderLayout
   links: TLinkItem[]

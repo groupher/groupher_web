@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TSizeTSM, TSocialItem, TSpace } from '@/spec'
 import SIZE from '@/const/size'

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import type { TSubMenu } from '../spec'
 import { SUB_MENU_TYPE } from '../constant'

@@ -1,11 +1,11 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import { reject } from 'ramda'
 
 import { nilOrEmpty } from '@/validator'
 import Button from '@/widgets/Buttons/Button'
 
+import useTags from '../logic/useTags'
 import { Wrapper, CatsWrapper, Hint } from '../styles/tags/group_selector'
-import { edit } from '../logic'
 
 type TProps = {
   groups: string[]
@@ -13,6 +13,8 @@ type TProps = {
 }
 
 const GroupSelector: FC<TProps> = ({ groups, active }) => {
+  const { edit } = useTags()
+
   return (
     <Wrapper>
       <Hint>标签分组:</Hint>

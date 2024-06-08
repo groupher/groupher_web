@@ -1,4 +1,4 @@
-import { FC, memo, Fragment } from 'react'
+import { type FC, memo } from 'react'
 
 import { prettyNum } from '@/fmt'
 import { Wrapper, HighlightNumber } from './styles/real_number'

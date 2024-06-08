@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { values } from 'ramda'
 
 import type { TImagePos } from '../spec'

@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { GITHUB, EMAIL_SUPPORT } from '@/config'
 import { joinUS } from '@/signal'

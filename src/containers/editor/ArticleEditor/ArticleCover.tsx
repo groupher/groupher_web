@@ -1,4 +1,4 @@
-import { FC, useState, lazy, Suspense } from 'react'
+import { type FC, useState, lazy, Suspense } from 'react'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 

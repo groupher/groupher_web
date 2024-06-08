@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, memo, useState } from 'react'
+import { type FC, useEffect, useRef, memo, useState } from 'react'
 
 import { useOverlayScrollbars } from 'overlayscrollbars-react'
 

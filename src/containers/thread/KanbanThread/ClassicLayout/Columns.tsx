@@ -3,7 +3,7 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import useKanbanPosts from '@/hooks/useKanbanPosts'
 import useKanbanBgColors from '@/hooks/useKanbanBgColors'

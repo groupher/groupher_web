@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { ICON_CMD } from '@/config'
 import { Wrapper, LockIcon, Message } from './styles/locked_message'

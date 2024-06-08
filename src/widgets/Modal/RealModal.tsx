@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useCallback } from 'react'
+import { type FC, useEffect, useState, useCallback } from 'react'
 import { Portal } from 'react-portal'
 
 import useShortcut from '@/hooks/useShortcut'

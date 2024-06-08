@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import TimeAgo from 'timeago-react'
 import { observer } from 'mobx-react-lite'
 

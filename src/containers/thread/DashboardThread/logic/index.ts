@@ -1,19 +1,7 @@
 import { useEffect } from 'react'
-import {
-  includes,
-  values,
-  uniq,
-  reject,
-  omit,
-  update,
-  findIndex,
-  mergeRight,
-  find,
-  startsWith,
-  forEach,
-} from 'ramda'
+import { includes, values, uniq, reject, omit, update, findIndex, forEach } from 'ramda'
 
-import type { TEditValue, TFAQSection, TID, TSocialItem, TUser, TMediaReport } from '@/spec'
+import type { TEditValue, TFAQSection, TID, TSocialItem, TUser } from '@/spec'
 import { COLOR_NAME } from '@/const/colors'
 import EVENT from '@/const/event'
 import ERR from '@/const/err'
@@ -25,7 +13,7 @@ import asyncSuit from '@/async'
 import { toast, errRescue } from '@/signal'
 
 import type { TStore } from '../store'
-import type { TSettingField, TNameAlias } from '../spec'
+import type { TSettingField } from '../spec'
 
 import {
   SETTING_FIELD,
@@ -34,7 +22,6 @@ import {
   SEO_KEYS,
   SEO_OG_KEYS,
   SEO_TW_KEYS,
-  EMPTY_MEDIA_REPORT,
   BASEINFO_BASIC_KEYS,
   BASEINFO_OTHER_KEYS,
 } from '../constant'

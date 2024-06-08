@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { ICON_CMD, ISSUE_ADDR } from '@/config'
 

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import useHover from '@/hooks/useHover'
 import { COLOR_NAME } from '@/const/colors'

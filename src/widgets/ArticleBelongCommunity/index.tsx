@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import { filter } from 'ramda'
 
 import type { TArticle, TCommunity } from '@/spec'

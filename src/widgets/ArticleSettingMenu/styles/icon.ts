@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import styled, { css, animate, rainbow, theme } from '@/css'
 import type { TColor, TActive } from '@/spec'

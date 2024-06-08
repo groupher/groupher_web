@@ -2,7 +2,7 @@
  * cards for job MasonryCards view
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TCommunity } from '@/spec'
 import { cutRest } from '@/fmt'

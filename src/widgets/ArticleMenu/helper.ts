@@ -32,7 +32,7 @@ export const hendleMenu = (key: string, article: TArticle): void => {
 export const holder = 1
 
 const handleEdit = (article: TArticle): void => {
-  const thread = article.meta.thread.toLowerCase()
+  // const thread = article.meta.thread.toLowerCase()
 
   // Router.push(`/update/${thread}/${article.id}`)
   console.log('## ## TODO: handleEdit')

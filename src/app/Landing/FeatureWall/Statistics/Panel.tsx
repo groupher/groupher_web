@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import ChartCard from './ChartCard'
 import SummaryCard from './SummaryCard'

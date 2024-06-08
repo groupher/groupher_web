@@ -4,7 +4,7 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { ICON } from '@/config'
 import Navigator from '@/widgets/Navigator'

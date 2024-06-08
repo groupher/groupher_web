@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import 'rsuite-table/dist/css/rsuite-table.css'
 
 import { DASHBOARD_ROUTE } from '@/const/route'

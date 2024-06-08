@@ -1,4 +1,4 @@
-import { FC, memo, lazy, Suspense } from 'react'
+import { type FC, memo, lazy, Suspense } from 'react'
 
 import Tooltip from '@/widgets/Tooltip'
 

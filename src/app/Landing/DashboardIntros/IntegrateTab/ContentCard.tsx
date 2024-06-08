@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { Wrapper } from '../../styles/dashboard_intros/integrate_tab/content_card'
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, useEffect, useCallback } from 'react'
+import { type FC, useEffect, useCallback } from 'react'
 
 import useViewingThread from '@/hooks/useViewingThread'
 import { THREAD } from '@/const/thread'

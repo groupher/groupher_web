@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { Item } from '../../styles/simple_layout/filter_bar'
 

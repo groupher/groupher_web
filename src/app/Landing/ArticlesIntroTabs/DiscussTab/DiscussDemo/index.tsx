@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { mockUsers } from '@/mock'
 import { ARTICLE_CAT } from '@/const/gtd'

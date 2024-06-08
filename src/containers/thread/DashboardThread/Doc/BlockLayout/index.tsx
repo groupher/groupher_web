@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import Block from './Block'
 import AdderBlock from './AdderBlock'

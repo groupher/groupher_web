@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import TimeAgo from 'timeago-react'
 
 import { UPVOTE_LAYOUT } from '@/const/layout'

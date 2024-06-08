@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import type { TColor, TThread } from '@/spec'
 import { THREAD } from '@/const/thread'

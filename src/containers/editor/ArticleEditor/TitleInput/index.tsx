@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { Wrapper, Inputer } from '../styles/title_input'
 import { editOnChange } from '../logic'

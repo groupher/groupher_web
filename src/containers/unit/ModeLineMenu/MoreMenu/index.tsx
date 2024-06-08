@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import CommunityLayout from './CommunityLayout'
 import ArticleLayout from './ArticleLayout'

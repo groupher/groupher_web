@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { type FC, useState } from 'react'
 
 import type { TThread } from '@/spec'
 import { THREAD } from '@/const/thread'

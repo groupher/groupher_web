@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import useSEOInfo from '../hooks/useSEOInfo'
 import { Wrapper, URL, Title, Desc, Hint } from '../styles/seo/search_engine_preview'

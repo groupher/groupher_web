@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import styled, { useTheme } from 'styled-components'
 import ContentLoader from 'react-content-loader'
 

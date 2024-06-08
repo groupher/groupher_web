@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TSpace } from '@/spec'
 import { DOC_FAQ_LAYOUT } from '@/const/layout'

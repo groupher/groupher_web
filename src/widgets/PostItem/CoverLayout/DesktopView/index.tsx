@@ -1,4 +1,4 @@
-import { FC, memo, useState, useEffect } from 'react'
+import { type FC, memo, useState, useEffect } from 'react'
 
 import type { TPost } from '@/spec'
 

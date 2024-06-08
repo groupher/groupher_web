@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import Img from '@/Img'
 import styled, { css, theme } from '@/css'

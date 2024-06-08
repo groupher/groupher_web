@@ -1,4 +1,4 @@
-import { FC, Fragment } from 'react'
+import { type FC, Fragment } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import AddButton from '@/widgets/Buttons/AddButton'

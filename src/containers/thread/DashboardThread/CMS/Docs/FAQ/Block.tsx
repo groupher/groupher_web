@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import Markdown from 'markdown-to-jsx'
 import type { TFAQSection } from '@/spec'

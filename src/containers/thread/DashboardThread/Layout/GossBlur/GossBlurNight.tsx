@@ -1,7 +1,6 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import type { TWallpaperInfo } from '@/spec'
 import { blurRGB } from '@/fmt'
 import useThemeData from '@/hooks/useThemeData'
 import useTheme from '@/hooks/useTheme'

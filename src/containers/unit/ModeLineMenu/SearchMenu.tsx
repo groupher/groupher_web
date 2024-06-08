@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { ICON } from '@/config'
 import DivideText from '@/widgets/DivideText'

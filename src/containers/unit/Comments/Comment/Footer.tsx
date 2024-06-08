@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import useAccount from '@/hooks/useAccount'
@@ -37,7 +37,7 @@ const Footer: FC<TProps> = ({ data, apiMode }) => {
   const accountInfo = useAccount()
   // const { isLegal } = data.meta
   const { meta, upvotesCount, viewerHasUpvoted } = data
-  const { isArticleAuthorUpvoted, isLegal, illegalReason, illegalWords } = meta
+  const { isArticleAuthorUpvoted, isLegal } = meta
 
   const isSolution = false
   const noExtraInfo = !isSolution && !isArticleAuthorUpvoted

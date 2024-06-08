@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TSelectOption } from '@/spec'
 import { Br } from '@/widgets/Common'

@@ -1,14 +1,17 @@
 import { useEffect } from 'react'
 import { reject, find, propEq, filter, includes, toUpper, isNil, equals } from 'ramda'
 
-import type { TCommunityThread, TTag, TNameAlias } from '@/spec'
+import type { TCommunityThread, TTag, TNameAlias, TEditValue } from '@/spec'
 import { THREAD } from '@/const/thread'
 import { sortByIndex } from '@/helper'
 import { runInAction, toJS } from '@/mobx'
+
+import type { TSettingField } from '@/stores2/dashboardStore/spec'
 import useQuery from '@/hooks/useQuery'
-
 import useDashboard from '@/hooks/useDashboard'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 
+import useHeader from './useHeader'
 import S from '../schema'
 
 type TRet = {
@@ -22,6 +25,7 @@ type TRet = {
   activeTagThread: string
   isTagsIndexTouched: boolean
   isTagsTouched: boolean
+  edit: (value: TEditValue, field: TSettingField) => void
   changeThread: (thread: string) => void
   editTag: (key: 'settingTag' | 'editingTag', tag: TTag) => void
 }
@@ -31,9 +35,11 @@ type TRet = {
  */
 const useTagListInfo = (): TRet => {
   const { dashboard: store } = useDashboard()
+  const { edit } = useHeader()
+
+  const curCommunity = useViewingCommunity()
 
   const {
-    curCommunity,
     activeTagGroup,
     activeTagThread,
     tags,
@@ -85,8 +91,10 @@ const useTagListInfo = (): TRet => {
   ) as TCommunityThread[]
 
   const tagsIndexTouched = () => {
-    // !equals(sortByIndex(tags, 'id'), sortByIndex(initSettings.tags, 'id'))
-    return false
+    const cur = sortByIndex(toJS(tags), 'id')
+    const init = sortByIndex(toJS(initSettings.tags) || [], 'id')
+
+    return !equals(cur, init)
   }
 
   const editTag = (key: 'settingTag' | 'editingTag', tag: TTag): void => {
@@ -119,6 +127,7 @@ const useTagListInfo = (): TRet => {
     isTagsIndexTouched: tagsIndexTouched(),
     changeThread,
     editTag,
+    edit,
   }
 }
 

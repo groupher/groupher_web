@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import useSwipe from '@/hooks/useSwipe'
 import { nilOrEmpty } from '@/validator'

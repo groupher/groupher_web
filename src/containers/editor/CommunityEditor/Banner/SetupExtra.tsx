@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import { Br, Space } from '@/widgets/Common'

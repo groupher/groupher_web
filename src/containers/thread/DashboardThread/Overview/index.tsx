@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import Portal from '../Portal'
 import BasicNumbers from './BasicNumbers'

@@ -1,4 +1,4 @@
-import { FC, memo, useState } from 'react'
+import { type FC, memo, useState } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { BANNER_LAYOUT } from '@/const/layout'

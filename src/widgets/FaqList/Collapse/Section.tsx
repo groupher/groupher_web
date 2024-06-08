@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { includes } from 'ramda'
 import Markdown from 'markdown-to-jsx'

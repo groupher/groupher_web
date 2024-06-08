@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TUser, TAccount } from '@/spec'
 // import { ICON } from '@/config'

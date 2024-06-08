@@ -1,4 +1,4 @@
-import { FC, useState, useRef } from 'react'
+import { type FC, useState, useRef } from 'react'
 
 import type { TSpace, TTooltipPlacement, TConditionMode } from '@/spec'
 

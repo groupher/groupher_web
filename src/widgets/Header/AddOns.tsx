@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TAccount } from '@/spec'
 import EVENT from '@/const/event'

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import type { TFAQSection } from '@/spec'
 import { useAutoAnimate } from '@formkit/auto-animate/react'

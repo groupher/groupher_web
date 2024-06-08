@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import VIEW from '@/const/view'
 import { sortByIndex } from '@/helper'

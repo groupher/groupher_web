@@ -1,4 +1,4 @@
-import { FC, memo, Fragment, useState } from 'react'
+import { type FC, memo, Fragment, useState } from 'react'
 
 import CopyButton from '@/widgets/Buttons/CopyButton'
 import type { TLinksData } from '../spec'

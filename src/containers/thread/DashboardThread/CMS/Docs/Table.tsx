@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react'
+import { type FC, useCallback, useState } from 'react'
 import { pluck } from 'ramda'
 
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table'

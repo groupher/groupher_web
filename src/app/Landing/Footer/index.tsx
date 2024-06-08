@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import useWallpaper from '@/hooks/useWallpaper'
 import { ROUTE } from '@/const/route'

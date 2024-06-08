@@ -1,8 +1,7 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TActive } from '@/spec'
-import { ARTICLE_STATE } from '@/const/gtd'
 
 import { Trans } from '@/i18n'
 import Icon from '@/widgets/Menu/Icon'

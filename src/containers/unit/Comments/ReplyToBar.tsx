@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TComment } from '@/spec'
 // import { ICON_CMD } from '@/config'

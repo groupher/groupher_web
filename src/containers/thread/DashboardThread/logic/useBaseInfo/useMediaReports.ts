@@ -1,16 +1,12 @@
-import { useEffect } from 'react'
-import { pick, isEmpty, find, reject, filter, equals, mergeRight, startsWith } from 'ramda'
+import { isEmpty, find, reject, filter, equals, mergeRight, startsWith } from 'ramda'
 
-import type { TCommunity, TSocialItem, TDashboardBaseInfoRoute, TMediaReport } from '@/spec'
+import type { TMediaReport } from '@/spec'
 import { toJS, runInAction } from '@/mobx'
 import { query } from '@/utils/api'
 
 import useDashboard from '@/hooks/useDashboard'
-import useQuery from '@/hooks/useQuery'
 
-import type { TSettingField } from '@/stores2/dashboardStore/spec'
-import useHelper from '../useHelper'
-import { BASEINFO_KEYS, EMPTY_MEDIA_REPORT } from '../../constant'
+import { EMPTY_MEDIA_REPORT } from '../../constant'
 
 import S from '../../schema'
 

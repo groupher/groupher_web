@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { ICON_BASE } from '@/config'
 import useTheme from '@/hooks/useTheme'

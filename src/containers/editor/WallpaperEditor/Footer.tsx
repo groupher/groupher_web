@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TWallpaperType } from '@/spec'
 import { WALLPAPER_TYPE } from '@/const/wallpaper'

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { GLOW_OPACITY, GLOW_EFFECTS_KEYS } from '@/const/glow_effect'

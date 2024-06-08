@@ -1,4 +1,4 @@
-import { FC, memo, useState } from 'react'
+import { type FC, memo, useState } from 'react'
 import { keys } from 'ramda'
 
 import type { TWallpaperPic } from '@/spec'

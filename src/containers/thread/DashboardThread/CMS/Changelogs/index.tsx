@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react'
+import { type FC, useCallback, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { pluck } from 'ramda'
 

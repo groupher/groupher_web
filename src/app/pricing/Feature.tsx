@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import type { TColor } from '@/spec'
 import { Wrapper, Title, IconWrapper, CheckIcon } from './styles/feature'

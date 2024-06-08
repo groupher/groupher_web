@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TEmotionType } from '@/spec'
 import { EIcon } from '../styles/selected_emotions/emotion_icon'

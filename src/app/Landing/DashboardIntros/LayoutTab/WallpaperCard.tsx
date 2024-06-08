@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { parseWallpaper } from '@/wallpaper'
 import useWallpaper from '@/hooks/useWallpaper'

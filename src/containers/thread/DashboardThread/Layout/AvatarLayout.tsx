@@ -1,7 +1,5 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
-
-import type { TAvatarLayout } from '@/spec'
 
 import { AVATAR_LAYOUT } from '@/const/layout'
 import { COLOR_NAME } from '@/const/colors'

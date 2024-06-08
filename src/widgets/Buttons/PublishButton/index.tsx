@@ -1,7 +1,7 @@
 /*
  * PublishButton
  */
-import { memo, type FC, useState } from 'react'
+import { memo, type FC } from 'react'
 
 import type { TPublishMode, TArticleCat, TSpace, TTooltipPlacement } from '@/spec'
 import { PUBLISH_MODE } from '@/const/publish'
@@ -13,7 +13,7 @@ import { POST_CAT_MENU_ITEMS } from '@/const/menu'
 
 import Menu from '@/widgets/Menu'
 
-import { MORE_MENU } from './constant'
+// import { MORE_MENU } from './constant'
 import PostLayout from './PostLayout'
 import SidebarHeaderLayout from './SidebarHeaderLayout'
 
@@ -41,10 +41,10 @@ const PublishButton: FC<TProps> = ({
   const primaryColor = usePrimaryColor()
   const activeThread = useViewingThread()
 
-  const [show, setShow] = useState(false)
+  // const [show, setShow] = useState(false)
   const _text = text || getText(activeThread)
 
-  const menuOptions = MORE_MENU[mode]
+  // const menuOptions = MORE_MENU[mode]
   // const hasNoMenu = isEmpty(menuOptions)
 
   return (

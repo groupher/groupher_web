@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TCommunity, TThread } from '@/spec'
 import { Trans } from '@/i18n'

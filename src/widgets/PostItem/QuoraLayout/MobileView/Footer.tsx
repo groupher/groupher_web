@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import type { TPost } from '@/spec'
 import { UPVOTE_LAYOUT } from '@/const/layout'

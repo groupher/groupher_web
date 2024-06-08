@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import { keys } from 'ramda'
 
 import type { TDashboardPath } from '@/spec'

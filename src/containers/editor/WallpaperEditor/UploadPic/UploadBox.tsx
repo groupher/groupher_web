@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import SVG from '@/const/svg'
 import MenuButton from '@/widgets/Buttons/MenuButton'

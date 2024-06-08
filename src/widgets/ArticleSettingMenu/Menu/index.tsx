@@ -1,4 +1,4 @@
-import { FC, memo, useState, useRef } from 'react'
+import { type FC, memo, useState, useRef } from 'react'
 
 import useOutsideClick from '@/hooks/useOutsideClick'
 

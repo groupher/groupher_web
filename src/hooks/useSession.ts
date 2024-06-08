@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from 'react'
+import { useEffect } from 'react'
 
 import type { TAccount } from '@/spec'
 

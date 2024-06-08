@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { callTagEditEditor } from '@/signal'
@@ -7,7 +7,8 @@ import Tooltip from '@/widgets/Tooltip'
 
 import ActionMenu from './ActionMenu'
 
-import useTagListInfo from '../logic/useTagListInfo'
+import useTags from '../logic/useTags'
+
 import {
   Wrapper,
   EditIcon,
@@ -22,7 +23,7 @@ import type { TProps as TTagBarProps } from './TagBar'
 type TProps = Omit<TTagBarProps, 'settingTag'>
 
 const TagAction: FC<TProps> = ({ tag, isFirst, isLast, total }) => {
-  const { editingTag, activeTagGroup, editTag } = useTagListInfo()
+  const { editingTag, activeTagGroup, editTag } = useTags()
   const isEditMode = editingTag?.id === tag.id
 
   if (isEditMode) return null

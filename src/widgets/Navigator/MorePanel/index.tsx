@@ -1,4 +1,4 @@
-import { Fragment, memo } from 'react'
+import { memo } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import DesktopView from './DesktopView'

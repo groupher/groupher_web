@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'

@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TDocLayout } from '@/spec'
 import { DOC_LAYOUT } from '@/const/layout'

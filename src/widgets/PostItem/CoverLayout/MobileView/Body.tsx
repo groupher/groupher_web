@@ -1,4 +1,4 @@
-import { FC, memo, useCallback } from 'react'
+import { type FC, memo, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 
 import type { TPost } from '@/spec'

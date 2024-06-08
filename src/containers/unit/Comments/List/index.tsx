@@ -1,4 +1,4 @@
-import { FC, Fragment, memo } from 'react'
+import { type FC, Fragment, memo } from 'react'
 
 import type { TPagedComments } from '@/spec'
 import Pagi from '@/widgets/Pagi'

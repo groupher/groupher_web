@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 
-import { FC, memo, Fragment } from 'react'
+import { type FC, memo, Fragment } from 'react'
 
 import { Wrapper, Title, Reason, Content, IllegalItem } from './styles'
 

@@ -1,4 +1,4 @@
-import { FC, memo, useState, useCallback, useEffect } from 'react'
+import { type FC, memo, useState, useCallback, useEffect } from 'react'
 import { isEmpty, includes, reject, pluck } from 'ramda'
 
 import type { TMenuOption } from '@/spec'

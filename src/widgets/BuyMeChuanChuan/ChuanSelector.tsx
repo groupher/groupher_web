@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { ICON_CMD } from '@/config'
 import { SelectBox, ChuanChuanIcon, Selectors, By, Circle } from './styles/chuan_selector'

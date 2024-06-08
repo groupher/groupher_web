@@ -3,7 +3,7 @@
  *
  */
 
-import { FC, Fragment } from 'react'
+import { type FC, Fragment } from 'react'
 
 import type { TWallpaperData } from '@/spec'
 import { WALLPAPER_TYPE } from '@/const/wallpaper'

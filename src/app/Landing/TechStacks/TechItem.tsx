@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { Wrapper, IconWrapper, TeckIcon, NotesIcon, Name } from '../styles/tech_stacks/tech_item'
 

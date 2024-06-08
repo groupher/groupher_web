@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import type { TColorName, TTag } from '@/spec'
@@ -12,7 +12,7 @@ import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'
 import TagAction from './TagAction'
 
-import useTagListInfo from '../logic/useTagListInfo'
+import useTags from '../logic/useTags'
 import {
   Wrapper,
   Dot,
@@ -31,7 +31,7 @@ export type TProps = {
 }
 
 const TagBar: FC<TProps> = ({ tag, isFirst, isLast, total }) => {
-  const { editingTag, settingTag, activeTagGroup, editTag } = useTagListInfo()
+  const { editingTag, settingTag, activeTagGroup, editTag } = useTags()
 
   const isEditMode = editingTag?.id === tag.id
 

@@ -5,7 +5,7 @@
  *
  */
 
-import { FC, Suspense } from 'react'
+import { type FC, Suspense } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { DOC_FAQ_LAYOUT } from '@/const/layout'

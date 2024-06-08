@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import BundleSizeCard from './BundleSizeCard'
 import MobileFirst from './MobileFirst'

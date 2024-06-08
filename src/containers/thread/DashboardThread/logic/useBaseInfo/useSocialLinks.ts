@@ -1,10 +1,8 @@
-import { useEffect } from 'react'
 import { isEmpty, reject, equals } from 'ramda'
 
 import type { TSocialItem } from '@/spec'
 import { toJS } from '@/mobx'
 import useDashboard from '@/hooks/useDashboard'
-import useHelper from '../useHelper'
 
 export type TRet = {
   socialLinks: TSocialItem[]

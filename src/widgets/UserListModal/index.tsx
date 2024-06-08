@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import useUserListModal from '@/hooks/useUserListModal'
@@ -6,7 +6,7 @@ import Modal from '@/widgets/Modal'
 import CustomScroller from '@/widgets/CustomScroller'
 import UserList from '@/widgets/UserList'
 
-import { Wrapper, ScrollWrapper } from './styles'
+import { Wrapper } from './styles'
 
 const UserListModal: FC = () => {
   const { show, onClose } = useUserListModal()

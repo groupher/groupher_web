@@ -65,7 +65,7 @@ const checkIfCommunityExist = () => {
 }
 
 const checkPendingApply = () => {
-  sr71$.query(S.hasPendingCommunityApply, {})
+  // sr71$.query(S.hasPendingCommunityApply, {})
 }
 
 /**
@@ -214,7 +214,7 @@ export const useInit = (_store: TStore): void => {
     // console.log('## effect init')
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
 
-    // checkPendingApply()
+    checkPendingApply()
 
     return () => {
       // console.log('## effect uninit')

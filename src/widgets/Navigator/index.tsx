@@ -2,7 +2,7 @@
  * Navigator
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TMetric } from '@/spec'
 import METRIC from '@/const/metric'

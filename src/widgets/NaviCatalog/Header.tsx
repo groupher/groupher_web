@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TNaviTag } from '@/spec'
 import { ICON } from '@/config'

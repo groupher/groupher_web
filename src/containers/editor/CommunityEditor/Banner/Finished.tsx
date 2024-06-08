@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { ROUTE } from '@/const/route'
 

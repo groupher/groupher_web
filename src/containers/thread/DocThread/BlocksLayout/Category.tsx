@@ -1,4 +1,4 @@
-import { FC, memo, useState } from 'react'
+import { type FC, memo, useState } from 'react'
 
 // import { config, library } from '@fortawesome/fontawesome-svg-core'
 // config.autoAddCss = false

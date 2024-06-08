@@ -1,4 +1,4 @@
-// import { FC } from 'react'
+// import type { FC } from 'react'
 
 import { Cell } from 'rsuite-table'
 import TimeAgo from 'timeago-react'

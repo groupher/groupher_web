@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { Wrapper, AddButton, AddIcon, Notes } from '../../../styles/cms/docs/faq/adder'
 import { addFAQSection } from '../../../logic/faq'

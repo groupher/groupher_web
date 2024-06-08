@@ -1,4 +1,4 @@
-import { FC, useCallback, lazy, Suspense } from 'react'
+import { type FC, useCallback, lazy, Suspense } from 'react'
 
 import type { TTabItem } from '@/spec'
 import { Wrapper } from '../styles/tabs/tab_icon'

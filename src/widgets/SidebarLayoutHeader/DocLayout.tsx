@@ -2,7 +2,7 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { ROUTE } from '@/const/route'
 

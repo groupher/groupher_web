@@ -1,4 +1,4 @@
-import { FC, memo, Fragment } from 'react'
+import { type FC, memo, Fragment } from 'react'
 
 import { Space } from '@/widgets/Common'
 import { Wrapper } from './styles/absolute_fmt'

@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TArticle } from '@/spec'
 import SVG from '@/const/svg'

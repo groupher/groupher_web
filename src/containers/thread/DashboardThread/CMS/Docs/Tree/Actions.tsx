@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import Button from '@/widgets/Buttons/Button'
 

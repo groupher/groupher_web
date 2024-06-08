@@ -1,4 +1,4 @@
-import { FC, memo, Fragment } from 'react'
+import { type FC, memo, Fragment } from 'react'
 
 import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 

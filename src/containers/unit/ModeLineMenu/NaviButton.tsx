@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { Wrapper, Icon, Title, Desc } from './styles/navi_button'
 

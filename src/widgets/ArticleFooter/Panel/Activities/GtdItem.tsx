@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { Item, GtdWipIcon, Highlight, Content } from '../../styles/panel/activities/gtd_item'
 

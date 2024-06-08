@@ -1,4 +1,4 @@
-import { FC, memo, useState } from 'react'
+import { type FC, memo, useState } from 'react'
 
 import { Wrapper, SearchInput } from '../styles/setter/search_box'
 

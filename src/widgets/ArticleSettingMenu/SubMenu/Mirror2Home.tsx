@@ -16,7 +16,7 @@ type TProps = {
 
 const Mirrow2Home: FC<TProps> = ({ onBack }) => {
   const { article } = useViewingArticle()
-  const { touched, setTouched, resetTouched } = useTouched()
+  const { resetTouched } = useTouched()
   const [result, updatePost] = useMutation(S.updatePost)
 
   const handleUpdate = () => {

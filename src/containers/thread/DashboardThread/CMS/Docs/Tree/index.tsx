@@ -30,9 +30,10 @@ type TProps = {
 
 const TreeView: FC<TProps> = ({ pagedDocs }) => {
   const treeRef = useRef()
+  console.log('## pagedDocs: ', pagedDocs)
 
   useEffect(() => {
-    const tree = treeRef.current
+    // const tree = treeRef.current
     /* See the Tree API reference for all you can do with it. */
   }, [])
 

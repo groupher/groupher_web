@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import SIZE from '@/const/size'
 import usePrimaryColor from '@/hooks/usePrimaryColor'

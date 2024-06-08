@@ -1,4 +1,4 @@
-import { FC, memo, useCallback } from 'react'
+import { type FC, memo, useCallback } from 'react'
 
 import { ICON } from '@/config'
 import { Trans } from '@/i18n'

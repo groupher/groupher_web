@@ -1,4 +1,4 @@
-import { FC, memo, useState, useEffect } from 'react'
+import { type FC, memo, useState } from 'react'
 
 import { isURL } from '@/validator'
 import Checker from '@/widgets/Checker'

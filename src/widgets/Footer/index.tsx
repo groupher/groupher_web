@@ -6,7 +6,7 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import DesktopView from './DesktopView'
 // import MobileView from './MobileView'

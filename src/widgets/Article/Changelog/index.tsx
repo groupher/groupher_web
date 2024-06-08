@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { type FC, useState } from 'react'
 
 import useViewingArticle from '@/hooks/useViewingArticle'
 import useMetric from '@/hooks/useMetric'
@@ -16,7 +16,7 @@ const Changelog: FC = () => {
 
   const metric = useMetric()
 
-  const [inViewport, setInViewport] = useState(false)
+  const [_inViewport, setInViewport] = useState(false)
 
   return (
     <Wrapper metric={metric}>

@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 
 import type { TOverview, TCommunity } from '@/spec'
 import useDashboard from '@/hooks/useDashboard'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
+
 import useQuery from '@/hooks/useQuery'
 
 import S from '../schema'
@@ -11,7 +13,8 @@ import S from '../schema'
  */
 const useOverview = (): TOverview => {
   const { dashboard: store } = useDashboard()
-  const { curCommunity, overview } = store
+  const curCommunity = useViewingCommunity()
+  const { overview } = store
 
   const { data } = useQuery(S.communityOverview, {
     slug: curCommunity.slug,

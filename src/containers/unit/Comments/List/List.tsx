@@ -1,4 +1,4 @@
-import { FC, Fragment, memo } from 'react'
+import { type FC, Fragment, memo } from 'react'
 import { includes } from 'ramda'
 
 import type { TComment, TID } from '@/spec'

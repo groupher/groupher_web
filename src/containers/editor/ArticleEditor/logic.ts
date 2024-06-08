@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { values } from 'ramda'
 
 import type { TEditValue, TCommunity, TTag, TArticleCat } from '@/spec'
-import { HCN } from '@/const/name'
 import EVENT from '@/const/event'
 import ERR from '@/const/err'
 
@@ -60,16 +59,13 @@ export const onCancel = (): void => {
 }
 
 const gotoArticleDetail = () => {
-  const { viewingArticle, thread } = store
+  // const { viewingArticle, thread } = store
   // Router.push(`/${thread}/${viewingArticle.id}`)
   console.log('## ## TODO: gotoArticleDetail')
 }
 
 const gotoBackToCommunity = () => {
-  const { communityData } = store
-  const { slug } = communityData
-
-  const path = slug === HCN ? '/' : `/${slug}`
+  // const path = slug === HCN ? '/' : `/${slug}`
   // Router.push(path)
   console.log('## ## TODO: gotoBackToCommunity')
 }

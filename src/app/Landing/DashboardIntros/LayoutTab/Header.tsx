@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import type { TColorName } from '@/spec'
 import { SpaceGrow, Brick } from '@/widgets/Common'

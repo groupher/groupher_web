@@ -204,8 +204,6 @@ export type TStore = TSettingsFields & {
   // editingFAQ: T.maybeNull(FAQSection),
 
   queringMediaReportIndex: number
-  // initSettings: T.opt(InitSettings, {}),
-  // defaultSettings: T.opt(InitSettings, {}),
 
   // cms
   batchSelectedIDs: string[]
@@ -336,6 +334,7 @@ export type TSettingField =
   | 'widgetsThreads'
   | 'widgetsSize'
   | 'widgetsType'
+  | 'activeTagGroup'
 
 export type THeaderEditType = 'logo' | 'title'
 export type TFooterEditType = THeaderEditType | 'social'

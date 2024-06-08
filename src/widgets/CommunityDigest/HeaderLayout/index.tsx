@@ -1,8 +1,5 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
-
-import dynamic from 'next/dynamic'
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
 
 import { ANCHOR } from '@/const/dom'
 import useHeaderLinks from '@/hooks/useHeaderLinks'

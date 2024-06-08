@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import type { TCommunity } from '@/spec'
 import { assetSrc } from '@/helper'

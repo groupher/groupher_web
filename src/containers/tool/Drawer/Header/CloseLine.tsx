@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { Wrapper, LeftLine, RightLine } from '../styles/header/close_line'
 

@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { Space } from '@/widgets/Common'
 import { Wrapper, Inputer, PlusIcon, AddButton } from '../styles/admin/adder'

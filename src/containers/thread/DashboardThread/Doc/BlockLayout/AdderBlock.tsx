@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { Wrapper, AddIcon, Title } from '../../styles/doc/block_layout/adder_block'
 import { addDocCategory } from '../../logic'

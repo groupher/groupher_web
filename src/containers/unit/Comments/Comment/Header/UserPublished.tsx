@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
-import { FC, memo, Fragment } from 'react'
+import { type FC, memo, Fragment } from 'react'
 import TimeAgo from 'timeago-react'
 
 import type { TComment } from '@/spec'

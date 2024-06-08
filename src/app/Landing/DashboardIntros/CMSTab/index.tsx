@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import Tabs from './Tabs'
 import ContentCard from './MainCard'

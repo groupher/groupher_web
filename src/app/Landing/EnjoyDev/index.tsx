@@ -1,4 +1,4 @@
-import { FC, useRef, useEffect } from 'react'
+import { type FC, useRef, useEffect } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import useWallpaper from '@/hooks/useWallpaper'

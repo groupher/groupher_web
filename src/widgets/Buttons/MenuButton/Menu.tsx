@@ -1,4 +1,4 @@
-import { FC, Fragment, memo } from 'react'
+import { type FC, Fragment, memo } from 'react'
 import { isEmpty } from 'ramda'
 import QRCode from 'qrcode.react'
 

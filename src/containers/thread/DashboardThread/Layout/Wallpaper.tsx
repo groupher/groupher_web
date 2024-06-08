@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react'
+import { type FC, useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { WIDTH } from '@/css'

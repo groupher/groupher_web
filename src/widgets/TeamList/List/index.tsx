@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import type { TUser } from '@/spec'
 import type { TLayout } from '../spec'

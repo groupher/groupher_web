@@ -4,7 +4,7 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import VIEW from '@/const/view'
 

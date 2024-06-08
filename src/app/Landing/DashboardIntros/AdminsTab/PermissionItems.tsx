@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { includes } from 'ramda'
 
 import { LIST, ACTIVE_ITMES } from './constant'

@@ -1,4 +1,4 @@
-import { FC, Suspense } from 'react'
+import { type FC, Suspense } from 'react'
 
 import TYPE from '@/const/type'
 import { LoadWatcher } from '@/widgets/Common'

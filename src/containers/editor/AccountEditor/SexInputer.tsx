@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { Wrapper, DudeIcon, GirlIcon } from './styles/sex_inputer'
 

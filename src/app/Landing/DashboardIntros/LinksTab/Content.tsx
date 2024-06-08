@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { Brick, Br } from '@/widgets/Common'
 import {

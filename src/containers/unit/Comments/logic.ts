@@ -9,7 +9,7 @@ import ERR from '@/const/err'
 import asyncSuit from '@/async'
 import BStore from '@/utils/bstore'
 import { titleCase } from '@/fmt'
-import { errRescue, authWarn } from '@/signal'
+import { errRescue } from '@/signal'
 import { scrollIntoEle } from '@/dom'
 import { updateEditing } from '@/mobx'
 

@@ -1,7 +1,5 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
-
-import type { TTagLayout } from '@/spec'
 
 import { TAG_LAYOUT } from '@/const/layout'
 import usePrimaryColor from '@/hooks/usePrimaryColor'

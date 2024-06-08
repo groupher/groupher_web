@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import type { TTestable, TActive } from '@/spec'
 import Img from '@/Img'

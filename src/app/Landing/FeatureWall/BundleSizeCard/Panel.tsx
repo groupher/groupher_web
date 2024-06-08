@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { num2Percent } from '@/helper'
 import { SpaceGrow } from '@/widgets/Common'

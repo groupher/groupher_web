@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { type FC, useState } from 'react'
 
 import useInterval from '@/hooks/useInterval'
 import AnimatedCount from '@/widgets/AnimatedCount'

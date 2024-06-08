@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState, memo } from 'react'
+import { type FC, useEffect, useRef, useState, memo } from 'react'
 
 import CustomScroller from '@/widgets/CustomScroller'
 

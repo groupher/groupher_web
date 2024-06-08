@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import Typewriter from 'typewriter-effect'
 
 import useWallpaper from '@/hooks/useWallpaper'

@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import useTheme from '@/hooks/useTheme'
 import THEME from '@/const/theme'

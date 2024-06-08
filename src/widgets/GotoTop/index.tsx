@@ -4,7 +4,7 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { scrollToHeader, scrollDrawerToTop } from '@/dom'
 

@@ -1,4 +1,4 @@
-import useDashboard from '@/hooks/useDashboard'
+// import useDashboard from '@/hooks/useDashboard'
 // import useHelper from '../useHelper'
 
 export type TRet = {
@@ -11,8 +11,6 @@ export type TRet = {
  * NOTE: should use observer to wrap the component who use this hook
  */
 const useDangerZone = (): TRet => {
-  const { dashboard: store } = useDashboard()
-
   // TODO: handle image upload
   const deleteCommunity = () => {
     console.log('## deleteCommunity')

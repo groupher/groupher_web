@@ -1,4 +1,4 @@
-import { FC, useState, memo } from 'react'
+import { type FC, useState, memo } from 'react'
 
 import { ROUTE } from '@/const/route'
 import useSession from '@/hooks/useSession'
