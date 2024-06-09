@@ -9,12 +9,12 @@ import createThemeStore from './themeStore'
 import createViewingStore from './viewingStore'
 import creaetAccountStore from './accountStore'
 
-const initialRootState = {
+const INITIAL_STATE = {
   theme: THEME.DAY,
   viewing: {},
 }
 
-const createRootStore = (initialState = initialRootState): TRootStore => {
+const createRootStore = (initialState = INITIAL_STATE): TRootStore => {
   return proxy({
     account: creaetAccountStore(),
     theme: createThemeStore(initialState.theme),

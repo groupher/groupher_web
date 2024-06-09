@@ -5,7 +5,7 @@
 import type { FC } from 'react'
 
 import type { TSpace } from '@/spec'
-import useTheme from '@/hooks/useTheme2'
+import useTheme from '@/hooks/useTheme'
 
 import THEME from '@/const/theme'
 
