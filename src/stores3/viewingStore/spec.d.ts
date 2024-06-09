@@ -12,7 +12,7 @@ export type TInit = {
 
 export type TStore = TInit & {
   // views
-  readonly viewingArticle: TArticle
+  viewingArticle: TArticle
 
   // actions
   updateViewingCommunity: (args: TCommunity) => void

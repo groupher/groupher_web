@@ -1,10 +1,8 @@
-import { useContext } from 'react'
 import { useTheme as useStyledTheme } from 'styled-components'
-import { useSnapshot } from 'valtio'
 
 import type { TThemeName, TThemeMap } from '@/spec'
 
-import { StoreContext } from '@/stores3'
+import useStoreTree from '@/hooks/useStoreTree'
 
 type TRet = {
   theme: TThemeName
@@ -16,9 +14,7 @@ type TRet = {
  * NOTE: should use observer to wrap the component who use this hook
  */
 const useTheme = (): TRet => {
-  const root = useContext(StoreContext)
-  const { theme: store } = useSnapshot(root)
-
+  const store = useStoreTree('theme')
   const styledTheme = useStyledTheme() as TThemeMap
 
   const { theme, change, toggle } = store

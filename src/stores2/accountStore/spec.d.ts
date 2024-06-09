@@ -6,7 +6,7 @@ export type TStore = {
   userSubscribedCommunities: TCommunity[] | null
 
   // views
-  readonly accountInfo: TAccount
+  accountInfo: TAccount
   // readonly themeData: TThemeMap
   // actions
   setSession: (user: TUser, token: string) => void
