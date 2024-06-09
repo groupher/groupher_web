@@ -5,7 +5,6 @@
  */
 
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TSpace } from '@/spec'
 import useAccount from '@/hooks/useAccount'
@@ -86,4 +85,4 @@ const LoggedInAccount: FC<TProps> = () => {
   )
 }
 
-export default observer(LoggedInAccount)
+export default LoggedInAccount

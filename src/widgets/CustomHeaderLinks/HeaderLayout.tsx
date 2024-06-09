@@ -1,5 +1,4 @@
 import { type FC, Fragment, useState } from 'react'
-import { observer } from 'mobx-react-lite'
 import { keys, startsWith, filter } from 'ramda'
 
 import type { TLinkItem } from '@/spec'
@@ -91,4 +90,4 @@ const CustomHeaderLinks: FC<TProps> = ({ links, activePath = '' }) => {
   )
 }
 
-export default observer(CustomHeaderLinks)
+export default CustomHeaderLinks

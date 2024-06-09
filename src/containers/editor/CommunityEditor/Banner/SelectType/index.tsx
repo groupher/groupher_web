@@ -5,7 +5,6 @@
  */
 
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import useAccount from '@/hooks/useAccount'
 import { Br } from '@/widgets/Common'
@@ -77,4 +76,4 @@ const SelectType: FC<TProps> = ({ status: { communityType }, validState }) => {
   )
 }
 
-export default observer(SelectType)
+export default SelectType
