@@ -1,16 +1,13 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { StoreContext } from '@/stores2'
-import useAccount from '@/hooks/useAccount'
-import OAUTH from '@/const/oauth'
 import type { TAccount, TSimpleUser } from '@/spec'
+import OAUTH from '@/const/oauth'
+import useStoreTree from '@/hooks/useStoreTree'
 import { debounce } from '@/helper'
-
 import BStore from '@/utils/bstore'
 
 const useSyncAccount = (): TAccount => {
-  const { account } = useContext(StoreContext)
-  const { isLogin } = useAccount()
+  const { isLogin, setSession, accountInfo } = useStoreTree('account')
 
   const [isLinkClickListenerAdded, setIsLinkClickListenerAdded] = useState(false)
 
@@ -22,7 +19,7 @@ const useSyncAccount = (): TAccount => {
       const parsedUser = JSON.parse(user) as TSimpleUser
 
       if (!isLogin && parsedUser.login) {
-        account.setSession(parsedUser, token)
+        setSession(parsedUser, token)
       }
     }
   }, 200)
@@ -56,7 +53,7 @@ const useSyncAccount = (): TAccount => {
     }
   }, [])
 
-  return account.accountInfo
+  return accountInfo
 }
 
 export default useSyncAccount

@@ -9,8 +9,7 @@ type TRet = {
 }
 
 const useViewing = (): TRet | null => {
-  const store = useStoreTree('viewing')
-  const { viewingArticle, community, updateViewingCommunity } = store
+  const { viewingArticle, community, updateViewingCommunity } = useStoreTree('viewing')
 
   return {
     article: viewingArticle,

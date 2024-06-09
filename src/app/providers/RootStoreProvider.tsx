@@ -6,7 +6,6 @@ import { Provider } from 'mobx-react'
 import { useStore } from '@/stores/init'
 
 import {
-  useI18n,
   useMetric,
   useCommunity,
   useTags,
@@ -27,8 +26,6 @@ type TProps = {
 }
 
 const RootStoreWrapper: FC<TProps> = ({ children }) => {
-  const { locale, localeData } = useI18n()
-
   const metric = useMetric()
   const activeThread = useThreadParam()
 
@@ -64,8 +61,6 @@ const RootStoreWrapper: FC<TProps> = ({ children }) => {
     },
     wallpaperEditor: wallpaper,
     dashboardThread: dashboard,
-    locale,
-    localeData,
   })
 
   return <Provider store={store}>{children}</Provider>

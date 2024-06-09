@@ -8,9 +8,9 @@ import useStoreTree from '@/hooks/useStoreTree'
  * styled-component can only be used before it init
  */
 const useThemeData = (): TThemeMap => {
-  const store = useStoreTree('theme')
+  const { themeData } = useStoreTree('theme')
 
-  return store.themeData
+  return themeData
 }
 
 export default useThemeData

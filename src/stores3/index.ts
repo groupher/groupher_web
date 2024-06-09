@@ -6,6 +6,7 @@ import type { TRootStore } from './spec'
 import THEME from '@/const/theme'
 import { LOCALE } from '@/const/i18n'
 
+import createLocaleStore from './localeStore'
 import createThemeStore from './themeStore'
 import createViewingStore from './viewingStore'
 import creaetAccountStore from './accountStore'
@@ -18,15 +19,14 @@ const INITIAL_STATE = {
 }
 
 const createRootStore = (initState = INITIAL_STATE): TRootStore => {
-  return proxy({
-    // locale: T.opt(T.enum('locale', values(LOCALE)), LOCALE.EN),
-    locale: initState.locale,
-    localeData: initState.localeData,
-
+  const store = proxy({
+    locale: createLocaleStore(initState.locale, initState.localeData),
     account: creaetAccountStore(),
     theme: createThemeStore(initState.theme),
     viewing: createViewingStore(initState.viewing),
   })
+
+  return store
 }
 
 export const StoreContext = createContext(createRootStore())
