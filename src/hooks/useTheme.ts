@@ -2,7 +2,7 @@ import { useTheme as useStyledTheme } from 'styled-components'
 
 import type { TThemeName, TThemeMap } from '@/spec'
 
-import useStoreTree from '@/hooks/useStoreTree'
+import useSubStore from '@/hooks/useSubStore'
 
 type TRet = {
   theme: TThemeName
@@ -14,7 +14,7 @@ type TRet = {
  * NOTE: should use observer to wrap the component who use this hook
  */
 const useTheme = (): TRet => {
-  const { theme, change, toggle } = useStoreTree('theme')
+  const { theme, change, toggle } = useSubStore('theme')
   const styledTheme = useStyledTheme() as TThemeMap
 
   return {

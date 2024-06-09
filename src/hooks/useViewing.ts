@@ -1,6 +1,6 @@
 import type { TArticle, TCommunity } from '@/spec'
 
-import useStoreTree from '@/hooks/useStoreTree'
+import useSubStore from '@/hooks/useSubStore'
 
 type TRet = {
   article: TArticle
@@ -9,7 +9,7 @@ type TRet = {
 }
 
 const useViewing = (): TRet | null => {
-  const { viewingArticle, community, updateViewingCommunity } = useStoreTree('viewing')
+  const { viewingArticle, community, updateViewingCommunity } = useSubStore('viewing')
 
   return {
     article: viewingArticle,

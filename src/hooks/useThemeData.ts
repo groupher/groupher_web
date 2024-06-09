@@ -1,6 +1,6 @@
 import type { TThemeMap } from '@/spec'
 
-import useStoreTree from '@/hooks/useStoreTree'
+import useSubStore from '@/hooks/useSubStore'
 
 /**
  * NOTE: should use observer to wrap the component who use this hook
@@ -8,7 +8,7 @@ import useStoreTree from '@/hooks/useStoreTree'
  * styled-component can only be used before it init
  */
 const useThemeData = (): TThemeMap => {
-  const { themeData } = useStoreTree('theme')
+  const { themeData } = useSubStore('theme')
 
   return themeData
 }

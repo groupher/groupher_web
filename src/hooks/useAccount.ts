@@ -1,9 +1,9 @@
 import type { TAccount } from '@/spec'
 
-import useStoreTree from '@/hooks/useStoreTree'
+import useSubStore from '@/hooks/useSubStore'
 
 const useAccount = (): TAccount => {
-  const store = useStoreTree('account')
+  const store = useSubStore('account')
 
   return store.accountInfo
 }

@@ -1,6 +1,6 @@
 import type { TLocale } from '@/spec'
 import { loadLocaleFile } from '@/i18n'
-import useStoreTree from '@/hooks/useStoreTree'
+import useSubStore from '@/hooks/useSubStore'
 
 type TRet = {
   changeLocale: (locale: TLocale) => void
@@ -10,7 +10,7 @@ type TRet = {
  * NOTE: should use observer to wrap the component who use this hook
  */
 const useChangeI18n = (): TRet => {
-  const { locale, setLocale, setLocaleData } = useStoreTree('locale')
+  const { locale, setLocale, setLocaleData } = useSubStore('locale')
 
   const changeLocale = (locale: TLocale) => {
     loadLocaleFile(locale)

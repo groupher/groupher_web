@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 
 import type { TAccount, TSimpleUser } from '@/spec'
 import OAUTH from '@/const/oauth'
-import useStoreTree from '@/hooks/useStoreTree'
+import useSubStore from '@/hooks/useSubStore'
 import { debounce } from '@/helper'
 import BStore from '@/utils/bstore'
 
 const useSyncAccount = (): TAccount => {
-  const { isLogin, setSession, accountInfo } = useStoreTree('account')
+  const { isLogin, setSession, accountInfo } = useSubStore('account')
 
   const [isLinkClickListenerAdded, setIsLinkClickListenerAdded] = useState(false)
 
