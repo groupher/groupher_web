@@ -6,17 +6,18 @@ import type { TRootStore } from './spec'
 import THEME from '@/const/theme'
 
 import createThemeStore from './themeStore'
+import createViewingStore from './viewingStore'
 
 const initialRootState = {
   theme: THEME.DAY,
+  viewing: {},
 }
 
 const createRootStore = (initialState = initialRootState): TRootStore => {
-  const store = {
+  return proxy({
     theme: createThemeStore(initialState.theme),
-  }
-
-  return proxy(store)
+    viewing: createViewingStore(initialState.viewing),
+  })
 }
 
 export const StoreContext = createContext(createRootStore())

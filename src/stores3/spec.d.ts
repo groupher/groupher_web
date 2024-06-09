@@ -4,7 +4,7 @@ import type { TStore as TThemeStore } from './themeStore/spec'
 import type { TStore as TDashbaordStore } from './dashboardStore/spec'
 
 export type TRootStore = {
-  // viewing: TViewingStore
+  viewing: TViewingStore
   // account: TAccountStore
   theme: TThemeStore
   // dashboard: TDashbaordStore
