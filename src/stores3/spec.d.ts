@@ -1,3 +1,5 @@
+import type { TLocale } from '@/spec'
+
 import type { TStore as TViewingStore } from './viewingStore/spec'
 import type { TStore as TAccountStore } from './accountStore/spec'
 import type { TStore as TThemeStore } from './themeStore/spec'
@@ -14,6 +16,9 @@ export type TTreeStoreKey = keyof TStoreMap
 export type TTreeStore<K extends TTreeStoreKey> = TStoreMap[K]
 
 export type TRootStore = {
+  locale: TLocale
+  localeData: string
+
   viewing: TViewingStore
   account: TAccountStore
   theme: TThemeStore
