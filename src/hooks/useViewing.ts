@@ -1,8 +1,6 @@
-import { useContext } from 'react'
-
 import type { TArticle, TCommunity } from '@/spec'
 
-import { StoreContext } from '@/stores2'
+import useStoreTree from '@/hooks/useStoreTree'
 
 type TRet = {
   article: TArticle
@@ -11,7 +9,7 @@ type TRet = {
 }
 
 const useViewing = (): TRet | null => {
-  const { viewing: store } = useContext(StoreContext)
+  const store = useStoreTree('viewing')
   const { viewingArticle, community, updateViewingCommunity } = store
 
   return {

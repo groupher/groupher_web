@@ -1,9 +1,6 @@
-import { useContext } from 'react'
-import { useSnapshot } from 'valtio'
-
 import type { TThemeMap } from '@/spec'
 
-import { StoreContext } from '@/stores3'
+import useStoreTree from '@/hooks/useStoreTree'
 
 /**
  * NOTE: should use observer to wrap the component who use this hook
@@ -11,10 +8,9 @@ import { StoreContext } from '@/stores3'
  * styled-component can only be used before it init
  */
 const useThemeData = (): TThemeMap => {
-  const root = useContext(StoreContext)
-  const { theme } = useSnapshot(root)
+  const store = useStoreTree('theme')
 
-  return theme.themeData
+  return store.themeData
 }
 
 export default useThemeData

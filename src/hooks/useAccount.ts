@@ -1,20 +1,11 @@
-import { useContext } from 'react'
-import { useSnapshot } from 'valtio'
-
 import type { TAccount } from '@/spec'
-import { StoreContext } from '@/stores3'
 
-/**
- * TODO:
- */
-// const useStoreTree = (part: ) => {
-// }
+import useStoreTree from '@/hooks/useStoreTree'
 
 const useAccount = (): TAccount => {
-  const root = useContext(StoreContext)
-  const { account } = useSnapshot(root)
+  const store = useStoreTree('account')
 
-  return account.accountInfo
+  return store.accountInfo
 }
 
 export default useAccount
