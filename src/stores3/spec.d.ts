@@ -5,7 +5,7 @@ import type { TStore as TDashbaordStore } from './dashboardStore/spec'
 
 export type TRootStore = {
   viewing: TViewingStore
-  // account: TAccountStore
+  account: TAccountStore
   theme: TThemeStore
   // dashboard: TDashbaordStore
 }

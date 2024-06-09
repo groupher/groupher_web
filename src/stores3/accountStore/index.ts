@@ -1,4 +1,5 @@
-import { battery } from '@/mobx'
+import { proxy } from 'valtio'
+
 import type { TUser, TAccount } from '@/spec'
 
 import BStore from '@/utils/bstore'
@@ -8,7 +9,7 @@ import type { TStore } from './spec'
 
 // theme store
 const createAccountStore = (): TStore => {
-  const store = {
+  const store = proxy({
     user: null,
     userSubscribedCommunities: null,
 
@@ -39,9 +40,9 @@ const createAccountStore = (): TStore => {
         store.user = {}
       }
     },
-  }
+  })
 
-  return battery(store)
+  return store
 }
 
 export default createAccountStore
