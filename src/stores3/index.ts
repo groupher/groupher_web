@@ -19,14 +19,12 @@ const INITIAL_STATE = {
 }
 
 const createRootStore = (initState = INITIAL_STATE): TRootStore => {
-  const store = proxy({
+  return proxy({
     locale: createLocaleStore(initState.locale, initState.localeData),
     account: creaetAccountStore(),
     theme: createThemeStore(initState.theme),
     viewing: createViewingStore(initState.viewing),
   })
-
-  return store
 }
 
 export const StoreContext = createContext(createRootStore())
