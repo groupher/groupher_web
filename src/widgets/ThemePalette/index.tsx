@@ -6,7 +6,6 @@
  * otherwhise the render will not be triggled
  */
 import type { FC, ReactNode } from 'react'
-import { observer } from 'mobx-react-lite'
 import { ThemeProvider } from 'styled-components'
 
 import usePrimaryColor from '@/hooks/usePrimaryColor'
@@ -38,7 +37,7 @@ const ThemePalette: FC<TProps> = ({ children }) => {
   )
 }
 
-export default observer(ThemePalette)
+export default ThemePalette
 
 // about meta theme-color
 // see: https://stackoverflow.com/questions/26960703/how-to-change-the-color-of-header-bar-and-address-bar-in-newest-chrome-version-o

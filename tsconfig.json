@@ -30,6 +30,8 @@
       "@/stores/*": ["src/stores/*"],
       "@/stores2": ["src/stores2"],
       "@/stores2/*": ["src/stores2/*"],
+      "@/stores3": ["src/stores3"],
+      "@/stores3/*": ["src/stores3/*"],
       "@/model": ["src/stores/Model"],
       "@/model/*": ["src/stores/Model/*"],
       "@/utils": ["utils"],

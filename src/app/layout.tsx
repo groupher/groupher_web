@@ -8,6 +8,7 @@ import {
   GraphQLProvider,
   RootStoreProvider,
   MobxStoreProvider,
+  ValtioStoreWrapper,
   GlobalLayout,
 } from './providers'
 
@@ -32,11 +33,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <StyledComponentsRegistry>
           <GraphQLProvider>
-            <MobxStoreProvider>
-              <RootStoreProvider>
-                <GlobalLayout>{children}</GlobalLayout>
-              </RootStoreProvider>
-            </MobxStoreProvider>
+            <ValtioStoreWrapper>
+              <MobxStoreProvider>
+                <RootStoreProvider>
+                  <GlobalLayout>{children}</GlobalLayout>
+                </RootStoreProvider>
+              </MobxStoreProvider>
+            </ValtioStoreWrapper>
           </GraphQLProvider>
         </StyledComponentsRegistry>
         <Analytics />

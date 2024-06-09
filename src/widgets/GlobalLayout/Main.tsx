@@ -26,7 +26,7 @@ import Footer from '@/widgets/Footer'
 
 import GlowBackground from './GlowBackground'
 
-import { Wrapper, ScrollWrapper, BodyWrapper, ContentWrapper } from './styles/main'
+import { Wrapper, BodyWrapper, ContentWrapper } from './styles/main'
 
 // let DashboardAlert = null
 

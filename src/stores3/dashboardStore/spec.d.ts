@@ -225,6 +225,7 @@ export type TStore = TSettingsFields & {
 
   // actions
   changeGlowEffect: (glowType: string) => void
+
   mark: (sobj: Record<string, any>) => void
 }
 

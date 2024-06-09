@@ -29,7 +29,6 @@ const Drawer: FC = () => {
 
   const {
     slideVisible,
-    visible,
     type,
     mmType,
     extraInfo,

@@ -1,9 +1,9 @@
 import { useContext } from 'react'
-// import { MobXProviderContext } from 'mobx-react'
+import { useSnapshot } from 'valtio'
 
 import type { TThemeMap } from '@/spec'
 
-import { StoreContext } from '@/stores2'
+import { StoreContext } from '@/stores3'
 
 /**
  * NOTE: should use observer to wrap the component who use this hook
@@ -11,8 +11,8 @@ import { StoreContext } from '@/stores2'
  * styled-component can only be used before it init
  */
 const useThemeData = (): TThemeMap => {
-  // const { store } = useContext(MobXProviderContext)
-  const { theme } = useContext(StoreContext)
+  const root = useContext(StoreContext)
+  const { theme } = useSnapshot(root)
 
   return theme.themeData
 }

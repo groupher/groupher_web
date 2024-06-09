@@ -1,5 +1,6 @@
 export { default as GraphQLProvider } from './GraphQLProvider'
 export { default as RootStoreProvider } from './RootStoreProvider'
 export { default as MobxStoreProvider } from './MobxStoreProvider'
+export { default as ValtioStoreWrapper } from './ValtioStoreProvider'
 export { default as StyledComponentsRegistry } from './StyledComponentRegistry'
 export { default as GlobalLayout } from './GlobalLayout'
