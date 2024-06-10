@@ -1,10 +1,9 @@
-import { useContext } from 'react'
-import { has, omit, findIndex, update, clone } from 'ramda'
+import { has, omit, findIndex, update } from 'ramda'
 
 import type { TEditValue, TTag, TNameAlias } from '@/spec'
 import { toJS, runInAction } from '@/mobx'
 import { isObject } from '@/validator'
-import { StoreContext } from '@/stores2'
+import useSubStore from '@/hooks/useSubStore'
 import BStore from '@/utils/bstore'
 
 import {
@@ -28,7 +27,7 @@ export type TRet = {
  * NOTE: should use observer to wrap the component who use this hook
  */
 const useUtils = (): TRet => {
-  const { dashboard: store } = useContext(StoreContext)
+  const store = useSubStore('dashboard')
   const { mutation } = useMutation()
 
   const edit = (v: TEditValue, field: TSettingField): void => {
@@ -38,7 +37,7 @@ const useUtils = (): TRet => {
       value = v.target.value
     }
 
-    store.mark({ [field]: value })
+    store.commit({ [field]: value })
   }
 
   const _rollbackByKeys = (keys: string[]): void => {
@@ -64,9 +63,7 @@ const useUtils = (): TRet => {
   }
 
   const _findAliasIdx = (): number => {
-    const self = store
-
-    const { nameAlias, editingAlias } = self
+    const { nameAlias, editingAlias } = store
     const targetIdx = findIndex(
       (item: TNameAlias) => item.slug === editingAlias.slug,
       toJS(nameAlias),
@@ -76,8 +73,6 @@ const useUtils = (): TRet => {
   }
 
   const rollbackEdit = (field: TSettingField): void => {
-    const self = store
-
     if (field === SETTING_FIELD.BASE_INFO) {
       _rollbackByKeys(BASEINFO_KEYS)
       return
@@ -92,18 +87,18 @@ const useUtils = (): TRet => {
       const targetIdx = _findTagIdx()
       if (targetIdx < 0) return
 
-      self.tags[targetIdx] = toJS(self.tags[targetIdx])
-      self.editingTag = null
+      store.tags[targetIdx] = toJS(store.tags[targetIdx])
+      store.commit({ editingTag: null })
       return
     }
 
     if (field === SETTING_FIELD.TAG_INDEX) {
-      self.tags = toJS(self.initSettings.tags)
+      store.commit({ tags: store.initSettings.tags })
       return
     }
 
     if (field === SETTING_FIELD.FAQ_SECTIONS) {
-      self.faqSections = toJS(self.initSettings.faqSections)
+      store.commit({ faqSections: store.initSettings.faqSections })
       return
     }
 
@@ -111,14 +106,17 @@ const useUtils = (): TRet => {
       const targetIdx = _findAliasIdx()
       if (targetIdx < 0) return
 
-      self.nameAlias[targetIdx] = toJS(self.nameAlias[targetIdx])
-      self.editingAlias = null
+      // self.nameAlias[targetIdx] = toJS(self.nameAlias[targetIdx])
+      const updatedNameAlias = update(
+        targetIdx,
+        store.initSettings.nameAlias[targetIdx],
+        store.nameAlias,
+      )
+      store.commit({ editingAlias: null, nameAlias: updatedNameAlias })
       return
     }
 
-    const initValue = toJS(self.initSettings[field])
-
-    self[field] = initValue
+    store.commit({ [field]: store.initFilled[field] })
   }
 
   // save to local settings should omit subTabs,
@@ -152,15 +150,11 @@ const useUtils = (): TRet => {
   const _updateEditingTag = () => {
     const { editingTag, tags } = store
 
-    const _editingTag = toJS(editingTag)
-    const _tags = toJS(tags)
-    const _initSettings = toJS(store.initSettings)
+    const targetIndex = findIndex((item: TTag) => item.id === editingTag.id, tags)
+    const updatedTags = update(targetIndex, editingTag, tags)
 
-    const targetIndex = findIndex((item: TTag) => item.id === editingTag.id, _tags)
-    const updatedTags = update(targetIndex, _editingTag, _tags)
-
-    const initSettings = { ..._initSettings, tags: updatedTags }
-    store.initSettings = initSettings
+    const initSettings = { ...store.initSettings, tags: updatedTags }
+    store.commit({ initSettings })
   }
 
   const _doSave = (field: TSettingField): void => {
@@ -179,18 +173,17 @@ const useUtils = (): TRet => {
       const targetIdx = _findAliasIdx()
       if (targetIdx < 0) return
 
-      store.nameAlias[targetIdx] = clone(editingAlias)
+      const updatedNameAlias = update(targetIdx, editingAlias, store.nameAlias)
+      store.commit({ nameAlias: updatedNameAlias })
+      // store.nameAlias[targetIdx] = clone(editingAlias)
     }
   }
 
   const onSave = (field: TSettingField): void => {
-    runInAction(() => {
-      store.saving = true
-      store.savingField = field
-      _doSave(field)
-    })
-
     console.log('## ## on save: ', field)
+
+    store.commit({ saving: true, savingField: field })
+    _doSave(field)
 
     mutation(field, store[field])
   }

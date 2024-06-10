@@ -1,8 +1,7 @@
 import { isEmpty, reject, equals } from 'ramda'
 
 import type { TSocialItem } from '@/spec'
-import { toJS } from '@/mobx'
-import useDashboard from '@/hooks/useDashboard'
+import useSubStore from '@/hooks/useSubStore'
 
 export type TRet = {
   socialLinks: TSocialItem[]
@@ -13,12 +12,12 @@ export type TRet = {
  * NOTE: should use observer to wrap the component who use this hook
  */
 const useSocialLinks = (): TRet => {
-  const { dashboard: store } = useDashboard()
+  const store = useSubStore('dashboard')
 
   const { socialLinks, initSettings } = store
 
   const socialLinksTouched = () => {
-    return !equals(toJS(socialLinks), toJS(initSettings.socialLinks))
+    return !equals(socialLinks, initSettings.socialLinks)
   }
 
   return {

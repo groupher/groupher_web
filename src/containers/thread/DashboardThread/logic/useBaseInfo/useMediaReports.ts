@@ -1,10 +1,9 @@
 import { isEmpty, find, reject, filter, equals, mergeRight, startsWith } from 'ramda'
 
 import type { TMediaReport } from '@/spec'
-import { toJS, runInAction } from '@/mobx'
 import { query } from '@/utils/api'
 
-import useDashboard from '@/hooks/useDashboard'
+import useSubStore from '@/hooks/useSubStore'
 
 import { EMPTY_MEDIA_REPORT } from '../../constant'
 
@@ -26,16 +25,13 @@ export type TRet = {
  * NOTE: should use observer to wrap the component who use this hook
  */
 const useMediaReports = (): TRet => {
-  const { dashboard: store } = useDashboard()
+  const store = useSubStore('dashboard')
 
   const { mediaReports, initSettings, queringMediaReportIndex } = store
 
   const mediaReportsTouched = () => {
-    const curValues = reject((item: TMediaReport) => !item.editUrl, toJS(mediaReports))
-    const initValues = reject(
-      (item: TMediaReport) => !item.editUrl,
-      toJS(initSettings.mediaReports),
-    )
+    const curValues = reject((item: TMediaReport) => !item.editUrl, mediaReports)
+    const initValues = reject((item: TMediaReport) => !item.editUrl, initSettings.mediaReports)
 
     const curValueTitles = filter((item: TMediaReport) => !isEmpty(item?.title), curValues)
     const isCurAllvalid = curValueTitles.length !== 0 && curValueTitles.length === curValues.length
@@ -47,7 +43,7 @@ const useMediaReports = (): TRet => {
     const { mediaReports } = store
     const newReport = mergeRight(EMPTY_MEDIA_REPORT, { index: new Date().getTime() })
 
-    store.mediaReports = [...toJS(mediaReports), newReport]
+    store.mediaReports = [...mediaReports, newReport]
   }
 
   const mediaReportOnChange = (index: number, url: string): void => {
@@ -65,8 +61,7 @@ const useMediaReports = (): TRet => {
     const { mediaReports } = store
     const newReports = reject((item: TMediaReport) => item.index === index, mediaReports)
 
-    store.mark({ mediaReports: newReports })
-    store.mediaReports = newReports
+    store.commit({ mediaReports: newReports })
   }
 
   const handleOgQueryInfo = (data) => {
@@ -82,10 +77,10 @@ const useMediaReports = (): TRet => {
     )
     const updatedReport = mergeRight(report, data)
 
-    runInAction(() => {
-      store.queringMediaReportIndex = null
-      store.loading = false
-      store.mediaReports = [...restReports, updatedReport]
+    store.commit({
+      queringMediaReportIndex: null,
+      loading: false,
+      mediaReports: [...restReports, updatedReport],
     })
   }
 
@@ -110,7 +105,7 @@ const useMediaReports = (): TRet => {
 
   return {
     queringMediaReportIndex,
-    mediaReports: toJS(mediaReports),
+    mediaReports,
     isMediaReportsTouched: mediaReportsTouched(),
     addMediaReport,
     mediaReportOnChange,

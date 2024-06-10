@@ -1,7 +1,7 @@
 import { pick } from 'ramda'
 
-import useDashboard from '@/hooks/useDashboard'
-import type { TSettingField } from '@/stores2/dashboardStore/spec'
+import useSubStore from '@/hooks/useSubStore'
+import type { TSettingField } from '@/stores3/dashboardStore/spec'
 
 import useHelper from '../useHelper'
 import { BASEINFO_LOGOS_KEYS } from '../../constant'
@@ -16,7 +16,7 @@ export type TRet = {
  * NOTE: should use observer to wrap the component who use this hook
  */
 const useLogos = (): TRet => {
-  const { dashboard: store } = useDashboard()
+  const store = useSubStore('dashboard')
   const { anyChanged } = useHelper()
 
   // TODO: handle image upload

@@ -1,5 +1,4 @@
 import { type FC, useEffect, useState } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import usePublicThreads from '@/hooks/usePublicThreads'
@@ -112,4 +111,4 @@ const CommunityBrief: FC = () => {
   )
 }
 
-export default observer(CommunityBrief)
+export default CommunityBrief

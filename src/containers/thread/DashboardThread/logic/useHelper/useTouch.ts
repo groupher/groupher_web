@@ -1,10 +1,8 @@
-import { useContext } from 'react'
 import { equals, any } from 'ramda'
 
-import { toJS } from '@/mobx'
-import { StoreContext } from '@/stores2'
+import useSubStore from '@/hooks/useSubStore'
 
-import type { TSettingField } from '@/stores2/dashboardStore/spec'
+import type { TSettingField } from '@/stores3/dashboardStore/spec'
 
 export type TRet = {
   isChanged: (field: TSettingField) => boolean
@@ -16,18 +14,18 @@ export type TRet = {
  * NOTE: should use observer to wrap the component who use this hook
  */
 const useTouch = (): TRet => {
-  const { dashboard: store } = useContext(StoreContext)
+  const store = useSubStore('dashboard')
   const { initSettings } = store
 
   const isChanged = (field: TSettingField): boolean => {
-    return !equals(toJS(store[field]), toJS(initSettings[field]))
+    return !equals(store[field], initSettings[field])
   }
 
   const anyChanged = (fields: TSettingField[]): boolean => any(isChanged)(fields)
 
   const mapArrayChanged = (key: string): boolean => {
     // return JSON.stringify(toJS(store[key])) !== JSON.stringify(toJS(initSettings[key]))
-    return !equals(toJS(store[key]), toJS(initSettings[key]))
+    return !equals(store[key], initSettings[key])
   }
 
   return {

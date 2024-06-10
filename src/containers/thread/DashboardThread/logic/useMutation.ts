@@ -2,9 +2,8 @@ import { includes, omit, values } from 'ramda'
 
 import type { TEditValue } from '@/spec'
 import { DASHBOARD_BASEINFO_ROUTE } from '@/const/route'
-import { runInAction, toJS } from '@/mobx'
 
-import useDashboard from '@/hooks/useDashboard'
+import useSubStore from '@/hooks/useSubStore'
 import useViewing from '@/hooks/useViewing'
 
 import { mutate } from '@/utils/api'
@@ -28,7 +27,7 @@ type TRet = {
  * NOTE: should use observer to wrap the component who use this hook
  */
 const useMutation = (): TRet => {
-  const { dashboard: store } = useDashboard()
+  const store = useSubStore('dashboard')
   const { updateViewingCommunity, community: curCommunity } = useViewing()
   const community = curCommunity.slug
 
@@ -40,9 +39,9 @@ const useMutation = (): TRet => {
     let initSettings
 
     if (field === SETTING_FIELD.TAG_INDEX) {
-      initSettings = { ...store.initSettings, tags: toJS(store.tags) }
+      initSettings = { ...store.initSettings, tags: store.tags }
     } else if (includes(field, [SETTING_FIELD.FAQ_SECTION_ADD, SETTING_FIELD.FAQ_SECTION_DELETE])) {
-      initSettings = { ...store.initSettings, faqSections: toJS(store.faqSections) }
+      initSettings = { ...store.initSettings, faqSections: store.faqSections }
     } else if (field === SETTING_FIELD.TAG) {
       // _updateEditingTag()
       initSettings = { ...store.initSettings }
@@ -61,22 +60,19 @@ const useMutation = (): TRet => {
       }
       initSettings = { ...store.initSettings, ...current }
     } else {
-      initSettings = { ...store.initSettings, [field]: toJS(store[field]) }
+      initSettings = { ...store.initSettings, [field]: store[field] }
     }
 
-    store.initSettings = initSettings
+    store.commit({ initSettings })
 
     // manually update in here not in store is because if this action fails,
     // store will rollback to previous value
-    if (field === SETTING_FIELD.TAG) store.editingTag = null
-    if (field === SETTING_FIELD.NAME_ALIAS) store.editingAlias = null
+    if (field === SETTING_FIELD.TAG) store.commit({ editingTag: null })
+    if (field === SETTING_FIELD.NAME_ALIAS) store.commit({ editingAlias: null })
 
     // avoid page component jump caused by saving state
     setTimeout(() => {
-      runInAction(() => {
-        store.saving = false
-        store.savingField = null
-      })
+      store.commit({ saving: false, savingField: null })
     }, 800)
   }
 
@@ -96,10 +92,10 @@ const useMutation = (): TRet => {
     if (field === SETTING_FIELD.MEDIA_REPORTS) {
       const { mediaReports } = store
 
-      const params = toJS({
+      const params = {
         community,
         mediaReports: mediaReports.map((item) => omit(['editUrl'], item)),
-      })
+      }
 
       handleMutation(S.updateDashboardMediaReports, params)
       return
@@ -143,7 +139,7 @@ const useMutation = (): TRet => {
 
     if (field === SETTING_FIELD.SOCIAL_LINKS) {
       const { socialLinks } = store
-      const params = toJS({ community, socialLinks })
+      const params = { community, socialLinks }
 
       handleMutation(S.updateDashboardSocialLinks, params)
       return

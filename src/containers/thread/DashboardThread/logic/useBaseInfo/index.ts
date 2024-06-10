@@ -2,8 +2,7 @@ import { useEffect } from 'react'
 import { pick, isEmpty } from 'ramda'
 
 import type { TCommunity, TDashboardBaseInfoRoute, TEditValue } from '@/spec'
-import { runInAction } from '@/mobx'
-import useDashboard from '@/hooks/useDashboard'
+import useSubStore from '@/hooks/useSubStore'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useQuery from '@/hooks/useQuery'
 
@@ -35,7 +34,8 @@ type TRet = TUseInfo &
  * NOTE: should use observer to wrap the component who use this hook
  */
 const useBaseInfo = (): TRet => {
-  const { dashboard: store } = useDashboard()
+  const store = useSubStore('dashboard')
+
   const curCommunity = useViewingCommunity()
   const { edit } = useHelper()
 
@@ -52,7 +52,7 @@ const useBaseInfo = (): TRet => {
 
   useEffect(() => {
     if (data?.community && !store.initFilled) {
-      store.initFilled = true
+      store.commit({ initFilled: true })
       // to avoid hooks rerender which update baseinfo
       updateBaseInfo(data.community)
     }
@@ -77,13 +77,16 @@ const useBaseInfo = (): TRet => {
       }))
     }
 
-    runInAction(() => {
-      Object.assign(store, updates)
-      Object.assign(store.initSettings, updates)
+    const initSettings = { ...store.initSettings, ...updates, mediaReports: initMediaReports }
+    store.commit({ ...updates, mediaReports: initMediaReports, initSettings })
 
-      store.mediaReports = initMediaReports
-      store.initSettings.mediaReports = initMediaReports
-    })
+    // runInAction(() => {
+    //   Object.assign(store, updates)
+    //   Object.assign(store.initSettings, updates)
+
+    //   store.mediaReports = initMediaReports
+    //   store.initSettings.mediaReports = initMediaReports
+    // })
   }
 
   return {

@@ -1,13 +1,13 @@
 import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
-import { pick, isEmpty, reject, filter, mergeRight } from 'ramda'
+import { pick, isEmpty, reject, filter } from 'ramda'
 
 import type { TSocialItem, TDashboardBaseInfoRoute, TMediaReport } from '@/spec'
 import { toJS } from '@/mobx'
 
 import type { TSettingField } from '../spec'
 import useHelper from './useHelper'
-import { BASEINFO_KEYS, EMPTY_MEDIA_REPORT } from '../constant'
+import { BASEINFO_KEYS } from '../constant'
 
 type TRet = {
   loading: boolean

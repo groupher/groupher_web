@@ -1,7 +1,7 @@
 import { pick } from 'ramda'
 
-import useDashboard from '@/hooks/useDashboard'
-import type { TSettingField } from '@/stores2/dashboardStore/spec'
+import type { TSettingField } from '@/stores3/dashboardStore/spec'
+import useSubStore from '@/hooks/useSubStore'
 
 import useHelper from '../useHelper'
 import { BASEINFO_BASIC_KEYS } from '../../constant'
@@ -24,7 +24,7 @@ export type TRet = {
  * NOTE: should use observer to wrap the component who use this hook
  */
 const useInfo = (): TRet => {
-  const { dashboard: store } = useDashboard()
+  const store = useSubStore('dashboard')
   const { anyChanged } = useHelper()
 
   return {
