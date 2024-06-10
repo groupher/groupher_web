@@ -11,7 +11,7 @@ export type TRootStore = {
   theme: TThemeStore
   viewing: TViewingStore
   account: TAccountStore
-  // dashboard: TDashbaordStore
+  dashboard: TDashbaordStore
 }
 
 export type TTreeStoreKey = keyof TRootStore

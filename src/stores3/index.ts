@@ -8,14 +8,16 @@ import { LOCALE } from '@/const/i18n'
 
 import createLocaleStore from './localeStore'
 import createThemeStore from './themeStore'
-import createViewingStore from './viewingStore'
 import creaetAccountStore from './accountStore'
+import createViewingStore from './viewingStore'
+import createDashboardStore from './dashboardStore'
 
 const INITIAL_STATE = {
   theme: THEME.DAY,
   locale: LOCALE.EN,
   localeData: '{}',
   viewing: {},
+  dashboard: {},
 }
 
 const createRootStore = (initState = INITIAL_STATE): TRootStore => {
@@ -24,6 +26,7 @@ const createRootStore = (initState = INITIAL_STATE): TRootStore => {
     account: creaetAccountStore(),
     theme: createThemeStore(initState.theme),
     viewing: createViewingStore(initState.viewing),
+    dashboard: createDashboardStore(initState.dashboard),
   })
 }
 

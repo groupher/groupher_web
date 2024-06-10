@@ -1,4 +1,4 @@
-import { battery, markStore } from '@/mobx'
+import { proxy } from 'valtio'
 
 import { uniq, pluck, equals, mapObjIndexed, mergeLeft } from 'ramda'
 
@@ -39,7 +39,7 @@ import {
 } from '@/const/route'
 import BStore from '@/utils/bstore'
 
-import type { TStore, TInitSettings, TSettingsFields, TDocSettings, TRootStore } from './spec'
+import type { TStore, TInitSettings, TSettingsFields, TDocSettings } from './spec'
 import {
   EMPTY_MEDIA_REPORT,
   DASHBOARD_DEMO_KEY,
@@ -150,143 +150,154 @@ export const settingsFields: TSettingsFields = {
 }
 
 // theme store
-const createDashboardStore = (rootStore: TRootStore, initState: TInitSettings = {}): TStore => {
-  const store = mergeLeft(initState, {
-    ...settingsFields,
-    initFilled: false,
-    initSettings: settingsFields,
-    defaultSettings: settingsFields,
+const createDashboardStore = (initState: TInitSettings = {}): TStore => {
+  const store = proxy(
+    mergeLeft(initState, {
+      ...settingsFields,
+      initFilled: false,
+      initSettings: settingsFields,
+      defaultSettings: settingsFields,
 
-    savingField: null,
-    saving: false,
-    loading: false,
-    curTab: DASHBOARD_ROUTE.INFO,
-    baseInfoTab: DASHBOARD_BASEINFO_ROUTE.BASIC,
+      savingField: null,
+      saving: false,
+      loading: false,
+      curTab: DASHBOARD_ROUTE.INFO,
+      baseInfoTab: DASHBOARD_BASEINFO_ROUTE.BASIC,
 
-    aliasTab: DASHBOARD_ALIAS_ROUTE.THREAD,
-    seoTab: DASHBOARD_SEO_ROUTE.SEARCH_ENGINE,
-    docTab: DASHBOARD_DOC_ROUTE.TABLE,
-    layoutTab: DASHBOARD_LAYOUT_ROUTE.GLOBAL,
-    broadcastTab: DASHBOARD_BROADCAST_ROUTE.GLOBAL,
+      aliasTab: DASHBOARD_ALIAS_ROUTE.THREAD,
+      seoTab: DASHBOARD_SEO_ROUTE.SEARCH_ENGINE,
+      docTab: DASHBOARD_DOC_ROUTE.TABLE,
+      layoutTab: DASHBOARD_LAYOUT_ROUTE.GLOBAL,
+      broadcastTab: DASHBOARD_BROADCAST_ROUTE.GLOBAL,
 
-    // overview
-    overview: DEFAULT_OVERVIEW,
+      // overview
+      overview: DEFAULT_OVERVIEW,
 
-    // editing
-    editingTag: null,
-    settingTag: null,
-    editingAlias: null,
-    editingLink: null,
-    editingLinkMode: CHANGE_MODE.CREATE,
+      // editing
+      editingTag: null,
+      settingTag: null,
+      editingAlias: null,
+      editingLink: null,
+      editingLinkMode: CHANGE_MODE.CREATE,
 
-    editingGroup: null,
-    editingGroupIndex: null,
-    editingFAQIndex: null,
-    // editingFAQ: T.maybeNull(FAQSection),
+      editingGroup: null,
+      editingGroupIndex: null,
+      editingFAQIndex: null,
+      // editingFAQ: T.maybeNull(FAQSection),
 
-    queringMediaReportIndex: null,
+      queringMediaReportIndex: null,
 
-    // cms
-    batchSelectedIDs: [],
-    // pagedCommunities: T.opt(PagedCommunities, emptyPagi),
-    // pagedPosts: T.opt(PagedPosts, emptyPagi),
-    // pagedDocs: T.opt(PagedDocs, emptyPagi),
-    // pagedChangelogs: T.opt(PagedChangelogs, emptyPagi),
+      // cms
+      batchSelectedIDs: [],
+      // pagedCommunities: T.opt(PagedCommunities, emptyPagi),
+      // pagedPosts: T.opt(PagedPosts, emptyPagi),
+      // pagedDocs: T.opt(PagedDocs, emptyPagi),
+      // pagedChangelogs: T.opt(PagedChangelogs, emptyPagi),
 
-    // for global alert
-    demoAlertEnable: false,
+      // for global alert
+      demoAlertEnable: false,
 
-    // activeModerator: T.maybeNull(User),
-    allModeratorRules: '{}',
-    allRootRules: '{}',
+      // activeModerator: T.maybeNull(User),
+      allModeratorRules: '{}',
+      allRootRules: '{}',
 
-    // -- views
-    get tagGroups(): string[] {
-      const self = this as TStore
-      const { tags } = self
+      // -- views
+      get tagGroups(): string[] {
+        const { tags } = store
 
-      return uniq(pluck('group', tags))
-    },
+        return uniq(pluck('group', tags))
+      },
 
-    get docSettings(): TDocSettings {
-      return {
-        categories: this.docCategories,
-      }
-    },
-
-    // actions
-    setAllPassportRules(rootRules: string, moderatorRules: string): void {
-      store.allRootRules = rootRules
-      store.allModeratorRules = moderatorRules
-    },
-
-    /**
-     * init activeTagThread for dashboard tags settings
-     * based on enableSettings
-     */
-    _initActiveTagThreadIfneed(): void {
-      const { curTab, enable } = store
-
-      if (curTab !== DASHBOARD_ROUTE.TAGS) return
-
-      if (enable.post) {
-        setTimeout(() => store.mark({ activeTagThread: THREAD.POST }))
-      } else if (enable.kanban) {
-        setTimeout(() => store.mark({ activeTagThread: THREAD.KANBAN }))
-      } else if (enable.changelog) {
-        setTimeout(() => store.mark({ activeTagThread: THREAD.CHANGELOG }))
-      } else {
-        setTimeout(() => store.mark({ activeTagThread: null }))
-      }
-    },
-
-    clearLocalSettings(): void {
-      BStore.remove(DASHBOARD_DEMO_KEY)
-
-      mapObjIndexed((value, key) => {
-        if (!equals(store[key], store.defaultSettings[key])) {
-          // @ts-ignore
-          if (key !== 'defaultSettings' && key !== 'initSettings') {
-            store.mark({ [key]: value })
-          }
+      get docSettings(): TDocSettings {
+        return {
+          categories: store.docCategories,
         }
-      }, store.defaultSettings)
+      },
 
-      store.mark({ demoAlertEnable: false, saving: false, initSettings: store.defaultSettings })
-    },
+      // actions
+      setAllPassportRules: (rootRules: string, moderatorRules: string): void => {
+        store.allRootRules = rootRules
+        store.allModeratorRules = moderatorRules
+      },
 
-    _loadLocalSettings(): boolean {
-      const dashboardDemoSettings = BStore.get(DASHBOARD_DEMO_KEY)
+      /**
+       * init activeTagThread for dashboard tags settings
+       * based on enableSettings
+       */
+      _initActiveTagThreadIfneed: (): void => {
+        const { curTab, enable } = store
 
-      if (dashboardDemoSettings) {
-        const settingsObj = JSON.parse(dashboardDemoSettings)
+        if (curTab !== DASHBOARD_ROUTE.TAGS) return
 
-        setTimeout(() => {
-          mapObjIndexed((value, key) => {
-            if (!equals(store[key], settingsObj[key])) {
-              store.mark({ [key]: value })
+        if (enable.post) {
+          setTimeout(() => {
+            store.activeTagThread = THREAD.POST
+          })
+        } else if (enable.kanban) {
+          setTimeout(() => {
+            store.activeTagThread = THREAD.KANBAN
+          })
+        } else if (enable.changelog) {
+          setTimeout(() => {
+            store.activeTagThread = THREAD.CHANGELOG
+          })
+        } else {
+          setTimeout(() => {
+            store.activeTagThread = null
+          })
+        }
+      },
+
+      clearLocalSettings: (): void => {
+        BStore.remove(DASHBOARD_DEMO_KEY)
+
+        mapObjIndexed((value, key) => {
+          if (!equals(store[key], store.defaultSettings[key])) {
+            // @ts-ignore
+            if (key !== 'defaultSettings' && key !== 'initSettings') {
+              // @ts-ignore
+              store[key] = value
             }
-          }, settingsObj)
+          }
+        }, store.defaultSettings)
 
-          store.mark({ saving: false, initSettings: settingsObj, demoAlertEnable: true })
-        })
-        return true
-      }
+        store.demoAlertEnable = false
+        store.saving = false
+        store.initSettings = store.defaultSettings
+      },
 
-      return false
-    },
+      _loadLocalSettings: (): boolean => {
+        const dashboardDemoSettings = BStore.get(DASHBOARD_DEMO_KEY)
 
-    /** it also maybe called by landing page */
-    changeGlowEffect(glowType: string): void {
-      store.glowType = glowType
-    },
+        if (dashboardDemoSettings) {
+          const settingsObj = JSON.parse(dashboardDemoSettings)
 
-    mark(sobj: Record<string, any>): void {
-      markStore(sobj, store)
-    },
-  })
+          setTimeout(() => {
+            mapObjIndexed((value, key) => {
+              if (!equals(store[key], settingsObj[key])) {
+                // @ts-ignore
+                store[key] = value
+              }
+            }, settingsObj)
 
-  return battery(store)
+            store.saving = false
+            store.initSettings = settingsObj
+            store.demoAlertEnable = true
+          })
+          return true
+        }
+
+        return false
+      },
+
+      /** it also maybe called by landing page */
+      changeGlowEffect: (glowType: string): void => {
+        store.glowType = glowType
+      },
+    }),
+  )
+
+  return store
 }
 
 export default createDashboardStore
