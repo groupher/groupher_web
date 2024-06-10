@@ -2,20 +2,21 @@ import { includes, omit, values } from 'ramda'
 
 import type { TEditValue } from '@/spec'
 import { DASHBOARD_BASEINFO_ROUTE } from '@/const/route'
+import { toast } from '@/signal'
 
+import { mutate } from '@/utils/api'
 import useSubStore from '@/hooks/useSubStore'
 import useViewing from '@/hooks/useViewing'
 
-import { mutate } from '@/utils/api'
-import { toast } from '@/signal'
+import type { TSettingField } from '@/stores3/dashboardStore/spec'
 
 import {
   SETTING_FIELD,
   BASEINFO_BASIC_KEYS,
   BASEINFO_OTHER_KEYS,
-  BASEINFO_KEYS,
   SETTING_LAYOUT_FIELD,
   SEO_KEYS,
+  BASEINFO_KEYS,
 } from '../constant'
 import S from '../schema'
 
@@ -23,17 +24,14 @@ type TRet = {
   mutation: (field: string, e: TEditValue) => Promise<void>
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useMutation = (): TRet => {
   const store = useSubStore('dashboard')
   const { updateViewingCommunity, community: curCommunity } = useViewing()
   const community = curCommunity.slug
 
-  const _handleDone = () => {
+  const _handleDone = (savingField: TSettingField) => {
     toast('设置已保存')
-    const field = store.savingField
+    const field = savingField
 
     // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
     let initSettings
@@ -65,30 +63,33 @@ const useMutation = (): TRet => {
 
     store.commit({ initSettings })
 
-    // manually update in here not in store is because if this action fails,
     // store will rollback to previous value
     if (field === SETTING_FIELD.TAG) store.commit({ editingTag: null })
     if (field === SETTING_FIELD.NAME_ALIAS) store.commit({ editingAlias: null })
 
     // avoid page component jump caused by saving state
+    // store.commit({ saving: false, savingField: null })
     setTimeout(() => {
       store.commit({ saving: false, savingField: null })
     }, 800)
   }
 
-  const handleMutation = (schema, params, okCb = null) => {
-    mutate(schema, params)
-      .then((data) => {
-        if (okCb) okCb(data)
-        _handleDone()
-      })
-      .catch((err) => {
-        console.error('## handle request error: ', err)
-      })
-  }
+  const mutation = (field: TSettingField, e: TEditValue): Promise<void> => {
+    /**
+     * store.savingField is not works in this **Promise** staff
+     * not Valtio's thing, this is hte wired React staff
+     */
+    const handleMutation = (schema, params, okCb = null) => {
+      mutate(schema, params)
+        .then((data) => {
+          if (okCb) okCb(data)
+          _handleDone(field)
+        })
+        .catch((err) => {
+          console.error('## handle request error: ', err)
+        })
+    }
 
-  const mutation = (field: string, e: TEditValue): Promise<void> => {
-    // const community = curCommunity.slug
     if (field === SETTING_FIELD.MEDIA_REPORTS) {
       const { mediaReports } = store
 
@@ -133,7 +134,6 @@ const useMutation = (): TRet => {
       handleMutation(S.updateDashboardBaseInfo, params, (data) =>
         updateViewingCommunity(data.updateDashboardBaseInfo),
       )
-
       return
     }
 

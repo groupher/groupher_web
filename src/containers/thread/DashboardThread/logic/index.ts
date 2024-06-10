@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
-import { includes, values, uniq, reject, omit, update, findIndex, forEach } from 'ramda'
+import { includes, uniq, reject, forEach } from 'ramda'
 
 import type { TEditValue, TFAQSection, TID, TSocialItem, TUser } from '@/spec'
 import { COLOR_NAME } from '@/const/colors'
 import EVENT from '@/const/event'
 import ERR from '@/const/err'
 
-import { DASHBOARD_ROUTE, DASHBOARD_BASEINFO_ROUTE, DASHBOARD_SEO_ROUTE } from '@/const/route'
+import { DASHBOARD_ROUTE, DASHBOARD_BASEINFO_ROUTE } from '@/const/route'
 
 import { updateEditing, toJS } from '@/mobx'
 import asyncSuit from '@/async'
@@ -15,16 +15,7 @@ import { toast, errRescue } from '@/signal'
 import type { TStore } from '../store'
 import type { TSettingField } from '../spec'
 
-import {
-  SETTING_FIELD,
-  SETTING_LAYOUT_FIELD,
-  BASEINFO_KEYS,
-  SEO_KEYS,
-  SEO_OG_KEYS,
-  SEO_TW_KEYS,
-  BASEINFO_BASIC_KEYS,
-  BASEINFO_OTHER_KEYS,
-} from '../constant'
+import { SETTING_FIELD, BASEINFO_KEYS, SEO_KEYS } from '../constant'
 import { init as tagsLogicInit } from './tags'
 import { init as faqInit } from './faq'
 
@@ -140,126 +131,126 @@ export const deleteFAQSection = (index: number): void => {
   sr71$.mutate(S.updateDashboardFaqs, { faqs: toJS(store.faqSections), community })
 }
 
-const _doMutation = (field: string, e: TEditValue): void => {
-  const { curCommunity } = store
-  const community = curCommunity.slug
+// const _doMutation = (field: string, e: TEditValue): void => {
+//   const { curCommunity } = store
+//   const community = curCommunity.slug
 
-  if (field === SETTING_FIELD.MEDIA_REPORTS) {
-    const { baseInfoSettings } = store
-    const { mediaReports } = baseInfoSettings
+//   if (field === SETTING_FIELD.MEDIA_REPORTS) {
+//     const { baseInfoSettings } = store
+//     const { mediaReports } = baseInfoSettings
 
-    sr71$.mutate(S.updateDashboardMediaReports, {
-      community,
-      mediaReports: mediaReports.map((item) => omit(['editUrl'], item)),
-    })
-    return
-  }
+//     sr71$.mutate(S.updateDashboardMediaReports, {
+//       community,
+//       mediaReports: mediaReports.map((item) => omit(['editUrl'], item)),
+//     })
+//     return
+//   }
 
-  if (field === SETTING_FIELD.BASE_INFO) {
-    const { baseInfoTab } = store
+//   if (field === SETTING_FIELD.BASE_INFO) {
+//     const { baseInfoTab } = store
 
-    const params = {}
-    if (baseInfoTab === DASHBOARD_BASEINFO_ROUTE.BASIC) {
-      forEach((key) => {
-        params[key] = store[key]
-      }, BASEINFO_BASIC_KEYS)
-    }
+//     const params = {}
+//     if (baseInfoTab === DASHBOARD_BASEINFO_ROUTE.BASIC) {
+//       forEach((key) => {
+//         params[key] = store[key]
+//       }, BASEINFO_BASIC_KEYS)
+//     }
 
-    if (baseInfoTab === DASHBOARD_BASEINFO_ROUTE.OTHER) {
-      forEach((key) => {
-        params[key] = store[key]
-      }, BASEINFO_OTHER_KEYS)
-    }
+//     if (baseInfoTab === DASHBOARD_BASEINFO_ROUTE.OTHER) {
+//       forEach((key) => {
+//         params[key] = store[key]
+//       }, BASEINFO_OTHER_KEYS)
+//     }
 
-    sr71$.mutate(S.updateDashboardBaseInfo, { community, ...params })
-    return
-  }
+//     sr71$.mutate(S.updateDashboardBaseInfo, { community, ...params })
+//     return
+//   }
 
-  if (field === SETTING_FIELD.SOCIAL_LINKS) {
-    const { socialLinks } = store.baseInfoSettings
-    sr71$.mutate(S.updateDashboardSocialLinks, { community, socialLinks })
-    return
-  }
+//   if (field === SETTING_FIELD.SOCIAL_LINKS) {
+//     const { socialLinks } = store.baseInfoSettings
+//     sr71$.mutate(S.updateDashboardSocialLinks, { community, socialLinks })
+//     return
+//   }
 
-  if (field === SETTING_FIELD.SEO) {
-    const params = {}
-    const { seoTab } = store
+//   if (field === SETTING_FIELD.SEO) {
+//     const params = {}
+//     const { seoTab } = store
 
-    if (seoTab === DASHBOARD_SEO_ROUTE.SEARCH_ENGINE) {
-      forEach((key) => {
-        params[key] = store[key]
-      }, SEO_OG_KEYS)
-    }
+//     if (seoTab === DASHBOARD_SEO_ROUTE.SEARCH_ENGINE) {
+//       forEach((key) => {
+//         params[key] = store[key]
+//       }, SEO_OG_KEYS)
+//     }
 
-    if (seoTab === DASHBOARD_SEO_ROUTE.TWITTER) {
-      forEach((key) => {
-        params[key] = store[key]
-      }, SEO_TW_KEYS)
-    }
+//     if (seoTab === DASHBOARD_SEO_ROUTE.TWITTER) {
+//       forEach((key) => {
+//         params[key] = store[key]
+//       }, SEO_TW_KEYS)
+//     }
 
-    sr71$.mutate(S.updateDashboardSeo, { community, ...params })
-    return
-  }
+//     sr71$.mutate(S.updateDashboardSeo, { community, ...params })
+//     return
+//   }
 
-  if (includes(field, values(SETTING_LAYOUT_FIELD))) {
-    sr71$.mutate(S.updateDashboardLayout, { community, [field]: e })
-    return
-  }
+//   if (includes(field, values(SETTING_LAYOUT_FIELD))) {
+//     sr71$.mutate(S.updateDashboardLayout, { community, [field]: e })
+//     return
+//   }
 
-  if (field === SETTING_FIELD.NAME_ALIAS) {
-    const nameAlias = toJS(store.nameAlias)
-    sr71$.mutate(S.updateDashboardNameAlias, { community, nameAlias })
-    return
-  }
+//   if (field === SETTING_FIELD.NAME_ALIAS) {
+//     const nameAlias = toJS(store.nameAlias)
+//     sr71$.mutate(S.updateDashboardNameAlias, { community, nameAlias })
+//     return
+//   }
 
-  if (field === SETTING_FIELD.TAG) {
-    console.log("## if it's here: ", field)
-    store.updateEditingTag()
-    sr71$.mutate(S.updateArticleTag, { ...toJS(store.editingTag), community })
-    return
-  }
+//   if (field === SETTING_FIELD.TAG) {
+//     console.log("## if it's here: ", field)
+//     store.updateEditingTag()
+//     sr71$.mutate(S.updateArticleTag, { ...toJS(store.editingTag), community })
+//     return
+//   }
 
-  if (field === SETTING_FIELD.FAQ_SECTIONS) {
-    sr71$.mutate(S.updateDashboardFaqs, { faqs: toJS(store.faqSections), community })
-    return
-  }
+//   if (field === SETTING_FIELD.FAQ_SECTIONS) {
+//     sr71$.mutate(S.updateDashboardFaqs, { faqs: toJS(store.faqSections), community })
+//     return
+//   }
 
-  if (field === SETTING_FIELD.FAQ_SECTION_ITEM) {
-    const { editingFAQ, faqSections } = store
-    const _editingFAQ = toJS(editingFAQ)
-    const _faqSections = toJS(faqSections)
-    const targetIndex = findIndex(
-      (item: TFAQSection) => item.index === editingFAQ.index,
-      _faqSections,
-    )
+//   if (field === SETTING_FIELD.FAQ_SECTION_ITEM) {
+//     const { editingFAQ, faqSections } = store
+//     const _editingFAQ = toJS(editingFAQ)
+//     const _faqSections = toJS(faqSections)
+//     const targetIndex = findIndex(
+//       (item: TFAQSection) => item.index === editingFAQ.index,
+//       _faqSections,
+//     )
 
-    const updatedSections = update(targetIndex, _editingFAQ, _faqSections)
-    store.mark({ faqSections: updatedSections, editingFAQ: null, editingFAQIndex: null })
-    sr71$.mutate(S.updateDashboardFaqs, { faqs: updatedSections, community })
-    return
-  }
+//     const updatedSections = update(targetIndex, _editingFAQ, _faqSections)
+//     store.mark({ faqSections: updatedSections, editingFAQ: null, editingFAQIndex: null })
+//     sr71$.mutate(S.updateDashboardFaqs, { faqs: updatedSections, community })
+//     return
+//   }
 
-  if (field === SETTING_FIELD.FAQ_SECTION_ADD) {
-    const { faqSections, editingFAQ } = store
-    const _faqSections = [...toJS(faqSections), toJS(editingFAQ)]
+//   if (field === SETTING_FIELD.FAQ_SECTION_ADD) {
+//     const { faqSections, editingFAQ } = store
+//     const _faqSections = [...toJS(faqSections), toJS(editingFAQ)]
 
-    store.mark({ faqSections: _faqSections, editingFAQ: null, editingFAQIndex: null })
-    sr71$.mutate(S.updateDashboardFaqs, { faqs: _faqSections, community })
-    return
-  }
+//     store.mark({ faqSections: _faqSections, editingFAQ: null, editingFAQIndex: null })
+//     sr71$.mutate(S.updateDashboardFaqs, { faqs: _faqSections, community })
+//     return
+//   }
 
-  if (field === SETTING_FIELD.TAG_INDEX) {
-    const { activeTagThread, activeTagGroup: group, tags } = store
-    const thread = activeTagThread.toUpperCase()
+//   if (field === SETTING_FIELD.TAG_INDEX) {
+//     const { activeTagThread, activeTagGroup: group, tags } = store
+//     const thread = activeTagThread.toUpperCase()
 
-    const tagIndex = toJS(tags).map((item) => ({
-      id: item.id,
-      index: item.index,
-    }))
+//     const tagIndex = toJS(tags).map((item) => ({
+//       id: item.id,
+//       index: item.index,
+//     }))
 
-    sr71$.mutate(S.reindexTagsInGroup, { community, thread, group, tags: tagIndex })
-  }
-}
+//     sr71$.mutate(S.reindexTagsInGroup, { community, thread, group, tags: tagIndex })
+//   }
+// }
 
 export const updateSocialLinks = (socialLinks: TSocialItem[]): void => {
   store.mark({ socialLinks })
@@ -282,12 +273,7 @@ export const reloadModerators = (): void => {
  * save to server
  */
 export const onSave = (field: TSettingField): void => {
-  store.mark({ saving: true, savingField: field })
-  store.onSave(field)
-
-  console.log('## ## on save: ', field)
-
-  _doMutation(field, store[field])
+  console.log('## onSave in logic, move to hooks')
 }
 
 export const loadPosts = () => {
@@ -391,13 +377,13 @@ const _handleDone = () => {
 
   // avoid page component jump caused by saving state
   setTimeout(() => {
-    store.mark({ saving: false, savingField: null })
+    // store.mark({ saving: false, savingField: null })
   }, 800)
 }
 
 const _handleError = () => {
   const field = store.savingField
-  store.mark({ saving: false, savingField: null })
+  // store.mark({ saving: false, savingField: null })
   store.rollbackEdit(field as TSettingField)
 }
 

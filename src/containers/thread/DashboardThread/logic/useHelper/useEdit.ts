@@ -13,7 +13,7 @@ import {
   SEO_KEYS,
 } from '@/stores2/dashboardStore/constant'
 
-import type { TSettingField } from '@/stores2/dashboardStore/spec'
+import type { TSettingField } from '@/stores3/dashboardStore/spec'
 import useMutation from '../useMutation'
 
 export type TRet = {
@@ -41,23 +41,19 @@ const useUtils = (): TRet => {
   }
 
   const _rollbackByKeys = (keys: string[]): void => {
-    const self = store
-
     runInAction(() => {
       for (let i = 0; i < keys.length; i += 1) {
         const key = keys[i]
-        const initValue = self.initSettings[key]
-        if (self[key] !== initValue) {
-          self[key] = initValue
+        const initValue = store.initSettings[key]
+        if (store[key] !== initValue) {
+          store.commit({ [key]: initValue })
         }
       }
     })
   }
 
   const _findTagIdx = (): number => {
-    const self = store
-
-    const { tags, editingTag } = self
+    const { tags, editingTag } = store
     const targetIdx = findIndex((item: TTag) => item.id === editingTag.id, toJS(tags))
     return targetIdx
   }
@@ -106,7 +102,6 @@ const useUtils = (): TRet => {
       const targetIdx = _findAliasIdx()
       if (targetIdx < 0) return
 
-      // self.nameAlias[targetIdx] = toJS(self.nameAlias[targetIdx])
       const updatedNameAlias = update(
         targetIdx,
         store.initSettings.nameAlias[targetIdx],
@@ -122,25 +117,22 @@ const useUtils = (): TRet => {
   // save to local settings should omit subTabs,
   // otherwise it will be choas when save one one tab then switch to other tab
   const _saveToLocal = (): void => {
-    const self = store
-
     const saveSlf = omit(
       ['curTab', 'baseInfoTab', 'aliasTab', 'layoutTab', 'layoutTab', 'broadcastTab'],
-      toJS(self),
+      toJS(store),
     )
 
     BStore.set(DASHBOARD_DEMO_KEY, JSON.stringify(saveSlf))
   }
 
   const resetEdit = (field: TSettingField): void => {
-    const self = store
-
     if (field === SETTING_FIELD.NAME_ALIAS) {
       const targetIdx = _findAliasIdx()
       if (targetIdx < 0) return
 
-      self.nameAlias[targetIdx].name = self.nameAlias[targetIdx].original
-      self.editingAlias = null
+      // self.nameAlias[targetIdx].name = self.nameAlias[targetIdx].original
+      // self.editingAlias = null
+      store.commit({ editingAlias: null })
     }
 
     _saveToLocal()
@@ -180,11 +172,10 @@ const useUtils = (): TRet => {
   }
 
   const onSave = (field: TSettingField): void => {
-    console.log('## ## on save: ', field)
-
+    console.log('## on save: ', field)
     store.commit({ saving: true, savingField: field })
-    _doSave(field)
 
+    _doSave(field)
     mutation(field, store[field])
   }
 

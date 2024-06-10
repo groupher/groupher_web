@@ -1,5 +1,4 @@
 import { proxy } from 'valtio'
-
 import { mergeDeepRight, equals, mapObjIndexed, mergeLeft } from 'ramda'
 
 import { LOCALE } from '@/const/i18n'
@@ -297,7 +296,7 @@ const createDashboardStore = (initState: TInitSettings = {}): TStore => {
         store.glowType = glowType
       },
 
-      commit(updates: Partial<TStore>): void {
+      commit: (updates: Partial<TStore>): void => {
         Object.assign(store, mergeDeepRight(store, updates))
       },
     }),
