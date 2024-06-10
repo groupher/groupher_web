@@ -1,6 +1,6 @@
 import { proxy } from 'valtio'
 
-import { uniq, pluck, equals, mapObjIndexed, mergeLeft } from 'ramda'
+import { mergeDeepRight, equals, mapObjIndexed, mergeLeft } from 'ramda'
 
 import { LOCALE } from '@/const/i18n'
 import { THREAD } from '@/const/thread'
@@ -203,14 +203,16 @@ const createDashboardStore = (initState: TInitSettings = {}): TStore => {
 
       // -- views
       get tagGroups(): string[] {
-        const { tags } = store
+        // const { tags } = store
 
-        return uniq(pluck('group', tags))
+        // return uniq(pluck('group', tags))
+        return []
       },
 
       get docSettings(): TDocSettings {
         return {
-          categories: store.docCategories,
+          // categories: store.docCategories,
+          categories: [], // store.docCategories,
         }
       },
 
@@ -293,6 +295,10 @@ const createDashboardStore = (initState: TInitSettings = {}): TStore => {
       /** it also maybe called by landing page */
       changeGlowEffect: (glowType: string): void => {
         store.glowType = glowType
+      },
+
+      mark(updates: Partial<TStore>): void {
+        Object.assign(store, mergeDeepRight(store, updates))
       },
     }),
   )

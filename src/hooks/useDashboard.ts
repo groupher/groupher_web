@@ -17,8 +17,6 @@ const useDashboard = (): TRes => {
 
   return {
     dashboard,
-    // onSave
-    // onRollback
   }
 }
 

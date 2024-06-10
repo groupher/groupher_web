@@ -225,6 +225,7 @@ export type TStore = TSettingsFields & {
 
   // actions
   changeGlowEffect: (glowType: string) => void
+  mark: (sobj: Partial<TStore>) => void
 }
 
 export type TLinkState = {

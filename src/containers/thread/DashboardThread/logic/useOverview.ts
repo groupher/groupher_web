@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import type { TOverview, TCommunity } from '@/spec'
-import useDashboard from '@/hooks/useDashboard'
+import useSubStore from '@/hooks/useSubStore'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import useQuery from '@/hooks/useQuery'
@@ -12,7 +12,7 @@ import S from '../schema'
  * NOTE: should use observer to wrap the component who use this hook
  */
 const useOverview = (): TOverview => {
-  const { dashboard: store } = useDashboard()
+  const store = useSubStore('dashboard')
   const curCommunity = useViewingCommunity()
   const { overview } = store
 
@@ -24,11 +24,13 @@ const useOverview = (): TOverview => {
   const updateOverview = (community: TCommunity): void => {
     const { meta, views, subscribersCount } = community
 
-    store.overview = {
-      views,
-      subscribersCount,
-      ...meta,
-    }
+    store.mark({
+      overview: {
+        views,
+        subscribersCount,
+        ...meta,
+      },
+    })
   }
 
   useEffect(() => {
