@@ -24,7 +24,7 @@ const useOverview = (): TOverview => {
   const updateOverview = (community: TCommunity): void => {
     const { meta, views, subscribersCount } = community
 
-    store.mark({
+    store.commit({
       overview: {
         views,
         subscribersCount,

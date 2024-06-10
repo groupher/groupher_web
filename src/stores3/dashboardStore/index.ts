@@ -297,7 +297,7 @@ const createDashboardStore = (initState: TInitSettings = {}): TStore => {
         store.glowType = glowType
       },
 
-      mark(updates: Partial<TStore>): void {
+      commit(updates: Partial<TStore>): void {
         Object.assign(store, mergeDeepRight(store, updates))
       },
     }),
