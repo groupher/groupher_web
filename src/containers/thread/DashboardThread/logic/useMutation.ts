@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { includes, omit, values } from 'ramda'
 
 import type { TEditValue } from '@/spec'
@@ -28,10 +29,16 @@ const useMutation = (): TRet => {
   const store = useSubStore('dashboard')
   const { updateViewingCommunity, community: curCommunity } = useViewing()
   const community = curCommunity.slug
+  const storeRef = useRef(store)
 
-  const _handleDone = (savingField: TSettingField) => {
+  // get latest store, for those state not in UI render cycle
+  useEffect(() => {
+    storeRef.current = store
+  }, [store])
+
+  const _handleDone = () => {
     toast('设置已保存')
-    const field = savingField
+    const field = storeRef.current.savingField
 
     // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
     let initSettings
@@ -83,7 +90,7 @@ const useMutation = (): TRet => {
       mutate(schema, params)
         .then((data) => {
           if (okCb) okCb(data)
-          _handleDone(field)
+          _handleDone()
         })
         .catch((err) => {
           console.error('## handle request error: ', err)
