@@ -9,7 +9,7 @@ import { mutate } from '@/utils/api'
 import useSubStore from '@/hooks/useSubStore'
 import useViewing from '@/hooks/useViewing'
 
-import type { TSettingField } from '@/stores3/dashboardStore/spec'
+import type { TSettingField } from '@/stores3/dashboard/spec'
 
 import {
   SETTING_FIELD,

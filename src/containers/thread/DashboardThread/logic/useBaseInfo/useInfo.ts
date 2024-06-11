@@ -1,6 +1,6 @@
 import { pick } from 'ramda'
 
-import type { TSettingField } from '@/stores3/dashboardStore/spec'
+import type { TSettingField } from '@/stores3/dashboard/spec'
 import useSubStore from '@/hooks/useSubStore'
 
 import useHelper from '../useHelper'

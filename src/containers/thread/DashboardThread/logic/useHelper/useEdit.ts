@@ -13,7 +13,7 @@ import {
   SEO_KEYS,
 } from '@/stores2/dashboardStore/constant'
 
-import type { TSettingField } from '@/stores3/dashboardStore/spec'
+import type { TSettingField } from '@/stores3/dashboard/spec'
 import useMutation from '../useMutation'
 
 export type TRet = {
