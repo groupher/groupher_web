@@ -8,9 +8,6 @@ import useQuery from '@/hooks/useQuery'
 
 import S from '../schema'
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useOverview = (): TOverview => {
   const store = useSubStore('dashboard')
   const curCommunity = useViewingCommunity()

@@ -30,9 +30,6 @@ type TRet = TUseInfo &
     edit: (value: TEditValue, field: TSettingField) => void
   }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useBaseInfo = (): TRet => {
   const store = useSubStore('dashboard')
 

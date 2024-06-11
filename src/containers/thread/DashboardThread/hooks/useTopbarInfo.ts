@@ -13,9 +13,6 @@ type TRet = {
   bg: TColorName
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useTopbarInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
   const { isChanged } = useHelper()

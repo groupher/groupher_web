@@ -8,9 +8,6 @@ export type TRet = {
   isSocialLinksTouched: boolean
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useSocialLinks = (): TRet => {
   const store = useSubStore('dashboard')
 

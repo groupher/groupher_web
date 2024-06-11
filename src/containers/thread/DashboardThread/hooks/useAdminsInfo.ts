@@ -10,9 +10,6 @@ type TRet = {
   activeModerator: TUser | null
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useAdminsInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
 

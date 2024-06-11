@@ -11,9 +11,6 @@ type TRet = {
   isDarkTouched: boolean
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useGossBlurInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
   const { isChanged } = useHelper()

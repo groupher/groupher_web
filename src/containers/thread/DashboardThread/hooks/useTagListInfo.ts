@@ -20,9 +20,6 @@ type TRet = {
   isTagsTouched: boolean
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useTagListInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
 

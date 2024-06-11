@@ -10,9 +10,6 @@ export type TRet = {
   mapArrayChanged: (key: string) => boolean
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useTouch = (): TRet => {
   const store = useSubStore('dashboard')
   const { initSettings } = store

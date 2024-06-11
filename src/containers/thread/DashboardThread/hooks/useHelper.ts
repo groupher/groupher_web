@@ -12,9 +12,6 @@ type TRet = {
   mapArrayChanged: (key: string) => boolean
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useHelper = (): TRet => {
   const { store } = useContext(MobXProviderContext)
 

@@ -15,9 +15,6 @@ type TRet = TDashboardSEOConfig & {
   isTouched: boolean
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useSEOInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
   const { anyChanged } = useHelper()

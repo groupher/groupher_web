@@ -38,9 +38,6 @@ const assignChecked = (entries: TArticleEntries, batchSelectedIDs: TID[]): TArti
   }))
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useCMSInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
   const { mapArrayChanged } = useHelper()

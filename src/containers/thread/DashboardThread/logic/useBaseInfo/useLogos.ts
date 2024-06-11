@@ -12,9 +12,6 @@ export type TRet = {
   isLogosTouched: boolean
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useLogos = (): TRet => {
   const store = useSubStore('dashboard')
   const { anyChanged } = useHelper()

@@ -23,9 +23,6 @@ export type TRet = {
   onSave: (field: TSettingField) => void
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useUtils = (): TRet => {
   const store = useSubStore('dashboard')
   const { mutation } = useMutation()

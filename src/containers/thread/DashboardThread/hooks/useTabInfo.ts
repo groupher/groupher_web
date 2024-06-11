@@ -8,9 +8,6 @@ type TRet = {
   curTab: TDashboardPath
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useTabInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
 

@@ -21,9 +21,6 @@ type TRet = {
 } & TLinkState &
   TUserLinks
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useFooter = (): TRet => {
   const { dashboard: store } = useDashboard()
   const useLinksData = useLinks()

@@ -19,9 +19,6 @@ type TRet = {
   changeTab: (tab: TDashboardAliasRoute) => void
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useAliasInfo = (): TRet => {
   const { dashboard: store } = useDashboard()
   const { edit, resetEdit } = useHelper()

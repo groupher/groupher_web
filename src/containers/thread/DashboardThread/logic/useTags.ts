@@ -30,9 +30,6 @@ type TRet = {
   editTag: (key: 'settingTag' | 'editingTag', tag: TTag) => void
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useTagListInfo = (): TRet => {
   const { dashboard: store } = useDashboard()
   const { edit } = useHeader()

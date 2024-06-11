@@ -17,9 +17,6 @@ type TRet = {
   isLayoutTouched: boolean
 } & TLinkState
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useFooterSettingsInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
   const { isChanged } = useHelper()

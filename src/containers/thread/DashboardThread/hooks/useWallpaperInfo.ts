@@ -3,9 +3,6 @@ import { MobXProviderContext } from 'mobx-react'
 
 import type { TWallpaperInfo } from '@/spec'
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useWallpaperInfo = (): TWallpaperInfo => {
   const { store } = useContext(MobXProviderContext)
 

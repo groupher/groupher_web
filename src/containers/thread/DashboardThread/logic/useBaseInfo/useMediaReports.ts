@@ -21,9 +21,6 @@ export type TRet = {
   queryOpenGraphInfo: (item: TMediaReport) => void
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useMediaReports = (): TRet => {
   const store = useSubStore('dashboard')
 

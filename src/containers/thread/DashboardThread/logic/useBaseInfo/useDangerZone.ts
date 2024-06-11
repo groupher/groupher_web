@@ -7,9 +7,6 @@ export type TRet = {
   toggleVisiable: () => void
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useDangerZone = (): TRet => {
   // TODO: handle image upload
   const deleteCommunity = () => {

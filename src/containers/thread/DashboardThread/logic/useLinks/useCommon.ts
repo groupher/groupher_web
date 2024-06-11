@@ -27,9 +27,6 @@ export type TRet = {
   confirmGroupUpdate: () => void
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useCommon = (): TRet => {
   const { dashboard: store } = useDashboard()
   const community = useViewingCommunity()

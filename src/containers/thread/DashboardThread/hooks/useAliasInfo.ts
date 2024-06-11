@@ -11,9 +11,6 @@ type TRet = {
   aliasTab: TDashboardAliasRoute
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useAliasInfo = (): TRet => {
   const { store } = useContext(MobXProviderContext)
 

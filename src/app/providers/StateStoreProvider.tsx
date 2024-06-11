@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, type ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { StoreContext, useStore } from '@/stores3'
 import { HOME_COMMUNITY } from '@/const/name'
@@ -8,7 +8,7 @@ import { HOME_COMMUNITY } from '@/const/name'
 // import { useThemeFromURL, useCommunity, useDashboard } from '../queries'
 import { useI18n, useThemeFromURL, useCommunity, useDashboard } from '../queries'
 
-const ValtioStoreWrapper = ({ children }: { children: ReactNode }) => {
+export default ({ children }: { children: ReactNode }) => {
   const { locale, localeData } = useI18n()
 
   const theme = useThemeFromURL()
@@ -27,5 +27,3 @@ const ValtioStoreWrapper = ({ children }: { children: ReactNode }) => {
 
   return <StoreContext.Provider value={rootStore}>{children}</StoreContext.Provider>
 }
-
-export default memo(ValtioStoreWrapper)
