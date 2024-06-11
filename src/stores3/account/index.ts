@@ -7,8 +7,7 @@ import OAUTH from '@/const/oauth'
 
 import type { TStore } from './spec'
 
-// theme store
-const createAccountStore = (): TStore => {
+export default (): TStore => {
   const store = proxy({
     user: null,
     userSubscribedCommunities: null,
@@ -44,5 +43,3 @@ const createAccountStore = (): TStore => {
 
   return store
 }
-
-export default createAccountStore

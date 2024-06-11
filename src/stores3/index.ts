@@ -6,11 +6,11 @@ import type { TRootStore } from './spec'
 import THEME from '@/const/theme'
 import { LOCALE } from '@/const/i18n'
 
-import createLocaleStore from './localeStore'
-import createThemeStore from './themeStore'
-import creaetAccountStore from './accountStore'
-import createViewingStore from './viewingStore'
-import createDashboardStore from './dashboardStore'
+import createLocale from './locale'
+import createTheme from './theme'
+import creaetAccount from './account'
+import createViewing from './viewing'
+import createDashboard from './dashboard'
 
 const INITIAL_STATE = {
   theme: THEME.DAY,
@@ -20,13 +20,13 @@ const INITIAL_STATE = {
   dashboard: {},
 }
 
-const createRootStore = (initState = INITIAL_STATE): TRootStore => {
+const createRootStore = (init = INITIAL_STATE): TRootStore => {
   return proxy({
-    locale: createLocaleStore(initState.locale, initState.localeData),
-    account: creaetAccountStore(),
-    theme: createThemeStore(initState.theme),
-    viewing: createViewingStore(initState.viewing),
-    dashboard: createDashboardStore(initState.dashboard),
+    locale: createLocale(init.locale, init.localeData),
+    account: creaetAccount(),
+    theme: createTheme(init.theme),
+    viewing: createViewing(init.viewing),
+    dashboard: createDashboard(init.dashboard),
   })
 }
 

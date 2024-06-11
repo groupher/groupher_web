@@ -7,8 +7,7 @@ import { ARTICLE_THREAD } from '@/const/thread'
 
 import type { TStore, TInit } from './spec'
 
-// theme store
-const createViewingStore = (init: TInit = {}): TStore => {
+export default (init: TInit = {}): TStore => {
   const store = proxy({
     user: init.user || null,
     community: init.community || null,
@@ -33,5 +32,3 @@ const createViewingStore = (init: TInit = {}): TStore => {
 
   return store
 }
-
-export default createViewingStore

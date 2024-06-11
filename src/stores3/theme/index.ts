@@ -7,7 +7,7 @@ import { themeSkins } from '@/utils/themes'
 
 import type { TStore } from './spec'
 
-const createThemeStore = (theme: TThemeName = THEME.DAY): TStore => {
+export default (theme: TThemeName = THEME.DAY): TStore => {
   const store = proxy({
     theme,
 
@@ -28,5 +28,3 @@ const createThemeStore = (theme: TThemeName = THEME.DAY): TStore => {
 
   return store
 }
-
-export default createThemeStore

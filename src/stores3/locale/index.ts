@@ -6,7 +6,7 @@ import { LOCALE } from '@/const/i18n'
 
 import type { TStore } from './spec'
 
-const createLocaleStore = (locale: TLocale = LOCALE.EN, localeData = '{}'): TStore => {
+export default (locale: TLocale = LOCALE.EN, localeData = '{}'): TStore => {
   const store = proxy({
     locale,
     localeData,
@@ -22,5 +22,3 @@ const createLocaleStore = (locale: TLocale = LOCALE.EN, localeData = '{}'): TSto
 
   return store
 }
-
-export default createLocaleStore

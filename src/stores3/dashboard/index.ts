@@ -148,8 +148,7 @@ export const settingsFields: TSettingsFields = {
   widgetsType: WIDGET_TYPE.SIDEBAR,
 }
 
-// theme store
-const createDashboardStore = (initState: TInitSettings = {}): TStore => {
+export default (initState: TInitSettings = {}): TStore => {
   const store = proxy(
     mergeLeft(initState, {
       ...settingsFields,
@@ -304,5 +303,3 @@ const createDashboardStore = (initState: TInitSettings = {}): TStore => {
 
   return store
 }
-
-export default createDashboardStore
