@@ -27,23 +27,32 @@ export const mutate = (mutation, variables) => {
     })
 }
 
-// remove __typename from query params, otherwise the Graphql will throw error
-export const clearfy = (obj: any): any => {
-  const result = obj
+type TClearifyInput = null | TClearifyObject | TClearifyArray
+type TClearifyArray = Array<TClearifyInput>
+type TClearifyObject = {
+  [key: string]: TClearifyInput
+}
+// remove __typename if need, avoid GraphQL error
+export const clearfy = (obj: TClearifyInput): TClearifyInput => {
+  if (!obj) return null
 
-  if (Array.isArray(result)) {
-    return result.map(clearfy)
+  if (Array.isArray(obj)) {
+    return obj.map(clearfy)
   }
 
-  if (result && typeof result === 'object') {
-    const newObj = { ...result }
-    for (const key of Object.keys(newObj)) {
-      newObj[key] = clearfy(newObj[key]) //
+  if (typeof obj === 'object') {
+    const newObj: TClearifyObject = {}
+
+    for (const key of Object.keys(obj)) {
+      newObj[key] = clearfy(obj[key])
     }
-    // delete Graphql typename if need, otherwise it will cause gq type error
-    delete newObj.__typename
+
+    // 确保 __typename 存在再删除
+    if ('__typename' in newObj) {
+      delete newObj.__typename
+    }
     return newObj
   }
 
-  return result
+  return obj
 }
