@@ -3,7 +3,7 @@ import useEdit, { type TRet as TEdit } from './useEdit'
 
 type TRet = TTouch & TEdit
 
-const useHelper = (): TRet => {
+export default (): TRet => {
   const { isChanged, anyChanged, mapArrayChanged } = useTouch()
   const { edit, rollbackEdit, resetEdit, onSave } = useEdit()
 
@@ -17,5 +17,3 @@ const useHelper = (): TRet => {
     onSave,
   }
 }
-
-export default useHelper

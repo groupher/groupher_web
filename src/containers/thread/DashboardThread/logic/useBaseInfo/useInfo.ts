@@ -20,7 +20,7 @@ export type TRet = {
   isTouched: boolean
 }
 
-const useInfo = (): TRet => {
+export default (): TRet => {
   const store = useSubStore('dashboard')
   const { anyChanged } = useHelper()
 
@@ -29,5 +29,3 @@ const useInfo = (): TRet => {
     isTouched: anyChanged(BASEINFO_BASIC_KEYS as TSettingField[]),
   }
 }
-
-export default useInfo

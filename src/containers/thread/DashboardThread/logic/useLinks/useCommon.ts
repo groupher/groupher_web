@@ -25,7 +25,7 @@ export type TRet = {
   confirmGroupUpdate: () => void
 }
 
-const useCommon = (): TRet => {
+export default (): TRet => {
   const store = useSubStore('dashboard')
   const community = useViewingCommunity()
   const { curTab } = store
@@ -274,5 +274,3 @@ const useCommon = (): TRet => {
     confirmGroupUpdate,
   }
 }
-
-export default useCommon

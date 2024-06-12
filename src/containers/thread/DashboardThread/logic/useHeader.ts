@@ -20,7 +20,7 @@ type TRet = {
 } & TLinkState &
   TUserLinks
 
-const useHeader = (): TRet => {
+export default (): TRet => {
   const store = useSubStore('dashboard')
   const useLinksData = useLinks()
   const { edit, isChanged } = useHelper()
@@ -54,5 +54,3 @@ const useHeader = (): TRet => {
     ...useLinksData,
   }
 }
-
-export default useHeader

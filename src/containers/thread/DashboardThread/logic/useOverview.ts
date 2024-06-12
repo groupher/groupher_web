@@ -8,7 +8,7 @@ import useQuery from '@/hooks/useQuery'
 
 import S from '../schema'
 
-const useOverview = (): TOverview => {
+export default (): TOverview => {
   const store = useSubStore('dashboard')
   const curCommunity = useViewingCommunity()
   const { overview } = store
@@ -36,5 +36,3 @@ const useOverview = (): TOverview => {
 
   return overview
 }
-
-export default useOverview

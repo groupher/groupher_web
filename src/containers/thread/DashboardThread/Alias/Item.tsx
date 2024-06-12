@@ -10,7 +10,7 @@ import SavingBar from '../SavingBar'
 
 import type { TNameAlias } from '../spec'
 
-import useAliasInfo from '../logic/useAliasInfo'
+import useAliasInfo from '../logic/useAlias'
 
 import {
   Wrapper,

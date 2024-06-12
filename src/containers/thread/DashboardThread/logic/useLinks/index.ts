@@ -41,7 +41,7 @@ export type TRet = {
   moveGroup2EdgeRight: (group: string) => void
 }
 
-const useLinks = (): TRet => {
+export default (): TRet => {
   const store = useSubStore('dashboard')
   const {
     getLinks,
@@ -280,5 +280,3 @@ const useLinks = (): TRet => {
     moveGroup2EdgeRight,
   }
 }
-
-export default useLinks

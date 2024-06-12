@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
 import { DASHBOARD_ALIAS_ROUTE } from '@/const/route'
@@ -15,13 +14,13 @@ import { ALIAS_TABS, ALIAS_GROUP } from '../constant'
 import Portal from '../Portal'
 import Item from './Item'
 
-import useAliasInfo from '../logic/useAliasInfo'
+import useAlias from '../logic/useAlias'
 import { Wrapper, Banner, TabsWrapper } from '../styles/alias'
 
 const Alias: FC = () => {
   const router = useRouter()
   const curCommunity = useViewingCommunity()
-  const { nameAlias, aliasTab, changeTab } = useAliasInfo()
+  const { nameAlias, aliasTab, changeTab } = useAlias()
 
   const groupedAlias = groupByKey(nameAlias, 'group')
 
@@ -65,4 +64,4 @@ const Alias: FC = () => {
   )
 }
 
-export default observer(Alias)
+export default Alias

@@ -21,7 +21,7 @@ export type TRet = {
   queryOpenGraphInfo: (item: TMediaReport) => void
 }
 
-const useMediaReports = (): TRet => {
+export default (): TRet => {
   const store = useSubStore('dashboard')
 
   const { mediaReports, initSettings, queringMediaReportIndex } = store
@@ -110,5 +110,3 @@ const useMediaReports = (): TRet => {
     queryOpenGraphInfo,
   }
 }
-
-export default useMediaReports

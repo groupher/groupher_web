@@ -10,7 +10,7 @@ export type TRet = {
   mapArrayChanged: (key: string) => boolean
 }
 
-const useTouch = (): TRet => {
+export default (): TRet => {
   const store = useSubStore('dashboard')
   const { initSettings } = store
 
@@ -31,5 +31,3 @@ const useTouch = (): TRet => {
     mapArrayChanged,
   }
 }
-
-export default useTouch

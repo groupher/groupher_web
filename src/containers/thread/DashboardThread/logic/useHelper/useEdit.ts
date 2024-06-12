@@ -23,7 +23,7 @@ export type TRet = {
   onSave: (field: TSettingField) => void
 }
 
-const useUtils = (): TRet => {
+export default (): TRet => {
   const store = useSubStore('dashboard')
   const { mutation } = useMutation()
 
@@ -183,5 +183,3 @@ const useUtils = (): TRet => {
     onSave,
   }
 }
-
-export default useUtils

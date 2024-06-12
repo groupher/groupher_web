@@ -7,7 +7,7 @@ export type TRet = {
   toggleVisiable: () => void
 }
 
-const useDangerZone = (): TRet => {
+export default (): TRet => {
   // TODO: handle image upload
   const deleteCommunity = () => {
     console.log('## deleteCommunity')
@@ -30,5 +30,3 @@ const useDangerZone = (): TRet => {
     toggleVisiable,
   }
 }
-
-export default useDangerZone

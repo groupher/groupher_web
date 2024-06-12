@@ -20,7 +20,7 @@ type TRet = {
 } & TLinkState &
   TUserLinks
 
-const useFooter = (): TRet => {
+export default (): TRet => {
   const store = useSubStore('dashboard')
   const useLinksData = useLinks()
   const { edit, isChanged } = useHelper()
@@ -53,5 +53,3 @@ const useFooter = (): TRet => {
     ...useLinksData,
   }
 }
-
-export default useFooter

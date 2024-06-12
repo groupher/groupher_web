@@ -8,7 +8,7 @@ export type TRet = {
   isSocialLinksTouched: boolean
 }
 
-const useSocialLinks = (): TRet => {
+export default (): TRet => {
   const store = useSubStore('dashboard')
 
   const { socialLinks, initSettings } = store
@@ -22,5 +22,3 @@ const useSocialLinks = (): TRet => {
     isSocialLinksTouched: socialLinksTouched(),
   }
 }
-
-export default useSocialLinks

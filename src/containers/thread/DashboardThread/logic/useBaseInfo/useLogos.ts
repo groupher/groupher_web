@@ -12,7 +12,7 @@ export type TRet = {
   isLogosTouched: boolean
 }
 
-const useLogos = (): TRet => {
+export default (): TRet => {
   const store = useSubStore('dashboard')
   const { anyChanged } = useHelper()
 
@@ -23,5 +23,3 @@ const useLogos = (): TRet => {
     isLogosTouched: anyChanged(BASEINFO_LOGOS_KEYS as TSettingField[]),
   }
 }
-
-export default useLogos

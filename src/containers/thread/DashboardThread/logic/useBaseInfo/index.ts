@@ -30,7 +30,7 @@ type TRet = TUseInfo &
     edit: (value: TEditValue, field: TSettingField) => void
   }
 
-const useBaseInfo = (): TRet => {
+export default (): TRet => {
   const store = useSubStore('dashboard')
 
   const curCommunity = useViewingCommunity()
@@ -96,5 +96,3 @@ const useBaseInfo = (): TRet => {
     ...useDangerZoneData,
   }
 }
-
-export default useBaseInfo

@@ -25,7 +25,7 @@ type TRet = {
   mutation: (field: string, e: TEditValue) => Promise<void>
 }
 
-const useMutation = (): TRet => {
+export default (): TRet => {
   const store = useSubStore('dashboard')
   const { updateViewingCommunity, community: curCommunity } = useViewing()
   const community = curCommunity.slug
@@ -234,5 +234,3 @@ const useMutation = (): TRet => {
 
   return { mutation }
 }
-
-export default useMutation

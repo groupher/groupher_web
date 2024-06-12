@@ -5,7 +5,6 @@ import type { ReactNode } from 'react'
 import { StoreContext, useStore } from '@/stores3'
 import { HOME_COMMUNITY } from '@/const/name'
 
-// import { useThemeFromURL, useCommunity, useDashboard } from '../queries'
 import { useI18n, useThemeFromURL, useCommunity, useDashboard } from '../queries'
 
 export default ({ children }: { children: ReactNode }) => {

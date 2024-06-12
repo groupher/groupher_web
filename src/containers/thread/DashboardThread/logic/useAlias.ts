@@ -19,7 +19,7 @@ type TRet = {
   changeTab: (tab: TDashboardAliasRoute) => void
 }
 
-const useAliasInfo = (): TRet => {
+export default (): TRet => {
   const store = useSubState('dashboard')
   const { edit, resetEdit } = useHelper()
 
@@ -44,5 +44,3 @@ const useAliasInfo = (): TRet => {
     resetEdit: () => resetEdit(SETTING_FIELD.NAME_ALIAS),
   }
 }
-
-export default useAliasInfo
