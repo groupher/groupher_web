@@ -2,14 +2,12 @@
 
 import { keys, findIndex, clone, remove, filter, reject, forEach, find } from 'ramda'
 
-import { runInAction, toJS } from '@/mobx'
-import { sortByIndex, groupByKey } from '@/helper'
-
 import type { TLinkItem, TGroupedLinks } from '@/spec'
+import { sortByIndex, groupByKey } from '@/helper'
 import { ROUTE, DASHBOARD_ROUTE } from '@/const/route'
 import { MORE_GROUP } from '@/const/dashboard'
 
-import useDashboard from '@/hooks/useDashboard'
+import useSubStore from '@/hooks/useSubStore'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import { EMPTY_LINK_ITEM } from '../../constant'
@@ -28,13 +26,13 @@ export type TRet = {
 }
 
 const useCommon = (): TRet => {
-  const { dashboard: store } = useDashboard()
+  const store = useSubStore('dashboard')
   const community = useViewingCommunity()
   const { curTab } = store
 
   const getLinks = (): TLinkItem[] => {
     const { curTab, headerLinks, footerLinks } = store
-    return toJS(curTab !== DASHBOARD_ROUTE.FOOTER ? headerLinks : footerLinks)
+    return clone(curTab !== DASHBOARD_ROUTE.FOOTER ? headerLinks : footerLinks)
   }
 
   const linksKey = curTab !== DASHBOARD_ROUTE.FOOTER ? 'headerLinks' : 'footerLinks'
@@ -140,7 +138,7 @@ const useCommon = (): TRet => {
         groupIndex: groupKeys.length + 2,
       }
 
-      const linksAfter = toJS([...links, newLinkItem])
+      const linksAfter = [...links, newLinkItem]
       store.headerLinks = reindexGroup(linksAfter)
     } else {
       // console.log('## 222: ', links)
@@ -168,12 +166,12 @@ const useCommon = (): TRet => {
       groupIndex: groupKeys.length,
     }
 
-    const linksAfter = toJS([...links, newLinkItem])
+    const linksAfter = [...links, newLinkItem]
 
-    runInAction(() => {
-      store.editingGroup = null
-      store.editingLink = newLinkItem
-      store[linksKey] = linksAfter
+    store.commit({
+      editingGroup: null,
+      editingLink: newLinkItem,
+      [linksKey]: linksAfter,
     })
 
     keepMoreGroup2EndIfNeed()
@@ -193,10 +191,10 @@ const useCommon = (): TRet => {
       }
     }
 
-    runInAction(() => {
-      store.editingGroup = null
-      store.editingGroupIndex = null
-      store[linksKey] = linksAfter
+    store.commit({
+      editingGroup: null,
+      editingGroupIndex: null,
+      [linksKey]: linksAfter,
     })
   }
 

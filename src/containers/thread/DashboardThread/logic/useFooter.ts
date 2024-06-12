@@ -1,9 +1,8 @@
 import type { TFooterLayout, TCommunityThread, TLinkItem, TEditValue } from '@/spec'
-import { toJS } from '@/mobx'
 import { publicThreads } from '@/helper'
 
 import type { TSettingField } from '@/stores2/dashboardStore/spec'
-import useDashboard from '@/hooks/useDashboard'
+import useSubStore from '@/hooks/useSubStore'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import type { TLinkState } from '../spec'
@@ -22,7 +21,7 @@ type TRet = {
   TUserLinks
 
 const useFooter = (): TRet => {
-  const { dashboard: store } = useDashboard()
+  const store = useSubStore('dashboard')
   const useLinksData = useLinks()
   const { edit, isChanged } = useHelper()
   const community = useViewingCommunity()
@@ -47,12 +46,7 @@ const useFooter = (): TRet => {
     editingLinkMode,
     editingGroup,
     editingGroupIndex,
-
-    threads: publicThreads(community.threads, {
-      enable: toJS(enable),
-      nameAlias: toJS(nameAlias),
-    }),
-
+    threads: publicThreads(community.threads, { enable, nameAlias }),
     saving,
     isTouched: isChanged('footerLinks') && editingLink === null,
     isLayoutTouched: isChanged('footerLayout'),

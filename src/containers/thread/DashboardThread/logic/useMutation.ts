@@ -5,7 +5,7 @@ import type { TEditValue } from '@/spec'
 import { DASHBOARD_BASEINFO_ROUTE } from '@/const/route'
 import { toast } from '@/signal'
 
-import { mutate } from '@/utils/api'
+import { mutate, clearfy } from '@/utils/api'
 import useSubStore from '@/hooks/useSubStore'
 import useViewing from '@/hooks/useViewing'
 
@@ -87,7 +87,7 @@ const useMutation = (): TRet => {
      * not Valtio's thing, this is hte wired React staff
      */
     const handleMutation = (schema, params, okCb = null) => {
-      mutate(schema, params)
+      mutate(schema, clearfy(params))
         .then((data) => {
           if (okCb) okCb(data)
           _handleDone()

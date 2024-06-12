@@ -1,14 +1,12 @@
 // logics for header & footer links
 import { find, findIndex, filter, reject } from 'ramda'
 
-import { runInAction, toJS } from '@/mobx'
-
 import { ONE_LINK_GROUP, MORE_GROUP } from '@/const/dashboard'
 import { DASHBOARD_ROUTE } from '@/const/route'
 import { CHANGE_MODE } from '@/const/mode'
 
 import type { TLinkItem } from '@/spec'
-import useDashboard from '@/hooks/useDashboard'
+import useSubStore from '@/hooks/useSubStore'
 
 import type { TMoveLinkDir } from '../../spec'
 import { EMPTY_LINK_ITEM } from '../../constant'
@@ -44,7 +42,7 @@ export type TRet = {
 }
 
 const useLinks = (): TRet => {
-  const { dashboard: store } = useDashboard()
+  const store = useSubStore('dashboard')
   const {
     getLinks,
     moveGroup,
@@ -62,8 +60,7 @@ const useLinks = (): TRet => {
   const linksKey = curTab !== DASHBOARD_ROUTE.FOOTER ? 'headerLinks' : 'footerLinks'
 
   const updateInGroup = (link: TLinkItem): void => {
-    store.editingLink = link
-    store.editingLinkMode = CHANGE_MODE.UPDATE
+    store.commit({ editingLink: link, editingLinkMode: CHANGE_MODE.UPDATE })
   }
 
   const add2Group = (group: string, index: number): void => {
@@ -80,10 +77,10 @@ const useLinks = (): TRet => {
       groupIndex,
     }
 
-    runInAction(() => {
-      store[linksKey] = [...links, newItem]
-      store.editingLink = newItem
-      store.editingLinkMode = CHANGE_MODE.CREATE
+    store.commit({
+      [linksKey]: [...links, newItem],
+      editingLink: newItem,
+      editingLinkMode: CHANGE_MODE.CREATE,
     })
   }
 
@@ -125,15 +122,16 @@ const useLinks = (): TRet => {
 
     linksAfter = emptyLinksIfNedd(linksAfter)
 
-    runInAction(() => {
-      store[linksKey] = linksAfter
-      store.editingLink = null
-      store.initSettings = { ...toJS(initSettings), [linksKey]: linksAfter }
+    store.commit({
+      [linksKey]: linksAfter,
+      editingLink: null,
+      initSettings: { ...initSettings, [linksKey]: linksAfter },
     })
   }
 
   const confirmLinkEditing = (): void => {
     const { editingLink, editingLinkMode } = store
+    // const links = getLinks()
     const links = getLinks()
 
     if (editingLinkMode === CHANGE_MODE.UPDATE) {
@@ -145,8 +143,10 @@ const useLinks = (): TRet => {
       links[editingIndex].title = editingLink.title
       links[editingIndex].link = editingLink.link
 
-      store[linksKey] = links
-      store.editingLink = null
+      store.commit({
+        [linksKey]: links,
+        editingLink: null,
+      })
       return
     }
 
@@ -172,7 +172,7 @@ const useLinks = (): TRet => {
       links,
     ).concat(editingLinkAfter)
 
-    store[linksKey] = toJS(linksAfter)
+    store[linksKey] = linksAfter
     store.editingLink = null
 
     keepMoreGroup2EndIfNeed()
@@ -187,46 +187,33 @@ const useLinks = (): TRet => {
 
     const editingLinkAfter = { ...editingLink, [key]: value }
 
-    store.editingLink = editingLinkAfter
+    store.commit({ editingLink: editingLinkAfter })
   }
 
   const resetEditingLink = (): void => {
-    runInAction(() => {
-      store.editingLink = null
-      store.editingGroup = null
-      store.editingGroupIndex = null
-    })
+    store.commit({ editingLink: null, editingGroup: null, editingGroupIndex: null })
   }
 
   const updateEditingGroup = (title: string): void => {
-    store.editingGroup = title
+    store.commit({ editingGroup: title })
   }
 
   const triggerGroupUpdate = (title: string, index: number): void => {
-    runInAction(() => {
-      store.editingGroup = title
-      store.editingGroupIndex = index
-    })
+    store.commit({ editingGroup: title, editingGroupIndex: index })
   }
 
   const triggerGroupAdd = (): void => {
-    runInAction(() => {
-      store.editingGroup = ''
-      store.editingGroupIndex = null
-    })
+    store.commit({ editingGroup: '', editingGroupIndex: null })
   }
 
   const cancelGroupChange = (): void => {
-    runInAction(() => {
-      store.editingGroup = null
-      store.editingGroupIndex = null
-    })
+    store.commit({ editingGroup: null, editingGroupIndex: null })
   }
 
   const addHeaderLinkGroup = () => {
     const time = new Date().getTime()
 
-    store.editingGroup = `${ONE_LINK_GROUP}_${time}`
+    store.commit({ editingGroup: `${ONE_LINK_GROUP}_${time}` })
     confirmGroupAdd()
   }
 
