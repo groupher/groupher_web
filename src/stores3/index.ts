@@ -1,4 +1,4 @@
-import { createContext, useRef, useMemo } from 'react'
+import { createContext, useRef } from 'react'
 import { proxy } from 'valtio'
 
 import type { TRootStore } from './spec'
@@ -34,7 +34,5 @@ export const StoreContext = createContext(setupRootStore())
 
 export const useStore = (initState) => {
   // see details: https://valtio.pmnd.rs/docs/how-tos/how-to-use-with-context
-  const store = useMemo(() => useRef(proxy(setupRootStore(initState))).current, [initState])
-
-  return store
+  return useRef(proxy(setupRootStore(initState))).current
 }
