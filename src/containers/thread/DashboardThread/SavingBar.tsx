@@ -69,10 +69,9 @@ const SavingBar: FC<TProps> = ({
                 field && rollbackEdit(field)
               }}
               onConfirm={() => {
-                console.log('## hello ???', field)
                 if (field) {
                   onSave(field)
-                  setTimeout(() => onConfirm?.(), 1000)
+                  setTimeout(() => onConfirm?.(), 500)
                 } else {
                   onConfirm?.()
                 }
@@ -107,8 +106,7 @@ const SavingBar: FC<TProps> = ({
           onConfirm={() => {
             if (field) {
               onSave(field)
-              setTimeout(() => onConfirm?.(), 1000)
-              setTimeout(() => onConfirm?.(), 1000)
+              setTimeout(() => onConfirm?.(), 500)
             } else {
               onConfirm?.()
             }

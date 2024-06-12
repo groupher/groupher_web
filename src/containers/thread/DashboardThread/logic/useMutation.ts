@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { includes, omit, values } from 'ramda'
+import { includes, omit, values, clone } from 'ramda'
 
 import type { TEditValue } from '@/spec'
 import { DASHBOARD_BASEINFO_ROUTE } from '@/const/route'
@@ -172,11 +172,14 @@ export default (): TRet => {
     //   return
     // }
 
-    // if (field === SETTING_FIELD.NAME_ALIAS) {
-    //   const nameAlias = toJS(store.nameAlias)
-    //   sr71$.mutate(S.updateDashboardNameAlias, { community, nameAlias })
-    //   return
-    // }
+    if (field === SETTING_FIELD.NAME_ALIAS) {
+      const { nameAlias } = storeRef.current
+      const params = { community, nameAlias }
+      console.log('## alias params: ', clone(params))
+
+      handleMutation(S.updateDashboardNameAlias, params)
+      return
+    }
 
     // if (field === SETTING_FIELD.TAG) {
     //   console.log("## if it's here: ", field)

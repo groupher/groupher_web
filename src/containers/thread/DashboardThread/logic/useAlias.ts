@@ -26,11 +26,11 @@ export default (): TRet => {
   const { aliasTab, editingAlias, nameAlias, saving } = store
 
   const updateEditingAlias = (alias: TNameAlias): void => {
-    store.editingAlias = alias
+    store.commit({ editingAlias: alias })
   }
 
   const changeTab = (tab: TDashboardAliasRoute) => {
-    store.aliasTab = tab
+    store.commit({ aliasTab: tab })
   }
 
   return {
