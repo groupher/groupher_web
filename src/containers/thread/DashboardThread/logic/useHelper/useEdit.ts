@@ -137,8 +137,6 @@ export default (): TRet => {
       const targetIdx = _findTagIdx()
       if (targetIdx < 0) return
 
-      store.tags[targetIdx] = editingTag
-
       const updatedTags = update(targetIdx, editingTag, tags)
       const initSettings = { ...store.initSettings, tags: updatedTags }
 
