@@ -1,9 +1,9 @@
-import useDashboard from '@/hooks/useDashboard'
 import type { TDashboardAliasRoute, TNameAlias, TEditValue } from '@/spec'
 
-import type { TSettingField } from '@/stores2/dashboardStore/spec'
-import { SETTING_FIELD } from '@/stores2/dashboardStore/constant'
-// import { toJS } from '@/mobx'
+import type { TSettingField } from '@/stores3/dashboard/spec'
+import { SETTING_FIELD } from '@/stores3/dashboard/constant'
+
+import useSubState from '@/hooks/useSubStore'
 
 import useHelper from './useHelper'
 
@@ -20,7 +20,7 @@ type TRet = {
 }
 
 const useAliasInfo = (): TRet => {
-  const { dashboard: store } = useDashboard()
+  const store = useSubState('dashboard')
   const { edit, resetEdit } = useHelper()
 
   const { aliasTab, editingAlias, nameAlias, saving } = store

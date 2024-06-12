@@ -4,11 +4,10 @@ import { reject, find, propEq, filter, includes, toUpper, isNil, equals } from '
 import type { TCommunityThread, TTag, TNameAlias, TEditValue } from '@/spec'
 import { THREAD } from '@/const/thread'
 import { sortByIndex } from '@/helper'
-import { runInAction, toJS } from '@/mobx'
 
 import type { TSettingField } from '@/stores2/dashboardStore/spec'
 import useQuery from '@/hooks/useQuery'
-import useDashboard from '@/hooks/useDashboard'
+import useSubState from '@/hooks/useSubStore'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import useHeader from './useHeader'
@@ -31,7 +30,7 @@ type TRet = {
 }
 
 const useTagListInfo = (): TRet => {
-  const { dashboard: store } = useDashboard()
+  const store = useSubState('dashboard')
   const { edit } = useHeader()
 
   const curCommunity = useViewingCommunity()
@@ -57,10 +56,7 @@ const useTagListInfo = (): TRet => {
       const { initSettings } = store
       const tags = data.pagedArticleTags.entries
 
-      runInAction(() => {
-        store.tags = tags
-        store.initSettings = { ...initSettings, tags }
-      })
+      store.commit({ tags, initSettings: { ...initSettings, tags } })
     }
   }, [data])
 
@@ -88,8 +84,8 @@ const useTagListInfo = (): TRet => {
   ) as TCommunityThread[]
 
   const tagsIndexTouched = () => {
-    const cur = sortByIndex(toJS(tags), 'id')
-    const init = sortByIndex(toJS(initSettings.tags) || [], 'id')
+    const cur = sortByIndex(tags, 'id')
+    const init = sortByIndex(initSettings.tags || [], 'id')
 
     return !equals(cur, init)
   }
@@ -115,12 +111,12 @@ const useTagListInfo = (): TRet => {
     saving,
     editingTag,
     settingTag,
-    tags: toJS(filterdTags),
+    tags: filterdTags,
     groups: tagGroups,
     activeTagThread,
     activeTagGroup,
     threads: curThreads,
-    isTagsTouched: !isNil(toJS(editingTag)),
+    isTagsTouched: !isNil(editingTag),
     isTagsIndexTouched: tagsIndexTouched(),
     changeThread,
     editTag,
