@@ -212,6 +212,20 @@ export default (): TRet => {
       return
     }
 
+    if (field === SETTING_FIELD.TAG_INDEX) {
+      const { activeTagThread, activeTagGroup: group, tags } = store
+      const thread = activeTagThread.toUpperCase()
+
+      const tagIndex = tags.map((item) => ({
+        id: item.id,
+        index: item.index,
+      }))
+
+      const params = { community, thread, group, tags: tagIndex }
+      handleMutation(S.reindexTagsInGroup, params)
+      return
+    }
+
     // if (field === SETTING_FIELD.FAQ_SECTIONS) {
     //   sr71$.mutate(S.updateDashboardFaqs, { faqs: toJS(store.faqSections), community })
     //   return
@@ -239,18 +253,6 @@ export default (): TRet => {
     //   store.mark({ faqSections: _faqSections, editingFAQ: null, editingFAQIndex: null })
     //   sr71$.mutate(S.updateDashboardFaqs, { faqs: _faqSections, community })
     //   return
-    // }
-
-    // if (field === SETTING_FIELD.TAG_INDEX) {
-    //   const { activeTagThread, activeTagGroup: group, tags } = store
-    //   const thread = activeTagThread.toUpperCase()
-
-    //   const tagIndex = toJS(tags).map((item) => ({
-    //     id: item.id,
-    //     index: item.index,
-    //   }))
-
-    //   sr71$.mutate(S.reindexTagsInGroup, { community, thread, group, tags: tagIndex })
     // }
 
     if (includes(field, values(SETTING_LAYOUT_FIELD))) {

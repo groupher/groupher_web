@@ -1,19 +1,6 @@
-import { useCallback } from 'react'
-import {
-  reject,
-  find,
-  propEq,
-  filter,
-  includes,
-  equals,
-  findIndex,
-  remove,
-  pluck,
-  uniq,
-  clone,
-} from 'ramda'
+import { reject, filter, findIndex, remove, clone } from 'ramda'
 
-import type { TCommunityThread, TTag, TNameAlias, TEditValue, TThread } from '@/spec'
+import type { TTag, TEditValue, TThread } from '@/spec'
 import { THREAD } from '@/const/thread'
 import { sortByIndex } from '@/helper'
 
@@ -23,8 +10,10 @@ import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import { query } from '@/utils/api'
 
-import useHelper from './useHelper'
-import S from '../schema'
+import useHelper from '../useHelper'
+import S from '../../schema'
+
+import useDrived, { type TRet as TDrived } from './useDrived'
 
 type TRet = {
   loading: boolean
@@ -33,12 +22,6 @@ type TRet = {
   settingTag: TTag
   activeTagGroup: string
   activeTagThread: string
-
-  // drived states
-  getTags: () => TTag[]
-  getGroups: () => string[]
-  getThreads: () => TCommunityThread[]
-  getTagsIndexTouched: () => boolean
 
   loadTags: (thread?: TThread) => void
   edit: (value: TEditValue, field: TSettingField) => void
@@ -49,24 +32,16 @@ type TRet = {
   moveTagDown: (tag: TTag) => void
   moveTag2Top: (tag: TTag) => void
   moveTag2Bottom: (tag: TTag) => void
-}
+} & TDrived
 
 export default (): TRet => {
   const store = useSubState('dashboard')
   const { edit } = useHelper()
   const curCommunity = useViewingCommunity()
+  const drived = useDrived()
 
-  const {
-    loading,
-    activeTagGroup,
-    activeTagThread,
-    tags,
-    nameAlias,
-    editingTag,
-    settingTag,
-    saving,
-    initSettings,
-  } = store
+  const { loading, activeTagGroup, activeTagThread, editingTag, settingTag, saving, initSettings } =
+    store
 
   const loadTags = (activeThread = THREAD.POST): void => {
     const community = curCommunity.slug
@@ -82,41 +57,6 @@ export default (): TRet => {
       store.commit({ tags, initSettings: { ...initSettings, tags }, loading: false })
     })
   }
-
-  // drived states
-  const getTags = useCallback(() => {
-    const selectedThread = (activeTagThread || '').toUpperCase()
-
-    const filterdTagsByGroup = activeTagGroup
-      ? filter((t: TTag) => t.group === activeTagGroup, tags)
-      : tags
-
-    return filter((t: TTag) => t.thread === selectedThread, filterdTagsByGroup)
-  }, [tags, activeTagThread, activeTagGroup])
-
-  const getGroups = useCallback((): string[] => uniq(pluck('group', tags)), [tags])
-
-  const getThreads = useCallback((): TCommunityThread[] => {
-    const mappedThreads = curCommunity.threads.map((pThread) => {
-      const aliasItem = find(propEq(pThread.slug, 'slug'))(nameAlias) as TNameAlias
-
-      return {
-        ...pThread,
-        title: aliasItem?.name || pThread.title,
-      }
-    })
-
-    return reject(
-      (thread: TCommunityThread) => includes(thread.slug, [THREAD.ABOUT, THREAD.DOC]),
-      mappedThreads,
-    )
-  }, [curCommunity, nameAlias])
-
-  const getTagsIndexTouched = useCallback((): boolean => {
-    console.log('## getTagsIndexTouched')
-    return !equals(sortByIndex(tags, 'id'), sortByIndex(initSettings.tags || [], 'id'))
-  }, [tags, initSettings.tags])
-  // drived states end
 
   const editTag = (key: TChangeTagMode, tag: TTag): void => store.commit({ [key]: tag })
   const changeThread = (thread: string) => store.commit({ activeTagThread: thread })
@@ -174,12 +114,7 @@ export default (): TRet => {
     settingTag,
     activeTagThread,
     activeTagGroup,
-    // drived states
-    getTags,
-    getGroups,
-    getThreads,
-    getTagsIndexTouched,
-    //
+    ...drived,
     changeThread,
     editTag,
     edit,
