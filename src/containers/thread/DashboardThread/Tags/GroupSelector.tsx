@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { reject } from 'ramda'
 
 import { nilOrEmpty } from '@/validator'
@@ -6,8 +7,10 @@ import Button from '@/widgets/Buttons/Button'
 import useTags from '../logic/useTags'
 import { Wrapper, CatsWrapper, Hint } from '../styles/tags/group_selector'
 
-export default () => {
-  const { activeTagGroup: active, edit, getGroups } = useTags()
+export default memo(() => {
+  const { activeTagGroup, edit, getGroups } = useTags()
+
+  const active = activeTagGroup
   const groups = getGroups()
 
   return (
@@ -37,4 +40,4 @@ export default () => {
       </CatsWrapper>
     </Wrapper>
   )
-}
+})

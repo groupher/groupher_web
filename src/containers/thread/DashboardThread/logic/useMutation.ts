@@ -44,7 +44,7 @@ export default (): TRet => {
   }
 
   const mergeBackEditingTag = (): TTag[] => {
-    const { editingTag, tags } = storeRef.current
+    const { editingTag, tags } = store
     const targetIdx = _findTagIdx()
 
     if (targetIdx < 0) return
@@ -108,7 +108,6 @@ export default (): TRet => {
     mutate(schema, params)
       .then((data) => {
         toast('设置已保存')
-        console.log('## call callback')
         if (okCb) okCb(data)
         _handleDone()
       })

@@ -16,7 +16,6 @@ import type { TStore } from '../store'
 import type { TSettingField } from '../spec'
 
 import { SETTING_FIELD, BASEINFO_KEYS, SEO_KEYS } from '../constant'
-import { init as tagsLogicInit } from './tags'
 import { init as faqInit } from './faq'
 
 import S from '../schema'
@@ -513,7 +512,6 @@ const ErrSolver = [
 export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
-    tagsLogicInit(store)
     faqInit(store)
 
     console.log('## useInit: ', store)

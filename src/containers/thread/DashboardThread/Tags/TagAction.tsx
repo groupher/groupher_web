@@ -5,8 +5,8 @@ import { Space } from '@/widgets/Common'
 import Tooltip from '@/widgets/Tooltip'
 
 import ActionMenu from './ActionMenu'
-
 import useTags from '../logic/useTags'
+import type { TProps as TTagBarProps } from './TagBar'
 
 import {
   Wrapper,
@@ -16,7 +16,6 @@ import {
   ArrowDownIcon,
   SettingIcon,
 } from '../styles/tags/tag_action'
-import type { TProps as TTagBarProps } from './TagBar'
 
 type TProps = Omit<TTagBarProps, 'settingTag'>
 

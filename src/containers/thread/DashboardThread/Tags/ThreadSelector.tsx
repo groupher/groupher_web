@@ -1,16 +1,11 @@
-import { type FC, memo } from 'react'
-
 import Button from '@/widgets/Buttons/Button'
 
 import useTags from '../logic/useTags'
 import { Wrapper, Hint, CatsWrapper } from '../styles/tags/thread_selector'
 
-type TProps = {
-  active: string
-}
-
-const ThreadSelector: FC<TProps> = ({ active }) => {
-  const { changeThread, getThreads } = useTags()
+export default () => {
+  const { activeTagThread, changeThread, getThreads } = useTags()
+  const active = activeTagThread
 
   return (
     <Wrapper>
@@ -35,5 +30,3 @@ const ThreadSelector: FC<TProps> = ({ active }) => {
     </Wrapper>
   )
 }
-
-export default memo(ThreadSelector)

@@ -27,6 +27,7 @@ import useHeader from './useHeader'
 import S from '../schema'
 
 type TRet = {
+  loading: boolean
   saving: boolean
   editingTag: TTag
   settingTag: TTag
@@ -56,6 +57,7 @@ export default (): TRet => {
   const curCommunity = useViewingCommunity()
 
   const {
+    loading,
     activeTagGroup,
     activeTagThread,
     tags,
@@ -73,27 +75,26 @@ export default (): TRet => {
       filter: { community, thread: thread.toUpperCase() },
     }
 
+    store.commit({ loading: true })
     query(S.pagedArticleTags, params).then((data) => {
       const { initSettings } = store
       const tags = data.pagedArticleTags.entries
-      store.commit({ tags, initSettings: { ...initSettings, tags } })
+      store.commit({ tags, initSettings: { ...initSettings, tags }, loading: false })
     })
   }
 
   // drived states
   const getTags = useCallback(() => {
-    const filterdTagsByGroup =
-      activeTagGroup === null ? tags : filter((t: TTag) => t.group === activeTagGroup, tags)
+    const selectedThread = (activeTagThread || '').toUpperCase()
 
-    return filter(
-      (t: TTag) => t.thread === (activeTagThread || '').toUpperCase(),
-      filterdTagsByGroup,
-    )
+    const filterdTagsByGroup = activeTagGroup
+      ? filter((t: TTag) => t.group === activeTagGroup, tags)
+      : tags
+
+    return filter((t: TTag) => t.thread === selectedThread, filterdTagsByGroup)
   }, [tags, activeTagThread, activeTagGroup])
 
-  const getGroups = useCallback((): string[] => {
-    return uniq(pluck('group', tags))
-  }, [tags])
+  const getGroups = useCallback((): string[] => uniq(pluck('group', tags)), [tags])
 
   const getThreads = useCallback((): TCommunityThread[] => {
     const mappedThreads = curCommunity.threads.map((pThread) => {
@@ -170,6 +171,7 @@ export default (): TRet => {
   const moveTag2Bottom = (tag: TTag): void => _moveTag2Edge(tag, 'bottom')
 
   return {
+    loading,
     saving,
     editingTag,
     settingTag,

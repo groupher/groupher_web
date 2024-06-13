@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useCallback } from 'react'
 import { has, omit, findIndex, update } from 'ramda'
 
 import type { TEditValue, TNameAlias } from '@/spec'
@@ -27,12 +27,7 @@ export default (): TRet => {
   const store = useSubStore('dashboard')
   const { mutation, mergeBackEditingTag } = useMutation()
 
-  const storeRef = useRef(store)
-  useEffect(() => {
-    storeRef.current = store
-  }, [store])
-
-  const edit = (v: TEditValue, field: TSettingField): void => {
+  const edit = useCallback((v: TEditValue, field: TSettingField): void => {
     let value = v
     if (isObject(v) && has('target', v)) {
       // @ts-ignore
@@ -40,7 +35,7 @@ export default (): TRet => {
     }
 
     store.commit({ [field]: value })
-  }
+  }, [])
 
   const _rollbackByKeys = (keys: string[]): void => {
     for (let i = 0; i < keys.length; i += 1) {
