@@ -53,6 +53,7 @@ export default (): TRet => {
       // to avoid hooks rerender which update baseinfo
       updateBaseInfo(data.community)
     }
+    return () => store.commit({ initFilled: false })
   }, [data])
 
   const updateBaseInfo = (community: TCommunity): void => {
@@ -76,14 +77,6 @@ export default (): TRet => {
 
     const initSettings = { ...store.initSettings, ...updates, mediaReports: initMediaReports }
     store.commit({ ...updates, mediaReports: initMediaReports, initSettings })
-
-    // runInAction(() => {
-    //   Object.assign(store, updates)
-    //   Object.assign(store.initSettings, updates)
-
-    //   store.mediaReports = initMediaReports
-    //   store.initSettings.mediaReports = initMediaReports
-    // })
   }
 
   return {

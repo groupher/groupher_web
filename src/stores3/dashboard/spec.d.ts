@@ -221,8 +221,6 @@ export type TStore = TSettingsFields & {
   allRootRules: string
 
   // views
-  tagGroups: string[]
-
   // actions
   changeGlowEffect: (glowType: string) => void
   commit: (updates: Partial<TStore>) => void

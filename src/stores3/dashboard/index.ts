@@ -124,7 +124,7 @@ export const settingsFields: TSettingsFields = {
   // tags
   tags: [],
   activeTagGroup: null,
-  activeTagThread: null,
+  activeTagThread: THREAD.POST,
   nameAlias: BUILDIN_ALIAS,
   enable: DEFAULT_ENABLE,
 
@@ -200,13 +200,6 @@ export default (initState: TInitSettings = {}): TStore => {
       allRootRules: '{}',
 
       // -- views
-      get tagGroups(): string[] {
-        // const { tags } = store
-
-        // return uniq(pluck('group', tags))
-        return []
-      },
-
       get docSettings(): TDocSettings {
         return {
           // categories: store.docCategories,

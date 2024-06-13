@@ -16,13 +16,20 @@ import {
   ArrowDownIcon,
   SettingIcon,
 } from '../styles/tags/tag_action'
-import { moveTagUp, moveTagDown, moveTag2Top, moveTag2Bottom } from '../logic/tags'
 import type { TProps as TTagBarProps } from './TagBar'
 
 type TProps = Omit<TTagBarProps, 'settingTag'>
 
 const TagAction: FC<TProps> = ({ tag, isFirst, isLast, total }) => {
-  const { editingTag, activeTagGroup, editTag } = useTags()
+  const {
+    editingTag,
+    activeTagGroup,
+    editTag,
+    moveTagUp,
+    moveTagDown,
+    moveTag2Top,
+    moveTag2Bottom,
+  } = useTags()
   const isEditMode = editingTag?.id === tag.id
 
   if (isEditMode) return null
