@@ -176,7 +176,6 @@ const DataResolver = [
 export const useInit = (_store: TStore, windowWidth: number, metric: TMetric): void => {
   useEffect((): (() => void) => {
     store = _store
-    console.log('## ## initing ')
     if (!sub$) {
       sub$ = sr71$.data().subscribe($solver(DataResolver, []))
     }

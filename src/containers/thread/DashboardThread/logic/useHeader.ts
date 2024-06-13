@@ -47,9 +47,12 @@ export default (): TRet => {
     editingGroup,
     editingGroupIndex,
 
+    // TODO: use drived state
     threads: publicThreads(community.threads, { enable, nameAlias }),
     saving,
+    // TODO: use drived state
     isTouched: isChanged('headerLinks') && editingLink === null,
+    // TODO: use drived state
     isLayoutTouched: isChanged('headerLayout'),
     ...useLinksData,
   }

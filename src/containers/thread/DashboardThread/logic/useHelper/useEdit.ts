@@ -25,9 +25,11 @@ export type TRet = {
 
 export default (): TRet => {
   const store = useSubStore('dashboard')
-  const { mutation, mergeBackEditingTag } = useMutation()
+  const { mutation } = useMutation()
 
   const edit = useCallback((v: TEditValue, field: TSettingField): void => {
+    console.log('## edit helper')
+
     let value = v
     if (isObject(v) && has('target', v)) {
       // @ts-ignore
@@ -66,7 +68,7 @@ export default (): TRet => {
     }
 
     if (field === SETTING_FIELD.TAG) {
-      mergeBackEditingTag()
+      store.commit({ editingTag: null })
       return
     }
 

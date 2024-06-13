@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { includes, omit, values, update, findIndex } from 'ramda'
+import { includes, omit, values, update, findIndex, equals } from 'ramda'
 
 import type { TEditValue, TTag } from '@/spec'
 import { DASHBOARD_BASEINFO_ROUTE } from '@/const/route'
@@ -49,7 +49,12 @@ export default (): TRet => {
 
     if (targetIdx < 0) return
     const updatedTags = update(targetIdx, editingTag, tags)
+    if (!equals(tags, updatedTags)) {
+      console.log('## not equals, update tags')
+      // store.commit({ tags: updatedTags })
+    }
 
+    // store.commit({ editingTag: null })
     store.commit({ tags: updatedTags, editingTag: null })
 
     return updatedTags
@@ -95,9 +100,7 @@ export default (): TRet => {
     store.commit({ initSettings })
 
     // avoid page component jump caused by saving state
-    setTimeout(() => {
-      store.commit({ saving: false, savingField: null })
-    }, 800)
+    setTimeout(() => store.commit({ saving: false, savingField: null }), 800)
   }
 
   /**

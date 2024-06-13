@@ -9,13 +9,12 @@ import useTags from '../logic/useTags'
 
 export default () => {
   const { loading, loadTags, getTags } = useTags()
-  const [animateRef, enable] = useAutoAnimate()
+  const [animateRef] = useAutoAnimate()
 
   const tags = getTags()
 
   useEffect(() => {
     loadTags()
-    enable(true)
   }, [])
 
   return (

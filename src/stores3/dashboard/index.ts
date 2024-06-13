@@ -1,5 +1,5 @@
 import { proxy } from 'valtio'
-import { mergeDeepRight, equals, mapObjIndexed, mergeLeft } from 'ramda'
+import { mergeDeepRight, mergeLeft } from 'ramda'
 
 import { LOCALE } from '@/const/i18n'
 import { THREAD } from '@/const/thread'
@@ -36,15 +36,9 @@ import {
   DASHBOARD_SEO_ROUTE,
   DASHBOARD_DOC_ROUTE,
 } from '@/const/route'
-import BStore from '@/utils/bstore'
 
-import type { TStore, TInitSettings, TSettingsFields, TDocSettings } from './spec'
-import {
-  EMPTY_MEDIA_REPORT,
-  DASHBOARD_DEMO_KEY,
-  DEFAULT_FAQ_ITEMS,
-  DEFAULT_OVERVIEW,
-} from './constant'
+import type { TStore, TInitSettings, TSettingsFields } from './spec'
+import { EMPTY_MEDIA_REPORT, DEFAULT_FAQ_ITEMS, DEFAULT_OVERVIEW } from './constant'
 
 export const settingsFields: TSettingsFields = {
   // baseInfo
@@ -199,100 +193,8 @@ export default (initState: TInitSettings = {}): TStore => {
       allModeratorRules: '{}',
       allRootRules: '{}',
 
-      // -- views
-      get docSettings(): TDocSettings {
-        return {
-          // categories: store.docCategories,
-          categories: [], // store.docCategories,
-        }
-      },
-
-      // actions
-      setAllPassportRules: (rootRules: string, moderatorRules: string): void => {
-        store.allRootRules = rootRules
-        store.allModeratorRules = moderatorRules
-      },
-
-      /**
-       * init activeTagThread for dashboard tags settings
-       * based on enableSettings
-       */
-      _initActiveTagThreadIfneed: (): void => {
-        const { curTab, enable } = store
-
-        if (curTab !== DASHBOARD_ROUTE.TAGS) return
-
-        if (enable.post) {
-          setTimeout(() => {
-            store.activeTagThread = THREAD.POST
-          })
-        } else if (enable.kanban) {
-          setTimeout(() => {
-            store.activeTagThread = THREAD.KANBAN
-          })
-        } else if (enable.changelog) {
-          setTimeout(() => {
-            store.activeTagThread = THREAD.CHANGELOG
-          })
-        } else {
-          setTimeout(() => {
-            store.activeTagThread = null
-          })
-        }
-      },
-
-      clearLocalSettings: (): void => {
-        BStore.remove(DASHBOARD_DEMO_KEY)
-
-        mapObjIndexed((value, key) => {
-          if (!equals(store[key], store.defaultSettings[key])) {
-            // @ts-ignore
-            if (key !== 'defaultSettings' && key !== 'initSettings') {
-              // @ts-ignore
-              store[key] = value
-            }
-          }
-        }, store.defaultSettings)
-
-        store.demoAlertEnable = false
-        store.saving = false
-        store.initSettings = store.defaultSettings
-      },
-
-      _loadLocalSettings: (): boolean => {
-        const dashboardDemoSettings = BStore.get(DASHBOARD_DEMO_KEY)
-
-        if (dashboardDemoSettings) {
-          const settingsObj = JSON.parse(dashboardDemoSettings)
-
-          setTimeout(() => {
-            mapObjIndexed((value, key) => {
-              if (!equals(store[key], settingsObj[key])) {
-                // @ts-ignore
-                store[key] = value
-              }
-            }, settingsObj)
-
-            store.saving = false
-            store.initSettings = settingsObj
-            store.demoAlertEnable = true
-          })
-          return true
-        }
-
-        return false
-      },
-
-      /** it also maybe called by landing page */
-      changeGlowEffect: (glowType: string): void => {
-        store.glowType = glowType
-      },
-
-      commit: (updates: Partial<TStore>): void => {
-        Object.assign(store, mergeDeepRight(store, updates))
-        // for (const [key, value] of Object.entries(updates)) {
-        //   store[key] = value
-        // }
+      commit: (patch: Partial<TStore>): void => {
+        Object.assign(store, mergeDeepRight(store, patch))
       },
     }),
   )

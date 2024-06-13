@@ -17,13 +17,13 @@ import type { TCommunityThread, TTag, TNameAlias, TEditValue, TThread } from '@/
 import { THREAD } from '@/const/thread'
 import { sortByIndex } from '@/helper'
 
-import type { TSettingField } from '@/stores3/dashboard/spec'
+import type { TSettingField, TChangeTagMode } from '@/stores3/dashboard/spec'
 import useSubState from '@/hooks/useSubStore'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import { query } from '@/utils/api'
 
-import useHeader from './useHeader'
+import useHelper from './useHelper'
 import S from '../schema'
 
 type TRet = {
@@ -43,7 +43,7 @@ type TRet = {
   loadTags: (thread?: TThread) => void
   edit: (value: TEditValue, field: TSettingField) => void
   changeThread: (thread: string) => void
-  editTag: (key: 'settingTag' | 'editingTag', tag: TTag) => void
+  editTag: (key: TChangeTagMode, tag: TTag) => void
 
   moveTagUp: (tag: TTag) => void
   moveTagDown: (tag: TTag) => void
@@ -53,7 +53,7 @@ type TRet = {
 
 export default (): TRet => {
   const store = useSubState('dashboard')
-  const { edit } = useHeader()
+  const { edit } = useHelper()
   const curCommunity = useViewingCommunity()
 
   const {
@@ -68,16 +68,16 @@ export default (): TRet => {
     initSettings,
   } = store
 
-  const loadTags = (thread = THREAD.POST): void => {
+  const loadTags = (activeThread = THREAD.POST): void => {
     const community = curCommunity.slug
+    const thread = activeThread.toUpperCase()
 
     const params = {
-      filter: { community, thread: thread.toUpperCase() },
+      filter: { community, thread },
     }
 
     store.commit({ loading: true })
     query(S.pagedArticleTags, params).then((data) => {
-      const { initSettings } = store
       const tags = data.pagedArticleTags.entries
       store.commit({ tags, initSettings: { ...initSettings, tags }, loading: false })
     })
@@ -113,13 +113,12 @@ export default (): TRet => {
   }, [curCommunity, nameAlias])
 
   const getTagsIndexTouched = useCallback((): boolean => {
+    console.log('## getTagsIndexTouched')
     return !equals(sortByIndex(tags, 'id'), sortByIndex(initSettings.tags || [], 'id'))
   }, [tags, initSettings.tags])
   // drived states end
 
-  const editTag = (key: 'settingTag' | 'editingTag', tag: TTag): void =>
-    store.commit({ [key]: tag })
-
+  const editTag = (key: TChangeTagMode, tag: TTag): void => store.commit({ [key]: tag })
   const changeThread = (thread: string) => store.commit({ activeTagThread: thread })
 
   const _reindex = (tags: TTag[]): TTag[] => tags.map((item, index) => ({ ...item, index }))
@@ -142,8 +141,7 @@ export default (): TRet => {
     groupTags[targetIndex].index = groupTags[tagIndex].index
     groupTags[tagIndex].index = tmpIndex
 
-    // store.commit({ tags: [...restTags, ..._reindex(groupTags)] })
-    store.commit({ tags: [...restTags, ...groupTags] })
+    store.commit({ tags: [...restTags, ..._reindex(groupTags)] })
   }
 
   const _moveTag2Edge = (tag: TTag, opt: 'top' | 'bottom'): void => {
@@ -166,7 +164,6 @@ export default (): TRet => {
 
   const moveTagUp = (tag: TTag): void => _moveTag(tag, 'up')
   const moveTagDown = (tag: TTag): void => _moveTag(tag, 'down')
-
   const moveTag2Top = (tag: TTag): void => _moveTag2Edge(tag, 'top')
   const moveTag2Bottom = (tag: TTag): void => _moveTag2Edge(tag, 'bottom')
 

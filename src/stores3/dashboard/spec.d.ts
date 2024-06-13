@@ -220,9 +220,7 @@ export type TStore = TSettingsFields & {
   allModeratorRules: string
   allRootRules: string
 
-  // views
   // actions
-  changeGlowEffect: (glowType: string) => void
   commit: (updates: Partial<TStore>) => void
 }
 
@@ -334,3 +332,5 @@ export type TSettingField =
 
 export type THeaderEditType = 'logo' | 'title'
 export type TFooterEditType = THeaderEditType | 'social'
+
+export type TChangeTagMode = 'settingTag' | 'editingTag'
