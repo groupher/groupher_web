@@ -1,14 +1,15 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { reject, find, propEq, filter, includes, toUpper, isNil, equals } from 'ramda'
 
 import type { TCommunityThread, TTag, TNameAlias, TEditValue } from '@/spec'
 import { THREAD } from '@/const/thread'
 import { sortByIndex } from '@/helper'
 
-import type { TSettingField } from '@/stores2/dashboardStore/spec'
-import useQuery from '@/hooks/useQuery'
+import type { TSettingField } from '@/stores3/dashboard/spec'
 import useSubState from '@/hooks/useSubStore'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
+
+import { query } from '@/utils/api'
 
 import useHeader from './useHeader'
 import S from '../schema'
@@ -29,9 +30,14 @@ type TRet = {
   editTag: (key: 'settingTag' | 'editingTag', tag: TTag) => void
 }
 
-const useTagListInfo = (): TRet => {
+export default (): TRet => {
   const store = useSubState('dashboard')
   const { edit } = useHeader()
+
+  const storeRef = useRef(store)
+  useEffect(() => {
+    storeRef.current = store
+  }, [store])
 
   const curCommunity = useViewingCommunity()
 
@@ -44,21 +50,21 @@ const useTagListInfo = (): TRet => {
     settingTag,
     saving,
     tagGroups,
-    initSettings,
   } = store
 
-  const { data, reload } = useQuery(S.pagedArticleTags, {
-    filter: { community: curCommunity.slug, thread: activeTagThread?.toUpperCase() },
-  })
+  const loadTags = (thread) => {
+    const community = curCommunity.slug
 
-  useEffect(() => {
-    if (data?.pagedArticleTags) {
+    const params = {
+      filter: { community, thread: thread.toUpperCase() },
+    }
+
+    query(S.pagedArticleTags, params).then((data) => {
       const { initSettings } = store
       const tags = data.pagedArticleTags.entries
-
       store.commit({ tags, initSettings: { ...initSettings, tags } })
-    }
-  }, [data])
+    })
+  }
 
   const filterdTagsByGroup =
     activeTagGroup === null ? tags : filter((t: TTag) => t.group === activeTagGroup, tags)
@@ -84,6 +90,8 @@ const useTagListInfo = (): TRet => {
   ) as TCommunityThread[]
 
   const tagsIndexTouched = () => {
+    const { tags, initSettings } = storeRef.current
+
     const cur = sortByIndex(tags, 'id')
     const init = sortByIndex(initSettings.tags || [], 'id')
 
@@ -91,20 +99,13 @@ const useTagListInfo = (): TRet => {
   }
 
   const editTag = (key: 'settingTag' | 'editingTag', tag: TTag): void => {
-    console.log('## ## editingTag key: ', key)
-    console.log('## ## editingTag tag: ', tag)
-
-    store.editingTag = tag
-    // store.mark({ [key]: tag })
+    store.commit({ [key]: tag })
   }
 
   const changeThread = (thread: string) => {
-    store.activeTagThread = thread
+    store.commit({ activeTagThread: thread })
 
-    const variables = {
-      filter: { community: curCommunity.slug, thread: thread.toUpperCase() },
-    }
-    reload(variables)
+    loadTags(thread)
   }
 
   return {
@@ -123,5 +124,3 @@ const useTagListInfo = (): TRet => {
     edit,
   }
 }
-
-export default useTagListInfo

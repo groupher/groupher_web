@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import { callTagEditEditor } from '@/signal'
 import { Space } from '@/widgets/Common'
@@ -70,4 +69,4 @@ const TagAction: FC<TProps> = ({ tag, isFirst, isLast, total }) => {
   )
 }
 
-export default observer(TagAction)
+export default TagAction

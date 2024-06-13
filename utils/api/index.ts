@@ -1,9 +1,8 @@
-//
 import gqClient from './gq_client'
 
 export const query = (query, variables) => {
   return gqClient
-    .query(query, variables)
+    .query(query, clearfy(variables))
     .toPromise()
     .then((res) => {
       if (res.error) throw res.error
@@ -16,7 +15,7 @@ export const query = (query, variables) => {
 
 export const mutate = (mutation, variables) => {
   return gqClient
-    .mutation(mutation, variables)
+    .mutation(mutation, clearfy(variables))
     .toPromise()
     .then((res) => {
       if (res.error) throw res.error
@@ -33,7 +32,7 @@ type TClearifyObject = {
   [key: string]: TClearifyInput
 }
 // remove __typename if need, avoid GraphQL error
-export const clearfy = (obj: TClearifyInput): TClearifyInput => {
+const clearfy = (obj: TClearifyInput): TClearifyInput => {
   if (!obj) return null
 
   if (Array.isArray(obj)) {

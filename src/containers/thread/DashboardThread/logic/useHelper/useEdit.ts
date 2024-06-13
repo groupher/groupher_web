@@ -1,6 +1,7 @@
+import { useEffect, useRef } from 'react'
 import { has, omit, findIndex, update } from 'ramda'
 
-import type { TEditValue, TTag, TNameAlias } from '@/spec'
+import type { TEditValue, TNameAlias } from '@/spec'
 import { isObject } from '@/validator'
 import useSubStore from '@/hooks/useSubStore'
 import BStore from '@/utils/bstore'
@@ -24,7 +25,12 @@ export type TRet = {
 
 export default (): TRet => {
   const store = useSubStore('dashboard')
-  const { mutation } = useMutation()
+  const { mutation, mergeBackEditingTag } = useMutation()
+
+  const storeRef = useRef(store)
+  useEffect(() => {
+    storeRef.current = store
+  }, [store])
 
   const edit = (v: TEditValue, field: TSettingField): void => {
     let value = v
@@ -46,12 +52,6 @@ export default (): TRet => {
     }
   }
 
-  const _findTagIdx = (): number => {
-    const { tags, editingTag } = store
-    const targetIdx = findIndex((item: TTag) => item.id === editingTag.id, tags)
-    return targetIdx
-  }
-
   const _findAliasIdx = (): number => {
     const { nameAlias, editingAlias } = store
     const targetIdx = findIndex((item: TNameAlias) => item.slug === editingAlias.slug, nameAlias)
@@ -71,12 +71,7 @@ export default (): TRet => {
     }
 
     if (field === SETTING_FIELD.TAG) {
-      const { tags, editingTag } = store
-      const targetIdx = _findTagIdx()
-      if (targetIdx < 0) return
-
-      const updatedTags = update(targetIdx, editingTag, tags)
-      store.commit({ tags: updatedTags, editingTag: null })
+      mergeBackEditingTag()
       return
     }
 
@@ -131,35 +126,11 @@ export default (): TRet => {
     // slf.mark({ demoAlertEnable: true })
   }
 
-  const _handleSpecialField = (field: TSettingField): void => {
-    if (field === SETTING_FIELD.TAG) {
-      const { editingTag, tags } = store
-      const targetIdx = _findTagIdx()
-      if (targetIdx < 0) return
-
-      const updatedTags = update(targetIdx, editingTag, tags)
-      const initSettings = { ...store.initSettings, tags: updatedTags }
-
-      store.commit({ tags: updatedTags, initSettings })
-    }
-
-    if (field === SETTING_FIELD.NAME_ALIAS) {
-      const { editingAlias, nameAlias } = store
-
-      const targetIdx = _findAliasIdx()
-      if (targetIdx < 0) return
-
-      const updatedNameAlias = update(targetIdx, editingAlias, nameAlias)
-      store.commit({ nameAlias: updatedNameAlias })
-    }
-  }
-
   const onSave = (field: TSettingField): void => {
     console.log('## on save: ', field)
     store.commit({ saving: true, savingField: field })
 
-    _handleSpecialField(field)
-    setTimeout(() => mutation(field, store[field]))
+    mutation(field, store[field])
   }
 
   return {

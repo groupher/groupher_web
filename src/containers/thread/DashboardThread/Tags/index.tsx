@@ -1,5 +1,4 @@
-import { type FC, useEffect } from 'react'
-import { observer } from 'mobx-react-lite'
+import { useEffect } from 'react'
 
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
@@ -14,12 +13,11 @@ import ThreadSelector from './ThreadSelector'
 import GroupSelector from './GroupSelector'
 import TagBar from './TagBar'
 
-import useTagListInfo from '../logic/useTags'
+import useTags from '../logic/useTags'
 import { Wrapper, InnerWrapper, ContentWrapper, AddButton, AddIcon } from '../styles/tags'
 
-const Tags: FC = () => {
-  const { tags, groups, activeTagGroup, activeTagThread, threads, isTagsIndexTouched } =
-    useTagListInfo()
+export default () => {
+  const { tags, groups, activeTagGroup, activeTagThread, threads, isTagsIndexTouched } = useTags()
 
   const [animateRef, enable] = useAutoAnimate()
 
@@ -61,5 +59,3 @@ const Tags: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(Tags)

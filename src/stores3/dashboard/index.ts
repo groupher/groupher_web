@@ -297,6 +297,9 @@ export default (initState: TInitSettings = {}): TStore => {
 
       commit: (updates: Partial<TStore>): void => {
         Object.assign(store, mergeDeepRight(store, updates))
+        // for (const [key, value] of Object.entries(updates)) {
+        //   store[key] = value
+        // }
       },
     }),
   )

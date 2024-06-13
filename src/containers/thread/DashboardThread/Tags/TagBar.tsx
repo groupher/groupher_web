@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TColorName, TTag } from '@/spec'
 
@@ -78,4 +77,4 @@ const TagBar: FC<TProps> = ({ tag, isFirst, isLast, total }) => {
   )
 }
 
-export default observer(TagBar)
+export default TagBar

@@ -1,11 +1,11 @@
 import { useEffect, useRef } from 'react'
-import { includes, omit, values, clone } from 'ramda'
+import { includes, omit, values, update, findIndex } from 'ramda'
 
-import type { TEditValue } from '@/spec'
+import type { TEditValue, TTag } from '@/spec'
 import { DASHBOARD_BASEINFO_ROUTE } from '@/const/route'
 import { toast } from '@/signal'
 
-import { mutate, clearfy } from '@/utils/api'
+import { mutate } from '@/utils/api'
 import useSubStore from '@/hooks/useSubStore'
 import useViewing from '@/hooks/useViewing'
 
@@ -23,6 +23,7 @@ import S from '../schema'
 
 type TRet = {
   mutation: (field: string, e: TEditValue) => Promise<void>
+  mergeBackEditingTag: () => TTag[]
 }
 
 export default (): TRet => {
@@ -36,67 +37,88 @@ export default (): TRet => {
     storeRef.current = store
   }, [store])
 
-  const _handleDone = () => {
-    toast('设置已保存')
-    const field = storeRef.current.savingField
+  const _findTagIdx = (): number => {
+    const { tags, editingTag } = store
+    const targetIdx = findIndex((item: TTag) => item.id === editingTag.id, tags)
+    return targetIdx
+  }
 
-    // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
-    let initSettings
+  const mergeBackEditingTag = (): TTag[] => {
+    const { editingTag, tags } = storeRef.current
+    const targetIdx = _findTagIdx()
+
+    if (targetIdx < 0) return
+    const updatedTags = update(targetIdx, editingTag, tags)
+
+    store.commit({ tags: updatedTags, editingTag: null })
+
+    return updatedTags
+  }
+
+  const _handleDone = () => {
+    const field = storeRef.current.savingField
+    console.log('## done field: ', field)
+    let initSettings = { ...store.initSettings, [field]: store[field] }
 
     if (field === SETTING_FIELD.TAG_INDEX) {
       initSettings = { ...store.initSettings, tags: store.tags }
-    } else if (includes(field, [SETTING_FIELD.FAQ_SECTION_ADD, SETTING_FIELD.FAQ_SECTION_DELETE])) {
+    }
+
+    if (includes(field, [SETTING_FIELD.FAQ_SECTION_ADD, SETTING_FIELD.FAQ_SECTION_DELETE])) {
       initSettings = { ...store.initSettings, faqSections: store.faqSections }
-    } else if (field === SETTING_FIELD.TAG) {
-      // _updateEditingTag()
-      initSettings = { ...store.initSettings }
-    } else if (field === SETTING_FIELD.BASE_INFO) {
+    }
+
+    if (field === SETTING_FIELD.BASE_INFO) {
       const current = {}
 
       for (const key of BASEINFO_KEYS) {
         current[key] = store[key]
       }
       initSettings = { ...store.initSettings, ...current }
-    } else if (field === SETTING_FIELD.SEO) {
+    }
+
+    if (field === SETTING_FIELD.TAG) {
+      const updatedTags = mergeBackEditingTag()
+      initSettings = { ...store.initSettings, tags: updatedTags }
+    }
+
+    if (field === SETTING_FIELD.SEO) {
       const current = {}
 
       for (const key of SEO_KEYS) {
         current[key] = store[key]
       }
       initSettings = { ...store.initSettings, ...current }
-    } else {
-      initSettings = { ...store.initSettings, [field]: store[field] }
     }
 
+    console.log('## handle done')
     store.commit({ initSettings })
 
-    // store will rollback to previous value
-    if (field === SETTING_FIELD.TAG) store.commit({ editingTag: null })
-    if (field === SETTING_FIELD.NAME_ALIAS) store.commit({ editingAlias: null })
-
     // avoid page component jump caused by saving state
-    // store.commit({ saving: false, savingField: null })
     setTimeout(() => {
       store.commit({ saving: false, savingField: null })
     }, 800)
   }
 
-  const mutation = (field: TSettingField, e: TEditValue): Promise<void> => {
-    /**
-     * store.savingField is not works in this **Promise** staff
-     * not Valtio's thing, this is hte wired React staff
-     */
-    const handleMutation = (schema, params, okCb = null) => {
-      mutate(schema, clearfy(params))
-        .then((data) => {
-          if (okCb) okCb(data)
-          _handleDone()
-        })
-        .catch((err) => {
-          console.error('## handle request error: ', err)
-        })
-    }
+  /**
+   * store.savingField is not works in this **Promise** staff
+   * not Valtio's thing, this is hte wired React staff
+   */
+  const handleMutation = (schema, params, okCb = null) => {
+    mutate(schema, params)
+      .then((data) => {
+        toast('设置已保存')
+        console.log('## call callback')
+        if (okCb) okCb(data)
+        _handleDone()
+      })
+      .catch((err) => {
+        console.error('## handle request error: ', err)
+        alert(err)
+      })
+  }
 
+  const mutation = (field: TSettingField, e: TEditValue): Promise<void> => {
     if (field === SETTING_FIELD.MEDIA_REPORTS) {
       const { mediaReports } = store
 
@@ -175,18 +197,18 @@ export default (): TRet => {
     if (field === SETTING_FIELD.NAME_ALIAS) {
       const { nameAlias } = storeRef.current
       const params = { community, nameAlias }
-      console.log('## alias params: ', clone(params))
 
       handleMutation(S.updateDashboardNameAlias, params)
       return
     }
 
-    // if (field === SETTING_FIELD.TAG) {
-    //   console.log("## if it's here: ", field)
-    //   store.updateEditingTag()
-    //   sr71$.mutate(S.updateArticleTag, { ...toJS(store.editingTag), community })
-    //   return
-    // }
+    if (field === SETTING_FIELD.TAG) {
+      const { editingTag } = storeRef.current
+      const params = { ...editingTag, community }
+
+      handleMutation(S.updateArticleTag, params)
+      return
+    }
 
     // if (field === SETTING_FIELD.FAQ_SECTIONS) {
     //   sr71$.mutate(S.updateDashboardFaqs, { faqs: toJS(store.faqSections), community })
@@ -235,5 +257,5 @@ export default (): TRet => {
     }
   }
 
-  return { mutation }
+  return { mutation, mergeBackEditingTag }
 }
