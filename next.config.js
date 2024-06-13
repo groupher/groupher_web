@@ -29,6 +29,7 @@ const nextConfig = {
   swcMinify: true,
   productionBrowserSourceMaps: true,
   experimental: {
+    reactCompiler: true,
     scrollRestoration: true,
     optimizePackageImports: ['ramda'],
     // for fix build error for useSearchParams

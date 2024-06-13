@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useCallback } from 'react'
 import {
   reject,
   find,
@@ -6,7 +6,6 @@ import {
   filter,
   includes,
   toUpper,
-  isNil,
   equals,
   findIndex,
   remove,
@@ -15,7 +14,7 @@ import {
   clone,
 } from 'ramda'
 
-import type { TCommunityThread, TTag, TNameAlias, TEditValue } from '@/spec'
+import type { TCommunityThread, TTag, TNameAlias, TEditValue, TThread } from '@/spec'
 import { THREAD } from '@/const/thread'
 import { sortByIndex } from '@/helper'
 
@@ -37,8 +36,11 @@ type TRet = {
   groups: string[]
   activeTagGroup: string
   activeTagThread: string
-  isTagsIndexTouched: boolean
-  isTagsTouched: boolean
+
+  // drived states
+  getTagsIndexTouched: () => boolean
+
+  loadTags: (thread?: TThread) => void
   edit: (value: TEditValue, field: TSettingField) => void
   changeThread: (thread: string) => void
   editTag: (key: 'settingTag' | 'editingTag', tag: TTag) => void
@@ -54,15 +56,6 @@ export default (): TRet => {
   const { edit } = useHeader()
   const curCommunity = useViewingCommunity()
 
-  useEffect(() => {
-    if (!store.initFilled) {
-      store.commit({ initFilled: true })
-      loadTags(THREAD.POST)
-    }
-
-    return () => store.commit({ initFilled: false })
-  }, [])
-
   const {
     activeTagGroup,
     activeTagThread,
@@ -74,7 +67,7 @@ export default (): TRet => {
     initSettings,
   } = store
 
-  const loadTags = (thread) => {
+  const loadTags = (thread = THREAD.POST): void => {
     const community = curCommunity.slug
 
     const params = {
@@ -111,12 +104,12 @@ export default (): TRet => {
     mappedThreads,
   ) as TCommunityThread[]
 
-  const tagsIndexTouched = useMemo(() => {
-    const cur = sortByIndex(tags, 'id')
-    const init = sortByIndex(initSettings.tags || [], 'id')
-
-    return !equals(cur, init)
+  // drived states
+  const getTagsIndexTouched = useCallback((): boolean => {
+    return !equals(sortByIndex(tags, 'id'), sortByIndex(initSettings.tags || [], 'id'))
   }, [tags, initSettings.tags])
+
+  // drived states end
 
   const editTag = (key: 'settingTag' | 'editingTag', tag: TTag): void => {
     store.commit({ [key]: tag })
@@ -124,8 +117,7 @@ export default (): TRet => {
 
   const changeThread = (thread: string) => {
     store.commit({ activeTagThread: thread })
-
-    loadTags(thread)
+    // loadTags(thread)
   }
 
   const _reindex = (tags: TTag[]): TTag[] =>
@@ -139,7 +131,7 @@ export default (): TRet => {
     const { group } = tag
 
     const groupTags = clone(sortByIndex(filter((item: TTag) => item.group === group, tags)))
-    const restTags = reject((item: TTag) => item.group === group, tags)
+    const restTags = clone(reject((item: TTag) => item.group === group, tags))
     const tagIndex = findIndex((item: TTag) => item.id === tag.id, groupTags)
 
     const targetIndex = opt === 'up' ? tagIndex - 1 : tagIndex + 1
@@ -152,7 +144,8 @@ export default (): TRet => {
     groupTags[targetIndex].index = groupTags[tagIndex].index
     groupTags[tagIndex].index = tmpIndex
 
-    store.commit({ tags: [...restTags, ..._reindex(groupTags)] })
+    // store.commit({ tags: [...restTags, ..._reindex(groupTags)] })
+    store.commit({ tags: [...restTags, ...groupTags] })
   }
 
   const _moveTag2Edge = (tag: TTag, opt: 'top' | 'bottom'): void => {
@@ -188,8 +181,7 @@ export default (): TRet => {
     activeTagThread,
     activeTagGroup,
     threads: curThreads,
-    isTagsTouched: !isNil(editingTag),
-    isTagsIndexTouched: tagsIndexTouched,
+    getTagsIndexTouched,
     changeThread,
     editTag,
     edit,
@@ -198,5 +190,6 @@ export default (): TRet => {
     moveTagDown,
     moveTag2Top,
     moveTag2Bottom,
+    loadTags,
   }
 }

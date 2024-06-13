@@ -17,12 +17,14 @@ import useTags from '../logic/useTags'
 import { Wrapper, InnerWrapper, ContentWrapper, AddButton, AddIcon } from '../styles/tags'
 
 export default () => {
-  const { tags, groups, activeTagGroup, activeTagThread, threads, isTagsIndexTouched } = useTags()
+  const { loadTags, tags, groups, activeTagGroup, activeTagThread, threads, getTagsIndexTouched } =
+    useTags()
 
   const [animateRef, enable] = useAutoAnimate()
 
   useEffect(() => {
     enable(false)
+    loadTags()
   }, [])
 
   return (
@@ -49,7 +51,7 @@ export default () => {
         </AddButton>
 
         <SavingBar
-          isTouched={isTagsIndexTouched}
+          isTouched={getTagsIndexTouched()}
           field={SETTING_FIELD.TAG_INDEX}
           prefix="是否保存标签排序"
           top={24}
