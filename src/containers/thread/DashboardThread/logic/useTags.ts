@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo } from 'react'
 import {
   reject,
   find,
@@ -54,11 +54,6 @@ export default (): TRet => {
   const { edit } = useHeader()
   const curCommunity = useViewingCommunity()
 
-  const storeRef = useRef(store)
-  useEffect(() => {
-    storeRef.current = store
-  }, [store])
-
   useEffect(() => {
     if (!store.initFilled) {
       store.commit({ initFilled: true })
@@ -68,7 +63,16 @@ export default (): TRet => {
     return () => store.commit({ initFilled: false })
   }, [])
 
-  const { activeTagGroup, activeTagThread, tags, nameAlias, editingTag, settingTag, saving } = store
+  const {
+    activeTagGroup,
+    activeTagThread,
+    tags,
+    nameAlias,
+    editingTag,
+    settingTag,
+    saving,
+    initSettings,
+  } = store
 
   const loadTags = (thread) => {
     const community = curCommunity.slug
@@ -107,14 +111,12 @@ export default (): TRet => {
     mappedThreads,
   ) as TCommunityThread[]
 
-  const tagsIndexTouched = () => {
-    const { tags, initSettings } = storeRef.current
-
+  const tagsIndexTouched = useMemo(() => {
     const cur = sortByIndex(tags, 'id')
     const init = sortByIndex(initSettings.tags || [], 'id')
 
     return !equals(cur, init)
-  }
+  }, [tags, initSettings.tags])
 
   const editTag = (key: 'settingTag' | 'editingTag', tag: TTag): void => {
     store.commit({ [key]: tag })
@@ -187,7 +189,7 @@ export default (): TRet => {
     activeTagGroup,
     threads: curThreads,
     isTagsTouched: !isNil(editingTag),
-    isTagsIndexTouched: tagsIndexTouched(),
+    isTagsIndexTouched: tagsIndexTouched,
     changeThread,
     editTag,
     edit,
