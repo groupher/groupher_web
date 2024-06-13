@@ -1,25 +1,22 @@
 import { type FC, memo } from 'react'
 
-import type { TCommunityThread } from '@/spec'
-
 import Button from '@/widgets/Buttons/Button'
 
 import useTags from '../logic/useTags'
 import { Wrapper, Hint, CatsWrapper } from '../styles/tags/thread_selector'
 
 type TProps = {
-  threads: TCommunityThread[]
   active: string
 }
 
-const ThreadSelector: FC<TProps> = ({ threads, active }) => {
-  const { changeThread } = useTags()
+const ThreadSelector: FC<TProps> = ({ active }) => {
+  const { changeThread, getThreads } = useTags()
 
   return (
     <Wrapper>
       <Hint>社区板块:</Hint>
       <CatsWrapper>
-        {threads.map((thread) => (
+        {getThreads().map((thread) => (
           <Button
             key={thread.slug}
             ghost={thread.slug !== active}

@@ -17,10 +17,10 @@ import useTags from '../logic/useTags'
 import { Wrapper, InnerWrapper, ContentWrapper, AddButton, AddIcon } from '../styles/tags'
 
 export default () => {
-  const { loadTags, tags, groups, activeTagGroup, activeTagThread, threads, getTagsIndexTouched } =
-    useTags()
-
+  const { loadTags, getTags, activeTagThread, getTagsIndexTouched } = useTags()
   const [animateRef, enable] = useAutoAnimate()
+
+  const tags = getTags()
 
   useEffect(() => {
     enable(false)
@@ -31,9 +31,9 @@ export default () => {
     <Wrapper>
       <Portal title="标签设置" desc="编辑各板块标签，标签分组，颜色名称等均可编辑。" />
       <InnerWrapper>
-        <ThreadSelector threads={threads} active={activeTagThread} />
+        <ThreadSelector active={activeTagThread} />
         <ContentWrapper ref={animateRef}>
-          <GroupSelector groups={groups} active={activeTagGroup} />
+          <GroupSelector />
           {sortByIndex(tags).map((tag, index) => (
             <TagBar
               key={tag.id}

@@ -5,7 +5,6 @@ import {
   propEq,
   filter,
   includes,
-  toUpper,
   equals,
   findIndex,
   remove,
@@ -29,15 +28,15 @@ import S from '../schema'
 
 type TRet = {
   saving: boolean
-  threads: TCommunityThread[]
-  tags: TTag[]
   editingTag: TTag
   settingTag: TTag
-  groups: string[]
   activeTagGroup: string
   activeTagThread: string
 
   // drived states
+  getTags: () => TTag[]
+  getGroups: () => string[]
+  getThreads: () => TCommunityThread[]
   getTagsIndexTouched: () => boolean
 
   loadTags: (thread?: TThread) => void
@@ -81,57 +80,55 @@ export default (): TRet => {
     })
   }
 
-  const filterdTagsByGroup =
-    activeTagGroup === null ? tags : filter((t: TTag) => t.group === activeTagGroup, tags)
-
-  const filterdTags = filter(
-    (t: TTag) => t.thread === toUpper(activeTagThread || ''),
-    filterdTagsByGroup,
-  )
-
-  const mappedThreads = curCommunity.threads.map((pThread) => {
-    const aliasItem = find(propEq(pThread.slug, 'slug'))(nameAlias) as TNameAlias
-
-    return {
-      ...pThread,
-      title: aliasItem?.name || pThread.title,
-    }
-  })
-
-  const curThreads = reject(
-    // @ts-ignore
-    (thread) => includes(thread.slug, [THREAD.ABOUT, THREAD.DOC]),
-    mappedThreads,
-  ) as TCommunityThread[]
-
   // drived states
+  const getTags = useCallback(() => {
+    const filterdTagsByGroup =
+      activeTagGroup === null ? tags : filter((t: TTag) => t.group === activeTagGroup, tags)
+
+    return filter(
+      (t: TTag) => t.thread === (activeTagThread || '').toUpperCase(),
+      filterdTagsByGroup,
+    )
+  }, [tags, activeTagThread, activeTagGroup])
+
+  const getGroups = useCallback((): string[] => {
+    return uniq(pluck('group', tags))
+  }, [tags])
+
+  const getThreads = useCallback((): TCommunityThread[] => {
+    const mappedThreads = curCommunity.threads.map((pThread) => {
+      const aliasItem = find(propEq(pThread.slug, 'slug'))(nameAlias) as TNameAlias
+
+      return {
+        ...pThread,
+        title: aliasItem?.name || pThread.title,
+      }
+    })
+
+    return reject(
+      (thread: TCommunityThread) => includes(thread.slug, [THREAD.ABOUT, THREAD.DOC]),
+      mappedThreads,
+    )
+  }, [curCommunity, nameAlias])
+
   const getTagsIndexTouched = useCallback((): boolean => {
     return !equals(sortByIndex(tags, 'id'), sortByIndex(initSettings.tags || [], 'id'))
   }, [tags, initSettings.tags])
-
   // drived states end
 
-  const editTag = (key: 'settingTag' | 'editingTag', tag: TTag): void => {
+  const editTag = (key: 'settingTag' | 'editingTag', tag: TTag): void =>
     store.commit({ [key]: tag })
-  }
 
-  const changeThread = (thread: string) => {
-    store.commit({ activeTagThread: thread })
-    // loadTags(thread)
-  }
+  const changeThread = (thread: string) => store.commit({ activeTagThread: thread })
 
-  const _reindex = (tags: TTag[]): TTag[] =>
-    tags.map((item, index) => ({
-      ...item,
-      index,
-    }))
+  const _reindex = (tags: TTag[]): TTag[] => tags.map((item, index) => ({ ...item, index }))
 
   const _moveTag = (tag: TTag, opt: 'up' | 'down'): void => {
     const { tags } = store
     const { group } = tag
 
     const groupTags = clone(sortByIndex(filter((item: TTag) => item.group === group, tags)))
-    const restTags = clone(reject((item: TTag) => item.group === group, tags))
+    const restTags = reject((item: TTag) => item.group === group, tags)
     const tagIndex = findIndex((item: TTag) => item.id === tag.id, groupTags)
 
     const targetIndex = opt === 'up' ? tagIndex - 1 : tagIndex + 1
@@ -176,12 +173,14 @@ export default (): TRet => {
     saving,
     editingTag,
     settingTag,
-    tags: filterdTags,
-    groups: uniq(pluck('group', store.tags)),
     activeTagThread,
     activeTagGroup,
-    threads: curThreads,
+    // drived states
+    getTags,
+    getGroups,
+    getThreads,
     getTagsIndexTouched,
+    //
     changeThread,
     editTag,
     edit,
