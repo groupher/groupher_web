@@ -4,9 +4,6 @@
  *
  */
 
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
 import { FOOTER_LAYOUT } from '@/const/layout'
 import useFooterLinks from '@/hooks/useFooterLinks'
 import useMetric from '@/hooks/useMetric'
@@ -18,7 +15,7 @@ import PowerbyInfo from './PowerbyInfo'
 
 import { Wrapper, InnerWrapper } from '../styles'
 
-const Footer: FC = () => {
+export default () => {
   const { slug } = useViewingCommunity()
   const { layout } = useFooterLinks()
   const metric = useMetric()
@@ -34,5 +31,3 @@ const Footer: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(Footer)

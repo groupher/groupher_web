@@ -1,5 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { keys } from 'ramda'
 
 import { DEME_SOCIALS } from '@/const/social'
@@ -24,7 +22,7 @@ import {
   LinkItem,
 } from '../styles/desktop_view/group_layout'
 
-const GroupLayout: FC = () => {
+export default () => {
   const { logo, desc, title } = useViewingCommunity()
   const { links } = useFooterLinks()
 
@@ -67,5 +65,3 @@ const GroupLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(GroupLayout)

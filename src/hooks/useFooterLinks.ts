@@ -1,26 +1,22 @@
-import { useContext, useMemo } from 'react'
-import { MobXProviderContext } from 'mobx-react'
+import { useMemo } from 'react'
 
 import type { TLinkItem, TFooterLayout } from '@/spec'
+import useSubStore from '@/hooks/useSubStore'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 type TFooterLinks = {
   layout: TFooterLayout
   links: TLinkItem[]
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
-const useFooterLinks = (): TFooterLinks => {
-  const { store } = useContext(MobXProviderContext)
+export default (): TFooterLinks => {
+  const store = useSubStore('dashboard')
 
-  const viewingCommunity = store.viewing.community.slug
-  const footerlinks = useMemo(() => store.dashboardThread.footerLinksData, [viewingCommunity])
+  const viewingCommunity = useViewingCommunity()
+  const footerlinks = useMemo(() => store.footerLinks, [viewingCommunity.slug])
 
   return {
-    layout: store.dashboardThread.footerLayout,
+    layout: store.footerLayout,
     links: footerlinks,
   }
 }
-
-export default useFooterLinks

@@ -13,9 +13,6 @@ type THeaderLinks = {
   customLinks: TLinkItem[]
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 export default (): THeaderLinks => {
   const store = useSubStore('dashboard')
   const viewingCommunity = useViewingCommunity()
