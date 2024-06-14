@@ -12,6 +12,7 @@ import type { TMoveLinkDir } from '../../spec'
 import { EMPTY_LINK_ITEM } from '../../constant'
 
 import useUtils from './useUtils'
+import useDrived, { type TRet as TDrived } from './useDrived'
 
 export type TRet = {
   resetEditingLink: () => void
@@ -39,7 +40,7 @@ export type TRet = {
   moveGroup2Right: (group: string) => void
   moveGroup2EdgeLeft: (group: string) => void
   moveGroup2EdgeRight: (group: string) => void
-}
+} & TDrived
 
 export default (): TRet => {
   const store = useSubStore('dashboard')
@@ -55,6 +56,7 @@ export default (): TRet => {
     confirmGroupUpdate,
     keepMoreGroup2EndIfNeed,
   } = useUtils()
+  const drived = useDrived()
 
   const { curTab } = store
   const linksKey = curTab !== DASHBOARD_ROUTE.FOOTER ? 'headerLinks' : 'footerLinks'
@@ -254,6 +256,7 @@ export default (): TRet => {
   const moveGroup2EdgeRight = (group: string): void => moveGroup(group, 'edge-right')
 
   return {
+    ...drived,
     updateInGroup,
     add2Group,
     deleteLink,

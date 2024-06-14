@@ -1,5 +1,4 @@
-import { type FC, memo } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
 import Tooltip from '@/widgets/Tooltip'
 import { SpaceGrow } from '@/widgets/Common'
@@ -88,4 +87,4 @@ const GroupHead: FC<TProps> = ({
   )
 }
 
-export default observer(GroupHead)
+export default GroupHead

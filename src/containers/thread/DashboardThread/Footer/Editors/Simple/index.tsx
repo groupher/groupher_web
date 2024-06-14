@@ -1,6 +1,5 @@
 import type { FC } from 'react'
 import { keys } from 'ramda'
-import { observer } from 'mobx-react-lite'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import type { TLinkItem } from '@/spec'
@@ -65,4 +64,4 @@ const Simple: FC = () => {
   )
 }
 
-export default observer(Simple)
+export default Simple

@@ -1,9 +1,7 @@
 import type { TFooterLayout, TCommunityThread, TLinkItem, TEditValue } from '@/spec'
-import { publicThreads } from '@/helper'
 
 import type { TSettingField } from '@/stores2/dashboardStore/spec'
 import useSubStore from '@/hooks/useSubStore'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import type { TLinkState } from '../spec'
 
@@ -23,8 +21,7 @@ type TRet = {
 export default (): TRet => {
   const store = useSubStore('dashboard')
   const useLinksData = useLinks()
-  const { edit, isChanged } = useHelper()
-  const community = useViewingCommunity()
+  const { edit } = useHelper()
 
   const {
     footerLayout,
@@ -33,8 +30,6 @@ export default (): TRet => {
     editingLinkMode,
     editingGroup,
     editingGroupIndex,
-    enable,
-    nameAlias,
     saving,
   } = store
 
@@ -46,10 +41,7 @@ export default (): TRet => {
     editingLinkMode,
     editingGroup,
     editingGroupIndex,
-    threads: publicThreads(community.threads, { enable, nameAlias }),
     saving,
-    isTouched: isChanged('footerLinks') && editingLink === null,
-    isLayoutTouched: isChanged('footerLayout'),
     ...useLinksData,
   }
 }

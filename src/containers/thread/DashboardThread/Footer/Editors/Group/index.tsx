@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { keys } from 'ramda'
 
 import { useAutoAnimate } from '@formkit/auto-animate/react'
@@ -123,4 +122,4 @@ const Group: FC = () => {
   )
 }
 
-export default observer(Group)
+export default Group

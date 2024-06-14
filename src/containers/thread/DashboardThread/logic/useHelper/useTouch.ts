@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react'
 import { equals, any } from 'ramda'
 
 import useSubStore from '@/hooks/useSubStore'
@@ -14,23 +13,11 @@ export type TRet = {
 export default (): TRet => {
   const store = useSubStore('dashboard')
 
-  const storeRef = useRef(store)
-  useEffect(() => {
-    storeRef.current = store
-  }, [store])
+  const { initSettings } = store
 
-  const { initSettings } = storeRef.current
-
-  const isChanged = (field: TSettingField): boolean => {
-    return !equals(store[field], initSettings[field])
-  }
-
+  const isChanged = (field: TSettingField): boolean => !equals(store[field], initSettings[field])
   const anyChanged = (fields: TSettingField[]): boolean => any(isChanged)(fields)
-
-  const mapArrayChanged = (key: string): boolean => {
-    // return JSON.stringify(toJS(store[key])) !== JSON.stringify(toJS(initSettings[key]))
-    return !equals(store[key], initSettings[key])
-  }
+  const mapArrayChanged = (key: string): boolean => !equals(store[key], initSettings[key])
 
   return {
     isChanged,

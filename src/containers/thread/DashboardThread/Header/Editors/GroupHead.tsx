@@ -1,6 +1,5 @@
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 import { startsWith } from 'ramda'
-import { observer } from 'mobx-react-lite'
 
 import { ONE_LINK_GROUP, MORE_GROUP } from '@/const/dashboard'
 
@@ -127,4 +126,4 @@ const GroupHead: FC<TProps> = ({
   )
 }
 
-export default observer(GroupHead)
+export default GroupHead

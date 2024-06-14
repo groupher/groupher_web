@@ -69,11 +69,13 @@ export const NameAlias = T.model('NameAlias', {
 })
 
 export const LinkItem = T.model('LinkItem', {
-  index: T.opt(T.int, 0),
+  // index: T.opt(T.int, 0),
+  index: T.maybeNull(T.int),
   title: T.opt(T.str, ''),
   link: T.opt(T.str, ''),
   group: T.opt(T.str, ''),
-  groupIndex: T.opt(T.int, 0),
+  // groupIndex: T.opt(T.int, 0),
+  groupIndex: T.maybeNull(T.int),
 })
 
 export const SocialLink = T.model('SocialLink', {

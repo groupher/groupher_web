@@ -1,5 +1,4 @@
 import { type FC, useState } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import { HEADER_LAYOUT } from '@/const/layout'
 
@@ -14,9 +13,12 @@ import useHeader from '../../logic/useHeader'
 import { Wrapper, ArrowIcon, ToggleButton, ToggleText } from '../../styles/header/templates'
 
 const Templates: FC = () => {
-  const { isLayoutTouched, headerLayout, saving, headerLinks: links, threads } = useHeader()
+  const { getIsLayoutTouched, headerLayout, saving, headerLinks: links, getThreads } = useHeader()
   const [showAll, setShowAll] = useState<boolean>(false)
+  const threads = getThreads()
   const linksProps = { threads, links }
+
+  const isLayoutTouched = getIsLayoutTouched()
 
   return (
     <Wrapper>
@@ -56,4 +58,4 @@ const Templates: FC = () => {
   )
 }
 
-export default observer(Templates)
+export default Templates

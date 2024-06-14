@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import { SETTING_FIELD } from '../constant'
 
@@ -12,7 +11,8 @@ import useHeader from '../logic/useHeader'
 import { Wrapper } from '../styles/header'
 
 const Header: FC = () => {
-  const { isTouched, saving } = useHeader()
+  const { saving, getIsTouched } = useHeader()
+  const isTouched = getIsTouched()
 
   return (
     <Wrapper>
@@ -32,4 +32,4 @@ const Header: FC = () => {
   )
 }
 
-export default observer(Header)
+export default Header

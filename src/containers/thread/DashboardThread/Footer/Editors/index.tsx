@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import { FOOTER_LAYOUT } from '@/const/layout'
 
@@ -18,4 +17,4 @@ const Editor: FC = () => {
   )
 }
 
-export default observer(Editor)
+export default Editor

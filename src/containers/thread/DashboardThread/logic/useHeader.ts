@@ -1,9 +1,7 @@
-import type { THeaderLayout, TCommunityThread, TLinkItem, TEditValue } from '@/spec'
-import { publicThreads } from '@/helper'
+import type { THeaderLayout, TLinkItem, TEditValue } from '@/spec'
 
 import type { TSettingField } from '@/stores2/dashboardStore/spec'
 import useSubStore from '@/hooks/useSubStore'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import type { TLinkState } from '../spec'
 
@@ -13,9 +11,6 @@ import useHelper from './useHelper'
 type TRet = {
   headerLayout: THeaderLayout
   headerLinks: TLinkItem[]
-  threads: TCommunityThread[]
-  isTouched: boolean
-  isLayoutTouched: boolean
   edit: (value: TEditValue, field: TSettingField) => void
 } & TLinkState &
   TUserLinks
@@ -23,8 +18,7 @@ type TRet = {
 export default (): TRet => {
   const store = useSubStore('dashboard')
   const useLinksData = useLinks()
-  const { edit, isChanged } = useHelper()
-  const community = useViewingCommunity()
+  const { edit } = useHelper()
 
   const {
     headerLayout,
@@ -33,8 +27,6 @@ export default (): TRet => {
     editingLinkMode,
     editingGroup,
     editingGroupIndex,
-    enable,
-    nameAlias,
     saving,
   } = store
 
@@ -47,13 +39,7 @@ export default (): TRet => {
     editingGroup,
     editingGroupIndex,
 
-    // TODO: use drived state
-    threads: publicThreads(community.threads, { enable, nameAlias }),
     saving,
-    // TODO: use drived state
-    isTouched: isChanged('headerLinks') && editingLink === null,
-    // TODO: use drived state
-    isLayoutTouched: isChanged('headerLayout'),
     ...useLinksData,
   }
 }

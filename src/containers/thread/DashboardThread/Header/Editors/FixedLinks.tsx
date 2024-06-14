@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { reject } from 'ramda'
 
 import type { TCommunityThread } from '@/spec'
@@ -61,4 +60,4 @@ const FixedLinks: FC<TProps> = ({ isAboutLinkFold }) => {
   )
 }
 
-export default observer(FixedLinks)
+export default FixedLinks
