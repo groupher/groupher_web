@@ -28,8 +28,6 @@ export default (): TRet => {
   const { mutation } = useMutation()
 
   const edit = useCallback((v: TEditValue, field: TSettingField): void => {
-    console.log('## edit helper')
-
     let value = v
     if (isObject(v) && has('target', v)) {
       // @ts-ignore

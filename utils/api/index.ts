@@ -33,7 +33,8 @@ type TClearifyObject = {
 }
 // remove __typename if need, avoid GraphQL error
 const clearfy = (obj: TClearifyInput): TClearifyInput => {
-  if (!obj) return null
+  // NOTE: do not use !obj here, otherwise it will treat 0 as null
+  if (obj === null) return null
 
   if (Array.isArray(obj)) {
     return obj.map(clearfy)
