@@ -50,7 +50,6 @@ export default (): TRet => {
   }, [curCommunity, nameAlias])
 
   const getTagsIndexTouched = useCallback((): boolean => {
-    console.log('## getTagsIndexTouched new')
     return !equals(sortByIndex(tags, 'id'), sortByIndex(initSettings.tags || [], 'id'))
   }, [tags, initSettings.tags])
 

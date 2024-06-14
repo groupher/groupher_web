@@ -1,4 +1,4 @@
-import type { TFooterLayout, TCommunityThread, TLinkItem, TEditValue } from '@/spec'
+import type { TFooterLayout, TLinkItem, TEditValue } from '@/spec'
 
 import type { TSettingField } from '@/stores2/dashboardStore/spec'
 import useSubStore from '@/hooks/useSubStore'
@@ -11,9 +11,6 @@ import useHelper from './useHelper'
 type TRet = {
   footerLayout: TFooterLayout
   footerLinks: TLinkItem[]
-  threads: TCommunityThread[]
-  isTouched: boolean
-  isLayoutTouched: boolean
   edit: (value: TEditValue, field: TSettingField) => void
 } & TLinkState &
   TUserLinks

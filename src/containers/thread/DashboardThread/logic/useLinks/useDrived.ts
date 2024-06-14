@@ -12,9 +12,6 @@ type TLinksType = 'headerLinks' | 'footerLinks'
 type TLayoutType = 'headerLayout' | 'footerLayout'
 
 export type TRet = {
-  threads: TCommunityThread[]
-  isTouched: boolean
-  isLayoutTouched: boolean
   getThreads: () => TCommunityThread[]
   getIsTouched: (type?: TLinksType) => boolean
   getIsLayoutTouched: (layout?: TLayoutType) => boolean
@@ -49,10 +46,5 @@ export default (): TRet => {
     getThreads,
     getIsTouched,
     getIsLayoutTouched,
-    threads: publicThreads(community.threads, { enable, nameAlias }),
-    // TODO: use drived state
-    isTouched: isChanged('headerLinks') && editingLink === null,
-    // TODO: use drived state
-    isLayoutTouched: isChanged('headerLayout'),
   }
 }
