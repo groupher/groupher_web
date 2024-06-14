@@ -1,13 +1,10 @@
-import type { TTag, TEditValue, TThread } from '@/spec'
-import { THREAD } from '@/const/thread'
+import { pick } from 'ramda'
 
+import type { TTag, TEditValue, TThread } from '@/spec'
 import type { TSettingField, TChangeTagMode } from '@/stores3/dashboard/spec'
 import useSubState from '@/hooks/useSubStore'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import { query } from '@/utils/api'
 
 import useHelper from '../useHelper'
-import S from '../../schema'
 
 import useUtils from './useUtils'
 import useDrived, { type TRet as TDrived } from './useDrived'
@@ -34,27 +31,8 @@ type TRet = {
 export default (): TRet => {
   const store = useSubState('dashboard')
   const { edit } = useHelper()
-  const curCommunity = useViewingCommunity()
   const drived = useDrived()
-  const { moveTag, moveTag2Edge } = useUtils()
-
-  const { loading, activeTagGroup, activeTagThread, editingTag, settingTag, saving, initSettings } =
-    store
-
-  const loadTags = (activeThread = THREAD.POST): void => {
-    const community = curCommunity.slug
-    const thread = activeThread.toUpperCase()
-
-    const params = {
-      filter: { community, thread },
-    }
-
-    store.commit({ loading: true })
-    query(S.pagedArticleTags, params).then((data) => {
-      const tags = data.pagedArticleTags.entries
-      store.commit({ tags, initSettings: { ...initSettings, tags }, loading: false })
-    })
-  }
+  const { loadTags, moveTag, moveTag2Edge } = useUtils()
 
   const editTag = (key: TChangeTagMode, tag: TTag): void => store.commit({ [key]: tag })
   const changeThread = (thread: string) => store.commit({ activeTagThread: thread })
@@ -65,13 +43,20 @@ export default (): TRet => {
   const moveTag2Bottom = (tag: TTag): void => moveTag2Edge(tag, 'bottom')
 
   return {
-    loading,
-    saving,
-    editingTag,
-    settingTag,
-    activeTagThread,
-    activeTagGroup,
+    ...pick(
+      [
+        'loading',
+        'editingTag',
+        'activeTagGroup',
+        'activeTagThread',
+        'settingTag',
+        'loading',
+        'saving',
+      ],
+      store,
+    ),
     ...drived,
+    // actions
     changeThread,
     editTag,
     edit,
