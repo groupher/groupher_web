@@ -1,5 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
@@ -32,7 +30,7 @@ import {
 // 没有各种外链接，打赏信息等的官方社区
 // const NON_STANDARD_COMMUNITIES = [HCN, 'feedback']
 
-const TabberLayout: FC = () => {
+export default () => {
   const router = useRouter()
   const metric = useMetric()
   const { isMobile } = useMobileDetect()
@@ -77,5 +75,3 @@ const TabberLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(TabberLayout)

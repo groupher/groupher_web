@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TSpace } from '@/spec'
 import { HEADER_LAYOUT } from '@/const/layout'
@@ -18,12 +17,12 @@ type TProps = TSpace
 
 const ThreadTab: FC<TProps> = ({ ...restProps }) => {
   const community = useViewingCommunity()
-  const { layout: headerLayout, customLinks } = useHeaderLinks()
+  const { layout, customLinks } = useHeaderLinks()
   const threads = usePublicThreads()
   const activeThread = useViewingThread()
   const primaryColor = usePrimaryColor()
 
-  const Wrapper = headerLayout === HEADER_LAYOUT.FLOAT ? FloatWrapper : NormalWrapper
+  const Wrapper = layout === HEADER_LAYOUT.FLOAT ? FloatWrapper : NormalWrapper
 
   return (
     <Wrapper {...restProps}>
@@ -43,4 +42,4 @@ const ThreadTab: FC<TProps> = ({ ...restProps }) => {
   )
 }
 
-export default observer(ThreadTab)
+export default ThreadTab

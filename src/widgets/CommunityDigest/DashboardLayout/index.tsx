@@ -1,6 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
 import { ANCHOR } from '@/const/dom'
 import useHeaderLinks from '@/hooks/useHeaderLinks'
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
@@ -20,9 +17,9 @@ import {
   CommunityBaseInfo,
 } from '../styles/dashboard_layout'
 
-const DashboardLayout: FC = () => {
+export default () => {
   const metric = useMetric()
-  const { layout: headerLayout } = useHeaderLinks()
+  const { layout } = useHeaderLinks()
   const { enterView, leaveView } = useCommunityDigestViewport()
 
   return (
@@ -30,7 +27,7 @@ const DashboardLayout: FC = () => {
       id={ANCHOR.GLOBAL_HEADER_ID}
       $testid="community-digest"
       metric={metric}
-      $headerLayout={headerLayout}
+      $headerLayout={layout}
     >
       <InnerWrapper metric={metric}>
         <BannerContentWrapper>
@@ -45,5 +42,3 @@ const DashboardLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(DashboardLayout)

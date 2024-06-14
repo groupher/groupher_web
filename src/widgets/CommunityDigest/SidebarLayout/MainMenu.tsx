@@ -1,6 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import usePublicThreads from '@/hooks/usePublicThreads'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
@@ -13,7 +10,7 @@ import ThreadIcon from './ThreadIcon'
 
 import { Wrapper, MenuItem, MenuTitle } from '../styles/sidebar_layout/main_menu'
 
-const MainMenu: FC = () => {
+export default () => {
   const community = useViewingCommunity()
   const primaryColor = usePrimaryColor()
   const communityPath = community?.slug
@@ -42,5 +39,3 @@ const MainMenu: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(MainMenu)
