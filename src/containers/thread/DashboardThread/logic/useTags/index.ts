@@ -1,18 +1,15 @@
-import { reject, filter, findIndex, remove, clone } from 'ramda'
-
 import type { TTag, TEditValue, TThread } from '@/spec'
 import { THREAD } from '@/const/thread'
-import { sortByIndex } from '@/helper'
 
 import type { TSettingField, TChangeTagMode } from '@/stores3/dashboard/spec'
 import useSubState from '@/hooks/useSubStore'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
-
 import { query } from '@/utils/api'
 
 import useHelper from '../useHelper'
 import S from '../../schema'
 
+import useUtils from './useUtils'
 import useDrived, { type TRet as TDrived } from './useDrived'
 
 type TRet = {
@@ -39,6 +36,7 @@ export default (): TRet => {
   const { edit } = useHelper()
   const curCommunity = useViewingCommunity()
   const drived = useDrived()
+  const { moveTag, moveTag2Edge } = useUtils()
 
   const { loading, activeTagGroup, activeTagThread, editingTag, settingTag, saving, initSettings } =
     store
@@ -61,51 +59,10 @@ export default (): TRet => {
   const editTag = (key: TChangeTagMode, tag: TTag): void => store.commit({ [key]: tag })
   const changeThread = (thread: string) => store.commit({ activeTagThread: thread })
 
-  const _reindex = (tags: TTag[]): TTag[] => tags.map((item, index) => ({ ...item, index }))
-
-  const _moveTag = (tag: TTag, opt: 'up' | 'down'): void => {
-    const { tags } = store
-    const { group } = tag
-
-    const groupTags = clone(sortByIndex(filter((item: TTag) => item.group === group, tags)))
-    const restTags = reject((item: TTag) => item.group === group, tags)
-    const tagIndex = findIndex((item: TTag) => item.id === tag.id, groupTags)
-
-    const targetIndex = opt === 'up' ? tagIndex - 1 : tagIndex + 1
-
-    const tmp = groupTags[targetIndex]
-    groupTags[targetIndex] = groupTags[tagIndex]
-    groupTags[tagIndex] = tmp
-
-    const tmpIndex = groupTags[targetIndex].index
-    groupTags[targetIndex].index = groupTags[tagIndex].index
-    groupTags[tagIndex].index = tmpIndex
-
-    store.commit({ tags: [...restTags, ..._reindex(groupTags)] })
-  }
-
-  const _moveTag2Edge = (tag: TTag, opt: 'top' | 'bottom'): void => {
-    const { tags } = store
-    const { group } = tag
-
-    const groupTags = filter((item: TTag) => item.group === group, tags)
-    const restTags = reject((item: TTag) => item.group === group, tags)
-
-    const curTagItemIndex = findIndex((item: TTag) => item.id === tag.id, groupTags)
-    const curTagItem = groupTags[curTagItemIndex]
-
-    const newTags =
-      opt === 'top'
-        ? [curTagItem, ...remove(curTagItemIndex, 1, groupTags)]
-        : [...remove(curTagItemIndex, 1, groupTags), curTagItem]
-
-    store.commit({ tags: [...restTags, ..._reindex(newTags)] })
-  }
-
-  const moveTagUp = (tag: TTag): void => _moveTag(tag, 'up')
-  const moveTagDown = (tag: TTag): void => _moveTag(tag, 'down')
-  const moveTag2Top = (tag: TTag): void => _moveTag2Edge(tag, 'top')
-  const moveTag2Bottom = (tag: TTag): void => _moveTag2Edge(tag, 'bottom')
+  const moveTagUp = (tag: TTag): void => moveTag(tag, 'up')
+  const moveTagDown = (tag: TTag): void => moveTag(tag, 'down')
+  const moveTag2Top = (tag: TTag): void => moveTag2Edge(tag, 'top')
+  const moveTag2Bottom = (tag: TTag): void => moveTag2Edge(tag, 'bottom')
 
   return {
     loading,

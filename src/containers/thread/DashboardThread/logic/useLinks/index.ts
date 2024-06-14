@@ -11,7 +11,7 @@ import useSubStore from '@/hooks/useSubStore'
 import type { TMoveLinkDir } from '../../spec'
 import { EMPTY_LINK_ITEM } from '../../constant'
 
-import useCommon from './useCommon'
+import useUtils from './useUtils'
 
 export type TRet = {
   resetEditingLink: () => void
@@ -54,7 +54,7 @@ export default (): TRet => {
     confirmGroupAdd,
     confirmGroupUpdate,
     keepMoreGroup2EndIfNeed,
-  } = useCommon()
+  } = useUtils()
 
   const { curTab } = store
   const linksKey = curTab !== DASHBOARD_ROUTE.FOOTER ? 'headerLinks' : 'footerLinks'

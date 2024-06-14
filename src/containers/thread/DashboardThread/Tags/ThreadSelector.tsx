@@ -14,14 +14,13 @@ export default () => {
         {getThreads().map((thread) => (
           <Button
             key={thread.slug}
-            ghost={thread.slug !== active}
             size="small"
             noBorder={thread.slug !== active}
             onClick={() => {
               changeThread(thread.slug)
-              // reloadArticleTags()
             }}
             space={10}
+            ghost
           >
             {thread.title}
           </Button>
