@@ -17,11 +17,11 @@ type TRet = {
   activeTagGroup: string
   activeTagThread: string
 
-  loadTags: (thread?: TThread) => void
   edit: (value: TEditValue, field: TSettingField) => void
   changeThread: (thread: string) => void
   editTag: (key: TChangeTagMode, tag: TTag) => void
 
+  loadTags: (thread?: TThread) => void
   moveTagUp: (tag: TTag) => void
   moveTagDown: (tag: TTag) => void
   moveTag2Top: (tag: TTag) => void
@@ -34,6 +34,16 @@ export default (): TRet => {
   const drived = useDrived()
   const { loadTags, moveTag, moveTag2Edge } = useUtils()
 
+  const exportState = [
+    'loading',
+    'editingTag',
+    'activeTagGroup',
+    'activeTagThread',
+    'settingTag',
+    'loading',
+    'saving',
+  ]
+
   const editTag = (key: TChangeTagMode, tag: TTag): void => store.commit({ [key]: tag })
   const changeThread = (thread: string) => store.commit({ activeTagThread: thread })
 
@@ -43,28 +53,17 @@ export default (): TRet => {
   const moveTag2Bottom = (tag: TTag): void => moveTag2Edge(tag, 'bottom')
 
   return {
-    ...pick(
-      [
-        'loading',
-        'editingTag',
-        'activeTagGroup',
-        'activeTagThread',
-        'settingTag',
-        'loading',
-        'saving',
-      ],
-      store,
-    ),
+    ...pick(exportState, store),
     ...drived,
     // actions
     changeThread,
     editTag,
     edit,
     // move actions
+    loadTags,
     moveTagUp,
     moveTagDown,
     moveTag2Top,
     moveTag2Bottom,
-    loadTags,
   }
 }
