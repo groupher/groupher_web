@@ -18,7 +18,8 @@ export default () => {
   const publicThreads = usePublicThreads()
   const activeThread = useViewingThread()
 
-  const { customLinks } = useHeaderLinks()
+  const { getCustomLinks } = useHeaderLinks()
+  const customLinks = getCustomLinks()
 
   return (
     <Wrapper>

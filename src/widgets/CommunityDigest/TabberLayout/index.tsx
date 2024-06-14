@@ -39,8 +39,9 @@ export default () => {
   const activeThread = useViewingThread()
   const community = useViewingCommunity()
   const brandLayout = useBrandLayout()
+  const { getCustomLinks } = useHeaderLinks()
 
-  const { customLinks } = useHeaderLinks()
+  const customLinks = getCustomLinks()
 
   return (
     <Wrapper

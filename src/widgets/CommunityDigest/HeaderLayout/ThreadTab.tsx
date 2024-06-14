@@ -17,11 +17,12 @@ type TProps = TSpace
 
 const ThreadTab: FC<TProps> = ({ ...restProps }) => {
   const community = useViewingCommunity()
-  const { layout, customLinks } = useHeaderLinks()
+  const { layout, getCustomLinks } = useHeaderLinks()
   const threads = usePublicThreads()
   const activeThread = useViewingThread()
   const primaryColor = usePrimaryColor()
 
+  const customLinks = getCustomLinks()
   const Wrapper = layout === HEADER_LAYOUT.FLOAT ? FloatWrapper : NormalWrapper
 
   return (

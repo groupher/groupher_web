@@ -1,8 +1,5 @@
-import { useMemo } from 'react'
-
 import type { TLinkItem, TFooterLayout } from '@/spec'
 import useSubStore from '@/hooks/useSubStore'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 type TFooterLinks = {
   layout: TFooterLayout
@@ -10,13 +7,10 @@ type TFooterLinks = {
 }
 
 export default (): TFooterLinks => {
-  const store = useSubStore('dashboard')
-
-  const viewingCommunity = useViewingCommunity()
-  const footerlinks = useMemo(() => store.footerLinks, [viewingCommunity.slug])
+  const { footerLayout, footerLinks } = useSubStore('dashboard')
 
   return {
-    layout: store.footerLayout,
-    links: footerlinks,
+    layout: footerLayout,
+    links: footerLinks,
   }
 }

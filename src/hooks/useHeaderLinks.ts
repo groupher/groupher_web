@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useCallback } from 'react'
 import { find } from 'ramda'
 
 import type { TLinkItem, THeaderLayout } from '@/spec'
@@ -10,7 +10,7 @@ import useViewingCommunity from '@/hooks/useViewingCommunity'
 type THeaderLinks = {
   layout: THeaderLayout
   links: TLinkItem[]
-  customLinks: TLinkItem[]
+  getCustomLinks: () => TLinkItem[]
 }
 
 export default (): THeaderLinks => {
@@ -19,34 +19,34 @@ export default (): THeaderLinks => {
   const community = viewingCommunity.slug
 
   const { headerLinks } = store
-  // const { isModerator } = store.accountInfo
+  // TODO:
   const isModerator = true
 
-  const hasExtraAbout = find((link: TLinkItem) => link.title === '关于', headerLinks)
+  const getCustomLinks = useCallback(() => {
+    const hasExtraAbout = find((link: TLinkItem) => link.title === '关于', headerLinks)
 
-  const aboutLink = !hasExtraAbout
-    ? {
-        index: 999,
-        title: '关于',
-        group: MORE_GROUP,
-        link: `/${community}/about`,
-      }
-    : { title: '', index: 0 }
+    const aboutLink = !hasExtraAbout
+      ? {
+          index: 999,
+          title: '关于',
+          group: MORE_GROUP,
+          link: `/${community}/about`,
+        }
+      : { title: '', index: 0 }
 
-  const dashboardLink = {
-    index: 1000,
-    title: '控制台',
-    group: MORE_GROUP,
-    link: `/${community}/dashboard`,
-  }
+    const dashboardLink = {
+      index: 1000,
+      title: '控制台',
+      group: MORE_GROUP,
+      link: `/${community}/dashboard`,
+    }
 
-  const customLinks = useMemo(() => {
     return isModerator ? [...headerLinks, aboutLink, dashboardLink] : headerLinks
-  }, [community])
+  }, [headerLinks, community])
 
   return {
     layout: store.headerLayout,
     links: headerLinks,
-    customLinks,
+    getCustomLinks,
   }
 }
