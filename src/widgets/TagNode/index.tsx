@@ -5,10 +5,9 @@
  */
 
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TColorName } from '@/spec'
-import useTagLayout from '@/hooks/useTagLayout'
+import useLayout from '@/hooks/useLayout'
 import useTheme from '@/hooks/useTheme'
 
 import { TAG_LAYOUT } from '@/const/layout'
@@ -44,7 +43,7 @@ const TagNode: FC<TProps> = ({
   opacity = 1,
   boldHash = false,
 }) => {
-  const tagLayout = useTagLayout()
+  const { tagLayout } = useLayout()
   const { theme } = useTheme()
   const darkTheme = theme === THEME.NIGHT
 
@@ -76,4 +75,4 @@ const TagNode: FC<TProps> = ({
   )
 }
 
-export default observer(TagNode)
+export default TagNode

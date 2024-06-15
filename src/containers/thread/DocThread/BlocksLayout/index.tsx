@@ -1,15 +1,12 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
-import useBannerLayout from '@/hooks/useBannerLayout'
+import useLayout from '@/hooks/useLayout'
 import { mockHelpCats } from '@/mock'
 
 import Category from './Category'
 import { Wrapper, CatsWrapper } from '../styles/blocks_layout'
 
-const BlocksLayout: FC = () => {
+export default () => {
   const cats = mockHelpCats()
-  const bannerLayout = useBannerLayout()
+  const { bannerLayout } = useLayout()
 
   return (
     <Wrapper $bannerLayout={bannerLayout}>
@@ -21,5 +18,3 @@ const BlocksLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(BlocksLayout)

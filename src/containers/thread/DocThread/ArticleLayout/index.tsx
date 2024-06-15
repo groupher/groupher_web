@@ -1,4 +1,4 @@
-import { type FC, memo, useState } from 'react'
+import { type FC, useState } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { BANNER_LAYOUT } from '@/const/layout'
@@ -9,7 +9,7 @@ import FeedbackFooter from '@/widgets/FeedbackFooter'
 import Sticky from '@/widgets/Sticky'
 import CustomScroller from '@/widgets/CustomScroller'
 
-import useBannerLayout from '@/hooks/useBannerLayout'
+import useLayout from '@/hooks/useLayout'
 
 import PinedTree from './PinedTree'
 import FaqLayout from '../FaqLayout'
@@ -37,7 +37,7 @@ const ArticleLayout: FC<TProps> = ({ isFAQArticleLayout }) => {
   const [filetreeOpen, setFileTreeOpen] = useState(true)
 
   const { isMobile } = useMobileDetect()
-  const bannerLayout = useBannerLayout()
+  const { bannerLayout } = useLayout()
 
   return (
     <Wrapper>
@@ -108,4 +108,4 @@ const ArticleLayout: FC<TProps> = ({ isFAQArticleLayout }) => {
   )
 }
 
-export default memo(ArticleLayout)
+export default ArticleLayout

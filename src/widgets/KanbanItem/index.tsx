@@ -5,10 +5,9 @@
  */
 
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TArticle } from '@/spec'
-import useKanbanLayout from '@/hooks/useKanbanLayout'
+import useLayout from '@/hooks/useLayout'
 import { KANBAN_LAYOUT } from '@/const/layout'
 
 // import IconButton from '@/widgets/Buttons/IconButton'
@@ -21,13 +20,13 @@ type TProps = {
 }
 
 const KanbanItem: FC<TProps> = ({ article }) => {
-  const layout = useKanbanLayout()
+  const { kanbanLayout } = useLayout()
 
-  return layout === KANBAN_LAYOUT.WATERFALL ? (
+  return kanbanLayout === KANBAN_LAYOUT.WATERFALL ? (
     <WaterfallLayout article={article} />
   ) : (
     <ClassicLayout article={article} />
   )
 }
 
-export default observer(KanbanItem)
+export default KanbanItem

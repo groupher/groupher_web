@@ -5,7 +5,6 @@
  */
 
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TArticleCat, TArticleOrder, TArticleState } from '@/spec'
 import { refreshArticles, callGEditor, callSyncSelector } from '@/signal'
@@ -15,7 +14,7 @@ import TYPE from '@/const/type'
 import { BANNER_LAYOUT } from '@/const/layout'
 
 import usePagedPosts from '@/hooks/usePagedPosts'
-import useBannerLayout from '@/hooks/useBannerLayout'
+import useLayout from '@/hooks/useLayout'
 import useArticlesFilter from '@/hooks/useArticlesFilter'
 
 import { Space, SpaceGrow, DesktopOnly } from '@/widgets/Common'
@@ -29,7 +28,7 @@ import { Wrapper } from './styles'
 
 const ArticlesFilter: FC<TProps> = ({ mode = 'default' }) => {
   const { resState } = usePagedPosts()
-  const bannerLayout = useBannerLayout()
+  const { bannerLayout } = useLayout()
 
   const {
     cat: activeCat,
@@ -92,5 +91,4 @@ const ArticlesFilter: FC<TProps> = ({ mode = 'default' }) => {
   )
 }
 
-// export default ArticlesFilter
-export default observer(ArticlesFilter)
+export default ArticlesFilter

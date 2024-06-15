@@ -1,5 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
 import { BANNER_LAYOUT, BRAND_LAYOUT } from '@/const/layout'
@@ -9,8 +7,7 @@ import { prettyURL } from '@/fmt'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useViewingThread from '@/hooks/useViewingThread'
-import useBannerLayout from '@/hooks/useBannerLayout'
-import useBrandLayout from '@/hooks/useBrandLayout'
+import useLayout from '@/hooks/useLayout'
 
 import ImgFallback from '@/widgets/ImgFallback'
 import ArrowLinker from '@/widgets/ArrowLinker'
@@ -30,12 +27,11 @@ import {
 } from '../styles/sidebar_layout/community_brief'
 // import { subscribeCommunity, unsubscribeCommunity } from '../logic'
 
-const CommunityBrief: FC = () => {
+export default () => {
   const router = useRouter()
   const { logo, slug, title, desc, dashboard } = useViewingCommunity()
   const activeThread = useViewingThread()
-  const bannerLayout = useBannerLayout()
-  const brandLayout = useBrandLayout()
+  const { bannerLayout, brandLayout } = useLayout()
 
   const { baseInfo } = dashboard
 
@@ -76,5 +72,3 @@ const CommunityBrief: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(CommunityBrief)

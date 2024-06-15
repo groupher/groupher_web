@@ -1,20 +1,18 @@
 'use client'
 
-import { observer } from 'mobx-react-lite'
-
 import { BANNER_LAYOUT } from '@/const/layout'
 
 import useMetric from '@/hooks/useMetric'
-import useBannerLayout from '@/hooks/useBannerLayout'
+import useLayout from '@/hooks/useLayout'
 
 import CommunityDigest from '@/widgets/CommunityDigest'
 
 import { Wrapper, SidebarWrapper, InnerWrapper, ContentWrapper } from './styles'
 
-const Layout = ({ children }) => {
+export default ({ children }) => {
   const metric = useMetric()
+  const { bannerLayout } = useLayout()
 
-  const bannerLayout = useBannerLayout()
   const isSidebarLayout = bannerLayout === BANNER_LAYOUT.SIDEBAR
   const LayoutWrapper = isSidebarLayout ? SidebarWrapper : Wrapper
 
@@ -28,5 +26,3 @@ const Layout = ({ children }) => {
     </LayoutWrapper>
   )
 }
-
-export default observer(Layout)

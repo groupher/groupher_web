@@ -3,7 +3,6 @@
  */
 
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { DOC_LAYOUT } from '@/const/layout'
@@ -11,7 +10,7 @@ import { DOC_LAYOUT } from '@/const/layout'
 import { Divider } from '@/widgets/Common'
 import FaqList from '@/widgets/FaqList'
 
-import useBannerLayout from '@/hooks/useBannerLayout'
+import useLayout from '@/hooks/useLayout'
 
 import BlocksLayout from './BlocksLayout'
 import ListsLayout from './ListsLayout'
@@ -32,7 +31,7 @@ const DocThread: FC<TProps> = ({ title = 'title' }) => {
 
   const { isArticleLayout, layout, faqLayout, isFAQArticleLayout, faqSections } = store
   const { isMobile } = useMobileDetect()
-  const bannerLayout = useBannerLayout()
+  const { bannerLayout } = useLayout()
 
   if (isArticleLayout) {
     return <ArticleLayout isFAQArticleLayout={isFAQArticleLayout} />
@@ -53,4 +52,4 @@ const DocThread: FC<TProps> = ({ title = 'title' }) => {
   )
 }
 
-export default observer(DocThread)
+export default DocThread

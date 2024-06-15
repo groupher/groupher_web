@@ -3,10 +3,7 @@
  *
  */
 
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
-import useKanbanLayout from '@/hooks/useKanbanLayout'
+import useLayout from '@/hooks/useLayout'
 import { KANBAN_LAYOUT } from '@/const/layout'
 
 import WaterfallLayout from './WaterfallLayout'
@@ -14,8 +11,8 @@ import ClassicLayout from './ClassicLayout'
 
 import { Wrapper } from './styles'
 
-const KanbanThread: FC = () => {
-  const kanbanLayout = useKanbanLayout()
+export default () => {
+  const { kanbanLayout } = useLayout()
 
   return (
     <Wrapper>
@@ -23,5 +20,3 @@ const KanbanThread: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(KanbanThread)

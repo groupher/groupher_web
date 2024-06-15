@@ -5,14 +5,13 @@
  */
 
 import { type FC, useState } from 'react'
-import { observer } from 'mobx-react-lite'
 import { includes } from 'ramda'
 
 import type { TSpace } from '@/spec'
 
 import useSyncAccount from '@/hooks/useSyncAccount'
 import useAccount from '@/hooks/useAccount'
-import useBannerLayout from '@/hooks/useBannerLayout'
+import useLayout from '@/hooks/useLayout'
 import { BANNER_LAYOUT } from '@/const/layout'
 
 import { SpaceGrow } from '@/widgets/Common'
@@ -38,7 +37,7 @@ const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
   const user = useAccount()
 
   const { isLogin, nickname } = user
-  const bannerLayout = useBannerLayout()
+  const { bannerLayout } = useLayout()
 
   const [showPanel, setShowPanel] = useState(false)
 
@@ -68,4 +67,4 @@ const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
   )
 }
 
-export default observer(AccountUnit)
+export default AccountUnit
