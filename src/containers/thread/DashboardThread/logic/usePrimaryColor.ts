@@ -1,14 +1,13 @@
 import { useCallback } from 'react'
 
-import type { TColorName, TEditValue } from '@/spec'
-import type { TSettingField } from '@/stores3/dashboard/spec'
+import type { TColorName, TEditFunc } from '@/spec'
 
 import useSubStore from '@/hooks/useSubStore'
 
 import useHelper from './useHelper'
 
 type TRet = {
-  edit: (value: TEditValue, field: TSettingField) => void
+  edit: TEditFunc
   primaryColor: TColorName
   saving: boolean
   getIsTouched: () => boolean

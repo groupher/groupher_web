@@ -1,8 +1,10 @@
 import type { TColorName } from './color'
 import type { TWallpaperData } from './wallpaper'
-import type { TLinkItem, TSocialItem } from './utils'
+import type { TLinkItem, TSocialItem, TEditValue } from './utils'
 import type { TFAQSection } from './article'
 import type { TUser } from './account'
+
+import type { TSettingField } from '@/stores3/dashboard/spec'
 
 export type TTagLayout = 'hash' | 'dot'
 export type TAvatarLayout = 'circle' | 'square'
@@ -174,3 +176,5 @@ export type TOverview = {
   changelogsCount: number
   docsCount: number
 }
+
+export type TEditFunc = (value: TEditValue, field: TSettingField) => void

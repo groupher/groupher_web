@@ -123,6 +123,7 @@ export type {
   TMediaReport,
   TDashboard,
   TOverview,
+  TEditFunc,
 } from './dashboard'
 
 export type {
