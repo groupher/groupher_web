@@ -1,4 +1,4 @@
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
 import type { TDocFAQLayout } from '@/spec'
 import { DOC_FAQ_LAYOUT } from '@/const/layout'
@@ -110,4 +110,4 @@ const FaqTemplate: FC<TProps> = ({ layout }) => {
   )
 }
 
-export default memo(FaqTemplate)
+export default FaqTemplate
