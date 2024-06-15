@@ -8,6 +8,7 @@ import type {
   TKanbanLayout,
   TPostLayout,
   TTagLayout,
+  TKanbanCardLayout,
 } from '@/spec'
 import useSubStore from '@/hooks/useSubStore'
 
@@ -18,6 +19,7 @@ type TRet = {
   tagLayout: TTagLayout
   postLayout: TPostLayout
   kanbanLayout: TKanbanLayout
+  kanbanCardLayout: TKanbanCardLayout
   changelogLayout: TChangelogLayout
 }
 
@@ -32,6 +34,7 @@ export default (): TRet => {
       'tagLayout',
       'postLayout',
       'kanbanLayout',
+      'kanbanCardLayout',
       'changelogLayout',
     ],
     store,
