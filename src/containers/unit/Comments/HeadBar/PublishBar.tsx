@@ -1,7 +1,6 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
-import useAvatarLayout from '@/hooks/useAvatarLayout'
+import useLayout from '@/hooks/useLayout'
 import { mockUsers } from '@/mock'
 
 import Button from '@/widgets/Buttons/Button'
@@ -20,7 +19,7 @@ type TProps = {
 }
 
 const PublishBar: FC<TProps> = ({ closeEditor }) => {
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout } = useLayout()
 
   return (
     <Wrapper>
@@ -41,4 +40,4 @@ const PublishBar: FC<TProps> = ({ closeEditor }) => {
   )
 }
 
-export default observer(PublishBar)
+export default PublishBar

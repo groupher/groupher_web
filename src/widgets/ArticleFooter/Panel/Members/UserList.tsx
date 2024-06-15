@@ -1,8 +1,7 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TUser } from '@/spec'
-import useAvatarLayout from '@/hooks/useAvatarLayout'
+import useLayout from '@/hooks/useLayout'
 import ImgFallback from '@/widgets/ImgFallback'
 
 import { Wrapper, Avatar } from '../../styles/panel/user_list'
@@ -12,7 +11,7 @@ type TProps = {
 }
 
 const UserList: FC<TProps> = ({ users }) => {
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout } = useLayout()
 
   return (
     <Wrapper>
@@ -28,4 +27,4 @@ const UserList: FC<TProps> = ({ users }) => {
   )
 }
 
-export default observer(UserList)
+export default UserList

@@ -1,8 +1,7 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TAccount } from '@/spec'
-import useAvatarLayout from '@/hooks/useAvatarLayout'
+import useLayout from '@/hooks/useLayout'
 
 import { SpaceGrow } from '@/widgets/Common'
 
@@ -25,7 +24,7 @@ type TProps = {
 }
 
 const EditorHeader: FC<TProps> = ({ accountInfo, showEditor }) => {
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout } = useLayout()
 
   if (showEditor) {
     return (
@@ -50,4 +49,4 @@ const EditorHeader: FC<TProps> = ({ accountInfo, showEditor }) => {
   )
 }
 
-export default observer(EditorHeader)
+export default EditorHeader

@@ -5,10 +5,9 @@
  */
 
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TUser, TSpace } from '@/spec'
-import useAvatarLayout from '@/hooks/useAvatarLayout'
+import useLayout from '@/hooks/useLayout'
 
 import ImgFallback from '@/widgets/ImgFallback'
 
@@ -20,7 +19,7 @@ type TProps = {
 } & TSpace
 
 const AdminAvatar: FC<TProps> = ({ testid = 'admin-avatar', user, ...restProps }) => {
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout } = useLayout()
 
   return (
     <Wrapper $testid={testid} {...restProps}>
@@ -36,4 +35,4 @@ const AdminAvatar: FC<TProps> = ({ testid = 'admin-avatar', user, ...restProps }
   )
 }
 
-export default observer(AdminAvatar)
+export default AdminAvatar

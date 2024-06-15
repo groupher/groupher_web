@@ -8,7 +8,7 @@ import type { FC } from 'react'
 
 import type { TSpace } from '@/spec'
 import useAccount from '@/hooks/useAccount'
-import useAvatarLayout from '@/hooks/useAvatarLayout'
+import useLayout from '@/hooks/useLayout'
 
 import { ROUTE } from '@/const/route'
 import { signOut } from '@/oauth'
@@ -33,7 +33,7 @@ type TProps = {
 const LoggedInAccount: FC<TProps> = () => {
   const user = useAccount()
   const { avatar } = user
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout } = useLayout()
 
   return (
     <Tooltip

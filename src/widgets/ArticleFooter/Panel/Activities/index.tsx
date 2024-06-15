@@ -1,7 +1,6 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
-import useAvatarLayout from '@/hooks/useAvatarLayout'
+import useLayout from '@/hooks/useLayout'
 import { mockUsers } from '@/mock'
 
 import ImgFallback from '@/widgets/ImgFallback'
@@ -20,7 +19,7 @@ import {
 } from '../../styles/panel/activities'
 
 const Activities: FC = () => {
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout } = useLayout()
 
   const user = mockUsers(1)[0]
 
@@ -54,4 +53,4 @@ const Activities: FC = () => {
   )
 }
 
-export default observer(Activities)
+export default Activities

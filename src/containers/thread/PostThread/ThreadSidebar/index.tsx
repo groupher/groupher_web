@@ -6,15 +6,13 @@
  *
  */
 
-import { type FC, Fragment, lazy, Suspense } from 'react'
-import { observer } from 'mobx-react-lite'
+import { Fragment, lazy, Suspense } from 'react'
 
 import useTrans from '@/hooks/useTrans'
-import useAvatarLayout from '@/hooks/useAvatarLayout'
+import useLayout from '@/hooks/useLayout'
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useActiveTag from '@/hooks/useActiveTag'
-import useBannerLayout from '@/hooks/useBannerLayout'
 
 import { Link, SpaceGrow, Br, SexyDivider } from '@/widgets/Common'
 import { refreshArticles, callGEditor, callSyncSelector, listUsers } from '@/signal'
@@ -48,14 +46,13 @@ import {
 
 const UniBar = lazy(() => import('@/widgets/UniBar'))
 
-const ThreadSidebar: FC = () => {
+export default () => {
   const { t } = useTrans()
   const curCommunity = useViewingCommunity()
 
   const { inView: showCommunityBadge } = useCommunityDigestViewport()
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout, bannerLayout } = useLayout()
   const activeTag = useActiveTag()
-  const bannerLayout = useBannerLayout()
 
   return (
     <Wrapper $testid="thread-sidebar">
@@ -129,5 +126,3 @@ const ThreadSidebar: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(ThreadSidebar)

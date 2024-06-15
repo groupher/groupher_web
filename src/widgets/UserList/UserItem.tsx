@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import type { TUser } from '@/spec'
 
 import { assetSrc } from '@/helper'
-import useAvatarLayout from '@/hooks/useAvatarLayout'
+import useLayout from '@/hooks/useLayout'
 import { Wrapper, Avatar, Main, Header, Title, Login, Bio } from './styles/user_item'
 
 type TProps = {
@@ -11,7 +11,7 @@ type TProps = {
 }
 
 const UserItem: FC<TProps> = ({ user }) => {
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout } = useLayout()
 
   return (
     <Wrapper>

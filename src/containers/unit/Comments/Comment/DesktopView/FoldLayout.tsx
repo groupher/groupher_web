@@ -1,9 +1,8 @@
 import type { FC } from 'react'
 import TimeAgo from 'timeago-react'
-import { observer } from 'mobx-react-lite'
 
 import type { TComment } from '@/spec'
-import useAvatarLayout from '@/hooks/useAvatarLayout'
+import useLayout from '@/hooks/useLayout'
 import { ICON } from '@/config'
 
 import ImgFallback from '@/widgets/ImgFallback'
@@ -28,7 +27,7 @@ type TProps = {
 }
 
 const FoldLayout: FC<TProps> = ({ data, isReply = false }) => {
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout } = useLayout()
 
   const isSolution = false //
   const { meta } = data
@@ -68,4 +67,4 @@ const FoldLayout: FC<TProps> = ({ data, isReply = false }) => {
   )
 }
 
-export default observer(FoldLayout)
+export default FoldLayout

@@ -1,9 +1,8 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TUser } from '@/spec'
 
-import useAvatarLayout from '@/hooks/useAvatarLayout'
+import useLayout from '@/hooks/useLayout'
 import Tooltip from '@/widgets/Tooltip'
 import UserCard from '@/widgets/Cards/UserCard'
 
@@ -21,7 +20,7 @@ type TProps = {
 }
 
 const RealAvatar: FC<TProps> = ({ user, size, noLazyLoad, onUserSelect, popCardPlacement }) => {
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout } = useLayout()
 
   return (
     <Wrapper size={size}>
@@ -47,4 +46,4 @@ const RealAvatar: FC<TProps> = ({ user, size, noLazyLoad, onUserSelect, popCardP
   )
 }
 
-export default observer(RealAvatar)
+export default RealAvatar

@@ -1,8 +1,7 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TModerator } from '@/spec'
-import useAvatarLayout from '@/hooks/useAvatarLayout'
+import useLayout from '@/hooks/useLayout'
 import { mockUsers } from '@/mock'
 
 import ImgFallback from '@/widgets/ImgFallback'
@@ -27,7 +26,7 @@ type TProps = {
 }
 
 const Members: FC<TProps> = ({ moderators }) => {
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout } = useLayout()
 
   return (
     <Wrapper>
@@ -78,4 +77,4 @@ const Members: FC<TProps> = ({ moderators }) => {
   )
 }
 
-export default observer(Members)
+export default Members
