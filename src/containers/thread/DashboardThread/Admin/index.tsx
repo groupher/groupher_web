@@ -1,6 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 import { Inline } from '@/widgets/Common'
 
@@ -10,7 +7,7 @@ import List from './List'
 
 import { Wrapper } from '../styles/admin'
 
-const Admin: FC = () => {
+export default () => {
   return (
     <Wrapper>
       <Portal
@@ -29,5 +26,3 @@ const Admin: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(Admin)

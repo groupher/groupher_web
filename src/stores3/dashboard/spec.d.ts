@@ -216,7 +216,7 @@ export type TStore = TSettingsFields & {
   demoAlertEnable: boolean
 
   // for admins
-  // activeModerator: T.maybeNull(User),
+  activeModerator: TUser | null
   allModeratorRules: string
   allRootRules: string
 

@@ -189,7 +189,7 @@ export default (initState: TInitSettings = {}): TStore => {
       // for global alert
       demoAlertEnable: false,
 
-      // activeModerator: T.maybeNull(User),
+      activeModerator: null,
       allModeratorRules: '{}',
       allRootRules: '{}',
 
