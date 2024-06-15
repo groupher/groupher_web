@@ -330,6 +330,12 @@ export type TSettingField =
   | 'widgetsType'
   | 'activeTagGroup'
   | 'layoutTab'
+  | 'seoTab'
+  | 'ogSiteName'
+  | 'ogTitle'
+  | 'ogDescription'
+  | 'ogUrl'
+  | 'ogImage'
 
 export type THeaderEditType = 'logo' | 'title'
 export type TFooterEditType = THeaderEditType | 'social'

@@ -1,6 +1,4 @@
-import type { FC } from 'react'
-
-import useSEOInfo from '../../hooks/useSEOInfo'
+import useSEO from '../../logic/useSEO'
 import {
   Wrapper,
   Hint,
@@ -15,8 +13,8 @@ import {
 // example: https://elixirweekly.net/issues/339
 // twitter:card = summary
 
-const SummaryPreview: FC = () => {
-  const { twUrl, twTitle, twDescription } = useSEOInfo()
+export default () => {
+  const { twUrl, twTitle, twDescription } = useSEO()
 
   return (
     <Wrapper>
@@ -32,5 +30,3 @@ const SummaryPreview: FC = () => {
     </Wrapper>
   )
 }
-
-export default SummaryPreview

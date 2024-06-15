@@ -1,5 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
 import { DASHBOARD_SEO_ROUTE } from '@/const/route'
@@ -15,14 +13,15 @@ import Portal from '../Portal'
 import OpenGraph from './OpenGraph'
 import TwitterGraph from './TwitterGraph'
 
-import useSEOInfo from '../hooks/useSEOInfo'
+import useSEO from '../logic/useSEO'
 import { Wrapper, Banner, TabsWrapper } from '../styles/basic_info'
-import { edit } from '../logic'
 
-const BasicInfo: FC = () => {
+export default () => {
   const router = useRouter()
   const curCommunity = useViewingCommunity()
-  const { seoTab, saving, isTouched } = useSEOInfo()
+  const { seoTab, saving, getIsTouched, edit } = useSEO()
+
+  const isTouched = getIsTouched()
 
   return (
     <Wrapper>
@@ -61,5 +60,3 @@ const BasicInfo: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(BasicInfo)

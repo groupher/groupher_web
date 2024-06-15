@@ -1,10 +1,8 @@
-import type { FC } from 'react'
-
-import useSEOInfo from '../hooks/useSEOInfo'
+import useSEO from '../logic/useSEO'
 import { Wrapper, URL, Title, Desc, Hint } from '../styles/seo/search_engine_preview'
 
-const SearchEnginePreview: FC = () => {
-  const { ogSiteName, ogDescription, ogUrl } = useSEOInfo()
+export default () => {
+  const { ogSiteName, ogDescription, ogUrl } = useSEO()
 
   return (
     <Wrapper>
@@ -15,5 +13,3 @@ const SearchEnginePreview: FC = () => {
     </Wrapper>
   )
 }
-
-export default SearchEnginePreview

@@ -1,6 +1,4 @@
-import type { FC } from 'react'
-
-import useSEOInfo from '../../hooks/useSEOInfo'
+import useSEO from '../../logic/useSEO'
 import {
   Wrapper,
   CoverWrapper,
@@ -14,8 +12,8 @@ import {
 
 // example: https://www.sketch.com/blog/design-portfolio-mindsets/?utm_source=stephaniewalter.design&utm_medium=weeklylinks
 // twitter:card = summary_large_image
-const SummaryLargePreview: FC = () => {
-  const { twUrl, twTitle, twDescription } = useSEOInfo()
+export default () => {
+  const { twUrl, twTitle, twDescription } = useSEO()
 
   return (
     <Wrapper>
@@ -31,5 +29,3 @@ const SummaryLargePreview: FC = () => {
     </Wrapper>
   )
 }
-
-export default SummaryLargePreview
