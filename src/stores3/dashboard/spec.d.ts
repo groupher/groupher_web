@@ -329,6 +329,7 @@ export type TSettingField =
   | 'widgetsSize'
   | 'widgetsType'
   | 'activeTagGroup'
+  | 'layoutTab'
 
 export type THeaderEditType = 'logo' | 'title'
 export type TFooterEditType = THeaderEditType | 'social'

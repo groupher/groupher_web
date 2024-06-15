@@ -3,7 +3,7 @@ import 'rsuite-table/dist/css/rsuite-table.css'
 
 import { DASHBOARD_ROUTE } from '@/const/route'
 
-import useTabInfo from '../hooks/useTabInfo'
+import useTabInfo from '../logic/useTab'
 import GlobalTableStyle from '../styles/cms/global'
 import { Wrapper } from '../styles/cms'
 

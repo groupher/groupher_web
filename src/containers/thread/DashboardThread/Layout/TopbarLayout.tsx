@@ -1,6 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
 import { TOPBAR_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/const/layout'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import { callDashboardDesc } from '@/signal'
@@ -14,7 +11,7 @@ import { SETTING_FIELD } from '../constant'
 import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
-import useTopbarInfo from '../hooks/useTopbarInfo'
+import useTopbar from '../logic/useTopbar'
 import {
   Wrapper,
   SelectWrapper,
@@ -30,12 +27,13 @@ import {
   BgLabel,
   TheColor,
 } from '../styles/layout/topbar_layout'
-import { edit } from '../logic'
 
-const TopbarLayout: FC = () => {
-  const { layout, isLayoutTouched, isBgTouched, saving, bg } = useTopbarInfo()
-
+export default () => {
+  const { edit, layout, getIsBgTouched, getIsLayoutTouched, saving, bg } = useTopbar()
   const primaryColor = usePrimaryColor()
+
+  const isLayoutTouched = getIsLayoutTouched()
+  const isBgTouched = getIsBgTouched()
 
   return (
     <Wrapper>
@@ -164,5 +162,3 @@ const TopbarLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(TopbarLayout)

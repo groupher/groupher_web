@@ -179,6 +179,7 @@ const updateDashboardLayout = gql`
     $gossBlurDark: Int
     $brandLayout: String
     $bannerLayout: String
+    $changelogLayout: String
   ) {
     updateDashboardLayout(
       community: $community
@@ -201,6 +202,7 @@ const updateDashboardLayout = gql`
       gossBlurDark: $gossBlurDark
       brandLayout: $brandLayout
       bannerLayout: $bannerLayout
+      changelogLayout: $changelogLayout
     ) {
       slug
     }

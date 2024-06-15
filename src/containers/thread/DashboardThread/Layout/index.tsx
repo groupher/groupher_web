@@ -1,5 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
 import { DASHBOARD_LAYOUT_ROUTE } from '@/const/route'
@@ -26,15 +24,14 @@ import GlowLight from './GlowLight'
 import GossBlur from './GossBlur'
 import Wallpaper from './Wallpaper'
 
-import useTabInfo from '../hooks/useTabInfo'
+import useTab from '../logic/useTab'
 import { Wrapper, Banner, TabsWrapper } from '../styles/layout'
-import { edit } from '../logic'
 
-const UI: FC = () => {
+export default () => {
   const curCommunity = useViewingCommunity()
   const router = useRouter()
 
-  const { layoutTab } = useTabInfo()
+  const { edit, layoutTab } = useTab()
 
   return (
     <Wrapper>
@@ -51,6 +48,7 @@ const UI: FC = () => {
                   ? `/${curCommunity.slug}/dashboard/layout`
                   : `/${curCommunity.slug}/dashboard/layout/${tab}`
 
+              console.log('## push targetPath:', targetPath)
               router.push(targetPath)
             }}
             view={VIEW.DESKTOP}
@@ -95,5 +93,3 @@ const UI: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(UI)
