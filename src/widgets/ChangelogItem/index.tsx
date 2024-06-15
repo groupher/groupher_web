@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 
 import type { TChangelog } from '@/spec'
 import { CHANGELOG_LAYOUT } from '@/const/layout'
-import useChangelogLayout from '@/hooks/useChangelogLayout'
+import useLayout from '@/hooks/useLayout'
 
 import ClassicLayout from './ClassicLayout'
 import SimpleLayout from './SimpleLayout'
@@ -14,7 +14,7 @@ type TProps = {
 }
 
 const ChangelogItem: FC<TProps> = ({ article }) => {
-  const changelogLayout = useChangelogLayout()
+  const { changelogLayout } = useLayout()
 
   return (
     <Fragment>

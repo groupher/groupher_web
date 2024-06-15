@@ -3,12 +3,10 @@
  *
  */
 
-import { type FC, useState } from 'react'
-import { observer } from 'mobx-react-lite'
+import { useState } from 'react'
 
-import useChangelogLayout from '@/hooks/useChangelogLayout'
+import useLayout from '@/hooks/useLayout'
 import usePagedChangelogs from '@/hooks/usePagedChangelogs'
-import useBannerLayout from '@/hooks/useBannerLayout'
 import { BANNER_LAYOUT, CHANGELOG_LAYOUT } from '@/const/layout'
 
 import ChangelogItem from '@/widgets/ChangelogItem'
@@ -19,10 +17,9 @@ import FilterBar from './FilterBar'
 
 import { Wrapper, Banner, TabsWrapper, Title, Desc, MainWrapper } from '../styles/simple_layout'
 
-const SimpleLayout: FC = () => {
+export default () => {
   const { pagedChangelogs } = usePagedChangelogs()
-  const changelogLayout = useChangelogLayout()
-  const bannerLayout = useBannerLayout()
+  const { bannerLayout, changelogLayout } = useLayout()
 
   const [filterExpand, setFilterExpand] = useState(false)
   const [tab, setTab] = useState(TABS_MODE_OPTIONS[0].slug)
@@ -61,5 +58,3 @@ const SimpleLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(SimpleLayout)
