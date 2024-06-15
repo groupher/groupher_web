@@ -19,7 +19,12 @@ export default (): TRet => {
   const { bannerLayout, saving } = store
 
   // drived
-  const getIsTouched = useCallback(() => isChanged('bannerLayout'), [store])
+  const getIsTouched = useCallback(() => {
+    console.log('## cur: ', store.bannerLayout)
+    console.log('## injit: ', store.initSettings.bannerLayout)
+
+    return isChanged('bannerLayout')
+  }, [store])
 
   return {
     edit,

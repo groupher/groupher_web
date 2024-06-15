@@ -27,14 +27,15 @@ import {
   TagsWrapper,
   SidebarWrapper,
 } from '../styles/layout/banner_layout'
-import { edit } from '../logic'
 
 export default () => {
-  const { layout, getIsTouched, saving } = useBanner()
+  const { edit, layout, getIsTouched, saving } = useBanner()
   const primaryColor = usePrimaryColor()
   const { title } = useViewingCommunity()
 
   const isTouched = getIsTouched()
+
+  console.log('## banner changed? ', isTouched)
 
   return (
     <Wrapper>

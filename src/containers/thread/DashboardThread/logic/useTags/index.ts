@@ -1,6 +1,6 @@
 import { pick } from 'ramda'
 
-import type { TTag, TThread, TEditFunc } from '@/spec'
+import type { TTag, TThread, TEditFunc, TTagLayout } from '@/spec'
 import type { TChangeTagMode } from '@/stores3/dashboard/spec'
 import useSubState from '@/hooks/useSubStore'
 
@@ -16,6 +16,7 @@ type TRet = {
   settingTag: TTag
   activeTagGroup: string
   activeTagThread: string
+  tagLayout: TTagLayout
 
   edit: TEditFunc
   changeThread: (thread: string) => void
@@ -36,6 +37,7 @@ export default (): TRet => {
 
   const exportState = [
     'loading',
+    'tagLayout',
     'editingTag',
     'activeTagGroup',
     'activeTagThread',

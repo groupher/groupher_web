@@ -10,7 +10,8 @@ import { SETTING_FIELD } from '../constant'
 import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
-import useTagInfo from '../hooks/useTagInfo'
+import useTags from '../logic/useTags'
+
 import {
   Wrapper,
   SelectWrapper,
@@ -23,18 +24,18 @@ import {
   HashTagIcon,
   Bar,
 } from '../styles/layout/tag_layout'
-import { edit } from '../logic'
 
 const TagLayout: FC = () => {
-  const { layout, isTouched, saving } = useTagInfo()
+  const { edit, tagLayout, getTagLayoutTouched, saving } = useTags()
   const primaryColor = usePrimaryColor()
+  const isTouched = getTagLayoutTouched()
 
   return (
     <Wrapper>
       <SectionLabel title="标签样式" desc="列表内容及文章详情的标签的展现形式。" />
       <SelectWrapper>
         <Layout onClick={() => edit(TAG_LAYOUT.HASH, 'tagLayout')}>
-          <Block $active={layout === TAG_LAYOUT.HASH} $color={primaryColor}>
+          <Block $active={tagLayout === TAG_LAYOUT.HASH} $color={primaryColor}>
             <TagItem>
               <HashTagIcon $color={primaryColor} />
               <Bar />
@@ -48,12 +49,12 @@ const TagLayout: FC = () => {
             </TagItem>
           </Block>
 
-          <LayoutTitle $active={layout === TAG_LAYOUT.HASH}>
-            <CheckLabel title="井字" $active={layout === TAG_LAYOUT.HASH} top={15} left={-15} />
+          <LayoutTitle $active={tagLayout === TAG_LAYOUT.HASH}>
+            <CheckLabel title="井字" $active={tagLayout === TAG_LAYOUT.HASH} top={15} left={-15} />
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(TAG_LAYOUT.DOT, 'tagLayout')}>
-          <Block $active={layout === TAG_LAYOUT.DOT} $color={primaryColor}>
+          <Block $active={tagLayout === TAG_LAYOUT.DOT} $color={primaryColor}>
             <TagItem>
               <Dot $color={primaryColor} />
               <Bar />
@@ -67,8 +68,8 @@ const TagLayout: FC = () => {
             </TagItem>
           </Block>
 
-          <LayoutTitle $active={layout === TAG_LAYOUT.DOT}>
-            <CheckLabel title="圆点" $active={layout === TAG_LAYOUT.DOT} top={15} left={-15} />
+          <LayoutTitle $active={tagLayout === TAG_LAYOUT.DOT}>
+            <CheckLabel title="圆点" $active={tagLayout === TAG_LAYOUT.DOT} top={15} left={-15} />
           </LayoutTitle>
         </Layout>
       </SelectWrapper>

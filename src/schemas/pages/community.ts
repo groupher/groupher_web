@@ -85,6 +85,7 @@ export const community = `
           tagLayout
           avatarLayout
           brandLayout
+          bannerLayout
           topbarLayout
           topbarBg
           broadcastLayout
