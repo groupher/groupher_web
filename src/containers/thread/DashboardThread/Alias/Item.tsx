@@ -1,5 +1,4 @@
 import { type FC, Fragment } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import AddButton from '@/widgets/Buttons/AddButton'
 import { SpaceGrow } from '@/widgets/Common'
@@ -10,7 +9,7 @@ import SavingBar from '../SavingBar'
 
 import type { TNameAlias } from '../spec'
 
-import useAliasInfo from '../logic/useAlias'
+import useAlias from '../logic/useAlias'
 
 import {
   Wrapper,
@@ -30,7 +29,7 @@ type TProps = {
 }
 
 const Item: FC<TProps> = ({ alias }) => {
-  const { updateEditingAlias, editingAlias, resetEdit } = useAliasInfo()
+  const { updateEditingAlias, editingAlias, resetEdit } = useAlias()
 
   const isEditMode: boolean = alias.slug === editingAlias?.slug
   const isChanged: boolean = alias.original !== alias.name
@@ -100,4 +99,4 @@ const Item: FC<TProps> = ({ alias }) => {
   )
 }
 
-export default observer(Item)
+export default Item
