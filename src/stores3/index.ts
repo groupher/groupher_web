@@ -27,6 +27,7 @@ const setupRootStore = (init = INITIAL_STATE): TRootStore => {
     theme: setupTheme(init.theme),
     viewing: setupViewing(init.viewing),
     dashboard: setupDashboard(init.dashboard),
+    // wallpaperEditor:
   })
 }
 

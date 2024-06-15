@@ -13,7 +13,7 @@ import SectionLabel from '../../SectionLabel'
 import SavingBar from '../../SavingBar'
 
 import useGossBlur from '../../logic/useGossBlur'
-import useWallpaperInfo from '../../hooks/useWallpaperInfo'
+import useWallpaperInfo from '../../logic/useWallpaper'
 
 import {
   Wrapper,

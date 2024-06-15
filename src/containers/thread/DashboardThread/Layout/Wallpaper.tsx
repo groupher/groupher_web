@@ -16,7 +16,7 @@ import CheckLabel from '@/widgets/CheckLabel'
 
 import SectionLabel from '../SectionLabel'
 
-import useWallpaperInfo from '../hooks/useWallpaperInfo'
+import useWallpaperInfo from '../logic/useWallpaper'
 import {
   Wrapper,
   Section,
