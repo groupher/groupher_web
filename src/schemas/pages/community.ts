@@ -82,6 +82,7 @@ export const community = `
           primaryColor
           postLayout
           docLayout
+          docFaqLayout
           tagLayout
           avatarLayout
           brandLayout
@@ -92,7 +93,6 @@ export const community = `
           kanbanLayout
           kanbanCardLayout
           kanbanBgColors
-          docFaqLayout
           changelogLayout
           headerLayout
           footerLayout

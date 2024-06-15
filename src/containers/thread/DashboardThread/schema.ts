@@ -180,6 +180,8 @@ const updateDashboardLayout = gql`
     $brandLayout: String
     $bannerLayout: String
     $changelogLayout: String
+    $docLayout: String
+    $docFaqLayout: String
   ) {
     updateDashboardLayout(
       community: $community
@@ -203,6 +205,8 @@ const updateDashboardLayout = gql`
       brandLayout: $brandLayout
       bannerLayout: $bannerLayout
       changelogLayout: $changelogLayout
+      docLayout: $docLayout
+      docFaqLayout: $docFaqLayout
     ) {
       slug
     }
