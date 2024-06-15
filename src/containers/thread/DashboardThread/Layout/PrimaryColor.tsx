@@ -1,6 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
 import { Row } from '@/widgets/Common'
 import ColorSelector from '@/widgets/ColorSelector'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
@@ -10,12 +7,12 @@ import SavingBar from '../SavingBar'
 
 import { SETTING_FIELD } from '../constant'
 
-import usePrimaryInfo from '../hooks//usePrimaryInfo'
+import usePrimaryColor from '../logic/usePrimaryColor'
 import { Wrapper, Label, ColorBall } from '../styles/layout/primary_color'
-import { edit } from '../logic'
 
-const PrimaryColor: FC = () => {
-  const { primaryColor, isTouched, saving } = usePrimaryInfo()
+export default () => {
+  const { edit, primaryColor, getIsTouched, saving } = usePrimaryColor()
+  const isTouched = getIsTouched()
 
   return (
     <Wrapper>
@@ -49,5 +46,3 @@ const PrimaryColor: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(PrimaryColor)

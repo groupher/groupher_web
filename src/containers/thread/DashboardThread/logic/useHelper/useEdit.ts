@@ -11,7 +11,7 @@ import {
   SETTING_FIELD,
   BASEINFO_KEYS,
   SEO_KEYS,
-} from '@/stores2/dashboardStore/constant'
+} from '@/stores3/dashboard/constant'
 
 import type { TSettingField } from '@/stores3/dashboard/spec'
 import useMutation from '../useMutation'
