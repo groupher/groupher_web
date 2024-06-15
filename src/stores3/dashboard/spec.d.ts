@@ -111,7 +111,7 @@ export type TSettingsFields = {
   postLayout: TPostLayout
   kanbanLayout: TKanbanLayout
   kanbanCardLayout: TKanbanCardLayout
-  kanbanBgColors: string[]
+  kanbanBgColors: TColorName[]
 
   docLayout: TDocLayout
   docFaqLayout: TDocFAQLayout

@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { INIT_KANBAN_COLORS } from '@/const/dashboard'
 import { Brick } from '@/widgets/Common'
 
-import useKanbanInfo from '../../../hooks/useKanbanInfo'
+import useKanbanInfo from '../../../logic/useKanban'
 import {
   Wrapper,
   Header,

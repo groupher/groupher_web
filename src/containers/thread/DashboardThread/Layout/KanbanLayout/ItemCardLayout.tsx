@@ -1,6 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
 import { KANBAN_CARD_LAYOUT } from '@/const/layout'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 
@@ -11,7 +8,7 @@ import { SETTING_FIELD } from '../../constant'
 import SectionLabel from '../../SectionLabel'
 import SavingBar from '../../SavingBar'
 
-import useKanbanInfo from '../../hooks/useKanbanInfo'
+import useKanban from '../../logic/useKanban'
 import {
   Wrapper,
   SelectWrapper,
@@ -22,11 +19,11 @@ import {
   UpvoteIcon,
   CommentIcon,
 } from '../../styles/layout/kanban_layout/item_card_layout'
-import { edit } from '../../logic'
 
-const KanbanItemLayout: FC = () => {
-  const { cardLayout, isCardTouched: isTouched, saving } = useKanbanInfo()
+export default () => {
+  const { kanbanCardLayout: cardLayout, getKanbanCardLayoutTouched, saving, edit } = useKanban()
   const primaryColor = usePrimaryColor()
+  const isTouched = getKanbanCardLayoutTouched()
 
   return (
     <Wrapper>
@@ -93,5 +90,3 @@ const KanbanItemLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(KanbanItemLayout)
