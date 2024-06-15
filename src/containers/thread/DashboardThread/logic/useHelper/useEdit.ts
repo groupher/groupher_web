@@ -93,7 +93,7 @@ export default (): TRet => {
       return
     }
 
-    store.commit({ [field]: store.initFilled[field] })
+    store.commit({ [field]: store.initSettings[field] })
   }
 
   // save to local settings should omit subTabs,
@@ -108,6 +108,8 @@ export default (): TRet => {
   }
 
   const resetEdit = (field: TSettingField): void => {
+    console.log('## resetEdit')
+
     if (field === SETTING_FIELD.NAME_ALIAS) {
       const targetIdx = _findAliasIdx()
       if (targetIdx < 0) return

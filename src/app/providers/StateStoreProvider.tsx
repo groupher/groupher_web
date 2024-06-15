@@ -14,8 +14,6 @@ export default ({ children }: { children: ReactNode }) => {
   const { community } = useCommunity()
   const dashboard = useDashboard(community)
 
-  console.log('## dashboard: ', dashboard.headerLinks)
-
   const rootStore = useStore({
     locale,
     localeData,

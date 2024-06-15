@@ -21,9 +21,7 @@ export default (): TRet => {
   const { primaryColor, saving } = store
 
   // drived
-  const getIsTouched = useCallback(() => {
-    return isChanged('primaryColor')
-  }, [])
+  const getIsTouched = useCallback(() => isChanged('primaryColor'), [store])
 
   return {
     edit,
