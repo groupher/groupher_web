@@ -140,35 +140,6 @@ export type TDashboardSEOConfig = {
   twImageHeight: string
 }
 
-export type TGlobalLayout = {
-  primaryColor: TColorName
-  brand: TBrandLayout
-  post: TPostLayout
-  kanban: TKanbanCardLayout
-  kanbanBgColors: TColorName[]
-  doc: TDocLayout
-  docFaq: TDocFAQLayout
-  banner: TBannerLayout
-  tag: TTagLayout
-  avatar: TAvatarLayout
-  changelog: TChangelogLayout
-  header: THeaderLayout
-  footer: TFooterLayout
-
-  broadcast: TBroadcastLayout
-  broadcastBg: TColorName
-  broadcastEnable: boolean
-
-  broadcastArticle: TBroadcastArticleLayout
-  broadcastArticleBg: TColorName
-  broadcastArticleEnable: boolean
-
-  topbar: TTopbarLayout
-  topbarBg: TColorName
-
-  enable: TEnableConfig
-}
-
 export type TOverview = {
   views: number
   subscribersCount: number

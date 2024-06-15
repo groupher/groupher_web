@@ -111,7 +111,6 @@ export type {
   TDocFAQLayout,
   THeaderLayout,
   TFooterLayout,
-  TGlobalLayout,
   TBroadcastLayout,
   TBroadcastArticleLayout,
   TBroadcastConfig,
