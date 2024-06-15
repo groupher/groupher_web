@@ -1,12 +1,9 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
 import { assetSrc } from '@/helper'
 import { DEME_SOCIALS } from '@/const/social'
 import { BRAND_LAYOUT } from '@/const/layout'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
-import useBrandLayout from '@/hooks/useBrandLayout'
+import useLayout from '@/hooks/useLayout'
 import useMetric from '@/hooks/useMetric'
 
 import ImgFallback from '@/widgets/ImgFallback'
@@ -28,10 +25,10 @@ import {
   Digest,
 } from '../styles/tabber_layout/community_brief'
 
-const CommunityBrief: FC = () => {
-  const { logo, title, desc } = useViewingCommunity()
-  const brandLayout = useBrandLayout()
+export default () => {
   const metric = useMetric()
+  const { logo, title, desc } = useViewingCommunity()
+  const { brandLayout } = useLayout()
 
   const COVER_IMAGE = '' // '/banner-cover.webp'
 
@@ -61,5 +58,3 @@ const CommunityBrief: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(CommunityBrief)

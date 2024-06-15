@@ -9,7 +9,7 @@ import useViewingThread from '@/hooks/useViewingThread'
 import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useHeaderLinks from '@/hooks/useHeaderLinks'
-import useBrandLayout from '@/hooks/useBrandLayout'
+import useLayout from '@/hooks/useLayout'
 
 import { SpaceGrow } from '@/widgets/Common'
 import TabBar from '@/widgets/TabBar'
@@ -38,7 +38,7 @@ export default () => {
   const publicThreads = usePublicThreads()
   const activeThread = useViewingThread()
   const community = useViewingCommunity()
-  const brandLayout = useBrandLayout()
+  const { brandLayout } = useLayout()
   const { getCustomLinks } = useHeaderLinks()
 
   const customLinks = getCustomLinks()

@@ -1,9 +1,8 @@
-import { type FC, useEffect, useState } from 'react'
-import { observer } from 'mobx-react-lite'
+import { useEffect, useState } from 'react'
 
 import { assetSrc } from '@/helper'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
-import useBrandLayout from '@/hooks/useBrandLayout'
+import useLayout from '@/hooks/useLayout'
 import useHover from '@/hooks/useHover'
 
 import { BRAND_LAYOUT } from '@/const/layout'
@@ -25,10 +24,10 @@ import {
   DisableTippyJump,
 } from '../styles/header_layout/community_brief'
 
-const CommunityBrief: FC = () => {
+export default () => {
   const [disableTippyJump, setDisableTippyJump] = useState(false)
   const { logo, title, slug, dashboard } = useViewingCommunity()
-  const brandLayout = useBrandLayout()
+  const { brandLayout } = useLayout()
 
   const [ref, isHovering] = useHover<HTMLDivElement>()
 
@@ -98,5 +97,3 @@ const CommunityBrief: FC = () => {
     </Tooltip>
   )
 }
-
-export default observer(CommunityBrief)

@@ -1,8 +1,8 @@
-import { type FC, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import usePublicThreads from '@/hooks/usePublicThreads'
-import useBrandLayout from '@/hooks/useBrandLayout'
+import useLayout from '@/hooks/useLayout'
 import useHover from '@/hooks/useHover'
 
 import { BRAND_LAYOUT } from '@/const/layout'
@@ -28,10 +28,10 @@ import {
   DisableTippyJump,
 } from '../styles/dashboard_layout/community_brief'
 
-const CommunityBrief: FC = () => {
+export default () => {
   const threads = usePublicThreads()
   const { title, logo, slug, dashboard } = useViewingCommunity()
-  const brandLayout = useBrandLayout()
+  const { brandLayout } = useLayout()
 
   const [disableTippyJump, setDisableTippyJump] = useState(false)
   const [ref, isHovering] = useHover<HTMLDivElement>()
@@ -110,5 +110,3 @@ const CommunityBrief: FC = () => {
     </Wrapper>
   )
 }
-
-export default CommunityBrief
