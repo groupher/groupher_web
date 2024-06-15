@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { has, omit, findIndex, update } from 'ramda'
 
-import type { TEditValue, TNameAlias } from '@/spec'
+import type { TEditValue, TNameAlias, TEditFunc } from '@/spec'
 import { isObject } from '@/validator'
 import useSubStore from '@/hooks/useSubStore'
 import BStore from '@/utils/bstore'
@@ -17,7 +17,7 @@ import type { TSettingField } from '@/stores3/dashboard/spec'
 import useMutation from '../useMutation'
 
 export type TRet = {
-  edit: (value: TEditValue, field: TSettingField) => void
+  edit: TEditFunc
   rollbackEdit: (field: TSettingField) => void
   resetEdit: (field: TSettingField) => void
   onSave: (field: TSettingField) => void

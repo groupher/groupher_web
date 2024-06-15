@@ -1,14 +1,12 @@
 import { useCallback } from 'react'
 
-import type { TBrandLayout, TEditValue } from '@/spec'
-import type { TSettingField } from '@/stores3/dashboard/spec'
-
+import type { TBrandLayout, TEditFunc } from '@/spec'
 import useSubStore from '@/hooks/useSubStore'
 
 import useHelper from './useHelper'
 
 type TRet = {
-  edit: (value: TEditValue, field: TSettingField) => void
+  edit: TEditFunc
   layout: TBrandLayout
   getIsTouched: () => boolean
   saving: boolean

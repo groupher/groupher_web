@@ -1,6 +1,7 @@
-import type { THeaderLayout, TLinkItem, TEditValue } from '@/spec'
+import { pick } from 'ramda'
 
-import type { TSettingField } from '@/stores2/dashboardStore/spec'
+import type { THeaderLayout, TLinkItem, TEditFunc } from '@/spec'
+
 import useSubStore from '@/hooks/useSubStore'
 
 import type { TLinkState } from '../spec'
@@ -11,7 +12,7 @@ import useHelper from './useHelper'
 type TRet = {
   headerLayout: THeaderLayout
   headerLinks: TLinkItem[]
-  edit: (value: TEditValue, field: TSettingField) => void
+  edit: TEditFunc
 } & TLinkState &
   TUserLinks
 
@@ -20,26 +21,20 @@ export default (): TRet => {
   const useLinksData = useLinks()
   const { edit } = useHelper()
 
-  const {
-    headerLayout,
-    headerLinks,
-    editingLink,
-    editingLinkMode,
-    editingGroup,
-    editingGroupIndex,
-    saving,
-  } = store
-
   return {
+    ...pick(
+      [
+        'headerLayout',
+        'headerLinks',
+        'editingLink',
+        'editingLinkMode',
+        'editingGroup',
+        'editingGroupIndex',
+        'saving',
+      ],
+      store,
+    ),
     edit,
-    headerLayout,
-    headerLinks,
-    editingLink,
-    editingLinkMode,
-    editingGroup,
-    editingGroupIndex,
-
-    saving,
     ...useLinksData,
   }
 }

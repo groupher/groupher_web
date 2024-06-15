@@ -1,12 +1,10 @@
 import { useEffect } from 'react'
 import { pick, isEmpty } from 'ramda'
 
-import type { TCommunity, TDashboardBaseInfoRoute, TEditValue } from '@/spec'
+import type { TCommunity, TDashboardBaseInfoRoute, TEditFunc } from '@/spec'
 import useSubStore from '@/hooks/useSubStore'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useQuery from '@/hooks/useQuery'
-
-import type { TSettingField } from '@/stores2/dashboardStore/spec'
 
 import useHelper from '../useHelper'
 import { BASEINFO_KEYS } from '../../constant'
@@ -27,7 +25,7 @@ type TRet = TUseInfo &
     saving: boolean
 
     baseInfoTab: TDashboardBaseInfoRoute
-    edit: (value: TEditValue, field: TSettingField) => void
+    edit: TEditFunc
   }
 
 export default (): TRet => {

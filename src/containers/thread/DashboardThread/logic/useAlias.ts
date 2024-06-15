@@ -1,8 +1,6 @@
-import type { TDashboardAliasRoute, TNameAlias, TEditValue } from '@/spec'
+import type { TDashboardAliasRoute, TNameAlias, TEditFunc } from '@/spec'
 
-import type { TSettingField } from '@/stores3/dashboard/spec'
 import { SETTING_FIELD } from '@/stores3/dashboard/constant'
-
 import useSubState from '@/hooks/useSubStore'
 
 import useHelper from './useHelper'
@@ -14,7 +12,7 @@ type TRet = {
   aliasTab: TDashboardAliasRoute
 
   updateEditingAlias: (alias: TNameAlias) => void
-  edit: (value: TEditValue, field: TSettingField) => void
+  edit: TEditFunc
   resetEdit: () => void
   changeTab: (tab: TDashboardAliasRoute) => void
 }

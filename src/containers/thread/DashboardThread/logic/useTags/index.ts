@@ -1,7 +1,7 @@
 import { pick } from 'ramda'
 
-import type { TTag, TEditValue, TThread } from '@/spec'
-import type { TSettingField, TChangeTagMode } from '@/stores3/dashboard/spec'
+import type { TTag, TThread, TEditFunc } from '@/spec'
+import type { TChangeTagMode } from '@/stores3/dashboard/spec'
 import useSubState from '@/hooks/useSubStore'
 
 import useHelper from '../useHelper'
@@ -17,7 +17,7 @@ type TRet = {
   activeTagGroup: string
   activeTagThread: string
 
-  edit: (value: TEditValue, field: TSettingField) => void
+  edit: TEditFunc
   changeThread: (thread: string) => void
   editTag: (key: TChangeTagMode, tag: TTag) => void
 

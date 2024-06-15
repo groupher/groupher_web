@@ -1,17 +1,15 @@
-import type { TFooterLayout, TLinkItem, TEditValue } from '@/spec'
+import type { TFooterLayout, TLinkItem, TEditFunc } from '@/spec'
 
-import type { TSettingField } from '@/stores2/dashboardStore/spec'
 import useSubStore from '@/hooks/useSubStore'
 
 import type { TLinkState } from '../spec'
-
 import useLinks, { type TRet as TUserLinks } from './useLinks'
 import useHelper from './useHelper'
 
 type TRet = {
   footerLayout: TFooterLayout
   footerLinks: TLinkItem[]
-  edit: (value: TEditValue, field: TSettingField) => void
+  edit: TEditFunc
 } & TLinkState &
   TUserLinks
 
