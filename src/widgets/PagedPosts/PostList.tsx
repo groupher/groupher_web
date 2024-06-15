@@ -1,15 +1,13 @@
 /* eslint-disable react/display-name */
 
-import type { FC } from 'react'
 import dynamic from 'next/dynamic'
-import { observer } from 'mobx-react-lite'
 // import { trackWindowScroll } from 'react-lazy-load-image-component'
 
 import usePagedPosts from '@/hooks/usePagedPosts'
 import { POST_LAYOUT } from '@/const/layout'
 import TYPE from '@/const/type'
 import { THREAD } from '@/const/thread'
-import usePostLayout from '@/hooks/usePostLayout'
+import useLayout from '@/hooks/useLayout'
 
 import PostItem from '@/widgets/PostItem'
 import MasonryCards from '@/widgets/MasonryCards'
@@ -21,8 +19,8 @@ export const EmptyThread = dynamic(() => import('@/widgets/EmptyThread'), {
   ssr: false,
 })
 
-const PostList: FC = () => {
-  const postLayout = usePostLayout()
+export default () => {
+  const { postLayout } = useLayout()
   const { pagedPosts, resState } = usePagedPosts()
   const { entries } = pagedPosts
 
@@ -58,6 +56,3 @@ const PostList: FC = () => {
     </>
   )
 }
-
-export default observer(PostList)
-// export default PostList
