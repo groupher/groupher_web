@@ -1,19 +1,8 @@
-import { useContext } from 'react'
-import { MobXProviderContext } from 'mobx-react'
-
 import type { TBrandLayout } from '@/spec'
+import useSubStore from '@/hooks/useSubStore'
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
-const useBrandLayout = (): TBrandLayout => {
-  const { store } = useContext(MobXProviderContext)
+export default (): TBrandLayout => {
+  const store = useSubStore('dashboard')
 
-  if (store === null) {
-    throw new Error('Store cannot be null, please add a context provider')
-  }
-
-  return store.dashboardThread.brandLayout
+  return store.brandLayout
 }
-
-export default useBrandLayout

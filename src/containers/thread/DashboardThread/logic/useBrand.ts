@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import type { TColorName, TEditValue } from '@/spec'
+import type { TBrandLayout, TEditValue } from '@/spec'
 import type { TSettingField } from '@/stores3/dashboard/spec'
 
 import useSubStore from '@/hooks/useSubStore'
@@ -9,24 +9,28 @@ import useHelper from './useHelper'
 
 type TRet = {
   edit: (value: TEditValue, field: TSettingField) => void
-  primaryColor: TColorName
-  saving: boolean
+  layout: TBrandLayout
   getIsTouched: () => boolean
+  saving: boolean
 }
 
 export default (): TRet => {
   const store = useSubStore('dashboard')
   const { isChanged, edit } = useHelper()
 
-  const { primaryColor, saving } = store
+  if (store === null) {
+    throw new Error('Store cannot be null, please add a context provider')
+  }
+
+  const { brandLayout, saving } = store
 
   // drived
-  const getIsTouched = useCallback(() => isChanged('primaryColor'), [store])
+  const getIsTouched = useCallback(() => isChanged('brandLayout'), [store])
 
   return {
     edit,
-    primaryColor,
-    saving,
+    layout: brandLayout,
     getIsTouched,
+    saving,
   }
 }
