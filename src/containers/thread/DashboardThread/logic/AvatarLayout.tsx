@@ -8,7 +8,7 @@ import { SETTING_FIELD } from '../constant'
 import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
-import useAvatar from '../logic/useAvatar'
+import useAvatar from './useAvatar'
 import {
   Wrapper,
   SelectWrapper,
@@ -24,7 +24,6 @@ import { edit } from '../logic'
 export default () => {
   const { layout, getIsTouched, saving } = useAvatar()
   const primaryColor = usePrimaryColor()
-
   const isTouched = getIsTouched()
 
   return (
