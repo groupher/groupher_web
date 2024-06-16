@@ -7,7 +7,6 @@ import useViewingCommunity from '@/hooks/useViewingCommunity'
 import Tabs from '@/widgets/Switcher/Tabs'
 
 import { BROADCAST_TABS } from '../constant'
-
 import Portal from '../Portal'
 import Editor from './Editor'
 

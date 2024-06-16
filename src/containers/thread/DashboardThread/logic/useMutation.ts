@@ -18,7 +18,7 @@ import {
   SETTING_LAYOUT_FIELD,
   SEO_KEYS,
   BASEINFO_KEYS,
-} from '../constant'
+} from '@/stores3/dashboard/constant'
 import S from '../schema'
 
 type TRet = {
@@ -121,6 +121,15 @@ export default (): TRet => {
   }
 
   const mutation = (field: TSettingField, e: TEditValue): Promise<void> => {
+    if (field === SETTING_FIELD.BROADCAST_ENABLE) {
+      const params = {
+        community,
+        broadcastEnable: storeRef.current.broadcastEnable,
+      }
+      handleMutation(S.updateDashboardLayout, params)
+      return
+    }
+
     if (field === SETTING_FIELD.MEDIA_REPORTS) {
       const { mediaReports } = store
 

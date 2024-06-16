@@ -18,7 +18,7 @@ import {
 import { broadcastOnSave, broadcastOnCancel } from '../../logic'
 
 export default () => {
-  const { saving, broadcastBg, broadcastEnable, getIsTouched, edit } = useBroadcast()
+  const { saving, broadcastBg, broadcastEnable, getIsTouched, edit, changeEnable } = useBroadcast()
   const isTouched = getIsTouched()
 
   return (
@@ -26,9 +26,7 @@ export default () => {
       <SectionLabel
         title="开启横幅广播"
         desc={<EnableDesc>开启后，本社区内的所有页面顶部将展示广播信息</EnableDesc>}
-        addon={
-          <ToggleSwitch checked={broadcastEnable} onChange={(v) => edit(v, 'broadcastEnable')} />
-        }
+        addon={<ToggleSwitch checked={broadcastEnable} onChange={(v) => changeEnable(v)} />}
       />
       <br />
 

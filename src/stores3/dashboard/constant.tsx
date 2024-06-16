@@ -75,6 +75,7 @@ export const SETTING_FIELD = {
   GLOW_FIXED: 'glowFixed',
   GLOW_OPACITY: 'glowOpacity',
   GOSS_BLUR: 'gossBlur',
+  BROADCAST_ENABLE: 'broadcastEnable',
 } as Record<TSnakeUpperCase<TSettingField>, TSettingField>
 
 export const MENU = {

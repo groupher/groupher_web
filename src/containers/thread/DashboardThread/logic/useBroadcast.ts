@@ -8,6 +8,7 @@ import type {
   TEditFunc,
 } from '@/spec'
 import useSubStore from '@/hooks/useSubStore'
+import { SETTING_FIELD } from '@/stores3/dashboard/constant'
 
 import useHelper from './useHelper'
 
@@ -18,12 +19,14 @@ type TRet = TBroadcastConfig & {
   saving: boolean
   getIsTouched: () => boolean
   getIsArticleTouched: () => boolean
+  changeEnable: (v: boolean) => void
 }
 
 export default (): TRet => {
   const store = useSubStore('dashboard')
-  const { edit, isChanged } = useHelper()
+  const { edit, isChanged, onSave } = useHelper()
 
+  // drived
   const getIsTouched = useCallback(() => {
     return isChanged('broadcastLayout') || isChanged('broadcastBg')
   }, [store])
@@ -31,6 +34,11 @@ export default (): TRet => {
   const getIsArticleTouched = useCallback(() => {
     return isChanged('broadcastArticleLayout') || isChanged('broadcastArticleBg')
   }, [store])
+
+  const changeEnable = (v: boolean) => {
+    store.commit({ broadcastEnable: v })
+    setTimeout(() => onSave(SETTING_FIELD.BROADCAST_ENABLE))
+  }
 
   return {
     edit,
@@ -49,5 +57,6 @@ export default (): TRet => {
     ),
     getIsTouched,
     getIsArticleTouched,
+    changeEnable,
   }
 }

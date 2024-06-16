@@ -101,6 +101,7 @@ export const community = `
           glowOpacity
           gossBlur
           gossBlurDark
+          broadcastEnable
         } 
 
         rss {
