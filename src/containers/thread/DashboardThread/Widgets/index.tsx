@@ -10,7 +10,7 @@ import Portal from '../Portal'
 import BaseSetting from './BaseSetting'
 import CodeArea from './CodeArea'
 
-import useWidgetsInfo from '../hooks/useWidgetsInfo'
+import useWidgets from '../logic/useWidgets'
 import {
   Wrapper,
   TypeSelect,
@@ -26,7 +26,7 @@ import {
 import { edit, onSave } from '../logic'
 
 export default () => {
-  const { widgetsType } = useWidgetsInfo()
+  const { widgetsType } = useWidgets()
 
   return (
     <Wrapper>
