@@ -336,6 +336,7 @@ export type TSettingField =
   | 'ogDescription'
   | 'ogUrl'
   | 'ogImage'
+  | 'broadcastTab'
 
 export type THeaderEditType = 'logo' | 'title'
 export type TFooterEditType = THeaderEditType | 'social'

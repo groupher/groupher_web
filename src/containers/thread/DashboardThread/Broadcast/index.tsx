@@ -13,12 +13,11 @@ import Editor from './Editor'
 
 import useBroadcast from '../logic/useBroadcast'
 import { Wrapper, Banner, TabsWrapper, InnerWrapper } from '../styles/broadcast'
-import { edit } from '../logic'
 
 export default () => {
   const router = useRouter()
   const curCommunity = useViewingCommunity()
-  const { broadcastTab } = useBroadcast()
+  const { broadcastTab, edit } = useBroadcast()
 
   return (
     <Wrapper>
