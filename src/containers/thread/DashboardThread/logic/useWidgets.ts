@@ -38,7 +38,7 @@ export default (): TRet => {
 
   const getIsThreadTouched = useCallback(() => {
     // @ts-ignore
-    return !equals(widgetsThreads.sort(), initSettings.widgetsThreads.sort())
+    return !equals(widgetsThreads, initSettings.widgetsThreads)
   }, [store])
 
   const getIsPrimaryColorTouched = useCallback(() => isChanged('widgetsPrimaryColor'), [store])

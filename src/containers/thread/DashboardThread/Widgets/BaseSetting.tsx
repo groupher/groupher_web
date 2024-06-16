@@ -1,6 +1,5 @@
-import { includes, reject, clone } from 'ramda'
+import { includes } from 'ramda'
 
-import type { TThread } from '@/spec'
 import { THREAD } from '@/const/thread'
 
 import ColorSelector from '@/widgets/ColorSelector'
@@ -24,8 +23,6 @@ import {
   Desc,
 } from '../styles/widgets/base_setting'
 
-import { edit } from '../logic'
-
 export default () => {
   const {
     widgetsPrimaryColor,
@@ -33,18 +30,12 @@ export default () => {
     saving,
     getIsThreadTouched,
     getIsPrimaryColorTouched,
+    edit,
+    threadOnChange,
   } = useWidgets()
 
   const isThreadTouched = getIsThreadTouched()
   const isPrimaryColorTouched = getIsPrimaryColorTouched()
-
-  const threadOnChange = (checked: boolean, thread: TThread): void => {
-    const newThreads = checked
-      ? [...widgetsThreads, thread]
-      : reject((t) => t === thread, clone(widgetsThreads))
-
-    edit(newThreads, 'widgetsThreads')
-  }
 
   return (
     <Wrapper>
