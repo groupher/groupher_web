@@ -1,17 +1,16 @@
-import { type FC, memo } from 'react'
-
 import Radio from '@/widgets/Switcher/Radio'
 import RangeSlider from '@/widgets/RangeSlider'
 
 import Portal from '../Portal'
 import SavingBar from '../SavingBar'
 
-import useRSSInfo from '../hooks/useRSSInfo'
+import useRSS from '../logic/useRSS'
 import { Wrapper, InnerWrapper, SettingsRow, NumRow, SettingTitle } from '../styles/rss'
-import { edit, rssOnSave, rssOnCancel } from '../logic'
+import { rssOnSave, rssOnCancel } from '../logic'
 
-const RSS: FC = () => {
-  const { rssFeedType, rssFeedCount, saving, isTouched } = useRSSInfo()
+export default () => {
+  const { rssFeedType, rssFeedCount, saving, getIsTouched, edit } = useRSS()
+  const isTouched = getIsTouched()
 
   return (
     <Wrapper>
@@ -60,5 +59,3 @@ const RSS: FC = () => {
     </Wrapper>
   )
 }
-
-export default memo(RSS)
