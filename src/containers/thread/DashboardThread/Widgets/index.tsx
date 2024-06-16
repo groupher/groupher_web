@@ -1,6 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
 import { Br } from '@/widgets/Common'
 
 import Button from '@/widgets/Buttons/Button'
@@ -28,7 +25,7 @@ import {
 } from '../styles/widgets'
 import { edit, onSave } from '../logic'
 
-const Widgets: FC = () => {
+export default () => {
   const { widgetsType } = useWidgetsInfo()
 
   return (
@@ -95,5 +92,3 @@ const Widgets: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(Widgets)

@@ -166,7 +166,7 @@ export type TSettingsFields = {
 
   // widgets
   widgetsPrimaryColor: TColorName
-  widgetsThreads: TThread
+  widgetsThreads: TThread[]
   widgetsSize: TSizeSML
   widgetsType: TWidgetType
 }

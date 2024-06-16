@@ -137,7 +137,7 @@ export const settingsFields: TSettingsFields = {
 
   // widgets
   widgetsPrimaryColor: COLOR_NAME.BLACK,
-  widgetsThreads: THREAD.POST,
+  widgetsThreads: [THREAD.POST],
   widgetsSize: SIZE.MEDIUM,
   widgetsType: WIDGET_TYPE.SIDEBAR,
 }
