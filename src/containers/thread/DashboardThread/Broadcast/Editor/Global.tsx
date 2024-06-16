@@ -1,6 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
 import ColorSelector from '@/widgets/ColorSelector'
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
 
@@ -8,7 +5,7 @@ import SectionLabel from '../../SectionLabel'
 import GlobalTemplate from '../Templates/Global'
 import SavingBar from '../../SavingBar'
 
-import useBroadcastInfo from '../../hooks/useBroadcastInfo'
+import useBroadcast from '../../logic/useBroadcast'
 import {
   Wrapper,
   Item,
@@ -18,10 +15,11 @@ import {
   Inputer,
   EnableDesc,
 } from '../../styles/broadcast/editor/global'
-import { edit, broadcastOnSave, broadcastOnCancel } from '../../logic'
+import { broadcastOnSave, broadcastOnCancel } from '../../logic'
 
-const GlobalEditor: FC = () => {
-  const { saving, broadcastBg, broadcastEnable, isTouched } = useBroadcastInfo()
+export default () => {
+  const { saving, broadcastBg, broadcastEnable, getIsTouched, edit } = useBroadcast()
+  const isTouched = getIsTouched()
 
   return (
     <Wrapper>
@@ -71,5 +69,3 @@ const GlobalEditor: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(GlobalEditor)

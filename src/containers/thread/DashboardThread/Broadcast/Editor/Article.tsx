@@ -1,6 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
 import { Br } from '@/widgets/Common'
 import ColorSelector from '@/widgets/ColorSelector'
 import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
@@ -9,7 +6,7 @@ import SectionLabel from '../../SectionLabel'
 import ArticleTemplate from '../Templates/Article'
 import SavingBar from '../../SavingBar'
 
-import useBroadcastInfo from '../../hooks/useBroadcastInfo'
+import useBroadcast from '../../logic/useBroadcast'
 import {
   Wrapper,
   Item,
@@ -19,11 +16,13 @@ import {
   Inputer,
   EnableDesc,
 } from '../../styles/broadcast/editor/article'
-import { edit, broadcastOnSave, broadcastOnCancel } from '../../logic'
+import { broadcastOnSave, broadcastOnCancel } from '../../logic'
 
-const ArticleEditor: FC = () => {
-  const { saving, broadcastArticleBg, broadcastArticleEnable, isArticleTouched } =
-    useBroadcastInfo()
+export default () => {
+  const { saving, broadcastArticleBg, broadcastArticleEnable, getIsArticleTouched, edit } =
+    useBroadcast()
+
+  const isArticleTouched = getIsArticleTouched()
 
   return (
     <Wrapper>
@@ -74,5 +73,3 @@ const ArticleEditor: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(ArticleEditor)
