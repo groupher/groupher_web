@@ -221,7 +221,7 @@ export type TStore = TSettingsFields & {
   allRootRules: string
 
   // actions
-  commit: (updates: Partial<TStore>) => void
+  commit: (patch: Partial<TStore>) => void
 }
 
 export type TLinkState = {

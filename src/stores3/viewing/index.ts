@@ -1,4 +1,5 @@
 import { proxy } from 'valtio'
+import { mergeDeepRight } from 'ramda'
 
 import { includes, values, mergeRight } from 'ramda'
 
@@ -15,6 +16,7 @@ export default (init: TInit = {}): TStore => {
     changelog: init.changelog || null,
     activeThread: init.activeThread || ARTICLE_THREAD.POST,
     viewingThread: null,
+    communityDigestInView: true,
 
     get viewingArticle(): TArticle {
       const curThread = store.viewingThread || store.activeThread
@@ -27,6 +29,10 @@ export default (init: TInit = {}): TStore => {
     // actions
     updateViewingCommunity(args: TCommunity): void {
       store.community = mergeRight(store.community, args)
+    },
+
+    commit: (patch: Partial<TStore>): void => {
+      Object.assign(store, mergeDeepRight(store, patch))
     },
   })
 

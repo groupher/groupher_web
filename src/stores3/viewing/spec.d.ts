@@ -13,7 +13,9 @@ export type TInit = {
 export type TStore = TInit & {
   // views
   viewingArticle: TArticle
+  communityDigestInView: boolean
 
   // actions
   updateViewingCommunity: (args: TCommunity) => void
+  commit: (patch: Partial<TStore>) => void
 }
