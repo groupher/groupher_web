@@ -14,7 +14,7 @@ import useSubStore from '@/hooks/useSubStore'
 
 import { parseWallpaper } from '@/wallpaper'
 
-type TRet = TWallpaperFmt
+type TRet = { wallpaper: string; hasShadow: boolean } & TWallpaperFmt
 
 export default (): TRet => {
   const store = useSubStore('wallpaper')
@@ -72,6 +72,8 @@ export default (): TRet => {
   const { background, effect } = parseWallpaper(wallpapers, wallpaper, customWallpaper)
 
   return {
+    wallpaper,
+    hasShadow,
     effect,
     background,
   }
