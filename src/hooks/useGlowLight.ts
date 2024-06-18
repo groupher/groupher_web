@@ -1,20 +1,15 @@
-import { useContext } from 'react'
-import { MobXProviderContext } from 'mobx-react'
-
 import type { TGlowEffect } from '@/spec'
+import useSubStore from '@/hooks/useSubStore'
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
-const useGlowLight = (): TGlowEffect => {
-  const { store } = useContext(MobXProviderContext)
+export default (): TGlowEffect => {
+  const store = useSubStore('dashboard')
+  const { wallpaper } = useSubStore('wallpaper')
 
-  if (store === null) {
-    throw new Error('Store cannot be null, please add a context provider')
+  const { glowType, glowFixed, glowOpacity } = store
+
+  const changeGlowEffect = (glowType: string): void => {
+    store.commit({ glowType })
   }
-
-  const { wallpaper } = store.wallpaperEditor
-  const { glowType, glowFixed, glowOpacity, changeGlowEffect } = store.dashboardThread
 
   return {
     glowType: wallpaper && glowType,
@@ -23,5 +18,3 @@ const useGlowLight = (): TGlowEffect => {
     changeGlowEffect,
   }
 }
-
-export default useGlowLight

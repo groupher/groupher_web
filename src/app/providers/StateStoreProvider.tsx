@@ -15,7 +15,6 @@ export default ({ children }: { children: ReactNode }) => {
   const dashboard = useDashboard(community)
   const wallpaper = useWallpaper(community)
 
-  console.log('## wallpaper: ', wallpaper)
   // console.log('## dashbaord: ', dashboard)
 
   const rootStore = useStore({
@@ -25,7 +24,6 @@ export default ({ children }: { children: ReactNode }) => {
     viewing: {
       community: community || HOME_COMMUNITY,
     },
-    // wallpaperEditor: wallpaper,
     wallpaper,
     dashboard,
   })

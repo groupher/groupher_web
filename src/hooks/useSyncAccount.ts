@@ -11,6 +11,9 @@ const useSyncAccount = (): TAccount => {
 
   const [isLinkClickListenerAdded, setIsLinkClickListenerAdded] = useState(false)
 
+  /**
+   * TODO: handle token expired situation
+   */
   const syncAccountInfo = debounce(() => {
     const user = BStore.cookie.get(OAUTH.USER_KEY)
     const token = BStore.cookie.get(OAUTH.TOKEN_KEY)

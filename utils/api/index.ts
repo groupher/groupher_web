@@ -18,7 +18,12 @@ export const mutate = (mutation, variables) => {
     .mutation(mutation, clearfy(variables))
     .toPromise()
     .then((res) => {
-      if (res.error) throw res.error
+      console.log('## got res: ', res)
+      if (res.error) {
+        // @ts-ignore
+        console.log('## error code: ', res.error.graphQLErrors[0].originalError.code)
+        throw res.error
+      }
       return res.data
     })
     .catch((e) => {

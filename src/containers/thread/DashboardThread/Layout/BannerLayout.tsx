@@ -35,8 +35,6 @@ export default () => {
 
   const isTouched = getIsTouched()
 
-  console.log('## banner changed? ', isTouched)
-
   return (
     <Wrapper>
       <SectionLabel

@@ -1,4 +1,4 @@
-import { type FC, memo, useState } from 'react'
+import { type FC, useState } from 'react'
 
 import { signIn } from '@/oauth'
 import { titleCase } from '@/fmt'
@@ -61,4 +61,4 @@ const Panel: FC<TProps> = ({ show, onClose }) => {
   )
 }
 
-export default memo(Panel)
+export default Panel
