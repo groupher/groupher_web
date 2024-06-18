@@ -7,7 +7,6 @@ import {
   StyledComponentsRegistry,
   GraphQLProvider,
   RootStoreProvider,
-  MobxStoreProvider,
   StateStoreProvider,
   GlobalLayout,
 } from './providers'
@@ -34,11 +33,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <StyledComponentsRegistry>
           <GraphQLProvider>
             <StateStoreProvider>
-              <MobxStoreProvider>
-                <RootStoreProvider>
-                  <GlobalLayout>{children}</GlobalLayout>
-                </RootStoreProvider>
-              </MobxStoreProvider>
+              <RootStoreProvider>
+                <GlobalLayout>{children}</GlobalLayout>
+              </RootStoreProvider>
             </StateStoreProvider>
           </GraphQLProvider>
         </StyledComponentsRegistry>
