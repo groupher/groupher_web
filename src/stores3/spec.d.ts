@@ -5,6 +5,7 @@ import type { TStore as TViewingStore } from './viewing/spec'
 import type { TStore as TAccountStore } from './account/spec'
 import type { TStore as TThemeStore } from './theme/spec'
 import type { TStore as TDashbaordStore } from './dashboard/spec'
+import type { TStore as TWallpaperStore } from './wallpaper/spec'
 
 export type TRootStore = {
   locale: TLocaleStore
@@ -12,6 +13,7 @@ export type TRootStore = {
   viewing: TViewingStore
   account: TAccountStore
   dashboard: TDashbaordStore
+  wallpaper: TWallpaperStore
 }
 
 export type TTreeStoreKey = keyof TRootStore

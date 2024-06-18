@@ -37,7 +37,7 @@ import {
   DASHBOARD_DOC_ROUTE,
 } from '@/const/route'
 
-import type { TStore, TInitSettings, TSettingsFields } from './spec'
+import type { TStore, TInitState, TSettingsFields } from './spec'
 import { EMPTY_MEDIA_REPORT, DEFAULT_FAQ_ITEMS, DEFAULT_OVERVIEW } from './constant'
 
 export const settingsFields: TSettingsFields = {
@@ -142,7 +142,7 @@ export const settingsFields: TSettingsFields = {
   widgetsType: WIDGET_TYPE.SIDEBAR,
 }
 
-export default (initState: TInitSettings = {}): TStore => {
+export default (initState: TInitState = {}): TStore => {
   const store = proxy(
     mergeLeft(initState, {
       ...settingsFields,

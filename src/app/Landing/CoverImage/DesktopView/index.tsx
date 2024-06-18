@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import useWallpaper from '@/hooks/useWallpaper'
 
@@ -24,4 +23,4 @@ const CoverImage: FC = () => {
   )
 }
 
-export default observer(CoverImage)
+export default CoverImage

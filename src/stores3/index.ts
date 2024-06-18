@@ -11,6 +11,7 @@ import setupTheme from './theme'
 import setupAccount from './account'
 import setupViewing from './viewing'
 import setupDashboard from './dashboard'
+import setupWallpaper from './wallpaper'
 
 const INITIAL_STATE = {
   theme: THEME.DAY,
@@ -18,6 +19,7 @@ const INITIAL_STATE = {
   localeData: '{}',
   viewing: {},
   dashboard: {},
+  wallpaper: {},
 }
 
 const setupRootStore = (init = INITIAL_STATE): TRootStore => {
@@ -27,7 +29,7 @@ const setupRootStore = (init = INITIAL_STATE): TRootStore => {
     theme: setupTheme(init.theme),
     viewing: setupViewing(init.viewing),
     dashboard: setupDashboard(init.dashboard),
-    // wallpaperEditor:
+    wallpaper: setupWallpaper(init.wallpaper),
   })
 }
 

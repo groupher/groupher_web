@@ -171,7 +171,7 @@ export type TSettingsFields = {
   widgetsType: TWidgetType
 }
 
-export type TInitSettings = Partial<TSettingsFields>
+export type TInitState = Partial<TSettingsFields>
 
 export type TStore = TSettingsFields & {
   initFilled: boolean
