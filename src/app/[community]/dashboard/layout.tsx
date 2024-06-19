@@ -1,25 +1,15 @@
 'use client'
 
-import { observer } from 'mobx-react-lite'
-
-import useDashboardSettings from '@/hooks/useDashboardSettings'
 import useMetric from '@/hooks/useMetric'
 
 import CommunityDigest from '@/widgets/CommunityDigest'
 
 import { Wrapper, InnerWrapper, ContentWrapper, FrameWrapper, MainWrapper } from './styles'
 
-import { useStore } from '@/containers//thread/DashboardThread/store'
-import { useInit } from '@/containers//thread/DashboardThread/logic'
-
 import SideMenu from '@/containers/thread/DashboardThread/SideMenu'
 
 const Layout = ({ children }) => {
-  const { curTab } = useDashboardSettings()
   const metric = useMetric()
-
-  const store = useStore()
-  useInit(store)
 
   return (
     <Wrapper>
@@ -28,7 +18,7 @@ const Layout = ({ children }) => {
       <InnerWrapper metric={metric}>
         <ContentWrapper>
           <FrameWrapper metric={metric}>
-            <SideMenu curTab={curTab} />
+            <SideMenu />
             <MainWrapper>{children}</MainWrapper>
           </FrameWrapper>
         </ContentWrapper>
@@ -37,4 +27,4 @@ const Layout = ({ children }) => {
   )
 }
 
-export default observer(Layout)
+export default Layout

@@ -1,9 +1,9 @@
 import { type FC, useState } from 'react'
-import { observer } from 'mobx-react-lite'
 
-import type { TDashboardPath } from '@/spec'
 import { DASHBOARD_ROUTE } from '@/const/route'
+
 import usePrimaryColor from '@/hooks/usePrimaryColor'
+import useDashboardTab from '@/hooks/useDashboardTab'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import type { TMenuGroup } from '../spec'
@@ -20,10 +20,10 @@ import {
 
 type TProps = {
   group: TMenuGroup
-  curTab: TDashboardPath | string
 }
 
-const Group: FC<TProps> = ({ group, curTab }) => {
+const Group: FC<TProps> = ({ group }) => {
+  const { curTab, changeTab } = useDashboardTab()
   const community = useViewingCommunity()
   const primaryColor = usePrimaryColor()
   const [fold, setFold] = useState(group.initFold)
@@ -45,6 +45,7 @@ const Group: FC<TProps> = ({ group, curTab }) => {
               <Item
                 key={item.slug}
                 $active={item.slug === curTab}
+                onClick={() => changeTab(item.slug)}
                 href={`/${community.slug}/${DASHBOARD_ROUTE.DASHBOARD}/${subPath}`}
                 $color={primaryColor}
               >
@@ -58,4 +59,4 @@ const Group: FC<TProps> = ({ group, curTab }) => {
   )
 }
 
-export default observer(Group)
+export default Group
