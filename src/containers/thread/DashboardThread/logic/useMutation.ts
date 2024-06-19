@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { includes, omit, values, update, findIndex, equals } from 'ramda'
+import { includes, omit, values, update, findIndex, equals, keys, filter } from 'ramda'
 
 import type { TEditValue, TTag } from '@/spec'
 import { DASHBOARD_BASEINFO_ROUTE } from '@/const/route'
@@ -121,6 +121,25 @@ export default (): TRet => {
   }
 
   const mutation = (field: TSettingField, e: TEditValue): Promise<void> => {
+    if (field === SETTING_FIELD.ENABLE) {
+      const curEnable = storeRef.current.enable
+      const initEnable = storeRef.current.initSettings.enable
+
+      const valueDiff = (key) => !equals(curEnable[key], initEnable[key])
+
+      const diff = filter(valueDiff, keys(curEnable))
+      const diffKey = diff[0]
+      if (!diffKey) return
+
+      const params = {
+        community,
+        [diffKey]: curEnable[diffKey],
+      }
+
+      handleMutation(S.updateDashboardEnable, params)
+      return
+    }
+
     if (field === SETTING_FIELD.BROADCAST_ENABLE) {
       const params = {
         community,

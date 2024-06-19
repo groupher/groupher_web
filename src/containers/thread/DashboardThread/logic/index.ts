@@ -29,20 +29,6 @@ const sr71$ = new SR71({
 let store: TStore | undefined
 let sub$ = null
 
-export const enableThread = (key: string, toggle: boolean): void => {
-  const { enableSettings, curCommunity } = store
-
-  const enable = {
-    ...enableSettings,
-    [key]: toggle,
-  }
-
-  store.mark({ enable })
-  store.onSave('enable')
-
-  sr71$.mutate(S.updateDashboardEnable, { community: curCommunity.slug, [key]: toggle })
-}
-
 export const toggleSEO = (seoEnable: boolean): void => {
   const { curCommunity } = store
 
@@ -272,7 +258,7 @@ export const reloadModerators = (): void => {
  * save to server
  */
 export const onSave = (field: TSettingField): void => {
-  console.log('## onSave in logic, move to hooks')
+  alert('## onSave in logic, move to hooks')
 }
 
 export const loadPosts = () => {
@@ -413,15 +399,7 @@ const DataSolver = [
     },
   },
   {
-    match: asyncRes('updateDashboardEnable'),
-    action: () => _handleDone(),
-  },
-  {
     match: asyncRes('updateDashboardLayout'),
-    action: () => _handleDone(),
-  },
-  {
-    match: asyncRes('updateDashboardNameAlias'),
     action: () => _handleDone(),
   },
   {

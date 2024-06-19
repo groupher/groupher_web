@@ -1,7 +1,9 @@
 import type { TEnableConfig } from '@/spec'
 
 import useSubState from '@/hooks/useSubStore'
-// import useViewing from '@/hooks/useViewing'
+import { SETTING_FIELD } from '@/stores3/dashboard/constant'
+
+import useHelper from './useHelper'
 
 type TRet = {
   enable: TEnableConfig
@@ -10,22 +12,18 @@ type TRet = {
 
 export default (): TRet => {
   const store = useSubState('dashboard')
-
-  //const { community } = useViewing()
-  //  const { edit, resetEdit } = useHelper()
+  const { onSave } = useHelper()
 
   const { enable } = store
 
   const enableThread = (key: string, toggle: boolean): void => {
-    console.log('## enableThread')
-    // const { enableSettings, curCommunity } = store
-    // const enable = {
-    //   ...enableSettings,
-    //   [key]: toggle,
-    // }
-    // store.mark({ enable })
-    // store.onSave('enable')
-    // sr71$.mutate(S.updateDashboardEnable, { community: curCommunity.slug, [key]: toggle })
+    const patch = {
+      ...enable,
+      [key]: toggle,
+    }
+
+    store.commit({ enable: patch })
+    setTimeout(() => onSave(SETTING_FIELD.ENABLE))
   }
 
   return {
