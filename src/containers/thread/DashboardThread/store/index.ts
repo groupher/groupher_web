@@ -30,7 +30,6 @@ import type {
 } from '@/spec'
 
 import {
-  DASHBOARD_ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
   DASHBOARD_BASEINFO_ROUTE,
   DASHBOARD_ALIAS_ROUTE,
@@ -39,7 +38,6 @@ import {
   DASHBOARD_DOC_ROUTE,
 } from '@/const/route'
 import { CHANGE_MODE } from '@/const/mode'
-import { THREAD } from '@/const/thread'
 
 import BStore from '@/utils/bstore'
 import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '@/mobx'
@@ -62,7 +60,6 @@ import type {
   TFooterSettings,
   TDocSettings,
   TSettingField,
-  TCurPageLinksKey,
 } from '../spec'
 
 import { SETTING_FIELD, BASEINFO_KEYS, SEO_KEYS } from '../constant'
@@ -77,7 +74,6 @@ const DashboardThread = T.model('DashboardThread', {
   saving: T.opt(T.bool, false),
   loading: T.opt(T.bool, false),
   // tab
-  curTab: T.opt(T.enum(values(DASHBOARD_ROUTE)), DASHBOARD_ROUTE.INFO),
   baseInfoTab: T.opt(T.enum(values(DASHBOARD_BASEINFO_ROUTE)), DASHBOARD_BASEINFO_ROUTE.BASIC),
   aliasTab: T.opt(T.enum(values(DASHBOARD_ALIAS_ROUTE)), DASHBOARD_ALIAS_ROUTE.THREAD),
   seoTab: T.opt(T.enum(values(DASHBOARD_SEO_ROUTE)), DASHBOARD_SEO_ROUTE.SEARCH_ENGINE),
@@ -156,17 +152,6 @@ const DashboardThread = T.model('DashboardThread', {
 
       // @ts-ignore
       return uniq(pluck('group', tags))
-    },
-
-    get curPageLinksKey(): TCurPageLinksKey {
-      const slf = self as TStore
-
-      const isFooter = slf.curTab === DASHBOARD_ROUTE.FOOTER
-
-      return {
-        links: isFooter ? 'footerLinks' : 'headerLinks',
-        settings: isFooter ? 'footerSettings' : 'headerSettings',
-      }
     },
 
     get headerSettings(): THeaderSettings {
@@ -300,27 +285,6 @@ const DashboardThread = T.model('DashboardThread', {
       self.allModeratorRules = moderatorRules
     },
 
-    /**
-     * init activeTagThread for dashboard tags settings
-     * based on enableSettings
-     */
-    _initActiveTagThreadIfneed(): void {
-      const slf = self as TStore
-      const { curTab, enableSettings } = slf
-
-      if (curTab !== DASHBOARD_ROUTE.TAGS) return
-
-      if (enableSettings.post) {
-        setTimeout(() => slf.mark({ activeTagThread: THREAD.POST }))
-      } else if (enableSettings.kanban) {
-        setTimeout(() => slf.mark({ activeTagThread: THREAD.KANBAN }))
-      } else if (enableSettings.changelog) {
-        setTimeout(() => slf.mark({ activeTagThread: THREAD.CHANGELOG }))
-      } else {
-        setTimeout(() => slf.mark({ activeTagThread: null }))
-      }
-    },
-
     clearLocalSettings(): void {
       BStore.remove(DASHBOARD_DEMO_KEY)
 
@@ -395,7 +359,7 @@ const DashboardThread = T.model('DashboardThread', {
     _saveToLocal(): void {
       const slf = self as TStore
       const saveSlf = omit(
-        ['curTab', 'baseInfoTab', 'aliasTab', 'layoutTab', 'layoutTab', 'broadcastTab'],
+        ['baseInfoTab', 'aliasTab', 'layoutTab', 'layoutTab', 'broadcastTab'],
         toJS(slf),
       )
 

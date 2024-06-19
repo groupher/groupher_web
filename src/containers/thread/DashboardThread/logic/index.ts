@@ -6,8 +6,6 @@ import { COLOR_NAME } from '@/const/colors'
 import EVENT from '@/const/event'
 import ERR from '@/const/err'
 
-import { DASHBOARD_ROUTE, DASHBOARD_BASEINFO_ROUTE } from '@/const/route'
-
 import { updateEditing, toJS } from '@/mobx'
 import asyncSuit from '@/async'
 import { toast, errRescue } from '@/signal'
@@ -431,17 +429,6 @@ const DataSolver = [
       const tags = pagedArticleTags.entries
 
       store.mark({ tags, initSettings: { ...initSettings, tags } })
-    },
-  },
-  {
-    match: asyncRes('community'),
-    action: ({ community }) => {
-      const { curTab, baseInfoTab } = store
-
-      if (curTab === DASHBOARD_ROUTE.ADMINS) store.mark({ moderators: community.moderators })
-      if (curTab === DASHBOARD_ROUTE.DASHBOARD && baseInfoTab === DASHBOARD_BASEINFO_ROUTE.BASIC) {
-        store.updateOverview(community)
-      }
     },
   },
   {
